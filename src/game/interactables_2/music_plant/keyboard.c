@@ -7,6 +7,7 @@
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/music_plant/keyboard.h"
 
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -88,7 +89,7 @@ static void sub_8076448(Sprite_Keyboard *kb)
 
     kb->unk1 = 8;
     gPlayer.unk64 = 4;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
         m4aSongNumStart(SE_TECHNO_BASE_COMMON);

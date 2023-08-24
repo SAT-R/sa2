@@ -13,6 +13,7 @@
 #include "task.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -129,13 +130,13 @@ static void Task_StageGoalToggleMain(void)
     if (IS_MULTI_PLAYER) {
         if (x <= Q_24_8_TO_INT(gPlayer.x)
             && !(gPlayer.moveState & (MOVESTATE_8000000 | MOVESTATE_8))) {
-            gPlayer.unk6D = 10;
+            gPlayer.transition = PLTRANS_PT10;
             gUnknown_030054D0 = x;
             StageGoalToggle_HandleMultiplayerFinish();
         }
     } else if (x <= Q_24_8_TO_INT(gPlayer.x)
                && !(gPlayer.moveState & MOVESTATE_8000000)) {
-        gPlayer.unk6D = 10;
+        gPlayer.transition = PLTRANS_PT10;
         gUnknown_03005424 |= 0x21;
         gUnknown_030054D0 = x;
 

@@ -10,6 +10,7 @@
 #include "game/interactables_2/music_plant/guitar_string.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 #define NUM_GUITAR_STRING_ELEMS 6
@@ -282,7 +283,7 @@ void sub_8076258(Sprite_GuitarString UNUSED *gs)
     if (PLAYER_IS_ALIVE) {
         Player_ClearMovestate_IsInScriptedSequence();
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
         gPlayer.speedAirY = -gPlayer.speedAirY;
         m4aSongNumStart(SE_MUSIC_PLANT_GUITAR_STRING);
     }

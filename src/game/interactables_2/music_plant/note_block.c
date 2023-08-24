@@ -8,6 +8,7 @@
 #include "game/interactables_2/music_plant/note_block.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -148,7 +149,7 @@ void sub_8075B50(Sprite_NoteBlock *block)
     block->unk49 = 192;
     gPlayer.speedAirY = -(gUnknown_080DFC6A[block->unk48]);
     gPlayer.unk64 = 0x39;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
     gPlayer.unk66 = -1;
 
     block->unk4A = 0;

@@ -10,6 +10,7 @@
 #include "game/interactables_2/egg_utopia/speeding_platform.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -108,7 +109,7 @@ static void sub_807F9F0(void)
                               sub_801EC3C);
         if (res < 0) {
             platform->unk4C = FALSE;
-            gPlayer.unk6D = 3;
+            gPlayer.transition = PLTRANS_PT3;
             gPlayer.moveState &= ~8;
             gPlayer.unk3C = 0;
         }

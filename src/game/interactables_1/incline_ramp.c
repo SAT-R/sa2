@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "task.h"
 
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -54,7 +55,7 @@ static void Task_InclineRamp(void)
                 gPlayer.unk17 = 14;
 
                 gPlayer.unk64 = 39;
-                gPlayer.unk6D = 7;
+                gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }
         } else {
@@ -80,7 +81,7 @@ static void Task_InclineRamp(void)
                 gPlayer.unk17 = 14;
 
                 gPlayer.unk64 = 11;
-                gPlayer.unk6D = 7;
+                gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }
         }

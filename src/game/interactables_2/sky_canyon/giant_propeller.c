@@ -8,6 +8,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -179,7 +180,7 @@ static void sub_807B74C(Sprite_GiantPropeller *propeller)
 static void sub_807B7BC(Sprite_GiantPropeller *propeller)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
 
     if (propeller->unk48 <= (PROPELLER_HITBOX_HEIGHT / 2) || propeller->unk48 >= 192) {
         propeller->unk48 += (PROPELLER_HITBOX_HEIGHT / 2);

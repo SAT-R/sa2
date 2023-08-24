@@ -11,6 +11,7 @@
 #include "sprite.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -176,7 +177,7 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
 static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
 {
-    gPlayer.unk6D = 0x18;
+    gPlayer.transition = PLTRANS_PT24;
 
     // NOTE: This doesn't take the sprite offset, is it a bug?
     gPlayer.x = Q_24_8(ring->posX);

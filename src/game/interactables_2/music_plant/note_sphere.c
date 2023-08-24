@@ -12,6 +12,7 @@
 #include "game/interactables_2/music_plant/note_sphere.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -178,7 +179,7 @@ static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
                                           * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
     }
 
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
 
     return angle;
 }

@@ -206,7 +206,7 @@ static bool32 sub_800E490(Sprite *displayed, MapEntity *me, Sprite_Spring *sprin
     if (((player->moveState & MOVESTATE_400000) == 0)
         && sub_800CDBC(displayed, xPos, yPos, player) != 0) {
 
-        player->unk6D = gUnknown_080D53D0[spring->unk3D];
+        player->transition = gUnknown_080D53D0[spring->unk3D];
         player->unk6E = spring->unk3E;
         player->unk6C = 1;
 

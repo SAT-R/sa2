@@ -10,6 +10,7 @@
 #include "game/entity.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -46,7 +47,7 @@ void Task_8061914(void)
             if (x < Q_24_8_TO_INT(gPlayer.x) && (corkscrew->base.spriteY & 1)) {
                 s32 idx;
                 s32 y24_8;
-                gPlayer.unk6D = 27;
+                gPlayer.transition = PLTRANS_PT27;
 
                 idx = ((((Q_24_8_TO_INT(gPlayer.x) - x) * 930) >> 8) + 256) & ONE_CYCLE;
                 gPlayer.x += gPlayer.speedGroundX;
@@ -114,13 +115,13 @@ void sub_8061AB0(void)
         if (player->speedGroundX < corkscrew->unkC) {
             player->unk64 = 50;
             player->speedAirX = player->speedGroundX;
-            player->unk6D = 5;
+            player->transition = PLTRANS_PT5;
             gCurTask->main = Task_8061914;
         } else if (player->unk5E & gPlayerControls.jump) {
             player->unk64 = 50;
             player->speedAirX = player->speedGroundX;
             player->speedAirY = -Q_24_8(4.875);
-            player->unk6D = 5;
+            player->transition = PLTRANS_PT5;
             gCurTask->main = Task_8061914;
         } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
             player->unk64 = 4;
@@ -172,13 +173,13 @@ void Task_8061C70(void)
             player->unk64 = 50;
             player->speedAirX = 0;
             player->speedAirY = player->speedGroundX;
-            player->unk6D = 5;
+            player->transition = PLTRANS_PT5;
             gCurTask->main = Task_8061914;
         } else if (player->unk5E & gPlayerControls.jump) {
             player->unk64 = 50;
             player->speedAirX = 0;
             player->speedAirY = -Q_24_8(4.875);
-            player->unk6D = 5;
+            player->transition = PLTRANS_PT5;
             gCurTask->main = Task_8061914;
         } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
             player->unk64 = 4;
@@ -212,9 +213,9 @@ void Task_8061DA4(void)
 
     if (Q_24_8_TO_INT(player->x) - x > 0x1A8) {
         if (player->moveState & MOVESTATE_4) {
-            player->unk6D = 2;
+            player->transition = PLTRANS_PT2;
         } else {
-            player->unk6D = 1;
+            player->transition = PLTRANS_PT1;
         }
         gCurTask->main = Task_8061914;
         return;
@@ -233,13 +234,13 @@ void Task_8061DA4(void)
     if (player->speedGroundX < corkscrew->unkC) {
         player->unk64 = 50;
         player->speedAirX = player->speedGroundX;
-        player->unk6D = 5;
+        player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8061914;
     } else if (player->unk5E & gPlayerControls.jump) {
         player->unk64 = 50;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q_24_8(4.875);
-        player->unk6D = 5;
+        player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8061914;
     } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
         player->unk64 = 4;
@@ -275,7 +276,7 @@ void Task_8061F60(void)
             if (x > Q_24_8_TO_INT(gPlayer.x) && (corkscrew->base.spriteY & 1)) {
                 s32 idx;
                 s32 y24_8;
-                gPlayer.unk6D = 27;
+                gPlayer.transition = PLTRANS_PT27;
 
                 idx = ((((Q_24_8_TO_INT(gPlayer.x) - x) * 930) >> 8) + 256) & ONE_CYCLE;
                 gPlayer.x += gPlayer.speedGroundX;
@@ -342,13 +343,13 @@ void Task_8062100(void)
         } else if (player->speedGroundX > -corkscrew->unkC) {
             player->unk64 = 50;
             player->speedAirX = player->speedGroundX;
-            player->unk6D = 5;
+            player->transition = PLTRANS_PT5;
             gCurTask->main = Task_8061F60;
         } else if (player->unk5E & gPlayerControls.jump) {
             player->unk64 = 50;
             player->speedAirX = player->speedGroundX;
             player->speedAirY = -Q_24_8(4.875);
-            player->unk6D = 5;
+            player->transition = PLTRANS_PT5;
             gCurTask->main = Task_8061F60;
         } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
             player->unk64 = 4;
@@ -400,13 +401,13 @@ void Task_80622C8(void)
             player->unk64 = 50;
             player->speedAirX = 0;
             player->speedAirY = player->speedGroundX;
-            player->unk6D = 5;
+            player->transition = PLTRANS_PT5;
             gCurTask->main = Task_8061F60;
         } else if (player->unk5E & gPlayerControls.jump) {
             player->unk64 = 50;
             player->speedAirX = 0;
             player->speedAirY = -Q_24_8(4.875);
-            player->unk6D = 5;
+            player->transition = PLTRANS_PT5;
             gCurTask->main = Task_8061F60;
         } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
             player->unk64 = 4;
@@ -440,9 +441,9 @@ void Task_8062414(void)
 
     if (Q_24_8_TO_INT(player->x) - x < -424) {
         if (player->moveState & MOVESTATE_4) {
-            player->unk6D = 2;
+            player->transition = PLTRANS_PT2;
         } else {
-            player->unk6D = 1;
+            player->transition = PLTRANS_PT1;
         }
         gCurTask->main = Task_8061F60;
         return;
@@ -461,13 +462,13 @@ void Task_8062414(void)
     if (player->speedGroundX > -corkscrew->unkC) {
         player->unk64 = 50;
         player->speedAirX = player->speedGroundX;
-        player->unk6D = 5;
+        player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8061F60;
     } else if (player->unk5E & gPlayerControls.jump) {
         player->unk64 = 50;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q_24_8(4.875);
-        player->unk6D = 5;
+        player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8061F60;
     } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
         player->unk64 = 4;

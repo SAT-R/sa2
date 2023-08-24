@@ -7,7 +7,9 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/interactables_2/ice_paradise/069.h"
+
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 struct Test {
@@ -536,7 +538,7 @@ void sub_8079888(Sprite_IA69 *ia69)
 
     if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.unk6D = 9;
+        gPlayer.transition = PLTRANS_PT9;
     }
 
     gCurTask->main = Task_Interactable069;

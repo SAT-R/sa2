@@ -9,6 +9,7 @@
 #include "game/interactables_2/ice_paradise/funnel_sphere.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -176,7 +177,7 @@ static void sub_8078254(Sprite_FunnelSphere *funnelSphere)
 {
     Player_ClearMovestate_IsInScriptedSequence();
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
 
     switch (gPlayer.character) {
         case CHARACTER_CREAM:

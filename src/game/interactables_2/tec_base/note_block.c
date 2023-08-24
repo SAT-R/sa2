@@ -4,8 +4,9 @@
 #include "game/game.h"
 #include "lib/m4a.h"
 
-#include "constants/songs.h"
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
+#include "constants/songs.h"
 
 typedef struct {
     SpriteBase base;
@@ -137,25 +138,25 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
                 gPlayer.y += Q_8_8(temp);
                 gPlayer.speedAirY = gUnknown_080E001A[noteBlock->unk4C][1];
                 gPlayer.unk64 = 4;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0xC0;
             } else if (temp & 0x40000) {
                 gPlayer.x += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = gUnknown_080E001A[noteBlock->unk4C][0];
                 gPlayer.unk64 = 4;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0x80;
             } else if (temp & 0x80000) {
                 gPlayer.x += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = gUnknown_080E001A[noteBlock->unk4C][2];
                 gPlayer.unk64 = 4;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0;
             } else {
                 gPlayer.y += Q_8_8(temp);
                 gPlayer.speedAirY = gUnknown_080E001A[noteBlock->unk4C][3];
                 gPlayer.unk64 = 4;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0x40;
             }
 
@@ -164,7 +165,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
             } else {
                 gPlayer.speedGroundX = speedGround;
                 gPlayer.unk64 = 4;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
             }
 
             if (gPlayer.unk3C == &noteBlock->sprite) {

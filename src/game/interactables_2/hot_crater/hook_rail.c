@@ -8,6 +8,7 @@
 #include "game/interactables_2/hot_crater/hook_rail.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -334,7 +335,7 @@ static void sub_80730F0(UNUSED Sprite_HookRail *hookRail)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     gPlayer.unk64 = 14;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
     if (gPlayer.rotation == 128) {
         gPlayer.rotation = 109;
     } else {
@@ -389,7 +390,7 @@ static void sub_80731D4(void)
 static void sub_807321C(void)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.unk6D = 3;
+    gPlayer.transition = PLTRANS_PT3;
 }
 
 static bool32 sub_8073238(Sprite_HookRail *hookRail)

@@ -14,6 +14,7 @@
 #include "game/playerfn_cmds.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -2980,7 +2981,7 @@ void Player_ClearMovestate_IsInScriptedSequence(void)
 
 void sub_802A018(void)
 {
-    gPlayer.unk6D = 10;
+    gPlayer.transition = PLTRANS_PT10;
     gUnknown_03005424
         |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__2 | EXTRA_STATE__ACT_START);
 

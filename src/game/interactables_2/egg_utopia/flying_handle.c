@@ -7,6 +7,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -164,7 +165,7 @@ static void sub_807F484(Sprite_FlyingHandle *flyingHandle)
     gPlayer.unk16 = 6;
     gPlayer.unk17 = 14;
     gPlayer.moveState &= ~MOVESTATE_4;
-    gPlayer.unk6D = 3;
+    gPlayer.transition = PLTRANS_PT3;
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;

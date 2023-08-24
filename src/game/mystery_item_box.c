@@ -8,6 +8,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -265,7 +266,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
         gPlayer.speedAirY = -0x300;
         gPlayer.unk64 = 0x26;
         gPlayer.unk66 = -1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
     }
 
     itemBox->base.me->d.sData[1] += 1;

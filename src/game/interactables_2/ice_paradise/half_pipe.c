@@ -6,6 +6,8 @@
 #include "game/entity.h"
 #include "game/interactables_2/ice_paradise/half_pipe.h"
 
+#include "constants/player_transitions.h"
+
 typedef struct {
     s32 x;
     s32 y;
@@ -175,7 +177,7 @@ static bool32 sub_80789AC(Sprite_IceParadiseHalfPipe *halfPipe)
 {
     if (gPlayer.speedAirX <= -Q_24_8(2) || gPlayer.speedAirX >= Q_24_8(2.25)) {
         if (gPlayer.unk5E & gPlayerControls.jump) {
-            gPlayer.unk6D = 3;
+            gPlayer.transition = PLTRANS_PT3;
         } else {
             return PlayerWithinHalfPipe(halfPipe);
         }

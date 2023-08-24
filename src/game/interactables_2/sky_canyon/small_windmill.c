@@ -8,6 +8,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -133,7 +134,7 @@ static void HandleRotationComplete(Sprite_SmallWindmill *windmill)
 
     if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         switch (windmill->initialTouchAngle) {
             case 2:

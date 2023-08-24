@@ -12,6 +12,7 @@
 #include "task.h"
 #include "trig.h"
 
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -170,7 +171,7 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
 
     if (gPlayer.unk5E & gPlayerControls.jump) {
         register u32 temp2 asm("r4");
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
         me->x = rotatingHandle->base.spriteX;
         sub_80218E4(&gPlayer);
         sub_8023B5C(&gPlayer, 9);

@@ -8,8 +8,9 @@
 #include "game/entity.h"
 #include "game/interactables_0/ramp.h"
 
-#include "constants/zones.h"
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -115,7 +116,7 @@ static void Task_Ramp(void)
                     if (temp9 > temp2) {
                         if (!(player->moveState & MOVESTATE_IN_AIR)
                             && (player->speedGroundX > Q_8_8(4))) {
-                            player->unk6D = 0x16;
+                            player->transition = PLTRANS_PT22;
                             player->unk6E = (ramp->unk3C & 1) * 3;
                         }
 
@@ -131,10 +132,10 @@ static void Task_Ramp(void)
                                 && (player->speedGroundX > Q_8_8(4))
                                 && (player->unk5E & gPlayerControls.jump)) {
                                 if (temp9 < (temp2 / 2)) {
-                                    player->unk6D = 0x16;
+                                    player->transition = PLTRANS_PT22;
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 1;
                                 } else {
-                                    player->unk6D = 0x16;
+                                    player->transition = PLTRANS_PT22;
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 2;
                                 }
                             } else {
@@ -161,7 +162,7 @@ static void Task_Ramp(void)
                         && Q_24_8_TO_INT(player->x) > displayed->x)) {
                     if (!(player->moveState & MOVESTATE_IN_AIR)
                         && player->speedGroundX > Q_8_8(4)) {
-                        player->unk6D = 0x16;
+                        player->transition = PLTRANS_PT22;
                         player->unk6E = (ramp->unk3C & 1) * 3;
                     }
                 } else if (((ramp->unk3C & 2) != 0

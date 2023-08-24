@@ -1,9 +1,11 @@
 #include "global.h"
 #include "core.h"
-#include "game/game.h"
 #include "lib/m4a.h"
+#include "game/game.h"
 #include "game/entity.h"
 #include "game/interactables_2/egg_utopia/094.h"
+
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -107,7 +109,7 @@ static void sub_807EB48(Sprite_IA94 *ia94)
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
         }
         gPlayer.unk64 = 4;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         if (ia94->unk1C) {
             gPlayer.speedAirX = -Q_24_8(5);
@@ -194,7 +196,7 @@ static void sub_807ED00(Sprite_IA94 *ia94)
     if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk64 = 14;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
         gPlayer.speedAirY = Q_24_8(1);
         m4aSongNumStop(SE_290);
     }

@@ -10,40 +10,40 @@
 
 void sub_8024228(Player *p)
 {
-    if (p->unk6D) {
-        switch (p->unk6D - 1) {
-            case 1 - 1: {
+    if (p->transition) {
+        switch (p->transition - 1) {
+            case PLTRANS_PT1 - 1: {
                 PLAYERFN_SET(PlayerCB_8025318);
             } break;
-            case 2 - 1: {
+            case PLTRANS_PT2 - 1: {
                 PLAYERFN_SET(PlayerCB_8025A0C);
             } break;
-            case 3 - 1: {
+            case PLTRANS_PT3 - 1: {
                 p->moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
                 PLAYERFN_SET(PlayerCB_Jump);
             } break;
-            case 4 - 1: {
+            case PLTRANS_PT4 - 1: {
                 p->moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
                 PLAYERFN_SET(PlayerCB_8025F84);
             } break;
-            case 7 - 1: {
+            case PLTRANS_PT7 - 1: {
                 PLAYERFN_SET(PlayerCB_8028D74);
             } break;
-            case 6 - 1: {
+            case PLTRANS_PT6 - 1: {
                 p->moveState |= MOVESTATE_100;
                 PLAYERFN_SET(PlayerCB_8026060);
             } break;
-            case 5 - 1: {
+            case PLTRANS_PT5 - 1: {
                 p->moveState |= MOVESTATE_100;
                 PLAYERFN_SET(PlayerCB_802611C);
             } break;
-            case 8 - 1: {
+            case PLTRANS_PT8 - 1: {
                 PLAYERFN_SET(PlayerCB_801225C);
             } break;
-            case 9 - 1: {
+            case PLTRANS_PT9 - 1: {
                 PLAYERFN_SET(PlayerCB_8027250);
             } break;
-            case 10 - 1: {
+            case PLTRANS_PT10 - 1: {
                 if (gGameMode == GAME_MODE_TIME_ATTACK) {
                     gUnknown_03005424 |= EXTRA_STATE__TURN_OFF_TIMER;
                 }
@@ -113,41 +113,41 @@ void sub_8024228(Player *p)
                 }
                 PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
-            case 22 - 1: {
+            case PLTRANS_PT22 - 1: {
                 PLAYERFN_SET(PlayerCB_8029158);
             } break;
             case 24 - 1: {
                 PLAYERFN_SET(PlayerCB_802A300);
             } break;
-            case 11 - 1: {
+            case PLTRANS_PT11 - 1: {
                 PLAYERFN_SET(PlayerCB_8026764);
             } break;
-            case 12 - 1: {
+            case PLTRANS_PT12 - 1: {
                 PLAYERFN_SET(PlayerCB_80269C0);
             } break;
-            case 13 - 1: {
+            case PLTRANS_PT13 - 1: {
                 PLAYERFN_SET(PlayerCB_8026A4C);
             } break;
-            case 23 - 1: {
+            case PLTRANS_PT23 - 1: {
                 PLAYERFN_SET(PlayerCB_802A258);
             } break;
-            case 25 - 1: {
+            case PLTRANS_PT25 - 1: {
                 PLAYERFN_SET(PlayerCB_8026E24);
             } break;
-            case 28 - 1: {
+            case PLTRANS_PT28 - 1: {
                 PLAYERFN_SET(PlayerCB_8026F10);
             } break;
-            case 26 - 1: {
+            case PLTRANS_PT26 - 1: {
                 PLAYERFN_SET(PlayerCB_8026FC8);
             } break;
-            case 27 - 1: {
+            case PLTRANS_PT27 - 1: {
                 PLAYERFN_SET(PlayerCB_8027114);
             } break;
         }
     }
 
-    p->prevTransition = p->unk6D;
-    p->unk6D = 0;
+    p->prevTransition = p->transition;
+    p->transition = 0;
 }
 
 void sub_802460C(Player *p)

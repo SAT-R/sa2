@@ -9,6 +9,7 @@
 #include "game/stage/entities_manager.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -89,7 +90,7 @@ void sub_806160C(void)
         && (sub_800C204(displayed, screenX, screenY, 0, &gPlayer, 0) == 1)
         && (gPlayer.speedAirY > 0) && (Q_24_8_TO_INT(gPlayer.y) + 4) < screenY) {
         gPlayer.unk64 = 0x32;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         bar->unk3C = gPlayer.speedAirY >> 0xA;
         if (bar->unk3C > 2) {

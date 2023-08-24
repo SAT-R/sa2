@@ -10,6 +10,7 @@
 #include "task.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -140,7 +141,7 @@ static void Task_Interactable_BouncySpring()
             }
 
             gPlayer.unk64 = 38;
-            gPlayer.unk6D = 7;
+            gPlayer.transition = PLTRANS_PT7;
             gPlayer.unk66 = -1;
 
             m4aSongNumStart(SE_SPRINGY_SPRING);

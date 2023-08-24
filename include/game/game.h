@@ -295,18 +295,8 @@ typedef struct Player_ {
     //  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA), by
     //  PlayerCB_80126B0
 
-    //  0x07 = Set in Egg Utopia - Launcher
-    //  0x0A = Player cleared the stage (only for Acts, not Bosses?)
-    //  0x0B = Something Grinding
-    //  0x0C = Something Grinding
-    //  0x0D = Something Grinding
-    //  0x0E = Hit an up-spring
-    //  0x16 = Set in IA Ramp
-    //  0x17 = Used in Interactable_044
-    //  0x18 = Dash
-    // Ring 0x1C = Set by IA ClearPipe_End if data[1] is 0
-    //
-    /* 0x6D */ u8 unk6D; // transition - use constants/player_transitions.h
+    // use constants/player_transitions.h
+    /* 0x6D */ u8 transition;
     /* 0x6E */ u8 unk6E; // Parameter for transition(?)
     /* 0x6F */ u8 prevTransition;
     /* 0x70 */ u8 unk70;

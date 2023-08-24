@@ -7,6 +7,7 @@
 #include "game/entity.h"
 #include "game/interactables_0/044.h"
 
+#include "constants/player_transitions.h"
 #include "constants/interactables.h"
 
 typedef struct {
@@ -52,7 +53,7 @@ void Task_Interactable_044(void)
                 if ((!(moveState & MOVESTATE_10000000)
                      || !(gPlayer.moveState & MOVESTATE_10000000))
                     && object->spriteY == 0) {
-                    gPlayer.unk6D = 0x17;
+                    gPlayer.transition = PLTRANS_PT23;
                     gPlayer.unk6E = 0;
 
                     if (me->index != IA__044)

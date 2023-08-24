@@ -7,7 +7,9 @@
 #include "game/interactables_2/tec_base/080.h"
 #include "malloc_vram.h"
 #include "trig.h"
+
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -142,7 +144,7 @@ static void TaskDestructor_Interactable080(struct Task *t)
 
 static void sub_807B2D0(Sprite_LightGlobe *globe)
 {
-    gPlayer.unk6D = 14;
+    gPlayer.transition = PLTRANS_SPRING_UP;
     gPlayer.unk6E = 0;
     globe->sprite.graphics.anim = SA2_ANIM_LIGHT_GLOBE;
     globe->sprite.variant = 1;

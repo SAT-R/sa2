@@ -7,7 +7,9 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/interactables_2/tec_base/075.h"
+
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 // Probably arrow screen
@@ -126,7 +128,7 @@ static void sub_807A560(void)
 {
     u8 someBool = FALSE;
     Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
-    gPlayer.unk6D = 1;
+    gPlayer.transition = PLTRANS_PT1;
     gPlayer.unk64 = 0;
 
     if (IS_MULTI_PLAYER) {
@@ -181,7 +183,7 @@ static void sub_807A688(Sprite_IA75 *ia75)
     ia75->unk7C = gPlayer.x - (Q_24_8(ia75->x) + ia75->unk74);
     ia75->unk80 = gPlayer.y - (Q_24_8(ia75->y) + ia75->unk78);
 
-    gPlayer.unk6D = 1;
+    gPlayer.transition = PLTRANS_PT1;
     gPlayer.unk64 = 0;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
@@ -224,15 +226,15 @@ static void sub_807A73C(Sprite_IA75 *ia75)
             case 0:
                 gPlayer.speedGroundX = -Q_8_8(7.5);
                 gPlayer.moveState |= 1;
-                gPlayer.unk6D = 1;
+                gPlayer.transition = PLTRANS_PT1;
                 break;
             case 1:
                 gPlayer.speedGroundX = Q_8_8(7.5);
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
-                gPlayer.unk6D = 1;
+                gPlayer.transition = PLTRANS_PT1;
                 break;
             case 2:
-                gPlayer.unk6D = 14;
+                gPlayer.transition = PLTRANS_SPRING_UP;
                 gPlayer.unk6E = 0;
                 break;
         }

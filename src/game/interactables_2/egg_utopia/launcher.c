@@ -12,6 +12,7 @@
 #include "game/game.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -199,7 +200,7 @@ static void Task_807DBF0(void)
     } else {
         if (gPlayer.unk2C != 120) {
             if (gPlayer.unk5E & gPlayerControls.jump) {
-                gPlayer.unk6D = 3;
+                gPlayer.transition = PLTRANS_PT3;
 
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 launcher->unk48 = FALSE;
@@ -246,7 +247,7 @@ static void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
     if (PLAYER_IS_ALIVE && launcher->unk48) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk64 = 65;
-        gPlayer.unk6D = 0x7;
+        gPlayer.transition = PLTRANS_PT7;
 
         switch (launcher->kind) {
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN):

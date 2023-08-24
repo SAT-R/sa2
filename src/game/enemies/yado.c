@@ -10,6 +10,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -79,7 +80,7 @@ void Task_YadoMain(void)
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.unk64 = SA2_CHAR_ANIM_50;
         gPlayer.unk6C = 1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         // TODO: Why is this called twice?
         m4aSongNumStart(SE_SPRING);
@@ -125,7 +126,7 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
                 gPlayer.speedAirY = YADO_PLAYER_ACCEL;
                 gPlayer.unk64 = SA2_CHAR_ANIM_50;
                 gPlayer.unk6C = 1;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
 
                 // TODO: Why is this called twice?
                 m4aSongNumStart(SE_SPRING);
@@ -136,7 +137,7 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.unk64 = SA2_CHAR_ANIM_50;
         gPlayer.unk6C = 1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         // TODO: Why is this called twice?
         m4aSongNumStart(SE_SPRING);
@@ -244,7 +245,7 @@ void Task_8055378(void)
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.unk64 = SA2_CHAR_ANIM_50;
         gPlayer.unk6C = 1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         m4aSongNumStart(SE_SPRING);
     }

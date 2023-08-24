@@ -7,6 +7,7 @@
 #include "lib/m4a.h"
 
 #include "constants/songs.h"
+#include "constants/player_transitions.h"
 
 typedef struct {
     /* 0x00 */ MapEntity *me;
@@ -87,9 +88,9 @@ NONMATCH("asm/non_matching/Task_GrindRail.inc", void Task_GrindRail(void))
                             }
                             // _0800FFB8
                             if ((railKind & RAIL_KIND_2))
-                                player->unk6D = 13;
+                                player->transition = PLTRANS_PT13;
                             else
-                                player->unk6D = 12;
+                                player->transition = PLTRANS_PT12;
 
                             {
                                 newRail = TaskGetStructPtr(gCurTask);
@@ -116,9 +117,9 @@ NONMATCH("asm/non_matching/Task_GrindRail.inc", void Task_GrindRail(void))
                         // _08010028
 
                         if ((railKind & RAIL_KIND_2))
-                            player->unk6D = 13;
+                            player->transition = PLTRANS_PT13;
                         else
-                            player->unk6D = 12;
+                            player->transition = PLTRANS_PT12;
 
                         // _0801004E
                         {
@@ -146,7 +147,7 @@ NONMATCH("asm/non_matching/Task_GrindRail.inc", void Task_GrindRail(void))
                             goto _080100B0;
                     }
                 _08010096:
-                    player->unk6D = 11;
+                    player->transition = 11;
                     player->unk6E = 0;
 
                     if (railKind & RAIL_KIND_1)
@@ -229,9 +230,9 @@ NONMATCH("asm/non_matching/Task_GrindRail_Air.inc", void Task_GrindRail_Air(void
                                         || ((player->unk5C & gPlayerControls.jump)
                                             && (kind & RAIL_KIND_2))) {
                                         if ((kind & RAIL_KIND_2))
-                                            player->unk6D = 13;
+                                            player->transition = PLTRANS_PT13;
                                         else
-                                            player->unk6D = 12;
+                                            player->transition = PLTRANS_PT12;
                                     }
                                 }
                             }
@@ -246,9 +247,9 @@ NONMATCH("asm/non_matching/Task_GrindRail_Air.inc", void Task_GrindRail_Air(void
                                         || ((player->unk5C & gPlayerControls.jump)
                                             && (kind & RAIL_KIND_2))) {
                                         if ((kind & RAIL_KIND_2))
-                                            player->unk6D = 13;
+                                            player->transition = PLTRANS_PT13;
                                         else
-                                            player->unk6D = 12;
+                                            player->transition = PLTRANS_PT12;
                                     }
                                 }
                             }

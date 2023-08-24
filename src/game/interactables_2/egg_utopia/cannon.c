@@ -4,8 +4,9 @@
 #include "trig.h"
 #include "game/math.h"
 
-#include "constants/songs.h"
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
+#include "constants/songs.h"
 
 typedef struct {
     // Completely unused, maybe the base?
@@ -119,7 +120,7 @@ static void sub_807E408(Sprite_Cannon *cannon)
 
     if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         gPlayer.x += COS_24_8(cannon->unk6A) * 0x20;
         gPlayer.y += SIN_24_8(cannon->unk6A) * 0x20;

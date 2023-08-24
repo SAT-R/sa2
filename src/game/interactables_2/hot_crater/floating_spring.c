@@ -265,7 +265,7 @@ static void sub_8075140(struct Task *t)
 
 static void sub_8075154(Sprite_FloatingSpring *floatingSpring)
 {
-    gPlayer.unk6D = PLTRANS_SPRING_UP;
+    gPlayer.transition = PLTRANS_SPRING_UP;
 
     if (floatingSpring->unk50) {
         gPlayer.unk6E = 3;

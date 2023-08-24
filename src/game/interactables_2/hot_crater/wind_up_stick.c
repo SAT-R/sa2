@@ -7,6 +7,7 @@
 #include "malloc_vram.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 
 typedef struct {
     s32 unk0;
@@ -153,17 +154,17 @@ static void sub_80727F4(Sprite_WindUpStick *windUpStick)
     switch (windUpStick->unk10) {
         case 1:
             gPlayer.unk64 = 0xE;
-            gPlayer.unk6D = 7;
+            gPlayer.transition = PLTRANS_PT7;
             break;
         case 2:
             gPlayer.unk64 = 0xE;
-            gPlayer.unk6D = 7;
+            gPlayer.transition = PLTRANS_PT7;
             break;
         case 3:
-            gPlayer.unk6D = 1;
+            gPlayer.transition = PLTRANS_PT1;
             break;
         case 4:
-            gPlayer.unk6D = 1;
+            gPlayer.transition = PLTRANS_PT1;
             gPlayer.moveState ^= 1;
             break;
     }

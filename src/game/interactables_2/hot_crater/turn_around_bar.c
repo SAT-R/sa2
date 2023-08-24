@@ -7,6 +7,7 @@
 #include "malloc_vram.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 
 typedef struct {
     SpriteBase base;
@@ -80,7 +81,7 @@ static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
     gPlayer.rotation = 0;
     gPlayer.speedAirY = 0;
     gPlayer.moveState = gPlayer.moveState ^ 1;
-    gPlayer.unk6D = 1;
+    gPlayer.transition = PLTRANS_PT1;
 
     sprite->graphics.anim = 567;
     sprite->variant = 2;

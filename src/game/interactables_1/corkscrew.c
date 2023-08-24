@@ -10,6 +10,7 @@
 #include "game/entity.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -40,7 +41,7 @@ void Task_8060D34(void)
             if (x < Q_24_8_TO_INT(gPlayer.x) && (corkscrew->base.spriteY & 1)) {
                 s32 idx;
                 s32 y24_8;
-                gPlayer.unk6D = 27;
+                gPlayer.transition = PLTRANS_PT27;
 
                 idx = ((((Q_24_8_TO_INT(gPlayer.x) - x) * 930) >> 8) + 256) & ONE_CYCLE;
                 gPlayer.x += gPlayer.speedGroundX;
@@ -91,9 +92,9 @@ void sub_8060ED0(void)
 
     if (Q_24_8_TO_INT(player->x) - x > 0x230) {
         if (player->moveState & MOVESTATE_4) {
-            player->unk6D = 2;
+            player->transition = PLTRANS_PT2;
         } else {
-            player->unk6D = 1;
+            player->transition = PLTRANS_PT1;
         }
         gCurTask->main = Task_8060D34;
         return;
@@ -110,13 +111,13 @@ void sub_8060ED0(void)
     if (player->speedGroundX < corkscrew->unk10) {
         player->unk64 = 50;
         player->speedAirX = player->speedGroundX;
-        player->unk6D = 5;
+        player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8060D34;
     } else if (player->unk5E & gPlayerControls.jump) {
         player->unk64 = 50;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q_24_8(4.875);
-        player->unk6D = 5;
+        player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8060D34;
     } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
         player->unk64 = 4;
@@ -153,7 +154,7 @@ void sub_8061088(void)
             if (x > Q_24_8_TO_INT(gPlayer.x) && (corkscrew->base.spriteY & 1)) {
                 s32 idx;
                 s32 y24_8;
-                gPlayer.unk6D = 27;
+                gPlayer.transition = PLTRANS_PT27;
 
                 idx = ((((Q_24_8_TO_INT(gPlayer.x) - x) * 930) >> 8) + 256) & ONE_CYCLE;
                 gPlayer.x += gPlayer.speedGroundX;
@@ -205,9 +206,9 @@ void sub_8061228(void)
 
     if (Q_24_8_TO_INT(player->x) - x < -0x230) {
         if (player->moveState & MOVESTATE_4) {
-            player->unk6D = 2;
+            player->transition = PLTRANS_PT2;
         } else {
-            player->unk6D = 1;
+            player->transition = PLTRANS_PT1;
         }
         gCurTask->main = sub_8061088;
         return;
@@ -224,13 +225,13 @@ void sub_8061228(void)
     if (player->speedGroundX > corkscrew->unk10) {
         player->unk64 = 50;
         player->speedAirX = player->speedGroundX;
-        player->unk6D = 5;
+        player->transition = PLTRANS_PT5;
         gCurTask->main = sub_8061088;
     } else if (player->unk5E & gPlayerControls.jump) {
         player->unk64 = 50;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q_24_8(4.875);
-        player->unk6D = 5;
+        player->transition = PLTRANS_PT5;
         gCurTask->main = sub_8061088;
     } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
         player->unk64 = 4;

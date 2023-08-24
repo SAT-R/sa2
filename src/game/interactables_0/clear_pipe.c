@@ -7,6 +7,8 @@
 #include "sprite.h"
 #include "task.h"
 
+#include "constants/player_transitions.h"
+
 typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_ClearPipe;
@@ -52,7 +54,7 @@ static void Task_ClearPipe_Start(void)
         && (!(gPlayer.moveState & MOVESTATE_80000))) {
         u8 flag;
 
-        gPlayer.unk6D = 0x19;
+        gPlayer.transition = PLTRANS_PT25;
 
         flag = (me->unk3 & 0x03) << 4;
         flag |= me->unk4 & 0x0F;
@@ -107,9 +109,9 @@ static void Task_ClearPipe_End(void)
             gPlayer.unk38 = FLAG_PLAYER_x38__LAYER_BACKGROUND;
         }
 
-        gPlayer.unk6D = 0x1C;
+        gPlayer.transition = PLTRANS_PT28;
         if (me->unk4 != 0) {
-            gPlayer.unk6D = 0x5;
+            gPlayer.transition = PLTRANS_PT5;
         }
 
         Player_ClearMovestate_IsInScriptedSequence();

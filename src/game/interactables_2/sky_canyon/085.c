@@ -4,6 +4,7 @@
 #include "trig.h"
 #include "lib/m4a.h"
 
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -128,7 +129,7 @@ static bool32 sub_807C424(Sprite_IA85 *ia85)
 
 static void sub_807C4A0(Sprite_IA85 *ia85)
 {
-    gPlayer.unk6D = 0x1A;
+    gPlayer.transition = PLTRANS_PT26;
     if (ia85->unk48 & 1)
         gPlayer.speedAirY = -Q_24_8(5.5);
     else

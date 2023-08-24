@@ -12,6 +12,7 @@
 #include "game/stage/dust_cloud.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -133,7 +134,7 @@ void sub_800B1AC(Entity_ItemBox *itembox)
         gPlayer.speedAirY = -Q_24_8(3.0);
         gPlayer.unk64 = 38;
         gPlayer.unk66 = -1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
     }
 
     m4aSongNumStart(SE_ITEM_BOX_2);

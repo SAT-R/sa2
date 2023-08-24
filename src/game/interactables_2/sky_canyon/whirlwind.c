@@ -8,7 +8,9 @@
 #include "game/interactables_2/tec_base/080.h"
 #include "malloc_vram.h"
 #include "trig.h"
+
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -627,7 +629,7 @@ void Task_807D268(void)
 void sub_807D2BC(Sprite_IA86 *unused)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.unk6D = 7;
+    gPlayer.transition = PLTRANS_PT7;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = -Q_24_8(8.0);
 

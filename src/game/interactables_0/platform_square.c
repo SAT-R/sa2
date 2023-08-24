@@ -12,6 +12,7 @@
 
 #include "constants/animations.h"
 #include "constants/interactables.h"
+#include "constants/player_transitions.h"
 #include "constants/zones.h"
 
 typedef struct {
@@ -239,7 +240,7 @@ static void Task_Platform_Square(void)
         if (result & 0x30000) {
             if (gPlayer.character == CHARACTER_KNUCKLES && gPlayer.unk64 > 99
                 && gPlayer.unk64 <= 105) {
-                p->unk6D = 4;
+                p->transition = PLTRANS_PT4;
             }
 
             p->y += Q_8_8(result);
