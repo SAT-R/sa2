@@ -206,7 +206,7 @@ void sub_80246DC(Player *p)
     u32 sl = variant;
 
      AnimId baseAnim = gPlayerCharacterIdleAnims[p->character];
-     r3 = (r3 - baseAnim) << 16 >> 16;
+     r3 = (u16)(r3 - baseAnim);
 
     if((charAnim == 10) || (charAnim == 11)) {
         if(variant == 0
@@ -217,7 +217,6 @@ void sub_80246DC(Player *p)
 
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
         } else {
-            // _08024770
             if((p->speedAirY > 0) && (p->unk6A == 1) && ((((u16)r3 - 10) == 0) || (((u16)r3 - 10) == 1))) {
                 s32 newY = sub_801E6D4(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x), p->unk38, 8, NULL, sub_801EE64);
 
@@ -229,7 +228,6 @@ void sub_80246DC(Player *p)
             }
         }
     } else {
-        // _080247CC
         if(charAnim == SA2_CHAR_ANIM_38) {
             if(r3 == SA2_CHAR_ANIM_52) {
                 if(variant == 0) {
@@ -243,7 +241,6 @@ void sub_80246DC(Player *p)
                 }
             }
         } else if(charAnim == SA2_CHAR_ANIM_39){
-            // _080247EA
             if(r3 == SA2_CHAR_ANIM_53) {
                 if(variant == 0) {
                     if(s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
@@ -253,7 +250,6 @@ void sub_80246DC(Player *p)
                 }
             }
         } else if(charAnim == SA2_CHAR_ANIM_37) {
-            // _0802480C
             if(r3 == SA2_CHAR_ANIM_65) {
                 if(variant == 0) {
                     if(p->speedAirY > 0) {
@@ -266,7 +262,6 @@ void sub_80246DC(Player *p)
                 }
             }
         } else if(r9 == SA2_CHAR_ANIM_57){
-            // _0802482A
             if(r3 == SA2_CHAR_ANIM_66) {
                 if(variant == 0) {
                     if(p->speedAirY > 0) {
