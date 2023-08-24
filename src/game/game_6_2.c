@@ -4,6 +4,7 @@
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
 
+#include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/player_transitions.h"
 
@@ -193,6 +194,97 @@ void sub_802460C(Player *p)
     asm("and %0, %2" : "=r"(input) : "r"(input), "r"(input2));
 #endif
     p->unk5E = input;
+}
+
+void sub_80246DC(Player *p)
+{
+    Sprite *s90 = &p->unk90->s;
+    u16 charAnim = p->unk64;
+    u32 r9 = charAnim;
+    AnimId r3 = p->unk68;
+    u32 variant = p->unk6A;
+    u32 sl = variant;
+
+    AnimId baseAnim = gPlayerCharacterIdleAnims[p->character];
+    r3 -= baseAnim;
+
+    if ((charAnim == 10) || (charAnim == 11)) {
+        if (variant == 0 && (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
+            && ((r3 - 10) == 0 || (r3 - 10) == 1)) {
+            p->unk6A = 1;
+            p->moveState |= MOVESTATE_4;
+
+            PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
+        } else {
+            // _08024770
+            if ((p->speedAirY > 0) && (p->unk6A == 1) && ((r3 == 10) || (r3 == 11))) {
+                s32 newY
+                    = sub_801E6D4(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x),
+                                  p->unk38, 8, NULL, sub_801EE64);
+
+                if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                    if (newY <= 32) {
+                        p->unk6A = 2;
+                    }
+                }
+            }
+        }
+    } else {
+        // _080247CC
+        if (charAnim == SA2_CHAR_ANIM_38) {
+            if (r3 == SA2_CHAR_ANIM_52) {
+                if (variant == 0) {
+                    if (p->speedAirY > 0) {
+                        p->unk6A = 1;
+                    }
+                } else if (variant == 1) {
+                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->unk6A = 2;
+                    }
+                }
+            }
+        } else if (charAnim == SA2_CHAR_ANIM_39) {
+            // _080247EA
+            if (r3 == SA2_CHAR_ANIM_53) {
+                if (variant == 0) {
+                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->unk68 = (baseAnim + SA2_CHAR_ANIM_52);
+                        p->unk6A = 2;
+                    }
+                }
+            }
+        } else if (charAnim == SA2_CHAR_ANIM_37) {
+            // _0802480C
+            if (r3 == SA2_CHAR_ANIM_65) {
+                if (variant == 0) {
+                    if (p->speedAirY > 0) {
+                        p->unk6A = 1;
+                    }
+                } else if (variant == 1) {
+                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->unk6A = 2;
+                    }
+                }
+            }
+        } else if (r9 == SA2_CHAR_ANIM_57) {
+            // _0802482A
+            if (r3 == SA2_CHAR_ANIM_66) {
+                if (variant == 0) {
+                    if (p->speedAirY > 0) {
+                        p->unk6A = 1;
+                    }
+                } else if (sl == 1) {
+                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->unk6A = 2;
+                    }
+                }
+            }
+        } else {
+            if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                p->unk6A = 2;
+            }
+        }
+    }
 }
 
 #if 0

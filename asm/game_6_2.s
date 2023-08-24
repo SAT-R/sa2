@@ -6,8 +6,6 @@
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start sub_80246DC
 sub_80246DC: @ 0x080246DC
 	push {r4, r5, r6, r7, lr}
@@ -24,7 +22,7 @@ sub_80246DC: @ 0x080246DC
 	adds r0, r4, #0
 	adds r0, #0x64
 	ldrh r5, [r0]
-	mov sb, r5
+	mov sb, r5      @ sb = charAnim
 	movs r0, #0x68
 	adds r0, r0, r4
 	mov r8, r0
@@ -33,7 +31,7 @@ sub_80246DC: @ 0x080246DC
 	adds r1, r1, r4
 	mov ip, r1
 	ldrh r2, [r1]
-	mov sl, r2
+	mov sl, r2      @ sl = r2 = variant
 	ldr r1, _0802476C @ =gPlayerCharacterIdleAnims
 	adds r0, r4, #0
 	adds r0, #0x85
@@ -80,25 +78,25 @@ sub_80246DC: @ 0x080246DC
 	strb r0, [r4, #0x16]
 	movs r0, #9
 	strb r0, [r4, #0x17]
-	b _0802485C
+	b sub_80246DC_return
 	.align 2, 0
 _0802476C: .4byte gPlayerCharacterIdleAnims
 _08024770:
 	movs r1, #0x12
 	ldrsh r0, [r4, r1]
 	cmp r0, #0
-	ble _0802485C
+	ble sub_80246DC_return
 	adds r5, r4, #0
 	adds r5, #0x6a
 	ldrh r0, [r5]
 	cmp r0, #1
-	bne _0802485C
+	bne sub_80246DC_return
 	adds r0, r3, #0
 	subs r0, #0xa
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	cmp r0, #1
-	bhi _0802485C
+	bhi sub_80246DC_return
 	ldr r0, [r4, #0xc]
 	asrs r0, r0, #8
 	movs r1, #0x17
@@ -119,12 +117,12 @@ _08024770:
 	ldr r0, _080247C8 @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #5
-	beq _0802485C
+	beq sub_80246DC_return
 	cmp r1, #0x20
-	bgt _0802485C
+	bgt sub_80246DC_return
 	movs r0, #2
 	strh r0, [r5]
-	b _0802485C
+	b sub_80246DC_return
 	.align 2, 0
 _080247C4: .4byte sub_801EE64
 _080247C8: .4byte gGameMode
@@ -132,32 +130,32 @@ _080247CC:
 	cmp r5, #0x26
 	bne _080247EA
 	cmp r3, #0x34
-	bne _0802485C
+	bne sub_80246DC_return
 	cmp r2, #0
 	bne _080247E4
 	movs r1, #0x12
 	ldrsh r0, [r4, r1]
 	cmp r0, #0
-	ble _0802485C
+	ble sub_80246DC_return
 	movs r0, #1
 	b _08024858
 _080247E4:
 	cmp r2, #1
-	bne _0802485C
+	bne sub_80246DC_return
 	b _0802484A
 _080247EA:
 	cmp r5, #0x27
 	bne _0802480C
 	cmp r3, #0x35
-	bne _0802485C
+	bne sub_80246DC_return
 	cmp r2, #0
-	bne _0802485C
+	bne sub_80246DC_return
 	ldr r0, [r6, #0x10]
 	movs r1, #0x80
 	lsls r1, r1, #7
 	ands r0, r1
 	cmp r0, #0
-	beq _0802485C
+	beq sub_80246DC_return
 	adds r0, r7, #0
 	adds r0, #0x34
 	mov r1, r8
@@ -167,50 +165,50 @@ _0802480C:
 	cmp r5, #0x25
 	bne _0802482A
 	cmp r3, #0x41
-	bne _0802485C
+	bne sub_80246DC_return
 	cmp r2, #0
 	bne _08024824
 	movs r1, #0x12
 	ldrsh r0, [r4, r1]
 	cmp r0, #0
-	ble _0802485C
+	ble sub_80246DC_return
 	movs r0, #1
 	b _08024858
 _08024824:
 	cmp r2, #1
-	bne _0802485C
+	bne sub_80246DC_return
 	b _0802484A
 _0802482A:
-	mov r0, sb
+	mov r0, sb      @ r0 = sb = charAnim
 	cmp r0, #0x39
-	bne _0802485C
+	bne sub_80246DC_return
 	cmp r3, #0x42
-	bne _0802485C
+	bne sub_80246DC_return
 	cmp r2, #0
 	bne _08024844
 	movs r1, #0x12
 	ldrsh r0, [r4, r1]
 	cmp r0, #0
-	ble _0802485C
+	ble sub_80246DC_return
 	movs r0, #1
 	b _08024858
 _08024844:
 	mov r0, sl
 	cmp r0, #1
-	bne _0802485C
+	bne sub_80246DC_return
 _0802484A:
 	ldr r0, [r6, #0x10]
 	movs r1, #0x80
 	lsls r1, r1, #7
 	ands r0, r1
 	cmp r0, #0
-	beq _0802485C
+	beq sub_80246DC_return
 _08024856:
 	movs r0, #2
 _08024858:
 	mov r1, ip
 	strh r0, [r1]
-_0802485C:
+sub_80246DC_return:
 	add sp, #8
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -219,6 +217,7 @@ _0802485C:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
+.endif
 
 .if 1
 	thumb_func_start sub_802486C
