@@ -188,7 +188,7 @@ void sub_806E94C(struct SpecialStageWorld *world)
         element->y = 0;
         element->unk1A = 0;
         element->unk1C = 0;
-        element->unk1E = 0xffff;
+        element->prevAnim = 0xffff;
         element->variant = assets[i].variant;
         element->unk21 = 0xff;
         element->unk22 = 16;

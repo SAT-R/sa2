@@ -36,7 +36,7 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
     element->y = yPos;
     element->unk1A = g << 6;
     element->unk1C = 0;
-    element->unk1E = 0xffff;
+    element->prevAnim = 0xffff;
     element->variant = variant;
     element->unk21 = 0xff;
     element->unk22 = 0x10;

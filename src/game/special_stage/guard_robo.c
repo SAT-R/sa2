@@ -247,7 +247,7 @@ void sub_8071380(Sprite *element, void *vram, s16 x, s16 y, u8 b,
     element->y = y;
     element->unk1A = b << 6;
     element->unk1C = 0;
-    element->unk1E = 0xffff;
+    element->prevAnim = 0xffff;
     element->variant = c4->variant;
     element->unk21 = 0xff;
     element->unk22 = c4->unk6;

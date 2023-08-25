@@ -115,7 +115,7 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
         element->y = (DISPLAY_HEIGHT / 2);
         element->unk1A = 0;
         element->unk1C = 0;
-        element->unk1E = -1;
+        element->prevAnim = -1;
 
         element->variant = variant;
         element->unk21 = -1;
@@ -317,7 +317,7 @@ void sub_806D548(Sprite *element, void *vram, s16 a, u8 b, const struct UNK_80DF
     element->y = a;
     element->unk1A = b << 6;
     element->unk1C = 0;
-    element->unk1E = 0xffff;
+    element->prevAnim = 0xffff;
     element->variant = c4->variant;
     element->unk21 = 0xff;
     element->unk22 = c4->unk6;

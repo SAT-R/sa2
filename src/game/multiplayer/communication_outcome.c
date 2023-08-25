@@ -183,41 +183,41 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 
 static void sub_805BC40(void)
 {
-    Sprite *element;
+    Sprite *s;
     struct CommunicationOutcomeScreen *outcomeScreen = TaskGetStructPtr(gCurTask);
-    element = &outcomeScreen->unkA0;
-    sub_8004558(element);
-    sub_80051E8(element);
+    s = &outcomeScreen->unkA0;
+    sub_8004558(s);
+    sub_80051E8(s);
 
     if (outcomeScreen->unk203 == OUTCOME_CONNECTION_SUCCESS) {
         const TileInfo *unk9090;
         u32 unk206 = outcomeScreen->unk206;
         u32 offset;
-        element = &outcomeScreen->unkD0;
+        s = &outcomeScreen->unkD0;
         unk9090 = sCommMessages[0];
         offset = gLoadedSaveGame->language + 7;
 
-        element->graphics.anim = unk9090[offset].anim;
+        s->graphics.anim = unk9090[offset].anim;
         offset = gLoadedSaveGame->language + 7;
-        element->variant = unk9090[offset].variant + unk206 - 2;
-        element->unk21 = 0xFF;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s->variant = unk9090[offset].variant + unk206 - 2;
+        s->unk21 = 0xFF;
+        sub_8004558(s);
+        sub_80051E8(s);
     } else {
         const TileInfo *unk9090;
-        element = &outcomeScreen->unkD0;
+        s = &outcomeScreen->unkD0;
         unk9090 = sCommMessages[0];
 
-        element->graphics.anim = unk9090[gLoadedSaveGame->language].anim;
-        element->variant = unk9090[gLoadedSaveGame->language].variant;
-        element->unk21 = 0xFF;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s->graphics.anim = unk9090[gLoadedSaveGame->language].anim;
+        s->variant = unk9090[gLoadedSaveGame->language].variant;
+        s->unk21 = 0xFF;
+        sub_8004558(s);
+        sub_80051E8(s);
     }
 
-    element = &outcomeScreen->s3;
-    sub_8004558(element);
-    sub_80051E8(element);
+    s = &outcomeScreen->s3;
+    sub_8004558(s);
+    sub_80051E8(s);
 
     if (outcomeScreen->unk200 != 0) {
         outcomeScreen->unk200--;

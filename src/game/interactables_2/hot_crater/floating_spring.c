@@ -331,7 +331,7 @@ static void sub_8075284(Sprite_FloatingSpring *floatingSpring)
         asm("" ::"r"(zone));
 #endif
         floatingSpring->sprite.graphics.dest = VramMalloc(0x1C);
-        floatingSpring->sprite.unk1E = -1;
+        floatingSpring->sprite.prevAnim = -1;
         floatingSpring->sprite.unk21 = -1;
         floatingSpring->unk4C = TRUE;
     }

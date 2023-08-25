@@ -279,7 +279,7 @@ static void Task_RotateSequence(void)
 
     if (sprite->unk10 & 0x4000) {
         sprite->unk10 &= ~0x4000;
-        sprite->unk1E = -1;
+        sprite->prevAnim = -1;
         sprite->unk21 = -1;
     }
     RenderWindmill(windmill);
@@ -292,7 +292,7 @@ static void SlowWindmillToStop(void)
 
     if (sprite->unk10 & 0x4000) {
         sprite->unk10 &= ~0x4000;
-        sprite->unk1E = -1;
+        sprite->prevAnim = -1;
         sprite->unk21 = -1;
 
         sprite->unk22 -= 8;

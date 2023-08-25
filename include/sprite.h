@@ -142,7 +142,7 @@ typedef struct {
     /* 0x1A */ u16 unk1A; // might be a bitfield?
 
     /* 0x1C */ s16 unk1C;
-    /* 0x1E */ u16 unk1E; // prevAnimId?
+    /* 0x1E */ u16 prevAnim;
 
     /* 0x20 */ u8 variant;
 
@@ -211,14 +211,14 @@ void UpdateBgAnimationTiles(Background *);
 
 #define SpriteShouldUpdate(sprite)                                                      \
     (((sprite)->unk21 != (sprite)->variant)                                             \
-     || ((sprite)->unk1E != (sprite)->graphics.anim))
+     || ((sprite)->prevAnim != (sprite)->graphics.anim))
 
 // TODO: Maybe rename this and move if out?
 #define SPRITE_MAYBE_SWITCH_ANIM(_sprite)                                               \
     if (SpriteShouldUpdate(_sprite)) {                                                  \
         (_sprite)->graphics.size = 0;                                                   \
         (_sprite)->unk21 = (_sprite)->variant;                                          \
-        (_sprite)->unk1E = (_sprite)->graphics.anim;                                    \
+        (_sprite)->prevAnim = (_sprite)->graphics.anim;                                 \
         (_sprite)->animCursor = 0;                                                      \
         (_sprite)->unk1C = 0;                                                           \
         (_sprite)->unk10 &= ~0x4000;                                                    \
