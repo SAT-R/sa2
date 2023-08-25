@@ -127,7 +127,8 @@ typedef struct {
                           // bit 14
                           // bit 15-16: Background ID
                           // bit 17
-                          // bit 18-25(?)
+                          // bit 18
+                          // bit 19-25(?)
                           // bit 26
                           // bit 27-29(?)
                           // bit 30

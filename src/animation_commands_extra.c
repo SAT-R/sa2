@@ -299,7 +299,7 @@ NONMATCH("asm/non_matching/sprite__sub_80039E4.inc", bool32 sub_80039E4(void))
                         oam.paletteNum += s->palId;
                         // __08003CD8
 
-                        yFlip = s->unk10 >> 11;
+                        yFlip = s->unk10 >> SPRITE_FLAG_SHIFT_Y_FLIP;
                         yFlip ^= (dims->flip >> 1);
 
                         if (yFlip & 1) {
@@ -534,7 +534,7 @@ s32 animCmd_JumpBack_COPY(void *cursor, Sprite *s)
 // (-4)
 s32 animCmd_End_COPY(void *cursor, Sprite *s)
 {
-    s->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
+    SPRITE_FLAG_SET(s, ANIM_OVER);
 
     return 0;
 }
