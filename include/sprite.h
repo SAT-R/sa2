@@ -154,8 +154,6 @@ typedef struct {
     /* 0x23 */ u8 oamBaseIndex;
     /* 0x24 */ u8 numSubFrames;
     /* 0x25 */ u8 palId;
-
-    /* 0x26 */ u8 filler26[2];
     /* 0x28 */ Hitbox hitboxes[1];
 } Sprite /* size = 0x30 */;
 
