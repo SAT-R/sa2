@@ -8,6 +8,7 @@
 #include "game/interactables_2/music_plant/note_block.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -81,13 +82,13 @@ void CreateEntity_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 
     s->unk1A = 0x480;
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
 
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
 
     {
@@ -148,7 +149,7 @@ void sub_8075B50(Sprite_NoteBlock *block)
     block->unk49 = 192;
     gPlayer.speedAirY = -(gUnknown_080DFC6A[block->unk48]);
     gPlayer.unk64 = 0x39;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
     gPlayer.unk66 = -1;
 
     block->unk4A = 0;

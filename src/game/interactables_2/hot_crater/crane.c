@@ -10,6 +10,7 @@
 #include "game/interactables_2/hot_crater/crane.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 
 typedef struct {
     /* 0x00 */ Sprite *s;
@@ -97,12 +98,12 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     cs->s->unk1A = 0x480;
 
     cs->s->graphics.size = 0;
-    cs->s->unk14 = 0;
-    cs->s->unk1C = 0;
-    cs->s->unk21 = 0xFF;
-    cs->s->unk22 = 0x10;
+    cs->s->animCursor = 0;
+    cs->s->timeUntilNextFrame = 0;
+    cs->s->prevVariant = -1;
+    cs->s->animSpeed = 0x10;
     cs->s->palId = 0;
-    cs->s->unk28->unk0 = -1;
+    cs->s->hitboxes[0].index = -1;
     cs->s->unk10 = 0x2000;
     cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2BC0);
     cs->s->graphics.anim = SA2_ANIM_CRANE;
@@ -131,12 +132,12 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
                 cs->s->unk1A = 0x480;
 
                 cs->s->graphics.size = 0;
-                cs->s->unk14 = 0;
-                cs->s->unk1C = 0;
-                cs->s->unk21 = 0xFF;
-                cs->s->unk22 = 0x10;
+                cs->s->animCursor = 0;
+                cs->s->timeUntilNextFrame = 0;
+                cs->s->prevVariant = -1;
+                cs->s->animSpeed = 0x10;
                 cs->s->palId = 0;
-                cs->s->unk28->unk0 = -1;
+                cs->s->hitboxes[0].index = -1;
                 cs->s->unk10 = 0x2000;
                 cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B80);
                 cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
@@ -159,12 +160,12 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         cs->unk10 = 0xC00;
         cs->s->unk1A = 0x480;
         cs->s->graphics.size = 0;
-        cs->s->unk14 = 0;
-        cs->s->unk1C = 0;
-        cs->s->unk21 = 0xFF;
-        cs->s->unk22 = 0x10;
+        cs->s->animCursor = 0;
+        cs->s->timeUntilNextFrame = 0;
+        cs->s->prevVariant = -1;
+        cs->s->animSpeed = 0x10;
         cs->s->palId = 0;
-        cs->s->unk28->unk0 = -1;
+        cs->s->hitboxes[0].index = -1;
         cs->s->unk10 = 0x2000;
         cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
         cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
@@ -538,7 +539,7 @@ static void sub_8074138(Sprite_HCCrane *crane)
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && crane->unk1B8.unk0 != 0) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk64 = 0x26;
-        gPlayer.unk6D = 7;
+        gPlayer.transition = PLTRANS_PT7;
         gPlayer.speedAirX = 0;
         gPlayer.speedAirY = -crane->unk1B8.accelY;
         crane->unk1B8.unk0 = 0;

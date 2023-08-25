@@ -20,10 +20,10 @@ void CreateDustCloud(s16 x, s16 y)
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_DUST_CLOUD;
     s->variant = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 }

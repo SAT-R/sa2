@@ -17,6 +17,7 @@
 #include "game/player_callbacks_1.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/zones.h"
 
 const VoidFn sBossCreationFuncs[] = {
@@ -50,7 +51,7 @@ void sub_8039ED4(void)
         gPlayer.moveState &= ~MOVESTATE_8000000;
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         PLAYERFN_SET(PlayerCB_8025318);
-        gPlayer.unk6D = 0;
+        gPlayer.transition = PLTRANS_NONE;
     }
 }
 

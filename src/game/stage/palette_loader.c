@@ -26,12 +26,12 @@ struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant,
     s->graphics.size = 0;
     s->graphics.anim = anim;
     s->variant = variant;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0;
 
     return t;

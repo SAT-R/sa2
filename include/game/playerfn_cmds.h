@@ -9,7 +9,7 @@
 #define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle)*4) * 60))
 
 #define GET_CHARACTER_ANIM(player)                                                      \
-    (player->unk68 - gPlayerCharacterIdleAnims[player->character])
+    (player->anim - gPlayerCharacterIdleAnims[player->character])
 
 #define PLAYERFN_SET(proc)          gPlayer.callback = proc;
 #define PLAYERFN_CALL(proc, player) proc(player);
@@ -113,4 +113,21 @@
         PLAYERFN_SET_SHIFT_OFFSETS(player, x, y)                                        \
     }
 
+#define PLAYERFN_SET_ANIM_SPEED(_p, _s)                                                 \
+    {                                                                                   \
+        s32 speed = _p->speedGroundX;                                                   \
+        speed = (speed >> 5) + (speed >> 6);                                            \
+                                                                                        \
+        /* TODO: Try ABS macro */                                                       \
+        speed = ABS(speed);                                                             \
+                                                                                        \
+        if (speed >= SPRITE_ANIM_SPEED(0.5)) {                                          \
+            if (speed > SPRITE_ANIM_SPEED(8.0)) {                                       \
+                speed = SPRITE_ANIM_SPEED(8.0);                                         \
+            }                                                                           \
+        } else {                                                                        \
+            speed = SPRITE_ANIM_SPEED(0.5);                                             \
+        }                                                                               \
+        _s->animSpeed = speed;                                                          \
+    }
 #endif // GUARD_PLAYER_CB_COMMANDS_H

@@ -107,15 +107,13 @@ typedef struct {
 extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
 
 typedef struct {
-    u8 filler0[0x22];
-    s16 unk22;
-    s16 unk24;
-} UNK_03005A70; /* 0x30 */
+    u8 filler0[0xC];
+    Sprite s;
+    Hitbox reserved;
+} UNK_3005A70; /* 0x30 */
 
-struct UNK_3005A70 {
-    /* 0x00 */ u8 filler0[0xC]; // type = SpriteBase?
-    /* 0x0C */ Sprite s;
-}; /* size: unknown? */
+extern UNK_3005A70 gUnknown_03005AA0;
+extern UNK_3005A70 gUnknown_03005AF0;
 
 extern u8 gUnknown_0300543C;
 
@@ -271,7 +269,7 @@ typedef struct Player_ {
     /* 0x4C */ s32 unk4C; // deceleration?
     /* 0x50 */ u16 unk50;
     /* 0x52 */ u16 unk52;
-    /* 0x54 */ u16 unk54;
+    /* 0x54 */ u16 unk54; // some other anim-variant?
     /* 0x56 */ u8 filler56[0x2];
     /* 0x58 */ s16 unk58;
     /* 0x5A */ bool8 unk5A; // boost?
@@ -283,30 +281,20 @@ typedef struct Player_ {
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
     /* 0x64 */ s16 unk64; // Character Anim? (TODO: shouldn't this be unsigned?)
-    /* 0x66 */ u16 unk66; // Character Anim, too? But if these were cAnims, why do some
+    /* 0x66 */ s16 unk66; // Character Anim, too? But if these were cAnims, why do some
                           // procs recalculate them?
-    /* 0x68 */ u16 unk68; // anim?
-    /* 0x6A */ u16 unk6A; // variant?
+    /* 0x68 */ AnimId anim;
+    /* 0x6A */ u16 variant;
     /* 0x6C */ u8 unk6C;
     // 0x6D Some player state, cleared after usage
     //  0x01 = PlayerCB_80124D0
     //  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA), by
     //  PlayerCB_80126B0
 
-    //  0x07 = Set in Egg Utopia - Launcher
-    //  0x0A = Player cleared the stage (only for Acts, not Bosses?)
-    //  0x0B = Something Grinding
-    //  0x0C = Something Grinding
-    //  0x0D = Something Grinding
-    //  0x0E = Hit an up-spring
-    //  0x16 = Set in IA Ramp
-    //  0x17 = Used in Interactable_044
-    //  0x18 = Dash
-    // Ring 0x1C = Set by IA ClearPipe_End if data[1] is 0
-    //
-    /* 0x6D */ u8 unk6D;
-    /* 0x6E */ u8 unk6E; // Parameter for 0x6D-state(?)
-    /* 0x6F */ u8 unk6F;
+    // use constants/player_transitions.h
+    /* 0x6D */ u8 transition;
+    /* 0x6E */ u8 unk6E; // Parameter for transition(?)
+    /* 0x6F */ u8 prevTransition;
     /* 0x70 */ u8 unk70;
     /* 0x71 */ u8 unk71;
     // unk72 appears to be a duration timer for side-forward trick animations (in
@@ -327,12 +315,12 @@ typedef struct Player_ {
     /* 0x87 */ u8 unk87;
     /* 0x88 */ u8 filler88[4];
     /* 0x8C */ struct Task *spriteTask;
-    /* 0x90 */ struct UNK_3005A70 *unk90;
+    /* 0x90 */ UNK_3005A70 *unk90;
 
     // TODO: Only used for Cream/Tails?
     //       Alternatively, some of the following data might be a union
-    /* 0x94 */ struct UNK_3005A70 *unk94;
-    /* 0x98 */ u8 filler98[1];
+    /* 0x94 */ UNK_3005A70 *unk94;
+    /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
     /* 0x99 */ s8 unk99;
     /* 0x9A */ u8 filler9A[0x12];
 
@@ -349,7 +337,6 @@ typedef struct Player_ {
     // Tails's framecounter for flying
     // NOTE: For some reason this is a 4-byte value, while Cream's is a 2-byte
     /* 0xB0 */ s32 flyingDurationTails;
-
 } Player;
 
 extern Player gPlayer;
@@ -494,19 +481,6 @@ extern u8 gMultiplayerConnections;
 extern struct ButtonConfig gPlayerControls;
 
 extern s32 gUnknown_030054D0;
-
-struct UNK_03005AF0 {
-    u8 filler0[0x1C];
-    u32 unk1C;
-    u8 filler20[0x18];
-    s8 unk38;
-    s8 unk39;
-    u8 unk3A;
-    s8 unk3B;
-}; /* unknown length */
-
-extern struct UNK_03005AF0 gUnknown_03005AF0;
-extern struct UNK_03005AF0 gUnknown_03005AA0;
 
 // TODO: find out what task is parent to IA
 typedef struct {

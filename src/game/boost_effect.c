@@ -29,32 +29,32 @@ void CreateBoostModeParticles(void)
     s32 i;
     struct Task *t = TaskCreate(sub_8089E54, 0xE8, 0x5050, 0, sub_808A234);
     struct BoostModeParticles *particles = TaskGetStructPtr(t);
-    Sprite *element = &particles->unk0;
+    Sprite *s = &particles->unk0;
 
     particles->unk60 = 0;
-    element->graphics.dest = VramMalloc(1);
-    element->graphics.anim = SA2_ANIM_BOOST_EFFECT;
-    element->variant = 0;
-    element->graphics.size = 0;
-    element->unk21 = 0xFF;
-    element->unk1A = 0x200;
-    element->unk10 = 0x2000;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    sub_8004558(element);
+    s->graphics.dest = VramMalloc(1);
+    s->graphics.anim = SA2_ANIM_BOOST_EFFECT;
+    s->variant = 0;
+    s->graphics.size = 0;
+    s->prevVariant = -1;
+    s->unk1A = 0x200;
+    s->unk10 = 0x2000;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    sub_8004558(s);
 
-    element = &particles->unk30;
-    element->graphics.dest = VramMalloc(1);
-    element->graphics.anim = SA2_ANIM_BOOST_EFFECT;
-    element->variant = 1;
-    element->graphics.size = 0;
-    element->unk21 = 0xFF;
-    element->unk1A = 0x200;
-    element->unk10 = 0x2000;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
+    s = &particles->unk30;
+    s->graphics.dest = VramMalloc(1);
+    s->graphics.anim = SA2_ANIM_BOOST_EFFECT;
+    s->variant = 1;
+    s->graphics.size = 0;
+    s->prevVariant = -1;
+    s->unk1A = 0x200;
+    s->unk10 = 0x2000;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
 
     SeedRng(gPlayer.x, gCamera.x);
 
@@ -114,7 +114,7 @@ void sub_8089E54(void)
 {
     s32 i;
     struct BoostModeParticles *particles = TaskGetStructPtr(gCurTask);
-    Sprite *element;
+    Sprite *s;
     sub_8004558(&particles->unk0);
 
     for (i = 0; i < 8; i++) {
@@ -128,14 +128,14 @@ void sub_8089E54(void)
 
         particles->unkA2[i][0] = (particles->unkA2[i][0] * 200) >> 8;
         particles->unkA2[i][1] = (particles->unkA2[i][1] * 200) >> 8;
-        element = &particles->unk0;
-        element->x = (gPlayer.x >> 8) - gCamera.x + (particles->unk62[i][0] >> 8);
-        element->y = (gPlayer.y >> 8) - gCamera.y + (particles->unk62[i][1] >> 8);
-        sub_80051E8(element);
+        s = &particles->unk0;
+        s->x = (gPlayer.x >> 8) - gCamera.x + (particles->unk62[i][0] >> 8);
+        s->y = (gPlayer.y >> 8) - gCamera.y + (particles->unk62[i][1] >> 8);
+        sub_80051E8(s);
     }
 
     if (particles->unk60++ > 8) {
-        element->variant = 1;
+        s->variant = 1;
         SeedRng(gPlayer.x, gCamera.x);
 
         for (i = 0; i < 16; i++) {
@@ -172,7 +172,7 @@ void sub_808A0A4(void)
 {
     s32 i;
     struct BoostModeParticles *particles = TaskGetStructPtr(gCurTask);
-    Sprite *element = &particles->unk0;
+    Sprite *s = &particles->unk0;
 
     if (particles->unk60++ > 0x18) {
         TaskDestroy(gCurTask);
@@ -194,27 +194,25 @@ void sub_808A0A4(void)
     }
 
     for (i = 0; i < 8; i++) {
-        element = &particles->unk0;
+        s = &particles->unk0;
         if (particles->unk60 & 1) {
-            element->x = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i][0] >> 8);
-            element->y = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i][1] >> 8);
-            sub_8004558(element);
+            s->x = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i][0] >> 8);
+            s->y = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i][1] >> 8);
+            sub_8004558(s);
 
         } else {
-            element->x
-                = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i + 8][0] >> 8);
-            element->y
-                = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i + 8][1] >> 8);
+            s->x = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i + 8][0] >> 8);
+            s->y = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i + 8][1] >> 8);
         }
-        sub_80051E8(element);
+        sub_80051E8(s);
     }
 }
 
 void sub_808A234(struct Task *t)
 {
     struct BoostModeParticles *particles = TaskGetStructPtr(t);
-    Sprite *element = &particles->unk0;
-    VramFree(element->graphics.dest);
-    element++;
-    VramFree(element->graphics.dest);
+    Sprite *s = &particles->unk0;
+    VramFree(s->graphics.dest);
+    s++;
+    VramFree(s->graphics.dest);
 }

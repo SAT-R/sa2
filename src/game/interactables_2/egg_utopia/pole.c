@@ -1,9 +1,11 @@
 #include "global.h"
 #include "core.h"
-#include "game/game.h"
 #include "lib/m4a.h"
+#include "game/game.h"
 #include "game/entity.h"
 #include "game/interactables_2/egg_utopia/pole.h"
+
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -96,7 +98,7 @@ static void Task_807EA8C(void)
     }
 }
 
-static void sub_807EC70(void);
+static void Task_807EC70(void);
 
 static void sub_807EB48(Sprite_Pole *pole)
 {
@@ -108,7 +110,7 @@ static void sub_807EB48(Sprite_Pole *pole)
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
         }
         gPlayer.unk64 = 4;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         if (pole->unk1C) {
             gPlayer.speedAirX = -Q_24_8(5);
@@ -117,7 +119,7 @@ static void sub_807EB48(Sprite_Pole *pole)
         }
         m4aSongNumStop(SE_290);
     }
-    gCurTask->main = sub_807EC70;
+    gCurTask->main = Task_807EC70;
 }
 
 static bool32 sub_807EBBC(Sprite_Pole *pole)
@@ -157,7 +159,7 @@ static void Task_Interactable094(void)
 static void sub_807ED48(Sprite_Pole *pole);
 static void Task_Interactable094(void);
 
-static void sub_807EC70(void)
+static void Task_807EC70(void)
 {
     Sprite_Pole *pole = TaskGetStructPtr(gCurTask);
     if (!PLAYER_IS_ALIVE) {
@@ -193,7 +195,7 @@ static void sub_807ED00(Sprite_Pole *pole)
     if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk64 = 14;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
         gPlayer.speedAirY = Q_24_8(1);
         m4aSongNumStop(SE_290);
     }
@@ -212,12 +214,11 @@ static void sub_807ED68(Sprite_Pole *pole)
     gCurTask->main = Task_Interactable094;
 }
 
-static void sub_807EC70(void);
 static void sub_807ED88(Sprite_Pole *pole)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     m4aSongNumStop(SE_290);
-    gCurTask->main = sub_807EC70;
+    gCurTask->main = Task_807EC70;
 }
 
 static bool32 sub_807EDB8(Sprite_Pole *pole)

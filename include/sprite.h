@@ -19,10 +19,18 @@ struct GraphicsData {
 #define TileMask_FlipXY  (TileMask_FlipX | TileMask_FlipY)
 #define TileMask_Palette (TileMask_FlipX | TileMask_FlipY)
 
+#define BACKGROUND_FLAGS_BG_ID(id)   (id)
+#define BACKGROUND_FLAGS_MASK_BG_ID  0x3
+#define BACKGROUND_FLAG_4            0x4
 #define BACKGROUND_UPDATE_GRAPHICS   0x8
 #define BACKGROUND_UPDATE_PALETTE    0x10
+#define BACKGROUND_FLAG_20           0x20
 #define BACKGROUND_FLAG_IS_LEVEL_MAP 0x40
+#define BACKGROUND_FLAG_80           0x80
+#define BACKGROUND_FLAG_100          0x100
 #define BACKGROUND_UPDATE_ANIMATIONS 0x200
+#define BACKGROUND_FLAG_400          0x400
+#define BACKGROUND_FLAG_800          0x800
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
 
@@ -61,9 +69,7 @@ typedef struct {
 
     u8 unk2D;
 
-    // Flags
-    // 0x200 = something about updating animations (sub_8003638)
-    u16 unk2E; // TODO: rename to "flags"
+    /* 0x2E */ u16 flags;
 
     // apparently NOT signed?
     /* 0x30 */ u16 scrollX;
@@ -96,12 +102,15 @@ typedef struct {
 } SpriteOffset;
 
 typedef struct {
-    /* 0x28 */ s32 unk0;
-    /* 0x2C */ s8 unk4;
-    /* 0x2D */ s8 unk5;
-    /* 0x2E */ s8 unk6;
-    /* 0x2F */ s8 unk7;
-} Sprite_UNK28;
+    // index: -1 on init; lower 4 bits = index (in anim-cmds)
+    /* 0x00 */ s32 index;
+    /* 0x04 */ s8 left;
+    /* 0x05 */ s8 top;
+    /* 0x06 */ s8 right;
+    /* 0x07 */ s8 bottom;
+} Hitbox;
+
+#define SPRITE_ANIM_SPEED(speed) ((int)((float)(speed)*0x10))
 
 // TODO: work out what makes this struct different from the above
 typedef struct {
@@ -120,35 +129,32 @@ typedef struct {
                           // bit 14
                           // bit 15-16: Background ID
                           // bit 17
-                          // bit 18-25(?)
+                          // bit 18
+                          // bit 19-25(?)
                           // bit 26
                           // bit 27-29(?)
                           // bit 30
                           // bit 31
 
-    /* 0x14 */ u16 unk14; // animation cursor
+    /* 0x14 */ u16 animCursor;
 
     /* 0x16 */ s16 x;
     /* 0x18 */ s16 y;
 
     /* 0x1A */ u16 unk1A; // might be a bitfield?
 
-    /* 0x1C */ s16 unk1C;
-    /* 0x1E */ u16 unk1E; // prevAnimId?
-
+    /* 0x1C */ s16 timeUntilNextFrame; // Q_8_8, in frames
+    /* 0x1E */ u16 prevAnim;
     /* 0x20 */ u8 variant;
+    /* 0x21 */ u8 prevVariant;
 
-    /* 0x21 */ u8 unk21; // prevVariant?
-
-    // something to do with animation speed
-    /* 0x22 */ u8 unk22;
+    // 0x08 = 0.5x, 0x10 = 1.0x, 0x20 = 2.0x ...
+    /* 0x22 */ u8 animSpeed;
 
     /* 0x23 */ u8 oamBaseIndex;
     /* 0x24 */ u8 numSubFrames;
     /* 0x25 */ u8 palId;
-
-    /* 0x26 */ u8 filler26[2];
-    /* 0x28 */ Sprite_UNK28 unk28[1];
+    /* 0x28 */ Hitbox hitboxes[1];
 } Sprite /* size = 0x30 */;
 
 typedef struct {
@@ -204,17 +210,17 @@ s32 sub_8004418(s16 x, s16 y);
 void UpdateBgAnimationTiles(Background *);
 
 #define SpriteShouldUpdate(sprite)                                                      \
-    (((sprite)->unk21 != (sprite)->variant)                                             \
-     || ((sprite)->unk1E != (sprite)->graphics.anim))
+    (((sprite)->prevVariant != (sprite)->variant)                                       \
+     || ((sprite)->prevAnim != (sprite)->graphics.anim))
 
 // TODO: Maybe rename this and move if out?
 #define SPRITE_MAYBE_SWITCH_ANIM(_sprite)                                               \
     if (SpriteShouldUpdate(_sprite)) {                                                  \
         (_sprite)->graphics.size = 0;                                                   \
-        (_sprite)->unk21 = (_sprite)->variant;                                          \
-        (_sprite)->unk1E = (_sprite)->graphics.anim;                                    \
-        (_sprite)->unk14 = 0;                                                           \
-        (_sprite)->unk1C = 0;                                                           \
+        (_sprite)->prevVariant = (_sprite)->variant;                                    \
+        (_sprite)->prevAnim = (_sprite)->graphics.anim;                                 \
+        (_sprite)->animCursor = 0;                                                      \
+        (_sprite)->timeUntilNextFrame = 0;                                              \
         (_sprite)->unk10 &= ~0x4000;                                                    \
     }
 
@@ -226,12 +232,12 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->graphics.size = 0;                                                         \
     _sprite->x = 0;                                                                     \
     _sprite->y = 0;                                                                     \
-    _sprite->unk14 = 0;                                                                 \
-    _sprite->unk1C = 0;                                                                 \
-    _sprite->unk21 = 0xFF;                                                              \
-    _sprite->unk22 = 0x10;                                                              \
+    _sprite->animCursor = 0;                                                            \
+    _sprite->timeUntilNextFrame = 0;                                                    \
+    _sprite->prevVariant = -1;                                                          \
+    _sprite->animSpeed = 0x10;                                                          \
     _sprite->palId = 0;                                                                 \
-    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->hitboxes[0].index = -1;                                                    \
     _sprite->unk10 = SPRITE_FLAG(PRIORITY, _priority);
 
 #define SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority,  \
@@ -241,12 +247,12 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->variant = _variant;                                                        \
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
-    _sprite->unk14 = 0;                                                                 \
-    _sprite->unk1C = 0;                                                                 \
-    _sprite->unk21 = 0xFF;                                                              \
-    _sprite->unk22 = 0x10;                                                              \
+    _sprite->animCursor = 0;                                                            \
+    _sprite->timeUntilNextFrame = 0;                                                    \
+    _sprite->prevVariant = -1;                                                          \
+    _sprite->animSpeed = 0x10;                                                          \
     _sprite->palId = 0;                                                                 \
-    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->hitboxes[0].index = -1;                                                    \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _UNK1A, _priority, _flags)   \
@@ -254,23 +260,23 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->variant = _variant;                                                        \
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
-    _sprite->unk14 = 0;                                                                 \
-    _sprite->unk1C = 0;                                                                 \
-    _sprite->unk21 = 0xFF;                                                              \
-    _sprite->unk22 = 0x10;                                                              \
+    _sprite->animCursor = 0;                                                            \
+    _sprite->timeUntilNextFrame = 0;                                                    \
+    _sprite->prevVariant = -1;                                                          \
+    _sprite->animSpeed = 0x10;                                                          \
     _sprite->palId = 0;                                                                 \
-    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->hitboxes[0].index = -1;                                                    \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(_sprite, _UNK1A, _priority, _flags)            \
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
-    _sprite->unk14 = 0;                                                                 \
-    _sprite->unk1C = 0;                                                                 \
-    _sprite->unk21 = 0xFF;                                                              \
-    _sprite->unk22 = 0x10;                                                              \
+    _sprite->animCursor = 0;                                                            \
+    _sprite->timeUntilNextFrame = 0;                                                    \
+    _sprite->prevVariant = -1;                                                          \
+    _sprite->animSpeed = 0x10;                                                          \
     _sprite->palId = 0;                                                                 \
-    _sprite->unk28[0].unk0 = -1;                                                        \
+    _sprite->hitboxes[0].index = -1;                                                    \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT_WITHOUT_VRAM_OR_FLAGS(_sprite, _anim, _variant, _UNK1A)             \
@@ -278,12 +284,12 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->variant = _variant;                                                        \
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
-    _sprite->unk14 = 0;                                                                 \
-    _sprite->unk1C = 0;                                                                 \
-    _sprite->unk21 = 0xFF;                                                              \
-    _sprite->unk22 = 0x10;                                                              \
+    _sprite->animCursor = 0;                                                            \
+    _sprite->timeUntilNextFrame = 0;                                                    \
+    _sprite->prevVariant = -1;                                                          \
+    _sprite->animSpeed = 0x10;                                                          \
     _sprite->palId = 0;                                                                 \
-    _sprite->unk28[0].unk0 = -1;
+    _sprite->hitboxes[0].index = -1;
 
 #define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)             \
     SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority, 0)

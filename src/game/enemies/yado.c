@@ -10,12 +10,13 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite_UNK28 reserved;
+    /* 0x3C */ Hitbox reserved;
     /* 0x44 */ s32 spawnX;
     /* 0x48 */ s32 spawnY;
     /* 0x4C */ u8 unk4C;
@@ -79,7 +80,7 @@ void Task_YadoMain(void)
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.unk64 = SA2_CHAR_ANIM_50;
         gPlayer.unk6C = 1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         // TODO: Why is this called twice?
         m4aSongNumStart(SE_SPRING);
@@ -93,12 +94,12 @@ void Task_YadoMain(void)
         gCurTask->main = Task_8055084;
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 1;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
     } else if (IS_YADO_FACING_PLAYER(yado, pos.x, &gPlayer)) {
         gCurTask->main = Task_8055378;
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 3;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
     }
 
     ENEMY_UPDATE_EX_RAW(s, yado->spawnX, yado->spawnY, {});
@@ -125,7 +126,7 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
                 gPlayer.speedAirY = YADO_PLAYER_ACCEL;
                 gPlayer.unk64 = SA2_CHAR_ANIM_50;
                 gPlayer.unk6C = 1;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
 
                 // TODO: Why is this called twice?
                 m4aSongNumStart(SE_SPRING);
@@ -136,7 +137,7 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.unk64 = SA2_CHAR_ANIM_50;
         gPlayer.unk6C = 1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         // TODO: Why is this called twice?
         m4aSongNumStart(SE_SPRING);
@@ -146,22 +147,22 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
         Sprite_Yado *yado2 = TaskGetStructPtr(gCurTask);
 
         if (gUnknown_030056A4->unk4C != -1) {
-            s32 r2 = s->unk28[0].unk4 + pos.x;
+            s32 r2 = s->hitboxes[0].left + pos.x;
             s32 r1 = Q_24_8_TO_INT(gUnknown_030056A4->posX) + gUnknown_030056A4->unk50;
             if (((r2 > r1)
                  && (r1 + (gUnknown_030056A4->unk52 - gUnknown_030056A4->unk50)) >= r2)
-                || ((r2 + (s->unk28[0].unk6 - s->unk28[0].unk4)) >= r1)
+                || ((r2 + (s->hitboxes[0].right - s->hitboxes[0].left)) >= r1)
                 || ((r2 >= r1)
                     && (r1 + (gUnknown_030056A4->unk52 - gUnknown_030056A4->unk50))
                         >= r2)) {
                 // _080551C2
-                s32 r3 = s->unk28[0].unk5 + pos.y;
+                s32 r3 = s->hitboxes[0].top + pos.y;
                 s32 r1
                     = Q_24_8_TO_INT(gUnknown_030056A4->posY) + gUnknown_030056A4->unk51;
                 if ((((r3 > r2)
                       && (r2 + (gUnknown_030056A4->unk53 - gUnknown_030056A4->unk51))
                           >= r3))
-                    || ((r3 + (s->unk28[0].unk7 - s->unk28[0].unk5)) >= r2)
+                    || ((r3 + (s->hitboxes[0].bottom - s->hitboxes[0].top)) >= r2)
                     || ((r3 >= r2)
                         && (r2 + (gUnknown_030056A4->unk53 - gUnknown_030056A4->unk51))
                             >= r3)) {
@@ -200,7 +201,7 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
         yado->unk4C = YADO_PROJ_COOLDOWN;
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         gCurTask->main = Task_YadoMain;
     } else if (yado->unk4C == 60) {
         // _080552E4
@@ -223,7 +224,7 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
     } else if (yado->unk4C == 6) {
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 2;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
     }
 
     sub_8004558(s);
@@ -244,7 +245,7 @@ void Task_8055378(void)
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.unk64 = SA2_CHAR_ANIM_50;
         gPlayer.unk6C = 1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         m4aSongNumStart(SE_SPRING);
     }
@@ -260,7 +261,7 @@ void Task_8055378(void)
 
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         gCurTask->main = Task_YadoMain;
     } else {
         sub_80051E8(s);

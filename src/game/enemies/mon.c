@@ -52,18 +52,18 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->graphics.dest = VramMalloc(25);
     s->unk1A = 0x480;
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     mon->speedY = -Q_24_8(5.5);
     mon->offsetY = +Q_24_8(0);
     s->graphics.anim = SA2_ANIM_MON;
     s->variant = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
 }
 
 static void Task_MonMain(void)
@@ -87,7 +87,7 @@ static void Task_MonMain(void)
             gCurTask->main = Task_Mon_2;
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 2;
-            s->unk21 = 0xFF;
+            s->prevVariant = -1;
         }
 
         ENEMY_TURN_TO_PLAYER(mon->x, s);
@@ -117,7 +117,7 @@ static void Task_Mon_2(void)
             mon->offsetY = +Q_24_8(0.0);
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 1;
-            s->unk21 = 0xFF;
+            s->prevVariant = -1;
 
             gCurTask->main = Task_Mon_3;
         }
@@ -146,7 +146,7 @@ static void Task_Mon_3(void)
         if (mon->offsetY >= 0) {
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 3;
-            s->unk21 = 0xFF;
+            s->prevVariant = -1;
 
             gCurTask->main = Task_Mon_4;
         }
@@ -182,13 +182,13 @@ static void Task_Mon_4(void)
 
                 s->graphics.anim = SA2_ANIM_MON;
                 s->variant = 2;
-                s->unk21 = 0xFF;
+                s->prevVariant = -1;
 
                 gCurTask->main = Task_Mon_2;
             } else {
                 s->graphics.anim = SA2_ANIM_MON;
                 s->variant = 0;
-                s->unk21 = 0xFF;
+                s->prevVariant = -1;
 
                 gCurTask->main = Task_MonMain;
             }

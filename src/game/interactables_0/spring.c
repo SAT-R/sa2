@@ -10,13 +10,14 @@
 #include "game/entity.h"
 #include "game/interactables_0/spring.h"
 
-#include "constants/zones.h"
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite displayed;
+    /* 0x0C */ Sprite s;
     /* 0x3D */ u8 unk3D;
     /* 0x3E */ u8 unk3E;
 } Sprite_Spring;
@@ -84,7 +85,10 @@ static const u16 sSpringAnimationData[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4] = {
 // Effects applied onto the player-state.
 // These trigger the player acceleration when touching each of the spring directions
 static const u8 gUnknown_080D53D0[SPRINGTYPE_COUNT]
-    = { 14, 15, 16, 17, 18, 19, 20, 21, 18, 19 };
+    = { PLTRANS_SPRING_UP,        PLTRANS_SPRING_DOWN,       PLTRANS_SPRING_LEFT,
+        PLTRANS_SPRING_RIGHT,     PLTRANS_SPRING_UP_LEFT,    PLTRANS_SPRING_UP_RIGHT,
+        PLTRANS_SPRING_DOWN_LEFT, PLTRANS_SPRING_DOWN_RIGHT, PLTRANS_SPRING_UP_LEFT,
+        PLTRANS_SPRING_UP_RIGHT };
 
 static const u16 sSpring_MusicPlant_Soundeffects[5]
     = { SE_MUSIC_PLANT_SPRING_1, SE_MUSIC_PLANT_SPRING_2, SE_MUSIC_PLANT_SPRING_3,
@@ -97,7 +101,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     struct Task *t = TaskCreate(Task_Spring, sizeof(Sprite_Spring), 0x2010, 0,
                                 TaskDestructor_Spring);
     Sprite_Spring *spring = TaskGetStructPtr(t);
-    Sprite *displayed = &spring->displayed;
+    Sprite *s = &spring->s;
 
     spring->base.regionX = spriteRegionX;
     spring->base.regionY = spriteRegionY;
@@ -105,20 +109,20 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     spring->base.spriteX = me->x;
     spring->base.spriteY = spriteY;
 
-    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
-    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    displayed->unk1A = 0x480;
-    displayed->graphics.size = springKind;
-    displayed->unk14 = springKind;
-    displayed->unk1C = springKind;
+    s->unk1A = 0x480;
+    s->graphics.size = springKind;
+    s->animCursor = springKind;
+    s->timeUntilNextFrame = springKind;
 
-    displayed->unk21 = 0xFF;
-    displayed->unk22 = 0x10;
-    displayed->palId = 0;
-    displayed->unk28[0].unk0 = -1;
-    displayed->unk10 = 0x2200;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2200;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3)
         springKind = SPRING_KIND_MUSIC_PLANT;
@@ -128,81 +132,81 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
 
     if (((s16)springKind != SPRING_KIND_MUSIC_PLANT) || ((springType / 2) != 0)) {
         u16 tileCount = sSpringAnimationData[springKind][springType][2];
-        displayed->graphics.dest = VramMalloc(tileCount);
+        s->graphics.dest = VramMalloc(tileCount);
     } else {
-        displayed->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
+        s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
     }
 
-    displayed->graphics.anim = sSpringAnimationData[springKind][springType][0];
-    displayed->variant = sSpringAnimationData[springKind][springType][1];
+    s->graphics.anim = sSpringAnimationData[springKind][springType][0];
+    s->variant = sSpringAnimationData[springKind][springType][1];
 
-    displayed->unk10 |= sSpringAnimationData[springKind][springType][3];
+    s->unk10 |= sSpringAnimationData[springKind][springType][3];
     spring->unk3D = springType;
     spring->unk3E = me->d.sData[0] & 0x3;
-    sub_8004558(displayed);
+    sub_8004558(s);
 }
 
 static void Task_Spring(void)
 {
     Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
-    Sprite *displayed = &spring->displayed;
+    Sprite *s = &spring->s;
     MapEntity *me = spring->base.me;
 
-    if (sub_800E490(displayed, me, spring, &gPlayer) != 0) {
+    if (sub_800E490(s, me, spring, &gPlayer) != 0) {
         gCurTask->main = sub_800E3D0;
-        displayed->variant++;
+        s->variant++;
 
         if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3 && (spring->unk3D / 2) == 0))
-            displayed->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B00);
+            s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B00);
     }
 
-    if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(displayed);
+        sub_80051E8(s);
     }
 }
 
 static void sub_800E3D0(void)
 {
     Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
-    Sprite *displayed = &spring->displayed;
+    Sprite *s = &spring->s;
     MapEntity *me = spring->base.me;
 
-    sub_800E490(displayed, me, spring, &gPlayer);
+    sub_800E490(s, me, spring, &gPlayer);
 
-    if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        if (sub_8004558(displayed) == 0) {
-            displayed->variant--;
+        if (sub_8004558(s) == 0) {
+            s->variant--;
 
             if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) && (spring->unk3D / 2) == 0) {
-                displayed->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
+                s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
             }
 
-            sub_8004558(displayed);
+            sub_8004558(s);
             gCurTask->main = Task_Spring;
         }
 
-        sub_80051E8(displayed);
+        sub_80051E8(s);
     }
 }
 
-static bool32 sub_800E490(Sprite *displayed, MapEntity *me, Sprite_Spring *spring,
+static bool32 sub_800E490(Sprite *s, MapEntity *me, Sprite_Spring *spring,
                           Player *player)
 {
     s16 xPos = TO_WORLD_POS(spring->base.spriteX, spring->base.regionX);
     s16 yPos = TO_WORLD_POS(me->y, spring->base.regionY);
-    displayed->x = xPos - gCamera.x;
-    displayed->y = yPos - gCamera.y;
+    s->x = xPos - gCamera.x;
+    s->y = yPos - gCamera.y;
 
     if (((player->moveState & MOVESTATE_400000) == 0)
-        && sub_800CDBC(displayed, xPos, yPos, player) != 0) {
+        && sub_800CDBC(s, xPos, yPos, player) != 0) {
 
-        player->unk6D = gUnknown_080D53D0[spring->unk3D];
+        player->transition = gUnknown_080D53D0[spring->unk3D];
         player->unk6E = spring->unk3E;
         player->unk6C = 1;
 
@@ -222,7 +226,7 @@ static void TaskDestructor_Spring(struct Task *t)
 {
     Sprite_Spring *spring = TaskGetStructPtr(t);
     if ((LEVEL_TO_ZONE(gCurrentLevel) != ZONE_3) || (spring->unk3D / 2 != 0)) {
-        VramFree(spring->displayed.graphics.dest);
+        VramFree(spring->s.graphics.dest);
     }
 }
 

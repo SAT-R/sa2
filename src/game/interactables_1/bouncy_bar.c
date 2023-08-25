@@ -9,11 +9,12 @@
 #include "game/stage/entities_manager.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
     /* 0x0 */ SpriteBase base;
-    /* 0xA */ Sprite displayed;
+    /* 0xA */ Sprite s;
     /* 0x3C */ u8 unk3C;
     /* 0x3D */ u8 unk3D;
     /* 0x3E */ s16 unk3E;
@@ -32,11 +33,11 @@ const s16 gUnknown_080D94F2[] = { -384, -384, -384 };
 void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                             u8 spriteY)
 {
-    Sprite *displayed;
+    Sprite *s;
     struct Task *t = TaskCreate(sub_806160C, 0x44, 0x2010, 0, TaskDestructor_80095E8);
     BouncyBar *bar = TaskGetStructPtr(t);
 
-    displayed = &bar->displayed;
+    s = &bar->s;
 
     bar->base.regionX = spriteRegionX;
     bar->base.regionY = spriteRegionY;
@@ -49,47 +50,47 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     bar->unk3E = 0;
     bar->unk40 = 0;
 
-    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
-    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    displayed->graphics.dest = VramMalloc(0x18);
-    displayed->graphics.anim = 0x21A;
-    displayed->variant = 0;
+    s->graphics.dest = VramMalloc(0x18);
+    s->graphics.anim = 0x21A;
+    s->variant = 0;
 
-    displayed->unk1A = 0x480;
-    displayed->graphics.size = 0;
-    displayed->unk14 = 0;
-    displayed->unk1C = 0;
-    displayed->unk21 = 0xFF;
-    displayed->unk22 = 0x10;
-    displayed->palId = 0;
-    displayed->unk28[0].unk0 = -1;
-    displayed->unk10 = 0x2000;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
 
     if (me->d.sData[0] != 0) {
-        displayed->unk10 |= 0x400;
+        s->unk10 |= 0x400;
     }
 }
 
 void sub_806160C(void)
 {
     BouncyBar *bar = TaskGetStructPtr(gCurTask);
-    Sprite *displayed = &bar->displayed;
+    Sprite *s = &bar->s;
     MapEntity *me = bar->base.me;
 
     s32 screenX, screenY;
 
     screenX = TO_WORLD_POS(bar->base.spriteX, bar->base.regionX);
     screenY = TO_WORLD_POS(me->y, bar->base.regionY);
-    displayed->x = screenX - gCamera.x;
-    displayed->y = screenY - gCamera.y;
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)
-        && (sub_800C204(displayed, screenX, screenY, 0, &gPlayer, 0) == 1)
+        && (sub_800C204(s, screenX, screenY, 0, &gPlayer, 0) == 1)
         && (gPlayer.speedAirY > 0) && (Q_24_8_TO_INT(gPlayer.y) + 4) < screenY) {
         gPlayer.unk64 = 0x32;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         bar->unk3C = gPlayer.speedAirY >> 0xA;
         if (bar->unk3C > 2) {
@@ -107,33 +108,33 @@ void sub_806160C(void)
         gPlayer.moveState |= MOVESTATE_400000;
 
         bar->unk3C = 2 - bar->unk3C;
-        displayed->graphics.anim = 538;
-        displayed->variant = bar->unk3C + 1;
-        displayed->unk21 = 0xFF;
+        s->graphics.anim = 538;
+        s->variant = bar->unk3C + 1;
+        s->prevVariant = -1;
         bar->unk3C = 2 - bar->unk3C;
         m4aSongNumStart(SE_279);
-    } else if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
+    } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = bar->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }
 
-    sub_8004558(displayed);
-    sub_80051E8(displayed);
+    sub_8004558(s);
+    sub_80051E8(s);
 }
 
 void sub_80617A4(void)
 {
     BouncyBar *bar = TaskGetStructPtr(gCurTask);
-    Sprite *displayed = &bar->displayed;
+    Sprite *s = &bar->s;
     MapEntity *me = bar->base.me;
 
     s32 screenX, screenY;
 
     screenX = TO_WORLD_POS(bar->base.spriteX, bar->base.regionX);
     screenY = TO_WORLD_POS(me->y, bar->base.regionY);
-    displayed->x = screenX - gCamera.x;
-    displayed->y = screenY - gCamera.y;
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
 
     if (bar->unk3D != 0) {
         s8 temp;
@@ -156,17 +157,17 @@ void sub_80617A4(void)
         }
     }
 
-    if (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = bar->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }
 
-    if (sub_8004558(displayed) == 0) {
-        displayed->graphics.anim = 538;
-        displayed->variant = 0;
-        displayed->unk21 = 0xFF;
+    if (sub_8004558(s) == 0) {
+        s->graphics.anim = 538;
+        s->variant = 0;
+        s->prevVariant = -1;
         gCurTask->main = sub_806160C;
     }
-    sub_80051E8(displayed);
+    sub_80051E8(s);
 }

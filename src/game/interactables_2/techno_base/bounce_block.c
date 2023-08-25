@@ -4,8 +4,9 @@
 #include "game/game.h"
 #include "lib/m4a.h"
 
-#include "constants/songs.h"
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
+#include "constants/songs.h"
 
 typedef struct {
     SpriteBase base;
@@ -64,12 +65,12 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s = &noteBlock->s;
     s->unk1A = 0x480;
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
     s->graphics.dest = (void *)OBJ_VRAM0 + sNoteBlockAssets[noteBlock->unk4C][2] * 0x20;
     s->graphics.anim = sNoteBlockAssets[noteBlock->unk4C][0];
@@ -136,25 +137,25 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
                 gPlayer.y += Q_8_8(temp);
                 gPlayer.speedAirY = gUnknown_080E001A[noteBlock->unk4C][1];
                 gPlayer.unk64 = 4;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0xC0;
             } else if (temp & 0x40000) {
                 gPlayer.x += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = gUnknown_080E001A[noteBlock->unk4C][0];
                 gPlayer.unk64 = 4;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0x80;
             } else if (temp & 0x80000) {
                 gPlayer.x += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = gUnknown_080E001A[noteBlock->unk4C][2];
                 gPlayer.unk64 = 4;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0;
             } else {
                 gPlayer.y += Q_8_8(temp);
                 gPlayer.speedAirY = gUnknown_080E001A[noteBlock->unk4C][3];
                 gPlayer.unk64 = 4;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0x40;
             }
 
@@ -163,7 +164,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
             } else {
                 gPlayer.speedGroundX = speedGround;
                 gPlayer.unk64 = 4;
-                gPlayer.unk6D = 5;
+                gPlayer.transition = PLTRANS_PT5;
             }
 
             if (gPlayer.unk3C == &noteBlock->s) {

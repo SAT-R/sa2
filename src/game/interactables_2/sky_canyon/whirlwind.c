@@ -8,7 +8,9 @@
 #include "game/interactables_2/techno_base/light_globe.h"
 #include "malloc_vram.h"
 #include "trig.h"
+
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -133,12 +135,12 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         for (i = 0; i < ARRAY_COUNT(ia086->sprites); i++) {
             Sprite *s = &ia086->sprites[i];
             s->graphics.size = 0;
-            s->unk14 = 0;
-            s->unk1C = 0;
-            s->unk21 = 0xFF;
-            s->unk22 = 0x10;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->prevVariant = -1;
+            s->animSpeed = 0x10;
             s->palId = 0;
-            s->unk28->unk0 = -1;
+            s->hitboxes[0].index = -1;
             s->graphics.dest = vram;
             s->graphics.anim = gUnknown_080E0124[i][0];
             s->variant = gUnknown_080E0124[i][1];
@@ -627,7 +629,7 @@ void Task_807D268(void)
 void sub_807D2BC(Sprite_IA86 *unused)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.unk6D = 7;
+    gPlayer.transition = PLTRANS_PT7;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = -Q_24_8(8.0);
 

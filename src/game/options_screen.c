@@ -5382,37 +5382,37 @@ void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
                  s16 yPos, u16 g, u8 variant, u8 palId)
 {
     Sprite newObj;
-    Sprite *element;
-    element = &newObj;
+    Sprite *s;
+    s = &newObj;
 
     if (obj != NULL) {
-        element = obj;
+        s = obj;
     }
 
     if (target != RENDER_TARGET_SCREEN) {
         if (gProfileScreenSubMenuNextVramAddress == NULL) {
             gProfileScreenSubMenuNextVramAddress = gProfileScreenNextVramAddress;
         }
-        element->graphics.dest = gProfileScreenSubMenuNextVramAddress;
+        s->graphics.dest = gProfileScreenSubMenuNextVramAddress;
     } else {
-        element->graphics.dest = gProfileScreenNextVramAddress;
+        s->graphics.dest = gProfileScreenNextVramAddress;
     }
 
-    element->graphics.size = 0;
-    element->graphics.anim = c;
-    element->unk10 = assetId;
-    element->x = xPos;
-    element->y = yPos;
-    element->unk1A = g << 6;
-    element->unk1C = 0;
-    element->unk1E = 0xffff;
-    element->variant = variant;
-    element->unk21 = 0xff;
-    element->unk22 = 0x10;
-    element->palId = palId;
-    element->unk28[0].unk0 = -1;
+    s->graphics.size = 0;
+    s->graphics.anim = c;
+    s->unk10 = assetId;
+    s->x = xPos;
+    s->y = yPos;
+    s->unk1A = g << 6;
+    s->timeUntilNextFrame = 0;
+    s->prevAnim = -1;
+    s->variant = variant;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = palId;
+    s->hitboxes[0].index = -1;
 
-    sub_8004558(element);
+    sub_8004558(s);
 
     switch (target) {
         case RENDER_TARGET_SCREEN:
@@ -6395,7 +6395,7 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void)
 }
 
 void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u16 d,
-                           u16 e, u16 f, u8 g, u16 scrollX, u16 scrollY)
+                           u16 e, u16 f, u8 bg_id, u16 scrollX, u16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;
@@ -6412,7 +6412,7 @@ void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u
     background->unk2A = f;
     background->animFrameCounter = 0;
     background->animDelayCounter = 0;
-    background->unk2E = g;
+    background->flags = BACKGROUND_FLAGS_BG_ID(bg_id);
     background->scrollX = scrollX;
     background->scrollY = scrollY;
     sub_8002A3C(background);

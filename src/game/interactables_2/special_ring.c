@@ -38,7 +38,7 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
                          0x4040, 0, TaskDestructor_Interactable_SpecialRing);
 
         Sprite_SpecialRing *ring = TaskGetStructPtr(t);
-        Sprite *disp;
+        Sprite *s;
 
         ring->posX = TO_WORLD_POS(me->x, spriteRegionX);
         ring->posY = TO_WORLD_POS(me->y, spriteRegionY);
@@ -48,20 +48,20 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         ring->base.spriteX = me->x;
         ring->base.spriteY = spriteY;
 
-        disp = &ring->displayed;
-        disp->unk1A = 0x480;
-        disp->graphics.size = 0;
-        disp->unk14 = 0;
-        disp->unk1C = 0;
-        disp->unk21 = 0xFF;
-        disp->unk22 = 0x10;
-        disp->palId = 0;
-        disp->unk28->unk0 = -1;
-        disp->unk10 = 0x2000;
+        s = &ring->displayed;
+        s->unk1A = 0x480;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0x2000;
 
-        disp->graphics.dest = VramMalloc(9);
-        disp->graphics.anim = SA2_ANIM_COLLECTIBLE_SPECIAL_RING;
-        disp->variant = SA2_ANIM_VARIANT_SP_RING__IDLE;
+        s->graphics.dest = VramMalloc(9);
+        s->graphics.anim = SA2_ANIM_COLLECTIBLE_SPECIAL_RING;
+        s->variant = SA2_ANIM_VARIANT_SP_RING__IDLE;
         SET_MAP_ENTITY_INITIALIZED(me);
     }
 }
@@ -135,13 +135,13 @@ static void sub_80810FC(Sprite_SpecialRing *ring)
 
 static void sub_8081134(Sprite_SpecialRing *ring)
 {
-    Sprite *disp = &ring->displayed;
+    Sprite *s = &ring->displayed;
 
-    disp->x = ring->posX - gCamera.x;
-    disp->y = ring->posY - gCamera.y;
+    s->x = ring->posX - gCamera.x;
+    s->y = ring->posY - gCamera.y;
 
-    sub_8004558(disp);
-    sub_80051E8(disp);
+    sub_8004558(s);
+    sub_80051E8(s);
 }
 
 static bool32 sub_8081164(Sprite_SpecialRing *ring)
@@ -174,9 +174,9 @@ static void sub_80811A0(Sprite_SpecialRing *ring, u32 param1)
 static void Task_80811BC(void)
 {
     Sprite_SpecialRing *ring = TaskGetStructPtr(gCurTask);
-    Sprite *disp = &ring->displayed;
+    Sprite *s = &ring->displayed;
 
-    if ((disp->unk10 & 0x4000) || sub_8081164(ring)) {
+    if ((s->unk10 & 0x4000) || sub_8081164(ring)) {
         sub_80811A0(ring, 0);
     } else {
         sub_8081134(ring);

@@ -12,6 +12,7 @@
 
 #include "constants/animations.h"
 #include "constants/interactables.h"
+#include "constants/player_transitions.h"
 #include "constants/zones.h"
 
 typedef struct {
@@ -106,12 +107,12 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 
         s->unk1A = 0x480;
         s->graphics.size = 0;
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = 0xFF;
-        s->unk22 = 0x10;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk28->unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
         sub_8004558(s);
     }
@@ -231,7 +232,7 @@ static void Task_Platform_Square(void)
         u32 otherRes;
         s32 movStateCopy = p->moveState;
 
-        s->unk28->unk5 -= 3;
+        s->hitboxes[0].top -= 3;
         x = (posX + Q_24_8_TO_INT(platform->unk40));
         y = (posY + Q_24_8_TO_INT(platform->unk44));
         result = sub_800CCB8(s, x, y, p);
@@ -239,7 +240,7 @@ static void Task_Platform_Square(void)
         if (result & 0x30000) {
             if (gPlayer.character == CHARACTER_KNUCKLES && gPlayer.unk64 > 99
                 && gPlayer.unk64 <= 105) {
-                p->unk6D = 4;
+                p->transition = PLTRANS_PT4;
             }
 
             p->y += Q_8_8(result);
@@ -266,14 +267,14 @@ static void Task_Platform_Square(void)
             if (result & 0x10000) {
                 if (GRAVITY_IS_INVERTED) {
                     p->y -= Q_8_8(result);
-                    s->unk28->unk4 += 16;
-                    s->unk28->unk6 -= 16;
+                    s->hitboxes[0].left += 16;
+                    s->hitboxes[0].right -= 16;
 
                     otherRes = sub_800CCB8(s, posX + Q_24_8_TO_INT(platform->unk40),
                                            posY + Q_24_8_TO_INT(platform->unk44), p);
 
-                    s->unk28->unk4 -= 16;
-                    s->unk28->unk6 += 16;
+                    s->hitboxes[0].left -= 16;
+                    s->hitboxes[0].right += 16;
 
                     p->y += Q_8_8(result);
                     p->moveState = movStateCopy;
@@ -353,7 +354,7 @@ static void Task_Platform_Square(void)
             }
         }
 
-        s->unk28->unk5 += 3;
+        s->hitboxes[0].top += 3;
     }
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, posX - gCamera.x, posY - gCamera.y)) {
@@ -392,13 +393,13 @@ static u32 sub_800F9AC(Sprite *s, s32 x, s32 y, Player *p)
 {
     u32 result;
 
-    s->unk28->unk5++;
-    s->unk28->unk7--;
+    s->hitboxes[0].top++;
+    s->hitboxes[0].bottom--;
 
     result = sub_800CCB8(s, x, y, p);
 
-    s->unk28->unk5--;
-    s->unk28->unk7++;
+    s->hitboxes[0].top--;
+    s->hitboxes[0].bottom++;
 
     return result;
 }

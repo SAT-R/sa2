@@ -36,6 +36,22 @@
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1
 #define SA2_CHAR_ANIM_31                                     31
+#define SA2_CHAR_ANIM_32                                     32
+#define SA2_CHAR_ANIM_33                                     33
+#define SA2_CHAR_ANIM_34                                     34
+#define SA2_CHAR_ANIM_35                                     35
+#define SA2_CHAR_ANIM_36                                     36
+#define SA2_CHAR_ANIM_37                                     37
+#define SA2_CHAR_ANIM_38                                     38
+#define SA2_CHAR_ANIM_39                                     39
+#define SA2_CHAR_ANIM_40                                     40
+#define SA2_CHAR_ANIM_41                                     41
+#define SA2_CHAR_ANIM_42                                     42
+#define SA2_CHAR_ANIM_43                                     43
+#define SA2_CHAR_ANIM_44                                     44
+#define SA2_CHAR_ANIM_45                                     45
+#define SA2_CHAR_ANIM_46                                     46
+#define SA2_CHAR_ANIM_47                                     47
 #define SA2_CHAR_ANIM_TRICK_UP                               48
 #define SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX           3 // Knuckles-only(?)
 #define SA2_CHAR_ANIM_TRICK_SIDE                             49
@@ -44,9 +60,19 @@
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX         2 // Sonic-only
 #define SA2_CHAR_ANIM_50                                     50
 #define SA2_CHAR_ANIM_51                                     51 // Sonic: Bound-Attack
+#define SA2_CHAR_ANIM_52                                     52
+#define SA2_CHAR_ANIM_53                                     53
+#define SA2_CHAR_ANIM_54                                     54
 #define SA2_CHAR_ANIM_55                                     55
+#define SA2_CHAR_ANIM_56                                     56
+#define SA2_CHAR_ANIM_57                                     57
+#define SA2_CHAR_ANIM_65                                     65
+#define SA2_CHAR_ANIM_66                                     66
+#define SA2_CHAR_ANIM_67                                     67
 #define SA2_CHAR_ANIM_68                                     68
+#define SA2_CHAR_ANIM_69                                     69
 #define SA2_CHAR_ANIM_70                                     70
+#define SA2_CHAR_ANIM_80                                     80
 
 #define SA2_ANIM_SONIC_IDLE    0
 #define SA2_ANIM_CREAM_IDLE    91

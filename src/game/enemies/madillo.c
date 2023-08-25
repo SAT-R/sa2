@@ -93,7 +93,7 @@ void Task_MadilloMain(void)
                     gCurTask->main = Task_8056230;
                     s->graphics.anim = SA2_ANIM_MADILLO;
                     s->variant = 1;
-                    s->unk21 = -1;
+                    s->prevVariant = -1;
                     SPRITE_FLAG_CLEAR(s, X_FLIP);
                 }
             } else {
@@ -104,7 +104,7 @@ void Task_MadilloMain(void)
                         gCurTask->main = Task_8056230;
                         s->graphics.anim = SA2_ANIM_MADILLO;
                         s->variant = 1;
-                        s->unk21 = -1;
+                        s->prevVariant = -1;
                         SPRITE_FLAG_SET(s, X_FLIP);
                     }
                 }
@@ -159,16 +159,16 @@ void Task_8056230(void)
     ip = gPlayer.unk90;
     otherS = &ip->s;
 
-    if(otherS->unk28[0].unk0 != -1) {
-        if(pos.x + s->unk28[0].unk4 <= Q_24_8_TO_INT(gPlayer.x) + otherS->unk28[0].unk4)
-        if ((madillo->s.unk22 - s->unk28[0].unk4 + pos.x) < s->unk28[0].unk4)
-        if (pos.x+s->unk28[0].unk4 >= s->unk28[0].unk4)
-        if (otherS->unk28[0].unk6 - otherS->unk28[0].unk4 >= pos.x+s->unk28[0].unk4)
-        if(s->unk28[0].unk5 + pos.y <= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
-        if((s->unk28[0].unk7 - s->unk28[0].unk5) + pos.y < Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
-        if(s->unk28[0].unk5 + pos.y >= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
+    if(otherS->hitboxes[0].index != -1) {
+        if(pos.x + s->hitboxes[0].left <= Q_24_8_TO_INT(gPlayer.x) + otherS->hitboxes[0].left)
+        if ((madillo->s.animSpeed - s->hitboxes[0].left + pos.x) < s->hitboxes[0].left)
+        if (pos.x+s->hitboxes[0].left >= s->hitboxes[0].left)
+        if (otherS->hitboxes[0].right - otherS->hitboxes[0].left >= pos.x+s->hitboxes[0].left)
+        if(s->hitboxes[0].top + pos.y <= Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].top)
+        if((s->hitboxes[0].bottom - s->hitboxes[0].top) + pos.y < Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].top)
+        if(s->hitboxes[0].top + pos.y >= Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].top)
         {
-            if(otherS->unk28[0].unk7 - s->unk28[0].unk5 >= Q_24_8_TO_INT(gPlayer.y) + otherS->unk28[0].unk5)
+            if(otherS->hitboxes[0].bottom - s->hitboxes[0].top >= Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].top)
             if((gPlayer.itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE)
                 sub_800CBA4(&gPlayer);
         }
@@ -181,14 +181,14 @@ void Task_8056230(void)
             gCurTask->main = Task_80564BC;
             s->graphics.anim = SA2_ANIM_MADILLO;
             s->variant = 0;
-            s->unk21 = -1;
+            s->prevVariant = -1;
             madillo->unk51 = 120;
         }
     } else if(Q_24_8_TO_INT(madillo->offsetX) < me->d.sData[0] * TILE_WIDTH) {
             gCurTask->main = Task_80564BC;
             s->graphics.anim = SA2_ANIM_MADILLO;
             s->variant = 0;
-            s->unk21 = -1;
+            s->prevVariant = -1;
             madillo->unk51 = 120;        
     }
 

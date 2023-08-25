@@ -128,7 +128,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     struct MultiplayerResultsScreen *resultsScreen;
     Background *background;
     u32 i;
-    Sprite *element;
+    Sprite *s;
 
     u32 count = 0;
     u32 lang = gLoadedSaveGame->language;
@@ -191,7 +191,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     background->unk26 = 0x1E;
     background->unk28 = 0x20;
     background->unk2A = 0;
-    background->unk2E = 3;
+    background->flags = BACKGROUND_FLAGS_BG_ID(3);
     sub_8002A3C(background);
 
     for (; count < 4; count++) {
@@ -204,49 +204,49 @@ void CreateMultiplayerResultsScreen(u8 mode)
         s32 temp2 = (i + 4) * 0x800;
         if (GetBit(gMultiplayerConnections, i)) {
             s32 temp;
-            element = &resultsScreen->resultRows[i];
-            element->x = 200;
-            element->y = 0x33 + (0x20 * i);
-            element->graphics.dest = (void *)(OBJ_VRAM0 + (i * 0x800));
-            element->unk1A = 0x400;
-            element->graphics.size = 0;
+            s = &resultsScreen->resultRows[i];
+            s->x = 200;
+            s->y = 0x33 + (0x20 * i);
+            s->graphics.dest = (void *)(OBJ_VRAM0 + (i * 0x800));
+            s->unk1A = 0x400;
+            s->graphics.size = 0;
             temp = gUnknown_030054B4[i];
             if (temp == 5) {
-                element->graphics.anim = gUnknown_080D9100[lang][1].anim;
-                element->variant = gUnknown_080D9100[lang][1].variant;
+                s->graphics.anim = gUnknown_080D9100[lang][1].anim;
+                s->variant = gUnknown_080D9100[lang][1].variant;
             } else if (temp == 4) {
-                element->graphics.anim = gUnknown_080D9100[lang][2].anim;
-                element->variant = gUnknown_080D9100[lang][2].variant;
+                s->graphics.anim = gUnknown_080D9100[lang][2].anim;
+                s->variant = gUnknown_080D9100[lang][2].variant;
             } else if (count == 2 || gGameMode == GAME_MODE_TEAM_PLAY) {
-                element->graphics.anim = gUnknown_080D9100[lang][0].anim;
-                element->variant = gUnknown_080D9100[lang][0].variant + temp;
+                s->graphics.anim = gUnknown_080D9100[lang][0].anim;
+                s->variant = gUnknown_080D9100[lang][0].variant + temp;
             } else {
-                element->graphics.anim = gUnknown_080D9100[lang][3].anim;
-                element->variant = gUnknown_080D9100[lang][3].variant + temp;
+                s->graphics.anim = gUnknown_080D9100[lang][3].anim;
+                s->variant = gUnknown_080D9100[lang][3].variant + temp;
             }
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk21 = 0xFF;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk10 = 0x1000;
-            sub_8004558(element);
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->prevVariant = -1;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->unk10 = 0x1000;
+            sub_8004558(s);
 
-            element = &resultsScreen->characterRows[i];
-            element->x = 0;
-            element->y = 0x1F + (0x20 * i);
-            element->graphics.dest = (void *)(OBJ_VRAM0 + temp2);
-            element->unk1A = 0x400;
-            element->graphics.size = 0;
-            element->graphics.anim = sResultsScreenPlayerCursor[i].anim;
-            element->variant = sResultsScreenPlayerCursor[i].variant;
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk21 = 0xFF;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk10 = 0x1000;
-            sub_8004558(element);
+            s = &resultsScreen->characterRows[i];
+            s->x = 0;
+            s->y = 0x1F + (0x20 * i);
+            s->graphics.dest = (void *)(OBJ_VRAM0 + temp2);
+            s->unk1A = 0x400;
+            s->graphics.size = 0;
+            s->graphics.anim = sResultsScreenPlayerCursor[i].anim;
+            s->variant = sResultsScreenPlayerCursor[i].variant;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->prevVariant = -1;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->unk10 = 0x1000;
+            sub_8004558(s);
         }
     }
 

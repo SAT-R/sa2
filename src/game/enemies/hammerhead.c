@@ -10,7 +10,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite_UNK28 reserved; // "overflow" from Sprite
+    /* 0x3C */ Hitbox reserved; // "overflow" from Sprite
     /* 0x48 */ s16 unk44;
     /* 0x46 */ s16 unk46;
     /* 0x48 */ s32 unk48;

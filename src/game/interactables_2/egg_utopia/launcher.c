@@ -12,6 +12,7 @@
 #include "game/game.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -139,14 +140,14 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 #endif
             s->unk1A = 0x180;
             s->graphics.size = 0;
-            s->unk14 = 0;
-            s->unk1C = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
 
-            launcher->s.unk21 = 0xFF;
-            launcher->s.unk22 = 0x10;
+            launcher->s.prevVariant = -1;
+            launcher->s.animSpeed = 0x10;
             launcher->s.palId = 0;
 
-            s->unk28->unk0 = -1;
+            s->hitboxes[0].index = -1;
             s->unk10 = SPRITE_FLAG(PRIORITY, 2);
             s->graphics.dest = VramMalloc(EGG_UTO_LAUNCHER_TILE_COUNT);
             s->graphics.anim = SA2_ANIM_LAUNCHER_EGG_UTO;
@@ -199,7 +200,7 @@ static void Task_807DBF0(void)
     } else {
         if (gPlayer.unk2C != 120) {
             if (gPlayer.unk5E & gPlayerControls.jump) {
-                gPlayer.unk6D = 3;
+                gPlayer.transition = PLTRANS_PT3;
 
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 launcher->unk48 = FALSE;
@@ -246,7 +247,7 @@ static void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
     if (PLAYER_IS_ALIVE && launcher->unk48) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk64 = 65;
-        gPlayer.unk6D = 0x7;
+        gPlayer.transition = PLTRANS_PT7;
 
         switch (launcher->kind) {
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN):

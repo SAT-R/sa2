@@ -15,7 +15,7 @@ typedef struct {
     /* 0x0C */ Sprite s;
     /* 0x3C */ Sprite s1;
     /* 0x6C */ Sprite s2;
-    /* 0x9C */ Sprite_UNK28 reserved; // "overflow" from Sprite
+    /* 0x9C */ Hitbox reserved; // "overflow" from Sprite
     /* 0xA4 */ s32 spawnX;
     /* 0xA8 */ s32 spawnY;
     /* 0xAC */ s32 unkAC;

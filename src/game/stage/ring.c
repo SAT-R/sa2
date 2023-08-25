@@ -33,10 +33,10 @@ void sub_800BAAC(s16 x, s16 y)
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_RING_STATIC;
     s->variant = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2));
 }
@@ -64,16 +64,17 @@ NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
     ringX = ring->s.x;
 
     lvalue = ring->s.x - 8;
-    rvalue = Q_24_8_TO_INT(p->x) + gUnknown_03005AF0.unk38;
+    rvalue = Q_24_8_TO_INT(p->x) + gUnknown_03005AF0.s.hitboxes[0].left;
 
     if (((lvalue <= rvalue) && (ring->s.x + 8 < rvalue))
-        || ((ringY - 16 > Q_24_8_TO_INT(gPlayer.y) + gUnknown_03005AF0.unk39))
-        || ((Q_24_8_TO_INT(p->y) >= gUnknown_03005AF0.unk39)
-            || ringY - 16 < gUnknown_03005AF0.unk39)) {
+        || ((ringY - 16
+             > Q_24_8_TO_INT(gPlayer.y) + gUnknown_03005AF0.s.hitboxes[0].top))
+        || ((Q_24_8_TO_INT(p->y) >= gUnknown_03005AF0.s.hitboxes[0].top)
+            || ringY - 16 < gUnknown_03005AF0.s.hitboxes[0].top)) {
 
     }
 
-    else if (gUnknown_03005AF0.unk3B - gUnknown_03005AF0.unk39
+    else if (gUnknown_03005AF0.s.hitboxes[0].bottom - gUnknown_03005AF0.s.hitboxes[0].top
              >= Q_24_8_TO_INT(gPlayer.y) + ringY) {
         // _0800BC36
         if (PLAYER_IS_ALIVE) {

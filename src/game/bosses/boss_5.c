@@ -92,26 +92,26 @@ typedef struct {
     /* 0x140 */ Sprite disk;
     /* 0x170 */ Sprite cabin;
 
-    /* 0x1A0 */ Sprite_UNK28 cabinReserved[2];
+    /* 0x1A0 */ Hitbox cabinReserved[2];
 
     /* 0x1B0 */ Sprite pilot;
     /* 0x1E0 */ Sprite gun;
-    /* 0x210 */ Sprite_UNK28 gunReserved;
+    /* 0x210 */ Hitbox gunReserved;
 
     /* 0x218 */ Sprite gunBase;
 
-    /* 0x248 */ Sprite_UNK28 gunBaseReserved;
+    /* 0x248 */ Hitbox gunBaseReserved;
 
     /* 0x250 */ SpriteTransform transform;
 
     /* 0x25C */ Sprite gunCharge;
     /* 0x28C */ Sprite armBase;
-    /* 0x2BC */ Sprite_UNK28 armReserved;
+    /* 0x2BC */ Hitbox armReserved;
 
     /* 0x2C4 */ Sprite armSegment; // arm segment
 
     /* 0x2F4 */ Sprite hand;
-    /* 0x324 */ Sprite_UNK28 handReserved;
+    /* 0x324 */ Hitbox handReserved;
 
     /* 0x32C */ Sprite smackParticles[8];
 
@@ -217,11 +217,11 @@ void CreateEggSaucer(void)
 
     m4aSongNumStart(SE_253);
 
-    gUnknown_03005AF0.unk1C &= ~0x3000;
-    gUnknown_03005AF0.unk1C |= 0x1000;
+    gUnknown_03005AF0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gUnknown_03005AF0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
 
-    gUnknown_03005AA0.unk1C &= ~0x3000;
-    gUnknown_03005AA0.unk1C |= 0x1000;
+    gUnknown_03005AA0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gUnknown_03005AA0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
 
     gActiveBossTask = TaskCreate(Task_EggSaucerIntro, sizeof(EggSaucer), 0x4000, 0,
                                  TaskDestructor_EggSaucerMain);
@@ -382,7 +382,7 @@ void CreateEggSaucer(void)
     s->y = 0;
     s->graphics.dest = vram;
     SPRITE_INIT_WITHOUT_VRAM_OR_FLAGS(s, SA2_ANIM_EGG_SAUCER_HAND, 0, 0x300);
-    s->unk28[1].unk0 = -1;
+    s->hitboxes[1].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 1);
 
     for (i = 0; i < 8; i++) {
@@ -1112,7 +1112,7 @@ void sub_8044784(EggSaucer *boss)
             s->y = y;
 
             if (boss->unk1C == 0xC) {
-                s->unk21 = -1;
+                s->prevVariant = -1;
                 s->graphics.anim = SA2_ANIM_EGG_SAUCER_GUN_CHARGE;
                 s->variant = 0;
             }
@@ -1196,8 +1196,8 @@ static void sub_8044A14(EggSaucer *boss)
 
     s = &boss->hand;
     // disable collision
-    s->unk28[0].unk0 = -1;
-    s->unk28[1].unk0 = -1;
+    s->hitboxes[0].index = -1;
+    s->hitboxes[1].index = -1;
 }
 
 static void sub_8044B28(EggSaucer *boss)
@@ -1258,7 +1258,7 @@ static void sub_8044B28(EggSaucer *boss)
         s = &boss->hand;
         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
         s->variant = 1;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     } else {
         if (boss->unkBC == 0x46) {
             m4aSongNumStart(SE_250);
@@ -1300,7 +1300,7 @@ static void sub_8044CBC(EggSaucer *boss)
             s = &boss->smackParticles[i];
             s->graphics.anim = gUnknown_080D7FB0[i].anim;
             s->variant = gUnknown_080D7FB0[i].variant;
-            s->unk21 = -1;
+            s->prevVariant = -1;
         }
     }
     boss->unk36[0][boss->unkB6] = boss->unkB8;
@@ -1342,14 +1342,14 @@ static void sub_8044CBC(EggSaucer *boss)
         if (boss->unk11 != 0) {
             boss->armState = 0;
             s = &boss->hand;
-            s->unk28[0].unk0 = -1;
-            s->unk28[1].unk0 = -1;
+            s->hitboxes[0].index = -1;
+            s->hitboxes[1].index = -1;
             s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
             s->variant = 2;
 #ifndef NON_MATCHING
-            s->unk21 |= r3;
+            s->prevVariant |= r3;
 #else
-            s->unk21 = -1;
+            s->prevVariant = -1;
 #endif
         } else {
             boss->armState = 3;
@@ -1407,14 +1407,14 @@ static void sub_8044EB0(EggSaucer *boss)
     if (boss->armStateTimer == 0) {
         boss->armState = 0;
         s = &boss->hand;
-        s->unk28[0].unk0 = -1;
-        s->unk28[1].unk0 = -1;
+        s->hitboxes[0].index = -1;
+        s->hitboxes[1].index = -1;
         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
         s->variant = 2;
 #ifndef NON_MATCHING
-        s->unk21 |= r2;
+        s->prevVariant |= r2;
 #else
-        s->unk21 = -1;
+        s->prevVariant = -1;
 #endif
     }
     boss->unkB6 = (boss->unkB6 + 1) & 31;
@@ -1452,7 +1452,7 @@ static void sub_8044FE4(EggSaucer *boss)
             s = &boss->smackParticles[i];
             s->graphics.anim = gUnknown_080D7FB0[i].anim;
             s->variant = gUnknown_080D7FB0[i].variant;
-            s->unk21 = -1;
+            s->prevVariant = -1;
         }
     }
 
@@ -1493,14 +1493,14 @@ static void sub_8044FE4(EggSaucer *boss)
     if (boss->armStateTimer == 0) {
         boss->armState = 0;
         s = &boss->hand;
-        s->unk28[0].unk0 = -1;
-        s->unk28[1].unk0 = -1;
+        s->hitboxes[0].index = -1;
+        s->hitboxes[1].index = -1;
         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
         s->variant = 2;
 #ifndef NON_MATCHING
-        s->unk21 |= r3;
+        s->prevVariant |= r3;
 #else
-        s->unk21 = -1;
+        s->prevVariant = -1;
 #endif
     }
     boss->unkB6 = (boss->unkB6 + 1) & 31;
@@ -1553,14 +1553,14 @@ static void sub_80451C4(EggSaucer *boss)
     if (boss->armStateTimer == 0) {
         boss->armState = 0;
         s = &boss->hand;
-        s->unk28[0].unk0 = -1;
-        s->unk28[1].unk0 = -1;
+        s->hitboxes[0].index = -1;
+        s->hitboxes[1].index = -1;
         s->graphics.anim = SA2_ANIM_EGG_SAUCER_HAND;
         s->variant = 2;
 #ifndef NON_MATCHING
-        s->unk21 |= r2;
+        s->prevVariant |= r2;
 #else
-        s->unk21 = -1;
+        s->prevVariant = -1;
 #endif
     }
     boss->unkB6 = (boss->unkB6 + 1) & 31;
@@ -1581,7 +1581,7 @@ void sub_80452F8(EggSaucer *boss)
             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_EGGMAN;
             s->variant = 1;
         }
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
 }
 
@@ -1619,7 +1619,7 @@ void sub_8045368(EggSaucer *boss)
             s->variant = 2;
         }
     }
-    s->unk21 = -1;
+    s->prevVariant = -1;
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
         && boss->unk10 == 4) {
@@ -1662,7 +1662,7 @@ void sub_80454A4(EggSaucer *boss)
             s->variant = 0;
         }
     }
-    s->unk21 = -1;
+    s->prevVariant = -1;
 }
 
 // https://decomp.me/scratch/wnQsf

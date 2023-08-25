@@ -10,11 +10,12 @@
 #include "game/interactables_2/egg_utopia/speeding_platform.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite;
+    Sprite s;
     s32 x;
     s32 y;
     s32 unk44;
@@ -53,7 +54,7 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
     struct Task *t = TaskCreate(Task_Interactable097, sizeof(Sprite_SpeedingPlatform),
                                 0x2010, 0, TaskDestructor_Interactable097);
     Sprite_SpeedingPlatform *platform = TaskGetStructPtr(t);
-    Sprite *sprite;
+    Sprite *s;
     platform->unk54 = 0;
     platform->unk58 = 0;
     platform->unk5A = 0;
@@ -77,20 +78,20 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
         platform->unk60[i][1] = platform->unk48;
     }
 
-    sprite = &platform->sprite;
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
-    sprite->graphics.dest = VramMalloc(0x10);
-    sprite->graphics.anim = SA2_ANIM_SPEEDING_PLATFORM;
-    sprite->variant = 0;
-    sub_8004558(sprite);
+    s = &platform->s;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->graphics.dest = VramMalloc(0x10);
+    s->graphics.anim = SA2_ANIM_SPEEDING_PLATFORM;
+    s->variant = 0;
+    sub_8004558(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
@@ -108,7 +109,7 @@ static void sub_807F9F0(void)
                               sub_801EC3C);
         if (res < 0) {
             platform->unk4C = FALSE;
-            gPlayer.unk6D = 3;
+            gPlayer.transition = PLTRANS_PT3;
             gPlayer.moveState &= ~8;
             gPlayer.unk3C = 0;
         }
@@ -162,19 +163,19 @@ static void sub_807FB1C(Sprite_SpeedingPlatform *platform)
 
 static void RenderPlatform(Sprite_SpeedingPlatform *platform)
 {
-    Sprite *sprite = &platform->sprite;
+    Sprite *s = &platform->s;
     if (IS_MULTI_PLAYER) {
-        sprite->x = platform->x + Q_24_8_TO_INT(platform->unk60[1][0]) - gCamera.x;
-        sprite->y = platform->y + Q_24_8_TO_INT(platform->unk60[1][1]) - gCamera.y;
+        s->x = platform->x + Q_24_8_TO_INT(platform->unk60[1][0]) - gCamera.x;
+        s->y = platform->y + Q_24_8_TO_INT(platform->unk60[1][1]) - gCamera.y;
     } else {
-        sprite->x = platform->x + Q_24_8_TO_INT(platform->unk44) - gCamera.x;
-        sprite->y = platform->y + Q_24_8_TO_INT(platform->unk48) - gCamera.y;
+        s->x = platform->x + Q_24_8_TO_INT(platform->unk44) - gCamera.x;
+        s->y = platform->y + Q_24_8_TO_INT(platform->unk48) - gCamera.y;
     }
 
-    sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(sprite);
-    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(sprite);
+    s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    sub_80051E8(s);
+    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    sub_80051E8(s);
 }
 
 static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)
@@ -207,9 +208,9 @@ static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)
 static u32 sub_807FD0C(Sprite_SpeedingPlatform *platform)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp = sub_800CCB8(&platform->sprite,
-                               platform->x + Q_24_8_TO_INT(platform->unk44),
-                               platform->y + Q_24_8_TO_INT(platform->unk48), &gPlayer);
+        u32 temp
+            = sub_800CCB8(&platform->s, platform->x + Q_24_8_TO_INT(platform->unk44),
+                          platform->y + Q_24_8_TO_INT(platform->unk48), &gPlayer);
 
         if (temp != 0) {
             if (temp & 0x10000) {
@@ -266,7 +267,7 @@ static void Task_Interactable097(void)
 static void TaskDestructor_Interactable097(struct Task *t)
 {
     Sprite_SpeedingPlatform *platform = TaskGetStructPtr(t);
-    VramFree(platform->sprite.graphics.dest);
+    VramFree(platform->s.graphics.dest);
 }
 
 static void sub_807FE34(Sprite_SpeedingPlatform *platform)

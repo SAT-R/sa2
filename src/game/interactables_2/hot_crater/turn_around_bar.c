@@ -7,10 +7,11 @@
 #include "malloc_vram.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite;
+    Sprite s;
     s32 x;
     s32 y;
     s32 unk44;
@@ -32,7 +33,7 @@ void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     struct Task *t = TaskCreate(Task_TurnAroundBarMain, sizeof(Sprite_TurnAroundBar),
                                 0x2010, 0, TaskDestructor_InteractableTurnAroundBar);
     Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(t);
-    Sprite *sprite = &turnAroundBar->sprite;
+    Sprite *s = &turnAroundBar->s;
 
     turnAroundBar->base.regionX = spriteRegionX;
     turnAroundBar->base.regionY = spriteRegionY;
@@ -40,29 +41,29 @@ void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     turnAroundBar->base.spriteX = me->x;
     turnAroundBar->base.spriteY = spriteY;
 
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = 0x2000;
-    sprite->graphics.dest = VramMalloc(0xC);
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
+    s->graphics.dest = VramMalloc(0xC);
 
-    sprite->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
-    sprite->variant = 0;
+    s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
+    s->variant = 0;
 
     turnAroundBar->x = TO_WORLD_POS(me->x, spriteRegionX);
     turnAroundBar->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
-    sub_8004558(sprite);
+    sub_8004558(s);
 }
 
 static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
 {
-    Sprite *sprite = &turnAroundBar->sprite;
+    Sprite *s = &turnAroundBar->s;
     Player_ClearMovestate_IsInScriptedSequence();
 
     gPlayer.moveState &= ~MOVESTATE_400000;
@@ -80,11 +81,11 @@ static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
     gPlayer.rotation = 0;
     gPlayer.speedAirY = 0;
     gPlayer.moveState = gPlayer.moveState ^ 1;
-    gPlayer.unk6D = 1;
+    gPlayer.transition = PLTRANS_PT1;
 
-    sprite->graphics.anim = 567;
-    sprite->variant = 2;
-    sub_8004558(sprite);
+    s->graphics.anim = 567;
+    s->variant = 2;
+    sub_8004558(s);
     gCurTask->main = sub_8073600;
 }
 
@@ -118,7 +119,7 @@ static u32 sub_8073520(Sprite_TurnAroundBar *turnAroundBar)
 static void Task_TurnAroundBarMain(void)
 {
     Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &turnAroundBar->sprite;
+    Sprite *s = &turnAroundBar->s;
     MapEntity *me = turnAroundBar->base.me;
     if (sub_8073520(turnAroundBar) == 2) {
         sub_8073670(turnAroundBar);
@@ -129,24 +130,24 @@ static void Task_TurnAroundBarMain(void)
         TaskDestroy(gCurTask);
     } else {
         sub_8073760(turnAroundBar);
-        sub_80051E8(sprite);
+        sub_80051E8(s);
     }
 }
 
 static void sub_8073600(void)
 {
     Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &turnAroundBar->sprite;
+    Sprite *s = &turnAroundBar->s;
 
     if (!PLAYER_IS_ALIVE) {
         sub_807371C(turnAroundBar);
         return;
     }
     sub_8073760(turnAroundBar);
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    sub_8004558(s);
+    sub_80051E8(s);
 
-    if (sprite->unk10 & 0x4000) {
+    if (s->unk10 & 0x4000) {
         sub_80736E0(turnAroundBar);
     }
 }
@@ -154,14 +155,14 @@ static void sub_8073600(void)
 static void TaskDestructor_InteractableTurnAroundBar(struct Task *t)
 {
     Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(t);
-    VramFree(turnAroundBar->sprite.graphics.dest);
+    VramFree(turnAroundBar->s.graphics.dest);
 }
 
 static void sub_8073818(void);
 
 static void sub_8073670(Sprite_TurnAroundBar *turnAroundBar)
 {
-    Sprite *sprite = &turnAroundBar->sprite;
+    Sprite *s = &turnAroundBar->s;
     Player_SetMovestate_IsInScriptedSequence();
 
     gPlayer.moveState |= MOVESTATE_400000;
@@ -170,42 +171,42 @@ static void sub_8073670(Sprite_TurnAroundBar *turnAroundBar)
     gPlayer.y = Q_24_8(turnAroundBar->y);
     gPlayer.unk64 = 0x38;
 
-    sprite->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
-    sprite->variant = 1;
+    s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
+    s->variant = 1;
 
     if (gPlayer.moveState & 1) {
-        sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+        s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
     }
-    sub_8004558(sprite);
+    sub_8004558(s);
     gCurTask->main = sub_8073818;
 }
 
 static void sub_80736E0(Sprite_TurnAroundBar *turnAroundBar)
 {
-    Sprite *sprite = &turnAroundBar->sprite;
-    sprite->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
-    sprite->variant = 0;
-    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_8004558(sprite);
+    Sprite *s = &turnAroundBar->s;
+    s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
+    s->variant = 0;
+    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    sub_8004558(s);
     gCurTask->main = Task_TurnAroundBarMain;
 }
 
 static void sub_807371C(Sprite_TurnAroundBar *turnAroundBar)
 {
-    Sprite *sprite = &turnAroundBar->sprite;
+    Sprite *s = &turnAroundBar->s;
     Player_ClearMovestate_IsInScriptedSequence();
-    sprite->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
-    sprite->variant = 0;
-    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_8004558(sprite);
+    s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
+    s->variant = 0;
+    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    sub_8004558(s);
     gCurTask->main = Task_TurnAroundBarMain;
 }
 
 static void sub_8073760(Sprite_TurnAroundBar *turnAroundBar)
 {
-    Sprite *sprite = &turnAroundBar->sprite;
-    sprite->x = turnAroundBar->x - gCamera.x;
-    sprite->y = turnAroundBar->y - gCamera.y;
+    Sprite *s = &turnAroundBar->s;
+    s->x = turnAroundBar->x - gCamera.x;
+    s->y = turnAroundBar->y - gCamera.y;
 }
 
 static bool32 sub_8073784(Sprite_TurnAroundBar *turnAroundBar)
@@ -251,16 +252,16 @@ static s16 ClampSpeed(s16 speed)
 static void sub_8073818(void)
 {
     Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &turnAroundBar->sprite;
+    Sprite *s = &turnAroundBar->s;
     if (!PLAYER_IS_ALIVE) {
         sub_807371C(turnAroundBar);
         return;
     }
     sub_8073760(turnAroundBar);
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    sub_8004558(s);
+    sub_80051E8(s);
 
-    if (sprite->unk10 & 0x4000) {
+    if (s->unk10 & 0x4000) {
         sub_8073474(turnAroundBar);
     }
 }

@@ -19,13 +19,13 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite displayed;
+    /* 0x0C */ Sprite s;
     /* 0x3C */ struct Task *task;
 } Sprite_Checkpoint;
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite displayed;
+    /* 0x0C */ Sprite s;
 } Sprite_Toggle_Checkpoint;
 
 static void Task_Interactable_Toggle_Checkpoint(void);
@@ -59,7 +59,7 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 {
     struct Task *t;
     Sprite_Checkpoint *chkPt;
-    Sprite *disp;
+    Sprite *s;
     u8 zone;
     u16 anim;
     u8 variant;
@@ -72,7 +72,7 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     }
 
     chkPt = TaskGetStructPtr(t);
-    disp = &chkPt->displayed;
+    s = &chkPt->s;
 
     chkPt->base.regionX = spriteRegionX;
     chkPt->base.regionY = spriteRegionY;
@@ -80,22 +80,22 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     chkPt->base.spriteX = me->x;
     chkPt->base.spriteY = spriteY;
 
-    disp->x = TO_WORLD_POS(me->x, spriteRegionX);
-    disp->y = TO_WORLD_POS(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    disp->graphics.dest = VramMalloc(CHECKPOINT_BALL_TILE_COUNT);
-    disp->graphics.anim = SA2_ANIM_CHECKPOINT;
-    disp->variant = 0;
-    disp->unk1A = 0x480;
-    disp->graphics.size = 0;
-    disp->unk14 = 0;
-    disp->unk1C = 0;
-    disp->unk21 = 0xFF;
-    disp->unk22 = 0x10;
-    disp->palId = 0;
-    disp->unk28->unk0 = -1;
-    disp->unk10 = 0x2000;
+    s->graphics.dest = VramMalloc(CHECKPOINT_BALL_TILE_COUNT);
+    s->graphics.anim = SA2_ANIM_CHECKPOINT;
+    s->variant = 0;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
 
     zone = LEVEL_TO_ZONE(gCurrentLevel);
     anim = sAnimIdsCheckpoint[zone][0];
@@ -107,16 +107,16 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 void Task_8062FD8(void)
 {
     Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
-    Sprite *disp = &chkPt->displayed;
+    Sprite *s = &chkPt->s;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
     posX = TO_WORLD_POS(chkPt->base.spriteX, chkPt->base.regionX);
     posY = TO_WORLD_POS(me->y, chkPt->base.regionY);
 
-    disp->x = posX - gCamera.x;
-    disp->y = posY - gCamera.y;
+    s->x = posX - gCamera.x;
+    s->y = posY - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(disp->x, disp->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = chkPt->base.spriteX;
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
@@ -130,58 +130,58 @@ void Task_8062FD8(void)
             if (gUnknown_030055B0 == 0)
                 gUnknown_030055B0++;
 
-            disp->graphics.anim = SA2_ANIM_CHECKPOINT;
-            disp->variant = SA2_ANIM_VARIANT_CHECKPOINT_HIT;
-            disp->unk21 = 0xFF;
+            s->graphics.anim = SA2_ANIM_CHECKPOINT;
+            s->variant = SA2_ANIM_VARIANT_CHECKPOINT_HIT;
+            s->prevVariant = -1;
 
             gCurTask->main = Task_8063108;
 
             m4aSongNumStart(SE_CHECKPOINT);
         }
 
-        sub_8004558(disp);
-        sub_80051E8(disp);
+        sub_8004558(s);
+        sub_80051E8(s);
     }
 }
 
 void Task_8063108(void)
 {
     Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
-    Sprite *disp = &chkPt->displayed;
+    Sprite *s = &chkPt->s;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
     posX = TO_WORLD_POS(chkPt->base.spriteX, chkPt->base.regionX);
     posY = TO_WORLD_POS(me->y, chkPt->base.regionY);
 
-    disp->x = posX - gCamera.x;
-    disp->y = posY - gCamera.y;
+    s->x = posX - gCamera.x;
+    s->y = posY - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(disp->x, disp->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = chkPt->base.spriteX;
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
     } else {
-        if (sub_8004558(disp) == 0) {
+        if (sub_8004558(s) == 0) {
             gCurTask->main = Task_806319C;
         }
 
-        sub_80051E8(disp);
+        sub_80051E8(s);
     }
 }
 
 void Task_806319C(void)
 {
     Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
-    Sprite *disp = &chkPt->displayed;
+    Sprite *s = &chkPt->s;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
     posX = TO_WORLD_POS(chkPt->base.spriteX, chkPt->base.regionX);
     posY = TO_WORLD_POS(me->y, chkPt->base.regionY);
 
-    disp->x = posX - gCamera.x;
-    disp->y = posY - gCamera.y;
+    s->x = posX - gCamera.x;
+    s->y = posY - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(disp->x, disp->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = chkPt->base.spriteX;
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
@@ -192,7 +192,7 @@ void Task_806319C(void)
 void TaskDestructor_8063214(struct Task *t)
 {
     Sprite_Checkpoint *chkPt = TaskGetStructPtr(t);
-    void *gfx = chkPt->displayed.graphics.dest;
+    void *gfx = chkPt->s.graphics.dest;
     VramFree(gfx);
 }
 

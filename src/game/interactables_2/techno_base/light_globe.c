@@ -7,12 +7,14 @@
 #include "game/interactables_2/techno_base/light_globe.h"
 #include "malloc_vram.h"
 #include "trig.h"
+
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite;
+    Sprite s;
     s32 unk3C;
     s32 unk40;
     s16 unk44;
@@ -34,7 +36,7 @@ void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     struct Task *t = TaskCreate(Task_Interactable080, sizeof(Sprite_LightGlobe), 0x2010,
                                 0, TaskDestructor_Interactable080);
     Sprite_LightGlobe *globe = TaskGetStructPtr(t);
-    Sprite *sprite;
+    Sprite *s;
 
     globe->unk44 = 0;
     globe->unk46 = 0;
@@ -47,19 +49,19 @@ void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     globe->base.spriteX = me->x;
     globe->base.spriteY = spriteY;
 
-    sprite = &globe->sprite;
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = 0x2000;
-    sprite->graphics.dest = VramMalloc(9);
-    sprite->graphics.anim = SA2_ANIM_LIGHT_GLOBE;
-    sprite->variant = 0;
+    s = &globe->s;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
+    s->graphics.dest = VramMalloc(9);
+    s->graphics.anim = SA2_ANIM_LIGHT_GLOBE;
+    s->variant = 0;
 
     SET_MAP_ENTITY_INITIALIZED(me);
 }
@@ -138,15 +140,15 @@ static void Task_Interactable080(void)
 static void TaskDestructor_Interactable080(struct Task *t)
 {
     Sprite_LightGlobe *globe = TaskGetStructPtr(t);
-    VramFree(globe->sprite.graphics.dest);
+    VramFree(globe->s.graphics.dest);
 }
 
 static void sub_807B2D0(Sprite_LightGlobe *globe)
 {
-    gPlayer.unk6D = 14;
+    gPlayer.transition = PLTRANS_SPRING_UP;
     gPlayer.unk6E = 0;
-    globe->sprite.graphics.anim = SA2_ANIM_LIGHT_GLOBE;
-    globe->sprite.variant = 1;
+    globe->s.graphics.anim = SA2_ANIM_LIGHT_GLOBE;
+    globe->s.variant = 1;
     m4aSongNumStart(SE_297);
     gCurTask->main = sub_807B3B0;
 }
@@ -160,11 +162,11 @@ static void sub_807B318(Sprite_LightGlobe *globe)
 
 static void sub_807B350(Sprite_LightGlobe *globe)
 {
-    Sprite *sprite = &globe->sprite;
-    sprite->x = globe->unk3C - gCamera.x + Q_24_8_TO_INT(globe->unk44);
-    sprite->y = globe->unk40 - gCamera.y + Q_24_8_TO_INT(globe->unk46);
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    Sprite *s = &globe->s;
+    s->x = globe->unk3C - gCamera.x + Q_24_8_TO_INT(globe->unk44);
+    s->y = globe->unk40 - gCamera.y + Q_24_8_TO_INT(globe->unk46);
+    sub_8004558(s);
+    sub_80051E8(s);
 }
 
 static void sub_807B398(Sprite_LightGlobe *globe)
@@ -177,7 +179,7 @@ static void sub_807B3B0(void)
 {
     Sprite_LightGlobe *globe = TaskGetStructPtr(gCurTask);
 
-    if (globe->sprite.unk10 & 0x4000) {
+    if (globe->s.unk10 & 0x4000) {
         sub_807B398(globe);
     } else {
         sub_807B350(globe);

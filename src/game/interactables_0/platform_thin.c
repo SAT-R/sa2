@@ -16,7 +16,7 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite sprite;
+    /* 0x0C */ Sprite s;
     /* 0x3C */ s32 unk3C;
     /* 0x40 */ s32 unk40;
     /* 0x44 */ s32 unk44;
@@ -80,7 +80,7 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
         = TaskCreate(Task_CommonPlatformThinMain, sizeof(Sprite_CommonThinPlatform),
                      0x2010, 0, TaskDestructor_CommonPlatformThin);
     Sprite_CommonThinPlatform *platform = TaskGetStructPtr(t);
-    Sprite *sprite = &platform->sprite;
+    Sprite *s = &platform->s;
 
     platform->base.regionX = spriteRegionX;
     platform->base.regionY = spriteRegionY;
@@ -91,33 +91,33 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
     platform->unk40 = 0;
     platform->unk44 = 0;
 
-    sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
-    sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sprite->graphics.dest
+    s->graphics.dest
         = VramMalloc(sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][0]);
-    sprite->graphics.anim = sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
-    sprite->variant = sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
+    s->graphics.anim = sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
+    s->variant = sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
 
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = -1;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = 0x2000;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
 
-    sub_8004558(sprite);
+    sub_8004558(s);
 }
 
 static void Task_CommonPlatformThinMain(void)
 {
     // Have to be declared in this order to match
     Player *player;
-    Sprite *sprite;
+    Sprite *s;
     MapEntity *me;
     Sprite_CommonThinPlatform *platform;
     s16 x, y;
@@ -126,18 +126,18 @@ static void Task_CommonPlatformThinMain(void)
     player = &gPlayer;
     something = FALSE;
     platform = TaskGetStructPtr(gCurTask);
-    sprite = &platform->sprite;
+    s = &platform->s;
     me = platform->base.me;
     x = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
     y = TO_WORLD_POS(me->y, platform->base.regionY);
 
-    sprite->x = x - gCamera.x;
-    sprite->y = y - gCamera.y;
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
 
     if (IS_MULTI_PLAYER && (s8)me->x == -3) {
         CreatePlatformBreakParticles(x, y);
 
-        if (player->moveState & MOVESTATE_8 && player->unk3C == sprite) {
+        if (player->moveState & MOVESTATE_8 && player->unk3C == s) {
             player->moveState &= ~MOVESTATE_8;
             player->moveState |= 2;
         }
@@ -146,9 +146,9 @@ static void Task_CommonPlatformThinMain(void)
     }
 
     if (!(player->moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
-        u32 temp2 = sub_800CCB8(sprite, x, y, player);
+        u32 temp2 = sub_800CCB8(s, x, y, player);
         if (temp2 & 0xC0000) {
-            if (sub_80111F0(sprite, x, y, player) & 0xC0000) {
+            if (sub_80111F0(s, x, y, player) & 0xC0000) {
                 player->x += (s16)(temp2 & 0xFF00);
                 player->speedAirX = 0;
             }
@@ -156,8 +156,8 @@ static void Task_CommonPlatformThinMain(void)
 
         if (temp2 & 0x30000) {
             s16 unk64 = player->unk64;
-            s16 unk68 = player->unk68;
-            s16 unk6A = player->unk6A;
+            s16 anim = player->anim;
+            s16 variant = player->variant;
             switch (player->character) {
                 case CHARACTER_KNUCKLES:
                     if (unk64 == 0x6B) {
@@ -173,8 +173,8 @@ static void Task_CommonPlatformThinMain(void)
                     break;
                 case CHARACTER_SONIC:
                 case CHARACTER_AMY: {
-                    unk68 -= gPlayerCharacterIdleAnims[player->character];
-                    if (unk64 == 0x24 && unk68 == 0x33 && unk6A == 1
+                    anim -= gPlayerCharacterIdleAnims[player->character];
+                    if (unk64 == 0x24 && anim == 0x33 && variant == 1
                         && player->speedAirY > 0) {
                         player->moveState &= ~MOVESTATE_8;
                         CreatePlatformBreakParticles(x, y);
@@ -207,7 +207,7 @@ static void Task_CommonPlatformThinMain(void)
         return;
     }
 
-    sub_80051E8(sprite);
+    sub_80051E8(s);
     return;
 }
 
@@ -222,7 +222,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
     register s32 r6 asm("r6");
 
     {
-        Sprite *r7 = &platform->unk0;
+        Sprite *s = &platform->unk0;
         SpriteTransform *transform = &platform->unkC0;
         platform->unkF0 = 0;
         platform->unkF2 = 0xFE00;
@@ -230,19 +230,19 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         y -= 50;
 
         // Init base 1
-        r7->graphics.dest
+        s->graphics.dest
             = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][0]);
-        r7->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
-        r7->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
+        s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
+        s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
 
-        r7->unk1A = 0x200;
-        r7->graphics.size = 0;
-        r7->unk14 = 0;
-        r7->unk1C = 0;
-        r7->unk21 = -1;
-        r7->unk22 = 0x10;
-        r7->palId = 0;
-        r7->unk10 = 0x70;
+        s->unk1A = 0x200;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0x70;
 
         // Init transform
         transform->unk0 = 0;
@@ -251,60 +251,60 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         transform->x = x;
         transform->y = y;
 
-        sub_8004558(r7);
+        sub_8004558(s);
 
         // copy base 1
         DmaCopy16(3, &platform->unk0, &platform->unk30, 0x30);
-        r7 = &platform->unk30;
+        s = &platform->unk30;
 
         // copy transform
         DmaCopy16(3, &platform->unkC0, &platform->unkCC, 0xC);
 
         // Set the new params
-        r7->unk10 = 0x71;
+        s->unk10 = 0x71;
 
         transform = &platform->unkCC;
         transform->y = y - 0x10;
     }
 
     {
-        Sprite *r7;
+        Sprite *s;
         SpriteTransform *transform;
         // init base 2
-        r7 = &platform->unk60;
+        s = &platform->unk60;
 
         // Copy the transform
         DmaCopy16(3, &platform->unkC0, &platform->unkD8, 0xC);
 
-        r7->graphics.dest
+        s->graphics.dest
             = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][3]);
-        r7->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
-        r7->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][5];
-        r7->unk1A = 0x200;
-        r7->graphics.size = 0;
-        r7->unk14 = 0;
-        r7->unk1C = 0;
-        r7->unk21 = -1;
-        r7->unk22 = 0x10;
-        r7->palId = 0;
-        r7->unk10 = 0x72;
+        s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
+        s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][5];
+        s->unk1A = 0x200;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0x72;
 
         transform = &platform->unkD8;
         // Set the transform props
         transform->y = y;
 
-        sub_8004558(r7);
+        sub_8004558(s);
 
         // Copy base 2
         DmaCopy16(3, &platform->unk60, &platform->unk90, 0x30);
-        r7 = &platform->unk90;
+        s = &platform->unk90;
 
         // Copy the transform
         DmaCopy16(3, &platform->unkD8, &platform->unkE4, 0xC);
         transform = &platform->unkE4;
 
         // Update props
-        r7->unk10 = 0x73;
+        s->unk10 = 0x73;
 
         // used to help match atm
         r6 = y - 0x10;
@@ -319,7 +319,7 @@ static void Task_PlatformBreakParticlesMain(void)
 {
     s16 x, y;
     Platform_D1C *platform = TaskGetStructPtr(gCurTask);
-    Sprite *sprite;
+    Sprite *s;
     s16 width;
     SpriteTransform *transform;
     if (platform->unkF0++ >= 0x3D) {
@@ -330,7 +330,7 @@ static void Task_PlatformBreakParticlesMain(void)
     platform->unkF2 += 0x28;
 
     //
-    sprite = &platform->unk0;
+    s = &platform->unk0;
     transform = &platform->unkC0;
 
     transform->y += Q_24_8_TO_INT(platform->unkF2);
@@ -351,16 +351,16 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->height = width;
     transform->unk0 -= 0x2A;
 
-    sprite->unk10 &= ~0x1F;
-    sprite->unk10 |= gUnknown_030054B8++;
-    sub_8004E14(sprite, transform);
-    sub_80051E8(sprite);
+    s->unk10 &= ~0x1F;
+    s->unk10 |= gUnknown_030054B8++;
+    sub_8004E14(s, transform);
+    sub_80051E8(s);
 
     transform->x = x;
     transform->y = y;
 
     //
-    sprite = &platform->unk30;
+    s = &platform->unk30;
     transform = &platform->unkCC;
 
     transform->y += Q_24_8_TO_INT(platform->unkF2);
@@ -377,16 +377,16 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->height = width;
     transform->unk0 += 0x2A;
 
-    sprite->unk10 &= ~0x1F;
-    sprite->unk10 |= gUnknown_030054B8++;
-    sub_8004E14(sprite, transform);
-    sub_80051E8(sprite);
+    s->unk10 &= ~0x1F;
+    s->unk10 |= gUnknown_030054B8++;
+    sub_8004E14(s, transform);
+    sub_80051E8(s);
 
     transform->x = x;
     transform->y = y;
 
     //
-    sprite = &platform->unk60;
+    s = &platform->unk60;
     transform = &platform->unkD8;
 
     transform->y += Q_24_8_TO_INT(platform->unkF2);
@@ -402,16 +402,16 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->height = width;
     transform->unk0 += 0xE;
 
-    sprite->unk10 &= ~0x1F;
-    sprite->unk10 |= gUnknown_030054B8++;
-    sub_8004E14(sprite, transform);
-    sub_80051E8(sprite);
+    s->unk10 &= ~0x1F;
+    s->unk10 |= gUnknown_030054B8++;
+    sub_8004E14(s, transform);
+    sub_80051E8(s);
 
     transform->x = x;
     transform->y = y;
 
     //
-    sprite = &platform->unk90;
+    s = &platform->unk90;
     transform = &platform->unkE4;
 
     transform->y += Q_24_8_TO_INT(platform->unkF2);
@@ -427,10 +427,10 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->height = width;
     transform->unk0 -= 0xE;
 
-    sprite->unk10 &= ~0x1F;
-    sprite->unk10 |= gUnknown_030054B8++;
-    sub_8004E14(sprite, transform);
-    sub_80051E8(sprite);
+    s->unk10 &= ~0x1F;
+    s->unk10 |= gUnknown_030054B8++;
+    sub_8004E14(s, transform);
+    sub_80051E8(s);
 
     transform->x = x;
     transform->y = y;
@@ -440,7 +440,7 @@ static void TaskDestructor_CommonPlatformThin(struct Task *t)
 {
     Sprite_CommonThinPlatform *platform = TaskGetStructPtr(t);
 
-    VramFree(platform->sprite.graphics.dest);
+    VramFree(platform->s.graphics.dest);
 }
 
 static void TaskDestructor_PlatformBreakParticles(struct Task *t)
@@ -450,15 +450,15 @@ static void TaskDestructor_PlatformBreakParticles(struct Task *t)
     VramFree(platform->unk60.graphics.dest);
 }
 
-static u32 sub_80111F0(Sprite *sprite, s32 x, s32 y, Player *player)
+static u32 sub_80111F0(Sprite *s, s32 x, s32 y, Player *player)
 {
     u32 result;
-    sprite->unk28[0].unk5 += 1;
-    sprite->unk28[0].unk7 -= 1;
+    s->hitboxes[0].top += 1;
+    s->hitboxes[0].bottom -= 1;
 
-    result = sub_800CCB8(sprite, x, y, player);
+    result = sub_800CCB8(s, x, y, player);
 
-    sprite->unk28[0].unk5 -= 1;
-    sprite->unk28[0].unk7 += 1;
+    s->hitboxes[0].top -= 1;
+    s->hitboxes[0].bottom += 1;
     return result;
 }

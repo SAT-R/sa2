@@ -25,10 +25,10 @@ struct Task *CreateSparkEffect()
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
     s->variant = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk1A = 0x200;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
@@ -42,7 +42,7 @@ void Task_SparkEffect(void)
     if (p->spriteTask == NULL || !(p->moveState & MOVESTATE_1000000)) {
         TaskDestroy(gCurTask);
         return;
-    } else if ((p->unk68 == SA2_CHAR_ANIM_55) && (p->unk6A == 0)) {
+    } else if ((p->anim == SA2_CHAR_ANIM_55) && (p->variant == 0)) {
         SparkEffect *spark = TaskGetStructPtr(gCurTask);
         Sprite *s = &spark->s;
         struct Camera *cam = &gCamera;

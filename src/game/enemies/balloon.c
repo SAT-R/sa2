@@ -13,7 +13,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite_UNK28 reserved;
+    /* 0x3C */ Hitbox reserved;
     /* 0x44 */ s32 spawnX;
     /* 0x48 */ s32 spawnY;
     /* 0x4C */ s32 offsetX;
@@ -86,7 +86,7 @@ void Task_BalloonMain(void)
     if (--balloon->unk5E == 0) {
         s->graphics.anim = SA2_ANIM_BALLOON;
         s->variant = 1;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = sub_805879C;
     }
 
@@ -134,9 +134,9 @@ void sub_805879C(void)
         s->graphics.anim = SA2_ANIM_BALLOON;
         s->variant = 0;
 #ifndef NON_MATCHING
-        s->unk21 |= r8;
+        s->prevVariant |= r8;
 #else
-        s->unk21 - 1;
+        s->prevVariant = -1;
 #endif
         gCurTask->main = Task_BalloonMain;
     }

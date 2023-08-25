@@ -132,14 +132,14 @@ static void sub_8057348(void)
         gCurTask->main = sub_8057618;
         s->graphics.anim = SA2_ANIM_MOUSE;
         s->variant = 1;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     } else if ((Q_24_8_TO_INT(mouse->offsetX)
                     >= ((me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)
                 && s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = sub_8057618;
         s->graphics.anim = SA2_ANIM_MOUSE;
         s->variant = 1;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
@@ -182,7 +182,7 @@ static void sub_8057618(void)
 
         s->graphics.anim = SA2_ANIM_MOUSE;
         s->variant = 0;
-        s->unk21 = -1;
+        s->prevVariant = -1;
 
         gCurTask->main = sub_8057348;
     }

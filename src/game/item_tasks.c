@@ -40,10 +40,10 @@ struct Task *CreateItemTask_Shield_Normal(s8 p0)
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_SHIELD_NORMAL;
     s->variant = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk1A = 0x200;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
@@ -65,10 +65,10 @@ struct Task *CreateItemTask_Invincibility(s8 p0)
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_INVINCIBILITY;
     s->variant = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk1A = 0x200;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
@@ -89,10 +89,10 @@ struct Task *CreateItemTask_Shield_Magnetic(s8 p0)
         item2->s.graphics.size = 0;
         item2->s.graphics.anim = SA2_ANIM_SHIELD_MAGNETIC;
         item2->s.variant = 0;
-        item2->s.unk21 = 0xFF;
+        item2->s.prevVariant = -1;
         item2->s.unk1A = 0x200;
-        item2->s.unk1C = 0;
-        item2->s.unk22 = 0x10;
+        item2->s.timeUntilNextFrame = 0;
+        item2->s.animSpeed = 0x10;
         item2->s.palId = 0;
         item2->s.unk10 = SPRITE_FLAG(PRIORITY, 2);
     }
@@ -116,10 +116,10 @@ struct Task *CreateItemTask_Confusion(s8 p0)
         item2->s.graphics.size = 0;
         item2->s.graphics.anim = SA2_ANIM_CONFUSION;
         item2->s.variant = 0;
-        item2->s.unk21 = 0xFF;
+        item2->s.prevVariant = -1;
         item2->s.unk1A = 0x200;
-        item2->s.unk1C = 0;
-        item2->s.unk22 = 0x10;
+        item2->s.timeUntilNextFrame = 0;
+        item2->s.animSpeed = 0x10;
         item2->s.palId = 0;
         item2->s.unk10 = SPRITE_FLAG(PRIORITY, 2);
     }

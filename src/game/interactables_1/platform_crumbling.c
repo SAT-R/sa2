@@ -14,7 +14,7 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite displayed;
+    /* 0x0C */ Sprite s;
     s16 unk3C;
 } Sprite_019;
 
@@ -45,7 +45,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
                                 TaskDestructor_Interactable019);
     Sprite_019 *platform = TaskGetStructPtr(t);
     SpriteBase *base = &platform->base;
-    Sprite *displayed = &platform->displayed;
+    Sprite *s = &platform->s;
     // s16 screenX, screenY;
 
     base->regionX = spriteRegionX;
@@ -58,50 +58,50 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
     platform->unk3C = 0;
 
     // @BUG Loads the -2 set through SET_MAP_ENTITY_INITIALIZED
-    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
-    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
-    displayed->graphics.dest = VramMalloc(IA_019_NUM_TILES);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
+    s->graphics.dest = VramMalloc(IA_019_NUM_TILES);
 
 #ifdef UB_FIX
     // Prevent overflow
-    displayed->graphics.anim
+    s->graphics.anim
         = sInt019_AnimationIds[gCurrentLevel % ARRAY_COUNT(sInt019_AnimationIds)];
 #else
-    displayed->graphics.anim = sInt019_AnimationIds[gCurrentLevel];
+    s->graphics.anim = sInt019_AnimationIds[gCurrentLevel];
 #endif
-    displayed->variant = 0;
-    displayed->unk1A = 0x480;
-    displayed->graphics.size = 0;
-    displayed->unk14 = 0;
-    displayed->unk1C = 0;
+    s->variant = 0;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
 
-    displayed->unk21 = 0xFF;
-    displayed->unk22 = 0x10;
-    displayed->palId = FALSE;
-    displayed->unk10 = 0x2000;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = FALSE;
+    s->unk10 = 0x2000;
 
     if (me->d.sData[0] != 0) {
-        displayed->unk10 |= 0x400;
+        s->unk10 |= 0x400;
     }
 
-    sub_8004558(displayed);
+    sub_8004558(s);
 }
 
 void Task_Interactable_019(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
     SpriteBase *base = &platform->base;
-    Sprite *displayed = &platform->displayed;
+    Sprite *s = &platform->s;
     MapEntity *me = base->me;
     s16 screenX, screenY;
 
     screenX = TO_WORLD_POS(base->spriteX, base->regionX);
     screenY = TO_WORLD_POS(me->y, base->regionY);
 
-    displayed->x = screenX - gCamera.x;
-    displayed->y = screenY - gCamera.y;
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
 
-    if (sub_800C060(displayed, screenX, screenY, &gPlayer) & 0x8) {
+    if (sub_800C060(s, screenX, screenY, &gPlayer) & 0x8) {
         gCurTask->main = Task_805E35C;
         platform->unk3C = 0;
     }
@@ -117,28 +117,28 @@ void Task_Interactable_019(void)
          || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
          || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
          || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
-        && (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y))) {
+        && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
         me->x = base->spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(displayed);
+        sub_80051E8(s);
     }
 }
 
 void Task_805E35C(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
-    Sprite *displayed = &platform->displayed;
+    Sprite *s = &platform->s;
     MapEntity *me = platform->base.me;
     s16 screenX, screenY;
 
     screenX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
     screenY = TO_WORLD_POS(me->y, platform->base.regionY);
 
-    displayed->x = screenX - gCamera.x;
-    displayed->y = screenY - gCamera.y;
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
 
-    sub_800C060(displayed, screenX, screenY, &gPlayer);
+    sub_800C060(s, screenX, screenY, &gPlayer);
 
     if (IS_MULTI_PLAYER && ((s8)me->x == MAP_ENTITY_STATE_MINUS_THREE)) {
         platform->unk3C = 0;
@@ -152,18 +152,18 @@ void Task_805E35C(void)
          || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
          || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
          || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
-        && (IS_OUT_OF_CAM_RANGE(displayed->x, displayed->y))) {
+        && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
         me->x = platform->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(displayed);
+        sub_80051E8(s);
     }
 }
 
 void Task_805E480(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
-    Sprite *displayed = &platform->displayed;
+    Sprite *s = &platform->s;
     MapEntity *me = platform->base.me;
     s16 screenX, screenY;
     s16 otherPos;
@@ -176,15 +176,15 @@ void Task_805E480(void)
 
     otherPos = (gCamera.y - screenY) + DISPLAY_HEIGHT;
 
-    displayed->x = screenX - gCamera.x;
-    displayed->y = screenY - gCamera.y;
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
     platform->unk3C++;
 
-    sub_800C060(displayed, screenX, screenY, &gPlayer);
+    sub_800C060(s, screenX, screenY, &gPlayer);
 
     if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
         || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
-        if ((u16)(displayed->x + (CAM_REGION_WIDTH / 2))
+        if ((u16)(s->x + (CAM_REGION_WIDTH / 2))
             > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
             me->x = platform->base.spriteX;
             TaskDestroy(gCurTask);
@@ -192,8 +192,8 @@ void Task_805E480(void)
         }
     }
     // _0805E52C
-    oam_ptr = gUnknown_03002794->oamData[displayed->graphics.anim];
-    oam = &oam_ptr[displayed->dimensions->oamIndex * 3];
+    oam_ptr = gUnknown_03002794->oamData[s->graphics.anim];
+    oam = &oam_ptr[s->dimensions->oamIndex * 3];
 
     // _0805E54C
     r6 = 0;
@@ -206,8 +206,7 @@ void Task_805E480(void)
 
             if (value > 0) {
                 if (r6 == 0 && value == 1) {
-                    if ((gPlayer.moveState & MOVESTATE_8)
-                        && gPlayer.unk3C == displayed) {
+                    if ((gPlayer.moveState & MOVESTATE_8) && gPlayer.unk3C == s) {
                         gPlayer.moveState
                             = ((gPlayer.moveState & (~MOVESTATE_8)) | MOVESTATE_IN_AIR);
                     }
@@ -227,24 +226,22 @@ void Task_805E480(void)
                 r4 = 0;
             }
             // _0805E5CE
-            pointer = OamMalloc((displayed->unk1A & 0x7C0) >> 6);
+            pointer = OamMalloc((s->unk1A & 0x7C0) >> 6);
             if (iwram_end == pointer)
                 return;
 
-            pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->y))) & 0xFF;
+            pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + s->y))) & 0xFF;
 
-            if (displayed->unk10 & 0x400) {
-                pointer->all.attr1
-                    = ((displayed->x - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
+            if (s->unk10 & 0x400) {
+                pointer->all.attr1 = ((s->x - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
             } else {
                 // _0805E62C
-                pointer->all.attr1 = (displayed->x + x * TILE_WIDTH) & 0x1FF;
+                pointer->all.attr1 = (s->x + x * TILE_WIDTH) & 0x1FF;
             }
 
             pointer->all.attr2
-                = (((oam[2] + displayed->palId) & ~0xFFF)
-                   | ((displayed->unk10 & 0x3000) >> 2)
-                   | (u16)(((u32)(displayed->graphics.dest - OBJ_VRAM0) >> 5)
+                = (((oam[2] + s->palId) & ~0xFFF) | ((s->unk10 & 0x3000) >> 2)
+                   | (u16)(((u32)(s->graphics.dest - OBJ_VRAM0) >> 5)
                            + r6)); // (>> 5) = offset -> tilecount?
         }
     }
@@ -253,7 +250,7 @@ void Task_805E480(void)
 void Task_805E6A4(void)
 {
     Sprite_019 *platform = TaskGetStructPtr(gCurTask);
-    Sprite *displayed = &platform->displayed;
+    Sprite *s = &platform->s;
     MapEntity *me = platform->base.me;
 
     s16 screenX, screenY;
@@ -267,13 +264,13 @@ void Task_805E6A4(void)
 
     otherPos = (gCamera.y - screenY) + DISPLAY_HEIGHT;
 
-    displayed->x = screenX - gCamera.x;
-    displayed->y = screenY - gCamera.y;
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
     platform->unk3C++;
 
     if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
         || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
-        if ((u16)(displayed->x + (CAM_REGION_WIDTH / 2))
+        if ((u16)(s->x + (CAM_REGION_WIDTH / 2))
             > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
             me->x = platform->base.spriteX;
             TaskDestroy(gCurTask);
@@ -281,8 +278,8 @@ void Task_805E6A4(void)
         }
     }
 
-    oam_ptr = gUnknown_03002794->oamData[displayed->graphics.anim];
-    oam = &oam_ptr[displayed->dimensions->oamIndex * 3];
+    oam_ptr = gUnknown_03002794->oamData[s->graphics.anim];
+    oam = &oam_ptr[s->dimensions->oamIndex * 3];
 
     r6 = 0;
     for (y = 0; y < 4; y++) {
@@ -302,24 +299,22 @@ void Task_805E6A4(void)
                 return;
             }
 
-            pointer = OamMalloc((displayed->unk1A & 0x7C0) >> 6);
+            pointer = OamMalloc((s->unk1A & 0x7C0) >> 6);
             if (iwram_end == pointer) {
                 return;
             }
 
-            pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + displayed->y))) & 0xFF;
+            pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + s->y))) & 0xFF;
 
-            if (displayed->unk10 & 0x400) {
-                pointer->all.attr1
-                    = ((displayed->x - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
+            if (s->unk10 & 0x400) {
+                pointer->all.attr1 = ((s->x - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
             } else {
-                pointer->all.attr1 = (displayed->x + x * TILE_WIDTH) & 0x1FF;
+                pointer->all.attr1 = (s->x + x * TILE_WIDTH) & 0x1FF;
             }
 
             pointer->all.attr2
-                = (((oam[2] + displayed->palId) & ~0xFFF)
-                   | ((displayed->unk10 & 0x3000) >> 2)
-                   | (u16)(((u32)(displayed->graphics.dest - OBJ_VRAM0) >> 5)
+                = (((oam[2] + s->palId) & ~0xFFF) | ((s->unk10 & 0x3000) >> 2)
+                   | (u16)(((u32)(s->graphics.dest - OBJ_VRAM0) >> 5)
                            + r6)); // (>> 5) = offset -> tilecount?
         }
     }
@@ -328,5 +323,5 @@ void Task_805E6A4(void)
 void TaskDestructor_Interactable019(struct Task *t)
 {
     Sprite_019 *platform = TaskGetStructPtr(t);
-    VramFree(platform->displayed.graphics.dest);
+    VramFree(platform->s.graphics.dest);
 }

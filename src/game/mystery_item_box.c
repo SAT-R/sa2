@@ -8,6 +8,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -55,7 +56,7 @@ static const u16 unused = 0;
 void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                  u8 spriteY)
 {
-    Sprite *sprite;
+    Sprite *s;
     Sprite_MysteryItemBox *itemBox;
     struct Task *t;
     if ((gRandomItemBox & 7) == me->d.sData[0]
@@ -83,35 +84,35 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     itemBox->base.spriteY = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sprite = &itemBox->box;
-    sprite->unk22 = 0x10;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = -1;
-    sprite->palId = 0;
-    sprite->unk1A = 0x480;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
-    sprite->graphics.dest = VramMalloc(16);
-    sprite->graphics.anim = SA2_ANIM_ITEMBOX;
-    sprite->variant = 0;
-    sub_8004558(sprite);
+    s = &itemBox->box;
+    s->animSpeed = 0x10;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->palId = 0;
+    s->unk1A = 0x480;
+    s->hitboxes[0].index = -1;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->graphics.dest = VramMalloc(16);
+    s->graphics.anim = SA2_ANIM_ITEMBOX;
+    s->variant = 0;
+    sub_8004558(s);
 
-    sprite = &itemBox->identifier;
-    sprite->unk22 = 0x10;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = -1;
-    sprite->palId = 0;
-    sprite->unk1A = 0x4C0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
-    sprite->graphics.dest = VramMalloc(4);
-    sprite->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
-    sprite->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
-    sub_8004558(sprite);
+    s = &itemBox->identifier;
+    s->animSpeed = 0x10;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->palId = 0;
+    s->unk1A = 0x4C0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->graphics.dest = VramMalloc(4);
+    s->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
+    s->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
+    sub_8004558(s);
 }
 
 static void sub_808616C(void)
@@ -265,7 +266,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
         gPlayer.speedAirY = -0x300;
         gPlayer.unk64 = 0x26;
         gPlayer.unk66 = -1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
     }
 
     itemBox->base.me->d.sData[1] += 1;

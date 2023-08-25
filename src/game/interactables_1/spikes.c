@@ -72,12 +72,12 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     }
 
     s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2200;
     sub_8004558(s);
 }
@@ -108,12 +108,12 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
 
     s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2A00;
     sub_8004558(s);
 }
@@ -232,12 +232,12 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
     s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
 
     s->variant = SA2_ANIM_VARIANT_SPIKES_SIDEWAYS;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2200;
 
     switch (gGameMode) {
@@ -413,12 +413,12 @@ void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     s->graphics.anim = -1;
 
     s->variant = 0xFF;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2200;
 }
 
@@ -481,12 +481,12 @@ void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 sprite
     s->graphics.anim = -1;
 
     s->variant = 0xFF;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2A00;
 }
 
@@ -549,9 +549,9 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
             }
 
             if (!GRAVITY_IS_INVERTED) {
-                player->y = Q_24_8(screenY + s->unk28->unk5 - sp00[3]);
+                player->y = Q_24_8(screenY + s->hitboxes[0].top - sp00[3]);
             } else {
-                player->y = Q_24_8(screenY + s->unk28->unk7 + sp00[3]);
+                player->y = Q_24_8(screenY + s->hitboxes[0].bottom + sp00[3]);
             }
 
             if (sub_800CBA4(player)) {
@@ -588,7 +588,8 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
                 if (gravityInverted) {
                     if (flags & 0x20000) {
                         player->speedAirY = 0;
-                        player->y = Q_24_8(screenY + s->unk28->unk7 + player->unk17);
+                        player->y
+                            = Q_24_8(screenY + s->hitboxes[0].bottom + player->unk17);
                         player->moveState |= MOVESTATE_8;
                         player->moveState &= ~MOVESTATE_IN_AIR;
                         player->unk3C = s;
@@ -660,7 +661,8 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
         if (flags) {
             if ((flags & 0x20000) && !GRAVITY_IS_INVERTED) {
-                player->y = Q_24_8((screenY + s->unk28->unk7) + player->unk17 + 1);
+                player->y
+                    = Q_24_8((screenY + s->hitboxes[0].bottom) + player->unk17 + 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
 
@@ -670,7 +672,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                 }
             } else if ((flags & 0x10000) && GRAVITY_IS_INVERTED) {
                 // _080604D0
-                player->y = Q_24_8((screenY + s->unk28->unk5) - player->unk17 - 1);
+                player->y = Q_24_8((screenY + s->hitboxes[0].top) - player->unk17 - 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
 
@@ -764,9 +766,9 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                     s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
                     if (!GRAVITY_IS_INVERTED) {
-                        player->y = Q_24_8((screenY + s->unk28->unk5) - sp00[3]);
+                        player->y = Q_24_8((screenY + s->hitboxes[0].top) - sp00[3]);
                     } else {
-                        player->y = Q_24_8((screenY + s->unk28->unk7) + sp00[3]);
+                        player->y = Q_24_8((screenY + s->hitboxes[0].bottom) + sp00[3]);
                     }
                     if (sub_800CBA4(player)) {
                         m4aSongNumStart(SE_SPIKES);
@@ -804,7 +806,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                         return TRUE;
                     }
                 } else if ((flags & 0x20000) && GRAVITY_IS_INVERTED) {
-                    player->y = Q_24_8(screenY + s->unk28->unk7 + player->unk17);
+                    player->y = Q_24_8(screenY + s->hitboxes[0].bottom + player->unk17);
                     player->moveState |= MOVESTATE_8;
                     player->moveState &= ~MOVESTATE_IN_AIR;
                     player->unk3C = s;
@@ -934,9 +936,9 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                 s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
                 if (!GRAVITY_IS_INVERTED) {
-                    player->y = Q_24_8(s->unk28->unk7 + screenY - sp00[1]);
+                    player->y = Q_24_8(s->hitboxes[0].bottom + screenY - sp00[1]);
                 } else {
-                    player->y = Q_24_8(s->unk28->unk5 + screenY + sp00[1]);
+                    player->y = Q_24_8(s->hitboxes[0].top + screenY + sp00[1]);
                 }
                 if (!sub_800CBA4(player)) {
                     return TRUE;
@@ -995,13 +997,13 @@ static u32 sub_8060D08(Sprite *s, s32 x, s32 y, Player *player)
 {
     u32 result;
 
-    s->unk28->unk4++;
-    s->unk28->unk6--;
+    s->hitboxes[0].left++;
+    s->hitboxes[0].right--;
 
     result = sub_800CCB8(s, x, y, player);
 
-    s->unk28->unk4--;
-    s->unk28->unk6++;
+    s->hitboxes[0].left--;
+    s->hitboxes[0].right++;
 
     return result;
 }

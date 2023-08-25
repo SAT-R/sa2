@@ -154,12 +154,12 @@ struct Task *CreateStageUI(void)
         s->graphics.size = 0;
         s->graphics.anim = sAnimsAsciiDigits[i][0];
         s->variant = sAnimsAsciiDigits[i][1];
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = 0xFF;
-        s->unk22 = 0x10;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk28[0].unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(18, 1);
 
         if (i != (ARRAY_COUNT(sAnimsAsciiDigits) - 1)) {
@@ -179,12 +179,12 @@ struct Task *CreateStageUI(void)
         s->variant = sAnims1UpIcons[gSelectedCharacter][2];
         s->unk1A = 0x100;
         s->graphics.size = 0;
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = 0xFF;
-        s->unk22 = 0x10;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk28[0].unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = 0;
 
         // This can never be reached
@@ -206,12 +206,12 @@ struct Task *CreateStageUI(void)
     s->variant = 0;
     s->unk1A = 0xC0;
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0;
     sub_8004558(s);
 
@@ -225,13 +225,13 @@ struct Task *CreateStageUI(void)
     s->variant = 0;
     s->unk1A = 0;
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0;
     ui->unk2D0 = 0;
 
@@ -328,7 +328,7 @@ void Task_CreateStageUIMain(void)
         ui->unk2D0 += ((gPlayer.speedAirX >> 3) + Q_24_8(0.25));
         ui->unk2D0 &= 0x7FF;
         ui->ring.variant = ui->unk2D0 >> 8;
-        ui->ring.unk21 = 0xFF;
+        ui->ring.prevVariant = -1;
         sub_8004558(&ui->ring);
 
         /* Ring-Count */

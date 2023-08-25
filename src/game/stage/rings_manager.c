@@ -94,10 +94,10 @@ void CreateStageRingsManager(void)
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_RING_STATIC;
     s->variant = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10
         = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);

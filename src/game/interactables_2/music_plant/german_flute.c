@@ -7,6 +7,7 @@
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/music_plant/german_flute.h"
 
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -252,7 +253,7 @@ static void sub_8076C88(Sprite_GermanFlute UNUSED *flute)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     gPlayer.unk64 = 14;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
 
@@ -262,7 +263,7 @@ static void sub_8076C88(Sprite_GermanFlute UNUSED *flute)
 static void sub_8076CC0(Sprite_GermanFlute UNUSED *flute)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
 

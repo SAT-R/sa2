@@ -31,7 +31,7 @@ static void Task_StarOpen(void);
         _star->timer = _time;                                                           \
         _sprite->graphics.anim = _anim;                                                 \
         _sprite->variant = _variant;                                                    \
-        _sprite->unk21 = -1;                                                            \
+        _sprite->prevVariant = -1;                                                      \
         gCurTask->main = _task;                                                         \
     }
 

@@ -52,12 +52,12 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = -1;
-        s->unk22 = 0x10;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk28->unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 1);
     }
 }
@@ -121,12 +121,12 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = -1;
-        s->unk22 = 0x10;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk28->unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 1);
     }
 }

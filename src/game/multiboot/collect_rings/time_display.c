@@ -27,51 +27,51 @@ void CreateCollectRingsTimeDisplay(void)
 {
     u32 i;
     TimeDisplay *timeDisplay;
-    Sprite *sprite;
+    Sprite *s;
     struct Task *t = TaskCreate(sub_808328C, 0x240, 0x2102, 0, sub_80832E0);
     gUnknown_03005B6C = 0;
     timeDisplay = TaskGetStructPtr(t);
 
-    sprite = &timeDisplay->unk0;
-    sprite->unk1A = 0x140;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk10 = 0x40000;
+    s = &timeDisplay->unk0;
+    s->unk1A = 0x140;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0x40000;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        sprite->graphics.dest = VramMalloc(9);
-        sprite->graphics.anim = 729;
-        sprite->variant = 0;
+        s->graphics.dest = VramMalloc(9);
+        s->graphics.anim = 729;
+        s->variant = 0;
     }
 
-    sub_8004558(sprite);
+    sub_8004558(s);
 
     for (i = 0; i < 11; i++) {
-        sprite = &timeDisplay->unk30[i];
-        sprite->x = 0;
-        sprite->y = 0;
-        sprite->unk1A = 0x100;
-        sprite->graphics.size = 0;
-        sprite->graphics.anim = 1119;
-        sprite->variant = i + 16;
-        sprite->unk14 = 0;
-        sprite->unk1C = 0;
-        sprite->unk21 = 0xFF;
-        sprite->unk22 = 0x10;
-        sprite->palId = 0;
-        sprite->unk10 = 0;
+        s = &timeDisplay->unk30[i];
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = 0x100;
+        s->graphics.size = 0;
+        s->graphics.anim = 1119;
+        s->variant = i + 16;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
 
         if (i == 0) {
-            sprite->graphics.dest = VramMalloc(22);
+            s->graphics.dest = VramMalloc(22);
         } else {
-            sprite->graphics.dest = timeDisplay->unk30[0].graphics.dest + (i * 0x40);
+            s->graphics.dest = timeDisplay->unk30[0].graphics.dest + (i * 0x40);
         }
 
-        sub_8004558(sprite);
+        sub_8004558(s);
     }
 
     for (i = 0; i < 16; i++) {
@@ -86,7 +86,7 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     s16 x, y;
     u16 temp4;
     u32 temp;
-    Sprite *sprite;
+    Sprite *s;
     u8 temp5;
     u16 index;
     u8 digit1;
@@ -121,79 +121,79 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
 
     x = 8;
     y = 38;
-    sprite = &timeDisplay->unk30[temp4 % 16];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = temp5;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[temp4 % 16];
+    s->x = x;
+    s->y = y;
+    s->palId = temp5;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[10];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = 0;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[10];
+    s->x = x;
+    s->y = y;
+    s->palId = 0;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[(temp6 / 16) % 16];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = temp5;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[(temp6 / 16) % 16];
+    s->x = x;
+    s->y = y;
+    s->palId = temp5;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[temp6 % 16];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = temp5;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[temp6 % 16];
+    s->x = x;
+    s->y = y;
+    s->palId = temp5;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[10];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = 0;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[10];
+    s->x = x;
+    s->y = y;
+    s->palId = 0;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[(digit1 / 16) % 16];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = temp5;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[(digit1 / 16) % 16];
+    s->x = x;
+    s->y = y;
+    s->palId = temp5;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[digit1 % 16];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = temp5;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[digit1 % 16];
+    s->x = x;
+    s->y = y;
+    s->palId = temp5;
+    sub_80051E8(s);
 }
 
 void sub_8083040(TimeDisplay *timeDisplay)
 {
-    Sprite *sprite;
+    Sprite *s;
 
     u16 i, j;
     s16 x, y;
     u32 temp;
 
     for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
-        sprite = &timeDisplay->unk0;
-        sprite->x = i * 26;
-        sprite->y = 0;
-        sprite->palId = i;
-        sub_80051E8(sprite);
+        s = &timeDisplay->unk0;
+        s->x = i * 26;
+        s->y = 0;
+        s->palId = i;
+        sub_80051E8(s);
 
         j = sub_8004518(gUnknown_030053E8[i]);
-        x = sprite->x + 0x17;
-        y = sprite->y + 0x13;
+        x = s->x + 0x17;
+        y = s->y + 0x13;
         do {
-            sprite = &timeDisplay->unk30[j % 16];
-            sprite->x = x;
-            sprite->y = y;
-            sprite->palId = 0;
-            sub_80051E8(sprite);
+            s = &timeDisplay->unk30[j % 16];
+            s->x = x;
+            s->y = y;
+            s->palId = 0;
+            sub_80051E8(s);
             x -= 8;
             y = y;
         } while (j /= 16);
@@ -205,7 +205,7 @@ void sub_8083104(TimeDisplay *timeDisplay)
     s16 x, y;
     u16 temp4;
     u32 temp;
-    Sprite *sprite;
+    Sprite *s;
     u16 index;
     u8 digit1;
     u32 temp2;
@@ -244,60 +244,60 @@ void sub_8083104(TimeDisplay *timeDisplay)
         ;
 #endif
 
-    sprite = &timeDisplay->unk30[temp4 % 16];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = 1;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[temp4 % 16];
+    s->x = x;
+    s->y = y;
+    s->palId = 1;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[10];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = 0;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[10];
+    s->x = x;
+    s->y = y;
+    s->palId = 0;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[(temp6 / 16) % 16];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = 1;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[(temp6 / 16) % 16];
+    s->x = x;
+    s->y = y;
+    s->palId = 1;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[temp6 % 16];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = 1;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[temp6 % 16];
+    s->x = x;
+    s->y = y;
+    s->palId = 1;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[10];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = 0;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[10];
+    s->x = x;
+    s->y = y;
+    s->palId = 0;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[(digit1 / 16) % 16];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = 1;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[(digit1 / 16) % 16];
+    s->x = x;
+    s->y = y;
+    s->palId = 1;
+    sub_80051E8(s);
 
     x += 8;
-    sprite = &timeDisplay->unk30[digit1 % 16];
-    sprite->x = x;
-    sprite->y = y;
-    sprite->palId = 1;
-    sub_80051E8(sprite);
+    s = &timeDisplay->unk30[digit1 % 16];
+    s->x = x;
+    s->y = y;
+    s->palId = 1;
+    sub_80051E8(s);
 }
 
 void sub_808328C(void)
 {
     if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_HUD)) {
         TimeDisplay *timeDisplay = TaskGetStructPtr(gCurTask);
-        Sprite *sprite = &timeDisplay->unk0;
+        Sprite *s = &timeDisplay->unk0;
         if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_TIMER)) {
             sub_8082E9C(timeDisplay);
 

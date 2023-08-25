@@ -74,10 +74,10 @@ static void Task_BellMain(void)
         }
 
         gCurTask->main = sub_8054D20;
-        s->unk28[0].unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->graphics.anim = SA2_ANIM_BELL;
         s->variant = 1;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
 
     ENEMY_UPDATE_EX_RAW(s, bell->spawnX, bell->spawnY, {});
@@ -113,12 +113,12 @@ void sub_8054D20(void)
             s->graphics.anim = SA2_ANIM_BELL;
             s->variant = 0;
 #ifndef NON_MATCHING
-            s->unk21 |= r2;
+            s->prevVariant |= r2;
 #else
-            s->unk21 = -1;
+            s->prevVariant = -1;
 #endif
 
-            s->unk28[1].unk0 = -1;
+            s->hitboxes[1].index = -1;
             gCurTask->main = Task_BellMain;
         }
     }

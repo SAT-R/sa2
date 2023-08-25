@@ -94,7 +94,7 @@ static void Task_PenMove(void)
             if (!pen->boosting) {
                 s->graphics.anim = SA2_ANIM_PEN;
                 s->variant = SA2_ANIM_PEN_VARIANT_BOOST;
-                s->unk21 = -1;
+                s->prevVariant = -1;
             }
             pen->boosting = TRUE;
         }
@@ -105,7 +105,7 @@ static void Task_PenMove(void)
             if (!pen->boosting) {
                 s->graphics.anim = SA2_ANIM_PEN;
                 s->variant = SA2_ANIM_PEN_VARIANT_BOOST;
-                s->unk21 = -1;
+                s->prevVariant = -1;
             }
             pen->boosting = TRUE;
         }
@@ -116,13 +116,13 @@ static void Task_PenMove(void)
         gCurTask->main = Task_PenTurn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     } else if (ENEMY_CROSSED_RIGHT_BORDER(pen, me)
                && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = Task_PenTurn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
 
     // TODO: Fix posX_24_8!
@@ -153,7 +153,7 @@ static void Task_PenTurn(void)
         }
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_MOVE;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = Task_PenMove;
     }
     sub_80051E8(s);

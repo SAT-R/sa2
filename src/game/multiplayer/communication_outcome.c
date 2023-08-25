@@ -23,7 +23,7 @@ struct CommunicationOutcomeScreen {
     u8 filler40[96];
     Sprite unkA0;
     Sprite unkD0;
-    Sprite unk100;
+    Sprite s3;
     u8 filler130[204];
     u32 unk1FC;
     u16 unk200;
@@ -36,12 +36,12 @@ struct CommunicationOutcomeScreen {
 
 static void sub_805BC40(void);
 
-static const u16 gUnknown_080D9088[2]
+static const u16 sCheeseSittingAnims[2]
     = { SA2_ANIM_MULTIPLAYER_CHEESE_SITTING, SA2_ANIM_MULTIPLAYER_CHEESE_SITTING };
-static const u8 gUnknown_080D908C[2]
+static const u8 sCheeseSittingVariants[2]
     = { SA2_ANIM_VARIANT_MULTIPLAYER_CHEESE_SITTING_HAPPY,
         SA2_ANIM_VARIANT_MULTIPLAYER_CHEESE_SITTING_SAD };
-static const TileInfo gUnknown_080D9090[][7] = {
+static const TileInfo sCommMessages[][7] = {
     {
         TextElementAlt2(LANG_DEFAULT, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
                         51, SA2_ANIM_MP_MSG),
@@ -82,7 +82,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     u8 count;
     struct Task *t;
     struct CommunicationOutcomeScreen *outcomeScreen;
-    Sprite *unk100;
+    Sprite *s3;
     Background *background;
     gDispCnt = 0x3140;
     gBgCntRegs[0] = 0x803;
@@ -112,50 +112,50 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 
     outcomeScreen->unk206 = count;
 
-    unk100 = &outcomeScreen->unk100;
-    unk100->x = (DISPLAY_WIDTH / 2);
-    unk100->y = DISPLAY_HEIGHT - 20;
-    unk100->graphics.dest = (void *)OBJ_VRAM0;
-    unk100->unk1A = 0x3C0;
-    unk100->graphics.size = 0;
-    unk100->graphics.anim = SA2_ANIM_MP_MSG;
-    unk100->variant = outcome + SA2_ANIM_VARIANT_MP_MSG_OK;
-    unk100->unk14 = 0;
-    unk100->unk1C = 0;
-    unk100->unk21 = 0xFF;
-    unk100->unk22 = 0x10;
-    unk100->palId = 0;
-    unk100->unk10 = 0x2000;
+    s3 = &outcomeScreen->s3;
+    s3->x = (DISPLAY_WIDTH / 2);
+    s3->y = DISPLAY_HEIGHT - 20;
+    s3->graphics.dest = (void *)OBJ_VRAM0;
+    s3->unk1A = 0x3C0;
+    s3->graphics.size = 0;
+    s3->graphics.anim = SA2_ANIM_MP_MSG;
+    s3->variant = outcome + SA2_ANIM_VARIANT_MP_MSG_OK;
+    s3->animCursor = 0;
+    s3->timeUntilNextFrame = 0;
+    s3->prevVariant = -1;
+    s3->animSpeed = 0x10;
+    s3->palId = 0;
+    s3->unk10 = 0x2000;
 
-    unk100 = &outcomeScreen->unkD0;
-    unk100->x = (DISPLAY_WIDTH / 2);
-    unk100->y = 36;
-    unk100->graphics.dest = (void *)OBJ_VRAM0 + 0x2000;
-    unk100->unk1A = 0x3C0;
-    unk100->graphics.size = 0;
-    unk100->graphics.anim = gUnknown_080D9088[outcome];
-    unk100->variant = gUnknown_080D908C[outcome];
-    unk100->unk14 = 0;
-    unk100->unk1C = 0;
-    unk100->unk21 = 0xFF;
-    unk100->unk22 = 0x10;
-    unk100->palId = 0;
-    unk100->unk10 = 0x2000;
+    s3 = &outcomeScreen->unkD0;
+    s3->x = (DISPLAY_WIDTH / 2);
+    s3->y = 36;
+    s3->graphics.dest = (void *)OBJ_VRAM0 + 0x2000;
+    s3->unk1A = 0x3C0;
+    s3->graphics.size = 0;
+    s3->graphics.anim = sCheeseSittingAnims[outcome];
+    s3->variant = sCheeseSittingVariants[outcome];
+    s3->animCursor = 0;
+    s3->timeUntilNextFrame = 0;
+    s3->prevVariant = -1;
+    s3->animSpeed = 0x10;
+    s3->palId = 0;
+    s3->unk10 = 0x2000;
 
-    unk100 = &outcomeScreen->unkA0;
-    unk100->x = (DISPLAY_WIDTH / 2);
-    unk100->y = DISPLAY_HEIGHT - 40;
-    unk100->graphics.dest = (void *)OBJ_VRAM0 + 0x4000;
-    unk100->unk1A = 0x3C0;
-    unk100->graphics.size = 0;
-    unk100->graphics.anim = gUnknown_080D9088[outcome];
-    unk100->variant = gUnknown_080D908C[outcome];
-    unk100->unk14 = 0;
-    unk100->unk1C = 0;
-    unk100->unk21 = 0xFF;
-    unk100->unk22 = 0x10;
-    unk100->palId = 0;
-    unk100->unk10 = 0x2000;
+    s3 = &outcomeScreen->unkA0;
+    s3->x = (DISPLAY_WIDTH / 2);
+    s3->y = DISPLAY_HEIGHT - 40;
+    s3->graphics.dest = (void *)OBJ_VRAM0 + 0x4000;
+    s3->unk1A = 0x3C0;
+    s3->graphics.size = 0;
+    s3->graphics.anim = sCheeseSittingAnims[outcome];
+    s3->variant = sCheeseSittingVariants[outcome];
+    s3->animCursor = 0;
+    s3->timeUntilNextFrame = 0;
+    s3->prevVariant = -1;
+    s3->animSpeed = 0x10;
+    s3->palId = 0;
+    s3->unk10 = 0x2000;
 
     background = &outcomeScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -170,7 +170,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     background->unk26 = 0x1E;
     background->unk28 = 0x14;
     background->unk2A = 0;
-    background->unk2E = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
     background->tilemapId = TM_MP_MESSAGE_BOX_UNKNOWN;
     sub_8002A3C(background);
     m4aMPlayAllStop();
@@ -183,41 +183,41 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 
 static void sub_805BC40(void)
 {
-    Sprite *element;
+    Sprite *s;
     struct CommunicationOutcomeScreen *outcomeScreen = TaskGetStructPtr(gCurTask);
-    element = &outcomeScreen->unkA0;
-    sub_8004558(element);
-    sub_80051E8(element);
+    s = &outcomeScreen->unkA0;
+    sub_8004558(s);
+    sub_80051E8(s);
 
     if (outcomeScreen->unk203 == OUTCOME_CONNECTION_SUCCESS) {
         const TileInfo *unk9090;
         u32 unk206 = outcomeScreen->unk206;
         u32 offset;
-        element = &outcomeScreen->unkD0;
-        unk9090 = gUnknown_080D9090[0];
+        s = &outcomeScreen->unkD0;
+        unk9090 = sCommMessages[0];
         offset = gLoadedSaveGame->language + 7;
 
-        element->graphics.anim = unk9090[offset].anim;
+        s->graphics.anim = unk9090[offset].anim;
         offset = gLoadedSaveGame->language + 7;
-        element->variant = unk9090[offset].variant + unk206 - 2;
-        element->unk21 = 0xFF;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s->variant = unk9090[offset].variant + unk206 - 2;
+        s->prevVariant = -1;
+        sub_8004558(s);
+        sub_80051E8(s);
     } else {
         const TileInfo *unk9090;
-        element = &outcomeScreen->unkD0;
-        unk9090 = gUnknown_080D9090[0];
+        s = &outcomeScreen->unkD0;
+        unk9090 = sCommMessages[0];
 
-        element->graphics.anim = unk9090[gLoadedSaveGame->language].anim;
-        element->variant = unk9090[gLoadedSaveGame->language].variant;
-        element->unk21 = 0xFF;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s->graphics.anim = unk9090[gLoadedSaveGame->language].anim;
+        s->variant = unk9090[gLoadedSaveGame->language].variant;
+        s->prevVariant = -1;
+        sub_8004558(s);
+        sub_80051E8(s);
     }
 
-    element = &outcomeScreen->unk100;
-    sub_8004558(element);
-    sub_80051E8(element);
+    s = &outcomeScreen->s3;
+    sub_8004558(s);
+    sub_80051E8(s);
 
     if (outcomeScreen->unk200 != 0) {
         outcomeScreen->unk200--;

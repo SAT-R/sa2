@@ -13,6 +13,7 @@
 
 #include "constants/animations.h"
 #include "constants/items.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -100,12 +101,12 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s = &itembox->s;
     s->unk1A = 0x4C0;
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
     s->graphics.anim = SA2_ANIM_ITEMBOX;
     s->variant = 0;
@@ -115,12 +116,12 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s = &itembox->item;
     s->unk1A = 0x500;
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
     s->graphics.dest = VramMalloc(TILE_COUNT__ANIM_ITEMBOX_TYPE);
     sub_800B580(itembox, TRUE);
@@ -134,7 +135,7 @@ void sub_800B1AC(Entity_ItemBox *itembox)
         gPlayer.speedAirY = -Q_24_8(3.0);
         gPlayer.unk64 = 38;
         gPlayer.unk66 = -1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
     }
 
     m4aSongNumStart(SE_ITEM_BOX_2);

@@ -41,12 +41,12 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
     su->s.graphics.size = 0;
     su->s.graphics.anim = anim;
     su->s.variant = variant;
-    su->s.unk14 = 0;
-    su->s.unk1C = 0;
-    su->s.unk21 = 0xFF;
-    su->s.unk22 = 0x10;
+    su->s.animCursor = 0;
+    su->s.timeUntilNextFrame = 0;
+    su->s.prevVariant = -1;
+    su->s.animSpeed = 0x10;
     su->s.palId = 0;
-    su->s.unk28->unk0 = -1;
+    su->s.hitboxes[0].index = -1;
     su->s.unk10 = 0;
 
     return t;

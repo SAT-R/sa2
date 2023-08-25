@@ -66,7 +66,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
 {
     struct TransitionState *transition;
     Background *background;
-    Sprite *element;
+    Sprite *s;
     s8 lang = gLoadedSaveGame->language - 1;
     u32 i;
 
@@ -103,92 +103,91 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     gBgScrollRegs[2][1] = 0;
 
     for (i = 0; i < 5; i++) {
-        element = &lobbyScreen->unkB0[i + 1];
+        s = &lobbyScreen->unkB0[i + 1];
         if (i != 3) {
             if (i > 3) {
-                element = &lobbyScreen->unkB0[i];
+                s = &lobbyScreen->unkB0[i];
             }
 
             if (i == 2 && (gGameMode & GAME_MODE_BOSS_TIME_ATTACK)) {
-                element = &lobbyScreen->unkB0[3];
+                s = &lobbyScreen->unkB0[3];
                 i = 3;
             }
-            element->graphics.dest
-                = VramMalloc(gUnknown_080E04D4[lang * 5 + i].numTiles);
-            element->graphics.anim = gUnknown_080E04D4[lang * 5 + i].anim;
-            element->variant = gUnknown_080E04D4[lang * 5 + i].variant;
-            element->unk21 = 0xFF;
-            element->x = (DISPLAY_WIDTH / 2);
-            element->y = i * 16 + 24;
+            s->graphics.dest = VramMalloc(gUnknown_080E04D4[lang * 5 + i].numTiles);
+            s->graphics.anim = gUnknown_080E04D4[lang * 5 + i].anim;
+            s->variant = gUnknown_080E04D4[lang * 5 + i].variant;
+            s->prevVariant = -1;
+            s->x = (DISPLAY_WIDTH / 2);
+            s->y = i * 16 + 24;
             if (i > 2) {
-                element->y -= 16;
+                s->y -= 16;
             }
-            element->unk1A = 0x100;
-            element->graphics.size = 0;
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk28[0].unk0 = -1;
-            element->unk10 = 0x1000;
-            sub_8004558(element);
+            s->unk1A = 0x100;
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->hitboxes[0].index = -1;
+            s->unk10 = 0x1000;
+            sub_8004558(s);
         }
     }
 
-    element = &lobbyScreen->unk80;
-    element->graphics.dest = NULL;
-    element->graphics.anim = SA2_ANIM_MSG_JP_TRY_AGAIN;
-    element->variant = 5;
-    element->unk21 = 0xFF;
-    element->x = 0;
-    element->y = 0;
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0x1000;
-    sub_8004558(element);
+    s = &lobbyScreen->unk80;
+    s->graphics.dest = NULL;
+    s->graphics.anim = SA2_ANIM_MSG_JP_TRY_AGAIN;
+    s->variant = 5;
+    s->prevVariant = -1;
+    s->x = 0;
+    s->y = 0;
+    s->unk1A = 0x100;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
+    sub_8004558(s);
 
-    element = &lobbyScreen->unk80;
-    element->graphics.dest = VramMalloc(gUnknown_080E0474[gSelectedCharacter].numTiles);
-    element->graphics.anim = gUnknown_080E0474[gSelectedCharacter].anim;
-    element->variant = gUnknown_080E0474[gSelectedCharacter].variant;
-    element->unk21 = 0xFF;
-    element->x = (DISPLAY_WIDTH / 2);
-    element->y = (DISPLAY_HEIGHT * (13. / 16.));
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0x1400;
-    sub_8004558(element);
+    s = &lobbyScreen->unk80;
+    s->graphics.dest = VramMalloc(gUnknown_080E0474[gSelectedCharacter].numTiles);
+    s->graphics.anim = gUnknown_080E0474[gSelectedCharacter].anim;
+    s->variant = gUnknown_080E0474[gSelectedCharacter].variant;
+    s->prevVariant = -1;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = (DISPLAY_HEIGHT * (13. / 16.));
+    s->unk1A = 0x100;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1400;
+    sub_8004558(s);
 
     lobbyScreen->unkB0[0].graphics.dest = 0;
 
     if (gSelectedCharacter == CHARACTER_CREAM) {
         lobbyScreen->unk1AC = 1;
-        element = &lobbyScreen->unkB0[0];
-        element->graphics.dest = VramMalloc(gUnknown_080E04C4[0].numTiles);
-        element->graphics.anim = gUnknown_080E04C4[0].anim;
-        element->variant = gUnknown_080E04C4[0].variant;
-        element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH * (5. / 12.));
-        element->y = (DISPLAY_HEIGHT * (11. / 16.));
-        element->unk1A = 0x140;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk28[0].unk0 = -1;
-        element->unk10 = 0x1400;
-        sub_8004558(element);
+        s = &lobbyScreen->unkB0[0];
+        s->graphics.dest = VramMalloc(gUnknown_080E04C4[0].numTiles);
+        s->graphics.anim = gUnknown_080E04C4[0].anim;
+        s->variant = gUnknown_080E04C4[0].variant;
+        s->prevVariant = -1;
+        s->x = (DISPLAY_WIDTH * (5. / 12.));
+        s->y = (DISPLAY_HEIGHT * (11. / 16.));
+        s->unk1A = 0x140;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0x1400;
+        sub_8004558(s);
     }
 
     background = &lobbyScreen->unk40;
@@ -205,7 +204,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->unk26 = 0x1C;
     background->unk28 = 0xC;
     background->unk2A = 0;
-    background->unk2E = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
 
     background = &lobbyScreen->unk0;
@@ -222,7 +221,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->unk26 = 0x20;
     background->unk28 = 0x20;
     background->unk2A = 0;
-    background->unk2E = 1;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(background);
 
     transition = &lobbyScreen->unk1A0;
@@ -242,26 +241,26 @@ void sub_8088EB4(void);
 void sub_8088CC4(void)
 {
     struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
-    Sprite *element;
+    Sprite *s;
     u32 i;
 
     for (i = 0; i < 4; i++) {
-        element = &lobbyScreen->unkB0[i + 1];
+        s = &lobbyScreen->unkB0[i + 1];
         if (i == lobbyScreen->unk1AD) {
-            element->palId = 0;
+            s->palId = 0;
         } else {
-            element->palId = 1;
+            s->palId = 1;
         }
-        sub_80051E8(element);
+        sub_80051E8(s);
     }
-    element = &lobbyScreen->unk80;
-    sub_8004558(element);
-    sub_80051E8(element);
+    s = &lobbyScreen->unk80;
+    sub_8004558(s);
+    sub_80051E8(s);
 
     if (lobbyScreen->unk1AC != 0) {
-        element = &lobbyScreen->unkB0[0];
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &lobbyScreen->unkB0[0];
+        sub_8004558(s);
+        sub_80051E8(s);
     }
 
     if (NextTransitionFrame(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
@@ -272,7 +271,7 @@ void sub_8088CC4(void)
 void sub_8088D60(void)
 {
     struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
-    Sprite *element;
+    Sprite *s;
     u32 i;
     if (NextTransitionFrame(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
         TaskDestroy(gCurTask);
@@ -298,46 +297,46 @@ void sub_8088D60(void)
     }
 
     for (i = 0; i < 4; i++) {
-        element = &lobbyScreen->unkB0[i + 1];
-        sub_80051E8(element);
+        s = &lobbyScreen->unkB0[i + 1];
+        sub_80051E8(s);
     }
 
-    element = &lobbyScreen->unk80;
+    s = &lobbyScreen->unk80;
     switch (lobbyScreen->unk1AD) {
         case 1:
-            element->x -= 4;
+            s->x -= 4;
             break;
         case 0:
         case 2:
-            element->x += 4;
+            s->x += 4;
             break;
     }
-    sub_8004558(element);
-    sub_80051E8(element);
+    sub_8004558(s);
+    sub_80051E8(s);
 
     if (lobbyScreen->unk1AC == 0) {
         return;
     }
 
-    element = &lobbyScreen->unkB0[0];
+    s = &lobbyScreen->unkB0[0];
     switch (lobbyScreen->unk1AD) {
         case 1:
-            element->x -= 2;
+            s->x -= 2;
             break;
         case 0:
         case 2:
-            element->x += 3;
+            s->x += 3;
             break;
     }
 
-    sub_8004558(element);
-    sub_80051E8(element);
+    sub_8004558(s);
+    sub_80051E8(s);
 }
 
 void sub_8088EB4(void)
 {
     struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
-    Sprite *element;
+    Sprite *s;
     struct TransitionState *transition;
     u32 i;
 
@@ -350,52 +349,52 @@ void sub_8088EB4(void)
     }
 
     for (i = 0; i < 4; i++) {
-        element = &lobbyScreen->unkB0[i + 1];
+        s = &lobbyScreen->unkB0[i + 1];
         if (i == lobbyScreen->unk1AD) {
-            element->palId = 0;
+            s->palId = 0;
         } else {
-            element->palId = 1;
+            s->palId = 1;
         }
-        sub_80051E8(element);
+        sub_80051E8(s);
     }
-    element = &lobbyScreen->unk80;
-    sub_8004558(element);
-    sub_80051E8(element);
+    s = &lobbyScreen->unk80;
+    sub_8004558(s);
+    sub_80051E8(s);
 
     if (lobbyScreen->unk1AC != 0) {
-        element = &lobbyScreen->unkB0[0];
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &lobbyScreen->unkB0[0];
+        sub_8004558(s);
+        sub_80051E8(s);
     }
 
     if (gRepeatedKeys & A_BUTTON) {
         if (lobbyScreen->unk1AD != 3) {
-            element = &lobbyScreen->unk80;
-            VramFree(element->graphics.dest);
-            element->graphics.dest
+            s = &lobbyScreen->unk80;
+            VramFree(s->graphics.dest);
+            s->graphics.dest
                 = VramMalloc(gUnknown_080E0474[gSelectedCharacter + 5].numTiles);
-            element->graphics.anim = gUnknown_080E0474[gSelectedCharacter + 5].anim;
-            element->variant = gUnknown_080E0474[gSelectedCharacter + 5].variant;
-            element->unk21 = 0xFF;
-            element->unk22 = 0x40;
+            s->graphics.anim = gUnknown_080E0474[gSelectedCharacter + 5].anim;
+            s->variant = gUnknown_080E0474[gSelectedCharacter + 5].variant;
+            s->prevVariant = -1;
+            s->animSpeed = 0x40;
             if (lobbyScreen->unk1AD == 1) {
-                element->unk10 &= ~0x400;
+                s->unk10 &= ~0x400;
             }
-            sub_8004558(element);
+            sub_8004558(s);
 
             if (lobbyScreen->unk1AC != 0) {
-                element = &lobbyScreen->unkB0[0];
-                VramFree(element->graphics.dest);
+                s = &lobbyScreen->unkB0[0];
+                VramFree(s->graphics.dest);
 
-                element->graphics.dest = VramMalloc(gUnknown_080E04C4[1].numTiles);
-                element->graphics.anim = gUnknown_080E04C4[1].anim;
-                element->variant = gUnknown_080E04C4[1].variant;
-                element->unk21 = 0xFF;
-                element->unk22 = 0x40;
+                s->graphics.dest = VramMalloc(gUnknown_080E04C4[1].numTiles);
+                s->graphics.anim = gUnknown_080E04C4[1].anim;
+                s->variant = gUnknown_080E04C4[1].variant;
+                s->prevVariant = -1;
+                s->animSpeed = 0x40;
                 if (lobbyScreen->unk1AD == 1) {
-                    element->unk10 &= ~0x400;
+                    s->unk10 &= ~0x400;
                 }
-                sub_8004558(element);
+                sub_8004558(s);
             }
         }
 

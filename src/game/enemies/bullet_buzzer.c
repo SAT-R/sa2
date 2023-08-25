@@ -12,7 +12,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite_UNK28 reserved;
+    /* 0x3C */ Hitbox reserved;
     /* 0x44 */ s32 spawnX;
     /* 0x48 */ s32 spawnY;
     /* 0x4C */ s32 offsetX;
@@ -85,13 +85,13 @@ void Task_BulletBuzzerMain(void)
         if (oldOffsetX < bbuzzer->offsetX) {
             s->graphics.anim = SA2_ANIM_BULLETBUZZER;
             s->variant = 1;
-            s->unk21 = -1;
+            s->prevVariant = -1;
         }
 
     } else if (oldOffsetX > bbuzzer->offsetX) {
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;
         s->variant = 1;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
 
     if (oldOffsetX < bbuzzer->offsetX) {
@@ -115,7 +115,7 @@ void Task_BulletBuzzerMain(void)
             bbuzzer->unk5D = 0;
             s->graphics.anim = SA2_ANIM_BULLETBUZZER;
             s->variant = 2;
-            s->unk21 = -1;
+            s->prevVariant = -1;
             gCurTask->main = sub_8059B04;
         }
     }
@@ -125,7 +125,7 @@ void Task_BulletBuzzerMain(void)
         ENEMY_TURN_AROUND(s);
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;
         s->variant = 0;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
     sub_80051E8(s);
 }
@@ -166,7 +166,7 @@ void sub_8059B04(void)
         bbuzzer->unk5E = 60;
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;
         s->variant = 0;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = Task_BulletBuzzerMain;
     } else {
         sub_80051E8(s);

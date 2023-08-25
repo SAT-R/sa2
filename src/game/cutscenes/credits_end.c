@@ -164,71 +164,71 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             background->unk26 = 0x1E;
             background->unk28 = 0x14;
             background->unk2A = 0;
-            background->unk2E = 0;
+            background->flags = BACKGROUND_FLAGS_BG_ID(0);
             sub_8002A3C(background);
         }
 
         {
-            Sprite *element;
-            element = &scene->unkC0;
-            element->graphics.dest = (void *)scene->unk16C;
+            Sprite *s;
+            s = &scene->unkC0;
+            s->graphics.dest = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[0].numTiles * TILE_SIZE_4BPP);
-            element->graphics.anim = gUnknown_080E12D0[0].anim;
-            element->variant = gUnknown_080E12D0[0].variant;
-            element->unk21 = 0xFF;
-            element->x = (DISPLAY_WIDTH / 2);
-            element->y = -20;
-            element->unk1A = 0;
-            element->graphics.size = 0;
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk10 = 0;
-            element->unk28[0].unk0 = -1;
-            sub_8004558(element);
+            s->graphics.anim = gUnknown_080E12D0[0].anim;
+            s->variant = gUnknown_080E12D0[0].variant;
+            s->prevVariant = -1;
+            s->x = (DISPLAY_WIDTH / 2);
+            s->y = -20;
+            s->unk1A = 0;
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->unk10 = 0;
+            s->hitboxes[0].index = -1;
+            sub_8004558(s);
         }
 
         {
-            Sprite *element;
-            element = &scene->unkF0;
-            element->graphics.dest = (void *)scene->unk16C;
+            Sprite *s;
+            s = &scene->unkF0;
+            s->graphics.dest = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[1].numTiles * TILE_SIZE_4BPP);
-            element->graphics.anim = gUnknown_080E12D0[1].anim;
-            element->variant = gUnknown_080E12D0[1].variant;
-            element->unk21 = 0xFF;
-            element->x = (DISPLAY_WIDTH / 2);
-            element->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
-            element->unk1A = 0;
-            element->graphics.size = 0;
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk10 = 0;
-            element->unk28[0].unk0 = -1;
-            sub_8004558(element);
+            s->graphics.anim = gUnknown_080E12D0[1].anim;
+            s->variant = gUnknown_080E12D0[1].variant;
+            s->prevVariant = -1;
+            s->x = (DISPLAY_WIDTH / 2);
+            s->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
+            s->unk1A = 0;
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->unk10 = 0;
+            s->hitboxes[0].index = -1;
+            sub_8004558(s);
         }
 
         {
-            Sprite *element;
-            element = &scene->unk120;
-            element->graphics.dest = (void *)scene->unk16C;
+            Sprite *s;
+            s = &scene->unk120;
+            s->graphics.dest = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[2].numTiles * TILE_SIZE_4BPP);
-            element->graphics.anim = gUnknown_080E12D0[2].anim;
-            element->variant = gUnknown_080E12D0[2].variant;
-            element->unk21 = 0xFF;
-            element->x = (DISPLAY_WIDTH / 2);
-            element->y = DISPLAY_HEIGHT + 96;
-            element->unk1A = 0;
-            element->graphics.size = 0;
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk10 = 0;
-            element->unk28[0].unk0 = -1;
-            sub_8004558(element);
+            s->graphics.anim = gUnknown_080E12D0[2].anim;
+            s->variant = gUnknown_080E12D0[2].variant;
+            s->prevVariant = -1;
+            s->x = (DISPLAY_WIDTH / 2);
+            s->y = DISPLAY_HEIGHT + 96;
+            s->unk1A = 0;
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->unk10 = 0;
+            s->hitboxes[0].index = -1;
+            sub_8004558(s);
         }
 
         gDispCnt |= 0x100;
@@ -248,7 +248,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk26 = 0x1E;
         background->unk28 = 0x14;
         background->unk2A = 0;
-        background->unk2E = 0;
+        background->flags = BACKGROUND_FLAGS_BG_ID(0);
         sub_8002A3C(background);
         UpdateBgAnimationTiles(background);
     }
@@ -273,7 +273,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk26 = 0x1E;
         background->unk28 = 0x14;
         background->unk2A = 0;
-        background->unk2E = 5;
+        background->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(1);
         sub_8002A3C(background);
     }
 }
@@ -330,7 +330,7 @@ static void Task_CreateCopyrightScreen(void)
         background->unk26 = 0x1E;
         background->unk28 = 0x14;
         background->unk2A = 0;
-        background->unk2E = 0;
+        background->flags = BACKGROUND_FLAGS_BG_ID(0);
         sub_8002A3C(background);
     }
 
@@ -353,7 +353,7 @@ static void Task_CreateCopyrightScreen(void)
         background->unk26 = 0x1E;
         background->unk28 = 3;
         background->unk2A = 0;
-        background->unk2E = 2;
+        background->flags = BACKGROUND_FLAGS_BG_ID(2);
         sub_8002A3C(background);
 
         scene->sequence = SEQUENCE_COPYRIGHT_SCREEN;
@@ -385,7 +385,7 @@ static void Task_SequenceMain(void)
                     = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
                 background->unk26 = 0x1E;
                 background->unk28 = 0x14;
-                background->unk2E = 0;
+                background->flags = BACKGROUND_FLAGS_BG_ID(0);
                 sub_8002A3C(background);
                 scene->sonicAnimFrame++;
 
@@ -507,7 +507,7 @@ static void Task_HandleGameCompletion(void)
 
 static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
 {
-    Sprite *element;
+    Sprite *s;
     if (scene->creditsVariant != CREDITS_VARIANT_EXTRA_ENDING) {
         return;
     }
@@ -518,13 +518,13 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
 
     // on for 30 frames
     if (scene->congratsAnimFrame >= 1) {
-        element = &scene->unkC0;
-        element->graphics.anim = gUnknown_080E12D0[0].anim;
-        element->variant = gUnknown_080E12D0[0].variant;
-        element->x = scene->unk170[0][0];
-        element->y = scene->unk170[0][1] >> 8;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &scene->unkC0;
+        s->graphics.anim = gUnknown_080E12D0[0].anim;
+        s->variant = gUnknown_080E12D0[0].variant;
+        s->x = scene->unk170[0][0];
+        s->y = scene->unk170[0][1] >> 8;
+        sub_8004558(s);
+        sub_80051E8(s);
         scene->congratsAnimFrame--;
     } else if (scene->congratsAnimFrame > -15 && scene->congratsAnimFrame < 1) {
         // off for 15 frames
@@ -535,21 +535,21 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
     }
 
     if (scene->sonicAnimFrame == 11) {
-        element = &scene->unkF0;
-        element->graphics.anim = gUnknown_080E12D0[1].anim;
-        element->variant = gUnknown_080E12D0[1].variant;
-        element->x = scene->unk170[1][0];
-        element->y = scene->unk170[1][1] >> 8;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &scene->unkF0;
+        s->graphics.anim = gUnknown_080E12D0[1].anim;
+        s->variant = gUnknown_080E12D0[1].variant;
+        s->x = scene->unk170[1][0];
+        s->y = scene->unk170[1][1] >> 8;
+        sub_8004558(s);
+        sub_80051E8(s);
 
-        element = &scene->unk120;
-        element->graphics.anim = gUnknown_080E12D0[2].anim;
-        element->variant = gUnknown_080E12D0[2].variant;
-        element->x = scene->unk170[2][0];
-        element->y = scene->unk170[2][1] >> 8;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &scene->unk120;
+        s->graphics.anim = gUnknown_080E12D0[2].anim;
+        s->variant = gUnknown_080E12D0[2].variant;
+        s->x = scene->unk170[2][0];
+        s->y = scene->unk170[2][1] >> 8;
+        sub_8004558(s);
+        sub_80051E8(s);
     }
 }
 

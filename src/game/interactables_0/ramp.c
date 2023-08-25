@@ -8,12 +8,13 @@
 #include "game/entity.h"
 #include "game/interactables_0/ramp.h"
 
-#include "constants/zones.h"
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite displayed;
+    /* 0x0C */ Sprite s;
     /* 0x3C */ u16 unk3C;
 } Sprite_Ramp /* size 0x40 */;
 
@@ -27,7 +28,7 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     struct Task *t
         = TaskCreate(Task_Ramp, sizeof(Sprite_Ramp), 0x2010, 0, TaskDestructor_Ramp);
     Sprite_Ramp *ramp = TaskGetStructPtr(t);
-    Sprite *displayed = &ramp->displayed;
+    Sprite *s = &ramp->s;
 
     ramp->base.regionX = spriteRegionX;
     ramp->base.regionY = spriteRegionY;
@@ -35,45 +36,45 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     ramp->base.spriteX = me->x;
     ramp->base.spriteY = spriteY;
 
-    displayed->x = TO_WORLD_POS(me->x, spriteRegionX);
-    displayed->y = TO_WORLD_POS(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
     temp = me->d.sData[0] & 3;
     ramp->unk3C = temp;
 
-    displayed->graphics.dest = VramMalloc(20);
-    displayed->graphics.anim = SA2_ANIM_RAMP;
+    s->graphics.dest = VramMalloc(20);
+    s->graphics.anim = SA2_ANIM_RAMP;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == 5) {
-        displayed->graphics.anim = 608;
+        s->graphics.anim = 608;
     }
 
     // required for match
     temp2 = temp;
 
-    displayed->variant = temp2 & 1;
-    displayed->unk1A = 0x480;
-    displayed->graphics.size = 0;
-    displayed->unk14 = 0;
-    displayed->unk1C = 0;
-    displayed->unk21 = -1;
-    displayed->unk22 = 0x10;
-    displayed->palId = 0;
-    displayed->unk28[0].unk0 = -1;
-    displayed->unk10 = 0x2200;
+    s->variant = temp2 & 1;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2200;
 
     if (temp & 2) {
-        displayed->unk10 |= 0x400;
+        s->unk10 |= 0x400;
     }
-    sub_8004558(displayed);
+    sub_8004558(s);
 }
 
 static void Task_Ramp(void)
 {
     Player *player = &gPlayer;
     Sprite_Ramp *ramp = TaskGetStructPtr(gCurTask);
-    Sprite *displayed = &ramp->displayed;
+    Sprite *s = &ramp->s;
     MapEntity *me = ramp->base.me;
 
     s16 screenX, screenY;
@@ -84,8 +85,8 @@ static void Task_Ramp(void)
 
         screenX = TO_WORLD_POS(ramp->base.spriteX, ramp->base.regionX);
         screenY = TO_WORLD_POS(me->y, ramp->base.regionY);
-        displayed->x = screenX - gCamera.x;
-        displayed->y = screenY - gCamera.y;
+        s->x = screenX - gCamera.x;
+        s->y = screenY - gCamera.y;
 
 #ifndef NON_MATCHING
     } while (0);
@@ -94,11 +95,11 @@ static void Task_Ramp(void)
     if (!(player->moveState & MOVESTATE_400000)) {
         u32 r1;
         u32 var = FALSE;
-        if (player->moveState & MOVESTATE_8 && player->unk3C == displayed) {
+        if (player->moveState & MOVESTATE_8 && player->unk3C == s) {
             var = TRUE;
         }
 
-        r1 = sub_800CDBC(displayed, screenX, screenY, player);
+        r1 = sub_800CDBC(s, screenX, screenY, player);
         if (r1 != 0) {
             if (((r1 & 0x80000) && (ramp->unk3C & 2) && (player->speedAirX > -1))
                 || ((r1 & 0x40000) && (!(ramp->unk3C & 2)) && (player->speedAirX < 1))) {
@@ -108,14 +109,14 @@ static void Task_Ramp(void)
                 player->speedAirX = 0;
                 player->speedGroundX = 0;
             } else if (!(ramp->unk3C & 2)) {
-                s32 temp8 = screenX + displayed->unk28[0].unk4;
-                s32 temp2 = displayed->unk28[0].unk6 - displayed->unk28[0].unk4;
+                s32 temp8 = screenX + s->hitboxes[0].left;
+                s32 temp2 = s->hitboxes[0].right - s->hitboxes[0].left;
                 s32 temp9 = Q_24_8_TO_INT(player->x) - temp8;
                 if (temp9 > 0) {
                     if (temp9 > temp2) {
                         if (!(player->moveState & MOVESTATE_IN_AIR)
                             && (player->speedGroundX > Q_8_8(4))) {
-                            player->unk6D = 0x16;
+                            player->transition = PLTRANS_PT22;
                             player->unk6E = (ramp->unk3C & 1) * 3;
                         }
 
@@ -123,7 +124,7 @@ static void Task_Ramp(void)
                         player->moveState |= MOVESTATE_IN_AIR;
                     } else {
                         s32 temp4 = Q_24_8_TO_INT(player->y) + player->unk17 - screenY;
-                        s32 temp6 = Q_24_8_TO_INT(displayed->unk28[0].unk5
+                        s32 temp6 = Q_24_8_TO_INT(s->hitboxes[0].top
                                                   * (Q_24_8(temp9) / temp2));
 
                         if (temp4 >= temp6) {
@@ -131,10 +132,10 @@ static void Task_Ramp(void)
                                 && (player->speedGroundX > Q_8_8(4))
                                 && (player->unk5E & gPlayerControls.jump)) {
                                 if (temp9 < (temp2 / 2)) {
-                                    player->unk6D = 0x16;
+                                    player->transition = PLTRANS_PT22;
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 1;
                                 } else {
-                                    player->unk6D = 0x16;
+                                    player->transition = PLTRANS_PT22;
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 2;
                                 }
                             } else {
@@ -143,7 +144,7 @@ static void Task_Ramp(void)
 
                                 player->moveState |= MOVESTATE_8;
                                 player->moveState &= ~MOVESTATE_IN_AIR;
-                                player->unk3C = displayed;
+                                player->unk3C = s;
                             }
                         } else {
                             player->moveState &= ~MOVESTATE_8;
@@ -156,18 +157,16 @@ static void Task_Ramp(void)
             }
         } else {
             if (var) {
-                if (((ramp->unk3C & 2) != 0 && Q_24_8_TO_INT(player->x) < displayed->x)
-                    || ((ramp->unk3C & 2) == 0
-                        && Q_24_8_TO_INT(player->x) > displayed->x)) {
+                if (((ramp->unk3C & 2) != 0 && Q_24_8_TO_INT(player->x) < s->x)
+                    || ((ramp->unk3C & 2) == 0 && Q_24_8_TO_INT(player->x) > s->x)) {
                     if (!(player->moveState & MOVESTATE_IN_AIR)
                         && player->speedGroundX > Q_8_8(4)) {
-                        player->unk6D = 0x16;
+                        player->transition = PLTRANS_PT22;
                         player->unk6E = (ramp->unk3C & 1) * 3;
                     }
-                } else if (((ramp->unk3C & 2) != 0
-                            && Q_24_8_TO_INT(player->x) > displayed->x)
+                } else if (((ramp->unk3C & 2) != 0 && Q_24_8_TO_INT(player->x) > s->x)
                            || ((ramp->unk3C & 2) == 0
-                               && Q_24_8_TO_INT(player->x) < displayed->x)) {
+                               && Q_24_8_TO_INT(player->x) < s->x)) {
                     player->moveState &= ~MOVESTATE_8;
                     player->unk3C = NULL;
                 }
@@ -181,11 +180,11 @@ static void Task_Ramp(void)
         return;
     }
 
-    sub_80051E8(displayed);
+    sub_80051E8(s);
 }
 
 static void TaskDestructor_Ramp(struct Task *t)
 {
     Sprite_Ramp *ramp = TaskGetStructPtr(t);
-    VramFree(ramp->displayed.graphics.dest);
+    VramFree(ramp->s.graphics.dest);
 }
