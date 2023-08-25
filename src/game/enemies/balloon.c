@@ -1,9 +1,12 @@
 #include "global.h"
 #include "malloc_vram.h"
+#include "game/enemies/balloon.h"
 #include "game/entity.h"
 #include "game/game.h"
 #include "game/stage/entities_manager.h"
+#include "game/enemies/projectiles.h"
 #include "task.h"
+#include "trig.h"
 
 #include "constants/animations.h"
 
@@ -52,4 +55,92 @@ void CreateEntity_Balloon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
         SPRITE_INIT(s, 10, SA2_ANIM_BALLOON, 0, 0x480, 2);
     }
+}
+
+void sub_805879C(void);
+
+void Task_BalloonMain(void)
+{
+    Sprite_Balloon *balloon = TaskGetStructPtr(gCurTask);
+    Sprite *s = &balloon->s;
+    MapEntity *me = balloon->base.me;
+    Vec2_32 pos;
+    u16 idx;
+
+    balloon->unk58 = (balloon->unk58 + 1) & 0x3FF;
+    idx = CLAMP_SIN_PERIOD(balloon->unk58 * 5);
+    balloon->offsetX = (COS(idx) * balloon->unk5C) >> 6;
+    idx = CLAMP_SIN_PERIOD(balloon->unk58 * 3);
+    balloon->offsetY = (SIN(idx) * balloon->unk5D) >> 6;
+
+    ENEMY_UPDATE_POSITION(balloon, s, pos.x, pos.y);
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    ENEMY_DESTROY_IF_OFFSCREEN(balloon, me, s);
+
+    if (ENEMY_CROSSED_LEFT_BORDER(balloon, me)) {
+        balloon->unk54 = 0x80;
+    } else if (ENEMY_CROSSED_RIGHT_BORDER(balloon, me)) {
+        balloon->unk54 = -0x80;
+    }
+
+    if (--balloon->unk5E == 0) {
+        s->graphics.anim = SA2_ANIM_BALLOON;
+        s->variant = 1;
+        s->unk21 = -1;
+        gCurTask->main = sub_805879C;
+    }
+
+    ENEMY_UPDATE(s, pos.x, pos.y);
+    s->unk10 ^= 0x400;
+    sub_80051E8(s);
+}
+
+void sub_805879C(void)
+{
+#ifndef NON_MATCHING
+    register u8 r8 asm("r8");
+#endif
+
+    Sprite_Balloon *balloon = TaskGetStructPtr(gCurTask);
+    Sprite *s = &balloon->s;
+    MapEntity *me = balloon->base.me;
+    Vec2_32 pos;
+
+    ENEMY_UPDATE_POSITION(balloon, s, pos.x, pos.y);
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    ENEMY_DESTROY_IF_OFFSCREEN(balloon, me, s);
+
+    balloon->unk5E++;
+
+#ifndef NON_MATCHING
+    r8 = -1;
+#endif
+
+    if (balloon->unk5E == 45) {
+        ProjInit proj;
+        proj.numTiles = 3;
+        proj.anim = SA2_ANIM_BALLOON_PROJ;
+        proj.variant = 0;
+        proj.x = Q_24_8_NEW(pos.x + 1);
+        proj.y = Q_24_8_NEW(pos.y + 20);
+        proj.rot = (u8)-1;
+        proj.speed = 512;
+        CreateProjectile(&proj);
+    }
+
+    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    if (sub_8004558(s) == 0) {
+        balloon->unk5E = 120;
+        s->graphics.anim = SA2_ANIM_BALLOON;
+        s->variant = 0;
+#ifndef NON_MATCHING
+        s->unk21 |= r8;
+#else
+        s->unk21 - 1;
+#endif
+        gCurTask->main = Task_BalloonMain;
+    }
+    sub_80051E8(s);
+    s->unk10 ^= 0x400;
+    sub_80051E8(s);
 }
