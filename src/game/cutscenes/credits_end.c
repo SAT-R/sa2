@@ -185,7 +185,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             element->unk22 = 0x10;
             element->palId = 0;
             element->unk10 = 0;
-            element->hitboxes[0].unk0 = -1;
+            element->hitboxes[0].index = -1;
             sub_8004558(element);
         }
 
@@ -206,7 +206,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             element->unk22 = 0x10;
             element->palId = 0;
             element->unk10 = 0;
-            element->hitboxes[0].unk0 = -1;
+            element->hitboxes[0].index = -1;
             sub_8004558(element);
         }
 
@@ -227,7 +227,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             element->unk22 = 0x10;
             element->palId = 0;
             element->unk10 = 0;
-            element->hitboxes[0].unk0 = -1;
+            element->hitboxes[0].index = -1;
             sub_8004558(element);
         }
 

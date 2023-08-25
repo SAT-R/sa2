@@ -40,7 +40,7 @@ struct Task *sub_80807CC(void)
     spring->unk21 = 0xFF;
     spring->unk22 = 0x10;
     spring->palId = 0;
-    spring->hitboxes[0].unk0 = -1;
+    spring->hitboxes[0].index = -1;
     spring->unk10 = 0x2000;
     spring->graphics.dest = (void *)(OBJ_VRAM0 + 0x3040);
     spring->graphics.anim = SA2_ANIM_SPRING_FLYING;
@@ -55,7 +55,7 @@ struct Task *sub_80807CC(void)
     propellor->unk21 = -1;
     propellor->unk22 = 0x10;
     propellor->palId = 0;
-    propellor->hitboxes[0].unk0 = -1;
+    propellor->hitboxes[0].index = -1;
     propellor->unk10 = 0x2000;
     propellor->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
     propellor->graphics.anim = SA2_ANIM_PROPELLOR;

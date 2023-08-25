@@ -46,8 +46,8 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 cmdId; // -6
 
-    /* 0x04 */ Hitbox unk4;
-} ACmd_6;
+    /* 0x04 */ Hitbox hitbox;
+} ACmd_Hitbox;
 
 typedef struct {
     /* 0x00 */ s32 cmdId; // -7
@@ -106,7 +106,7 @@ typedef union {
     ACmd_JumpBack jump;
     ACmd_4 end;
     ACmd_PlaySoundEffect sfx;
-    ACmd_6 _6;
+    ACmd_Hitbox _6;
     ACmd_TranslateSprite translate;
     ACmd_8 _8;
     ACmd_SetIdAndVariant setAnimId;

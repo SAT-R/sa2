@@ -112,7 +112,7 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
         s->unk21 = 0xFF;
         s->unk22 = 0x10;
         s->palId = 0;
-        s->hitboxes->unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
         sub_8004558(s);
     }
@@ -232,7 +232,7 @@ static void Task_Platform_Square(void)
         u32 otherRes;
         s32 movStateCopy = p->moveState;
 
-        s->hitboxes->unk5 -= 3;
+        s->hitboxes[0].top -= 3;
         x = (posX + Q_24_8_TO_INT(platform->unk40));
         y = (posY + Q_24_8_TO_INT(platform->unk44));
         result = sub_800CCB8(s, x, y, p);
@@ -267,14 +267,14 @@ static void Task_Platform_Square(void)
             if (result & 0x10000) {
                 if (GRAVITY_IS_INVERTED) {
                     p->y -= Q_8_8(result);
-                    s->hitboxes->unk4 += 16;
-                    s->hitboxes->unk6 -= 16;
+                    s->hitboxes[0].left += 16;
+                    s->hitboxes[0].right -= 16;
 
                     otherRes = sub_800CCB8(s, posX + Q_24_8_TO_INT(platform->unk40),
                                            posY + Q_24_8_TO_INT(platform->unk44), p);
 
-                    s->hitboxes->unk4 -= 16;
-                    s->hitboxes->unk6 += 16;
+                    s->hitboxes[0].left -= 16;
+                    s->hitboxes[0].right += 16;
 
                     p->y += Q_8_8(result);
                     p->moveState = movStateCopy;
@@ -354,7 +354,7 @@ static void Task_Platform_Square(void)
             }
         }
 
-        s->hitboxes->unk5 += 3;
+        s->hitboxes[0].top += 3;
     }
 
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, posX - gCamera.x, posY - gCamera.y)) {
@@ -393,13 +393,13 @@ static u32 sub_800F9AC(Sprite *s, s32 x, s32 y, Player *p)
 {
     u32 result;
 
-    s->hitboxes->unk5++;
-    s->hitboxes->unk7--;
+    s->hitboxes[0].top++;
+    s->hitboxes[0].bottom--;
 
     result = sub_800CCB8(s, x, y, p);
 
-    s->hitboxes->unk5--;
-    s->hitboxes->unk7++;
+    s->hitboxes[0].top--;
+    s->hitboxes[0].bottom++;
 
     return result;
 }

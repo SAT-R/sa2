@@ -70,7 +70,7 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk21 = 0xFF;
     s->unk22 = 0x10;
     s->palId = 0;
-    s->hitboxes[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
     s->graphics.dest = (void *)OBJ_VRAM0 + sNoteBlockAssets[noteBlock->unk4C][2] * 0x20;
     s->graphics.anim = sNoteBlockAssets[noteBlock->unk4C][0];

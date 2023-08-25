@@ -147,7 +147,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             launcher->s.unk22 = 0x10;
             launcher->s.palId = 0;
 
-            s->hitboxes[0].unk0 = -1;
+            s->hitboxes[0].index = -1;
             s->unk10 = SPRITE_FLAG(PRIORITY, 2);
             s->graphics.dest = VramMalloc(EGG_UTO_LAUNCHER_TILE_COUNT);
             s->graphics.anim = SA2_ANIM_LAUNCHER_EGG_UTO;

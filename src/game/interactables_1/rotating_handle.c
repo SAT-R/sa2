@@ -59,7 +59,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         s->unk21 = 0xFF;
         s->unk22 = 0x10;
         s->palId = 0;
-        s->hitboxes[0].unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = 0x2000;
     }
 }

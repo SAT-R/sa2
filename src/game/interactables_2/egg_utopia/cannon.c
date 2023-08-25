@@ -67,7 +67,7 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;
     sprite->palId = 0;
-    sprite->hitboxes[0].unk0 = -1;
+    sprite->hitboxes[0].index = -1;
     sprite->unk10 = 0x2000;
     sprite->graphics.dest = (void *)OBJ_VRAM0 + 0x2C80;
 
@@ -267,22 +267,22 @@ NONMATCH("asm/non_matching/sub_807E66C.inc",
         playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
         biggerX = x;
-        r4 = sprite->hitboxes[0].unk4;
+        r4 = sprite->hitboxes[0].left;
         biggerX += r4;
-        temp2 = playerX + gUnknown_03005AF0.s.hitboxes[0].unk4;
-        if (((biggerX > temp2 || biggerX + (sprite->hitboxes[0].unk6 - r4) >= temp2))
+        temp2 = playerX + gUnknown_03005AF0.s.hitboxes[0].left;
+        if (((biggerX > temp2 || biggerX + (sprite->hitboxes[0].right - r4) >= temp2))
             && biggerX >= temp2
-                    + (gUnknown_03005AF0.s.hitboxes[0].unk6
-                       - gUnknown_03005AF0.s.hitboxes[0].unk4)) {
+                    + (gUnknown_03005AF0.s.hitboxes[0].right
+                       - gUnknown_03005AF0.s.hitboxes[0].left)) {
             biggerY = y;
-            r4 = sprite->hitboxes[0].unk5;
+            r4 = sprite->hitboxes[0].top;
             biggerY += r4;
-            temp3 = playerY + gUnknown_03005AF0.s.hitboxes[0].unk5;
+            temp3 = playerY + gUnknown_03005AF0.s.hitboxes[0].top;
             if (((biggerY > temp3
-                  || (biggerY) + (sprite->hitboxes[0].unk7 - r4) >= temp3))
+                  || (biggerY) + (sprite->hitboxes[0].bottom - r4) >= temp3))
                 && biggerY >= temp3
-                        + (gUnknown_03005AF0.s.hitboxes[0].unk7
-                           - gUnknown_03005AF0.s.hitboxes[0].unk5)) {
+                        + (gUnknown_03005AF0.s.hitboxes[0].bottom
+                           - gUnknown_03005AF0.s.hitboxes[0].top)) {
                 return 1;
             }
         }

@@ -92,7 +92,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     sprite->unk21 = -1;
     sprite->palId = 0;
     sprite->unk1A = 0x480;
-    sprite->hitboxes[0].unk0 = -1;
+    sprite->hitboxes[0].index = -1;
     sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
     sprite->graphics.dest = VramMalloc(16);
     sprite->graphics.anim = SA2_ANIM_ITEMBOX;
@@ -107,7 +107,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     sprite->unk21 = -1;
     sprite->palId = 0;
     sprite->unk1A = 0x4C0;
-    sprite->hitboxes[0].unk0 = -1;
+    sprite->hitboxes[0].index = -1;
     sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
     sprite->graphics.dest = VramMalloc(4);
     sprite->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];

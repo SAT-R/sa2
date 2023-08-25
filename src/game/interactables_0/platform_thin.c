@@ -107,7 +107,7 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;
     sprite->palId = 0;
-    sprite->hitboxes[0].unk0 = -1;
+    sprite->hitboxes[0].index = -1;
     sprite->unk10 = 0x2000;
 
     sub_8004558(sprite);
@@ -453,12 +453,12 @@ static void TaskDestructor_PlatformBreakParticles(struct Task *t)
 static u32 sub_80111F0(Sprite *sprite, s32 x, s32 y, Player *player)
 {
     u32 result;
-    sprite->hitboxes[0].unk5 += 1;
-    sprite->hitboxes[0].unk7 -= 1;
+    sprite->hitboxes[0].top += 1;
+    sprite->hitboxes[0].bottom -= 1;
 
     result = sub_800CCB8(sprite, x, y, player);
 
-    sprite->hitboxes[0].unk5 -= 1;
-    sprite->hitboxes[0].unk7 += 1;
+    sprite->hitboxes[0].top -= 1;
+    sprite->hitboxes[0].bottom += 1;
     return result;
 }

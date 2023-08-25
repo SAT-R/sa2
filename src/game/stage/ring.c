@@ -64,17 +64,17 @@ NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
     ringX = ring->s.x;
 
     lvalue = ring->s.x - 8;
-    rvalue = Q_24_8_TO_INT(p->x) + gUnknown_03005AF0.s.hitboxes[0].unk4;
+    rvalue = Q_24_8_TO_INT(p->x) + gUnknown_03005AF0.s.hitboxes[0].left;
 
     if (((lvalue <= rvalue) && (ring->s.x + 8 < rvalue))
         || ((ringY - 16
-             > Q_24_8_TO_INT(gPlayer.y) + gUnknown_03005AF0.s.hitboxes[0].unk5))
-        || ((Q_24_8_TO_INT(p->y) >= gUnknown_03005AF0.s.hitboxes[0].unk5)
-            || ringY - 16 < gUnknown_03005AF0.s.hitboxes[0].unk5)) {
+             > Q_24_8_TO_INT(gPlayer.y) + gUnknown_03005AF0.s.hitboxes[0].top))
+        || ((Q_24_8_TO_INT(p->y) >= gUnknown_03005AF0.s.hitboxes[0].top)
+            || ringY - 16 < gUnknown_03005AF0.s.hitboxes[0].top)) {
 
     }
 
-    else if (gUnknown_03005AF0.s.hitboxes[0].unk7 - gUnknown_03005AF0.s.hitboxes[0].unk5
+    else if (gUnknown_03005AF0.s.hitboxes[0].bottom - gUnknown_03005AF0.s.hitboxes[0].top
              >= Q_24_8_TO_INT(gPlayer.y) + ringY) {
         // _0800BC36
         if (PLAYER_IS_ALIVE) {

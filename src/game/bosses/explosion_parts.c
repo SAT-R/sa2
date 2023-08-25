@@ -57,7 +57,7 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         s->unk21 = -1;
         s->unk22 = 0x10;
         s->palId = 0;
-        s->hitboxes->unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 1);
     }
 }
@@ -126,7 +126,7 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         s->unk21 = -1;
         s->unk22 = 0x10;
         s->palId = 0;
-        s->hitboxes->unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 1);
     }
 }

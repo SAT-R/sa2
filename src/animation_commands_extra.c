@@ -116,24 +116,25 @@ s32 animCmd_GetTiles_COPY(void *cursor, Sprite *s)
 // (-6)
 // Differences to animCmd_6:
 // - uses XOR_SWAP macro instead of SWAP_AND_NEGATE
+// TODO: rename animCmd_Hitbox_COPY
 s32 animCmd_6_COPY(void *cursor, Sprite *s)
 {
-    ACmd_6 *cmd = (ACmd_6 *)cursor;
-    s32 r3 = cmd->unk4.unk0 & 0xF;
-    s->unk14 += AnimCommandSizeInWords(ACmd_6);
+    ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
+    s32 index = cmd->hitbox.index & 0xF;
+    s->unk14 += AnimCommandSizeInWords(ACmd_Hitbox);
 
-    DmaCopy32(3, &cmd->unk4, &s->hitboxes[r3].unk0, 8);
+    DmaCopy32(3, &cmd->hitbox, &s->hitboxes[index].index, 8);
 
-    if ((cmd->unk4.unk4 == 0) && (cmd->unk4.unk5 == 0) && (cmd->unk4.unk6 == 0)
-        && (cmd->unk4.unk7 == 0)) {
-        s->hitboxes[r3].unk0 = -1;
+    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0)
+        && (cmd->hitbox.bottom == 0)) {
+        s->hitboxes[index].index = -1;
     } else {
         if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
-            XOR_SWAP(s->hitboxes[r3].unk5, s->hitboxes[r3].unk7);
+            XOR_SWAP(s->hitboxes[index].top, s->hitboxes[index].bottom);
         }
 
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            XOR_SWAP(s->hitboxes[r3].unk4, s->hitboxes[r3].unk6);
+            XOR_SWAP(s->hitboxes[index].left, s->hitboxes[index].right);
         }
     }
 
@@ -805,22 +806,22 @@ s32 animCmd_GetTiles(void *cursor, Sprite *s)
 // (-6)
 s32 animCmd_6(void *cursor, Sprite *s)
 {
-    ACmd_6 *cmd = (ACmd_6 *)cursor;
-    s32 r3 = cmd->unk4.unk0 & 0xF;
-    s->unk14 += AnimCommandSizeInWords(ACmd_6);
+    ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
+    s32 index = cmd->hitbox.index & 0xF;
+    s->unk14 += AnimCommandSizeInWords(ACmd_Hitbox);
 
-    DmaCopy32(3, &cmd->unk4, &s->hitboxes[r3].unk0, 8);
+    DmaCopy32(3, &cmd->hitbox, &s->hitboxes[index].index, 8);
 
-    if ((cmd->unk4.unk4 == 0) && (cmd->unk4.unk5 == 0) && (cmd->unk4.unk6 == 0)
-        && (cmd->unk4.unk7 == 0)) {
-        s->hitboxes[r3].unk0 = -1;
+    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0)
+        && (cmd->hitbox.bottom == 0)) {
+        s->hitboxes[index].index = -1;
     } else {
         if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
-            SWAP_AND_NEGATE(s->hitboxes[r3].unk5, s->hitboxes[r3].unk7);
+            SWAP_AND_NEGATE(s->hitboxes[index].top, s->hitboxes[index].bottom);
         }
 
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            SWAP_AND_NEGATE(s->hitboxes[r3].unk4, s->hitboxes[r3].unk6);
+            SWAP_AND_NEGATE(s->hitboxes[index].left, s->hitboxes[index].right);
         }
     }
 

@@ -74,7 +74,7 @@ static void Task_BellMain(void)
         }
 
         gCurTask->main = sub_8054D20;
-        s->hitboxes[0].unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->graphics.anim = SA2_ANIM_BELL;
         s->variant = 1;
         s->unk21 = -1;
@@ -118,7 +118,7 @@ void sub_8054D20(void)
             s->unk21 = -1;
 #endif
 
-            s->hitboxes[1].unk0 = -1;
+            s->hitboxes[1].index = -1;
             gCurTask->main = Task_BellMain;
         }
     }

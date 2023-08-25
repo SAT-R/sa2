@@ -62,7 +62,7 @@ void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY
         deco->unk21 = 0xFF;
         deco->unk22 = 0x10;
         deco->palId = 0;
-        deco->hitboxes[0].unk0 = -1;
+        deco->hitboxes[0].index = -1;
         deco->unk10 = 0x2000;
     }
 }

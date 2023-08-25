@@ -49,8 +49,8 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk21 = -1;
     s->unk22 = 0x10;
     s->palId = 0;
-    s->hitboxes[0].unk0 = -1;
-    s->hitboxes[1].unk0 = -1;
+    s->hitboxes[0].index = -1;
+    s->hitboxes[1].index = -1;
     s->unk10 = 0x2000;
 }
 
@@ -70,14 +70,14 @@ NONMATCH("asm/non_matching/Task_EnemySpinner.inc", void Task_EnemySpinner(void))
 
     if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
         UNK_3005A70 *u90 = gPlayer.unk90;
-        if ((u90->s.hitboxes[0].unk0 == -1) && (u90->s.hitboxes[1].unk0 == -1)) {
-            someX = s->hitboxes[1].unk4 + pos.x;
-            otherX = Q_24_8_TO_INT(gPlayer.x) + u90->s.hitboxes[0].unk4;
+        if ((u90->s.hitboxes[0].index == -1) && (u90->s.hitboxes[1].index == -1)) {
+            someX = s->hitboxes[1].left + pos.x;
+            otherX = Q_24_8_TO_INT(gPlayer.x) + u90->s.hitboxes[0].left;
             if ((someX > otherX)
-                || someX + (u90->s.hitboxes[1].unk6 - u90->s.hitboxes[1].unk4)) {
+                || someX + (u90->s.hitboxes[1].right - u90->s.hitboxes[1].left)) {
                 // _080570C2
-                int diff = (u90->s.hitboxes[0].unk6 - u90->s.hitboxes[0].unk4);
-                if (otherX > diff && otherX >= u90->s.hitboxes[0].unk5) {
+                int diff = (u90->s.hitboxes[0].right - u90->s.hitboxes[0].left);
+                if (otherX > diff && otherX >= u90->s.hitboxes[0].top) {
                     if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
                         sub_800CBA4(&gPlayer);
                     }

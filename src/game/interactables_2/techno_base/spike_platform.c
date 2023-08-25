@@ -67,7 +67,7 @@ void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     sprite->unk21 = 0xFF;
     sprite->unk22 = 0x10;
     sprite->palId = 0;
-    sprite->hitboxes[0].unk0 = -1;
+    sprite->hitboxes[0].index = -1;
     sprite->unk10 = 0x2000;
     sprite->graphics.dest = VramMalloc(42);
     sprite->graphics.anim = -1;
@@ -196,13 +196,13 @@ static u32 sub_807AF0C(Sprite_IA78 *ia78)
 {
     if (PLAYER_IS_ALIVE) {
         u32 temp;
-        ia78->sprite.hitboxes[0].unk5 -= 16;
-        ia78->sprite.hitboxes[0].unk7 += 16;
+        ia78->sprite.hitboxes[0].top -= 16;
+        ia78->sprite.hitboxes[0].bottom += 16;
 
         temp = sub_800CDBC(&ia78->sprite, ia78->unk3C, ia78->unk40, &gPlayer);
 
-        ia78->sprite.hitboxes[0].unk5 += 16;
-        ia78->sprite.hitboxes[0].unk7 -= 16;
+        ia78->sprite.hitboxes[0].top += 16;
+        ia78->sprite.hitboxes[0].bottom -= 16;
 
         if (temp != 0) {
             if (temp & 0x10000) {

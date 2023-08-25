@@ -161,7 +161,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
         element->palId = 0;
-        element->hitboxes[0].unk0 = -1;
+        element->hitboxes[0].index = -1;
         element->unk10 = 0x1000;
         sub_8004558(element);
     }
@@ -182,7 +182,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
         element->palId = 0;
-        element->hitboxes[0].unk0 = -1;
+        element->hitboxes[0].index = -1;
         element->unk10 = 0;
         sub_8004558(element);
     }
@@ -199,7 +199,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->hitboxes[0].unk0 = -1;
+    element->hitboxes[0].index = -1;
     element->unk10 = 0;
 
     background = &teamPlayScreen->unk210;

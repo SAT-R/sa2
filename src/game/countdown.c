@@ -70,7 +70,7 @@ void CreateCourseStartCountdown(u8 mode)
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->hitboxes[0].unk0 = -1;
+    element->hitboxes[0].index = -1;
     element->unk10 = 0;
 
     element = &countdown->unk0;
@@ -84,7 +84,7 @@ void CreateCourseStartCountdown(u8 mode)
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->hitboxes[0].unk0 = -1;
+    element->hitboxes[0].index = -1;
     element->unk10 = 0x2400;
 }
 
@@ -219,7 +219,7 @@ void CreateRaceStartMessage(void)
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->hitboxes[0].unk0 = -1;
+    element->hitboxes[0].index = -1;
     element->unk10 = gUnknown_030054B8++ | 0x60;
 
     element = &startMessage->unk3C;
@@ -233,7 +233,7 @@ void CreateRaceStartMessage(void)
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
-    element->hitboxes[0].unk0 = -1;
+    element->hitboxes[0].index = -1;
     element->unk10 = gUnknown_030054B8++ | 0x60;
 }
 

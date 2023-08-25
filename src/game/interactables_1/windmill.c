@@ -58,7 +58,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk21 = 0xFF;
     s->unk22 = 0x10;
     s->palId = 0;
-    s->hitboxes[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
     sub_8004558(s);
 
@@ -82,7 +82,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             s->unk21 = 0xFF;
             s->unk22 = 0x10;
             s->palId = 0;
-            s->hitboxes[0].unk0 = -1;
+            s->hitboxes[0].index = -1;
             s->unk10 = 0;
             sub_8004558(s);
         }
