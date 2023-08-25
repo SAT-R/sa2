@@ -14,7 +14,7 @@
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite;
+    Sprite s;
     s32 unk3C;
     s32 unk40;
     s32 unk44;
@@ -47,7 +47,7 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
     struct Task *t
         = TaskCreate(sub_80750A8, sizeof(Sprite_FloatingSpring), 0x2010, 0, sub_8075140);
     Sprite_FloatingSpring *floatingSpring = TaskGetStructPtr(t);
-    Sprite *sprite = &floatingSpring->sprite;
+    Sprite *s = &floatingSpring->s;
 
     floatingSpring->unk44 = 0;
     floatingSpring->unk48 = 0;
@@ -59,18 +59,18 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
     floatingSpring->base.spriteX = me->x;
     floatingSpring->base.spriteY = spriteY;
 
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->animCursor = 0;
-    sprite->unk1C = 0;
-    sprite->prevVariant = -1;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->hitboxes[0].index = -1;
-    sprite->unk10 = 0x2000;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
 
     floatingSpring->unk4C = FALSE;
-    sprite->graphics.dest = 0;
+    s->graphics.dest = 0;
     sub_8075284(floatingSpring);
 
     if (me->d.uData[2] > me->d.uData[3]) {
@@ -95,7 +95,7 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
         }
     }
     sub_8074FD8(floatingSpring);
-    sub_8004558(sprite);
+    sub_8004558(s);
     sub_8074E44(floatingSpring);
     sub_80751B4(floatingSpring);
 
@@ -136,11 +136,11 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
 static u32 sub_8074EF4(Sprite_FloatingSpring *floatingSpring)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp = sub_800CDBC(&floatingSpring->sprite, floatingSpring->unk3C,
+        u32 temp = sub_800CDBC(&floatingSpring->s, floatingSpring->unk3C,
                                floatingSpring->unk40, &gPlayer);
         if (temp != 0) {
             if (Q_24_8_TO_INT(gPlayer.y) < floatingSpring->unk40) {
-                gPlayer.y += Q_24_8(floatingSpring->sprite.hitboxes[0].top);
+                gPlayer.y += Q_24_8(floatingSpring->s.hitboxes[0].top);
                 if (gPlayer.speedAirY > 0) {
                     gPlayer.speedAirY = 0;
                 }
@@ -184,19 +184,19 @@ static void sub_8074FD8(Sprite_FloatingSpring *floatingSpring)
     if (floatingSpring->unk50) {
         u8 level = gCurrentLevel;
         if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
-            floatingSpring->sprite.variant = 0;
+            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->s.variant = 0;
         } else {
-            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
-            floatingSpring->sprite.variant = 0;
+            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
+            floatingSpring->s.variant = 0;
         }
     } else {
         if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
-            floatingSpring->sprite.variant = ZONE_3;
+            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->s.variant = ZONE_3;
         } else {
-            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
-            floatingSpring->sprite.variant = 2;
+            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
+            floatingSpring->s.variant = 2;
         }
     }
 }
@@ -205,19 +205,19 @@ static void sub_8075048(Sprite_FloatingSpring *floatingSpring)
 {
     if (floatingSpring->unk50) {
         if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
-            floatingSpring->sprite.variant = 1;
+            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->s.variant = 1;
         } else {
-            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
-            floatingSpring->sprite.variant = 1;
+            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
+            floatingSpring->s.variant = 1;
         }
     } else {
         if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
-            floatingSpring->sprite.variant = 3;
+            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->s.variant = 3;
         } else {
-            floatingSpring->sprite.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
-            floatingSpring->sprite.variant = 3;
+            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
+            floatingSpring->s.variant = 3;
         }
     }
 }
@@ -235,7 +235,7 @@ static void sub_80750A8(void)
         if (!floatingSpring->unk4C) {
             sub_8075284(floatingSpring);
             sub_8074FD8(floatingSpring);
-            sub_8004558(&floatingSpring->sprite);
+            sub_8004558(&floatingSpring->s);
         }
     }
 
@@ -251,7 +251,7 @@ static void sub_80750A8(void)
         sub_80751B4(floatingSpring);
 
         if (floatingSpring->unk4C) {
-            sub_80051E8(&floatingSpring->sprite);
+            sub_80051E8(&floatingSpring->s);
         }
     }
 }
@@ -278,15 +278,15 @@ static void sub_8075154(Sprite_FloatingSpring *floatingSpring)
     }
 
     sub_8075048(floatingSpring);
-    sub_8004558(&floatingSpring->sprite);
+    sub_8004558(&floatingSpring->s);
     m4aSongNumStart(SE_SPRING);
     gCurTask->main = sub_80752D8;
 }
 
 static void sub_80751B4(Sprite_FloatingSpring *floatingSpring)
 {
-    floatingSpring->sprite.x = floatingSpring->unk3C - gCamera.x;
-    floatingSpring->sprite.y = floatingSpring->unk40 - gCamera.y;
+    floatingSpring->s.x = floatingSpring->unk3C - gCamera.x;
+    floatingSpring->s.y = floatingSpring->unk40 - gCamera.y;
 }
 
 bool32 sub_80751CC(Sprite_FloatingSpring *floatingSpring)
@@ -330,9 +330,9 @@ static void sub_8075284(Sprite_FloatingSpring *floatingSpring)
         u32 zone = LEVEL_TO_ZONE(gCurrentLevel);
         asm("" ::"r"(zone));
 #endif
-        floatingSpring->sprite.graphics.dest = VramMalloc(0x1C);
-        floatingSpring->sprite.prevAnim = -1;
-        floatingSpring->sprite.prevVariant = -1;
+        floatingSpring->s.graphics.dest = VramMalloc(0x1C);
+        floatingSpring->s.prevAnim = -1;
+        floatingSpring->s.prevVariant = -1;
         floatingSpring->unk4C = TRUE;
     }
 }
@@ -340,8 +340,8 @@ static void sub_8075284(Sprite_FloatingSpring *floatingSpring)
 static void sub_80752BC(Sprite_FloatingSpring *floatingSpring)
 {
     if (floatingSpring->unk4C) {
-        VramFree(floatingSpring->sprite.graphics.dest);
-        floatingSpring->sprite.graphics.dest = NULL;
+        VramFree(floatingSpring->s.graphics.dest);
+        floatingSpring->s.graphics.dest = NULL;
         floatingSpring->unk4C = FALSE;
     }
 }
@@ -349,12 +349,12 @@ static void sub_80752BC(Sprite_FloatingSpring *floatingSpring)
 static void sub_80752D8(void)
 {
     Sprite_FloatingSpring *floatingSpring = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &floatingSpring->sprite;
+    Sprite *s = &floatingSpring->s;
     sub_8074E44(floatingSpring);
     sub_80751B4(floatingSpring);
 
-    if (!(sprite->unk10 & 0x4000)) {
-        sub_8004558(&floatingSpring->sprite);
+    if (!(s->unk10 & 0x4000)) {
+        sub_8004558(&floatingSpring->s);
     } else {
         sub_8075334(floatingSpring);
     }
@@ -363,14 +363,14 @@ static void sub_80752D8(void)
         sub_8075154(floatingSpring);
     }
 
-    sub_80051E8(sprite);
+    sub_80051E8(s);
 }
 
 static void sub_8075334(Sprite_FloatingSpring *floatingSpring)
 {
     floatingSpring->unk50 ^= TRUE;
     sub_8074FD8(floatingSpring);
-    sub_8004558(&floatingSpring->sprite);
-    sub_80051E8(&floatingSpring->sprite);
+    sub_8004558(&floatingSpring->s);
+    sub_80051E8(&floatingSpring->s);
     gCurTask->main = sub_80750A8;
 }

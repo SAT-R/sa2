@@ -78,9 +78,9 @@ void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->unk1A = 0x480;
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->unk1C = 0;
+    s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->unk22 = 0x10;
+    s->animSpeed = 0x10;
     s->palId = FALSE;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;

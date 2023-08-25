@@ -161,7 +161,7 @@ void Task_8056230(void)
 
     if(otherS->hitboxes[0].index != -1) {
         if(pos.x + s->hitboxes[0].left <= Q_24_8_TO_INT(gPlayer.x) + otherS->hitboxes[0].left)
-        if ((madillo->s.unk22 - s->hitboxes[0].left + pos.x) < s->hitboxes[0].left)
+        if ((madillo->s.animSpeed - s->hitboxes[0].left + pos.x) < s->hitboxes[0].left)
         if (pos.x+s->hitboxes[0].left >= s->hitboxes[0].left)
         if (otherS->hitboxes[0].right - otherS->hitboxes[0].left >= pos.x+s->hitboxes[0].left)
         if(s->hitboxes[0].top + pos.y <= Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].top)

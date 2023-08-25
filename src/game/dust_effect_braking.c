@@ -64,8 +64,8 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
         s->graphics.size = 0;
         s->prevVariant = -1;
         s->unk1A = 0x200;
-        s->unk1C = 0;
-        s->unk22 = 0x10;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
         s->palId = 0;
 
         return t;

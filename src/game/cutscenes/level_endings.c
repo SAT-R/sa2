@@ -157,7 +157,7 @@ void CreateCourseResultsCutScene(u8 mode)
 
     struct Task *t;
     struct ResultsCutScene *scene;
-    Sprite *element;
+    Sprite *s;
     struct TransitionState *transition;
     memcpy(mains, gUnknown_080E1208, sizeof(gUnknown_080E1208));
     memcpy(unk1214, gUnknown_080E1214, sizeof(gUnknown_080E1214));
@@ -180,49 +180,49 @@ void CreateCourseResultsCutScene(u8 mode)
 
     scene->unk0 = &gPlayer;
 
-    element = &scene->unk4;
+    s = &scene->unk4;
 
-    element->graphics.dest = VramMalloc(sAnimsCharacterRescued[mode * 3]);
-    element->graphics.anim = sAnimsCharacterRescued[(mode * 3) + 1];
-    element->variant = sAnimsCharacterRescued[(mode * 3) + 2];
-    element->prevVariant = -1;
+    s->graphics.dest = VramMalloc(sAnimsCharacterRescued[mode * 3]);
+    s->graphics.anim = sAnimsCharacterRescued[(mode * 3) + 1];
+    s->variant = sAnimsCharacterRescued[(mode * 3) + 2];
+    s->prevVariant = -1;
 
-    element->x = 0;
-    element->y = 0;
-    element->graphics.size = 0;
-    element->unk1A = 0x280;
-    element->unk1C = 0;
+    s->x = 0;
+    s->y = 0;
+    s->graphics.size = 0;
+    s->unk1A = 0x280;
+    s->timeUntilNextFrame = 0;
 
-    element->unk22 = 0x10;
-    element->palId = unk122C[mode];
+    s->animSpeed = 0x10;
+    s->palId = unk122C[mode];
 
     if (mode != 2) {
-        element->unk10 = 0x400;
+        s->unk10 = 0x400;
     } else {
-        element->unk10 = 0;
+        s->unk10 = 0;
     }
 
-    sub_8004558(element);
+    sub_8004558(s);
 
     scene->unk34.graphics.dest = NULL;
 
     if (mode == 0) {
-        element = &scene->unk34;
-        element->graphics.dest = VramMalloc(6);
-        element->graphics.anim = SA2_ANIM_CHEESE_DOWNWARDS;
-        element->variant = 0;
-        element->prevVariant = -1;
+        s = &scene->unk34;
+        s->graphics.dest = VramMalloc(6);
+        s->graphics.anim = SA2_ANIM_CHEESE_DOWNWARDS;
+        s->variant = 0;
+        s->prevVariant = -1;
 
-        element->x = 0;
-        element->y = 0;
-        element->graphics.size = 0;
-        element->unk1A = 0x240;
-        element->unk1C = 0;
+        s->x = 0;
+        s->y = 0;
+        s->graphics.size = 0;
+        s->unk1A = 0x240;
+        s->timeUntilNextFrame = 0;
 
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0x400;
-        sub_8004558(element);
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0x400;
+        sub_8004558(s);
         m4aSongNumStart(SE_236);
     }
 
@@ -237,7 +237,7 @@ void CreateCourseResultsCutScene(u8 mode)
 static void sub_808DD9C(void)
 {
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
-    Sprite *element = &scene->unk4;
+    Sprite *s = &scene->unk4;
     Player *player = scene->unk0;
     struct TransitionState *transition = &scene->unk64;
 
@@ -266,8 +266,8 @@ static void sub_808DD9C(void)
 
             VramFree(scene->unk4.graphics.dest);
 
-            element->graphics.dest = VramMalloc(0x19);
-            element->graphics.anim = SA2_ANIM_CREAM_HOLDING_ONTO_SONIC;
+            s->graphics.dest = VramMalloc(0x19);
+            s->graphics.anim = SA2_ANIM_CREAM_HOLDING_ONTO_SONIC;
             scene->unk4.variant = 0;
             scene->unk4.prevVariant = -1;
 
@@ -283,17 +283,17 @@ static void sub_808DD9C(void)
         transition->unk0 = scene->unk0->rotation * 4;
     }
 
-    element->x = scene->unk70 >> 8;
-    element->y = scene->unk72 >> 8;
+    s->x = scene->unk70 >> 8;
+    s->y = scene->unk72 >> 8;
 
     transition->speed = scene->unk70 >> 8;
     transition->unk8 = scene->unk72 >> 8;
 
-    sub_8004558(element);
-    sub_80051E8(element);
+    sub_8004558(s);
+    sub_80051E8(s);
 
-    scene->unk34.x = element->x;
-    scene->unk34.y = element->y;
+    scene->unk34.x = s->x;
+    scene->unk34.y = s->y;
     sub_8004558(&scene->unk34);
     sub_80051E8(&scene->unk34);
 
@@ -307,7 +307,7 @@ static void sub_808DD9C(void)
 static void sub_808DF88(void)
 {
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
-    Sprite *element = &scene->unk4;
+    Sprite *s = &scene->unk4;
     Player *player = scene->unk0;
 
     scene->unk70 -= scene->unk74;
@@ -332,27 +332,27 @@ static void sub_808DF88(void)
         if (scene->unk7A == 0) {
             VramFree(scene->unk4.graphics.dest);
 
-            element->graphics.dest = VramMalloc(0x24);
-            element->graphics.anim = SA2_ANIM_TAILS_FLYING;
+            s->graphics.dest = VramMalloc(0x24);
+            s->graphics.anim = SA2_ANIM_TAILS_FLYING;
             scene->unk4.variant = SA2_ANIM_VARIANT_TAILS_FLYING_WAVING_AT_PLAYER;
             scene->unk7A = 1;
             scene->unk7A = 1;
         }
     }
 
-    element->x = scene->unk70 >> 8;
+    s->x = scene->unk70 >> 8;
 
     if (scene->unk7A != 0) {
         s16 sin;
         scene->unk7B += 4;
         sin = SIN(scene->unk7B * 4) >> 12;
-        element->y = (scene->unk72 >> 8) + sin;
+        s->y = (scene->unk72 >> 8) + sin;
     } else {
-        element->y = (scene->unk72 >> 8);
+        s->y = (scene->unk72 >> 8);
     }
 
-    sub_8004558(element);
-    sub_80051E8(element);
+    sub_8004558(s);
+    sub_80051E8(s);
 
     scene->unk78++;
 
@@ -365,7 +365,7 @@ static void sub_808E114(void)
 {
     s32 result;
     struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
-    Sprite *element = &scene->unk4;
+    Sprite *s = &scene->unk4;
     Player *player = scene->unk0;
 
     if (scene->unk78 < 0x2E) {
@@ -395,11 +395,11 @@ static void sub_808E114(void)
         scene->unk72 += 0x100;
     }
 
-    element->x = (scene->unk70 >> 8) + scene->unk7C;
-    element->y = (scene->unk72 >> 8) - 0xE;
+    s->x = (scene->unk70 >> 8) + scene->unk7C;
+    s->y = (scene->unk72 >> 8) - 0xE;
 
-    sub_8004558(element);
-    sub_80051E8(element);
+    sub_8004558(s);
+    sub_80051E8(s);
 
     if (scene->unk78 == 0x28) {
         player->unk64 = 0x52;

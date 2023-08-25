@@ -75,9 +75,9 @@ void CreatePauseMenu(void)
             s->graphics.anim = sAnimInfoPauseMenu[lang].anim;
             s->variant = sAnimInfoPauseMenu[lang].variant;
             s->animCursor = 0;
-            s->unk1C = 0;
+            s->timeUntilNextFrame = 0;
             s->prevVariant = -1;
-            s->unk22 = 0x10;
+            s->animSpeed = 0x10;
             s->palId = 0;
 
             s->x = (DISPLAY_WIDTH / 2);

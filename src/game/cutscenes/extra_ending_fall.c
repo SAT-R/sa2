@@ -231,199 +231,199 @@ void CreateExtraEndingFallCutScene(void)
     scene->unk398 = OBJ_VRAM0;
 
     for (i = 0; i < 4; i++) {
-        Sprite *element;
-        element = &scene->unk280[i];
-        element->graphics.dest = (void *)scene->unk398;
+        Sprite *s;
+        s = &scene->unk280[i];
+        s->graphics.dest = (void *)scene->unk398;
         scene->unk398 += 0xA00;
-        element->graphics.anim = gUnknown_080E12FC[i + 3].anim;
-        element->variant = gUnknown_080E12FC[i + 3].variant;
-        element->prevVariant = -1;
-        element->x = 0;
-        element->y = 0;
+        s->graphics.anim = gUnknown_080E12FC[i + 3].anim;
+        s->variant = gUnknown_080E12FC[i + 3].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
 
         if (i < 2) {
-            element->unk1A = (i + 1) << 6;
+            s->unk1A = (i + 1) << 6;
         } else {
-            element->unk1A = (i + 10) << 6;
+            s->unk1A = (i + 10) << 6;
         }
 
-        element->unk10 = 0;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->hitboxes[0].index = -1;
-        sub_8004558(element);
+        s->unk10 = 0;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        sub_8004558(s);
     }
 
     {
-        Sprite *element;
-        element = &scene->unk40;
-        element->graphics.dest = (void *)scene->unk398;
+        Sprite *s;
+        s = &scene->unk40;
+        s->graphics.dest = (void *)scene->unk398;
         scene->unk398 += 0x540;
-        element->graphics.anim = gUnknown_080E12FC[0].anim;
-        element->variant = gUnknown_080E12FC[0].variant;
-        element->prevVariant = -1;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0x100;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->hitboxes[0].index = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E12FC[0].anim;
+        s->variant = gUnknown_080E12FC[0].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = 0x100;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        sub_8004558(s);
     }
 
     {
-        Sprite *element;
-        element = &scene->unk70;
-        element->graphics.dest = (void *)scene->unk398;
+        Sprite *s;
+        s = &scene->unk70;
+        s->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[7].numTiles << 5;
-        element->graphics.anim = gUnknown_080E12FC[7].anim;
-        element->variant = gUnknown_080E12FC[7].variant;
-        element->prevVariant = -1;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0x1C0;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->hitboxes[0].index = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E12FC[7].anim;
+        s->variant = gUnknown_080E12FC[7].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = 0x1C0;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        sub_8004558(s);
     }
 
     {
-        Sprite *element;
+        Sprite *s;
 
-        element = &scene->unkA0;
-        element->graphics.dest = (void *)scene->unk398;
+        s = &scene->unkA0;
+        s->graphics.dest = (void *)scene->unk398;
         scene->unk398 += 0x800;
-        element->graphics.anim = gUnknown_080E12FC[10].anim;
-        element->variant = gUnknown_080E12FC[10].variant;
-        element->prevVariant = -1;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0x240;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->hitboxes[0].index = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E12FC[10].anim;
+        s->variant = gUnknown_080E12FC[10].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = 0x240;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        sub_8004558(s);
     }
 
     for (i = 0; i < 6; i++) {
-        Sprite *element;
-        element = &scene->unkD0[i];
-        element->graphics.dest = (void *)scene->unk398;
+        Sprite *s;
+        s = &scene->unkD0[i];
+        s->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[i + 0xD].numTiles * 0x20;
-        element->graphics.anim = gUnknown_080E12FC[i + 0xD].anim;
-        element->variant = gUnknown_080E12FC[i + 0xD].variant;
-        element->prevVariant = -1;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0x180;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->hitboxes[0].index = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E12FC[i + 0xD].anim;
+        s->variant = gUnknown_080E12FC[i + 0xD].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = 0x180;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        sub_8004558(s);
     }
 
     {
-        Sprite *element;
-        element = &scene->unk1F0;
-        element->graphics.dest = (void *)scene->unk398;
+        Sprite *s;
+        s = &scene->unk1F0;
+        s->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[19].numTiles << 5;
-        element->graphics.anim = gUnknown_080E12FC[19].anim;
-        element->variant = gUnknown_080E12FC[19].variant;
-        element->prevVariant = -1;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0x140;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 1;
-        element->unk10 = 0;
-        element->hitboxes[0].index = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E12FC[19].anim;
+        s->variant = gUnknown_080E12FC[19].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = 0x140;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 1;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        sub_8004558(s);
     }
 
     {
-        Sprite *element;
-        element = &scene->unk220;
-        element->graphics.dest = (void *)scene->unk398;
+        Sprite *s;
+        s = &scene->unk220;
+        s->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[20].numTiles << 5;
-        element->graphics.anim = gUnknown_080E12FC[20].anim;
-        element->variant = gUnknown_080E12FC[20].variant;
-        element->prevVariant = -1;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0xC0;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->hitboxes[0].index = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E12FC[20].anim;
+        s->variant = gUnknown_080E12FC[20].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = 0xC0;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        sub_8004558(s);
     }
 
     {
-        Sprite *element;
-        element = &scene->unk340;
-        element->graphics.dest = (void *)scene->unk398;
+        Sprite *s;
+        s = &scene->unk340;
+        s->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[9].numTiles << 6;
-        element->graphics.anim = gUnknown_080E12FC[9].anim;
-        element->variant = gUnknown_080E12FC[9].variant;
-        element->prevVariant = -1;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->hitboxes[0].index = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E12FC[9].anim;
+        s->variant = gUnknown_080E12FC[9].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = 0;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        sub_8004558(s);
     }
 
     {
-        Sprite *element;
-        element = &scene->unk250;
-        element->graphics.dest = (void *)scene->unk398;
+        Sprite *s;
+        s = &scene->unk250;
+        s->graphics.dest = (void *)scene->unk398;
         scene->unk398 += gUnknown_080E12FC[8].numTiles << 5;
-        element->graphics.anim = gUnknown_080E12FC[8].anim;
-        element->variant = gUnknown_080E12FC[8].variant;
-        element->prevVariant = -1;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0x200;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->hitboxes[0].index = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E12FC[8].anim;
+        s->variant = gUnknown_080E12FC[8].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = 0x200;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        sub_8004558(s);
     }
 
     {
@@ -875,136 +875,136 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
 {
     u8 i;
     u32 max;
-    Sprite *element;
+    Sprite *s;
     if (scene->unk37C == 13) {
         max = 4;
     } else {
         max = 10;
     }
-    element = &scene->unk340;
+    s = &scene->unk340;
     for (i = 0; i < max; i++) {
-        element->graphics.anim = gUnknown_080E12FC[9].anim;
-        element->variant = gUnknown_080E12FC[9].variant;
-        element->x = scene->unk3E8[i][0];
-        element->y = scene->unk3E8[i][1] >> 8;
-        sub_80051E8(element);
+        s->graphics.anim = gUnknown_080E12FC[9].anim;
+        s->variant = gUnknown_080E12FC[9].variant;
+        s->x = scene->unk3E8[i][0];
+        s->y = scene->unk3E8[i][1] >> 8;
+        sub_80051E8(s);
     }
 
     if (gBgScrollRegs[0][1] > 0x6D) {
         max = 0;
         for (i = 0; i < 8; i++) {
-            element = &scene->unk280[i & 3];
-            element->graphics.anim = gUnknown_080E12FC[(i & 3) + 3].anim;
-            element->variant = gUnknown_080E12FC[(i & 3) + 3].variant;
+            s = &scene->unk280[i & 3];
+            s->graphics.anim = gUnknown_080E12FC[(i & 3) + 3].anim;
+            s->variant = gUnknown_080E12FC[(i & 3) + 3].variant;
 
             if (i > 4) {
                 max = 1;
             }
 
             // TODO: Might be able to use Q_24_8_TO_INT() here
-            element->x = (scene->unk3A0[i][0] >> 8) - (max * 100);
-            element->y = scene->unk3A0[i][1] >> 8;
+            s->x = (scene->unk3A0[i][0] >> 8) - (max * 100);
+            s->y = scene->unk3A0[i][1] >> 8;
 
-            sub_80051E8(element);
+            sub_80051E8(s);
         }
     }
 
-    element = &scene->unk40;
+    s = &scene->unk40;
     if (scene->unk37C == 0xD) {
-        element->graphics.anim = gUnknown_080E12FC[1].anim;
-        element->variant = gUnknown_080E12FC[1].variant;
+        s->graphics.anim = gUnknown_080E12FC[1].anim;
+        s->variant = gUnknown_080E12FC[1].variant;
     } else if (scene->unk37C == 0xE || scene->unk37C == 0xF || scene->unk37C == 0x10) {
-        element->graphics.anim = gUnknown_080E12FC[2].anim;
-        element->variant = gUnknown_080E12FC[2].variant;
+        s->graphics.anim = gUnknown_080E12FC[2].anim;
+        s->variant = gUnknown_080E12FC[2].variant;
     } else if (scene->unk37C >= 0x11) {
-        element->graphics.anim = gUnknown_080E12FC[21].anim;
-        element->variant = gUnknown_080E12FC[21].variant;
+        s->graphics.anim = gUnknown_080E12FC[21].anim;
+        s->variant = gUnknown_080E12FC[21].variant;
     }
-    element->x = scene->unk3E0[0] >> 8;
-    element->y = scene->unk3E0[1] >> 8;
-    sub_8004558(element);
-    sub_80051E8(element);
+    s->x = scene->unk3E0[0] >> 8;
+    s->y = scene->unk3E0[1] >> 8;
+    sub_8004558(s);
+    sub_80051E8(s);
 
     if (scene->unk37C < 0xE) {
-        element = &scene->unkA0;
-        element->x = scene->unk460;
-        element->y = scene->unk464;
+        s = &scene->unkA0;
+        s->x = scene->unk460;
+        s->y = scene->unk464;
 
         if (scene->unk37C == 10) {
-            element->graphics.anim = gUnknown_080E12FC[11].anim;
-            element->variant = gUnknown_080E12FC[11].variant;
-            sub_8004558(element);
+            s->graphics.anim = gUnknown_080E12FC[11].anim;
+            s->variant = gUnknown_080E12FC[11].variant;
+            sub_8004558(s);
         } else if (scene->unk37C == 0xD) {
-            element->graphics.anim = gUnknown_080E12FC[12].anim;
-            element->variant = gUnknown_080E12FC[12].variant;
-            sub_8004558(element);
+            s->graphics.anim = gUnknown_080E12FC[12].anim;
+            s->variant = gUnknown_080E12FC[12].variant;
+            sub_8004558(s);
         }
-        sub_80051E8(element);
+        sub_80051E8(s);
     }
 
     if (scene->unk37C < 0xD) {
-        element = &scene->unk1F0;
+        s = &scene->unk1F0;
         for (i = 0; i < scene->unk37C; i++) {
-            element->x = scene->unk4F4[i][0] >> 8;
-            element->y = scene->unk4F4[i][1] >> 8;
-            sub_8004558(element);
-            sub_80051E8(element);
+            s->x = scene->unk4F4[i][0] >> 8;
+            s->y = scene->unk4F4[i][1] >> 8;
+            sub_8004558(s);
+            sub_80051E8(s);
         }
     } else {
         for (i = 0; i < 6; i++) {
-            element = &scene->unkD0[i];
-            element->graphics.anim = gUnknown_080E12FC[i + 0xD].anim;
-            element->variant = gUnknown_080E12FC[i + 0xD].variant;
-            element->x = scene->unk584[i][0] >> 8;
-            element->y = scene->unk584[i][1] >> 8;
-            sub_80051E8(element);
+            s = &scene->unkD0[i];
+            s->graphics.anim = gUnknown_080E12FC[i + 0xD].anim;
+            s->variant = gUnknown_080E12FC[i + 0xD].variant;
+            s->x = scene->unk584[i][0] >> 8;
+            s->y = scene->unk584[i][1] >> 8;
+            sub_80051E8(s);
         }
     }
 
     if (gBgScrollRegs[0][1] < 0x6E) {
-        element = &scene->unk220;
-        element->x = scene->unk460;
-        element->y = scene->unk464 + 0x1E;
-        sub_8004558(element);
+        s = &scene->unk220;
+        s->x = scene->unk460;
+        s->y = scene->unk464 + 0x1E;
+        sub_8004558(s);
 
         if (scene->unk380 != 0) {
             scene->unk380--;
-            sub_80051E8(element);
+            sub_80051E8(s);
         } else {
             scene->unk380 = 2;
         }
     }
     if (scene->unk37C > 0xC) {
         for (i = 0; i < 6; i++) {
-            element = &scene->unk70;
-            element->x = scene->unk47C[i][0] >> 8;
-            element->y = scene->unk47C[i][1] >> 8;
+            s = &scene->unk70;
+            s->x = scene->unk47C[i][0] >> 8;
+            s->y = scene->unk47C[i][1] >> 8;
 
             if (scene->unk37C >= 0xF) {
                 if (scene->unk387[i] == 1) {
-                    element->unk10 &= ~0x400;
+                    s->unk10 &= ~0x400;
                 } else if (scene->unk387[i] == 2) {
-                    element->unk10 |= 0x400;
+                    s->unk10 |= 0x400;
                 }
             } else {
                 if (i < 3) {
-                    element->unk10 &= ~0x400;
+                    s->unk10 &= ~0x400;
 
                 } else {
-                    element->unk10 |= 0x400;
+                    s->unk10 |= 0x400;
                 }
             }
 
-            sub_8004558(element);
-            sub_80051E8(element);
+            sub_8004558(s);
+            sub_80051E8(s);
         }
 
-        element = &scene->unk250;
-        element->x = scene->unk470[0] >> 8;
-        element->y = scene->unk470[1] >> 8;
+        s = &scene->unk250;
+        s->x = scene->unk470[0] >> 8;
+        s->y = scene->unk470[1] >> 8;
 
-        sub_8004558(element);
-        sub_80051E8(element);
+        sub_8004558(s);
+        sub_80051E8(s);
     }
 }
 

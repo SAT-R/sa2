@@ -44,23 +44,23 @@ void CreateHeartParticles(void)
 static void sub_8086A0C(HeartParticles *unk998)
 {
     u8 i;
-    Sprite *sprite;
+    Sprite *s;
 
     for (i = 0; i < 4; i++) {
-        sprite = &unk998->sprites[i];
-        sprite->graphics.dest = VramMalloc(10);
-        sprite->graphics.anim = SA2_ANIM_HEART;
-        sprite->variant = 0;
-        sprite->prevVariant = -1;
-        sprite->x = -20;
-        sprite->y = 0;
-        sprite->unk1A = 0x180;
-        sprite->graphics.size = 0;
-        sprite->animCursor = 0;
-        sprite->unk1C = 0;
-        sprite->unk22 = 0x10;
-        sprite->palId = 0;
-        sprite->unk10 = 0x2000;
+        s = &unk998->sprites[i];
+        s->graphics.dest = VramMalloc(10);
+        s->graphics.anim = SA2_ANIM_HEART;
+        s->variant = 0;
+        s->prevVariant = -1;
+        s->x = -20;
+        s->y = 0;
+        s->unk1A = 0x180;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0x2000;
     }
 }
 
@@ -68,12 +68,12 @@ static void sub_8086A88(void)
 {
     u8 i;
     HeartParticles *unk998 = TaskGetStructPtr(gCurTask);
-    Sprite *sprite;
+    Sprite *s;
 
     for (i = 0; i < NUM_HEARTS; i++) {
-        sprite = &unk998->sprites[i];
-        sprite->x = gPlayer.unk90->s.x;
-        sprite->y = gPlayer.unk90->s.y;
+        s = &unk998->sprites[i];
+        s->x = gPlayer.unk90->s.x;
+        s->y = gPlayer.unk90->s.y;
     }
 
     sub_8086B38(unk998);
@@ -108,7 +108,7 @@ static void sub_8086B38(HeartParticles *unk998)
 {
     u8 i;
     u8 j = 1;
-    Sprite *sprite;
+    Sprite *s;
 
     if (unk998->unkE4 != 0 && unk998->unkC0 == 0) {
         TaskDestroy(gCurTask);
@@ -117,14 +117,14 @@ static void sub_8086B38(HeartParticles *unk998)
 
     for (i = 0; i < NUM_HEARTS; i++) {
         if (unk998->unkC0 & j) {
-            sprite = &unk998->sprites[i];
-            sprite->x = Q_24_8_TO_INT(unk998->unkC4[i]) - gCamera.x;
-            sprite->y = Q_24_8_TO_INT(unk998->unkD4[i]) - gCamera.y;
+            s = &unk998->sprites[i];
+            s->x = Q_24_8_TO_INT(unk998->unkC4[i]) - gCamera.x;
+            s->y = Q_24_8_TO_INT(unk998->unkD4[i]) - gCamera.y;
 
-            if (sub_8004558(sprite) == 0) {
+            if (sub_8004558(s) == 0) {
                 unk998->unkC0 &= ~(1 << i);
             } else {
-                sub_80051E8(sprite);
+                sub_80051E8(s);
             }
         }
         j <<= 1;
@@ -133,7 +133,7 @@ static void sub_8086B38(HeartParticles *unk998)
 
 static void sub_8086BE8(u8 i)
 {
-    Sprite *sprite;
+    Sprite *s;
     HeartParticles *unk998 = TaskGetStructPtr(gCurTask);
 
     unk998->unkC4[i] = gPlayer.x;
@@ -147,18 +147,18 @@ static void sub_8086BE8(u8 i)
         unk998->unkD4[3] -= 0x800;
     }
 
-    sprite = &unk998->sprites[i];
-    sprite->prevVariant = -1;
-    sprite->x = Q_24_8_TO_INT(unk998->unkC4[i]) - gCamera.x;
-    sprite->y = Q_24_8_TO_INT(unk998->unkD4[i]) - gCamera.y;
+    s = &unk998->sprites[i];
+    s->prevVariant = -1;
+    s->x = Q_24_8_TO_INT(unk998->unkC4[i]) - gCamera.x;
+    s->y = Q_24_8_TO_INT(unk998->unkD4[i]) - gCamera.y;
 
     if (GRAVITY_IS_INVERTED) {
-        sprite->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+        s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
     } else {
-        sprite->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
+        s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
     }
 
-    sub_8004558(sprite);
+    sub_8004558(s);
     unk998->unkC0 |= (1 << i);
 }
 

@@ -95,7 +95,7 @@ void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         = TaskCreate(Task_LightBridgeInactive, sizeof(Sprite_LightBridge), 0x2010, 0,
                      TaskDestructor_InteractableTecBaseLightBridge);
     Sprite_LightBridge *lightBridge = TaskGetStructPtr(t);
-    Sprite *sprite;
+    Sprite *s;
     lightBridge->type = me->d.uData[0];
     lightBridge->unk6C = me->d.uData[1];
     lightBridge->active = FALSE;
@@ -110,20 +110,20 @@ void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     lightBridge->vram = vram;
 
     for (i = 0; i < NUM_BRIDGE_SPRITES; i++) {
-        sprite = &lightBridge->sprites[i];
-        sprite->unk1A = 0x480;
-        sprite->graphics.size = 0;
-        sprite->animCursor = 0;
-        sprite->unk1C = 0;
-        sprite->prevVariant = -1;
-        sprite->unk22 = 0x10;
-        sprite->palId = 0;
-        sprite->hitboxes[0].index = -1;
-        sprite->unk10 = 0x2000;
-        sprite->graphics.anim = sBridgeSprites[i][0];
-        sprite->variant = sBridgeSprites[i][1];
-        sprite->graphics.dest = vram;
-        sub_8004558(sprite);
+        s = &lightBridge->sprites[i];
+        s->unk1A = 0x480;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0x2000;
+        s->graphics.anim = sBridgeSprites[i][0];
+        s->variant = sBridgeSprites[i][1];
+        s->graphics.dest = vram;
+        sub_8004558(s);
         vram += sBridgeSprites[i][2] * TILE_SIZE_4BPP;
     }
 
@@ -157,7 +157,7 @@ static void Task_LightBridgeActive(void)
 
 static void RenderStraightBridge(Sprite_LightBridge *lightBridge)
 {
-    Sprite *sprite = &lightBridge->sprites[1];
+    Sprite *s = &lightBridge->sprites[1];
     s32 posX = lightBridge->posX;
     s32 cameraX = gCamera.x;
 
@@ -170,9 +170,9 @@ static void RenderStraightBridge(Sprite_LightBridge *lightBridge)
          x <= maxX && x <= 246; // x <= (BRIDGE_SEGMENT_WIDTH * 20.5)
          x += BRIDGE_SEGMENT_WIDTH, i++) {
         if ((i & 1) && x > 5) {
-            sprite->x = x;
-            sprite->y = y;
-            sub_80051E8(sprite);
+            s->x = x;
+            s->y = y;
+            sub_80051E8(s);
         }
     }
 }
@@ -186,7 +186,7 @@ static void RenderCurvedBridge(Sprite_LightBridge *lightBridge)
 {
 #endif
     u8 i;
-    Sprite *sprite;
+    Sprite *s;
     s32 posX, posY;
     s32 cameraX, cameraY, temp;
     s16 x, y;
@@ -203,10 +203,10 @@ static void RenderCurvedBridge(Sprite_LightBridge *lightBridge)
     y = posY;
 
     for (i = (gUnknown_03005590 >> 1) & 1; i < 12; i += 2) {
-        sprite = &lightBridge->sprites[sCurvedBridgePositions[i][2]];
-        sprite->x = x + sCurvedBridgePositions[i][0];
-        sprite->y = y + sCurvedBridgePositions[i][1];
-        sub_80051E8(sprite);
+        s = &lightBridge->sprites[sCurvedBridgePositions[i][2]];
+        s->x = x + sCurvedBridgePositions[i][0];
+        s->y = y + sCurvedBridgePositions[i][1];
+        sub_80051E8(s);
     }
 }
 

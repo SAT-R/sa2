@@ -125,40 +125,40 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         ringType = DASH_RING__TYPE_TECHNO_BASE;
 
     {
-        Sprite *s1 = &ring->s1;
-        s1->unk1A = 0x180;
-        s1->graphics.size = 0;
-        s1->animCursor = 0;
-        s1->unk1C = 0;
+        Sprite *s = &ring->s1;
+        s->unk1A = 0x180;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
 
-        s1->prevVariant = -1;
-        s1->unk22 = 0x10;
-        s1->palId = 0;
-        s1->hitboxes[0].index = -1;
-        s1->unk10 = 0x2000;
-        s1->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][0][0];
-        s1->variant = sAnimInfoDashRing[ringType][ring->orientation][0][1];
-        s1->graphics.dest
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0x2000;
+        s->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][0][0];
+        s->variant = sAnimInfoDashRing[ringType][ring->orientation][0][1];
+        s->graphics.dest
             = VramMalloc(sAnimInfoDashRing[ringType][ring->orientation][0][2]);
-        s1->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][0][3];
+        s->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][0][3];
     }
     {
-        Sprite *s2 = &ring->s2;
-        s2->unk1A = 0x480;
-        s2->graphics.size = 0;
-        s2->animCursor = 0;
-        s2->unk1C = 0;
+        Sprite *s = &ring->s2;
+        s->unk1A = 0x480;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
 
-        s2->prevVariant = -1;
-        s2->unk22 = 0x10;
-        s2->palId = 0;
-        s2->hitboxes[0].index = -1;
-        s2->unk10 = 0x2000;
-        s2->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][1][0];
-        s2->variant = sAnimInfoDashRing[ringType][ring->orientation][1][1];
-        s2->graphics.dest
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0x2000;
+        s->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][1][0];
+        s->variant = sAnimInfoDashRing[ringType][ring->orientation][1][1];
+        s->graphics.dest
             = VramMalloc(sAnimInfoDashRing[ringType][ring->orientation][1][2]);
-        s2->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][1][3];
+        s->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][1][3];
     }
     DashRing_UpdateScreenPos(ring);
     sub_8004558(&ring->s1);

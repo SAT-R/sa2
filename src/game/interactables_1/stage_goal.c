@@ -57,8 +57,8 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk1A = 0x100;
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
     s->palId = FALSE;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;

@@ -1,12 +1,13 @@
 #include "core.h"
+#include "malloc_vram.h"
+#include "task.h"
+#include "lib/m4a.h"
 #include "game/game_over.h"
 #include "game/game.h"
 #include "game/time_attack/lobby.h"
 #include "game/title_screen.h"
-#include "task.h"
 #include "game/screen_transition.h"
-#include "lib/m4a.h"
-#include "malloc_vram.h"
+
 #include "constants/songs.h"
 
 typedef struct {
@@ -82,7 +83,7 @@ void sub_8036780(u8 unkC)
 {
     struct Task *t;
     GameOverScreen *screen;
-    Sprite *sprite;
+    Sprite *s;
     struct TransitionState *transition;
 
     gWinRegs[4] = 0;
@@ -112,40 +113,40 @@ void sub_8036780(u8 unkC)
         screen->unk6C = 0xB4;
     }
 
-    sprite = &screen->unkC;
-    sprite->graphics.dest = VramMalloc(0x40);
+    s = &screen->unkC;
+    s->graphics.dest = VramMalloc(0x40);
     if (unkC & 1) {
-        sprite->graphics.anim = 731;
-        sprite->variant = 0;
+        s->graphics.anim = 731;
+        s->variant = 0;
     } else {
-        sprite->graphics.anim = 731;
-        sprite->variant = 4;
+        s->graphics.anim = 731;
+        s->variant = 4;
     }
-    sprite->prevVariant = -1;
-    sprite->x = 0;
-    sprite->y = 80;
-    sprite->unk1A = 0xC0;
-    sprite->graphics.size = 0;
-    sprite->unk1C = 0;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk10 = 0;
-    sub_8004558(sprite);
+    s->prevVariant = -1;
+    s->x = 0;
+    s->y = 80;
+    s->unk1A = 0xC0;
+    s->graphics.size = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
+    sub_8004558(s);
 
-    sprite = &screen->unk3C;
-    sprite->graphics.dest = VramMalloc(0x40);
-    sprite->graphics.anim = 731;
-    sprite->variant = 1;
-    sprite->prevVariant = -1;
-    sprite->x = 0;
-    sprite->y = 80;
-    sprite->graphics.size = 0;
-    sprite->unk1A = 0xC0;
-    sprite->unk1C = 0;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk10 = 0;
-    sub_8004558(sprite);
+    s = &screen->unk3C;
+    s->graphics.dest = VramMalloc(0x40);
+    s->graphics.anim = 731;
+    s->variant = 1;
+    s->prevVariant = -1;
+    s->x = 0;
+    s->y = 80;
+    s->graphics.size = 0;
+    s->unk1A = 0xC0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
+    sub_8004558(s);
 
     transition = &screen->unk0;
     transition->unk0 = 1;
@@ -162,7 +163,7 @@ void sub_80369D8(void);
 void sub_8036918(void)
 {
     GameOverScreen *screen = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &screen->unkC;
+    Sprite *s = &screen->unkC;
     Sprite *sprite2 = &screen->unk3C;
 
     gBldRegs.bldCnt = 0x3FEF;
@@ -187,10 +188,10 @@ void sub_8036918(void)
 
     if (screen->unk6C >= 0x3D) {
         s16 temp = screen->unk6C + 60;
-        sprite->x = temp;
+        s->x = temp;
         sprite2->x = temp;
     } else {
-        sprite->x = 120;
+        s->x = 120;
         sprite2->x = 120;
     }
 
@@ -240,7 +241,7 @@ void sub_8036BEC(GameOverScreen *screen);
 void sub_8036A44(void)
 {
     GameOverScreen *screen = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &screen->unkC;
+    Sprite *s = &screen->unkC;
     Sprite *sprite2 = &screen->unk3C;
 
     gBldRegs.bldCnt = 0x3FEF;
@@ -325,32 +326,32 @@ void sub_8036B70(void)
 
 void sub_8036BD4(GameOverScreen *screen)
 {
-    Sprite *sprite = &screen->unkC;
+    Sprite *s = &screen->unkC;
     Sprite *sprite2 = &screen->unk3C;
-    sub_80051E8(sprite);
+    sub_80051E8(s);
     sub_80051E8(sprite2);
 }
 
 void sub_8036BEC(GameOverScreen *screen)
 {
-    Sprite *sprite = &screen->unkC;
+    Sprite *s = &screen->unkC;
     Sprite *sprite2 = &screen->unk3C;
     if (screen->unk6C > 140) {
         s16 temp = (screen->unk6C * 2) - 160;
-        sprite->x = temp;
+        s->x = temp;
         sprite2->x = temp;
     } else if (screen->unk6C > 40) {
-        sprite->x = 120;
+        s->x = 120;
         sprite2->x = 120;
     } else if (screen->unk6C > 0) {
         s16 temp = 120 - ((40 - screen->unk6C) * 2);
-        sprite->x = temp;
+        s->x = temp;
         sprite2->x = temp;
     } else {
         return;
     }
 
-    sub_80051E8(sprite);
+    sub_80051E8(s);
     sub_80051E8(sprite2);
 }
 

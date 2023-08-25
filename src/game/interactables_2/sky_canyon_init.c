@@ -36,9 +36,9 @@ struct Task *sub_80807CC(void)
     spring->unk1A = 0x480;
     spring->graphics.size = 0;
     spring->animCursor = 0;
-    spring->unk1C = 0;
+    spring->timeUntilNextFrame = 0;
     spring->prevVariant = -1;
-    spring->unk22 = 0x10;
+    spring->animSpeed = 0x10;
     spring->palId = 0;
     spring->hitboxes[0].index = -1;
     spring->unk10 = 0x2000;
@@ -51,9 +51,9 @@ struct Task *sub_80807CC(void)
     propellor->unk1A = 0x480;
     propellor->graphics.size = 0;
     propellor->animCursor = 0;
-    propellor->unk1C = 0;
+    propellor->timeUntilNextFrame = 0;
     propellor->prevVariant = -1;
-    propellor->unk22 = 0x10;
+    propellor->animSpeed = 0x10;
     propellor->palId = 0;
     propellor->hitboxes[0].index = -1;
     propellor->unk10 = 0x2000;

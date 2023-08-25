@@ -12,7 +12,7 @@
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite;
+    Sprite s;
     s32 x;
     s32 y;
     s32 unk44;
@@ -54,7 +54,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
                                u8 spriteY)
 {
     u32 i;
-    Sprite *sprite;
+    Sprite *s;
     struct Task *t = TaskCreate(Task_FlyingHandle, sizeof(Sprite_FlyingHandle), 0x2010,
                                 0, TaskDestructor_FlyingHandle);
     Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(t);
@@ -86,20 +86,20 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
         flyingHandle->unk6C[i][1] = flyingHandle->unk48;
     }
 
-    sprite = &flyingHandle->sprite;
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->animCursor = 0;
-    sprite->unk1C = 0;
-    sprite->prevVariant = -1;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->hitboxes[0].index = -1;
-    sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
-    sprite->graphics.dest = VramMalloc(FLYING_HANDLE_VRAM_TILES);
-    sprite->graphics.anim = SA2_ANIM_FLYING_HANDLE;
-    sprite->variant = 0;
-    sub_8004558(sprite);
+    s = &flyingHandle->s;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->graphics.dest = VramMalloc(FLYING_HANDLE_VRAM_TILES);
+    s->graphics.anim = SA2_ANIM_FLYING_HANDLE;
+    s->variant = 0;
+    sub_8004558(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
@@ -201,17 +201,17 @@ static void sub_807F4F0(Sprite_FlyingHandle *flyingHandle)
 
 static void sub_807F5C0(Sprite_FlyingHandle *flyingHandle)
 {
-    Sprite *sprite = &flyingHandle->sprite;
+    Sprite *s = &flyingHandle->s;
     if (IS_MULTI_PLAYER) {
-        sprite->x = Q_24_8_TO_INT(flyingHandle->unk6C[1][0]) - gCamera.x;
-        sprite->y = Q_24_8_TO_INT(flyingHandle->unk6C[1][1]) - gCamera.y;
+        s->x = Q_24_8_TO_INT(flyingHandle->unk6C[1][0]) - gCamera.x;
+        s->y = Q_24_8_TO_INT(flyingHandle->unk6C[1][1]) - gCamera.y;
     } else {
-        sprite->x = Q_24_8_TO_INT(flyingHandle->unk44 + flyingHandle->unk4C) - gCamera.x;
-        sprite->y = Q_24_8_TO_INT(flyingHandle->unk48 + flyingHandle->unk50) - gCamera.y;
+        s->x = Q_24_8_TO_INT(flyingHandle->unk44 + flyingHandle->unk4C) - gCamera.x;
+        s->y = Q_24_8_TO_INT(flyingHandle->unk48 + flyingHandle->unk50) - gCamera.y;
     }
 
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    sub_8004558(s);
+    sub_80051E8(s);
 }
 
 static bool32 IsPlayerTouching(Sprite_FlyingHandle *flyingHandle)
@@ -274,7 +274,7 @@ static void sub_807F6F0(void)
 static void TaskDestructor_FlyingHandle(struct Task *t)
 {
     Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(t);
-    VramFree(flyingHandle->sprite.graphics.dest);
+    VramFree(flyingHandle->s.graphics.dest);
 }
 
 static void sub_807F770(UNUSED Sprite_FlyingHandle *flyingHandle)

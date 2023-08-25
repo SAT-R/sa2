@@ -155,9 +155,9 @@ struct Task *CreateStageUI(void)
         s->graphics.anim = sAnimsAsciiDigits[i][0];
         s->variant = sAnimsAsciiDigits[i][1];
         s->animCursor = 0;
-        s->unk1C = 0;
+        s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->unk22 = 0x10;
+        s->animSpeed = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(18, 1);
@@ -180,9 +180,9 @@ struct Task *CreateStageUI(void)
         s->unk1A = 0x100;
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->unk1C = 0;
+        s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->unk22 = 0x10;
+        s->animSpeed = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = 0;
@@ -207,9 +207,9 @@ struct Task *CreateStageUI(void)
     s->unk1A = 0xC0;
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->unk1C = 0;
+    s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->unk22 = 0x10;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
@@ -226,9 +226,9 @@ struct Task *CreateStageUI(void)
     s->unk1A = 0;
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->unk1C = 0;
+    s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->unk22 = 0x10;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
     s->hitboxes[0].index = -1;

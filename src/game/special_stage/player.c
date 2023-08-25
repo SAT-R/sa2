@@ -10,9 +10,9 @@
 
 void sub_806D788(void);
 void sub_806D2C8(void);
-void sub_806D548(Sprite *element, void *, s16, u8, const struct UNK_80DF670 *);
-void sub_806D7D0(Sprite *element, s16, s16, const struct UNK_80DF670 *);
-void sub_806D830(Sprite *element, s16, s16, const struct UNK_80DF670 *);
+void sub_806D548(Sprite *s, void *, s16, u8, const struct UNK_80DF670 *);
+void sub_806D7D0(Sprite *s, s16, s16, const struct UNK_80DF670 *);
+void sub_806D830(Sprite *s, s16, s16, const struct UNK_80DF670 *);
 
 void sub_806D5CC(void);
 void sub_806D388(void);
@@ -104,27 +104,27 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
     sub_806D548(&player->unk38, player->unk9C, stage->unk5CC, 10, &gUnknown_080DF668);
 
     {
-        Sprite *element = &player->roboArrow;
+        Sprite *s = &player->roboArrow;
         u16 *affine = &gOamBuffer[120].all.affineParam;
 
-        element->graphics.dest = player->unkA0;
-        element->graphics.size = 0;
-        element->graphics.anim = SA2_ANIM_SP_STAGE_ARROW;
-        element->unk10 = 0x107E;
-        element->x = (DISPLAY_WIDTH / 2);
-        element->y = (DISPLAY_HEIGHT / 2);
-        element->unk1A = 0;
-        element->unk1C = 0;
-        element->prevAnim = -1;
+        s->graphics.dest = player->unkA0;
+        s->graphics.size = 0;
+        s->graphics.anim = SA2_ANIM_SP_STAGE_ARROW;
+        s->unk10 = 0x107E;
+        s->x = (DISPLAY_WIDTH / 2);
+        s->y = (DISPLAY_HEIGHT / 2);
+        s->unk1A = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevAnim = -1;
 
-        element->variant = variant;
-        element->prevVariant = -1;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->hitboxes[0].index = -1;
+        s->variant = variant;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
 
         if (stage->paused == FALSE) {
-            sub_8004558(element);
+            sub_8004558(s);
         }
 
         *affine = 0x100;
@@ -298,7 +298,7 @@ void sub_806D4E4(void)
     sub_806D7D0(unk8, player->animSpeed >> 1, stage->unk5CC, unkC4);
 }
 
-void sub_806D548(Sprite *element, void *vram, s16 a, u8 b, const struct UNK_80DF670 *c4)
+void sub_806D548(Sprite *s, void *vram, s16 a, u8 b, const struct UNK_80DF670 *c4)
 {
     u32 unk10 = 0x1000;
     if (c4->unk7 & 1) {
@@ -309,21 +309,21 @@ void sub_806D548(Sprite *element, void *vram, s16 a, u8 b, const struct UNK_80DF
         unk10 |= 0x800;
     }
 
-    element->graphics.dest = vram;
-    element->graphics.size = 0;
-    element->graphics.anim = c4->anim;
-    element->unk10 = unk10;
-    element->x = (DISPLAY_WIDTH / 2);
-    element->y = a;
-    element->unk1A = b << 6;
-    element->unk1C = 0;
-    element->prevAnim = 0xffff;
-    element->variant = c4->variant;
-    element->prevVariant = -1;
-    element->unk22 = c4->unk6;
-    element->palId = 0;
-    element->hitboxes[0].index = -1;
-    sub_8004558(element);
+    s->graphics.dest = vram;
+    s->graphics.size = 0;
+    s->graphics.anim = c4->anim;
+    s->unk10 = unk10;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = a;
+    s->unk1A = b << 6;
+    s->timeUntilNextFrame = 0;
+    s->prevAnim = 0xffff;
+    s->variant = c4->variant;
+    s->prevVariant = -1;
+    s->animSpeed = c4->unk6;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    sub_8004558(s);
 }
 
 UNUSED void sub_806D5CC(void) { }
@@ -396,8 +396,7 @@ void sub_806D788(void)
     }
 }
 
-void sub_806D7D0(Sprite *element, s16 animSpeed, s16 spriteY,
-                 const struct UNK_80DF670 *anim)
+void sub_806D7D0(Sprite *s, s16 animSpeed, s16 spriteY, const struct UNK_80DF670 *anim)
 {
     u32 unk10 = 0x1000;
     if (anim->unk7 & 1) {
@@ -407,16 +406,16 @@ void sub_806D7D0(Sprite *element, s16 animSpeed, s16 spriteY,
     if (anim->unk7 & 2) {
         unk10 |= 0x800;
     }
-    element->graphics.anim = anim->anim;
-    element->unk10 = unk10;
-    element->y = spriteY;
-    element->variant = anim->variant;
+    s->graphics.anim = anim->anim;
+    s->unk10 = unk10;
+    s->y = spriteY;
+    s->variant = anim->variant;
 
-    element->unk22 = animSpeed != -1 ? animSpeed : 0x10;
-    sub_8004558(element);
+    s->animSpeed = animSpeed != -1 ? animSpeed : 0x10;
+    sub_8004558(s);
 }
 
-void sub_806D830(Sprite *element, s16 a, s16 spriteY, const struct UNK_80DF670 *anim)
+void sub_806D830(Sprite *s, s16 a, s16 spriteY, const struct UNK_80DF670 *anim)
 {
     u8 unk22;
     u32 unk10 = 0x1100;
@@ -427,11 +426,11 @@ void sub_806D830(Sprite *element, s16 a, s16 spriteY, const struct UNK_80DF670 *
     if (anim->unk7 & 2) {
         unk10 |= 0x800;
     }
-    element->graphics.anim = anim->anim;
-    element->unk10 = unk10;
-    element->y = spriteY;
-    element->variant = anim->variant;
+    s->graphics.anim = anim->anim;
+    s->unk10 = unk10;
+    s->y = spriteY;
+    s->variant = anim->variant;
 
-    element->unk22 = a != -1 ? a : 0x10;
-    sub_8004558(element);
+    s->animSpeed = a != -1 ? a : 0x10;
+    sub_8004558(s);
 }

@@ -141,15 +141,13 @@ typedef struct {
 
     /* 0x1A */ u16 unk1A; // might be a bitfield?
 
-    /* 0x1C */ s16 unk1C;
+    /* 0x1C */ s16 timeUntilNextFrame; // Q_8_8, in frames
     /* 0x1E */ u16 prevAnim;
-
     /* 0x20 */ u8 variant;
-
     /* 0x21 */ u8 prevVariant;
 
-    // something to do with animation speed
-    /* 0x22 */ u8 unk22;
+    // 0x08 = 0.5x, 0x10 = 1.0x, 0x20 = 2.0x ...
+    /* 0x22 */ u8 animSpeed;
 
     /* 0x23 */ u8 oamBaseIndex;
     /* 0x24 */ u8 numSubFrames;
@@ -220,7 +218,7 @@ void UpdateBgAnimationTiles(Background *);
         (_sprite)->prevVariant = (_sprite)->variant;                                    \
         (_sprite)->prevAnim = (_sprite)->graphics.anim;                                 \
         (_sprite)->animCursor = 0;                                                      \
-        (_sprite)->unk1C = 0;                                                           \
+        (_sprite)->timeUntilNextFrame = 0;                                              \
         (_sprite)->unk10 &= ~0x4000;                                                    \
     }
 
@@ -233,9 +231,9 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->x = 0;                                                                     \
     _sprite->y = 0;                                                                     \
     _sprite->animCursor = 0;                                                            \
-    _sprite->unk1C = 0;                                                                 \
+    _sprite->timeUntilNextFrame = 0;                                                    \
     _sprite->prevVariant = -1;                                                          \
-    _sprite->unk22 = 0x10;                                                              \
+    _sprite->animSpeed = 0x10;                                                          \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;                                                    \
     _sprite->unk10 = SPRITE_FLAG(PRIORITY, _priority);
@@ -248,9 +246,9 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
     _sprite->animCursor = 0;                                                            \
-    _sprite->unk1C = 0;                                                                 \
+    _sprite->timeUntilNextFrame = 0;                                                    \
     _sprite->prevVariant = -1;                                                          \
-    _sprite->unk22 = 0x10;                                                              \
+    _sprite->animSpeed = 0x10;                                                          \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;                                                    \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
@@ -261,9 +259,9 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
     _sprite->animCursor = 0;                                                            \
-    _sprite->unk1C = 0;                                                                 \
+    _sprite->timeUntilNextFrame = 0;                                                    \
     _sprite->prevVariant = -1;                                                          \
-    _sprite->unk22 = 0x10;                                                              \
+    _sprite->animSpeed = 0x10;                                                          \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;                                                    \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
@@ -272,9 +270,9 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
     _sprite->animCursor = 0;                                                            \
-    _sprite->unk1C = 0;                                                                 \
+    _sprite->timeUntilNextFrame = 0;                                                    \
     _sprite->prevVariant = -1;                                                          \
-    _sprite->unk22 = 0x10;                                                              \
+    _sprite->animSpeed = 0x10;                                                          \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;                                                    \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
@@ -285,9 +283,9 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
     _sprite->animCursor = 0;                                                            \
-    _sprite->unk1C = 0;                                                                 \
+    _sprite->timeUntilNextFrame = 0;                                                    \
     _sprite->prevVariant = -1;                                                          \
-    _sprite->unk22 = 0x10;                                                              \
+    _sprite->animSpeed = 0x10;                                                          \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;
 

@@ -104,9 +104,9 @@ static void CreateEntity_SmallPropeller(MapEntity *me, u16 spriteRegionX,
     s->unk1A = 0x480;
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->unk1C = 0;
+    s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->unk22 = 0x10;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
 
@@ -238,7 +238,7 @@ static void UpdateFanSpeed(Sprite_SmallPropeller *prop)
             prop->fanSpeed = PROP_SPEED_MAX - temp;
         }
 
-        s->unk22 = prop->fanSpeed >> 4;
+        s->animSpeed = prop->fanSpeed >> 4;
         s->graphics.anim = SA2_ANIM_SMALL_PROPELLOR;
         s->variant = 2;
 

@@ -13,7 +13,7 @@
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite;
+    Sprite s;
     u8 type;
     u8 initialTouchAngle;
     u8 rotationTarget;
@@ -43,7 +43,7 @@ void CreateEntity_SmallSpinnyWindmill(MapEntity *me, u16 spriteRegionX,
         = TaskCreate(Task_SmallSpinnyWindmill, 0x48, 0x2010, 0,
                      TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill);
     Sprite_SmallWindmill *windmill = TaskGetStructPtr(t);
-    Sprite *sprite;
+    Sprite *s;
     windmill->type = me->d.uData[0];
 
     windmill->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -55,27 +55,27 @@ void CreateEntity_SmallSpinnyWindmill(MapEntity *me, u16 spriteRegionX,
     windmill->base.spriteX = me->x;
     windmill->base.spriteY = spriteY;
 
-    sprite = &windmill->sprite;
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->animCursor = 0;
-    sprite->unk1C = 0;
-    sprite->prevVariant = -1;
-    sprite->unk22 = 16;
-    sprite->palId = 0;
-    sprite->hitboxes[0].index = -1;
-    sprite->unk10 = 0x2000;
-    sprite->graphics.dest = VramMalloc(WINDMILL_NUM_TILES);
-    sprite->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
-    sprite->variant = 2;
-    sub_8004558(sprite);
+    s = &windmill->s;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 16;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
+    s->graphics.dest = VramMalloc(WINDMILL_NUM_TILES);
+    s->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
+    s->variant = 2;
+    sub_8004558(s);
 
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void StartSpinSequence(Sprite_SmallWindmill *windmill)
 {
-    Sprite *sprite = &windmill->sprite;
+    Sprite *s = &windmill->s;
     s8 spriteX;
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_400000;
@@ -111,20 +111,20 @@ static void StartSpinSequence(Sprite_SmallWindmill *windmill)
         case 3:
         case 5:
         case 7:
-            sprite->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
-            sprite->variant = 0;
+            s->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
+            s->variant = 0;
             break;
         case 2:
         case 4:
         case 6:
         case 8:
-            sprite->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
-            sprite->variant = 1;
+            s->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
+            s->variant = 1;
             break;
     }
-    sprite->unk22 = 32;
+    s->animSpeed = 32;
 
-    sub_8004558(&windmill->sprite);
+    sub_8004558(&windmill->s);
     gCurTask->main = Task_RotateSequence;
 }
 
@@ -271,16 +271,16 @@ static void Task_SmallSpinnyWindmill(void)
 static void Task_RotateSequence(void)
 {
     Sprite_SmallWindmill *windmill = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &windmill->sprite;
+    Sprite *s = &windmill->s;
     bool32 finished = RotateWindmill(windmill);
     if (finished) {
         HandleRotationComplete(windmill);
     }
 
-    if (sprite->unk10 & 0x4000) {
-        sprite->unk10 &= ~0x4000;
-        sprite->prevAnim = -1;
-        sprite->prevVariant = -1;
+    if (s->unk10 & 0x4000) {
+        s->unk10 &= ~0x4000;
+        s->prevAnim = -1;
+        s->prevVariant = -1;
     }
     RenderWindmill(windmill);
 }
@@ -288,15 +288,15 @@ static void Task_RotateSequence(void)
 static void SlowWindmillToStop(void)
 {
     Sprite_SmallWindmill *windmill = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &windmill->sprite;
+    Sprite *s = &windmill->s;
 
-    if (sprite->unk10 & 0x4000) {
-        sprite->unk10 &= ~0x4000;
-        sprite->prevAnim = -1;
-        sprite->prevVariant = -1;
+    if (s->unk10 & 0x4000) {
+        s->unk10 &= ~0x4000;
+        s->prevAnim = -1;
+        s->prevVariant = -1;
 
-        sprite->unk22 -= 8;
-        if (sprite->unk22 == 0) {
+        s->animSpeed -= 8;
+        if (s->animSpeed == 0) {
             ResetWindmill(windmill);
         }
     }
@@ -306,29 +306,29 @@ static void SlowWindmillToStop(void)
 static void TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill(struct Task *t)
 {
     Sprite_SmallWindmill *windmill = TaskGetStructPtr(t);
-    VramFree(windmill->sprite.graphics.dest);
+    VramFree(windmill->s.graphics.dest);
 }
 
 static void ResetWindmill(Sprite_SmallWindmill *windmill)
 {
-    Sprite *sprite = &windmill->sprite;
-    sprite->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
-    sprite->variant = 2;
-    sprite->unk22 = 16;
-    sub_8004558(sprite);
+    Sprite *s = &windmill->s;
+    s->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
+    s->variant = 2;
+    s->animSpeed = 16;
+    sub_8004558(s);
     gCurTask->main = Task_SmallSpinnyWindmill;
 }
 
 static void RenderWindmill(Sprite_SmallWindmill *windmill)
 {
-    Sprite *sprite = &windmill->sprite;
-    sub_8004558(sprite);
-    sprite->x = windmill->x - gCamera.x;
-    sprite->y = windmill->y - gCamera.y;
-    sprite->unk10 &= ~0xC00;
-    sub_80051E8(sprite);
-    sprite->unk10 |= 0xC00;
-    sub_80051E8(sprite);
+    Sprite *s = &windmill->s;
+    sub_8004558(s);
+    s->x = windmill->x - gCamera.x;
+    s->y = windmill->y - gCamera.y;
+    s->unk10 &= ~0xC00;
+    sub_80051E8(s);
+    s->unk10 |= 0xC00;
+    sub_80051E8(s);
 }
 
 static bool32 ShouldDespawn(Sprite_SmallWindmill *windmill)

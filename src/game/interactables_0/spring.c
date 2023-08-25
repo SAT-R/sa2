@@ -116,10 +116,10 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     s->unk1A = 0x480;
     s->graphics.size = springKind;
     s->animCursor = springKind;
-    s->unk1C = springKind;
+    s->timeUntilNextFrame = springKind;
 
     s->prevVariant = -1;
-    s->unk22 = 0x10;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x2200;

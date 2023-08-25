@@ -136,31 +136,31 @@ void CreateMissingChaosEmaraldsCutScene(void)
     scene->unkC4 = OBJ_VRAM0;
 
     {
-        Sprite *element;
-        element = &scene->unk80;
-        element->graphics.dest = (void *)OBJ_VRAM0;
+        Sprite *s;
+        s = &scene->unk80;
+        s->graphics.dest = (void *)OBJ_VRAM0;
         if (scene->unkBD < 4) {
             scene->unkC4 += gUnknown_080E1CA0[0].numTiles * TILE_SIZE_4BPP;
-            element->graphics.anim = gUnknown_080E1CA0[0].anim;
-            element->variant = gUnknown_080E1CA0[0].variant;
-            element->y = 85;
+            s->graphics.anim = gUnknown_080E1CA0[0].anim;
+            s->variant = gUnknown_080E1CA0[0].variant;
+            s->y = 85;
         } else {
             scene->unkC4 += 0xA00;
-            element->graphics.anim = gUnknown_080E1CA0[1].anim;
-            element->variant = gUnknown_080E1CA0[1].variant;
-            element->y = 90;
+            s->graphics.anim = gUnknown_080E1CA0[1].anim;
+            s->variant = gUnknown_080E1CA0[1].variant;
+            s->y = 90;
         }
-        element->prevVariant = -1;
-        element->x = (DISPLAY_WIDTH / 2);
-        element->unk1A = 0;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->hitboxes[0].index = -1;
-        sub_8004558(element);
+        s->prevVariant = -1;
+        s->x = (DISPLAY_WIDTH / 2);
+        s->unk1A = 0;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        sub_8004558(s);
     }
 
     {
@@ -321,12 +321,12 @@ void TaskDestructor_80945A0(struct Task *t)
 void sub_80945A4(struct MissingChaosEmaraldsCutScene *scene)
 {
     if (scene->unkBD != 0) {
-        Sprite *element = &scene->unk80;
+        Sprite *s = &scene->unk80;
         if (scene->unkBD > 3 && scene->unkBE != 0) {
-            element->graphics.anim = gUnknown_080E1CA0[2].anim;
-            element->variant = gUnknown_080E1CA0[2].variant;
+            s->graphics.anim = gUnknown_080E1CA0[2].anim;
+            s->variant = gUnknown_080E1CA0[2].variant;
         }
-        sub_8004558(element);
-        sub_80051E8(element);
+        sub_8004558(s);
+        sub_80051E8(s);
     }
 }

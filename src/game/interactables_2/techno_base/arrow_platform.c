@@ -15,8 +15,8 @@
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite1;
-    Sprite sprite2;
+    Sprite s1;
+    Sprite s2;
     s32 x;
     s32 y;
     s32 unk74;
@@ -49,7 +49,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
                         u8 param)
 {
     s32 i;
-    Sprite *sprite;
+    Sprite *s;
     struct Task *t
         = TaskCreate(sub_807AA68, sizeof(Sprite_IA75), 0x2010, 0, sub_807AB04);
     Sprite_IA75 *ia75 = TaskGetStructPtr(t);
@@ -90,35 +90,35 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     ia75->x = TO_WORLD_POS(me->x, spriteRegionX);
     ia75->y = TO_WORLD_POS(me->y, spriteRegionY);
 
-    sprite = &ia75->sprite1;
-    sprite->unk1A = 0x4C0;
-    sprite->graphics.size = 0;
-    sprite->animCursor = 0;
-    sprite->unk1C = 0;
-    sprite->prevVariant = -1;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->hitboxes[0].index = -1;
-    sprite->unk10 = 0x2000;
-    sprite->graphics.dest = VramMalloc(8);
-    sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN;
-    sprite->variant = 2;
-    sub_8004558(sprite);
+    s = &ia75->s1;
+    s->unk1A = 0x4C0;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->graphics.dest = VramMalloc(8);
+    s->graphics.anim = SA2_ANIM_ARROW_SCREEN;
+    s->variant = 2;
+    sub_8004558(s);
 
-    sprite = &ia75->sprite2;
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->animCursor = 0;
-    sprite->unk1C = 0;
-    sprite->prevVariant = -1;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->hitboxes[0].index = -1;
-    sprite->unk10 = 0x2000;
-    sprite->graphics.dest = (void *)BORDER_VRAM_ADDR;
-    sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN_BORDER;
-    sprite->variant = 0;
-    sub_8004558(sprite);
+    s = &ia75->s2;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->graphics.dest = (void *)BORDER_VRAM_ADDR;
+    s->graphics.anim = SA2_ANIM_ARROW_SCREEN_BORDER;
+    s->variant = 0;
+    sub_8004558(s);
 
     SET_MAP_ENTITY_INITIALIZED(me);
 }
@@ -172,13 +172,13 @@ static void sub_807A560(void)
         sub_807A73C(ia75);
     }
 
-    sub_8004558(&ia75->sprite1);
+    sub_8004558(&ia75->s1);
     sub_807A7F4(ia75);
 }
 
 static void sub_807A688(Sprite_IA75 *ia75)
 {
-    Sprite *sprite;
+    Sprite *s;
     ia75->unk7C = gPlayer.x - (Q_24_8(ia75->x) + ia75->unk74);
     ia75->unk80 = gPlayer.y - (Q_24_8(ia75->y) + ia75->unk78);
 
@@ -190,20 +190,20 @@ static void sub_807A688(Sprite_IA75 *ia75)
     gPlayer.rotation = 0;
     ia75->unk90 = 1;
 
-    sprite = &ia75->sprite1;
+    s = &ia75->s1;
 
     switch (ia75->unk94) {
         case 0:
-            sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN;
-            sprite->variant = 0;
+            s->graphics.anim = SA2_ANIM_ARROW_SCREEN;
+            s->variant = 0;
             break;
         case 1:
-            sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN;
-            sprite->variant = 0;
+            s->graphics.anim = SA2_ANIM_ARROW_SCREEN;
+            s->variant = 0;
             break;
         case 2:
-            sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN;
-            sprite->variant = 1;
+            s->graphics.anim = SA2_ANIM_ARROW_SCREEN;
+            s->variant = 1;
             break;
     }
     ia75->unk8C = 1;
@@ -213,10 +213,10 @@ static void sub_807A688(Sprite_IA75 *ia75)
 
 static void sub_807A73C(Sprite_IA75 *ia75)
 {
-    Sprite *sprite = &ia75->sprite1;
-    sprite->graphics.anim = SA2_ANIM_ARROW_SCREEN;
-    sprite->variant = 2;
-    sub_8004558(sprite);
+    Sprite *s = &ia75->s1;
+    s->graphics.anim = SA2_ANIM_ARROW_SCREEN;
+    s->variant = 2;
+    sub_8004558(s);
 
     if (PLAYER_IS_ALIVE && ia75->unk90) {
         gPlayer.moveState &= ~MOVESTATE_400000;
@@ -246,47 +246,47 @@ static void sub_807A73C(Sprite_IA75 *ia75)
 
 static void sub_807A7F4(Sprite_IA75 *ia75)
 {
-    Sprite *sprite = &ia75->sprite1;
+    Sprite *s = &ia75->s1;
     if (IS_MULTI_PLAYER) {
-        sprite->x = ia75->x + Q_24_8_TO_INT(ia75->unk98[1][0]) - gCamera.x;
-        sprite->y = ia75->y + Q_24_8_TO_INT(ia75->unk98[1][1]) - gCamera.y;
+        s->x = ia75->x + Q_24_8_TO_INT(ia75->unk98[1][0]) - gCamera.x;
+        s->y = ia75->y + Q_24_8_TO_INT(ia75->unk98[1][1]) - gCamera.y;
     } else {
-        sprite->x = ia75->x + Q_24_8_TO_INT(ia75->unk74) - gCamera.x;
-        sprite->y = ia75->y + Q_24_8_TO_INT(ia75->unk78) - gCamera.y;
+        s->x = ia75->x + Q_24_8_TO_INT(ia75->unk74) - gCamera.x;
+        s->y = ia75->y + Q_24_8_TO_INT(ia75->unk78) - gCamera.y;
     }
 
     if (ia75->unk8C != 0) {
         switch (ia75->unk94) {
             case 0:
-                sprite->unk10 &= ~(0x800 | 0x400);
-                sub_80051E8(&ia75->sprite1);
-                sprite->unk10 |= 0x800;
-                sub_80051E8(&ia75->sprite1);
+                s->unk10 &= ~(0x800 | 0x400);
+                sub_80051E8(&ia75->s1);
+                s->unk10 |= 0x800;
+                sub_80051E8(&ia75->s1);
                 break;
             case 1:
-                sprite->unk10 &= ~0x800;
-                sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-                sub_80051E8(&ia75->sprite1);
-                sprite->unk10 |= 0x800;
-                sub_80051E8(&ia75->sprite1);
+                s->unk10 &= ~0x800;
+                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                sub_80051E8(&ia75->s1);
+                s->unk10 |= 0x800;
+                sub_80051E8(&ia75->s1);
                 break;
             case 2:
-                sprite->unk10 &= ~(0x800 | 0x400);
-                sub_80051E8(&ia75->sprite1);
-                sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-                sub_80051E8(&ia75->sprite1);
+                s->unk10 &= ~(0x800 | 0x400);
+                sub_80051E8(&ia75->s1);
+                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                sub_80051E8(&ia75->s1);
                 break;
         }
     } else {
-        sprite->unk10 &= ~(0x800 | 0x400);
-        sub_80051E8(&ia75->sprite1);
-        sprite->unk10 |= 0x800;
-        sub_80051E8(&ia75->sprite1);
+        s->unk10 &= ~(0x800 | 0x400);
+        sub_80051E8(&ia75->s1);
+        s->unk10 |= 0x800;
+        sub_80051E8(&ia75->s1);
     }
 
-    ia75->sprite2.x = sprite->x;
-    ia75->sprite2.y = sprite->y;
-    sub_80051E8(&ia75->sprite2);
+    ia75->s2.x = s->x;
+    ia75->s2.y = s->y;
+    sub_80051E8(&ia75->s2);
 }
 
 static bool32 sub_807A920(Sprite_IA75 *ia75)
@@ -304,7 +304,7 @@ static bool32 sub_807A920(Sprite_IA75 *ia75)
 static u32 sub_807A99C(Sprite_IA75 *ia75)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp = sub_800CCB8(&ia75->sprite2, ia75->x + Q_24_8_TO_INT(ia75->unk74),
+        u32 temp = sub_800CCB8(&ia75->s2, ia75->x + Q_24_8_TO_INT(ia75->unk74),
                                ia75->y + Q_24_8_TO_INT(ia75->unk78), &gPlayer);
         if (temp != 0) {
             if (temp & 0x10000) {
@@ -376,7 +376,7 @@ static void sub_807AABC(void)
 static void sub_807AB04(struct Task *t)
 {
     Sprite_IA75 *ia75 = TaskGetStructPtr(t);
-    VramFree(ia75->sprite1.graphics.dest);
+    VramFree(ia75->s1.graphics.dest);
 }
 
 static void sub_807AB18(Sprite_IA75 *ia75)

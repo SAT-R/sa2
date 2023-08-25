@@ -27,8 +27,8 @@ struct Task *CreateSpindashDustEffect()
     s->variant = 0;
     s->prevVariant = -1;
     s->unk1A = 0x200;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 

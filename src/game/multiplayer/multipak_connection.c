@@ -112,8 +112,8 @@ void StartMultiPakConnect(void)
     s->unk1A = 0x100;
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
@@ -130,8 +130,8 @@ void StartMultiPakConnect(void)
     s->unk1A = 0x100;
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
@@ -146,8 +146,8 @@ void StartMultiPakConnect(void)
     s->unk1A = 0x100;
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;

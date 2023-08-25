@@ -55,9 +55,9 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         s->unk1A = 0x480;
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->unk1C = 0;
+        s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->unk22 = 0x10;
+        s->animSpeed = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = 0x2000;

@@ -141,10 +141,10 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             s->unk1A = 0x180;
             s->graphics.size = 0;
             s->animCursor = 0;
-            s->unk1C = 0;
+            s->timeUntilNextFrame = 0;
 
             launcher->s.prevVariant = -1;
-            launcher->s.unk22 = 0x10;
+            launcher->s.animSpeed = 0x10;
             launcher->s.palId = 0;
 
             s->hitboxes[0].index = -1;

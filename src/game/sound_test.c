@@ -516,7 +516,7 @@ static void Task_SoundTestScreenMain(void)
         u32 songTempo;
         soundTestScreen->songTempo = songTempo
             = sSoundTempos[soundsList[soundTestScreen->soundNumber - 1]];
-        soundTestScreen->creams[DANCING_CREAM].unk22 = Q_20_12_TO_INT(songTempo);
+        soundTestScreen->creams[DANCING_CREAM].animSpeed = Q_20_12_TO_INT(songTempo);
         m4aMPlayAllStop();
 
         MPlayStart(

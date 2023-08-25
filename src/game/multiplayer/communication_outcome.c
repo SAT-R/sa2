@@ -121,9 +121,9 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->graphics.anim = SA2_ANIM_MP_MSG;
     s3->variant = outcome + SA2_ANIM_VARIANT_MP_MSG_OK;
     s3->animCursor = 0;
-    s3->unk1C = 0;
+    s3->timeUntilNextFrame = 0;
     s3->prevVariant = -1;
-    s3->unk22 = 0x10;
+    s3->animSpeed = 0x10;
     s3->palId = 0;
     s3->unk10 = 0x2000;
 
@@ -136,9 +136,9 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->graphics.anim = sCheeseSittingAnims[outcome];
     s3->variant = sCheeseSittingVariants[outcome];
     s3->animCursor = 0;
-    s3->unk1C = 0;
+    s3->timeUntilNextFrame = 0;
     s3->prevVariant = -1;
-    s3->unk22 = 0x10;
+    s3->animSpeed = 0x10;
     s3->palId = 0;
     s3->unk10 = 0x2000;
 
@@ -151,9 +151,9 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->graphics.anim = sCheeseSittingAnims[outcome];
     s3->variant = sCheeseSittingVariants[outcome];
     s3->animCursor = 0;
-    s3->unk1C = 0;
+    s3->timeUntilNextFrame = 0;
     s3->prevVariant = -1;
-    s3->unk22 = 0x10;
+    s3->animSpeed = 0x10;
     s3->palId = 0;
     s3->unk10 = 0x2000;
 

@@ -99,9 +99,9 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
     cs->s->graphics.size = 0;
     cs->s->animCursor = 0;
-    cs->s->unk1C = 0;
+    cs->s->timeUntilNextFrame = 0;
     cs->s->prevVariant = -1;
-    cs->s->unk22 = 0x10;
+    cs->s->animSpeed = 0x10;
     cs->s->palId = 0;
     cs->s->hitboxes[0].index = -1;
     cs->s->unk10 = 0x2000;
@@ -133,9 +133,9 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
                 cs->s->graphics.size = 0;
                 cs->s->animCursor = 0;
-                cs->s->unk1C = 0;
+                cs->s->timeUntilNextFrame = 0;
                 cs->s->prevVariant = -1;
-                cs->s->unk22 = 0x10;
+                cs->s->animSpeed = 0x10;
                 cs->s->palId = 0;
                 cs->s->hitboxes[0].index = -1;
                 cs->s->unk10 = 0x2000;
@@ -161,9 +161,9 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         cs->s->unk1A = 0x480;
         cs->s->graphics.size = 0;
         cs->s->animCursor = 0;
-        cs->s->unk1C = 0;
+        cs->s->timeUntilNextFrame = 0;
         cs->s->prevVariant = -1;
-        cs->s->unk22 = 0x10;
+        cs->s->animSpeed = 0x10;
         cs->s->palId = 0;
         cs->s->hitboxes[0].index = -1;
         cs->s->unk10 = 0x2000;

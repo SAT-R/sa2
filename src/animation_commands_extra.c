@@ -34,8 +34,8 @@ s32 sub_80036E0(Sprite *s)
 
     SPRITE_MAYBE_SWITCH_ANIM(s);
 
-    if (s->unk1C > 0)
-        s->unk1C -= 16 * s->unk22;
+    if (s->timeUntilNextFrame > 0)
+        s->timeUntilNextFrame -= s->animSpeed * 16;
     else {
         s32 ret;
         ACmd *cmd;
@@ -70,8 +70,8 @@ s32 sub_80036E0(Sprite *s)
         }
 
         // Display the image 'index' for 'delay' frames
-        s->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
-        s->unk1C -= s->unk22 * 16;
+        s->timeUntilNextFrame += (((ACmd_ShowFrame *)cmd)->delay << 8);
+        s->timeUntilNextFrame -= s->animSpeed * 16;
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {
@@ -721,8 +721,8 @@ s32 sub_8004558(Sprite *s)
     if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
-    if (s->unk1C > 0)
-        s->unk1C -= 16 * s->unk22;
+    if (s->timeUntilNextFrame > 0)
+        s->timeUntilNextFrame -= s->animSpeed * 16;
     else {
 
         // _080045B8
@@ -761,8 +761,8 @@ s32 sub_8004558(Sprite *s)
         }
 
         // Display the image 'index' for 'delay' frames
-        s->unk1C += (((ACmd_ShowFrame *)cmd)->delay << 8);
-        s->unk1C -= s->unk22 * 16;
+        s->timeUntilNextFrame += (((ACmd_ShowFrame *)cmd)->delay << 8);
+        s->timeUntilNextFrame -= s->animSpeed * 16;
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {

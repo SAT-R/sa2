@@ -136,9 +136,9 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             Sprite *s = &ia086->sprites[i];
             s->graphics.size = 0;
             s->animCursor = 0;
-            s->unk1C = 0;
+            s->timeUntilNextFrame = 0;
             s->prevVariant = -1;
-            s->unk22 = 0x10;
+            s->animSpeed = 0x10;
             s->palId = 0;
             s->hitboxes[0].index = -1;
             s->graphics.dest = vram;

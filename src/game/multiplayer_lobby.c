@@ -120,7 +120,7 @@ void CreateMultiplayerLobbyScreen(void)
 static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     u8 i;
-    Sprite *element;
+    Sprite *s;
     Background *background;
     struct TransitionState *transition;
     s8 lang = gLoadedSaveGame->language - 1;
@@ -177,39 +177,39 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
 
-    element = &lobbyScreen->chao;
-    element->graphics.dest = VramMalloc(0x38);
-    element->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
-    element->variant = 3;
-    element->prevVariant = -1;
-    element->x = (DISPLAY_WIDTH / 2);
-    element->y = (DISPLAY_HEIGHT)-50;
-    element->unk1A = 0xC0;
-    element->graphics.size = 0;
-    element->animCursor = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk10 = 0x1000;
-    sub_8004558(element);
+    s = &lobbyScreen->chao;
+    s->graphics.dest = VramMalloc(0x38);
+    s->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
+    s->variant = 3;
+    s->prevVariant = -1;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = (DISPLAY_HEIGHT)-50;
+    s->unk1A = 0xC0;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0x1000;
+    sub_8004558(s);
 
     for (i = 0; i < ARRAY_COUNT(lobbyScreen->uiElements); i++) {
-        element = &lobbyScreen->uiElements[i];
-        element->graphics.dest
+        s = &lobbyScreen->uiElements[i];
+        s->graphics.dest
             = VramMalloc(sUiText[TextElementOffsetAlt(lang, 3, i)].numTiles);
-        element->graphics.anim = sUiText[TextElementOffsetAlt(lang, 3, i)].anim;
-        element->variant = sUiText[TextElementOffsetAlt(lang, 3, i)].variant;
-        element->prevVariant = -1;
-        element->x = (DISPLAY_WIDTH / 2);
-        element->y = (DISPLAY_HEIGHT / 4) - 4;
-        element->unk1A = 0x100;
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        sub_8004558(element);
+        s->graphics.anim = sUiText[TextElementOffsetAlt(lang, 3, i)].anim;
+        s->variant = sUiText[TextElementOffsetAlt(lang, 3, i)].variant;
+        s->prevVariant = -1;
+        s->x = (DISPLAY_WIDTH / 2);
+        s->y = (DISPLAY_HEIGHT / 4) - 4;
+        s->unk1A = 0x100;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        sub_8004558(s);
     }
 
     lobbyScreen->transition.unk0 = 1;
@@ -488,50 +488,50 @@ static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
 
 static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
 {
-    Sprite *element = &lobbyScreen->chao;
+    Sprite *s = &lobbyScreen->chao;
     // Chao anim finished
-    if (!sub_8004558(element)) {
+    if (!sub_8004558(s)) {
         if (lobbyScreen->cursor != CURSOR_YES
-            && element->graphics.anim == SA2_ANIM_MP_CHEESE_WAVING) {
-            element->variant = 1;
+            && s->graphics.anim == SA2_ANIM_MP_CHEESE_WAVING) {
+            s->variant = 1;
         } else {
-            if (element->variant == 6) {
-                element->variant = 3;
+            if (s->variant == 6) {
+                s->variant = 3;
             }
 
-            if (element->variant == 4) {
-                element->variant = 5;
+            if (s->variant == 4) {
+                s->variant = 5;
             }
         }
     }
 
-    sub_80051E8(element);
+    sub_80051E8(s);
 
-    element = &lobbyScreen->uiElements[ELEMENT_TITLE];
-    sub_80051E8(element);
+    s = &lobbyScreen->uiElements[ELEMENT_TITLE];
+    sub_80051E8(s);
 
-    element = &lobbyScreen->uiElements[ELEMENT_YES];
+    s = &lobbyScreen->uiElements[ELEMENT_YES];
     if (lobbyScreen->cursor != CURSOR_YES) {
-        element->x = (DISPLAY_WIDTH / 6) + 4;
-        element->palId = 1;
+        s->x = (DISPLAY_WIDTH / 6) + 4;
+        s->palId = 1;
     } else {
-        element->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0x2C;
-        element->palId = 0;
+        s->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0x2C;
+        s->palId = 0;
     }
-    element->y = DISPLAY_HEIGHT - 50;
-    sub_80051E8(element);
+    s->y = DISPLAY_HEIGHT - 50;
+    sub_80051E8(s);
 
-    element = &lobbyScreen->uiElements[ELEMENT_NO];
+    s = &lobbyScreen->uiElements[ELEMENT_NO];
 
     if (lobbyScreen->cursor != CURSOR_YES) {
-        element->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0xC0;
-        element->palId = 15;
+        s->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0xC0;
+        s->palId = 15;
     } else {
-        element->x = (DISPLAY_WIDTH - 48);
-        element->palId = 0;
+        s->x = (DISPLAY_WIDTH - 48);
+        s->palId = 0;
     }
-    element->y = DISPLAY_HEIGHT - 50;
-    sub_80051E8(element);
+    s->y = DISPLAY_HEIGHT - 50;
+    sub_80051E8(s);
 
     if (lobbyScreen->animFrame > 0) {
         lobbyScreen->animFrame--;

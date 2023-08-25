@@ -12,7 +12,7 @@
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite;
+    Sprite s;
     s32 unk3C;
     s32 unk40;
     s32 unk44;
@@ -45,7 +45,7 @@ static const u16 gUnknown_080E00FC[][2] = {
 void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                 u8 spriteY)
 {
-    Sprite *sprite;
+    Sprite *s;
     struct Task *t = TaskCreate(Task_Interactable078, sizeof(Sprite_IA78), 0x2010, 0,
                                 TaskDestructor_Interactable078);
     Sprite_IA78 *ia78 = TaskGetStructPtr(t);
@@ -59,19 +59,19 @@ void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     ia78->unk3C = TO_WORLD_POS(me->x, spriteRegionX);
     ia78->unk40 = TO_WORLD_POS(me->y, spriteRegionY);
 
-    sprite = &ia78->sprite;
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->animCursor = 0;
-    sprite->unk1C = 0;
-    sprite->prevVariant = -1;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->hitboxes[0].index = -1;
-    sprite->unk10 = 0x2000;
-    sprite->graphics.dest = VramMalloc(42);
-    sprite->graphics.anim = -1;
-    sprite->variant = -1;
+    s = &ia78->s;
+    s->unk1A = 0x480;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
+    s->graphics.dest = VramMalloc(42);
+    s->graphics.anim = -1;
+    s->variant = -1;
     sub_807ACF4(ia78, 1);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
@@ -79,7 +79,7 @@ void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
 static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
 {
     u8 i;
-    Sprite *sprite = &ia78->sprite;
+    Sprite *s = &ia78->s;
     u32 temp = gUnknown_03005590 % 286;
 
     if (temp <= 119) {
@@ -87,23 +87,23 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
 
         if (p2 != 0) {
             if (temp < 8) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
-                sprite->variant = 8;
-                sub_8004558(sprite);
+                s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
+                s->variant = 8;
+                sub_8004558(s);
             } else {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
-                sprite->variant = 9;
-                sub_8004558(sprite);
+                s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
+                s->variant = 9;
+                sub_8004558(s);
             }
         } else {
             if (temp == 0) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
-                sprite->variant = 8;
-                sub_8004558(sprite);
+                s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
+                s->variant = 8;
+                sub_8004558(s);
             } else if (temp == 8) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
-                sprite->variant = 9;
-                sub_8004558(sprite);
+                s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
+                s->variant = 9;
+                sub_8004558(s);
             }
         }
 
@@ -116,32 +116,32 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
             }
         }
         i--;
-        sprite->graphics.anim = gUnknown_080E00B4[gUnknown_080E00FC[i][1]][0];
-        sprite->variant = gUnknown_080E00B4[gUnknown_080E00FC[i][1]][1];
-        sub_8004558(sprite);
+        s->graphics.anim = gUnknown_080E00B4[gUnknown_080E00FC[i][1]][0];
+        s->variant = gUnknown_080E00B4[gUnknown_080E00FC[i][1]][1];
+        sub_8004558(s);
         ia78->unk44 = 0;
     } else if (temp <= 244) {
         temp = (temp - 185) & 15;
 
         if (p2 != 0) {
             if (temp >= 8) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
-                sprite->variant = 3;
-                sub_8004558(sprite);
+                s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
+                s->variant = 3;
+                sub_8004558(s);
             } else {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
-                sprite->variant = 2;
-                sub_8004558(sprite);
+                s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
+                s->variant = 2;
+                sub_8004558(s);
             }
         } else {
             if (temp == 0) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
-                sprite->variant = 2;
-                sub_8004558(sprite);
+                s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
+                s->variant = 2;
+                sub_8004558(s);
             } else if (temp == 8) {
-                sprite->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
-                sprite->variant = 3;
-                sub_8004558(sprite);
+                s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
+                s->variant = 3;
+                sub_8004558(s);
             }
         }
 
@@ -154,9 +154,9 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
             }
         };
         i--;
-        sprite->graphics.anim = gUnknown_080E00B4[gUnknown_080E00D4[i][1]][0];
-        sprite->variant = gUnknown_080E00B4[gUnknown_080E00D4[i][1]][1];
-        sub_8004558(sprite);
+        s->graphics.anim = gUnknown_080E00B4[gUnknown_080E00D4[i][1]][0];
+        s->variant = gUnknown_080E00B4[gUnknown_080E00D4[i][1]][1];
+        sub_8004558(s);
         ia78->unk44 = 0;
     }
 }
@@ -164,8 +164,8 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
 static u32 sub_807AE60(Sprite_IA78 *ia78)
 {
     if (PLAYER_IS_ALIVE) {
-        Sprite *sprite = &ia78->sprite;
-        u32 temp = sub_800CCB8(sprite, ia78->unk3C, ia78->unk40, &gPlayer);
+        Sprite *s = &ia78->s;
+        u32 temp = sub_800CCB8(s, ia78->unk3C, ia78->unk40, &gPlayer);
         if (temp != 0) {
             if (temp & 0x10000) {
                 gPlayer.y += Q_8_8(temp);
@@ -196,13 +196,13 @@ static u32 sub_807AF0C(Sprite_IA78 *ia78)
 {
     if (PLAYER_IS_ALIVE) {
         u32 temp;
-        ia78->sprite.hitboxes[0].top -= 16;
-        ia78->sprite.hitboxes[0].bottom += 16;
+        ia78->s.hitboxes[0].top -= 16;
+        ia78->s.hitboxes[0].bottom += 16;
 
-        temp = sub_800CDBC(&ia78->sprite, ia78->unk3C, ia78->unk40, &gPlayer);
+        temp = sub_800CDBC(&ia78->s, ia78->unk3C, ia78->unk40, &gPlayer);
 
-        ia78->sprite.hitboxes[0].top += 16;
-        ia78->sprite.hitboxes[0].bottom -= 16;
+        ia78->s.hitboxes[0].top += 16;
+        ia78->s.hitboxes[0].bottom -= 16;
 
         if (temp != 0) {
             if (temp & 0x10000) {
@@ -248,14 +248,14 @@ static void Task_Interactable078(void)
 static void TaskDestructor_Interactable078(struct Task *t)
 {
     Sprite_IA78 *ia78 = TaskGetStructPtr(t);
-    VramFree(ia78->sprite.graphics.dest);
+    VramFree(ia78->s.graphics.dest);
 }
 
 static void sub_807B004(Sprite_IA78 *ia78)
 {
-    ia78->sprite.x = ia78->unk3C - gCamera.x;
-    ia78->sprite.y = ia78->unk40 - gCamera.y;
-    sub_80051E8(&ia78->sprite);
+    ia78->s.x = ia78->unk3C - gCamera.x;
+    ia78->s.y = ia78->unk40 - gCamera.y;
+    sub_80051E8(&ia78->s);
 }
 
 static bool32 sub_807B028(Sprite_IA78 *ia78)

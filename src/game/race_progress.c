@@ -74,65 +74,65 @@ void CreateRaceProgressIndicator(void)
 static void CreateUI(struct RaceProgressIndicator *progressIndicator)
 {
     u8 i;
-    Sprite *element;
+    Sprite *s;
     u8 avatarVariants[6];
 
     memcpy(avatarVariants, sCharacterAvatars, sizeof(sCharacterAvatars));
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         // Life Counter
-        element = &progressIndicator->avatars[i];
-        element->graphics.dest = VramMalloc(4);
-        element->graphics.anim = SA2_ANIM_LIFE_COUNTER;
-        element->variant = avatarVariants[gMultiplayerCharacters[i]];
-        element->prevVariant = -1;
-        element->x = 6;
-        element->y = (DISPLAY_HEIGHT - 18);
+        s = &progressIndicator->avatars[i];
+        s->graphics.dest = VramMalloc(4);
+        s->graphics.anim = SA2_ANIM_LIFE_COUNTER;
+        s->variant = avatarVariants[gMultiplayerCharacters[i]];
+        s->prevVariant = -1;
+        s->x = 6;
+        s->y = (DISPLAY_HEIGHT - 18);
         if (gMultiplayerCharacters[i] == gSelectedCharacter) {
-            element->unk1A = 0x80;
+            s->unk1A = 0x80;
         } else {
-            element->unk1A = 0xC0;
+            s->unk1A = 0xC0;
         }
-        element->graphics.size = 0;
-        element->animCursor = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = i;
-        element->unk10 = 0;
-        sub_8004558(element);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = i;
+        s->unk10 = 0;
+        sub_8004558(s);
     }
 
-    element = &progressIndicator->flags[START_FLAG];
-    element->graphics.dest = VramMalloc(4);
-    element->graphics.anim = SA2_ANIM_RACE_START_ICON;
-    element->variant = 0;
-    element->prevVariant = -1;
-    element->x = 0 + RACE_ICON_INDENT;
-    element->y = RACE_ICON_Y;
-    element->unk1A = 0x140;
-    element->graphics.size = 0;
-    element->animCursor = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk10 = 0;
-    sub_8004558(element);
+    s = &progressIndicator->flags[START_FLAG];
+    s->graphics.dest = VramMalloc(4);
+    s->graphics.anim = SA2_ANIM_RACE_START_ICON;
+    s->variant = 0;
+    s->prevVariant = -1;
+    s->x = 0 + RACE_ICON_INDENT;
+    s->y = RACE_ICON_Y;
+    s->unk1A = 0x140;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
+    sub_8004558(s);
 
-    element = &progressIndicator->flags[FINISH_FLAG];
-    element->graphics.dest = VramMalloc(4);
-    element->graphics.anim = SA2_ANIM_RACE_FINISH_ICON;
-    element->variant = 0;
-    element->prevVariant = -1;
-    element->x = DISPLAY_WIDTH - RACE_ICON_INDENT;
-    element->y = RACE_ICON_Y;
-    element->unk1A = 0x140;
-    element->graphics.size = 0;
-    element->animCursor = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk10 = 0;
-    sub_8004558(element);
+    s = &progressIndicator->flags[FINISH_FLAG];
+    s->graphics.dest = VramMalloc(4);
+    s->graphics.anim = SA2_ANIM_RACE_FINISH_ICON;
+    s->variant = 0;
+    s->prevVariant = -1;
+    s->x = DISPLAY_WIDTH - RACE_ICON_INDENT;
+    s->y = RACE_ICON_Y;
+    s->unk1A = 0x140;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
+    sub_8004558(s);
 }
 #undef RACE_ICON_INDENT
 
@@ -157,20 +157,20 @@ static void Task_UpdateAvatarPositions(void)
 static void RenderUI(struct RaceProgressIndicator *progressIndicator)
 {
     u8 i;
-    Sprite *element;
+    Sprite *s;
 
     if (gPlayer.moveState & MOVESTATE_100000) {
         return;
     }
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
-        element = &progressIndicator->avatars[i];
-        sub_80051E8(element);
+        s = &progressIndicator->avatars[i];
+        sub_80051E8(s);
     }
 
     for (i = 0; i < ARRAY_COUNT(progressIndicator->flags); i++) {
-        element = &progressIndicator->flags[i];
-        sub_80051E8(element);
+        s = &progressIndicator->flags[i];
+        sub_80051E8(s);
     }
 }
 
