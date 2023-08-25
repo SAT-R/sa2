@@ -281,11 +281,12 @@ void sub_80246DC(Player *p)
     }
 }
 
-#if 01
-// 98.30% - https://decomp.me/scratch/H4vjT
-NONMATCH("asm/non_matching/sub_802486C.inc",
-         void sub_802486C(Player *p, UNK_3005A70 *p2))
+void sub_802486C(Player *p, UNK_3005A70 *p2)
 {
+#ifndef NON_MATCHING
+    s32 speed;
+    register s32 r0 asm("r0");
+#endif
     Sprite *s = &p2->s;
 
     if ((p->unk64 != -1) && (p->unk64 != p->unk66)) {
@@ -300,13 +301,6 @@ NONMATCH("asm/non_matching/sub_802486C.inc",
         p2->s.animSpeed = SPRITE_ANIM_SPEED(1.0);
     }
     // _080248E0
-
-    // r2 = &p->variant
-    // r3 = p
-    // r4 = &p->anim
-    // r6 = p2
-    // r8 = &p->unk64
-    // ip = s = &p2-s
 
     switch (((u16)(p->unk64 - 9) << 16) >> 16) {
         case SA2_CHAR_ANIM_WALK - 9: {
@@ -323,22 +317,53 @@ NONMATCH("asm/non_matching/sub_802486C.inc",
         } break;
 
         case 16 - 9: {
-            // _08024A3A
-            if (p->character == CHARACTER_CREAM) {
-                PLAYERFN_SET_ANIM_SPEED(p, s);
+#ifndef NON_MATCHING
+            if (p->character != CHARACTER_CREAM) {
+                break;
             }
+            // _08024A3A
+            speed = p->speedGroundX;
+            speed = (speed >> 5) + (speed >> 6);
+
+            /* TODO: Try ABS macro */
+            speed = ABS(speed);
+
+            if (speed >= SPRITE_ANIM_SPEED(0.5)) {
+                if (speed > SPRITE_ANIM_SPEED(8.0)) {
+                    speed = SPRITE_ANIM_SPEED(8.0);
+                }
+            } else {
+                speed = SPRITE_ANIM_SPEED(0.5);
+            }
+            s->animSpeed = speed;
+#else
+            PLAYERFN_SET_ANIM_SPEED(p, s);
+#endif
         } break;
 
         case 51 - 9:
         case 52 - 9: {
             // _08024A70
+#ifndef NON_MATCHING
+            r0 = p->speedAirY;
+            goto lab;
+#else
             s->animSpeed = Q_24_8_TO_INT(ABS(p->speedAirY)) * 3 + 8;
+#endif
         } break;
 
         case 53 - 9:
         case 54 - 9: {
+#ifndef NON_MATCHING
             // _08024A76
+            r0 = p->speedGroundX;
+        lab:
+            speed = Q_24_8_TO_INT(ABS(r0)) * 3 + 8;
+            s->animSpeed = speed;
+#else
             s->animSpeed = Q_24_8_TO_INT(ABS(p->speedGroundX)) * 3 + 8;
+            ;
+#endif
         } break;
     }
     // _08024A96
@@ -364,5 +389,3 @@ NONMATCH("asm/non_matching/sub_802486C.inc",
     // _08024AF6
     p->unk66 = p->unk64;
 }
-END_NONMATCH
-#endif
