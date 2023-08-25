@@ -5912,7 +5912,7 @@ Task_8023FC0: @ 0x08023FC0
 	adds r0, r5, #0
 	bl sub_8023878
 	adds r0, r5, #0
-	bl sub_8024228
+	bl CallPlayerTransition
 	ldr r0, [r5, #0x20]
 	movs r1, #0x80
 	lsls r1, r1, #0xf

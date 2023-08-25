@@ -113,4 +113,21 @@
         PLAYERFN_SET_SHIFT_OFFSETS(player, x, y)                                        \
     }
 
+#define PLAYERFN_SET_ANIM_SPEED(_p, _s)                                                 \
+    {                                                                                   \
+        s32 speed = _p->speedGroundX;                                                   \
+        speed = (speed >> 5) + (speed >> 6);                                            \
+                                                                                        \
+        /* TODO: Try ABS macro */                                                       \
+        speed = ABS(speed);                                                             \
+                                                                                        \
+        if (speed >= SPRITE_ANIM_SPEED(0.5)) {                                          \
+            if (speed > SPRITE_ANIM_SPEED(8.0)) {                                       \
+                speed = SPRITE_ANIM_SPEED(8.0);                                         \
+            }                                                                           \
+        } else {                                                                        \
+            speed = SPRITE_ANIM_SPEED(0.5);                                             \
+        }                                                                               \
+        _s->animSpeed = speed;                                                          \
+    }
 #endif // GUARD_PLAYER_CB_COMMANDS_H

@@ -110,6 +110,8 @@ typedef struct {
     /* 0x07 */ s8 bottom;
 } Hitbox;
 
+#define SPRITE_ANIM_SPEED(speed) ((int)((float)(speed)*0x10))
+
 // TODO: work out what makes this struct different from the above
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;

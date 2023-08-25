@@ -72,6 +72,7 @@
 #define SA2_CHAR_ANIM_68                                     68
 #define SA2_CHAR_ANIM_69                                     69
 #define SA2_CHAR_ANIM_70                                     70
+#define SA2_CHAR_ANIM_80                                     80
 
 #define SA2_ANIM_SONIC_IDLE    0
 #define SA2_ANIM_CREAM_IDLE    91

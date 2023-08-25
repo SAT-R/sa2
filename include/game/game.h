@@ -109,15 +109,11 @@ extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
 typedef struct {
     u8 filler0[0xC];
     Sprite s;
+    Hitbox reserved;
 } UNK_3005A70; /* 0x30 */
 
-typedef struct {
-    u8 filler0[0xC]; // Likely SpriteBase
-    Sprite s;
-} UNK_03005AF0; /* unknown length */
-
-extern UNK_03005AF0 gUnknown_03005AA0;
-extern UNK_03005AF0 gUnknown_03005AF0;
+extern UNK_3005A70 gUnknown_03005AA0;
+extern UNK_3005A70 gUnknown_03005AF0;
 
 extern u8 gUnknown_0300543C;
 
@@ -273,7 +269,7 @@ typedef struct Player_ {
     /* 0x4C */ s32 unk4C; // deceleration?
     /* 0x50 */ u16 unk50;
     /* 0x52 */ u16 unk52;
-    /* 0x54 */ u16 unk54;
+    /* 0x54 */ u16 unk54; // some other anim-variant?
     /* 0x56 */ u8 filler56[0x2];
     /* 0x58 */ s16 unk58;
     /* 0x5A */ bool8 unk5A; // boost?
@@ -285,7 +281,7 @@ typedef struct Player_ {
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
     /* 0x64 */ s16 unk64; // Character Anim? (TODO: shouldn't this be unsigned?)
-    /* 0x66 */ u16 unk66; // Character Anim, too? But if these were cAnims, why do some
+    /* 0x66 */ s16 unk66; // Character Anim, too? But if these were cAnims, why do some
                           // procs recalculate them?
     /* 0x68 */ AnimId anim;
     /* 0x6A */ u16 variant;
@@ -324,7 +320,7 @@ typedef struct Player_ {
     // TODO: Only used for Cream/Tails?
     //       Alternatively, some of the following data might be a union
     /* 0x94 */ UNK_3005A70 *unk94;
-    /* 0x98 */ u8 filler98[1];
+    /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
     /* 0x99 */ s8 unk99;
     /* 0x9A */ u8 filler9A[0x12];
 

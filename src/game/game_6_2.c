@@ -8,7 +8,9 @@
 #include "constants/move_states.h"
 #include "constants/player_transitions.h"
 
-void sub_8024228(Player *p)
+extern u16 gUnknown_080D6736[115][2];
+
+void CallPlayerTransition(Player *p)
 {
     if (p->transition) {
         switch (p->transition - 1) {
@@ -279,9 +281,88 @@ void sub_80246DC(Player *p)
     }
 }
 
-#if 0
-void sub_802486C(Player *p, UNK_03005AF0 *p2)
+#if 01
+// 98.30% - https://decomp.me/scratch/H4vjT
+NONMATCH("asm/non_matching/sub_802486C.inc",
+         void sub_802486C(Player *p, UNK_3005A70 *p2))
 {
-    
+    Sprite *s = &p2->s;
+
+    if ((p->unk64 != -1) && (p->unk64 != p->unk66)) {
+        p->anim = gUnknown_080D6736[p->unk64][0];
+
+        // NOTE: Could it be that anims 80-91 are character-specific?
+        if (p->unk64 < SA2_CHAR_ANIM_80) {
+            p->anim += gPlayerCharacterIdleAnims[p->character];
+        }
+        // _080248C6
+        p->variant = gUnknown_080D6736[p->unk64][1];
+        p2->s.animSpeed = SPRITE_ANIM_SPEED(1.0);
+    }
+    // _080248E0
+
+    // r2 = &p->variant
+    // r3 = p
+    // r4 = &p->anim
+    // r6 = p2
+    // r8 = &p->unk64
+    // ip = s = &p2-s
+
+    switch (((u16)(p->unk64 - 9) << 16) >> 16) {
+        case SA2_CHAR_ANIM_WALK - 9: {
+            // _080249E8
+            p->anim = gPlayerCharacterIdleAnims[p->character] + SA2_CHAR_ANIM_WALK;
+            p->variant = p->unk54;
+        } // FALLTHROUGH!!!
+
+        case 59 - 9:
+        case 60 - 9:
+        case 61 - 9: {
+            // _08024A10
+            PLAYERFN_SET_ANIM_SPEED(p, s);
+        } break;
+
+        case 16 - 9: {
+            // _08024A3A
+            if (p->character == CHARACTER_CREAM) {
+                PLAYERFN_SET_ANIM_SPEED(p, s);
+            }
+        } break;
+
+        case 51 - 9:
+        case 52 - 9: {
+            // _08024A70
+            s->animSpeed = Q_24_8_TO_INT(ABS(p->speedAirY)) * 3 + 8;
+        } break;
+
+        case 53 - 9:
+        case 54 - 9: {
+            // _08024A76
+            s->animSpeed = Q_24_8_TO_INT(ABS(p->speedGroundX)) * 3 + 8;
+        } break;
+    }
+    // _08024A96
+
+    if (IS_MULTI_PLAYER) {
+        p->unk98 = 0;
+    }
+    // _08024AA8
+
+    if ((p->unk6C != 0) || (s->graphics.anim != p->anim) || (s->variant != p->variant)) {
+        // _08024ACA
+        p->unk6C = 0;
+        s->graphics.anim = p->anim;
+        s->variant = p->variant;
+        s->prevVariant = -1;
+        s->hitboxes[0].index = -1;
+        s->hitboxes[1].index = -1;
+
+        if (IS_MULTI_PLAYER) {
+            p->unk98 = 1;
+        }
+    }
+    // _08024AF6
+    p->unk66 = p->unk64;
 }
+END_NONMATCH
 #endif
