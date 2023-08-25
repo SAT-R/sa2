@@ -227,7 +227,7 @@ void CreateFinalEndingLandingCutScene(void)
             scene->unk618 += 0x300;
             element->graphics.anim = gUnknown_080E17A4[32].anim;
             element->variant = gUnknown_080E17A4[32].variant;
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             element->x = 200;
             element->y = 100;
             element->unk1A = 0x80;
@@ -246,7 +246,7 @@ void CreateFinalEndingLandingCutScene(void)
             element = &scene->unk140;
             element->graphics.dest = (void *)scene->unk618;
             scene->unk618 += 0x120;
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             element->x = (DISPLAY_WIDTH / 2) - 10;
             element->y = -20;
             element->unk1A = 0x40;
@@ -266,7 +266,7 @@ void CreateFinalEndingLandingCutScene(void)
             scene->unk618 += gUnknown_080E17A4[49].numTiles * 0x20;
             element->graphics.anim = gUnknown_080E17A4[49].anim;
             element->variant = gUnknown_080E17A4[49].variant;
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             element->x = 0;
             element->y = 0;
             element->unk1A = 0x40;
@@ -288,7 +288,7 @@ void CreateFinalEndingLandingCutScene(void)
         scene->unk618 += 0x800;
         element->graphics.anim = gUnknown_080E17A4[gSelectedCharacter].anim;
         element->variant = gUnknown_080E17A4[gSelectedCharacter].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = (DISPLAY_WIDTH / 2);
         element->y = -20;
         element->unk1A = 0x40;
@@ -311,7 +311,7 @@ void CreateFinalEndingLandingCutScene(void)
         scene->unk618 += 0x800;
         element->graphics.anim = gUnknown_080E17A4[gSelectedCharacter + 0x14].anim;
         element->variant = gUnknown_080E17A4[gSelectedCharacter + 0x14].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x40;
@@ -339,7 +339,7 @@ void CreateFinalEndingLandingCutScene(void)
         scene->unk618 += gUnknown_080E17A4[0x24 + i].numTiles * 0x20;
         element->graphics.anim = gUnknown_080E17A4[36].anim;
         element->variant = gUnknown_080E17A4[36].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0xC0;
@@ -360,7 +360,7 @@ void CreateFinalEndingLandingCutScene(void)
         scene->unk618 += gUnknown_080E17A4[0x26 + i].numTiles * 0x20;
         element->graphics.anim = gUnknown_080E17A4[38].anim;
         element->variant = gUnknown_080E17A4[38].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 30;
         element->y = 30;
         element->unk1A = 0xC0;
@@ -381,7 +381,7 @@ void CreateFinalEndingLandingCutScene(void)
         scene->unk618 += gUnknown_080E17A4[35].numTiles * 0x20;
         element->graphics.anim = gUnknown_080E17A4[35].anim;
         element->variant = gUnknown_080E17A4[35].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 0;
         element->y = 30;
         element->unk1A = 0;
@@ -402,7 +402,7 @@ void CreateFinalEndingLandingCutScene(void)
         scene->unk618 += gUnknown_080E17A4[40].numTiles * 0x20;
         element->graphics.anim = gUnknown_080E17A4[40].anim;
         element->variant = gUnknown_080E17A4[40].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = (DISPLAY_WIDTH / 2);
         element->y = -20;
         element->unk1A = 0;
@@ -423,7 +423,7 @@ void CreateFinalEndingLandingCutScene(void)
         scene->unk618 += gUnknown_080E17A4[41].numTiles * 0x20;
         element->graphics.anim = gUnknown_080E17A4[41].anim;
         element->variant = gUnknown_080E17A4[41].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = (DISPLAY_WIDTH / 2);
         element->y = DISPLAY_HEIGHT + 96;
         element->unk1A = 0;
@@ -444,7 +444,7 @@ void CreateFinalEndingLandingCutScene(void)
         scene->unk618 += gUnknown_080E17A4[42].numTiles * 0x20;
         element->graphics.anim = gUnknown_080E17A4[42].anim;
         element->variant = gUnknown_080E17A4[42].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = (DISPLAY_WIDTH / 2);
         element->y = DISPLAY_HEIGHT + 96;
         element->unk1A = 0;
@@ -465,7 +465,7 @@ void CreateFinalEndingLandingCutScene(void)
         scene->unk618 += 0x1500;
         element->graphics.anim = gUnknown_080E17A4[gSelectedCharacter + 0x19].anim;
         element->variant = gUnknown_080E17A4[gSelectedCharacter + 0x19].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = (DISPLAY_WIDTH / 2);
         element->y = 0;
         element->unk1A = 0x40;

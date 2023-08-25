@@ -36,7 +36,7 @@ void CreateBoostModeParticles(void)
     element->graphics.anim = SA2_ANIM_BOOST_EFFECT;
     element->variant = 0;
     element->graphics.size = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk1A = 0x200;
     element->unk10 = 0x2000;
     element->unk1C = 0;
@@ -49,7 +49,7 @@ void CreateBoostModeParticles(void)
     element->graphics.anim = SA2_ANIM_BOOST_EFFECT;
     element->variant = 1;
     element->graphics.size = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk1A = 0x200;
     element->unk10 = 0x2000;
     element->unk1C = 0;

@@ -64,7 +64,7 @@ void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     sprite->graphics.size = 0;
     sprite->animCursor = 0;
     sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
+    sprite->prevVariant = -1;
     sprite->unk22 = 0x10;
     sprite->palId = 0;
     sprite->hitboxes[0].index = -1;

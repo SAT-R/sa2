@@ -93,7 +93,7 @@ void Task_MadilloMain(void)
                     gCurTask->main = Task_8056230;
                     s->graphics.anim = SA2_ANIM_MADILLO;
                     s->variant = 1;
-                    s->unk21 = -1;
+                    s->prevVariant = -1;
                     SPRITE_FLAG_CLEAR(s, X_FLIP);
                 }
             } else {
@@ -104,7 +104,7 @@ void Task_MadilloMain(void)
                         gCurTask->main = Task_8056230;
                         s->graphics.anim = SA2_ANIM_MADILLO;
                         s->variant = 1;
-                        s->unk21 = -1;
+                        s->prevVariant = -1;
                         SPRITE_FLAG_SET(s, X_FLIP);
                     }
                 }
@@ -181,14 +181,14 @@ void Task_8056230(void)
             gCurTask->main = Task_80564BC;
             s->graphics.anim = SA2_ANIM_MADILLO;
             s->variant = 0;
-            s->unk21 = -1;
+            s->prevVariant = -1;
             madillo->unk51 = 120;
         }
     } else if(Q_24_8_TO_INT(madillo->offsetX) < me->d.sData[0] * TILE_WIDTH) {
             gCurTask->main = Task_80564BC;
             s->graphics.anim = SA2_ANIM_MADILLO;
             s->variant = 0;
-            s->unk21 = -1;
+            s->prevVariant = -1;
             madillo->unk51 = 120;        
     }
 

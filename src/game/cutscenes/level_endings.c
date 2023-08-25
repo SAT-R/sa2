@@ -185,7 +185,7 @@ void CreateCourseResultsCutScene(u8 mode)
     element->graphics.dest = VramMalloc(sAnimsCharacterRescued[mode * 3]);
     element->graphics.anim = sAnimsCharacterRescued[(mode * 3) + 1];
     element->variant = sAnimsCharacterRescued[(mode * 3) + 2];
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
 
     element->x = 0;
     element->y = 0;
@@ -211,7 +211,7 @@ void CreateCourseResultsCutScene(u8 mode)
         element->graphics.dest = VramMalloc(6);
         element->graphics.anim = SA2_ANIM_CHEESE_DOWNWARDS;
         element->variant = 0;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
 
         element->x = 0;
         element->y = 0;
@@ -269,13 +269,13 @@ static void sub_808DD9C(void)
             element->graphics.dest = VramMalloc(0x19);
             element->graphics.anim = SA2_ANIM_CREAM_HOLDING_ONTO_SONIC;
             scene->unk4.variant = 0;
-            scene->unk4.unk21 = 0xFF;
+            scene->unk4.prevVariant = -1;
 
             scene->unk7A = 1;
 
             scene->unk34.graphics.anim = SA2_ANIM_CHEESE_SIDEWAYS_2;
             scene->unk34.variant = 0;
-            scene->unk34.unk21 = 0xFF;
+            scene->unk34.prevVariant = -1;
         }
     }
 

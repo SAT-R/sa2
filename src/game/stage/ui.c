@@ -156,7 +156,7 @@ struct Task *CreateStageUI(void)
         s->variant = sAnimsAsciiDigits[i][1];
         s->animCursor = 0;
         s->unk1C = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         s->unk22 = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;
@@ -181,7 +181,7 @@ struct Task *CreateStageUI(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->unk1C = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         s->unk22 = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;
@@ -208,7 +208,7 @@ struct Task *CreateStageUI(void)
     s->graphics.size = 0;
     s->animCursor = 0;
     s->unk1C = 0;
-    s->unk21 = -1;
+    s->prevVariant = -1;
     s->unk22 = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
@@ -227,7 +227,7 @@ struct Task *CreateStageUI(void)
     s->graphics.size = 0;
     s->animCursor = 0;
     s->unk1C = 0;
-    s->unk21 = -1;
+    s->prevVariant = -1;
     s->unk22 = 0x10;
     s->palId = 0;
     s->unk10 = 0;
@@ -328,7 +328,7 @@ void Task_CreateStageUIMain(void)
         ui->unk2D0 += ((gPlayer.speedAirX >> 3) + Q_24_8(0.25));
         ui->unk2D0 &= 0x7FF;
         ui->ring.variant = ui->unk2D0 >> 8;
-        ui->ring.unk21 = 0xFF;
+        ui->ring.prevVariant = -1;
         sub_8004558(&ui->ring);
 
         /* Ring-Count */

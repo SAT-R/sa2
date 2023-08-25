@@ -56,7 +56,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         s->graphics.size = 0;
         s->animCursor = 0;
         s->unk1C = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         s->unk22 = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;
@@ -238,7 +238,7 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
 
         s->graphics.anim = 0x222;
         s->variant = r2;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         gPlayer.variant = r2;
         gPlayer.unk6C = 1;
         gPlayer.x = Q_24_8(x);
@@ -282,7 +282,7 @@ static void sub_805EF90(void)
 
     s->graphics.anim = 0x222;
     s->variant = temp3;
-    s->unk21 = -1;
+    s->prevVariant = -1;
 
     s->x = x - gCamera.x;
     s->y = y - gCamera.y;

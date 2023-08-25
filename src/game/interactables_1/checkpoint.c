@@ -91,7 +91,7 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->graphics.size = 0;
     s->animCursor = 0;
     s->unk1C = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk22 = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
@@ -132,7 +132,7 @@ void Task_8062FD8(void)
 
             s->graphics.anim = SA2_ANIM_CHECKPOINT;
             s->variant = SA2_ANIM_VARIANT_CHECKPOINT_HIT;
-            s->unk21 = 0xFF;
+            s->prevVariant = -1;
 
             gCurTask->main = Task_8063108;
 

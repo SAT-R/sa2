@@ -53,7 +53,7 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(GOAL_LEVER_TILES);
     s->graphics.anim = SA2_ANIM_GOAL_LEVER;
     s->variant = 1;
-    s->unk21 = -1;
+    s->prevVariant = -1;
     s->unk1A = 0x100;
     s->graphics.size = 0;
     s->animCursor = 0;
@@ -87,7 +87,7 @@ static void Task_StageGoalMain(void)
         if (sub_800C204(s, x, y, 0, &gPlayer, 0) == 1) {
             s->graphics.anim = SA2_ANIM_GOAL_LEVER;
             s->variant = 0;
-            s->unk21 = -1;
+            s->prevVariant = -1;
             gCurTask->main = Task_StageGoalAnimate;
         }
     }

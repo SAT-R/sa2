@@ -59,7 +59,7 @@ void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY
         deco->graphics.size = 0;
         deco->animCursor = 0;
         deco->unk1C = 0;
-        deco->unk21 = 0xFF;
+        deco->prevVariant = -1;
         deco->unk22 = 0x10;
         deco->palId = 0;
         deco->hitboxes[0].index = -1;

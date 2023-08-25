@@ -133,7 +133,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     element->graphics.dest = VramMalloc(0x6C);
     element->graphics.anim = SA2_ANIM_TIME_ATTACK_JP;
     element->variant = SA2_ANIM_VARIANT_TA_TITLE;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->x = 0;
     element->y = 0;
     element->unk1A = 0x100;
@@ -151,7 +151,7 @@ void CreateTimeAttackModeSelectionScreen(void)
         = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 0)].numTiles);
     element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].anim;
     element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].variant;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->x = 0;
     element->y = 0;
     element->unk1A = 0x100;
@@ -169,7 +169,7 @@ void CreateTimeAttackModeSelectionScreen(void)
         = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 1)].numTiles);
     element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].anim;
     element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].variant;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->x = 0;
     element->y = 0;
     element->unk1A = 0x100;
@@ -187,7 +187,7 @@ void CreateTimeAttackModeSelectionScreen(void)
         = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 2)].numTiles);
     element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
     element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->x = 8;
     element->y = 103;
     element->unk1A = 0x100;
@@ -384,7 +384,7 @@ static void Task_ScreenMain(void)
                 = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].anim;
             element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].variant;
         }
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
     } else {
         lang = gLoadedSaveGame->language - 1;
         if (lang < 0) {
@@ -399,7 +399,7 @@ static void Task_ScreenMain(void)
         element = &modeScreen->infoText;
         element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
         element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
     }
     RenderUI(modeScreen);
 }

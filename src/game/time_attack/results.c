@@ -102,7 +102,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
         element->graphics.size = 0;
         element->animCursor = 0;
         element->unk1C = 0;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->unk22 = 0x10;
         element->palId = 0;
         element->hitboxes[0].index = -1;
@@ -133,7 +133,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -151,7 +151,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -170,7 +170,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -193,7 +193,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -210,7 +210,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -232,7 +232,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -255,7 +255,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;

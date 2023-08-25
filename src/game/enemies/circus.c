@@ -85,7 +85,7 @@ void Task_CircusMain(void)
         gCurTask->main = Task_8055AB8;
         s->graphics.anim = SA2_ANIM_CIRCUS;
         s->variant = 1;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
 
     ENEMY_UPDATE_EX_RAW(s, circus->spawnX, circus->spawnY, {});
@@ -121,7 +121,7 @@ void Task_8055AB8(void)
 
         s->graphics.anim = SA2_ANIM_CIRCUS;
         s->variant = 2;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = Task_8055C0C;
     } else {
         sub_80051E8(s);
@@ -166,7 +166,7 @@ void Task_8055C0C(void)
     if (--circus->unk84 == 0) {
         s->graphics.anim = SA2_ANIM_CIRCUS;
         s->variant = 3;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = Task_8055D7C;
     }
 }
@@ -194,7 +194,7 @@ void Task_8055D7C(void)
 
         s->graphics.anim = SA2_ANIM_CIRCUS;
         s->variant = 0;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = Task_CircusMain;
     } else {
         sub_80051E8(s);

@@ -249,7 +249,7 @@ void sub_8071380(Sprite *element, void *vram, s16 x, s16 y, u8 b,
     element->unk1C = 0;
     element->prevAnim = 0xffff;
     element->variant = c4->variant;
-    element->unk21 = 0xff;
+    element->prevVariant = 0xff;
     element->unk22 = c4->unk6;
     element->palId = 0;
     element->hitboxes[0].index = -1;

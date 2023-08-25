@@ -85,7 +85,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
         element->graphics.dest = VramMalloc(4);
         element->graphics.anim = SA2_ANIM_LIFE_COUNTER;
         element->variant = avatarVariants[gMultiplayerCharacters[i]];
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 6;
         element->y = (DISPLAY_HEIGHT - 18);
         if (gMultiplayerCharacters[i] == gSelectedCharacter) {
@@ -106,7 +106,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     element->graphics.dest = VramMalloc(4);
     element->graphics.anim = SA2_ANIM_RACE_START_ICON;
     element->variant = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->x = 0 + RACE_ICON_INDENT;
     element->y = RACE_ICON_Y;
     element->unk1A = 0x140;
@@ -122,7 +122,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     element->graphics.dest = VramMalloc(4);
     element->graphics.anim = SA2_ANIM_RACE_FINISH_ICON;
     element->variant = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->x = DISPLAY_WIDTH - RACE_ICON_INDENT;
     element->y = RACE_ICON_Y;
     element->unk1A = 0x140;

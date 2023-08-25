@@ -62,7 +62,7 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.size = 0;
     s->animCursor = 0;
     s->unk1C = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk22 = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
@@ -110,7 +110,7 @@ void sub_806160C(void)
         bar->unk3C = 2 - bar->unk3C;
         s->graphics.anim = 538;
         s->variant = bar->unk3C + 1;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         bar->unk3C = 2 - bar->unk3C;
         m4aSongNumStart(SE_279);
     } else if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
@@ -166,7 +166,7 @@ void sub_80617A4(void)
     if (sub_8004558(s) == 0) {
         s->graphics.anim = 538;
         s->variant = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         gCurTask->main = sub_806160C;
     }
     sub_80051E8(s);

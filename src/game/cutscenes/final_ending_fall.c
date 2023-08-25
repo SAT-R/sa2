@@ -209,7 +209,7 @@ void CreateFinalEndingFallCutScene(void)
         scene->unk494 += gUnknown_080E1650[0].numTiles * 0x20;
         element->graphics.anim = gUnknown_080E1650[0].anim;
         element->variant = gUnknown_080E1650[0].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0;
@@ -228,7 +228,7 @@ void CreateFinalEndingFallCutScene(void)
         element = &scene->unk110;
         element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 0x1A00;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = (DISPLAY_WIDTH / 2);
         element->y = (DISPLAY_HEIGHT / 2);
         element->unk1A = 0;
@@ -247,7 +247,7 @@ void CreateFinalEndingFallCutScene(void)
         element = &scene->unk140;
         element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 0xC00;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 0x78;
         element->y = 0x50;
         element->unk1A = 0;
@@ -267,7 +267,7 @@ void CreateFinalEndingFallCutScene(void)
         scene->unk494 += 0x3C0;
         element->graphics.anim = gUnknown_080E1650[1].anim;
         element->variant = gUnknown_080E1650[1].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x80;
@@ -286,7 +286,7 @@ void CreateFinalEndingFallCutScene(void)
         element = &scene->unk1D0[i];
         element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += gUnknown_080E1650[(i + 3)].numTiles * 0x20;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0x40;
@@ -305,7 +305,7 @@ void CreateFinalEndingFallCutScene(void)
 
         element->graphics.dest = (void *)scene->unk494;
         scene->unk494 += gUnknown_080E1650[2].numTiles * 0x20;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0;
@@ -325,7 +325,7 @@ void CreateFinalEndingFallCutScene(void)
         scene->unk494 += gUnknown_080E1650[27].numTiles * 0x20;
         element->graphics.anim = gUnknown_080E1650[27].anim;
         element->variant = gUnknown_080E1650[27].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0;
@@ -346,7 +346,7 @@ void CreateFinalEndingFallCutScene(void)
         scene->unk494 += 1;
         element->graphics.anim = gUnknown_080E1650[(i + 5)].anim;
         element->variant = gUnknown_080E1650[(i + 5)].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = 0;
         element->y = 0;
         element->unk1A = 0;

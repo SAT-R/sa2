@@ -63,7 +63,7 @@ void CreateCourseStartCountdown(u8 mode)
     element->graphics.dest = VramMalloc(4);
     element->graphics.anim = SA2_ANIM_COUNTDOWN;
     element->variant = SA2_ANIM_VARIANT_COUNTDOWN_3;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk1A = 0x100;
     element->graphics.size = 0;
     element->animCursor = 0;
@@ -81,7 +81,7 @@ void CreateCourseStartCountdown(u8 mode)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -150,7 +150,7 @@ void sub_8036168(void)
         element = &countdown->unk30;
         element->variant = SA2_ANIM_VARIANT_COUNTDOWN_1
             - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = (Q_24_8_TO_INT(gPlayer.x) - gCamera.x) + 0x18;
         element->y = (Q_24_8_TO_INT(gPlayer.y) - gCamera.y) - 0x18;
         sub_8004558(element);
@@ -212,7 +212,7 @@ void CreateRaceStartMessage(void)
     element->graphics.dest = VramMalloc(0x40);
     element->graphics.anim = SA2_ANIM_COUNTDOWN_START;
     element->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_L;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk1A = 0x100;
     element->graphics.size = 0;
     element->animCursor = 0;
@@ -226,7 +226,7 @@ void CreateRaceStartMessage(void)
     element->graphics.dest = VramMalloc(0x40);
     element->graphics.anim = SA2_ANIM_COUNTDOWN_START;
     element->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_R;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk1A = 0x100;
     element->graphics.size = 0;
     element->animCursor = 0;

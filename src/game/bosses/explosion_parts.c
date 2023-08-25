@@ -54,7 +54,7 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         s->variant = info->variant;
         s->animCursor = 0;
         s->unk1C = 0;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         s->unk22 = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;
@@ -123,7 +123,7 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         s->variant = info->variant;
         s->animCursor = 0;
         s->unk1C = 0;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         s->unk22 = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;

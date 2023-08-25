@@ -25,7 +25,7 @@ struct Task *CreateSparkEffect()
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
     s->variant = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk1A = 0x200;
     s->unk1C = 0;
     s->unk22 = 0x10;

@@ -60,7 +60,7 @@ void CreateEntity_SmallSpinnyWindmill(MapEntity *me, u16 spriteRegionX,
     sprite->graphics.size = 0;
     sprite->animCursor = 0;
     sprite->unk1C = 0;
-    sprite->unk21 = -1;
+    sprite->prevVariant = -1;
     sprite->unk22 = 16;
     sprite->palId = 0;
     sprite->hitboxes[0].index = -1;
@@ -280,7 +280,7 @@ static void Task_RotateSequence(void)
     if (sprite->unk10 & 0x4000) {
         sprite->unk10 &= ~0x4000;
         sprite->prevAnim = -1;
-        sprite->unk21 = -1;
+        sprite->prevVariant = -1;
     }
     RenderWindmill(windmill);
 }
@@ -293,7 +293,7 @@ static void SlowWindmillToStop(void)
     if (sprite->unk10 & 0x4000) {
         sprite->unk10 &= ~0x4000;
         sprite->prevAnim = -1;
-        sprite->unk21 = -1;
+        sprite->prevVariant = -1;
 
         sprite->unk22 -= 8;
         if (sprite->unk22 == 0) {

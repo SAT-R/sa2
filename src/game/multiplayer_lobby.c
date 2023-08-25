@@ -181,7 +181,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     element->graphics.dest = VramMalloc(0x38);
     element->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
     element->variant = 3;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->x = (DISPLAY_WIDTH / 2);
     element->y = (DISPLAY_HEIGHT)-50;
     element->unk1A = 0xC0;
@@ -199,7 +199,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
             = VramMalloc(sUiText[TextElementOffsetAlt(lang, 3, i)].numTiles);
         element->graphics.anim = sUiText[TextElementOffsetAlt(lang, 3, i)].anim;
         element->variant = sUiText[TextElementOffsetAlt(lang, 3, i)].variant;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = (DISPLAY_WIDTH / 2);
         element->y = (DISPLAY_HEIGHT / 4) - 4;
         element->unk1A = 0x100;
@@ -315,14 +315,14 @@ static void ScreenMain(void)
                 if (chao->variant != 5) {
                     chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                     chao->variant = 4;
-                    chao->unk21 = 0xFF;
+                    chao->prevVariant = -1;
                 }
 
             } else {
                 if (chao->variant != 3) {
                     chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                     chao->variant = 6;
-                    chao->unk21 = 0xFF;
+                    chao->prevVariant = -1;
                 }
             }
         }
@@ -342,7 +342,7 @@ static void ScreenMain(void)
             if (chao->variant != 3) {
                 chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                 chao->variant = 6;
-                chao->unk21 = 0xFF;
+                chao->prevVariant = -1;
             }
             send->pat0.unk3 = 1;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -354,7 +354,7 @@ static void ScreenMain(void)
             if (chao->variant != 5) {
                 chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                 chao->variant = 4;
-                chao->unk21 = 0xFF;
+                chao->prevVariant = -1;
             }
             send->pat0.unk3 = 1;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -482,7 +482,7 @@ static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
     // Cheese waves at the Player
     chao->graphics.anim = SA2_ANIM_MP_CHEESE_WAVING;
     chao->variant = 0;
-    chao->unk21 = 0xFF;
+    chao->prevVariant = -1;
     gCurTask->main = Task_FadeInOrHandleExit;
 }
 

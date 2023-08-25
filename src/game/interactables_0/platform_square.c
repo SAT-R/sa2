@@ -109,7 +109,7 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
         s->graphics.size = 0;
         s->animCursor = 0;
         s->unk1C = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         s->unk22 = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;

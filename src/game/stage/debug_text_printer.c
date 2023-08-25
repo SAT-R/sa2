@@ -50,7 +50,7 @@ struct Task *Debug_CreateAsciiTask(s16 x, s16 y)
         s->variant = i + 1;
         s->animCursor = 0;
         s->unk1C = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         s->unk22 = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;

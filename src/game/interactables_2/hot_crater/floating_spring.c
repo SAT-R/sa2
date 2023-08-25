@@ -63,7 +63,7 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
     sprite->graphics.size = 0;
     sprite->animCursor = 0;
     sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
+    sprite->prevVariant = -1;
     sprite->unk22 = 0x10;
     sprite->palId = 0;
     sprite->hitboxes[0].index = -1;
@@ -332,7 +332,7 @@ static void sub_8075284(Sprite_FloatingSpring *floatingSpring)
 #endif
         floatingSpring->sprite.graphics.dest = VramMalloc(0x1C);
         floatingSpring->sprite.prevAnim = -1;
-        floatingSpring->sprite.unk21 = -1;
+        floatingSpring->sprite.prevVariant = -1;
         floatingSpring->unk4C = TRUE;
     }
 }

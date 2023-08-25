@@ -89,7 +89,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     sprite->graphics.size = 0;
     sprite->animCursor = 0;
     sprite->unk1C = 0;
-    sprite->unk21 = -1;
+    sprite->prevVariant = -1;
     sprite->palId = 0;
     sprite->unk1A = 0x480;
     sprite->hitboxes[0].index = -1;
@@ -104,7 +104,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     sprite->graphics.size = 0;
     sprite->animCursor = 0;
     sprite->unk1C = 0;
-    sprite->unk21 = -1;
+    sprite->prevVariant = -1;
     sprite->palId = 0;
     sprite->unk1A = 0x4C0;
     sprite->hitboxes[0].index = -1;

@@ -58,7 +58,7 @@ void sub_8080AFC(s32 posX, s32 posY, u16 p2, u16 p3, s16 velocity, u8 quarterAng
     sprite->s.graphics.size = 0;
     sprite->s.animCursor = 0;
     sprite->s.unk1C = 0;
-    sprite->s.unk21 = 0xFF;
+    sprite->s.prevVariant = -1;
     sprite->s.unk22 = 0x10;
     sprite->s.palId = 0;
     sprite->s.hitboxes[0].index = -1;
@@ -97,7 +97,7 @@ void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, s16 accelX, s16 accelY, u8 kind
     sprite->s.graphics.size = 0;
     sprite->s.animCursor = 0;
     sprite->s.unk1C = 0;
-    sprite->s.unk21 = 0xFF;
+    sprite->s.prevVariant = -1;
     sprite->s.unk22 = 0x10;
     sprite->s.palId = 0;
     sprite->s.hitboxes[0].index = -1;

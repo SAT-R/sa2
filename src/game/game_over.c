@@ -121,7 +121,7 @@ void sub_8036780(u8 unkC)
         sprite->graphics.anim = 731;
         sprite->variant = 4;
     }
-    sprite->unk21 = 0xFF;
+    sprite->prevVariant = -1;
     sprite->x = 0;
     sprite->y = 80;
     sprite->unk1A = 0xC0;
@@ -136,7 +136,7 @@ void sub_8036780(u8 unkC)
     sprite->graphics.dest = VramMalloc(0x40);
     sprite->graphics.anim = 731;
     sprite->variant = 1;
-    sprite->unk21 = 0xFF;
+    sprite->prevVariant = -1;
     sprite->x = 0;
     sprite->y = 80;
     sprite->graphics.size = 0;

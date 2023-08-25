@@ -148,7 +148,7 @@ void sub_8038E20(void);
                                                                                         \
         (sprite)->graphics.anim = tileInfo->anim;                                       \
         (sprite)->variant = tileInfo->variant;                                          \
-        (sprite)->unk21 = 0xFF;                                                         \
+        (sprite)->prevVariant = -1;                                                     \
     })
 
 #define OBJ_RENDER_SPRITE(obj, sprite)                                                  \
@@ -328,7 +328,7 @@ void CreateTrueArea53Intro(void)
     sprite->graphics.size = 0;
     sprite->animCursor = 0;
     sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
+    sprite->prevVariant = -1;
     sprite->unk22 = 0x10;
     sprite->palId = 5;
     sprite->unk10 = 0x400;
@@ -344,7 +344,7 @@ void CreateTrueArea53Intro(void)
         sprite->graphics.size = 0;
         sprite->animCursor = 0;
         sprite->unk1C = 0;
-        sprite->unk21 = 0xFF;
+        sprite->prevVariant = -1;
         sprite->unk22 = 0x10;
         sprite->palId = i + 1;
         sprite->hitboxes[0].index = -1;
@@ -392,7 +392,7 @@ void CreateOrbitingEmeraldsSequence(void)
         emerald->graphics.dest = (void *)OBJ_VRAM0 + 0x3000 + (i * 0x200);
         emerald->graphics.anim = 0x345;
         emerald->variant = i;
-        emerald->unk21 = 0xFF;
+        emerald->prevVariant = -1;
         emerald->unk1A = 0x500;
         emerald->graphics.size = 0;
         emerald->animCursor = 0;
@@ -577,7 +577,7 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     sprite->graphics.dest = (void *)gUnknown_080D7540[type].numTiles;
     sprite->graphics.anim = gUnknown_080D7540[type].anim;
     sprite->variant = gUnknown_080D7540[type].variant;
-    sprite->unk21 = 0xFF;
+    sprite->prevVariant = -1;
     sprite->unk1A = 0x100;
     sprite->graphics.size = 0;
     sprite->animCursor = 0;
@@ -632,7 +632,7 @@ void CreateActor(u8 character)
     sprite->graphics.dest = (void *)tileInfo->numTiles;
     sprite->graphics.anim = tileInfo->anim;
     sprite->variant = tileInfo->variant;
-    sprite->unk21 = 0xFF;
+    sprite->prevVariant = -1;
     sprite->unk1A = (16 - gUnknown_080D7984[character]) * 64;
     sprite->graphics.size = 0;
     sprite->animCursor = 0;
@@ -654,7 +654,7 @@ void CreateActor(u8 character)
         sprite->graphics.dest = (void *)gUnknown_080D7540[character].numTiles;
         sprite->graphics.anim = gUnknown_080D7540[character].anim;
         sprite->variant = gUnknown_080D7540[character].variant;
-        sprite->unk21 = 0xFF;
+        sprite->prevVariant = -1;
         sprite->unk1A = 0x400;
         sprite->graphics.size = 0;
         sprite->animCursor = 0;
@@ -884,7 +884,7 @@ void sub_8037E08(void)
         sprite2->graphics.dest = (void *)gUnknown_080D7540[1].numTiles;
         sprite2->graphics.anim = gUnknown_080D7540[1].anim;
         sprite2->variant = gUnknown_080D7540[1].variant;
-        sprite2->unk21 = 0xFF;
+        sprite2->prevVariant = -1;
 
         gCurTask->main = sub_8037F68;
 
@@ -1370,7 +1370,7 @@ void Task_IntroPanIn(void)
             sprite->graphics.anim = gUnknown_080D7560[0].anim;
             sprite->variant = gUnknown_080D7560[0].variant;
             sprite->unk10 = 0;
-            sprite->unk21 = 0xFF;
+            sprite->prevVariant = -1;
         }
 
         if (intro->animFrame == 60) {

@@ -146,7 +146,7 @@ typedef struct {
 
     /* 0x20 */ u8 variant;
 
-    /* 0x21 */ u8 unk21; // prevVariant?
+    /* 0x21 */ u8 prevVariant;
 
     // something to do with animation speed
     /* 0x22 */ u8 unk22;
@@ -210,14 +210,14 @@ s32 sub_8004418(s16 x, s16 y);
 void UpdateBgAnimationTiles(Background *);
 
 #define SpriteShouldUpdate(sprite)                                                      \
-    (((sprite)->unk21 != (sprite)->variant)                                             \
+    (((sprite)->prevVariant != (sprite)->variant)                                       \
      || ((sprite)->prevAnim != (sprite)->graphics.anim))
 
 // TODO: Maybe rename this and move if out?
 #define SPRITE_MAYBE_SWITCH_ANIM(_sprite)                                               \
     if (SpriteShouldUpdate(_sprite)) {                                                  \
         (_sprite)->graphics.size = 0;                                                   \
-        (_sprite)->unk21 = (_sprite)->variant;                                          \
+        (_sprite)->prevVariant = (_sprite)->variant;                                    \
         (_sprite)->prevAnim = (_sprite)->graphics.anim;                                 \
         (_sprite)->animCursor = 0;                                                      \
         (_sprite)->unk1C = 0;                                                           \
@@ -234,7 +234,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->y = 0;                                                                     \
     _sprite->animCursor = 0;                                                            \
     _sprite->unk1C = 0;                                                                 \
-    _sprite->unk21 = 0xFF;                                                              \
+    _sprite->prevVariant = -1;                                                          \
     _sprite->unk22 = 0x10;                                                              \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;                                                    \
@@ -249,7 +249,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->graphics.size = 0;                                                         \
     _sprite->animCursor = 0;                                                            \
     _sprite->unk1C = 0;                                                                 \
-    _sprite->unk21 = 0xFF;                                                              \
+    _sprite->prevVariant = -1;                                                          \
     _sprite->unk22 = 0x10;                                                              \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;                                                    \
@@ -262,7 +262,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->graphics.size = 0;                                                         \
     _sprite->animCursor = 0;                                                            \
     _sprite->unk1C = 0;                                                                 \
-    _sprite->unk21 = 0xFF;                                                              \
+    _sprite->prevVariant = -1;                                                          \
     _sprite->unk22 = 0x10;                                                              \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;                                                    \
@@ -273,7 +273,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->graphics.size = 0;                                                         \
     _sprite->animCursor = 0;                                                            \
     _sprite->unk1C = 0;                                                                 \
-    _sprite->unk21 = 0xFF;                                                              \
+    _sprite->prevVariant = -1;                                                          \
     _sprite->unk22 = 0x10;                                                              \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;                                                    \
@@ -286,7 +286,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->graphics.size = 0;                                                         \
     _sprite->animCursor = 0;                                                            \
     _sprite->unk1C = 0;                                                                 \
-    _sprite->unk21 = 0xFF;                                                              \
+    _sprite->prevVariant = -1;                                                          \
     _sprite->unk22 = 0x10;                                                              \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;

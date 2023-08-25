@@ -141,7 +141,7 @@ void CreateEntity_Platform_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
         s->graphics.size = 0;
         s->animCursor = 0;
         s->unk1C = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         s->unk22 = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;
@@ -302,7 +302,7 @@ void CreateEntity_Platform_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->graphics.size = 0;
     s->animCursor = 0;
     s->unk1C = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk22 = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;

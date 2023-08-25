@@ -106,7 +106,7 @@ void StartMultiPakConnect(void)
     vramAddr += gUnknown_080D9050[gLoadedSaveGame->language].numTiles * TILE_SIZE_4BPP;
     s->graphics.anim = gUnknown_080D9050[gLoadedSaveGame->language].anim;
     s->variant = gUnknown_080D9050[gLoadedSaveGame->language].variant;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->x = 8;
     s->y = 24;
     s->unk1A = 0x100;
@@ -124,7 +124,7 @@ void StartMultiPakConnect(void)
     vramAddr += gPressStartTiles[gLoadedSaveGame->language].numTiles * TILE_SIZE_4BPP;
     s->graphics.anim = gPressStartTiles[gLoadedSaveGame->language].anim;
     s->variant = gPressStartTiles[gLoadedSaveGame->language].variant;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = 122;
     s->unk1A = 0x100;
@@ -140,7 +140,7 @@ void StartMultiPakConnect(void)
     s->graphics.dest = vramAddr;
     s->graphics.anim = SA2_ANIM_MP_MSG;
     s->variant = SA2_ANIM_VARIANT_MP_MSG_2;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT * (7. / 8.));
     s->unk1A = 0x100;
@@ -401,7 +401,7 @@ static void sub_805ADAC(void)
         r4p = &connectScreen->unk6C;
         r4p->graphics.anim = SA2_ANIM_MP_MSG;
         r4p->variant = var2 + SA2_ANIM_VARIANT_MP_MSG_OK;
-        r4p->unk21 = 0xFF;
+        r4p->prevVariant = -1;
         sub_8004558(r4p);
         sub_80051E8(r4p);
     }
@@ -585,7 +585,7 @@ static void sub_805B4C0(void)
             r4p = &connectScreen->unk6C;
             r4p->graphics.anim = SA2_ANIM_MP_MSG;
             r4p->variant = count + SA2_ANIM_VARIANT_MP_MSG_OK;
-            r4p->unk21 = 0xFF;
+            r4p->prevVariant = -1;
             sub_8004558(r4p);
             sub_80051E8(r4p);
         }

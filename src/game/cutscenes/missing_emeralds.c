@@ -150,7 +150,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
             element->variant = gUnknown_080E1CA0[1].variant;
             element->y = 90;
         }
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->x = (DISPLAY_WIDTH / 2);
         element->unk1A = 0;
         element->graphics.size = 0;

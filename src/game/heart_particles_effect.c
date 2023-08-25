@@ -51,7 +51,7 @@ static void sub_8086A0C(HeartParticles *unk998)
         sprite->graphics.dest = VramMalloc(10);
         sprite->graphics.anim = SA2_ANIM_HEART;
         sprite->variant = 0;
-        sprite->unk21 = 0xFF;
+        sprite->prevVariant = -1;
         sprite->x = -20;
         sprite->y = 0;
         sprite->unk1A = 0x180;
@@ -148,7 +148,7 @@ static void sub_8086BE8(u8 i)
     }
 
     sprite = &unk998->sprites[i];
-    sprite->unk21 = -1;
+    sprite->prevVariant = -1;
     sprite->x = Q_24_8_TO_INT(unk998->unkC4[i]) - gCamera.x;
     sprite->y = Q_24_8_TO_INT(unk998->unkD4[i]) - gCamera.y;
 

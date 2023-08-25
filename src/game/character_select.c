@@ -349,7 +349,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
         element->graphics.size = 0;
         element->animCursor = 0;
         element->unk1C = 0;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->unk22 = 0x10;
         element->palId = 0;
         element->hitboxes[0].index = -1;
@@ -367,7 +367,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -387,7 +387,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -406,7 +406,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -425,7 +425,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -442,7 +442,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -459,7 +459,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -476,7 +476,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -494,7 +494,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -511,7 +511,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -529,7 +529,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -656,13 +656,13 @@ static void Task_CharacterSelectMain(void)
             = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter][0];
         element->variant
             = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter][1];
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
 
         element = &characterScreen->characterSecondarySprite;
         element->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
         element->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
             SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED);
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         gSelectedCharacter = characterScreen->selectedCharacter;
 
         characterScreen->animFrame = 0;
@@ -702,7 +702,7 @@ static void Task_CharacterSelectMain(void)
             element = &characterScreen->scrollUpArrow;
             element->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
             element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_SCROLLING;
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             m4aSongNumStart(SE_SHIFT);
             gCurTask->main = Task_HandleCarouselScrollUp;
             RenderCarouselScrollAnim(characterScreen);
@@ -720,7 +720,7 @@ static void Task_CharacterSelectMain(void)
             element = &characterScreen->scrollDownArrow;
             element->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
             element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_SCROLLING;
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             m4aSongNumStart(SE_SHIFT);
             gCurTask->main = Task_HandleCarouselScrollDown;
             RenderCarouselScrollAnim(characterScreen);
@@ -755,14 +755,14 @@ static void Task_CharacterSelectMain(void)
                 element->variant
                     = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter]
                                                     [1];
-                element->unk21 = 0xFF;
+                element->prevVariant = -1;
 
                 element = &characterScreen->characterSecondarySprite;
                 element->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
                 element->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
                     SA2_ANIM_CHAR_ID_CHEESE,
                     SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED);
-                element->unk21 = 0xFF;
+                element->prevVariant = -1;
 
                 gSelectedCharacter = characterScreen->selectedCharacter;
                 characterScreen->animFrame = 0;
@@ -800,7 +800,7 @@ static void Task_CharacterSelectMain(void)
                     element = &characterScreen->scrollDownArrow;
                     element->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
                     element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_SCROLLING;
-                    element->unk21 = 0xFF;
+                    element->prevVariant = -1;
                     m4aSongNumStart(SE_SHIFT);
                     gCurTask->main = Task_HandleCarouselScrollDown;
                 } else {
@@ -822,7 +822,7 @@ static void Task_CharacterSelectMain(void)
                     element = &characterScreen->scrollUpArrow;
                     element->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
                     element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_SCROLLING;
-                    element->unk21 = 0xFF;
+                    element->prevVariant = -1;
                     m4aSongNumStart(SE_SHIFT);
                     gCurTask->main = Task_HandleCarouselScrollUp;
                 }
@@ -862,7 +862,7 @@ static void Task_HandleCarouselScrollUp(void)
             element = &characterScreen->scrollUpArrow;
             element->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
             element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
-            element->unk21 = 0xff;
+            element->prevVariant = -1;
         }
     }
 
@@ -920,7 +920,7 @@ static void Task_HandleCarouselScrollDown(void)
             element = &characterScreen->scrollDownArrow;
             element->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
             element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
-            element->unk21 = 0xff;
+            element->prevVariant = -1;
         }
     }
 
@@ -973,7 +973,7 @@ static void Task_CarouselScrollCompleteAnim(void)
             element = &characterScreen->scrollUpArrow;
             element->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
             element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
-            element->unk21 = 0xff;
+            element->prevVariant = -1;
         }
     }
 
@@ -983,7 +983,7 @@ static void Task_CarouselScrollCompleteAnim(void)
             element = &characterScreen->scrollDownArrow;
             element->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
             element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
-            element->unk21 = 0xff;
+            element->prevVariant = -1;
         }
     }
 
@@ -1027,7 +1027,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
             element = &characterScreen->scrollUpArrow;
             element->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
             element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
-            element->unk21 = 0xff;
+            element->prevVariant = -1;
         }
     }
 
@@ -1037,7 +1037,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
             element = &characterScreen->scrollDownArrow;
             element->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
             element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC;
-            element->unk21 = 0xff;
+            element->prevVariant = -1;
         }
     }
 
@@ -1222,7 +1222,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     element->y = 79;
     element->variant = characterScreen->selectedCharacter
         + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
 
     transformOptions->unk0 = 0;
     transformOptions->width
@@ -1390,7 +1390,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         element = &characterScreen->characterSprite;
         element->graphics.anim = sCharacterSpriteAssets[selectedCharacter][0];
         element->variant = sCharacterSpriteAssets[selectedCharacter][1];
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
 
         if (!(characterScreen->availableCharacters
               & CHARACTER_BIT(characterScreen->selectedCharacter))
@@ -1411,38 +1411,38 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
             element->graphics.anim
                 = sCharacterNameSubTextAssets[CHARACTER_HIDDEN_LABEL][0];
             element->variant = sCharacterNameSubTextAssets[CHARACTER_HIDDEN_LABEL][1];
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             sub_8004558(element);
 
             element = &characterScreen->characterTitleTextLeft;
             element->graphics.anim
                 = sCharacterTitleLeftSideAssets[CHARACTER_HIDDEN_LABEL][0];
             element->variant = sCharacterTitleLeftSideAssets[CHARACTER_HIDDEN_LABEL][1];
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
 
             element = &characterScreen->characterTitleTextRight;
             element->graphics.anim
                 = sCharacteTitleRightSideAssets[CHARACTER_HIDDEN_LABEL][0];
             element->variant = sCharacteTitleRightSideAssets[CHARACTER_HIDDEN_LABEL][1];
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
         } else {
             element = &characterScreen->characterNameSubText;
             element->graphics.anim
                 = sCharacterNameSubTextAssets[selectedCharacter + somethinga * 6][0];
             element->variant
                 = sCharacterNameSubTextAssets[selectedCharacter + somethinga * 6][1];
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             sub_8004558(element);
 
             element = &characterScreen->characterTitleTextLeft;
             element->graphics.anim = sCharacterTitleLeftSideAssets[selectedCharacter][0];
             element->variant = sCharacterTitleLeftSideAssets[selectedCharacter][1];
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
 
             element = &characterScreen->characterTitleTextRight;
             element->graphics.anim = sCharacteTitleRightSideAssets[selectedCharacter][0];
             element->variant = sCharacteTitleRightSideAssets[selectedCharacter][1];
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
         }
     }
 
@@ -1494,7 +1494,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         element->y = 0x4F;
         element->variant = characterScreen->selectedCharacter
             + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
 
         transformOptions->unk0 = 0;
         transformOptions->width
@@ -1689,7 +1689,7 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
         element->y = 79;
         element->variant = characterScreen->selectedCharacter
             + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
 
         transformOptions->unk0 = 0;
         transformOptions->width
@@ -1772,13 +1772,13 @@ static void Task_MultiplayerWaitForSelections(void)
         element->graphics.anim
             = sCharacterSpriteAssets[characterScreen->selectedCharacter][0];
         element->variant = sCharacterSpriteAssets[characterScreen->selectedCharacter][1];
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
 
         element = &characterScreen->characterSecondarySprite;
         element->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
         element->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
             SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
 
         RenderUI(characterScreen);
 
@@ -1826,7 +1826,7 @@ static void Task_MultiplayerWaitForSelections(void)
                     = sCharacterSpriteAssets[characterScreen->selectedCharacter][0];
                 element->variant
                     = sCharacterSpriteAssets[characterScreen->selectedCharacter][1];
-                element->unk21 = 0xFF;
+                element->prevVariant = -1;
                 sub_8004558(element);
 
                 element = &characterScreen->characterSecondarySprite;
@@ -1834,7 +1834,7 @@ static void Task_MultiplayerWaitForSelections(void)
                 element->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
                     SA2_ANIM_CHAR_ID_CHEESE,
                     SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
-                element->unk21 = 0xFF;
+                element->prevVariant = -1;
                 sub_8004558(element);
 
                 send = &gMultiSioSend;

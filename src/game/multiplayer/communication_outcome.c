@@ -122,7 +122,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->variant = outcome + SA2_ANIM_VARIANT_MP_MSG_OK;
     s3->animCursor = 0;
     s3->unk1C = 0;
-    s3->unk21 = 0xFF;
+    s3->prevVariant = -1;
     s3->unk22 = 0x10;
     s3->palId = 0;
     s3->unk10 = 0x2000;
@@ -137,7 +137,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->variant = sCheeseSittingVariants[outcome];
     s3->animCursor = 0;
     s3->unk1C = 0;
-    s3->unk21 = 0xFF;
+    s3->prevVariant = -1;
     s3->unk22 = 0x10;
     s3->palId = 0;
     s3->unk10 = 0x2000;
@@ -152,7 +152,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->variant = sCheeseSittingVariants[outcome];
     s3->animCursor = 0;
     s3->unk1C = 0;
-    s3->unk21 = 0xFF;
+    s3->prevVariant = -1;
     s3->unk22 = 0x10;
     s3->palId = 0;
     s3->unk10 = 0x2000;
@@ -200,7 +200,7 @@ static void sub_805BC40(void)
         s->graphics.anim = unk9090[offset].anim;
         offset = gLoadedSaveGame->language + 7;
         s->variant = unk9090[offset].variant + unk206 - 2;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         sub_8004558(s);
         sub_80051E8(s);
     } else {
@@ -210,7 +210,7 @@ static void sub_805BC40(void)
 
         s->graphics.anim = unk9090[gLoadedSaveGame->language].anim;
         s->variant = unk9090[gLoadedSaveGame->language].variant;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         sub_8004558(s);
         sub_80051E8(s);
     }

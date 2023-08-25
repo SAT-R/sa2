@@ -75,7 +75,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
     s->animCursor = 0;
     s->unk1C = 0;
 
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk22 = 0x10;
     s->palId = FALSE;
     s->unk10 = 0x2000;

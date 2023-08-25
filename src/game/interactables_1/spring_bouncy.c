@@ -79,7 +79,7 @@ void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->graphics.size = 0;
     s->animCursor = 0;
     s->unk1C = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk22 = 0x10;
     s->palId = FALSE;
     s->hitboxes[0].index = -1;
@@ -129,15 +129,15 @@ static void Task_Interactable_BouncySpring()
             if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
                 s->graphics.anim = gUnknown_080D94A4[index].anim;
                 spring->s.variant = gUnknown_080D94A4[index].variant;
-                spring->s.unk21 = 0xFF;
+                spring->s.prevVariant = -1;
             } else if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
                 s->graphics.anim = gUnknown_080D94BC[index].anim;
                 spring->s.variant = gUnknown_080D94BC[index].variant;
-                spring->s.unk21 = 0xFF;
+                spring->s.prevVariant = -1;
             } else {
                 s->graphics.anim = gUnknown_080D948C[index].anim;
                 spring->s.variant = gUnknown_080D948C[index].variant;
-                spring->s.unk21 = 0xFF;
+                spring->s.prevVariant = -1;
             }
 
             gPlayer.unk64 = 38;
@@ -190,7 +190,7 @@ static void Task_805E02C()
                 s->graphics.anim = SA2_ANIM_SPRING_BOUNCY;
                 s->variant = variant;
             }
-            s->unk21 = -1;
+            s->prevVariant = -1;
         }
 
         sub_80051E8(s);

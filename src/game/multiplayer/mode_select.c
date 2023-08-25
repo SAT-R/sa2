@@ -121,7 +121,7 @@ void CreateMultiplayerModeSelectScreen(void)
     element->graphics.dest = VramMalloc(0x32);
     element->graphics.anim = SA2_ANIM_VS;
     element->variant = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->x = 0;
     element->y = 0;
     element->unk1A = 0x100;
@@ -138,7 +138,7 @@ void CreateMultiplayerModeSelectScreen(void)
     element->graphics.dest = VramMalloc(sMultiplayerModeSelectScreenText[lang].numTiles);
     element->graphics.anim = sMultiplayerModeSelectScreenText[lang].anim;
     element->variant = sMultiplayerModeSelectScreenText[lang].variant;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
 
     element->x = 0;
     element->y = 0;
@@ -157,7 +157,7 @@ void CreateMultiplayerModeSelectScreen(void)
         = VramMalloc(sMultiplayerModeSelectScreenText[lang + 1].numTiles);
     element->graphics.anim = sMultiplayerModeSelectScreenText[lang + 1].anim;
     element->variant = sMultiplayerModeSelectScreenText[lang + 1].variant;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
 
     element->x = 0;
     element->y = 0;
@@ -176,7 +176,7 @@ void CreateMultiplayerModeSelectScreen(void)
         = VramMalloc(sMultiplayerModeSelectScreenText[lang + 2].numTiles);
     element->graphics.anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
     element->variant = sMultiplayerModeSelectScreenText[lang + 2].variant;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
 
     element->x = 8;
     element->y = 103;
@@ -350,7 +350,7 @@ static void Task_ScreenMain(void)
         subText = &modeScreen->subText;
         subText->graphics.anim = sMultiplayerModeSelectScreenText[lang + 3].anim;
         subText->variant = sMultiplayerModeSelectScreenText[lang + 3].variant;
-        subText->unk21 = 0xFF;
+        subText->prevVariant = -1;
     } else {
         Sprite *subText;
         u8 lang = gLoadedSaveGame->language * 4;
@@ -359,7 +359,7 @@ static void Task_ScreenMain(void)
         subText = &modeScreen->subText;
         subText->graphics.anim = sMultiplayerModeSelectScreenText[lang + 2].anim;
         subText->variant = sMultiplayerModeSelectScreenText[lang + 2].variant;
-        subText->unk21 = 0xFF;
+        subText->prevVariant = -1;
     }
 
     RenderUI(modeScreen);

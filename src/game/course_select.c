@@ -403,7 +403,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -427,7 +427,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         element->graphics.size = 0;
         element->animCursor = 0;
         element->unk1C = 0;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->unk22 = 0x10;
         element->palId = 0;
         element->hitboxes[0].index = -1;
@@ -445,7 +445,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         element->graphics.size = 0;
         element->animCursor = 0;
         element->unk1C = 0;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->unk22 = 0x10;
         element->palId = 0;
         element->hitboxes[0].index = -1;
@@ -463,7 +463,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -480,7 +480,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -519,7 +519,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     element->graphics.size = 0;
     element->animCursor = 0;
     element->unk1C = 0;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->unk22 = 0x10;
     element->palId = 0;
     element->hitboxes[0].index = -1;
@@ -537,7 +537,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         element->graphics.size = 0;
         element->animCursor = 0;
         element->unk1C = 0;
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         element->unk22 = 0x10;
         element->palId = 0;
         element->hitboxes[0].index = -1;
@@ -994,14 +994,14 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
         element = &coursesScreen->zoneActUnits[0];
         element->graphics.anim = 0x2F6;
         element->variant = COURSE_INDEX_TO_ZONE_INDEX(coursesScreen->currentCourse);
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         sub_8004558(element);
         sub_80051E8(element);
 
         element = &coursesScreen->zoneActUnits[1];
         element->graphics.anim = 0x2F6;
         element->variant = COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse);
-        element->unk21 = 0xFF;
+        element->prevVariant = -1;
         sub_8004558(element);
         sub_80051E8(element);
     }
@@ -1009,7 +1009,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
     element = &coursesScreen->zoneType;
     element->graphics.anim = sZoneTypeAssets[coursesScreen->currentCourse][0];
     element->variant = sZoneTypeAssets[coursesScreen->currentCourse][1];
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     sub_8004558(element);
     sub_80051E8(element);
 
@@ -1022,7 +1022,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
         = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][0];
     element->variant
         = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][1];
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     sub_8004558(element);
     sub_80051E8(element);
     element = &coursesScreen->screenTitle;

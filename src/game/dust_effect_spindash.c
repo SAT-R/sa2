@@ -25,7 +25,7 @@ struct Task *CreateSpindashDustEffect()
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT;
     s->variant = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk1A = 0x200;
     s->unk1C = 0;
     s->unk22 = 0x10;
@@ -52,7 +52,7 @@ void Task_SpindashDustEffect(void)
         if (p->spindashAccel > Q_24_8(2.0)) {
             s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT_BIG;
             s->variant = 0;
-            s->unk21 = 0xFF;
+            s->prevVariant = -1;
             gCurTask->main = Task_SpindashDustEffectBig;
         }
 
@@ -107,7 +107,7 @@ void Task_SpindashDustEffectBig(void)
         if (p->spindashAccel <= Q_24_8(2.0)) {
             s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT;
             s->variant = 0;
-            s->unk21 = 0xFF;
+            s->prevVariant = -1;
             gCurTask->main = Task_SpindashDustEffect;
         }
 

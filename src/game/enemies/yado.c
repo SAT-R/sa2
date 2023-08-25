@@ -94,12 +94,12 @@ void Task_YadoMain(void)
         gCurTask->main = Task_8055084;
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 1;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
     } else if (IS_YADO_FACING_PLAYER(yado, pos.x, &gPlayer)) {
         gCurTask->main = Task_8055378;
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 3;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
     }
 
     ENEMY_UPDATE_EX_RAW(s, yado->spawnX, yado->spawnY, {});
@@ -201,7 +201,7 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
         yado->unk4C = YADO_PROJ_COOLDOWN;
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         gCurTask->main = Task_YadoMain;
     } else if (yado->unk4C == 60) {
         // _080552E4
@@ -224,7 +224,7 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
     } else if (yado->unk4C == 6) {
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 2;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
     }
 
     sub_8004558(s);
@@ -261,7 +261,7 @@ void Task_8055378(void)
 
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 0;
-        s->unk21 = 0xFF;
+        s->prevVariant = -1;
         gCurTask->main = Task_YadoMain;
     } else {
         sub_80051E8(s);

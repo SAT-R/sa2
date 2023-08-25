@@ -175,7 +175,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             scene->unk16C += (gUnknown_080E12D0[0].numTiles * TILE_SIZE_4BPP);
             element->graphics.anim = gUnknown_080E12D0[0].anim;
             element->variant = gUnknown_080E12D0[0].variant;
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             element->x = (DISPLAY_WIDTH / 2);
             element->y = -20;
             element->unk1A = 0;
@@ -196,7 +196,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             scene->unk16C += (gUnknown_080E12D0[1].numTiles * TILE_SIZE_4BPP);
             element->graphics.anim = gUnknown_080E12D0[1].anim;
             element->variant = gUnknown_080E12D0[1].variant;
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             element->x = (DISPLAY_WIDTH / 2);
             element->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
             element->unk1A = 0;
@@ -217,7 +217,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             scene->unk16C += (gUnknown_080E12D0[2].numTiles * TILE_SIZE_4BPP);
             element->graphics.anim = gUnknown_080E12D0[2].anim;
             element->variant = gUnknown_080E12D0[2].variant;
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             element->x = (DISPLAY_WIDTH / 2);
             element->y = DISPLAY_HEIGHT + 96;
             element->unk1A = 0;

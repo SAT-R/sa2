@@ -188,7 +188,7 @@ void StartSinglePakConnect(void)
     element->unk10 = 0x1000;
     element->graphics.anim = gUnknown_080E018C[connectScreen->unkFA][0];
     element->variant = gUnknown_080E018C[connectScreen->unkFA][1];
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->graphics.dest = (void *)ram;
     ram += gUnknown_080E018C[connectScreen->unkFA][2] * 0x20;
     sub_8004558(element);
@@ -206,7 +206,7 @@ void StartSinglePakConnect(void)
     element->unk10 = 0x1000;
     element->graphics.anim = gUnknown_080E01B6[connectScreen->unkFA][0];
     element->variant = gUnknown_080E01B6[connectScreen->unkFA][1];
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->graphics.dest = (void *)ram;
     ram += gUnknown_080E01B6[connectScreen->unkFA][2] * 0x20;
 
@@ -223,7 +223,7 @@ void StartSinglePakConnect(void)
     element->unk10 = 0x1000;
     element->graphics.anim = SA2_ANIM_MP_MSG;
     element->variant = SA2_ANIM_VARIANT_MP_MSG_2;
-    element->unk21 = 0xFF;
+    element->prevVariant = -1;
     element->graphics.dest = (void *)ram;
 
     background = &connectScreen->unk9C;
@@ -604,7 +604,7 @@ void sub_8081DF0(struct SinglePakConnectScreen *connectScreen, u8 a)
 
     connectScreen->unk6C.graphics.anim = SA2_ANIM_MP_MSG;
     connectScreen->unk6C.variant = a + SA2_ANIM_VARIANT_MP_MSG_OK;
-    connectScreen->unk6C.unk21 = 0xFF;
+    connectScreen->unk6C.prevVariant = -1;
 
     sub_8004558(&connectScreen->unk6C);
     sub_80051E8(&connectScreen->unk6C);

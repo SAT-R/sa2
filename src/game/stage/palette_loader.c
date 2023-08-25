@@ -28,7 +28,7 @@ struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant,
     s->variant = variant;
     s->animCursor = 0;
     s->unk1C = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
     s->unk22 = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;

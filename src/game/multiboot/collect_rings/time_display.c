@@ -37,7 +37,7 @@ void CreateCollectRingsTimeDisplay(void)
     sprite->graphics.size = 0;
     sprite->animCursor = 0;
     sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
+    sprite->prevVariant = -1;
     sprite->unk22 = 0x10;
     sprite->palId = 0;
     sprite->unk10 = 0x40000;
@@ -60,7 +60,7 @@ void CreateCollectRingsTimeDisplay(void)
         sprite->variant = i + 16;
         sprite->animCursor = 0;
         sprite->unk1C = 0;
-        sprite->unk21 = 0xFF;
+        sprite->prevVariant = -1;
         sprite->unk22 = 0x10;
         sprite->palId = 0;
         sprite->unk10 = 0;

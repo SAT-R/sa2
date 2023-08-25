@@ -147,7 +147,7 @@ struct Task *sub_8011C98(s32 x, s32 y)
         s->graphics.size = 0;
         s->graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_SONIC);
         s->variant = 3;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         s->unk1A = 0x440;
         s->unk1C = 0;
         s->unk22 = 0x10;

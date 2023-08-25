@@ -226,7 +226,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             }
             element->animCursor = 0;
             element->unk1C = 0;
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             element->unk22 = 0x10;
             element->palId = 0;
             element->unk10 = 0x1000;
@@ -242,7 +242,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             element->variant = sResultsScreenPlayerCursor[i].variant;
             element->animCursor = 0;
             element->unk1C = 0;
-            element->unk21 = 0xFF;
+            element->prevVariant = -1;
             element->unk22 = 0x10;
             element->palId = 0;
             element->unk10 = 0x1000;

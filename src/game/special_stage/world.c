@@ -190,7 +190,7 @@ void sub_806E94C(struct SpecialStageWorld *world)
         element->unk1C = 0;
         element->prevAnim = 0xffff;
         element->variant = assets[i].variant;
-        element->unk21 = 0xff;
+        element->prevVariant = -1;
         element->unk22 = 16;
         element->palId = 0;
         element->hitboxes[0].index = -1;

@@ -787,14 +787,14 @@ static void SoundTestScreenSetCreamAnim(u8 anim)
         case CREAM_ANIM_BOW:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
-            animatedCream->unk21 = 0xFF;
+            animatedCream->prevVariant = -1;
             animatedCream->variant = 0;
             animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_BOW;
             break;
         case CREAM_ANIM_IDLE:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
-            animatedCream->unk21 = 0xFF;
+            animatedCream->prevVariant = -1;
             animatedCream->variant = 0;
             animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CLAP_FORWARD;
             break;
@@ -822,7 +822,7 @@ static void SoundTestScreenSetCreamAnim(u8 anim)
         case CREAM_ANIM_SOUND_END:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
-            animatedCream->unk21 = 0xFF;
+            animatedCream->prevVariant = -1;
             animatedCream->variant = 0;
             animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_WAITING;
             break;

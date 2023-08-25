@@ -558,7 +558,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     // Copyright screen
     config->graphics.anim = SA2_ANIM_TITLE_COPYRIGHT;
     config->variant = SA2_ANIM_VARIANT_COPYRIGHT_2003;
-    config->unk21 = 0xFF;
+    config->prevVariant = -1;
     config->x = 0;
     config->y = DISPLAY_HEIGHT - 30; // set to the screen's bottom
     config->graphics.size = 0;
@@ -577,7 +577,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     // "PRESS START" text
     config->graphics.anim = gPressStartTiles[language].anim;
     config->variant = gPressStartTiles[language].variant;
-    config->unk21 = 0xFF;
+    config->prevVariant = -1;
     config->x = (DISPLAY_WIDTH / 2);
     config->y = (DISPLAY_HEIGHT / 2) + 30;
     config->graphics.size = 0;
@@ -598,7 +598,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
 
         config->graphics.anim = sMenuTiles[MenuTextIdx(language, menuItemId)].anim;
         config->variant = sMenuTiles[MenuTextIdx(language, menuItemId)].variant;
-        config->unk21 = 0xFF;
+        config->prevVariant = -1;
         config->x = (DISPLAY_WIDTH / 2);
 
         // Generate menu item y positions
@@ -628,7 +628,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     // Uses last value for this one
     config->graphics.anim = sMenuTiles[42].anim;
     config->variant = sMenuTiles[42].variant;
-    config->unk21 = 0xFF;
+    config->prevVariant = -1;
     config->x = (DISPLAY_WIDTH / 2);
     config->y = (DISPLAY_HEIGHT / 2);
     config->graphics.size = 0;
@@ -1551,7 +1551,7 @@ static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
     animation->sprite.graphics.dest = VramMalloc(3);
     animation->sprite.graphics.anim = SA2_ANIM_TITLE_SEAGULL;
     animation->sprite.variant = 0;
-    animation->sprite.unk21 = 0xFF;
+    animation->sprite.prevVariant = -1;
     animation->sprite.x = x;
     animation->sprite.y = y;
     animation->sprite.graphics.size = 0;
@@ -1684,7 +1684,7 @@ static void CreateLensFlareAnimation(void)
 
         sprite->graphics.anim = SA2_ANIM_TITLE_LENS_FLARE;
         sprite->variant = sLensFlareSizes[i];
-        sprite->unk21 = 0xFF;
+        sprite->prevVariant = -1;
 
         lensFlare->posSequenceX[i] = posX = sLensFlareStartPositions[i][0];
         lensFlare->posSequenceY[i] = sLensFlareStartPositions[i][1];
