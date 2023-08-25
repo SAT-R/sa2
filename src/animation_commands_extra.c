@@ -114,10 +114,10 @@ s32 animCmd_GetTiles_COPY(void *cursor, Sprite *s)
 }
 
 // (-6)
-// Differences to animCmd_6:
+// Differences to animCmd_AddHitbox:
 // - uses XOR_SWAP macro instead of SWAP_AND_NEGATE
-// TODO: rename animCmd_Hitbox_COPY
-s32 animCmd_6_COPY(void *cursor, Sprite *s)
+// TODO: rename animCmd_AddHitbox_COPY
+s32 animCmd_AddHitbox_COPY(void *cursor, Sprite *s)
 {
     ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
     s32 index = cmd->hitbox.index & 0xF;
@@ -804,7 +804,7 @@ s32 animCmd_GetTiles(void *cursor, Sprite *s)
 }
 
 // (-6)
-s32 animCmd_6(void *cursor, Sprite *s)
+s32 animCmd_AddHitbox(void *cursor, Sprite *s)
 {
     ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
     s32 index = cmd->hitbox.index & 0xF;

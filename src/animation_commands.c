@@ -12,7 +12,7 @@ static s32 animCmd_GetPalette(void *cursor, Sprite *sprite);
 static s32 animCmd_JumpBack(void *cursor, Sprite *sprite);
 static s32 animCmd_End(void *cursor, Sprite *sprite);
 static s32 animCmd_PlaySoundEffect(void *cursor, Sprite *sprite);
-extern s32 animCmd_6(void *cursor, Sprite *sprite);
+extern s32 animCmd_AddHitbox(void *cursor, Sprite *sprite);
 static s32 animCmd_TranslateSprite(void *cursor, Sprite *sprite);
 static s32 animCmd_8(void *cursor, Sprite *sprite);
 static s32 animCmd_SetIdAndVariant(void *cursor, Sprite *sprite);
@@ -28,7 +28,7 @@ extern u32 gFlags;
 const AnimationCommandFunc animCmdTable[] = {
     // 0x080984AC
     animCmd_GetTiles,        animCmd_GetPalette, animCmd_JumpBack,          animCmd_End,
-    animCmd_PlaySoundEffect, animCmd_6,          animCmd_TranslateSprite,   animCmd_8,
+    animCmd_PlaySoundEffect, animCmd_AddHitbox,  animCmd_TranslateSprite,   animCmd_8,
     animCmd_SetIdAndVariant, animCmd_10,         animCmd_SetSpritePriority, animCmd_12,
 };
 

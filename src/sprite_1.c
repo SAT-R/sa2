@@ -8,7 +8,7 @@ extern s32 animCmd_GetPalette_COPY(void *, Sprite *);
 extern s32 animCmd_JumpBack_COPY(void *, Sprite *);
 extern s32 animCmd_End_COPY(void *, Sprite *);
 extern s32 animCmd_PlaySoundEffect_COPY(void *, Sprite *);
-extern s32 animCmd_6_COPY(void *, Sprite *);
+extern s32 animCmd_AddHitbox_COPY(void *, Sprite *);
 extern s32 animCmd_TranslateSprite_COPY(void *, Sprite *);
 extern s32 animCmd_8_COPY(void *, Sprite *);
 extern s32 animCmd_SetIdAndVariant_COPY(void *, Sprite *);
@@ -19,7 +19,7 @@ extern s32 animCmd_12_COPY(void *, Sprite *);
 const AnimationCommandFunc animCmdTable_2[12] = {
     animCmd_GetTiles_COPY,          animCmd_GetPalette_COPY,
     animCmd_JumpBack_COPY,          animCmd_End_COPY,
-    animCmd_PlaySoundEffect_COPY,   animCmd_6_COPY,
+    animCmd_PlaySoundEffect_COPY,   animCmd_AddHitbox_COPY,
     animCmd_TranslateSprite_COPY,   animCmd_8_COPY,
     animCmd_SetIdAndVariant_COPY,   animCmd_10_COPY,
     animCmd_SetSpritePriority_COPY, animCmd_12_COPY,
