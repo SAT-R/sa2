@@ -62,7 +62,7 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     sprite = &cannon->sprite2;
     sprite->unk1A = 0x1C0;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;

@@ -154,7 +154,7 @@ struct Task *CreateStageUI(void)
         s->graphics.size = 0;
         s->graphics.anim = sAnimsAsciiDigits[i][0];
         s->variant = sAnimsAsciiDigits[i][1];
-        s->unk14 = 0;
+        s->animCursor = 0;
         s->unk1C = 0;
         s->unk21 = 0xFF;
         s->unk22 = 0x10;
@@ -179,7 +179,7 @@ struct Task *CreateStageUI(void)
         s->variant = sAnims1UpIcons[gSelectedCharacter][2];
         s->unk1A = 0x100;
         s->graphics.size = 0;
-        s->unk14 = 0;
+        s->animCursor = 0;
         s->unk1C = 0;
         s->unk21 = 0xFF;
         s->unk22 = 0x10;
@@ -206,7 +206,7 @@ struct Task *CreateStageUI(void)
     s->variant = 0;
     s->unk1A = 0xC0;
     s->graphics.size = 0;
-    s->unk14 = 0;
+    s->animCursor = 0;
     s->unk1C = 0;
     s->unk21 = -1;
     s->unk22 = 0x10;
@@ -225,7 +225,7 @@ struct Task *CreateStageUI(void)
     s->variant = 0;
     s->unk1A = 0;
     s->graphics.size = 0;
-    s->unk14 = 0;
+    s->animCursor = 0;
     s->unk1C = 0;
     s->unk21 = -1;
     s->unk22 = 0x10;

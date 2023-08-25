@@ -140,7 +140,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 #endif
             s->unk1A = 0x180;
             s->graphics.size = 0;
-            s->unk14 = 0;
+            s->animCursor = 0;
             s->unk1C = 0;
 
             launcher->s.unk21 = 0xFF;

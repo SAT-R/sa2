@@ -125,7 +125,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
             }
             element->unk1A = 0x100;
             element->graphics.size = 0;
-            element->unk14 = 0;
+            element->animCursor = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
             element->palId = 0;
@@ -144,7 +144,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     element->y = 0;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
@@ -161,7 +161,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     element->y = (DISPLAY_HEIGHT * (13. / 16.));
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
@@ -182,7 +182,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
         element->y = (DISPLAY_HEIGHT * (11. / 16.));
         element->unk1A = 0x140;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;

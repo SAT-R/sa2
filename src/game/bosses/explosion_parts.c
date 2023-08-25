@@ -52,7 +52,7 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
-        s->unk14 = 0;
+        s->animCursor = 0;
         s->unk1C = 0;
         s->unk21 = -1;
         s->unk22 = 0x10;
@@ -121,7 +121,7 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
-        s->unk14 = 0;
+        s->animCursor = 0;
         s->unk1C = 0;
         s->unk21 = -1;
         s->unk22 = 0x10;

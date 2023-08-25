@@ -214,7 +214,7 @@ void CreateFinalEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -233,7 +233,7 @@ void CreateFinalEndingFallCutScene(void)
         element->y = (DISPLAY_HEIGHT / 2);
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -252,7 +252,7 @@ void CreateFinalEndingFallCutScene(void)
         element->y = 0x50;
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -272,7 +272,7 @@ void CreateFinalEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0x80;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 2;
@@ -291,7 +291,7 @@ void CreateFinalEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0x40;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 2;
@@ -310,7 +310,7 @@ void CreateFinalEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 2;
@@ -330,7 +330,7 @@ void CreateFinalEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 2;
@@ -351,7 +351,7 @@ void CreateFinalEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -707,7 +707,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
                 element->y = scene->unk3C8[i][1] >> 8;
 
                 if (sub_8004558(element) != 1) {
-                    element->unk14 = 0;
+                    element->animCursor = 0;
                     element->unk1C = 0;
                     element->unk10 &= ~0x4000;
                 }

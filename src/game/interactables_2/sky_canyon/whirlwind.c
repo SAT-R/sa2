@@ -135,7 +135,7 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         for (i = 0; i < ARRAY_COUNT(ia086->sprites); i++) {
             Sprite *s = &ia086->sprites[i];
             s->graphics.size = 0;
-            s->unk14 = 0;
+            s->animCursor = 0;
             s->unk1C = 0;
             s->unk21 = 0xFF;
             s->unk22 = 0x10;

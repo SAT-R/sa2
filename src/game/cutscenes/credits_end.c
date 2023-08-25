@@ -180,7 +180,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             element->y = -20;
             element->unk1A = 0;
             element->graphics.size = 0;
-            element->unk14 = 0;
+            element->animCursor = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
             element->palId = 0;
@@ -201,7 +201,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             element->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
             element->unk1A = 0;
             element->graphics.size = 0;
-            element->unk14 = 0;
+            element->animCursor = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
             element->palId = 0;
@@ -222,7 +222,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             element->y = DISPLAY_HEIGHT + 96;
             element->unk1A = 0;
             element->graphics.size = 0;
-            element->unk14 = 0;
+            element->animCursor = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
             element->palId = 0;

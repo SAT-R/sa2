@@ -134,7 +134,7 @@ static void CreateFlyingAnimal(SpawnOptions *init)
     sprite->graphics.size = 0;
     sprite->graphics.anim = init->anim;
     sprite->variant = init->variant;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 16;
@@ -202,7 +202,7 @@ static void CreateBouncingAnimal(SpawnOptions *init)
     sprite->graphics.size = 0;
     sprite->graphics.anim = init->anim;
     sprite->variant = init->variant;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;
@@ -273,7 +273,7 @@ static void CreateStaticAnimal(SpawnOptions *init)
     sprite->graphics.size = 0;
     sprite->graphics.anim = init->anim;
     sprite->variant = init->variant;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 16;

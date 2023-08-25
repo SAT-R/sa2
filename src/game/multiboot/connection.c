@@ -180,7 +180,7 @@ void StartSinglePakConnect(void)
     element->y = 24;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
@@ -198,7 +198,7 @@ void StartSinglePakConnect(void)
     element->y = (DISPLAY_HEIGHT - 38);
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
@@ -215,7 +215,7 @@ void StartSinglePakConnect(void)
     element->y = (DISPLAY_HEIGHT * (7. / 8.));
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;

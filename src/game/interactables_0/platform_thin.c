@@ -102,7 +102,7 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
 
     sprite->unk1A = 0x480;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;
@@ -222,7 +222,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
     register s32 r6 asm("r6");
 
     {
-        Sprite *r7 = &platform->unk0;
+        Sprite *s = &platform->unk0;
         SpriteTransform *transform = &platform->unkC0;
         platform->unkF0 = 0;
         platform->unkF2 = 0xFE00;
@@ -230,19 +230,19 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         y -= 50;
 
         // Init base 1
-        r7->graphics.dest
+        s->graphics.dest
             = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][0]);
-        r7->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
-        r7->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
+        s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
+        s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
 
-        r7->unk1A = 0x200;
-        r7->graphics.size = 0;
-        r7->unk14 = 0;
-        r7->unk1C = 0;
-        r7->unk21 = -1;
-        r7->unk22 = 0x10;
-        r7->palId = 0;
-        r7->unk10 = 0x70;
+        s->unk1A = 0x200;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->unk1C = 0;
+        s->unk21 = -1;
+        s->unk22 = 0x10;
+        s->palId = 0;
+        s->unk10 = 0x70;
 
         // Init transform
         transform->unk0 = 0;
@@ -251,60 +251,60 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         transform->x = x;
         transform->y = y;
 
-        sub_8004558(r7);
+        sub_8004558(s);
 
         // copy base 1
         DmaCopy16(3, &platform->unk0, &platform->unk30, 0x30);
-        r7 = &platform->unk30;
+        s = &platform->unk30;
 
         // copy transform
         DmaCopy16(3, &platform->unkC0, &platform->unkCC, 0xC);
 
         // Set the new params
-        r7->unk10 = 0x71;
+        s->unk10 = 0x71;
 
         transform = &platform->unkCC;
         transform->y = y - 0x10;
     }
 
     {
-        Sprite *r7;
+        Sprite *s;
         SpriteTransform *transform;
         // init base 2
-        r7 = &platform->unk60;
+        s = &platform->unk60;
 
         // Copy the transform
         DmaCopy16(3, &platform->unkC0, &platform->unkD8, 0xC);
 
-        r7->graphics.dest
+        s->graphics.dest
             = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][3]);
-        r7->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
-        r7->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][5];
-        r7->unk1A = 0x200;
-        r7->graphics.size = 0;
-        r7->unk14 = 0;
-        r7->unk1C = 0;
-        r7->unk21 = -1;
-        r7->unk22 = 0x10;
-        r7->palId = 0;
-        r7->unk10 = 0x72;
+        s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
+        s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][5];
+        s->unk1A = 0x200;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->unk1C = 0;
+        s->unk21 = -1;
+        s->unk22 = 0x10;
+        s->palId = 0;
+        s->unk10 = 0x72;
 
         transform = &platform->unkD8;
         // Set the transform props
         transform->y = y;
 
-        sub_8004558(r7);
+        sub_8004558(s);
 
         // Copy base 2
         DmaCopy16(3, &platform->unk60, &platform->unk90, 0x30);
-        r7 = &platform->unk90;
+        s = &platform->unk90;
 
         // Copy the transform
         DmaCopy16(3, &platform->unkD8, &platform->unkE4, 0xC);
         transform = &platform->unkE4;
 
         // Update props
-        r7->unk10 = 0x73;
+        s->unk10 = 0x73;
 
         // used to help match atm
         r6 = y - 0x10;

@@ -26,7 +26,7 @@ struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant,
     s->graphics.size = 0;
     s->graphics.anim = anim;
     s->variant = variant;
-    s->unk14 = 0;
+    s->animCursor = 0;
     s->unk1C = 0;
     s->unk21 = 0xFF;
     s->unk22 = 0x10;

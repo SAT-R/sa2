@@ -134,7 +134,7 @@ typedef struct {
                           // bit 30
                           // bit 31
 
-    /* 0x14 */ u16 unk14; // animation cursor
+    /* 0x14 */ u16 animCursor;
 
     /* 0x16 */ s16 x;
     /* 0x18 */ s16 y;
@@ -221,7 +221,7 @@ void UpdateBgAnimationTiles(Background *);
         (_sprite)->graphics.size = 0;                                                   \
         (_sprite)->unk21 = (_sprite)->variant;                                          \
         (_sprite)->unk1E = (_sprite)->graphics.anim;                                    \
-        (_sprite)->unk14 = 0;                                                           \
+        (_sprite)->animCursor = 0;                                                      \
         (_sprite)->unk1C = 0;                                                           \
         (_sprite)->unk10 &= ~0x4000;                                                    \
     }
@@ -234,7 +234,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->graphics.size = 0;                                                         \
     _sprite->x = 0;                                                                     \
     _sprite->y = 0;                                                                     \
-    _sprite->unk14 = 0;                                                                 \
+    _sprite->animCursor = 0;                                                            \
     _sprite->unk1C = 0;                                                                 \
     _sprite->unk21 = 0xFF;                                                              \
     _sprite->unk22 = 0x10;                                                              \
@@ -249,7 +249,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->variant = _variant;                                                        \
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
-    _sprite->unk14 = 0;                                                                 \
+    _sprite->animCursor = 0;                                                            \
     _sprite->unk1C = 0;                                                                 \
     _sprite->unk21 = 0xFF;                                                              \
     _sprite->unk22 = 0x10;                                                              \
@@ -262,7 +262,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->variant = _variant;                                                        \
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
-    _sprite->unk14 = 0;                                                                 \
+    _sprite->animCursor = 0;                                                            \
     _sprite->unk1C = 0;                                                                 \
     _sprite->unk21 = 0xFF;                                                              \
     _sprite->unk22 = 0x10;                                                              \
@@ -273,7 +273,7 @@ void UpdateBgAnimationTiles(Background *);
 #define SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(_sprite, _UNK1A, _priority, _flags)            \
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
-    _sprite->unk14 = 0;                                                                 \
+    _sprite->animCursor = 0;                                                            \
     _sprite->unk1C = 0;                                                                 \
     _sprite->unk21 = 0xFF;                                                              \
     _sprite->unk22 = 0x10;                                                              \
@@ -286,7 +286,7 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->variant = _variant;                                                        \
     _sprite->unk1A = _UNK1A;                                                            \
     _sprite->graphics.size = 0;                                                         \
-    _sprite->unk14 = 0;                                                                 \
+    _sprite->animCursor = 0;                                                            \
     _sprite->unk1C = 0;                                                                 \
     _sprite->unk21 = 0xFF;                                                              \
     _sprite->unk22 = 0x10;                                                              \

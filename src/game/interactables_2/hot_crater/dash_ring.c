@@ -128,7 +128,7 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         Sprite *s1 = &ring->s1;
         s1->unk1A = 0x180;
         s1->graphics.size = 0;
-        s1->unk14 = 0;
+        s1->animCursor = 0;
         s1->unk1C = 0;
 
         s1->unk21 = 0xFF;
@@ -146,7 +146,7 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         Sprite *s2 = &ring->s2;
         s2->unk1A = 0x480;
         s2->graphics.size = 0;
-        s2->unk14 = 0;
+        s2->animCursor = 0;
         s2->unk1C = 0;
 
         s2->unk21 = 0xFF;

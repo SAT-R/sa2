@@ -224,7 +224,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
                 element->graphics.anim = gUnknown_080D9100[lang][3].anim;
                 element->variant = gUnknown_080D9100[lang][3].variant + temp;
             }
-            element->unk14 = 0;
+            element->animCursor = 0;
             element->unk1C = 0;
             element->unk21 = 0xFF;
             element->unk22 = 0x10;
@@ -240,7 +240,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             element->graphics.size = 0;
             element->graphics.anim = sResultsScreenPlayerCursor[i].anim;
             element->variant = sResultsScreenPlayerCursor[i].variant;
-            element->unk14 = 0;
+            element->animCursor = 0;
             element->unk1C = 0;
             element->unk21 = 0xFF;
             element->unk22 = 0x10;

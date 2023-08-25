@@ -86,7 +86,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
     sprite->unk1A = 0x480;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;
@@ -102,7 +102,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     sprite = &ia69->unk30;
     sprite->unk1A = 0x480;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;
@@ -118,7 +118,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     sprite = &ia69->unk60;
     sprite->unk1A = 0x480;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;
@@ -134,7 +134,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     sprite = &ia69->unk90;
     sprite->unk1A = 0x480;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;
@@ -150,7 +150,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     sprite = &ia69->unkC0;
     sprite->unk1A = 0x480;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 0x10;

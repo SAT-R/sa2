@@ -45,7 +45,7 @@ s32 sub_80036E0(Sprite *s)
         // Handle all the "regular" Animation commands with an ID < 0
         variants = gUnknown_03002794->animations[s->graphics.anim];
         script = variants[s->variant];
-        cmd = ReadInstruction(script, s->unk14);
+        cmd = ReadInstruction(script, s->animCursor);
         while (cmd->id < 0) {
             ret = animCmdTable_2[~cmd->id](cmd, s);
             if (ret != 1) {
@@ -62,11 +62,11 @@ s32 sub_80036E0(Sprite *s)
                 variants = gUnknown_03002794->animations[s->graphics.anim];
                 newScript = variants[s->variant];
                 // reset cursor
-                s->unk14 = 0;
+                s->animCursor = 0;
                 // load the new script
                 script = newScript;
             }
-            cmd = ReadInstruction(script, s->unk14);
+            cmd = ReadInstruction(script, s->animCursor);
         }
 
         // Display the image 'index' for 'delay' frames
@@ -83,7 +83,7 @@ s32 sub_80036E0(Sprite *s)
             }
         }
 
-        s->unk14 += 2;
+        s->animCursor += 2;
     }
     return 1;
 }
@@ -93,7 +93,7 @@ s32 sub_80036E0(Sprite *s)
 s32 animCmd_GetTiles_COPY(void *cursor, Sprite *s)
 {
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
+    s->animCursor += AnimCommandSizeInWords(ACmd_GetTiles);
 
     if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
@@ -121,7 +121,7 @@ s32 animCmd_AddHitbox_COPY(void *cursor, Sprite *s)
 {
     ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
     s32 index = cmd->hitbox.index & 0xF;
-    s->unk14 += AnimCommandSizeInWords(ACmd_Hitbox);
+    s->animCursor += AnimCommandSizeInWords(ACmd_Hitbox);
 
     DmaCopy32(3, &cmd->hitbox, &s->hitboxes[index].index, 8);
 
@@ -508,7 +508,7 @@ s32 sub_8004274(void *dest, const void *tilesSrc, u16 param2, u16 param3, u8 bgC
 s32 animCmd_GetPalette_COPY(void *cursor, Sprite *s)
 {
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_GetPalette);
+    s->animCursor += AnimCommandSizeInWords(ACmd_GetPalette);
 
     if (!(s->unk10 & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
@@ -526,7 +526,7 @@ s32 animCmd_GetPalette_COPY(void *cursor, Sprite *s)
 s32 animCmd_JumpBack_COPY(void *cursor, Sprite *s)
 {
     ACmd_JumpBack *cmd = cursor;
-    s->unk14 -= cmd->offset;
+    s->animCursor -= cmd->offset;
 
     return 1;
 }
@@ -543,7 +543,7 @@ s32 animCmd_End_COPY(void *cursor, Sprite *s)
 s32 animCmd_PlaySoundEffect_COPY(void *cursor, Sprite *s)
 {
     ACmd_PlaySoundEffect *cmd = cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
+    s->animCursor += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
 
     m4aSongNumStart(cmd->songId);
 
@@ -554,7 +554,7 @@ s32 animCmd_PlaySoundEffect_COPY(void *cursor, Sprite *s)
 s32 animCmd_TranslateSprite_COPY(void *cursor, Sprite *s)
 {
     ACmd_TranslateSprite *cmd = cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_TranslateSprite);
+    s->animCursor += AnimCommandSizeInWords(ACmd_TranslateSprite);
 
     s->x += cmd->x;
     s->y += cmd->y;
@@ -566,7 +566,7 @@ s32 animCmd_TranslateSprite_COPY(void *cursor, Sprite *s)
 s32 animCmd_8_COPY(void *cursor, Sprite *s)
 {
     ACmd_8 *cmd = cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_8);
+    s->animCursor += AnimCommandSizeInWords(ACmd_8);
 
     return 1;
 }
@@ -574,7 +574,7 @@ s32 animCmd_8_COPY(void *cursor, Sprite *s)
 s32 animCmd_SetIdAndVariant_COPY(void *cursor, Sprite *s)
 {
     ACmd_SetIdAndVariant *cmd = cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
+    s->animCursor += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
 
     s->graphics.anim = cmd->animId;
     s->unk21 = 0xFF;
@@ -585,7 +585,7 @@ s32 animCmd_SetIdAndVariant_COPY(void *cursor, Sprite *s)
 
 s32 animCmd_10_COPY(void *cursor, Sprite *s)
 {
-    s->unk14 += AnimCommandSizeInWords(ACmd_10);
+    s->animCursor += AnimCommandSizeInWords(ACmd_10);
 
 #ifdef UB_FIX
     return 1; // I think this should be the correct behavior?
@@ -597,14 +597,14 @@ s32 animCmd_10_COPY(void *cursor, Sprite *s)
 // This is not a NOP-instruction in the regular version
 s32 animCmd_SetSpritePriority_COPY(void *cursor, Sprite *s)
 {
-    s->unk14 += AnimCommandSizeInWords(ACmd_SetSpritePriority);
+    s->animCursor += AnimCommandSizeInWords(ACmd_SetSpritePriority);
     return 1;
 }
 
 // This is not a NOP-instruction in the regular version
 s32 animCmd_12_COPY(void *cursor, Sprite *s)
 {
-    s->unk14 += AnimCommandSizeInWords(ACmd_12);
+    s->animCursor += AnimCommandSizeInWords(ACmd_12);
     return 1;
 }
 
@@ -734,7 +734,7 @@ s32 sub_8004558(Sprite *s)
         // Handle all the "regular" Animation commands with an ID < 0
         variants = gUnknown_03002794->animations[s->graphics.anim];
         script = variants[s->variant];
-        cmd = ReadInstruction(script, s->unk14);
+        cmd = ReadInstruction(script, s->animCursor);
         while (cmd->id < 0) {
             ret = animCmdTable[~cmd->id](cmd, s);
             if (ret != 1) {
@@ -752,12 +752,12 @@ s32 sub_8004558(Sprite *s)
                 newScript = variants[s->variant];
 
                 // reset cursor
-                s->unk14 = 0;
+                s->animCursor = 0;
 
                 // load the new script
                 script = newScript;
             }
-            cmd = ReadInstruction(script, s->unk14);
+            cmd = ReadInstruction(script, s->animCursor);
         }
 
         // Display the image 'index' for 'delay' frames
@@ -774,7 +774,7 @@ s32 sub_8004558(Sprite *s)
             }
         }
 
-        s->unk14 += 2;
+        s->animCursor += 2;
     }
     return 1;
 }
@@ -783,7 +783,7 @@ s32 sub_8004558(Sprite *s)
 s32 animCmd_GetTiles(void *cursor, Sprite *s)
 {
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_GetTiles);
+    s->animCursor += AnimCommandSizeInWords(ACmd_GetTiles);
 
     if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
@@ -808,7 +808,7 @@ s32 animCmd_AddHitbox(void *cursor, Sprite *s)
 {
     ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
     s32 index = cmd->hitbox.index & 0xF;
-    s->unk14 += AnimCommandSizeInWords(ACmd_Hitbox);
+    s->animCursor += AnimCommandSizeInWords(ACmd_Hitbox);
 
     DmaCopy32(3, &cmd->hitbox, &s->hitboxes[index].index, 8);
 

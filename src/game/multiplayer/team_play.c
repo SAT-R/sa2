@@ -156,7 +156,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         element->graphics.size = 0;
         element->graphics.anim = gUnknown_080D92BC[i].anim;
         element->variant = gUnknown_080D92BC[i].variant;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
@@ -177,7 +177,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         element->graphics.size = 0;
         element->graphics.anim = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].anim;
         element->variant = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].variant;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
@@ -194,7 +194,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     element->graphics.size = 0;
     element->graphics.anim = SA2_ANIM_MULTIPLAYER_UNKNOWN;
     element->variant = SA2_ANIM_VARIANT_MULTIPLAYER_UNKNOWN_ARROWS;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;

@@ -58,7 +58,7 @@ void CreateEntity_SmallSpinnyWindmill(MapEntity *me, u16 spriteRegionX,
     sprite = &windmill->sprite;
     sprite->unk1A = 0x480;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = -1;
     sprite->unk22 = 16;

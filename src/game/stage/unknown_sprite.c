@@ -41,7 +41,7 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
     su->s.graphics.size = 0;
     su->s.graphics.anim = anim;
     su->s.variant = variant;
-    su->s.unk14 = 0;
+    su->s.animCursor = 0;
     su->s.unk1C = 0;
     su->s.unk21 = 0xFF;
     su->s.unk22 = 0x10;

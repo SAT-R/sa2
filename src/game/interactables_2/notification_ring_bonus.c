@@ -200,7 +200,7 @@ void CreateSprite_Notif_RingBonus(void)
     notif->unk30 = 120;
     notif->s.unk1A = 0x40;
     notif->s.graphics.size = 0;
-    notif->s.unk14 = 0;
+    notif->s.animCursor = 0;
     notif->s.unk1C = 0;
     notif->s.unk21 = 0xFF;
     notif->s.unk22 = 0x10;

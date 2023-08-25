@@ -93,7 +93,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     sprite = &ia75->sprite1;
     sprite->unk1A = 0x4C0;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = 0xFF;
     sprite->unk22 = 0x10;
@@ -108,7 +108,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     sprite = &ia75->sprite2;
     sprite->unk1A = 0x480;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = 0xFF;
     sprite->unk22 = 0x10;

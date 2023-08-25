@@ -94,7 +94,7 @@ void CreateStageRingsManager(void)
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_RING_STATIC;
     s->variant = 0;
-    s->unk14 = 0;
+    s->animCursor = 0;
     s->unk1C = 0;
     s->unk21 = 0xFF;
     s->unk22 = 0x10;

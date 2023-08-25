@@ -101,7 +101,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s = &itembox->s;
     s->unk1A = 0x4C0;
     s->graphics.size = 0;
-    s->unk14 = 0;
+    s->animCursor = 0;
     s->unk1C = 0;
     s->unk21 = 0xFF;
     s->unk22 = 0x10;
@@ -116,7 +116,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s = &itembox->item;
     s->unk1A = 0x500;
     s->graphics.size = 0;
-    s->unk14 = 0;
+    s->animCursor = 0;
     s->unk1C = 0;
     s->unk21 = -1;
     s->unk22 = 0x10;

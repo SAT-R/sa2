@@ -401,7 +401,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     }
     element->unk1A = 0xC0;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -425,7 +425,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         }
         element->unk1A = 0x100;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
@@ -443,7 +443,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         element->variant = 0;
         element->unk1A = 0x100;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
@@ -461,7 +461,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     element->variant = 0;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -478,7 +478,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     element->variant = 0;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -517,7 +517,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     }
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -535,7 +535,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         element->variant = sChaoEmeraldAssets[i][1];
         element->unk1A = 0x100;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;

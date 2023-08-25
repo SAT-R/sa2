@@ -52,7 +52,7 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->graphics.dest = VramMalloc(25);
     s->unk1A = 0x480;
     s->graphics.size = 0;
-    s->unk14 = 0;
+    s->animCursor = 0;
     s->unk1C = 0;
     s->unk22 = 0x10;
     s->palId = 0;

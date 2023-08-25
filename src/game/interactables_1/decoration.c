@@ -57,7 +57,7 @@ void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY
 
         deco->unk1A = 0x700;
         deco->graphics.size = 0;
-        deco->unk14 = 0;
+        deco->animCursor = 0;
         deco->unk1C = 0;
         deco->unk21 = 0xFF;
         deco->unk22 = 0x10;

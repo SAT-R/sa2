@@ -36,7 +36,7 @@ const AnimationCommandFunc animCmdTable[] = {
 s32 animCmd_GetPalette(void *cursor, Sprite *s)
 {
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_GetPalette);
+    s->animCursor += AnimCommandSizeInWords(ACmd_GetPalette);
 
     if (!(s->unk10 & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
@@ -54,7 +54,7 @@ s32 animCmd_GetPalette(void *cursor, Sprite *s)
 s32 animCmd_JumpBack(void *cursor, Sprite *s)
 {
     ACmd_JumpBack *cmd = cursor;
-    s->unk14 -= cmd->offset;
+    s->animCursor -= cmd->offset;
 
     return 1;
 }
@@ -71,7 +71,7 @@ s32 animCmd_End(void *cursor, Sprite *s)
 s32 animCmd_PlaySoundEffect(void *cursor, Sprite *s)
 {
     ACmd_PlaySoundEffect *cmd = cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
+    s->animCursor += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
 
     m4aSongNumStart(cmd->songId);
 
@@ -82,7 +82,7 @@ s32 animCmd_PlaySoundEffect(void *cursor, Sprite *s)
 s32 animCmd_TranslateSprite(void *cursor, Sprite *s)
 {
     ACmd_TranslateSprite *cmd = cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_TranslateSprite);
+    s->animCursor += AnimCommandSizeInWords(ACmd_TranslateSprite);
 
     s->x += cmd->x;
     s->y += cmd->y;
@@ -94,7 +94,7 @@ s32 animCmd_TranslateSprite(void *cursor, Sprite *s)
 s32 animCmd_8(void *cursor, Sprite *s)
 {
     ACmd_8 *cmd = cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_8);
+    s->animCursor += AnimCommandSizeInWords(ACmd_8);
 
     return 1;
 }
@@ -103,7 +103,7 @@ s32 animCmd_8(void *cursor, Sprite *s)
 s32 animCmd_SetIdAndVariant(void *cursor, Sprite *s)
 {
     ACmd_SetIdAndVariant *cmd = cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
+    s->animCursor += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
 
     s->graphics.anim = cmd->animId;
     s->unk21 = 0xFF;
@@ -116,7 +116,7 @@ s32 animCmd_SetIdAndVariant(void *cursor, Sprite *s)
 s32 animCmd_10(void *cursor, Sprite *s)
 {
     ACmd_10 *cmd = cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_10);
+    s->animCursor += AnimCommandSizeInWords(ACmd_10);
 
 #ifdef UB_FIX
     return 1; // I think this should be the correct behavior?
@@ -129,7 +129,7 @@ s32 animCmd_10(void *cursor, Sprite *s)
 s32 animCmd_SetSpritePriority(void *cursor, Sprite *s)
 {
     ACmd_SetSpritePriority *cmd = cursor;
-    s->unk14 += AnimCommandSizeInWords(ACmd_SetSpritePriority);
+    s->animCursor += AnimCommandSizeInWords(ACmd_SetSpritePriority);
 
     SPRITE_FLAG_CLEAR(s, PRIORITY);
     SPRITE_FLAG_SET_VALUE(s, PRIORITY, cmd->priority);
@@ -142,7 +142,7 @@ s32 animCmd_12(void *cursor, Sprite *s)
 {
     ACmd_12 *cmd = cursor;
 
-    s->unk14 += AnimCommandSizeInWords(ACmd_12);
+    s->animCursor += AnimCommandSizeInWords(ACmd_12);
     s->unk1A = cmd->unk4 << 6;
 
     return 1;

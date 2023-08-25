@@ -103,7 +103,7 @@ static void CreateEntity_SmallPropeller(MapEntity *me, u16 spriteRegionX,
     s = &prop->s;
     s->unk1A = 0x480;
     s->graphics.size = 0;
-    s->unk14 = 0;
+    s->animCursor = 0;
     s->unk1C = 0;
     s->unk21 = 0xFF;
     s->unk22 = 0x10;

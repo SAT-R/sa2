@@ -35,7 +35,7 @@ struct Task *sub_80807CC(void)
     spring = &init->spring;
     spring->unk1A = 0x480;
     spring->graphics.size = 0;
-    spring->unk14 = 0;
+    spring->animCursor = 0;
     spring->unk1C = 0;
     spring->unk21 = 0xFF;
     spring->unk22 = 0x10;
@@ -50,7 +50,7 @@ struct Task *sub_80807CC(void)
     propellor = &init->propellor;
     propellor->unk1A = 0x480;
     propellor->graphics.size = 0;
-    propellor->unk14 = 0;
+    propellor->animCursor = 0;
     propellor->unk1C = 0;
     propellor->unk21 = -1;
     propellor->unk22 = 0x10;

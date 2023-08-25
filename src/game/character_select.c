@@ -347,7 +347,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
         element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_INACTIVE + i;
         element->unk1A = 0x100;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
@@ -365,7 +365,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->variant = SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
     element->unk1A = 0xC0;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -385,7 +385,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
                                                    + (something * 6)][1];
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -404,7 +404,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
         = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][1];
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -423,7 +423,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
         = sCharacteTitleRightSideAssets[characterScreen->initialSelection][1];
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -440,7 +440,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->variant = sScreenTitleTextAssets[lang][1];
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -457,7 +457,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->variant = 0;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -474,7 +474,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->variant = 0;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -492,7 +492,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
         SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -509,7 +509,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->variant = 0;
     element->unk1A = 0x40;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -527,7 +527,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     element->variant = sCharacterSpriteAssets[characterScreen->initialSelection][1];
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;

@@ -56,7 +56,7 @@ static void sub_8086A0C(HeartParticles *unk998)
         sprite->y = 0;
         sprite->unk1A = 0x180;
         sprite->graphics.size = 0;
-        sprite->unk14 = 0;
+        sprite->animCursor = 0;
         sprite->unk1C = 0;
         sprite->unk22 = 0x10;
         sprite->palId = 0;

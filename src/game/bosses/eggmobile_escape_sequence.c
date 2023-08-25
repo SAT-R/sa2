@@ -43,7 +43,7 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
     s->variant = 0;
     s->unk1A = 0x640;
     s->graphics.size = 0;
-    s->unk14 = 0;
+    s->animCursor = 0;
     s->unk1C = 0;
     s->unk21 = -1;
     s->unk22 = 0x10;
@@ -60,7 +60,7 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
     s->variant = 0;
     s->unk1A = 0x600;
     s->graphics.size = 0;
-    s->unk14 = 0;
+    s->animCursor = 0;
     s->unk1C = 0;
     s->unk21 = -1;
     s->unk22 = 0x10;

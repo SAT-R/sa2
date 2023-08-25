@@ -249,7 +249,7 @@ void CreateExtraEndingFallCutScene(void)
 
         element->unk10 = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -269,7 +269,7 @@ void CreateExtraEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0x100;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -290,7 +290,7 @@ void CreateExtraEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0x1C0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -312,7 +312,7 @@ void CreateExtraEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0x240;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -333,7 +333,7 @@ void CreateExtraEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0x180;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -354,7 +354,7 @@ void CreateExtraEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0x140;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 1;
@@ -375,7 +375,7 @@ void CreateExtraEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0xC0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -396,7 +396,7 @@ void CreateExtraEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -417,7 +417,7 @@ void CreateExtraEndingFallCutScene(void)
         element->y = 0;
         element->unk1A = 0x200;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;

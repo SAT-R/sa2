@@ -126,7 +126,7 @@ void CreateMultiplayerModeSelectScreen(void)
     element->y = 0;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
@@ -144,7 +144,7 @@ void CreateMultiplayerModeSelectScreen(void)
     element->y = 0;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
@@ -163,7 +163,7 @@ void CreateMultiplayerModeSelectScreen(void)
     element->y = 0;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;
@@ -182,7 +182,7 @@ void CreateMultiplayerModeSelectScreen(void)
     element->y = 103;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk22 = 0x10;
     element->palId = 0;

@@ -187,7 +187,7 @@ void sub_808207C(void)
                 }
 
                 element->variant = i;
-                element->unk14 = 0;
+                element->animCursor = 0;
                 element->unk1C = 0;
                 element->unk21 = 0xFF;
                 element->unk22 = 0x10;
@@ -215,7 +215,7 @@ void sub_808207C(void)
                 element->graphics.anim = SA2_ANIM_PRESS_START_MSG_EN;
             }
             element->variant = 0;
-            element->unk14 = 0;
+            element->animCursor = 0;
             element->unk1C = 0;
             element->unk21 = 0xFF;
             element->unk22 = 0x10;
@@ -590,7 +590,7 @@ void sub_8082CEC(Sprite *element, u32 vramAddr, u16 animId, u8 variant, s16 x, s
     element->graphics.size = 0;
     element->graphics.anim = animId;
     element->variant = variant;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xff;
     element->unk22 = 0x10;

@@ -52,7 +52,7 @@ void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     sprite = &globe->sprite;
     sprite->unk1A = 0x480;
     sprite->graphics.size = 0;
-    sprite->unk14 = 0;
+    sprite->animCursor = 0;
     sprite->unk1C = 0;
     sprite->unk21 = 0xFF;
     sprite->unk22 = 0x10;

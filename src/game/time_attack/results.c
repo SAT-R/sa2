@@ -100,7 +100,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
         element->variant = SA2_ANIM_VARIANT_TA_DIGITS_0;
         element->unk1A = 0x100;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk21 = 0xFF;
         element->unk22 = 0x10;
@@ -131,7 +131,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->variant = 0;
     element->unk1A = 0x140;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -149,7 +149,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -168,7 +168,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->variant = gUnknown_080D715A[isBossLevel][2];
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -191,7 +191,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->variant = sAnimsGotThroughZoneAndActNames[level][2];
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -208,7 +208,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->variant = SA2_ANIM_VARIANT_TA_TIME;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -230,7 +230,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     }
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;
@@ -253,7 +253,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     element->variant = 0;
     element->unk1A = 0x100;
     element->graphics.size = 0;
-    element->unk14 = 0;
+    element->animCursor = 0;
     element->unk1C = 0;
     element->unk21 = 0xFF;
     element->unk22 = 0x10;

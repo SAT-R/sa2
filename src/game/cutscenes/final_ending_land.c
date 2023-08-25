@@ -232,7 +232,7 @@ void CreateFinalEndingLandingCutScene(void)
             element->y = 100;
             element->unk1A = 0x80;
             element->graphics.size = 0;
-            element->unk14 = 0;
+            element->animCursor = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
             element->palId = 1;
@@ -251,7 +251,7 @@ void CreateFinalEndingLandingCutScene(void)
             element->y = -20;
             element->unk1A = 0x40;
             element->graphics.size = 0;
-            element->unk14 = 0;
+            element->animCursor = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
             element->palId = 0;
@@ -271,7 +271,7 @@ void CreateFinalEndingLandingCutScene(void)
             element->y = 0;
             element->unk1A = 0x40;
             element->graphics.size = 0;
-            element->unk14 = 0;
+            element->animCursor = 0;
             element->unk1C = 0;
             element->unk22 = 0x10;
             element->palId = 2;
@@ -293,7 +293,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->y = -20;
         element->unk1A = 0x40;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -316,7 +316,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->y = 0;
         element->unk1A = 0x40;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -344,7 +344,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->y = 0;
         element->unk1A = 0xC0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -365,7 +365,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->y = 30;
         element->unk1A = 0xC0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -386,7 +386,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->y = 30;
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -407,7 +407,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->y = -20;
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -428,7 +428,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->y = DISPLAY_HEIGHT + 96;
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -449,7 +449,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->y = DISPLAY_HEIGHT + 96;
         element->unk1A = 0;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 0;
@@ -470,7 +470,7 @@ void CreateFinalEndingLandingCutScene(void)
         element->y = 0;
         element->unk1A = 0x40;
         element->graphics.size = 0;
-        element->unk14 = 0;
+        element->animCursor = 0;
         element->unk1C = 0;
         element->unk22 = 0x10;
         element->palId = 1;
