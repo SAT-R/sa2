@@ -226,13 +226,13 @@ void UpdateBgAnimationTiles(Background *);
         SPRITE_FLAG_CLEAR(_sprite, ANIM_OVER);                                          \
     }
 
-#define SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order)                               \
+#define SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order)                              \
     _sprite->graphics.anim = _anim;                                                     \
     _sprite->variant = _variant;                                                        \
     _sprite->unk1A = SPRITE_OAM_ORDER(_order);                                          \
     _sprite->graphics.size = 0;
 
-#define SPRITE_INIT_SCRIPT(_sprite, _speed)                                               \
+#define SPRITE_INIT_SCRIPT(_sprite, _speed)                                             \
     _sprite->animCursor = 0;                                                            \
     _sprite->timeUntilNextFrame = 0;                                                    \
     _sprite->prevVariant = -1;                                                          \
@@ -240,26 +240,26 @@ void UpdateBgAnimationTiles(Background *);
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;
 
-#define SPRITE_INIT_ANIM_AND_SCRIPT(_sprite, _anim, _variant, _order)                      \
-    SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order);                                  \
+#define SPRITE_INIT_ANIM_AND_SCRIPT(_sprite, _anim, _variant, _order)                   \
+    SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order);                                 \
     SPRITE_INIT_SCRIPT(_sprite, 1.0);
 
 #define SPRITE_INIT_WITH_POS(_sprite, _numTiles, _anim, _variant, _order, _priority)    \
     _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
-    SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order);                                  \
+    SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order);                                 \
     _sprite->x = 0;                                                                     \
     _sprite->y = 0;                                                                     \
-    SPRITE_INIT_SCRIPT(_sprite, 1.0)                                                      \
+    SPRITE_INIT_SCRIPT(_sprite, 1.0)                                                    \
     _sprite->unk10 = SPRITE_FLAG(PRIORITY, _priority);
 
 #define SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _order, _priority, _flags)   \
-    SPRITE_INIT_ANIM_AND_SCRIPT(_sprite, _anim, _variant, _order);                         \
+    SPRITE_INIT_ANIM_AND_SCRIPT(_sprite, _anim, _variant, _order);                      \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(_sprite, _order, _priority, _flags)            \
     _sprite->unk1A = SPRITE_OAM_ORDER(_order);                                          \
     _sprite->graphics.size = 0;                                                         \
-    SPRITE_INIT_SCRIPT(_sprite, 1.0);                                                     \
+    SPRITE_INIT_SCRIPT(_sprite, 1.0);                                                   \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _order, _priority)             \

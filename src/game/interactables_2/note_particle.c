@@ -37,8 +37,8 @@ static void Task_8080DB8(void);
 static void Task_8080E54(void);
 static void TaskDestructor_8080EF8(struct Task *);
 
-void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed, s16 velocity, u8 quarterAngle,
-                 u8 kind)
+void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed,
+                 s16 velocity, u8 quarterAngle, u8 kind)
 {
     struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_NoteParticle), 0x2010, 0,
                                 TaskDestructor_8080EF8);
@@ -70,7 +70,8 @@ void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
     sub_8004558(s);
 }
 
-void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed, s16 accelX, s16 accelY, u8 kind)
+void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed,
+                 s16 accelX, s16 accelY, u8 kind)
 {
     struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_NoteParticle), 0x2010, 0,
                                 TaskDestructor_8080EF8);
@@ -87,7 +88,7 @@ void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
     np->framesUntilVisible = framesUntilVisible;
     np->framesUntilDestroyed = framesUntilDestroyed;
     np->kind = kind;
-    
+
     SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 6, gUnknown_080E0140[kind][4], 0);
 
     if (gUnknown_080E0140[kind][3] != 0) {
