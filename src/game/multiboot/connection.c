@@ -178,7 +178,7 @@ void StartSinglePakConnect(void)
     s = &connectScreen->unkC;
     s->x = 8;
     s->y = 24;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -196,7 +196,7 @@ void StartSinglePakConnect(void)
     s = &connectScreen->unk3C;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT - 38);
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -213,7 +213,7 @@ void StartSinglePakConnect(void)
     s = &connectScreen->unk6C;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT * (7. / 8.));
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

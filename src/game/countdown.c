@@ -64,7 +64,7 @@ void CreateCourseStartCountdown(u8 mode)
     s->graphics.anim = SA2_ANIM_COUNTDOWN;
     s->variant = SA2_ANIM_VARIANT_COUNTDOWN_3;
     s->prevVariant = -1;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -77,7 +77,7 @@ void CreateCourseStartCountdown(u8 mode)
     s->graphics.dest = VramMalloc(0xE);
     s->graphics.anim = SA2_ANIM_LEVEL_START_MACHINE;
     s->variant = 0;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -213,7 +213,7 @@ void CreateRaceStartMessage(void)
     s->graphics.anim = SA2_ANIM_COUNTDOWN_START;
     s->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_L;
     s->prevVariant = -1;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -227,7 +227,7 @@ void CreateRaceStartMessage(void)
     s->graphics.anim = SA2_ANIM_COUNTDOWN_START;
     s->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_R;
     s->prevVariant = -1;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

@@ -33,7 +33,7 @@ void CreateCollectRingsTimeDisplay(void)
     timeDisplay = TaskGetStructPtr(t);
 
     s = &timeDisplay->unk0;
-    s->unk1A = 0x140;
+    s->unk1A = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -54,7 +54,7 @@ void CreateCollectRingsTimeDisplay(void)
         s = &timeDisplay->unk30[i];
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = 1119;
         s->variant = i + 16;

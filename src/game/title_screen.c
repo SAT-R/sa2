@@ -414,7 +414,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     bg0->graphics.anim = 0;
     bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
     bg0->unk18 = 0;
-    bg0->unk1A = 0;
+    bg0->unk1A = SPRITE_OAM_ORDER(0);
     if (gLoadedSaveGame->language < 2) {
         bg0->tilemapId = TM_SA2_LOGO_JP;
     } else {
@@ -504,7 +504,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     bg80->graphics.anim = 0;
     bg80->tilesVram = (void *)BG_SCREEN_ADDR(31);
     bg80->unk18 = 0;
-    bg80->unk1A = 0;
+    bg80->unk1A = SPRITE_OAM_ORDER(0);
     bg80->tilemapId = TM_INTRO_PRESENTED_BY_SEGA;
     bg80->unk1E = 0;
     bg80->unk20 = 0;
@@ -523,7 +523,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     bg0->graphics.anim = 0;
     bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
     bg0->unk18 = 0;
-    bg0->unk1A = 0;
+    bg0->unk1A = SPRITE_OAM_ORDER(0);
     bg0->tilemapId = TM_INTRO_WATER;
     bg0->unk1E = 0;
     bg0->unk20 = 0;
@@ -562,7 +562,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     s->x = 0;
     s->y = DISPLAY_HEIGHT - 30; // set to the screen's bottom
     s->graphics.size = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -581,7 +581,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 2) + 30;
     s->graphics.size = 0;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -615,7 +615,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
         }
 
         s->graphics.size = 0;
-        s->unk1A = 0xc0;
+        s->unk1A = SPRITE_OAM_ORDER(3);
         s->timeUntilNextFrame = 0;
         s->animSpeed = 0x10;
         s->palId = 0;
@@ -625,14 +625,13 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
 
     s = &titleScreen->unk240;
     s->graphics.dest = objAddr;
-    // Uses last value for this one
-    s->graphics.anim = sMenuTiles[42].anim;
-    s->variant = sMenuTiles[42].variant;
+    s->graphics.anim = sMenuTiles[ARRAY_COUNT(sMenuTiles) - 1].anim;
+    s->variant = sMenuTiles[ARRAY_COUNT(sMenuTiles) - 1].variant;
     s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 2);
     s->graphics.size = 0;
-    s->unk1A = 0x780;
+    s->unk1A = SPRITE_OAM_ORDER(30);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -1555,7 +1554,7 @@ static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
     animation->s.x = x;
     animation->s.y = y;
     animation->s.graphics.size = 0;
-    animation->s.unk1A = 0xC0;
+    animation->s.unk1A = SPRITE_OAM_ORDER(3);
     animation->s.timeUntilNextFrame = 0;
     animation->s.animSpeed = 0x10;
     animation->s.palId = 0;
@@ -1690,11 +1689,13 @@ static void CreateLensFlareAnimation(void)
         lensFlare->posSequenceY[i] = sLensFlareStartPositions[i][1];
 
         s->graphics.size = 0;
-        s->unk1A = (8 - i) * 0x40;
+        s->unk1A = SPRITE_OAM_ORDER(8 - i);
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = i | 96;
+        s->unk10 = i
+            | (SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
+               | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
 
         transform->unk0 = 0;
         transform->height = transform->width = posX * 2 + 0xB0;
@@ -1725,7 +1726,7 @@ static void Task_LensFlareAnim(void)
         | BLDCNT_TGT1_OBJ;
     gBldRegs.bldAlpha = BLDALPHA_BLEND(7, 31);
 
-    // Show the flares every eother frame
+    // Show the flares every other frame
     if (!(lensFlare->animFrame & 1)) {
         for (i = 0; i < 8; i++) {
             s = &lensFlare->sprites[i];

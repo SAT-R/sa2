@@ -70,7 +70,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
     s->graphics.anim = sInt019_AnimationIds[gCurrentLevel];
 #endif
     s->variant = 0;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -226,7 +226,7 @@ void Task_805E480(void)
                 r4 = 0;
             }
             // _0805E5CE
-            pointer = OamMalloc((s->unk1A & 0x7C0) >> 6);
+            pointer = OamMalloc(GET_SPRITE_OAM_ORDER(s));
             if (iwram_end == pointer)
                 return;
 

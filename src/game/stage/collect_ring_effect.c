@@ -29,7 +29,7 @@ void CreateCollectRingEffect(s16 x, s16 y)
         s->x = x;
         s->y = y;
         s->graphics.dest = RESERVED_RING_EFFECT_TILES_VRAM;
-        s->unk1A = 0x3C0;
+        s->unk1A = SPRITE_OAM_ORDER(15);
         s->graphics.size = 0;
         s->graphics.anim = SA2_ANIM_RING_COLLECT;
         s->variant = 0;

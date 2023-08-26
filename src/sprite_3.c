@@ -38,6 +38,7 @@ void sub_80051E8(Sprite *sprite)
         sprite->numSubFrames = sprDims->numSubframes;
         x = sprite->x;
         y = sprite->y;
+
         if (sprite->unk10 & SPRITE_FLAG_MASK_17) {
             x -= gUnknown_030017F4[0];
             y -= gUnknown_030017F4[1];
@@ -74,7 +75,7 @@ void sub_80051E8(Sprite *sprite)
                 oamData = gUnknown_03002794->oamData[sprite->graphics.anim];
 
                 // oam gets zero-initialized(?)
-                oam = OamMalloc((sprite->unk1A & 0x7C0) >> 6);
+                oam = OamMalloc(GET_SPRITE_OAM_ORDER(sprite));
                 if (iwram_end == oam) {
                     return;
                 }

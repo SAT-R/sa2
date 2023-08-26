@@ -84,7 +84,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     vramBase = VramMalloc(0x1F);
     ia69->vram = vramBase;
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -100,7 +100,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
     vram = vramBase + 0x200;
     s = &ia69->unk30;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -116,7 +116,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
     vram = vramBase + 800;
     s = &ia69->unk60;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -132,7 +132,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
     vram = vramBase + 928;
     s = &ia69->unk90;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -148,7 +148,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
     vram = vramBase + 960;
     s = &ia69->unkC0;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

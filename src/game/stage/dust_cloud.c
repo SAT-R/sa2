@@ -16,7 +16,7 @@ void CreateDustCloud(s16 x, s16 y)
     s->x = x;
     s->y = y;
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x1000);
-    s->unk1A = 0x3C0;
+    s->unk1A = SPRITE_OAM_ORDER(15);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_DUST_CLOUD;
     s->variant = 0;

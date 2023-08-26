@@ -87,8 +87,8 @@ typedef struct {
 typedef struct {
     /* 0x00 */ s32 cmdId; // -12
 
-    /* 0x04 */ s32 unk4;
-} ACmd_12;
+    /* 0x04 */ s32 orderIndex;
+} ACmd_SetOamOrder;
 
 typedef struct {
     // number of frames this will be displayed
@@ -112,7 +112,7 @@ typedef union {
     ACmd_SetIdAndVariant setAnimId;
     ACmd_10 _10;
     ACmd_SetSpritePriority _11;
-    ACmd_12 _12;
+    ACmd_SetOamOrder setOamOrder;
 
     ACmd_ShowFrame show;
 } ACmd;

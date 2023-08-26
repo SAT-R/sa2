@@ -111,6 +111,8 @@ typedef struct {
 } Hitbox;
 
 #define SPRITE_ANIM_SPEED(speed) ((int)((float)(speed)*0x10))
+#define SPRITE_OAM_ORDER(index)  ((index) << 6)
+#define GET_SPRITE_OAM_ORDER(s)  ((((s)->unk1A) & 0x7C0) >> 6)
 
 // TODO: work out what makes this struct different from the above
 typedef struct {
@@ -141,7 +143,7 @@ typedef struct {
     /* 0x16 */ s16 x;
     /* 0x18 */ s16 y;
 
-    /* 0x1A */ u16 unk1A; // might be a bitfield?
+    /* 0x1A */ u16 unk1A; // bit 6-10: OAM order index
 
     /* 0x1C */ s16 timeUntilNextFrame; // Q_8_8, in frames
     /* 0x1E */ u16 prevAnim;

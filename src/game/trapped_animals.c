@@ -130,7 +130,7 @@ static void CreateFlyingAnimal(SpawnOptions *init)
     s->x = init->x;
     s->y = init->y;
     s->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
     s->graphics.anim = init->anim;
     s->variant = init->variant;
@@ -198,7 +198,7 @@ static void CreateBouncingAnimal(SpawnOptions *init)
     s->x = init->x;
     s->y = init->y;
     s->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
     s->graphics.anim = init->anim;
     s->variant = init->variant;
@@ -269,7 +269,7 @@ static void CreateStaticAnimal(SpawnOptions *init)
     s->x = init->x;
     s->y = init->y;
     s->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
     s->graphics.anim = init->anim;
     s->variant = init->variant;

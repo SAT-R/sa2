@@ -345,7 +345,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
         s->graphics.dest = VramMalloc(0x10);
         s->graphics.anim = SA2_ANIM_CHAR_SELECT_CIRCLE;
         s->variant = SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_INACTIVE + i;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -363,7 +363,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = VramMalloc(0x40);
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_CIRCLE;
     s->variant = SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -382,7 +382,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
                                                    + (something * 6)][0];
     s->variant = sCharacterNameSubTextAssets[characterScreen->initialSelection
                                              + (something * 6)][1];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -400,7 +400,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     s->graphics.anim
         = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][0];
     s->variant = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][1];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -418,7 +418,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     s->graphics.anim
         = sCharacteTitleRightSideAssets[characterScreen->initialSelection][0];
     s->variant = sCharacteTitleRightSideAssets[characterScreen->initialSelection][1];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -435,7 +435,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = VramMalloc(0x36);
     s->graphics.anim = sScreenTitleTextAssets[lang][0];
     s->variant = sScreenTitleTextAssets[lang][1];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -452,7 +452,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = VramMalloc(0x18);
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
     s->variant = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -469,7 +469,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = VramMalloc(0x18);
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
     s->variant = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -487,7 +487,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
     s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
         SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -504,7 +504,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2580);
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_RED_CROSS_BOX;
     s->variant = 0;
-    s->unk1A = 0x40;
+    s->unk1A = SPRITE_OAM_ORDER(1);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -521,7 +521,7 @@ NONMATCH("asm/non_matching/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x1000);
     s->graphics.anim = sCharacterSpriteAssets[characterScreen->initialSelection][0];
     s->variant = sCharacterSpriteAssets[characterScreen->initialSelection][1];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

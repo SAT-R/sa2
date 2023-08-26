@@ -84,7 +84,7 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
     s->graphics.anim = SA2_ANIM_DROWN_COUNTDOWN;
     s->variant = 5 - countdown;
 
-    s->unk1A = 0x240;
+    s->unk1A = SPRITE_OAM_ORDER(9);
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     transform = &ts->transform;
@@ -137,7 +137,7 @@ struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
             ts->unk14 = (((u32)PseudoRandom32() & 0x30000) >> 16);
         }
 
-        s->unk1A = 0x240;
+        s->unk1A = SPRITE_OAM_ORDER(9);
 
         transform->unk0 = 0;
         transform->width = 0;

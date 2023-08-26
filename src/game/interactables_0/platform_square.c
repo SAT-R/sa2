@@ -105,7 +105,7 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
         variant = sAnimsPlatformSquare[LEVEL_TO_ZONE(gCurrentLevel)][2];
         s->variant = variant;
 
-        s->unk1A = 0x480;
+        s->unk1A = SPRITE_OAM_ORDER(18);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

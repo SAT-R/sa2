@@ -324,7 +324,7 @@ void CreateTrueArea53Intro(void)
     s->graphics.dest = (void *)gUnknown_080D7560[0].numTiles;
     s->graphics.anim = gUnknown_080D7560[4].anim;
     s->variant = gUnknown_080D7560[4].variant;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -340,7 +340,7 @@ void CreateTrueArea53Intro(void)
         s->graphics.dest = (void *)gUnknown_080D7560[i + 1].numTiles;
         s->graphics.anim = gUnknown_080D7560[i + 1].anim;
         s->variant = gUnknown_080D7560[i + 1].variant;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -393,7 +393,7 @@ void CreateOrbitingEmeraldsSequence(void)
         emerald->graphics.anim = 0x345;
         emerald->variant = i;
         emerald->prevVariant = -1;
-        emerald->unk1A = 0x500;
+        emerald->unk1A = SPRITE_OAM_ORDER(20);
         emerald->graphics.size = 0;
         emerald->animCursor = 0;
         emerald->timeUntilNextFrame = 0;
@@ -578,7 +578,7 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     s->graphics.anim = gUnknown_080D7540[type].anim;
     s->variant = gUnknown_080D7540[type].variant;
     s->prevVariant = -1;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -633,7 +633,7 @@ void CreateActor(u8 character)
     s->graphics.anim = tileInfo->anim;
     s->variant = tileInfo->variant;
     s->prevVariant = -1;
-    s->unk1A = (16 - gUnknown_080D7984[character]) * 64;
+    s->unk1A = SPRITE_OAM_ORDER(16 - gUnknown_080D7984[character]);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -655,7 +655,7 @@ void CreateActor(u8 character)
         s->graphics.anim = gUnknown_080D7540[character].anim;
         s->variant = gUnknown_080D7540[character].variant;
         s->prevVariant = -1;
-        s->unk1A = 0x400;
+        s->unk1A = SPRITE_OAM_ORDER(16);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

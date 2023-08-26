@@ -150,7 +150,7 @@ struct Task *CreateStageUI(void)
 
         ui->unk2D8[i] = (GET_TILE_NUM(s->graphics.dest) & 0x3FF) | 0x6000;
 
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->graphics.anim = sAnimsAsciiDigits[i][0];
         s->variant = sAnimsAsciiDigits[i][1];
@@ -177,7 +177,7 @@ struct Task *CreateStageUI(void)
         ui->unk2D4 = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
         s->graphics.anim = sAnims1UpIcons[gSelectedCharacter][1];
         s->variant = sAnims1UpIcons[gSelectedCharacter][2];
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -204,7 +204,7 @@ struct Task *CreateStageUI(void)
     ui->unk2D6 |= 0x6000;
     s->graphics.anim = SA2_ANIM_UI_RING_CONTAINER;
     s->variant = 0;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -223,7 +223,7 @@ struct Task *CreateStageUI(void)
     ui->unk2D2 |= 0x6000;
     s->graphics.anim = SA2_ANIM_UI_RING;
     s->variant = 0;
-    s->unk1A = 0;
+    s->unk1A = SPRITE_OAM_ORDER(0);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

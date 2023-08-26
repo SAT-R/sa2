@@ -125,7 +125,7 @@ void sub_8036780(u8 unkC)
     s->prevVariant = -1;
     s->x = 0;
     s->y = 80;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
@@ -141,7 +141,7 @@ void sub_8036780(u8 unkC)
     s->x = 0;
     s->y = 80;
     s->graphics.size = 0;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;

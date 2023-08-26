@@ -399,7 +399,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     } else {
         s->variant = gMultiplayerCharacters[0];
     }
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -423,7 +423,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
             s->graphics.anim = sZoneMapPathAssets[i][1];
             s->variant = sZoneMapPathAssets[i][2];
         }
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -441,7 +441,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->graphics.dest = VramMalloc(4);
         s->graphics.anim = 0x2F6;
         s->variant = 0;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -459,7 +459,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->graphics.dest = VramMalloc(0x1A);
     s->graphics.anim = 0x2F5;
     s->variant = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -476,7 +476,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->graphics.dest = VramMalloc(0x26);
     s->graphics.anim = 0x2F9;
     s->variant = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -515,7 +515,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
             s->variant = gMultiplayerCharacters[0];
         }
     }
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -533,7 +533,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->graphics.dest = (void *)OBJ_VRAM0 + (i * 0x120);
         s->graphics.anim = sChaoEmeraldAssets[i][0];
         s->variant = sChaoEmeraldAssets[i][1];
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

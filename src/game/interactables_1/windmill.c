@@ -51,7 +51,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(sWindmillParts[4].numTiles);
     s->graphics.anim = sWindmillParts[4].anim;
     s->variant = sWindmillParts[4].variant;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -75,7 +75,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             }
             s->graphics.anim = sWindmillParts[j].anim;
             s->variant = sWindmillParts[j].variant;
-            s->unk1A = 0x480;
+            s->unk1A = SPRITE_OAM_ORDER(18);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;

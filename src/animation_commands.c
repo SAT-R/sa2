@@ -18,7 +18,7 @@ static s32 animCmd_8(void *cursor, Sprite *s);
 static s32 animCmd_SetIdAndVariant(void *cursor, Sprite *s);
 s32 animCmd_10(void *cursor, Sprite *s);
 static s32 animCmd_SetSpritePriority(void *cursor, Sprite *s);
-static s32 animCmd_12(void *cursor, Sprite *s);
+static s32 animCmd_SetOamOrder(void *cursor, Sprite *s);
 
 extern const struct SpriteTables *gUnknown_03002794;
 extern u16 gObjPalette[];
@@ -27,9 +27,12 @@ extern u32 gFlags;
 // make static
 const AnimationCommandFunc animCmdTable[] = {
     // 0x080984AC
-    animCmd_GetTiles,        animCmd_GetPalette, animCmd_JumpBack,          animCmd_End,
-    animCmd_PlaySoundEffect, animCmd_AddHitbox,  animCmd_TranslateSprite,   animCmd_8,
-    animCmd_SetIdAndVariant, animCmd_10,         animCmd_SetSpritePriority, animCmd_12,
+    animCmd_GetTiles,          animCmd_GetPalette,
+    animCmd_JumpBack,          animCmd_End,
+    animCmd_PlaySoundEffect,   animCmd_AddHitbox,
+    animCmd_TranslateSprite,   animCmd_8,
+    animCmd_SetIdAndVariant,   animCmd_10,
+    animCmd_SetSpritePriority, animCmd_SetOamOrder,
 };
 
 // (-2)
@@ -126,6 +129,7 @@ s32 animCmd_10(void *cursor, Sprite *s)
 }
 
 // (-11)
+// Sets the priority the sprite has in OAM (0 - 3)
 s32 animCmd_SetSpritePriority(void *cursor, Sprite *s)
 {
     ACmd_SetSpritePriority *cmd = cursor;
@@ -138,12 +142,14 @@ s32 animCmd_SetSpritePriority(void *cursor, Sprite *s)
 }
 
 // (-12)
-s32 animCmd_12(void *cursor, Sprite *s)
+// Sets the index 's' is expected to be put at in OAM
+// compared to sprites with a lower/higher value (0 - 31)
+s32 animCmd_SetOamOrder(void *cursor, Sprite *s)
 {
-    ACmd_12 *cmd = cursor;
+    ACmd_SetOamOrder *cmd = cursor;
 
-    s->animCursor += AnimCommandSizeInWords(ACmd_12);
-    s->unk1A = cmd->unk4 << 6;
+    s->animCursor += AnimCommandSizeInWords(ACmd_SetOamOrder);
+    s->unk1A = SPRITE_OAM_ORDER(cmd->orderIndex);
 
     return 1;
 }

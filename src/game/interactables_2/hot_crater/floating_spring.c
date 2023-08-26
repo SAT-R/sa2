@@ -59,7 +59,7 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
     floatingSpring->base.spriteX = me->x;
     floatingSpring->base.spriteY = spriteY;
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

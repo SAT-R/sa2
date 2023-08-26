@@ -70,10 +70,10 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        SPRITE_INIT(s, 15, SA2_ANIM_MOUSE, 0, 0x480, 2);
+        SPRITE_INIT(s, 15, SA2_ANIM_MOUSE, 0, SPRITE_OAM_ORDER(18), 2);
 
         if (mouse->unk51) {
-            s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+            SPRITE_FLAG_SET(s, Y_FLIP);
         }
     }
 }

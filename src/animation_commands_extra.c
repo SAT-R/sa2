@@ -604,7 +604,7 @@ s32 animCmd_SetSpritePriority_COPY(void *cursor, Sprite *s)
 // This is not a NOP-instruction in the regular version
 s32 animCmd_12_COPY(void *cursor, Sprite *s)
 {
-    s->animCursor += AnimCommandSizeInWords(ACmd_12);
+    s->animCursor += AnimCommandSizeInWords(ACmd_SetOamOrder);
     return 1;
 }
 

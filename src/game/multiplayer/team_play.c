@@ -152,7 +152,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         s->y = 0;
         s->graphics.dest = (void *)vram;
         vram += gUnknown_080D92BC[i].numTiles * TILE_SIZE_4BPP;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = gUnknown_080D92BC[i].anim;
         s->variant = gUnknown_080D92BC[i].variant;
@@ -173,7 +173,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         s->graphics.dest = (void *)vram;
         vram += gUnknown_080D92DC[TextElementOffset(lang, 5, i)].numTiles
             * TILE_SIZE_4BPP;
-        s->unk1A = 0xC0;
+        s->unk1A = SPRITE_OAM_ORDER(3);
         s->graphics.size = 0;
         s->graphics.anim = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].anim;
         s->variant = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].variant;
@@ -190,7 +190,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     s->x = 0;
     s->y = 0;
     s->graphics.dest = (void *)vram;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_MULTIPLAYER_UNKNOWN;
     s->variant = SA2_ANIM_VARIANT_MULTIPLAYER_UNKNOWN_ARROWS;

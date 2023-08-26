@@ -41,7 +41,7 @@ struct Task *CreateItemTask_Shield_Normal(s8 p0)
     s->graphics.anim = SA2_ANIM_SHIELD_NORMAL;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -66,7 +66,7 @@ struct Task *CreateItemTask_Invincibility(s8 p0)
     s->graphics.anim = SA2_ANIM_INVINCIBILITY;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;

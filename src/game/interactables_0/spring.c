@@ -113,7 +113,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = springKind;
     s->animCursor = springKind;
     s->timeUntilNextFrame = springKind;

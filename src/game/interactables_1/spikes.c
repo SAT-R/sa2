@@ -62,7 +62,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
 
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -103,7 +103,7 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
 
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
 
     s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
 
@@ -226,7 +226,7 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
 
     s->graphics.dest = VramMalloc(4 * 4);
 
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
 
     s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
@@ -407,7 +407,7 @@ void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 
     s->graphics.dest = VramMalloc(4 * 4);
 
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
 
     s->graphics.size = 0;
     s->graphics.anim = -1;
@@ -475,7 +475,7 @@ void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 sprite
 
     s->graphics.dest = VramMalloc(4 * 4);
 
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
 
     s->graphics.size = 0;
     s->graphics.anim = -1;

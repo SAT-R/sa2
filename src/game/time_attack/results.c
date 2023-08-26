@@ -98,7 +98,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
         s->graphics.dest = VramMalloc(4);
         s->graphics.anim = SA2_ANIM_TIME_ATTACK_DIGITS;
         s->variant = SA2_ANIM_VARIANT_TA_DIGITS_0;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -129,7 +129,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
     s->variant = 0;
-    s->unk1A = 0x140;
+    s->unk1A = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -146,7 +146,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -165,7 +165,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(gUnknown_080D715A[isBossLevel][0]);
     s->graphics.anim = gUnknown_080D715A[isBossLevel][1];
     s->variant = gUnknown_080D715A[isBossLevel][2];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -188,7 +188,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
     s->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
     s->variant = sAnimsGotThroughZoneAndActNames[level][2];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -205,7 +205,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(8);
     s->graphics.anim = SA2_ANIM_TA_RECORD;
     s->variant = SA2_ANIM_VARIANT_TA_TIME;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -226,7 +226,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     } else {
         s->variant = SA2_ANIM_VARIANT_TA_DIGITS_PLATE_1_GOLD;
     }
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -249,7 +249,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(0x16);
     s->graphics.anim = SA2_ANIM_TA_RECORD;
     s->variant = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

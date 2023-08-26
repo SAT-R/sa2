@@ -122,7 +122,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
             if (i > 2) {
                 s->y -= 16;
             }
-            s->unk1A = 0x100;
+            s->unk1A = SPRITE_OAM_ORDER(4);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
@@ -141,7 +141,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     s->prevVariant = -1;
     s->x = 0;
     s->y = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -158,7 +158,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT * (13. / 16.));
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -179,7 +179,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH * (5. / 12.));
         s->y = (DISPLAY_HEIGHT * (11. / 16.));
-        s->unk1A = 0x140;
+        s->unk1A = SPRITE_OAM_ORDER(5);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

@@ -70,7 +70,7 @@ void CreatePauseMenu(void)
             }
 
             s->graphics.dest = vramTiles;
-            s->unk1A = 0x40;
+            s->unk1A = SPRITE_OAM_ORDER(1);
             s->graphics.size = 0;
             s->graphics.anim = sAnimInfoPauseMenu[lang].anim;
             s->variant = sAnimInfoPauseMenu[lang].variant;

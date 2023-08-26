@@ -100,7 +100,7 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
     s->graphics.anim = sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
     s->variant = sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -235,7 +235,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
         s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
 
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -280,7 +280,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
             = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][3]);
         s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
         s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][5];
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

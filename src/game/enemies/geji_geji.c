@@ -72,14 +72,14 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
     SPRITE_INIT(s, gUnknown_080D8F50[gg->unk27C].numTiles,
                 gUnknown_080D8F50[gg->unk27C].anim,
-                gUnknown_080D8F50[gg->unk27C].variant, 0x480, 2);
+                gUnknown_080D8F50[gg->unk27C].variant, SPRITE_OAM_ORDER(18), 2);
 
     s = &gg->s2;
     s->x = 0;
     s->y = 0;
     SPRITE_INIT(s, gUnknown_080D8F50[gg->unk27C + 2].numTiles,
                 gUnknown_080D8F50[gg->unk27C + 2].anim,
-                gUnknown_080D8F50[gg->unk27C + 2].variant, 0x500, 2);
+                gUnknown_080D8F50[gg->unk27C + 2].variant, SPRITE_OAM_ORDER(20), 2);
 }
 
 static void sub_8057F80(void)

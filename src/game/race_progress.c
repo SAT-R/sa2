@@ -89,9 +89,9 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
         s->x = 6;
         s->y = (DISPLAY_HEIGHT - 18);
         if (gMultiplayerCharacters[i] == gSelectedCharacter) {
-            s->unk1A = 0x80;
+            s->unk1A = SPRITE_OAM_ORDER(2);
         } else {
-            s->unk1A = 0xC0;
+            s->unk1A = SPRITE_OAM_ORDER(3);
         }
         s->graphics.size = 0;
         s->animCursor = 0;
@@ -109,7 +109,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     s->prevVariant = -1;
     s->x = 0 + RACE_ICON_INDENT;
     s->y = RACE_ICON_Y;
-    s->unk1A = 0x140;
+    s->unk1A = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -125,7 +125,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     s->prevVariant = -1;
     s->x = DISPLAY_WIDTH - RACE_ICON_INDENT;
     s->y = RACE_ICON_Y;
-    s->unk1A = 0x140;
+    s->unk1A = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

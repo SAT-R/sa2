@@ -54,7 +54,7 @@ static void sub_8086A0C(HeartParticles *unk998)
         s->prevVariant = -1;
         s->x = -20;
         s->y = 0;
-        s->unk1A = 0x180;
+        s->unk1A = SPRITE_OAM_ORDER(6);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

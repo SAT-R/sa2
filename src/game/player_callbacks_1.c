@@ -1859,7 +1859,7 @@ struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
     s->graphics.dest = VramMalloc(gUnknown_080D69A6[p2_][0]);
     s->graphics.anim = gUnknown_080D69A6[p2_][1];
     s->variant = gUnknown_080D69A6[p2_][2];
-    s->unk1A = 0x1C0;
+    s->unk1A = SPRITE_OAM_ORDER(7);
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     return t;

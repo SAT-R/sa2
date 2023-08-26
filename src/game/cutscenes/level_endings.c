@@ -190,7 +190,7 @@ void CreateCourseResultsCutScene(u8 mode)
     s->x = 0;
     s->y = 0;
     s->graphics.size = 0;
-    s->unk1A = 0x280;
+    s->unk1A = SPRITE_OAM_ORDER(10);
     s->timeUntilNextFrame = 0;
 
     s->animSpeed = 0x10;
@@ -216,7 +216,7 @@ void CreateCourseResultsCutScene(u8 mode)
         s->x = 0;
         s->y = 0;
         s->graphics.size = 0;
-        s->unk1A = 0x240;
+        s->unk1A = SPRITE_OAM_ORDER(9);
         s->timeUntilNextFrame = 0;
 
         s->animSpeed = 0x10;

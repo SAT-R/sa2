@@ -60,7 +60,7 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     }
 
     s = &cannon->sprite2;
-    s->unk1A = 0x1C0;
+    s->unk1A = SPRITE_OAM_ORDER(7);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

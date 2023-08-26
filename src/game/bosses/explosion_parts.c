@@ -48,7 +48,7 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         s->x = 0;
         s->y = 0;
         s->graphics.dest = info->vram;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
@@ -117,7 +117,7 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         s->x = 0;
         s->y = 0;
         s->graphics.dest = info->vram;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
