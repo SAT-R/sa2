@@ -58,7 +58,7 @@ void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(0x12);
     s->graphics.anim = SA2_ANIM_IRON_BALL;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     if (me->d.uData[2] > me->d.uData[3]) {
         if (me->d.sData[0] >= 0) {

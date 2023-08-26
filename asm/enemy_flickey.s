@@ -168,7 +168,7 @@ _08058C26:
 	movs r0, #0x4c
 	add r0, sl
 	mov sb, r0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r6, #0
 	mov r1, sp
 	adds r1, #0xc
@@ -479,7 +479,7 @@ _08058EAC:
 	lsls r1, r6, #8
 	bl sub_80122DC
 	mov r0, sb
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, sb
 	bl sub_80051E8
 	mov r0, sl
@@ -631,7 +631,7 @@ _08058FD0:
 	add r1, sb
 	mov r8, r1
 	mov r0, r8
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0
 	mov r2, sp
 	adds r2, #4
@@ -820,7 +820,7 @@ _08059168:
 	lsls r1, r7, #8
 	bl sub_80122DC
 	mov r0, r8
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _080591D4
 	mov r0, r8
@@ -914,7 +914,7 @@ _0805922C: .4byte gCurTask
 _08059230: .4byte IWRAM_START + 0x4C
 _08059234:
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r0, #0
 	mov r8, r0
 	ldr r0, _08059308 @ =IWRAM_START + 0xA4
@@ -1039,7 +1039,7 @@ Flickey_RenderIronBalls: @ 0x08059320
 	adds r5, r6, #0
 	adds r5, #0x4c
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r4, #0
 	movs r0, #0xa9
 	lsls r0, r0, #2

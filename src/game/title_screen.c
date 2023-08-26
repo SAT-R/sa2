@@ -567,7 +567,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &titleScreen->unkF0;
 
@@ -586,7 +586,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (menuItemId = 0; menuItemId < ARRAY_COUNT(titleScreen->menuItems);
          menuItemId++) {
@@ -620,7 +620,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
         s->animSpeed = 0x10;
         s->palId = 0;
         s->unk10 = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     };
 
     s = &titleScreen->unk240;
@@ -636,7 +636,7 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0x3000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_IntroFadeInSegaLogoAnim(void)
@@ -1560,7 +1560,7 @@ static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(&animation->s);
+    UpdateSpriteAnimation(&animation->s);
 
     animation->unk30 = gBgScrollRegs[1][0];
     animation->unk32 = gBgScrollRegs[1][1];
@@ -1605,7 +1605,7 @@ static void Task_BirdAnim(void)
     }
     s->y = (temp << 0x10 >> 0x10) + animation->unk32 - gBgScrollRegs[1][1];
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     if ((u16)(s->x + 64) > 368) {
@@ -1703,7 +1703,7 @@ static void CreateLensFlareAnimation(void)
         transform->x = lensFlare->posSequenceX[i];
         transform->y = lensFlare->posSequenceY[i];
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     lensFlare->unk200 = gBgScrollRegs[1][0];

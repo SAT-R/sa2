@@ -149,7 +149,7 @@ sub_8019498: @ 0x08019498
 	ldr r1, _08019518 @ =IWRAM_START + 0x20
 	adds r3, r3, r1
 	strb r5, [r3]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	add sp, #4
 	pop {r4, r5}
 	pop {r0}
@@ -605,7 +605,7 @@ _0801984A:
 	orrs r0, r1
 	str r0, [r5, #0x10]
 	ldr r0, [sp]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r0, [sp]
 	mov r1, sl
 	bl sub_8004860
@@ -1151,7 +1151,7 @@ _08019C5A:
 	orrs r0, r1
 	str r0, [r3, #0x10]
 	ldr r0, [sp]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r0, [sp]
 	mov r1, sl
 	bl sub_8004860
@@ -1178,7 +1178,7 @@ sub_8019CAC: @ 0x08019CAC
 	movs r1, #0xc0
 	lsls r1, r1, #0x12
 	adds r0, r0, r1
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	pop {r0}
 	bx r0
 	.align 2, 0

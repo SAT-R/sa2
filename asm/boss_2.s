@@ -979,7 +979,7 @@ sub_803D430: @ 0x0803D430
 	adds r0, #4
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 	adds r6, #0x38
@@ -995,7 +995,7 @@ sub_803D430: @ 0x0803D430
 	adds r0, #9
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 	movs r0, #0xc2
@@ -1014,7 +1014,7 @@ sub_803D430: @ 0x0803D430
 	subs r0, #0x2a
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 	movs r5, #0
@@ -1027,7 +1027,7 @@ _0803D4B6:
 	adds r0, #0xe8
 	adds r6, r7, r0
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r0, #0xf4
 	mov sb, r5
 	cmp r4, #0
@@ -1179,7 +1179,7 @@ _0803D5D2:
 	ldrh r0, [r6, #0x18]
 	strh r0, [r2, #8]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _0803D608
 	movs r1, #1
@@ -1235,7 +1235,7 @@ sub_803D640: @ 0x0803D640
 	adds r0, #4
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 	adds r6, #0x38
@@ -1252,7 +1252,7 @@ sub_803D640: @ 0x0803D640
 	adds r0, #9
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 	cmp r4, #0
@@ -1274,7 +1274,7 @@ sub_803D640: @ 0x0803D640
 	subs r0, #0x2a
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 _0803D6D2:
@@ -1294,7 +1294,7 @@ _0803D6E0:
 	adds r0, #0xe8
 	adds r6, r7, r0
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r0, #0
 	mov r8, r5
 	adds r5, r4, #0
@@ -2045,7 +2045,7 @@ _0803DC6E:
 	ldrh r0, [r2, #0x18]
 	strh r0, [r1, #8]
 	mov r0, r8
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, r8
 	mov r1, sl
 	bl sub_8004860
@@ -3788,7 +3788,7 @@ _0803EAD4: .4byte gCurTask
 _0803EAD8: .4byte sub_803EC84
 _0803EADC:
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 _0803EAE8:
@@ -3970,7 +3970,7 @@ _0803EBEE:
 	strb r0, [r1]
 _0803EC4C:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _0803EC5E
 	ldr r0, _0803EC6C @ =gCurTask

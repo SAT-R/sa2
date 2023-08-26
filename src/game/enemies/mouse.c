@@ -144,7 +144,7 @@ static void sub_8057348(void)
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 
@@ -175,7 +175,7 @@ static void sub_8057618(void)
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         mouse->unk52 = 0;
 
         ENEMY_TURN_AROUND(s);

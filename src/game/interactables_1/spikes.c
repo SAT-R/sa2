@@ -79,7 +79,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x2200;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
@@ -115,7 +115,7 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x2A00;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void sub_805F810(void)
@@ -153,7 +153,7 @@ static void sub_805F810(void)
         TaskDestroy(gCurTask);
     } else {
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
         sub_80051E8(s);
     }
@@ -198,7 +198,7 @@ static void sub_805F928(void)
     } else {
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
             || (me->d.sData[0] != 0 || gUnknown_030053E0 != 0)) {
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             sub_80051E8(s);
         }
     }
@@ -256,7 +256,7 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
         } break;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void sub_805FBA0(void)
@@ -379,7 +379,7 @@ static void sub_805FBA0(void)
     } else {
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0)
             || (gUnknown_030053E0 != 0)) {
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             sub_80051E8(s);
         }
     }
@@ -447,7 +447,7 @@ static void Task_805FF68(void)
         }
 
         if (procResult) {
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             sub_80051E8(s);
         }
     }
@@ -515,7 +515,7 @@ static void Task_806012C(void)
         }
 
         if (procResult) {
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             sub_80051E8(s);
         }
     }
@@ -733,7 +733,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 64) {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
@@ -747,7 +747,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 124) {
         if ((s->variant != SA2_ANIM_VARIANT_SPIKES_UP)
             || ((player->unk60 != 0) && (*param4 != 0))) {
@@ -758,7 +758,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
             s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
             s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
 
             if (sub_800DF38(s, screenX, screenY, player) == 0x80000) {
                 if ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0) {
@@ -841,7 +841,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
@@ -855,7 +855,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     return TRUE;
@@ -902,7 +902,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 64) {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
@@ -916,7 +916,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 124) {
         if ((s->variant != SA2_ANIM_VARIANT_SPIKES_UP)
             || ((player->unk60 != 0) && (*param4 != 0))) {
@@ -927,7 +927,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
             s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
             s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
 
             if ((sub_800DF38(s, screenX, screenY, player) == 0x80000)
                 && ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0)) {
@@ -967,7 +967,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
@@ -981,7 +981,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     return TRUE;

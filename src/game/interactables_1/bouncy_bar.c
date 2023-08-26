@@ -119,7 +119,7 @@ void sub_806160C(void)
         return;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 
@@ -163,7 +163,7 @@ void sub_80617A4(void)
         return;
     }
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         s->graphics.anim = 538;
         s->variant = 0;
         s->prevVariant = -1;

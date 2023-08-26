@@ -408,7 +408,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->mapPaths); i++) {
         s = &coursesScreen->mapPaths[i];
@@ -450,7 +450,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     s = &coursesScreen->zoneType;
@@ -468,7 +468,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &coursesScreen->zoneName;
     s->x = 0xF0;
@@ -485,7 +485,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &coursesScreen->screenTitle;
     s->x = 0;
@@ -524,7 +524,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->chaosEmeralds); i++) {
         s = &coursesScreen->chaosEmeralds[i];
@@ -956,7 +956,7 @@ static bool8 AnimateNewZonePath(struct CourseSelectionScreen *coursesScreen)
         s->x = sZoneMapPathPositions[i][0]
             - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
         s->y = sZoneMapPathPositions[i][1];
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -964,7 +964,7 @@ static bool8 AnimateNewZonePath(struct CourseSelectionScreen *coursesScreen)
     s->x = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][0]
         - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
     s->y = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][1];
-    animDone = sub_8004558(s) == 0;
+    animDone = UpdateSpriteAnimation(s) == 0;
     sub_80051E8(s);
     RenderUI(coursesScreen);
 
@@ -994,14 +994,14 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
         s->graphics.anim = 0x2F6;
         s->variant = COURSE_INDEX_TO_ZONE_INDEX(coursesScreen->currentCourse);
         s->prevVariant = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
 
         s = &coursesScreen->zoneActUnits[1];
         s->graphics.anim = 0x2F6;
         s->variant = COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse);
         s->prevVariant = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -1009,7 +1009,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
     s->graphics.anim = sZoneTypeAssets[coursesScreen->currentCourse][0];
     s->variant = sZoneTypeAssets[coursesScreen->currentCourse][1];
     s->prevVariant = -1;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     s = &coursesScreen->zoneName;
@@ -1021,7 +1021,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
         = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][0];
     s->variant = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][1];
     s->prevVariant = -1;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
     s = &coursesScreen->screenTitle;
     sub_80051E8(s);
@@ -1035,7 +1035,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
                 s = &coursesScreen->chaosEmeralds[0];
             }
             s->x = (((i * 3)) * 8) + 0x24;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             sub_80051E8(s);
         }
     }
@@ -1144,7 +1144,7 @@ static void RenderZoneMapPathsAndUI(struct CourseSelectionScreen *coursesScreen)
         s->x = sZoneMapPathPositions[i][0]
             - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
         s->y = sZoneMapPathPositions[i][1];
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 

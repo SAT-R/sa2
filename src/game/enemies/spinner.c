@@ -97,7 +97,7 @@ NONMATCH("asm/non_matching/Task_EnemySpinner.inc", void Task_EnemySpinner(void))
         TaskDestroy(gCurTask);
     } else {
         sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }

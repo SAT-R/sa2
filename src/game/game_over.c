@@ -131,7 +131,7 @@ void sub_8036780(u8 unkC)
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &screen->unk3C;
     s->graphics.dest = VramMalloc(0x40);
@@ -146,7 +146,7 @@ void sub_8036780(u8 unkC)
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     transition = &screen->unk0;
     transition->unk0 = 1;

@@ -339,7 +339,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
         bIdk = TRUE;
 
     for (i = 0; i < ARRAY_COUNT(ia086->sprites); i++) {
-        sub_8004558(&ia086->sprites[i]);
+        UpdateSpriteAnimation(&ia086->sprites[i]);
     }
 
     for (i = 0; i < ARRAY_COUNT(ia086->unk0); i++) {

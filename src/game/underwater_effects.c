@@ -57,7 +57,7 @@ static void Task_DrowningCountdown(void)
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
     s->unk10 |= (gUnknown_030054B8++ | 0x20);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_8004860(s, transform);
     sub_80051E8(s);
 }
@@ -220,7 +220,7 @@ static void Task_SpawnAirBubbles(void)
 
         s->unk10 |= (gUnknown_030054B8++ | 0x20);
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_8004860(s, transform);
         sub_80051E8(s);
     }

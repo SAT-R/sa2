@@ -60,7 +60,7 @@ void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     s->y = 0;
     SPRITE_INIT(s, 16, SA2_ANIM_CIRCUS_PROJ, 2, 18, 2);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_CircusMain(void)
@@ -112,9 +112,9 @@ void Task_8055AB8(void)
 
     sub_80122DC(circus->spawnX, circus->spawnY);
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         sub_80051E8(s);
-        sub_8004558(s2);
+        UpdateSpriteAnimation(s2);
         sub_80051E8(s2);
 
         circus->unk84 = 50;
@@ -158,9 +158,9 @@ void Task_8055C0C(void)
 
     sub_80122DC(circus->spawnX, circus->spawnY);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
-    sub_8004558(s2);
+    UpdateSpriteAnimation(s2);
     sub_80051E8(s2);
 
     if (--circus->unk84 == 0) {
@@ -187,7 +187,7 @@ void Task_8055D7C(void)
 
     sub_80122DC(circus->spawnX, circus->spawnY);
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         sub_80051E8(s);
 
         circus->unk84 = 30;

@@ -358,7 +358,7 @@ _0805EF6C: .4byte IWRAM_START + 0x2D
 _0805EF70: .4byte gCurTask
 _0805EF74:
 	mov r0, sb
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, sb
 	bl sub_80051E8
 _0805EF80:

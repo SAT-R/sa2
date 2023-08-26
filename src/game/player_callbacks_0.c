@@ -332,7 +332,7 @@ void Task_8012034(void)
         || (gPlayer.unk64 != 36)) {
         TaskDestroy(gCurTask);
     } else {
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
 
         strc->unk28 = ((strc->unk28 - 1) & 0x6);
         sub_80157C8(&pos, strc->unk28);

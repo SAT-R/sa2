@@ -89,21 +89,21 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
             if (temp < 8) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 8;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             } else {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 9;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         } else {
             if (temp == 0) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 8;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             } else if (temp == 8) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 9;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         }
 
@@ -118,7 +118,7 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
         i--;
         s->graphics.anim = gUnknown_080E00B4[gUnknown_080E00FC[i][1]][0];
         s->variant = gUnknown_080E00B4[gUnknown_080E00FC[i][1]][1];
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         ia78->unk44 = 0;
     } else if (temp <= 244) {
         temp = (temp - 185) & 15;
@@ -127,21 +127,21 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
             if (temp >= 8) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 3;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             } else {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 2;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         } else {
             if (temp == 0) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 2;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             } else if (temp == 8) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 3;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         }
 
@@ -156,7 +156,7 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
         i--;
         s->graphics.anim = gUnknown_080E00B4[gUnknown_080E00D4[i][1]][0];
         s->variant = gUnknown_080E00B4[gUnknown_080E00D4[i][1]][1];
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         ia78->unk44 = 0;
     }
 }

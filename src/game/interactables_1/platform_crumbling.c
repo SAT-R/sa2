@@ -84,7 +84,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
         s->unk10 |= 0x400;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_Interactable_019(void)

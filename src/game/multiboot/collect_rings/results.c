@@ -193,7 +193,7 @@ void sub_808207C(void)
                 s->animSpeed = 0x10;
                 s->palId = 0;
                 s->unk10 = 0x1000;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         }
 
@@ -221,7 +221,7 @@ void sub_808207C(void)
             s->animSpeed = 0x10;
             s->palId = 0;
             s->unk10 = 0;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
         resultsScreen->unk430 = 0;
         gCurTask->main = sub_80823FC;
@@ -446,7 +446,7 @@ void sub_8082788(void)
                 s = &resultsScreen->unk80[i].unk0;
                 s->x = (DISPLAY_WIDTH / 2);
                 s->y = gUnknown_030054B4[i] * 40 + 20;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
                 sub_80051E8(s);
 
                 s = &resultsScreen->unk370[gMultiplayerCharacters[i]];
@@ -481,7 +481,7 @@ void sub_8082788(void)
                 s = &resultsScreen->unk80[i].unk0;
                 s->x = (DISPLAY_WIDTH / 2);
                 s->y = i * 40 + 20;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
                 sub_80051E8(s);
 
                 if (gUnknown_03005428[i] > 99) {
@@ -596,5 +596,5 @@ void sub_8082CEC(Sprite *s, u32 vramAddr, u16 animId, u8 variant, s16 x, s16 y,
     s->animSpeed = 0x10;
     s->palId = unk25;
     s->unk10 = unk10;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }

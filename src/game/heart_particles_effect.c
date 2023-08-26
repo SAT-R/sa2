@@ -121,7 +121,7 @@ static void sub_8086B38(HeartParticles *unk998)
             s->x = Q_24_8_TO_INT(unk998->unkC4[i]) - gCamera.x;
             s->y = Q_24_8_TO_INT(unk998->unkD4[i]) - gCamera.y;
 
-            if (sub_8004558(s) == 0) {
+            if (UpdateSpriteAnimation(s) == 0) {
                 unk998->unkC0 &= ~(1 << i);
             } else {
                 sub_80051E8(s);
@@ -158,7 +158,7 @@ static void sub_8086BE8(u8 i)
         s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     unk998->unkC0 |= (1 << i);
 }
 

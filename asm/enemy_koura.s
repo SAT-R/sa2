@@ -447,7 +447,7 @@ _080543BA:
 	movs r0, #0xff
 	strb r0, [r1]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 	movs r0, #0x99
@@ -724,7 +724,7 @@ _080545FA:
 	adds r0, r2, #0
 	bl sub_80122DC
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 _08054610:
@@ -948,7 +948,7 @@ _080547C4:
 	movs r0, #0xff
 	strb r0, [r1]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 	movs r0, #0x99
@@ -1029,7 +1029,7 @@ _08054874:
 	lsls r1, r2, #8
 	bl sub_80122DC
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _080548E8
 	ldr r1, [r6, #0x10]
@@ -1279,7 +1279,7 @@ _08054A7C:
 	lsls r1, r6, #8
 	bl sub_80122DC
 	mov r0, r8
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _08054ACE
 	ldr r3, _08054AE4 @ =gUnknown_080D8F38

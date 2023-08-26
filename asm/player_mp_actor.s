@@ -251,7 +251,7 @@ _08016210:
 	str r0, [r4, #4]
 _08016214:
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r1, _08016238 @ =gMultiplayerPlayerTasks
 	ldrb r0, [r7]
 	lsls r0, r0, #2
@@ -927,7 +927,7 @@ _08016722:
 	str r0, [r6, #0x30]
 _08016766:
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r0, _08016894 @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #4

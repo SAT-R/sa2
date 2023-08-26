@@ -43,7 +43,7 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
     s->palId = palId;
     s->hitboxes[0].index = -1;
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     switch (target) {
         case RENDER_TARGET_SCREEN:

@@ -50,7 +50,7 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = spriteFlags;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &em->s;
     s->x = x;
@@ -67,7 +67,7 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = spriteFlags;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     if (spriteFlags & SPRITE_FLAG_MASK_X_FLIP) {
         em->direction = EGGMOBILE_DIR_RIGHT;
@@ -83,11 +83,11 @@ static void Task_EggmobileMoveUp(void)
     Sprite *s2 = &em->s2;
 
     s2->y -= 2;
-    sub_8004558(s2);
+    UpdateSpriteAnimation(s2);
     sub_80051E8(s2);
 
     s->y -= 2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     if (s->y <= 50) {
@@ -112,11 +112,11 @@ static void Task_EggmobileSwitchMovement(void)
     }
 
     s = &em->s2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     s = &em->s;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 
@@ -130,12 +130,12 @@ static void Task_EggmobileMoveRight(void)
         TaskDestroy(gCurTask);
     } else {
         s->x += 2;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
 
         s = &em->s;
         s->x += 2;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }

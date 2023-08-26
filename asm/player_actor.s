@@ -319,7 +319,7 @@ _080141C2:
 	orrs r0, r1
 	str r0, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldrh r1, [r4, #0xc]
 	movs r0, #2
 	ands r0, r1
@@ -1698,7 +1698,7 @@ _08014C8C:
 	subs r1, r1, r0
 	strh r1, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
 	bl sub_80051E8
 _08014CBC:

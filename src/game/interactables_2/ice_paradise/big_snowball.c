@@ -96,7 +96,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.dest = vramBase;
     s->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     vram = vramBase + 0x200;
     s = &ia69->unk30;
@@ -112,7 +112,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.dest = vram;
     s->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     s->variant = 1;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     vram = vramBase + 800;
     s = &ia69->unk60;
@@ -128,7 +128,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.dest = vram;
     s->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     s->variant = 2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     vram = vramBase + 928;
     s = &ia69->unk90;
@@ -144,7 +144,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.dest = vram;
     s->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     s->variant = 3;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     vram = vramBase + 960;
     s = &ia69->unkC0;
@@ -160,7 +160,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.dest = vram;
     s->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     s->variant = 4;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 

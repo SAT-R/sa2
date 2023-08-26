@@ -55,7 +55,7 @@ void Task_SparkEffect(void)
             s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
         }
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }

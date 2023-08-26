@@ -95,7 +95,7 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
         }
     }
     sub_8074FD8(floatingSpring);
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_8074E44(floatingSpring);
     sub_80751B4(floatingSpring);
 
@@ -235,7 +235,7 @@ static void sub_80750A8(void)
         if (!floatingSpring->unk4C) {
             sub_8075284(floatingSpring);
             sub_8074FD8(floatingSpring);
-            sub_8004558(&floatingSpring->s);
+            UpdateSpriteAnimation(&floatingSpring->s);
         }
     }
 
@@ -278,7 +278,7 @@ static void sub_8075154(Sprite_FloatingSpring *floatingSpring)
     }
 
     sub_8075048(floatingSpring);
-    sub_8004558(&floatingSpring->s);
+    UpdateSpriteAnimation(&floatingSpring->s);
     m4aSongNumStart(SE_SPRING);
     gCurTask->main = sub_80752D8;
 }
@@ -354,7 +354,7 @@ static void sub_80752D8(void)
     sub_80751B4(floatingSpring);
 
     if (!(s->unk10 & 0x4000)) {
-        sub_8004558(&floatingSpring->s);
+        UpdateSpriteAnimation(&floatingSpring->s);
     } else {
         sub_8075334(floatingSpring);
     }
@@ -370,7 +370,7 @@ static void sub_8075334(Sprite_FloatingSpring *floatingSpring)
 {
     floatingSpring->unk50 ^= TRUE;
     sub_8074FD8(floatingSpring);
-    sub_8004558(&floatingSpring->s);
+    UpdateSpriteAnimation(&floatingSpring->s);
     sub_80051E8(&floatingSpring->s);
     gCurTask->main = sub_80750A8;
 }

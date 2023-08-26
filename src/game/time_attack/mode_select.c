@@ -144,7 +144,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &modeScreen->unkB0;
     s->graphics.dest
@@ -162,7 +162,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &modeScreen->unkE0;
     s->graphics.dest
@@ -180,7 +180,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &modeScreen->infoText;
     s->graphics.dest
@@ -486,7 +486,7 @@ static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
 
     if (modeScreen->unk14E != 0) {
         s = &modeScreen->infoText;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }

@@ -74,7 +74,7 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     gs->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
         s16 *elem = gs->elements[i];

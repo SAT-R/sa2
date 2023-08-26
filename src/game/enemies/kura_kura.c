@@ -54,7 +54,7 @@ void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
     SPRITE_INIT(s, 1, SA2_ANIM_KURAKURA_PROJ, 0, 17, 2);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &kk->s2;
     s->x = 0;
@@ -109,7 +109,7 @@ void sub_805213C(Sprite_KuraKura *kk)
     s2->y = pos.y - gCamera.y;
     sub_800C84C(s2, pos.x, pos.y);
 
-    sub_8004558(s2);
+    UpdateSpriteAnimation(s2);
     sub_80051E8(s2);
 }
 

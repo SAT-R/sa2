@@ -205,7 +205,7 @@ void CreateSprite_Notif_RingBonus(void)
     s->graphics.dest = VramMalloc(26);
     s->graphics.anim = SA2_ANIM_NOTIFICATION_RING_BONUS;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_80806F4(void)

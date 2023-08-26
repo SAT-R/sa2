@@ -97,7 +97,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     s->graphics.dest = VramMalloc(16);
     s->graphics.anim = SA2_ANIM_ITEMBOX;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &itemBox->identifier;
     s->animSpeed = 0x10;
@@ -112,7 +112,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
     s->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void sub_808616C(void)
@@ -127,7 +127,7 @@ static void sub_808616C(void)
     identifier = &itemBox->identifier;
     identifier->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
     identifier->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
-    sub_8004558(identifier);
+    UpdateSpriteAnimation(identifier);
 
     itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;

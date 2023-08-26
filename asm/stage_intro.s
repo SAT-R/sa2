@@ -3297,7 +3297,7 @@ _0802F34C:
 	str r0, [r5, #0x28]
 	str r7, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0
 	movs r4, #0xb1
 	lsls r4, r4, #2
@@ -3501,7 +3501,7 @@ _0802F4C0:
 	str r3, [r5, #0x28]
 	str r4, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r5, #0xb5
 	lsls r5, r5, #2
 	add r5, r8
@@ -3573,7 +3573,7 @@ _0802F558:
 	lsrs r0, r0, #0x18
 	str r0, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r0, _0802F5E4 @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #2
@@ -3659,7 +3659,7 @@ _0802F60E:
 	str r3, [r5, #0x10]
 	adds r0, r5, #0
 	str r3, [sp, #0x30]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #1
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18
@@ -3753,7 +3753,7 @@ _0802F6C8:
 	str r3, [r5, #0x10]
 	adds r0, r5, #0
 	str r3, [sp, #0x30]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #1
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18
@@ -4694,7 +4694,7 @@ _0802FEA6:
 	movs r0, #0xff
 	strb r0, [r5]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
 	bl sub_80051E8
 	adds r5, #0x30
@@ -4740,7 +4740,7 @@ _0802FEE0:
 	strb r0, [r1]
 _0802FF06:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 _0802FF0C:
 	adds r0, r5, #0
 	bl sub_80051E8
@@ -4887,7 +4887,7 @@ _08030030:
 	strh r0, [r5, #0x18]
 _08030040:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	bl sub_80051E8
 	b _0803029C

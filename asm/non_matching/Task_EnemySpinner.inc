@@ -192,7 +192,7 @@ _08057190:
 	lsls r1, r5, #8
 	bl sub_80122DC
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 _080571A4:

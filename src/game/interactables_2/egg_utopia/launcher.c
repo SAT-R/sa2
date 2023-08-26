@@ -177,7 +177,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                 } break;
             }
 
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
         SET_MAP_ENTITY_INITIALIZED(me);
     }

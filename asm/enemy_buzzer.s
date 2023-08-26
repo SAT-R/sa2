@@ -350,7 +350,7 @@ _08053388:
 	adds r1, r4, #0
 	bl sub_80122DC
 	mov r0, sb
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, sb
 	bl sub_80051E8
 _0805339C:
@@ -473,7 +473,7 @@ _08053484:
 	lsls r1, r5, #8
 	bl sub_80122DC
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _080534D2
 	ldr r1, [r6, #0x10]
@@ -656,7 +656,7 @@ _080535E4:
 	str r0, [r1, #8]
 _080535FC:
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
 	bl sub_80051E8
 _08053608:
@@ -822,7 +822,7 @@ _08053714:
 	str r0, [r1, #8]
 _0805374E:
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
 	bl sub_80051E8
 _0805375A:

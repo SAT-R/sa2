@@ -122,7 +122,7 @@ void Task_BulletBuzzerMain(void)
     }
 
     sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         ENEMY_TURN_AROUND(s);
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;
         s->variant = 0;
@@ -162,7 +162,7 @@ void sub_8059B04(void)
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         sub_80051E8(s);
         bbuzzer->unk5E = 60;
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;

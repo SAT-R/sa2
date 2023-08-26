@@ -39,7 +39,7 @@ void CreateEnemyDefeatScore(s16 x, s16 y)
     s->palId = 0;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_CreateEnemyDefeatScore_MoveUp(void)

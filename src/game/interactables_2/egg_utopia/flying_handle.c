@@ -99,7 +99,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->graphics.dest = VramMalloc(FLYING_HANDLE_VRAM_TILES);
     s->graphics.anim = SA2_ANIM_FLYING_HANDLE;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
@@ -210,7 +210,7 @@ static void sub_807F5C0(Sprite_FlyingHandle *flyingHandle)
         s->y = Q_24_8_TO_INT(flyingHandle->unk48 + flyingHandle->unk50) - gCamera.y;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 

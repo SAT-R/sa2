@@ -143,7 +143,7 @@ void sub_8036168(void)
     s = &countdown->unk0;
     s->x = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
     s->y = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     if (countdown->unk68 < (GBA_FRAMES_PER_SECOND * 3)) {
@@ -153,7 +153,7 @@ void sub_8036168(void)
         s->prevVariant = -1;
         s->x = (Q_24_8_TO_INT(gPlayer.x) - gCamera.x) + 0x18;
         s->y = (Q_24_8_TO_INT(gPlayer.y) - gCamera.y) - 0x18;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -185,7 +185,7 @@ void sub_8036398(void)
         }
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 
@@ -268,7 +268,7 @@ void sub_8036524(void)
 
     transformConfig->x = s->x;
     transformConfig->y = s->y;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_8004860(s, transformConfig);
     sub_80051E8(s);
 
@@ -290,7 +290,7 @@ void sub_8036524(void)
 
     transformConfig->x = s->x;
     transformConfig->y = s->y;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_8004860(s, transformConfig);
     sub_80051E8(s);
 }

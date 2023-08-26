@@ -140,7 +140,7 @@ static void sub_8081134(Sprite_SpecialRing *ring)
     s->x = ring->posX - gCamera.x;
     s->y = ring->posY - gCamera.y;
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 

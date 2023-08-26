@@ -160,7 +160,7 @@ void Task_Item_Shield_Normal(void)
         item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
         item->s.unk10 |= gPlayer.unk90->s.unk10 & SPRITE_FLAG_MASK_PRIORITY;
 
-        sub_8004558(&item->s);
+        UpdateSpriteAnimation(&item->s);
 
 #ifndef NON_MATCHING
         asm("mov %0, %2\n"
@@ -215,7 +215,7 @@ void Task_Item_Shield_Magnetic(void)
         }
     }
 
-    sub_8004558(&item->s);
+    UpdateSpriteAnimation(&item->s);
 
     b = (param);
     {
@@ -259,7 +259,7 @@ void Task_802ABC8(void)
         item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
         item->s.unk10 |= r2;
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }
@@ -303,7 +303,7 @@ void Task_Item_Invincibility(void)
     item->s.y = y - cam->y;
     item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
     item->s.unk10 |= priority;
-    sub_8004558(&item->s);
+    UpdateSpriteAnimation(&item->s);
 
     {
 #ifndef NON_MATCHING
@@ -352,7 +352,7 @@ void Task_Item_Confusion(void)
             s->unk10 &= ~MOVESTATE_800;
         }
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
 
         b = param;
         {

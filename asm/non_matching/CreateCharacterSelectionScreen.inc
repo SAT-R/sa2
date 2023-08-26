@@ -486,7 +486,7 @@ _080317D8:
 	str r0, [r7, #0x28]
 	str r4, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #1
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
@@ -526,7 +526,7 @@ _080317D8:
 	str r0, [r7, #0x28]
 	str r4, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0x96
 	lsls r7, r7, #1
 	add r7, sl
@@ -580,7 +580,7 @@ _080317D8:
 	str r2, [r7, #0x28]
 	str r4, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0xae
 	lsls r7, r7, #1
 	add r7, sl
@@ -623,7 +623,7 @@ _080317D8:
 	str r2, [r7, #0x28]
 	str r4, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0xcc
 	lsls r7, r7, #1
 	add r7, sl
@@ -666,7 +666,7 @@ _080317D8:
 	str r2, [r7, #0x28]
 	str r4, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r7, [sp, #0x20]
 	strh r4, [r7, #0x16]
 	strh r4, [r7, #0x18]
@@ -743,7 +743,7 @@ _08031A48:
 	str r2, [r7, #0x28]
 	str r4, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0xc0
 	lsls r7, r7, #2
 	add r7, sl
@@ -782,7 +782,7 @@ _08031A48:
 	str r2, [r7, #0x28]
 	str r4, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0xcc
 	lsls r7, r7, #2
 	add r7, sl
@@ -819,7 +819,7 @@ _08031A48:
 	lsls r0, r0, #4
 	str r0, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0xd8
 	lsls r7, r7, #2
 	add r7, sl
@@ -853,7 +853,7 @@ _08031A48:
 	str r2, [r7, #0x28]
 	str r4, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0xe4
 	lsls r7, r7, #2
 	add r7, sl
@@ -884,7 +884,7 @@ _08031A48:
 	str r2, [r7, #0x28]
 	str r4, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r7, [sp, #0x44]
 	strh r4, [r7, #0x16]
 	strh r4, [r7, #0x18]
@@ -925,7 +925,7 @@ _08031A48:
 	str r0, [r7, #0x28]
 	str r4, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r5, #0
 	ldr r2, _08031C5C @ =gObjPalette
 	movs r1, #0

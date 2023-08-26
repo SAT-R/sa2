@@ -165,7 +165,7 @@ static void sub_807B350(Sprite_LightGlobe *globe)
     Sprite *s = &globe->s;
     s->x = globe->unk3C - gCamera.x + Q_24_8_TO_INT(globe->unk44);
     s->y = globe->unk40 - gCamera.y + Q_24_8_TO_INT(globe->unk46);
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 

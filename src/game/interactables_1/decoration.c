@@ -94,7 +94,7 @@ void Task_Decoration(void)
         me->x = base->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }

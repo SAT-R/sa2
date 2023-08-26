@@ -191,7 +191,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(lobbyScreen->uiElements); i++) {
         s = &lobbyScreen->uiElements[i];
@@ -209,7 +209,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
         s->animSpeed = 0x10;
         s->palId = 0;
         s->unk10 = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     lobbyScreen->transition.unk0 = 1;
@@ -490,7 +490,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     Sprite *s = &lobbyScreen->chao;
     // Chao anim finished
-    if (!sub_8004558(s)) {
+    if (!UpdateSpriteAnimation(s)) {
         if (lobbyScreen->cursor != CURSOR_YES
             && s->graphics.anim == SA2_ANIM_MP_CHEESE_WAVING) {
             s->variant = 1;

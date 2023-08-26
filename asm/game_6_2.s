@@ -169,7 +169,7 @@ _08024C26:
 	strh r1, [r6, #2]
 	strh r0, [r6, #4]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r0, _08024C64 @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #2
@@ -226,7 +226,7 @@ _08024CB4:
 _08024CBA:
 	str r0, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 _08024CC2:
 	ldr r0, _08024DA0 @ =gGameMode
 	ldrb r0, [r0]
@@ -814,7 +814,7 @@ _08025116:
 	strh r1, [r4, #2]
 	strh r0, [r4, #4]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	adds r1, r4, #0
 	bl sub_8004860
@@ -1022,7 +1022,7 @@ _080252A6:
 	strh r1, [r4, #2]
 	strh r0, [r4, #4]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	adds r1, r4, #0
 	bl sub_8004860

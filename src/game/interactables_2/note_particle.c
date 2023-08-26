@@ -67,7 +67,7 @@ void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
 
     s->graphics.anim = gUnknown_080E0140[kind][0];
     s->variant = gUnknown_080E0140[kind][1];
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed,
@@ -113,7 +113,7 @@ static void Task_8080DB8(void)
         np->offsetY += np->accelY;
         np->s.x = (np->posX - gCamera.x) + Q_24_8_TO_INT(np->offsetX);
         np->s.y = (np->posY - gCamera.y) + Q_24_8_TO_INT(np->offsetY);
-        sub_8004558(&np->s);
+        UpdateSpriteAnimation(&np->s);
 
         if (np->framesUntilVisible == 0) {
             sub_80051E8(&np->s);
@@ -138,7 +138,7 @@ static void Task_8080E54(void)
 
         np->s.x = (np->posX - gCamera.x) + Q_24_8_TO_INT(np->offsetX);
         np->s.y = (np->posY - gCamera.y) + Q_24_8_TO_INT(np->offsetY);
-        sub_8004558(&np->s);
+        UpdateSpriteAnimation(&np->s);
 
         if (np->framesUntilVisible == 0) {
             sub_80051E8(&np->s);

@@ -85,7 +85,7 @@ void Task_801F6E0(void)
     } else {
         s->x = bde->x - gCamera.x;
         s->y = bde->y - gCamera.y;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
 
         bde->x += bde->unk4;

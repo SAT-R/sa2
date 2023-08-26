@@ -48,7 +48,7 @@ void CreateCollectRingsTimeDisplay(void)
         s->variant = 0;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < 11; i++) {
         s = &timeDisplay->unk30[i];
@@ -71,7 +71,7 @@ void CreateCollectRingsTimeDisplay(void)
             s->graphics.dest = timeDisplay->unk30[0].graphics.dest + (i * 0x40);
         }
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 16; i++) {

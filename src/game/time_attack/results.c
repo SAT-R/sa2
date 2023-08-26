@@ -118,7 +118,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     resultsCutScene->unk178[6].variant += resultsCutScene->unk175;
 
     for (i = 0; i < 7; i++) {
-        sub_8004558(&resultsCutScene->unk178[i]);
+        UpdateSpriteAnimation(&resultsCutScene->unk178[i]);
     }
 
     resultsCutScene->unk2D8 = sub_80899B8(finishTime);
@@ -138,7 +138,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unkC[0];
     s->x = 256;
@@ -155,7 +155,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     isBossLevel = (gCurrentLevel & 3) >> 1;
 
@@ -174,7 +174,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     if (isBossLevel != 0) {
         level = (gCurrentLevel >> 2) + ACT_BOSS;
@@ -197,7 +197,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unk9C[0];
     s->x = 40;
@@ -214,7 +214,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unk9C[1];
     s->x = (DISPLAY_WIDTH / 2);
@@ -235,7 +235,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = gUnknown_030054B8++ | 0x20;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     resultsCutScene->transform.width = 0;
     resultsCutScene->transform.height = 0x100;
@@ -258,7 +258,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     gUnknown_030054A8.unk0 = 0xFF;
 

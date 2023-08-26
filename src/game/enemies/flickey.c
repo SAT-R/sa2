@@ -83,7 +83,7 @@ void Flickey_RenderIronBalls(Sprite_Flickey *flickey)
 {
     u8 i;
     Sprite *s = &flickey->s2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < 3; i++) {
         u8 index = (flickey->unk2A4 - (i + 1) * 16) & 0x3F;

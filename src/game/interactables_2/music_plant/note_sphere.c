@@ -92,7 +92,7 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     note->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_80754B8(void)

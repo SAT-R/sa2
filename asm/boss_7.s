@@ -415,7 +415,7 @@ _08047CCE:
 	lsls r1, r1, #6
 	str r1, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #1
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
@@ -466,7 +466,7 @@ _08047CCE:
 	lsls r1, r1, #6
 	str r1, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r3, [sp, #0x30]
 	movs r2, #0xdc
 	lsls r2, r2, #1
@@ -501,7 +501,7 @@ _08047CCE:
 	lsls r1, r1, #6
 	str r1, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	add sp, #0x34
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -863,7 +863,7 @@ sub_80480E8: @ 0x080480E8
 	movs r0, #0x28
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_8003914
 	ldr r3, _08048148 @ =gBgScrollRegs
@@ -1223,7 +1223,7 @@ _080483D8:
 _080483DC:
 	str r0, [r6, #0x10]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 	ldr r3, [sp, #0x1c]
@@ -3557,7 +3557,7 @@ _080495DC:
 	strb r0, [r1]
 _08049636:
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 _08049642:
@@ -3870,7 +3870,7 @@ _08049858:
 	strb r0, [r1]
 _080498B0:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	bl sub_80051E8
 _080498BC:
@@ -4573,7 +4573,7 @@ _08049DF2:
 	lsls r0, r0, #5
 	str r0, [r2, #0x10]
 	adds r0, r2, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #1
 	lsls r0, r0, #0x18
 	lsrs r4, r0, #0x18

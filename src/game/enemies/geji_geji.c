@@ -143,9 +143,9 @@ static void sub_8057F80(void)
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
-    sub_8004558(s2);
+    UpdateSpriteAnimation(s2);
 
     for (i = 0; i < 4; i++) {
         u8 index = (gg->unk27E - ((i + 1) * 13)) & 0x3F;
@@ -199,11 +199,11 @@ static void sub_8058264(void)
         }
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     s = &gg->s2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < 4; i++) {
         u8 index = (gg->unk27E - ((i + 1) * 13)) & 0x3F;

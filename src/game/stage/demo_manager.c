@@ -66,7 +66,7 @@ void CreateDemoManager(void)
     if (blendCtrl != BLDCNT_EFFECT_BLEND) {
         s->unk10 = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
     }
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &dm->textDemoPlay;
     s->x = (DISPLAY_WIDTH / 2);
@@ -88,7 +88,7 @@ void CreateDemoManager(void)
     if (blendCtrl != BLDCNT_EFFECT_BLEND) {
         s->unk10 = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
     }
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_800A110(void)
@@ -132,7 +132,7 @@ void Task_800A110(void)
                 s->unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
             }
 
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             sub_80051E8(s);
         }
 

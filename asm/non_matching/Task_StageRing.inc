@@ -207,7 +207,7 @@ _0800BCD8:
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	bl sub_80051E8
 	mov r3, sl

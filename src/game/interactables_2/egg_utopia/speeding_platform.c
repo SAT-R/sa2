@@ -91,7 +91,7 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
     s->graphics.dest = VramMalloc(0x10);
     s->graphics.anim = SA2_ANIM_SPEEDING_PLATFORM;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 

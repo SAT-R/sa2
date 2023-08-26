@@ -144,7 +144,7 @@ static void Task_PenTurn(void)
     ENEMY_DESTROY_IF_OFFSCREEN(pen, me, s);
 
     sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         pen->boosting = FALSE;
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
             s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;

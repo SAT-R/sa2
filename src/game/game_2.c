@@ -84,7 +84,7 @@ void Task_801F214(void)
             }
         }
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }

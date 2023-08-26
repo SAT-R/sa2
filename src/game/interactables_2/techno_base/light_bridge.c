@@ -123,7 +123,7 @@ void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         s->graphics.anim = sBridgeSprites[i][0];
         s->variant = sBridgeSprites[i][1];
         s->graphics.dest = vram;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         vram += sBridgeSprites[i][2] * TILE_SIZE_4BPP;
     }
 

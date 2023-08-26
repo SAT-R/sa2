@@ -62,7 +62,7 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->palId = FALSE;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_StageGoalMain(void)
@@ -112,7 +112,7 @@ static void Task_StageGoalAnimate(void)
         return;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 

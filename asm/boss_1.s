@@ -355,7 +355,7 @@ _0803A444:
 	lsls r2, r2, #6
 	str r2, [r6, #0x10]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r3, #0xc6
 	lsls r3, r3, #2
 	adds r6, r7, r3
@@ -390,7 +390,7 @@ _0803A444:
 	lsls r0, r0, #6
 	str r0, [r6, #0x10]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r1, #0xea
 	lsls r1, r1, #2
 	adds r6, r7, r1
@@ -493,7 +493,7 @@ _0803A444:
 	lsls r3, r3, #6
 	str r3, [r6, #0x10]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r0, #0xde
 	lsls r0, r0, #2
 	adds r6, r7, r0
@@ -1273,7 +1273,7 @@ sub_803AC2C: @ 0x0803AC2C
 	subs r0, r0, r1
 	strh r0, [r7, #0x18]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
 	bl sub_80051E8
 	movs r7, #0xde
@@ -1292,7 +1292,7 @@ sub_803AC2C: @ 0x0803AC2C
 	subs r0, r0, r1
 	strh r0, [r7, #0x18]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
 	bl sub_80051E8
 	movs r7, #0xea
@@ -1321,7 +1321,7 @@ sub_803AC2C: @ 0x0803AC2C
 	subs r0, r0, r1
 	strh r0, [r7, #0x18]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
 	bl sub_80051E8
 	mov r3, sl
@@ -1367,7 +1367,7 @@ sub_803AC2C: @ 0x0803AC2C
 	subs r0, r0, r1
 	strh r0, [r7, #0x18]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
 	bl sub_80051E8
 	mov r3, sl
@@ -1549,7 +1549,7 @@ _0803AE1C:
 	subs r4, #0x14
 	strh r4, [r7, #0x18]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
 	bl sub_80051E8
 	ldr r7, _0803B00C @ =0x00000474
@@ -1557,7 +1557,7 @@ _0803AE1C:
 	strh r5, [r7, #0x16]
 	strh r4, [r7, #0x18]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
 	bl sub_80051E8
 _0803AEBA:
@@ -1703,7 +1703,7 @@ _0803AFC4:
 	ldrh r0, [r7, #0x18]
 	strh r0, [r4, #8]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
 	adds r1, r4, #0
 	bl sub_8004860
@@ -4148,7 +4148,7 @@ _0803C278:
 	subs r0, r0, r1
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 	mov r1, sb
@@ -4483,7 +4483,7 @@ _0803C528:
 	subs r0, r0, r1
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 _0803C556:
@@ -4522,7 +4522,7 @@ _0803C572:
 	subs r0, r0, r1
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 _0803C5A4:
@@ -4600,7 +4600,7 @@ _0803C60A:
 	subs r0, r0, r1
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 _0803C63E:

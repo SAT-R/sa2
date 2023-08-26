@@ -162,7 +162,7 @@ void sub_806FCF8(void)
         s->variant = unkF7E8->variant;
         s->unk10 |= 0x40000;
         s->palId = temp;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     if ((timeHundreds | timeTens) != 0) {
@@ -172,7 +172,7 @@ void sub_806FCF8(void)
         s->variant = unkF7E8->variant;
         s->unk10 |= 0x40000;
         s->palId = temp;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     unkF7E8 = &sDigitSprites[timeUnits];
@@ -181,7 +181,7 @@ void sub_806FCF8(void)
     s->variant = unkF7E8->variant;
     s->unk10 |= 0x40000;
     s->palId = temp;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void CreateRingCounter(struct SpecialStageUI *ui)
@@ -263,19 +263,19 @@ void sub_8070078(void)
     s = &ui->ringsHundredsDigit;
     s->graphics.anim = sprite->anim;
     s->variant = sprite->variant;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     sprite = &sDigitSprites[stage->ringsTens];
     s = &ui->ringsTENS_DIGIT;
     s->graphics.anim = sprite->anim;
     s->variant = sprite->variant;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     sprite = &sDigitSprites[stage->ringsUnits];
     s = &ui->ringsUNITS_DIGIT;
     s->graphics.anim = sprite->anim;
     s->variant = sprite->variant;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     if (stage->targetReached == FALSE) {
         if (stage->rings >= stage->ringsTarget) {
@@ -287,7 +287,7 @@ void sub_8070078(void)
             s = &ui->unk154;
             s->graphics.anim = 0x378;
             s->variant = 1;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
         return;
     }
@@ -298,10 +298,10 @@ void sub_8070078(void)
         s = &ui->unk154;
         s->graphics.anim = 0x378;
         s->variant = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else {
         s = &ui->unk154;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 }
 
@@ -602,7 +602,7 @@ static void RenderScoresAnim(void)
     }
 
     for (i = 0; i < 7; i++) {
-        sub_8004558(&resultsScreen->chaosEmerald[i]);
+        UpdateSpriteAnimation(&resultsScreen->chaosEmerald[i]);
         sub_80051E8(&resultsScreen->chaosEmerald[i]);
     }
 
@@ -616,7 +616,7 @@ static void RenderScoresAnim(void)
             s = &resultsScreen->unk244[i];
             s->graphics.anim = sDigitSprites[a[i]].anim;
             s->variant = sDigitSprites[a[i]].variant;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             sub_80051E8(s);
         }
     }
@@ -627,7 +627,7 @@ static void RenderScoresAnim(void)
             s = &resultsScreen->unk334[i];
             s->graphics.anim = sDigitSprites[b[i]].anim;
             s->variant = sDigitSprites[b[i]].variant;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             sub_80051E8(s);
         }
     }
@@ -638,7 +638,7 @@ static void RenderScoresAnim(void)
             s = &resultsScreen->unk424[i];
             s->graphics.anim = sDigitSprites[c[i]].anim;
             s->variant = sDigitSprites[c[i]].variant;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             sub_80051E8(s);
         }
     }
@@ -742,7 +742,7 @@ void sub_8070D14(void)
         if (stage->paused == FALSE) {
             s->graphics.anim = unkF830->anim;
             s->variant = unkF830->variant;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
         sub_80051E8(s);
     }

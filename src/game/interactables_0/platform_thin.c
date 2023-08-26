@@ -110,7 +110,7 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
     s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_CommonPlatformThinMain(void)
@@ -251,7 +251,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         transform->x = x;
         transform->y = y;
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
 
         // copy base 1
         DmaCopy16(3, &platform->unk0, &platform->unk30, 0x30);
@@ -293,7 +293,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         // Set the transform props
         transform->y = y;
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
 
         // Copy base 2
         DmaCopy16(3, &platform->unk60, &platform->unk90, 0x30);

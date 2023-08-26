@@ -163,7 +163,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = 0x1000;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 5; i++) {
@@ -184,7 +184,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
     s = &teamPlayScreen->unk1B0;
     s->x = 0;
@@ -542,7 +542,7 @@ static void sub_805D1F8(void)
 
         if (i == 0) {
             s = &teamPlayScreen->unk1B0;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
 
         if (packet->pat0.unk0 == 0x4040 || packet->pat0.unk0 == 0x4041) {

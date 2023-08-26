@@ -123,6 +123,6 @@ void sub_8054D20(void)
         }
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }

@@ -115,7 +115,7 @@ CreateEntity_Kiki: @ 0x08053784
 	lsls r0, r0, #6
 	str r0, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	add sp, #8
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -324,7 +324,7 @@ _08053A14:
 	asrs r1, r4, #8
 	bl sub_80122DC
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_80051E8
 _08053A28:
@@ -500,7 +500,7 @@ _08053B70:
 	bl sub_8053BBC
 _08053B82:
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r2, r0, #0
 	cmp r2, #0
 	bne _08053B9C
@@ -644,7 +644,7 @@ _08053C62:
 	lsls r0, r0, #6
 	str r0, [r6, #0x10]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	add sp, #4
 	pop {r3}
 	mov r8, r3
@@ -769,7 +769,7 @@ _08053D98:
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
 	bl sub_80051E8
 	strh r7, [r4, #0x16]
@@ -845,7 +845,7 @@ _08053E2E:
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
 	bl sub_80051E8
 	mov r0, sb
@@ -945,7 +945,7 @@ _08053EBE:
 	lsls r0, r0, #6
 	str r0, [r6, #0x10]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	add sp, #4
 	pop {r3}
 	mov r8, r3
@@ -1078,7 +1078,7 @@ _08053FFA:
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _08054038
 	ldr r0, _08054024 @ =gCurTask

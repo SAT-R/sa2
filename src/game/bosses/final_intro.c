@@ -155,7 +155,7 @@ void sub_8038E20(void);
     ({                                                                                  \
         (s)->x = Q_24_8_TO_INT((obj)->x);                                               \
         (s)->y = Q_24_8_TO_INT((obj)->y) - gCamera.y;                                   \
-        sub_8004558(s);                                                                 \
+        UpdateSpriteAnimation(s);                                                       \
         sub_80051E8(s);                                                                 \
     })
 
@@ -433,7 +433,7 @@ void sub_8036EF8(void)
 
         ORBIT_SET_SPRITE_POS(s, pos);
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -468,7 +468,7 @@ void sub_8036FE4(void)
 
         ORBIT_SET_SPRITE_POS(s, pos);
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -532,7 +532,7 @@ void sub_80370C0(void)
 
         ORBIT_SET_SPRITE_POS(s, pos);
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }
@@ -828,7 +828,7 @@ void sub_8037BD0(void)
     s->x = Q_24_8_TO_INT(actor->x);
     s->y = 178 - gCamera.y;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
@@ -857,7 +857,7 @@ void sub_8037CEC(void)
     s->x = Q_24_8_TO_INT(actor->x);
     s->y = 178 - gCamera.y;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
@@ -897,7 +897,7 @@ void sub_8037E08(void)
     s->x = Q_24_8_TO_INT(actor->x);
     s->y = 178 - gCamera.y;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
@@ -950,7 +950,7 @@ void sub_8037F68(void)
         s->x = Q_24_8_TO_INT(actor->x);
         s->y = 178 - gCamera.y;
         s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
 
         s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
@@ -1472,9 +1472,9 @@ void IntroRenderSprites(u8 flockMode)
     gBgScrollRegs[0][0] = intro->unkE;
     gBgScrollRegs[1][0] = intro->unkE;
 
-    sub_8004558(&intro->birdSprites[0]);
-    sub_8004558(&intro->birdSprites[1]);
-    sub_8004558(&intro->birdSprites[2]);
+    UpdateSpriteAnimation(&intro->birdSprites[0]);
+    UpdateSpriteAnimation(&intro->birdSprites[1]);
+    UpdateSpriteAnimation(&intro->birdSprites[2]);
 
     pos[0] = (intro->unk8 * 5) & ONE_CYCLE;
     pos[1] = (intro->unk8 * 3) & ONE_CYCLE;
@@ -1532,7 +1532,7 @@ void IntroRenderSprites(u8 flockMode)
         s->x = Q_24_8_TO_INT(intro->unk1B4);
         s->y = Q_24_8_TO_INT(intro->unk1B8) - intro->cameraY + intro->unkF;
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }
@@ -1600,7 +1600,7 @@ void sub_803997C(void)
 {
     IntroActor *actor = TaskGetStructPtr(gCurTask);
 
-    sub_8004558(&actor->s);
+    UpdateSpriteAnimation(&actor->s);
     sub_80051E8(&actor->s);
 }
 
@@ -1608,7 +1608,7 @@ void sub_80399A4(void)
 {
     IntroActor *actor = TaskGetStructPtr(gCurTask);
 
-    sub_8004558(&actor->s);
+    UpdateSpriteAnimation(&actor->s);
     sub_80051E8(&actor->s);
 }
 
@@ -1623,7 +1623,7 @@ void sub_8039A10(void)
 {
     IntroActor *actor = TaskGetStructPtr(gCurTask);
 
-    sub_8004558(&actor->s);
+    UpdateSpriteAnimation(&actor->s);
     sub_80051E8(&actor->s);
 }
 

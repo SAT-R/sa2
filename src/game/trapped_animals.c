@@ -177,7 +177,7 @@ static void Task_FlyingAnimal(void)
         return;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 
@@ -247,7 +247,7 @@ static void Task_BouncingAnimal(void)
         return;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 
@@ -314,7 +314,7 @@ static void Task_StaticAnimalMain(void)
         return;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 

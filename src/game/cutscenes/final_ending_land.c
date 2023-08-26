@@ -238,7 +238,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->palId = 1;
             s->unk10 = 0;
             s->hitboxes[0].index = -1;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
 
         {
@@ -277,7 +277,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->palId = 2;
             s->unk10 = 0;
             s->hitboxes[0].index = -1;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 
@@ -299,7 +299,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -329,7 +329,7 @@ void CreateFinalEndingLandingCutScene(void)
         transform->x = s->x;
         transform->y = s->y;
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 2; i++) {
@@ -350,7 +350,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 2; i++) {
@@ -371,7 +371,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -392,7 +392,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -413,7 +413,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -434,7 +434,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -455,7 +455,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -476,7 +476,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 1;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -778,7 +778,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         sub_8004860(s, transform);
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     if ((gSelectedCharacter != 1 && scene->unk338 > 4)
@@ -797,7 +797,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         }
         s->x = scene->unk5E0[0][0] >> 8;
         s->y = scene->unk5E0[0][1] >> 8;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -814,7 +814,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->x = scene->unk80.x;
         s->y = scene->unk80.y + 0x19;
 
-        if (sub_8004558(s) != 1) {
+        if (UpdateSpriteAnimation(s) != 1) {
             scene->unk33D = 1;
         }
 
@@ -836,7 +836,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->y = (gUnknown_080E1964[i][4] - gBgScrollRegs[1][1])
             + (scene->unk34C[i][1] >> 8);
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -854,7 +854,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->x = scene->unk4DC[i][0] >> 8;
         s->y = scene->unk4DC[i][1] >> 8;
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -864,7 +864,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->variant = gUnknown_080E17A4[40].variant;
         s->x = scene->unk5E0[0][4];
         s->y = scene->unk5E0[0][5] >> 8;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
         scene->unk34A--;
     } else {
@@ -882,7 +882,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->variant = gUnknown_080E17A4[41].variant;
         s->x = scene->unk5E0[0][6];
         s->y = scene->unk5E0[0][7] >> 8;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
 
         s = &scene->unk230;
@@ -890,7 +890,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->variant = gUnknown_080E17A4[42].variant;
         s->x = scene->unk5E0[0][8];
         s->y = scene->unk5E0[0][9] >> 8;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -900,7 +900,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->variant = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].variant;
         s->x = scene->unk5E0[0][2];
         s->y = scene->unk5E0[0][3] >> 8;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
 
         if (scene->unk338 < 6) {
@@ -918,7 +918,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
             s->x = scene->unk5E0[0][0] >> 8;
             s->y = scene->unk5E0[0][1] >> 8;
         }
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }

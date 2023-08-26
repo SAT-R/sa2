@@ -492,9 +492,9 @@ static void Task_SoundTestScreenMain(void)
         numberDisplayDigit[1].variant = soundTestScreen->soundNumber / 10 % 10 + 16;
         numberDisplayDigit[2].variant = soundTestScreen->soundNumber / 100 % 10 + 16;
 
-        sub_8004558(&numberDisplayDigit[0]);
-        sub_8004558(&numberDisplayDigit[1]);
-        sub_8004558(&numberDisplayDigit[2]);
+        UpdateSpriteAnimation(&numberDisplayDigit[0]);
+        UpdateSpriteAnimation(&numberDisplayDigit[1]);
+        UpdateSpriteAnimation(&numberDisplayDigit[2]);
 
         if (soundTestScreen->state == SOUND_TEST_SCREEN_STOPPED) {
             SoundTestScreenSetNameDisplay(soundsList[soundTestScreen->soundNumber - 1]);
@@ -505,7 +505,7 @@ static void Task_SoundTestScreenMain(void)
         && gMPlayTable[0].info->status == MUSICPLAYER_STATUS_PAUSE) {
         soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
         backControlName->variant = 1;
-        sub_8004558(backControlName);
+        UpdateSpriteAnimation(backControlName);
         m4aMPlayAllStop();
         soundTestScreen->animFrame = 0;
         soundTestScreen->barBeat = 0;
@@ -532,7 +532,7 @@ static void Task_SoundTestScreenMain(void)
         soundTestScreen->scrollArrowAnimFrame = 0;
         soundTestScreen->creamDanceAnimStep = 0;
 
-        sub_8004558(backControlName);
+        UpdateSpriteAnimation(backControlName);
 
         SoundTestScreenSetNameDisplay(soundsList[soundTestScreen->soundNumber - 1]);
         SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_RIGHT);
@@ -542,7 +542,7 @@ static void Task_SoundTestScreenMain(void)
         if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING) {
             soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
             backControlName->variant = 1;
-            sub_8004558(backControlName);
+            UpdateSpriteAnimation(backControlName);
             m4aMPlayAllStop();
             soundTestScreen->animFrame = 0;
             soundTestScreen->barBeat = 0;
@@ -753,14 +753,14 @@ static void Task_SoundTestScreenInOutTransition(void)
     soundTestScreen->animFrame++;
 
     if (soundTestScreen->state == SOUND_TEST_SCREEN_EXITING) {
-        sub_8004558(idleCream);
+        UpdateSpriteAnimation(idleCream);
         // Wait for bow animation to finish
         if (soundTestScreen->animFrame > (60 - 16)) {
             NextTransitionFrame(&soundTestScreen->unk4);
         }
     } else {
         if (soundTestScreen->animFrame > 20) {
-            sub_8004558(idleCream);
+            UpdateSpriteAnimation(idleCream);
         }
         NextTransitionFrame(&soundTestScreen->unk4);
     }
@@ -830,7 +830,7 @@ static void SoundTestScreenSetCreamAnim(u8 anim)
             break;
     }
 
-    sub_8004558(animatedCream);
+    UpdateSpriteAnimation(animatedCream);
 }
 
 static void SoundTestScreenUpdateCreamAnim(void)
@@ -842,17 +842,17 @@ static void SoundTestScreenUpdateCreamAnim(void)
         case SOUND_TEST_SCREEN_STOPPED:
             // If current animation is song end, set to anim idle
             if (animatedCream->graphics.anim == SA2_ANIM_SOUNDTEST_CREAM_WAITING) {
-                if (!sub_8004558(animatedCream)) {
+                if (!UpdateSpriteAnimation(animatedCream)) {
                     SoundTestScreenSetCreamAnim(CREAM_ANIM_IDLE);
                 }
             } else {
-                sub_8004558(animatedCream);
+                UpdateSpriteAnimation(animatedCream);
             }
             break;
         case SOUND_TEST_SCREEN_PLAYING:
             soundTestScreen->barBeat += soundTestScreen->songTempo;
             soundTestScreen->animFrame = soundTestScreen->barBeat >> 16;
-            sub_8004558(animatedCream);
+            UpdateSpriteAnimation(animatedCream);
 
             if (soundTestScreen->animFrame >= 55
                 && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_RIGHT) {
@@ -942,6 +942,6 @@ static void SoundTestScreenSetNameDisplay(u8 soundId)
             asset[0] = 0;
         }
 
-        sub_8004558(&soundTestScreen->nameDisplay[i]);
+        UpdateSpriteAnimation(&soundTestScreen->nameDisplay[i]);
     }
 }

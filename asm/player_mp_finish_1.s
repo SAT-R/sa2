@@ -220,7 +220,7 @@ _08019E38:
 	strb r2, [r0]
 	str r1, [r4, #0x10]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 _08019E5E:
 	add sp, #4
 	pop {r4, r5, r6}

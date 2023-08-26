@@ -132,6 +132,6 @@ void Task_KyuraRecover(void)
         kyura->unk54 = (kyura->unk54 + 8) & ONE_CYCLE;
         gCurTask->main = Task_KyuraMain;
     }
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }

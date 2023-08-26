@@ -80,7 +80,7 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     noteBlock->unk40 = TO_WORLD_POS(me->y, spriteRegionY);
 
     SET_MAP_ENTITY_INITIALIZED(me);
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void sub_80799FC(void)

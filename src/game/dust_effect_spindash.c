@@ -85,7 +85,7 @@ void Task_SpindashDustEffect(void)
             s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
         }
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }
@@ -140,7 +140,7 @@ void Task_SpindashDustEffectBig(void)
             s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
         }
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }

@@ -117,7 +117,7 @@ void StartMultiPakConnect(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &connectScreen->s2;
     s->graphics.dest = vramAddr;
@@ -393,7 +393,7 @@ static void sub_805ADAC(void)
 
     if ((gMultiSioStatusFlags & MULTI_SIO_PARENT) && var2 > 1 && bool3) {
         r4p = &connectScreen->s2;
-        sub_8004558(r4p);
+        UpdateSpriteAnimation(r4p);
         sub_80051E8(r4p);
     }
 
@@ -402,7 +402,7 @@ static void sub_805ADAC(void)
         r4p->graphics.anim = SA2_ANIM_MP_MSG;
         r4p->variant = var2 + SA2_ANIM_VARIANT_MP_MSG_OK;
         r4p->prevVariant = -1;
-        sub_8004558(r4p);
+        UpdateSpriteAnimation(r4p);
         sub_80051E8(r4p);
     }
     r4p = &connectScreen->s;
@@ -586,7 +586,7 @@ static void sub_805B4C0(void)
             r4p->graphics.anim = SA2_ANIM_MP_MSG;
             r4p->variant = count + SA2_ANIM_VARIANT_MP_MSG_OK;
             r4p->prevVariant = -1;
-            sub_8004558(r4p);
+            UpdateSpriteAnimation(r4p);
             sub_80051E8(r4p);
         }
 

@@ -139,7 +139,7 @@ void Task_8062FD8(void)
             m4aSongNumStart(SE_CHECKPOINT);
         }
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }
@@ -161,7 +161,7 @@ void Task_8063108(void)
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
     } else {
-        if (sub_8004558(s) == 0) {
+        if (UpdateSpriteAnimation(s) == 0) {
             gCurTask->main = Task_806319C;
         }
 

@@ -129,7 +129,7 @@ void sub_805879C(void)
     }
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         balloon->unk5E = 120;
         s->graphics.anim = SA2_ANIM_BALLOON;
         s->variant = 0;

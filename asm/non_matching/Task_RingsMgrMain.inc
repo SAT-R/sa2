@@ -126,7 +126,7 @@ _08007FFA:
 	adds r1, r1, r0
 	str r1, [sp, #0x18]
 	adds r0, r1, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r0, [sp, #0x18]
 	ldr r0, [r0, #0xc]
 	str r0, [sp, #0x20]

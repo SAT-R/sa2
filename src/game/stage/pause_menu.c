@@ -85,7 +85,7 @@ void CreatePauseMenu(void)
 
             s->unk10 = 0;
 
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 }

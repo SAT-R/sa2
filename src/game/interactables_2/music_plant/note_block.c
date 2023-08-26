@@ -108,7 +108,7 @@ void CreateEntity_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     block->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_8075A90(void)
@@ -165,7 +165,7 @@ void sub_8075B50(Sprite_NoteBlock *block)
         block->s.graphics.anim
             = gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][0];
         block->s.variant = gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][1];
-        sub_8004558(&block->s);
+        UpdateSpriteAnimation(&block->s);
     }
 
     m4aSongNumStart(sSfxGlockenspiel[block->unk48]);

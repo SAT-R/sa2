@@ -154,7 +154,7 @@ static void Task_Interactable_BouncySpring()
         me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }
@@ -177,7 +177,7 @@ static void Task_805E02C()
         me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        if (sub_8004558(s) == 0) {
+        if (UpdateSpriteAnimation(s) == 0) {
             gCurTask->main = Task_Interactable_BouncySpring;
 
             if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {

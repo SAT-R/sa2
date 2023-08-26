@@ -168,7 +168,7 @@ void Task_Interactable_Booster(void)
         me->x = booster->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }

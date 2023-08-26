@@ -85,7 +85,7 @@ void Task_BossParticleWithExplosionUpdate(void)
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         gCurTask->main = Task_DestroyBossParts;
     }
 
@@ -150,7 +150,7 @@ void Task_BossParticleStatic(void)
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         gCurTask->main = Task_DestroyBossParts;
     }
 

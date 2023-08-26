@@ -323,7 +323,7 @@ sub_801FE78: @ 0x0801FE78
 	movs r1, #0
 	str r1, [sp, #0x10]
 	mov r0, sb
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r2, #0x1f
 	str r2, [sp, #0x14]
 _0801FEB8:
@@ -737,7 +737,7 @@ sub_80201B8: @ 0x080201B8
 	movs r1, #0
 	str r1, [sp, #0x10]
 	mov r0, sb
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r2, #0x1f
 	str r2, [sp, #0x14]
 _080201F8:
@@ -1162,7 +1162,7 @@ sub_8020514: @ 0x08020514
 	movs r0, #0
 	str r0, [sp, #0x10]
 	mov r0, sb
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r1, #0
 	mov sl, r1
 _08020554:
@@ -1746,7 +1746,7 @@ sub_8020998: @ 0x08020998
 	movs r0, #0
 	str r0, [sp, #0x10]
 	mov r0, sl
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r1, #0
 	str r1, [sp, #0x14]
 _080209D8:
@@ -2331,7 +2331,7 @@ sub_8020E20: @ 0x08020E20
 	movs r0, #0
 	str r0, [sp, #0x14]
 	adds r0, r2, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r1, #0
 	str r1, [sp, #0x18]
 _08020E60:

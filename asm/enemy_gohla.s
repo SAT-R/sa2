@@ -408,7 +408,7 @@ _08051AAA:
 	lsls r1, r7, #8
 	bl sub_80122DC
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	bl sub_80051E8
 	movs r0, #0x16
@@ -597,7 +597,7 @@ _08051C34:
 	lsls r1, r7, #8
 	bl sub_80122DC
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _08051C80
 	ldr r1, [r4, #0x10]
@@ -675,7 +675,7 @@ sub_8051CB8: @ 0x08051CB8
 	adds r5, r7, #0
 	adds r5, #0x44
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r1, r7, #0
 	adds r1, #0x88
 	ldrh r0, [r1]

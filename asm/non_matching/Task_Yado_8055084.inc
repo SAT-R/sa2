@@ -362,7 +362,7 @@ _08055340:
 	strb r0, [r1]
 _08055358:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	bl sub_80051E8
 Task_8055084_Return:

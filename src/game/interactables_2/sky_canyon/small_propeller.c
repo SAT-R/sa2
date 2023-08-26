@@ -259,7 +259,7 @@ static void UpdateFanSpritePosition(Sprite_SmallPropeller *prop)
 
     s->y = prop->posY + prop->bottom - gCamera.y;
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 

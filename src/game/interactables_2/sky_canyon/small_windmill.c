@@ -68,7 +68,7 @@ void CreateEntity_SmallSpinnyWindmill(MapEntity *me, u16 spriteRegionX,
     s->graphics.dest = VramMalloc(WINDMILL_NUM_TILES);
     s->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
     s->variant = 2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     SET_MAP_ENTITY_INITIALIZED(me);
 }
@@ -124,7 +124,7 @@ static void StartSpinSequence(Sprite_SmallWindmill *windmill)
     }
     s->animSpeed = 32;
 
-    sub_8004558(&windmill->s);
+    UpdateSpriteAnimation(&windmill->s);
     gCurTask->main = Task_RotateSequence;
 }
 
@@ -315,14 +315,14 @@ static void ResetWindmill(Sprite_SmallWindmill *windmill)
     s->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
     s->variant = 2;
     s->animSpeed = 16;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     gCurTask->main = Task_SmallSpinnyWindmill;
 }
 
 static void RenderWindmill(Sprite_SmallWindmill *windmill)
 {
     Sprite *s = &windmill->s;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     s->x = windmill->x - gCamera.x;
     s->y = windmill->y - gCamera.y;
     s->unk10 &= ~0xC00;

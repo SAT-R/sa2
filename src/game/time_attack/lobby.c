@@ -130,7 +130,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
             s->palId = 0;
             s->hitboxes[0].index = -1;
             s->unk10 = 0x1000;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 
@@ -149,7 +149,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &lobbyScreen->unk80;
     s->graphics.dest = VramMalloc(gUnknown_080E0474[gSelectedCharacter].numTiles);
@@ -166,7 +166,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1400;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     lobbyScreen->unkB0[0].graphics.dest = 0;
 
@@ -187,7 +187,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = 0x1400;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     background = &lobbyScreen->unk40;
@@ -254,12 +254,12 @@ void sub_8088CC4(void)
         sub_80051E8(s);
     }
     s = &lobbyScreen->unk80;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     if (lobbyScreen->unk1AC != 0) {
         s = &lobbyScreen->unkB0[0];
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -311,7 +311,7 @@ void sub_8088D60(void)
             s->x += 4;
             break;
     }
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     if (lobbyScreen->unk1AC == 0) {
@@ -329,7 +329,7 @@ void sub_8088D60(void)
             break;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 
@@ -358,12 +358,12 @@ void sub_8088EB4(void)
         sub_80051E8(s);
     }
     s = &lobbyScreen->unk80;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 
     if (lobbyScreen->unk1AC != 0) {
         s = &lobbyScreen->unkB0[0];
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 
@@ -380,7 +380,7 @@ void sub_8088EB4(void)
             if (lobbyScreen->unk1AD == 1) {
                 s->unk10 &= ~0x400;
             }
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
 
             if (lobbyScreen->unk1AC != 0) {
                 s = &lobbyScreen->unkB0[0];
@@ -394,7 +394,7 @@ void sub_8088EB4(void)
                 if (lobbyScreen->unk1AD == 1) {
                     s->unk10 &= ~0x400;
                 }
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         }
 

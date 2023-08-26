@@ -230,7 +230,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             s->animSpeed = 0x10;
             s->palId = 0;
             s->unk10 = 0x1000;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
 
             s = &resultsScreen->characterRows[i];
             s->x = 0;
@@ -246,7 +246,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             s->animSpeed = 0x10;
             s->palId = 0;
             s->unk10 = 0x1000;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 

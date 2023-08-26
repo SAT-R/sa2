@@ -160,7 +160,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -326,7 +326,7 @@ void sub_80945A4(struct MissingChaosEmaraldsCutScene *scene)
             s->graphics.anim = gUnknown_080E1CA0[2].anim;
             s->variant = gUnknown_080E1CA0[2].variant;
         }
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_80051E8(s);
     }
 }

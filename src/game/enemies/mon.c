@@ -112,7 +112,7 @@ static void Task_Mon_2(void)
         TaskDestroy(gCurTask);
     } else {
         sub_80122DC(mon->x, mon->y);
-        if (sub_8004558(s) == 0) {
+        if (UpdateSpriteAnimation(s) == 0) {
             mon->speedY = -Q_24_8(5.5);
             mon->offsetY = +Q_24_8(0.0);
             s->graphics.anim = SA2_ANIM_MON;
@@ -172,7 +172,7 @@ static void Task_Mon_4(void)
     } else {
         sub_80122DC(mon->x, mon->y);
 
-        if (sub_8004558(s) == 0) {
+        if (UpdateSpriteAnimation(s) == 0) {
             if ((gPlayer.x > mon->x - Q_24_8(DISPLAY_WIDTH / 2))
                 && (gPlayer.x < mon->x + Q_24_8(DISPLAY_WIDTH / 2))
                 && (gPlayer.y > mon->y - Q_24_8(50))

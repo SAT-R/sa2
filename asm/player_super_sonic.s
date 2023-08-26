@@ -1168,7 +1168,7 @@ _0802BEC4:
 	str r0, [r5, #0x10]
 _0802BECE:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r0, [r6]
 	movs r1, #4
 	ands r0, r1

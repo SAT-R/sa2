@@ -188,7 +188,7 @@ _080523F4:
 	strb r0, [r1]
 _080523FA:
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r7, sl
 	adds r7, #0x6c
 	movs r5, #0
@@ -228,7 +228,7 @@ _080523FA:
 	lsls r0, r0, #6
 	str r0, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	subs r7, #0x30
 	strh r4, [r7, #0x16]
 	strh r4, [r7, #0x18]
@@ -268,7 +268,7 @@ _080523FA:
 	orrs r0, r1
 	str r0, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r1, #2
 	rsbs r1, r1, #0
 	adds r0, r1, #0
@@ -1605,7 +1605,7 @@ _08052F28:
 	mov r2, r8
 	str r0, [r2, #0x10]
 	mov r0, r8
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, r8
 	ldr r1, [sp]
 	bl sub_8004860

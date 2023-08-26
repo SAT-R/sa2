@@ -161,8 +161,8 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         s->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][1][3];
     }
     DashRing_UpdateScreenPos(ring);
-    sub_8004558(&ring->s1);
-    sub_8004558(&ring->s2);
+    UpdateSpriteAnimation(&ring->s1);
+    UpdateSpriteAnimation(&ring->s2);
 
     SET_MAP_ENTITY_INITIALIZED(me);
 

@@ -191,7 +191,7 @@ void StartSinglePakConnect(void)
     s->prevVariant = -1;
     s->graphics.dest = (void *)ram;
     ram += gUnknown_080E018C[connectScreen->unkFA][2] * 0x20;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &connectScreen->unk3C;
     s->x = (DISPLAY_WIDTH / 2);
@@ -599,14 +599,14 @@ void sub_8081DB4(struct SinglePakConnectScreen *connectScreen)
 
 void sub_8081DF0(struct SinglePakConnectScreen *connectScreen, u8 a)
 {
-    sub_8004558(&connectScreen->unk3C);
+    UpdateSpriteAnimation(&connectScreen->unk3C);
     sub_80051E8(&connectScreen->unk3C);
 
     connectScreen->unk6C.graphics.anim = SA2_ANIM_MP_MSG;
     connectScreen->unk6C.variant = a + SA2_ANIM_VARIANT_MP_MSG_OK;
     connectScreen->unk6C.prevVariant = -1;
 
-    sub_8004558(&connectScreen->unk6C);
+    UpdateSpriteAnimation(&connectScreen->unk6C);
     sub_80051E8(&connectScreen->unk6C);
 }
 

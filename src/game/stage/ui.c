@@ -163,7 +163,7 @@ struct Task *CreateStageUI(void)
         s->unk10 = SPRITE_FLAG(18, 1);
 
         if (i != (ARRAY_COUNT(sAnimsAsciiDigits) - 1)) {
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 
@@ -193,7 +193,7 @@ struct Task *CreateStageUI(void)
             s->palId = id;
             ui->unk2D4 |= (id << 12);
         }
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     s = &ui->ringContainer;
@@ -213,7 +213,7 @@ struct Task *CreateStageUI(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &ui->ring;
     ui->ring.x = 7;
@@ -261,7 +261,7 @@ void Task_CreateStageUIMain(void)
         if (gGameMode == GAME_MODE_SINGLE_PLAYER) {
             if (ACT_INDEX(gCurrentLevel) != ACT_BOSS) {
                 sd = &digits[UI_ASCII_SP_RING];
-                sub_8004558(sd);
+                UpdateSpriteAnimation(sd);
 
                 for (i = 0; i < gUnknown_030054F4; i++) {
                     oam = OamMalloc(3);
@@ -329,7 +329,7 @@ void Task_CreateStageUIMain(void)
         ui->unk2D0 &= 0x7FF;
         ui->ring.variant = ui->unk2D0 >> 8;
         ui->ring.prevVariant = -1;
-        sub_8004558(&ui->ring);
+        UpdateSpriteAnimation(&ui->ring);
 
         /* Ring-Count */
         oam = OamMalloc(3);

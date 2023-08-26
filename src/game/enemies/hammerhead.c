@@ -110,7 +110,7 @@ static void Task_Hammerhead(void)
             TaskDestroy(gCurTask);
         } else {
             sub_80122DC(posX << 8, (posY << 8) + hammerhead->unk48);
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             sub_80051E8(s);
         }
     }

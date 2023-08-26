@@ -3793,7 +3793,7 @@ _0804C456:
 	ldrh r0, [r5, #0x18]
 	strh r0, [r3, #8]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	mov r1, r8
 	bl sub_8004860
@@ -3882,7 +3882,7 @@ _0804C4DE:
 	ldrh r0, [r5, #0x18]
 	strh r0, [r1, #8]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	mov r1, r8
 	bl sub_8004860
@@ -4100,7 +4100,7 @@ _0804C6DE:
 	ldrh r0, [r5, #0x18]
 	strh r0, [r6, #8]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	adds r1, r6, #0
 	bl sub_8004860
@@ -4191,7 +4191,7 @@ _0804C754:
 	ldrh r0, [r5, #0x18]
 	strh r0, [r6, #8]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	adds r1, r6, #0
 	bl sub_8004860

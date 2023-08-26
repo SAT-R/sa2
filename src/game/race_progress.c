@@ -99,7 +99,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
         s->animSpeed = 0x10;
         s->palId = i;
         s->unk10 = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     s = &progressIndicator->flags[START_FLAG];
@@ -116,7 +116,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &progressIndicator->flags[FINISH_FLAG];
     s->graphics.dest = VramMalloc(4);
@@ -132,7 +132,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 #undef RACE_ICON_INDENT
 

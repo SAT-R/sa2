@@ -439,7 +439,7 @@ _08045BB6:
 	str r1, [r7, #0x28]
 	str r6, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r5, #0
 	movs r0, #0
 	mov r8, r0
@@ -496,7 +496,7 @@ _08045D34:
 	lsls r0, r0, #5
 	str r0, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #1
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
@@ -557,7 +557,7 @@ _08045DB2:
 	str r0, [r7, #0x10]
 	adds r0, r7, #0
 	str r3, [sp, #0x4c]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #1
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
@@ -632,7 +632,7 @@ sub_8045E78: @ 0x08045E78
 	strb r0, [r1]
 _08045EC0:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	bl sub_80051E8
 	b _08045F78
@@ -784,7 +784,7 @@ _08045FD8:
 	cmp r1, #0
 	bne _08045FF6
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r2, #1
 	mov r8, r2
 _08045FF6:
@@ -1182,7 +1182,7 @@ sub_8046328: @ 0x08046328
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	bl sub_80051E8
 	movs r1, #0xfe
@@ -1199,7 +1199,7 @@ sub_8046328: @ 0x08046328
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	bl sub_80051E8
 	movs r2, #0
@@ -1293,7 +1293,7 @@ _08046424:
 	adds r0, r0, r2
 	adds r5, r7, r0
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, r8
 	adds r0, #1
 	lsls r0, r0, #0x18
@@ -1463,7 +1463,7 @@ sub_804655C: @ 0x0804655C
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	bl sub_80051E8
 	movs r1, #0xfe
@@ -1480,7 +1480,7 @@ sub_804655C: @ 0x0804655C
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	bl sub_80051E8
 	ldr r1, [r7]
@@ -1657,7 +1657,7 @@ _08046702:
 	adds r0, r0, r2
 	adds r5, r7, r0
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, r8
 	adds r0, #1
 	lsls r0, r0, #0x18
@@ -2638,7 +2638,7 @@ sub_8046E90: @ 0x08046E90
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
 	bl sub_80051E8
 	ldr r1, _08046EFC @ =0x000001C1
@@ -2660,7 +2660,7 @@ sub_8046E90: @ 0x08046E90
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
 	bl sub_80051E8
 _08046EF0:

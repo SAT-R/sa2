@@ -136,7 +136,7 @@ static void sub_805EA94(void)
         }
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 
@@ -253,7 +253,7 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
         return;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
 END_NONMATCH
@@ -298,6 +298,6 @@ static void sub_805EF90(void)
         rotatingHandle->unk3E = 0;
         gCurTask->main = sub_805EA94;
     }
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_80051E8(s);
 }
