@@ -330,7 +330,7 @@ static void sub_8075284(Sprite_FloatingSpring *floatingSpring)
         u32 zone = LEVEL_TO_ZONE(gCurrentLevel);
         asm("" ::"r"(zone));
 #endif
-        floatingSpring->s.graphics.dest = VramMalloc(0x1C);
+        floatingSpring->s.graphics.dest = VramMalloc(28);
         floatingSpring->s.prevAnim = -1;
         floatingSpring->s.prevVariant = -1;
         floatingSpring->unk4C = TRUE;

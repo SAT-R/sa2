@@ -46,13 +46,13 @@ void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 8, SA2_ANIM_KURAKURA, 0, 0x480, 2);
+    SPRITE_INIT(s, 8, SA2_ANIM_KURAKURA, 0, 18, 2);
 
     s = &kk->s1;
     s->x = 0;
     s->y = 0;
 
-    SPRITE_INIT(s, 1, SA2_ANIM_KURAKURA_PROJ, 0, 0x440, 2);
+    SPRITE_INIT(s, 1, SA2_ANIM_KURAKURA_PROJ, 0, 17, 2);
 
     sub_8004558(s);
 
@@ -60,7 +60,7 @@ void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->x = 0;
     s->y = 0;
 
-    SPRITE_INIT(s, 4, SA2_ANIM_KURAKURA_PROJ_FIREBALL, 0, 0x400, 2);
+    SPRITE_INIT(s, 4, SA2_ANIM_KURAKURA_PROJ_FIREBALL, 0, 16, 2);
 }
 
 void sub_805213C(Sprite_KuraKura *kk);

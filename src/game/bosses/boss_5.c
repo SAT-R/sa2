@@ -305,8 +305,7 @@ void CreateEggSaucer(void)
     s->x = 0;
     s->y = 0;
     s->graphics.dest = (void *)VRAM + 0xC000;
-    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_DISK, 0, 0x7C0, 3,
-                             SPRITE_FLAG(18, 1));
+    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_DISK, 0, 31, 3, SPRITE_FLAG(18, 1));
 
     sub_80036E0(s);
     sub_8003914(s);
@@ -326,7 +325,7 @@ void CreateEggSaucer(void)
         s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_EGGMAN;
         s->variant = 0;
     }
-    SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 0x500, 1, 0);
+    SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 20, 1, 0);
 
     s = &boss->cabin;
     s->x = 0;
@@ -334,7 +333,7 @@ void CreateEggSaucer(void)
     s->graphics.dest = vram;
     vram += 36 * TILE_SIZE_4BPP;
 
-    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_CABIN, 0, 0x540, 1, 0);
+    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_CABIN, 0, 21, 1, 0);
     sub_8004558(s);
 
     s = &boss->gunBase;
@@ -342,7 +341,7 @@ void CreateEggSaucer(void)
     s->y = 0;
     s->graphics.dest = vram;
     vram += 25 * TILE_SIZE_4BPP;
-    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_GUN_BASE, 0, 0x580, 1, 0);
+    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_GUN_BASE, 0, 22, 1, 0);
 
     s = &boss->gun;
     s->x = 0;
@@ -350,7 +349,7 @@ void CreateEggSaucer(void)
     s->graphics.dest = vram;
     // Seems a lot of tiles for this
     vram += 64 * TILE_SIZE_4BPP;
-    SPRITE_INIT_WITHOUT_VRAM_OR_FLAGS(s, SA2_ANIM_EGG_SAUCER_GUN, 0, 0x5C0);
+    SPRITE_INIT_GFX_AND_ANIM(s, SA2_ANIM_EGG_SAUCER_GUN, 0, 23);
     s->unk10 = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 1)
         | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 
@@ -359,14 +358,14 @@ void CreateEggSaucer(void)
     s->y = 0;
     s->graphics.dest = vram;
     vram += 4 * TILE_SIZE_4BPP;
-    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_GUN_CHARGE, 0, 0x4C0, 1, 0);
+    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_GUN_CHARGE, 0, 19, 1, 0);
 
     s = &boss->armBase;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = vram;
     vram += 20 * TILE_SIZE_4BPP;
-    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_ARM_BASE, 0, 0x500, 1, 0);
+    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_ARM_BASE, 0, 20, 1, 0);
     sub_8004558(s);
 
     s = &boss->armSegment;
@@ -374,14 +373,14 @@ void CreateEggSaucer(void)
     s->y = 0;
     s->graphics.dest = vram;
     vram += 4 * TILE_SIZE_4BPP;
-    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_ARM_SEGMENT, 0, 0x4C0, 1, 0);
+    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_SAUCER_ARM_SEGMENT, 0, 19, 1, 0);
     sub_8004558(s);
 
     s = &boss->hand;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = vram;
-    SPRITE_INIT_WITHOUT_VRAM_OR_FLAGS(s, SA2_ANIM_EGG_SAUCER_HAND, 0, 0x300);
+    SPRITE_INIT_GFX_AND_ANIM(s, SA2_ANIM_EGG_SAUCER_HAND, 0, 12);
     s->hitboxes[1].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 1);
 
@@ -393,7 +392,7 @@ void CreateEggSaucer(void)
         vramBase += gUnknown_080D7FB0[i].numTiles * TILE_SIZE_4BPP;
 
         SPRITE_INIT_WITHOUT_VRAM(s, gUnknown_080D7FB0[i].anim,
-                                 gUnknown_080D7FB0[i].variant, 0x2C0, 1, 0);
+                                 gUnknown_080D7FB0[i].variant, 11, 1, 0);
     }
 }
 

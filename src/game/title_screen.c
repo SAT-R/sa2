@@ -1546,19 +1546,20 @@ static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
 {
     struct Task *t = TaskCreate(Task_BirdAnim, 0x40, 0x2000, 0, 0);
     struct BirdAnimation *animation = TaskGetStructPtr(t);
+    Sprite *s = &animation->s;
 
-    animation->s.graphics.dest = VramMalloc(3);
-    animation->s.graphics.anim = SA2_ANIM_TITLE_SEAGULL;
-    animation->s.variant = 0;
-    animation->s.prevVariant = -1;
-    animation->s.x = x;
-    animation->s.y = y;
-    animation->s.graphics.size = 0;
-    animation->s.unk1A = SPRITE_OAM_ORDER(3);
-    animation->s.timeUntilNextFrame = 0;
-    animation->s.animSpeed = 0x10;
-    animation->s.palId = 0;
-    animation->s.unk10 = 0;
+    s->graphics.dest = VramMalloc(3);
+    s->graphics.anim = SA2_ANIM_TITLE_SEAGULL;
+    s->variant = 0;
+    s->prevVariant = -1;
+    s->x = x;
+    s->y = y;
+    s->graphics.size = 0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
     sub_8004558(&animation->s);
 
     animation->unk30 = gBgScrollRegs[1][0];
@@ -1943,7 +1944,9 @@ static void ShowGameLogo(struct TitleScreen *_)
 static void BirdAnimEnd(void)
 {
     struct BirdAnimation *animation = TaskGetStructPtr(gCurTask);
-    VramFree(animation->s.graphics.dest);
+    Sprite *s = &animation->s;
+
+    VramFree(s->graphics.dest);
     TaskDestroy(gCurTask);
 }
 

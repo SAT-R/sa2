@@ -54,6 +54,6 @@ void CreateEntity_Buzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        SPRITE_INIT(s, 20, SA2_ANIM_BUZZER, 0, 0x480, 2);
+        SPRITE_INIT(s, 20, SA2_ANIM_BUZZER, 0, 18, 2);
     }
 }

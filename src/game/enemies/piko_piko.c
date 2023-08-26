@@ -49,7 +49,7 @@ void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        SPRITE_INIT(s, 30, SA2_ANIM_PIKOPIKO, 0, 0x480, 2);
+        SPRITE_INIT(s, 30, SA2_ANIM_PIKOPIKO, 0, 18, 2);
     }
 }
 
