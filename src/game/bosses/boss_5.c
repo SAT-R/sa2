@@ -349,7 +349,7 @@ void CreateEggSaucer(void)
     s->graphics.dest = vram;
     // Seems a lot of tiles for this
     vram += 64 * TILE_SIZE_4BPP;
-    SPRITE_INIT_GFX_AND_ANIM(s, SA2_ANIM_EGG_SAUCER_GUN, 0, 23);
+    SPRITE_INIT_ANIM_AND_SCRIPT(s, SA2_ANIM_EGG_SAUCER_GUN, 0, 23);
     s->unk10 = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 1)
         | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 
@@ -380,7 +380,7 @@ void CreateEggSaucer(void)
     s->x = 0;
     s->y = 0;
     s->graphics.dest = vram;
-    SPRITE_INIT_GFX_AND_ANIM(s, SA2_ANIM_EGG_SAUCER_HAND, 0, 12);
+    SPRITE_INIT_ANIM_AND_SCRIPT(s, SA2_ANIM_EGG_SAUCER_HAND, 0, 12);
     s->hitboxes[1].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 1);
 

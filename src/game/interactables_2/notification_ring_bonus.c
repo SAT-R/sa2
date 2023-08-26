@@ -30,7 +30,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ Sprite s;
-    /* 0x30 */ u16 unk30;
+    /* 0x30 */ u16 framesVisible;
     /* 0x32 */ u8 filler32[2];
 } Sprite_Notif_RingBonus; /* size: 0x34 */
 
@@ -196,21 +196,16 @@ void CreateSprite_Notif_RingBonus(void)
     struct Task *t = TaskCreate(Task_8080750, sizeof(Sprite_Notif_RingBonus), 0x2010, 0,
                                 TaskDestructor_8080790);
     Sprite_Notif_RingBonus *notif = TaskGetStructPtr(t);
+    Sprite *s = &notif->s;
 
-    notif->unk30 = 120;
-    notif->s.unk1A = 0x40;
-    notif->s.graphics.size = 0;
-    notif->s.animCursor = 0;
-    notif->s.timeUntilNextFrame = 0;
-    notif->s.prevVariant = -1;
-    notif->s.animSpeed = 0x10;
-    notif->s.palId = 0;
-    notif->s.hitboxes[0].index = -1;
-    notif->s.unk10 = 0x1000;
-    notif->s.graphics.dest = VramMalloc(26);
-    notif->s.graphics.anim = SA2_ANIM_NOTIFICATION_RING_BONUS;
-    notif->s.variant = 0;
-    sub_8004558(&notif->s);
+    notif->framesVisible = ZONE_TIME_TO_INT(0, 2);
+
+    SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 1, 1, 0);
+
+    s->graphics.dest = VramMalloc(26);
+    s->graphics.anim = SA2_ANIM_NOTIFICATION_RING_BONUS;
+    s->variant = 0;
+    sub_8004558(s);
 }
 
 void Task_80806F4(void)
@@ -232,7 +227,7 @@ void sub_808073C(Sprite_MultiplayerTeleport UNUSED *s) { gCurTask->main = Task_8
 void Task_8080750(void)
 {
     Sprite_Notif_RingBonus *sprite = TaskGetStructPtr(gCurTask);
-    if (--sprite->unk30 == (u16)-1) {
+    if (--sprite->framesVisible == (u16)-1) {
         TaskDestroy(gCurTask);
     } else {
         sprite->s.x = (DISPLAY_WIDTH * 0.5);
