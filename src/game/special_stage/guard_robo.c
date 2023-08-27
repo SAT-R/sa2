@@ -113,7 +113,7 @@ void Task_GuardRoboMain(void)
         }
 
         if (guardRobo->state != 2 || !(guardRobo->animFrame & 2) || stage->paused != 0) {
-            sub_80051E8(&guardRobo->sprite);
+            DisplaySprite(&guardRobo->sprite);
         }
     }
 }

@@ -434,15 +434,15 @@ static void Task_ExitAndInitSelectedPakMode(void)
 static void RenderUI(struct MultiplayerModeSelectScreen *modeScreen)
 {
     Sprite *unk80 = &modeScreen->unk80;
-    sub_80051E8(unk80);
+    DisplaySprite(unk80);
     unk80++;
-    sub_80051E8(unk80);
+    DisplaySprite(unk80);
     unk80++;
-    sub_80051E8(unk80);
+    DisplaySprite(unk80);
     if (modeScreen->enterAnimDone) {
         unk80++;
         UpdateSpriteAnimation(unk80);
-        sub_80051E8(unk80);
+        DisplaySprite(unk80);
     };
 }
 

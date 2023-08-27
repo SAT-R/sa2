@@ -255,7 +255,7 @@ static void sub_807B004(Sprite_IA78 *ia78)
 {
     ia78->s.x = ia78->unk3C - gCamera.x;
     ia78->s.y = ia78->unk40 - gCamera.y;
-    sub_80051E8(&ia78->s);
+    DisplaySprite(&ia78->s);
 }
 
 static bool32 sub_807B028(Sprite_IA78 *ia78)

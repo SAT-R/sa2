@@ -352,7 +352,7 @@ _08053388:
 	mov r0, sb
 	bl UpdateSpriteAnimation
 	mov r0, sb
-	bl sub_80051E8
+	bl DisplaySprite
 _0805339C:
 	add sp, #8
 	pop {r3, r4, r5}
@@ -509,7 +509,7 @@ _080534B2:
 	str r0, [r1, #8]
 _080534D2:
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080534D8:
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -658,7 +658,7 @@ _080535FC:
 	adds r0, r7, #0
 	bl UpdateSpriteAnimation
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08053608:
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -824,7 +824,7 @@ _0805374E:
 	adds r0, r7, #0
 	bl UpdateSpriteAnimation
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0805375A:
 	pop {r3, r4, r5}
 	mov r8, r3

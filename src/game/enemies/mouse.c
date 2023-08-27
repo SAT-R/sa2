@@ -145,7 +145,7 @@ static void sub_8057348(void)
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void sub_8057618(void)
@@ -187,5 +187,5 @@ static void sub_8057618(void)
         gCurTask->main = sub_8057348;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

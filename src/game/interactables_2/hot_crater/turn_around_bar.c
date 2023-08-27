@@ -130,7 +130,7 @@ static void Task_TurnAroundBarMain(void)
         TaskDestroy(gCurTask);
     } else {
         sub_8073760(turnAroundBar);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -145,7 +145,7 @@ static void sub_8073600(void)
     }
     sub_8073760(turnAroundBar);
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (s->unk10 & 0x4000) {
         sub_80736E0(turnAroundBar);
@@ -259,7 +259,7 @@ static void sub_8073818(void)
     }
     sub_8073760(turnAroundBar);
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (s->unk10 & 0x4000) {
         sub_8073474(turnAroundBar);

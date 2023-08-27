@@ -131,7 +131,7 @@ void sub_8089E54(void)
         s = &particles->unk0;
         s->x = (gPlayer.x >> 8) - gCamera.x + (particles->unk62[i][0] >> 8);
         s->y = (gPlayer.y >> 8) - gCamera.y + (particles->unk62[i][1] >> 8);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (particles->unk60++ > 8) {
@@ -204,7 +204,7 @@ void sub_808A0A4(void)
             s->x = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i + 8][0] >> 8);
             s->y = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i + 8][1] >> 8);
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

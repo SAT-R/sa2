@@ -394,7 +394,7 @@ static void sub_805ADAC(void)
     if ((gMultiSioStatusFlags & MULTI_SIO_PARENT) && var2 > 1 && bool3) {
         r4p = &connectScreen->s2;
         UpdateSpriteAnimation(r4p);
-        sub_80051E8(r4p);
+        DisplaySprite(r4p);
     }
 
     if (var2 > 1) {
@@ -403,10 +403,10 @@ static void sub_805ADAC(void)
         r4p->variant = var2 + SA2_ANIM_VARIANT_MP_MSG_OK;
         r4p->prevVariant = -1;
         UpdateSpriteAnimation(r4p);
-        sub_80051E8(r4p);
+        DisplaySprite(r4p);
     }
     r4p = &connectScreen->s;
-    sub_80051E8(r4p);
+    DisplaySprite(r4p);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         if ((!bool2 && var1 > 1 && gPressedKeys & START_BUTTON)
@@ -587,7 +587,7 @@ static void sub_805B4C0(void)
             r4p->variant = count + SA2_ANIM_VARIANT_MP_MSG_OK;
             r4p->prevVariant = -1;
             UpdateSpriteAnimation(r4p);
-            sub_80051E8(r4p);
+            DisplaySprite(r4p);
         }
 
         if ((gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
@@ -650,9 +650,9 @@ static void sub_805B4C0(void)
 UNUSED static void sub_805B98C(struct MultiPakConnectScreen *connectScreen)
 {
     Sprite *s = &connectScreen->s;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s++;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 // HandleLinkCommunicationError

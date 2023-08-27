@@ -133,7 +133,7 @@ void Task_800A110(void)
             }
 
             UpdateSpriteAnimation(s);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
 
         if (gBldRegs.bldY != 0) {
@@ -142,7 +142,7 @@ void Task_800A110(void)
             dm->textDemoPlay.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
         }
 
-        sub_80051E8(&dm->textDemoPlay);
+        DisplaySprite(&dm->textDemoPlay);
     }
 }
 

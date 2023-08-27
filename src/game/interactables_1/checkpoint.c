@@ -140,7 +140,7 @@ void Task_8062FD8(void)
         }
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -165,7 +165,7 @@ void Task_8063108(void)
             gCurTask->main = Task_806319C;
         }
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

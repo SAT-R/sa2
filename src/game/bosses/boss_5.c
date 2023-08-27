@@ -566,20 +566,20 @@ void sub_80438C4(EggSaucer *boss)
     s->x = x + ((COS(boss->cabinDiskAngle) * 5) >> 11);
     s->y = y + ((SIN(boss->cabinDiskAngle) * 5) >> 11);
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &boss->pilot;
     s->x = x + ((COS(boss->cabinDiskAngle) * 5) >> 11);
     s->y = y + ((SIN(boss->cabinDiskAngle) * 5) >> 11);
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (boss->unk11) {
         s = &boss->gunBase;
         s->x = x + ((COS(boss->gunDiskAngle) * 5) >> 11);
         s->y = y + ((SIN(boss->gunDiskAngle) * 5) >> 11);
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         s = &boss->gun;
         transform = &boss->transform;
@@ -594,12 +594,12 @@ void sub_80438C4(EggSaucer *boss)
         transform->y = s->y;
         UpdateSpriteAnimation(s);
         sub_8004860(s, transform);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         if (PLAYER_IS_ALIVE && (boss->unk1C > 0 && boss->unk1C < 12)) {
             s = &boss->gunCharge;
             UpdateSpriteAnimation(s);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 
@@ -609,7 +609,7 @@ void sub_80438C4(EggSaucer *boss)
 
     s->x = x;
     s->y = y;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 2;
     y -= 17;
@@ -626,7 +626,7 @@ void sub_80438C4(EggSaucer *boss)
         s->x = x + (x2 >> 3);
         s->y = y + (y2 >> 3);
         s->unk1A = (19 - i) * 0x40;
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s = &boss->hand;
@@ -645,7 +645,7 @@ void sub_80438C4(EggSaucer *boss)
     s->y = y + ((y2) >> 3);
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (boss->unkC0 > 0) {
         sub_8043D94(boss, (x + ((x2) >> 3)) - 16, y + ((y2) >> 3));
@@ -673,7 +673,7 @@ void sub_8043BEC(EggSaucer *boss)
     s->x = Q_24_8_TO_INT(boss->cabinX) - gCamera.x;
     s->y = Q_24_8_TO_INT(boss->cabinY) - gCamera.y;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (boss->unk15 == 0
         || (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
@@ -683,27 +683,27 @@ void sub_8043BEC(EggSaucer *boss)
         s->x = Q_24_8_TO_INT(boss->cabinX) - gCamera.x;
         s->y = Q_24_8_TO_INT(boss->cabinY) - gCamera.y;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s = &boss->armBase;
     s->x = Q_24_8_TO_INT(boss->armBaseX) - gCamera.x;
     s->y = Q_24_8_TO_INT(boss->armBaseY) - gCamera.y;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &boss->armSegment;
     for (i = 0; i < 6; i++) {
         s->x = Q_24_8_TO_INT(boss->unkDC[i][0]) - gCamera.x;
         s->y = Q_24_8_TO_INT(boss->unkDC[i][1]) - gCamera.y;
         s->unk1A = (19 - i) * 0x40;
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s = &boss->hand;
     s->x = Q_24_8_TO_INT(boss->handX) - gCamera.x;
     s->y = Q_24_8_TO_INT(boss->handY) - gCamera.y;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_8043D94(EggSaucer *boss, s32 x, s32 y)
@@ -722,7 +722,7 @@ void sub_8043D94(EggSaucer *boss, s32 x, s32 y)
         s->y = ((temp * SIN(i * 128)) >> 14) + y;
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -754,7 +754,7 @@ void sub_8043E2C(EggSaucer *boss)
         s->x = Q_24_8_TO_INT(x) - gCamera.x;
         s->y = Q_24_8_TO_INT(y) - gCamera.y;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         s = &boss->gun;
         transform = &boss->transform;
@@ -768,7 +768,7 @@ void sub_8043E2C(EggSaucer *boss)
         transform->x = s->x;
         transform->y = s->y;
         sub_8004860(s, transform);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         if (Mod(gUnknown_03005590, 3) == 0) {
             u32 rand;

@@ -326,7 +326,7 @@ _08053A14:
 	adds r0, r6, #0
 	bl UpdateSpriteAnimation
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08053A28:
 	add sp, #4
 	pop {r3, r4, r5}
@@ -513,7 +513,7 @@ _08053B82:
 	strb r2, [r0]
 _08053B9C:
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08053BA2:
 	add sp, #4
 	pop {r3, r4, r5}
@@ -771,7 +771,7 @@ _08053D98:
 	adds r0, r4, #0
 	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	strh r7, [r4, #0x16]
 	mov r0, r8
 	strh r0, [r4, #0x18]
@@ -847,7 +847,7 @@ _08053E2E:
 	adds r0, r4, #0
 	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r0, sb
 	strh r0, [r4, #0x16]
 	mov r0, r8
@@ -1094,7 +1094,7 @@ _08054030: .4byte IWRAM_START + 0x2E
 _08054034: .4byte gCamera
 _08054038:
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r2, r8
 	strh r2, [r4, #0x16]
 	mov r0, sb

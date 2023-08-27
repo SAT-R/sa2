@@ -172,7 +172,7 @@ static void RenderStraightBridge(Sprite_LightBridge *lightBridge)
         if ((i & 1) && x > 5) {
             s->x = x;
             s->y = y;
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -206,7 +206,7 @@ static void RenderCurvedBridge(Sprite_LightBridge *lightBridge)
         s = &lightBridge->sprites[sCurvedBridgePositions[i][2]];
         s->x = x + sCurvedBridgePositions[i][0];
         s->y = y + sCurvedBridgePositions[i][1];
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

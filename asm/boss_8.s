@@ -3798,7 +3798,7 @@ _0804C456:
 	mov r1, r8
 	bl sub_8004860
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r4, #0
 	mov sb, r4
 	subs r5, #0x3c
@@ -3887,7 +3887,7 @@ _0804C4DE:
 	mov r1, r8
 	bl sub_8004860
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r0, sb
 	adds r0, #1
 	lsls r0, r0, #0x18
@@ -4105,7 +4105,7 @@ _0804C6DE:
 	adds r1, r6, #0
 	bl sub_8004860
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r7, #0
 	movs r3, #0x42
 	add r3, r8
@@ -4196,7 +4196,7 @@ _0804C754:
 	adds r1, r6, #0
 	bl sub_8004860
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0804C802:
 	adds r0, r7, #1
 	lsls r0, r0, #0x18

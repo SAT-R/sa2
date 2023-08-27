@@ -364,7 +364,7 @@ _08055358:
 	adds r0, r5, #0
 	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 Task_8055084_Return:
 	add sp, #0x2c
 	pop {r3, r4, r5}

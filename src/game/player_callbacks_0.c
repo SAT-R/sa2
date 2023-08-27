@@ -339,7 +339,7 @@ void Task_8012034(void)
         s->x = Q_24_8_TO_INT(pos.x) - gCamera.x;
         s->y = Q_24_8_TO_INT(pos.y) - gCamera.y;
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

@@ -180,7 +180,7 @@ static void Task_Ramp(void)
         return;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void TaskDestructor_Ramp(struct Task *t)

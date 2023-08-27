@@ -779,7 +779,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if ((gSelectedCharacter != 1 && scene->unk338 > 4)
         || (gSelectedCharacter == 1 && scene->unk338 > 5)) {
@@ -798,7 +798,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->x = scene->unk5E0[0][0] >> 8;
         s->y = scene->unk5E0[0][1] >> 8;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk338 != 0 && scene->unk33D == 0) {
@@ -808,7 +808,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->unk10 |= 0x400;
         s->x = scene->unk80.x;
         s->y = scene->unk80.y + 0x19;
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         s->unk10 &= ~0x400;
         s->x = scene->unk80.x;
@@ -818,7 +818,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
             scene->unk33D = 1;
         }
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     for (i = 0; i < (0x14 - scene->unk33C); i++) {
@@ -837,7 +837,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
             + (scene->unk34C[i][1] >> 8);
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     for (i = 0; i < (0xD - (scene->unk33C >> 1)); i++) {
@@ -855,7 +855,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->y = scene->unk4DC[i][1] >> 8;
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk34A >= 1) {
@@ -865,7 +865,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->x = scene->unk5E0[0][4];
         s->y = scene->unk5E0[0][5] >> 8;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
         scene->unk34A--;
     } else {
         if ((u16)(scene->unk34A + 0x1D) < 0x1E) {
@@ -883,7 +883,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->x = scene->unk5E0[0][6];
         s->y = scene->unk5E0[0][7] >> 8;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         s = &scene->unk230;
         s->graphics.anim = gUnknown_080E17A4[42].anim;
@@ -891,7 +891,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->x = scene->unk5E0[0][8];
         s->y = scene->unk5E0[0][9] >> 8;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (gSelectedCharacter == 1) {
@@ -901,7 +901,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->x = scene->unk5E0[0][2];
         s->y = scene->unk5E0[0][3] >> 8;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         if (scene->unk338 < 6) {
             s = &scene->unk140;
@@ -919,7 +919,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
             s->y = scene->unk5E0[0][1] >> 8;
         }
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

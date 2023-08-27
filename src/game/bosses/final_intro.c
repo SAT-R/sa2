@@ -156,7 +156,7 @@ void sub_8038E20(void);
         (s)->x = Q_24_8_TO_INT((obj)->x);                                               \
         (s)->y = Q_24_8_TO_INT((obj)->y) - gCamera.y;                                   \
         UpdateSpriteAnimation(s);                                                       \
-        sub_80051E8(s);                                                                 \
+        DisplaySprite(s);                                                               \
     })
 
 #define OBJ_UPDATE_POS(obj)                                                             \
@@ -434,7 +434,7 @@ void sub_8036EF8(void)
         ORBIT_SET_SPRITE_POS(s, pos);
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (--sequence->animFrame == 0) {
@@ -469,7 +469,7 @@ void sub_8036FE4(void)
         ORBIT_SET_SPRITE_POS(s, pos);
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (--sequence->animFrame == 0) {
@@ -533,7 +533,7 @@ void sub_80370C0(void)
         ORBIT_SET_SPRITE_POS(s, pos);
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -829,10 +829,10 @@ void sub_8037BD0(void)
     s->y = 178 - gCamera.y;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (!(actor->animFrame & 3)) {
         CreateSuperSonicSpark(actor->x, actor->y);
@@ -858,10 +858,10 @@ void sub_8037CEC(void)
     s->y = 178 - gCamera.y;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (!(actor->animFrame & 3)) {
         CreateSuperSonicSpark(actor->x, actor->y);
@@ -898,10 +898,10 @@ void sub_8037E08(void)
     s->y = 178 - gCamera.y;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (!(actor->animFrame & 3)) {
         CreateSuperSonicSpark(actor->x, actor->y);
@@ -951,10 +951,10 @@ void sub_8037F68(void)
         s->y = 178 - gCamera.y;
         s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (!(actor->animFrame & 3)) {
@@ -1493,7 +1493,7 @@ void IntroRenderSprites(u8 flockMode)
                 s->x = intro->birdPositions[i][0] >> 8;
                 s->y = (intro->birdPositions[i][1] >> 8) - intro->cameraY;
                 s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     } else {
@@ -1521,7 +1521,7 @@ void IntroRenderSprites(u8 flockMode)
                 s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
             }
 
-            sub_80051E8(s);
+            DisplaySprite(s);
             pos[0] = (pos[0] - 64) & ONE_CYCLE;
             pos[1] = (pos[1] - 64) & ONE_CYCLE;
         }
@@ -1533,7 +1533,7 @@ void IntroRenderSprites(u8 flockMode)
         s->y = Q_24_8_TO_INT(intro->unk1B8) - intro->cameraY + intro->unkF;
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -1601,7 +1601,7 @@ void sub_803997C(void)
     IntroActor *actor = TaskGetStructPtr(gCurTask);
 
     UpdateSpriteAnimation(&actor->s);
-    sub_80051E8(&actor->s);
+    DisplaySprite(&actor->s);
 }
 
 void sub_80399A4(void)
@@ -1609,7 +1609,7 @@ void sub_80399A4(void)
     IntroActor *actor = TaskGetStructPtr(gCurTask);
 
     UpdateSpriteAnimation(&actor->s);
-    sub_80051E8(&actor->s);
+    DisplaySprite(&actor->s);
 }
 
 void sub_80399CC(void)
@@ -1624,7 +1624,7 @@ void sub_8039A10(void)
     IntroActor *actor = TaskGetStructPtr(gCurTask);
 
     UpdateSpriteAnimation(&actor->s);
-    sub_80051E8(&actor->s);
+    DisplaySprite(&actor->s);
 }
 
 void sub_8039A38(void) { TaskDestroy(gCurTask); }

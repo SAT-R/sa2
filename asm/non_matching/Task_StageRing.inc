@@ -209,7 +209,7 @@ _0800BCD8:
 	adds r0, r5, #0
 	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r3, sl
 	strh r3, [r5, #0x16]
 	mov r6, r8

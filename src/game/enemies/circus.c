@@ -93,7 +93,7 @@ void Task_CircusMain(void)
     s2->y = s->y - Q_24_8(0.125);
 
     sub_800C84C(s2, pos.x, pos.y - Q_24_8(0.125));
-    sub_80051E8(s2);
+    DisplaySprite(s2);
 }
 
 void Task_8055AB8(void)
@@ -113,9 +113,9 @@ void Task_8055AB8(void)
     sub_80122DC(circus->spawnX, circus->spawnY);
 
     if (UpdateSpriteAnimation(s) == 0) {
-        sub_80051E8(s);
+        DisplaySprite(s);
         UpdateSpriteAnimation(s2);
-        sub_80051E8(s2);
+        DisplaySprite(s2);
 
         circus->unk84 = 50;
 
@@ -124,12 +124,12 @@ void Task_8055AB8(void)
         s->prevVariant = -1;
         gCurTask->main = Task_8055C0C;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
         s2->x = s->x;
         s2->y = s->y - Q_24_8(0.125);
 
         sub_800C84C(s2, pos.x, pos.y - Q_24_8(0.125));
-        sub_80051E8(s2);
+        DisplaySprite(s2);
     }
 }
 
@@ -159,9 +159,9 @@ void Task_8055C0C(void)
     sub_80122DC(circus->spawnX, circus->spawnY);
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
     UpdateSpriteAnimation(s2);
-    sub_80051E8(s2);
+    DisplaySprite(s2);
 
     if (--circus->unk84 == 0) {
         s->graphics.anim = SA2_ANIM_CIRCUS;
@@ -188,7 +188,7 @@ void Task_8055D7C(void)
     sub_80122DC(circus->spawnX, circus->spawnY);
 
     if (UpdateSpriteAnimation(s) == 0) {
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         circus->unk84 = 30;
 
@@ -197,14 +197,14 @@ void Task_8055D7C(void)
         s->prevVariant = -1;
         gCurTask->main = Task_CircusMain;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s2->x = s->x;
     s2->y = s->y - Q_24_8(0.125);
 
     sub_800C84C(s2, pos.x, pos.y - Q_24_8(0.125));
-    sub_80051E8(s2);
+    DisplaySprite(s2);
 }
 
 void TaskDestructor_Circus(struct Task *t)

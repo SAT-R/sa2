@@ -1521,7 +1521,7 @@ _08016BE6:
 	cmp r1, #0xdf
 	bgt _08016C38
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	b _08016CE8
 	.align 2, 0
 _08016C0C: .4byte 0xFFFFF7FF
@@ -1621,7 +1621,7 @@ _08016CB0:
 	bl sub_8004860
 _08016CE2:
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08016CE8:
 	ldr r4, _08016D18 @ =IWRAM_START + 0x5B7C
 	ldrb r0, [r4]

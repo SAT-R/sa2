@@ -321,7 +321,7 @@ _0805648A:
 	adds r0, r5, #0
 	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0805649E:
 	add sp, #0x14
 	pop {r3, r4, r5}
@@ -547,7 +547,7 @@ _08056658:
 	adds r0, r7, #0
 	bl UpdateSpriteAnimation
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08056664:
 	add sp, #0xc
 	pop {r3, r4}

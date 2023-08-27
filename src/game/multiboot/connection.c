@@ -273,7 +273,7 @@ void sub_8081604(void)
     s32 multiBootFlags;
     struct MultiBootParam *params;
     NextTransitionFrame(&connectScreen->unk0);
-    sub_80051E8(&connectScreen->unkC);
+    DisplaySprite(&connectScreen->unkC);
     result = sub_8081D70(connectScreen);
 
     if (SomeSioCheck()) {
@@ -600,14 +600,14 @@ void sub_8081DB4(struct SinglePakConnectScreen *connectScreen)
 void sub_8081DF0(struct SinglePakConnectScreen *connectScreen, u8 a)
 {
     UpdateSpriteAnimation(&connectScreen->unk3C);
-    sub_80051E8(&connectScreen->unk3C);
+    DisplaySprite(&connectScreen->unk3C);
 
     connectScreen->unk6C.graphics.anim = SA2_ANIM_MP_MSG;
     connectScreen->unk6C.variant = a + SA2_ANIM_VARIANT_MP_MSG_OK;
     connectScreen->unk6C.prevVariant = -1;
 
     UpdateSpriteAnimation(&connectScreen->unk6C);
-    sub_80051E8(&connectScreen->unk6C);
+    DisplaySprite(&connectScreen->unk6C);
 }
 
 // HeartBeatClient

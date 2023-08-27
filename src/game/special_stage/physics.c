@@ -111,7 +111,7 @@ static void Task_PhysicsMain(void)
         if (stage->paused == FALSE) {
             UpdateSpriteAnimation(&player->roboArrow);
         }
-        sub_80051E8(&player->roboArrow);
+        DisplaySprite(&player->roboArrow);
     }
 
     sub_806FAA0();

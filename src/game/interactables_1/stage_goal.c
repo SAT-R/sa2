@@ -91,7 +91,7 @@ static void Task_StageGoalMain(void)
             gCurTask->main = Task_StageGoalAnimate;
         }
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void Task_StageGoalAnimate(void)
@@ -113,7 +113,7 @@ static void Task_StageGoalAnimate(void)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void Task_StageGoalToggleMain(void)

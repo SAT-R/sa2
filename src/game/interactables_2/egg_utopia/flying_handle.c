@@ -211,7 +211,7 @@ static void sub_807F5C0(Sprite_FlyingHandle *flyingHandle)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 IsPlayerTouching(Sprite_FlyingHandle *flyingHandle)

@@ -341,15 +341,15 @@ void Task_CreateStageUIMain(void)
             sd = &digits[9];
             sd->y = UI_POS_RING_COUNT_Y;
             sd->x = UI_POS_RING_COUNT_X + 0 * 8;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             sd->y = UI_POS_RING_COUNT_Y;
             sd->x = UI_POS_RING_COUNT_X + 1 * 8;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             sd->y = UI_POS_RING_COUNT_Y;
             sd->x = UI_POS_RING_COUNT_X + 2 * 8;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
         } else {
             // _0802CF28
             u32 processed2;
@@ -430,35 +430,35 @@ void Task_CreateStageUIMain(void)
             sd->x = ((DISPLAY_WIDTH / 2) + 16) + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Milliseconds-R
             sd = &digits[gMillisUnpackTable[r5][1]];
             sd->x = ((DISPLAY_WIDTH / 2) + 16) + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Seconds-L
             sd = &digits[gSecondsTable[seconds][0]];
             sd->x = ((DISPLAY_WIDTH / 2) - 8) + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Seconds-R
             sd = &digits[gSecondsTable[seconds][1]];
             sd->x = ((DISPLAY_WIDTH / 2) - 8) + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Minutes
             sd = &digits[minutes];
             sd->x = (DISPLAY_WIDTH / 2) - 24;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
         }
     }
 }
@@ -508,7 +508,7 @@ void StageUI_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
 
         digit->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
 
-        sub_80051E8(digit);
+        DisplaySprite(digit);
 
         value = remaining;
     }

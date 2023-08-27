@@ -326,7 +326,7 @@ _080141C2:
 	cmp r0, #0
 	bne _080141F4
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080141F4:
 	pop {r4, r5, r6}
 	pop {r0}
@@ -1700,7 +1700,7 @@ _08014C8C:
 	adds r0, r4, #0
 	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08014CBC:
 	pop {r4}
 	pop {r0}

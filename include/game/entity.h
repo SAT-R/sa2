@@ -94,7 +94,7 @@ void sub_801FD34(s32, s32, s32);
     sub_80122DC(_posX, _posY);                                                          \
     { code_insert };                                                                    \
     UpdateSpriteAnimation(_s);                                                          \
-    sub_80051E8(_s);
+    DisplaySprite(_s);
 
 #define ENEMY_UPDATE_EX(_s, _posX, _posY, code_insert)                                  \
     ENEMY_UPDATE_EX_RAW(_s, Q_24_8_NEW(_posX), Q_24_8_NEW(_posY), code_insert);

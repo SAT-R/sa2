@@ -887,7 +887,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
         s->variant = gUnknown_080E12FC[9].variant;
         s->x = scene->unk3E8[i][0];
         s->y = scene->unk3E8[i][1] >> 8;
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (gBgScrollRegs[0][1] > 0x6D) {
@@ -905,7 +905,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
             s->x = (scene->unk3A0[i][0] >> 8) - (max * 100);
             s->y = scene->unk3A0[i][1] >> 8;
 
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 
@@ -923,7 +923,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
     s->x = scene->unk3E0[0] >> 8;
     s->y = scene->unk3E0[1] >> 8;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (scene->unk37C < 0xE) {
         s = &scene->unkA0;
@@ -939,7 +939,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
             s->variant = gUnknown_080E12FC[12].variant;
             UpdateSpriteAnimation(s);
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk37C < 0xD) {
@@ -948,7 +948,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
             s->x = scene->unk4F4[i][0] >> 8;
             s->y = scene->unk4F4[i][1] >> 8;
             UpdateSpriteAnimation(s);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     } else {
         for (i = 0; i < 6; i++) {
@@ -957,7 +957,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
             s->variant = gUnknown_080E12FC[i + 0xD].variant;
             s->x = scene->unk584[i][0] >> 8;
             s->y = scene->unk584[i][1] >> 8;
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 
@@ -969,7 +969,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
 
         if (scene->unk380 != 0) {
             scene->unk380--;
-            sub_80051E8(s);
+            DisplaySprite(s);
         } else {
             scene->unk380 = 2;
         }
@@ -996,7 +996,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
             }
 
             UpdateSpriteAnimation(s);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
 
         s = &scene->unk250;
@@ -1004,7 +1004,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
         s->y = scene->unk470[1] >> 8;
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

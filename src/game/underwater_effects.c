@@ -59,7 +59,7 @@ static void Task_DrowningCountdown(void)
 
     UpdateSpriteAnimation(s);
     sub_8004860(s, transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
@@ -222,7 +222,7 @@ static void Task_SpawnAirBubbles(void)
 
         UpdateSpriteAnimation(s);
         sub_8004860(s, transform);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

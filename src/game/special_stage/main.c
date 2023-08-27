@@ -160,7 +160,7 @@ void Task_IntroScreenMain(void)
     struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
 
     struct TransitionState *transition = &stage->transition;
-    sub_80051E8(&stage->introText);
+    DisplaySprite(&stage->introText);
     gBldRegs.bldCnt = 0xAF;
 
     stage->animFrame++;

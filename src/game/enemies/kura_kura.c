@@ -83,7 +83,7 @@ void Task_8052024(void)
 
     SPRITE_FLAG_SET(s, X_FLIP);
 
-    sub_80051E8(s);
+    DisplaySprite(s);
     sub_805213C(kk);
 }
 
@@ -99,7 +99,7 @@ void sub_805213C(Sprite_KuraKura *kk)
     for (i = 0; i < 2; i++) {
         s1->x = (Q_24_8_TO_INT(kk->spawnX) + (SIN(kk->unkAC) >> (11 - i))) - gCamera.x;
         s1->y = (Q_24_8_TO_INT(kk->spawnY) + (COS(kk->unkAC) >> (11 - i))) - gCamera.y;
-        sub_80051E8(s1);
+        DisplaySprite(s1);
     }
 
     pos.x = (Q_24_8_TO_INT(kk->spawnX) + (SIN(kk->unkAC) >> 9)) - (SIN(kk->unkAC) >> 11);
@@ -110,7 +110,7 @@ void sub_805213C(Sprite_KuraKura *kk)
     sub_800C84C(s2, pos.x, pos.y);
 
     UpdateSpriteAnimation(s2);
-    sub_80051E8(s2);
+    DisplaySprite(s2);
 }
 
 void TaskDestructor_8052264(struct Task *t)

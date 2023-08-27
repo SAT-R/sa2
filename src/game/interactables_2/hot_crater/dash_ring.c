@@ -288,8 +288,8 @@ static void Task_Interactable_DashRing(void)
         DashRing_Despawn(ring);
     } else {
         DashRing_UpdateScreenPos(ring);
-        sub_80051E8(&ring->s1);
-        sub_80051E8(&ring->s2);
+        DisplaySprite(&ring->s1);
+        DisplaySprite(&ring->s2);
     }
 }
 
@@ -298,8 +298,8 @@ static void Task_Interactable_DashRing_AfterAcceleration(void)
     Sprite_DashRing *ring = TaskGetStructPtr(gCurTask);
 
     DashRing_UpdateScreenPos(ring);
-    sub_80051E8(&ring->s1);
-    sub_80051E8(&ring->s2);
+    DisplaySprite(&ring->s1);
+    DisplaySprite(&ring->s2);
 
     if (!DashRing_PlayerIsColliding(ring)) {
         gCurTask->main = Task_Interactable_DashRing;

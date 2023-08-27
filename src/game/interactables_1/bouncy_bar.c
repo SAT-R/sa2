@@ -120,7 +120,7 @@ void sub_806160C(void)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_80617A4(void)
@@ -169,5 +169,5 @@ void sub_80617A4(void)
         s->prevVariant = -1;
         gCurTask->main = sub_806160C;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

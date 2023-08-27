@@ -260,7 +260,7 @@ static void UpdateFanSpritePosition(Sprite_SmallPropeller *prop)
     s->y = prop->posY + prop->bottom - gCamera.y;
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 IsPlayerInFanRegion(Sprite_SmallPropeller *prop)

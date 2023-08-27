@@ -96,7 +96,7 @@ void Task_805102C(void)
     } else {
         sub_800C84C(s, Q_24_8_TO_INT(proj->x), Q_24_8_TO_INT(proj->y));
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -127,7 +127,7 @@ void Task_80510B0(void)
 
         sub_800C84C(s, Q_24_8_TO_INT(proj->positions[i].x),
                     Q_24_8_TO_INT(proj->positions[i].y));
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (count == 0) {

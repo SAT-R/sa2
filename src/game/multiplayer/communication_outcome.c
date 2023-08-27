@@ -187,7 +187,7 @@ static void sub_805BC40(void)
     struct CommunicationOutcomeScreen *outcomeScreen = TaskGetStructPtr(gCurTask);
     s = &outcomeScreen->unkA0;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (outcomeScreen->unk203 == OUTCOME_CONNECTION_SUCCESS) {
         const TileInfo *unk9090;
@@ -202,7 +202,7 @@ static void sub_805BC40(void)
         s->variant = unk9090[offset].variant + unk206 - 2;
         s->prevVariant = -1;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     } else {
         const TileInfo *unk9090;
         s = &outcomeScreen->unkD0;
@@ -212,12 +212,12 @@ static void sub_805BC40(void)
         s->variant = unk9090[gLoadedSaveGame->language].variant;
         s->prevVariant = -1;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s = &outcomeScreen->s3;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (outcomeScreen->unk200 != 0) {
         outcomeScreen->unk200--;

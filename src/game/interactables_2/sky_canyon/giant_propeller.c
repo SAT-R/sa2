@@ -258,7 +258,7 @@ static void Render(Sprite_GiantPropeller *propeller)
     Sprite *sprite = &sub_807BA54()->sprite2;
     sprite->x = propeller->x - gCamera.x;
     sprite->y = propeller->y - gCamera.y;
-    sub_80051E8(sprite);
+    DisplaySprite(sprite);
 }
 
 static bool32 ShouldDespawn(Sprite_GiantPropeller *propeller)

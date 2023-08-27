@@ -121,7 +121,7 @@ void Task_Interactable_019(void)
         me->x = base->spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -156,7 +156,7 @@ void Task_805E35C(void)
         me->x = platform->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

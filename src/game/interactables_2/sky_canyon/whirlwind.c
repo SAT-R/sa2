@@ -470,7 +470,7 @@ void sub_807CE94(Sprite_IA86 *ia086)
             else
                 unk086->s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-            sub_80051E8(unk086->s);
+            DisplaySprite(unk086->s);
         }
     }
 }

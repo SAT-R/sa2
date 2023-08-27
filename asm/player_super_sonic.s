@@ -1201,14 +1201,14 @@ _0802BECE:
 	adds r1, r4, #0
 	bl sub_8004860
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	b _0802BF96
 	.align 2, 0
 _0802BF1C: .4byte gSineTable
 _0802BF20: .4byte 0x000003FF
 _0802BF24:
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldr r1, [r6]
 	movs r0, #0x82
 	ands r0, r1
@@ -1257,7 +1257,7 @@ _0802BF48:
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0802BF8E:
 	lsls r0, r4, #0x18
 	lsrs r4, r0, #0x18

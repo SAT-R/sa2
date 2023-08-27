@@ -156,5 +156,5 @@ static void Task_PenTurn(void)
         s->prevVariant = -1;
         gCurTask->main = Task_PenMove;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

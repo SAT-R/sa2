@@ -192,15 +192,15 @@ void sub_806D2C8(void)
 
     if (player->unkB6 != 0 && stage->paused == FALSE) {
         if ((--player->unkB6) & 2) {
-            sub_80051E8(unk8);
+            DisplaySprite(unk8);
             if (player->state < 14) {
-                sub_80051E8(unk38);
+                DisplaySprite(unk38);
             }
         }
     } else {
-        sub_80051E8(unk8);
+        DisplaySprite(unk8);
         if (player->state < 14) {
-            sub_80051E8(unk38);
+            DisplaySprite(unk38);
         }
     }
 }
@@ -230,7 +230,7 @@ void sub_806D388(void)
     sub_806D7D0(unk8, -1, stage->unk5CC, unkC4);
 
     if (stage->state == 8) {
-        sub_80051E8(unk8);
+        DisplaySprite(unk8);
         sub_806D830(unk8, -1, stage->unk5CC, unkC4);
     }
 }

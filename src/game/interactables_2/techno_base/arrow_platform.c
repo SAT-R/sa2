@@ -259,34 +259,34 @@ static void sub_807A7F4(Sprite_IA75 *ia75)
         switch (ia75->unk94) {
             case 0:
                 s->unk10 &= ~(0x800 | 0x400);
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 s->unk10 |= 0x800;
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 break;
             case 1:
                 s->unk10 &= ~0x800;
                 s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 s->unk10 |= 0x800;
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 break;
             case 2:
                 s->unk10 &= ~(0x800 | 0x400);
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 break;
         }
     } else {
         s->unk10 &= ~(0x800 | 0x400);
-        sub_80051E8(&ia75->s1);
+        DisplaySprite(&ia75->s1);
         s->unk10 |= 0x800;
-        sub_80051E8(&ia75->s1);
+        DisplaySprite(&ia75->s1);
     }
 
     ia75->s2.x = s->x;
     ia75->s2.y = s->y;
-    sub_80051E8(&ia75->s2);
+    DisplaySprite(&ia75->s2);
 }
 
 static bool32 sub_807A920(Sprite_IA75 *ia75)

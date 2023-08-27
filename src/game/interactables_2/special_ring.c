@@ -141,7 +141,7 @@ static void sub_8081134(Sprite_SpecialRing *ring)
     s->y = ring->posY - gCamera.y;
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 sub_8081164(Sprite_SpecialRing *ring)

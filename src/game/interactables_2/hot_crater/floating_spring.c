@@ -251,7 +251,7 @@ static void sub_80750A8(void)
         sub_80751B4(floatingSpring);
 
         if (floatingSpring->unk4C) {
-            sub_80051E8(&floatingSpring->s);
+            DisplaySprite(&floatingSpring->s);
         }
     }
 }
@@ -363,7 +363,7 @@ static void sub_80752D8(void)
         sub_8075154(floatingSpring);
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void sub_8075334(Sprite_FloatingSpring *floatingSpring)
@@ -371,6 +371,6 @@ static void sub_8075334(Sprite_FloatingSpring *floatingSpring)
     floatingSpring->unk50 ^= TRUE;
     sub_8074FD8(floatingSpring);
     UpdateSpriteAnimation(&floatingSpring->s);
-    sub_80051E8(&floatingSpring->s);
+    DisplaySprite(&floatingSpring->s);
     gCurTask->main = sub_80750A8;
 }

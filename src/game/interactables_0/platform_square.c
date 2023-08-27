@@ -361,7 +361,7 @@ static void Task_Platform_Square(void)
         SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

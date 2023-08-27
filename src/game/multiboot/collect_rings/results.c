@@ -326,7 +326,7 @@ void sub_80823FC(void)
         sub_8082788();
 
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-            sub_80051E8(&resultsScreen->unk400);
+            DisplaySprite(&resultsScreen->unk400);
         }
 
         for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
@@ -447,12 +447,12 @@ void sub_8082788(void)
                 s->x = (DISPLAY_WIDTH / 2);
                 s->y = gUnknown_030054B4[i] * 40 + 20;
                 UpdateSpriteAnimation(s);
-                sub_80051E8(s);
+                DisplaySprite(s);
 
                 s = &resultsScreen->unk370[gMultiplayerCharacters[i]];
                 s->x = 52;
                 s->y = gUnknown_030054B4[i] * 40 + 20;
-                sub_80051E8(s);
+                DisplaySprite(s);
 
                 // TODO: Fix type
                 temp = sub_8004518(gUnknown_030053E8[i]);
@@ -461,7 +461,7 @@ void sub_8082788(void)
                 if (s != &resultsScreen->unk160[0]) {
                     s->x = 160;
                     s->y = gUnknown_030054B4[i] * 40 + 20;
-                    sub_80051E8(s);
+                    DisplaySprite(s);
                 }
 
                 s = &resultsScreen->unk160[((temp) >> 4) & 0xF];
@@ -469,20 +469,20 @@ void sub_8082788(void)
                 if (s != &resultsScreen->unk160[0] || (temp > 0xFF)) {
                     s->x = 171;
                     s->y = gUnknown_030054B4[i] * 40 + 20;
-                    sub_80051E8(s);
+                    DisplaySprite(s);
                 }
 
                 s = &resultsScreen->unk160[(temp)&0xF];
                 s->x = 182;
                 s->y = gUnknown_030054B4[i] * 40 + 20;
-                sub_80051E8(s);
+                DisplaySprite(s);
             } else {
                 u16 temp;
                 s = &resultsScreen->unk80[i].unk0;
                 s->x = (DISPLAY_WIDTH / 2);
                 s->y = i * 40 + 20;
                 UpdateSpriteAnimation(s);
-                sub_80051E8(s);
+                DisplaySprite(s);
 
                 if (gUnknown_03005428[i] > 99) {
                     temp = 99;
@@ -495,17 +495,17 @@ void sub_8082788(void)
                 if (s != &resultsScreen->unk160[0]) {
                     s->x = 160;
                     s->y = i * 40 + 20;
-                    sub_80051E8(s);
+                    DisplaySprite(s);
                 }
                 s = &resultsScreen->unk160[temp & 0xF];
                 s->x = 171;
                 s->y = i * 40 + 20;
-                sub_80051E8(s);
+                DisplaySprite(s);
 
                 s = &resultsScreen->unk340;
                 s->x = 197;
                 s->y = i * 40 + 20;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     }

@@ -219,10 +219,10 @@ static void sub_8079D30(Sprite_TecBaseNoteBlock *noteBlock)
     Sprite *s = &noteBlock->s;
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 sub_8079D60(Sprite_TecBaseNoteBlock *noteBlock)

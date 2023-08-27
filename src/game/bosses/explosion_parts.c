@@ -89,7 +89,7 @@ void Task_BossParticleWithExplosionUpdate(void)
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
@@ -154,5 +154,5 @@ void Task_BossParticleStatic(void)
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

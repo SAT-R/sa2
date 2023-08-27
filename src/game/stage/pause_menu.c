@@ -168,7 +168,7 @@ void Task_PauseMenuUpdate(void)
     }
 
     pm->unk60 = 0;
-    sub_80051E8(&pm->s);
+    DisplaySprite(&pm->s);
 }
 
 void Task_PauseMenuInit(void)

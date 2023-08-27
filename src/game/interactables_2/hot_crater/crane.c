@@ -632,7 +632,7 @@ static void sub_80742A8(Sprite_HCCrane *crane)
 
                 sub_8004860(cs->s, &transform);
             }
-            sub_80051E8(cs->s);
+            DisplaySprite(cs->s);
         }
     }
 }

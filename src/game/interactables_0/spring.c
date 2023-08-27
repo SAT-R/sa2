@@ -164,7 +164,7 @@ static void Task_Spring(void)
         me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -191,7 +191,7 @@ static void sub_800E3D0(void)
             gCurTask->main = Task_Spring;
         }
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

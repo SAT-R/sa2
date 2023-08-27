@@ -290,12 +290,12 @@ static void sub_808DD9C(void)
     transition->unk8 = scene->unk72 >> 8;
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     scene->unk34.x = s->x;
     scene->unk34.y = s->y;
     UpdateSpriteAnimation(&scene->unk34);
-    sub_80051E8(&scene->unk34);
+    DisplaySprite(&scene->unk34);
 
     scene->unk78++;
 
@@ -352,7 +352,7 @@ static void sub_808DF88(void)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     scene->unk78++;
 
@@ -399,7 +399,7 @@ static void sub_808E114(void)
     s->y = (scene->unk72 >> 8) - 0xE;
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (scene->unk78 == 0x28) {
         player->unk64 = 0x52;

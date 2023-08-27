@@ -327,6 +327,6 @@ void sub_80945A4(struct MissingChaosEmaraldsCutScene *scene)
             s->variant = gUnknown_080E1CA0[2].variant;
         }
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }

@@ -207,7 +207,7 @@ static void Task_CommonPlatformThinMain(void)
         return;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
     return;
 }
 
@@ -354,7 +354,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     transform->x = x;
     transform->y = y;
@@ -380,7 +380,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     transform->x = x;
     transform->y = y;
@@ -405,7 +405,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     transform->x = x;
     transform->y = y;
@@ -430,7 +430,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     transform->x = x;
     transform->y = y;

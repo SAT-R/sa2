@@ -449,7 +449,7 @@ _080543BA:
 	adds r0, r6, #0
 	bl UpdateSpriteAnimation
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r0, #0x99
 	bl m4aSongNumStart
 	b _08054610
@@ -726,7 +726,7 @@ _080545FA:
 	adds r0, r6, #0
 	bl UpdateSpriteAnimation
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08054610:
 	add sp, #0x10
 	pop {r3}
@@ -950,7 +950,7 @@ _080547C4:
 	adds r0, r6, #0
 	bl UpdateSpriteAnimation
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r0, #0x99
 	bl m4aSongNumStart
 	b _080548EE
@@ -1082,7 +1082,7 @@ _080548A6:
 	str r0, [r1, #8]
 _080548E8:
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080548EE:
 	add sp, #0x10
 	pop {r4, r5, r6, r7}
@@ -1316,7 +1316,7 @@ _08054A7C:
 	str r0, [r1, #8]
 _08054ACE:
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 _08054AD4:
 	add sp, #8
 	pop {r3, r4}

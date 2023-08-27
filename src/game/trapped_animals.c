@@ -178,7 +178,7 @@ static void Task_FlyingAnimal(void)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void CreateBouncingAnimal(SpawnOptions *init)
@@ -248,7 +248,7 @@ static void Task_BouncingAnimal(void)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void CreateStaticAnimal(SpawnOptions *init)
@@ -315,7 +315,7 @@ static void Task_StaticAnimalMain(void)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void CreateTrappedAnimal(s16 x, s16 y)

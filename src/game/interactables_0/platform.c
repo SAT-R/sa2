@@ -256,7 +256,7 @@ void Task_800E89C(void)
         }
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -367,7 +367,7 @@ void Task_800EC58(void)
         s->y += SIN_24_8(platform->unk4C) >> 6;
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -442,7 +442,7 @@ void Task_800EDF8(void)
         s->y += SIN_24_8(platform->unk4C) >> 6;
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -516,7 +516,7 @@ void Task_800EFD0(void)
         s->y += SIN_24_8(platform->unk4C) >> 6;
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

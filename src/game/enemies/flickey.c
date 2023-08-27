@@ -89,10 +89,10 @@ void Flickey_RenderIronBalls(Sprite_Flickey *flickey)
         u8 index = (flickey->unk2A4 - (i + 1) * 16) & 0x3F;
         s->x = flickey->positions[index].x - gCamera.x;
         s->y = flickey->positions[index].y - gCamera.y;
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         SPRITE_FLAG_FLIP(s, X_FLIP);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

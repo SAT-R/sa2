@@ -251,16 +251,16 @@ void sub_8088CC4(void)
         } else {
             s->palId = 1;
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
     s = &lobbyScreen->unk80;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (lobbyScreen->unk1AC != 0) {
         s = &lobbyScreen->unkB0[0];
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (NextTransitionFrame(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
@@ -298,7 +298,7 @@ void sub_8088D60(void)
 
     for (i = 0; i < 4; i++) {
         s = &lobbyScreen->unkB0[i + 1];
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s = &lobbyScreen->unk80;
@@ -312,7 +312,7 @@ void sub_8088D60(void)
             break;
     }
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (lobbyScreen->unk1AC == 0) {
         return;
@@ -330,7 +330,7 @@ void sub_8088D60(void)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_8088EB4(void)
@@ -355,16 +355,16 @@ void sub_8088EB4(void)
         } else {
             s->palId = 1;
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
     s = &lobbyScreen->unk80;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (lobbyScreen->unk1AC != 0) {
         s = &lobbyScreen->unkB0[0];
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (gRepeatedKeys & A_BUTTON) {

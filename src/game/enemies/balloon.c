@@ -92,7 +92,7 @@ void Task_BalloonMain(void)
 
     ENEMY_UPDATE(s, pos.x, pos.y);
     s->unk10 ^= 0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_805879C(void)
@@ -140,7 +140,7 @@ void sub_805879C(void)
 #endif
         gCurTask->main = Task_BalloonMain;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
     s->unk10 ^= 0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

@@ -524,7 +524,7 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
         s->x = scene->unk170[0][0];
         s->y = scene->unk170[0][1] >> 8;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
         scene->congratsAnimFrame--;
     } else if (scene->congratsAnimFrame > -15 && scene->congratsAnimFrame < 1) {
         // off for 15 frames
@@ -541,7 +541,7 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
         s->x = scene->unk170[1][0];
         s->y = scene->unk170[1][1] >> 8;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         s = &scene->unk120;
         s->graphics.anim = gUnknown_080E12D0[2].anim;
@@ -549,7 +549,7 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
         s->x = scene->unk170[2][0];
         s->y = scene->unk170[2][1] >> 8;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

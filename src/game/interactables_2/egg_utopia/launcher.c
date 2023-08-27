@@ -286,7 +286,7 @@ static void sub_807DDA0(Sprite_EggUtopia_Launcher *launcher)
         s->y = Q_24_8_TO_INT(launcher->unk58) - gCamera.y;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)

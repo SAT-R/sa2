@@ -111,7 +111,7 @@ static void Task_WindmillMain(void)
         return;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
     screenX = s->x;
     screenY = s->y;
 
@@ -133,7 +133,7 @@ static void Task_WindmillMain(void)
 
             s->unk10 = (gUnknown_030054B8++ | 0x1060);
             sub_8004860(s, transform);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }

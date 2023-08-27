@@ -111,7 +111,7 @@ static void Task_Hammerhead(void)
         } else {
             sub_80122DC(posX << 8, (posY << 8) + hammerhead->unk48);
             UpdateSpriteAnimation(s);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }

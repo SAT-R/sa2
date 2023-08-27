@@ -56,7 +56,7 @@ void Task_SparkEffect(void)
         }
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

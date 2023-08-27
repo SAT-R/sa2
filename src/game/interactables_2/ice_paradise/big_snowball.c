@@ -339,7 +339,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
                 ia69->unk0.x = ia69->unk158 - gCamera.x
                     + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
                 ia69->unk0.y = ia69->unk15C - gCamera.y + temp2;
-                sub_80051E8(&ia69->unk0);
+                DisplaySprite(&ia69->unk0);
             }
         }
 
@@ -349,7 +349,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
                 ia69->unk30.x = ia69->unk158 - gCamera.x
                     + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
                 ia69->unk30.y = ia69->unk15C - gCamera.y + temp2;
-                sub_80051E8(&ia69->unk30);
+                DisplaySprite(&ia69->unk30);
             }
         }
 
@@ -359,7 +359,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
                 ia69->unk60.x = ia69->unk158 - gCamera.x
                     + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
                 ia69->unk60.y = ia69->unk15C - gCamera.y + temp2;
-                sub_80051E8(&ia69->unk60);
+                DisplaySprite(&ia69->unk60);
             }
         }
 
@@ -369,7 +369,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
                 ia69->unk90.x = ia69->unk158 - gCamera.x
                     + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
                 ia69->unk90.y = ia69->unk15C - gCamera.y + temp2;
-                sub_80051E8(&ia69->unk90);
+                DisplaySprite(&ia69->unk90);
             }
         }
 
@@ -379,7 +379,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
                 ia69->unkC0.x = ia69->unk158 - gCamera.x
                     + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
                 ia69->unkC0.y = ia69->unk15C - gCamera.y + temp2;
-                sub_80051E8(&ia69->unkC0);
+                DisplaySprite(&ia69->unkC0);
             }
         }
     } else {
@@ -418,11 +418,11 @@ void sub_8079560(Sprite_IA69 *ia69)
             if (i & 1) {
                 ia69->unk90.x = (unk158 - gCamera.x) + Q_24_8_TO_INT(unkF0->unk0);
                 ia69->unk90.y = (temp - gCamera.y) + Q_24_8_TO_INT(unkF0->unk2);
-                sub_80051E8(&ia69->unk90);
+                DisplaySprite(&ia69->unk90);
             } else {
                 ia69->unkC0.x = (unk158 - gCamera.x) + Q_24_8_TO_INT(unkF0->unk0);
                 ia69->unkC0.y = (temp - gCamera.y) + Q_24_8_TO_INT(unkF0->unk2);
-                sub_80051E8(&ia69->unkC0);
+                DisplaySprite(&ia69->unkC0);
             }
         }
     }

@@ -232,7 +232,7 @@ void Task_8080750(void)
     } else {
         sprite->s.x = (DISPLAY_WIDTH * 0.5);
         sprite->s.y = (DISPLAY_HEIGHT * 0.3);
-        sub_80051E8(&sprite->s);
+        DisplaySprite(&sprite->s);
     }
 }
 

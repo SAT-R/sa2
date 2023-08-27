@@ -58,12 +58,12 @@ void Task_CreateEnemyDefeatScore_MoveUp(void)
     if (score->deltaY >= 60) {
         gCurTask->main = Task_CreateEnemyDefeatScore_Hold;
 
-        sub_80051E8(s);
+        DisplaySprite(s);
         s->x = scoreX;
         s->y = scoreY - score->deltaY;
         score->deltaY = 0;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
         s->x = scoreX;
         s->y = scoreY;
     }
@@ -87,7 +87,7 @@ void Task_CreateEnemyDefeatScore_Hold(void)
     } else {
         s->x = scoreX - gCamera.x;
         s->y = scoreY - gCamera.y;
-        sub_80051E8(s);
+        DisplaySprite(s);
         s->x = scoreX;
         s->y = scoreY;
     }

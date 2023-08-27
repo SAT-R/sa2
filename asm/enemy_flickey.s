@@ -230,7 +230,7 @@ _08058C50:
 	subs r1, r1, r0
 	str r1, [r2]
 	mov r0, sb
-	bl sub_80051E8
+	bl DisplaySprite
 	lsls r5, r5, #0x18
 	lsrs r6, r5, #0x18
 	cmp r6, #2
@@ -481,7 +481,7 @@ _08058EAC:
 	mov r0, sb
 	bl UpdateSpriteAnimation
 	mov r0, sb
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r0, sl
 	bl Flickey_RenderIronBalls
 _08058ECA:
@@ -692,7 +692,7 @@ _08059004:
 	subs r1, r1, r0
 	str r1, [r2]
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	lsls r5, r5, #0x18
 	lsrs r7, r5, #0x18
 	cmp r7, #2
@@ -868,7 +868,7 @@ _080591B6:
 	str r0, [r1, #8]
 _080591D4:
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r0, sb
 	bl Flickey_RenderIronBalls
 _080591E0:
@@ -995,14 +995,14 @@ _080592BE:
 	subs r0, r0, r1
 	strh r0, [r7, #0x18]
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldr r0, [r7, #0x10]
 	movs r1, #0x80
 	lsls r1, r1, #3
 	eors r0, r1
 	str r0, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080592EA:
 	mov r0, r8
 	adds r0, #1
@@ -1070,14 +1070,14 @@ _0805933E:
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldr r0, [r5, #0x10]
 	movs r1, #0x80
 	lsls r1, r1, #3
 	eors r0, r1
 	str r0, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	lsls r4, r4, #0x18
 	lsrs r4, r4, #0x18
 	cmp r4, #2

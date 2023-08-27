@@ -233,10 +233,10 @@ static void NoteSphere_80758B8(Sprite_NoteSphere *note)
     Sprite *s = &note->disp;
 
     s->unk10 |= 0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->unk10 &= ~0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 NoteSphere_ShouldDespawn(Sprite_NoteSphere *note)

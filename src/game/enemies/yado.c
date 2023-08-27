@@ -228,7 +228,7 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 END_NONMATCH
 
@@ -255,7 +255,7 @@ void Task_8055378(void)
     sub_80122DC(yado->spawnX, yado->spawnY);
 
     if (UpdateSpriteAnimation(s) == 0) {
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         ENEMY_TURN_AROUND(s);
 
@@ -264,7 +264,7 @@ void Task_8055378(void)
         s->prevVariant = -1;
         gCurTask->main = Task_YadoMain;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

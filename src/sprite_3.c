@@ -23,7 +23,7 @@ const u8 gOamShapesSizes[12][2] = {
     { 32, 64 },
 };
 
-void sub_80051E8(Sprite *sprite)
+void DisplaySprite(Sprite *sprite)
 {
     OamData *oam;
     s32 x, y, sprWidth, sprHeight;

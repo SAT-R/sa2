@@ -86,7 +86,7 @@ void Task_801F6E0(void)
         s->x = bde->x - gCamera.x;
         s->y = bde->y - gCamera.y;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         bde->x += bde->unk4;
         bde->y += bde->unk6;

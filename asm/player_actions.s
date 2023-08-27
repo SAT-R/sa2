@@ -678,7 +678,7 @@ _08015B32:
 	cmp r0, r1
 	bne _08015B44
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08015B44:
 	pop {r3}
 	mov r8, r3
@@ -1029,7 +1029,7 @@ _08015DC2:
 	adds r0, r4, #0
 	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08015E06:
 	adds r0, r5, #1
 	lsls r0, r0, #0x18

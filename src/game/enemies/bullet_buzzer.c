@@ -128,7 +128,7 @@ void Task_BulletBuzzerMain(void)
         s->variant = 0;
         s->prevVariant = -1;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_8059B04(void)
@@ -163,13 +163,13 @@ void sub_8059B04(void)
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
-        sub_80051E8(s);
+        DisplaySprite(s);
         bbuzzer->unk5E = 60;
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;
         s->variant = 0;
         s->prevVariant = -1;
         gCurTask->main = Task_BulletBuzzerMain;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }

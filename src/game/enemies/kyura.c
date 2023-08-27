@@ -133,5 +133,5 @@ void Task_KyuraRecover(void)
         gCurTask->main = Task_KyuraMain;
     }
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

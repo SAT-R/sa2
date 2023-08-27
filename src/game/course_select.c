@@ -957,7 +957,7 @@ static bool8 AnimateNewZonePath(struct CourseSelectionScreen *coursesScreen)
             - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
         s->y = sZoneMapPathPositions[i][1];
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s = &coursesScreen->mapPaths[coursesScreen->zonePathsUnlocked];
@@ -965,7 +965,7 @@ static bool8 AnimateNewZonePath(struct CourseSelectionScreen *coursesScreen)
         - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
     s->y = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][1];
     animDone = UpdateSpriteAnimation(s) == 0;
-    sub_80051E8(s);
+    DisplaySprite(s);
     RenderUI(coursesScreen);
 
     return animDone;
@@ -987,7 +987,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
     s->x = TO_SCREEN_COORD(coursesScreen->avatarTargetX - coursesScreen->cameraScrollX)
         + 5;
     s->y = TO_SCREEN_COORD(coursesScreen->avatarTargetY) + 6;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (coursesScreen->currentCourse < 0xE) {
         s = &coursesScreen->zoneActUnits[0];
@@ -995,14 +995,14 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
         s->variant = COURSE_INDEX_TO_ZONE_INDEX(coursesScreen->currentCourse);
         s->prevVariant = -1;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         s = &coursesScreen->zoneActUnits[1];
         s->graphics.anim = 0x2F6;
         s->variant = COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse);
         s->prevVariant = -1;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s = &coursesScreen->zoneType;
@@ -1010,7 +1010,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
     s->variant = sZoneTypeAssets[coursesScreen->currentCourse][1];
     s->prevVariant = -1;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &coursesScreen->zoneName;
 #ifndef NON_MATCHING
@@ -1022,9 +1022,9 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
     s->variant = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][1];
     s->prevVariant = -1;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
     s = &coursesScreen->screenTitle;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (IS_SINGLE_PLAYER) {
         u8 i;
@@ -1036,7 +1036,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
             }
             s->x = (((i * 3)) * 8) + 0x24;
             UpdateSpriteAnimation(s);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -1145,7 +1145,7 @@ static void RenderZoneMapPathsAndUI(struct CourseSelectionScreen *coursesScreen)
             - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
         s->y = sZoneMapPathPositions[i][1];
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     RenderUI(coursesScreen);

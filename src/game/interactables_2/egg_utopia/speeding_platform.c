@@ -173,9 +173,9 @@ static void RenderPlatform(Sprite_SpeedingPlatform *platform)
     }
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)

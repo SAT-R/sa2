@@ -214,10 +214,10 @@ void sub_8075D28(Sprite_NoteBlock *block)
     Sprite *s = &block->s;
 
     s->unk10 |= 0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->unk10 &= ~0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 bool32 sub_8075D58(Sprite_NoteBlock *block)

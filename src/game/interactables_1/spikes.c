@@ -155,7 +155,7 @@ static void sub_805F810(void)
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
             UpdateSpriteAnimation(s);
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -199,7 +199,7 @@ static void sub_805F928(void)
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
             || (me->d.sData[0] != 0 || gUnknown_030053E0 != 0)) {
             UpdateSpriteAnimation(s);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -380,7 +380,7 @@ static void sub_805FBA0(void)
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0)
             || (gUnknown_030053E0 != 0)) {
             UpdateSpriteAnimation(s);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -448,7 +448,7 @@ static void Task_805FF68(void)
 
         if (procResult) {
             UpdateSpriteAnimation(s);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -516,7 +516,7 @@ static void Task_806012C(void)
 
         if (procResult) {
             UpdateSpriteAnimation(s);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }

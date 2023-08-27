@@ -108,7 +108,7 @@ NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
         ring->s.x -= gCamera.x;
         ring->s.y -= gCamera.y;
         UpdateSpriteAnimation(&ring->s);
-        sub_80051E8(&ring->s);
+        DisplaySprite(&ring->s);
         ring->s.x = ringX;
         ring->s.y = ringY;
     }

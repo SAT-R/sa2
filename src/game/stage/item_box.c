@@ -466,9 +466,9 @@ void sub_800B860(Entity_ItemBox *itembox, bool32 p1)
     itembox->item.y = (Q_24_8_TO_INT(itembox->unk74) + itembox->s.y);
 
     if (!p1)
-        sub_80051E8(&itembox->s);
+        DisplaySprite(&itembox->s);
 
-    sub_80051E8(&itembox->item);
+    DisplaySprite(&itembox->item);
 }
 
 bool32 sub_800B8AC(Entity_ItemBox *itembox)

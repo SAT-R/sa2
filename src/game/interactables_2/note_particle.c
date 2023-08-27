@@ -116,7 +116,7 @@ static void Task_8080DB8(void)
         UpdateSpriteAnimation(&np->s);
 
         if (np->framesUntilVisible == 0) {
-            sub_80051E8(&np->s);
+            DisplaySprite(&np->s);
         } else {
             np->framesUntilVisible--;
         }
@@ -141,7 +141,7 @@ static void Task_8080E54(void)
         UpdateSpriteAnimation(&np->s);
 
         if (np->framesUntilVisible == 0) {
-            sub_80051E8(&np->s);
+            DisplaySprite(&np->s);
         } else {
             np->framesUntilVisible--;
         }

@@ -183,7 +183,7 @@ extern const u8 gOamShapesSizes[12][2];
 
 s32 UpdateSpriteAnimation(Sprite *);
 
-void sub_80051E8(Sprite *);
+void DisplaySprite(Sprite *);
 void sub_8002A3C(Background *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);

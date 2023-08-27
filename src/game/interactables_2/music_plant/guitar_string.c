@@ -240,7 +240,7 @@ void sub_8076114(Sprite_GuitarString *gs)
         r1 -= gCamera.y;
         s->y = r1;
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

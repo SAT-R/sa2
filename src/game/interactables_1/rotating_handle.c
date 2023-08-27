@@ -137,7 +137,7 @@ static void sub_805EA94(void)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 // https://decomp.me/scratch/RaPDV
@@ -165,7 +165,7 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
 
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = sub_805EF90;
-        sub_80051E8(s);
+        DisplaySprite(s);
         return;
     }
 
@@ -254,7 +254,7 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 END_NONMATCH
 
@@ -299,5 +299,5 @@ static void sub_805EF90(void)
         gCurTask->main = sub_805EA94;
     }
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

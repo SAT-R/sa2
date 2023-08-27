@@ -86,7 +86,7 @@ void Task_SpindashDustEffect(void)
         }
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -141,7 +141,7 @@ void Task_SpindashDustEffectBig(void)
         }
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

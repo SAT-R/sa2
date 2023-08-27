@@ -124,7 +124,7 @@ static void sub_8086B38(HeartParticles *unk998)
             if (UpdateSpriteAnimation(s) == 0) {
                 unk998->unkC0 &= ~(1 << i);
             } else {
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
         j <<= 1;

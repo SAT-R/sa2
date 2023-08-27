@@ -95,7 +95,7 @@ void Task_Decoration(void)
         TaskDestroy(gCurTask);
     } else {
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

@@ -155,7 +155,7 @@ static void Task_Interactable_BouncySpring()
         TaskDestroy(gCurTask);
     } else {
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -193,7 +193,7 @@ static void Task_805E02C()
             s->prevVariant = -1;
         }
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

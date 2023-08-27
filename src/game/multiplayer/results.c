@@ -448,10 +448,10 @@ static void sub_805C69C(void)
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         if (GetBit(gMultiplayerConnections, i)) {
             item = &resultsScreen->characterRows[i];
-            sub_80051E8(item);
+            DisplaySprite(item);
             if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
                 item = &resultsScreen->resultRows[i];
-                sub_80051E8(item);
+                DisplaySprite(item);
             }
         }
     }

@@ -169,6 +169,6 @@ void Task_Interactable_Booster(void)
         TaskDestroy(gCurTask);
     } else {
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }

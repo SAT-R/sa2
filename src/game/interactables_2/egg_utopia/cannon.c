@@ -241,7 +241,7 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
     }
 
     sub_8004860(s, &transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 // https://decomp.me/scratch/TDVLh

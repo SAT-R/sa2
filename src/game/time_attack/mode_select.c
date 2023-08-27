@@ -478,16 +478,16 @@ static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
 {
     Sprite *s;
     s = &modeScreen->unk80;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s = &modeScreen->unkB0;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s = &modeScreen->unkE0;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (modeScreen->unk14E != 0) {
         s = &modeScreen->infoText;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

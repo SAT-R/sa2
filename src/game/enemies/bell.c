@@ -124,5 +124,5 @@ void sub_8054D20(void)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

@@ -873,7 +873,7 @@ _080085A2:
 	subs r0, r7, r0
 	strh r0, [r3, #0x18]
 	ldr r0, [sp, #0x18]
-	bl sub_80051E8
+	bl DisplaySprite
 	b _08008638
 	.align 2, 0
 _080085C0: .4byte gCamera
@@ -1108,7 +1108,7 @@ _08008764:
 	subs r0, r7, r0
 	strh r0, [r3, #0x18]
 	ldr r0, [sp, #0x18]
-	bl sub_80051E8
+	bl DisplaySprite
 	b _080087FA
 	.align 2, 0
 _08008784: .4byte gCamera

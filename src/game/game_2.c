@@ -85,7 +85,7 @@ void Task_801F214(void)
         }
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

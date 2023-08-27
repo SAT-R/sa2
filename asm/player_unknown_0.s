@@ -570,7 +570,7 @@ _0801170A:
 	movs r5, #0x10
 _0801177A:
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r4, #0x16]
 	adds r0, #0x10
 	strh r0, [r4, #0x16]
@@ -746,7 +746,7 @@ _080118E8:
 	adds r0, r4, #0
 	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080118F6:
 	pop {r4, r5}
 	pop {r0}

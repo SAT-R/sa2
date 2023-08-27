@@ -1007,7 +1007,7 @@ static void Task_PressStartMenuMain(void)
 
     // Show the press start text for 2/3 of a second
     if (titleScreen->animFrame < 40) {
-        sub_80051E8(&titleScreen->unkF0);
+        DisplaySprite(&titleScreen->unkF0);
     }
 
     titleScreen->animFrame++;
@@ -1015,7 +1015,7 @@ static void Task_PressStartMenuMain(void)
     if (titleScreen->animFrame > 80) {
         titleScreen->animFrame = 0;
     }
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
 
     if (gPressedKeys & START_BUTTON) {
         m4aSongNumStart(SE_SELECT);
@@ -1039,11 +1039,11 @@ static void Task_StartPressedTransitionAnim(void)
 
     // Flash the start button
     if ((titleScreen->animFrame & 7) > 3) {
-        sub_80051E8(&titleScreen->unkF0);
+        DisplaySprite(&titleScreen->unkF0);
     }
     titleScreen->animFrame++;
 
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
 
     // Start showing the next menu items after 1/6 of a second (10 frames)
     if (titleScreen->animFrame == 10) {
@@ -1072,7 +1072,7 @@ static inline void PlayModeMenuHighlightFocused(struct TitleScreen *titleScreen)
     for (menuIndex = 0; menuIndex < 2; menuIndex++) {
         menuItem = &titleScreen->menuItems[menuIndex ^ 1];
         menuItem->palId = (menuIndex ^ titleScreen->menuCursor);
-        sub_80051E8(menuItem);
+        DisplaySprite(menuItem);
     };
 }
 
@@ -1081,7 +1081,7 @@ static void Task_PlayModeMenuMain(void)
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
     struct TransitionState *transition;
 
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
     PlayModeMenuHighlightFocused(titleScreen);
@@ -1140,11 +1140,11 @@ static void Task_SinglePlayerSelectedTransitionAnim(void)
 
     // Flash the previous selected single player menu item
     if ((titleScreen->animFrame & 7) > 3) {
-        sub_80051E8(&menuItems[MENU_ITEM_SINGLE_PLAYER]);
+        DisplaySprite(&menuItems[MENU_ITEM_SINGLE_PLAYER]);
     }
     titleScreen->animFrame++;
 
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
 
     // Allow back to be pressed during animation
     // to cancel
@@ -1189,7 +1189,7 @@ static inline void SinglePlayerMenuHighlightFocused(struct TitleScreen *titleScr
         } else {
             menuItem->palId = 0;
         }
-        sub_80051E8(menuItem);
+        DisplaySprite(menuItem);
     }
 };
 
@@ -1316,16 +1316,16 @@ static void Task_HandleTitleScreenExit(void)
                 menuItem = &titleScreen->menuItems[i ^ 1];
                 menuItem->palId = i ^ 1;
                 if ((++titleScreen->animFrame & 7) > 3) {
-                    sub_80051E8(menuItem);
+                    DisplaySprite(menuItem);
                 }
             }
-            sub_80051E8(&titleScreen->unkC0);
+            DisplaySprite(&titleScreen->unkC0);
         } else {
             menuItem
                 = &titleScreen->menuItems[SinglePlayerMenuItem(titleScreen->menuCursor)];
             menuItem->palId = 1;
             if ((++titleScreen->animFrame & 7) > 3) {
-                sub_80051E8(menuItem);
+                DisplaySprite(menuItem);
             }
         }
     }
@@ -1411,7 +1411,7 @@ static void Task_JumpToPlayModeMenu(void)
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
     PlayModeMenuHighlightFocused(titleScreen);
 
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
     if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
@@ -1606,7 +1606,7 @@ static void Task_BirdAnim(void)
     s->y = (temp << 0x10 >> 0x10) + animation->unk32 - gBgScrollRegs[1][1];
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if ((u16)(s->x + 64) > 368) {
         BirdAnimEnd();
@@ -1632,7 +1632,7 @@ static void Task_MenuItemTransitionOutAnim(void)
     s->x -= sMenuItemTransitionKeyFrames[transition->animFrame];
     gBldRegs.bldAlpha = FadeOutBlend(transition->animFrame * 2);
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (++transition->animFrame > 8) {
         s->x = transition->unk12;
@@ -1656,7 +1656,7 @@ static void Task_MenuItemTransitionInAnim(void)
     s->x = sum + transition->unk12;
 
     gBldRegs.bldAlpha = FadeInBlend(transition->animFrame * 2);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (++transition->animFrame > 8) {
         s->x = transition->unk12;
@@ -1743,7 +1743,7 @@ static void Task_LensFlareAnim(void)
                                        lensFlare->animFrame * 16, 8, 0);
 
             sub_8004860(s, transform);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 
@@ -1847,7 +1847,7 @@ static void Task_ShowPressStartMenu(void)
 {
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
 
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
     if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {

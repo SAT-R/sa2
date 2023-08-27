@@ -74,7 +74,7 @@ void sub_800A5F8(void)
     } else if (UpdateSpriteAnimation(&su->s) == 0 && su->unk40 == 0) {
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(&su->s);
+        DisplaySprite(&su->s);
     }
 }
 

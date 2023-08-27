@@ -68,14 +68,14 @@ void Task_CollectRingEffect(void)
     s->x -= gCamera.x;
     s->y -= gCamera.y;
     if (UpdateSpriteAnimation(s) == 0) {
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         gUnknown_0300540C--;
 
         TaskDestroy(gCurTask);
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->x = playerX;
     s->y = playerY;

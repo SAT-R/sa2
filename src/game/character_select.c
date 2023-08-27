@@ -549,8 +549,8 @@ static void Task_FadeInAndStartRollInAnim(void)
     }
 
     NextTransitionFrame(&characterScreen->screenFade);
-    sub_80051E8(&characterScreen->scrollUpArrow);
-    sub_80051E8(&characterScreen->scrollDownArrow);
+    DisplaySprite(&characterScreen->scrollUpArrow);
+    DisplaySprite(&characterScreen->scrollDownArrow);
 
     BackgroundAnim();
 }
@@ -1125,7 +1125,7 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
                                 & 0x3FF))
                            * 92)
                     + 80;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     } else {
@@ -1140,7 +1140,7 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
                 temp2 = (temp + i * 0x66) & 0x3FF;
                 s->x = Q_2_14_TO_INT(COS(temp2) * 92) + 10;
                 s->y = Q_2_14_TO_INT(SIN(temp2) * 92) + 80;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
 
@@ -1153,15 +1153,15 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
                 temp2 = (temp + i * 0x66) & 0x3FF;
                 s->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
                 s->y = (gSineTable[temp2] * 0x5C >> 0xE) + 80;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     }
 
     s = &characterScreen->scrollUpArrow;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s = &characterScreen->scrollDownArrow;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterScreen)
@@ -1192,7 +1192,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
                          * 0x5C)
                         >> 0xE)
                     + 0x50;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     } else {
@@ -1206,7 +1206,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
                 temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
                 s->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
                 s->y = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     }
@@ -1232,7 +1232,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     s->unk10 = gUnknown_030054B8++ | 0x60;
     UpdateSpriteAnimation(s);
     sub_8004860(s, transformOptions);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (characterScreen->animFrame < 8) {
         i = 0xA0;
@@ -1242,7 +1242,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     s = &characterScreen->screenTitleText;
     s->x = i + 0xF0;
     s->y = 0x10;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (characterScreen->animFrame < 8) {
         i = 8 - characterScreen->animFrame;
@@ -1270,7 +1270,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
         s->unk10 &= ~0x40000;
         s->palId = 0;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (characterScreen->selectedCharacter == CHARACTER_CREAM) {
         s = &characterScreen->characterSecondarySprite;
@@ -1287,7 +1287,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
             s->unk10 &= ~0x40000;
             s->palId = 0;
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (characterScreen->animFrame < 4) {
@@ -1300,7 +1300,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     s = &characterScreen->characterNameSubText;
     s->x = characterScreen->characterSubTextBaseXPos + i * 0x14;
     s->y = 0x90;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &characterScreen->characterTitleTextLeft;
     transformOptions = &characterScreen->characterTitleLeftTransform;
@@ -1317,7 +1317,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     s->unk10 = gUnknown_030054B8++ | 0x20;
     UpdateSpriteAnimation(s);
     sub_8004860(s, transformOptions);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &characterScreen->characterTitleTextRight;
     transformOptions = &characterScreen->characterTitleRightTransform;
@@ -1334,12 +1334,12 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     s->unk10 = gUnknown_030054B8++ | 0x20;
     UpdateSpriteAnimation(s);
     sub_8004860(s, transformOptions);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &characterScreen->scrollUpArrow;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s = &characterScreen->scrollDownArrow;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterScreen)
@@ -1459,7 +1459,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
                          * 0x5C)
                         >> 0xE)
                     + 0x50;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     } else {
@@ -1473,7 +1473,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
                 temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
                 s->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
                 s->y = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     }
@@ -1503,7 +1503,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         s->unk10 = gUnknown_030054B8++ | 0x60;
         UpdateSpriteAnimation(s);
         sub_8004860(s, transformOptions);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s = &characterScreen->characterSprite;
@@ -1530,7 +1530,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         s->unk10 &= ~0x40000;
         s->palId = 0;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (characterScreen->selectedCharacter == CHARACTER_CREAM) {
         s = &characterScreen->characterSecondarySprite;
@@ -1547,7 +1547,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
             s->palId = 0;
         }
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (IS_MULTI_PLAYER
@@ -1556,13 +1556,13 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         s = &characterScreen->characterUnavailableIndicator;
         s->x = f;
         s->y = 130;
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s = &characterScreen->characterNameSubText;
     s->x = characterScreen->characterSubTextBaseXPos + (d * 5) * 4;
     s->y = 144;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
 #ifndef NON_MATCHING
     if (&characterScreen->screenTitleText) {
@@ -1575,7 +1575,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     s = &characterScreen->screenTitleText;
     s->x = DISPLAY_WIDTH;
     s->y = 16;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &characterScreen->characterTitleTextLeft;
     transformOptions = &characterScreen->characterTitleLeftTransform;
@@ -1596,7 +1596,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         s->unk10 = 0;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &characterScreen->characterTitleTextRight;
     transformOptions = &characterScreen->characterTitleRightTransform;
@@ -1617,15 +1617,15 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         s->unk10 = 0;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &characterScreen->scrollUpArrow;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &characterScreen->scrollDownArrow;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void RenderUI(struct CharacterSelectionScreen *characterScreen)
@@ -1654,7 +1654,7 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
                          * 0x5C)
                         >> 0xE)
                     + 0x50;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     } else {
@@ -1668,7 +1668,7 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
                 temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
                 s->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
                 s->y = (gSineTable[temp2] * 0x5C >> 0xE) + 0x50;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     }
@@ -1698,22 +1698,22 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
         s->unk10 = gUnknown_030054B8++ | 0x60;
         UpdateSpriteAnimation(s);
         sub_8004860(s, transformOptions);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
     UpdateSpriteAnimation(&characterScreen->characterSprite);
-    sub_80051E8(&characterScreen->characterSprite);
+    DisplaySprite(&characterScreen->characterSprite);
 
     if (characterScreen->selectedCharacter == CHARACTER_CREAM) {
         element2 = &characterScreen->characterSecondarySprite;
         UpdateSpriteAnimation(element2);
-        sub_80051E8(element2);
+        DisplaySprite(element2);
     }
     if (IS_MULTI_PLAYER
         && (characterScreen->multiplayerSelections
             & CHARACTER_BIT(characterScreen->selectedCharacter))) {
-        sub_80051E8(&characterScreen->characterUnavailableIndicator);
+        DisplaySprite(&characterScreen->characterUnavailableIndicator);
     }
-    sub_80051E8(&characterScreen->characterNameSubText);
+    DisplaySprite(&characterScreen->characterNameSubText);
 #ifndef NON_MATCHING
     if (&characterScreen->screenTitleText) {
         element3 = &characterScreen->screenTitleText;
@@ -1724,20 +1724,20 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
         ++element3;
         --element3;
     }
-    sub_80051E8(element3);
+    DisplaySprite(element3);
 #else
-    sub_80051E8(&characterScreen->screenTitleText);
+    DisplaySprite(&characterScreen->screenTitleText);
 #endif
-    sub_80051E8(&characterScreen->characterTitleTextLeft);
-    sub_80051E8(&characterScreen->characterTitleTextRight);
+    DisplaySprite(&characterScreen->characterTitleTextLeft);
+    DisplaySprite(&characterScreen->characterTitleTextRight);
 
     s = &characterScreen->scrollUpArrow;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &characterScreen->scrollDownArrow;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void Task_MultiplayerWaitForSelections(void)

@@ -139,9 +139,9 @@ static void sub_807F0D8(Sprite_IA95 *ia95)
     ia95->s.x = ia95->unk3C - gCamera.x;
     ia95->s.y = ia95->unk40 - gCamera.y;
     ia95->s.unk10 &= ~0x400;
-    sub_80051E8(&ia95->s);
+    DisplaySprite(&ia95->s);
     ia95->s.unk10 |= 0x400;
-    sub_80051E8(&ia95->s);
+    DisplaySprite(&ia95->s);
 }
 
 static bool32 sub_807F120(Sprite_IA95 *ia95)

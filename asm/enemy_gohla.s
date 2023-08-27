@@ -410,7 +410,7 @@ _08051AAA:
 	adds r0, r5, #0
 	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r0, #0x16
 	ldrsh r1, [r5, r0]
 	ldrh r2, [r5, #0x18]
@@ -632,7 +632,7 @@ _08051C62:
 	str r0, [r1, #8]
 _08051C80:
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r0, #0x16
 	ldrsh r1, [r4, r0]
 	ldrh r2, [r4, #0x18]
@@ -778,7 +778,7 @@ _08051DA0:
 	strh r0, [r5, #0x1a]
 	adds r0, r5, #0
 	str r3, [sp, #8]
-	bl sub_80051E8
+	bl DisplaySprite
 	adds r0, r6, #1
 	lsls r0, r0, #0x18
 	lsrs r6, r0, #0x18

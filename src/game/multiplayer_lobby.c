@@ -505,10 +505,10 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
         }
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &lobbyScreen->uiElements[ELEMENT_TITLE];
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &lobbyScreen->uiElements[ELEMENT_YES];
     if (lobbyScreen->cursor != CURSOR_YES) {
@@ -519,7 +519,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
         s->palId = 0;
     }
     s->y = DISPLAY_HEIGHT - 50;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &lobbyScreen->uiElements[ELEMENT_NO];
 
@@ -531,7 +531,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
         s->palId = 0;
     }
     s->y = DISPLAY_HEIGHT - 50;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (lobbyScreen->animFrame > 0) {
         lobbyScreen->animFrame--;

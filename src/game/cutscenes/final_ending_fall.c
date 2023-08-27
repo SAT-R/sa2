@@ -671,7 +671,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
         s->x = scene->unk3F8[i][0];
         s->y = scene->unk3F8[i][1] >> 8;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk35C > 8) {
@@ -685,7 +685,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
     s->y = scene->unk3C4 >> 8;
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (scene->unk35C < 10) {
         for (i = 0; i < 6; i++) {
@@ -696,7 +696,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
                 s->x = scene->unk378[i][0];
                 s->y = scene->unk378[i][1] >> 8;
                 UpdateSpriteAnimation(s);
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
 
             if (scene->unk365[i] != 0) {
@@ -711,7 +711,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
                     s->timeUntilNextFrame = 0;
                     s->unk10 &= ~0x4000;
                 }
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     }
@@ -725,7 +725,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
     s->x = scene->unk3A8;
     s->y = scene->unk3AC >> 8;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (scene->unk35C > 10) {
         variant = 1;
@@ -737,7 +737,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
     s->x = scene->unk3B4;
     s->y = scene->unk3B8 >> 8;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (gSelectedCharacter == CHARACTER_CREAM) {
         s = &scene->unk170;
@@ -746,7 +746,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
         s->x = scene->unk3B4;
         s->y = scene->unk3B8 >> 8;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk35C > 10) {

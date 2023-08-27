@@ -326,9 +326,9 @@ static void RenderWindmill(Sprite_SmallWindmill *windmill)
     s->x = windmill->x - gCamera.x;
     s->y = windmill->y - gCamera.y;
     s->unk10 &= ~0xC00;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s->unk10 |= 0xC00;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 ShouldDespawn(Sprite_SmallWindmill *windmill)

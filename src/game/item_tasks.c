@@ -175,7 +175,7 @@ void Task_Item_Shield_Normal(void)
 #endif
         if (((gUnknown_03005590 & 0x2) && (b != itemEffect))
             || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
-            sub_80051E8(&item->s);
+            DisplaySprite(&item->s);
         }
     }
 }
@@ -227,7 +227,7 @@ void Task_Item_Shield_Magnetic(void)
         b &= one;
         if (((gUnknown_03005590 & 0x2) && (b != one))
             || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
-            sub_80051E8(&item->s);
+            DisplaySprite(&item->s);
         }
     }
 }
@@ -260,7 +260,7 @@ void Task_802ABC8(void)
         item->s.unk10 |= r2;
 
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -315,7 +315,7 @@ void Task_Item_Invincibility(void)
         b &= ~param;
         if (((gUnknown_03005590 & 0x2) && (b != one))
             || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
-            sub_80051E8(&item->s);
+            DisplaySprite(&item->s);
         }
     }
 }
@@ -364,7 +364,7 @@ void Task_Item_Confusion(void)
             b &= one;
             if (((gUnknown_03005590 & 0x2) && (b != one))
                 || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     } else {

@@ -40,11 +40,11 @@ static void Task_CreateDustCloud(void)
     s->y -= gCamera.y;
 
     if (UpdateSpriteAnimation(s) == 0) {
-        sub_80051E8(s);
+        DisplaySprite(s);
         TaskDestroy(gCurTask);
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->x = oldX;
     s->y = oldY;

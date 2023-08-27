@@ -172,7 +172,7 @@ static void sub_807C558(Sprite_IA85 *ia85)
     sprite->x = ia85->unk3C - gCamera.x + Q_24_8_TO_INT(ia85->unk44);
     sprite->y = ia85->unk40 - gCamera.y + Q_24_8_TO_INT(ia85->unk46);
 
-    sub_80051E8(sprite);
+    DisplaySprite(sprite);
 }
 
 static bool32 sub_807C598(Sprite_IA85 *ia85)

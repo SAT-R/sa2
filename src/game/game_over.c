@@ -328,8 +328,8 @@ void sub_8036BD4(GameOverScreen *screen)
 {
     Sprite *s = &screen->unkC;
     Sprite *sprite2 = &screen->unk3C;
-    sub_80051E8(s);
-    sub_80051E8(sprite2);
+    DisplaySprite(s);
+    DisplaySprite(sprite2);
 }
 
 void sub_8036BEC(GameOverScreen *screen)
@@ -351,8 +351,8 @@ void sub_8036BEC(GameOverScreen *screen)
         return;
     }
 
-    sub_80051E8(s);
-    sub_80051E8(sprite2);
+    DisplaySprite(s);
+    DisplaySprite(sprite2);
 }
 
 void sub_8036C38(struct Task *t)

@@ -165,12 +165,12 @@ static void RenderUI(struct RaceProgressIndicator *progressIndicator)
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         s = &progressIndicator->avatars[i];
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     for (i = 0; i < ARRAY_COUNT(progressIndicator->flags); i++) {
         s = &progressIndicator->flags[i];
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

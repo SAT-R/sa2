@@ -144,7 +144,7 @@ void sub_8036168(void)
     s->x = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
     s->y = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (countdown->unk68 < (GBA_FRAMES_PER_SECOND * 3)) {
         s = &countdown->unk30;
@@ -154,7 +154,7 @@ void sub_8036168(void)
         s->x = (Q_24_8_TO_INT(gPlayer.x) - gCamera.x) + 0x18;
         s->y = (Q_24_8_TO_INT(gPlayer.y) - gCamera.y) - 0x18;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (countdown->unk68 >= (int)((1 + 1. / 6.) * GBA_FRAMES_PER_SECOND)
@@ -186,7 +186,7 @@ void sub_8036398(void)
     }
 
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_8036524(void);
@@ -270,7 +270,7 @@ void sub_8036524(void)
     transformConfig->y = s->y;
     UpdateSpriteAnimation(s);
     sub_8004860(s, transformConfig);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &startMessage->unk3C;
     transformConfig = &startMessage->unk6C;
@@ -292,7 +292,7 @@ void sub_8036524(void)
     transformConfig->y = s->y;
     UpdateSpriteAnimation(s);
     sub_8004860(s, transformConfig);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_8036638(struct Task *t)

@@ -84,11 +84,11 @@ static void Task_EggmobileMoveUp(void)
 
     s2->y -= 2;
     UpdateSpriteAnimation(s2);
-    sub_80051E8(s2);
+    DisplaySprite(s2);
 
     s->y -= 2;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (s->y <= 50) {
         gCurTask->main = Task_EggmobileSwitchMovement;
@@ -113,11 +113,11 @@ static void Task_EggmobileSwitchMovement(void)
 
     s = &em->s2;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &em->s;
     UpdateSpriteAnimation(s);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void Task_EggmobileMoveRight(void)
@@ -131,12 +131,12 @@ static void Task_EggmobileMoveRight(void)
     } else {
         s->x += 2;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         s = &em->s;
         s->x += 2;
         UpdateSpriteAnimation(s);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

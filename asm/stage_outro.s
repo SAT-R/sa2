@@ -1601,7 +1601,7 @@ _08031174:
 _0803117A:
 	strh r4, [r5, #0x16]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	adds r4, #0x20
 	adds r6, #1
 	cmp r6, #7
@@ -1620,7 +1620,7 @@ _08031198:
 _080311A2:
 	strh r4, [r5, #0x16]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	adds r4, #0x20
 	adds r6, #1
 	cmp r6, #7
@@ -1652,7 +1652,7 @@ _080311D4:
 	strh r0, [r4]
 	adds r0, r5, #0
 	str r1, [sp]
-	bl sub_80051E8
+	bl DisplaySprite
 	adds r4, #0x30
 	adds r0, r5, #0
 	adds r0, #0x30
@@ -1687,7 +1687,7 @@ _0803121E:
 	subs r0, r4, r1
 	strh r0, [r5, #0x16]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r0, #0xae
 	lsls r0, r0, #1
 	add r0, sb
@@ -1728,7 +1728,7 @@ _0803126E:
 	subs r0, r4, r2
 	strh r0, [r5, #0x16]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r0, #0xb0
 	lsls r0, r0, #1
 	add r0, sb
@@ -1781,7 +1781,7 @@ _080312D6:
 	subs r0, r4, r2
 	strh r0, [r5, #0x16]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r0, #0xb2
 	lsls r0, r0, #1
 	add r0, sb

@@ -616,18 +616,18 @@ static void SoundTestScreenRenderUI(void)
             }
         }
 
-        sub_80051E8(numberDisplayDigit);
+        DisplaySprite(numberDisplayDigit);
     }
 
     for (i = 0; i < 2; i++, titleTrimAndControls++) {
-        sub_80051E8(titleTrimAndControls);
+        DisplaySprite(titleTrimAndControls);
     }
 
-    sub_80051E8(backCountrolName);
-    sub_80051E8(unkC8);
-    sub_80051E8(unk2DC);
+    DisplaySprite(backCountrolName);
+    DisplaySprite(unkC8);
+    DisplaySprite(unk2DC);
     unk2DC->unk10 |= 0x400;
-    sub_80051E8(unk2DC);
+    DisplaySprite(unk2DC);
     unk2DC->unk10 &= ~0x400;
 
     if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING) {
@@ -727,19 +727,19 @@ static void SoundTestScreenRenderUI(void)
     }
 
     for (i = 0; i < 4; i++) {
-        sub_80051E8(&speakerConeElement[i]);
+        DisplaySprite(&speakerConeElement[i]);
     }
 
-    sub_80051E8(unk2D8);
+    DisplaySprite(unk2D8);
 
     scrollArrows->x
         = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7)
         + 94;
-    sub_80051E8(scrollArrows);
+    DisplaySprite(scrollArrows);
     scrollArrows->x = 58
         - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
     scrollArrows->unk10 |= 0x400;
-    sub_80051E8(scrollArrows);
+    DisplaySprite(scrollArrows);
     scrollArrows->unk10 &= ~0x400;
 
     soundTestScreen->scrollArrowAnimFrame++;
@@ -923,7 +923,7 @@ static void SoundTestScreenSetNameDisplayPos(u8 unused_, s16 x, s16 y)
         *pos = x + i * 10;
         pos++;
         *pos = y;
-        sub_80051E8(&soundTestScreen->nameDisplay[i]);
+        DisplaySprite(&soundTestScreen->nameDisplay[i]);
     }
 }
 

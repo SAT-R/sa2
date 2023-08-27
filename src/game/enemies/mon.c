@@ -121,7 +121,7 @@ static void Task_Mon_2(void)
 
             gCurTask->main = Task_Mon_3;
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -193,6 +193,6 @@ static void Task_Mon_4(void)
                 gCurTask->main = Task_MonMain;
             }
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }

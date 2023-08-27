@@ -297,13 +297,13 @@ void sub_80897E8(void)
 
         for (i = 0; i < 8; i++) {
             s->x = temp + i * 0x20;
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     } else {
         s = &resultsCutScene->unk12C;
         for (i = 0; i < 8; i++) {
             s->x = i << 5; // TODO: Does (i * 32) match?
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 
@@ -317,7 +317,7 @@ void sub_80897E8(void)
 
         for (i = 0; i < temp; i++) {
             s = &resultsCutScene->unkC[i];
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 
@@ -326,7 +326,7 @@ void sub_80897E8(void)
         if ((unk168 - 0x5A) < 0xB) {
             s->x = (100 - unk168) * 16 + 40;
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (unk168 > 0x77) {
@@ -350,12 +350,12 @@ void sub_80897E8(void)
                     resultsCutScene->transform.width = 0x10;
                 }
                 sub_8004860(s, &resultsCutScene->transform);
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
 
             if (resultsCutScene->unk2D8 == 1 && (unk168 & 0x20)) {
                 s = &resultsCutScene->unk9C[2];
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
 
@@ -370,7 +370,7 @@ void sub_80897E8(void)
                 s->y += gUnknown_080E05C4[index];
             }
 
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }

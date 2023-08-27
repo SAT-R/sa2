@@ -285,7 +285,7 @@ _08019ED4:
 _08019EE0:
 	strh r0, [r3, #0x18]
 	adds r0, r3, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	pop {r4}
 	pop {r0}
 	bx r0

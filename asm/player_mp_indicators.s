@@ -610,7 +610,7 @@ _0801984A:
 	mov r1, sl
 	bl sub_8004860
 	ldr r0, [sp]
-	bl sub_80051E8
+	bl DisplaySprite
 _08019882:
 	add sp, #8
 	pop {r3, r4, r5}
@@ -1156,7 +1156,7 @@ _08019C5A:
 	mov r1, sl
 	bl sub_8004860
 	ldr r0, [sp]
-	bl sub_80051E8
+	bl DisplaySprite
 _08019C96:
 	add sp, #8
 	pop {r3, r4, r5}

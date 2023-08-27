@@ -444,7 +444,7 @@ static void sub_805CC34(void)
     s = &teamPlayScreen->unkC0[0];
     s->x = (DISPLAY_WIDTH / 2);
     s->y = 28;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &teamPlayScreen->unkC0[2];
     s->x = 70;
@@ -454,7 +454,7 @@ static void sub_805CC34(void)
     } else {
         s->palId = 0xFF;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &teamPlayScreen->unkC0[3];
     s->x = 0xAA;
@@ -464,12 +464,12 @@ static void sub_805CC34(void)
     } else {
         s->palId = 1;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &teamPlayScreen->unkC0[4];
     s->x = (DISPLAY_WIDTH / 2);
     s->y = 52;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         union MultiSioData *msd = &gMultiSioSend;
@@ -535,7 +535,7 @@ static void sub_805D1F8(void)
     s = &teamPlayScreen->unkC0[1];
     s->x = (DISPLAY_WIDTH / 2);
     s->y = 28;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
         packet = &gMultiSioRecv[i];
@@ -550,7 +550,7 @@ static void sub_805D1F8(void)
                 s = &teamPlayScreen->unk0[i];
                 s->y = (i * 24) + 64;
                 s->x = gUnknown_080D92B8[packet->pat0.unk2];
-                sub_80051E8(s);
+                DisplaySprite(s);
 
                 s = &teamPlayScreen->unk1B0;
                 s->y = (i * 24) + 64;
@@ -563,12 +563,12 @@ static void sub_805D1F8(void)
                     s->unk10 |= 0x400;
                     gMultiplayerConnections |= (0x10 << (i));
                 }
-                sub_80051E8(s);
+                DisplaySprite(s);
                 someVar = FALSE;
             } else {
                 s16 a;
                 s = &teamPlayScreen->unk0[i];
-                sub_80051E8(s);
+                DisplaySprite(s);
                 a = s->x;
 
                 if (a == gUnknown_080D92B8[0]) {
@@ -658,7 +658,7 @@ static void sub_805D644(struct MultiplayerTeamPlayScreen *teamPlayScreen)
             s = &teamPlayScreen->unk0[i];
             s->x = gUnknown_080D92B8[i & 1];
             s->y = i * 0x18 + 0x40;
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }
