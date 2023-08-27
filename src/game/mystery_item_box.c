@@ -91,13 +91,13 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
     s->palId = 0;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->hitboxes[0].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
     s->graphics.dest = VramMalloc(16);
     s->graphics.anim = SA2_ANIM_ITEMBOX;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &itemBox->identifier;
     s->animSpeed = 0x10;
@@ -106,13 +106,13 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
     s->palId = 0;
-    s->unk1A = 0x4C0;
+    s->unk1A = SPRITE_OAM_ORDER(19);
     s->hitboxes[0].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
     s->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void sub_808616C(void)
@@ -127,7 +127,7 @@ static void sub_808616C(void)
     identifier = &itemBox->identifier;
     identifier->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
     identifier->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
-    sub_8004558(identifier);
+    UpdateSpriteAnimation(identifier);
 
     itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
@@ -201,8 +201,8 @@ static void sub_808623C(void)
 
     sub_8004860(&itemBox->box, transform);
     sub_8004860(&itemBox->identifier, transform);
-    sub_80051E8(&itemBox->box);
-    sub_80051E8(&itemBox->identifier);
+    DisplaySprite(&itemBox->box);
+    DisplaySprite(&itemBox->identifier);
 }
 
 static inline void sub_808673C_inline(void)
@@ -254,8 +254,8 @@ static void sub_808636C(void)
 
     sub_8004860(&itemBox->box, transform);
     sub_8004860(&itemBox->identifier, transform);
-    sub_80051E8(&itemBox->box);
-    sub_80051E8(&itemBox->identifier);
+    DisplaySprite(&itemBox->box);
+    DisplaySprite(&itemBox->identifier);
 }
 
 static void sub_8086474(Sprite_MysteryItemBox *itemBox)
@@ -473,10 +473,10 @@ static void sub_80868A8(Sprite_MysteryItemBox *itemBox, u32 p2)
     itemBox->identifier.y = itemBox->box.y + Q_24_8_TO_INT(itemBox->iconOffsetY);
 
     if (p2 == 0) {
-        sub_80051E8(&itemBox->box);
+        DisplaySprite(&itemBox->box);
     }
 
-    sub_80051E8(&itemBox->identifier);
+    DisplaySprite(&itemBox->identifier);
 }
 
 static bool32 sub_80868F4(Sprite_MysteryItemBox *itemBox)

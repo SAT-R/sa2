@@ -58,7 +58,7 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.anim = 0x21A;
     s->variant = 0;
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -119,8 +119,8 @@ void sub_806160C(void)
         return;
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 void sub_80617A4(void)
@@ -163,11 +163,11 @@ void sub_80617A4(void)
         return;
     }
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         s->graphics.anim = 538;
         s->variant = 0;
         s->prevVariant = -1;
         gCurTask->main = sub_806160C;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

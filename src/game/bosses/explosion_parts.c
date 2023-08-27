@@ -48,7 +48,7 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         s->x = 0;
         s->y = 0;
         s->graphics.dest = info->vram;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
@@ -85,11 +85,11 @@ void Task_BossParticleWithExplosionUpdate(void)
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
@@ -117,7 +117,7 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         s->x = 0;
         s->y = 0;
         s->graphics.dest = info->vram;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
@@ -150,9 +150,9 @@ void Task_BossParticleStatic(void)
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

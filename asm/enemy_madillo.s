@@ -319,9 +319,9 @@ _0805648A:
 	lsls r1, r7, #8
 	bl sub_80122DC
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0805649E:
 	add sp, #0x14
 	pop {r3, r4, r5}
@@ -545,9 +545,9 @@ _08056618:
 	strb r0, [r1]
 _08056658:
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08056664:
 	add sp, #0xc
 	pop {r3, r4}

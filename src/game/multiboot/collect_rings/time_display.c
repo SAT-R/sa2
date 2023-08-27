@@ -33,7 +33,7 @@ void CreateCollectRingsTimeDisplay(void)
     timeDisplay = TaskGetStructPtr(t);
 
     s = &timeDisplay->unk0;
-    s->unk1A = 0x140;
+    s->unk1A = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -48,13 +48,13 @@ void CreateCollectRingsTimeDisplay(void)
         s->variant = 0;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < 11; i++) {
         s = &timeDisplay->unk30[i];
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = 1119;
         s->variant = i + 16;
@@ -71,7 +71,7 @@ void CreateCollectRingsTimeDisplay(void)
             s->graphics.dest = timeDisplay->unk30[0].graphics.dest + (i * 0x40);
         }
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 16; i++) {
@@ -125,49 +125,49 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     s->x = x;
     s->y = y;
     s->palId = temp5;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[10];
     s->x = x;
     s->y = y;
     s->palId = 0;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[(temp6 / 16) % 16];
     s->x = x;
     s->y = y;
     s->palId = temp5;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[temp6 % 16];
     s->x = x;
     s->y = y;
     s->palId = temp5;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[10];
     s->x = x;
     s->y = y;
     s->palId = 0;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[(digit1 / 16) % 16];
     s->x = x;
     s->y = y;
     s->palId = temp5;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[digit1 % 16];
     s->x = x;
     s->y = y;
     s->palId = temp5;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_8083040(TimeDisplay *timeDisplay)
@@ -183,7 +183,7 @@ void sub_8083040(TimeDisplay *timeDisplay)
         s->x = i * 26;
         s->y = 0;
         s->palId = i;
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         j = sub_8004518(gUnknown_030053E8[i]);
         x = s->x + 0x17;
@@ -193,7 +193,7 @@ void sub_8083040(TimeDisplay *timeDisplay)
             s->x = x;
             s->y = y;
             s->palId = 0;
-            sub_80051E8(s);
+            DisplaySprite(s);
             x -= 8;
             y = y;
         } while (j /= 16);
@@ -248,49 +248,49 @@ void sub_8083104(TimeDisplay *timeDisplay)
     s->x = x;
     s->y = y;
     s->palId = 1;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[10];
     s->x = x;
     s->y = y;
     s->palId = 0;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[(temp6 / 16) % 16];
     s->x = x;
     s->y = y;
     s->palId = 1;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[temp6 % 16];
     s->x = x;
     s->y = y;
     s->palId = 1;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[10];
     s->x = x;
     s->y = y;
     s->palId = 0;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[(digit1 / 16) % 16];
     s->x = x;
     s->y = y;
     s->palId = 1;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[digit1 % 16];
     s->x = x;
     s->y = y;
     s->palId = 1;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_808328C(void)

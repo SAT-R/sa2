@@ -91,7 +91,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     ia75->y = TO_WORLD_POS(me->y, spriteRegionY);
 
     s = &ia75->s1;
-    s->unk1A = 0x4C0;
+    s->unk1A = SPRITE_OAM_ORDER(19);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -103,10 +103,10 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     s->graphics.dest = VramMalloc(8);
     s->graphics.anim = SA2_ANIM_ARROW_SCREEN;
     s->variant = 2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &ia75->s2;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -118,7 +118,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     s->graphics.dest = (void *)BORDER_VRAM_ADDR;
     s->graphics.anim = SA2_ANIM_ARROW_SCREEN_BORDER;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     SET_MAP_ENTITY_INITIALIZED(me);
 }
@@ -172,7 +172,7 @@ static void sub_807A560(void)
         sub_807A73C(ia75);
     }
 
-    sub_8004558(&ia75->s1);
+    UpdateSpriteAnimation(&ia75->s1);
     sub_807A7F4(ia75);
 }
 
@@ -216,7 +216,7 @@ static void sub_807A73C(Sprite_IA75 *ia75)
     Sprite *s = &ia75->s1;
     s->graphics.anim = SA2_ANIM_ARROW_SCREEN;
     s->variant = 2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     if (PLAYER_IS_ALIVE && ia75->unk90) {
         gPlayer.moveState &= ~MOVESTATE_400000;
@@ -259,34 +259,34 @@ static void sub_807A7F4(Sprite_IA75 *ia75)
         switch (ia75->unk94) {
             case 0:
                 s->unk10 &= ~(0x800 | 0x400);
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 s->unk10 |= 0x800;
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 break;
             case 1:
                 s->unk10 &= ~0x800;
                 s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 s->unk10 |= 0x800;
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 break;
             case 2:
                 s->unk10 &= ~(0x800 | 0x400);
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-                sub_80051E8(&ia75->s1);
+                DisplaySprite(&ia75->s1);
                 break;
         }
     } else {
         s->unk10 &= ~(0x800 | 0x400);
-        sub_80051E8(&ia75->s1);
+        DisplaySprite(&ia75->s1);
         s->unk10 |= 0x800;
-        sub_80051E8(&ia75->s1);
+        DisplaySprite(&ia75->s1);
     }
 
     ia75->s2.x = s->x;
     ia75->s2.y = s->y;
-    sub_80051E8(&ia75->s2);
+    DisplaySprite(&ia75->s2);
 }
 
 static bool32 sub_807A920(Sprite_IA75 *ia75)

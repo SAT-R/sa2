@@ -51,7 +51,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(sWindmillParts[4].numTiles);
     s->graphics.anim = sWindmillParts[4].anim;
     s->variant = sWindmillParts[4].variant;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -60,7 +60,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 4; j++) {
@@ -75,7 +75,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             }
             s->graphics.anim = sWindmillParts[j].anim;
             s->variant = sWindmillParts[j].variant;
-            s->unk1A = 0x480;
+            s->unk1A = SPRITE_OAM_ORDER(18);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
@@ -84,7 +84,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             s->palId = 0;
             s->hitboxes[0].index = -1;
             s->unk10 = 0;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 }
@@ -111,7 +111,7 @@ static void Task_WindmillMain(void)
         return;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
     screenX = s->x;
     screenY = s->y;
 
@@ -133,7 +133,7 @@ static void Task_WindmillMain(void)
 
             s->unk10 = (gUnknown_030054B8++ | 0x1060);
             sub_8004860(s, transform);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }

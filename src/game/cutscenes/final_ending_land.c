@@ -230,7 +230,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->prevVariant = -1;
             s->x = 200;
             s->y = 100;
-            s->unk1A = 0x80;
+            s->unk1A = SPRITE_OAM_ORDER(2);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
@@ -238,7 +238,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->palId = 1;
             s->unk10 = 0;
             s->hitboxes[0].index = -1;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
 
         {
@@ -249,7 +249,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->prevVariant = -1;
             s->x = (DISPLAY_WIDTH / 2) - 10;
             s->y = -20;
-            s->unk1A = 0x40;
+            s->unk1A = SPRITE_OAM_ORDER(1);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
@@ -269,7 +269,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->prevVariant = -1;
             s->x = 0;
             s->y = 0;
-            s->unk1A = 0x40;
+            s->unk1A = SPRITE_OAM_ORDER(1);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
@@ -277,7 +277,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->palId = 2;
             s->unk10 = 0;
             s->hitboxes[0].index = -1;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 
@@ -291,7 +291,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = -20;
-        s->unk1A = 0x40;
+        s->unk1A = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -299,7 +299,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -314,7 +314,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0x40;
+        s->unk1A = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -329,7 +329,7 @@ void CreateFinalEndingLandingCutScene(void)
         transform->x = s->x;
         transform->y = s->y;
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 2; i++) {
@@ -342,7 +342,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0xC0;
+        s->unk1A = SPRITE_OAM_ORDER(3);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -350,7 +350,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 2; i++) {
@@ -363,7 +363,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->prevVariant = -1;
         s->x = 30;
         s->y = 30;
-        s->unk1A = 0xC0;
+        s->unk1A = SPRITE_OAM_ORDER(3);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -371,7 +371,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -384,7 +384,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 30;
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -392,7 +392,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -405,7 +405,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = -20;
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -413,7 +413,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -426,7 +426,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = DISPLAY_HEIGHT + 96;
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -434,7 +434,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -447,7 +447,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = DISPLAY_HEIGHT + 96;
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -455,7 +455,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -468,7 +468,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = 0;
-        s->unk1A = 0x40;
+        s->unk1A = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -476,7 +476,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->palId = 1;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -778,8 +778,8 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         sub_8004860(s, transform);
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if ((gSelectedCharacter != 1 && scene->unk338 > 4)
         || (gSelectedCharacter == 1 && scene->unk338 > 5)) {
@@ -797,8 +797,8 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         }
         s->x = scene->unk5E0[0][0] >> 8;
         s->y = scene->unk5E0[0][1] >> 8;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk338 != 0 && scene->unk33D == 0) {
@@ -808,17 +808,17 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->unk10 |= 0x400;
         s->x = scene->unk80.x;
         s->y = scene->unk80.y + 0x19;
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         s->unk10 &= ~0x400;
         s->x = scene->unk80.x;
         s->y = scene->unk80.y + 0x19;
 
-        if (sub_8004558(s) != 1) {
+        if (UpdateSpriteAnimation(s) != 1) {
             scene->unk33D = 1;
         }
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     for (i = 0; i < (0x14 - scene->unk33C); i++) {
@@ -836,8 +836,8 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->y = (gUnknown_080E1964[i][4] - gBgScrollRegs[1][1])
             + (scene->unk34C[i][1] >> 8);
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     for (i = 0; i < (0xD - (scene->unk33C >> 1)); i++) {
@@ -854,8 +854,8 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->x = scene->unk4DC[i][0] >> 8;
         s->y = scene->unk4DC[i][1] >> 8;
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk34A >= 1) {
@@ -864,8 +864,8 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->variant = gUnknown_080E17A4[40].variant;
         s->x = scene->unk5E0[0][4];
         s->y = scene->unk5E0[0][5] >> 8;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
         scene->unk34A--;
     } else {
         if ((u16)(scene->unk34A + 0x1D) < 0x1E) {
@@ -882,16 +882,16 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->variant = gUnknown_080E17A4[41].variant;
         s->x = scene->unk5E0[0][6];
         s->y = scene->unk5E0[0][7] >> 8;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
 
         s = &scene->unk230;
         s->graphics.anim = gUnknown_080E17A4[42].anim;
         s->variant = gUnknown_080E17A4[42].variant;
         s->x = scene->unk5E0[0][8];
         s->y = scene->unk5E0[0][9] >> 8;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     if (gSelectedCharacter == 1) {
@@ -900,8 +900,8 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->variant = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].variant;
         s->x = scene->unk5E0[0][2];
         s->y = scene->unk5E0[0][3] >> 8;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
 
         if (scene->unk338 < 6) {
             s = &scene->unk140;
@@ -918,8 +918,8 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
             s->x = scene->unk5E0[0][0] >> 8;
             s->y = scene->unk5E0[0][1] >> 8;
         }
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 

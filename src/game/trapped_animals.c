@@ -130,7 +130,7 @@ static void CreateFlyingAnimal(SpawnOptions *init)
     s->x = init->x;
     s->y = init->y;
     s->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
     s->graphics.anim = init->anim;
     s->variant = init->variant;
@@ -177,8 +177,8 @@ static void Task_FlyingAnimal(void)
         return;
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 static void CreateBouncingAnimal(SpawnOptions *init)
@@ -198,7 +198,7 @@ static void CreateBouncingAnimal(SpawnOptions *init)
     s->x = init->x;
     s->y = init->y;
     s->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
     s->graphics.anim = init->anim;
     s->variant = init->variant;
@@ -247,8 +247,8 @@ static void Task_BouncingAnimal(void)
         return;
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 static void CreateStaticAnimal(SpawnOptions *init)
@@ -269,7 +269,7 @@ static void CreateStaticAnimal(SpawnOptions *init)
     s->x = init->x;
     s->y = init->y;
     s->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
     s->graphics.anim = init->anim;
     s->variant = init->variant;
@@ -314,8 +314,8 @@ static void Task_StaticAnimalMain(void)
         return;
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 void CreateTrappedAnimal(s16 x, s16 y)

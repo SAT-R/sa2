@@ -60,7 +60,7 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     }
 
     s = &cannon->sprite2;
-    s->unk1A = 0x1C0;
+    s->unk1A = SPRITE_OAM_ORDER(7);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -74,7 +74,7 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     // TODO: anim cannon?
     s->graphics.anim = SA2_ANIM_CANNON_EGG_UTO;
     s->variant = 1;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
@@ -241,7 +241,7 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
     }
 
     sub_8004860(s, &transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 // https://decomp.me/scratch/TDVLh

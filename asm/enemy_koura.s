@@ -447,9 +447,9 @@ _080543BA:
 	movs r0, #0xff
 	strb r0, [r1]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r0, #0x99
 	bl m4aSongNumStart
 	b _08054610
@@ -724,9 +724,9 @@ _080545FA:
 	adds r0, r2, #0
 	bl sub_80122DC
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08054610:
 	add sp, #0x10
 	pop {r3}
@@ -948,9 +948,9 @@ _080547C4:
 	movs r0, #0xff
 	strb r0, [r1]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r0, #0x99
 	bl m4aSongNumStart
 	b _080548EE
@@ -1029,7 +1029,7 @@ _08054874:
 	lsls r1, r2, #8
 	bl sub_80122DC
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _080548E8
 	ldr r1, [r6, #0x10]
@@ -1082,7 +1082,7 @@ _080548A6:
 	str r0, [r1, #8]
 _080548E8:
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080548EE:
 	add sp, #0x10
 	pop {r4, r5, r6, r7}
@@ -1279,7 +1279,7 @@ _08054A7C:
 	lsls r1, r6, #8
 	bl sub_80122DC
 	mov r0, r8
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _08054ACE
 	ldr r3, _08054AE4 @ =gUnknown_080D8F38
@@ -1316,7 +1316,7 @@ _08054A7C:
 	str r0, [r1, #8]
 _08054ACE:
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 _08054AD4:
 	add sp, #8
 	pop {r3, r4}

@@ -71,10 +71,10 @@ void sub_800A5F8(void)
     if (((u16)(su->s.x + 32) > (DISPLAY_WIDTH + 2 * 32))
         || (((su->s.y - 32) > DISPLAY_HEIGHT))) {
         TaskDestroy(gCurTask);
-    } else if (sub_8004558(&su->s) == 0 && su->unk40 == 0) {
+    } else if (UpdateSpriteAnimation(&su->s) == 0 && su->unk40 == 0) {
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(&su->s);
+        DisplaySprite(&su->s);
     }
 }
 

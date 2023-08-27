@@ -105,7 +105,7 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
         variant = sAnimsPlatformSquare[LEVEL_TO_ZONE(gCurrentLevel)][2];
         s->variant = variant;
 
-        s->unk1A = 0x480;
+        s->unk1A = SPRITE_OAM_ORDER(18);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -114,7 +114,7 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 }
 
@@ -361,7 +361,7 @@ static void Task_Platform_Square(void)
         SET_MAP_ENTITY_NOT_INITIALIZED(me, platform->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

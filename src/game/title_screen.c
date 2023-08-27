@@ -414,7 +414,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     bg0->graphics.anim = 0;
     bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
     bg0->unk18 = 0;
-    bg0->unk1A = 0;
+    bg0->unk1A = SPRITE_OAM_ORDER(0);
     if (gLoadedSaveGame->language < 2) {
         bg0->tilemapId = TM_SA2_LOGO_JP;
     } else {
@@ -504,7 +504,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     bg80->graphics.anim = 0;
     bg80->tilesVram = (void *)BG_SCREEN_ADDR(31);
     bg80->unk18 = 0;
-    bg80->unk1A = 0;
+    bg80->unk1A = SPRITE_OAM_ORDER(0);
     bg80->tilemapId = TM_INTRO_PRESENTED_BY_SEGA;
     bg80->unk1E = 0;
     bg80->unk20 = 0;
@@ -523,7 +523,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     bg0->graphics.anim = 0;
     bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
     bg0->unk18 = 0;
-    bg0->unk1A = 0;
+    bg0->unk1A = SPRITE_OAM_ORDER(0);
     bg0->tilemapId = TM_INTRO_WATER;
     bg0->unk1E = 0;
     bg0->unk20 = 0;
@@ -562,12 +562,12 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     s->x = 0;
     s->y = DISPLAY_HEIGHT - 30; // set to the screen's bottom
     s->graphics.size = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &titleScreen->unkF0;
 
@@ -581,12 +581,12 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 2) + 30;
     s->graphics.size = 0;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (menuItemId = 0; menuItemId < ARRAY_COUNT(titleScreen->menuItems);
          menuItemId++) {
@@ -615,29 +615,28 @@ static void InitTitleScreenUI(struct TitleScreen *titleScreen)
         }
 
         s->graphics.size = 0;
-        s->unk1A = 0xc0;
+        s->unk1A = SPRITE_OAM_ORDER(3);
         s->timeUntilNextFrame = 0;
         s->animSpeed = 0x10;
         s->palId = 0;
         s->unk10 = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     };
 
     s = &titleScreen->unk240;
     s->graphics.dest = objAddr;
-    // Uses last value for this one
-    s->graphics.anim = sMenuTiles[42].anim;
-    s->variant = sMenuTiles[42].variant;
+    s->graphics.anim = sMenuTiles[ARRAY_COUNT(sMenuTiles) - 1].anim;
+    s->variant = sMenuTiles[ARRAY_COUNT(sMenuTiles) - 1].variant;
     s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 2);
     s->graphics.size = 0;
-    s->unk1A = 0x780;
+    s->unk1A = SPRITE_OAM_ORDER(30);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0x3000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_IntroFadeInSegaLogoAnim(void)
@@ -1008,7 +1007,7 @@ static void Task_PressStartMenuMain(void)
 
     // Show the press start text for 2/3 of a second
     if (titleScreen->animFrame < 40) {
-        sub_80051E8(&titleScreen->unkF0);
+        DisplaySprite(&titleScreen->unkF0);
     }
 
     titleScreen->animFrame++;
@@ -1016,7 +1015,7 @@ static void Task_PressStartMenuMain(void)
     if (titleScreen->animFrame > 80) {
         titleScreen->animFrame = 0;
     }
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
 
     if (gPressedKeys & START_BUTTON) {
         m4aSongNumStart(SE_SELECT);
@@ -1040,11 +1039,11 @@ static void Task_StartPressedTransitionAnim(void)
 
     // Flash the start button
     if ((titleScreen->animFrame & 7) > 3) {
-        sub_80051E8(&titleScreen->unkF0);
+        DisplaySprite(&titleScreen->unkF0);
     }
     titleScreen->animFrame++;
 
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
 
     // Start showing the next menu items after 1/6 of a second (10 frames)
     if (titleScreen->animFrame == 10) {
@@ -1073,7 +1072,7 @@ static inline void PlayModeMenuHighlightFocused(struct TitleScreen *titleScreen)
     for (menuIndex = 0; menuIndex < 2; menuIndex++) {
         menuItem = &titleScreen->menuItems[menuIndex ^ 1];
         menuItem->palId = (menuIndex ^ titleScreen->menuCursor);
-        sub_80051E8(menuItem);
+        DisplaySprite(menuItem);
     };
 }
 
@@ -1082,7 +1081,7 @@ static void Task_PlayModeMenuMain(void)
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
     struct TransitionState *transition;
 
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
     PlayModeMenuHighlightFocused(titleScreen);
@@ -1141,11 +1140,11 @@ static void Task_SinglePlayerSelectedTransitionAnim(void)
 
     // Flash the previous selected single player menu item
     if ((titleScreen->animFrame & 7) > 3) {
-        sub_80051E8(&menuItems[MENU_ITEM_SINGLE_PLAYER]);
+        DisplaySprite(&menuItems[MENU_ITEM_SINGLE_PLAYER]);
     }
     titleScreen->animFrame++;
 
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
 
     // Allow back to be pressed during animation
     // to cancel
@@ -1190,7 +1189,7 @@ static inline void SinglePlayerMenuHighlightFocused(struct TitleScreen *titleScr
         } else {
             menuItem->palId = 0;
         }
-        sub_80051E8(menuItem);
+        DisplaySprite(menuItem);
     }
 };
 
@@ -1317,16 +1316,16 @@ static void Task_HandleTitleScreenExit(void)
                 menuItem = &titleScreen->menuItems[i ^ 1];
                 menuItem->palId = i ^ 1;
                 if ((++titleScreen->animFrame & 7) > 3) {
-                    sub_80051E8(menuItem);
+                    DisplaySprite(menuItem);
                 }
             }
-            sub_80051E8(&titleScreen->unkC0);
+            DisplaySprite(&titleScreen->unkC0);
         } else {
             menuItem
                 = &titleScreen->menuItems[SinglePlayerMenuItem(titleScreen->menuCursor)];
             menuItem->palId = 1;
             if ((++titleScreen->animFrame & 7) > 3) {
-                sub_80051E8(menuItem);
+                DisplaySprite(menuItem);
             }
         }
     }
@@ -1412,7 +1411,7 @@ static void Task_JumpToPlayModeMenu(void)
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
     PlayModeMenuHighlightFocused(titleScreen);
 
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
     if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
@@ -1547,20 +1546,21 @@ static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
 {
     struct Task *t = TaskCreate(Task_BirdAnim, 0x40, 0x2000, 0, 0);
     struct BirdAnimation *animation = TaskGetStructPtr(t);
+    Sprite *s = &animation->s;
 
-    animation->s.graphics.dest = VramMalloc(3);
-    animation->s.graphics.anim = SA2_ANIM_TITLE_SEAGULL;
-    animation->s.variant = 0;
-    animation->s.prevVariant = -1;
-    animation->s.x = x;
-    animation->s.y = y;
-    animation->s.graphics.size = 0;
-    animation->s.unk1A = 0xC0;
-    animation->s.timeUntilNextFrame = 0;
-    animation->s.animSpeed = 0x10;
-    animation->s.palId = 0;
-    animation->s.unk10 = 0;
-    sub_8004558(&animation->s);
+    s->graphics.dest = VramMalloc(3);
+    s->graphics.anim = SA2_ANIM_TITLE_SEAGULL;
+    s->variant = 0;
+    s->prevVariant = -1;
+    s->x = x;
+    s->y = y;
+    s->graphics.size = 0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
+    UpdateSpriteAnimation(&animation->s);
 
     animation->unk30 = gBgScrollRegs[1][0];
     animation->unk32 = gBgScrollRegs[1][1];
@@ -1605,8 +1605,8 @@ static void Task_BirdAnim(void)
     }
     s->y = (temp << 0x10 >> 0x10) + animation->unk32 - gBgScrollRegs[1][1];
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if ((u16)(s->x + 64) > 368) {
         BirdAnimEnd();
@@ -1632,7 +1632,7 @@ static void Task_MenuItemTransitionOutAnim(void)
     s->x -= sMenuItemTransitionKeyFrames[transition->animFrame];
     gBldRegs.bldAlpha = FadeOutBlend(transition->animFrame * 2);
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (++transition->animFrame > 8) {
         s->x = transition->unk12;
@@ -1656,7 +1656,7 @@ static void Task_MenuItemTransitionInAnim(void)
     s->x = sum + transition->unk12;
 
     gBldRegs.bldAlpha = FadeInBlend(transition->animFrame * 2);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (++transition->animFrame > 8) {
         s->x = transition->unk12;
@@ -1690,18 +1690,20 @@ static void CreateLensFlareAnimation(void)
         lensFlare->posSequenceY[i] = sLensFlareStartPositions[i][1];
 
         s->graphics.size = 0;
-        s->unk1A = (8 - i) * 0x40;
+        s->unk1A = SPRITE_OAM_ORDER(8 - i);
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = i | 96;
+        s->unk10 = i
+            | (SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
+               | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
 
         transform->unk0 = 0;
         transform->height = transform->width = posX * 2 + 0xB0;
         transform->x = lensFlare->posSequenceX[i];
         transform->y = lensFlare->posSequenceY[i];
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     lensFlare->unk200 = gBgScrollRegs[1][0];
@@ -1725,7 +1727,7 @@ static void Task_LensFlareAnim(void)
         | BLDCNT_TGT1_OBJ;
     gBldRegs.bldAlpha = BLDALPHA_BLEND(7, 31);
 
-    // Show the flares every eother frame
+    // Show the flares every other frame
     if (!(lensFlare->animFrame & 1)) {
         for (i = 0; i < 8; i++) {
             s = &lensFlare->sprites[i];
@@ -1741,7 +1743,7 @@ static void Task_LensFlareAnim(void)
                                        lensFlare->animFrame * 16, 8, 0);
 
             sub_8004860(s, transform);
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 
@@ -1845,7 +1847,7 @@ static void Task_ShowPressStartMenu(void)
 {
     struct TitleScreen *titleScreen = TaskGetStructPtr(gCurTask);
 
-    sub_80051E8(&titleScreen->unkC0);
+    DisplaySprite(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
     if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
@@ -1942,7 +1944,9 @@ static void ShowGameLogo(struct TitleScreen *_)
 static void BirdAnimEnd(void)
 {
     struct BirdAnimation *animation = TaskGetStructPtr(gCurTask);
-    VramFree(animation->s.graphics.dest);
+    Sprite *s = &animation->s;
+
+    VramFree(s->graphics.dest);
     TaskDestroy(gCurTask);
 }
 

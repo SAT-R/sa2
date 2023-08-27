@@ -63,7 +63,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
 
         s->graphics.size = 0;
         s->prevVariant = -1;
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->timeUntilNextFrame = 0;
         s->animSpeed = 0x10;
         s->palId = 0;
@@ -85,8 +85,8 @@ void Task_801F6E0(void)
     } else {
         s->x = bde->x - gCamera.x;
         s->y = bde->y - gCamera.y;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
 
         bde->x += bde->unk4;
         bde->y += bde->unk6;

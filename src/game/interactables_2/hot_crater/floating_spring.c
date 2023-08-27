@@ -59,7 +59,7 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
     floatingSpring->base.spriteX = me->x;
     floatingSpring->base.spriteY = spriteY;
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -95,7 +95,7 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
         }
     }
     sub_8074FD8(floatingSpring);
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_8074E44(floatingSpring);
     sub_80751B4(floatingSpring);
 
@@ -235,7 +235,7 @@ static void sub_80750A8(void)
         if (!floatingSpring->unk4C) {
             sub_8075284(floatingSpring);
             sub_8074FD8(floatingSpring);
-            sub_8004558(&floatingSpring->s);
+            UpdateSpriteAnimation(&floatingSpring->s);
         }
     }
 
@@ -251,7 +251,7 @@ static void sub_80750A8(void)
         sub_80751B4(floatingSpring);
 
         if (floatingSpring->unk4C) {
-            sub_80051E8(&floatingSpring->s);
+            DisplaySprite(&floatingSpring->s);
         }
     }
 }
@@ -278,7 +278,7 @@ static void sub_8075154(Sprite_FloatingSpring *floatingSpring)
     }
 
     sub_8075048(floatingSpring);
-    sub_8004558(&floatingSpring->s);
+    UpdateSpriteAnimation(&floatingSpring->s);
     m4aSongNumStart(SE_SPRING);
     gCurTask->main = sub_80752D8;
 }
@@ -330,7 +330,7 @@ static void sub_8075284(Sprite_FloatingSpring *floatingSpring)
         u32 zone = LEVEL_TO_ZONE(gCurrentLevel);
         asm("" ::"r"(zone));
 #endif
-        floatingSpring->s.graphics.dest = VramMalloc(0x1C);
+        floatingSpring->s.graphics.dest = VramMalloc(28);
         floatingSpring->s.prevAnim = -1;
         floatingSpring->s.prevVariant = -1;
         floatingSpring->unk4C = TRUE;
@@ -354,7 +354,7 @@ static void sub_80752D8(void)
     sub_80751B4(floatingSpring);
 
     if (!(s->unk10 & 0x4000)) {
-        sub_8004558(&floatingSpring->s);
+        UpdateSpriteAnimation(&floatingSpring->s);
     } else {
         sub_8075334(floatingSpring);
     }
@@ -363,14 +363,14 @@ static void sub_80752D8(void)
         sub_8075154(floatingSpring);
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void sub_8075334(Sprite_FloatingSpring *floatingSpring)
 {
     floatingSpring->unk50 ^= TRUE;
     sub_8074FD8(floatingSpring);
-    sub_8004558(&floatingSpring->s);
-    sub_80051E8(&floatingSpring->s);
+    UpdateSpriteAnimation(&floatingSpring->s);
+    DisplaySprite(&floatingSpring->s);
     gCurTask->main = sub_80750A8;
 }

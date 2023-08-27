@@ -37,12 +37,12 @@ void CreateBoostModeParticles(void)
     s->variant = 0;
     s->graphics.size = 0;
     s->prevVariant = -1;
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->unk10 = 0x2000;
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &particles->unk30;
     s->graphics.dest = VramMalloc(1);
@@ -50,7 +50,7 @@ void CreateBoostModeParticles(void)
     s->variant = 1;
     s->graphics.size = 0;
     s->prevVariant = -1;
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->unk10 = 0x2000;
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
@@ -115,7 +115,7 @@ void sub_8089E54(void)
     s32 i;
     struct BoostModeParticles *particles = TaskGetStructPtr(gCurTask);
     Sprite *s;
-    sub_8004558(&particles->unk0);
+    UpdateSpriteAnimation(&particles->unk0);
 
     for (i = 0; i < 8; i++) {
         if (i & 1) {
@@ -131,7 +131,7 @@ void sub_8089E54(void)
         s = &particles->unk0;
         s->x = (gPlayer.x >> 8) - gCamera.x + (particles->unk62[i][0] >> 8);
         s->y = (gPlayer.y >> 8) - gCamera.y + (particles->unk62[i][1] >> 8);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (particles->unk60++ > 8) {
@@ -198,13 +198,13 @@ void sub_808A0A4(void)
         if (particles->unk60 & 1) {
             s->x = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i][0] >> 8);
             s->y = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i][1] >> 8);
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
 
         } else {
             s->x = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i + 8][0] >> 8);
             s->y = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i + 8][1] >> 8);
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

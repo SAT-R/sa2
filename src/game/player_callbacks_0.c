@@ -118,7 +118,7 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
     s->graphics.dest = VramMalloc(gUnknown_080D5518[p2][0]);
     s->graphics.anim = gUnknown_080D5518[p2][1];
     s->variant = gUnknown_080D5518[p2][2];
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     return t;
@@ -148,7 +148,7 @@ struct Task *sub_8011C98(s32 x, s32 y)
         s->graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_SONIC);
         s->variant = 3;
         s->prevVariant = -1;
-        s->unk1A = 0x440;
+        s->unk1A = SPRITE_OAM_ORDER(17);
         s->timeUntilNextFrame = 0;
         s->animSpeed = 0x10;
         s->palId = 0;
@@ -332,14 +332,14 @@ void Task_8012034(void)
         || (gPlayer.unk64 != 36)) {
         TaskDestroy(gCurTask);
     } else {
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
 
         strc->unk28 = ((strc->unk28 - 1) & 0x6);
         sub_80157C8(&pos, strc->unk28);
         s->x = Q_24_8_TO_INT(pos.x) - gCamera.x;
         s->y = Q_24_8_TO_INT(pos.y) - gCamera.y;
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -818,7 +818,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
             s->variant = 1;
         }
 
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
         result = t;
@@ -1015,7 +1015,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
         s->graphics.anim = sKnucklesAnimData_FX[p2][1];
         s->variant = sKnucklesAnimData_FX[p2][2];
 
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
         result = t;

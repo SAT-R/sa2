@@ -208,7 +208,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             s->x = 200;
             s->y = 0x33 + (0x20 * i);
             s->graphics.dest = (void *)(OBJ_VRAM0 + (i * 0x800));
-            s->unk1A = 0x400;
+            s->unk1A = SPRITE_OAM_ORDER(16);
             s->graphics.size = 0;
             temp = gUnknown_030054B4[i];
             if (temp == 5) {
@@ -230,13 +230,13 @@ void CreateMultiplayerResultsScreen(u8 mode)
             s->animSpeed = 0x10;
             s->palId = 0;
             s->unk10 = 0x1000;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
 
             s = &resultsScreen->characterRows[i];
             s->x = 0;
             s->y = 0x1F + (0x20 * i);
             s->graphics.dest = (void *)(OBJ_VRAM0 + temp2);
-            s->unk1A = 0x400;
+            s->unk1A = SPRITE_OAM_ORDER(16);
             s->graphics.size = 0;
             s->graphics.anim = sResultsScreenPlayerCursor[i].anim;
             s->variant = sResultsScreenPlayerCursor[i].variant;
@@ -246,7 +246,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             s->animSpeed = 0x10;
             s->palId = 0;
             s->unk10 = 0x1000;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 
@@ -448,10 +448,10 @@ static void sub_805C69C(void)
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         if (GetBit(gMultiplayerConnections, i)) {
             item = &resultsScreen->characterRows[i];
-            sub_80051E8(item);
+            DisplaySprite(item);
             if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
                 item = &resultsScreen->resultRows[i];
-                sub_80051E8(item);
+                DisplaySprite(item);
             }
         }
     }

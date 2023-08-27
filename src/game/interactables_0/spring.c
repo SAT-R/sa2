@@ -113,7 +113,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = springKind;
     s->animCursor = springKind;
     s->timeUntilNextFrame = springKind;
@@ -143,7 +143,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     s->unk10 |= sSpringAnimationData[springKind][springType][3];
     spring->unk3D = springType;
     spring->unk3E = me->d.sData[0] & 0x3;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_Spring(void)
@@ -164,7 +164,7 @@ static void Task_Spring(void)
         me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -180,18 +180,18 @@ static void sub_800E3D0(void)
         me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        if (sub_8004558(s) == 0) {
+        if (UpdateSpriteAnimation(s) == 0) {
             s->variant--;
 
             if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) && (spring->unk3D / 2) == 0) {
                 s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
             }
 
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
             gCurTask->main = Task_Spring;
         }
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

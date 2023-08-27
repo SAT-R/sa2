@@ -60,7 +60,7 @@ void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     ia78->unk40 = TO_WORLD_POS(me->y, spriteRegionY);
 
     s = &ia78->s;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -89,21 +89,21 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
             if (temp < 8) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 8;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             } else {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 9;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         } else {
             if (temp == 0) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 8;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             } else if (temp == 8) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 9;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         }
 
@@ -118,7 +118,7 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
         i--;
         s->graphics.anim = gUnknown_080E00B4[gUnknown_080E00FC[i][1]][0];
         s->variant = gUnknown_080E00B4[gUnknown_080E00FC[i][1]][1];
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         ia78->unk44 = 0;
     } else if (temp <= 244) {
         temp = (temp - 185) & 15;
@@ -127,21 +127,21 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
             if (temp >= 8) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 3;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             } else {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 2;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         } else {
             if (temp == 0) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 2;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             } else if (temp == 8) {
                 s->graphics.anim = SA2_ANIM_SPIKE_PLATFORM;
                 s->variant = 3;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         }
 
@@ -156,7 +156,7 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
         i--;
         s->graphics.anim = gUnknown_080E00B4[gUnknown_080E00D4[i][1]][0];
         s->variant = gUnknown_080E00B4[gUnknown_080E00D4[i][1]][1];
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         ia78->unk44 = 0;
     }
 }
@@ -255,7 +255,7 @@ static void sub_807B004(Sprite_IA78 *ia78)
 {
     ia78->s.x = ia78->unk3C - gCamera.x;
     ia78->s.y = ia78->unk40 - gCamera.y;
-    sub_80051E8(&ia78->s);
+    DisplaySprite(&ia78->s);
 }
 
 static bool32 sub_807B028(Sprite_IA78 *ia78)

@@ -150,7 +150,7 @@ struct Task *CreateStageUI(void)
 
         ui->unk2D8[i] = (GET_TILE_NUM(s->graphics.dest) & 0x3FF) | 0x6000;
 
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->graphics.anim = sAnimsAsciiDigits[i][0];
         s->variant = sAnimsAsciiDigits[i][1];
@@ -163,7 +163,7 @@ struct Task *CreateStageUI(void)
         s->unk10 = SPRITE_FLAG(18, 1);
 
         if (i != (ARRAY_COUNT(sAnimsAsciiDigits) - 1)) {
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 
@@ -177,7 +177,7 @@ struct Task *CreateStageUI(void)
         ui->unk2D4 = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
         s->graphics.anim = sAnims1UpIcons[gSelectedCharacter][1];
         s->variant = sAnims1UpIcons[gSelectedCharacter][2];
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -193,7 +193,7 @@ struct Task *CreateStageUI(void)
             s->palId = id;
             ui->unk2D4 |= (id << 12);
         }
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     s = &ui->ringContainer;
@@ -204,7 +204,7 @@ struct Task *CreateStageUI(void)
     ui->unk2D6 |= 0x6000;
     s->graphics.anim = SA2_ANIM_UI_RING_CONTAINER;
     s->variant = 0;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -213,7 +213,7 @@ struct Task *CreateStageUI(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &ui->ring;
     ui->ring.x = 7;
@@ -223,7 +223,7 @@ struct Task *CreateStageUI(void)
     ui->unk2D2 |= 0x6000;
     s->graphics.anim = SA2_ANIM_UI_RING;
     s->variant = 0;
-    s->unk1A = 0;
+    s->unk1A = SPRITE_OAM_ORDER(0);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -261,7 +261,7 @@ void Task_CreateStageUIMain(void)
         if (gGameMode == GAME_MODE_SINGLE_PLAYER) {
             if (ACT_INDEX(gCurrentLevel) != ACT_BOSS) {
                 sd = &digits[UI_ASCII_SP_RING];
-                sub_8004558(sd);
+                UpdateSpriteAnimation(sd);
 
                 for (i = 0; i < gUnknown_030054F4; i++) {
                     oam = OamMalloc(3);
@@ -329,7 +329,7 @@ void Task_CreateStageUIMain(void)
         ui->unk2D0 &= 0x7FF;
         ui->ring.variant = ui->unk2D0 >> 8;
         ui->ring.prevVariant = -1;
-        sub_8004558(&ui->ring);
+        UpdateSpriteAnimation(&ui->ring);
 
         /* Ring-Count */
         oam = OamMalloc(3);
@@ -341,15 +341,15 @@ void Task_CreateStageUIMain(void)
             sd = &digits[9];
             sd->y = UI_POS_RING_COUNT_Y;
             sd->x = UI_POS_RING_COUNT_X + 0 * 8;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             sd->y = UI_POS_RING_COUNT_Y;
             sd->x = UI_POS_RING_COUNT_X + 1 * 8;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             sd->y = UI_POS_RING_COUNT_Y;
             sd->x = UI_POS_RING_COUNT_X + 2 * 8;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
         } else {
             // _0802CF28
             u32 processed2;
@@ -430,35 +430,35 @@ void Task_CreateStageUIMain(void)
             sd->x = ((DISPLAY_WIDTH / 2) + 16) + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Milliseconds-R
             sd = &digits[gMillisUnpackTable[r5][1]];
             sd->x = ((DISPLAY_WIDTH / 2) + 16) + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Seconds-L
             sd = &digits[gSecondsTable[seconds][0]];
             sd->x = ((DISPLAY_WIDTH / 2) - 8) + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Seconds-R
             sd = &digits[gSecondsTable[seconds][1]];
             sd->x = ((DISPLAY_WIDTH / 2) - 8) + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Minutes
             sd = &digits[minutes];
             sd->x = (DISPLAY_WIDTH / 2) - 24;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
         }
     }
 }
@@ -508,7 +508,7 @@ void StageUI_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
 
         digit->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
 
-        sub_80051E8(digit);
+        DisplaySprite(digit);
 
         value = remaining;
     }

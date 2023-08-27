@@ -26,7 +26,7 @@ struct Task *CreateSpindashDustEffect()
     s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -85,8 +85,8 @@ void Task_SpindashDustEffect(void)
             s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
         }
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
@@ -140,8 +140,8 @@ void Task_SpindashDustEffectBig(void)
             s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
         }
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 

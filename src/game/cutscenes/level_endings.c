@@ -190,7 +190,7 @@ void CreateCourseResultsCutScene(u8 mode)
     s->x = 0;
     s->y = 0;
     s->graphics.size = 0;
-    s->unk1A = 0x280;
+    s->unk1A = SPRITE_OAM_ORDER(10);
     s->timeUntilNextFrame = 0;
 
     s->animSpeed = 0x10;
@@ -202,7 +202,7 @@ void CreateCourseResultsCutScene(u8 mode)
         s->unk10 = 0;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     scene->unk34.graphics.dest = NULL;
 
@@ -216,13 +216,13 @@ void CreateCourseResultsCutScene(u8 mode)
         s->x = 0;
         s->y = 0;
         s->graphics.size = 0;
-        s->unk1A = 0x240;
+        s->unk1A = SPRITE_OAM_ORDER(9);
         s->timeUntilNextFrame = 0;
 
         s->animSpeed = 0x10;
         s->palId = 0;
         s->unk10 = 0x400;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         m4aSongNumStart(SE_236);
     }
 
@@ -289,13 +289,13 @@ static void sub_808DD9C(void)
     transition->speed = scene->unk70 >> 8;
     transition->unk8 = scene->unk72 >> 8;
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     scene->unk34.x = s->x;
     scene->unk34.y = s->y;
-    sub_8004558(&scene->unk34);
-    sub_80051E8(&scene->unk34);
+    UpdateSpriteAnimation(&scene->unk34);
+    DisplaySprite(&scene->unk34);
 
     scene->unk78++;
 
@@ -351,8 +351,8 @@ static void sub_808DF88(void)
         s->y = (scene->unk72 >> 8);
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     scene->unk78++;
 
@@ -398,8 +398,8 @@ static void sub_808E114(void)
     s->x = (scene->unk70 >> 8) + scene->unk7C;
     s->y = (scene->unk72 >> 8) - 0xE;
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if (scene->unk78 == 0x28) {
         player->unk64 = 0x52;

@@ -399,7 +399,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     } else {
         s->variant = gMultiplayerCharacters[0];
     }
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -408,7 +408,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->mapPaths); i++) {
         s = &coursesScreen->mapPaths[i];
@@ -423,7 +423,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
             s->graphics.anim = sZoneMapPathAssets[i][1];
             s->variant = sZoneMapPathAssets[i][2];
         }
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -441,7 +441,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->graphics.dest = VramMalloc(4);
         s->graphics.anim = 0x2F6;
         s->variant = 0;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -450,7 +450,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     s = &coursesScreen->zoneType;
@@ -459,7 +459,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->graphics.dest = VramMalloc(0x1A);
     s->graphics.anim = 0x2F5;
     s->variant = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -468,7 +468,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &coursesScreen->zoneName;
     s->x = 0xF0;
@@ -476,7 +476,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->graphics.dest = VramMalloc(0x26);
     s->graphics.anim = 0x2F9;
     s->variant = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -485,7 +485,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &coursesScreen->screenTitle;
     s->x = 0;
@@ -515,7 +515,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
             s->variant = gMultiplayerCharacters[0];
         }
     }
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -524,7 +524,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->chaosEmeralds); i++) {
         s = &coursesScreen->chaosEmeralds[i];
@@ -533,7 +533,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->graphics.dest = (void *)OBJ_VRAM0 + (i * 0x120);
         s->graphics.anim = sChaoEmeraldAssets[i][0];
         s->variant = sChaoEmeraldAssets[i][1];
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -956,16 +956,16 @@ static bool8 AnimateNewZonePath(struct CourseSelectionScreen *coursesScreen)
         s->x = sZoneMapPathPositions[i][0]
             - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
         s->y = sZoneMapPathPositions[i][1];
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     s = &coursesScreen->mapPaths[coursesScreen->zonePathsUnlocked];
     s->x = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][0]
         - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
     s->y = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][1];
-    animDone = sub_8004558(s) == 0;
-    sub_80051E8(s);
+    animDone = UpdateSpriteAnimation(s) == 0;
+    DisplaySprite(s);
     RenderUI(coursesScreen);
 
     return animDone;
@@ -987,30 +987,30 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
     s->x = TO_SCREEN_COORD(coursesScreen->avatarTargetX - coursesScreen->cameraScrollX)
         + 5;
     s->y = TO_SCREEN_COORD(coursesScreen->avatarTargetY) + 6;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (coursesScreen->currentCourse < 0xE) {
         s = &coursesScreen->zoneActUnits[0];
         s->graphics.anim = 0x2F6;
         s->variant = COURSE_INDEX_TO_ZONE_INDEX(coursesScreen->currentCourse);
         s->prevVariant = -1;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
 
         s = &coursesScreen->zoneActUnits[1];
         s->graphics.anim = 0x2F6;
         s->variant = COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse);
         s->prevVariant = -1;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     s = &coursesScreen->zoneType;
     s->graphics.anim = sZoneTypeAssets[coursesScreen->currentCourse][0];
     s->variant = sZoneTypeAssets[coursesScreen->currentCourse][1];
     s->prevVariant = -1;
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     s = &coursesScreen->zoneName;
 #ifndef NON_MATCHING
@@ -1021,10 +1021,10 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
         = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][0];
     s->variant = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][1];
     s->prevVariant = -1;
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
     s = &coursesScreen->screenTitle;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (IS_SINGLE_PLAYER) {
         u8 i;
@@ -1035,8 +1035,8 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
                 s = &coursesScreen->chaosEmeralds[0];
             }
             s->x = (((i * 3)) * 8) + 0x24;
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -1144,8 +1144,8 @@ static void RenderZoneMapPathsAndUI(struct CourseSelectionScreen *coursesScreen)
         s->x = sZoneMapPathPositions[i][0]
             - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
         s->y = sZoneMapPathPositions[i][1];
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     RenderUI(coursesScreen);

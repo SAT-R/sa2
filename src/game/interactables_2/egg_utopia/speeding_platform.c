@@ -79,7 +79,7 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
     }
 
     s = &platform->s;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -91,7 +91,7 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
     s->graphics.dest = VramMalloc(0x10);
     s->graphics.anim = SA2_ANIM_SPEEDING_PLATFORM;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
@@ -173,9 +173,9 @@ static void RenderPlatform(Sprite_SpeedingPlatform *platform)
     }
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)

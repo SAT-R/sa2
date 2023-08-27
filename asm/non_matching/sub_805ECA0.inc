@@ -64,7 +64,7 @@
 	ldr r0, _0805ED38 @ =sub_805EF90
 	str r0, [r2, #8]
 	mov r0, sb
-	bl sub_80051E8
+	bl DisplaySprite
 	b _0805EF80
 	.align 2, 0
 _0805ED20: .4byte gCurTask
@@ -358,9 +358,9 @@ _0805EF6C: .4byte IWRAM_START + 0x2D
 _0805EF70: .4byte gCurTask
 _0805EF74:
 	mov r0, sb
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, sb
-	bl sub_80051E8
+	bl DisplaySprite
 _0805EF80:
 	add sp, #0xc
 	pop {r3, r4, r5}

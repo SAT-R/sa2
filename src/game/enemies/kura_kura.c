@@ -46,21 +46,21 @@ void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 8, SA2_ANIM_KURAKURA, 0, 0x480, 2);
+    SPRITE_INIT(s, 8, SA2_ANIM_KURAKURA, 0, 18, 2);
 
     s = &kk->s1;
     s->x = 0;
     s->y = 0;
 
-    SPRITE_INIT(s, 1, SA2_ANIM_KURAKURA_PROJ, 0, 0x440, 2);
+    SPRITE_INIT(s, 1, SA2_ANIM_KURAKURA_PROJ, 0, 17, 2);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &kk->s2;
     s->x = 0;
     s->y = 0;
 
-    SPRITE_INIT(s, 4, SA2_ANIM_KURAKURA_PROJ_FIREBALL, 0, 0x400, 2);
+    SPRITE_INIT(s, 4, SA2_ANIM_KURAKURA_PROJ_FIREBALL, 0, 16, 2);
 }
 
 void sub_805213C(Sprite_KuraKura *kk);
@@ -83,7 +83,7 @@ void Task_8052024(void)
 
     SPRITE_FLAG_SET(s, X_FLIP);
 
-    sub_80051E8(s);
+    DisplaySprite(s);
     sub_805213C(kk);
 }
 
@@ -99,7 +99,7 @@ void sub_805213C(Sprite_KuraKura *kk)
     for (i = 0; i < 2; i++) {
         s1->x = (Q_24_8_TO_INT(kk->spawnX) + (SIN(kk->unkAC) >> (11 - i))) - gCamera.x;
         s1->y = (Q_24_8_TO_INT(kk->spawnY) + (COS(kk->unkAC) >> (11 - i))) - gCamera.y;
-        sub_80051E8(s1);
+        DisplaySprite(s1);
     }
 
     pos.x = (Q_24_8_TO_INT(kk->spawnX) + (SIN(kk->unkAC) >> 9)) - (SIN(kk->unkAC) >> 11);
@@ -109,8 +109,8 @@ void sub_805213C(Sprite_KuraKura *kk)
     s2->y = pos.y - gCamera.y;
     sub_800C84C(s2, pos.x, pos.y);
 
-    sub_8004558(s2);
-    sub_80051E8(s2);
+    UpdateSpriteAnimation(s2);
+    DisplaySprite(s2);
 }
 
 void TaskDestructor_8052264(struct Task *t)

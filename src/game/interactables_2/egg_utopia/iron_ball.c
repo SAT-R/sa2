@@ -46,7 +46,7 @@ void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     ia95->base.spriteY = spriteY;
 
     s = &ia95->s;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -58,7 +58,7 @@ void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(0x12);
     s->graphics.anim = SA2_ANIM_IRON_BALL;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     if (me->d.uData[2] > me->d.uData[3]) {
         if (me->d.sData[0] >= 0) {
@@ -139,9 +139,9 @@ static void sub_807F0D8(Sprite_IA95 *ia95)
     ia95->s.x = ia95->unk3C - gCamera.x;
     ia95->s.y = ia95->unk40 - gCamera.y;
     ia95->s.unk10 &= ~0x400;
-    sub_80051E8(&ia95->s);
+    DisplaySprite(&ia95->s);
     ia95->s.unk10 |= 0x400;
-    sub_80051E8(&ia95->s);
+    DisplaySprite(&ia95->s);
 }
 
 static bool32 sub_807F120(Sprite_IA95 *ia95)

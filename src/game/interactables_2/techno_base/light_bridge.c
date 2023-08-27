@@ -111,7 +111,7 @@ void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
     for (i = 0; i < NUM_BRIDGE_SPRITES; i++) {
         s = &lightBridge->sprites[i];
-        s->unk1A = 0x480;
+        s->unk1A = SPRITE_OAM_ORDER(18);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -123,7 +123,7 @@ void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         s->graphics.anim = sBridgeSprites[i][0];
         s->variant = sBridgeSprites[i][1];
         s->graphics.dest = vram;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         vram += sBridgeSprites[i][2] * TILE_SIZE_4BPP;
     }
 
@@ -172,7 +172,7 @@ static void RenderStraightBridge(Sprite_LightBridge *lightBridge)
         if ((i & 1) && x > 5) {
             s->x = x;
             s->y = y;
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -206,7 +206,7 @@ static void RenderCurvedBridge(Sprite_LightBridge *lightBridge)
         s = &lightBridge->sprites[sCurvedBridgePositions[i][2]];
         s->x = x + sCurvedBridgePositions[i][0];
         s->y = y + sCurvedBridgePositions[i][1];
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

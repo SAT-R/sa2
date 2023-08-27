@@ -137,7 +137,7 @@ void CreateEntity_Platform_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
         s->graphics.anim = anim;
         s->variant = 0;
 
-        s->unk1A = 0x480;
+        s->unk1A = SPRITE_OAM_ORDER(18);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -146,7 +146,7 @@ void CreateEntity_Platform_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 }
 
@@ -255,8 +255,8 @@ void Task_800E89C(void)
             }
         }
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
@@ -298,7 +298,7 @@ void CreateEntity_Platform_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
         s->graphics.anim = SA2_ANIM_PLATFORM_LEA_FOR;
     }
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -307,7 +307,7 @@ void CreateEntity_Platform_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_800EC58(void)
@@ -366,8 +366,8 @@ void Task_800EC58(void)
 
         s->y += SIN_24_8(platform->unk4C) >> 6;
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
@@ -441,8 +441,8 @@ void Task_800EDF8(void)
 
         s->y += SIN_24_8(platform->unk4C) >> 6;
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
@@ -515,8 +515,8 @@ void Task_800EFD0(void)
 
         s->y += SIN_24_8(platform->unk4C) >> 6;
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 

@@ -113,7 +113,7 @@ void Task_GuardRoboMain(void)
         }
 
         if (guardRobo->state != 2 || !(guardRobo->animFrame & 2) || stage->paused != 0) {
-            sub_80051E8(&guardRobo->sprite);
+            DisplaySprite(&guardRobo->sprite);
         }
     }
 }
@@ -252,7 +252,7 @@ void sub_8071380(Sprite *s, void *vram, s16 x, s16 y, u8 b, const struct UNK_80D
     s->animSpeed = c4->unk6;
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     *oam = 0x100;
     oam += 4;
@@ -344,5 +344,5 @@ static void RenderGuardRobo(Sprite *s, s16 x, s16 y, u8 b,
     s->unk1A = b << 6;
     s->variant = spriteConfig->variant;
     s->animSpeed = spriteConfig->unk6;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }

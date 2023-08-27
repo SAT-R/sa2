@@ -41,7 +41,7 @@ struct Task *CreateItemTask_Shield_Normal(s8 p0)
     s->graphics.anim = SA2_ANIM_SHIELD_NORMAL;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -66,7 +66,7 @@ struct Task *CreateItemTask_Invincibility(s8 p0)
     s->graphics.anim = SA2_ANIM_INVINCIBILITY;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -85,16 +85,18 @@ struct Task *CreateItemTask_Shield_Magnetic(s8 p0)
 
     {
         ItemTask *item2 = (ItemTask *)TaskGetStructPtr(t);
-        item2->s.graphics.dest = VramMalloc(36);
-        item2->s.graphics.size = 0;
-        item2->s.graphics.anim = SA2_ANIM_SHIELD_MAGNETIC;
-        item2->s.variant = 0;
-        item2->s.prevVariant = -1;
-        item2->s.unk1A = 0x200;
-        item2->s.timeUntilNextFrame = 0;
-        item2->s.animSpeed = 0x10;
-        item2->s.palId = 0;
-        item2->s.unk10 = SPRITE_FLAG(PRIORITY, 2);
+        Sprite *s = &item2->s;
+
+        s->graphics.dest = VramMalloc(36);
+        s->graphics.size = 0;
+        s->graphics.anim = SA2_ANIM_SHIELD_MAGNETIC;
+        s->variant = 0;
+        s->prevVariant = -1;
+        s->unk1A = 0x200;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
     }
 
     m4aSongNumStart(SE_ACTIVATE_SHIELD);
@@ -112,16 +114,18 @@ struct Task *CreateItemTask_Confusion(s8 p0)
 
     {
         ItemTask *item2 = (ItemTask *)TaskGetStructPtr(t);
-        item2->s.graphics.dest = VramMalloc(8);
-        item2->s.graphics.size = 0;
-        item2->s.graphics.anim = SA2_ANIM_CONFUSION;
-        item2->s.variant = 0;
-        item2->s.prevVariant = -1;
-        item2->s.unk1A = 0x200;
-        item2->s.timeUntilNextFrame = 0;
-        item2->s.animSpeed = 0x10;
-        item2->s.palId = 0;
-        item2->s.unk10 = SPRITE_FLAG(PRIORITY, 2);
+        Sprite *s = &item2->s;
+
+        s->graphics.dest = VramMalloc(8);
+        s->graphics.size = 0;
+        s->graphics.anim = SA2_ANIM_CONFUSION;
+        s->variant = 0;
+        s->prevVariant = -1;
+        s->unk1A = 0x200;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
     }
 
     return t;
@@ -156,7 +160,7 @@ void Task_Item_Shield_Normal(void)
         item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
         item->s.unk10 |= gPlayer.unk90->s.unk10 & SPRITE_FLAG_MASK_PRIORITY;
 
-        sub_8004558(&item->s);
+        UpdateSpriteAnimation(&item->s);
 
 #ifndef NON_MATCHING
         asm("mov %0, %2\n"
@@ -171,7 +175,7 @@ void Task_Item_Shield_Normal(void)
 #endif
         if (((gUnknown_03005590 & 0x2) && (b != itemEffect))
             || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
-            sub_80051E8(&item->s);
+            DisplaySprite(&item->s);
         }
     }
 }
@@ -211,7 +215,7 @@ void Task_Item_Shield_Magnetic(void)
         }
     }
 
-    sub_8004558(&item->s);
+    UpdateSpriteAnimation(&item->s);
 
     b = (param);
     {
@@ -223,7 +227,7 @@ void Task_Item_Shield_Magnetic(void)
         b &= one;
         if (((gUnknown_03005590 & 0x2) && (b != one))
             || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
-            sub_80051E8(&item->s);
+            DisplaySprite(&item->s);
         }
     }
 }
@@ -255,8 +259,8 @@ void Task_802ABC8(void)
         item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
         item->s.unk10 |= r2;
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
@@ -299,7 +303,7 @@ void Task_Item_Invincibility(void)
     item->s.y = y - cam->y;
     item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
     item->s.unk10 |= priority;
-    sub_8004558(&item->s);
+    UpdateSpriteAnimation(&item->s);
 
     {
 #ifndef NON_MATCHING
@@ -311,7 +315,7 @@ void Task_Item_Invincibility(void)
         b &= ~param;
         if (((gUnknown_03005590 & 0x2) && (b != one))
             || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
-            sub_80051E8(&item->s);
+            DisplaySprite(&item->s);
         }
     }
 }
@@ -348,7 +352,7 @@ void Task_Item_Confusion(void)
             s->unk10 &= ~MOVESTATE_800;
         }
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
 
         b = param;
         {
@@ -360,7 +364,7 @@ void Task_Item_Confusion(void)
             b &= one;
             if (((gUnknown_03005590 & 0x2) && (b != one))
                 || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     } else {

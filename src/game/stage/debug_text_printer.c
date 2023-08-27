@@ -98,10 +98,10 @@ void Debug_PrintIntegerAt(u32 value, u16 x, u16 y)
 
         digit->x = digitX;
         digit->y = y;
-        sub_8004558(digit);
+        UpdateSpriteAnimation(digit);
 
         digit->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
-        sub_80051E8(digit);
+        DisplaySprite(digit);
 
         value = remaining;
     }
@@ -120,10 +120,10 @@ void Debug_PrintTextAt(char *text, s16 x, s16 y)
 
             digit->x = x;
             digit->y = y;
-            sub_8004558(digit);
+            UpdateSpriteAnimation(digit);
 
             digit->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
-            sub_80051E8(digit);
+            DisplaySprite(digit);
         }
 
         x += 8;

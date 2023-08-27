@@ -125,7 +125,7 @@
 	strh r1, [r2, #8]
 	adds r0, r6, #0
 	str r2, [sp, #4]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r4, _08010F50 @ =0x040000D4
 	str r6, [r4]
 	ldr r3, _08010F54 @ =IWRAM_START + 0x30
@@ -225,7 +225,7 @@
 	strh r0, [r2, #8]
 	adds r0, r7, #0
 	str r2, [sp, #4]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	str r7, [r4]
 	ldr r1, _08010F70 @ =IWRAM_START + 0x90
 	adds r7, r5, r1

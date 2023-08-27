@@ -124,7 +124,7 @@ void CreateMultiplayerModeSelectScreen(void)
     s->prevVariant = -1;
     s->x = 0;
     s->y = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -132,7 +132,7 @@ void CreateMultiplayerModeSelectScreen(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &modeScreen->unkB0;
     s->graphics.dest = VramMalloc(sMultiplayerModeSelectScreenText[lang].numTiles);
@@ -142,7 +142,7 @@ void CreateMultiplayerModeSelectScreen(void)
 
     s->x = 0;
     s->y = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -150,7 +150,7 @@ void CreateMultiplayerModeSelectScreen(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &modeScreen->unkE0;
     s->graphics.dest = VramMalloc(sMultiplayerModeSelectScreenText[lang + 1].numTiles);
@@ -160,7 +160,7 @@ void CreateMultiplayerModeSelectScreen(void)
 
     s->x = 0;
     s->y = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -168,7 +168,7 @@ void CreateMultiplayerModeSelectScreen(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &modeScreen->subText;
     s->graphics.dest = VramMalloc(sMultiplayerModeSelectScreenText[lang + 2].numTiles);
@@ -178,7 +178,7 @@ void CreateMultiplayerModeSelectScreen(void)
 
     s->x = 8;
     s->y = 103;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -434,15 +434,15 @@ static void Task_ExitAndInitSelectedPakMode(void)
 static void RenderUI(struct MultiplayerModeSelectScreen *modeScreen)
 {
     Sprite *unk80 = &modeScreen->unk80;
-    sub_80051E8(unk80);
+    DisplaySprite(unk80);
     unk80++;
-    sub_80051E8(unk80);
+    DisplaySprite(unk80);
     unk80++;
-    sub_80051E8(unk80);
+    DisplaySprite(unk80);
     if (modeScreen->enterAnimDone) {
         unk80++;
-        sub_8004558(unk80);
-        sub_80051E8(unk80);
+        UpdateSpriteAnimation(unk80);
+        DisplaySprite(unk80);
     };
 }
 

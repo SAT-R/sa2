@@ -87,7 +87,7 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->graphics.dest = VramMalloc(CHECKPOINT_BALL_TILE_COUNT);
     s->graphics.anim = SA2_ANIM_CHECKPOINT;
     s->variant = 0;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -139,8 +139,8 @@ void Task_8062FD8(void)
             m4aSongNumStart(SE_CHECKPOINT);
         }
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
@@ -161,11 +161,11 @@ void Task_8063108(void)
         TaskDestroy(chkPt->task);
         TaskDestroy(gCurTask);
     } else {
-        if (sub_8004558(s) == 0) {
+        if (UpdateSpriteAnimation(s) == 0) {
             gCurTask->main = Task_806319C;
         }
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

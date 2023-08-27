@@ -43,7 +43,7 @@ void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, ANIM_BELL_TILES, SA2_ANIM_BELL, 0, 0x480, 2);
+    SPRITE_INIT(s, ANIM_BELL_TILES, SA2_ANIM_BELL, 0, 18, 2);
 }
 
 static void Task_BellMain(void)
@@ -123,6 +123,6 @@ void sub_8054D20(void)
         }
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }

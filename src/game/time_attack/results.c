@@ -98,7 +98,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
         s->graphics.dest = VramMalloc(4);
         s->graphics.anim = SA2_ANIM_TIME_ATTACK_DIGITS;
         s->variant = SA2_ANIM_VARIANT_TA_DIGITS_0;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -118,7 +118,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     resultsCutScene->unk178[6].variant += resultsCutScene->unk175;
 
     for (i = 0; i < 7; i++) {
-        sub_8004558(&resultsCutScene->unk178[i]);
+        UpdateSpriteAnimation(&resultsCutScene->unk178[i]);
     }
 
     resultsCutScene->unk2D8 = sub_80899B8(finishTime);
@@ -129,7 +129,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
     s->variant = 0;
-    s->unk1A = 0x140;
+    s->unk1A = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -138,7 +138,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unkC[0];
     s->x = 256;
@@ -146,7 +146,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -155,7 +155,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     isBossLevel = (gCurrentLevel & 3) >> 1;
 
@@ -165,7 +165,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(gUnknown_080D715A[isBossLevel][0]);
     s->graphics.anim = gUnknown_080D715A[isBossLevel][1];
     s->variant = gUnknown_080D715A[isBossLevel][2];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -174,7 +174,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     if (isBossLevel != 0) {
         level = (gCurrentLevel >> 2) + ACT_BOSS;
@@ -188,7 +188,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
     s->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
     s->variant = sAnimsGotThroughZoneAndActNames[level][2];
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -197,7 +197,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unk9C[0];
     s->x = 40;
@@ -205,7 +205,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(8);
     s->graphics.anim = SA2_ANIM_TA_RECORD;
     s->variant = SA2_ANIM_VARIANT_TA_TIME;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -214,7 +214,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unk9C[1];
     s->x = (DISPLAY_WIDTH / 2);
@@ -226,7 +226,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     } else {
         s->variant = SA2_ANIM_VARIANT_TA_DIGITS_PLATE_1_GOLD;
     }
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -235,7 +235,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = gUnknown_030054B8++ | 0x20;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     resultsCutScene->transform.width = 0;
     resultsCutScene->transform.height = 0x100;
@@ -249,7 +249,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->graphics.dest = VramMalloc(0x16);
     s->graphics.anim = SA2_ANIM_TA_RECORD;
     s->variant = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -258,7 +258,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     gUnknown_030054A8.unk0 = 0xFF;
 
@@ -297,13 +297,13 @@ void sub_80897E8(void)
 
         for (i = 0; i < 8; i++) {
             s->x = temp + i * 0x20;
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     } else {
         s = &resultsCutScene->unk12C;
         for (i = 0; i < 8; i++) {
             s->x = i << 5; // TODO: Does (i * 32) match?
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 
@@ -317,7 +317,7 @@ void sub_80897E8(void)
 
         for (i = 0; i < temp; i++) {
             s = &resultsCutScene->unkC[i];
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 
@@ -326,7 +326,7 @@ void sub_80897E8(void)
         if ((unk168 - 0x5A) < 0xB) {
             s->x = (100 - unk168) * 16 + 40;
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (unk168 > 0x77) {
@@ -350,12 +350,12 @@ void sub_80897E8(void)
                     resultsCutScene->transform.width = 0x10;
                 }
                 sub_8004860(s, &resultsCutScene->transform);
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
 
             if (resultsCutScene->unk2D8 == 1 && (unk168 & 0x20)) {
                 s = &resultsCutScene->unk9C[2];
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
 
@@ -370,7 +370,7 @@ void sub_80897E8(void)
                 s->y += gUnknown_080E05C4[index];
             }
 
-            sub_80051E8(s);
+            DisplaySprite(s);
         }
     }
 }

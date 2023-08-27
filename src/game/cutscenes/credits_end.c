@@ -186,7 +186,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->palId = 0;
             s->unk10 = 0;
             s->hitboxes[0].index = -1;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
 
         {
@@ -207,7 +207,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->palId = 0;
             s->unk10 = 0;
             s->hitboxes[0].index = -1;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
 
         {
@@ -228,7 +228,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->palId = 0;
             s->unk10 = 0;
             s->hitboxes[0].index = -1;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
 
         gDispCnt |= 0x100;
@@ -523,8 +523,8 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
         s->variant = gUnknown_080E12D0[0].variant;
         s->x = scene->unk170[0][0];
         s->y = scene->unk170[0][1] >> 8;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
         scene->congratsAnimFrame--;
     } else if (scene->congratsAnimFrame > -15 && scene->congratsAnimFrame < 1) {
         // off for 15 frames
@@ -540,16 +540,16 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
         s->variant = gUnknown_080E12D0[1].variant;
         s->x = scene->unk170[1][0];
         s->y = scene->unk170[1][1] >> 8;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
 
         s = &scene->unk120;
         s->graphics.anim = gUnknown_080E12D0[2].anim;
         s->variant = gUnknown_080E12D0[2].variant;
         s->x = scene->unk170[2][0];
         s->y = scene->unk170[2][1] >> 8;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 

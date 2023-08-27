@@ -42,7 +42,7 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(GFX_TILE_COUNT_SPINNER);
     s->graphics.anim = SA2_ANIM_SPINNER;
     s->variant = 0;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -97,8 +97,8 @@ NONMATCH("asm/non_matching/Task_EnemySpinner.inc", void Task_EnemySpinner(void))
         TaskDestroy(gCurTask);
     } else {
         sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 END_NONMATCH

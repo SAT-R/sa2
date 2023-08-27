@@ -70,7 +70,7 @@ void CreatePauseMenu(void)
             }
 
             s->graphics.dest = vramTiles;
-            s->unk1A = 0x40;
+            s->unk1A = SPRITE_OAM_ORDER(1);
             s->graphics.size = 0;
             s->graphics.anim = sAnimInfoPauseMenu[lang].anim;
             s->variant = sAnimInfoPauseMenu[lang].variant;
@@ -85,7 +85,7 @@ void CreatePauseMenu(void)
 
             s->unk10 = 0;
 
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 }
@@ -168,7 +168,7 @@ void Task_PauseMenuUpdate(void)
     }
 
     pm->unk60 = 0;
-    sub_80051E8(&pm->s);
+    DisplaySprite(&pm->s);
 }
 
 void Task_PauseMenuInit(void)

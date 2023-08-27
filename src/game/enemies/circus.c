@@ -53,14 +53,14 @@ void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 20, SA2_ANIM_CIRCUS, 0, 0x480, 2);
+    SPRITE_INIT(s, 20, SA2_ANIM_CIRCUS, 0, 18, 2);
 
     s = &circus->s2;
     s->x = 0;
     s->y = 0;
-    SPRITE_INIT(s, 16, SA2_ANIM_CIRCUS_PROJ, 2, 0x480, 2);
+    SPRITE_INIT(s, 16, SA2_ANIM_CIRCUS_PROJ, 2, 18, 2);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_CircusMain(void)
@@ -93,7 +93,7 @@ void Task_CircusMain(void)
     s2->y = s->y - Q_24_8(0.125);
 
     sub_800C84C(s2, pos.x, pos.y - Q_24_8(0.125));
-    sub_80051E8(s2);
+    DisplaySprite(s2);
 }
 
 void Task_8055AB8(void)
@@ -112,10 +112,10 @@ void Task_8055AB8(void)
 
     sub_80122DC(circus->spawnX, circus->spawnY);
 
-    if (sub_8004558(s) == 0) {
-        sub_80051E8(s);
-        sub_8004558(s2);
-        sub_80051E8(s2);
+    if (UpdateSpriteAnimation(s) == 0) {
+        DisplaySprite(s);
+        UpdateSpriteAnimation(s2);
+        DisplaySprite(s2);
 
         circus->unk84 = 50;
 
@@ -124,12 +124,12 @@ void Task_8055AB8(void)
         s->prevVariant = -1;
         gCurTask->main = Task_8055C0C;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
         s2->x = s->x;
         s2->y = s->y - Q_24_8(0.125);
 
         sub_800C84C(s2, pos.x, pos.y - Q_24_8(0.125));
-        sub_80051E8(s2);
+        DisplaySprite(s2);
     }
 }
 
@@ -158,10 +158,10 @@ void Task_8055C0C(void)
 
     sub_80122DC(circus->spawnX, circus->spawnY);
 
-    sub_8004558(s);
-    sub_80051E8(s);
-    sub_8004558(s2);
-    sub_80051E8(s2);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+    UpdateSpriteAnimation(s2);
+    DisplaySprite(s2);
 
     if (--circus->unk84 == 0) {
         s->graphics.anim = SA2_ANIM_CIRCUS;
@@ -187,8 +187,8 @@ void Task_8055D7C(void)
 
     sub_80122DC(circus->spawnX, circus->spawnY);
 
-    if (sub_8004558(s) == 0) {
-        sub_80051E8(s);
+    if (UpdateSpriteAnimation(s) == 0) {
+        DisplaySprite(s);
 
         circus->unk84 = 30;
 
@@ -197,14 +197,14 @@ void Task_8055D7C(void)
         s->prevVariant = -1;
         gCurTask->main = Task_CircusMain;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s2->x = s->x;
     s2->y = s->y - Q_24_8(0.125);
 
     sub_800C84C(s2, pos.x, pos.y - Q_24_8(0.125));
-    sub_80051E8(s2);
+    DisplaySprite(s2);
 }
 
 void TaskDestructor_Circus(struct Task *t)

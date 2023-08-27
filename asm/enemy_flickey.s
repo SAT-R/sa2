@@ -168,7 +168,7 @@ _08058C26:
 	movs r0, #0x4c
 	add r0, sl
 	mov sb, r0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r6, #0
 	mov r1, sp
 	adds r1, #0xc
@@ -230,7 +230,7 @@ _08058C50:
 	subs r1, r1, r0
 	str r1, [r2]
 	mov r0, sb
-	bl sub_80051E8
+	bl DisplaySprite
 	lsls r5, r5, #0x18
 	lsrs r6, r5, #0x18
 	cmp r6, #2
@@ -479,9 +479,9 @@ _08058EAC:
 	lsls r1, r6, #8
 	bl sub_80122DC
 	mov r0, sb
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, sb
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r0, sl
 	bl Flickey_RenderIronBalls
 _08058ECA:
@@ -631,7 +631,7 @@ _08058FD0:
 	add r1, sb
 	mov r8, r1
 	mov r0, r8
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0
 	mov r2, sp
 	adds r2, #4
@@ -692,7 +692,7 @@ _08059004:
 	subs r1, r1, r0
 	str r1, [r2]
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	lsls r5, r5, #0x18
 	lsrs r7, r5, #0x18
 	cmp r7, #2
@@ -820,7 +820,7 @@ _08059168:
 	lsls r1, r7, #8
 	bl sub_80122DC
 	mov r0, r8
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	cmp r0, #0
 	bne _080591D4
 	mov r0, r8
@@ -868,7 +868,7 @@ _080591B6:
 	str r0, [r1, #8]
 _080591D4:
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r0, sb
 	bl Flickey_RenderIronBalls
 _080591E0:
@@ -914,7 +914,7 @@ _0805922C: .4byte gCurTask
 _08059230: .4byte IWRAM_START + 0x4C
 _08059234:
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r0, #0
 	mov r8, r0
 	ldr r0, _08059308 @ =IWRAM_START + 0xA4
@@ -995,14 +995,14 @@ _080592BE:
 	subs r0, r0, r1
 	strh r0, [r7, #0x18]
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldr r0, [r7, #0x10]
 	movs r1, #0x80
 	lsls r1, r1, #3
 	eors r0, r1
 	str r0, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080592EA:
 	mov r0, r8
 	adds r0, #1
@@ -1039,7 +1039,7 @@ Flickey_RenderIronBalls: @ 0x08059320
 	adds r5, r6, #0
 	adds r5, #0x4c
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r4, #0
 	movs r0, #0xa9
 	lsls r0, r0, #2
@@ -1070,14 +1070,14 @@ _0805933E:
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldr r0, [r5, #0x10]
 	movs r1, #0x80
 	lsls r1, r1, #3
 	eors r0, r1
 	str r0, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	lsls r4, r4, #0x18
 	lsrs r4, r4, #0x18
 	cmp r4, #2

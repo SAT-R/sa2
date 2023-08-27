@@ -100,7 +100,7 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
     s->graphics.anim = sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
     s->variant = sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -110,7 +110,7 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
     s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_CommonPlatformThinMain(void)
@@ -207,7 +207,7 @@ static void Task_CommonPlatformThinMain(void)
         return;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
     return;
 }
 
@@ -235,7 +235,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
         s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
 
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -251,7 +251,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         transform->x = x;
         transform->y = y;
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
 
         // copy base 1
         DmaCopy16(3, &platform->unk0, &platform->unk30, 0x30);
@@ -280,7 +280,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
             = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][3]);
         s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
         s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][5];
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -293,7 +293,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         // Set the transform props
         transform->y = y;
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
 
         // Copy base 2
         DmaCopy16(3, &platform->unk60, &platform->unk90, 0x30);
@@ -354,7 +354,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     transform->x = x;
     transform->y = y;
@@ -380,7 +380,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     transform->x = x;
     transform->y = y;
@@ -405,7 +405,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     transform->x = x;
     transform->y = y;
@@ -430,7 +430,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     transform->x = x;
     transform->y = y;

@@ -57,7 +57,7 @@ void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     s->y = 0;
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 24, SA2_ANIM_KYURA, 0, 0x480, 2);
+    SPRITE_INIT(s, 24, SA2_ANIM_KYURA, 0, 18, 2);
 }
 
 void Task_KyuraMain(void)
@@ -132,6 +132,6 @@ void Task_KyuraRecover(void)
         kyura->unk54 = (kyura->unk54 + 8) & ONE_CYCLE;
         gCurTask->main = Task_KyuraMain;
     }
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }

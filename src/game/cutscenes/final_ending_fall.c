@@ -212,7 +212,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -220,7 +220,7 @@ void CreateFinalEndingFallCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -231,7 +231,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = (DISPLAY_HEIGHT / 2);
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -250,7 +250,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0x78;
         s->y = 0x50;
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -270,7 +270,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0x80;
+        s->unk1A = SPRITE_OAM_ORDER(2);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -278,7 +278,7 @@ void CreateFinalEndingFallCutScene(void)
         s->palId = 2;
         s->unk10 = 0x2000;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 2; i++) {
@@ -289,7 +289,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0x40;
+        s->unk1A = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -308,7 +308,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -328,7 +328,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -336,7 +336,7 @@ void CreateFinalEndingFallCutScene(void)
         s->palId = 2;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 2; i++) {
@@ -349,7 +349,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -357,7 +357,7 @@ void CreateFinalEndingFallCutScene(void)
         s->palId = 0;
         s->unk10 = 0;
         s->hitboxes[0].index = -1;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     background = &scene->unk0;
@@ -670,8 +670,8 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
 
         s->x = scene->unk3F8[i][0];
         s->y = scene->unk3F8[i][1] >> 8;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk35C > 8) {
@@ -684,8 +684,8 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
     s->x = scene->unk3C0;
     s->y = scene->unk3C4 >> 8;
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if (scene->unk35C < 10) {
         for (i = 0; i < 6; i++) {
@@ -695,8 +695,8 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
                 s->variant = gUnknown_080E1650[(i & 1) + 3].variant;
                 s->x = scene->unk378[i][0];
                 s->y = scene->unk378[i][1] >> 8;
-                sub_8004558(s);
-                sub_80051E8(s);
+                UpdateSpriteAnimation(s);
+                DisplaySprite(s);
             }
 
             if (scene->unk365[i] != 0) {
@@ -706,12 +706,12 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
                 s->x = scene->unk3C8[i][0];
                 s->y = scene->unk3C8[i][1] >> 8;
 
-                if (sub_8004558(s) != 1) {
+                if (UpdateSpriteAnimation(s) != 1) {
                     s->animCursor = 0;
                     s->timeUntilNextFrame = 0;
                     s->unk10 &= ~0x4000;
                 }
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     }
@@ -724,8 +724,8 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
     s->variant = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].variant;
     s->x = scene->unk3A8;
     s->y = scene->unk3AC >> 8;
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if (scene->unk35C > 10) {
         variant = 1;
@@ -736,8 +736,8 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
     s->variant = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].variant;
     s->x = scene->unk3B4;
     s->y = scene->unk3B8 >> 8;
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if (gSelectedCharacter == CHARACTER_CREAM) {
         s = &scene->unk170;
@@ -745,13 +745,13 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
         s->variant = gUnknown_080E1650[variant + 0x1B].variant;
         s->x = scene->unk3B4;
         s->y = scene->unk3B8 >> 8;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk35C > 10) {
         for (i = 0; i < 2; i++) {
-            sub_8004558(&scene->unkB0[i]);
+            UpdateSpriteAnimation(&scene->unkB0[i]);
         }
         scene->unk370++;
     }

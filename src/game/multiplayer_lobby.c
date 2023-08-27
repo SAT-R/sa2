@@ -184,14 +184,14 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT)-50;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(lobbyScreen->uiElements); i++) {
         s = &lobbyScreen->uiElements[i];
@@ -202,14 +202,14 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = (DISPLAY_HEIGHT / 4) - 4;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->animSpeed = 0x10;
         s->palId = 0;
         s->unk10 = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     lobbyScreen->transition.unk0 = 1;
@@ -490,7 +490,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     Sprite *s = &lobbyScreen->chao;
     // Chao anim finished
-    if (!sub_8004558(s)) {
+    if (!UpdateSpriteAnimation(s)) {
         if (lobbyScreen->cursor != CURSOR_YES
             && s->graphics.anim == SA2_ANIM_MP_CHEESE_WAVING) {
             s->variant = 1;
@@ -505,10 +505,10 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
         }
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &lobbyScreen->uiElements[ELEMENT_TITLE];
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &lobbyScreen->uiElements[ELEMENT_YES];
     if (lobbyScreen->cursor != CURSOR_YES) {
@@ -519,7 +519,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
         s->palId = 0;
     }
     s->y = DISPLAY_HEIGHT - 50;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s = &lobbyScreen->uiElements[ELEMENT_NO];
 
@@ -531,7 +531,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
         s->palId = 0;
     }
     s->y = DISPLAY_HEIGHT - 50;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (lobbyScreen->animFrame > 0) {
         lobbyScreen->animFrame--;

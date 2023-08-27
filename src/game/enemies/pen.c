@@ -54,7 +54,7 @@ void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 12, SA2_ANIM_PEN, SA2_ANIM_PEN_VARIANT_MOVE, 0x480, 2);
+    SPRITE_INIT(s, 12, SA2_ANIM_PEN, SA2_ANIM_PEN_VARIANT_MOVE, 18, 2);
 }
 
 static void Task_PenMove(void)
@@ -144,7 +144,7 @@ static void Task_PenTurn(void)
     ENEMY_DESTROY_IF_OFFSCREEN(pen, me, s);
 
     sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         pen->boosting = FALSE;
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
             s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
@@ -156,5 +156,5 @@ static void Task_PenTurn(void)
         s->prevVariant = -1;
         gCurTask->main = Task_PenMove;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

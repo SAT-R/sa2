@@ -87,7 +87,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     }
 
     s = &flyingHandle->s;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -99,7 +99,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->graphics.dest = VramMalloc(FLYING_HANDLE_VRAM_TILES);
     s->graphics.anim = SA2_ANIM_FLYING_HANDLE;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
@@ -210,8 +210,8 @@ static void sub_807F5C0(Sprite_FlyingHandle *flyingHandle)
         s->y = Q_24_8_TO_INT(flyingHandle->unk48 + flyingHandle->unk50) - gCamera.y;
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 static bool32 IsPlayerTouching(Sprite_FlyingHandle *flyingHandle)

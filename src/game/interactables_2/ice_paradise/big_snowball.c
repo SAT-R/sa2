@@ -84,7 +84,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     vramBase = VramMalloc(0x1F);
     ia69->vram = vramBase;
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -96,11 +96,11 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.dest = vramBase;
     s->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     s->variant = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     vram = vramBase + 0x200;
     s = &ia69->unk30;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -112,11 +112,11 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.dest = vram;
     s->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     s->variant = 1;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     vram = vramBase + 800;
     s = &ia69->unk60;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -128,11 +128,11 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.dest = vram;
     s->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     s->variant = 2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     vram = vramBase + 928;
     s = &ia69->unk90;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -144,11 +144,11 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.dest = vram;
     s->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     s->variant = 3;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     vram = vramBase + 960;
     s = &ia69->unkC0;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -160,7 +160,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->graphics.dest = vram;
     s->graphics.anim = SA2_ANIM_BIG_SNOWBALL;
     s->variant = 4;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
@@ -339,7 +339,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
                 ia69->unk0.x = ia69->unk158 - gCamera.x
                     + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
                 ia69->unk0.y = ia69->unk15C - gCamera.y + temp2;
-                sub_80051E8(&ia69->unk0);
+                DisplaySprite(&ia69->unk0);
             }
         }
 
@@ -349,7 +349,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
                 ia69->unk30.x = ia69->unk158 - gCamera.x
                     + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
                 ia69->unk30.y = ia69->unk15C - gCamera.y + temp2;
-                sub_80051E8(&ia69->unk30);
+                DisplaySprite(&ia69->unk30);
             }
         }
 
@@ -359,7 +359,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
                 ia69->unk60.x = ia69->unk158 - gCamera.x
                     + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
                 ia69->unk60.y = ia69->unk15C - gCamera.y + temp2;
-                sub_80051E8(&ia69->unk60);
+                DisplaySprite(&ia69->unk60);
             }
         }
 
@@ -369,7 +369,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
                 ia69->unk90.x = ia69->unk158 - gCamera.x
                     + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
                 ia69->unk90.y = ia69->unk15C - gCamera.y + temp2;
-                sub_80051E8(&ia69->unk90);
+                DisplaySprite(&ia69->unk90);
             }
         }
 
@@ -379,7 +379,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
                 ia69->unkC0.x = ia69->unk158 - gCamera.x
                     + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
                 ia69->unkC0.y = ia69->unk15C - gCamera.y + temp2;
-                sub_80051E8(&ia69->unkC0);
+                DisplaySprite(&ia69->unkC0);
             }
         }
     } else {
@@ -418,11 +418,11 @@ void sub_8079560(Sprite_IA69 *ia69)
             if (i & 1) {
                 ia69->unk90.x = (unk158 - gCamera.x) + Q_24_8_TO_INT(unkF0->unk0);
                 ia69->unk90.y = (temp - gCamera.y) + Q_24_8_TO_INT(unkF0->unk2);
-                sub_80051E8(&ia69->unk90);
+                DisplaySprite(&ia69->unk90);
             } else {
                 ia69->unkC0.x = (unk158 - gCamera.x) + Q_24_8_TO_INT(unkF0->unk0);
                 ia69->unkC0.y = (temp - gCamera.y) + Q_24_8_TO_INT(unkF0->unk2);
-                sub_80051E8(&ia69->unkC0);
+                DisplaySprite(&ia69->unkC0);
             }
         }
     }

@@ -41,7 +41,7 @@ void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     turnAroundBar->base.spriteX = me->x;
     turnAroundBar->base.spriteY = spriteY;
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -58,7 +58,7 @@ void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     turnAroundBar->x = TO_WORLD_POS(me->x, spriteRegionX);
     turnAroundBar->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
@@ -85,7 +85,7 @@ static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
 
     s->graphics.anim = 567;
     s->variant = 2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     gCurTask->main = sub_8073600;
 }
 
@@ -130,7 +130,7 @@ static void Task_TurnAroundBarMain(void)
         TaskDestroy(gCurTask);
     } else {
         sub_8073760(turnAroundBar);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -144,8 +144,8 @@ static void sub_8073600(void)
         return;
     }
     sub_8073760(turnAroundBar);
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if (s->unk10 & 0x4000) {
         sub_80736E0(turnAroundBar);
@@ -177,7 +177,7 @@ static void sub_8073670(Sprite_TurnAroundBar *turnAroundBar)
     if (gPlayer.moveState & 1) {
         s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
     }
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     gCurTask->main = sub_8073818;
 }
 
@@ -187,7 +187,7 @@ static void sub_80736E0(Sprite_TurnAroundBar *turnAroundBar)
     s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     s->variant = 0;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     gCurTask->main = Task_TurnAroundBarMain;
 }
 
@@ -198,7 +198,7 @@ static void sub_807371C(Sprite_TurnAroundBar *turnAroundBar)
     s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     s->variant = 0;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     gCurTask->main = Task_TurnAroundBarMain;
 }
 
@@ -258,8 +258,8 @@ static void sub_8073818(void)
         return;
     }
     sub_8073760(turnAroundBar);
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if (s->unk10 & 0x4000) {
         sub_8073474(turnAroundBar);

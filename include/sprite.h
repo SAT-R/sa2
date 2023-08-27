@@ -111,6 +111,8 @@ typedef struct {
 } Hitbox;
 
 #define SPRITE_ANIM_SPEED(speed) ((int)((float)(speed)*0x10))
+#define SPRITE_OAM_ORDER(index)  ((index) << 6)
+#define GET_SPRITE_OAM_ORDER(s)  ((((s)->unk1A) & 0x7C0) >> 6)
 
 // TODO: work out what makes this struct different from the above
 typedef struct {
@@ -141,7 +143,7 @@ typedef struct {
     /* 0x16 */ s16 x;
     /* 0x18 */ s16 y;
 
-    /* 0x1A */ u16 unk1A; // might be a bitfield?
+    /* 0x1A */ u16 unk1A; // bit 6-10: OAM order index
 
     /* 0x1C */ s16 timeUntilNextFrame; // Q_8_8, in frames
     /* 0x1E */ u16 prevAnim;
@@ -179,9 +181,9 @@ typedef struct PACKED {
 
 extern const u8 gOamShapesSizes[12][2];
 
-s32 sub_8004558(Sprite *);
+s32 UpdateSpriteAnimation(Sprite *);
 
-void sub_80051E8(Sprite *);
+void DisplaySprite(Sprite *);
 void sub_8002A3C(Background *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);
@@ -221,78 +223,48 @@ void UpdateBgAnimationTiles(Background *);
         (_sprite)->prevAnim = (_sprite)->graphics.anim;                                 \
         (_sprite)->animCursor = 0;                                                      \
         (_sprite)->timeUntilNextFrame = 0;                                              \
-        (_sprite)->unk10 &= ~0x4000;                                                    \
+        SPRITE_FLAG_CLEAR(_sprite, ANIM_OVER);                                          \
     }
 
-#define SPRITE_INIT_WITH_POS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)    \
-    _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
+#define SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order)                              \
     _sprite->graphics.anim = _anim;                                                     \
     _sprite->variant = _variant;                                                        \
-    _sprite->unk1A = _UNK1A;                                                            \
-    _sprite->graphics.size = 0;                                                         \
-    _sprite->x = 0;                                                                     \
-    _sprite->y = 0;                                                                     \
-    _sprite->animCursor = 0;                                                            \
-    _sprite->timeUntilNextFrame = 0;                                                    \
-    _sprite->prevVariant = -1;                                                          \
-    _sprite->animSpeed = 0x10;                                                          \
-    _sprite->palId = 0;                                                                 \
-    _sprite->hitboxes[0].index = -1;                                                    \
-    _sprite->unk10 = SPRITE_FLAG(PRIORITY, _priority);
+    _sprite->unk1A = SPRITE_OAM_ORDER(_order);                                          \
+    _sprite->graphics.size = 0;
 
-#define SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority,  \
-                               _flags)                                                  \
-    _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
-    _sprite->graphics.anim = _anim;                                                     \
-    _sprite->variant = _variant;                                                        \
-    _sprite->unk1A = _UNK1A;                                                            \
-    _sprite->graphics.size = 0;                                                         \
+#define SPRITE_INIT_SCRIPT(_sprite, _speed)                                             \
     _sprite->animCursor = 0;                                                            \
     _sprite->timeUntilNextFrame = 0;                                                    \
     _sprite->prevVariant = -1;                                                          \
-    _sprite->animSpeed = 0x10;                                                          \
-    _sprite->palId = 0;                                                                 \
-    _sprite->hitboxes[0].index = -1;                                                    \
-    _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
-
-#define SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _UNK1A, _priority, _flags)   \
-    _sprite->graphics.anim = _anim;                                                     \
-    _sprite->variant = _variant;                                                        \
-    _sprite->unk1A = _UNK1A;                                                            \
-    _sprite->graphics.size = 0;                                                         \
-    _sprite->animCursor = 0;                                                            \
-    _sprite->timeUntilNextFrame = 0;                                                    \
-    _sprite->prevVariant = -1;                                                          \
-    _sprite->animSpeed = 0x10;                                                          \
-    _sprite->palId = 0;                                                                 \
-    _sprite->hitboxes[0].index = -1;                                                    \
-    _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
-
-#define SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(_sprite, _UNK1A, _priority, _flags)            \
-    _sprite->unk1A = _UNK1A;                                                            \
-    _sprite->graphics.size = 0;                                                         \
-    _sprite->animCursor = 0;                                                            \
-    _sprite->timeUntilNextFrame = 0;                                                    \
-    _sprite->prevVariant = -1;                                                          \
-    _sprite->animSpeed = 0x10;                                                          \
-    _sprite->palId = 0;                                                                 \
-    _sprite->hitboxes[0].index = -1;                                                    \
-    _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
-
-#define SPRITE_INIT_WITHOUT_VRAM_OR_FLAGS(_sprite, _anim, _variant, _UNK1A)             \
-    _sprite->graphics.anim = _anim;                                                     \
-    _sprite->variant = _variant;                                                        \
-    _sprite->unk1A = _UNK1A;                                                            \
-    _sprite->graphics.size = 0;                                                         \
-    _sprite->animCursor = 0;                                                            \
-    _sprite->timeUntilNextFrame = 0;                                                    \
-    _sprite->prevVariant = -1;                                                          \
-    _sprite->animSpeed = 0x10;                                                          \
+    _sprite->animSpeed = SPRITE_ANIM_SPEED(_speed);                                     \
     _sprite->palId = 0;                                                                 \
     _sprite->hitboxes[0].index = -1;
 
-#define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority)             \
-    SPRITE_INIT_WITH_FLAGS(_sprite, _numTiles, _anim, _variant, _UNK1A, _priority, 0)
+#define SPRITE_INIT_ANIM_AND_SCRIPT(_sprite, _anim, _variant, _order)                   \
+    SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order);                                 \
+    SPRITE_INIT_SCRIPT(_sprite, 1.0);
+
+#define SPRITE_INIT_WITH_POS(_sprite, _numTiles, _anim, _variant, _order, _priority)    \
+    _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
+    SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order);                                 \
+    _sprite->x = 0;                                                                     \
+    _sprite->y = 0;                                                                     \
+    SPRITE_INIT_SCRIPT(_sprite, 1.0)                                                    \
+    _sprite->unk10 = SPRITE_FLAG(PRIORITY, _priority);
+
+#define SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _order, _priority, _flags)   \
+    SPRITE_INIT_ANIM_AND_SCRIPT(_sprite, _anim, _variant, _order);                      \
+    _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
+
+#define SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(_sprite, _order, _priority, _flags)            \
+    _sprite->unk1A = SPRITE_OAM_ORDER(_order);                                          \
+    _sprite->graphics.size = 0;                                                         \
+    SPRITE_INIT_SCRIPT(_sprite, 1.0);                                                   \
+    _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
+
+#define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _order, _priority)             \
+    _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
+    SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _order, _priority, 0);
 
 #define SF_SHIFT(name) (SPRITE_FLAG_SHIFT_##name)
 

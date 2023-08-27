@@ -1857,20 +1857,20 @@ static void OptionsScreenRenderUI(void)
     Sprite *playerNameDisplayChar = optionsScreen->playerNameDisplay;
     s16 i;
 
-    sub_80051E8(title);
+    DisplaySprite(title);
 
     for (i = 0; i < NUM_OPTIONS_MENU_ITEMS; i++, menuItem++) {
         if (optionsScreen->soundTestUnlocked || i != OPTIONS_MENU_ITEM_SOUND_TEST) {
-            sub_80051E8(menuItem);
+            DisplaySprite(menuItem);
             if (i < 4) {
-                sub_80051E8(metaItem);
+                DisplaySprite(metaItem);
                 metaItem++;
             }
         }
     }
 
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
-        sub_80051E8(playerNameDisplayChar);
+        DisplaySprite(playerNameDisplayChar);
     }
 }
 
@@ -2245,7 +2245,7 @@ static void Task_DifficultyMenuMain(void)
         difficultyOption = &optionsScreen->metaItems[OPTIONS_META_ITEM_DIFFICULTY_LEVEL];
         difficultyOption->variant = difficultyLevelText->unk2;
         difficultyOption->graphics.anim = difficultyLevelText->unk0;
-        sub_8004558(difficultyOption);
+        UpdateSpriteAnimation(difficultyOption);
 
         m4aSongNumStart(SE_SELECT);
 
@@ -2400,7 +2400,7 @@ static void Task_TimeLimitMenuMain(void)
 
         timeLimitOption->variant = itemText3->unk2;
         timeLimitOption->graphics.anim = itemText3->unk0;
-        sub_8004558(timeLimitOption);
+        UpdateSpriteAnimation(timeLimitOption);
         m4aSongNumStart(SE_SELECT);
         // and this
         optionsScreen->timeLimitDisabled = timeLimitMenu->switchValue;
@@ -2640,7 +2640,7 @@ static void Task_ButtonConfigMenuAButtonMain(void)
         actionText = &actionsText[buttonConfigMenu->aButtonAction];
         buttonAction->graphics.anim = actionText->unk0;
         buttonAction->variant = actionText->unk2;
-        sub_8004558(&buttonAction[0]);
+        UpdateSpriteAnimation(&buttonAction[0]);
         return;
     }
 
@@ -2660,7 +2660,7 @@ static void Task_ButtonConfigMenuAButtonMain(void)
                 = actionsText[buttonConfigMenu->bButtonAction].unk0;
             buttonAction->variant = actionsText[buttonConfigMenu->bButtonAction].unk2;
 
-            sub_8004558(buttonAction);
+            UpdateSpriteAnimation(buttonAction);
         }
 
         if (buttonConfigMenu->aButtonAction == buttonConfigMenu->rShoulderAction) {
@@ -2679,7 +2679,7 @@ static void Task_ButtonConfigMenuAButtonMain(void)
             buttonAction->graphics.anim
                 = actionsText[buttonConfigMenu->rShoulderAction].unk0;
             buttonAction->variant = actionsText[buttonConfigMenu->rShoulderAction].unk2;
-            sub_8004558(buttonAction);
+            UpdateSpriteAnimation(buttonAction);
         }
 
         buttonConfigMenu->focus = BUTTON_CONFIG_MENU_B_BUTTON;
@@ -2740,7 +2740,7 @@ static void Task_ButtonConfigMenuBButtonMain(void)
         itemText4 = &actionsText[unk245];
         buttonAction->graphics.anim = itemText4->unk0;
         buttonAction->variant = itemText4->unk2;
-        sub_8004558(buttonAction);
+        UpdateSpriteAnimation(buttonAction);
         return;
     }
 
@@ -2762,7 +2762,7 @@ static void Task_ButtonConfigMenuBButtonMain(void)
                 = actionsText[buttonConfigMenu->rShoulderAction].unk0;
             buttonAction->variant = actionsText[buttonConfigMenu->rShoulderAction].unk2;
 
-            sub_8004558(buttonAction);
+            UpdateSpriteAnimation(buttonAction);
         }
 
         buttonConfigMenu->focus = BUTTON_CONFIG_MENU_R_SHOULDER_BUTTON;
@@ -2788,7 +2788,7 @@ static void Task_ButtonConfigMenuBButtonMain(void)
                 = actionsText[buttonConfigMenu->bButtonAction].unk0;
             buttonAction->variant = actionsText[buttonConfigMenu->bButtonAction].unk2;
 
-            sub_8004558(buttonAction);
+            UpdateSpriteAnimation(buttonAction);
         }
         m4aSongNumStart(SE_RETURN);
         buttonConfigMenu->focus = BUTTON_CONFIG_MENU_A_BUTTON;
@@ -2891,7 +2891,7 @@ static void ButtonConfigMenuStartOver(void)
     for (i = 0; i < 3; i++, buttonAction++) {
         buttonAction->graphics.anim = actionsText[i].unk0;
         buttonAction->variant = actionsText[i].unk2;
-        sub_8004558(buttonAction);
+        UpdateSpriteAnimation(buttonAction);
     }
 
     gCurTask->main = Task_ButtonConfigMenuHandleStartOver;
@@ -2943,19 +2943,19 @@ static void ButtonConfigMenuRenderUI(void)
     s16 i;
 
     for (i = 0; i < 6; i++, unk4++) {
-        sub_80051E8(unk4);
+        DisplaySprite(unk4);
     }
 
     for (i = 0; i < 3; i++, unk124++) {
-        sub_80051E8(unk124);
+        DisplaySprite(unk124);
     }
 
     for (i = 0; i < 2; i++, unk1B4++) {
-        sub_8004558(unk1B4);
-        sub_80051E8(unk1B4);
+        UpdateSpriteAnimation(unk1B4);
+        DisplaySprite(unk1B4);
     }
 
-    sub_80051E8(unk214);
+    DisplaySprite(unk214);
 }
 
 static void LanguageScreenInitRegisters(struct LanguageScreen *languageScreen)
@@ -3109,12 +3109,12 @@ static void LanguageScreenHandleLanguageChanged(void)
 
     headerFooter->variant = titleText->unk2;
     headerFooter->graphics.anim = titleText->unk0;
-    sub_8004558(headerFooter);
+    UpdateSpriteAnimation(headerFooter);
 
     headerFooter++;
     headerFooter->variant = controlsText->unk2;
     headerFooter->graphics.anim = controlsText->unk0;
-    sub_8004558(headerFooter);
+    UpdateSpriteAnimation(headerFooter);
 }
 
 static void CreateDeleteScreen(struct OptionsScreen *optionsScreen)
@@ -3250,7 +3250,7 @@ static void Task_DeleteScreenCreateAbsoluteConfirmation(void)
     headerFooter->variant = titleText->unk2;
     headerFooter->graphics.anim = titleText->unk0;
 
-    sub_8004558(headerFooter);
+    UpdateSpriteAnimation(headerFooter);
 
     deleteScreen->confirmationCursor = DELETE_SCREEN_CONFIRMATION_NO;
 
@@ -3884,10 +3884,10 @@ static void ProfileNameScreenRenderUI(void)
     s16 i;
     u16 *nameChar;
 
-    sub_80051E8(title);
+    DisplaySprite(title);
 
     for (i = 0; i < 3; i++, controls++) {
-        sub_80051E8(controls);
+        DisplaySprite(controls);
     }
 
     if (profileNameScreen->cursorCol < PROFILE_NAME_SCREEN_CONTROLS_COLUMN) {
@@ -3899,8 +3899,8 @@ static void ProfileNameScreenRenderUI(void)
             + 32;
         focusedCell->y
             = profileNameScreen->cursorRow * NAME_CHAR_MATRIX_BACKGROUND_ROW_HEIGHT + 47;
-        sub_8004558(focusedCell);
-        sub_80051E8(focusedCell);
+        UpdateSpriteAnimation(focusedCell);
+        DisplaySprite(focusedCell);
         focusedCell++;
 
         // Interesting that this is calculated here, feels like the wrong place
@@ -3917,8 +3917,8 @@ static void ProfileNameScreenRenderUI(void)
             + 32;
         focusedCell->y
             = profileNameScreen->cursorRow * NAME_CHAR_MATRIX_BACKGROUND_ROW_HEIGHT + 47;
-        sub_8004558(focusedCell);
-        sub_80051E8(focusedCell);
+        UpdateSpriteAnimation(focusedCell);
+        DisplaySprite(focusedCell);
     } else {
         // Make a focus outline if we are on the controls
         focusedCell->graphics.anim = 0x3BA;
@@ -3926,35 +3926,35 @@ static void ProfileNameScreenRenderUI(void)
         focusedCell->x = 0xCB;
         focusedCell->y
             = profileNameScreen->cursorRow * NAME_CHAR_MATRIX_BACKGROUND_ROW_HEIGHT + 39;
-        sub_8004558(focusedCell);
-        sub_80051E8(focusedCell);
+        UpdateSpriteAnimation(focusedCell);
+        DisplaySprite(focusedCell);
     }
 
     // top
-    sub_8004558(scrollArrow);
+    UpdateSpriteAnimation(scrollArrow);
     scrollArrow++;
     // bottom
-    sub_8004558(scrollArrow);
+    UpdateSpriteAnimation(scrollArrow);
 
     if (profileNameScreen->cursorCol < PROFILE_NAME_SCREEN_CONTROLS_COLUMN) {
         // Show the top arrow if we are not on the first row
         scrollArrow = profileNameScreen->scrollArrows;
         if (profileNameScreen->matrixCursorIndex > NAME_CHAR_MATRIX_NUM_COLS - 1) {
-            sub_80051E8(scrollArrow);
+            DisplaySprite(scrollArrow);
         }
         scrollArrow++;
 
         // Show the bottom arrow if we are not on the last row
         if (profileNameScreen->matrixCursorIndex
             < NAME_CHAR_MATRIX_NUM_COLS * (NAME_CHAR_MATRIX_NUM_ROWS - 1)) {
-            sub_80051E8(scrollArrow);
+            DisplaySprite(scrollArrow);
         }
     }
 
     if (profileNameScreen->nameInput.cursor < MAX_PLAYER_NAME_LENGTH) {
         inputDisplayCursor->x
             = profileNameScreen->nameInput.cursor * NAME_INPUT_DISPLAY_CHAR_WIDTH + 161;
-        sub_80051E8(inputDisplayCursor);
+        DisplaySprite(inputDisplayCursor);
     }
 
     // render the inputted name into the display
@@ -3964,8 +3964,8 @@ static void ProfileNameScreenRenderUI(void)
         nameCharTile = sub_806B908(*nameChar);
         inputDisplayChar->graphics.anim = nameCharTile.unk4;
         inputDisplayChar->variant = nameCharTile.unk6;
-        sub_8004558(inputDisplayChar);
-        sub_80051E8(inputDisplayChar);
+        UpdateSpriteAnimation(inputDisplayChar);
+        DisplaySprite(inputDisplayChar);
     }
 }
 
@@ -4446,7 +4446,7 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen *timeRecord
         minuteDigit->graphics.anim = digitTile->unk0;
         minuteDigit->variant = digitTile->unk2;
         minuteDigit->x = (i * 8) + 272;
-        sub_8004558(minuteDigit);
+        UpdateSpriteAnimation(minuteDigit);
 
         deliminator->x = (i * 8) + 288;
         deliminator++;
@@ -4455,14 +4455,14 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen *timeRecord
         secondDigit->graphics.anim = digitTile->unk0;
         secondDigit->variant = digitTile->unk2;
         secondDigit->x = (i * 8) + 304;
-        sub_8004558(secondDigit);
+        UpdateSpriteAnimation(secondDigit);
 
         secondDigit++;
         digitTile = &sTimeRecordDigitTiles[UNITS_DIGIT(seconds)];
         secondDigit->graphics.anim = digitTile->unk0;
         secondDigit->variant = digitTile->unk2;
         secondDigit->x = (i * 8) + 320;
-        sub_8004558(secondDigit);
+        UpdateSpriteAnimation(secondDigit);
 
         deliminator->x = (i * 8) + 336;
 
@@ -4470,14 +4470,14 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen *timeRecord
         milliDigit->graphics.anim = digitTile->unk0;
         milliDigit->variant = digitTile->unk2;
         milliDigit->x = (i * 8) + 352;
-        sub_8004558(milliDigit);
+        UpdateSpriteAnimation(milliDigit);
 
         milliDigit++;
         digitTile = &sTimeRecordDigitTiles[UNITS_DIGIT(millis)];
         milliDigit->graphics.anim = digitTile->unk0;
         milliDigit->variant = digitTile->unk2;
         milliDigit->x = (i * 8) + 368;
-        sub_8004558(milliDigit);
+        UpdateSpriteAnimation(milliDigit);
     }
 }
 
@@ -4784,13 +4784,13 @@ static void Task_TimeRecordsScreenHandleCourseChange(void)
     zoneNumber->graphics.anim = zoneTitleText->unk0;
     zoneNumber->variant = zoneTitleText->unk2;
 
-    sub_8004558(zoneNumber);
+    UpdateSpriteAnimation(zoneNumber);
 
     if (!timeRecordsScreen->isBossMode) {
         zoneTitleText = &sTimeRecordsZoneActTitleDigits[timeRecordsScreen->act];
         unkDC->graphics.anim = zoneTitleText->unk0;
         unkDC->variant = zoneTitleText->unk2;
-        sub_8004558(unkDC);
+        UpdateSpriteAnimation(unkDC);
     }
 
     // zone subtitle text
@@ -4802,7 +4802,7 @@ static void Task_TimeRecordsScreenHandleCourseChange(void)
 
     zoneSubtitle->graphics.anim = zoneTitleText->unk0;
     zoneSubtitle->variant = zoneTitleText->unk2;
-    sub_8004558(zoneSubtitle);
+    UpdateSpriteAnimation(zoneSubtitle);
 
     TimeRecordsScreenRefreshTimesUI(timeRecordsScreen);
     TimeRecordsScreenRenderCoursesViewUI(0);
@@ -4877,11 +4877,11 @@ static void TimeRecordsScreenRenderCoursesViewUI(u16 a)
     }
 
     for (i = 0; i < 3; i++, timeRecordDisplay++) {
-        sub_80051E8(timeRecordDisplay);
+        DisplaySprite(timeRecordDisplay);
     }
 
     for (i = 0; i < 2; i++, zoneTitleElement++) {
-        sub_80051E8(zoneTitleElement);
+        DisplaySprite(zoneTitleElement);
     }
 
     // No idea why j is reused here
@@ -4895,19 +4895,19 @@ static void TimeRecordsScreenRenderCoursesViewUI(u16 a)
         : j;
 
     for (i = 0; i < visibleScrollArrows; i++, scrollArrows++) {
-        sub_8004558(scrollArrows);
-        sub_80051E8(scrollArrows);
+        UpdateSpriteAnimation(scrollArrows);
+        DisplaySprite(scrollArrows);
     }
 
     if (!timeRecordsScreen->isBossMode) {
         for (i = 0; i < 2; i++, actTitleElement++) {
-            sub_80051E8(actTitleElement);
+            DisplaySprite(actTitleElement);
         }
     } else {
-        sub_80051E8(actTitleElement);
+        DisplaySprite(actTitleElement);
     }
 
-    sub_80051E8(zoneSubtitle);
+    DisplaySprite(zoneSubtitle);
 
     for (i = 0; i < 3; i++, timeRecord++) {
         deliminator = timeRecord->deliminators;
@@ -4916,17 +4916,17 @@ static void TimeRecordsScreenRenderCoursesViewUI(u16 a)
         milliDigit = timeRecord->millis;
 
         for (j = 0; j < 2; j++, deliminator++) {
-            sub_80051E8(deliminator);
+            DisplaySprite(deliminator);
         }
 
-        sub_80051E8(minute);
+        DisplaySprite(minute);
 
         for (j = 0; j < 2; j++, secondDigit++) {
-            sub_80051E8(secondDigit);
+            DisplaySprite(secondDigit);
         }
 
         for (j = 0; j < 2; j++, milliDigit++) {
-            sub_80051E8(milliDigit);
+            DisplaySprite(milliDigit);
         }
     }
 }
@@ -5299,17 +5299,17 @@ static void MultiplayerRecordsScreenRenderUI(void)
     s16 i, j;
     s16 numVisibleRows = MULTIPLAYER_RECORDS_SCREEN_NUM_VISIBLE_ROWS + 1;
 
-    sub_80051E8(title);
-    sub_80051E8(columnHeaders);
+    DisplaySprite(title);
+    DisplaySprite(columnHeaders);
 
     scrollArrow = multiplayerRecordsScreen->scrollArrows;
-    sub_8004558(scrollArrow);
+    UpdateSpriteAnimation(scrollArrow);
     scrollArrow++;
-    sub_8004558(scrollArrow);
+    UpdateSpriteAnimation(scrollArrow);
     scrollArrow--;
 
     if (multiplayerRecordsScreen->scrollIndex > 0) {
-        sub_80051E8(scrollArrow);
+        DisplaySprite(scrollArrow);
     }
     scrollArrow++;
 
@@ -5320,23 +5320,23 @@ static void MultiplayerRecordsScreenRenderUI(void)
     if (multiplayerRecordsScreen->scrollIndex
             < MULTIPLAYER_RECORDS_SCREEN_MAX_SCROLL_INDEX
         && row->slotFilled) {
-        sub_80051E8(scrollArrow);
+        DisplaySprite(scrollArrow);
     }
 
     for (i = 0; i < MAX_PLAYER_NAME_LENGTH; i++, playerNameDisplayChar++) {
-        sub_80051E8(playerNameDisplayChar);
+        DisplaySprite(playerNameDisplayChar);
     }
 
     for (i = 0; i < 2; i++, playerWinsDigit++) {
-        sub_80051E8(playerWinsDigit);
+        DisplaySprite(playerWinsDigit);
     }
 
     for (i = 0; i < 2; i++, playerLosesDigit++) {
-        sub_80051E8(playerLosesDigit);
+        DisplaySprite(playerLosesDigit);
     }
 
     for (i = 0; i < 2; i++, playerDrawsDigit++) {
-        sub_80051E8(playerDrawsDigit);
+        DisplaySprite(playerDrawsDigit);
     }
 
     if (multiplayerRecordsScreen->targetFirstVisibleRowIndex
@@ -5355,24 +5355,24 @@ static void MultiplayerRecordsScreenRenderUI(void)
         playerNameDisplayChar = row->nameDisplay;
 
         for (j = 0; j < MAX_PLAYER_NAME_LENGTH; j++, playerNameDisplayChar++) {
-            sub_80051E8(playerNameDisplayChar);
+            DisplaySprite(playerNameDisplayChar);
         }
 
         playerWinsDigit = row->winsDigits;
         playerLosesDigit = row->losesDigits;
         playerDrawsDigit = row->defeatsDigits;
 
-        sub_80051E8(playerWinsDigit);
+        DisplaySprite(playerWinsDigit);
         ++playerWinsDigit;
-        sub_80051E8(playerWinsDigit);
+        DisplaySprite(playerWinsDigit);
 
-        sub_80051E8(playerLosesDigit);
+        DisplaySprite(playerLosesDigit);
         ++playerLosesDigit;
-        sub_80051E8(playerLosesDigit);
+        DisplaySprite(playerLosesDigit);
 
-        sub_80051E8(playerDrawsDigit);
+        DisplaySprite(playerDrawsDigit);
         ++playerDrawsDigit;
-        sub_80051E8(playerDrawsDigit);
+        DisplaySprite(playerDrawsDigit);
     }
 }
 
@@ -5412,7 +5412,7 @@ void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
     s->palId = palId;
     s->hitboxes[0].index = -1;
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     switch (target) {
         case RENDER_TARGET_SCREEN:
@@ -5839,14 +5839,14 @@ static void PlayerDataMenuRenderUI(void)
     s16 i;
 
     for (i = 0; i < 2; i++, headerFooter++) {
-        sub_80051E8(headerFooter);
+        DisplaySprite(headerFooter);
     }
 
     for (i = 0; i < NUM_PLAYER_DATA_MENU_ITEMS; i++, menuItem++) {
-        sub_80051E8(menuItem);
+        DisplaySprite(menuItem);
     }
 
-    sub_80051E8(menuItemOutline);
+    DisplaySprite(menuItemOutline);
 }
 
 static void CreateDifficultyMenu(struct OptionsScreen *optionsScreen)
@@ -5873,14 +5873,14 @@ static void DifficultyMenuRenderUI(void)
     s16 i;
 
     for (i = 0; i < 2; i++, headerFooter++) {
-        sub_80051E8(headerFooter);
+        DisplaySprite(headerFooter);
     }
 
     for (i = 0; i < 2; i++, difficultyOption++) {
-        sub_80051E8(difficultyOption);
+        DisplaySprite(difficultyOption);
     }
 
-    sub_80051E8(switchValueOutline);
+    DisplaySprite(switchValueOutline);
 }
 
 static void CreateTimeLimitMenu(struct OptionsScreen *optionsScreen)
@@ -5906,14 +5906,14 @@ static void TimeLimitMenuRenderUI(void)
     s16 i;
 
     for (i = 0; i < 2; i++, headerFooter++) {
-        sub_80051E8(headerFooter);
+        DisplaySprite(headerFooter);
     }
 
     for (i = 0; i < 2; i++, option++) {
-        sub_80051E8(option);
+        DisplaySprite(option);
     }
 
-    sub_80051E8(switchValueOutline);
+    DisplaySprite(switchValueOutline);
 }
 
 static void Task_ButtonConfigMenuHandleStartOver(void)
@@ -6051,14 +6051,14 @@ static void LanguageScreenRenderUI(void)
     s16 i;
 
     for (i = 0; i < 2; i++, headerFooter++) {
-        sub_80051E8(headerFooter);
+        DisplaySprite(headerFooter);
     }
 
     for (i = 0; i < NUM_LANGUAGES; i++, languageOption++) {
-        sub_80051E8(languageOption);
+        DisplaySprite(languageOption);
     }
 
-    sub_80051E8(optionOutline);
+    DisplaySprite(optionOutline);
 }
 
 static void DeleteScreenCreateBackgroundsUI(struct DeleteScreen *deleteScreen)
@@ -6106,14 +6106,14 @@ static void DeleteScreenRenderUI(void)
     s16 i;
 
     for (i = 0; i < 2; i++, headerFooter++) {
-        sub_80051E8(headerFooter);
+        DisplaySprite(headerFooter);
     }
 
     for (i = 0; i < 2; i++, unk60++) {
-        sub_80051E8(unk60);
+        DisplaySprite(unk60);
     }
 
-    sub_80051E8(unkC0);
+    DisplaySprite(unkC0);
 }
 
 static void Task_ProfileNameScreenFadeIn(void)
@@ -6223,15 +6223,15 @@ static void TimeRecordsScreenRenderModeChoiceUI(void)
     Sprite *choiceItem = timeRecordsScreen->choiceViewItemsOrZoneTitle;
     s16 i;
 
-    sub_80051E8(title);
+    DisplaySprite(title);
 
     for (i = 0; i < 2; i++, choiceItem++) {
-        sub_80051E8(choiceItem);
+        DisplaySprite(choiceItem);
     }
 
     for (i = 0; i < 2; i++, scrollArrows++) {
-        sub_8004558(scrollArrows);
-        sub_80051E8(scrollArrows);
+        UpdateSpriteAnimation(scrollArrows);
+        DisplaySprite(scrollArrows);
     }
 }
 
@@ -6279,7 +6279,7 @@ static void Task_TimeRecordsScreenHandleActChange(void)
     unkDC->graphics.anim = unk5E8->unk0;
     unkDC->variant = unk5E8->unk2;
 
-    sub_8004558(unkDC);
+    UpdateSpriteAnimation(unkDC);
     TimeRecordsScreenRefreshTimesUI(timeRecordsScreen);
     TimeRecordsScreenRenderCoursesViewUI(0);
 

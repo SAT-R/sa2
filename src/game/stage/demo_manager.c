@@ -60,13 +60,13 @@ void CreateDemoManager(void)
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk1A = 0x40;
+    s->unk1A = SPRITE_OAM_ORDER(1);
     s->unk10 = 0;
 
     if (blendCtrl != BLDCNT_EFFECT_BLEND) {
         s->unk10 = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
     }
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &dm->textDemoPlay;
     s->x = (DISPLAY_WIDTH / 2);
@@ -82,13 +82,13 @@ void CreateDemoManager(void)
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk1A = 0x40;
+    s->unk1A = SPRITE_OAM_ORDER(1);
     s->unk10 = 0;
 
     if (blendCtrl != BLDCNT_EFFECT_BLEND) {
         s->unk10 = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
     }
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_800A110(void)
@@ -132,8 +132,8 @@ void Task_800A110(void)
                 s->unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
             }
 
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
 
         if (gBldRegs.bldY != 0) {
@@ -142,7 +142,7 @@ void Task_800A110(void)
             dm->textDemoPlay.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
         }
 
-        sub_80051E8(&dm->textDemoPlay);
+        DisplaySprite(&dm->textDemoPlay);
     }
 }
 

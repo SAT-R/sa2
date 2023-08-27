@@ -63,7 +63,7 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     noteBlock->base.spriteY = spriteY;
 
     s = &noteBlock->s;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -80,7 +80,7 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     noteBlock->unk40 = TO_WORLD_POS(me->y, spriteRegionY);
 
     SET_MAP_ENTITY_INITIALIZED(me);
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void sub_80799FC(void)
@@ -219,10 +219,10 @@ static void sub_8079D30(Sprite_TecBaseNoteBlock *noteBlock)
     Sprite *s = &noteBlock->s;
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 sub_8079D60(Sprite_TecBaseNoteBlock *noteBlock)

@@ -125,13 +125,13 @@ void sub_8036780(u8 unkC)
     s->prevVariant = -1;
     s->x = 0;
     s->y = 80;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &screen->unk3C;
     s->graphics.dest = VramMalloc(0x40);
@@ -141,12 +141,12 @@ void sub_8036780(u8 unkC)
     s->x = 0;
     s->y = 80;
     s->graphics.size = 0;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     transition = &screen->unk0;
     transition->unk0 = 1;
@@ -328,8 +328,8 @@ void sub_8036BD4(GameOverScreen *screen)
 {
     Sprite *s = &screen->unkC;
     Sprite *sprite2 = &screen->unk3C;
-    sub_80051E8(s);
-    sub_80051E8(sprite2);
+    DisplaySprite(s);
+    DisplaySprite(sprite2);
 }
 
 void sub_8036BEC(GameOverScreen *screen)
@@ -351,8 +351,8 @@ void sub_8036BEC(GameOverScreen *screen)
         return;
     }
 
-    sub_80051E8(s);
-    sub_80051E8(sprite2);
+    DisplaySprite(s);
+    DisplaySprite(sprite2);
 }
 
 void sub_8036C38(struct Task *t)

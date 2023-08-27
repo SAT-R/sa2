@@ -45,7 +45,7 @@ void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 36, SA2_ANIM_HAMMERHEAD, 0, 0x480, 2);
+    SPRITE_INIT(s, 36, SA2_ANIM_HAMMERHEAD, 0, 18, 2);
 }
 
 static void Task_Hammerhead(void)
@@ -110,8 +110,8 @@ static void Task_Hammerhead(void)
             TaskDestroy(gCurTask);
         } else {
             sub_80122DC(posX << 8, (posY << 8) + hammerhead->unk48);
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 }

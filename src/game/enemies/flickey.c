@@ -68,12 +68,12 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         s->y = 0;
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        SPRITE_INIT(s, 20, SA2_ANIM_FLICKEY, 1, 0x480, 2);
+        SPRITE_INIT(s, 20, SA2_ANIM_FLICKEY, 1, 18, 2);
 
         s = &flickey->s2;
         s->x = TO_WORLD_POS(me->x, spriteRegionX);
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
-        SPRITE_INIT(s, 8, SA2_ANIM_FLICKEY_PROJ, 0, 0x4C0, 2);
+        SPRITE_INIT(s, 8, SA2_ANIM_FLICKEY_PROJ, 0, 19, 2);
     }
 }
 
@@ -83,16 +83,16 @@ void Flickey_RenderIronBalls(Sprite_Flickey *flickey)
 {
     u8 i;
     Sprite *s = &flickey->s2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < 3; i++) {
         u8 index = (flickey->unk2A4 - (i + 1) * 16) & 0x3F;
         s->x = flickey->positions[index].x - gCamera.x;
         s->y = flickey->positions[index].y - gCamera.y;
-        sub_80051E8(s);
+        DisplaySprite(s);
 
         SPRITE_FLAG_FLIP(s, X_FLIP);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

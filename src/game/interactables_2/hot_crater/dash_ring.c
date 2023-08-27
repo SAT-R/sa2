@@ -126,7 +126,7 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
     {
         Sprite *s = &ring->s1;
-        s->unk1A = 0x180;
+        s->unk1A = SPRITE_OAM_ORDER(6);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -144,7 +144,7 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     }
     {
         Sprite *s = &ring->s2;
-        s->unk1A = 0x480;
+        s->unk1A = SPRITE_OAM_ORDER(18);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -161,8 +161,8 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         s->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][1][3];
     }
     DashRing_UpdateScreenPos(ring);
-    sub_8004558(&ring->s1);
-    sub_8004558(&ring->s2);
+    UpdateSpriteAnimation(&ring->s1);
+    UpdateSpriteAnimation(&ring->s2);
 
     SET_MAP_ENTITY_INITIALIZED(me);
 
@@ -288,8 +288,8 @@ static void Task_Interactable_DashRing(void)
         DashRing_Despawn(ring);
     } else {
         DashRing_UpdateScreenPos(ring);
-        sub_80051E8(&ring->s1);
-        sub_80051E8(&ring->s2);
+        DisplaySprite(&ring->s1);
+        DisplaySprite(&ring->s2);
     }
 }
 
@@ -298,8 +298,8 @@ static void Task_Interactable_DashRing_AfterAcceleration(void)
     Sprite_DashRing *ring = TaskGetStructPtr(gCurTask);
 
     DashRing_UpdateScreenPos(ring);
-    sub_80051E8(&ring->s1);
-    sub_80051E8(&ring->s2);
+    DisplaySprite(&ring->s1);
+    DisplaySprite(&ring->s2);
 
     if (!DashRing_PlayerIsColliding(ring)) {
         gCurTask->main = Task_Interactable_DashRing;

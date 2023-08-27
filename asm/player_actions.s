@@ -601,7 +601,7 @@ _08015A46:
 	ldrh r0, [r5, #0x18]
 	strh r0, [r7, #8]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r1, [r5, #0x10]
 	movs r0, #0x20
 	ands r0, r1
@@ -678,7 +678,7 @@ _08015B32:
 	cmp r0, r1
 	bne _08015B44
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08015B44:
 	pop {r3}
 	mov r8, r3
@@ -1027,9 +1027,9 @@ _08015DC2:
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08015E06:
 	adds r0, r5, #1
 	lsls r0, r0, #0x18

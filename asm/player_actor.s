@@ -319,14 +319,14 @@ _080141C2:
 	orrs r0, r1
 	str r0, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldrh r1, [r4, #0xc]
 	movs r0, #2
 	ands r0, r1
 	cmp r0, #0
 	bne _080141F4
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080141F4:
 	pop {r4, r5, r6}
 	pop {r0}
@@ -1698,9 +1698,9 @@ _08014C8C:
 	subs r1, r1, r0
 	strh r1, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08014CBC:
 	pop {r4}
 	pop {r0}

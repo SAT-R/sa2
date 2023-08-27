@@ -3297,7 +3297,7 @@ _0802F34C:
 	str r0, [r5, #0x28]
 	str r7, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r7, #0
 	movs r4, #0xb1
 	lsls r4, r4, #2
@@ -3501,7 +3501,7 @@ _0802F4C0:
 	str r3, [r5, #0x28]
 	str r4, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r5, #0xb5
 	lsls r5, r5, #2
 	add r5, r8
@@ -3573,7 +3573,7 @@ _0802F558:
 	lsrs r0, r0, #0x18
 	str r0, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r0, _0802F5E4 @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #2
@@ -3659,7 +3659,7 @@ _0802F60E:
 	str r3, [r5, #0x10]
 	adds r0, r5, #0
 	str r3, [sp, #0x30]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #1
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18
@@ -3753,7 +3753,7 @@ _0802F6C8:
 	str r3, [r5, #0x10]
 	adds r0, r5, #0
 	str r3, [sp, #0x30]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #1
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18
@@ -4684,7 +4684,7 @@ sub_802FE78: @ 0x0802FE78
 	ldr r0, _0802FF74 @ =IWRAM_START + 0x1B4
 	adds r5, r4, r0
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r6, #0
 	ldr r1, _0802FF78 @ =IWRAM_START + 0x205
 	adds r5, r4, r1
@@ -4694,9 +4694,9 @@ _0802FEA6:
 	movs r0, #0xff
 	strb r0, [r5]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	adds r5, #0x30
 	adds r4, #0x30
 	adds r6, #1
@@ -4713,7 +4713,7 @@ _0802FEA6:
 	adds r4, r7, #4
 _0802FED2:
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	adds r4, #0x30
 	adds r6, #1
 	cmp r6, #8
@@ -4740,10 +4740,10 @@ _0802FEE0:
 	strb r0, [r1]
 _0802FF06:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 _0802FF0C:
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r1, #0xb5
 	lsls r1, r1, #2
 	adds r5, r7, r1
@@ -4783,7 +4783,7 @@ _0802FF44:
 	adds r1, r4, #0
 	bl sub_8004860
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	pop {r3, r4}
 	mov r8, r3
 	mov sb, r4
@@ -4887,9 +4887,9 @@ _08030030:
 	strh r0, [r5, #0x18]
 _08030040:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	b _0803029C
 _0803004E:
 	subs r3, #9
@@ -5355,7 +5355,7 @@ _08030398:
 	lsls r0, r1, #4
 	adds r0, #4
 	adds r0, r5, r0
-	bl sub_80051E8
+	bl DisplaySprite
 _080303B0:
 	adds r0, r4, #1
 	lsls r0, r0, #0x18
@@ -5503,7 +5503,7 @@ _080304AC:
 	lsls r0, r1, #4
 	adds r0, #4
 	adds r0, r5, r0
-	bl sub_80051E8
+	bl DisplaySprite
 _080304C4:
 	adds r0, r4, #1
 	lsls r0, r0, #0x18

@@ -89,9 +89,9 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
         s->x = 6;
         s->y = (DISPLAY_HEIGHT - 18);
         if (gMultiplayerCharacters[i] == gSelectedCharacter) {
-            s->unk1A = 0x80;
+            s->unk1A = SPRITE_OAM_ORDER(2);
         } else {
-            s->unk1A = 0xC0;
+            s->unk1A = SPRITE_OAM_ORDER(3);
         }
         s->graphics.size = 0;
         s->animCursor = 0;
@@ -99,7 +99,7 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
         s->animSpeed = 0x10;
         s->palId = i;
         s->unk10 = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     s = &progressIndicator->flags[START_FLAG];
@@ -109,14 +109,14 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     s->prevVariant = -1;
     s->x = 0 + RACE_ICON_INDENT;
     s->y = RACE_ICON_Y;
-    s->unk1A = 0x140;
+    s->unk1A = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &progressIndicator->flags[FINISH_FLAG];
     s->graphics.dest = VramMalloc(4);
@@ -125,14 +125,14 @@ static void CreateUI(struct RaceProgressIndicator *progressIndicator)
     s->prevVariant = -1;
     s->x = DISPLAY_WIDTH - RACE_ICON_INDENT;
     s->y = RACE_ICON_Y;
-    s->unk1A = 0x140;
+    s->unk1A = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 #undef RACE_ICON_INDENT
 
@@ -165,12 +165,12 @@ static void RenderUI(struct RaceProgressIndicator *progressIndicator)
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         s = &progressIndicator->avatars[i];
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     for (i = 0; i < ARRAY_COUNT(progressIndicator->flags); i++) {
         s = &progressIndicator->flags[i];
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

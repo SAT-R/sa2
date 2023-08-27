@@ -99,7 +99,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     itembox->base.spriteY = spriteY;
 
     s = &itembox->s;
-    s->unk1A = 0x4C0;
+    s->unk1A = SPRITE_OAM_ORDER(19);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -111,10 +111,10 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.anim = SA2_ANIM_ITEMBOX;
     s->variant = 0;
     s->graphics.dest = VramMalloc(TILE_COUNT__ANIM_ITEMBOX);
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &itembox->item;
-    s->unk1A = 0x500;
+    s->unk1A = SPRITE_OAM_ORDER(20);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -355,7 +355,7 @@ void sub_800B580(Entity_ItemBox *itembox, bool32 p1)
                     itembox->item.variant = ItemBox_MysteryIcons[itembox->kind][1];
                 }
 
-                sub_8004558(&itembox->item);
+                UpdateSpriteAnimation(&itembox->item);
             }
         } break;
 
@@ -378,7 +378,7 @@ void sub_800B580(Entity_ItemBox *itembox, bool32 p1)
 
                 itembox->item.graphics.anim = ItemBox_MysteryIcons[kind][0];
                 itembox->item.variant = ItemBox_MysteryIcons[kind][1];
-                sub_8004558(&itembox->item);
+                UpdateSpriteAnimation(&itembox->item);
             }
         } break;
 
@@ -386,7 +386,7 @@ void sub_800B580(Entity_ItemBox *itembox, bool32 p1)
             if (p1) {
                 itembox->item.graphics.anim = ItemBox_MysteryIcons[itembox->kind][0];
                 itembox->item.variant = ItemBox_MysteryIcons[itembox->kind][1];
-                sub_8004558(&itembox->item);
+                UpdateSpriteAnimation(&itembox->item);
             }
         } break;
     }
@@ -466,9 +466,9 @@ void sub_800B860(Entity_ItemBox *itembox, bool32 p1)
     itembox->item.y = (Q_24_8_TO_INT(itembox->unk74) + itembox->s.y);
 
     if (!p1)
-        sub_80051E8(&itembox->s);
+        DisplaySprite(&itembox->s);
 
-    sub_80051E8(&itembox->item);
+    DisplaySprite(&itembox->item);
 }
 
 bool32 sub_800B8AC(Entity_ItemBox *itembox)

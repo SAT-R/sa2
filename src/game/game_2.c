@@ -84,8 +84,8 @@ void Task_801F214(void)
             }
         }
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
@@ -127,7 +127,7 @@ struct Task *sub_801F3A4(s32 x, s32 y, u16 score)
         s->graphics.dest = VramMalloc(sAnimData_StageGoalScoreBonus[score][0]);
         s->graphics.anim = sAnimData_StageGoalScoreBonus[score][1];
         s->variant = sAnimData_StageGoalScoreBonus[score][2];
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
         return t;
     }
@@ -165,7 +165,7 @@ void sub_801F488(void)
         s->graphics.dest = VramMalloc(20);
         s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
         s->variant = 0;
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->unk10 = SPRITE_FLAG(PRIORITY, 1);
     }
 }
@@ -187,7 +187,7 @@ struct Task *sub_801F568(s16 x, s16 y)
     s->graphics.dest = VramMalloc(20);
     s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
     s->variant = 0;
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->unk10 = SPRITE_FLAG(PRIORITY, 1);
 
     return t;

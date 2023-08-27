@@ -108,7 +108,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2BC0);
     cs->s->graphics.anim = SA2_ANIM_CRANE;
     cs->s->variant = 0;
-    sub_8004558(cs->s);
+    UpdateSpriteAnimation(cs->s);
 
     for (i = 0; i < 6; i++) {
         cs = &crane->cs[1 + i];
@@ -142,7 +142,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
                 cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B80);
                 cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
                 cs->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_ROPE_GREY;
-                sub_8004558(cs->s);
+                UpdateSpriteAnimation(cs->s);
             }
         }
         // _08073A00
@@ -170,7 +170,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
         cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
         cs->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_HOOK;
-        sub_8004558(cs->s);
+        UpdateSpriteAnimation(cs->s);
 
         cs = &crane->cs[8];
         cs->s = NULL;
@@ -632,7 +632,7 @@ static void sub_80742A8(Sprite_HCCrane *crane)
 
                 sub_8004860(cs->s, &transform);
             }
-            sub_80051E8(cs->s);
+            DisplaySprite(cs->s);
         }
     }
 }

@@ -20,7 +20,7 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
-// Differences to sub_8004558:
+// Differences to UpdateSpriteAnimation:
 // - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
 // - Uses animCmdTable_2 instead of animCmdTable
 s32 sub_80036E0(Sprite *s)
@@ -604,7 +604,7 @@ s32 animCmd_SetSpritePriority_COPY(void *cursor, Sprite *s)
 // This is not a NOP-instruction in the regular version
 s32 animCmd_12_COPY(void *cursor, Sprite *s)
 {
-    s->animCursor += AnimCommandSizeInWords(ACmd_12);
+    s->animCursor += AnimCommandSizeInWords(ACmd_SetOamOrder);
     return 1;
 }
 
@@ -714,7 +714,7 @@ u32 sub_8004518(u16 num)
     return result;
 }
 
-s32 sub_8004558(Sprite *s)
+s32 UpdateSpriteAnimation(Sprite *s)
 {
     SPRITE_MAYBE_SWITCH_ANIM(s);
 
@@ -724,8 +724,7 @@ s32 sub_8004558(Sprite *s)
     if (s->timeUntilNextFrame > 0)
         s->timeUntilNextFrame -= s->animSpeed * 16;
     else {
-
-        // _080045B8
+        /* Call all commands for the new frame */
         s32 ret;
         ACmd *cmd;
         ACmd *script;
@@ -761,7 +760,7 @@ s32 sub_8004558(Sprite *s)
         }
 
         // Display the image 'index' for 'delay' frames
-        s->timeUntilNextFrame += (((ACmd_ShowFrame *)cmd)->delay << 8);
+        s->timeUntilNextFrame += Q_8_8(((ACmd_ShowFrame *)cmd)->delay);
         s->timeUntilNextFrame -= s->animSpeed * 16;
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;

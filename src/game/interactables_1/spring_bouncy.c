@@ -75,7 +75,7 @@ void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
         s->variant = variant;
     }
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -154,8 +154,8 @@ static void Task_Interactable_BouncySpring()
         me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
@@ -177,7 +177,7 @@ static void Task_805E02C()
         me->x = spring->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        if (sub_8004558(s) == 0) {
+        if (UpdateSpriteAnimation(s) == 0) {
             gCurTask->main = Task_Interactable_BouncySpring;
 
             if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
@@ -193,7 +193,7 @@ static void Task_805E02C()
             s->prevVariant = -1;
         }
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

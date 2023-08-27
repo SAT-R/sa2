@@ -136,7 +136,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->prevVariant = -1;
     s->x = 0;
     s->y = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -144,7 +144,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &modeScreen->unkB0;
     s->graphics.dest
@@ -154,7 +154,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->prevVariant = -1;
     s->x = 0;
     s->y = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -162,7 +162,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &modeScreen->unkE0;
     s->graphics.dest
@@ -172,7 +172,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->prevVariant = -1;
     s->x = 0;
     s->y = 0;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -180,7 +180,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &modeScreen->infoText;
     s->graphics.dest
@@ -190,7 +190,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     s->prevVariant = -1;
     s->x = 8;
     s->y = 103;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -478,16 +478,16 @@ static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
 {
     Sprite *s;
     s = &modeScreen->unk80;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s = &modeScreen->unkB0;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s = &modeScreen->unkE0;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     if (modeScreen->unk14E != 0) {
         s = &modeScreen->infoText;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 

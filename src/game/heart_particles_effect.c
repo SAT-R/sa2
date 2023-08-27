@@ -54,7 +54,7 @@ static void sub_8086A0C(HeartParticles *unk998)
         s->prevVariant = -1;
         s->x = -20;
         s->y = 0;
-        s->unk1A = 0x180;
+        s->unk1A = SPRITE_OAM_ORDER(6);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -121,10 +121,10 @@ static void sub_8086B38(HeartParticles *unk998)
             s->x = Q_24_8_TO_INT(unk998->unkC4[i]) - gCamera.x;
             s->y = Q_24_8_TO_INT(unk998->unkD4[i]) - gCamera.y;
 
-            if (sub_8004558(s) == 0) {
+            if (UpdateSpriteAnimation(s) == 0) {
                 unk998->unkC0 &= ~(1 << i);
             } else {
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
         j <<= 1;
@@ -158,7 +158,7 @@ static void sub_8086BE8(u8 i)
         s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     unk998->unkC0 |= (1 << i);
 }
 

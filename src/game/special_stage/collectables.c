@@ -144,11 +144,11 @@ void sub_806DB48(void)
     struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
     struct SpecialStage *stage = collectables->stage;
     if (stage->paused == FALSE) {
-        sub_8004558(&collectables->unk4);
-        sub_8004558(&collectables->unk64);
-        sub_8004558(&collectables->unk34);
-        sub_8004558(&collectables->unk94);
-        sub_8004558(&collectables->unkC4);
+        UpdateSpriteAnimation(&collectables->unk4);
+        UpdateSpriteAnimation(&collectables->unk64);
+        UpdateSpriteAnimation(&collectables->unk34);
+        UpdateSpriteAnimation(&collectables->unk94);
+        UpdateSpriteAnimation(&collectables->unkC4);
 
         sub_806DC98();
 

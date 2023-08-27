@@ -49,7 +49,7 @@ void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 16, SA2_ANIM_MADILLO, 0, 0x480, 2);
+    SPRITE_INIT(s, 16, SA2_ANIM_MADILLO, 0, 18, 2);
 }
 
 void Task_MadilloMain(void)

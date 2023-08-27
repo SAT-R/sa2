@@ -109,9 +109,9 @@ static void Task_PhysicsMain(void)
         sub_80047A0(arrowAngle, 256, 256, 30);
 
         if (stage->paused == FALSE) {
-            sub_8004558(&player->roboArrow);
+            UpdateSpriteAnimation(&player->roboArrow);
         }
-        sub_80051E8(&player->roboArrow);
+        DisplaySprite(&player->roboArrow);
     }
 
     sub_806FAA0();

@@ -53,7 +53,7 @@ void CreateEntity_Balloon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        SPRITE_INIT(s, 10, SA2_ANIM_BALLOON, 0, 0x480, 2);
+        SPRITE_INIT(s, 10, SA2_ANIM_BALLOON, 0, 18, 2);
     }
 }
 
@@ -92,7 +92,7 @@ void Task_BalloonMain(void)
 
     ENEMY_UPDATE(s, pos.x, pos.y);
     s->unk10 ^= 0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_805879C(void)
@@ -129,7 +129,7 @@ void sub_805879C(void)
     }
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         balloon->unk5E = 120;
         s->graphics.anim = SA2_ANIM_BALLOON;
         s->variant = 0;
@@ -140,7 +140,7 @@ void sub_805879C(void)
 #endif
         gCurTask->main = Task_BalloonMain;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
     s->unk10 ^= 0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

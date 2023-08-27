@@ -192,9 +192,9 @@ _08057190:
 	lsls r1, r5, #8
 	bl sub_80122DC
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080571A4:
 	add sp, #8
 	pop {r3, r4, r5}

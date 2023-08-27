@@ -109,7 +109,7 @@ void StartMultiPakConnect(void)
     s->prevVariant = -1;
     s->x = 8;
     s->y = 24;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -117,7 +117,7 @@ void StartMultiPakConnect(void)
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &connectScreen->s2;
     s->graphics.dest = vramAddr;
@@ -127,7 +127,7 @@ void StartMultiPakConnect(void)
     s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = 122;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -143,7 +143,7 @@ void StartMultiPakConnect(void)
     s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT * (7. / 8.));
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -393,8 +393,8 @@ static void sub_805ADAC(void)
 
     if ((gMultiSioStatusFlags & MULTI_SIO_PARENT) && var2 > 1 && bool3) {
         r4p = &connectScreen->s2;
-        sub_8004558(r4p);
-        sub_80051E8(r4p);
+        UpdateSpriteAnimation(r4p);
+        DisplaySprite(r4p);
     }
 
     if (var2 > 1) {
@@ -402,11 +402,11 @@ static void sub_805ADAC(void)
         r4p->graphics.anim = SA2_ANIM_MP_MSG;
         r4p->variant = var2 + SA2_ANIM_VARIANT_MP_MSG_OK;
         r4p->prevVariant = -1;
-        sub_8004558(r4p);
-        sub_80051E8(r4p);
+        UpdateSpriteAnimation(r4p);
+        DisplaySprite(r4p);
     }
     r4p = &connectScreen->s;
-    sub_80051E8(r4p);
+    DisplaySprite(r4p);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         if ((!bool2 && var1 > 1 && gPressedKeys & START_BUTTON)
@@ -586,8 +586,8 @@ static void sub_805B4C0(void)
             r4p->graphics.anim = SA2_ANIM_MP_MSG;
             r4p->variant = count + SA2_ANIM_VARIANT_MP_MSG_OK;
             r4p->prevVariant = -1;
-            sub_8004558(r4p);
-            sub_80051E8(r4p);
+            UpdateSpriteAnimation(r4p);
+            DisplaySprite(r4p);
         }
 
         if ((gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
@@ -650,9 +650,9 @@ static void sub_805B4C0(void)
 UNUSED static void sub_805B98C(struct MultiPakConnectScreen *connectScreen)
 {
     Sprite *s = &connectScreen->s;
-    sub_80051E8(s);
+    DisplaySprite(s);
     s++;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 // HandleLinkCommunicationError

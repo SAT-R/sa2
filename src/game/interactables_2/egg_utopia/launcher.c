@@ -138,7 +138,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 #else
             Sprite *s = &launcher->s;
 #endif
-            s->unk1A = 0x180;
+            s->unk1A = SPRITE_OAM_ORDER(6);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
@@ -177,7 +177,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                 } break;
             }
 
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
         SET_MAP_ENTITY_INITIALIZED(me);
     }
@@ -286,7 +286,7 @@ static void sub_807DDA0(Sprite_EggUtopia_Launcher *launcher)
         s->y = Q_24_8_TO_INT(launcher->unk58) - gCamera.y;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)

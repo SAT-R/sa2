@@ -45,7 +45,7 @@ struct Task *sub_80807CC(void)
     spring->graphics.dest = (void *)(OBJ_VRAM0 + 0x3040);
     spring->graphics.anim = SA2_ANIM_SPRING_FLYING;
     spring->variant = 0;
-    sub_8004558(&init->spring);
+    UpdateSpriteAnimation(&init->spring);
 
     propellor = &init->propellor;
     propellor->unk1A = 0x480;
@@ -60,7 +60,7 @@ struct Task *sub_80807CC(void)
     propellor->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
     propellor->graphics.anim = SA2_ANIM_PROPELLOR;
     propellor->variant = 0;
-    sub_8004558(&init->propellor);
+    UpdateSpriteAnimation(&init->propellor);
 
     return t;
 }
@@ -69,12 +69,12 @@ static void Task_80808DC(void)
 {
     Sprite_OnInit_SkyCanyon *init = TaskGetStructPtr(gCurTask);
     if (init->unk60) {
-        sub_8004558(&init->spring);
+        UpdateSpriteAnimation(&init->spring);
     }
     init->unk60 = 0;
 
     if (init->unk62 != 0) {
-        sub_8004558(&init->propellor);
+        UpdateSpriteAnimation(&init->propellor);
     }
     init->unk62 = 0;
 }

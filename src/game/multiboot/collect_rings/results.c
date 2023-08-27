@@ -174,7 +174,7 @@ void sub_808207C(void)
 
                 s->x = 0;
                 s->y = 0;
-                s->unk1A = 0x100;
+                s->unk1A = SPRITE_OAM_ORDER(4);
                 s->graphics.size = 0;
 #ifndef NON_MATCHING
                 var = 0x44c;
@@ -193,7 +193,7 @@ void sub_808207C(void)
                 s->animSpeed = 0x10;
                 s->palId = 0;
                 s->unk10 = 0x1000;
-                sub_8004558(s);
+                UpdateSpriteAnimation(s);
             }
         }
 
@@ -207,7 +207,7 @@ void sub_808207C(void)
             } else {
                 s->graphics.dest = resultsScreen->unk340.graphics.dest + 0x180;
             }
-            s->unk1A = 0;
+            s->unk1A = SPRITE_OAM_ORDER(0);
             s->graphics.size = 0;
             if (gMultiplayerLanguage == 1) {
                 s->graphics.anim = SA2_ANIM_PRESS_START_MSG_JP;
@@ -221,7 +221,7 @@ void sub_808207C(void)
             s->animSpeed = 0x10;
             s->palId = 0;
             s->unk10 = 0;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
         resultsScreen->unk430 = 0;
         gCurTask->main = sub_80823FC;
@@ -326,7 +326,7 @@ void sub_80823FC(void)
         sub_8082788();
 
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-            sub_80051E8(&resultsScreen->unk400);
+            DisplaySprite(&resultsScreen->unk400);
         }
 
         for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
@@ -446,13 +446,13 @@ void sub_8082788(void)
                 s = &resultsScreen->unk80[i].unk0;
                 s->x = (DISPLAY_WIDTH / 2);
                 s->y = gUnknown_030054B4[i] * 40 + 20;
-                sub_8004558(s);
-                sub_80051E8(s);
+                UpdateSpriteAnimation(s);
+                DisplaySprite(s);
 
                 s = &resultsScreen->unk370[gMultiplayerCharacters[i]];
                 s->x = 52;
                 s->y = gUnknown_030054B4[i] * 40 + 20;
-                sub_80051E8(s);
+                DisplaySprite(s);
 
                 // TODO: Fix type
                 temp = sub_8004518(gUnknown_030053E8[i]);
@@ -461,7 +461,7 @@ void sub_8082788(void)
                 if (s != &resultsScreen->unk160[0]) {
                     s->x = 160;
                     s->y = gUnknown_030054B4[i] * 40 + 20;
-                    sub_80051E8(s);
+                    DisplaySprite(s);
                 }
 
                 s = &resultsScreen->unk160[((temp) >> 4) & 0xF];
@@ -469,20 +469,20 @@ void sub_8082788(void)
                 if (s != &resultsScreen->unk160[0] || (temp > 0xFF)) {
                     s->x = 171;
                     s->y = gUnknown_030054B4[i] * 40 + 20;
-                    sub_80051E8(s);
+                    DisplaySprite(s);
                 }
 
                 s = &resultsScreen->unk160[(temp)&0xF];
                 s->x = 182;
                 s->y = gUnknown_030054B4[i] * 40 + 20;
-                sub_80051E8(s);
+                DisplaySprite(s);
             } else {
                 u16 temp;
                 s = &resultsScreen->unk80[i].unk0;
                 s->x = (DISPLAY_WIDTH / 2);
                 s->y = i * 40 + 20;
-                sub_8004558(s);
-                sub_80051E8(s);
+                UpdateSpriteAnimation(s);
+                DisplaySprite(s);
 
                 if (gUnknown_03005428[i] > 99) {
                     temp = 99;
@@ -495,17 +495,17 @@ void sub_8082788(void)
                 if (s != &resultsScreen->unk160[0]) {
                     s->x = 160;
                     s->y = i * 40 + 20;
-                    sub_80051E8(s);
+                    DisplaySprite(s);
                 }
                 s = &resultsScreen->unk160[temp & 0xF];
                 s->x = 171;
                 s->y = i * 40 + 20;
-                sub_80051E8(s);
+                DisplaySprite(s);
 
                 s = &resultsScreen->unk340;
                 s->x = 197;
                 s->y = i * 40 + 20;
-                sub_80051E8(s);
+                DisplaySprite(s);
             }
         }
     }
@@ -550,7 +550,7 @@ void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
     for (i = 0; i < 4; i++) {
         u16 anim = gPlayerCharacterIdleAnims[i];
         sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), anim, 0,
-                    0x78, (i * 40) + 20, 0x400, i, 0x1000);
+                    0x78, (i * 40) + 20, SPRITE_OAM_ORDER(16), i, 0x1000);
     }
 }
 
@@ -560,7 +560,7 @@ void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 
     for (i = 0; i < 10; i++) {
         sub_8082CEC(&resultsScreen->unk160[i], OBJ_VRAM0 + (i * 4 + 0x100) * 0x20, 0x451,
-                    i, 0, 0, 0x100, 0, 0x1000);
+                    i, 0, 0, SPRITE_OAM_ORDER(4), 0, 0x1000);
     }
 }
 
@@ -570,14 +570,14 @@ void sub_8082C58(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 
     for (i = 0; i < 3; i++) {
         sub_8082CEC(&resultsScreen->unk370[i], OBJ_VRAM0 + 0x2500 + i * 0xC0, 1099, i, 0,
-                    0, 0x100, 0, 0x1000);
+                    0, SPRITE_OAM_ORDER(4), 0, 0x1000);
     }
 }
 
 void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {
-    sub_8082CEC(&resultsScreen->unk340, OBJ_VRAM0 + 0x2F00, 1099, 3, 0, 0, 0x100, 0,
-                0x1000);
+    sub_8082CEC(&resultsScreen->unk340, OBJ_VRAM0 + 0x2F00, 1099, 3, 0, 0,
+                SPRITE_OAM_ORDER(4), 0, 0x1000);
 }
 
 void sub_8082CEC(Sprite *s, u32 vramAddr, u16 animId, u8 variant, s16 x, s16 y,
@@ -596,5 +596,5 @@ void sub_8082CEC(Sprite *s, u32 vramAddr, u16 animId, u8 variant, s16 x, s16 y,
     s->animSpeed = 0x10;
     s->palId = unk25;
     s->unk10 = unk10;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }

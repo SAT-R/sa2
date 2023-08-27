@@ -57,7 +57,7 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     gs->base.spriteX = me->x;
     gs->base.spriteY = spriteY;
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -74,7 +74,7 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     gs->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
         s16 *elem = gs->elements[i];
@@ -240,7 +240,7 @@ void sub_8076114(Sprite_GuitarString *gs)
         r1 -= gCamera.y;
         s->y = r1;
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

@@ -29,7 +29,7 @@ void sub_800BAAC(s16 x, s16 y)
     s->y = y;
 
     s->graphics.dest = RESERVED_RING_TILES_VRAM;
-    s->unk1A = 0x3C0;
+    s->unk1A = SPRITE_OAM_ORDER(15);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_RING_STATIC;
     s->variant = 0;
@@ -107,8 +107,8 @@ NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
     {
         ring->s.x -= gCamera.x;
         ring->s.y -= gCamera.y;
-        sub_8004558(&ring->s);
-        sub_80051E8(&ring->s);
+        UpdateSpriteAnimation(&ring->s);
+        DisplaySprite(&ring->s);
         ring->s.x = ringX;
         ring->s.y = ringY;
     }

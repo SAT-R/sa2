@@ -124,7 +124,7 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
         s->hitboxes[0].index = -1;
 
         if (stage->paused == FALSE) {
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
 
         *affine = 0x100;
@@ -192,15 +192,15 @@ void sub_806D2C8(void)
 
     if (player->unkB6 != 0 && stage->paused == FALSE) {
         if ((--player->unkB6) & 2) {
-            sub_80051E8(unk8);
+            DisplaySprite(unk8);
             if (player->state < 14) {
-                sub_80051E8(unk38);
+                DisplaySprite(unk38);
             }
         }
     } else {
-        sub_80051E8(unk8);
+        DisplaySprite(unk8);
         if (player->state < 14) {
-            sub_80051E8(unk38);
+            DisplaySprite(unk38);
         }
     }
 }
@@ -230,7 +230,7 @@ void sub_806D388(void)
     sub_806D7D0(unk8, -1, stage->unk5CC, unkC4);
 
     if (stage->state == 8) {
-        sub_80051E8(unk8);
+        DisplaySprite(unk8);
         sub_806D830(unk8, -1, stage->unk5CC, unkC4);
     }
 }
@@ -323,7 +323,7 @@ void sub_806D548(Sprite *s, void *vram, s16 a, u8 b, const struct UNK_80DF670 *c
     s->animSpeed = c4->unk6;
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 UNUSED void sub_806D5CC(void) { }
@@ -412,7 +412,7 @@ void sub_806D7D0(Sprite *s, s16 animSpeed, s16 spriteY, const struct UNK_80DF670
     s->variant = anim->variant;
 
     s->animSpeed = animSpeed != -1 ? animSpeed : 0x10;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void sub_806D830(Sprite *s, s16 a, s16 spriteY, const struct UNK_80DF670 *anim)
@@ -432,5 +432,5 @@ void sub_806D830(Sprite *s, s16 a, s16 spriteY, const struct UNK_80DF670 *anim)
     s->variant = anim->variant;
 
     s->animSpeed = a != -1 ? a : 0x10;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }

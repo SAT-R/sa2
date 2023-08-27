@@ -178,7 +178,7 @@ void StartSinglePakConnect(void)
     s = &connectScreen->unkC;
     s->x = 8;
     s->y = 24;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -191,12 +191,12 @@ void StartSinglePakConnect(void)
     s->prevVariant = -1;
     s->graphics.dest = (void *)ram;
     ram += gUnknown_080E018C[connectScreen->unkFA][2] * 0x20;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &connectScreen->unk3C;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT - 38);
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -213,7 +213,7 @@ void StartSinglePakConnect(void)
     s = &connectScreen->unk6C;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT * (7. / 8.));
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -273,7 +273,7 @@ void sub_8081604(void)
     s32 multiBootFlags;
     struct MultiBootParam *params;
     NextTransitionFrame(&connectScreen->unk0);
-    sub_80051E8(&connectScreen->unkC);
+    DisplaySprite(&connectScreen->unkC);
     result = sub_8081D70(connectScreen);
 
     if (SomeSioCheck()) {
@@ -599,15 +599,15 @@ void sub_8081DB4(struct SinglePakConnectScreen *connectScreen)
 
 void sub_8081DF0(struct SinglePakConnectScreen *connectScreen, u8 a)
 {
-    sub_8004558(&connectScreen->unk3C);
-    sub_80051E8(&connectScreen->unk3C);
+    UpdateSpriteAnimation(&connectScreen->unk3C);
+    DisplaySprite(&connectScreen->unk3C);
 
     connectScreen->unk6C.graphics.anim = SA2_ANIM_MP_MSG;
     connectScreen->unk6C.variant = a + SA2_ANIM_VARIANT_MP_MSG_OK;
     connectScreen->unk6C.prevVariant = -1;
 
-    sub_8004558(&connectScreen->unk6C);
-    sub_80051E8(&connectScreen->unk6C);
+    UpdateSpriteAnimation(&connectScreen->unk6C);
+    DisplaySprite(&connectScreen->unk6C);
 }
 
 // HeartBeatClient

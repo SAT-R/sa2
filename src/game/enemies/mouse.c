@@ -70,10 +70,10 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        SPRITE_INIT(s, 15, SA2_ANIM_MOUSE, 0, 0x480, 2);
+        SPRITE_INIT(s, 15, SA2_ANIM_MOUSE, 0, 18, 2);
 
         if (mouse->unk51) {
-            s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+            SPRITE_FLAG_SET(s, Y_FLIP);
         }
     }
 }
@@ -144,8 +144,8 @@ static void sub_8057348(void)
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 static void sub_8057618(void)
@@ -175,7 +175,7 @@ static void sub_8057618(void)
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         mouse->unk52 = 0;
 
         ENEMY_TURN_AROUND(s);
@@ -187,5 +187,5 @@ static void sub_8057618(void)
         gCurTask->main = sub_8057348;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

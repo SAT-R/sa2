@@ -2,25 +2,36 @@
 #include "core.h"
 #include "flags.h"
 
-OamData *OamMalloc(u8 p0)
+// The parameter to this determines the order this sprite is expected to be drawn at.
+//
+// If you have created n Sprite instances, and you want them to be drawn in a certain
+// order, you'd set their OAM order value (inside Sprite.unk1A) accordingly.
+// A higher value gets drawn first
+// (Higher order value == Higher Priority -> Drawn first).
+//  This only applies if these sprites all have the same priority value (0-3) in OAM.
+//  For OAM priority values the same rule (Higher value == Higher Priority) applies.
+//
+// This behavior is used by the Pause Menu, whereby all existing OAM values get put to
+// the end of the OAM buffer, while the pause menu itself gets put to the beginning.
+OamData *OamMalloc(u8 order)
 {
     OamData *result;
 
-    if (p0 > 31) {
-        p0 = 31;
+    if (order > 31) {
+        order = 31;
     }
 
     if (gOamFreeIndex > OAM_ENTRY_COUNT - 1) {
         result = (OamData *)iwram_end;
     } else {
-        if (gUnknown_03001850[p0] == 0xFF) {
+        if (gUnknown_03001850[order] == 0xFF) {
             gUnknown_030022D0[gOamFreeIndex].split.fractional = 0xFF;
-            gUnknown_03001850[p0] = gOamFreeIndex;
-            gUnknown_03004D60[p0] = gOamFreeIndex;
+            gUnknown_03001850[order] = gOamFreeIndex;
+            gUnknown_03004D60[order] = gOamFreeIndex;
         } else {
             gUnknown_030022D0[gOamFreeIndex].split.fractional = 0xFF;
-            gUnknown_030022D0[gUnknown_03004D60[p0]].split.fractional = gOamFreeIndex;
-            gUnknown_03004D60[p0] = gOamFreeIndex;
+            gUnknown_030022D0[gUnknown_03004D60[order]].split.fractional = gOamFreeIndex;
+            gUnknown_03004D60[order] = gOamFreeIndex;
         }
 
         gOamFreeIndex++;

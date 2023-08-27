@@ -49,7 +49,7 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         ring->base.spriteY = spriteY;
 
         s = &ring->displayed;
-        s->unk1A = 0x480;
+        s->unk1A = SPRITE_OAM_ORDER(18);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -140,8 +140,8 @@ static void sub_8081134(Sprite_SpecialRing *ring)
     s->x = ring->posX - gCamera.x;
     s->y = ring->posY - gCamera.y;
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 static bool32 sub_8081164(Sprite_SpecialRing *ring)

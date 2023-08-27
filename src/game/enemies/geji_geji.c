@@ -72,14 +72,14 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
     SPRITE_INIT(s, gUnknown_080D8F50[gg->unk27C].numTiles,
                 gUnknown_080D8F50[gg->unk27C].anim,
-                gUnknown_080D8F50[gg->unk27C].variant, 0x480, 2);
+                gUnknown_080D8F50[gg->unk27C].variant, 18, 2);
 
     s = &gg->s2;
     s->x = 0;
     s->y = 0;
     SPRITE_INIT(s, gUnknown_080D8F50[gg->unk27C + 2].numTiles,
                 gUnknown_080D8F50[gg->unk27C + 2].anim,
-                gUnknown_080D8F50[gg->unk27C + 2].variant, 0x500, 2);
+                gUnknown_080D8F50[gg->unk27C + 2].variant, 20, 2);
 }
 
 static void sub_8057F80(void)
@@ -143,15 +143,15 @@ static void sub_8057F80(void)
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
-    sub_8004558(s);
-    sub_80051E8(s);
-    sub_8004558(s2);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+    UpdateSpriteAnimation(s2);
 
     for (i = 0; i < 4; i++) {
         u8 index = (gg->unk27E - ((i + 1) * 13)) & 0x3F;
         s2->x = gg->positions[0][index] - gCamera.x;
         s2->y = gg->positions[1][index] - gCamera.y;
-        sub_80051E8(s2);
+        DisplaySprite(s2);
     }
 
     gg->unk27E = (gg->unk27E + 1) & 0x3F;
@@ -199,17 +199,17 @@ static void sub_8058264(void)
         }
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     s = &gg->s2;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < 4; i++) {
         u8 index = (gg->unk27E - ((i + 1) * 13)) & 0x3F;
         s->x = gg->positions[0][index] - gCamera.x;
         s->y = gg->positions[1][index] - gCamera.y;
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     gg->unk27E = (gg->unk27E + 1) & 0x3F;

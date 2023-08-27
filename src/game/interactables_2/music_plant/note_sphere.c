@@ -73,7 +73,7 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     note->base.me = me;
     note->base.spriteX = me->x;
     note->base.spriteY = spriteY;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -92,7 +92,7 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     note->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_80754B8(void)
@@ -233,10 +233,10 @@ static void NoteSphere_80758B8(Sprite_NoteSphere *note)
     Sprite *s = &note->disp;
 
     s->unk10 |= 0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->unk10 &= ~0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 NoteSphere_ShouldDespawn(Sprite_NoteSphere *note)

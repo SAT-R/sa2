@@ -54,7 +54,7 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.anim = SA2_ANIM_GOAL_LEVER;
     s->variant = 1;
     s->prevVariant = -1;
-    s->unk1A = 0x100;
+    s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -62,7 +62,7 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->palId = FALSE;
     s->hitboxes[0].index = -1;
     s->unk10 = 0x1000;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_StageGoalMain(void)
@@ -91,7 +91,7 @@ static void Task_StageGoalMain(void)
             gCurTask->main = Task_StageGoalAnimate;
         }
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void Task_StageGoalAnimate(void)
@@ -112,8 +112,8 @@ static void Task_StageGoalAnimate(void)
         return;
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 static void Task_StageGoalToggleMain(void)

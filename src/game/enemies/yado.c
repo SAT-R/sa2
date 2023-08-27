@@ -63,7 +63,7 @@ void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 12, SA2_ANIM_YADO, 0, 0x480, 2);
+    SPRITE_INIT(s, 12, SA2_ANIM_YADO, 0, 18, 2);
 }
 
 void Task_YadoMain(void)
@@ -227,8 +227,8 @@ NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
         s->prevVariant = -1;
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 END_NONMATCH
 
@@ -254,8 +254,8 @@ void Task_8055378(void)
 
     sub_80122DC(yado->spawnX, yado->spawnY);
 
-    if (sub_8004558(s) == 0) {
-        sub_80051E8(s);
+    if (UpdateSpriteAnimation(s) == 0) {
+        DisplaySprite(s);
 
         ENEMY_TURN_AROUND(s);
 
@@ -264,7 +264,7 @@ void Task_8055378(void)
         s->prevVariant = -1;
         gCurTask->main = Task_YadoMain;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 

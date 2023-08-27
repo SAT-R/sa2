@@ -415,7 +415,7 @@ _08047CCE:
 	lsls r1, r1, #6
 	str r1, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #1
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
@@ -466,7 +466,7 @@ _08047CCE:
 	lsls r1, r1, #6
 	str r1, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r3, [sp, #0x30]
 	movs r2, #0xdc
 	lsls r2, r2, #1
@@ -501,7 +501,7 @@ _08047CCE:
 	lsls r1, r1, #6
 	str r1, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	add sp, #0x34
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -863,7 +863,7 @@ sub_80480E8: @ 0x080480E8
 	movs r0, #0x28
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
 	bl sub_8003914
 	ldr r3, _08048148 @ =gBgScrollRegs
@@ -1038,7 +1038,7 @@ _08048210:
 	adds r0, r6, #0
 	str r2, [sp, #0x34]
 	str r3, [sp, #0x38]
-	bl sub_80051E8
+	bl DisplaySprite
 	adds r0, r4, #1
 	lsls r0, r0, #0x18
 	lsrs r4, r0, #0x18
@@ -1127,7 +1127,7 @@ _080482D2:
 	add r0, sb
 	strh r0, [r6, #0x18]
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrb r0, [r7, #0x14]
 	cmp r0, #0
 	beq _0804834E
@@ -1223,9 +1223,9 @@ _080483D8:
 _080483DC:
 	str r0, [r6, #0x10]
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldr r3, [sp, #0x1c]
 	lsls r0, r3, #0x18
 	lsrs r0, r0, #0x18
@@ -3557,9 +3557,9 @@ _080495DC:
 	strb r0, [r1]
 _08049636:
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08049642:
 	add sp, #8
 	pop {r3}
@@ -3870,9 +3870,9 @@ _08049858:
 	strb r0, [r1]
 _080498B0:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080498BC:
 	add sp, #4
 	pop {r4, r5, r6, r7}
@@ -4573,7 +4573,7 @@ _08049DF2:
 	lsls r0, r0, #5
 	str r0, [r2, #0x10]
 	adds r0, r2, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #1
 	lsls r0, r0, #0x18
 	lsrs r4, r0, #0x18
@@ -4817,7 +4817,7 @@ _0804A008:
 	str r0, [r6, #0xc]
 _0804A036:
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r7, #0x16]
 	mov r1, sl
 	strh r0, [r1, #0x16]
@@ -4825,7 +4825,7 @@ _0804A036:
 	adds r0, #0x40
 	strh r0, [r1, #0x18]
 	mov r0, sl
-	bl sub_80051E8
+	bl DisplaySprite
 	add sp, #4
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -4979,7 +4979,7 @@ _0804A136:
 	strb r0, [r2]
 _0804A17E:
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r6, #0x16]
 	mov r1, r8
 	strh r0, [r1, #0x16]
@@ -4987,7 +4987,7 @@ _0804A17E:
 	adds r0, #0x40
 	strh r0, [r1, #0x18]
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	add sp, #8
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -5211,7 +5211,7 @@ _0804A320:
 	str r0, [r4, #0xc]
 _0804A34E:
 	mov r0, sb
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r2, sb
 	ldrh r0, [r2, #0x16]
 	ldr r3, [sp, #0x20]
@@ -5220,7 +5220,7 @@ _0804A34E:
 	adds r0, #0x40
 	strh r0, [r3, #0x18]
 	ldr r0, [sp, #0x20]
-	bl sub_80051E8
+	bl DisplaySprite
 	add sp, #0x34
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -5412,7 +5412,7 @@ _0804A4B8:
 	str r0, [r4, #0xc]
 _0804A4E6:
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r7, #0x16]
 	mov r4, r8
 	strh r0, [r4, #0x16]
@@ -5420,17 +5420,17 @@ _0804A4E6:
 	adds r0, #0x40
 	strh r0, [r4, #0x18]
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r7, #0x18]
 	adds r0, #0x80
 	strh r0, [r4, #0x18]
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r7, #0x18]
 	adds r0, #0xc0
 	strh r0, [r4, #0x18]
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	add sp, #0x10
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -5598,7 +5598,7 @@ _0804A632:
 	str r0, [r4, #0xc]
 _0804A660:
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r7, #0x16]
 	mov r1, r8
 	strh r0, [r1, #0x16]
@@ -5606,19 +5606,19 @@ _0804A660:
 	adds r0, #0x40
 	strh r0, [r1, #0x18]
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r7, #0x18]
 	adds r0, #0x80
 	mov r1, r8
 	strh r0, [r1, #0x18]
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r7, #0x18]
 	adds r0, #0xc0
 	mov r1, r8
 	strh r0, [r1, #0x18]
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	add sp, #4
 	pop {r3, r4, r5}
 	mov r8, r3

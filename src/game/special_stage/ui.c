@@ -162,7 +162,7 @@ void sub_806FCF8(void)
         s->variant = unkF7E8->variant;
         s->unk10 |= 0x40000;
         s->palId = temp;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     if ((timeHundreds | timeTens) != 0) {
@@ -172,7 +172,7 @@ void sub_806FCF8(void)
         s->variant = unkF7E8->variant;
         s->unk10 |= 0x40000;
         s->palId = temp;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     unkF7E8 = &sDigitSprites[timeUnits];
@@ -181,7 +181,7 @@ void sub_806FCF8(void)
     s->variant = unkF7E8->variant;
     s->unk10 |= 0x40000;
     s->palId = temp;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void CreateRingCounter(struct SpecialStageUI *ui)
@@ -230,25 +230,25 @@ void sub_806FFC8(void)
     }
 
     if (stage->ringsHundreds != 0) {
-        sub_80051E8(&ui->ringsHundredsDigit);
+        DisplaySprite(&ui->ringsHundredsDigit);
     }
 
     if (stage->ringsHundreds != 0 || stage->ringsTens != 0) {
-        sub_80051E8(&ui->ringsTENS_DIGIT);
+        DisplaySprite(&ui->ringsTENS_DIGIT);
     }
 
-    sub_80051E8(&ui->ringsUNITS_DIGIT);
-    sub_80051E8(&ui->unk154);
+    DisplaySprite(&ui->ringsUNITS_DIGIT);
+    DisplaySprite(&ui->unk154);
 
     if (stage->ringsTargetHundreds != 0) {
-        sub_80051E8(&ui->ringsTargetHundredsDigit);
+        DisplaySprite(&ui->ringsTargetHundredsDigit);
     }
 
     if (stage->ringsTargetHundreds != 0 || stage->ringsTargetTens != 0) {
-        sub_80051E8(&ui->ringsTargetTENS_DIGIT);
+        DisplaySprite(&ui->ringsTargetTENS_DIGIT);
     }
 
-    sub_80051E8(&ui->ringsTargetUNITS_DIGIT);
+    DisplaySprite(&ui->ringsTargetUNITS_DIGIT);
 }
 
 void sub_8070078(void)
@@ -263,19 +263,19 @@ void sub_8070078(void)
     s = &ui->ringsHundredsDigit;
     s->graphics.anim = sprite->anim;
     s->variant = sprite->variant;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     sprite = &sDigitSprites[stage->ringsTens];
     s = &ui->ringsTENS_DIGIT;
     s->graphics.anim = sprite->anim;
     s->variant = sprite->variant;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     sprite = &sDigitSprites[stage->ringsUnits];
     s = &ui->ringsUNITS_DIGIT;
     s->graphics.anim = sprite->anim;
     s->variant = sprite->variant;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     if (stage->targetReached == FALSE) {
         if (stage->rings >= stage->ringsTarget) {
@@ -287,7 +287,7 @@ void sub_8070078(void)
             s = &ui->unk154;
             s->graphics.anim = 0x378;
             s->variant = 1;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
         return;
     }
@@ -298,10 +298,10 @@ void sub_8070078(void)
         s = &ui->unk154;
         s->graphics.anim = 0x378;
         s->variant = 0;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else {
         s = &ui->unk154;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 }
 
@@ -595,20 +595,20 @@ static void RenderScoresAnim(void)
     finalScore /= 10;
     c[0] = finalScore % 10;
 
-    sub_80051E8(&resultsScreen->unk4);
+    DisplaySprite(&resultsScreen->unk4);
 
     if (stage->targetReached) {
-        sub_80051E8(&resultsScreen->unk34);
+        DisplaySprite(&resultsScreen->unk34);
     }
 
     for (i = 0; i < 7; i++) {
-        sub_8004558(&resultsScreen->chaosEmerald[i]);
-        sub_80051E8(&resultsScreen->chaosEmerald[i]);
+        UpdateSpriteAnimation(&resultsScreen->chaosEmerald[i]);
+        DisplaySprite(&resultsScreen->chaosEmerald[i]);
     }
 
-    sub_80051E8(&resultsScreen->unk1B4);
-    sub_80051E8(&resultsScreen->unk1E4);
-    sub_80051E8(&resultsScreen->unk214);
+    DisplaySprite(&resultsScreen->unk1B4);
+    DisplaySprite(&resultsScreen->unk1E4);
+    DisplaySprite(&resultsScreen->unk214);
 
     for (i = 0, found = FALSE; i < 5; i++) {
         if (found || a[i] != 0 || i == 4) {
@@ -616,8 +616,8 @@ static void RenderScoresAnim(void)
             s = &resultsScreen->unk244[i];
             s->graphics.anim = sDigitSprites[a[i]].anim;
             s->variant = sDigitSprites[a[i]].variant;
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 
@@ -627,8 +627,8 @@ static void RenderScoresAnim(void)
             s = &resultsScreen->unk334[i];
             s->graphics.anim = sDigitSprites[b[i]].anim;
             s->variant = sDigitSprites[b[i]].variant;
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 
@@ -638,8 +638,8 @@ static void RenderScoresAnim(void)
             s = &resultsScreen->unk424[i];
             s->graphics.anim = sDigitSprites[c[i]].anim;
             s->variant = sDigitSprites[c[i]].variant;
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -709,17 +709,17 @@ void sub_8070C58(void)
         sub_806FCF8();
     }
 
-    sub_80051E8(&ui->timeSymbol);
+    DisplaySprite(&ui->timeSymbol);
 
     if (stage->timeHundreds != 0) {
-        sub_80051E8(&ui->timeHundreds);
+        DisplaySprite(&ui->timeHundreds);
     }
 
     if ((stage->timeHundreds | stage->timeTens) != 0) {
-        sub_80051E8(&ui->timeTens);
+        DisplaySprite(&ui->timeTens);
     }
 
-    sub_80051E8(&ui->timeUnits);
+    DisplaySprite(&ui->timeUnits);
 }
 
 static void CreateMultiplierValue(struct SpecialStageUI *ui)
@@ -742,9 +742,9 @@ void sub_8070D14(void)
         if (stage->paused == FALSE) {
             s->graphics.anim = unkF830->anim;
             s->variant = unkF830->variant;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -756,7 +756,7 @@ void sub_8070D80(struct SpecialStageUI *ui)
     sub_806CA88(s, 0, 0x14, 0x376, 0x1000, 0x78, 0x50, 1, 0, 0);
 }
 
-void sub_8070DD0(struct SpecialStageUI *ui) { sub_80051E8(&ui->unk244); }
+void sub_8070DD0(struct SpecialStageUI *ui) { DisplaySprite(&ui->unk244); }
 
 void sub_8070DE0(struct SpecialStageUI *ui)
 {
@@ -781,7 +781,7 @@ static void RenderPauseMenu(struct SpecialStageUI *ui)
 
     DmaCopy16(3, ui->pauseMenuPalette2, b, 6);
     DmaCopy16(3, ui->pauseMenuPalette1, a, 6);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static void HandleUnpaused(struct SpecialStageUI *ui)

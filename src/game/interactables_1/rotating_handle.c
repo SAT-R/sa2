@@ -52,7 +52,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         s->graphics.anim = 546;
         s->variant = 0;
 
-        s->unk1A = 0x480;
+        s->unk1A = SPRITE_OAM_ORDER(18);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -136,8 +136,8 @@ static void sub_805EA94(void)
         }
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 // https://decomp.me/scratch/RaPDV
@@ -165,7 +165,7 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
 
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = sub_805EF90;
-        sub_80051E8(s);
+        DisplaySprite(s);
         return;
     }
 
@@ -253,8 +253,8 @@ NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
         return;
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 END_NONMATCH
 
@@ -298,6 +298,6 @@ static void sub_805EF90(void)
         rotatingHandle->unk3E = 0;
         gCurTask->main = sub_805EA94;
     }
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
