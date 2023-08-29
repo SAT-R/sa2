@@ -22,10 +22,10 @@ void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
     affine[12] = Q_24_8_TO_INT(COS_24_8(angle) * res);
 }
 
-#if 001
 // Similar to sub_8004ABC and sub_8004E14
-// https://decomp.me/scratch/mCDYD
-void sub_8004860(Sprite *s, SpriteTransform *transform)
+// (52.72%) https://decomp.me/scratch/mCDYD
+NONMATCH("asm/non_matching/sub_8004860.inc",
+         void sub_8004860(Sprite *s, SpriteTransform *transform))
 {
     // sp24 = s
     SpriteOffset *dimensions = s->dimensions;
@@ -133,4 +133,4 @@ void sub_8004860(Sprite *s, SpriteTransform *transform)
         }
     }
 }
-#endif
+END_NONMATCH
