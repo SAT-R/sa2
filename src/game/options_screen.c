@@ -5379,7 +5379,7 @@ static void MultiplayerRecordsScreenRenderUI(void)
 // Some sort of register menu item function
 // used in sound test, but wonder why it wasn't split out
 void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
-                 s16 yPos, u16 g, u8 variant, u8 palId)
+                 s16 yPos, u16 oamOrder, u8 variant, u8 palId)
 {
     Sprite newObj;
     Sprite *s;
@@ -5403,7 +5403,7 @@ void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
     s->unk10 = assetId;
     s->x = xPos;
     s->y = yPos;
-    s->unk1A = g << 6;
+    s->unk1A = SPRITE_OAM_ORDER(oamOrder);
     s->timeUntilNextFrame = 0;
     s->prevAnim = -1;
     s->variant = variant;

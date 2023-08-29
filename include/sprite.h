@@ -120,7 +120,7 @@ typedef struct {
     /* 0x0C */ SpriteOffset *dimensions;
 
     // Bitfield description from KATAM decomp
-    /* 0x10 */ u32 unk10; // bit 0-4: rotscale param selection
+    /* 0x10 */ u32 unk10; // bit 0-4: affine-index / rotscale param selection
                           // bit 5: rotscale enable
                           // bit 6: rotscale double-size
                           // bit 7-8: obj mode
@@ -160,7 +160,7 @@ typedef struct {
 } Sprite /* size = 0x30 */;
 
 typedef struct {
-    /* 0x00 */ u16 unk0;
+    /* 0x00 */ u16 rotation;
     /* 0x02 */ s16 width;
     /* 0x04 */ s16 height;
     /* 0x06 */ s16 x;
@@ -193,6 +193,7 @@ OamData *OamMalloc(u8 size);
 
 // TransformSprite
 void sub_8004860(Sprite *, SpriteTransform *);
+void sub_8004ABC(Sprite *, SpriteTransform *);
 void sub_8004E14(Sprite *, SpriteTransform *);
 
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
@@ -205,7 +206,7 @@ void sub_800724C(u8 p0, void *p1);
 
 s32 sub_80036E0(Sprite *);
 void sub_8003914(Sprite *);
-void sub_80047A0(u16, u16, u16, u16);
+void sub_80047A0(u16, s16, s16, u16);
 
 s32 sub_8004418(s16 x, s16 y);
 

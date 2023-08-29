@@ -241,7 +241,7 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     resultsCutScene->transform.height = 0x100;
     resultsCutScene->transform.x = 120;
     resultsCutScene->transform.y = 120;
-    resultsCutScene->transform.unk0 = 0;
+    resultsCutScene->transform.rotation = 0;
 
     s = &resultsCutScene->unk9C[2];
     s->x = (DISPLAY_WIDTH / 2);

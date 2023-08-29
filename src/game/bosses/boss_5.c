@@ -587,7 +587,7 @@ void sub_80438C4(EggSaucer *boss)
         s->y = y + ((SIN(boss->gunDiskAngle) * 5) >> 11) - 19;
         s->unk10 = gUnknown_030054B8++ | 0x1060;
 
-        transform->unk0 = boss->unk1A;
+        transform->rotation = boss->unk1A;
         transform->width = 0x100;
         transform->height = 0x100;
         transform->x = s->x;
@@ -762,7 +762,7 @@ void sub_8043E2C(EggSaucer *boss)
         s->y = (Q_24_8_TO_INT(y) - gCamera.y) - 19;
         s->unk10 = gUnknown_030054B8++ | 0x1060;
 
-        transform->unk0 = boss->unk1A;
+        transform->rotation = boss->unk1A;
         transform->width = 256;
         transform->height = 256;
         transform->x = s->x;

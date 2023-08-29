@@ -88,7 +88,7 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     transform = &ts->transform;
-    transform->unk0 = 0;
+    transform->rotation = 0;
     transform->width = 0;
     transform->height = 0;
     transform->x = 0;
@@ -139,7 +139,7 @@ struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
 
         s->unk1A = SPRITE_OAM_ORDER(9);
 
-        transform->unk0 = 0;
+        transform->rotation = 0;
         transform->width = 0;
         transform->height = 0;
         transform->x = 0;

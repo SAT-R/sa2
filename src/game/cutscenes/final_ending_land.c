@@ -33,7 +33,7 @@ struct FinalEndingLandCutScene {
     Sprite unk260[2];
     Sprite unk2C0[2];
 
-    SpriteTransform unk320;
+    SpriteTransform transform;
     struct TransitionState unk32C;
 
     u8 unk338;
@@ -304,7 +304,7 @@ void CreateFinalEndingLandingCutScene(void)
 
     {
         Sprite *s;
-        transform = &scene->unk320;
+        transform = &scene->transform;
 
         s = &scene->unkB0;
         s->graphics.dest = (void *)scene->unk618;
@@ -323,7 +323,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->unk10 = 0x60;
         s->hitboxes[0].index = -1;
 
-        transform->unk0 = 0;
+        transform->rotation = 0;
         transform->width = scene->unk340;
         transform->height = scene->unk340;
         transform->x = s->x;
@@ -641,10 +641,10 @@ void sub_80934B8(struct FinalEndingLandCutScene *scene)
 
             if (scene->unk342 < 0x32) {
                 scene->unk340 += 4;
-                scene->unk320.unk0 += 3;
+                scene->transform.rotation += 3;
             } else {
                 scene->unk340 += 8;
-                scene->unk320.unk0 += 0x14;
+                scene->transform.rotation += 0x14;
             }
 
             if (scene->unk342 == 1) {
@@ -728,7 +728,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
     SpriteTransform *transform;
     Sprite *s = NULL;
 
-    transform = &scene->unk320;
+    transform = &scene->transform;
 
     if ((gSelectedCharacter == 1 && scene->unk338 < 5)
         || (gSelectedCharacter != 1 && scene->unk338 < 4)) {
