@@ -4,6 +4,7 @@
 #include "game/game.h"
 #include "game/stage/entities_manager.h"
 #include "task.h"
+#include "sprite.h"
 
 #include "constants/animations.h"
 
@@ -75,6 +76,95 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SPRITE_INIT(s, 8, SA2_ANIM_FLICKEY_PROJ, 0, 19, 2);
     }
+}
+
+void sub_80591FC(void);
+void Flickey_RenderIronBalls(Sprite_Flickey *flickey);
+
+void Task_FlickeyMain(void)
+{
+    u8 i;
+    Sprite_Flickey *flickey = TaskGetStructPtr(gCurTask);
+    Sprite *s = &flickey->s;
+    Sprite *s2 = &flickey->s2;
+    MapEntity *me = flickey->base.me;
+    s32 positions[64][3];
+    Vec2_32 pos;
+    s32 someVal;
+
+    flickey->unk9E += 0x20;
+    flickey->offsetX += flickey->unk9C;
+    flickey->offsetY += flickey->unk9E;
+
+    ENEMY_UPDATE_POSITION(flickey, s, pos.x, pos.y);
+
+    someVal = sub_801F07C(pos.y, pos.x, 1, 8, 0, sub_801EE64);
+
+    flickey->positions[flickey->unk2A4].x = pos.x;
+    flickey->positions[flickey->unk2A4].y = pos.y;
+
+    flickey->unk2A4 = (flickey->unk2A4 + 1) & 0x3F;
+
+    for (i = 0; i < 3; i++) {
+        u8 index = (flickey->unk2A4 - ((i + 1) * 0x10)) & 0x3F;
+        s2->x = flickey->positions[index].x - gCamera.x;
+        s2->y = flickey->positions[index].y - gCamera.y;
+        sub_800C84C(s2, flickey->positions[index].x, flickey->positions[index].y);
+    }
+
+    if (sub_800C4FC(s, pos.x, pos.y, 0)) {
+        flickey->unkA0 = 0x78;
+        sub_8004558(s2);
+        for (i = 0; i < 3; i++) {
+            u8 index = (flickey->unk2A4 - ((i + 1) * 0x10)) & 0x3F;
+            s2->x = flickey->positions[index].x - gCamera.x;
+            s2->y = flickey->positions[index].y - gCamera.y;
+
+            positions[i][0] = flickey->positions[index].x;
+            positions[i][1] = flickey->positions[index].y;
+            positions[i][2]
+                = flickey->positions[index].y - flickey->positions[(index - 1) & 0x3F].y;
+
+            DisplaySprite(s2);
+        }
+
+        for (i = 0; i < 3; i++) {
+            u32 temp;
+            flickey->positions[i].x = Q_24_8_NEW(positions[i][0]);
+            flickey->positions[i].y = Q_24_8_NEW(positions[i][1]);
+            temp = Div(flickey->unk9C, i + 1);
+            flickey->positions[i + 3].y = Q_24_8_NEW(positions[i][2]);
+        }
+
+        gCurTask->main = sub_80591FC;
+        return;
+    }
+
+    if (someVal < 0) {
+        s->y += someVal;
+        flickey->offsetY += Q_24_8(someVal);
+
+        flickey->unk9E = -0x400;
+        s->graphics.anim = SA2_ANIM_FLICKEY;
+        s->variant = 1;
+        s->prevVariant = -1;
+
+        if (ENEMY_CROSSED_LEFT_BORDER(flickey, me) && flickey->unk9C < 0) {
+            s->graphics.anim = SA2_ANIM_FLICKEY;
+            s->variant = 0;
+            s->prevVariant = -1;
+        } else if (ENEMY_CROSSED_RIGHT_BORDER(flickey, me) && flickey->unk9C < 1) {
+            s->graphics.anim = SA2_ANIM_FLICKEY;
+            s->variant = 2;
+            s->prevVariant = -1;
+        }
+    }
+
+    ENEMY_DESTROY_IF_OFFSCREEN(flickey, me, s);
+
+    ENEMY_UPDATE(s, pos.x, pos.y);
+
+    Flickey_RenderIronBalls(flickey);
 }
 
 #if 0
