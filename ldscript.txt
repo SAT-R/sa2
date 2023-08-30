@@ -179,7 +179,6 @@ SECTIONS
         build/sa2/src/game/enemies/geji_geji.o(.text);
         build/sa2/src/game/enemies/balloon.o(.text);
         build/sa2/src/game/enemies/flickey.o(.text);
-        build/sa2/asm/enemy_flickey.o(.text);
         build/sa2/src/game/enemies/kyura.o(.text);
         build/sa2/src/game/enemies/bullet_buzzer.o(.text);
         build/sa2/src/game/enemies/star.o(.text);
