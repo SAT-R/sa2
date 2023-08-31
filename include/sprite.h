@@ -210,8 +210,6 @@ void sub_80047A0(u16, s16, s16, u16);
 
 s32 sub_8004418(s16 x, s16 y);
 
-void UpdateBgAnimationTiles(Background *);
-
 #define SpriteShouldUpdate(sprite)                                                      \
     (((sprite)->prevVariant != (sprite)->variant)                                       \
      || ((sprite)->prevAnim != (sprite)->graphics.anim))

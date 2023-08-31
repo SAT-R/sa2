@@ -1,6 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
+#include "animation_commands_bg.h"
 #include "game/game.h"
 #include "game/stage/spot_light.h"
 

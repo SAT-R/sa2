@@ -1,9 +1,9 @@
 #include "global.h"
 #include "core.h"
 #include "task.h"
+#include "animation_commands_bg.h"
 #include "game/title_screen.h"
 
-#include "animation_commands_extra.h"
 #include "data/tileset_language.h"
 
 const u8 ALIGNED(4) gUnknown_080D5130[]

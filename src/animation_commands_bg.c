@@ -20,6 +20,48 @@ extern const AnimationCommandFunc animCmdTable_2[];
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
+void UpdateBgAnimationTiles(Background *bg)
+{
+    struct MapHeader *header = gUnknown_03002260[bg->tilemapId];
+    if (header->h.animFrameCount) {
+        if (header->h.animDelay <= ++bg->animDelayCounter) {
+            u32 animTileSize;
+
+            bg->animDelayCounter = 0;
+
+            if (header->h.animFrameCount <= ++bg->animFrameCounter)
+                bg->animFrameCounter = 0;
+
+            animTileSize = header->h.animTileSize;
+
+            if (!(bg->flags & BACKGROUND_UPDATE_ANIMATIONS)) {
+                if (bg->animFrameCounter == 0) {
+                    bg->graphics.src = header->h.tiles;
+                } else {
+                    const u8 *tiles = header->h.tiles;
+                    u32 size = header->h.tilesSize;
+                    tiles += size;
+                    tiles += (bg->animFrameCounter - 1) * animTileSize;
+                    bg->graphics.src = tiles;
+                }
+            } else {
+                u8 *ts = bg->graphics.dest;
+                ts += header->h.tilesSize;
+                ts += (bg->animFrameCounter * animTileSize);
+                bg->graphics.src = ts;
+            }
+            {
+                u32 queueIndex;
+                bg->graphics.size = animTileSize;
+                gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &bg->graphics;
+                queueIndex = gVramGraphicsCopyQueueIndex + 1;
+                queueIndex %= ARRAY_COUNT(gVramGraphicsCopyQueue);
+                gVramGraphicsCopyQueueIndex = queueIndex;
+            }
+        }
+    }
+}
+
 // Differences to UpdateSpriteAnimation:
 // - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
 // - Uses animCmdTable_2 instead of animCmdTable

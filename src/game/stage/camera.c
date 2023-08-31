@@ -1,5 +1,6 @@
 #include "global.h"
 #include "core.h"
+#include "animation_commands_bg.h"
 #include "game/game.h"
 
 #include "constants/tilemaps.h"

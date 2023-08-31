@@ -57,11 +57,11 @@ NONMATCH("asm/non_matching/sub_8004860.inc",
         res = Div(0x10000, sp00[7]);
         affine[12] = Q_24_8_TO_INT(sp00[5] * res);
 
-        if (transform->height < 0)
-            sp00[6] = -transform->height;
-
         if (transform->width < 0)
-            sp00[7] = -transform->width;
+            sp00[6] = -transform->width;
+
+        if (transform->height < 0)
+            sp00[7] = -transform->height;
 
         // _0800497A
         sp00[0] = Q_24_8_TO_INT(sp00[4] * sp00[6]);
@@ -81,7 +81,7 @@ NONMATCH("asm/non_matching/sub_8004860.inc",
         {
             s16 r3;
             s32 r0, r1, r2, r4;
-            u32 r5;
+            s32 r5;
 
             if (transform->width > 0) {
                 r4 = dimensions->offsetX;
@@ -108,11 +108,9 @@ NONMATCH("asm/non_matching/sub_8004860.inc",
             r4 -= dimensions->width / 2;
             r1 = r0;
             r1 *= r4;
-            r0 = sp00[1];
             r5 >>= 1;
             r3 -= r5;
-            r0 *= r3;
-            r1 += r0;
+            r1 += sp00[1] * r3;
             r1 += (r2 << 8);
             r1 >>= 8;
             sp10 -= r1;
