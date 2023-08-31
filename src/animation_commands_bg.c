@@ -26,7 +26,7 @@ static s32 animCmd_12_BG(void *, Sprite *);
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
-const AnimationCommandFunc animCmdTable_bg[12] = {
+const AnimationCommandFunc animCmdTable_BG[12] = {
     animCmd_GetTiles_BG,          animCmd_GetPalette_BG,
     animCmd_JumpBack_BG,          animCmd_End_BG,
     animCmd_PlaySoundEffect_BG,   animCmd_AddHitbox_BG,
@@ -79,7 +79,7 @@ void UpdateBgAnimationTiles(Background *bg)
 
 // Differences to UpdateSpriteAnimation:
 // - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
-// - Uses animCmdTable_bg instead of animCmdTable
+// - Uses animCmdTable_BG instead of animCmdTable
 s32 sub_80036E0(Sprite *s)
 {
     ACmd **variants;
@@ -104,7 +104,7 @@ s32 sub_80036E0(Sprite *s)
         script = variants[s->variant];
         cmd = ReadInstruction(script, s->animCursor);
         while (cmd->id < 0) {
-            ret = animCmdTable_bg[~cmd->id](cmd, s);
+            ret = animCmdTable_BG[~cmd->id](cmd, s);
             if (ret != 1) {
 #ifndef NON_MATCHING
                 register ACmd *newScript asm("r1");
