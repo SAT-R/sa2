@@ -19,8 +19,12 @@ u32 TasksInit(void)
     gNextTask = NULL;
     gNumTasks = 0;
 
-    // 0x4 * MAX_TASK_NUM = 0x200, but that woud assume gTasks is an array of pointers
+#ifndef BUG_FIX
+    // 0x4 * MAX_TASK_NUM = 0x200, but that would assume gTasks is an array of pointers
     DmaFill32(3, 0, gTasks, 0x200);
+#else
+    DmaFill32(3, 0, gTasks, sizeof(gTasks));
+#endif
 
     for (i = 0; i < MAX_TASK_NUM; ++i)
         gTaskPtrs[i] = &gTasks[i];
@@ -156,7 +160,7 @@ void TaskDestroy(struct Task *task)
 void TasksExec(void)
 {
     gCurTask = gTaskPtrs[0];
-    if (!(gFlags & 0x800) && TASK_IS_NOT_NULL(gTaskPtrs[0])) {
+    if (!(gFlags & FLAGS_800) && TASK_IS_NOT_NULL(gTaskPtrs[0])) {
         while (TASK_IS_NOT_NULL(gCurTask)) {
             gNextTask = (struct Task *)TASK_PTR(gCurTask->next);
 
