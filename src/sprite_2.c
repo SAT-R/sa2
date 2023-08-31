@@ -4,6 +4,231 @@
 #include "sprite.h"
 #include "trig.h"
 
+extern const AnimationCommandFunc animCmdTable[];
+
+const u8 sUnknown_080984A4[] = {
+    /* 0x00 */ Q_24_8_TO_INT(Q_24_8(0.5 * 2)),
+    /* 0x01 */ Q_24_8_TO_INT(Q_24_8(0.0 * 2)),
+    /* 0x02 */ Q_24_8_TO_INT(Q_24_8(1.0 * 2)),
+    /* 0x03 */ Q_24_8_TO_INT(Q_24_8(1.5 * 2)),
+    /* 0x04 */ Q_24_8_TO_INT(Q_24_8(3.0 * 2)),
+    /* 0x05 */ Q_24_8_TO_INT(Q_24_8(3.5 * 2)),
+    /* 0x06 */ Q_24_8_TO_INT(Q_24_8(2.5 * 2)),
+    /* 0x07 */ Q_24_8_TO_INT(Q_24_8(2.0 * 2)),
+};
+
+#define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
+
+// This function gets called as long as an enemy is on-screen.
+// Potentially something to do with collision/distance?
+s32 sub_8004418(s16 x, s16 y)
+{
+    u8 index = 0;
+    u8 array[ARRAY_COUNT(sUnknown_080984A4)];
+
+    s16 fraction;
+    s32 result;
+
+    memcpy(&array, sUnknown_080984A4, ARRAY_COUNT(sUnknown_080984A4));
+
+    if ((x | y) == 0) {
+        result = -1;
+    } else {
+        // _0800444C
+        if (x <= 0) {
+            x = -x;
+            index = 4;
+        }
+        if (y <= 0) {
+            y = -y;
+            index += 2;
+        }
+        if (x >= y) {
+            // fraction = y*0.5 / x
+            y *= Q_24_8(0.5);
+
+            if (x == 0) {
+                // _0800447C
+                fraction = y;
+            } else {
+                // _08004480
+                fraction = y / x;
+            }
+        } else {
+            // _08004488
+            index += 1;
+
+            x *= Q_24_8(0.5);
+
+            if (y == 0) {
+                fraction = x;
+            } else {
+                fraction = x / y;
+            }
+        }
+
+        // If array[index] is odd,
+        if (array[index] & 0x01) {
+            fraction = Q_8_8(0.5) - fraction;
+        }
+
+        {
+            s32 val = array[index] * Q_24_8(0.5);
+            fraction += val;
+            result = ((u32)(fraction << 22) >> 22);
+        }
+    }
+    return result;
+}
+
+void numToTileIndices(u8 *digits, u16 number)
+{
+    u8 i;
+
+    for (i = 0; i < 4; number <<= 4, i++) {
+        u16 value = ((number & 0xF000) >> 12);
+        if (value > 9) {
+            digits[i] = value + 87;
+        } else {
+            digits[i] = value + '0';
+        }
+    }
+
+    digits[i] = 0;
+}
+
+u32 sub_8004518(u16 num)
+{
+    u8 i;
+    u16 result;
+    u8 lowDigit;
+    u32 remainder = num;
+
+    result = 0;
+    for (i = 0; i < 4; i++) {
+        s32 divisor = Div(remainder, 10);
+        lowDigit = remainder - (divisor * 10);
+        remainder = (u16)divisor;
+
+        result |= lowDigit << (i * 4);
+    }
+
+    return result;
+}
+
+s32 UpdateSpriteAnimation(Sprite *s)
+{
+    SPRITE_MAYBE_SWITCH_ANIM(s);
+
+    if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
+        return 0;
+
+    if (s->timeUntilNextFrame > 0)
+        s->timeUntilNextFrame -= s->animSpeed * 16;
+    else {
+        /* Call all commands for the new frame */
+        s32 ret;
+        ACmd *cmd;
+        ACmd *script;
+        ACmd **variants;
+
+        // Handle all the "regular" Animation commands with an ID < 0
+        variants = gUnknown_03002794->animations[s->graphics.anim];
+        script = variants[s->variant];
+        cmd = ReadInstruction(script, s->animCursor);
+        while (cmd->id < 0) {
+            ret = animCmdTable[~cmd->id](cmd, s);
+            if (ret != 1) {
+#ifndef NON_MATCHING
+                register ACmd *newScript asm("r2");
+#else
+                ACmd *newScript;
+#endif
+                if (ret != -1) {
+                    return ret;
+                }
+
+                // animation has changed
+                variants = gUnknown_03002794->animations[s->graphics.anim];
+                newScript = variants[s->variant];
+
+                // reset cursor
+                s->animCursor = 0;
+
+                // load the new script
+                script = newScript;
+            }
+            cmd = ReadInstruction(script, s->animCursor);
+        }
+
+        // Display the image 'index' for 'delay' frames
+        s->timeUntilNextFrame += Q_8_8(((ACmd_ShowFrame *)cmd)->delay);
+        s->timeUntilNextFrame -= s->animSpeed * 16;
+        {
+            s32 frame = ((ACmd_ShowFrame *)cmd)->index;
+            if (frame != -1) {
+                const struct SpriteTables *sprTables = gUnknown_03002794;
+
+                s->dimensions = &sprTables->dimensions[s->graphics.anim][frame];
+            } else {
+                s->dimensions = (void *)-1;
+            }
+        }
+
+        s->animCursor += 2;
+    }
+    return 1;
+}
+
+// (-1)
+s32 animCmd_GetTiles(void *cursor, Sprite *s)
+{
+    ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
+    s->animCursor += AnimCommandSizeInWords(ACmd_GetTiles);
+
+    if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
+        if (cmd->tileIndex < 0) {
+            s->graphics.src
+                = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
+            s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
+        } else {
+            s->graphics.src
+                = &gUnknown_03002794->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
+            s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
+        }
+
+        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &s->graphics;
+        gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) & 0x1F;
+    }
+
+    return 1;
+}
+
+// (-6)
+s32 animCmd_AddHitbox(void *cursor, Sprite *s)
+{
+    ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
+    s32 index = cmd->hitbox.index & 0xF;
+    s->animCursor += AnimCommandSizeInWords(ACmd_Hitbox);
+
+    DmaCopy32(3, &cmd->hitbox, &s->hitboxes[index].index, 8);
+
+    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0)
+        && (cmd->hitbox.bottom == 0)) {
+        s->hitboxes[index].index = -1;
+    } else {
+        if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+            SWAP_AND_NEGATE(s->hitboxes[index].top, s->hitboxes[index].bottom);
+        }
+
+        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+            SWAP_AND_NEGATE(s->hitboxes[index].left, s->hitboxes[index].right);
+        }
+    }
+
+    return 1;
+}
+
 void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
 {
     u16 *affine = &gOamBuffer[affineIndex * 4].all.affineParam;

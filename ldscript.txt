@@ -37,7 +37,6 @@ SECTIONS
         build/sa2/src/core.o(.text);
         build/sa2/src/main.o(.text);
         build/sa2/src/task.o(.text);
-        build/sa2/src/sprite_1.o(.text);
         build/sa2/src/bg_update.o(.text);
         build/sa2/src/animation_commands_bg.o(.text);
         build/sa2/src/sprite_2.o(.text);
@@ -307,10 +306,9 @@ SECTIONS
         build/sa2/src/multi_sio.o(.rodata);
         build/sa2/src/sio32_multi_load.o(.rodata);
         build/sa2/src/core.o(.rodata);
-        build/sa2/src/sprite_1.o(.rodata);
-        build/sa2/src/trig.o(.rodata);
-        build/sa2/asm/sprite_3.o(.rodata);
         build/sa2/src/animation_commands_bg.o(.rodata);
+        build/sa2/src/trig.o(.rodata);
+        build/sa2/src/sprite_2.o(.rodata);
         build/sa2/src/animation_commands.o(.rodata);
         build/sa2/src/sprite_3.o(.rodata);
         build/sa2/asm/sprite_4.o(.rodata);
