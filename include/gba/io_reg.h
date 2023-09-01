@@ -349,7 +349,7 @@
 
 #define REG_DISPCNT     (*(vu16 *)REG_ADDR_DISPCNT)
 #define REG_DISPSTAT    (*(vu16 *)REG_ADDR_DISPSTAT)
-#define REG_VCOUNT      (*(volatile int_vcount *)REG_ADDR_VCOUNT)
+#define REG_VCOUNT      (*(vu16 *)REG_ADDR_VCOUNT)
 #define REG_BG0CNT      (*(vu16 *)REG_ADDR_BG0CNT)
 #define REG_BG1CNT      (*(vu16 *)REG_ADDR_BG1CNT)
 #define REG_BG2CNT      (*(vu16 *)REG_ADDR_BG2CNT)
