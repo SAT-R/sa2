@@ -11,8 +11,10 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
 }
 #endif
 
-#if 01
-void Zone7BgUpdate_Outside(s32 x, s32 y)
+// https://decomp.me/scratch/7KDXI
+// 98.95% - only register alloc issues, logic works as intended
+NONMATCH("asm/non_matching/Zone7BgUpdate_Outside.inc",
+         void Zone7BgUpdate_Outside(s32 x, s32 y))
 {
     u16 *bgBuffer;
     u8 frameCount;
@@ -61,4 +63,4 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
         }
     }
 }
-#endif
+END_NONMATCH
