@@ -83,7 +83,7 @@ void sub_80871C4(s16 a, s16 b, s16 c)
     s16 g;
     u8 i;
 
-    u8 *unk1884 = gUnknown_03001884;
+    u8 *unk1884 = gComputedBgBuffer;
     gUnknown_03002A80 = 2;
     gUnknown_03002878 = (void *)REG_ADDR_WIN0H;
 

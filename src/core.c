@@ -27,8 +27,7 @@ u8 gUnknown_03001850[] ALIGNED(16) = {};
 FuncType_030053A0 gUnknown_03001870[] = {};
 u16 gPhysicalInput = 0;
 
-// gComputedBgBuffer
-void *gUnknown_03001884 = NULL;
+void *gComputedBgBuffer = NULL;
 
 u16 gVramHeapMaxTileSlots = 0;
 u8 gNumHBlankCallbacks ALIGNED(4) = 0;
@@ -287,7 +286,7 @@ void GameInit(void)
 
     DmaFill32(3, 0, &gUnknown_03001B60, sizeof(gUnknown_03001B60));
 
-    gUnknown_03001884 = gUnknown_03001B60[0];
+    gComputedBgBuffer = gUnknown_03001B60[0];
     gUnknown_030022AC = (void *)gUnknown_03001B60[1];
     gUnknown_03002878 = NULL;
     gUnknown_03002A80 = 0;
@@ -419,7 +418,7 @@ static void UpdateScreenDma(void)
     }
 
     if (gFlags & FLAGS_4) {
-        DmaCopy16(3, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
+        DmaCopy16(3, gComputedBgBuffer, gUnknown_03002878, gUnknown_03002A80);
     }
 
     if (gUnknown_030026F4 == 0xff) {
@@ -465,11 +464,11 @@ static void ClearOamBufferDma(void)
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
     if (!(gFlags & FLAGS_20)) {
-        if (gUnknown_03001884 == gUnknown_03004D54) {
-            gUnknown_03001884 = gUnknown_030022C0;
+        if (gComputedBgBuffer == gUnknown_03004D54) {
+            gComputedBgBuffer = gUnknown_030022C0;
             gUnknown_030022AC = gUnknown_03004D54;
         } else {
-            gUnknown_03001884 = gUnknown_03004D54;
+            gComputedBgBuffer = gUnknown_03004D54;
             gUnknown_030022AC = gUnknown_030022C0;
         }
     }
@@ -561,8 +560,8 @@ static void VBlankIntr(void)
     if (gFlagsPreVBlank & 4) {
         REG_IE |= INTR_FLAG_HBLANK;
         DmaWait(0);
-        DmaCopy16(0, gUnknown_03001884, gUnknown_03002878, gUnknown_03002A80);
-        DmaSet(0, gUnknown_03001884 + gUnknown_03002A80, gUnknown_03002878,
+        DmaCopy16(0, gComputedBgBuffer, gUnknown_03002878, gUnknown_03002A80);
+        DmaSet(0, gComputedBgBuffer + gUnknown_03002A80, gUnknown_03002878,
                ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD) << 16)
                    | (gUnknown_03002A80 >> 1));
     } else if (gUnknown_03002878) {
@@ -740,11 +739,11 @@ static void ClearOamBufferCpuSet(void)
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
     if (!(gFlags & 0x20)) {
-        if (gUnknown_03001884 == gUnknown_03004D54) {
-            gUnknown_03001884 = gUnknown_030022C0;
+        if (gComputedBgBuffer == gUnknown_03004D54) {
+            gComputedBgBuffer = gUnknown_030022C0;
             gUnknown_030022AC = gUnknown_03004D54;
         } else {
-            gUnknown_03001884 = gUnknown_03004D54;
+            gComputedBgBuffer = gUnknown_03004D54;
             gUnknown_030022AC = gUnknown_030022C0;
         }
     }

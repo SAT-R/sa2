@@ -52,9 +52,9 @@ struct TitleScreen {
     struct UNK_3005B80_UNK4 unk27C;
 
     // Something to do with the wave effects
-    u16 wavesTranslationX[0xA0];
-    u32 unk3F4[0xA0][4];
-    u16 wavesTranslationY[0xA0];
+    u16 wavesTranslationX[DISPLAY_HEIGHT];
+    u32 unk3F4[DISPLAY_HEIGHT][4];
+    u16 wavesTranslationY[DISPLAY_HEIGHT];
 
     u16 unkF34;
     u16 unkF36;
@@ -1476,7 +1476,7 @@ static void WavesBackgroundAnim(struct TitleScreen *titleScreen)
     gUnknown_03002878 = (void *)REG_ADDR_BG2PA;
 
     // TODO: not sure unk3F4 is the correct type
-    gUnknown_03001884 = &titleScreen->unk3F4[0][0];
+    gComputedBgBuffer = &titleScreen->unk3F4[0][0];
     pointer = &titleScreen->unk3F4[0][0];
     for (i = 0, j = 0; i < DISPLAY_HEIGHT; i++) {
         s32 temp, r3;

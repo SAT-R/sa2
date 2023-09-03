@@ -5,9 +5,6 @@
 .syntax unified
 .arm
 
-.if 0
-.endif
-
 	thumb_func_start Zone7BgUpdate_Inside
 Zone7BgUpdate_Inside: @ 0x0801D9D4
 	push {r4, r5, r6, r7, lr}
@@ -66,7 +63,7 @@ _0801DA1A:
 	str r0, [r1]
 	ldr r0, _0801DBA0 @ =gUnknown_03002A80
 	strb r2, [r0]
-	ldr r0, _0801DBA4 @ =gUnknown_03001884
+	ldr r0, _0801DBA4 @ =gComputedBgBuffer
 	ldr r4, [r0]
 	movs r0, #0x2a
 	mov r1, sl
@@ -142,7 +139,7 @@ _0801DAA6:
 	str r1, [sp]
 	cmp r5, #0x50
 	bls _0801DB1C
-	ldr r1, _0801DBA4 @ =gUnknown_03001884
+	ldr r1, _0801DBA4 @ =gComputedBgBuffer
 	ldr r4, [r1]
 	adds r0, r5, #0
 	subs r0, #0x50
@@ -179,7 +176,7 @@ _0801DB02:
 	cmp r2, r1
 	blo _0801DB02
 _0801DB1C:
-	ldr r1, _0801DBA4 @ =gUnknown_03001884
+	ldr r1, _0801DBA4 @ =gComputedBgBuffer
 	ldr r4, [r1]
 	add r4, sb
 	adds r3, r5, #0
@@ -242,10 +239,10 @@ _0801DB94: .4byte gFlags
 _0801DB98: .4byte gUnknown_03002878
 _0801DB9C: .4byte 0x0400001C
 _0801DBA0: .4byte gUnknown_03002A80
-_0801DBA4: .4byte gUnknown_03001884
+_0801DBA4: .4byte gComputedBgBuffer
 _0801DBA8: .4byte gUnknown_03005590
 _0801DBAC:
-	ldr r2, _0801DCCC @ =gUnknown_03001884
+	ldr r2, _0801DCCC @ =gComputedBgBuffer
 	ldr r4, [r2]
 	movs r0, #0xff
 	subs r3, r0, r5
@@ -308,7 +305,7 @@ _0801DBFA:
 	mov sb, r3
 	cmp r5, #0x50
 	bls _0801DC66
-	ldr r0, _0801DCCC @ =gUnknown_03001884
+	ldr r0, _0801DCCC @ =gComputedBgBuffer
 	ldr r4, [r0]
 	adds r0, r5, #0
 	subs r0, #0x50
@@ -345,7 +342,7 @@ _0801DC4C:
 	cmp r2, r1
 	blo _0801DC4C
 _0801DC66:
-	ldr r1, _0801DCCC @ =gUnknown_03001884
+	ldr r1, _0801DCCC @ =gComputedBgBuffer
 	ldr r4, [r1]
 	add r4, sb
 	adds r3, r5, #0
@@ -399,12 +396,12 @@ _0801DCB0:
 	blo _0801DCB0
 	b _0801DD1A
 	.align 2, 0
-_0801DCCC: .4byte gUnknown_03001884
+_0801DCCC: .4byte gComputedBgBuffer
 _0801DCD0: .4byte 0x000001EF
 _0801DCD4: .4byte 0x000001B7
 _0801DCD8: .4byte gUnknown_03005590
 _0801DCDC:
-	ldr r1, _0801DD64 @ =gUnknown_03001884
+	ldr r1, _0801DD64 @ =gComputedBgBuffer
 	ldr r4, [r1]
 	movs r0, #0xff
 	subs r3, r0, r5
@@ -477,13 +474,14 @@ _0801DD2E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0801DD64: .4byte gUnknown_03001884
+_0801DD64: .4byte gComputedBgBuffer
 _0801DD68: .4byte 0x000001CF
 _0801DD6C: .4byte 0x000001A7
 _0801DD70: .4byte gUnknown_080D5C82
 _0801DD74: .4byte gBgPalette
 _0801DD78: .4byte gFlags
 
+.if 01
 	thumb_func_start Zone7BgUpdate_Outside
 Zone7BgUpdate_Outside: @ 0x0801DD7C
 	push {r4, r5, r6, r7, lr}
@@ -512,7 +510,7 @@ Zone7BgUpdate_Outside: @ 0x0801DD7C
 	ldr r1, _0801DEEC @ =gUnknown_03002A80
 	movs r0, #2
 	strb r0, [r1]
-	ldr r0, _0801DEF0 @ =gUnknown_03001884
+	ldr r0, _0801DEF0 @ =gComputedBgBuffer
 	ldr r4, [r0]
 	ldr r0, _0801DEF4 @ =gUnknown_03005590
 	ldr r5, [r0]
@@ -671,9 +669,10 @@ _0801DEE0: .4byte gFlags
 _0801DEE4: .4byte gUnknown_03002878
 _0801DEE8: .4byte 0x04000010
 _0801DEEC: .4byte gUnknown_03002A80
-_0801DEF0: .4byte gUnknown_03001884
+_0801DEF0: .4byte gComputedBgBuffer
 _0801DEF4: .4byte gUnknown_03005590
 _0801DEF8: .4byte gUnknown_080D5C62
 _0801DEFC: .4byte 0x0000507F
 _0801DF00: .4byte gSineTable
 _0801DF04: .4byte 0x000003FF
+.endif
