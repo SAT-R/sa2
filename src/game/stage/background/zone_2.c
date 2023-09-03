@@ -5,8 +5,8 @@
 #include "game/game.h"
 
 // https://decomp.me/scratch/ekyaq
-NONMATCH("asm/non_matching/StageBgUpdateZone2Acts12.inc",
-         void StageBgUpdateZone2Acts12(s32 a, s32 b))
+NONMATCH("asm/non_matching/StageBgUpdate_Zone2Acts12.inc",
+         void StageBgUpdate_Zone2Acts12(s32 a, s32 b))
 {
     u8 i, j;
     u16 *cursor = NULL;

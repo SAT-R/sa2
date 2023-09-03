@@ -5,8 +5,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start StageInit_Zone7
-StageInit_Zone7: @ 0x0801D95C
+	thumb_func_start CreateStageBg_Zone7
+CreateStageBg_Zone7: @ 0x0801D95C
 	push {r4, r5, r6, lr}
 	ldr r4, _0801D9B0 @ =gUnknown_03005850
 	ldr r1, _0801D9B4 @ =gDispCnt
@@ -58,8 +58,8 @@ _0801D9C8: .4byte 0x0600B000
 _0801D9CC: .4byte 0x0000FFFC
 _0801D9D0: .4byte gBgScrollRegs
 
-	thumb_func_start sub_801D9D4
-sub_801D9D4: @ 0x0801D9D4
+	thumb_func_start Zone7BgUpdate_Inside
+Zone7BgUpdate_Inside: @ 0x0801D9D4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -534,8 +534,8 @@ _0801DD70: .4byte gUnknown_080D5C82
 _0801DD74: .4byte gBgPalette
 _0801DD78: .4byte gFlags
 
-	thumb_func_start sub_801DD7C
-sub_801DD7C: @ 0x0801DD7C
+	thumb_func_start Zone7BgUpdate_Outside
+Zone7BgUpdate_Outside: @ 0x0801DD7C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

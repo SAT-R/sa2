@@ -7,7 +7,7 @@
 
 extern const Background gUnknown_080D5864[4];
 
-void StageInit_Zone6_Boss(void);
+void CreateStageBg_Zone6_Boss(void);
 
 const s16 gUnknown_080D5BF0[] = {
     Q_8_8(0.00),  Q_8_8(0.25),  Q_8_8(2.25), Q_8_8(2.50), Q_8_8(3.50),
@@ -49,7 +49,7 @@ const u8 gUnknown_080D5C02[] = {
     0x00, 0x07, 0x00, //
 };
 
-void StageInit_Zone6_Acts(void)
+void CreateStageBg_Zone6_Acts(void)
 {
     gDispCnt |= DISPCNT_BG0_ON;
     gBgCntRegs[0] = 0x1a0f;
@@ -66,13 +66,13 @@ void StageInit_Zone6_Acts(void)
     gUnknown_03005590 = 0x380;
 
     if (IS_MULTI_PLAYER) {
-        StageInit_Zone6_Boss();
+        CreateStageBg_Zone6_Boss();
     }
     gBgCntRegs[3] &= ~(1 | 2);
     gBgCntRegs[3] |= 2;
 }
 
-void StageInit_Zone6_Boss(void)
+void CreateStageBg_Zone6_Boss(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     gDispCnt |= DISPCNT_BG0_ON;

@@ -7,7 +7,7 @@
 
 extern const Background gUnknown_080D5864[4];
 
-void StageInit_Zone5(void)
+void CreateStageBg_Zone5(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     if (IS_SINGLE_PLAYER) {
@@ -29,7 +29,7 @@ void StageInit_Zone5(void)
 
 #define BG_CLOUD_START_Y 96
 
-void StageBgUpdateZone5Acts12(s32 UNUSED a, s32 UNUSED b)
+void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
 {
     s32 num;
     u16 *cursor, i, val;

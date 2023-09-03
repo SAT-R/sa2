@@ -19,6 +19,7 @@ void HBlankCB_801E434(int_vcount vcount)
         REG_BG3HOFS = gUnknown_03005590 >> 4;
     }
 }
+
 void HBlankCB_801E454(int_vcount vcount)
 {
     if (vcount != 0) {

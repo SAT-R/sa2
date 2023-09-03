@@ -1,4 +1,4 @@
 #include "global.h"
 
-void StageInit_Dummy(void) { }
-void stageBgUpdateDummy(void) { }
+void CreateStageBg_Dummy(void) { }
+void StageBgUpdate_Dummy(void) { }

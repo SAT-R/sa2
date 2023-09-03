@@ -4,8 +4,9 @@
 #include "game/game.h"
 
 #include "game/stage/background/callbacks.h"
+#include "game/stage/background/zone_1.h"
 
-void StageBgUpdateZone1ActBoss(void)
+void StageBgUpdate_Zone1ActBoss(UNUSED s32 x, UNUSED s32 y)
 {
     struct Camera *cam = &gCamera;
     if (!PLAYER_IS_ALIVE) {

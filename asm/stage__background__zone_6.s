@@ -385,8 +385,8 @@ _0801D52C: .4byte gBgPalette
 _0801D530: .4byte gFlags
 
 @ type: CameraMain
-	thumb_func_start StageBgUpdateZone6Acts12
-StageBgUpdateZone6Acts12: @ 0x0801D534
+	thumb_func_start StageBgUpdate_Zone6Acts12
+StageBgUpdate_Zone6Acts12: @ 0x0801D534
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

@@ -4,11 +4,11 @@
 
 #include "game/stage/background/zone_2.h"
 
-void StageBgUpdateZone2ActBoss(void)
+void StageBgUpdate_Zone2ActBoss(UNUSED s32 a, UNUSED s32 b)
 {
     if (!PLAYER_IS_ALIVE) {
         gUnknown_03005590--;
     }
 
-    StageBgUpdateZone2Acts12(gUnknown_03005590, 4000);
+    StageBgUpdate_Zone2Acts12(gUnknown_03005590, 4000);
 }

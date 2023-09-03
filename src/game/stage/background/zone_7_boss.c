@@ -4,11 +4,11 @@
 
 #include "game/stage/background/zone_7.h"
 
-void StageBgUpdateZone7ActBoss(void)
+void StageBgUpdate_Zone7ActBoss(UNUSED s32 x, UNUSED s32 y)
 {
     if (!PLAYER_IS_ALIVE) {
         gUnknown_03005590--;
     }
 
-    sub_801D9D4(gUnknown_03005590, 945);
+    Zone7BgUpdate_Inside(gUnknown_03005590, 945);
 }

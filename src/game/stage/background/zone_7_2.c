@@ -11,34 +11,32 @@ const u16 sZone7BgTransitionRegions[2][NUM_ZONE7_BG_TRANSITION_POSITIONS] = {
     { 1344, 2616, 9432, 15192, 18552, 19892, 23158, 25848 },
 };
 
-#if 01
-void StageBgUpdateZone7Acts12(s32 x, s32 y)
+// https://decomp.me/scratch/SuYje
+NONMATCH("asm/non_matching/StageBgUpdate_Zone7Acts12.inc",
+         void StageBgUpdate_Zone7Acts12(s32 x, s32 y))
 {
     // NOTE: GCC-Hack
     // u32 act = (gCurrentLevel - LEVEL_INDEX(ZONE_7, ACT_1)) % 2
     u32 act = !!(gCurrentLevel ^ (LEVEL_INDEX(ZONE_7, ACT_1)));
-    register u32 bgId asm("r4") = 0;
+    u32 bgId = 0;
     u8 regionId = 0;
 
-    if (x >= sZone7BgTransitionRegions[act][regionId]) {
-        register u32 r5 asm("r5") = 1;
-
-        do {
-            if (++regionId >= NUM_ZONE7_BG_TRANSITION_POSITIONS)
-                goto _0801E2B2;
-        } while (x >= sZone7BgTransitionRegions[act][regionId]);
-
-        bgId = r5;
-        bgId &= regionId;
+    while (x >= sZone7BgTransitionRegions[act][regionId]) {
+        u32 one = 1;
+        if (++regionId >= NUM_ZONE7_BG_TRANSITION_POSITIONS)
+            goto StageBgUpdate_Zone7Acts12_CallBgUpdate;
+        else
+            bgId = regionId & one;
     }
-_0801E2B2:
+
+StageBgUpdate_Zone7Acts12_CallBgUpdate:
 
     if (bgId == 0) {
-        sub_801D9D4(x, y);
+        Zone7BgUpdate_Inside(x, y);
     } else {
-        sub_801DD7C(x, y);
+        Zone7BgUpdate_Outside(x, y);
     }
 
     gPlayer.unkA8 = bgId;
 }
-#endif
+END_NONMATCH

@@ -8,7 +8,7 @@
 #include "game/bosses/boss_9.h"
 #include "game/stage/background/callbacks.h"
 
-void StageBgUpdateZoneFinalActTA53(void)
+void StageBgUpdate_ZoneFinalActTA53(void)
 {
     u32 aBool = FALSE;
     int_vcount y;

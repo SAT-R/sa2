@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-void StageBgUpdateZone6ActBoss(void)
+void StageBgUpdate_Zone6ActBoss(void)
 {
     gBgCntRegs[0] |= 0x3;
     gBgCntRegs[3] &= ~0x3;

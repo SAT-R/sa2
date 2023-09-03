@@ -1,13 +1,7 @@
-.include "asm/macros.inc"
-.include "constants/constants.inc"
+.include "constants/gba_constants.inc"
 
-.text
 .syntax unified
-.arm
-
-.if 0
-	thumb_func_start StageBgUpdateZone7Acts12
-StageBgUpdateZone7Acts12: @ 0x0801E26C
+.text
 	push {r4, r5, r6, r7, lr}
 	adds r3, r0, #0     @ r3 = x
 	adds r7, r1, #0     @ r7 = y
@@ -49,7 +43,7 @@ _0801E2B2:
 	bne _0801E2C8
 	adds r0, r3, #0
 	adds r1, r7, #0
-	bl sub_801D9D4
+	bl Zone7BgUpdate_Inside
 	b _0801E2D0
 	.align 2, 0
 _0801E2C0: .4byte gCurrentLevel
@@ -57,7 +51,7 @@ _0801E2C4: .4byte sZone7BgTransitionRegions
 _0801E2C8:
 	adds r0, r3, #0
 	adds r1, r7, #0
-	bl sub_801DD7C
+	bl Zone7BgUpdate_Outside
 _0801E2D0:
 	ldr r0, _0801E2DC @ =gPlayer
 	adds r0, #0xa8
@@ -67,4 +61,3 @@ _0801E2D0:
 	bx r0
 	.align 2, 0
 _0801E2DC: .4byte gPlayer
-.endif
