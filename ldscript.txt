@@ -162,7 +162,6 @@ SECTIONS
         build/sa2/src/game/enemies/kura_kura.o(.text);
         build/sa2/asm/enemy_kubinaga.o(.text);
         build/sa2/src/game/enemies/buzzer.o(.text);
-        build/sa2/asm/enemy_buzzer.o(.text);
         build/sa2/asm/enemy_kiki.o(.text);
         build/sa2/asm/enemy_koura.o(.text);
         build/sa2/src/game/enemies/bell.o(.text);
