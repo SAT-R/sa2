@@ -322,7 +322,9 @@ typedef struct Player_ {
     /* 0x94 */ UNK_3005A70 *unk94;
     /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
     /* 0x99 */ s8 unk99;
-    /* 0x9A */ u8 filler9A[0x12];
+    /* 0x9A */ u8 filler9A[0xE];
+    /* 0xA8 */ u8 unkA8;
+    /* 0x9A */ u8 fillerA9[0x3];
 
     // Cream's framecounter for flying
     // TODO/HACK: I guess this is actually part of a union per character?

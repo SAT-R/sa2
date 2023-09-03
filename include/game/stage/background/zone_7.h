@@ -4,5 +4,6 @@
 #include "gba/types.h"
 
 void sub_801D9D4(s32, s32);
+void sub_801DD7C(s32, s32);
 
 #endif // GUARD_GAME_STAGE_BG_ZONE7_H
