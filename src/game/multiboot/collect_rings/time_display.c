@@ -116,7 +116,7 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
 
     temp5 = 0;
     if (gCourseTime < 3600) {
-        temp5 = (-(gUnknown_03005590 & 0x10)) >> 0x1F;
+        temp5 = (-(gStageTime & 0x10)) >> 0x1F;
     }
 
     x = 8;

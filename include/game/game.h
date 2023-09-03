@@ -161,7 +161,8 @@ typedef struct {
 } UNK_30056A4; /* size: unknown */
 extern UNK_30056A4 *gUnknown_030056A4; // might be a Task* ?
 
-extern u32 gUnknown_03005590;
+// Incremented by 1 every frame if the game is not paused.
+extern u32 gStageTime;
 
 extern u32 gUnknown_030054A0;
 

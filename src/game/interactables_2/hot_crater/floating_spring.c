@@ -110,7 +110,7 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
         s32 temp = me->d.uData[2] * 2048;
         floatingSpring->unk44
             = (SIN((floatingSpring->unk52
-                    * ((gUnknown_03005590 + floatingSpring->unk56) & 255))
+                    * ((gStageTime + floatingSpring->unk56) & 255))
                    & ONE_CYCLE)
                * temp)
             >> 15;
@@ -120,7 +120,7 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
         s32 temp = me->d.uData[3] * 2048;
         floatingSpring->unk48
             = (SIN((floatingSpring->unk54
-                    * ((gUnknown_03005590 + floatingSpring->unk56) & 255))
+                    * ((gStageTime + floatingSpring->unk56) & 255))
                    & ONE_CYCLE)
                * temp)
             >> 15;

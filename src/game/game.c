@@ -135,7 +135,7 @@ void GameStageStart(void)
         gUnknown_030056A4 = NULL;
     }
 
-    gUnknown_03005590 = 0;
+    gStageTime = 0;
     gUnknown_03005424 &= ~0x80;
 
     if (IS_MULTI_PLAYER) {
@@ -283,12 +283,12 @@ void sub_801AB3C(void)
             && !(gUnknown_03005424 & 0x40)) {
             CreatePauseMenu();
         }
-        gUnknown_03005590++;
+        gStageTime++;
         timeStep = 1;
     } else {
         u32 temp = (gFrameCount - gUnknown_030054A0);
-        timeStep = temp - gUnknown_03005590;
-        gUnknown_03005590 = temp;
+        timeStep = temp - gStageTime;
+        gStageTime = temp;
 
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
             if ((temp & ~(0x1FF)) != ((temp - timeStep) & ~(0x1FF))) {

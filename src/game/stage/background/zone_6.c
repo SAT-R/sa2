@@ -63,7 +63,7 @@ void CreateStageBg_Zone6_Acts(void)
     gBgScrollRegs[0][1] = 0;
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
-    gUnknown_03005590 = 0x380;
+    gStageTime = 0x380;
 
     if (IS_MULTI_PLAYER) {
         CreateStageBg_Zone6_Boss();

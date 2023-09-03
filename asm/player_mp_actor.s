@@ -1375,7 +1375,7 @@ _08016ACC:
 	beq _08016AEE
 	b _08016CE8
 _08016AEE:
-	ldr r0, _08016C14 @ =gUnknown_03005590
+	ldr r0, _08016C14 @ =gStageTime
 	ldr r0, [r0]
 	movs r4, #2
 	ands r0, r4
@@ -1526,7 +1526,7 @@ _08016BE6:
 	.align 2, 0
 _08016C0C: .4byte 0xFFFFF7FF
 _08016C10: .4byte 0xFFFFCFFF
-_08016C14: .4byte gUnknown_03005590
+_08016C14: .4byte gStageTime
 _08016C18: .4byte gUnknown_030054B4
 _08016C1C: .4byte 0xFFFFFE7F
 _08016C20: .4byte gGameMode

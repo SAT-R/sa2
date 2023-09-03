@@ -7,7 +7,7 @@
 void sub_801E3F0(void)
 {
     struct Camera *cam = &gCamera;
-    if (gUnknown_03005590 & 0x1) {
+    if (gStageTime & 0x1) {
         u16 rand = (PseudoRandom32() & 0x70000) >> 16;
         cam->shiftY = rand - 8;
     }
@@ -16,7 +16,7 @@ void sub_801E3F0(void)
 void HBlankCB_801E434(int_vcount vcount)
 {
     if (vcount == 73) {
-        REG_BG3HOFS = gUnknown_03005590 >> 4;
+        REG_BG3HOFS = gStageTime >> 4;
     }
 }
 
@@ -49,6 +49,6 @@ void HBlankCB_BgUpdateZone5ActBoss(int_vcount vcount)
 void HBlankCB_BgUpdateZoneFinalActXX(int_vcount vcount)
 {
     if (vcount == 88) {
-        REG_BG3HOFS = (u8)gUnknown_03005590;
+        REG_BG3HOFS = (u8)gStageTime;
     }
 }

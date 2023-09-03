@@ -361,8 +361,8 @@ void sub_800B580(Entity_ItemBox *itembox, bool32 p1)
 
         case GAME_MODE_MULTI_PLAYER:
         case GAME_MODE_TEAM_PLAY: {
-            if (p1 || ((gUnknown_03005590 & 0x1F) == 0)) {
-                s32 kind = gUnknown_080D51E4[(gUnknown_03005590 >> 5) & 0x7];
+            if (p1 || ((gStageTime & 0x1F) == 0)) {
+                s32 kind = gUnknown_080D51E4[(gStageTime >> 5) & 0x7];
 
                 if (kind == 13) {
                     kind = gUnknown_080D51F4[gMultiplayerPseudoRandom & 0x3];

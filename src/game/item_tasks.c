@@ -173,8 +173,8 @@ void Task_Item_Shield_Normal(void)
 #else
         b = (param & 0x1);
 #endif
-        if (((gUnknown_03005590 & 0x2) && (b != itemEffect))
-            || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
+        if (((gStageTime & 0x2) && (b != itemEffect))
+            || (!(gStageTime & 0x2) && (b != 0))) {
             DisplaySprite(&item->s);
         }
     }
@@ -225,8 +225,8 @@ void Task_Item_Shield_Magnetic(void)
         u32 one = 1;
 #endif
         b &= one;
-        if (((gUnknown_03005590 & 0x2) && (b != one))
-            || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
+        if (((gStageTime & 0x2) && (b != one))
+            || (!(gStageTime & 0x2) && (b != 0))) {
             DisplaySprite(&item->s);
         }
     }
@@ -313,8 +313,8 @@ void Task_Item_Invincibility(void)
 #endif
         b = one;
         b &= ~param;
-        if (((gUnknown_03005590 & 0x2) && (b != one))
-            || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
+        if (((gStageTime & 0x2) && (b != one))
+            || (!(gStageTime & 0x2) && (b != 0))) {
             DisplaySprite(&item->s);
         }
     }
@@ -362,8 +362,8 @@ void Task_Item_Confusion(void)
             u32 one = 1;
 #endif
             b &= one;
-            if (((gUnknown_03005590 & 0x2) && (b != one))
-                || (!(gUnknown_03005590 & 0x2) && (b != 0))) {
+            if (((gStageTime & 0x2) && (b != one))
+                || (!(gStageTime & 0x2) && (b != 0))) {
                 DisplaySprite(s);
             }
         }

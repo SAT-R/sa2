@@ -469,7 +469,7 @@ _080116A2:
 	.align 2, 0
 _080116B8: .4byte gFlags
 _080116BC:
-	ldr r1, _080116E0 @ =gUnknown_03005590
+	ldr r1, _080116E0 @ =gStageTime
 	ldr r0, [r1]
 	ands r0, r2
 	adds r5, r1, #0
@@ -487,7 +487,7 @@ _080116BC:
 	adds r0, #1
 	b _080116EA
 	.align 2, 0
-_080116E0: .4byte gUnknown_03005590
+_080116E0: .4byte gStageTime
 _080116E4:
 	cmp r2, r1
 	ble _080116EC

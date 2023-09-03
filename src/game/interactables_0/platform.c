@@ -172,7 +172,7 @@ void Task_800E89C(void)
         s32 meUdata2 = (me->d.uData[2] << 11);
 
         platform->unk40
-            = (SIN((platform->unk48 * ((gUnknown_03005590 + platform->unk3C) & 0xFF))
+            = (SIN((platform->unk48 * ((gStageTime + platform->unk3C) & 0xFF))
                    & ONE_CYCLE)
                * meUdata2)
             >> 14;
@@ -191,7 +191,7 @@ void Task_800E89C(void)
 #endif
         s32 meUdata3 = (me->d.uData[3] << 11);
         platform->unk44
-            = (SIN(((platform->unk4A * ((gUnknown_03005590 + platform->unk3C) & 0xFF)))
+            = (SIN(((platform->unk4A * ((gStageTime + platform->unk3C) & 0xFF)))
                    & ONE_CYCLE)
                * meUdata3)
             >> 14;

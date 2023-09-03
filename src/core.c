@@ -318,7 +318,7 @@ void GameInit(void)
     VramResetHeapState();
 
     errorIdentifying = IdentifyFlash();
-    if (errorIdentifying) {
+    if (!errorIdentifying) {
         gFlags |= FLAGS_NO_FLASH_MEMORY;
     } else {
         SetFlashTimerIntr(1, &gIntrTable[5]);

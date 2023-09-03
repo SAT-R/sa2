@@ -499,7 +499,7 @@ _0802B964:
 	ands r0, r1
 	cmp r0, #0
 	bne _0802BA0E
-	ldr r0, _0802B9F4 @ =gUnknown_03005590
+	ldr r0, _0802B9F4 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #0x3c
 	bl Mod
@@ -564,7 +564,7 @@ _0802B964:
 	bl m4aSongNumStart
 	b _0802BA72
 	.align 2, 0
-_0802B9F4: .4byte gUnknown_03005590
+_0802B9F4: .4byte gStageTime
 _0802B9F8: .4byte gRingCount
 _0802B9FC: .4byte gPlayer
 _0802BA00: .4byte sub_802C8EC
@@ -1090,7 +1090,7 @@ _0802BE30:
 	ands r0, r2
 	cmp r0, #0x80
 	bne _0802BE46
-	ldr r0, _0802BEB8 @ =gUnknown_03005590
+	ldr r0, _0802BEB8 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #4
 	ands r0, r1
@@ -1102,7 +1102,7 @@ _0802BE46:
 	ands r2, r3
 	cmp r2, #0
 	beq _0802BE5A
-	ldr r0, _0802BEB8 @ =gUnknown_03005590
+	ldr r0, _0802BEB8 @ =gStageTime
 	ldr r0, [r0]
 	ands r0, r3
 	cmp r0, #0
@@ -1157,7 +1157,7 @@ _0802BE98:
 	str r2, [r5, #0x10]
 	b _0802BECE
 	.align 2, 0
-_0802BEB8: .4byte gUnknown_03005590
+_0802BEB8: .4byte gStageTime
 _0802BEBC: .4byte gCamera
 _0802BEC0: .4byte gUnknown_030054B8
 _0802BEC4:
@@ -1225,7 +1225,7 @@ _0802BF24:
 	mov r8, r0
 	ldr r7, _0802BFA0 @ =gCamera
 _0802BF48:
-	ldr r0, _0802BFA4 @ =gUnknown_03005590
+	ldr r0, _0802BFA4 @ =gStageTime
 	ldr r0, [r0]
 	adds r1, r4, #2
 	bl Mod
@@ -1271,7 +1271,7 @@ _0802BF96:
 	bx r0
 	.align 2, 0
 _0802BFA0: .4byte gCamera
-_0802BFA4: .4byte gUnknown_03005590
+_0802BFA4: .4byte gStageTime
 
 	thumb_func_start sub_802BFA8
 sub_802BFA8: @ 0x0802BFA8

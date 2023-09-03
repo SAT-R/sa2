@@ -111,7 +111,7 @@ CreateEggFrog: @ 0x08047A68
 	str r0, [r2, #0x20]
 	bl sub_8039ED4
 	ldr r1, _08047B1C @ =gPseudoRandom
-	ldr r0, _08047B20 @ =gUnknown_03005590
+	ldr r0, _08047B20 @ =gStageTime
 	ldr r0, [r0]
 	str r0, [r1]
 	ldr r2, _08047B24 @ =gUnknown_03005AF0
@@ -156,7 +156,7 @@ _08047B10: .4byte gUnknown_03004D80
 _08047B14: .4byte gUnknown_03002280
 _08047B18: .4byte gPlayer
 _08047B1C: .4byte gPseudoRandom
-_08047B20: .4byte gUnknown_03005590
+_08047B20: .4byte gStageTime
 _08047B24: .4byte gUnknown_03005AF0
 _08047B28: .4byte 0xFFFFCFFF
 _08047B2C: .4byte Task_EggFrogMain
@@ -656,7 +656,7 @@ sub_8047F0C: @ 0x08047F0C
 	bl sub_80480E8
 	adds r0, r7, #0
 	bl sub_804931C
-	ldr r4, _080480AC @ =gUnknown_03005590
+	ldr r4, _080480AC @ =gStageTime
 	ldr r0, [r4]
 	movs r1, #0xd
 	bl Mod
@@ -829,7 +829,7 @@ _08048090:
 _080480A0: .4byte gCurTask
 _080480A4: .4byte gUnknown_03005424
 _080480A8: .4byte 0x0000FF7F
-_080480AC: .4byte gUnknown_03005590
+_080480AC: .4byte gStageTime
 _080480B0: .4byte IWRAM_START + 0x65
 _080480B4: .4byte gPseudoRandom
 _080480B8: .4byte 0x00196225

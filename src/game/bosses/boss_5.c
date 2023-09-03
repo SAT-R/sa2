@@ -213,7 +213,7 @@ void CreateEggSaucer(void)
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
 
     sub_8039ED4();
-    gPseudoRandom = gUnknown_03005590;
+    gPseudoRandom = gStageTime;
 
     m4aSongNumStart(SE_253);
 
@@ -456,7 +456,7 @@ void sub_80435BC(void)
         boss->unk13--;
     }
 
-    if (Mod(gUnknown_03005590, 13) == 0) {
+    if (Mod(gStageTime, 13) == 0) {
         m4aSongNumStart(SE_144);
     }
 
@@ -770,7 +770,7 @@ void sub_8043E2C(EggSaucer *boss)
         sub_8004860(s, transform);
         DisplaySprite(s);
 
-        if (Mod(gUnknown_03005590, 3) == 0) {
+        if (Mod(gStageTime, 3) == 0) {
             u32 rand;
 
             rand = PseudoRandom32();
@@ -1130,7 +1130,7 @@ void sub_8044784(EggSaucer *boss)
         temp3 - (Q_24_8_TO_INT(boss->x) + ((COS(boss->gunDiskAngle) * 5) >> 11));
     });
     temp = sub_8004418(y, x);
-    if (gUnknown_03005590 & 1) {
+    if (gStageTime & 1) {
         if (boss->unk1A < temp) {
             if (boss->unk1A <= 0x23F) {
                 boss->unk1A += 1;
@@ -1152,7 +1152,7 @@ static void sub_8044A14(EggSaucer *boss)
 
     s32 val;
     s32 temp;
-    temp = SIN((gUnknown_03005590 << 4) & (SIN_PERIOD - 1));
+    temp = SIN((gStageTime << 4) & (SIN_PERIOD - 1));
     boss->unk32 = CLAMP_SIN_PERIOD(((temp) >> 9) + 1000);
     boss->unk36[0][boss->unkB6] = boss->unkB8;
     boss->unk36[1][boss->unkB6] = boss->unkBA;
@@ -1205,7 +1205,7 @@ static void sub_8044B28(EggSaucer *boss)
     s32 val;
     s32 temp;
 
-    temp = SIN((gUnknown_03005590 << 4) & (SIN_PERIOD - 1));
+    temp = SIN((gStageTime << 4) & (SIN_PERIOD - 1));
     boss->unk32 = CLAMP_SIN_PERIOD(((temp) >> 9) + 1000);
     boss->unk36[0][boss->unkB6] = boss->unkB8;
     boss->unk36[1][boss->unkB6] = boss->unkBA;
@@ -1243,7 +1243,7 @@ static void sub_8044B28(EggSaucer *boss)
             boss->armStateTimer = 64;
             boss->armState = 2;
         } else {
-            if (gUnknown_03005590 & 2) {
+            if (gStageTime & 2) {
                 boss->unkBC = 0;
                 boss->armStateTimer = 64;
                 boss->armState = 4;
@@ -1673,9 +1673,9 @@ NONMATCH("asm/non_matching/sub_8045564.inc", void sub_8045564(EggSaucer *boss))
     if (boss->unk15 == 0) {
         ExplosionPartsInfo e;
         s32 rand;
-        if (Mod(gUnknown_03005590, 7) == 0) {
+        if (Mod(gStageTime, 7) == 0) {
             rand = (PseudoRandom32() & 31) + 0x18;
-            index = CLAMP_SIN_PERIOD(gUnknown_03005590 * 900);
+            index = CLAMP_SIN_PERIOD(gStageTime * 900);
             e.spawnX = (Q_24_8_TO_INT(boss->x) - gCamera.x);
             e.spawnX += +((rand * COS(index)) >> 14);
             e.spawnY = (Q_24_8_TO_INT(boss->y) - gCamera.y);
@@ -1689,10 +1689,10 @@ NONMATCH("asm/non_matching/sub_8045564.inc", void sub_8045564(EggSaucer *boss))
             e.unk4 = 0;
             CreateBossParticleWithExplosionUpdate(&e, &boss->unk14);
         }
-        if (Mod(gUnknown_03005590, 10) == 0) {
+        if (Mod(gStageTime, 10) == 0) {
             rand = (PseudoRandom32() & 31) + 0x18;
-            index = CLAMP_SIN_PERIOD(gUnknown_03005590 * 900);
-            val2 = Mod(gUnknown_03005590, 6);
+            index = CLAMP_SIN_PERIOD(gStageTime * 900);
+            val2 = Mod(gStageTime, 6);
             e.spawnX = (Q_24_8_TO_INT(boss->x) - gCamera.x);
             e.spawnX += ((rand * COS(index)) >> 14);
             e.spawnY = (Q_24_8_TO_INT(boss->y) - gCamera.y);
@@ -1708,7 +1708,7 @@ NONMATCH("asm/non_matching/sub_8045564.inc", void sub_8045564(EggSaucer *boss))
             CreateBossParticleWithExplosionUpdate(&e, &boss->unk14);
         }
 
-        if (Mod(gUnknown_03005590, 9) == 0) {
+        if (Mod(gStageTime, 9) == 0) {
             rand = PseudoRandom32();
             e.spawnX = (Q_24_8_TO_INT(boss->cabinX) - gCamera.x) + (rand & 0xF) - 8;
             rand = PseudoRandom32();
@@ -1724,7 +1724,7 @@ NONMATCH("asm/non_matching/sub_8045564.inc", void sub_8045564(EggSaucer *boss))
             CreateBossParticleWithExplosionUpdate(&e, &boss->unk14);
         }
 
-        if (Mod(gUnknown_03005590, 0xB) == 0) {
+        if (Mod(gStageTime, 0xB) == 0) {
             rand = PseudoRandom32();
             e.spawnX = (Q_24_8_TO_INT(boss->armBaseX) - gCamera.x) + (rand & 0xF) - 8;
             rand = PseudoRandom32();
@@ -1748,7 +1748,7 @@ void sub_8045898(EggSaucer *boss)
     u8 i;
     u32 val;
     if (boss->unk15 == 0) {
-        val = (gUnknown_03005590 & 2) >> 1;
+        val = (gStageTime & 2) >> 1;
         if (boss->unk13 != 0) {
             for (i = 0; i < 0x10; i++) {
                 gObjPalette[i + 0x80] = gUnknown_080D7FF0[val][i];

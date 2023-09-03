@@ -166,7 +166,7 @@ static void RenderStraightBridge(Sprite_LightBridge *lightBridge)
     s16 y = MACRO_F7C(lightBridge->posY, gCamera.y, 0);
 
     u8 i;
-    for (i = (gUnknown_03005590 >> 1) & 1;
+    for (i = (gStageTime >> 1) & 1;
          x <= maxX && x <= 246; // x <= (BRIDGE_SEGMENT_WIDTH * 20.5)
          x += BRIDGE_SEGMENT_WIDTH, i++) {
         if ((i & 1) && x > 5) {
@@ -202,7 +202,7 @@ static void RenderCurvedBridge(Sprite_LightBridge *lightBridge)
     posY -= temp;
     y = posY;
 
-    for (i = (gUnknown_03005590 >> 1) & 1; i < 12; i += 2) {
+    for (i = (gStageTime >> 1) & 1; i < 12; i += 2) {
         s = &lightBridge->sprites[sCurvedBridgePositions[i][2]];
         s->x = x + sCurvedBridgePositions[i][0];
         s->y = y + sCurvedBridgePositions[i][1];
@@ -311,7 +311,7 @@ static void DeactivateBridge(Sprite_LightBridge *lightBridge)
 
 static void sub_807A25C(Sprite_LightBridge *lightBridge)
 {
-    u16 val = (gUnknown_03005590 + lightBridge->unk6C)
+    u16 val = (gStageTime + lightBridge->unk6C)
         % (sSoundDurations[lightBridge->type][0]
            + sSoundDurations[lightBridge->type][1]);
 

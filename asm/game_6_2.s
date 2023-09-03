@@ -246,7 +246,7 @@ _08024CC2:
 	ldrsh r0, [r7, r1]
 	cmp r0, #0
 	beq _08024CF2
-	ldr r0, _08024DA4 @ =gUnknown_03005590
+	ldr r0, _08024DA4 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #2
 	ands r0, r1
@@ -342,7 +342,7 @@ _08024D6C:
 	.align 2, 0
 _08024D9C: .4byte 0xFFFFF7FF
 _08024DA0: .4byte gGameMode
-_08024DA4: .4byte gUnknown_03005590
+_08024DA4: .4byte gStageTime
 _08024DA8: .4byte gMultiSioSend
 _08024DAC: .4byte gMultiplayerPlayerTasks
 _08024DB0: .4byte 0x04000128
@@ -834,7 +834,7 @@ _0802515E:
 	ldrsh r0, [r5, r1]
 	cmp r0, #0
 	beq _08025174
-	ldr r0, _0802517C @ =gUnknown_03005590
+	ldr r0, _0802517C @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #2
 	ands r0, r1
@@ -846,7 +846,7 @@ _08025174:
 	bl DisplaySprite
 	b _08025306
 	.align 2, 0
-_0802517C: .4byte gUnknown_03005590
+_0802517C: .4byte gStageTime
 _08025180:
 	movs r3, #0x10
 	ldrsh r2, [r5, r3]
@@ -1040,7 +1040,7 @@ _080252A6:
 	ldrsh r0, [r5, r1]
 	cmp r0, #0
 	beq _08025300
-	ldr r0, _08025314 @ =gUnknown_03005590
+	ldr r0, _08025314 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #2
 	ands r0, r1
@@ -1058,4 +1058,4 @@ _08025306:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08025314: .4byte gUnknown_03005590
+_08025314: .4byte gStageTime

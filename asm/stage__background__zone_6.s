@@ -47,7 +47,7 @@ sub_801D24C: @ 0x0801D24C
 	strh r0, [r2, #4]
 	ldr r0, _0801D390 @ =gComputedBgBuffer
 	ldr r3, [r0]
-	ldr r0, _0801D394 @ =gUnknown_03005590
+	ldr r0, _0801D394 @ =gStageTime
 	ldr r0, [r0]
 	ldr r5, _0801D398 @ =0x000003FF
 	mov ip, r5
@@ -171,7 +171,7 @@ _0801D384: .4byte gWinRegs
 _0801D388: .4byte gBldRegs
 _0801D38C: .4byte 0x00003F41
 _0801D390: .4byte gComputedBgBuffer
-_0801D394: .4byte gUnknown_03005590
+_0801D394: .4byte gStageTime
 _0801D398: .4byte 0x000003FF
 _0801D39C: .4byte gSineTable
 _0801D3A0:
@@ -396,7 +396,7 @@ StageBgUpdate_Zone6Acts12: @ 0x0801D534
 	ldr r1, _0801D56C @ =gBgScrollRegs
 	asrs r0, r0, #4
 	strh r0, [r1, #0xc]
-	ldr r0, _0801D570 @ =gUnknown_03005590
+	ldr r0, _0801D570 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #0xd0
 	lsls r1, r1, #3
@@ -414,7 +414,7 @@ StageBgUpdate_Zone6Acts12: @ 0x0801D534
 	.align 2, 0
 _0801D568: .4byte gUnknown_03005850
 _0801D56C: .4byte gBgScrollRegs
-_0801D570: .4byte gUnknown_03005590
+_0801D570: .4byte gStageTime
 _0801D574: .4byte gUnknown_080D5BF0
 _0801D578:
 	lsls r0, r2, #0x18

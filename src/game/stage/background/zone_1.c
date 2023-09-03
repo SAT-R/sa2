@@ -59,7 +59,7 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
             temp = (gPlayer.moveState & MOVESTATE_4000000) ? 7 : 0xF;
 
             val = gBgScrollRegs[0][0];
-            if ((gUnknown_03005590 & temp) == temp) {
+            if ((gStageTime & temp) == temp) {
                 val++;
             }
             gBgScrollRegs[0][0] = val;
@@ -81,7 +81,7 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
             temp = (gPlayer.moveState & MOVESTATE_4000000) ? 0xF : 0x1F;
 
             val = gBgScrollRegs[3][0];
-            if ((gUnknown_03005590 & temp) == temp) {
+            if ((gStageTime & temp) == temp) {
                 val++;
             }
             gBgScrollRegs[3][0] = val;

@@ -115,7 +115,7 @@ _0801DA94:
 	bge _0801DA94
 	movs r1, #0
 _0801DAA6:
-	ldr r3, _0801DBA8 @ =gUnknown_03005590
+	ldr r3, _0801DBA8 @ =gStageTime
 	ldr r0, [r3]
 	add r0, sl
 	lsrs r0, r0, #3
@@ -240,7 +240,7 @@ _0801DB98: .4byte gUnknown_03002878
 _0801DB9C: .4byte 0x0400001C
 _0801DBA0: .4byte gUnknown_03002A80
 _0801DBA4: .4byte gComputedBgBuffer
-_0801DBA8: .4byte gUnknown_03005590
+_0801DBA8: .4byte gStageTime
 _0801DBAC:
 	ldr r2, _0801DCCC @ =gComputedBgBuffer
 	ldr r4, [r2]
@@ -286,7 +286,7 @@ _0801DBEE:
 	bhi _0801DBFA
 	b _0801DAA6
 _0801DBFA:
-	ldr r3, _0801DCD8 @ =gUnknown_03005590
+	ldr r3, _0801DCD8 @ =gStageTime
 	ldr r0, [r3]
 	add r0, sl
 	lsrs r0, r0, #1
@@ -399,7 +399,7 @@ _0801DCB0:
 _0801DCCC: .4byte gComputedBgBuffer
 _0801DCD0: .4byte 0x000001EF
 _0801DCD4: .4byte 0x000001B7
-_0801DCD8: .4byte gUnknown_03005590
+_0801DCD8: .4byte gStageTime
 _0801DCDC:
 	ldr r1, _0801DD64 @ =gComputedBgBuffer
 	ldr r4, [r1]
@@ -481,7 +481,7 @@ _0801DD70: .4byte gUnknown_080D5C82
 _0801DD74: .4byte gBgPalette
 _0801DD78: .4byte gFlags
 
-.if 01
+.if 0
 	thumb_func_start Zone7BgUpdate_Outside
 Zone7BgUpdate_Outside: @ 0x0801DD7C
 	push {r4, r5, r6, r7, lr}
@@ -512,12 +512,12 @@ Zone7BgUpdate_Outside: @ 0x0801DD7C
 	strb r0, [r1]
 	ldr r0, _0801DEF0 @ =gComputedBgBuffer
 	ldr r4, [r0]
-	ldr r0, _0801DEF4 @ =gUnknown_03005590
+	ldr r0, _0801DEF4 @ =gStageTime
 	ldr r5, [r0]
 	lsrs r1, r5, #3
 	movs r2, #0x1f
 	ands r1, r2
-	mov sb, r0
+	mov sb, r0      @ sb = &gStageTime
 	cmp r1, #0xf
 	bls _0801DDCA
 	subs r0, r2, r1
@@ -529,18 +529,18 @@ _0801DDCA:
 	adds r7, r6, #2
 	mov r8, r7
 	movs r0, #7
-	mov ip, r0
+	mov ip, r0          @ ip = 7
 	movs r1, #0xff
-	mov sl, r1
+	mov sl, r1          @ sl = 0xFF
 _0801DDDA:
 	lsls r0, r3, #1
 	mov r7, sp
-	adds r2, r7, r0
+	adds r2, r7, r0     @ r2 = &sp[i]
 	adds r1, r3, #0
 	mov r0, ip
 	ands r1, r0
 	lsls r1, r1, #2
-	adds r0, r1, r6
+	adds r0, r1, r6     @ r0 = &gUnknown_080D5C62[(i & 0x7)][0]
 	movs r7, #0
 	ldrsh r0, [r0, r7]
 	muls r0, r5, r0
@@ -561,7 +561,7 @@ _0801DDDA:
 	ldr r5, _0801DF00 @ =gSineTable
 	ldr r2, _0801DF04 @ =0x000003FF
 _0801DE10:
-	mov r7, sb
+	mov r7, sb          @ r7 = sb = &gStageTime
 	ldr r0, [r7]
 	lsls r0, r0, #2
 	lsls r1, r3, #1
@@ -609,7 +609,7 @@ _0801DE10:
 	ldr r5, _0801DF00 @ =gSineTable
 	ldr r2, _0801DF04 @ =0x000003FF
 _0801DE6E:
-	mov r1, sb
+	mov r1, sb          @ r1 = sb = &gStageTime
 	ldr r0, [r1]
 	lsls r0, r0, #2
 	lsls r1, r3, #1
@@ -670,7 +670,7 @@ _0801DEE4: .4byte gUnknown_03002878
 _0801DEE8: .4byte 0x04000010
 _0801DEEC: .4byte gUnknown_03002A80
 _0801DEF0: .4byte gComputedBgBuffer
-_0801DEF4: .4byte gUnknown_03005590
+_0801DEF4: .4byte gStageTime
 _0801DEF8: .4byte gUnknown_080D5C62
 _0801DEFC: .4byte 0x0000507F
 _0801DF00: .4byte gSineTable

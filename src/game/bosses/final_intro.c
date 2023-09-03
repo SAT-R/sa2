@@ -1348,14 +1348,14 @@ void Task_IntroPanIn(void)
 {
     TrueArea53Intro *intro = TaskGetStructPtr(gCurTask);
 
-    if (!(gUnknown_03005590 & 3) && intro->cameraY < 44) {
+    if (!(gStageTime & 3) && intro->cameraY < 44) {
         intro->cameraY++;
     }
 
     intro->unk8 += 2;
     gCamera.x = 0;
     gCamera.y = intro->cameraY;
-    gUnknown_03005590++;
+    gStageTime++;
 
     IntroRenderSprites(0);
 
@@ -1386,7 +1386,7 @@ void Task_IntroPanIn(void)
     }
 
     if (gBldRegs.bldY != 0) {
-        if ((gUnknown_03005590 & 3) == 0) {
+        if ((gStageTime & 3) == 0) {
             gBldRegs.bldY--;
         }
         return;
@@ -1402,7 +1402,7 @@ void sub_80393A4(void)
     TrueArea53Intro *intro = TaskGetStructPtr(gCurTask);
 
     intro->unk8++;
-    gUnknown_03005590++;
+    gStageTime++;
     gUnknown_030054B8 = 0;
 
     intro->animFrame += 7;

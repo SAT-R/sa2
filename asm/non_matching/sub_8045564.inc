@@ -15,7 +15,7 @@
 	beq _0804557A
 	b _08045858
 _0804557A:
-	ldr r1, _08045868 @ =gUnknown_03005590
+	ldr r1, _08045868 @ =gStageTime
 	ldr r0, [r1]
 	movs r1, #7
 	bl Mod
@@ -35,7 +35,7 @@ _0804557A:
 	ands r0, r2
 	adds r6, r0, #0
 	adds r6, #0x18
-	ldr r3, _08045868 @ =gUnknown_03005590
+	ldr r3, _08045868 @ =gStageTime
 	ldr r1, [r3]
 	lsls r0, r1, #3
 	subs r0, r0, r1
@@ -112,7 +112,7 @@ _0804557A:
 	adds r1, #0x14
 	bl CreateBossParticleWithExplosionUpdate
 _0804563E:
-	ldr r2, _08045868 @ =gUnknown_03005590
+	ldr r2, _08045868 @ =gStageTime
 	ldr r0, [r2]
 	movs r1, #0xa
 	bl Mod
@@ -131,7 +131,7 @@ _0804563E:
 	ands r0, r1
 	adds r6, r0, #0
 	adds r6, #0x18
-	ldr r2, _08045868 @ =gUnknown_03005590
+	ldr r2, _08045868 @ =gStageTime
 	ldr r0, [r2]
 	lsls r1, r0, #3
 	subs r1, r1, r0
@@ -230,7 +230,7 @@ _0804563E:
 	mov r0, sp
 	bl CreateBossParticleWithExplosionUpdate
 _0804572E:
-	ldr r3, _08045868 @ =gUnknown_03005590
+	ldr r3, _08045868 @ =gStageTime
 	ldr r0, [r3]
 	movs r1, #9
 	bl Mod
@@ -304,7 +304,7 @@ _0804572E:
 	adds r1, #0x14
 	bl CreateBossParticleWithExplosionUpdate
 _080457C4:
-	ldr r4, _08045868 @ =gUnknown_03005590
+	ldr r4, _08045868 @ =gStageTime
 	ldr r0, [r4]
 	movs r1, #0xb
 	bl Mod
@@ -386,7 +386,7 @@ _08045858:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08045868: .4byte gUnknown_03005590
+_08045868: .4byte gStageTime
 _0804586C: .4byte gPseudoRandom
 _08045870: .4byte 0x00196225
 _08045874: .4byte 0x3C6EF35F

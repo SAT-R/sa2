@@ -121,7 +121,7 @@ static void Task_WindmillMain(void)
 
             s = &windmill->blades[i * 4 + j].s;
             transform = &windmill->blades[i * 4 + j].transform;
-            temp = (gUnknown_03005590 * 2 + (i * 256));
+            temp = (gStageTime * 2 + (i * 256));
 
             s->x = screenX + ((COS(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
             s->y = screenY + ((SIN(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);

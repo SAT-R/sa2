@@ -63,7 +63,7 @@ CreateEggHammerTankII: @ 0x0803A24C
 	orrs r0, r1
 	str r0, [r2, #0x20]
 	ldr r1, _0803A2A8 @ =gPseudoRandom
-	ldr r0, _0803A2AC @ =gUnknown_03005590
+	ldr r0, _0803A2AC @ =gStageTime
 	ldr r0, [r0]
 	str r0, [r1]
 	ldr r0, _0803A2B0 @ =Task_EggHammerTankIIMain
@@ -96,7 +96,7 @@ CreateEggHammerTankII: @ 0x0803A24C
 	.align 2, 0
 _0803A2A4: .4byte gPlayer
 _0803A2A8: .4byte gPseudoRandom
-_0803A2AC: .4byte gUnknown_03005590
+_0803A2AC: .4byte gStageTime
 _0803A2B0: .4byte Task_EggHammerTankIIMain
 _0803A2B4: .4byte 0x000004A4
 _0803A2B8: .4byte TaskDestructor_EggHammerTankIIMain

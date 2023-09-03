@@ -7,8 +7,8 @@
 void StageBgUpdate_Zone7ActBoss(UNUSED s32 x, UNUSED s32 y)
 {
     if (!PLAYER_IS_ALIVE) {
-        gUnknown_03005590--;
+        gStageTime--;
     }
 
-    Zone7BgUpdate_Inside(gUnknown_03005590, 945);
+    Zone7BgUpdate_Inside(gStageTime, 945);
 }

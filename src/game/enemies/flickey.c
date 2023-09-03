@@ -288,7 +288,7 @@ static void sub_80591FC(void)
             flickey->positions[i + 3].y = -flickey->positions[i + 3].y;
         }
 
-        if (flickey->unkA0 > 0x2D || (gUnknown_03005590 & 2 && flickey->unkA0 < 0x2D)) {
+        if (flickey->unkA0 > 0x2D || (gStageTime & 2 && flickey->unkA0 < 0x2D)) {
             s->x = Q_24_8_TO_INT(flickey->positions[i].x) - gCamera.x;
             s->y = Q_24_8_TO_INT(flickey->positions[i].y) - gCamera.y;
 

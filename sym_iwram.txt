@@ -60,7 +60,7 @@ build/sa2/src/core.o(.data);
 . = 0x000054FC; gUnknown_030054FC = .;
 . = 0x00005500; gMultiplayerCharacters = .;
 . = 0x00005510; gUnknown_03005510 = .;
-. = 0x00005590; gUnknown_03005590 = .;
+. = 0x00005590; gStageTime = .;
 . = 0x00005594; gMultiplayerUnlockedCharacters = .;
 . = 0x000055A0; gMultiplayerPlayerTasks = .;
 . = 0x000055B0; gUnknown_030055B0 = .;

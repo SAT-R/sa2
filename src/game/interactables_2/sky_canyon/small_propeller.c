@@ -192,7 +192,7 @@ static void UpdateFanSpeed(Sprite_SmallPropeller *prop)
     Sprite *s = &prop->s;
 
     if (IS_PROPELLER_PERIODIC(prop->kind)) {
-        u32 fanSpeed = gUnknown_03005590 % PERIODIC_PROP_FULL_DURATION;
+        u32 fanSpeed = gStageTime % PERIODIC_PROP_FULL_DURATION;
         if (fanSpeed < PERIOD_END__OFF) {
             prop->fanSpeed = PROP_SPEED_MIN;
         } else if (fanSpeed < PERIOD_END__ACCEL) {

@@ -47,7 +47,7 @@ NONMATCH("asm/non_matching/StageBgUpdate_Zone2Acts12.inc",
         gUnknown_03002A80 = 4;
 
         cursor = gComputedBgBuffer;
-        unk5590_1 = gUnknown_03005590 * 0x18;
+        unk5590_1 = gStageTime * 0x18;
 
         for (i = 0; i < 159; i++) {
             s16 temp4;
@@ -75,10 +75,10 @@ NONMATCH("asm/non_matching/StageBgUpdate_Zone2Acts12.inc",
             x = (x + 8);
             x &= ONE_CYCLE;
             *cursor++ = something + (SIN(x) >> 0xD)
-                + (COS(((gUnknown_03005590 * 2) + x) & ONE_CYCLE) >> 0xB)
+                + (COS(((gStageTime * 2) + x) & ONE_CYCLE) >> 0xB)
                 + (SIN((unk5590_1 + (i * 0x40)) & ONE_CYCLE) >> 0xD);
             *cursor++ = (j / 2) + temp + (SIN(x) >> 0xC)
-                + (COS((gUnknown_03005590 + (i * 8)) & ONE_CYCLE) >> 10);
+                + (COS((gStageTime + (i * 8)) & ONE_CYCLE) >> 10);
         };
     }
 }

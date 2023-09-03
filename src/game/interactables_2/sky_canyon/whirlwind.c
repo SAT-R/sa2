@@ -335,7 +335,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
     bool32 bIdk = FALSE;
     u8 i;
 
-    if ((gUnknown_03005590 & 0xF) == 0)
+    if ((gStageTime & 0xF) == 0)
         bIdk = TRUE;
 
     for (i = 0; i < ARRAY_COUNT(ia086->sprites); i++) {
@@ -568,7 +568,7 @@ void sub_807D130(Sprite_IA86 *ia086)
 
 void sub_807D16C(Sprite_IA86 *unused)
 {
-    if ((gUnknown_03005590 & 0xFF) == 0) {
+    if ((gStageTime & 0xFF) == 0) {
         m4aSongNumStartOrContinue(SE_WHIRLWIND);
     }
 }

@@ -35,7 +35,7 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
     u16 *cursor, i, val;
     gBgScrollRegs[0][0]++;
     gBgScrollRegs[3][0] = 0;
-    num = gUnknown_03005590 * 2;
+    num = gStageTime * 2;
     if (IS_SINGLE_PLAYER) {
         gFlags = gFlags | 4;
         gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;

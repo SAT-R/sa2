@@ -125,7 +125,7 @@ void Task_800A110(void)
     if (!(gUnknown_03005424 & EXTRA_STATE__100)) {
         Sprite *s = &dm->textPressStart;
 
-        if (gUnknown_03005590 & 0x20) {
+        if (gStageTime & 0x20) {
             if (gBldRegs.bldY != 0) {
                 s->unk10 |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
             } else {

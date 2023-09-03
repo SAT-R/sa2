@@ -104,7 +104,7 @@ _0801C9FE:
 	strb r2, [r0]
 	ldr r0, _0801CA6C @ =gComputedBgBuffer
 	ldr r4, [r0]
-	ldr r0, _0801CA70 @ =gUnknown_03005590
+	ldr r0, _0801CA70 @ =gStageTime
 	ldr r1, [r0]
 	lsls r0, r1, #1
 	adds r0, r0, r1
@@ -146,7 +146,7 @@ _0801CA60: .4byte gUnknown_03002878
 _0801CA64: .4byte 0x0400001C
 _0801CA68: .4byte gUnknown_03002A80
 _0801CA6C: .4byte gComputedBgBuffer
-_0801CA70: .4byte gUnknown_03005590
+_0801CA70: .4byte gStageTime
 _0801CA74:
 	cmp r1, #0x78
 	ble _0801CA7E
@@ -211,7 +211,7 @@ _0801CACE:
 	asrs r1, r3, #0x1d
 	ldr r7, [sp, #4]
 	adds r1, r7, r1
-	ldr r7, _0801CB70 @ =gUnknown_03005590
+	ldr r7, _0801CB70 @ =gStageTime
 	ldr r0, [r7]
 	lsls r0, r0, #1
 	adds r0, r0, r2
@@ -242,7 +242,7 @@ _0801CACE:
 	asrs r3, r3, #0x1c
 	adds r2, r2, r3
 	lsls r0, r5, #3
-	ldr r3, _0801CB70 @ =gUnknown_03005590
+	ldr r3, _0801CB70 @ =gStageTime
 	ldr r1, [r3]
 	adds r0, r0, r1
 	ldr r7, _0801CB68 @ =0x000003FF
@@ -278,7 +278,7 @@ _0801CB58:
 	.align 2, 0
 _0801CB68: .4byte 0x000003FF
 _0801CB6C: .4byte gSineTable
-_0801CB70: .4byte gUnknown_03005590
+_0801CB70: .4byte gStageTime
 
 	
 .syntax divided
