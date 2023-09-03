@@ -133,7 +133,7 @@ static void sub_808616C(void)
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
     transform = &itemBox->transform;
-    transform->unk0 = 0;
+    transform->rotation = 0;
     transform->width = 0x100;
     transform->height = 0;
     transform->x = 0;
@@ -411,7 +411,7 @@ static inline void sub_808679C_inline(void)
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
     transform = &itemBox->transform;
-    transform->unk0 = 0;
+    transform->rotation = 0;
     transform->width = 0x100;
     transform->height = 0x100;
     transform->x = 0;
@@ -428,7 +428,7 @@ static void sub_808679C(void)
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
     transform = &itemBox->transform;
-    transform->unk0 = 0;
+    transform->rotation = 0;
     transform->width = 0x100;
     transform->height = 0x100;
     transform->x = 0;

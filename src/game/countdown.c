@@ -256,7 +256,7 @@ void sub_8036524(void)
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 4);
     s->unk10 = gUnknown_030054B8++ | 0x60;
-    transformConfig->unk0 = 0;
+    transformConfig->rotation = 0;
     unk78 = startMessage->unk78;
     if (unk78 < 0x10) {
         transformConfig->width = 0x200 - startMessage->unk78 * 0x10;
@@ -278,7 +278,7 @@ void sub_8036524(void)
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 4);
     s->unk10 = gUnknown_030054B8++ | 0x60;
-    transformConfig->unk0 = 0;
+    transformConfig->rotation = 0;
     unk78 = startMessage->unk78;
     if (unk78 < 0x10) {
         transformConfig->width = 0x200 - startMessage->unk78 * 0x10;

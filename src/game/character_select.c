@@ -1219,7 +1219,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
         + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
     s->prevVariant = -1;
 
-    transformOptions->unk0 = 0;
+    transformOptions->rotation = 0;
     transformOptions->width
         = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8)
         + 0xC0;
@@ -1308,7 +1308,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     s->x = 0x28;
     s->y = 0x4F;
 
-    transformOptions->unk0 = 0;
+    transformOptions->rotation = 0;
     transformOptions->width = 0x100;
     transformOptions->height = 0x100 - ((0x10 - characterScreen->animFrame) * 0xF);
     transformOptions->x = s->x;
@@ -1325,7 +1325,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     s->x = 0x28;
     s->y = 0x4F;
 
-    transformOptions->unk0 = 0;
+    transformOptions->rotation = 0;
     transformOptions->width = 0x100;
     transformOptions->height = 0x100 - ((0x10 - characterScreen->animFrame) * 0xF);
     transformOptions->x = s->x;
@@ -1488,7 +1488,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
             + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
         s->prevVariant = -1;
 
-        transformOptions->unk0 = 0;
+        transformOptions->rotation = 0;
         transformOptions->width
             = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
                >> 8)
@@ -1583,7 +1583,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     s->y = 79;
 
     if (c < 8) {
-        transformOptions->unk0 = 0;
+        transformOptions->rotation = 0;
         transformOptions->width = 0x100;
         transformOptions->height = 0x100 - ((8 - c) * 0x1E);
         transformOptions->x = s->x;
@@ -1604,7 +1604,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     s->y = 79;
 
     if (c < 8) {
-        transformOptions->unk0 = 0;
+        transformOptions->rotation = 0;
         transformOptions->width = 0x100;
         transformOptions->height = 0x100 - ((8 - c) * 0x1E);
         transformOptions->x = s->x;
@@ -1683,7 +1683,7 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
             + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
         s->prevVariant = -1;
 
-        transformOptions->unk0 = 0;
+        transformOptions->rotation = 0;
         transformOptions->width
             = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
                >> 8)

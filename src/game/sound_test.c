@@ -390,8 +390,9 @@ static void SoundTestScreenCreateUI(struct Task *t)
                     0x5a, 6, 0, 0);
     }
 
+    // Transforms static circle
     for (i = 0; i < 4; i++) {
-        transforms[i].unk0 = i << 8;
+        transforms[i].rotation = DEG_TO_SIN(90) * i;
         transforms[i].width = 0x100;
         transforms[i].height = 0x100;
         transforms[i].x = 0x4C;
@@ -707,7 +708,7 @@ static void SoundTestScreenRenderUI(void)
 
     for (i = 0; i < 4; i++) {
         if (unk2D8->graphics.anim != SA2_ANIM_SOUNDTEST_CREAM_BOW) {
-            speakerConeEffects[i].unk0 = i << 8;
+            speakerConeEffects[i].rotation = DEG_TO_SIN(90) * i;
             speakerConeEffects[i].height = speakerConeEffects[i].width
                 = soundTestScreen->speakerSize + 0x100;
         }

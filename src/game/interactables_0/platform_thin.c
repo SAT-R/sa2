@@ -245,7 +245,7 @@ NONMATCH("asm/non_matching/sub_8010D1C.inc",
         s->unk10 = 0x70;
 
         // Init transform
-        transform->unk0 = 0;
+        transform->rotation = 0;
         transform->width = 0x100;
         transform->height = 0x100;
         transform->x = x;
@@ -349,7 +349,7 @@ static void Task_PlatformBreakParticlesMain(void)
     }
     transform->width = width;
     transform->height = width;
-    transform->unk0 -= 0x2A;
+    transform->rotation -= 0x2A;
 
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
@@ -375,7 +375,7 @@ static void Task_PlatformBreakParticlesMain(void)
 
     transform->width = width;
     transform->height = width;
-    transform->unk0 += 0x2A;
+    transform->rotation += 0x2A;
 
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
@@ -400,7 +400,7 @@ static void Task_PlatformBreakParticlesMain(void)
 
     transform->width = width;
     transform->height = width;
-    transform->unk0 += 0xE;
+    transform->rotation += 0xE;
 
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;
@@ -425,7 +425,7 @@ static void Task_PlatformBreakParticlesMain(void)
 
     transform->width = width;
     transform->height = width;
-    transform->unk0 -= 0xE;
+    transform->rotation -= 0xE;
 
     s->unk10 &= ~0x1F;
     s->unk10 |= gUnknown_030054B8++;

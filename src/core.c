@@ -542,7 +542,7 @@ static void UpdateScreenCpuSet(void)
     }
 
     gUnknown_030026F4 = 0xff;
-    for (; j <= 3; j++) {
+    for (; j < ARRAY_COUNT(spriteUpdateFuncs); j++) {
         if (spriteUpdateFuncs[j]() == 0) {
             gUnknown_030026F4 = j;
             break;
@@ -701,7 +701,7 @@ static void GetInput(void)
 static void HBlankIntr(void)
 {
     u8 i;
-    int_vcount vcount = *(volatile int_vcount *)REG_ADDR_VCOUNT;
+    int_vcount vcount = *(volatile int_vcount *)&REG_VCOUNT;
 
     if (vcount < DISPLAY_HEIGHT) {
         for (i = 0; i < gNumHBlankIntrs; i++) {

@@ -229,7 +229,7 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
     s->x = cannon->x - gCamera.x;
     s->y = cannon->y - gCamera.y;
 
-    transform.unk0 = cannon->unk6A;
+    transform.rotation = cannon->unk6A;
     transform.width = 0x100;
     transform.height = 0x100;
     transform.x = s->x;

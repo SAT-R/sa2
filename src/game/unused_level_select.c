@@ -7,7 +7,7 @@
 #include "game/bosses/common.h"
 #include "game/title_screen.h"
 
-#include "animation_commands_extra.h"
+#include "animation_commands_bg.h"
 #include "data/tileset_language.h"
 
 #include "constants/songs.h"

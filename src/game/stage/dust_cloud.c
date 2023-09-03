@@ -42,6 +42,10 @@ static void Task_CreateDustCloud(void)
     if (UpdateSpriteAnimation(s) == 0) {
         DisplaySprite(s);
         TaskDestroy(gCurTask);
+#ifdef BUG_FIX
+        // Without this return, we essentially have a "use-after-free".
+        return;
+#endif
     }
 
     DisplaySprite(s);

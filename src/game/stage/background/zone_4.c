@@ -1,6 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
+#include "animation_commands_bg.h"
 #include "game/game.h"
 #include "game/stage/spot_light.h"
 
@@ -56,12 +57,12 @@ void StageBgUpdateZone4Acts12(s32 a, s32 b)
     }
 
     if (IS_SINGLE_PLAYER && !(gUnknown_03005424 & 0x100)) {
-        gWinRegs[5] = 0x3e;
-        gWinRegs[4] = 0x3f3f;
-        gWinRegs[0] = 0xf0;
-        gWinRegs[2] = 0xa0;
-        gWinRegs[1] = 0xf0;
-        gWinRegs[3] = 0xa0;
+        gWinRegs[WINREG_WINOUT] = 0x3e;
+        gWinRegs[WINREG_WININ] = 0x3f3f;
+        gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_WIDTH);
+        gWinRegs[WINREG_WIN0V] = WIN_RANGE(0, DISPLAY_HEIGHT);
+        gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
+        gWinRegs[WINREG_WIN1V] = WIN_RANGE(0, DISPLAY_HEIGHT);
         gBldRegs.bldY = 7;
         gBldRegs.bldCnt = 0x3f41;
         gBldRegs.bldAlpha = 0xc0c;

@@ -1,9 +1,50 @@
 #include "global.h"
 #include "core.h"
-
+#include "flags.h"
 #include "sprite.h"
 
 #define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
+
+void sub_8002A3C(Background *background)
+{
+    struct MapHeader *mapHeader = gUnknown_03002260[background->tilemapId];
+    const u16 *pal;
+    u32 palSize;
+    u16 gfxSize;
+
+    background->unk14 = mapHeader->h.xTiles;
+    background->unk16 = mapHeader->h.yTiles;
+    background->graphics.src = mapHeader->h.tiles;
+    gfxSize = mapHeader->h.tilesSize;
+    background->graphics.size = gfxSize;
+
+    if (!(background->flags & BACKGROUND_UPDATE_GRAPHICS)) {
+        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &background->graphics;
+        gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) & 0x1F;
+        background->flags ^= BACKGROUND_UPDATE_GRAPHICS;
+    }
+
+    pal = mapHeader->h.palette;
+    palSize = mapHeader->h.palLength;
+    background->unk2A = mapHeader->h.palOffset;
+
+    if (!(background->flags & BACKGROUND_UPDATE_PALETTE)) {
+        DmaCopy16(3, pal, gBgPalette + background->unk2A, palSize * sizeof(*pal));
+        gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
+        background->flags ^= BACKGROUND_UPDATE_PALETTE;
+    }
+
+    background->unk10 = mapHeader->h.map;
+
+    if (background->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
+        background->metatileMap = mapHeader->metatileMap;
+        background->mapWidth = mapHeader->mapWidth;
+        background->mapHeight = mapHeader->mapHeight;
+    }
+
+    gUnknown_03001800[gUnknown_0300287C] = background;
+    gUnknown_0300287C = (gUnknown_0300287C + 1) & 0xF;
+}
 
 // (85.37%) https://decomp.me/scratch/617Jb
 NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
@@ -555,45 +596,3 @@ NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
     return 1;
 }
 END_NONMATCH
-
-void UpdateBgAnimationTiles(Background *bg)
-{
-    struct MapHeader *header = gUnknown_03002260[bg->tilemapId];
-    if (header->h.animFrameCount) {
-        if (header->h.animDelay <= ++bg->animDelayCounter) {
-            u32 animTileSize;
-
-            bg->animDelayCounter = 0;
-
-            if (header->h.animFrameCount <= ++bg->animFrameCounter)
-                bg->animFrameCounter = 0;
-
-            animTileSize = header->h.animTileSize;
-
-            if (!(bg->flags & BACKGROUND_UPDATE_ANIMATIONS)) {
-                if (bg->animFrameCounter == 0) {
-                    bg->graphics.src = header->h.tiles;
-                } else {
-                    const u8 *tiles = header->h.tiles;
-                    u32 size = header->h.tilesSize;
-                    tiles += size;
-                    tiles += (bg->animFrameCounter - 1) * animTileSize;
-                    bg->graphics.src = tiles;
-                }
-            } else {
-                u8 *ts = bg->graphics.dest;
-                ts += header->h.tilesSize;
-                ts += (bg->animFrameCounter * animTileSize);
-                bg->graphics.src = ts;
-            }
-            {
-                u32 queueIndex;
-                bg->graphics.size = animTileSize;
-                gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &bg->graphics;
-                queueIndex = gVramGraphicsCopyQueueIndex + 1;
-                queueIndex %= ARRAY_COUNT(gVramGraphicsCopyQueue);
-                gVramGraphicsCopyQueueIndex = queueIndex;
-            }
-        }
-    }
-}

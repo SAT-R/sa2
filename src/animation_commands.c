@@ -20,10 +20,6 @@ s32 animCmd_10(void *cursor, Sprite *s);
 static s32 animCmd_SetSpritePriority(void *cursor, Sprite *s);
 static s32 animCmd_SetOamOrder(void *cursor, Sprite *s);
 
-extern const struct SpriteTables *gUnknown_03002794;
-extern u16 gObjPalette[];
-extern u32 gFlags;
-
 // make static
 const AnimationCommandFunc animCmdTable[] = {
     // 0x080984AC
@@ -34,6 +30,8 @@ const AnimationCommandFunc animCmdTable[] = {
     animCmd_SetIdAndVariant,   animCmd_10,
     animCmd_SetSpritePriority, animCmd_SetOamOrder,
 };
+
+#define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
 // (-2)
 s32 animCmd_GetPalette(void *cursor, Sprite *s)
