@@ -3,7 +3,8 @@
 
 const u16 Palette_zone_3_act_2_bg[]
     = INCBIN_U16("data/maps/zone_3/act_2/tilemaps/bg/palette.gbapal");
-const u8 Tiles_zone_3_act_2_bg[] = INCBIN_U8("data/maps/zone_3/act_2/tilemaps/bg/tiles.4bpp");
+const u8 Tiles_zone_3_act_2_bg[]
+    = INCBIN_U8("data/maps/zone_3/act_2/tilemaps/bg/tiles.4bpp");
 const u16 Tilemap_zone_3_act_2_bg[]
     = INCBIN_U16("data/maps/zone_3/act_2/tilemaps/bg/tilemap.tilemap2");
 
