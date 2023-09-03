@@ -98,6 +98,7 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_5.o(.text);
         build/sa2/src/game/stage/background/zone_6.o(.text);
         build/sa2/asm/stage__background__zone_6.o(.text);
+        build/sa2/src/game/stage/background/zone_7_0.o(.text);
         build/sa2/asm/stage__background__zone_7_1.o(.text);
         build/sa2/src/game/stage/background/zone_7_1.o(.text);
         build/sa2/src/game/stage/background/zone_final.o(.text);
@@ -342,7 +343,7 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_4.o(.rodata);
         build/sa2/src/game/stage/background/zone_5.o(.rodata);
         build/sa2/src/game/stage/background/zone_6.o(.rodata);
-        build/sa2/src/game/stage/background/zone_7_1.o(.rodata);
+        build/sa2/src/game/stage/background/zone_7_0.o(.rodata);
         build/sa2/src/game/stage/background/zone_7_2.o(.rodata);
         build/sa2/src/game/stage/background/zone_final.o(.rodata);
         build/sa2/src/data/tilemap_table.o(.rodata);

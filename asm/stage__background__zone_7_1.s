@@ -5,58 +5,8 @@
 .syntax unified
 .arm
 
-	thumb_func_start CreateStageBg_Zone7
-CreateStageBg_Zone7: @ 0x0801D95C
-	push {r4, r5, r6, lr}
-	ldr r4, _0801D9B0 @ =gUnknown_03005850
-	ldr r1, _0801D9B4 @ =gDispCnt
-	movs r2, #0xb2
-	lsls r2, r2, #5
-	adds r0, r2, #0
-	strh r0, [r1]
-	ldr r5, _0801D9B8 @ =gBgCntRegs
-	movs r6, #0
-	ldr r0, _0801D9BC @ =0x0000160F
-	strh r0, [r5]
-	ldr r1, _0801D9C0 @ =gUnknown_080D5864
-	adds r1, #0xc0
-	adds r0, r4, #0
-	movs r2, #0x40
-	bl memcpy
-	movs r0, #0xd1
-	strh r0, [r4, #0x1c]
-	ldr r0, _0801D9C4 @ =0x0600C000
-	str r0, [r4, #4]
-	ldr r0, _0801D9C8 @ =0x0600B000
-	str r0, [r4, #0xc]
-	movs r0, #0x20
-	strh r0, [r4, #0x26]
-	movs r0, #0x14
-	strh r0, [r4, #0x28]
-	adds r0, r4, #0
-	bl sub_8002A3C
-	ldrh r1, [r5, #6]
-	ldr r0, _0801D9CC @ =0x0000FFFC
-	ands r0, r1
-	movs r1, #3
-	orrs r0, r1
-	strh r0, [r5, #6]
-	ldr r0, _0801D9D0 @ =gBgScrollRegs
-	strh r6, [r0]
-	strh r6, [r0, #2]
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0801D9B0: .4byte gUnknown_03005850
-_0801D9B4: .4byte gDispCnt
-_0801D9B8: .4byte gBgCntRegs
-_0801D9BC: .4byte 0x0000160F
-_0801D9C0: .4byte gUnknown_080D5864
-_0801D9C4: .4byte 0x0600C000
-_0801D9C8: .4byte 0x0600B000
-_0801D9CC: .4byte 0x0000FFFC
-_0801D9D0: .4byte gBgScrollRegs
+.if 0
+.endif
 
 	thumb_func_start Zone7BgUpdate_Inside
 Zone7BgUpdate_Inside: @ 0x0801D9D4
