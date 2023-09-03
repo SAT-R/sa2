@@ -24,28 +24,41 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
 
     gFlags |= FLAGS_4;
 
-    gUnknown_03002878 = (void*)&REG_BG0HOFS;
+    gUnknown_03002878 = (void *)&REG_BG0HOFS;
     gUnknown_03002A80 = 2;
     bgBuffer = (u16 *)gComputedBgBuffer;
 
     frameCount = ((gStageTime >> 3) & 0x1F);
-    if(frameCount >= 16) {
+    if (frameCount >= 16) {
         frameCount = 31 - frameCount;
+        asm("" ::"r"(frameCount));
     }
 
-    for(i = 0; i < ARRAY_COUNT(sp); i++) {
-        sp[i] = Q_24_8_TO_INT(gUnknown_080D5C62[(i & 0x7)][0] * gStageTime) + gUnknown_080D5C62[(i & 0x7)][1];
+    for (i = 0; i < ARRAY_COUNT(sp); i++) {
+        sp[i] = 0xFF
+            & (Q_24_8_TO_INT(gUnknown_080D5C62[(i & 0x7)][0] * gStageTime)
+               + gUnknown_080D5C62[(i & 0x7)][1]);
     }
 
-    for(i = 0; i < DISPLAY_HEIGHT/2; i++) {
-        u16 sinVal = SIN_24_8(((gStageTime << 2) + i*2) & ONE_CYCLE) >> 3;
+    {
+        u16 sinVal, value;
+        u32 cosVal;
+        u32 scrollSpeed = (Q_24_8(80.5) - 1);
 
-        *bgBuffer++ = sinVal;
+        for (i = 0; i < DISPLAY_HEIGHT / 2; i++) {
+            sinVal = SIN_24_8(((gStageTime * 4) + i * 2) & ONE_CYCLE) >> 3;
+            cosVal = (COS_24_8(((i * scrollSpeed) >> 5) & ONE_CYCLE) >> 4);
+            value = cosVal + sinVal;
+            *bgBuffer++ = (value + sp[(i & 0x1F)]) & 0xFF;
+        }
+
+        for (; i < DISPLAY_HEIGHT - 1; i++) {
+            sinVal = SIN_24_8(((gStageTime << 2) + i * 2) & ONE_CYCLE) >> 3;
+            cosVal = (COS_24_8((((DISPLAY_HEIGHT - i) * scrollSpeed) >> 5) & ONE_CYCLE)
+                      >> 4);
+            value = cosVal + sinVal;
+            *bgBuffer++ = (value + sp[(i & 0x1F)]) & 0xFF;
+        }
     }
-    
-    for(; i < DISPLAY_HEIGHT; i++) {
-
-    }
-
 }
 #endif

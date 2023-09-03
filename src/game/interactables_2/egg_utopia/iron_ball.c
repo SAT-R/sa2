@@ -92,17 +92,17 @@ static void sub_807EFC4(Sprite_IA95 *ia95)
 
     if (ia95->unk4C != 0) {
         s32 temp = me->d.uData[2] * 0x800;
-        ia95->unk44 = (temp
-                       * SIN((ia95->unk4C * ((gStageTime + ia95->unk50) & 0xFF))
-                             & ONE_CYCLE))
+        ia95->unk44
+            = (temp
+               * SIN((ia95->unk4C * ((gStageTime + ia95->unk50) & 0xFF)) & ONE_CYCLE))
             >> 0xF;
     }
 
     if (ia95->unk4E != 0) {
         s32 temp = (me->d.uData[3] * 0x800);
-        ia95->unk48 = (temp
-                       * SIN((ia95->unk4E * ((gStageTime + ia95->unk50) & 0xFF))
-                             & ONE_CYCLE))
+        ia95->unk48
+            = (temp
+               * SIN((ia95->unk4E * ((gStageTime + ia95->unk50) & 0xFF)) & ONE_CYCLE))
             >> 0xF;
     }
 

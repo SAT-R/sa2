@@ -66,8 +66,10 @@ void GameStart(void)
     }
 
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
-        CreateTitleScreen();
+        // CreateTitleScreen();
         LoadCompletedSaveGame();
+        gCurrentLevel = LEVEL_INDEX(ZONE_7, ACT_1);
+        GameStageStart();
         return;
     }
 

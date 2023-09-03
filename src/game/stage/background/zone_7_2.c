@@ -12,13 +12,13 @@ const u16 sZone7BgTransitionRegions[2][NUM_ZONE7_BG_TRANSITION_POSITIONS] = {
 };
 
 // https://decomp.me/scratch/SuYje
-NONMATCH("asm/non_matching/StageBgUpdate_Zone7Acts12.inc",
-         void StageBgUpdate_Zone7Acts12(s32 x, s32 y))
+// NONMATCH("asm/non_matching/StageBgUpdate_Zone7Acts12.inc",
+void StageBgUpdate_Zone7Acts12(s32 x, s32 y) //)
 {
     // NOTE: GCC-Hack
     // u32 act = (gCurrentLevel - LEVEL_INDEX(ZONE_7, ACT_1)) % 2
     u32 act = !!(gCurrentLevel ^ (LEVEL_INDEX(ZONE_7, ACT_1)));
-    u32 bgId = 0;
+    u32 bgId = 1;
     u8 regionId = 0;
 
     while (x >= sZone7BgTransitionRegions[act][regionId]) {
@@ -39,4 +39,4 @@ StageBgUpdate_Zone7Acts12_CallBgUpdate:
 
     gPlayer.unkA8 = bgId;
 }
-END_NONMATCH
+// END_NONMATCH

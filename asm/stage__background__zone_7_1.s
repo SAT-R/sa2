@@ -573,7 +573,7 @@ _0801DE10:
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x19
 	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
+	lsrs r1, r0, #0x10  @ r1 = sinVal = SIN_24_8(((gStageTime << 2) + i*2) & ONE_CYCLE) >> 3;
 	adds r0, r3, #0
 	muls r0, r6, r0
 	lsrs r0, r0, #5
@@ -585,8 +585,8 @@ _0801DE10:
 	adds r0, r0, r5
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
-	asrs r0, r0, #0x1a
-	adds r0, r1, r0
+	asrs r0, r0, #0x1a  @ r0 = cosVal
+	adds r0, r1, r0     @ r0 = sinVal + cosVal
 	lsls r0, r0, #0x10
 	movs r1, #0x1f
 	ands r1, r3
