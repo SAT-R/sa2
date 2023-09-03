@@ -1,6 +1,9 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
+#include "trig.h"
+#include "game/game.h"
+#include "game/stage/background/zone_7.h"
 
 #if 0
 void Zone7BgUpdate_Inside(s32 x, s32 y)
@@ -8,9 +11,14 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
 }
 #endif
 
-#if 0
+#if 01
 void Zone7BgUpdate_Outside(s32 x, s32 y)
 {
+    u16 *bgBuffer;
+    u8 frameCount;
+    int_vcount i;
+    u16 sp[32];
+
     gDispCnt &= ~DISPCNT_BG3_ON;
     gDispCnt |= DISPCNT_BG0_ON;
 
@@ -18,6 +26,26 @@ void Zone7BgUpdate_Outside(s32 x, s32 y)
 
     gUnknown_03002878 = (void*)&REG_BG0HOFS;
     gUnknown_03002A80 = 2;
-    gComputedBgBuffer;
+    bgBuffer = (u16 *)gComputedBgBuffer;
+
+    frameCount = ((gStageTime >> 3) & 0x1F);
+    if(frameCount >= 16) {
+        frameCount = 31 - frameCount;
+    }
+
+    for(i = 0; i < ARRAY_COUNT(sp); i++) {
+        sp[i] = Q_24_8_TO_INT(gUnknown_080D5C62[(i & 0x7)][0] * gStageTime) + gUnknown_080D5C62[(i & 0x7)][1];
+    }
+
+    for(i = 0; i < DISPLAY_HEIGHT/2; i++) {
+        u16 sinVal = SIN_24_8(((gStageTime << 2) + i*2) & ONE_CYCLE) >> 3;
+
+        *bgBuffer++ = sinVal;
+    }
+    
+    for(; i < DISPLAY_HEIGHT; i++) {
+
+    }
+
 }
 #endif
