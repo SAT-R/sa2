@@ -4484,6 +4484,8 @@ _080182F0:
 	.align 2, 0
 _080182FC: .4byte gPlayer
 
+@ Out:
+@  bool32 (hit?)
 	thumb_func_start sub_8018300
 sub_8018300: @ 0x08018300
 	push {r4, r5, r6, r7, lr}

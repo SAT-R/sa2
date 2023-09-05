@@ -27,6 +27,8 @@ u8 gUnknown_03001850[] ALIGNED(16) = {};
 FuncType_030053A0 gUnknown_03001870[] = {};
 u16 gPhysicalInput = 0;
 
+// TODO: This actually seems to be used by background scanline procedures
+//       to buffer the x-shift for each line, so rename it again?
 void *gComputedBgBuffer = NULL;
 
 u16 gVramHeapMaxTileSlots = 0;
@@ -46,7 +48,7 @@ u32 gMultiSioStatusFlags = 0;
 bool8 gMultiSioEnabled = FALSE;
 
 struct Task *gTaskPtrs[] ALIGNED(16) = {};
-u32 gUnknown_03001B60[][160] = {};
+u32 gUnknown_03001B60[][DISPLAY_HEIGHT] = {};
 u16 gObjPalette[] = {};
 struct MapHeader **gUnknown_03002260 = NULL;
 u32 gFrameCount = 0;

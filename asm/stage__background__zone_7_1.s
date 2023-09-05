@@ -5,16 +5,17 @@
 .syntax unified
 .arm
 
-	thumb_func_start Zone7BgUpdate_Inside
-Zone7BgUpdate_Inside: @ 0x0801D9D4
+.if 01
+	thumb_func_start Zone7BgUpdate_Inside_
+Zone7BgUpdate_Inside_: @ 0x0801D9D4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x10
-	mov sl, r0
-	adds r5, r1, #0
+	mov sl, r0          @ sl = x
+	adds r5, r1, #0     @ r5 = y
 	ldr r2, _0801DB80 @ =gPlayer
 	ldr r0, [r2, #0x20]
 	movs r1, #0x80
@@ -66,15 +67,15 @@ _0801DA1A:
 	ldr r0, _0801DBA4 @ =gComputedBgBuffer
 	ldr r4, [r0]
 	movs r0, #0x2a
-	mov r1, sl
+	mov r1, sl          @ r1 = sl = x
 	muls r1, r0, r1
 	adds r0, r1, #0
 	movs r1, #0xc8
 	lsls r1, r1, #1
 	bl Div
-	mov r2, sl
+	mov r2, sl          @ r2 = sl = x
 	lsls r0, r2, #1
-	asrs r3, r5, #4
+	asrs r3, r5, #4     @ r3 = y >> 4
 	str r3, [sp, #0xc]
 	asrs r5, r5, #1
 	str r5, [sp, #4]
@@ -91,7 +92,7 @@ _0801DA6A:
 	subs r3, #1
 	cmp r3, #0
 	bge _0801DA6A
-	add r0, sl
+	add r0, sl          @ r0 += x
 	lsls r0, r0, #3
 	add r0, sl
 	movs r1, #0xc8
@@ -133,6 +134,7 @@ _0801DAA6:
 	lsrs r5, r0, #0x18
 	cmp r5, #0xef
 	bhi _0801DBAC
+__0801DACA:
 	lsls r0, r5, #2
 	mov sb, r0
 	adds r1, #1
@@ -159,7 +161,7 @@ _0801DAA6:
 	bhs _0801DB1C
 	movs r0, #0
 	mov r8, r0
-	movs r0, #0xd0
+	movs r0, #208
 	subs r6, r0, r3
 _0801DB02:
 	mov r0, r8
@@ -480,3 +482,4 @@ _0801DD6C: .4byte 0x000001A7
 _0801DD70: .4byte gUnknown_080D5C82
 _0801DD74: .4byte gBgPalette
 _0801DD78: .4byte gFlags
+.endif

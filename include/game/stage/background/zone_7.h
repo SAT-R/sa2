@@ -4,6 +4,7 @@
 #include "gba/types.h"
 
 extern const s16 gUnknown_080D5C62[8][2];
+extern const u16 gUnknown_080D5C82[16];
 
 extern void CreateStageBg_Zone7(void);
 extern void StageBgUpdate_Zone7Acts12(s32, s32);
