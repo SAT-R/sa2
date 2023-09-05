@@ -10,6 +10,7 @@
 extern void Zone7BgUpdate_Inside_(s32 x, s32 y);
 
 #if 01
+// https://decomp.me/scratch/yQ5VE
 void Zone7BgUpdate_Inside(s32 x, s32 y)
 {
     u16 *lineShiftX;
@@ -27,7 +28,7 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
     Zone7BgUpdate_Inside_(x, y);
     return;
 #endif
-    if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 < 7)) {
+    if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 >= 7)) {
         s16 value;
 
         if (gBgScrollRegs[3][0] == 0)
