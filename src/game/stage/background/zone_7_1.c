@@ -6,14 +6,18 @@
 #include "game/stage/background/zone_7.h"
 
 #if 01
-// https://decomp.me/scratch/BPm17
+// (98.09%) - https://decomp.me/scratch/BPm17
 void Zone7BgUpdate_Inside(s32 x, s32 y)
 {
-    u16 *bgShift;
+    u16 *dst;
     s32 someX;
-    s32 i;
-    u8 j;
+    s32 lineY;
     s32 ip;
+    u8 j;
+    u8 r1;
+    u8 r2;
+    u8 r5;
+    s32 sb;
 
     if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 >= 7)) {
         s16 value;
@@ -34,7 +38,7 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
     gUnknown_03002878 = (void *)&REG_BG3HOFS;
     gUnknown_03002A80 = 4;
 
-    bgShift = (u16 *)gComputedBgBuffer;
+    dst = (u16 *)gComputedBgBuffer;
 
 #ifndef NON_MATCHING
     // Why call Div without using its return value?
@@ -43,9 +47,10 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
 
     someX = x * 2;
 
-    for (i = 0; i < 40; i++) {
-        *bgShift++ = 8;
-        *bgShift++ = 16;
+    // Move BG3 to the "ceiling" for the first 40 lines
+    for (lineY = 0; lineY < 40; lineY++) {
+        *dst++ = 8;
+        *dst++ = 16;
     }
 
     someX += x;
@@ -53,12 +58,11 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
     someX += x; // someX = 25*x
 
     // ip = Div(25*x, 400);
-    ip = Div(someX, 400);
-    ip &= 0xFF;
+    ip = Div(someX, 400) & 0xFF;
 
-    for (i = 0; i < 119; i++) {
-        *bgShift++ = ip;
-        *bgShift++ = 17;
+    for (lineY = 0; lineY < 119; lineY++) {
+        *dst++ = ip;
+        *dst++ = 17;
     }
 
     // _0801DAA6
@@ -66,63 +70,56 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
     // NOTE: j stored in *sp
     j = 0;
     do {
-        u8 r5;
-        ip = (gStageTime + x) >> 3;
+        ip = ((gStageTime + x) >> 3);
         ip &= 0xFF;
 
         r5 = (((j * 100) + 64) - (y >> 4));
         if (r5 < 240) {
             // __0801DACA
-            s32 sb;
-            u8 r1;
-            u8 r2;
-            s32 r3;
-
             sb = r5 * 4;
             if (r5 > 80) {
-                bgShift = gComputedBgBuffer;
+                dst = gComputedBgBuffer;
                 r1 = ((r5 - 80) >> 4);
-                bgShift += (r5 - r1) << 1;
+                dst += (r5 - r1) << 1;
 
-                i = r5;
-                for (r2 = 0; ((i < r1 + 160) && (r2 < r1)); i++, r2++) {
-                    *bgShift++ = 0;
-                    *bgShift++ = 208 - r5;
-                    // i++;
+                lineY = r5;
+                for (r2 = 0; ((lineY < r1 + 160) && (r2 < r1)); lineY++, r2++) {
+                    *dst++ = 0;
+                    *dst++ = 208 - r5;
                 }
             }
             // _0801DB1C
-            bgShift = gComputedBgBuffer;
-            bgShift = ((void *)bgShift) + sb;
+            dst = gComputedBgBuffer;
+            dst = ((void *)dst) + sb;
 
-            for (i = r5, r2 = 0; ((i < DISPLAY_HEIGHT) && (r2 < 16)); i++, r2++) {
-                *bgShift++ = ip;
-                *bgShift++ = (240 - r5);
+            for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 16));
+                 lineY++, r2++) {
+                *dst++ = ip;
+                *dst++ = (240 - r5);
             }
 
-            if (i < 80) {
-                s32 r0 = (80 - i) >> 4;
+            if (lineY < 80) {
+                s32 r0 = (80 - lineY) >> 4;
                 r1 = r0;
 
-                for (r2 = 0; ((i < DISPLAY_HEIGHT) && (r2 < r1)); i++, r2++) {
-                    *bgShift++ = 0;
-                    *bgShift++ = (184 - r5);
+                for (r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < r1)); lineY++, r2++) {
+                    *dst++ = 0;
+                    *dst++ = (184 - r5);
                 }
             }
         } else {
-            u8 r2;
             // _0801DBAC
-            bgShift = gComputedBgBuffer;
+            dst = gComputedBgBuffer;
 
-            for (i = 255 - r5; i < 16; i++) {
-                *bgShift++ = ip;
-                *bgShift++ = 495 - r5;
+            for (lineY = 255 - r5; lineY < 16; lineY++) {
+                *dst++ = ip;
+                *dst++ = 495 - r5;
             }
             // _0801DBD2
 
             for (r2 = 0; r2 < 4; r2++) {
-                *bgShift++ = 0;
-                *bgShift++ = 439 - r5;
+                *dst++ = 0;
+                *dst++ = 439 - r5;
             }
         }
     } while (++j < 2); // _0801DBEE == continue of (j < 2)
@@ -132,68 +129,69 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
     ip &= 0xFF;
 
     {
-        u8 r2;
-        s32 r6, r7;
-        u8 r5 = -(y >> 1);
-        s32 sb;
+        s32 r6;
+        r5 = -(y >> 1);
 
         if ((u8)r5 < 224) {
             sb = r5 << 2;
 
             if (r5 > 80) {
-                bgShift = gComputedBgBuffer;
+                dst = gComputedBgBuffer;
 
                 j = ((r5 - 80) >> 4);
-                bgShift += (r5 - j) << 1;
+                dst += (r5 - j) << 1;
 
-                i = r5, r2 = 0;
+                lineY = r5, r2 = 0;
                 r6 = j + 160;
-                for (; ((i < r6) && (r2 < j)); i++, r2++) {
-                    *bgShift++ = 0;
-                    *bgShift++ = 208 - r5;
+                for (; ((lineY < r6) && (r2 < j)); lineY++, r2++) {
+                    *dst++ = 0;
+                    *dst++ = 208 - r5;
                 }
             }
             // _0801DC66
-            bgShift = gComputedBgBuffer;
-            bgShift = ((void *)bgShift) + sb;
+            dst = gComputedBgBuffer;
+            dst = ((void *)dst) + sb;
 
-            for (i = r5, r2 = 0; ((i < DISPLAY_HEIGHT) && (r2 < 32)); i++, r2++) {
-                *bgShift++ = ip;
-                *bgShift++ = 208 - r5;
+            for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 32));
+                 lineY++, r2++) {
+                *dst++ = ip;
+                *dst++ = 208 - r5;
             }
 
-            if (i < 80) {
-                for (j = (80 - i) >> 4, r2 = 0; ((i < 160) && (r2 < j)); i++, r2++) {
-                    *bgShift++ = 0;
-                    *bgShift++ = 168 - r5;
+            if (lineY < 80) {
+                for (j = (80 - lineY) >> 4, r2 = 0; ((lineY < 160) && (r2 < j));
+                     lineY++, r2++) {
+                    *dst++ = 0;
+                    *dst++ = 168 - r5;
                 }
             }
         } else {
             // _0801DCDC
-            bgShift = gComputedBgBuffer;
+            dst = gComputedBgBuffer;
 
-            for (i = 255 - r5; i < 32; i++) {
-                *bgShift++ = ip;
-                *bgShift++ = 463 - r5;
+            for (lineY = 255 - r5; lineY < 32; lineY++) {
+                *dst++ = ip;
+                *dst++ = 463 - r5;
             }
 
             for (r2 = 0; r2 < 4; r2++) {
-                *bgShift++ = 0;
-                *bgShift++ = 423 - r5;
+                *dst++ = 0;
+                *dst++ = 423 - r5;
             }
         }
         // _0801DD1A
         { // Draw the "ceiling" movement
             u32 new_r1 = (x >> 4) << 16;
-            s32 mask = 0x7;
-            const u16 *src = gUnknown_080D5C82;
-            u16 *pal = gBgPalette;
-            pal += 0xD1;
+            const u16 *src;
+            r6 = 0x7;
+            src = gUnknown_080D5C82;
+            dst = &gBgPalette[0];
+            dst += 209;
             new_r1 >>= 16;
 
-            for (i = 0; i < 8; new_r1--, i++) {
-                s32 index = (new_r1 & mask) + 1;
-                *pal++ = src[index];
+            for (lineY = 0; lineY < 8; new_r1--, lineY++) {
+                s32 index = (new_r1 & r6) + 1;
+                *dst++ = src[index];
             }
         }
     }
