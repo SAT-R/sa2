@@ -5,9 +5,9 @@
 .syntax unified
 .arm
 
-.if 01
-	thumb_func_start Zone7BgUpdate_Inside_
-Zone7BgUpdate_Inside_: @ 0x0801D9D4
+.if 0
+	thumb_func_start Zone7BgUpdate_Inside
+Zone7BgUpdate_Inside: @ 0x0801D9D4
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

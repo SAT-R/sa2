@@ -5,29 +5,16 @@
 #include "game/game.h"
 #include "game/stage/background/zone_7.h"
 
-// TEMP: Debug!!!
-#include "game/stage/debug_text_printer.h"
-extern void Zone7BgUpdate_Inside_(s32 x, s32 y);
-
 #if 01
-// https://decomp.me/scratch/yQ5VE
+// https://decomp.me/scratch/BPm17
 void Zone7BgUpdate_Inside(s32 x, s32 y)
 {
-    u16 *lineShiftX;
+    u16 *bgShift;
     s32 someX;
     s32 i;
     u8 j;
     s32 ip;
-    s32 sp4[3];
 
-    // TEMP: Debug!!!
-    Debug_PrintIntegerAt(x, 224, 16);
-    Debug_PrintIntegerAt(y, 224, 32);
-
-#if 0
-    Zone7BgUpdate_Inside_(x, y);
-    return;
-#endif
     if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 >= 7)) {
         s16 value;
 
@@ -47,7 +34,7 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
     gUnknown_03002878 = (void *)&REG_BG3HOFS;
     gUnknown_03002A80 = 4;
 
-    lineShiftX = (u16 *)gComputedBgBuffer;
+    bgShift = (u16 *)gComputedBgBuffer;
 
 #ifndef NON_MATCHING
     // Why call Div without using its return value?
@@ -56,163 +43,166 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
 
     someX = x * 2;
 
-    sp4[2] = y >> 4;
-    sp4[0] = y >> 1;
-    sp4[1] = x >> 4;
-
     for (i = 0; i < 40; i++) {
-        *lineShiftX++ = 8;
-        *lineShiftX++ = 16;
+        *bgShift++ = 8;
+        *bgShift++ = 16;
     }
 
     someX += x;
     someX *= 8;
     someX += x; // someX = 25*x
 
+    // ip = Div(25*x, 400);
     ip = Div(someX, 400);
     ip &= 0xFF;
 
     for (i = 0; i < 119; i++) {
-        *lineShiftX++ = ip;
-        *lineShiftX++ = 17;
+        *bgShift++ = ip;
+        *bgShift++ = 17;
     }
 
     // _0801DAA6
     // Draw the small, green-shining, moving pillars
     // NOTE: j stored in *sp
-    for (j = 0; j < 2; j++) {
-        s32 r5; // r5 might be u8?
+    j = 0;
+    do {
+        u8 r5;
         ip = (gStageTime + x) >> 3;
         ip &= 0xFF;
 
-        r5 = (((j * 100) + 64) - sp4[2]);
+        r5 = (((j * 100) + 64) - (y >> 4));
         if (r5 < 240) {
             // __0801DACA
             s32 sb;
             u8 r1;
             u8 r2;
             s32 r3;
-            u32 r6;
 
-            sb = r5 * 2;
+            sb = r5 * 4;
             if (r5 > 80) {
-
-                lineShiftX = gComputedBgBuffer;
+                bgShift = gComputedBgBuffer;
                 r1 = ((r5 - 80) >> 4);
-                lineShiftX += (r5 - r1) << 1;
+                bgShift += (r5 - r1) << 1;
 
-                r3 = r5;
-                r6 = 208 - r3;
-                for (r2 = 0; ((r3 < r1 + 160) && (r2 < r1)); r2++) {
-                    *lineShiftX++ = 0;
-                    *lineShiftX++ = r6;
+                i = r5;
+                for (r2 = 0; ((i < r1 + 160) && (r2 < r1)); i++, r2++) {
+                    *bgShift++ = 0;
+                    *bgShift++ = 208 - r5;
+                    // i++;
                 }
             }
             // _0801DB1C
-            lineShiftX = gComputedBgBuffer;
-            lineShiftX += sb;
+            bgShift = gComputedBgBuffer;
+            bgShift = ((void *)bgShift) + sb;
 
-            r3 = r5;
-            for (r3 = r5, r2 = 0; ((r3 < DISPLAY_HEIGHT) && (r2 < 16)); r2++, r3++) {
-                *lineShiftX++ = ip;
-                *lineShiftX++ = (240 - r3);
+            for (i = r5, r2 = 0; ((i < DISPLAY_HEIGHT) && (r2 < 16)); i++, r2++) {
+                *bgShift++ = ip;
+                *bgShift++ = (240 - r5);
             }
 
-            if (r3 < 80) {
-                s32 r0 = (80 - r3) >> 4;
+            if (i < 80) {
+                s32 r0 = (80 - i) >> 4;
                 r1 = r0;
 
-                for (r2 = 0; ((r3 < DISPLAY_HEIGHT) && (r2 < r1)); r2++) {
-                    *lineShiftX++ = 0;
-                    *lineShiftX++ = (184 - r5);
+                for (r2 = 0; ((i < DISPLAY_HEIGHT) && (r2 < r1)); i++, r2++) {
+                    *bgShift++ = 0;
+                    *bgShift++ = (184 - r5);
                 }
             }
         } else {
             u8 r2;
-            u32 r3;
             // _0801DBAC
-            lineShiftX = gComputedBgBuffer;
+            bgShift = gComputedBgBuffer;
 
-            for (r3 = 255 - r5; r3 < 16; r3++) {
-                *lineShiftX++ = ip;
-                *lineShiftX++ = 495 - r5;
+            for (i = 255 - r5; i < 16; i++) {
+                *bgShift++ = ip;
+                *bgShift++ = 495 - r5;
             }
             // _0801DBD2
 
             for (r2 = 0; r2 < 4; r2++) {
-                *lineShiftX++ = 0;
-                *lineShiftX++ = 439 - r5;
+                *bgShift++ = 0;
+                *bgShift++ = 439 - r5;
             }
         }
-    } // _0801DBEE == continue of (j < 2)
+    } while (++j < 2); // _0801DBEE == continue of (j < 2)
     // _0801DBFA
 
     ip = (gStageTime + x) >> 1;
     ip &= 0xFF;
 
     {
-        u8 r1;
         u8 r2;
-        s32 r3;
         s32 r6, r7;
-        s32 temp;
-        u8 r5 = -sp4[0];
-        u8 sb;
+        u8 r5 = -(y >> 1);
+        s32 sb;
 
-        if (r5 < 224) {
-            sb = r5 << 1;
+        if ((u8)r5 < 224) {
+            sb = r5 << 2;
 
             if (r5 > 80) {
-                lineShiftX = gComputedBgBuffer;
+                bgShift = gComputedBgBuffer;
 
-                r1 = (((s8)r5 - 80) >> 4);
-                lineShiftX += (r5 - r1) << 1;
+                j = ((r5 - 80) >> 4);
+                bgShift += (r5 - j) << 1;
 
-                r7 = 204 - r3;
-                for (r3 = r5, r2 = 0, r6 = r1 + 160; ((r3 < r6) && (r2 < r1)); r2++) {
-                    *lineShiftX++ = 0;
-                    *lineShiftX++ = r7;
+                i = r5, r2 = 0;
+                r6 = j + 160;
+                for (; ((i < r6) && (r2 < j)); i++, r2++) {
+                    *bgShift++ = 0;
+                    *bgShift++ = 208 - r5;
                 }
             }
             // _0801DC66
-            lineShiftX = gComputedBgBuffer;
-            lineShiftX += sb;
+            bgShift = gComputedBgBuffer;
+            bgShift = ((void *)bgShift) + sb;
 
-            temp = 208 - r3;
-            r3 = r5, r2 = 0;
-            for (; ((r3 < DISPLAY_HEIGHT) && (r2 < 32)); r3++, r2++) {
-                *lineShiftX++ = ip;
-                *lineShiftX++ = temp;
+            for (i = r5, r2 = 0; ((i < DISPLAY_HEIGHT) && (r2 < 32)); i++, r2++) {
+                *bgShift++ = ip;
+                *bgShift++ = 208 - r5;
+            }
+
+            if (i < 80) {
+                for (j = (80 - i) >> 4, r2 = 0; ((i < 160) && (r2 < j)); i++, r2++) {
+                    *bgShift++ = 0;
+                    *bgShift++ = 168 - r5;
+                }
             }
         } else {
             // _0801DCDC
-            lineShiftX = gComputedBgBuffer;
+            bgShift = gComputedBgBuffer;
 
-            for (r3 = 255 - r5; r3 < 32; r3++) {
-                *lineShiftX++ = ip;
-                *lineShiftX++ = 463 - r5;
+            for (i = 255 - r5; i < 32; i++) {
+                *bgShift++ = ip;
+                *bgShift++ = 463 - r5;
             }
 
             for (r2 = 0; r2 < 4; r2++) {
-                *lineShiftX++ = 0;
-                *lineShiftX++ = 423 - r5;
+                *bgShift++ = 0;
+                *bgShift++ = 423 - r5;
             }
         }
         // _0801DD1A
-        {
-            u16 new_r1 = sp4[1];
+        { // Draw the "ceiling" movement
+            u32 new_r1 = (x >> 4) << 16;
+            s32 mask = 0x7;
+            const u16 *src = gUnknown_080D5C82;
+            u16 *pal = gBgPalette;
+            pal += 0xD1;
+            new_r1 >>= 16;
 
-            for (r3 = 0; r3 < 8; new_r1--, r3++) {
-                *lineShiftX++ = gUnknown_080D5C82[(new_r1 & 0x7) + 1];
+            for (i = 0; i < 8; new_r1--, i++) {
+                s32 index = (new_r1 & mask) + 1;
+                *pal++ = src[index];
             }
         }
     }
 
-    gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
+    gFlags = gFlags | FLAGS_UPDATE_BACKGROUND_PALETTES;
 }
 #endif
 
-// https://decomp.me/scratch/7KDXI
+// https://decomp.me/scratch/BPm17
 // 98.95% - only register alloc issues, logic works as intended
 NONMATCH("asm/non_matching/Zone7BgUpdate_Outside.inc",
          void Zone7BgUpdate_Outside(s32 x, s32 y))
