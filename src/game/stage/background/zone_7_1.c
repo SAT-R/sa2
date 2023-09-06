@@ -5,9 +5,9 @@
 #include "game/game.h"
 #include "game/stage/background/zone_7.h"
 
-#if 01
-// (98.09%) - https://decomp.me/scratch/BPm17
-void Zone7BgUpdate_Inside(s32 x, s32 y)
+// (98.52%) - https://decomp.me/scratch/DUPkY
+NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
+         void Zone7BgUpdate_Inside(s32 x, s32 y))
 {
     u16 *dst;
     s32 someX;
@@ -17,11 +17,8 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
     u8 r1;
     u8 r2;
     u8 r5;
-    s32 sb;
 
     if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 >= 7)) {
-        s16 value;
-
         if (gBgScrollRegs[3][0] == 0)
             gBgScrollRegs[3][0] = x;
 
@@ -45,20 +42,14 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
     someX = Div(x * 42, 400);
 #endif
 
-    someX = x * 2;
-
     // Move BG3 to the "ceiling" for the first 40 lines
     for (lineY = 0; lineY < 40; lineY++) {
         *dst++ = 8;
         *dst++ = 16;
     }
 
-    someX += x;
-    someX *= 8;
-    someX += x; // someX = 25*x
-
     // ip = Div(25*x, 400);
-    ip = Div(someX, 400) & 0xFF;
+    ip = Div(25 * x, 400) & 0xFF;
 
     for (lineY = 0; lineY < 119; lineY++) {
         *dst++ = ip;
@@ -70,13 +61,11 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
     // NOTE: j stored in *sp
     j = 0;
     do {
-        ip = ((gStageTime + x) >> 3);
-        ip &= 0xFF;
+        ip = (((gStageTime + x) / 8)) & 0xFF;
 
-        r5 = (((j * 100) + 64) - (y >> 4));
+        r5 = (((100 * j) + 64) - (y >> 4));
         if (r5 < 240) {
             // __0801DACA
-            sb = r5 * 4;
             if (r5 > 80) {
                 dst = gComputedBgBuffer;
                 r1 = ((r5 - 80) >> 4);
@@ -90,7 +79,7 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
             }
             // _0801DB1C
             dst = gComputedBgBuffer;
-            dst = ((void *)dst) + sb;
+            dst = ((void *)dst) + (r5 * 4);
 
             for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 16));
                  lineY++, r2++) {
@@ -125,32 +114,28 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
     } while (++j < 2); // _0801DBEE == continue of (j < 2)
     // _0801DBFA
 
-    ip = (gStageTime + x) >> 1;
-    ip &= 0xFF;
+    ip = ((gStageTime + x) / 2) & 0xFF;
 
     {
-        s32 r6;
         r5 = -(y >> 1);
 
-        if ((u8)r5 < 224) {
-            sb = r5 << 2;
-
+        if (r5 < 224) {
+            u8 val;
             if (r5 > 80) {
                 dst = gComputedBgBuffer;
 
-                j = ((r5 - 80) >> 4);
-                dst += (r5 - j) << 1;
+                val = ((r5 - 80) >> 4);
+                dst += (r5 - val) << 1;
 
                 lineY = r5, r2 = 0;
-                r6 = j + 160;
-                for (; ((lineY < r6) && (r2 < j)); lineY++, r2++) {
+                for (; ((lineY < (160 + val)) && (r2 < val)); lineY++, r2++) {
                     *dst++ = 0;
                     *dst++ = 208 - r5;
                 }
             }
             // _0801DC66
             dst = gComputedBgBuffer;
-            dst = ((void *)dst) + sb;
+            dst = ((void *)dst) + (r5 * 4);
 
             for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 32));
                  lineY++, r2++) {
@@ -159,7 +144,7 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
             }
 
             if (lineY < 80) {
-                for (j = (80 - lineY) >> 4, r2 = 0; ((lineY < 160) && (r2 < j));
+                for (r1 = (80 - lineY) >> 4, r2 = 0; ((lineY < 160) && (r2 < r1));
                      lineY++, r2++) {
                     *dst++ = 0;
                     *dst++ = 168 - r5;
@@ -179,13 +164,14 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
                 *dst++ = 423 - r5;
             }
         }
-        // _0801DD1A
+// _0801DD1A
+#if 001
         { // Draw the "ceiling" movement
             u32 new_r1 = (x >> 4) << 16;
             const u16 *src;
-            r6 = 0x7;
+            s32 r6 = 0x7;
             src = gUnknown_080D5C82;
-            dst = &gBgPalette[0];
+            dst = gBgPalette;
             dst += 209;
             new_r1 >>= 16;
 
@@ -194,11 +180,20 @@ void Zone7BgUpdate_Inside(s32 x, s32 y)
                 *dst++ = src[index];
             }
         }
+#else
+        { // Draw the "ceiling" movement
+            for (lineY = 0; lineY < 8; lineY++) {
+                dst = gBgPalette;
+                dst += 209;
+                dst[lineY] = gUnknown_080D5C82[((x >> 4) & 0x7) + 1];
+            }
+        }
+#endif
     }
 
     gFlags = gFlags | FLAGS_UPDATE_BACKGROUND_PALETTES;
 }
-#endif
+END_NONMATCH
 
 // https://decomp.me/scratch/BPm17
 // 98.95% - only register alloc issues, logic works as intended

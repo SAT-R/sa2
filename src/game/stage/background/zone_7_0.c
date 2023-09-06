@@ -20,9 +20,7 @@ const s16 gUnknown_080D5C62[8][2] = {
     { -Q_8_8(0.75), -Q_8_8(0.125) }, //
 };
 
-const u16 gUnknown_080D5C82[16]
-    = { 0x7C1F, 0x1481, 0x0CE6, 0x0CE6, 0x0CE6, 0x0CE6, 0x0CE6, 0x0CE6,
-        0x0CE6, 0x5C16, 0x7E80, 0x4E75, 0x2AF2, 0x7E78, 0x15BF, 0x460B };
+const u16 gUnknown_080D5C82[16] = INCBIN_U16("graphics/080D5C82.gbapal");
 
 void CreateStageBg_Zone7(void)
 {
