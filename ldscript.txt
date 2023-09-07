@@ -98,7 +98,6 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_5.o(.text);
         build/sa2/src/game/stage/background/zone_6.o(.text);
         build/sa2/asm/stage__background__zone_6.o(.text);
-        build/sa2/asm/stage__background__zone_7_1.o(.text);
         build/sa2/src/game/stage/background/zone_7_1.o(.text);
         build/sa2/src/game/stage/background/zone_final.o(.text);
         build/sa2/src/game/stage/camera_destroy.o(.text);
@@ -109,12 +108,11 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_3_boss.o(.text);
         build/sa2/src/game/stage/background/zone_5_boss.o(.text);
         build/sa2/src/game/stage/background/zone_6_boss.o(.text);
-        build/sa2/asm/stage__background__zone_7_2.o(.text);
+        build/sa2/src/game/stage/background/zone_7_2.o(.text);
         build/sa2/src/game/stage/background/zone_7_boss.o(.text);
         build/sa2/src/game/stage/background/zone_final_boss.o(.text);
         build/sa2/src/game/stage/background/zone_extra_boss.o(.text);
         build/sa2/src/game/stage/background/callbacks.o(.text);
-        build/sa2/src/game/stage/background/zone_7_2.o(.text);
         build/sa2/asm/player_super_sonic_data.o(.text);
         build/sa2/asm/game_1.o(.text);
         build/sa2/src/game/game_2.o(.text);

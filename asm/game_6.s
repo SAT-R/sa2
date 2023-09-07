@@ -5127,7 +5127,7 @@ _080239FC:
 	movs r0, #0x3c
 	strb r0, [r7]
 _08023A00:
-	ldr r0, _08023A4C @ =gUnknown_03005590
+	ldr r0, _08023A4C @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #0xf
 	ands r0, r1
@@ -5165,7 +5165,7 @@ _08023A34:
 	b _08023B02
 	.align 2, 0
 _08023A48: .4byte 0xFFFFF400
-_08023A4C: .4byte gUnknown_03005590
+_08023A4C: .4byte gStageTime
 _08023A50: .4byte gPseudoRandom
 _08023A54: .4byte 0x00196225
 _08023A58: .4byte 0x3C6EF35F

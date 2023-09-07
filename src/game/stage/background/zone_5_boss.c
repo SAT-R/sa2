@@ -4,7 +4,7 @@
 
 #include "game/stage/background/callbacks.h"
 
-void StageBgUpdateZone5ActBoss(void)
+void StageBgUpdate_Zone5ActBoss(void)
 {
     gDispCnt &= ~DISPCNT_BG1_ON;
     gBgScrollRegs[0][0]++;

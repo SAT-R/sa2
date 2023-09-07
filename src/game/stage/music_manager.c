@@ -74,8 +74,8 @@ void Task_StageMusicManager(void)
             gUnknown_030054A8.unk6 = 0;
             gUnknown_030054A8.unk5 = 1;
         } else if ((songHeader == gSongTable[MUS_DROWNING].header)
-                   && ((gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK) != 0)
-                   && ((gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE) == 0)) {
+                   && (gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK)
+                   && !(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE)) {
             gUnknown_030054A8.unk5 = 1;
             gUnknown_030054A8.unk2 = 0;
             gUnknown_030054A8.unk3 = 0;
@@ -85,9 +85,9 @@ void Task_StageMusicManager(void)
 
             m4aSongNumStart(MUS_DROWNING);
         } else if ((songHeader == gSongTable[MUS_INVINCIBILITY].header)
-                   && ((gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK) != 0)
-                   && (!(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE))
-                   && ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY) == 0)) {
+                   && (gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_TRACK)
+                   && !(gMPlayInfo_BGM.status & MUSICPLAYER_STATUS_PAUSE)
+                   && !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
             gUnknown_030054A8.unk5 = 1;
             m4aSongNumStop(MUS_INVINCIBILITY);
         } else if ((songHeader != gSongTable[MUS_1_UP].header)

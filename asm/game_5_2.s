@@ -579,7 +579,7 @@ _08020090:
 	ldrh r0, [r5, #0xc]
 	cmp r0, #0x1f
 	bhi _080200C0
-	ldr r0, _080200F4 @ =gUnknown_03005590
+	ldr r0, _080200F4 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #2
 	ands r0, r1
@@ -611,7 +611,7 @@ _080200D2:
 	.align 2, 0
 _080200EC: .4byte sub_801EC3C
 _080200F0: .4byte 0x000002B6
-_080200F4: .4byte gUnknown_03005590
+_080200F4: .4byte gStageTime
 _080200F8:
 	ldrb r0, [r1]
 	lsls r0, r0, #3
@@ -1003,7 +1003,7 @@ _080203E8:
 	ldrh r0, [r5, #0xc]
 	cmp r0, #0x1f
 	bhi _08020418
-	ldr r0, _08020450 @ =gUnknown_03005590
+	ldr r0, _08020450 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #2
 	ands r0, r1
@@ -1036,7 +1036,7 @@ _0802042A:
 	.align 2, 0
 _08020448: .4byte sub_801EC3C
 _0802044C: .4byte 0x000002B6
-_08020450: .4byte gUnknown_03005590
+_08020450: .4byte gStageTime
 _08020454:
 	ldrb r0, [r1]
 	lsls r0, r0, #3
@@ -1587,7 +1587,7 @@ _08020870:
 	ldrh r0, [r5, #0xc]
 	cmp r0, #0x1f
 	bhi _080208A0
-	ldr r0, _080208D8 @ =gUnknown_03005590
+	ldr r0, _080208D8 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #2
 	ands r0, r1
@@ -1621,7 +1621,7 @@ _080208B2:
 	.align 2, 0
 _080208D0: .4byte sub_801EC3C
 _080208D4: .4byte 0x000002B6
-_080208D8: .4byte gUnknown_03005590
+_080208D8: .4byte gStageTime
 _080208DC:
 	ldrb r0, [r1]
 	lsls r0, r0, #3
@@ -2172,7 +2172,7 @@ _08020CF8:
 	ldrh r0, [r5, #0xc]
 	cmp r0, #0x1f
 	bhi _08020D28
-	ldr r0, _08020D60 @ =gUnknown_03005590
+	ldr r0, _08020D60 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #2
 	ands r0, r1
@@ -2206,7 +2206,7 @@ _08020D3A:
 	.align 2, 0
 _08020D58: .4byte sub_801EC3C
 _08020D5C: .4byte 0x000002B6
-_08020D60: .4byte gUnknown_03005590
+_08020D60: .4byte gStageTime
 _08020D64:
 	ldrb r0, [r1]
 	lsls r0, r0, #3
@@ -2846,7 +2846,7 @@ _0802123C:
 	ldrh r0, [r5, #0xc]
 	cmp r0, #0x1f
 	bhi _08021264
-	ldr r0, _08021290 @ =gUnknown_03005590
+	ldr r0, _08021290 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #2
 	ands r0, r1
@@ -2876,7 +2876,7 @@ _08021276:
 	str r0, [sp, #0x14]
 	b _08021302
 	.align 2, 0
-_08021290: .4byte gUnknown_03005590
+_08021290: .4byte gStageTime
 _08021294:
 	ldrb r0, [r1]
 	lsls r0, r0, #3

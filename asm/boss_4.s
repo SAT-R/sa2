@@ -31,7 +31,7 @@ CreateAeroEgg: @ 0x0804156C
 	str r0, [r2, #0x20]
 	bl sub_8039ED4
 	ldr r1, _080415CC @ =gPseudoRandom
-	ldr r0, _080415D0 @ =gUnknown_03005590
+	ldr r0, _080415D0 @ =gStageTime
 	ldr r0, [r0]
 	str r0, [r1]
 	ldr r0, _080415D4 @ =Task_AeroEggMain
@@ -63,7 +63,7 @@ CreateAeroEgg: @ 0x0804156C
 	.align 2, 0
 _080415C8: .4byte gPlayer
 _080415CC: .4byte gPseudoRandom
-_080415D0: .4byte gUnknown_03005590
+_080415D0: .4byte gStageTime
 _080415D4: .4byte Task_AeroEggMain
 _080415D8: .4byte TaskDestructor_AeroEggMain
 _080415DC: .4byte gActiveBossTask
@@ -301,7 +301,7 @@ sub_80417A0: @ 0x080417A0
 	bl sub_8042560
 	adds r0, r4, #0
 	bl sub_8041D34
-	ldr r0, _0804186C @ =gUnknown_03005590
+	ldr r0, _0804186C @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #0xd
 	bl Mod
@@ -377,7 +377,7 @@ _08041860:
 	bx r0
 	.align 2, 0
 _08041868: .4byte gCurTask
-_0804186C: .4byte gUnknown_03005590
+_0804186C: .4byte gStageTime
 _08041870: .4byte IWRAM_START + 0x84
 _08041874: .4byte gCamera
 _08041878: .4byte IWRAM_START + 0x80
@@ -433,7 +433,7 @@ sub_8041880: @ 0x08041880
 	adds r7, #0x30
 	mov sl, r4
 _080418E6:
-	ldr r3, _08041A00 @ =gUnknown_03005590
+	ldr r3, _08041A00 @ =gStageTime
 	ldr r1, [r3]
 	lsls r0, r1, #1
 	adds r0, r0, r1
@@ -498,7 +498,7 @@ _080418E6:
 	cmp r5, #2
 	bls _080418E6
 	ldr r4, _080419FC @ =gSineTable
-	ldr r0, _08041A00 @ =gUnknown_03005590
+	ldr r0, _08041A00 @ =gStageTime
 	ldr r1, [r0]
 	lsls r0, r1, #1
 	adds r0, r0, r1
@@ -569,7 +569,7 @@ _080418E6:
 	.align 2, 0
 _080419F8: .4byte gCamera
 _080419FC: .4byte gSineTable
-_08041A00: .4byte gUnknown_03005590
+_08041A00: .4byte gStageTime
 _08041A04: .4byte 0x000003FF
 
 	thumb_func_start sub_8041A08
@@ -578,7 +578,7 @@ sub_8041A08: @ 0x08041A08
 	adds r5, r0, #0
 	movs r7, #0
 	ldr r4, _08041AEC @ =gSineTable
-	ldr r0, _08041AF0 @ =gUnknown_03005590
+	ldr r0, _08041AF0 @ =gStageTime
 	ldr r1, [r0]
 	lsls r0, r1, #1
 	adds r0, r0, r1
@@ -690,7 +690,7 @@ _08041ACE:
 	b _08041B34
 	.align 2, 0
 _08041AEC: .4byte gSineTable
-_08041AF0: .4byte gUnknown_03005590
+_08041AF0: .4byte gStageTime
 _08041AF4: .4byte 0x000003FF
 _08041AF8: .4byte gPlayer
 _08041AFC: .4byte 0x0000FB40
@@ -1421,7 +1421,7 @@ sub_8042024: @ 0x08042024
 	movs r6, #0
 	ldr r0, _08042170 @ =gSineTable
 	mov r8, r0
-	ldr r0, _08042174 @ =gUnknown_03005590
+	ldr r0, _08042174 @ =gStageTime
 	ldr r1, [r0]
 	ldr r2, _08042178 @ =0x000003FF
 	mov sl, r2
@@ -1518,7 +1518,7 @@ _080420C2:
 	.align 2, 0
 _0804216C: .4byte gCamera
 _08042170: .4byte gSineTable
-_08042174: .4byte gUnknown_03005590
+_08042174: .4byte gStageTime
 _08042178: .4byte 0x000003FF
 
 	thumb_func_start sub_804217C
@@ -2045,7 +2045,7 @@ sub_8042560: @ 0x08042560
 	mov ip, r0
 	ldr r7, _080425A0 @ =gObjPalette
 	ldr r6, _080425A4 @ =gUnknown_080D7F54
-	ldr r5, _080425A8 @ =gUnknown_03005590
+	ldr r5, _080425A8 @ =gStageTime
 	movs r4, #2
 _08042576:
 	adds r2, r3, #0
@@ -2071,7 +2071,7 @@ _08042576:
 _0804259C: .4byte gFlags
 _080425A0: .4byte gObjPalette
 _080425A4: .4byte gUnknown_080D7F54
-_080425A8: .4byte gUnknown_03005590
+_080425A8: .4byte gStageTime
 _080425AC:
 	movs r3, #0
 	ldr r1, _080425E4 @ =gFlags

@@ -65,7 +65,7 @@ void Task_SpotLightMain(void)
     if (!(gUnknown_03005424 & EXTRA_STATE__100)) {
         ut = TaskGetStructPtr(spotLight->t0);
 
-        if (((gUnknown_03005590 & 0x7) == 0) && (ut->unkB != 0)
+        if (((gStageTime & 0x7) == 0) && (ut->unkB != 0)
             && (gDispCnt & DISPCNT_BG0_ON)) {
 
             if (ut->unkB < 32)
@@ -88,7 +88,7 @@ void Task_SpotLightMain(void)
         }
         // _0800A800
         unkC = spotLight->unkC - Q_24_8(2.0);
-        spotLight->unkC = unkC - SIN_24_8(gUnknown_03005590 & (ONE_CYCLE - 512));
+        spotLight->unkC = unkC - SIN_24_8(gStageTime & (ONE_CYCLE - 512));
 
         gBgScrollRegs[0][0] = Q_24_8_TO_INT(spotLight->unkC) & 0xFF;
         gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xFF;
@@ -126,21 +126,21 @@ void Task_800A8E0(void)
     s32 unkC;
 
     ut = TaskGetStructPtr(spotLight->t0);
-    if (!(gUnknown_03005590 & 0x1) && (ut->unkB != 0)) {
+    if (!(gStageTime & 0x1) && (ut->unkB != 0)) {
         ut->unkB -= 2;
         if (ut->unkB < 5)
             boolR5 = TRUE;
     }
 
     ut = TaskGetStructPtr(spotLight->t1);
-    if (!(gUnknown_03005590 & 0x1) && (ut->unkB != 0)) {
+    if (!(gStageTime & 0x1) && (ut->unkB != 0)) {
         ut->unkB -= 1;
         if (ut->unkB < 3)
             boolR5 = TRUE;
     }
 
     unkC = spotLight->unkC - Q_24_8(2.0);
-    spotLight->unkC = unkC - SIN_24_8(gUnknown_03005590 & (ONE_CYCLE - 512));
+    spotLight->unkC = unkC - SIN_24_8(gStageTime & (ONE_CYCLE - 512));
 
     gBgScrollRegs[0][0] = Q_24_8_TO_INT(spotLight->unkC) & 0xFF;
     gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xFF;

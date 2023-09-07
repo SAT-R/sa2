@@ -354,7 +354,7 @@ void Task_CreateStageUIMain(void)
             // _0802CF28
             u32 processed2;
             u16 processed;
-            sl = (gRingCount == 0) && gUnknown_03005590 & 0x10 ? 0x7000 : 0;
+            sl = (gRingCount == 0) && gStageTime & 0x10 ? 0x7000 : 0;
 
             { /* 100s */
                 u16 hundreds;
@@ -422,7 +422,7 @@ void Task_CreateStageUIMain(void)
             tempB = ZONE_TIME_TO_INT(9, 0);
             sl = 0;
             if (tempTime > tempB) {
-                sl = (-(gUnknown_03005590 & 0x10)) >> 31;
+                sl = (-(gStageTime & 0x10)) >> 31;
             }
 
             // Milliseconds-L

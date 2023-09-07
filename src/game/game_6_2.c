@@ -168,7 +168,7 @@ void sub_802460C(Player *p)
 
             if (IS_MULTI_PLAYER && (p->itemEffect & PLAYER_ITEM_EFFECT__40)) {
                 u8 dpad = (p->unk5C & DPAD_ANY) >> 4;
-                u32 r1 = gUnknown_03005590;
+                u32 r1 = gStageTime;
 
                 r1 = ((p->unk32 + r1) & 0x3);
                 if (!r1) {

@@ -332,7 +332,7 @@ _080542E4:
 	cmp r1, #2
 	bne _08054314
 	ldr r2, _08054308 @ =gSineTable
-	ldr r0, _0805430C @ =gUnknown_03005590
+	ldr r0, _0805430C @ =gStageTime
 	ldr r1, [r0]
 	lsls r0, r1, #2
 	adds r0, r0, r1
@@ -348,11 +348,11 @@ _080542E4:
 	b _08054330
 	.align 2, 0
 _08054308: .4byte gSineTable
-_0805430C: .4byte gUnknown_03005590
+_0805430C: .4byte gStageTime
 _08054310: .4byte 0x000003FF
 _08054314:
 	ldr r2, _080543E4 @ =gSineTable
-	ldr r0, _080543E8 @ =gUnknown_03005590
+	ldr r0, _080543E8 @ =gStageTime
 	ldr r1, [r0]
 	lsls r0, r1, #2
 	adds r0, r0, r1
@@ -455,7 +455,7 @@ _080543BA:
 	b _08054610
 	.align 2, 0
 _080543E4: .4byte gSineTable
-_080543E8: .4byte gUnknown_03005590
+_080543E8: .4byte gStageTime
 _080543EC: .4byte 0x000003FF
 _080543F0: .4byte gCamera
 _080543F4: .4byte gPlayer
@@ -808,7 +808,7 @@ _080546B0:
 	cmp r0, #2
 	bne _080546E0
 	ldr r2, _080546D4 @ =gSineTable
-	ldr r0, _080546D8 @ =gUnknown_03005590
+	ldr r0, _080546D8 @ =gStageTime
 	ldr r1, [r0]
 	lsls r0, r1, #2
 	adds r0, r0, r1
@@ -824,11 +824,11 @@ _080546B0:
 	b _080546FC
 	.align 2, 0
 _080546D4: .4byte gSineTable
-_080546D8: .4byte gUnknown_03005590
+_080546D8: .4byte gStageTime
 _080546DC: .4byte 0x000003FF
 _080546E0:
 	ldr r2, _08054778 @ =gSineTable
-	ldr r0, _0805477C @ =gUnknown_03005590
+	ldr r0, _0805477C @ =gStageTime
 	ldr r1, [r0]
 	lsls r0, r1, #2
 	adds r0, r0, r1
@@ -904,7 +904,7 @@ _080546FC:
 	b _0805479A
 	.align 2, 0
 _08054778: .4byte gSineTable
-_0805477C: .4byte gUnknown_03005590
+_0805477C: .4byte gStageTime
 _08054780: .4byte 0x000003FF
 _08054784: .4byte gCamera
 _08054788: .4byte gPlayer
@@ -1166,7 +1166,7 @@ _08054994:
 	cmp r0, #2
 	bne _080549C4
 	ldr r2, _080549B8 @ =gSineTable
-	ldr r0, _080549BC @ =gUnknown_03005590
+	ldr r0, _080549BC @ =gStageTime
 	ldr r1, [r0]
 	lsls r0, r1, #2
 	adds r0, r0, r1
@@ -1182,11 +1182,11 @@ _08054994:
 	b _080549E0
 	.align 2, 0
 _080549B8: .4byte gSineTable
-_080549BC: .4byte gUnknown_03005590
+_080549BC: .4byte gStageTime
 _080549C0: .4byte 0x000003FF
 _080549C4:
 	ldr r2, _08054A68 @ =gSineTable
-	ldr r0, _08054A6C @ =gUnknown_03005590
+	ldr r0, _08054A6C @ =gStageTime
 	ldr r1, [r0]
 	lsls r0, r1, #2
 	adds r0, r0, r1
@@ -1270,7 +1270,7 @@ _08054A56:
 	b _08054AD4
 	.align 2, 0
 _08054A68: .4byte gSineTable
-_08054A6C: .4byte gUnknown_03005590
+_08054A6C: .4byte gStageTime
 _08054A70: .4byte 0x000003FF
 _08054A74: .4byte gCamera
 _08054A78: .4byte gCurTask

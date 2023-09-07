@@ -2,6 +2,15 @@
 #include "core.h"
 #include "animation_commands_bg.h"
 #include "game/game.h"
+#include "game/stage/background/dummy.h"
+#include "game/stage/background/zone_1.h"
+#include "game/stage/background/zone_2.h"
+#include "game/stage/background/zone_3.h"
+#include "game/stage/background/zone_4.h"
+#include "game/stage/background/zone_5.h"
+#include "game/stage/background/zone_6.h"
+#include "game/stage/background/zone_7.h"
+#include "game/stage/background/zone_final.h"
 
 #include "constants/tilemaps.h"
 #include "constants/zones.h"
@@ -21,7 +30,7 @@ const Background gUnknown_080D5864[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)0x600F000,
+        .tilesVram = (void*)BG_SCREEN_ADDR(30),
         .unk10 = NULL,
         .unk14 = 0,
         .unk16 = 0,
@@ -54,7 +63,7 @@ const Background gUnknown_080D5864[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)0x600F800,
+        .tilesVram = (void*)BG_SCREEN_ADDR(31),
         .unk10 = NULL,
         .unk14 = 0,
         .unk16 = 0,
@@ -83,11 +92,11 @@ const Background gUnknown_080D5864[4] = {
     {
         .graphics = {  
             .src = NULL,  
-            .dest = (void*)0x6008000,  
+            .dest = (void*)BG_SCREEN_ADDR(16),  
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)0x600E800,
+        .tilesVram = (void*)BG_SCREEN_ADDR(29),
         .unk10 = NULL,
         .unk14 = 0,
         .unk16 = 0,
@@ -120,7 +129,7 @@ const Background gUnknown_080D5864[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)0x600E000,
+        .tilesVram = (void*)BG_SCREEN_ADDR(28),
         .unk10 = NULL,
         .unk14 = 0,
         .unk16 = 0,
@@ -152,123 +161,95 @@ const u16 gUnknown_080D5964[][2]
     = { { 32, 216 }, { 32, 204 }, { 32, 216 }, { 32, 208 }, { 32, 208 },
         { 32, 232 }, { 32, 264 }, { 32, 264 }, { 32, 264 } };
 
-extern void StageInit_Zone1(void);
-extern void StageInit_Zone2(void);
-extern void StageInit_Zone3(void);
-extern void StageInit_Zone4(void);
-extern void StageInit_Zone5(void);
-extern void StageInit_Zone6_Acts(void);
-extern void StageInit_Zone6_Boss(void);
-extern void StageInit_Zone7(void);
-extern void StageInit_ZoneFinal_0(void);
-extern void StageInit_Dummy(void);
-
 static const VoidFn sStageInitProcedures[] = {
-    [LEVEL_INDEX(ZONE_1, ACT_1)] = StageInit_Zone1,
-    [LEVEL_INDEX(ZONE_1, ACT_2)] = StageInit_Zone1,
-    [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = StageInit_Zone1,
+    [LEVEL_INDEX(ZONE_1, ACT_1)] = CreateStageBg_Zone1,
+    [LEVEL_INDEX(ZONE_1, ACT_2)] = CreateStageBg_Zone1,
+    [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = CreateStageBg_Zone1,
     [LEVEL_INDEX(ZONE_1, ACT_UNUSED)] = NULL, // Anti-Formatting
-    [LEVEL_INDEX(ZONE_2, ACT_1)] = StageInit_Zone2,
-    [LEVEL_INDEX(ZONE_2, ACT_2)] = StageInit_Zone2,
-    [LEVEL_INDEX(ZONE_2, ACT_BOSS)] = StageInit_Zone2,
+    [LEVEL_INDEX(ZONE_2, ACT_1)] = CreateStageBg_Zone2,
+    [LEVEL_INDEX(ZONE_2, ACT_2)] = CreateStageBg_Zone2,
+    [LEVEL_INDEX(ZONE_2, ACT_BOSS)] = CreateStageBg_Zone2,
     [LEVEL_INDEX(ZONE_2, ACT_UNUSED)] = NULL, //
-    [LEVEL_INDEX(ZONE_3, ACT_1)] = StageInit_Zone3,
-    [LEVEL_INDEX(ZONE_3, ACT_2)] = StageInit_Zone3,
-    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = StageInit_Zone3,
+    [LEVEL_INDEX(ZONE_3, ACT_1)] = CreateStageBg_Zone3,
+    [LEVEL_INDEX(ZONE_3, ACT_2)] = CreateStageBg_Zone3,
+    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = CreateStageBg_Zone3,
     [LEVEL_INDEX(ZONE_3, ACT_UNUSED)] = NULL, //
-    [LEVEL_INDEX(ZONE_4, ACT_1)] = StageInit_Zone4,
-    [LEVEL_INDEX(ZONE_4, ACT_2)] = StageInit_Zone4,
-    [LEVEL_INDEX(ZONE_4, ACT_BOSS)] = StageInit_Dummy,
+    [LEVEL_INDEX(ZONE_4, ACT_1)] = CreateStageBg_Zone4,
+    [LEVEL_INDEX(ZONE_4, ACT_2)] = CreateStageBg_Zone4,
+    [LEVEL_INDEX(ZONE_4, ACT_BOSS)] = CreateStageBg_Dummy,
     [LEVEL_INDEX(ZONE_4, ACT_UNUSED)] = NULL, //
-    [LEVEL_INDEX(ZONE_5, ACT_1)] = StageInit_Zone5,
-    [LEVEL_INDEX(ZONE_5, ACT_2)] = StageInit_Zone5,
+    [LEVEL_INDEX(ZONE_5, ACT_1)] = CreateStageBg_Zone5,
+    [LEVEL_INDEX(ZONE_5, ACT_2)] = CreateStageBg_Zone5,
     [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = NULL,
     [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = NULL, //
-    [LEVEL_INDEX(ZONE_6, ACT_1)] = StageInit_Zone6_Acts,
-    [LEVEL_INDEX(ZONE_6, ACT_2)] = StageInit_Zone6_Acts,
-    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = StageInit_Zone6_Boss,
+    [LEVEL_INDEX(ZONE_6, ACT_1)] = CreateStageBg_Zone6_Acts,
+    [LEVEL_INDEX(ZONE_6, ACT_2)] = CreateStageBg_Zone6_Acts,
+    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = CreateStageBg_Zone6_Boss,
     [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = NULL, //
-    [LEVEL_INDEX(ZONE_7, ACT_1)] = StageInit_Zone7,
-    [LEVEL_INDEX(ZONE_7, ACT_2)] = StageInit_Zone7,
-    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = StageInit_Zone7,
+    [LEVEL_INDEX(ZONE_7, ACT_1)] = CreateStageBg_Zone7,
+    [LEVEL_INDEX(ZONE_7, ACT_2)] = CreateStageBg_Zone7,
+    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = CreateStageBg_Zone7,
     [LEVEL_INDEX(ZONE_7, ACT_UNUSED)] = NULL, //
     [LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)] = NULL, // This doesn't make sense...
-    [LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)] = StageInit_ZoneFinal_0,
-    [LEVEL_INDEX(ZONE_FINAL, ACT_BOSS)] = StageInit_Zone1,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)] = CreateStageBg_ZoneFinal_0,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_BOSS)] = CreateStageBg_Zone1,
     [LEVEL_INDEX(ZONE_FINAL, ACT_UNUSED)] = NULL, //
     [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = NULL,
     [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = NULL,
 };
 
-void StageBgUpdateZone1Acts12(s32, s32);
-void StageBgUpdateZone2Acts12(s32, s32);
-void StageBgUpdateZone3Acts12(s32, s32);
-void StageBgUpdateZone4Acts12(s32, s32);
-void StageBgUpdateZone5Acts12(s32, s32);
-void StageBgUpdateZone6Acts12(s32, s32);
-void stageBgUpdateDummy(s32, s32);
-void StageBgUpdateZone1ActBoss(s32, s32);
-void StageBgUpdateZone2ActBoss(s32, s32);
-void StageBgUpdateZone3ActBoss(s32, s32);
-void StageBgUpdateZone5ActBoss(s32, s32);
-void StageBgUpdateZone6ActBoss(s32, s32);
-void StageBgUpdateZone7Acts12(s32, s32);
-void StageBgUpdateZone7ActBoss(s32, s32);
-void StageBgUpdateZoneFinalActXX(s32, s32);
-void StageBgUpdateZoneFinalActTA53(s32, s32);
-
 static const CameraMain sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
     // Zone 1
-    [LEVEL_INDEX(ZONE_1, ACT_1)] = StageBgUpdateZone1Acts12,
-    [LEVEL_INDEX(ZONE_1, ACT_2)] = StageBgUpdateZone1Acts12,
-    [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = StageBgUpdateZone1ActBoss,
-    [LEVEL_INDEX(ZONE_1, ACT_UNUSED)] = stageBgUpdateDummy,
+    [LEVEL_INDEX(ZONE_1, ACT_1)] = StageBgUpdate_Zone1Acts12,
+    [LEVEL_INDEX(ZONE_1, ACT_2)] = StageBgUpdate_Zone1Acts12,
+    [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = StageBgUpdate_Zone1ActBoss,
+    [LEVEL_INDEX(ZONE_1, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
     // Zone 2
-    [LEVEL_INDEX(ZONE_2, ACT_1)] = StageBgUpdateZone2Acts12,
-    [LEVEL_INDEX(ZONE_2, ACT_2)] = StageBgUpdateZone2Acts12,
-    [LEVEL_INDEX(ZONE_2, ACT_BOSS)] = StageBgUpdateZone2ActBoss,
-    [LEVEL_INDEX(ZONE_2, ACT_UNUSED)] = stageBgUpdateDummy,
+    [LEVEL_INDEX(ZONE_2, ACT_1)] = StageBgUpdate_Zone2Acts12,
+    [LEVEL_INDEX(ZONE_2, ACT_2)] = StageBgUpdate_Zone2Acts12,
+    [LEVEL_INDEX(ZONE_2, ACT_BOSS)] = StageBgUpdate_Zone2ActBoss,
+    [LEVEL_INDEX(ZONE_2, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
     // Zone 3
-    [LEVEL_INDEX(ZONE_3, ACT_1)] = StageBgUpdateZone3Acts12,
-    [LEVEL_INDEX(ZONE_3, ACT_2)] = StageBgUpdateZone3Acts12,
-    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = StageBgUpdateZone3ActBoss,
-    [LEVEL_INDEX(ZONE_3, ACT_UNUSED)] = stageBgUpdateDummy,
+    [LEVEL_INDEX(ZONE_3, ACT_1)] = StageBgUpdate_Zone3Acts12,
+    [LEVEL_INDEX(ZONE_3, ACT_2)] = StageBgUpdate_Zone3Acts12,
+    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = StageBgUpdate_Zone3ActBoss,
+    [LEVEL_INDEX(ZONE_3, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
     // Zone 4
-    [LEVEL_INDEX(ZONE_4, ACT_1)] = StageBgUpdateZone4Acts12,
-    [LEVEL_INDEX(ZONE_4, ACT_2)] = StageBgUpdateZone4Acts12,
-    [LEVEL_INDEX(ZONE_4, ACT_BOSS)] = stageBgUpdateDummy,
-    [LEVEL_INDEX(ZONE_4, ACT_UNUSED)] = stageBgUpdateDummy,
+    [LEVEL_INDEX(ZONE_4, ACT_1)] = StageBgUpdate_Zone4Acts12,
+    [LEVEL_INDEX(ZONE_4, ACT_2)] = StageBgUpdate_Zone4Acts12,
+    [LEVEL_INDEX(ZONE_4, ACT_BOSS)] = StageBgUpdate_Dummy,
+    [LEVEL_INDEX(ZONE_4, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
     // Zone 5
-    [LEVEL_INDEX(ZONE_5, ACT_1)] = StageBgUpdateZone5Acts12,
-    [LEVEL_INDEX(ZONE_5, ACT_2)] = StageBgUpdateZone5Acts12,
-    [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = StageBgUpdateZone5ActBoss,
-    [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = stageBgUpdateDummy,
+    [LEVEL_INDEX(ZONE_5, ACT_1)] = StageBgUpdate_Zone5Acts12,
+    [LEVEL_INDEX(ZONE_5, ACT_2)] = StageBgUpdate_Zone5Acts12,
+    [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = StageBgUpdate_Zone5ActBoss,
+    [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
     // Zone 6
-    [LEVEL_INDEX(ZONE_6, ACT_1)] = StageBgUpdateZone6Acts12,
-    [LEVEL_INDEX(ZONE_6, ACT_2)] = StageBgUpdateZone6Acts12,
-    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = StageBgUpdateZone6ActBoss,
-    [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = stageBgUpdateDummy,
+    [LEVEL_INDEX(ZONE_6, ACT_1)] = StageBgUpdate_Zone6Acts12,
+    [LEVEL_INDEX(ZONE_6, ACT_2)] = StageBgUpdate_Zone6Acts12,
+    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = StageBgUpdate_Zone6ActBoss,
+    [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
     // Zone 7
-    [LEVEL_INDEX(ZONE_7, ACT_1)] = StageBgUpdateZone7Acts12,
-    [LEVEL_INDEX(ZONE_7, ACT_2)] = StageBgUpdateZone7Acts12,
-    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = StageBgUpdateZone7ActBoss,
-    [LEVEL_INDEX(ZONE_7, ACT_UNUSED)] = stageBgUpdateDummy,
+    [LEVEL_INDEX(ZONE_7, ACT_1)] = StageBgUpdate_Zone7Acts12,
+    [LEVEL_INDEX(ZONE_7, ACT_2)] = StageBgUpdate_Zone7Acts12,
+    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = StageBgUpdate_Zone7ActBoss,
+    [LEVEL_INDEX(ZONE_7, ACT_UNUSED)] = StageBgUpdate_Dummy,
 
     // Zone Final
-    [LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)] = StageBgUpdateZoneFinalActXX,
-    [LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)] = StageBgUpdateZoneFinalActTA53,
-    [LEVEL_INDEX(ZONE_FINAL, ACT_BOSS)] = StageBgUpdateZone1Acts12,
-    [LEVEL_INDEX(ZONE_FINAL, ACT_UNUSED)] = StageBgUpdateZone2Acts12,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)] = StageBgUpdate_ZoneFinalActXX,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)] = StageBgUpdate_ZoneFinalActTA53,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_BOSS)] = StageBgUpdate_Zone1Acts12,
+    [LEVEL_INDEX(ZONE_FINAL, ACT_UNUSED)] = StageBgUpdate_Zone2Acts12,
 
     // Zone Unused
-    [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = StageBgUpdateZone1Acts12,
-    [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = StageBgUpdateZone6Acts12,
+    [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = StageBgUpdate_Zone1Acts12,
+    [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = StageBgUpdate_Zone6Acts12,
 };
 
 static const s8 gUnknown_080D5A98[NUM_LEVEL_IDS][4] = {

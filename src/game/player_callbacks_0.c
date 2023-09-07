@@ -893,7 +893,7 @@ void PlayerCB_8012C2C(Player *p)
 {
     // Only decrease Tails' counter every 2nd frame, giving him 8 seconds of flight.
     // ...why didn't they just set his timer to a bigger value?
-    if ((gUnknown_03005590 & 0x1) && (p->flyingDurationTails != 0)) {
+    if ((gStageTime & 0x1) && (p->flyingDurationTails != 0)) {
         p->flyingDurationTails--;
     }
 
@@ -1398,7 +1398,7 @@ void sub_801350C(Player *p)
     s32 p2;
     s32 res;
 
-    if ((gUnknown_03005590 & 0x3) == 0) {
+    if ((gStageTime & 0x3) == 0) {
         s32 offsetY = p->unk17;
 
         if (GRAVITY_IS_INVERTED)

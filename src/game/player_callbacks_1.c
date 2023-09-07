@@ -2958,7 +2958,7 @@ void sub_8029FA4(Player *p)
 {
     u8 mask = (p->moveState & MOVESTATE_8000000) ? 0x7 : 0x3;
 
-    if ((gUnknown_03005590 & mask) == 0) {
+    if ((gStageTime & mask) == 0) {
         s32 u17 = p->unk17;
 
         if (GRAVITY_IS_INVERTED) {

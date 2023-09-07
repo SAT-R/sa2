@@ -93,7 +93,7 @@ const u8 gUnknown_080D5B50[DISPLAY_HEIGHT] = {
     0
 };
 
-void StageInit_Zone3(void)
+void CreateStageBg_Zone3(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     gDispCnt |= 0x100;
@@ -121,10 +121,10 @@ typedef struct {
 
 // https://decomp.me/scratch/Esyzr
 #if 01
-NONMATCH("asm/non_matching/StageBgUpdateZone3Acts12.inc",
-         void StageBgUpdateZone3Acts12(s32 a, s32 b))
+NONMATCH("asm/non_matching/StageBgUpdate_Zone3Acts12.inc",
+         void StageBgUpdate_Zone3Acts12(s32 a, s32 b))
 #else
-void StageBgUpdateZone3Acts12(s32 a, s32 b)
+void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
 #endif
 {
     s16 r6;
@@ -136,11 +136,11 @@ void StageBgUpdateZone3Acts12(s32 a, s32 b)
     s32 pFlags;
 #ifdef NON_MATCHING
     register s16 sl asm("sl") = 0;
-    register u16 *bgBuffer asm("r5") = gUnknown_03001884;
+    register u16 *bgBuffer asm("r5") = gBgOffsetsHBlank;
     register s16 r3 asm("r3") = (Div(b, 60) << 16) >> 16;
 #else
     s16 sl = 0;
-    u16 *bgBuffer = gUnknown_03001884;
+    u16 *bgBuffer = gBgOffsetsHBlank;
     s16 r3 = (Div(b, 60) << 16) >> 16;
 #endif
 

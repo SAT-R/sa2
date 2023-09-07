@@ -55,7 +55,7 @@ CreateEggBomberTank: @ 0x0803CCA8
 	str r0, [r2, #0x20]
 	bl sub_8039ED4
 	ldr r1, _0803CD10 @ =gPseudoRandom
-	ldr r0, _0803CD14 @ =gUnknown_03005590
+	ldr r0, _0803CD14 @ =gStageTime
 	ldr r0, [r0]
 	str r0, [r1]
 	ldr r0, _0803CD18 @ =Task_EggBomberTankMain
@@ -92,7 +92,7 @@ CreateEggBomberTank: @ 0x0803CCA8
 	.align 2, 0
 _0803CD0C: .4byte gPlayer
 _0803CD10: .4byte gPseudoRandom
-_0803CD14: .4byte gUnknown_03005590
+_0803CD14: .4byte gStageTime
 _0803CD18: .4byte Task_EggBomberTankMain
 _0803CD1C: .4byte TaskDestructor_EggBomberTankMain
 _0803CD20: .4byte gDifficultyLevel
@@ -806,7 +806,7 @@ sub_803D2C0: @ 0x0803D2C0
 	ldr r0, _0803D35C @ =0x3C6EF35F
 	adds r1, r1, r0
 	str r1, [r2]
-	ldr r0, _0803D360 @ =gUnknown_03005590
+	ldr r0, _0803D360 @ =gStageTime
 	ldr r0, [r0]
 	adds r0, r0, r1
 	movs r1, #0x11
@@ -848,7 +848,7 @@ _0803D350: .4byte gCamera
 _0803D354: .4byte gPseudoRandom
 _0803D358: .4byte 0x00196225
 _0803D35C: .4byte 0x3C6EF35F
-_0803D360: .4byte gUnknown_03005590
+_0803D360: .4byte gStageTime
 _0803D364: .4byte sub_803E5B0
 
 	thumb_func_start sub_803D368
@@ -1642,7 +1642,7 @@ sub_803D978: @ 0x0803D978
 	ldr r1, _0803D9C8 @ =gObjPalette
 	mov ip, r1
 	ldr r7, _0803D9CC @ =gUnknown_080D7B70
-	ldr r6, _0803D9D0 @ =gUnknown_03005590
+	ldr r6, _0803D9D0 @ =gStageTime
 	movs r5, #2
 _0803D99C:
 	adds r2, r3, #0
@@ -1668,7 +1668,7 @@ _0803D99C:
 _0803D9C4: .4byte gFlags
 _0803D9C8: .4byte gObjPalette
 _0803D9CC: .4byte gUnknown_080D7B70
-_0803D9D0: .4byte gUnknown_03005590
+_0803D9D0: .4byte gStageTime
 _0803D9D4:
 	movs r3, #0
 	adds r4, r1, #0
@@ -1700,7 +1700,7 @@ _0803D9FC:
 	movs r3, #0
 	ldr r7, _0803DA3C @ =gObjPalette
 	ldr r6, _0803DA44 @ =gUnknown_080D7B70
-	ldr r5, _0803DA48 @ =gUnknown_03005590
+	ldr r5, _0803DA48 @ =gStageTime
 	movs r4, #2
 _0803DA10:
 	adds r2, r3, #0
@@ -1727,7 +1727,7 @@ _0803DA38: .4byte gFlags
 _0803DA3C: .4byte gObjPalette
 _0803DA40: .4byte gUnknown_080D7B90
 _0803DA44: .4byte gUnknown_080D7B70
-_0803DA48: .4byte gUnknown_03005590
+_0803DA48: .4byte gStageTime
 _0803DA4C:
 	movs r3, #0
 	ldr r4, _0803DA84 @ =gObjPalette
@@ -1971,7 +1971,7 @@ _0803DC18: .4byte 0x0000026B
 _0803DC1C: .4byte gCamera
 _0803DC20: .4byte gUnknown_080D7B43
 _0803DC24:
-	ldr r0, _0803DCDC @ =gUnknown_03005590
+	ldr r0, _0803DCDC @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #3
 	ands r0, r1
@@ -2062,7 +2062,7 @@ _0803DCCC:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0803DCDC: .4byte gUnknown_03005590
+_0803DCDC: .4byte gStageTime
 _0803DCE0: .4byte gCamera
 _0803DCE4: .4byte 0x06012980
 _0803DCE8: .4byte 0x0000026B
@@ -2718,7 +2718,7 @@ sub_803E214: @ 0x0803E214
 	push {r6, r7}
 	sub sp, #0x20
 	mov ip, r0
-	ldr r0, _0803E2BC @ =gUnknown_03005590
+	ldr r0, _0803E2BC @ =gStageTime
 	ldr r7, [r0]
 	movs r0, #7
 	ands r7, r0
@@ -2796,7 +2796,7 @@ _0803E244:
 	bl CreateBossParticleWithExplosionUpdate
 	b _0803E3BC
 	.align 2, 0
-_0803E2BC: .4byte gUnknown_03005590
+_0803E2BC: .4byte gStageTime
 _0803E2C0: .4byte 0x00000103
 _0803E2C4: .4byte gPseudoRandom
 _0803E2C8: .4byte 0x00196225
@@ -3112,7 +3112,7 @@ Task_803E520: @ 0x0803E520
 	ldr r0, _0803E5A4 @ =0x3C6EF35F
 	adds r1, r1, r0
 	str r1, [r2]
-	ldr r0, _0803E5A8 @ =gUnknown_03005590
+	ldr r0, _0803E5A8 @ =gStageTime
 	ldr r0, [r0]
 	adds r0, r0, r1
 	movs r1, #0x15
@@ -3141,7 +3141,7 @@ _0803E598: .4byte gCurTask
 _0803E59C: .4byte gPseudoRandom
 _0803E5A0: .4byte 0x00196225
 _0803E5A4: .4byte 0x3C6EF35F
-_0803E5A8: .4byte gUnknown_03005590
+_0803E5A8: .4byte gStageTime
 _0803E5AC: .4byte sub_803D2C0
 
 	thumb_func_start sub_803E5B0
@@ -3174,7 +3174,7 @@ sub_803E5B0: @ 0x0803E5B0
 	ldr r0, _0803E634 @ =0x3C6EF35F
 	adds r1, r1, r0
 	str r1, [r2]
-	ldr r0, _0803E638 @ =gUnknown_03005590
+	ldr r0, _0803E638 @ =gStageTime
 	ldr r0, [r0]
 	adds r0, r0, r1
 	movs r1, #0xd
@@ -3204,7 +3204,7 @@ _0803E628: .4byte gCamera
 _0803E62C: .4byte gPseudoRandom
 _0803E630: .4byte 0x00196225
 _0803E634: .4byte 0x3C6EF35F
-_0803E638: .4byte gUnknown_03005590
+_0803E638: .4byte gStageTime
 
 	thumb_func_start sub_803E63C
 sub_803E63C: @ 0x0803E63C

@@ -288,8 +288,8 @@ void sub_8079510(Sprite_IA69 *ia69);
 
 void sub_80791B4(Sprite_IA69 *ia69)
 {
-    u32 temp = gUnknown_03005590 / ia69->unk160;
-    u32 temp2 = gUnknown_03005590 % ia69->unk160;
+    u32 temp = gStageTime / ia69->unk160;
+    u32 temp2 = gStageTime % ia69->unk160;
 
     if (ia69->unk16C != temp) {
         sub_8078E48(ia69);

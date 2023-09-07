@@ -1706,6 +1706,8 @@ _0800CB8E:
 	.align 2, 0
 _0800CBA0: .4byte gPlayer
 
+@ In:
+@  r0 = Player*
 	thumb_func_start sub_800CBA4
 sub_800CBA4: @ 0x0800CBA4
 	push {r4, r5, lr}
@@ -1851,6 +1853,9 @@ _0800CCB0:
 	bx r1
 	.align 2, 0
 
+@ Called by: Boss 3,6,7, hammerhead, platform (square),
+@            spikes, spring bouncy, speeding platform,
+@            arrow platform, spike platform
 @ Returns some flags
 @ u32 sub_800CCB8 (Sprite*, s32 x, s32 y, Player*);
 	thumb_func_start sub_800CCB8
@@ -1990,6 +1995,7 @@ _0800CDB0: .4byte gCurrentLevel
 _0800CDB4: .4byte gUnknown_030054B0
 _0800CDB8: .4byte gCamera
 
+@; Called by IAs ramp, spring, floating spring, bounce block, spike platform
 	thumb_func_start sub_800CDBC
 sub_800CDBC: @ 0x0800CDBC
 	push {r4, r5, r6, r7, lr}
@@ -2390,6 +2396,7 @@ _0800D088:
 _0800D098: .4byte 0xFFFF00FF
 _0800D09C: .4byte 0xFFFFFF00
 
+@ Called by: player_mp_actor.s
 	thumb_func_start sub_800D0A0
 sub_800D0A0: @ 0x0800D0A0
 	push {r4, r5, r6, r7, lr}

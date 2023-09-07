@@ -5,10 +5,10 @@
 
 #include "game/stage/background/callbacks.h"
 
-void StageBgUpdateZoneFinalActXX(void)
+void StageBgUpdate_ZoneFinalActXX(void)
 {
     if (!PLAYER_IS_ALIVE) {
-        gUnknown_03005590--;
+        gStageTime--;
     }
 
     gHBlankCallbacks[gNumHBlankCallbacks++] = HBlankCB_BgUpdateZoneFinalActXX;

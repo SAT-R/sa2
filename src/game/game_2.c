@@ -136,7 +136,7 @@ struct Task *sub_801F3A4(s32 x, s32 y, u16 score)
 void sub_801F488(void)
 {
     Player *p = &gPlayer;
-    if ((gUnknown_03005590 & 0x7) == 0) {
+    if ((gStageTime & 0x7) == 0) {
         struct Task *t;
         TaskStrc_801F15C *ts;
         Sprite *s;

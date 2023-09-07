@@ -8,7 +8,7 @@
 #include "game/bosses/boss_9.h"
 #include "game/stage/background/callbacks.h"
 
-void StageBgUpdateZoneFinalActTA53(void)
+void StageBgUpdate_ZoneFinalActTA53(void)
 {
     u32 aBool = FALSE;
     int_vcount y;
@@ -24,9 +24,9 @@ void StageBgUpdateZoneFinalActTA53(void)
         gUnknown_03002878 = (void *)&REG_BG1HOFS;
         gUnknown_03002A80 = 2;
 
-        ptr = (u16 *)gUnknown_03001884;
+        ptr = (u16 *)gBgOffsetsHBlank;
         for (y = 0; y < DISPLAY_HEIGHT - 1; y++) {
-            s16 val = SIN(((y + gUnknown_03005590) * 40) & ONE_CYCLE) >> 12;
+            s16 val = SIN(((y + gStageTime) * 40) & ONE_CYCLE) >> 12;
             *ptr++ = val;
         }
     }

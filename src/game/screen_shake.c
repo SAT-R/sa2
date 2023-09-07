@@ -53,7 +53,7 @@ void Task_ScreenShake(void)
             } break;
         }
 
-        if (!(shake->flags & 0x20) || !(gUnknown_03005590 & 0x1)) {
+        if (!(shake->flags & 0x20) || !(gStageTime & 0x1)) {
             if (shake->flags & SCREENSHAKE_HORIZONTAL) {
                 cam->unk60 = r2;
             }

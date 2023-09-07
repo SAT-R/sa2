@@ -58,7 +58,7 @@ CreateSuperEggRoboZ: @ 0x0804A6C8
 	str r0, [r2, #0x20]
 	bl sub_8039ED4
 	ldr r1, _0804A780 @ =gPseudoRandom
-	ldr r0, _0804A784 @ =gUnknown_03005590
+	ldr r0, _0804A784 @ =gStageTime
 	ldr r0, [r0]
 	str r0, [r1]
 	ldr r1, _0804A788 @ =gUnknown_03005AF0
@@ -109,7 +109,7 @@ _0804A774: .4byte gUnknown_03004D80
 _0804A778: .4byte gUnknown_03002280
 _0804A77C: .4byte gPlayer
 _0804A780: .4byte gPseudoRandom
-_0804A784: .4byte gUnknown_03005590
+_0804A784: .4byte gStageTime
 _0804A788: .4byte gUnknown_03005AF0
 _0804A78C: .4byte 0xFFFFCFFF
 _0804A790: .4byte gUnknown_03005AA0
@@ -410,7 +410,7 @@ sub_804A9D8: @ 0x0804A9D8
 	ldr r1, _0804AAE8 @ =0xFFFFFF00
 	adds r0, r0, r1
 	str r0, [r5, #4]
-	ldr r4, _0804AAEC @ =gUnknown_03005590
+	ldr r4, _0804AAEC @ =gStageTime
 	ldr r0, [r4]
 	movs r1, #0x1f
 	ands r0, r1
@@ -531,7 +531,7 @@ _0804AADC:
 	.align 2, 0
 _0804AAE4: .4byte gCurTask
 _0804AAE8: .4byte 0xFFFFFF00
-_0804AAEC: .4byte gUnknown_03005590
+_0804AAEC: .4byte gStageTime
 _0804AAF0: .4byte gPlayer
 _0804AAF4: .4byte 0x0000FFFF
 _0804AAF8: .4byte gUnknown_03005424
@@ -3281,7 +3281,7 @@ sub_804C080: @ 0x0804C080
 	push {r5, r6, r7}
 	sub sp, #0x20
 	mov sl, r0
-	ldr r0, _0804C20C @ =gUnknown_03005590
+	ldr r0, _0804C20C @ =gStageTime
 	mov sb, r0
 	ldr r7, [r0]
 	movs r0, #7
@@ -3366,7 +3366,7 @@ _0804C116:
 	mov r3, sl
 	str r0, [r3, #0x14]
 _0804C13C:
-	ldr r0, _0804C20C @ =gUnknown_03005590
+	ldr r0, _0804C20C @ =gStageTime
 	ldr r0, [r0]
 	adds r7, r0, #3
 	movs r0, #7
@@ -3470,7 +3470,7 @@ _0804C1FC:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0804C20C: .4byte gUnknown_03005590
+_0804C20C: .4byte gStageTime
 _0804C210: .4byte gPseudoRandom
 _0804C214: .4byte 0x00196225
 _0804C218: .4byte 0x3C6EF35F
@@ -3566,7 +3566,7 @@ _0804C294:
 	adds r0, r0, r1
 	str r0, [sp, #0x20]
 	str r0, [r6]
-	ldr r1, _0804C38C @ =gUnknown_03005590
+	ldr r1, _0804C38C @ =gStageTime
 	mov sl, r1
 	ldr r6, [r1]
 	movs r0, #3
@@ -3653,7 +3653,7 @@ _0804C37C:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0804C38C: .4byte gUnknown_03005590
+_0804C38C: .4byte gStageTime
 _0804C390: .4byte gPseudoRandom
 _0804C394: .4byte 0x00196225
 _0804C398: .4byte 0x3C6EF35F
@@ -4524,7 +4524,7 @@ sub_804CA70: @ 0x0804CA70
 	mov r7, r8
 	push {r7}
 	adds r3, r0, #0
-	ldr r0, _0804CABC @ =gUnknown_03005590
+	ldr r0, _0804CABC @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #2
 	ands r0, r1
@@ -4560,7 +4560,7 @@ _0804CA9E:
 	bls _0804CA9E
 	b _0804CAFA
 	.align 2, 0
-_0804CABC: .4byte gUnknown_03005590
+_0804CABC: .4byte gStageTime
 _0804CAC0: .4byte gFlags
 _0804CAC4: .4byte gObjPalette
 _0804CAC8: .4byte gUnknown_080D88B0

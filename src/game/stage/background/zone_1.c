@@ -11,7 +11,7 @@
 extern struct Backgrounds gUnknown_03005850;
 extern const Background gUnknown_080D5864[4];
 
-void StageInit_Zone1(void)
+void CreateStageBg_Zone1(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     gDispCnt |= 0x100;
@@ -44,7 +44,7 @@ void StageInit_Zone1(void)
     gBgScrollRegs[0][1] = 0;
 }
 
-void StageBgUpdateZone1Acts12(s32 UNUSED a, s32 UNUSED b)
+void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
 {
 
     s32 i;
@@ -59,7 +59,7 @@ void StageBgUpdateZone1Acts12(s32 UNUSED a, s32 UNUSED b)
             temp = (gPlayer.moveState & MOVESTATE_4000000) ? 7 : 0xF;
 
             val = gBgScrollRegs[0][0];
-            if ((gUnknown_03005590 & temp) == temp) {
+            if ((gStageTime & temp) == temp) {
                 val++;
             }
             gBgScrollRegs[0][0] = val;
@@ -73,7 +73,7 @@ void StageBgUpdateZone1Acts12(s32 UNUSED a, s32 UNUSED b)
         gFlags |= 4;
         gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 4;
-        cursor = gUnknown_03001884;
+        cursor = gBgOffsetsHBlank;
         initial1 = 0;
 
         if ((gPlayer.moveState & MOVESTATE_8000000) && gUnknown_030054F4 >= 7) {
@@ -81,7 +81,7 @@ void StageBgUpdateZone1Acts12(s32 UNUSED a, s32 UNUSED b)
             temp = (gPlayer.moveState & MOVESTATE_4000000) ? 0xF : 0x1F;
 
             val = gBgScrollRegs[3][0];
-            if ((gUnknown_03005590 & temp) == temp) {
+            if ((gStageTime & temp) == temp) {
                 val++;
             }
             gBgScrollRegs[3][0] = val;

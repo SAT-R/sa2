@@ -9,7 +9,7 @@
 
 extern const Background gUnknown_080D5864[4];
 
-void StageInit_Zone4(void)
+void CreateStageBg_Zone4(void)
 {
     Background *background = &gUnknown_03005850.unk0;
     const Background *templates;
@@ -40,7 +40,7 @@ struct UNK_801CDF0 {
     s16 unk40A;
 };
 
-void StageBgUpdateZone4Acts12(s32 a, s32 b)
+void StageBgUpdate_Zone4Acts12(s32 a, s32 b)
 {
     Player *player = &gPlayer;
 
@@ -71,7 +71,7 @@ void StageBgUpdateZone4Acts12(s32 a, s32 b)
     sub_8002A3C(&gUnknown_03005850.unk0);
     UpdateBgAnimationTiles(&gUnknown_03005850.unk0);
 
-    if (!(gUnknown_03005590 & 0xF)) {
+    if (!(gStageTime & 0xF)) {
         gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 1) & 0xff;
         gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xff;
     }

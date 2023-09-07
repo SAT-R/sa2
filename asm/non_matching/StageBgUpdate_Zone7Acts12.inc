@@ -1,15 +1,10 @@
-.include "asm/macros.inc"
-.include "constants/constants.inc"
+.include "constants/gba_constants.inc"
 
-.text
 .syntax unified
-.arm
-
-	thumb_func_start StageBgUpdateZone7Acts12
-StageBgUpdateZone7Acts12: @ 0x0801E26C
+.text
 	push {r4, r5, r6, r7, lr}
-	adds r3, r0, #0
-	adds r7, r1, #0
+	adds r3, r0, #0     @ r3 = x
+	adds r7, r1, #0     @ r7 = y
 	ldr r0, _0801E2C0 @ =gCurrentLevel
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
@@ -21,14 +16,14 @@ StageBgUpdateZone7Acts12: @ 0x0801E26C
 	lsrs r1, r1, #0x1f
 	movs r4, #0
 	movs r2, #0
-	ldr r5, _0801E2C4 @ =gUnknown_080D5CA2
+	ldr r5, _0801E2C4 @ =sZone7BgTransitionRegions
 	lsls r1, r1, #4
 	adds r0, r1, r5
 	ldrh r0, [r0]
 	cmp r3, r0
 	blt _0801E2B2
-	adds r6, r5, #0
-	movs r5, #1
+	adds r6, r5, #0     @ r6 = sZone7BgTransitionRegions
+	movs r5, #1         @ r5 = r5 = 1
 _0801E298:
 	adds r0, r2, #1
 	lsls r0, r0, #0x18
@@ -48,15 +43,15 @@ _0801E2B2:
 	bne _0801E2C8
 	adds r0, r3, #0
 	adds r1, r7, #0
-	bl sub_801D9D4
+	bl Zone7BgUpdate_Inside
 	b _0801E2D0
 	.align 2, 0
 _0801E2C0: .4byte gCurrentLevel
-_0801E2C4: .4byte gUnknown_080D5CA2
+_0801E2C4: .4byte sZone7BgTransitionRegions
 _0801E2C8:
 	adds r0, r3, #0
 	adds r1, r7, #0
-	bl sub_801DD7C
+	bl Zone7BgUpdate_Outside
 _0801E2D0:
 	ldr r0, _0801E2DC @ =gPlayer
 	adds r0, #0xa8

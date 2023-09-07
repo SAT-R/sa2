@@ -155,7 +155,7 @@ bool32 RandomlySpawnAirBubbles(Player *p)
 
     u32 result = FALSE;
 
-    u32 flags = gUnknown_03005590 & 0x7;
+    u32 flags = gStageTime & 0x7;
     if (!flags) {
         rand = ((u32)PseudoRandom32() & 0x300);
         if (!rand) {
@@ -234,7 +234,7 @@ static void Task_SpawnBubblesAfterDrowning(void)
     if (IS_ALIVE(p)) {
         TaskDestroy(gCurTask);
         return;
-    } else if (!(gUnknown_03005590 & (0x2 | 0x1))) {
+    } else if (!(gStageTime & (0x2 | 0x1))) {
         if ((PseudoRandom32() & 0x300) == 0) {
             s32 r4 = ((u32)PseudoRandom32() & 0x100) >> 8;
 

@@ -696,7 +696,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                           Player *player, u32 *param4) //)
 {
     s16 screenX, screenY;
-    u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
+    u32 sp0C[1] = { gStageTime & 0x7F };
     s32 sl = player->unk60;
 
     screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
@@ -865,7 +865,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                           Player *player, u32 *param4)
 {
     s16 screenX, screenY;
-    u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
+    u32 sp0C[1] = { gStageTime & 0x7F };
     s32 sl = player->unk60;
 
     screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);

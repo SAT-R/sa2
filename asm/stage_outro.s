@@ -1041,7 +1041,7 @@ _08030C88:
 	mov r1, r8
 	str r1, [r0]
 _08030CB8:
-	ldr r0, _08030D24 @ =gUnknown_03005590
+	ldr r0, _08030D24 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #3
 	ands r0, r1
@@ -1083,7 +1083,7 @@ _08030D14: .4byte 0x0000C350
 _08030D18: .4byte gGameMode
 _08030D1C: .4byte gNumLives
 _08030D20: .4byte gPressedKeys
-_08030D24: .4byte gUnknown_03005590
+_08030D24: .4byte gStageTime
 _08030D28:
 	movs r0, #0xb8
 	lsls r0, r0, #1

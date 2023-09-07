@@ -80,7 +80,7 @@ static void sub_807ACF4(Sprite_IA78 *ia78, u32 p2)
 {
     u8 i;
     Sprite *s = &ia78->s;
-    u32 temp = gUnknown_03005590 % 286;
+    u32 temp = gStageTime % 286;
 
     if (temp <= 119) {
         temp &= 15;

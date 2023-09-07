@@ -66,7 +66,7 @@ static void Task_Hammerhead(void)
     }
 
     unk4C = hammerhead->unk4C;
-    temp = (((gUnknown_03005590 * 3) / 2) + (u16)hammerhead->unk44) % 256;
+    temp = (((gStageTime * 3) / 2) + (u16)hammerhead->unk44) % 256;
     temp = ((unk4C * temp) & 0x1FF) | 0x200;
 
     prevUnk48 = hammerhead->unk48;

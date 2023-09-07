@@ -94,7 +94,7 @@ void sub_805213C(Sprite_KuraKura *kk)
     Sprite *s1 = &kk->s1;
     Sprite *s2 = &kk->s2;
 
-    kk->unkAC = (SIN_24_8((gUnknown_03005590 * 4) & ONE_CYCLE) >> 1) & ONE_CYCLE;
+    kk->unkAC = (SIN_24_8((gStageTime * 4) & ONE_CYCLE) >> 1) & ONE_CYCLE;
 
     for (i = 0; i < 2; i++) {
         s1->x = (Q_24_8_TO_INT(kk->spawnX) + (SIN(kk->unkAC) >> (11 - i))) - gCamera.x;
