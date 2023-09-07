@@ -129,8 +129,8 @@ File OpenWholeFile(char* path)
             if((long)bytes_read != (long)file.size) {
                 fprintf(stderr,
                     "ERROR reading '%s':\n"
-                    "Bytes expected: %ld\n"
-                    "Bytes read: %ld\n",
+                    "Bytes expected: %zd\n"
+                    "Bytes read: %zu\n",
                     path, file.size, bytes_read);
             }
         }
