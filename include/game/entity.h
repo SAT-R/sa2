@@ -135,12 +135,18 @@ void sub_801FD34(s32, s32, s32);
     ((Q_24_8_TO_INT(_enemy->offsetX)                                                    \
       >= (_mapEntity->d.sData[0] * TILE_WIDTH + _mapEntity->d.uData[2] * TILE_WIDTH)))
 
+#define ENEMY_CROSSED_TOP_BORDER_RAW(_enemy, _mapEntity, _offsetY)                      \
+    ((_offsetY <= _mapEntity->d.sData[1] * TILE_WIDTH))
+
 #define ENEMY_CROSSED_TOP_BORDER(_enemy, _mapEntity)                                    \
-    ((Q_24_8_TO_INT(_enemy->offsetY) <= _mapEntity->d.sData[1] * TILE_WIDTH))
+    ENEMY_CROSSED_TOP_BORDER_RAW(_enemy, _mapEntity, Q_24_8_TO_INT(_enemy->offsetY))
+
+#define ENEMY_CROSSED_BOTTOM_BORDER_RAW(_enemy, _mapEntity, _offsetY)                   \
+    ((_offsetY                                                                          \
+      >= (_mapEntity->d.sData[1] * TILE_WIDTH + _mapEntity->d.uData[3] * TILE_WIDTH)))
 
 #define ENEMY_CROSSED_BOTTOM_BORDER(_enemy, _mapEntity)                                 \
-    ((Q_24_8_TO_INT(_enemy->offsetY)                                                    \
-      >= (_mapEntity->d.sData[1] * TILE_WIDTH + _mapEntity->d.uData[3] * TILE_WIDTH)))
+    ENEMY_CROSSED_BOTTOM_BORDER_RAW(_enemy, _mapEntity, Q_24_8_TO_INT(_enemy->offsetY))
 
 #define ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, _task)                        \
     sub_801F100(Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY),                        \

@@ -599,7 +599,7 @@ extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
 extern void sub_80122DC(s32, s32);
 
 // HandleHitPlayer
-extern void sub_800C84C(Sprite *, s32, s32);
+extern u32 sub_800C84C(Sprite *, s32, s32);
 
 typedef s32 (*Func801F100)(s32, s32, s32);
 extern s32 sub_801EB44(s32, s32, s32);
