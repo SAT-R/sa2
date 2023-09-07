@@ -1331,7 +1331,7 @@ _0804D704:
 	ldr r1, _0804D78C @ =gUnknown_03002A80
 	movs r0, #2
 	strb r0, [r1]
-	ldr r0, _0804D790 @ =gComputedBgBuffer
+	ldr r0, _0804D790 @ =gBgOffsetsHBlank
 	ldr r3, [r0]
 	movs r2, #0
 	ldr r6, _0804D794 @ =gSineTable
@@ -1368,7 +1368,7 @@ _0804D780: .4byte gFlags
 _0804D784: .4byte gUnknown_03002878
 _0804D788: .4byte 0x04000016
 _0804D78C: .4byte gUnknown_03002A80
-_0804D790: .4byte gComputedBgBuffer
+_0804D790: .4byte gBgOffsetsHBlank
 _0804D794: .4byte gSineTable
 _0804D798: .4byte gStageTime
 _0804D79C: .4byte 0x000003FF

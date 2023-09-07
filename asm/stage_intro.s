@@ -180,7 +180,7 @@ sub_802DBC0: @ 0x0802DBC0
 	push {r4, r5, r6, r7, lr}
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18
-	ldr r0, _0802DC0C @ =gComputedBgBuffer
+	ldr r0, _0802DC0C @ =gBgOffsetsHBlank
 	ldr r4, [r0]
 	movs r5, #0
 	lsls r1, r1, #0x16
@@ -217,7 +217,7 @@ _0802DBF4:
 	blt _0802DBF4
 	b _0802DCBE
 	.align 2, 0
-_0802DC0C: .4byte gComputedBgBuffer
+_0802DC0C: .4byte gBgOffsetsHBlank
 _0802DC10: .4byte 0xFFFFFF00
 _0802DC14:
 	ldr r2, _0802DC44 @ =gSineTable
@@ -323,7 +323,7 @@ sub_802DCC8: @ 0x0802DCC8
 	push {r4, r5, r6, r7, lr}
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18
-	ldr r0, _0802DD08 @ =gComputedBgBuffer
+	ldr r0, _0802DD08 @ =gBgOffsetsHBlank
 	ldr r4, [r0]
 	movs r5, #0
 	lsls r1, r1, #0x16
@@ -354,7 +354,7 @@ _0802DCF6:
 	bgt _0802DCF6
 	b _0802DDBC
 	.align 2, 0
-_0802DD08: .4byte gComputedBgBuffer
+_0802DD08: .4byte gBgOffsetsHBlank
 _0802DD0C: .4byte 0xFFFFFF00
 _0802DD10: .4byte 0xFFFF0000
 _0802DD14:
@@ -455,7 +455,7 @@ sub_802DDC4: @ 0x0802DDC4
 	push {r4, r5, r6, r7, lr}
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
-	ldr r0, _0802DE1C @ =gComputedBgBuffer
+	ldr r0, _0802DE1C @ =gBgOffsetsHBlank
 	ldr r4, [r0]
 	movs r6, #0
 	lsls r1, r1, #0x16
@@ -500,7 +500,7 @@ _0802DE04:
 	blt _0802DE04
 	b _0802DF0A
 	.align 2, 0
-_0802DE1C: .4byte gComputedBgBuffer
+_0802DE1C: .4byte gBgOffsetsHBlank
 _0802DE20: .4byte 0xFFFFFEFF
 _0802DE24: .4byte 0xFFFFFE00
 _0802DE28:
@@ -579,7 +579,7 @@ _0802DEAC:
 	lsls r0, r0, #1
 	adds r4, r4, r0
 	movs r1, #0xa0
-	ldr r0, _0802DF10 @ =gComputedBgBuffer
+	ldr r0, _0802DF10 @ =gBgOffsetsHBlank
 	mov ip, r0
 	lsls r7, r5, #1
 	cmp r1, r5
@@ -631,7 +631,7 @@ _0802DF0A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802DF10: .4byte gComputedBgBuffer
+_0802DF10: .4byte gBgOffsetsHBlank
 _0802DF14: .4byte 0xFFFF0000
 
 	thumb_func_start sub_802DF18
@@ -639,7 +639,7 @@ sub_802DF18: @ 0x0802DF18
 	push {r4, r5, r6, r7, lr}
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
-	ldr r0, _0802DF64 @ =gComputedBgBuffer
+	ldr r0, _0802DF64 @ =gBgOffsetsHBlank
 	ldr r4, [r0]
 	movs r7, #0
 	lsls r1, r1, #0x16
@@ -677,7 +677,7 @@ _0802DF4C:
 	blt _0802DF4C
 	b _0802E03A
 	.align 2, 0
-_0802DF64: .4byte gComputedBgBuffer
+_0802DF64: .4byte gBgOffsetsHBlank
 _0802DF68: .4byte 0xFFFFFEFF
 _0802DF6C: .4byte 0xFFFFFE00
 _0802DF70:
@@ -801,7 +801,7 @@ _0802E040: .4byte 0xFFFF0000
 sub_802E044: @ 0x0802E044
 	push {r4, r5, r6, r7, lr}
 	adds r4, r0, #0
-	ldr r0, _0802E08C @ =gComputedBgBuffer
+	ldr r0, _0802E08C @ =gBgOffsetsHBlank
 	ldr r6, [r0]
 	lsls r1, r1, #0x16
 	lsrs r5, r1, #0x16
@@ -834,7 +834,7 @@ sub_802E044: @ 0x0802E044
 	adds r3, r0, #0
 	b _0802E096
 	.align 2, 0
-_0802E08C: .4byte gComputedBgBuffer
+_0802E08C: .4byte gBgOffsetsHBlank
 _0802E090: .4byte gSineTable
 _0802E094:
 	adds r3, r7, #0
@@ -879,7 +879,7 @@ _0802E0CC:
 sub_802E0D4: @ 0x0802E0D4
 	push {r4, r5, r6, r7, lr}
 	adds r5, r0, #0
-	ldr r0, _0802E11C @ =gComputedBgBuffer
+	ldr r0, _0802E11C @ =gBgOffsetsHBlank
 	ldr r4, [r0]
 	lsls r1, r1, #0x16
 	lsrs r6, r1, #0x16
@@ -912,7 +912,7 @@ sub_802E0D4: @ 0x0802E0D4
 	adds r3, r0, #0
 	b _0802E126
 	.align 2, 0
-_0802E11C: .4byte gComputedBgBuffer
+_0802E11C: .4byte gBgOffsetsHBlank
 _0802E120: .4byte gSineTable
 _0802E124:
 	adds r3, r7, #0
@@ -957,7 +957,7 @@ _0802E15E:
 sub_802E164: @ 0x0802E164
 	push {r4, r5, r6, r7, lr}
 	adds r4, r0, #0
-	ldr r0, _0802E1AC @ =gComputedBgBuffer
+	ldr r0, _0802E1AC @ =gBgOffsetsHBlank
 	ldr r6, [r0]
 	lsls r1, r1, #0x16
 	lsrs r5, r1, #0x16
@@ -990,7 +990,7 @@ sub_802E164: @ 0x0802E164
 	adds r3, r0, #0
 	b _0802E1B6
 	.align 2, 0
-_0802E1AC: .4byte gComputedBgBuffer
+_0802E1AC: .4byte gBgOffsetsHBlank
 _0802E1B0: .4byte gSineTable
 _0802E1B4:
 	adds r3, r7, #0
@@ -1031,7 +1031,7 @@ _0802E1E6:
 sub_802E1EC: @ 0x0802E1EC
 	push {r4, r5, r6, r7, lr}
 	adds r5, r0, #0
-	ldr r0, _0802E234 @ =gComputedBgBuffer
+	ldr r0, _0802E234 @ =gBgOffsetsHBlank
 	ldr r4, [r0]
 	lsls r1, r1, #0x16
 	lsrs r6, r1, #0x16
@@ -1064,7 +1064,7 @@ sub_802E1EC: @ 0x0802E1EC
 	adds r3, r0, #0
 	b _0802E23E
 	.align 2, 0
-_0802E234: .4byte gComputedBgBuffer
+_0802E234: .4byte gBgOffsetsHBlank
 _0802E238: .4byte gSineTable
 _0802E23C:
 	adds r3, r7, #0
@@ -1147,7 +1147,7 @@ _0802E2B6:
 	add r1, sp
 	mov sl, r1
 _0802E2C6:
-	ldr r0, _0802E310 @ =gComputedBgBuffer
+	ldr r0, _0802E310 @ =gBgOffsetsHBlank
 	ldr r5, [r0]
 	lsls r4, r4, #0x10
 	asrs r1, r4, #0x10
@@ -1184,7 +1184,7 @@ _0802E2C6:
 	adds r4, r0, #0
 	b _0802E320
 	.align 2, 0
-_0802E310: .4byte gComputedBgBuffer
+_0802E310: .4byte gBgOffsetsHBlank
 _0802E314:
 	mov r3, sp
 	adds r0, r3, r1
@@ -1292,7 +1292,7 @@ _0802E3C2:
 	add r1, sp
 	mov sl, r1
 _0802E3D2:
-	ldr r0, _0802E41C @ =gComputedBgBuffer
+	ldr r0, _0802E41C @ =gBgOffsetsHBlank
 	ldr r5, [r0]
 	lsls r4, r4, #0x10
 	asrs r1, r4, #0x10
@@ -1329,7 +1329,7 @@ _0802E3D2:
 	adds r4, r0, #0
 	b _0802E42C
 	.align 2, 0
-_0802E41C: .4byte gComputedBgBuffer
+_0802E41C: .4byte gBgOffsetsHBlank
 _0802E420:
 	mov r3, sp
 	adds r0, r3, r1
@@ -1860,7 +1860,7 @@ _0802E7E8:
 	bgt _0802E7EE
 	b _0802EABC
 _0802E7EE:
-	ldr r0, _0802E820 @ =gComputedBgBuffer
+	ldr r0, _0802E820 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
 	ldr r2, _0802E824 @ =gUnknown_03001B60
 	cmp r0, r2
@@ -1881,7 +1881,7 @@ _0802E810: .4byte gUnknown_03002878
 _0802E814: .4byte 0x04000040
 _0802E818: .4byte gFlags
 _0802E81C: .4byte 0xFFFF0000
-_0802E820: .4byte gComputedBgBuffer
+_0802E820: .4byte gBgOffsetsHBlank
 _0802E824: .4byte gUnknown_03001B60
 _0802E828: .4byte 0x040000D4
 _0802E82C: .4byte 0x81000140
@@ -2235,7 +2235,7 @@ _0802EABC:
 	mov r8, r2
 	cmp r2, #0
 	bne _0802EB14
-	ldr r0, _0802EAE4 @ =gComputedBgBuffer
+	ldr r0, _0802EAE4 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
 	ldr r3, _0802EAE8 @ =gUnknown_03001B60
 	cmp r0, r3
@@ -2250,7 +2250,7 @@ _0802EABC:
 	ldr r0, [r0, #8]
 	b _0802ED86
 	.align 2, 0
-_0802EAE4: .4byte gComputedBgBuffer
+_0802EAE4: .4byte gBgOffsetsHBlank
 _0802EAE8: .4byte gUnknown_03001B60
 _0802EAEC: .4byte 0x040000D4
 _0802EAF0: .4byte 0x81000140
@@ -2301,7 +2301,7 @@ _0802EB14:
 	cmp r0, #0x9e
 	bhi _0802EBE8
 	movs r3, #0xf1
-	ldr r0, _0802EB74 @ =gComputedBgBuffer
+	ldr r0, _0802EB74 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
 	ldr r2, _0802EB78 @ =gUnknown_03001B60
 	cmp r0, r2
@@ -2318,7 +2318,7 @@ _0802EB14:
 	.align 2, 0
 _0802EB6C: .4byte 0xFFFFFEFF
 _0802EB70: .4byte gSineTable
-_0802EB74: .4byte gComputedBgBuffer
+_0802EB74: .4byte gBgOffsetsHBlank
 _0802EB78: .4byte gUnknown_03001B60
 _0802EB7C: .4byte 0x040000D4
 _0802EB80: .4byte 0x81000140
@@ -2405,7 +2405,7 @@ _0802EBE8:
 	cmp r0, #0xee
 	bhi _0802ECB8
 	movs r3, #0xf1
-	ldr r0, _0802EC44 @ =gComputedBgBuffer
+	ldr r0, _0802EC44 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
 	ldr r2, _0802EC48 @ =gUnknown_03001B60
 	cmp r0, r2
@@ -2421,7 +2421,7 @@ _0802EBE8:
 	b _0802EC6A
 	.align 2, 0
 _0802EC40: .4byte gSineTable
-_0802EC44: .4byte gComputedBgBuffer
+_0802EC44: .4byte gBgOffsetsHBlank
 _0802EC48: .4byte gUnknown_03001B60
 _0802EC4C: .4byte 0x040000D4
 _0802EC50: .4byte 0x81000140
@@ -2509,7 +2509,7 @@ _0802ECC2:
 	cmp r0, #0xee
 	bhi _0802ED86
 	movs r3, #0xf1
-	ldr r0, _0802ED14 @ =gComputedBgBuffer
+	ldr r0, _0802ED14 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
 	ldr r2, _0802ED18 @ =gUnknown_03001B60
 	cmp r0, r2
@@ -2525,7 +2525,7 @@ _0802ECC2:
 	b _0802ED3A
 	.align 2, 0
 _0802ED10: .4byte gSineTable
-_0802ED14: .4byte gComputedBgBuffer
+_0802ED14: .4byte gBgOffsetsHBlank
 _0802ED18: .4byte gUnknown_03001B60
 _0802ED1C: .4byte 0x040000D4
 _0802ED20: .4byte 0x81000140
@@ -2878,7 +2878,7 @@ sub_802EFDC: @ 0x0802EFDC
 	sub sp, #4
 	lsls r0, r0, #0x10
 	lsrs r1, r0, #0x10
-	ldr r0, _0802F004 @ =gComputedBgBuffer
+	ldr r0, _0802F004 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
 	ldr r2, _0802F008 @ =gUnknown_03001B60
 	cmp r0, r2
@@ -2894,7 +2894,7 @@ sub_802EFDC: @ 0x0802EFDC
 	ldr r0, [r0, #8]
 	b _0802F02A
 	.align 2, 0
-_0802F004: .4byte gComputedBgBuffer
+_0802F004: .4byte gBgOffsetsHBlank
 _0802F008: .4byte gUnknown_03001B60
 _0802F00C: .4byte 0x040000D4
 _0802F010: .4byte 0x81000140
@@ -2927,7 +2927,7 @@ sub_802F038: @ 0x0802F038
 	lsrs r1, r1, #0x18
 	lsls r2, r2, #0x18
 	lsrs r2, r2, #0x18
-	ldr r0, _0802F068 @ =gComputedBgBuffer
+	ldr r0, _0802F068 @ =gBgOffsetsHBlank
 	ldr r3, [r0]
 	lsls r0, r1, #1
 	adds r3, r3, r0
@@ -2946,7 +2946,7 @@ _0802F060:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802F068: .4byte gComputedBgBuffer
+_0802F068: .4byte gBgOffsetsHBlank
 
 	thumb_func_start Task_802F06C
 Task_802F06C: @ 0x0802F06C

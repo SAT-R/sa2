@@ -258,7 +258,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
 static void sub_805C0F0(void)
 {
     struct MultiplayerResultsScreen *selectionResultsScreen;
-    u16 *unk1884 = gComputedBgBuffer;
+    u16 *unk1884 = gBgOffsetsHBlank;
     gDispCnt |= 0x1800;
 
     MultiPakHeartbeat();
@@ -399,7 +399,7 @@ static void sub_805C504(void)
     u16 j, x;
 
     struct MultiplayerResultsScreen *selectionResultsScreen;
-    u16 *unk1884 = gComputedBgBuffer;
+    u16 *unk1884 = gBgOffsetsHBlank;
     MultiPakHeartbeat();
 
     selectionResultsScreen = TaskGetStructPtr(gCurTask);

@@ -24,7 +24,7 @@ void StageBgUpdate_ZoneFinalActTA53(void)
         gUnknown_03002878 = (void *)&REG_BG1HOFS;
         gUnknown_03002A80 = 2;
 
-        ptr = (u16 *)gComputedBgBuffer;
+        ptr = (u16 *)gBgOffsetsHBlank;
         for (y = 0; y < DISPLAY_HEIGHT - 1; y++) {
             s16 val = SIN(((y + gStageTime) * 40) & ONE_CYCLE) >> 12;
             *ptr++ = val;

@@ -486,7 +486,7 @@ static void sub_805D118(struct MultiplayerTeamPlayScreen *teamPlayScreen)
     u16 i;
     s16 unk312, unk310;
 
-    u16 *unk1884 = gComputedBgBuffer;
+    u16 *unk1884 = gBgOffsetsHBlank;
     teamPlayScreen->unk314 = (teamPlayScreen->unk314 + 1) & 1023;
     teamPlayScreen->unk310 += gSineTable[teamPlayScreen->unk314] >> 4;
     teamPlayScreen->unk312 += gSineTable[teamPlayScreen->unk314 + 0x100] >> 4;

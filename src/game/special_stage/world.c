@@ -156,7 +156,7 @@ void sub_806E7C0(struct SpecialStageWorld *world)
     }
 
     world->unk4 = EwramMalloc(0xA00);
-    gComputedBgBuffer = world->unk4;
+    gBgOffsetsHBlank = world->unk4;
     gUnknown_03004D54 = world->unk4;
     gUnknown_030022C0 = world->unk4;
     unk4 = world->unk4;
@@ -209,7 +209,7 @@ void sub_806EA04(void)
     s16 *unk1884;
     gUnknown_03002A80 = 0x10;
     gUnknown_03002878 = (void *)REG_ADDR_BG2PA;
-    gComputedBgBuffer = world->unk4;
+    gBgOffsetsHBlank = world->unk4;
 
     unk5A0 = stage->cameraBearing;
     sin1 = gSineTable[unk5A0] * 4;
@@ -219,7 +219,7 @@ void sub_806EA04(void)
     gFlags |= 4;
 
     i = stage->unk5D1;
-    unk1884 = gComputedBgBuffer + (stage->unk5D1 * 0x10);
+    unk1884 = gBgOffsetsHBlank + (stage->unk5D1 * 0x10);
 
     for (; i < 0xA0; i++) {
         s32 *footer;

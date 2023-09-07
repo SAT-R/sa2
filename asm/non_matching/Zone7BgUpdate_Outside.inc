@@ -29,7 +29,7 @@
 	ldr r1, _0801DEEC @ =gUnknown_03002A80
 	movs r0, #2
 	strb r0, [r1]
-	ldr r0, _0801DEF0 @ =gComputedBgBuffer
+	ldr r0, _0801DEF0 @ =gBgOffsetsHBlank
 	ldr r4, [r0]
 	ldr r0, _0801DEF4 @ =gStageTime
 	ldr r5, [r0]
@@ -188,7 +188,7 @@ _0801DEE0: .4byte gFlags
 _0801DEE4: .4byte gUnknown_03002878
 _0801DEE8: .4byte 0x04000010
 _0801DEEC: .4byte gUnknown_03002A80
-_0801DEF0: .4byte gComputedBgBuffer
+_0801DEF0: .4byte gBgOffsetsHBlank
 _0801DEF4: .4byte gStageTime
 _0801DEF8: .4byte gUnknown_080D5C62
 _0801DEFC: .4byte 0x0000507F

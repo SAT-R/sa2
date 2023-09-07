@@ -46,7 +46,7 @@ NONMATCH("asm/non_matching/StageBgUpdate_Zone2Acts12.inc",
         gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 4;
 
-        cursor = gComputedBgBuffer;
+        cursor = gBgOffsetsHBlank;
         unk5590_1 = gStageTime * 0x18;
 
         for (i = 0; i < 159; i++) {

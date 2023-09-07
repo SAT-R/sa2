@@ -73,7 +73,7 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
         gFlags |= 4;
         gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 4;
-        cursor = gComputedBgBuffer;
+        cursor = gBgOffsetsHBlank;
         initial1 = 0;
 
         if ((gPlayer.moveState & MOVESTATE_8000000) && gUnknown_030054F4 >= 7) {

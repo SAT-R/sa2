@@ -35,7 +35,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
     gUnknown_03002878 = (void *)&REG_BG3HOFS;
     gUnknown_03002A80 = 4;
 
-    dst = (u16 *)gComputedBgBuffer;
+    dst = (u16 *)gBgOffsetsHBlank;
 
 #ifndef NON_MATCHING
     // Why call Div without using its return value?
@@ -67,7 +67,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
         if (r5 < 240) {
             // __0801DACA
             if (r5 > 80) {
-                dst = gComputedBgBuffer;
+                dst = gBgOffsetsHBlank;
                 r1 = ((r5 - 80) >> 4);
                 dst += (r5 - r1) << 1;
 
@@ -78,7 +78,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
                 }
             }
             // _0801DB1C
-            dst = gComputedBgBuffer;
+            dst = gBgOffsetsHBlank;
             dst = ((void *)dst) + (r5 * 4);
 
             for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 16));
@@ -98,7 +98,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
             }
         } else {
             // _0801DBAC
-            dst = gComputedBgBuffer;
+            dst = gBgOffsetsHBlank;
 
             for (lineY = 255 - r5; lineY < 16; lineY++) {
                 *dst++ = ip;
@@ -122,7 +122,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
         if (r5 < 224) {
             u8 val;
             if (r5 > 80) {
-                dst = gComputedBgBuffer;
+                dst = gBgOffsetsHBlank;
 
                 val = ((r5 - 80) >> 4);
                 dst += (r5 - val) << 1;
@@ -134,7 +134,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
                 }
             }
             // _0801DC66
-            dst = gComputedBgBuffer;
+            dst = gBgOffsetsHBlank;
             dst = ((void *)dst) + (r5 * 4);
 
             for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 32));
@@ -152,7 +152,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
             }
         } else {
             // _0801DCDC
-            dst = gComputedBgBuffer;
+            dst = gBgOffsetsHBlank;
 
             for (lineY = 255 - r5; lineY < 32; lineY++) {
                 *dst++ = ip;
@@ -212,7 +212,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Outside.inc",
 
     gUnknown_03002878 = (void *)&REG_BG0HOFS;
     gUnknown_03002A80 = 2;
-    lineShiftX = (u16 *)gComputedBgBuffer;
+    lineShiftX = (u16 *)gBgOffsetsHBlank;
 
 #ifndef NON_MATCHING
     frameCount = ((gStageTime >> 3) & 0x1F);

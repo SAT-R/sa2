@@ -1476,7 +1476,7 @@ static void WavesBackgroundAnim(struct TitleScreen *titleScreen)
     gUnknown_03002878 = (void *)REG_ADDR_BG2PA;
 
     // TODO: not sure unk3F4 is the correct type
-    gComputedBgBuffer = &titleScreen->unk3F4[0][0];
+    gBgOffsetsHBlank = &titleScreen->unk3F4[0][0];
     pointer = &titleScreen->unk3F4[0][0];
     for (i = 0, j = 0; i < DISPLAY_HEIGHT; i++) {
         s32 temp, r3;

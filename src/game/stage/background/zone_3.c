@@ -136,11 +136,11 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
     s32 pFlags;
 #ifdef NON_MATCHING
     register s16 sl asm("sl") = 0;
-    register u16 *bgBuffer asm("r5") = gComputedBgBuffer;
+    register u16 *bgBuffer asm("r5") = gBgOffsetsHBlank;
     register s16 r3 asm("r3") = (Div(b, 60) << 16) >> 16;
 #else
     s16 sl = 0;
-    u16 *bgBuffer = gComputedBgBuffer;
+    u16 *bgBuffer = gBgOffsetsHBlank;
     s16 r3 = (Div(b, 60) << 16) >> 16;
 #endif
 

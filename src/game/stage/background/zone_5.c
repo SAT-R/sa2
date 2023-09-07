@@ -40,7 +40,7 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
         gFlags = gFlags | 4;
         gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 2;
-        cursor = gComputedBgBuffer;
+        cursor = gBgOffsetsHBlank;
         if (gCurrentLevel != 18) {
             gDispCnt |= 0x100;
             gDispCnt |= 0x2000;
