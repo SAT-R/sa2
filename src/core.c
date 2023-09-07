@@ -27,8 +27,8 @@ u8 gUnknown_03001850[] ALIGNED(16) = {};
 FuncType_030053A0 gUnknown_03001870[] = {};
 u16 gPhysicalInput = 0;
 
-// TODO: This actually seems to be used by background scanline procedures
-//       to buffer the x-shift for each line, so rename it again?
+// This seems to be used by background scanline procedures
+// to buffer the xy-shift for each line
 void *gBgOffsetsHBlank = NULL;
 
 u16 gVramHeapMaxTileSlots = 0;

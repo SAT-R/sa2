@@ -275,6 +275,7 @@ extern OamData gOamBuffer[128];
 extern u32 gUnknown_03001B60[2][160];
 extern Background *gUnknown_03001800[16];
 
+// This is used to buffer the xy-shift for each background scanline
 extern void *gBgOffsetsHBlank;
 
 extern u16 gUnknown_030017F0;

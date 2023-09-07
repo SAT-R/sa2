@@ -98,8 +98,6 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_5.o(.text);
         build/sa2/src/game/stage/background/zone_6.o(.text);
         build/sa2/asm/stage__background__zone_6.o(.text);
-        build/sa2/src/game/stage/background/zone_7_0.o(.text);
-        build/sa2/asm/stage__background__zone_7_1.o(.text);
         build/sa2/src/game/stage/background/zone_7_1.o(.text);
         build/sa2/src/game/stage/background/zone_final.o(.text);
         build/sa2/src/game/stage/camera_destroy.o(.text);
