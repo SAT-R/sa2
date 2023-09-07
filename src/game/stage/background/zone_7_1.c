@@ -7,7 +7,6 @@
 #include "game/stage/camera.h"
 #include "game/stage/background/zone_7.h"
 
-
 #include "constants/tilemaps.h"
 
 const s16 gUnknown_080D5C62[8][2] = {
