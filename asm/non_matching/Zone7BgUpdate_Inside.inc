@@ -434,7 +434,7 @@ _0801DD1A:
 	ldr r2, [sp, #8]
 	lsls r1, r2, #0x10
 	movs r6, #7
-	ldr r5, _0801DD70 @ =gUnknown_080D5C82
+	ldr r5, _0801DD70 @ =sPalette_Zone7BgCeiling
 	ldr r0, _0801DD74 @ =gBgPalette
 	movs r3, #0xd1
 	lsls r3, r3, #1
@@ -472,7 +472,7 @@ _0801DD2E:
 _0801DD64: .4byte gBgOffsetsHBlank
 _0801DD68: .4byte 0x000001CF
 _0801DD6C: .4byte 0x000001A7
-_0801DD70: .4byte gUnknown_080D5C82
+_0801DD70: .4byte sPalette_Zone7BgCeiling
 _0801DD74: .4byte gBgPalette
 _0801DD78: .4byte gFlags
 

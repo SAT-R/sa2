@@ -23,7 +23,7 @@ const s16 gUnknown_080D5C62[8][2] = {
     { -Q_8_8(0.75), -Q_8_8(0.125) }, //
 };
 
-const u16 gUnknown_080D5C82[16] = INCBIN_U16("graphics/080D5C82.gbapal");
+static const u16 sPalette_Zone7BgCeiling[16] = INCBIN_U16("graphics/080D5C82.gbapal");
 
 void CreateStageBg_Zone7(void)
 {
@@ -215,7 +215,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
             u32 new_r1 = (x >> 4) << 16;
             const u16 *src;
             s32 r6 = 0x7;
-            src = gUnknown_080D5C82;
+            src = sPalette_Zone7BgCeiling;
             dst = gBgPalette;
             dst += 209;
             new_r1 >>= 16;
@@ -230,7 +230,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
             for (lineY = 0; lineY < 8; lineY++) {
                 dst = gBgPalette;
                 dst += 209;
-                dst[lineY] = gUnknown_080D5C82[((x >> 4) & 0x7) + 1];
+                dst[lineY] = sPalette_Zone7BgCeiling[((x >> 4) & 0x7) + 1];
             }
         }
 #endif
