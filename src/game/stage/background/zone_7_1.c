@@ -240,7 +240,7 @@ NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
 }
 END_NONMATCH
 
-// https://decomp.me/scratch/BPm17
+// https://decomp.me/scratch/7KDXI
 // 98.95% - only register alloc issues, logic works as intended
 NONMATCH("asm/non_matching/Zone7BgUpdate_Outside.inc",
          void Zone7BgUpdate_Outside(s32 x, s32 y))
