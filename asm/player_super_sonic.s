@@ -240,7 +240,7 @@ sub_802B708: @ 0x0802B708
 	str r4, [sp]
 	movs r3, #0
 	bl TaskCreate
-	ldr r1, _0802B7EC @ =gUnknown_03005B40
+	ldr r1, _0802B7EC @ =sSuperSonicTask
 	str r0, [r1]
 	ldrh r3, [r0, #6]
 	movs r1, #0xc0
@@ -324,7 +324,7 @@ _0802B7DC: .4byte gPlayer
 _0802B7E0: .4byte gCourseTime
 _0802B7E4: .4byte sub_802BC10
 _0802B7E8: .4byte 0x00004040
-_0802B7EC: .4byte gUnknown_03005B40
+_0802B7EC: .4byte sSuperSonicTask
 _0802B7F0: .4byte IWRAM_START + 0x22
 _0802B7F4: .4byte sub_802C828
 _0802B7F8: .4byte IWRAM_START + 0x128
@@ -340,7 +340,7 @@ _0802B818: .4byte IWRAM_START + 0x159
 	thumb_func_start sub_802B81C
 sub_802B81C: @ 0x0802B81C
 	push {r4, r5, r6, lr}
-	ldr r0, _0802B880 @ =gUnknown_03005B40
+	ldr r0, _0802B880 @ =sSuperSonicTask
 	ldr r2, [r0]
 	cmp r2, #0
 	beq _0802B878
@@ -390,7 +390,7 @@ _0802B878:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802B880: .4byte gUnknown_03005B40
+_0802B880: .4byte sSuperSonicTask
 _0802B884: .4byte sub_802C7E8
 _0802B888: .4byte sub_802C8A0
 _0802B88C: .4byte IWRAM_START + 0x23
@@ -637,7 +637,7 @@ _0802BA88: .4byte 0x00000155
 	thumb_func_start sub_802BA8C
 sub_802BA8C: @ 0x0802BA8C
 	push {r4, r5, r6, r7, lr}
-	ldr r0, _0802BB2C @ =gUnknown_03005B40
+	ldr r0, _0802BB2C @ =sSuperSonicTask
 	ldr r0, [r0]
 	ldrh r5, [r0, #6]
 	movs r0, #0xc0
@@ -716,7 +716,7 @@ sub_802BA8C: @ 0x0802BA8C
 	movs r0, #1
 	b _0802BB4E
 	.align 2, 0
-_0802BB2C: .4byte gUnknown_03005B40
+_0802BB2C: .4byte sSuperSonicTask
 _0802BB30: .4byte sub_802C480
 _0802BB34: .4byte IWRAM_START + 0x23
 _0802BB38: .4byte gAnims_SuperSonic_080D69C8
@@ -734,7 +734,7 @@ _0802BB4E:
 	thumb_func_start sub_802BB54
 sub_802BB54: @ 0x0802BB54
 	push {r4, r5, r6, r7, lr}
-	ldr r0, _0802BBF0 @ =gUnknown_03005B40
+	ldr r0, _0802BBF0 @ =sSuperSonicTask
 	ldr r0, [r0]
 	ldrh r5, [r0, #6]
 	movs r0, #0xc0
@@ -811,7 +811,7 @@ _0802BBE8:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802BBF0: .4byte gUnknown_03005B40
+_0802BBF0: .4byte sSuperSonicTask
 _0802BBF4: .4byte sub_802C55C
 _0802BBF8: .4byte IWRAM_START + 0x23
 _0802BBFC: .4byte gAnims_SuperSonic_080D69C8
@@ -2160,7 +2160,7 @@ sub_802C668: @ 0x0802C668
 	push {lr}
 	adds r2, r0, #0
 	adds r3, r1, #0
-	ldr r0, _0802C698 @ =gUnknown_03005B40
+	ldr r0, _0802C698 @ =sSuperSonicTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0802C6A0
@@ -2181,7 +2181,7 @@ sub_802C668: @ 0x0802C668
 	str r1, [r0, #0x20]
 	b _0802C6AA
 	.align 2, 0
-_0802C698: .4byte gUnknown_03005B40
+_0802C698: .4byte sSuperSonicTask
 _0802C69C: .4byte gPlayer
 _0802C6A0:
 	str r0, [r2]
@@ -2201,7 +2201,7 @@ sub_802C6B4: @ 0x0802C6B4
 	push {r4, lr}
 	adds r3, r0, #0
 	adds r4, r1, #0
-	ldr r0, _0802C6E0 @ =gUnknown_03005B40
+	ldr r0, _0802C6E0 @ =sSuperSonicTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0802C6D8
@@ -2221,13 +2221,13 @@ _0802C6D8:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802C6E0: .4byte gUnknown_03005B40
+_0802C6E0: .4byte sSuperSonicTask
 
 	thumb_func_start sub_802C6E4
 sub_802C6E4: @ 0x0802C6E4
 	push {lr}
 	movs r1, #0
-	ldr r0, _0802C700 @ =gUnknown_03005B40
+	ldr r0, _0802C700 @ =sSuperSonicTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0802C6FA
@@ -2241,7 +2241,7 @@ _0802C6FA:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0802C700: .4byte gUnknown_03005B40
+_0802C700: .4byte sSuperSonicTask
 
 	thumb_func_start sub_802C704
 sub_802C704: @ 0x0802C704
@@ -2250,7 +2250,7 @@ sub_802C704: @ 0x0802C704
 	adds r5, r2, #0
 	lsls r0, r0, #0x18
 	lsrs r3, r0, #0x18
-	ldr r0, _0802C740 @ =gUnknown_03005B40
+	ldr r0, _0802C740 @ =sSuperSonicTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0802C73A
@@ -2277,7 +2277,7 @@ _0802C73A:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802C740: .4byte gUnknown_03005B40
+_0802C740: .4byte sSuperSonicTask
 _0802C744: .4byte IWRAM_START + 0x128
 _0802C748: .4byte IWRAM_START + 0x28
 _0802C74C: .4byte IWRAM_START + 0x2C
@@ -2286,7 +2286,7 @@ _0802C74C: .4byte IWRAM_START + 0x2C
 sub_802C750: @ 0x0802C750
 	push {lr}
 	movs r1, #0
-	ldr r0, _0802C768 @ =gUnknown_03005B40
+	ldr r0, _0802C768 @ =sSuperSonicTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0802C762
@@ -2298,14 +2298,14 @@ _0802C762:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0802C768: .4byte gUnknown_03005B40
+_0802C768: .4byte sSuperSonicTask
 _0802C76C: .4byte IWRAM_START + 0x134
 
 	thumb_func_start sub_802C770
 sub_802C770: @ 0x0802C770
 	push {lr}
 	movs r1, #0
-	ldr r0, _0802C790 @ =gUnknown_03005B40
+	ldr r0, _0802C790 @ =sSuperSonicTask
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0802C78A
@@ -2321,13 +2321,13 @@ _0802C78A:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0802C790: .4byte gUnknown_03005B40
+_0802C790: .4byte sSuperSonicTask
 _0802C794: .4byte 0x000003FF
 
 	thumb_func_start sub_802C798
 sub_802C798: @ 0x0802C798
 	push {r4, lr}
-	ldr r0, _0802C7E0 @ =gUnknown_03005B40
+	ldr r0, _0802C7E0 @ =sSuperSonicTask
 	ldr r0, [r0]
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
@@ -2363,7 +2363,7 @@ _0802C7DA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0802C7E0: .4byte gUnknown_03005B40
+_0802C7E0: .4byte sSuperSonicTask
 _0802C7E4: .4byte sub_802C92C
 
 	thumb_func_start sub_802C7E8
