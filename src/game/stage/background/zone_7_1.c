@@ -51,7 +51,7 @@ void CreateStageBg_Zone7(void)
 }
 
 // (98.52%) - https://decomp.me/scratch/DUPkY
-NONMATCH("asm/non_matching/Zone7BgUpdate_Inside.inc",
+NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc",
          void Zone7BgUpdate_Inside(s32 x, s32 y))
 {
     u16 *dst;
@@ -242,7 +242,7 @@ END_NONMATCH
 
 // https://decomp.me/scratch/7KDXI
 // 98.95% - only register alloc issues, logic works as intended
-NONMATCH("asm/non_matching/Zone7BgUpdate_Outside.inc",
+NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Outside.inc",
          void Zone7BgUpdate_Outside(s32 x, s32 y))
 {
     u16 *lineShiftX;

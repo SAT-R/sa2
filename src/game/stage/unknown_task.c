@@ -38,7 +38,7 @@ typedef struct {
 } Struct_SP10;
 
 // (68.53%) https://decomp.me/scratch/NchTb
-NONMATCH("asm/non_matching/Task_CreateStageUnknownTask.inc",
+NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc",
          void Task_CreateStageUnknownTask(void))
 {
     u32 sinIndex;

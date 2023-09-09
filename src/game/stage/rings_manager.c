@@ -103,7 +103,7 @@ void CreateStageRingsManager(void)
         = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
 }
 
-NONMATCH("asm/non_matching/Task_RingsMgrMain.inc", void Task_RingsMgrMain(void)) { }
+NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgrMain(void)) { }
 END_NONMATCH
 
 void TaskDestructor_8007F1C(struct Task *t)

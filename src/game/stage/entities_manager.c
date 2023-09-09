@@ -479,7 +479,7 @@ static inline MapEntity *ReadMe(void *data, u32 r6)
 
 // https://decomp.me/scratch/Co5bs
 // logic is correct. Compiling differently for some reason
-NONMATCH("asm/non_matching/SpawnMapEntities.inc", void SpawnMapEntities())
+NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntities())
 {
     if (!(gUnknown_03005424 & 2)) {
         u32 pos;
@@ -650,7 +650,7 @@ NONMATCH("asm/non_matching/SpawnMapEntities.inc", void SpawnMapEntities())
 END_NONMATCH
 
 // https://decomp.me/scratch/ynO2N
-NONMATCH("asm/non_matching/Task_8008DCC.inc", void Task_8008DCC(void))
+NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void))
 {
     if (!(gUnknown_03005424 & 2)) {
         u32 pos;

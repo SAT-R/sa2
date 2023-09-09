@@ -240,7 +240,7 @@ void sub_8003914(Sprite *s)
 }
 
 // Some VBlank function
-NONMATCH("asm/non_matching/sprite__sub_80039E4.inc", bool32 sub_80039E4(void))
+NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
 {
     // tilesize (could be 32 and get optimized out?)
     s32 sp28 = 5;
@@ -422,7 +422,7 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
 }
 
 // https://decomp.me/scratch/6Xm6S
-NONMATCH("asm/non_matching/sub_8004010.inc", u32 sub_8004010(void))
+NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
 {
     u8 bgIndex;
     u16 sp00[2];

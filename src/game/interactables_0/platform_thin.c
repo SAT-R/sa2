@@ -211,7 +211,7 @@ static void Task_CommonPlatformThinMain(void)
     return;
 }
 
-NONMATCH("asm/non_matching/sub_8010D1C.inc",
+NONMATCH("asm/non_matching/game/interactables_0/sub_8010D1C.inc",
          static void CreatePlatformBreakParticles(s16 x, s16 y))
 {
     struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(Platform_D1C),

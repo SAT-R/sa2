@@ -249,7 +249,7 @@ void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
 
 // Similar to sub_8004ABC and sub_8004E14
 // (52.72%) https://decomp.me/scratch/mCDYD
-NONMATCH("asm/non_matching/sub_8004860.inc",
+NONMATCH("asm/non_matching/engine/sub_8004860.inc",
          void sub_8004860(Sprite *s, SpriteTransform *transform))
 {
     // sp24 = s

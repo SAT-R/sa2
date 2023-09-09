@@ -121,7 +121,7 @@ typedef struct {
 
 // https://decomp.me/scratch/Esyzr
 #if 01
-NONMATCH("asm/non_matching/StageBgUpdate_Zone3Acts12.inc",
+NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone3Acts12.inc",
          void StageBgUpdate_Zone3Acts12(s32 a, s32 b))
 #else
 void StageBgUpdate_Zone3Acts12(s32 a, s32 b)

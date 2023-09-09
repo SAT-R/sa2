@@ -245,10 +245,14 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
 }
 
 // https://decomp.me/scratch/TDVLh
-NONMATCH("asm/non_matching/sub_807E66C.inc",
+NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
          static bool32 sub_807E66C(Sprite_Cannon *cannon))
 {
+#ifndef NON_MATCHING
     register Sprite *s asm("r6") = &cannon->sprite2;
+#else
+    Sprite *s = &cannon->sprite2;
+#endif
     s16 x, y;
     s32 biggerX, biggerY, temp2, temp3;
     s32 r4;
@@ -257,8 +261,10 @@ NONMATCH("asm/non_matching/sub_807E66C.inc",
     if (PLAYER_IS_ALIVE) {
         // Maybe log
         {
+#ifndef NON_MATCHING
             register u16 r0 asm("r0") = cannon->unk68;
             asm("" ::"r"(r0));
+#endif
         }
 
         x = cannon->x - gCamera.x;

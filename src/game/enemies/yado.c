@@ -106,7 +106,7 @@ void Task_YadoMain(void)
 }
 
 // (71.15%) https://decomp.me/scratch/bdODk
-NONMATCH("asm/non_matching/Task_Yado_8055084.inc", void Task_8055084(void))
+NONMATCH("asm/non_matching/game/enemies/Task_Yado_8055084.inc", void Task_8055084(void))
 {
     Sprite_Yado *yado = TaskGetStructPtr(gCurTask);
     Sprite *s = &yado->s;
