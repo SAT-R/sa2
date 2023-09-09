@@ -228,7 +228,7 @@ typedef struct {
 // Not sure what these are yet
 typedef struct Player_ {
     /* 0x00 */ PlayerCallback callback;
-    /* 0x04 */ u32 filler4;
+    /* 0x04 */ u32 unk4;
 
     /* 0x08 */ s32 x;
     /* 0x0C */ s32 y;
@@ -646,6 +646,8 @@ extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void TaskDestructor_801F550(struct Task *);
 
 extern void sub_801F78C(void);
+
+extern void sub_802C668(s32 *x, s32 *y);
 
 extern void sub_8021350(void);
 

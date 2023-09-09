@@ -1665,7 +1665,8 @@ void sub_80454A4(EggSaucer *boss)
 }
 
 // https://decomp.me/scratch/wnQsf
-NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc", void sub_8045564(EggSaucer *boss))
+NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc",
+         void sub_8045564(EggSaucer *boss))
 {
     s32 index;
     u8 val2;

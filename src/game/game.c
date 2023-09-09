@@ -77,7 +77,6 @@ void sub_801BE4C(void);
 void sub_801BEB8(void);
 void sub_801BF24(void);
 
-void sub_802C668(s32 *, s32 *);
 void Task_801E0A8(void);
 void TaskDestructor_801E040(struct Task *);
 

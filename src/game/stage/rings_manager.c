@@ -1,4 +1,6 @@
+#include <string.h>
 #include "global.h"
+#include "game/player_super_sonic.h"
 #include "malloc_ewram.h"
 #include "game/game.h"
 #include "game/stage/rings_manager.h"
@@ -103,8 +105,117 @@ void CreateStageRingsManager(void)
         = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
 }
 
-NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgrMain(void)) { }
-END_NONMATCH
+// NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void
+// Task_RingsMgrMain(void)) { }
+void Task_RingsMgrMain(void)
+{
+    s32 sp1C = 0;
+    s8 sp00[4];
+    s8 sp04[4];
+    s32 sp08;
+    u32 regions_x; // sp0C;
+    u32 regions_y; // sp10;
+
+    s8 *pSp04 = sp04;
+    *pSp04++ = -gPlayer.unk16;
+    *pSp04++ = -gPlayer.unk17;
+    *pSp04++ = +gPlayer.unk16;
+    *pSp04 = +gPlayer.unk17;
+    memcpy(sp00, sp04, sizeof(sp00));
+
+    if (!(gUnknown_03005424 & EXTRA_STATE__2)) {
+        // _08007F60
+        RingsManager *rm = TaskGetStructPtr(gCurTask);
+        void *rings = rm->rings; // sp14
+        s32 *rings_header;
+        Sprite *s; // sp18
+        SpriteOffset *dimensions; // sp20
+        u16 sl; // sl / sp40
+
+        if (IS_BOSS_STAGE(gCurrentLevel)) {
+            if (gUnknown_03005430 && gUnknown_0300542C) {
+                RLUnCompWram(gSpritePosData_rings[gCurrentLevel], rings);
+                gUnknown_03005430 = 0;
+                gUnknown_0300542C--;
+            }
+        }
+        // _08007FBE
+        sp08 = 0;
+        if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+            u32 res = sub_802C6E4() & 0x21C;
+            sp08 = 1;
+
+            if (res) {
+                sp08 = 0;
+            }
+
+            // _08007FE4
+            sub_802C668(&gPlayer.x, &gPlayer.y);
+            sp00[0] = -10;
+            sp00[1] = -10;
+            sp00[2] = +10;
+            sp00[3] = +10;
+        }
+        // _08007FFA
+
+        rm = TaskGetStructPtr(gCurTask);
+        rings = rm->rings;
+        s = &rm->s;
+        UpdateSpriteAnimation(s);
+
+        dimensions = s->dimensions;
+
+        rings_header = rings + 4;
+        regions_x = (u16)*rings_header++;
+        regions_y = (u16)*rings_header++;
+        rings = rings_header;
+
+        sl = (Q_24_8_TO_INT(gPlayer.y) + sp00[1]);
+        while (((sl <= (((Q_24_8_TO_INT(gPlayer.y) + sp00[3]) + 8)) >> 8))
+               && (sl++ < regions_y)) {
+            // _08008064
+            u16 sb = ((Q_24_8_TO_INT(gPlayer.x) - sp00[0] - 8) >> 8);
+
+            s32 r0x = (sp00[2] + Q_24_8_TO_INT(gPlayer.x) + 16) >> 8;
+
+            if (((signed)sb <= r0x) && sb < regions_x) {
+                // _080080A0
+            }
+            // _08008208
+        }
+        // _0800822C
+
+        if (IS_MULTI_PLAYER) {
+            // _08008236
+            u8 i; // sp30
+            for (i = 0; i < 4; i++) { }
+        }
+        // _0800847E
+        {
+            sl = Q_24_8(gCamera.y) >> 16;
+
+            if ((gPlayer.itemEffect != PLAYER_ITEM_EFFECT__NONE)
+                && (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)) {
+                // _080084A2
+            }
+            // _080086B4
+
+            while (((sl << 8) < gCamera.y + DISPLAY_HEIGHT) && (sl < regions_y)) {
+                u16 sb = (gCamera.x << 8);
+
+                while ((sb < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
+                    // _080086E8
+
+                    sb++;
+                }
+                // _0800882C
+                sl++;
+            }
+            // return
+        }
+    }
+}
+// END_NONMATCH
 
 void TaskDestructor_8007F1C(struct Task *t)
 {

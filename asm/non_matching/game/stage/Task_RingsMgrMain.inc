@@ -10,7 +10,7 @@
 	sub sp, #0x4c
 	movs r0, #0
 	str r0, [sp, #0x1c]
-	ldr r2, _08008288 @ =gPlayer
+	ldr r2, _08008288 @ =gPlayer    @ r2 = p = gPlayer
 	ldrb r4, [r2, #0x16]
 	rsbs r0, r4, #0
 	add r1, sp, #4
@@ -41,7 +41,7 @@ _08007F60:
 	ldr r1, _08008294 @ =IWRAM_START + 0x30
 	adds r0, r0, r1
 	ldr r0, [r0]
-	str r0, [sp, #0x14]
+	str r0, [sp, #0x14]     @ sp14 = void *rings
 	ldr r0, _08008298 @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
@@ -127,9 +127,9 @@ _08007FFA:
 	str r1, [sp, #0x18]
 	adds r0, r1, #0
 	bl UpdateSpriteAnimation
-	ldr r0, [sp, #0x18]
+	ldr r0, [sp, #0x18]     @ r0 = sp18 = s
 	ldr r0, [r0, #0xc]
-	str r0, [sp, #0x20]
+	str r0, [sp, #0x20]     @ sp20 = dimensions = s->dimensions
 	ldr r1, [sp, #0x14]
 	adds r1, #4
 	ldm r1!, {r0}
