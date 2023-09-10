@@ -163,8 +163,8 @@ void CreateGameStage(void)
     gUnknown_03005424 |= 0x21;
     gUnknown_03005424 &= ~0x80;
 
-    gUnknown_03005430 = 0;
-    gUnknown_0300542C = 10;
+    gBossRingsShallRespawn = 0;
+    gBossRingsRespawnCount = 10;
     gUnknown_030055BC = 0;
 
     sub_801F044();

@@ -4179,6 +4179,8 @@ _080232B0:
 	.align 2, 0
 _080232CC: .4byte gSineTable
 
+@ Called in boss battles.
+@ It sets gBossRingsShallRespawn to TRUE, amongst other things
 	thumb_func_start sub_80232D0
 sub_80232D0: @ 0x080232D0
 	push {r4, r5, r6, r7, lr}
@@ -4269,7 +4271,7 @@ _08023366:
 	str r1, [r0]
 	adds r0, r3, #0
 	bl sub_8039F14
-	ldr r1, _080233C0 @ =gUnknown_03005430
+	ldr r1, _080233C0 @ =gBossRingsShallRespawn
 	movs r0, #1
 	strb r0, [r1]
 	ldr r0, [r4]
@@ -4300,7 +4302,7 @@ _080233B0: .4byte gUnknown_080D661C
 _080233B4: .4byte gUnknown_030056A4
 _080233B8: .4byte gUnknown_030054FC
 _080233BC: .4byte gUnknown_030054E0
-_080233C0: .4byte gUnknown_03005430
+_080233C0: .4byte gBossRingsShallRespawn
 _080233C4:
 	ldr r0, _080234B4 @ =gPlayer
 	ldr r0, [r0, #0x20]

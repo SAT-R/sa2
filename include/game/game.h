@@ -170,8 +170,8 @@ extern u32 gCheckpointTime; // Checkpoint timer?
 
 extern u8 gUnknown_0300540C;
 
-extern u8 gUnknown_0300542C;
-extern u8 gUnknown_03005430;
+extern u8 gBossRingsRespawnCount;
+extern bool8 gBossRingsShallRespawn;
 extern u8 gUnknown_03005438;
 extern u8 gUnknown_030055BC;
 
@@ -228,7 +228,7 @@ typedef struct {
 // Not sure what these are yet
 typedef struct Player_ {
     /* 0x00 */ PlayerCallback callback;
-    /* 0x04 */ u32 unk4;
+    /* 0x04 */ u32 filler4;
 
     /* 0x08 */ s32 x;
     /* 0x0C */ s32 y;

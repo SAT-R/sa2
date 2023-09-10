@@ -60,11 +60,11 @@ _08007F8A:
 	cmp r1, #0x1d
 	bne _08007FBE
 _08007F8E:
-	ldr r5, _080082A0 @ =gUnknown_03005430
+	ldr r5, _080082A0 @ =gBossRingsShallRespawn
 	ldrb r0, [r5]
 	cmp r0, #0
 	beq _08007FBE
-	ldr r4, _080082A4 @ =gUnknown_0300542C
+	ldr r4, _080082A4 @ =gBossRingsRespawnCount
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _08007FBE
@@ -468,8 +468,8 @@ _08008290: .4byte gCurTask
 _08008294: .4byte IWRAM_START + 0x30
 _08008298: .4byte gCurrentLevel
 _0800829C: .4byte gUnknown_030054B0
-_080082A0: .4byte gUnknown_03005430
-_080082A4: .4byte gUnknown_0300542C
+_080082A0: .4byte gBossRingsShallRespawn
+_080082A4: .4byte gBossRingsRespawnCount
 _080082A8: .4byte gSpritePosData_rings
 _080082AC: .4byte gPlayer + 0x8
 _080082B0: .4byte gRingCount

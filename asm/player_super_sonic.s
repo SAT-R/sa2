@@ -996,7 +996,7 @@ _0802BD60:
 	lsrs r3, r0, #0x18
 	cmp r3, #0x1f
 	bls _0802BD60
-	ldr r1, _0802BDD4 @ =gUnknown_03005430
+	ldr r1, _0802BDD4 @ =gBossRingsShallRespawn
 	movs r0, #1
 	strb r0, [r1]
 	ldr r1, _0802BDD8 @ =gCamera
@@ -1037,7 +1037,7 @@ _0802BDAA:
 _0802BDC8: .4byte gUnknown_080D650C
 _0802BDCC: .4byte gCurrentLevel
 _0802BDD0: .4byte gUnknown_080D661C
-_0802BDD4: .4byte gUnknown_03005430
+_0802BDD4: .4byte gBossRingsShallRespawn
 _0802BDD8: .4byte gCamera
 _0802BDDC: .4byte sub_802C8A0
 _0802BDE0:

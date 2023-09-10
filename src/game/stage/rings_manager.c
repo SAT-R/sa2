@@ -105,8 +105,8 @@ void CreateStageRingsManager(void)
         = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
 }
 
-// NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void
-// Task_RingsMgrMain(void)) { }
+//NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
+//         void Task_RingsMgrMain(void))
 void Task_RingsMgrMain(void)
 {
     s32 sp1C = 0;
@@ -133,10 +133,10 @@ void Task_RingsMgrMain(void)
         u16 sl; // sl / sp40
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
-            if (gUnknown_03005430 && gUnknown_0300542C) {
+            if (gBossRingsShallRespawn && gBossRingsRespawnCount > 0) {
                 RLUnCompWram(gSpritePosData_rings[gCurrentLevel], rings);
-                gUnknown_03005430 = 0;
-                gUnknown_0300542C--;
+                gBossRingsShallRespawn = 0;
+                gBossRingsRespawnCount--;
             }
         }
         // _08007FBE
@@ -201,9 +201,9 @@ void Task_RingsMgrMain(void)
             // _080086B4
 
             while (((sl << 8) < gCamera.y + DISPLAY_HEIGHT) && (sl < regions_y)) {
-                u16 sb = (gCamera.x << 8);
+                u16 sb = ((gCamera.x << 8) >> 16);
 
-                while ((sb < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
+                while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
                     // _080086E8
 
                     sb++;
@@ -215,7 +215,7 @@ void Task_RingsMgrMain(void)
         }
     }
 }
-// END_NONMATCH
+//END_NONMATCH
 
 void TaskDestructor_8007F1C(struct Task *t)
 {
