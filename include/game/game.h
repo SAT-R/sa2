@@ -170,8 +170,6 @@ extern u32 gCheckpointTime; // Checkpoint timer?
 
 extern u8 gUnknown_0300540C;
 
-extern u8 gBossRingsRespawnCount;
-extern bool8 gBossRingsShallRespawn;
 extern u8 gUnknown_03005438;
 extern u8 gUnknown_030055BC;
 

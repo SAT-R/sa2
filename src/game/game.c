@@ -13,12 +13,11 @@
 #include "game/save.h"
 #include "game/screen_shake.h"
 #include "game/stage/entities_manager.h"
-#include "game/stage/rings_manager.h"
 #include "game/stage/music_manager.h"
 #include "game/stage/palette_loader.h"
 #include "game/stage/pause_menu.h"
+#include "game/stage/rings_manager.h"
 #include "game/time_attack/lobby.h"
-#include "game/stage/music_manager.h"
 
 #include "constants/songs.h"
 #include "constants/tilemaps.h"
@@ -163,8 +162,8 @@ void CreateGameStage(void)
     gUnknown_03005424 |= 0x21;
     gUnknown_03005424 &= ~0x80;
 
-    gBossRingsShallRespawn = 0;
-    gBossRingsRespawnCount = 10;
+    gBossRingsShallRespawn = FALSE;
+    gBossRingsRespawnCount = BOSS_RINGS_DEFAULT_RESPAWN_COUNT;
     gUnknown_030055BC = 0;
 
     sub_801F044();

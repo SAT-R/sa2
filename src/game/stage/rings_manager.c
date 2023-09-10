@@ -135,7 +135,7 @@ void Task_RingsMgrMain(void)
         if (IS_BOSS_STAGE(gCurrentLevel)) {
             if (gBossRingsShallRespawn && gBossRingsRespawnCount > 0) {
                 RLUnCompWram(gSpritePosData_rings[gCurrentLevel], rings);
-                gBossRingsShallRespawn = 0;
+                gBossRingsShallRespawn = FALSE;
                 gBossRingsRespawnCount--;
             }
         }
