@@ -15,7 +15,8 @@
 extern u8 gBossRingsRespawnCount;
 extern bool8 gBossRingsShallRespawn;
 
-void CreateStageRingsManager(void);
 extern const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS];
+
+void CreateStageRingsManager(void);
 
 #endif // GUARD_RINGS_MANAGER_H

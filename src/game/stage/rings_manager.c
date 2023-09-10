@@ -1,9 +1,11 @@
 #include <string.h>
 #include "global.h"
-#include "game/player_super_sonic.h"
 #include "malloc_ewram.h"
 #include "game/game.h"
+#include "game/entity.h"
+#include "game/player_super_sonic.h"
 #include "game/stage/rings_manager.h"
+#include "game/stage/collect_ring_effect.h"
 #include "game/assets/compressed/entities.h"
 
 #include "constants/animations.h"
@@ -15,6 +17,11 @@ typedef struct {
 
 void Task_RingsMgrMain(void);
 void TaskDestructor_8007F1C(struct Task *);
+
+#define RM_PLAYER_LEFT   (Q_24_8_TO_INT(gPlayer.x) + sp00[0])
+#define RM_PLAYER_RIGHT  (RM_PLAYER_LEFT + (sp00[2] - sp00[0]))
+#define RM_PLAYER_TOP    (Q_24_8_TO_INT(gPlayer.y) + sp00[1])
+#define RM_PLAYER_BOTTOM (RM_PLAYER_TOP + (sp00[3] - sp00[1]))
 
 const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS] = {
     zone1_act1_rings,
@@ -105,8 +112,8 @@ void CreateStageRingsManager(void)
         = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
 }
 
-//NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
-//         void Task_RingsMgrMain(void))
+// NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
+//          void Task_RingsMgrMain(void))
 void Task_RingsMgrMain(void)
 {
     s32 sp1C = 0;
@@ -140,13 +147,13 @@ void Task_RingsMgrMain(void)
             }
         }
         // _08007FBE
-        sp08 = 0;
+        sp08 = FALSE;
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             u32 res = sub_802C6E4() & 0x21C;
-            sp08 = 1;
+            sp08 = TRUE;
 
             if (res) {
-                sp08 = 0;
+                sp08 = FALSE;
             }
 
             // _08007FE4
@@ -178,17 +185,105 @@ void Task_RingsMgrMain(void)
 
             s32 r0x = (sp00[2] + Q_24_8_TO_INT(gPlayer.x) + 16) >> 8;
 
-            if (((signed)sb <= r0x) && sb < regions_x) {
+            while (((signed)sb <= r0x) && sb < regions_x) {
                 // _080080A0
+                u32 *ring_offsets = &((u32 *)rings)[regions_x * sl];
+                u32 offset;
+                ring_offsets += sb;
+
+                offset = *ring_offsets;
+                if (offset) {
+                    MapEntity_Ring *meRing;
+                    offset -= 8;
+
+                    meRing = (MapEntity_Ring *)&((u8 *)rings)[offset];
+
+                    while ((meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END)
+                           && (meRing->x != (u8)MAP_ENTITY_STATE_INITIALIZED)) {
+                        // _080080D6
+                        s32 r8 = TO_WORLD_POS(meRing->x, sb);
+                        s32 r7 = TO_WORLD_POS(meRing->y, sl);
+
+                        if ((sp08 != FALSE)
+                            || (gCurrentLevel
+                                    != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)
+                                && PLAYER_IS_ALIVE)) {
+                            // _0800810A
+
+                            // Player touches ring(?)
+                            if ((((r8 - 8) > RM_PLAYER_LEFT)
+                                 && (RM_PLAYER_RIGHT < (r8 - 8)))
+                                || ((r8 + 8) >= RM_PLAYER_LEFT)
+                                || (((r8 - 8) >= RM_PLAYER_LEFT)
+                                    && ((RM_PLAYER_RIGHT < (r8 - 8))))) {
+                                // _0800813A
+                                if ((((r7 - 16) > RM_PLAYER_TOP)
+                                     && (RM_PLAYER_BOTTOM >= (r7 - 16)))
+                                    || (r7 >= RM_PLAYER_TOP)
+                                    || ((((r7 - 16) > RM_PLAYER_TOP)
+                                         && ((RM_PLAYER_BOTTOM >= (r7 - 16)))))) {
+                                    // _08008166
+                                    s16 prevRingCount = gRingCount++;
+
+                                    if (gCurrentLevel
+                                        != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+                                        s32 lives = Div(gRingCount, 100);
+                                        s32 prevLives = Div(prevRingCount, 100);
+
+                                        if ((lives != prevLives)
+                                            && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
+                                            if (--gNumLives > 0xFF)
+                                                gNumLives = 0xFF;
+
+                                            gUnknown_030054A8.unk3 = 0x10;
+                                        }
+                                    }
+                                    // _080081AC
+
+                                    if (gGameMode
+                                        == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                                        if (--gRingCount > 0xFF)
+                                            gRingCount = 0xFF;
+                                    }
+                                    // _080081C0
+                                    CreateCollectRingEffect(r8, r7);
+                                    SET_MAP_ENTITY_INITIALIZED(meRing);
+                                }
+                            }
+                        }
+                        // _080081D2
+                        meRing++;
+                    }
+                    // _080081E4
+                    if (sb > ((Q_24_8_TO_INT(gPlayer.x) + sp00[2] + 16) >> 8))
+                        break;
+
+                    if (sb >= regions_x)
+                        break;
+                }
+                sb++;
             }
-            // _08008208
+            sl++;
+            // _08008208 = continue
+            if (sl > ((Q_24_8_TO_INT(gPlayer.y) + sp00[3] + 8) >> 8))
+                break;
+
+            if (sl > regions_y)
+                break;
         }
         // _0800822C
 
         if (IS_MULTI_PLAYER) {
             // _08008236
             u8 i; // sp30
-            for (i = 0; i < 4; i++) { }
+            for (i = 0; i < 4; i++) {
+                u32 playerId = SIO_MULTI_CNT->id;
+                if ((i == playerId) && (gMultiplayerPlayerTasks[i] != NULL)) {
+                    // _08008258
+                    struct MultiplayerPlayer *mpPlayer
+                        = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
+                }
+            }
         }
         // _0800847E
         {
@@ -215,7 +310,7 @@ void Task_RingsMgrMain(void)
         }
     }
 }
-//END_NONMATCH
+// END_NONMATCH
 
 void TaskDestructor_8007F1C(struct Task *t)
 {

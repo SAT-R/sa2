@@ -31,6 +31,12 @@ typedef struct PACKED {
     /* 0x02 */ u8 index;
 } MapEntity_Itembox;
 
+typedef struct PACKED {
+    /* 0x00 */ u8 x; // While an enemy is active, x gets repurposed as a "state"
+                     // (e.g. indicating that it's active)
+    /* 0x01 */ u8 y;
+} MapEntity_Ring;
+
 typedef struct {
     /* 0x00 */ MapEntity *me;
     /* 0x04 */ u16 regionX;
@@ -50,6 +56,7 @@ u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
 void sub_801FD34(s32, s32, s32);
 
 // After a MapEntity is initialized, its x-value in the layout-data gets set to -2.
+#define MAP_ENTITY_STATE_ARRAY_END   (-1)
 #define MAP_ENTITY_STATE_INITIALIZED (-2)
 #define MAP_ENTITY_STATE_MINUS_THREE (-3)
 #define SET_MAP_ENTITY_INITIALIZED(mapEnt)                                              \

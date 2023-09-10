@@ -179,7 +179,7 @@ _08008064:
 	subs r0, #8
 	lsls r0, r0, #8
 	lsrs r0, r0, #0x10
-	mov sb, r0
+	mov sb, r0      @ ((Q_24_8_TO_INT(gPlayer.x) - sp00[0] - 8) >> 8);
 	mov r0, sp
 	ldrb r0, [r0, #2]
 	lsls r0, r0, #0x18
@@ -217,7 +217,7 @@ _080080A0:
 	b _080081E4
 _080080BE:
 	subs r0, #8
-	adds r5, r6, r0
+	adds r5, r6, r0     @ r5 = region
 	ldrb r1, [r5]
 	adds r0, r1, #0
 	cmp r0, #0xff
@@ -440,7 +440,7 @@ _08008258:
 	ldrh r2, [r0, #6]
 	movs r6, #0xc0
 	lsls r6, r6, #0x12
-	adds r4, r2, r6
+	adds r4, r2, r6     @ r4 = mpPlayer
 	ldr r1, _080082C8 @ =IWRAM_START + 0x52
 	adds r0, r2, r1
 	movs r3, #0

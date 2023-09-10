@@ -4252,7 +4252,7 @@ _08049BAC:
 	movs r0, #1
 	strb r0, [r1]
 	ldr r1, _08049C90 @ =gBossRingsRespawnCount
-	movs r0, #0xa
+	movs r0, #0xa @ BOSS_RINGS_DEFAULT_RESPAWN_COUNT
 	strb r0, [r1]
 	ldr r1, _08049C94 @ =gPlayer
 	ldr r0, _08049C98 @ =gCourseTime
