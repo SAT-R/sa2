@@ -138,6 +138,7 @@ void Task_RingsMgrMain(void)
         Sprite *s; // sp18
         SpriteOffset *dimensions; // sp20
         u16 sl; // sl / sp40
+        u16 sb;
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
             if (gBossRingsShallRespawn && gBossRingsRespawnCount > 0) {
@@ -181,9 +182,10 @@ void Task_RingsMgrMain(void)
         while (((sl <= (((Q_24_8_TO_INT(gPlayer.y) + sp00[3]) + 8)) >> 8))
                && (sl++ < regions_y)) {
             // _08008064
-            u16 sb = ((Q_24_8_TO_INT(gPlayer.x) - sp00[0] - 8) >> 8);
+            s32 r0x;
+            sb = ((Q_24_8_TO_INT(gPlayer.x) - sp00[0] - 8) >> 8);
 
-            s32 r0x = (sp00[2] + Q_24_8_TO_INT(gPlayer.x) + 16) >> 8;
+            r0x = (sp00[2] + Q_24_8_TO_INT(gPlayer.x) + 16) >> 8;
 
             while (((signed)sb <= r0x) && sb < regions_x) {
                 // _080080A0
@@ -211,11 +213,9 @@ void Task_RingsMgrMain(void)
                             // _0800810A
 
                             // Player touches ring(?)
-                            if ((((r8 - 8) > RM_PLAYER_LEFT)
-                                 && (RM_PLAYER_RIGHT < (r8 - 8)))
+                            if ((((r8 - 8) > RM_PLAYER_LEFT) && (RM_PLAYER_RIGHT < (r8 - 8)))
                                 || ((r8 + 8) >= RM_PLAYER_LEFT)
-                                || (((r8 - 8) >= RM_PLAYER_LEFT)
-                                    && ((RM_PLAYER_RIGHT < (r8 - 8))))) {
+                                || (((r8 - 8) >= RM_PLAYER_LEFT) && (RM_PLAYER_RIGHT < (r8 - 8)))) {
                                 // _0800813A
                                 if ((((r7 - 16) > RM_PLAYER_TOP)
                                      && (RM_PLAYER_BOTTOM >= (r7 - 16)))
@@ -240,9 +240,8 @@ void Task_RingsMgrMain(void)
                                     }
                                     // _080081AC
 
-                                    if (gGameMode
-                                        == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                                        if (--gRingCount > 0xFF)
+                                    if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                                        if (gRingCount > 0xFF)
                                             gRingCount = 0xFF;
                                     }
                                     // _080081C0
@@ -278,11 +277,28 @@ void Task_RingsMgrMain(void)
             u8 i; // sp30
             for (i = 0; i < 4; i++) {
                 u32 playerId = SIO_MULTI_CNT->id;
+
                 if ((i == playerId) && (gMultiplayerPlayerTasks[i] != NULL)) {
                     // _08008258
-                    struct MultiplayerPlayer *mpPlayer
-                        = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
+                    struct MultiplayerPlayer *mpPlayer = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
+                    s16 px, py = mpPlayer->unk52;
+                    s32 hbBottom, hbLeft, hbRight;
+                    sl = Q_24_8(py + s->hitboxes[0].top);
+                    hbBottom = Q_24_8(py + s->hitboxes[0].bottom);
+
+                    if((sl > ((hbBottom + 8) >> 8)) || ((unsigned)sl >= regions_y))
+                        continue;
+
+                    // _080082E2
+                    // sp28 = mpPlayer->unk50;
+                    // sp2C = mpPlayer->s.hitboxes[0].left;
+                    // sp48 = mpPlayer->s.hitboxes[0].right;
+                    px = mpPlayer->unk50;
+                    sb = Q_24_8(px + mpPlayer->s.hitboxes[0].left - 8);
+
+                    hbRight = Q_24_8((px + mpPlayer->s.hitboxes[0].right) + 16);
                 }
+                // _08008472 = continue
             }
         }
         // _0800847E
@@ -292,21 +308,26 @@ void Task_RingsMgrMain(void)
             if ((gPlayer.itemEffect != PLAYER_ITEM_EFFECT__NONE)
                 && (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)) {
                 // _080084A2
-            }
-            // _080086B4
+                while(((sl << 8) >= (gCamera.y + DISPLAY_HEIGHT)) && ((unsigned)(sl << 8) >= regions_y)) {
 
-            while (((sl << 8) < gCamera.y + DISPLAY_HEIGHT) && (sl < regions_y)) {
-                u16 sb = ((gCamera.x << 8) >> 16);
-
-                while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
-                    // _080086E8
-
-                    sb++;
                 }
-                // _0800882C
-                sl++;
+            } else {
+                // _080086B4
+
+                sl = Q_24_8(gCamera.y) >> 16;
+                while (((sl << 8) < gCamera.y + DISPLAY_HEIGHT) && (sl < regions_y)) {
+                    // _080086CC
+                    sb = Q_24_8(gCamera.x << 8) >> 16);
+
+                    while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
+                        // _080086E8
+
+                        sb++;
+                    }
+                    // _0800882C
+                    sl++;
+                }
             }
-            // return
         }
     }
 }

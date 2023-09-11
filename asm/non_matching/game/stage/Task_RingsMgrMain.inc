@@ -444,13 +444,13 @@ _08008258:
 	ldr r1, _080082C8 @ =IWRAM_START + 0x52
 	adds r0, r2, r1
 	movs r3, #0
-	ldrsh r1, [r0, r3]
+	ldrsh r1, [r0, r3]  @ r1 = py = mpPlayer->unk52
 	adds r6, #0x2d
 	adds r0, r2, r6
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	adds r0, r1, r0
+	asrs r0, r0, #0x18  @ r0 = s->hitboxes[0].top
+	adds r0, r1, r0     @ r0 = r1 + r0
 	lsls r0, r0, #8
 	lsrs r0, r0, #0x10
 	mov sl, r0
@@ -512,13 +512,13 @@ _080082F4:
 	subs r1, #8
 	lsls r1, r1, #8
 	lsrs r1, r1, #0x10
-	mov sb, r1
+	mov sb, r1          @ sb = Q_24_8(px + mpPlayer->s.hitboxes[0].left - 8);
 	ldr r3, [sp, #0x48]
 	movs r1, #0
 	ldrsb r1, [r3, r1]
 	adds r1, r1, r0
 	adds r1, #0x10
-	asrs r1, r1, #8
+	asrs r1, r1, #8     @ r1 = hbRight
 	mov r6, sl
 	adds r6, #1
 	str r6, [sp, #0x40]
