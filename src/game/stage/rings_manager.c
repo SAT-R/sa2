@@ -114,6 +114,7 @@ void CreateStageRingsManager(void)
 
 // NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
 //          void Task_RingsMgrMain(void))
+// https://decomp.me/scratch/1MST0
 void Task_RingsMgrMain(void)
 {
     s32 sp1C = 0;
@@ -309,6 +310,12 @@ void Task_RingsMgrMain(void)
                 && (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)) {
                 // _080084A2
                 while(((sl << 8) >= (gCamera.y + DISPLAY_HEIGHT)) && ((unsigned)(sl << 8) >= regions_y)) {
+                    // _080084B8
+                    s32 offset;
+                    s32 yPos = regions_x * sl;
+                    s32 xPos = sb * 4;
+                    yPos *= 4;
+                    offset = *(u32*)&((u8*)rings)[yPos + xPos];
 
                 }
             } else {
@@ -317,10 +324,11 @@ void Task_RingsMgrMain(void)
                 sl = Q_24_8(gCamera.y) >> 16;
                 while (((sl << 8) < gCamera.y + DISPLAY_HEIGHT) && (sl < regions_y)) {
                     // _080086CC
-                    sb = Q_24_8(gCamera.x << 8) >> 16);
+                    sb = Q_24_8(gCamera.x) >> 16;
 
                     while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
                         // _080086E8
+
 
                         sb++;
                     }

@@ -756,8 +756,8 @@ _080084B8:
 	blt _080084CC
 	b _0800867A
 _080084CC:
-	ldr r6, [sp, #0xc]
-	mov r2, sl
+	ldr r6, [sp, #0xc]      @ r6 = regions_x
+	mov r2, sl              @ r2 = sl
 	muls r2, r6, r2
 	mov r0, sb
 	lsls r1, r0, #2
