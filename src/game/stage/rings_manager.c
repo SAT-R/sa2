@@ -1,5 +1,6 @@
 #include <string.h>
 #include "global.h"
+#include "core.h"
 #include "malloc_ewram.h"
 #include "game/game.h"
 #include "game/entity.h"
@@ -114,7 +115,7 @@ void CreateStageRingsManager(void)
 
 // NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
 //          void Task_RingsMgrMain(void))
-// https://decomp.me/scratch/1MST0
+//
 void Task_RingsMgrMain(void)
 {
     // oam sub-frame ID?
@@ -359,6 +360,28 @@ void Task_RingsMgrMain(void)
                                             DisplaySprite(s);
                                         } else {
                                             // _08008788
+                                            OamData *oamDat
+                                                = &gUnknown_030022D0[s->oamBaseIndex];
+                                            OamData *oamAllocated
+                                                = OamMalloc(GET_SPRITE_OAM_ORDER(s));
+
+                                            if (oamAllocated == iwram_end)
+                                                return;
+
+                                            DmaCopy16(3, oamDat, oamAllocated,
+                                                      sizeof(OamDataShort));
+
+                                            // TODO: Can these be done more explicitly?
+                                            oamAllocated->all.attr1 &= 0xFE00;
+                                            oamAllocated->all.attr0 &= 0xFF00;
+                                            oamAllocated->all.attr0
+                                                += ((ry - gCamera.y)
+                                                    - dimensions->offsetY)
+                                                & 0xFF;
+                                            oamAllocated->all.attr1
+                                                += ((rx - gCamera.x)
+                                                    - dimensions->offsetX)
+                                                & 0x1FF;
                                         }
                                         sp1C++;
                                     }

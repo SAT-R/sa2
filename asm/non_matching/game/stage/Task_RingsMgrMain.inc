@@ -1114,9 +1114,9 @@ _08008764:
 _08008784: .4byte gCamera
 _08008788:
 	ldrb r1, [r1]
-	lsls r1, r1, #3
+	lsls r1, r1, #3     @ r1 = s->oamIndex * 8
 	ldr r0, _0800885C @ =gUnknown_030022D0
-	adds r6, r1, r0
+	adds r6, r1, r0     @ r6 = oamDat
 	ldr r4, [sp, #0x18]
 	ldrh r0, [r4, #0x1a]
 	movs r2, #0xf8
@@ -1125,7 +1125,7 @@ _08008788:
 	ands r0, r1
 	lsrs r0, r0, #6
 	bl OamMalloc
-	adds r4, r0, #0
+	adds r4, r0, #0     @ r4 = oamAllocated
 	ldr r0, _08008860 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r4
