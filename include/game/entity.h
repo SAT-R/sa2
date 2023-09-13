@@ -56,9 +56,13 @@ u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
 void sub_801FD34(s32, s32, s32);
 
 // After a MapEntity is initialized, its x-value in the layout-data gets set to -2.
+// TODO:
+// Find out whether casting these to u8 can work while still matching!
 #define MAP_ENTITY_STATE_ARRAY_END   (-1)
 #define MAP_ENTITY_STATE_INITIALIZED (-2)
 #define MAP_ENTITY_STATE_MINUS_THREE (-3)
+
+// TODO: Find a way to simplify/remove this macro!
 #define SET_MAP_ENTITY_INITIALIZED(mapEnt)                                              \
     {                                                                                   \
         s32 negativeTwo;                                                                \

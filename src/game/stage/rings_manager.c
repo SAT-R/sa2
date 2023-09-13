@@ -117,6 +117,7 @@ void CreateStageRingsManager(void)
 // https://decomp.me/scratch/1MST0
 void Task_RingsMgrMain(void)
 {
+    // oam sub-frame ID?
     s32 sp1C = 0;
     s8 sp00[4];
     s8 sp04[4];
@@ -201,75 +202,71 @@ void Task_RingsMgrMain(void)
 
                     meRing = (MapEntity_Ring *)&((u8 *)rings)[offset];
 
-                    while ((meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END)
-                           && (meRing->x != (u8)MAP_ENTITY_STATE_INITIALIZED)) {
-                        // _080080D6
-                        s32 r8 = TO_WORLD_POS(meRing->x, sb);
-                        s32 r7 = TO_WORLD_POS(meRing->y, sl);
+                    while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
+                        if (meRing->x != (u8)MAP_ENTITY_STATE_INITIALIZED) {
+                            // _080080D6
+                            s32 r8 = TO_WORLD_POS(meRing->x, sb);
+                            s32 r7 = TO_WORLD_POS(meRing->y, sl);
 
-                        if ((sp08 != FALSE)
-                            || (gCurrentLevel
-                                    != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)
-                                && PLAYER_IS_ALIVE)) {
-                            // _0800810A
+                            if ((sp08 != FALSE)
+                                || (gCurrentLevel
+                                        != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)
+                                    && PLAYER_IS_ALIVE)) {
+                                // _0800810A
 
-                            // Player touches ring(?)
-                            if ((((r8 - 8) > RM_PLAYER_LEFT) && (RM_PLAYER_RIGHT < (r8 - 8)))
-                                || ((r8 + 8) >= RM_PLAYER_LEFT)
-                                || (((r8 - 8) >= RM_PLAYER_LEFT) && (RM_PLAYER_RIGHT < (r8 - 8)))) {
-                                // _0800813A
-                                if ((((r7 - 16) > RM_PLAYER_TOP)
-                                     && (RM_PLAYER_BOTTOM >= (r7 - 16)))
-                                    || (r7 >= RM_PLAYER_TOP)
-                                    || ((((r7 - 16) > RM_PLAYER_TOP)
-                                         && ((RM_PLAYER_BOTTOM >= (r7 - 16)))))) {
-                                    // _08008166
-                                    s16 prevRingCount = gRingCount++;
+                                // Player touches ring(?)
+                                if ((((r8 - 8) > RM_PLAYER_LEFT)
+                                     && (RM_PLAYER_RIGHT < (r8 - 8)))
+                                    || ((r8 + 8) >= RM_PLAYER_LEFT)
+                                    || (((r8 - 8) >= RM_PLAYER_LEFT)
+                                        && (RM_PLAYER_RIGHT < (r8 - 8)))) {
+                                    // _0800813A
+                                    if ((((r7 - 16) > RM_PLAYER_TOP)
+                                         && (RM_PLAYER_BOTTOM >= (r7 - 16)))
+                                        || (r7 >= RM_PLAYER_TOP)
+                                        || ((((r7 - 16) > RM_PLAYER_TOP)
+                                             && ((RM_PLAYER_BOTTOM >= (r7 - 16)))))) {
+                                        // _08008166
+                                        s16 prevRingCount = gRingCount++;
 
-                                    if (gCurrentLevel
-                                        != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-                                        s32 lives = Div(gRingCount, 100);
-                                        s32 prevLives = Div(prevRingCount, 100);
+                                        if (gCurrentLevel
+                                            != LEVEL_INDEX(ZONE_FINAL,
+                                                           ACT_TRUE_AREA_53)) {
+                                            s32 lives = Div(gRingCount, 100);
+                                            s32 prevLives = Div(prevRingCount, 100);
 
-                                        if ((lives != prevLives)
-                                            && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
-                                            if (--gNumLives > 0xFF)
-                                                gNumLives = 0xFF;
+                                            if ((lives != prevLives)
+                                                && (gGameMode
+                                                    == GAME_MODE_SINGLE_PLAYER)) {
+                                                if (--gNumLives > 0xFF)
+                                                    gNumLives = 0xFF;
 
-                                            gUnknown_030054A8.unk3 = 0x10;
+                                                gUnknown_030054A8.unk3 = 0x10;
+                                            }
                                         }
-                                    }
-                                    // _080081AC
+                                        // _080081AC
 
-                                    if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                                        if (gRingCount > 0xFF)
-                                            gRingCount = 0xFF;
+                                        if (gGameMode
+                                            == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                                            if (gRingCount > 0xFF)
+                                                gRingCount = 0xFF;
+                                        }
+                                        // _080081C0
+                                        CreateCollectRingEffect(r8, r7);
+                                        SET_MAP_ENTITY_INITIALIZED(meRing);
                                     }
-                                    // _080081C0
-                                    CreateCollectRingEffect(r8, r7);
-                                    SET_MAP_ENTITY_INITIALIZED(meRing);
                                 }
                             }
+                            // _080081D2
                         }
-                        // _080081D2
                         meRing++;
                     }
-                    // _080081E4
-                    if (sb > ((Q_24_8_TO_INT(gPlayer.x) + sp00[2] + 16) >> 8))
-                        break;
-
-                    if (sb >= regions_x)
-                        break;
                 }
+
                 sb++;
             }
-            sl++;
-            // _08008208 = continue
-            if (sl > ((Q_24_8_TO_INT(gPlayer.y) + sp00[3] + 8) >> 8))
-                break;
 
-            if (sl > regions_y)
-                break;
+            sl++;
         }
         // _0800822C
 
@@ -281,13 +278,14 @@ void Task_RingsMgrMain(void)
 
                 if ((i == playerId) && (gMultiplayerPlayerTasks[i] != NULL)) {
                     // _08008258
-                    struct MultiplayerPlayer *mpPlayer = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
+                    struct MultiplayerPlayer *mpPlayer
+                        = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
                     s16 px, py = mpPlayer->unk52;
                     s32 hbBottom, hbLeft, hbRight;
                     sl = Q_24_8(py + s->hitboxes[0].top);
                     hbBottom = Q_24_8(py + s->hitboxes[0].bottom);
 
-                    if((sl > ((hbBottom + 8) >> 8)) || ((unsigned)sl >= regions_y))
+                    if ((sl > ((hbBottom + 8) >> 8)) || ((unsigned)sl >= regions_y))
                         continue;
 
                     // _080082E2
@@ -309,14 +307,14 @@ void Task_RingsMgrMain(void)
             if ((gPlayer.itemEffect != PLAYER_ITEM_EFFECT__NONE)
                 && (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)) {
                 // _080084A2
-                while(((sl << 8) >= (gCamera.y + DISPLAY_HEIGHT)) && ((unsigned)(sl << 8) >= regions_y)) {
+                while (((sl << 8) >= (gCamera.y + DISPLAY_HEIGHT))
+                       && ((unsigned)(sl << 8) >= regions_y)) {
                     // _080084B8
                     s32 offset;
-                    s32 yPos = regions_x * sl;
+                    s32 yPos = sl * regions_x;
                     s32 xPos = sb * 4;
                     yPos *= 4;
-                    offset = *(u32*)&((u8*)rings)[yPos + xPos];
-
+                    offset = *(u32 *)&((u8 *)rings)[yPos + xPos];
                 }
             } else {
                 // _080086B4
@@ -326,9 +324,48 @@ void Task_RingsMgrMain(void)
                     // _080086CC
                     sb = Q_24_8(gCamera.x) >> 16;
 
-                    while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
+                    while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH))
+                           && (sb < regions_x)) {
                         // _080086E8
+                        s32 yPos = sl * regions_x;
+                        s32 xPos = sb * 4;
+                        s32 offset;
+                        yPos *= 4;
+                        offset = *(u32 *)(rings + (yPos + xPos));
 
+                        if (offset != 0) {
+                            MapEntity_Ring *meRing;
+                            offset -= 8;
+
+                            meRing = (rings + (offset));
+                            while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
+                                // _0800870C
+                                if (meRing->x != (u8)MAP_ENTITY_STATE_INITIALIZED) {
+                                    s32 rx = TO_WORLD_POS(meRing->x, sb);
+                                    s32 ry = TO_WORLD_POS(meRing->y, sl);
+
+                                    if (((rx - gCamera.x) + TILE_WIDTH)
+                                            <= (DISPLAY_WIDTH + 2 * TILE_WIDTH)
+                                        && (((ry - gCamera.y) + TILE_WIDTH) >= 0)
+                                        && (((ry - gCamera.y) - TILE_WIDTH)
+                                            <= DISPLAY_HEIGHT)) {
+                                        // _08008750
+                                        if ((sp1C == 0) || s->oamBaseIndex == 0xFF) {
+                                            // _08008764
+                                            s->oamBaseIndex = 0xFF;
+
+                                            s->x = rx - gCamera.x;
+                                            s->y = ry - gCamera.y;
+                                            DisplaySprite(s);
+                                        } else {
+                                            // _08008788
+                                        }
+                                        sp1C++;
+                                    }
+                                }
+                                meRing++;
+                            }
+                        }
 
                         sb++;
                     }

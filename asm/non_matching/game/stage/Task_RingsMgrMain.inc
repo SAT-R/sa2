@@ -1045,7 +1045,7 @@ _080086E8:
 	b _0800880E
 _08008702:
 	subs r0, #8
-	adds r5, r6, r0
+	adds r5, r6, r0     @ r5 = meRing = rings + (offset)
 	b _08008804
 	.align 2, 0
 _08008708: .4byte gCamera
@@ -1057,12 +1057,12 @@ _0800870C:
 	mov r2, sb
 	lsls r0, r2, #8
 	adds r1, r1, r0
-	mov r8, r1
+	mov r8, r1          @ r8 = rx
 	ldrb r1, [r5, #1]
 	lsls r1, r1, #3
 	mov r3, sl
 	lsls r0, r3, #8
-	adds r7, r1, r0
+	adds r7, r1, r0     @ r7 = ry
 	ldr r4, _0800874C @ =gCamera
 	ldr r0, [r4]
 	mov r6, r8
@@ -1086,9 +1086,9 @@ _08008746:
 _0800874C: .4byte gCamera
 _08008750:
 	adds r5, #2
-	ldr r2, [sp, #0x18]
+	ldr r2, [sp, #0x18]     @ r2 = s
 	adds r2, #0x23
-	ldr r0, [sp, #0x1c]
+	ldr r0, [sp, #0x1c]     @ r0 = sp1C
 	cmp r0, #0
 	beq _08008764
 	adds r1, r2, #0
