@@ -116,10 +116,8 @@ void CreateStageRingsManager(void)
 
 // TODO: Create GET_OFFSET macro!
 //
-// NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
-//          void Task_RingsMgrMain(void))
-// (74.06%) https://decomp.me/scratch/pbchb
-void Task_RingsMgrMain(void)
+// (76.80%) https://decomp.me/scratch/pbchb
+NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgrMain(void))
 {
     // oam sub-frame ID?
     u8 sp1C = 0;
@@ -538,7 +536,7 @@ void Task_RingsMgrMain(void)
         }
     }
 }
-// END_NONMATCH
+END_NONMATCH
 
 void TaskDestructor_8007F1C(struct Task *t)
 {
