@@ -2,6 +2,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/enemies/kiki.h"
+#include "game/stage/entities_manager.h"
 #include "malloc_vram.h"
 #include "sprite.h"
 
@@ -16,12 +17,31 @@ typedef struct {
     /* 0x3F */ u8 unk3F;
 } Sprite_Kiki; /* size: 0x40 */
 
-void sub_80538A0(void);
-void TaskDestructor_80095E8(struct Task *);
+typedef struct {
+    Sprite s;
+    u16 unk30;
+    s16 unk32;
+    s16 unk34;
+    s16 unk36;
+    s16 unk38;
+} Kiki_Proj; /* 0x3C */
+
+static void Task_KikiMain(void);
+static void sub_8053A38(void);
+
+static void CreateProjectile(s16, s16);
+static void Task_ProjMain(void);
+static void Task_ProjSplit(void);
+
+static void CreateProjectilePiece(s16, s16);
+static void Task_ProjPieceMain(void);
+
+static void TaskDestructor_KikiProj(struct Task *);
 
 void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_80538A0, 0x40, 0x4020, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_KikiMain, sizeof(Sprite_Kiki), 0x4020, 0,
+                                TaskDestructor_80095E8);
     Sprite_Kiki *kiki = TaskGetStructPtr(t);
     Sprite *s = &kiki->s;
 
@@ -50,9 +70,7 @@ void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     UpdateSpriteAnimation(s);
 }
 
-void sub_8053A38(void);
-
-void sub_80538A0(void)
+static void Task_KikiMain(void)
 {
     Sprite_Kiki *kiki = TaskGetStructPtr(gCurTask);
     Sprite *s = &kiki->s;
@@ -101,9 +119,7 @@ void sub_80538A0(void)
     ENEMY_UPDATE_EX_RAW(s, Q_24_8_NEW(x), Q_24_8_NEW(y), {});
 }
 
-void sub_8053BBC(s16, s16);
-
-void sub_8053A38(void)
+static void sub_8053A38(void)
 {
     Sprite_Kiki *kiki = TaskGetStructPtr(gCurTask);
     Sprite *s = &kiki->s;
@@ -142,33 +158,22 @@ void sub_8053A38(void)
 
     if (kiki->unk3F == 0x12) {
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            sub_8053BBC(x - 4, y + 2);
+            CreateProjectile(x - 4, y + 2);
         } else {
-            sub_8053BBC(x + 9, y + 2);
+            CreateProjectile(x + 9, y + 2);
         }
     }
     if (UpdateSpriteAnimation(s) == 0) {
-        gCurTask->main = sub_80538A0;
+        gCurTask->main = Task_KikiMain;
         s->variant = 0;
     };
     DisplaySprite(s);
 }
 
-typedef struct {
-    Sprite s;
-    u16 unk30;
-    s16 unk32;
-    s16 unk34;
-    s16 unk36;
-    s16 unk38;
-} Kiki_Proj; /* 0x3C */
-
-void sub_8053CC0(void);
-void sub_8054054(struct Task *);
-
-void sub_8053BBC(s16 x, s16 y)
+static void CreateProjectile(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(sub_8053CC0, 0x3C, 0x4028, 0, sub_8054054);
+    struct Task *t = TaskCreate(Task_ProjMain, sizeof(Kiki_Proj), 0x4028, 0,
+                                TaskDestructor_KikiProj);
     Kiki_Proj *proj = TaskGetStructPtr(t);
     Sprite *s = &proj->s;
 
@@ -203,11 +208,7 @@ void sub_8053BBC(s16 x, s16 y)
     UpdateSpriteAnimation(s);
 }
 
-void sub_8053DCC(void);
-
-void sub_8053E64(s16, s16);
-
-void sub_8053CC0(void)
+static void Task_ProjMain(void)
 {
     Kiki_Proj *proj = TaskGetStructPtr(gCurTask);
     Sprite *s = &proj->s;
@@ -227,7 +228,7 @@ void sub_8053CC0(void)
                 proj->unk32 = -(proj->unk32 >> 2);
                 proj->unk30 += 1;
             } else {
-                gCurTask->main = sub_8053DCC;
+                gCurTask->main = Task_ProjSplit;
                 proj->unk30 = 0;
                 proj->unk32 = 0;
             }
@@ -240,7 +241,7 @@ void sub_8053CC0(void)
         s->prevVariant = -1;
         s->graphics.anim = SA2_ANIM_DUST_CLOUD;
         s->variant = 0;
-        sub_8053E64(x, y);
+        CreateProjectilePiece(x, y);
         TaskDestroy(gCurTask);
         return;
     }
@@ -252,7 +253,7 @@ void sub_8053CC0(void)
     s->y = y;
 }
 
-void sub_8053DCC(void)
+static void Task_ProjSplit(void)
 {
     Kiki_Proj *proj = TaskGetStructPtr(gCurTask);
     Sprite *s = &proj->s;
@@ -261,13 +262,13 @@ void sub_8053DCC(void)
     x = s->x;
     y = s->y;
     if (proj->unk30++ >= 0x60) {
-        sub_8053E64(x, y);
+        CreateProjectilePiece(x, y);
         TaskDestroy(gCurTask);
         return;
     }
 
     if (sub_800C84C(s, x, y) != 0) {
-        sub_8053E64(x, y);
+        CreateProjectilePiece(x, y);
         TaskDestroy(gCurTask);
         return;
     }
@@ -280,11 +281,10 @@ void sub_8053DCC(void)
     s->y = y;
 }
 
-void sub_8053F24(void);
-
-void sub_8053E64(s16 x, s16 y)
+static void CreateProjectilePiece(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(sub_8053F24, 0x3C, 0x2000, 0, sub_8054054);
+    struct Task *t = TaskCreate(Task_ProjPieceMain, sizeof(Kiki_Proj), 0x2000, 0,
+                                TaskDestructor_KikiProj);
     Kiki_Proj *proj = TaskGetStructPtr(t);
     Sprite *s = &proj->s;
 
@@ -307,4 +307,48 @@ void sub_8053E64(s16 x, s16 y)
     SPRITE_INIT_SCRIPT(s, 1.0);
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
     UpdateSpriteAnimation(s);
+}
+
+static void Task_ProjPieceMain(void)
+{
+    Sprite *s2 = &gUnknown_03005AF0.s;
+    Kiki_Proj *proj = TaskGetStructPtr(gCurTask);
+    Sprite *s = &proj->s;
+    UNK_3005A70 *u90;
+
+    s16 x, y;
+
+    x = s->x;
+    y = s->y;
+    if ((s->hitboxes[0].index != -1) && (s2->hitboxes[0].index != -1)) {
+        s32 x1, x2;
+        x1 = x + s->hitboxes[0].left;
+        x2 = Q_24_8_TO_INT(gPlayer.x) + s2->hitboxes[0].left;
+        if ((x1 <= x2 && x1 + (s->hitboxes[0].right - s->hitboxes[0].left) >= x2)
+            || (x1 >= x2 && x2 + (s2->hitboxes[0].right - s2->hitboxes[0].left) >= x1)) {
+            s32 y1, y2;
+            y1 = y + s->hitboxes[0].top;
+            y2 = Q_24_8_TO_INT(gPlayer.y) + s2->hitboxes[0].top;
+            if ((y1 <= y2 && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
+                || (y1 >= y2
+                    && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {
+                sub_800CBA4(&gPlayer);
+            }
+        }
+    }
+    s->x -= gCamera.x;
+    s->y -= gCamera.y;
+    if (UpdateSpriteAnimation(s) == 0) {
+        TaskDestroy(gCurTask);
+        return;
+    }
+    DisplaySprite(s);
+    s->x = x;
+    s->y = y;
+}
+
+static void TaskDestructor_KikiProj(struct Task *t)
+{
+    Kiki_Proj *proj = TaskGetStructPtr(t);
+    VramFree(proj->s.graphics.dest);
 }
