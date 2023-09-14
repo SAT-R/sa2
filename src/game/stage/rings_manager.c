@@ -117,7 +117,8 @@ void CreateStageRingsManager(void)
 // TODO: Create GET_OFFSET macro!
 //
 // (76.80%) https://decomp.me/scratch/pbchb
-NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgrMain(void))
+NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
+         void Task_RingsMgrMain(void))
 {
     // oam sub-frame ID?
     u8 sp1C = 0;
