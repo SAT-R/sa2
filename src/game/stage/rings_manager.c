@@ -114,9 +114,11 @@ void CreateStageRingsManager(void)
         = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
 }
 
+// TODO: Create GET_OFFSET macro!
+//
 // NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
 //          void Task_RingsMgrMain(void))
-// (74.06%) https://decomp.me/scratch/lrVoD
+// (74.06%) https://decomp.me/scratch/pbchb
 void Task_RingsMgrMain(void)
 {
     // oam sub-frame ID?
@@ -187,7 +189,7 @@ void Task_RingsMgrMain(void)
                && (sl < regions_y)) {
             // _08008064
             s32 r0x;
-            sb = ((Q_24_8_TO_INT(gPlayer.x) - sp00[0] - 8) >> 8);
+            sb = ((Q_24_8_TO_INT(gPlayer.x) + sp00[0] - 8) >> 8);
 
             while ((sb <= ((Q_24_8_TO_INT(gPlayer.x) + sp00[2] + 16) >> 8))
                    && sb < regions_x) {
@@ -207,27 +209,28 @@ void Task_RingsMgrMain(void)
                     while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
                         if (meRing->x != (u8)MAP_ENTITY_STATE_INITIALIZED) {
                             // _080080D6
-                            s32 r8 = TO_WORLD_POS(meRing->x, sb);
-                            s32 r7 = TO_WORLD_POS(meRing->y, sl);
+                            s32 rx = TO_WORLD_POS(meRing->x, sb);
+                            s32 ry = TO_WORLD_POS(meRing->y, sl);
 
                             if ((sp08 != FALSE)
                                 || (gCurrentLevel
                                         != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)
                                     && PLAYER_IS_ALIVE)) {
                                 // _0800810A
+                                s32 ringLeft = rx - 8;
 
                                 // Player touches ring(?)
-                                if ((((r8 - 8) > RM_PLAYER_LEFT)
-                                     && (RM_PLAYER_RIGHT < (r8 - 8)))
-                                    || ((r8 + 8) >= RM_PLAYER_LEFT)
-                                    || (((r8 - 8) >= RM_PLAYER_LEFT)
-                                        && (RM_PLAYER_RIGHT >= (r8 - 8)))) {
+                                if (((ringLeft <= RM_PLAYER_LEFT)
+                                     && ((rx + 8) >= RM_PLAYER_LEFT))
+                                    || ((RM_PLAYER_RIGHT >= ringLeft))) {
                                     // _0800813A
-                                    if ((((r7 - 16) > RM_PLAYER_TOP)
-                                         && (RM_PLAYER_BOTTOM >= (r7 - 16)))
-                                        || (r7 >= RM_PLAYER_TOP)
-                                        || ((((r7 - 16) >= RM_PLAYER_TOP)
-                                             && ((RM_PLAYER_BOTTOM >= (r7 - 16)))))) {
+                                    s32 ringTop = ry - 16;
+
+                                    if (((ringTop <= RM_PLAYER_TOP)
+                                         && (RM_PLAYER_TOP >= ringTop))
+                                        || (ry >= RM_PLAYER_TOP)
+                                        || (((ringTop >= RM_PLAYER_TOP)
+                                             && (((ry + 16) <= RM_PLAYER_BOTTOM))))) {
                                         // _08008166
                                         u16 prevRingCount = gRingCount;
                                         gRingCount++;
@@ -241,8 +244,8 @@ void Task_RingsMgrMain(void)
                                             if ((lives != prevLives)
                                                 && (gGameMode
                                                     == GAME_MODE_SINGLE_PLAYER)) {
-                                                if (gNumLives + 1 > 0xFF)
-                                                    gNumLives = 0xFF;
+                                                if ((gNumLives + 1) > 255u)
+                                                    gNumLives = 255;
                                                 else
                                                     gNumLives++;
 
@@ -257,7 +260,7 @@ void Task_RingsMgrMain(void)
                                                 gRingCount = 0xFF;
                                         }
                                         // _080081C0
-                                        CreateCollectRingEffect(r8, r7);
+                                        CreateCollectRingEffect(rx, ry);
                                         meRing->x = (u8)MAP_ENTITY_STATE_INITIALIZED;
                                     }
                                 }
@@ -290,7 +293,7 @@ void Task_RingsMgrMain(void)
                     sl = Q_24_8(py + s->hitboxes[0].top);
                     hbBottom = Q_24_8(py + s->hitboxes[0].bottom);
 
-                    while ((sl <= ((hbBottom + 8) >> 8)) || ((unsigned)sl < regions_y)) {
+                    while ((sl <= ((hbBottom + 8) >> 8)) && ((unsigned)sl < regions_y)) {
                         // _080082E2
                         // sp28 = mpPlayer->unk50;
                         // sp2C = mpPlayer->s.hitboxes[0].left;
@@ -317,29 +320,29 @@ void Task_RingsMgrMain(void)
                                 meRing = (rings + (offset));
                                 while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
                                     if (meRing->x != (u8)MAP_ENTITY_STATE_INITIALIZED) {
-                                        s32 r8 = TO_WORLD_POS(meRing->x, sb);
-                                        s32 r7 = TO_WORLD_POS(meRing->y, sl);
+                                        s32 rx = TO_WORLD_POS(meRing->x, sb);
+                                        s32 ry = TO_WORLD_POS(meRing->y, sl);
 
-                                        if ((((r8 - 8)
-                                              >= (mpPlayer->unk50
+                                        if ((((rx - 8)
+                                              <= (mpPlayer->unk50
                                                   + mpPlayer->s.hitboxes[0].left))
-                                             && (r8 <= mpPlayer->s.hitboxes[0].right))
-                                            && (((r7 - 8)
+                                             && ((rx + 8)
+                                                 > mpPlayer->s.hitboxes[0].right))
+                                            && (((ry - 8)
                                                  >= (mpPlayer->unk52
                                                      + mpPlayer->s.hitboxes[0].top))
-                                                && (r8 <= mpPlayer->s.hitboxes[0]
-                                                              .bottom))) {
+                                                && ((rx + 8) <= mpPlayer->s.hitboxes[0]
+                                                                    .bottom))) {
                                             u8 anim = rm->s.graphics.anim
                                                 - gPlayerCharacterIdleAnims
                                                     [gMultiplayerCharacters
                                                          [mpPlayer->unk56]];
-                                            if (anim == SA2_CHAR_ANIM_28
-                                                || anim == SA2_CHAR_ANIM_29) {
-                                                if (!(mpPlayer->unk54 & 0x4)) {
-                                                    CreateCollectRingEffect(r8, r7);
-                                                    meRing->x = (u8)
-                                                        MAP_ENTITY_STATE_INITIALIZED;
-                                                }
+                                            if ((anim != SA2_CHAR_ANIM_28
+                                                 && anim != SA2_CHAR_ANIM_29)
+                                                || !(mpPlayer->unk54 & 0x4)) {
+                                                CreateCollectRingEffect(rx, ry);
+                                                meRing->x
+                                                    = (u8)MAP_ENTITY_STATE_INITIALIZED;
                                             }
                                         }
                                     }
@@ -369,10 +372,11 @@ void Task_RingsMgrMain(void)
                     while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH))
                            && (sb < regions_x)) {
                         // _080086E8
-                        u32 *ringels = rings;
                         s32 yPos = sl * regions_x;
-                        s32 xPos = sb;
-                        s32 offset = ringels[yPos + xPos];
+                        s32 xPos = sb * 4;
+                        s32 offset;
+                        yPos *= 4;
+                        offset = *(u32 *)(rings + (yPos + xPos));
 
                         if (offset != 0) {
                             MapEntity_Ring *meRing;
@@ -387,14 +391,19 @@ void Task_RingsMgrMain(void)
 
                                     if (((u32)(rx - gCamera.x) + TILE_WIDTH)
                                             <= (DISPLAY_WIDTH + 2 * TILE_WIDTH)
-                                        && (((ry - gCamera.x)) >= 0)
+                                        && (((ry - gCamera.y)) >= 0)
                                         && (((ry - gCamera.y) - 2 * TILE_WIDTH)
-                                            <= DISPLAY_HEIGHT)
-                                        && ((rx - 64) <= gPlayer.x >> 8)
-                                        && ((rx + 64) >= gPlayer.x >> 8)) {
+                                            > DISPLAY_HEIGHT)) {
+                                        meRing++;
+                                    } else if (((rx - 64) <= Q_24_8_TO_INT(gPlayer.x))
+                                               && ((rx + 64) >= Q_24_8_TO_INT(gPlayer.x))
+                                               && ((ry - 72) <= Q_24_8_TO_INT(gPlayer.y))
+                                               && ((ry + 56
+                                                    >= Q_24_8_TO_INT(gPlayer.y)))) {
                                         sub_800BAAC(rx, ry);
                                         meRing->x = (u8)MAP_ENTITY_STATE_INITIALIZED;
                                         meRing++;
+
                                     } else {
                                         meRing++;
                                         // _08008750
@@ -430,9 +439,9 @@ void Task_RingsMgrMain(void)
                                                     - dimensions->offsetX)
                                                 & 0x1FF;
                                         }
+                                        sp1C++;
                                     }
                                 }
-                                sp1C++;
                             }
                         }
 

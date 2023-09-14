@@ -1150,7 +1150,7 @@ _08008788:
 	strh r2, [r4]
 	ldr r6, _0800886C @ =gCamera
 	ldr r0, [r6, #4]
-	subs r0, r7, r0
+	subs r0, r7, r0     @ r0 = ry - gCamera.y
 	ldr r6, [sp, #0x20]
 	ldrh r1, [r6, #0xa]
 	subs r0, r0, r1
