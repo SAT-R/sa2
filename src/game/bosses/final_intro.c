@@ -380,7 +380,7 @@ void CreateOrbitingEmeraldsSequence(void)
     background->unk24 = 1;
     background->unk26 = 0xD;
     background->unk28 = 0x12;
-    background->unk2A = 0;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(2);
 
     for (i = 0; i < 7; i++) {
@@ -1574,7 +1574,7 @@ void CreateBackgrounds(void)
     background->unk24 = 0;
     background->unk26 = 0x20;
     background->unk28 = 0x20;
-    background->unk2A = 0;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
 
@@ -1591,7 +1591,7 @@ void CreateBackgrounds(void)
     background->unk24 = 0;
     background->unk26 = 0x20;
     background->unk28 = 0x20;
-    background->unk2A = 0;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(background);
 }

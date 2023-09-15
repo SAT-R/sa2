@@ -6409,7 +6409,7 @@ void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u
     background->unk24 = 0;
     background->unk26 = d;
     background->unk28 = e;
-    background->unk2A = f;
+    background->paletteOffset = f;
     background->animFrameCounter = 0;
     background->animDelayCounter = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(bg_id);

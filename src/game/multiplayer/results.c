@@ -190,7 +190,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     background->unk24 = 0;
     background->unk26 = 0x1E;
     background->unk28 = 0x20;
-    background->unk2A = 0;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(3);
     sub_8002A3C(background);
 

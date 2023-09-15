@@ -26,10 +26,10 @@ void sub_8002A3C(Background *background)
 
     pal = mapHeader->h.palette;
     palSize = mapHeader->h.palLength;
-    background->unk2A = mapHeader->h.palOffset;
+    background->paletteOffset = mapHeader->h.palOffset;
 
     if (!(background->flags & BACKGROUND_UPDATE_PALETTE)) {
-        DmaCopy16(3, pal, gBgPalette + background->unk2A, palSize * sizeof(*pal));
+        DmaCopy16(3, pal, gBgPalette + background->paletteOffset, palSize * sizeof(*pal));
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
         background->flags ^= BACKGROUND_UPDATE_PALETTE;
     }

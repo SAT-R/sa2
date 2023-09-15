@@ -51,8 +51,8 @@ typedef struct {
     /* 0x0C */ u16 *tilesVram;
     /* 0x10 */ const u16 *unk10;
 
-    /* 0x14 */ u16 xTiles;
-    /* 0x16 */ u16 yTiles;
+    /* 0x14 */ u16 xTiles; // # of tiles in x-axis
+    /* 0x16 */ u16 yTiles; // # of tiles in y-axis
     /* 0x18 */ u16 unk18;
     /* 0x1A */ u16 unk1A;
     /* 0x1C */ u16 tilemapId;
@@ -63,7 +63,7 @@ typedef struct {
     /* 0x24 */ u16 unk24;
     /* 0x26 */ u16 unk26; // tile-width?
     /* 0x28 */ u16 unk28; // tile-height?
-    /* 0x2A */ u8 unk2A; // palette offset
+    /* 0x2A */ u8 paletteOffset;
     /* 0x2B */ u8 animFrameCounter;
     /* 0x2C */ u8 animDelayCounter;
 

@@ -177,7 +177,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
         background->unk24 = 0;
         background->unk26 = 0x1E;
         background->unk28 = 0x14;
-        background->unk2A = 0;
+        background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(0);
     }
     {
@@ -198,7 +198,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
         } else {
             background->unk28 = 6;
         }
-        background->unk2A = 0;
+        background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(1);
     }
 }

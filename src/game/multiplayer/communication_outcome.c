@@ -169,7 +169,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     background->unk24 = 0;
     background->unk26 = 0x1E;
     background->unk28 = 0x14;
-    background->unk2A = 0;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
     background->tilemapId = TM_MP_MESSAGE_BOX_UNKNOWN;
     sub_8002A3C(background);
