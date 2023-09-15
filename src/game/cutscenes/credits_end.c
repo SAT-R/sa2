@@ -162,8 +162,8 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             background->unk20 = 0;
             background->unk22 = 0;
             background->unk24 = 0;
-            background->unk26 = 0x1E;
-            background->unk28 = 0x14;
+            background->targetTilesX = 0x1E;
+            background->targetTilesY = 0x14;
             background->paletteOffset = 0;
             background->flags = BACKGROUND_FLAGS_BG_ID(0);
             sub_8002A3C(background);
@@ -246,8 +246,8 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
         background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(0);
         sub_8002A3C(background);
@@ -271,8 +271,8 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
         background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(1);
         sub_8002A3C(background);
@@ -328,8 +328,8 @@ static void Task_CreateCopyrightScreen(void)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
         background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(0);
         sub_8002A3C(background);
@@ -351,8 +351,8 @@ static void Task_CreateCopyrightScreen(void)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 3;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 3;
         background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(2);
         sub_8002A3C(background);
@@ -384,8 +384,8 @@ static void Task_SequenceMain(void)
 
                 background->tilemapId
                     = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
-                background->unk26 = 0x1E;
-                background->unk28 = 0x14;
+                background->targetTilesX = 0x1E;
+                background->targetTilesY = 0x14;
                 background->flags = BACKGROUND_FLAGS_BG_ID(0);
                 sub_8002A3C(background);
                 scene->sonicAnimFrame++;

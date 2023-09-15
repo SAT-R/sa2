@@ -196,8 +196,8 @@ void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = d;
-    background->unk28 = e;
+    background->targetTilesX = d;
+    background->targetTilesY = e;
     background->paletteOffset = palOffset;
     background->animFrameCounter = 0;
     background->animDelayCounter = 0;

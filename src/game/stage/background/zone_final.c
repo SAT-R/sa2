@@ -34,8 +34,8 @@ void CreateStageBg_ZoneFinal_0(void)
 
     // TODO: Should this be a different macro?
     bgDst->tilesVram = (void *)BG_TILE_ADDR(416);
-    bgDst->unk26 = 10;
-    bgDst->unk28 = 9;
+    bgDst->targetTilesX = 10;
+    bgDst->targetTilesY = 9;
     bgDst->flags |= BACKGROUND_FLAG_4;
     sub_8002A3C(bgDst);
 
@@ -50,8 +50,8 @@ void CreateStageBg_ZoneFinal_0(void)
 
     // TODO: Should this be a different macro?
     bgDst->tilesVram = (void *)BG_TILE_ADDR(480);
-    bgDst->unk26 = 32;
-    bgDst->unk28 = 20;
+    bgDst->targetTilesX = 32;
+    bgDst->targetTilesY = 20;
     bgDst->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(bgDst);
 

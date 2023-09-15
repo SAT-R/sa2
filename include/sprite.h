@@ -51,8 +51,12 @@ typedef struct {
     /* 0x0C */ u16 *tilesVram;
     /* 0x10 */ const u16 *unk10;
 
-    /* 0x14 */ u16 xTiles; // # of tiles in x-axis
-    /* 0x16 */ u16 yTiles; // # of tiles in y-axis
+    // Tile-count on each axis
+    // - Stage maps: should be 12 (# per metatile)
+    // - Common Tilemaps: should be .targetTilesX/Y
+    /* 0x14 */ u16 xTiles;
+    /* 0x16 */ u16 yTiles;
+
     /* 0x18 */ u16 unk18;
     /* 0x1A */ u16 unk1A;
     /* 0x1C */ u16 tilemapId;
@@ -61,8 +65,13 @@ typedef struct {
     /* 0x20 */ u16 unk20;
     /* 0x22 */ u16 unk22;
     /* 0x24 */ u16 unk24;
-    /* 0x26 */ u16 unk26; // tile-width?
-    /* 0x28 */ u16 unk28; // tile-height?
+
+    /* Tile-Dimensions for the rendering target */
+    /* - Stage maps: DISPLAY_WIDTH/_HEIGHT + 1*TILE_WIDTH */
+    /* - Common Tilemaps: full image dimensions */
+    /* 0x26 */ u16 targetTilesX;
+    /* 0x28 */ u16 targetTilesY;
+
     /* 0x2A */ u8 paletteOffset;
     /* 0x2B */ u8 animFrameCounter;
     /* 0x2C */ u8 animDelayCounter;
@@ -76,6 +85,8 @@ typedef struct {
     /* 0x32 */ u16 scrollY;
     /* 0x34 */ u16 prevScrollX;
     /* 0x36 */ u16 prevScrollY;
+
+    /* Only used by stage maps (they are encoded as Tilemaps) */
     /* 0x38 */ const u16 *metatileMap;
     /* 0x3C */ u16 mapWidth;
     /* 0x3E */ u16 mapHeight;

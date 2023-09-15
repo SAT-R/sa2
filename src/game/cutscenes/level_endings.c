@@ -479,8 +479,8 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1e;
-    background->unk28 = 5;
+    background->targetTilesX = 0x1e;
+    background->targetTilesY = 5;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(background);
@@ -496,8 +496,8 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1e;
-    background->unk28 = 0x14;
+    background->targetTilesX = 0x1e;
+    background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(2);
     sub_8002A3C(background);
@@ -562,8 +562,8 @@ void sub_808E4C8(void)
             background->unk20 = 0;
             background->unk22 = 0;
             background->unk24 = 0;
-            background->unk26 = 0x1e;
-            background->unk28 = 5;
+            background->targetTilesX = 0x1e;
+            background->targetTilesY = 5;
             background->paletteOffset = 0;
             background->flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(0);
             sub_8002A3C(background);

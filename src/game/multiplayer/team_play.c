@@ -213,8 +213,8 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
@@ -230,8 +230,8 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x28;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x28;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(background);
@@ -247,8 +247,8 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 10;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 10;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(3);
     sub_8002A3C(background);
@@ -264,8 +264,8 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(3);
     sub_8002A3C(background);
@@ -371,8 +371,8 @@ static void sub_805CC34(void)
                     background->unk20 = 0;
                     background->unk22 = 0;
                     background->unk24 = 0;
-                    background->unk26 = 0x1E;
-                    background->unk28 = 7;
+                    background->targetTilesX = 0x1E;
+                    background->targetTilesY = 7;
                     background->paletteOffset = 0;
                     background->flags = BACKGROUND_FLAGS_BG_ID(3);
                     sub_8002A3C(background);
@@ -416,8 +416,8 @@ static void sub_805CC34(void)
                 background->unk20 = 0;
                 background->unk22 = 0;
                 background->unk24 = 0;
-                background->unk26 = 0x1E;
-                background->unk28 = 7;
+                background->targetTilesX = 0x1E;
+                background->targetTilesY = 7;
                 background->paletteOffset = 0;
                 background->flags = BACKGROUND_FLAGS_BG_ID(3);
                 sub_8002A3C(background);

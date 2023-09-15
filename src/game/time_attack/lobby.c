@@ -201,8 +201,8 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1C;
-    background->unk28 = 0xC;
+    background->targetTilesX = 0x1C;
+    background->targetTilesY = 0xC;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
@@ -218,8 +218,8 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(background);

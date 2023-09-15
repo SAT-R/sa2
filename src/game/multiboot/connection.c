@@ -237,8 +237,8 @@ void StartSinglePakConnect(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);
@@ -476,8 +476,8 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
     sub_8002A3C(background);

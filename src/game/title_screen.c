@@ -424,8 +424,8 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     bg0->unk20 = 0;
     bg0->unk22 = 0;
     bg0->unk24 = 0;
-    bg0->unk26 = 0x1a;
-    bg0->unk28 = 10;
+    bg0->targetTilesX = 26;
+    bg0->targetTilesY = 10;
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
@@ -450,8 +450,8 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     config40->unk20 = 0;
     config40->unk22 = 0;
     config40->unk24 = 0;
-    config40->unk26 = 0x20;
-    config40->unk28 = 0x40;
+    config40->targetTilesX = 0x20;
+    config40->targetTilesY = 0x40;
     config40->paletteOffset = 0;
     config40->flags = BACKGROUND_FLAGS_BG_ID(1);
 
@@ -510,8 +510,8 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     bg80->unk20 = 0;
     bg80->unk22 = 0;
     bg80->unk24 = 0;
-    bg80->unk26 = 0x1e;
-    bg80->unk28 = 0x14;
+    bg80->targetTilesX = 30;
+    bg80->targetTilesY = 20;
     bg80->paletteOffset = 0;
     bg80->flags = 0;
 
@@ -529,8 +529,8 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     bg0->unk20 = 0;
     bg0->unk22 = 0;
     bg0->unk24 = 0;
-    bg0->unk26 = 0x20;
-    bg0->unk28 = 0x20;
+    bg0->targetTilesX = 32;
+    bg0->targetTilesY = 32;
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
@@ -695,8 +695,8 @@ static void Task_IntroStartSonicTeamLogoAnim(void)
         bg->unk20 = 0;
         bg->unk22 = 0;
         bg->unk24 = 0;
-        bg->unk26 = 30;
-        bg->unk28 = 20;
+        bg->targetTilesX = 30;
+        bg->targetTilesY = 20;
         bg->paletteOffset = 0;
         bg->flags = 0x10;
         sub_8002A3C(bg);
@@ -774,8 +774,8 @@ static void Task_IntroStartSkyTransition(void)
         config40->unk20 = 0;
         config40->unk22 = 0;
         config40->unk24 = 0;
-        config40->unk26 = 0x20;
-        config40->unk28 = 0x40;
+        config40->targetTilesX = 0x20;
+        config40->targetTilesY = 0x40;
         config40->paletteOffset = 0;
         config40->flags = BACKGROUND_FLAGS_BG_ID(1);
         sub_8002A3C(config40);
@@ -852,8 +852,8 @@ static void Task_IntroPanSkyAnim(void)
         bg0->unk20 = 0;
         bg0->unk22 = 0;
         bg0->unk24 = 0;
-        bg0->unk26 = 7;
-        bg0->unk28 = 0x10;
+        bg0->targetTilesX = 7;
+        bg0->targetTilesY = 0x10;
         bg0->paletteOffset = 0;
         bg0->flags = 0x10;
         sub_8002A3C(bg0);
@@ -956,8 +956,8 @@ static void Task_IntroSkyAnim(void)
         bg0->unk20 = 0;
         bg0->unk22 = 0;
         bg0->unk24 = 0;
-        bg0->unk26 = 0x1A;
-        bg0->unk28 = 10;
+        bg0->targetTilesX = 0x1A;
+        bg0->targetTilesY = 10;
         bg0->paletteOffset = 0;
         bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
@@ -1366,8 +1366,8 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     bg0->unk20 = 0;
     bg0->unk22 = 0;
     bg0->unk24 = 0;
-    bg0->unk26 = 0x1A;
-    bg0->unk28 = 10;
+    bg0->targetTilesX = 0x1A;
+    bg0->targetTilesY = 10;
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
     sub_8002A3C(bg0);
@@ -1383,8 +1383,8 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     config40->unk20 = 0;
     config40->unk22 = 0;
     config40->unk24 = 0;
-    config40->unk26 = 0x20;
-    config40->unk28 = 0x40;
+    config40->targetTilesX = 0x20;
+    config40->targetTilesY = 0x40;
     config40->paletteOffset = 0;
     config40->flags = BACKGROUND_FLAGS_BG_ID(1);
     sub_8002A3C(config40);

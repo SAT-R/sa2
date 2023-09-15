@@ -25,8 +25,8 @@ void CreateStageBg_Zone1(void)
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->tilesVram = (void *)BG_SCREEN_ADDR(27);
 
-        background->unk26 = 0x20;
-        background->unk28 = 0x20;
+        background->targetTilesX = 0x20;
+        background->targetTilesY = 0x20;
     } else {
         const Background *templates = gUnknown_080D5864;
         memcpy(background, &templates[3], 0x40);
@@ -35,8 +35,8 @@ void CreateStageBg_Zone1(void)
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->tilesVram = (void *)BG_SCREEN_ADDR(27);
 
-        background->unk26 = 0x20;
-        background->unk28 = 0x1E;
+        background->targetTilesX = 0x20;
+        background->targetTilesY = 0x1E;
     }
 
     sub_8002A3C(background);
