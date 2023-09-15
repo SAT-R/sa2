@@ -12,8 +12,8 @@ void sub_8002A3C(Background *background)
     u32 palSize;
     u16 gfxSize;
 
-    background->unk14 = mapHeader->h.xTiles;
-    background->unk16 = mapHeader->h.yTiles;
+    background->xTiles = mapHeader->h.xTiles;
+    background->yTiles = mapHeader->h.yTiles;
     background->graphics.src = mapHeader->h.tiles;
     gfxSize = mapHeader->h.tilesSize;
     background->graphics.size = gfxSize;
@@ -80,7 +80,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                 continue;
         }
         // NOTE: register r4 = sp00
-        sp00 = bg->unk14;
+        sp00 = bg->xTiles;
 
         bgId = (bg->flags & BACKGROUND_FLAGS_MASK_BG_ID);
         if (bgId > 1 && ((gDispCnt & 0x3) > 0)) {
@@ -241,11 +241,11 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     s32 sp10_i = sp10 + i;
                     s32 temp;
 
-                    sp18 = Div(sp10_i, bg->unk14);
-                    r1 = bg->unk14;
+                    sp18 = Div(sp10_i, bg->xTiles);
+                    r1 = bg->xTiles;
                     r5Res = sp18;
 
-                    sp1C = sp10_i - r5Res * bg->unk14;
+                    sp1C = sp10_i - r5Res * bg->xTiles;
 
                     r8 = bg->unk28;
                     temp = (bg->unk26 - i);
@@ -266,9 +266,9 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         s32 temp2;
                         u32 v;
                         s32 r4 = sp14 + j;
-                        s32 result = Div(r4, bg->unk16);
-                        r4 -= result * bg->unk16;
-                        r5 = bg->unk16 - r4;
+                        s32 result = Div(r4, bg->yTiles);
+                        r4 -= result * bg->yTiles;
+                        r5 = bg->yTiles - r4;
 
                         result *= bg->mapWidth;
                         r2Ptr = (void *)bg->metatileMap;
@@ -277,8 +277,8 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         r1Ptr = CastPointer(r0Ptr, temp2);
 
                         // r1 = v
-                        v = *((u16 *)r1Ptr) * bg->unk14 * bg->unk16;
-                        v += r4 * bg->unk14 + sp1C;
+                        v = *((u16 *)r1Ptr) * bg->xTiles * bg->yTiles;
+                        v += r4 * bg->xTiles + sp1C;
                         v *= sp08;
 
                         dmaSrc = ((u8 *)bg->unk10) + v;
@@ -313,16 +313,16 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
         } else {
             // r2 <- bg->flags
             // r3 <- bg->unk30
-            // r4 <- sp00 == bg->unk14
+            // r4 <- sp00 == bg->xTiles
             // r5 <- bgId
             // _08002FE8
             if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
-                u32 vR2 = bg->unk14;
+                u32 vR2 = bg->xTiles;
                 while (bg->scrollX >= sp00 * 8)
                     bg->scrollX -= sp00 * 8;
 
-                while (bg->scrollY >= bg->unk16 * 8) {
-                    bg->scrollY -= bg->unk16 * 8;
+                while (bg->scrollY >= bg->yTiles * 8) {
+                    bg->scrollY -= bg->yTiles * 8;
                 }
             }
             //_08003034
@@ -347,8 +347,8 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     r7Ptr = CastPointer(bg->tilesVram, notherIndex);
                     r7Ptr = CastPointer(r7Ptr, bg->unk22 * sp08);
 
-                    if (((bg->unk26 + sp10) + 1) > bg->unk14) {
-                        r2 -= (bg->unk14 - 1);
+                    if (((bg->unk26 + sp10) + 1) > bg->xTiles) {
+                        r2 -= (bg->xTiles - 1);
                     } else {
                         r2 = 0;
                     }
@@ -438,7 +438,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     if (r2 != 0) {
                         // _080032CE
                         u8 *r1 = CastPointer(bg->tilesVram, bg->unk24 * sp0C); // <- r1
-                        u32 displayTile = bg->unk22 + bg->unk14 - sp10; // <- r0
+                        u32 displayTile = bg->unk22 + bg->xTiles - sp10; // <- r0
                         u16 *r7Ptr = CastPointer(r1, displayTile * sp08);
                         u16 r5 = (bg->unk28 + 1);
 
@@ -520,8 +520,8 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     for (i = 0; i < bg->unk26;) {
                         // _08003500
                         s32 r4 = sp10 + i;
-                        s32 sp24 = Div(r4, bg->unk14);
-                        s32 r1 = bg->unk14;
+                        s32 sp24 = Div(r4, bg->xTiles);
+                        s32 r1 = bg->xTiles;
                         s32 sp28 = r4 - (sp24 * r1);
                         s32 sp2C;
                         s32 sp34;
@@ -538,18 +538,18 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         for (j = 0; j < bg->unk28;) {
                             // _08003542
                             s32 divident = sp14 + j;
-                            s32 yPos = Div(divident, bg->unk16);
-                            s32 new_r4 = divident - (yPos * bg->unk16);
-                            s32 r5 = bg->unk16 - new_r4;
+                            s32 yPos = Div(divident, bg->yTiles);
+                            s32 new_r4 = divident - (yPos * bg->yTiles);
+                            s32 r5 = bg->yTiles - new_r4;
                             yPos *= bg->mapWidth;
 
                             { // _0800355C
                                 s32 metatileIndex = *(&bg->metatileMap[yPos] + sp24);
                                 s32 otherVal;
-                                metatileIndex *= bg->unk14;
-                                metatileIndex *= bg->unk16;
+                                metatileIndex *= bg->xTiles;
+                                metatileIndex *= bg->yTiles;
 
-                                otherVal = new_r4 * bg->unk14;
+                                otherVal = new_r4 * bg->xTiles;
                                 otherVal += sp28;
                                 otherVal += metatileIndex;
 

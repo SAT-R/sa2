@@ -51,8 +51,8 @@ typedef struct {
     /* 0x0C */ u16 *tilesVram;
     /* 0x10 */ const u16 *unk10;
 
-    /* 0x14 */ u16 unk14;
-    /* 0x16 */ u16 unk16;
+    /* 0x14 */ u16 xTiles;
+    /* 0x16 */ u16 yTiles;
     /* 0x18 */ u16 unk18;
     /* 0x1A */ u16 unk1A;
     /* 0x1C */ u16 tilemapId;
