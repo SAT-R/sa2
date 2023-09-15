@@ -1665,7 +1665,8 @@ void sub_80454A4(EggSaucer *boss)
 }
 
 // https://decomp.me/scratch/wnQsf
-NONMATCH("asm/non_matching/sub_8045564.inc", void sub_8045564(EggSaucer *boss))
+NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc",
+         void sub_8045564(EggSaucer *boss))
 {
     s32 index;
     u8 val2;
@@ -1698,7 +1699,7 @@ NONMATCH("asm/non_matching/sub_8045564.inc", void sub_8045564(EggSaucer *boss))
             e.spawnY = (Q_24_8_TO_INT(boss->y) - gCamera.y);
             e.spawnY += ((rand * SIN(index)) >> 14);
             e.velocity = 0x40;
-            rand = (PseudoRandom32() & 0x3FF);
+            rand = (PseudoRandom32() & ONE_CYCLE);
             e.rotation = rand;
             e.speed = 0x600;
             e.vram = (void *)OBJ_VRAM0 + (gUnknown_080D79D0[val2][0] * 0x20);

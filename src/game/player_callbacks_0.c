@@ -1690,7 +1690,7 @@ void sub_801394C(Player *p)
 }
 
 // https://decomp.me/scratch/8fUWD
-NONMATCH("asm/non_matching/playercb__sub_80139B0.inc", void sub_80139B0(Player *p))
+NONMATCH("asm/non_matching/game/playercb__sub_80139B0.inc", void sub_80139B0(Player *p))
 {
     s32 speedGrnd = ABS(p->speedGroundX);
     s8 r2 = p->w.tf.shift;

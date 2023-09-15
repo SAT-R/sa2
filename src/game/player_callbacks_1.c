@@ -2391,7 +2391,7 @@ bool32 sub_80294F4(Player *p)
 }
 
 // https://decomp.me/scratch/HZn3x
-NONMATCH("asm/non_matching/playercb__sub_802966C.inc", void sub_802966C(Player *p))
+NONMATCH("asm/non_matching/game/playercb__sub_802966C.inc", void sub_802966C(Player *p))
 {
     u8 r6 = -1;
     s32 u48 = p->unk48;

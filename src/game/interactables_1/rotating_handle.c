@@ -141,7 +141,8 @@ static void sub_805EA94(void)
 }
 
 // https://decomp.me/scratch/RaPDV
-NONMATCH("asm/non_matching/sub_805ECA0.inc", static void sub_805ECA0())
+NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
+         static void sub_805ECA0())
 {
     Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
     Sprite *s = &rotatingHandle->s;

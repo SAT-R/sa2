@@ -4208,7 +4208,7 @@ _08049B4E:
 	ldrb r1, [r7, #4]
 	adds r0, r6, #0
 	bl sub_8039F50
-	ldr r1, _08049BA0 @ =gUnknown_03005430
+	ldr r1, _08049BA0 @ =gBossRingsShallRespawn
 	movs r0, #1
 	strb r0, [r1]
 	ldr r1, _08049BA4 @ =gCamera
@@ -4233,7 +4233,7 @@ _08049B90: .4byte gActiveBossTask
 _08049B94: .4byte 0x00A53BFF
 _08049B98: .4byte gUnknown_080D8808
 _08049B9C: .4byte gUnknown_030054FC
-_08049BA0: .4byte gUnknown_03005430
+_08049BA0: .4byte gBossRingsShallRespawn
 _08049BA4: .4byte gCamera
 _08049BA8: .4byte gUnknown_030056A4
 _08049BAC:
@@ -4248,11 +4248,11 @@ _08049BAC:
 	ldrh r1, [r1]
 	cmp r0, r1
 	ble _08049BEE
-	ldr r1, _08049C8C @ =gUnknown_03005430
+	ldr r1, _08049C8C @ =gBossRingsShallRespawn
 	movs r0, #1
 	strb r0, [r1]
-	ldr r1, _08049C90 @ =gUnknown_0300542C
-	movs r0, #0xa
+	ldr r1, _08049C90 @ =gBossRingsRespawnCount
+	movs r0, #0xa @ BOSS_RINGS_DEFAULT_RESPAWN_COUNT
 	strb r0, [r1]
 	ldr r1, _08049C94 @ =gPlayer
 	ldr r0, _08049C98 @ =gCourseTime
@@ -4297,7 +4297,7 @@ _08049BEE:
 	ldrb r1, [r7, #4]
 	adds r0, r5, #0
 	bl sub_8039F50
-	ldr r1, _08049C8C @ =gUnknown_03005430
+	ldr r1, _08049C8C @ =gBossRingsShallRespawn
 	movs r0, #1
 	strb r0, [r1]
 	ldr r0, [r6]
@@ -4350,8 +4350,8 @@ _08049C7C:
 	.align 2, 0
 _08049C84: .4byte gCamera
 _08049C88: .4byte gUnknown_080D87D8
-_08049C8C: .4byte gUnknown_03005430
-_08049C90: .4byte gUnknown_0300542C
+_08049C8C: .4byte gBossRingsShallRespawn
+_08049C90: .4byte gBossRingsRespawnCount
 _08049C94: .4byte gPlayer
 _08049C98: .4byte gCourseTime
 _08049C9C: .4byte gUnknown_03005424

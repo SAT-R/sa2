@@ -11,7 +11,12 @@
 #define RESERVED_RING_TILES_VRAM        (void *)(OBJ_VRAM0 + 0x1F00)
 #define RESERVED_RING_EFFECT_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2100)
 
-void CreateStageRingsManager(void);
+#define BOSS_RINGS_DEFAULT_RESPAWN_COUNT 10
+extern u8 gBossRingsRespawnCount;
+extern bool8 gBossRingsShallRespawn;
+
 extern const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS];
+
+void CreateStageRingsManager(void);
 
 #endif // GUARD_RINGS_MANAGER_H

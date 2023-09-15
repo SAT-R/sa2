@@ -42,7 +42,7 @@ void sub_800BAAC(s16 x, s16 y)
 }
 
 // https://decomp.me/scratch/EmhmV
-NONMATCH("asm/non_matching/Task_StageRing.inc", void Task_StageRing(void))
+NONMATCH("asm/non_matching/game/stage/Task_StageRing.inc", void Task_StageRing(void))
 {
     StageRing *ring = TaskGetStructPtr(gCurTask);
     Player *p = &gPlayer;

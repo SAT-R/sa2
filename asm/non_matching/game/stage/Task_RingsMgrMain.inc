@@ -10,7 +10,7 @@
 	sub sp, #0x4c
 	movs r0, #0
 	str r0, [sp, #0x1c]
-	ldr r2, _08008288 @ =gPlayer
+	ldr r2, _08008288 @ =gPlayer    @ r2 = p = gPlayer
 	ldrb r4, [r2, #0x16]
 	rsbs r0, r4, #0
 	add r1, sp, #4
@@ -41,7 +41,7 @@ _08007F60:
 	ldr r1, _08008294 @ =IWRAM_START + 0x30
 	adds r0, r0, r1
 	ldr r0, [r0]
-	str r0, [sp, #0x14]
+	str r0, [sp, #0x14]     @ sp14 = void *rings
 	ldr r0, _08008298 @ =gCurrentLevel
 	ldrb r1, [r0]
 	movs r0, #3
@@ -60,11 +60,11 @@ _08007F8A:
 	cmp r1, #0x1d
 	bne _08007FBE
 _08007F8E:
-	ldr r5, _080082A0 @ =gUnknown_03005430
+	ldr r5, _080082A0 @ =gBossRingsShallRespawn
 	ldrb r0, [r5]
 	cmp r0, #0
 	beq _08007FBE
-	ldr r4, _080082A4 @ =gUnknown_0300542C
+	ldr r4, _080082A4 @ =gBossRingsRespawnCount
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _08007FBE
@@ -127,9 +127,9 @@ _08007FFA:
 	str r1, [sp, #0x18]
 	adds r0, r1, #0
 	bl UpdateSpriteAnimation
-	ldr r0, [sp, #0x18]
+	ldr r0, [sp, #0x18]     @ r0 = sp18 = s
 	ldr r0, [r0, #0xc]
-	str r0, [sp, #0x20]
+	str r0, [sp, #0x20]     @ sp20 = dimensions = s->dimensions
 	ldr r1, [sp, #0x14]
 	adds r1, #4
 	ldm r1!, {r0}
@@ -179,7 +179,7 @@ _08008064:
 	subs r0, #8
 	lsls r0, r0, #8
 	lsrs r0, r0, #0x10
-	mov sb, r0
+	mov sb, r0      @ ((Q_24_8_TO_INT(gPlayer.x) - sp00[0] - 8) >> 8);
 	mov r0, sp
 	ldrb r0, [r0, #2]
 	lsls r0, r0, #0x18
@@ -217,7 +217,7 @@ _080080A0:
 	b _080081E4
 _080080BE:
 	subs r0, #8
-	adds r5, r6, r0
+	adds r5, r6, r0     @ r5 = region
 	ldrb r1, [r5]
 	adds r0, r1, #0
 	cmp r0, #0xff
@@ -440,17 +440,17 @@ _08008258:
 	ldrh r2, [r0, #6]
 	movs r6, #0xc0
 	lsls r6, r6, #0x12
-	adds r4, r2, r6
+	adds r4, r2, r6     @ r4 = mpPlayer
 	ldr r1, _080082C8 @ =IWRAM_START + 0x52
 	adds r0, r2, r1
 	movs r3, #0
-	ldrsh r1, [r0, r3]
+	ldrsh r1, [r0, r3]  @ r1 = py = mpPlayer->unk52
 	adds r6, #0x2d
 	adds r0, r2, r6
 	ldrb r0, [r0]
 	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	adds r0, r1, r0
+	asrs r0, r0, #0x18  @ r0 = s->hitboxes[0].top
+	adds r0, r1, r0     @ r0 = r1 + r0
 	lsls r0, r0, #8
 	lsrs r0, r0, #0x10
 	mov sl, r0
@@ -468,8 +468,8 @@ _08008290: .4byte gCurTask
 _08008294: .4byte IWRAM_START + 0x30
 _08008298: .4byte gCurrentLevel
 _0800829C: .4byte gUnknown_030054B0
-_080082A0: .4byte gUnknown_03005430
-_080082A4: .4byte gUnknown_0300542C
+_080082A0: .4byte gBossRingsShallRespawn
+_080082A4: .4byte gBossRingsRespawnCount
 _080082A8: .4byte gSpritePosData_rings
 _080082AC: .4byte gPlayer + 0x8
 _080082B0: .4byte gRingCount
@@ -512,13 +512,13 @@ _080082F4:
 	subs r1, #8
 	lsls r1, r1, #8
 	lsrs r1, r1, #0x10
-	mov sb, r1
+	mov sb, r1          @ sb = Q_24_8(px + mpPlayer->s.hitboxes[0].left - 8);
 	ldr r3, [sp, #0x48]
 	movs r1, #0
 	ldrsb r1, [r3, r1]
 	adds r1, r1, r0
 	adds r1, #0x10
-	asrs r1, r1, #8
+	asrs r1, r1, #8     @ r1 = hbRight
 	mov r6, sl
 	adds r6, #1
 	str r6, [sp, #0x40]
@@ -756,8 +756,8 @@ _080084B8:
 	blt _080084CC
 	b _0800867A
 _080084CC:
-	ldr r6, [sp, #0xc]
-	mov r2, sl
+	ldr r6, [sp, #0xc]      @ r6 = regions_x
+	mov r2, sl              @ r2 = sl
 	muls r2, r6, r2
 	mov r0, sb
 	lsls r1, r0, #2
@@ -1045,7 +1045,7 @@ _080086E8:
 	b _0800880E
 _08008702:
 	subs r0, #8
-	adds r5, r6, r0
+	adds r5, r6, r0     @ r5 = meRing = rings + (offset)
 	b _08008804
 	.align 2, 0
 _08008708: .4byte gCamera
@@ -1057,12 +1057,12 @@ _0800870C:
 	mov r2, sb
 	lsls r0, r2, #8
 	adds r1, r1, r0
-	mov r8, r1
+	mov r8, r1          @ r8 = rx
 	ldrb r1, [r5, #1]
 	lsls r1, r1, #3
 	mov r3, sl
 	lsls r0, r3, #8
-	adds r7, r1, r0
+	adds r7, r1, r0     @ r7 = ry
 	ldr r4, _0800874C @ =gCamera
 	ldr r0, [r4]
 	mov r6, r8
@@ -1086,9 +1086,9 @@ _08008746:
 _0800874C: .4byte gCamera
 _08008750:
 	adds r5, #2
-	ldr r2, [sp, #0x18]
+	ldr r2, [sp, #0x18]     @ r2 = s
 	adds r2, #0x23
-	ldr r0, [sp, #0x1c]
+	ldr r0, [sp, #0x1c]     @ r0 = sp1C
 	cmp r0, #0
 	beq _08008764
 	adds r1, r2, #0
@@ -1114,9 +1114,9 @@ _08008764:
 _08008784: .4byte gCamera
 _08008788:
 	ldrb r1, [r1]
-	lsls r1, r1, #3
+	lsls r1, r1, #3     @ r1 = s->oamIndex * 8
 	ldr r0, _0800885C @ =gUnknown_030022D0
-	adds r6, r1, r0
+	adds r6, r1, r0     @ r6 = oamDat
 	ldr r4, [sp, #0x18]
 	ldrh r0, [r4, #0x1a]
 	movs r2, #0xf8
@@ -1125,7 +1125,7 @@ _08008788:
 	ands r0, r1
 	lsrs r0, r0, #6
 	bl OamMalloc
-	adds r4, r0, #0
+	adds r4, r0, #0     @ r4 = oamAllocated
 	ldr r0, _08008860 @ =iwram_end
 	ldr r0, [r0]
 	cmp r0, r4
@@ -1150,7 +1150,7 @@ _08008788:
 	strh r2, [r4]
 	ldr r6, _0800886C @ =gCamera
 	ldr r0, [r6, #4]
-	subs r0, r7, r0
+	subs r0, r7, r0     @ r0 = ry - gCamera.y
 	ldr r6, [sp, #0x20]
 	ldrh r1, [r6, #0xa]
 	subs r0, r0, r1

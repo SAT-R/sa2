@@ -32,6 +32,8 @@
 #define SA2_CHAR_ANIM_INSTA_SHIELD_1 17
 #define SA2_CHAR_ANIM_INSTA_SHIELD_2 18
 
+#define SA2_CHAR_ANIM_28                                     28
+#define SA2_CHAR_ANIM_29                                     29
 #define SA2_CHAR_ANIM_BEFORE_COUNTDOWN                       30
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1

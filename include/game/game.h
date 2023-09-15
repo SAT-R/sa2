@@ -170,8 +170,6 @@ extern u32 gCheckpointTime; // Checkpoint timer?
 
 extern u8 gUnknown_0300540C;
 
-extern u8 gUnknown_0300542C;
-extern u8 gUnknown_03005430;
 extern u8 gUnknown_03005438;
 extern u8 gUnknown_030055BC;
 
@@ -541,7 +539,7 @@ extern struct Backgrounds gUnknown_03005850;
 extern const u32 *gUnknown_030059C8;
 
 // rodata
-extern const u16 gPlayerCharacterIdleAnims[NUM_CHARACTERS];
+extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
 extern const u16 sAnimsGotThroughCharacterNames[5][3];
 extern const u16 gUnknown_080D715A[5][3];
 extern const u16 sAnimsGotThroughZoneAndActNames[11][3];
@@ -646,6 +644,8 @@ extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
 extern void TaskDestructor_801F550(struct Task *);
 
 extern void sub_801F78C(void);
+
+extern void sub_802C668(s32 *x, s32 *y);
 
 extern void sub_8021350(void);
 

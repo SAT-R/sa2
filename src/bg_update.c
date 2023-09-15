@@ -47,7 +47,7 @@ void sub_8002A3C(Background *background)
 }
 
 // (85.37%) https://decomp.me/scratch/617Jb
-NONMATCH("asm/non_matching/sub_8002B20.inc", bool32 sub_8002B20(void))
+NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 {
     u16 sp00;
     s32 sp04 = 0;
