@@ -76,8 +76,6 @@ typedef struct {
     /* 0x2B */ u8 animFrameCounter;
     /* 0x2C */ u8 animDelayCounter;
 
-    u8 unk2D;
-
     /* 0x2E */ u16 flags;
 
     // apparently NOT signed?

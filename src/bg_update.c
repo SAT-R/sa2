@@ -29,7 +29,8 @@ void sub_8002A3C(Background *background)
     background->paletteOffset = mapHeader->h.palOffset;
 
     if (!(background->flags & BACKGROUND_UPDATE_PALETTE)) {
-        DmaCopy16(3, pal, gBgPalette + background->paletteOffset, palSize * sizeof(*pal));
+        DmaCopy16(3, pal, gBgPalette + background->paletteOffset,
+                  palSize * sizeof(*pal));
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
         background->flags ^= BACKGROUND_UPDATE_PALETTE;
     }
@@ -117,8 +118,8 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     if (bg->flags & BACKGROUND_FLAG_80) {
                         u32 r0Index = (((bg->unk20 + r5) - 1) * sp00) * sp08;
                         void *r2Ptr = CastPointer(bg->unk10, r0Index);
-                        u16 *r4Ptr
-                            = CastPointer(r2Ptr, ((bg->unk1E + bg->targetTilesX) - 1) * sp08);
+                        u16 *r4Ptr = CastPointer(
+                            r2Ptr, ((bg->unk1E + bg->targetTilesX) - 1) * sp08);
 
                         // _08002C7C
                         while (r5-- != 0) {

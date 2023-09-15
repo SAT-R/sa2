@@ -183,8 +183,8 @@ void InitSpecialStageScreenVram(void)
     gUnknown_03005B58 = NULL;
 }
 
-void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 palOffset,
-                 u8 bg_id, u16 scrollX, u16 scrollY)
+void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
+                 u16 palOffset, u8 bg_id, u16 scrollX, u16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;
