@@ -120,7 +120,7 @@ void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
     Background *background = &screen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_2));
@@ -284,7 +284,7 @@ void sub_80823FC(void)
             gBgScrollRegs[2][1] = 0;
             background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
             background->graphics.anim = 0;
-            background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+            background->layoutVram = (void *)BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
             background->tilemapId = TM_LEVEL_METATILES_0(LEVEL_INDEX(ZONE_1, ACT_BOSS));

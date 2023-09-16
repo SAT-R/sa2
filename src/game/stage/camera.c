@@ -30,7 +30,7 @@ const Background gUnknown_080D5864[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)BG_SCREEN_ADDR(30),
+        .layoutVram = (void*)BG_SCREEN_ADDR(30),
         .layout = NULL,
         .xTiles = 0,
         .yTiles = 0,
@@ -62,7 +62,7 @@ const Background gUnknown_080D5864[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)BG_SCREEN_ADDR(31),
+        .layoutVram = (void*)BG_SCREEN_ADDR(31),
         .layout = NULL,
         .xTiles = 0,
         .yTiles = 0,
@@ -94,7 +94,7 @@ const Background gUnknown_080D5864[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)BG_SCREEN_ADDR(29),
+        .layoutVram = (void*)BG_SCREEN_ADDR(29),
         .layout = NULL,
         .xTiles = 0,
         .yTiles = 0,
@@ -126,7 +126,7 @@ const Background gUnknown_080D5864[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)BG_SCREEN_ADDR(28),
+        .layoutVram = (void*)BG_SCREEN_ADDR(28),
         .layout = NULL,
         .xTiles = 0,
         .yTiles = 0,
@@ -320,7 +320,7 @@ void InitCamera(u32 level)
     bgs->unkC0.tilemapId = TM_LEVEL_BG(level);
 
     bgs->unkC0.graphics.dest = (void *)BG_CHAR_ADDR(unkA98[2]);
-    bgs->unkC0.tilesVram = (void *)BG_SCREEN_ADDR(unkA98[3]);
+    bgs->unkC0.layoutVram = (void *)BG_SCREEN_ADDR(unkA98[3]);
     bgs->unkC0.targetTilesX = unkA98[0];
     bgs->unkC0.targetTilesY = unkA98[1];
 

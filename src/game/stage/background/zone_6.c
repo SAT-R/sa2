@@ -91,7 +91,7 @@ void CreateStageBg_Zone6_Boss(void)
     *background = gUnknown_080D5864[3];
     background->tilemapId = TM_TECHNO_BASE_BG_CIRCUIT_MASK;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    background->tilesVram = (void *)BG_SCREEN_ADDR(26);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(26);
     background->targetTilesX = 0x20;
     background->targetTilesY = 0x20;
 

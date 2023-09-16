@@ -19,7 +19,7 @@ void CreateStageBg_Zone4(void)
 
     background->tilemapId = TM_SPOTLIGHT_SNOW;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    background->tilesVram = (void *)BG_SCREEN_ADDR(27);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(27);
     background->targetTilesX = 0x20;
     background->targetTilesY = 0x20;
     background->flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3);

@@ -412,7 +412,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     bg0 = &titleScreen->unk0;
     bg0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     bg0->graphics.anim = 0;
-    bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
+    bg0->layoutVram = (void *)BG_SCREEN_ADDR(26);
     bg0->unk18 = 0;
     bg0->unk1A = SPRITE_OAM_ORDER(0);
     if (gLoadedSaveGame->language < 2) {
@@ -442,7 +442,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     config40 = &titleScreen->unk40;
     config40->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     config40->graphics.anim = 0;
-    config40->tilesVram = (void *)BG_SCREEN_ADDR(29);
+    config40->layoutVram = (void *)BG_SCREEN_ADDR(29);
     config40->unk18 = 0;
     config40->unk1A = 0;
     config40->tilemapId = TM_TITLE_SCREEN_BG;
@@ -502,7 +502,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
 
     bg80->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     bg80->graphics.anim = 0;
-    bg80->tilesVram = (void *)BG_SCREEN_ADDR(31);
+    bg80->layoutVram = (void *)BG_SCREEN_ADDR(31);
     bg80->unk18 = 0;
     bg80->unk1A = SPRITE_OAM_ORDER(0);
     bg80->tilemapId = TM_INTRO_PRESENTED_BY_SEGA;
@@ -521,7 +521,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
 
     bg0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     bg0->graphics.anim = 0;
-    bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
+    bg0->layoutVram = (void *)BG_SCREEN_ADDR(26);
     bg0->unk18 = 0;
     bg0->unk1A = SPRITE_OAM_ORDER(0);
     bg0->tilemapId = TM_INTRO_WATER;
@@ -687,7 +687,7 @@ static void Task_IntroStartSonicTeamLogoAnim(void)
         bg = &titleScreen->introSonicLogo;
         bg->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         bg->graphics.anim = 0;
-        bg->tilesVram = (void *)BG_SCREEN_ADDR(31);
+        bg->layoutVram = (void *)BG_SCREEN_ADDR(31);
         bg->unk18 = 0;
         bg->unk1A = 0;
         bg->tilemapId = TM_INTRO_CREATED_BY_SONIC_TEAM;
@@ -766,7 +766,7 @@ static void Task_IntroStartSkyTransition(void)
         config40 = &titleScreen->unk40;
         config40->graphics.dest = (void *)BG_SCREEN_ADDR(16);
         config40->graphics.anim = 0;
-        config40->tilesVram = (void *)BG_SCREEN_ADDR(29);
+        config40->layoutVram = (void *)BG_SCREEN_ADDR(29);
         config40->unk18 = 0;
         config40->unk1A = 0;
         config40->tilemapId = TM_TITLE_SCREEN_BG;
@@ -844,7 +844,7 @@ static void Task_IntroPanSkyAnim(void)
         bg0 = &titleScreen->unk0;
         bg0->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         bg0->graphics.anim = 0;
-        bg0->tilesVram = (void *)BG_SCREEN_ADDR(31);
+        bg0->layoutVram = (void *)BG_SCREEN_ADDR(31);
         bg0->unk18 = 0;
         bg0->unk1A = 0;
         bg0->tilemapId = TM_LENS_FLARE_BG;
@@ -942,7 +942,7 @@ static void Task_IntroSkyAnim(void)
 
         bg0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         bg0->graphics.anim = 0;
-        bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
+        bg0->layoutVram = (void *)BG_SCREEN_ADDR(26);
         bg0->unk18 = 0;
         bg0->unk1A = 0;
 
@@ -1351,7 +1351,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
 
     bg0->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     bg0->graphics.anim = 0;
-    bg0->tilesVram = (void *)BG_SCREEN_ADDR(26);
+    bg0->layoutVram = (void *)BG_SCREEN_ADDR(26);
     bg0->unk18 = 0;
     bg0->unk1A = 0;
 
@@ -1375,7 +1375,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     config40 = &titleScreen->unk40;
     config40->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     config40->graphics.anim = 0;
-    config40->tilesVram = (void *)BG_SCREEN_ADDR(29);
+    config40->layoutVram = (void *)BG_SCREEN_ADDR(29);
     config40->unk18 = 0;
     config40->unk1A = 0;
     config40->tilemapId = TM_TITLE_SCREEN_BG;

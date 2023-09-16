@@ -193,7 +193,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background = &lobbyScreen->unk40;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(29);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(29);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MESSAGE_BOX_BLACK;
@@ -210,7 +210,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background = &lobbyScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(7);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(7);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_GREEN_CARET;

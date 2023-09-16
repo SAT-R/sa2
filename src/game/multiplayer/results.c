@@ -180,7 +180,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     background = &resultsScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = sResultsScreenBgSelectedCharacters[lang];

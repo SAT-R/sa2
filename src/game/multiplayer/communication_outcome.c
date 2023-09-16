@@ -160,7 +160,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     background = &outcomeScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(8);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(8);
     background->unk18 = 0;
     background->unk1A = 0;
     background->unk1E = 0;

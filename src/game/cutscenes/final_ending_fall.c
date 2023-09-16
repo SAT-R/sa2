@@ -363,7 +363,7 @@ void CreateFinalEndingFallCutScene(void)
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = gUnknown_080E1648[1];
@@ -380,7 +380,7 @@ void CreateFinalEndingFallCutScene(void)
     background = &scene->unk40;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(24);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(24);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = gUnknown_080E1648[0];

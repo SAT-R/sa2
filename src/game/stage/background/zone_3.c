@@ -103,7 +103,7 @@ void CreateStageBg_Zone3(void)
 
     background->tilemapId = 0x171;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    background->tilesVram = (void *)BG_SCREEN_ADDR(27);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(27);
     background->targetTilesX = 0x20;
     background->targetTilesY = 0x20;
     sub_8002A3C(background);

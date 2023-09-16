@@ -39,7 +39,7 @@ void CreateStageBg_Zone7(void)
 
     bg->tilemapId = TM_UNK_SPACE_BG;
     bg->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    bg->tilesVram = (void *)BG_SCREEN_ADDR(22);
+    bg->layoutVram = (void *)BG_SCREEN_ADDR(22);
     bg->targetTilesX = 32;
     bg->targetTilesY = 20;
     sub_8002A3C(bg);

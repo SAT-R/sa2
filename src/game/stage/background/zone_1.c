@@ -23,7 +23,7 @@ void CreateStageBg_Zone1(void)
 
         background->tilemapId = TM_STAGE_1_BG_0_COPY;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-        background->tilesVram = (void *)BG_SCREEN_ADDR(27);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(27);
 
         background->targetTilesX = 0x20;
         background->targetTilesY = 0x20;
@@ -33,7 +33,7 @@ void CreateStageBg_Zone1(void)
         background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_1));
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-        background->tilesVram = (void *)BG_SCREEN_ADDR(27);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(27);
 
         background->targetTilesX = 0x20;
         background->targetTilesY = 0x1E;

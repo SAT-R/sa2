@@ -46,9 +46,7 @@ typedef struct {
     // T = Tile-Index
     //
     // NOTE: It does NOT point to the tileset!
-    // NOTE/TODO (Jace): Should this also be const?
-    //                   It's in VRAM, so it doesn't make much sense?
-    /* 0x0C */ u16 *tilesVram;
+    /* 0x0C */ u16 *layoutVram;
 
     // Stage-Map: Metatiles
     // Common Tilemaps: Tilemap-Tiles

@@ -431,7 +431,7 @@ void CreateExtraEndingFallCutScene(void)
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = TM_CUTSCENE_POST_EXTRA_BOSS_BG;

@@ -290,7 +290,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     background = &characterScreen->unk8C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CHARACTER_SELECT_WHEEL;
@@ -307,7 +307,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     background = &characterScreen->unkC;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(20);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CHARACTER_SELECT_BACKGROUND_0;
@@ -324,7 +324,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     background = &characterScreen->unk4C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(21);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(21);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CHARACTER_SELECT_BACKGROUND_1;

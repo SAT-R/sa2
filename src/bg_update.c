@@ -104,7 +104,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
         if (!(bg->flags & BACKGROUND_FLAG_20)) {
             if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
                 // _08002C20
-                u8 *r1 = CastPointer(bg->tilesVram, bg->unk24 * sp0C);
+                u8 *r1 = CastPointer(bg->layoutVram, bg->unk24 * sp0C);
                 u16 *r7 = CastPointer(r1, bg->unk22 * sp08);
                 u16 r5 = bg->targetTilesY;
 
@@ -286,7 +286,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                         {
                             void *r0;
-                            r0 = CastPointer(bg->tilesVram, bg->unk24);
+                            r0 = CastPointer(bg->layoutVram, bg->unk24);
                             r0 = CastPointer(r0, sp0C * j);
                             r0 = CastPointer(r0, bg->unk22);
                             dmaDest = CastPointer(r0, i * sp08);
@@ -345,7 +345,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     sp14 = (u16)((bg->scrollY >> 3) + bg->unk20);
 
                     notherIndex = (bg->unk24 * sp0C);
-                    r7Ptr = CastPointer(bg->tilesVram, notherIndex);
+                    r7Ptr = CastPointer(bg->layoutVram, notherIndex);
                     r7Ptr = CastPointer(r7Ptr, bg->unk22 * sp08);
 
                     if (((bg->targetTilesX + sp10) + 1) > bg->xTiles) {
@@ -438,7 +438,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     // _080032C4
                     if (r2 != 0) {
                         // _080032CE
-                        u8 *r1 = CastPointer(bg->tilesVram, bg->unk24 * sp0C); // <- r1
+                        u8 *r1 = CastPointer(bg->layoutVram, bg->unk24 * sp0C); // <- r1
                         u32 displayTile = bg->unk22 + bg->xTiles - sp10; // <- r0
                         u16 *r7Ptr = CastPointer(r1, displayTile * sp08);
                         u16 r5 = (bg->targetTilesY + 1);
@@ -561,7 +561,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                                     u8 *destPtr;
                                     u32 destIndex;
                                     dmaSrc = CastPointer(bg->layout, otherVal * sp08);
-                                    destPtr = CastPointer(bg->tilesVram, bg->unk24);
+                                    destPtr = CastPointer(bg->layoutVram, bg->unk24);
                                     destPtr += sp0C * j;
                                     destPtr += +bg->unk22;
                                     dmaDest = CastPointer(destPtr, i * sp08);

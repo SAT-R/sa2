@@ -154,7 +154,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
             background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
             background->graphics.anim = 0;
-            background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+            background->layoutVram = (void *)BG_SCREEN_ADDR(22);
             background->unk18 = 0;
             background->unk1A = 0;
             background->tilemapId = sTilemapsCreditsEndSlides[2];
@@ -238,7 +238,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
@@ -263,7 +263,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(20);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(20);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[scene->unk160];
@@ -320,7 +320,7 @@ static void Task_CreateCopyrightScreen(void)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[13];
@@ -343,7 +343,7 @@ static void Task_CreateCopyrightScreen(void)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(21);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(21);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[14];
