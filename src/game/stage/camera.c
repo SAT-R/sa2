@@ -159,7 +159,7 @@ const u16 gUnknown_080D5964[][2]
     = { { 32, 216 }, { 32, 204 }, { 32, 216 }, { 32, 208 }, { 32, 208 },
         { 32, 232 }, { 32, 264 }, { 32, 264 }, { 32, 264 } };
 
-static const VoidFn sStageInitProcedures[] = {
+static const VoidFn sStageBgInitProcedures[] = {
     [LEVEL_INDEX(ZONE_1, ACT_1)] = CreateStageBg_Zone1,
     [LEVEL_INDEX(ZONE_1, ACT_2)] = CreateStageBg_Zone1,
     [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = CreateStageBg_Zone1,
@@ -419,8 +419,8 @@ void InitCamera(u32 level)
 
     camera->unk58 = sStageBgUpdateFuncs[level];
 
-    if (sStageInitProcedures[level] != NULL) {
-        sStageInitProcedures[level]();
+    if (sStageBgInitProcedures[level] != NULL) {
+        sStageBgInitProcedures[level]();
     }
 }
 

@@ -16,7 +16,6 @@ gUnknown_080D550C:
 .syntax unified
 .arm
 
-@; wtf does this even do
 	thumb_func_start sub_8011328
 sub_8011328: @ 0x08011328
 	push {r4, r5, r6, r7, lr}
@@ -401,11 +400,11 @@ sub_80115D0: @ 0x080115D0
 	strb r7, [r1]
 	str r5, [r0, #0x10]
 	bl UpdateSpriteAnimation
-	ldr r0, _08011654 @ =sub_8011660
+	ldr r0, _08011654 @ =Task_8011660
 	movs r1, #0x80
 	lsls r1, r1, #3
 	ldr r2, _08011658 @ =0x0000FFFE
-	ldr r3, _0801165C @ =sub_8011A20
+	ldr r3, _0801165C @ =TaskDestructor_8011A20
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
@@ -419,12 +418,12 @@ _08011640:
 _08011648: .4byte gUnknown_03005660
 _0801164C: .4byte 0x06012980
 _08011650: .4byte 0x00000216
-_08011654: .4byte sub_8011660
+_08011654: .4byte Task_8011660
 _08011658: .4byte 0x0000FFFE
-_0801165C: .4byte sub_8011A20
+_0801165C: .4byte TaskDestructor_8011A20
 
-	thumb_func_start sub_8011660
-sub_8011660: @ 0x08011660
+	thumb_func_start Task_8011660
+Task_8011660: @ 0x08011660
 	push {r4, r5, r6, r7, lr}
 	ldr r6, _08011688 @ =gUnknown_03005660
 	ldr r7, _0801168C @ =gCamera
@@ -898,8 +897,8 @@ _08011A12:
 _08011A18: .4byte 0x7BDE7BDE
 _08011A1C: .4byte 0x739C739C
 
-	thumb_func_start sub_8011A20
-sub_8011A20: @ 0x08011A20
+	thumb_func_start TaskDestructor_8011A20
+TaskDestructor_8011A20: @ 0x08011A20
 	ldr r3, _08011A3C @ =gUnknown_03005660
 	ldr r2, _08011A40 @ =gFlags
 	ldr r0, [r2]

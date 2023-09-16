@@ -168,8 +168,6 @@ extern u32 gUnknown_030054A0;
 
 extern u32 gCheckpointTime; // Checkpoint timer?
 
-extern u8 gUnknown_0300540C;
-
 extern u8 gUnknown_03005438;
 extern u8 gUnknown_030055BC;
 
@@ -481,7 +479,8 @@ extern u8 gMultiplayerConnections;
 
 extern struct ButtonConfig gPlayerControls;
 
-extern s32 gUnknown_030054D0;
+// Only set after the player passed it, used to determine extra score
+extern s32 gStageGoalX;
 
 // TODO: find out what task is parent to IA
 typedef struct {

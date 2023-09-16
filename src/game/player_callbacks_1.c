@@ -1425,7 +1425,7 @@ void PlayerCB_GoalSlowdown(Player *p)
     u32 playerX = Q_24_8_TO_INT(p->x);
     u16 playerX2;
 
-    playerX2 = playerX - gUnknown_030054D0;
+    playerX2 = playerX - gStageGoalX;
 
     if (((p->speedGroundX >= Q_24_8(2.0)) && (p->unk5E & DPAD_LEFT))
         || (playerX2 > 0x579)) {
@@ -1483,8 +1483,8 @@ void PlayerCB_GoalBrake(Player *p)
             p->speedGroundX = 0;
             m4aSongNumStop(SE_LONG_BRAKE);
 
-            if (gUnknown_030054D0 != 0) {
-                u16 playerX = Q_24_8_TO_INT(p->x) - gUnknown_030054D0;
+            if (gStageGoalX != 0) {
+                u16 playerX = Q_24_8_TO_INT(p->x) - gStageGoalX;
                 s32 r8 = 0;
 
                 if (playerX <= 730)
@@ -1668,7 +1668,7 @@ void PlayerCB_8027D3C(Player *p)
     s8 *someSio = gUnknown_030054B4;
     s32 sioDat = ((REG_SIOCNT_32 << 26) >> 30);
     u16 r8 = someSio[sioDat];
-    u32 *pCmpX = &gUnknown_030054D0;
+    u32 *pCmpX = &gStageGoalX;
     u32 cmpX;
     s32 index = (0x40 + (r8 * 32));
 

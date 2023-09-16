@@ -18,7 +18,7 @@ build/sa2/src/core.o(.data);
 . = 0x000053E8; gUnknown_030053E8 = .;
 . = 0x000053EC; gMultiplayerLanguage = .;
 . = 0x000053F0; gRingCount = .;
-. = 0x0000540C; gUnknown_0300540C = .;
+. = 0x0000540C; gActiveCollectRingEffectCount = .;
 . = 0x00005410; gMultiplayerIds = .;
 . = 0x00005420; gUnknown_03005420 = .;
 . = 0x00005424; gUnknown_03005424 = .;
@@ -46,7 +46,7 @@ build/sa2/src/core.o(.data);
 
 . = 0x000054C8; gDemoPlayCounter = .;
 . = 0x000054CC; gGameMode = .;
-. = 0x000054D0; gUnknown_030054D0 = .;
+. = 0x000054D0; gStageGoalX = .;
 . = 0x000054D4; gMultiplayerMissingHeartbeats = .;
 . = 0x000054D8; gMultiplayerUnlockedLevels = .;
 . = 0x000054DC; gEntitiesManagerTask = .;

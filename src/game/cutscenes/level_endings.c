@@ -543,7 +543,7 @@ void sub_808E4C8(void)
     scene = TaskGetStructPtr(gCurTask);
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
 
-    if (scene->unk110++ > 0x154) {
+    if (scene->unk110++ > 340) {
         scene->unk110 = 0;
 
         if ((scene->unk10C & 3) == 3) {
@@ -562,12 +562,12 @@ void sub_808E4C8(void)
             background->unk20 = 0;
             background->unk22 = 0;
             background->unk24 = 0;
-            background->targetTilesX = 0x1e;
+            background->targetTilesX = 30;
             background->targetTilesY = 5;
             background->paletteOffset = 0;
             background->flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(0);
             InitBackground(background);
-            gDispCnt |= 0x100;
+            gDispCnt |= DISPCNT_BG0_ON;
             m4aSongNumStart(MUS_GOT_ALL_CHAOS_EMERALDS);
             gCurTask->main = sub_808E63C;
         } else {
@@ -579,7 +579,7 @@ void sub_808E4C8(void)
     }
 
     if (gPressedKeys & START_BUTTON && scene->unk110 > 8) {
-        scene->unk110 = 0x154;
+        scene->unk110 = 340;
     }
 }
 
@@ -667,7 +667,7 @@ void sub_808E890(struct Task *t)
     struct ResultsCutScene *scene = TaskGetStructPtr(t);
     VramFree(scene->unk4.graphics.dest);
 
-    if (scene->unk34.graphics.dest != 0) {
+    if (scene->unk34.graphics.dest != NULL) {
         VramFree(scene->unk34.graphics.dest);
     }
 }

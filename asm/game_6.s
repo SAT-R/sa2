@@ -74,7 +74,7 @@ _0802143C:
 	bl InputRecorderLoadTape
 	strb r4, [r6, #8]
 _08021442:
-	ldr r0, _08021484 @ =gUnknown_030054D0
+	ldr r0, _08021484 @ =gStageGoalX
 	movs r1, #0
 	str r1, [r0]
 	ldr r0, _08021488 @ =gUnknown_030054FC
@@ -101,7 +101,7 @@ _08021474: .4byte gRingCount
 _08021478: .4byte gPlayer
 _0802147C: .4byte PlayerCB_8025318
 _08021480: .4byte gInputRecorder
-_08021484: .4byte gUnknown_030054D0
+_08021484: .4byte gStageGoalX
 _08021488: .4byte gUnknown_030054FC
 _0802148C: .4byte gUnknown_030054E0
 

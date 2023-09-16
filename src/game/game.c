@@ -12,6 +12,7 @@
 #include "game/race_progress.h"
 #include "game/save.h"
 #include "game/screen_shake.h"
+#include "game/stage/collect_ring_effect.h"
 #include "game/stage/entities_manager.h"
 #include "game/stage/music_manager.h"
 #include "game/stage/palette_loader.h"
@@ -36,7 +37,7 @@ void sub_802B708(void);
 void InitCamera(u32);
 void sub_801BF90(void);
 
-void SetupStageLoadingScreen(void);
+void SetupStageIntro(void);
 
 void sub_80115D0(u32, u32, u32);
 
@@ -155,7 +156,7 @@ void CreateGameStage(void)
 {
     u8 i;
     gGameStageTask = TaskCreate(sub_801AB3C, 0, 0xff00, 0, sub_801B7A8);
-    gUnknown_0300540C = 0;
+    gActiveCollectRingEffectCount = 0;
     gUnknown_030054F4 = 0;
     gUnknown_030054B0 = 0;
 
@@ -193,7 +194,7 @@ void CreateGameStage(void)
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         CreateStageMusicManager();
-        SetupStageLoadingScreen();
+        SetupStageIntro();
         InitCamera(gCurrentLevel);
         gUnknown_080D57DC[gCurrentLevel]();
     } else {

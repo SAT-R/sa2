@@ -131,14 +131,14 @@ static void Task_StageGoalToggleMain(void)
         if (x <= Q_24_8_TO_INT(gPlayer.x)
             && !(gPlayer.moveState & (MOVESTATE_8000000 | MOVESTATE_8))) {
             gPlayer.transition = PLTRANS_PT10;
-            gUnknown_030054D0 = x;
+            gStageGoalX = x;
             StageGoalToggle_HandleMultiplayerFinish();
         }
     } else if (x <= Q_24_8_TO_INT(gPlayer.x)
                && !(gPlayer.moveState & MOVESTATE_8000000)) {
         gPlayer.transition = PLTRANS_PT10;
         gUnknown_03005424 |= 0x21;
-        gUnknown_030054D0 = x;
+        gStageGoalX = x;
 
         if (gGameMode == GAME_MODE_SINGLE_PLAYER
             && !(gPlayer.moveState & MOVESTATE_IN_AIR) && gPlayer.speedGroundX > 0x280) {
