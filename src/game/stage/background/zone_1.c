@@ -9,7 +9,7 @@
 #include "constants/zones.h"
 
 extern struct Backgrounds gUnknown_03005850;
-extern const Background gUnknown_080D5864[4];
+extern const Background gStageCameraBgTemplates[4];
 
 void CreateStageBg_Zone1(void)
 {
@@ -18,7 +18,7 @@ void CreateStageBg_Zone1(void)
     gBgCntRegs[0] = 0x1B0F;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        const Background *templates = gUnknown_080D5864;
+        const Background *templates = gStageCameraBgTemplates;
         memcpy(background, &templates[3], 0x40);
 
         background->tilemapId = TM_STAGE_1_BG_0_COPY;
@@ -28,7 +28,7 @@ void CreateStageBg_Zone1(void)
         background->targetTilesX = 0x20;
         background->targetTilesY = 0x20;
     } else {
-        const Background *templates = gUnknown_080D5864;
+        const Background *templates = gStageCameraBgTemplates;
         memcpy(background, &templates[3], 0x40);
         background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_1));
 

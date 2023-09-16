@@ -34,7 +34,7 @@ void CreateStageBg_Zone7(void)
 
     gBgCntRegs[0] = 0x160F;
 
-    src = gUnknown_080D5864;
+    src = gStageCameraBgTemplates;
     memcpy(bg, &src[3], sizeof(Background));
 
     bg->tilemapId = TM_UNK_SPACE_BG;

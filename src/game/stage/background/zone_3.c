@@ -4,7 +4,7 @@
 #include "game/game.h"
 #include "game/stage/background/callbacks.h"
 
-extern const Background gUnknown_080D5864[4];
+extern const Background gStageCameraBgTemplates[4];
 
 // TODO: make this static!
 extern const u8 gUnknown_080D5B20[16][3];
@@ -99,7 +99,7 @@ void CreateStageBg_Zone3(void)
     gDispCnt |= 0x100;
     gBgCntRegs[0] = 0x1B0F;
 
-    *background = gUnknown_080D5864[3];
+    *background = gStageCameraBgTemplates[3];
 
     background->tilemapId = 0x171;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);

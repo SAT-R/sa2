@@ -7,7 +7,7 @@
 
 #include "constants/tilemaps.h"
 
-extern const Background gUnknown_080D5864[4];
+extern const Background gStageCameraBgTemplates[4];
 
 void CreateStageBg_Zone4(void)
 {
@@ -15,7 +15,7 @@ void CreateStageBg_Zone4(void)
     const Background *templates;
     gBgCntRegs[0] = 0x1B0F;
 
-    *background = gUnknown_080D5864[3];
+    *background = gStageCameraBgTemplates[3];
 
     background->tilemapId = TM_SPOTLIGHT_SNOW;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);

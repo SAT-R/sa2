@@ -26,7 +26,7 @@ void CreateStageBg_ZoneFinal_0(void)
     bgDst = &gUnknown_03005850.unk80;
     gBgCntRegs[2]
         = BGCNT_SCREENBASE(26) | BGCNT_256COLOR | BGCNT_CHARBASE(2) | BGCNT_PRIORITY(1);
-    bgSrc = gUnknown_080D5864;
+    bgSrc = gStageCameraBgTemplates;
     memcpy(bgDst, &bgSrc[2], sizeof(Background));
 
     bgDst->tilemapId = TM_EXTRA_BOSS_COCKPIT;

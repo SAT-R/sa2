@@ -476,7 +476,7 @@ _0801D5D8: @ jump table
 _0801D5F8:
 	cmp r6, #1
 	bne _0801D630
-	ldr r1, _0801D624 @ =gUnknown_080D5864
+	ldr r1, _0801D624 @ =gStageCameraBgTemplates
 	adds r1, #0xc0
 	adds r0, r4, #0
 	movs r2, #0x40
@@ -494,7 +494,7 @@ _0801D5F8:
 	bl sub_8002A3C
 	b _0801D942
 	.align 2, 0
-_0801D624: .4byte gUnknown_080D5864
+_0801D624: .4byte gStageCameraBgTemplates
 _0801D628: .4byte 0x0600C000
 _0801D62C: .4byte 0x0600D000
 _0801D630:
@@ -618,7 +618,7 @@ _0801D718:
 	ldr r0, _0801D744 @ =0x00000381
 	cmp r6, r0
 	bne _0801D754
-	ldr r1, _0801D748 @ =gUnknown_080D5864
+	ldr r1, _0801D748 @ =gStageCameraBgTemplates
 	adds r1, #0xc0
 	adds r0, r4, #0
 	movs r2, #0x40
@@ -637,7 +637,7 @@ _0801D718:
 	b _0801D76C
 	.align 2, 0
 _0801D744: .4byte 0x00000381
-_0801D748: .4byte gUnknown_080D5864
+_0801D748: .4byte gStageCameraBgTemplates
 _0801D74C: .4byte 0x0600C000
 _0801D750: .4byte 0x0600D000
 _0801D754:
