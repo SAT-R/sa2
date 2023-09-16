@@ -1497,7 +1497,8 @@ void PlayerCB_GoalBrake(Player *p)
                 if (r8 != 0) {
                     INCREMENT_SCORE(r8);
 
-                    sub_801F3A4(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), r8);
+                    CreateStageGoalBonusPointsAnim(Q_24_8_TO_INT(p->x),
+                                                   Q_24_8_TO_INT(p->y), r8);
                 }
             }
         }

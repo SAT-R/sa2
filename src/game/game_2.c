@@ -89,7 +89,7 @@ void Task_801F214(void)
     }
 }
 
-struct Task *sub_801F3A4(s32 x, s32 y, u16 score)
+struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
 {
     if ((score != 100) && (score != 200) && (score != 300) && (score != 500)
         && (score != 800)) {

@@ -141,23 +141,24 @@ static void Task_StageGoalToggleMain(void)
         gStageGoalX = x;
 
         if (gGameMode == GAME_MODE_SINGLE_PLAYER
-            && !(gPlayer.moveState & MOVESTATE_IN_AIR) && gPlayer.speedGroundX > 0x280) {
-            u32 temp;
-            if (gPlayer.speedGroundX < 0x401) {
-                temp = 200;
-            } else if (gPlayer.speedGroundX < 0x901) {
-                temp = 300;
-            } else if (gPlayer.speedGroundX < 0xA01) {
-                temp = 500;
+            && !(gPlayer.moveState & MOVESTATE_IN_AIR)
+            && gPlayer.speedGroundX > Q_24_8(2.5)) {
+            u32 extraScore;
+            if (gPlayer.speedGroundX <= Q_24_8(4.0)) {
+                extraScore = 200;
+            } else if (gPlayer.speedGroundX <= Q_24_8(9.0)) {
+                extraScore = 300;
+            } else if (gPlayer.speedGroundX <= Q_24_8(10.0)) {
+                extraScore = 500;
             } else {
-                temp = 800;
+                extraScore = 800;
             }
 
             // Redundant check :/
-            if (temp != 0) {
+            if (extraScore != 0) {
                 u32 temp2, temp3;
                 u32 prev = gLevelScore;
-                gLevelScore += temp;
+                gLevelScore += extraScore;
                 temp2 = Div(gLevelScore, 50000);
                 temp3 = Div(prev, 50000);
                 if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
@@ -171,7 +172,8 @@ static void Task_StageGoalToggleMain(void)
                     gNumLives = numLives;
                     gUnknown_030054A8.unk3 = 0x10;
                 }
-                sub_801F3A4(Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), temp);
+                CreateStageGoalBonusPointsAnim(Q_24_8_TO_INT(gPlayer.x),
+                                               Q_24_8_TO_INT(gPlayer.y), extraScore);
             }
         }
     }
