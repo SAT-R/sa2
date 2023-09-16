@@ -49,7 +49,10 @@ typedef struct {
     // NOTE/TODO (Jace): Should this also be const?
     //                   It's in VRAM, so it doesn't make much sense?
     /* 0x0C */ u16 *tilesVram;
-    /* 0x10 */ const u16 *unk10;
+
+    // Stage-Map: Metatiles
+    // Common Tilemaps: Tilemap-Tiles
+    /* 0x10 */ const u16 *layout;
 
     // Tile-count on each axis
     // - Stage maps: should be 12 (# per metatile)
