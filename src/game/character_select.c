@@ -302,7 +302,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &characterScreen->unkC;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -319,7 +319,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     background->targetTilesY = 0x20;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &characterScreen->unk4C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
@@ -336,7 +336,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     background->targetTilesY = 0x20;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(2);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
         s = &characterScreen->carouselBlobs[i];

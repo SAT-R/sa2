@@ -217,7 +217,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &teamPlayScreen->unk250;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
@@ -234,7 +234,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->targetTilesY = 0x28;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &teamPlayScreen->unk290;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
@@ -251,7 +251,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->targetTilesY = 10;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(3);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &teamPlayScreen->unk2D0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
@@ -268,7 +268,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->targetTilesY = 0x20;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(3);
-    sub_8002A3C(background);
+    InitBackground(background);
 }
 
 static void sub_805CB34(void)
@@ -375,7 +375,7 @@ static void sub_805CC34(void)
                     background->targetTilesY = 7;
                     background->paletteOffset = 0;
                     background->flags = BACKGROUND_FLAGS_BG_ID(3);
-                    sub_8002A3C(background);
+                    InitBackground(background);
 
                     gMultiSioSend.pat0.unk0 = 0x4035;
                     teamPlayScreen->unk317 = 0;
@@ -420,7 +420,7 @@ static void sub_805CC34(void)
                 background->targetTilesY = 7;
                 background->paletteOffset = 0;
                 background->flags = BACKGROUND_FLAGS_BG_ID(3);
-                sub_8002A3C(background);
+                InitBackground(background);
 
                 gMultiSioSend.pat0.unk0 = 0x4035;
                 teamPlayScreen->unk317 = 0;

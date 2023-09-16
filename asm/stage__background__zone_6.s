@@ -392,7 +392,7 @@ StageBgUpdate_Zone6Acts12: @ 0x0801D534
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
-	ldr r4, _0801D568 @ =gUnknown_03005850
+	ldr r4, _0801D568 @ =gStageBackgroundsRam
 	ldr r1, _0801D56C @ =gBgScrollRegs
 	asrs r0, r0, #4
 	strh r0, [r1, #0xc]
@@ -412,7 +412,7 @@ StageBgUpdate_Zone6Acts12: @ 0x0801D534
 	movs r5, #7
 	b _0801D598
 	.align 2, 0
-_0801D568: .4byte gUnknown_03005850
+_0801D568: .4byte gStageBackgroundsRam
 _0801D56C: .4byte gBgScrollRegs
 _0801D570: .4byte gStageTime
 _0801D574: .4byte gUnknown_080D5BF0
@@ -491,7 +491,7 @@ _0801D5F8:
 	strh r0, [r4, #0x26]
 	strh r0, [r4, #0x28]
 	adds r0, r4, #0
-	bl sub_8002A3C
+	bl InitBackground
 	b _0801D942
 	.align 2, 0
 _0801D624: .4byte gStageCameraBgTemplates
@@ -633,7 +633,7 @@ _0801D718:
 	strh r0, [r4, #0x26]
 	strh r0, [r4, #0x28]
 	adds r0, r4, #0
-	bl sub_8002A3C
+	bl InitBackground
 	b _0801D76C
 	.align 2, 0
 _0801D744: .4byte 0x00000381

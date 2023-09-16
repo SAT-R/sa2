@@ -205,7 +205,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->targetTilesY = 0xC;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &lobbyScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -222,7 +222,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->targetTilesY = 0x20;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     transition = &lobbyScreen->unk1A0;
     transition->unk0 = 1;

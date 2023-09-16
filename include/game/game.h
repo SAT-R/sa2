@@ -535,7 +535,7 @@ struct Backgrounds {
     Background unkC0;
 };
 
-extern struct Backgrounds gUnknown_03005850;
+extern struct Backgrounds gStageBackgroundsRam;
 extern const u32 *gUnknown_030059C8;
 
 // rodata

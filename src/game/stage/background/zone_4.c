@@ -11,7 +11,7 @@ extern const Background gStageCameraBgTemplates[4];
 
 void CreateStageBg_Zone4(void)
 {
-    Background *background = &gUnknown_03005850.unk0;
+    Background *background = &gStageBackgroundsRam.unk0;
     const Background *templates;
     gBgCntRegs[0] = 0x1B0F;
 
@@ -23,7 +23,7 @@ void CreateStageBg_Zone4(void)
     background->targetTilesX = 0x20;
     background->targetTilesY = 0x20;
     background->flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
@@ -68,8 +68,8 @@ void StageBgUpdate_Zone4Acts12(s32 a, s32 b)
         gBldRegs.bldAlpha = 0xc0c;
     }
 
-    sub_8002A3C(&gUnknown_03005850.unk0);
-    UpdateBgAnimationTiles(&gUnknown_03005850.unk0);
+    InitBackground(&gStageBackgroundsRam.unk0);
+    UpdateBgAnimationTiles(&gStageBackgroundsRam.unk0);
 
     if (!(gStageTime & 0xF)) {
         gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 1) & 0xff;

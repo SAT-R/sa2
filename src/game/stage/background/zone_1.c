@@ -8,12 +8,12 @@
 #include "constants/tilemaps.h"
 #include "constants/zones.h"
 
-extern struct Backgrounds gUnknown_03005850;
+extern struct Backgrounds gStageBackgroundsRam;
 extern const Background gStageCameraBgTemplates[4];
 
 void CreateStageBg_Zone1(void)
 {
-    Background *background = &gUnknown_03005850.unk0;
+    Background *background = &gStageBackgroundsRam.unk0;
     gDispCnt |= 0x100;
     gBgCntRegs[0] = 0x1B0F;
 
@@ -39,7 +39,7 @@ void CreateStageBg_Zone1(void)
         background->targetTilesY = 0x1E;
     }
 
-    sub_8002A3C(background);
+    InitBackground(background);
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 }

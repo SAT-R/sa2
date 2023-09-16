@@ -5,7 +5,7 @@
 
 #define CastPointer(ptr, index) (void *)&(((u8 *)(ptr))[(index)])
 
-void sub_8002A3C(Background *background)
+void InitBackground(Background *background)
 {
     struct MapHeader *mapHeader = gUnknown_03002260[background->tilemapId];
     const u16 *pal;

@@ -81,7 +81,7 @@ build/sa2/src/core.o(.data);
 . = 0x00005840; gUnknown_03005840 = .;
 . = 0x00005844; gUnknown_03005844 = .;
 . = 0x00005848; gGameStageTask = .;
-. = 0x00005850; gUnknown_03005850 = .;
+. = 0x00005850; gStageBackgroundsRam = .;
 . = 0x00005960; gCamera = .;
 
 /* part of camera */

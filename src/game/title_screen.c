@@ -429,7 +429,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
-    sub_8002A3C(bg0);
+    InitBackground(bg0);
 
     gDispCnt &= ~DISPCNT_BG0_ON;
     gDispCnt |= DISPCNT_BG1_ON | DISPCNT_BG2_ON;
@@ -455,7 +455,7 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     config40->paletteOffset = 0;
     config40->flags = BACKGROUND_FLAGS_BG_ID(1);
 
-    sub_8002A3C(config40);
+    InitBackground(config40);
 
     m4aSongNumStart(MUS_TITLE_FANFARE);
 
@@ -515,7 +515,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     bg80->paletteOffset = 0;
     bg80->flags = 0;
 
-    sub_8002A3C(bg80);
+    InitBackground(bg80);
 
     bg0 = &titleScreen->unk0;
 
@@ -534,7 +534,7 @@ static void InitTitleScreenBackgrounds(struct TitleScreen *titleScreen)
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
-    sub_8002A3C(bg0);
+    InitBackground(bg0);
 }
 
 static void InitTitleScreenUI(struct TitleScreen *titleScreen)
@@ -699,7 +699,7 @@ static void Task_IntroStartSonicTeamLogoAnim(void)
         bg->targetTilesY = 20;
         bg->paletteOffset = 0;
         bg->flags = 0x10;
-        sub_8002A3C(bg);
+        InitBackground(bg);
     }
 
     if (titleScreen->animFrame > 2) {
@@ -778,7 +778,7 @@ static void Task_IntroStartSkyTransition(void)
         config40->targetTilesY = 0x40;
         config40->paletteOffset = 0;
         config40->flags = BACKGROUND_FLAGS_BG_ID(1);
-        sub_8002A3C(config40);
+        InitBackground(config40);
     }
 
     // Once the animation frame is at 140
@@ -856,7 +856,7 @@ static void Task_IntroPanSkyAnim(void)
         bg0->targetTilesY = 0x10;
         bg0->paletteOffset = 0;
         bg0->flags = 0x10;
-        sub_8002A3C(bg0);
+        InitBackground(bg0);
 
         gBgScrollRegs[0][1] = 0x4F;
         gCurTask->main = Task_IntroSkyAnim;
@@ -961,7 +961,7 @@ static void Task_IntroSkyAnim(void)
         bg0->paletteOffset = 0;
         bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
-        sub_8002A3C(bg0);
+        InitBackground(bg0);
 
         gBgCntRegs[2] &= 0xDFFF;
         gCurTask->main = Task_IntroFadeInTitleScreenAnim;
@@ -1370,7 +1370,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     bg0->targetTilesY = 10;
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
-    sub_8002A3C(bg0);
+    InitBackground(bg0);
 
     config40 = &titleScreen->unk40;
     config40->graphics.dest = (void *)BG_SCREEN_ADDR(16);
@@ -1387,7 +1387,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     config40->targetTilesY = 0x40;
     config40->paletteOffset = 0;
     config40->flags = BACKGROUND_FLAGS_BG_ID(1);
-    sub_8002A3C(config40);
+    InitBackground(config40);
 
     gDispCnt &= ~0x100;
     gDispCnt |= 0x600;

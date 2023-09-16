@@ -9,7 +9,7 @@ extern const Background gStageCameraBgTemplates[4];
 
 void CreateStageBg_Zone5(void)
 {
-    Background *background = &gUnknown_03005850.unk0;
+    Background *background = &gStageBackgroundsRam.unk0;
     if (IS_SINGLE_PLAYER) {
         gDispCnt |= 0x100;
         gBgCntRegs[0] = 0x1b0c;
@@ -19,7 +19,7 @@ void CreateStageBg_Zone5(void)
         background->layoutVram = (void *)BG_SCREEN_ADDR(27);
         background->targetTilesX = 0x20;
         background->targetTilesY = 0x20;
-        sub_8002A3C(background);
+        InitBackground(background);
     }
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;

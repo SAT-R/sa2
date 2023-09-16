@@ -74,7 +74,7 @@ void CreateStageBg_Zone6_Acts(void)
 
 void CreateStageBg_Zone6_Boss(void)
 {
-    Background *background = &gUnknown_03005850.unk0;
+    Background *background = &gStageBackgroundsRam.unk0;
     gDispCnt |= DISPCNT_BG0_ON;
     gBgCntRegs[0] = 0x1a0f;
     gUnknown_03004D80[0] = 0;
@@ -95,5 +95,5 @@ void CreateStageBg_Zone6_Boss(void)
     background->targetTilesX = 0x20;
     background->targetTilesY = 0x20;
 
-    sub_8002A3C(background);
+    InitBackground(background);
 }

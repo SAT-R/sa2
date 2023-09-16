@@ -18,9 +18,11 @@
 extern const CameraMain sStageBgUpdateFuncs[];
 extern const u32 *gCollisionTable[NUM_LEVEL_IDS];
 
-void sub_802C668(s32 *, s32 *);
+static void sub_801C708(s32, s32);
 void Task_801E0A8(void);
 void TaskDestructor_801E040(struct Task *);
+
+#define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
 const Background gStageCameraBgTemplates[4] = {
     {
@@ -300,8 +302,10 @@ void InitCamera(u32 level)
         gDispCnt = 0x3741;
     }
 
-    gBgCntRegs[1] = 0x1E01;
-    gBgCntRegs[2] = 0x1F02;
+    gBgCntRegs[1]
+        = (BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
+    gBgCntRegs[2]
+        = (BGCNT_SCREENBASE(31) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(2));
     temp = ((unkA98[0] + 0x1F) >> 6 | ((unkA98[1] + 0x1F) >> 6) << 1) << 0xE;
     gBgCntRegs[3] = temp | 3 | (unkA98[3] << 8) | (unkA98[2] << 2);
 
@@ -309,14 +313,14 @@ void InitCamera(u32 level)
         gDispCnt = 0x3641;
     }
 
-    bgs = &gUnknown_03005850;
-    memcpy(&gUnknown_03005850.unk40, &gStageCameraBgTemplates[0], 0x40);
+    bgs = &gStageBackgroundsRam;
+    memcpy(&gStageBackgroundsRam.unk40, &gStageCameraBgTemplates[0], sizeof(Background));
     bgs->unk40.tilemapId = TM_LEVEL_METATILES_0(level);
 
-    memcpy(&gUnknown_03005850.unk80, &gStageCameraBgTemplates[1], 0x40);
+    memcpy(&gStageBackgroundsRam.unk80, &gStageCameraBgTemplates[1], sizeof(Background));
     bgs->unk80.tilemapId = TM_LEVEL_METATILES_1(level);
 
-    memcpy(&gUnknown_03005850.unkC0, &gStageCameraBgTemplates[2], 0x40);
+    memcpy(&gStageBackgroundsRam.unkC0, &gStageCameraBgTemplates[2], sizeof(Background));
     bgs->unkC0.tilemapId = TM_LEVEL_BG(level);
 
     bgs->unkC0.graphics.dest = (void *)BG_CHAR_ADDR(unkA98[2]);
@@ -341,9 +345,9 @@ void InitCamera(u32 level)
     }
 
     if (level != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        sub_8002A3C(&bgs->unk40);
-        sub_8002A3C(&bgs->unk80);
-        sub_8002A3C(&bgs->unkC0);
+        InitBackground(&bgs->unk40);
+        InitBackground(&bgs->unk80);
+        InitBackground(&bgs->unkC0);
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -419,10 +423,6 @@ void InitCamera(u32 level)
         sStageInitProcedures[level]();
     }
 }
-
-void sub_801C708(s32, s32);
-
-#define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
 void UpdateCamera(void)
 {
@@ -603,23 +603,23 @@ void UpdateCamera(void)
     }
 }
 
-void sub_801C708(s32 x, s32 y)
+static void sub_801C708(s32 x, s32 y)
 {
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        Background *layer = &gUnknown_03005850.unk40;
+        Background *layer = &gStageBackgroundsRam.unk40;
         gBgScrollRegs[1][0] = x & 7;
         gBgScrollRegs[1][1] = y & 7;
         layer->scrollX = x;
         layer->scrollY = y;
-        sub_8002A3C(layer);
+        InitBackground(layer);
         UpdateBgAnimationTiles(layer);
 
-        layer++;
+        layer = &gStageBackgroundsRam.unk80;
         gBgScrollRegs[2][0] = x & 7;
         gBgScrollRegs[2][1] = y & 7;
         layer->scrollX = x;
         layer->scrollY = y;
-        sub_8002A3C(layer);
+        InitBackground(layer);
     }
 }

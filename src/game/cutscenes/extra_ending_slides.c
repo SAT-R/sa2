@@ -66,7 +66,7 @@ void CreateExtraEndingSlidesCutScene(void)
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 }
 
 void sub_8091608(void);

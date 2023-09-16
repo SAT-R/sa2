@@ -108,7 +108,7 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
         background->targetTilesY = 0x14;
         background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(1);
-        sub_8002A3C(background);
+        InitBackground(background);
     }
 }
 
@@ -141,7 +141,7 @@ void sub_808EF38(void)
                 background->targetTilesY = 0x14;
                 background->paletteOffset = 0;
                 background->flags = BACKGROUND_FLAGS_BG_ID(1);
-                sub_8002A3C(background);
+                InitBackground(background);
             }
             gCurTask->main = sub_808F004;
         } else {

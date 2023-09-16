@@ -335,7 +335,7 @@ _0804A8C0:
 	ldr r6, [sp, #0x20]
 	strb r5, [r6]
 	strh r4, [r0, #0x2e]
-	bl sub_8002A3C
+	bl InitBackground
 	ldr r6, [sp, #0x48]
 	strh r4, [r6, #0x16]
 	strh r4, [r6, #0x18]
