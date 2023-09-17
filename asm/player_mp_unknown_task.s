@@ -592,7 +592,7 @@ _08018D5C:
 	cmp r1, r3
 	beq _08018DEA
 _08018D8E:
-	ldr r1, _08018DA8 @ =IWRAM_START + 0x5B7C
+	ldr r1, _08018DA8 @ =gUnknown_03005B7C
 	movs r0, #1
 	strb r0, [r1]
 	movs r0, #0xdb
@@ -602,7 +602,7 @@ _08018D8E:
 _08018D9C: .4byte gGameMode
 _08018DA0: .4byte gMultiplayerConnections
 _08018DA4: .4byte 0x04000128
-_08018DA8: .4byte IWRAM_START + 0x5B7C
+_08018DA8: .4byte gUnknown_03005B7C
 _08018DAC:
 	ldr r0, _08018DF0 @ =gGameMode
 	ldrb r0, [r0]

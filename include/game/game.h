@@ -652,8 +652,8 @@ extern void sub_802C668(s32 *x, s32 *y);
 
 extern void sub_8021350(void);
 
-// NOTE: Proc type should be the same as sub_80299F0!
-extern void sub_8021604(u32 character, u32 level, u32 p2, Player *player);
+// NOTE: Proc type should be the same as SetStageSpawnPosInternal!
+extern void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *player);
 
 #define INCREMENT_SCORE(incVal)                                                         \
     {                                                                                   \

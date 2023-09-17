@@ -14,173 +14,6 @@ gUnknown_080D6736:
 .if 0
 .endif
 
-	thumb_func_start sub_8021554
-sub_8021554: @ 0x08021554
-	push {r4, r5, r6, r7, lr}
-	adds r7, r0, #0
-	adds r0, r1, #0
-	adds r4, r0, #0
-	adds r4, #0xc
-	adds r6, r0, #0
-	adds r0, r7, #0
-	adds r0, #0x85
-	movs r5, #0
-	ldrsb r5, [r0, r5]
-	cmp r5, #1
-	bne _08021580
-	movs r0, #0x10
-	bl VramMalloc
-	str r0, [r4, #4]
-	movs r0, #0x5f
-	strh r0, [r4, #0xa]
-	adds r0, r6, #0
-	adds r0, #0x2c
-	strb r5, [r0]
-	b _08021598
-_08021580:
-	cmp r5, #2
-	bne _080215F8
-	movs r0, #16
-	bl VramMalloc
-	str r0, [r4, #4]
-	movs r0, #0xba
-	strh r0, [r4, #0xa]
-	adds r1, r6, #0
-	adds r1, #0x2c
-	movs r0, #1
-	strb r0, [r1]
-_08021598:
-	movs r1, #0
-	strh r1, [r4, #8]
-	adds r2, r4, #0
-	adds r2, #0x21
-	movs r0, #0xff
-	strb r0, [r2]
-	ldr r0, [r7, #8]
-	asrs r0, r0, #8
-	strh r0, [r4, #0x16]
-	ldr r0, [r7, #0xc]
-	asrs r0, r0, #8
-	strh r0, [r4, #0x18]
-	movs r0, #0x88
-	lsls r0, r0, #3
-	strh r0, [r4, #0x1a]
-	strh r1, [r4, #0x1c]
-	adds r1, r4, #0
-	adds r1, #0x22
-	movs r0, #0x10
-	strb r0, [r1]
-	ldr r0, _080215D4 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bls _080215DC
-	ldr r0, _080215D8 @ =0x04000128
-	ldr r0, [r0]
-	lsls r0, r0, #0x1a
-	lsrs r0, r0, #0x1e
-	adds r1, #3
-	b _080215E2
-	.align 2, 0
-_080215D4: .4byte gGameMode
-_080215D8: .4byte 0x04000128
-_080215DC:
-	adds r1, r4, #0
-	adds r1, #0x25
-	movs r0, #0
-_080215E2:
-	strb r0, [r1]
-	ldr r0, _08021600 @ =0x00042024
-	str r0, [r4, #0x10]
-	movs r1, #0
-	strh r1, [r6]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	strh r0, [r6, #2]
-	strh r0, [r6, #4]
-	strh r1, [r6, #6]
-	strh r1, [r6, #8]
-_080215F8:
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08021600: .4byte 0x00042024
-
-@ Called by sub_80299F0
-	thumb_func_start sub_8021604
-sub_8021604: @ 0x08021604
-	push {r4, lr}
-	adds r4, r1, #0
-	mov ip, r3
-	mov r1, ip
-	adds r1, #0x60
-	strb r2, [r1]
-	adds r1, #0x25
-	strb r0, [r1]
-	ldr r0, _08021638 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #5
-	beq _08021640
-	ldr r1, _0802163C @ =gSpawnPositions
-	lsls r2, r4, #2
-	adds r0, r2, r1
-	ldrh r3, [r0]
-	mov r0, ip
-	adds r0, #0x74
-	strh r3, [r0]
-	adds r1, #2
-	adds r2, r2, r1
-	ldrh r0, [r2]
-	mov r3, ip
-	adds r3, #0x76
-	strh r0, [r3]
-	b _0802166A
-	.align 2, 0
-_08021638: .4byte gGameMode
-_0802163C: .4byte gSpawnPositions
-_08021640:
-	ldr r0, _08021688 @ =0x04000128
-	ldr r0, [r0]
-	lsls r0, r0, #0x1a
-	lsrs r0, r0, #0x1e
-	lsls r1, r0, #2
-	adds r1, r1, r0
-	lsls r1, r1, #2
-	movs r2, #0xb4
-	lsls r2, r2, #1
-	adds r0, r2, #0
-	subs r0, r0, r1
-	mov r1, ip
-	adds r1, #0x74
-	strh r0, [r1]
-	adds r1, #2
-	movs r0, #0xb1
-	strh r0, [r1]
-	subs r0, #0xb2
-	mov r1, ip
-	str r0, [r1, #8]
-	str r0, [r1, #0xc]
-_0802166A:
-	mov r1, ip
-	adds r1, #0x98
-	movs r0, #0
-	strb r0, [r1]
-	mov r2, ip
-	str r0, [r2, #0x78]
-	subs r1, #8
-	ldr r0, _0802168C @ =gUnknown_03005AF0
-	str r0, [r1]
-	adds r1, #4
-	ldr r0, _08021690 @ =gUnknown_03005AA0
-	str r0, [r1]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08021688: .4byte 0x04000128
-_0802168C: .4byte gUnknown_03005AF0
-_08021690: .4byte gUnknown_03005AA0
-
 @ In:
 @  r0: Player*
 	thumb_func_start sub_8021694
@@ -460,7 +293,7 @@ _080218BA:
 	movs r0, #0
 	strb r0, [r1]
 _080218C2:
-	ldr r1, _080218D8 @ =IWRAM_START + 0x5B7C
+	ldr r1, _080218D8 @ =gUnknown_03005B7C
 	movs r0, #0
 	strb r0, [r1]
 	ldr r0, _080218DC @ =gUnknown_03005840
@@ -472,7 +305,7 @@ _080218C2:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080218D8: .4byte IWRAM_START + 0x5B7C
+_080218D8: .4byte gUnknown_03005B7C
 _080218DC: .4byte gUnknown_03005840
 _080218E0: .4byte gUnknown_0300583C
 

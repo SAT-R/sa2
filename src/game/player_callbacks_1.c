@@ -2597,10 +2597,9 @@ void sub_8029990(Player *p)
     }
 }
 
-// NOTE: Proc type should be the same as sub_8021604!
-void sub_80299F0(u32 character, u32 level, u32 p2, Player *p)
+void CallSetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
 {
-    sub_8021604(character, level, p2, p);
+    SetStageSpawnPos(character, level, p2, p);
 }
 
 void sub_80299FC(Player *p)

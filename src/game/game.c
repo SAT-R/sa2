@@ -23,7 +23,7 @@
 #include "constants/songs.h"
 #include "constants/tilemaps.h"
 
-void sub_80299F0(u32, u32, u32, Player *);
+void CallSetStageSpawnPos(u32, u32, u32, Player *);
 void CreateGameStage(void);
 
 void sub_801AB3C(void);
@@ -130,7 +130,7 @@ void GameStageStart(void)
     gUnknown_030054F8 = 1;
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        sub_80299F0(gSelectedCharacter, gCurrentLevel, 0, &gPlayer);
+        CallSetStageSpawnPos(gSelectedCharacter, gCurrentLevel, 0, &gPlayer);
         gUnknown_030056A4 = NULL;
     }
 
