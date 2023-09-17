@@ -2747,8 +2747,6 @@ s32 sub_8029B58(Player *p, u8 *p1, int *out)
 {
     s32 result;
 
-    u8 dummy;
-
     if (GRAVITY_IS_INVERTED) {
         result = sub_8029B0C(p, p1, out);
     } else {
@@ -2761,8 +2759,6 @@ s32 sub_8029B58(Player *p, u8 *p1, int *out)
 s32 sub_8029B88(Player *p, u8 *p1, int *out)
 {
     s32 result;
-
-    u8 dummy;
 
     if (GRAVITY_IS_INVERTED) {
         result = sub_8029AC0(p, p1, out);

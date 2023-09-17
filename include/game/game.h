@@ -92,6 +92,10 @@ extern u32 gCourseTime;
 // Collected Special Rings in current stage?
 extern u8 gUnknown_030054F4;
 
+// TODO: Types not checked yet!
+extern s32 gUnknown_030054E0;
+extern s32 gUnknown_030054FC;
+
 extern u16 gUnknown_03005440;
 extern u16 gUnknown_030054BC;
 extern u8 gRandomItemBox;
@@ -107,7 +111,7 @@ typedef struct {
 extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
 
 typedef struct {
-    u8 filler0[0xC];
+    u16 unk0[6]; // might be [5]
     Sprite s;
     Hitbox reserved;
 } UNK_3005A70; /* 0x30 */

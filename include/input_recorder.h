@@ -10,10 +10,9 @@
 #define RECORDER_PLAYBACK 2
 
 struct InputRecorder {
-    s32 playbackHead;
-    s32 recordHead;
-
-    u8 mode;
+    /* 0x00 */ s32 playbackHead;
+    /* 0x04 */ s32 recordHead;
+    /* 0x08 */ u8 mode;
 };
 
 void InputRecorderResetRecordHead(void);
