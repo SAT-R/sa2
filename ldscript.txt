@@ -120,6 +120,7 @@ SECTIONS
         build/sa2/src/game/dust_effect_spindash.o(.text);
         build/sa2/src/game/spark_effect.o(.text);
         build/sa2/asm/game_5_2.o(.text);
+        build/sa2/src/game/game_6_0.o(.text);
         build/sa2/asm/game_6.o(.text);
         build/sa2/src/game/game_6_2.o(.text);
         build/sa2/asm/game_6_2.o(.text);
