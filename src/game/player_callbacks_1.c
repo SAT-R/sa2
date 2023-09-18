@@ -435,7 +435,7 @@ void PlayerCB_8025A0C(Player *p)
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
         p->moveState |= MOVESTATE_4;
-        p->unk99 = 0;
+        p->unk99[0] = 0;
         PLAYERFN_SET_AND_CALL(PlayerCB_8025AB8, p);
     }
 }
@@ -449,8 +449,8 @@ void PlayerCB_8025AB8(Player *p)
                == MOVESTATE_800) {
         sub_802A360(p);
     } else {
-        if (p->unk99 != 0) {
-            p->unk99--;
+        if (p->unk99[0] != 0) {
+            p->unk99[0]--;
         } else if (!sub_8029E6C(p)) {
             if (p->unk2A == 0) {
                 u16 dpadSideways = (p->unk5C & (DPAD_LEFT | DPAD_RIGHT));
@@ -1229,7 +1229,7 @@ void PlayerCB_8026F10(Player *p)
 
         p->moveState |= MOVESTATE_4;
 
-        p->unk99 = 30;
+        p->unk99[0] = 30;
 
         PLAYERFN_SET_AND_CALL(PlayerCB_8025AB8, p);
     }

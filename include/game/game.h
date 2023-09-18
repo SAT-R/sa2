@@ -215,7 +215,7 @@ typedef struct {
 } SonicFlags;
 
 typedef struct {
-    /* 0xAC */ u16 flyingDuration;
+    /* 0xAC */ s16 flyingDuration;
     /* 0xAE */ u16 unkAE;
     /* 0xB0 */ s8 unkB0;
 } CreamFlags;
@@ -225,6 +225,8 @@ typedef struct {
     /* 0xAD */ s8 shift;
     /* 0xAE */ s8 unkAE;
     /* 0xAF */ s8 unkAF;
+
+    // NOTE: For some reason this is a 4-byte value, while Cream's is a 2-byte
     /* 0xB0 */ s32 flyingDuration;
 } TailsFlags;
 
@@ -366,10 +368,6 @@ typedef struct Player_ {
         KnucklesFlags kf;
         AmyFlags af;
     } w;
-
-    // Tails's framecounter for flying
-    // NOTE: For some reason this is a 4-byte value, while Cream's is a 2-byte
-    /* 0xB0 */ s32 flyingDurationTails;
 } Player;
 
 extern Player gPlayer;
