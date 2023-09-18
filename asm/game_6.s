@@ -14,65 +14,6 @@ gUnknown_080D6736:
 .if 0
 .endif
 
-	thumb_func_start sub_8021BE0
-sub_8021BE0: @ 0x08021BE0
-	push {r4, lr}
-	adds r4, r0, #0
-	ldr r2, [r4, #0x20]
-	movs r0, #0x80
-	lsls r0, r0, #2
-	ands r0, r2
-	cmp r0, #0
-	bne _08021C34
-	movs r0, #0x80
-	lsls r0, r0, #0x10
-	ands r0, r2
-	cmp r0, #0
-	bne _08021C08
-	ldr r0, _08021C2C @ =gPlayer
-	ldr r1, _08021C30 @ =PlayerCB_8025318
-	str r1, [r0]
-	movs r0, #0x13
-	rsbs r0, r0, #0
-	ands r2, r0
-	str r2, [r4, #0x20]
-_08021C08:
-	ldr r1, [r4, #0x20]
-	movs r0, #4
-	ands r0, r1
-	cmp r0, #0
-	beq _08021C22
-	movs r0, #5
-	rsbs r0, r0, #0
-	ands r1, r0
-	str r1, [r4, #0x20]
-	adds r0, r4, #0
-	movs r1, #0xe
-	bl sub_8023B5C
-_08021C22:
-	movs r0, #6
-	strb r0, [r4, #0x16]
-	movs r0, #0xe
-	strb r0, [r4, #0x17]
-	b _08021C3C
-	.align 2, 0
-_08021C2C: .4byte gPlayer
-_08021C30: .4byte PlayerCB_8025318
-_08021C34:
-	movs r0, #0x13
-	rsbs r0, r0, #0
-	ands r2, r0
-	str r2, [r4, #0x20]
-_08021C3C:
-	adds r1, r4, #0
-	adds r1, #0x84
-	movs r0, #0
-	strb r0, [r1]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
 	thumb_func_start sub_8021C4C
 sub_8021C4C: @ 0x08021C4C
 	push {r4, r5, r6, r7, lr}

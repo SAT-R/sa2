@@ -504,3 +504,23 @@ s32 sub_8021B08(Player *p, u8 *p1, s32 *out)
 
     return result;
 }
+
+void sub_8021BE0(Player *p)
+{
+    if (!(p->moveState & MOVESTATE_200)) {
+        if (!(p->moveState & MOVESTATE_800000)) {
+            PLAYERFN_SET(PlayerCB_8025318);
+            p->moveState &= ~(MOVESTATE_10 | MOVESTATE_IN_AIR);
+        }
+        // _08021C08
+        if (p->moveState & MOVESTATE_4) {
+            p->moveState &= ~MOVESTATE_4;
+            sub_8023B5C(p, 14);
+        }
+        PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
+    } else {
+        p->moveState &= ~(MOVESTATE_10 | MOVESTATE_IN_AIR);
+    }
+
+    p->defeatScoreIndex = 0;
+}
