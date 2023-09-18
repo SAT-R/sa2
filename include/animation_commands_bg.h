@@ -2,6 +2,7 @@
 #define GUARD_ANIMATION_COMMANDS_EXTRA_H
 
 #include "gba/types.h"
+#include "sprite.h"
 
 void UpdateBgAnimationTiles(Background *);
 
