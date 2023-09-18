@@ -524,3 +524,95 @@ void sub_8021BE0(Player *p)
 
     p->defeatScoreIndex = 0;
 }
+
+void sub_8021C4C(Player *p)
+{
+    u8 rotation, anotherByte2;
+    s32 fnOut;
+    u32 mask = p->unk38;
+    s32 result;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+
+    playerX = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
+    playerY = Q_24_8_TO_INT(p->y);
+
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+
+    result = sub_801E4E4(playerY, playerX, mask, -8, 0, sub_801EE64);
+
+    if (result <= 0) {
+        p->x -= Q_24_8(result);
+        p->speedAirX = 0;
+    }
+    // _08021CA2
+    playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
+    playerY2 = Q_24_8_TO_INT(p->y);
+
+    mask = p->unk38;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+
+    result = sub_801E4E4(playerY2, playerX2, mask, +8, 0, sub_801EE64);
+
+    if (result <= 0) {
+        p->x += Q_24_8(result);
+        p->speedAirX = 0;
+    }
+    // _08021CDE
+    if (GRAVITY_IS_INVERTED) {
+        result = sub_8029AC0(p, &rotation, &fnOut);
+    } else {
+        result = sub_8029B0C(p, &rotation, &fnOut);
+    }
+
+    if (result < 0) {
+        s32 r1 = -(Q_24_8_TO_INT(p->speedAirY) + 6);
+        s8 rotCopy;
+
+        if ((result >= r1) || (fnOut >= r1)) {
+            // _08021D26
+            s32 airY;
+            p->rotation = rotation;
+
+            if (GRAVITY_IS_INVERTED) {
+                result = -result;
+            }
+            p->y += result;
+
+            sub_8021BE0(p);
+
+            if ((rotation + 32) & 0x40) {
+                p->speedAirX = 0;
+
+                if (p->speedAirY > Q_24_8(11.8125)) {
+                    p->speedAirY = Q_24_8(11.8125);
+                }
+            } else if (!((rotation + 16) & 0x20)) {
+                // _08021D74
+                p->speedAirY = 0;
+                p->speedGroundX = p->speedAirX;
+                return;
+            } else {
+                // _08021D86
+                p->speedAirY >>= 1;
+            }
+
+            airY = p->speedAirY;
+            if (airY < 0) {
+                airY = -airY;
+            }
+            p->speedGroundX = airY;
+
+            rotCopy = rotation;
+            if (rotCopy < 0) {
+                p->speedGroundX = -airY;
+            } else {
+                p->speedGroundX = +rotCopy;
+            }
+        }
+    }
+}

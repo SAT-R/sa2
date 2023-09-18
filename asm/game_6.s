@@ -12,8 +12,6 @@ gUnknown_080D6736:
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start sub_8021C4C
 sub_8021C4C: @ 0x08021C4C
 	push {r4, r5, r6, r7, lr}
@@ -204,6 +202,7 @@ _08021DAA:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
+.endif
 
 	thumb_func_start sub_8021DB8
 sub_8021DB8: @ 0x08021DB8
