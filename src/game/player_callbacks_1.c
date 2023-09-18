@@ -2765,6 +2765,7 @@ s32 sub_8029B88(Player *p, u8 *p1, int *out)
     return result;
 }
 
+// Very similar to sub_802195C
 s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
 {
     u8 dummy;

@@ -355,62 +355,52 @@ void sub_80218E4(Player *p)
     }
 }
 
-#if 0
+// Very similar to sub_8029BB8
 s32 sub_802195C(Player *p, u8 *p1, s32 *out)
 {
+    u8 dummy;
+    s32 dummyInt;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    u32 mask;
+    u8 anotherByte, anotherByte2;
+    s32 r5, r1;
     s32 result;
-    u8 sp08[4];
-    s32 sp0C;
-    s32 px, py;
-    u32 layerFlags;
-    s32 resultA, resultB;
 
-    if(!p1)
-        p1 = sp08;
-    
-    if(!out)
-        out = &sp0C;
-    
-    { // _0802197A
-        s32 px0 = (Q_24_8_TO_INT(p->x) - 2), py0;
-        px = px0 - p->unk16;
+    if (p1 == NULL)
+        p1 = &dummy;
+    if (out == NULL)
+        out = &dummyInt;
 
-        py0 = Q_24_8_TO_INT(p->y);
-        py = py0 - p->unk17;
-        
-        layerFlags = p->unk38;
+    playerY2 = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
+    playerX2 = Q_24_8_TO_INT(p->y) - (p->unk17);
 
-        if(p->speedAirY < Q_24_8(3.0)) {
-            layerFlags |= FLAG_PLAYER_x38__80;
-        }
-        // _080219A6
-
-        resultA = sub_801E4E4(px, py, layerFlags, -8, &sp08[1], sub_801ED24);
-    }
-    
-
-    {
-        px = Q_24_8_TO_INT(p->x) - 2 - p->unk16;
-        py = Q_24_8_TO_INT(p->y) + p->unk17;
-        layerFlags = p->unk38;
-
-        if(p->speedAirY < Q_24_8(3.0)) {
-            layerFlags |= FLAG_PLAYER_x38__80;
-        }
-
-        resultB = sub_801E4E4(px, py, layerFlags, -8, &sp08[2], sub_801ED24);
+    mask = p->unk38;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
     }
 
-    if(resultA < resultB) {
-        result = resultA;
-        *p1 = sp08[1];
-        *out = resultB;
+    r5 = sub_801E4E4(playerY2, playerX2, mask, -8, &anotherByte, sub_801ED24);
+
+    playerY = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
+    playerX = Q_24_8_TO_INT(p->y) + (p->unk17);
+
+    mask = p->unk38;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+
+    r1 = sub_801E4E4(playerY, playerX, mask, -8, &anotherByte2, sub_801ED24);
+
+    if (r5 < r1) {
+        result = r5;
+        *p1 = anotherByte;
+        *out = r1;
     } else {
-        result = resultB;
-        *p1 = sp08[2];
-        *out = resultA;
+        result = r1;
+        *p1 = anotherByte2;
+        *out = r5;
     }
 
     return result;
 }
-#endif
