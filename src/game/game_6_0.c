@@ -3,6 +3,8 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "game/dust_effect_braking.h"
+#include "game/mp_unknown_task.h"
+#include "game/player_actions.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
 #include "game/stage/stage.h"
@@ -23,7 +25,7 @@ void Task_8023FC0(void);
 extern void sub_801FC2C(void);
 void AllocateCharacterStageGfx(Player *, UNK_3005A70 *);
 void AllocateCharacterMidAirGfx(Player *, UNK_3005A70 *);
-void sub_8021694(Player *);
+void InitializePlayer(Player *);
 void TaskDestructor_802A07C(struct Task *);
 
 s32 gUnused_03005B78 = 0;
@@ -57,7 +59,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
         }
     }
 
-    sub_8021694(p);
+    InitializePlayer(p);
 
     PLAYERFN_SET(PlayerCB_8025318);
 
@@ -194,6 +196,134 @@ void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
     p->unk90 = &gUnknown_03005AF0;
     p->unk94 = &gUnknown_03005AA0;
 }
+
+// NOTE: Only reg-alloc mismatch in loop (see comment below)
+// (99.91%) https://decomp.me/scratch/UT9dt
+NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Player *p))
+{
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
+        && (((p->x & p->y) + 1) != 0)) {
+        p->x = Q_24_8(460);
+    } else {
+        p->x = Q_24_8(p->checkPointX);
+    }
+    p->y = Q_24_8(p->checkPointY);
+
+    p->callback = PlayerCB_8025318;
+
+    p->unk5C = gPlayerControls.jump | gPlayerControls.attack | gPlayerControls.trick;
+    p->unk5E = gPlayerControls.jump | gPlayerControls.attack | gPlayerControls.trick;
+
+    p->speedAirX = 0;
+    p->speedAirY = 0;
+    p->speedGroundX = 0;
+    p->moveState = MOVESTATE_IGNORE_INPUT;
+    p->rotation = 0;
+    PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 14);
+    p->unk25 = 120;
+    p->spindashAccel = 0;
+    p->unk29 = 0;
+    p->unk28 = 0;
+    p->unk38 = FLAG_PLAYER_x38__LAYER_BACKGROUND;
+    p->unk40 = 0x900;
+    p->unk44 = 0x600;
+    p->unk48 = 8;
+    p->unk4C = 64;
+    p->unk64 = 0;
+    p->unk66 = -1;
+    p->anim = -1;
+    p->variant = -1;
+    p->unk2C = 0;
+    p->timerInvincibility = 0;
+    p->timerSpeedup = 0;
+    p->unk32 = 0;
+    p->unk3C = NULL;
+    p->itemEffect = 0;
+    p->unk2A = 0;
+    p->unk72 = 0x168;
+    p->unk7E = 0;
+    p->unk7C = 0;
+    p->unk82 = 0x100;
+    p->unk80 = 0x100;
+    p->defeatScoreIndex = 0;
+    p->unk61 = 0;
+    p->unk62 = 0;
+    p->unk63 = 0;
+    p->unk86 = 30;
+    p->unk87 = 60;
+    p->unk88 = 10;
+    p->transition = 0;
+    p->unk6E = 0;
+    p->prevTransition = 0;
+    p->unk5A = 0;
+    p->unk58 = 0;
+    p->unk6C = 0;
+    p->unk71 = 0;
+    p->unk70 = 0;
+    p->unk36 = 0;
+
+    sub_8015750();
+    sub_801561C();
+    sub_802989C(p);
+
+    { // This smells like a memset macro.
+        // Nonmatching reg-alloc between r4 & r6 here
+        u32 *u99 = (void *)p->unk99;
+        s32 i = 4;
+
+        while (i-- != 0) {
+            *u99++ = 0;
+        }
+    }
+
+    p->unk99[0] = 0x7F;
+
+    if ((p->unk60 == 0) && IS_SINGLE_PLAYER) {
+        if (gCourseTime >= MAX_COURSE_TIME) {
+            gCheckpointTime = 0;
+            gCourseTime = 0;
+            p->checkpointTime = 0;
+        } else {
+            gCheckpointTime = p->checkpointTime;
+            gCourseTime = p->checkpointTime;
+        }
+    }
+
+    switch (p->character) {
+        case CHARACTER_SONIC: {
+            p->w.sf.flags = 0;
+            p->w.sf.unkAE = 0;
+            p->w.sf.unkB0 = 0;
+        } break;
+
+        case CHARACTER_CREAM: {
+            p->w.cf.unkAE = 0;
+            p->w.cf.flyingDuration = 0;
+            p->w.cf.unkB0 = 0;
+        } break;
+
+        case CHARACTER_TAILS: {
+            p->w.tf.flags = 0;
+            p->w.tf.flyingDuration = 0;
+            p->w.tf.shift = 0;
+        } break;
+
+        case CHARACTER_KNUCKLES: {
+            p->w.kf.unkAC = 0;
+            p->w.kf.unkAD = 0;
+            p->w.kf.unkAE = 0;
+        } break;
+
+        case CHARACTER_AMY: {
+            p->w.af.unkAC = 0;
+        } break;
+    }
+
+    gUnknown_03005B7C = 0;
+    gUnknown_03005840 = NULL;
+    gUnknown_0300583C = 0;
+}
+END_NONMATCH
 
 #if 01
 #endif

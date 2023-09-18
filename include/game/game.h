@@ -209,10 +209,34 @@ typedef void (*PlayerCallback)(struct Player_ *);
 //       This is used for an apparent around the value Cream uses for flying duration
 typedef struct {
     /* 0xAC */ u8 flags;
+    /* 0xAD */ s8 unkAD;
+    /* 0xAE */ u16 unkAE;
+    /* 0xB0 */ u16 unkB0;
+} SonicFlags;
+
+typedef struct {
+    /* 0xAC */ u16 flyingDuration;
+    /* 0xAE */ u16 unkAE;
+    /* 0xB0 */ s8 unkB0;
+} CreamFlags;
+
+typedef struct {
+    /* 0xAC */ u8 flags;
     /* 0xAD */ s8 shift;
     /* 0xAE */ s8 unkAE;
     /* 0xAF */ s8 unkAF;
+    /* 0xB0 */ s32 flyingDuration;
 } TailsFlags;
+
+typedef struct {
+    /* 0xAC */ u8 unkAC;
+    /* 0xAD */ u8 unkAD;
+    /* 0xAE */ u8 unkAE;
+} KnucklesFlags;
+
+typedef struct {
+    /* 0xAC */ u8 unkAC;
+} AmyFlags;
 
 #define PLAYER_ITEM_EFFECT__NONE            0x00
 #define PLAYER_ITEM_EFFECT__SHIELD_NORMAL   0x01
@@ -249,20 +273,21 @@ typedef struct Player_ {
     /* 0x20 */ u32 moveState;
 
     /* 0x24 */ u8 rotation;
-    /* 0x25 */ u8 filler25[1];
+    /* 0x25 */ u8 unk25;
     /* 0x26 */ s16 spindashAccel;
-    /* 0x28 */ u8 filler28[2];
+    /* 0x28 */ u8 unk28;
+    /* 0x28 */ u8 unk29;
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
     /* 0x2E */ u16 timerInvincibility;
     /* 0x30 */ u16 timerSpeedup;
     /* 0x32 */ u16 unk32;
-    /* 0x32 */ u8 filler34[2];
+    /* 0x34 */ u8 filler34[2];
     /* 0x36 */ s8 unk36;
     /* 0x37 */ u8 itemEffect; // bitfield
     /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
     /* 0x39 */ u8 unk39;
-    /* 0x3A */ u8 filler3A[2];
+    /* 0x3A */ u16 unk3A;
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
     /* 0x40 */ s32 unk40;
     /* 0x44 */ s32 unk44;
@@ -301,11 +326,13 @@ typedef struct Player_ {
     // unk72 appears to be a duration timer for side-forward trick animations (in
     // frames?)
     /* 0x72 */ s16 unk72;
-    /* 0x74 */ u16 checkPointX;
-    /* 0x76 */ u16 checkPointY;
+    /* 0x74 */ s16 checkPointX;
+    /* 0x76 */ s16 checkPointY;
     /* 0x78 */ u32 checkpointTime;
     /* 0x7C */ u16 unk7C;
-    /* 0x7E */ u8 filler7E[6];
+    /* 0x7E */ u16 unk7E;
+    /* 0x80 */ u16 unk80;
+    /* 0x82 */ u16 unk82;
 
     // Denotes how many points the player should get after defeating an enemy.
     // (see stage/enemy_defeat_score.c and stage/entity_manager.c for usage)
@@ -314,7 +341,8 @@ typedef struct Player_ {
     /* 0x85 */ s8 character;
     /* 0x86 */ u8 unk86;
     /* 0x87 */ u8 unk87;
-    /* 0x88 */ u8 filler88[4];
+    /* 0x88 */ u8 unk88;
+    /* 0x88 */ u8 filler88[3];
     /* 0x8C */ struct Task *spriteTask;
     /* 0x90 */ UNK_3005A70 *unk90;
 
@@ -322,8 +350,7 @@ typedef struct Player_ {
     //       Alternatively, some of the following data might be a union
     /* 0x94 */ UNK_3005A70 *unk94;
     /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
-    /* 0x99 */ s8 unk99;
-    /* 0x9A */ u8 filler9A[0xE];
+    /* 0x99 */ s8 unk99[15];
     /* 0xA8 */ u8 unkA8;
     /* 0x9A */ u8 fillerA9[0x3];
 
@@ -333,8 +360,11 @@ typedef struct Player_ {
     //            when jumping.
     /* 0xAC */
     union {
-        s16 flyingDurationCream;
+        SonicFlags sf;
+        CreamFlags cf;
         TailsFlags tf;
+        KnucklesFlags kf;
+        AmyFlags af;
     } w;
 
     // Tails's framecounter for flying

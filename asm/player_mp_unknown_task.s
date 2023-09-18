@@ -406,7 +406,7 @@ _08018BF8:
 	b _08018DEA
 _08018C04:
 	adds r0, r5, #0
-	bl sub_8021694
+	bl InitializePlayer
 	adds r0, r6, #0
 	adds r0, #0x50
 	movs r1, #0
