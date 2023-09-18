@@ -372,25 +372,125 @@ s32 sub_802195C(Player *p, u8 *p1, s32 *out)
     if (out == NULL)
         out = &dummyInt;
 
-    playerY2 = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
-    playerX2 = Q_24_8_TO_INT(p->y) - (p->unk17);
+    playerX2 = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
+    playerY2 = Q_24_8_TO_INT(p->y) - (p->unk17);
 
     mask = p->unk38;
     if (p->speedAirY < Q_24_8(3.0)) {
         mask |= 0x80;
     }
 
-    r5 = sub_801E4E4(playerY2, playerX2, mask, -8, &anotherByte, sub_801ED24);
+    r5 = sub_801E4E4(playerX2, playerY2, mask, -8, &anotherByte, sub_801ED24);
 
-    playerY = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
-    playerX = Q_24_8_TO_INT(p->y) + (p->unk17);
+    playerX = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
+    playerY = Q_24_8_TO_INT(p->y) + (p->unk17);
 
     mask = p->unk38;
     if (p->speedAirY < Q_24_8(3.0)) {
         mask |= 0x80;
     }
 
-    r1 = sub_801E4E4(playerY, playerX, mask, -8, &anotherByte2, sub_801ED24);
+    r1 = sub_801E4E4(playerX, playerY, mask, -8, &anotherByte2, sub_801ED24);
+
+    if (r5 < r1) {
+        result = r5;
+        *p1 = anotherByte;
+        *out = r1;
+    } else {
+        result = r1;
+        *p1 = anotherByte2;
+        *out = r5;
+    }
+
+    return result;
+}
+
+// Very similar to sub_802195C
+s32 sub_8021A34(Player *p, u8 *p1, s32 *out)
+{
+    u8 dummy;
+    s32 dummyInt;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    u32 mask;
+    u8 anotherByte, anotherByte2;
+    s32 r5, r1;
+    s32 result;
+
+    if (p1 == NULL)
+        p1 = &dummy;
+    if (out == NULL)
+        out = &dummyInt;
+
+    playerX2 = Q_24_8_TO_INT(p->x) + (2 + p->unk16);
+    playerY2 = Q_24_8_TO_INT(p->y) - (p->unk17);
+
+    mask = p->unk38;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+
+    r5 = sub_801E4E4(playerX2, playerY2, mask, +8, &anotherByte, sub_801ED24);
+
+    playerX = Q_24_8_TO_INT(p->x) + (2 + p->unk16);
+    playerY = Q_24_8_TO_INT(p->y) + (p->unk17);
+
+    mask = p->unk38;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+
+    r1 = sub_801E4E4(playerX, playerY, mask, +8, &anotherByte2, sub_801ED24);
+
+    if (r5 < r1) {
+        result = r5;
+        *p1 = anotherByte;
+        *out = r1;
+    } else {
+        result = r1;
+        *p1 = anotherByte2;
+        *out = r5;
+    }
+
+    return result;
+}
+
+// Very similar to sub_802195C
+s32 sub_8021B08(Player *p, u8 *p1, s32 *out)
+{
+    u8 dummy;
+    s32 dummyInt;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    u32 mask;
+    u8 anotherByte, anotherByte2;
+    s32 r5, r1;
+    s32 result;
+
+    if (p1 == NULL)
+        p1 = &dummy;
+    if (out == NULL)
+        out = &dummyInt;
+
+    playerY2 = Q_24_8_TO_INT(p->y) - (p->unk17);
+    playerX2 = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
+
+    mask = p->unk38;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+
+    r5 = sub_801E4E4(playerY2, playerX2, mask, -8, &anotherByte, sub_801EE64);
+
+    playerY = Q_24_8_TO_INT(p->y) - (p->unk17);
+    playerX = Q_24_8_TO_INT(p->x) + (2 + p->unk16);
+
+    mask = p->unk38;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+
+    r1 = sub_801E4E4(playerY, playerX, mask, -8, &anotherByte2, sub_801EE64);
 
     if (r5 < r1) {
         result = r5;
