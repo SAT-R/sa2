@@ -6,6 +6,7 @@
 #include "game/heart_particles_effect.h"
 #include "game/stage/music_manager.h"
 
+#include "game/game_6.h"
 #include "game/boost_effect.h" // incl. CreateBoostModeParticles
 #include "game/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/dust_effect_spindash.h" // CreateSpindashDustEffect
@@ -45,10 +46,6 @@ extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
 extern void Task_801F214(void);
 extern void sub_801F488(void);
-
-extern s32 sub_802195C(Player *p, u8 *p1, s32 *out);
-extern s32 sub_8021A34(Player *p, u8 *p1, s32 *out);
-extern s32 sub_8021B08(Player *p, u8 *p1, s32 *out);
 
 extern s32 sub_8022F58(u8, Player *);
 extern void sub_8022190(Player *);

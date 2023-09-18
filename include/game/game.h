@@ -251,6 +251,7 @@ typedef struct {
 #define PLAYER_ITEM_EFFECT__80              0x80
 #define FLAG_PLAYER_x38__LAYER_FOREGROUND   0x00
 #define FLAG_PLAYER_x38__LAYER_BACKGROUND   0x01
+#define FLAG_PLAYER_x38__80                 0x80
 // Not sure what these are yet
 typedef struct Player_ {
     /* 0x00 */ PlayerCallback callback;

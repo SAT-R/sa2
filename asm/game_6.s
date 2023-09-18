@@ -11,71 +11,7 @@ gUnknown_080D6736:
 .syntax unified
 .arm
 
-.if 0
-.endif
-
-	thumb_func_start sub_80218E4
-sub_80218E4: @ 0x080218E4
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	ldr r0, [r4, #0x20]
-	movs r1, #0x80
-	lsls r1, r1, #0xa
-	ands r0, r1
-	cmp r0, #0
-	beq _080218FA
-	ldr r0, _08021950 @ =0x00000119
-	bl m4aSongNumStop
-_080218FA:
-	ldr r0, [r4, #0x20]
-	ldr r1, _08021954 @ =0xCEF118CF
-	ands r0, r1
-	str r0, [r4, #0x20]
-	adds r0, r4, #0
-	adds r0, #0x61
-	movs r1, #0
-	strb r1, [r0]
-	adds r0, #1
-	strb r1, [r0]
-	adds r0, #1
-	strb r1, [r0]
-	adds r0, #0xe
-	strb r1, [r0]
-	subs r0, #1
-	strb r1, [r0]
-	adds r5, r4, #0
-	adds r5, #0x85
-	movs r0, #0
-	ldrsb r0, [r5, r0]
-	cmp r0, #2
-	bne _0802192C
-	movs r0, #0x78
-	bl m4aSongNumStop
-_0802192C:
-	movs r0, #0
-	ldrsb r0, [r5, r0]
-	cmp r0, #1
-	bne _0802193A
-	movs r0, #0xe3
-	bl m4aSongNumStop
-_0802193A:
-	movs r0, #0
-	ldrsb r0, [r5, r0]
-	cmp r0, #0
-	bne _0802194A
-	ldr r0, [r4, #0x20]
-	ldr r1, _08021958 @ =0xFDFFFFFF
-	ands r0, r1
-	str r0, [r4, #0x20]
-_0802194A:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08021950: .4byte 0x00000119
-_08021954: .4byte 0xCEF118CF
-_08021958: .4byte 0xFDFFFFFF
-
+.if 01
 	thumb_func_start sub_802195C
 sub_802195C: @ 0x0802195C
 	push {r4, r5, r6, r7, lr}
@@ -84,9 +20,9 @@ sub_802195C: @ 0x0802195C
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x10
-	adds r4, r0, #0
-	adds r6, r1, #0
-	adds r7, r2, #0
+	adds r4, r0, #0     @ r4 = p
+	adds r6, r1, #0     @ r6 = p1
+	adds r7, r2, #0     @ r7 = out
 	cmp r6, #0
 	bne _08021974
 	add r6, sp, #8
@@ -100,16 +36,16 @@ _0802197A:
 	subs r0, #2
 	movs r1, #0x16
 	ldrsb r1, [r4, r1]
-	subs r3, r0, r1
+	subs r3, r0, r1     @ r3 = px
 	ldr r0, [r4, #0xc]
 	asrs r0, r0, #8
 	movs r1, #0x17
 	ldrsb r1, [r4, r1]
-	subs r1, r0, r1
+	subs r1, r0, r1     @ r1 = py
 	movs r0, #0x38
 	adds r0, r0, r4
-	mov r8, r0
-	ldrb r2, [r0]
+	mov r8, r0          @ r8 = p->unk38
+	ldrb r2, [r0]       @ r2 = layerFlags
 	movs r5, #0x12
 	ldrsh r0, [r4, r5]
 	ldr r5, _08021A10 @ =0x000002FF
@@ -120,7 +56,7 @@ _0802197A:
 _080219A6:
 	movs r0, #9
 	add r0, sp
-	mov sb, r0
+	mov sb, r0      @ sb = &sp08[1]
 	str r0, [sp]
 	ldr r5, _08021A14 @ =sub_801ED24
 	mov sl, r5
@@ -189,6 +125,7 @@ _08021A20:
 	pop {r1}
 	bx r1
 	.align 2, 0
+.endif
 
 	thumb_func_start sub_8021A34
 sub_8021A34: @ 0x08021A34

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"
+#include "lib/m4a.h"
 #include "game/game.h"
 #include "game/dust_effect_braking.h"
 #include "game/mp_unknown_task.h"
@@ -12,6 +13,7 @@
 #include "constants/animations.h"
 #include "constants/move_states.h"
 #include "constants/player_transitions.h"
+#include "constants/songs.h"
 
 extern u16 gUnknown_080D6736[115][2];
 
@@ -42,7 +44,6 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     s32 unk60 = p->unk60;
     struct Task *t;
     Game_6_0_Task *gt;
-    s32 mode;
 
     t = TaskCreate(Task_8023FC0, sizeof(Game_6_0_Task), 0x3000, 0,
                    TaskDestructor_802A07C);
@@ -66,14 +67,12 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     sub_801F754();
     sub_801FC2C();
 
-    mode = gInputRecorder.mode;
-
-    if ((mode == RECORDER_RECORD)) {
+    if ((gInputRecorder.mode == RECORDER_RECORD)) {
         InputRecorderLoadTape();
-        gInputRecorder.mode = mode;
-    } else if (mode == RECORDER_PLAYBACK) {
+        gInputRecorder.mode = RECORDER_RECORD;
+    } else if (gInputRecorder.mode == RECORDER_PLAYBACK) {
         InputRecorderLoadTape();
-        gInputRecorder.mode = mode;
+        gInputRecorder.mode = RECORDER_PLAYBACK;
     }
 
     gStageGoalX = 0;
@@ -325,5 +324,93 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
 }
 END_NONMATCH
 
-#if 01
+// PlayerCancelMidAir? (Not only used for transitioning to ground)
+void sub_80218E4(Player *p)
+{
+    if (p->moveState & MOVESTATE_20000) {
+        m4aSongNumStop(SE_281);
+    }
+
+    p->moveState &= ~(MOVESTATE_20000000 | MOVESTATE_10000000 | MOVESTATE_1000000
+                      | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
+                      | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_400
+                      | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20 | MOVESTATE_10);
+
+    p->unk61 = 0;
+    p->unk62 = 0;
+    p->unk63 = 0;
+    p->unk71 = 0;
+    p->unk70 = 0;
+
+    if (p->character == CHARACTER_TAILS) {
+        m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
+    }
+
+    if (p->character == CHARACTER_CREAM) {
+        m4aSongNumStop(SE_CREAM_FLYING);
+    }
+
+    if (p->character == CHARACTER_SONIC) {
+        p->moveState &= ~MOVESTATE_BOOST_EFFECT_ON;
+    }
+}
+
+#if 0
+s32 sub_802195C(Player *p, u8 *p1, s32 *out)
+{
+    s32 result;
+    u8 sp08[4];
+    s32 sp0C;
+    s32 px, py;
+    u32 layerFlags;
+    s32 resultA, resultB;
+
+    if(!p1)
+        p1 = sp08;
+    
+    if(!out)
+        out = &sp0C;
+    
+    { // _0802197A
+        s32 px0 = (Q_24_8_TO_INT(p->x) - 2), py0;
+        px = px0 - p->unk16;
+
+        py0 = Q_24_8_TO_INT(p->y);
+        py = py0 - p->unk17;
+        
+        layerFlags = p->unk38;
+
+        if(p->speedAirY < Q_24_8(3.0)) {
+            layerFlags |= FLAG_PLAYER_x38__80;
+        }
+        // _080219A6
+
+        resultA = sub_801E4E4(px, py, layerFlags, -8, &sp08[1], sub_801ED24);
+    }
+    
+
+    {
+        px = Q_24_8_TO_INT(p->x) - 2 - p->unk16;
+        py = Q_24_8_TO_INT(p->y) + p->unk17;
+        layerFlags = p->unk38;
+
+        if(p->speedAirY < Q_24_8(3.0)) {
+            layerFlags |= FLAG_PLAYER_x38__80;
+        }
+
+        resultB = sub_801E4E4(px, py, layerFlags, -8, &sp08[2], sub_801ED24);
+    }
+
+    if(resultA < resultB) {
+        result = resultA;
+        *p1 = sp08[1];
+        *out = resultB;
+    } else {
+        result = resultB;
+        *p1 = sp08[2];
+        *out = resultA;
+    }
+
+    return result;
+}
 #endif
