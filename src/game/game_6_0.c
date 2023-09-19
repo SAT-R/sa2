@@ -990,3 +990,304 @@ void sub_8022318(Player *p)
         p->unk64 = SA2_CHAR_ANIM_IDLE;
     }
 }
+
+void sub_80223BC(Player *p)
+{
+    u8 rotation, anotherByte2;
+    s32 fnOut;
+    s32 result;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    s32 *ptr;
+    u16 gravity;
+
+    u32 mask;
+    u32 mask2 = p->unk38;
+
+    playerX = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
+    playerY = Q_24_8_TO_INT(p->y);
+
+    mask = mask2;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask = 0x80;
+        mask |= mask2;
+    }
+    result = sub_801E4E4(playerX, playerY, mask, -8, NULL, sub_801ED24);
+
+    if (result <= 0) {
+        p->x -= Q_24_8(result);
+        p->speedAirX = 0;
+        // TODO: Find out which character(s) call this, to use the appropriate 'flags'
+        p->w.sf.flags |= 0x20;
+    }
+
+    playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
+    playerY2 = Q_24_8_TO_INT(p->y);
+
+    mask = mask2;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+    result = sub_801E4E4(playerX2, playerY2, mask, +8, NULL, sub_801ED24);
+
+    if (result <= 0) {
+        p->x += Q_24_8(result);
+        p->speedAirX = 0;
+        p->w.sf.flags |= 0x20;
+    }
+
+    ptr = &fnOut;
+    if (GRAVITY_IS_INVERTED) {
+        result = sub_8029AC0(p, &rotation, ptr);
+    } else {
+        result = sub_8029B0C(p, &rotation, ptr);
+    }
+
+    if (result <= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            result = -result;
+        }
+
+        p->y += Q_24_8(result);
+
+        p->rotation = rotation;
+        p->speedAirY = 0;
+        p->w.sf.flags &= ~0x2;
+    }
+}
+
+// Similar to sub_80223BC
+void sub_80224DC(Player *p)
+{
+    u8 rotation, anotherByte2;
+    s32 fnOut;
+    s32 result;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    s32 *ptr;
+    u16 gravity;
+
+    u32 mask;
+    u32 mask2 = p->unk38;
+
+    playerX = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
+    playerY = Q_24_8_TO_INT(p->y);
+
+    mask = mask2;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask = 0x80;
+        mask |= mask2;
+    }
+    result = sub_801E4E4(playerX, playerY, mask, -8, NULL, sub_801ED24);
+
+    if (result <= 0) {
+        p->x -= Q_24_8(result);
+        p->speedAirX = 0;
+        // TODO: Find out which character(s) call this, to use the appropriate 'flags'
+        p->w.sf.flags |= 0x20;
+    }
+
+    playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
+    playerY2 = Q_24_8_TO_INT(p->y);
+
+    mask = mask2;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+    result = sub_801E4E4(playerX2, playerY2, mask, +8, NULL, sub_801ED24);
+
+    if (result <= 0) {
+        p->x += Q_24_8(result);
+        p->speedAirX = 0;
+        p->w.sf.flags |= 0x20;
+    }
+
+    ptr = &fnOut;
+    if (GRAVITY_IS_INVERTED) {
+        result = sub_8029B0C(p, &rotation, ptr);
+    } else {
+        result = sub_8029AC0(p, &rotation, ptr);
+    }
+
+    if (result <= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            result = -result;
+        }
+
+        p->y -= Q_24_8(result);
+
+        p->speedAirY = 0;
+    }
+}
+
+void sub_80225E8(Player *p)
+{
+    u8 rotation, anotherByte2;
+    s32 fnOut;
+    s32 result;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    s32 *ptr;
+    u16 gravity;
+
+    u32 mask;
+    u8 *mask2 = &p->unk38;
+
+    playerX = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
+    playerY = Q_24_8_TO_INT(p->y);
+
+    mask = *mask2;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+    result = sub_801E4E4(playerX, playerY, mask, -8, NULL, sub_801ED24);
+
+    if (result <= 0) {
+        p->x -= Q_24_8(result);
+        p->speedAirX = 0;
+        // TODO: Find out which character(s) call this, to use the appropriate 'flags'
+        p->w.sf.flags |= 0x20;
+    }
+
+    gravity = GRAVITY_IS_INVERTED;
+    ptr = &fnOut;
+    if (gravity) {
+        result = sub_8029B0C(p, &rotation, ptr);
+    } else {
+        result = sub_8029AC0(p, &rotation, ptr);
+    }
+
+    if (result <= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            result = -result;
+        }
+        p->y -= Q_24_8(result);
+
+        if (p->speedAirY < 0) {
+            p->speedAirY = 0;
+        }
+    } else if (p->speedAirY >= 0) {
+
+        if (GRAVITY_IS_INVERTED) {
+            result = sub_8029AC0(p, &rotation, ptr);
+        } else {
+            result = sub_8029B0C(p, &rotation, ptr);
+        }
+
+        if (result <= 0) {
+            if (GRAVITY_IS_INVERTED) {
+                result = -result;
+            }
+
+            p->y += Q_24_8(result);
+
+            p->rotation = rotation;
+            p->speedAirY = 0;
+            p->w.sf.flags &= ~0x2;
+        }
+    }
+}
+
+// Similar to sub_80225E8
+void sub_8022710(Player *p)
+{
+    u8 rotation, anotherByte2;
+    s32 fnOut;
+    s32 result;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    s32 *ptr;
+    u16 gravity;
+
+    u32 mask;
+    u8 *mask2 = &p->unk38;
+
+    playerX = Q_24_8_TO_INT(p->x) + (2 + p->unk16);
+    playerY = Q_24_8_TO_INT(p->y);
+
+    mask = *mask2;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+    result = sub_801E4E4(playerX, playerY, mask, +8, NULL, sub_801ED24);
+
+    if (result <= 0) {
+        p->x += Q_24_8(result);
+        p->speedAirX = 0;
+        // TODO: Find out which character(s) call this, to use the appropriate 'flags'
+        p->w.sf.flags |= 0x20;
+    }
+
+    gravity = GRAVITY_IS_INVERTED;
+    ptr = &fnOut;
+    if (gravity) {
+        result = sub_8029B0C(p, &rotation, ptr);
+    } else {
+        result = sub_8029AC0(p, &rotation, ptr);
+    }
+
+    if (result <= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            result = -result;
+        }
+        p->y -= Q_24_8(result);
+
+        if (p->speedAirY < 0) {
+            p->speedAirY = 0;
+        }
+    } else if (p->speedAirY >= 0) {
+
+        if (GRAVITY_IS_INVERTED) {
+            result = sub_8029AC0(p, &rotation, ptr);
+        } else {
+            result = sub_8029B0C(p, &rotation, ptr);
+        }
+
+        if (result <= 0) {
+            if (GRAVITY_IS_INVERTED) {
+                result = -result;
+            }
+
+            p->y += Q_24_8(result);
+
+            p->rotation = rotation;
+            p->speedAirY = 0;
+            p->w.sf.flags &= ~0x2;
+        }
+    }
+}
+
+void sub_8022838(Player *p)
+{
+    s16 airX = p->speedAirX;
+    s16 airY = p->speedAirY;
+    u8 arcResult = 0;
+
+    if (p->moveState & MOVESTATE_8) {
+        p->w.sf.flags &= ~0x2;
+        p->unk29 = 0;
+        p->unk28 = 0;
+    } else {
+        arcResult = Q_24_8_TO_INT(ArcTan2(airX, airY));
+
+        arcResult = (arcResult - 0x20) & 0xC0;
+
+        switch (arcResult >> 6) {
+            case 0: {
+                sub_80223BC(p);
+            } break;
+
+            case 2: {
+                sub_80224DC(p);
+            } break;
+
+            case 1: {
+                sub_80225E8(p);
+            } break;
+
+            case 3: {
+                sub_8022710(p);
+            } break;
+        }
+    }
+}
