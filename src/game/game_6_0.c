@@ -878,3 +878,115 @@ void sub_8022190(Player *p)
         } break;
     }
 }
+
+void sub_8022218(Player *p)
+{
+    u8 rotation;
+    s32 sp04;
+    s32 res;
+
+    // u8 *pRot = &rotation;
+    s32 *pSp04 = &sp04;
+
+    if (GRAVITY_IS_INVERTED) {
+        res = sub_8029AC0(p, &rotation, pSp04);
+    } else {
+        res = sub_8029B0C(p, &rotation, pSp04);
+    }
+
+    if (res <= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            res = -res;
+        }
+
+        p->y += Q_24_8(res);
+        p->rotation = rotation;
+        sub_8021BE0(p);
+
+        p->speedAirY = 0;
+        p->speedGroundX = p->speedAirX;
+    }
+}
+
+void sub_8022284(Player *p)
+{
+    u8 rotation;
+    s32 sp04;
+    s32 res;
+    s32 airY;
+
+    // u8 *pRot = &rotation;
+    s32 *pSp04 = &sp04;
+
+    if (GRAVITY_IS_INVERTED) {
+        res = sub_8029B0C(p, &rotation, pSp04);
+    } else {
+        res = sub_8029AC0(p, &rotation, pSp04);
+    }
+
+    if (res <= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            res = -res;
+        }
+
+        p->y -= Q_24_8(res);
+        p->rotation = rotation;
+        sub_8021BE0(p);
+
+        airY = p->speedAirY;
+        if (airY < 0) {
+            airY = -airY;
+        }
+        p->speedGroundX = airY;
+
+        if ((s8)rotation >= 0) {
+            p->speedGroundX = -airY;
+        }
+
+        if (p->unk6E) {
+            p->moveState ^= MOVESTATE_FACING_LEFT;
+        }
+    }
+}
+
+void sub_8022318(Player *p)
+{
+    s32 offsetY;
+
+    if (!(p->moveState & MOVESTATE_4)) {
+        p->unk16 = 6;
+        p->unk17 = 14;
+    } else {
+        // _08022334
+        p->moveState &= ~MOVESTATE_4;
+        p->unk64 = 0;
+
+        offsetY = p->unk17 - 14;
+
+        if (GRAVITY_IS_INVERTED) {
+            offsetY = -offsetY;
+        }
+
+        if (((p->rotation + 0x40) << 24) <= 0) {
+            offsetY = -offsetY;
+        }
+
+        p->unk16 = 6;
+        p->unk17 = 14;
+
+        p->y += Q_24_8(offsetY);
+    }
+
+    p->moveState &= ~MOVESTATE_IN_AIR;
+    p->moveState &= ~MOVESTATE_20;
+    p->moveState &= ~MOVESTATE_10;
+    p->moveState &= ~MOVESTATE_100;
+
+    p->defeatScoreIndex = 0;
+    p->unk25 = 120;
+    p->unk61 = 0;
+
+    if (p->unk64 > SA2_NUM_PLAYER_CHAR_ANIMATIONS) {
+        p->unk64 = SA2_CHAR_ANIM_IDLE;
+    }
+}
