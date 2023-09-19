@@ -14,79 +14,6 @@ gUnknown_080D6736:
 .if 0
 .endif
 
-	thumb_func_start sub_8022190
-sub_8022190: @ 0x08022190
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	ldrh r3, [r4, #0x12]
-	adds r5, r3, #0
-	ldr r0, _080221E4 @ =gUnknown_03005424
-	ldrh r1, [r0]
-	movs r2, #0x80
-	adds r0, r2, #0
-	ands r0, r1
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	rsbs r0, r0, #0
-	asrs r0, r0, #0x1f
-	ands r0, r2
-	movs r1, #0x10
-	ldrsh r2, [r4, r1]
-	cmp r2, #0
-	bne _080221B8
-	cmp r3, #0
-	beq _080221C6
-_080221B8:
-	lsls r1, r5, #0x10
-	asrs r1, r1, #0x10
-	adds r0, r2, #0
-	bl ArcTan2
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x18
-_080221C6:
-	subs r0, #0x20
-	movs r2, #0x40
-	rsbs r2, r2, #0
-	adds r1, r2, #0
-	ands r0, r1
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x1e
-	cmp r0, #1
-	beq _08022202
-	cmp r0, #1
-	bgt _080221E8
-	cmp r0, #0
-	beq _080221F2
-	b _08022210
-	.align 2, 0
-_080221E4: .4byte gUnknown_03005424
-_080221E8:
-	cmp r0, #2
-	beq _080221FA
-	cmp r0, #3
-	beq _0802220A
-	b _08022210
-_080221F2:
-	adds r0, r4, #0
-	bl sub_8021C4C
-	b _08022210
-_080221FA:
-	adds r0, r4, #0
-	bl sub_8021DB8
-	b _08022210
-_08022202:
-	adds r0, r4, #0
-	bl sub_8021EE4
-	b _08022210
-_0802220A:
-	adds r0, r4, #0
-	bl sub_802203C
-_08022210:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
 	thumb_func_start sub_8022218
 sub_8022218: @ 0x08022218
 	push {r4, r5, lr}
@@ -459,6 +386,7 @@ _080224CA:
 	.align 2, 0
 _080224D8: .4byte gUnknown_03005424
 
+@ Similar to sub_80223BC
 	thumb_func_start sub_80224DC
 sub_80224DC: @ 0x080224DC
 	push {r4, r5, r6, r7, lr}
@@ -750,6 +678,7 @@ _08022704:
 	.align 2, 0
 _0802270C: .4byte gUnknown_03005424
 
+@ Similar to sub_80225E8
 	thumb_func_start sub_8022710
 sub_8022710: @ 0x08022710
 	push {r4, r5, r6, lr}
@@ -3915,8 +3844,8 @@ _08023E88:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8023E90
-sub_8023E90: @ 0x08023E90
+	thumb_func_start Task_8023E90
+Task_8023E90: @ 0x08023E90
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -4200,7 +4129,7 @@ _080240C8:
 	ldr r7, _08024104 @ =gCamera
 	ldr r0, _08024108 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0802410C @ =sub_8023E90
+	ldr r0, _0802410C @ =Task_8023E90
 	str r0, [r1, #8]
 	movs r0, #0x16
 	strh r0, [r6]
@@ -4223,7 +4152,7 @@ _080240FC: .4byte gUnknown_03005498
 _08024100: .4byte 0x00009C40
 _08024104: .4byte gCamera
 _08024108: .4byte gCurTask
-_0802410C: .4byte sub_8023E90
+_0802410C: .4byte Task_8023E90
 _08024110: .4byte 0xFFFFFC00
 _08024114:
 	cmp r1, #0

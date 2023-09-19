@@ -847,3 +847,34 @@ void sub_802203C(Player *p)
         }
     }
 }
+
+void sub_8022190(Player *p)
+{
+    s16 airY = p->speedAirY;
+    u8 arcResult = (GRAVITY_IS_INVERTED) ? 0x80 : 0;
+    s16 airX = p->speedAirX;
+
+    if (airX || airY) {
+        arcResult = Q_24_8_TO_INT(ArcTan2(airX, airY));
+    }
+
+    arcResult = (arcResult - 0x20) & 0xC0;
+
+    switch (arcResult >> 6) {
+        case 0: {
+            sub_8021C4C(p);
+        } break;
+
+        case 2: {
+            sub_8021DB8(p);
+        } break;
+
+        case 1: {
+            sub_8021EE4(p);
+        } break;
+
+        case 3: {
+            sub_802203C(p);
+        } break;
+    }
+}
