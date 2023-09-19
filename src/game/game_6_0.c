@@ -620,3 +620,80 @@ void sub_8021C4C(Player *p)
         }
     }
 }
+
+void sub_8021DB8(Player *p)
+{
+    u8 rotation, anotherByte2;
+    s32 fnOut;
+    s32 result;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    s32 *ptr;
+
+    u32 mask;
+    u32 mask2 = p->unk38;
+
+    playerX = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
+    playerY = Q_24_8_TO_INT(p->y);
+
+    mask = mask2;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask = 0x80;
+        mask |= mask2;
+    }
+
+    result = sub_801E4E4(playerX, playerY, mask, -8, 0, sub_801ED24);
+
+    if (result <= 0) {
+        p->x -= Q_24_8(result);
+        p->speedAirX = 0;
+    }
+
+    playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
+    playerY2 = Q_24_8_TO_INT(p->y);
+
+    mask = mask2;
+    if (p->speedAirY < Q_24_8(3.0)) {
+        mask |= 0x80;
+    }
+
+    result = sub_801E4E4(playerX2, playerY2, mask, +8, 0, sub_801ED24);
+
+    if (result <= 0) {
+        p->x += Q_24_8(result);
+        p->speedAirX = 0;
+    }
+
+    ptr = &fnOut;
+    if (GRAVITY_IS_INVERTED) {
+        result = sub_8029B0C(p, &rotation, ptr);
+    } else {
+        result = sub_8029AC0(p, &rotation, ptr);
+    }
+
+    if (result <= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            result = -result;
+        }
+
+        p->y -= result << 8;
+
+        if (((rotation + 32) & 0x40)) {
+            s8 *pt = (s8 *)&rotation;
+            if ((*pt - 0x40) > 0) {
+                s32 speed;
+                p->rotation = rotation;
+
+                sub_8021BE0(p);
+
+                speed = p->speedAirY;
+                if (speed < 0) {
+                    speed = -speed;
+                }
+                p->speedGroundX = speed;
+                return;
+            }
+        }
+        p->speedAirY = 0;
+    }
+}
