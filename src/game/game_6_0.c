@@ -512,7 +512,7 @@ void sub_8021BE0(Player *p)
             PLAYERFN_SET(PlayerCB_8025318);
             p->moveState &= ~(MOVESTATE_10 | MOVESTATE_IN_AIR);
         }
-        // _08021C08
+
         if (p->moveState & MOVESTATE_4) {
             p->moveState &= ~MOVESTATE_4;
             sub_8023B5C(p, 14);
@@ -552,7 +552,7 @@ void sub_8021C4C(Player *p)
         p->x -= Q_24_8(result);
         p->speedAirX = 0;
     }
-    // _08021CA2
+
     playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
     playerY2 = Q_24_8_TO_INT(p->y);
 
@@ -567,7 +567,6 @@ void sub_8021C4C(Player *p)
         p->x += Q_24_8(result);
         p->speedAirX = 0;
     }
-    // _08021CDE
 
     ptr = &fnOut;
     if (GRAVITY_IS_INVERTED) {
@@ -583,7 +582,6 @@ void sub_8021C4C(Player *p)
         r1 = -r1;
 
         if ((result >= r1) || (fnOut >= r1)) {
-            // _08021D26
             s32 airY;
             p->rotation = rotation;
 
@@ -602,12 +600,10 @@ void sub_8021C4C(Player *p)
                     p->speedAirY = Q_24_8(11.8125);
                 }
             } else if (!((rotation + 16) & 0x20)) {
-                // _08021D74
                 p->speedAirY = 0;
                 p->speedGroundX = p->speedAirX;
                 return;
             } else {
-                // _08021D86
                 p->speedAirY >>= 1;
             }
 
