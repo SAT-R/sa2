@@ -1291,3 +1291,88 @@ void sub_8022838(Player *p)
         }
     }
 }
+
+// (71.04%%) https://decomp.me/scratch/scq2y
+void sub_80228C0(Player *p)
+{
+    s32 playerX = p->x;
+    s32 playerY = p->y;
+    u8 mask = p->unk38;
+    s32 resultA, resultB;
+    s32 val;
+    u8 r0;
+
+    playerY = Q_24_8_TO_INT(p->y) + (p->unk17);
+    playerX = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
+    resultA = sub_801E4E4(playerY, playerX, mask, 8, &p->unk28, sub_801EE64);
+
+    playerY = Q_24_8_TO_INT(p->y) + (p->unk17);
+    playerX = Q_24_8_TO_INT(p->x) + (2 - p->unk16);
+    resultB = sub_801E4E4(playerY, playerX, mask, 8, &p->unk29, sub_801EE64);
+
+    val = resultA;
+    if (resultA > resultB) {
+        val = resultB;
+    }
+
+    if (val != 0) {
+        if (val < 0) {
+            if (val < -11) {
+                return;
+            }
+
+            playerY += Q_24_8(val);
+
+            if (resultB < resultA) {
+                r0 = p->unk28;
+            } else {
+                r0 = p->unk29;
+            }
+        } else /* val > 0 */ {
+            // _0802295E
+            s32 airX = p->speedAirX;
+
+            if (airX < 0) {
+                airX = -airX;
+            }
+
+            airX = Q_24_8_TO_INT(airX);
+            airX += 3;
+
+            if (airX > 11)
+                airX = 11;
+
+            if (val <= airX) {
+                p->y += Q_24_8(val);
+
+                if (resultB < resultA) {
+                    r0 = p->unk28;
+                }
+            } else {
+                // _08022988
+                p->moveState |= MOVESTATE_IN_AIR;
+                p->moveState &= ~MOVESTATE_20;
+                return;
+            }
+        }
+    } else {
+        // _08022996
+        if (resultB < resultA) {
+            r0 = p->unk28;
+        } else {
+            r0 = p->unk29;
+        }
+    }
+    // _080229A4
+
+    p->y = playerY;
+
+    if (!(r0 & 0x1)) {
+        p->rotation = r0;
+
+        if (GRAVITY_IS_INVERTED) {
+            u8 v = p->rotation + 0x40;
+            p->rotation = (((u32)(-(v << 24)) >> 24) - 0x40);
+        }
+    }
+}

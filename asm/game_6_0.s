@@ -11,7 +11,7 @@ gUnknown_080D6736:
 .syntax unified
 .arm
 
-.if 01
+.if 0
 @ Similar to 
 	thumb_func_start sub_80228C0
 sub_80228C0: @ 0x080228C0
@@ -24,11 +24,11 @@ sub_80228C0: @ 0x080228C0
 	adds r7, r0, #0     @ r7 = p
 	ldr r4, [r7, #8]    @ r4 = p->x
 	ldr r0, [r7, #0xc]
-	mov sl, r0
+	mov sl, r0          @ sl = p->y
 	adds r0, r7, #0
 	adds r0, #0x38
 	ldrb r0, [r0]
-	mov r8, r0
+	mov r8, r0          @ r8 = mask
 	mov r1, sl
 	asrs r5, r1, #8
 	movs r0, #0x17
@@ -48,7 +48,7 @@ sub_80228C0: @ 0x080228C0
 	mov r2, r8
 	movs r3, #8
 	bl sub_801E4E4
-	adds r6, r0, #0
+	adds r6, r0, #0     @ r6 = resultA
 	movs r0, #0x17
 	ldrsb r0, [r7, r0]
 	adds r5, r5, r0
@@ -67,7 +67,7 @@ sub_80228C0: @ 0x080228C0
 	mov r2, r8
 	movs r3, #8
 	bl sub_801E4E4
-	adds r2, r0, #0
+	adds r2, r0, #0     @ r2 = resultB
 	adds r1, r2, #0
 	cmp r2, r6
 	ble _08022936
@@ -80,7 +80,7 @@ _08022936:
 	movs r0, #0xb
 	rsbs r0, r0, #0
 	cmp r1, r0
-	blt _080229D6
+	blt sub_80228C0_return
 	lsls r0, r1, #8
 	add sl, r0
 	cmp r6, r2
@@ -126,7 +126,7 @@ _08022988:
 	subs r1, #0x23
 	ands r0, r1
 	str r0, [r7, #0x20]
-	b _080229D6
+	b sub_80228C0_return
 _08022996:
 	cmp r6, r2
 	bge _080229A0
@@ -144,7 +144,7 @@ _080229A4:
 	movs r0, #1
 	ands r0, r1
 	cmp r0, #0
-	bne _080229D6
+	bne sub_80228C0_return
 	adds r2, r7, #0
 	adds r2, #0x24
 	strb r1, [r2]
@@ -153,7 +153,7 @@ _080229A4:
 	movs r0, #0x80
 	ands r0, r1
 	cmp r0, #0
-	beq _080229D6
+	beq sub_80228C0_return
 	ldrb r1, [r2]
 	adds r0, r1, #0
 	adds r0, #0x40
@@ -163,7 +163,7 @@ _080229A4:
 	adds r0, r1, #0
 	subs r0, #0x40
 	strb r0, [r2]
-_080229D6:
+sub_80228C0_return:
 	add sp, #0xc
 	pop {r3, r4, r5}
 	mov r8, r3
