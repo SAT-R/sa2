@@ -697,3 +697,153 @@ void sub_8021DB8(Player *p)
         p->speedAirY = 0;
     }
 }
+
+void sub_8021EE4(Player *p)
+{
+    u8 rotation, anotherByte2;
+    s32 fnOut;
+    s32 result;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    s32 *ptr;
+    u16 gravity;
+
+    u32 mask;
+    u32 mask2 = p->unk38;
+
+    gravity = GRAVITY_IS_INVERTED;
+    if (gravity) {
+        playerX = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
+        playerY = Q_24_8_TO_INT(p->y);
+        result = sub_801E4E4(playerX, playerY, mask2, -8, NULL, sub_801ED24);
+    } else {
+        playerX2 = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
+        playerY2 = Q_24_8_TO_INT(p->y);
+
+        mask = mask2;
+        if (p->speedAirY < Q_24_8(3.0)) {
+            mask |= 0x80;
+        }
+        result = sub_801E4E4(playerX2, playerY2, mask, -8, NULL, sub_801ED24);
+    }
+
+    if (result <= 0) {
+        p->x -= Q_24_8(result);
+        p->speedAirX = 0;
+        p->speedGroundX = p->speedAirY;
+    }
+
+    ptr = &fnOut;
+    if (GRAVITY_IS_INVERTED) {
+        result = sub_8029B0C(p, &rotation, ptr);
+    } else {
+        result = sub_8029AC0(p, &rotation, ptr);
+    }
+
+    if (result <= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            result = -result;
+        }
+
+        p->y -= Q_24_8(result);
+
+        if (p->speedAirY < 0) {
+            p->speedAirY = 0;
+        }
+    } else if (p->speedAirY >= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            result = sub_8029AC0(p, &rotation, &fnOut);
+        } else {
+            result = sub_8029B0C(p, &rotation, &fnOut);
+        }
+
+        if (result <= 0) {
+            if (GRAVITY_IS_INVERTED) {
+                result = -result;
+            }
+
+            p->y += Q_24_8(result);
+
+            p->rotation = rotation;
+            sub_8021BE0(p);
+
+            p->speedAirY = 0;
+            p->speedGroundX = p->speedAirX;
+        }
+    }
+}
+
+void sub_802203C(Player *p)
+{
+    u8 rotation, anotherByte2;
+    s32 fnOut;
+    s32 result;
+    s32 playerX, playerY;
+    s32 playerX2, playerY2;
+    s32 *ptr;
+    u16 gravity;
+
+    u32 mask;
+    u32 mask2 = p->unk38;
+
+    gravity = GRAVITY_IS_INVERTED;
+    if (gravity) {
+        playerX = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
+        playerY = Q_24_8_TO_INT(p->y);
+        result = sub_801E4E4(playerX, playerY, mask2, +8, NULL, sub_801ED24);
+    } else {
+        playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
+        playerY2 = Q_24_8_TO_INT(p->y);
+
+        mask = mask2;
+        if (p->speedAirY < Q_24_8(3.0)) {
+            mask |= 0x80;
+        }
+        result = sub_801E4E4(playerX2, playerY2, mask, +8, NULL, sub_801ED24);
+    }
+
+    if (result <= 0) {
+        p->x += Q_24_8(result);
+        p->speedAirX = 0;
+        p->speedGroundX = p->speedAirY;
+    }
+
+    ptr = &fnOut;
+    if (GRAVITY_IS_INVERTED) {
+        result = sub_8029B0C(p, &rotation, ptr);
+    } else {
+        result = sub_8029AC0(p, &rotation, ptr);
+    }
+
+    if (result <= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            result = -result;
+        }
+
+        p->y -= Q_24_8(result);
+
+        if (p->speedAirY < 0) {
+            p->speedAirY = 0;
+        }
+    } else if (p->speedAirY >= 0) {
+        if (GRAVITY_IS_INVERTED) {
+            result = sub_8029AC0(p, &rotation, &fnOut);
+        } else {
+            result = sub_8029B0C(p, &rotation, &fnOut);
+        }
+
+        if (result <= 0) {
+            if (GRAVITY_IS_INVERTED) {
+                result = -result;
+            }
+
+            p->y += Q_24_8(result);
+
+            p->rotation = rotation;
+            sub_8021BE0(p);
+
+            p->speedAirY = 0;
+            p->speedGroundX = p->speedAirX;
+        }
+    }
+}
