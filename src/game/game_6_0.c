@@ -529,19 +529,24 @@ void sub_8021C4C(Player *p)
 {
     u8 rotation, anotherByte2;
     s32 fnOut;
-    u32 mask = p->unk38;
     s32 result;
     s32 playerX, playerY;
     s32 playerX2, playerY2;
+    s32 *ptr;
 
-    playerX = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
+    u32 mask;
+    u32 mask2 = p->unk38;
+
+    playerX = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
     playerY = Q_24_8_TO_INT(p->y);
 
+    mask = mask2;
     if (p->speedAirY < Q_24_8(3.0)) {
-        mask |= 0x80;
+        mask = 0x80;
+        mask |= mask2;
     }
 
-    result = sub_801E4E4(playerY, playerX, mask, -8, 0, sub_801EE64);
+    result = sub_801E4E4(playerX, playerY, mask, -8, 0, sub_801ED24);
 
     if (result <= 0) {
         p->x -= Q_24_8(result);
@@ -551,27 +556,31 @@ void sub_8021C4C(Player *p)
     playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
     playerY2 = Q_24_8_TO_INT(p->y);
 
-    mask = p->unk38;
+    mask = mask2;
     if (p->speedAirY < Q_24_8(3.0)) {
         mask |= 0x80;
     }
 
-    result = sub_801E4E4(playerY2, playerX2, mask, +8, 0, sub_801EE64);
+    result = sub_801E4E4(playerX2, playerY2, mask, +8, 0, sub_801ED24);
 
     if (result <= 0) {
         p->x += Q_24_8(result);
         p->speedAirX = 0;
     }
     // _08021CDE
+
+    ptr = &fnOut;
     if (GRAVITY_IS_INVERTED) {
-        result = sub_8029AC0(p, &rotation, &fnOut);
+        result = sub_8029AC0(p, &rotation, ptr);
     } else {
-        result = sub_8029B0C(p, &rotation, &fnOut);
+        result = sub_8029B0C(p, &rotation, ptr);
     }
 
     if (result < 0) {
-        s32 r1 = -(Q_24_8_TO_INT(p->speedAirY) + 6);
         s8 rotCopy;
+        s32 r1 = Q_24_8_TO_INT(p->speedAirY);
+        r1 += 6;
+        r1 = -r1;
 
         if ((result >= r1) || (fnOut >= r1)) {
             // _08021D26
@@ -581,7 +590,8 @@ void sub_8021C4C(Player *p)
             if (GRAVITY_IS_INVERTED) {
                 result = -result;
             }
-            p->y += result;
+
+            p->y += result << 8;
 
             sub_8021BE0(p);
 
@@ -610,8 +620,6 @@ void sub_8021C4C(Player *p)
             rotCopy = rotation;
             if (rotCopy < 0) {
                 p->speedGroundX = -airY;
-            } else {
-                p->speedGroundX = +rotCopy;
             }
         }
     }
