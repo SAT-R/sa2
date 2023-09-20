@@ -1292,23 +1292,28 @@ void sub_8022838(Player *p)
     }
 }
 
-// (71.04%%) https://decomp.me/scratch/scq2y
+// (82.31%) https://decomp.me/scratch/jn1qy
 void sub_80228C0(Player *p)
 {
-    s32 playerX = p->x;
-    s32 playerY = p->y;
-    u8 mask = p->unk38;
-    s32 resultA, resultB;
+    register s32 resultA asm("r6");
+    s32 resultB;
     s32 val;
     u8 r0;
+    s32 playerX = p->x;
+    register s32 playerY asm("sl") = (p->y);
+    register u32 mask asm("r8") = p->unk38;
+    u8 *p29;
 
-    playerY = Q_24_8_TO_INT(p->y) + (p->unk17);
-    playerX = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
-    resultA = sub_801E4E4(playerY, playerX, mask, 8, &p->unk28, sub_801EE64);
+    register s32 py asm("r5") = Q_24_8_TO_INT(playerY);
+    // playerX = Q_24_8_TO_INT(playerX);
 
-    playerY = Q_24_8_TO_INT(p->y) + (p->unk17);
-    playerX = Q_24_8_TO_INT(p->x) + (2 - p->unk16);
-    resultB = sub_801E4E4(playerY, playerX, mask, 8, &p->unk29, sub_801EE64);
+    resultA = sub_801E4E4(py + p->unk17, Q_24_8_TO_INT(playerX) - (2 + p->unk16), mask,
+                          8, &p->unk28, sub_801EE64);
+
+    py = py + (p->unk17);
+    playerX = Q_24_8_TO_INT(playerX) + (2 + p->unk16);
+    p29 = &p->unk29;
+    resultB = sub_801E4E4(py, playerX, mask, 8, p29, sub_801EE64);
 
     val = resultA;
     if (resultA > resultB) {
@@ -1326,7 +1331,7 @@ void sub_80228C0(Player *p)
             if (resultB < resultA) {
                 r0 = p->unk28;
             } else {
-                r0 = p->unk29;
+                r0 = *p29;
             }
         } else /* val > 0 */ {
             // _0802295E
@@ -1343,10 +1348,12 @@ void sub_80228C0(Player *p)
                 airX = 11;
 
             if (val <= airX) {
-                p->y += Q_24_8(val);
+                playerY += Q_24_8(val);
 
                 if (resultB < resultA) {
                     r0 = p->unk28;
+                } else {
+                    r0 = *p29;
                 }
             } else {
                 // _08022988
