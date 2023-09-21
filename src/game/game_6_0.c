@@ -1292,32 +1292,40 @@ void sub_8022838(Player *p)
     }
 }
 
-// (82.31%) https://decomp.me/scratch/jn1qy
 void sub_80228C0(Player *p)
 {
-    register s32 resultA asm("r6");
-    s32 resultB;
     s32 val;
-    u8 r0;
-    s32 playerX = p->x;
-    register s32 playerY asm("sl") = (p->y);
-    register u32 mask asm("r8") = p->unk38;
     u8 *p29;
+    s32 resultB;
+#ifndef NON_MATCHING
+    register s32 resultA asm("r6");
+    register u32 r1 asm("r1");
+    register u32 r0 asm("r0");
+    register s32 playerX asm("r4") = p->x;
+    register s32 playerY asm("sl") = (p->y);
+#else
+    s32 resultA;
+    u32 r1;
+    u32 r0;
+    s32 playerX = p->x;
+    s32 playerY = (p->y);
+#endif
+    u32 mask = p->unk38;
+    s32 py = Q_24_8_TO_INT(playerY);
 
-    register s32 py asm("r5") = Q_24_8_TO_INT(playerY);
-    // playerX = Q_24_8_TO_INT(playerX);
-
-    resultA = sub_801E4E4(py + p->unk17, Q_24_8_TO_INT(playerX) - (2 + p->unk16), mask,
-                          8, &p->unk28, sub_801EE64);
+    resultA
+        = sub_801E4E4(py + p->unk17, (playerX = Q_24_8_TO_INT(playerX)) - (2 + p->unk16),
+                      mask, 8, &p->unk28, sub_801EE64);
 
     py = py + (p->unk17);
-    playerX = Q_24_8_TO_INT(playerX) + (2 + p->unk16);
+    playerX += 2;
+    playerX += p->unk16;
     p29 = &p->unk29;
     resultB = sub_801E4E4(py, playerX, mask, 8, p29, sub_801EE64);
 
-    val = resultA;
-    if (resultA > resultB) {
-        val = resultB;
+    val = resultB;
+    if (resultB > resultA) {
+        val = resultA;
     }
 
     if (val != 0) {
@@ -1328,13 +1336,12 @@ void sub_80228C0(Player *p)
 
             playerY += Q_24_8(val);
 
-            if (resultB < resultA) {
+            if (resultA < resultB) {
                 r0 = p->unk28;
             } else {
                 r0 = *p29;
             }
         } else /* val > 0 */ {
-            // _0802295E
             s32 airX = p->speedAirX;
 
             if (airX < 0) {
@@ -1350,36 +1357,386 @@ void sub_80228C0(Player *p)
             if (val <= airX) {
                 playerY += Q_24_8(val);
 
-                if (resultB < resultA) {
+                if (resultA < resultB) {
                     r0 = p->unk28;
                 } else {
                     r0 = *p29;
                 }
             } else {
-                // _08022988
                 p->moveState |= MOVESTATE_IN_AIR;
                 p->moveState &= ~MOVESTATE_20;
                 return;
             }
         }
     } else {
-        // _08022996
-        if (resultB < resultA) {
+        if (resultA < resultB) {
             r0 = p->unk28;
         } else {
             r0 = p->unk29;
         }
     }
-    // _080229A4
 
+    r1 = r0;
     p->y = playerY;
 
-    if (!(r0 & 0x1)) {
-        p->rotation = r0;
+    if (!(r1 & 0x1)) {
+        vu8 *pRot = &p->rotation;
+        *pRot = r1;
 
         if (GRAVITY_IS_INVERTED) {
-            u8 v = p->rotation + 0x40;
-            p->rotation = (((u32)(-(v << 24)) >> 24) - 0x40);
+            // TODO: CLEANUP (effectively *pRot = -r1)
+            r1 = *pRot;
+            asm("" ::"r"(r1));
+            r0 = r1;
+            r0 += 0x40;
+            r0 <<= 24;
+            r0 = -r0;
+            r1 = r0 >> 24;
+            asm("" ::"r"(r0, r1));
+            r0 = r1;
+            r0 -= 0x40;
+
+            *pRot = r0;
+        }
+    }
+}
+
+// Similar to sub_80228C0, sub_8022B18
+void sub_80229EC(Player *p)
+{
+    s32 val;
+    u8 *p29;
+    s32 resultB;
+    s32 playerY;
+    s32 py;
+#ifndef NON_MATCHING
+    register s32 resultA asm("r6");
+    register u32 r1 asm("r1");
+    register u32 r0 asm("r0");
+    register s32 playerX asm("r4");
+    register u32 mask asm("r9");
+#else
+    s32 resultA;
+    u32 r1;
+    u32 r0;
+    s32 playerX;
+    u32 mask;
+#endif
+    playerX = p->x;
+    playerY = (p->y);
+    mask = p->unk38;
+    py = Q_24_8_TO_INT(playerY);
+
+    resultA
+        = sub_801E4E4(py - p->unk17, (playerX = Q_24_8_TO_INT(playerX)) + (2 + p->unk16),
+                      mask, -8, &p->unk28, sub_801EE64);
+
+    py = py - (p->unk17);
+    playerX -= 2;
+    playerX -= p->unk16;
+    p29 = &p->unk29;
+    resultB = sub_801E4E4(py, playerX, mask, -8, p29, sub_801EE64);
+
+    val = resultB;
+    if (resultB > resultA) {
+        val = resultA;
+    }
+
+    if (val != 0) {
+        if (val < 0) {
+            if (val < -11) {
+                return;
+            }
+
+            playerY -= Q_24_8(val);
+
+            if (resultA < resultB) {
+                r0 = p->unk28;
+            } else {
+                r0 = *p29;
+            }
+        } else /* val > 0 */ {
+            s32 airX = p->speedAirX;
+
+            if (airX < 0) {
+                airX = -airX;
+            }
+
+            airX = Q_24_8_TO_INT(airX);
+            airX += 3;
+
+            if (airX > 11)
+                airX = 11;
+
+            if (val <= airX) {
+                playerY -= Q_24_8(val);
+
+                if (resultA < resultB) {
+                    r0 = p->unk28;
+                } else {
+                    r0 = *p29;
+                }
+            } else {
+                p->moveState |= MOVESTATE_IN_AIR;
+                p->moveState &= ~MOVESTATE_20;
+                return;
+            }
+        }
+    } else {
+        if (resultA < resultB) {
+            r0 = p->unk28;
+        } else {
+            r0 = p->unk29;
+        }
+    }
+
+    r1 = r0;
+    p->y = playerY;
+
+    if (!(r1 & 0x1)) {
+        vu8 *pRot = &p->rotation;
+        *pRot = r1;
+
+        if (GRAVITY_IS_INVERTED) {
+            // TODO: CLEANUP (effectively *pRot = 128-r1)
+            r1 = *pRot;
+            asm("" ::"r"(r1));
+            r0 = r1;
+            r0 += 0x40;
+            r0 <<= 24;
+            r0 = -r0;
+            r1 = r0 >> 24;
+            asm("" ::"r"(r0, r1));
+            r0 = r1;
+            r0 -= 0x40;
+
+            *pRot = r0;
+        }
+    }
+}
+
+// Similar to sub_80228C0, sub_80229EC
+void sub_8022B18(Player *p)
+{
+    s32 val;
+    u8 *p29;
+    s32 resultB;
+    s32 playerX;
+    s32 py;
+#ifndef NON_MATCHING
+    register s32 resultA asm("r6");
+    register u32 r1 asm("r1");
+    register u32 r0 asm("r0");
+    register s32 playerY asm("r4");
+    register u32 mask asm("r9");
+#else
+    s32 resultA;
+    u32 r1;
+    u32 r0;
+    s32 playerY;
+    u32 mask;
+#endif
+    playerX = p->x;
+    playerY = (p->y);
+    mask = p->unk38;
+    py = Q_24_8_TO_INT(playerX);
+
+    resultA
+        = sub_801E4E4(py - p->unk17, (playerY = Q_24_8_TO_INT(playerY)) - (2 + p->unk16),
+                      mask, -8, &p->unk28, sub_801ED24);
+
+    py = py - (p->unk17);
+    playerY += 2;
+    playerY += p->unk16;
+    p29 = &p->unk29;
+    resultB = sub_801E4E4(py, playerY, mask, -8, p29, sub_801ED24);
+
+    val = resultB;
+    if (resultB > resultA) {
+        val = resultA;
+    }
+
+    if (val != 0) {
+        if (val < 0) {
+            if (val < -11) {
+                return;
+            }
+
+            playerX -= Q_24_8(val);
+
+            if (resultA < resultB) {
+                r0 = p->unk28;
+            } else {
+                r0 = *p29;
+            }
+        } else /* val > 0 */ {
+            s32 airY = p->speedAirY;
+
+            if (airY < 0) {
+                airY = -airY;
+            }
+
+            airY = Q_24_8_TO_INT(airY);
+            airY += 3;
+
+            if (airY > 11)
+                airY = 11;
+
+            if (val <= airY) {
+                playerX -= Q_24_8(val);
+
+                if (resultA < resultB) {
+                    r0 = p->unk28;
+                } else {
+                    r0 = *p29;
+                }
+            } else {
+                p->moveState |= MOVESTATE_IN_AIR;
+                p->moveState &= ~MOVESTATE_20;
+                return;
+            }
+        }
+    } else {
+        if (resultA < resultB) {
+            r0 = p->unk28;
+        } else {
+            r0 = p->unk29;
+        }
+    }
+
+    r1 = r0;
+    p->x = playerX;
+
+    if (!(r1 & 0x1)) {
+        vu8 *pRot = &p->rotation;
+        *pRot = r1;
+
+        if (GRAVITY_IS_INVERTED) {
+            // TODO: CLEANUP (effectively *pRot = 128-r1)
+            r1 = *pRot;
+            asm("" ::"r"(r1));
+            r0 = r1;
+            r0 += 0x40;
+            r0 <<= 24;
+            r0 = -r0;
+            r1 = r0 >> 24;
+            asm("" ::"r"(r0, r1));
+            r0 = r1;
+            r0 -= 0x40;
+
+            *pRot = r0;
+        }
+    }
+}
+
+// Similar to sub_80228C0, sub_80229EC, sub_8022B18
+void sub_8022C44(Player *p)
+{
+    s32 val;
+    s32 resultB;
+    s32 playerX;
+    s32 py;
+    s32 resultA;
+
+#ifndef NON_MATCHING
+    register u32 r1 asm("r1");
+    register u32 r0 asm("r0");
+    register s32 playerY asm("r4");
+    register u32 mask asm("r8");
+#else
+    u32 r1;
+    u32 r0;
+    s32 playerY;
+    u32 mask;
+#endif
+    playerX = p->x;
+    playerY = (p->y);
+    mask = p->unk38;
+    py = Q_24_8_TO_INT(playerX);
+
+    resultA
+        = sub_801E4E4(py + p->unk17, (playerY = Q_24_8_TO_INT(playerY)) + (2 + p->unk16),
+                      mask, +8, &p->unk28, sub_801ED24);
+
+    py = py + (p->unk17);
+    playerY -= 2;
+    playerY -= p->unk16;
+    resultB = sub_801E4E4(py, playerY, mask, +8, &p->unk29, sub_801ED24);
+
+    val = resultB;
+    if (resultB > resultA) {
+        val = resultA;
+    }
+
+    if (val != 0) {
+        if (val < 0) {
+            if (val < -11) {
+                return;
+            }
+
+            playerX += Q_24_8(val);
+
+            if (resultA < resultB) {
+                r0 = p->unk28;
+            } else {
+                r0 = p->unk29;
+            }
+        } else /* val > 0 */ {
+            s32 airY = p->speedAirY;
+
+            if (airY < 0) {
+                airY = -airY;
+            }
+
+            airY = Q_24_8_TO_INT(airY);
+            airY += 3;
+
+            if (airY > 11)
+                airY = 11;
+
+            if (val <= airY) {
+                playerX += Q_24_8(val);
+
+                if (resultA < resultB) {
+                    r0 = p->unk28;
+                } else {
+                    r0 = p->unk29;
+                }
+            } else {
+                p->moveState |= MOVESTATE_IN_AIR;
+                p->moveState &= ~MOVESTATE_20;
+                return;
+            }
+        }
+    } else {
+        if (resultA < resultB) {
+            r0 = p->unk28;
+        } else {
+            r0 = p->unk29;
+        }
+    }
+
+    r1 = r0;
+    p->x = playerX;
+
+    if (!(r1 & 0x1)) {
+        vu8 *pRot = &p->rotation;
+        *pRot = r1;
+
+        if (GRAVITY_IS_INVERTED) {
+            // TODO: CLEANUP (effectively *pRot = 128-r1)
+            r1 = *pRot;
+            asm("" ::"r"(r1));
+            r0 = r1;
+            r0 += 0x40;
+            r0 <<= 24;
+            r0 = -r0;
+            r1 = r0 >> 24;
+            asm("" ::"r"(r0, r1));
+            r0 = r1;
+            r0 -= 0x40;
+
+            *pRot = r0;
         }
     }
 }
