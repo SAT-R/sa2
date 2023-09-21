@@ -1,6 +1,7 @@
 #include "global.h"
 #include "malloc_vram.h"
 #include "game/entity.h"
+#include "game/enemies/madillo.h"
 
 #include "constants/animations.h"
 
