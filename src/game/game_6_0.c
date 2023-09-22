@@ -1756,12 +1756,16 @@ void sub_8022D6C(Player *p)
             u32 mask = ~0x3;
             s32 offsetY = p->unk17;
             s32 unk4 = gUnknown_03005660.unk4;
-            u32 r0 = (unk4 - offsetY) & mask;
+            s32 r0 = (unk4 - offsetY) & mask;
             s16 r6;
             r0 <<= 16;
             r5 &= mask;
             r6 = (s16)(r0 >> 16);
+#ifndef NON_MATCHING
+            asm("\tasr %0, %0, #16\n" : "=r"(r0) : "r"(r0));
+#else
             r0 = r0 >> 16;
+#endif
 
             if ((r5 == r0) && (p->speedAirY >= 0) && ((u8)(p->rotation + 0x18) <= 0x30)
                 && (!(p->moveState & MOVESTATE_IN_AIR))
@@ -1795,94 +1799,93 @@ void sub_8022D6C(Player *p)
             }
         }
         // _08022E90
+        {
+            u8 r1;
+            if (GRAVITY_IS_INVERTED) {
+                s32 r0;
 
-        if (GRAVITY_IS_INVERTED) {
-            s32 r0;
-            s32 r1;
-            s8 smol_r0;
+                // TODO: CLEANUP
+                r0 = (s8)p->rotation;
+                r0 = r0;
+                r0 += 0x40;
+                r0 <<= 24;
+                r0 = -r0;
+                r0 = r0 >> 24;
+                r0 -= 0x40;
+                r0 <<= 24;
+                r0 >>= 24;
+                r1 = (r0 << 24) >> 24;
 
-            // TODO: CLEANUP (effectively *pRot = 128-r1)
-            r0 = (s8)p->rotation;
-            r0 = r0;
-            r0 += 0x40;
-            r0 <<= 24;
-            r0 = -r0;
-            r0 = r0 >> 24;
-            r0 -= 0x40;
-            r0 <<= 24;
-            r0 >>= 24;
-            smol_r0 = (r0 << 24) >> 24;
+                // _08022EF4
 
-            // _08022EF4
-
-            if (r0 + 0x20 > 0) {
-                if (r0 <= 0) {
-                    smol_r0 = r0 + 0x20;
+                if (r0 + 0x20 > 0) {
+                    if (r0 <= 0) {
+                        r1 = r0 + 0x20;
+                    } else {
+                        r1 = r0 + 0x1F;
+                    }
                 } else {
-                    smol_r0 = r0 + 0x1F;
+                    if (r0 > 0) {
+                        r1 = r0 + 0x20;
+                    } else {
+                        r1 = r0 + 0x1F;
+                    }
                 }
+
+                switch (r1 >> 6) {
+                    case 0: {
+                        sub_80228C0(p);
+                    } break;
+
+                    case 2: {
+                        sub_80229EC(p);
+                    } break;
+
+                    case 1: {
+                        sub_8022B18(p);
+                    } break;
+
+                    case 3: {
+                        sub_8022C44(p);
+                    } break;
+                }
+
             } else {
-                if (r0 > 0) {
-                    smol_r0 = r0 + 0x20;
+                u8 r1;
+                s32 r0 = (s8)p->rotation;
+                // _08022EF4
+
+                if (r0 + 0x20 > 0) {
+                    if (r0 <= 0) {
+                        r1 = r0 + 0x20;
+                    } else {
+                        r1 = r0 + 0x1F;
+                    }
                 } else {
-                    smol_r0 = r0 + 0x1F;
+                    if (r0 > 0) {
+                        r1 = r0 + 0x20;
+                    } else {
+                        r1 = r0 + 0x1F;
+                    }
                 }
-            }
 
-            switch (smol_r0 >> 6) {
-                case 0: {
-                    sub_80228C0(p);
-                } break;
+                switch (r1 >> 6) {
+                    case 0: {
+                        sub_80228C0(p);
+                    } break;
 
-                case 2: {
-                    sub_80229EC(p);
-                } break;
+                    case 2: {
+                        sub_80229EC(p);
+                    } break;
 
-                case 1: {
-                    sub_8022B18(p);
-                } break;
+                    case 1: {
+                        sub_8022B18(p);
+                    } break;
 
-                case 3: {
-                    sub_8022C44(p);
-                } break;
-            }
-
-        } else {
-            u8 smol_r0;
-            s32 r0 = (s8)p->rotation;
-            u32 r1;
-            // _08022EF4
-
-            if (r0 + 0x20 > 0) {
-                if (r0 <= 0) {
-                    smol_r0 = r0 + 0x20;
-                } else {
-                    smol_r0 = r0 + 0x1F;
+                    case 3: {
+                        sub_8022C44(p);
+                    } break;
                 }
-            } else {
-                if (r0 > 0) {
-                    smol_r0 = r0 + 0x20;
-                } else {
-                    smol_r0 = r0 + 0x1F;
-                }
-            }
-
-            switch (smol_r0 >> 6) {
-                case 0: {
-                    sub_80228C0(p);
-                } break;
-
-                case 2: {
-                    sub_80229EC(p);
-                } break;
-
-                case 1: {
-                    sub_8022B18(p);
-                } break;
-
-                case 3: {
-                    sub_8022C44(p);
-                } break;
             }
         }
     }
