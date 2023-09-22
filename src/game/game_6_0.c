@@ -1798,7 +1798,6 @@ void sub_8022D6C(Player *p)
         if (GRAVITY_IS_INVERTED) {
             s32 r0;
             s32 r1;
-            s32 switchVal;
             s8 smol_r0;
 
             // TODO: CLEANUP (effectively *pRot = 128-r1)

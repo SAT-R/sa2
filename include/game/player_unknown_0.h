@@ -1,0 +1,6 @@
+#ifndef GUARD_PLAYER_UNKNOWN_1
+#define GUARD_PLAYER_UNKNOWN_1
+
+extern void sub_80117F0(void);
+
+#endif // GUARD_PLAYER_UNKNOWN_1
