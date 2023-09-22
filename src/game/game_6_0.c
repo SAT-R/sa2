@@ -7,6 +7,7 @@
 #include "game/mp_unknown_task.h"
 #include "game/player_actions.h"
 #include "game/player_callbacks_1.h"
+#include "game/player_unknown_0.h"
 #include "game/playerfn_cmds.h"
 #include "game/stage/stage.h"
 
@@ -1740,3 +1741,150 @@ void sub_8022C44(Player *p)
         }
     }
 }
+
+#if 01
+// (97.50%) https://decomp.me/scratch/WA4Qa
+void sub_8022D6C(Player *p)
+{
+    u32 zero = 0;
+    if (p->moveState & MOVESTATE_8) {
+        p->unk29 = zero;
+        p->unk28 = zero;
+    } else {
+        if ((gCurrentLevel == 0) && (gUnknown_03005660.unk0 == 1)) {
+            s32 r5 = Q_24_8(p->y) >> 16;
+            u32 mask = ~0x3;
+            s32 offsetY = p->unk17;
+            s32 unk4 = gUnknown_03005660.unk4;
+            u32 r0 = (unk4 - offsetY) & mask;
+            u32 r6;
+            r0 <<= 16;
+            r5 &= mask;
+            r6 = (s16)(r0 >> 16);
+            r0 = r0 >> 16;
+
+            if ((r5 == r0) && (p->speedAirY >= 0) && ((u8)(p->rotation + 0x18) <= 0x30)
+                && (!(p->moveState & MOVESTATE_IN_AIR))
+                && (ABS(p->speedGroundX) >= Q_24_8(6.0))) {
+                sub_80228C0(p);
+
+                if (p->y >= Q_24_8(r5)) {
+                    if (!(p->moveState & MOVESTATE_20000)) {
+                        p->moveState |= MOVESTATE_20000;
+
+                        if (IS_SINGLE_PLAYER) {
+                            sub_80117F0();
+                        }
+                    }
+
+                    m4aSongNumStartOrContinue(SE_281);
+                    p->y = (r6 << 8);
+                    p->rotation = 0;
+                    p->moveState &= ~MOVESTATE_IN_AIR;
+                } else {
+                    // _08022E54
+                    if (p->moveState & MOVESTATE_20000) {
+                        m4aSongNumStop(SE_281);
+                    }
+                    p->moveState &= ~MOVESTATE_20000;
+                }
+            } else if (p->moveState & MOVESTATE_20000) {
+                p->moveState &= ~MOVESTATE_20000;
+                m4aSongNumStop(SE_281);
+            }
+        }
+        // _08022E90
+
+        if (GRAVITY_IS_INVERTED) {
+            s32 r0;
+            s32 r1;
+            s32 switchVal;
+            s8 smol_r0;
+
+            // TODO: CLEANUP (effectively *pRot = 128-r1)
+            r0 = (s8)p->rotation;
+            r0 = r0;
+            r0 += 0x40;
+            r0 <<= 24;
+            r0 = -r0;
+            r0 = r0 >> 24;
+            r0 -= 0x40;
+            r0 <<= 24;
+            r0 >>= 24;
+            smol_r0 = (r0 << 24) >> 24;
+
+            // _08022EF4
+
+            if (r0 + 0x20 > 0) {
+                if (r0 <= 0) {
+                    smol_r0 = r0 + 0x20;
+                } else {
+                    smol_r0 = r0 + 0x1F;
+                }
+            } else {
+                if (r0 > 0) {
+                    smol_r0 = r0 + 0x20;
+                } else {
+                    smol_r0 = r0 + 0x1F;
+                }
+            }
+
+            switch (smol_r0 >> 6) {
+                case 0: {
+                    sub_80228C0(p);
+                } break;
+
+                case 2: {
+                    sub_80229EC(p);
+                } break;
+
+                case 1: {
+                    sub_8022B18(p);
+                } break;
+
+                case 3: {
+                    sub_8022C44(p);
+                } break;
+            }
+
+        } else {
+            u8 smol_r0;
+            s32 r0 = (s8)p->rotation;
+            u32 r1;
+            // _08022EF4
+
+            if (r0 + 0x20 > 0) {
+                if (r0 <= 0) {
+                    smol_r0 = r0 + 0x20;
+                } else {
+                    smol_r0 = r0 + 0x1F;
+                }
+            } else {
+                if (r0 > 0) {
+                    smol_r0 = r0 + 0x20;
+                } else {
+                    smol_r0 = r0 + 0x1F;
+                }
+            }
+
+            switch (smol_r0 >> 6) {
+                case 0: {
+                    sub_80228C0(p);
+                } break;
+
+                case 2: {
+                    sub_80229EC(p);
+                } break;
+
+                case 1: {
+                    sub_8022B18(p);
+                } break;
+
+                case 3: {
+                    sub_8022C44(p);
+                } break;
+            }
+        }
+    }
+}
+#endif

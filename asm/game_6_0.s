@@ -12,169 +12,6 @@ gUnknown_080D6736:
 .arm
 
 .if 0
-@ Similar to sub_80228C0, sub_80229EC, sub_8022B18
-	thumb_func_start sub_8022C44
-sub_8022C44: @ 0x08022C44
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #0xc
-	adds r7, r0, #0
-	ldr r0, [r7, #8]
-	str r0, [sp, #8]
-	ldr r4, [r7, #0xc]
-	adds r0, r7, #0
-	adds r0, #0x38
-	ldrb r0, [r0]
-	mov r8, r0
-	ldr r1, [sp, #8]
-	asrs r5, r1, #8
-	movs r0, #0x17
-	ldrsb r0, [r7, r0]
-	adds r0, r5, r0
-	asrs r4, r4, #8
-	adds r1, r4, #2
-	movs r2, #0x16
-	ldrsb r2, [r7, r2]
-	adds r1, r1, r2
-	movs r2, #0x28
-	adds r2, r2, r7
-	mov sl, r2
-	str r2, [sp]
-	ldr r3, _08022CD8 @ =sub_801ED24
-	str r3, [sp, #4]
-	mov r2, r8
-	movs r3, #8
-	bl sub_801E4E4
-	adds r6, r0, #0
-	movs r0, #0x17
-	ldrsb r0, [r7, r0]
-	adds r5, r5, r0
-	subs r4, #2
-	movs r0, #0x16
-	ldrsb r0, [r7, r0]
-	subs r4, r4, r0
-	movs r0, #0x29
-	adds r0, r0, r7
-	mov sb, r0
-	str r0, [sp]
-	ldr r1, _08022CD8 @ =sub_801ED24
-	str r1, [sp, #4]
-	adds r0, r5, #0
-	adds r1, r4, #0
-	mov r2, r8
-	movs r3, #8
-	bl sub_801E4E4
-	adds r2, r0, #0
-	adds r1, r2, #0
-	cmp r2, r6
-	ble _08022CBA
-	adds r1, r6, #0
-_08022CBA:
-	cmp r1, #0
-	beq _08022D18
-	cmp r1, #0
-	bge _08022CDC
-	movs r0, #0xb
-	rsbs r0, r0, #0
-	cmp r1, r0
-	blt _08022D58
-	lsls r0, r1, #8
-	ldr r3, [sp, #8]
-	adds r3, r3, r0
-	str r3, [sp, #8]
-	cmp r6, r2
-	blt _08022D1C
-	b _08022D22
-	.align 2, 0
-_08022CD8: .4byte sub_801ED24
-_08022CDC:
-	movs r3, #0x12
-	ldrsh r0, [r7, r3]
-	cmp r0, #0
-	bge _08022CE6
-	rsbs r0, r0, #0
-_08022CE6:
-	asrs r0, r0, #8
-	adds r0, #3
-	cmp r0, #0xb
-	ble _08022CF0
-	movs r0, #0xb
-_08022CF0:
-	cmp r1, r0
-	bgt _08022D0A
-	lsls r0, r1, #8
-	ldr r1, [sp, #8]
-	adds r1, r1, r0
-	str r1, [sp, #8]
-	cmp r6, r2
-	bge _08022D04
-	mov r2, sl
-	b _08022D24
-_08022D04:
-	mov r3, sb
-	ldrb r0, [r3]
-	b _08022D26
-_08022D0A:
-	ldr r0, [r7, #0x20]
-	movs r1, #2
-	orrs r0, r1
-	subs r1, #0x23
-	ands r0, r1
-	str r0, [r7, #0x20]
-	b _08022D58
-_08022D18:
-	cmp r6, r2
-	bge _08022D22
-_08022D1C:
-	mov r1, sl
-	ldrb r0, [r1]
-	b _08022D26
-_08022D22:
-	mov r2, sb
-_08022D24:
-	ldrb r0, [r2]
-_08022D26:
-	adds r1, r0, #0
-	ldr r3, [sp, #8]
-	str r3, [r7, #8]
-	movs r0, #1
-	ands r0, r1
-	cmp r0, #0
-	bne _08022D58
-	adds r2, r7, #0
-	adds r2, #0x24
-	strb r1, [r2]
-	ldr r0, _08022D68 @ =gUnknown_03005424
-	ldrh r1, [r0]
-	movs r0, #0x80
-	ands r0, r1
-	cmp r0, #0
-	beq _08022D58
-	ldrb r1, [r2]
-	adds r0, r1, #0
-	adds r0, #0x40
-	lsls r0, r0, #0x18
-	rsbs r0, r0, #0
-	lsrs r1, r0, #0x18
-	adds r0, r1, #0
-	subs r0, #0x40
-	strb r0, [r2]
-_08022D58:
-	add sp, #0xc
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08022D68: .4byte gUnknown_03005424
-.endif
-
 	thumb_func_start sub_8022D6C
 sub_8022D6C: @ 0x08022D6C
 	push {r4, r5, r6, r7, lr}
@@ -192,7 +29,7 @@ sub_8022D6C: @ 0x08022D6C
 	strb r1, [r0]
 	subs r0, #1
 	strb r1, [r0]
-	b _08022F4E
+	b sub_8022D6C_return
 _08022D8C:
 	ldr r0, _08022E40 @ =gCurrentLevel
 	ldrb r0, [r0]
@@ -223,6 +60,7 @@ _08022D8C:
 	ands r0, r2
 	lsls r0, r0, #0x10
 	ands r5, r2
+__08022DC6:
 	lsrs r6, r0, #0x10
 	asrs r0, r0, #0x10
 	cmp r5, r0
@@ -303,7 +141,7 @@ _08022E66:
 _08022E6A:
 	ands r0, r1
 	str r0, [r4, #0x20]
-	b _08022F4E
+	b sub_8022D6C_return
 	.align 2, 0
 _08022E70: .4byte 0x00000119
 _08022E74: .4byte 0xFFFDFFFF
@@ -365,10 +203,10 @@ _08022ED8:
 	cmp r0, #2
 	beq _08022F38
 	cmp r0, #3
-	bne _08022F4E
+	bne sub_8022D6C_return
 	adds r0, r4, #0
 	bl sub_8022C44
-	b _08022F4E
+	b sub_8022D6C_return
 _08022EF4:
 	movs r0, #0
 	ldrsb r0, [r7, r0]
@@ -398,31 +236,32 @@ _08022F14:
 _08022F20:
 	cmp r0, #0
 	beq _08022F30
-	b _08022F4E
+	b sub_8022D6C_return
 _08022F26:
 	cmp r0, #2
 	beq _08022F38
 	cmp r0, #3
 	beq _08022F48
-	b _08022F4E
+	b sub_8022D6C_return
 _08022F30:
 	adds r0, r4, #0
 	bl sub_80228C0
-	b _08022F4E
+	b sub_8022D6C_return
 _08022F38:
 	adds r0, r4, #0
 	bl sub_80229EC
-	b _08022F4E
+	b sub_8022D6C_return
 _08022F40:
 	adds r0, r4, #0
 	bl sub_8022B18
-	b _08022F4E
+	b sub_8022D6C_return
 _08022F48:
 	adds r0, r4, #0
 	bl sub_8022C44
-_08022F4E:
+sub_8022D6C_return:
 	pop {r3}
 	mov r8, r3
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
+.endif
