@@ -579,7 +579,7 @@ void CallPlayerTransition(Player *p)
             case PLTRANS_PT22 - 1: {
                 PLAYERFN_SET(PlayerCB_8029158);
             } break;
-            case 24 - 1: {
+            case PLTRANS_PT24 - 1: {
                 PLAYERFN_SET(PlayerCB_802A300);
             } break;
             case PLTRANS_PT11 - 1: {
