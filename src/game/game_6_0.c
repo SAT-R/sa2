@@ -1742,9 +1742,8 @@ void sub_8022C44(Player *p)
     }
 }
 
-#if 01
-// (97.68%) https://decomp.me/scratch/WA4Qa
-void sub_8022D6C(Player *p)
+// (99.91%) https://decomp.me/scratch/WA4Qa
+NONMATCH("asm/non_matching/game/sub_8022D6C.inc", void sub_8022D6C(Player *p))
 {
     u32 zero = 0;
     if (p->moveState & MOVESTATE_8) {
@@ -1890,4 +1889,4 @@ void sub_8022D6C(Player *p)
         }
     }
 }
-#endif
+END_NONMATCH

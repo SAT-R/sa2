@@ -1,19 +1,6 @@
-.include "asm/macros.inc"
-.include "constants/constants.inc"
 
-.section .rodata
-
-    .global gUnknown_080D6736
-gUnknown_080D6736:
-    .incbin "baserom.gba", 0x000D6736, 0x1CC
-    
-.text
 .syntax unified
-.arm
-
-.if 0
-	thumb_func_start sub_8022D6C
-sub_8022D6C: @ 0x08022D6C
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -264,4 +251,4 @@ sub_8022D6C_return:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
-.endif
+    .syntax divided
