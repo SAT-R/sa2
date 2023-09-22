@@ -1743,7 +1743,7 @@ void sub_8022C44(Player *p)
 }
 
 #if 01
-// (97.50%) https://decomp.me/scratch/WA4Qa
+// (97.68%) https://decomp.me/scratch/WA4Qa
 void sub_8022D6C(Player *p)
 {
     u32 zero = 0;
@@ -1757,7 +1757,7 @@ void sub_8022D6C(Player *p)
             s32 offsetY = p->unk17;
             s32 unk4 = gUnknown_03005660.unk4;
             u32 r0 = (unk4 - offsetY) & mask;
-            u32 r6;
+            s16 r6;
             r0 <<= 16;
             r5 &= mask;
             r6 = (s16)(r0 >> 16);
@@ -1788,6 +1788,7 @@ void sub_8022D6C(Player *p)
                     }
                     p->moveState &= ~MOVESTATE_20000;
                 }
+                return;
             } else if (p->moveState & MOVESTATE_20000) {
                 p->moveState &= ~MOVESTATE_20000;
                 m4aSongNumStop(SE_281);
