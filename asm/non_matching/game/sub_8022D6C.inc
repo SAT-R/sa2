@@ -26,7 +26,7 @@ _08022D8C:
 	adds r7, #0x24
 	cmp r0, #0
 	bne _08022E90
-	ldr r0, _08022E44 @ =gUnknown_03005660
+	ldr r0, _08022E44 @ =gWater
 	mov ip, r0
 	ldrb r0, [r0]
 	cmp r0, #1
@@ -109,7 +109,7 @@ _08022E26:
 	b _08022E6A
 	.align 2, 0
 _08022E40: .4byte gCurrentLevel
-_08022E44: .4byte gUnknown_03005660
+_08022E44: .4byte gWater
 _08022E48: .4byte 0x000005FF
 _08022E4C: .4byte gGameMode
 _08022E50: .4byte 0x00000119

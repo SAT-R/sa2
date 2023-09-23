@@ -1750,12 +1750,12 @@ NONMATCH("asm/non_matching/game/sub_8022D6C.inc", void sub_8022D6C(Player *p))
         p->unk29 = zero;
         p->unk28 = zero;
     } else {
-        if ((gCurrentLevel == 0) && (gUnknown_03005660.unk0 == 1)) {
+        if ((gCurrentLevel == 0) && (gWater.isActive == 1)) {
             s32 r5 = Q_24_8(p->y) >> 16;
             u32 mask = ~0x3;
             s32 offsetY = p->unk17;
-            s32 unk4 = gUnknown_03005660.unk4;
-            s32 r0 = (unk4 - offsetY) & mask;
+            s32 waterLevel = gWater.currentWaterLevel;
+            s32 r0 = (waterLevel - offsetY) & mask;
             s16 r6;
             r0 <<= 16;
             r5 &= mask;

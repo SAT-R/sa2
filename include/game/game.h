@@ -478,18 +478,19 @@ typedef struct {
 } SomeStruct_3005498; /* size: unknown (but >= 0x8) */
 extern SomeStruct_3005498 gUnknown_03005498;
 
-// Seems to be belonging to the pause menu?
-// Or maybe this is generally used to init common palettes for the GUI?
-struct SomeStruct_5660 {
-    /* 0x00 */ u8 unk0; // Might be bool for checking whether the task was just started?
+// Seems to be belonging to water effect
+typedef struct {
+    /* 0x00 */ bool8 isActive;
     /* 0x01 */ u8 filler1[3];
-    /* 0x04 */ s16 unk4;
-    /* 0x06 */ u8 filler6[0xA];
-    /* 0x10 */ struct Task
-        *t; // -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
-};
+    /* 0x04 */ s16 currentWaterLevel;
+    /* 0x06 */ s16 targetWaterLevel;
+    /* 0x08 */ u8 filler8[0x8];
 
-extern struct SomeStruct_5660 gUnknown_03005660;
+    // t -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
+    /* 0x10 */ struct Task *t;
+} Water;
+
+extern Water gWater;
 
 extern u8 gMultiplayerUnlockedCharacters;
 extern u8 gMultiplayerUnlockedLevels;

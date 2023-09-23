@@ -45,7 +45,7 @@ void Task_801F214(void)
                     } break;
 
                     case 0x10: {
-                        ts->y = gUnknown_03005660.unk4;
+                        ts->y = gWater.currentWaterLevel;
                     } break;
                 }
 

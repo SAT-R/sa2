@@ -13,7 +13,7 @@ sub_8023878: @ 0x08023878
 	ldr r0, _08023944 @ =0xFFFFEFFF
 	ands r2, r0
 	str r2, [r4, #0x20]
-	ldr r0, _08023948 @ =gUnknown_03005660
+	ldr r0, _08023948 @ =gWater
 	ldrb r1, [r0]
 	adds r3, r0, #0
 	cmp r1, #1
@@ -114,7 +114,7 @@ _08023912:
 	mov pc, r0
 	.align 2, 0
 _08023944: .4byte 0xFFFFEFFF
-_08023948: .4byte gUnknown_03005660
+_08023948: .4byte gWater
 _0802394C: .4byte _08023950
 _08023950: @ jump table
 	.4byte _080239CA @ case 0

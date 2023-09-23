@@ -149,8 +149,8 @@ void Task_PauseMenuUpdate(void)
         DmaCopy16(3, pm->pal6A, &(((u16 *)OBJ_PLTT)[249]), sizeof(pm->pal6A));
         DmaCopy16(3, pm->pal64, &(((u16 *)OBJ_PLTT)[252]), sizeof(pm->pal64));
 
-        if (gUnknown_03005660.unk0 == 1) {
-            u16 *somePalette = TaskGetStructPtr(gUnknown_03005660.t);
+        if (gWater.isActive == TRUE) {
+            u16 *somePalette = TaskGetStructPtr(gWater.t);
 
             DmaCopy16(3, pm->pal6A, &somePalette[249], sizeof(pm->pal6A));
             DmaCopy16(3, pm->pal64, &somePalette[252], sizeof(pm->pal64));
@@ -159,8 +159,8 @@ void Task_PauseMenuUpdate(void)
         DmaCopy16(3, pm->pal6A, &(((u16 *)OBJ_PLTT)[252]), sizeof(pm->pal6A));
         DmaCopy16(3, pm->pal64, &(((u16 *)OBJ_PLTT)[249]), sizeof(pm->pal64));
 
-        if (gUnknown_03005660.unk0 == 1) {
-            u16 *somePalette = TaskGetStructPtr(gUnknown_03005660.t);
+        if (gWater.isActive == TRUE) {
+            u16 *somePalette = TaskGetStructPtr(gWater.t);
 
             DmaCopy16(3, pm->pal6A, &somePalette[252], sizeof(pm->pal6A));
             DmaCopy16(3, pm->pal64, &somePalette[249], sizeof(pm->pal64));

@@ -206,8 +206,8 @@ static void Task_SpawnAirBubbles(void)
         transform->height = -transform->height;
 
     if (((u16)(transform->x + 0x20) > 0x130) || ((u16)(transform->y + 0x20) > 0xE0)
-        || ((u16)gUnknown_03005660.unk0 != 1) || (gUnknown_03005660.unk4 < 0)
-        || (Q_24_8_TO_INT(r4) - 3 < gUnknown_03005660.unk4) || (ts->unk10 > 0x1E0)) {
+        || ((u16)gWater.isActive != TRUE) || (gWater.currentWaterLevel < 0)
+        || (Q_24_8_TO_INT(r4) - 3 < gWater.currentWaterLevel) || (ts->unk10 > 0x1E0)) {
         TaskDestroy(gCurTask);
         return;
     } else {
