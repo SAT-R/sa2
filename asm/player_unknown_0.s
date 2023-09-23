@@ -24,13 +24,13 @@ sub_8011328: @ 0x08011328
 	mov r5, r8
 	push {r5, r6, r7}
 	ldr r0, _080113E0 @ =gWater
-	mov sl, r0
+	mov sl, r0              @ sl = gWater
 	ldr r0, [r0, #0x10]
 	ldrh r6, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r0, r6
-	mov ip, r0
+	mov ip, r0              @ ip = gWater.t
 	ldr r0, _080113E4 @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #2
@@ -1046,6 +1046,7 @@ sub_8011B3C: @ 0x08011B3C
 	.align 2, 0
 _08011B50: .4byte IWRAM_START + 0x1C
 
+.if 0
 @; last func
 	thumb_func_start sub_8011B54
 sub_8011B54: @ 0x08011B54
@@ -1077,3 +1078,4 @@ _08011B7C:
 	bne _08011B5C
 	pop {r0}
 	bx r0
+.endif
