@@ -164,3 +164,89 @@ void sub_8054224(void)
 
     ENEMY_UPDATE(s, pos.x, pos.y);
 }
+
+void sub_805462C(void)
+{
+    Sprite_Koura *koura = TaskGetStructPtr(gCurTask);
+    Sprite *s = &koura->s;
+    MapEntity *me = koura->base.me;
+    Vec2_32 pos;
+
+    if (koura->unk54 < 2) {
+        ENEMY_CLAMP_TO_GROUND(koura, koura->unk54);
+    } else if (koura->unk54 == 2) {
+        s32 temp = SIN((gStageTime * 0x14) & ONE_CYCLE);
+        koura->offsetY = temp >> 4;
+    } else {
+        s32 temp = SIN((gStageTime * 0x14) & ONE_CYCLE);
+        koura->offsetX = temp >> 4;
+    }
+
+    ENEMY_UPDATE_POSITION(koura, s, pos.x, pos.y);
+
+    if (gPlayer.speedAirY >= 1 && (gPlayer.moveState & MOVESTATE_IN_AIR)) {
+        if (sub_800DF38(s, pos.x, pos.y, &gPlayer) == 0x80000) {
+            gPlayer.transition = 14;
+            gPlayer.unk6E = 0;
+            gPlayer.moveState &= ~MOVESTATE_100;
+            gPlayer.speedAirY = -896;
+
+            ENEMY_TURN_AROUND(s);
+
+            gCurTask->main = sub_8054904;
+            s->graphics.anim = gUnknown_080D8F38[koura->unk54 > 1 ? 3 : 1][0];
+            s->variant = gUnknown_080D8F38[koura->unk54 > 1 ? 3 : 1][1];
+            s->prevVariant = -1;
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
+            m4aSongNumStart(SE_SPRING);
+            return;
+        }
+    } else {
+        ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    }
+
+    ENEMY_DESTROY_IF_OFFSCREEN(koura, me, s);
+
+    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+
+    if (UpdateSpriteAnimation(s) == 0) {
+        ENEMY_TURN_AROUND(s);
+        s->graphics.anim = gUnknown_080D8F38[koura->unk54 & 2][0];
+        s->variant = gUnknown_080D8F38[koura->unk54 & 2][1];
+        s->prevVariant = -1;
+        gCurTask->main = sub_8054224;
+    };
+    DisplaySprite(s);
+}
+
+void sub_8054904(void)
+{
+    Sprite_Koura *koura = TaskGetStructPtr(gCurTask);
+    Sprite *s = &koura->s;
+    MapEntity *me = koura->base.me;
+    Vec2_32 pos;
+
+    if (koura->unk54 < 2) {
+        ENEMY_CLAMP_TO_GROUND(koura, koura->unk54);
+    } else if (koura->unk54 == 2) {
+        s32 temp = SIN((gStageTime * 0x14) & ONE_CYCLE);
+        koura->offsetY = temp >> 4;
+    } else {
+        s32 temp = SIN((gStageTime * 0x14) & ONE_CYCLE);
+        koura->offsetX = temp >> 4;
+    }
+
+    ENEMY_UPDATE_POSITION(koura, s, pos.x, pos.y);
+    ENEMY_DESTROY_IF_OFFSCREEN(koura, me, s);
+
+    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+
+    if (UpdateSpriteAnimation(s) == 0) {
+        s->graphics.anim = gUnknown_080D8F38[koura->unk54 & 2][0];
+        s->variant = gUnknown_080D8F38[koura->unk54 & 2][1];
+        s->prevVariant = -1;
+        gCurTask->main = sub_8054224;
+    };
+    DisplaySprite(s);
+}
