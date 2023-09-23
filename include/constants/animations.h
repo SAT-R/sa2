@@ -217,6 +217,12 @@
 #define SA2_ANIM_ROCK              551
 #define SA2_ANIM_552               552
 
+#define SA2_ANIM_PALETTE_554                     554
+#define SA2_ANIM_UNDERWATER_1UP_SONIC            555
+#define SA2_ANIM_UNDERWATER_1UP_TAILS            556
+#define SA2_ANIM_UNDERWATER_1UP_KNUCKLES         557
+#define SA2_ANIM_UNDERWATER_1UP_CREAM            558
+#define SA2_ANIM_UNDERWATER_1UP_AMY              559
 #define SA2_ANIM_WATER_GROUND_SPLASH             560
 #define SA2_ANIM_WIND_MILL_PART                  561
 #define SA2_ANIM_562                             562

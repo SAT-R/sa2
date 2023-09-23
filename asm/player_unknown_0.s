@@ -1,21 +1,11 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-
-    .global gUnknown_080D550C
-gUnknown_080D550C:
-    .2byte 0x22B @ 
-    .2byte 0x22E @ 
-    .2byte 0x22C @ 
-    .2byte 0x22D @ 
-    .2byte 0x22F @ 
-    .2byte 0
-
 .text
 .syntax unified
 .arm
 
+.if 0
 	thumb_func_start sub_8011328
 sub_8011328: @ 0x08011328
 	push {r4, r5, r6, r7, lr}
@@ -30,7 +20,7 @@ sub_8011328: @ 0x08011328
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r0, r6
-	mov ip, r0              @ ip = gWater.t
+	mov ip, r0              @ ip = TaskGetStructPtr(gWater.t)
 	ldr r0, _080113E4 @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #2
@@ -249,9 +239,9 @@ _080114C6:
 	bne _080114C6
 	movs r3, #0x80
 	lsls r3, r3, #2
-	add r3, ip
+	add r3, ip          @ r3 = &(gWater.t)->pal[256]
 	ldr r6, _080115C4 @ =gBgPalette
-	mov r0, sl
+	mov r0, sl          @ r0 = sl = gWater
 	ldr r2, [r0, #0xc]
 	movs r7, #0xf
 	ldr r5, _080115C8 @ =0x7BDE7BDE
@@ -352,6 +342,7 @@ _080115C0: .4byte 0x000008A8
 _080115C4: .4byte gBgPalette
 _080115C8: .4byte 0x7BDE7BDE
 _080115CC: .4byte 0x739C739C
+.endif
 
 @ Input:
     @; R0 = u32 Water-Level
@@ -381,7 +372,7 @@ sub_80115D0: @ 0x080115D0
 	blt _08011640
 	adds r0, r4, #0
 	adds r0, #0x14
-	ldr r1, _0801164C @ =0x06012980
+	ldr r1, _0801164C @ =VRAM + 0x12980
 	str r1, [r0, #4]
 	strh r5, [r0, #8]
 	ldr r1, _08011650 @ =0x00000216
@@ -420,7 +411,7 @@ _08011640:
 	bx r0
 	.align 2, 0
 _08011648: .4byte gWater
-_0801164C: .4byte 0x06012980
+_0801164C: .4byte VRAM + 0x12980
 _08011650: .4byte 0x00000216
 _08011654: .4byte Task_8011660
 _08011658: .4byte 0x0000FFFE
@@ -1046,7 +1037,7 @@ sub_8011B3C: @ 0x08011B3C
 	.align 2, 0
 _08011B50: .4byte IWRAM_START + 0x1C
 
-.if 0
+.if 01
 @; last func
 	thumb_func_start sub_8011B54
 sub_8011B54: @ 0x08011B54

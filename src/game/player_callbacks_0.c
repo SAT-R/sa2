@@ -65,7 +65,7 @@ void PlayerFn_Cmd_UpdateAirFallSpeed(Player *p);
 
 extern u16 gUnknown_080D6736[115][2];
 
-const u16 gUnknown_080D5518[3][3] = {
+const ALIGNED(4) u16 gUnknown_080D5518[3][3] = {
     { 15, SA2_ANIM_CHAR(SA2_CHAR_ANIM_16, CHARACTER_SONIC), 3 },
     { 16, SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_SONIC), 1 },
     { 16, SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_SONIC), 3 },
