@@ -1800,20 +1800,12 @@ NONMATCH("asm/non_matching/game/sub_8022D6C.inc", void sub_8022D6C(Player *p))
         // _08022E90
         {
             u8 r1;
+            s8 r0;
             if (GRAVITY_IS_INVERTED) {
-                s32 r0;
-
-                // TODO: CLEANUP
                 r0 = (s8)p->rotation;
-                r0 = r0;
                 r0 += 0x40;
-                r0 <<= 24;
-                r0 = -r0;
-                r0 = r0 >> 24;
+                r0 = NEGATE(r0);
                 r0 -= 0x40;
-                r0 <<= 24;
-                r0 >>= 24;
-                r1 = (r0 << 24) >> 24;
 
                 // _08022EF4
 
@@ -1831,7 +1823,8 @@ NONMATCH("asm/non_matching/game/sub_8022D6C.inc", void sub_8022D6C(Player *p))
                     }
                 }
 
-                switch (r1 >> 6) {
+                r0 = r1 >> 6;
+                switch (r0) {
                     case 0: {
                         sub_80228C0(p);
                     } break;
@@ -1850,8 +1843,7 @@ NONMATCH("asm/non_matching/game/sub_8022D6C.inc", void sub_8022D6C(Player *p))
                 }
 
             } else {
-                u8 r1;
-                s32 r0 = (s8)p->rotation;
+                r0 = (s8)p->rotation;
                 // _08022EF4
 
                 if (r0 + 0x20 > 0) {
