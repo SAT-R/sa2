@@ -44,7 +44,8 @@ static void Task_DrowningCountdown(void)
     if (ts->unk14 & 0x2)
         transform->height = -transform->height;
 
-    if (((u16)(transform->x + 0x20) > 0x130) || ((u16)(transform->y + 0x20) > 0xE0)
+    if ((transform->x < -32 || transform->x > DISPLAY_WIDTH + 32)
+        || (transform->y < -32 || transform->y > DISPLAY_HEIGHT + 32)
         || (ts->unk10 > 0x80)) {
         TaskDestroy(gCurTask);
         return;
@@ -205,8 +206,9 @@ static void Task_SpawnAirBubbles(void)
     if (ts->unk14 & 0x2)
         transform->height = -transform->height;
 
-    if (((u16)(transform->x + 0x20) > 0x130) || ((u16)(transform->y + 0x20) > 0xE0)
-        || ((u16)gWater.isActive != TRUE) || (gWater.currentWaterLevel < 0)
+    if ((transform->x < -32 || transform->x > DISPLAY_WIDTH + 32)
+        || (transform->y < -32 || transform->y > DISPLAY_HEIGHT + 32)
+        || (gWater.isActive != TRUE) || (gWater.currentWaterLevel < 0)
         || (Q_24_8_TO_INT(r4) - 3 < gWater.currentWaterLevel) || (ts->unk10 > 0x1E0)) {
         TaskDestroy(gCurTask);
         return;
