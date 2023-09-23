@@ -183,12 +183,12 @@ void InitSpecialStageScreenVram(void)
     gUnknown_03005B58 = NULL;
 }
 
-void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f,
-                 u8 bg_id, u16 scrollX, u16 scrollY)
+void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
+                 u16 palOffset, u8 bg_id, u16 scrollX, u16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(b);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(b);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = assetId;
@@ -196,15 +196,15 @@ void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = d;
-    background->unk28 = e;
-    background->unk2A = f;
+    background->targetTilesX = d;
+    background->targetTilesY = e;
+    background->paletteOffset = palOffset;
     background->animFrameCounter = 0;
     background->animDelayCounter = 0;
     background->flags = (bg_id);
     background->scrollX = scrollX;
     background->scrollY = scrollY;
-    sub_8002A3C(background);
+    InitBackground(background);
 }
 
 s16 MaxSpriteSize(const struct UNK_80DF670 *spriteConfig)

@@ -4,7 +4,7 @@
 #include "game/game.h"
 #include "game/stage/background/callbacks.h"
 
-extern const Background gUnknown_080D5864[4];
+extern const Background gStageCameraBgTemplates[4];
 
 // TODO: make this static!
 extern const u8 gUnknown_080D5B20[16][3];
@@ -95,18 +95,18 @@ const u8 gUnknown_080D5B50[DISPLAY_HEIGHT] = {
 
 void CreateStageBg_Zone3(void)
 {
-    Background *background = &gUnknown_03005850.unk0;
+    Background *background = &gStageBackgroundsRam.unk0;
     gDispCnt |= 0x100;
     gBgCntRegs[0] = 0x1B0F;
 
-    *background = gUnknown_080D5864[3];
+    *background = gStageCameraBgTemplates[3];
 
     background->tilemapId = 0x171;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    background->tilesVram = (void *)BG_SCREEN_ADDR(27);
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    sub_8002A3C(background);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(27);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    InitBackground(background);
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;

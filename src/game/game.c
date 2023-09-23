@@ -12,6 +12,7 @@
 #include "game/race_progress.h"
 #include "game/save.h"
 #include "game/screen_shake.h"
+#include "game/stage/collect_ring_effect.h"
 #include "game/stage/entities_manager.h"
 #include "game/stage/music_manager.h"
 #include "game/stage/palette_loader.h"
@@ -22,7 +23,7 @@
 #include "constants/songs.h"
 #include "constants/tilemaps.h"
 
-void sub_80299F0(u32, u32, u32, Player *);
+void CallSetStageSpawnPos(u32, u32, u32, Player *);
 void CreateGameStage(void);
 
 void sub_801AB3C(void);
@@ -36,7 +37,7 @@ void sub_802B708(void);
 void InitCamera(u32);
 void sub_801BF90(void);
 
-void SetupStageLoadingScreen(void);
+void SetupStageIntro(void);
 
 void sub_80115D0(u32, u32, u32);
 
@@ -129,7 +130,7 @@ void GameStageStart(void)
     gUnknown_030054F8 = 1;
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        sub_80299F0(gSelectedCharacter, gCurrentLevel, 0, &gPlayer);
+        CallSetStageSpawnPos(gSelectedCharacter, gCurrentLevel, 0, &gPlayer);
         gUnknown_030056A4 = NULL;
     }
 
@@ -155,7 +156,7 @@ void CreateGameStage(void)
 {
     u8 i;
     gGameStageTask = TaskCreate(sub_801AB3C, 0, 0xff00, 0, sub_801B7A8);
-    gUnknown_0300540C = 0;
+    gActiveCollectRingEffectCount = 0;
     gUnknown_030054F4 = 0;
     gUnknown_030054B0 = 0;
 
@@ -193,7 +194,7 @@ void CreateGameStage(void)
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         CreateStageMusicManager();
-        SetupStageLoadingScreen();
+        SetupStageIntro();
         InitCamera(gCurrentLevel);
         gUnknown_080D57DC[gCurrentLevel]();
     } else {

@@ -392,7 +392,7 @@ StageBgUpdate_Zone6Acts12: @ 0x0801D534
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
-	ldr r4, _0801D568 @ =gUnknown_03005850
+	ldr r4, _0801D568 @ =gStageBackgroundsRam
 	ldr r1, _0801D56C @ =gBgScrollRegs
 	asrs r0, r0, #4
 	strh r0, [r1, #0xc]
@@ -412,7 +412,7 @@ StageBgUpdate_Zone6Acts12: @ 0x0801D534
 	movs r5, #7
 	b _0801D598
 	.align 2, 0
-_0801D568: .4byte gUnknown_03005850
+_0801D568: .4byte gStageBackgroundsRam
 _0801D56C: .4byte gBgScrollRegs
 _0801D570: .4byte gStageTime
 _0801D574: .4byte gUnknown_080D5BF0
@@ -476,7 +476,7 @@ _0801D5D8: @ jump table
 _0801D5F8:
 	cmp r6, #1
 	bne _0801D630
-	ldr r1, _0801D624 @ =gUnknown_080D5864
+	ldr r1, _0801D624 @ =gStageCameraBgTemplates
 	adds r1, #0xc0
 	adds r0, r4, #0
 	movs r2, #0x40
@@ -491,10 +491,10 @@ _0801D5F8:
 	strh r0, [r4, #0x26]
 	strh r0, [r4, #0x28]
 	adds r0, r4, #0
-	bl sub_8002A3C
+	bl InitBackground
 	b _0801D942
 	.align 2, 0
-_0801D624: .4byte gUnknown_080D5864
+_0801D624: .4byte gStageCameraBgTemplates
 _0801D628: .4byte 0x0600C000
 _0801D62C: .4byte 0x0600D000
 _0801D630:
@@ -618,7 +618,7 @@ _0801D718:
 	ldr r0, _0801D744 @ =0x00000381
 	cmp r6, r0
 	bne _0801D754
-	ldr r1, _0801D748 @ =gUnknown_080D5864
+	ldr r1, _0801D748 @ =gStageCameraBgTemplates
 	adds r1, #0xc0
 	adds r0, r4, #0
 	movs r2, #0x40
@@ -633,11 +633,11 @@ _0801D718:
 	strh r0, [r4, #0x26]
 	strh r0, [r4, #0x28]
 	adds r0, r4, #0
-	bl sub_8002A3C
+	bl InitBackground
 	b _0801D76C
 	.align 2, 0
 _0801D744: .4byte 0x00000381
-_0801D748: .4byte gUnknown_080D5864
+_0801D748: .4byte gStageCameraBgTemplates
 _0801D74C: .4byte 0x0600C000
 _0801D750: .4byte 0x0600D000
 _0801D754:

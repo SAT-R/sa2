@@ -205,7 +205,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     background = &teamPlayScreen->unk210;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(6);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(6);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_UNKNOWN_GREEN;
@@ -213,16 +213,16 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &teamPlayScreen->unk250;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(14);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(14);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_UNKNOWN_ORANGE_ZIGZAG;
@@ -230,16 +230,16 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x28;
-    background->unk2A = 0;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x28;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &teamPlayScreen->unk290;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_UNKNOWN_MESSAGE_BOX_WHITE;
@@ -247,16 +247,16 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 10;
-    background->unk2A = 0;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 10;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(3);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &teamPlayScreen->unk2D0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_VS_BACKGROUND_TEXT;
@@ -264,11 +264,11 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(3);
-    sub_8002A3C(background);
+    InitBackground(background);
 }
 
 static void sub_805CB34(void)
@@ -363,7 +363,7 @@ static void sub_805CC34(void)
 
                     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                     background->graphics.anim = 0;
-                    background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+                    background->layoutVram = (void *)BG_SCREEN_ADDR(22);
                     background->unk18 = 0;
                     background->unk1A = 0;
                     background->tilemapId = TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL;
@@ -371,11 +371,11 @@ static void sub_805CC34(void)
                     background->unk20 = 0;
                     background->unk22 = 0;
                     background->unk24 = 0;
-                    background->unk26 = 0x1E;
-                    background->unk28 = 7;
-                    background->unk2A = 0;
+                    background->targetTilesX = 0x1E;
+                    background->targetTilesY = 7;
+                    background->paletteOffset = 0;
                     background->flags = BACKGROUND_FLAGS_BG_ID(3);
-                    sub_8002A3C(background);
+                    InitBackground(background);
 
                     gMultiSioSend.pat0.unk0 = 0x4035;
                     teamPlayScreen->unk317 = 0;
@@ -408,7 +408,7 @@ static void sub_805CC34(void)
 
                 background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                 background->graphics.anim = 0;
-                background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+                background->layoutVram = (void *)BG_SCREEN_ADDR(22);
                 background->unk18 = 0;
                 background->unk1A = 0;
                 background->tilemapId = TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL;
@@ -416,11 +416,11 @@ static void sub_805CC34(void)
                 background->unk20 = 0;
                 background->unk22 = 0;
                 background->unk24 = 0;
-                background->unk26 = 0x1E;
-                background->unk28 = 7;
-                background->unk2A = 0;
+                background->targetTilesX = 0x1E;
+                background->targetTilesY = 7;
+                background->paletteOffset = 0;
                 background->flags = BACKGROUND_FLAGS_BG_ID(3);
-                sub_8002A3C(background);
+                InitBackground(background);
 
                 gMultiSioSend.pat0.unk0 = 0x4035;
                 teamPlayScreen->unk317 = 0;

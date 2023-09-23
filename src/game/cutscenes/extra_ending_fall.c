@@ -325,7 +325,7 @@ void CreateExtraEndingFallCutScene(void)
         Sprite *s;
         s = &scene->unkD0[i];
         s->graphics.dest = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[i + 0xD].numTiles * 0x20;
+        scene->unk398 += gUnknown_080E12FC[i + 0xD].numTiles * TILE_SIZE_4BPP;
         s->graphics.anim = gUnknown_080E12FC[i + 0xD].anim;
         s->variant = gUnknown_080E12FC[i + 0xD].variant;
         s->prevVariant = -1;
@@ -346,7 +346,7 @@ void CreateExtraEndingFallCutScene(void)
         Sprite *s;
         s = &scene->unk1F0;
         s->graphics.dest = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[19].numTiles << 5;
+        scene->unk398 += gUnknown_080E12FC[19].numTiles * TILE_SIZE_4BPP;
         s->graphics.anim = gUnknown_080E12FC[19].anim;
         s->variant = gUnknown_080E12FC[19].variant;
         s->prevVariant = -1;
@@ -367,7 +367,7 @@ void CreateExtraEndingFallCutScene(void)
         Sprite *s;
         s = &scene->unk220;
         s->graphics.dest = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[20].numTiles << 5;
+        scene->unk398 += gUnknown_080E12FC[20].numTiles * TILE_SIZE_4BPP;
         s->graphics.anim = gUnknown_080E12FC[20].anim;
         s->variant = gUnknown_080E12FC[20].variant;
         s->prevVariant = -1;
@@ -388,7 +388,7 @@ void CreateExtraEndingFallCutScene(void)
         Sprite *s;
         s = &scene->unk340;
         s->graphics.dest = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[9].numTiles << 6;
+        scene->unk398 += gUnknown_080E12FC[9].numTiles * TILE_SIZE_8BPP;
         s->graphics.anim = gUnknown_080E12FC[9].anim;
         s->variant = gUnknown_080E12FC[9].variant;
         s->prevVariant = -1;
@@ -409,7 +409,7 @@ void CreateExtraEndingFallCutScene(void)
         Sprite *s;
         s = &scene->unk250;
         s->graphics.dest = (void *)scene->unk398;
-        scene->unk398 += gUnknown_080E12FC[8].numTiles << 5;
+        scene->unk398 += gUnknown_080E12FC[8].numTiles * TILE_SIZE_4BPP;
         s->graphics.anim = gUnknown_080E12FC[8].anim;
         s->variant = gUnknown_080E12FC[8].variant;
         s->prevVariant = -1;
@@ -431,7 +431,7 @@ void CreateExtraEndingFallCutScene(void)
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = TM_CUTSCENE_POST_EXTRA_BOSS_BG;
@@ -439,11 +439,11 @@ void CreateExtraEndingFallCutScene(void)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x20;
-        background->unk28 = 0x40;
-        background->unk2A = 0;
+        background->targetTilesX = 32;
+        background->targetTilesY = 64;
+        background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(0);
-        sub_8002A3C(background);
+        InitBackground(background);
     }
 }
 

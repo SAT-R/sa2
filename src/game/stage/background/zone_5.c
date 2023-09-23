@@ -5,21 +5,21 @@
 
 #include "constants/tilemaps.h"
 
-extern const Background gUnknown_080D5864[4];
+extern const Background gStageCameraBgTemplates[4];
 
 void CreateStageBg_Zone5(void)
 {
-    Background *background = &gUnknown_03005850.unk0;
+    Background *background = &gStageBackgroundsRam.unk0;
     if (IS_SINGLE_PLAYER) {
         gDispCnt |= 0x100;
         gBgCntRegs[0] = 0x1b0c;
-        *background = gUnknown_080D5864[3];
+        *background = gStageCameraBgTemplates[3];
         background->tilemapId = TM_SKY_CANYON_CLOUDS_FOREGROUND;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-        background->tilesVram = (void *)BG_SCREEN_ADDR(27);
-        background->unk26 = 0x20;
-        background->unk28 = 0x20;
-        sub_8002A3C(background);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(27);
+        background->targetTilesX = 0x20;
+        background->targetTilesY = 0x20;
+        InitBackground(background);
     }
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;

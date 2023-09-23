@@ -16,7 +16,6 @@ gUnknown_080D550C:
 .syntax unified
 .arm
 
-@; wtf does this even do
 	thumb_func_start sub_8011328
 sub_8011328: @ 0x08011328
 	push {r4, r5, r6, r7, lr}
@@ -24,7 +23,7 @@ sub_8011328: @ 0x08011328
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
-	ldr r0, _080113E0 @ =gUnknown_03005660
+	ldr r0, _080113E0 @ =gWater
 	mov sl, r0
 	ldr r0, [r0, #0x10]
 	ldrh r6, [r0, #6]
@@ -116,7 +115,7 @@ _080113AE:
 	blo _08011382
 	b _080114B0
 	.align 2, 0
-_080113E0: .4byte gUnknown_03005660
+_080113E0: .4byte gWater
 _080113E4: .4byte gGameMode
 _080113E8: .4byte gAnimations
 _080113EC: .4byte gSpritePalettes
@@ -354,11 +353,15 @@ _080115C4: .4byte gBgPalette
 _080115C8: .4byte 0x7BDE7BDE
 _080115CC: .4byte 0x739C739C
 
+@ Input:
+    @; R0 = u32 Water-Level
+    @; R1 = u32 unk
+    @; R2 = u32 some mask
 	thumb_func_start sub_80115D0
 sub_80115D0: @ 0x080115D0
 	push {r4, r5, r6, r7, lr}
 	sub sp, #4
-	ldr r4, _08011648 @ =gUnknown_03005660
+	ldr r4, _08011648 @ =gWater
 	movs r7, #0
 	movs r5, #0
 	strh r0, [r4, #4]
@@ -401,11 +404,11 @@ sub_80115D0: @ 0x080115D0
 	strb r7, [r1]
 	str r5, [r0, #0x10]
 	bl UpdateSpriteAnimation
-	ldr r0, _08011654 @ =sub_8011660
+	ldr r0, _08011654 @ =Task_8011660
 	movs r1, #0x80
 	lsls r1, r1, #3
 	ldr r2, _08011658 @ =0x0000FFFE
-	ldr r3, _0801165C @ =sub_8011A20
+	ldr r3, _0801165C @ =TaskDestructor_8011A20
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
@@ -416,17 +419,17 @@ _08011640:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08011648: .4byte gUnknown_03005660
+_08011648: .4byte gWater
 _0801164C: .4byte 0x06012980
 _08011650: .4byte 0x00000216
-_08011654: .4byte sub_8011660
+_08011654: .4byte Task_8011660
 _08011658: .4byte 0x0000FFFE
-_0801165C: .4byte sub_8011A20
+_0801165C: .4byte TaskDestructor_8011A20
 
-	thumb_func_start sub_8011660
-sub_8011660: @ 0x08011660
+	thumb_func_start Task_8011660
+Task_8011660: @ 0x08011660
 	push {r4, r5, r6, r7, lr}
-	ldr r6, _08011688 @ =gUnknown_03005660
+	ldr r6, _08011688 @ =gWater
 	ldr r7, _0801168C @ =gCamera
 	ldr r0, _08011690 @ =gCurrentLevel
 	ldrb r0, [r0]
@@ -446,7 +449,7 @@ sub_8011660: @ 0x08011660
 	movs r0, #1
 	b _080116A2
 	.align 2, 0
-_08011688: .4byte gUnknown_03005660
+_08011688: .4byte gWater
 _0801168C: .4byte gCamera
 _08011690: .4byte gCurrentLevel
 _08011694: .4byte gPlayer
@@ -711,7 +714,7 @@ _080118A4:
 	ldr r1, [r5, #8]
 	asrs r1, r1, #8
 	str r1, [r3]
-	ldr r0, _080118D4 @ =gUnknown_03005660
+	ldr r0, _080118D4 @ =gWater
 	movs r2, #4
 	ldrsh r0, [r0, r2]
 	str r0, [r3, #4]
@@ -733,7 +736,7 @@ _080118A4:
 	ands r0, r1
 	b _080118E8
 	.align 2, 0
-_080118D4: .4byte gUnknown_03005660
+_080118D4: .4byte gWater
 _080118D8: .4byte gCamera
 _080118DC: .4byte 0xFFFFFBFF
 _080118E0:
@@ -898,9 +901,9 @@ _08011A12:
 _08011A18: .4byte 0x7BDE7BDE
 _08011A1C: .4byte 0x739C739C
 
-	thumb_func_start sub_8011A20
-sub_8011A20: @ 0x08011A20
-	ldr r3, _08011A3C @ =gUnknown_03005660
+	thumb_func_start TaskDestructor_8011A20
+TaskDestructor_8011A20: @ 0x08011A20
+	ldr r3, _08011A3C @ =gWater
 	ldr r2, _08011A40 @ =gFlags
 	ldr r0, [r2]
 	movs r1, #0x41
@@ -915,7 +918,7 @@ sub_8011A20: @ 0x08011A20
 	str r0, [r3, #0x10]
 	bx lr
 	.align 2, 0
-_08011A3C: .4byte gUnknown_03005660
+_08011A3C: .4byte gWater
 _08011A40: .4byte gFlags
 _08011A44: .4byte gIntrTable
 _08011A48: .4byte gIntrTableTemplate
@@ -923,7 +926,7 @@ _08011A48: .4byte gIntrTableTemplate
 	thumb_func_start sub_8011A4C
 sub_8011A4C: @ 0x08011A4C
 	push {r4, r5, lr}
-	ldr r3, _08011AAC @ =gUnknown_03005660
+	ldr r3, _08011AAC @ =gWater
 	ldr r0, [r3, #0x10]
 	ldrh r4, [r0, #6]
 	movs r0, #0xc0
@@ -971,7 +974,7 @@ _08011AA4:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08011AAC: .4byte gUnknown_03005660
+_08011AAC: .4byte gWater
 _08011AB0: .4byte 0x040000D4
 _08011AB4: .4byte IWRAM_START + 0x200
 _08011AB8: .4byte 0x84000074
@@ -982,7 +985,7 @@ _08011AC8: .4byte gFlags
 
 	thumb_func_start sub_8011ACC
 sub_8011ACC: @ 0x08011ACC
-	ldr r0, _08011B18 @ =gUnknown_03005660
+	ldr r0, _08011B18 @ =gWater
 	ldr r0, [r0, #0x10]
 	ldrh r1, [r0, #6]
 	movs r2, #0xc0
@@ -1020,7 +1023,7 @@ sub_8011ACC: @ 0x08011ACC
 	strh r0, [r1]
 	bx lr
 	.align 2, 0
-_08011B18: .4byte gUnknown_03005660
+_08011B18: .4byte gWater
 _08011B1C: .4byte 0x040000D4
 _08011B20: .4byte IWRAM_START + 0x200
 _08011B24: .4byte 0x84000074

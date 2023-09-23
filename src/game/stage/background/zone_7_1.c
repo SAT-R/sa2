@@ -27,22 +27,22 @@ static const u16 sPalette_Zone7BgCeiling[16] = INCBIN_U16("graphics/080D5C82.gba
 
 void CreateStageBg_Zone7(void)
 {
-    Background *bg = &gUnknown_03005850.unk0;
+    Background *bg = &gStageBackgroundsRam.unk0;
     const Background *src;
     gDispCnt = DISPCNT_OBJ_ON | DISPCNT_BG2_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_1D_MAP
         | DISPCNT_MODE_0;
 
     gBgCntRegs[0] = 0x160F;
 
-    src = gUnknown_080D5864;
+    src = gStageCameraBgTemplates;
     memcpy(bg, &src[3], sizeof(Background));
 
     bg->tilemapId = TM_UNK_SPACE_BG;
     bg->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    bg->tilesVram = (void *)BG_SCREEN_ADDR(22);
-    bg->unk26 = 32;
-    bg->unk28 = 20;
-    sub_8002A3C(bg);
+    bg->layoutVram = (void *)BG_SCREEN_ADDR(22);
+    bg->targetTilesX = 32;
+    bg->targetTilesY = 20;
+    InitBackground(bg);
 
     gBgCntRegs[3] &= ~BGCNT_PRIORITY(3);
     gBgCntRegs[3] |= BGCNT_PRIORITY(3);

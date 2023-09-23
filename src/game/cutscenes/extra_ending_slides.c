@@ -54,7 +54,7 @@ void CreateExtraEndingSlidesCutScene(void)
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_STORYFRAME_SONIC_CATCHES_VANILLA;
@@ -62,11 +62,11 @@ void CreateExtraEndingSlidesCutScene(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 }
 
 void sub_8091608(void);

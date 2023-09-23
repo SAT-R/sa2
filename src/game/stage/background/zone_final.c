@@ -23,23 +23,23 @@ void CreateStageBg_ZoneFinal_0(void)
     gUnknown_03002280[2][2] = 0xFF;
     gUnknown_03002280[2][3] = 0x20;
 
-    bgDst = &gUnknown_03005850.unk80;
+    bgDst = &gStageBackgroundsRam.unk80;
     gBgCntRegs[2]
         = BGCNT_SCREENBASE(26) | BGCNT_256COLOR | BGCNT_CHARBASE(2) | BGCNT_PRIORITY(1);
-    bgSrc = gUnknown_080D5864;
+    bgSrc = gStageCameraBgTemplates;
     memcpy(bgDst, &bgSrc[2], sizeof(Background));
 
     bgDst->tilemapId = TM_EXTRA_BOSS_COCKPIT;
     bgDst->graphics.dest = (void *)BG_CHAR_ADDR(2);
 
     // TODO: Should this be a different macro?
-    bgDst->tilesVram = (void *)BG_TILE_ADDR(416);
-    bgDst->unk26 = 10;
-    bgDst->unk28 = 9;
+    bgDst->layoutVram = (void *)BG_TILE_ADDR(416);
+    bgDst->targetTilesX = 10;
+    bgDst->targetTilesY = 9;
     bgDst->flags |= BACKGROUND_FLAG_4;
-    sub_8002A3C(bgDst);
+    InitBackground(bgDst);
 
-    bgDst = &gUnknown_03005850.unk0;
+    bgDst = &gStageBackgroundsRam.unk0;
     gBgCntRegs[0]
         = BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(1) | BGCNT_PRIORITY(3);
 
@@ -49,11 +49,11 @@ void CreateStageBg_ZoneFinal_0(void)
     bgDst->graphics.dest = (void *)BG_CHAR_ADDR(1);
 
     // TODO: Should this be a different macro?
-    bgDst->tilesVram = (void *)BG_TILE_ADDR(480);
-    bgDst->unk26 = 32;
-    bgDst->unk28 = 20;
+    bgDst->layoutVram = (void *)BG_TILE_ADDR(480);
+    bgDst->targetTilesX = 32;
+    bgDst->targetTilesY = 20;
     bgDst->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(bgDst);
+    InitBackground(bgDst);
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;

@@ -122,12 +122,12 @@ void sub_803796C(void);
 void sub_80378BC(void);
 void sub_8037818(void);
 void sub_8037744(void);
-void sub_80370C0(void);
-void sub_8036FE4(void);
-void sub_8036EF8(void);
-void sub_8037254(void);
-void sub_80373CC(void);
-void Task_ActorSonicSlowToStop(void);
+void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void);
+void Task_OrbitingEmeraldsRotate(void);
+void Task_OrbitingEmeraldsMoveOutwards(void);
+void Task_DisplaySonicSonicArtworkAndDestroyTask(void);
+void Task_SuperSonicSpark(void);
+void Task_ActorSonicSlowDownTilStop(void);
 
 void Task_ActorSonicRunIn(void);
 void sub_80380B0(void);
@@ -362,15 +362,15 @@ void CreateOrbitingEmeraldsSequence(void)
     Background *background;
     Sprite *emerald;
 
-    struct Task *t
-        = TaskCreate(sub_8036EF8, sizeof(OrbitingEmeraldsSequence), 0x7000, 0, NULL);
+    struct Task *t = TaskCreate(Task_OrbitingEmeraldsMoveOutwards,
+                                sizeof(OrbitingEmeraldsSequence), 0x7000, 0, NULL);
     OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(t);
     sequence->animFrame = 32;
 
     background = &sequence->background;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CUTSCENE_VANILLA_KIDNAPPED_SUPER_SONIC_ART;
@@ -378,9 +378,9 @@ void CreateOrbitingEmeraldsSequence(void)
     background->unk20 = 0;
     background->unk22 = 9;
     background->unk24 = 1;
-    background->unk26 = 0xD;
-    background->unk28 = 0x12;
-    background->unk2A = 0;
+    background->targetTilesX = 0xD;
+    background->targetTilesY = 0x12;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(2);
 
     for (i = 0; i < 7; i++) {
@@ -412,7 +412,7 @@ void CreateOrbitingEmeraldsSequence(void)
         s->y = pos[1] + ORBIT_BASE_Y;                                                   \
     })
 
-void sub_8036EF8(void)
+void Task_OrbitingEmeraldsMoveOutwards(void)
 {
     u8 i;
     s32 pos[2];
@@ -439,11 +439,11 @@ void sub_8036EF8(void)
 
     if (--sequence->animFrame == 0) {
         sequence->animFrame = 360;
-        gCurTask->main = sub_8036FE4;
+        gCurTask->main = Task_OrbitingEmeraldsRotate;
     };
 }
 
-void sub_8036FE4(void)
+void Task_OrbitingEmeraldsRotate(void)
 {
     u8 i;
     s32 pos[2];
@@ -474,11 +474,11 @@ void sub_8036FE4(void)
 
     if (--sequence->animFrame == 0) {
         sequence->animFrame = 32;
-        gCurTask->main = sub_80370C0;
+        gCurTask->main = Task_OrbitingEmeraldsContractAndFadeScreenWhite;
     };
 }
 
-void sub_80370C0(void)
+void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void)
 {
     u8 i;
     s32 pos[2];
@@ -504,8 +504,8 @@ void sub_80370C0(void)
         gUnknown_03002280[2][2] = 0xff;
         gUnknown_03002280[2][3] = 0x14;
 
-        sub_8002A3C(&sequence->background);
-        gCurTask->main = sub_8037254;
+        InitBackground(&sequence->background);
+        gCurTask->main = Task_DisplaySonicSonicArtworkAndDestroyTask;
         return;
     }
 
@@ -537,7 +537,7 @@ void sub_80370C0(void)
     }
 }
 
-void sub_8037254(void)
+void Task_DisplaySonicSonicArtworkAndDestroyTask(void)
 {
     OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(gCurTask);
 
@@ -561,7 +561,8 @@ void sub_8037254(void)
 void CreateSuperSonicSpark(s32 x, s32 y)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(sub_80373CC, sizeof(SuperSonicSpark), 0x7000, 0, NULL);
+    struct Task *t
+        = TaskCreate(Task_SuperSonicSpark, sizeof(SuperSonicSpark), 0x7000, 0, NULL);
     u32 type = PseudoRandBetween(2, 3);
     SuperSonicSpark *spark = TaskGetStructPtr(t);
     spark->animFrame = 40;
@@ -587,7 +588,7 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     s->unk10 = 0x1000;
 }
 
-void sub_80373CC(void)
+void Task_SuperSonicSpark(void)
 {
     s32 unk4, unkC;
     Sprite *s;
@@ -676,13 +677,13 @@ void Task_ActorSonicRunIn(void)
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, s);
         s->animSpeed = 0x10;
-        gCurTask->main = Task_ActorSonicSlowToStop;
+        gCurTask->main = Task_ActorSonicSlowDownTilStop;
     }
 
     OBJ_RENDER_SPRITE(actor, s);
 }
 
-void Task_ActorSonicSlowToStop(void)
+void Task_ActorSonicSlowDownTilStop(void)
 {
     Sprite *s;
     IntroActor *actor = TaskGetStructPtr(gCurTask);
@@ -1564,7 +1565,7 @@ void CreateBackgrounds(void)
     background = &worldBgs->bg1;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(31);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(31);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP;
@@ -1572,16 +1573,16 @@ void CreateBackgrounds(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &worldBgs->bg2;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP_COPY;
@@ -1589,11 +1590,11 @@ void CreateBackgrounds(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    sub_8002A3C(background);
+    InitBackground(background);
 }
 
 void sub_803997C(void)
@@ -1654,8 +1655,8 @@ void sub_8039AD4(void)
 
     m4aMPlayAllStop();
     gGameMode = GAME_MODE_SINGLE_PLAYER;
-    gSelectedCharacter = 0;
-    gCurrentLevel = 0x1D;
+    gSelectedCharacter = CHARACTER_SONIC;
+    gCurrentLevel = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
     ApplyGameStageSettings();
     GameStageStart();
     TaskDestroy(gCurTask);

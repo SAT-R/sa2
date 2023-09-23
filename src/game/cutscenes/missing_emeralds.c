@@ -168,16 +168,16 @@ void CreateMissingChaosEmaraldsCutScene(void)
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(30);
         background->unk18 = 0;
         background->unk1A = 0;
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
-        background->unk2A = 0;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
+        background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(0);
     }
     {
@@ -185,20 +185,20 @@ void CreateMissingChaosEmaraldsCutScene(void)
         background = &scene->unk40;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
+        background->targetTilesX = 0x1E;
         if (scene->unkBD != 0) {
-            background->unk28 = 7;
+            background->targetTilesY = 7;
         } else {
-            background->unk28 = 6;
+            background->targetTilesY = 6;
         }
-        background->unk2A = 0;
+        background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(1);
     }
 }
@@ -217,7 +217,7 @@ void Task_8094360(void)
             gBgScrollRegs[1][1] = 400;
             background = &scene->unk40;
             background->tilemapId = sTilemapsPlayerNotifs[scene->unkBF - 1];
-            sub_8002A3C(background);
+            InitBackground(background);
         }
 
         // "Collect all Chaos Emeralds!" message
@@ -226,7 +226,7 @@ void Task_8094360(void)
         gBgScrollRegs[0][1] = 0;
         background = &scene->unk0;
         background->tilemapId = sTilemapsPlayerNotifs[0];
-        sub_8002A3C(background);
+        InitBackground(background);
     } else {
         s32 base;
         u16 index;
@@ -237,7 +237,7 @@ void Task_8094360(void)
         // "Unlocked Tiny Chao Garden" message
         background = &scene->unk0;
         background->tilemapId = sTilemapsPlayerNotifs[7];
-        sub_8002A3C(background);
+        InitBackground(background);
 
         if (scene->unkBD > 1 || scene->unkBF > 1) {
             gDispCnt |= 0x200;
@@ -248,7 +248,7 @@ void Task_8094360(void)
             base = scene->unkBF;
             index = (base + 6 + ((scene->unkBD - 1) * 7));
             background->tilemapId = sTilemapsPlayerNotifs[index];
-            sub_8002A3C(background);
+            InitBackground(background);
         }
     }
 

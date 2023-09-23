@@ -18,11 +18,13 @@
 extern const CameraMain sStageBgUpdateFuncs[];
 extern const u32 *gCollisionTable[NUM_LEVEL_IDS];
 
-void sub_802C668(s32 *, s32 *);
+static void sub_801C708(s32, s32);
 void Task_801E0A8(void);
 void TaskDestructor_801E040(struct Task *);
 
-const Background gUnknown_080D5864[4] = {
+#define BOSS_CAM_FRAME_DELTA_PIXELS 5
+
+const Background gStageCameraBgTemplates[4] = {
     {
         .graphics = {  
             .src = NULL,  
@@ -30,10 +32,10 @@ const Background gUnknown_080D5864[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)BG_SCREEN_ADDR(30),
-        .unk10 = NULL,
-        .unk14 = 0,
-        .unk16 = 0,
+        .layoutVram = (void*)BG_SCREEN_ADDR(30),
+        .layout = NULL,
+        .xTiles = 0,
+        .yTiles = 0,
         .unk18 = 0,
         .unk1A = 0,
         .tilemapId = 0,
@@ -41,12 +43,11 @@ const Background gUnknown_080D5864[4] = {
         .unk20 = 0,
         .unk22 = 0,
         .unk24 = 0,
-        .unk26 = 31,
-        .unk28 = 21,
-        .unk2A = 0,
+        .targetTilesX = (DISPLAY_WIDTH / TILE_WIDTH) + 1,
+        .targetTilesY = (DISPLAY_HEIGHT / TILE_WIDTH) + 1,
+        .paletteOffset = 0,
         .animFrameCounter = 0,
         .animDelayCounter = 0,
-        .unk2D = 0,
         .flags = BACKGROUND_FLAG_IS_LEVEL_MAP | BACKGROUND_FLAG_20 | BACKGROUND_UPDATE_PALETTE | BACKGROUND_UPDATE_GRAPHICS | BACKGROUND_FLAGS_BG_ID(1),
         .scrollX = 0,
         .scrollY = 0,
@@ -63,10 +64,10 @@ const Background gUnknown_080D5864[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)BG_SCREEN_ADDR(31),
-        .unk10 = NULL,
-        .unk14 = 0,
-        .unk16 = 0,
+        .layoutVram = (void*)BG_SCREEN_ADDR(31),
+        .layout = NULL,
+        .xTiles = 0,
+        .yTiles = 0,
         .unk18 = 0,
         .unk1A = 0,
         .tilemapId = 0,
@@ -74,12 +75,11 @@ const Background gUnknown_080D5864[4] = {
         .unk20 = 0,
         .unk22 = 0,
         .unk24 = 0,
-        .unk26 = 31,
-        .unk28 = 21,
-        .unk2A = 0,
+        .targetTilesX = (DISPLAY_WIDTH / TILE_WIDTH) + 1,
+        .targetTilesY = (DISPLAY_HEIGHT / TILE_WIDTH) + 1,
+        .paletteOffset = 0,
         .animFrameCounter = 0,
         .animDelayCounter = 0,
-        .unk2D = 0,
         .flags = BACKGROUND_FLAG_IS_LEVEL_MAP | BACKGROUND_FLAG_20 | BACKGROUND_FLAGS_BG_ID(2),
         .scrollX = 0,
         .scrollY = 0,
@@ -96,10 +96,10 @@ const Background gUnknown_080D5864[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)BG_SCREEN_ADDR(29),
-        .unk10 = NULL,
-        .unk14 = 0,
-        .unk16 = 0,
+        .layoutVram = (void*)BG_SCREEN_ADDR(29),
+        .layout = NULL,
+        .xTiles = 0,
+        .yTiles = 0,
         .unk18 = 0,
         .unk1A = 0,
         .tilemapId = 0,
@@ -107,12 +107,11 @@ const Background gUnknown_080D5864[4] = {
         .unk20 = 0,
         .unk22 = 0,
         .unk24 = 0,
-        .unk26 = 32,
-        .unk28 = 32,
-        .unk2A = 0,
+        .targetTilesX = 32,
+        .targetTilesY = 32,
+        .paletteOffset = 0,
         .animFrameCounter = 0,
         .animDelayCounter = 0,
-        .unk2D = 0,
         .flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3),
         .scrollX = 0,
         .scrollY = 0,
@@ -125,14 +124,14 @@ const Background gUnknown_080D5864[4] = {
     {
         .graphics = {  
             .src = NULL,  
-            .dest = (void*)0x600C000,  
+            .dest = (void*)BG_CHAR_ADDR(3),  
             .size = 0,  
             .anim = 0,
         },
-        .tilesVram = (void*)BG_SCREEN_ADDR(28),
-        .unk10 = NULL,
-        .unk14 = 0,
-        .unk16 = 0,
+        .layoutVram = (void*)BG_SCREEN_ADDR(28),
+        .layout = NULL,
+        .xTiles = 0,
+        .yTiles = 0,
         .unk18 = 0,
         .unk1A = 0,
         .tilemapId = 0,
@@ -140,12 +139,11 @@ const Background gUnknown_080D5864[4] = {
         .unk20 = 0,
         .unk22 = 0,
         .unk24 = 0,
-        .unk26 = 32,
-        .unk28 = 32,
-        .unk2A = 0,
+        .targetTilesX = 32,
+        .targetTilesY = 32,
+        .paletteOffset = 0,
         .animFrameCounter = 0,
         .animDelayCounter = 0,
-        .unk2D = 0,
         .flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(0),
         .scrollX = 0,
         .scrollY = 0,
@@ -161,7 +159,7 @@ const u16 gUnknown_080D5964[][2]
     = { { 32, 216 }, { 32, 204 }, { 32, 216 }, { 32, 208 }, { 32, 208 },
         { 32, 232 }, { 32, 264 }, { 32, 264 }, { 32, 264 } };
 
-static const VoidFn sStageInitProcedures[] = {
+static const VoidFn sStageBgInitProcedures[] = {
     [LEVEL_INDEX(ZONE_1, ACT_1)] = CreateStageBg_Zone1,
     [LEVEL_INDEX(ZONE_1, ACT_2)] = CreateStageBg_Zone1,
     [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = CreateStageBg_Zone1,
@@ -253,40 +251,40 @@ static const CameraMain sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
 };
 
 static const s8 gUnknown_080D5A98[NUM_LEVEL_IDS][4] = {
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x40, 0x02, 0x1C }, //
-    { 0x20, 0x40, 0x02, 0x1C }, //
-    { 0x20, 0x40, 0x02, 0x1C }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x40, 0x02, 0x1C }, //
-    { 0x20, 0x40, 0x02, 0x1C }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x40, 0x02, 0x1C }, //
-    { 0x40, 0x20, 0x02, 0x1C }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1C }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1C }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x20, 0x40, 0x02, 0x1C }, //
-    { 0x20, 0x20, 0x02, 0x1D }, //
-    { 0x40, 0x20, 0x02, 0x1C }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 64, 2, 28 }, //
+    { 32, 64, 2, 28 }, //
+    { 32, 64, 2, 28 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 64, 2, 28 }, //
+    { 32, 64, 2, 28 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 64, 2, 28 }, //
+    { 64, 32, 2, 28 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 28 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 28 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 32, 2, 29 }, //
+    { 32, 64, 2, 28 }, //
+    { 32, 32, 2, 29 }, //
+    { 64, 32, 2, 28 }, //
 };
 
 void InitCamera(u32 level)
@@ -300,33 +298,35 @@ void InitCamera(u32 level)
     const s8 *unkA98 = gUnknown_080D5A98[level];
 
     gDispCnt = 0x3E40;
-    if (level == 0x1D) {
+    if (level == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
         gDispCnt = 0x3741;
     }
 
-    gBgCntRegs[1] = 0x1E01;
-    gBgCntRegs[2] = 0x1F02;
+    gBgCntRegs[1]
+        = (BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
+    gBgCntRegs[2]
+        = (BGCNT_SCREENBASE(31) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(2));
     temp = ((unkA98[0] + 0x1F) >> 6 | ((unkA98[1] + 0x1F) >> 6) << 1) << 0xE;
     gBgCntRegs[3] = temp | 3 | (unkA98[3] << 8) | (unkA98[2] << 2);
 
-    if (level == 0x1D) {
+    if (level == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
         gDispCnt = 0x3641;
     }
 
-    bgs = &gUnknown_03005850;
-    memcpy(&gUnknown_03005850.unk40, &gUnknown_080D5864[0], 0x40);
+    bgs = &gStageBackgroundsRam;
+    memcpy(&gStageBackgroundsRam.unk40, &gStageCameraBgTemplates[0], sizeof(Background));
     bgs->unk40.tilemapId = TM_LEVEL_METATILES_0(level);
 
-    memcpy(&gUnknown_03005850.unk80, &gUnknown_080D5864[1], 0x40);
+    memcpy(&gStageBackgroundsRam.unk80, &gStageCameraBgTemplates[1], sizeof(Background));
     bgs->unk80.tilemapId = TM_LEVEL_METATILES_1(level);
 
-    memcpy(&gUnknown_03005850.unkC0, &gUnknown_080D5864[2], 0x40);
+    memcpy(&gStageBackgroundsRam.unkC0, &gStageCameraBgTemplates[2], sizeof(Background));
     bgs->unkC0.tilemapId = TM_LEVEL_BG(level);
 
     bgs->unkC0.graphics.dest = (void *)BG_CHAR_ADDR(unkA98[2]);
-    bgs->unkC0.tilesVram = (void *)BG_SCREEN_ADDR(unkA98[3]);
-    bgs->unkC0.unk26 = unkA98[0];
-    bgs->unkC0.unk28 = unkA98[1];
+    bgs->unkC0.layoutVram = (void *)BG_SCREEN_ADDR(unkA98[3]);
+    bgs->unkC0.targetTilesX = unkA98[0];
+    bgs->unkC0.targetTilesY = unkA98[1];
 
     gUnknown_03004D80[1] = 0;
     gUnknown_03002280[1][0] = 0;
@@ -344,10 +344,10 @@ void InitCamera(u32 level)
         bgs->unk80.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_UPDATE_GRAPHICS;
     }
 
-    if (level != 0x1D) {
-        sub_8002A3C(&bgs->unk40);
-        sub_8002A3C(&bgs->unk80);
-        sub_8002A3C(&bgs->unkC0);
+    if (level != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+        InitBackground(&bgs->unk40);
+        InitBackground(&bgs->unk80);
+        InitBackground(&bgs->unkC0);
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -362,9 +362,10 @@ void InitCamera(u32 level)
     camera->unk34 = gUnknown_030059C8[7];
 
     if (((gCurrentLevel & ACTS_PER_ZONE) == ACT_BOSS)
-        || ((gCurrentLevel == 0x1C) && (gUnknown_030054B0 == 0))
-        || (gCurrentLevel == 0x1D)) {
-        if (gCurrentLevel == 0x1D) {
+        || ((gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
+            && (gUnknown_030054B0 == 0))
+        || (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
+        if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             sub_802C668(&player->x, &player->y);
             gUnknown_03005440 = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][0];
             gUnknown_030054BC = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][1];
@@ -418,14 +419,10 @@ void InitCamera(u32 level)
 
     camera->unk58 = sStageBgUpdateFuncs[level];
 
-    if (sStageInitProcedures[level] != NULL) {
-        sStageInitProcedures[level]();
+    if (sStageBgInitProcedures[level] != NULL) {
+        sStageBgInitProcedures[level]();
     }
 }
-
-void sub_801C708(s32, s32);
-
-#define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
 void UpdateCamera(void)
 {
@@ -606,23 +603,23 @@ void UpdateCamera(void)
     }
 }
 
-void sub_801C708(s32 x, s32 y)
+static void sub_801C708(s32 x, s32 y)
 {
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        Background *layer = &gUnknown_03005850.unk40;
+        Background *layer = &gStageBackgroundsRam.unk40;
         gBgScrollRegs[1][0] = x & 7;
         gBgScrollRegs[1][1] = y & 7;
         layer->scrollX = x;
         layer->scrollY = y;
-        sub_8002A3C(layer);
+        InitBackground(layer);
         UpdateBgAnimationTiles(layer);
 
-        layer++;
+        layer = &gStageBackgroundsRam.unk80;
         gBgScrollRegs[2][0] = x & 7;
         gBgScrollRegs[2][1] = y & 7;
         layer->scrollX = x;
         layer->scrollY = y;
-        sub_8002A3C(layer);
+        InitBackground(layer);
     }
 }

@@ -32,7 +32,7 @@ void GameStart(void)
     gCamera.movementTask = NULL;
 
     gUnknown_030059D0.t = NULL;
-    gUnknown_03005660.t = NULL;
+    gWater.t = NULL;
 
     gUnknown_0300543C = 0;
     gGameMode = GAME_MODE_SINGLE_PLAYER;

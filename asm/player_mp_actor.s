@@ -1623,7 +1623,7 @@ _08016CE2:
 	adds r0, r6, #0
 	bl DisplaySprite
 _08016CE8:
-	ldr r4, _08016D18 @ =IWRAM_START + 0x5B7C
+	ldr r4, _08016D18 @ =gUnknown_03005B7C
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _08016CF8
@@ -1648,7 +1648,7 @@ _08016D08:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08016D18: .4byte IWRAM_START + 0x5B7C
+_08016D18: .4byte gUnknown_03005B7C
 _08016D1C: .4byte gUnknown_0300583C
 
 	thumb_func_start sub_8016D20

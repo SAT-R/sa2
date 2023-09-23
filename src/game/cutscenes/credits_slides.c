@@ -96,7 +96,7 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsSlides[scene->unk50];
@@ -104,11 +104,11 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
-        background->unk2A = 0;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
+        background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(1);
-        sub_8002A3C(background);
+        InitBackground(background);
     }
 }
 
@@ -129,7 +129,7 @@ void sub_808EF38(void)
                 Background *background = &scene->unk0;
                 background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
                 background->graphics.anim = 0;
-                background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+                background->layoutVram = (void *)BG_SCREEN_ADDR(28);
                 background->unk18 = 0;
                 background->unk1A = 0;
                 background->tilemapId = sTilemapsCreditsSlides[scene->unk50];
@@ -137,11 +137,11 @@ void sub_808EF38(void)
                 background->unk20 = 0;
                 background->unk22 = 0;
                 background->unk24 = 0;
-                background->unk26 = 0x1E;
-                background->unk28 = 0x14;
-                background->unk2A = 0;
+                background->targetTilesX = 0x1E;
+                background->targetTilesY = 0x14;
+                background->paletteOffset = 0;
                 background->flags = BACKGROUND_FLAGS_BG_ID(1);
-                sub_8002A3C(background);
+                InitBackground(background);
             }
             gCurTask->main = sub_808F004;
         } else {

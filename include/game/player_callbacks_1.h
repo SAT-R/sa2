@@ -43,6 +43,7 @@ extern void sub_80283C4(Player *p);
 extern void PlayerCB_8028D74(Player *p);
 extern void PlayerCB_TouchNormalSpring(Player *p);
 extern void PlayerCB_8029158(Player *p);
+extern void sub_802989C(Player *p);
 extern void sub_8029C84(Player *p);
 extern void sub_8029FA4(Player *p);
 extern void PlayerCB_802A258(Player *p);

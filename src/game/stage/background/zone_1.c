@@ -8,38 +8,38 @@
 #include "constants/tilemaps.h"
 #include "constants/zones.h"
 
-extern struct Backgrounds gUnknown_03005850;
-extern const Background gUnknown_080D5864[4];
+extern struct Backgrounds gStageBackgroundsRam;
+extern const Background gStageCameraBgTemplates[4];
 
 void CreateStageBg_Zone1(void)
 {
-    Background *background = &gUnknown_03005850.unk0;
+    Background *background = &gStageBackgroundsRam.unk0;
     gDispCnt |= 0x100;
     gBgCntRegs[0] = 0x1B0F;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        const Background *templates = gUnknown_080D5864;
+        const Background *templates = gStageCameraBgTemplates;
         memcpy(background, &templates[3], 0x40);
 
         background->tilemapId = TM_STAGE_1_BG_0_COPY;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-        background->tilesVram = (void *)BG_SCREEN_ADDR(27);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(27);
 
-        background->unk26 = 0x20;
-        background->unk28 = 0x20;
+        background->targetTilesX = 0x20;
+        background->targetTilesY = 0x20;
     } else {
-        const Background *templates = gUnknown_080D5864;
+        const Background *templates = gStageCameraBgTemplates;
         memcpy(background, &templates[3], 0x40);
         background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_1));
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-        background->tilesVram = (void *)BG_SCREEN_ADDR(27);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(27);
 
-        background->unk26 = 0x20;
-        background->unk28 = 0x1E;
+        background->targetTilesX = 0x20;
+        background->targetTilesY = 0x1E;
     }
 
-    sub_8002A3C(background);
+    InitBackground(background);
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 }

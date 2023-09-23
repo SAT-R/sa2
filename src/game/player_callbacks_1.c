@@ -6,6 +6,7 @@
 #include "game/heart_particles_effect.h"
 #include "game/stage/music_manager.h"
 
+#include "game/game_6.h"
 #include "game/boost_effect.h" // incl. CreateBoostModeParticles
 #include "game/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/dust_effect_spindash.h" // CreateSpindashDustEffect
@@ -45,10 +46,6 @@ extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
 extern void Task_801F214(void);
 extern void sub_801F488(void);
-
-extern s32 sub_802195C(Player *p, u8 *p1, s32 *out);
-extern s32 sub_8021A34(Player *p, u8 *p1, s32 *out);
-extern s32 sub_8021B08(Player *p, u8 *p1, s32 *out);
 
 extern s32 sub_8022F58(u8, Player *);
 extern void sub_8022190(Player *);
@@ -435,7 +432,7 @@ void PlayerCB_8025A0C(Player *p)
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
         p->moveState |= MOVESTATE_4;
-        p->unk99 = 0;
+        p->unk99[0] = 0;
         PLAYERFN_SET_AND_CALL(PlayerCB_8025AB8, p);
     }
 }
@@ -449,8 +446,8 @@ void PlayerCB_8025AB8(Player *p)
                == MOVESTATE_800) {
         sub_802A360(p);
     } else {
-        if (p->unk99 != 0) {
-            p->unk99--;
+        if (p->unk99[0] != 0) {
+            p->unk99[0]--;
         } else if (!sub_8029E6C(p)) {
             if (p->unk2A == 0) {
                 u16 dpadSideways = (p->unk5C & (DPAD_LEFT | DPAD_RIGHT));
@@ -1229,7 +1226,7 @@ void PlayerCB_8026F10(Player *p)
 
         p->moveState |= MOVESTATE_4;
 
-        p->unk99 = 30;
+        p->unk99[0] = 30;
 
         PLAYERFN_SET_AND_CALL(PlayerCB_8025AB8, p);
     }
@@ -1425,7 +1422,7 @@ void PlayerCB_GoalSlowdown(Player *p)
     u32 playerX = Q_24_8_TO_INT(p->x);
     u16 playerX2;
 
-    playerX2 = playerX - gUnknown_030054D0;
+    playerX2 = playerX - gStageGoalX;
 
     if (((p->speedGroundX >= Q_24_8(2.0)) && (p->unk5E & DPAD_LEFT))
         || (playerX2 > 0x579)) {
@@ -1483,8 +1480,8 @@ void PlayerCB_GoalBrake(Player *p)
             p->speedGroundX = 0;
             m4aSongNumStop(SE_LONG_BRAKE);
 
-            if (gUnknown_030054D0 != 0) {
-                u16 playerX = Q_24_8_TO_INT(p->x) - gUnknown_030054D0;
+            if (gStageGoalX != 0) {
+                u16 playerX = Q_24_8_TO_INT(p->x) - gStageGoalX;
                 s32 r8 = 0;
 
                 if (playerX <= 730)
@@ -1497,7 +1494,8 @@ void PlayerCB_GoalBrake(Player *p)
                 if (r8 != 0) {
                     INCREMENT_SCORE(r8);
 
-                    sub_801F3A4(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), r8);
+                    CreateStageGoalBonusPointsAnim(Q_24_8_TO_INT(p->x),
+                                                   Q_24_8_TO_INT(p->y), r8);
                 }
             }
         }
@@ -1668,7 +1666,7 @@ void PlayerCB_8027D3C(Player *p)
     s8 *someSio = gUnknown_030054B4;
     s32 sioDat = ((REG_SIOCNT_32 << 26) >> 30);
     u16 r8 = someSio[sioDat];
-    u32 *pCmpX = &gUnknown_030054D0;
+    u32 *pCmpX = &gStageGoalX;
     u32 cmpX;
     s32 index = (0x40 + (r8 * 32));
 
@@ -2596,10 +2594,9 @@ void sub_8029990(Player *p)
     }
 }
 
-// NOTE: Proc type should be the same as sub_8021604!
-void sub_80299F0(u32 character, u32 level, u32 p2, Player *p)
+void CallSetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
 {
-    sub_8021604(character, level, p2, p);
+    SetStageSpawnPos(character, level, p2, p);
 }
 
 void sub_80299FC(Player *p)
@@ -2746,8 +2743,6 @@ s32 sub_8029B58(Player *p, u8 *p1, int *out)
 {
     s32 result;
 
-    u8 dummy;
-
     if (GRAVITY_IS_INVERTED) {
         result = sub_8029B0C(p, p1, out);
     } else {
@@ -2761,8 +2756,6 @@ s32 sub_8029B88(Player *p, u8 *p1, int *out)
 {
     s32 result;
 
-    u8 dummy;
-
     if (GRAVITY_IS_INVERTED) {
         result = sub_8029AC0(p, p1, out);
     } else {
@@ -2772,6 +2765,7 @@ s32 sub_8029B88(Player *p, u8 *p1, int *out)
     return result;
 }
 
+// Very similar to sub_802195C
 s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
 {
     u8 dummy;

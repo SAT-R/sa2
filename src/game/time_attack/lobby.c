@@ -193,7 +193,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background = &lobbyScreen->unk40;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(29);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(29);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MESSAGE_BOX_BLACK;
@@ -201,16 +201,16 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1C;
-    background->unk28 = 0xC;
-    background->unk2A = 0;
+    background->targetTilesX = 0x1C;
+    background->targetTilesY = 0xC;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &lobbyScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(7);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(7);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_GREEN_CARET;
@@ -218,11 +218,11 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     transition = &lobbyScreen->unk1A0;
     transition->unk0 = 1;

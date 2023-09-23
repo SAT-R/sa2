@@ -2,13 +2,14 @@
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/game.h"
+#include "game/stage/collect_ring_effect.h"
 #include "game/stage/rings_manager.h"
 
 #include "constants/animations.h"
 
 typedef struct {
     Sprite s;
-    u8 unk30;
+    u8 bPanSfxLeft;
     u8 unk31;
 } RingEffect;
 
@@ -18,7 +19,7 @@ extern struct SongHeader se_ring_copy;
 
 void CreateCollectRingEffect(s16 x, s16 y)
 {
-    if (gUnknown_0300540C < 8) {
+    if (gActiveCollectRingEffectCount < 8) {
         struct Task *t
             = TaskCreate(Task_CollectRingEffect, sizeof(RingEffect), 0x2000, 0, NULL);
         RingEffect *re = TaskGetStructPtr(t);
@@ -40,8 +41,8 @@ void CreateCollectRingEffect(s16 x, s16 y)
         s->palId = 0;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-        re->unk30 = gRingCount & 1;
-        if (re->unk30) {
+        re->bPanSfxLeft = gRingCount & 1;
+        if (re->bPanSfxLeft) {
             MPlayStart(&gMPlayInfo_SE2, &se_ring_copy);
             m4aMPlayImmInit(&gMPlayInfo_SE2);
             m4aMPlayVolumeControl(&gMPlayInfo_SE2, 0xFFFF, 128);
@@ -53,7 +54,7 @@ void CreateCollectRingEffect(s16 x, s16 y)
             m4aMPlayPanpotControl(&gMPlayInfo_SE1, 0xFFFF, +64);
         }
 
-        gUnknown_0300540C++;
+        gActiveCollectRingEffectCount++;
     }
 }
 
@@ -70,7 +71,7 @@ void Task_CollectRingEffect(void)
     if (UpdateSpriteAnimation(s) == 0) {
         DisplaySprite(s);
 
-        gUnknown_0300540C--;
+        gActiveCollectRingEffectCount--;
 
         TaskDestroy(gCurTask);
     }

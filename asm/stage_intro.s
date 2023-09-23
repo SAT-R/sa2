@@ -2979,8 +2979,8 @@ _0802F098:
 _0802F0A0: .4byte gCurTask
 _0802F0A4: .4byte Task_802ED98
 
-	thumb_func_start SetupStageLoadingScreen
-SetupStageLoadingScreen: @ 0x0802F0A8
+	thumb_func_start SetupStageIntro
+SetupStageIntro: @ 0x0802F0A8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

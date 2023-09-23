@@ -471,7 +471,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background = &scene->unk80;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(29);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(29);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = sTilemapsCharacterDialogue[scene->unk10E + (lang * 15)];
@@ -479,16 +479,16 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1e;
-    background->unk28 = 5;
-    background->unk2A = 0;
+    background->targetTilesX = 30;
+    background->targetTilesY = 5;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = sTilemapsCharacterSlides[scene->unk10C];
@@ -496,11 +496,11 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1e;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
+    background->targetTilesX = 30;
+    background->targetTilesY = 20;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(2);
-    sub_8002A3C(background);
+    InitBackground(background);
 }
 
 void sub_808E4C8(void);
@@ -543,7 +543,7 @@ void sub_808E4C8(void)
     scene = TaskGetStructPtr(gCurTask);
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
 
-    if (scene->unk110++ > 0x154) {
+    if (scene->unk110++ > 340) {
         scene->unk110 = 0;
 
         if ((scene->unk10C & 3) == 3) {
@@ -553,7 +553,7 @@ void sub_808E4C8(void)
             background = &scene->unk40;
             background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
             background->graphics.anim = 0;
-            background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+            background->layoutVram = (void *)BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
             background->tilemapId
@@ -562,12 +562,12 @@ void sub_808E4C8(void)
             background->unk20 = 0;
             background->unk22 = 0;
             background->unk24 = 0;
-            background->unk26 = 0x1e;
-            background->unk28 = 5;
-            background->unk2A = 0;
+            background->targetTilesX = 30;
+            background->targetTilesY = 5;
+            background->paletteOffset = 0;
             background->flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(0);
-            sub_8002A3C(background);
-            gDispCnt |= 0x100;
+            InitBackground(background);
+            gDispCnt |= DISPCNT_BG0_ON;
             m4aSongNumStart(MUS_GOT_ALL_CHAOS_EMERALDS);
             gCurTask->main = sub_808E63C;
         } else {
@@ -579,7 +579,7 @@ void sub_808E4C8(void)
     }
 
     if (gPressedKeys & START_BUTTON && scene->unk110 > 8) {
-        scene->unk110 = 0x154;
+        scene->unk110 = 340;
     }
 }
 
@@ -667,7 +667,7 @@ void sub_808E890(struct Task *t)
     struct ResultsCutScene *scene = TaskGetStructPtr(t);
     VramFree(scene->unk4.graphics.dest);
 
-    if (scene->unk34.graphics.dest != 0) {
+    if (scene->unk34.graphics.dest != NULL) {
         VramFree(scene->unk34.graphics.dest);
     }
 }

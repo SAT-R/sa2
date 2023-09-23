@@ -290,7 +290,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     background = &characterScreen->unk8C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CHARACTER_SELECT_WHEEL;
@@ -298,16 +298,16 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &characterScreen->unkC;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(20);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CHARACTER_SELECT_BACKGROUND_0;
@@ -315,16 +315,16 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     background = &characterScreen->unk4C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(21);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(21);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CHARACTER_SELECT_BACKGROUND_1;
@@ -332,11 +332,11 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(2);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     for (i = 0; i < NUM_CHARACTERS; i++) {
         s = &characterScreen->carouselBlobs[i];

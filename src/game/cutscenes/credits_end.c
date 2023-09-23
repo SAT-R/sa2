@@ -154,7 +154,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
             background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
             background->graphics.anim = 0;
-            background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+            background->layoutVram = (void *)BG_SCREEN_ADDR(22);
             background->unk18 = 0;
             background->unk1A = 0;
             background->tilemapId = sTilemapsCreditsEndSlides[2];
@@ -162,11 +162,11 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             background->unk20 = 0;
             background->unk22 = 0;
             background->unk24 = 0;
-            background->unk26 = 0x1E;
-            background->unk28 = 0x14;
-            background->unk2A = 0;
+            background->targetTilesX = 0x1E;
+            background->targetTilesY = 0x14;
+            background->paletteOffset = 0;
             background->flags = BACKGROUND_FLAGS_BG_ID(0);
-            sub_8002A3C(background);
+            InitBackground(background);
         }
 
         {
@@ -238,7 +238,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
@@ -246,11 +246,11 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
-        background->unk2A = 0;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
+        background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(0);
-        sub_8002A3C(background);
+        InitBackground(background);
         UpdateBgAnimationTiles(background);
     }
 
@@ -263,7 +263,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(20);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(20);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[scene->unk160];
@@ -271,11 +271,11 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
-        background->unk2A = 0;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
+        background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(1);
-        sub_8002A3C(background);
+        InitBackground(background);
     }
 }
 
@@ -320,7 +320,7 @@ static void Task_CreateCopyrightScreen(void)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[13];
@@ -328,11 +328,11 @@ static void Task_CreateCopyrightScreen(void)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
-        background->unk2A = 0;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
+        background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(0);
-        sub_8002A3C(background);
+        InitBackground(background);
     }
 
     {
@@ -343,7 +343,7 @@ static void Task_CreateCopyrightScreen(void)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(21);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(21);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[14];
@@ -351,11 +351,11 @@ static void Task_CreateCopyrightScreen(void)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 3;
-        background->unk2A = 0;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 3;
+        background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(2);
-        sub_8002A3C(background);
+        InitBackground(background);
 
         scene->sequence = SEQUENCE_COPYRIGHT_SCREEN;
         scene->sonicAnimFrame++;
@@ -384,10 +384,10 @@ static void Task_SequenceMain(void)
 
                 background->tilemapId
                     = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
-                background->unk26 = 0x1E;
-                background->unk28 = 0x14;
+                background->targetTilesX = 0x1E;
+                background->targetTilesY = 0x14;
                 background->flags = BACKGROUND_FLAGS_BG_ID(0);
-                sub_8002A3C(background);
+                InitBackground(background);
                 scene->sonicAnimFrame++;
 
                 scene->unk15E = gUnknown_080E12F0[scene->sonicAnimFrame];

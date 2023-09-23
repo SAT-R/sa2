@@ -5,7 +5,7 @@
 
 #include "constants/tilemaps.h"
 
-extern const Background gUnknown_080D5864[4];
+extern const Background gStageCameraBgTemplates[4];
 
 void CreateStageBg_Zone6_Boss(void);
 
@@ -74,7 +74,7 @@ void CreateStageBg_Zone6_Acts(void)
 
 void CreateStageBg_Zone6_Boss(void)
 {
-    Background *background = &gUnknown_03005850.unk0;
+    Background *background = &gStageBackgroundsRam.unk0;
     gDispCnt |= DISPCNT_BG0_ON;
     gBgCntRegs[0] = 0x1a0f;
     gUnknown_03004D80[0] = 0;
@@ -88,12 +88,12 @@ void CreateStageBg_Zone6_Boss(void)
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
 
-    *background = gUnknown_080D5864[3];
+    *background = gStageCameraBgTemplates[3];
     background->tilemapId = TM_TECHNO_BASE_BG_CIRCUIT_MASK;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    background->tilesVram = (void *)BG_SCREEN_ADDR(26);
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
+    background->layoutVram = (void *)BG_SCREEN_ADDR(26);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
 
-    sub_8002A3C(background);
+    InitBackground(background);
 }

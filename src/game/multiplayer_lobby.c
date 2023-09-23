@@ -163,7 +163,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     background = &lobbyScreen->background;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_MESSAGE_BOX_UNKNOWN;
@@ -171,11 +171,11 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     s = &lobbyScreen->chao;
     s->graphics.dest = VramMalloc(0x38);

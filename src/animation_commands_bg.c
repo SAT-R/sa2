@@ -398,10 +398,10 @@ END_NONMATCH
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  BgAffineReg *affine)
 {
-    affine->pa = ((COS(p0) >> 6) * (s16)Div(0x10000, p1)) >> 8;
-    affine->pb = ((SIN(p0) >> 6) * (s16)Div(0x10000, p1)) >> 8;
+    affine->pa = (COS_24_8(p0) * (s16)Div(0x10000, p1)) >> 8;
+    affine->pb = (SIN_24_8(p0) * (s16)Div(0x10000, p1)) >> 8;
     affine->pc = ((-SIN(p0) >> 6) * (s16)Div(0x10000, p2)) >> 8;
-    affine->pd = ((COS(p0) >> 6) * (s16)Div(0x10000, p2)) >> 8;
+    affine->pd = (COS_24_8(p0) * (s16)Div(0x10000, p2)) >> 8;
 
     p5 *= -1;
     p6 *= -1;
@@ -409,15 +409,15 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
         // __sub_8003FA8
         s32 r1 = (s16)affine->pa * p5;
         s32 r3 = (s16)affine->pb * p6;
-        r1 += r3;
-        affine->x = r1 + p3 * 256;
+
+        affine->x = (r1 + r3) + p3 * 256;
     }
     {
         // __sub_8003FBE
         s32 r1 = (s16)affine->pc * p5;
         s32 r3 = (s16)affine->pd * p6;
-        r1 += r3;
-        affine->y = r1 + p4 * 256;
+
+        affine->y = (r1 + r3) + p4 * 256;
     }
 }
 

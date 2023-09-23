@@ -229,7 +229,7 @@ void StartSinglePakConnect(void)
     background = &connectScreen->unk9C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(20);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_WAIT_CONNECTION;
@@ -237,11 +237,11 @@ void StartSinglePakConnect(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
     m4aSongNumStart(MUS_CONNECTION_PENDING);
 
     if (!SomeSioCheck()) {
@@ -468,7 +468,7 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     background = &connectScreen->unk9C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = gUnknown_080E0218[connectScreen->unkFA];
@@ -476,11 +476,11 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     CpuFill16(0, &gBgPalette[17], 30);
 

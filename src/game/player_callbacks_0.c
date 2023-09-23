@@ -589,7 +589,7 @@ void sub_8012548(Player *p)
 
 void sub_80125BC(Player *p)
 {
-    if (p->w.flyingDurationCream == 0) {
+    if (p->w.cf.flyingDuration == 0) {
         if (p->unk64 == 85)
             m4aSongNumStop(SE_CREAM_FLYING);
 
@@ -620,7 +620,7 @@ void sub_8012644(Player *p)
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
     }
 
-    p->w.flyingDurationCream = CREAM_FLYING_DURATION;
+    p->w.cf.flyingDuration = CREAM_FLYING_DURATION;
     p->unk61 = 1;
     p->unk5A = 0;
     p->unk58 = 0;
@@ -630,8 +630,8 @@ void sub_8012644(Player *p)
 
 void PlayerCB_80126B0(Player *p)
 {
-    if (p->w.flyingDurationCream != 0) {
-        p->w.flyingDurationCream--;
+    if (p->w.cf.flyingDuration != 0) {
+        p->w.cf.flyingDuration--;
 
         if (p->unk5C & gPlayerControls.attack) {
             p->unk64 = 86;
@@ -654,7 +654,7 @@ void PlayerCB_80126B0(Player *p)
         }
     } else {
         if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q_24_8(0.75))
-            && (p->w.flyingDurationCream != 0)) {
+            && (p->w.cf.flyingDuration != 0)) {
             p->unk61 = 2;
         }
 
@@ -852,7 +852,7 @@ void sub_8012AD0(Player *p)
 
 void sub_8012B44(Player *p)
 {
-    if (p->flyingDurationTails == 0) {
+    if (p->w.tf.flyingDuration == 0) {
         p->unk64 = 90;
         m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
     } else {
@@ -880,7 +880,7 @@ void sub_8012BC0(Player *p)
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
     }
 
-    p->flyingDurationTails = TAILS_FLYING_DURATION;
+    p->w.tf.flyingDuration = TAILS_FLYING_DURATION;
     p->unk61 = 1;
     p->unk5A = 0;
     p->unk58 = 0;
@@ -893,8 +893,8 @@ void PlayerCB_8012C2C(Player *p)
 {
     // Only decrease Tails' counter every 2nd frame, giving him 8 seconds of flight.
     // ...why didn't they just set his timer to a bigger value?
-    if ((gStageTime & 0x1) && (p->flyingDurationTails != 0)) {
-        p->flyingDurationTails--;
+    if ((gStageTime & 0x1) && (p->w.tf.flyingDuration != 0)) {
+        p->w.tf.flyingDuration--;
     }
 
     if (p->unk61 != 1) {
@@ -909,7 +909,7 @@ void PlayerCB_8012C2C(Player *p)
         }
     } else {
         if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q_24_8(0.75))
-            && (p->flyingDurationTails != 0)) {
+            && (p->w.tf.flyingDuration != 0)) {
             p->unk61 = 2;
         }
 

@@ -92,6 +92,10 @@ extern u32 gCourseTime;
 // Collected Special Rings in current stage?
 extern u8 gUnknown_030054F4;
 
+// TODO: Types not checked yet!
+extern s32 gUnknown_030054E0;
+extern s32 gUnknown_030054FC;
+
 extern u16 gUnknown_03005440;
 extern u16 gUnknown_030054BC;
 extern u8 gRandomItemBox;
@@ -107,7 +111,7 @@ typedef struct {
 extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
 
 typedef struct {
-    u8 filler0[0xC];
+    u16 unk0[6]; // might be [5]
     Sprite s;
     Hitbox reserved;
 } UNK_3005A70; /* 0x30 */
@@ -168,8 +172,6 @@ extern u32 gUnknown_030054A0;
 
 extern u32 gCheckpointTime; // Checkpoint timer?
 
-extern u8 gUnknown_0300540C;
-
 extern u8 gUnknown_03005438;
 extern u8 gUnknown_030055BC;
 
@@ -207,10 +209,36 @@ typedef void (*PlayerCallback)(struct Player_ *);
 //       This is used for an apparent around the value Cream uses for flying duration
 typedef struct {
     /* 0xAC */ u8 flags;
+    /* 0xAD */ s8 unkAD;
+    /* 0xAE */ u16 unkAE;
+    /* 0xB0 */ u16 unkB0;
+} SonicFlags;
+
+typedef struct {
+    /* 0xAC */ s16 flyingDuration;
+    /* 0xAE */ u16 unkAE;
+    /* 0xB0 */ s8 unkB0;
+} CreamFlags;
+
+typedef struct {
+    /* 0xAC */ u8 flags;
     /* 0xAD */ s8 shift;
     /* 0xAE */ s8 unkAE;
     /* 0xAF */ s8 unkAF;
+
+    // NOTE: For some reason this is a 4-byte value, while Cream's is a 2-byte
+    /* 0xB0 */ s32 flyingDuration;
 } TailsFlags;
+
+typedef struct {
+    /* 0xAC */ u8 unkAC;
+    /* 0xAD */ u8 unkAD;
+    /* 0xAE */ u8 unkAE;
+} KnucklesFlags;
+
+typedef struct {
+    /* 0xAC */ u8 unkAC;
+} AmyFlags;
 
 #define PLAYER_ITEM_EFFECT__NONE            0x00
 #define PLAYER_ITEM_EFFECT__SHIELD_NORMAL   0x01
@@ -223,6 +251,7 @@ typedef struct {
 #define PLAYER_ITEM_EFFECT__80              0x80
 #define FLAG_PLAYER_x38__LAYER_FOREGROUND   0x00
 #define FLAG_PLAYER_x38__LAYER_BACKGROUND   0x01
+#define FLAG_PLAYER_x38__80                 0x80
 // Not sure what these are yet
 typedef struct Player_ {
     /* 0x00 */ PlayerCallback callback;
@@ -247,20 +276,21 @@ typedef struct Player_ {
     /* 0x20 */ u32 moveState;
 
     /* 0x24 */ u8 rotation;
-    /* 0x25 */ u8 filler25[1];
+    /* 0x25 */ u8 unk25;
     /* 0x26 */ s16 spindashAccel;
-    /* 0x28 */ u8 filler28[2];
+    /* 0x28 */ u8 unk28;
+    /* 0x28 */ u8 unk29;
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
     /* 0x2E */ u16 timerInvincibility;
     /* 0x30 */ u16 timerSpeedup;
     /* 0x32 */ u16 unk32;
-    /* 0x32 */ u8 filler34[2];
+    /* 0x34 */ u8 filler34[2];
     /* 0x36 */ s8 unk36;
     /* 0x37 */ u8 itemEffect; // bitfield
     /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
     /* 0x39 */ u8 unk39;
-    /* 0x3A */ u8 filler3A[2];
+    /* 0x3A */ u16 unk3A;
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
     /* 0x40 */ s32 unk40;
     /* 0x44 */ s32 unk44;
@@ -299,11 +329,13 @@ typedef struct Player_ {
     // unk72 appears to be a duration timer for side-forward trick animations (in
     // frames?)
     /* 0x72 */ s16 unk72;
-    /* 0x74 */ u16 checkPointX;
-    /* 0x76 */ u16 checkPointY;
+    /* 0x74 */ s16 checkPointX;
+    /* 0x76 */ s16 checkPointY;
     /* 0x78 */ u32 checkpointTime;
     /* 0x7C */ u16 unk7C;
-    /* 0x7E */ u8 filler7E[6];
+    /* 0x7E */ u16 unk7E;
+    /* 0x80 */ u16 unk80;
+    /* 0x82 */ u16 unk82;
 
     // Denotes how many points the player should get after defeating an enemy.
     // (see stage/enemy_defeat_score.c and stage/entity_manager.c for usage)
@@ -312,7 +344,8 @@ typedef struct Player_ {
     /* 0x85 */ s8 character;
     /* 0x86 */ u8 unk86;
     /* 0x87 */ u8 unk87;
-    /* 0x88 */ u8 filler88[4];
+    /* 0x88 */ u8 unk88;
+    /* 0x88 */ u8 filler88[3];
     /* 0x8C */ struct Task *spriteTask;
     /* 0x90 */ UNK_3005A70 *unk90;
 
@@ -320,8 +353,7 @@ typedef struct Player_ {
     //       Alternatively, some of the following data might be a union
     /* 0x94 */ UNK_3005A70 *unk94;
     /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
-    /* 0x99 */ s8 unk99;
-    /* 0x9A */ u8 filler9A[0xE];
+    /* 0x99 */ s8 unk99[15];
     /* 0xA8 */ u8 unkA8;
     /* 0x9A */ u8 fillerA9[0x3];
 
@@ -331,13 +363,12 @@ typedef struct Player_ {
     //            when jumping.
     /* 0xAC */
     union {
-        s16 flyingDurationCream;
+        SonicFlags sf;
+        CreamFlags cf;
         TailsFlags tf;
+        KnucklesFlags kf;
+        AmyFlags af;
     } w;
-
-    // Tails's framecounter for flying
-    // NOTE: For some reason this is a 4-byte value, while Cream's is a 2-byte
-    /* 0xB0 */ s32 flyingDurationTails;
 } Player;
 
 extern Player gPlayer;
@@ -447,18 +478,19 @@ typedef struct {
 } SomeStruct_3005498; /* size: unknown (but >= 0x8) */
 extern SomeStruct_3005498 gUnknown_03005498;
 
-// Seems to be belonging to the pause menu?
-// Or maybe this is generally used to init common palettes for the GUI?
-struct SomeStruct_5660 {
-    /* 0x00 */ u8 unk0; // Might be bool for checking whether the task was just started?
+// Seems to be belonging to water effect
+typedef struct {
+    /* 0x00 */ bool8 isActive;
     /* 0x01 */ u8 filler1[3];
-    /* 0x04 */ s16 unk4;
-    /* 0x06 */ u8 filler6[0xA];
-    /* 0x10 */ struct Task
-        *t; // -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
-};
+    /* 0x04 */ s16 currentWaterLevel;
+    /* 0x06 */ s16 targetWaterLevel;
+    /* 0x08 */ u8 filler8[0x8];
 
-extern struct SomeStruct_5660 gUnknown_03005660;
+    // t -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
+    /* 0x10 */ struct Task *t;
+} Water;
+
+extern Water gWater;
 
 extern u8 gMultiplayerUnlockedCharacters;
 extern u8 gMultiplayerUnlockedLevels;
@@ -481,7 +513,8 @@ extern u8 gMultiplayerConnections;
 
 extern struct ButtonConfig gPlayerControls;
 
-extern s32 gUnknown_030054D0;
+// Only set after the player passed it, used to determine extra score
+extern s32 gStageGoalX;
 
 // TODO: find out what task is parent to IA
 typedef struct {
@@ -535,7 +568,7 @@ struct Backgrounds {
     Background unkC0;
 };
 
-extern struct Backgrounds gUnknown_03005850;
+extern struct Backgrounds gStageBackgroundsRam;
 extern const u32 *gUnknown_030059C8;
 
 // rodata
@@ -581,7 +614,7 @@ void sub_802E044(u16, u16);
 void sub_80304DC(u32, u16, u8);
 
 void sub_8019F08(void);
-struct Task *sub_801F3A4(s32, s32, u16);
+struct Task *CreateStageGoalBonusPointsAnim(s32, s32, u16);
 void sub_801F550(struct Task *);
 
 void sub_80218E4(Player *);
@@ -649,8 +682,8 @@ extern void sub_802C668(s32 *x, s32 *y);
 
 extern void sub_8021350(void);
 
-// NOTE: Proc type should be the same as sub_80299F0!
-extern void sub_8021604(u32 character, u32 level, u32 p2, Player *player);
+// NOTE: Proc type should be the same as SetStageSpawnPosInternal!
+extern void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *player);
 
 #define INCREMENT_SCORE(incVal)                                                         \
     {                                                                                   \

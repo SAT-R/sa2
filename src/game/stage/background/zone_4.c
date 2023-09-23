@@ -7,23 +7,23 @@
 
 #include "constants/tilemaps.h"
 
-extern const Background gUnknown_080D5864[4];
+extern const Background gStageCameraBgTemplates[4];
 
 void CreateStageBg_Zone4(void)
 {
-    Background *background = &gUnknown_03005850.unk0;
+    Background *background = &gStageBackgroundsRam.unk0;
     const Background *templates;
     gBgCntRegs[0] = 0x1B0F;
 
-    *background = gUnknown_080D5864[3];
+    *background = gStageCameraBgTemplates[3];
 
     background->tilemapId = TM_SPOTLIGHT_SNOW;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-    background->tilesVram = (void *)BG_SCREEN_ADDR(27);
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
+    background->layoutVram = (void *)BG_SCREEN_ADDR(27);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
     background->flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
@@ -68,8 +68,8 @@ void StageBgUpdate_Zone4Acts12(s32 a, s32 b)
         gBldRegs.bldAlpha = 0xc0c;
     }
 
-    sub_8002A3C(&gUnknown_03005850.unk0);
-    UpdateBgAnimationTiles(&gUnknown_03005850.unk0);
+    InitBackground(&gStageBackgroundsRam.unk0);
+    UpdateBgAnimationTiles(&gStageBackgroundsRam.unk0);
 
     if (!(gStageTime & 0xF)) {
         gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 1) & 0xff;

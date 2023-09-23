@@ -6399,7 +6399,7 @@ void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(b);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(b);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = tilemapId;
@@ -6407,15 +6407,15 @@ void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = d;
-    background->unk28 = e;
-    background->unk2A = f;
+    background->targetTilesX = d;
+    background->targetTilesY = e;
+    background->paletteOffset = f;
     background->animFrameCounter = 0;
     background->animDelayCounter = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(bg_id);
     background->scrollX = scrollX;
     background->scrollY = scrollY;
-    sub_8002A3C(background);
+    InitBackground(background);
 }
 
 // Finds the max unk4 of the item text array

@@ -180,7 +180,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     background = &resultsScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = sResultsScreenBgSelectedCharacters[lang];
@@ -188,11 +188,11 @@ void CreateMultiplayerResultsScreen(u8 mode)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(3);
-    sub_8002A3C(background);
+    InitBackground(background);
 
     for (; count < 4; count++) {
         if (gUnknown_030054B4[count] == -1) {
