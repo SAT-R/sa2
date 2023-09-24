@@ -1,5 +1,6 @@
 #include "global.h"
 #include "core.h"
+#include "flags.h"
 #include "task.h"
 #include "game/game.h"
 
@@ -7,11 +8,14 @@
 #include "game/player_unknown_0.h"
 
 #include "constants/animations.h"
+#include "constants/zones.h"
 
 #define WATER_MASK_COLOR_A 0x7BDE
 #define WATER_MASK_COLOR_B 0x739C
 #define WATER_MASK_A       ((WATER_MASK_COLOR_A << 16) | WATER_MASK_COLOR_A)
 #define WATER_MASK_B       ((WATER_MASK_COLOR_B << 16) | WATER_MASK_COLOR_B)
+
+#define WATER_SURFACE_SPRITE_COUNT ((DISPLAY_WIDTH + 16) / 16)
 
 // TODO: Move decl elsewhere
 extern u16 gUnknown_080D5678[];
@@ -25,6 +29,8 @@ const u16 gUnknown_080D550C[NUM_CHARACTERS] = {
 
 void Task_8011660(void);
 void TaskDestructor_8011A20(struct Task *);
+void sub_8011A4C(void);
+void VCountIntr_8011ACC(void);
 
 static void inline sub_8011B54_inline(u32 *dst, u32 *src, s32 size, s32 shift)
 {
@@ -228,6 +234,84 @@ void sub_80115D0(s32 waterLevel, u32 p1, u32 mask)
 
         gWater.t
             = TaskCreate(Task_8011660, PLTT_SIZE, 0xFFFE, 0, TaskDestructor_8011A20);
+    }
+}
+
+void Task_8011660(void)
+{
+    Water *water = &gWater;
+    struct Camera *cam = &gCamera;
+    bool32 active;
+    Sprite *s;
+    u8 unk1;
+#ifndef NON_MATCHING
+    register u8 unk2_0 asm("r0");
+    register u8 unk2_2 asm("r2");
+#else
+    u8 unk2_0;
+    u8 unk2_2;
+#endif
+
+    if ((gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1))
+        && (Q_24_8_TO_INT(gPlayer.x) > 6665) && (Q_24_8_TO_INT(gPlayer.x) <= 10650))
+        water->isActive = TRUE;
+    else
+        water->isActive = FALSE;
+
+    if (water->isActive != TRUE) {
+        gFlags &= ~MOVESTATE_40;
+        return;
+    }
+    // _080116BC
+
+    if (gStageTime & 0x1) {
+        if (water->currentWaterLevel != water->targetWaterLevel) {
+            if (water->currentWaterLevel < water->targetWaterLevel)
+                water->currentWaterLevel++;
+            else if (water->currentWaterLevel > water->targetWaterLevel)
+                water->currentWaterLevel--;
+        }
+    }
+    // _080116EC
+    if (water->currentWaterLevel <= cam->y) {
+        water->unk2 = 0;
+    } else if (water->currentWaterLevel < cam->y + DISPLAY_HEIGHT) {
+        water->unk2 = water->currentWaterLevel - cam->y;
+    } else {
+        water->unk2 = 0xFF;
+    }
+
+    gUnknown_03001870[gUnknown_03004D50++] = sub_8011A4C;
+    gFlags |= FLAGS_10;
+
+    unk1 = water->unk1 - 1;
+    if (unk1 < DISPLAY_HEIGHT - 1) {
+        s = &water->s;
+        s->x = -((cam->x + ((gStageTime + 1) >> 2)) & 0xF);
+        s->y = water->unk2 + 1;
+        s->unk10 |= (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18);
+        UpdateSpriteAnimation(s);
+
+        if (gStageTime & 0x2) {
+            u16 y = s->y - 1;
+            if (y < DISPLAY_WIDTH - 1) {
+                s32 count = WATER_SURFACE_SPRITE_COUNT;
+                do {
+                    DisplaySprite(s);
+                    s->x += 16;
+                } while (--count >= 0);
+            }
+        }
+    }
+    // _0801178C
+    unk2_0 = (water->unk2);
+    if ((unk2_2 = unk2_0 - 1) < DISPLAY_HEIGHT - 1) {
+        gIntrTable[3] = VCountIntr_8011ACC;
+        gUnknown_03002874 = unk2_2;
+        gFlags |= FLAGS_40;
+    } else {
+        gIntrTable[3] = gIntrTableTemplate[3];
+        gFlags &= ~FLAGS_40;
     }
 }
 

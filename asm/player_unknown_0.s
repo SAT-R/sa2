@@ -6,8 +6,6 @@
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start Task_8011660
 Task_8011660: @ 0x08011660
 	push {r4, r5, r6, r7, lr}
@@ -50,14 +48,14 @@ _080116A2:
 	rsbs r2, r2, #0
 	ands r1, r2
 	str r1, [r0]
-	b _080117DC
+	b Task_8011660_return
 	.align 2, 0
 _080116B8: .4byte gFlags
 _080116BC:
 	ldr r1, _080116E0 @ =gStageTime
 	ldr r0, [r1]
 	ands r0, r2
-	adds r5, r1, #0
+	adds r5, r1, #0     @ r5 = r1 = gStageTime
 	cmp r0, #0
 	beq _080116EC
 	ldrh r0, [r6, #4]
@@ -120,7 +118,7 @@ _0801170A:
 	lsrs r0, r0, #0x18
 	cmp r0, #0x9e
 	bhi _0801178C
-	adds r4, r6, #0
+	adds r4, r6, #0 @ r4 = r6 = water
 	adds r4, #0x14
 	ldr r1, [r7]
 	ldr r0, [r5]
@@ -170,7 +168,7 @@ _0801178C:
 	cmp r0, #0x9e
 	bhi _080117C8
 	ldr r1, _080117BC @ =gIntrTable
-	ldr r0, _080117C0 @ =sub_8011ACC
+	ldr r0, _080117C0 @ =VCountIntr_8011ACC
 	str r0, [r1, #0xc]
 	ldr r0, _080117C4 @ =gUnknown_03002874
 	strb r2, [r0]
@@ -185,7 +183,7 @@ _080117B0: .4byte gUnknown_03004D50
 _080117B4: .4byte sub_8011A4C
 _080117B8: .4byte gFlags
 _080117BC: .4byte gIntrTable
-_080117C0: .4byte sub_8011ACC
+_080117C0: .4byte VCountIntr_8011ACC
 _080117C4: .4byte gUnknown_03002874
 _080117C8:
 	ldr r1, _080117E4 @ =gIntrTable
@@ -199,7 +197,7 @@ _080117C8:
 	ands r0, r1
 _080117DA:
 	str r0, [r2]
-_080117DC:
+Task_8011660_return:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
@@ -207,6 +205,7 @@ _080117DC:
 _080117E4: .4byte gIntrTable
 _080117E8: .4byte gIntrTableTemplate
 _080117EC: .4byte gFlags
+.endif
 
 @; new thing
 
@@ -565,8 +564,8 @@ _08011AC0: .4byte 0x84000080
 _08011AC4: .4byte 0x0000FEFF
 _08011AC8: .4byte gFlags
 
-	thumb_func_start sub_8011ACC
-sub_8011ACC: @ 0x08011ACC
+	thumb_func_start VCountIntr_8011ACC
+VCountIntr_8011ACC: @ 0x08011ACC
 	ldr r0, _08011B18 @ =gWater
 	ldr r0, [r0, #0x10]
 	ldrh r1, [r0, #6]
