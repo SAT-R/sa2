@@ -26,13 +26,14 @@ typedef struct {
     /* 0x58 */ s16 unk58;
 } Sprite_Koura; /* size: 0x5C */
 
-void Task_MadilloMain(void);
-void Task_8056230(void);
-void Task_80564BC(void);
+static void sub_8054224(void);
+static void sub_8054904(void);
+static void sub_805462C(void);
 
-void sub_8054224(void);
-
-extern const u16 gUnknown_080D8F38[][2];
+static const u16 gUnknown_080D8F38[][2] = {
+    { SA2_ANIM_KOURA, 1 }, { SA2_ANIM_KOURA, 2 }, { SA2_ANIM_KOURA, 3 },
+    { SA2_ANIM_KOURA, 4 }, { SA2_ANIM_KOURA, 5 }, { SA2_ANIM_KOURA, 6 },
+};
 
 void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -80,10 +81,7 @@ void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
                 gUnknown_080D8F38[koura->unk54 & 2][1], 18, 2);
 }
 
-void sub_8054904(void);
-void sub_805462C(void);
-
-void sub_8054224(void)
+static void sub_8054224(void)
 {
     Sprite_Koura *koura = TaskGetStructPtr(gCurTask);
     Sprite *s = &koura->s;
@@ -165,7 +163,7 @@ void sub_8054224(void)
     ENEMY_UPDATE(s, pos.x, pos.y);
 }
 
-void sub_805462C(void)
+static void sub_805462C(void)
 {
     Sprite_Koura *koura = TaskGetStructPtr(gCurTask);
     Sprite *s = &koura->s;
@@ -220,7 +218,7 @@ void sub_805462C(void)
     DisplaySprite(s);
 }
 
-void sub_8054904(void)
+static void sub_8054904(void)
 {
     Sprite_Koura *koura = TaskGetStructPtr(gCurTask);
     Sprite *s = &koura->s;
