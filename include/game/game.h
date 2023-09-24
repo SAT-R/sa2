@@ -477,7 +477,7 @@ typedef struct {
 extern SomeStruct_3005498 gUnknown_03005498;
 
 typedef struct {
-    u16 pal[16*16];
+    u16 pal[16 * 16];
 } WaterData;
 
 // Seems to be belonging to water effect
