@@ -23,6 +23,9 @@ const u16 gUnknown_080D550C[NUM_CHARACTERS] = {
     SA2_ANIM_UNDERWATER_1UP_AMY,
 };
 
+void Task_8011660(void);
+void TaskDestructor_8011A20(struct Task *);
+
 static void inline sub_8011B54_inline(u32 *dst, u32 *src, s32 size, s32 shift)
 {
     s32 r2 = size >> shift;
@@ -199,6 +202,34 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328())
     /* Mask sixteen 16-color palettes - End */
 }
 END_NONMATCH
+
+void sub_80115D0(s32 waterLevel, u32 p1, u32 mask)
+{
+    gWater.currentWaterLevel = waterLevel;
+    gWater.targetWaterLevel = waterLevel;
+    gWater.unk2 = 0xFF;
+    gWater.unk1 = -1;
+    gWater.unk8 = mask & 0x100;
+    gWater.mask = p1;
+
+    if (waterLevel >= 0) {
+        Sprite *s = &gWater.s;
+        s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
+        s->graphics.size = 0;
+        s->graphics.anim = SA2_ANIM_WATER_SURFACE;
+        s->variant = 0;
+        s->prevVariant |= -1;
+        s->unk1A = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+        s->palId = 0;
+        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        UpdateSpriteAnimation(s);
+
+        gWater.t
+            = TaskCreate(Task_8011660, PLTT_SIZE, 0xFFFE, 0, TaskDestructor_8011A20);
+    }
+}
 
 #if 0 // matches
 static void sub_8011B54(u32 *dst, u32 *src, s32 size)

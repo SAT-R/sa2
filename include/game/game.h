@@ -483,14 +483,17 @@ typedef struct {
 // Seems to be belonging to water effect
 typedef struct {
     /* 0x00 */ bool8 isActive;
-    /* 0x01 */ u8 filler1[3];
+    /* 0x01 */ u8 unk1;
+    /* 0x01 */ u8 unk2;
+    /* 0x01 */ u8 unk3;
     /* 0x04 */ s16 currentWaterLevel;
     /* 0x06 */ s16 targetWaterLevel;
-    /* 0x08 */ u8 filler8[0x4];
+    /* 0x08 */ u32 unk8;
     /* 0x0C */ u32 mask;
 
     // t -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
     /* 0x10 */ struct Task *t; /* size: 0x400 */
+    /* 0x14 */ Sprite s;
 } Water;
 
 extern Water gWater;
