@@ -10,8 +10,8 @@
 
 #define WATER_MASK_COLOR_A 0x7BDE
 #define WATER_MASK_COLOR_B 0x739C
-#define WATER_MASK_A ((WATER_MASK_COLOR_A << 16) | WATER_MASK_COLOR_A)
-#define WATER_MASK_B ((WATER_MASK_COLOR_B << 16) | WATER_MASK_COLOR_B)
+#define WATER_MASK_A       ((WATER_MASK_COLOR_A << 16) | WATER_MASK_COLOR_A)
+#define WATER_MASK_B       ((WATER_MASK_COLOR_B << 16) | WATER_MASK_COLOR_B)
 
 // TODO: Move decl elsewhere
 extern u16 gUnknown_080D5678[];
@@ -82,34 +82,37 @@ void sub_8011328()
             animId = gUnknown_080D550C[mpChar];
             animation = gAnimations[animId];
             pal = (animation[0])[1];
-            sub_8011B54_inline((u32*)&wd->pal[j * 16], (u32*)&gSpritePalettes[pal * 16], 1, 0);
+            sub_8011B54_inline((u32 *)&wd->pal[j * 16],
+                               (u32 *)&gSpritePalettes[pal * 16], 1, 0);
         }
     } else {
         // _08011400
         animId = gUnknown_080D550C[gPlayer.character];
-        animation = (s32**)gAnimations[animId];
+        animation = (s32 **)gAnimations[animId];
         pal = (animation[0])[1];
-        sub_8011B54_inline((u32*)&wd->pal[0 * 16], (u32*)&gSpritePalettes[pal * 16], 1, 0);
-        
+        sub_8011B54_inline((u32 *)&wd->pal[0 * 16], (u32 *)&gSpritePalettes[pal * 16], 1,
+                           0);
 
         gUnknown_080D5678[gPlayer.character];
-        animation = (s32**)gAnimations[animId];
+        animation = (s32 **)gAnimations[animId];
         pal = (animation[0])[1];
-        sub_8011B54_inline((u32*)&wd->pal[3 * 16], (u32*)&gSpritePalettes[(pal + 1) * 16], 1, 0);
+        sub_8011B54_inline((u32 *)&wd->pal[3 * 16],
+                           (u32 *)&gSpritePalettes[(pal + 1) * 16], 1, 0);
     }
     // _080114B0
     animId = SA2_ANIM_PALETTE_554;
-    animation = (s32**)gAnimations[animId];
+    animation = (s32 **)gAnimations[animId];
     pal = (animation[0])[1];
-    sub_8011B54_inline((u32*)&wd->pal[3 * 16], (u32*)&gSpritePalettes[(pal + 2) * 16], 12, 0);
+    sub_8011B54_inline((u32 *)&wd->pal[3 * 16], (u32 *)&gSpritePalettes[(pal + 2) * 16],
+                       12, 0);
 
-    dst = (u32*)&wd->pal[256];
-    src = (u32*)gBgPalette;
+    dst = (u32 *)&wd->pal[256];
+    src = (u32 *)gBgPalette;
     waterMask = gWater.mask & WATER_MASK_B;
-    
+
     /* Mask sixteen 16-color palettes - Start */
     k = 16;
-    while(--k != 0) {
+    while (--k != 0) {
         maskColors0 = *src++;
         maskColors1 = maskColors0;
         maskColors1 &= WATER_MASK_A;
@@ -117,7 +120,7 @@ void sub_8011328()
         maskColors0 = (maskColors0 + waterMask) >> 1;
         maskColors1 = (maskColors1 + maskColors0) >> 1;
         *dst++ = maskColors1;
-    
+
         maskColors0 = *src++;
         maskColors1 = maskColors0;
         maskColors1 &= WATER_MASK_A;
@@ -125,7 +128,7 @@ void sub_8011328()
         maskColors0 = (maskColors0 + waterMask) >> 1;
         maskColors1 = (maskColors1 + maskColors0) >> 1;
         *dst++ = maskColors1;
-    
+
         maskColors0 = *src++;
         maskColors1 = maskColors0;
         maskColors1 &= WATER_MASK_A;
@@ -133,7 +136,7 @@ void sub_8011328()
         maskColors0 = (maskColors0 + waterMask) >> 1;
         maskColors1 = (maskColors1 + maskColors0) >> 1;
         *dst++ = maskColors1;
-    
+
         maskColors0 = *src++;
         maskColors1 = maskColors0;
         maskColors1 &= WATER_MASK_A;
@@ -141,7 +144,7 @@ void sub_8011328()
         maskColors0 = (maskColors0 + waterMask) >> 1;
         maskColors1 = (maskColors1 + maskColors0) >> 1;
         *dst++ = maskColors1;
-    
+
         maskColors0 = *src++;
         maskColors1 = maskColors0;
         maskColors1 &= WATER_MASK_A;
@@ -149,7 +152,7 @@ void sub_8011328()
         maskColors0 = (maskColors0 + waterMask) >> 1;
         maskColors1 = (maskColors1 + maskColors0) >> 1;
         *dst++ = maskColors1;
-    
+
         maskColors0 = *src++;
         maskColors1 = maskColors0;
         maskColors1 &= WATER_MASK_A;
@@ -157,7 +160,7 @@ void sub_8011328()
         maskColors0 = (maskColors0 + waterMask) >> 1;
         maskColors1 = (maskColors1 + maskColors0) >> 1;
         *dst++ = maskColors1;
-    
+
         maskColors0 = *src++;
         maskColors1 = maskColors0;
         maskColors1 &= WATER_MASK_A;
@@ -165,7 +168,7 @@ void sub_8011328()
         maskColors0 = (maskColors0 + waterMask) >> 1;
         maskColors1 = (maskColors1 + maskColors0) >> 1;
         *dst++ = maskColors1;
-    
+
         maskColors0 = *src++;
         maskColors1 = maskColors0;
         maskColors1 &= WATER_MASK_A;
@@ -175,7 +178,6 @@ void sub_8011328()
         *dst++ = maskColors1;
     }
     /* Mask sixteen 16-color palettes - End */
-
 }
 #endif
 
