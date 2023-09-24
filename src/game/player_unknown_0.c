@@ -52,8 +52,8 @@ static void inline copyMask(u32 *dst, u32 *src, u32 waterMask)
     *dst = maskColors1;
 }
 
-// https://decomp.me/scratch/M6i4c
-void sub_8011328()
+// (98.73%) https://decomp.me/scratch/M6i4c
+NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328())
 {
     s32 k;
     u16 animId;
@@ -198,6 +198,7 @@ void sub_8011328()
     }
     /* Mask sixteen 16-color palettes - End */
 }
+END_NONMATCH
 
 #if 0 // matches
 static void sub_8011B54(u32 *dst, u32 *src, s32 size)
