@@ -94,7 +94,7 @@ _08022DF4:
 	ldrb r0, [r0]
 	cmp r0, #2
 	bhi _08022E26
-	bl sub_80117F0
+	bl CreateRunOnWaterEffect
 _08022E26:
 	ldr r0, _08022E50 @ =0x00000119
 	bl m4aSongNumStartOrContinue

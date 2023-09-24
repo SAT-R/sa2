@@ -52,7 +52,6 @@ void sub_8013CA0(Player *p);
 
 void sub_8015BD4(u16);
 
-void Task_801F214(void);
 void TaskDestructor_801F550(struct Task *);
 
 void sub_8022318(Player *p);

@@ -39,7 +39,7 @@ void sub_801BF90(void);
 
 void SetupStageIntro(void);
 
-void sub_80115D0(u32, u32, u32);
+void CreateStageWaterTask(u32, u32, u32);
 
 void sub_8019120(void);
 void CreateMultiplayerPlayer(u8);
@@ -206,7 +206,7 @@ void CreateGameStage(void)
     }
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_1, ACT_1)) {
-        sub_80115D0(-1, 0, 0);
+        CreateStageWaterTask(-1, 0, 0);
     }
 
     gUnknown_03005424 &= ~0x2;
@@ -440,7 +440,7 @@ void sub_801AE48(void)
 void sub_801AF14(void)
 {
     u16 level;
-    sub_80115D0(0x830, 0x7F207F20, 0);
+    CreateStageWaterTask(0x830, 0x7F207F20, 0);
     CreatePaletteLoaderTask(0x2000, 897, 0, NULL);
 
     level = gCurrentLevel;

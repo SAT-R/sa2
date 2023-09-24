@@ -1,11 +1,12 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
+#include "malloc_vram.h"
 #include "task.h"
 #include "game/game.h"
 
 #include "data/sprite_data.h"
-#include "game/player_unknown_0.h"
+#include "game/water_surface.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"
@@ -27,10 +28,12 @@ const u16 gUnknown_080D550C[NUM_CHARACTERS] = {
     SA2_ANIM_UNDERWATER_1UP_AMY,
 };
 
-void Task_8011660(void);
-void TaskDestructor_8011A20(struct Task *);
+static void Task_StageWaterTask(void);
+static void Task_RunOnWaterEffect(void);
+static void TaskDestructor_WaterSurface(struct Task *);
 void sub_8011A4C(void);
 void VCountIntr_8011ACC(void);
+void TaskDestructor_8011B3C(struct Task *);
 
 static void inline sub_8011B54_inline(u32 *dst, u32 *src, s32 size, s32 shift)
 {
@@ -62,7 +65,7 @@ static void inline copyMask(u32 *dst, u32 *src, u32 waterMask)
 }
 
 // (98.73%) https://decomp.me/scratch/M6i4c
-NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328())
+NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
 {
     s32 k;
     u16 animId;
@@ -209,7 +212,7 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328())
 }
 END_NONMATCH
 
-void sub_80115D0(s32 waterLevel, u32 p1, u32 mask)
+void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)
 {
     gWater.currentWaterLevel = waterLevel;
     gWater.targetWaterLevel = waterLevel;
@@ -232,12 +235,12 @@ void sub_80115D0(s32 waterLevel, u32 p1, u32 mask)
         s->unk10 = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
 
-        gWater.t
-            = TaskCreate(Task_8011660, PLTT_SIZE, 0xFFFE, 0, TaskDestructor_8011A20);
+        gWater.t = TaskCreate(Task_StageWaterTask, PLTT_SIZE, 0xFFFE, 0,
+                              TaskDestructor_WaterSurface);
     }
 }
 
-void Task_8011660(void)
+static void Task_StageWaterTask(void)
 {
     Water *water = &gWater;
     struct Camera *cam = &gCamera;
@@ -315,9 +318,203 @@ void Task_8011660(void)
     }
 }
 
-#if 0 // matches
+typedef struct {
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    /* 0x08 */ u8 filler0[0x14];
+    /* 0x1C */ Sprite s;
+    /* 0x4C */ u8 filler4C[0xC];
+} RunOnWaterEffect; /* size: 0x58 */
+
+void CreateRunOnWaterEffect(void)
+{
+    struct Task *t = TaskCreate(Task_RunOnWaterEffect, sizeof(RunOnWaterEffect), 0x4001,
+                                0, TaskDestructor_8011B3C);
+    RunOnWaterEffect *effect = TaskGetStructPtr(t);
+    Sprite *s = &effect->s;
+    s->graphics.dest = VramMalloc(12);
+    s->graphics.size = 0;
+    s->graphics.anim = SA2_ANIM_WATER_RUNNING_PARTICLES;
+    s->variant = 0;
+    s->prevVariant = -1;
+    s->unk1A = SPRITE_OAM_ORDER(7);
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+}
+
+static void Task_RunOnWaterEffect(void)
+{
+    RunOnWaterEffect *effect = TaskGetStructPtr(gCurTask);
+    Sprite *s = &effect->s;
+    Player *p = &gPlayer;
+    u32 newMovestate;
+
+    if ((p->moveState & (MOVESTATE_20000 | MOVESTATE_DEAD)) != MOVESTATE_20000) {
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    effect->x = Q_24_8_TO_INT(p->x);
+    effect->y = gWater.currentWaterLevel;
+
+    s->x = effect->x - gCamera.x;
+    s->y = effect->y - gCamera.y;
+
+    if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
+        s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    } else {
+        s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    }
+
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+}
+
+struct Task *CreateWaterfallSurfaceHitEffect(s16 x, s16 y)
+{
+    struct Task *t = sub_801F15C(x, y, 0x10, 0, Task_801F214, TaskDestructor_801F550);
+    TaskStrc_801F15C *ts = TaskGetStructPtr(t);
+    Sprite *s = &ts->s;
+
+    s->graphics.dest = VramMalloc(12);
+    s->graphics.anim = SA2_ANIM_WATER_FALL_HIT_SURFACE;
+    s->variant = 0;
+    s->unk1A = SPRITE_OAM_ORDER(7);
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+
+    return t;
+}
+
+// TODO: Inlining this might match sub_8011328?
+// (92.07%) https://decomp.me/scratch/84Q33
+NONMATCH("asm/non_matching/game/MaskPaletteWithUnderwaterColor.inc",
+         void MaskPaletteWithUnderwaterColor(u32 *dst, u32 *src, u32 mask, s32 size))
+{
+    u32 maskColors0, maskColors1;
+    u32 maskA, maskB;
+    u32 k;
+
+    k = (size >> 4);
+
+    /* Mask sixteen 16-color palettes - Start */
+    while (k-- != 0) {
+        maskA = WATER_MASK_A;
+        maskB = WATER_MASK_B;
+
+        // TODO: Find a way to inline these!
+        maskColors0 = *src++;
+        maskColors1 = maskColors0;
+        maskColors1
+            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 >>= 1;
+        *dst++ = maskColors1;
+
+        maskColors0 = *src++;
+        maskColors1 = maskColors0;
+        maskColors1
+            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 >>= 1;
+        *dst++ = maskColors1;
+
+        maskColors0 = *src++;
+        maskColors1 = maskColors0;
+        maskColors1
+            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 >>= 1;
+        *dst++ = maskColors1;
+
+        maskColors0 = *src++;
+        maskColors1 = maskColors0;
+        maskColors1
+            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 >>= 1;
+        *dst++ = maskColors1;
+
+        maskColors0 = *src++;
+        maskColors1 = maskColors0;
+        maskColors1
+            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 >>= 1;
+        *dst++ = maskColors1;
+
+        maskColors0 = *src++;
+        maskColors1 = maskColors0;
+        maskColors1
+            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 >>= 1;
+        *dst++ = maskColors1;
+
+        maskColors0 = *src++;
+        maskColors1 = maskColors0;
+        maskColors1
+            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 >>= 1;
+        *dst++ = maskColors1;
+
+        maskColors0 = *src++;
+        maskColors1 = maskColors0;
+        maskColors1 &= maskA;
+        maskColors0 &= maskB;
+        maskColors0 = (maskColors0 + (maskB & mask)) >> 1;
+        maskColors1 = (maskColors1 + maskColors0);
+        maskColors1 >>= 1;
+        *dst++ = maskColors1;
+    }
+}
+END_NONMATCH
+
+void TaskDestructor_WaterSurface(struct Task *t)
+{
+    Water *water = &gWater;
+
+    gFlags &= ~FLAGS_40;
+    gIntrTable[3] = gIntrTableTemplate[3];
+    water->t = NULL;
+}
+
+void sub_8011A4C(void)
+{
+    Water *water = &gWater;
+    WaterData *wd = TaskGetStructPtr(water->t);
+    u32 unk2;
+    unk2 = water->unk2;
+    water->unk1 = unk2;
+    water->unk8 &= ~0x1;
+
+    // TODO: This surely can be matched differently!
+    unk2 <<= 24;
+
+    if (!unk2) {
+        DmaCopy32(3, &wd->pal[0x100], PLTT, 0x1D0);
+        DmaCopy32(3, &wd->pal[0x0], OBJ_PLTT, OBJ_PLTT_SIZE);
+        REG_DISPCNT &= ~DISPCNT_BG0_ON;
+        gFlags |= (FLAGS_UPDATE_SPRITE_PALETTES | FLAGS_UPDATE_BACKGROUND_PALETTES);
+    }
+}
+
+void VCountIntr_8011ACC(void)
+{
+    Water *water = &gWater;
+    WaterData *wd = TaskGetStructPtr(water->t);
+
+    DmaCopy32(3, &wd->pal[0x100], PLTT, 0x1D0);
+    DmaCopy32(3, &wd->pal[0x0], OBJ_PLTT, OBJ_PLTT_SIZE);
+
+    REG_DISPCNT &= ~DISPCNT_BG0_ON;
+    gFlags |= (FLAGS_UPDATE_SPRITE_PALETTES | FLAGS_UPDATE_BACKGROUND_PALETTES);
+    REG_IF = INTR_FLAG_VCOUNT;
+}
+
+void TaskDestructor_8011B3C(struct Task *t)
+{
+    RunOnWaterEffect *effect = TaskGetStructPtr(t);
+    Sprite *s = &effect->s;
+    VramFree(s->graphics.dest);
+}
+
 static void sub_8011B54(u32 *dst, u32 *src, s32 size)
 {
-    sub_8011B54_inline(dst, src, size, 4, 4);
+    sub_8011B54_inline(dst, src, size, 4);
 }
-#endif

@@ -621,6 +621,7 @@ void sub_80304DC(u32, u16, u8);
 
 void sub_8019F08(void);
 struct Task *CreateStageGoalBonusPointsAnim(s32, s32, u16);
+extern void Task_801F214(void);
 void sub_801F550(struct Task *);
 
 void sub_80218E4(Player *);

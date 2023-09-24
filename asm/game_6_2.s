@@ -83,7 +83,7 @@ _080238EE:
 	asrs r0, r0, #8
 	movs r2, #4
 	ldrsh r1, [r3, r2]
-	bl sub_80118FC
+	bl CreateWaterfallSurfaceHitEffect
 	movs r0, #0x9c
 	bl m4aSongNumStart
 _08023912:
@@ -284,7 +284,7 @@ _08023A9E:
 	asrs r0, r0, #8
 	movs r2, #4
 	ldrsh r1, [r3, r2]
-	bl sub_80118FC
+	bl CreateWaterfallSurfaceHitEffect
 	movs r0, #0x9c
 	bl m4aSongNumStart
 _08023AC2:
