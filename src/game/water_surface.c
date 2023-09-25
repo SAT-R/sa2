@@ -18,11 +18,7 @@
 
 #define WATER_SURFACE_SPRITE_COUNT ((DISPLAY_WIDTH + 16) / 16)
 
-// TODO: Move decl elsewhere
-extern u16 gUnknown_080D5678[];
-
-// TODO: static
-const u16 gUnknown_080D550C[NUM_CHARACTERS] = {
+static const u16 gUnknown_080D550C[NUM_CHARACTERS] = {
     SA2_ANIM_UNDERWATER_1UP_SONIC, SA2_ANIM_UNDERWATER_1UP_CREAM,
     SA2_ANIM_UNDERWATER_1UP_TAILS, SA2_ANIM_UNDERWATER_1UP_KNUCKLES,
     SA2_ANIM_UNDERWATER_1UP_AMY,
@@ -256,10 +252,11 @@ static void Task_StageWaterTask(void)
 #endif
 
     if ((gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1))
-        && (Q_24_8_TO_INT(gPlayer.x) > 6665) && (Q_24_8_TO_INT(gPlayer.x) <= 10650))
+        && (Q_24_8_TO_INT(gPlayer.x) > 6665) && (Q_24_8_TO_INT(gPlayer.x) <= 10650)) {
         water->isActive = TRUE;
-    else
+    } else {
         water->isActive = FALSE;
+    }
 
     if (water->isActive != TRUE) {
         gFlags &= ~MOVESTATE_40;
