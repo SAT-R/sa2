@@ -86,7 +86,6 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
         }
 
         for (j = 0; j < i; j++) {
-            // _08011382
             u16 mpChar = gMultiplayerCharacters[j];
             animId = gUnknown_080D550C[mpChar];
             animation = gAnimations[animId];
@@ -98,7 +97,6 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
     } else {
         u16 playerChar = gPlayer.character;
 
-        // _08011400
         animId = gUnknown_080D550C[playerChar];
         animation = (s32 **)gAnimations[animId];
         pal = ((animation[0])[1]);
@@ -113,7 +111,7 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
         src = (u32 *)&gSpritePalettes[pal];
         sub_8011B54_inline(dst, src, 1, 0);
     }
-    // _080114B0
+
     animId = SA2_ANIM_PALETTE_554;
     animation = (s32 **)gAnimations[animId];
     pal = ((animation[0])[1] + 4) * 16;
@@ -262,7 +260,6 @@ static void Task_StageWaterTask(void)
         gFlags &= ~MOVESTATE_40;
         return;
     }
-    // _080116BC
 
     if (gStageTime & 0x1) {
         if (water->currentWaterLevel != water->targetWaterLevel) {
@@ -272,7 +269,7 @@ static void Task_StageWaterTask(void)
                 water->currentWaterLevel--;
         }
     }
-    // _080116EC
+
     if (water->currentWaterLevel <= cam->y) {
         water->unk2 = 0;
     } else if (water->currentWaterLevel < cam->y + DISPLAY_HEIGHT) {
@@ -303,7 +300,7 @@ static void Task_StageWaterTask(void)
             }
         }
     }
-    // _0801178C
+
     unk2_0 = (water->unk2);
     if ((unk2_2 = unk2_0 - 1) < DISPLAY_HEIGHT - 1) {
         gIntrTable[3] = VCountIntr_8011ACC;
