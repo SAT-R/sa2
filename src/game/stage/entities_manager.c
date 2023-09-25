@@ -649,6 +649,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
 END_NONMATCH
 
 // (82.33%) https://decomp.me/scratch/ynO2N
+// Alt with old data-types: (88.58%) https://decomp.me/scratch/pOpmU
 NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void))
 {
     if (!(gUnknown_03005424 & 2)) {

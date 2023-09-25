@@ -117,8 +117,8 @@ void Task_MadilloMain(void)
 }
 
 // Task_8056230
-// // Once this matches, Task_80564BC should be straightforward
-// https://decomp.me/scratch/UJCld
+// Once this matches, Task_80564BC should be straightforward
+// (89.01%) https://decomp.me/scratch/UJCld
 #if 0
 void Task_8056230(void)
 {
