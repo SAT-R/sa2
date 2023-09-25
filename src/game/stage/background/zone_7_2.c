@@ -11,7 +11,7 @@ const u16 sZone7BgTransitionRegions[2][NUM_ZONE7_BG_TRANSITION_POSITIONS] = {
     { 1344, 2616, 9432, 15192, 18552, 19892, 23158, 25848 }, // ACT 2
 };
 
-// https://decomp.me/scratch/SuYje
+// (88.49) https://decomp.me/scratch/SuYje
 NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone7Acts12.inc",
          void StageBgUpdate_Zone7Acts12(s32 x, s32 y))
 {

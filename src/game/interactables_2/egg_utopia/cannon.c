@@ -244,7 +244,7 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
     DisplaySprite(s);
 }
 
-// https://decomp.me/scratch/TDVLh
+// (68.07%) https://decomp.me/scratch/TDVLh
 NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
          static bool32 sub_807E66C(Sprite_Cannon *cannon))
 {

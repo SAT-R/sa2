@@ -1664,7 +1664,7 @@ void sub_80454A4(EggSaucer *boss)
     s->prevVariant = -1;
 }
 
-// https://decomp.me/scratch/wnQsf
+// (86.11%) https://decomp.me/scratch/wnQsf
 NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc",
          void sub_8045564(EggSaucer *boss))
 {

@@ -4,7 +4,7 @@
 #include "trig.h"
 #include "game/game.h"
 
-// https://decomp.me/scratch/ekyaq
+// (88.05%) https://decomp.me/scratch/ekyaq
 NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
          void StageBgUpdate_Zone2Acts12(s32 a, s32 b))
 {
@@ -42,7 +42,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
             temp2 = 0x100;
         }
 
-        gFlags |= 4;
+        gFlags |= FLAGS_4;
         gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 4;
 

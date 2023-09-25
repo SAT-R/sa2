@@ -2387,7 +2387,7 @@ bool32 sub_80294F4(Player *p)
     return FALSE;
 }
 
-// https://decomp.me/scratch/HZn3x
+// (85.13%) https://decomp.me/scratch/HZn3x
 NONMATCH("asm/non_matching/game/playercb__sub_802966C.inc", void sub_802966C(Player *p))
 {
     u8 r6 = -1;

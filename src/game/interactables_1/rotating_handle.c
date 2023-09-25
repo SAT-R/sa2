@@ -140,7 +140,7 @@ static void sub_805EA94(void)
     DisplaySprite(s);
 }
 
-// https://decomp.me/scratch/RaPDV
+// (95.57%) https://decomp.me/scratch/RaPDV
 NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
          static void sub_805ECA0())
 {

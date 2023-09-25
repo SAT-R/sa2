@@ -210,7 +210,7 @@ static void Task_CommonPlatformThinMain(void)
     DisplaySprite(s);
     return;
 }
-
+// (95.35%) https://decomp.me/scratch/8xD3v
 NONMATCH("asm/non_matching/game/interactables_0/sub_8010D1C.inc",
          static void CreatePlatformBreakParticles(s16 x, s16 y))
 {

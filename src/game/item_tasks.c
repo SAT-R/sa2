@@ -131,7 +131,7 @@ struct Task *CreateItemTask_Confusion(s8 p0)
     return t;
 }
 
-// https://decomp.me/scratch/DuFBd
+// (fake-matched) https://decomp.me/scratch/DuFBd
 void Task_Item_Shield_Normal(void)
 {
     s8 param = ITEMTASK_GET_PLAYER_NUM();

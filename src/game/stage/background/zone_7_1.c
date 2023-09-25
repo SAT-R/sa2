@@ -50,7 +50,7 @@ void CreateStageBg_Zone7(void)
     gBgScrollRegs[0][1] = 0;
 }
 
-// (98.52%) - https://decomp.me/scratch/DUPkY
+// (98.52%) https://decomp.me/scratch/DUPkY
 NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc",
          void Zone7BgUpdate_Inside(s32 x, s32 y))
 {
@@ -240,8 +240,8 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc",
 }
 END_NONMATCH
 
-// https://decomp.me/scratch/7KDXI
-// 98.95% - only register alloc issues, logic works as intended
+// (98.95%) https://decomp.me/scratch/7KDXI
+// (only register alloc issues, logic works as intended)
 NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Outside.inc",
          void Zone7BgUpdate_Outside(s32 x, s32 y))
 {
