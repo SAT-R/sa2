@@ -40,8 +40,6 @@
     (CHARACTER_BIT(CHARACTER_SONIC) | CHARACTER_BIT(CHARACTER_CREAM)                    \
      | CHARACTER_BIT(CHARACTER_TAILS) | CHARACTER_BIT(CHARACTER_KNUCKLES))
 
-#define NUM_SPRITE_ANIMATIONS 1133
-
 struct ButtonConfig {
     u16 jump;
     u16 attack;
@@ -478,16 +476,24 @@ typedef struct {
 } SomeStruct_3005498; /* size: unknown (but >= 0x8) */
 extern SomeStruct_3005498 gUnknown_03005498;
 
+typedef struct {
+    u16 pal[16 * 16];
+} WaterData;
+
 // Seems to be belonging to water effect
 typedef struct {
     /* 0x00 */ bool8 isActive;
-    /* 0x01 */ u8 filler1[3];
+    /* 0x01 */ u8 unk1;
+    /* 0x01 */ u8 unk2;
+    /* 0x01 */ u8 unk3;
     /* 0x04 */ s16 currentWaterLevel;
     /* 0x06 */ s16 targetWaterLevel;
-    /* 0x08 */ u8 filler8[0x8];
+    /* 0x08 */ u32 unk8;
+    /* 0x0C */ u32 mask;
 
     // t -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
-    /* 0x10 */ struct Task *t;
+    /* 0x10 */ struct Task *t; /* size: 0x400 */
+    /* 0x14 */ Sprite s;
 } Water;
 
 extern Water gWater;
@@ -615,6 +621,7 @@ void sub_80304DC(u32, u16, u8);
 
 void sub_8019F08(void);
 struct Task *CreateStageGoalBonusPointsAnim(s32, s32, u16);
+extern void Task_801F214(void);
 void sub_801F550(struct Task *);
 
 void sub_80218E4(Player *);

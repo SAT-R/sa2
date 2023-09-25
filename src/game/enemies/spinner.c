@@ -54,7 +54,7 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk10 = 0x2000;
 }
 
-// https://decomp.me/scratch/M6ta6
+// (58.16%) https://decomp.me/scratch/M6ta6
 NONMATCH("asm/non_matching/game/enemies/Task_EnemySpinner.inc",
          void Task_EnemySpinner(void))
 {

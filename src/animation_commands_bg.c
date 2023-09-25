@@ -240,6 +240,7 @@ void sub_8003914(Sprite *s)
 }
 
 // Some VBlank function
+// (21.30%) https://decomp.me/scratch/UfJX7
 NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
 {
     // tilesize (could be 32 and get optimized out?)
@@ -421,7 +422,7 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
     }
 }
 
-// https://decomp.me/scratch/6Xm6S
+// (57.61%) https://decomp.me/scratch/6Xm6S
 NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
 {
     u8 bgIndex;

@@ -7,9 +7,9 @@
 #include "game/mp_unknown_task.h"
 #include "game/player_actions.h"
 #include "game/player_callbacks_1.h"
-#include "game/player_unknown_0.h"
 #include "game/playerfn_cmds.h"
 #include "game/stage/stage.h"
+#include "game/water_effects.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
@@ -1776,7 +1776,7 @@ NONMATCH("asm/non_matching/game/sub_8022D6C.inc", void sub_8022D6C(Player *p))
                         p->moveState |= MOVESTATE_20000;
 
                         if (IS_SINGLE_PLAYER) {
-                            sub_80117F0();
+                            CreateRunOnWaterEffect();
                         }
                     }
 

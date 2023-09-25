@@ -208,15 +208,22 @@
 #define SA2_ANIM_VARIANT_SPIKES_UP_MID   2
 #define SA2_ANIM_VARIANT_SPIKES_SIDEWAYS 3
 #define SA2_ANIM_RAMP                    543
+#define SA2_ANIM_WATER_RUNNING_PARTICLES 544
 
-#define SA2_ANIM_ROTATING_HANDLE   546
-#define SA2_ANIM_FLOWER_YELLOW     547
-#define SA2_ANIM_FLOWER_RED_SMALL  548
-#define SA2_ANIM_FLOWER_BLUE       549
-#define SA2_ANIM_FLOWER_BLUE_SMALL 550
-#define SA2_ANIM_ROCK              551
-#define SA2_ANIM_552               552
-
+#define SA2_ANIM_ROTATING_HANDLE                 546
+#define SA2_ANIM_FLOWER_YELLOW                   547
+#define SA2_ANIM_FLOWER_RED_SMALL                548
+#define SA2_ANIM_FLOWER_BLUE                     549
+#define SA2_ANIM_FLOWER_BLUE_SMALL               550
+#define SA2_ANIM_ROCK                            551
+#define SA2_ANIM_552                             552
+#define SA2_ANIM_WATER_FALL_HIT_SURFACE          553
+#define SA2_ANIM_PALETTE_554                     554
+#define SA2_ANIM_UNDERWATER_1UP_SONIC            555
+#define SA2_ANIM_UNDERWATER_1UP_TAILS            556
+#define SA2_ANIM_UNDERWATER_1UP_KNUCKLES         557
+#define SA2_ANIM_UNDERWATER_1UP_CREAM            558
+#define SA2_ANIM_UNDERWATER_1UP_AMY              559
 #define SA2_ANIM_WATER_GROUND_SPLASH             560
 #define SA2_ANIM_WIND_MILL_PART                  561
 #define SA2_ANIM_562                             562

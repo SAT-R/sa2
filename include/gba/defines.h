@@ -9,10 +9,10 @@
 #define IWRAM_DATA __attribute__((section("iwram_data")))
 #define EWRAM_DATA __attribute__((section("ewram_data")))
 
+// TODO: Move these elsewhere?
 #define NAKED __attribute__((naked))
 #define UNUSED __attribute__((unused))
 #define PACKED __attribute__((packed))
-
 #define ALIGNED(n) __attribute__((aligned(n)))
 
 #ifdef PORTABLE

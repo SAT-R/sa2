@@ -32,7 +32,7 @@ extern void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteR
 void Task_GrindRail(void);
 void sub_8010464(void);
 
-// https://decomp.me/scratch/ncgh4
+// (79.90%) https://decomp.me/scratch/ncgh4
 NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
          void Task_GrindRail(void))
 {
@@ -183,7 +183,7 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
 }
 END_NONMATCH
 
-// https://decomp.me/scratch/Wvuov
+// (87.88%) https://decomp.me/scratch/Wvuov
 NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail_Air.inc",
          void Task_GrindRail_Air(void))
 {

@@ -1,4 +1,4 @@
-#include "data/sprite_dimensions.h"
+#include "data/sprite_data.h"
 
 // 0 - 0x08137078
 static const SpriteOffset spriteDim_8137078[13] = {

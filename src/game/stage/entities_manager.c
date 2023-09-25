@@ -477,8 +477,7 @@ static inline MapEntity *ReadMe(void *data, u32 r6)
     return data + offset;
 }
 
-// https://decomp.me/scratch/Co5bs
-// logic is correct. Compiling differently for some reason
+// (98.55%) https://decomp.me/scratch/Co5bs
 NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntities())
 {
     if (!(gUnknown_03005424 & 2)) {
@@ -649,7 +648,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
 }
 END_NONMATCH
 
-// https://decomp.me/scratch/ynO2N
+// (88.58%) https://decomp.me/scratch/pOpmU
 NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void))
 {
     if (!(gUnknown_03005424 & 2)) {

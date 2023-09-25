@@ -119,7 +119,7 @@ typedef struct {
     s16 unk408;
 } Unk3000408;
 
-// https://decomp.me/scratch/Esyzr
+// (85.02%) https://decomp.me/scratch/Esyzr
 #if 01
 NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone3Acts12.inc",
          void StageBgUpdate_Zone3Acts12(s32 a, s32 b))

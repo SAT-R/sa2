@@ -41,7 +41,7 @@ void sub_800BAAC(s16 x, s16 y)
     s->unk10 = (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2));
 }
 
-// https://decomp.me/scratch/EmhmV
+// (88.87%) https://decomp.me/scratch/EmhmV
 NONMATCH("asm/non_matching/game/stage/Task_StageRing.inc", void Task_StageRing(void))
 {
     StageRing *ring = TaskGetStructPtr(gCurTask);

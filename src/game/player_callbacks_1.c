@@ -44,7 +44,6 @@ extern void PlayerCB_8013D18(Player *);
 extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
 extern void sub_8015BD4(u16);
-extern void Task_801F214(void);
 extern void sub_801F488(void);
 
 extern s32 sub_8022F58(u8, Player *);
@@ -2388,7 +2387,7 @@ bool32 sub_80294F4(Player *p)
     return FALSE;
 }
 
-// https://decomp.me/scratch/HZn3x
+// (85.13%) https://decomp.me/scratch/HZn3x
 NONMATCH("asm/non_matching/game/playercb__sub_802966C.inc", void sub_802966C(Player *p))
 {
     u8 r6 = -1;

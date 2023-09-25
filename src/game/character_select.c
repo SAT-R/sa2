@@ -196,7 +196,7 @@ static const u8 sCharacterSilhouettes[] = {
         }                                                                               \
     })
 
-// Pretty close: https://decomp.me/scratch/A2o3b
+// (96.84%) https://decomp.me/scratch/A2o3b
 NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
          void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked))
 {

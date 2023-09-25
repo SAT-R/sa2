@@ -2,15 +2,15 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 
-#include "game/game.h"
-#include "task.h"
 #include "core.h"
-
 #include "data.h"
+#include "data/sprite_data.h"
 #include "flags.h"
+#include "sprite.h"
+#include "task.h"
+#include "game/game.h"
 #include "game/entity.h"
 #include "game/stage/palette_loader.h"
-#include "sprite.h"
 
 #include "constants/animations.h"
 #include "constants/anim_commands.h"

@@ -153,7 +153,7 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 }
 
 #ifdef NON_MATCHING
-// https://decomp.me/scratch/Jl2c3
+// (fake-matched) https://decomp.me/scratch/Jl2c3
 void sub_807C9C0(Sprite_IA86 *ia086)
 {
     gPlayer.moveState |= MOVESTATE_400000;
