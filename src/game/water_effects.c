@@ -6,7 +6,7 @@
 #include "game/game.h"
 
 #include "data/sprite_data.h"
-#include "game/water_surface.h"
+#include "game/water_effects.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"

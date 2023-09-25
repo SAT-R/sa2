@@ -77,7 +77,7 @@ SECTIONS
         build/sa2/src/game/interactables_0/pipe.o(.text);
         build/sa2/src/game/interactables_0/platform_thin.o(.text);
         build/sa2/src/game/interactables_0/slidy_ice.o(.text);
-        build/sa2/src/game/water_surface.o(.text);
+        build/sa2/src/game/water_effects.o(.text);
         build/sa2/src/game/player_callbacks_0.o(.text);
         build/sa2/asm/player_actor.o(.text);
         build/sa2/asm/player_actions.o(.text);
@@ -328,7 +328,7 @@ SECTIONS
         build/sa2/src/game/interactables_0/platform.o(.rodata);
         build/sa2/src/game/interactables_0/platform_square.o(.rodata);
         build/sa2/src/game/interactables_0/platform_thin.o(.rodata);
-        build/sa2/src/game/water_surface.o(.rodata);
+        build/sa2/src/game/water_effects.o(.rodata);
         build/sa2/src/game/player_callbacks_0.o(.rodata);
         build/sa2/asm/player_actor.o(.rodata);
         build/sa2/asm/player_actions.o(.rodata);

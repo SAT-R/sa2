@@ -9,7 +9,7 @@
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
 #include "game/stage/stage.h"
-#include "game/water_surface.h"
+#include "game/water_effects.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
