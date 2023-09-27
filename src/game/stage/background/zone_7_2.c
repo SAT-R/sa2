@@ -24,12 +24,12 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone7Acts12.inc",
     while (x >= sZone7BgTransitionRegions[act][regionId]) {
         u32 one = 1;
         if (++regionId >= NUM_ZONE7_BG_TRANSITION_POSITIONS)
-            goto StageBgUpdate_Zone7Acts12_CallBgUpdate;
+            break; // goto StageBgUpdate_Zone7Acts12_CallBgUpdate;
         else
             bgId = regionId & one;
     }
 
-StageBgUpdate_Zone7Acts12_CallBgUpdate:
+    // StageBgUpdate_Zone7Acts12_CallBgUpdate:
 
     if (bgId == 0) {
         Zone7BgUpdate_Inside(x, y);

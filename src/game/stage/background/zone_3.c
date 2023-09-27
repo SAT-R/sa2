@@ -169,12 +169,14 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
 
             while (r6 >= cursor[i * 3]) {
                 if (++i >= ARRAY_COUNT(gUnknown_080D5B20)) {
-                    goto _0801CCA8;
+                    break;
+                }
+                {
+                    sl = i;
                 }
             }
         }
-        sl = i;
-    _0801CCA8:
+        //_0801CCA8:
 
         for (i = 0; i < ARRAY_COUNT(gUnknown_080D5B20); i++) {
             sp[i].x = (((gUnknown_080D5B20[i][1] * a) >> 5) & 0xFF);

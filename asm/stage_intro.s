@@ -175,6 +175,7 @@ gUnknown_080D7130:
 .syntax unified
 .text
 
+.if 0
 	thumb_func_start sub_802DBC0
 sub_802DBC0: @ 0x0802DBC0
 	push {r4, r5, r6, r7, lr}
@@ -191,7 +192,7 @@ sub_802DBC0: @ 0x0802DBC0
 	movs r1, #0x80
 	lsls r1, r1, #0x12
 	cmp r0, r1
-	bls _0802DCBE
+	bls sub_802DBC0_return
 	cmp r6, #1
 	bhi _0802DC14
 	lsls r0, r7, #1
@@ -200,7 +201,7 @@ sub_802DBC0: @ 0x0802DBC0
 	movs r0, #0xa0
 	subs r0, r0, r7
 	cmp r1, r0
-	bge _0802DCBE
+	bge sub_802DBC0_return
 	movs r3, #0xf0
 	adds r2, r0, #0
 _0802DBF4:
@@ -215,7 +216,7 @@ _0802DBF4:
 	asrs r0, r0, #0x10
 	cmp r0, r2
 	blt _0802DBF4
-	b _0802DCBE
+	b sub_802DBC0_return
 	.align 2, 0
 _0802DC0C: .4byte gBgOffsetsHBlank
 _0802DC10: .4byte 0xFFFFFF00
@@ -255,11 +256,12 @@ _0802DC50:
 	ldr r0, _0802DC8C @ =0x000001FF
 	cmp r6, r0
 	bhi _0802DC90
+__0802DC56:
 	lsls r0, r7, #1
 	adds r4, r4, r0
 	adds r1, r7, #0
 	cmp r1, #0x9f
-	bgt _0802DCBE
+	bgt sub_802DBC0_return
 _0802DC60:
 	adds r5, r5, r3
 	lsls r0, r5, #8
@@ -282,7 +284,7 @@ _0802DC72:
 	asrs r0, r0, #0x10
 	cmp r0, #0x9f
 	ble _0802DC60
-	b _0802DCBE
+	b sub_802DBC0_return
 	.align 2, 0
 _0802DC8C: .4byte 0x000001FF
 _0802DC90:
@@ -291,7 +293,7 @@ _0802DC90:
 	adds r1, r7, #0
 	adds r0, r1, #0
 	cmp r0, #0
-	blt _0802DCBE
+	blt sub_802DBC0_return
 _0802DC9C:
 	adds r5, r5, r3
 	lsls r0, r5, #8
@@ -311,12 +313,13 @@ _0802DCAE:
 	lsrs r1, r0, #0x10
 	cmp r0, #0
 	bge _0802DC9C
-_0802DCBE:
+sub_802DBC0_return:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
 	.align 2, 0
 _0802DCC4: .4byte 0xFFFF0000
+.endif
 
 	thumb_func_start sub_802DCC8
 sub_802DCC8: @ 0x0802DCC8
@@ -3014,10 +3017,10 @@ SetupStageIntro: @ 0x0802F0A8
 	ldr r0, _0802F208 @ =gActiveBossTask
 	movs r4, #0
 	str r4, [r0]
-	ldr r0, _0802F20C @ =sub_802F75C
+	ldr r0, _0802F20C @ =Task_802F75C
 	movs r2, #0x88
 	lsls r2, r2, #6
-	ldr r1, _0802F210 @ =sub_80303CC
+	ldr r1, _0802F210 @ =TaskDestructor_80303CC
 	str r1, [sp]
 	movs r1, #8
 	movs r3, #0
@@ -3036,7 +3039,7 @@ SetupStageIntro: @ 0x0802F0A8
 	lsls r1, r1, #0xd
 	orrs r0, r1
 	str r0, [r7, #0x20]
-	ldr r0, _0802F214 @ =sub_802F9F8
+	ldr r0, _0802F214 @ =Task_802F9F8
 	ldr r2, _0802F218 @ =0x00002210
 	ldr r1, _0802F21C @ =TaskDestructor_nop_8030458
 	mov r8, r1
@@ -3058,7 +3061,7 @@ SetupStageIntro: @ 0x0802F0A8
 	strh r1, [r0, #8]
 	strh r4, [r0, #0xa]
 	bl NextTransitionFrame
-	ldr r0, _0802F228 @ =sub_802FD34
+	ldr r0, _0802F228 @ =Task_802FD34
 	ldr r2, _0802F22C @ =0x00002220
 	mov r1, r8
 	str r1, [sp]
@@ -3077,7 +3080,7 @@ SetupStageIntro: @ 0x0802F0A8
 	adds r1, r0, r2
 	strh r4, [r1]
 	strh r4, [r1, #2]
-	ldr r0, _0802F238 @ =sub_802FF94
+	ldr r0, _0802F238 @ =Task_802FF94
 	movs r1, #0xc4
 	lsls r1, r1, #2
 	ldr r2, _0802F23C @ =0x00002230
@@ -3151,18 +3154,18 @@ SetupStageIntro: @ 0x0802F0A8
 _0802F200: .4byte gUnknown_03005424
 _0802F204: .4byte gPlayer
 _0802F208: .4byte gActiveBossTask
-_0802F20C: .4byte sub_802F75C
-_0802F210: .4byte sub_80303CC
-_0802F214: .4byte sub_802F9F8
+_0802F20C: .4byte Task_802F75C
+_0802F210: .4byte TaskDestructor_80303CC
+_0802F214: .4byte Task_802F9F8
 _0802F218: .4byte 0x00002210
 _0802F21C: .4byte TaskDestructor_nop_8030458
 _0802F220: .4byte IWRAM_START+4
 _0802F224: .4byte 0x00003FFF
-_0802F228: .4byte sub_802FD34
+_0802F228: .4byte Task_802FD34
 _0802F22C: .4byte 0x00002220
 _0802F230: .4byte IWRAM_START + 0x10
 _0802F234: .4byte IWRAM_START + 0x14
-_0802F238: .4byte sub_802FF94
+_0802F238: .4byte Task_802FF94
 _0802F23C: .4byte 0x00002230
 _0802F240: .4byte TaskDestructor_803045C
 _0802F244: .4byte gGameMode
@@ -3667,7 +3670,7 @@ _0802F60E:
 	cmp r7, #8
 	bls _0802F5A8
 _0802F652:
-	ldr r0, _0802F73C @ =sub_80302AC
+	ldr r0, _0802F73C @ =Task_80302AC
 	movs r2, #0x89
 	lsls r2, r2, #6
 	ldr r1, _0802F740 @ =TaskDestructor_8030474
@@ -3783,7 +3786,7 @@ _0802F6C8:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0802F73C: .4byte sub_80302AC
+_0802F73C: .4byte Task_80302AC
 _0802F740: .4byte TaskDestructor_8030474
 _0802F744: .4byte sZoneLoadingActLetters
 _0802F748: .4byte 0x0000FFE0
@@ -3792,8 +3795,8 @@ _0802F750: .4byte Task_UpdateStageLoadingScreen
 _0802F754: .4byte 0x000022F0
 _0802F758: .4byte TaskDestructor_nop_8030458
 
-	thumb_func_start sub_802F75C
-sub_802F75C: @ 0x0802F75C
+	thumb_func_start Task_802F75C
+Task_802F75C: @ 0x0802F75C
 	push {r4, r5, r6, r7, lr}
 	ldr r0, _0802F7E0 @ =gCurTask
 	ldr r0, [r0]
@@ -4109,8 +4112,8 @@ _0802F9EC: .4byte gUnknown_03005AF0
 _0802F9F0: .4byte 0xFFFBFFFF
 _0802F9F4: .4byte gCurTask
 
-	thumb_func_start sub_802F9F8
-sub_802F9F8: @ 0x0802F9F8
+	thumb_func_start Task_802F9F8
+Task_802F9F8: @ 0x0802F9F8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -4507,8 +4510,8 @@ _0802FD28: .4byte 0x00001346
 _0802FD2C: .4byte 0x00000404
 _0802FD30: .4byte gCurTask
 
-	thumb_func_start sub_802FD34
-sub_802FD34: @ 0x0802FD34
+	thumb_func_start Task_802FD34
+Task_802FD34: @ 0x0802FD34
 	push {r4, r5, r6, r7, lr}
 	ldr r0, _0802FD90 @ =gCurTask
 	ldr r0, [r0]
@@ -4801,8 +4804,8 @@ _0802FF88: .4byte 0x000002C5
 _0802FF8C: .4byte gSineTable
 _0802FF90: .4byte 0x000003FF
 
-	thumb_func_start sub_802FF94
-sub_802FF94: @ 0x0802FF94
+	thumb_func_start Task_802FF94
+Task_802FF94: @ 0x0802FF94
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -5222,8 +5225,8 @@ _0803029C:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_80302AC
-sub_80302AC: @ 0x080302AC
+	thumb_func_start Task_80302AC
+Task_80302AC: @ 0x080302AC
 	push {r4, r5, r6, r7, lr}
 	ldr r1, _080302D4 @ =gCurTask
 	ldr r2, [r1]
@@ -5328,6 +5331,7 @@ _08030366:
 	cmp r4, #3
 	bls _08030366
 _08030378:
+@ inline of sub_8030488
 	ldrb r1, [r7]
 	movs r0, #3
 	ands r0, r1
@@ -5371,8 +5375,8 @@ _080303C0: .4byte gCurrentLevel
 _080303C4: .4byte IWRAM_START + 0x1A
 _080303C8: .4byte sScreenPositions_ZoneLoadingActLetters
 
-	thumb_func_start sub_80303CC
-sub_80303CC: @ 0x080303CC
+	thumb_func_start TaskDestructor_80303CC
+TaskDestructor_80303CC: @ 0x080303CC
 	push {lr}
 	ldr r0, _080303F4 @ =gCurrentLevel
 	ldrb r0, [r0]
@@ -5471,7 +5475,7 @@ TaskDestructor_8030474: @ 0x08030474
 	pop {r0}
 	bx r0
 
-    @ Seems to be unused
+    @ inline
 	thumb_func_start sub_8030488
 sub_8030488: @ 0x08030488
 	push {r4, r5, lr}
