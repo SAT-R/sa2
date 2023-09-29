@@ -615,7 +615,7 @@ void CreateTrueArea53Intro(void);
 
 void CreateGameStage(void);
 // Sweep anim
-void sub_802E044(u16, u16);
+void sub_802E044(s32, u16);
 
 void sub_80304DC(u32, u16, u8);
 
