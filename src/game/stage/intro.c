@@ -88,5 +88,255 @@ void sub_802DBC0(u8 p0, u16 p1)
     }
 }
 
-#if 01
+// (84.45%) https://decomp.me/scratch/ge5fv
+NONMATCH("asm/non_matching/game/stage/sub_802DCC8.inc", void sub_802DCC8(u8 p0, u16 p1))
+{
+    register u32 r7 asm("r7") = p0;
+    u8 *bgOffsets = gBgOffsetsHBlank;
+    s32 r2;
+    register s32 r5 asm("r5") = 0;
+    register u16 r6 asm("r6") = ((unsigned)p1 << 22) >> 22;
+
+    if ((unsigned)(r6 - Q_24_8(1.0)) << 16 <= 512 << 16)
+        return;
+
+    if (r6 == 0 || r6 == 1) {
+        s16 i;
+
+        bgOffsets = &bgOffsets[r7 * sizeof(u16)];
+
+        for (i = r7; i > 0; i--) {
+            // TODO: Is this a macro?
+            bgOffsets--;
+            *bgOffsets = DISPLAY_WIDTH;
+            bgOffsets--;
+        }
+    } else {
+        // _0802DC14
+        s32 r3 = (COS(r6) * 15) >> 2;
+        s32 r1 = SIN_24_8(r6);
+        s16 i; // r7
+
+        if (r3 != 0) {
+            r3 = Div(r3, r1);
+        }
+        // _0802DC4A
+
+        r3 = ABS(r3);
+
+        if (r6 < Q_24_8(2.0)) {
+            bgOffsets = &bgOffsets[r7 * sizeof(u16)];
+
+            // __0802DC56
+            for (i = r7; i >= 0; i--) {
+                u32 xVal;
+                r5 = r5 + r3;
+                xVal = (u32)Q_24_8(r5) >> 16;
+                if (xVal > DISPLAY_WIDTH) {
+                    r3 = 0;
+                    r5 = Q_24_8(DISPLAY_WIDTH);
+                    xVal = DISPLAY_WIDTH;
+                }
+
+                // TODO: Macro?
+                bgOffsets--;
+                *bgOffsets = xVal;
+                bgOffsets--;
+            }
+        } else {
+            // _0802DC90
+            bgOffsets = &bgOffsets[r7 * sizeof(u16)];
+
+            for (i = r7; i < DISPLAY_HEIGHT; i++) {
+                // _0802DC9C
+                u32 xVal;
+                r5 = r5 + r3;
+                xVal = (u32)Q_24_8(r5) >> 16;
+                if (xVal > DISPLAY_WIDTH) {
+                    r3 = 0;
+                    r5 = Q_24_8(DISPLAY_WIDTH);
+                    xVal = DISPLAY_WIDTH;
+                }
+                *bgOffsets = xVal;
+                bgOffsets += 2;
+            }
+        }
+    }
+}
+END_NONMATCH
+
+void sub_802DDC4(u8 p0, u16 p1)
+{
+    u8 *bgOffsets = gBgOffsetsHBlank;
+    s32 r2;
+    s32 r5 = 0;
+    u16 r6 = ((unsigned)p1 << 22) >> 22;
+
+    if ((unsigned)(r6 - (Q_24_8(1.0) + 1)) << 16 > 510 << 16)
+        return;
+
+    if ((r6 - Q_24_8(2.0)) == 0 || (r6 - Q_24_8(2.0)) == 1) {
+        s16 i;
+
+        bgOffsets = &bgOffsets[p0 * sizeof(u16)];
+
+#ifndef NON_MATCHING
+        asm("" : "=r"(r5));
 #endif
+        for (i = 0; i < (DISPLAY_HEIGHT - p0); i++) {
+            // TODO: Is this a macro?
+            bgOffsets++;
+            *bgOffsets = DISPLAY_WIDTH;
+            bgOffsets++;
+        }
+    } else {
+        // _0802DC14
+        s32 r3 = (COS(r6) * 15) >> 2;
+        s32 r1 = SIN_24_8(r6);
+        s16 i; // r7
+
+        r3 = ABS(r3);
+        r1 = ABS(r1);
+
+        if (r3 != 0) {
+            r3 = Div(r3, r1);
+        } else {
+            r3 = Q_24_8(1.0);
+        }
+
+        if (r6 < Q_24_8(2.0)) {
+            bgOffsets = &bgOffsets[p0 * sizeof(u16)];
+
+            // __0802DC56
+            for (i = p0; i < DISPLAY_HEIGHT; i++) {
+                u32 xVal;
+                r5 = r5 + r3;
+                xVal = (u32)Q_24_8(r5) >> 16;
+                if (xVal > DISPLAY_WIDTH) {
+                    r3 = 0;
+                    r5 = Q_24_8(DISPLAY_WIDTH);
+                    xVal = DISPLAY_WIDTH;
+                }
+
+                // TODO: Macro?
+                *bgOffsets = DISPLAY_WIDTH - xVal;
+                bgOffsets += 2;
+            }
+        } else {
+            // _0802DC90
+            u16 *pOffset;
+            bgOffsets = &bgOffsets[DISPLAY_HEIGHT * sizeof(u16)];
+
+            for (i = DISPLAY_HEIGHT; i > p0; i--) {
+                *bgOffsets--;
+                *bgOffsets = DISPLAY_WIDTH;
+                *bgOffsets--;
+            }
+
+            bgOffsets = gBgOffsetsHBlank;
+            bgOffsets += p0 * sizeof(u16);
+
+            for (i = p0; i >= 0; i--) {
+                // _0802DC9C
+                u32 xVal;
+                r5 = r5 + r3;
+                xVal = (u32)Q_24_8(r5) >> 16;
+                if (xVal > DISPLAY_WIDTH) {
+                    r3 = 0;
+                    r5 = Q_24_8(DISPLAY_WIDTH);
+                    xVal = DISPLAY_WIDTH;
+                }
+                bgOffsets -= 1;
+                *bgOffsets = DISPLAY_WIDTH - xVal;
+                bgOffsets -= 1;
+            }
+        }
+    }
+}
+
+NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, u16 p1))
+{
+    u8 *bgOffsets = gBgOffsetsHBlank;
+    s32 r2;
+    s32 r7 = 0;
+    u16 r6 = ((unsigned)p1 << 22) >> 22;
+
+    if ((unsigned)(r6 - (Q_24_8(1.0) + 1)) << 16 > 510 << 16)
+        return;
+
+    if ((r6 - Q_24_8(2.0)) == 0 || (r6 - Q_24_8(2.0)) == 1) {
+        s16 i;
+
+        // bgOffsets = &bgOffsets[p0 * sizeof(u16)];
+
+#ifndef NON_MATCHING
+        asm("" : "=r"(r7));
+#endif
+        for (i = 0; i < p0; i++) {
+            bgOffsets++;
+            *bgOffsets = DISPLAY_WIDTH;
+            bgOffsets++;
+        }
+    } else {
+        s32 r3 = (COS(r6) * 15) >> 2;
+        s32 r1 = SIN_24_8(r6);
+        s16 i; // r7
+
+        r3 = ABS(r3);
+        r1 = ABS(r1);
+
+        if (r3 != 0) {
+            r3 = Div(r3, r1);
+        } else {
+            r3 = Q_24_8(1.0);
+        }
+
+        if (r6 < Q_24_8(2.0)) {
+            // bgOffsets = &bgOffsets[p0 * sizeof(u16)];
+            s16 k;
+
+            for (k = 0; k < p0; k++) {
+
+                // TODO: Macro?
+                *bgOffsets++;
+                *bgOffsets = DISPLAY_WIDTH;
+                *bgOffsets++;
+            }
+
+            for (k = p0; k < DISPLAY_HEIGHT; k++) {
+                u32 val;
+                s32 dw;
+
+                dw = DISPLAY_WIDTH;
+
+                r7 += r3;
+                val = r7;
+
+                val = (val << 8) >> 16;
+
+                if (val > DISPLAY_WIDTH)
+                    return;
+
+                *bgOffsets++;
+                *bgOffsets = dw - val;
+                *bgOffsets++;
+            }
+        } else {
+            bgOffsets += p0 * sizeof(u16);
+
+            for (i = p0; i >= 0; i--) {
+                u32 xVal;
+                r7 = r7 + r3;
+                xVal = (u32)Q_24_8(r7) >> 16;
+                if (xVal > DISPLAY_WIDTH) {
+                    r3 = 0;
+                    r7 = Q_24_8(DISPLAY_WIDTH);
+                    xVal = DISPLAY_WIDTH;
+                }
+                *bgOffsets = DISPLAY_WIDTH - xVal;
+                bgOffsets -= 2;
+            }
+        }
+    }
+}
+END_NONMATCH
