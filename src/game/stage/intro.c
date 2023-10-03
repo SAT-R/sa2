@@ -516,3 +516,115 @@ void sub_802E1EC(s32 p0, u16 p1)
         }
     }
 }
+
+#define STGINTRO_SP_SIZE 8
+
+// https://decomp.me/scratch/BhinB
+void sub_802E278(Vec2_16 *p0, u8 pairCount)
+{
+    s16 i;
+    s16 sp[STGINTRO_SP_SIZE][2];
+
+#ifdef NON_MATCHING
+    // Make sure pairCount isn't bigger than the # of elements in sp
+    if (pairCount > STGINTRO_SP_SIZE)
+        pairCount = STGINTRO_SP_SIZE;
+#endif
+
+    for (i = 0; i < pairCount; i++) {
+        sp[i][0] = p0[i].x;
+        sp[i][1] = p0[i].y;
+    }
+
+    for (i = 0; i < pairCount - 1; i++) {
+        u8 *bgOffsets = gBgOffsetsHBlank;
+        register s32 yVal asm("r3") = sp[i][1];
+        s16 xVal;
+        s32 xVal2;
+        s32 r4;
+        s16 l, r;
+
+        bgOffsets = (u8 *)&((s16 *)bgOffsets)[yVal];
+        xVal = sp[i][0];
+        xVal2 = Q_24_8(xVal);
+
+        yVal -= sp[i + 1][1];
+
+        if (yVal != 0) {
+            r4 = Div(Q_24_8(xVal - sp[i + 1][0]), yVal);
+        } else {
+            r4 = Q_24_8(xVal - sp[i + 1][0]);
+        }
+
+        l = sp[i][1];
+        while (l <= sp[i + 1][1]) {
+            s32 r0 = (u8)(xVal2 >> 8);
+
+            if (r0 > DISPLAY_WIDTH)
+                r0 = DISPLAY_WIDTH;
+
+            *bgOffsets++ = r0;
+            *bgOffsets++;
+
+            xVal2 += r4;
+            l++;
+        }
+    }
+}
+
+// https://decomp.me/scratch/soFiq
+void sub_802E384(Vec2_16 *p0, u16 pairCount)
+{
+    s16 i;
+    s16 sp[STGINTRO_SP_SIZE][2];
+
+#ifdef NON_MATCHING
+    // Make sure pairCount isn't bigger than the # of elements in sp
+    if (pairCount > STGINTRO_SP_SIZE)
+        pairCount = STGINTRO_SP_SIZE;
+#endif
+
+    for (i = 0; i < pairCount; i++) {
+        sp[i][0] = p0[i].x;
+        sp[i][1] = p0[i].y;
+    }
+
+    for (i = 0; i < pairCount - 1; i++) {
+        u8 *bgOffsets = gBgOffsetsHBlank;
+        register s32 yVal asm("r3") = sp[i][1];
+        s16 xVal;
+        s32 xVal2;
+        s32 r4;
+        s16 l, r;
+
+        bgOffsets = (u8 *)&((s16 *)bgOffsets)[yVal];
+        xVal = sp[i][0];
+        xVal2 = Q_24_8(xVal);
+
+        yVal -= sp[i + 1][1];
+
+        if (yVal != 0) {
+            r4 = Div(Q_24_8(xVal - sp[i + 1][0]), yVal);
+        } else {
+            r4 = Q_24_8(xVal - sp[i + 1][0]);
+        }
+
+        l = sp[i][1];
+        while (l <= sp[i + 1][1]) {
+            s16 r1 = (xVal2 >> 8);
+
+            if (r1 > DISPLAY_WIDTH)
+                r1 = DISPLAY_WIDTH;
+
+            if (r1 < 0)
+                r1 = 0;
+
+            *bgOffsets++;
+            *bgOffsets = r1;
+            *bgOffsets++;
+
+            xVal2 += r4;
+            l++;
+        }
+    }
+}
