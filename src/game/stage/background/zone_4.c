@@ -44,7 +44,7 @@ void StageBgUpdate_Zone4Acts12(s32 a, s32 b)
 {
     Player *player = &gPlayer;
 
-    if ((player->moveState & MOVESTATE_8000000) && gUnknown_030054F4 > 6) {
+    if ((player->moveState & MOVESTATE_8000000) && gSpecialRingCount > 6) {
         struct UNK_801CDF0 *unkDF0 = (void *)IWRAM_START;
         if (unkDF0->unk40A == 0) {
             unkDF0->unk40A = a;

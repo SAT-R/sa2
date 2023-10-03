@@ -125,7 +125,7 @@ static void TaskDestructor_Interactable_SpecialRing(struct Task *t)
 
 static void sub_80810FC(Sprite_SpecialRing *ring)
 {
-    gUnknown_030054F4++;
+    gSpecialRingCount++;
 
     ring->displayed.graphics.anim = SA2_ANIM_COLLECTIBLE_SPECIAL_RING;
     ring->displayed.variant = SA2_ANIM_VARIANT_SP_RING__COLLECT;

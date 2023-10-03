@@ -34,7 +34,7 @@ _0801CC1A:
 	ands r0, r1
 	cmp r0, #0
 	beq _0801CC6C
-	ldr r0, _0801CC64 @ =gUnknown_030054F4
+	ldr r0, _0801CC64 @ =gSpecialRingCount
 	ldrb r0, [r0]
 	cmp r0, #6
 	bls _0801CC6C
@@ -61,7 +61,7 @@ _0801CC54: .4byte gBgOffsetsHBlank
 _0801CC58: .4byte gBgScrollRegs
 _0801CC5C: .4byte gGameMode
 _0801CC60: .4byte gPlayer
-_0801CC64: .4byte gUnknown_030054F4
+_0801CC64: .4byte gSpecialRingCount
 _0801CC68: .4byte (IWRAM_START + 0x408)
 _0801CC6C:
 	ldr r1, _0801CD5C @ =(IWRAM_START + 0x408)

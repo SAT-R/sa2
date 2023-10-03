@@ -300,7 +300,7 @@ static void sub_808DD9C(void)
     scene->unk78++;
 
     if (scene->unk78 == 200) {
-        sub_80304DC(gCourseTime, gRingCount, gUnknown_030054F4);
+        sub_80304DC(gCourseTime, gRingCount, gSpecialRingCount);
     }
 }
 
@@ -357,7 +357,7 @@ static void sub_808DF88(void)
     scene->unk78++;
 
     if (scene->unk78 == 200) {
-        sub_80304DC(gCourseTime, gRingCount, gUnknown_030054F4);
+        sub_80304DC(gCourseTime, gRingCount, gSpecialRingCount);
     }
 }
 
@@ -406,7 +406,7 @@ static void sub_808E114(void)
     }
 
     if (scene->unk78 == 200) {
-        sub_80304DC(gCourseTime, gRingCount, gUnknown_030054F4);
+        sub_80304DC(gCourseTime, gRingCount, gSpecialRingCount);
     }
 
     scene->unk78++;

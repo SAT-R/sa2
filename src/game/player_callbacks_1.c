@@ -1390,9 +1390,9 @@ void PlayerCB_80273D0(Player *p)
         sub_802A468(p);
     } else {
         if (gGameMode == GAME_MODE_TIME_ATTACK)
-            gUnknown_030054F4 = 7;
+            gSpecialRingCount = 7;
 
-        if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 > 6)) {
+        if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount > 6)) {
             sub_802A40C(p);
         } else {
             sub_80218E4(p);
@@ -1557,7 +1557,7 @@ void PlayerCB_80278D4(Player *p)
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
             CreateTimeAttackResultsCutScene(gCourseTime);
         } else {
-            sub_80304DC(gCourseTime, gRingCount, gUnknown_030054F4);
+            sub_80304DC(gCourseTime, gRingCount, gSpecialRingCount);
         }
         PLAYERFN_SET(PlayerCB_802A3F0);
     }
@@ -1593,7 +1593,7 @@ void PlayerCB_80279F8(Player *p)
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
             CreateTimeAttackResultsCutScene(gCourseTime);
         } else {
-            sub_80304DC(gCourseTime, gRingCount, gUnknown_030054F4);
+            sub_80304DC(gCourseTime, gRingCount, gSpecialRingCount);
         }
     }
 

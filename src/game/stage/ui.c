@@ -263,7 +263,7 @@ void Task_CreateStageUIMain(void)
                 sd = &digits[UI_ASCII_SP_RING];
                 UpdateSpriteAnimation(sd);
 
-                for (i = 0; i < gUnknown_030054F4; i++) {
+                for (i = 0; i < gSpecialRingCount; i++) {
                     oam = OamMalloc(3);
                     oam->all.attr0 = 31;
                     oam->all.attr1 = i * 8 + 4;

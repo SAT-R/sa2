@@ -4766,7 +4766,7 @@ sub_804CC30: @ 0x0804CC30
 	ldr r0, [r0]
 	ldr r1, _0804CC88 @ =gRingCount
 	ldrh r1, [r1]
-	ldr r2, _0804CC8C @ =gUnknown_030054F4
+	ldr r2, _0804CC8C @ =gSpecialRingCount
 	ldrb r2, [r2]
 	bl sub_80304DC
 	movs r0, #0x90
@@ -4786,7 +4786,7 @@ _0804CC7C: .4byte IWRAM_START + 0x4C
 _0804CC80: .4byte IWRAM_START + 0x48
 _0804CC84: .4byte gCourseTime
 _0804CC88: .4byte gRingCount
-_0804CC8C: .4byte gUnknown_030054F4
+_0804CC8C: .4byte gSpecialRingCount
 _0804CC90: .4byte gMPlayInfo_SE3
 _0804CC94: .4byte 0x0000FFFF
 
