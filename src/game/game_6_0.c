@@ -199,7 +199,7 @@ void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
 
 // NOTE: Only reg-alloc mismatch in loop (see comment below)
 // (99.91%) https://decomp.me/scratch/UT9dt
-NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Player *p))
+void InitializePlayer(Player *p)
 {
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
         && (((p->x & p->y) + 1) != 0)) {
@@ -281,11 +281,11 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     if ((p->unk60 == 0) && IS_SINGLE_PLAYER) {
         if (gCourseTime >= MAX_COURSE_TIME) {
             gCheckpointTime = 0;
-            gCourseTime = 0;
+            gCourseTime = ZONE_TIME_TO_INT(0, 10);
             p->checkpointTime = 0;
         } else {
             gCheckpointTime = p->checkpointTime;
-            gCourseTime = p->checkpointTime;
+            gCourseTime = ZONE_TIME_TO_INT(0, 10);
         }
     }
 
@@ -323,7 +323,6 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     gUnknown_03005840 = NULL;
     gUnknown_0300583C = 0;
 }
-END_NONMATCH
 
 // PlayerCancelMidAir? (Not only used for transitioning to ground)
 void sub_80218E4(Player *p)

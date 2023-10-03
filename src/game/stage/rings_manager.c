@@ -62,6 +62,22 @@ const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS] = {
     NULL,
 };
 
+void Task_SpecialRingsManager(void);
+
+void CreateSpecialRingsManager(void)
+{
+    TaskCreate(Task_SpecialRingsManager, 0, 0x2000, 0, NULL);
+}
+
+void Task_SpecialRingsManager(void)
+{
+    if (gCheckpointTime != 0 && (gCheckpointTime % ZONE_TIME_TO_INT(0, 5)) == 0
+        && gSpecialRingCount > 0) {
+        // manager->lastSpecialRingTime = time;
+        gSpecialRingCount--;
+    }
+}
+
 void CreateStageRingsManager(void)
 {
     struct Task *t;
@@ -71,6 +87,8 @@ void CreateStageRingsManager(void)
     u32 *ewramBuffer;
     const u8 *compressedRingPosData;
     u32 dataSize;
+
+    CreateSpecialRingsManager();
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         t = TaskCreate(Task_RingsMgrMain, sizeof(RingsManager), 0x2000, 0,

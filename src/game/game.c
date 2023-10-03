@@ -127,6 +127,7 @@ void GameStageStart(void)
     gTrappedAnimalVariant = 0;
     gUnknown_030055B0 = 0;
     gRingCount = 0;
+
     gUnknown_030054F8 = 1;
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
@@ -144,7 +145,7 @@ void GameStageStart(void)
     gCheckpointTime = ZONE_TIME_TO_INT(0, 0);
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gCourseTime = ZONE_TIME_TO_INT(0, 0);
+        gCourseTime = ZONE_TIME_TO_INT(0, 10);
     } else {
         gCourseTime = ZONE_TIME_TO_INT(3, 0);
     }
@@ -157,7 +158,7 @@ void CreateGameStage(void)
     u8 i;
     gGameStageTask = TaskCreate(sub_801AB3C, 0, 0xff00, 0, sub_801B7A8);
     gActiveCollectRingEffectCount = 0;
-    gSpecialRingCount = 0;
+    gSpecialRingCount = 10;
     gUnknown_030054B0 = 0;
 
     gUnknown_03005424 |= 0x21;
@@ -382,7 +383,7 @@ void sub_801AB3C(void)
             sub_8019F08();
         }
     } else {
-        gCourseTime += timeStep;
+        gCourseTime -= timeStep;
         if (gCourseTime <= MAX_COURSE_TIME) {
             return;
         }

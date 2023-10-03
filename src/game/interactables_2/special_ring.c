@@ -126,6 +126,7 @@ static void TaskDestructor_Interactable_SpecialRing(struct Task *t)
 static void sub_80810FC(Sprite_SpecialRing *ring)
 {
     gSpecialRingCount++;
+    gCourseTime += ZONE_TIME_TO_INT(0, 5);
 
     ring->displayed.graphics.anim = SA2_ANIM_COLLECTIBLE_SPECIAL_RING;
     ring->displayed.variant = SA2_ANIM_VARIANT_SP_RING__COLLECT;
