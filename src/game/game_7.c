@@ -628,14 +628,3 @@ NONMATCH("asm/non_matching/game/stage/sub_802E384.inc",
     }
 }
 END_NONMATCH
-
-#if 0
-void sub_802E49C(s16 *p0, u8 p1)
-{
-    if(p1 > 8 || p1 < 3)
-        return;
-
-    // _0802E4BC
-    
-}
-#endif

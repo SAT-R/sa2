@@ -109,9 +109,9 @@ typedef struct {
 extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
 
 typedef struct {
-    u16 unk0[6]; // might be [5]
-    Sprite s;
-    Hitbox reserved;
+    /*0x00 */ u16 unk0[6]; // might be [5]
+    /*0x0C */ Sprite s;
+    /*0x3C */ Hitbox reserved;
 } UNK_3005A70; /* 0x30 */
 
 extern UNK_3005A70 gUnknown_03005AA0;

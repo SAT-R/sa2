@@ -52,17 +52,16 @@ zoneLoadingZoneNames:
     .2byte 35, 1117, 27
   @ XX
     .2byte 35, 1117, 28
+    .2byte 20, 1117, 29 @ (empty image)
+    .2byte 20, 1117, 30 @ (empty image)
+    .2byte 35, 1117, 31 @ (empty image)
   @ TRUE AREA 53
-    .2byte 20, 1117, 29
-    .2byte 20, 1117, 30
-    .2byte 35, 1117, 31
     .2byte 35, 1117, 32
-  @ BOSS ATTACK!
     .2byte 20, 1117, 33
     .2byte 20, 1117, 34
     .2byte 35, 1117, 35
+  @ BOSS ATTACK!
     .2byte 35, 1117, 36
-  @ TODO: 37-39 do not exist!?!?
     .2byte 20, 1117, 37
     .2byte 20, 1117, 38
     .2byte 35, 1117, 39
@@ -179,6 +178,7 @@ gUnknown_080D7130:
 .syntax unified
 .text
 
+.if 0
 	thumb_func_start SetupStageIntro
 SetupStageIntro: @ 0x0802F0A8
 	push {r4, r5, r6, r7, lr}
@@ -991,6 +991,7 @@ _0802F74C: .4byte gCurrentLevel
 _0802F750: .4byte Task_UpdateStageLoadingScreen
 _0802F754: .4byte 0x000022F0
 _0802F758: .4byte TaskDestructor_nop_8030458
+.endif
 
 	thumb_func_start Task_802F75C
 Task_802F75C: @ 0x0802F75C
