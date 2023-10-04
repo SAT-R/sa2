@@ -3,12 +3,6 @@
 #include "trig.h"
 #include "game/game.h"
 
-// Seven unknown x/y positions
-const u16 gUnknown_080D6DE4[][2] = {
-    { 3800, 177 },  { 11864, 145 }, { 16088, 177 }, { 21080, 153 },
-    { 27000, 150 }, { 36058, 201 }, { 40000, 225 },
-};
-
 void sub_802DBC0(u8 p0, u16 p1)
 {
     u8 *bgOffsets = gBgOffsetsHBlank;
@@ -634,3 +628,14 @@ NONMATCH("asm/non_matching/game/stage/sub_802E384.inc",
     }
 }
 END_NONMATCH
+
+#if 0
+void sub_802E49C(s16 *p0, u8 p1)
+{
+    if(p1 > 8 || p1 < 3)
+        return;
+
+    // _0802E4BC
+    
+}
+#endif
