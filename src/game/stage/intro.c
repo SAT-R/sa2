@@ -148,7 +148,11 @@ struct Task *SetupStageIntro(void)
     sit_d->unk0 = sit_a;
 
     { // Allocate VRAM for all icon's tiles
+#ifndef NON_MATCHING
         register u32 tilesToAlloc asm("r0");
+#else
+        u32 tilesToAlloc;
+#endif
         u32 loadingIconsTiles;
 
         if (IS_SINGLE_PLAYER) {
