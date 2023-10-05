@@ -7,6 +7,18 @@
 #include "constants/animations.h"
 #include "constants/zones.h"
 
+#define INTRO_ICON_LEAF_FOREST  0
+#define INTRO_ICON_HOT_CRATAER  1
+#define INTRO_ICON_MUSIC_PLANT  2
+#define INTRO_ICON_ICE_PARADISE 3
+#define INTRO_ICON_SKY_CANYON   4
+#define INTRO_ICON_TECHNO_BASE  5
+#define INTRO_ICON_EGG_UTOPIA   6
+#define INTRO_ICON_XX           7
+#define INTRO_ICON_TRUE_AREA_53 8
+#define INTRO_ICON_BOSS_ATTACK  9
+#define NUM_INTRO_STAGE_ICONS   9 // excludes Boss Attack
+
 // (Stage-Courses + XX + True Area 53) == 9
 #define NUM_ZONE_UNLOCKED_ICONS  (NUM_COURSE_ZONES + 2)
 #define NUM_ZONE_NAME_PARTS      4
@@ -14,18 +26,21 @@
 #define ZONE_NAME_INDEX_BOSS_ATK 36
 
 extern u16 zoneLoadingCharacterLogos[NUM_CHARACTERS][3];
-extern u16 zoneLoadingZoneNames[10 * NUM_ZONE_NAME_PARTS][3];
-extern u16 zoneLoadingIcons[9][3];
+extern u16 zoneLoadingZoneNames[(NUM_INTRO_STAGE_ICONS + 1) * NUM_ZONE_NAME_PARTS][3];
+extern u16 zoneLoadingIcons[NUM_INTRO_STAGE_ICONS][3];
 
 // NOTE: The usage code expects all these icons to have the same tile-count.
 //       It uses the count of the 0th entry.
-extern u16 zoneUnlockedIcons[10][3];
+extern u16 zoneUnlockedIcons[NUM_INTRO_STAGE_ICONS][3];
+
+extern u16 sZoneLoadingActLetters[5][3];
 
 typedef struct {
     /* 0x00 */ u32 unk0;
     /* 0x04 */ u8 unk4;
 } SITaskA; /* size: 0x8 */
 
+// TODO: Are SITaskB/C/F the same struct?
 typedef struct {
     /* 0x00 */ SITaskA *unk0;
     /* 0x04 */ struct TransitionState transition;
@@ -41,31 +56,45 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ SITaskA *unk0;
-    /* 0x04 */ u8 filler4[0x1B0];
+    /* 0x04 */ Sprite sUnlockedIcons[9];
     /* 0x1B4 */ Sprite sCharacterLogo;
     /* 0x1E4 */ Sprite sStageName[4];
     /* 0x2A4 */ Sprite s2A4;
     /* 0x2D4 */ Sprite s2D4;
 } SITaskD; /* size: 0x310 */
 
+typedef struct {
+    /* 0x00 */ SITaskA *unk0;
+    /* 0x04 */ Sprite sStageNames[4];
+} SITaskE; /* size: 0xC4 */
+
+typedef struct {
+    /* 0x00 */ SITaskA *unk0;
+    /* 0x04 */ u8 filler4[0x14];
+} SITaskF; /* size: 0x18 */
+
 void Task_802F75C(void);
 void Task_802F9F8(void);
 void Task_802FD34(void);
 void Task_802FF94(void);
+void Task_80302AC(void);
+void Task_UpdateStageLoadingScreen(void);
 void TaskDestructor_80303CC(struct Task *);
 void TaskDestructor_nop_8030458(struct Task *);
 void TaskDestructor_803045C(struct Task *);
+void TaskDestructor_8030474(struct Task *);
 
+// (99.53%) https://decomp.me/scratch/zGPtO
 struct Task *SetupStageIntro(void)
 {
     struct Task *t; // sp04
     SITaskA *sit_a; // sp08
     struct Task *t2;
     SITaskB *sit_b;
-    struct Task *t3;
     SITaskC *sit_c;
-    struct Task *t4;
     SITaskD *sit_d; // r8
+    SITaskE *sit_e;
+    SITaskF *sit_f;
     struct TransitionState *transition;
     Vec2_16 *vec;
     void *tilesCursor;
@@ -101,9 +130,9 @@ struct Task *SetupStageIntro(void)
     transition->unkA = 0;
     NextTransitionFrame(transition);
 
-    t3 = TaskCreate(Task_802FD34, sizeof(SITaskC), 0x2220, 0,
+    t2 = TaskCreate(Task_802FD34, sizeof(SITaskC), 0x2220, 0,
                     TaskDestructor_nop_8030458);
-    sit_c = TaskGetStructPtr(t3);
+    sit_c = TaskGetStructPtr(t2);
     sit_c->unk0 = sit_a;
 
     vec = &sit_c->unk10;
@@ -114,37 +143,43 @@ struct Task *SetupStageIntro(void)
     vec->x = 0;
     vec->y = 0;
 
-    t4 = TaskCreate(Task_802FF94, sizeof(SITaskD), 0x2230, 0, TaskDestructor_803045C);
-    sit_d = TaskGetStructPtr(t4);
+    t2 = TaskCreate(Task_802FF94, sizeof(SITaskD), 0x2230, 0, TaskDestructor_803045C);
+    sit_d = TaskGetStructPtr(t2);
     sit_d->unk0 = sit_a;
 
-    {
-        u32 tilesToAlloc;
-        u32 zone;
+    { // Allocate VRAM for all icon's tiles
+        register u32 tilesToAlloc asm("r0");
         u32 loadingIconsTiles;
 
         if (IS_SINGLE_PLAYER) {
             tilesToAlloc = zoneLoadingCharacterLogos[gSelectedCharacter][0];
-            zone = LEVEL_TO_ZONE(gCurrentLevel);
-            tilesToAlloc += zoneLoadingZoneNames[zone * 4 + 0][0];
-            tilesToAlloc += zoneLoadingZoneNames[zone * 4 + 1][0];
-            tilesToAlloc += zoneLoadingZoneNames[zone * 4 + 2][0];
-            tilesToAlloc += zoneLoadingZoneNames[zone * 4 + 3][0];
-            tilesToAlloc += zoneLoadingIcons[zone][0] + 0x24;
+            tilesToAlloc
+                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0];
+            tilesToAlloc
+                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0];
+            tilesToAlloc
+                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0];
+            tilesToAlloc
+                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0];
+            loadingIconsTiles = zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24;
+            tilesToAlloc += loadingIconsTiles;
             tilesToAlloc += zoneUnlockedIcons[0][0] * NUM_ZONE_UNLOCKED_ICONS;
+            tilesCursor = VramMalloc(tilesToAlloc);
         } else {
             // _0802F260
             tilesToAlloc = zoneLoadingCharacterLogos[gSelectedCharacter][0];
-            zone = LEVEL_TO_ZONE(gCurrentLevel);
-            tilesToAlloc += zoneLoadingZoneNames[zone * 4 + 0][0];
-            tilesToAlloc += zoneLoadingZoneNames[zone * 4 + 1][0];
-            tilesToAlloc += zoneLoadingZoneNames[zone * 4 + 2][0];
-            tilesToAlloc += zoneLoadingZoneNames[zone * 4 + 3][0];
-            loadingIconsTiles = zoneLoadingIcons[zone][0] + 0x24;
+            tilesToAlloc
+                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0];
+            tilesToAlloc
+                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0];
+            tilesToAlloc
+                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0];
+            tilesToAlloc
+                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0];
+            loadingIconsTiles = zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24;
             tilesToAlloc += loadingIconsTiles;
+            tilesCursor = VramMalloc(tilesToAlloc);
         }
-
-        tilesCursor = VramMalloc(tilesToAlloc);
     }
     // __0802F2C4
 
@@ -228,11 +263,12 @@ struct Task *SetupStageIntro(void)
         s->unk10 = SPRITE_FLAG(PRIORITY, 0);
     }
 
+    /*    Loading Wheel in upper-left corner    */
     s = &sit_d->s2A4;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = tilesCursor;
-    tilesCursor += 24 * TILE_SIZE_4BPP;
+    tilesCursor += 36 * TILE_SIZE_4BPP;
 
     s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
@@ -247,12 +283,116 @@ struct Task *SetupStageIntro(void)
     s->unk10 = SPRITE_FLAG(PRIORITY, 0);
     UpdateSpriteAnimation(s);
 
+    /*    Icon inside the loading wheel    */
     s = &sit_d->s2D4;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = tilesCursor;
 
-    // continueHEreLabel
+    tilesCursor += zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] * TILE_SIZE_4BPP;
+    s->graphics.anim = zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][1];
+    s->variant = zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][2];
+
+    if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+        s->graphics.anim = zoneLoadingIcons[INTRO_ICON_TRUE_AREA_53][1];
+        s->variant = zoneLoadingIcons[INTRO_ICON_TRUE_AREA_53][2];
+    }
+
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant |= -1;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
+    UpdateSpriteAnimation(s);
+
+    /*    The icons of all unlocked zones in the upper-right    */
+    if (IS_SINGLE_PLAYER) {
+        // _0802F5A8
+        for (i = 0; i < NUM_INTRO_STAGE_ICONS; i++) {
+            s = &sit_d->sUnlockedIcons[i];
+            s->x = 0;
+            s->y = -32;
+            s->graphics.dest = tilesCursor;
+            tilesCursor += zoneUnlockedIcons[0][0] * TILE_SIZE_4BPP;
+
+            if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+                if (i == INTRO_ICON_TRUE_AREA_53) {
+                    // TODO: The macro names don't line up right now.
+                    //       (i == TA53, but icon index for Boss Attack)
+                    s->graphics.anim = zoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][1];
+                    s->variant = zoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][2];
+                } else {
+                    // _0802F5FE
+                    s->graphics.anim = zoneUnlockedIcons[i][1];
+                    s->variant = zoneUnlockedIcons[i][2];
+                }
+            } else if (i == LEVEL_TO_ZONE(gCurrentLevel)) {
+                // _0802F5F0
+                s->graphics.anim = zoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][1];
+                s->variant = zoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][2];
+            } else {
+                // _0802F5FE
+                s->graphics.anim = zoneUnlockedIcons[i][1];
+                s->variant = zoneUnlockedIcons[i][2];
+            }
+
+            s->unk1A = SPRITE_OAM_ORDER(4);
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->prevVariant = -1;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+            s->palId = 0;
+            s->hitboxes[0].index = -1;
+            s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+            UpdateSpriteAnimation(s);
+        }
+    }
+    // _0802F652
+
+    /*    Act Names    */
+    t2 = TaskCreate(Task_80302AC, sizeof(SITaskE), 0x2240, 0, TaskDestructor_8030474);
+    sit_e = TaskGetStructPtr(t2);
+    sit_e->unk0 = sit_a;
+    tilesCursor = VramMalloc(sZoneLoadingActLetters[0][0] * 4);
+
+    for (i = 0; i < 4; i++) {
+        s = &sit_e->sStageNames[i];
+        s->x = 0;
+        s->y = -32;
+
+        s->graphics.anim = sZoneLoadingActLetters[i][1];
+        s->variant = sZoneLoadingActLetters[i][2];
+
+        // Set Act number anim (1 or 2)
+        if ((i == 3) && ((ACT_INDEX(gCurrentLevel) & 0x1) != ACT_1)) {
+            s->graphics.anim = sZoneLoadingActLetters[4][1];
+            s->variant = sZoneLoadingActLetters[4][2];
+        }
+
+        s->graphics.dest = tilesCursor;
+        tilesCursor += sZoneLoadingActLetters[0][0] * TILE_SIZE_4BPP;
+
+        s->unk1A = SPRITE_OAM_ORDER(2);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        UpdateSpriteAnimation(s);
+    }
+
+    t2 = TaskCreate(Task_UpdateStageLoadingScreen, sizeof(SITaskF), 0x22F0, 0,
+                    TaskDestructor_nop_8030458);
+    sit_f = TaskGetStructPtr(t2);
+    sit_f->unk0 = sit_a;
 
     return t;
 }

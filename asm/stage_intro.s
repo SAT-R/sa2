@@ -707,7 +707,6 @@ _0802F4C0:
 	strh r4, [r5, #0x16]
 	strh r4, [r5, #0x18]
 	str r6, [r5, #4]
-continueHEreLabel:
 	ldr r3, _0802F5DC @ =zoneLoadingIcons
 	ldr r2, _0802F5D8 @ =gCurrentLevel
 	ldrb r0, [r2]
@@ -879,7 +878,7 @@ _0802F652:
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r1, r1, r0
-	mov r8, r1
+	mov r8, r1          @ r8 = sit_e
 	ldr r2, [sp, #8]
 	str r2, [r1]
 	ldr r4, _0802F744 @ =sZoneLoadingActLetters
@@ -892,7 +891,7 @@ _0802F652:
 	mov sl, r3
 	movs r3, #0
 	mov sb, r4
-_0802F688:
+_0802F688:  @ loop
 	lsls r1, r7, #1
 	adds r1, r1, r7
 	lsls r0, r1, #4
