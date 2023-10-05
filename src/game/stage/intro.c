@@ -74,7 +74,7 @@ void TaskDestructor_nop_8030458(struct Task *);
 void TaskDestructor_803045C(struct Task *);
 void TaskDestructor_8030474(struct Task *);
 
-// (99.53%) https://decomp.me/scratch/zGPtO
+// (99.66%) https://decomp.me/scratch/zGPtO
 NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
          struct Task *SetupStageIntro(void))
 {
