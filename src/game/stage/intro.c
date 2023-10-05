@@ -44,15 +44,9 @@ typedef struct {
 typedef struct {
     /* 0x00 */ SITaskA *unk0;
     /* 0x04 */ struct TransitionState transition;
-    u8 filler4[0x8];
-} SITaskB; /* size: 0x18 */
-
-typedef struct {
-    /* 0x00 */ SITaskA *unk0;
-    /* 0x04 */ u8 filler4[0xC];
     /* 0x10 */ Vec2_16 unk10;
     /* 0x14 */ Vec2_16 unk14;
-} SITaskC; /* size: 0x18 */
+} SITaskB; /* size: 0x18 */
 
 typedef struct {
     /* 0x00 */ SITaskA *unk0;
@@ -61,17 +55,13 @@ typedef struct {
     /* 0x1E4 */ Sprite sStageName[4];
     /* 0x2A4 */ Sprite s2A4;
     /* 0x2D4 */ Sprite s2D4;
+    /* 0x314 */u8 filler4[0xC];
 } SITaskD; /* size: 0x310 */
 
 typedef struct {
     /* 0x00 */ SITaskA *unk0;
     /* 0x04 */ Sprite sStageNames[4];
 } SITaskE; /* size: 0xC4 */
-
-typedef struct {
-    /* 0x00 */ SITaskA *unk0;
-    /* 0x04 */ u8 filler4[0x14];
-} SITaskF; /* size: 0x18 */
 
 void Task_802F75C(void);
 void Task_802F9F8(void);
@@ -85,16 +75,18 @@ void TaskDestructor_803045C(struct Task *);
 void TaskDestructor_8030474(struct Task *);
 
 // (99.53%) https://decomp.me/scratch/zGPtO
+#if 01
+
 struct Task *SetupStageIntro(void)
 {
     struct Task *t; // sp04
     SITaskA *sit_a; // sp08
     struct Task *t2;
     SITaskB *sit_b;
-    SITaskC *sit_c;
+    //SITaskC *sit_c;
     SITaskD *sit_d; // r8
     SITaskE *sit_e;
-    SITaskF *sit_f;
+    //SITaskF *sit_f;
     struct TransitionState *transition;
     Vec2_16 *vec;
     void *tilesCursor;
@@ -130,16 +122,16 @@ struct Task *SetupStageIntro(void)
     transition->unkA = 0;
     NextTransitionFrame(transition);
 
-    t2 = TaskCreate(Task_802FD34, sizeof(SITaskC), 0x2220, 0,
+    t2 = TaskCreate(Task_802FD34, sizeof(SITaskB), 0x2220, 0,
                     TaskDestructor_nop_8030458);
-    sit_c = TaskGetStructPtr(t2);
-    sit_c->unk0 = sit_a;
+    sit_b = TaskGetStructPtr(t2);
+    sit_b->unk0 = sit_a;
 
-    vec = &sit_c->unk10;
+    vec = &sit_b->unk10;
     vec->x = 0;
     vec->y = 0;
 
-    vec = &sit_c->unk14;
+    vec = &sit_b->unk14;
     vec->x = 0;
     vec->y = 0;
 
@@ -148,42 +140,34 @@ struct Task *SetupStageIntro(void)
     sit_d->unk0 = sit_a;
 
     { // Allocate VRAM for all icon's tiles
-#ifndef NON_MATCHING
+        #ifndef NON_MATCHING
         register u32 tilesToAlloc asm("r0");
-#else
+        #else
         u32 tilesToAlloc;
-#endif
+        #endif
         u32 loadingIconsTiles;
 
         if (IS_SINGLE_PLAYER) {
             tilesToAlloc = zoneLoadingCharacterLogos[gSelectedCharacter][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0];
+            tilesToAlloc += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0];
+            tilesToAlloc += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0];
+            tilesToAlloc += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0];
+            tilesToAlloc += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0];
             loadingIconsTiles = zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24;
             tilesToAlloc += loadingIconsTiles;
             tilesToAlloc += zoneUnlockedIcons[0][0] * NUM_ZONE_UNLOCKED_ICONS;
-            tilesCursor = VramMalloc(tilesToAlloc);
         } else {
             // _0802F260
             tilesToAlloc = zoneLoadingCharacterLogos[gSelectedCharacter][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0];
+            tilesToAlloc += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0];
+            tilesToAlloc += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0];
+            tilesToAlloc += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0];
+            tilesToAlloc += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0];
             loadingIconsTiles = zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24;
             tilesToAlloc += loadingIconsTiles;
-            tilesCursor = VramMalloc(tilesToAlloc);
         }
+        tilesCursor = VramMalloc(tilesToAlloc); 
+
     }
     // __0802F2C4
 
@@ -214,13 +198,6 @@ struct Task *SetupStageIntro(void)
     s->unk10 = 0;
     UpdateSpriteAnimation(s);
 
-    {
-        // void *sp20 = &sit_d->s2A4.variant;
-        //
-        //  multiple ptrs pushed to stack, likely the compiler doing it
-        //
-        //  ...
-    }
 
     for (i = 0; i < NUM_ZONE_NAME_PARTS; i++) {
         u32 nameIndex;
@@ -393,10 +370,11 @@ struct Task *SetupStageIntro(void)
         UpdateSpriteAnimation(s);
     }
 
-    t2 = TaskCreate(Task_UpdateStageLoadingScreen, sizeof(SITaskF), 0x22F0, 0,
+    t2 = TaskCreate(Task_UpdateStageLoadingScreen, sizeof(SITaskB), 0x22F0, 0,
                     TaskDestructor_nop_8030458);
-    sit_f = TaskGetStructPtr(t2);
-    sit_f->unk0 = sit_a;
+    sit_b = TaskGetStructPtr(t2);
+    sit_b->unk0 = sit_a;
 
     return t;
 }
+#endif
