@@ -3,8 +3,6 @@
 
 .section .rodata
 
-@; TODO: move all the above data into `stage_ui.c` and merge with `time.c`
-
     .global zoneLoadingCharacterLogos
 zoneLoadingCharacterLogos:
     .2byte 9, 1114, 0   @ [CHARACTER_SONIC]    (Blue)
@@ -67,7 +65,7 @@ zoneLoadingZoneNames:
     .2byte 35, 1117, 39
 
     @ Big icon showing the current zone during the stage loading screen.
-    @ It is rotating and displayed in the upper left screen corner.
+    @ It is positioned inside the rotating wheel displayed in the upper left screen corner.
     .global zoneLoadingIcons
 zoneLoadingIcons:   @ 0x080D6F0E
     .2byte 64, 1116, 0
@@ -128,15 +126,15 @@ gUnknown_080D6FC8:
     @ .4byte Unknown
     @ .2byte animId, variantId
     .4byte 0x54
-    .2byte 1113, 0
+    .2byte 1113, 0  @ 1113, [CHARACTER_SONIC]
     .4byte 0x54
-    .2byte 1113, 4
+    .2byte 1113, 4  @ 1113, [CHARACTER_CREAM]
     .4byte 0x54
-    .2byte 1113, 1
+    .2byte 1113, 1  @ 1113, [CHARACTER_TAILS]
     .4byte 0x54
-    .2byte 1113, 2
+    .2byte 1113, 2  @ 1113, [CHARACTER_KNUCKLES]
     .4byte 0x54
-    .2byte 1113, 3
+    .2byte 1113, 3  @ 1113, [CHARACTER_AMY]
 
     @ [NUM_CHARACTERS]
     .global gUnknown_080D6FF0
@@ -311,8 +309,8 @@ SetupStageIntro: @ 0x0802F0A8
 	lsls r4, r2, #1
 	adds r4, r4, r2
 	lsls r1, r4, #3
-	adds r1, r1, r5
-	ldrh r6, [r1]
+	adds r1, r1, r5		@ r1 = 24*LEVEL_TO_ZONE(gCurrLvl)
+	ldrh r6, [r1]		@ r6 = zoneNamesTilecount0
 	lsls r2, r2, #2
 	adds r3, r2, #1
 	lsls r1, r3, #1
@@ -424,6 +422,7 @@ _0802F2BE:
 	adds r0, r0, r1
 	bl VramMalloc
 	adds r6, r0, #0
+__0802F2C4:
 	movs r5, #0xda
 	lsls r5, r5, #1
 	add r5, r8
@@ -539,7 +538,7 @@ _0802F39C:
 	lsls r1, r1, #1
 	adds r0, r0, r1
 	mov r4, r8
-	adds r5, r4, r0
+	adds r5, r4, r0			@ r5 = s
 	strh r2, [r5, #0x16]
 	strh r2, [r5, #0x18]
 	ldr r0, _0802F3EC @ =gCurrentLevel
@@ -708,6 +707,7 @@ _0802F4C0:
 	strh r4, [r5, #0x16]
 	strh r4, [r5, #0x18]
 	str r6, [r5, #4]
+continueHEreLabel:
 	ldr r3, _0802F5DC @ =zoneLoadingIcons
 	ldr r2, _0802F5D8 @ =gCurrentLevel
 	ldrb r0, [r2]
