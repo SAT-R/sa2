@@ -177,8 +177,6 @@ gUnknown_080D7130:
 .text
 
 .if 0
-.endif
-
 	thumb_func_start Task_802F75C
 Task_802F75C: @ 0x0802F75C
 	push {r4, r5, r6, r7, lr}
@@ -495,6 +493,7 @@ _0802F9E6:
 _0802F9EC: .4byte gUnknown_03005AF0
 _0802F9F0: .4byte 0xFFFBFFFF
 _0802F9F4: .4byte gCurTask
+.endif
 
 	thumb_func_start Task_802F9F8
 Task_802F9F8: @ 0x0802F9F8
