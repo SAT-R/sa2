@@ -166,6 +166,7 @@ static const u8 sGettingReadyAnimationDuration[NUM_CHARACTERS]
         [CHARACTER_AMY] = 40 };
 
 // TODO: static
+//       This is u8[][3], each byte being one RGB channel(0-31)
 const u8 gUnknown_080D6FF5[] = {
     0x00, 0x17, 0x06, 0x16, 0x16, 0x16, 0x00, 0x04, 0x13, 0x00, 0x08, 0x1D, 0x00, 0x00,
     0x0C, 0x00, 0x13, 0x00, 0x1F, 0x1F, 0x13, 0x1F, 0x1B, 0x00, 0x13, 0x0A, 0x02, 0x1F,
@@ -216,14 +217,14 @@ typedef struct {
 
 // TODO: Are SITaskB/C/F the same struct?
 typedef struct {
-    /* 0x00 */ SITaskA *unk0;
+    /* 0x00 */ SITaskA *parent;
     /* 0x04 */ struct TransitionState transition;
     /* 0x10 */ Vec2_16 unk10;
     /* 0x14 */ Vec2_16 unk14;
 } SITaskB; /* size: 0x18 */
 
 typedef struct {
-    /* 0x00 */ SITaskA *unk0;
+    /* 0x00 */ SITaskA *parent;
     /* 0x04 */ Sprite sUnlockedIcons[9];
     /* 0x1B4 */ Sprite sCharacterLogo;
     /* 0x1E4 */ Sprite sStageName[4];
@@ -233,7 +234,7 @@ typedef struct {
 } SITaskD; /* size: 0x310 */
 
 typedef struct {
-    /* 0x00 */ SITaskA *unk0;
+    /* 0x00 */ SITaskA *parent;
     /* 0x04 */ Sprite sStageNames[4];
 } SITaskE; /* size: 0xC4 */
 
@@ -284,7 +285,7 @@ NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
     t2 = TaskCreate(Task_802F9F8, sizeof(SITaskB), 0x2210, 0,
                     TaskDestructor_nop_8030458);
     sit_b = TaskGetStructPtr(t2);
-    sit_b->unk0 = sit_a;
+    sit_b->parent = sit_a;
 
     transition = &sit_b->transition;
     transition->unk0 = 0;
@@ -298,7 +299,7 @@ NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
     t2 = TaskCreate(Task_802FD34, sizeof(SITaskB), 0x2220, 0,
                     TaskDestructor_nop_8030458);
     sit_b = TaskGetStructPtr(t2);
-    sit_b->unk0 = sit_a;
+    sit_b->parent = sit_a;
 
     vec = &sit_b->unk10;
     vec->x = 0;
@@ -310,7 +311,7 @@ NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
 
     t2 = TaskCreate(Task_802FF94, sizeof(SITaskD), 0x2230, 0, TaskDestructor_803045C);
     sit_d = TaskGetStructPtr(t2);
-    sit_d->unk0 = sit_a;
+    sit_d->parent = sit_a;
 
     { // Allocate VRAM for all icon's tiles
 #ifndef NON_MATCHING
@@ -517,7 +518,7 @@ NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
     /*    Act Names    */
     t2 = TaskCreate(Task_80302AC, sizeof(SITaskE), 0x2240, 0, TaskDestructor_8030474);
     sit_e = TaskGetStructPtr(t2);
-    sit_e->unk0 = sit_a;
+    sit_e->parent = sit_a;
     tilesCursor = VramMalloc(sZoneLoadingActLetters[0][0] * 4);
 
     for (i = 0; i < 4; i++) {
@@ -552,7 +553,7 @@ NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
     t2 = TaskCreate(Task_UpdateStageLoadingScreen, sizeof(SITaskB), 0x22F0, 0,
                     TaskDestructor_nop_8030458);
     sit_b = TaskGetStructPtr(t2);
-    sit_b->unk0 = sit_a;
+    sit_b->parent = sit_a;
 
     return t;
 }
@@ -638,5 +639,99 @@ void Task_802F75C(void)
         CreateStageUI();
         TaskDestroy(gCurTask);
         sub_801583C();
+    }
+}
+
+void Task_802F9F8(void)
+{
+    SITaskB *sit_b = TaskGetStructPtr(gCurTask);
+    SITaskA *parent = sit_b->parent; // sp00
+    struct TransitionState *transition = &sit_b->transition;
+    s32 frameCounter = parent->counter;
+    u8 i;
+
+    gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_OBJWIN_ON);
+
+    if (frameCounter >= 150) {
+        frameCounter -= 150;
+
+        if (frameCounter >= (160 - 150)) {
+            frameCounter = 10;
+        }
+        transition->unk4 = frameCounter << 9;
+
+        if (((frameCounter << 25) >> 16) >= 0x2000) {
+            transition->unk4 = 0x2000;
+        }
+        // _0802FA4C
+
+        if (IS_SINGLE_PLAYER) {
+            // _0802FA4C+8
+            for (i = 0; i < 16; i++) {
+                s32 index = (gSelectedCharacter * 48) + i * 3;
+                u8 r = (gUnknown_080D6FF5[index] * frameCounter) / 16u;
+                u8 g = ((gUnknown_080D6FF5[index + 1] * frameCounter) / 16u);
+                u8 b = ((gUnknown_080D6FF5[index + 2] * frameCounter) / 16u);
+
+                gObjPalette[i] = RGB(r, g, b);
+
+                if (gUnknown_030056A4 != NULL) {
+                    index = (gSelectedCharacter * 48) + i * 3;
+                    r = (gUnknown_080D6FF5[index + 240] * frameCounter) / 16u;
+                    g = ((gUnknown_080D6FF5[index + 241] * frameCounter) / 16u);
+                    b = ((gUnknown_080D6FF5[index + 242] * frameCounter) / 16u);
+
+                    gObjPalette[i + 0xE0] = RGB(r, g, b);
+                }
+            }
+        } else {
+            // _0802FB28
+        }
+    } else {
+        // _0802FC5C
+        transition->unk8 = 0x30EF;
+        NextTransitionFrame(transition);
+
+        gWinRegs[WINREG_WININ] = (WININ_WIN0_ALL | WININ_WIN1_ALL);
+        gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_OBJ | WINOUT_WINOBJ_OBJ);
+    }
+
+    if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+        gWinRegs[WINREG_WININ] &= ~(WININ_WIN0_BG1 | WININ_WIN0_BG2);
+    }
+    // _0802FC86
+
+    /* Setup window registers and destroy this Task */
+    if (parent->counter >= 200) {
+        gBldRegs.bldY = 0;
+        gBldRegs.bldCnt = 0;
+        gBldRegs.bldAlpha = 0;
+
+        gWinRegs[WINREG_WIN0H] = WIN_RANGE(DISPLAY_WIDTH, DISPLAY_WIDTH);
+        gWinRegs[WINREG_WIN0V] = WIN_RANGE(DISPLAY_HEIGHT, DISPLAY_HEIGHT);
+        gWinRegs[WINREG_WIN1H] = WIN_RANGE(DISPLAY_WIDTH, DISPLAY_WIDTH);
+        gWinRegs[WINREG_WIN1V] = WIN_RANGE(DISPLAY_HEIGHT, DISPLAY_HEIGHT);
+        gWinRegs[WINREG_WININ] = 0;
+        gWinRegs[WINREG_WINOUT] = 0;
+
+        if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+            gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_OBJWIN_ON);
+        } else {
+            // Level: True Area 53
+            gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_BG1_ON
+                          | DISPCNT_BG2_ON);
+            gWinRegs[WINREG_WINOUT]
+                = (WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR | WINOUT_WINOBJ_BG0
+                   | WINOUT_WINOBJ_BG1 | WINOUT_WINOBJ_BG2 | WINOUT_WIN01_OBJ
+                   | WINOUT_WIN01_CLR | WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2);
+
+            gBldRegs.bldCnt
+                = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG0 | BLDCNT_TGT2_BG1
+                   | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2);
+            gBldRegs.bldAlpha = 0x404;
+            gBldRegs.bldY = 0x404;
+        }
+
+        TaskDestroy(gCurTask);
     }
 }

@@ -8,8 +8,6 @@
 .text
 
 .if 0
-.endif
-
 	thumb_func_start Task_802F9F8
 Task_802F9F8: @ 0x0802F9F8
 	push {r4, r5, r6, r7, lr}
@@ -25,10 +23,10 @@ Task_802F9F8: @ 0x0802F9F8
 	lsls r0, r0, #0x12
 	adds r0, r1, r0
 	ldr r0, [r0]
-	str r0, [sp]
+	str r0, [sp]            @ sp00 = parent
 	ldr r0, _0802FB08 @ =IWRAM_START+4
 	adds r0, r1, r0
-	str r0, [sp, #4]
+	str r0, [sp, #4]        @ sp04 = transition
 	ldr r1, [sp]
 	ldr r5, [r1]
 	ldr r2, _0802FB0C @ =gDispCnt
@@ -65,23 +63,23 @@ _0802FA4C:
 	ldr r3, _0802FB18 @ =gUnknown_080D6FF5
 	mov ip, r3
 	ldr r0, _0802FB1C @ =gObjPalette
-	mov sb, r0
-	mov r8, ip
+	mov sb, r0      @ sb = gObjPalette
+	mov r8, ip      @ r8 = ip = gUnknown_080D6FF5
 	movs r1, #2
 	add r1, ip
-	mov sl, r1
+	mov sl, r1      @ sl = ip = gUnknown_080D6FF5+2
 _0802FA66:
 	lsls r3, r6, #1
-	adds r7, r3, r6
+	adds r7, r3, r6 @ r7 = i*3
 	ldr r1, _0802FB20 @ =gSelectedCharacter
 	movs r0, #0
 	ldrsb r0, [r1, r0]
 	lsls r2, r0, #1
 	adds r2, r2, r0
-	lsls r2, r2, #4
-	adds r2, r7, r2
+	lsls r2, r2, #4     @ r2 = gSelChar*48
+	adds r2, r7, r2     @ r2 += i*3
 	mov r1, r8
-	adds r0, r2, r1
+	adds r0, r2, r1     @ r0 = gUnknown_080D6FF5[r2]
 	ldrb r4, [r0]
 	adds r0, r4, #0
 	muls r0, r5, r0
@@ -407,6 +405,7 @@ _0802FD24: .4byte 0x00003735
 _0802FD28: .4byte 0x00001346
 _0802FD2C: .4byte 0x00000404
 _0802FD30: .4byte gCurTask
+.endif
 
 	thumb_func_start Task_802FD34
 Task_802FD34: @ 0x0802FD34
