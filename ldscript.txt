@@ -361,7 +361,6 @@ SECTIONS
         build/sa2/src/game/trapped_animals.o(.rodata);
         build/sa2/src/game/game_8.o(.rodata);
         build/sa2/src/game/stage/intro.o(.rodata);
-        build/sa2/asm/stage_intro.o(.rodata);
         build/sa2/asm/stage_outro.o(.rodata);
         build/sa2/src/game/stage/outro.o(.rodata);
         build/sa2/src/game/character_select.o(.rodata);
