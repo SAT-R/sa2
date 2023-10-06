@@ -108,7 +108,7 @@ sub_80304DC: @ 0x080304DC
 	ands r0, r1
 	cmp r0, #0
 	beq _08030594
-	ldr r0, _0803058C @ =gUnknown_030054F4
+	ldr r0, _0803058C @ =gSpecialRingCount
 	ldrb r0, [r0]
 	cmp r0, #6
 	bls _08030594
@@ -127,7 +127,7 @@ _0803057C: .4byte IWRAM_START + 0x168
 _08030580: .4byte IWRAM_START + 0x170
 _08030584: .4byte 0x00003FFF
 _08030588: .4byte gPlayer
-_0803058C: .4byte gUnknown_030054F4
+_0803058C: .4byte gSpecialRingCount
 _08030590: .4byte 0x00003FBF
 _08030594:
 	ldr r0, _080305C4 @ =gCurrentLevel
@@ -1375,7 +1375,7 @@ _08030F94:
 	ands r0, r1
 	cmp r0, #0
 	beq _08031030
-	ldr r0, _08031008 @ =gUnknown_030054F4
+	ldr r0, _08031008 @ =gSpecialRingCount
 	ldrb r0, [r0]
 	cmp r0, #6
 	bls _08031030
@@ -1424,7 +1424,7 @@ _08030F94:
 	.align 2, 0
 _08031000: .4byte gLoadedSaveGame
 _08031004: .4byte gSelectedCharacter
-_08031008: .4byte gUnknown_030054F4
+_08031008: .4byte gSpecialRingCount
 _0803100C: .4byte 0x0000FFFF
 _08031010: .4byte gUnknown_03002AE4
 _08031014: .4byte gUnknown_0300287C
@@ -1466,7 +1466,7 @@ _0803106C:
 	ands r0, r1
 	cmp r0, #0
 	beq _0803109C
-	ldr r0, _08031098 @ =gUnknown_030054F4
+	ldr r0, _08031098 @ =gSpecialRingCount
 	ldrb r0, [r0]
 	cmp r0, #6
 	bls _0803109C
@@ -1479,7 +1479,7 @@ _0803106C:
 	b _080310E6
 	.align 2, 0
 _08031094: .4byte gPlayer
-_08031098: .4byte gUnknown_030054F4
+_08031098: .4byte gSpecialRingCount
 _0803109C:
 	bl sub_80310F0
 	bl sub_8031314

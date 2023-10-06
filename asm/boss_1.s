@@ -1219,7 +1219,7 @@ _0803ABEC:
 	ldr r0, [r0]
 	ldr r1, _0803AC0C @ =gRingCount
 	ldrh r1, [r1]
-	ldr r2, _0803AC10 @ =gUnknown_030054F4
+	ldr r2, _0803AC10 @ =gSpecialRingCount
 	ldrb r2, [r2]
 	bl sub_80304DC
 _0803ABFC:
@@ -1230,7 +1230,7 @@ _0803ABFC:
 	.align 2, 0
 _0803AC08: .4byte gCourseTime
 _0803AC0C: .4byte gRingCount
-_0803AC10: .4byte gUnknown_030054F4
+_0803AC10: .4byte gSpecialRingCount
 _0803AC14: .4byte gCurTask
 _0803AC18:
 	ldr r0, _0803AC28 @ =gWinRegs

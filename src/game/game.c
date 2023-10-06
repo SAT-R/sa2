@@ -157,7 +157,7 @@ void CreateGameStage(void)
     u8 i;
     gGameStageTask = TaskCreate(sub_801AB3C, 0, 0xff00, 0, sub_801B7A8);
     gActiveCollectRingEffectCount = 0;
-    gUnknown_030054F4 = 0;
+    gSpecialRingCount = 0;
     gUnknown_030054B0 = 0;
 
     gUnknown_03005424 |= 0x21;

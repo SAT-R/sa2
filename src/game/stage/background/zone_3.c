@@ -148,7 +148,7 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
     gBgScrollRegs[3][1] = r3;
 
     if (IS_SINGLE_PLAYER) {
-        if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 >= 7)) {
+        if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= 7)) {
             Unk3000408 *unk = IWRAM_PTR(NULL);
             if (unk->unk408 == 0) {
                 unk->unk408 = a;

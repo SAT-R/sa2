@@ -176,7 +176,7 @@ gUnknown_080D7130:
 .syntax unified
 .text
 
-.if 0
+.if 01
 	thumb_func_start Task_802F75C
 Task_802F75C: @ 0x0802F75C
 	push {r4, r5, r6, r7, lr}

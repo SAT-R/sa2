@@ -20,7 +20,7 @@
 	ands r0, r1
 	cmp r0, #0
 	beq _0801C992
-	ldr r0, _0801C9C4 @ =gUnknown_030054F4
+	ldr r0, _0801C9C4 @ =gSpecialRingCount
 	ldrb r0, [r0]
 	cmp r0, #6
 	bls _0801C992
@@ -65,7 +65,7 @@ _0801C9BA:
 	b _0801CB58
 	.align 2, 0
 _0801C9C0: .4byte gPlayer
-_0801C9C4: .4byte gUnknown_030054F4
+_0801C9C4: .4byte gSpecialRingCount
 _0801C9C8: .4byte gBgScrollRegs
 _0801C9CC: .4byte gGameMode
 _0801C9D0:

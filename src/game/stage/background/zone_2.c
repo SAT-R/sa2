@@ -12,7 +12,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
     u16 *cursor = NULL;
     s16 something;
     s32 x = 0;
-    if ((gPlayer.moveState & MOVESTATE_8000000) && gUnknown_030054F4 >= 7) {
+    if ((gPlayer.moveState & MOVESTATE_8000000) && gSpecialRingCount >= 7) {
         if (gBgScrollRegs[3][0] == 0) {
             gBgScrollRegs[3][0] = a;
         }

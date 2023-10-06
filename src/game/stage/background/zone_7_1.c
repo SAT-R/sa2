@@ -63,7 +63,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc",
     u8 r2;
     u8 r5;
 
-    if ((gPlayer.moveState & MOVESTATE_8000000) && (gUnknown_030054F4 >= 7)) {
+    if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= 7)) {
         if (gBgScrollRegs[3][0] == 0)
             gBgScrollRegs[3][0] = x;
 

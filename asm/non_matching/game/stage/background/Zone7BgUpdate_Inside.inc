@@ -16,7 +16,7 @@
 	ands r0, r1
 	cmp r0, #0
 	beq _0801DA1A
-	ldr r0, _0801DB84 @ =gUnknown_030054F4
+	ldr r0, _0801DB84 @ =gSpecialRingCount
 	ldrb r0, [r0]
 	cmp r0, #6
 	bls _0801DA1A
@@ -226,7 +226,7 @@ _0801DB66:
 	b _0801DBEE
 	.align 2, 0
 _0801DB80: .4byte gPlayer
-_0801DB84: .4byte gUnknown_030054F4
+_0801DB84: .4byte gSpecialRingCount
 _0801DB88: .4byte gBgScrollRegs
 _0801DB8C: .4byte gDispCnt
 _0801DB90: .4byte 0x0000FEFF

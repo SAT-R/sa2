@@ -1966,7 +1966,7 @@ Task_804DC60: @ 0x0804DC60
 	ldr r0, [r0]
 	ldr r1, _0804DCE8 @ =gRingCount
 	ldrh r1, [r1]
-	ldr r2, _0804DCEC @ =gUnknown_030054F4
+	ldr r2, _0804DCEC @ =gSpecialRingCount
 	ldrb r2, [r2]
 	bl sub_80304DC
 	ldr r1, _0804DCF0 @ =gBldRegs
@@ -1986,7 +1986,7 @@ _0804DCDC: .4byte gVramGraphicsCopyQueueIndex
 _0804DCE0: .4byte gUnknown_03005424
 _0804DCE4: .4byte gCourseTime
 _0804DCE8: .4byte gRingCount
-_0804DCEC: .4byte gUnknown_030054F4
+_0804DCEC: .4byte gSpecialRingCount
 _0804DCF0: .4byte gBldRegs
 _0804DCF4: .4byte 0x00003FBF
 

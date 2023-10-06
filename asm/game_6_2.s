@@ -679,13 +679,13 @@ _08023D88:
 	ldr r0, _08023D98 @ =gRingCount
 	movs r1, #0
 	strh r1, [r0]
-	ldr r0, _08023D9C @ =gUnknown_030054F4
+	ldr r0, _08023D9C @ =gSpecialRingCount
 	strb r1, [r0]
 	bl sub_801AE48
 	b _08023E88
 	.align 2, 0
 _08023D98: .4byte gRingCount
-_08023D9C: .4byte gUnknown_030054F4
+_08023D9C: .4byte gSpecialRingCount
 _08023DA0:
 	ldr r1, _08023E50 @ =gRingCount
 	strh r5, [r1]
@@ -694,7 +694,7 @@ _08023DA0:
 	movs r0, #1
 	strh r0, [r1]
 _08023DAC:
-	ldr r1, _08023E54 @ =gUnknown_030054F4
+	ldr r1, _08023E54 @ =gSpecialRingCount
 	movs r0, #0
 	strb r0, [r1]
 	ldr r6, _08023E58 @ =gPlayer
@@ -776,7 +776,7 @@ _08023E3E:
 	b _08023E88
 	.align 2, 0
 _08023E50: .4byte gRingCount
-_08023E54: .4byte gUnknown_030054F4
+_08023E54: .4byte gSpecialRingCount
 _08023E58: .4byte gPlayer
 _08023E5C: .4byte gCamera
 _08023E60: .4byte gMPlayInfo_BGM

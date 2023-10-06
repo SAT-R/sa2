@@ -88,7 +88,7 @@ extern UNK_30054A8 gUnknown_030054A8;
 extern u32 gCourseTime;
 
 // Collected Special Rings in current stage?
-extern u8 gUnknown_030054F4;
+extern u8 gSpecialRingCount;
 
 // TODO: Types not checked yet!
 extern s32 gUnknown_030054E0;

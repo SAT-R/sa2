@@ -623,7 +623,7 @@ _080233C4:
 	ands r0, r1
 	cmp r0, #0
 	beq _08023486
-	ldr r0, _080234B8 @ =gUnknown_030054F4
+	ldr r0, _080234B8 @ =gSpecialRingCount
 	ldrb r0, [r0]
 	cmp r0, #6
 	bls _08023486
@@ -740,7 +740,7 @@ _08023494:
 	b _080234E6
 	.align 2, 0
 _080234B4: .4byte gPlayer
-_080234B8: .4byte gUnknown_030054F4
+_080234B8: .4byte gSpecialRingCount
 _080234BC: .4byte gUnknown_080D650C
 _080234C0: .4byte gUnknown_080D661C
 _080234C4: .4byte gUnknown_030056A4

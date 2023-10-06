@@ -55,7 +55,7 @@ build/sa2/src/core.o(.data);
 . = 0x000054E8; gRandomItemBox  = .;
 . = 0x000054EC; gDifficultyLevel = .;
 . = 0x000054F0; gSelectedCharacter = .;
-. = 0x000054F4; gUnknown_030054F4 = .;
+. = 0x000054F4; gSpecialRingCount = .;
 . = 0x000054F8; gUnknown_030054F8 = .;
 . = 0x000054FC; gUnknown_030054FC = .;
 . = 0x00005500; gMultiplayerCharacters = .;

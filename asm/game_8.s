@@ -85,20 +85,20 @@ _0802EE36:
 	ldr r0, [r0]
 	ldr r1, _0802EE4C @ =gRingCount
 	ldrh r1, [r1]
-	ldr r2, _0802EE50 @ =gUnknown_030054F4
+	ldr r2, _0802EE50 @ =gSpecialRingCount
 	ldrb r2, [r2]
 	bl sub_80304DC
 	b _0802EE64
 	.align 2, 0
 _0802EE48: .4byte gCourseTime
 _0802EE4C: .4byte gRingCount
-_0802EE50: .4byte gUnknown_030054F4
+_0802EE50: .4byte gSpecialRingCount
 _0802EE54:
 	ldr r0, _0802EE6C @ =gCourseTime
 	ldr r0, [r0]
 	ldr r1, _0802EE70 @ =gRingCount
 	ldrh r1, [r1]
-	ldr r2, _0802EE74 @ =gUnknown_030054F4
+	ldr r2, _0802EE74 @ =gSpecialRingCount
 	ldrb r2, [r2]
 	bl sub_80304DC
 _0802EE64:
@@ -108,7 +108,7 @@ _0802EE64:
 	.align 2, 0
 _0802EE6C: .4byte gCourseTime
 _0802EE70: .4byte gRingCount
-_0802EE74: .4byte gUnknown_030054F4
+_0802EE74: .4byte gSpecialRingCount
 
 	thumb_func_start Task_802EE78
 Task_802EE78: @ 0x0802EE78
