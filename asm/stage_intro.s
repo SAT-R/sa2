@@ -176,7 +176,7 @@ gUnknown_080D7130:
 .syntax unified
 .text
 
-.if 01
+.if 0
 	thumb_func_start Task_802F75C
 Task_802F75C: @ 0x0802F75C
 	push {r4, r5, r6, r7, lr}
@@ -185,9 +185,9 @@ Task_802F75C: @ 0x0802F75C
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r6, r1, r0
-	ldr r5, [r6]
-	adds r5, #1
+	adds r6, r1, r0     @ r6 = sit_a
+	ldr r5, [r6]        
+	adds r5, #1         @ r5 = sit_a->unk0+1
 	ldr r0, _0802F7E4 @ =gGameMode
 	ldrb r1, [r0]
 	mov ip, r0

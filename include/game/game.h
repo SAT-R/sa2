@@ -146,7 +146,8 @@ extern u8 gDifficultyLevel;
 
 extern s8 gTrappedAnimalVariant;
 
-extern u8 gUnknown_030055B0;
+extern u8
+    gUnknown_030055B0; // TODO: Boss ID in XX-Stage? But it's used in checkpointc.c ...
 extern u8 gUnknown_030054F8;
 
 typedef struct {

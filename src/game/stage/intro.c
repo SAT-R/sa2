@@ -35,8 +35,12 @@ extern u16 zoneUnlockedIcons[NUM_INTRO_STAGE_ICONS][3];
 
 extern u16 sZoneLoadingActLetters[5][3];
 
+extern u8 gUnknown_080D6FF0[NUM_CHARACTERS]; // = {40, 55, 52, 40, 40};
+
+extern TileInfo characterAnimsGettingReady[NUM_CHARACTERS]; // = {40, 55, 52, 40, 40};
+
 typedef struct {
-    /* 0x00 */ u32 unk0;
+    /* 0x00 */ u32 counter;
     /* 0x04 */ u8 unk4;
 } SITaskA; /* size: 0x8 */
 
@@ -102,7 +106,7 @@ NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
 
     t = TaskCreate(Task_802F75C, sizeof(SITaskA), 0x2200, 0, TaskDestructor_80303CC);
     sit_a = TaskGetStructPtr(t);
-    sit_a->unk0 = 2;
+    sit_a->counter = 2;
     sit_a->unk4 = 0;
 
     gPlayer.moveState |= MOVESTATE_100000;
@@ -383,3 +387,71 @@ NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
     return t;
 }
 END_NONMATCH
+
+void Task_802F75C(void)
+{
+    SITaskA *sit_a = TaskGetStructPtr(gCurTask);
+    u32 frameCounter = sit_a->counter + 1;
+
+    if ((IS_SINGLE_PLAYER) && !IS_BOSS_STAGE(gCurrentLevel)) {
+        if (gPressedKeys & (A_BUTTON | B_BUTTON)) {
+            gPlayer.moveState &= ~MOVESTATE_100000;
+            gPlayer.moveState &= ~MOVESTATE_400000;
+            frameCounter = 200;
+            sit_a->unk4 = 1;
+        }
+        sit_a->counter = frameCounter;
+    }
+    // _0802F7BA
+
+    gUnknown_03005AF0.s.unk10 &= ~(SPRITE_FLAG_MASK_OBJ_MODE);
+
+    if (frameCounter < 150) {
+        gPlayer.moveState |= MOVESTATE_100000;
+        gPlayer.moveState |= MOVESTATE_400000;
+    } else if (frameCounter == 151) {
+        gPlayer.moveState &= ~MOVESTATE_100000;
+    } else if (frameCounter >= 150 && frameCounter <= 166) {
+        gPlayer.moveState &= ~MOVESTATE_400000;
+    }
+    // _0802F82E
+
+    if ((frameCounter == (200 - gUnknown_080D6FF0[gSelectedCharacter]))
+        && (gUnknown_030055B0 == 0) && (ACT_INDEX(gCurrentLevel) != ACT_BOSS)) {
+        Player *p = &gPlayer;
+        p->anim = characterAnimsGettingReady[gSelectedCharacter].anim;
+        p->variant = characterAnimsGettingReady[gSelectedCharacter].variant;
+        p->unk6C = 1;
+        p->unk90->s.unk10 |= MOVESTATE_40000;
+        p->unk94->s.unk10 |= MOVESTATE_40000;
+
+        if (IS_MULTI_PLAYER) {
+            p->unk90->s.palId = SIO_MULTI_CNT->id;
+        } else {
+            p->unk90->s.palId = 0;
+        }
+    }
+    // _0802F8D8
+
+    if (frameCounter > 200) {
+        // _0802F8DE
+        gUnknown_03005424 &= ~EXTRA_STATE__100;
+
+        if (IS_BOSS_STAGE(gCurrentLevel)) {
+            if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
+                // Create the 1st boss (for Boss Rush)
+                if (gUnknown_030055B0 == 0) {
+                    CreateZoneBoss(0);
+                }
+            } else if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+                //_0802F938
+                CreateZoneBoss(8);
+            } else {
+                CreateZoneBoss(LEVEL_TO_ZONE(gCurrentLevel));
+            }
+            // _0802F962
+        } else {
+            // _0802F988
+        }
+    }
+}

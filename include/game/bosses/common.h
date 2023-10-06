@@ -30,6 +30,7 @@ typedef struct {
     /* 0x1C */ s16 velocity;
 } ExplosionPartsInfo;
 
+void CreateZoneBoss(u8 boss);
 void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *p0, u8 *numCreatedParts);
 void Task_DestroyBossParts(void);
 void sub_8039ED4(void);
