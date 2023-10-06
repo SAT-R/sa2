@@ -13,4 +13,6 @@ extern const u8 gMillisUnpackTable[60][2];
 
 extern struct Task *gStageUITask;
 
+struct Task *CreateStageUI(void);
+
 #endif // GUARD_TIME_H

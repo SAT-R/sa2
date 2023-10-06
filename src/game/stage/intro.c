@@ -2,7 +2,11 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "game/bosses/common.h"
+#include "game/countdown.h"
+#include "game/player_actions.h"
+#include "game/player_mp_actor.h"
 #include "game/screen_transition.h"
+#include "game/stage/ui.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"
@@ -35,13 +39,13 @@ extern u16 zoneUnlockedIcons[NUM_INTRO_STAGE_ICONS][3];
 
 extern u16 sZoneLoadingActLetters[5][3];
 
-extern u8 gUnknown_080D6FF0[NUM_CHARACTERS]; // = {40, 55, 52, 40, 40};
+extern u8 sGettingReadyAnimationDuration[NUM_CHARACTERS]; // = {40, 55, 52, 40, 40};
 
 extern TileInfo characterAnimsGettingReady[NUM_CHARACTERS]; // = {40, 55, 52, 40, 40};
 
 typedef struct {
     /* 0x00 */ u32 counter;
-    /* 0x04 */ u8 unk4;
+    /* 0x04 */ bool8 skippedIntro;
 } SITaskA; /* size: 0x8 */
 
 // TODO: Are SITaskB/C/F the same struct?
@@ -107,7 +111,7 @@ NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
     t = TaskCreate(Task_802F75C, sizeof(SITaskA), 0x2200, 0, TaskDestructor_80303CC);
     sit_a = TaskGetStructPtr(t);
     sit_a->counter = 2;
-    sit_a->unk4 = 0;
+    sit_a->skippedIntro = FALSE;
 
     gPlayer.moveState |= MOVESTATE_100000;
 
@@ -391,18 +395,19 @@ END_NONMATCH
 void Task_802F75C(void)
 {
     SITaskA *sit_a = TaskGetStructPtr(gCurTask);
-    u32 frameCounter = sit_a->counter + 1;
+    u32 frameCounter = sit_a->counter;
+    frameCounter++;
 
+    /*    Allow player to skip the intro animation    */
     if ((IS_SINGLE_PLAYER) && !IS_BOSS_STAGE(gCurrentLevel)) {
         if (gPressedKeys & (A_BUTTON | B_BUTTON)) {
             gPlayer.moveState &= ~MOVESTATE_100000;
             gPlayer.moveState &= ~MOVESTATE_400000;
             frameCounter = 200;
-            sit_a->unk4 = 1;
+            sit_a->skippedIntro = TRUE;
         }
-        sit_a->counter = frameCounter;
     }
-    // _0802F7BA
+    sit_a->counter = frameCounter;
 
     gUnknown_03005AF0.s.unk10 &= ~(SPRITE_FLAG_MASK_OBJ_MODE);
 
@@ -414,9 +419,9 @@ void Task_802F75C(void)
     } else if (frameCounter >= 150 && frameCounter <= 166) {
         gPlayer.moveState &= ~MOVESTATE_400000;
     }
-    // _0802F82E
 
-    if ((frameCounter == (200 - gUnknown_080D6FF0[gSelectedCharacter]))
+    /*    Set player animation to "Getting Ready" and delay until it is finished    */
+    if ((frameCounter == (200 - sGettingReadyAnimationDuration[gSelectedCharacter]))
         && (gUnknown_030055B0 == 0) && (ACT_INDEX(gCurrentLevel) != ACT_BOSS)) {
         Player *p = &gPlayer;
         p->anim = characterAnimsGettingReady[gSelectedCharacter].anim;
@@ -431,27 +436,41 @@ void Task_802F75C(void)
             p->unk90->s.palId = 0;
         }
     }
-    // _0802F8D8
 
+    /*    Call all initializations necessary for current stage and destroy this Task */
     if (frameCounter > 200) {
-        // _0802F8DE
         gUnknown_03005424 &= ~EXTRA_STATE__100;
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
             if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
                 // Create the 1st boss (for Boss Rush)
                 if (gUnknown_030055B0 == 0) {
-                    CreateZoneBoss(0);
+                    CreateZoneBoss(BOSS_EGG_HAMMER_TANK_II);
                 }
             } else if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-                //_0802F938
-                CreateZoneBoss(8);
+                CreateZoneBoss(BOSS_TRUE_AREA_53_BOSS);
+                gDispCnt |= DISPCNT_BG1_ON;
             } else {
                 CreateZoneBoss(LEVEL_TO_ZONE(gCurrentLevel));
             }
-            // _0802F962
+
+            gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
+            gUnknown_03005424 &= ~EXTRA_STATE__ACT_START;
         } else {
-            // _0802F988
+            if (gUnknown_030055B0 == 0) {
+                CreateCourseStartCountdown(sit_a->skippedIntro);
+            } else {
+                gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
+                gUnknown_03005424 &= ~EXTRA_STATE__ACT_START;
+            }
         }
+        if (IS_MULTI_PLAYER) {
+            sub_8018818();
+        } else {
+            gUnknown_03005AF0.s.unk10 &= ~SPRITE_FLAG_MASK_18;
+        }
+        CreateStageUI();
+        TaskDestroy(gCurTask);
+        sub_801583C();
     }
 }
