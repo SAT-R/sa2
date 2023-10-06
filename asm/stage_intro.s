@@ -3,175 +3,6 @@
 
 .section .rodata
 
-    .global zoneLoadingCharacterLogos
-zoneLoadingCharacterLogos:
-    .2byte 9, 1114, 0   @ [CHARACTER_SONIC]    (Blue)
-    .2byte 9, 1114, 3   @ [CHARACTER_CREAM]    (Orange)
-    .2byte 9, 1114, 1   @ [CHARACTER_TAILS]    (Yellow)
-    .2byte 9, 1114, 2   @ [CHARACTER_KNUCKLES] (Red)
-    .2byte 9, 1114, 4   @ [CHARACTER_AMY]      (Pink)
-
-    .global zoneLoadingZoneNames
-zoneLoadingZoneNames:
-  @ LEAF FOREST
-    .2byte 35, 1117, 0
-    .2byte 20, 1117, 1
-    .2byte 20, 1117, 2
-    .2byte 35, 1117, 3
-  @ HOT CRATER
-    .2byte 35, 1117, 4
-    .2byte 20, 1117, 5
-    .2byte 20, 1117, 6
-    .2byte 35, 1117, 7
-  @ MUSIC PLANT
-    .2byte 35, 1117, 8
-    .2byte 20, 1117, 9
-    .2byte 20, 1117, 10
-    .2byte 35, 1117, 11
-  @ ICE PARADISE
-    .2byte 35, 1117, 12
-    .2byte 20, 1117, 13
-    .2byte 20, 1117, 14
-    .2byte 35, 1117, 15
-  @ SKY CANYON
-    .2byte 35, 1117, 16
-    .2byte 20, 1117, 17
-    .2byte 20, 1117, 18
-    .2byte 35, 1117, 19
-  @ TECHNO BASE
-    .2byte 35, 1117, 20
-    .2byte 20, 1117, 21
-    .2byte 20, 1117, 22
-    .2byte 35, 1117, 23
-  @ EGG UTOPIA
-    .2byte 35, 1117, 24
-    .2byte 20, 1117, 25
-    .2byte 20, 1117, 26
-    .2byte 35, 1117, 27
-  @ XX
-    .2byte 35, 1117, 28
-    .2byte 20, 1117, 29 @ (empty image)
-    .2byte 20, 1117, 30 @ (empty image)
-    .2byte 35, 1117, 31 @ (empty image)
-  @ TRUE AREA 53
-    .2byte 35, 1117, 32
-    .2byte 20, 1117, 33
-    .2byte 20, 1117, 34
-    .2byte 35, 1117, 35
-  @ BOSS ATTACK!
-    .2byte 35, 1117, 36
-    .2byte 20, 1117, 37
-    .2byte 20, 1117, 38
-    .2byte 35, 1117, 39
-
-    @ Big icon showing the current zone during the stage loading screen.
-    @ It is positioned inside the rotating wheel displayed in the upper left screen corner.
-    .global zoneLoadingIcons
-zoneLoadingIcons:   @ 0x080D6F0E
-    .2byte 64, 1116, 0
-    .2byte 64, 1116, 1
-    .2byte 64, 1116, 2
-    .2byte 64, 1116, 3
-    .2byte 64, 1116, 4
-    .2byte 64, 1116, 5
-    .2byte 64, 1116, 6
-    .2byte 64, 1116, 7
-    .2byte 64, 1116, 8
-    
-    @ Small icons showing the unlocked stages during the stage loading screen
-    .global zoneUnlockedIcons
-zoneUnlockedIcons:  @ 0x080D6F44
-    .2byte 9, 1118, 1
-    .2byte 9, 1118, 2
-    .2byte 9, 1118, 3
-    .2byte 9, 1118, 4
-    .2byte 9, 1118, 5
-    .2byte 9, 1118, 6
-    .2byte 9, 1118, 7
-    .2byte 9, 1118, 8
-    .2byte 9, 1118, 9
-    .2byte 9, 1118, 0
-
-    .global sZoneLoadingActLetters
-sZoneLoadingActLetters:
-    .2byte 18, 1112, 0      @ A
-    .2byte 18, 1112, 1      @ C
-    .2byte 18, 1112, 2      @ T
-    .2byte 18, 1112, 3      @ 1
-    .2byte 18, 1112, 4      @ 2
-
-    .align 2 , 0
-    .global characterAnimsGettingReady
-characterAnimsGettingReady: @ 0x080D6FA0
-    @ CHARACTER_SONIC
-    .4byte 0
-    .2byte 30 + 91*0, 0
-    @ CHARACTER_CREAM
-    .4byte 0
-    .2byte 30 + 91*1, 0
-    @ CHARACTER_TAILS
-    .4byte 0
-    .2byte 30 + 91*2, 0
-    @ CHARACTER_KNUCKLES
-    .4byte 0
-    .2byte 30 + 91*3, 0
-    @ CHARACTER_AMY
-    .4byte 0
-    .2byte 30 + 91*4, 0
-
-    @ Colored triangles used for each char
-    @ [NUM_CHARACTERS]
-    .global gUnknown_080D6FC8
-gUnknown_080D6FC8:
-    @ .4byte Unknown
-    @ .2byte animId, variantId
-    .4byte 0x54
-    .2byte 1113, 0  @ 1113, [CHARACTER_SONIC]
-    .4byte 0x54
-    .2byte 1113, 4  @ 1113, [CHARACTER_CREAM]
-    .4byte 0x54
-    .2byte 1113, 1  @ 1113, [CHARACTER_TAILS]
-    .4byte 0x54
-    .2byte 1113, 2  @ 1113, [CHARACTER_KNUCKLES]
-    .4byte 0x54
-    .2byte 1113, 3  @ 1113, [CHARACTER_AMY]
-
-    @ [NUM_CHARACTERS]
-    .global sGettingReadyAnimationDuration
-sGettingReadyAnimationDuration:
-    .byte 40, 55, 52, 40, 40
-
-    .global gUnknown_080D6FF5
-gUnknown_080D6FF5:
-    .byte 0x00, 0x17
-
-    .global gUnknown_080D6FF7
-gUnknown_080D6FF7:
-    .byte 0x06, 0x16, 0x16, 0x16, 0x00, 0x04, 0x13, 0x00, 0x08, 0x1D, 0x00, 0x00, 0x0C, 0x00, 0x13, 0x00, 0x1F, 0x1F, 0x13, 0x1F, 0x1B, 0x00, 0x13, 0x0A, 0x02, 0x1F, 0x15, 0x0A, 0x15, 0x00, 0x00, 0x1F, 0x04, 0x04, 0x04, 0x04, 0x04, 0x1F, 0x1F, 0x1F, 0x0E, 0x0E, 0x0E, 0x00, 0x13, 0x1F, 0x00, 0x19, 0x14, 0x19, 0x19, 0x19, 0x1F, 0x0B, 0x00, 0x1F, 0x12, 0x00, 0x19, 0x05, 0x00, 0x1C, 0x0B, 0x00, 0x13, 0x00, 0x00, 0x1F, 0x1C, 0x17, 0x1D, 0x18, 0x10, 0x13, 0x0F, 0x08, 0x1F, 0x1E, 0x00, 0x08, 0x11, 0x1F, 0x02, 0x02, 0x02, 0x1F, 0x1F, 0x1F, 0x0E, 0x0E, 0x0E, 0x1F, 0x00, 0x1F, 0x00, 0x17, 0x06, 0x1F, 0x00, 0x1F, 0x1D, 0x11, 0x04, 0x1F, 0x17, 0x04, 0x17, 0x0A, 0x02, 0x15, 0x19, 0x1B, 0x00, 0x13, 0x1F, 0x04, 0x08, 0x1F, 0x13, 0x13, 0x13, 0x0E, 0x0E, 0x0E, 0x15, 0x00, 0x00, 0x1F, 0x04, 0x04, 0x02, 0x02, 0x02, 0x1F, 0x1F, 0x1F, 0x1F, 0x00, 0x1F, 0x1F, 0x00, 0x1F, 0x00, 0x16, 0x14, 0x16, 0x16, 0x16, 0x17, 0x00, 0x00, 0x1F, 0x04, 0x00, 0x0E, 0x00, 0x00, 0x04, 0x08, 0x1F, 0x1F, 0x1F, 0x13, 0x1F, 0x1B, 0x00, 0x13, 0x0A, 0x00, 0x1F, 0x15, 0x0A, 0x00, 0x15, 0x02, 0x0E, 0x1F, 0x00, 0x04, 0x04, 0x04, 0x1F, 0x1F, 0x1F, 0x0E, 0x0E, 0x0E, 0x1F, 0x13, 0x00, 0x00, 0x17, 0x06, 0x15, 0x19, 0x1B, 0x1D, 0x08, 0x13, 0x1F, 0x13, 0x17, 0x17, 0x04, 0x0A, 0x00, 0x15, 0x00, 0x0E, 0x0E, 0x0E, 0x13, 0x13, 0x13, 0x13, 0x0A, 0x00, 0x1F, 0x15, 0x0A, 0x15, 0x00, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x13, 0x1F, 0x1F, 0x00, 0x00, 0x12, 0x0B, 0x04, 0x06, 0x0A, 0x00, 0x1F, 0x00, 0x1F, 0x1F, 0x1F, 0x14, 0x1F, 0x1F, 0x10, 0x1C, 0x1E, 0x0C, 0x18, 0x19, 0x09, 0x14, 0x15, 0x00, 0x0E, 0x10, 0x00, 0x1F, 0x00, 0x1F, 0x16, 0x18, 0x1F, 0x0A, 0x10, 0x1F, 0x1E, 0x00, 0x19, 0x18, 0x00, 0x13, 0x0A, 0x00, 0x1F, 0x00, 0x00, 0x00
-
-    @ Colors [NUM_CHARACTERS]
-    .global sZoneLoadingCharacterColors
-sZoneLoadingCharacterColors:
-    RGB  0  0 31   @; Sonic
-    RGB 31 18  0   @; Cream
-    RGB 31 27  0   @; Tails
-    RGB 31  3  0   @; Knuckles
-    RGB 31 17 21   @; Amy
-
-    .global sScreenPositions_ZoneLoadingActLetters
-sScreenPositions_ZoneLoadingActLetters:
-    .2byte DISPLAY_WIDTH-108, DISPLAY_HEIGHT-63     @ A
-    .2byte DISPLAY_WIDTH-87,  DISPLAY_HEIGHT-59     @ C
-    .2byte DISPLAY_WIDTH-66,  DISPLAY_HEIGHT-55     @ T
-    .2byte DISPLAY_WIDTH-44,  DISPLAY_HEIGHT-51     @ 1|2
-
-    .global gUnknown_080D7130
-gUnknown_080D7130:
-    .2byte 10, -8
-    .2byte  6, -4
-    .2byte  2,  0
-
-
 .arm
 .syntax unified
 .text
@@ -377,7 +208,7 @@ _0802FB52:
 	muls r2, r5, r2
 	lsrs r2, r2, #4
 	lsls r2, r2, #0x18
-	ldr r1, _0802FC44 @ =gUnknown_080D6FF7
+	ldr r1, _0802FC44 @ =gUnknown_080D6FF5+2
 	adds r3, r3, r1
 	ldrb r0, [r3]
 	muls r0, r5, r0
@@ -474,7 +305,7 @@ _0802FC34: .4byte gMultiplayerConnections
 _0802FC38: .4byte gUnknown_080D6FF5
 _0802FC3C: .4byte gMultiplayerCharacters
 _0802FC40: .4byte gObjPalette
-_0802FC44: .4byte gUnknown_080D6FF7
+_0802FC44: .4byte gUnknown_080D6FF5+2
 _0802FC48: .4byte gUnknown_030056A4
 _0802FC4C: .4byte gFlags
 _0802FC50: .4byte 0x00003FCF
@@ -908,7 +739,7 @@ _0802FFD2:
 	adds r5, r6, r0
 	cmp r3, #0x96
 	bne _08030030
-	ldr r2, _0803001C @ =gUnknown_080D6FC8
+	ldr r2, _0803001C @ =sColoredTriangle
 	ldr r1, _08030020 @ =gSelectedCharacter
 	movs r0, #0
 	ldrsb r0, [r1, r0]
@@ -941,7 +772,7 @@ _0802FFD2:
 	b _08030040
 	.align 2, 0
 _08030018: .4byte IWRAM_START + 0x1B4
-_0803001C: .4byte gUnknown_080D6FC8
+_0803001C: .4byte sColoredTriangle
 _08030020: .4byte gSelectedCharacter
 _08030024: .4byte IWRAM_START + 0x1D4
 _08030028: .4byte IWRAM_START + 0x1D9

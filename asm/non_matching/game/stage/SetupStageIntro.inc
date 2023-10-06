@@ -163,7 +163,7 @@
 	ldrh r1, [r4]
 	adds r1, #0x24
 	adds r0, r0, r1
-	ldr r1, _0802F25C @ =zoneUnlockedIcons
+	ldr r1, _0802F25C @ =sZoneUnlockedIcons
 	ldrh r2, [r1]
 	lsls r1, r2, #3
 	adds r1, r1, r2
@@ -192,7 +192,7 @@ _0802F24C: .4byte gSelectedCharacter
 _0802F250: .4byte zoneLoadingZoneNames
 _0802F254: .4byte gCurrentLevel
 _0802F258: .4byte zoneLoadingIcons
-_0802F25C: .4byte zoneUnlockedIcons
+_0802F25C: .4byte sZoneUnlockedIcons
 _0802F260:
 	ldr r2, _0802F3E0 @ =zoneLoadingCharacterLogos
 	ldr r0, _0802F3E4 @ =gSelectedCharacter
@@ -604,7 +604,7 @@ _0802F558:
 	movs r4, #0
 	mov sb, r4
 	movs r3, #0
-	ldr r4, _0802F5E8 @ =zoneUnlockedIcons
+	ldr r4, _0802F5E8 @ =sZoneUnlockedIcons
 _0802F5A8:
 	lsls r0, r7, #1
 	adds r1, r0, r7
@@ -635,7 +635,7 @@ _0802F5D8: .4byte gCurrentLevel
 _0802F5DC: .4byte zoneLoadingIcons
 _0802F5E0: .4byte gUnknown_030054B8
 _0802F5E4: .4byte gGameMode
-_0802F5E8: .4byte zoneUnlockedIcons
+_0802F5E8: .4byte sZoneUnlockedIcons
 _0802F5EC: .4byte 0x0000FFE0
 _0802F5F0:
 	asrs r0, r2, #0x1a

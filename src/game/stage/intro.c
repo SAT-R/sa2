@@ -21,7 +21,10 @@
 #define INTRO_ICON_XX           7
 #define INTRO_ICON_TRUE_AREA_53 8
 #define INTRO_ICON_BOSS_ATTACK  9
-#define NUM_INTRO_STAGE_ICONS   9 // excludes Boss Attack
+#define NUM_INTRO_STAGE_ICONS   9
+
+// includes Boss Attack
+#define NUM_INTRO_UNLOCKED_STAGES_ICONS (NUM_INTRO_STAGE_ICONS + 1)
 
 // (Stage-Courses + XX + True Area 53) == 9
 #define NUM_ZONE_UNLOCKED_ICONS  (NUM_COURSE_ZONES + 2)
@@ -29,19 +32,182 @@
 #define ZONE_NAME_INDEX_TA53     32
 #define ZONE_NAME_INDEX_BOSS_ATK 36
 
-extern u16 zoneLoadingCharacterLogos[NUM_CHARACTERS][3];
-extern u16 zoneLoadingZoneNames[(NUM_INTRO_STAGE_ICONS + 1) * NUM_ZONE_NAME_PARTS][3];
-extern u16 zoneLoadingIcons[NUM_INTRO_STAGE_ICONS][3];
+// The colored logo next to the stage name
+static const u16 zoneLoadingCharacterLogos[NUM_CHARACTERS][3] = {
+    [CHARACTER_SONIC] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 0 },
+    [CHARACTER_CREAM] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 3 },
+    [CHARACTER_TAILS] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 1 },
+    [CHARACTER_KNUCKLES] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 2 },
+    [CHARACTER_AMY] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 4 },
+};
 
+static const u16
+    zoneLoadingZoneNames[NUM_INTRO_UNLOCKED_STAGES_ICONS * NUM_ZONE_NAME_PARTS][3]
+    = {
+          // LEAF FOREST
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 0 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 1 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 2 },
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 3 },
+          // HOT CRATER
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 4 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 5 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 6 },
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 7 },
+          // MUSIC PLANT
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 8 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 9 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 10 },
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 11 },
+          // ICE PARADISE
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 12 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 13 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 14 },
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 15 },
+          // SKY CANYON
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 16 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 17 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 18 },
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 19 },
+          // TECHNO BASE
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 20 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 21 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 22 },
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 23 },
+          // EGG UTOPIA
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 24 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 25 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 26 },
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 27 },
+          // XX
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 28 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 29 }, // (empty image)
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 30 }, // (empty image)
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 31 }, // (empty image)
+                                                       // TRUE AREA 53
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 32 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 33 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 34 },
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 35 },
+          // BOSS ATTACK!
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 36 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 37 },
+          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 38 },
+          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 39 },
+      };
+
+// Big icon showing the current zone during the stage loading screen.
+// It is positioned inside the rotating wheel displayed in the upper left screen corner.
+static const u16 zoneLoadingIcons[NUM_INTRO_STAGE_ICONS][3] = {
+    [INTRO_ICON_LEAF_FOREST] = { 64, SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS, 0 },
+    [INTRO_ICON_HOT_CRATAER] = { 64, SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS, 1 },
+    [INTRO_ICON_MUSIC_PLANT] = { 64, SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS, 2 },
+    [INTRO_ICON_ICE_PARADISE] = { 64, SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS, 3 },
+    [INTRO_ICON_SKY_CANYON] = { 64, SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS, 4 },
+    [INTRO_ICON_TECHNO_BASE] = { 64, SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS, 5 },
+    [INTRO_ICON_EGG_UTOPIA] = { 64, SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS, 6 },
+    [INTRO_ICON_XX] = { 64, SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS, 7 },
+    [INTRO_ICON_TRUE_AREA_53] = { 64, SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS, 8 },
+};
+
+// Small icons showing the unlocked stages during the stage loading screen
+//
 // NOTE: The usage code expects all these icons to have the same tile-count.
 //       It uses the count of the 0th entry.
-extern u16 zoneUnlockedIcons[NUM_INTRO_STAGE_ICONS][3];
+static const u16 sZoneUnlockedIcons[NUM_INTRO_UNLOCKED_STAGES_ICONS][3] = {
+    [INTRO_ICON_LEAF_FOREST] = { 9, SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS, 1 },
+    [INTRO_ICON_HOT_CRATAER] = { 9, SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS, 2 },
+    [INTRO_ICON_MUSIC_PLANT] = { 9, SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS, 3 },
+    [INTRO_ICON_ICE_PARADISE] = { 9, SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS, 4 },
+    [INTRO_ICON_SKY_CANYON] = { 9, SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS, 5 },
+    [INTRO_ICON_TECHNO_BASE] = { 9, SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS, 6 },
+    [INTRO_ICON_EGG_UTOPIA] = { 9, SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS, 7 },
+    [INTRO_ICON_XX] = { 9, SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS, 8 },
+    [INTRO_ICON_TRUE_AREA_53] = { 9, SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS, 9 },
+    [INTRO_ICON_BOSS_ATTACK] = { 9, SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS, 0 },
+};
 
-extern u16 sZoneLoadingActLetters[5][3];
+static const u16 sZoneLoadingActLetters[5][3] = {
+    [0] = { 18, SA2_ANIM_STAGE_INTRO_ACT_LETTERS, 0 }, // A
+    [1] = { 18, SA2_ANIM_STAGE_INTRO_ACT_LETTERS, 1 }, // C
+    [2] = { 18, SA2_ANIM_STAGE_INTRO_ACT_LETTERS, 2 }, // T
+    [3] = { 18, SA2_ANIM_STAGE_INTRO_ACT_LETTERS, 3 }, // 1
+    [4] = { 18, SA2_ANIM_STAGE_INTRO_ACT_LETTERS, 4 }, // 2
+};
 
-extern u8 sGettingReadyAnimationDuration[NUM_CHARACTERS]; // = {40, 55, 52, 40, 40};
+static const TileInfo characterAnimsGettingReady[NUM_CHARACTERS] = {
+    [CHARACTER_SONIC]
+    = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_SONIC), 0 },
+    [CHARACTER_CREAM]
+    = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_CREAM), 0 },
+    [CHARACTER_TAILS]
+    = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_TAILS), 0 },
+    [CHARACTER_KNUCKLES]
+    = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_KNUCKLES), 0 },
+    [CHARACTER_AMY]
+    = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_AMY), 0 },
+};
 
-extern TileInfo characterAnimsGettingReady[NUM_CHARACTERS]; // = {40, 55, 52, 40, 40};
+// TODO: static
+// Colored triangles used for each character (botton-right)
+const TileInfo sColoredTriangle[NUM_CHARACTERS] = {
+    [CHARACTER_SONIC] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 0 },
+    [CHARACTER_CREAM] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 4 },
+    [CHARACTER_TAILS] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 1 },
+    [CHARACTER_KNUCKLES] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 2 },
+    [CHARACTER_AMY] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 3 },
+};
+
+static const u8 sGettingReadyAnimationDuration[NUM_CHARACTERS]
+    = { [CHARACTER_SONIC] = 40,
+        [CHARACTER_CREAM] = 55,
+        [CHARACTER_TAILS] = 52,
+        [CHARACTER_KNUCKLES] = 40,
+        [CHARACTER_AMY] = 40 };
+
+// TODO: static
+const u8 gUnknown_080D6FF5[] = {
+    0x00, 0x17, 0x06, 0x16, 0x16, 0x16, 0x00, 0x04, 0x13, 0x00, 0x08, 0x1D, 0x00, 0x00,
+    0x0C, 0x00, 0x13, 0x00, 0x1F, 0x1F, 0x13, 0x1F, 0x1B, 0x00, 0x13, 0x0A, 0x02, 0x1F,
+    0x15, 0x0A, 0x15, 0x00, 0x00, 0x1F, 0x04, 0x04, 0x04, 0x04, 0x04, 0x1F, 0x1F, 0x1F,
+    0x0E, 0x0E, 0x0E, 0x00, 0x13, 0x1F, 0x00, 0x19, 0x14, 0x19, 0x19, 0x19, 0x1F, 0x0B,
+    0x00, 0x1F, 0x12, 0x00, 0x19, 0x05, 0x00, 0x1C, 0x0B, 0x00, 0x13, 0x00, 0x00, 0x1F,
+    0x1C, 0x17, 0x1D, 0x18, 0x10, 0x13, 0x0F, 0x08, 0x1F, 0x1E, 0x00, 0x08, 0x11, 0x1F,
+    0x02, 0x02, 0x02, 0x1F, 0x1F, 0x1F, 0x0E, 0x0E, 0x0E, 0x1F, 0x00, 0x1F, 0x00, 0x17,
+    0x06, 0x1F, 0x00, 0x1F, 0x1D, 0x11, 0x04, 0x1F, 0x17, 0x04, 0x17, 0x0A, 0x02, 0x15,
+    0x19, 0x1B, 0x00, 0x13, 0x1F, 0x04, 0x08, 0x1F, 0x13, 0x13, 0x13, 0x0E, 0x0E, 0x0E,
+    0x15, 0x00, 0x00, 0x1F, 0x04, 0x04, 0x02, 0x02, 0x02, 0x1F, 0x1F, 0x1F, 0x1F, 0x00,
+    0x1F, 0x1F, 0x00, 0x1F, 0x00, 0x16, 0x14, 0x16, 0x16, 0x16, 0x17, 0x00, 0x00, 0x1F,
+    0x04, 0x00, 0x0E, 0x00, 0x00, 0x04, 0x08, 0x1F, 0x1F, 0x1F, 0x13, 0x1F, 0x1B, 0x00,
+    0x13, 0x0A, 0x00, 0x1F, 0x15, 0x0A, 0x00, 0x15, 0x02, 0x0E, 0x1F, 0x00, 0x04, 0x04,
+    0x04, 0x1F, 0x1F, 0x1F, 0x0E, 0x0E, 0x0E, 0x1F, 0x13, 0x00, 0x00, 0x17, 0x06, 0x15,
+    0x19, 0x1B, 0x1D, 0x08, 0x13, 0x1F, 0x13, 0x17, 0x17, 0x04, 0x0A, 0x00, 0x15, 0x00,
+    0x0E, 0x0E, 0x0E, 0x13, 0x13, 0x13, 0x13, 0x0A, 0x00, 0x1F, 0x15, 0x0A, 0x15, 0x00,
+    0x00, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x13, 0x1F,
+    0x1F, 0x00, 0x00, 0x12, 0x0B, 0x04, 0x06, 0x0A, 0x00, 0x1F, 0x00, 0x1F, 0x1F, 0x1F,
+    0x14, 0x1F, 0x1F, 0x10, 0x1C, 0x1E, 0x0C, 0x18, 0x19, 0x09, 0x14, 0x15, 0x00, 0x0E,
+    0x10, 0x00, 0x1F, 0x00, 0x1F, 0x16, 0x18, 0x1F, 0x0A, 0x10, 0x1F, 0x1E, 0x00, 0x19,
+    0x18, 0x00, 0x13, 0x0A, 0x00, 0x1F, 0x00, 0x00, 0x00
+};
+
+const u16 sZoneLoadingCharacterColors[NUM_CHARACTERS] = {
+    [CHARACTER_SONIC] = RGB(0, 0, 31),  [CHARACTER_CREAM] = RGB(31, 18, 0),
+    [CHARACTER_TAILS] = RGB(31, 27, 0), [CHARACTER_KNUCKLES] = RGB(31, 3, 0),
+    [CHARACTER_AMY] = RGB(31, 17, 21),
+};
+
+const u16 sScreenPositions_ZoneLoadingActLetters[4][2] = {
+    { DISPLAY_WIDTH - 108, DISPLAY_HEIGHT - 63 }, // A
+    { DISPLAY_WIDTH - 87, DISPLAY_HEIGHT - 59 }, // C
+    { DISPLAY_WIDTH - 66, DISPLAY_HEIGHT - 55 }, // T
+    { DISPLAY_WIDTH - 44, DISPLAY_HEIGHT - 51 }, // 1|2
+};
+
+const u16 gUnknown_080D7130[3][2] = {
+    { 10, -8 },
+    { 6, -4 },
+    { 2, 0 },
+};
 
 typedef struct {
     /* 0x00 */ u32 counter;
@@ -166,7 +332,7 @@ NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
                 += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0];
             loadingIconsTiles = zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24;
             tilesToAlloc += loadingIconsTiles;
-            tilesToAlloc += zoneUnlockedIcons[0][0] * NUM_ZONE_UNLOCKED_ICONS;
+            tilesToAlloc += sZoneUnlockedIcons[0][0] * NUM_ZONE_UNLOCKED_ICONS;
         } else {
             // _0802F260
             tilesToAlloc = zoneLoadingCharacterLogos[gSelectedCharacter][0];
@@ -311,27 +477,27 @@ NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
             s->x = 0;
             s->y = -32;
             s->graphics.dest = tilesCursor;
-            tilesCursor += zoneUnlockedIcons[0][0] * TILE_SIZE_4BPP;
+            tilesCursor += sZoneUnlockedIcons[0][0] * TILE_SIZE_4BPP;
 
             if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
                 if (i == INTRO_ICON_TRUE_AREA_53) {
                     // TODO: The macro names don't line up right now.
                     //       (i == TA53, but icon index for Boss Attack)
-                    s->graphics.anim = zoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][1];
-                    s->variant = zoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][2];
+                    s->graphics.anim = sZoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][1];
+                    s->variant = sZoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][2];
                 } else {
                     // _0802F5FE
-                    s->graphics.anim = zoneUnlockedIcons[i][1];
-                    s->variant = zoneUnlockedIcons[i][2];
+                    s->graphics.anim = sZoneUnlockedIcons[i][1];
+                    s->variant = sZoneUnlockedIcons[i][2];
                 }
             } else if (i == LEVEL_TO_ZONE(gCurrentLevel)) {
                 // _0802F5F0
-                s->graphics.anim = zoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][1];
-                s->variant = zoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][2];
+                s->graphics.anim = sZoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][1];
+                s->variant = sZoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][2];
             } else {
                 // _0802F5FE
-                s->graphics.anim = zoneUnlockedIcons[i][1];
-                s->variant = zoneUnlockedIcons[i][2];
+                s->graphics.anim = sZoneUnlockedIcons[i][1];
+                s->variant = sZoneUnlockedIcons[i][2];
             }
 
             s->unk1A = SPRITE_OAM_ORDER(4);
