@@ -266,7 +266,7 @@ void TaskDestructor_803045C(struct Task *);
 void TaskDestructor_8030474(struct Task *);
 
 // (99.66%) https://decomp.me/scratch/zGPtO
-NONMATCH("asm/non_matching/game/stage/SetupStageIntro.inc",
+NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
          struct Task *SetupStageIntro(void))
 {
     struct Task *t; // sp04
@@ -659,7 +659,7 @@ void Task_802F75C(void)
 }
 
 // (85.25%) https://decomp.me/scratch/zMdSN
-void Task_802F9F8(void)
+NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8(void))
 {
     SITaskB *sit_b = TaskGetStructPtr(gCurTask);
     SITaskA *parent = sit_b->parent; // sp00
@@ -790,3 +790,4 @@ void Task_802F9F8(void)
         TaskDestroy(gCurTask);
     }
 }
+END_NONMATCH
