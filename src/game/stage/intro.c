@@ -2,6 +2,7 @@
 #include "flags.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/game_7.h"
 #include "game/bosses/common.h"
 #include "game/countdown.h"
 #include "game/player_actions.h"
@@ -256,7 +257,7 @@ typedef struct {
 
 void Task_802F75C(void);
 void Task_802F9F8(void);
-void Task_802FD34(void);
+void Task_IntroColorAnimation(void);
 void Task_802FF94(void);
 void Task_80302AC(void);
 void Task_UpdateStageLoadingScreen(void);
@@ -312,7 +313,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     transition->unkA = 0;
     NextTransitionFrame(transition);
 
-    t2 = TaskCreate(Task_802FD34, sizeof(SITaskB), 0x2220, 0,
+    t2 = TaskCreate(Task_IntroColorAnimation, sizeof(SITaskB), 0x2220, 0,
                     TaskDestructor_nop_8030458);
     sit_b = TaskGetStructPtr(t2);
     sit_b->parent = sit_a;
@@ -791,3 +792,78 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
     }
 }
 END_NONMATCH
+
+void Task_IntroColorAnimation(void)
+{
+    SITaskB *sit_b = TaskGetStructPtr(gCurTask);
+
+    SITaskA *parent = sit_b->parent;
+    Vec2_16 *p0 = &sit_b->unk10;
+    Vec2_16 *p1 = &sit_b->unk14;
+    u32 counter = parent->counter;
+
+    if (counter > 1) {
+        u32 innerCount = counter - 1;
+
+        p0->y = 0;
+        p0->x = 160;
+        p1->y = 512;
+        p1->x = 0;
+
+        if (innerCount < 10) {
+            p0->y = -(innerCount * 24) + 256;
+            p0->x = 88;
+
+            if (innerCount >= 7) {
+                innerCount = counter - 7;
+
+                p1->y = 512;
+                p1->x = innerCount * 5;
+            }
+        } else if (counter < 120) {
+            // _0802FD9C
+            p0->y = 542;
+            p0->x = 137;
+            p1->y = 512;
+            p1->x = 16;
+        } else if (counter < 136) {
+            // _0802FDB4
+            innerCount = counter - 120;
+
+            p0->y = 542 - (innerCount * 18);
+            p0->x = -(innerCount * 2) + 137;
+            p1->y = 512 - (innerCount * 16);
+            p1->x = counter - 104;
+        } else if (counter >= 150) {
+            // _0802FDE4
+            gFlags &= ~FLAGS_4;
+
+            TaskDestroy(gCurTask);
+            return;
+        } else /* 136 <= counter <= 149 */ {
+            // _0802FE00
+            innerCount = counter - 136;
+            p0->y = 544 - (innerCount * 6);
+            p0->x = (innerCount * 7);
+            p1->y = 0;
+            // p1->x = 0;
+        }
+    }
+    // _0802FE1C
+
+    gUnknown_03002A80 = 2;
+    gUnknown_03002878 = (void *)&REG_WIN0H;
+
+    gFlags |= FLAGS_4;
+
+    sub_802EFDC(DISPLAY_WIDTH);
+
+    if (counter > 10) {
+        sub_802DDC4(p0->x, p0->y);
+        sub_802DF18(p1->x, p1->y);
+    } else {
+        // _0802FE60
+        sub_802DBC0(p0->x, p0->y);
+        sub_802DF18(p1->x, p1->y);
+    }
+}

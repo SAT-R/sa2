@@ -79,7 +79,7 @@
 	strh r1, [r0, #8]
 	strh r4, [r0, #0xa]
 	bl NextTransitionFrame
-	ldr r0, _0802F228 @ =Task_802FD34
+	ldr r0, _0802F228 @ =Task_IntroColorAnimation
 	ldr r2, _0802F22C @ =0x00002220
 	mov r1, r8
 	str r1, [sp]
@@ -179,7 +179,7 @@ _0802F218: .4byte 0x00002210
 _0802F21C: .4byte TaskDestructor_nop_8030458
 _0802F220: .4byte IWRAM_START+4
 _0802F224: .4byte 0x00003FFF
-_0802F228: .4byte Task_802FD34
+_0802F228: .4byte Task_IntroColorAnimation
 _0802F22C: .4byte 0x00002220
 _0802F230: .4byte IWRAM_START + 0x10
 _0802F234: .4byte IWRAM_START + 0x14
