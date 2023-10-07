@@ -34,6 +34,13 @@
 #define ZONE_NAME_INDEX_TA53     32
 #define ZONE_NAME_INDEX_BOSS_ATK 36
 
+#define INTROFRAME_VISIBLE         1
+#define INTROFRAME_BANNER_APPEARS  7
+#define INTROFRAME_NAME_AND_BANNER 10
+#define INTROFRAME_PAUSE_ON_BANNER 120
+#define INTROFRAME_CLEAR_BANNER    136
+#define INTROFRAME_FADE_GAMEPLAY   150
+
 // The colored logo next to the stage name
 static const u16 zoneLoadingCharacterLogos[NUM_CHARACTERS][3] = {
     [CHARACTER_SONIC] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 0 },
@@ -802,54 +809,58 @@ void Task_IntroColorAnimation(void)
     Vec2_16 *p1 = &sit_b->unk14;
     u32 counter = parent->counter;
 
-    if (counter > 1) {
-        u32 innerCount = counter - 1;
+    if (counter > INTROFRAME_VISIBLE) {
+        u32 innerCount = counter - INTROFRAME_VISIBLE;
 
         p0->y = 0;
         p0->x = 160;
         p1->y = 512;
         p1->x = 0;
 
-        if (innerCount < 10) {
+        if (innerCount < INTROFRAME_NAME_AND_BANNER) {
+            /* Bottom left */
             p0->y = -(innerCount * 24) + 256;
             p0->x = 88;
 
-            if (innerCount >= 7) {
-                innerCount = counter - 7;
+            if (innerCount >= INTROFRAME_BANNER_APPEARS) {
+                /* Top Banner */
+                innerCount = counter - INTROFRAME_BANNER_APPEARS;
 
                 p1->y = 512;
                 p1->x = innerCount * 5;
             }
-        } else if (counter < 120) {
-            // _0802FD9C
+        } else if (counter < INTROFRAME_PAUSE_ON_BANNER) {
+            /* Keep the Bottom-Left Triangle and Banner on-screen until 2 seconds have
+             * passed (and stage name + all icons left the screen) */
             p0->y = 542;
             p0->x = 137;
             p1->y = 512;
             p1->x = 16;
-        } else if (counter < 136) {
-            // _0802FDB4
-            innerCount = counter - 120;
+        } else if (counter < INTROFRAME_CLEAR_BANNER) {
+            /* Clear the BL-Triangle and Banner */
+            innerCount = counter - INTROFRAME_PAUSE_ON_BANNER;
 
             p0->y = 542 - (innerCount * 18);
             p0->x = -(innerCount * 2) + 137;
             p1->y = 512 - (innerCount * 16);
             p1->x = counter - 104;
-        } else if (counter >= 150) {
-            // _0802FDE4
+        } else if (counter >= INTROFRAME_FADE_GAMEPLAY) {
+            /* Clean up after the animation finished */
             gFlags &= ~FLAGS_4;
 
             TaskDestroy(gCurTask);
             return;
-        } else /* 136 <= counter <= 149 */ {
-            // _0802FE00
-            innerCount = counter - 136;
+        } else {
+            /* INTROFRAME_CLEAR_BANNER <= counter < INTROFRAME_FADE_GAMEPLAY */
+            /* Transition to single Bottom-Right triangle (which is a sprite!) that
+             * highlights the Act's name */
+            innerCount = counter - INTROFRAME_CLEAR_BANNER;
             p0->y = 544 - (innerCount * 6);
             p0->x = (innerCount * 7);
             p1->y = 0;
             // p1->x = 0;
         }
     }
-    // _0802FE1C
 
     gUnknown_03002A80 = 2;
     gUnknown_03002878 = (void *)&REG_WIN0H;
