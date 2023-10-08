@@ -229,11 +229,7 @@ const u16 sScreenPositions_ZoneLoadingActLetters[4][2] = {
     { DISPLAY_WIDTH - 44, DISPLAY_HEIGHT - 51 }, // 1|2
 };
 
-const u16 gUnknown_080D7130[3][2] = {
-    { 10, -8 },
-    { 6, -4 },
-    { 2, 0 },
-};
+const s16 gUnknown_080D7130[6] = { 10, -8, 6, -4, 2, 0 };
 
 typedef struct {
     /* 0x00 */ u32 counter;
@@ -267,7 +263,7 @@ void Task_802F75C(void);
 void Task_802F9F8(void);
 void Task_IntroColorAnimation(void);
 void Task_IntroZoneNameAndIconAnimations(void);
-void Task_80302AC(void);
+void Task_IntroActLettersAnimations(void);
 void Task_UpdateStageLoadingScreen(void);
 void TaskDestructor_80303CC(struct Task *);
 void TaskDestructor_nop_8030458(struct Task *);
@@ -542,7 +538,8 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     // _0802F652
 
     /*    Act Names    */
-    t2 = TaskCreate(Task_80302AC, sizeof(SITaskE), 0x2240, 0, TaskDestructor_8030474);
+    t2 = TaskCreate(Task_IntroActLettersAnimations, sizeof(SITaskE), 0x2240, 0,
+                    TaskDestructor_8030474);
     sit_e = TaskGetStructPtr(t2);
     sit_e->parent = sit_a;
     tilesCursor = VramMalloc(sZoneLoadingActLetters[0][0] * 4);
@@ -1106,3 +1103,88 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
     }
 }
 END_NONMATCH
+
+static inline void sub_8030488_inline()
+{
+    if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS)
+        && (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_FINAL)) {
+        SITaskE *sit_e = TaskGetStructPtr(gCurTask);
+        u8 i;
+
+        for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
+            if ((i * 3) < (sit_e->parent->counter - 150)) {
+                Sprite *s = &sit_e->sprZoneNames[i];
+                DisplaySprite(s);
+            }
+        }
+    }
+}
+
+// (98.66%) https://decomp.me/scratch/gykfQ
+NONMATCH("asm/non_matching/game/stage/intro/Task_IntroActLettersAnimations.inc",
+         void Task_IntroActLettersAnimations(void))
+{
+    SITaskE *sit_e = TaskGetStructPtr(gCurTask);
+    u32 counter = sit_e->parent->counter;
+    Sprite *s;
+    u32 i;
+    s32 index;
+    s32 y;
+
+    if ((counter - 151) >= 40) {
+        if (counter >= 200) {
+            TaskDestroy(gCurTask);
+            return;
+        }
+    } else {
+        counter -= 150;
+
+        if (counter < 14) {
+            // _080302D8+6
+            for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
+                s = &sit_e->sprZoneNames[i];
+
+                index = counter - i * 3;
+                if (index >= 4)
+                    index = 4;
+
+                index *= 8;
+
+                s->x = sScreenPositions_ZoneLoadingActLetters[i][0];
+
+                y = (index - 32);
+                s->y = y + sScreenPositions_ZoneLoadingActLetters[i][1];
+            }
+        } else if (counter < 18) {
+            // _0803031C+4
+            s32 shift;
+            counter -= 13;
+
+            shift = gUnknown_080D7130[counter];
+
+            for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
+                s = &sit_e->sprZoneNames[i];
+                s->x = sScreenPositions_ZoneLoadingActLetters[i][0];
+                s->y = sScreenPositions_ZoneLoadingActLetters[i][1] + shift;
+            }
+        } else {
+            // _0803035C
+            for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
+                s = &sit_e->sprZoneNames[i];
+                s->x = sScreenPositions_ZoneLoadingActLetters[i][0];
+                s->y = sScreenPositions_ZoneLoadingActLetters[i][1];
+            }
+        }
+        // _08030378
+        sub_8030488_inline();
+    }
+}
+END_NONMATCH
+
+/*
+* Doesn't quite match, but it's close!
+void sub_8030488(void)
+{
+    sub_8030488_inline();
+}
+*/

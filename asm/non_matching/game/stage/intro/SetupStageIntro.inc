@@ -689,7 +689,7 @@ _0802F60E:
 	cmp r7, #8
 	bls _0802F5A8
 _0802F652:
-	ldr r0, _0802F73C @ =Task_80302AC
+	ldr r0, _0802F73C @ =Task_IntroActLettersAnimations
 	movs r2, #0x89
 	lsls r2, r2, #6
 	ldr r1, _0802F740 @ =TaskDestructor_8030474
@@ -805,7 +805,7 @@ _0802F6C8:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0802F73C: .4byte Task_80302AC
+_0802F73C: .4byte Task_IntroActLettersAnimations
 _0802F740: .4byte TaskDestructor_8030474
 _0802F744: .4byte sZoneLoadingActLetters
 _0802F748: .4byte 0x0000FFE0
