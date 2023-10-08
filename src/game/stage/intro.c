@@ -944,15 +944,15 @@ void StageIntroUpdateIcons(void)
     DisplaySprite(s);
 }
 
-// (85.16%) https://decomp.me/scratch/la7O4
-void Task_IntroZoneNameAndIconAnimations(void)
+// (88.38%) https://decomp.me/scratch/la7O4
+NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.inc", void Task_IntroZoneNameAndIconAnimations(void))
 {
     SITaskD *sit_d = TaskGetStructPtr(gCurTask);
     u32 counter = sit_d->parent->counter;
     Sprite *s;
     u8 sp08;
     s32 sl;
-    s32 i;
+    u32 i;
 
     if (counter - 10 > 124) {
         if (counter >= 200) {
@@ -998,6 +998,7 @@ void Task_IntroZoneNameAndIconAnimations(void)
             s->y = 121 - (((innerCount * 123) << 3) >> 8);
         }
         // _080300AE
+        i = 0;
         sp08 = counter;
 
         for (i = 0; i < ARRAY_COUNT(sit_d->sprZoneName); i++) {
@@ -1046,10 +1047,11 @@ void Task_IntroZoneNameAndIconAnimations(void)
                         } else {
                             // _080301C2
                             s->y = 12;
+                            asm(""); // TEMP
                         }
                     }
                 }
-            } else if (sp08 < 100) {
+            } else if (counter < 100) {
                 // _080301C8+4
                 if (!(i & 0x1)) {
                     s->y = 20;
@@ -1102,3 +1104,4 @@ void Task_IntroZoneNameAndIconAnimations(void)
         StageIntroUpdateIcons();
     }
 }
+END_NONMATCH
