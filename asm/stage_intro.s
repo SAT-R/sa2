@@ -10,143 +10,8 @@
 .if 0
 .endif
 
-	thumb_func_start sub_802FE78
-sub_802FE78: @ 0x0802FE78
-	push {r4, r5, r6, r7, lr}
-	mov r7, sb
-	mov r6, r8
-	push {r6, r7}
-	ldr r0, _0802FF70 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r4, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r7, r4, r0
-	ldr r0, [r7]
-	ldr r0, [r0]
-	mov r8, r0
-	ldr r0, _0802FF74 @ =IWRAM_START + 0x1B4
-	adds r5, r4, r0
-	adds r0, r5, #0
-	bl DisplaySprite
-	movs r6, #0
-	ldr r1, _0802FF78 @ =IWRAM_START + 0x205
-	adds r5, r4, r1
-	ldr r0, _0802FF7C @ =IWRAM_START + 0x1E4
-	adds r4, r4, r0
-_0802FEA6:
-	movs r0, #0xff
-	strb r0, [r5]
-	adds r0, r4, #0
-	bl UpdateSpriteAnimation
-	adds r0, r4, #0
-	bl DisplaySprite
-	adds r5, #0x30
-	adds r4, #0x30
-	adds r6, #1
-	cmp r6, #3
-	bls _0802FEA6
-	ldr r0, _0802FF80 @ =gGameMode
-	ldrb r0, [r0]
-	mov r1, r8
-	lsls r1, r1, #1
-	mov sb, r1
-	cmp r0, #2
-	bhi _0802FEE0
-	movs r6, #0
-	adds r4, r7, #4
-_0802FED2:
-	adds r0, r4, #0
-	bl DisplaySprite
-	adds r4, #0x30
-	adds r6, #1
-	cmp r6, #8
-	bls _0802FED2
-_0802FEE0:
-	movs r0, #0xa9
-	lsls r0, r0, #2
-	adds r5, r7, r0
-	mov r1, r8
-	cmp r1, #0x1d
-	bls _0802FF0C
-	cmp r1, #0x1e
-	bne _0802FF06
-	ldr r0, _0802FF84 @ =0x0000045B
-	strh r0, [r5, #0xa]
-	movs r0, #0xb1
-	lsls r0, r0, #2
-	adds r1, r7, r0
-	movs r0, #1
-	strb r0, [r1]
-	ldr r0, _0802FF88 @ =0x000002C5
-	adds r1, r7, r0
-	movs r0, #0xff
-	strb r0, [r1]
-_0802FF06:
-	adds r0, r5, #0
-	bl UpdateSpriteAnimation
-_0802FF0C:
-	adds r0, r5, #0
-	bl DisplaySprite
-	movs r1, #0xb5
-	lsls r1, r1, #2
-	adds r5, r7, r1
-	movs r0, #0xc1
-	lsls r0, r0, #2
-	adds r4, r7, r0
-	ldr r2, _0802FF8C @ =gSineTable
-	mov r0, sb
-	add r0, r8
-	lsls r0, r0, #3
-	ldr r1, _0802FF90 @ =0x000003FF
-	ands r0, r1
-	lsls r0, r0, #1
-	adds r0, r0, r2
-	ldrh r0, [r0]
-	lsls r0, r0, #0x10
-	asrs r1, r0, #0x16
-	movs r2, #0x80
-	lsls r2, r2, #1
-	cmp r1, r2
-	bne _0802FF3E
-	movs r1, #0xff
-_0802FF3E:
-	cmp r1, #0
-	bne _0802FF44
-	movs r1, #4
-_0802FF44:
-	movs r0, #0
-	strh r0, [r4]
-	strh r1, [r4, #2]
-	strh r2, [r4, #4]
-	ldrh r0, [r5, #0x16]
-	strh r0, [r4, #6]
-	ldrh r0, [r5, #0x18]
-	strh r0, [r4, #8]
-	adds r0, r5, #0
-	adds r1, r4, #0
-	bl sub_8004860
-	adds r0, r5, #0
-	bl DisplaySprite
-	pop {r3, r4}
-	mov r8, r3
-	mov sb, r4
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0802FF70: .4byte gCurTask
-_0802FF74: .4byte IWRAM_START + 0x1B4
-_0802FF78: .4byte IWRAM_START + 0x205
-_0802FF7C: .4byte IWRAM_START + 0x1E4
-_0802FF80: .4byte gGameMode
-_0802FF84: .4byte 0x0000045B
-_0802FF88: .4byte 0x000002C5
-_0802FF8C: .4byte gSineTable
-_0802FF90: .4byte 0x000003FF
-
-	thumb_func_start Task_802FF94
-Task_802FF94: @ 0x0802FF94
+	thumb_func_start Task_IntroZoneNameAndIconAnimations
+Task_IntroZoneNameAndIconAnimations: @ 0x0802FF94
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -555,7 +420,7 @@ _0803028A:
 	subs r0, r0, r1
 _08030296:
 	strh r0, [r5, #0x18]
-	bl sub_802FE78
+	bl StageIntroUpdateIcons
 _0803029C:
 	add sp, #0x10
 	pop {r3, r4, r5}

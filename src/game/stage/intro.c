@@ -1,6 +1,7 @@
 #include "global.h"
 #include "flags.h"
 #include "malloc_vram.h"
+#include "trig.h"
 #include "game/game.h"
 #include "game/game_7.h"
 #include "game/bosses/common.h"
@@ -249,23 +250,23 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ SITaskA *parent;
-    /* 0x04 */ Sprite sUnlockedIcons[9];
-    /* 0x1B4 */ Sprite sCharacterLogo;
-    /* 0x1E4 */ Sprite sStageName[4];
-    /* 0x2A4 */ Sprite s2A4;
-    /* 0x2D4 */ Sprite s2D4;
-    /* 0x314 */ u8 filler4[0xC];
+    /* 0x04 */ Sprite sprUnlockedIcons[9];
+    /* 0x1B4 */ Sprite sprCharacterLogo;
+    /* 0x1E4 */ Sprite sprZoneName[4];
+    /* 0x2A4 */ Sprite sprLoadingWheel;
+    /* 0x2D4 */ Sprite sprLoadingWheelIcon;
+    /* 0x304 */ SpriteTransform transform;
 } SITaskD; /* size: 0x310 */
 
 typedef struct {
     /* 0x00 */ SITaskA *parent;
-    /* 0x04 */ Sprite sStageNames[4];
+    /* 0x04 */ Sprite sprZoneNames[4];
 } SITaskE; /* size: 0xC4 */
 
 void Task_802F75C(void);
 void Task_802F9F8(void);
 void Task_IntroColorAnimation(void);
-void Task_802FF94(void);
+void Task_IntroZoneNameAndIconAnimations(void);
 void Task_80302AC(void);
 void Task_UpdateStageLoadingScreen(void);
 void TaskDestructor_80303CC(struct Task *);
@@ -333,7 +334,8 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     vec->x = 0;
     vec->y = 0;
 
-    t2 = TaskCreate(Task_802FF94, sizeof(SITaskD), 0x2230, 0, TaskDestructor_803045C);
+    t2 = TaskCreate(Task_IntroZoneNameAndIconAnimations, sizeof(SITaskD), 0x2230, 0,
+                    TaskDestructor_803045C);
     sit_d = TaskGetStructPtr(t2);
     sit_d->parent = sit_a;
 
@@ -377,7 +379,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     // __0802F2C4
 
     /*     Init Character Logo     */
-    s = &sit_d->sCharacterLogo;
+    s = &sit_d->sprCharacterLogo;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = tilesCursor;
@@ -407,7 +409,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
         u32 nameIndex;
 
         // _0802F39C
-        s = &sit_d->sStageName[i];
+        s = &sit_d->sprZoneName[i];
         s->x = 0;
         s->y = 0;
 
@@ -449,7 +451,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     }
 
     /*    Loading Wheel in upper-left corner    */
-    s = &sit_d->s2A4;
+    s = &sit_d->sprLoadingWheel;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = tilesCursor;
@@ -469,7 +471,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     UpdateSpriteAnimation(s);
 
     /*    Icon inside the loading wheel    */
-    s = &sit_d->s2D4;
+    s = &sit_d->sprLoadingWheelIcon;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = tilesCursor;
@@ -498,7 +500,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     if (IS_SINGLE_PLAYER) {
         // _0802F5A8
         for (i = 0; i < NUM_INTRO_STAGE_ICONS; i++) {
-            s = &sit_d->sUnlockedIcons[i];
+            s = &sit_d->sprUnlockedIcons[i];
             s->x = 0;
             s->y = -32;
             s->graphics.dest = tilesCursor;
@@ -546,7 +548,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     tilesCursor = VramMalloc(sZoneLoadingActLetters[0][0] * 4);
 
     for (i = 0; i < 4; i++) {
-        s = &sit_e->sStageNames[i];
+        s = &sit_e->sprZoneNames[i];
         s->x = 0;
         s->y = -32;
 
@@ -877,4 +879,67 @@ void Task_IntroColorAnimation(void)
         sub_802DBC0(p0->x, p0->y);
         sub_802DF18(p1->x, p1->y);
     }
+}
+
+void StageIntroUpdateIcons(void)
+{
+    SITaskD *sit_d = TaskGetStructPtr(gCurTask);
+    u32 counter = sit_d->parent->counter;
+    Sprite *s;
+    SpriteTransform *transform;
+    s32 i;
+    s32 sineVal;
+
+    /* Colored Character Logo */
+    s = &sit_d->sprCharacterLogo;
+    DisplaySprite(s);
+
+    /* Zone Name */
+    for (i = 0; i < ARRAY_COUNT(sit_d->sprZoneName); i++) {
+        s = &sit_d->sprZoneName[i];
+        s->prevVariant = -1;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+
+    /* Icons of unlocked Zones */
+    if (IS_SINGLE_PLAYER) {
+        for (i = 0; i < ARRAY_COUNT(sit_d->sprUnlockedIcons); i++) {
+            s = &sit_d->sprUnlockedIcons[i];
+            DisplaySprite(s);
+        }
+    }
+
+    /* The top-left Loading Wheel */
+    s = &sit_d->sprLoadingWheel;
+    if (counter >= 30) {
+        if (counter == 30) {
+            s->graphics.anim = SA2_ANIM_STAGE_INTRO_LOADING_WHEEL;
+            s->variant = 1;
+            s->prevVariant = -1;
+        }
+        UpdateSpriteAnimation(s);
+    }
+    DisplaySprite(s);
+
+    /* The Zone's icon inside the Loading Wheel */
+    s = &sit_d->sprLoadingWheelIcon;
+    transform = &sit_d->transform;
+    sineVal = SIN_24_8((counter * 24) & ONE_CYCLE);
+
+    if (sineVal == Q_24_8(1.0)) {
+        sineVal = Q_24_8(1.0) - 1;
+    }
+    if (sineVal == Q_24_8(0.0)) {
+        sineVal = Q_24_8(0.0) + 4;
+    }
+
+    transform->rotation = 0;
+    transform->width = sineVal;
+    transform->height = Q_24_8(1.0);
+    transform->x = s->x;
+    transform->y = s->y;
+
+    sub_8004860(s, transform);
+    DisplaySprite(s);
 }

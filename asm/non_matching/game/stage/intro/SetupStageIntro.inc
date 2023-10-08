@@ -98,7 +98,7 @@
 	adds r1, r0, r2
 	strh r4, [r1]
 	strh r4, [r1, #2]
-	ldr r0, _0802F238 @ =Task_802FF94
+	ldr r0, _0802F238 @ =Task_IntroZoneNameAndIconAnimations
 	movs r1, #0xc4
 	lsls r1, r1, #2
 	ldr r2, _0802F23C @ =0x00002230
@@ -183,7 +183,7 @@ _0802F228: .4byte Task_IntroColorAnimation
 _0802F22C: .4byte 0x00002220
 _0802F230: .4byte IWRAM_START + 0x10
 _0802F234: .4byte IWRAM_START + 0x14
-_0802F238: .4byte Task_802FF94
+_0802F238: .4byte Task_IntroZoneNameAndIconAnimations
 _0802F23C: .4byte 0x00002230
 _0802F240: .4byte TaskDestructor_803045C
 _0802F244: .4byte gGameMode
