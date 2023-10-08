@@ -38,7 +38,7 @@
 	ldr r0, _0802F20C @ =Task_802F75C
 	movs r2, #0x88
 	lsls r2, r2, #6
-	ldr r1, _0802F210 @ =TaskDestructor_80303CC
+	ldr r1, _0802F210 @ =TaskDestructor_StageIntroParent
 	str r1, [sp]
 	movs r1, #8
 	movs r3, #0
@@ -173,7 +173,7 @@ _0802F200: .4byte gUnknown_03005424
 _0802F204: .4byte gPlayer
 _0802F208: .4byte gActiveBossTask
 _0802F20C: .4byte Task_802F75C
-_0802F210: .4byte TaskDestructor_80303CC
+_0802F210: .4byte TaskDestructor_StageIntroParent
 _0802F214: .4byte Task_802F9F8
 _0802F218: .4byte 0x00002210
 _0802F21C: .4byte TaskDestructor_nop_8030458

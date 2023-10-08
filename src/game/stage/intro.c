@@ -10,6 +10,7 @@
 #include "game/player_mp_actor.h"
 #include "game/screen_transition.h"
 #include "game/stage/ui.h"
+#include "game/water_effects.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"
@@ -265,7 +266,7 @@ void Task_IntroColorAnimation(void);
 void Task_IntroZoneNameAndIconAnimations(void);
 void Task_IntroActLettersAnimations(void);
 void Task_UpdateStageLoadingScreen(void);
-void TaskDestructor_80303CC(struct Task *);
+void TaskDestructor_StageIntroParent(struct Task *);
 void TaskDestructor_nop_8030458(struct Task *);
 void TaskDestructor_803045C(struct Task *);
 void TaskDestructor_8030474(struct Task *);
@@ -296,7 +297,8 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
 
     gActiveBossTask = NULL;
 
-    t = TaskCreate(Task_802F75C, sizeof(SITaskA), 0x2200, 0, TaskDestructor_80303CC);
+    t = TaskCreate(Task_802F75C, sizeof(SITaskA), 0x2200, 0,
+                   TaskDestructor_StageIntroParent);
     sit_a = TaskGetStructPtr(t);
     sit_a->counter = 2;
     sit_a->skippedIntro = FALSE;
@@ -1181,10 +1183,61 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroActLettersAnimations.inc",
 }
 END_NONMATCH
 
-/*
-* Doesn't quite match, but it's close!
+void TaskDestructor_StageIntroParent(struct Task *t)
+{
+    if (gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1)) {
+        sub_8011328();
+    }
+
+    if (IS_SINGLE_PLAYER) {
+        gUnknown_03005424 &= ~EXTRA_STATE__DISABLE_PAUSE_MENU;
+    }
+}
+
+void Task_UpdateStageLoadingScreen(void)
+{
+    SITaskB *sit_b = TaskGetStructPtr(gCurTask);
+    u32 counter = sit_b->parent->counter;
+
+    gBgPalette[0] = sZoneLoadingCharacterColors[gSelectedCharacter];
+
+    gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
+
+    if (counter >= 200) {
+        TaskDestroy(gCurTask);
+        return;
+    }
+}
+
+void TaskDestructor_nop_8030458(struct Task *t) { }
+
+void TaskDestructor_803045C(struct Task *t)
+{
+    SITaskD *sit_d = TaskGetStructPtr(t);
+    VramFree(sit_d->sprCharacterLogo.graphics.dest);
+}
+
+void TaskDestructor_8030474(struct Task *t)
+{
+    SITaskE *sit_e = TaskGetStructPtr(t);
+    VramFree(sit_e->sprZoneNames[0].graphics.dest);
+}
+
+// NOTE: This only matches with the code being copy-pasted,
+//       not using the inline function
+//       defined above for some reason...
 void sub_8030488(void)
 {
-    sub_8030488_inline();
+    if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS)
+        && (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_FINAL)) {
+        SITaskE *sit_e = TaskGetStructPtr(gCurTask);
+        u8 i;
+
+        for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
+            if ((i * 3) < (sit_e->parent->counter - 150)) {
+                Sprite *s = &sit_e->sprZoneNames[i];
+                DisplaySprite(s);
+            }
+        }
+    }
 }
-*/
