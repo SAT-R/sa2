@@ -260,16 +260,16 @@ typedef struct {
     /* 0x04 */ Sprite sprZoneNames[4];
 } SITaskE; /* size: 0xC4 */
 
-void Task_802F75C(void);
-void Task_802F9F8(void);
-void Task_IntroColorAnimation(void);
-void Task_IntroZoneNameAndIconAnimations(void);
-void Task_IntroActLettersAnimations(void);
-void Task_UpdateStageLoadingScreen(void);
-void TaskDestructor_StageIntroParent(struct Task *);
-void TaskDestructor_nop_8030458(struct Task *);
-void TaskDestructor_803045C(struct Task *);
-void TaskDestructor_8030474(struct Task *);
+static void Task_802F75C(void);
+static void Task_802F9F8(void);
+static void Task_IntroColorAnimation(void);
+static void Task_IntroZoneNameAndIconAnimations(void);
+static void Task_IntroActLettersAnimations(void);
+static void Task_UpdateStageLoadingScreen(void);
+static void TaskDestructor_StageIntroParent(struct Task *);
+static void TaskDestructor_nop_8030458(struct Task *);
+static void TaskDestructor_803045C(struct Task *);
+static void TaskDestructor_8030474(struct Task *);
 
 // (99.66%) https://decomp.me/scratch/zGPtO
 NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
@@ -584,7 +584,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
 }
 END_NONMATCH
 
-void Task_802F75C(void)
+static void Task_802F75C(void)
 {
     SITaskA *sit_a = TaskGetStructPtr(gCurTask);
     u32 frameCounter = sit_a->counter;
@@ -801,7 +801,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
 }
 END_NONMATCH
 
-void Task_IntroColorAnimation(void)
+static void Task_IntroColorAnimation(void)
 {
     SITaskB *sit_b = TaskGetStructPtr(gCurTask);
 
@@ -880,7 +880,7 @@ void Task_IntroColorAnimation(void)
     }
 }
 
-void StageIntroUpdateIcons(void)
+static void StageIntroUpdateIcons(void)
 {
     SITaskD *sit_d = TaskGetStructPtr(gCurTask);
     u32 counter = sit_d->parent->counter;
@@ -1183,7 +1183,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroActLettersAnimations.inc",
 }
 END_NONMATCH
 
-void TaskDestructor_StageIntroParent(struct Task *t)
+static void TaskDestructor_StageIntroParent(struct Task *t)
 {
     if (gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1)) {
         sub_8011328();
@@ -1194,7 +1194,7 @@ void TaskDestructor_StageIntroParent(struct Task *t)
     }
 }
 
-void Task_UpdateStageLoadingScreen(void)
+static void Task_UpdateStageLoadingScreen(void)
 {
     SITaskB *sit_b = TaskGetStructPtr(gCurTask);
     u32 counter = sit_b->parent->counter;
@@ -1209,15 +1209,15 @@ void Task_UpdateStageLoadingScreen(void)
     }
 }
 
-void TaskDestructor_nop_8030458(struct Task *t) { }
+static void TaskDestructor_nop_8030458(struct Task *t) { }
 
-void TaskDestructor_803045C(struct Task *t)
+static void TaskDestructor_803045C(struct Task *t)
 {
     SITaskD *sit_d = TaskGetStructPtr(t);
     VramFree(sit_d->sprCharacterLogo.graphics.dest);
 }
 
-void TaskDestructor_8030474(struct Task *t)
+static void TaskDestructor_8030474(struct Task *t)
 {
     SITaskE *sit_e = TaskGetStructPtr(t);
     VramFree(sit_e->sprZoneNames[0].graphics.dest);
@@ -1226,7 +1226,7 @@ void TaskDestructor_8030474(struct Task *t)
 // NOTE: This only matches with the code being copy-pasted,
 //       not using the inline function
 //       defined above for some reason...
-void sub_8030488(void)
+static void sub_8030488(void)
 {
     if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS)
         && (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_FINAL)) {
