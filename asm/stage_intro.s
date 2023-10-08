@@ -8,8 +8,6 @@
 .text
 
 .if 0
-.endif
-
 	thumb_func_start Task_IntroZoneNameAndIconAnimations
 Task_IntroZoneNameAndIconAnimations: @ 0x0802FF94
 	push {r4, r5, r6, r7, lr}
@@ -24,9 +22,9 @@ Task_IntroZoneNameAndIconAnimations: @ 0x0802FF94
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r0, r6
-	mov ip, r0
+	mov ip, r0          @ ip = sit_d
 	ldr r0, [r0]
-	ldr r3, [r0]
+	ldr r3, [r0]        @ r3 = counter
 	adds r0, r3, #0
 	subs r0, #0xa
 	cmp r0, #0x7c
@@ -165,7 +163,7 @@ _080300AE:
 	movs r7, #0x8e
 	lsls r7, r7, #1
 	mov r8, r7
-	mov r1, r8
+	mov r1, r8          @ r1 = r8 = 284
 	subs r0, r1, r0
 	mov sl, r0
 	movs r6, #0
@@ -184,8 +182,8 @@ _080300E4:
 	movs r1, #0xf2
 	lsls r1, r1, #1
 	adds r0, r6, r1
-	mov r1, ip
-	adds r5, r1, r0
+	mov r1, ip          @ r1 = ip = sit_d
+	adds r5, r1, r0     @ r5 = s = &sit_d->sprZoneName[i];
 	cmp r3, #0xc
 	bhi _080300FC
 	mov r0, sl
@@ -230,29 +228,29 @@ _08030134:
 	adds r4, #1
 	cmp r4, #3
 	bls _080300E4
-	ldr r1, [sp, #8]
-	lsrs r2, r1, #0x18
+	ldr r1, [sp, #8]        
+	lsrs r2, r1, #0x18      @ r2 = (u8)counter
 	movs r4, #0
 	movs r7, #1
-	mov r8, r7
+	mov r8, r7              @ r8 = 1
 	movs r0, #0x14
-	mov sl, r0
+	mov sl, r0              @ sl = 20
 	movs r1, #0xc
-	mov sb, r1
+	mov sb, r1              @ sb = 12
 	adds r0, r3, #0
-	subs r0, #0x64
+	subs r0, #0x64          @ r0 = (counter - 100)
 	lsls r1, r2, #2
 	adds r1, r1, r2
 	lsls r1, r1, #1
 	subs r1, #0x16
-	str r1, [sp, #0xc]
-	adds r6, r2, #0
+	str r1, [sp, #0xc]      @ sp0C = sp08*10 - 22
+	adds r6, r2, #0         @ r6 = sp08
 	lsls r1, r0, #1
 	adds r1, r1, r0
 	lsls r1, r1, #1
 	mov r7, sl
 	subs r7, r7, r1
-	str r7, [sp]
+	str r7, [sp]            @ sp = 20 - (counter - 100)*6
 	mov r0, sb
 	subs r0, r0, r1
 	str r0, [sp, #4]
@@ -272,12 +270,12 @@ _08030170:
 	movs r0, #0x16
 	rsbs r0, r0, #0
 	strh r0, [r5, #0x18]
-	cmp r2, #0x31
+	cmp r2, #0x31       @ sp08 < 50
 	bhi _080301C8
 	lsls r1, r4, #1
 	cmp r2, r1
 	blo _080301F8
-	adds r0, r4, #0
+	adds r0, r4, #0     @ r0 = i
 	mov r7, r8
 	ands r0, r7
 	cmp r0, #0
@@ -285,14 +283,14 @@ _08030170:
 	cmp r6, #4
 	bhi _080301AC
 	mov r0, sp
-	ldrh r0, [r0, #0xc]
+	ldrh r0, [r0, #0xc] @ s->y = [sp, #0xc]
 	b _080301F6
 _080301AC:
 	mov r1, sl
 	strh r1, [r5, #0x18]
 	b _080301F8
 _080301B2:
-	subs r1, r2, r1
+	subs r1, r2, r1     @ r1 = (sp08 - i*2)
 	cmp r1, #4
 	bhi _080301C2
 	lsls r0, r1, #1
@@ -307,7 +305,7 @@ _080301C2:
 _080301C8:
 	cmp r3, #0x63
 	bhi _080301E0
-	adds r0, r4, #0
+	adds r0, r4, #0     @ r0 = r4 = i
 	mov r1, r8
 	ands r0, r1
 	cmp r0, #0
@@ -430,6 +428,7 @@ _0803029C:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
+.endif
 
 	thumb_func_start Task_80302AC
 Task_80302AC: @ 0x080302AC

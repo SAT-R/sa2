@@ -159,7 +159,7 @@ static const TileInfo characterAnimsGettingReady[NUM_CHARACTERS] = {
 };
 
 // TODO: static
-// Colored triangles used for each character (botton-right)
+// Colored triangles used for each character (bottom-right)
 const TileInfo sColoredTriangle[NUM_CHARACTERS] = {
     [CHARACTER_SONIC] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 0 },
     [CHARACTER_CREAM] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 4 },
@@ -942,4 +942,163 @@ void StageIntroUpdateIcons(void)
 
     sub_8004860(s, transform);
     DisplaySprite(s);
+}
+
+// (85.16%) https://decomp.me/scratch/la7O4
+void Task_IntroZoneNameAndIconAnimations(void)
+{
+    SITaskD *sit_d = TaskGetStructPtr(gCurTask);
+    u32 counter = sit_d->parent->counter;
+    Sprite *s;
+    u8 sp08;
+    s32 sl;
+    s32 i;
+
+    if (counter - 10 > 124) {
+        if (counter >= 200) {
+            TaskDestroy(gCurTask);
+            return;
+        } else if (counter >= 150) {
+            // _0802FFD2
+            s = &sit_d->sprCharacterLogo;
+
+            if (counter == 150) {
+                s->graphics.anim = sColoredTriangle[gSelectedCharacter].anim;
+                s->variant = sColoredTriangle[gSelectedCharacter].variant;
+                s->palId = 0;
+                s->prevVariant = -1;
+                s->x = DISPLAY_WIDTH;
+                s->y = DISPLAY_HEIGHT;
+                s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+            } else if (counter >= 190) {
+                s->x += 4;
+                s->y += 4;
+            }
+
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
+        }
+    } else {
+        // _0803004E
+        counter -= 9;
+
+        s = &sit_d->sprCharacterLogo;
+
+        if (counter <= 12) {
+            s->x = 254 - (((counter * 75) << 6) >> 8);
+            s->y = 121 - (((counter * 123) << 3) >> 8);
+        } else if (counter <= 100) {
+            // _08030078
+            s->x = 24;
+            s->y = 74;
+        } else {
+            // _08030086
+            u32 innerCount = counter - (100 - 12);
+            s->x = 254 - (((innerCount * 75) << 6) >> 8);
+            s->y = 121 - (((innerCount * 123) << 3) >> 8);
+        }
+        // _080300AE
+        sp08 = counter;
+
+        for (i = 0; i < ARRAY_COUNT(sit_d->sprZoneName); i++) {
+            s = &sit_d->sprZoneName[i];
+
+            if (counter <= 12) {
+                s->x = 284 - (((counter * 75) << 6) >> 8);
+                s->y = 127 - (((counter * 123) << 3) >> 8);
+            } else if (counter <= 100) {
+                s->x = 54;
+                s->y = DISPLAY_HEIGHT / 2;
+            } else {
+                s->x = 284 - ((((counter - (100 - 12)) * 75) << 6) >> 8);
+                s->y = 127 - ((((counter - (100 - 12)) * 123) << 3) >> 8);
+            }
+            // _0803012A
+
+            // TODO: This looks like a programmer added a @HACK here?
+            if (i == 3) {
+                s->x -= 24;
+            }
+        }
+        // _08030134+8
+
+        for (i = 0; i < ARRAY_COUNT(sit_d->sprUnlockedIcons); i++) {
+            // _08030170
+            u32 lastIconIndex = ((ARRAY_COUNT(sit_d->sprUnlockedIcons) - 1) - i);
+            s = &sit_d->sprUnlockedIcons[lastIconIndex];
+            s->x = 67 + lastIconIndex * 17;
+            s->y = -22;
+
+            if (sp08 < 50) {
+                if (sp08 >= i * 2) {
+                    if (!(i & 0x1)) {
+                        if (sp08 < 5) {
+                            s->y = (sp08 * 10 - 22) - i * 20;
+                        } else {
+                            s->y = 20;
+                            asm(""); // TEMP?
+                        }
+                    } else {
+                        // _080301B2
+                        u32 yVal = (sp08 - i * 2);
+                        if (yVal < 5) {
+                            s->y = (yVal * 6) - 22;
+                        } else {
+                            // _080301C2
+                            s->y = 12;
+                        }
+                    }
+                }
+            } else if (sp08 < 100) {
+                // _080301C8+4
+                if (!(i & 0x1)) {
+                    s->y = 20;
+                } else {
+                    s->y = 12;
+                }
+            } else {
+                // _080301E0
+                if (!(i & 0x1)) {
+                    s->y = 20 - (counter - 100) * 6;
+                } else {
+                    s->y = 12 - (counter - 100) * 6;
+                }
+            }
+        }
+
+        /* Loading Wheel */
+        s = &sit_d->sprLoadingWheel;
+        s->x = 36;
+
+        if (counter <= 16) {
+            s->y = -48;
+        } else if (counter <= 25) {
+            u8 xw = counter - 16;
+            s->y = (xw * 8) - 40;
+        } else if (counter <= 100) {
+            s->y = 32;
+        } else {
+            s->y = 32 - ((u8)(counter - 100) * 8u);
+        }
+
+        // _08030240
+        /* Loading Wheel Icon */
+        s = &sit_d->sprLoadingWheelIcon;
+
+        s->unk10 = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
+        s->x = 35;
+
+        if (counter <= 16) {
+            s->y = -49;
+        } else if (counter <= 25) {
+            s->y = ((u8)(counter - 16) * 8u) - 41;
+        } else if (counter <= 100) {
+            s->x = 35;
+            s->y = 32;
+        } else {
+            s->y = 32 - ((u8)(counter - 100) * 8u);
+        }
+
+        StageIntroUpdateIcons();
+    }
 }
