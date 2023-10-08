@@ -945,7 +945,8 @@ void StageIntroUpdateIcons(void)
 }
 
 // (88.38%) https://decomp.me/scratch/la7O4
-NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.inc", void Task_IntroZoneNameAndIconAnimations(void))
+NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.inc",
+         void Task_IntroZoneNameAndIconAnimations(void))
 {
     SITaskD *sit_d = TaskGetStructPtr(gCurTask);
     u32 counter = sit_d->parent->counter;
