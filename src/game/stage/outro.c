@@ -12,16 +12,20 @@
 typedef struct {
     /*  0x00 */ u8 filler0[0xC];
     /*  0x0C */ Sprite s1[3];
-    /*  0x9C */ Sprite s4;
-    /*  0xCC */ Sprite s5;
-    /*  0xFC */ Sprite s6;
+    /*  0x9C */ Sprite sprTimeScore;
+    /*  0xCC */ Sprite sprRingScore;
+    /*  0xFC */ Sprite sprSpRingScore;
     /* 0x12C */ Sprite s7;
-    /* 0x15C */ s32 unk15C; // Time Bonus?
-    /* 0x160 */ s32 unk160; // Ring Bonus?
-    /* 0x164 */ s32 unk164; // SP-Ring Bonus?
+    /* 0x15C */ s32 timeBonusScore; // Time Bonus?
+    /* 0x160 */ s32 ringBonusScore; // Ring Bonus?
+    /* 0x164 */ s32 spRingBonusScore; // SP-Ring Bonus?
     /* 0x168 */ s32 counter;
     /* 0x16C */ u8 filler16C[0x8];
 } StageOutro;
+
+#define OUTRO_TIME_BONUS_Y_POS    90
+#define OUTRO_RING_BONUS_Y_POS    110
+#define OUTRO_SP_RING_BONUS_Y_POS 130
 
 const u16 gUnknown_080D71CC[3] = { 0, 69, 173 };
 
@@ -79,9 +83,9 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
     // _080311B2
 
     if (counter > 28) {
-        u32 cmp = (ACT_INDEX(gCurrentLevel) == ACT_BOSS) ? 2 : 3;
+        u32 numDisplayedBonuses = (ACT_INDEX(gCurrentLevel) == ACT_BOSS) ? 2 : 3;
 
-        for (i = 0; i < cmp; i++) {
+        for (i = 0; i < numDisplayedBonuses; i++) {
             s = &outro->s1[i];
             s->x -= p0;
             DisplaySprite(s);
@@ -91,7 +95,7 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
 
     if (counter >= 39) {
 
-        s = &outro->s4;
+        s = &outro->sprTimeScore;
 
         if (counter < 56) {
             s32 innerX = DISPLAY_WIDTH - ((counter - 39) * 12);
@@ -102,15 +106,15 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
         s->x = r4 - p0;
         DisplaySprite(s);
 
-        bonusVal = outro->unk15C;
+        bonusVal = outro->timeBonusScore;
         xPos = p0;
         xPos -= 144;
-        StageUI_PrintIntegerAt(bonusVal, (r4 - xPos), 90, 0);
+        StageUI_PrintIntegerAt(bonusVal, (r4 - xPos), OUTRO_TIME_BONUS_Y_POS, 0);
     }
     // _0803124C
 
     if (counter >= 49) {
-        s = &outro->s5;
+        s = &outro->sprRingScore;
 
         if (counter <= 65) {
             r4 = DISPLAY_WIDTH - ((counter - 49) * 12);
@@ -120,17 +124,17 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
         s->x = r4 - p0;
         DisplaySprite(s);
 
-        bonusVal = outro->unk160;
+        bonusVal = outro->ringBonusScore;
         xPos = p0;
         xPos -= 144;
-        StageUI_PrintIntegerAt(bonusVal, (r4 - xPos), 110, 0);
+        StageUI_PrintIntegerAt(bonusVal, (r4 - xPos), OUTRO_RING_BONUS_Y_POS, 0);
     }
     // _0803129C
 
     if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS)
         && (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
         && (counter >= 59)) {
-        s = &outro->s6;
+        s = &outro->sprSpRingScore;
 
         if (counter <= 75) {
             s32 innerX = DISPLAY_WIDTH - ((counter - 59) * 12);
@@ -142,10 +146,10 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
         s->x = r4 - p0;
         DisplaySprite(s);
 
-        bonusVal = outro->unk164;
+        bonusVal = outro->spRingBonusScore;
         xPos = p0;
         xPos -= 144;
-        StageUI_PrintIntegerAt(bonusVal, (r4 - xPos), 130, 0);
+        StageUI_PrintIntegerAt(bonusVal, (r4 - xPos), OUTRO_SP_RING_BONUS_Y_POS, 0);
     }
 }
 END_NONMATCH
@@ -184,9 +188,9 @@ void TaskDestructor_UpdateGotThroughScreen(struct Task *t)
         VramFree(outro->s1[0].graphics.dest);
         VramFree(outro->s1[1].graphics.dest);
         VramFree(outro->s1[2].graphics.dest);
-        VramFree(outro->s4.graphics.dest);
-        VramFree(outro->s5.graphics.dest);
-        VramFree(outro->s6.graphics.dest);
+        VramFree(outro->sprTimeScore.graphics.dest);
+        VramFree(outro->sprRingScore.graphics.dest);
+        VramFree(outro->sprSpRingScore.graphics.dest);
     }
 }
 
@@ -198,9 +202,9 @@ void sub_80313D0(void)
         VramFree(outro->s1[0].graphics.dest);
         VramFree(outro->s1[1].graphics.dest);
         VramFree(outro->s1[2].graphics.dest);
-        VramFree(outro->s4.graphics.dest);
-        VramFree(outro->s5.graphics.dest);
-        VramFree(outro->s6.graphics.dest);
+        VramFree(outro->sprTimeScore.graphics.dest);
+        VramFree(outro->sprRingScore.graphics.dest);
+        VramFree(outro->sprSpRingScore.graphics.dest);
 
         outro->s7.graphics.dest = NULL;
     }
