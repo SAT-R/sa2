@@ -25,9 +25,8 @@ typedef struct {
 
 const u16 gUnknown_080D71CC[3] = { 0, 69, 173 };
 
-#if 01
 // (90.87%) https://decomp.me/scratch/ju0GI
-void sub_8031138(u16 p0)
+NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u16 p0))
 {
     StageOutro *outro = TaskGetStructPtr(gCurTask);
     u32 counter = outro->counter;
@@ -133,7 +132,7 @@ void sub_8031138(u16 p0)
         StageUI_PrintIntegerAt(bonusVal, (r4 - xPos), 130, 0);
     }
 }
-#endif
+END_NONMATCH
 
 void sub_8031314(void)
 {
