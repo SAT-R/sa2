@@ -1521,47 +1521,6 @@ _080310E6:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
-
-	thumb_func_start sub_80310F0
-sub_80310F0: @ 0x080310F0
-	push {lr}
-	ldr r0, _08031114 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	ldr r2, _08031118 @ =IWRAM_START + 0x168
-	adds r0, r1, r2
-	ldr r2, [r0]
-	ldr r0, _0803111C @ =IWRAM_START + 0x12C
-	adds r3, r1, r0
-	cmp r2, #0xf
-	bhi _08031120
-	movs r0, #0x10
-	subs r0, r0, r2
-	lsls r1, r0, #4
-	subs r1, r1, r0
-	strh r1, [r3, #0x16]
-	movs r0, #0x64
-	b _08031130
-	.align 2, 0
-_08031114: .4byte gCurTask
-_08031118: .4byte IWRAM_START + 0x168
-_0803111C: .4byte IWRAM_START + 0x12C
-_08031120:
-	cmp r2, #0x17
-	bhi _08031128
-	movs r0, #0x64
-	b _08031130
-_08031128:
-	cmp r2, #0x1c
-	bhi _08031132
-	ldrh r0, [r3, #0x18]
-	subs r0, #7
-_08031130:
-	strh r0, [r3, #0x18]
-_08031132:
-	pop {r0}
-	bx r0
-	.align 2, 0
     
 .if 00
 .endif

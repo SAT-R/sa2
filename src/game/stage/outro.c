@@ -25,6 +25,22 @@ typedef struct {
 
 const u16 gUnknown_080D71CC[3] = { 0, 69, 173 };
 
+void sub_80310F0(void)
+{
+    StageOutro *outro = TaskGetStructPtr(gCurTask);
+    u32 counter = outro->counter;
+    Sprite *s = &outro->s7;
+
+    if (counter <= 15) {
+        s->x = (16 - counter) * 15;
+        s->y = 100;
+    } else if (counter <= 23) {
+        s->y = 100;
+    } else if (counter <= 28) {
+        s->y -= 7;
+    }
+}
+
 // (90.87%) https://decomp.me/scratch/ju0GI
 NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u16 p0))
 {
