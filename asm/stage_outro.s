@@ -45,6 +45,7 @@ gUnknown_080D71BA:
 
 @ <Character> "Got Through" <Stage> screen
     @ Seems to be a non-static procedure
+    @ Returns u16(?)
 	thumb_func_start sub_80304DC
 sub_80304DC: @ 0x080304DC
 	push {r4, r5, r6, r7, lr}
@@ -1561,7 +1562,8 @@ _08031132:
 	pop {r0}
 	bx r0
 	.align 2, 0
-
+    
+.if 00
 	thumb_func_start sub_8031138
 sub_8031138: @ 0x08031138
 	push {r4, r5, r6, r7, lr}
@@ -1571,17 +1573,17 @@ sub_8031138: @ 0x08031138
 	sub sp, #4
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	mov r8, r0
+	mov r8, r0          @ r8 = p0
 	ldr r0, _0803118C @ =gCurTask
 	ldr r0, [r0]
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r0, r1
-	mov sb, r0
+	mov sb, r0          @ sb = outro
 	ldr r2, _08031190 @ =IWRAM_START + 0x168
 	adds r0, r1, r2
-	ldr r7, [r0]
+	ldr r7, [r0]        @ r7 = counter
 	cmp r7, #0x17
 	bhi _08031198
 	ldr r0, _08031194 @ =IWRAM_START + 0x12C
@@ -1640,9 +1642,9 @@ _080311C6:
 	movs r6, #0
 	cmp r6, r1
 	bhs _080311F4
-	mov r4, sb
+	mov r4, sb          @ r4 = sb = outro
 	adds r4, #0x22
-	mov r0, sb
+	mov r0, sb          @ r0 = sb = outro
 	adds r0, #0xc
 _080311D4:
 	adds r5, r0, #0
@@ -1663,7 +1665,7 @@ _080311D4:
 _080311F4:
 	cmp r7, #0x26
 	bls _0803124C
-	mov r5, sb
+	mov r5, sb          @ r5 = sb = outro
 	adds r5, #0x9c
 	cmp r7, #0x37
 	bhi _0803121C
@@ -1807,6 +1809,4 @@ _08031304:
 	pop {r0}
 	bx r0
 	.align 2, 0
-
-.if 00
 .endif
