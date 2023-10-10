@@ -160,6 +160,7 @@ SECTIONS
         build/sa2/src/game/enemies/mon.o(.text);
         build/sa2/asm/enemy_gohla.o(.text);
         build/sa2/src/game/enemies/kura_kura.o(.text);
+        build/sa2/src/game/enemies/kubinaga.o(.text);
         build/sa2/asm/enemy_kubinaga.o(.text);
         build/sa2/src/game/enemies/buzzer.o(.text);
         build/sa2/src/game/enemies/kiki.o(.text);
