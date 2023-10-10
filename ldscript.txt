@@ -162,11 +162,11 @@ SECTIONS
         build/sa2/src/game/enemies/mon.o(.text);
         build/sa2/asm/enemy_gohla.o(.text);
         build/sa2/src/game/enemies/kura_kura.o(.text);
+        build/sa2/src/game/enemies/kubinaga.o(.text);
         build/sa2/asm/enemy_kubinaga.o(.text);
         build/sa2/src/game/enemies/buzzer.o(.text);
         build/sa2/src/game/enemies/kiki.o(.text);
         build/sa2/src/game/enemies/koura.o(.text);
-        build/sa2/asm/enemy_koura.o(.text);
         build/sa2/src/game/enemies/bell.o(.text);
         build/sa2/src/game/enemies/yado.o(.text);
         build/sa2/src/game/enemies/piko_piko.o(.text);
@@ -377,7 +377,7 @@ SECTIONS
         build/sa2/asm/boss_8.o(.rodata);
         build/sa2/asm/boss_9.o(.rodata);
         build/sa2/asm/enemy_kubinaga.o(.rodata);
-        build/sa2/asm/enemy_koura.o(.rodata);
+        build/sa2/src/game/enemies/koura.o(.rodata);
         build/sa2/src/game/enemies/geji_geji.o(.rodata);
         build/sa2/src/game/multiplayer/mode_select.o(.rodata);
         build/sa2/src/game/multiplayer/multipak_connection.o(.rodata);
