@@ -44,9 +44,10 @@ static void sub_8031138(u16 p0);
 void sub_8031314(void);
 static void sub_80313D0(void);
 
-#if 01
 // (98.45%) https://decomp.me/scratch/19nrW
-void Task_UpdateGotThroughScreen(void)
+// NOTE: Only non-matching thing is TasksDestoyAll() not
+//       getting initialized like in the original.
+NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateGotThroughScreen.inc", void Task_UpdateGotThroughScreen(void))
 {
     StageOutro *outro = TaskGetStructPtr(gCurTask);
     u32 counter = outro->counter;
@@ -289,10 +290,8 @@ void Task_UpdateGotThroughScreen(void)
     } else {
         sub_8031138(0);
     }
-
-    // _0803109C
 }
-#endif
+END_NONMATCH
 
 void sub_80310F0(void)
 {
