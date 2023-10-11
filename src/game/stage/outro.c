@@ -13,6 +13,7 @@
 #include "game/special_stage/main.h"
 #include "game/stage/ui.h"
 
+#include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -39,6 +40,8 @@ typedef struct {
 
 const u16 gUnknown_080D71CC[3] = { 0, 69, 173 };
 
+void Task_UpdateGotThroughScreen(void);
+void TaskDestructor_UpdateGotThroughScreen(struct Task *);
 void sub_80310F0(void);
 static void sub_8031138(u16 p0);
 void sub_8031314(void);
@@ -49,13 +52,100 @@ u16 sub_80304DC(u32 courseTime, u16 ringCount, u8 spRingCount)
 {
     struct Task *t;
     StageOutro *outro;
+    Sprite *s;
 
     gLoadedSaveGame->score += gRingCount;
 
-    t = TaskCreate(Task_UpdateGotThroughScreen, sizeof(StageOutro), 0xC100, 0, TaskDestructor_UpdateGotThroughScreen);
+    t = TaskCreate(Task_UpdateGotThroughScreen, sizeof(StageOutro), 0xC100, 0,
+                   TaskDestructor_UpdateGotThroughScreen);
     outro = TaskGetStructPtr(t);
     outro->counter = 0;
     outro->isCountingDone = FALSE;
+
+    outro->transition.unk0 = 0;
+    outro->transition.unk2 = 1;
+    outro->transition.speed = Q_24_8(1.0);
+    outro->transition.unk8 = 0x3FFF;
+    outro->transition.unkA = 0;
+
+    if ((gPlayer.moveState & MOVESTATE_8000000)
+        && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+        outro->transition.speed = Q_24_8(0.25);
+        outro->transition.unk8 = 0x3FBF;
+    } else if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
+        // _08030594
+        outro->transition.unk8 = 0x3FAF;
+        outro->transition.unk4 = 0x2000;
+        NextTransitionFrame(&outro->transition);
+    }
+    // _080305B4
+
+    // TODO: Use time macros for comparisons!
+    if (gCourseTime < 1800) {
+        outro->timeBonusScore = 50000;
+    } else if (gCourseTime < 3600) {
+        outro->timeBonusScore = 10000;
+    } else if (gCourseTime < 5400) {
+        outro->timeBonusScore = 5000;
+    } else if (gCourseTime < 7200) {
+        outro->timeBonusScore = 4000;
+    } else if (gCourseTime < 10800) {
+        outro->timeBonusScore = 3000;
+    } else if (gCourseTime < 14400) {
+        outro->timeBonusScore = 2000;
+    } else if (gCourseTime < 18000) {
+        outro->timeBonusScore = 1000;
+    } else if (gCourseTime < 21600) {
+        outro->timeBonusScore = 500;
+    } else {
+        outro->timeBonusScore = 0;
+    }
+    // _0803069C
+
+    outro->ringBonusScore = ringCount * 100;
+
+    // TODO(Jace): Making it >= might make more sense?
+    if (spRingCount == SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
+        outro->spRingBonusScore = 10000;
+    } else {
+        outro->spRingBonusScore = spRingCount * 1000;
+    }
+    // _080306CC
+
+    if (outro->spRingBonusScore > outro->ringBonusScore) {
+        if (outro->spRingBonusScore > outro->timeBonusScore) {
+            outro->unk16C = Div(outro->spRingBonusScore, 100);
+        } else {
+            outro->unk16C = Div(outro->timeBonusScore, 100);
+        }
+    } else {
+        if (outro->ringBonusScore > outro->timeBonusScore) {
+            outro->unk16C = Div(outro->ringBonusScore, 100);
+        } else {
+            outro->unk16C = Div(outro->timeBonusScore, 100);
+        }
+    }
+
+    s = &outro->s7;
+    s->x = DISPLAY_WIDTH + 16;
+    s->y = 80;
+    s->graphics.dest = VramMalloc(4);
+    s->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
+    s->variant = 0;
+    s->unk1A = 0x140;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+    UpdateSpriteAnimation(s);
+
+    s = &outro->s1[0];
+    s->x = DISPLAY_WIDTH + 16;
+    s->y = 41;
 
     return (u16)outro->unk16C;
 }
@@ -121,8 +211,8 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateGotThroughScreen.inc",
             if ((outro->ringBonusScore != 0) || (outro->spRingBonusScore != 0)
                 || (outro->timeBonusScore != 0)) {
                 m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
-            } else if (outro->isCountingDone == 0) {
-                outro->isCountingDone = 1;
+            } else if (!outro->isCountingDone) {
+                outro->isCountingDone = TRUE;
                 m4aSongNumStart(SE_STAGE_RESULT_COUNTER_DONE);
             }
         }

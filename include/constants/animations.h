@@ -600,6 +600,7 @@
 #define SA2_ANIM_ASCII_YEN        '\\'
 #define SA2_ANIM_NUM_ASCII_CHARS  94
 
+// Used in Time Attack and stage results screen (/ stage outro)
 #define SA2_ANIM_TA_WHITE_BAR 1120
 
 #define SA2_ANIM_STAGE               1123
