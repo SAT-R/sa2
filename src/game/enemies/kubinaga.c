@@ -13,40 +13,46 @@
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite s2;
-    /* 0x6C */ Sprite s3;
-    /* 0x9C */ s32 unk9C;
-    /* 0xA0 */ s32 unkA0;
-    /* 0xA4 */ s32 unkA4;
+    /* 0x0C */ Sprite sBase;
+    /* 0x3C */ Sprite sHead;
+    /* 0x6C */ Sprite sNeck;
+    /* 0x9C */ SpriteTransform transform;
     /* 0xA8 */ s32 spawnX;
     /* 0xAC */ s32 spawnY;
-    /* 0xB0 */ s32 offsetX;
-    /* 0xB4 */ s32 offsetY;
+    /* 0xB0 */ s32 headX;
+    /* 0xB4 */ s32 headY;
     /* 0xB8 */ u16 unkB8;
-    /* 0xBA */ s16 unkBA;
+    /* 0xBA */ u16 unkBA;
     /* 0xBC */ s16 unkBC;
     /* 0xBE */ s16 unkBE;
     /* 0xC0 */ u8 unkC0;
-} Sprite_Kubinaga; /* size: 0x5C */
+} Sprite_Kubinaga;
 
-void sub_80524D0(void);
-void sub_8052F70(struct Task *);
+static void sub_80524D0(void);
+static void sub_8052F70(struct Task *);
+static void sub_8052AEC(void);
+static void sub_80528AC(void);
+static void sub_8052CC8(Sprite_Kubinaga *k);
+static void sub_80526C8(void);
 
-extern const u16 gUnknown_080D8F30[][2];
+static const u16 gUnknown_080D8F30[][2] = {
+    { SA2_ANIM_KUBINAGA_BASE, 0 },
+    { SA2_ANIM_KUBINAGA_BASE, 1 },
+};
 
 void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                            u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_80524D0, 0xC4, 0x4060, 0, sub_8052F70);
+    struct Task *t
+        = TaskCreate(sub_80524D0, sizeof(Sprite_Kubinaga), 0x4060, 0, sub_8052F70);
     Sprite_Kubinaga *k = TaskGetStructPtr(t);
-    Sprite *s = &k->s;
+    Sprite *s = &k->sBase;
 
     k->unkB8 = 0;
     k->unkBA = 0;
     k->unkBE = 0;
-    k->offsetX = 0;
-    k->offsetY = 0;
+    k->headX = 0;
+    k->headY = 0;
     k->unkC0 = 0;
 
     k->base.regionX = spriteRegionX;
@@ -72,13 +78,13 @@ void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     }
     UpdateSpriteAnimation(s);
 
-    s = &k->s3;
+    s = &k->sNeck;
     s->x = 0;
     s->y = 0;
     SPRITE_INIT(s, 4, SA2_ANIM_KUBINAGA_NECK, 0, 20, 2);
     UpdateSpriteAnimation(s);
 
-    s = &k->s2;
+    s = &k->sHead;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = VramMalloc(0x10);
@@ -89,12 +95,10 @@ void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void sub_80526C8(void);
-
-void sub_80524D0(void)
+static void sub_80524D0(void)
 {
     Sprite_Kubinaga *k = TaskGetStructPtr(gCurTask);
-    Sprite *s = &k->s;
+    Sprite *s = &k->sBase;
     MapEntity *me = k->base.me;
     Vec2_32 pos;
 
@@ -119,8 +123,8 @@ void sub_80524D0(void)
                                    (Q_24_8_TO_INT(gPlayer.x) - pos.x) - 10);
         }
 
-        k->offsetX = k->spawnX;
-        k->offsetY = k->spawnY;
+        k->headX = k->spawnX;
+        k->headY = k->spawnY;
         gCurTask->main = sub_80526C8;
     }
 
@@ -135,37 +139,33 @@ void sub_80524D0(void)
     }
 }
 
-void sub_80528AC(void);
-
-void sub_8052CC8(Sprite_Kubinaga *k);
-
-void sub_80526C8(void)
+static void sub_80526C8(void)
 {
     Sprite_Kubinaga *k = TaskGetStructPtr(gCurTask);
-    Sprite *s = &k->s;
-    Sprite *s2 = &k->s2;
+    Sprite *sBase = &k->sBase;
+    Sprite *sHead = &k->sHead;
     MapEntity *me = k->base.me;
     Vec2_32 pos;
     Vec2_32 pos2;
 
     pos.x = Q_24_8_TO_INT(k->spawnX);
     pos.y = Q_24_8_TO_INT(k->spawnY);
-    pos2.x = Q_24_8_TO_INT(k->offsetX);
-    pos2.y = Q_24_8_TO_INT(k->offsetY);
+    pos2.x = Q_24_8_TO_INT(k->headX);
+    pos2.y = Q_24_8_TO_INT(k->headY);
 
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
+    sBase->x = pos.x - gCamera.x;
+    sBase->y = pos.y - gCamera.y;
 
-    s2->x = pos2.x - gCamera.x;
+    sHead->x = pos2.x - gCamera.x;
     // BUG: this doesn't make sense to be pos.x but it doesn't appear to have any effect
-    s2->y = pos2.x - gCamera.y;
+    sHead->y = pos2.x - gCamera.y;
 
     k->unkBE += 0x200;
 
-    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
-    ENEMY_DESTROY_IF_PLAYER_HIT_2(s2, pos2);
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(sBase, pos);
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(sHead, pos2);
 
-    ENEMY_DESTROY_IF_OFFSCREEN_RAW(k, me, s, pos.x, pos.y);
+    ENEMY_DESTROY_IF_OFFSCREEN_RAW(k, me, sBase, pos.x, pos.y);
 
     sub_80122DC(k->spawnX, k->spawnY);
 
@@ -175,85 +175,219 @@ void sub_80526C8(void)
         gCurTask->main = sub_80528AC;
     }
 
-    DisplaySprite(s);
+    DisplaySprite(sBase);
 
-    if (s->variant == 0) {
-        s->unk10 ^= SPRITE_FLAG_MASK_X_FLIP;
-        DisplaySprite(s);
+    if (sBase->variant == 0) {
+        sBase->unk10 ^= SPRITE_FLAG_MASK_X_FLIP;
+        DisplaySprite(sBase);
     } else {
-        s->unk10 ^= SPRITE_FLAG_MASK_Y_FLIP;
-        DisplaySprite(s);
+        sBase->unk10 ^= SPRITE_FLAG_MASK_Y_FLIP;
+        DisplaySprite(sBase);
     }
 
     sub_8052CC8(k);
 }
 
-void sub_8052AEC(void);
+static void sub_80528AC(void)
+{
+    Sprite_Kubinaga *k = TaskGetStructPtr(gCurTask);
+    Sprite *sBase = &k->sBase;
+    Sprite *sHead = &k->sHead;
+    MapEntity *me = k->base.me;
+    Vec2_32 pos;
+    Vec2_32 pos2;
 
-// void sub_80528AC(void)
-// {
-//     Sprite_Kubinaga *k = TaskGetStructPtr(gCurTask);
-//     Sprite *s = &k->s;
-//     Sprite *s2 = &k->s2;
-//     MapEntity *me = k->base.me;
-//     Vec2_32 pos;
-//     Vec2_32 pos2;
+    pos.x = Q_24_8_TO_INT(k->spawnX);
+    pos.y = Q_24_8_TO_INT(k->spawnY);
+    pos2.x = Q_24_8_TO_INT(k->headX);
+    pos2.y = Q_24_8_TO_INT(k->headY);
 
-//     pos.x = Q_24_8_TO_INT(k->spawnX);
-//     pos.y = Q_24_8_TO_INT(k->spawnY);
-//     pos2.x = Q_24_8_TO_INT(k->offsetX);
-//     pos2.y = Q_24_8_TO_INT(k->offsetY);
+    sBase->x = pos.x - gCamera.x;
+    sBase->y = pos.y - gCamera.y;
 
-//     s->x = pos.x - gCamera.x;
-//     s->y = pos.y - gCamera.y;
+    sHead->x = pos2.x - gCamera.x;
+    // BUG: this doesn't make sense to be pos.x but it doesn't appear to have any effect
+    sHead->y = pos2.x - gCamera.y;
 
-//     s2->x = pos2.x - gCamera.x;
-//     // BUG: this doesn't make sense to be pos.x but it doesn't appear to have any
-//     effect s2->y = pos2.x - gCamera.y;
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(sBase, pos);
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(sHead, pos2);
 
-//     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
-//     ENEMY_DESTROY_IF_PLAYER_HIT_2(s2, pos2);
+    ENEMY_DESTROY_IF_OFFSCREEN_RAW(k, me, sBase, pos.x, pos.y);
 
-//     ENEMY_DESTROY_IF_OFFSCREEN_RAW(k, me, s, pos.x, pos.y);
+    sub_80122DC(k->spawnX, k->spawnY);
 
-//     sub_80122DC(k->spawnX, k->spawnY);
+    if (k->unkB8 != 0) {
 
-//     if (k->unkB8 == 0) {
-//         gCurTask->main = sub_8052AEC;
-//     } else {
-//         k->unkBE--;
+        if (k->unkB8-- == 0x11) {
+            ProjInit init;
+            init.numTiles = 1;
+            init.anim = SA2_ANIM_KUBINAGA_PROJ;
+            init.variant = 0;
+            init.rot = k->unkBC;
+            init.speed = 0x140;
+            if (k->unkC0 == 0) {
+                init.x = k->headX;
+                init.y = k->headY - 0xA00;
+            } else {
+                if ((k->unkC0 & 1)) {
+                    init.x = k->headX + 0xA00;
+                } else {
+                    init.x = (k->headX) - 0xA00;
+                }
+                init.y = k->headY;
+            }
+            CreateProjectile(&init);
+        }
+    } else {
+        gCurTask->main = sub_8052AEC;
+    }
 
-//         if (k->unkBE == 0x11) {
-//             ProjInit init;
-//             init.numTiles = 0;
-//             init.anim = SA2_ANIM_KUBINAGA_PROJ;
-//             init.variant = 0;
-//             init.rot = k->unkBC;
-//             init.speed = 0x140;
-//             if (k->unkC0 == 0) {
-//                 init.x = k->spawnX;
-//                 init.y = k->spawnY - 0xA00;
-//             } else {
-//                 if ((k->unkC0 & 1) == 0) {
-//                     init.x = (k->spawnX) - 0xA00;
-//                 } else {
-//                     init.x = k->spawnX + 0xA00;
-//                 }
-//                 init.y = k->spawnY;
-//             }
-//             CreateProjectile(&init);
-//         }
-//     }
+    DisplaySprite(sBase);
 
-//     DisplaySprite(s);
+    if (sBase->variant == 0) {
+        sBase->unk10 ^= SPRITE_FLAG_MASK_X_FLIP;
+        DisplaySprite(sBase);
+    } else {
+        sBase->unk10 ^= SPRITE_FLAG_MASK_Y_FLIP;
+        DisplaySprite(sBase);
+    }
 
-//     if (s->variant == 0) {
-//         s->unk10 ^= SPRITE_FLAG_MASK_X_FLIP;
-//         DisplaySprite(s);
-//     } else {
-//         s->unk10 ^= SPRITE_FLAG_MASK_Y_FLIP;
-//         DisplaySprite(s);
-//     }
+    sub_8052CC8(k);
+}
 
-//     sub_8052CC8(k);
-// }
+static void sub_8052AEC(void)
+{
+    Sprite_Kubinaga *k = TaskGetStructPtr(gCurTask);
+    Sprite *sBase = &k->sBase;
+    Sprite *sHead = &k->sHead;
+    MapEntity *me = k->base.me;
+    Vec2_32 pos;
+    Vec2_32 pos2;
+
+    pos.x = Q_24_8_TO_INT(k->spawnX);
+    pos.y = Q_24_8_TO_INT(k->spawnY);
+    pos2.x = Q_24_8_TO_INT(k->headX);
+    pos2.y = Q_24_8_TO_INT(k->headY);
+
+    sBase->x = pos.x - gCamera.x;
+    sBase->y = pos.y - gCamera.y;
+
+    sHead->x = pos2.x - gCamera.x;
+    // BUG: this doesn't make sense to be pos.x but it doesn't appear to have any effect
+    sHead->y = pos2.x - gCamera.y;
+
+    k->unkBE -= 0x200;
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(sBase, pos);
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(sHead, pos2);
+
+    ENEMY_DESTROY_IF_OFFSCREEN_RAW(k, me, sBase, pos.x, pos.y);
+
+    sub_80122DC(k->spawnX, k->spawnY);
+
+    if (k->unkBE < 0) {
+        k->unkBE = 0;
+        k->unkB8 = 0x78;
+        gCurTask->main = sub_80524D0;
+    }
+
+    DisplaySprite(sBase);
+
+    if (sBase->variant == 0) {
+        sBase->unk10 ^= SPRITE_FLAG_MASK_X_FLIP;
+        DisplaySprite(sBase);
+    } else {
+        sBase->unk10 ^= SPRITE_FLAG_MASK_Y_FLIP;
+        DisplaySprite(sBase);
+    }
+
+    sub_8052CC8(k);
+}
+
+static void sub_8052CC8(Sprite_Kubinaga *k)
+{
+    Sprite *sHead = &k->sHead;
+    Sprite *sNeck = &k->sNeck;
+    SpriteTransform *transform = &k->transform;
+    s32 cos = (COS(k->unkBA) * 7) >> 5;
+    s32 sin = (SIN(k->unkBA) * 7) >> 5;
+    Vec2_32 pos;
+
+    u8 val = Div(k->unkBE, 0xE00);
+    u8 i;
+
+    for (i = 0; i < val; i++) {
+
+        pos.x = Q_24_8_TO_INT((i + 1) * cos + k->spawnX);
+        pos.y = Q_24_8_TO_INT((i + 1) * sin + k->spawnY);
+        sNeck->x = pos.x - gCamera.x;
+        if (k->unkC0 == 0) {
+            sNeck->y = (pos.y - gCamera.y) - 10;
+        } else {
+            sNeck->x = (k->unkC0 & 1) ? sNeck->x + 10 : sNeck->x - 10;
+            sNeck->y = pos.y - gCamera.y;
+        }
+
+        sub_800C84C(sNeck, pos.x, pos.y);
+        DisplaySprite(sNeck);
+    }
+
+    k->headX = ((COS(k->unkBA) * Q_8_8_TO_INT(k->unkBE)) >> 6) + k->spawnX;
+    k->headY = ((SIN(k->unkBA) * Q_8_8_TO_INT(k->unkBE)) >> 6) + k->spawnY;
+
+    pos.x = Q_24_8_TO_INT(k->headX);
+    pos.y = Q_24_8_TO_INT(k->headY);
+
+    sHead->x = pos.x - gCamera.x;
+
+    if (k->unkC0 == 0) {
+        sHead->y = (pos.y - gCamera.y) - 10;
+        transform->rotation = sub_8004418(Q_24_8_TO_INT(gPlayer.y) - pos.y + 10,
+                                          Q_24_8_TO_INT(gPlayer.x) - pos.x);
+    } else {
+        if (k->unkC0 & 1) {
+
+            sHead->x = sHead->x + 10;
+            transform->rotation = sub_8004418(Q_24_8_TO_INT(gPlayer.y) - pos.y,
+                                              (Q_24_8_TO_INT(gPlayer.x) - pos.x) + 10);
+        } else {
+
+            sHead->x = sHead->x - 10;
+            transform->rotation = sub_8004418(Q_24_8_TO_INT(gPlayer.y) - pos.y,
+                                              (Q_24_8_TO_INT(gPlayer.x) - pos.x) - 10);
+        }
+        sHead->y = (pos.y - gCamera.y);
+    }
+
+    sub_800C84C(sHead, pos.x, pos.y);
+
+    transform->width = 0x100;
+    transform->height = 0x100;
+    transform->x = sHead->x;
+    transform->y = sHead->y;
+    k->unkBC = transform->rotation;
+
+    if ((u16)(transform->rotation - 0x100) > 0x200) {
+        sHead->graphics.anim = SA2_ANIM_KUBINAGA;
+        sHead->variant = 0;
+        sHead->prevVariant = -1;
+    } else {
+        transform->rotation ^= 0x200;
+        sHead->graphics.anim = SA2_ANIM_KUBINAGA;
+        sHead->variant = 1;
+        sHead->prevVariant = -1;
+    }
+
+    sHead->unk10 = gUnknown_030054B8++ | 0x2060;
+
+    UpdateSpriteAnimation(sHead);
+    sub_8004860(sHead, transform);
+    DisplaySprite(sHead);
+}
+
+static void sub_8052F70(struct Task *t)
+{
+    Sprite_Kubinaga *k = TaskGetStructPtr(t);
+    VramFree(k->sBase.graphics.dest);
+    VramFree(k->sHead.graphics.dest);
+    VramFree(k->sNeck.graphics.dest);
+}
