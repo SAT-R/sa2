@@ -693,14 +693,35 @@ extern void sub_8021350(void);
 // NOTE: Proc type should be the same as SetStageSpawnPosInternal!
 extern void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *player);
 
-#define INCREMENT_SCORE(incVal)                                                         \
+#define INCREMENT_SCORE_A(incVal)                                                       \
     {                                                                                   \
         s32 divResA, divResB;                                                           \
-        s32 old_3005450 = gLevelScore;                                                  \
+        s32 oldScore = gLevelScore;                                                     \
         gLevelScore += incVal;                                                          \
                                                                                         \
         divResA = Div(gLevelScore, 50000);                                              \
-        divResB = Div(old_3005450, 50000);                                              \
+        divResB = Div(oldScore, 50000);                                                 \
+                                                                                        \
+        if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
+            u16 lives = divResA - divResB;                                              \
+            lives += gNumLives;                                                         \
+                                                                                        \
+            gNumLives = ({                                                              \
+                if (lives > 255)                                                        \
+                    lives = 255;                                                        \
+                lives;                                                                  \
+            });                                                                         \
+        }                                                                               \
+    }
+
+#define INCREMENT_SCORE(incVal)                                                         \
+    {                                                                                   \
+        s32 divResA, divResB;                                                           \
+        s32 oldScore = gLevelScore;                                                     \
+        gLevelScore += incVal;                                                          \
+                                                                                        \
+        divResA = Div(gLevelScore, 50000);                                              \
+        divResB = Div(oldScore, 50000);                                                 \
                                                                                         \
         if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
             u16 lives = divResA - divResB;                                              \

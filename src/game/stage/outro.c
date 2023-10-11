@@ -1,16 +1,25 @@
 #include "global.h"
+#include "core.h"
 #include "malloc_vram.h"
 #include "sprite.h"
 #include "task.h"
+#include "lib/m4a.h"
 #include "game/game.h"
+#include "game/course_select.h"
+#include "game/cutscenes/endings.h"
+#include "game/cutscenes/level_endings.h"
+#include "game/save.h"
+#include "game/screen_transition.h"
+#include "game/special_stage/main.h"
 #include "game/stage/ui.h"
 
+#include "constants/songs.h"
 #include "constants/zones.h"
 
 // TODO(Jace): Maybe call this module "Points Summary" instead?
 
 typedef struct {
-    /*  0x00 */ u8 filler0[0xC];
+    /*  0x00 */ struct TransitionState transition;
     /*  0x0C */ Sprite s1[3];
     /*  0x9C */ Sprite sprTimeScore;
     /*  0xCC */ Sprite sprRingScore;
@@ -19,8 +28,9 @@ typedef struct {
     /* 0x15C */ s32 timeBonusScore; // Time Bonus?
     /* 0x160 */ s32 ringBonusScore; // Ring Bonus?
     /* 0x164 */ s32 spRingBonusScore; // SP-Ring Bonus?
-    /* 0x168 */ s32 counter;
-    /* 0x16C */ u8 filler16C[0x8];
+    /* 0x168 */ s32 counter; // framesSince the task started
+    /* 0x16C */ s32 unk16C;
+    /* 0x170 */ s32 unk170;
 } StageOutro;
 
 #define OUTRO_TIME_BONUS_Y_POS    90
@@ -28,6 +38,260 @@ typedef struct {
 #define OUTRO_SP_RING_BONUS_Y_POS 130
 
 const u16 gUnknown_080D71CC[3] = { 0, 69, 173 };
+
+void sub_80310F0(void);
+static void sub_8031138(u16 p0);
+void sub_8031314(void);
+static void sub_80313D0(void);
+
+#if 01
+void Task_UpdateGotThroughScreen(void)
+{
+    StageOutro *outro = TaskGetStructPtr(gCurTask);
+    u32 counter = outro->counter;
+
+    if (++counter > outro->unk16C + 309) {
+        counter = outro->unk16C + 310;
+    }
+    outro->counter = counter;
+
+    if (IS_EXTRA_STAGE(gCurrentLevel)) {
+        gBldRegs.bldCnt
+            = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_BD | BLDCNT_TGT1_BG0
+               | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3);
+    }
+
+    if (counter >= 150) {
+        if (outro->ringBonusScore != 0) {
+            outro->ringBonusScore -= 100;
+            INCREMENT_SCORE_A(100);
+        }
+        // _08030AEE
+
+        if (outro->spRingBonusScore != 0) {
+            outro->spRingBonusScore -= 100;
+            INCREMENT_SCORE_A(100);
+        }
+
+        if (outro->timeBonusScore != 0) {
+            outro->timeBonusScore -= 100;
+            INCREMENT_SCORE_A(100);
+        }
+
+        // If user pressed A, quickly finish score counting
+        if (!IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
+            if (gPressedKeys & A_BUTTON) {
+                INCREMENT_SCORE_A(outro->ringBonusScore);
+                INCREMENT_SCORE_A(outro->spRingBonusScore);
+                INCREMENT_SCORE_A(outro->timeBonusScore);
+
+                outro->ringBonusScore = 0;
+                outro->spRingBonusScore = 0;
+                outro->timeBonusScore = 0;
+
+                if (counter < outro->unk16C + 149) {
+                    counter = outro->unk16C + 149;
+                    outro->counter = counter;
+                }
+            }
+        }
+        // _08030CB8
+
+        if ((gStageTime % 4u) == 0) {
+            if ((outro->ringBonusScore != 0) || (outro->spRingBonusScore != 0)
+                || (outro->timeBonusScore != 0)) {
+                m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
+            } else if (outro->unk170 == 0) {
+                outro->unk170 = 1;
+                m4aSongNumStart(SE_STAGE_RESULT_COUNTER_DONE);
+            }
+        }
+    }
+    // _08030D3E
+
+    if (counter > outro->unk16C + 309) {
+        if (IS_FINAL_STAGE(gCurrentLevel)) {
+            // _08030D50+0xC
+            if (((u16)gMPlayInfo_BGM.status) == 0) {
+                // _08030D68
+                gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
+                    = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
+                WriteSaveGame();
+
+                TasksDestroyAll();
+
+                { // TODO: This is a macro!
+                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    gUnknown_03005390 = 0;
+                    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                }
+
+                StartEndingCutscenes();
+                return;
+            }
+        } else if (IS_EXTRA_STAGE(gCurrentLevel)) {
+            // _08030DD0
+            if (((u16)gMPlayInfo_BGM.status) == 0) {
+                gCurrentLevel++;
+                gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
+
+                TasksDestroyAll();
+
+                { // TODO: This is a macro!
+                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    gUnknown_03005390 = 0;
+                    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                }
+
+                StartEndingCutscenes();
+
+                WriteSaveGame();
+                return;
+            }
+        } else {
+            // _08030E40
+            if (NextTransitionFrame(&outro->transition) == 1) {
+                gBldRegs.bldY = 0x10;
+                gPlayer.moveState |= MOVESTATE_100000;
+
+                if (ACT_INDEX(gCurrentLevel) == ACT_BOSS) {
+                    TasksDestroyAll();
+
+                    { // TODO: This is a macro!
+                        gUnknown_03002AE4 = gUnknown_0300287C;
+                        gUnknown_03005390 = 0;
+                        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                    }
+
+                    gCurrentLevel++;
+
+                    if (gCurrentLevel
+                        > gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
+                        gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
+                            = gCurrentLevel;
+
+                        if (gSelectedCharacter == CHARACTER_SONIC) {
+                            switch (LEVEL_TO_ZONE(gCurrentLevel - 1)) {
+                                case ZONE_1: {
+                                    gLoadedSaveGame->unlockedCharacters
+                                        |= CHARACTER_BIT(CHARACTER_CREAM);
+                                    CreateCharacterUnlockCutScene(0);
+                                } break;
+
+                                case ZONE_3: {
+                                    gLoadedSaveGame->unlockedCharacters
+                                        |= CHARACTER_BIT(CHARACTER_TAILS);
+                                    CreateCharacterUnlockCutScene(2);
+                                } break;
+
+                                case ZONE_5: {
+                                    gLoadedSaveGame->unlockedCharacters
+                                        |= CHARACTER_BIT(CHARACTER_KNUCKLES);
+                                    CreateCharacterUnlockCutScene(1);
+                                } break;
+
+                                default: {
+                                    CreateCourseSelectionScreen(
+                                        gCurrentLevel,
+                                        gLoadedSaveGame
+                                            ->unlockedLevels[gSelectedCharacter],
+                                        1);
+                                }
+                            }
+                            WriteSaveGame();
+                            return;
+                        } else {
+                            // _08030F54
+                            CreateCourseSelectionScreen(
+                                gCurrentLevel,
+                                gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
+                            WriteSaveGame();
+                            return;
+                        }
+                    } else {
+                        // _08030F6A
+                        CreateCourseSelectionScreen(
+                            gCurrentLevel,
+                            gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 4);
+                        WriteSaveGame();
+                        return;
+                    }
+                } else {
+                    // _08030F74
+                    gCurrentLevel++;
+                    if (gCurrentLevel
+                        > gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
+                        gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
+                            = gCurrentLevel;
+                    }
+                    // _08030F94
+
+                    if ((gPlayer.moveState & MOVESTATE_800000)
+                        && (gSpecialRingCount >= 7)) {
+                        TasksDestroyAll();
+
+                        { // TODO: This is a macro!
+                            gUnknown_03002AE4 = gUnknown_0300287C;
+                            gUnknown_03005390 = 0;
+                            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                        }
+
+                        CreateSpecialStage(-1, -1);
+
+                        gDispCnt |= DISPCNT_WIN0_ON;
+                        gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_WIDTH);
+                        gWinRegs[WINREG_WIN0V] = WIN_RANGE(0, DISPLAY_HEIGHT);
+                        gWinRegs[WINREG_WININ] |= WININ_WIN0_ALL;
+                        gWinRegs[WINREG_WINOUT]
+                            |= (WINOUT_WIN01_ALL & ~WINOUT_WIN01_CLR);
+
+                        gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL
+                                           | BLDCNT_TGT2_ALL);
+                        gBldRegs.bldY = 0x10;
+
+                        WriteSaveGame();
+                        return;
+                    }
+
+                    // _08031030
+                    TasksDestroyAll();
+
+                    { // TODO: This is a macro!
+                        gUnknown_03002AE4 = gUnknown_0300287C;
+                        gUnknown_03005390 = 0;
+                        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                    }
+
+                    WriteSaveGame();
+                    return;
+                }
+            }
+        }
+        // _0803106C
+
+        if ((gPlayer.moveState & MOVESTATE_8000000) && gSpecialRingCount >= 7) {
+            sub_80313D0();
+            gPlayer.moveState |= MOVESTATE_4000000;
+            return;
+        }
+    }
+
+    sub_80310F0();
+    sub_8031314();
+
+    if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
+        if (counter > outro->unk16C + 245) {
+            sub_8031138((counter - 245) - outro->unk16C);
+        } else {
+            sub_8031138(0);
+        }
+    } else {
+        sub_8031138(0);
+    }
+
+    // _0803109C
+}
+#endif
 
 void sub_80310F0(void)
 {

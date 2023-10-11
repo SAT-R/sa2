@@ -108,6 +108,6 @@ struct UNK_806CB84 {
     s16 unk12;
 };
 
-void CreateSpecialStage(s16, s16);
+void CreateSpecialStage(s16 selectedCharacter, s16 level);
 
 #endif

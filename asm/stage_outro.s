@@ -723,7 +723,7 @@ _08030A2E:
 	.align 2, 0
 _08030A48: .4byte 0x00000191
 
-
+.if 00
 	thumb_func_start Task_UpdateGotThroughScreen
 Task_UpdateGotThroughScreen: @ 0x08030A4C
 	push {r4, r5, r6, r7, lr}
@@ -738,13 +738,13 @@ Task_UpdateGotThroughScreen: @ 0x08030A4C
 	ldr r0, _08030CF4 @ =IWRAM_START + 0x168
 	adds r3, r2, r0
 	ldr r1, [r3]
-	mov r8, r1
+	mov r8, r1          @ r8 = r1 = counter
 	movs r4, #1
 	add r8, r4
 	ldr r1, _08030CF8 @ =IWRAM_START + 0x16C
 	adds r0, r2, r1
 	ldr r1, [r0]
-	ldr r4, _08030CFC @ =0x00000135
+	ldr r4, _08030CFC @ =309
 	adds r0, r1, r4
 	cmp r8, r0
 	bls _08030A80
@@ -785,7 +785,7 @@ _08030A9E:
 	ldr r4, _08030D14 @ =0x0000C350
 	adds r1, r4, #0
 	bl Div
-	adds r6, r0, #0
+	adds r6, r0, #0     @ r6 = div50K;
 	adds r0, r5, #0
 	adds r1, r4, #0
 	bl Div
@@ -1145,7 +1145,7 @@ _08030D68:
 	ldrb r0, [r0]
 	strb r0, [r1]
 	bl StartEndingCutScenes
-	b _080310E6
+	b Task_UpdateGotThroughScreen_return
 	.align 2, 0
 _08030DA4: .4byte 0x00000135
 _08030DA8: .4byte gCurrentLevel
@@ -1195,7 +1195,7 @@ _08030DE0:
 	bl StartEndingCutScenes
 _08030E16:
 	bl WriteSaveGame
-	b _080310E6
+	b Task_UpdateGotThroughScreen_return
 	.align 2, 0
 _08030E1C: .4byte gMPlayInfo_BGM
 _08030E20: .4byte 0x0000FFFF
@@ -1477,7 +1477,7 @@ _0803106C:
 	lsls r1, r1, #0x13
 	orrs r0, r1
 	str r0, [r4, #0x20]
-	b _080310E6
+	b Task_UpdateGotThroughScreen_return
 	.align 2, 0
 _08031094: .4byte gPlayer
 _08031098: .4byte gSpecialRingCount
@@ -1505,22 +1505,20 @@ _0803109C:
 	lsls r0, r0, #0x14
 	lsrs r0, r0, #0x10
 	bl sub_8031138
-	b _080310E6
+	b Task_UpdateGotThroughScreen_return
 	.align 2, 0
 _080310D4: .4byte gCurrentLevel
 _080310D8:
 	movs r0, #0
 	bl sub_8031138
-	b _080310E6
+	b Task_UpdateGotThroughScreen_return
 _080310E0:
 	movs r0, #0
 	bl sub_8031138
-_080310E6:
+Task_UpdateGotThroughScreen_return:
 	pop {r3}
 	mov r8, r3
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
-    
-.if 00
 .endif

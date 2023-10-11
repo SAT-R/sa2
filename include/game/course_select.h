@@ -4,7 +4,7 @@
 #include "global.h"
 
 // CreateCourseSelectionScreen
-void CreateCourseSelectionScreen(u8, u8, u8);
+void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes);
 
 #define COURSE_SELECT_CUT_SCENE_NONE  0
 #define CUT_SCENE_UNLOCK_NEXT_COURSE  1
