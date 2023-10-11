@@ -13,6 +13,7 @@
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
 #include "game/parameters/characters.h"
 #include "game/playerfn_cmds.h"
+#include "game/special_stage/main.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -1390,9 +1391,10 @@ void PlayerCB_80273D0(Player *p)
         sub_802A468(p);
     } else {
         if (gGameMode == GAME_MODE_TIME_ATTACK)
-            gSpecialRingCount = 7;
+            gSpecialRingCount = SPECIAL_STAGE_REQUIRED_SP_RING_COUNT;
 
-        if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount > 6)) {
+        if ((gPlayer.moveState & MOVESTATE_8000000)
+            && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             sub_802A40C(p);
         } else {
             sub_80218E4(p);

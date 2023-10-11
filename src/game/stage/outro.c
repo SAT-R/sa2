@@ -30,7 +30,7 @@ typedef struct {
     /* 0x164 */ s32 spRingBonusScore; // SP-Ring Bonus?
     /* 0x168 */ s32 counter; // framesSince the task started
     /* 0x16C */ s32 unk16C;
-    /* 0x170 */ u8 unk170;
+    /* 0x170 */ bool8 isCountingDone;
 } StageOutro; /* size: 0x174 */
 
 #define OUTRO_TIME_BONUS_Y_POS    90
@@ -55,7 +55,7 @@ u16 sub_80304DC(u32 courseTime, u16 ringCount, u8 spRingCount)
     t = TaskCreate(Task_UpdateGotThroughScreen, sizeof(StageOutro), 0xC100, 0, TaskDestructor_UpdateGotThroughScreen);
     outro = TaskGetStructPtr(t);
     outro->counter = 0;
-    outro->unk170 = 0;
+    outro->isCountingDone = FALSE;
 
     return (u16)outro->unk16C;
 }
@@ -121,8 +121,8 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateGotThroughScreen.inc",
             if ((outro->ringBonusScore != 0) || (outro->spRingBonusScore != 0)
                 || (outro->timeBonusScore != 0)) {
                 m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
-            } else if (outro->unk170 == 0) {
-                outro->unk170 = 1;
+            } else if (outro->isCountingDone == 0) {
+                outro->isCountingDone = 1;
                 m4aSongNumStart(SE_STAGE_RESULT_COUNTER_DONE);
             }
         }
@@ -242,8 +242,8 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateGotThroughScreen.inc",
                     }
                     // _08030F94
 
-                    if ((gPlayer.moveState & MOVESTATE_800000)
-                        && (gSpecialRingCount >= 7)) {
+                    if ((gPlayer.moveState & MOVESTATE_8000000)
+                        && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
                         TasksDestroyAll();
 
                         { // TODO: This is a macro!
@@ -287,7 +287,8 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateGotThroughScreen.inc",
         }
         // _0803106C
 
-        if ((gPlayer.moveState & MOVESTATE_8000000) && gSpecialRingCount >= 7) {
+        if ((gPlayer.moveState & MOVESTATE_8000000)
+            && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
             sub_80313D0();
             gPlayer.moveState |= MOVESTATE_4000000;
             return;
