@@ -45,6 +45,7 @@ void sub_8031314(void);
 static void sub_80313D0(void);
 
 #if 01
+// (98.45%) https://decomp.me/scratch/19nrW
 void Task_UpdateGotThroughScreen(void)
 {
     StageOutro *outro = TaskGetStructPtr(gCurTask);
@@ -198,24 +199,20 @@ void Task_UpdateGotThroughScreen(void)
                                         1);
                                 }
                             }
-                            WriteSaveGame();
-                            return;
                         } else {
                             // _08030F54
                             CreateCourseSelectionScreen(
                                 gCurrentLevel,
                                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
-                            WriteSaveGame();
-                            return;
                         }
                     } else {
                         // _08030F6A
                         CreateCourseSelectionScreen(
                             gCurrentLevel,
                             gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 4);
-                        WriteSaveGame();
-                        return;
                     }
+                    WriteSaveGame();
+                    return;
                 } else {
                     // _08030F74
                     gCurrentLevel++;
@@ -262,6 +259,8 @@ void Task_UpdateGotThroughScreen(void)
                         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
                     }
 
+                    GameStageStart();
+
                     WriteSaveGame();
                     return;
                 }
@@ -281,7 +280,9 @@ void Task_UpdateGotThroughScreen(void)
 
     if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
         if (counter > outro->unk16C + 245) {
-            sub_8031138((counter - 245) - outro->unk16C);
+            u32 innerCount = counter;
+            innerCount -= 245;
+            sub_8031138((innerCount - outro->unk16C) * 16);
         } else {
             sub_8031138(0);
         }
