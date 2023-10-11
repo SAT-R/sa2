@@ -163,7 +163,6 @@ SECTIONS
         build/sa2/asm/enemy_gohla.o(.text);
         build/sa2/src/game/enemies/kura_kura.o(.text);
         build/sa2/src/game/enemies/kubinaga.o(.text);
-        build/sa2/asm/enemy_kubinaga.o(.text);
         build/sa2/src/game/enemies/buzzer.o(.text);
         build/sa2/src/game/enemies/kiki.o(.text);
         build/sa2/src/game/enemies/koura.o(.text);
@@ -376,7 +375,7 @@ SECTIONS
         build/sa2/asm/boss_7.o(.rodata);
         build/sa2/asm/boss_8.o(.rodata);
         build/sa2/asm/boss_9.o(.rodata);
-        build/sa2/asm/enemy_kubinaga.o(.rodata);
+        build/sa2/src/game/enemies/kubinaga.o(.rodata);
         build/sa2/src/game/enemies/koura.o(.rodata);
         build/sa2/src/game/enemies/geji_geji.o(.rodata);
         build/sa2/src/game/multiplayer/mode_select.o(.rodata);
