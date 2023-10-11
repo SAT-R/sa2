@@ -30,8 +30,8 @@ typedef struct {
     /* 0x164 */ s32 spRingBonusScore; // SP-Ring Bonus?
     /* 0x168 */ s32 counter; // framesSince the task started
     /* 0x16C */ s32 unk16C;
-    /* 0x170 */ s32 unk170;
-} StageOutro;
+    /* 0x170 */ u8 unk170;
+} StageOutro; /* size: 0x174 */
 
 #define OUTRO_TIME_BONUS_Y_POS    90
 #define OUTRO_RING_BONUS_Y_POS    110
@@ -44,7 +44,24 @@ static void sub_8031138(u16 p0);
 void sub_8031314(void);
 static void sub_80313D0(void);
 
-// (98.45%) https://decomp.me/scratch/19nrW
+#if 0
+u16 sub_80304DC(u32 courseTime, u16 ringCount, u8 spRingCount)
+{
+    struct Task *t;
+    StageOutro *outro;
+
+    gLoadedSaveGame->score += gRingCount;
+
+    t = TaskCreate(Task_UpdateGotThroughScreen, sizeof(StageOutro), 0xC100, 0, TaskDestructor_UpdateGotThroughScreen);
+    outro = TaskGetStructPtr(t);
+    outro->counter = 0;
+    outro->unk170 = 0;
+
+    return (u16)outro->unk16C;
+}
+#endif
+
+// (98.99%) https://decomp.me/scratch/19nrW
 // NOTE: Only non-matching thing is TasksDestroyAll() not
 //       getting initialized like in the original.
 NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateGotThroughScreen.inc",
