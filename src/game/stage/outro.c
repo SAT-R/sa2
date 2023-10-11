@@ -45,9 +45,10 @@ void sub_8031314(void);
 static void sub_80313D0(void);
 
 // (98.45%) https://decomp.me/scratch/19nrW
-// NOTE: Only non-matching thing is TasksDestoyAll() not
+// NOTE: Only non-matching thing is TasksDestroyAll() not
 //       getting initialized like in the original.
-NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateGotThroughScreen.inc", void Task_UpdateGotThroughScreen(void))
+NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateGotThroughScreen.inc",
+         void Task_UpdateGotThroughScreen(void))
 {
     StageOutro *outro = TaskGetStructPtr(gCurTask);
     u32 counter = outro->counter;
