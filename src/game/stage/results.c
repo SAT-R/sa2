@@ -23,10 +23,10 @@ typedef struct {
     /*  0x0C */ Sprite s1[3];
     /*  0x9C */ Sprite sprScores[3];
     /* 0x12C */ Sprite s7;
-    /* 0x15C */ u32 timeBonusScore; // Time Bonus?
-    /* 0x160 */ u32 ringBonusScore; // Ring Bonus?
-    /* 0x164 */ u32 spRingBonusScore; // SP-Ring Bonus?
-    /* 0x168 */ s32 counter; // framesSince the task started
+    /* 0x15C */ u32 timeBonusScore;
+    /* 0x160 */ u32 ringBonusScore;
+    /* 0x164 */ u32 spRingBonusScore;
+    /* 0x168 */ s32 counter; // frames since task started
     /* 0x16C */ s32 unk16C;
     /* 0x170 */ bool8 isCountingDone;
 } StageResults; /* size: 0x174 */
