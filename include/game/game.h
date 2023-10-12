@@ -581,8 +581,7 @@ extern const u32 *gUnknown_030059C8;
 // rodata
 extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
 extern const u16 sAnimsGotThroughCharacterNames[5][3];
-extern const u16 gUnknown_080D715A[5][3];
-extern const u16 sAnimsGotThroughZoneAndActNames[11][3];
+extern const u16 sStageOutroHeadline[5][3];
 
 // Some unused rom thing?
 extern const u8 gUnknown_08C88408[0x8000];

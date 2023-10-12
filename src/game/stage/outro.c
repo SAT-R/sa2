@@ -11,6 +11,7 @@
 #include "game/save.h"
 #include "game/screen_transition.h"
 #include "game/special_stage/main.h"
+#include "game/stage/results.h"
 #include "game/stage/ui.h"
 
 #include "constants/animations.h"
@@ -22,13 +23,11 @@
 typedef struct {
     /*  0x00 */ struct TransitionState transition;
     /*  0x0C */ Sprite s1[3];
-    /*  0x9C */ Sprite sprTimeScore;
-    /*  0xCC */ Sprite sprRingScore;
-    /*  0xFC */ Sprite sprSpRingScore;
+    /*  0x9C */ Sprite sprScores[3];
     /* 0x12C */ Sprite s7;
-    /* 0x15C */ s32 timeBonusScore; // Time Bonus?
-    /* 0x160 */ s32 ringBonusScore; // Ring Bonus?
-    /* 0x164 */ s32 spRingBonusScore; // SP-Ring Bonus?
+    /* 0x15C */ u32 timeBonusScore; // Time Bonus?
+    /* 0x160 */ u32 ringBonusScore; // Ring Bonus?
+    /* 0x164 */ u32 spRingBonusScore; // SP-Ring Bonus?
     /* 0x168 */ s32 counter; // framesSince the task started
     /* 0x16C */ s32 unk16C;
     /* 0x170 */ bool8 isCountingDone;
@@ -37,6 +36,40 @@ typedef struct {
 #define OUTRO_TIME_BONUS_Y_POS    90
 #define OUTRO_RING_BONUS_Y_POS    110
 #define OUTRO_SP_RING_BONUS_Y_POS 130
+
+const u16 sAnimsGotThroughCharacterNames[5][3] = {
+    { 24, 1121, 0 }, // "SONIC"
+    { 27, 1121, 4 }, // "CREAM"
+    { 24, 1121, 1 }, // "TAILS"
+    { 27, 1121, 2 }, // "KNUCKLES"
+    { 18, 1121, 3 }, // "AMY"
+};
+
+const u16 sStageOutroHeadline[5][3] = {
+    { 28, 1122, 0 }, // "GOT THROUGH"
+    { 36, 1122, 1 }, // "BOSS DESTROYED"
+    { 0, 0, 0 },     { 0, 0, 0 }, { 0, 0, 0 },
+};
+
+const u16 sAnimsGotThroughZoneAndActNames[11][3] = {
+    { 14, 1123, 0 }, // "ACT 1"
+    { 14, 1123, 1 }, // "ACT 2"
+    { 18, 1123, 4 }, // "ZONE 1"
+    { 18, 1123, 5 }, // "ZONE 2"
+    { 18, 1123, 6 }, // "ZONE 3"
+    { 18, 1123, 7 }, // "ZONE 4"
+    { 18, 1123, 8 }, // "ZONE 5"
+    { 18, 1123, 9 }, // "ZONE 6"
+    { 18, 1123, 10 }, // "ZONE 7"
+    { 16, 1123, 2 }, // "FINAL"
+    { 16, 1123, 3 }, // "EXTRA"
+};
+
+static const u16 sStageScoreBonusesTexts[3][3] = {
+    { 26, 1124, 0 }, // Time Bonus
+    { 26, 1124, 1 }, // Ring Bonus
+    { 26, 1124, 2 }, // Special Ring Bonus
+};
 
 const u16 gUnknown_080D71CC[3] = { 0, 69, 173 };
 
@@ -47,26 +80,34 @@ static void sub_8031138(u16 p0);
 void sub_8031314(void);
 static void sub_80313D0(void);
 
-#if 0
+#if 01
 u16 sub_80304DC(u32 courseTime, u16 ringCount, u8 spRingCount)
 {
     struct Task *t;
     StageOutro *outro;
     Sprite *s;
+    u8 i;
 
-    gLoadedSaveGame->score += gRingCount;
+#ifndef NON_MATCHING
+    register u32 zero asm("r7") = 0;
+#else
+    u32 zero = 0;
+#endif
+
+    gLoadedSaveGame->score += (s16)gRingCount;
 
     t = TaskCreate(Task_UpdateGotThroughScreen, sizeof(StageOutro), 0xC100, 0,
                    TaskDestructor_UpdateGotThroughScreen);
     outro = TaskGetStructPtr(t);
-    outro->counter = 0;
-    outro->isCountingDone = FALSE;
+    outro->counter = zero;
+    outro->isCountingDone = zero;
 
-    outro->transition.unk0 = 0;
+    outro->transition.unk0 = zero;
     outro->transition.unk2 = 1;
     outro->transition.speed = Q_24_8(1.0);
+    outro->transition.unk4 = zero;
     outro->transition.unk8 = 0x3FFF;
-    outro->transition.unkA = 0;
+    outro->transition.unkA = zero;
 
     if ((gPlayer.moveState & MOVESTATE_8000000)
         && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
@@ -81,21 +122,23 @@ u16 sub_80304DC(u32 courseTime, u16 ringCount, u8 spRingCount)
     // _080305B4
 
     // TODO: Use time macros for comparisons!
-    if (gCourseTime < 1800) {
+    if (courseTime < 1800) {
+        outro->timeBonusScore = 80000;
+    } else if (courseTime < 3000) {
         outro->timeBonusScore = 50000;
-    } else if (gCourseTime < 3600) {
+    } else if (courseTime < 3600) {
         outro->timeBonusScore = 10000;
-    } else if (gCourseTime < 5400) {
+    } else if (courseTime < 5400) {
         outro->timeBonusScore = 5000;
-    } else if (gCourseTime < 7200) {
+    } else if (courseTime < 7200) {
         outro->timeBonusScore = 4000;
-    } else if (gCourseTime < 10800) {
+    } else if (courseTime < 10800) {
         outro->timeBonusScore = 3000;
-    } else if (gCourseTime < 14400) {
+    } else if (courseTime < 14400) {
         outro->timeBonusScore = 2000;
-    } else if (gCourseTime < 18000) {
+    } else if (courseTime < 18000) {
         outro->timeBonusScore = 1000;
-    } else if (gCourseTime < 21600) {
+    } else if (courseTime < 21600) {
         outro->timeBonusScore = 500;
     } else {
         outro->timeBonusScore = 0;
@@ -132,7 +175,7 @@ u16 sub_80304DC(u32 courseTime, u16 ringCount, u8 spRingCount)
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
     s->variant = 0;
-    s->unk1A = 0x140;
+    s->unk1A = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -146,6 +189,118 @@ u16 sub_80304DC(u32 courseTime, u16 ringCount, u8 spRingCount)
     s = &outro->s1[0];
     s->x = DISPLAY_WIDTH + 16;
     s->y = 41;
+    s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
+    s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
+    s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+    UpdateSpriteAnimation(s);
+
+    {
+        s8 extraLevel;
+        u8 level;
+        bool32 isBossAct = ACT_INDEX(gCurrentLevel) >> 1;
+
+        s = &outro->s1[1];
+        s->x = DISPLAY_WIDTH + 16;
+        s->y = 49;
+        s->graphics.dest = VramMalloc(sStageOutroHeadline[isBossAct][0]);
+        s->graphics.anim = sStageOutroHeadline[isBossAct][1];
+        s->variant = sStageOutroHeadline[isBossAct][2];
+
+        extraLevel = gCurrentLevel; // needed for matching
+        if (IS_FINAL_STAGE(extraLevel) || IS_EXTRA_STAGE(gCurrentLevel)) {
+            s->graphics.anim = sStageOutroHeadline[0][1];
+            s->variant = sStageOutroHeadline[0][2];
+        }
+
+        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        UpdateSpriteAnimation(s);
+
+        if (isBossAct) {
+            level = LEVEL_TO_ZONE(gCurrentLevel) + ACT_BOSS;
+
+        } else {
+            level = gCurrentLevel & 1;
+        }
+
+        s = &outro->s1[2];
+        s->x = DISPLAY_WIDTH + 16;
+        s->y = 49;
+        s->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
+        s->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
+        s->variant = sAnimsGotThroughZoneAndActNames[level][2];
+
+        if (IS_FINAL_STAGE(gCurrentLevel)) {
+            s->graphics.anim = sAnimsGotThroughZoneAndActNames[9][1];
+            s->variant = sAnimsGotThroughZoneAndActNames[9][2];
+        } else if (IS_EXTRA_STAGE(gCurrentLevel)) {
+            s->graphics.anim = sAnimsGotThroughZoneAndActNames[10][1];
+            s->variant = sAnimsGotThroughZoneAndActNames[10][2];
+        }
+
+        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0;
+        UpdateSpriteAnimation(s);
+    }
+
+    for (i = 0; i < ARRAY_COUNT(outro->sprScores); i++) {
+        s = &outro->sprScores[i];
+        s->x = DISPLAY_WIDTH + 16;
+        s->y = 74 + i * 20;
+        s->graphics.dest = VramMalloc(sStageScoreBonusesTexts[i][0]);
+        s->graphics.anim = sStageScoreBonusesTexts[i][1];
+        s->variant = sStageScoreBonusesTexts[i][2];
+        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        UpdateSpriteAnimation(s);
+    }
+
+    gUnknown_030054A8.unk0 |= -1;
+
+    if (IS_FINAL_STAGE(gCurrentLevel)) {
+        m4aSongNumStart(MUS_FINAL_CLEAR);
+    } else if (IS_EXTRA_STAGE(gCurrentLevel)) {
+        m4aSongNumStart(MUS_EXTRA_CLEAR);
+    } else if (ACT_INDEX(gCurrentLevel) == ACT_BOSS) {
+        m4aSongNumStart(MUS_BOSS_CLEAR);
+
+        if (gPlayer.unk64 == SA2_CHAR_ANIM_WALK) {
+            gPlayer.unk64 = SA2_CHAR_ANIM_ACT_CLEAR;
+        }
+
+    } else {
+        m4aSongNumStart(MUS_ACT_CLEAR);
+    }
 
     return (u16)outro->unk16C;
 }
@@ -467,8 +622,8 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
     // _080311F4
 
     if (counter >= 39) {
-
-        s = &outro->sprTimeScore;
+        // Time Score
+        s = &outro->sprScores[0];
 
         if (counter < 56) {
             s32 innerX = DISPLAY_WIDTH - ((counter - 39) * 12);
@@ -487,7 +642,8 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
     // _0803124C
 
     if (counter >= 49) {
-        s = &outro->sprRingScore;
+        // Ring Score
+        s = &outro->sprScores[1];
 
         if (counter <= 65) {
             r4 = DISPLAY_WIDTH - ((counter - 49) * 12);
@@ -507,7 +663,7 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
     if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS)
         && (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
         && (counter >= 59)) {
-        s = &outro->sprSpRingScore;
+        s = &outro->sprScores[2];
 
         if (counter <= 75) {
             s32 innerX = DISPLAY_WIDTH - ((counter - 59) * 12);
@@ -561,9 +717,9 @@ void TaskDestructor_UpdateGotThroughScreen(struct Task *t)
         VramFree(outro->s1[0].graphics.dest);
         VramFree(outro->s1[1].graphics.dest);
         VramFree(outro->s1[2].graphics.dest);
-        VramFree(outro->sprTimeScore.graphics.dest);
-        VramFree(outro->sprRingScore.graphics.dest);
-        VramFree(outro->sprSpRingScore.graphics.dest);
+        VramFree(outro->sprScores[0].graphics.dest);
+        VramFree(outro->sprScores[1].graphics.dest);
+        VramFree(outro->sprScores[2].graphics.dest);
     }
 }
 
@@ -575,9 +731,9 @@ void sub_80313D0(void)
         VramFree(outro->s1[0].graphics.dest);
         VramFree(outro->s1[1].graphics.dest);
         VramFree(outro->s1[2].graphics.dest);
-        VramFree(outro->sprTimeScore.graphics.dest);
-        VramFree(outro->sprRingScore.graphics.dest);
-        VramFree(outro->sprSpRingScore.graphics.dest);
+        VramFree(outro->sprScores[0].graphics.dest);
+        VramFree(outro->sprScores[1].graphics.dest);
+        VramFree(outro->sprScores[2].graphics.dest);
 
         outro->s7.graphics.dest = NULL;
     }

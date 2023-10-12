@@ -38,7 +38,7 @@
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1
 #define SA2_CHAR_ANIM_31                                     31
-#define SA2_CHAR_ANIM_32                                     32
+#define SA2_CHAR_ANIM_ACT_CLEAR                              32
 #define SA2_CHAR_ANIM_33                                     33
 #define SA2_CHAR_ANIM_34                                     34
 #define SA2_CHAR_ANIM_35                                     35

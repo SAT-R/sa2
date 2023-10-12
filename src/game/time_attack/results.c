@@ -9,6 +9,7 @@
 #include "lib/m4a.h"
 #include "trig.h"
 #include "task.h"
+#include "game/stage/results.h"
 #include "game/time_attack/lobby.h"
 
 #include "constants/animations.h"
@@ -157,14 +158,14 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->unk10 = 0;
     UpdateSpriteAnimation(s);
 
-    isBossLevel = (gCurrentLevel & 3) >> 1;
+    isBossLevel = ACT_INDEX(gCurrentLevel) >> 1;
 
     s = &resultsCutScene->unkC[1];
     s->x = 256;
     s->y = 49;
-    s->graphics.dest = VramMalloc(gUnknown_080D715A[isBossLevel][0]);
-    s->graphics.anim = gUnknown_080D715A[isBossLevel][1];
-    s->variant = gUnknown_080D715A[isBossLevel][2];
+    s->graphics.dest = VramMalloc(sStageOutroHeadline[isBossLevel][0]);
+    s->graphics.anim = sStageOutroHeadline[isBossLevel][1];
+    s->variant = sStageOutroHeadline[isBossLevel][2];
     s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
@@ -176,14 +177,14 @@ u32 CreateTimeAttackResultsCutScene(u32 finishTime)
     s->unk10 = 0;
     UpdateSpriteAnimation(s);
 
-    if (isBossLevel != 0) {
-        level = (gCurrentLevel >> 2) + ACT_BOSS;
+    if (isBossLevel) {
+        level = LEVEL_TO_ZONE(gCurrentLevel) + ACT_BOSS;
 
     } else {
         level = gCurrentLevel & 1;
     }
     s = &resultsCutScene->unkC[2];
-    s->x = 256;
+    s->x = DISPLAY_WIDTH + 16;
     s->y = 49;
     s->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
     s->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
