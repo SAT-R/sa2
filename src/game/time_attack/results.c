@@ -41,7 +41,7 @@ void sub_8089AEC(void);
 void sub_8089BB0(struct Task *);
 u8 sub_80899B8(u32 finishTime);
 
-u32 CreateTimeAttackResultsCutScene(u32 finishTime)
+u32 CreateTimeAttackResults(u32 finishTime)
 {
     struct Task *t;
     struct TimeAttackResultsCutScene *resultsCutScene;

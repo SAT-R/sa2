@@ -1188,7 +1188,7 @@ _0803AB84:
 	bne _0803ABC0
 	ldr r0, _0803ABBC @ =gCourseTime
 	ldr r0, [r0]
-	bl CreateTimeAttackResultsCutScene
+	bl CreateTimeAttackResults
 	b _0803ABFC
 	.align 2, 0
 _0803ABB4: .4byte gCurrentLevel

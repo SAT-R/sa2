@@ -27,7 +27,7 @@ Task_802ED98: @ 0x0802ED98
 	bne _0802EDD8
 	ldr r0, _0802EDD4 @ =gCourseTime
 	ldr r0, [r0]
-	bl CreateTimeAttackResultsCutScene
+	bl CreateTimeAttackResults
 	b _0802EE64
 	.align 2, 0
 _0802EDCC: .4byte gCurTask

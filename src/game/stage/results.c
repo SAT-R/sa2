@@ -18,8 +18,6 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
-// TODO(Jace): Maybe call this module "Points Summary" instead?
-
 typedef struct {
     /*  0x00 */ struct TransitionState transition;
     /*  0x0C */ Sprite s1[3];
@@ -114,36 +112,32 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         outro->transition.speed = Q_24_8(0.25);
         outro->transition.unk8 = 0x3FBF;
     } else if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
-        // _08030594
         outro->transition.unk8 = 0x3FAF;
         outro->transition.unk4 = 0x2000;
         NextTransitionFrame(&outro->transition);
     }
-    // _080305B4
 
-    // TODO: Use time macros for comparisons!
-    if (courseTime < 1800) {
+    if (courseTime < ZONE_TIME_TO_INT(0, 30)) {
         outro->timeBonusScore = 80000;
-    } else if (courseTime < 3000) {
+    } else if (courseTime < ZONE_TIME_TO_INT(0, 50)) {
         outro->timeBonusScore = 50000;
-    } else if (courseTime < 3600) {
+    } else if (courseTime < ZONE_TIME_TO_INT(1, 0)) {
         outro->timeBonusScore = 10000;
-    } else if (courseTime < 5400) {
+    } else if (courseTime < ZONE_TIME_TO_INT(1, 30)) {
         outro->timeBonusScore = 5000;
-    } else if (courseTime < 7200) {
+    } else if (courseTime < ZONE_TIME_TO_INT(2, 0)) {
         outro->timeBonusScore = 4000;
-    } else if (courseTime < 10800) {
+    } else if (courseTime < ZONE_TIME_TO_INT(3, 0)) {
         outro->timeBonusScore = 3000;
-    } else if (courseTime < 14400) {
+    } else if (courseTime < ZONE_TIME_TO_INT(4, 0)) {
         outro->timeBonusScore = 2000;
-    } else if (courseTime < 18000) {
+    } else if (courseTime < ZONE_TIME_TO_INT(5, 0)) {
         outro->timeBonusScore = 1000;
-    } else if (courseTime < 21600) {
+    } else if (courseTime < ZONE_TIME_TO_INT(6, 0)) {
         outro->timeBonusScore = 500;
     } else {
         outro->timeBonusScore = 0;
     }
-    // _0803069C
 
     outro->ringBonusScore = ringCount * 100;
 
@@ -153,7 +147,6 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     } else {
         outro->spRingBonusScore = spRingCount * 1000;
     }
-    // _080306CC
 
     if (outro->spRingBonusScore > outro->ringBonusScore) {
         if (outro->spRingBonusScore > outro->timeBonusScore) {

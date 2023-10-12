@@ -1557,7 +1557,7 @@ void PlayerCB_80278D4(Player *p)
 
     if (--p->unk72 == 0) {
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
-            CreateTimeAttackResultsCutScene(gCourseTime);
+            CreateTimeAttackResults(gCourseTime);
         } else {
             CreateStageResults(gCourseTime, gRingCount, gSpecialRingCount);
         }
@@ -1593,7 +1593,7 @@ void PlayerCB_80279F8(Player *p)
 
     if (p->unk72 == 180) {
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
-            CreateTimeAttackResultsCutScene(gCourseTime);
+            CreateTimeAttackResults(gCourseTime);
         } else {
             CreateStageResults(gCourseTime, gRingCount, gSpecialRingCount);
         }
