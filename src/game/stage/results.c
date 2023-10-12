@@ -29,60 +29,62 @@ typedef struct {
     /* 0x168 */ s32 counter; // framesSince the task started
     /* 0x16C */ s32 unk16C;
     /* 0x170 */ bool8 isCountingDone;
-} StageOutro; /* size: 0x174 */
+} StageResults; /* size: 0x174 */
 
 #define OUTRO_TIME_BONUS_Y_POS    90
 #define OUTRO_RING_BONUS_Y_POS    110
 #define OUTRO_SP_RING_BONUS_Y_POS 130
 
 const u16 sAnimsGotThroughCharacterNames[5][3] = {
-    { 24, 1121, 0 }, // "SONIC"
-    { 27, 1121, 4 }, // "CREAM"
-    { 24, 1121, 1 }, // "TAILS"
-    { 27, 1121, 2 }, // "KNUCKLES"
-    { 18, 1121, 3 }, // "AMY"
+    { 24, SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_SONIC },
+    { 27, SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_CREAM },
+    { 24, SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_TAILS },
+    { 27, SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_KNUCKLES },
+    { 18, SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_AMY },
 };
 
-const u16 sStageOutroHeadline[5][3] = {
-    { 28, 1122, 0 }, // "GOT THROUGH"
-    { 36, 1122, 1 }, // "BOSS DESTROYED"
-    { 0, 0, 0 },     { 0, 0, 0 }, { 0, 0, 0 },
+const u16 sStageResultsHeadlineTexts[5][3] = {
+    { 28, SA2_ANIM_RESULTS_HEADLINE, SA2_ANIM_VARIANT_RESULTS_HEADLINE_GOT_THROUGH },
+    { 36, SA2_ANIM_RESULTS_HEADLINE, SA2_ANIM_VARIANT_RESULTS_HEADLINE_BOSS_DESTROYED },
+    { 0, 0, 0 },
+    { 0, 0, 0 },
+    { 0, 0, 0 },
 };
 
 const u16 sAnimsGotThroughZoneAndActNames[11][3] = {
-    { 14, 1123, 0 }, // "ACT 1"
-    { 14, 1123, 1 }, // "ACT 2"
-    { 18, 1123, 4 }, // "ZONE 1"
-    { 18, 1123, 5 }, // "ZONE 2"
-    { 18, 1123, 6 }, // "ZONE 3"
-    { 18, 1123, 7 }, // "ZONE 4"
-    { 18, 1123, 8 }, // "ZONE 5"
-    { 18, 1123, 9 }, // "ZONE 6"
-    { 18, 1123, 10 }, // "ZONE 7"
-    { 16, 1123, 2 }, // "FINAL"
-    { 16, 1123, 3 }, // "EXTRA"
+    { 14, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ACT_1 },
+    { 14, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ACT_2 },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_1) },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_2) },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_3) },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_4) },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_5) },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_6) },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_7) },
+    { 16, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_FINAL },
+    { 16, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_EXTRA },
 };
 
 static const u16 sStageScoreBonusesTexts[3][3] = {
-    { 26, 1124, 0 }, // Time Bonus
-    { 26, 1124, 1 }, // Ring Bonus
-    { 26, 1124, 2 }, // Special Ring Bonus
+    { 26, SA2_ANIM_SCORE_BONUSES, SA2_ANIM_VARIANT_SCORE_BONUSES_TIME },
+    { 26, SA2_ANIM_SCORE_BONUSES, SA2_ANIM_VARIANT_SCORE_BONUSES_RING },
+    { 26, SA2_ANIM_SCORE_BONUSES, SA2_ANIM_VARIANT_SCORE_BONUSES_SP_RING },
 };
 
 const u16 gUnknown_080D71CC[3] = { 0, 69, 173 };
 
-void Task_UpdateGotThroughScreen(void);
-void TaskDestructor_UpdateGotThroughScreen(struct Task *);
+void Task_UpdateStageResults(void);
+void TaskDestructor_StageResults(struct Task *);
 void sub_80310F0(void);
 static void sub_8031138(u16 p0);
 void sub_8031314(void);
-static void sub_80313D0(void);
+static void DestroyStageResultsGfx(void);
 
 #if 01
 u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 {
     struct Task *t;
-    StageOutro *outro;
+    StageResults *outro;
     Sprite *s;
     u8 i;
 
@@ -94,8 +96,8 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     gLoadedSaveGame->score += (s16)gRingCount;
 
-    t = TaskCreate(Task_UpdateGotThroughScreen, sizeof(StageOutro), 0xC100, 0,
-                   TaskDestructor_UpdateGotThroughScreen);
+    t = TaskCreate(Task_UpdateStageResults, sizeof(StageResults), 0xC100, 0,
+                   TaskDestructor_StageResults);
     outro = TaskGetStructPtr(t);
     outro->counter = zero;
     outro->isCountingDone = zero;
@@ -141,7 +143,6 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     outro->ringBonusScore = ringCount * 100;
 
-    // TODO(Jace): Making it >= might make more sense?
     if (spRingCount == SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
         outro->spRingBonusScore = 10000;
     } else {
@@ -204,14 +205,14 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s = &outro->s1[1];
         s->x = DISPLAY_WIDTH + 16;
         s->y = 49;
-        s->graphics.dest = VramMalloc(sStageOutroHeadline[isBossAct][0]);
-        s->graphics.anim = sStageOutroHeadline[isBossAct][1];
-        s->variant = sStageOutroHeadline[isBossAct][2];
+        s->graphics.dest = VramMalloc(sStageResultsHeadlineTexts[isBossAct][0]);
+        s->graphics.anim = sStageResultsHeadlineTexts[isBossAct][1];
+        s->variant = sStageResultsHeadlineTexts[isBossAct][2];
 
         extraLevel = gCurrentLevel; // needed for matching
         if (IS_FINAL_STAGE(extraLevel) || IS_EXTRA_STAGE(gCurrentLevel)) {
-            s->graphics.anim = sStageOutroHeadline[0][1];
-            s->variant = sStageOutroHeadline[0][2];
+            s->graphics.anim = sStageResultsHeadlineTexts[0][1];
+            s->variant = sStageResultsHeadlineTexts[0][2];
         }
 
         s->unk1A = SPRITE_OAM_ORDER(4);
@@ -302,10 +303,10 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 // (98.99%) https://decomp.me/scratch/19nrW
 // NOTE: Only non-matching thing is TasksDestroyAll() not
 //       getting initialized like in the original.
-NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateGotThroughScreen.inc",
-         void Task_UpdateGotThroughScreen(void))
+NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
+         void Task_UpdateStageResults(void))
 {
-    StageOutro *outro = TaskGetStructPtr(gCurTask);
+    StageResults *outro = TaskGetStructPtr(gCurTask);
     u32 counter = outro->counter;
 
     if (++counter > outro->unk16C + 309) {
@@ -527,7 +528,7 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateGotThroughScreen.inc",
 
         if ((gPlayer.moveState & MOVESTATE_8000000)
             && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
-            sub_80313D0();
+            DestroyStageResultsGfx();
             gPlayer.moveState |= MOVESTATE_4000000;
             return;
         }
@@ -552,7 +553,7 @@ END_NONMATCH
 
 void sub_80310F0(void)
 {
-    StageOutro *outro = TaskGetStructPtr(gCurTask);
+    StageResults *outro = TaskGetStructPtr(gCurTask);
     u32 counter = outro->counter;
     Sprite *s = &outro->s7;
 
@@ -569,7 +570,7 @@ void sub_80310F0(void)
 // (90.87%) https://decomp.me/scratch/ju0GI
 NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u16 p0))
 {
-    StageOutro *outro = TaskGetStructPtr(gCurTask);
+    StageResults *outro = TaskGetStructPtr(gCurTask);
     u32 counter = outro->counter;
     u32 i;
     Sprite *s;
@@ -678,7 +679,7 @@ END_NONMATCH
 
 void sub_8031314(void)
 {
-    StageOutro *outro = TaskGetStructPtr(gCurTask);
+    StageResults *outro = TaskGetStructPtr(gCurTask);
     u32 counter = outro->counter;
 
     if (counter > 28) {
@@ -702,9 +703,9 @@ void sub_8031314(void)
     }
 }
 
-void TaskDestructor_UpdateGotThroughScreen(struct Task *t)
+void TaskDestructor_StageResults(struct Task *t)
 {
-    StageOutro *outro = TaskGetStructPtr(t);
+    StageResults *outro = TaskGetStructPtr(t);
     if (outro->s7.graphics.dest != NULL) {
         VramFree(outro->s7.graphics.dest);
         VramFree(outro->s1[0].graphics.dest);
@@ -716,9 +717,9 @@ void TaskDestructor_UpdateGotThroughScreen(struct Task *t)
     }
 }
 
-void sub_80313D0(void)
+void DestroyStageResultsGfx(void)
 {
-    StageOutro *outro = TaskGetStructPtr(gCurTask);
+    StageResults *outro = TaskGetStructPtr(gCurTask);
     if (outro->s7.graphics.dest != NULL) {
         VramFree(outro->s7.graphics.dest);
         VramFree(outro->s1[0].graphics.dest);

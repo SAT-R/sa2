@@ -747,7 +747,7 @@ _0803106C:
 	ldrb r0, [r0]
 	cmp r0, #6
 	bls _0803109C
-	bl sub_80313D0
+	bl DestroyStageResultsGfx
 	ldr r0, [r4, #0x20]
 	movs r1, #0x80
 	lsls r1, r1, #0x13

@@ -163,9 +163,9 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s = &resultsCutScene->unkC[1];
     s->x = 256;
     s->y = 49;
-    s->graphics.dest = VramMalloc(sStageOutroHeadline[isBossLevel][0]);
-    s->graphics.anim = sStageOutroHeadline[isBossLevel][1];
-    s->variant = sStageOutroHeadline[isBossLevel][2];
+    s->graphics.dest = VramMalloc(sStageResultsHeadlineTexts[isBossLevel][0]);
+    s->graphics.anim = sStageResultsHeadlineTexts[isBossLevel][1];
+    s->variant = sStageResultsHeadlineTexts[isBossLevel][2];
     s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
