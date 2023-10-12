@@ -1221,7 +1221,7 @@ _0803ABEC:
 	ldrh r1, [r1]
 	ldr r2, _0803AC10 @ =gSpecialRingCount
 	ldrb r2, [r2]
-	bl sub_80304DC
+	bl CreateStageResults
 _0803ABFC:
 	ldr r0, _0803AC14 @ =gCurTask
 	ldr r0, [r0]

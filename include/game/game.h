@@ -617,7 +617,7 @@ void CreateGameStage(void);
 // Sweep anim
 void sub_802E044(s32, u16);
 
-u16 sub_80304DC(u32, u16, u8);
+u16 CreateStageResults(u32, u16, u8);
 
 void sub_8019F08(void);
 struct Task *CreateStageGoalBonusPointsAnim(s32, s32, u16);

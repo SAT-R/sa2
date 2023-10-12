@@ -87,7 +87,7 @@ _0802EE36:
 	ldrh r1, [r1]
 	ldr r2, _0802EE50 @ =gSpecialRingCount
 	ldrb r2, [r2]
-	bl sub_80304DC
+	bl CreateStageResults
 	b _0802EE64
 	.align 2, 0
 _0802EE48: .4byte gCourseTime
@@ -100,7 +100,7 @@ _0802EE54:
 	ldrh r1, [r1]
 	ldr r2, _0802EE74 @ =gSpecialRingCount
 	ldrb r2, [r2]
-	bl sub_80304DC
+	bl CreateStageResults
 _0802EE64:
 	pop {r4}
 	pop {r0}

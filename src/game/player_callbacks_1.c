@@ -1559,7 +1559,7 @@ void PlayerCB_80278D4(Player *p)
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
             CreateTimeAttackResultsCutScene(gCourseTime);
         } else {
-            sub_80304DC(gCourseTime, gRingCount, gSpecialRingCount);
+            CreateStageResults(gCourseTime, gRingCount, gSpecialRingCount);
         }
         PLAYERFN_SET(PlayerCB_802A3F0);
     }
@@ -1595,7 +1595,7 @@ void PlayerCB_80279F8(Player *p)
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
             CreateTimeAttackResultsCutScene(gCourseTime);
         } else {
-            sub_80304DC(gCourseTime, gRingCount, gSpecialRingCount);
+            CreateStageResults(gCourseTime, gRingCount, gSpecialRingCount);
         }
     }
 

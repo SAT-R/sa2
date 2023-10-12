@@ -81,7 +81,7 @@ void sub_8031314(void);
 static void sub_80313D0(void);
 
 #if 01
-u16 sub_80304DC(u32 courseTime, u16 ringCount, u8 spRingCount)
+u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 {
     struct Task *t;
     StageOutro *outro;
