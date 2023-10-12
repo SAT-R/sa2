@@ -139,7 +139,7 @@ SECTIONS
         build/sa2/asm/game_7.o(.text);
         build/sa2/asm/game_8.o(.text);
         build/sa2/src/game/stage/intro.o(.text);
-        build/sa2/src/game/stage/outro.o(.text);
+        build/sa2/src/game/stage/results.o(.text);
         build/sa2/src/game/character_select.o(.text);
         build/sa2/src/game/course_select.o(.text);
         build/sa2/src/game/countdown.o(.text);
@@ -358,7 +358,7 @@ SECTIONS
         build/sa2/src/game/trapped_animals.o(.rodata);
         build/sa2/src/game/game_8.o(.rodata);
         build/sa2/src/game/stage/intro.o(.rodata);
-        build/sa2/src/game/stage/outro.o(.rodata);
+        build/sa2/src/game/stage/results.o(.rodata);
         build/sa2/src/game/character_select.o(.rodata);
         build/sa2/src/game/course_select.o(.rodata);
         build/sa2/src/game/countdown.o(.rodata);
