@@ -415,6 +415,7 @@ _08015884:
 	ldr r0, _080159B0 @ =gPlayer
 	adds r0, #0x85
 	ldrb r0, [r0]
+@ inline of sub_8015B64
 	lsls r0, r0, #0x18
 	asrs r0, r0, #0x18
 	lsls r0, r0, #1
@@ -699,6 +700,7 @@ sub_8015B50: @ 0x08015B50
 	pop {r0}
 	bx r0
 
+@ inline
 	thumb_func_start sub_8015B64
 sub_8015B64: @ 0x08015B64
 	push {r4, lr}

@@ -4768,7 +4768,7 @@ sub_804CC30: @ 0x0804CC30
 	ldrh r1, [r1]
 	ldr r2, _0804CC8C @ =gSpecialRingCount
 	ldrb r2, [r2]
-	bl sub_80304DC
+	bl CreateStageResults
 	movs r0, #0x90
 	bl m4aSongNumStop
 	ldr r0, _0804CC90 @ =gMPlayInfo_SE3

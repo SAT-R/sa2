@@ -3,6 +3,7 @@
 #include "flags.h"
 #include "game/game.h"
 #include "game/stage/background/callbacks.h"
+#include "game/special_stage/main.h"
 
 extern const Background gStageCameraBgTemplates[4];
 
@@ -148,7 +149,8 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
     gBgScrollRegs[3][1] = r3;
 
     if (IS_SINGLE_PLAYER) {
-        if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= 7)) {
+        if ((gPlayer.moveState & MOVESTATE_8000000)
+            && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             Unk3000408 *unk = IWRAM_PTR(NULL);
             if (unk->unk408 == 0) {
                 unk->unk408 = a;
@@ -169,12 +171,14 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
 
             while (r6 >= cursor[i * 3]) {
                 if (++i >= ARRAY_COUNT(gUnknown_080D5B20)) {
-                    goto _0801CCA8;
+                    break;
+                }
+                {
+                    sl = i;
                 }
             }
         }
-        sl = i;
-    _0801CCA8:
+        //_0801CCA8:
 
         for (i = 0; i < ARRAY_COUNT(gUnknown_080D5B20); i++) {
             sp[i].x = (((gUnknown_080D5B20[i][1] * a) >> 5) & 0xFF);

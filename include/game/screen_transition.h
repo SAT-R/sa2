@@ -8,12 +8,12 @@
 
 // Possibly transition configuration?
 struct TransitionState {
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-    s16 speed;
-    s16 unk8;
-    s16 unkA;
+    /* 0x00 */ s16 unk0;
+    /* 0x02 */ s16 unk2;
+    /* 0x04 */ s16 unk4;
+    /* 0x06 */ s16 speed;
+    /* 0x08 */ s16 unk8;
+    /* 0x0A */ s16 unkA;
 };
 
 // Some sort of fade transition function?

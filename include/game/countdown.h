@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void CreateCourseStartCountdown(u8);
+void CreateCourseStartCountdown(bool8 playerSkippedIntro);
 
 #endif // GUARD_COUNTDOWN_H

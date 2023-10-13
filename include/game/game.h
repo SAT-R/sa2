@@ -109,9 +109,9 @@ typedef struct {
 extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
 
 typedef struct {
-    u16 unk0[6]; // might be [5]
-    Sprite s;
-    Hitbox reserved;
+    /*0x00 */ u16 unk0[6]; // might be [5]
+    /*0x0C */ Sprite s;
+    /*0x3C */ Hitbox reserved;
 } UNK_3005A70; /* 0x30 */
 
 extern UNK_3005A70 gUnknown_03005AA0;
@@ -146,7 +146,8 @@ extern u8 gDifficultyLevel;
 
 extern s8 gTrappedAnimalVariant;
 
-extern u8 gUnknown_030055B0;
+extern u8
+    gUnknown_030055B0; // TODO: Boss ID in XX-Stage? But it's used in checkpointc.c ...
 extern u8 gUnknown_030054F8;
 
 typedef struct {
@@ -579,9 +580,6 @@ extern const u32 *gUnknown_030059C8;
 
 // rodata
 extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
-extern const u16 sAnimsGotThroughCharacterNames[5][3];
-extern const u16 gUnknown_080D715A[5][3];
-extern const u16 sAnimsGotThroughZoneAndActNames[11][3];
 
 // Some unused rom thing?
 extern const u8 gUnknown_08C88408[0x8000];
@@ -606,7 +604,7 @@ void Player_SetMovestate_IsInScriptedSequence(void);
 void Player_ClearMovestate_IsInScriptedSequence(void);
 
 void sub_802EFDC(u32);
-void sub_802E164(u16, u16);
+void sub_802E164(s32, u16);
 
 // ApplyGamePlaySettings
 void ApplyGameStageSettings(void);
@@ -615,9 +613,9 @@ void CreateTrueArea53Intro(void);
 
 void CreateGameStage(void);
 // Sweep anim
-void sub_802E044(u16, u16);
+void sub_802E044(s32, u16);
 
-void sub_80304DC(u32, u16, u8);
+u16 CreateStageResults(u32, u16, u8);
 
 void sub_8019F08(void);
 struct Task *CreateStageGoalBonusPointsAnim(s32, s32, u16);
@@ -692,14 +690,35 @@ extern void sub_8021350(void);
 // NOTE: Proc type should be the same as SetStageSpawnPosInternal!
 extern void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *player);
 
-#define INCREMENT_SCORE(incVal)                                                         \
+#define INCREMENT_SCORE_A(incVal)                                                       \
     {                                                                                   \
         s32 divResA, divResB;                                                           \
-        s32 old_3005450 = gLevelScore;                                                  \
+        s32 oldScore = gLevelScore;                                                     \
         gLevelScore += incVal;                                                          \
                                                                                         \
         divResA = Div(gLevelScore, 50000);                                              \
-        divResB = Div(old_3005450, 50000);                                              \
+        divResB = Div(oldScore, 50000);                                                 \
+                                                                                        \
+        if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
+            u16 lives = divResA - divResB;                                              \
+            lives += gNumLives;                                                         \
+                                                                                        \
+            gNumLives = ({                                                              \
+                if (lives > 255)                                                        \
+                    lives = 255;                                                        \
+                lives;                                                                  \
+            });                                                                         \
+        }                                                                               \
+    }
+
+#define INCREMENT_SCORE(incVal)                                                         \
+    {                                                                                   \
+        s32 divResA, divResB;                                                           \
+        s32 oldScore = gLevelScore;                                                     \
+        gLevelScore += incVal;                                                          \
+                                                                                        \
+        divResA = Div(gLevelScore, 50000);                                              \
+        divResB = Div(oldScore, 50000);                                                 \
                                                                                         \
         if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
             u16 lives = divResA - divResB;                                              \

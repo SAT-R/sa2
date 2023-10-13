@@ -3,6 +3,7 @@
 #include "flags.h"
 #include "trig.h"
 #include "game/game.h"
+#include "game/special_stage/main.h"
 
 // (88.05%) https://decomp.me/scratch/ekyaq
 NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
@@ -12,7 +13,8 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
     u16 *cursor = NULL;
     s16 something;
     s32 x = 0;
-    if ((gPlayer.moveState & MOVESTATE_8000000) && gSpecialRingCount >= 7) {
+    if ((gPlayer.moveState & MOVESTATE_8000000)
+        && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
         if (gBgScrollRegs[3][0] == 0) {
             gBgScrollRegs[3][0] = a;
         }

@@ -5,6 +5,8 @@
 #include "sprite.h"
 #include "game/screen_transition.h"
 
+#define SPECIAL_STAGE_REQUIRED_SP_RING_COUNT 7
+
 #define SPECIAL_STAGE_ZONE_SIZE 8
 
 #define MIN_SPECIAL_STAGE_PLAYER_X 48
@@ -108,6 +110,6 @@ struct UNK_806CB84 {
     s16 unk12;
 };
 
-void CreateSpecialStage(s16, s16);
+void CreateSpecialStage(s16 selectedCharacter, s16 level);
 
 #endif

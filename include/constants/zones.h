@@ -50,4 +50,8 @@
          && (gUnknown_030054B0 == 0))                                                   \
      || (((lvl) == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))))
 
+#define IS_FINAL_STAGE(lvl)          ((lvl) == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
+#define IS_EXTRA_STAGE(lvl)          ((lvl) == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
+#define IS_FINAL_OR_EXTRA_STAGE(lvl) ((IS_FINAL_STAGE(lvl)) || (IS_EXTRA_STAGE(lvl)))
+
 #endif // GUARD_ZONES_H

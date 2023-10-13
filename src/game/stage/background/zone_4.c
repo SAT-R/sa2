@@ -4,6 +4,7 @@
 #include "animation_commands_bg.h"
 #include "game/game.h"
 #include "game/stage/spot_light.h"
+#include "game/special_stage/main.h"
 
 #include "constants/tilemaps.h"
 
@@ -44,7 +45,8 @@ void StageBgUpdate_Zone4Acts12(s32 a, s32 b)
 {
     Player *player = &gPlayer;
 
-    if ((player->moveState & MOVESTATE_8000000) && gSpecialRingCount > 6) {
+    if ((player->moveState & MOVESTATE_8000000)
+        && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
         struct UNK_801CDF0 *unkDF0 = (void *)IWRAM_START;
         if (unkDF0->unk40A == 0) {
             unkDF0->unk40A = a;

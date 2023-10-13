@@ -464,12 +464,12 @@ void Task_CreateStageUIMain(void)
 }
 
 // Almost identical to Debug_PrintIntegerAt()"
-void StageUI_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
+void StageUI_PrintIntegerAt(u32 value, s16 x, s16 y, u8 palId)
 {
     StageUI *ui = TaskGetStructPtr(gStageUITask);
     Sprite *digits = &ui->digits[0];
     u32 numDigits;
-    u32 digitX;
+    s32 digitX;
 
     s32 base = 10;
     u32 remaining = 1;
@@ -493,7 +493,8 @@ void StageUI_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
     if (remaining == 0 || numDigits == 0)
         return;
 
-    for (digitX = x; remaining > 0 && numDigits > 0; digitX -= 8, numDigits--) {
+    // NOTE: (u16)x cast needed for matching
+    for (digitX = (u16)x; remaining > 0 && numDigits > 0; digitX -= 8, numDigits--) {
         Sprite *digit;
 
         remaining = Div(value, base);

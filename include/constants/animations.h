@@ -38,7 +38,7 @@
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1
 #define SA2_CHAR_ANIM_31                                     31
-#define SA2_CHAR_ANIM_32                                     32
+#define SA2_CHAR_ANIM_ACT_CLEAR                              32
 #define SA2_CHAR_ANIM_33                                     33
 #define SA2_CHAR_ANIM_34                                     34
 #define SA2_CHAR_ANIM_35                                     35
@@ -578,28 +578,52 @@
 #define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_ROUND_DRAW 2
 
 // We can infer this Chao is Cheese, since they have a red bow
-#define SA2_ANIM_MP_CHEESE_WAVING   1103
-#define SA2_ANIM_MP_CHEESE_SITTING  1104
-#define SA2_ANIM_DIGITS             1105
-#define SA2_ANIM_PRESS_START_MSG_JP 1106
-#define SA2_ANIM_PRESS_START_MSG_EN 1107
-#define SA2_ANIM_PRESS_START_MSG_DE 1108
-#define SA2_ANIM_PRESS_START_MSG_FR 1109
-#define SA2_ANIM_PRESS_START_MSG_ES 1110
-#define SA2_ANIM_PRESS_START_MSG_IT 1111
+#define SA2_ANIM_MP_CHEESE_WAVING                1103
+#define SA2_ANIM_MP_CHEESE_SITTING               1104
+#define SA2_ANIM_DIGITS                          1105
+#define SA2_ANIM_PRESS_START_MSG_JP              1106
+#define SA2_ANIM_PRESS_START_MSG_EN              1107
+#define SA2_ANIM_PRESS_START_MSG_DE              1108
+#define SA2_ANIM_PRESS_START_MSG_FR              1109
+#define SA2_ANIM_PRESS_START_MSG_ES              1110
+#define SA2_ANIM_PRESS_START_MSG_IT              1111
+#define SA2_ANIM_STAGE_INTRO_ACT_LETTERS         1112
+#define SA2_ANIM_STAGE_INTRO_TRIANGLES           1113
+#define SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO      1114
+#define SA2_ANIM_STAGE_INTRO_LOADING_WHEEL       1115
+#define SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS 1116
+#define SA2_ANIM_STAGE_INTRO_ZONE_NAMES          1117
+#define SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS      1118
 
 #define SA2_ANIM_ASCII            1119
 #define SA2_ANIM_ASCII_FIRST_CHAR '!'
 #define SA2_ANIM_ASCII_YEN        '\\'
 #define SA2_ANIM_NUM_ASCII_CHARS  94
 
-#define SA2_ANIM_TA_WHITE_BAR 1120
+// Used in Time Attack and stage results screen (/ stage outro)
+#define SA2_ANIM_TA_WHITE_BAR                      1120
+#define SA2_ANIM_CHAR_GOT_THROUGH                  1121
+#define SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_SONIC    0
+#define SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_CREAM    4
+#define SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_TAILS    1
+#define SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_KNUCKLES 2
+#define SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_AMY      3
 
-#define SA2_ANIM_STAGE               1123
-#define SA2_ANIM_VARIANT_STAGE_ACT_1 0
-#define SA2_ANIM_VARIANT_STAGE_ACT_2 1
-#define SA2_ANIM_VARIANT_STAGE_FINAL 2
-#define SA2_ANIM_VARIANT_STAGE_EXTRA 3
+#define SA2_ANIM_RESULTS_HEADLINE                        1122
+#define SA2_ANIM_VARIANT_RESULTS_HEADLINE_GOT_THROUGH    0
+#define SA2_ANIM_VARIANT_RESULTS_HEADLINE_BOSS_DESTROYED 1
+
+#define SA2_ANIM_STAGE                    1123
+#define SA2_ANIM_VARIANT_STAGE_ACT_1      0
+#define SA2_ANIM_VARIANT_STAGE_ACT_2      1
+#define SA2_ANIM_VARIANT_STAGE_FINAL      2
+#define SA2_ANIM_VARIANT_STAGE_EXTRA      3
+#define SA2_ANIM_VARIANT_STAGE_ZONE(zone) (4 + (zone))
+
+#define SA2_ANIM_SCORE_BONUSES                 1124
+#define SA2_ANIM_VARIANT_SCORE_BONUSES_TIME    0
+#define SA2_ANIM_VARIANT_SCORE_BONUSES_RING    1
+#define SA2_ANIM_VARIANT_SCORE_BONUSES_SP_RING 2
 
 #define SA2_ANIM_LIFE_COUNTER                  1125
 #define SA2_ANIM_VARIANT_LIFE_COUNTER_SONIC    0

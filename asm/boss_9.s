@@ -1968,7 +1968,7 @@ Task_804DC60: @ 0x0804DC60
 	ldrh r1, [r1]
 	ldr r2, _0804DCEC @ =gSpecialRingCount
 	ldrb r2, [r2]
-	bl sub_80304DC
+	bl CreateStageResults
 	ldr r1, _0804DCF0 @ =gBldRegs
 	ldr r0, _0804DCF4 @ =0x00003FBF
 	strh r0, [r1]

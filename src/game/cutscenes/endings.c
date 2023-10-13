@@ -25,7 +25,7 @@ struct EndingCutSceneTransition {
 void sub_808E9AC(void);
 void sub_808E9F8(struct Task *);
 
-void StartEndingCutScenes(void)
+void StartEndingCutscenes(void)
 {
     struct Task *t = TaskCreate(sub_808E9AC, 0x74, 0x3100, 0, sub_808E9F8);
     struct EndingCutSceneTransition *transition = TaskGetStructPtr(t);

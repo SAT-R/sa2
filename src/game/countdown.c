@@ -1,9 +1,10 @@
 #include "game/countdown.h"
 #include "core.h"
 #include "sprite.h"
-#include "game/game.h"
 #include "task.h"
 #include "malloc_vram.h"
+#include "game/game.h"
+#include "game/player_mp_actor.h"
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
@@ -40,7 +41,7 @@ const TileInfo gUnknown_080D7518[NUM_CHARACTERS] = {
 void sub_8036168(void);
 void sub_8036638(struct Task *);
 
-void CreateCourseStartCountdown(u8 mode)
+void CreateCourseStartCountdown(bool8 playerSkippedIntro)
 {
     struct Task *t;
     struct CourseStartCountdown *countdown;
@@ -53,10 +54,10 @@ void CreateCourseStartCountdown(u8 mode)
     countdown->unk6A = 0;
     countdown->unk6B = 0;
 
-    if (mode == 0) {
-        countdown->unk68 = 0x136;
+    if (!playerSkippedIntro) {
+        countdown->unk68 = GBA_FRAMES_PER_SECOND * 5 + 10;
     } else {
-        countdown->unk68 = 0xB4;
+        countdown->unk68 = GBA_FRAMES_PER_SECOND * 3;
     }
 
     s = &countdown->unk30;
@@ -88,7 +89,6 @@ void CreateCourseStartCountdown(u8 mode)
     s->unk10 = 0x2400;
 }
 
-void sub_8018818(void);
 void CreateRaceStartMessage(void);
 void sub_8036398(void);
 
