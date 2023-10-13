@@ -20,6 +20,7 @@ void TaskDestructor_8019EF4(struct Task *);
 
 const TileInfo gUnknown_080D5768[2][7]
     = { {
+            // Japanese
             { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_WIN },
             { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_LOSE },
             { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_DRAW },
@@ -29,6 +30,7 @@ const TileInfo gUnknown_080D5768[2][7]
             { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_4TH },
         },
         {
+            // English
             { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_WIN },
             { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_LOSE },
             { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_DRAW },
@@ -37,6 +39,22 @@ const TileInfo gUnknown_080D5768[2][7]
             { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_3RD },
             { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_4TH },
         } };
+
+#define GET_MP_FINISH_RESULT_TILE_INFO(_id)                                             \
+    ({                                                                                  \
+        const TileInfo *source;                                                         \
+        u8 *info = (u8 *)gUnknown_080D5768;                                             \
+                                                                                        \
+        s32 index;                                                                      \
+                                                                                        \
+        index = ((gLoadedSaveGame->language == LANG_DEFAULT)                            \
+                 || (gLoadedSaveGame->language == LANG_JAPANESE))                       \
+            ? 0                                                                         \
+            : (7 * sizeof(TileInfo));                                                   \
+        source = (TileInfo *)(info + index);                                            \
+                                                                                        \
+        (source + (_id));                                                               \
+    })
 
 // https://decomp.me/scratch/mH5Qf
 void sub_8019CCC(u8 sioId, u8 count)
@@ -72,89 +90,17 @@ void sub_8019CCC(u8 sioId, u8 count)
         s->graphics.dest = VramMalloc(12);
 
         if (count == 5) {
-            u8 *info = (u8 *)gUnknown_080D5768;
-            const TileInfo *source; //
-
-            s32 index;
-
-            index = ((gLoadedSaveGame->language == LANG_DEFAULT)
-                     || (gLoadedSaveGame->language == LANG_JAPANESE))
-                ? 0
-                : 0x38;
-            source = (TileInfo *)(info + index);
-
-            s->graphics.anim = (source + 1)->anim;
-
-            index = ((gLoadedSaveGame->language == LANG_DEFAULT)
-                     || (gLoadedSaveGame->language == LANG_JAPANESE))
-                ? 0
-                : 0x38;
-            source = (TileInfo *)(info + index);
-
-            s->variant = (source + 1)->variant;
+            s->graphics.anim = GET_MP_FINISH_RESULT_TILE_INFO(1)->anim;
+            s->variant = GET_MP_FINISH_RESULT_TILE_INFO(1)->variant;
         } else if (count == 4) {
-            u8 *info = (u8 *)gUnknown_080D5768;
-            const TileInfo *source; //
-
-            s32 index;
-
-            index = ((gLoadedSaveGame->language == LANG_DEFAULT)
-                     || (gLoadedSaveGame->language == LANG_JAPANESE))
-                ? 0
-                : 0x38;
-            source = (TileInfo *)(info + index);
-
-            s->graphics.anim = (source + 2)->anim;
-
-            index = ((gLoadedSaveGame->language == LANG_DEFAULT)
-                     || (gLoadedSaveGame->language == LANG_JAPANESE))
-                ? 0
-                : 0x38;
-            source = (TileInfo *)(info + index);
-
-            s->variant = (source + 2)->variant;
+            s->graphics.anim = GET_MP_FINISH_RESULT_TILE_INFO(2)->anim;
+            s->variant = GET_MP_FINISH_RESULT_TILE_INFO(2)->variant;
         } else if ((i == 2) || gGameMode == GAME_MODE_TEAM_PLAY) {
-            u8 *info = (u8 *)gUnknown_080D5768;
-            const TileInfo *source; //
-
-            s32 index;
-
-            index = ((gLoadedSaveGame->language == LANG_DEFAULT)
-                     || (gLoadedSaveGame->language == LANG_JAPANESE))
-                ? 0
-                : 0x38;
-            source = (TileInfo *)(info + index);
-
-            s->graphics.anim = (source)->anim;
-
-            index = ((gLoadedSaveGame->language == LANG_DEFAULT)
-                     || (gLoadedSaveGame->language == LANG_JAPANESE))
-                ? 0
-                : 0x38;
-            source = (TileInfo *)(info + index);
-
-            s->variant = count + (source)->variant;
+            s->graphics.anim = GET_MP_FINISH_RESULT_TILE_INFO(0)->anim;
+            s->variant = count + GET_MP_FINISH_RESULT_TILE_INFO(0)->variant;
         } else {
-            u8 *info = (u8 *)gUnknown_080D5768;
-            const TileInfo *source; //
-
-            s32 index;
-
-            index = ((gLoadedSaveGame->language == LANG_DEFAULT)
-                     || (gLoadedSaveGame->language == LANG_JAPANESE))
-                ? 0
-                : 0x38;
-            source = (TileInfo *)(info + index);
-
-            s->graphics.anim = (source + 3)->anim;
-
-            index = ((gLoadedSaveGame->language == LANG_DEFAULT)
-                     || (gLoadedSaveGame->language == LANG_JAPANESE))
-                ? 0
-                : 0x38;
-            source = (TileInfo *)(info + index);
-
-            s->variant = count + (source + 3)->variant;
+            s->graphics.anim = GET_MP_FINISH_RESULT_TILE_INFO(3)->anim;
+            s->variant = count + GET_MP_FINISH_RESULT_TILE_INFO(3)->variant;
         }
 
         s->prevVariant = -1;
