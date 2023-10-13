@@ -626,9 +626,6 @@ void sub_80218E4(Player *);
 void sub_8023B5C(Player *, s8);
 void sub_8023260(Player *);
 
-// Something to do with entities
-extern void sub_8019CCC(u8, u8);
-
 // HandlePlayerDestroy?
 extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
 

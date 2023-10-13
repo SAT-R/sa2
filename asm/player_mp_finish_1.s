@@ -4,20 +4,17 @@
 
 .section .rodata
 
-    .global gUnknown_080D5768
-gUnknown_080D5768:
-    .incbin "baserom.gba", 0x000D5768, 0x70
-
 .text
 .syntax unified
 .arm
 
+.if 0
 	thumb_func_start sub_8019CCC
 sub_8019CCC: @ 0x08019CCC
 	push {r4, r5, r6, lr}
 	sub sp, #4
 	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
+	lsrs r4, r0, #0x18      @ r4 sioId
 	lsls r1, r1, #0x18
 	lsrs r6, r1, #0x18
 	movs r5, #0
@@ -31,9 +28,9 @@ sub_8019CCC: @ 0x08019CCC
 	beq _08019CEC
 	b _08019E5E
 _08019CEC:
-	ldr r0, _08019D0C @ =sub_8019E70
+	ldr r0, _08019D0C @ =Task_8019E70
 	ldr r2, _08019D10 @ =0x00002010
-	ldr r1, _08019D14 @ =sub_8019EF4
+	ldr r1, _08019D14 @ =TaskDestructor_8019EF4
 	str r1, [sp]
 	movs r1, #0x34
 	movs r3, #0
@@ -46,9 +43,9 @@ _08019CEC:
 	b _08019D24
 	.align 2, 0
 _08019D08: .4byte gUnknown_030054B4
-_08019D0C: .4byte sub_8019E70
+_08019D0C: .4byte Task_8019E70
 _08019D10: .4byte 0x00002010
-_08019D14: .4byte sub_8019EF4
+_08019D14: .4byte TaskDestructor_8019EF4
 _08019D18: .4byte gMultiplayerPlayerTasks
 _08019D1C:
 	adds r1, #4
@@ -74,7 +71,7 @@ _08019D3C:
 	subs r1, r5, #1
 	strb r1, [r0]
 _08019D44:
-	adds r0, r2, #0
+	adds r0, r2, #0     @ r0 = r2 = finish
 	adds r0, #0x30
 	movs r1, #0
 	strb r4, [r0]
@@ -229,9 +226,10 @@ _08019E5E:
 	.align 2, 0
 _08019E68: .4byte gUnknown_080D5768
 _08019E6C: .4byte gLoadedSaveGame
+.endif
 
-	thumb_func_start sub_8019E70
-sub_8019E70: @ 0x08019E70
+	thumb_func_start Task_8019E70
+Task_8019E70: @ 0x08019E70
 	push {r4, lr}
 	ldr r0, _08019EB8 @ =gCurTask
 	ldr r0, [r0]
@@ -292,8 +290,8 @@ _08019EE0:
 	.align 2, 0
 _08019EF0: .4byte IWRAM_START + 0x52
 
-	thumb_func_start sub_8019EF4
-sub_8019EF4: @ 0x08019EF4
+	thumb_func_start TaskDestructor_8019EF4
+TaskDestructor_8019EF4: @ 0x08019EF4
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0

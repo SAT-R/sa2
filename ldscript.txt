@@ -85,6 +85,7 @@ SECTIONS
         build/sa2/asm/player_mp_unknown_task.o(.text);
         build/sa2/src/game/multiplayer/player_unk_1.o(.text);
         build/sa2/asm/player_mp_indicators.o(.text);
+        build/sa2/src/game/multiplayer/finish.o(.text);
         build/sa2/asm/player_mp_finish_1.o(.text);
         build/sa2/asm/player_mp_finish_2.o(.text);
         build/sa2/src/game/multiplayer/player_unk_2.o(.text);
@@ -334,7 +335,7 @@ SECTIONS
         build/sa2/asm/player_actions.o(.rodata);
         build/sa2/asm/player_mp_actor.o(.rodata);
         build/sa2/asm/player_mp_unknown_task.o(.rodata);
-        build/sa2/asm/player_mp_finish_1.o(.rodata);
+        build/sa2/src/game/multiplayer/finish.o(.rodata);
         build/sa2/asm/player_mp_finish_2.o(.rodata);
         build/sa2/src/game/game.o(.rodata);
         build/sa2/src/game/stage/camera.o(.rodata);
