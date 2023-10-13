@@ -176,12 +176,8 @@ static const u8 sGettingReadyAnimationDuration[NUM_CHARACTERS]
         [CHARACTER_KNUCKLES] = 40,
         [CHARACTER_AMY] = 40 };
 
-// TODO: static
-//       This is u8[][3], each byte being one RGB channel(0-31)
-#if 0
-extern const u8 gUnknown_080D6FF5[];
-#else
-const u8 gUnknown_080D6FF5[][3] = {
+// Each byte represents one RGB channel(0-31)
+static const u8 gUnknown_080D6FF5[][3] = {
     { 0x00, 0x17, 0x06 }, { 0x16, 0x16, 0x16 }, { 0x00, 0x04, 0x13 },
     { 0x00, 0x08, 0x1D }, { 0x00, 0x00, 0x0C }, { 0x00, 0x13, 0x00 },
     { 0x1F, 0x1F, 0x13 }, { 0x1F, 0x1B, 0x00 }, { 0x13, 0x0A, 0x02 },
@@ -215,7 +211,6 @@ const u8 gUnknown_080D6FF5[][3] = {
     { 0x1F, 0x16, 0x18 }, { 0x1F, 0x0A, 0x10 }, { 0x1F, 0x1E, 0x00 },
     { 0x19, 0x18, 0x00 }, { 0x13, 0x0A, 0x00 }, { 0x1F, 0x00, 0x00 },
 };
-#endif
 
 const u16 sZoneLoadingCharacterColors[NUM_CHARACTERS] = {
     [CHARACTER_SONIC] = RGB(0, 0, 31),  [CHARACTER_CREAM] = RGB(31, 18, 0),
