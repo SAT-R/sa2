@@ -1,6 +1,6 @@
 #ifndef GUARD_MULTIPLAYER_FINISH_H
 #define GUARD_MULTIPLAYER_FINISH_H
 
-extern void sub_8019CCC(u8, u8);
+extern void sub_8019CCC(u8 sioId, u8 count);
 
 #endif // GUARD_MULTIPLAYER_FINISH_H

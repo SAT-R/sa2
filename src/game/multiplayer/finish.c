@@ -56,7 +56,6 @@ const TileInfo gUnknown_080D5768[2][7]
         (source + (_id));                                                               \
     })
 
-// https://decomp.me/scratch/mH5Qf
 void sub_8019CCC(u8 sioId, u8 count)
 {
     u32 i = 0;
@@ -111,4 +110,29 @@ void sub_8019CCC(u8 sioId, u8 count)
         s->unk10 = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
     }
+}
+
+void Task_8019E70(void)
+{
+    MpFinish1 *finish = TaskGetStructPtr(gCurTask);
+    Sprite *s = &finish->s;
+    struct MultiplayerPlayer *mpp
+        = TaskGetStructPtr(gMultiplayerPlayerTasks[finish->unk30]);
+
+    s->x = mpp->unk50 - gCamera.x;
+
+    if (!GRAVITY_IS_INVERTED) {
+        s->y = (mpp->unk52 - gCamera.y) - 32;
+    } else {
+        s->y = (mpp->unk52 - gCamera.y) + 32;
+    }
+
+    DisplaySprite(s);
+}
+
+void TaskDestructor_8019EF4(struct Task *t)
+{
+    MpFinish1 *finish = TaskGetStructPtr(t);
+    Sprite *s = &finish->s;
+    VramFree(s->graphics.dest);
 }
