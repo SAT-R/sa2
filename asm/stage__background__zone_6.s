@@ -448,10 +448,10 @@ _0801D5A2:
 	movs r1, #1
 	orrs r0, r1
 	str r0, [r2]
-	mov sl, r2
+	mov sl, r2          @ sl = r2 = gFlags
 	cmp r5, #7
 	bls _0801D5BA
-	b _0801D942
+	b StageBgUpdate_Zone6Acts12_return
 _0801D5BA:
 	lsls r0, r5, #2
 	ldr r1, _0801D5D4 @ =_0801D5D8
@@ -465,15 +465,15 @@ _0801D5CC: .4byte gBgPalette
 _0801D5D0: .4byte gFlags
 _0801D5D4: .4byte _0801D5D8
 _0801D5D8: @ jump table
-	.4byte _0801D5F8 @ case 0
-	.4byte _0801D680 @ case 1
-	.4byte _0801D68C @ case 2
-	.4byte _0801D6D0 @ case 3
-	.4byte _0801D718 @ case 4
-	.4byte _0801D7F8 @ case 5
-	.4byte _0801D86C @ case 6
-	.4byte _0801D90C @ case 7
-_0801D5F8:
+	.4byte _0801D5F8_case0 @ case 0
+	.4byte _0801D680_case1 @ case 1
+	.4byte _0801D68C_case2 @ case 2
+	.4byte _0801D6D0_case3 @ case 3
+	.4byte _0801D718_case4 @ case 4
+	.4byte _0801D7F8_case5 @ case 5
+	.4byte _0801D86C_case6 @ case 6
+	.4byte _0801D90C_case7 @ case 7
+_0801D5F8_case0:
 	cmp r6, #1
 	bne _0801D630
 	ldr r1, _0801D624 @ =gStageCameraBgTemplates
@@ -492,7 +492,7 @@ _0801D5F8:
 	strh r0, [r4, #0x28]
 	adds r0, r4, #0
 	bl InitBackground
-	b _0801D942
+	b StageBgUpdate_Zone6Acts12_return
 	.align 2, 0
 _0801D624: .4byte gStageCameraBgTemplates
 _0801D628: .4byte 0x0600C000
@@ -500,7 +500,7 @@ _0801D62C: .4byte 0x0600D000
 _0801D630:
 	cmp r6, #1
 	bhi _0801D636
-	b _0801D942
+	b StageBgUpdate_Zone6Acts12_return
 _0801D636:
 	ldr r2, _0801D674 @ =gDispCnt
 	ldrh r0, [r2]
@@ -537,14 +537,14 @@ _0801D666:
 _0801D674: .4byte gDispCnt
 _0801D678: .4byte gBgCntRegs
 _0801D67C: .4byte 0x0000FFFC
-_0801D680:
+_0801D680_case1:
 	movs r0, #0xf
 	movs r1, #0
 _0801D684:
 	movs r2, #0
 	bl sub_801D24C
-	b _0801D942
-_0801D68C:
+	b StageBgUpdate_Zone6Acts12_return
+_0801D68C_case2:
 	ldr r1, _0801D6B4 @ =0xFFFFFDBF
 	adds r0, r6, r1
 	lsls r0, r0, #0x10
@@ -563,7 +563,7 @@ _0801D68C:
 	subs r1, r1, r2
 	movs r2, #1
 	bl sub_801D24C
-	b _0801D942
+	b StageBgUpdate_Zone6Acts12_return
 	.align 2, 0
 _0801D6B4: .4byte 0xFFFFFDBF
 _0801D6B8:
@@ -575,10 +575,10 @@ _0801D6B8:
 	str r0, [r2]
 	ldr r0, _0801D6CC @ =gBldRegs
 	strh r6, [r0]
-	b _0801D942
+	b StageBgUpdate_Zone6Acts12_return
 	.align 2, 0
 _0801D6CC: .4byte gBldRegs
-_0801D6D0:
+_0801D6D0_case3:
 	ldr r3, _0801D70C @ =gBgCntRegs
 	ldrh r2, [r3]
 	ldr r1, _0801D710 @ =0x0000FFFC
@@ -614,7 +614,7 @@ _0801D6F0:
 _0801D70C: .4byte gBgCntRegs
 _0801D710: .4byte 0x0000FFFC
 _0801D714: .4byte gBgPalette
-_0801D718:
+_0801D718_case4:
 	ldr r0, _0801D744 @ =0x00000381
 	cmp r6, r0
 	bne _0801D754
@@ -718,7 +718,7 @@ _0801D7E8: .4byte gFlags
 _0801D7EC: .4byte gUnknown_080D5C02
 _0801D7F0: .4byte gBgPalette
 _0801D7F4: .4byte gUnknown_080D5C02+2
-_0801D7F8:
+_0801D7F8_case5:
 	movs r2, #0
 	ldr r0, _0801D860 @ =gBgScrollRegs
 	mov r8, r0
@@ -771,12 +771,12 @@ _0801D83C:
 	adds r0, #1
 	ands r0, r1
 	strh r0, [r3, #2]
-	b _0801D942
+	b StageBgUpdate_Zone6Acts12_return
 	.align 2, 0
 _0801D860: .4byte gBgScrollRegs
 _0801D864: .4byte gUnknown_080D5C02
 _0801D868: .4byte gBgPalette
-_0801D86C:
+_0801D86C_case6:
 	ldr r1, _0801D8FC @ =gBgScrollRegs
 	ldrh r0, [r1]
 	subs r0, #2
@@ -849,13 +849,13 @@ _0801D8EE:
 	movs r1, #1
 	orrs r0, r1
 	str r0, [r3]
-	b _0801D942
+	b StageBgUpdate_Zone6Acts12_return
 	.align 2, 0
 _0801D8FC: .4byte gBgScrollRegs
 _0801D900: .4byte 0xFFFFFA5F
 _0801D904: .4byte gUnknown_080D5C02
 _0801D908: .4byte gBgPalette
-_0801D90C:
+_0801D90C_case7:
 	movs r2, #0
 	ldr r5, _0801D950 @ =gDispCnt
 	ldr r4, _0801D954 @ =gBgPalette
@@ -884,7 +884,7 @@ _0801D914:
 	ldr r0, _0801D958 @ =0x0000FEFF
 	ands r0, r1
 	strh r0, [r5]
-_0801D942:
+StageBgUpdate_Zone6Acts12_return:
 	pop {r3, r4, r5}
 	mov r8, r3
 	mov sb, r4
