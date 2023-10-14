@@ -80,7 +80,6 @@ static void sub_8031138(u16 p0);
 void sub_8031314(void);
 static void DestroyStageResultsGfx(void);
 
-#if 01
 u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 {
     struct Task *t;
@@ -298,13 +297,8 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     return (u16)outro->unk16C;
 }
-#endif
 
-// (98.99%) https://decomp.me/scratch/19nrW
-// NOTE: Only non-matching thing is TasksDestroyAll() not
-//       getting initialized like in the original.
-NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
-         void Task_UpdateStageResults(void))
+void Task_UpdateStageResults(void)
 {
     StageResults *outro = TaskGetStructPtr(gCurTask);
     u32 counter = outro->counter;
@@ -360,8 +354,8 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
             if ((outro->ringBonusScore != 0) || (outro->spRingBonusScore != 0)
                 || (outro->timeBonusScore != 0)) {
                 m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
-            } else if (!outro->isCountingDone) {
-                outro->isCountingDone = TRUE;
+            } else if (outro->isCountingDone == 0) {
+                outro->isCountingDone = 1;
                 m4aSongNumStart(SE_STAGE_RESULT_COUNTER_DONE);
             }
         }
@@ -371,7 +365,7 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
     if (counter > outro->unk16C + 309) {
         if (IS_FINAL_STAGE(gCurrentLevel)) {
             // _08030D50+0xC
-            if (((u16)gMPlayInfo_BGM.status) == 0) {
+            if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
                 // _08030D68
                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
                     = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
@@ -390,7 +384,7 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
             }
         } else if (IS_EXTRA_STAGE(gCurrentLevel)) {
             // _08030DD0
-            if (((u16)gMPlayInfo_BGM.status) == 0) {
+            if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
                 gCurrentLevel++;
                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
 
@@ -549,7 +543,6 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
         sub_8031138(0);
     }
 }
-END_NONMATCH
 
 void sub_80310F0(void)
 {
