@@ -169,11 +169,11 @@ void sub_801FD34(s32, s32, s32);
                 Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY), _unknownBool, 8,       \
                 sub_801EC3C);
 
-#define ENEMY_CLAMP_TO_GROUND(_enemy, _unknownBool)                                     \
+#define ENEMY_CLAMP_TO_GROUND_RAW(_enemy, _unknownBool, _p)                             \
     {                                                                                   \
         s32 delta = sub_801F07C(Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY),        \
                                 Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX),        \
-                                _unknownBool, 8, NULL, sub_801EE64);                    \
+                                _unknownBool, 8, _p, sub_801EE64);                      \
                                                                                         \
         if (delta < 0) {                                                                \
             _enemy->offsetY += Q_24_8(delta);                                           \
@@ -184,6 +184,9 @@ void sub_801FD34(s32, s32, s32);
             _enemy->offsetY += Q_24_8(delta);                                           \
         }                                                                               \
     }
+
+#define ENEMY_CLAMP_TO_GROUND(_enemy, _unknownBool)                                     \
+    ENEMY_CLAMP_TO_GROUND_RAW(_enemy, _unknownBool, NULL)
 
 #define ENEMY_CLAMP_TO_GROUND_2(_enemy, _unknownBool)                                   \
     {                                                                                   \
