@@ -105,8 +105,7 @@ void Task_YadoMain(void)
     ENEMY_UPDATE_EX_RAW(s, yado->spawnX, yado->spawnY, {});
 }
 
-// (71.15%) https://decomp.me/scratch/bdODk
-NONMATCH("asm/non_matching/game/enemies/Task_Yado_8055084.inc", void Task_8055084(void))
+void Task_8055084(void)
 {
     Sprite_Yado *yado = TaskGetStructPtr(gCurTask);
     Sprite *s = &yado->s;
@@ -116,7 +115,7 @@ NONMATCH("asm/non_matching/game/enemies/Task_Yado_8055084.inc", void Task_805508
     ENEMY_UPDATE_POSITION_STATIC(yado, s, pos.x, pos.y);
 
     if (!(gPlayer.moveState & MOVESTATE_IN_AIR)) {
-        if (sub_800C4FC(s, pos.x, pos.y, 0) == TRUE) {
+        if (sub_800C4FC(s, pos.x, pos.y, 1) == TRUE) {
             TaskDestroy(gCurTask);
             return;
         } else {
@@ -126,7 +125,7 @@ NONMATCH("asm/non_matching/game/enemies/Task_Yado_8055084.inc", void Task_805508
                 gPlayer.speedAirY = YADO_PLAYER_ACCEL;
                 gPlayer.unk64 = SA2_CHAR_ANIM_50;
                 gPlayer.unk6C = 1;
-                gPlayer.transition = PLTRANS_PT5;
+                gPlayer.transition = 5;
 
                 // TODO: Why is this called twice?
                 m4aSongNumStart(SE_SPRING);
@@ -137,52 +136,52 @@ NONMATCH("asm/non_matching/game/enemies/Task_Yado_8055084.inc", void Task_805508
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.unk64 = SA2_CHAR_ANIM_50;
         gPlayer.unk6C = 1;
-        gPlayer.transition = PLTRANS_PT5;
+        gPlayer.transition = 5;
 
         // TODO: Why is this called twice?
         m4aSongNumStart(SE_SPRING);
-    } else if (gUnknown_030056A4 != NULL) {
-        // _08055164
-        // TODO: ...why? Is this part of a macro? Copy-paste?
-        Sprite_Yado *yado2 = TaskGetStructPtr(gCurTask);
+    } else {
+        s32 x = pos.x;
+        s32 y = pos.y;
 
-        if (gUnknown_030056A4->unk4C != -1) {
-            s32 r2 = s->hitboxes[0].left + pos.x;
-            s32 r1 = Q_24_8_TO_INT(gUnknown_030056A4->posX) + gUnknown_030056A4->unk50;
-            if (((r2 > r1)
-                 && (r1 + (gUnknown_030056A4->unk52 - gUnknown_030056A4->unk50)) >= r2)
-                || ((r2 + (s->hitboxes[0].right - s->hitboxes[0].left)) >= r1)
-                || ((r2 >= r1)
-                    && (r1 + (gUnknown_030056A4->unk52 - gUnknown_030056A4->unk50))
-                        >= r2)) {
-                // _080551C2
-                s32 r3 = s->hitboxes[0].top + pos.y;
-                s32 r1
-                    = Q_24_8_TO_INT(gUnknown_030056A4->posY) + gUnknown_030056A4->unk51;
-                if ((((r3 > r2)
-                      && (r2 + (gUnknown_030056A4->unk53 - gUnknown_030056A4->unk51))
-                          >= r3))
-                    || ((r3 + (s->hitboxes[0].bottom - s->hitboxes[0].top)) >= r2)
-                    || ((r3 >= r2)
-                        && (r2 + (gUnknown_030056A4->unk53 - gUnknown_030056A4->unk51))
-                            >= r3)) {
-                    s16 effectX, effectY;
-                    if (IS_MULTI_PLAYER) {
-                        struct UNK_3005510 *unk = sub_8019224();
-                        unk->unk0 = 3;
-                        unk->unk1 = yado2->base.regionX;
-                        unk->unk2 = yado2->base.regionY;
-                        unk->unk3 = yado2->base.spriteY;
+        if (gUnknown_030056A4 != NULL) {
+            UNK_30056A4 *a4 = gUnknown_030056A4;
+            Sprite_Yado *yado2 = TaskGetStructPtr(gCurTask);
+
+            if ((a4->s.hitboxes[3].index != -1)) {
+                s32 x1, x2;
+                x1 = x + s->hitboxes[0].left;
+                x2 = Q_24_8_TO_INT(a4->posX) + a4->s.hitboxes[3].left;
+                if ((x1 <= x2 && x1 + (s->hitboxes[0].right - s->hitboxes[0].left) >= x2)
+                    || (x1 >= x2
+                        && x2 + (a4->s.hitboxes[3].right - a4->s.hitboxes[3].left)
+                            >= x1)) {
+                    s32 y1, y2;
+                    y1 = y + s->hitboxes[0].top;
+                    y2 = Q_24_8_TO_INT(a4->posY) + a4->s.hitboxes[3].top;
+                    if ((y1 <= y2
+                         && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
+                        || (y1 >= y2
+                            && y2 + (a4->s.hitboxes[3].bottom - a4->s.hitboxes[3].top)
+                                >= y1)) {
+                        s16 x3, y3;
+                        if (IS_MULTI_PLAYER) {
+                            struct UNK_3005510 *unk = sub_8019224();
+                            unk->unk0 = 3;
+                            unk->unk1 = yado2->base.regionX;
+                            unk->unk2 = yado2->base.regionY;
+                            unk->unk3 = yado2->base.spriteY;
+                        }
+                        x3 = x;
+                        y3 = y;
+
+                        CreateDustCloud(x3, y3);
+                        CreateTrappedAnimal(x3, y3);
+                        CreateEnemyDefeatScoreAndManageLives(x3, y3);
+
+                        TaskDestroy(gCurTask);
+                        return;
                     }
-
-                    effectX = pos.x;
-                    effectY = pos.y;
-                    CreateDustCloud(effectX, effectY);
-                    CreateTrappedAnimal(effectX, effectY);
-                    CreateEnemyDefeatScoreAndManageLives(effectX, effectY);
-
-                    TaskDestroy(gCurTask);
-                    return;
                 }
             }
         }
@@ -193,7 +192,6 @@ NONMATCH("asm/non_matching/game/enemies/Task_Yado_8055084.inc", void Task_805508
         TaskDestroy(gCurTask);
         return;
     }
-    // _08055298
 
     sub_80122DC(yado->spawnX, yado->spawnY);
 
@@ -201,7 +199,7 @@ NONMATCH("asm/non_matching/game/enemies/Task_Yado_8055084.inc", void Task_805508
         yado->unk4C = YADO_PROJ_COOLDOWN;
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 0;
-        s->prevVariant = -1;
+        s->prevVariant = 0xFF;
         gCurTask->main = Task_YadoMain;
     } else if (yado->unk4C == 60) {
         // _080552E4
@@ -211,26 +209,25 @@ NONMATCH("asm/non_matching/game/enemies/Task_Yado_8055084.inc", void Task_805508
         pinit.variant = 0;
 
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            pinit.x = Q_24_8(yado->spawnX + 6);
+            pinit.x = Q_24_8_NEW(pos.x + 6);
             pinit.rot = 0;
         } else {
-            pinit.x = Q_24_8(yado->spawnX - 5);
+            pinit.x = Q_24_8_NEW(pos.x - 5);
             pinit.rot = Q_24_8(2.0);
         }
-        pinit.y = Q_24_8(yado->spawnY - 6);
+        pinit.y = Q_24_8_NEW(pos.y - 6);
         pinit.speed = Q_24_8(1.5);
 
         CreateProjectile(&pinit);
     } else if (yado->unk4C == 6) {
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 2;
-        s->prevVariant = -1;
+        s->prevVariant = 0xFF;
     }
 
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 }
-END_NONMATCH
 
 void Task_8055378(void)
 {

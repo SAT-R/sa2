@@ -154,13 +154,12 @@ typedef struct {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 posY;
 
+    /* 0x08 */ s32 filler8;
+
     // Following here might be a Sprite (incl. unk4C-unk53)?
-    /* 0x08 */ u8 filler8[0x34];
-    /* 0x4C */ s32 unk4C;
-    /* 0x50 */ s8 unk50;
-    /* 0x51 */ s8 unk51;
-    /* 0x52 */ s8 unk52;
-    /* 0x53 */ s8 unk53;
+    /* 0x0C */ Sprite s;
+    /* 0x3C */ Hitbox reserved;
+    /* 0x4C */ Hitbox reserved2;
 } UNK_30056A4; /* size: unknown */
 extern UNK_30056A4 *gUnknown_030056A4; // might be a Task* ?
 
