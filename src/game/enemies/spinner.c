@@ -54,52 +54,42 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk10 = 0x2000;
 }
 
-// (58.16%) https://decomp.me/scratch/M6ta6
-NONMATCH("asm/non_matching/game/enemies/Task_EnemySpinner.inc",
-         void Task_EnemySpinner(void))
+void Task_EnemySpinner(void)
 {
     Vec2_32 pos;
-    s32 someX, otherX;
+    // Must be declared first (for match)
+    MapEntity *me;
     Sprite_Spinner *spinner = TaskGetStructPtr(gCurTask);
     Sprite *s = &spinner->s;
-    MapEntity *me = spinner->base.me;
 
-    pos.x = Q_24_8_TO_INT(spinner->spawnX);
-    pos.y = Q_24_8_TO_INT(spinner->spawnY);
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
+    me = spinner->base.me;
+    ENEMY_UPDATE_POSITION_STATIC(spinner, s, pos.x, pos.y);
 
     if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
-        UNK_3005A70 *u90 = gPlayer.unk90;
-        if ((u90->s.hitboxes[0].index == -1) && (u90->s.hitboxes[1].index == -1)) {
-            someX = s->hitboxes[1].left + pos.x;
-            otherX = Q_24_8_TO_INT(gPlayer.x) + u90->s.hitboxes[0].left;
-            if ((someX > otherX)
-                || someX + (u90->s.hitboxes[1].right - u90->s.hitboxes[1].left)) {
-                // _080570C2
-                int diff = (u90->s.hitboxes[0].right - u90->s.hitboxes[0].left);
-                if (otherX > diff && otherX >= u90->s.hitboxes[0].top) {
-                    if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
-                        sub_800CBA4(&gPlayer);
+        Player *p = &gPlayer;
+        Sprite *s2 = &p->unk90->s;
+        if ((s2->hitboxes[0].index != -1) && s->hitboxes[1].index != -1) {
+            s32 x1, x2;
+            x1 = pos.x + s->hitboxes[1].left;
+            x2 = Q_24_8_TO_INT(p->x) + s2->hitboxes[0].left;
+            if ((x1 <= x2 && x1 + (s->hitboxes[1].right - s->hitboxes[1].left) >= x2)
+                || (x1 >= x2
+                    && x2 + (s2->hitboxes[0].right - s2->hitboxes[0].left) >= x1)) {
+                s32 y1, y2;
+                y1 = pos.y + s->hitboxes[1].top;
+                y2 = Q_24_8_TO_INT(p->y) + s2->hitboxes[0].top;
+                if ((y1 <= y2 && y1 + (s->hitboxes[1].bottom - s->hitboxes[1].top) >= y2)
+                    || (y1 >= y2
+                        && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {
+                    if ((p->itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE) {
+                        sub_800CBA4(p);
                     }
                 }
             }
         }
-        //_0805712E
-        if (sub_800C4FC(s, pos.x, pos.y, 0)) {
-            SET_MAP_ENTITY_NOT_INITIALIZED(me, spinner->base.spriteX);
-            TaskDestroy(gCurTask);
-            return;
-        }
+        ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     }
-    // _0805713E
-    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, spinner->base.spriteX);
-        TaskDestroy(gCurTask);
-    } else {
-        sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
-        UpdateSpriteAnimation(s);
-        DisplaySprite(s);
-    }
+
+    ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(spinner, me, s);
+    ENEMY_UPDATE(s, pos.x, pos.y);
 }
-END_NONMATCH
