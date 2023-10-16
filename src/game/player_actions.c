@@ -21,12 +21,12 @@ extern u8 gUnknown_03005830;
 void sub_801561C(void)
 {
     s16 i;
-    AnimId oldPlayerAnim = gPlayer.anim; // sp00
-    u16 oldPlayerVariant = gPlayer.variant; // sl
+    AnimId oldPlayerAnim = gPlayer.anim;
+    u16 oldPlayerVariant = gPlayer.variant;
     u32 oldPlayerMovestate = gPlayer.moveState;
     UNK_3005A70 *unk5A70 = gPlayer.unk90;
-    u32 oldPlayerAnimSpeed = unk5A70->s.animSpeed; // ip
-    u32 oldPlayerUnk10 = unk5A70->s.unk10; // sp04
+    u32 oldPlayerAnimSpeed = unk5A70->s.animSpeed;
+    u32 oldPlayerUnk10 = unk5A70->s.unk10;
     u16 r6 = unk5A70->unk0[0];
     u8 *first;
 
@@ -36,8 +36,7 @@ void sub_801561C(void)
         oldPlayerMovestate |= MOVESTATE_80000000;
     }
 
-    // _08015666
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < ARRAY_COUNT(gUnknown_030056B0); i++) {
         gUnknown_030056B0[i].anim = oldPlayerAnim;
         gUnknown_030056B0[i].variant = oldPlayerVariant;
         gUnknown_030056B0[i].moveState = oldPlayerMovestate;
