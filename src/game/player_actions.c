@@ -36,7 +36,7 @@ void sub_801561C(void)
         oldPlayerMovestate |= MOVESTATE_80000000;
     }
 
-    for (i = 0; i < ARRAY_COUNT(gUnknown_030056B0); i++) {
+    for (i = 0; i < (s32)ARRAY_COUNT(gUnknown_030056B0); i++) {
         gUnknown_030056B0[i].anim = oldPlayerAnim;
         gUnknown_030056B0[i].variant = oldPlayerVariant;
         gUnknown_030056B0[i].moveState = oldPlayerMovestate;
