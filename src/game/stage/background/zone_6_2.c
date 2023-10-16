@@ -33,14 +33,13 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
     } else
         while (1) {
             u32 r3;
-            s32 r0 = (r2 << 24);
+            u32 r0 = (r2 << 24);
             r0 += (0xFF << 24);
             r2 = r0 >> 24;
             r3 == r2 << 24;
             r0 = r3 >> 24;
-            if (r0 >= 0) {
-                if (r6 > gUnknown_080D5BF0[r0])
-                    break;
+            if (((signed)r0 >= 0) || (r6 > gUnknown_080D5BF0[r0])) {
+                break;
             }
         }
 
