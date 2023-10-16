@@ -371,7 +371,7 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
     if (counter > outro->unk16C + 309) {
         if (IS_FINAL_STAGE(gCurrentLevel)) {
             // _08030D50+0xC
-            if (((u16)gMPlayInfo_BGM.status) == 0) {
+            if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
                 // _08030D68
                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
                     = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
@@ -390,7 +390,7 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
             }
         } else if (IS_EXTRA_STAGE(gCurrentLevel)) {
             // _08030DD0
-            if (((u16)gMPlayInfo_BGM.status) == 0) {
+            if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
                 gCurrentLevel++;
                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
 

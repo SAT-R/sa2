@@ -11,7 +11,7 @@
 [contributors-badge]: https://img.shields.io/github/contributors/SAT-R/sa2
 
 [discord-badge]: https://img.shields.io/discord/1052347299457671200
-[discord-link]: https://discord.gg/rckwpnYUXF
+[discord-link]: https://discord.gg/vZTvVH3gA9
 
 This is a work in progress matching decompilation of Sonic Advance 2
 
@@ -32,7 +32,7 @@ It so far builds the following ROMs:
 
 ### Community
 
-Join us on [discord](https://discord.gg/JQntqGR5Q) to get started in helping out
+Join us on [discord](https://discord.gg/vZTvVH3gA9) to get started in helping out
 
 ### Setting up the repository
 

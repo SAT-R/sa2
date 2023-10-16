@@ -160,7 +160,7 @@ SECTIONS
         build/sa2/asm/boss_9.o(.text);
         build/sa2/src/game/enemies/projectiles.o(.text);
         build/sa2/src/game/enemies/mon.o(.text);
-        build/sa2/asm/enemy_gohla.o(.text);
+        build/sa2/src/game/enemies/gohla.o(.text);
         build/sa2/src/game/enemies/kura_kura.o(.text);
         build/sa2/src/game/enemies/kubinaga.o(.text);
         build/sa2/src/game/enemies/buzzer.o(.text);
@@ -171,7 +171,6 @@ SECTIONS
         build/sa2/src/game/enemies/piko_piko.o(.text);
         build/sa2/src/game/enemies/circus.o(.text);
         build/sa2/src/game/enemies/madillo.o(.text);
-        build/sa2/asm/enemy_madillo.o(.text);
         build/sa2/src/game/enemies/straw.o(.text);
         build/sa2/src/game/enemies/hammerhead.o(.text);
         build/sa2/src/game/enemies/spinner.o(.text);

@@ -254,7 +254,8 @@
     "player_callbacks_1.h": "c",
     "boss_1.h": "c",
     "boss_2.h": "c",
-    "koura.h": "c"
+    "koura.h": "c",
+    "gohla.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

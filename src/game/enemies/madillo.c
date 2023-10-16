@@ -2,6 +2,7 @@
 #include "malloc_vram.h"
 #include "game/entity.h"
 #include "game/enemies/madillo.h"
+#include "game/stage/entities_manager.h"
 
 #include "constants/animations.h"
 
@@ -17,10 +18,9 @@ typedef struct {
     /* 0x51 */ u8 unk51;
 } Sprite_Madillo; /* size: 0x54 */
 
-void Task_MadilloMain(void);
-void Task_8056230(void);
-void Task_80564BC(void);
-void TaskDestructor_80095E8(struct Task *);
+static void Task_MadilloMain(void);
+static void Task_8056230(void);
+static void Task_80564BC(void);
 
 void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                           u8 spriteY)
@@ -53,7 +53,7 @@ void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     SPRITE_INIT(s, 16, SA2_ANIM_MADILLO, 0, 18, 2);
 }
 
-void Task_MadilloMain(void)
+static void Task_MadilloMain(void)
 {
     Sprite_Madillo *madillo = TaskGetStructPtr(gCurTask);
     Sprite *s = &madillo->s;
@@ -115,84 +115,103 @@ void Task_MadilloMain(void)
 
     ENEMY_UPDATE_EX_RAW(s, (Q_24_8_NEW(pos.x)), Q_24_8_NEW(pos.y), {});
 }
-
-// Task_8056230
-// Once this matches, Task_80564BC should be straightforward
-// (89.01%) https://decomp.me/scratch/UJCld
-#if 0
-void Task_8056230(void)
+static void Task_8056230(void)
 {
     Sprite_Madillo *madillo = TaskGetStructPtr(gCurTask);
     Sprite *s = &madillo->s; // r5
-    Sprite *otherS;
-    struct UNK_3005A70 *ip;
-    
+    Sprite *s2;
+
     MapEntity *me = madillo->base.me;
     Vec2_32 pos;
     Player *p;
+    s32 sp0;
 
-    s32 sp08;
-
-    if(s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+    if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
         madillo->offsetX -= madillo->unk4C;
     } else {
         madillo->offsetX += madillo->unk4C;
     }
-    
-    // TODO: Merge with ENEMY_CLAMP_TO_GROUND macro
-    {
-        s32 delta = sub_801F07C(Q_24_8_TO_INT(madillo->spawnY + madillo->offsetY),
-                                Q_24_8_TO_INT(madillo->spawnX + madillo->offsetX),
-                                madillo->clampParam, 8, &sp08,
-                                sub_801EE64);
-        if(delta < 0) {
-            madillo->offsetY += Q_24_8(delta);
-            delta = ENEMY_CLAMP_TO_GROUND_INNER(madillo, madillo->clampParam, sub_801EC3C);
-        }
-    
-        if(delta > 0) {
-            madillo->offsetY += Q_24_8(delta);
-        }
-    }
 
+    ENEMY_CLAMP_TO_GROUND_RAW(madillo, madillo->clampParam, &sp0);
     ENEMY_UPDATE_POSITION(madillo, s, pos.x, pos.y);
 
-    ip = gPlayer.unk90;
-    otherS = &ip->s;
+    p = &gPlayer;
+    s2 = &p->unk90->s;
 
-    if(otherS->hitboxes[0].index != -1) {
-        if(pos.x + s->hitboxes[0].left <= Q_24_8_TO_INT(gPlayer.x) + otherS->hitboxes[0].left)
-        if ((madillo->s.animSpeed - s->hitboxes[0].left + pos.x) < s->hitboxes[0].left)
-        if (pos.x+s->hitboxes[0].left >= s->hitboxes[0].left)
-        if (otherS->hitboxes[0].right - otherS->hitboxes[0].left >= pos.x+s->hitboxes[0].left)
-        if(s->hitboxes[0].top + pos.y <= Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].top)
-        if((s->hitboxes[0].bottom - s->hitboxes[0].top) + pos.y < Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].top)
-        if(s->hitboxes[0].top + pos.y >= Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].top)
-        {
-            if(otherS->hitboxes[0].bottom - s->hitboxes[0].top >= Q_24_8_TO_INT(gPlayer.y) + otherS->hitboxes[0].top)
-            if((gPlayer.itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE)
-                sub_800CBA4(&gPlayer);
+    if ((s2->hitboxes[0].index != -1)) {
+        s32 x1, x2;
+        x1 = pos.x + s->hitboxes[0].left;
+        x2 = Q_24_8_TO_INT(p->x) + s2->hitboxes[0].left;
+        if ((x1 <= x2 && x1 + (s->hitboxes[0].right - s->hitboxes[0].left) >= x2)
+            || (x1 >= x2 && x2 + (s2->hitboxes[0].right - s2->hitboxes[0].left) >= x1)) {
+            s32 y1, y2;
+            y1 = pos.y + s->hitboxes[0].top;
+            y2 = Q_24_8_TO_INT(p->y) + s2->hitboxes[0].top;
+            if ((y1 <= y2 && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
+                || (y1 >= y2
+                    && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {
+                if ((p->itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE) {
+                    sub_800CBA4(p);
+                }
+            }
         }
     }
-    
+
     ENEMY_DESTROY_IF_OFFSCREEN(madillo, me, s);
 
-    if(s->unk10 & 0x400) {
-        if((Q_24_8_TO_INT(madillo->offsetX) <= (me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)){
-            gCurTask->main = Task_80564BC;
-            s->graphics.anim = SA2_ANIM_MADILLO;
-            s->variant = 0;
-            s->prevVariant = -1;
-            madillo->unk51 = 120;
-        }
-    } else if(Q_24_8_TO_INT(madillo->offsetX) < me->d.sData[0] * TILE_WIDTH) {
-            gCurTask->main = Task_80564BC;
-            s->graphics.anim = SA2_ANIM_MADILLO;
-            s->variant = 0;
-            s->prevVariant = -1;
-            madillo->unk51 = 120;        
+    if ((s->unk10 & 0x400
+         && Q_24_8_TO_INT(madillo->offsetX)
+             > (me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)
+        || (!(s->unk10 & 0x400)
+            && Q_24_8_TO_INT(madillo->offsetX) < me->d.sData[0] * TILE_WIDTH)) {
+        gCurTask->main = Task_80564BC;
+        s->graphics.anim = SA2_ANIM_MADILLO;
+        s->variant = 0;
+        s->prevVariant = -1;
+        madillo->unk51 = 120;
     }
 
     ENEMY_UPDATE_EX_RAW(s, Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y), {});
 }
-#endif
+
+static void Task_80564BC(void)
+{
+    Sprite_Madillo *madillo = TaskGetStructPtr(gCurTask);
+    Sprite *s = &madillo->s; // r5
+    Sprite *s2;
+
+    MapEntity *me = madillo->base.me;
+    Vec2_32 pos;
+    Player *p;
+    s32 sp0;
+
+    if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        madillo->offsetX -= madillo->unk4C;
+    } else {
+        madillo->offsetX += madillo->unk4C;
+    }
+
+    ENEMY_CLAMP_TO_GROUND_RAW(madillo, madillo->clampParam, &sp0);
+
+    madillo->unk4C = Div(madillo->unk4C * 0x5A, 100);
+    if ((u32)(madillo->unk4C + 0x1F) < 0x3F) {
+        madillo->unk4C = 0;
+    }
+
+    ENEMY_UPDATE_POSITION(madillo, s, pos.x, pos.y);
+    ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    ENEMY_DESTROY_IF_OFFSCREEN(madillo, me, s);
+
+    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+
+    if (--madillo->unk51 == 0) {
+        madillo->unk4C = -384;
+        madillo->unk51 = 120;
+        gCurTask->main = Task_MadilloMain;
+        s->graphics.anim = SA2_ANIM_MADILLO;
+        s->variant = 0;
+        s->prevVariant = -1;
+    }
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+}
