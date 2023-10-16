@@ -14,7 +14,8 @@ extern const u8 gUnknown_080D5C02[];
 void sub_801D24C(u8, u32, u8);
 
 // (84.63%) https://decomp.me/scratch/W9B0j
-void StageBgUpdate_Zone6Acts12(s32 x, s32 UNUSED y)
+NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
+         void StageBgUpdate_Zone6Acts12(s32 x, s32 UNUSED y))
 {
     u16 r6;
     u8 r5;
@@ -200,3 +201,4 @@ void StageBgUpdate_Zone6Acts12(s32 x, s32 UNUSED y)
         } break;
     }
 }
+END_NONMATCH
