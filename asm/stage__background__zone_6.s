@@ -593,7 +593,7 @@ _0801D6D0_case3:
 	orrs r1, r0
 	strh r1, [r3, #6]
 	movs r2, #0
-	ldr r4, _0801D714 @ =gBgPalette
+	ldr r4, _0801D714 @ =
 	movs r3, #0
 _0801D6F0:
 	lsls r1, r2, #0x18
@@ -678,7 +678,7 @@ _0801D788:
 	ldrb r4, [r0]
 	muls r4, r6, r4
 	asrs r4, r4, #5
-	ands r4, r7
+	ands r4, r7     @ r4 = red
 	mov r0, ip
 	adds r0, #1
 	adds r0, r1, r0
@@ -686,13 +686,13 @@ _0801D788:
 	adds r2, r5, #0
 	muls r2, r6, r2
 	asrs r2, r2, #5
-	ands r2, r7
+	ands r2, r7     @ r2 = green
 	ldr r0, _0801D7F4 @ =gUnknown_080D5C02+2
 	adds r1, r1, r0
 	ldrb r0, [r1]
 	muls r0, r6, r0
 	asrs r0, r0, #5
-	ands r0, r7
+	ands r0, r7     @ r0 = blue
 	adds r1, r3, #0
 	adds r1, #0xf0
 	lsls r1, r1, #1
