@@ -29,128 +29,6 @@ gUnknown_080D5684:
 .if 0
 .endif
 
-	thumb_func_start sub_8015750
-sub_8015750: @ 0x08015750
-	push {r4, r5, r6, r7, lr}
-	ldr r0, _08015784 @ =gPlayer
-	ldr r5, [r0, #8]
-	ldr r4, [r0, #0xc]
-	movs r1, #0
-	ldr r7, _08015788 @ =gUnknown_03005834
-	ldr r3, _0801578C @ =gUnknown_030057B0
-	adds r6, r3, #4
-_08015760:
-	lsls r0, r1, #0x10
-	asrs r0, r0, #0x10
-	lsls r2, r0, #3
-	adds r1, r2, r3
-	str r5, [r1]
-	adds r2, r2, r6
-	str r4, [r2]
-	adds r0, #1
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	asrs r0, r0, #0x10
-	cmp r0, #0xf
-	ble _08015760
-	movs r0, #0
-	strb r0, [r7]
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08015784: .4byte gPlayer
-_08015788: .4byte gUnknown_03005834
-_0801578C: .4byte gUnknown_030057B0
-
-	thumb_func_start sub_8015790
-sub_8015790: @ 0x08015790
-	push {r4, lr}
-	ldr r2, _080157BC @ =gUnknown_03005834
-	ldrb r0, [r2]
-	adds r0, #1
-	movs r1, #0xf
-	ands r0, r1
-	strb r0, [r2]
-	ldrb r2, [r2]
-	ldr r1, _080157C0 @ =gUnknown_030057B0
-	lsls r2, r2, #3
-	adds r3, r2, r1
-	ldr r4, _080157C4 @ =gPlayer
-	ldr r0, [r4, #8]
-	str r0, [r3]
-	adds r1, #4
-	adds r2, r2, r1
-	ldr r0, [r4, #0xc]
-	str r0, [r2]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080157BC: .4byte gUnknown_03005834
-_080157C0: .4byte gUnknown_030057B0
-_080157C4: .4byte gPlayer
-
-	thumb_func_start sub_80157C8
-sub_80157C8: @ 0x080157C8
-	lsls r1, r1, #0x18
-	lsrs r1, r1, #0x18
-	ldr r2, _080157EC @ =gUnknown_03005834
-	ldrb r2, [r2]
-	subs r2, r2, r1
-	movs r1, #0xf
-	ands r2, r1
-	ldr r3, _080157F0 @ =gUnknown_030057B0
-	lsls r2, r2, #3
-	adds r1, r2, r3
-	ldr r1, [r1]
-	str r1, [r0]
-	adds r3, #4
-	adds r2, r2, r3
-	ldr r1, [r2]
-	str r1, [r0, #4]
-	bx lr
-	.align 2, 0
-_080157EC: .4byte gUnknown_03005834
-_080157F0: .4byte gUnknown_030057B0
-
-	thumb_func_start sub_80157F4
-sub_80157F4: @ 0x080157F4
-	push {r4, lr}
-	lsls r1, r1, #0x18
-	lsrs r1, r1, #0x18
-	ldr r2, _08015834 @ =gUnknown_03005830
-	ldrb r2, [r2]
-	subs r2, r2, r1
-	movs r1, #0xf
-	ands r2, r1
-	ldr r3, _08015838 @ =gUnknown_030056B0
-	lsls r2, r2, #4
-	adds r4, r2, r3
-	ldrh r1, [r4]
-	strh r1, [r0]
-	ldrh r1, [r4, #2]
-	strh r1, [r0, #2]
-	adds r1, r3, #0
-	adds r1, #8
-	adds r1, r2, r1
-	ldr r1, [r1]
-	str r1, [r0, #8]
-	ldrb r1, [r4, #0xe]
-	strb r1, [r0, #0xe]
-	adds r3, #4
-	adds r2, r2, r3
-	ldr r1, [r2]
-	str r1, [r0, #4]
-	ldrh r1, [r4, #0xc]
-	strh r1, [r0, #0xc]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08015834: .4byte gUnknown_03005830
-_08015838: .4byte gUnknown_030056B0
-
 	thumb_func_start sub_801583C
 sub_801583C: @ 0x0801583C
 	push {r4, r5, r6, r7, lr}
@@ -406,7 +284,7 @@ _08015A46:
 	adds r4, #0x4c
 	adds r0, r4, #0
 	mov r1, r8
-	bl sub_80157F4
+	bl GetPreviousFramePlayerState
 	ldrh r0, [r4]
 	strh r0, [r5, #0xa]
 	adds r0, r6, #0
@@ -435,7 +313,7 @@ _08015A46:
 	adds r0, r6, #0
 	adds r0, #0x44
 	mov r1, r8
-	bl sub_80157C8
+	bl GetPreviousPlayerPos
 	ldr r2, [r6, #0x44]
 	asrs r2, r2, #8
 	ldr r1, _08015AE8 @ =gCamera

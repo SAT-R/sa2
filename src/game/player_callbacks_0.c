@@ -4,6 +4,7 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "game/dust_effect_braking.h"
+#include "game/player_actions.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
 #include "game/parameters/characters.h"
@@ -325,7 +326,7 @@ void Task_8012034(void)
 {
     TaskStrc_8011C98 *strc = TaskGetStructPtr(gCurTask);
     Sprite *s = &strc->s;
-    TrickBoundPos pos;
+    Vec2_32 pos;
 
     if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.speedAirY < Q_24_8(2.0))
         || (gPlayer.unk64 != 36)) {
@@ -334,7 +335,10 @@ void Task_8012034(void)
         UpdateSpriteAnimation(s);
 
         strc->unk28 = ((strc->unk28 - 1) & 0x6);
-        sub_80157C8(&pos, strc->unk28);
+
+        // Get player's previous position 'unk28' frames ago
+        // and display it
+        GetPreviousPlayerPos(&pos, strc->unk28);
         s->x = Q_24_8_TO_INT(pos.x) - gCamera.x;
         s->y = Q_24_8_TO_INT(pos.y) - gCamera.y;
 

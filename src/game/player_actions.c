@@ -13,10 +13,25 @@ typedef struct {
     /* 0x08 */ s32 moveState;
     /* 0x0C */ u16 unkC;
     /* 0x0E */ u8 animSpeed;
-} PlActions;
+} PlayerState;
 
-extern PlActions gUnknown_030056B0[16];
-extern u8 gUnknown_03005830;
+#define PL_ACTIONS_BUFFER_SIZE 16
+
+#define PL_ACTIONS_RING_INDEX(_bufferName, _num)                                        \
+    ((_bufferName##Index + (_num)) % (unsigned)ARRAY_COUNT(_bufferName))
+
+#define ADD_PL_ACTIONS_INDEX(_bufferName, _num)                                         \
+    _bufferName##Index = PL_ACTIONS_RING_INDEX(_bufferName, (_num))
+
+#define INC_PL_ACTIONS_INDEX(_bufferName) ADD_PL_ACTIONS_INDEX(_bufferName, 1)
+
+#define DEC_PL_ACTIONS_INDEX(_bufferName) ADD_PL_ACTIONS_INDEX(_bufferName, -1)
+
+// Ring Buffers storing the
+extern PlayerState sPlayerStateBuffer[PL_ACTIONS_BUFFER_SIZE];
+extern Vec2_32 sPlayerPosBuffer[PL_ACTIONS_BUFFER_SIZE];
+extern u8 sPlayerStateBufferIndex;
+extern u8 sPlayerPosBufferIndex;
 
 void sub_801561C(void)
 {
@@ -35,26 +50,26 @@ void sub_801561C(void)
         oldPlayerMovestate |= MOVESTATE_80000000;
     }
 
-    for (i = 0; i < (s32)ARRAY_COUNT(gUnknown_030056B0); i++) {
-        gUnknown_030056B0[i].anim = oldPlayerAnim;
-        gUnknown_030056B0[i].variant = oldPlayerVariant;
-        gUnknown_030056B0[i].moveState = oldPlayerMovestate;
-        gUnknown_030056B0[i].animSpeed = oldPlayerAnimSpeed;
-        gUnknown_030056B0[i].flags = oldPlayerUnk10;
-        gUnknown_030056B0[i].unkC = r6;
+    for (i = 0; i < (s32)ARRAY_COUNT(sPlayerStateBuffer); i++) {
+        sPlayerStateBuffer[i].anim = oldPlayerAnim;
+        sPlayerStateBuffer[i].variant = oldPlayerVariant;
+        sPlayerStateBuffer[i].moveState = oldPlayerMovestate;
+        sPlayerStateBuffer[i].animSpeed = oldPlayerAnimSpeed;
+        sPlayerStateBuffer[i].flags = oldPlayerUnk10;
+        sPlayerStateBuffer[i].unkC = r6;
     }
 
-    gUnknown_03005830 = 0;
+    sPlayerStateBufferIndex = 0;
 }
 
 void sub_80156D0(void)
 {
     Player *p = &gPlayer;
     u32 oldMovestate = p->moveState;
-    u8 i;
+    u32 i;
 
-    gUnknown_03005830 = (gUnknown_03005830 + 1) & 0xF;
-    i = gUnknown_03005830;
+    INC_PL_ACTIONS_INDEX(sPlayerStateBuffer);
+    i = sPlayerStateBufferIndex;
 
     oldMovestate &= ~MOVESTATE_80000000;
 
@@ -62,10 +77,52 @@ void sub_80156D0(void)
         oldMovestate |= MOVESTATE_80000000;
     }
 
-    gUnknown_030056B0[i].anim = p->anim;
-    gUnknown_030056B0[i].variant = p->variant;
-    gUnknown_030056B0[i].moveState = oldMovestate;
-    gUnknown_030056B0[i].animSpeed = p->unk90->s.animSpeed;
-    gUnknown_030056B0[i].flags = p->unk90->s.unk10;
-    gUnknown_030056B0[i].unkC = p->unk90->unk0[0];
+    sPlayerStateBuffer[i].anim = p->anim;
+    sPlayerStateBuffer[i].variant = p->variant;
+    sPlayerStateBuffer[i].moveState = oldMovestate;
+    sPlayerStateBuffer[i].animSpeed = p->unk90->s.animSpeed;
+    sPlayerStateBuffer[i].flags = p->unk90->s.unk10;
+    sPlayerStateBuffer[i].unkC = p->unk90->unk0[0];
+}
+
+void sub_8015750(void)
+{
+    s32 playerX = gPlayer.x;
+    s32 playerY = gPlayer.y;
+    s16 i;
+
+    for (i = 0; i < (s32)ARRAY_COUNT(sPlayerPosBuffer); i++) {
+        sPlayerPosBuffer[i].x = playerX;
+        sPlayerPosBuffer[i].y = playerY;
+    }
+
+    sPlayerPosBufferIndex = 0;
+}
+
+void sub_8015790(void)
+{
+    u32 index;
+
+    INC_PL_ACTIONS_INDEX(sPlayerPosBuffer);
+    index = sPlayerPosBufferIndex;
+    sPlayerPosBuffer[index].x = gPlayer.x;
+    sPlayerPosBuffer[index].y = gPlayer.y;
+}
+
+void GetPreviousPlayerPos(Vec2_32 *pos, u8 pastFrameDelta)
+{
+    s32 index = PL_ACTIONS_RING_INDEX(sPlayerPosBuffer, -pastFrameDelta);
+    pos->x = sPlayerPosBuffer[index].x;
+    pos->y = sPlayerPosBuffer[index].y;
+}
+
+void GetPreviousFramePlayerState(PlayerState *state, u8 pastFrameDelta)
+{
+    s32 index = PL_ACTIONS_RING_INDEX(sPlayerStateBuffer, -pastFrameDelta);
+    state->anim = sPlayerStateBuffer[index].anim;
+    state->variant = sPlayerStateBuffer[index].variant;
+    state->moveState = sPlayerStateBuffer[index].moveState;
+    state->animSpeed = sPlayerStateBuffer[index].animSpeed;
+    state->flags = sPlayerStateBuffer[index].flags;
+    state->unkC = sPlayerStateBuffer[index].unkC;
 }
