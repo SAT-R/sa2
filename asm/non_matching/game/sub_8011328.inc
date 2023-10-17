@@ -132,7 +132,7 @@ _08011400:
 	movs r7, #0
 	mov r8, r2
 	mov sb, r1
-	ldr r2, _080115B8 @ =gUnknown_080D5678
+	ldr r2, _080115B8 @ =sCharacterPalettesBoostEffect
 	ldr r0, _080115BC @ =IWRAM_START + 0x20
 	adds r1, r6, r0
 	adds r0, #0x60
@@ -330,7 +330,7 @@ _080115A8: .4byte gPlayer
 _080115AC: .4byte gUnknown_080D550C
 _080115B0: .4byte gAnimations
 _080115B4: .4byte gSpritePalettes
-_080115B8: .4byte gUnknown_080D5678
+_080115B8: .4byte sCharacterPalettesBoostEffect
 _080115BC: .4byte IWRAM_START + 0x20
 _080115C0: .4byte 0x000008A8
 _080115C4: .4byte gBgPalette

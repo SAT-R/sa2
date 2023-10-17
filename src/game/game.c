@@ -9,6 +9,7 @@
 #include "game/game_5.h"
 #include "game/game_over.h"
 #include "game/multiboot/collect_rings/time_display.h"
+#include "game/player_actions.h"
 #include "game/race_progress.h"
 #include "game/save.h"
 #include "game/screen_shake.h"

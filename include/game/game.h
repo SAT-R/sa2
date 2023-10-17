@@ -171,7 +171,6 @@ extern u32 gUnknown_030054A0;
 extern u32 gCheckpointTime; // Checkpoint timer?
 
 extern u8 gUnknown_03005438;
-extern u8 gUnknown_030055BC;
 
 struct MultiplayerPlayer {
     // TODO: Verify that this is Sprite!

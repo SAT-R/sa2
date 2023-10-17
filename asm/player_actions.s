@@ -9,8 +9,9 @@ gUnknown_080D5674:
 
     @; Some character Animation IDs.
     @; Player character AnimIDs are 91 apart from eachother
-    .global gUnknown_080D5678
-gUnknown_080D5678:
+    @; TODO: Check whether the name is accurate!
+    .global sCharacterPalettesBoostEffect
+sCharacterPalettesBoostEffect:
     .2byte 74 + 0*91 @ Sonic
     .2byte 74 + 1*91 @ Cream
     .2byte 74 + 2*91 @ Tails
@@ -29,195 +30,8 @@ gUnknown_080D5684:
 .if 0
 .endif
 
-	thumb_func_start sub_801583C
-sub_801583C: @ 0x0801583C
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	sub sp, #4
-	ldr r0, _0801597C @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bls _0801584E
-	b _0801596E
-_0801584E:
-	ldr r2, _08015980 @ =gUnknown_030055BC
-	ldrb r0, [r2]
-	cmp r0, #0
-	beq _08015858
-	b _0801596E
-_08015858:
-	ldr r0, _08015984 @ =gCurrentLevel
-	ldrb r1, [r0]
-	movs r0, #3
-	ands r0, r1
-	cmp r0, #2
-	bne _08015866
-	b _0801596E
-_08015866:
-	lsls r0, r1, #0x18
-	asrs r1, r0, #0x18
-	cmp r1, #0x1c
-	bne _08015876
-	ldr r0, _08015988 @ =gUnknown_030054B0
-	ldrb r0, [r0]
-	cmp r0, #0
-	beq _0801596E
-_08015876:
-	cmp r1, #0x1d
-	beq _0801596E
-	movs r0, #1
-	strb r0, [r2]
-	movs r0, #0
-	mov r8, r0
-	movs r7, #0
-_08015884:
-	ldr r0, _0801598C @ =sub_8015B50
-	str r0, [sp]
-	ldr r0, _08015990 @ =sub_80159C8
-	movs r1, #0x60
-	movs r2, #0x80
-	lsls r2, r2, #7
-	movs r3, #0
-	bl TaskCreate
-	ldrh r5, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r6, r5, r1
-	adds r1, #0x5c
-	adds r0, r5, r1
-	mov r1, r8
-	strb r1, [r0]
-	ldr r1, _08015994 @ =IWRAM_START + 0x5D
-	adds r0, r5, r1
-	strb r7, [r0]
-	ldr r0, _08015998 @ =IWRAM_START + 0xC
-	adds r4, r5, r0
-	movs r0, #0x40
-	bl VramMalloc
-	str r0, [r4, #4]
-	movs r0, #0x80
-	lsls r0, r0, #3
-	strh r0, [r4, #0x1a]
-	strh r7, [r4, #8]
-	strh r7, [r4, #0x14]
-	strh r7, [r4, #0x1c]
-	ldr r0, _0801599C @ =IWRAM_START + 0x2D
-	adds r1, r5, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	ldr r0, _080159A0 @ =IWRAM_START + 0x2E
-	adds r1, r5, r0
-	movs r0, #0x10
-	strb r0, [r1]
-	subs r0, #0x11
-	str r0, [r4, #0x28]
-	movs r0, #0x80
-	lsls r0, r0, #6
-	str r0, [r4, #0x10]
-	ldr r1, _080159A4 @ =IWRAM_START + 0x31
-	adds r2, r5, r1
-	movs r0, #1
-	strb r0, [r2]
-	strh r7, [r4, #0xa]
-	ldr r0, _080159A8 @ =IWRAM_START + 0x2C
-	adds r5, r5, r0
-	strb r7, [r5]
-	strh r7, [r4, #0x16]
-	strh r7, [r4, #0x18]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	strh r0, [r6, #4]
-	mov r0, r8
-	adds r0, #1
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	mov r8, r0
-	cmp r0, #2
-	bls _08015884
-	ldrb r0, [r2]
-	cmp r0, #0
-	beq _0801596E
-	ldr r1, _080159AC @ =gUnknown_080D5678
-	ldr r0, _080159B0 @ =gPlayer
-	adds r0, #0x85
-	ldrb r0, [r0]
-@ inline of sub_8015B64
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	lsls r0, r0, #1
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	ldrb r5, [r2]
-	ldr r1, _080159B4 @ =gAnimations
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldr r0, [r0]
-	ldr r2, [r0]
-	ldm r2!, {r1}
-	movs r0, #2
-	rsbs r0, r0, #0
-	cmp r1, r0
-	bne _0801596E
-	ldm r2!, {r3}
-	ldr r2, [r2]
-	lsrs r1, r2, #0x10
-	adds r1, r1, r5
-	lsls r1, r1, #0x10
-	movs r0, #0xff
-	ands r2, r0
-	ldr r4, _080159B8 @ =0x040000D4
-	ldr r0, _080159BC @ =gUnknown_03002794
-	ldr r0, [r0]
-	lsls r3, r3, #5
-	ldr r0, [r0, #0xc]
-	adds r0, r0, r3
-	str r0, [r4]
-	lsrs r1, r1, #0xf
-	ldr r0, _080159C0 @ =gObjPalette
-	adds r1, r1, r0
-	str r1, [r4, #4]
-	lsrs r2, r2, #1
-	movs r0, #0x84
-	lsls r0, r0, #0x18
-	orrs r2, r0
-	str r2, [r4, #8]
-	ldr r0, [r4, #8]
-	ldr r2, _080159C4 @ =gFlags
-	ldr r0, [r2]
-	movs r1, #2
-	orrs r0, r1
-	str r0, [r2]
-_0801596E:
-	add sp, #4
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0801597C: .4byte gGameMode
-_08015980: .4byte gUnknown_030055BC
-_08015984: .4byte gCurrentLevel
-_08015988: .4byte gUnknown_030054B0
-_0801598C: .4byte sub_8015B50
-_08015990: .4byte sub_80159C8
-_08015994: .4byte IWRAM_START + 0x5D
-_08015998: .4byte IWRAM_START + 0xC
-_0801599C: .4byte IWRAM_START + 0x2D
-_080159A0: .4byte IWRAM_START + 0x2E
-_080159A4: .4byte IWRAM_START + 0x31
-_080159A8: .4byte IWRAM_START + 0x2C
-_080159AC: .4byte gUnknown_080D5678
-_080159B0: .4byte gPlayer
-_080159B4: .4byte gAnimations
-_080159B8: .4byte 0x040000D4
-_080159BC: .4byte gUnknown_03002794
-_080159C0: .4byte gObjPalette
-_080159C4: .4byte gFlags
-
-	thumb_func_start sub_80159C8
-sub_80159C8: @ 0x080159C8
+	thumb_func_start Task_80159C8
+Task_80159C8: @ 0x080159C8
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -415,8 +229,8 @@ _08015B44:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8015B50
-sub_8015B50: @ 0x08015B50
+	thumb_func_start TaskDestructor_8015B50
+TaskDestructor_8015B50: @ 0x08015B50
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r1, #0xc0
@@ -444,7 +258,7 @@ sub_8015B64: @ 0x08015B64
 	rsbs r0, r0, #0
 	cmp r1, r0
 	bne _08015BBA
-	ldm r2!, {r3}
+	ldm r2!, {r3}       @ r3 = animPalId
 	ldr r2, [r2]
 	lsrs r1, r2, #0x10
 	adds r1, r1, r4

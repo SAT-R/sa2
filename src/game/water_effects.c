@@ -4,6 +4,7 @@
 #include "malloc_vram.h"
 #include "task.h"
 #include "game/game.h"
+#include "game/player_actions.h"
 
 #include "data/sprite_data.h"
 #include "game/water_effects.h"
@@ -104,7 +105,7 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
                            0);
 
         playerChar = gPlayer.character;
-        animId = gUnknown_080D5678[playerChar];
+        animId = sCharacterPalettesBoostEffect[playerChar];
         animation = (s32 **)gAnimations[animId];
         pal = ((animation[0])[1] + 0) * 16;
         dst = (u32 *)&wd->pal[1 * 16];
