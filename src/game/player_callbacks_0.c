@@ -3,6 +3,7 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/amy_attack_heart_effect.h"
 #include "game/dust_effect_braking.h"
 #include "game/player_actions.h"
 #include "game/player_callbacks_1.h"
@@ -50,8 +51,6 @@ void PlayerCB_8013C18(Player *p);
 void PlayerCB_8013C34(Player *p);
 void sub_8013C50(Player *p);
 void sub_8013CA0(Player *p);
-
-void sub_8015BD4(u16);
 
 void TaskDestructor_801F550(struct Task *);
 
@@ -508,7 +507,7 @@ void PlayerCB_80123FC(Player *p)
         if (p->character == CHARACTER_SONIC) {
             sub_8011C98(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y));
         } else if (p->character == CHARACTER_AMY) {
-            sub_8015BD4(3);
+            CreateAmyAttackHeartEffect(3);
         }
     }
 }
@@ -2053,7 +2052,7 @@ void sub_8013F04(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    sub_8015BD4(0);
+    CreateAmyAttackHeartEffect(0);
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8013F60, p);
 }

@@ -15,138 +15,8 @@ gUnknown_080D5684:
 .if 0
 .endif
 
-	thumb_func_start sub_8015BD4
-sub_8015BD4: @ 0x08015BD4
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	sub sp, #4
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	mov r8, r0
-	ldr r0, _08015CB4 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #2
-	bhi _08015CA6
-	ldr r1, _08015CB8 @ =gPlayer
-	adds r0, r1, #0
-	adds r0, #0x85
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #4
-	bne _08015CA6
-	adds r0, r1, #0
-	adds r0, #0x64
-	movs r1, #0
-	ldrsh r0, [r0, r1]
-	cmp r0, #0xf
-	beq _08015C0E
-	cmp r0, #0x12
-	beq _08015C0E
-	cmp r0, #0x24
-	bne _08015CA6
-_08015C0E:
-	ldr r0, _08015CBC @ =sub_8015CE4
-	movs r1, #0x86
-	lsls r1, r1, #1
-	ldr r2, _08015CC0 @ =0x00003001
-	ldr r3, _08015CC4 @ =sub_8015FF0
-	str r3, [sp]
-	movs r3, #0
-	bl TaskCreate
-	ldrh r3, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r0, r0, r3
-	mov ip, r0
-	ldr r1, _08015CC8 @ =gUnknown_080D6736
-	ldr r6, _08015CB8 @ =gPlayer
-	adds r2, r6, #0
-	adds r2, #0x64
-	movs r4, #0
-	ldrsh r0, [r2, r4]
-	lsls r0, r0, #2
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	ldr r5, _08015CCC @ =IWRAM_START + 0x100
-	adds r4, r3, r5
-	movs r5, #0
-	strh r0, [r4]
-	movs r7, #0
-	ldrsh r0, [r2, r7]
-	lsls r0, r0, #2
-	adds r1, #2
-	adds r0, r0, r1
-	ldrh r1, [r0]
-	ldr r7, _08015CD0 @ =IWRAM_START + 0x102
-	adds r0, r3, r7
-	strh r1, [r0]
-	movs r1, #0
-	ldrsh r0, [r2, r1]
-	cmp r0, #0x4f
-	bgt _08015C76
-	ldr r1, _08015CD4 @ =gPlayerCharacterIdleAnims
-	adds r0, r6, #0
-	adds r0, #0x85
-	ldrb r0, [r0]
-	lsls r0, r0, #0x18
-	asrs r0, r0, #0x18
-	lsls r0, r0, #1
-	adds r0, r0, r1
-	ldrh r0, [r0]
-	ldrh r7, [r4]
-	adds r0, r0, r7
-	strh r0, [r4]
-_08015C76:
-	ldr r1, _08015CD8 @ =IWRAM_START + 0x104
-	adds r0, r3, r1
-	mov r4, r8
-	strh r4, [r0]
-	ldr r7, _08015CDC @ =IWRAM_START + 0x106
-	adds r0, r3, r7
-	strh r5, [r0]
-	adds r1, #4
-	adds r0, r3, r1
-	strh r5, [r0]
-	ldr r4, _08015CE0 @ =IWRAM_START + 0x10A
-	adds r0, r3, r4
-	strh r5, [r0]
-	movs r1, #0
-	movs r2, #0
-_08015C94:
-	lsls r0, r1, #4
-	add r0, ip
-	adds r0, #0xcc
-	strb r2, [r0]
-	adds r0, r1, #1
-	lsls r0, r0, #0x18
-	lsrs r1, r0, #0x18
-	cmp r1, #3
-	bls _08015C94
-_08015CA6:
-	add sp, #4
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08015CB4: .4byte gGameMode
-_08015CB8: .4byte gPlayer
-_08015CBC: .4byte sub_8015CE4
-_08015CC0: .4byte 0x00003001
-_08015CC4: .4byte sub_8015FF0
-_08015CC8: .4byte gUnknown_080D6736
-_08015CCC: .4byte IWRAM_START + 0x100
-_08015CD0: .4byte IWRAM_START + 0x102
-_08015CD4: .4byte gPlayerCharacterIdleAnims
-_08015CD8: .4byte IWRAM_START + 0x104
-_08015CDC: .4byte IWRAM_START + 0x106
-_08015CE0: .4byte IWRAM_START + 0x10A
-
-	thumb_func_start sub_8015CE4
-sub_8015CE4: @ 0x08015CE4
+	thumb_func_start Task_8015CE4
+Task_8015CE4: @ 0x08015CE4
 	push {r4, r5, r6, r7, lr}
 	ldr r0, _08015D18 @ =gCurTask
 	ldr r2, [r0]
@@ -539,8 +409,8 @@ _08015FE2:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_8015FF0
-sub_8015FF0: @ 0x08015FF0
+	thumb_func_start TaskDestructor_8015FF0
+TaskDestructor_8015FF0: @ 0x08015FF0
 	push {r4, r5, lr}
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0

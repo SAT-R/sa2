@@ -7,6 +7,7 @@
 #include "game/stage/music_manager.h"
 
 #include "game/game_6.h"
+#include "game/amy_attack_heart_effect.h"
 #include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
 #include "game/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/dust_effect_spindash.h" // CreateSpindashDustEffect
@@ -44,7 +45,6 @@ extern void sub_8013AD8(Player *);
 extern void PlayerCB_8013D18(Player *);
 extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
-extern void sub_8015BD4(u16);
 extern void sub_801F488(void);
 
 extern s32 sub_8022F58(u8, Player *);
@@ -2374,7 +2374,7 @@ bool32 sub_80294F4(Player *p)
                 case CHARACTER_AMY: {
                     p->moveState |= MOVESTATE_20000000;
                     p->unk64 = 18;
-                    sub_8015BD4(2);
+                    CreateAmyAttackHeartEffect(2);
 
                     song = SE_AMY_SUPER_HAMMER_ATTACK;
                 sub_80294F4_PlaySfx:
