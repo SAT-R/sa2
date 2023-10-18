@@ -874,7 +874,7 @@ gAnimations:
 	.4byte anim_0870
 	.4byte anim_0871
 	.4byte anim_0872
-	.4byte anim_boost_effect
+	.4byte anim_boost_mode_particles
 	.4byte anim_main_menu
 	.4byte anim_0875
 	.4byte anim_0876

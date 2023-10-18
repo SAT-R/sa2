@@ -732,7 +732,7 @@
 .include "data/animations/anims/anim_0870.inc"
 .include "data/animations/anims/anim_0871.inc"
 .include "data/animations/anims/anim_0872.inc"
-.include "data/animations/anims/anim_boost_effect.inc"
+.include "data/animations/anims/anim_boost_mode_particles.inc"
 .include "data/animations/anims/anim_main_menu.inc"
 .include "data/animations/anims/anim_0875.inc"
 .include "data/animations/anims/anim_0876.inc"

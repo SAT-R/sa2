@@ -1,6 +1,6 @@
 
 
-anim_boost_effect_variant_0:
+anim_boost_mode_particles_variant_0:
 	mGetPalette 0x17 16 0x40
 	mGetTiles 0x239AE 1
 	.4byte	2, 0
@@ -10,7 +10,7 @@ anim_boost_effect_variant_0:
 
 	mJumpBack 0xD
 
-anim_boost_effect_variant_1:
+anim_boost_mode_particles_variant_1:
 	mGetPalette 0x17 16 0x40
 	mGetTiles 0x239AE 1
 	.4byte	2, 0
@@ -45,6 +45,6 @@ anim_boost_effect_variant_1:
 	mAnimCmd4 
 
 
-anim_boost_effect:
-	.4byte anim_boost_effect_variant_0
-	.4byte anim_boost_effect_variant_1
+anim_boost_mode_particles:
+	.4byte anim_boost_mode_particles_variant_0
+	.4byte anim_boost_mode_particles_variant_1

@@ -22,10 +22,10 @@ typedef struct {
 
 #define BE_BUFFER_SIZE 16
 
-#define BE_RING_INDEX(_bufferName, _num)                                        \
+#define BE_RING_INDEX(_bufferName, _num)                                                \
     ((_bufferName##Index + (_num)) % (unsigned)ARRAY_COUNT(_bufferName))
 
-#define ADD_BE_INDEX(_bufferName, _num)                                         \
+#define ADD_BE_INDEX(_bufferName, _num)                                                 \
     _bufferName##Index = BE_RING_INDEX(_bufferName, (_num))
 
 #define INC_BE_INDEX(_bufferName) ADD_BE_INDEX(_bufferName, 1)
