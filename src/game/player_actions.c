@@ -215,18 +215,20 @@ void Task_80159C8(void)
     SpriteTransform *transform = &actions->transform;
     register u32 r8 asm("r8") = gUnknown_080D5674[actions->unk5C];
 
-    if (!(gPlayer.moveState & MOVESTATE_4000000)) {
+    if(!(gPlayer.moveState & MOVESTATE_4000000)) {
         if (gPlayer.moveState & MOVESTATE_8000000) {
             TaskDestroy(gCurTask);
             gUnknown_030055BC = FALSE;
             return;
         }
     }
-
-    if (PLAYER_IS_ALIVE) {
-        if (gPlayer.unk5A || (gPlayer.moveState & MOVESTATE_BOOST_EFFECT_ON)) {
+    
+    if(PLAYER_IS_ALIVE) {
+        if(gPlayer.unk5A || (gPlayer.moveState & MOVESTATE_BOOST_EFFECT_ON)) {
             // _08015A46
-            GetPreviousFramePlayerState(&actions->plState, r8);
+            register PlayerState *pls asm("r0") = &actions->plState;
+            u8 r8Copy = r8;
+            GetPreviousFramePlayerState(pls, r8Copy);
 
             s->graphics.anim = actions->plState.anim;
             s->variant = actions->plState.variant;
@@ -244,13 +246,13 @@ void Task_80159C8(void)
             transform->y = s->y;
             UpdateSpriteAnimation(s);
 
-            if (SPRITE_FLAG_GET(s, ROT_SCALE_ENABLE)) {
+            if(SPRITE_FLAG_GET(s, ROT_SCALE_ENABLE)) {
                 u32 moveState;
 
                 SPRITE_FLAG_CLEAR(s, ROT_SCALE);
                 s->unk10 |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
-                if (actions->plState.moveState & MOVESTATE_FACING_LEFT) {
+                if(actions->plState.moveState & MOVESTATE_FACING_LEFT) {
                     transform->width = 0x100;
                 } else {
                     transform->width = 0xFF00;
@@ -260,7 +262,7 @@ void Task_80159C8(void)
                 moveState = actions->plState.moveState & MOVESTATE_80000000;
                 actions->plState.moveState = moveState;
 
-                if (moveState) {
+                if(moveState) {
                     transform->width = -transform->width;
                 }
 
@@ -270,11 +272,11 @@ void Task_80159C8(void)
                 SPRITE_FLAG_CLEAR(s, ROT_SCALE_ENABLE);
             }
 
-            if (++actions->unk5D > 2) {
+            if(++actions->unk5D > 2) {
                 actions->unk5D = 0;
             }
 
-            if (actions->unk5D == actions->unk5C) {
+            if(actions->unk5D == actions->unk5C) {
                 DisplaySprite(s);
             }
         }
