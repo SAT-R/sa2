@@ -139,7 +139,6 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
     REGISTER(u16, *bgBuffer, "r5") = gBgOffsetsHBlank;
     REGISTER(s16, r3, "r3") = (Div(b, 60) << 16) >> 16;
 
-
     gBgScrollRegs[0][1] = r3;
     gBgScrollRegs[3][1] = r3;
 

@@ -241,7 +241,7 @@ void *IwramMalloc(u16 req)
 static void IwramFree(void *p)
 {
     struct IwramNode *node = p, *fast;
-    REGISTER(struct IwramNode *, slow,  "r1");
+    REGISTER(struct IwramNode *, slow, "r1");
 
     node--;
     slow = (struct IwramNode *)&gIwramHeap[0];
