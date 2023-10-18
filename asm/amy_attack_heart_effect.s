@@ -4,8 +4,8 @@
 .section .rodata
 
 .align 2 , 0
-    .global gUnknown_080D5684
-gUnknown_080D5684:
+    .global sHeartOffsets
+sHeartOffsets:
     .incbin "baserom.gba", 0x000D5684, 0xC0
 
 .text
@@ -13,8 +13,6 @@ gUnknown_080D5684:
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start Task_8015CE4
 Task_8015CE4: @ 0x08015CE4
 	push {r4, r5, r6, r7, lr}
@@ -23,7 +21,7 @@ Task_8015CE4: @ 0x08015CE4
 	ldrh r3, [r2, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r6, r3, r0
+	adds r6, r3, r0         @ r6 = hearts
 	ldr r4, _08015D1C @ =gPlayer
 	ldr r0, [r4, #0x20]
 	movs r1, #0x80
@@ -78,20 +76,20 @@ _08015D56:
 	lsrs r5, r0, #0x18
 	cmp r5, #3
 	bls _08015D2A
-	ldr r3, _08015E18 @ =gUnknown_080D5684
+	ldr r3, _08015E18 @ =sHeartOffsets
 	movs r2, #0x84
 	lsls r2, r2, #1
 	adds r5, r6, r2
-	ldrh r0, [r5]
+	ldrh r0, [r5]       @ r0 = hearts->unk108
 	lsls r1, r0, #1
 	adds r1, r1, r0
-	lsls r1, r1, #1
+	lsls r1, r1, #1     @ r1 = unk108*3*2
 	subs r2, #4
 	adds r0, r6, r2
-	ldrh r2, [r0]
+	ldrh r2, [r0]       @ r2 = hearts->unk104
 	lsls r0, r2, #1
 	adds r0, r0, r2
-	lsls r0, r0, #4
+	lsls r0, r0, #4     @ r0 = unk104 * 48
 	adds r1, r1, r0
 	adds r1, r1, r3
 	ldrh r0, [r1]
@@ -137,10 +135,10 @@ _08015DC2:
 	lsls r0, r5, #1
 	adds r0, r0, r5
 	lsls r0, r0, #4
-	adds r4, r6, r0
+	adds r4, r6, r0     @ r4 = s
 	adds r0, r6, #0
 	adds r0, #0xc0
-	adds r0, r0, r2
+	adds r0, r0, r2     @ r0 = params
 	ldr r1, [r0]
 	lsls r1, r1, #8
 	adds r0, r6, #0
@@ -171,10 +169,11 @@ _08015E10:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08015E18: .4byte gUnknown_080D5684
+_08015E18: .4byte sHeartOffsets
 _08015E1C: .4byte 0x0000FFFF
 _08015E20: .4byte gPlayer
 _08015E24: .4byte gCamera
+.endif
 
 	thumb_func_start sub_8015E28
 sub_8015E28: @ 0x08015E28
@@ -243,7 +242,7 @@ _08015E6E:
 	mov sb, r4
 	cmp r1, #0
 	beq _08015ED8
-	ldr r3, _08015ED4 @ =gUnknown_080D5684
+	ldr r3, _08015ED4 @ =sHeartOffsets
 	mov r2, ip
 	lsls r4, r2, #1
 	adds r1, r4, r2
@@ -266,9 +265,9 @@ _08015E6E:
 	b _08015F00
 	.align 2, 0
 _08015ED0: .4byte gPlayer
-_08015ED4: .4byte gUnknown_080D5684
+_08015ED4: .4byte sHeartOffsets
 _08015ED8:
-	ldr r3, _08015F3C @ =gUnknown_080D5684
+	ldr r3, _08015F3C @ =sHeartOffsets
 	mov r1, ip
 	lsls r4, r1, #1
 	adds r1, r4, r1
@@ -319,7 +318,7 @@ _08015F00:
 	subs r0, r0, r1
 	b _08015F6C
 	.align 2, 0
-_08015F3C: .4byte gUnknown_080D5684
+_08015F3C: .4byte sHeartOffsets
 _08015F40: .4byte gUnknown_03005424
 _08015F44:
 	mov r3, sb
