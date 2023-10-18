@@ -7,7 +7,7 @@
 #include "game/stage/music_manager.h"
 
 #include "game/game_6.h"
-#include "game/boost_effect.h" // incl. CreateBoostModeParticles
+#include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
 #include "game/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/dust_effect_spindash.h" // CreateSpindashDustEffect
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
