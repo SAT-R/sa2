@@ -241,11 +241,8 @@ void *IwramMalloc(u16 req)
 static void IwramFree(void *p)
 {
     struct IwramNode *node = p, *fast;
-#ifndef NON_MATCHING
-    register struct IwramNode *slow asm("r1");
-#else
-    struct IwramNode *slow;
-#endif
+    REGISTER(struct IwramNode *, slow,  "r1");
+
     node--;
     slow = (struct IwramNode *)&gIwramHeap[0];
     fast = slow;

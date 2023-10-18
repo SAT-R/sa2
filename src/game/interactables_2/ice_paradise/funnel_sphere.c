@@ -84,12 +84,11 @@ static void sub_8077F7C(void)
         r4 = r6;
         if (r4 > 0x80) {
 #ifndef NON_MATCHING
-            register u32 r0 asm("r0") = 0x100;
+            REGISTER(u32, r0, "r0") = 0x100;
             asm("" ::"r"(r0));
             r4 = r0 - r6;
 #else
-            u32 r0 = 0x100 - r6;
-            r4 = r0;
+            r4 = 0x100 - r6;
 #endif
         }
 

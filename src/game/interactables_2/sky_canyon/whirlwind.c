@@ -173,11 +173,11 @@ void sub_807C9C0(Sprite_IA86 *ia086)
 #else
 void sub_807C9C0(Sprite_IA86 *ia086)
 {
-    register Player *p1 asm("r2") = &gPlayer;
-    register Player *p asm("r4");
-    register s32 r0 asm("r0");
-    register s32 zero asm("r3");
-    register s32 r1 asm("r1");
+    REGISTER(Player *, p1, "r2") = &gPlayer;
+    REGISTER(Player *, p, "r4");
+    REGISTER(s32, r0, "r0");
+    REGISTER(s32, zero, "r3");
+    REGISTER(s32, r1, "r1");
     s16 *p184;
 
     p1->moveState |= MOVESTATE_400000;
@@ -186,10 +186,10 @@ void sub_807C9C0(Sprite_IA86 *ia086)
     // Must be some debug stuff happening here
     r0 = 0x23C;
     r0 = Q_24_8(*(s32 *)((void *)ia086 + r0));
-    asm("" ::"r"(r0));
     r1 = p1->x;
-    asm("" ::"r"(r1));
     p = p1;
+    asm("" ::"r"(r0));
+    asm("" ::"r"(r1));
     asm("" ::: "r0");
 
     ia086->unk182 = 64;
@@ -307,11 +307,7 @@ void sub_807CC28(Sprite_IA86 *ia086)
     unk180 += Q_24_8(0.5);
     ia086->unk180 = unk180;
     {
-#ifdef NON_MATCHING
-        u32 r2 = unk180;
-#else
-        register u32 r2 asm("r2") = unk180;
-#endif
+        REGISTER(u32, r2, "r2") = unk180;
 
         unk180 <<= 16;
         unk180 >>= 16;
@@ -320,11 +316,8 @@ void sub_807CC28(Sprite_IA86 *ia086)
         ia086->unk180 = r2;
 
         {
-#ifdef NON_MATCHING
-            u32 r0 = (r2 << 16);
-#else
-            register u32 r0 asm("r0") = (r2 << 16);
-#endif
+            REGISTER(u32, r0, "r0") = (r2 << 16);
+
             ia086->unk182 += (r0 >> 24);
         }
     }

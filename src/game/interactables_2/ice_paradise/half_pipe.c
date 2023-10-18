@@ -88,7 +88,7 @@ static void UpdatePlayerPosOnHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe, u16 
     temp4 = (CLAMP_16(temp4, 0, ONE_CYCLE + 1) + 768) & ONE_CYCLE;
 
     {
-        register s16 temp asm("r0") = abs(gPlayer.speedAirX);
+        REGISTER(s16, temp, "r0") = abs(gPlayer.speedAirX);
         temp = temp << 0x10 >> 0x10;
         airSpeed = temp;
         if (temp > Q_24_8(10)) {

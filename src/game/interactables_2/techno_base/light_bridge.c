@@ -180,7 +180,7 @@ static void RenderStraightBridge(Sprite_LightBridge *lightBridge)
 #ifndef NON_MATCHING
 static void RenderCurvedBridge(Sprite_LightBridge *in)
 {
-    register Sprite_LightBridge *lightBridge asm("r5") = in;
+    REGISTER(Sprite_LightBridge *, lightBridge, "r5") = in;
 #else
 static void RenderCurvedBridge(Sprite_LightBridge *lightBridge)
 {

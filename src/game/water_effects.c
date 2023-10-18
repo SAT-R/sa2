@@ -242,13 +242,8 @@ static void Task_StageWaterTask(void)
     bool32 active;
     Sprite *s;
     u8 unk1;
-#ifndef NON_MATCHING
-    register u8 unk2_0 asm("r0");
-    register u8 unk2_2 asm("r2");
-#else
-    u8 unk2_0;
-    u8 unk2_2;
-#endif
+    REGISTER(u8, unk2_0, "r0");
+    REGISTER(u8, unk2_2, "r2");
 
     if ((gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1))
         && (Q_24_8_TO_INT(gPlayer.x) > 6665) && (Q_24_8_TO_INT(gPlayer.x) <= 10650)) {

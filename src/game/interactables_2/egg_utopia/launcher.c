@@ -124,9 +124,8 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     {
         s32 *xs, *ys;
         int i = 0;
-#ifndef NON_MATCHING
-        register void *s2 asm("r4") = &launcher->s;
-#endif
+        REGISTER(void *, s2, "r4") = &launcher->s;
+
         for (; i < ARRAY_COUNT(launcher->unk60); i++) {
             launcher->unk60[i][0] = launcher->unk54;
             launcher->unk60[i][1] = launcher->unk58;
@@ -134,7 +133,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
         {
 #ifndef NON_MATCHING
-            register Sprite *s asm("r5") = s2;
+            REGISTER(Sprite *, s, "r5") = s2;
 #else
             Sprite *s = &launcher->s;
 #endif

@@ -74,11 +74,7 @@ void Task_Decoration(void)
     MapEntity *me = base->base.me;
     s32 screenX;
 
-#ifndef NON_MATCHING
-    register s32 screenY asm("r2");
-#else
-    s32 screenY;
-#endif
+    REGISTER(s32, screenY, "r2");
 
     screenX = (base->base.spriteX) * TILE_WIDTH;
     screenX += (base->base.regionX) * CAM_REGION_WIDTH;

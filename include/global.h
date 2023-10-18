@@ -43,6 +43,14 @@ typedef void (*VoidFn)(void);
 #define END_NONMATCH }
 #endif
 
+#ifndef NON_MATCHING
+// Macro used to declare variables to be put into specific register for matching, while
+// staying cross-platform
+#define REGISTER(_varType, _varName, _regName) register _varType _varName asm(_regName)
+#else
+#define REGISTER(_varType, _varName, _regName) _varType _varName
+#endif
+
 /// IDE support
 #if defined(__APPLE__) || defined(__CYGWIN__) || defined(__INTELLISENSE__)
 // We define these when using certain IDEs to fool preproc

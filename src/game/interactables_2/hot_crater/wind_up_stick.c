@@ -103,7 +103,7 @@ static void sub_80726E8(Sprite_WindUpStick *windUpStick)
         case 2:
 #ifndef NON_MATCHING
         {
-            register s16 *unk64 asm("r0") = &gPlayer.unk64;
+            REGISTER(s16 *, unk64, "r0") = &gPlayer.unk64;
             *unk64 = 0x34;
         }
 #else

@@ -135,15 +135,10 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
     Vec2_16 *cursorStack;
     u8 *cursor;
     s32 pFlags;
-#ifdef NON_MATCHING
-    register s16 sl asm("sl") = 0;
-    register u16 *bgBuffer asm("r5") = gBgOffsetsHBlank;
-    register s16 r3 asm("r3") = (Div(b, 60) << 16) >> 16;
-#else
-    s16 sl = 0;
-    u16 *bgBuffer = gBgOffsetsHBlank;
-    s16 r3 = (Div(b, 60) << 16) >> 16;
-#endif
+    REGISTER(s16, sl, "sl") = 0;
+    REGISTER(u16, *bgBuffer, "r5") = gBgOffsetsHBlank;
+    REGISTER(s16, r3, "r3") = (Div(b, 60) << 16) >> 16;
+
 
     gBgScrollRegs[0][1] = r3;
     gBgScrollRegs[3][1] = r3;

@@ -333,11 +333,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     sit_d->parent = sit_a;
 
     { // Allocate VRAM for all icon's tiles
-#ifndef NON_MATCHING
-        register u32 tilesToAlloc asm("r0");
-#else
-        u32 tilesToAlloc;
-#endif
+        REGISTER(u32, tilesToAlloc, "r0");
         u32 loadingIconsTiles;
 
         if (IS_SINGLE_PLAYER) {

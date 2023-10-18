@@ -297,14 +297,10 @@ static void sub_807F798(Sprite_FlyingHandle *flyingHandle)
 
 static void sub_807F7D0(Sprite_FlyingHandle *flyingHandle)
 {
-#ifndef NON_MATCHING
-    register Player *p1 asm("r0") = &gPlayer;
-    register u32 r1 asm("r1") = p1->moveState & MOVESTATE_FACING_LEFT;
-    register Player *player asm("r2") = p1;
-#else
-    Player *player = &gPlayer;
-    u32 r1 = player->moveState & MOVESTATE_FACING_LEFT;
-#endif
+    REGISTER(Player *, p1, "r0") = &gPlayer;
+    REGISTER(u32, r1, "r1") = p1->moveState & MOVESTATE_FACING_LEFT;
+    REGISTER(Player *, player, "r2") = p1;
+
     if (r1) {
         player->x = (flyingHandle->unk44 + flyingHandle->unk4C) + Q_24_8(4.0);
         player->y = (flyingHandle->unk48 + flyingHandle->unk50) + Q_24_8(20.0);

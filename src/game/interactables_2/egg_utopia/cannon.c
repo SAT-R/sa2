@@ -190,7 +190,7 @@ static void sub_807E56C(Sprite_Cannon *cannon)
     s16 temp2;
     s16 temp3;
     s32 mask;
-    register s16 r0 asm("r0");
+    REGISTER(s16, r0, "r0");
     s32 r1;
 
     r3 = cannon->unk68 == 0  ? cannon->unk6E == 0 ? 0x280 : 0x180
@@ -248,11 +248,8 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
 NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
          static bool32 sub_807E66C(Sprite_Cannon *cannon))
 {
-#ifndef NON_MATCHING
-    register Sprite *s asm("r6") = &cannon->sprite2;
-#else
-    Sprite *s = &cannon->sprite2;
-#endif
+    REGISTER(Sprite *, s, "r6") = &cannon->sprite2;
+
     s16 x, y;
     s32 biggerX, biggerY, temp2, temp3;
     s32 r4;
@@ -262,7 +259,7 @@ NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
         // Maybe log
         {
 #ifndef NON_MATCHING
-            register u16 r0 asm("r0") = cannon->unk68;
+            REGISTER(u16, r0, "r0") = cannon->unk68;
             asm("" ::"r"(r0));
 #endif
         }

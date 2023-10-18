@@ -77,11 +77,8 @@ static void sub_805EA94(void)
 
     if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
         && sub_800C204(s, x, y, 0, &gPlayer, 0) == 1) {
-#ifndef NON_MATCHING
-        register s32 temp1 asm("r0"), temp2;
-#else
-        s32 temp1, temp2;
-#endif
+        REGISTER(s32, temp1, "r0"), temp2;
+
         sub_80218E4(&gPlayer);
         rotatingHandle->unk3C = 0;
 
@@ -171,7 +168,8 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
     }
 
     if (gPlayer.unk5E & gPlayerControls.jump) {
-        register u32 temp2 asm("r4");
+        REGISTER(u32, temp2, "r4");
+
         gPlayer.transition = PLTRANS_PT5;
         me->x = rotatingHandle->base.spriteX;
         sub_80218E4(&gPlayer);
@@ -205,7 +203,7 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
 
                 break;
             case 3: {
-                register s32 r1 asm("r1") = 0x220;
+                REGISTER(s32, r1, "r1") = 0x220;
                 temp2 = (r1 - temp) & cycle;
                 sin = SIN(temp);
                 gPlayer.x -= sin >> 1;

@@ -139,11 +139,8 @@ s32 UpdateSpriteAnimation(Sprite *s)
         while (cmd->id < 0) {
             ret = animCmdTable[~cmd->id](cmd, s);
             if (ret != 1) {
-#ifndef NON_MATCHING
-                register ACmd *newScript asm("r2");
-#else
-                ACmd *newScript;
-#endif
+                REGISTER(ACmd *, newScript, "r2");
+
                 if (ret != -1) {
                     return ret;
                 }

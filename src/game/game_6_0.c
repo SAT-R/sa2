@@ -36,11 +36,7 @@ u8 gUnknown_03005B7C = 0;
 
 void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 {
-#ifndef NON_MATCHING
-    register Player *p asm("r5") = player;
-#else
-    Player *p = player;
-#endif
+    REGISTER(Player *, p, "r5") = player;
 
     s32 unk60 = p->unk60;
     struct Task *t;
@@ -1298,19 +1294,12 @@ void sub_80228C0(Player *p)
     s32 val;
     u8 *p29;
     s32 resultB;
-#ifndef NON_MATCHING
-    register s32 resultA asm("r6");
-    register u32 r1 asm("r1");
-    register u32 r0 asm("r0");
-    register s32 playerX asm("r4") = p->x;
-    register s32 playerY asm("sl") = (p->y);
-#else
-    s32 resultA;
-    u32 r1;
-    u32 r0;
-    s32 playerX = p->x;
-    s32 playerY = (p->y);
-#endif
+    REGISTER(s32, resultA, "r6");
+    REGISTER(u32, r1, "r1");
+    REGISTER(u32, r0, "r0");
+    REGISTER(s32, playerX, "r4") = p->x;
+    REGISTER(s32, playerY, "sl") = p->y;
+
     u32 mask = p->unk38;
     s32 py = Q_24_8_TO_INT(playerY);
 
@@ -1410,19 +1399,12 @@ void sub_80229EC(Player *p)
     s32 resultB;
     s32 playerY;
     s32 py;
-#ifndef NON_MATCHING
-    register s32 resultA asm("r6");
-    register u32 r1 asm("r1");
-    register u32 r0 asm("r0");
-    register s32 playerX asm("r4");
-    register u32 mask asm("r9");
-#else
-    s32 resultA;
-    u32 r1;
-    u32 r0;
-    s32 playerX;
-    u32 mask;
-#endif
+    REGISTER(s32, resultA, "r6");
+    REGISTER(u32, r1, "r1");
+    REGISTER(u32, r0, "r0");
+    REGISTER(s32, playerX, "r4");
+    REGISTER(u32, mask, "r9");
+
     playerX = p->x;
     playerY = (p->y);
     mask = p->unk38;
@@ -1524,19 +1506,12 @@ void sub_8022B18(Player *p)
     s32 resultB;
     s32 playerX;
     s32 py;
-#ifndef NON_MATCHING
-    register s32 resultA asm("r6");
-    register u32 r1 asm("r1");
-    register u32 r0 asm("r0");
-    register s32 playerY asm("r4");
-    register u32 mask asm("r9");
-#else
-    s32 resultA;
-    u32 r1;
-    u32 r0;
-    s32 playerY;
-    u32 mask;
-#endif
+    REGISTER(s32, resultA, "r6");
+    REGISTER(u32, r1, "r1");
+    REGISTER(u32, r0, "r0");
+    REGISTER(s32, playerY, "r4");
+    REGISTER(u32, mask, "r9");
+
     playerX = p->x;
     playerY = (p->y);
     mask = p->unk38;
@@ -1639,17 +1614,11 @@ void sub_8022C44(Player *p)
     s32 py;
     s32 resultA;
 
-#ifndef NON_MATCHING
-    register u32 r1 asm("r1");
-    register u32 r0 asm("r0");
-    register s32 playerY asm("r4");
-    register u32 mask asm("r8");
-#else
-    u32 r1;
-    u32 r0;
-    s32 playerY;
-    u32 mask;
-#endif
+    REGISTER(u32, r1, "r1");
+    REGISTER(u32, r0, "r0");
+    REGISTER(s32, playerY, "r4");
+    REGISTER(u32, mask, "r8");
+
     playerX = p->x;
     playerY = (p->y);
     mask = p->unk38;

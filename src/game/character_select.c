@@ -558,12 +558,8 @@ static void Task_FadeInAndStartRollInAnim(void)
 static void Task_RollInAnim(void)
 {
     struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
-#ifndef NON_MATCHING
-    register u32 animFrame asm("r3") = ++characterScreen->animFrame;
-    register u32 r0 asm("r0");
-#else
-    u32 animFrame = ++characterScreen->animFrame;
-#endif
+    REGISTER(u32, animFrame, "r3") = ++characterScreen->animFrame;
+    REGISTER(u32, r0, "r0");
 
     if (animFrame > 60 || ((gPressedKeys & A_BUTTON) && IS_SINGLE_PLAYER)) {
         characterScreen->cursorAnimFrame++;
@@ -1871,8 +1867,7 @@ static void Task_MultiplayerVerifySelections(void)
     u8 mostLevelsAvailable;
     union MultiSioData *send;
     union MultiSioData *recv;
-    register struct CharacterSelectionScreen *characterScreen
-        = TaskGetStructPtr(gCurTask);
+    struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
     MultiPakHeartbeat();
 
     for (i = 0, someoneNotConfirmed = FALSE; i < MULTI_SIO_PLAYERS_MAX; i++) {

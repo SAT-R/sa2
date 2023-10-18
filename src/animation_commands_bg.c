@@ -106,11 +106,8 @@ s32 sub_80036E0(Sprite *s)
         while (cmd->id < 0) {
             ret = animCmdTable_BG[~cmd->id](cmd, s);
             if (ret != 1) {
-#ifndef NON_MATCHING
-                register ACmd *newScript asm("r1");
-#else
-                ACmd *newScript;
-#endif
+                REGISTER(ACmd *, newScript, "r1");
+
                 if (ret != -1) {
                     return ret;
                 }

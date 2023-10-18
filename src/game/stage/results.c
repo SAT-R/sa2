@@ -88,11 +88,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     Sprite *s;
     u8 i;
 
-#ifndef NON_MATCHING
-    register u32 zero asm("r7") = 0;
-#else
-    u32 zero = 0;
-#endif
+    REGISTER(u32, zero, "r7") = 0;
 
     gLoadedSaveGame->score += (s16)gRingCount;
 

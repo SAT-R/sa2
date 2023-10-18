@@ -219,11 +219,8 @@ void Task_Item_Shield_Magnetic(void)
 
     b = (param);
     {
-#ifndef NON_MATCHING
-        register u32 one asm("r3") = 1;
-#else
-        u32 one = 1;
-#endif
+        REGISTER(u32, one, "r3") = 1;
+
         b &= one;
         if (((gStageTime & 0x2) && (b != one)) || (!(gStageTime & 0x2) && (b != 0))) {
             DisplaySprite(&item->s);
@@ -305,11 +302,8 @@ void Task_Item_Invincibility(void)
     UpdateSpriteAnimation(&item->s);
 
     {
-#ifndef NON_MATCHING
-        register u32 one asm("r3") = 1;
-#else
-        u32 one = 1;
-#endif
+        REGISTER(u32, one, "r3") = 1;
+
         b = one;
         b &= ~param;
         if (((gStageTime & 0x2) && (b != one)) || (!(gStageTime & 0x2) && (b != 0))) {
@@ -354,11 +348,8 @@ void Task_Item_Confusion(void)
 
         b = param;
         {
-#ifndef NON_MATCHING
-            register u32 one asm("r3") = 1;
-#else
-            u32 one = 1;
-#endif
+            REGISTER(u32, one, "r3") = 1;
+
             b &= one;
             if (((gStageTime & 0x2) && (b != one))
                 || (!(gStageTime & 0x2) && (b != 0))) {

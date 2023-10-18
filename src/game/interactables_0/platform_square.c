@@ -148,11 +148,8 @@ static void Task_Platform_Square(void)
     }
 
     if (platform->unk4A != 0) {
-#ifdef NON_MATCHING
-        s32 r5 = platform->unk44;
-#else
-        register s32 r5 asm("r5") = platform->unk44;
-#endif
+        REGISTER(s32, r5, "r5") = platform->unk44;
+
         s32 meUdata3 = (me->d.uData[3] << 11);
         platform->unk44
             = (SIN(((platform->unk4A * ((gStageTime + platform->unk3C) & 0xFF)))

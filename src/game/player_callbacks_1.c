@@ -2848,11 +2848,7 @@ void sub_8029CE0(Player *p)
 
 void sub_8029D14(Player *p)
 {
-#ifndef NON_MATCHING
-    register s32 grndSpeed asm("r2") = p->speedGroundX;
-#else
-    s32 grndSpeed = p->speedGroundX;
-#endif
+    REGISTER(s32, grndSpeed, "r2") = p->speedGroundX;
 
     if ((((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) && grndSpeed != 0) {
         s32 accelInt = Q_24_8_TO_INT(GET_ROTATED_ACCEL_3(p->rotation));

@@ -288,11 +288,8 @@ static void ScreenMain(void)
 {
     u8 i;
     struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
-#ifndef NON_MATCHING
-    register union MultiSioData *recv asm("r4"), *send;
-#else
-    union MultiSioData *recv, *send;
-#endif
+    REGISTER(union MultiSioData *, recv, "r4"), *send;
+
     Sprite *chao = &lobbyScreen->chao;
     MultiPakHeartbeat();
 
@@ -393,11 +390,8 @@ static void Task_NotifyExit(void)
 {
     u8 i;
     struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
-#ifndef NON_MATCHING
-    register union MultiSioData *send asm("r4");
-#else
-    union MultiSioData *send;
-#endif
+    REGISTER(union MultiSioData *, send, "r4");
+
     MultiPakHeartbeat();
 
     for (i = 1; i < MULTI_SIO_PLAYERS_MAX; i++) {
@@ -441,11 +435,7 @@ static void Task_NotifyExit(void)
 static void Task_ListenForExit(void)
 {
     struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
-#ifndef NON_MATCHING
-    register union MultiSioData *recv, *send asm("r4");
-#else
-    union MultiSioData *recv, *send;
-#endif
+    REGISTER(union MultiSioData *, send, "r4"), *recv;
 
     MultiPakHeartbeat();
 

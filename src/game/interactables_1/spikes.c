@@ -280,11 +280,8 @@ static void sub_805FBA0(void)
         || gUnknown_030053E0 != 0) {
         // _0805FC16
         s32 r4 = sub_800CCB8(s, screenX, screenY, &gPlayer);
-#ifdef NON_MATCHING
-        u32 gravityInverted;
-#else
-        register u32 gravityInverted asm("r9");
-#endif
+        REGISTER(u32, gravityInverted, "r9");
+
         gravityInverted = GRAVITY_IS_INVERTED;
         if (gravityInverted) {
             if (r4 & 0x10000) {
@@ -322,11 +319,8 @@ static void sub_805FBA0(void)
 
         // _0805FD12
         if (r4 & 0x40000) {
-#ifdef NON_MATCHING
-            u16 iaIndex;
-#else
-            register u16 iaIndex asm("r0");
-#endif
+            REGISTER(u16, iaIndex, "r0");
+
             gPlayer.moveState |= MOVESTATE_20;
             gPlayer.x += (s16)((u32)r4 & 0xFF00);
             gPlayer.speedAirX = 0;
@@ -341,11 +335,8 @@ static void sub_805FBA0(void)
         } else {
             // _0805FD60
             if (r4 & 0x80000) {
-#ifdef NON_MATCHING
-                u16 iaIndex;
-#else
-                register u16 iaIndex asm("r0");
-#endif
+                REGISTER(u16, iaIndex, "r0");
+
                 gPlayer.moveState |= MOVESTATE_20;
                 gPlayer.x += (s16)((u32)r4 & 0xFF00);
                 gPlayer.speedAirX = 0;

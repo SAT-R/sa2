@@ -85,11 +85,11 @@ void sub_802DBC0(u8 p0, u16 p1)
 // (84.45%) https://decomp.me/scratch/ge5fv
 NONMATCH("asm/non_matching/game/stage/sub_802DCC8.inc", void sub_802DCC8(u8 p0, u16 p1))
 {
-    register u32 r7 asm("r7") = p0;
+    REGISTER(u32, r7, "r7") = p0;
     u8 *bgOffsets = gBgOffsetsHBlank;
     s32 r2;
-    register s32 r5 asm("r5") = 0;
-    register u16 r6 asm("r6") = ((unsigned)p1 << 22) >> 22;
+    REGISTER(s32, r5, "r5") = 0;
+    REGISTER(u16, r6, "r6") = ((unsigned)p1 << 22) >> 22;
 
     if ((unsigned)(r6 - Q_24_8(1.0)) << 16 <= 512 << 16)
         return;
@@ -534,7 +534,7 @@ NONMATCH("asm/non_matching/game/stage/sub_802E278.inc",
 
     for (i = 0; i < pairCount - 1; i++) {
         u8 *bgOffsets = gBgOffsetsHBlank;
-        register s32 yVal asm("r3") = sp[i][1];
+        REGISTER(s32, yVal, "r3") = sp[i][1];
         s16 xVal;
         s32 xVal2;
         s32 r4;
@@ -590,7 +590,7 @@ NONMATCH("asm/non_matching/game/stage/sub_802E384.inc",
 
     for (i = 0; i < pairCount - 1; i++) {
         u8 *bgOffsets = gBgOffsetsHBlank;
-        register s32 yVal asm("r3") = sp[i][1];
+        REGISTER(s32, yVal, "r3") = sp[i][1];
         s16 xVal;
         s32 xVal2;
         s32 r4;

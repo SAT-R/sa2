@@ -90,7 +90,7 @@ void CreateBoostModeParticles(void)
         }
 #ifndef NON_MATCHING
         {
-            register s32 ip asm("ip");
+            REGISTER(s32, ip, "ip");
             rand = ((s32(*)(void))Random)();
             ip = 0x3ff;
             particles->unkA2[i][0]

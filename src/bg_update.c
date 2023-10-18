@@ -261,9 +261,9 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     for (j = 0; j < bg->targetTilesY;) {
                         void *dmaSrc, *dmaDest;
                         s32 r5;
-                        register const u16 *r1Ptr asm("r1");
-                        register void *r2Ptr asm("r2");
-                        register void *r0Ptr asm("r0");
+                        REGISTER(const u16 *, r1Ptr, "r1");
+                        REGISTER(void *, r2Ptr, "r2");
+                        REGISTER(void *, r0Ptr, "r0");
                         s32 temp2;
                         u32 v;
                         s32 r4 = sp14 + j;

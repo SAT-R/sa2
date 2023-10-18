@@ -746,7 +746,7 @@ void sub_802486C(Player *p, UNK_3005A70 *p2)
 {
 #ifndef NON_MATCHING
     s32 speed;
-    register s32 r0 asm("r0");
+    REGISTER(s32, r0, "r0");
 #endif
     Sprite *s = &p2->s;
 

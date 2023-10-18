@@ -219,13 +219,13 @@ NONMATCH("asm/non_matching/game/interactables_0/sub_8010D1C.inc",
     Platform_D1C *platform = TaskGetStructPtr(t);
 
     // Hack for better match
-    register s32 r6 asm("r6");
+    REGISTER(s32, r6, "r6");
 
     {
         Sprite *s = &platform->unk0;
         SpriteTransform *transform = &platform->unkC0;
-        platform->unkF0 = 0;
-        platform->unkF2 = 0xFE00;
+        platform->unkF0 = Q_24_8(0.0);
+        platform->unkF2 = -Q_24_8(2.0);
         x -= 128;
         y -= 50;
 
@@ -327,7 +327,7 @@ static void Task_PlatformBreakParticlesMain(void)
         return;
     }
 
-    platform->unkF2 += 0x28;
+    platform->unkF2 += Q_24_8(0.15625);
 
     //
     s = &platform->unk0;

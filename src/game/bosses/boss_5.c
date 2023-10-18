@@ -1272,9 +1272,8 @@ static void sub_8044CBC(EggSaucer *boss)
     u8 i;
     s32 val;
     Sprite *s;
-#ifndef NON_MATCHING
-    register u8 r3 asm("r3");
-#endif
+    REGISTER(u8, r3, "r3");
+
     if (boss->armStateTimer == 64) {
         s32 x, y;
         x = Q_24_8_TO_INT(boss->x);
@@ -1362,9 +1361,8 @@ static void sub_8044EB0(EggSaucer *boss)
 {
     Sprite *s;
     s32 val, temp, index;
-#ifndef NON_MATCHING
-    register u8 r2 asm("r2");
-#endif
+    REGISTER(u8, r2, "r2");
+
     index = CLAMP_SIN_PERIOD(boss->armStateTimer << 4);
     temp = SIN(index);
     boss->unk32 = CLAMP_SIN_PERIOD(((temp * 5) >> 11) + boss->unk32);
@@ -1424,9 +1422,8 @@ static void sub_8044FE4(EggSaucer *boss)
     u8 i;
     s32 val;
     Sprite *s;
-#ifndef NON_MATCHING
-    register u8 r3 asm("r3");
-#endif
+    REGISTER(u8, r3, "r3");
+
     if (boss->armStateTimer == 64) {
         s32 x, y;
         x = Q_24_8_TO_INT(boss->x);
@@ -1509,9 +1506,8 @@ static void sub_80451C4(EggSaucer *boss)
 {
     Sprite *s;
     s32 val, temp, index;
-#ifndef NON_MATCHING
-    register u8 r2 asm("r2");
-#endif
+    REGISTER(u8, r2, "r2");
+
     boss->unk32 -= 0xC;
     boss->unk32 &= (SIN_PERIOD - 1);
 

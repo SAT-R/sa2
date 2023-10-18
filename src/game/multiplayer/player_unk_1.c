@@ -62,11 +62,8 @@ void sub_80192A8(union MultiSioData *msioData, u32 UNUSED someId)
         r2 = msioData->pat0.unkF;
 
         {
-#ifdef NON_MATCHING
-            u32 offset
-#else
-            register u32 offset asm("r1")
-#endif
+            REGISTER(u32, offset, "r1")
+
                 = *(u32 *)(((u8 *)items)
                            + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
                            + (r2 * sizeof(u32)));
@@ -98,11 +95,8 @@ void sub_80192FC(union MultiSioData *msioData, u32 UNUSED someId)
         enemies++; // skip v_regionCount
         r2 = msioData->pat0.unkF;
         {
-#ifdef NON_MATCHING
-            u32 offset
-#else
-            register u32 offset asm("r1")
-#endif
+            REGISTER(u32, offset, "r1")
+
                 = *(u32 *)(((u8 *)enemies)
                            + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
                            + (r2 * sizeof(u32)));
@@ -139,11 +133,8 @@ void sub_8019368(union MultiSioData *msioData, u32 UNUSED someId)
         ias++; // skip v_regionCount
         r2 = msioData->pat0.unkF;
         {
-#ifdef NON_MATCHING
-            u32 offset
-#else
-            register u32 offset asm("r1")
-#endif
+            REGISTER(u32, offset, "r1")
+
                 = *(u32 *)(((u8 *)ias)
                            + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
                            + (r2 * sizeof(u32)));

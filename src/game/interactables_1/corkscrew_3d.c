@@ -521,13 +521,8 @@ s32 sub_806267C(s32 x, s32 y, s16 p2)
 {
     Player *p = &gPlayer;
 
+    REGISTER(s32, px, "r0") = ((Q_24_8_TO_INT(p->x) - x) * 930) >> 8;
     s32 py;
-
-#ifndef NON_MATCHING
-    register s32 px asm("r0") = ((Q_24_8_TO_INT(p->x) - x) * 930) >> 8;
-#else
-    s32 px = ((Q_24_8_TO_INT(p->x) - x) * 930) >> 8;
-#endif
 
     px = (px + p2) & ONE_CYCLE;
     p->x += p->speedGroundX;

@@ -97,9 +97,7 @@ void Task_BalloonMain(void)
 
 void sub_805879C(void)
 {
-#ifndef NON_MATCHING
-    register u8 r8 asm("r8");
-#endif
+    REGISTER(u8, r8, "r8");
 
     Sprite_Balloon *balloon = TaskGetStructPtr(gCurTask);
     Sprite *s = &balloon->s;

@@ -103,9 +103,7 @@ void sub_8054D20(void)
     bell->unk4C--;
 
     {
-#ifndef NON_MATCHING
-        register s32 r2 asm("r2") = 0xFF;
-#endif
+        REGISTER(s32, r2, "r2") = 0xFF;
 
         if (bell->unk4C == 0) {
             bell->unk4C = 120;

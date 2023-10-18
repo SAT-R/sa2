@@ -71,8 +71,8 @@ void Task_KyuraMain(void)
 
 #ifndef NON_MATCHING
     u32 r0 = unk54 * 5;
-    register s32 r1 asm("r1") = ONE_CYCLE;
-    register s32 r5 asm("r5");
+    REGISTER(s32, r1, "r1") = ONE_CYCLE;
+    REGISTER(s32, r5, "r5");
     asm("" ::"r"(r1));
     r5 = r1;
     r0 &= r5;
@@ -81,7 +81,7 @@ void Task_KyuraMain(void)
     // we had to use inline ASM
     // TODO: Match the inline asm (and this comment afterwards)!
     kyura->offsetX = (SIN(({
-                          register u32 r2 asm("r2") = 0x100;
+                          REGISTER(u32, r2, "r2") = 0x100;
                           asm("" ::"r"(r2));
                           r0 + r2;
                       }))

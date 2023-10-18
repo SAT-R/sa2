@@ -78,9 +78,9 @@ void CreateEntity_Gohla(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 static void sub_8051928(void)
 {
 #ifndef NON_MATCHING
-    register IwramData ref asm("r1") = gCurTask->data;
+    REGISTER(IwramData, ref, "r1") = gCurTask->data;
     Sprite_Gohla *gohla = (void *)IWRAM_START + ref;
-    register Sprite *s asm("r5") = &gohla->s;
+    REGISTER(Sprite *, s, "r5") = &gohla->s;
 #else
     Sprite_Gohla *gohla = TaskGetStructPtr(gCurTask);
     Sprite *s = &gohla->s;

@@ -227,7 +227,8 @@ bool32 sub_8075D58(Sprite_NoteBlock *block)
 
 #ifndef NON_MATCHING
     s32 r1;
-    register s32 r4 asm("r4");
+    REGISTER(s32, r4, "r4");
+
     screenX = block->posX;
     r1 = 256;
     r4 = r1;

@@ -473,7 +473,7 @@ void CreateStageEntitiesManager(void)
 
 static inline MapEntity *ReadMe(void *data, u32 r6)
 {
-    register u32 offset asm("r0") = r6 - 8;
+    REGISTER(u32, offset, "r0") = r6 - 8;
     return data + offset;
 }
 
@@ -544,9 +544,9 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
             while (Q_24_8(regionX) < (u32)range.xHigh && regionX < h_regionCount) {
                 u32 posY;
                 u32 i;
-                register u32 r6 asm("r6");
                 MapEntity *me;
                 u32 sp28;
+                REGISTER(u32, r6, "r6");
 
                 sp28 = ({
                     u32 r0 = h_regionCount * regionY;
