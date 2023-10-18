@@ -28,8 +28,6 @@ gUnknown_080D5684:
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start Task_80159C8
 Task_80159C8: @ 0x080159C8
 	push {r4, r5, r6, r7, lr}
@@ -228,6 +226,7 @@ _08015B44:
 	pop {r0}
 	bx r0
 	.align 2, 0
+.endif
 
 	thumb_func_start TaskDestructor_8015B50
 TaskDestructor_8015B50: @ 0x08015B50

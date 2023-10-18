@@ -33,6 +33,7 @@ typedef struct {
 #define DEC_PL_ACTIONS_INDEX(_bufferName) ADD_PL_ACTIONS_INDEX(_bufferName, -1)
 
 // Ring Buffers storing the
+extern u8 gUnknown_080D5674[4];
 extern PlayerState sPlayerStateBuffer[PL_ACTIONS_BUFFER_SIZE];
 extern Vec2_32 sPlayerPosBuffer[PL_ACTIONS_BUFFER_SIZE];
 extern u8 sPlayerStateBufferIndex;
@@ -133,11 +134,11 @@ void GetPreviousFramePlayerState(PlayerState *state, u8 pastFrameDelta)
 }
 
 typedef struct {
-    /* 0x00 */ u8 filler0[0x4];
-    /* 0x04 */ u16 unk4;
-    /* 0x06 */ u8 filler6[0x6];
+    /* 0x00 */ SpriteTransform transform;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ u8 filler3C[0x20];
+    /* 0x3C */ u8 filler3C[0x8];
+    /* 0x44 */ Vec2_32 pos;
+    /* 0x4C */ PlayerState plState;
     /* 0x5C */ u8 unk5C;
     /* 0x5D */ u8 unk5D;
 } PlayerActions; /* size: 0x60 */
@@ -197,7 +198,7 @@ void sub_801583C(void)
             s->x = 0;
             s->y = 0;
 
-            actions->unk4 = 0x100;
+            actions->transform.height = 0x100;
         }
 
         if (s->palId != 0) {
@@ -207,7 +208,86 @@ void sub_801583C(void)
     }
 }
 
+void Task_80159C8(void)
+{
+    PlayerActions *actions = TaskGetStructPtr(gCurTask);
+    Sprite *s = &actions->s;
+    SpriteTransform *transform = &actions->transform;
+    register u32 r8 asm("r8") = gUnknown_080D5674[actions->unk5C];
+
+    if (!(gPlayer.moveState & MOVESTATE_4000000)) {
+        if (gPlayer.moveState & MOVESTATE_8000000) {
+            TaskDestroy(gCurTask);
+            gUnknown_030055BC = FALSE;
+            return;
+        }
+    }
+
+    if (PLAYER_IS_ALIVE) {
+        if (gPlayer.unk5A || (gPlayer.moveState & MOVESTATE_BOOST_EFFECT_ON)) {
+            // _08015A46
+            GetPreviousFramePlayerState(&actions->plState, r8);
+
+            s->graphics.anim = actions->plState.anim;
+            s->variant = actions->plState.variant;
+            s->animSpeed = actions->plState.animSpeed;
+            s->unk10 = actions->plState.flags;
+
+            transform->rotation = actions->plState.unkC;
+            s->unk10 |= SPRITE_FLAG(18, 1);
+
+            GetPreviousPlayerPos(&actions->pos, r8);
+            s->x = Q_24_8_TO_INT(actions->pos.x) - gCamera.x;
+            s->y = Q_24_8_TO_INT(actions->pos.y) - gCamera.y;
+
+            transform->x = s->x;
+            transform->y = s->y;
+            UpdateSpriteAnimation(s);
+
+            if (SPRITE_FLAG_GET(s, ROT_SCALE_ENABLE)) {
+                u32 moveState;
+
+                SPRITE_FLAG_CLEAR(s, ROT_SCALE);
+                s->unk10 |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+
+                if (actions->plState.moveState & MOVESTATE_FACING_LEFT) {
+                    transform->width = 0x100;
+                } else {
+                    transform->width = 0xFF00;
+                }
+                // _08015AF4+2
+
+                moveState = actions->plState.moveState & MOVESTATE_80000000;
+                actions->plState.moveState = moveState;
+
+                if (moveState) {
+                    transform->width = -transform->width;
+                }
+
+                sub_8004860(s, transform);
+            } else {
+                // _08015B14
+                SPRITE_FLAG_CLEAR(s, ROT_SCALE_ENABLE);
+            }
+
+            if (++actions->unk5D > 2) {
+                actions->unk5D = 0;
+            }
+
+            if (actions->unk5D == actions->unk5C) {
+                DisplaySprite(s);
+            }
+        }
+    }
+}
+
 #if 0
+void TaskDestructor_8015B50(struct Task *t)
+{
+    PlayerActions *actions = TaskGetStructPtr(t);
+    VramFree(actions->s.graphics.dest);
+}
+
 // TODO: Try matching this by just calling sub_8015B64_inline
 void sub_8015B64(AnimId anim, u16 palId)
 {
