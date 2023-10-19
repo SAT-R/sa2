@@ -91,8 +91,12 @@ void Task_8015CE4(void)
     } else {
         for (i = 0; i < ARRAY_COUNT(hearts->params); i++) {
             if (hearts->params[i].count != 0) {
+#ifndef NON_MATCHING
                 register s32 sIndex asm("r0") = i * sizeof(Sprite);
                 register Sprite *s asm("r4") = ((void *)&hearts->sprHearts) + sIndex;
+#else
+                Sprite *s = &hearts->sprHearts[i];
+#endif
 
                 if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
                     hearts->params[i].count = 0;
@@ -130,11 +134,11 @@ void Task_8015CE4(void)
                     s32 camX, camY;
 #ifndef NON_MATCHING
                     register s32 index asm("r0") = i;
-#else
-                    s32 index = i;
-#endif
                     index *= sizeof(Sprite);
                     s = ((void *)&hearts->sprHearts) + index;
+#else
+                    s = &hearts->sprHearts[i];
+#endif
                     x = Q_24_8(hearts->params[i].unk0);
                     y = Q_24_8(hearts->params[i].unk4);
 
