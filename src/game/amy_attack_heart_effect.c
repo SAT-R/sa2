@@ -136,3 +136,18 @@ void Task_8015CE4(void)
         }
     }
 }
+
+#if 0 // Matches
+void TaskDestructor_8015FF0(struct Task *t)
+{
+    AmyAtkHearts *hearts = TaskGetStructPtr(t);
+    
+    u8 i;
+    for(i = 0; i < ARRAY_COUNT(hearts->params); i++) {
+        if(hearts->params[i].count != 0) {
+            Sprite *s = &hearts->sprHearts[i];
+            VramFree(s->graphics.dest);
+        }
+    }
+}
+#endif
