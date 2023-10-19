@@ -70,22 +70,29 @@ void CreateAmyAttackHeartEffect(u16 kind)
     }
 }
 
-// (98.99%) https://decomp.me/scratch/Rky7Z
+// NOTE: Fakematch
+// (99.97%) https://decomp.me/scratch/Z3oDP
 void Task_8015CE4(void)
 {
-    AmyAtkHearts *hearts = TaskGetStructPtr(gCurTask);
+#ifndef NON_MATCHING
+    register struct Task *t asm("r2") = gCurTask;
+#else
+    struct Task *t = gCurTask;
+#endif
+    AmyAtkHearts *hearts = TaskGetStructPtr(t);
     u8 i;
 
     // TODO: Fix horrible cast!
     if ((!PLAYER_IS_ALIVE)
         || ((*(u32 *)&hearts->unk100 != *(u32 *)&gPlayer.anim)
             && (*(u32 *)&gPlayer.anim != 0x0001019F))) {
-        TaskDestroy(gCurTask);
+        TaskDestroy(t);
         return;
     } else {
         for (i = 0; i < ARRAY_COUNT(hearts->params); i++) {
             if (hearts->params[i].count != 0) {
-                Sprite *s = &hearts->sprHearts[i];
+                register s32 sIndex asm("r0") = i * sizeof(Sprite);
+                register Sprite *s asm("r4") = ((void *)&hearts->sprHearts) + sIndex;
 
                 if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
                     hearts->params[i].count = 0;
@@ -109,7 +116,7 @@ void Task_8015CE4(void)
                     hearts->unk108 = ((++hearts->unk108) & 0x7);
 
                     if (hearts->unk108 == 0) {
-                        hearts->unk106 = hearts->unk108;
+                        hearts->unk106 = 0;
                     }
                 }
             }
@@ -118,11 +125,18 @@ void Task_8015CE4(void)
                 struct Camera *cam = &gCamera;
 
                 if (hearts->params[i].count != 0) {
-                    Sprite *s = &hearts->sprHearts[i];
-                    s32 x = Q_24_8(hearts->params[i].unk0);
-                    s32 y = Q_24_8(hearts->params[i].unk4);
-
+                    Sprite *s;
+                    s32 x, y;
                     s32 camX, camY;
+#ifndef NON_MATCHING
+                    register s32 index asm("r0") = i;
+#else
+                    s32 index = i;
+#endif
+                    index *= sizeof(Sprite);
+                    s = ((void *)&hearts->sprHearts) + index;
+                    x = Q_24_8(hearts->params[i].unk0);
+                    y = Q_24_8(hearts->params[i].unk4);
 
                     camX = gCamera.x;
                     s->x = (x >> 16) - camX;
