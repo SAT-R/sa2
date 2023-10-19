@@ -3,17 +3,17 @@
 #include "malloc_vram.h"
 #include "task.h"
 #include "game/game.h"
+#include "game/amy_attack_heart_effect.h"
 
 #include "constants/animations.h"
 
-#define AMY_ATTACK_HEART_COUNT 4
-
 typedef struct {
-    s32 unk0;
-    s32 unk4;
-    u8 filler8[0x4];
-    u8 count;
-} AmyHeartParams;
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    /* 0x08 */ u16 unk8;
+    /* 0x0A */ u16 unkA;
+    /* 0x0C */ u8 count;
+} AmyHeartParams; /* size: 0x10 */
 
 typedef struct {
     /* 0x000 */ Sprite sprHearts[AMY_ATTACK_HEART_COUNT];
@@ -30,7 +30,49 @@ void Task_8015CE4(void);
 void sub_8015E28(u16);
 void TaskDestructor_8015FF0(struct Task *);
 
-extern const s16 sHeartOffsets[4][8][3];
+ALIGNED(4)
+const s16 sHeartOffsets[4][8][3] = {
+    [AMY_ATTACK_EFFECT_KIND_A] = {
+        { 10, 0, -27 },
+        { 12, 13, -22 },
+        { 14, 23, -13 },
+        { 16, 26, 0 },
+        { -1, 0, 0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 },
+    },
+    [AMY_ATTACK_EFFECT_KIND_B] = {
+        { 10, 7, -27 },
+        { 12, 20, -22 },
+        { 14, 30, -13 },
+        { 16, 33, 0 },
+        { -1, 0, 0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 },
+    },
+    [AMY_ATTACK_EFFECT_KIND_C] = {
+        { 0, -10, -26 },
+        { 4, 8, -27 },
+        { 8, 22, -17 },
+        { 12, 28, -1 },
+        { 16, 23, 16 },
+        { 20, 10, 26 },
+        { -1, 0, 0 },
+        { 0, 0, 0 },
+    },
+    [AMY_ATTACK_EFFECT_KIND_D] = {
+        { 2, 0, 4 },
+        { 6, 19, 6 },
+        { 10, 28, 2 },
+        { 14, 19, 4 },
+        { 18, 0, 6 },
+        { 22, -19, 2 },
+        { 26, -28, 4 },
+        { 30, -19, 6 },
+    },
+};
 extern const u16 gUnknown_080D6736[115][2];
 
 void CreateAmyAttackHeartEffect(u16 kind)
@@ -139,8 +181,8 @@ void Task_8015CE4(void)
 #else
                     s = &hearts->sprHearts[i];
 #endif
-                    x = Q_24_8(hearts->params[i].unk0);
-                    y = Q_24_8(hearts->params[i].unk4);
+                    x = Q_24_8(hearts->params[i].x);
+                    y = Q_24_8(hearts->params[i].y);
 
                     camX = gCamera.x;
                     s->x = (x >> 16) - camX;
@@ -154,6 +196,64 @@ void Task_8015CE4(void)
         }
     }
 }
+
+#if 01
+void sub_8015E28(u16 p0)
+{
+    u8 i;
+    AmyAtkHearts *hearts = TaskGetStructPtr(gCurTask);
+
+    for (i = 0; i < ARRAY_COUNT(hearts->params); i++) {
+        if (hearts->params[i].count == 0) {
+            u32 prio;
+            // _08015E6E
+            Sprite *s = &hearts->sprHearts[i];
+            hearts->params[i].count = 0xFF;
+            hearts->params[i].x = gPlayer.x;
+            hearts->params[i].y = gPlayer.y;
+
+            if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
+                hearts->params[i].x -= sHeartOffsets[hearts->kind][p0][1];
+            } else {
+                // _08015ED8
+                hearts->params[i].x += sHeartOffsets[hearts->kind][p0][1];
+            }
+            // _08015F00+2
+
+            if (GRAVITY_IS_INVERTED) {
+                hearts->params[i].y -= sHeartOffsets[hearts->kind][p0][2];
+            } else {
+                // _08015F44
+                hearts->params[i].y += sHeartOffsets[hearts->kind][p0][2];
+            }
+
+            hearts->params[i].unk8 = 0;
+            hearts->params[i].unkA = 0;
+
+            s->graphics.dest = VramMalloc(4);
+            s->unk1A = 0x400;
+            s->graphics.size = 0;
+            s->graphics.anim = SA2_ANIM_HEART;
+            s->variant = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->prevVariant = -1;
+            gPlayer.unk90->s.animSpeed++;
+            s->palId = 0;
+            prio = SPRITE_FLAG(PRIORITY, 2);
+            s->unk10 = prio;
+
+            if (GRAVITY_IS_INVERTED) {
+                s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+            } else {
+                s->unk10 = prio;
+            }
+
+            break;
+        }
+    }
+}
+#endif
 
 #if 0 // Matches
 void TaskDestructor_8015FF0(struct Task *t)

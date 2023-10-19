@@ -4,15 +4,12 @@
 .section .rodata
 
 .align 2 , 0
-    .global sHeartOffsets
-sHeartOffsets:
-    .incbin "baserom.gba", 0x000D5684, 0xC0
 
 .text
 .syntax unified
 .arm
 
-.if 01
+.if 0
 	thumb_func_start sub_8015E28
 sub_8015E28: @ 0x08015E28
 	push {r4, r5, r6, r7, lr}
@@ -21,7 +18,7 @@ sub_8015E28: @ 0x08015E28
 	push {r6, r7}
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	mov ip, r0
+	mov ip, r0      @ ip = p0
 	ldr r0, _08015E4C @ =gCurTask
 	ldr r0, [r0]
 	ldrh r0, [r0, #6]
@@ -56,7 +53,7 @@ _08015E6E:
 	lsls r0, r3, #1
 	adds r0, r0, r3
 	lsls r0, r0, #4
-	adds r6, r5, r0
+	adds r6, r5, r0     @ r6 = s
 	lsls r3, r3, #4
 	adds r0, r5, r3
 	adds r0, #0xcc
@@ -106,10 +103,10 @@ _08015ED0: .4byte gPlayer
 _08015ED4: .4byte sHeartOffsets
 _08015ED8:
 	ldr r3, _08015F3C @ =sHeartOffsets
-	mov r1, ip
+	mov r1, ip          @ r1 = ip = p0
 	lsls r4, r1, #1
 	adds r1, r4, r1
-	lsls r1, r1, #1
+	lsls r1, r1, #1     @ r1 = p0 * 6
 	movs r2, #0x82
 	lsls r2, r2, #1
 	adds r0, r5, r2
@@ -127,7 +124,7 @@ _08015ED8:
 	adds r0, r0, r1
 _08015F00:
 	str r0, [r7]
-	adds r7, r3, #0
+	adds r7, r3, #0     @ r7 = r3 = sHeartOffsets
 	ldr r0, _08015F40 @ =gUnknown_03005424
 	ldrh r1, [r0]
 	movs r0, #0x80
@@ -135,7 +132,7 @@ _08015F00:
 	cmp r0, #0
 	beq _08015F44
 	mov r3, sb
-	add r3, r8
+	add r3, r8      @ r3 = hearts->params[i].y
 	mov r2, ip
 	adds r1, r4, r2
 	lsls r1, r1, #1
@@ -181,7 +178,7 @@ _08015F44:
 	adds r0, r0, r1
 _08015F6C:
 	str r0, [r3]
-	mov r1, r8
+	mov r1, r8      @ r1 = r8 = i * 16
 	adds r0, r5, r1
 	adds r1, r0, #0
 	adds r1, #0xc8
