@@ -33,10 +33,10 @@ typedef struct {
 #define DEC_BE_INDEX(_bufferName) ADD_BE_INDEX(_bufferName, -1)
 
 // Ring Buffers storing the
-extern PlayerState sPlayerStateBuffer[BE_BUFFER_SIZE];
-extern Vec2_32 sPlayerPosBuffer[BE_BUFFER_SIZE];
-extern u8 sPlayerStateBufferIndex;
-extern u8 sPlayerPosBufferIndex;
+static PlayerState sPlayerStateBuffer[BE_BUFFER_SIZE] = { 0 };
+static Vec2_32 sPlayerPosBuffer[BE_BUFFER_SIZE] = { 0 };
+static u8 ALIGNED(4) sPlayerStateBufferIndex = 0;
+static u8 ALIGNED(4) sPlayerPosBufferIndex = 0;
 
 const u8 gUnknown_080D5674[4] = { 2, 4, 6, 0 };
 
