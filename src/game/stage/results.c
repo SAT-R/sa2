@@ -80,7 +80,6 @@ static void sub_8031138(u16 p0);
 void sub_8031314(void);
 static void DestroyStageResultsGfx(void);
 
-#if 01
 u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 {
     struct Task *t;
@@ -298,7 +297,6 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     return (u16)outro->unk16C;
 }
-#endif
 
 void Task_UpdateStageResults(void)
 {
@@ -665,21 +663,21 @@ void sub_8031314(void)
     u32 counter = outro->counter;
 
     if (counter > 28) {
-        u32 r0;
+        u32 x;
 
         if (counter < 45) {
-            r0 = (u16)(DISPLAY_WIDTH - ((counter - 29) * 15));
+            x = (u16)(DISPLAY_WIDTH - ((counter - 29) * 15));
         } else {
-            r0 = 3;
+            x = 3;
         }
 
         {
             s32 i = 0;
-            s32 r4 = (s16)r0;
+            s32 x2 = (s16)x;
             for (; i < ARRAY_COUNT(gUnknown_080D71CC); i++) {
                 Sprite *s = &outro->s1[i];
                 s32 match = gUnknown_080D71CC[i];
-                s->x = r4 + match;
+                s->x = x2 + match;
             }
         }
     }
