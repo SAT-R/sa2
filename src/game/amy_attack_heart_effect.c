@@ -197,75 +197,67 @@ void Task_8015CE4(void)
     }
 }
 
-#if 01
 void sub_8015E28(u16 p0)
 {
-    u8 i;
     AmyAtkHearts *hearts = TaskGetStructPtr(gCurTask);
+    u8 i = 0;
 
-    for (i = 0; i < ARRAY_COUNT(hearts->params); i++) {
-        if (hearts->params[i].count == 0) {
-            u32 prio;
-            // _08015E6E
-            Sprite *s = &hearts->sprHearts[i];
-            hearts->params[i].count = 0xFF;
-            hearts->params[i].x = gPlayer.x;
-            hearts->params[i].y = gPlayer.y;
+    while (hearts->params[i].count != 0) {
+        if (++i >= ARRAY_COUNT(hearts->params)) {
+            return;
+        }
+    }
 
-            if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-                hearts->params[i].x -= sHeartOffsets[hearts->kind][p0][1];
-            } else {
-                // _08015ED8
-                hearts->params[i].x += sHeartOffsets[hearts->kind][p0][1];
-            }
-            // _08015F00+2
+    if (i < ARRAY_COUNT(hearts->params)) {
+        Sprite *s = &hearts->sprHearts[i];
+        hearts->params[i].count = 0xFF;
+        hearts->params[i].x = gPlayer.x;
+        hearts->params[i].y = gPlayer.y;
 
-            if (GRAVITY_IS_INVERTED) {
-                hearts->params[i].y -= sHeartOffsets[hearts->kind][p0][2];
-            } else {
-                // _08015F44
-                hearts->params[i].y += sHeartOffsets[hearts->kind][p0][2];
-            }
+        if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
+            hearts->params[i].x -= sHeartOffsets[hearts->kind][p0][1] << 8;
+        } else {
+            hearts->params[i].x += sHeartOffsets[hearts->kind][p0][1] << 8;
+        }
 
-            hearts->params[i].unk8 = 0;
-            hearts->params[i].unkA = 0;
+        if (GRAVITY_IS_INVERTED) {
+            hearts->params[i].y -= sHeartOffsets[hearts->kind][p0][2] << 8;
+        } else {
+            hearts->params[i].y += sHeartOffsets[hearts->kind][p0][2] << 8;
+        }
 
-            s->graphics.dest = VramMalloc(4);
-            s->unk1A = 0x400;
-            s->graphics.size = 0;
-            s->graphics.anim = SA2_ANIM_HEART;
-            s->variant = 0;
-            s->animCursor = 0;
-            s->timeUntilNextFrame = 0;
-            s->prevVariant = -1;
-            gPlayer.unk90->s.animSpeed++;
-            s->palId = 0;
-            prio = SPRITE_FLAG(PRIORITY, 2);
-            s->unk10 = prio;
+        hearts->params[i].unk8 = 0;
+        hearts->params[i].unkA = 0;
 
-            if (GRAVITY_IS_INVERTED) {
-                s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
-            } else {
-                s->unk10 = prio;
-            }
+        s->graphics.dest = VramMalloc(4);
+        s->unk1A = 0x400;
+        s->graphics.size = 0;
+        s->graphics.anim = SA2_ANIM_HEART;
+        s->variant = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = gPlayer.unk90->s.animSpeed;
+        s->palId = 0;
+        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-            break;
+        if (GRAVITY_IS_INVERTED) {
+            SPRITE_FLAG_SET(s, Y_FLIP);
+        } else {
+            SPRITE_FLAG_SET_VALUE(s, PRIORITY, 2);
         }
     }
 }
-#endif
 
-#if 0 // Matches
 void TaskDestructor_8015FF0(struct Task *t)
 {
     AmyAtkHearts *hearts = TaskGetStructPtr(t);
-    
+
     u8 i;
-    for(i = 0; i < ARRAY_COUNT(hearts->params); i++) {
-        if(hearts->params[i].count != 0) {
+    for (i = 0; i < ARRAY_COUNT(hearts->params); i++) {
+        if (hearts->params[i].count != 0) {
             Sprite *s = &hearts->sprHearts[i];
             VramFree(s->graphics.dest);
         }
     }
 }
-#endif
