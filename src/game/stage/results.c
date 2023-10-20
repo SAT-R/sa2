@@ -668,7 +668,7 @@ void sub_8031314(void)
         u32 r0;
 
         if (counter < 45) {
-            r0 = (u16)(240 - ((counter - 29) * 15));
+            r0 = (u16)(DISPLAY_WIDTH - ((counter - 29) * 15));
         } else {
             r0 = 3;
         }
