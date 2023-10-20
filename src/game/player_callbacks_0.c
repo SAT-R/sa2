@@ -3,7 +3,9 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/amy_attack_heart_effect.h"
 #include "game/dust_effect_braking.h"
+#include "game/player_actions.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
 #include "game/parameters/characters.h"
@@ -49,8 +51,6 @@ void PlayerCB_8013C18(Player *p);
 void PlayerCB_8013C34(Player *p);
 void sub_8013C50(Player *p);
 void sub_8013CA0(Player *p);
-
-void sub_8015BD4(u16);
 
 void TaskDestructor_801F550(struct Task *);
 
@@ -325,7 +325,7 @@ void Task_8012034(void)
 {
     TaskStrc_8011C98 *strc = TaskGetStructPtr(gCurTask);
     Sprite *s = &strc->s;
-    TrickBoundPos pos;
+    Vec2_32 pos;
 
     if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.speedAirY < Q_24_8(2.0))
         || (gPlayer.unk64 != 36)) {
@@ -334,7 +334,10 @@ void Task_8012034(void)
         UpdateSpriteAnimation(s);
 
         strc->unk28 = ((strc->unk28 - 1) & 0x6);
-        sub_80157C8(&pos, strc->unk28);
+
+        // Get player's previous position 'unk28' frames ago
+        // and display it
+        GetPreviousPlayerPos(&pos, strc->unk28);
         s->x = Q_24_8_TO_INT(pos.x) - gCamera.x;
         s->y = Q_24_8_TO_INT(pos.y) - gCamera.y;
 
@@ -504,7 +507,7 @@ void PlayerCB_80123FC(Player *p)
         if (p->character == CHARACTER_SONIC) {
             sub_8011C98(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y));
         } else if (p->character == CHARACTER_AMY) {
-            sub_8015BD4(3);
+            CreateAmyAttackHeartEffect(3);
         }
     }
 }
@@ -2049,7 +2052,7 @@ void sub_8013F04(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    sub_8015BD4(0);
+    CreateAmyAttackHeartEffect(0);
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8013F60, p);
 }

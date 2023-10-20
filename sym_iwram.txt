@@ -73,10 +73,10 @@ build/sa2/src/core.o(.data);
 . = 0x000055E0; gNewInputCounters = .;
 . = 0x00005660; gWater = .;
 . = 0x000056A4; gUnknown_030056A4 = .;
-. = 0x000056B0; gUnknown_030056B0 = .;
-. = 0x000057B0; gUnknown_030057B0 = .;
-. = 0x00005830; gUnknown_03005830 = .;
-. = 0x00005834; gUnknown_03005834 = .;
+
+. = ALIGN(16); 
+build/sa2/src/game/boost_effect.o(.data);
+
 . = 0x0000583C; gUnknown_0300583C = .;
 . = 0x00005840; gUnknown_03005840 = .;
 . = 0x00005844; gUnknown_03005844 = .;

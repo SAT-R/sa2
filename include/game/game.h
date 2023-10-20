@@ -171,7 +171,6 @@ extern u32 gUnknown_030054A0;
 extern u32 gCheckpointTime; // Checkpoint timer?
 
 extern u8 gUnknown_03005438;
-extern u8 gUnknown_030055BC;
 
 struct MultiplayerPlayer {
     // TODO: Verify that this is Sprite!
@@ -558,13 +557,6 @@ typedef struct {
     /* 0x2C */ Sprite s;
 } TaskStrc_8011C98; /* size: 0x5C */
 
-typedef struct {
-    s32 x;
-    s32 y;
-} TrickBoundPos;
-
-extern void sub_80157C8(TrickBoundPos *pos, u8 index);
-
 extern struct UNK_3005510 gUnknown_03005510[16];
 
 struct Backgrounds {
@@ -624,9 +616,6 @@ void sub_801F550(struct Task *);
 void sub_80218E4(Player *);
 void sub_8023B5C(Player *, s8);
 void sub_8023260(Player *);
-
-// Something to do with entities
-extern void sub_8019CCC(u8, u8);
 
 // HandlePlayerDestroy?
 extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);

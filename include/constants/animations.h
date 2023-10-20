@@ -26,6 +26,8 @@
 #define SA2_CHAR_ANIM_JUMP_1             10
 #define SA2_CHAR_ANIM_JUMP_2             11
 #define SA2_CHAR_ANIM_FALLING_VULNERABLE 13
+#define SA2_CHAR_ANIM_14                 14
+#define SA2_CHAR_ANIM_15                 15
 #define SA2_CHAR_ANIM_16                 16
 
 // TODO: Rename. "These "Insta Shield" is true for Sonic, but not the other characters.
@@ -74,6 +76,7 @@
 #define SA2_CHAR_ANIM_68                                     68
 #define SA2_CHAR_ANIM_69                                     69
 #define SA2_CHAR_ANIM_70                                     70
+#define SA2_CHAR_ANIM_BOOST_PALETTE                          74
 #define SA2_CHAR_ANIM_80                                     80
 
 #define SA2_ANIM_SONIC_IDLE    0
@@ -404,7 +407,7 @@
 #define SA2_ANIM_VARIANT_DROWN_COUNTDOWN_0 5
 #define SA2_ANIM_STAGE_GOAL_SCORE_BONUS    871
 #define SA2_ANIM_BRAKING_DUST_EFFECT       872
-#define SA2_ANIM_BOOST_EFFECT              873
+#define SA2_ANIM_SONIC_BOOM_PARTICLES      873
 #define SA2_ANIM_MAIN_MENU                 874
 #define SA2_ANIM_VARIANT_MAIN_MENU_OPTIONS 3
 
@@ -576,6 +579,16 @@
 #define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_ROUND_WIN  0
 #define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_ROUND_LOSE 1
 #define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_ROUND_DRAW 2
+
+#define SA2_ANIM_MP_RESULT_JP   1101
+#define SA2_ANIM_MP_RESULT      1102
+#define SA2_ANIM_MP_RESULT_WIN  0
+#define SA2_ANIM_MP_RESULT_LOSE 1
+#define SA2_ANIM_MP_RESULT_DRAW 2
+#define SA2_ANIM_MP_RESULT_1ST  3
+#define SA2_ANIM_MP_RESULT_2ND  4
+#define SA2_ANIM_MP_RESULT_3RD  5
+#define SA2_ANIM_MP_RESULT_4TH  6
 
 // We can infer this Chao is Cheese, since they have a red bow
 #define SA2_ANIM_MP_CHEESE_WAVING                1103

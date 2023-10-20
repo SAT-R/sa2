@@ -80,12 +80,13 @@ SECTIONS
         build/sa2/src/game/water_effects.o(.text);
         build/sa2/src/game/player_callbacks_0.o(.text);
         build/sa2/asm/player_actor.o(.text);
-        build/sa2/asm/player_actions.o(.text);
+        build/sa2/src/game/boost_effect.o(.text);
+        build/sa2/src/game/amy_attack_heart_effect.o(.text);
         build/sa2/asm/player_mp_actor.o(.text);
         build/sa2/asm/player_mp_unknown_task.o(.text);
         build/sa2/src/game/multiplayer/player_unk_1.o(.text);
         build/sa2/asm/player_mp_indicators.o(.text);
-        build/sa2/asm/player_mp_finish_1.o(.text);
+        build/sa2/src/game/multiplayer/finish.o(.text);
         build/sa2/asm/player_mp_finish_2.o(.text);
         build/sa2/src/game/multiplayer/player_unk_2.o(.text);
         build/sa2/src/game/init.o(.text);
@@ -98,6 +99,7 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_5.o(.text);
         build/sa2/src/game/stage/background/zone_6.o(.text);
         build/sa2/asm/stage__background__zone_6.o(.text);
+        build/sa2/src/game/stage/background/zone_6_2.o(.text);
         build/sa2/src/game/stage/background/zone_7_1.o(.text);
         build/sa2/src/game/stage/background/zone_final.o(.text);
         build/sa2/src/game/stage/camera_destroy.o(.text);
@@ -264,7 +266,7 @@ SECTIONS
         build/sa2/src/game/time_attack/mode_select.o(.text);
         build/sa2/src/game/time_attack/lobby.o(.text);
         build/sa2/src/game/time_attack/results.o(.text);
-        build/sa2/src/game/boost_effect.o(.text);
+        build/sa2/src/game/boost_mode_particles.o(.text);
         build/sa2/src/game/sound_test.o(.text);
         build/sa2/src/game/title_screen.o(.text);
         build/sa2/src/game/backgrounds.o(.text);
@@ -330,10 +332,11 @@ SECTIONS
         build/sa2/src/game/water_effects.o(.rodata);
         build/sa2/src/game/player_callbacks_0.o(.rodata);
         build/sa2/asm/player_actor.o(.rodata);
-        build/sa2/asm/player_actions.o(.rodata);
+        build/sa2/src/game/boost_effect.o(.rodata);
+        build/sa2/src/game/amy_attack_heart_effect.o(.rodata);
         build/sa2/asm/player_mp_actor.o(.rodata);
         build/sa2/asm/player_mp_unknown_task.o(.rodata);
-        build/sa2/asm/player_mp_finish_1.o(.rodata);
+        build/sa2/src/game/multiplayer/finish.o(.rodata);
         build/sa2/asm/player_mp_finish_2.o(.rodata);
         build/sa2/src/game/game.o(.rodata);
         build/sa2/src/game/stage/camera.o(.rodata);

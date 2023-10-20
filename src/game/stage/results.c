@@ -319,7 +319,6 @@ void Task_UpdateStageResults(void)
             outro->ringBonusScore -= 100;
             INCREMENT_SCORE_A(100);
         }
-        // _08030AEE
 
         if (outro->spRingBonusScore != 0) {
             outro->spRingBonusScore -= 100;
@@ -348,25 +347,21 @@ void Task_UpdateStageResults(void)
                 }
             }
         }
-        // _08030CB8
 
         if ((gStageTime % 4u) == 0) {
             if ((outro->ringBonusScore != 0) || (outro->spRingBonusScore != 0)
                 || (outro->timeBonusScore != 0)) {
                 m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
-            } else if (outro->isCountingDone == 0) {
-                outro->isCountingDone = 1;
+            } else if (!outro->isCountingDone) {
+                outro->isCountingDone = TRUE;
                 m4aSongNumStart(SE_STAGE_RESULT_COUNTER_DONE);
             }
         }
     }
-    // _08030D3E
 
     if (counter > outro->unk16C + 309) {
         if (IS_FINAL_STAGE(gCurrentLevel)) {
-            // _08030D50+0xC
             if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
-                // _08030D68
                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
                     = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
                 WriteSaveGame();
@@ -383,7 +378,6 @@ void Task_UpdateStageResults(void)
                 return;
             }
         } else if (IS_EXTRA_STAGE(gCurrentLevel)) {
-            // _08030DD0
             if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
                 gCurrentLevel++;
                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
@@ -402,7 +396,6 @@ void Task_UpdateStageResults(void)
                 return;
             }
         } else {
-            // _08030E40
             if (NextTransitionFrame(&outro->transition) == 1) {
                 gBldRegs.bldY = 0x10;
                 gPlayer.moveState |= MOVESTATE_100000;
@@ -452,13 +445,11 @@ void Task_UpdateStageResults(void)
                                 }
                             }
                         } else {
-                            // _08030F54
                             CreateCourseSelectionScreen(
                                 gCurrentLevel,
                                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
                         }
                     } else {
-                        // _08030F6A
                         CreateCourseSelectionScreen(
                             gCurrentLevel,
                             gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 4);
@@ -466,14 +457,12 @@ void Task_UpdateStageResults(void)
                     WriteSaveGame();
                     return;
                 } else {
-                    // _08030F74
                     gCurrentLevel++;
                     if (gCurrentLevel
                         > gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
                         gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
                             = gCurrentLevel;
                     }
-                    // _08030F94
 
                     if ((gPlayer.moveState & MOVESTATE_8000000)
                         && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
@@ -502,7 +491,6 @@ void Task_UpdateStageResults(void)
                         return;
                     }
 
-                    // _08031030
                     TasksDestroyAll();
 
                     { // TODO: This is a macro!
@@ -518,7 +506,6 @@ void Task_UpdateStageResults(void)
                 }
             }
         }
-        // _0803106C
 
         if ((gPlayer.moveState & MOVESTATE_8000000)
             && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
@@ -676,21 +663,21 @@ void sub_8031314(void)
     u32 counter = outro->counter;
 
     if (counter > 28) {
-        u32 r0;
+        u32 x;
 
         if (counter < 45) {
-            r0 = (u16)(240 - ((counter - 29) * 15));
+            x = (u16)(DISPLAY_WIDTH - ((counter - 29) * 15));
         } else {
-            r0 = 3;
+            x = 3;
         }
 
         {
             s32 i = 0;
-            s32 r4 = (s16)r0;
+            s32 x2 = (s16)x;
             for (; i < ARRAY_COUNT(gUnknown_080D71CC); i++) {
                 Sprite *s = &outro->s1[i];
                 s32 match = gUnknown_080D71CC[i];
-                s->x = r4 + match;
+                s->x = x2 + match;
             }
         }
     }

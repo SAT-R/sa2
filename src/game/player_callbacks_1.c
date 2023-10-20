@@ -7,7 +7,8 @@
 #include "game/stage/music_manager.h"
 
 #include "game/game_6.h"
-#include "game/boost_effect.h" // incl. CreateBoostModeParticles
+#include "game/amy_attack_heart_effect.h"
+#include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
 #include "game/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/dust_effect_spindash.h" // CreateSpindashDustEffect
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
@@ -44,7 +45,6 @@ extern void sub_8013AD8(Player *);
 extern void PlayerCB_8013D18(Player *);
 extern void sub_8013F04(Player *);
 extern void sub_801583C(void);
-extern void sub_8015BD4(u16);
 extern void sub_801F488(void);
 
 extern s32 sub_8022F58(u8, Player *);
@@ -1840,7 +1840,7 @@ void sub_8028478(Player *p)
 /* Starting here, callbacks appear to have a different style,
    but they still use macros like PLAYERFN_UPDATE_POSITION */
 
-struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
+struct Task *sub_8028640(s32 x, s32 y, s32 p2)
 {
     struct Task *t;
     TaskStrc_801F15C *taskStrc;
@@ -1848,7 +1848,7 @@ struct Task *sub_8028640(s32 p0, s32 p1, s32 p2)
 
     u16 p2_ = p2;
 
-    t = sub_801F15C(p0, p1, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
+    t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
 
     taskStrc = TaskGetStructPtr(t);
     taskStrc->playerAnim = gPlayer.anim;
@@ -2374,7 +2374,7 @@ bool32 sub_80294F4(Player *p)
                 case CHARACTER_AMY: {
                     p->moveState |= MOVESTATE_20000000;
                     p->unk64 = 18;
-                    sub_8015BD4(2);
+                    CreateAmyAttackHeartEffect(2);
 
                     song = SE_AMY_SUPER_HAMMER_ATTACK;
                 sub_80294F4_PlaySfx:

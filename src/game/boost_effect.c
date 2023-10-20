@@ -1,218 +1,306 @@
 #include "global.h"
 #include "core.h"
-#include "game/game.h"
-#include "sprite.h"
-#include "task.h"
+#include "flags.h"
 #include "malloc_vram.h"
-#include "game/math.h"
-#include "game/boost_effect.h"
-#include "trig.h"
+#include "data/sprite_data.h"
+#include "game/game.h"
+#include "game/player_actions.h"
 
 #include "constants/animations.h"
+#include "constants/anim_commands.h"
+#include "constants/zones.h"
 
-struct BoostModeParticles {
-    Sprite unk0;
-    Sprite unk30;
-    u16 unk60;
-    s16 unk62[16][2];
-    s16 unkA2[16][2];
-    s16 unkE2;
-    s16 unkE4;
-    u16 fillerE6;
+// TODO: Rename struct!
+typedef struct {
+    /* 0x00 */ AnimId anim;
+    /* 0x02 */ u16 variant;
+    /* 0x04 */ s32 flags;
+    /* 0x08 */ s32 moveState;
+    /* 0x0C */ u16 unkC;
+    /* 0x0E */ u8 animSpeed;
+} PlayerState;
+
+#define BE_BUFFER_SIZE 16
+
+#define BE_RING_INDEX(_bufferName, _num)                                                \
+    ((_bufferName##Index + (_num)) % (unsigned)ARRAY_COUNT(_bufferName))
+
+#define ADD_BE_INDEX(_bufferName, _num)                                                 \
+    _bufferName##Index = BE_RING_INDEX(_bufferName, (_num))
+
+#define INC_BE_INDEX(_bufferName) ADD_BE_INDEX(_bufferName, 1)
+
+#define DEC_BE_INDEX(_bufferName) ADD_BE_INDEX(_bufferName, -1)
+
+// Ring Buffers storing the
+static PlayerState sPlayerStateBuffer[BE_BUFFER_SIZE] = { 0 };
+static Vec2_32 sPlayerPosBuffer[BE_BUFFER_SIZE] = { 0 };
+static u8 ALIGNED(4) sPlayerStateBufferIndex = 0;
+static u8 ALIGNED(4) sPlayerPosBufferIndex = 0;
+
+const u8 gUnknown_080D5674[4] = { 2, 4, 6, 0 };
+
+const AnimId sCharacterPalettesBoostEffect[NUM_CHARACTERS] = {
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_SONIC),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_CREAM),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_TAILS),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_KNUCKLES),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_AMY),
 };
 
-void sub_8089E54(void);
-void sub_808A234(struct Task *);
-
-void CreateBoostModeParticles(void)
+void sub_801561C(void)
 {
-    s32 i;
-    struct Task *t = TaskCreate(sub_8089E54, 0xE8, 0x5050, 0, sub_808A234);
-    struct BoostModeParticles *particles = TaskGetStructPtr(t);
-    Sprite *s = &particles->unk0;
+    s16 i;
+    AnimId oldPlayerAnim = gPlayer.anim;
+    u16 oldPlayerVariant = gPlayer.variant;
+    u32 oldPlayerMovestate = gPlayer.moveState;
+    UNK_3005A70 *unk5A70 = gPlayer.unk90;
+    u32 oldPlayerAnimSpeed = unk5A70->s.animSpeed;
+    u32 oldPlayerUnk10 = unk5A70->s.unk10;
+    u16 r6 = unk5A70->unk0[0];
 
-    particles->unk60 = 0;
-    s->graphics.dest = VramMalloc(1);
-    s->graphics.anim = SA2_ANIM_BOOST_EFFECT;
-    s->variant = 0;
-    s->graphics.size = 0;
-    s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(8);
-    s->unk10 = 0x2000;
-    s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
-    s->palId = 0;
-    UpdateSpriteAnimation(s);
+    oldPlayerMovestate &= ~MOVESTATE_80000000;
 
-    s = &particles->unk30;
-    s->graphics.dest = VramMalloc(1);
-    s->graphics.anim = SA2_ANIM_BOOST_EFFECT;
-    s->variant = 1;
-    s->graphics.size = 0;
-    s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(8);
-    s->unk10 = 0x2000;
-    s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
-    s->palId = 0;
+    if (GRAVITY_IS_INVERTED) {
+        oldPlayerMovestate |= MOVESTATE_80000000;
+    }
 
-    SeedRng(gPlayer.x, gCamera.x);
+    for (i = 0; i < (s32)ARRAY_COUNT(sPlayerStateBuffer); i++) {
+        sPlayerStateBuffer[i].anim = oldPlayerAnim;
+        sPlayerStateBuffer[i].variant = oldPlayerVariant;
+        sPlayerStateBuffer[i].moveState = oldPlayerMovestate;
+        sPlayerStateBuffer[i].animSpeed = oldPlayerAnimSpeed;
+        sPlayerStateBuffer[i].flags = oldPlayerUnk10;
+        sPlayerStateBuffer[i].unkC = r6;
+    }
 
-    for (i = 0; i < 16; i++) {
-        u8 temp1;
-        s32 rand, var;
-        particles->unk62[i][1] = (Random() & 0x7FF) + 0x1000;
-        if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-#ifndef NON_MATCHING
-            u32 z = (u32)gPlayer.rotation << 0x18;
-            temp1 = (z + 0xC0000000) >> 0x18;
-            asm("" ::: "memory");
-#else
-            temp1 = gPlayer.rotation + 0xC0;
-#endif
-            particles->unk62[i][0]
-                = ((gSineTable[((gPlayer.rotation + 0x80) & 0xff) * 4 + 0x100] >> 6)
-                   * particles->unk62[i][1])
-                >> 8;
-            particles->unk62[i][1]
-                = ((gSineTable[((gPlayer.rotation + 0x80) & 0xff) * 4] >> 6)
-                   * particles->unk62[i][1])
-                >> 8;
+    sPlayerStateBufferIndex = 0;
+}
 
-        } else {
-            temp1 = gPlayer.rotation + 0x40;
-            particles->unk62[i][0] = ((gSineTable[(gPlayer.rotation) * 4 + 0x100] >> 6)
-                                      * particles->unk62[i][1])
-                >> 8;
-            particles->unk62[i][1]
-                = ((gSineTable[(gPlayer.rotation) * 4] >> 6) * particles->unk62[i][1])
-                >> 8;
-        }
-#ifndef NON_MATCHING
-        {
-            register s32 ip asm("ip");
-            rand = ((s32(*)(void))Random)();
-            ip = 0x3ff;
-            particles->unkA2[i][0]
-                = ((gSineTable[temp1 * 4 + 0x100] >> 6) * (var = (rand & ip) + 0x200))
-                >> 8;
-            particles->unkA2[i][1] = ((gSineTable[temp1 * 4] >> 6) * var) >> 8;
-        }
-#else
-        rand = Random();
-        particles->unkA2[i][0]
-            = ((gSineTable[temp1 * 4 + 0x100] >> 6) * (var = (rand & 0x3ff) + 0x200))
-            >> 8;
-        particles->unkA2[i][1] = ((gSineTable[temp1 * 4] >> 6) * var) >> 8;
-#endif
+void sub_80156D0(void)
+{
+    Player *p = &gPlayer;
+    u32 oldMovestate = p->moveState;
+    u32 i;
+
+    INC_BE_INDEX(sPlayerStateBuffer);
+    i = sPlayerStateBufferIndex;
+
+    oldMovestate &= ~MOVESTATE_80000000;
+
+    if (GRAVITY_IS_INVERTED) {
+        oldMovestate |= MOVESTATE_80000000;
+    }
+
+    sPlayerStateBuffer[i].anim = p->anim;
+    sPlayerStateBuffer[i].variant = p->variant;
+    sPlayerStateBuffer[i].moveState = oldMovestate;
+    sPlayerStateBuffer[i].animSpeed = p->unk90->s.animSpeed;
+    sPlayerStateBuffer[i].flags = p->unk90->s.unk10;
+    sPlayerStateBuffer[i].unkC = p->unk90->unk0[0];
+}
+
+void sub_8015750(void)
+{
+    s32 playerX = gPlayer.x;
+    s32 playerY = gPlayer.y;
+    s16 i;
+
+    for (i = 0; i < (s32)ARRAY_COUNT(sPlayerPosBuffer); i++) {
+        sPlayerPosBuffer[i].x = playerX;
+        sPlayerPosBuffer[i].y = playerY;
+    }
+
+    sPlayerPosBufferIndex = 0;
+}
+
+void sub_8015790(void)
+{
+    u32 index;
+
+    INC_BE_INDEX(sPlayerPosBuffer);
+    index = sPlayerPosBufferIndex;
+    sPlayerPosBuffer[index].x = gPlayer.x;
+    sPlayerPosBuffer[index].y = gPlayer.y;
+}
+
+void GetPreviousPlayerPos(Vec2_32 *pos, u8 pastFrameDelta)
+{
+    s32 index = BE_RING_INDEX(sPlayerPosBuffer, -pastFrameDelta);
+    pos->x = sPlayerPosBuffer[index].x;
+    pos->y = sPlayerPosBuffer[index].y;
+}
+
+void GetPreviousFramePlayerState(PlayerState *state, u8 pastFrameDelta)
+{
+    s32 index = BE_RING_INDEX(sPlayerStateBuffer, -pastFrameDelta);
+    state->anim = sPlayerStateBuffer[index].anim;
+    state->variant = sPlayerStateBuffer[index].variant;
+    state->moveState = sPlayerStateBuffer[index].moveState;
+    state->animSpeed = sPlayerStateBuffer[index].animSpeed;
+    state->flags = sPlayerStateBuffer[index].flags;
+    state->unkC = sPlayerStateBuffer[index].unkC;
+}
+
+typedef struct {
+    /* 0x00 */ SpriteTransform transform;
+    /* 0x0C */ Sprite s;
+    /* 0x3C */ u8 filler3C[0x8];
+    /* 0x44 */ Vec2_32 pos;
+    /* 0x4C */ PlayerState plState;
+    /* 0x5C */ u8 unk5C;
+    /* 0x5D */ u8 unk5D;
+} PlayerActions; /* size: 0x60 */
+
+void Task_80159C8(void);
+void TaskDestructor_8015B50(struct Task *);
+
+static inline void sub_8015B64_inline(AnimId anim, u16 palId)
+{
+    s32 *pAnim = *gAnimations[anim];
+
+    if (*pAnim++ == ANIM_CMD__GET_PALETTE) {
+        u32 animPalId;
+        u16 numColors, insertOffset;
+
+        animPalId = *pAnim++;
+        insertOffset = (*pAnim >> 16);
+        insertOffset += palId;
+        numColors = *pAnim % 256u;
+
+        DmaCopy32(3, &gUnknown_03002794->palettes[animPalId * 16],
+                  &gObjPalette[insertOffset], numColors * sizeof(u16));
+
+        gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }
 }
 
-void sub_808A0A4(void);
-
-void sub_8089E54(void)
+void sub_801583C(void)
 {
-    s32 i;
-    struct BoostModeParticles *particles = TaskGetStructPtr(gCurTask);
     Sprite *s;
-    UpdateSpriteAnimation(&particles->unk0);
+    u8 i;
 
-    for (i = 0; i < 8; i++) {
-        if (i & 1) {
-            particles->unk62[i][0] += particles->unkA2[i][0];
-            particles->unk62[i][1] += particles->unkA2[i][1];
-        } else {
-            particles->unk62[i][0] -= particles->unkA2[i][0];
-            particles->unk62[i][1] -= particles->unkA2[i][1];
+    if (IS_SINGLE_PLAYER && !gUnknown_030055BC && !IS_BOSS_STAGE(gCurrentLevel)) {
+        gUnknown_030055BC = TRUE;
+
+        for (i = 0; i < 3; i++) {
+            struct Task *t = TaskCreate(Task_80159C8, sizeof(PlayerActions), 0x4000, 0,
+                                        TaskDestructor_8015B50);
+            PlayerActions *actions = TaskGetStructPtr(t);
+
+            actions->unk5C = i;
+            actions->unk5D = 0;
+
+            s = &actions->s;
+            s->graphics.dest = VramMalloc(64);
+            s->unk1A = SPRITE_OAM_ORDER(16);
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->prevVariant = -1;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+            s->hitboxes[0].index = -1;
+            s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+            s->palId = 1;
+            s->graphics.anim = 0;
+            s->variant = 0;
+            s->x = 0;
+            s->y = 0;
+
+            actions->transform.height = 0x100;
         }
 
-        particles->unkA2[i][0] = (particles->unkA2[i][0] * 200) >> 8;
-        particles->unkA2[i][1] = (particles->unkA2[i][1] * 200) >> 8;
-        s = &particles->unk0;
-        s->x = (gPlayer.x >> 8) - gCamera.x + (particles->unk62[i][0] >> 8);
-        s->y = (gPlayer.y >> 8) - gCamera.y + (particles->unk62[i][1] >> 8);
-        DisplaySprite(s);
-    }
-
-    if (particles->unk60++ > 8) {
-        s->variant = 1;
-        SeedRng(gPlayer.x, gCamera.x);
-
-        for (i = 0; i < 16; i++) {
-            u8 temp;
-            s16 rand;
-            particles->unkE2 = 0x80;
-            particles->unkE4 = 0;
-            if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-                temp = Random();
-                temp += 64;
-                particles->unkE2
-                    = (gSineTable[((gPlayer.rotation + 0x80) & 0xFF) * 4 + 0x100] >> 6)
-                    << 2;
-                particles->unkE4
-                    = (gSineTable[((gPlayer.rotation + 0x80) & 0xFF) * 4] >> 6) << 2;
-            } else {
-                temp = Random();
-                particles->unkE2 = (gSineTable[(gPlayer.rotation * 4) + 0x100] >> 6)
-                    << 2;
-                particles->unkE4 = (gSineTable[gPlayer.rotation * 4] >> 6) << 2;
-            }
-
-            rand = (Random() & 0x3FF);
-            particles->unkA2[i][0]
-                = ((gSineTable[temp * 4 + 0x100] >> 6) * (rand + 0x600)) >> 8;
-            particles->unkA2[i][1] = ((rand + 0x600) * (gSineTable[temp * 4] >> 6)) >> 8;
+        if (s->palId != 0) {
+            sub_8015B64_inline(sCharacterPalettesBoostEffect[gPlayer.character],
+                               s->palId);
         }
-
-        gCurTask->main = sub_808A0A4;
     }
 }
 
-void sub_808A0A4(void)
+void Task_80159C8(void)
 {
-    s32 i;
-    struct BoostModeParticles *particles = TaskGetStructPtr(gCurTask);
-    Sprite *s = &particles->unk0;
+    PlayerActions *actions = TaskGetStructPtr(gCurTask);
+    Sprite *s = &actions->s;
+    SpriteTransform *transform = &actions->transform;
 
-    if (particles->unk60++ > 0x18) {
-        TaskDestroy(gCurTask);
-        return;
+#ifndef NON_MATCHING
+    register u32 r8 asm("r8") = gUnknown_080D5674[actions->unk5C];
+#else
+    u32 r8 = gUnknown_080D5674[actions->unk5C];
+#endif
+
+    if (!(gPlayer.moveState & MOVESTATE_4000000)) {
+        if (gPlayer.moveState & MOVESTATE_8000000) {
+            TaskDestroy(gCurTask);
+            gUnknown_030055BC = FALSE;
+            return;
+        }
     }
 
-    for (i = 0; i < 16; i++) {
-        particles->unk62[i][0] += particles->unkA2[i][0];
-        particles->unk62[i][1] += particles->unkA2[i][1];
+    if (PLAYER_IS_ALIVE) {
+        if (gPlayer.unk5A || (gPlayer.moveState & MOVESTATE_BOOST_EFFECT_ON)) {
+#ifndef NON_MATCHING
+            register PlayerState *pls asm("r0") = &actions->plState;
+#else
+            PlayerState *pls = &actions->plState;
+#endif
+            GetPreviousFramePlayerState(pls, r8);
 
-        particles->unk62[i][0] -= particles->unkE2;
-        particles->unk62[i][1] -= particles->unkE4;
+            s->graphics.anim = actions->plState.anim;
+            s->variant = actions->plState.variant;
+            s->animSpeed = actions->plState.animSpeed;
+            s->unk10 = actions->plState.flags;
 
-        particles->unkA2[i][0] = (particles->unkA2[i][0] * 200) >> 8;
-        particles->unkA2[i][1] = (particles->unkA2[i][1] * 200) >> 8;
+            transform->rotation = actions->plState.unkC;
+            s->unk10 |= SPRITE_FLAG(18, 1);
 
-        particles->unkE2 = (particles->unkE2 * 0x101) >> 8;
-        particles->unkE4 = (particles->unkE4 * 0x101) >> 8;
-    }
+            GetPreviousPlayerPos(&actions->pos, r8);
+            s->x = Q_24_8_TO_INT(actions->pos.x) - gCamera.x;
+            s->y = Q_24_8_TO_INT(actions->pos.y) - gCamera.y;
 
-    for (i = 0; i < 8; i++) {
-        s = &particles->unk0;
-        if (particles->unk60 & 1) {
-            s->x = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i][0] >> 8);
-            s->y = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i][1] >> 8);
+            transform->x = s->x;
+            transform->y = s->y;
             UpdateSpriteAnimation(s);
 
-        } else {
-            s->x = ((gPlayer.x >> 8) - gCamera.x) + (particles->unk62[i + 8][0] >> 8);
-            s->y = ((gPlayer.y >> 8) - gCamera.y) + (particles->unk62[i + 8][1] >> 8);
+            if (SPRITE_FLAG_GET(s, ROT_SCALE_ENABLE)) {
+                u32 moveState;
+
+                SPRITE_FLAG_CLEAR(s, ROT_SCALE);
+                s->unk10 |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+
+                if (actions->plState.moveState & MOVESTATE_FACING_LEFT) {
+                    transform->width = 0x100;
+                } else {
+                    transform->width = 0xFF00;
+                }
+
+                moveState = actions->plState.moveState & MOVESTATE_80000000;
+                actions->plState.moveState = moveState;
+
+                if (moveState) {
+                    transform->width = -transform->width;
+                }
+
+                sub_8004860(s, transform);
+            } else {
+                SPRITE_FLAG_CLEAR(s, ROT_SCALE_ENABLE);
+            }
+
+            if (++actions->unk5D > 2) {
+                actions->unk5D = 0;
+            }
+
+            if (actions->unk5D == actions->unk5C) {
+                DisplaySprite(s);
+            }
         }
-        DisplaySprite(s);
     }
 }
 
-void sub_808A234(struct Task *t)
+void TaskDestructor_8015B50(struct Task *t)
 {
-    struct BoostModeParticles *particles = TaskGetStructPtr(t);
-    Sprite *s = &particles->unk0;
-    VramFree(s->graphics.dest);
-    s++;
-    VramFree(s->graphics.dest);
+    PlayerActions *actions = TaskGetStructPtr(t);
+    VramFree(actions->s.graphics.dest);
 }
+
+void sub_8015B64(AnimId anim, u16 palId) { sub_8015B64_inline(anim, palId); }
