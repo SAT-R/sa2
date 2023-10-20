@@ -300,11 +300,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 }
 #endif
 
-// (98.99%) https://decomp.me/scratch/19nrW
-// NOTE: Only non-matching thing is TasksDestroyAll() not
-//       getting initialized like in the original.
-NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
-         void Task_UpdateStageResults(void))
+void Task_UpdateStageResults(void)
 {
     StageResults *outro = TaskGetStructPtr(gCurTask);
     u32 counter = outro->counter;
@@ -325,7 +321,6 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
             outro->ringBonusScore -= 100;
             INCREMENT_SCORE_A(100);
         }
-        // _08030AEE
 
         if (outro->spRingBonusScore != 0) {
             outro->spRingBonusScore -= 100;
@@ -354,7 +349,6 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
                 }
             }
         }
-        // _08030CB8
 
         if ((gStageTime % 4u) == 0) {
             if ((outro->ringBonusScore != 0) || (outro->spRingBonusScore != 0)
@@ -366,13 +360,10 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
             }
         }
     }
-    // _08030D3E
 
     if (counter > outro->unk16C + 309) {
         if (IS_FINAL_STAGE(gCurrentLevel)) {
-            // _08030D50+0xC
             if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
-                // _08030D68
                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
                     = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
                 WriteSaveGame();
@@ -389,7 +380,6 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
                 return;
             }
         } else if (IS_EXTRA_STAGE(gCurrentLevel)) {
-            // _08030DD0
             if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
                 gCurrentLevel++;
                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
@@ -408,7 +398,6 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
                 return;
             }
         } else {
-            // _08030E40
             if (NextTransitionFrame(&outro->transition) == 1) {
                 gBldRegs.bldY = 0x10;
                 gPlayer.moveState |= MOVESTATE_100000;
@@ -458,13 +447,11 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
                                 }
                             }
                         } else {
-                            // _08030F54
                             CreateCourseSelectionScreen(
                                 gCurrentLevel,
                                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
                         }
                     } else {
-                        // _08030F6A
                         CreateCourseSelectionScreen(
                             gCurrentLevel,
                             gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 4);
@@ -472,14 +459,12 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
                     WriteSaveGame();
                     return;
                 } else {
-                    // _08030F74
                     gCurrentLevel++;
                     if (gCurrentLevel
                         > gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
                         gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
                             = gCurrentLevel;
                     }
-                    // _08030F94
 
                     if ((gPlayer.moveState & MOVESTATE_8000000)
                         && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
@@ -508,7 +493,6 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
                         return;
                     }
 
-                    // _08031030
                     TasksDestroyAll();
 
                     { // TODO: This is a macro!
@@ -524,7 +508,6 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
                 }
             }
         }
-        // _0803106C
 
         if ((gPlayer.moveState & MOVESTATE_8000000)
             && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
@@ -549,7 +532,6 @@ NONMATCH("asm/non_matching/game/stage/outro/Task_UpdateStageResults.inc",
         sub_8031138(0);
     }
 }
-END_NONMATCH
 
 void sub_80310F0(void)
 {
