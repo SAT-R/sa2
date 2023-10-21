@@ -27,7 +27,7 @@ void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 {
     struct Task *t = TaskCreate(Task_Hammerhead, sizeof(Enemy_Hammerhead), 0x4040, 0,
                                 TaskDestructor_Hammerhead);
-    Enemy_Hammerhead *hammerhead = TaskGetStructPtr(t);
+    Enemy_Hammerhead *hammerhead = TASK_DATA(t);
     Sprite *s = &hammerhead->s;
     hammerhead->base.regionX = spriteRegionX;
     hammerhead->base.regionY = spriteRegionY;
@@ -51,7 +51,7 @@ void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 static void Task_Hammerhead(void)
 {
     Player *p = &gPlayer;
-    Enemy_Hammerhead *hammerhead = TaskGetStructPtr(gCurTask);
+    Enemy_Hammerhead *hammerhead = TASK_DATA(gCurTask);
     Sprite *s = &hammerhead->s;
     MapEntity *me = hammerhead->base.me;
     u32 unk4C;
@@ -125,7 +125,7 @@ static void sub_8056EDC(Enemy_Hammerhead *hammerhead)
 
 static void TaskDestructor_Hammerhead(struct Task *t)
 {
-    Enemy_Hammerhead *hammerhead = TaskGetStructPtr(t);
+    Enemy_Hammerhead *hammerhead = TASK_DATA(t);
     Sprite *s = &hammerhead->s;
     VramFree(s->graphics.dest);
 

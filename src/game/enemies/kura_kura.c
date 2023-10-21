@@ -30,7 +30,7 @@ void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_8052024, sizeof(Sprite_KuraKura), 0x4050, 0,
                                 TaskDestructor_8052264);
-    Sprite_KuraKura *kk = TaskGetStructPtr(t);
+    Sprite_KuraKura *kk = TASK_DATA(t);
     Sprite *s = &kk->s;
     kk->unkB0 = 0;
     kk->unkAC = 0;
@@ -67,7 +67,7 @@ void sub_805213C(Sprite_KuraKura *kk);
 
 void Task_8052024(void)
 {
-    Sprite_KuraKura *kk = TaskGetStructPtr(gCurTask);
+    Sprite_KuraKura *kk = TASK_DATA(gCurTask);
     Sprite *s = &kk->s;
     MapEntity *me = kk->base.me;
 
@@ -115,7 +115,7 @@ void sub_805213C(Sprite_KuraKura *kk)
 
 void TaskDestructor_8052264(struct Task *t)
 {
-    Sprite_KuraKura *kk = TaskGetStructPtr(t);
+    Sprite_KuraKura *kk = TASK_DATA(t);
     VramFree(kk->s.graphics.dest);
     VramFree(kk->s1.graphics.dest);
     VramFree(kk->s2.graphics.dest);

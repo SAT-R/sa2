@@ -17,7 +17,7 @@ struct Task *CreateStageUnknownTask(void)
 {
     struct Task *t = TaskCreate(Task_CreateStageUnknownTask, sizeof(StageUnkTask),
                                 0x2000, 0, TaskDestructor_CreateStageUnknownTask);
-    StageUnkTask *ut = TaskGetStructPtr(t);
+    StageUnkTask *ut = TASK_DATA(t);
 
     ut->unk6 = 120;
     ut->unk8 = 200;
@@ -44,7 +44,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc",
     u32 sinIndex;
     s32 someCos;
 
-    StageUnkTask *ut = TaskGetStructPtr(gCurTask);
+    StageUnkTask *ut = TASK_DATA(gCurTask);
 
     if (ut->unkB != 0) {
         // _08009984

@@ -38,7 +38,7 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     u8 i;
     struct Task *t
         = TaskCreate(sub_8057F80, sizeof(Sprite_GejiGeji), 0x4040, 0, sub_8058480);
-    Sprite_GejiGeji *gg = TaskGetStructPtr(t);
+    Sprite_GejiGeji *gg = TASK_DATA(t);
 
     Sprite *s = &gg->s;
     gg->base.regionX = spriteRegionX;
@@ -85,7 +85,7 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 static void sub_8057F80(void)
 {
     u8 i;
-    Sprite_GejiGeji *gg = TaskGetStructPtr(gCurTask);
+    Sprite_GejiGeji *gg = TASK_DATA(gCurTask);
     MapEntity *me;
     Vec2_32 pos;
 
@@ -163,7 +163,7 @@ static void sub_8057F80(void)
 static void sub_8058264(void)
 {
     u8 i;
-    Sprite_GejiGeji *gg = TaskGetStructPtr(gCurTask);
+    Sprite_GejiGeji *gg = TASK_DATA(gCurTask);
     Sprite *s = &gg->s;
     MapEntity *me = gg->base.me;
 
@@ -220,7 +220,7 @@ static void sub_8058264(void)
 
 static void sub_8058480(struct Task *t)
 {
-    Sprite_GejiGeji *gg = TaskGetStructPtr(t);
+    Sprite_GejiGeji *gg = TASK_DATA(t);
 
     VramFree(gg->s.graphics.dest);
     VramFree(gg->s2.graphics.dest);

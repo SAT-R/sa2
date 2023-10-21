@@ -35,7 +35,7 @@ void CreateEntity_Buzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     if (DIFFICULTY_LEVEL_IS_NOT_EASY_AND_ZONE_IS_NOT_1) {
         struct Task *t = TaskCreate(Task_BuzzerMain, sizeof(Sprite_Buzzer), 0x4030, 0,
                                     TaskDestructor_Buzzer);
-        Sprite_Buzzer *buzzer = TaskGetStructPtr(t);
+        Sprite_Buzzer *buzzer = TASK_DATA(t);
         Sprite *s = &buzzer->s;
         buzzer->base.regionX = spriteRegionX;
         buzzer->base.regionY = spriteRegionY;
@@ -63,7 +63,7 @@ void CreateEntity_Buzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
 
 static void Task_BuzzerMain(void)
 {
-    Sprite_Buzzer *buzzer = TaskGetStructPtr(gCurTask);
+    Sprite_Buzzer *buzzer = TASK_DATA(gCurTask);
     Sprite *s = &buzzer->s;
     MapEntity *me = buzzer->base.me;
     Vec2_32 pos;
@@ -141,7 +141,7 @@ static void Task_BuzzerMain(void)
 
 static void sub_80533B4(void)
 {
-    Sprite_Buzzer *buzzer = TaskGetStructPtr(gCurTask);
+    Sprite_Buzzer *buzzer = TASK_DATA(gCurTask);
     Sprite *s = &buzzer->s;
     MapEntity *me = buzzer->base.me;
     Vec2_32 pos;
@@ -166,7 +166,7 @@ static void sub_80533B4(void)
 
 static void sub_80534F0(void)
 {
-    Sprite_Buzzer *buzzer = TaskGetStructPtr(gCurTask);
+    Sprite_Buzzer *buzzer = TASK_DATA(gCurTask);
     Sprite *s = &buzzer->s;
     MapEntity *me = buzzer->base.me;
     Vec2_32 pos;
@@ -189,7 +189,7 @@ static void sub_80534F0(void)
 
 static void sub_8053620(void)
 {
-    Sprite_Buzzer *buzzer = TaskGetStructPtr(gCurTask);
+    Sprite_Buzzer *buzzer = TASK_DATA(gCurTask);
     Sprite *s = &buzzer->s;
     MapEntity *me = buzzer->base.me;
     Vec2_32 pos;
@@ -218,6 +218,6 @@ static void sub_8053620(void)
 
 static void TaskDestructor_Buzzer(struct Task *t)
 {
-    Sprite_Buzzer *buzzer = TaskGetStructPtr(t);
+    Sprite_Buzzer *buzzer = TASK_DATA(t);
     VramFree(buzzer->s.graphics.dest);
 }

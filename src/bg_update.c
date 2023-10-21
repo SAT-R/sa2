@@ -44,7 +44,7 @@ void InitBackground(Background *background)
     }
 
     gUnknown_03001800[gUnknown_0300287C] = background;
-    gUnknown_0300287C = (gUnknown_0300287C + 1) & 0xF;
+    gUnknown_0300287C = (gUnknown_0300287C + 1) % ARRAY_COUNT(gUnknown_03001800);
 }
 
 // (85.37%) https://decomp.me/scratch/617Jb

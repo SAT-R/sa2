@@ -18,13 +18,13 @@ typedef struct {
 #define DBG_UI_REQUIRED_TILES (2 * SA2_ANIM_NUM_ASCII_CHARS)
 #define DBG_UI_CHAR_SIZE      (2 * TILE_SIZE_4BPP)
 #define DGB_UI_GET_CHAR_FROM_TASK(task, ascii)                                          \
-    (Sprite *)&(((DebugTextPrinter *)TaskGetStructPtr(task))->chars[(ascii) - '!'])
+    (Sprite *)&(((DebugTextPrinter *)TASK_DATA(task))->chars[(ascii) - '!'])
 
 struct Task *Debug_CreateAsciiTask(s16 x, s16 y)
 {
     struct Task *t = TaskCreate(Task_802D4B4, sizeof(DebugTextPrinter), 0xE100, 0,
                                 TaskDestructor_802D4B8);
-    DebugTextPrinter *printer = TaskGetStructPtr(t);
+    DebugTextPrinter *printer = TASK_DATA(t);
     u32 i;
 
     for (i = 0; i < SA2_ANIM_NUM_ASCII_CHARS; i++) {
@@ -133,7 +133,7 @@ void Task_802D4B4(void) { }
 
 void TaskDestructor_802D4B8(struct Task *t)
 {
-    DebugTextPrinter *printer = TaskGetStructPtr(t);
+    DebugTextPrinter *printer = TASK_DATA(t);
 
     // First Sprite in 'chars' holds the allocation pointer
     Sprite *s = &printer->chars[0];

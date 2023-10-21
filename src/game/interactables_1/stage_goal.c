@@ -38,7 +38,7 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0,
                                 TaskDestructor_8062E7C);
-    Sprite_StageGoal *stageGoal = TaskGetStructPtr(t);
+    Sprite_StageGoal *stageGoal = TASK_DATA(t);
     Sprite *s = &stageGoal->s;
 
     stageGoal->base.regionX = spriteRegionX;
@@ -68,7 +68,7 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
 static void Task_StageGoalMain(void)
 {
-    Sprite_StageGoal *stageGoal = TaskGetStructPtr(gCurTask);
+    Sprite_StageGoal *stageGoal = TASK_DATA(gCurTask);
     Sprite *s = &stageGoal->s;
     MapEntity *me = stageGoal->base.me;
 
@@ -97,7 +97,7 @@ static void Task_StageGoalMain(void)
 
 static void Task_StageGoalAnimate(void)
 {
-    Sprite_StageGoal *stageGoal = TaskGetStructPtr(gCurTask);
+    Sprite_StageGoal *stageGoal = TASK_DATA(gCurTask);
     Sprite *s = &stageGoal->s;
     MapEntity *me = stageGoal->base.me;
 
@@ -119,7 +119,7 @@ static void Task_StageGoalAnimate(void)
 
 static void Task_StageGoalToggleMain(void)
 {
-    Sprite_StageGoalToggle *stageGoalToggle = TaskGetStructPtr(gCurTask);
+    Sprite_StageGoalToggle *stageGoalToggle = TASK_DATA(gCurTask);
     MapEntity *me = stageGoalToggle->base.me;
 
     u8 spriteX = stageGoalToggle->base.spriteX;
@@ -192,7 +192,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
     struct UNK_3005510 *unk5510;
     u32 count = 0;
     struct MultiplayerPlayer *player
-        = TaskGetStructPtr(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+        = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__40;
     gPlayer.unk32 = 0;
 
@@ -202,7 +202,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
              && gMultiplayerPlayerTasks[j] != NULL;
              j++) {
             struct MultiplayerPlayer *otherPlayer
-                = TaskGetStructPtr(gMultiplayerPlayerTasks[j]);
+                = TASK_DATA(gMultiplayerPlayerTasks[j]);
             if (otherPlayer->unk5C & 1) {
                 count++;
             }
@@ -280,7 +280,7 @@ static void sub_8062D44(void)
         struct Task **tasks;
         for (j = 0, tasks = gMultiplayerPlayerTasks;
              j < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[j] != NULL; j++) {
-            struct MultiplayerPlayer *otherPlayer = TaskGetStructPtr(tasks[j]);
+            struct MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[j]);
             if (otherPlayer->unk54 & 0x100) {
                 count++;
             }
@@ -293,7 +293,7 @@ static void sub_8062D44(void)
             if (gMultiplayerPlayerTasks[0] != NULL) {
                 for (i = 0, tasks = gMultiplayerPlayerTasks;
                      i < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[i] != NULL; i++) {
-                    struct MultiplayerPlayer *otherPlayer = TaskGetStructPtr(tasks[i]);
+                    struct MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[i]);
                     if (!(otherPlayer->unk5C & 1) && gGameMode != GAME_MODE_TEAM_PLAY) {
                         otherPlayer->unk5C |= 1;
                         gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
@@ -313,7 +313,7 @@ void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteR
 {
     struct Task *t = TaskCreate(Task_StageGoalToggleMain, sizeof(Sprite_StageGoalToggle),
                                 0x2010, 0, NULL);
-    Sprite_StageGoalToggle *stageGoalToggle = TaskGetStructPtr(t);
+    Sprite_StageGoalToggle *stageGoalToggle = TASK_DATA(t);
 
     stageGoalToggle->base.regionX = spriteRegionX;
     stageGoalToggle->base.regionY = spriteRegionY;
@@ -324,6 +324,6 @@ void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteR
 
 static void TaskDestructor_8062E7C(struct Task *t)
 {
-    Sprite_StageGoal *stageGoal = TaskGetStructPtr(t);
+    Sprite_StageGoal *stageGoal = TASK_DATA(t);
     VramFree(stageGoal->s.graphics.dest);
 }

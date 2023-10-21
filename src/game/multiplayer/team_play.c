@@ -139,7 +139,7 @@ void CreateMultiplayerTeamPlayScreen(void)
 
     t = TaskCreate(sub_805CB34, sizeof(struct MultiplayerTeamPlayScreen), 0x3000, 0,
                    NULL);
-    teamPlayScreen = TaskGetStructPtr(t);
+    teamPlayScreen = TASK_DATA(t);
     teamPlayScreen->unk310 = 0;
     teamPlayScreen->unk312 = 0;
     teamPlayScreen->unk314 = 0;
@@ -277,7 +277,7 @@ static void sub_805CB34(void)
 
     MultiPakHeartbeat();
 
-    teamPlayScreen = TaskGetStructPtr(gCurTask);
+    teamPlayScreen = TASK_DATA(gCurTask);
     gWinRegs[5] = 0x3F;
     gBldRegs.bldCnt = 0x3F48;
     gBldRegs.bldAlpha = 0x810;
@@ -306,7 +306,7 @@ static void sub_805CC34(void)
 
     MultiPakHeartbeat();
 
-    teamPlayScreen = TaskGetStructPtr(gCurTask);
+    teamPlayScreen = TASK_DATA(gCurTask);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT && !teamPlayScreen->unk317) {
         if (gPressedKeys & DPAD_LEFT) {
@@ -515,7 +515,7 @@ static void sub_805D1F8(void)
     Sprite *s;
     union MultiSioData *packet;
 
-    teamPlayScreen = TaskGetStructPtr(gCurTask);
+    teamPlayScreen = TASK_DATA(gCurTask);
     if (teamPlayScreen->unk31F == 0) {
         if (gRepeatedKeys & DPAD_RIGHT) {
             if (teamPlayScreen->unk31E == 0) {
@@ -633,7 +633,7 @@ static void sub_805D1F8(void)
 
 static void sub_805D5C8(void)
 {
-    struct MultiplayerTeamPlayScreen *teamPlayScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerTeamPlayScreen *teamPlayScreen = TASK_DATA(gCurTask);
     teamPlayScreen->unk31E = SIO_MULTI_CNT->id & 1;
     teamPlayScreen->unk31F = 0;
     gCurTask->main = sub_805D1F8;

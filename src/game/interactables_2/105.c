@@ -31,7 +31,7 @@ void CreateEntity_Interactable105(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 {
     struct Task *t = TaskCreate(Task_Interactable105, sizeof(Sprite_IA105), 0x1FF0, 0,
                                 TaskDestructor_Interactable105);
-    Sprite_IA105 *ia105 = TaskGetStructPtr(t);
+    Sprite_IA105 *ia105 = TASK_DATA(t);
 
     ia105->posX = TO_WORLD_POS(me->x, spriteRegionX);
     ia105->posY = TO_WORLD_POS(me->y, spriteRegionY);
@@ -71,7 +71,7 @@ static bool32 sub_80809B8(Sprite_IA105 *ia105)
 
 static void Task_Interactable105(void)
 {
-    Sprite_IA105 *ia105 = TaskGetStructPtr(gCurTask);
+    Sprite_IA105 *ia105 = TASK_DATA(gCurTask);
 
     if (sub_80809B8(ia105)) {
         sub_800CBA4(&gPlayer);

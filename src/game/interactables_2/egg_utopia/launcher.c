@@ -82,7 +82,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_807DE98, sizeof(Sprite_EggUtopia_Launcher), 0x2010,
                                 0, TaskDestructor_807DF38);
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(t);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(t);
 
     launcher->kind = kind;
     launcher->posX = TO_WORLD_POS(me->x, spriteRegionX);
@@ -185,7 +185,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
 static void Task_807DBF0(void)
 {
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER)
         sub_807E0D0(launcher);
@@ -322,7 +322,7 @@ static bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
 // static
 void Task_807DE98(void)
 {
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER) {
         sub_807E0D0(launcher);
@@ -341,7 +341,7 @@ void Task_807DE98(void)
 
 static void Task_807DEEC(void)
 {
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER) {
         sub_807E0D0(launcher);
@@ -357,7 +357,7 @@ static void Task_807DEEC(void)
 // static
 void TaskDestructor_807DF38(struct Task *t)
 {
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(t);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(t);
     VramFree(launcher->s.graphics.dest);
 }
 
@@ -480,7 +480,7 @@ void CreateEntity_Launcher_Right_GUp(MapEntity *me, u16 spriteRegionX, u16 sprit
 
 static void Task_807E16C(void)
 {
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(gCurTask);
 
     if (!IS_SINGLE_PLAYER) {
         sub_807E0D0(launcher);

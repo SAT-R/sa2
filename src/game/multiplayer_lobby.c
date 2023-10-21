@@ -105,7 +105,7 @@ void CreateMultiplayerLobbyScreen(void)
     struct Task *t
         = TaskCreate(Task_FadeInOrHandleExit, sizeof(struct MultiplayerLobbyScreen),
                      0x1000, 0, MultiplayerLobbyScreenOnDestroy);
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(t);
 
     lobbyScreen->fadeInComplete = FALSE;
     lobbyScreen->cursor = CURSOR_YES;
@@ -223,7 +223,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
 static void Task_FadeInOrHandleExit(void)
 {
     u8 i;
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
     union MultiSioData *send;
     MultiPakHeartbeat();
 
@@ -287,7 +287,7 @@ static void Task_FadeInOrHandleExit(void)
 static void ScreenMain(void)
 {
     u8 i;
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
 #ifndef NON_MATCHING
     register union MultiSioData *recv asm("r4"), *send;
 #else
@@ -392,7 +392,7 @@ static void ScreenMain(void)
 static void Task_NotifyExit(void)
 {
     u8 i;
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
 #ifndef NON_MATCHING
     register union MultiSioData *send asm("r4");
 #else
@@ -440,7 +440,7 @@ static void Task_NotifyExit(void)
 
 static void Task_ListenForExit(void)
 {
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
 #ifndef NON_MATCHING
     register union MultiSioData *recv, *send asm("r4");
 #else
@@ -541,7 +541,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
 static void MultiplayerLobbyScreenOnDestroy(struct Task *t)
 {
     u8 i;
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(t);
     VramFree(lobbyScreen->chao.graphics.dest);
 
     for (i = 0; i < 3; i++) {

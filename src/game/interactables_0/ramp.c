@@ -27,7 +27,7 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s32 temp2;
     struct Task *t
         = TaskCreate(Task_Ramp, sizeof(Sprite_Ramp), 0x2010, 0, TaskDestructor_Ramp);
-    Sprite_Ramp *ramp = TaskGetStructPtr(t);
+    Sprite_Ramp *ramp = TASK_DATA(t);
     Sprite *s = &ramp->s;
 
     ramp->base.regionX = spriteRegionX;
@@ -73,7 +73,7 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 static void Task_Ramp(void)
 {
     Player *player = &gPlayer;
-    Sprite_Ramp *ramp = TaskGetStructPtr(gCurTask);
+    Sprite_Ramp *ramp = TASK_DATA(gCurTask);
     Sprite *s = &ramp->s;
     MapEntity *me = ramp->base.me;
 
@@ -185,6 +185,6 @@ static void Task_Ramp(void)
 
 static void TaskDestructor_Ramp(struct Task *t)
 {
-    Sprite_Ramp *ramp = TaskGetStructPtr(t);
+    Sprite_Ramp *ramp = TASK_DATA(t);
     VramFree(ramp->s.graphics.dest);
 }

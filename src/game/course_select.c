@@ -313,7 +313,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
                        CourseSelectionScreenOnDestroy);
     }
 
-    coursesScreen = TaskGetStructPtr(t);
+    coursesScreen = TASK_DATA(t);
     coursesScreen->cameraScrollX = 0;
 
     courseIndex = LEVEL_TO_COURSE_INDEX(currentLevel);
@@ -547,7 +547,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
 
 static void Task_FadeInIntro(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX + CAM_MAX_X_SPEED);
 
     // Wait for fade
@@ -581,7 +581,7 @@ static void Task_FadeInIntro(void)
 
 static void Task_FadeInIntroAndStartUnlockCutScene(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
@@ -610,7 +610,7 @@ static void Task_FadeInIntroAndStartUnlockCutScene(void)
 
 static void Task_UnlockCutSceneNewPathAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
     bool8 animDone;
     coursesScreen->zoneNameAnimFrame++;
@@ -629,7 +629,7 @@ static void Task_UnlockCutSceneNewPathAnim(void)
 
 static void Task_UnlockCutSceneScrollAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX - CAM_MAX_X_SPEED);
 
     if (coursesScreen->cameraScrollX == MIN_CAMERA_SCROLL_X
@@ -673,7 +673,7 @@ static void Task_UnlockCutSceneScrollAnim(void)
 
 static void Task_CourseSelectMain(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
     Sprite *zoneName = &coursesScreen->zoneName;
     struct TransitionState *fadeTransition = &coursesScreen->screenFade;
@@ -790,7 +790,7 @@ static void Task_CourseSelectMain(void)
 
 static void Task_ScrollToPreviousLevelAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
     union MultiSioData *send;
     MultiPakHeartbeat();
@@ -833,7 +833,7 @@ static void Task_ScrollToPreviousLevelAnim(void)
 
 static void Task_ScrollToNextLevelAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
     union MultiSioData *send;
 
@@ -879,7 +879,7 @@ static void Task_ScrollToNextLevelAnim(void)
 
 static void Task_DisplayZoneNameAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
@@ -899,7 +899,7 @@ static void Task_DisplayZoneNameAnim(void)
 
 static void Task_UnlockCutSceneScrollToNextCourseAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
@@ -927,7 +927,7 @@ static void Task_UnlockCutSceneScrollToNextCourseAnim(void)
 
 static void Task_UnlockCutSceneNextCoursePause(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     s8 unk4BE = coursesScreen->zoneNameAnimFrame + 1;
     struct TransitionState *fadeTransition = &coursesScreen->screenFade;
 
@@ -1085,7 +1085,7 @@ static void DestroyUI(struct CourseSelectionScreen *coursesScreen)
 
 static void Task_FadeOutAndExitToSelectedLevel(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
     if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
@@ -1107,7 +1107,7 @@ static void Task_FadeOutAndExitToSelectedLevel(void)
 
 static void Task_FadeOutAndExitToSelectedMultiplayerLevel(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
     if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
@@ -1122,7 +1122,7 @@ static void Task_FadeOutAndExitToSelectedMultiplayerLevel(void)
 
 static void Task_FadeOutAndExitToCharacterSelect(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
     if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
@@ -1151,7 +1151,4 @@ static void RenderZoneMapPathsAndUI(struct CourseSelectionScreen *coursesScreen)
     RenderUI(coursesScreen);
 }
 
-static void CourseSelectionScreenOnDestroy(struct Task *t)
-{
-    DestroyUI(TaskGetStructPtr(t));
-}
+static void CourseSelectionScreenOnDestroy(struct Task *t) { DestroyUI(TASK_DATA(t)); }

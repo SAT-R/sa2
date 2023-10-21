@@ -28,7 +28,7 @@ static void TaskDestructor_Interactable085(struct Task *);
 
 static void Task_Interactable085(void)
 {
-    Sprite_IA85 *ia85 = TaskGetStructPtr(gCurTask);
+    Sprite_IA85 *ia85 = TASK_DATA(gCurTask);
     ia85->unk46 = SIN_24_8(ia85->unk49 * 4) * 2;
     ia85->unk49 += 2;
     if (sub_807C424(ia85)) {
@@ -49,7 +49,7 @@ static void sub_807C4EC(Sprite_IA85 *);
 static void sub_807C2E0(void)
 {
     s16 r1;
-    Sprite_IA85 *ia85 = TaskGetStructPtr(gCurTask);
+    Sprite_IA85 *ia85 = TASK_DATA(gCurTask);
     ia85->unk46 = SIN_24_8(ia85->unk49 * 4) * 16;
     sub_807C52C(ia85);
 
@@ -80,7 +80,7 @@ static void sub_807C504(Sprite_IA85 *);
 
 static void sub_807C360(void)
 {
-    Sprite_IA85 *ia85 = TaskGetStructPtr(gCurTask);
+    Sprite_IA85 *ia85 = TASK_DATA(gCurTask);
     ia85->unk49 += 8;
     if (ia85->unk49 == 0x80) {
         sub_807C504(ia85);
@@ -201,15 +201,15 @@ static void sub_807C5E0(Sprite_IA85 *ia85)
 
 static Sprite *sub_807C5F8(void)
 {
-    UNK_807C5F8_Parent *parent = TaskGetStructPtr(TaskGetParent(gCurTask));
-    UNK_807C5F8 *unk807 = TaskGetStructPtr(parent->unk18);
+    UNK_807C5F8_Parent *parent = TASK_DATA(TASK_PARENT(gCurTask));
+    UNK_807C5F8 *unk807 = TASK_DATA(parent->unk18);
     return &unk807->sprite1;
 }
 
 static void sub_807C614(void)
 {
-    UNK_807C5F8_Parent *parent = TaskGetStructPtr(TaskGetParent(gCurTask));
-    UNK_807C5F8 *unk807 = TaskGetStructPtr(parent->unk18);
+    UNK_807C5F8_Parent *parent = TASK_DATA(TASK_PARENT(gCurTask));
+    UNK_807C5F8 *unk807 = TASK_DATA(parent->unk18);
 
     unk807->unk60++;
 }
@@ -219,7 +219,7 @@ void CreateEntity_PropellerSpring(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 {
     struct Task *t = TaskCreate(Task_Interactable085, 0x4C, 0x2010, 0,
                                 TaskDestructor_Interactable085);
-    Sprite_IA85 *ia85 = TaskGetStructPtr(t);
+    Sprite_IA85 *ia85 = TASK_DATA(t);
     ia85->unk3C = TO_WORLD_POS(me->x, spriteRegionX);
     ia85->unk40 = TO_WORLD_POS(me->y, spriteRegionY);
 
@@ -239,7 +239,7 @@ static void sub_807C72C(Sprite_IA85 *);
 
 static void sub_807C6E4(void)
 {
-    Sprite_IA85 *ia85 = TaskGetStructPtr(gCurTask);
+    Sprite_IA85 *ia85 = TASK_DATA(gCurTask);
     sub_807C3DC(ia85);
 
     if (++ia85->unk49 > 0) {
@@ -267,7 +267,7 @@ static void sub_807C7A0(Sprite_IA85 *);
 
 static void sub_807C744(void)
 {
-    Sprite_IA85 *ia85 = TaskGetStructPtr(gCurTask);
+    Sprite_IA85 *ia85 = TASK_DATA(gCurTask);
     ia85->unk46 = SIN_24_8(ia85->unk49 * 4) * 16;
     sub_807C3DC(ia85);
 

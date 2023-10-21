@@ -153,7 +153,7 @@ void sub_808207C(void)
         gMultiSioSend.pat0.unk3 = gMultiplayerLanguage;
     }
 
-    resultsScreen = TaskGetStructPtr(gCurTask);
+    resultsScreen = TASK_DATA(gCurTask);
 #ifndef NON_MATCHING
     while (0)
         ;
@@ -271,7 +271,7 @@ void sub_80823FC(void)
     u32 i;
     s32 val2 = 0;
     u8 val = FALSE;
-    struct MultiplayerSinglePakResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     union MultiSioData *packet;
 
     gMultiplayerConnections = ((gMultiSioStatusFlags & MULTI_SIO_ALL_CONNECTED) >> 8);
@@ -359,7 +359,7 @@ void sub_8082788(void);
 
 void sub_8082630(void)
 {
-    struct MultiplayerSinglePakResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     resultsScreen->unk430 += 0x20;
     sub_8082788();
 
@@ -376,7 +376,7 @@ void sub_8082630(void)
 void sub_808267C(void)
 {
     union MultiSioData *packet;
-    struct MultiplayerSinglePakResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(gCurTask);
 
     packet = &gMultiSioRecv[0];
 
@@ -432,7 +432,7 @@ void sub_8082788(void)
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
 
     MultiPakHeartbeat();
-    resultsScreen = TaskGetStructPtr(gCurTask);
+    resultsScreen = TASK_DATA(gCurTask);
 
     for (i = 0; i < 4; i++) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i + 8))) {
@@ -513,7 +513,7 @@ void sub_8082788(void)
 
 void sub_8082AA8(void)
 {
-    struct MultiplayerSinglePakResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(gCurTask);
 
     sub_8082788();
     if (resultsScreen->unk430++ > 0x1E) {
@@ -531,7 +531,7 @@ struct MultiplayerSinglePakResultsScreen *sub_8082B1C(s16 mode)
 {
     struct Task *t = TaskCreate(
         sub_808207C, sizeof(struct MultiplayerSinglePakResultsScreen), 0x2000, 0, NULL);
-    struct MultiplayerSinglePakResultsScreen *resultsScreen = TaskGetStructPtr(t);
+    struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(t);
 
     resultsScreen->unk434 = mode;
     resultsScreen->unk430 = 0;

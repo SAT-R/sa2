@@ -60,7 +60,7 @@ static const u16 sFluteSfx[NUM_GERMAN_FLUTE_KINDS] = {
 
 static void sub_8076928(void)
 {
-    Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
+    Sprite_GermanFlute *flute = TASK_DATA(gCurTask);
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         sub_8076CF4(flute);
@@ -109,7 +109,7 @@ static void sub_80769E0(void)
 {
     s32 res;
     s32 r1;
-    Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
+    Sprite_GermanFlute *flute = TASK_DATA(gCurTask);
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         sub_8076CF4(flute);
@@ -139,7 +139,7 @@ static void Task_8076A6C(void)
 {
     s32 res;
     s32 r1;
-    Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
+    Sprite_GermanFlute *flute = TASK_DATA(gCurTask);
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         sub_8076CF4(flute);
@@ -286,7 +286,7 @@ void CreateEntity_GermanFlute(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 {
     struct Task *t = TaskCreate(Task_GermanFlute, sizeof(Sprite_GermanFlute), 0x2010, 0,
                                 TaskDestructor_GermanFlute);
-    Sprite_GermanFlute *flute = TaskGetStructPtr(t);
+    Sprite_GermanFlute *flute = TASK_DATA(t);
     s32 posX, posY;
 
     posX = TO_WORLD_POS(me->x, spriteRegionX);
@@ -306,7 +306,7 @@ void CreateEntity_GermanFlute(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
 static void Task_GermanFlute(void)
 {
-    Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
+    Sprite_GermanFlute *flute = TASK_DATA(gCurTask);
     if (sub_8076BE4(flute)) {
         sub_8076B84(flute);
     }
@@ -318,7 +318,7 @@ static void Task_GermanFlute(void)
 
 static void Task_8076DE8(void)
 {
-    Sprite_GermanFlute *flute = TaskGetStructPtr(gCurTask);
+    Sprite_GermanFlute *flute = TASK_DATA(gCurTask);
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         sub_8076CF4(flute);
     }

@@ -102,7 +102,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
 
     t = TaskCreate(Task_8094360, 0xC8, 0x3100, 0, TaskDestructor_80945A0);
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
 
     scene->unkBC = 0;
     scene->unkC0 = 0xF0;
@@ -208,7 +208,7 @@ void sub_809449C(void);
 void Task_8094360(void)
 {
     Background *background = NULL;
-    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
 
     if (scene->unkBD == 0) {
         if (scene->unkBF > 1) {
@@ -260,7 +260,7 @@ void sub_8094530(void);
 
 void sub_809449C(void)
 {
-    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unkB0;
     transition->unk2 = 2;
 
@@ -277,7 +277,7 @@ void sub_8094570(void);
 
 void sub_80944EC(void)
 {
-    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unkB0;
     transition->unk2 = 1;
 
@@ -292,7 +292,7 @@ void sub_80944EC(void)
 
 void sub_8094530(void)
 {
-    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
     sub_80945A4(scene);
     if (scene->unkC0 != 0) {
         scene->unkC0--;
@@ -304,7 +304,7 @@ void sub_8094530(void)
 
 void sub_8094570(void)
 {
-    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
     if (scene->unkC0 != 0) {
         scene->unkC0--;
     } else {

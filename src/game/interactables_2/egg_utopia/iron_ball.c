@@ -34,7 +34,7 @@ void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IA95), 0x2010, 0,
                                 TaskDestructor_Interactable095);
-    Sprite_IA95 *ia95 = TaskGetStructPtr(t);
+    Sprite_IA95 *ia95 = TASK_DATA(t);
     Sprite *s;
     ia95->unk44 = 0;
     ia95->unk48 = 0;
@@ -113,7 +113,7 @@ static void sub_807EFC4(Sprite_IA95 *ia95)
 
 static void Task_Interactable095Main(void)
 {
-    Sprite_IA95 *ia95 = TaskGetStructPtr(gCurTask);
+    Sprite_IA95 *ia95 = TASK_DATA(gCurTask);
 
     sub_807EFC4(ia95);
 
@@ -130,7 +130,7 @@ static void Task_Interactable095Main(void)
 
 static void TaskDestructor_Interactable095(struct Task *t)
 {
-    Sprite_IA95 *ia95 = TaskGetStructPtr(t);
+    Sprite_IA95 *ia95 = TASK_DATA(t);
     VramFree(ia95->s.graphics.dest);
 }
 

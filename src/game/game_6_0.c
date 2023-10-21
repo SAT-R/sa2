@@ -49,7 +49,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     t = TaskCreate(Task_8023FC0, sizeof(Game_6_0_Task), 0x3000, 0,
                    TaskDestructor_802A07C);
     p->spriteTask = t;
-    gt = TaskGetStructPtr(t);
+    gt = TASK_DATA(t);
     gt->unk0 = unk60;
     gt->unk4 = 0;
 

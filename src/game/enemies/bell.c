@@ -27,7 +27,7 @@ void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 {
     struct Task *t = TaskCreate(Task_BellMain, sizeof(Sprite_Bell), 0x4080, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Bell *bell = TaskGetStructPtr(t);
+    Sprite_Bell *bell = TASK_DATA(t);
     Sprite *s = &bell->s;
     bell->unk4C = 120;
     bell->base.regionX = spriteRegionX;
@@ -48,7 +48,7 @@ void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 
 static void Task_BellMain(void)
 {
-    Sprite_Bell *bell = TaskGetStructPtr(gCurTask);
+    Sprite_Bell *bell = TASK_DATA(gCurTask);
     Sprite *s = &bell->s;
     MapEntity *me = bell->base.me;
 
@@ -85,7 +85,7 @@ static void Task_BellMain(void)
 
 void sub_8054D20(void)
 {
-    Sprite_Bell *bell = TaskGetStructPtr(gCurTask);
+    Sprite_Bell *bell = TASK_DATA(gCurTask);
     Sprite *s = &bell->s;
     MapEntity *me = bell->base.me;
     Vec2_32 pos;

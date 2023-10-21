@@ -129,7 +129,7 @@ void TaskDestroy(struct Task *task)
                 }
 
                 if (task == gNextTask) {
-                    gNextTask = TaskGetNext(task);
+                    gNextTask = TASK_NEXT(task);
                 }
 
                 prev = TASK_PTR(task->prev);
@@ -138,7 +138,7 @@ void TaskDestroy(struct Task *task)
                 ((struct Task *)next)->prev = prev;
 
                 if (task->data != (IwramData)NULL) {
-                    IwramFree(TaskGetStructPtr(task));
+                    IwramFree(TASK_DATA(task));
                 }
 
                 gTaskPtrs[--gNumTasks] = task;

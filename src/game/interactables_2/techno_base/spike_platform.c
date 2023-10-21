@@ -48,7 +48,7 @@ void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     Sprite *s;
     struct Task *t = TaskCreate(Task_Interactable078, sizeof(Sprite_IA78), 0x2010, 0,
                                 TaskDestructor_Interactable078);
-    Sprite_IA78 *ia78 = TaskGetStructPtr(t);
+    Sprite_IA78 *ia78 = TASK_DATA(t);
 
     ia78->base.me = me;
     ia78->base.regionX = spriteRegionX;
@@ -228,7 +228,7 @@ static u32 sub_807AF0C(Sprite_IA78 *ia78)
 
 static void Task_Interactable078(void)
 {
-    Sprite_IA78 *ia78 = TaskGetStructPtr(gCurTask);
+    Sprite_IA78 *ia78 = TASK_DATA(gCurTask);
     sub_807ACF4(ia78, 0);
     sub_807AE60(ia78);
 
@@ -247,7 +247,7 @@ static void Task_Interactable078(void)
 
 static void TaskDestructor_Interactable078(struct Task *t)
 {
-    Sprite_IA78 *ia78 = TaskGetStructPtr(t);
+    Sprite_IA78 *ia78 = TASK_DATA(t);
     VramFree(ia78->s.graphics.dest);
 }
 

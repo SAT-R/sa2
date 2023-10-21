@@ -20,7 +20,7 @@ static void Task_JumpSequenceReverse(void);
 
 static void Task_GappedLoopForwardsMain(void)
 {
-    Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(gCurTask);
+    Sprite_GappedLoop *gappedLoop = TASK_DATA(gCurTask);
     MapEntity *me = gappedLoop->base.me;
     u16 spriteX = gappedLoop->base.spriteX;
     u16 regionX = gappedLoop->base.regionX;
@@ -59,7 +59,7 @@ static void Task_GappedLoopForwardsMain(void)
 
 static void Task_JumpSequenceForwards(void)
 {
-    Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(gCurTask);
+    Sprite_GappedLoop *gappedLoop = TASK_DATA(gCurTask);
     MapEntity *me = gappedLoop->base.me;
     u16 spriteX = gappedLoop->base.spriteX;
     u16 regionX = gappedLoop->base.regionX;
@@ -101,7 +101,7 @@ static void Task_JumpSequenceForwards(void)
 
 static void Task_GappedLoopReverseMain(void)
 {
-    Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(gCurTask);
+    Sprite_GappedLoop *gappedLoop = TASK_DATA(gCurTask);
     MapEntity *me = gappedLoop->base.me;
     u16 spriteX = gappedLoop->base.spriteX;
     u16 regionX = gappedLoop->base.regionX;
@@ -140,7 +140,7 @@ static void Task_GappedLoopReverseMain(void)
 
 static void Task_JumpSequenceReverse(void)
 {
-    Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(gCurTask);
+    Sprite_GappedLoop *gappedLoop = TASK_DATA(gCurTask);
     MapEntity *me = gappedLoop->base.me;
     u16 spriteX = gappedLoop->base.spriteX;
     u16 regionX = gappedLoop->base.regionX;
@@ -184,7 +184,7 @@ void CreateEntity_GappedLoop_Start(MapEntity *me, u16 spriteRegionX, u16 spriteR
 {
     struct Task *t = TaskCreate(Task_GappedLoopForwardsMain, sizeof(Sprite_GappedLoop),
                                 0x2000, 0, NULL);
-    Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(t);
+    Sprite_GappedLoop *gappedLoop = TASK_DATA(t);
     gappedLoop->base.regionX = spriteRegionX;
     gappedLoop->base.regionY = spriteRegionY;
     gappedLoop->base.me = me;
@@ -201,7 +201,7 @@ void CreateEntity_GappedLoop_End(MapEntity *me, u16 spriteRegionX, u16 spriteReg
 {
     struct Task *t = TaskCreate(Task_GappedLoopReverseMain, sizeof(Sprite_GappedLoop),
                                 0x2000, 0, NULL);
-    Sprite_GappedLoop *gappedLoop = TaskGetStructPtr(t);
+    Sprite_GappedLoop *gappedLoop = TASK_DATA(t);
     gappedLoop->base.regionX = spriteRegionX;
     gappedLoop->base.regionY = spriteRegionY;
     gappedLoop->base.me = me;

@@ -957,7 +957,7 @@ bool32 sub_8077840(Sprite_Pipe_Horn *pipe)
 
 void sub_80778AC(void)
 {
-    Sprite_Pipe_Horn *pipe = TaskGetStructPtr(gCurTask);
+    Sprite_Pipe_Horn *pipe = TASK_DATA(gCurTask);
 
     if (sub_8077840(pipe)) {
         sub_80778E4(pipe);
@@ -1013,7 +1013,7 @@ void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX,
 {
     struct Task *t = TaskCreate(sub_80778AC, sizeof(Sprite_Pipe_Horn), 0x2010, 0,
                                 TaskDestructor_Pipe);
-    Sprite_Pipe_Horn *pipe = TaskGetStructPtr(t);
+    Sprite_Pipe_Horn *pipe = TASK_DATA(t);
 
     pipe->kind = me->d.sData[0];
     pipe->me = me;
@@ -1027,7 +1027,7 @@ void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX,
 
 void sub_8077A3C(void)
 {
-    Sprite_Pipe_Horn *pipe = TaskGetStructPtr(gCurTask);
+    Sprite_Pipe_Horn *pipe = TASK_DATA(gCurTask);
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         Player_ClearMovestate_IsInScriptedSequence();
@@ -1057,7 +1057,7 @@ void sub_8077AAC(Sprite_Pipe_Horn *horn)
 
 void sub_8077ABC(void)
 {
-    Sprite_Pipe_Horn *horn = TaskGetStructPtr(gCurTask);
+    Sprite_Pipe_Horn *horn = TASK_DATA(gCurTask);
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         Player_ClearMovestate_IsInScriptedSequence();
         gCurTask->main = Task_FrenchHorn_8077C04;
@@ -1128,7 +1128,7 @@ bool32 sub_8077B98(Sprite_Pipe_Horn *horn)
 
 void Task_FrenchHorn_8077C04(void)
 {
-    Sprite_Pipe_Horn *horn = TaskGetStructPtr(gCurTask);
+    Sprite_Pipe_Horn *horn = TASK_DATA(gCurTask);
 
     if (sub_8077B98(horn)) {
         sub_8077C3C(horn);
@@ -1190,7 +1190,7 @@ void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteR
 {
     struct Task *t = TaskCreate(Task_FrenchHorn_8077C04, sizeof(Sprite_Pipe_Horn),
                                 0x2010, 0, TaskDestructor_FrenchHorn);
-    Sprite_Pipe_Horn *horn = TaskGetStructPtr(t);
+    Sprite_Pipe_Horn *horn = TASK_DATA(t);
 
     horn->kind = me->d.sData[0];
     horn->me = me;

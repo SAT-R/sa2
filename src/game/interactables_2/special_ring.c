@@ -37,7 +37,7 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
             = TaskCreate(Task_Interactable_SpecialRing, sizeof(Sprite_SpecialRing),
                          0x4040, 0, TaskDestructor_Interactable_SpecialRing);
 
-        Sprite_SpecialRing *ring = TaskGetStructPtr(t);
+        Sprite_SpecialRing *ring = TASK_DATA(t);
         Sprite *s;
 
         ring->posX = TO_WORLD_POS(me->x, spriteRegionX);
@@ -99,7 +99,7 @@ static bool32 sub_8081010(Sprite_SpecialRing *ring)
 
 static void Task_Interactable_SpecialRing(void)
 {
-    Sprite_SpecialRing *ring = TaskGetStructPtr(gCurTask);
+    Sprite_SpecialRing *ring = TASK_DATA(gCurTask);
 
     if (gPlayer.character == CHARACTER_CREAM) {
         sub_80122DC(Q_24_8(ring->posX), Q_24_8(ring->posY));
@@ -118,7 +118,7 @@ static void Task_Interactable_SpecialRing(void)
 
 static void TaskDestructor_Interactable_SpecialRing(struct Task *t)
 {
-    Sprite_SpecialRing *ring = TaskGetStructPtr(t);
+    Sprite_SpecialRing *ring = TASK_DATA(t);
     void *gfx = ring->displayed.graphics.dest;
     VramFree(gfx);
 }
@@ -173,7 +173,7 @@ static void sub_80811A0(Sprite_SpecialRing *ring, u32 param1)
 
 static void Task_80811BC(void)
 {
-    Sprite_SpecialRing *ring = TaskGetStructPtr(gCurTask);
+    Sprite_SpecialRing *ring = TASK_DATA(gCurTask);
     Sprite *s = &ring->displayed;
 
     if ((s->unk10 & 0x4000) || sub_8081164(ring)) {

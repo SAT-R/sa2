@@ -74,7 +74,7 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
     lang = stage->zone;
 
     t = TaskCreate(sub_806D2C8, sizeof(struct SpecialStagePlayer), 0x9000, 0, NULL);
-    player = TaskGetStructPtr(t);
+    player = TASK_DATA(t);
     player->unk0 = stage;
     player->unk4 = NULL;
     player->x = Q_16_16(gUnknown_080DF9D8[lang][0]);
@@ -175,7 +175,7 @@ void sub_806D2C8(void)
     PlayerStateHandler stateHandlers[18];
     Sprite *unk8, *unk38;
 
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     struct SpecialStage *stage = player->unk0;
 
     memcpy(stateHandlers, sPlayerStateHandlers, sizeof(sPlayerStateHandlers));
@@ -210,7 +210,7 @@ void sub_806D2C8(void)
 // Stopped?
 void sub_806D388(void)
 {
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     struct SpecialStage *stage = player->unk0;
     const struct UNK_80DF670 *unkC4;
     Sprite *unk8;
@@ -238,7 +238,7 @@ void sub_806D388(void)
 // Moving?
 void sub_806D424(void)
 {
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     struct SpecialStage *stage = player->unk0;
 
     const struct UNK_80DF670 *unkC4;
@@ -259,7 +259,7 @@ void sub_806D424(void)
 // Running?
 void sub_806D484(void)
 {
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     struct SpecialStage *stage = player->unk0;
 
     const struct UNK_80DF670 *unkC4;
@@ -280,7 +280,7 @@ void sub_806D484(void)
 // Sprinting?
 void sub_806D4E4(void)
 {
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     struct SpecialStage *stage = player->unk0;
 
     const struct UNK_80DF670 *unkC4;
@@ -332,7 +332,7 @@ UNUSED void sub_806D5CC(void) { }
 
 void sub_806D5D0(void)
 {
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     struct SpecialStage *stage = player->unk0;
 
     const struct UNK_80DF670 *unkC4 = &player->sprites[12];
@@ -344,7 +344,7 @@ void sub_806D5D0(void)
 
 void sub_806D634(void)
 {
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     struct SpecialStage *stage = player->unk0;
     const struct UNK_80DF670 *unkC4 = &player->sprites[15];
 
@@ -356,7 +356,7 @@ void sub_806D634(void)
 
 void sub_806D698(void)
 {
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     struct SpecialStage *stage = player->unk0;
     const struct UNK_80DF670 *unkC4 = &player->sprites[18];
 
@@ -365,7 +365,7 @@ void sub_806D698(void)
 
 void sub_806D6DC(void)
 {
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     struct SpecialStage *stage = player->unk0;
     const struct UNK_80DF670 *unkC4 = &player->sprites[19];
 
@@ -377,7 +377,7 @@ void sub_806D6DC(void)
 
 void sub_806D740(void)
 {
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     struct SpecialStage *stage = player->unk0;
     const struct UNK_80DF670 *unkC4 = &player->sprites[20];
 
@@ -386,7 +386,7 @@ void sub_806D740(void)
 
 void sub_806D788(void)
 {
-    struct SpecialStagePlayer *player = TaskGetStructPtr(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(gCurTask);
     if (player->unkBC != 0) {
         s32 temp = --player->unkBC;
         if (temp == 0) {

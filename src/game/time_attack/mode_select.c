@@ -113,7 +113,7 @@ void CreateTimeAttackModeSelectionScreen(void)
     t = TaskCreate(Task_FadeInAndStartIntro,
                    sizeof(struct TimeAttackModeSelectionScreen), 0x2000, 0,
                    TimeAttackModeSelectionScreenOnDestroy);
-    modeScreen = TaskGetStructPtr(t);
+    modeScreen = TASK_DATA(t);
 
     modeScreen->animFrame = 0;
     modeScreen->unk14D = 0;
@@ -238,7 +238,7 @@ void CreateTimeAttackModeSelectionScreen(void)
 
 void Task_IntroSweepAnim(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
     gUnknown_03002A80 = 2;
     gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
@@ -263,7 +263,7 @@ void Task_IntroSweepAnim(void)
 
 static void Task_IntroUIAnim(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
     Sprite *s;
     if (++modeScreen->animFrame == 32) {
         modeScreen->unk14E = 1;
@@ -316,7 +316,7 @@ static void Task_IntroUIAnim(void)
 
 static void Task_ScreenMain(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
     struct TransitionState *transition;
     Sprite *s;
     s8 lang;
@@ -404,7 +404,7 @@ static void Task_ScreenMain(void)
 
 static void Task_FadeOutModeSelected(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
     if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         gFlags &= ~0x4;
@@ -427,7 +427,7 @@ static void Task_FadeOutModeSelected(void)
 
 static void Task_FadeOutToTitleScreen(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
     if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         gFlags &= ~0x4;
@@ -450,7 +450,7 @@ static void Task_FadeOutToTitleScreen(void)
 
 static void Task_FadeInAndStartIntro(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
     if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
         modeScreen->animFrame = 0xF;
         gCurTask->main = Task_IntroSweepAnim;
@@ -459,7 +459,7 @@ static void Task_FadeInAndStartIntro(void)
 
 static void Task_HandleModeSelectedExit(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
     if (modeScreen->unk14D != 0) {
         gGameMode = GAME_MODE_BOSS_TIME_ATTACK;
@@ -493,7 +493,7 @@ static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
 
 static void TimeAttackModeSelectionScreenOnDestroy(struct Task *t)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(t);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(t);
     VramFree(modeScreen->unk80.graphics.dest);
     VramFree(modeScreen->unkB0.graphics.dest);
     VramFree(modeScreen->unkE0.graphics.dest);

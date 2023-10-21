@@ -53,7 +53,7 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
     u32 i;
     struct Task *t = TaskCreate(Task_Interactable097, sizeof(Sprite_SpeedingPlatform),
                                 0x2010, 0, TaskDestructor_Interactable097);
-    Sprite_SpeedingPlatform *platform = TaskGetStructPtr(t);
+    Sprite_SpeedingPlatform *platform = TASK_DATA(t);
     Sprite *s;
     platform->unk54 = 0;
     platform->unk58 = 0;
@@ -97,7 +97,7 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
 
 static void sub_807F9F0(void)
 {
-    Sprite_SpeedingPlatform *platform = TaskGetStructPtr(gCurTask);
+    Sprite_SpeedingPlatform *platform = TASK_DATA(gCurTask);
     if (IS_MULTI_PLAYER) {
         sub_807FF04(platform);
     }
@@ -248,7 +248,7 @@ static u32 sub_807FD0C(Sprite_SpeedingPlatform *platform)
 
 static void Task_Interactable097(void)
 {
-    Sprite_SpeedingPlatform *platform = TaskGetStructPtr(gCurTask);
+    Sprite_SpeedingPlatform *platform = TASK_DATA(gCurTask);
     if (IS_MULTI_PLAYER) {
         sub_807FF04(platform);
     }
@@ -266,7 +266,7 @@ static void Task_Interactable097(void)
 
 static void TaskDestructor_Interactable097(struct Task *t)
 {
-    Sprite_SpeedingPlatform *platform = TaskGetStructPtr(t);
+    Sprite_SpeedingPlatform *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);
 }
 
@@ -312,7 +312,7 @@ static void sub_807FF04(Sprite_SpeedingPlatform *platform)
 
 static void sub_807FF20(void)
 {
-    Sprite_SpeedingPlatform *platform = TaskGetStructPtr(gCurTask);
+    Sprite_SpeedingPlatform *platform = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER) {
         sub_807FF04(platform);
@@ -342,7 +342,7 @@ static void sub_807FF88(Sprite_SpeedingPlatform *platform)
 
 static void sub_807FFB0(void)
 {
-    Sprite_SpeedingPlatform *platform = TaskGetStructPtr(gCurTask);
+    Sprite_SpeedingPlatform *platform = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER) {
         sub_807FF04(platform);

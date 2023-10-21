@@ -19,7 +19,7 @@ void Task_UnknownEffect(void)
 {
     s16 a = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
     s16 b = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
-    struct UnknownEffect87028 *effect = TaskGetStructPtr(gCurTask);
+    struct UnknownEffect87028 *effect = TASK_DATA(gCurTask);
 
     sub_80871C4(a, b, DISPLAY_HEIGHT - effect->unk0);
 
@@ -33,7 +33,7 @@ void sub_8087088(void)
 {
     s16 a = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
     s16 b = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
-    struct UnknownEffect87028 *effect = TaskGetStructPtr(gCurTask);
+    struct UnknownEffect87028 *effect = TASK_DATA(gCurTask);
 
     sub_80871C4(a, b, 0x6E);
 
@@ -53,7 +53,7 @@ void sub_80870E8(void)
 {
     s16 a = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
     s16 b = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
-    struct UnknownEffect87028 *effect = TaskGetStructPtr(gCurTask);
+    struct UnknownEffect87028 *effect = TASK_DATA(gCurTask);
 
     sub_80871C4(a + gUnknown_080E02DC[effect->unk0 & 7][0],
                 b + gUnknown_080E02DC[effect->unk0 & 7][1], 160 - effect->unk0);
@@ -163,7 +163,7 @@ void sub_8087368(void)
 {
     struct Task *t = TaskCreate(Task_UnknownEffect, sizeof(struct UnknownEffect87028),
                                 0x8000, 0, TaskDestructor_UnknownEffect);
-    struct UnknownEffect87028 *effect = TaskGetStructPtr(t);
+    struct UnknownEffect87028 *effect = TASK_DATA(t);
     effect->unk0 = 0;
     sub_80873A4();
     m4aSongNumStart(SE_219);

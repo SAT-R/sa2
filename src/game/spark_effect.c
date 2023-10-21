@@ -19,7 +19,7 @@ struct Task *CreateSparkEffect()
     struct Task *t = TaskCreate(Task_SparkEffect, sizeof(SparkEffect), 0x2001, 0,
                                 TaskDestructor_SparkEffect);
 
-    SparkEffect *spark = TaskGetStructPtr(t);
+    SparkEffect *spark = TASK_DATA(t);
     Sprite *s = &spark->s;
     s->graphics.dest = VramMalloc(20);
     s->graphics.size = 0;
@@ -43,7 +43,7 @@ void Task_SparkEffect(void)
         TaskDestroy(gCurTask);
         return;
     } else if ((p->anim == SA2_CHAR_ANIM_55) && (p->variant == 0)) {
-        SparkEffect *spark = TaskGetStructPtr(gCurTask);
+        SparkEffect *spark = TASK_DATA(gCurTask);
         Sprite *s = &spark->s;
         struct Camera *cam = &gCamera;
         s->x = Q_24_8_TO_INT(p->x) - cam->x;
@@ -62,6 +62,6 @@ void Task_SparkEffect(void)
 
 void TaskDestructor_SparkEffect(struct Task *t)
 {
-    SparkEffect *spark = TaskGetStructPtr(t);
+    SparkEffect *spark = TASK_DATA(t);
     VramFree(spark->s.graphics.dest);
 }

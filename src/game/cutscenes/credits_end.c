@@ -113,7 +113,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
     t = TaskCreate(Task_FadeIn, sizeof(struct CreditsEndCutScene), 0x3100, 0,
                    TaskDestroy_CreditsEndCutScene);
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
     scene->delayFrames = 270;
     scene->creditsVariant = creditsVariant;
     scene->sequence = SEQUENCE_GAME_END_SCREEN;
@@ -281,7 +281,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
 static void Task_FadeOut(void)
 {
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->transition;
     transition->unk2 = 1;
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
@@ -305,7 +305,7 @@ static void Task_FadeOut(void)
 
 static void Task_CreateCopyrightScreen(void)
 {
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
 
     if (scene->delayFrames > 0) {
         scene->delayFrames--;
@@ -366,7 +366,7 @@ static void Task_CreateCopyrightScreen(void)
 
 static void Task_SequenceMain(void)
 {
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
 
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         UpdateCongratsMessagePos(scene);
@@ -419,7 +419,7 @@ static void Task_HandleGameCompletion(void)
     u8 charactersCompleted = 0;
     u8 zonesCompleteCharacters = 0;
     u8 i;
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
 
 #ifndef NON_MATCHING
     u16 var = zonesCompleteCharacters;
@@ -556,7 +556,7 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
 
 static void Task_FadeIn(void)
 {
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->transition;
     transition->unk2 = 2;
 
@@ -576,7 +576,7 @@ static void Task_FadeIn(void)
 
 static void Task_SequenceEnd(void)
 {
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
     if (scene->delayFrames > 0) {
         scene->delayFrames--;
         return;

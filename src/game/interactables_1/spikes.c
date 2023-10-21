@@ -45,7 +45,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                             u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_805F810, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
     spikes->unk3C[1] = 0;
@@ -86,7 +86,7 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
                               u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_805F928, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
     spikes->unk3C[1] = 0;
@@ -120,7 +120,7 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
 static void sub_805F810(void)
 {
-    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite_Spikes *spikes = TASK_DATA(gCurTask);
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
@@ -161,7 +161,7 @@ static void sub_805F810(void)
 
 static void sub_805F928(void)
 {
-    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite_Spikes *spikes = TASK_DATA(gCurTask);
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
@@ -209,7 +209,7 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
 {
     struct Task *t = TaskCreate(sub_805FBA0, sizeof(Sprite_Spikes), 0x2000, 0,
                                 TaskDestructor_8060CF4);
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
     spikes->unk3C[1] = 0;
@@ -266,7 +266,7 @@ static void sub_805FBA0(void)
     Sprite *s;
     MapEntity *me;
     Sprite_Spikes *spikes;
-    spikes = TaskGetStructPtr(gCurTask);
+    spikes = TASK_DATA(gCurTask);
     s = &spikes->s;
     me = spikes->base.me;
 
@@ -390,7 +390,7 @@ void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 {
     struct Task *t = TaskCreate(Task_805FF68, sizeof(Sprite_Spikes), 0x2000, 0,
                                 TaskDestructor_8060CF4);
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
     spikes->unk3C[1] = 0;
@@ -426,7 +426,7 @@ static void Task_805FF68(void)
 {
     s16 screenX, screenY;
     u32 someParam = 0;
-    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite_Spikes *spikes = TASK_DATA(gCurTask);
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
 
@@ -458,7 +458,7 @@ void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 sprite
 {
     struct Task *t = TaskCreate(Task_806012C, sizeof(Sprite_Spikes), 0x2000, 0,
                                 TaskDestructor_8060CF4);
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
     spikes->unk3C[1] = 0;
@@ -494,7 +494,7 @@ static void Task_806012C(void)
 {
     s16 screenX, screenY;
     u32 someParam = 0;
-    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite_Spikes *spikes = TASK_DATA(gCurTask);
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
 
@@ -989,7 +989,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
 static void TaskDestructor_8060CF4(struct Task *t)
 {
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     VramFree(spikes->s.graphics.dest);
 }
 

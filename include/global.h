@@ -60,6 +60,10 @@ typedef void (*VoidFn)(void);
 #define INCBIN_S32 INCBIN
 #endif // IDE support
 
+// NOTE: This has to be kept as-is.
+//       If casted it to be signed,
+//          dataIndex = (dataIndex + 1) % ARRAY_COUNT(data)
+//       wouldn't match.
 #define ARRAY_COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 // Converts a number to Q8.8 fixed-point format

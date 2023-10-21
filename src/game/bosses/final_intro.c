@@ -299,7 +299,7 @@ void CreateTrueArea53Intro(void)
     gBldRegs.bldY = 0x10;
 
     t = TaskCreate(Task_IntroPanIn, sizeof(TrueArea53Intro), 0x7000, 0, NULL);
-    intro = TaskGetStructPtr(t);
+    intro = TASK_DATA(t);
     intro->cameraY = 0;
     intro->animFrame = 370;
     intro->unk8 = 0xE8;
@@ -364,7 +364,7 @@ void CreateOrbitingEmeraldsSequence(void)
 
     struct Task *t = TaskCreate(Task_OrbitingEmeraldsMoveOutwards,
                                 sizeof(OrbitingEmeraldsSequence), 0x7000, 0, NULL);
-    OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(t);
+    OrbitingEmeraldsSequence *sequence = TASK_DATA(t);
     sequence->animFrame = 32;
 
     background = &sequence->background;
@@ -418,7 +418,7 @@ void Task_OrbitingEmeraldsMoveOutwards(void)
     s32 pos[2];
     s32 temp[2];
     Sprite *s;
-    OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(gCurTask);
+    OrbitingEmeraldsSequence *sequence = TASK_DATA(gCurTask);
 
     for (i = 0; i < 7; i++) {
         s = &sequence->emerald[i];
@@ -450,7 +450,7 @@ void Task_OrbitingEmeraldsRotate(void)
     s32 temp[2];
     s32 temp2;
     Sprite *s;
-    OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(gCurTask);
+    OrbitingEmeraldsSequence *sequence = TASK_DATA(gCurTask);
 
     for (i = 0; i < 7; i++) {
         s = &sequence->emerald[i];
@@ -485,7 +485,7 @@ void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void)
     s32 temp[2];
     s32 temp2;
     Sprite *s;
-    OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(gCurTask);
+    OrbitingEmeraldsSequence *sequence = TASK_DATA(gCurTask);
 
     if (--sequence->animFrame == 0) {
         sequence->animFrame = 0x78;
@@ -539,7 +539,7 @@ void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void)
 
 void Task_DisplaySonicSonicArtworkAndDestroyTask(void)
 {
-    OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(gCurTask);
+    OrbitingEmeraldsSequence *sequence = TASK_DATA(gCurTask);
 
     if (--sequence->animFrame == 0) {
         gDispCnt = 0x1140;
@@ -564,7 +564,7 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     struct Task *t
         = TaskCreate(Task_SuperSonicSpark, sizeof(SuperSonicSpark), 0x7000, 0, NULL);
     u32 type = PseudoRandBetween(2, 3);
-    SuperSonicSpark *spark = TaskGetStructPtr(t);
+    SuperSonicSpark *spark = TASK_DATA(t);
     spark->animFrame = 40;
 
     spark->x = x + (s16)Q_24_8(PseudoRandBetween(-16, 15));
@@ -592,7 +592,7 @@ void Task_SuperSonicSpark(void)
 {
     s32 unk4, unkC;
     Sprite *s;
-    SuperSonicSpark *spark = TaskGetStructPtr(gCurTask);
+    SuperSonicSpark *spark = TASK_DATA(gCurTask);
     s = &spark->s;
 
     OBJ_ACCELERATE_Y(spark, 16);
@@ -612,7 +612,7 @@ void CreateActor(u8 character)
     const TileInfo *tileInfo;
     struct Task *t
         = TaskCreate(gUnknown_080D7970[character], sizeof(IntroActor), 0x7000, 0, NULL);
-    IntroActor *actor = TaskGetStructPtr(t);
+    IntroActor *actor = TASK_DATA(t);
     actor->character = character;
     actor->sequence = 0;
 
@@ -669,7 +669,7 @@ void CreateActor(u8 character)
 void Task_ActorSonicRunIn(void)
 {
     Sprite *s;
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
 
     OBJ_UPDATE_POS(actor);
@@ -686,7 +686,7 @@ void Task_ActorSonicRunIn(void)
 void Task_ActorSonicSlowDownTilStop(void)
 {
     Sprite *s;
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
@@ -705,7 +705,7 @@ void sub_8037744(void)
 {
     Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
@@ -725,7 +725,7 @@ void sub_8037818(void)
 {
     Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -739,7 +739,7 @@ void sub_80378BC(void)
 {
     Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -754,7 +754,7 @@ void sub_803796C(void)
 {
     Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
 
     if (actor->animFrame < 0x135) {
@@ -780,7 +780,7 @@ void sub_8037A38(void)
 {
     Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
 
     if (!(actor->animFrame & 7)) {
@@ -800,7 +800,7 @@ void sub_8037B04(void)
 {
     Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
     actor->y -= SIN(((++actor->unk4) * 5) & 0x3FF) >> 8;
 
@@ -815,7 +815,7 @@ void sub_8037BD0(void)
 {
     Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
     actor->y -= SIN(((++actor->unk4) * 5) & 0x3FF) >> 8;
 
@@ -844,7 +844,7 @@ void sub_8037CEC(void)
 {
     Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
     actor->y -= SIN(((++actor->unk4) * 5) & 0x3FF) >> 8;
 
@@ -873,7 +873,7 @@ void sub_8037E08(void)
 {
     Sprite *s, *sprite2;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     s = &actor->s;
     sprite2 = &actor->ssGroundEffectSprite;
     actor->y -= SIN(((++actor->unk4) * 5) & 0x3FF) >> 8;
@@ -911,7 +911,7 @@ void sub_8037E08(void)
 
 void sub_8037F68(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
     if (actor->y > -0x2000) {
         actor->y -= 0x800;
@@ -966,7 +966,7 @@ void sub_8037F68(void)
 // Cream
 void sub_80380B0(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_UPDATE_POS(actor);
@@ -981,7 +981,7 @@ void sub_80380B0(void)
 
 void sub_8038168(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
@@ -998,7 +998,7 @@ void sub_8038168(void)
 
 void sub_8038238(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_UPDATE_POS(actor);
@@ -1013,7 +1013,7 @@ void sub_8038238(void)
 
 void sub_80382F0(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
@@ -1029,7 +1029,7 @@ void sub_80382F0(void)
 
 void sub_80383B8(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -1042,7 +1042,7 @@ void sub_80383B8(void)
 
 void sub_803845C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -1055,7 +1055,7 @@ void sub_803845C(void)
 
 void sub_8038500(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -1069,7 +1069,7 @@ void sub_8038500(void)
 // tails
 void sub_80385A4(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_UPDATE_POS(actor);
@@ -1085,7 +1085,7 @@ void sub_80385A4(void)
 
 void sub_8038664(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
@@ -1101,7 +1101,7 @@ void sub_8038664(void)
 
 void sub_803872C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
@@ -1117,7 +1117,7 @@ void sub_803872C(void)
 
 void sub_80387F4(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -1130,7 +1130,7 @@ void sub_80387F4(void)
 
 void sub_8038898(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -1143,7 +1143,7 @@ void sub_8038898(void)
 
 void sub_803893C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -1157,7 +1157,7 @@ void sub_803893C(void)
 // Knuckles
 void sub_80389E0(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_UPDATE_POS(actor);
@@ -1173,7 +1173,7 @@ void sub_80389E0(void)
 
 void sub_8038AA0(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
@@ -1190,7 +1190,7 @@ void sub_8038AA0(void)
 
 void sub_8038B6C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
@@ -1206,7 +1206,7 @@ void sub_8038B6C(void)
 
 void sub_8038C34(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -1219,7 +1219,7 @@ void sub_8038C34(void)
 
 void sub_8038CD8(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -1232,7 +1232,7 @@ void sub_8038CD8(void)
 
 void sub_8038D7C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -1246,7 +1246,7 @@ void sub_8038D7C(void)
 // Maybe cheese?
 void sub_8038E20(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     s->animSpeed = 0x10;
@@ -1263,7 +1263,7 @@ void sub_8038E20(void)
 
 void sub_8038EE4(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
@@ -1281,7 +1281,7 @@ void sub_8038EE4(void)
 
 void sub_8038FBC(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
@@ -1297,7 +1297,7 @@ void sub_8038FBC(void)
 
 void sub_8039084(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (actor->x < 0xB800) {
@@ -1316,7 +1316,7 @@ void sub_8039084(void)
 
 void sub_8039144(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (actor->x < 0x9800) {
@@ -1334,7 +1334,7 @@ void sub_8039144(void)
 
 void sub_8039208(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
@@ -1347,7 +1347,7 @@ void sub_8039208(void)
 
 void Task_IntroPanIn(void)
 {
-    TrueArea53Intro *intro = TaskGetStructPtr(gCurTask);
+    TrueArea53Intro *intro = TASK_DATA(gCurTask);
 
     if (!(gStageTime & 3) && intro->cameraY < 44) {
         intro->cameraY++;
@@ -1400,7 +1400,7 @@ void sub_80393A4(void)
 {
     s32 x, y;
     u8 i;
-    TrueArea53Intro *intro = TaskGetStructPtr(gCurTask);
+    TrueArea53Intro *intro = TASK_DATA(gCurTask);
 
     intro->unk8++;
     gStageTime++;
@@ -1467,7 +1467,7 @@ void IntroRenderSprites(u8 flockMode)
     u8 i;
     s32 pos[2];
     Sprite *s;
-    TrueArea53Intro *intro = TaskGetStructPtr(gCurTask);
+    TrueArea53Intro *intro = TASK_DATA(gCurTask);
     gBgScrollRegs[0][1] = intro->unkF + intro->cameraY;
     gBgScrollRegs[1][1] = intro->unkF + intro->cameraY;
     gBgScrollRegs[0][0] = intro->unkE;
@@ -1560,7 +1560,7 @@ void CreateBackgrounds(void)
     gUnknown_03002280[2][3] = 0x20;
 
     t = TaskCreate(sub_8039A38, sizeof(WorldBackgrounds), 0x8100, 0, NULL);
-    worldBgs = TaskGetStructPtr(t);
+    worldBgs = TASK_DATA(t);
 
     background = &worldBgs->bg1;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -1599,7 +1599,7 @@ void CreateBackgrounds(void)
 
 void sub_803997C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
 
     UpdateSpriteAnimation(&actor->s);
     DisplaySprite(&actor->s);
@@ -1607,7 +1607,7 @@ void sub_803997C(void)
 
 void sub_80399A4(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
 
     UpdateSpriteAnimation(&actor->s);
     DisplaySprite(&actor->s);
@@ -1615,14 +1615,14 @@ void sub_80399A4(void)
 
 void sub_80399CC(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
     OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8039A10(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
 
     UpdateSpriteAnimation(&actor->s);
     DisplaySprite(&actor->s);

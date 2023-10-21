@@ -58,7 +58,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     struct Task *t = TaskCreate(Task_Interactable069, 0x1C0, 0x2010, 0,
                                 TaskDestructor_Interactable069);
     Sprite *s;
-    Sprite_IA69 *ia69 = TaskGetStructPtr(t);
+    Sprite_IA69 *ia69 = TASK_DATA(t);
     void *vramBase;
     void *vram;
     u32 temp;
@@ -473,7 +473,7 @@ void sub_80797E8(Sprite_IA69 *);
 
 void Task_Interactable069(void)
 {
-    Sprite_IA69 *ia69 = TaskGetStructPtr(gCurTask);
+    Sprite_IA69 *ia69 = TASK_DATA(gCurTask);
     sub_80791B4(ia69);
 
     if (sub_80796A8(ia69)) {
@@ -489,7 +489,7 @@ void Task_Interactable069(void)
 
 void TaskDestructor_Interactable069(struct Task *t)
 {
-    Sprite_IA69 *ia69 = TaskGetStructPtr(t);
+    Sprite_IA69 *ia69 = TASK_DATA(t);
     VramFree(ia69->vram);
 }
 
@@ -516,7 +516,7 @@ void sub_8079888(Sprite_IA69 *);
 
 void sub_8079810(void)
 {
-    Sprite_IA69 *ia69 = TaskGetStructPtr(gCurTask);
+    Sprite_IA69 *ia69 = TASK_DATA(gCurTask);
     sub_80791B4(ia69);
 
     if (!PLAYER_IS_ALIVE) {

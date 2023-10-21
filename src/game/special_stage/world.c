@@ -97,7 +97,7 @@ struct Task *CreateSpecialStageWorld(struct SpecialStage *stage)
     memcpy(unkF776, gUnknown_080DF776, sizeof(gUnknown_080DF776));
 
     t = TaskCreate(sub_806EA04, 0x2A0, 0x8000, 0, sub_806EBF4);
-    world = TaskGetStructPtr(t);
+    world = TASK_DATA(t);
     world->stage = stage;
 
     world->unk4 = NULL;
@@ -200,7 +200,7 @@ void sub_806E94C(struct SpecialStageWorld *world)
 
 void sub_806EA04(void)
 {
-    struct SpecialStageWorld *world = TaskGetStructPtr(gCurTask);
+    struct SpecialStageWorld *world = TASK_DATA(gCurTask);
     struct SpecialStage *stage = world->stage;
     s32 sin1, sin2;
     s16 unk5CE;
@@ -254,7 +254,7 @@ void sub_806EA04(void)
 void sub_806EB74(void)
 {
     s16 i;
-    struct SpecialStageWorld *world = TaskGetStructPtr(gCurTask);
+    struct SpecialStageWorld *world = TASK_DATA(gCurTask);
     struct SpecialStage *stage = world->stage;
     u8 *level = &stage->zone;
     s16 num = gUnknown_080DF6DC[*level];
@@ -275,7 +275,7 @@ void sub_806EB74(void)
 
 void sub_806EBF4(struct Task *t)
 {
-    struct SpecialStageWorld *world = TaskGetStructPtr(t);
+    struct SpecialStageWorld *world = TASK_DATA(t);
 
     if (world->unk8 != NULL) {
         EwramFree(world->unk8);

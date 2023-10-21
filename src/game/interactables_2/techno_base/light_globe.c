@@ -35,7 +35,7 @@ void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 {
     struct Task *t = TaskCreate(Task_Interactable080, sizeof(Sprite_LightGlobe), 0x2010,
                                 0, TaskDestructor_Interactable080);
-    Sprite_LightGlobe *globe = TaskGetStructPtr(t);
+    Sprite_LightGlobe *globe = TASK_DATA(t);
     Sprite *s;
 
     globe->unk44 = 0;
@@ -124,7 +124,7 @@ static bool32 sub_807B1F0(Sprite_LightGlobe *globe)
 
 static void Task_Interactable080(void)
 {
-    Sprite_LightGlobe *globe = TaskGetStructPtr(gCurTask);
+    Sprite_LightGlobe *globe = TASK_DATA(gCurTask);
     if (sub_807B1F0(globe)) {
         sub_807B2D0(globe);
     }
@@ -139,7 +139,7 @@ static void Task_Interactable080(void)
 
 static void TaskDestructor_Interactable080(struct Task *t)
 {
-    Sprite_LightGlobe *globe = TaskGetStructPtr(t);
+    Sprite_LightGlobe *globe = TASK_DATA(t);
     VramFree(globe->s.graphics.dest);
 }
 
@@ -177,7 +177,7 @@ static void sub_807B398(Sprite_LightGlobe *globe)
 
 static void sub_807B3B0(void)
 {
-    Sprite_LightGlobe *globe = TaskGetStructPtr(gCurTask);
+    Sprite_LightGlobe *globe = TASK_DATA(gCurTask);
 
     if (globe->s.unk10 & 0x4000) {
         sub_807B398(globe);

@@ -32,7 +32,7 @@ void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
 {
     struct Task *t = TaskCreate(Task_TurnAroundBarMain, sizeof(Sprite_TurnAroundBar),
                                 0x2010, 0, TaskDestructor_InteractableTurnAroundBar);
-    Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(t);
+    Sprite_TurnAroundBar *turnAroundBar = TASK_DATA(t);
     Sprite *s = &turnAroundBar->s;
 
     turnAroundBar->base.regionX = spriteRegionX;
@@ -118,7 +118,7 @@ static u32 sub_8073520(Sprite_TurnAroundBar *turnAroundBar)
 
 static void Task_TurnAroundBarMain(void)
 {
-    Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(gCurTask);
+    Sprite_TurnAroundBar *turnAroundBar = TASK_DATA(gCurTask);
     Sprite *s = &turnAroundBar->s;
     MapEntity *me = turnAroundBar->base.me;
     if (sub_8073520(turnAroundBar) == 2) {
@@ -136,7 +136,7 @@ static void Task_TurnAroundBarMain(void)
 
 static void sub_8073600(void)
 {
-    Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(gCurTask);
+    Sprite_TurnAroundBar *turnAroundBar = TASK_DATA(gCurTask);
     Sprite *s = &turnAroundBar->s;
 
     if (!PLAYER_IS_ALIVE) {
@@ -154,7 +154,7 @@ static void sub_8073600(void)
 
 static void TaskDestructor_InteractableTurnAroundBar(struct Task *t)
 {
-    Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(t);
+    Sprite_TurnAroundBar *turnAroundBar = TASK_DATA(t);
     VramFree(turnAroundBar->s.graphics.dest);
 }
 
@@ -251,7 +251,7 @@ static s16 ClampSpeed(s16 speed)
 
 static void sub_8073818(void)
 {
-    Sprite_TurnAroundBar *turnAroundBar = TaskGetStructPtr(gCurTask);
+    Sprite_TurnAroundBar *turnAroundBar = TASK_DATA(gCurTask);
     Sprite *s = &turnAroundBar->s;
     if (!PLAYER_IS_ALIVE) {
         sub_807371C(turnAroundBar);

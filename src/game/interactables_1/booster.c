@@ -59,7 +59,7 @@ void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_Interactable_Booster, sizeof(Sprite_Booster),
                                 0x2000, 0, TaskDestructor_80095E8);
-    Sprite_Booster *booster = TaskGetStructPtr(t);
+    Sprite_Booster *booster = TASK_DATA(t);
     Sprite *s = &booster->s;
     u32 value;
 
@@ -103,7 +103,7 @@ void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
 void Task_Interactable_Booster(void)
 {
-    Sprite_Booster *booster = TaskGetStructPtr(gCurTask);
+    Sprite_Booster *booster = TASK_DATA(gCurTask);
     Sprite *s = &booster->s;
     MapEntity *me = booster->base.me;
 

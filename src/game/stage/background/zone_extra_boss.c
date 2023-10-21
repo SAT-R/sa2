@@ -14,7 +14,7 @@ void StageBgUpdate_ZoneFinalActTA53(void)
     int_vcount y;
 
     if (gActiveBossTask != NULL) {
-        Sprite_TrueArea53Boss *boss = TaskGetStructPtr(gActiveBossTask);
+        Sprite_TrueArea53Boss *boss = TASK_DATA(gActiveBossTask);
         aBool = boss->unk10 & 0x1;
     }
 

@@ -19,7 +19,7 @@ static void TaskDestructor_ScreenShake(struct Task *);
 
 void Task_ScreenShake(void)
 {
-    ScreenShake *shake = TaskGetStructPtr(gCurTask);
+    ScreenShake *shake = TASK_DATA(gCurTask);
 
     s32 factor;
     s32 r2;
@@ -77,7 +77,7 @@ struct Task *CreateScreenShake(u32 p0, u32 p1, u32 p2, u32 p3, u32 flags)
     struct Task *t = TaskCreate(Task_ScreenShake, sizeof(ScreenShake), 0xEFF, 0,
                                 TaskDestructor_ScreenShake);
 
-    ScreenShake *shake = TaskGetStructPtr(t);
+    ScreenShake *shake = TASK_DATA(t);
     shake->p0 = p0;
     shake->p1 = p1;
     shake->p2 = p2;
@@ -90,7 +90,7 @@ struct Task *CreateScreenShake(u32 p0, u32 p1, u32 p2, u32 p3, u32 flags)
 
 static void TaskDestructor_ScreenShake(struct Task *t)
 {
-    ScreenShake *shake = TaskGetStructPtr(t);
+    ScreenShake *shake = TASK_DATA(t);
 
     struct Camera *cam = &gCamera;
 

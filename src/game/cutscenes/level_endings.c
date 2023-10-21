@@ -165,7 +165,7 @@ void CreateCourseResultsCutScene(u8 mode)
     memcpy(unk122C, gUnknown_080E122C, sizeof(gUnknown_080E122C));
 
     t = TaskCreate(mains[mode], 0x80, 0x5000, 0, sub_808E890);
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
 
     scene->unk78 = 0;
     scene->unk7A = 0;
@@ -236,7 +236,7 @@ void CreateCourseResultsCutScene(u8 mode)
 
 static void sub_808DD9C(void)
 {
-    struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct ResultsCutScene *scene = TASK_DATA(gCurTask);
     Sprite *s = &scene->unk4;
     Player *player = scene->unk0;
     struct TransitionState *transition = &scene->unk64;
@@ -306,7 +306,7 @@ static void sub_808DD9C(void)
 
 static void sub_808DF88(void)
 {
-    struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct ResultsCutScene *scene = TASK_DATA(gCurTask);
     Sprite *s = &scene->unk4;
     Player *player = scene->unk0;
 
@@ -364,7 +364,7 @@ static void sub_808DF88(void)
 static void sub_808E114(void)
 {
     s32 result;
-    struct ResultsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct ResultsCutScene *scene = TASK_DATA(gCurTask);
     Sprite *s = &scene->unk4;
     Player *player = scene->unk0;
 
@@ -507,7 +507,7 @@ void sub_808E4C8(void);
 
 void sub_808E424(void)
 {
-    struct CharacterUnlockCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CharacterUnlockCutScene *scene = TASK_DATA(gCurTask);
 
     if (scene->unk110 == 0) {
         scene->unk110 = 1;
@@ -540,7 +540,7 @@ void sub_808E4C8(void)
         lang = 0;
     }
 
-    scene = TaskGetStructPtr(gCurTask);
+    scene = TASK_DATA(gCurTask);
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
 
     if (scene->unk110++ > 340) {
@@ -587,7 +587,7 @@ void sub_808E6B0(void);
 
 void sub_808E63C(void)
 {
-    struct CharacterUnlockCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CharacterUnlockCutScene *scene = TASK_DATA(gCurTask);
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
 
     if (scene->unk110++ > 300) {
@@ -606,7 +606,7 @@ void sub_808E63C(void)
 
 void sub_808E6B0(void)
 {
-    struct CharacterUnlockCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CharacterUnlockCutScene *scene = TASK_DATA(gCurTask);
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
 
     if (NextTransitionFrame(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
@@ -624,7 +624,7 @@ void sub_808E6B0(void)
 void CreateCharacterUnlockCutScene(u8 zone)
 {
     struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
-    struct CharacterUnlockCutScene *scene = TaskGetStructPtr(t);
+    struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = zone * 4;
     scene->unk10E = zone * 5;
     scene->unk110 = 0;
@@ -635,7 +635,7 @@ void CreateCharacterUnlockCutScene(u8 zone)
 void CreateCreamUnlockCutScene(void)
 {
     struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
-    struct CharacterUnlockCutScene *scene = TaskGetStructPtr(t);
+    struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 0;
     scene->unk10E = 0;
     scene->unk110 = 0;
@@ -645,7 +645,7 @@ void CreateCreamUnlockCutScene(void)
 void CreateTailsUnlockCutScene(void)
 {
     struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
-    struct CharacterUnlockCutScene *scene = TaskGetStructPtr(t);
+    struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 8;
     scene->unk10E = 10;
     scene->unk110 = 0;
@@ -655,7 +655,7 @@ void CreateTailsUnlockCutScene(void)
 void CreateKnucklesUnlockCutScene(void)
 {
     struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
-    struct CharacterUnlockCutScene *scene = TaskGetStructPtr(t);
+    struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 4;
     scene->unk10E = 5;
     scene->unk110 = 0;
@@ -664,7 +664,7 @@ void CreateKnucklesUnlockCutScene(void)
 
 void sub_808E890(struct Task *t)
 {
-    struct ResultsCutScene *scene = TaskGetStructPtr(t);
+    struct ResultsCutScene *scene = TASK_DATA(t);
     VramFree(scene->unk4.graphics.dest);
 
     if (scene->unk34.graphics.dest != NULL) {

@@ -55,7 +55,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     t = TaskCreate(sub_8089AEC, sizeof(struct TimeAttackResultsCutScene), 0xC100, 0,
                    sub_8089BB0);
-    resultsCutScene = TaskGetStructPtr(t);
+    resultsCutScene = TASK_DATA(t);
     transition = &resultsCutScene->unk0;
 
     resultsCutScene->unk168 = 0;
@@ -283,7 +283,7 @@ const s8 gUnknown_080E05C4[] = {
 
 void sub_80897E8(void)
 {
-    struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(gCurTask);
+    struct TimeAttackResultsCutScene *resultsCutScene = TASK_DATA(gCurTask);
     Sprite *s;
     u32 unk168 = resultsCutScene->unk168;
     u32 i;
@@ -414,7 +414,7 @@ void sub_8089B40(void);
 
 void sub_8089AEC(void)
 {
-    struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(gCurTask);
+    struct TimeAttackResultsCutScene *resultsCutScene = TASK_DATA(gCurTask);
     u32 unk168 = resultsCutScene->unk168;
     resultsCutScene->unk168 = ++unk168;
     sub_80310F0();
@@ -429,7 +429,7 @@ void sub_8089AEC(void)
 
 void sub_8089B40(void)
 {
-    struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(gCurTask);
+    struct TimeAttackResultsCutScene *resultsCutScene = TASK_DATA(gCurTask);
     if (NextTransitionFrame(&resultsCutScene->unk0) == SCREEN_TRANSITION_COMPLETE) {
         WriteSaveGame();
         TasksDestroyAll();
@@ -448,7 +448,7 @@ void sub_8089B40(void)
 void sub_8089BB0(struct Task *t)
 {
     u32 i;
-    struct TimeAttackResultsCutScene *resultsCutScene = TaskGetStructPtr(t);
+    struct TimeAttackResultsCutScene *resultsCutScene = TASK_DATA(t);
     VramFree(resultsCutScene->unk12C.graphics.dest);
 
     for (i = 0; i < 3; i++) {

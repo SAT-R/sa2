@@ -94,7 +94,7 @@ void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     struct Task *t
         = TaskCreate(Task_LightBridgeInactive, sizeof(Sprite_LightBridge), 0x2010, 0,
                      TaskDestructor_InteractableTecBaseLightBridge);
-    Sprite_LightBridge *lightBridge = TaskGetStructPtr(t);
+    Sprite_LightBridge *lightBridge = TASK_DATA(t);
     Sprite *s;
     lightBridge->type = me->d.uData[0];
     lightBridge->unk6C = me->d.uData[1];
@@ -132,7 +132,7 @@ void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
 static void Task_LightBridgeActive(void)
 {
-    Sprite_LightBridge *lightBridge = TaskGetStructPtr(gCurTask);
+    Sprite_LightBridge *lightBridge = TASK_DATA(gCurTask);
     if (!PLAYER_IS_ALIVE) {
         DeactivateBridge(lightBridge);
     }
@@ -274,7 +274,7 @@ static bool32 IsPlayerWithinRange(Sprite_LightBridge *lightBridge)
 
 static void Task_LightBridgeInactive(void)
 {
-    Sprite_LightBridge *lightBridge = TaskGetStructPtr(gCurTask);
+    Sprite_LightBridge *lightBridge = TASK_DATA(gCurTask);
     if (IsPlayerWithinRange(lightBridge)) {
         ActivateBridge(lightBridge);
     }
@@ -292,7 +292,7 @@ static void Task_LightBridgeInactive(void)
 
 static void TaskDestructor_InteractableTecBaseLightBridge(struct Task *t)
 {
-    Sprite_LightBridge *lightBridge = TaskGetStructPtr(t);
+    Sprite_LightBridge *lightBridge = TASK_DATA(t);
     VramFree(lightBridge->vram);
 }
 

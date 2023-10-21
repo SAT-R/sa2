@@ -242,7 +242,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     t = TaskCreate(Task_FadeInAndStartRollInAnim,
                    sizeof(struct CharacterSelectionScreen), 0x4100, 0,
                    CharacterSelectScreenOnDestroy);
-    characterScreen = TaskGetStructPtr(t);
+    characterScreen = TASK_DATA(t);
 
     characterScreen->availableCharacters = gLoadedSaveGame->unlockedCharacters;
     characterScreen->selectedCharacter = initialSelection;
@@ -542,7 +542,7 @@ END_NONMATCH
 
 static void Task_FadeInAndStartRollInAnim(void)
 {
-    struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
+    struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     if (++characterScreen->animFrame > 23) {
         characterScreen->animFrame = 0;
         gCurTask->main = Task_RollInAnim;
@@ -557,7 +557,7 @@ static void Task_FadeInAndStartRollInAnim(void)
 
 static void Task_RollInAnim(void)
 {
-    struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
+    struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
 #ifndef NON_MATCHING
     register u32 animFrame asm("r3") = ++characterScreen->animFrame;
     register u32 r0 asm("r0");
@@ -599,7 +599,7 @@ static void Task_RollInAnim(void)
 
 static void Task_TransitionInUIAnim(void)
 {
-    struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
+    struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     u32 animFrame = ++characterScreen->animFrame;
     characterScreen->cursorAnimFrame++;
     if (animFrame >= 16) {
@@ -621,7 +621,7 @@ static void Task_CharacterSelectMain(void)
     Sprite *s;
     struct TransitionState *unk0;
     union MultiSioData *packet;
-    struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
+    struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     characterScreen->cursorAnimFrame = (characterScreen->cursorAnimFrame & 0x3F) + 1;
 
     MultiPakHeartbeat();
@@ -847,7 +847,7 @@ static void Task_HandleCarouselScrollUp(void)
     Sprite *s;
     MultiPakHeartbeat();
 
-    characterScreen = TaskGetStructPtr(gCurTask);
+    characterScreen = TASK_DATA(gCurTask);
 
     animFrame = ++characterScreen->animFrame;
     characterScreen->unk3C4++;
@@ -905,7 +905,7 @@ static void Task_HandleCarouselScrollDown(void)
     Sprite *s;
     MultiPakHeartbeat();
 
-    characterScreen = TaskGetStructPtr(gCurTask);
+    characterScreen = TASK_DATA(gCurTask);
 
     animFrame = ++characterScreen->animFrame;
     characterScreen->unk3C4++;
@@ -959,7 +959,7 @@ static void Task_HandleCarouselScrollDown(void)
 static void Task_CarouselScrollCompleteAnim(void)
 {
     Sprite *s;
-    struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
+    struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     u32 animFrame = ++characterScreen->animFrame;
     characterScreen->unk3C4++;
 
@@ -1006,7 +1006,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
     u8 i;
     union MultiSioData *packet;
     Sprite *s;
-    struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
+    struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &characterScreen->screenFade;
     MultiPakHeartbeat();
 
@@ -1082,7 +1082,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
 
 static void Task_FadeOutAndExitToPrevious(void)
 {
-    struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
+    struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &characterScreen->screenFade;
 
     if (NextTransitionFrame(unk0) == SCREEN_TRANSITION_COMPLETE) {
@@ -1747,7 +1747,7 @@ static void Task_MultiplayerWaitForSelections(void)
     Sprite *s;
     u8 charactersSelected[NUM_CHARACTERS] = { 0, 0, 0, 0, 0 };
 
-    struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(gCurTask);
+    struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     BackgroundAnim();
 
     MultiPakHeartbeat();
@@ -1871,8 +1871,7 @@ static void Task_MultiplayerVerifySelections(void)
     u8 mostLevelsAvailable;
     union MultiSioData *send;
     union MultiSioData *recv;
-    register struct CharacterSelectionScreen *characterScreen
-        = TaskGetStructPtr(gCurTask);
+    register struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     MultiPakHeartbeat();
 
     for (i = 0, someoneNotConfirmed = FALSE; i < MULTI_SIO_PLAYERS_MAX; i++) {
@@ -1968,7 +1967,7 @@ static void Task_MultiplayerVerifySelections(void)
 static void CharacterSelectScreenOnDestroy(struct Task *t)
 {
     u8 i;
-    struct CharacterSelectionScreen *characterScreen = TaskGetStructPtr(t);
+    struct CharacterSelectionScreen *characterScreen = TASK_DATA(t);
     VramFree(characterScreen->characterNameSubText.graphics.dest);
     VramFree(characterScreen->characterTitleTextLeft.graphics.dest);
     VramFree(characterScreen->characterTitleTextRight.graphics.dest);

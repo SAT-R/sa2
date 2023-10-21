@@ -20,7 +20,7 @@ typedef struct {
 
 static void Task_DrowningCountdown(void)
 {
-    TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
+    TaskStrc_801F15C *ts = TASK_DATA(gCurTask);
     Sprite *s = &ts->s;
     SpriteTransform *transform = &ts->transform;
 
@@ -68,7 +68,7 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
     struct Camera *cam = &gCamera;
     struct Task *t
         = sub_801F15C(0, 0, 0, 0, Task_DrowningCountdown, TaskDestructor_801F550);
-    TaskStrc_801F15C *ts = TaskGetStructPtr(t);
+    TaskStrc_801F15C *ts = TASK_DATA(t);
     Sprite *s;
     SpriteTransform *transform;
     s32 temp;
@@ -114,7 +114,7 @@ struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
         t = sub_801F15C(0, 0, 0, 0, Task_SpawnAirBubbles,
                         TaskDestructor_SpawnAirBubbles);
 
-        ts = TaskGetStructPtr(t);
+        ts = TASK_DATA(t);
         s = &ts->s;
         transform = &ts->transform;
 
@@ -178,7 +178,7 @@ bool32 RandomlySpawnAirBubbles(Player *p)
 
 static void Task_SpawnAirBubbles(void)
 {
-    TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
+    TaskStrc_801F15C *ts = TASK_DATA(gCurTask);
     Sprite *s = &ts->s;
     SpriteTransform *transform = &ts->transform;
 
@@ -230,7 +230,7 @@ static void Task_SpawnAirBubbles(void)
 
 static void Task_SpawnBubblesAfterDrowning(void)
 {
-    DrownBubbles *db = TaskGetStructPtr(gCurTask);
+    DrownBubbles *db = TASK_DATA(gCurTask);
     Player *p = db->p;
 
     if (IS_ALIVE(p)) {
@@ -261,7 +261,7 @@ struct Task *SpawnBubblesAfterDrowning(Player *p)
     struct Task *t
         = TaskCreate(Task_SpawnBubblesAfterDrowning, sizeof(Player **), 0x4001, 0, NULL);
 
-    DrownBubbles *db = TaskGetStructPtr(t);
+    DrownBubbles *db = TASK_DATA(t);
     db->p = p;
 
     return t;

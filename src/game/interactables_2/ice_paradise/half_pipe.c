@@ -40,7 +40,7 @@ static void CreateEntity_HalfPipe(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 {
     struct Task *t = TaskCreate(Task_HalfPipeMain, sizeof(Sprite_IceParadiseHalfPipe),
                                 0x2010, 0, TaskDestructor_HalfPipe);
-    Sprite_IceParadiseHalfPipe *halfPipe = TaskGetStructPtr(t);
+    Sprite_IceParadiseHalfPipe *halfPipe = TASK_DATA(t);
     halfPipe->direction = direction;
     halfPipe->x = Q_24_8(spriteRegionX) + me->x * TILE_WIDTH;
     halfPipe->y = Q_24_8(spriteRegionY) + me->y * TILE_WIDTH;
@@ -56,7 +56,7 @@ static void CreateEntity_HalfPipe(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 
 static void Task_HalfPipeSequenceMain(void)
 {
-    Sprite_IceParadiseHalfPipe *halfPipe = TaskGetStructPtr(gCurTask);
+    Sprite_IceParadiseHalfPipe *halfPipe = TASK_DATA(gCurTask);
     if (!PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_8000;
         EndHalfPipeSequence(halfPipe);
@@ -146,7 +146,7 @@ static bool32 PlayerWithinHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
 
 static void Task_HalfPipeMain(void)
 {
-    Sprite_IceParadiseHalfPipe *halfPipe = TaskGetStructPtr(gCurTask);
+    Sprite_IceParadiseHalfPipe *halfPipe = TASK_DATA(gCurTask);
 
     if (ShouldTriggerHalfPipe(halfPipe)) {
         StartHalfPipeSequence(halfPipe);

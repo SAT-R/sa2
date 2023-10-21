@@ -27,7 +27,7 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
 {
     struct Task *t = TaskCreate(Task_EggmobileMoveUp, sizeof(Sprite_EggMobile), 0x3800,
                                 0, TaskDestructor_EggmobileEscape);
-    Sprite_EggMobile *em = TaskGetStructPtr(t);
+    Sprite_EggMobile *em = TASK_DATA(t);
     Sprite *s;
 
     m4aSongNumStart(SE_EGGMOBILE_FLEES);
@@ -78,7 +78,7 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
 
 static void Task_EggmobileMoveUp(void)
 {
-    Sprite_EggMobile *em = TaskGetStructPtr(gCurTask);
+    Sprite_EggMobile *em = TASK_DATA(gCurTask);
     Sprite *s = &em->s;
     Sprite *s2 = &em->s2;
 
@@ -98,7 +98,7 @@ static void Task_EggmobileMoveUp(void)
 // EggMobile - Init movement to the right
 static void Task_EggmobileSwitchMovement(void)
 {
-    Sprite_EggMobile *em = TaskGetStructPtr(gCurTask);
+    Sprite_EggMobile *em = TASK_DATA(gCurTask);
     Sprite *s;
 
     if (--em->frames == 0) {
@@ -122,7 +122,7 @@ static void Task_EggmobileSwitchMovement(void)
 
 static void Task_EggmobileMoveRight(void)
 {
-    Sprite_EggMobile *em = TaskGetStructPtr(gCurTask);
+    Sprite_EggMobile *em = TASK_DATA(gCurTask);
     Sprite *s = &em->s2;
 
     if (s->x > DISPLAY_WIDTH + 30) {
@@ -142,7 +142,7 @@ static void Task_EggmobileMoveRight(void)
 
 static void TaskDestructor_EggmobileEscape(struct Task *t)
 {
-    Sprite_EggMobile *em = TaskGetStructPtr(t);
+    Sprite_EggMobile *em = TASK_DATA(t);
     VramFree(em->s.graphics.dest);
     VramFree(em->s2.graphics.dest);
 }

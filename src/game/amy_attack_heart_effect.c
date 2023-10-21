@@ -92,7 +92,7 @@ void CreateAmyAttackHeartEffect(u16 kind)
         || (gPlayer.unk64 == SA2_CHAR_ANIM_36)) {
         struct Task *t = TaskCreate(Task_8015CE4, sizeof(AmyAtkHearts), 0x3001, 0,
                                     TaskDestructor_8015FF0);
-        AmyAtkHearts *hearts = TaskGetStructPtr(t);
+        AmyAtkHearts *hearts = TASK_DATA(t);
 
         hearts->unk100 = gUnknown_080D6736[gPlayer.unk64][0];
         hearts->unk102 = gUnknown_080D6736[gPlayer.unk64][1];
@@ -121,7 +121,7 @@ void Task_8015CE4(void)
 #else
     struct Task *t = gCurTask;
 #endif
-    AmyAtkHearts *hearts = TaskGetStructPtr(t);
+    AmyAtkHearts *hearts = TASK_DATA(t);
     u8 i;
 
     // TODO: Fix horrible cast!
@@ -199,7 +199,7 @@ void Task_8015CE4(void)
 
 void sub_8015E28(u16 p0)
 {
-    AmyAtkHearts *hearts = TaskGetStructPtr(gCurTask);
+    AmyAtkHearts *hearts = TASK_DATA(gCurTask);
     u8 i = 0;
 
     while (hearts->params[i].count != 0) {
@@ -251,7 +251,7 @@ void sub_8015E28(u16 p0)
 
 void TaskDestructor_8015FF0(struct Task *t)
 {
-    AmyAtkHearts *hearts = TaskGetStructPtr(t);
+    AmyAtkHearts *hearts = TASK_DATA(t);
 
     u8 i;
     for (i = 0; i < ARRAY_COUNT(hearts->params); i++) {

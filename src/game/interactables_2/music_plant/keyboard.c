@@ -59,7 +59,7 @@ void CreateEntity_Keyboard(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     struct Task *t = TaskCreate(Task_Keyboard, sizeof(Sprite_Keyboard), 0x2010, 0,
                                 TaskDestructor_Keyboard);
 
-    Sprite_Keyboard *kb = TaskGetStructPtr(t);
+    Sprite_Keyboard *kb = TASK_DATA(t);
     kb->kbType = type;
     kb->unk1 = 0;
     kb->posX = TO_WORLD_POS(me->x, spriteRegionX);
@@ -261,7 +261,7 @@ static bool32 sub_8076780(Sprite_Keyboard *kb)
 
 static void Task_Keyboard(void)
 {
-    Sprite_Keyboard *kb = TaskGetStructPtr(gCurTask);
+    Sprite_Keyboard *kb = TASK_DATA(gCurTask);
     if (sub_8076780(kb)) {
         sub_8076448(kb);
     }

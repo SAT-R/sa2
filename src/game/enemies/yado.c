@@ -40,7 +40,7 @@ void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s32 regX, regY;
     struct Task *t
         = TaskCreate(Task_YadoMain, sizeof(Sprite_Yado), 0x4090, 0, TaskDestructor_Yado);
-    Sprite_Yado *yado = TaskGetStructPtr(t);
+    Sprite_Yado *yado = TASK_DATA(t);
     Sprite *s = &yado->s;
     yado->base.regionX = spriteRegionX;
     yado->base.regionY = spriteRegionY;
@@ -68,7 +68,7 @@ void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 
 void Task_YadoMain(void)
 {
-    Sprite_Yado *yado = TaskGetStructPtr(gCurTask);
+    Sprite_Yado *yado = TASK_DATA(gCurTask);
     Sprite *s = &yado->s;
     MapEntity *me = yado->base.me;
     Vec2_32 pos;
@@ -107,7 +107,7 @@ void Task_YadoMain(void)
 
 void Task_8055084(void)
 {
-    Sprite_Yado *yado = TaskGetStructPtr(gCurTask);
+    Sprite_Yado *yado = TASK_DATA(gCurTask);
     Sprite *s = &yado->s;
     MapEntity *me = yado->base.me;
     Vec2_32 pos;
@@ -146,7 +146,7 @@ void Task_8055084(void)
 
         if (gUnknown_030056A4 != NULL) {
             UNK_30056A4 *a4 = gUnknown_030056A4;
-            Sprite_Yado *yado2 = TaskGetStructPtr(gCurTask);
+            Sprite_Yado *yado2 = TASK_DATA(gCurTask);
 
             if ((a4->s.hitboxes[3].index != -1)) {
                 s32 x1, x2;
@@ -231,7 +231,7 @@ void Task_8055084(void)
 
 void Task_8055378(void)
 {
-    Sprite_Yado *yado = TaskGetStructPtr(gCurTask);
+    Sprite_Yado *yado = TASK_DATA(gCurTask);
     Sprite *s = &yado->s;
     MapEntity *me = yado->base.me;
     Vec2_32 pos;
@@ -267,6 +267,6 @@ void Task_8055378(void)
 
 void TaskDestructor_Yado(struct Task *t)
 {
-    Sprite_Yado *yado = TaskGetStructPtr(t);
+    Sprite_Yado *yado = TASK_DATA(t);
     VramFree(yado->s.graphics.dest);
 }

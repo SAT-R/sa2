@@ -33,7 +33,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     if (me->d.sData[0] >= 0) {
         struct Task *t
             = TaskCreate(sub_805EA94, 0x44, 0x2010, 0, TaskDestructor_80095E8);
-        Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(t);
+        Sprite_RotatingHandle *rotatingHandle = TASK_DATA(t);
         Sprite *s = &rotatingHandle->s;
         rotatingHandle->base.regionX = spriteRegionX;
         rotatingHandle->base.regionY = spriteRegionY;
@@ -66,7 +66,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
 
 static void sub_805EA94(void)
 {
-    Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
+    Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
     Sprite *s = &rotatingHandle->s;
     MapEntity *me = rotatingHandle->base.me;
     s32 x = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);
@@ -144,7 +144,7 @@ static void sub_805EA94(void)
 NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
          static void sub_805ECA0())
 {
-    Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
+    Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
     Sprite *s = &rotatingHandle->s;
     MapEntity *me = rotatingHandle->base.me;
     u64 temp;
@@ -261,7 +261,7 @@ END_NONMATCH
 
 static void sub_805EF90(void)
 {
-    Sprite_RotatingHandle *rotatingHandle = TaskGetStructPtr(gCurTask);
+    Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
     Sprite *s = &rotatingHandle->s;
     MapEntity *me = rotatingHandle->base.me;
     s32 x = TO_WORLD_POS(rotatingHandle->base.spriteX, rotatingHandle->base.regionX);

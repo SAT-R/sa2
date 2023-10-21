@@ -49,7 +49,7 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 {
     struct Task *t = TaskCreate(Task_Platform_Square, sizeof(Sprite_PlatformSquare),
                                 0x2010, 0, TaskDestructor_Platform_Square);
-    Sprite_PlatformSquare *platform = TaskGetStructPtr(t);
+    Sprite_PlatformSquare *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
     platform->base.regionX = spriteRegionX;
@@ -127,7 +127,7 @@ static void Task_Platform_Square(void)
     u32 result;
     s32 deltaX = 0, deltaY = 0;
 
-    Sprite_PlatformSquare *platform = TaskGetStructPtr(gCurTask);
+    Sprite_PlatformSquare *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;
     me = platform->base.me;
 
@@ -367,7 +367,7 @@ static void Task_Platform_Square(void)
 
 static void TaskDestructor_Platform_Square(struct Task *t)
 {
-    Sprite_PlatformSquare *platform = TaskGetStructPtr(t);
+    Sprite_PlatformSquare *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);
 }
 

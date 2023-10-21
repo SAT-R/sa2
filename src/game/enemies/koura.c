@@ -39,7 +39,7 @@ void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 {
 
     struct Task *t = TaskCreate(sub_8054224, 0x5C, 0x40B0, 0, TaskDestructor_80095E8);
-    Sprite_Koura *koura = TaskGetStructPtr(t);
+    Sprite_Koura *koura = TASK_DATA(t);
     Sprite *s = &koura->s;
     koura->base.regionX = spriteRegionX;
     koura->base.regionY = spriteRegionY;
@@ -83,7 +83,7 @@ void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
 static void sub_8054224(void)
 {
-    Sprite_Koura *koura = TaskGetStructPtr(gCurTask);
+    Sprite_Koura *koura = TASK_DATA(gCurTask);
     Sprite *s = &koura->s;
     MapEntity *me = koura->base.me;
     Vec2_32 pos;
@@ -165,7 +165,7 @@ static void sub_8054224(void)
 
 static void sub_805462C(void)
 {
-    Sprite_Koura *koura = TaskGetStructPtr(gCurTask);
+    Sprite_Koura *koura = TASK_DATA(gCurTask);
     Sprite *s = &koura->s;
     MapEntity *me = koura->base.me;
     Vec2_32 pos;
@@ -220,7 +220,7 @@ static void sub_805462C(void)
 
 static void sub_8054904(void)
 {
-    Sprite_Koura *koura = TaskGetStructPtr(gCurTask);
+    Sprite_Koura *koura = TASK_DATA(gCurTask);
     Sprite *s = &koura->s;
     MapEntity *me = koura->base.me;
     Vec2_32 pos;

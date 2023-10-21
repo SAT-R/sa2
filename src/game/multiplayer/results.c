@@ -158,7 +158,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     DmaFill32(3, 0, (void *)VRAM + 0x9fe0, 0x40);
     t = TaskCreate(sub_805C0F0, sizeof(struct MultiplayerResultsScreen), 0x2000, 0,
                    NULL);
-    resultsScreen = TaskGetStructPtr(t);
+    resultsScreen = TASK_DATA(t);
 
     resultsScreen->animStep = 0;
 
@@ -263,7 +263,7 @@ static void sub_805C0F0(void)
 
     MultiPakHeartbeat();
 
-    selectionResultsScreen = TaskGetStructPtr(gCurTask);
+    selectionResultsScreen = TASK_DATA(gCurTask);
 
     if ((selectionResultsScreen->animStep += 0x400) > 0xF000) {
         selectionResultsScreen->animStep = 0;
@@ -313,7 +313,7 @@ static void sub_805C0F0(void)
 
 static void sub_805C30C(void)
 {
-    struct MultiplayerResultsScreen *selectionResultsScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerResultsScreen *selectionResultsScreen = TASK_DATA(gCurTask);
     bool32 somebool = FALSE;
 
     if (selectionResultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
@@ -343,7 +343,7 @@ static void sub_805C30C(void)
 
 static void sub_805C3D0(void)
 {
-    struct MultiplayerResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     resultsScreen->animStep += 0x200;
 
     if (resultsScreen->animStep > 0x1000) {
@@ -402,7 +402,7 @@ static void sub_805C504(void)
     u16 *unk1884 = gBgOffsetsHBlank;
     MultiPakHeartbeat();
 
-    selectionResultsScreen = TaskGetStructPtr(gCurTask);
+    selectionResultsScreen = TASK_DATA(gCurTask);
     gFlags |= 0x4;
     gUnknown_03002878 = (void *)REG_ADDR_BG3VOFS;
     gUnknown_03002A80 = 2;
@@ -443,7 +443,7 @@ static void sub_805C69C(void)
 
     MultiPakHeartbeat();
 
-    resultsScreen = TaskGetStructPtr(gCurTask);
+    resultsScreen = TASK_DATA(gCurTask);
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         if (GetBit(gMultiplayerConnections, i)) {

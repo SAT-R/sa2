@@ -62,7 +62,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a,
                    struct SpecialStageCollectables_UNK874_2 *unk874,
                    struct SpecialStage *stage)
 {
-    struct SpecialStageWorld *world = TaskGetStructPtr(stage->worldTask);
+    struct SpecialStageWorld *world = TASK_DATA(stage->worldTask);
     s32 r9;
     s32 r4;
     s16 val2, val;

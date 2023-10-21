@@ -17,7 +17,7 @@ struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant,
     struct Task *t
         = TaskCreate(Task_StagePaletteLoader, sizeof(Sprite), priority, 0, dtor);
 
-    Sprite *s = TaskGetStructPtr(t);
+    Sprite *s = TASK_DATA(t);
 
     s->x = 0;
     s->y = 0;
@@ -39,7 +39,7 @@ struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant,
 
 static void Task_StagePaletteLoader(void)
 {
-    Sprite *s = TaskGetStructPtr(gCurTask);
+    Sprite *s = TASK_DATA(gCurTask);
 
     if (sub_80036E0(s) == 0) {
         TaskDestroy(gCurTask);

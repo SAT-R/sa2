@@ -28,7 +28,7 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     u32 r2;
     struct Task *t = TaskCreate(Task_MonMain, sizeof(Sprite_Mon), 0x4010, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Mon *mon = TaskGetStructPtr(t);
+    Sprite_Mon *mon = TASK_DATA(t);
     Sprite *s = &mon->s;
     mon->base.regionX = spriteRegionX;
     mon->base.regionY = spriteRegionY;
@@ -68,7 +68,7 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
 
 static void Task_MonMain(void)
 {
-    Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
+    Sprite_Mon *mon = TASK_DATA(gCurTask);
     Sprite *s = &mon->s;
     MapEntity *me = mon->base.me;
 
@@ -98,7 +98,7 @@ static void Task_MonMain(void)
 
 static void Task_Mon_2(void)
 {
-    Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
+    Sprite_Mon *mon = TASK_DATA(gCurTask);
     Sprite *s = &mon->s;
     MapEntity *me = mon->base.me;
 
@@ -127,7 +127,7 @@ static void Task_Mon_2(void)
 
 static void Task_Mon_3(void)
 {
-    Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
+    Sprite_Mon *mon = TASK_DATA(gCurTask);
     Sprite *s = &mon->s;
     MapEntity *me = mon->base.me;
 
@@ -157,7 +157,7 @@ static void Task_Mon_3(void)
 
 static void Task_Mon_4(void)
 {
-    Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
+    Sprite_Mon *mon = TASK_DATA(gCurTask);
     Sprite *s = &mon->s;
     MapEntity *me = mon->base.me;
 

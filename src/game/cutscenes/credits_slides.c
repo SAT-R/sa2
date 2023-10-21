@@ -61,7 +61,7 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
     gUnknown_03002280[1][3] = 0x20;
 
     t = TaskCreate(sub_808F004, sizeof(CreditsSlidesCutScene), 0x3100, 0, sub_808F148);
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
     scene->creditsVariant = creditsVariant;
     scene->unk4E = b;
     scene->unk4F = c;
@@ -116,7 +116,7 @@ void sub_808F10C(void);
 
 void sub_808EF38(void)
 {
-    CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
+    CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
 
     transition->unk2 = 1;
@@ -155,7 +155,7 @@ void sub_808F068(void);
 
 void sub_808F004(void)
 {
-    CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
+    CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
     transition->unk2 = 2;
 
@@ -171,7 +171,7 @@ void sub_808F004(void)
 
 void sub_808F068(void)
 {
-    CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
+    CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
 
     if (scene->unk54 != 0) {
         scene->unk54--;
@@ -187,7 +187,7 @@ void sub_808F068(void)
 
 void sub_808F0BC(void)
 {
-    CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
+    CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
     transition->unk2 = 1;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
@@ -201,7 +201,7 @@ void sub_808F0BC(void)
 
 void sub_808F10C(void)
 {
-    CreditsSlidesCutScene *scene = TaskGetStructPtr(gCurTask);
+    CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
     scene->unk4F++;
     CreateCreditsCutScene(scene->creditsVariant, scene->unk4E, scene->unk4F);
     TaskDestroy(gCurTask);

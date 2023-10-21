@@ -87,7 +87,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
     t = TaskCreate(Task_800B704, sizeof(Entity_ItemBox), 0x2000, 0,
                    TaskDestructor_800B80C);
-    itembox = TaskGetStructPtr(t);
+    itembox = TASK_DATA(t);
     itembox->kind = me->index;
     itembox->unk74 = 0;
     itembox->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -285,7 +285,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
                 if (playerId == sioId)
                     continue;
 
-                mpp = TaskGetStructPtr(gMultiplayerPlayerTasks[playerId]);
+                mpp = TASK_DATA(gMultiplayerPlayerTasks[playerId]);
                 boxToPlayerX = SQUARE(Q_24_8_TO_INT(gPlayer.x) - mpp->unk50);
                 boxToPlayerY = SQUARE(Q_24_8_TO_INT(gPlayer.y) - mpp->unk52);
 
@@ -394,7 +394,7 @@ void sub_800B580(Entity_ItemBox *itembox, bool32 p1)
 
 void Task_800B704(void)
 {
-    Entity_ItemBox *itembox = TaskGetStructPtr(gCurTask);
+    Entity_ItemBox *itembox = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER && ((s8)itembox->base.me->x) == MAP_ENTITY_STATE_MINUS_THREE) {
         sub_800B828(itembox);
@@ -416,7 +416,7 @@ void Task_800B704(void)
 
 void Task_800B780(void)
 {
-    Entity_ItemBox *itembox = TaskGetStructPtr(gCurTask);
+    Entity_ItemBox *itembox = TASK_DATA(gCurTask);
 
     // TODO/BUG(?) This should be a pre-increment, not post-increment, right?
     if (itembox->frames++ >= 60)
@@ -430,7 +430,7 @@ void Task_800B780(void)
 
 void Task_800B7D0(void)
 {
-    Entity_ItemBox *itembox = TaskGetStructPtr(gCurTask);
+    Entity_ItemBox *itembox = TASK_DATA(gCurTask);
 
     // TODO/BUG(?) This should be a pre-increment, not post-increment, right?
     if (itembox->frames++ >= 30)
@@ -441,7 +441,7 @@ void Task_800B7D0(void)
 
 void TaskDestructor_800B80C(struct Task *t)
 {
-    Entity_ItemBox *itembox = TaskGetStructPtr(t);
+    Entity_ItemBox *itembox = TASK_DATA(t);
     VramFree(itembox->s.graphics.dest);
     VramFree(itembox->item.graphics.dest);
 }
@@ -510,7 +510,7 @@ bool32 sub_800B8F4(Entity_ItemBox *itembox)
 
 void Task_800B950(void)
 {
-    Entity_ItemBox *itembox = TaskGetStructPtr(gCurTask);
+    Entity_ItemBox *itembox = TASK_DATA(gCurTask);
 
     // TODO/BUG(?) This should be a pre-increment, not post-increment, right?
     if (itembox->frames++ >= 60) {

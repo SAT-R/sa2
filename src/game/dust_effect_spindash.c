@@ -19,7 +19,7 @@ struct Task *CreateSpindashDustEffect()
     struct Task *t = TaskCreate(Task_SpindashDustEffect, sizeof(DustEffect), 0x4001, 0,
                                 TaskDestructor_SpindashDustEffect);
 
-    DustEffect *sde = TaskGetStructPtr(t);
+    DustEffect *sde = TASK_DATA(t);
     Sprite *s = &sde->s;
     s->graphics.dest = VramMalloc(20);
     s->graphics.size = 0;
@@ -46,7 +46,7 @@ void Task_SpindashDustEffect(void)
         TaskDestroy(gCurTask);
         return;
     } else {
-        DustEffect *sde = TaskGetStructPtr(gCurTask);
+        DustEffect *sde = TASK_DATA(gCurTask);
         Sprite *s = &sde->s;
 
         if (p->spindashAccel > Q_24_8(2.0)) {
@@ -65,7 +65,7 @@ void Task_SpindashDustEffect(void)
 
         if (IS_MULTI_PLAYER) {
             struct Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
-            struct MultiplayerPlayer *mpp = TaskGetStructPtr(t);
+            struct MultiplayerPlayer *mpp = TASK_DATA(t);
             s->x = (mpp->unk50 - cam->x);
             s->y = ((mpp->unk52 + offY) - cam->y);
         } else {
@@ -101,7 +101,7 @@ void Task_SpindashDustEffectBig(void)
         TaskDestroy(gCurTask);
         return;
     } else {
-        DustEffect *sde = TaskGetStructPtr(gCurTask);
+        DustEffect *sde = TASK_DATA(gCurTask);
         Sprite *s = &sde->s;
 
         if (p->spindashAccel <= Q_24_8(2.0)) {
@@ -120,7 +120,7 @@ void Task_SpindashDustEffectBig(void)
 
         if (IS_MULTI_PLAYER) {
             struct Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
-            struct MultiplayerPlayer *mpp = TaskGetStructPtr(t);
+            struct MultiplayerPlayer *mpp = TASK_DATA(t);
             s->x = (mpp->unk50 - cam->x);
             s->y = ((mpp->unk52 + offY) - cam->y);
         } else {
@@ -147,6 +147,6 @@ void Task_SpindashDustEffectBig(void)
 
 void TaskDestructor_SpindashDustEffect(struct Task *t)
 {
-    DustEffect *sde = TaskGetStructPtr(t);
+    DustEffect *sde = TASK_DATA(t);
     VramFree(sde->s.graphics.dest);
 }

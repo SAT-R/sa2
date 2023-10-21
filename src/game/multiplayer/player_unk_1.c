@@ -17,7 +17,7 @@ struct UNK_3005510 *sub_8019224(void)
 void sub_8019240(union MultiSioData *msioData, u32 someId)
 {
     if (gEntitiesManagerTask != NULL) {
-        EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
+        EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
         // MapData *ias = em->interactables;
         u32 *ias = (u32 *)em->interactables;
         u16 h_regionCount;
@@ -51,7 +51,7 @@ void sub_8019240(union MultiSioData *msioData, u32 someId)
 void sub_80192A8(union MultiSioData *msioData, u32 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
-        EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
+        EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
         // MapData *items = em->interactables;
         u32 *items = (u32 *)em->items;
         u16 h_regionCount;
@@ -88,7 +88,7 @@ void sub_80192A8(union MultiSioData *msioData, u32 UNUSED someId)
 void sub_80192FC(union MultiSioData *msioData, u32 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
-        EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
+        EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
         // MapData *enemies = em->interactables;
         u32 *enemies = (u32 *)em->enemies;
         u16 h_regionCount;
@@ -129,7 +129,7 @@ void sub_8019350(union MultiSioData *msioData, u32 UNUSED someId)
 void sub_8019368(union MultiSioData *msioData, u32 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
-        EntitiesManager *em = TaskGetStructPtr(gEntitiesManagerTask);
+        EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
         // MapData *ias = em->interactables;
         u32 *ias = (u32 *)em->interactables;
         u16 h_regionCount;

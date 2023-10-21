@@ -77,7 +77,7 @@ void CreateEntity_HookRail(u32 triggerType, MapEntity *me, u16 spriteRegionX,
             return;
     }
 
-    hookRail = TaskGetStructPtr(t);
+    hookRail = TASK_DATA(t);
     hookRail->triggerType = triggerType;
     hookRail->x = TO_WORLD_POS(me->x, spriteRegionX);
     hookRail->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -95,7 +95,7 @@ void CreateEntity_HookRail(u32 triggerType, MapEntity *me, u16 spriteRegionX,
 
 static void sub_8072BB8(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_8073068(hookRail);
@@ -129,7 +129,7 @@ static void sub_8072BB8(void)
 
 static void sub_8072C90(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_8073068(hookRail);
@@ -155,7 +155,7 @@ static void sub_8072C90(void)
 
 static void sub_8072D40(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_8073148(hookRail);
@@ -243,7 +243,7 @@ static u32 IsPlayerTouching(Sprite_HookRail *hookRail)
 
 static void sub_8072F38(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
     u16 touchDirection = IsPlayerTouching(hookRail);
     if (touchDirection != PLAYER_TOUCH_DIRECTION_NONE) {
         if (hookRail->triggerType == 0) {
@@ -262,7 +262,7 @@ static void sub_8072F38(void)
 
 static void sub_8072F8C(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
     if (IsPlayerTouching(hookRail) != PLAYER_TOUCH_DIRECTION_NONE
         && gPlayer.unk64 == 55) {
@@ -431,7 +431,7 @@ void CreateEntity_HookRail_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 
 static void sub_8073320(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_8073068(hookRail);

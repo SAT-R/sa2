@@ -185,7 +185,7 @@ struct MultiplayerPlayer {
     u8 unk56;
     u8 unk57;
     u8 unk58[4];
-    u32 unk5C;
+    u32 unk5C; // flags?
 };
 
 extern struct Task *gMultiplayerPlayerTasks[4];

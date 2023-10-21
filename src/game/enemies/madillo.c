@@ -27,7 +27,7 @@ void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_MadilloMain, sizeof(Sprite_Madillo), 0x4040, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Madillo *madillo = TaskGetStructPtr(t);
+    Sprite_Madillo *madillo = TASK_DATA(t);
     Sprite *s = &madillo->s;
     madillo->base.regionX = spriteRegionX;
     madillo->base.regionY = spriteRegionY;
@@ -55,7 +55,7 @@ void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
 static void Task_MadilloMain(void)
 {
-    Sprite_Madillo *madillo = TaskGetStructPtr(gCurTask);
+    Sprite_Madillo *madillo = TASK_DATA(gCurTask);
     Sprite *s = &madillo->s;
     MapEntity *me = madillo->base.me;
     Player *p;
@@ -117,7 +117,7 @@ static void Task_MadilloMain(void)
 }
 static void Task_8056230(void)
 {
-    Sprite_Madillo *madillo = TaskGetStructPtr(gCurTask);
+    Sprite_Madillo *madillo = TASK_DATA(gCurTask);
     Sprite *s = &madillo->s; // r5
     Sprite *s2;
 
@@ -176,7 +176,7 @@ static void Task_8056230(void)
 
 static void Task_80564BC(void)
 {
-    Sprite_Madillo *madillo = TaskGetStructPtr(gCurTask);
+    Sprite_Madillo *madillo = TASK_DATA(gCurTask);
     Sprite *s = &madillo->s; // r5
     Sprite *s2;
 

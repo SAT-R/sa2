@@ -74,7 +74,7 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
     u32 maskA, maskB;
 
     Water *water = &gWater;
-    WaterData *wd = TaskGetStructPtr(water->t);
+    WaterData *wd = TASK_DATA(water->t);
 
     if (IS_MULTI_PLAYER) {
         u8 i = 0, j = 0;
@@ -325,7 +325,7 @@ void CreateRunOnWaterEffect(void)
 {
     struct Task *t = TaskCreate(Task_RunOnWaterEffect, sizeof(RunOnWaterEffect), 0x4001,
                                 0, TaskDestructor_8011B3C);
-    RunOnWaterEffect *effect = TaskGetStructPtr(t);
+    RunOnWaterEffect *effect = TASK_DATA(t);
     Sprite *s = &effect->s;
     s->graphics.dest = VramMalloc(12);
     s->graphics.size = 0;
@@ -341,7 +341,7 @@ void CreateRunOnWaterEffect(void)
 
 static void Task_RunOnWaterEffect(void)
 {
-    RunOnWaterEffect *effect = TaskGetStructPtr(gCurTask);
+    RunOnWaterEffect *effect = TASK_DATA(gCurTask);
     Sprite *s = &effect->s;
     Player *p = &gPlayer;
     u32 newMovestate;
@@ -370,7 +370,7 @@ static void Task_RunOnWaterEffect(void)
 struct Task *CreateWaterfallSurfaceHitEffect(s16 x, s16 y)
 {
     struct Task *t = sub_801F15C(x, y, 0x10, 0, Task_801F214, TaskDestructor_801F550);
-    TaskStrc_801F15C *ts = TaskGetStructPtr(t);
+    TaskStrc_801F15C *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
 
     s->graphics.dest = VramMalloc(12);
@@ -472,7 +472,7 @@ void TaskDestructor_WaterSurface(struct Task *t)
 void sub_8011A4C(void)
 {
     Water *water = &gWater;
-    WaterData *wd = TaskGetStructPtr(water->t);
+    WaterData *wd = TASK_DATA(water->t);
     u32 unk2;
     unk2 = water->unk2;
     water->unk1 = unk2;
@@ -492,7 +492,7 @@ void sub_8011A4C(void)
 void VCountIntr_8011ACC(void)
 {
     Water *water = &gWater;
-    WaterData *wd = TaskGetStructPtr(water->t);
+    WaterData *wd = TASK_DATA(water->t);
 
     DmaCopy32(3, &wd->pal[0x100], PLTT, 0x1D0);
     DmaCopy32(3, &wd->pal[0x0], OBJ_PLTT, OBJ_PLTT_SIZE);
@@ -504,7 +504,7 @@ void VCountIntr_8011ACC(void)
 
 void TaskDestructor_8011B3C(struct Task *t)
 {
-    RunOnWaterEffect *effect = TaskGetStructPtr(t);
+    RunOnWaterEffect *effect = TASK_DATA(t);
     Sprite *s = &effect->s;
     VramFree(s->graphics.dest);
 }

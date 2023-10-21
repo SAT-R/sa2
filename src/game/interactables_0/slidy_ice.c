@@ -22,7 +22,7 @@ typedef struct {
 
 void Task_SlidyIce(void)
 {
-    Sprite_SlidyIce *ice = TaskGetStructPtr(gCurTask);
+    Sprite_SlidyIce *ice = TASK_DATA(gCurTask);
     MapEntity_SlidyIce *me = (MapEntity_SlidyIce *)ice->base.me;
     u8 spriteX = ice->base.spriteX;
 
@@ -62,7 +62,7 @@ void CreateEntity_SlidyIce(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_SlidyIce, 0xC, 0x2010, 0, NULL);
 
-    Sprite_SlidyIce *ice = TaskGetStructPtr(t);
+    Sprite_SlidyIce *ice = TASK_DATA(t);
     ice->base.regionX = spriteRegionX;
     ice->base.regionY = spriteRegionY;
     ice->base.me = me;

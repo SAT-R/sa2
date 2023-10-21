@@ -20,7 +20,7 @@ typedef struct {
 #define sBottom ((sTop) + me->d.uData[3] * TILE_WIDTH)
 void Task_Interactable_044(void)
 {
-    Sprite_IA044 *ia044 = TaskGetStructPtr(gCurTask);
+    Sprite_IA044 *ia044 = TASK_DATA(gCurTask);
     SpriteBase *object = &ia044->base;
     MapEntity *me = object->me;
     s32 screenX, screenY;
@@ -84,7 +84,7 @@ void CreateEntity_044(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
 {
     struct Task *t
         = TaskCreate(Task_Interactable_044, sizeof(Sprite_IA044), 0x2010, 0, NULL);
-    Sprite_IA044 *ia044 = TaskGetStructPtr(t);
+    Sprite_IA044 *ia044 = TASK_DATA(t);
 
     ia044->base.regionX = spriteRegionX;
     ia044->base.regionY = spriteRegionY;

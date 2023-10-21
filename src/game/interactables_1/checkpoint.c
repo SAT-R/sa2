@@ -71,7 +71,7 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
                        TaskDestructor_8063214);
     }
 
-    chkPt = TaskGetStructPtr(t);
+    chkPt = TASK_DATA(t);
     s = &chkPt->s;
 
     chkPt->base.regionX = spriteRegionX;
@@ -106,7 +106,7 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 
 void Task_8062FD8(void)
 {
-    Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
+    Sprite_Checkpoint *chkPt = TASK_DATA(gCurTask);
     Sprite *s = &chkPt->s;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
@@ -146,7 +146,7 @@ void Task_8062FD8(void)
 
 void Task_8063108(void)
 {
-    Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
+    Sprite_Checkpoint *chkPt = TASK_DATA(gCurTask);
     Sprite *s = &chkPt->s;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
@@ -171,7 +171,7 @@ void Task_8063108(void)
 
 void Task_806319C(void)
 {
-    Sprite_Checkpoint *chkPt = TaskGetStructPtr(gCurTask);
+    Sprite_Checkpoint *chkPt = TASK_DATA(gCurTask);
     Sprite *s = &chkPt->s;
     MapEntity *me = chkPt->base.me;
     s32 posX, posY;
@@ -191,7 +191,7 @@ void Task_806319C(void)
 // static
 void TaskDestructor_8063214(struct Task *t)
 {
-    Sprite_Checkpoint *chkPt = TaskGetStructPtr(t);
+    Sprite_Checkpoint *chkPt = TASK_DATA(t);
     void *gfx = chkPt->s.graphics.dest;
     VramFree(gfx);
 }
@@ -221,7 +221,7 @@ void Task_8063228(struct Task *unused)
 
 static void Task_Interactable_Toggle_Checkpoint(void)
 {
-    Sprite_Toggle_Checkpoint *toggle = TaskGetStructPtr(gCurTask);
+    Sprite_Toggle_Checkpoint *toggle = TASK_DATA(gCurTask);
     MapEntity *me = toggle->base.me;
     s32 posX, posY;
     s16 screenX, screenY;
@@ -258,7 +258,7 @@ void CreateEntity_Toggle_Checkpoint(MapEntity *in_ia, u16 spriteRegionX,
         struct Task *t = TaskCreate(Task_Interactable_Toggle_Checkpoint,
                                     sizeof(Sprite_Toggle_Checkpoint), 0x2010, 0, NULL);
 
-        Sprite_Toggle_Checkpoint *toggle = TaskGetStructPtr(t);
+        Sprite_Toggle_Checkpoint *toggle = TASK_DATA(t);
         toggle->base.regionX = spriteRegionX;
         toggle->base.regionY = spriteRegionY;
         toggle->base.me = in_ia;

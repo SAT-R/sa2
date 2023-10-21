@@ -97,7 +97,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     t = TaskCreate(Task_UpdateStageResults, sizeof(StageResults), 0xC100, 0,
                    TaskDestructor_StageResults);
-    outro = TaskGetStructPtr(t);
+    outro = TASK_DATA(t);
     outro->counter = zero;
     outro->isCountingDone = zero;
 
@@ -300,7 +300,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
 void Task_UpdateStageResults(void)
 {
-    StageResults *outro = TaskGetStructPtr(gCurTask);
+    StageResults *outro = TASK_DATA(gCurTask);
     u32 counter = outro->counter;
 
     if (++counter > outro->unk16C + 309) {
@@ -533,7 +533,7 @@ void Task_UpdateStageResults(void)
 
 void sub_80310F0(void)
 {
-    StageResults *outro = TaskGetStructPtr(gCurTask);
+    StageResults *outro = TASK_DATA(gCurTask);
     u32 counter = outro->counter;
     Sprite *s = &outro->s7;
 
@@ -550,7 +550,7 @@ void sub_80310F0(void)
 // (90.87%) https://decomp.me/scratch/ju0GI
 NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u16 p0))
 {
-    StageResults *outro = TaskGetStructPtr(gCurTask);
+    StageResults *outro = TASK_DATA(gCurTask);
     u32 counter = outro->counter;
     u32 i;
     Sprite *s;
@@ -659,7 +659,7 @@ END_NONMATCH
 
 void sub_8031314(void)
 {
-    StageResults *outro = TaskGetStructPtr(gCurTask);
+    StageResults *outro = TASK_DATA(gCurTask);
     u32 counter = outro->counter;
 
     if (counter > 28) {
@@ -685,7 +685,7 @@ void sub_8031314(void)
 
 void TaskDestructor_StageResults(struct Task *t)
 {
-    StageResults *outro = TaskGetStructPtr(t);
+    StageResults *outro = TASK_DATA(t);
     if (outro->s7.graphics.dest != NULL) {
         VramFree(outro->s7.graphics.dest);
         VramFree(outro->s1[0].graphics.dest);
@@ -699,7 +699,7 @@ void TaskDestructor_StageResults(struct Task *t)
 
 void DestroyStageResultsGfx(void)
 {
-    StageResults *outro = TaskGetStructPtr(gCurTask);
+    StageResults *outro = TASK_DATA(gCurTask);
     if (outro->s7.graphics.dest != NULL) {
         VramFree(outro->s7.graphics.dest);
         VramFree(outro->s1[0].graphics.dest);

@@ -29,7 +29,7 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     if (gGameMode == GAME_MODE_TIME_ATTACK || gDifficultyLevel != 1) {
         struct Task *t = TaskCreate(sub_8057348, sizeof(Sprite_Mouse), 0x4040, 0,
                                     TaskDestructor_80095E8);
-        Sprite_Mouse *mouse = TaskGetStructPtr(t);
+        Sprite_Mouse *mouse = TASK_DATA(t);
         Sprite *s = &mouse->s;
         mouse->base.regionX = spriteRegionX;
         mouse->base.regionY = spriteRegionY;
@@ -80,7 +80,7 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
 static void sub_8057348(void)
 {
-    Sprite_Mouse *mouse = TaskGetStructPtr(gCurTask);
+    Sprite_Mouse *mouse = TASK_DATA(gCurTask);
 
     Sprite *s = &mouse->s;
     MapEntity *me = mouse->base.me;
@@ -150,7 +150,7 @@ static void sub_8057348(void)
 
 static void sub_8057618(void)
 {
-    Sprite_Mouse *mouse = TaskGetStructPtr(gCurTask);
+    Sprite_Mouse *mouse = TASK_DATA(gCurTask);
 
     Sprite *s = &mouse->s;
     MapEntity *me = mouse->base.me;

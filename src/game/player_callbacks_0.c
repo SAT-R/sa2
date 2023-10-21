@@ -91,7 +91,7 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
     }
 
     t = sub_801F15C(x, y, 0xE8, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
-    ts = TaskGetStructPtr(t);
+    ts = TASK_DATA(t);
 
     switch (p2) {
         case 0: {
@@ -132,7 +132,7 @@ struct Task *sub_8011C98(s32 x, s32 y)
         struct Task *t = TaskCreate(Task_8012034, sizeof(TaskStrc_8011C98), 0x4001, 0,
                                     TaskDestructor_80124B8);
 
-        TaskStrc_8011C98 *strc = TaskGetStructPtr(t);
+        TaskStrc_8011C98 *strc = TASK_DATA(t);
         Sprite *s = &strc->s;
 
         s16 i;
@@ -323,7 +323,7 @@ void PlayerCB_8011F94(Player *p)
 
 void Task_8012034(void)
 {
-    TaskStrc_8011C98 *strc = TaskGetStructPtr(gCurTask);
+    TaskStrc_8011C98 *strc = TASK_DATA(gCurTask);
     Sprite *s = &strc->s;
     Vec2_32 pos;
 
@@ -536,7 +536,7 @@ void PlayerCB_8012498(Player *p)
 
 void TaskDestructor_80124B8(struct Task *t)
 {
-    TaskStrc_8011C98 *strc = TaskGetStructPtr(t);
+    TaskStrc_8011C98 *strc = TASK_DATA(t);
     Sprite *s = &strc->s;
     VramFree(s->graphics.dest);
 }
@@ -801,7 +801,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
         TaskStrc_801F15C *ts;
         Sprite *s;
         t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
-        ts = TaskGetStructPtr(t);
+        ts = TASK_DATA(t);
         ts->playerAnim = gPlayerCharacterIdleAnims[gPlayer.character];
 
         // This is += because it's adding to the base Idle character animation
@@ -1002,7 +1002,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
         Sprite *s;
         struct Task *t;
         t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
-        ts = TaskGetStructPtr(t);
+        ts = TASK_DATA(t);
 
         ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
         ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];

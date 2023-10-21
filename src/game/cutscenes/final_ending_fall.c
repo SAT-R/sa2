@@ -143,7 +143,7 @@ void CreateFinalEndingFallCutScene(void)
     m4aSongNumStart(MUS_FINAL_ENDING);
 
     t = TaskCreate(sub_8092690, 0x49C, 0x3100, 0, sub_8092800);
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
 
     scene->unk35C = 0;
     scene->unk494 = 0;
@@ -409,7 +409,7 @@ void sub_8091E60(void);
 
 void sub_8091CB0(void)
 {
-    struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     sub_8091F68(scene);
     sub_809205C(scene);
     sub_80920E4(scene);
@@ -472,7 +472,7 @@ void sub_809289C(struct FinalEndingFallCutScene *);
 
 void sub_8091E60(void)
 {
-    struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk350;
 
     transition->speed = 0x50;
@@ -761,7 +761,7 @@ void sub_8092780(void);
 
 void sub_8092690(void)
 {
-    struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk350;
     transition->unk2 = 2;
 
@@ -785,7 +785,7 @@ void sub_8092690(void)
 
 void sub_8092714(void)
 {
-    struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk350;
     transition->unk2 = 1;
 
@@ -805,7 +805,7 @@ void sub_8092714(void)
 
 void sub_8092780(void)
 {
-    struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     sub_8091F68(scene);
     sub_809205C(scene);
     sub_80920E4(scene);

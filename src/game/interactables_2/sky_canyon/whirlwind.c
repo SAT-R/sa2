@@ -95,7 +95,7 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_807D06C, sizeof(Sprite_IA86), 0x2010, 0,
                                 TaskDestructor_Interactable086);
-    Sprite_IA86 *ia086 = TaskGetStructPtr(t);
+    Sprite_IA86 *ia086 = TASK_DATA(t);
     s32 someX, someY;
     s32 value;
     u32 width;
@@ -521,7 +521,7 @@ bool32 sub_807CFB4(Sprite_IA86 *ia086)
 
 void Task_807D06C(void)
 {
-    Sprite_IA86 *ia086 = TaskGetStructPtr(gCurTask);
+    Sprite_IA86 *ia086 = TASK_DATA(gCurTask);
 
     if (sub_807CFB4(ia086)) {
         m4aSongNumStart(SE_WHIRLWIND);
@@ -539,7 +539,7 @@ void Task_807D06C(void)
 
 void Task_807D0C4(void)
 {
-    Sprite_IA86 *ia086 = TaskGetStructPtr(gCurTask);
+    Sprite_IA86 *ia086 = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_807D06C;
@@ -554,7 +554,7 @@ void Task_807D0C4(void)
 
 void TaskDestructor_Interactable086(struct Task *t)
 {
-    Sprite_IA86 *ia086 = TaskGetStructPtr(t);
+    Sprite_IA86 *ia086 = TASK_DATA(t);
     VramFree(ia086->unk228.vramMem);
 }
 
@@ -614,7 +614,7 @@ void CreateEntity_Whirlwind_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
 void Task_807D268(void)
 {
-    Sprite_IA86 *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_IA86 *sprite = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_807D06C;

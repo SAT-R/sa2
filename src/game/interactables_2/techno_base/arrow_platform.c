@@ -52,7 +52,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     Sprite *s;
     struct Task *t
         = TaskCreate(sub_807AA68, sizeof(Sprite_IA75), 0x2010, 0, sub_807AB04);
-    Sprite_IA75 *ia75 = TaskGetStructPtr(t);
+    Sprite_IA75 *ia75 = TASK_DATA(t);
     ia75->unk94 = param;
     ia75->unk8C = 0;
     ia75->unk90 = 0;
@@ -126,7 +126,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 static void sub_807A560(void)
 {
     u8 someBool = FALSE;
-    Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
+    Sprite_IA75 *ia75 = TASK_DATA(gCurTask);
     gPlayer.transition = PLTRANS_PT1;
     gPlayer.unk64 = 0;
 
@@ -339,7 +339,7 @@ static u32 sub_807A99C(Sprite_IA75 *ia75)
 
 static void sub_807AA68(void)
 {
-    Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
+    Sprite_IA75 *ia75 = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER) {
         sub_807AB6C(ia75);
@@ -358,7 +358,7 @@ static void sub_807AA68(void)
 
 static void sub_807AABC(void)
 {
-    Sprite_IA75 *ia75 = TaskGetStructPtr(gCurTask);
+    Sprite_IA75 *ia75 = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER) {
         sub_807AB6C(ia75);
@@ -375,7 +375,7 @@ static void sub_807AABC(void)
 
 static void sub_807AB04(struct Task *t)
 {
-    Sprite_IA75 *ia75 = TaskGetStructPtr(t);
+    Sprite_IA75 *ia75 = TASK_DATA(t);
     VramFree(ia75->s1.graphics.dest);
 }
 

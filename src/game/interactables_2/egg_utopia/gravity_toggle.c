@@ -49,7 +49,7 @@ static void CreateEntity_Toggle_Gravity(MapEntity *in_ia, u16 spriteRegionX,
                                         u16 spriteRegionY, u8 spriteY, u8 toggleKind)
 {
     struct Task *t = TaskCreate(Task_80801F8, 0x2C, 0x2010, 0, TaskDestructor_8080230);
-    Sprite_GravityToggle *toggle = TaskGetStructPtr(t);
+    Sprite_GravityToggle *toggle = TASK_DATA(t);
     Interactable_GravityToggle *me = (Interactable_GravityToggle *)in_ia;
 
     toggle->unk14 = toggleKind;
@@ -123,7 +123,7 @@ bool32 sub_808017C(Sprite_GravityToggle *toggle)
 
 void Task_80801F8(void)
 {
-    Sprite_GravityToggle *toggle = TaskGetStructPtr(gCurTask);
+    Sprite_GravityToggle *toggle = TASK_DATA(gCurTask);
 
     if (sub_808017C(toggle)) {
         sub_8080234(toggle);
@@ -185,7 +185,7 @@ void CreateEntity_Toggle_Gravity__Toggle(MapEntity *me, u16 spriteRegionX,
 
 void Task_8080318(void)
 {
-    Sprite_GravityToggle *toggle = TaskGetStructPtr(gCurTask);
+    Sprite_GravityToggle *toggle = TASK_DATA(gCurTask);
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         sub_80800D4(toggle);
