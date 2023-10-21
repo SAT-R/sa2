@@ -1,3 +1,5 @@
+#include <string.h> // memcpy
+
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"
@@ -136,6 +138,8 @@ void TaskDestructor_8019EF4(struct Task *t)
     VramFree(s->graphics.dest);
 }
 
+#include "game/multiboot/collect_rings/results.h"
+#include "game/multiplayer/results.h"
 #include "lib/m4a.h"
 
 typedef struct {
@@ -168,7 +172,6 @@ void sub_8019F08(void)
             return;
         }
     }
-    // _08019F6C
 
     r2 = 0;
 
@@ -182,20 +185,17 @@ void sub_8019F08(void)
                 r2++;
             }
         }
-        // _08019FA4
+
         if (r2 == 0) {
             r6 = 4;
         } else if (r2 == (i - 1)) {
-            // _08019FD4+6
             r6 = r2;
         } else {
             r6 = 5;
         }
     } else {
-        // _08019FE4
         r6 = 4;
     }
-    // _08019FE8
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         if (gMultiplayerPlayerTasks[i] == NULL) {
@@ -234,5 +234,143 @@ void Task_801A04C(void)
             f2->unk0 = 0;
             gCurTask->main = Task_801A0E0;
         }
+    }
+}
+
+void Task_801A0E0(void)
+{
+    u32 i; // r7
+    u32 j;
+
+    Finish2 *f2 = TASK_DATA(gCurTask);
+    f2->unk0 += 64;
+
+    gBldRegs.bldY = (f2->unk0 >> 8);
+
+    if (f2->unk0 >= 0x1000) {
+        // _0801A110
+        gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+        gBldRegs.bldY = 0;
+
+        if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            u8 sp00[4] = { 0, 1, 2, 3 };
+            u8 sp04[4] = { 0 };
+
+            m4aMPlayAllStop();
+            *((u32 *)sp04) = *((u32 *)gUnknown_030053E8);
+
+            for (i = 0, j = 3; i < MULTI_SIO_PLAYERS_MAX; j--, i++) {
+                s32 m = 0;
+                while (m < j) {
+                    if (sp04[m] < sp04[m + 1]) {
+                        XOR_SWAP(sp04[m], sp04[m + 1]);
+                        XOR_SWAP(sp00[m], sp00[m + 1]);
+                    }
+
+                    m++;
+                }
+            }
+
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                if (i != 0) {
+                    if (sp04[i] != sp04[0]) {
+                        gUnknown_030054B4[sp00[i]] = i;
+                        gMultiplayerCharacters[sp00[i]] = 1;
+                    } else {
+                        gUnknown_030054B4[sp00[i]] = i;
+                        gMultiplayerCharacters[sp00[i]] = 2;
+                        asm("");
+                    }
+                } else {
+                    // _0801A1F4
+                    if (sp04[0] == sp04[1]) {
+                        gUnknown_030054B4[sp00[i]] = i;
+                        gMultiplayerCharacters[sp00[i]] = 2;
+                        asm("");
+                    } else {
+                        gUnknown_030054B4[sp00[0]] = i;
+                        gUnknown_03005428[sp00[0]]++;
+                        gMultiplayerCharacters[sp00[0]] = 1;
+                    }
+                }
+            }
+
+            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+#if 1
+                goto _0801A2DA;
+#else
+                TasksDestroyAll();
+
+                { // TODO: This is a macro!
+                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    gUnknown_03005390 = 0;
+                    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                }
+
+                if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                    DmaFill32(3, 0, &gMultiSioSend, sizeof(struct MultiSioData_0_0));
+                    CreateMultiplayerResultsScreen(1);
+                } else {
+                    DmaFill32(3, 0, &gMultiSioSend, sizeof(struct MultiSioData_0_0));
+                    CreateMultiplayerSinglePakResultsScreen(1);
+                }
+
+                return;
+#endif
+            }
+        }
+        // _0801A232
+
+        {
+            s16 r6 = 0;
+            s16 r2;
+            s32 r3;
+            for (r2 = 0; r2 < MULTI_SIO_PLAYERS_MAX; r2++) {
+
+                if (!((gMultiplayerConnections >> r2) & 0x1))
+                    continue;
+
+                if (r2 == SIO_MULTI_CNT->id)
+                    continue;
+
+                if (gUnknown_030054B4[SIO_MULTI_CNT->id] < gUnknown_030054B4[r2]) {
+                    r3 = 0;
+                } else if (gUnknown_030054B4[SIO_MULTI_CNT->id]
+                           > gUnknown_030054B4[r2]) {
+                    r3 = 1;
+                    r6 = 1;
+                } else {
+                    r3 = 2;
+
+                    if (r6 != 1) {
+                        r6 = 2;
+                    }
+                }
+                // _0801A2A8
+                RecordMultiplayerResult(gMultiplayerIds[r2], &gMultiplayerNames[r2][0],
+                                        r3);
+            }
+
+            RecordOwnMultiplayerResult(r6);
+            WriteSaveGame();
+        }
+    _0801A2DA:
+        TasksDestroyAll();
+
+        { // TODO: This is a macro!
+            gUnknown_03002AE4 = gUnknown_0300287C;
+            gUnknown_03005390 = 0;
+            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        }
+
+        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            DmaFill32(3, 0, &gMultiSioSend, sizeof(struct MultiSioData_0_0));
+            CreateMultiplayerResultsScreen(1);
+        } else {
+            DmaFill32(3, 0, &gMultiSioSend, sizeof(struct MultiSioData_0_0));
+            CreateMultiplayerSinglePakResultsScreen(1);
+        }
+
+        return;
     }
 }

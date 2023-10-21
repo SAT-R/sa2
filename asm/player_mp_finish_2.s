@@ -12,8 +12,6 @@ gUnknown_080D57D8:
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start Task_801A0E0
 Task_801A0E0: @ 0x0801A0E0
 	push {r4, r5, r6, r7, lr}
@@ -27,7 +25,7 @@ Task_801A0E0: @ 0x0801A0E0
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r1, r1, r0
+	adds r1, r1, r0     @ r1 = f2
 	ldrh r0, [r1]
 	adds r0, #0x40
 	strh r0, [r1]
@@ -69,12 +67,12 @@ _0801A126:
 	movs r7, #0
 	mov sb, r4
 	movs r0, #3
-	mov ip, r0
+	mov ip, r0      @ip = 3
 _0801A14E:
 	movs r4, #0
 	cmp r4, ip
 	bhs _0801A196
-	mov r6, sb
+	mov r6, sb      @ r6 = sb = sp04
 	mov r8, ip
 _0801A158:
 	adds r3, r6, r4
@@ -112,16 +110,16 @@ _0801A190:
 _0801A196:
 	movs r0, #1
 	rsbs r0, r0, #0
-	add ip, r0
+	add ip, r0      @ ip -= 1
 	adds r7, #1
 	cmp r7, #3
 	bls _0801A14E
 	movs r7, #0
-	mov r4, sb
+	mov r4, sb      @ r4 = sb = sp04
 	ldr r6, _0801A1E8 @ =gUnknown_030054B4
 	ldr r5, _0801A1EC @ =gMultiplayerCharacters
-	mov r3, sp
-	mov r2, sp
+	mov r3, sp      @ r3 = sp00[0]
+	mov r2, sp      @ r2 = sp00[i]
 	ldr r1, _0801A1F0 @ =gUnknown_03005428
 	mov r8, r1
 _0801A1B2:
@@ -198,13 +196,13 @@ _0801A236:
 	ands r1, r0
 	adds r5, r2, #0
 	cmp r1, #0
-	beq _0801A2C2
+	beq _0801A2C2_continue
 	ldr r4, _0801A280 @ =0x04000128
 	ldr r0, [r4]
 	lsls r0, r0, #0x1a
 	lsrs r0, r0, #0x1e
 	cmp r3, r0
-	beq _0801A2C2
+	beq _0801A2C2_continue
 	ldr r2, _0801A284 @ =gUnknown_030054B4
 	ldr r0, [r4]
 	lsls r0, r0, #0x1a
@@ -257,7 +255,7 @@ _0801A2A8:
 	adds r1, r1, r2
 	adds r2, r3, #0
 	bl RecordMultiplayerResult
-_0801A2C2:
+_0801A2C2_continue:
 	movs r1, #0x80
 	lsls r1, r1, #9
 	adds r0, r5, r1
@@ -339,5 +337,4 @@ _0801A366:
 _0801A378: .4byte 0x040000D4
 _0801A37C: .4byte gMultiSioSend
 _0801A380: .4byte 0x85000005
-
-@; new
+.endif
