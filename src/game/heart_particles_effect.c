@@ -28,7 +28,7 @@ void CreateHeartParticles(void)
     u8 i;
     struct Task *t
         = TaskCreate(sub_8086A88, sizeof(HeartParticles), 0x4000, 0, sub_8086CBC);
-    HeartParticles *unk998 = TaskGetStructPtr(t);
+    HeartParticles *unk998 = TASK_DATA(t);
     unk998->unkC2 = 0;
     unk998->unkE4 = 0;
     unk998->unkC0 = 0;
@@ -67,7 +67,7 @@ static void sub_8086A0C(HeartParticles *unk998)
 static void sub_8086A88(void)
 {
     u8 i;
-    HeartParticles *unk998 = TaskGetStructPtr(gCurTask);
+    HeartParticles *unk998 = TASK_DATA(gCurTask);
     Sprite *s;
 
     for (i = 0; i < NUM_HEARTS; i++) {
@@ -134,7 +134,7 @@ static void sub_8086B38(HeartParticles *unk998)
 static void sub_8086BE8(u8 i)
 {
     Sprite *s;
-    HeartParticles *unk998 = TaskGetStructPtr(gCurTask);
+    HeartParticles *unk998 = TASK_DATA(gCurTask);
 
     unk998->unkC4[i] = gPlayer.x;
     unk998->unkD4[i] = gPlayer.y;
@@ -165,7 +165,7 @@ static void sub_8086BE8(u8 i)
 static void sub_8086CBC(struct Task *t)
 {
     u8 i;
-    HeartParticles *unk998 = TaskGetStructPtr(t);
+    HeartParticles *unk998 = TASK_DATA(t);
 
     for (i = 0; i < 4; i++) {
         VramFree(unk998->sprites[i].graphics.dest);

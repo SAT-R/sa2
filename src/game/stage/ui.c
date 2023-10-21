@@ -135,7 +135,7 @@ struct Task *CreateStageUI(void)
     struct Task *t = TaskCreate(Task_CreateStageUIMain, sizeof(StageUI), 0x2102, 0,
                                 TaskDestructor_CreateStageUI);
     gStageUITask = t;
-    ui = TaskGetStructPtr(t);
+    ui = TASK_DATA(t);
 
     for (i = 0; i < ARRAY_COUNT(ui->digits); i++) {
         s = &ui->digits[i];
@@ -253,7 +253,7 @@ void Task_CreateStageUIMain(void)
         OamData *oam;
         u32 courseTime;
 
-        StageUI *ui = TaskGetStructPtr(gCurTask);
+        StageUI *ui = TASK_DATA(gCurTask);
         Sprite *digits = &ui->digits[0];
         Sprite *sd;
         u32 seconds, minutes;
@@ -466,7 +466,7 @@ void Task_CreateStageUIMain(void)
 // Almost identical to Debug_PrintIntegerAt()"
 void StageUI_PrintIntegerAt(u32 value, s16 x, s16 y, u8 palId)
 {
-    StageUI *ui = TaskGetStructPtr(gStageUITask);
+    StageUI *ui = TASK_DATA(gStageUITask);
     Sprite *digits = &ui->digits[0];
     u32 numDigits;
     s32 digitX;
@@ -517,7 +517,7 @@ void StageUI_PrintIntegerAt(u32 value, s16 x, s16 y, u8 palId)
 
 void TaskDestructor_CreateStageUI(struct Task *t)
 {
-    StageUI *ui = TaskGetStructPtr(t);
+    StageUI *ui = TASK_DATA(t);
     VramFree(ui->ring.graphics.dest);
     VramFree(ui->ringContainer.graphics.dest);
 

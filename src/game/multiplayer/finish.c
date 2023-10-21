@@ -63,7 +63,7 @@ void sub_8019CCC(u8 sioId, u8 count)
     if (gUnknown_030054B4[sioId] == -1) {
         struct Task *t = TaskCreate(Task_8019E70, sizeof(MpFinish1), 0x2010, 0,
                                     TaskDestructor_8019EF4);
-        MpFinish1 *finish = TaskGetStructPtr(t);
+        MpFinish1 *finish = TASK_DATA(t);
         struct Task **mpt = &gMultiplayerPlayerTasks[0];
         Sprite *s;
 
@@ -114,10 +114,9 @@ void sub_8019CCC(u8 sioId, u8 count)
 
 void Task_8019E70(void)
 {
-    MpFinish1 *finish = TaskGetStructPtr(gCurTask);
+    MpFinish1 *finish = TASK_DATA(gCurTask);
     Sprite *s = &finish->s;
-    struct MultiplayerPlayer *mpp
-        = TaskGetStructPtr(gMultiplayerPlayerTasks[finish->unk30]);
+    struct MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[finish->unk30]);
 
     s->x = mpp->unk50 - gCamera.x;
 
@@ -132,7 +131,7 @@ void Task_8019E70(void)
 
 void TaskDestructor_8019EF4(struct Task *t)
 {
-    MpFinish1 *finish = TaskGetStructPtr(t);
+    MpFinish1 *finish = TASK_DATA(t);
     Sprite *s = &finish->s;
     VramFree(s->graphics.dest);
 }
@@ -149,7 +148,7 @@ void sub_8019F08(void)
 {
     u32 r6;
     struct Task *t = TaskCreate(sub_801A04C, sizeof(Finish2), 0x2000, 0, NULL);
-    Finish2 *f2 = TaskGetStructPtr(t);
+    Finish2 *f2 = TASK_DATA(t);
     f2->unk0 = 0;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {

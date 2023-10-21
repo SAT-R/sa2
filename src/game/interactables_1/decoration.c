@@ -37,7 +37,7 @@ void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY
     if (me->decoId >= 0) {
         t = TaskCreate(Task_Decoration, sizeof(Sprite_Decoration), 0x2010, 0,
                        TaskDestructor_Decoration);
-        base = TaskGetStructPtr(t);
+        base = TASK_DATA(t);
         s = &base->displayed;
 
         base->base.regionX = regionX;
@@ -69,7 +69,7 @@ void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY
 
 void Task_Decoration(void)
 {
-    Sprite_Decoration *base = TaskGetStructPtr(gCurTask);
+    Sprite_Decoration *base = TASK_DATA(gCurTask);
     Sprite *s = &base->displayed;
     MapEntity *me = base->base.me;
     s32 screenX;
@@ -102,7 +102,7 @@ void Task_Decoration(void)
 // InteractableDecorationOnDestroy
 void TaskDestructor_Decoration(struct Task *t)
 {
-    Sprite_Decoration *s = TaskGetStructPtr(t);
+    Sprite_Decoration *s = TASK_DATA(t);
     VramFree(s->displayed.graphics.dest);
 }
 

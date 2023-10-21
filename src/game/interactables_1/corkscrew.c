@@ -23,7 +23,7 @@ void sub_8060ED0(void);
 
 void Task_8060D34(void)
 {
-    Sprite_Corkscrew *corkscrew = TaskGetStructPtr(gCurTask);
+    Sprite_Corkscrew *corkscrew = TASK_DATA(gCurTask);
     MapEntity *me = corkscrew->base.me;
 
     u16 regionX = corkscrew->base.regionX;
@@ -75,7 +75,7 @@ void sub_8060ED0(void)
 {
     s32 y24_8, idx;
 
-    Sprite_Corkscrew *corkscrew = TaskGetStructPtr(gCurTask);
+    Sprite_Corkscrew *corkscrew = TASK_DATA(gCurTask);
     MapEntity *me = corkscrew->base.me;
 
     u16 regionX = corkscrew->base.regionX;
@@ -136,7 +136,7 @@ void sub_8061228(void);
 
 void sub_8061088(void)
 {
-    Sprite_Corkscrew *corkscrew = TaskGetStructPtr(gCurTask);
+    Sprite_Corkscrew *corkscrew = TASK_DATA(gCurTask);
     MapEntity *me = corkscrew->base.me;
 
     u16 regionX = corkscrew->base.regionX;
@@ -189,7 +189,7 @@ void sub_8061228(void)
 {
     s32 y24_8, idx;
 
-    Sprite_Corkscrew *corkscrew = TaskGetStructPtr(gCurTask);
+    Sprite_Corkscrew *corkscrew = TASK_DATA(gCurTask);
     MapEntity *me = corkscrew->base.me;
 
     u16 regionX = corkscrew->base.regionX;
@@ -250,7 +250,7 @@ void CreateEntity_Corkscrew_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRe
                                   u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_8060D34, sizeof(Sprite_Corkscrew), 0x2000, 0, NULL);
-    Sprite_Corkscrew *corkscrew = TaskGetStructPtr(t);
+    Sprite_Corkscrew *corkscrew = TASK_DATA(t);
     corkscrew->base.regionX = spriteRegionX;
     corkscrew->base.regionY = spriteRegionY;
     corkscrew->base.me = me;
@@ -266,7 +266,7 @@ void CreateEntity_Corkscrew_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
                                 u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_8061088, sizeof(Sprite_Corkscrew), 0x2000, 0, NULL);
-    Sprite_Corkscrew *corkscrew = TaskGetStructPtr(t);
+    Sprite_Corkscrew *corkscrew = TASK_DATA(t);
     corkscrew->base.regionX = spriteRegionX;
     corkscrew->base.regionY = spriteRegionY;
     corkscrew->base.me = me;

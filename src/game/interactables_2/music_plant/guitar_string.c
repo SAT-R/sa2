@@ -47,7 +47,7 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 {
     struct Task *t = TaskCreate(Task_GuitarString, sizeof(Sprite_GuitarString), 0x2010,
                                 0, TaskDestructor_GuitarString);
-    Sprite_GuitarString *gs = TaskGetStructPtr(t);
+    Sprite_GuitarString *gs = TASK_DATA(t);
     Sprite *s = &gs->s1;
     u16 i;
 
@@ -111,7 +111,7 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 void sub_8075F58(void)
 {
     u8 r7 = 0;
-    Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
+    Sprite_GuitarString *gs = TASK_DATA(gCurTask);
     u8 i;
 
     sub_80762E0(gs);
@@ -152,7 +152,7 @@ void sub_8075F58(void)
 void sub_8076000(void)
 {
     u8 r5 = 0;
-    Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
+    Sprite_GuitarString *gs = TASK_DATA(gCurTask);
     u8 i;
 
     for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
@@ -262,7 +262,7 @@ bool32 sub_807618C(Sprite_GuitarString *gs)
 
 void Task_GuitarString(void)
 {
-    Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
+    Sprite_GuitarString *gs = TASK_DATA(gCurTask);
 
     if (sub_807618C(gs)) {
         sub_807608C(gs);

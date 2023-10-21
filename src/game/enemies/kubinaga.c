@@ -45,7 +45,7 @@ void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t
         = TaskCreate(sub_80524D0, sizeof(Sprite_Kubinaga), 0x4060, 0, sub_8052F70);
-    Sprite_Kubinaga *k = TaskGetStructPtr(t);
+    Sprite_Kubinaga *k = TASK_DATA(t);
     Sprite *s = &k->sBase;
 
     k->unkB8 = 0;
@@ -97,7 +97,7 @@ void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
 static void sub_80524D0(void)
 {
-    Sprite_Kubinaga *k = TaskGetStructPtr(gCurTask);
+    Sprite_Kubinaga *k = TASK_DATA(gCurTask);
     Sprite *s = &k->sBase;
     MapEntity *me = k->base.me;
     Vec2_32 pos;
@@ -141,7 +141,7 @@ static void sub_80524D0(void)
 
 static void sub_80526C8(void)
 {
-    Sprite_Kubinaga *k = TaskGetStructPtr(gCurTask);
+    Sprite_Kubinaga *k = TASK_DATA(gCurTask);
     Sprite *sBase = &k->sBase;
     Sprite *sHead = &k->sHead;
     MapEntity *me = k->base.me;
@@ -190,7 +190,7 @@ static void sub_80526C8(void)
 
 static void sub_80528AC(void)
 {
-    Sprite_Kubinaga *k = TaskGetStructPtr(gCurTask);
+    Sprite_Kubinaga *k = TASK_DATA(gCurTask);
     Sprite *sBase = &k->sBase;
     Sprite *sHead = &k->sHead;
     MapEntity *me = k->base.me;
@@ -257,7 +257,7 @@ static void sub_80528AC(void)
 
 static void sub_8052AEC(void)
 {
-    Sprite_Kubinaga *k = TaskGetStructPtr(gCurTask);
+    Sprite_Kubinaga *k = TASK_DATA(gCurTask);
     Sprite *sBase = &k->sBase;
     Sprite *sHead = &k->sHead;
     MapEntity *me = k->base.me;
@@ -386,7 +386,7 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
 
 static void sub_8052F70(struct Task *t)
 {
-    Sprite_Kubinaga *k = TaskGetStructPtr(t);
+    Sprite_Kubinaga *k = TASK_DATA(t);
     VramFree(k->sBase.graphics.dest);
     VramFree(k->sHead.graphics.dest);
     VramFree(k->sNeck.graphics.dest);

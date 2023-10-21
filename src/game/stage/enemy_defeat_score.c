@@ -20,7 +20,7 @@ void CreateEnemyDefeatScore(s16 x, s16 y)
     struct Task *t
         = TaskCreate(Task_CreateEnemyDefeatScore_MoveUp, sizeof(EnemyDefeatScore),
                      0x2000, 0, TaskDestructor_CreateEnemyDefeatScore);
-    EnemyDefeatScore *score = TaskGetStructPtr(t);
+    EnemyDefeatScore *score = TASK_DATA(t);
     Sprite *s = &score->s;
 
     score->deltaY = 0;
@@ -44,7 +44,7 @@ void CreateEnemyDefeatScore(s16 x, s16 y)
 
 void Task_CreateEnemyDefeatScore_MoveUp(void)
 {
-    EnemyDefeatScore *score = TaskGetStructPtr(gCurTask);
+    EnemyDefeatScore *score = TASK_DATA(gCurTask);
     Sprite *s = &score->s;
 
     s16 scoreX = s->x;
@@ -71,7 +71,7 @@ void Task_CreateEnemyDefeatScore_MoveUp(void)
 
 void Task_CreateEnemyDefeatScore_Hold(void)
 {
-    EnemyDefeatScore *score = TaskGetStructPtr(gCurTask);
+    EnemyDefeatScore *score = TASK_DATA(gCurTask);
     Sprite *s = &score->s;
 
     s16 scoreX = s->x;
@@ -95,7 +95,7 @@ void Task_CreateEnemyDefeatScore_Hold(void)
 
 void TaskDestructor_CreateEnemyDefeatScore(struct Task *t)
 {
-    EnemyDefeatScore *score = TaskGetStructPtr(t);
+    EnemyDefeatScore *score = TASK_DATA(t);
 
     VramFree(score->s.graphics.dest);
 }

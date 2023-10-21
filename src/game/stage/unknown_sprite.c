@@ -25,7 +25,7 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
     struct Task *t
         = TaskCreate(sub_800A5F8, sizeof(Sprite_StageSprUnknown), taskPrio, 0, dtor);
 
-    Sprite_StageSprUnknown *su = TaskGetStructPtr(t);
+    Sprite_StageSprUnknown *su = TASK_DATA(t);
     su->x = 0;
     su->y = 0;
     su->speedX = 0;
@@ -54,7 +54,7 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
 
 void sub_800A5F8(void)
 {
-    Sprite_StageSprUnknown *su = TaskGetStructPtr(gCurTask);
+    Sprite_StageSprUnknown *su = TASK_DATA(gCurTask);
     su->speedX += su->accX;
     su->speedY += su->accY;
 
@@ -80,6 +80,6 @@ void sub_800A5F8(void)
 
 void TaskDestructor_800A694(struct Task *t)
 {
-    Sprite_StageSprUnknown *su = TaskGetStructPtr(t);
+    Sprite_StageSprUnknown *su = TASK_DATA(t);
     VramFree(su->s.graphics.dest);
 }

@@ -39,7 +39,7 @@ void CreateEntity_Gohla(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     if (gGameMode == GAME_MODE_TIME_ATTACK || gDifficultyLevel != 1) {
         struct Task *t = TaskCreate(sub_8051928, sizeof(Sprite_Gohla), 0x4040, 0,
                                     TaskDestructor_Gohla);
-        Sprite_Gohla *gohla = TaskGetStructPtr(t);
+        Sprite_Gohla *gohla = TASK_DATA(t);
         Sprite *s = &gohla->s;
         gohla->base.regionX = spriteRegionX;
         gohla->base.regionY = spriteRegionY;
@@ -82,7 +82,7 @@ static void sub_8051928(void)
     Sprite_Gohla *gohla = (void *)IWRAM_START + ref;
     register Sprite *s asm("r5") = &gohla->s;
 #else
-    Sprite_Gohla *gohla = TaskGetStructPtr(gCurTask);
+    Sprite_Gohla *gohla = TASK_DATA(gCurTask);
     Sprite *s = &gohla->s;
 #endif
     MapEntity *me = gohla->base.me;
@@ -115,7 +115,7 @@ static void sub_8051928(void)
 
 static void sub_8051AF0(void)
 {
-    Sprite_Gohla *gohla = TaskGetStructPtr(gCurTask);
+    Sprite_Gohla *gohla = TASK_DATA(gCurTask);
     Sprite *s = &gohla->s;
     MapEntity *me = gohla->base.me;
     Vec2_32 pos;
@@ -202,7 +202,7 @@ static bool8 CheckPlayerHit(Sprite_Gohla *gohla, s32 x, s32 y)
 
 static void TaskDestructor_Gohla(struct Task *t)
 {
-    Sprite_Gohla *gohla = TaskGetStructPtr(t);
+    Sprite_Gohla *gohla = TASK_DATA(t);
     VramFree(gohla->s.graphics.dest);
     VramFree(gohla->proj.graphics.dest);
 }

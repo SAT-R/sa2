@@ -33,7 +33,7 @@ void CreateProjectile(ProjInit *init)
 {
     struct Task *t = TaskCreate(Task_805102C, sizeof(ProjectileA), 0x4000, 0,
                                 TaskDestructor_80511EC);
-    ProjectileA *proj = TaskGetStructPtr(t);
+    ProjectileA *proj = TASK_DATA(t);
     Sprite *s;
     s32 velocityX, velocityY;
 
@@ -54,7 +54,7 @@ void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
 {
     struct Task *t = TaskCreate(Task_80510B0, sizeof(ProjectileB), 0x4000, 0,
                                 TaskDestructor_8051200);
-    ProjectileB *proj = TaskGetStructPtr(t);
+    ProjectileB *proj = TASK_DATA(t);
     Sprite *s;
     u8 i;
 
@@ -82,7 +82,7 @@ void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
 
 void Task_805102C(void)
 {
-    ProjectileA *proj = TaskGetStructPtr(gCurTask);
+    ProjectileA *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
 
     proj->x += proj->velocityX;
@@ -102,7 +102,7 @@ void Task_805102C(void)
 
 void Task_80510B0(void)
 {
-    ProjectileB *proj = TaskGetStructPtr(gCurTask);
+    ProjectileB *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
     u8 count, i;
 
@@ -139,12 +139,12 @@ void Task_DestroyProjectileTask(void) { TaskDestroy(gCurTask); }
 
 void TaskDestructor_80511EC(struct Task *t)
 {
-    ProjectileA *proj = TaskGetStructPtr(t);
+    ProjectileA *proj = TASK_DATA(t);
     VramFree(proj->s.graphics.dest);
 }
 
 void TaskDestructor_8051200(struct Task *t)
 {
-    ProjectileB *proj = TaskGetStructPtr(t);
+    ProjectileB *proj = TASK_DATA(t);
     VramFree(proj->s.graphics.dest);
 }

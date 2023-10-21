@@ -38,7 +38,7 @@ void CreateEntity_WindUpStick(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
                               u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_8072998, 0x1C, 0x2010, 0, sub_80729D4);
-    Sprite_WindUpStick *windUpStick = TaskGetStructPtr(t);
+    Sprite_WindUpStick *windUpStick = TASK_DATA(t);
     windUpStick->unk11 = 0;
     windUpStick->unk0 = TO_WORLD_POS(me->x, spriteRegionX);
     windUpStick->unk4 = TO_WORLD_POS(me->y, spriteRegionY);
@@ -54,7 +54,7 @@ void CreateEntity_WindUpStick(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
 static void sub_8072650(void)
 {
-    Sprite_WindUpStick *windUpStick = TaskGetStructPtr(gCurTask);
+    Sprite_WindUpStick *windUpStick = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_80729D8(windUpStick);
@@ -211,7 +211,7 @@ static u8 sub_80728D4(Sprite_WindUpStick *windUpStick)
 
 static void sub_8072998(void)
 {
-    Sprite_WindUpStick *windUpStick = TaskGetStructPtr(gCurTask);
+    Sprite_WindUpStick *windUpStick = TASK_DATA(gCurTask);
     windUpStick->unk10 = sub_80728D4(windUpStick);
     if (windUpStick->unk10 != 0) {
         sub_80726E8(windUpStick);

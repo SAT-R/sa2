@@ -56,7 +56,7 @@ void CreateRaceProgressIndicator(void)
     struct Task *t
         = TaskCreate(Task_UpdateAvatarPositions, sizeof(struct RaceProgressIndicator),
                      0x1000, 0, RaceProgressIndicatorOnDestroy);
-    struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(t);
+    struct RaceProgressIndicator *progressIndicator = TASK_DATA(t);
 
     progressIndicator->course = COURSE_LEVEL_TO_COURSE_INDEX(gCurrentLevel);
 
@@ -141,11 +141,11 @@ static void Task_UpdateAvatarPositions(void)
     u8 i;
     Sprite *avatar;
     struct MultiplayerPlayer *player;
-    struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(gCurTask);
+    struct RaceProgressIndicator *progressIndicator = TASK_DATA(gCurTask);
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         avatar = &progressIndicator->avatars[i];
-        player = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
+        player = TASK_DATA(gMultiplayerPlayerTasks[i]);
         avatar->x
             = ((player->unk50 * sCourseStepSizes[progressIndicator->course]) >> 0x10)
             + 6;
@@ -177,7 +177,7 @@ static void RenderUI(struct RaceProgressIndicator *progressIndicator)
 static void RaceProgressIndicatorOnDestroy(struct Task *t)
 {
     u8 i;
-    struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(t);
+    struct RaceProgressIndicator *progressIndicator = TASK_DATA(t);
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         VramFree(progressIndicator->avatars[i].graphics.dest);

@@ -439,7 +439,7 @@ void CreateStageEntitiesManager(void)
         t = TaskCreate(Task_8008DCC, sizeof(EntitiesManager), 0x2000, 0, NULL);
     }
 
-    em = TaskGetStructPtr(t);
+    em = TASK_DATA(t);
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         decompBuf = EwramMalloc(gSpritePosData_interactables[gCurrentLevel]->size);
@@ -488,7 +488,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
         struct Range range;
         u32 h_regionCount, v_regionCount;
 
-        EntitiesManager *em = TaskGetStructPtr(gCurTask);
+        EntitiesManager *em = TASK_DATA(gCurTask);
         u32 *interactables;
         u32 *itemBoxPositions;
         u32 *enemyPositions;
@@ -663,7 +663,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
 
         u32 h_regionCount, v_regionCount;
 
-        EntitiesManager *em = TaskGetStructPtr(gCurTask);
+        EntitiesManager *em = TASK_DATA(gCurTask);
 
         if (em->unk14 != 0) {
             SpawnMapEntities();
@@ -1037,13 +1037,13 @@ void CreateEnemyDefeatScoreAndManageLives(s16 x, s16 y)
 
 void TaskDestructor_80095E8(struct Task *t)
 {
-    Sprite_Entity *s = TaskGetStructPtr(t);
+    Sprite_Entity *s = TASK_DATA(t);
     VramFree(s->displayed.graphics.dest);
 }
 
 void sub_80095FC(struct Task *t)
 {
-    EntitiesManager *em = TaskGetStructPtr(t);
+    EntitiesManager *em = TASK_DATA(t);
     EwramFree(em->interactables);
     EwramFree(em->items);
     EwramFree(em->enemies);

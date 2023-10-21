@@ -52,7 +52,7 @@ void CreateEntity_MultiplayerTeleport(MapEntity *me, u16 spriteRegionX,
 
     struct Task *t
         = TaskCreate(Task_80806F4, sizeof(Sprite_MultiplayerTeleport), 0x2010, 0, NULL);
-    Sprite_MultiplayerTeleport *sprite = TaskGetStructPtr(t);
+    Sprite_MultiplayerTeleport *sprite = TASK_DATA(t);
 
     sprite->timer = 0;
     sprite->unk18 = 0;
@@ -195,7 +195,7 @@ void CreateSprite_Notif_RingBonus(void)
 {
     struct Task *t = TaskCreate(Task_8080750, sizeof(Sprite_Notif_RingBonus), 0x2010, 0,
                                 TaskDestructor_8080790);
-    Sprite_Notif_RingBonus *notif = TaskGetStructPtr(t);
+    Sprite_Notif_RingBonus *notif = TASK_DATA(t);
     Sprite *s = &notif->s;
 
     notif->framesVisible = ZONE_TIME_TO_INT(0, 2);
@@ -210,7 +210,7 @@ void CreateSprite_Notif_RingBonus(void)
 
 void Task_80806F4(void)
 {
-    Sprite_MultiplayerTeleport *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_MultiplayerTeleport *sprite = TASK_DATA(gCurTask);
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         sprite->unk18 = sprite->unk1A;
     }
@@ -226,7 +226,7 @@ void sub_808073C(Sprite_MultiplayerTeleport UNUSED *s) { gCurTask->main = Task_8
 
 void Task_8080750(void)
 {
-    Sprite_Notif_RingBonus *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_Notif_RingBonus *sprite = TASK_DATA(gCurTask);
     if (--sprite->framesVisible == (u16)-1) {
         TaskDestroy(gCurTask);
     } else {
@@ -238,13 +238,13 @@ void Task_8080750(void)
 
 static void TaskDestructor_8080790(struct Task *t)
 {
-    Sprite_Notif_RingBonus *sprite = TaskGetStructPtr(t);
+    Sprite_Notif_RingBonus *sprite = TASK_DATA(t);
     VramFree(sprite->s.graphics.dest);
 }
 
 static void Task_80807A4(void)
 {
-    Sprite_MultiplayerTeleport *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_MultiplayerTeleport *sprite = TASK_DATA(gCurTask);
     if (sub_808055C(sprite) == 0)
         sub_80803FC(sprite);
 }

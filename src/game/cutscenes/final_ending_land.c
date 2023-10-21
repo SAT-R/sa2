@@ -161,7 +161,7 @@ void CreateFinalEndingLandingCutScene(void)
     gUnknown_03002280[1][3] = 0x20;
 
     t = TaskCreate(sub_8093EDC, 0x61C, 0x3100, 0, sub_8093F9C);
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
     // TODO: chaos emeralds are probabyl wrong
     if (gLoadedSaveGame->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALD(ZONE_FINAL)) {
         value = 2;
@@ -544,7 +544,7 @@ void sub_8093F54(void);
 
 void sub_80932C8(void)
 {
-    struct FinalEndingLandCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingLandCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk32C;
 
     transition->unk2 = 1;
@@ -568,7 +568,7 @@ void sub_80932C8(void)
 
 void sub_809334C(void)
 {
-    struct FinalEndingLandCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingLandCutScene *scene = TASK_DATA(gCurTask);
 
     sub_8093FA0(scene);
     sub_8093FF0(scene);
@@ -925,7 +925,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
 
 void sub_8093EDC(void)
 {
-    struct FinalEndingLandCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingLandCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk32C;
 
     sub_8093FA0(scene);
@@ -947,7 +947,7 @@ void sub_8093EDC(void)
 
 void sub_8093F54(void)
 {
-    struct FinalEndingLandCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingLandCutScene *scene = TASK_DATA(gCurTask);
     if (scene->unk344 != 0) {
         if (scene->unk344-- == 0x3D) {
             m4aSongNumStart(MUS_STAFF_CREDITS);

@@ -57,7 +57,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     Sprite *s;
     struct Task *t = TaskCreate(Task_FlyingHandle, sizeof(Sprite_FlyingHandle), 0x2010,
                                 0, TaskDestructor_FlyingHandle);
-    Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(t);
+    Sprite_FlyingHandle *flyingHandle = TASK_DATA(t);
     flyingHandle->unk68 = 0;
     flyingHandle->unk5C = 0;
     flyingHandle->unk5E = 0;
@@ -105,7 +105,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 
 static void Task_ActiveMain(void)
 {
-    Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(gCurTask);
+    Sprite_FlyingHandle *flyingHandle = TASK_DATA(gCurTask);
     if (IS_MULTI_PLAYER) {
         sub_807F8B4(flyingHandle);
     }
@@ -234,7 +234,7 @@ static bool32 IsPlayerTouching(Sprite_FlyingHandle *flyingHandle)
 
 static void Task_FlyingHandle(void)
 {
-    Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(gCurTask);
+    Sprite_FlyingHandle *flyingHandle = TASK_DATA(gCurTask);
     if (IS_MULTI_PLAYER) {
         sub_807F8B4(flyingHandle);
     }
@@ -253,7 +253,7 @@ static void Task_FlyingHandle(void)
 
 static void sub_807F6F0(void)
 {
-    Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(gCurTask);
+    Sprite_FlyingHandle *flyingHandle = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER) {
         sub_807F8B4(flyingHandle);
@@ -273,7 +273,7 @@ static void sub_807F6F0(void)
 
 static void TaskDestructor_FlyingHandle(struct Task *t)
 {
-    Sprite_FlyingHandle *flyingHandle = TaskGetStructPtr(t);
+    Sprite_FlyingHandle *flyingHandle = TASK_DATA(t);
     VramFree(flyingHandle->s.graphics.dest);
 }
 

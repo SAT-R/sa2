@@ -33,7 +33,7 @@ void CreateEntity_Balloon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
         struct Task *t = TaskCreate(Task_BalloonMain, sizeof(Sprite_Balloon), 0x4040, 0,
                                     TaskDestructor_80095E8);
-        Sprite_Balloon *balloon = TaskGetStructPtr(t);
+        Sprite_Balloon *balloon = TASK_DATA(t);
         Sprite *s = &balloon->s;
         balloon->base.regionX = spriteRegionX;
         balloon->base.regionY = spriteRegionY;
@@ -61,7 +61,7 @@ void sub_805879C(void);
 
 void Task_BalloonMain(void)
 {
-    Sprite_Balloon *balloon = TaskGetStructPtr(gCurTask);
+    Sprite_Balloon *balloon = TASK_DATA(gCurTask);
     Sprite *s = &balloon->s;
     MapEntity *me = balloon->base.me;
     Vec2_32 pos;
@@ -101,7 +101,7 @@ void sub_805879C(void)
     register u8 r8 asm("r8");
 #endif
 
-    Sprite_Balloon *balloon = TaskGetStructPtr(gCurTask);
+    Sprite_Balloon *balloon = TASK_DATA(gCurTask);
     Sprite *s = &balloon->s;
     MapEntity *me = balloon->base.me;
     Vec2_32 pos;

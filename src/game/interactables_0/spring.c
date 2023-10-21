@@ -100,7 +100,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     s16 springKind = SPRING_KIND_NORMAL;
     struct Task *t = TaskCreate(Task_Spring, sizeof(Sprite_Spring), 0x2010, 0,
                                 TaskDestructor_Spring);
-    Sprite_Spring *spring = TaskGetStructPtr(t);
+    Sprite_Spring *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
 
     spring->base.regionX = spriteRegionX;
@@ -148,7 +148,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
 
 static void Task_Spring(void)
 {
-    Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
+    Sprite_Spring *spring = TASK_DATA(gCurTask);
     Sprite *s = &spring->s;
     MapEntity *me = spring->base.me;
 
@@ -170,7 +170,7 @@ static void Task_Spring(void)
 
 static void sub_800E3D0(void)
 {
-    Sprite_Spring *spring = TaskGetStructPtr(gCurTask);
+    Sprite_Spring *spring = TASK_DATA(gCurTask);
     Sprite *s = &spring->s;
     MapEntity *me = spring->base.me;
 
@@ -224,7 +224,7 @@ static bool32 sub_800E490(Sprite *s, MapEntity *me, Sprite_Spring *spring,
 
 static void TaskDestructor_Spring(struct Task *t)
 {
-    Sprite_Spring *spring = TaskGetStructPtr(t);
+    Sprite_Spring *spring = TASK_DATA(t);
     if ((LEVEL_TO_ZONE(gCurrentLevel) != ZONE_3) || (spring->unk3D / 2 != 0)) {
         VramFree(spring->s.graphics.dest);
     }

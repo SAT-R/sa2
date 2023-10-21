@@ -65,7 +65,7 @@ void CreateEntity_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 {
     struct Task *t = TaskCreate(Task_8075C6C, sizeof(Sprite_NoteBlock), 0x2010, 0,
                                 TaskDestructor_8075CC0);
-    Sprite_NoteBlock *block = TaskGetStructPtr(t);
+    Sprite_NoteBlock *block = TASK_DATA(t);
     Sprite *s = &block->s;
 
     block->unk4B = 3;
@@ -113,7 +113,7 @@ void CreateEntity_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 
 void Task_8075A90(void)
 {
-    Sprite_NoteBlock *block = TaskGetStructPtr(gCurTask);
+    Sprite_NoteBlock *block = TASK_DATA(gCurTask);
 
     u32 index = block->unk4A++;
 
@@ -174,7 +174,7 @@ void sub_8075B50(Sprite_NoteBlock *block)
 
 void Task_8075C6C(void)
 {
-    Sprite_NoteBlock *block = TaskGetStructPtr(gCurTask);
+    Sprite_NoteBlock *block = TASK_DATA(gCurTask);
     if (sub_8075D98(block)) {
         sub_8075B50(block);
     }

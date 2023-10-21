@@ -42,7 +42,7 @@ void CreateEntity_SmallSpinnyWindmill(MapEntity *me, u16 spriteRegionX,
     struct Task *t
         = TaskCreate(Task_SmallSpinnyWindmill, 0x48, 0x2010, 0,
                      TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill);
-    Sprite_SmallWindmill *windmill = TaskGetStructPtr(t);
+    Sprite_SmallWindmill *windmill = TASK_DATA(t);
     Sprite *s;
     windmill->type = me->d.uData[0];
 
@@ -253,7 +253,7 @@ static u32 GetPlayerTouchingAngle(Sprite_SmallWindmill *windmill)
 
 static void Task_SmallSpinnyWindmill(void)
 {
-    Sprite_SmallWindmill *windmill = TaskGetStructPtr(gCurTask);
+    Sprite_SmallWindmill *windmill = TASK_DATA(gCurTask);
 
     windmill->initialTouchAngle = GetPlayerTouchingAngle(windmill);
     if (windmill->initialTouchAngle != 0) {
@@ -270,7 +270,7 @@ static void Task_SmallSpinnyWindmill(void)
 
 static void Task_RotateSequence(void)
 {
-    Sprite_SmallWindmill *windmill = TaskGetStructPtr(gCurTask);
+    Sprite_SmallWindmill *windmill = TASK_DATA(gCurTask);
     Sprite *s = &windmill->s;
     bool32 finished = RotateWindmill(windmill);
     if (finished) {
@@ -287,7 +287,7 @@ static void Task_RotateSequence(void)
 
 static void SlowWindmillToStop(void)
 {
-    Sprite_SmallWindmill *windmill = TaskGetStructPtr(gCurTask);
+    Sprite_SmallWindmill *windmill = TASK_DATA(gCurTask);
     Sprite *s = &windmill->s;
 
     if (s->unk10 & 0x4000) {
@@ -305,7 +305,7 @@ static void SlowWindmillToStop(void)
 
 static void TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill(struct Task *t)
 {
-    Sprite_SmallWindmill *windmill = TaskGetStructPtr(t);
+    Sprite_SmallWindmill *windmill = TASK_DATA(t);
     VramFree(windmill->s.graphics.dest);
 }
 

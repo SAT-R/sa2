@@ -40,7 +40,7 @@ static bool32 sub_807B9F0(Sprite_GiantPropeller *);
 
 static void Task_PlayerFloating(void)
 {
-    Sprite_GiantPropeller *propeller = TaskGetStructPtr(gCurTask);
+    Sprite_GiantPropeller *propeller = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_GiantPropellerIdle;
@@ -94,7 +94,7 @@ static void Task_PlayerFloating(void)
 
 static void sub_807B530(void)
 {
-    Sprite_GiantPropeller *propeller = TaskGetStructPtr(gCurTask);
+    Sprite_GiantPropeller *propeller = TASK_DATA(gCurTask);
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_GiantPropellerIdle;
     } else {
@@ -221,7 +221,7 @@ bool32 IsPlayerInteracting(Sprite_GiantPropeller *propeller)
 
 static void Task_GiantPropellerIdle(void)
 {
-    Sprite_GiantPropeller *propeller = TaskGetStructPtr(gCurTask);
+    Sprite_GiantPropeller *propeller = TASK_DATA(gCurTask);
 
     if (IsPlayerInteracting(propeller)) {
         StartPlayerFloatingTask(propeller);
@@ -310,14 +310,14 @@ static void DestroyPropeller(Sprite_GiantPropeller *propeller)
 
 UNK_807C5F8 *sub_807BA54(void)
 {
-    UNK_807C5F8_Parent *parent = TaskGetStructPtr(TaskGetParent(gCurTask));
-    return TaskGetStructPtr(parent->unk18);
+    UNK_807C5F8_Parent *parent = TASK_DATA(TaskGetParent(gCurTask));
+    return TASK_DATA(parent->unk18);
 }
 
 static void sub_807BA70(void)
 {
-    UNK_807C5F8_Parent *parent = TaskGetStructPtr(TaskGetParent(gCurTask));
-    UNK_807C5F8 *unk807 = TaskGetStructPtr(parent->unk18);
+    UNK_807C5F8_Parent *parent = TASK_DATA(TaskGetParent(gCurTask));
+    UNK_807C5F8 *unk807 = TASK_DATA(parent->unk18);
 
     unk807->unk62++;
 }
@@ -328,7 +328,7 @@ void CreateEntity_GiantPropeller(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     struct Task *t = TaskCreate(Task_GiantPropellerIdle, sizeof(Sprite_GiantPropeller),
                                 0x2010, 0, TaskDestructor_GiantPropeller);
 
-    Sprite_GiantPropeller *propeller = TaskGetStructPtr(t);
+    Sprite_GiantPropeller *propeller = TASK_DATA(t);
     propeller->x = TO_WORLD_POS(me->x, spriteRegionX);
     propeller->y = TO_WORLD_POS(me->y, spriteRegionY);
     propeller->base.regionX = spriteRegionX;

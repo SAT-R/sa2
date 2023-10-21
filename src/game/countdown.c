@@ -49,7 +49,7 @@ void CreateCourseStartCountdown(bool8 playerSkippedIntro)
 
     gUnknown_03005424 |= EXTRA_STATE__100;
     t = TaskCreate(sub_8036168, 0x6C, 0x3000, 0, sub_8036638);
-    countdown = TaskGetStructPtr(t);
+    countdown = TASK_DATA(t);
 
     countdown->unk6A = 0;
     countdown->unk6B = 0;
@@ -94,7 +94,7 @@ void sub_8036398(void);
 
 void sub_8036168(void)
 {
-    struct CourseStartCountdown *countdown = TaskGetStructPtr(gCurTask);
+    struct CourseStartCountdown *countdown = TASK_DATA(gCurTask);
     Sprite *s;
 
     // Skip intro
@@ -173,7 +173,7 @@ void sub_8036168(void)
 
 void sub_8036398(void)
 {
-    struct CourseStartCountdown *countdown = TaskGetStructPtr(gCurTask);
+    struct CourseStartCountdown *countdown = TASK_DATA(gCurTask);
     Sprite *s = &countdown->unk0;
 
     s->x = countdown->unk60 - gCamera.x;
@@ -204,7 +204,7 @@ struct RaceStartMessage {
 void CreateRaceStartMessage(void)
 {
     struct Task *t = TaskCreate(sub_8036524, 0x7C, 0x3000, 0, sub_8036654);
-    struct RaceStartMessage *startMessage = TaskGetStructPtr(t);
+    struct RaceStartMessage *startMessage = TASK_DATA(t);
     Sprite *s;
 
     startMessage->unk78 = 0x3C;
@@ -239,7 +239,7 @@ void CreateRaceStartMessage(void)
 
 void sub_8036524(void)
 {
-    struct RaceStartMessage *startMessage = TaskGetStructPtr(gCurTask);
+    struct RaceStartMessage *startMessage = TASK_DATA(gCurTask);
     Sprite *s, *element2;
     SpriteTransform *transformConfig;
     s16 unk78;
@@ -297,14 +297,14 @@ void sub_8036524(void)
 
 void sub_8036638(struct Task *t)
 {
-    struct CourseStartCountdown *countdown = TaskGetStructPtr(t);
+    struct CourseStartCountdown *countdown = TASK_DATA(t);
     VramFree(countdown->unk0.graphics.dest);
     VramFree(countdown->unk30.graphics.dest);
 }
 
 void sub_8036654(struct Task *t)
 {
-    struct RaceStartMessage *startMessage = TaskGetStructPtr(t);
+    struct RaceStartMessage *startMessage = TASK_DATA(t);
     VramFree(startMessage->unk3C.graphics.dest);
     VramFree(startMessage->unk0.graphics.dest);
 }

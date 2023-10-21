@@ -39,7 +39,7 @@ void CreateExtraEndingSlidesCutScene(void)
     gUnknown_03002280[0][3] = 0x20;
 
     t = TaskCreate(sub_8091590, 0x50, 0x3100, 0, sub_8091680);
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
 
     scene->unk4C = 0xF0;
 
@@ -73,7 +73,7 @@ void sub_8091608(void);
 
 void sub_8091590(void)
 {
-    struct ExtraEndingCutSceneSlides *scene = TaskGetStructPtr(gCurTask);
+    struct ExtraEndingCutSceneSlides *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
 
     transition->unk2 = 2;
@@ -87,7 +87,7 @@ void sub_8091638(void);
 
 void sub_80915CC(void)
 {
-    struct ExtraEndingCutSceneSlides *scene = TaskGetStructPtr(gCurTask);
+    struct ExtraEndingCutSceneSlides *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
 
     transition->unk2 = 1;
@@ -99,7 +99,7 @@ void sub_80915CC(void)
 
 void sub_8091608(void)
 {
-    struct ExtraEndingCutSceneSlides *scene = TaskGetStructPtr(gCurTask);
+    struct ExtraEndingCutSceneSlides *scene = TASK_DATA(gCurTask);
 
     if (scene->unk4C != 0) {
         scene->unk4C--;
@@ -111,7 +111,7 @@ void sub_8091608(void)
 
 void sub_8091638(void)
 {
-    struct ExtraEndingCutSceneSlides *scene = TaskGetStructPtr(gCurTask);
+    struct ExtraEndingCutSceneSlides *scene = TASK_DATA(gCurTask);
 
     if (scene->unk4C != 0) {
         scene->unk4C--;

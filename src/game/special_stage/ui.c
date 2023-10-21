@@ -58,7 +58,7 @@ static const u16 sPauseMenuVariants[][3] = {
 
 void sub_806FB04(void)
 {
-    struct SpecialStageUI *ui = TaskGetStructPtr(gCurTask);
+    struct SpecialStageUI *ui = TASK_DATA(gCurTask);
     struct SpecialStage *stage = ui->stage;
 
     sub_8070C58();
@@ -126,7 +126,7 @@ static void CreateStageTime(struct SpecialStageUI *ui)
 
 void sub_806FCF8(void)
 {
-    struct SpecialStageUI *ui = TaskGetStructPtr(gCurTask);
+    struct SpecialStageUI *ui = TASK_DATA(gCurTask);
     struct SpecialStage *stage = ui->stage;
 
     Sprite *s;
@@ -222,7 +222,7 @@ void sub_8070078(void);
 
 void sub_806FFC8(void)
 {
-    struct SpecialStageUI *ui = TaskGetStructPtr(gCurTask);
+    struct SpecialStageUI *ui = TASK_DATA(gCurTask);
     struct SpecialStage *stage = ui->stage;
 
     if (stage->paused == FALSE) {
@@ -253,7 +253,7 @@ void sub_806FFC8(void)
 
 void sub_8070078(void)
 {
-    struct SpecialStageUI *ui = TaskGetStructPtr(gCurTask);
+    struct SpecialStageUI *ui = TASK_DATA(gCurTask);
     struct SpecialStage *stage = ui->stage;
 
     Sprite *s;
@@ -402,7 +402,7 @@ void Task_ResultsScreenSequencePart2(void);
 
 void Task_ResultsScreenSequencePart1(void)
 {
-    struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(gCurTask);
 
     if (resultsScreen->animFrame < 12) {
         sub_807061C(resultsScreen->animFrame);
@@ -435,7 +435,7 @@ void Task_ResultsScreenSequencePart1(void)
 
 void sub_807061C(s16 a)
 {
-    struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
     Sprite *s;
 
@@ -455,7 +455,7 @@ void sub_807061C(s16 a)
 void sub_8070680(s16 a)
 {
     s16 i;
-    struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
 
     resultsScreen->unk518 = (0xB - a) * 0x16;
@@ -474,7 +474,7 @@ void sub_80706D8(s16 a)
     s16 i;
 
     Sprite *s;
-    struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
 
     resultsScreen->unk51A = (0xB - a) * 0x16;
@@ -496,7 +496,7 @@ void sub_8070740(s16 a)
     s16 i;
     s32 temp2, temp;
     Sprite *s;
-    struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
 
     resultsScreen->unk51C = (0xB - a) * 0x16;
@@ -516,7 +516,7 @@ void sub_80707A8(s16 xPos)
     s16 i;
     s32 temp2, temp;
     Sprite *s;
-    struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
 
     resultsScreen->unk51E = (0xB - xPos) * 0x16;
@@ -534,7 +534,7 @@ void sub_80707A8(s16 xPos)
 void Task_ResultsScreenNewEmeraldSequencePart2(void);
 void Task_ResultsScreenNewEmeraldSequencePart1(void)
 {
-    struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
     u8 zone = stage->zone;
     RenderScoresAnim();
@@ -554,7 +554,7 @@ static void RenderScoresAnim(void)
 {
     Sprite *s;
 
-    struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
 
     s16 i;
@@ -650,7 +650,7 @@ static void CreateDisplays(struct SpecialStageUI *);
 struct Task *CreateSpecialStageUI(struct SpecialStage *stage)
 {
     struct Task *t = TaskCreate(sub_806FB04, 0x2B8, 0xD000, 0, sub_8070BEC);
-    struct SpecialStageUI *ui = TaskGetStructPtr(t);
+    struct SpecialStageUI *ui = TASK_DATA(t);
     ui->stage = stage;
     ui->unk2A4 = NULL;
 
@@ -672,7 +672,7 @@ struct Task *CreateSpecialStageResultsScreen(struct SpecialStage *stage)
 {
     struct Task *t = TaskCreate(Task_ResultsScreenSequencePart1, 0x520, 0xD000, 0,
                                 SpecialStageResultsScreenOnDestroy);
-    struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(t);
+    struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(t);
     resultsScreen->stage = stage;
     SpecialStageResultsScreenCreateUI(resultsScreen);
 
@@ -702,7 +702,7 @@ static void CreateDisplays(struct SpecialStageUI *ui)
 
 void sub_8070C58(void)
 {
-    struct SpecialStageUI *ui = TaskGetStructPtr(gCurTask);
+    struct SpecialStageUI *ui = TASK_DATA(gCurTask);
     struct SpecialStage *stage = ui->stage;
 
     if (stage->paused == FALSE) {
@@ -731,9 +731,9 @@ static void CreateMultiplierValue(struct SpecialStageUI *ui)
 
 void sub_8070D14(void)
 {
-    struct SpecialStageUI *ui = TaskGetStructPtr(gCurTask);
+    struct SpecialStageUI *ui = TASK_DATA(gCurTask);
     struct SpecialStage *stage = ui->stage;
-    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
     s16 unkC0 = player->multiplier;
 
     if (unkC0 > 1) {
@@ -793,7 +793,7 @@ static void HandleUnpaused(struct SpecialStageUI *ui)
 
 static void Task_ResultsScreenStartNewEmeraldSequence(void)
 {
-    struct SpecialStageResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     struct SpecialStage *stage = resultsScreen->stage;
     Sprite *s = &resultsScreen->chaosEmerald[stage->zone];
 

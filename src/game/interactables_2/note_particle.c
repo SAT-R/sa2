@@ -42,7 +42,7 @@ void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
 {
     struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_NoteParticle), 0x2010, 0,
                                 TaskDestructor_8080EF8);
-    Sprite_NoteParticle *np = TaskGetStructPtr(t);
+    Sprite_NoteParticle *np = TASK_DATA(t);
     Sprite *s = &np->s;
 
     np->posX = posX;
@@ -75,7 +75,7 @@ void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
 {
     struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_NoteParticle), 0x2010, 0,
                                 TaskDestructor_8080EF8);
-    Sprite_NoteParticle *np = TaskGetStructPtr(t);
+    Sprite_NoteParticle *np = TASK_DATA(t);
     Sprite *s = &np->s;
 
     np->posX = posX;
@@ -105,7 +105,7 @@ void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
 static void Task_8080DB8(void)
 {
     struct Task *t = gCurTask;
-    Sprite_NoteParticle *np = TaskGetStructPtr(t);
+    Sprite_NoteParticle *np = TASK_DATA(t);
     if (--np->framesUntilDestroyed == (u16)-1) {
         TaskDestroy(t);
     } else {
@@ -126,7 +126,7 @@ static void Task_8080DB8(void)
 static void Task_8080E54(void)
 {
     struct Task *t = gCurTask;
-    Sprite_NoteParticle *np = TaskGetStructPtr(t);
+    Sprite_NoteParticle *np = TASK_DATA(t);
     if (--np->framesUntilDestroyed == (u16)-1) {
         TaskDestroy(t);
     } else {
@@ -150,7 +150,7 @@ static void Task_8080E54(void)
 
 static void TaskDestructor_8080EF8(struct Task *t)
 {
-    Sprite_NoteParticle *np = TaskGetStructPtr(t);
+    Sprite_NoteParticle *np = TASK_DATA(t);
     if (gUnknown_080E0140[np->kind][3] != 0) {
         VramFree(np->s.graphics.dest);
     }

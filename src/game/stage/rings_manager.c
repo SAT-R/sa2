@@ -92,10 +92,10 @@ void CreateStageRingsManager(void)
         RLUnCompWram(MP_COLLECT_RINGS_COMPRESSED_POS_DATA[0], ewramBuffer);
     }
 
-    mgrRings = TaskGetStructPtr(t) + offsetof(RingsManager, rings);
+    mgrRings = TASK_DATA(t) + offsetof(RingsManager, rings);
     *mgrRings = ewramBuffer;
 
-    s = TaskGetStructPtr(t);
+    s = TASK_DATA(t);
 
     s->x = 0;
     s->y = 0;
@@ -137,7 +137,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
 
     if (!(gUnknown_03005424 & EXTRA_STATE__2)) {
         // _08007F60
-        RingsManager *rm = TaskGetStructPtr(gCurTask);
+        RingsManager *rm = TASK_DATA(gCurTask);
         void *rings = rm->rings; // sp14
         s32 *rings_header;
         Sprite *s; // sp18
@@ -171,7 +171,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
         }
         // _08007FFA
 
-        rm = TaskGetStructPtr(gCurTask);
+        rm = TASK_DATA(gCurTask);
         rings = rm->rings;
         s = &rm->s;
         UpdateSpriteAnimation(s);
@@ -286,7 +286,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                 if ((i == playerId) && (gMultiplayerPlayerTasks[i] != NULL)) {
                     // _08008258
                     struct MultiplayerPlayer *mpPlayer
-                        = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
+                        = TASK_DATA(gMultiplayerPlayerTasks[i]);
                     s16 px, py = mpPlayer->unk52;
                     s32 hbBottom, hbLeft, hbRight;
                     sl = Q_24_8(py + s->hitboxes[0].top);
@@ -541,6 +541,6 @@ END_NONMATCH
 
 void TaskDestructor_8007F1C(struct Task *t)
 {
-    void *rings = *(void **)(TaskGetStructPtr(t) + offsetof(RingsManager, rings));
+    void *rings = *(void **)(TASK_DATA(t) + offsetof(RingsManager, rings));
     EwramFree(rings);
 }

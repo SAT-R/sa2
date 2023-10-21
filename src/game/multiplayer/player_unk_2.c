@@ -20,7 +20,7 @@ void sub_801A384(void)
             struct Task *t
                 = TaskCreate(Task_PlayerMPUnk2, (sizeof(MultiPlayerBgCtrlRegs)), 0xE000,
                              0, TaskDestructor_PlayerMPUnk2);
-            MultiPlayerBgCtrlRegs *regs = TaskGetStructPtr(t);
+            MultiPlayerBgCtrlRegs *regs = TASK_DATA(t);
 
             gUnknown_03005840 = regs;
 
@@ -41,7 +41,7 @@ void sub_801A384(void)
 
 void Task_PlayerMPUnk2(void)
 {
-    MultiPlayerBgCtrlRegs *regs = TaskGetStructPtr(gCurTask);
+    MultiPlayerBgCtrlRegs *regs = TASK_DATA(gCurTask);
     s16 *p;
 
     regs->unk0++;

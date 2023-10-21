@@ -79,7 +79,7 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
     struct Task *t
         = TaskCreate(Task_CommonPlatformThinMain, sizeof(Sprite_CommonThinPlatform),
                      0x2010, 0, TaskDestructor_CommonPlatformThin);
-    Sprite_CommonThinPlatform *platform = TaskGetStructPtr(t);
+    Sprite_CommonThinPlatform *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
     platform->base.regionX = spriteRegionX;
@@ -125,7 +125,7 @@ static void Task_CommonPlatformThinMain(void)
 
     player = &gPlayer;
     something = FALSE;
-    platform = TaskGetStructPtr(gCurTask);
+    platform = TASK_DATA(gCurTask);
     s = &platform->s;
     me = platform->base.me;
     x = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
@@ -216,7 +216,7 @@ NONMATCH("asm/non_matching/game/interactables_0/sub_8010D1C.inc",
 {
     struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(Platform_D1C),
                                 0x2011, 0, TaskDestructor_PlatformBreakParticles);
-    Platform_D1C *platform = TaskGetStructPtr(t);
+    Platform_D1C *platform = TASK_DATA(t);
 
     // Hack for better match
     register s32 r6 asm("r6");
@@ -318,7 +318,7 @@ END_NONMATCH
 static void Task_PlatformBreakParticlesMain(void)
 {
     s16 x, y;
-    Platform_D1C *platform = TaskGetStructPtr(gCurTask);
+    Platform_D1C *platform = TASK_DATA(gCurTask);
     Sprite *s;
     s16 width;
     SpriteTransform *transform;
@@ -438,14 +438,14 @@ static void Task_PlatformBreakParticlesMain(void)
 
 static void TaskDestructor_CommonPlatformThin(struct Task *t)
 {
-    Sprite_CommonThinPlatform *platform = TaskGetStructPtr(t);
+    Sprite_CommonThinPlatform *platform = TASK_DATA(t);
 
     VramFree(platform->s.graphics.dest);
 }
 
 static void TaskDestructor_PlatformBreakParticles(struct Task *t)
 {
-    Platform_D1C *platform = TaskGetStructPtr(t);
+    Platform_D1C *platform = TASK_DATA(t);
     VramFree(platform->unk0.graphics.dest);
     VramFree(platform->unk60.graphics.dest);
 }

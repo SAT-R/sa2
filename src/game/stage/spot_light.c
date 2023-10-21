@@ -25,7 +25,7 @@ bool32 CreateSpotLightBeams(void)
 {
     struct Task *t = TaskCreate(Task_SpotLightMain, sizeof(StageSpotLight), 0x2000, 0,
                                 TaskDestructor_SpotLightMain);
-    StageSpotLight *spotLight = TaskGetStructPtr(t);
+    StageSpotLight *spotLight = TASK_DATA(t);
     StageUnkTask *ut;
 
     spotLight->unk8 = 0x600;
@@ -33,7 +33,7 @@ bool32 CreateSpotLightBeams(void)
 
     spotLight->t0 = CreateStageUnknownTask();
 
-    ut = TaskGetStructPtr(spotLight->t0);
+    ut = TASK_DATA(spotLight->t0);
     ut->unk6 = 60;
     ut->unk8 = 200;
     ut->unk0 = 0;
@@ -44,7 +44,7 @@ bool32 CreateSpotLightBeams(void)
 
     spotLight->t1 = CreateStageUnknownTask();
 
-    ut = TaskGetStructPtr(spotLight->t1);
+    ut = TASK_DATA(spotLight->t1);
     ut->unk6 = 200;
     ut->unk8 = 240;
     ut->unk0 = 0;
@@ -58,12 +58,12 @@ bool32 CreateSpotLightBeams(void)
 
 void Task_SpotLightMain(void)
 {
-    StageSpotLight *spotLight = TaskGetStructPtr(gCurTask);
+    StageSpotLight *spotLight = TASK_DATA(gCurTask);
     StageUnkTask *ut;
     s32 unkC;
 
     if (!(gUnknown_03005424 & EXTRA_STATE__100)) {
-        ut = TaskGetStructPtr(spotLight->t0);
+        ut = TASK_DATA(spotLight->t0);
 
         if (((gStageTime & 0x7) == 0) && (ut->unkB != 0)
             && (gDispCnt & DISPCNT_BG0_ON)) {
@@ -71,7 +71,7 @@ void Task_SpotLightMain(void)
             if (ut->unkB < 32)
                 ut->unkB++;
 
-            ut = TaskGetStructPtr(spotLight->t1);
+            ut = TASK_DATA(spotLight->t1);
 
             if (ut->unkB < 16)
                 ut->unkB++;
@@ -79,7 +79,7 @@ void Task_SpotLightMain(void)
             if (ut->unkB == 0) {
                 ut->unkB = 4;
 
-                ut = TaskGetStructPtr(spotLight->t1);
+                ut = TASK_DATA(spotLight->t1);
                 ut->unkB = 4;
             } else {
                 // _0800A7F4
@@ -121,18 +121,18 @@ void Task_SpotLightMain(void)
 void Task_800A8E0(void)
 {
     bool32 boolR5 = FALSE;
-    StageSpotLight *spotLight = TaskGetStructPtr(gCurTask);
+    StageSpotLight *spotLight = TASK_DATA(gCurTask);
     StageUnkTask *ut;
     s32 unkC;
 
-    ut = TaskGetStructPtr(spotLight->t0);
+    ut = TASK_DATA(spotLight->t0);
     if (!(gStageTime & 0x1) && (ut->unkB != 0)) {
         ut->unkB -= 2;
         if (ut->unkB < 5)
             boolR5 = TRUE;
     }
 
-    ut = TaskGetStructPtr(spotLight->t1);
+    ut = TASK_DATA(spotLight->t1);
     if (!(gStageTime & 0x1) && (ut->unkB != 0)) {
         ut->unkB -= 1;
         if (ut->unkB < 3)

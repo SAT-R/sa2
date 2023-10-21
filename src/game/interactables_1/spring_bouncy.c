@@ -47,7 +47,7 @@ void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     struct Task *t
         = TaskCreate(Task_Interactable_BouncySpring, sizeof(Sprite_BouncySpring), 0x2010,
                      0, TaskDestructor_Interactable_BouncySpring);
-    Sprite_BouncySpring *spring = TaskGetStructPtr(t);
+    Sprite_BouncySpring *spring = TASK_DATA(t);
     Sprite *s = &spring->s;
     u32 variant = 0;
 
@@ -88,7 +88,7 @@ void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 
 static void Task_Interactable_BouncySpring()
 {
-    Sprite_BouncySpring *spring = TaskGetStructPtr(gCurTask);
+    Sprite_BouncySpring *spring = TASK_DATA(gCurTask);
     Sprite *s = &spring->s;
     MapEntity *me = spring->base.me;
     s32 screenX, screenY;
@@ -161,7 +161,7 @@ static void Task_Interactable_BouncySpring()
 
 static void Task_805E02C()
 {
-    Sprite_BouncySpring *spring = TaskGetStructPtr(gCurTask);
+    Sprite_BouncySpring *spring = TASK_DATA(gCurTask);
     Sprite *s = &spring->s;
     MapEntity *me = spring->base.me;
     s32 screenX, screenY;
@@ -199,6 +199,6 @@ static void Task_805E02C()
 
 static void TaskDestructor_Interactable_BouncySpring(struct Task *t)
 {
-    Sprite_BouncySpring *spring = TaskGetStructPtr(t);
+    Sprite_BouncySpring *spring = TASK_DATA(t);
     VramFree(spring->s.graphics.dest);
 }

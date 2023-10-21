@@ -186,7 +186,7 @@ void sub_801583C(void)
         for (i = 0; i < 3; i++) {
             struct Task *t = TaskCreate(Task_80159C8, sizeof(PlayerActions), 0x4000, 0,
                                         TaskDestructor_8015B50);
-            PlayerActions *actions = TaskGetStructPtr(t);
+            PlayerActions *actions = TASK_DATA(t);
 
             actions->unk5C = i;
             actions->unk5D = 0;
@@ -219,7 +219,7 @@ void sub_801583C(void)
 
 void Task_80159C8(void)
 {
-    PlayerActions *actions = TaskGetStructPtr(gCurTask);
+    PlayerActions *actions = TASK_DATA(gCurTask);
     Sprite *s = &actions->s;
     SpriteTransform *transform = &actions->transform;
 
@@ -299,7 +299,7 @@ void Task_80159C8(void)
 
 void TaskDestructor_8015B50(struct Task *t)
 {
-    PlayerActions *actions = TaskGetStructPtr(t);
+    PlayerActions *actions = TASK_DATA(t);
     VramFree(actions->s.graphics.dest);
 }
 

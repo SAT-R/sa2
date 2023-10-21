@@ -89,7 +89,7 @@ void CreateEntity_Platform_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 {
     struct Task *t = TaskCreate(Task_800E89C, sizeof(Sprite_Platform), 0x2010, 0,
                                 TaskDestructor_800F19C);
-    Sprite_Platform *platform = TaskGetStructPtr(t);
+    Sprite_Platform *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
     platform->base.regionX = spriteRegionX;
@@ -159,7 +159,7 @@ void Task_800E89C(void)
     u32 result;
     s32 deltaX = 0, deltaY = 0;
 
-    Sprite_Platform *platform = TaskGetStructPtr(gCurTask);
+    Sprite_Platform *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;
     me = platform->base.me;
 
@@ -265,7 +265,7 @@ void CreateEntity_Platform_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 {
     struct Task *t = TaskCreate(Task_800EC58, sizeof(Sprite_Platform), 0x2010, 0,
                                 TaskDestructor_800F19C);
-    Sprite_Platform *platform = TaskGetStructPtr(t);
+    Sprite_Platform *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
     platform->base.regionX = spriteRegionX;
@@ -320,7 +320,7 @@ void Task_800EC58(void)
     s32 deltaX = 0, deltaY = 0;
     s32 x, y;
 
-    Sprite_Platform *platform = TaskGetStructPtr(gCurTask);
+    Sprite_Platform *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;
     me = platform->base.me;
 
@@ -381,7 +381,7 @@ void Task_800EDF8(void)
     s32 deltaX = 0, deltaY = 0;
     s32 x, y;
 
-    Sprite_Platform *platform = TaskGetStructPtr(gCurTask);
+    Sprite_Platform *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;
     me = platform->base.me;
 
@@ -455,7 +455,7 @@ void Task_800EFD0(void)
     s32 deltaX = 0, deltaY = 0;
     s32 x, y;
 
-    Sprite_Platform *platform = TaskGetStructPtr(gCurTask);
+    Sprite_Platform *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;
     me = platform->base.me;
 
@@ -522,7 +522,7 @@ void Task_800EFD0(void)
 
 void TaskDestructor_800F19C(struct Task *t)
 {
-    Sprite_Platform *platform = TaskGetStructPtr(t);
+    Sprite_Platform *platform = TASK_DATA(t);
     void *vramPtr = platform->s.graphics.dest;
     VramFree(vramPtr);
 }

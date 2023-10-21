@@ -119,7 +119,7 @@ static void CreateFlyingAnimal(SpawnOptions *init)
 {
     struct Task *t
         = TaskCreate(Task_FlyingAnimal, sizeof(FlyingAnimal), 0x2000, 0, NULL);
-    FlyingAnimal *animal = TaskGetStructPtr(t);
+    FlyingAnimal *animal = TASK_DATA(t);
     Sprite *s;
     animal->x = Q_24_8(init->x);
     animal->y = Q_24_8(init->y);
@@ -144,7 +144,7 @@ static void CreateFlyingAnimal(SpawnOptions *init)
 
 static void Task_FlyingAnimal(void)
 {
-    FlyingAnimal *animal = TaskGetStructPtr(gCurTask);
+    FlyingAnimal *animal = TASK_DATA(gCurTask);
     Sprite *s = &animal->s;
 
     s32 sin, cos;
@@ -185,7 +185,7 @@ static void CreateBouncingAnimal(SpawnOptions *init)
 {
     struct Task *t
         = TaskCreate(Task_BouncingAnimal, sizeof(BouncingAnimal), 0x2000, 0, NULL);
-    BouncingAnimal *animal = TaskGetStructPtr(t);
+    BouncingAnimal *animal = TASK_DATA(t);
     Sprite *s;
     animal->x = Q_24_8(init->x);
     animal->y = Q_24_8(init->y);
@@ -212,7 +212,7 @@ static void CreateBouncingAnimal(SpawnOptions *init)
 
 static void Task_BouncingAnimal(void)
 {
-    BouncingAnimal *animal = TaskGetStructPtr(gCurTask);
+    BouncingAnimal *animal = TASK_DATA(gCurTask);
     Sprite *s = &animal->s;
     s32 y;
 
@@ -255,7 +255,7 @@ static void CreateStaticAnimal(SpawnOptions *init)
 {
     struct Task *t
         = TaskCreate(Task_StaticAnimalMain, sizeof(StaticAnimal), 0x2000, 0, NULL);
-    StaticAnimal *animal = TaskGetStructPtr(t);
+    StaticAnimal *animal = TASK_DATA(t);
     Sprite *s;
     animal->x = Q_24_8(init->x);
     animal->y = Q_24_8(init->y);
@@ -283,7 +283,7 @@ static void CreateStaticAnimal(SpawnOptions *init)
 
 static void Task_StaticAnimalMain(void)
 {
-    StaticAnimal *animal = TaskGetStructPtr(gCurTask);
+    StaticAnimal *animal = TASK_DATA(gCurTask);
     Sprite *s = &animal->s;
     s32 y;
 

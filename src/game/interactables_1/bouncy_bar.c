@@ -35,7 +35,7 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     Sprite *s;
     struct Task *t = TaskCreate(sub_806160C, 0x44, 0x2010, 0, TaskDestructor_80095E8);
-    BouncyBar *bar = TaskGetStructPtr(t);
+    BouncyBar *bar = TASK_DATA(t);
 
     s = &bar->s;
 
@@ -75,7 +75,7 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
 void sub_806160C(void)
 {
-    BouncyBar *bar = TaskGetStructPtr(gCurTask);
+    BouncyBar *bar = TASK_DATA(gCurTask);
     Sprite *s = &bar->s;
     MapEntity *me = bar->base.me;
 
@@ -125,7 +125,7 @@ void sub_806160C(void)
 
 void sub_80617A4(void)
 {
-    BouncyBar *bar = TaskGetStructPtr(gCurTask);
+    BouncyBar *bar = TASK_DATA(gCurTask);
     Sprite *s = &bar->s;
     MapEntity *me = bar->base.me;
 

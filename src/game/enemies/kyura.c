@@ -35,7 +35,7 @@ void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 {
     struct Task *t = TaskCreate(Task_KyuraMain, sizeof(Sprite_Kyura), 0x4040, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Kyura *kyura = TaskGetStructPtr(t);
+    Sprite_Kyura *kyura = TASK_DATA(t);
     Sprite *s = &kyura->s;
     kyura->base.regionX = spriteRegionX;
     kyura->base.regionY = spriteRegionY;
@@ -62,7 +62,7 @@ void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
 void Task_KyuraMain(void)
 {
-    Sprite_Kyura *kyura = TaskGetStructPtr(gCurTask);
+    Sprite_Kyura *kyura = TASK_DATA(gCurTask);
     Sprite *s = &kyura->s;
     MapEntity *me = kyura->base.me;
     u32 unk54 = kyura->unk54;
@@ -124,7 +124,7 @@ void Task_KyuraMain(void)
 
 void Task_KyuraRecover(void)
 {
-    Sprite_Kyura *kyura = TaskGetStructPtr(gCurTask);
+    Sprite_Kyura *kyura = TASK_DATA(gCurTask);
     Sprite *s = &kyura->s;
 
     if (--kyura->framesUntilTaskSwitch == 0) {

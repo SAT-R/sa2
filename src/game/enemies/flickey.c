@@ -47,7 +47,7 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
         struct Task *t = TaskCreate(Task_FlickeyMain, sizeof(Sprite_Flickey), 0x4040, 0,
                                     TaskDestructor_Flickey);
-        Sprite_Flickey *flickey = TaskGetStructPtr(t);
+        Sprite_Flickey *flickey = TASK_DATA(t);
         Sprite *s = &flickey->s;
         flickey->base.regionX = spriteRegionX;
         flickey->base.regionY = spriteRegionY;
@@ -85,7 +85,7 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 static void Task_FlickeyMain(void)
 {
     u8 i;
-    Sprite_Flickey *flickey = TaskGetStructPtr(gCurTask);
+    Sprite_Flickey *flickey = TASK_DATA(gCurTask);
     Sprite *s = &flickey->s;
     MapEntity *me = flickey->base.me;
     s32 positions[3][3];
@@ -185,7 +185,7 @@ static void Task_FlickeyMain(void)
 static void sub_8058EDC(void)
 {
     u8 i;
-    Sprite_Flickey *flickey = TaskGetStructPtr(gCurTask);
+    Sprite_Flickey *flickey = TASK_DATA(gCurTask);
     Sprite *s = &flickey->s;
     MapEntity *me = flickey->base.me;
     s32 positions[3][3];
@@ -262,7 +262,7 @@ static void sub_8058EDC(void)
 
 static void sub_80591FC(void)
 {
-    Sprite_Flickey *flickey = TaskGetStructPtr(gCurTask);
+    Sprite_Flickey *flickey = TASK_DATA(gCurTask);
     Sprite *s = &flickey->s2;
     s32 someVal;
     u8 i;
@@ -318,7 +318,7 @@ static void Flickey_RenderIronBalls(Sprite_Flickey *flickey)
 
 static void TaskDestructor_Flickey(struct Task *t)
 {
-    Sprite_Flickey *flickey = TaskGetStructPtr(t);
+    Sprite_Flickey *flickey = TASK_DATA(t);
     VramFree(flickey->s.graphics.dest);
     VramFree(flickey->s2.graphics.dest);
 }

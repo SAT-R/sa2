@@ -240,7 +240,7 @@ void sub_8088EB4(void);
 
 void sub_8088CC4(void)
 {
-    struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
     Sprite *s;
     u32 i;
 
@@ -270,7 +270,7 @@ void sub_8088CC4(void)
 
 void sub_8088D60(void)
 {
-    struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
     Sprite *s;
     u32 i;
     if (NextTransitionFrame(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
@@ -335,7 +335,7 @@ void sub_8088D60(void)
 
 void sub_8088EB4(void)
 {
-    struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
     Sprite *s;
     struct TransitionState *transition;
     u32 i;
@@ -413,7 +413,7 @@ void CreateTimeAttackLobbyScreen()
 {
     struct Task *t = TaskCreate(sub_8088CC4, sizeof(struct TimeAttackLobbyScreen),
                                 0x1000, 0, sub_8089104);
-    struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
+    struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(t);
 
     lobbyScreen->unk1AD = 0;
     lobbyScreen->unk1AC = 0;
@@ -422,7 +422,7 @@ void CreateTimeAttackLobbyScreen()
 
 void sub_8089104(struct Task *t)
 {
-    struct TimeAttackLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
+    struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(t);
     VramFree(lobbyScreen->unkB0[1].graphics.dest);
     VramFree(lobbyScreen->unkB0[2].graphics.dest);
     VramFree(lobbyScreen->unkB0[3].graphics.dest);

@@ -31,7 +31,7 @@ void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
 {
     struct Task *t = TaskCreate(Task_CircusMain, sizeof(Sprite_Circus), 0x4090, 0,
                                 TaskDestructor_Circus);
-    Sprite_Circus *circus = TaskGetStructPtr(t);
+    Sprite_Circus *circus = TASK_DATA(t);
     Sprite *s = &circus->s;
     circus->base.regionX = spriteRegionX;
     circus->base.regionY = spriteRegionY;
@@ -65,7 +65,7 @@ void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
 
 void Task_CircusMain(void)
 {
-    Sprite_Circus *circus = TaskGetStructPtr(gCurTask);
+    Sprite_Circus *circus = TASK_DATA(gCurTask);
     Sprite *s = &circus->s;
     Sprite *s2 = &circus->s2;
     MapEntity *me = circus->base.me;
@@ -98,7 +98,7 @@ void Task_CircusMain(void)
 
 void Task_8055AB8(void)
 {
-    Sprite_Circus *circus = TaskGetStructPtr(gCurTask);
+    Sprite_Circus *circus = TASK_DATA(gCurTask);
     Sprite *s = &circus->s;
     Sprite *s2 = &circus->s2;
     MapEntity *me = circus->base.me;
@@ -136,7 +136,7 @@ void Task_8055AB8(void)
 void Task_8055C0C(void)
 {
     MapEntity *me;
-    Sprite_Circus *circus = TaskGetStructPtr(gCurTask);
+    Sprite_Circus *circus = TASK_DATA(gCurTask);
     Sprite *s = &circus->s;
     Sprite *s2 = &circus->s2;
     Vec2_32 pos;
@@ -173,7 +173,7 @@ void Task_8055C0C(void)
 
 void Task_8055D7C(void)
 {
-    Sprite_Circus *circus = TaskGetStructPtr(gCurTask);
+    Sprite_Circus *circus = TASK_DATA(gCurTask);
     Sprite *s = &circus->s;
     Sprite *s2 = &circus->s2;
     MapEntity *me = circus->base.me;
@@ -209,7 +209,7 @@ void Task_8055D7C(void)
 
 void TaskDestructor_Circus(struct Task *t)
 {
-    Sprite_Circus *circus = TaskGetStructPtr(t);
+    Sprite_Circus *circus = TASK_DATA(t);
     VramFree(circus->s.graphics.dest);
     VramFree(circus->s2.graphics.dest);
 }

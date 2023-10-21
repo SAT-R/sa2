@@ -67,7 +67,7 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
 
     t = TaskCreate(Task_ShowIntroScreen, sizeof(struct SpecialStage), 0x2000, 0,
                    SpecialStageOnDestroy);
-    stage = TaskGetStructPtr(t);
+    stage = TASK_DATA(t);
     stage->cameraX = Q_16_16(256);
     stage->cameraY = Q_16_16(256);
     stage->unk59C = 0;
@@ -157,7 +157,7 @@ static void SetupIntroScreenRegisters(void)
 
 void Task_IntroScreenMain(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
 
     struct TransitionState *transition = &stage->transition;
     DisplaySprite(&stage->introText);
@@ -182,7 +182,7 @@ void Task_IntroScreenMain(void)
 
 void Task_InitComponents(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     stage->state = 2;
 
     switch (stage->animFrame) {
@@ -210,7 +210,7 @@ void Task_InitComponents(void)
 
 void Task_SpecialStageStartDelay(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     SpecialStagePauseMenuMain();
 
     if (!stage->paused) {
@@ -227,8 +227,8 @@ void Task_SpecialStageStartDelay(void)
 
 void Task_SpecialStageMain(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
     if (stage->state == 6) {
 #ifndef NON_MATCHING
@@ -288,10 +288,10 @@ void Task_SpecialStageMain(void)
 
 void sub_806BFD0(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     struct TransitionState *transition = &stage->transition;
-    struct SpecialStageGuardRobo *guardRobo = TaskGetStructPtr(stage->guardRoboTask);
-    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStageGuardRobo *guardRobo = TASK_DATA(stage->guardRoboTask);
+    struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
     guardRobo->state = 0;
 
@@ -314,9 +314,9 @@ void sub_806BFD0(void)
 
 void Task_FadeToResultScreen(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     struct TransitionState *transition = &stage->transition;
-    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
     if (NextTransitionFrame(transition) == 0) {
         gDispCnt = 0x9641;
@@ -365,8 +365,8 @@ void Task_FadeToResultScreen(void)
 
 void sub_806C158(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
     gBldRegs.bldY = 0;
     gBldRegs.bldCnt = 0;
@@ -402,7 +402,7 @@ void sub_806C158(void)
 
 void sub_806C25C(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
 
     if (stage->unk5C7 == 1) {
         if (--stage->unk5C8 == 0) {
@@ -442,7 +442,7 @@ void sub_806C25C(void)
 
 void sub_806C338(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     if (stage->unk5C7 == 1) {
         if (--stage->unk5C8 == 0) {
             m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
@@ -486,7 +486,7 @@ void sub_806C338(void)
 
 void sub_806C42C(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     stage->finalScore += stage->points;
     stage->points = 0;
 
@@ -507,7 +507,7 @@ void sub_806C42C(void)
 
 void sub_806C49C(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     struct TransitionState *transition = &stage->transition;
     stage->animFrame++;
 
@@ -537,7 +537,7 @@ void sub_806C49C(void)
 
 void sub_806C560(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     u8 character = stage->character;
     u8 chaosEmeralds = gLoadedSaveGame->chaosEmeralds[character];
 
@@ -567,7 +567,7 @@ void sub_806C560(void)
 
 void sub_806C638(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
 
     if (stage->unk5C7 == 1) {
         if (--stage->unk5C8 == 0) {
@@ -586,7 +586,7 @@ void sub_806C638(void)
 
 void sub_806C6A4(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     if (NextTransitionFrame(&stage->transition) == 0) {
         return;
     }
@@ -636,7 +636,7 @@ void sub_806C6A4(void)
 
 static void TickStageTimer(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
 
     if (stage->timeTicks > 0) {
         stage->timeTicks--;
@@ -669,7 +669,7 @@ static void TickStageTimer(void)
 
 void SpecialStagePauseMenuMain(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
 
     if (stage->paused == TRUE) {
         if (gPressedKeys & (DPAD_UP | DPAD_DOWN)) {
@@ -719,7 +719,7 @@ static void SpecialStageOnDestroy(UNUSED struct Task *t)
 
 static void Task_ShowIntroScreen(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     SetupIntroScreenRegisters();
     sub_806CA88(&stage->introText, RENDER_TARGET_SCREEN, 0x28, 0x37C, 0, 0x78, 0x50, 0,
                 0, 0);
@@ -732,7 +732,7 @@ static void Task_ShowIntroScreen(void)
 
 void Task_FadeInSpecialStage(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
 
     if (NextTransitionFrame(&stage->transition) != 0) {
         stage->animFrame = 0;
@@ -744,7 +744,7 @@ void Task_FadeInSpecialStage(void)
 
 void sub_806CA18(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
 
     gBldRegs.bldY = 0;
     gBldRegs.bldCnt = 0;
@@ -759,7 +759,7 @@ void sub_806CA18(void)
 
 void sub_806CA54(void)
 {
-    struct SpecialStage *stage = TaskGetStructPtr(gCurTask);
+    struct SpecialStage *stage = TASK_DATA(gCurTask);
     stage->animFrame++;
 
     if (stage->animFrame > 59) {

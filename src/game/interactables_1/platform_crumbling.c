@@ -43,7 +43,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
 {
     struct Task *t = TaskCreate(Task_Interactable_019, sizeof(Sprite_019), 0x2000, 0,
                                 TaskDestructor_Interactable019);
-    Sprite_019 *platform = TaskGetStructPtr(t);
+    Sprite_019 *platform = TASK_DATA(t);
     SpriteBase *base = &platform->base;
     Sprite *s = &platform->s;
     // s16 screenX, screenY;
@@ -89,7 +89,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
 
 void Task_Interactable_019(void)
 {
-    Sprite_019 *platform = TaskGetStructPtr(gCurTask);
+    Sprite_019 *platform = TASK_DATA(gCurTask);
     SpriteBase *base = &platform->base;
     Sprite *s = &platform->s;
     MapEntity *me = base->me;
@@ -127,7 +127,7 @@ void Task_Interactable_019(void)
 
 void Task_805E35C(void)
 {
-    Sprite_019 *platform = TaskGetStructPtr(gCurTask);
+    Sprite_019 *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;
     MapEntity *me = platform->base.me;
     s16 screenX, screenY;
@@ -162,7 +162,7 @@ void Task_805E35C(void)
 
 void Task_805E480(void)
 {
-    Sprite_019 *platform = TaskGetStructPtr(gCurTask);
+    Sprite_019 *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;
     MapEntity *me = platform->base.me;
     s16 screenX, screenY;
@@ -249,7 +249,7 @@ void Task_805E480(void)
 
 void Task_805E6A4(void)
 {
-    Sprite_019 *platform = TaskGetStructPtr(gCurTask);
+    Sprite_019 *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;
     MapEntity *me = platform->base.me;
 
@@ -322,6 +322,6 @@ void Task_805E6A4(void)
 
 void TaskDestructor_Interactable019(struct Task *t)
 {
-    Sprite_019 *platform = TaskGetStructPtr(t);
+    Sprite_019 *platform = TASK_DATA(t);
     VramFree(platform->s.graphics.dest);
 }

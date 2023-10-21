@@ -74,7 +74,7 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     // BUG: assigning to null pointer
     scene->unk52 = 0;
 
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
     scene->variant = creditsVariant;
     scene->unk4E = b;
     scene->unk4F = c;
@@ -123,7 +123,7 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
 
 static void sub_808EBC4(void)
 {
-    struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
 
     transition->unk2 = 2;
@@ -140,7 +140,7 @@ static void sub_808EBC4(void)
 
 static void sub_808EC28(void)
 {
-    struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
     transition->unk2 = 1;
 
@@ -152,7 +152,7 @@ static void sub_808EC28(void)
 
 static void sub_808EC64(void)
 {
-    struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
 
     if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
@@ -168,7 +168,7 @@ static void sub_808EC64(void)
 
 static void sub_808ECB4(void)
 {
-    struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
     transition->unk2 = 1;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
@@ -182,7 +182,7 @@ static void sub_808ECB4(void)
 
 static void sub_808ED04(void)
 {
-    struct CreditsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsCutScene *scene = TASK_DATA(gCurTask);
     scene->unk4E++;
     if (scene->unk4F < 4) {
         CreateCreditsSlidesCutScene(scene->variant, scene->unk4E, scene->unk4F);

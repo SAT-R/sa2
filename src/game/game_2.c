@@ -10,7 +10,7 @@
 
 void Task_801F214(void)
 {
-    TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
+    TaskStrc_801F15C *ts = TASK_DATA(gCurTask);
     Sprite *s = &ts->s;
 
     if (!PLAYER_IS_ALIVE) {
@@ -35,7 +35,7 @@ void Task_801F214(void)
                         if (IS_MULTI_PLAYER) {
                             s8 id = SIO_MULTI_CNT->id;
                             struct Task *tmpp = gMultiplayerPlayerTasks[id];
-                            struct MultiplayerPlayer *mpp = TaskGetStructPtr(tmpp);
+                            struct MultiplayerPlayer *mpp = TASK_DATA(tmpp);
                             ts->x = mpp->unk50;
                             ts->y = mpp->unk52;
                         } else {
@@ -99,7 +99,7 @@ struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
         TaskStrc_801F15C *ts;
         Sprite *s;
         t = sub_801F15C(x, y, 32, 0, Task_801F214, TaskDestructor_801F550);
-        ts = TaskGetStructPtr(t);
+        ts = TASK_DATA(t);
 
         switch (score) {
             case 100: {
@@ -160,7 +160,7 @@ void sub_801F488(void)
 
         t = sub_801F15C(x2, y2, 192, 0, Task_801F214, TaskDestructor_801F550);
 
-        ts = TaskGetStructPtr(t);
+        ts = TASK_DATA(t);
         s = &ts->s;
         s->graphics.dest = VramMalloc(20);
         s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
@@ -172,7 +172,7 @@ void sub_801F488(void)
 
 void TaskDestructor_801F550(struct Task *t)
 {
-    TaskStrc_801F15C *ts = TaskGetStructPtr(t);
+    TaskStrc_801F15C *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
 
     VramFree(s->graphics.dest);
@@ -181,7 +181,7 @@ void TaskDestructor_801F550(struct Task *t)
 struct Task *sub_801F568(s16 x, s16 y)
 {
     struct Task *t = sub_801F15C(x, y, 192, 0, Task_801F214, TaskDestructor_801F550);
-    TaskStrc_801F15C *ts = TaskGetStructPtr(t);
+    TaskStrc_801F15C *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
 
     s->graphics.dest = VramMalloc(20);

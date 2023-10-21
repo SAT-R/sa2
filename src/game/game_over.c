@@ -21,7 +21,7 @@ void sub_80366F0(void);
 void CreateGameOverScreen(u8 type)
 {
     struct Task *t = TaskCreate(sub_80366F0, 0x10, 0x2220, 0, NULL);
-    GameOverScreenTransition *screen = TaskGetStructPtr(t);
+    GameOverScreenTransition *screen = TASK_DATA(t);
 
     struct TransitionState *transition = &screen->unk0;
     transition->unk0 = 1;
@@ -44,7 +44,7 @@ void sub_8036780(u8);
 
 void sub_80366F0(void)
 {
-    GameOverScreenTransition *transition = TaskGetStructPtr(gCurTask);
+    GameOverScreenTransition *transition = TASK_DATA(gCurTask);
     u8 unkC = transition->unkC;
 
     if (transition->unkD != 0) {
@@ -105,7 +105,7 @@ void sub_8036780(u8 unkC)
         t = TaskCreate(sub_8036A44, 0x70, 0x1000, 0, sub_8036C38);
     }
 
-    screen = TaskGetStructPtr(t);
+    screen = TASK_DATA(t);
 
     if (unkC & 1) {
         screen->unk6C = 0x8C;
@@ -162,7 +162,7 @@ void sub_80369D8(void);
 
 void sub_8036918(void)
 {
-    GameOverScreen *screen = TaskGetStructPtr(gCurTask);
+    GameOverScreen *screen = TASK_DATA(gCurTask);
     Sprite *s = &screen->unkC;
     Sprite *sprite2 = &screen->unk3C;
 
@@ -218,7 +218,7 @@ void sub_8036B30(void);
 
 void sub_80369D8(void)
 {
-    GameOverScreen *screen = TaskGetStructPtr(gCurTask);
+    GameOverScreen *screen = TASK_DATA(gCurTask);
     NextTransitionFrame(&screen->unk0);
 
     if (--screen->unk6C == 0) {
@@ -240,7 +240,7 @@ void sub_8036BEC(GameOverScreen *screen);
 
 void sub_8036A44(void)
 {
-    GameOverScreen *screen = TaskGetStructPtr(gCurTask);
+    GameOverScreen *screen = TASK_DATA(gCurTask);
     Sprite *s = &screen->unkC;
     Sprite *sprite2 = &screen->unk3C;
 
@@ -297,7 +297,7 @@ void sub_8036B70(void);
 
 void sub_8036B30(void)
 {
-    GameOverScreen *screen = TaskGetStructPtr(gCurTask);
+    GameOverScreen *screen = TASK_DATA(gCurTask);
 
     if (NextTransitionFrame(&screen->unk0) != 0) {
         screen->unk6C = 140;
@@ -310,7 +310,7 @@ void sub_8036B30(void)
 
 void sub_8036B70(void)
 {
-    GameOverScreen *screen = TaskGetStructPtr(gCurTask);
+    GameOverScreen *screen = TASK_DATA(gCurTask);
 
     if (--screen->unk6C == 0) {
         TasksDestroyAll();
@@ -357,7 +357,7 @@ void sub_8036BEC(GameOverScreen *screen)
 
 void sub_8036C38(struct Task *t)
 {
-    GameOverScreen *screen = TaskGetStructPtr(t);
+    GameOverScreen *screen = TASK_DATA(t);
 
     VramFree(screen->unkC.graphics.dest);
     VramFree(screen->unk3C.graphics.dest);

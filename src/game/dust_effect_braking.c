@@ -36,7 +36,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
         t = TaskCreate(Task_801F6E0, sizeof(BrakeDustEffect), 0x4001, 0,
                        TaskDestructor_801F7B8);
 
-        bde = TaskGetStructPtr(t);
+        bde = TASK_DATA(t);
         bde->x = x;
         bde->y = y;
         bde->unk4 = 0;
@@ -75,7 +75,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
 void Task_801F6E0(void)
 {
     UNK_30059D0 *unk = &gUnknown_030059D0;
-    BrakeDustEffect *bde = TaskGetStructPtr(gCurTask);
+    BrakeDustEffect *bde = TASK_DATA(gCurTask);
     Sprite *s = &bde->s;
 
     if (unk->t == 0 || (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
@@ -116,7 +116,7 @@ void Task_801F7B4(void) { }
 
 void TaskDestructor_801F7B8(struct Task *t)
 {
-    BrakeDustEffect *bde = TaskGetStructPtr(t);
+    BrakeDustEffect *bde = TASK_DATA(t);
     Sprite *s = &bde->s;
 
     if (s->graphics.anim == SA2_ANIM_BRAKING_DUST_EFFECT) {

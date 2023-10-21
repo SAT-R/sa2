@@ -113,7 +113,7 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     struct Task *t = TaskCreate(Task_Interactable_DashRing, 0x80, 0x2010, 0,
                                 TaskDestructor_Interactable_DashRing);
 
-    Sprite_DashRing *ring = TaskGetStructPtr(t);
+    Sprite_DashRing *ring = TASK_DATA(t);
     ring->orientation = me->d.sData[0];
     ring->posX = TO_WORLD_POS(me->x, spriteRegionX);
     ring->posY = TO_WORLD_POS(me->y, spriteRegionY);
@@ -278,7 +278,7 @@ static bool32 DashRing_PlayerIsColliding(Sprite_DashRing *ring)
 
 static void Task_Interactable_DashRing(void)
 {
-    Sprite_DashRing *ring = TaskGetStructPtr(gCurTask);
+    Sprite_DashRing *ring = TASK_DATA(gCurTask);
 
     if (DashRing_PlayerIsColliding(ring)) {
         DashRing_SetPlayerSpeedAndDir(ring);
@@ -295,7 +295,7 @@ static void Task_Interactable_DashRing(void)
 
 static void Task_Interactable_DashRing_AfterAcceleration(void)
 {
-    Sprite_DashRing *ring = TaskGetStructPtr(gCurTask);
+    Sprite_DashRing *ring = TASK_DATA(gCurTask);
 
     DashRing_UpdateScreenPos(ring);
     DisplaySprite(&ring->s1);
@@ -308,7 +308,7 @@ static void Task_Interactable_DashRing_AfterAcceleration(void)
 
 static void TaskDestructor_Interactable_DashRing(struct Task *t)
 {
-    Sprite_DashRing *ring = TaskGetStructPtr(t);
+    Sprite_DashRing *ring = TASK_DATA(t);
 
     VramFree(ring->s1.graphics.dest);
     VramFree(ring->s2.graphics.dest);

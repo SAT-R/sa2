@@ -22,7 +22,7 @@ void CreateCollectRingEffect(s16 x, s16 y)
     if (gActiveCollectRingEffectCount < 8) {
         struct Task *t
             = TaskCreate(Task_CollectRingEffect, sizeof(RingEffect), 0x2000, 0, NULL);
-        RingEffect *re = TaskGetStructPtr(t);
+        RingEffect *re = TASK_DATA(t);
         Sprite *s = &re->s;
 
         re->unk31 = 0;
@@ -60,7 +60,7 @@ void CreateCollectRingEffect(s16 x, s16 y)
 
 void Task_CollectRingEffect(void)
 {
-    RingEffect *re = TaskGetStructPtr(gCurTask);
+    RingEffect *re = TASK_DATA(gCurTask);
     Sprite *s = &re->s;
 
     s16 playerX = s->x;

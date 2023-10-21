@@ -76,7 +76,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 {
     struct Task *t = TaskCreate(Task_8073AA8, sizeof(Sprite_HCCrane), 0x2010, 0,
                                 TaskDestructor_80743B8);
-    Sprite_HCCrane *crane = TaskGetStructPtr(t);
+    Sprite_HCCrane *crane = TASK_DATA(t);
     CraneStruct *cs;
     u16 i;
     u16 j;
@@ -184,7 +184,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
 static void Task_8073AA8()
 {
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
     sub_8074260(crane);
 
@@ -210,7 +210,7 @@ static void Task_8073AA8()
 
 static void Task_8073B1C(void)
 {
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
     if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.unk2C == 120)) {
         gPlayer.moveState &= ~MOVESTATE_400000;
@@ -243,7 +243,7 @@ static void Task_8073B1C(void)
 
 static void Task_8073BD4(void)
 {
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
     if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.unk2C == 120)) {
         gPlayer.moveState &= ~MOVESTATE_400000;
@@ -278,7 +278,7 @@ static void Task_8073C6C(void)
 {
     bool32 result_744D0;
     u16 r1;
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
     result_744D0 = sub_80744D0(crane, crane->unk1B8.unk6);
 
@@ -327,7 +327,7 @@ static void Task_8073D48(void)
 {
     bool32 result_744D0;
     u16 r1;
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
     sub_8074260(crane);
 
@@ -374,7 +374,7 @@ static void Task_8073D48(void)
 
 static void Task_8073E20(void)
 {
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
     sub_8074260(crane);
     sub_807447C(crane);
 

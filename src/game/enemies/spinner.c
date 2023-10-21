@@ -24,7 +24,7 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_EnemySpinner, sizeof(Sprite_Spinner), 0x4040, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Spinner *spinner = TaskGetStructPtr(t);
+    Sprite_Spinner *spinner = TASK_DATA(t);
     Sprite *s = &spinner->s;
     spinner->base.regionX = spriteRegionX;
     spinner->base.regionY = spriteRegionY;
@@ -59,7 +59,7 @@ void Task_EnemySpinner(void)
     Vec2_32 pos;
     // Must be declared first (for match)
     MapEntity *me;
-    Sprite_Spinner *spinner = TaskGetStructPtr(gCurTask);
+    Sprite_Spinner *spinner = TASK_DATA(gCurTask);
     Sprite *s = &spinner->s;
 
     me = spinner->base.me;

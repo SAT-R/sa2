@@ -46,7 +46,7 @@ void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 sprite
 {
     struct Task *t
         = TaskCreate(sub_80750A8, sizeof(Sprite_FloatingSpring), 0x2010, 0, sub_8075140);
-    Sprite_FloatingSpring *floatingSpring = TaskGetStructPtr(t);
+    Sprite_FloatingSpring *floatingSpring = TASK_DATA(t);
     Sprite *s = &floatingSpring->s;
 
     floatingSpring->unk44 = 0;
@@ -222,7 +222,7 @@ static void sub_8075048(Sprite_FloatingSpring *floatingSpring)
 
 static void sub_80750A8(void)
 {
-    Sprite_FloatingSpring *floatingSpring = TaskGetStructPtr(gCurTask);
+    Sprite_FloatingSpring *floatingSpring = TASK_DATA(gCurTask);
 
     sub_8074E44(floatingSpring);
     if (sub_8075228(floatingSpring)) {
@@ -256,7 +256,7 @@ static void sub_80750A8(void)
 
 static void sub_8075140(struct Task *t)
 {
-    Sprite_FloatingSpring *floatingSpring = TaskGetStructPtr(t);
+    Sprite_FloatingSpring *floatingSpring = TASK_DATA(t);
 
     sub_80752BC(floatingSpring);
 }
@@ -346,7 +346,7 @@ static void sub_80752BC(Sprite_FloatingSpring *floatingSpring)
 
 static void sub_80752D8(void)
 {
-    Sprite_FloatingSpring *floatingSpring = TaskGetStructPtr(gCurTask);
+    Sprite_FloatingSpring *floatingSpring = TASK_DATA(gCurTask);
     Sprite *s = &floatingSpring->s;
     sub_8074E44(floatingSpring);
     sub_80751B4(floatingSpring);

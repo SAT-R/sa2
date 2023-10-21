@@ -19,7 +19,7 @@ void Task_StageRing(void);
 void sub_800BAAC(s16 x, s16 y)
 {
     struct Task *t = TaskCreate(Task_StageRing, sizeof(StageRing), 0x2000, 0, NULL);
-    StageRing *ring = TaskGetStructPtr(t);
+    StageRing *ring = TASK_DATA(t);
     Sprite *s;
 
     ring->unk30 = 0;
@@ -44,7 +44,7 @@ void sub_800BAAC(s16 x, s16 y)
 // (88.87%) https://decomp.me/scratch/EmhmV
 NONMATCH("asm/non_matching/game/stage/Task_StageRing.inc", void Task_StageRing(void))
 {
-    StageRing *ring = TaskGetStructPtr(gCurTask);
+    StageRing *ring = TASK_DATA(gCurTask);
     Player *p = &gPlayer;
     s32 ringToPlayerX = Q_24_8_TO_INT(p->x) - (u16)ring->s.x;
     s32 ringToPlayerY = Q_24_8_TO_INT(p->y) - (u16)ring->s.y;

@@ -1162,7 +1162,7 @@ void CreateOptionsScreen(u16 p1)
 
     t = TaskCreate(Task_OptionsScreenShow, sizeof(struct OptionsScreen), 0x1000,
                    TASK_x0004, OptionsScreenTaskDestroyHandler);
-    optionsScreen = TaskGetStructPtr(t);
+    optionsScreen = TASK_DATA(t);
 
     ReadProfileData(optionsScreen);
 
@@ -1191,7 +1191,7 @@ void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter,
     struct Task *t
         = TaskCreate(Task_TimeRecordsScreenCreateTimesUI,
                      sizeof(struct TimeRecordsScreen), 0x2000, TASK_x0004, NULL);
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(t);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(t);
     s16 i;
 
     ReadAvailableCharacters(i, gLoadedSaveGame->unlockedCharacters);
@@ -1237,7 +1237,7 @@ void CreateNewProfileScreen(void)
 
     t = TaskCreate(Task_LanguageScreenFadeIn, sizeof(struct LanguageScreen), 0x2000,
                    TASK_x0004, NULL);
-    languageScreen = TaskGetStructPtr(t);
+    languageScreen = TASK_DATA(t);
 
     languageScreen->optionsScreen = NULL;
     languageScreen->menuCursor = LanguageIndex(gLoadedSaveGame->language);
@@ -1259,7 +1259,7 @@ void CreateNewProfileNameScreen(s16 mode)
     struct Task *t
         = TaskCreate(Task_ProfileNameScreenFadeIn, sizeof(struct ProfileNameScreen),
                      0x2000, TASK_x0004, NULL);
-    struct ProfileNameScreen *profileNameScreen = TaskGetStructPtr(t);
+    struct ProfileNameScreen *profileNameScreen = TASK_DATA(t);
     s16 i;
 
     profileNameScreen->playerDataMenu = NULL;
@@ -1553,7 +1553,7 @@ static void OptionsScreenCreateUI(struct OptionsScreen *optionsScreen, s16 state
 
 static void Task_OptionsScreenMain(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
 
     OptionsScreenRenderUI();
 
@@ -1684,7 +1684,7 @@ static inline void PrevMenuCursorAnimFrame(struct OptionsScreen *optionsScreen,
 
 static void Task_OptionsScreenMenuCursorMoveAnim(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     s16 animFrame = optionsScreen->subMenuAnimFrame;
 
     NextMenuCursorAnimFrame(
@@ -1733,7 +1733,7 @@ static inline void SubMenuAnimFrame(struct OptionsScreen *optionsScreen,
 
 static void Task_OptionsScreenSubMenuOpenAnim(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
 
     SubMenuAnimFrame(optionsScreen, sSubMenuOpenAnim);
     OptionsScreenRenderUI();
@@ -1746,7 +1746,7 @@ static void Task_OptionsScreenSubMenuOpenAnim(void)
 
 static void Task_OptionsScreenSubMenuCloseAnim(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
 
     SubMenuAnimFrame(optionsScreen, sSubMenuCloseAnim);
     OptionsScreenRenderUI();
@@ -1759,7 +1759,7 @@ static void Task_OptionsScreenSubMenuCloseAnim(void)
 
 static void Task_OptionsScreenWaitForLanguageScreenExit(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk774 = &optionsScreen->unk774;
 
     if (optionsScreen->state != OPTIONS_SCREEN_STATE_ACTIVE) {
@@ -1785,7 +1785,7 @@ static void Task_OptionsScreenWaitForLanguageScreenExit(void)
 
 static void Task_OptionsScreenWaitForSoundTestExit(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk774 = &optionsScreen->unk774;
 
     if (optionsScreen->state != OPTIONS_SCREEN_STATE_ACTIVE) {
@@ -1812,7 +1812,7 @@ static void Task_OptionsScreenWaitForSoundTestExit(void)
 
 static void Task_OptionsScreenWaitForDeleteScreenExit(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk774 = &optionsScreen->unk774;
     u8 language = optionsScreen->language;
 
@@ -1850,7 +1850,7 @@ static void Task_OptionsScreenWaitForDeleteScreenExit(void)
 
 static void OptionsScreenRenderUI(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     Sprite *title = &optionsScreen->title;
     Sprite *menuItem = optionsScreen->menuItems;
     Sprite *metaItem = optionsScreen->metaItems;
@@ -1878,7 +1878,7 @@ static void CreatePlayerDataMenu(struct OptionsScreen *optionsScreen)
 {
     struct Task *t = TaskCreate(Task_PlayerDataMenuOpenAnimWait,
                                 sizeof(struct PlayerDataMenu), 0x2000, TASK_x0004, NULL);
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(t);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(t);
 
     s16 initialCursorPos;
     if (optionsScreen->initialSubMenuCursorPosition != -1) {
@@ -1940,7 +1940,7 @@ static void PlayerDataMenuCreateUI(struct PlayerDataMenu *playerDataMenu)
 
 static void Task_PlayerDataMenuOpenAnimWait(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     Sprite *headerFooter = playerDataMenu->headerFooter;
     Sprite *menuItem = playerDataMenu->menuItems;
     Sprite *menuItemOutline = &playerDataMenu->menuItemOutline;
@@ -1968,7 +1968,7 @@ static void Task_PlayerDataMenuOpenAnimWait(void)
 
 static void Task_PlayerDataMenuMain(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     Sprite *menuItem = playerDataMenu->menuItems;
     Sprite *menuItemOutline = &playerDataMenu->menuItemOutline;
     struct OptionsScreen *optionsScreen = playerDataMenu->optionsScreen;
@@ -2031,7 +2031,7 @@ static void Task_PlayerDataMenuMain(void)
 
 static void Task_PlayerDataMenuCloseAnim(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     Sprite *headerFooter = playerDataMenu->headerFooter;
     Sprite *menuItem = playerDataMenu->menuItems;
     Sprite *menuItemOutline = &playerDataMenu->menuItemOutline;
@@ -2085,7 +2085,7 @@ OptionsScreenRecreateUIForPlayerDataMenu(struct PlayerDataMenu *playerDataMenu,
 
 static void Task_PlayerDataMenuWaitForProfileNameScreenExit(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk150 = &playerDataMenu->unk150;
 
     if (playerDataMenu->state == 0) {
@@ -2096,7 +2096,7 @@ static void Task_PlayerDataMenuWaitForProfileNameScreenExit(void)
 
 static void Task_PlayerDataMenuFadeOutToTimeRecordsScreen(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -2117,7 +2117,7 @@ static void Task_PlayerDataMenuFadeOutToTimeRecordsScreen(void)
 
 static void Task_PlayerDataMenuWaitForTimeRecordsScreenExit(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk150 = &playerDataMenu->unk150;
 
     if (playerDataMenu->state == PLAYER_DATA_MENU_STATE_ACTIVE) {
@@ -2128,7 +2128,7 @@ static void Task_PlayerDataMenuWaitForTimeRecordsScreenExit(void)
 
 static void Task_PlayerDataMenuWaitForMultiplayerRecordsScreenExit(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk150 = &playerDataMenu->unk150;
 
     if (playerDataMenu->state == PLAYER_DATA_MENU_STATE_ACTIVE) {
@@ -2184,7 +2184,7 @@ static void DifficultyMenuCreateUI(struct SwitchMenu *difficultyMenu)
 
 static void Task_DifficultyMenuOpenAnimWait(void)
 {
-    struct SwitchMenu *difficultyMenu = TaskGetStructPtr(gCurTask);
+    struct SwitchMenu *difficultyMenu = TASK_DATA(gCurTask);
     Sprite *headerFooter = difficultyMenu->headerFooter;
     Sprite *difficultyOption = difficultyMenu->options;
     Sprite *switchValueOutline = &difficultyMenu->switchValueOutline;
@@ -2211,7 +2211,7 @@ static void Task_DifficultyMenuOpenAnimWait(void)
 
 static void Task_DifficultyMenuMain(void)
 {
-    struct SwitchMenu *difficultyMenu = TaskGetStructPtr(gCurTask);
+    struct SwitchMenu *difficultyMenu = TASK_DATA(gCurTask);
     Sprite *difficultyOption = difficultyMenu->options;
     Sprite *switchValueOutline = &difficultyMenu->switchValueOutline;
     struct OptionsScreen *optionsScreen = difficultyMenu->optionsScreen;
@@ -2264,7 +2264,7 @@ static void Task_DifficultyMenuMain(void)
 
 static void Task_DifficultyMenuCloseAnim(void)
 {
-    struct SwitchMenu *difficultyMenu = TaskGetStructPtr(gCurTask);
+    struct SwitchMenu *difficultyMenu = TASK_DATA(gCurTask);
     Sprite *headerFooter = difficultyMenu->headerFooter;
     Sprite *difficultyOption = difficultyMenu->options;
     Sprite *switchValueOutline = &difficultyMenu->switchValueOutline;
@@ -2337,7 +2337,7 @@ static void TimeLimitMenuCreateUI(struct SwitchMenu *timeLimitMenu)
 
 static void Task_TimeLimitMenuOpenAnimWait(void)
 {
-    struct SwitchMenu *timeLimitMenu = TaskGetStructPtr(gCurTask);
+    struct SwitchMenu *timeLimitMenu = TASK_DATA(gCurTask);
     Sprite *headerFooter = timeLimitMenu->headerFooter;
     Sprite *timeLimitOption = timeLimitMenu->options;
     Sprite *switchValueOutline = &timeLimitMenu->switchValueOutline;
@@ -2365,7 +2365,7 @@ static void Task_TimeLimitMenuOpenAnimWait(void)
 static void Task_TimeLimitMenuMain(void)
 {
     // Same as sub_806548C
-    struct SwitchMenu *timeLimitMenu = TaskGetStructPtr(gCurTask);
+    struct SwitchMenu *timeLimitMenu = TASK_DATA(gCurTask);
     Sprite *timeLimitOption = timeLimitMenu->options;
     Sprite *switchValueOutline = &timeLimitMenu->switchValueOutline;
     struct OptionsScreen *optionsScreen = timeLimitMenu->optionsScreen;
@@ -2415,7 +2415,7 @@ static void Task_TimeLimitMenuMain(void)
 
 static void Task_TimeLimitMenuCloseAnim(void)
 {
-    struct SwitchMenu *timeLimitMenu = TaskGetStructPtr(gCurTask);
+    struct SwitchMenu *timeLimitMenu = TASK_DATA(gCurTask);
     Sprite *headerFooter = timeLimitMenu->headerFooter;
     Sprite *timeLimitOption = timeLimitMenu->options;
     Sprite *switchValueOutline = &timeLimitMenu->switchValueOutline;
@@ -2446,7 +2446,7 @@ static void CreateButtonConfigMenu(struct OptionsScreen *optionsScreen)
 {
     struct Task *t = TaskCreate(Task_ButtonConfigMenuOpenAnimWait,
                                 sizeof(struct ButtonConfigMenu), 0x2000, 4, NULL);
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(t);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(t);
 
     buttonConfigMenu->optionsScreen = optionsScreen;
 
@@ -2577,7 +2577,7 @@ static void ButtonConfigMenuCreateUI(struct ButtonConfigMenu *buttonConfigMenu)
 
 static void Task_ButtonConfigMenuOpenAnimWait(void)
 {
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(gCurTask);
     Sprite *uiElement = buttonConfigMenu->staticElements;
     Sprite *buttonAction = buttonConfigMenu->buttonActions;
     Sprite *scrollArrow = buttonConfigMenu->scrollArrows;
@@ -2613,7 +2613,7 @@ static void Task_ButtonConfigMenuOpenAnimWait(void)
 
 static void Task_ButtonConfigMenuAButtonMain(void)
 {
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(gCurTask);
     Sprite *buttonAction = buttonConfigMenu->buttonActions;
     const struct UNK_080D95E8 *actionsText
         = sButtonConfigActionsText[buttonConfigMenu->language];
@@ -2704,7 +2704,7 @@ static void Task_ButtonConfigMenuAButtonMain(void)
 
 static void Task_ButtonConfigMenuBButtonMain(void)
 {
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(gCurTask);
     Sprite *buttonAction;
     const struct UNK_080D95E8 *actionsText
         = sButtonConfigActionsText[buttonConfigMenu->language];
@@ -2844,7 +2844,7 @@ static inline void CommitButtonConfig(struct ButtonConfigMenu *buttonConfigMenu,
 
 static void Task_ButtonConfigMenuRShoulderMain(void)
 {
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(gCurTask);
     struct OptionsScreen *optionsScreen = buttonConfigMenu->optionsScreen;
 
     ButtonConfigMenuRenderUI();
@@ -2875,7 +2875,7 @@ static void Task_ButtonConfigMenuRShoulderMain(void)
 
 static void ButtonConfigMenuStartOver(void)
 {
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(gCurTask);
     struct OptionsScreen *optionsScreen = buttonConfigMenu->optionsScreen;
     Sprite *buttonAction = buttonConfigMenu->buttonActions;
     const struct UNK_080D95E8 *actionsText
@@ -2899,7 +2899,7 @@ static void ButtonConfigMenuStartOver(void)
 
 static void Task_ButtonMenuConfigCloseAnim(void)
 {
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(gCurTask);
     Sprite *unk4 = buttonConfigMenu->staticElements;
     Sprite *unk124 = buttonConfigMenu->buttonActions;
     Sprite *unk1B4 = buttonConfigMenu->scrollArrows;
@@ -2935,7 +2935,7 @@ static void Task_ButtonMenuConfigCloseAnim(void)
 
 static void ButtonConfigMenuRenderUI(void)
 {
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(gCurTask);
     Sprite *unk4 = buttonConfigMenu->staticElements;
     Sprite *unk124 = buttonConfigMenu->buttonActions;
     Sprite *unk1B4 = buttonConfigMenu->scrollArrows;
@@ -3035,7 +3035,7 @@ static void LanguageScreenCreateUI(struct LanguageScreen *languageScreen)
 
 static void Task_LanguageScreenMain(void)
 {
-    struct LanguageScreen *languageScreen = TaskGetStructPtr(gCurTask);
+    struct LanguageScreen *languageScreen = TASK_DATA(gCurTask);
     ReseedRng();
 
     if (gRepeatedKeys & (DPAD_DOWN)) {
@@ -3085,7 +3085,7 @@ static void Task_LanguageScreenMain(void)
 
 static void LanguageScreenHandleLanguageChanged(void)
 {
-    struct LanguageScreen *languageScreen = TaskGetStructPtr(gCurTask);
+    struct LanguageScreen *languageScreen = TASK_DATA(gCurTask);
     Sprite *headerFooter = languageScreen->headerFooter;
     Sprite *menuItems = languageScreen->languageOptions;
     Sprite *menuItemOutline = &languageScreen->optionOutline;
@@ -3121,7 +3121,7 @@ static void CreateDeleteScreen(struct OptionsScreen *optionsScreen)
 {
     struct Task *t = TaskCreate(Task_DeleteScreenFadeIn, sizeof(struct DeleteScreen),
                                 0x2000, TASK_x0004, NULL);
-    struct DeleteScreen *deleteScreen = TaskGetStructPtr(t);
+    struct DeleteScreen *deleteScreen = TASK_DATA(t);
 
     deleteScreen->optionsScreen = optionsScreen;
     deleteScreen->confirmationCursor = 1;
@@ -3199,7 +3199,7 @@ static void DeleteScreenCreateUI(struct DeleteScreen *deleteScreen)
 
 static void Task_DeleteScreenConfrimationMain(void)
 {
-    struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
+    struct DeleteScreen *deleteScreen = TASK_DATA(gCurTask);
     Sprite *option = deleteScreen->options;
     Sprite *optionOutline = &deleteScreen->optionOutline;
     s16 i;
@@ -3238,7 +3238,7 @@ static void Task_DeleteScreenConfrimationMain(void)
 
 static void Task_DeleteScreenCreateAbsoluteConfirmation(void)
 {
-    struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
+    struct DeleteScreen *deleteScreen = TASK_DATA(gCurTask);
 
     Sprite *headerFooter = deleteScreen->headerFooter;
     Sprite *option = deleteScreen->options;
@@ -3266,7 +3266,7 @@ static void Task_DeleteScreenCreateAbsoluteConfirmation(void)
 
 static void Task_DeleteScreenAbsoluteConfirmMain(void)
 {
-    struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
+    struct DeleteScreen *deleteScreen = TASK_DATA(gCurTask);
     Sprite *option = deleteScreen->options;
     Sprite *optionOutline = &deleteScreen->optionOutline;
     s16 i;
@@ -3306,7 +3306,7 @@ static void Task_DeleteScreenAbsoluteConfirmMain(void)
 
 static void Task_DeleteScreenFadeOutAndExit(void)
 {
-    struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
+    struct DeleteScreen *deleteScreen = TASK_DATA(gCurTask);
 
     if (!NextTransitionFrame(&deleteScreen->unk130)) {
         DeleteScreenRenderUI();
@@ -3328,7 +3328,7 @@ static void CreateEditProfileNameScreen(struct PlayerDataMenu *playerDataMenu)
 {
     struct Task *t = TaskCreate(Task_ProfileNameScreenFadeIn,
                                 sizeof(struct ProfileNameScreen), 0x2000, 4, NULL);
-    struct ProfileNameScreen *profileNameScreen = TaskGetStructPtr(t);
+    struct ProfileNameScreen *profileNameScreen = TASK_DATA(t);
     s16 i;
 
     profileNameScreen->playerDataMenu = playerDataMenu;
@@ -3506,7 +3506,7 @@ ProfileNameScreenCreateInputDisplayUI(struct ProfileNameScreen *profileNameScree
 
 static void Task_ProfileNameScreenMain(void)
 {
-    struct ProfileNameScreen *profileNameScreen = TaskGetStructPtr(gCurTask);
+    struct ProfileNameScreen *profileNameScreen = TASK_DATA(gCurTask);
     struct NameInputDisplay *nameInput = &profileNameScreen->nameInput;
 
     ProfileNameScreenRenderUI();
@@ -3666,7 +3666,7 @@ static void Task_ProfileNameScreenMain(void)
 
 static bool16 ProfileNameScreenHandleShoulderInput(void)
 {
-    struct ProfileNameScreen *profileNameScreen = TaskGetStructPtr(gCurTask);
+    struct ProfileNameScreen *profileNameScreen = TASK_DATA(gCurTask);
 
     if (gRepeatedKeys & L_BUTTON) {
         if (profileNameScreen->nameInput.cursor > 0) {
@@ -3705,7 +3705,7 @@ static bool16 ProfileNameScreenHandleShoulderInput(void)
 
 static bool16 ProfileNameScreenHandleDpadInput(void)
 {
-    struct ProfileNameScreen *profileNameScreen = TaskGetStructPtr(gCurTask);
+    struct ProfileNameScreen *profileNameScreen = TASK_DATA(gCurTask);
 
     if (!(gRepeatedKeys & (DPAD_ANY))) {
         return FALSE;
@@ -3805,7 +3805,7 @@ static bool16 ProfileNameScreenHandleDpadInput(void)
 
 static void ProfileNameScreenInputComplete(void)
 {
-    struct ProfileNameScreen *profileNameScreen = TaskGetStructPtr(gCurTask);
+    struct ProfileNameScreen *profileNameScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk140 = &profileNameScreen->unk140;
     struct NameInputDisplay *nameInput = &profileNameScreen->nameInput;
     s16 i;
@@ -3831,7 +3831,7 @@ static void ProfileNameScreenInputComplete(void)
 
 static void ProfileNameScreenFadeOutAndExit(void)
 {
-    struct ProfileNameScreen *profileNameScreen = TaskGetStructPtr(gCurTask);
+    struct ProfileNameScreen *profileNameScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk140 = &profileNameScreen->unk140;
     struct NameInputDisplay *nameInput = &profileNameScreen->nameInput;
     s16 onCompleteAction = profileNameScreen->onCompleteAction;
@@ -3870,7 +3870,7 @@ static void ProfileNameScreenFadeOutAndExit(void)
 
 static void ProfileNameScreenRenderUI(void)
 {
-    struct ProfileNameScreen *profileNameScreen = TaskGetStructPtr(gCurTask);
+    struct ProfileNameScreen *profileNameScreen = TASK_DATA(gCurTask);
 
     Sprite *title = &profileNameScreen->title;
     Sprite *controls = profileNameScreen->controls;
@@ -3973,7 +3973,7 @@ static void CreateTimeRecordsScreen(struct PlayerDataMenu *playerDataMenu)
 {
     struct Task *t = TaskCreate(Task_TimeRecordsScreenChoiceViewFadeIn,
                                 sizeof(struct TimeRecordsScreen), 0x2000, 4, NULL);
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(t);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(t);
     s16 availableCharacters;
 
     ReadAvailableCharacters(availableCharacters, gLoadedSaveGame->unlockedCharacters);
@@ -4099,7 +4099,7 @@ TimeRecordsScreenCreateChoiceViewUI(struct TimeRecordsScreen *timeRecordsScreen)
 
 static void Task_TimeRecordsScreenModeChoiceMain(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     Sprite *unk4C = timeRecordsScreen->choiceViewItemsOrZoneTitle;
 
     if (gRepeatedKeys & (DPAD_LEFT | DPAD_RIGHT)) {
@@ -4140,7 +4140,7 @@ static void CreateTimeRecordsScreenAtCoursesView(struct PlayerDataMenu *playerDa
 {
     struct Task *t = TaskCreate(Task_TimeRecordsScreenCreateTimesUI,
                                 sizeof(struct TimeRecordsScreen), 0x2000, 4, NULL);
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(t);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(t);
     s16 i;
 
     ReadAvailableCharacters(i, gLoadedSaveGame->unlockedCharacters);
@@ -4483,7 +4483,7 @@ static void TimeRecordsScreenRefreshTimesUI(struct TimeRecordsScreen *timeRecord
 
 static void Task_TimeRecordsScreenHandleCharacterChange(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     u32 character;
 
     if (timeRecordsScreen->character != 0xFF) {
@@ -4510,7 +4510,7 @@ static void Task_TimeRecordsScreenHandleCharacterChange(void)
 
 static void Task_TimeRecordsScreenCharacterChangeAnimIn(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
 
     if (++timeRecordsScreen->animFrame < 5) {
         gBgScrollRegs[1][0] = timeRecordsScreen->animFrame * 18 - 240;
@@ -4530,7 +4530,7 @@ static void Task_TimeRecordsScreenCharacterChangeAnimIn(void)
 
 static void Task_TimeRecordsScreenCourseChangeAnim(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     s16 i;
 
     timeRecordsScreen->animFrame++;
@@ -4558,7 +4558,7 @@ static void TimeRecordsScreenRenderTimeRowAnimFrame(s16 rowIndex, s16 frame)
     struct TimeRecordDisplay *timeDisplay
         = (struct TimeRecordDisplay *)(offsetA + offsetB);
 #else
-    struct TimeRecordsScreen *trs = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *trs = TASK_DATA(gCurTask);
     struct TimeRecordDisplay *timeDisplay = &trs->timeDisplays[rowIndex];
 #endif
 
@@ -4586,7 +4586,7 @@ static void TimeRecordsScreenRenderTimeRowAnimFrame(s16 rowIndex, s16 frame)
 
 static void Task_TimeRecordsScreenCoursesViewMain(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     s16 availableCourses
         = timeRecordsScreen->unlockedCourses[timeRecordsScreen->character];
     s32 temp;
@@ -4753,7 +4753,7 @@ static void Task_TimeRecordsScreenCoursesViewMain(void)
 
 static void Task_TimeRecordsScreenCharacterChangeAnimOut(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
 
     timeRecordsScreen->animFrame--;
 
@@ -4772,7 +4772,7 @@ static void Task_TimeRecordsScreenCharacterChangeAnimOut(void)
 
 static void Task_TimeRecordsScreenHandleCourseChange(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     Sprite *zoneNumber = &timeRecordsScreen->choiceViewItemsOrZoneTitle[1];
     Sprite *unkDC = &timeRecordsScreen->actTitle[1];
     Sprite *zoneSubtitle = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
@@ -4812,7 +4812,7 @@ static void Task_TimeRecordsScreenHandleCourseChange(void)
 
 static void Task_TimeRecordsScreenFadeToPrevious(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
     struct PlayerDataMenu *playerDataMenu = timeRecordsScreen->playerDataMenu;
 
@@ -4859,7 +4859,7 @@ static void Task_TimeRecordsScreenFadeToPrevious(void)
 
 static void TimeRecordsScreenRenderCoursesViewUI(u16 a)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TimeRecordDisplay *timeRecord = timeRecordsScreen->timeDisplays;
     Sprite *timeRecordDisplay = timeRecordsScreen->timeRecordDisplays;
     Sprite *zoneTitleElement = timeRecordsScreen->choiceViewItemsOrZoneTitle;
@@ -4936,7 +4936,7 @@ static void CreateMultiplayerRecordsScreen(struct PlayerDataMenu *playerDataMenu
     struct Task *t
         = TaskCreate(Task_MultiplayerRecordsScreenCreateNextTableRowUI,
                      sizeof(struct MultiplayerRecordsScreen), 0x2000, 4, NULL);
-    struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TaskGetStructPtr(t);
+    struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(t);
 
     struct MultiplayerRecordRow *rows;
     struct OptionsScreenProfileData *profileData;
@@ -5167,8 +5167,7 @@ static void MultiplayerRecordsScreenCreateTableRowUI(s16 rowIndex)
 
 static void Task_MultiplayerRecordsScreenMain(void)
 {
-    struct MultiplayerRecordsScreen *multiplayerRecordsScreen
-        = TaskGetStructPtr(gCurTask);
+    struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(gCurTask);
     struct MultiplayerRecordRow *rows = multiplayerRecordsScreen->table->rows;
 
     MultiplayerRecordsScreenRenderUI();
@@ -5217,8 +5216,7 @@ static void Task_MultiplayerRecordsScreenMain(void)
 static void Task_MultiplayerRecordsScreenScrollAnim(void)
 {
     struct MultiplayerRecordRow *row;
-    struct MultiplayerRecordsScreen *multiplayerRecordsScreen
-        = TaskGetStructPtr(gCurTask);
+    struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(gCurTask);
 
     // assume that we are going to need to render the next row or previous row
     s16 numVisibleRows = MULTIPLAYER_RECORDS_SCREEN_NUM_VISIBLE_ROWS + 1;
@@ -5282,8 +5280,7 @@ static void Task_MultiplayerRecordsScreenScrollAnim(void)
 
 static void MultiplayerRecordsScreenRenderUI(void)
 {
-    struct MultiplayerRecordsScreen *multiplayerRecordsScreen
-        = TaskGetStructPtr(gCurTask);
+    struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(gCurTask);
     Sprite *title = &multiplayerRecordsScreen->title;
     Sprite *columnHeaders = &multiplayerRecordsScreen->columnHeaders;
     Sprite *playerNameDisplayChar = multiplayerRecordsScreen->playerNameDisplay;
@@ -5499,7 +5496,7 @@ static void OptionsScreenTaskDestroyHandler(struct Task *optionsScreenTask)
 
 static void Task_OptionsScreenShow(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
 
     OptionsScreenInitRegisters(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
 
@@ -5516,7 +5513,7 @@ static void SetupOptionScreenBackgroundsUI(struct OptionsScreen *optionsScreen)
 
 static void Task_OptionScreenFadeIn(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5527,7 +5524,7 @@ static void Task_OptionScreenFadeIn(void)
 
 static void OptionsScreenOpenSelectedSubMenu(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
 
     switch (optionsScreen->menuCursor) {
         case OPTIONS_MENU_ITEM_PLAYER_DATA:
@@ -5556,7 +5553,7 @@ static void OptionsScreenOpenSelectedSubMenu(void)
 
 static void Task_OptionsScreenWaitForSubMenuExit(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     if (optionsScreen->state < OPTIONS_SCREEN_STATE_SUB_MENU_SCREEN_OPEN) {
         OptionsScreenRenderUI();
     }
@@ -5571,7 +5568,7 @@ static void Task_OptionsScreenWaitForSubMenuExit(void)
 
 static void OptionsScreenShowLanguageScreen(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5585,7 +5582,7 @@ static void OptionsScreenShowLanguageScreen(void)
 
 static void Task_OptionsScreenFadeOutToLanguageScreen(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5598,7 +5595,7 @@ static void Task_OptionsScreenFadeOutToLanguageScreen(void)
 
 static void Task_OptionsScreenFadeInFromLanguageScreen(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5611,7 +5608,7 @@ static void Task_OptionsScreenFadeInFromLanguageScreen(void)
 
 static void OptionsScreenShowSoundTestScreen(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5625,7 +5622,7 @@ static void OptionsScreenShowSoundTestScreen(void)
 
 static void Task_OptionScreenFadeOutToSoundTest(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5638,7 +5635,7 @@ static void Task_OptionScreenFadeOutToSoundTest(void)
 
 static void Task_OptionsScreenFadeInFromSoundTest(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5651,7 +5648,7 @@ static void Task_OptionsScreenFadeInFromSoundTest(void)
 
 static void OptionsScreenShowDeleteScreen(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5665,7 +5662,7 @@ static void OptionsScreenShowDeleteScreen(void)
 
 static void Task_OptionsScreenFadeOutToDeleteScreen(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5678,7 +5675,7 @@ static void Task_OptionsScreenFadeOutToDeleteScreen(void)
 
 static void Task_OptionsScreenFadeInFromDeleteScreen(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
@@ -5691,7 +5688,7 @@ static void Task_OptionsScreenFadeInFromDeleteScreen(void)
 
 static void PlayerDataMenuShowProfileNameScreen(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk270 = &playerDataMenu->unk150;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5705,7 +5702,7 @@ static void PlayerDataMenuShowProfileNameScreen(void)
 
 static void Task_PlayerDataMenuFadeOutToProfileNameScreen(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -5719,7 +5716,7 @@ static void Task_PlayerDataMenuFadeOutToProfileNameScreen(void)
 
 static void Task_PlayerDataMenuFadeInFromProfileNameScreen(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -5732,7 +5729,7 @@ static void Task_PlayerDataMenuFadeInFromProfileNameScreen(void)
 
 static void PlayerDataMenuShowTimeRecordsScreen(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk270 = &playerDataMenu->unk150;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5746,7 +5743,7 @@ static void PlayerDataMenuShowTimeRecordsScreen(void)
 
 static void Task_PlayerDataMenuFadeInFromTimeRecordsScreen(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -5759,7 +5756,7 @@ static void Task_PlayerDataMenuFadeInFromTimeRecordsScreen(void)
 
 static void PlayerDataMenuShowMultiplayerRecordsScreen(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk270 = &playerDataMenu->unk150;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5773,7 +5770,7 @@ static void PlayerDataMenuShowMultiplayerRecordsScreen(void)
 
 static void Task_PlayerDataMenuFadeOutToMultiplayerRecordsScreen(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -5787,7 +5784,7 @@ static void Task_PlayerDataMenuFadeOutToMultiplayerRecordsScreen(void)
 
 static void Task_PlayerDataMenuFadeInFromMultiplayerRecordsScreen(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
     struct TransitionState *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
@@ -5798,7 +5795,7 @@ static void Task_PlayerDataMenuFadeInFromMultiplayerRecordsScreen(void)
 
 static void OptionsScreenHandleExit(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk270 = &optionsScreen->unk774;
     unk270->unk0 = 0;
     unk270->unk2 = 1;
@@ -5812,7 +5809,7 @@ static void OptionsScreenHandleExit(void)
 
 static void Task_OptionsScreenFadeOutAndExit(void)
 {
-    struct OptionsScreen *optionsScreen = TaskGetStructPtr(gCurTask);
+    struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk270 = &optionsScreen->unk774;
     if (!NextTransitionFrame(unk270)) {
         OptionsScreenRenderUI();
@@ -5830,7 +5827,7 @@ static void Task_OptionsScreenFadeOutAndExit(void)
 
 static void PlayerDataMenuRenderUI(void)
 {
-    struct PlayerDataMenu *playerDataMenu = TaskGetStructPtr(gCurTask);
+    struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
 
     Sprite *headerFooter = playerDataMenu->headerFooter;
     Sprite *menuItem = playerDataMenu->menuItems;
@@ -5853,7 +5850,7 @@ static void CreateDifficultyMenu(struct OptionsScreen *optionsScreen)
 {
     struct Task *t = TaskCreate(Task_DifficultyMenuOpenAnimWait,
                                 sizeof(struct SwitchMenu), 0x2000, 4, NULL);
-    struct SwitchMenu *difficultyMenu = TaskGetStructPtr(t);
+    struct SwitchMenu *difficultyMenu = TASK_DATA(t);
 
     difficultyMenu->optionsScreen = optionsScreen;
     difficultyMenu->switchValue = optionsScreen->difficultyLevel;
@@ -5865,7 +5862,7 @@ static void CreateDifficultyMenu(struct OptionsScreen *optionsScreen)
 
 static void DifficultyMenuRenderUI(void)
 {
-    struct SwitchMenu *difficultyMenu = TaskGetStructPtr(gCurTask);
+    struct SwitchMenu *difficultyMenu = TASK_DATA(gCurTask);
     Sprite *headerFooter = difficultyMenu->headerFooter;
     Sprite *difficultyOption = difficultyMenu->options;
     Sprite *switchValueOutline = &difficultyMenu->switchValueOutline;
@@ -5887,7 +5884,7 @@ static void CreateTimeLimitMenu(struct OptionsScreen *optionsScreen)
 {
     struct Task *t = TaskCreate(Task_TimeLimitMenuOpenAnimWait,
                                 sizeof(struct SwitchMenu), 0x2000, 4, 0);
-    struct SwitchMenu *timeLimitMenu = TaskGetStructPtr(t);
+    struct SwitchMenu *timeLimitMenu = TASK_DATA(t);
 
     timeLimitMenu->optionsScreen = optionsScreen;
     timeLimitMenu->switchValue = optionsScreen->timeLimitDisabled;
@@ -5898,7 +5895,7 @@ static void CreateTimeLimitMenu(struct OptionsScreen *optionsScreen)
 
 static void TimeLimitMenuRenderUI(void)
 {
-    struct SwitchMenu *timeLimitMenu = TaskGetStructPtr(gCurTask);
+    struct SwitchMenu *timeLimitMenu = TASK_DATA(gCurTask);
     Sprite *headerFooter = timeLimitMenu->headerFooter;
     Sprite *option = timeLimitMenu->options;
     Sprite *switchValueOutline = &timeLimitMenu->switchValueOutline;
@@ -5918,7 +5915,7 @@ static void TimeLimitMenuRenderUI(void)
 
 static void Task_ButtonConfigMenuHandleStartOver(void)
 {
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(gCurTask);
 
     Sprite *scrollArrow = buttonConfigMenu->scrollArrows;
     Sprite *controlFocus = &buttonConfigMenu->controlFocus;
@@ -5935,7 +5932,7 @@ static void Task_ButtonConfigMenuHandleStartOver(void)
 
 static void Task_ButtonConfigMenuHandleAButtonComplete(void)
 {
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(gCurTask);
 
     Sprite *unk1B4 = buttonConfigMenu->scrollArrows;
     Sprite *unk214 = &buttonConfigMenu->controlFocus;
@@ -5951,7 +5948,7 @@ static void Task_ButtonConfigMenuHandleAButtonComplete(void)
 
 static void Task_ButtonConfigMenuHandleBButtonComplete(void)
 {
-    struct ButtonConfigMenu *buttonConfigMenu = TaskGetStructPtr(gCurTask);
+    struct ButtonConfigMenu *buttonConfigMenu = TASK_DATA(gCurTask);
 
     Sprite *unk1B4 = buttonConfigMenu->scrollArrows;
     Sprite *unk214 = &buttonConfigMenu->controlFocus;
@@ -5970,7 +5967,7 @@ static void CreateEditLanguageScreen(struct OptionsScreen *optionScreen)
 {
     struct Task *t = TaskCreate(Task_LanguageScreenFadeIn, sizeof(struct LanguageScreen),
                                 0x2000, 4, NULL);
-    struct LanguageScreen *languageScreen = TaskGetStructPtr(t);
+    struct LanguageScreen *languageScreen = TASK_DATA(t);
 
     languageScreen->optionsScreen = optionScreen;
     languageScreen->menuCursor = optionScreen->language;
@@ -5991,7 +5988,7 @@ static void LanguageScreenCreateBackgroundsUI(struct LanguageScreen *languageScr
 
 static void Task_LanguageScreenFadeIn(void)
 {
-    struct LanguageScreen *languageScreen = TaskGetStructPtr(gCurTask);
+    struct LanguageScreen *languageScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk1F0 = &languageScreen->unk1F0;
 
     LanguageScreenRenderUI();
@@ -6004,7 +6001,7 @@ static void Task_LanguageScreenFadeIn(void)
 
 static void LanguageScreenHandleExit(void)
 {
-    struct LanguageScreen *languageScreen = TaskGetStructPtr(gCurTask);
+    struct LanguageScreen *languageScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk1F0 = &languageScreen->unk1F0;
     unk1F0->unk0 = 0;
     unk1F0->unk2 = 1;
@@ -6019,7 +6016,7 @@ static void LanguageScreenHandleExit(void)
 
 static void Task_LanguageScreenFadeOutAndExit(void)
 {
-    struct LanguageScreen *languageScreen = TaskGetStructPtr(gCurTask);
+    struct LanguageScreen *languageScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk1F0 = &languageScreen->unk1F0;
     ReseedRng();
 
@@ -6042,7 +6039,7 @@ static void ReseedRng(void) { ShuffleRngSeed(); }
 
 static void LanguageScreenRenderUI(void)
 {
-    struct LanguageScreen *languageScreen = TaskGetStructPtr(gCurTask);
+    struct LanguageScreen *languageScreen = TASK_DATA(gCurTask);
 
     Sprite *headerFooter = languageScreen->headerFooter;
     Sprite *languageOption = languageScreen->languageOptions;
@@ -6069,7 +6066,7 @@ static void DeleteScreenCreateBackgroundsUI(struct DeleteScreen *deleteScreen)
 
 static void Task_DeleteScreenFadeIn(void)
 {
-    struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
+    struct DeleteScreen *deleteScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk130 = &deleteScreen->unk130;
     DeleteScreenRenderUI();
     if (NextTransitionFrame(unk130)) {
@@ -6079,7 +6076,7 @@ static void Task_DeleteScreenFadeIn(void)
 
 static void Task_DeleteScreenHandleExit(void)
 {
-    struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
+    struct DeleteScreen *deleteScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk130 = &deleteScreen->unk130;
 
     DeleteScreenRenderUI();
@@ -6097,7 +6094,7 @@ static void Task_DeleteScreenHandleExit(void)
 
 static void DeleteScreenRenderUI(void)
 {
-    struct DeleteScreen *deleteScreen = TaskGetStructPtr(gCurTask);
+    struct DeleteScreen *deleteScreen = TASK_DATA(gCurTask);
 
     Sprite *headerFooter = deleteScreen->headerFooter;
     Sprite *unk60 = deleteScreen->options;
@@ -6118,7 +6115,7 @@ static void DeleteScreenRenderUI(void)
 
 static void Task_ProfileNameScreenFadeIn(void)
 {
-    struct ProfileNameScreen *profileNameScreen = TaskGetStructPtr(gCurTask);
+    struct ProfileNameScreen *profileNameScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk140 = &profileNameScreen->unk140;
 
     ProfileNameScreenRenderUI();
@@ -6146,7 +6143,7 @@ TimeRecordsScreenShowChoiceView(struct TimeRecordsScreen *timeRecordsScreen)
 
 static void Task_TimeRecordsScreenChoiceViewFadeIn(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
 
     TimeRecordsScreenRenderModeChoiceUI();
@@ -6158,7 +6155,7 @@ static void Task_TimeRecordsScreenChoiceViewFadeIn(void)
 
 static void TimeRecordsScreenHandleExit(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -6173,7 +6170,7 @@ static void TimeRecordsScreenHandleExit(void)
 
 static void Task_TimeRecordsScreenFadeOutAndExit(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
     struct PlayerDataMenu *playerDataMenu = timeRecordsScreen->playerDataMenu;
 
@@ -6188,7 +6185,7 @@ static void Task_TimeRecordsScreenFadeOutAndExit(void)
 
 static void TimeRecordsScreenShowCoursesView(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -6203,7 +6200,7 @@ static void TimeRecordsScreenShowCoursesView(void)
 
 static void TimeRecordsScreenFadeOutToCoursesView(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
 
     if (!NextTransitionFrame(unk0)) {
@@ -6216,7 +6213,7 @@ static void TimeRecordsScreenFadeOutToCoursesView(void)
 
 static void TimeRecordsScreenRenderModeChoiceUI(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
 
     Sprite *title = &timeRecordsScreen->choiceViewTitleOrZoneSubtitle;
     Sprite *scrollArrows = timeRecordsScreen->choiceViewScrollArrows;
@@ -6250,7 +6247,7 @@ TimeRecordsScreenCreateCoursesView(struct TimeRecordsScreen *timeRecordsScreen)
 
 static void Task_TimeRecordsScreenCreateTimesUI(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     TimeRecordsScreenCreateTimesUI(timeRecordsScreen);
 
     gCurTask->main = Task_TimeRecordsScreenCoursesViewFadeIn;
@@ -6258,7 +6255,7 @@ static void Task_TimeRecordsScreenCreateTimesUI(void)
 
 static void Task_TimeRecordsScreenCoursesViewFadeIn(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
     TimeRecordsScreenRenderCoursesViewUI(0);
 
@@ -6270,7 +6267,7 @@ static void Task_TimeRecordsScreenCoursesViewFadeIn(void)
 
 static void Task_TimeRecordsScreenHandleActChange(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     Sprite *unkDC = &timeRecordsScreen->actTitle[1];
 
     const struct UNK_080D95E8 *unk5E8
@@ -6289,7 +6286,7 @@ static void Task_TimeRecordsScreenHandleActChange(void)
 
 static void Task_TimeRecordsScreenHandleCourseSelected(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -6304,7 +6301,7 @@ static void Task_TimeRecordsScreenHandleCourseSelected(void)
 
 static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
 
     if (!NextTransitionFrame(unk0)) {
@@ -6323,7 +6320,7 @@ static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void)
 
 static void TimeRecordsScreenHandleReturn(void)
 {
-    struct TimeRecordsScreen *timeRecordsScreen = TaskGetStructPtr(gCurTask);
+    struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &timeRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -6338,8 +6335,7 @@ static void TimeRecordsScreenHandleReturn(void)
 
 static void Task_MultiplayerRecordsScreenCreateNextTableRowUI(void)
 {
-    struct MultiplayerRecordsScreen *multiplayerRecordsScreen
-        = TaskGetStructPtr(gCurTask);
+    struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(gCurTask);
 
     MultiplayerRecordsScreenCreateTableRowUI(multiplayerRecordsScreen->scrollAnimFrame);
 
@@ -6351,8 +6347,7 @@ static void Task_MultiplayerRecordsScreenCreateNextTableRowUI(void)
 
 static void Task_MultiplayerRecordsScreenFadeIn(void)
 {
-    struct MultiplayerRecordsScreen *multiplayerRecordsScreen
-        = TaskGetStructPtr(gCurTask);
+    struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &multiplayerRecordsScreen->unk0;
     MultiplayerRecordsScreenRenderUI();
 
@@ -6363,8 +6358,7 @@ static void Task_MultiplayerRecordsScreenFadeIn(void)
 
 static void Task_MultiplayerRecordsScreenHandleExit(void)
 {
-    struct MultiplayerRecordsScreen *multiplayerRecordsScreen
-        = TaskGetStructPtr(gCurTask);
+    struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &multiplayerRecordsScreen->unk0;
 
     unk0->unk0 = 0;
@@ -6379,8 +6373,7 @@ static void Task_MultiplayerRecordsScreenHandleExit(void)
 
 static void Task_MultiplayerRecordsScreenFadeOutAndExit(void)
 {
-    struct MultiplayerRecordsScreen *multiplayerRecordsScreen
-        = TaskGetStructPtr(gCurTask);
+    struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(gCurTask);
     struct TransitionState *unk0 = &multiplayerRecordsScreen->unk0;
     struct PlayerDataMenu *playerDataMenu = multiplayerRecordsScreen->playerDataMenu;
 

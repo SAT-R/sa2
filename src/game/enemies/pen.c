@@ -31,7 +31,7 @@ void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
 {
     struct Task *t = TaskCreate(Task_PenMove, sizeof(Sprite_Pen), 0x4040, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Pen *pen = TaskGetStructPtr(t);
+    Sprite_Pen *pen = TASK_DATA(t);
     Sprite *s = &pen->s;
     pen->base.regionX = spriteRegionX;
     pen->base.regionY = spriteRegionY;
@@ -59,7 +59,7 @@ void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
 
 static void Task_PenMove(void)
 {
-    Sprite_Pen *pen = TaskGetStructPtr(gCurTask);
+    Sprite_Pen *pen = TASK_DATA(gCurTask);
     Sprite *s = &pen->s;
     MapEntity *me = pen->base.me;
     Vec2_32 pos;
@@ -131,7 +131,7 @@ static void Task_PenMove(void)
 
 static void Task_PenTurn(void)
 {
-    Sprite_Pen *pen = TaskGetStructPtr(gCurTask);
+    Sprite_Pen *pen = TASK_DATA(gCurTask);
     Sprite *s = &pen->s;
     MapEntity *me = pen->base.me;
     Vec2_32 pos;

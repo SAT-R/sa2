@@ -35,7 +35,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     Sprite *s;
     struct Task *t = TaskCreate(Task_WindmillMain, sizeof(InteractableWindmill), 0x2010,
                                 0, TaskDestructor_Windmill);
-    InteractableWindmill *windmill = TaskGetStructPtr(t);
+    InteractableWindmill *windmill = TASK_DATA(t);
 
     s = &windmill->center;
     windmill->base.regionX = spriteRegionX;
@@ -93,7 +93,7 @@ static void Task_WindmillMain(void)
 {
     u8 i, j;
     SpriteTransform *transform;
-    InteractableWindmill *windmill = TaskGetStructPtr(gCurTask);
+    InteractableWindmill *windmill = TASK_DATA(gCurTask);
     Sprite *s = &windmill->center;
     MapEntity *me = windmill->base.me;
 
@@ -140,7 +140,7 @@ static void Task_WindmillMain(void)
 
 static void TaskDestructor_Windmill(struct Task *t)
 {
-    InteractableWindmill *windmill = TaskGetStructPtr(t);
+    InteractableWindmill *windmill = TASK_DATA(t);
     VramFree(windmill->center.graphics.dest);
     VramFree(windmill->blades[0].s.graphics.dest);
     VramFree(windmill->blades[1].s.graphics.dest);

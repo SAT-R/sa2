@@ -50,7 +50,7 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_NoteBlock, sizeof(Sprite_TecBaseNoteBlock), 0x2010,
                                 0, TaskDestructor_NoteBlock);
-    Sprite_TecBaseNoteBlock *noteBlock = TaskGetStructPtr(t);
+    Sprite_TecBaseNoteBlock *noteBlock = TASK_DATA(t);
     Sprite *s = &noteBlock->s;
     noteBlock->unk44 = 0;
     noteBlock->unk48 = 0;
@@ -85,7 +85,7 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
 static void sub_80799FC(void)
 {
-    Sprite_TecBaseNoteBlock *noteBlock = TaskGetStructPtr(gCurTask);
+    Sprite_TecBaseNoteBlock *noteBlock = TASK_DATA(gCurTask);
 
     switch (noteBlock->unk4E++) {
         case 0:
@@ -180,7 +180,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
 
 static void Task_NoteBlock(void)
 {
-    Sprite_TecBaseNoteBlock *noteBlock = TaskGetStructPtr(gCurTask);
+    Sprite_TecBaseNoteBlock *noteBlock = TASK_DATA(gCurTask);
 
     if (sub_8079AC4(noteBlock)) {
         sub_8079CCC(noteBlock);

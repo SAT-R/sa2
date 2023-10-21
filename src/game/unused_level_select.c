@@ -33,7 +33,7 @@ void sub_80096DC(void)
     gMultiplayerMissingHeartbeats[0] = 0;
 
     {
-        LevelSelect *levelSelect = TaskGetStructPtr(t);
+        LevelSelect *levelSelect = TASK_DATA(t);
 
         gDispCnt = (DISPCNT_BG0_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_0);
         gBgCntRegs[0] = (BGCNT_SCREENBASE(31) | BGCNT_16COLOR | BGCNT_CHARBASE(1)
@@ -64,7 +64,7 @@ void sub_80096DC(void)
 
 static void Task_8009780(void)
 {
-    LevelSelect *levelSelect = TaskGetStructPtr(gCurTask);
+    LevelSelect *levelSelect = TASK_DATA(gCurTask);
 
     char digits[5];
 
@@ -100,7 +100,7 @@ static void Task_8009780(void)
 
 static void Task_8009854(void)
 {
-    LevelSelect *levelSelect = TaskGetStructPtr(gCurTask);
+    LevelSelect *levelSelect = TASK_DATA(gCurTask);
     gBgPalette[1] = RGB_WHITE;
     gFlags |= 0x1;
 
@@ -113,7 +113,7 @@ static void Task_8009854(void)
 
 static void Task_80098C0(void)
 {
-    LevelSelect *levelSelect = TaskGetStructPtr(gCurTask);
+    LevelSelect *levelSelect = TASK_DATA(gCurTask);
 
     u32 levelId = levelSelect->levelId;
     u8 levelId2 = levelId;

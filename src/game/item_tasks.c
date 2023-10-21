@@ -23,7 +23,7 @@ void TaskDestructor_ItemTasks(struct Task *);
 
 #define ITEMTASK_GET_PLAYER_NUM()                                                       \
     ({                                                                                  \
-        ItemTask *it = TaskGetStructPtr(gCurTask);                                      \
+        ItemTask *it = TASK_DATA(gCurTask);                                             \
         it->unk30;                                                                      \
     })
 
@@ -31,7 +31,7 @@ struct Task *CreateItemTask_Shield_Normal(s8 p0)
 {
     struct Task *t = TaskCreate(Task_Item_Shield_Normal, sizeof(ItemTask), 0x4001, 0,
                                 TaskDestructor_ItemTasks);
-    ItemTask *item = TaskGetStructPtr(t);
+    ItemTask *item = TASK_DATA(t);
     Sprite *s = &item->s;
 
     item->unk30 = p0;
@@ -56,7 +56,7 @@ struct Task *CreateItemTask_Invincibility(s8 p0)
 {
     struct Task *t = TaskCreate(Task_Item_Invincibility, sizeof(ItemTask), 0x4001, 0,
                                 TaskDestructor_ItemTasks);
-    ItemTask *item = TaskGetStructPtr(t);
+    ItemTask *item = TASK_DATA(t);
     Sprite *s = &item->s;
 
     item->unk30 = p0;
@@ -79,12 +79,12 @@ struct Task *CreateItemTask_Shield_Magnetic(s8 p0)
 {
     struct Task *t = TaskCreate(Task_Item_Shield_Magnetic, sizeof(ItemTask), 0x4001, 0,
                                 TaskDestructor_ItemTasks);
-    ItemTask *item = (ItemTask *)TaskGetStructPtr(t);
+    ItemTask *item = (ItemTask *)TASK_DATA(t);
 
     item->unk30 = p0;
 
     {
-        ItemTask *item2 = (ItemTask *)TaskGetStructPtr(t);
+        ItemTask *item2 = (ItemTask *)TASK_DATA(t);
         Sprite *s = &item2->s;
 
         s->graphics.dest = VramMalloc(36);
@@ -108,12 +108,12 @@ struct Task *CreateItemTask_Confusion(s8 p0)
 {
     struct Task *t = TaskCreate(Task_Item_Confusion, sizeof(ItemTask), 0x4001, 0,
                                 TaskDestructor_ItemTasks);
-    ItemTask *item = TaskGetStructPtr(t);
+    ItemTask *item = TASK_DATA(t);
 
     item->unk30 = p0;
 
     {
-        ItemTask *item2 = (ItemTask *)TaskGetStructPtr(t);
+        ItemTask *item2 = (ItemTask *)TASK_DATA(t);
         Sprite *s = &item2->s;
 
         s->graphics.dest = VramMalloc(8);
@@ -136,7 +136,7 @@ void Task_Item_Shield_Normal(void)
 {
     s8 param = ITEMTASK_GET_PLAYER_NUM();
 
-    ItemTask *item = TaskGetStructPtr(gCurTask);
+    ItemTask *item = TASK_DATA(gCurTask);
     struct Camera *cam = &gCamera;
 
     u32 itemEffect
@@ -184,7 +184,7 @@ void Task_Item_Shield_Magnetic(void)
 {
     s8 param = ITEMTASK_GET_PLAYER_NUM();
 
-    ItemTask *item = TaskGetStructPtr(gCurTask);
+    ItemTask *item = TASK_DATA(gCurTask);
     struct Camera *cam = &gCamera;
 
     bool32 b;
@@ -234,7 +234,7 @@ void Task_Item_Shield_Magnetic(void)
 // Unused?
 void Task_802ABC8(void)
 {
-    ItemTask *item = TaskGetStructPtr(gCurTask);
+    ItemTask *item = TASK_DATA(gCurTask);
     struct Camera *cam = &gCamera;
     Sprite *s = &item->s;
 
@@ -267,7 +267,7 @@ void Task_Item_Invincibility(void)
 {
     s32 param = ITEMTASK_GET_PLAYER_NUM();
 
-    ItemTask *item = TaskGetStructPtr(gCurTask);
+    ItemTask *item = TASK_DATA(gCurTask);
     s16 x, y;
     u32 priority;
     u32 b;
@@ -275,8 +275,7 @@ void Task_Item_Invincibility(void)
     struct Camera *cam = &gCamera;
 
     if (IS_MULTI_PLAYER) {
-        struct MultiplayerPlayer *mpp
-            = TaskGetStructPtr(gMultiplayerPlayerTasks[(s8)param]);
+        struct MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[(s8)param]);
 
         if (mpp->unk57 & 0x2) {
             x = mpp->unk50;
@@ -321,7 +320,7 @@ void Task_Item_Invincibility(void)
 void Task_Item_Confusion(void)
 {
     s8 param = ITEMTASK_GET_PLAYER_NUM();
-    ItemTask *item = TaskGetStructPtr(gCurTask);
+    ItemTask *item = TASK_DATA(gCurTask);
     Sprite *s = &item->s;
 
     s16 x, y;
@@ -331,8 +330,7 @@ void Task_Item_Confusion(void)
     struct Camera *cam = &gCamera;
 
     if (IS_MULTI_PLAYER) {
-        struct MultiplayerPlayer *mpp
-            = TaskGetStructPtr(gMultiplayerPlayerTasks[(s8)param]);
+        struct MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[(s8)param]);
 
         if (!(mpp->unk57 & (0x40 | 0x10))) {
             TaskDestroy(gCurTask);
@@ -373,6 +371,6 @@ void Task_Item_Confusion(void)
 
 void TaskDestructor_ItemTasks(struct Task *t)
 {
-    ItemTask *item = TaskGetStructPtr(t);
+    ItemTask *item = TASK_DATA(t);
     VramFree(item->s.graphics.dest);
 }

@@ -28,7 +28,7 @@ void sub_808E9F8(struct Task *);
 void StartEndingCutscenes(void)
 {
     struct Task *t = TaskCreate(sub_808E9AC, 0x74, 0x3100, 0, sub_808E9F8);
-    struct EndingCutSceneTransition *transition = TaskGetStructPtr(t);
+    struct EndingCutSceneTransition *transition = TASK_DATA(t);
 
     transition->unk6C = 0;
     transition->unk6D = 0;
@@ -65,7 +65,7 @@ void sub_808E95C(s32 *ptr, s32 a, u8 b)
 
 void sub_808E9AC(void)
 {
-    struct EndingCutSceneTransition *transition = TaskGetStructPtr(gCurTask);
+    struct EndingCutSceneTransition *transition = TASK_DATA(gCurTask);
 
     if (transition->unk6E != 0) {
         transition->unk6E--;
@@ -86,7 +86,7 @@ void sub_808E9F8(UNUSED struct Task *t)
 
 UNUSED void sub_808E9FC(void)
 {
-    struct EndingCutSceneTransition *transition = TaskGetStructPtr(gCurTask);
+    struct EndingCutSceneTransition *transition = TASK_DATA(gCurTask);
     if (gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
         > (LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
         transition->unk6D = 2;

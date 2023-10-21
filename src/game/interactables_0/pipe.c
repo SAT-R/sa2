@@ -36,7 +36,7 @@ typedef struct {
 
 static void Task_Pipe_Start(void)
 {
-    Sprite_ClearPipe *pipe = TaskGetStructPtr(gCurTask);
+    Sprite_ClearPipe *pipe = TASK_DATA(gCurTask);
     SpriteBase *base = &pipe->base;
     MapEntity_PipeStart *me = (MapEntity_PipeStart *)base->me;
 
@@ -83,7 +83,7 @@ static void Task_Pipe_Start(void)
 
 static void Task_Pipe_End(void)
 {
-    Sprite_ClearPipe *pipe = TaskGetStructPtr(gCurTask);
+    Sprite_ClearPipe *pipe = TASK_DATA(gCurTask);
     SpriteBase *base = &pipe->base;
     MapEntity_PipeEnd *me = (MapEntity_PipeEnd *)base->me;
 
@@ -133,7 +133,7 @@ void CreateEntity_Pipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     struct Task *t
         = TaskCreate(Task_Pipe_Start, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
 
-    Sprite_ClearPipe *pipe = TaskGetStructPtr(t);
+    Sprite_ClearPipe *pipe = TASK_DATA(t);
     pipe->base.regionX = spriteRegionX;
     pipe->base.regionY = spriteRegionY;
     pipe->base.me = me;
@@ -147,7 +147,7 @@ void CreateEntity_Pipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     struct Task *t
         = TaskCreate(Task_Pipe_End, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
 
-    Sprite_ClearPipe *pipe = TaskGetStructPtr(t);
+    Sprite_ClearPipe *pipe = TASK_DATA(t);
     pipe->base.regionX = spriteRegionX;
     pipe->base.regionY = spriteRegionY;
     pipe->base.me = me;

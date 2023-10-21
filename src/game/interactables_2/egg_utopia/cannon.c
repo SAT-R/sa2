@@ -45,7 +45,7 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     Sprite *s;
     struct Task *t = TaskCreate(Task_Interactable093, sizeof(Sprite_Cannon), 0x2010, 0,
                                 TaskDestructor_Interactable093);
-    Sprite_Cannon *cannon = TaskGetStructPtr(t);
+    Sprite_Cannon *cannon = TASK_DATA(t);
     cannon->unk68 = me->d.sData[0];
     cannon->x = TO_WORLD_POS(me->x, spriteRegionX);
     cannon->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -80,7 +80,7 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
 
 static void sub_807E314(void)
 {
-    Sprite_Cannon *cannon = TaskGetStructPtr(gCurTask);
+    Sprite_Cannon *cannon = TASK_DATA(gCurTask);
     if (!PLAYER_IS_ALIVE || --cannon->unk6C == 0xFFFF
         || gPlayer.unk5E & (gPlayerControls.jump | gPlayerControls.attack)) {
         sub_807E408(cannon);
@@ -299,7 +299,7 @@ END_NONMATCH
 
 static void Task_Interactable093(void)
 {
-    Sprite_Cannon *cannon = TaskGetStructPtr(gCurTask);
+    Sprite_Cannon *cannon = TASK_DATA(gCurTask);
     if (sub_807E66C(cannon)) {
         sub_807E384(cannon);
     }
@@ -313,7 +313,7 @@ static void Task_Interactable093(void)
 
 static void sub_807E7B0(void)
 {
-    Sprite_Cannon *cannon = TaskGetStructPtr(gCurTask);
+    Sprite_Cannon *cannon = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_807E86C(cannon);
@@ -327,7 +327,7 @@ static void sub_807E7B0(void)
 
 static void sub_807E7F8(void)
 {
-    Sprite_Cannon *cannon = TaskGetStructPtr(gCurTask);
+    Sprite_Cannon *cannon = TASK_DATA(gCurTask);
 
     if (cannon->unk6E++ > 60) {
         sub_807E884(cannon);
@@ -383,7 +383,7 @@ static void sub_807E8E0(Sprite_Cannon *cannon)
 
 static void sub_807E8FC(void)
 {
-    Sprite_Cannon *cannon = TaskGetStructPtr(gCurTask);
+    Sprite_Cannon *cannon = TASK_DATA(gCurTask);
 
     if (sub_807E954(cannon)) {
         sub_807E940(cannon);

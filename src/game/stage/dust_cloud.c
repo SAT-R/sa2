@@ -11,7 +11,7 @@ static void Task_CreateDustCloud(void);
 void CreateDustCloud(s16 x, s16 y)
 {
     struct Task *t = TaskCreate(Task_CreateDustCloud, sizeof(Sprite), 0x2000, 0, NULL);
-    Sprite *s = TaskGetStructPtr(t);
+    Sprite *s = TASK_DATA(t);
 
     s->x = x;
     s->y = y;
@@ -30,7 +30,7 @@ void CreateDustCloud(s16 x, s16 y)
 
 static void Task_CreateDustCloud(void)
 {
-    Sprite *s = TaskGetStructPtr(gCurTask);
+    Sprite *s = TASK_DATA(gCurTask);
     s16 oldX, oldY;
 
     oldX = s->x;

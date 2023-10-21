@@ -42,7 +42,7 @@ void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 {
     struct Task *t = TaskCreate(Task_KikiMain, sizeof(Sprite_Kiki), 0x4020, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Kiki *kiki = TaskGetStructPtr(t);
+    Sprite_Kiki *kiki = TASK_DATA(t);
     Sprite *s = &kiki->s;
 
     kiki->base.regionX = spriteRegionX;
@@ -72,7 +72,7 @@ void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 
 static void Task_KikiMain(void)
 {
-    Sprite_Kiki *kiki = TaskGetStructPtr(gCurTask);
+    Sprite_Kiki *kiki = TASK_DATA(gCurTask);
     Sprite *s = &kiki->s;
     MapEntity *me = kiki->base.me;
     s16 x, y;
@@ -121,7 +121,7 @@ static void Task_KikiMain(void)
 
 static void sub_8053A38(void)
 {
-    Sprite_Kiki *kiki = TaskGetStructPtr(gCurTask);
+    Sprite_Kiki *kiki = TASK_DATA(gCurTask);
     Sprite *s = &kiki->s;
     MapEntity *me = kiki->base.me;
     s16 x, y;
@@ -174,7 +174,7 @@ static void CreateProjectile(s16 x, s16 y)
 {
     struct Task *t = TaskCreate(Task_ProjMain, sizeof(Kiki_Proj), 0x4028, 0,
                                 TaskDestructor_KikiProj);
-    Kiki_Proj *proj = TaskGetStructPtr(t);
+    Kiki_Proj *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
 
     proj->unk32 = -512;
@@ -210,7 +210,7 @@ static void CreateProjectile(s16 x, s16 y)
 
 static void Task_ProjMain(void)
 {
-    Kiki_Proj *proj = TaskGetStructPtr(gCurTask);
+    Kiki_Proj *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
     s16 x, y;
 
@@ -255,7 +255,7 @@ static void Task_ProjMain(void)
 
 static void Task_ProjSplit(void)
 {
-    Kiki_Proj *proj = TaskGetStructPtr(gCurTask);
+    Kiki_Proj *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
     s16 x, y;
 
@@ -285,7 +285,7 @@ static void CreateProjectilePiece(s16 x, s16 y)
 {
     struct Task *t = TaskCreate(Task_ProjPieceMain, sizeof(Kiki_Proj), 0x2000, 0,
                                 TaskDestructor_KikiProj);
-    Kiki_Proj *proj = TaskGetStructPtr(t);
+    Kiki_Proj *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
 
     proj->unk32 = -512;
@@ -312,7 +312,7 @@ static void CreateProjectilePiece(s16 x, s16 y)
 static void Task_ProjPieceMain(void)
 {
     Sprite *s2 = &gUnknown_03005AF0.s;
-    Kiki_Proj *proj = TaskGetStructPtr(gCurTask);
+    Kiki_Proj *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
     UNK_3005A70 *u90;
 
@@ -349,6 +349,6 @@ static void Task_ProjPieceMain(void)
 
 static void TaskDestructor_KikiProj(struct Task *t)
 {
-    Kiki_Proj *proj = TaskGetStructPtr(t);
+    Kiki_Proj *proj = TASK_DATA(t);
     VramFree(proj->s.graphics.dest);
 }

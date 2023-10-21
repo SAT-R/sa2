@@ -36,7 +36,7 @@ void CreateDemoManager(void)
     s8 lang = gLoadedSaveGame->language;
     struct Task *t
         = TaskCreate(Task_800A110, sizeof(DemoManager), 1, 0, TaskDestructor_800A350);
-    DemoManager *dm = TaskGetStructPtr(t);
+    DemoManager *dm = TASK_DATA(t);
     Sprite *s;
 
     dm->unk60 = 0;
@@ -93,7 +93,7 @@ void CreateDemoManager(void)
 
 void Task_800A110(void)
 {
-    DemoManager *dm = TaskGetStructPtr(gCurTask);
+    DemoManager *dm = TASK_DATA(gCurTask);
 
     if (gPhysicalInput & START_BUTTON) {
         gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
@@ -148,7 +148,7 @@ void Task_800A110(void)
 
 void Task_800A24C(void)
 {
-    DemoManager *dm = TaskGetStructPtr(gCurTask);
+    DemoManager *dm = TASK_DATA(gCurTask);
     dm->unk62++;
 
     m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 0);
@@ -173,7 +173,7 @@ void Task_800A24C(void)
 
 void Task_800A310(void)
 {
-    DemoManager *dm = TaskGetStructPtr(gCurTask);
+    DemoManager *dm = TASK_DATA(gCurTask);
     dm->unk60 += Q_24_8(0.25);
 
     gBldRegs.bldY = dm->unk60 >> 8;
@@ -185,7 +185,7 @@ void Task_800A310(void)
 
 void TaskDestructor_800A350(struct Task *t)
 {
-    DemoManager *dm = TaskGetStructPtr(t);
+    DemoManager *dm = TASK_DATA(t);
     VramFree(dm->textPressStart.graphics.dest);
     VramFree(dm->textDemoPlay.graphics.dest);
 
@@ -196,7 +196,7 @@ void TaskDestructor_800A350(struct Task *t)
 void CreateMusicFadeoutTask(u16 factor)
 {
     struct Task *t = TaskCreate(Task_800A3D4, sizeof(DemoMusicFadeout), 0xFFFE, 0, NULL);
-    DemoMusicFadeout *mf = TaskGetStructPtr(t);
+    DemoMusicFadeout *mf = TASK_DATA(t);
     mf->volume = 0x100;
     mf->unk2 = (s32)mf->volume / factor;
     gUnknown_030054A8.unk0 = 0xFF;
@@ -204,7 +204,7 @@ void CreateMusicFadeoutTask(u16 factor)
 
 void Task_800A3D4(void)
 {
-    DemoMusicFadeout *mf = TaskGetStructPtr(gCurTask);
+    DemoMusicFadeout *mf = TASK_DATA(gCurTask);
 
     m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, mf->volume);
     m4aMPlayVolumeControl(&gMPlayInfo_SE1, 0xFFFF, mf->volume);

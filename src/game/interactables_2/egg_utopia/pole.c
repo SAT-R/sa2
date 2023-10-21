@@ -33,7 +33,7 @@ void CreateEntity_Pole(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 {
     struct Task *t = TaskCreate(Task_Interactable094, sizeof(Sprite_Pole), 0x2010, 0,
                                 TaskDestructor_Interactable094);
-    Sprite_Pole *pole = TaskGetStructPtr(t);
+    Sprite_Pole *pole = TASK_DATA(t);
     pole->unk0 = TO_WORLD_POS(me->x, spriteRegionX);
     pole->unk4 = TO_WORLD_POS(me->y, spriteRegionY);
 
@@ -63,7 +63,7 @@ static void sub_807EB48(Sprite_Pole *);
 
 static void Task_807EA8C(void)
 {
-    Sprite_Pole *pole = TaskGetStructPtr(gCurTask);
+    Sprite_Pole *pole = TASK_DATA(gCurTask);
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         sub_807ED68(pole);
@@ -146,7 +146,7 @@ static void sub_807ECB8(Sprite_Pole *);
 
 static void Task_Interactable094(void)
 {
-    Sprite_Pole *pole = TaskGetStructPtr(gCurTask);
+    Sprite_Pole *pole = TASK_DATA(gCurTask);
     if (sub_807EBBC(pole)) {
         sub_807ECB8(pole);
     }
@@ -161,7 +161,7 @@ static void Task_Interactable094(void);
 
 static void Task_807EC70(void)
 {
-    Sprite_Pole *pole = TaskGetStructPtr(gCurTask);
+    Sprite_Pole *pole = TASK_DATA(gCurTask);
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_Interactable094;
         return;

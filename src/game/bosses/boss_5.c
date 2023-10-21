@@ -225,7 +225,7 @@ void CreateEggSaucer(void)
 
     gActiveBossTask = TaskCreate(Task_EggSaucerIntro, sizeof(EggSaucer), 0x4000, 0,
                                  TaskDestructor_EggSaucerMain);
-    boss = TaskGetStructPtr(gActiveBossTask);
+    boss = TASK_DATA(gActiveBossTask);
 
     screenTransition = &boss->screenTransition;
     screenTransition->unk0 = 0;
@@ -398,7 +398,7 @@ void CreateEggSaucer(void)
 
 void Task_EggSaucerIntro(void)
 {
-    EggSaucer *boss = TaskGetStructPtr(gCurTask);
+    EggSaucer *boss = TASK_DATA(gCurTask);
     // speed
     boss->x += Q_24_8(BOSS_INTRO_SPEED);
 
@@ -419,7 +419,7 @@ void Task_EggSaucerIntro(void)
 
 void sub_804352C(void)
 {
-    EggSaucer *boss = TaskGetStructPtr(gCurTask);
+    EggSaucer *boss = TASK_DATA(gCurTask);
 
     SaucerUpdatePosAndRotate(boss);
     sub_8044784(boss);
@@ -445,7 +445,7 @@ void sub_804352C(void)
 
 void sub_80435BC(void)
 {
-    EggSaucer *boss = TaskGetStructPtr(gCurTask);
+    EggSaucer *boss = TASK_DATA(gCurTask);
 
     sub_8044540(boss);
     sub_8043BEC(boss);
@@ -793,7 +793,7 @@ void sub_8043E2C(EggSaucer *boss)
 void EggSaucerMove(s32 dX, s32 dY)
 {
     u8 i;
-    EggSaucer *boss = TaskGetStructPtr(gActiveBossTask);
+    EggSaucer *boss = TASK_DATA(gActiveBossTask);
 
     boss->x += dX;
     boss->y += dY;
@@ -1787,7 +1787,7 @@ void sub_80459A0(EggSaucer *boss)
 
 void TaskDestructor_EggSaucerMain(struct Task *t)
 {
-    EggSaucer *boss = TaskGetStructPtr(t);
+    EggSaucer *boss = TASK_DATA(t);
     VramFree(boss->vram);
     gActiveBossTask = NULL;
 }

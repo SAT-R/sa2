@@ -30,7 +30,7 @@ void CreateCollectRingsTimeDisplay(void)
     Sprite *s;
     struct Task *t = TaskCreate(sub_808328C, 0x240, 0x2102, 0, sub_80832E0);
     gUnknown_03005B6C = 0;
-    timeDisplay = TaskGetStructPtr(t);
+    timeDisplay = TASK_DATA(t);
 
     s = &timeDisplay->unk0;
     s->unk1A = SPRITE_OAM_ORDER(5);
@@ -296,7 +296,7 @@ void sub_8083104(TimeDisplay *timeDisplay)
 void sub_808328C(void)
 {
     if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_HUD)) {
-        TimeDisplay *timeDisplay = TaskGetStructPtr(gCurTask);
+        TimeDisplay *timeDisplay = TASK_DATA(gCurTask);
         Sprite *s = &timeDisplay->unk0;
         if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_TIMER)) {
             sub_8082E9C(timeDisplay);
@@ -311,7 +311,7 @@ void sub_808328C(void)
 
 void sub_80832E0(struct Task *t)
 {
-    TimeDisplay *timeDisplay = TaskGetStructPtr(t);
+    TimeDisplay *timeDisplay = TASK_DATA(t);
     VramFree(timeDisplay->unk0.graphics.dest);
     VramFree(timeDisplay->unk30[0].graphics.dest);
 }

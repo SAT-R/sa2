@@ -42,7 +42,7 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
                                  : Q_24_8_TO_INT(player->y) + player->unk17;
 
     // _0800FE78
-    Sprite_GrindRail *rail = TaskGetStructPtr(gCurTask);
+    Sprite_GrindRail *rail = TASK_DATA(gCurTask);
     MapEntity *me = rail->me;
     u8 *pSpriteX = &rail->spriteX;
     u8 stackSpriteX = *pSpriteX;
@@ -94,7 +94,7 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
                                 player->transition = PLTRANS_PT12;
 
                             {
-                                newRail = TaskGetStructPtr(gCurTask);
+                                newRail = TASK_DATA(gCurTask);
                                 newRail += 9;
                                 *(u8 *)newRail |= RAIL_KIND_80;
                                 // goto _080100B0; // This is supposed to go here, but
@@ -124,7 +124,7 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
 
                         // _0801004E
                         {
-                            void *newRail = TaskGetStructPtr(gCurTask);
+                            void *newRail = TASK_DATA(gCurTask);
                             newRail += 9;
                             *(u8 *)newRail |= RAIL_KIND_80;
                         }
@@ -159,7 +159,7 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
         _080100B0 : {
             void *newRail;
             {
-                newRail = TaskGetStructPtr(gCurTask);
+                newRail = TASK_DATA(gCurTask);
                 newRail += 9;
                 *(u8 *)newRail &= 0x7F;
             }
@@ -167,7 +167,7 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
         } else {
             // _080100C4
             void *newRail;
-            newRail = TaskGetStructPtr(gCurTask);
+            newRail = TASK_DATA(gCurTask);
             newRail += 9;
             *(u8 *)newRail &= 0x7F;
         }
@@ -188,7 +188,7 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail_Air.inc",
          void Task_GrindRail_Air(void))
 {
     Player *player = &gPlayer;
-    Sprite_GrindRail *rail = TaskGetStructPtr(gCurTask);
+    Sprite_GrindRail *rail = TASK_DATA(gCurTask);
     MapEntity *me = rail->me;
     s32 right, bottom;
     u8 smolRight;
@@ -278,7 +278,7 @@ void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 #ifdef NON_MATCHING
     struct Task *t
         = TaskCreate(Task_GrindRail, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
-    Sprite_GrindRail *rail = TaskGetStructPtr(t);
+    Sprite_GrindRail *rail = TASK_DATA(t);
     rail->kind = railType;
     rail->regionX = spriteRegionX;
     rail->regionY = spriteRegionY;
@@ -288,28 +288,28 @@ void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     struct Task *t = TaskCreate(Task_GrindRail, 10, 0x2010, 0, NULL);
     void *rail;
     {
-        rail = TaskGetStructPtr(t);
+        rail = TASK_DATA(t);
         rail += 9;
         *(u8 *)rail = railType;
     }
     {
-        rail = TaskGetStructPtr(t);
+        rail = TASK_DATA(t);
         rail += 4;
         *(u16 *)rail = spriteRegionX;
     }
     {
-        rail = TaskGetStructPtr(t);
+        rail = TASK_DATA(t);
         rail += 6;
         *(u16 *)rail = spriteRegionY;
     }
     {
-        MapEntity **rail = TaskGetStructPtr(t);
+        MapEntity **rail = TASK_DATA(t);
         rail++;
         rail--;
         *rail = me;
     }
     {
-        u8 *rail = TaskGetStructPtr(t);
+        u8 *rail = TASK_DATA(t);
         rail += 8;
         *rail = me->x;
     }
@@ -323,7 +323,7 @@ void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
 #ifdef NON_MATCHING
     struct Task *t
         = TaskCreate(Task_GrindRail_Air, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
-    Sprite_GrindRail *rail = TaskGetStructPtr(t);
+    Sprite_GrindRail *rail = TASK_DATA(t);
     rail->kind = railType;
     rail->regionX = spriteRegionX;
     rail->regionY = spriteRegionY;
@@ -333,28 +333,28 @@ void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     struct Task *t = TaskCreate(Task_GrindRail_Air, 10, 0x2010, 0, NULL);
     void *rail;
     {
-        rail = TaskGetStructPtr(t);
+        rail = TASK_DATA(t);
         rail += 9;
         *(u8 *)rail = railType;
     }
     {
-        rail = TaskGetStructPtr(t);
+        rail = TASK_DATA(t);
         rail += 4;
         *(u16 *)rail = spriteRegionX;
     }
     {
-        rail = TaskGetStructPtr(t);
+        rail = TASK_DATA(t);
         rail += 6;
         *(u16 *)rail = spriteRegionY;
     }
     {
-        MapEntity **rail = TaskGetStructPtr(t);
+        MapEntity **rail = TASK_DATA(t);
         rail++;
         rail--;
         *rail = me;
     }
     {
-        u8 *rail = TaskGetStructPtr(t);
+        u8 *rail = TASK_DATA(t);
         rail += 8;
         *rail = me->x;
     }
@@ -366,13 +366,13 @@ void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
 void CreateGrindrailAudioTask(void)
 {
     struct Task *t = TaskCreate(sub_8010464, sizeof(u16), 0x2010, 0, NULL);
-    u16 *audioTimer = TaskGetStructPtr(t);
+    u16 *audioTimer = TASK_DATA(t);
     *audioTimer = 0;
 }
 
 void sub_8010464(void)
 {
-    u16 *audioTimer = TaskGetStructPtr(gCurTask);
+    u16 *audioTimer = TASK_DATA(gCurTask);
     if (++(*audioTimer) > GBA_FRAMES_PER_SECOND) {
         m4aSongNumStart(SE_GRINDING);
         TaskDestroy(gCurTask);

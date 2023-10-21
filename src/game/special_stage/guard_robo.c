@@ -71,7 +71,7 @@ void Task_GuardRoboMain(void)
     u16 *oam;
     bool16 visible;
 
-    struct SpecialStageGuardRobo *guardRobo = TaskGetStructPtr(gCurTask);
+    struct SpecialStageGuardRobo *guardRobo = TASK_DATA(gCurTask);
     struct SpecialStage *stage = guardRobo->stage;
     oam = &gOamBuffer[124].all.affineParam;
 
@@ -120,8 +120,8 @@ void Task_GuardRoboMain(void)
 
 void sub_80710B0(void)
 {
-    struct SpecialStageGuardRobo *guardRobo = TaskGetStructPtr(gCurTask);
-    struct SpecialStagePlayer *player = TaskGetStructPtr(guardRobo->stage->playerTask);
+    struct SpecialStageGuardRobo *guardRobo = TASK_DATA(gCurTask);
+    struct SpecialStagePlayer *player = TASK_DATA(guardRobo->stage->playerTask);
 
     s32 sin3;
     s32 sin4;
@@ -170,7 +170,7 @@ void sub_80710B0(void)
 void sub_807120C(struct SpecialStageGuardRobo *guardRobo)
 {
     struct SpecialStage *stage = guardRobo->stage;
-    struct SpecialStagePlayer *player = TaskGetStructPtr(guardRobo->stage->playerTask);
+    struct SpecialStagePlayer *player = TASK_DATA(guardRobo->stage->playerTask);
 
     s16 guardRoboX = Q_16_16_TO_INT(guardRobo->x);
     s16 guardRoboY = Q_16_16_TO_INT(guardRobo->y);
@@ -267,7 +267,7 @@ struct Task *CreateSpecialStageGuardRobo(struct SpecialStage *stage)
 {
     struct Task *t = TaskCreate(Task_GuardRoboMain, 0x58, 0xA000, 0,
                                 SpecialStageGuardRoboOnDestroy);
-    struct SpecialStageGuardRobo *guardRobo = TaskGetStructPtr(t);
+    struct SpecialStageGuardRobo *guardRobo = TASK_DATA(t);
     guardRobo->stage = stage;
     GuardRoboInit(guardRobo);
     return t;
@@ -280,7 +280,7 @@ void SpecialStageGuardRoboOnDestroy(UNUSED struct Task *t)
 
 void sub_8071478(void)
 {
-    struct SpecialStageGuardRobo *guardRobo = TaskGetStructPtr(gCurTask);
+    struct SpecialStageGuardRobo *guardRobo = TASK_DATA(gCurTask);
     struct SpecialStage *stage = guardRobo->stage;
 
     GuardRoboStateHandler stateHandlers[ARRAY_COUNT(sGuardRoboStateHandlers)];
@@ -298,7 +298,7 @@ void sub_80714C4(void)
 
 void sub_80714C8(void)
 {
-    struct SpecialStageGuardRobo *guardRobo = TaskGetStructPtr(gCurTask);
+    struct SpecialStageGuardRobo *guardRobo = TASK_DATA(gCurTask);
     guardRobo->animFrame--;
 
     if (guardRobo->animFrame < 1) {

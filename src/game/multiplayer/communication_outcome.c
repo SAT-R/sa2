@@ -98,7 +98,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 
     t = TaskCreate(sub_805BC40, sizeof(struct CommunicationOutcomeScreen), 0x2000, 0,
                    NULL);
-    outcomeScreen = TaskGetStructPtr(t);
+    outcomeScreen = TASK_DATA(t);
 
     outcomeScreen->unk203 = outcome;
     outcomeScreen->unk200 = 0x78;
@@ -184,7 +184,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
 static void sub_805BC40(void)
 {
     Sprite *s;
-    struct CommunicationOutcomeScreen *outcomeScreen = TaskGetStructPtr(gCurTask);
+    struct CommunicationOutcomeScreen *outcomeScreen = TASK_DATA(gCurTask);
     s = &outcomeScreen->unkA0;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);

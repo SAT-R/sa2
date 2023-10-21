@@ -62,7 +62,7 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 {
     struct Task *t = TaskCreate(Task_Note_Sphere, sizeof(Sprite_NoteSphere), 0x2010, 0,
                                 TaskDestructor_Interactable_MusicPlant_Note_Sphere);
-    Sprite_NoteSphere *note = TaskGetStructPtr(t);
+    Sprite_NoteSphere *note = TASK_DATA(t);
     Sprite *s = &note->disp;
     note->unk44 = 0;
     note->unk46 = 0;
@@ -97,7 +97,7 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
 static void Task_80754B8(void)
 {
-    Sprite_NoteSphere *note = TaskGetStructPtr(gCurTask);
+    Sprite_NoteSphere *note = TASK_DATA(gCurTask);
 
     switch (note->unk4A++) {
         case 0: {
@@ -204,7 +204,7 @@ static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *note)
 
 static void Task_Note_Sphere(void)
 {
-    Sprite_NoteSphere *note = TaskGetStructPtr(gCurTask);
+    Sprite_NoteSphere *note = TASK_DATA(gCurTask);
 
     if (NoteSphere_IsPlayerColliding(note)) {
         NoteSphere_ApplyCollisionPlayer(note);

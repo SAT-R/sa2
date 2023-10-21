@@ -57,7 +57,7 @@ void CreatePauseMenu(void)
         if (vramTiles != ewram_end) {
             struct Task *t = TaskCreate(Task_PauseMenuInit, sizeof(PauseMenu), 0xFFFE, 4,
                                         TaskDestructor_PauseMenu);
-            PauseMenu *pm = TaskGetStructPtr(t);
+            PauseMenu *pm = TASK_DATA(t);
             Sprite *s = &pm->s;
 
             pm->unk60 = 0;
@@ -92,7 +92,7 @@ void CreatePauseMenu(void)
 
 void Task_PauseMenuUpdate(void)
 {
-    PauseMenu *pm = TaskGetStructPtr(gCurTask);
+    PauseMenu *pm = TASK_DATA(gCurTask);
 
     /* Handle A-/B-Button */
     if ((gReleasedKeys & A_BUTTON)
@@ -150,7 +150,7 @@ void Task_PauseMenuUpdate(void)
         DmaCopy16(3, pm->pal64, &(((u16 *)OBJ_PLTT)[252]), sizeof(pm->pal64));
 
         if (gWater.isActive == TRUE) {
-            u16 *somePalette = TaskGetStructPtr(gWater.t);
+            u16 *somePalette = TASK_DATA(gWater.t);
 
             DmaCopy16(3, pm->pal6A, &somePalette[249], sizeof(pm->pal6A));
             DmaCopy16(3, pm->pal64, &somePalette[252], sizeof(pm->pal64));
@@ -160,7 +160,7 @@ void Task_PauseMenuUpdate(void)
         DmaCopy16(3, pm->pal64, &(((u16 *)OBJ_PLTT)[249]), sizeof(pm->pal64));
 
         if (gWater.isActive == TRUE) {
-            u16 *somePalette = TaskGetStructPtr(gWater.t);
+            u16 *somePalette = TASK_DATA(gWater.t);
 
             DmaCopy16(3, pm->pal6A, &somePalette[252], sizeof(pm->pal6A));
             DmaCopy16(3, pm->pal64, &somePalette[249], sizeof(pm->pal64));
@@ -173,7 +173,7 @@ void Task_PauseMenuUpdate(void)
 
 void Task_PauseMenuInit(void)
 {
-    PauseMenu *pm = TaskGetStructPtr(gCurTask);
+    PauseMenu *pm = TASK_DATA(gCurTask);
     u32 i;
 
     for (i = 0; i < 4; i++) {
@@ -193,7 +193,7 @@ void Task_PauseMenuInit(void)
 
 void TaskDestructor_PauseMenu(struct Task *t)
 {
-    PauseMenu *pm = TaskGetStructPtr(t);
+    PauseMenu *pm = TASK_DATA(t);
     VramFree(pm->s.graphics.dest);
 }
 

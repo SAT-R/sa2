@@ -149,7 +149,7 @@ void StartSinglePakConnect(void)
     gBgScrollRegs[1][1] = 0;
 
     t = TaskCreate(sub_8081604, 0xFC, 0x2000, 0, NULL);
-    connectScreen = TaskGetStructPtr(t);
+    connectScreen = TASK_DATA(t);
     connectScreen->unkFA = gLoadedSaveGame->language;
 
     if ((u8)LanguageIndex(connectScreen->unkFA) > LanguageIndex(LANG_ITALIAN)) {
@@ -268,7 +268,7 @@ void sub_8081C50(void);
 
 void sub_8081604(void)
 {
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     s8 result;
     s32 multiBootFlags;
     struct MultiBootParam *params;
@@ -372,7 +372,7 @@ void sub_80818B8(void)
 {
     u16 i, j;
     u32 temp;
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     if (gMultiSioStatusFlags & MULTI_SIO_LD_REQUEST
         && connectScreen->unkF9 < ARRAY_COUNT(gUnknown_080E0168)) {
         gCurTask->main = sub_8081D04;
@@ -436,7 +436,7 @@ void sub_8081E90(struct SinglePakConnectScreen *);
 void sub_8081A5C(void)
 {
     u32 progress = 0;
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     if (Sio32MultiLoadMain(&progress) != 0) {
         gCurTask->main = sub_8081C8C;
     }
@@ -519,7 +519,7 @@ void sub_8081DB4(struct SinglePakConnectScreen *);
 
 void sub_8081C50(void)
 {
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
@@ -533,7 +533,7 @@ void sub_8081CC4(void);
 
 void sub_8081C8C(void)
 {
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
@@ -559,7 +559,7 @@ void sub_8081CC4(void)
 // Send next segment
 void sub_8081D04(void)
 {
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     MultiSioStop();
     gIntrTable[0] = Sio32MultiLoadIntr;
     Sio32MultiLoadInit(gMultiSioStatusFlags & MULTI_SIO_PARENT,

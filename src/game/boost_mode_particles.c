@@ -28,7 +28,7 @@ void CreateBoostModeParticles(void)
 {
     s32 i;
     struct Task *t = TaskCreate(sub_8089E54, 0xE8, 0x5050, 0, sub_808A234);
-    struct BoostModeParticles *particles = TaskGetStructPtr(t);
+    struct BoostModeParticles *particles = TASK_DATA(t);
     Sprite *s = &particles->unk0;
 
     particles->unk60 = 0;
@@ -113,7 +113,7 @@ void sub_808A0A4(void);
 void sub_8089E54(void)
 {
     s32 i;
-    struct BoostModeParticles *particles = TaskGetStructPtr(gCurTask);
+    struct BoostModeParticles *particles = TASK_DATA(gCurTask);
     Sprite *s;
     UpdateSpriteAnimation(&particles->unk0);
 
@@ -171,7 +171,7 @@ void sub_8089E54(void)
 void sub_808A0A4(void)
 {
     s32 i;
-    struct BoostModeParticles *particles = TaskGetStructPtr(gCurTask);
+    struct BoostModeParticles *particles = TASK_DATA(gCurTask);
     Sprite *s = &particles->unk0;
 
     if (particles->unk60++ > 0x18) {
@@ -210,7 +210,7 @@ void sub_808A0A4(void)
 
 void sub_808A234(struct Task *t)
 {
-    struct BoostModeParticles *particles = TaskGetStructPtr(t);
+    struct BoostModeParticles *particles = TASK_DATA(t);
     Sprite *s = &particles->unk0;
     VramFree(s->graphics.dest);
     s++;

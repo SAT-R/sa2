@@ -81,7 +81,7 @@ static void CreateEntity_SmallPropeller(MapEntity *me, u16 spriteRegionX,
     struct Task *t
         = TaskCreate(Task_IA_SmallPropeller_UpdateRegular, sizeof(Sprite_SmallPropeller),
                      0x2010, 0, TaskDestructor_IA_SmallPropeller_UpdateRegular);
-    Sprite_SmallPropeller *prop = TaskGetStructPtr(t);
+    Sprite_SmallPropeller *prop = TASK_DATA(t);
     Sprite *s;
 
     prop->kind = kind;
@@ -287,7 +287,7 @@ static bool32 IsPlayerInFanRegion(Sprite_SmallPropeller *prop)
 
 static void Task_IA_SmallPropeller_UpdateRegular(void)
 {
-    Sprite_SmallPropeller *prop = TaskGetStructPtr(gCurTask);
+    Sprite_SmallPropeller *prop = TASK_DATA(gCurTask);
 
     if (IsPlayerInFanRegion(prop)) {
         SetTaskMain_807D978(prop);
@@ -303,7 +303,7 @@ static void Task_IA_SmallPropeller_UpdateRegular(void)
 
 static void TaskDestructor_IA_SmallPropeller_UpdateRegular(struct Task *t)
 {
-    Sprite_SmallPropeller *prop = TaskGetStructPtr(t);
+    Sprite_SmallPropeller *prop = TASK_DATA(t);
     VramFree(prop->s.graphics.dest);
 }
 
@@ -379,7 +379,7 @@ void CreateEntity_SmallPropeller_Right_Periodic(MapEntity *me, u16 spriteRegionX
 
 void Task_IA_SmallPropeller_UpdateInFanRegion(void)
 {
-    Sprite_SmallPropeller *prop = TaskGetStructPtr(gCurTask);
+    Sprite_SmallPropeller *prop = TASK_DATA(gCurTask);
 
     sub_807D468(prop);
 
