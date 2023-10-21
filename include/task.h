@@ -76,7 +76,7 @@ struct IwramNode {
 
 #define TASK_DATA(taskp)   (void *)TASK_PTR((taskp)->data)
 #define TASK_PARENT(taskp) (struct Task *)TASK_PTR((taskp)->parent)
-#define TaskGetNext(taskp) (struct Task *)TASK_PTR((taskp)->next)
+#define TASK_NEXT(taskp)   (struct Task *)TASK_PTR((taskp)->next)
 #define TasksDestroyAll()  TasksDestroyInPriorityRange(0, 0xFFFF)
 
 extern struct Task gTasks[MAX_TASK_NUM];

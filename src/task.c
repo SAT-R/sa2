@@ -8,7 +8,7 @@ static void TaskMainDummy1(void);
 static void TaskMainDummy2(void);
 static void TaskMainDummy3(void);
 static void IwramFree(void *);
-static struct Task *TaskGetNextSlot(void);
+static struct Task *TASK_NEXTSlot(void);
 
 u32 TasksInit(void)
 {
@@ -29,7 +29,7 @@ u32 TasksInit(void)
     for (i = 0; i < MAX_TASK_NUM; ++i)
         gTaskPtrs[i] = &gTasks[i];
 
-    cur = TaskGetNextSlot();
+    cur = TASK_NEXTSlot();
     if (!cur) {
         return 0;
     }
@@ -39,7 +39,7 @@ u32 TasksInit(void)
     cur->flags = 0;
     cur->parent = (TaskPtr32)NULL;
     cur->prev = (TaskPtr32)NULL;
-    cur->next = (TaskPtr32)TaskGetNextSlot();
+    cur->next = (TaskPtr32)TASK_NEXTSlot();
 
     if (TASK_IS_NULL((void *)TASK_PTR(cur->next))) {
         return 0;
@@ -129,7 +129,7 @@ void TaskDestroy(struct Task *task)
                 }
 
                 if (task == gNextTask) {
-                    gNextTask = TaskGetNext(task);
+                    gNextTask = TASK_NEXT(task);
                 }
 
                 prev = TASK_PTR(task->prev);
@@ -329,7 +329,7 @@ static void sub_80028DC(void)
     }
 }
 
-static struct Task *TaskGetNextSlot(void)
+static struct Task *TASK_NEXTSlot(void)
 {
     if (gNumTasks >= MAX_TASK_NUM) {
         return NULL;
