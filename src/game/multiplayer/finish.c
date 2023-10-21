@@ -136,13 +136,15 @@ void TaskDestructor_8019EF4(struct Task *t)
     VramFree(s->graphics.dest);
 }
 
-#if 01
+#include "lib/m4a.h"
+
 typedef struct {
     u16 unk0;
     u8 filler2[2];
 } Finish2; /* size: 4 */
 
 void Task_801A04C(void);
+void Task_801A0E0(void);
 
 void sub_8019F08(void)
 {
@@ -171,8 +173,11 @@ void sub_8019F08(void)
     r2 = 0;
 
     if (gGameMode != GAME_MODE_TEAM_PLAY) {
-        for (i = 0; (i < MULTI_SIO_PLAYERS_MAX) && (gMultiplayerPlayerTasks[i] != NULL);
-             i++) {
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+            if (gMultiplayerPlayerTasks[i] == NULL) {
+                break;
+            }
+
             if (gUnknown_030054B4[i] != -1) {
                 r2++;
             }
@@ -192,7 +197,7 @@ void sub_8019F08(void)
     }
     // _08019FE8
 
-    for (i = 0; ((i < MULTI_SIO_PLAYERS_MAX)); i++) {
+    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         if (gMultiplayerPlayerTasks[i] == NULL) {
             break;
         }
@@ -206,4 +211,28 @@ void sub_8019F08(void)
         }
     }
 }
-#endif
+
+void Task_801A04C(void)
+{
+    u32 x = 0;
+    Finish2 *f2 = TASK_DATA(gCurTask);
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        x = 240;
+    }
+
+    if (gUnknown_03005438 == gUnknown_03005420) {
+        if (f2->unk0++ > x) {
+            gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+            gBldRegs.bldY = 0;
+
+            m4aMPlayFadeOut(&gMPlayInfo_BGM, 4);
+            m4aMPlayFadeOut(&gMPlayInfo_SE1, 4);
+            m4aMPlayFadeOut(&gMPlayInfo_SE2, 4);
+            m4aMPlayFadeOut(&gMPlayInfo_SE3, 4);
+
+            f2->unk0 = 0;
+            gCurTask->main = Task_801A0E0;
+        }
+    }
+}

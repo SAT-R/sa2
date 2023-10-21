@@ -14,74 +14,8 @@ gUnknown_080D57D8:
 .if 0
 .endif
 
-	thumb_func_start Task_801A04C
-Task_801A04C: @ 0x0801A04C
-	push {r4, r5, r6, lr}
-	movs r2, #0
-	ldr r6, _0801A0B8 @ =gCurTask
-	ldr r0, [r6]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r5, r1, r0
-	ldr r0, _0801A0BC @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #5
-	beq _0801A066
-	movs r2, #0xf0
-_0801A066:
-	ldr r0, _0801A0C0 @ =gUnknown_03005438
-	ldr r1, _0801A0C4 @ =gUnknown_03005420
-	ldrb r0, [r0]
-	ldrb r1, [r1]
-	cmp r0, r1
-	bne _0801A0B2
-	ldrh r0, [r5]
-	adds r1, r0, #1
-	strh r1, [r5]
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	cmp r0, r2
-	bls _0801A0B2
-	ldr r1, _0801A0C8 @ =gBldRegs
-	movs r4, #0
-	movs r0, #0xbf
-	strh r0, [r1]
-	strh r4, [r1, #4]
-	ldr r0, _0801A0CC @ =gMPlayInfo_BGM
-	movs r1, #4
-	bl m4aMPlayFadeOut
-	ldr r0, _0801A0D0 @ =gMPlayInfo_SE1
-	movs r1, #4
-	bl m4aMPlayFadeOut
-	ldr r0, _0801A0D4 @ =gMPlayInfo_SE2
-	movs r1, #4
-	bl m4aMPlayFadeOut
-	ldr r0, _0801A0D8 @ =gMPlayInfo_SE3
-	movs r1, #4
-	bl m4aMPlayFadeOut
-	strh r4, [r5]
-	ldr r1, [r6]
-	ldr r0, _0801A0DC @ =sub_801A0E0
-	str r0, [r1, #8]
-_0801A0B2:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0801A0B8: .4byte gCurTask
-_0801A0BC: .4byte gGameMode
-_0801A0C0: .4byte gUnknown_03005438
-_0801A0C4: .4byte gUnknown_03005420
-_0801A0C8: .4byte gBldRegs
-_0801A0CC: .4byte gMPlayInfo_BGM
-_0801A0D0: .4byte gMPlayInfo_SE1
-_0801A0D4: .4byte gMPlayInfo_SE2
-_0801A0D8: .4byte gMPlayInfo_SE3
-_0801A0DC: .4byte sub_801A0E0
-
-	thumb_func_start sub_801A0E0
-sub_801A0E0: @ 0x0801A0E0
+	thumb_func_start Task_801A0E0
+Task_801A0E0: @ 0x0801A0E0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

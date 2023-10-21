@@ -124,6 +124,8 @@ extern u8 gSmallAirBubbleCount;
 
 extern u8 gUnknown_030054E4;
 
+extern u8 gUnknown_03005420;
+
 #define EXTRA_STATE__CLEAR              0x0000
 #define EXTRA_STATE__ACT_START          0x0001 // Turns timer off, likely other effects?
 #define EXTRA_STATE__2                  0x0002
