@@ -836,7 +836,7 @@ _08041C08:
 	lsls r0, r0, #5
 	adds r2, r2, r0
 	adds r0, r4, #0
-	bl sub_80427FC
+	bl CreateAeroEggBomb
 	ldrb r0, [r4, #0x14]
 	cmp r0, #4
 	bhi _08041C26
@@ -2357,8 +2357,8 @@ _080427F0: .4byte IWRAM_START + 0xF4
 _080427F4: .4byte IWRAM_START + 0x124
 _080427F8: .4byte gActiveBossTask
 
-	thumb_func_start sub_80427FC
-sub_80427FC: @ 0x080427FC
+	thumb_func_start CreateAeroEggBomb
+CreateAeroEggBomb: @ 0x080427FC
 	push {r4, r5, r6, lr}
 	mov r6, r8
 	push {r6}

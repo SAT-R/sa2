@@ -136,3 +136,43 @@ void TaskDestructor_8019EF4(struct Task *t)
     Sprite *s = &finish->s;
     VramFree(s->graphics.dest);
 }
+
+#if 0
+typedef struct {
+    u16 unk0;
+    u8 filler2[2];
+} Finish2; /* size: 4 */
+
+void sub_801A04C(void);
+
+void sub_8019F08(void)
+{
+    u32 r6;
+    struct Task *t = TaskCreate(sub_801A04C, sizeof(Finish2), 0x2000, 0, NULL);
+    Finish2 *f2 = TaskGetStructPtr(t);
+    f2->unk0 = 0;
+
+    if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        return;
+    }
+
+    gUnknown_030054A8.unk0 = 0xFF;
+    gLoadedSaveGame->score += gRingCount;
+
+    if((gCourseTime <= MAX_COURSE_TIME)
+    && !(gUnknown_03005424 & EXTRA_STATE__4)
+    && (gCourseTime != 0))
+    {
+        return;
+    }
+    // _08019F6C
+
+    if(gGameMode != GAME_MODE_TEAM_PLAY) {
+        struct Task *mpt = gMultiplayerPlayerTasks[0];
+        
+    } else {
+        // _08019FE4
+        r6 = 4;
+    }
+}
+#endif
