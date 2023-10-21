@@ -43,10 +43,71 @@ void sub_8083B88(struct UNK_8085F1C_1 *, struct UNK_8085F1C_1 *, struct UNK_8085
 void sub_80835E0(struct UNK_8085F1C *p2, s32 *);
 
 typedef struct {
-    s32 filler0;
+    void *unk0;
     void *start;
     void *next;
+    void *unkC;
 } UNK_8085DEC;
+
+bool8 sub_8085D98(UNK_8085DEC *thing, UNK_8085DEC *target);
+
+void sub_8085D44(UNK_8085DEC *thing)
+{
+    thing->unk0 = NULL;
+    thing->start = NULL;
+    thing->next = NULL;
+    thing->unkC = NULL;
+}
+
+UNK_8085DEC *sub_8085D50(UNK_8085DEC *thing)
+{
+    while (thing->unk0 != NULL) {
+        thing = thing->unk0;
+    }
+
+    return thing;
+}
+
+void sub_8085D64(UNK_8085DEC *thing)
+{
+    if (thing->unk0 != NULL) {
+        sub_8085D98(thing->unk0, thing);
+    }
+}
+
+void sub_8085D78(UNK_8085DEC *thing, UNK_8085DEC *target)
+{
+    if (target->unk0 != NULL) {
+        sub_8085D98(target->unk0, target);
+    }
+    target->unk0 = thing;
+    target->next = thing->start;
+    thing->start = target;
+}
+
+bool8 sub_8085D98(UNK_8085DEC *thing, UNK_8085DEC *target)
+{
+    UNK_8085DEC *curr = thing->start;
+    UNK_8085DEC *prev = NULL;
+
+    while (curr != NULL) {
+        if (curr == target) {
+            if (prev == NULL) {
+                thing->start = curr->next;
+            } else {
+                prev->next = curr->next;
+            }
+            target->unk0 = NULL;
+            target->next = NULL;
+
+            return TRUE;
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+
+    return FALSE;
+}
 
 u16 sub_8085DD0(UNK_8085DEC *thing)
 {
