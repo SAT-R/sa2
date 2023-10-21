@@ -310,13 +310,13 @@ static void DestroyPropeller(Sprite_GiantPropeller *propeller)
 
 UNK_807C5F8 *sub_807BA54(void)
 {
-    UNK_807C5F8_Parent *parent = TASK_DATA(TaskGetParent(gCurTask));
+    UNK_807C5F8_Parent *parent = TASK_DATA(TASK_PARENT(gCurTask));
     return TASK_DATA(parent->unk18);
 }
 
 static void sub_807BA70(void)
 {
-    UNK_807C5F8_Parent *parent = TASK_DATA(TaskGetParent(gCurTask));
+    UNK_807C5F8_Parent *parent = TASK_DATA(TASK_PARENT(gCurTask));
     UNK_807C5F8 *unk807 = TASK_DATA(parent->unk18);
 
     unk807->unk62++;

@@ -201,14 +201,14 @@ static void sub_807C5E0(Sprite_IA85 *ia85)
 
 static Sprite *sub_807C5F8(void)
 {
-    UNK_807C5F8_Parent *parent = TASK_DATA(TaskGetParent(gCurTask));
+    UNK_807C5F8_Parent *parent = TASK_DATA(TASK_PARENT(gCurTask));
     UNK_807C5F8 *unk807 = TASK_DATA(parent->unk18);
     return &unk807->sprite1;
 }
 
 static void sub_807C614(void)
 {
-    UNK_807C5F8_Parent *parent = TASK_DATA(TaskGetParent(gCurTask));
+    UNK_807C5F8_Parent *parent = TASK_DATA(TASK_PARENT(gCurTask));
     UNK_807C5F8 *unk807 = TASK_DATA(parent->unk18);
 
     unk807->unk60++;
