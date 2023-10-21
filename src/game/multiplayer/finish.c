@@ -142,16 +142,15 @@ typedef struct {
     u8 filler2[2];
 } Finish2; /* size: 4 */
 
-void sub_801A04C(void);
+void Task_801A04C(void);
 
-// (93.41%) https://decomp.me/scratch/Fp7pC
 void sub_8019F08(void)
 {
     u32 i; // r4
     u32 r2;
     u8 r6;
     struct Task *mpt;
-    struct Task *t = TaskCreate(sub_801A04C, sizeof(Finish2), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_801A04C, sizeof(Finish2), 0x2000, 0, NULL);
     Finish2 *f2 = TASK_DATA(t);
     f2->unk0 = 0;
 
@@ -193,8 +192,11 @@ void sub_8019F08(void)
     }
     // _08019FE8
 
-    for (i = 0; ((i < MULTI_SIO_PLAYERS_MAX) && (gMultiplayerPlayerTasks[i] != NULL));
-         i++) {
+    for (i = 0; ((i < MULTI_SIO_PLAYERS_MAX)); i++) {
+        if (gMultiplayerPlayerTasks[i] == NULL) {
+            break;
+        }
+
         if (gUnknown_030054B4[i] == -1) {
             struct MultiplayerPlayer *mpp;
             mpt = gMultiplayerPlayerTasks[i];
