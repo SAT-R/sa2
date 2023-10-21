@@ -42,6 +42,35 @@ void sub_8083B88(struct UNK_8085F1C_1 *, struct UNK_8085F1C_1 *, struct UNK_8085
 
 void sub_80835E0(struct UNK_8085F1C *p2, s32 *);
 
+typedef struct {
+    s32 filler0;
+    void *start;
+    void *next;
+} UNK_8085DEC;
+
+u16 sub_8085DD0(UNK_8085DEC *thing)
+{
+    u16 num = 0;
+    thing = thing->start;
+    while (thing != NULL) {
+        num++;
+        thing = thing->next;
+    }
+
+    return num;
+}
+
+UNK_8085DEC *sub_8085DEC(UNK_8085DEC *thing, u16 num)
+{
+    thing = thing->start;
+    while (thing != NULL && num != 0) {
+        num--;
+        thing = thing->next;
+    }
+
+    return thing;
+}
+
 void sub_8085E10(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2)
 {
     memcpy(p2, &p1->unk10, 0x10);
