@@ -144,6 +144,7 @@ typedef struct {
 
 void sub_801A04C(void);
 
+// (93.41%) https://decomp.me/scratch/Fp7pC
 void sub_8019F08(void)
 {
     u32 i; // r4
@@ -161,16 +162,18 @@ void sub_8019F08(void)
     gUnknown_030054A8.unk0 = 0xFF;
     gLoadedSaveGame->score += (s16)gRingCount;
 
-    if ((gCourseTime <= MAX_COURSE_TIME) && !(gUnknown_03005424 & EXTRA_STATE__4)
-        && (gCourseTime != 0)) {
-        return;
+    if (gCourseTime <= MAX_COURSE_TIME) {
+        if (!(gUnknown_03005424 & EXTRA_STATE__4) || (gCourseTime != 0)) {
+            return;
+        }
     }
     // _08019F6C
 
     r2 = 0;
 
     if (gGameMode != GAME_MODE_TEAM_PLAY) {
-        for (i = 0; (i  < MULTI_SIO_PLAYERS_MAX) && (gMultiplayerPlayerTasks[i] != NULL); i++) {
+        for (i = 0; (i < MULTI_SIO_PLAYERS_MAX) && (gMultiplayerPlayerTasks[i] != NULL);
+             i++) {
             if (gUnknown_030054B4[i] != -1) {
                 r2++;
             }
@@ -190,8 +193,9 @@ void sub_8019F08(void)
     }
     // _08019FE8
 
-    for (i = 0; (i  < MULTI_SIO_PLAYERS_MAX) && (gMultiplayerPlayerTasks[i] != NULL); i++) {
-        if (gUnknown_030054B4[i] != -1) {
+    for (i = 0; ((i < MULTI_SIO_PLAYERS_MAX) && (gMultiplayerPlayerTasks[i] != NULL));
+         i++) {
+        if (gUnknown_030054B4[i] == -1) {
             struct MultiplayerPlayer *mpp;
             mpt = gMultiplayerPlayerTasks[i];
             mpp = TASK_DATA(mpt);
