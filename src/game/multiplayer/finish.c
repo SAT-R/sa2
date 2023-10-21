@@ -136,7 +136,7 @@ void TaskDestructor_8019EF4(struct Task *t)
     VramFree(s->graphics.dest);
 }
 
-#if 0
+#if 01
 typedef struct {
     u16 unk0;
     u8 filler2[2];
@@ -146,7 +146,10 @@ void sub_801A04C(void);
 
 void sub_8019F08(void)
 {
-    u32 r6;
+    u32 i; // r4
+    u32 r2;
+    u8 r6;
+    struct Task *mpt;
     struct Task *t = TaskCreate(sub_801A04C, sizeof(Finish2), 0x2000, 0, NULL);
     Finish2 *f2 = TASK_DATA(t);
     f2->unk0 = 0;
@@ -156,22 +159,45 @@ void sub_8019F08(void)
     }
 
     gUnknown_030054A8.unk0 = 0xFF;
-    gLoadedSaveGame->score += gRingCount;
+    gLoadedSaveGame->score += (s16)gRingCount;
 
-    if((gCourseTime <= MAX_COURSE_TIME)
-    && !(gUnknown_03005424 & EXTRA_STATE__4)
-    && (gCourseTime != 0))
-    {
+    if ((gCourseTime <= MAX_COURSE_TIME) && !(gUnknown_03005424 & EXTRA_STATE__4)
+        && (gCourseTime != 0)) {
         return;
     }
     // _08019F6C
 
-    if(gGameMode != GAME_MODE_TEAM_PLAY) {
-        struct Task *mpt = gMultiplayerPlayerTasks[0];
-        
+    r2 = 0;
+
+    if (gGameMode != GAME_MODE_TEAM_PLAY) {
+        for (i = 0; (i  < MULTI_SIO_PLAYERS_MAX) && (gMultiplayerPlayerTasks[i] != NULL); i++) {
+            if (gUnknown_030054B4[i] != -1) {
+                r2++;
+            }
+        }
+        // _08019FA4
+        if (r2 == 0) {
+            r6 = 4;
+        } else if (r2 == (i - 1)) {
+            // _08019FD4+6
+            r6 = r2;
+        } else {
+            r6 = 5;
+        }
     } else {
         // _08019FE4
         r6 = 4;
+    }
+    // _08019FE8
+
+    for (i = 0; (i  < MULTI_SIO_PLAYERS_MAX) && (gMultiplayerPlayerTasks[i] != NULL); i++) {
+        if (gUnknown_030054B4[i] != -1) {
+            struct MultiplayerPlayer *mpp;
+            mpt = gMultiplayerPlayerTasks[i];
+            mpp = TASK_DATA(mpt);
+            mpp->unk5C |= 1;
+            sub_8019CCC(i, r6);
+        }
     }
 }
 #endif
