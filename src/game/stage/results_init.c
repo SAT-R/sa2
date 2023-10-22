@@ -142,11 +142,35 @@ void sub_802EF68(s16 p0, s16 p1, u8 p2)
     m4aSongNumStart(SE_333);
 }
 
-void InitHBlankBgOffsets(u16 p0)
+void InitHBlankBgOffsets(u16 xOffset)
 {
     if (gBgOffsetsHBlank == &gUnknown_03001B60) {
-        DmaFill16(3, p0, &gUnknown_03001B60[0][0], sizeof(gUnknown_03001B60[0]));
+        DmaFill16(3, xOffset, &gUnknown_03001B60[0][0], sizeof(gUnknown_03001B60[0]));
     } else {
-        DmaFill16(3, p0, &gUnknown_03001B60[1][0], sizeof(gUnknown_03001B60[1]));
+        DmaFill16(3, xOffset, &gUnknown_03001B60[1][0], sizeof(gUnknown_03001B60[1]));
+    }
+}
+
+// Unused
+void SetBgOffsetsInRange(u16 value, int_vcount from, int_vcount to)
+{
+    u16 *offsets = gBgOffsetsHBlank;
+    offsets += from;
+
+    for (; from < to; from++) {
+        *offsets++ = value;
+    }
+}
+
+void Task_802F06C(void)
+{
+    StageResultsInit *sri = TASK_DATA(gCurTask);
+
+    struct TransitionState *ts = &sri->ts;
+    NextTransitionFrame(ts);
+    
+    if(++sri->unk10 > ZONE_TIME_TO_INT(0, 2)) {
+        ts->speed = 60;
+        gCurTask->main = Task_802ED98;
     }
 }
