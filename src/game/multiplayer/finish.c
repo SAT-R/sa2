@@ -237,6 +237,7 @@ void Task_801A04C(void)
     }
 }
 
+// (94.60%) https://decomp.me/scratch/vZsth
 void Task_801A0E0(void)
 {
     u32 i; // r7
@@ -259,8 +260,9 @@ void Task_801A0E0(void)
             m4aMPlayAllStop();
             *((u32 *)sp04) = *((u32 *)gUnknown_030053E8);
 
-            for (i = 0, j = 3; i < MULTI_SIO_PLAYERS_MAX; j--, i++) {
+            for (i = 0, j = 3; i < MULTI_SIO_PLAYERS_MAX; i++) {
                 s32 m = 0;
+                s32 negOne;
                 while (m < j) {
                     if (sp04[m] < sp04[m + 1]) {
                         XOR_SWAP(sp04[m], sp04[m + 1]);
@@ -269,9 +271,13 @@ void Task_801A0E0(void)
 
                     m++;
                 }
+                negOne = -1;
+                j += negOne;
             }
 
             for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                u8 *v = &gUnknown_03005428[0];
+
                 if (i != 0) {
                     if (sp04[i] != sp04[0]) {
                         gUnknown_030054B4[sp00[i]] = i;
@@ -279,18 +285,16 @@ void Task_801A0E0(void)
                     } else {
                         gUnknown_030054B4[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 2;
-                        asm("");
                     }
                 } else {
                     // _0801A1F4
                     if (sp04[0] == sp04[1]) {
                         gUnknown_030054B4[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 2;
-                        asm("");
                     } else {
                         gUnknown_030054B4[sp00[0]] = i;
-                        gUnknown_03005428[sp00[0]]++;
-                        gMultiplayerCharacters[sp00[0]] = 1;
+                        v[sp00[0]]++;
+                        gMultiplayerCharacters[sp00[0]] = i;
                     }
                 }
             }
