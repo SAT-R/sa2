@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-void CreateCourseResultsCutScene(u8 unlockedCharacter);
+void CreateStageResultsCutscene(u8 unlockedCharacter);
 
 void CreateCharacterUnlockCutScene(u8 zone);
 void CreateCreamUnlockCutScene(void);

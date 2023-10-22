@@ -50,15 +50,15 @@ void Task_802ED98(void)
             && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
             switch (LEVEL_TO_ZONE(gCurrentLevel)) {
                 case ZONE_1: {
-                    CreateCourseResultsCutScene(COURSE_END_UNLOCK_CREAM);
+                    CreateStageResultsCutscene(COURSE_END_UNLOCK_CREAM);
                 } break;
 
                 case ZONE_3: {
-                    CreateCourseResultsCutScene(COURSE_END_UNLOCK_TAILS);
+                    CreateStageResultsCutscene(COURSE_END_UNLOCK_TAILS);
                 } break;
 
                 case ZONE_5: {
-                    CreateCourseResultsCutScene(COURSE_END_UNLOCK_KNUCKLES);
+                    CreateStageResultsCutscene(COURSE_END_UNLOCK_KNUCKLES);
                 } break;
 
                 default: {
@@ -168,8 +168,8 @@ void Task_802F06C(void)
 
     struct TransitionState *ts = &sri->ts;
     NextTransitionFrame(ts);
-    
-    if(++sri->unk10 > ZONE_TIME_TO_INT(0, 2)) {
+
+    if (++sri->unk10 > ZONE_TIME_TO_INT(0, 2)) {
         ts->speed = 60;
         gCurTask->main = Task_802ED98;
     }

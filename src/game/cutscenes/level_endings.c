@@ -150,7 +150,7 @@ UNUSED static const u16 gUnknown_080E1232[] = {
 
 void sub_808E890(struct Task *);
 
-void CreateCourseResultsCutScene(u8 mode)
+void CreateStageResultsCutscene(u8 mode)
 {
     TaskMain mains[3];
     u16 unk1214[6], unk1220[6], unk122C[3];
