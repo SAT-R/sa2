@@ -237,9 +237,7 @@ void Task_801A04C(void)
     }
 }
 
-// (99.02%) https://decomp.me/scratch/vZsth
-NONMATCH("asm/non_matching/game/multiplayer/finish/Task_801A0E0.inc",
-         void Task_801A0E0(void))
+void Task_801A0E0(void)
 {
     u32 i; // r7
     u32 j;
@@ -265,10 +263,9 @@ NONMATCH("asm/non_matching/game/multiplayer/finish/Task_801A0E0.inc",
             *((u32 *)sp04) = *((u32 *)gUnknown_030053E8);
 
             for (i = 0, j = 3; i < MULTI_SIO_PLAYERS_MAX; i++) {
-                u32 n = j;
                 s32 m = 0;
                 s32 negOne;
-                while (m < n) {
+                while (m < (3 - i)) {
                     if (sp04[m] < sp04[m + 1]) {
                         XOR_SWAP(sp04[m], sp04[m + 1]);
                         XOR_SWAP(sp00[m], sp00[m + 1]);
@@ -287,8 +284,8 @@ NONMATCH("asm/non_matching/game/multiplayer/finish/Task_801A0E0.inc",
                         gUnknown_030054B4[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 1;
                     } else {
-// TODO: Match without goto
-#if 1
+#ifndef NON_MATCHING
+                        // TODO: Match without goto
                         goto else_block;
 #else
                         gUnknown_030054B4[sp00[i]] = i;
@@ -298,7 +295,9 @@ NONMATCH("asm/non_matching/game/multiplayer/finish/Task_801A0E0.inc",
                 } else {
                     // _0801A1F4
                     if (sp04[0] == sp04[1]) {
+#ifndef NON_MATCHING
                     else_block:
+#endif
                         gUnknown_030054B4[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 2;
                     } else {
@@ -310,7 +309,7 @@ NONMATCH("asm/non_matching/game/multiplayer/finish/Task_801A0E0.inc",
             }
 
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-#if 1
+#ifndef NON_MATCHING
                 // TODO: Match without goto
                 goto _0801A2DA;
 #else
@@ -369,7 +368,9 @@ NONMATCH("asm/non_matching/game/multiplayer/finish/Task_801A0E0.inc",
             RecordOwnMultiplayerResult(r6);
             WriteSaveGame();
         }
+#ifndef NON_MATCHING
     _0801A2DA:
+#endif
         TasksDestroyAll();
 
         { // TODO: This is a macro!
@@ -389,4 +390,3 @@ NONMATCH("asm/non_matching/game/multiplayer/finish/Task_801A0E0.inc",
         return;
     }
 }
-END_NONMATCH
