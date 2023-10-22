@@ -3,9 +3,11 @@
 
 .section .rodata
 
+@ HACK: This data is inside the C implementation
+@       and gets inlined in-code, no matter whether it's non-matching or not.
     .global gUnknown_080D57D8
 gUnknown_080D57D8:
-    .byte 0, 1, 2, 3
+    @ .byte 0, 1, 2, 3
 
 .text
 .syntax unified
@@ -47,7 +49,7 @@ _0801A110:
 	beq _0801A126
 	b _0801A232
 _0801A126:
-	ldr r1, _0801A1E0 @ =gUnknown_080D57D8
+	ldr r1, _0801A1E0 @ =gUnknown_080D57D8-4
 	mov r0, sp
 	movs r2, #4
 	bl memcpy
@@ -139,7 +141,7 @@ _0801A1D0: .4byte gCurTask
 _0801A1D4: .4byte gBldRegs
 _0801A1D8: .4byte 0x00000FFF
 _0801A1DC: .4byte gGameMode
-_0801A1E0: .4byte gUnknown_080D57D8
+_0801A1E0: .4byte gUnknown_080D57D8-4
 _0801A1E4: .4byte gUnknown_030053E8
 _0801A1E8: .4byte gUnknown_030054B4
 _0801A1EC: .4byte gMultiplayerCharacters

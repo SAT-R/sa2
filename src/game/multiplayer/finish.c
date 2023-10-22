@@ -257,10 +257,8 @@ NONMATCH("asm/non_matching/game/multiplayer/finish/Task_801A0E0.inc",
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
             // NOTE(Jace): agbcc reserves the .rodata memory for this,
             //             even though the code in here never gets compiled because of
-            //             the NONMATCH macro.
-            // So as long as the C code doesn't entirely match, we have to keep this
-            // @HACK.
-            u8 sp00[4] = { 0 }; //= { 0, 1, 2, 3 };
+            //             the NONMATCH macro. @HACK.
+            u8 sp00[4] = { 0, 1, 2, 3 };
             u8 sp04[4] = { 0 };
 
             m4aMPlayAllStop();
