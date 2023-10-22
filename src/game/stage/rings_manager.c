@@ -103,7 +103,7 @@ void CreateStageRingsManager(void)
     s->graphics.dest = RESERVED_RING_TILES_VRAM;
     s->unk1A = SPRITE_OAM_ORDER(20);
     s->graphics.size = 0;
-    s->graphics.anim = SA2_ANIM_RING_STATIC;
+    s->graphics.anim = SA2_ANIM_RING;
     s->variant = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
