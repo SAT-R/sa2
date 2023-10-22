@@ -1,3 +1,5 @@
+#include <string.h> // memcpy
+
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"
@@ -136,13 +138,17 @@ void TaskDestructor_8019EF4(struct Task *t)
     VramFree(s->graphics.dest);
 }
 
-#if 01
+#include "game/multiboot/collect_rings/results.h"
+#include "game/multiplayer/results.h"
+#include "lib/m4a.h"
+
 typedef struct {
     u16 unk0;
     u8 filler2[2];
 } Finish2; /* size: 4 */
 
 void Task_801A04C(void);
+void Task_801A0E0(void);
 
 void sub_8019F08(void)
 {
@@ -166,33 +172,32 @@ void sub_8019F08(void)
             return;
         }
     }
-    // _08019F6C
 
     r2 = 0;
 
     if (gGameMode != GAME_MODE_TEAM_PLAY) {
-        for (i = 0; (i < MULTI_SIO_PLAYERS_MAX) && (gMultiplayerPlayerTasks[i] != NULL);
-             i++) {
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+            if (gMultiplayerPlayerTasks[i] == NULL) {
+                break;
+            }
+
             if (gUnknown_030054B4[i] != -1) {
                 r2++;
             }
         }
-        // _08019FA4
+
         if (r2 == 0) {
             r6 = 4;
         } else if (r2 == (i - 1)) {
-            // _08019FD4+6
             r6 = r2;
         } else {
             r6 = 5;
         }
     } else {
-        // _08019FE4
         r6 = 4;
     }
-    // _08019FE8
 
-    for (i = 0; ((i < MULTI_SIO_PLAYERS_MAX)); i++) {
+    for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         if (gMultiplayerPlayerTasks[i] == NULL) {
             break;
         }
@@ -206,4 +211,174 @@ void sub_8019F08(void)
         }
     }
 }
+
+void Task_801A04C(void)
+{
+    u32 x = 0;
+    Finish2 *f2 = TASK_DATA(gCurTask);
+
+    if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        x = 240;
+    }
+
+    if (gUnknown_03005438 == gUnknown_03005420) {
+        if (f2->unk0++ > x) {
+            gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+            gBldRegs.bldY = 0;
+
+            m4aMPlayFadeOut(&gMPlayInfo_BGM, 4);
+            m4aMPlayFadeOut(&gMPlayInfo_SE1, 4);
+            m4aMPlayFadeOut(&gMPlayInfo_SE2, 4);
+            m4aMPlayFadeOut(&gMPlayInfo_SE3, 4);
+
+            f2->unk0 = 0;
+            gCurTask->main = Task_801A0E0;
+        }
+    }
+}
+
+void Task_801A0E0(void)
+{
+    u32 i; // r7
+
+    Finish2 *f2 = TASK_DATA(gCurTask);
+    f2->unk0 += 64;
+
+    gBldRegs.bldY = (f2->unk0 >> 8);
+
+    if (f2->unk0 >= 0x1000) {
+        // _0801A110
+        gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+        gBldRegs.bldY = 0;
+
+        if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            u8 sp00[4] = { 0, 1, 2, 3 };
+            u8 sp04[4] = { 0 };
+
+            m4aMPlayAllStop();
+            *((u32 *)sp04) = *((u32 *)gUnknown_030053E8);
+
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                s32 m;
+
+                for (m = 0; m < (3 - i); m++) {
+                    if (sp04[m] < sp04[m + 1]) {
+                        XOR_SWAP(sp04[m], sp04[m + 1]);
+                        XOR_SWAP(sp00[m], sp00[m + 1]);
+                    }
+                }
+            }
+
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+
+                if (i != 0) {
+                    if (sp04[i] != sp04[0]) {
+                        gUnknown_030054B4[sp00[i]] = i;
+                        gMultiplayerCharacters[sp00[i]] = 1;
+                    } else {
+#ifndef NON_MATCHING
+                        // TODO: Match without goto
+                        goto else_block;
+#else
+                        gUnknown_030054B4[sp00[i]] = i;
+                        gMultiplayerCharacters[sp00[i]] = 2;
 #endif
+                    }
+                } else {
+                    // _0801A1F4
+                    if (sp04[0] == sp04[1]) {
+#ifndef NON_MATCHING
+                    else_block:
+#endif
+                        gUnknown_030054B4[sp00[i]] = i;
+                        gMultiplayerCharacters[sp00[i]] = 2;
+                    } else {
+                        gUnknown_030054B4[sp00[0]] = i;
+                        gUnknown_03005428[sp00[0]]++;
+                        gMultiplayerCharacters[sp00[0]] = i;
+                    }
+                }
+            }
+
+            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+#ifndef NON_MATCHING
+                // TODO: Match without goto
+                goto _0801A2DA;
+#else
+                TasksDestroyAll();
+
+                { // TODO: This is a macro!
+                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    gUnknown_03005390 = 0;
+                    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                }
+
+                if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                    DmaFill32(3, 0, &gMultiSioSend, sizeof(struct MultiSioData_0_0));
+                    CreateMultiplayerResultsScreen(1);
+                } else {
+                    DmaFill32(3, 0, &gMultiSioSend, sizeof(struct MultiSioData_0_0));
+                    CreateMultiplayerSinglePakResultsScreen(1);
+                }
+
+                return;
+#endif
+            }
+        }
+        // _0801A232
+
+        {
+            s16 pid;
+            s32 foeResult;
+            s16 ownResult = 0;
+            for (pid = 0; pid < MULTI_SIO_PLAYERS_MAX; pid++) {
+
+                if (!((gMultiplayerConnections >> pid) & 0x1))
+                    continue;
+
+                if (pid == SIO_MULTI_CNT->id)
+                    continue;
+
+                if (gUnknown_030054B4[SIO_MULTI_CNT->id] < gUnknown_030054B4[pid]) {
+                    foeResult = 0;
+                } else if (gUnknown_030054B4[SIO_MULTI_CNT->id]
+                           > gUnknown_030054B4[pid]) {
+                    foeResult = 1;
+                    ownResult = 1;
+                } else {
+                    foeResult = 2;
+
+                    if (ownResult != 1) {
+                        ownResult = 2;
+                    }
+                }
+                // _0801A2A8
+                RecordMultiplayerResult(gMultiplayerIds[pid], &gMultiplayerNames[pid][0],
+                                        foeResult);
+            }
+
+            RecordOwnMultiplayerResult(ownResult);
+            WriteSaveGame();
+        }
+#ifndef NON_MATCHING
+    _0801A2DA:
+#endif
+        TasksDestroyAll();
+
+        { // TODO: This is a macro!
+            gUnknown_03002AE4 = gUnknown_0300287C;
+            gUnknown_03005390 = 0;
+            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        }
+
+        if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+            DmaFill32(3, 0, &gMultiSioSend, sizeof(struct MultiSioData_0_0));
+            CreateMultiplayerResultsScreen(1);
+        } else {
+            DmaFill32(3, 0, &gMultiSioSend, sizeof(struct MultiSioData_0_0));
+            CreateMultiplayerSinglePakResultsScreen(1);
+        }
+
+        return;
+    }
+}

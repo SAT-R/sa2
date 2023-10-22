@@ -162,7 +162,7 @@ _0801FD64:
 	ble _0801FD72
 	movs r7, #0x10
 _0801FD72:
-	movs r0, #0x76
+	movs r0, #0x76      @ SE_RINGS_LOST
 	bl m4aSongNumStart
 	movs r3, #0x91
 	lsls r3, r3, #3
