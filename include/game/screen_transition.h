@@ -3,8 +3,8 @@
 
 #include "global.h"
 
-#define SCREEN_TRANSITION_INCOMPLETE 0
-#define SCREEN_TRANSITION_COMPLETE   1
+#define SCREEN_TRANSITION_RUNNING  0
+#define SCREEN_TRANSITION_COMPLETE 1
 
 // Possibly transition configuration?
 struct TransitionState {
