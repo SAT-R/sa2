@@ -21,8 +21,8 @@
 typedef struct {
     u32 unk0;
     u32 unk4;
-    u16 unk8;
-    u16 unkA;
+    s16 unk8;
+    s16 unkA;
 
     u32 unkC[2][8];
     u32 unk4C;
@@ -191,4 +191,59 @@ void CreateEggHammerTankII(void)
     }
 
     gActiveBossTask = t;
+}
+
+void Task_803C980(void);
+
+u8 sub_803CA40(void);
+
+extern const TaskMain gUnknown_080D7AA8[];
+
+void sub_803CB18(EggHammerTankII *);
+void sub_803AC2C(EggHammerTankII *);
+
+void Task_EggHammerTankIIMain(void)
+{
+    EggHammerTankII *boss = TASK_DATA(gCurTask);
+    u32 unkA8 = ++boss->unkA8;
+
+    if (unkA8 < 0x15) {
+        boss->unk8 = 0;
+        return;
+    }
+
+    if (unkA8 < 127) {
+        register u32 r0 asm("r0");
+        u32 r2;
+        register u32 temp asm("r1") = (unkA8 - 0x3D);
+        if (IS_FINAL_STAGE(gCurrentLevel)) {
+            r0 = (unkA8 * 0x500);
+            r2 = (r0 + 0x4BA00);
+            r2 += ((temp * temp * temp) >> 1);
+            r2 -= (temp * 0x30 * temp) >> 1;
+            r0 = (temp >> 1);
+            r2 += r0;
+            boss->unk0 = r2;
+        } else {
+            r0 = (unkA8 * 0x500);
+            r2 = (r0 + 0x4BA00);
+            r2 += ((temp * temp * temp) >> 1);
+            r2 -= (temp * 0x30 * temp) >> 1;
+            r0 = (temp >> 1);
+            r2 += r0;
+            boss->unk0 = r2;
+        }
+    }
+    boss->unk0 += boss->unk8;
+    boss->unk4 += boss->unkA;
+
+    if (unkA8 > 0x7E) {
+        gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
+        boss->unk8 = 0x500;
+        gCurTask->main = Task_803C980;
+    }
+
+    gUnknown_080D7AA8[sub_803CA40()]();
+    sub_803CB18(boss);
+    sub_803AC2C(boss);
 }
