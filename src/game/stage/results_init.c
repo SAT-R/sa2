@@ -1,12 +1,14 @@
 #include "global.h"
 #include "flags.h"
 #include "task.h"
+#include "lib/m4a.h"
 #include "game/game.h"
 #include "game/save.h"
 #include "game/cutscenes/level_endings.h"
 #include "game/screen_transition.h"
 #include "game/time_attack/results.h"
 
+#include "constants/songs.h"
 #include "constants/zones.h"
 
 // Seven unknown x/y positions
@@ -17,7 +19,8 @@ const u16 gUnknown_080D6DE4[][2] = {
 
 typedef struct {
     /* 0x00 */ struct TransitionState ts;
-    /* 0x0C */ u8 fillerC[0x4];
+    /* 0x0C */ s16 unkC;
+    /* 0x0C */ s16 unkE;
     /* 0x10 */ u8 unk10;
     /* 0x11 */ u8 unk11;
 } StageResultsInit; /* size: 0x14 */
@@ -114,4 +117,25 @@ void Task_802EE78(void)
 
         gCurTask->main = Task_802F06C;
     }
+}
+
+void sub_802EF68(s16 p0, s16 p1, u8 p2)
+{
+    struct Task *t = TaskCreate(Task_802EE78, sizeof(StageResultsInit), 0x6080, 0, NULL);
+    StageResultsInit *sri = TASK_DATA(t);
+    struct TransitionState *ts = &sri->ts;
+
+    sri->unk10 = 0;
+    sri->unkC = p0;
+    sri->unkE = p1;
+    sri->unk11 = p2;
+
+    ts->unk0 = 0;
+    ts->unk4 = 0x800;
+    ts->unk2 = 1;
+    ts->speed = 192;
+    ts->unk8 = 191;
+    ts->unkA = 0;
+
+    m4aSongNumStart(SE_333);
 }
