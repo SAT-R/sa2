@@ -237,7 +237,7 @@ void Task_801A04C(void)
     }
 }
 
-// (94.60%) https://decomp.me/scratch/vZsth
+// (97.92%) https://decomp.me/scratch/vZsth
 void Task_801A0E0(void)
 {
     u32 i; // r7
@@ -276,24 +276,29 @@ void Task_801A0E0(void)
             }
 
             for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-                u8 *v = &gUnknown_03005428[0];
 
                 if (i != 0) {
                     if (sp04[i] != sp04[0]) {
                         gUnknown_030054B4[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 1;
                     } else {
+// TODO: Match without goto
+#if 1
+                        goto else_block;
+#else
                         gUnknown_030054B4[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 2;
+#endif
                     }
                 } else {
                     // _0801A1F4
                     if (sp04[0] == sp04[1]) {
+                    else_block:
                         gUnknown_030054B4[sp00[i]] = i;
                         gMultiplayerCharacters[sp00[i]] = 2;
                     } else {
                         gUnknown_030054B4[sp00[0]] = i;
-                        v[sp00[0]]++;
+                        gUnknown_03005428[sp00[0]]++;
                         gMultiplayerCharacters[sp00[0]] = i;
                     }
                 }
@@ -301,6 +306,7 @@ void Task_801A0E0(void)
 
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
 #if 1
+                // TODO: Match without goto
                 goto _0801A2DA;
 #else
                 TasksDestroyAll();
