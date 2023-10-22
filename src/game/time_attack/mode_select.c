@@ -1,14 +1,15 @@
-#include "game/time_attack/mode_select.h"
 #include "core.h"
-#include "sprite.h"
-#include "game/screen_transition.h"
-#include "game/save.h"
-#include "task.h"
 #include "malloc_vram.h"
+#include "sprite.h"
+#include "task.h"
 #include "lib/m4a.h"
-#include "game/title_screen.h"
 #include "game/game.h"
 #include "game/character_select.h"
+#include "game/stage/results_init.h"
+#include "game/save.h"
+#include "game/time_attack/mode_select.h"
+#include "game/screen_transition.h"
+#include "game/title_screen.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -247,7 +248,7 @@ void Task_IntroSweepAnim(void)
     gWinRegs[5] = 0x11;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, modeScreen->animFrame * 20 + 700);
 
     if (gPressedKeys & A_BUTTON) {
@@ -281,7 +282,7 @@ static void Task_IntroUIAnim(void)
     gWinRegs[5] = 0x11;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
 
     s = &modeScreen->unk80;
@@ -354,7 +355,7 @@ static void Task_ScreenMain(void)
     gWinRegs[5] = 0x11;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
 
     if (gPressedKeys & (DPAD_UP | DPAD_DOWN)) {
@@ -420,7 +421,7 @@ static void Task_FadeOutModeSelected(void)
     gWinRegs[5] = 0x31;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
     RenderUI(modeScreen);
 }
@@ -443,7 +444,7 @@ static void Task_FadeOutToTitleScreen(void)
     gWinRegs[5] = 0x31;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
     RenderUI(modeScreen);
 }

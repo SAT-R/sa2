@@ -142,7 +142,7 @@ void sub_802EF68(s16 p0, s16 p1, u8 p2)
     m4aSongNumStart(SE_333);
 }
 
-void sub_802EFDC(u16 p0)
+void InitHBlankBgOffsets(u16 p0)
 {
     if (gBgOffsetsHBlank == &gUnknown_03001B60) {
         DmaFill16(3, p0, &gUnknown_03001B60[0][0], sizeof(gUnknown_03001B60[0]));
