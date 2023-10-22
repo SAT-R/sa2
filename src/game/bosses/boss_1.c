@@ -213,23 +213,25 @@ void Task_EggHammerTankIIMain(void)
     }
 
     if (unkA8 < 127) {
-        register u32 r0 asm("r0");
-        u32 r2;
-        register u32 temp asm("r1") = (unkA8 - 0x3D);
+        u32 r0, r2;
+#ifndef NON_MATCHING
+        register u32 r1 asm("r1") = (unkA8 - 0x3D);
+#endif
+
         if (IS_FINAL_STAGE(gCurrentLevel)) {
-            r0 = (unkA8 * 0x500);
-            r2 = (r0 + 0x4BA00);
-            r2 += ((temp * temp * temp) >> 1);
-            r2 -= (temp * 0x30 * temp) >> 1;
-            r0 = (temp >> 1);
+            r0 = unkA8 * 0x500;
+            r2 = r0 + 0x4BA00;
+            r2 += ((unkA8 - 0x3D) * (unkA8 - 0x3D) * (unkA8 - 0x3D)) >> 1;
+            r2 -= ((unkA8 - 0x3D) * 0x30 * (unkA8 - 0x3D)) >> 1;
+            r0 = (unkA8 - 0x3D) >> 1;
             r2 += r0;
             boss->unk0 = r2;
         } else {
-            r0 = (unkA8 * 0x500);
-            r2 = (r0 + 0x4BA00);
-            r2 += ((temp * temp * temp) >> 1);
-            r2 -= (temp * 0x30 * temp) >> 1;
-            r0 = (temp >> 1);
+            r0 = unkA8 * 0x500;
+            r2 = r0 + 0x4BA00;
+            r2 += ((unkA8 - 0x3D) * (unkA8 - 0x3D) * (unkA8 - 0x3D)) >> 1;
+            r2 -= ((unkA8 - 0x3D) * 0x30 * (unkA8 - 0x3D)) >> 1;
+            r0 = (unkA8 - 0x3D) >> 1;
             r2 += r0;
             boss->unk0 = r2;
         }
@@ -237,7 +239,7 @@ void Task_EggHammerTankIIMain(void)
     boss->unk0 += boss->unk8;
     boss->unk4 += boss->unkA;
 
-    if (unkA8 > 0x7E) {
+    if (unkA8 > 126) {
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         boss->unk8 = 0x500;
         gCurTask->main = Task_803C980;
