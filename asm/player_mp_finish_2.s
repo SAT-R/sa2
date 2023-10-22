@@ -1,6 +1,7 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.if 0
 .section .rodata
 
     .global gUnknown_080D57D8
@@ -11,7 +12,6 @@ gUnknown_080D57D8:
 .syntax unified
 .arm
 
-.if 0
 	thumb_func_start Task_801A0E0
 Task_801A0E0: @ 0x0801A0E0
 	push {r4, r5, r6, r7, lr}

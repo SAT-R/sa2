@@ -237,7 +237,7 @@ void Task_801A04C(void)
     }
 }
 
-// (97.92%) https://decomp.me/scratch/vZsth
+// (99.02%) https://decomp.me/scratch/vZsth
 void Task_801A0E0(void)
 {
     u32 i; // r7
@@ -261,9 +261,10 @@ void Task_801A0E0(void)
             *((u32 *)sp04) = *((u32 *)gUnknown_030053E8);
 
             for (i = 0, j = 3; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                u32 n = j;
                 s32 m = 0;
                 s32 negOne;
-                while (m < j) {
+                while (m < n) {
                     if (sp04[m] < sp04[m + 1]) {
                         XOR_SWAP(sp04[m], sp04[m + 1]);
                         XOR_SWAP(sp00[m], sp00[m + 1]);
