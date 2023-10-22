@@ -240,7 +240,6 @@ void Task_801A04C(void)
 void Task_801A0E0(void)
 {
     u32 i; // r7
-    u32 j;
 
     Finish2 *f2 = TASK_DATA(gCurTask);
     f2->unk0 += 64;
@@ -253,28 +252,21 @@ void Task_801A0E0(void)
         gBldRegs.bldY = 0;
 
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            // NOTE(Jace): agbcc reserves the .rodata memory for this,
-            //             even though the code in here never gets compiled because of
-            //             the NONMATCH macro. @HACK.
             u8 sp00[4] = { 0, 1, 2, 3 };
             u8 sp04[4] = { 0 };
 
             m4aMPlayAllStop();
             *((u32 *)sp04) = *((u32 *)gUnknown_030053E8);
 
-            for (i = 0, j = 3; i < MULTI_SIO_PLAYERS_MAX; i++) {
-                s32 m = 0;
-                s32 negOne;
-                while (m < (3 - i)) {
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+                s32 m;
+
+                for (m = 0; m < (3 - i); m++) {
                     if (sp04[m] < sp04[m + 1]) {
                         XOR_SWAP(sp04[m], sp04[m + 1]);
                         XOR_SWAP(sp00[m], sp00[m + 1]);
                     }
-
-                    m++;
                 }
-                negOne = -1;
-                j += negOne;
             }
 
             for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
@@ -336,36 +328,36 @@ void Task_801A0E0(void)
         // _0801A232
 
         {
-            s16 r6 = 0;
-            s16 r2;
-            s32 r3;
-            for (r2 = 0; r2 < MULTI_SIO_PLAYERS_MAX; r2++) {
+            s16 pid;
+            s32 foeResult;
+            s16 ownResult = 0;
+            for (pid = 0; pid < MULTI_SIO_PLAYERS_MAX; pid++) {
 
-                if (!((gMultiplayerConnections >> r2) & 0x1))
+                if (!((gMultiplayerConnections >> pid) & 0x1))
                     continue;
 
-                if (r2 == SIO_MULTI_CNT->id)
+                if (pid == SIO_MULTI_CNT->id)
                     continue;
 
-                if (gUnknown_030054B4[SIO_MULTI_CNT->id] < gUnknown_030054B4[r2]) {
-                    r3 = 0;
+                if (gUnknown_030054B4[SIO_MULTI_CNT->id] < gUnknown_030054B4[pid]) {
+                    foeResult = 0;
                 } else if (gUnknown_030054B4[SIO_MULTI_CNT->id]
-                           > gUnknown_030054B4[r2]) {
-                    r3 = 1;
-                    r6 = 1;
+                           > gUnknown_030054B4[pid]) {
+                    foeResult = 1;
+                    ownResult = 1;
                 } else {
-                    r3 = 2;
+                    foeResult = 2;
 
-                    if (r6 != 1) {
-                        r6 = 2;
+                    if (ownResult != 1) {
+                        ownResult = 2;
                     }
                 }
                 // _0801A2A8
-                RecordMultiplayerResult(gMultiplayerIds[r2], &gMultiplayerNames[r2][0],
-                                        r3);
+                RecordMultiplayerResult(gMultiplayerIds[pid], &gMultiplayerNames[pid][0],
+                                        foeResult);
             }
 
-            RecordOwnMultiplayerResult(r6);
+            RecordOwnMultiplayerResult(ownResult);
             WriteSaveGame();
         }
 #ifndef NON_MATCHING
