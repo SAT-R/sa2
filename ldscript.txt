@@ -358,7 +358,7 @@ SECTIONS
         build/sa2/asm/player_super_sonic.o(.rodata);
         build/sa2/src/game/stage/ui.o(.rodata);
         build/sa2/src/game/trapped_animals.o(.rodata);
-        build/sa2/src/game/game_8.o(.rodata);
+        build/sa2/src/game/stage/results_init.o(.rodata);
         build/sa2/src/game/stage/intro.o(.rodata);
         build/sa2/src/game/stage/results.o(.rodata);
         build/sa2/src/game/character_select.o(.rodata);
