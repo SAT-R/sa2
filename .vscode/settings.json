@@ -255,7 +255,8 @@
     "boss_1.h": "c",
     "boss_2.h": "c",
     "koura.h": "c",
-    "gohla.h": "c"
+    "gohla.h": "c",
+    "multipak_connection.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
