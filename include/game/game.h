@@ -596,7 +596,6 @@ void GameStageStart(void);
 void Player_SetMovestate_IsInScriptedSequence(void);
 void Player_ClearMovestate_IsInScriptedSequence(void);
 
-void sub_802EFDC(u32);
 void sub_802E164(s32, u16);
 
 // ApplyGamePlaySettings

@@ -5,52 +5,7 @@
 .syntax unified
 .text
 
-.if 01
-	thumb_func_start sub_802EFDC
-sub_802EFDC: @ 0x0802EFDC
-	push {lr}
-	sub sp, #4
-	lsls r0, r0, #0x10
-	lsrs r1, r0, #0x10
-	ldr r0, _0802F004 @ =gBgOffsetsHBlank
-	ldr r0, [r0]
-	ldr r2, _0802F008 @ =gUnknown_03001B60
-	cmp r0, r2
-	bne _0802F014
-	mov r0, sp
-	strh r1, [r0]
-	ldr r0, _0802F00C @ =0x040000D4
-	mov r1, sp
-	str r1, [r0]
-	str r2, [r0, #4]
-	ldr r1, _0802F010 @ =0x81000140
-	str r1, [r0, #8]
-	ldr r0, [r0, #8]
-	b _0802F02A
-	.align 2, 0
-_0802F004: .4byte gBgOffsetsHBlank
-_0802F008: .4byte gUnknown_03001B60
-_0802F00C: .4byte 0x040000D4
-_0802F010: .4byte 0x81000140
-_0802F014:
-	mov r0, sp
-	strh r1, [r0]
-	ldr r1, _0802F030 @ =0x040000D4
-	str r0, [r1]
-	movs r3, #0xa0
-	lsls r3, r3, #2
-	adds r0, r2, r3
-	str r0, [r1, #4]
-	ldr r0, _0802F034 @ =0x81000140
-	str r0, [r1, #8]
-	ldr r0, [r1, #8]
-_0802F02A:
-	add sp, #4
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0802F030: .4byte 0x040000D4
-_0802F034: .4byte 0x81000140
+.if 0
 .endif
 
 	thumb_func_start sub_802F038

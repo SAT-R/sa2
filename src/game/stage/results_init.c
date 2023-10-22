@@ -1,4 +1,5 @@
 #include "global.h"
+#include "core.h"
 #include "flags.h"
 #include "task.h"
 #include "lib/m4a.h"
@@ -6,6 +7,7 @@
 #include "game/save.h"
 #include "game/cutscenes/level_endings.h"
 #include "game/screen_transition.h"
+#include "game/stage/results.h"
 #include "game/time_attack/results.h"
 
 #include "constants/songs.h"
@@ -138,4 +140,13 @@ void sub_802EF68(s16 p0, s16 p1, u8 p2)
     ts->unkA = 0;
 
     m4aSongNumStart(SE_333);
+}
+
+void sub_802EFDC(u16 p0)
+{
+    if (gBgOffsetsHBlank == &gUnknown_03001B60) {
+        DmaFill16(3, p0, &gUnknown_03001B60[0][0], sizeof(gUnknown_03001B60[0]));
+    } else {
+        DmaFill16(3, p0, &gUnknown_03001B60[1][0], sizeof(gUnknown_03001B60[1]));
+    }
 }
