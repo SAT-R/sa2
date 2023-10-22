@@ -5,67 +5,7 @@
 .syntax unified
 .text
 
-.if 0
-.endif
-
-	thumb_func_start sub_802EF68
-sub_802EF68: @ 0x0802EF68
-	push {r4, r5, r6, lr}
-	mov r6, r8
-	push {r6}
-	sub sp, #4
-	adds r4, r0, #0
-	adds r5, r1, #0
-	adds r6, r2, #0
-	lsls r4, r4, #0x10
-	lsrs r4, r4, #0x10
-	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
-	lsls r6, r6, #0x18
-	lsrs r6, r6, #0x18
-	ldr r0, _0802EFD4 @ =Task_802EE78
-	movs r2, #0xc1
-	lsls r2, r2, #7
-	movs r1, #0
-	mov r8, r1
-	str r1, [sp]
-	movs r1, #0x14
-	movs r3, #0
-	bl TaskCreate
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	mov r1, r8
-	strb r1, [r0, #0x10]
-	strh r4, [r0, #0xc]
-	strh r5, [r0, #0xe]
-	strb r6, [r0, #0x11]
-	mov r1, r8
-	strh r1, [r0]
-	movs r1, #0x80
-	lsls r1, r1, #4
-	strh r1, [r0, #4]
-	movs r1, #1
-	strh r1, [r0, #2]
-	movs r1, #0xc0
-	strh r1, [r0, #6]
-	movs r1, #0xbf
-	strh r1, [r0, #8]
-	mov r1, r8
-	strh r1, [r0, #0xa]
-	ldr r0, _0802EFD8 @ =0x0000014D
-	bl m4aSongNumStart
-	add sp, #4
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0802EFD4: .4byte Task_802EE78
-_0802EFD8: .4byte 0x0000014D
-
+.if 01
 	thumb_func_start sub_802EFDC
 sub_802EFDC: @ 0x0802EFDC
 	push {lr}
@@ -111,6 +51,7 @@ _0802F02A:
 	.align 2, 0
 _0802F030: .4byte 0x040000D4
 _0802F034: .4byte 0x81000140
+.endif
 
 	thumb_func_start sub_802F038
 sub_802F038: @ 0x0802F038
