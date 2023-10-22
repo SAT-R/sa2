@@ -10,6 +10,7 @@
 #include "game/player_mp_actor.h"
 #include "game/screen_transition.h"
 #include "game/stage/ui.h"
+#include "game/stage/results_init.h"
 #include "game/water_effects.h"
 
 #include "constants/animations.h"
@@ -863,7 +864,7 @@ static void Task_IntroColorAnimation(void)
 
     gFlags |= FLAGS_4;
 
-    sub_802EFDC(DISPLAY_WIDTH);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
 
     if (counter > 10) {
         sub_802DDC4(p0->x, p0->y);

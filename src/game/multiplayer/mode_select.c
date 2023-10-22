@@ -1,16 +1,17 @@
 #include "global.h"
+#include "core.h"
+#include "flags.h"
+#include "malloc_vram.h"
+#include "multi_sio.h"
+#include "sprite.h"
+#include "task.h"
+#include "lib/m4a.h"
 #include "game/multiplayer/mode_select.h"
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiboot/connection.h"
 #include "game/save.h"
-#include "core.h"
-#include "multi_sio.h"
-#include "task.h"
-#include "sprite.h"
-#include "malloc_vram.h"
 #include "game/screen_transition.h"
-#include "lib/m4a.h"
-#include "flags.h"
+#include "game/stage/results_init.h"
 #include "game/title_screen.h"
 
 #include "constants/animations.h"
@@ -233,7 +234,7 @@ static void Task_EnterAnimPart1(void)
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, (0x10 - modeScreen->animFrame) * 20);
     if (gPressedKeys & A_BUTTON) {
         modeScreen->animFrame = 0;
@@ -265,7 +266,7 @@ static void Task_EnterAnimPart2(void)
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
     unk80 = &modeScreen->unk80;
@@ -331,7 +332,7 @@ static void Task_ScreenMain(void)
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
     if (gPressedKeys & (DPAD_DOWN | DPAD_UP)) {
@@ -378,7 +379,7 @@ static void Task_FadeOutToSelectedMode(void)
     gWinRegs[4] = 0x3300;
     gWinRegs[5] = 0x31;
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
     RenderUI(modeScreen);
@@ -399,7 +400,7 @@ static void Task_FadeOutAndExitToTitleScreen(void)
     gWinRegs[4] = 0x3300;
     gWinRegs[5] = 0x31;
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
     RenderUI(modeScreen);

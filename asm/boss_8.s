@@ -1089,7 +1089,7 @@ _0804AF34:
 	cmp r0, #0x5a
 	bls _0804B008
 	movs r0, #0
-	bl sub_802EFDC
+	bl InitHBlankBgOffsets
 	mov r0, r8
 	lsls r3, r0, #0x10
 	asrs r3, r3, #0x10
