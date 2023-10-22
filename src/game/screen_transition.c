@@ -39,7 +39,7 @@ u8 NextTransitionFrame(struct TransitionState *transition)
         transition->unk4 = Q_8_8(32);
         return SCREEN_TRANSITION_COMPLETE;
     } else {
-        return SCREEN_TRANSITION_INCOMPLETE;
+        return SCREEN_TRANSITION_RUNNING;
     }
 }
 
