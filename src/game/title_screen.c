@@ -323,12 +323,12 @@ void CreateTitleScreen(void)
     };
 
     transition = &titleScreen->unk270;
-    transition->unk0 = 1;
-    transition->unk4 = 0;
-    transition->unk2 = 2;
+    transition->window = SCREEN_FADE_USE_WINDOW_1;
+    transition->brightness = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
     transition->speed = 0x100;
-    transition->unk8 = 0x3FBF;
-    transition->unkA = 0;
+    transition->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    transition->bldAlpha = 0;
 
     config27C = &titleScreen->unk27C;
     config27C->unk0 = 0;
@@ -368,12 +368,13 @@ static void CreateTitleScreenWithoutIntro(struct TitleScreen *titleScreen)
     titleScreen->introPanUpVelocity = 1;
 
     transition = &titleScreen->unk270;
-    transition->unk0 = 1;
-    transition->unk4 = 0;
-    transition->unk2 = 2;
+    transition = &titleScreen->unk270;
+    transition->window = SCREEN_FADE_USE_WINDOW_1;
+    transition->brightness = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
     transition->speed = 0x200;
-    transition->unk8 = 0x3fbf;
-    transition->unkA = 0;
+    transition->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    transition->bldAlpha = 0;
 
     InitTitleScreenUI(titleScreen);
 
@@ -1114,10 +1115,11 @@ static void Task_PlayModeMenuMain(void)
             CreateMenuItemTransition(&titleScreen->menuItems[MENU_ITEM_SINGLE_PLAYER],
                                      TRANSITION_OUT);
 
-            transition->unk8 = 0x3FFF;
-            transition->unk4 = 0;
+            transition->bldCnt
+                = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+            transition->brightness = 0;
             transition->speed = 0x100;
-            transition->unk2 = 1;
+            transition->flags = SCREEN_FADE_USE_WINDOW_1;
 
             titleScreen->menuCursor = SPECIAL_MENU_INDEX_MULTI_PLAYER;
             gCurTask->main = Task_HandleTitleScreenExit;
@@ -1235,14 +1237,15 @@ static void Task_SinglePlayerMenuMain(void)
 
     if (gPressedKeys & A_BUTTON) {
         transition = &titleScreen->unk270;
-        transition->unk8 = 0x3FFF;
+        transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
         if (titleScreen->menuCursor
             == SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN)) {
-            transition->unk8 = 0x3FBF;
+            transition->bldCnt
+                = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
         }
         transition->speed = 0x100;
-        transition->unk4 = 0;
-        transition->unk2 = 1;
+        transition->brightness = 0;
+        transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
 
         for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
             if (menuIndex != titleScreen->menuCursor) {
@@ -1828,12 +1831,12 @@ static void SkipIntro(struct TitleScreen *titleScreen)
     struct TransitionState *transition = &titleScreen->unk270;
     gFlags &= ~0x4;
 
-    transition->unk0 = 1;
-    transition->unk4 = 0;
-    transition->unk2 = 2;
+    transition->window = 1;
+    transition->brightness = 0;
+    transition->flags = 2;
     transition->speed = 0x100;
-    transition->unk8 = 0x3FBF;
-    transition->unkA = 0;
+    transition->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    transition->bldAlpha = 0;
     NextTransitionFrame(transition);
 
     m4aMPlayAllStop();

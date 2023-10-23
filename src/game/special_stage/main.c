@@ -169,12 +169,12 @@ void Task_IntroScreenMain(void)
         gBldRegs.bldCnt = 0xBF;
         gBldRegs.bldY = 0x10;
 
-        transition->unk0 = 0;
-        transition->unk2 = 2;
-        transition->unk4 = Q_8_8(0);
-        transition->speed = 0x100;
-        transition->unkA = 0;
-        transition->unk8 = 0xBF;
+        transition->window = 0;
+        transition->flags = 2;
+        transition->brightness = Q_8_8(0);
+        transition->speed = Q_24_8(1.0);
+        transition->bldAlpha = 0;
+        transition->bldCnt = 0xBF;
         stage->animFrame = 0;
         gCurTask->main = Task_InitComponents;
     }
@@ -295,16 +295,16 @@ void sub_806BFD0(void)
 
     guardRobo->state = 0;
 
-    transition->unk0 = 1;
-    transition->unk2 = 1;
-    transition->unk4 = Q_8_8(0);
+    transition->window = 1;
+    transition->flags = 1;
+    transition->brightness = Q_8_8(0);
     transition->speed = 0x40;
-    transition->unkA = 0;
-    transition->unk8 = 0xBF;
+    transition->bldAlpha = 0;
+    transition->bldCnt = 0xBF;
     NextTransitionFrame(transition);
 
     gDispCnt = 0x9641;
-    gWinRegs[5] = 0x103F;
+    gWinRegs[WINREG_WINOUT] = 0x103F;
 
     if (player->state == 13) {
         m4aSongNumStart(MUS_SPECIAL_STAGE_CLEAR);
@@ -320,7 +320,7 @@ void Task_FadeToResultScreen(void)
 
     if (NextTransitionFrame(transition) == 0) {
         gDispCnt = 0x9641;
-        gWinRegs[5] = 0x103F;
+        gWinRegs[WINREG_WINOUT] = 0x103F;
         return;
     }
 
@@ -519,12 +519,12 @@ void sub_806C49C(void)
     }
 
     if (gPressedKeys & A_BUTTON || stage->animFrame > 60) {
-        transition->unk0 = 0;
-        transition->unk2 = 1;
-        transition->unk4 = Q_8_8(0);
+        transition->window = 0;
+        transition->flags = 1;
+        transition->brightness = Q_8_8(0);
         transition->speed = 0x40;
-        transition->unkA = 0;
-        transition->unk8 = 0xBF;
+        transition->bldAlpha = 0;
+        transition->bldCnt = 0xBF;
 
         stage->animFrame = 0;
         if (stage->targetReached) {

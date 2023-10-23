@@ -163,7 +163,7 @@ typedef struct {
     /* 0x3C */ Hitbox reserved;
     /* 0x4C */ Hitbox reserved2;
 } UNK_30056A4; /* size: unknown */
-extern UNK_30056A4 *gUnknown_030056A4; // might be a Task* ?
+extern UNK_30056A4 *gUnknown_030056A4;
 
 // Incremented by 1 every frame if the game is not paused.
 extern u32 gStageTime;
@@ -596,7 +596,6 @@ void GameStageStart(void);
 void Player_SetMovestate_IsInScriptedSequence(void);
 void Player_ClearMovestate_IsInScriptedSequence(void);
 
-void sub_802EFDC(u32);
 void sub_802E164(s32, u16);
 
 // ApplyGamePlaySettings

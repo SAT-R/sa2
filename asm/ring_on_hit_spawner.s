@@ -11,8 +11,9 @@ gPlayerCharacterIdleAnims: @ 0x080D672C
 .syntax unified
 .arm
 
-	thumb_func_start sub_801FC2C
-sub_801FC2C: @ 0x0801FC2C
+@ Called on Stage Initialization
+	thumb_func_start InitPlayerHitRingsSpawner
+InitPlayerHitRingsSpawner: @ 0x0801FC2C
 	push {r4, r5, lr}
 	sub sp, #8
 	ldr r0, _0801FC44 @ =gGameMode

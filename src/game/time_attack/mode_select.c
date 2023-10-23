@@ -1,14 +1,15 @@
-#include "game/time_attack/mode_select.h"
 #include "core.h"
-#include "sprite.h"
-#include "game/screen_transition.h"
-#include "game/save.h"
-#include "task.h"
 #include "malloc_vram.h"
+#include "sprite.h"
+#include "task.h"
 #include "lib/m4a.h"
-#include "game/title_screen.h"
 #include "game/game.h"
 #include "game/character_select.h"
+#include "game/stage/boss_results_transition.h"
+#include "game/save.h"
+#include "game/time_attack/mode_select.h"
+#include "game/screen_transition.h"
+#include "game/title_screen.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -120,12 +121,12 @@ void CreateTimeAttackModeSelectionScreen(void)
     modeScreen->unk14E = 0;
 
     transition = &modeScreen->unk140;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 2;
+    transition->window = 1;
+    transition->brightness = Q_8_8(0);
+    transition->flags = 2;
     transition->speed = 0x100;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    transition->bldCnt = 0x3FFF;
+    transition->bldAlpha = 0;
 
     NextTransitionFrame(transition);
 
@@ -247,7 +248,7 @@ void Task_IntroSweepAnim(void)
     gWinRegs[5] = 0x11;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, modeScreen->animFrame * 20 + 700);
 
     if (gPressedKeys & A_BUTTON) {
@@ -281,7 +282,7 @@ static void Task_IntroUIAnim(void)
     gWinRegs[5] = 0x11;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
 
     s = &modeScreen->unk80;
@@ -326,23 +327,23 @@ static void Task_ScreenMain(void)
             m4aSongNumStart(SE_ABORT);
         } else {
             transition = &modeScreen->unk140;
-            transition->unk0 = 1;
-            transition->unk4 = Q_8_8(0);
-            transition->unk2 = 1;
+            transition->window = 1;
+            transition->brightness = Q_8_8(0);
+            transition->flags = 1;
             transition->speed = 0x100;
-            transition->unk8 = 0x3FFF;
-            transition->unkA = 0;
+            transition->bldCnt = 0x3FFF;
+            transition->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutModeSelected;
         }
     } else if (gPressedKeys & B_BUTTON) {
         transition = &modeScreen->unk140;
-        transition->unk0 = 1;
-        transition->unk4 = Q_8_8(0);
-        transition->unk2 = 1;
+        transition->window = 1;
+        transition->brightness = Q_8_8(0);
+        transition->flags = 1;
         transition->speed = 0x100;
-        transition->unk8 = 0x3FFF;
-        transition->unkA = 0;
+        transition->bldCnt = 0x3FFF;
+        transition->bldAlpha = 0;
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = Task_FadeOutToTitleScreen;
     }
@@ -354,7 +355,7 @@ static void Task_ScreenMain(void)
     gWinRegs[5] = 0x11;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
 
     if (gPressedKeys & (DPAD_UP | DPAD_DOWN)) {
@@ -420,7 +421,7 @@ static void Task_FadeOutModeSelected(void)
     gWinRegs[5] = 0x31;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
     RenderUI(modeScreen);
 }
@@ -443,7 +444,7 @@ static void Task_FadeOutToTitleScreen(void)
     gWinRegs[5] = 0x31;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
     RenderUI(modeScreen);
 }

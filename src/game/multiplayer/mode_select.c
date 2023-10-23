@@ -1,16 +1,17 @@
 #include "global.h"
+#include "core.h"
+#include "flags.h"
+#include "malloc_vram.h"
+#include "multi_sio.h"
+#include "sprite.h"
+#include "task.h"
+#include "lib/m4a.h"
 #include "game/multiplayer/mode_select.h"
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiboot/connection.h"
 #include "game/save.h"
-#include "core.h"
-#include "multi_sio.h"
-#include "task.h"
-#include "sprite.h"
-#include "malloc_vram.h"
 #include "game/screen_transition.h"
-#include "lib/m4a.h"
-#include "flags.h"
+#include "game/stage/boss_results_transition.h"
 #include "game/title_screen.h"
 
 #include "constants/animations.h"
@@ -30,7 +31,7 @@ struct MultiplayerModeSelectScreen {
     Sprite unkE0;
     Sprite subText;
 
-    struct TransitionState unk140;
+    struct TransitionState transition;
 
     // animFrame
     u8 animFrame;
@@ -83,7 +84,7 @@ void CreateMultiplayerModeSelectScreen(void)
 {
     struct Task *t;
     struct MultiplayerModeSelectScreen *modeScreen;
-    struct TransitionState *unk140;
+    struct TransitionState *transition;
     Sprite *s;
     Background *background;
 
@@ -108,14 +109,14 @@ void CreateMultiplayerModeSelectScreen(void)
     modeScreen->pakMode = PAK_MODE_MULTI;
     modeScreen->enterAnimDone = FALSE;
 
-    unk140 = &modeScreen->unk140;
-    unk140->unk0 = 1;
-    unk140->unk4 = 0;
-    unk140->unk2 = 2;
-    unk140->speed = 0x100;
-    unk140->unk8 = 0x3FFF;
-    unk140->unkA = 0;
-    NextTransitionFrame(unk140);
+    transition = &modeScreen->transition;
+    transition->window = 1;
+    transition->brightness = Q_24_8(0.0);
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    transition->speed = Q_24_8(1.0);
+    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    transition->bldAlpha = 0;
+    NextTransitionFrame(transition);
 
     s = &modeScreen->unk80;
     s->graphics.dest = VramMalloc(0x32);
@@ -233,7 +234,7 @@ static void Task_EnterAnimPart1(void)
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, (0x10 - modeScreen->animFrame) * 20);
     if (gPressedKeys & A_BUTTON) {
         modeScreen->animFrame = 0;
@@ -265,7 +266,7 @@ static void Task_EnterAnimPart2(void)
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
     unk80 = &modeScreen->unk80;
@@ -301,27 +302,27 @@ static void Task_EnterAnimPart2(void)
 static void Task_ScreenMain(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk140;
+    struct TransitionState *transition;
     if (gPressedKeys & A_BUTTON) {
-        unk140 = &modeScreen->unk140;
-        unk140->unk0 = 1;
-        unk140->unk4 = 0;
-        unk140->unk2 = 1;
-        unk140->speed = 0x100;
-        unk140->unk8 = 0x3FFF;
-        unk140->unkA = 0;
+        transition = &modeScreen->transition;
+        transition->window = 1;
+        transition->brightness = 0;
+        transition->flags = 1;
+        transition->speed = 0x100;
+        transition->bldCnt = 0x3FFF;
+        transition->bldAlpha = 0;
         m4aSongNumStart(SE_SELECT);
         MultiSioStop();
         MultiSioInit(0);
         gCurTask->main = Task_FadeOutToSelectedMode;
     } else if (gPressedKeys & B_BUTTON) {
-        unk140 = &modeScreen->unk140;
-        unk140->unk0 = 1;
-        unk140->unk4 = 0;
-        unk140->unk2 = 1;
-        unk140->speed = 0x100;
-        unk140->unk8 = 0x3FFF;
-        unk140->unkA = 0;
+        transition = &modeScreen->transition;
+        transition->window = 1;
+        transition->brightness = 0;
+        transition->flags = 1;
+        transition->speed = 0x100;
+        transition->bldCnt = 0x3FFF;
+        transition->bldAlpha = 0;
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = Task_FadeOutAndExitToTitleScreen;
     }
@@ -331,7 +332,7 @@ static void Task_ScreenMain(void)
     gWinRegs[4] = 0x1300;
     gWinRegs[5] = 0x11;
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
     if (gPressedKeys & (DPAD_DOWN | DPAD_UP)) {
@@ -366,7 +367,7 @@ static void Task_ScreenMain(void)
 static void Task_FadeOutToSelectedMode(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&modeScreen->transition) == SCREEN_TRANSITION_COMPLETE) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
         gCurTask->main = Task_ExitAndInitSelectedPakMode;
@@ -378,7 +379,7 @@ static void Task_FadeOutToSelectedMode(void)
     gWinRegs[4] = 0x3300;
     gWinRegs[5] = 0x31;
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
     RenderUI(modeScreen);
@@ -387,7 +388,7 @@ static void Task_FadeOutToSelectedMode(void)
 static void Task_FadeOutAndExitToTitleScreen(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&modeScreen->transition) == SCREEN_TRANSITION_COMPLETE) {
         gFlags &= ~0x4;
         CreateTitleScreenAtPlayModeMenu();
         TaskDestroy(gCurTask);
@@ -399,7 +400,7 @@ static void Task_FadeOutAndExitToTitleScreen(void)
     gWinRegs[4] = 0x3300;
     gWinRegs[5] = 0x31;
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E164(0x6400, 0x140);
 
     RenderUI(modeScreen);
@@ -408,7 +409,7 @@ static void Task_FadeOutAndExitToTitleScreen(void)
 static void Task_FadeInAndStartEnterAnim(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&modeScreen->transition) == SCREEN_TRANSITION_COMPLETE) {
         modeScreen->animFrame = 15;
         gCurTask->main = Task_EnterAnimPart1;
     }

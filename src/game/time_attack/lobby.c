@@ -225,12 +225,12 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     InitBackground(background);
 
     transition = &lobbyScreen->unk1A0;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 2;
+    transition->window = 1;
+    transition->brightness = Q_8_8(0);
+    transition->flags = 2;
     transition->speed = 0x200;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    transition->bldCnt = 0x3FFF;
+    transition->bldAlpha = 0;
 
     m4aSongNumStart(MUS_TIME_ATTACK_MENU);
     NextTransitionFrame(transition);
@@ -398,9 +398,9 @@ void sub_8088EB4(void)
             }
         }
 
-        lobbyScreen->unk1A0.unkA = 0;
-        lobbyScreen->unk1A0.unk4 = 0;
-        lobbyScreen->unk1A0.unk2 = 1;
+        lobbyScreen->unk1A0.bldAlpha = 0;
+        lobbyScreen->unk1A0.brightness = 0;
+        lobbyScreen->unk1A0.flags = 1;
         m4aSongNumStart(SE_SELECT);
         m4aMPlayFadeOut(&gMPlayInfo_BGM, 0x1000);
         gCurTask->main = sub_8088D60;

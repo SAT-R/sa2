@@ -46,7 +46,7 @@ u32 gMultiSioStatusFlags = 0;
 bool8 gMultiSioEnabled = FALSE;
 
 struct Task *gTaskPtrs[] ALIGNED(16) = {};
-u32 gUnknown_03001B60[][DISPLAY_HEIGHT] = {};
+u32 gUnknown_03001B60[2][DISPLAY_HEIGHT] = {};
 u16 gObjPalette[] = {};
 struct MapHeader **gUnknown_03002260 = NULL;
 u32 gFrameCount = 0;

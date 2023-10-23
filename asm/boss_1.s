@@ -418,7 +418,7 @@ _0803ABC0:
 	cmp r1, r0
 	bgt _0803ABEC
 	movs r0, #0
-	bl CreateCourseResultsCutScene
+	bl CreateStageResultsCutscene
 	b _0803ABFC
 	.align 2, 0
 _0803ABE4: .4byte gSelectedCharacter

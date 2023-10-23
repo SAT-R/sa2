@@ -279,12 +279,12 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     }
 
     screenFade = &characterScreen->screenFade;
-    screenFade->unk0 = 0;
-    screenFade->unk4 = 0;
-    screenFade->unk2 = 2;
+    screenFade->window = SCREEN_FADE_USE_WINDOW_0;
+    screenFade->brightness = 0;
+    screenFade->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
     screenFade->speed = 0x180;
-    screenFade->unk8 = 0xFF;
-    screenFade->unkA = 0;
+    screenFade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+    screenFade->bldAlpha = 0;
     NextTransitionFrame(screenFade);
 
     background = &characterScreen->unk8C;
@@ -619,7 +619,7 @@ static void Task_CharacterSelectMain(void)
 {
     u8 i;
     Sprite *s;
-    struct TransitionState *unk0;
+    struct TransitionState *screenFade;
     union MultiSioData *packet;
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     characterScreen->cursorAnimFrame = (characterScreen->cursorAnimFrame & 0x3F) + 1;
@@ -629,13 +629,13 @@ static void Task_CharacterSelectMain(void)
     if (IS_MULTI_PLAYER) {
         ReadMultiplayerSelections(characterScreen, i, packet);
     } else if (gPressedKeys & B_BUTTON || characterScreen->exiting) {
-        unk0 = &characterScreen->screenFade;
-        unk0->unk0 = 0;
-        unk0->unk4 = 0;
-        unk0->unk2 = 1;
-        unk0->speed = 0x180;
-        unk0->unk8 = 0xFF;
-        unk0->unkA = 0;
+        screenFade = &characterScreen->screenFade;
+        screenFade->window = SCREEN_FADE_USE_WINDOW_0;
+        screenFade->brightness = 0;
+        screenFade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+        screenFade->speed = 0x180;
+        screenFade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+        screenFade->bldAlpha = 0;
         gCurTask->main = Task_FadeOutAndExitToPrevious;
 
         if (!characterScreen->exiting) {
@@ -663,13 +663,13 @@ static void Task_CharacterSelectMain(void)
 
         characterScreen->animFrame = 0;
 
-        unk0 = &characterScreen->screenFade;
-        unk0->unk0 = 0;
-        unk0->unk4 = 0;
-        unk0->unk2 = 1;
-        unk0->speed = 0x180;
-        unk0->unk8 = 0xFF;
-        unk0->unkA = 0;
+        screenFade = &characterScreen->screenFade;
+        screenFade->window = SCREEN_FADE_USE_WINDOW_0;
+        screenFade->brightness = 0;
+        screenFade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+        screenFade->speed = 0x180;
+        screenFade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+        screenFade->bldAlpha = 0;
 
         m4aSongNumStart(gCharacterAnnouncements[characterScreen->selectedCharacter]);
 
@@ -763,13 +763,13 @@ static void Task_CharacterSelectMain(void)
                 gSelectedCharacter = characterScreen->selectedCharacter;
                 characterScreen->animFrame = 0;
 
-                unk0 = &characterScreen->screenFade;
-                unk0->unk0 = 0;
-                unk0->unk4 = 0;
-                unk0->unk2 = 1;
-                unk0->speed = 0x180;
-                unk0->unk8 = 0xFF;
-                unk0->unkA = 0;
+                screenFade = &characterScreen->screenFade;
+                screenFade->window = SCREEN_FADE_USE_WINDOW_0;
+                screenFade->brightness = 0;
+                screenFade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+                screenFade->speed = 0x180;
+                screenFade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+                screenFade->bldAlpha = 0;
                 m4aSongNumStart(
                     gCharacterAnnouncements[characterScreen->selectedCharacter]);
 

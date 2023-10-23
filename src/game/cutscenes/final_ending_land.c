@@ -214,11 +214,11 @@ void CreateFinalEndingLandingCutScene(void)
 
     scene->unk618 = OBJ_VRAM0;
     transition = &scene->unk32C;
-    transition->unk2 = 2;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->speed = 0x100;
-    transition->unk8 = 0x3FBF;
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    transition->window = SCREEN_FADE_USE_WINDOW_1;
+    transition->brightness = Q_8_8(0);
+    transition->speed = Q_24_8(1.0);
+    transition->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
     if (gSelectedCharacter == 1) {
         {
             Sprite *s;
@@ -547,8 +547,8 @@ void sub_80932C8(void)
     struct FinalEndingLandCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk32C;
 
-    transition->unk2 = 1;
-    transition->unk8 = 0x3FFF;
+    transition->flags = 1;
+    transition->bldCnt = 0x3FFF;
     sub_8093FA0(scene);
     sub_8093FF0(scene);
     sub_80934B8(scene);
@@ -561,7 +561,7 @@ void sub_80932C8(void)
     sub_8093868(scene);
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_8_8(0);
         gCurTask->main = sub_8093F54;
     }
 }
@@ -940,7 +940,7 @@ void sub_8093EDC(void)
     sub_8093868(scene);
 
     if (NextTransitionFrame(&scene->unk32C) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_8_8(0);
         gCurTask->main = sub_809334C;
     }
 }

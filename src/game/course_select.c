@@ -341,12 +341,12 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     coursesScreen->maxCourse = maxCourseIndex;
 
     fadeTransition = &coursesScreen->screenFade;
-    fadeTransition->unk0 = 0;
-    fadeTransition->unk4 = 0;
-    fadeTransition->unk2 = 2;
+    fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
+    fadeTransition->brightness = 0;
+    fadeTransition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
     fadeTransition->speed = 0x180;
-    fadeTransition->unk8 = 0xFF;
-    fadeTransition->unkA = 0;
+    fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+    fadeTransition->bldAlpha = 0;
     NextTransitionFrame(fadeTransition);
 
     background = &coursesScreen->header;
@@ -693,12 +693,12 @@ static void Task_CourseSelectMain(void)
 
     if (IS_SINGLE_PLAYER || gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         if (coursesScreen->levelChosen && IS_SINGLE_PLAYER) {
-            fadeTransition->unk0 = 0;
-            fadeTransition->unk4 = 0;
-            fadeTransition->unk2 = 1;
+            fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
+            fadeTransition->brightness = 0;
+            fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
             fadeTransition->speed = 0x180;
-            fadeTransition->unk8 = 0xFF;
-            fadeTransition->unkA = 0;
+            fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fadeTransition->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
         } else if (gInput & (DPAD_LEFT) && !coursesScreen->levelChosen) {
@@ -725,31 +725,31 @@ static void Task_CourseSelectMain(void)
             }
         } else if (!(gInput & (DPAD_RIGHT | DPAD_LEFT)) && (gPressedKeys & A_BUTTON)
                    && IS_SINGLE_PLAYER) {
-            fadeTransition->unk0 = 0;
-            fadeTransition->unk4 = 0;
-            fadeTransition->unk2 = 1;
+            fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
+            fadeTransition->brightness = 0;
+            fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
             fadeTransition->speed = 0x180;
-            fadeTransition->unk8 = 0xFF;
-            fadeTransition->unkA = 0;
+            fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fadeTransition->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
         } else if ((gPressedKeys & B_BUTTON) && IS_SINGLE_PLAYER) {
-            fadeTransition->unk0 = 0;
-            fadeTransition->unk4 = 0;
-            fadeTransition->unk2 = 1;
+            fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
+            fadeTransition->brightness = 0;
+            fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
             fadeTransition->speed = 0x180;
-            fadeTransition->unk8 = 0xFF;
-            fadeTransition->unkA = 0;
+            fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fadeTransition->bldAlpha = 0;
             m4aSongNumStart(SE_RETURN);
             gCurTask->main = Task_FadeOutAndExitToCharacterSelect;
         } else if (!(gInput & (DPAD_RIGHT | DPAD_LEFT)) && (gPressedKeys & A_BUTTON)
                    && (IS_SINGLE_PLAYER || gGameMode == GAME_MODE_MULTI_PLAYER)) {
-            fadeTransition->unk0 = 0;
-            fadeTransition->unk4 = 0;
-            fadeTransition->unk2 = 1;
+            fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
+            fadeTransition->brightness = 0;
+            fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
             fadeTransition->speed = 0x180;
-            fadeTransition->unk8 = 0xFF;
-            fadeTransition->unkA = 0;
+            fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fadeTransition->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutAndExitToSelectedMultiplayerLevel;
         }
@@ -772,12 +772,12 @@ static void Task_CourseSelectMain(void)
         recv = &gMultiSioRecv[0];
 
         if (recv->pat1.unk0 == 0x4051) {
-            fadeTransition->unk0 = 0;
-            fadeTransition->unk4 = 0;
-            fadeTransition->unk2 = 1;
+            fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
+            fadeTransition->brightness = 0;
+            fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
             fadeTransition->speed = 0x180;
-            fadeTransition->unk8 = 0xFF;
-            fadeTransition->unkA = 0;
+            fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fadeTransition->bldAlpha = 0;
             gCurTask->main = Task_FadeOutAndExitToSelectedMultiplayerLevel;
             m4aSongNumStart(SE_SELECT);
         }
@@ -933,12 +933,12 @@ static void Task_UnlockCutSceneNextCoursePause(void)
 
     coursesScreen->zoneNameAnimFrame = unk4BE;
     if (coursesScreen->zoneNameAnimFrame > 60) {
-        fadeTransition->unk0 = 0;
-        fadeTransition->unk4 = 0;
-        fadeTransition->unk2 = 1;
+        fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
+        fadeTransition->brightness = 0;
+        fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
         fadeTransition->speed = 0x180;
-        fadeTransition->unk8 = 0xFF;
-        fadeTransition->unkA = 0;
+        fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+        fadeTransition->bldAlpha = 0;
         gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
     }
 

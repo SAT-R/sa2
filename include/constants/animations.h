@@ -335,9 +335,10 @@
 #define SA2_ANIM_ITEMBOX      724
 #define SA2_ANIM_ITEMBOX_TYPE 725
 
-// Might be RING_UI instead of STATIC?
-#define SA2_ANIM_RING_STATIC          726
-#define SA2_ANIM_RING_COLLECT         727
+// Used both for rings placed in the stage and
+// ones the player loses when hit.
+#define SA2_ANIM_RING                 726
+#define SA2_ANIM_RING_COLLECT_EFFECT  727
 #define TILE_COUNT__ANIM_ITEMBOX      16 // TODO: Automate
 #define TILE_COUNT__ANIM_ITEMBOX_TYPE 4 // TODO: Automate
 
@@ -428,8 +429,7 @@
 
 #define SA2_ANIM_CONFUSION 881
 
-// Likely the Player UI ring
-#define SA2_ANIM_RING                    882
+#define SA2_ANIM_RING_SP_STAGE           882
 #define SA2_ANIM_E100_ALPHA              883
 #define SA2_ANIM_SP_STAGE_HOLE           884
 #define SA2_ANIM_VARIANT_SP_STAGE_HOLE_0 0

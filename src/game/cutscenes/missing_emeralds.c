@@ -127,11 +127,11 @@ void CreateMissingChaosEmaraldsCutScene(void)
         m4aSongNumStart(MUS_MESSAGE_2);
     }
     transition = &scene->unkB0;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->speed = 0x80;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    transition->window = SCREEN_FADE_USE_WINDOW_1;
+    transition->brightness = Q_24_8(0);
+    transition->speed = Q_24_8(0.5);
+    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    transition->bldAlpha = 0;
 
     scene->unkC4 = OBJ_VRAM0;
 
@@ -262,12 +262,12 @@ void sub_809449C(void)
 {
     struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unkB0;
-    transition->unk2 = 2;
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     sub_80945A4(scene);
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_8_8(0);
         scene->unkBE = 1;
         gCurTask->main = sub_8094530;
     }
@@ -279,12 +279,12 @@ void sub_80944EC(void)
 {
     struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unkB0;
-    transition->unk2 = 1;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
 
     sub_80945A4(scene);
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_8_8(0);
 
         gCurTask->main = sub_8094570;
     }

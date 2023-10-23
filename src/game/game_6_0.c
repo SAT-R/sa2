@@ -25,7 +25,7 @@ typedef struct {
 
 extern void InitNewInputCounters(void);
 void Task_8023FC0(void);
-extern void sub_801FC2C(void);
+extern void InitPlayerHitRingsSpawner(void);
 void AllocateCharacterStageGfx(Player *, UNK_3005A70 *);
 void AllocateCharacterMidAirGfx(Player *, UNK_3005A70 *);
 void InitializePlayer(Player *);
@@ -66,7 +66,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     PLAYERFN_SET(PlayerCB_8025318);
 
     sub_801F754();
-    sub_801FC2C();
+    InitPlayerHitRingsSpawner();
 
     if ((gInputRecorder.mode == RECORDER_RECORD)) {
         InputRecorderLoadTape();

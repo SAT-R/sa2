@@ -136,12 +136,12 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
     }
 
     transition = &scene->transition;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 2;
-    transition->unkA = 0;
+    transition->window = 1;
+    transition->brightness = Q_24_8(0);
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    transition->bldAlpha = 0;
     transition->speed = 0x100;
-    transition->unk8 = 0x3FFF;
+    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
 
     scene->unk16C = OBJ_VRAM0;
 
@@ -283,7 +283,7 @@ static void Task_FadeOut(void)
 {
     struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->transition;
-    transition->unk2 = 1;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         UpdateCongratsMessagePos(scene);
         UpdateMessageLine1Pos(scene);
@@ -293,7 +293,7 @@ static void Task_FadeOut(void)
     RenderExtraEndingElements(scene);
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_24_8(0);
 
         if (scene->sequence == SEQUENCE_FADE_TO_COPYRIGHT_SCREEN) {
             gCurTask->main = Task_CreateCopyrightScreen;
@@ -481,11 +481,13 @@ static void Task_HandleGameCompletion(void)
                     WriteSaveGame();
                     scene->hasAllEmeralds = FALSE;
                     scene->delayFrames = 105;
-                    scene->transition.unk8 = 0x3FFF;
+                    scene->transition.bldCnt
+                        = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
                 }
             } else {
                 scene->hasAllEmeralds = FALSE;
-                scene->transition.unk8 = 0x3FFF;
+                scene->transition.bldCnt
+                    = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
                 scene->delayFrames = 105;
             }
         } else {
@@ -558,7 +560,7 @@ static void Task_FadeIn(void)
 {
     struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->transition;
-    transition->unk2 = 2;
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         UpdateCongratsMessagePos(scene);
@@ -569,7 +571,7 @@ static void Task_FadeIn(void)
     RenderExtraEndingElements(scene);
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_24_8(0);
         gCurTask->main = Task_SequenceMain;
     }
 }
