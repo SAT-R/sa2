@@ -228,12 +228,14 @@ void CreateEggSaucer(void)
     boss = TASK_DATA(gActiveBossTask);
 
     screenTransition = &boss->screenTransition;
-    screenTransition->unk0 = 0;
-    screenTransition->unk4 = 0;
-    screenTransition->unk2 = 2;
+    screenTransition->window = SCREEN_FADE_USE_WINDOW_0;
+    screenTransition->brightness = 0;
+    screenTransition->flags = 2;
     screenTransition->speed = 0;
-    screenTransition->unk8 = 12527;
-    screenTransition->unkA = 0;
+    screenTransition->bldCnt
+        = (BLDCNT_TGT2_BD | BLDCNT_TGT2_OBJ | BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_BD
+           | BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3);
+    screenTransition->bldAlpha = 0;
 
     if (gDifficultyLevel != 0 && gGameMode != GAME_MODE_BOSS_TIME_ATTACK) {
         boss->unk10 = 6;
@@ -1059,8 +1061,8 @@ void sub_8044784(EggSaucer *boss)
     struct TransitionState *transition = &boss->screenTransition;
 
     if (!PLAYER_IS_ALIVE) {
-        if (transition->unk4 != 0x2000) {
-            transition->unk4 = 0x2000;
+        if (transition->brightness != Q_24_8(SCREEN_FADE_BLEND_MAX)) {
+            transition->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
             NextTransitionFrame(transition);
         }
         gFlags &= ~FLAGS_4;
@@ -1068,7 +1070,7 @@ void sub_8044784(EggSaucer *boss)
     }
 
     if (boss->unk11 == 0) {
-        transition->unk4 = 0x2000;
+        transition->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
         NextTransitionFrame(transition);
         gFlags &= ~FLAGS_4;
         return;
@@ -1085,7 +1087,7 @@ void sub_8044784(EggSaucer *boss)
 
     someBool = FALSE;
     if (boss->unk1E != 0 && boss->unk1C == 0) {
-        transition->unk4 = 0x2000 - Q_8_8((--boss->unk1E));
+        transition->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX) - Q_8_8((--boss->unk1E));
         sub_802E784(boss->unk1A, boss->unk1E + 8, 6, x, y, 0x20);
 
         someBool = TRUE;
@@ -1094,14 +1096,14 @@ void sub_8044784(EggSaucer *boss)
         }
     } else {
         s32 tmp;
-        transition->unk4 = 0x2000;
+        transition->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
         tmp = boss->unk1C;
         boss->unk1C--;
         if (boss->unk1C == 0) {
             m4aSongNumStart(SE_252);
             boss->unk1E = 0x10;
         } else if (boss->unk1C >= 0xB && boss->unk1C < 40) {
-            transition->unk4 = 0x2000 - ((tmp - 0xB) * 0x80);
+            transition->brightness = 0x2000 - ((tmp - 0xB) * 0x80);
             sub_802E784(boss->unk1A, 10, 6, x, y, 0x20);
         }
 
