@@ -29,7 +29,7 @@ struct TimeRecordDisplay {
 };
 
 struct TimeRecordsScreen {
-    struct TransitionState unk0;
+    struct TransitionState transition;
     Background coursesViewBackground;
     Sprite choiceViewItemsOrZoneTitle[2];
     Sprite actTitle[2];
@@ -91,7 +91,7 @@ struct ProfileNameScreen {
     Background background;
     Background charMatrixBackground;
 
-    struct TransitionState unk140;
+    struct TransitionState transition;
     struct PlayerDataMenu *playerDataMenu;
 
     Sprite focusedCell[2];
@@ -182,7 +182,7 @@ struct MultiplayerRecordsTable {
 }; /* size 0x1720 */
 
 struct MultiplayerRecordsScreen {
-    struct TransitionState unk0;
+    struct TransitionState transition;
 
     Background backgroundTrims;
     Background background;
@@ -1382,7 +1382,7 @@ static void StoreProfileData(struct OptionsScreen *optionsScreen)
 // OptionsScreenInitRegistersAndFadeIn
 static void OptionsScreenInitRegisters(struct OptionsScreen *optionsScreen, s16 state)
 {
-    struct TransitionState *unk774 = &optionsScreen->unk774;
+    struct TransitionState *transition = &optionsScreen->unk774;
 
     gDispCnt = 0x1740;
     gBgCntRegs[0] = 0x703;
@@ -1405,14 +1405,14 @@ static void OptionsScreenInitRegisters(struct OptionsScreen *optionsScreen, s16 
     DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
 
     if (state == OPTIONS_SCREEN_STATE_ACTIVE) {
-        unk774->unk0 = 0;
-        unk774->unk2 = 2;
-        unk774->unk4 = 0;
-        unk774->speed = 0x100;
-        unk774->unkA = 0;
-        unk774->unk8 = 0xFF;
+        transition->window = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_USE_WINDOW_0);
+        transition->flags = SCREEN_FADE_FLAG_2;
+        transition->brightness = 0;
+        transition->speed = 0x100;
+        transition->bldAlpha = 0;
+        transition->bldCnt = 0xFF;
 
-        NextTransitionFrame(unk774);
+        NextTransitionFrame(transition);
     }
 }
 
@@ -1760,7 +1760,7 @@ static void Task_OptionsScreenSubMenuCloseAnim(void)
 static void Task_OptionsScreenWaitForLanguageScreenExit(void)
 {
     struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk774 = &optionsScreen->unk774;
+    struct TransitionState *transition = &optionsScreen->unk774;
 
     if (optionsScreen->state != OPTIONS_SCREEN_STATE_ACTIVE) {
         return;
@@ -1773,12 +1773,12 @@ static void Task_OptionsScreenWaitForLanguageScreenExit(void)
                                  optionsScreen->subMenuBackground);
     OptionsScreenCreateUI(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
 
-    unk774->unk0 = 0;
-    unk774->unk2 = 2;
-    unk774->unk4 = 0;
-    unk774->speed = 0x100;
-    unk774->unkA = 0;
-    unk774->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_OptionsScreenFadeInFromLanguageScreen;
 }
@@ -1786,7 +1786,7 @@ static void Task_OptionsScreenWaitForLanguageScreenExit(void)
 static void Task_OptionsScreenWaitForSoundTestExit(void)
 {
     struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk774 = &optionsScreen->unk774;
+    struct TransitionState *transition = &optionsScreen->unk774;
 
     if (optionsScreen->state != OPTIONS_SCREEN_STATE_ACTIVE) {
         return;
@@ -1799,12 +1799,12 @@ static void Task_OptionsScreenWaitForSoundTestExit(void)
                                  optionsScreen->subMenuBackground);
     OptionsScreenCreateUI(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
 
-    unk774->unk0 = 0;
-    unk774->unk2 = 2;
-    unk774->unk4 = 0;
-    unk774->speed = 0x100;
-    unk774->unkA = 0;
-    unk774->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     m4aSongNumStart(MUS_OPTIONS);
     gCurTask->main = Task_OptionsScreenFadeInFromSoundTest;
@@ -1813,7 +1813,7 @@ static void Task_OptionsScreenWaitForSoundTestExit(void)
 static void Task_OptionsScreenWaitForDeleteScreenExit(void)
 {
     struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk774 = &optionsScreen->unk774;
+    struct TransitionState *transition = &optionsScreen->unk774;
     u8 language = optionsScreen->language;
 
     if (optionsScreen->state == OPTIONS_SCREEN_STATE_SUB_MENU_OPEN) {
@@ -1833,12 +1833,12 @@ static void Task_OptionsScreenWaitForDeleteScreenExit(void)
                                  optionsScreen->subMenuBackground);
     OptionsScreenCreateUI(optionsScreen, OPTIONS_SCREEN_STATE_ACTIVE);
 
-    unk774->unk0 = 0;
-    unk774->unk2 = 2;
-    unk774->unk4 = 0;
-    unk774->speed = 0x100;
-    unk774->unkA = 0;
-    unk774->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     if (optionsScreen->state == OPTIONS_SCREEN_STATE_ACTIVE) {
         m4aSongNumStart(MUS_OPTIONS);
@@ -2058,7 +2058,7 @@ static void Task_PlayerDataMenuCloseAnim(void)
 
 static inline void
 OptionsScreenRecreateUIForPlayerDataMenu(struct PlayerDataMenu *playerDataMenu,
-                                         struct TransitionState *unk150)
+                                         struct TransitionState *transition)
 {
     struct OptionsScreen *optionsScreen;
 
@@ -2073,12 +2073,12 @@ OptionsScreenRecreateUIForPlayerDataMenu(struct PlayerDataMenu *playerDataMenu,
     OptionsScreenCreateUI(playerDataMenu->optionsScreen, 1);
     PlayerDataMenuCreateUI(playerDataMenu);
 
-    unk150->unk0 = 0;
-    unk150->unk2 = 2;
-    unk150->unk4 = 0;
-    unk150->speed = 0x100;
-    unk150->unkA = 0;
-    unk150->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     playerDataMenu->optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_OPEN;
 }
@@ -2960,7 +2960,7 @@ static void ButtonConfigMenuRenderUI(void)
 
 static void LanguageScreenInitRegisters(struct LanguageScreen *languageScreen)
 {
-    struct TransitionState *unk1F0 = &languageScreen->unk1F0;
+    struct TransitionState *transition = &languageScreen->unk1F0;
 
     gDispCnt = 0x1740;
     gBgCntRegs[0] = 0x703;
@@ -2976,12 +2976,12 @@ static void LanguageScreenInitRegisters(struct LanguageScreen *languageScreen)
 
     DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
 
-    unk1F0->unk0 = 0;
-    unk1F0->unk2 = 2;
-    unk1F0->unk4 = 0;
-    unk1F0->speed = 0x100;
-    unk1F0->unkA = 0;
-    unk1F0->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     NextTransitionFrame(&languageScreen->unk1F0);
 }
@@ -3138,7 +3138,7 @@ static void CreateDeleteScreen(struct OptionsScreen *optionsScreen)
 
 static void DeleteScreenInitRegisters(struct DeleteScreen *deleteScreen)
 {
-    struct TransitionState *unk130 = &deleteScreen->unk130;
+    struct TransitionState *transition = &deleteScreen->unk130;
 
     gDispCnt = 0x1740;
     gBgCntRegs[0] = 0x703;
@@ -3154,12 +3154,12 @@ static void DeleteScreenInitRegisters(struct DeleteScreen *deleteScreen)
 
     DmaFill32(3, 0, (void *)VRAM, VRAM_SIZE);
 
-    unk130->unk0 = 0;
-    unk130->unk2 = 2;
-    unk130->unk4 = 0;
-    unk130->speed = 0x100;
-    unk130->unkA = 0;
-    unk130->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     NextTransitionFrame(&deleteScreen->unk130);
 }
@@ -3395,14 +3395,14 @@ static void ProfileNameScreenInitRegisters(s16 language)
 static void
 ProfileNameScreenCreateUIBackgrounds(struct ProfileNameScreen *profileNameScreen)
 {
-    struct TransitionState *unk140 = &profileNameScreen->unk140;
+    struct TransitionState *transition = &profileNameScreen->transition;
 
-    unk140->unk0 = 0;
-    unk140->unk2 = 2;
-    unk140->unk4 = 0;
-    unk140->speed = 0x100;
-    unk140->unkA = 0;
-    unk140->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     OptionsInitBackground(&profileNameScreen->background, 0, 7, TM_OPTIONS_ENTER_NAME,
                           0x1E, 0x14, 0, 0, 0, 0);
@@ -3806,7 +3806,7 @@ static bool16 ProfileNameScreenHandleDpadInput(void)
 static void ProfileNameScreenInputComplete(void)
 {
     struct ProfileNameScreen *profileNameScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk140 = &profileNameScreen->unk140;
+    struct TransitionState *transition = &profileNameScreen->transition;
     struct NameInputDisplay *nameInput = &profileNameScreen->nameInput;
     s16 i;
 
@@ -3819,12 +3819,12 @@ static void ProfileNameScreenInputComplete(void)
         }
     }
 
-    unk140->unk0 = 0;
-    unk140->unk2 = 1;
-    unk140->unk4 = 0;
-    unk140->speed = 0x100;
-    unk140->unkA = 0;
-    unk140->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = ProfileNameScreenFadeOutAndExit;
 }
@@ -3832,12 +3832,12 @@ static void ProfileNameScreenInputComplete(void)
 static void ProfileNameScreenFadeOutAndExit(void)
 {
     struct ProfileNameScreen *profileNameScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk140 = &profileNameScreen->unk140;
+    struct TransitionState *transition = &profileNameScreen->transition;
     struct NameInputDisplay *nameInput = &profileNameScreen->nameInput;
     s16 onCompleteAction = profileNameScreen->onCompleteAction;
     s16 i;
 
-    if (!NextTransitionFrame(unk140)) {
+    if (!NextTransitionFrame(transition)) {
         ProfileNameScreenRenderUI();
         return;
     }
@@ -4022,13 +4022,14 @@ static void TimeRecordScreenInitRegisters(void)
 static void TimeRecordsScreenCreateChoiceViewBackgroundsUI(
     struct TimeRecordsScreen *timeRecordsScreen)
 {
-    struct TransitionState *unk270 = &timeRecordsScreen->unk0;
-    unk270->unk0 = 0;
-    unk270->unk2 = 2;
-    unk270->unk4 = 0;
-    unk270->speed = 0x100;
-    unk270->unkA = 0;
-    unk270->unk8 = 0xFF;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
+    transition->window = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
+
     OptionsInitBackground(&timeRecordsScreen->coursesViewCharacterBackground, 0, 7,
                           TM_OPTIONS_TIME_RECORD_BG0, 0x1e, 0x14, 0, 0, 0, 0);
     OptionsInitBackground(&timeRecordsScreen->coursesViewCharacter, 1, 0xF,
@@ -4205,7 +4206,7 @@ static void TimeRecordsScreenInitRegisters(void)
 static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(
     struct TimeRecordsScreen *timeRecordsScreen)
 {
-    struct TransitionState *unk270 = &timeRecordsScreen->unk0;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
     u8 character;
     if (timeRecordsScreen->character != 0xFF) {
         character = timeRecordsScreen->character;
@@ -4213,12 +4214,12 @@ static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(
         character = 0;
     }
 
-    unk270->unk0 = 0;
-    unk270->unk2 = 2;
-    unk270->unk4 = 0;
-    unk270->speed = 0x100;
-    unk270->unkA = 0;
-    unk270->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     OptionsInitBackground(&timeRecordsScreen->coursesViewBackground, 0, 7,
                           TM_TILEMAP_139, 0x1e, 0x14, 0, 0, 0, 0);
@@ -4813,7 +4814,7 @@ static void Task_TimeRecordsScreenHandleCourseChange(void)
 static void Task_TimeRecordsScreenFadeToPrevious(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &timeRecordsScreen->unk0;
+    struct TransitionState *unk0 = &timeRecordsScreen->transition;
     struct PlayerDataMenu *playerDataMenu = timeRecordsScreen->playerDataMenu;
 
     u8 availableCharacters;
@@ -5005,13 +5006,13 @@ static void MultiplayerRecordsScreenInitRegisters(void)
 static void MultiplayerRecordsScreenCreateBackgroundsUI(
     struct MultiplayerRecordsScreen *multiplayerRecordsScreen)
 {
-    struct TransitionState *unk0 = &multiplayerRecordsScreen->unk0;
-    unk0->unk0 = 0;
-    unk0->unk2 = 2;
-    unk0->unk4 = 0;
-    unk0->speed = 0x100;
-    unk0->unkA = 0;
-    unk0->unk8 = 0xFF;
+    struct TransitionState *transition = &multiplayerRecordsScreen->transition;
+    transition->window = 0;
+    transition->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     OptionsInitBackground(&multiplayerRecordsScreen->backgroundTrims, 0, 7,
                           TM_OPTIONS_VS_RECORD_BG1, 0x1E, 0x14, 0, 0, 0, 0);
@@ -5569,13 +5570,14 @@ static void Task_OptionsScreenWaitForSubMenuExit(void)
 static void OptionsScreenShowLanguageScreen(void)
 {
     struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk270 = &optionsScreen->unk774;
-    unk270->unk0 = 0;
-    unk270->unk2 = 1;
-    unk270->unk4 = 0;
-    unk270->speed = 0x100;
-    unk270->unkA = 0;
-    unk270->unk8 = 0xFF;
+    struct TransitionState *transition = &optionsScreen->unk774;
+
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_OptionsScreenFadeOutToLanguageScreen;
 }
@@ -5609,13 +5611,14 @@ static void Task_OptionsScreenFadeInFromLanguageScreen(void)
 static void OptionsScreenShowSoundTestScreen(void)
 {
     struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk270 = &optionsScreen->unk774;
-    unk270->unk0 = 0;
-    unk270->unk2 = 1;
-    unk270->unk4 = 0;
-    unk270->speed = 0x100;
-    unk270->unkA = 0;
-    unk270->unk8 = 0xFF;
+    struct TransitionState *transition = &optionsScreen->unk774;
+
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_OptionScreenFadeOutToSoundTest;
 }
@@ -5649,13 +5652,13 @@ static void Task_OptionsScreenFadeInFromSoundTest(void)
 static void OptionsScreenShowDeleteScreen(void)
 {
     struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk270 = &optionsScreen->unk774;
-    unk270->unk0 = 0;
-    unk270->unk2 = 1;
-    unk270->unk4 = 0;
-    unk270->speed = 0x100;
-    unk270->unkA = 0;
-    unk270->unk8 = 0xFF;
+    struct TransitionState *transition = &optionsScreen->unk774;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_OptionsScreenFadeOutToDeleteScreen;
 }
@@ -5689,13 +5692,13 @@ static void Task_OptionsScreenFadeInFromDeleteScreen(void)
 static void PlayerDataMenuShowProfileNameScreen(void)
 {
     struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
-    struct TransitionState *unk270 = &playerDataMenu->unk150;
-    unk270->unk0 = 0;
-    unk270->unk2 = 1;
-    unk270->unk4 = 0;
-    unk270->speed = 0x100;
-    unk270->unkA = 0;
-    unk270->unk8 = 0xFF;
+    struct TransitionState *transition = &playerDataMenu->unk150;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_PlayerDataMenuFadeOutToProfileNameScreen;
 }
@@ -5730,13 +5733,13 @@ static void Task_PlayerDataMenuFadeInFromProfileNameScreen(void)
 static void PlayerDataMenuShowTimeRecordsScreen(void)
 {
     struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
-    struct TransitionState *unk270 = &playerDataMenu->unk150;
-    unk270->unk0 = 0;
-    unk270->unk2 = 1;
-    unk270->unk4 = 0;
-    unk270->speed = 0x100;
-    unk270->unkA = 0;
-    unk270->unk8 = 0xFF;
+    struct TransitionState *transition = &playerDataMenu->unk150;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_PlayerDataMenuFadeOutToTimeRecordsScreen;
 }
@@ -5757,13 +5760,13 @@ static void Task_PlayerDataMenuFadeInFromTimeRecordsScreen(void)
 static void PlayerDataMenuShowMultiplayerRecordsScreen(void)
 {
     struct PlayerDataMenu *playerDataMenu = TASK_DATA(gCurTask);
-    struct TransitionState *unk270 = &playerDataMenu->unk150;
-    unk270->unk0 = 0;
-    unk270->unk2 = 1;
-    unk270->unk4 = 0;
-    unk270->speed = 0x100;
-    unk270->unkA = 0;
-    unk270->unk8 = 0xFF;
+    struct TransitionState *transition = &playerDataMenu->unk150;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_PlayerDataMenuFadeOutToMultiplayerRecordsScreen;
 }
@@ -5796,13 +5799,13 @@ static void Task_PlayerDataMenuFadeInFromMultiplayerRecordsScreen(void)
 static void OptionsScreenHandleExit(void)
 {
     struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk270 = &optionsScreen->unk774;
-    unk270->unk0 = 0;
-    unk270->unk2 = 1;
-    unk270->unk4 = 0;
-    unk270->speed = 0x100;
-    unk270->unkA = 0;
-    unk270->unk8 = 0xFF;
+    struct TransitionState *transition = &optionsScreen->unk774;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_OptionsScreenFadeOutAndExit;
 }
@@ -6002,15 +6005,15 @@ static void Task_LanguageScreenFadeIn(void)
 static void LanguageScreenHandleExit(void)
 {
     struct LanguageScreen *languageScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk1F0 = &languageScreen->unk1F0;
-    unk1F0->unk0 = 0;
-    unk1F0->unk2 = 1;
-    unk1F0->unk4 = 0;
-    unk1F0->speed = 0x100;
-    unk1F0->unkA = 0;
-    unk1F0->unk8 = 0xFF;
+    struct TransitionState *transition = &languageScreen->unk1F0;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
-    NextTransitionFrame(unk1F0);
+    NextTransitionFrame(transition);
     gCurTask->main = Task_LanguageScreenFadeOutAndExit;
 }
 
@@ -6077,18 +6080,18 @@ static void Task_DeleteScreenFadeIn(void)
 static void Task_DeleteScreenHandleExit(void)
 {
     struct DeleteScreen *deleteScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk130 = &deleteScreen->unk130;
+    struct TransitionState *transition = &deleteScreen->unk130;
 
     DeleteScreenRenderUI();
 
-    unk130->unk0 = 0;
-    unk130->unk2 = 1;
-    unk130->unk4 = 0;
-    unk130->speed = 0x100;
-    unk130->unkA = 0;
-    unk130->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
-    NextTransitionFrame(unk130);
+    NextTransitionFrame(transition);
     gCurTask->main = Task_DeleteScreenFadeOutAndExit;
 }
 
@@ -6116,11 +6119,11 @@ static void DeleteScreenRenderUI(void)
 static void Task_ProfileNameScreenFadeIn(void)
 {
     struct ProfileNameScreen *profileNameScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk140 = &profileNameScreen->unk140;
+    struct TransitionState *transition = &profileNameScreen->transition;
 
     ProfileNameScreenRenderUI();
 
-    if (NextTransitionFrame(unk140)) {
+    if (NextTransitionFrame(transition)) {
         profileNameScreen->matrixCursorIndex = 0;
         gCurTask->main = Task_ProfileNameScreenMain;
     }
@@ -6144,11 +6147,11 @@ TimeRecordsScreenShowChoiceView(struct TimeRecordsScreen *timeRecordsScreen)
 static void Task_TimeRecordsScreenChoiceViewFadeIn(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &timeRecordsScreen->unk0;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
 
     TimeRecordsScreenRenderModeChoiceUI();
 
-    if (NextTransitionFrame(unk0)) {
+    if (NextTransitionFrame(transition)) {
         gCurTask->main = Task_TimeRecordsScreenModeChoiceMain;
     }
 }
@@ -6156,14 +6159,14 @@ static void Task_TimeRecordsScreenChoiceViewFadeIn(void)
 static void TimeRecordsScreenHandleExit(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &timeRecordsScreen->unk0;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
 
-    unk0->unk0 = 0;
-    unk0->unk2 = 1;
-    unk0->unk4 = 0;
-    unk0->speed = 0x100;
-    unk0->unkA = 0;
-    unk0->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_TimeRecordsScreenFadeOutAndExit;
 }
@@ -6171,10 +6174,10 @@ static void TimeRecordsScreenHandleExit(void)
 static void Task_TimeRecordsScreenFadeOutAndExit(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &timeRecordsScreen->unk0;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
     struct PlayerDataMenu *playerDataMenu = timeRecordsScreen->playerDataMenu;
 
-    if (!NextTransitionFrame(unk0)) {
+    if (!NextTransitionFrame(transition)) {
         TimeRecordsScreenRenderModeChoiceUI();
         return;
     }
@@ -6186,14 +6189,14 @@ static void Task_TimeRecordsScreenFadeOutAndExit(void)
 static void TimeRecordsScreenShowCoursesView(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &timeRecordsScreen->unk0;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
 
-    unk0->unk0 = 0;
-    unk0->unk2 = 1;
-    unk0->unk4 = 0;
-    unk0->speed = 0x100;
-    unk0->unkA = 0;
-    unk0->unk8 = 0xFF;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = TimeRecordsScreenFadeOutToCoursesView;
 }
@@ -6201,9 +6204,9 @@ static void TimeRecordsScreenShowCoursesView(void)
 static void TimeRecordsScreenFadeOutToCoursesView(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &timeRecordsScreen->unk0;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
 
-    if (!NextTransitionFrame(unk0)) {
+    if (!NextTransitionFrame(transition)) {
         TimeRecordsScreenRenderModeChoiceUI();
         return;
     }
@@ -6256,10 +6259,10 @@ static void Task_TimeRecordsScreenCreateTimesUI(void)
 static void Task_TimeRecordsScreenCoursesViewFadeIn(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &timeRecordsScreen->unk0;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
     TimeRecordsScreenRenderCoursesViewUI(0);
 
-    if (NextTransitionFrame(unk0)) {
+    if (NextTransitionFrame(transition)) {
         timeRecordsScreen->animFrame = 0;
         gCurTask->main = Task_TimeRecordsScreenCoursesViewMain;
     }
@@ -6287,14 +6290,13 @@ static void Task_TimeRecordsScreenHandleActChange(void)
 static void Task_TimeRecordsScreenHandleCourseSelected(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &timeRecordsScreen->unk0;
-
-    unk0->unk0 = 0;
-    unk0->unk2 = 1;
-    unk0->unk4 = 0;
-    unk0->speed = 0x100;
-    unk0->unkA = 0;
-    unk0->unk8 = 0xFF;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_TimeRecordsScreenFadeOutToSelectedCourse;
 }
@@ -6302,9 +6304,9 @@ static void Task_TimeRecordsScreenHandleCourseSelected(void)
 static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &timeRecordsScreen->unk0;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
 
-    if (!NextTransitionFrame(unk0)) {
+    if (!NextTransitionFrame(transition)) {
         TimeRecordsScreenRenderCoursesViewUI(0);
         return;
     }
@@ -6321,14 +6323,13 @@ static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void)
 static void TimeRecordsScreenHandleReturn(void)
 {
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &timeRecordsScreen->unk0;
-
-    unk0->unk0 = 0;
-    unk0->unk2 = 1;
-    unk0->unk4 = 0;
-    unk0->speed = 0x100;
-    unk0->unkA = 0;
-    unk0->unk8 = 0xFF;
+    struct TransitionState *transition = &timeRecordsScreen->transition;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_TimeRecordsScreenFadeToPrevious;
 }
@@ -6348,7 +6349,7 @@ static void Task_MultiplayerRecordsScreenCreateNextTableRowUI(void)
 static void Task_MultiplayerRecordsScreenFadeIn(void)
 {
     struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &multiplayerRecordsScreen->unk0;
+    struct TransitionState *unk0 = &multiplayerRecordsScreen->transition;
     MultiplayerRecordsScreenRenderUI();
 
     if (NextTransitionFrame(unk0)) {
@@ -6359,14 +6360,13 @@ static void Task_MultiplayerRecordsScreenFadeIn(void)
 static void Task_MultiplayerRecordsScreenHandleExit(void)
 {
     struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &multiplayerRecordsScreen->unk0;
-
-    unk0->unk0 = 0;
-    unk0->unk2 = 1;
-    unk0->unk4 = 0;
-    unk0->speed = 0x100;
-    unk0->unkA = 0;
-    unk0->unk8 = 0xFF;
+    struct TransitionState *transition = &multiplayerRecordsScreen->transition;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->brightness = 0;
+    transition->speed = 0x100;
+    transition->bldAlpha = 0;
+    transition->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
     gCurTask->main = Task_MultiplayerRecordsScreenFadeOutAndExit;
 }
@@ -6374,10 +6374,10 @@ static void Task_MultiplayerRecordsScreenHandleExit(void)
 static void Task_MultiplayerRecordsScreenFadeOutAndExit(void)
 {
     struct MultiplayerRecordsScreen *multiplayerRecordsScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &multiplayerRecordsScreen->unk0;
+    struct TransitionState *transition = &multiplayerRecordsScreen->transition;
     struct PlayerDataMenu *playerDataMenu = multiplayerRecordsScreen->playerDataMenu;
 
-    if (!NextTransitionFrame(unk0)) {
+    if (!NextTransitionFrame(transition)) {
         MultiplayerRecordsScreenRenderUI();
         return;
     }
