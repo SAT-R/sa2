@@ -307,12 +307,12 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     sit_b->parent = sit_a;
 
     transition = &sit_b->transition;
-    transition->unk0 = 0;
-    transition->unk4 = 0;
-    transition->unk2 = 2;
+    transition->window = 0;
+    transition->brightness = 0;
+    transition->flags = 2;
     transition->speed = 0;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    transition->bldCnt = 0x3FFF;
+    transition->bldAlpha = 0;
     NextTransitionFrame(transition);
 
     t2 = TaskCreate(Task_IntroColorAnimation, sizeof(SITaskB), 0x2220, 0,
@@ -680,10 +680,10 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
         if ((unsigned)frameCounter >= (166 - 150)) {
             frameCounter = 16;
         }
-        transition->unk4 = frameCounter << 9;
+        transition->brightness = frameCounter << 9;
 
         if (((frameCounter << 25) >> 16) >= 0x2000) {
-            transition->unk4 = 0x2000;
+            transition->brightness = 0x2000;
         }
         // _0802FA4C
 
@@ -740,7 +740,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
         }
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
-        transition->unk8 = 0x3FCF;
+        transition->bldCnt = 0x3FCF;
         NextTransitionFrame(transition);
 
         // TODO: Use #defines here
@@ -749,7 +749,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
 
     } else {
         // _0802FC5C
-        transition->unk8 = 0x30EF;
+        transition->bldCnt = 0x30EF;
         NextTransitionFrame(transition);
 
         gWinRegs[WINREG_WININ] = (WININ_WIN0_ALL | WININ_WIN1_ALL);

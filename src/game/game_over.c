@@ -44,15 +44,15 @@ void sub_8036780(u8);
 
 void sub_80366F0(void)
 {
-    GameOverScreenTransition *transition = TASK_DATA(gCurTask);
-    u8 unkC = transition->unkC;
+    GameOverScreenTransition *gameover_transition = TASK_DATA(gCurTask);
+    u8 unkC = gameover_transition->unkC;
 
-    if (transition->unkD != 0) {
-        transition->unkD--;
+    if (gameover_transition->unkD != 0) {
+        gameover_transition->unkD--;
         return;
     }
 
-    if (NextTransitionFrame(&transition->unk0) != 0) {
+    if (NextTransitionFrame(&gameover_transition->unk0) != 0) {
         gBldRegs.bldY = 0x10;
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;

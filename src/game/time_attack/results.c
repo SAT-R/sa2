@@ -62,12 +62,12 @@ u32 CreateTimeAttackResults(u32 finishTime)
     resultsCutScene->unk2D4 = 0x800;
     resultsCutScene->unk2D6 = 0x4000;
 
-    transition->unk0 = 0;
-    transition->unk2 = 1;
+    transition->window = 0;
+    transition->flags = 1;
     transition->speed = 0x100;
-    transition->unk4 = Q_8_8(0);
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    transition->brightness = Q_8_8(0);
+    transition->bldCnt = 0x3FFF;
+    transition->bldAlpha = 0;
 
     resultsCutScene->unk15C = finishTime;
 

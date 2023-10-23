@@ -121,12 +121,12 @@ void CreateTimeAttackModeSelectionScreen(void)
     modeScreen->unk14E = 0;
 
     transition = &modeScreen->unk140;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 2;
+    transition->window = 1;
+    transition->brightness = Q_8_8(0);
+    transition->flags = 2;
     transition->speed = 0x100;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    transition->bldCnt = 0x3FFF;
+    transition->bldAlpha = 0;
 
     NextTransitionFrame(transition);
 
@@ -327,23 +327,23 @@ static void Task_ScreenMain(void)
             m4aSongNumStart(SE_ABORT);
         } else {
             transition = &modeScreen->unk140;
-            transition->unk0 = 1;
-            transition->unk4 = Q_8_8(0);
-            transition->unk2 = 1;
+            transition->window = 1;
+            transition->brightness = Q_8_8(0);
+            transition->flags = 1;
             transition->speed = 0x100;
-            transition->unk8 = 0x3FFF;
-            transition->unkA = 0;
+            transition->bldCnt = 0x3FFF;
+            transition->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutModeSelected;
         }
     } else if (gPressedKeys & B_BUTTON) {
         transition = &modeScreen->unk140;
-        transition->unk0 = 1;
-        transition->unk4 = Q_8_8(0);
-        transition->unk2 = 1;
+        transition->window = 1;
+        transition->brightness = Q_8_8(0);
+        transition->flags = 1;
         transition->speed = 0x100;
-        transition->unk8 = 0x3FFF;
-        transition->unkA = 0;
+        transition->bldCnt = 0x3FFF;
+        transition->bldAlpha = 0;
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = Task_FadeOutToTitleScreen;
     }

@@ -84,11 +84,11 @@ void Task_802EE78(void)
     NextTransitionFrame(ts);
 
     if (++sri->unk10 > 8) {
-        ts->unk4 = 0;
-        ts->unk2 = 2;
+        ts->brightness = Q_24_8(0);
+        ts->flags = 2;
         ts->speed = 0;
-        ts->unk8 = 191;
-        ts->unkA = 0;
+        ts->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+        ts->bldAlpha = 0;
 
         if (gCurrentLevel != LEVEL_INDEX(ZONE_7, ACT_BOSS)) {
             gFlags &= ~FLAGS_4;
@@ -135,12 +135,12 @@ void sub_802EF68(s16 p0, s16 p1, u8 p2)
     sri->unkE = p1;
     sri->unk11 = p2;
 
-    ts->unk0 = 0;
-    ts->unk4 = 0x800;
-    ts->unk2 = 1;
-    ts->speed = 192;
-    ts->unk8 = 191;
-    ts->unkA = 0;
+    ts->window = 0;
+    ts->brightness = Q_24_8(8.0);
+    ts->flags = 1;
+    ts->speed = Q_24_8(3. / 4.);
+    ts->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+    ts->bldAlpha = 0;
 
     m4aSongNumStart(SE_333);
 }

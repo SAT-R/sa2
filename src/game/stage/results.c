@@ -101,20 +101,20 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     outro->counter = zero;
     outro->isCountingDone = zero;
 
-    outro->transition.unk0 = zero;
-    outro->transition.unk2 = 1;
+    outro->transition.window = zero;
+    outro->transition.flags = 1;
     outro->transition.speed = Q_24_8(1.0);
-    outro->transition.unk4 = zero;
-    outro->transition.unk8 = 0x3FFF;
-    outro->transition.unkA = zero;
+    outro->transition.brightness = zero;
+    outro->transition.bldCnt = 0x3FFF;
+    outro->transition.bldAlpha = zero;
 
     if ((gPlayer.moveState & MOVESTATE_8000000)
         && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
         outro->transition.speed = Q_24_8(0.25);
-        outro->transition.unk8 = 0x3FBF;
+        outro->transition.bldCnt = 0x3FBF;
     } else if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
-        outro->transition.unk8 = 0x3FAF;
-        outro->transition.unk4 = 0x2000;
+        outro->transition.bldCnt = 0x3FAF;
+        outro->transition.brightness = 0x2000;
         NextTransitionFrame(&outro->transition);
     }
 
