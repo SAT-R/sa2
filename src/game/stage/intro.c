@@ -10,7 +10,7 @@
 #include "game/player_mp_actor.h"
 #include "game/screen_transition.h"
 #include "game/stage/ui.h"
-#include "game/stage/boss_to_results_transition.h"
+#include "game/stage/boss_results_transition.h"
 #include "game/water_effects.h"
 
 #include "constants/animations.h"

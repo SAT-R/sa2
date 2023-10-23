@@ -304,7 +304,7 @@ void sub_806BFD0(void)
     NextTransitionFrame(transition);
 
     gDispCnt = 0x9641;
-    gWinRegs[5] = 0x103F;
+    gWinRegs[WINREG_WINOUT] = 0x103F;
 
     if (player->state == 13) {
         m4aSongNumStart(MUS_SPECIAL_STAGE_CLEAR);

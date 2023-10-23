@@ -11,7 +11,7 @@
 #include "game/multiboot/connection.h"
 #include "game/save.h"
 #include "game/screen_transition.h"
-#include "game/stage/boss_to_results_transition.h"
+#include "game/stage/boss_results_transition.h"
 #include "game/title_screen.h"
 
 #include "constants/animations.h"
