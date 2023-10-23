@@ -50,6 +50,9 @@ void Task_802ED98(void)
             && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
             switch (LEVEL_TO_ZONE(gCurrentLevel)) {
                 case ZONE_1: {
+                    // This case is never executed.
+                    // The boss_1 module does the transition to Cream
+                    // explicitly.
                     CreateStageResultsCutscene(COURSE_END_UNLOCK_CREAM);
                 } break;
 

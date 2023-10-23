@@ -16,7 +16,7 @@
 #include "constants/text.h"
 #include "constants/tilemaps.h"
 
-struct ResultsCutScene {
+typedef struct {
     Player *unk0;
     Sprite unk4;
     Sprite unk34;
@@ -29,7 +29,7 @@ struct ResultsCutScene {
     u8 unk7A;
     u8 unk7B;
     s8 unk7C;
-} /* 0x80 */;
+} ResultsCutScene /* 0x80 */;
 
 struct CharacterUnlockCutScene {
     Background unk0;
@@ -156,7 +156,7 @@ void CreateStageResultsCutscene(u8 mode)
     u16 unk1214[6], unk1220[6], unk122C[3];
 
     struct Task *t;
-    struct ResultsCutScene *scene;
+    ResultsCutScene *scene;
     Sprite *s;
     struct TransitionState *transition;
     memcpy(mains, gUnknown_080E1208, sizeof(gUnknown_080E1208));
@@ -164,7 +164,7 @@ void CreateStageResultsCutscene(u8 mode)
     memcpy(unk1220, gUnknown_080E1220, sizeof(gUnknown_080E1220));
     memcpy(unk122C, gUnknown_080E122C, sizeof(gUnknown_080E122C));
 
-    t = TaskCreate(mains[mode], 0x80, 0x5000, 0, sub_808E890);
+    t = TaskCreate(mains[mode], sizeof(ResultsCutScene), 0x5000, 0, sub_808E890);
     scene = TASK_DATA(t);
 
     scene->unk78 = 0;
@@ -236,7 +236,7 @@ void CreateStageResultsCutscene(u8 mode)
 
 static void sub_808DD9C(void)
 {
-    struct ResultsCutScene *scene = TASK_DATA(gCurTask);
+    ResultsCutScene *scene = TASK_DATA(gCurTask);
     Sprite *s = &scene->unk4;
     Player *player = scene->unk0;
     struct TransitionState *transition = &scene->unk64;
@@ -252,14 +252,14 @@ static void sub_808DD9C(void)
         scene->unk76 = (scene->unk76 * 0x43) >> 6;
     }
 
-    if (scene->unk70 < (player->x - Q_24_8(gCamera.x) - 0x1400)) {
-        scene->unk70 = (player->x - Q_24_8(gCamera.x) - 0x1400);
+    if (scene->unk70 < (player->x - Q_24_8(gCamera.x) - Q_24_8(20.0))) {
+        scene->unk70 = (player->x - Q_24_8(gCamera.x) - Q_24_8(20.0));
     }
 
     if (scene->unk72 > (player->y - (gCamera.y * 0x100) - 0xA00)) {
         // Required for match
         scene->unk72 = scene->unk72 = player->y - (gCamera.y * 0x100) - 0xA00;
-        scene->unk70 = player->x - Q_24_8(gCamera.x) - 0x1400;
+        scene->unk70 = player->x - Q_24_8(gCamera.x) - Q_24_8(20.0);
 
         if (scene->unk7A == 0) {
             player->unk64 = 0x52;
@@ -306,7 +306,7 @@ static void sub_808DD9C(void)
 
 static void sub_808DF88(void)
 {
-    struct ResultsCutScene *scene = TASK_DATA(gCurTask);
+    ResultsCutScene *scene = TASK_DATA(gCurTask);
     Sprite *s = &scene->unk4;
     Player *player = scene->unk0;
 
@@ -364,7 +364,7 @@ static void sub_808DF88(void)
 static void sub_808E114(void)
 {
     s32 result;
-    struct ResultsCutScene *scene = TASK_DATA(gCurTask);
+    ResultsCutScene *scene = TASK_DATA(gCurTask);
     Sprite *s = &scene->unk4;
     Player *player = scene->unk0;
 
@@ -664,7 +664,7 @@ void CreateKnucklesUnlockCutScene(void)
 
 void sub_808E890(struct Task *t)
 {
-    struct ResultsCutScene *scene = TASK_DATA(t);
+    ResultsCutScene *scene = TASK_DATA(t);
     VramFree(scene->unk4.graphics.dest);
 
     if (scene->unk34.graphics.dest != NULL) {

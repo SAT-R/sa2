@@ -138,7 +138,7 @@ SECTIONS
         build/sa2/src/game/trapped_animals.o(.text);
         build/sa2/src/game/game_7.o(.text);
         build/sa2/asm/game_7.o(.text);
-        build/sa2/src/game/stage/results_init.o(.text);
+        build/sa2/src/game/stage/boss_to_results_transition.o(.text);
         build/sa2/src/game/stage/intro.o(.text);
         build/sa2/src/game/stage/results.o(.text);
         build/sa2/src/game/character_select.o(.text);
@@ -357,7 +357,7 @@ SECTIONS
         build/sa2/asm/player_super_sonic.o(.rodata);
         build/sa2/src/game/stage/ui.o(.rodata);
         build/sa2/src/game/trapped_animals.o(.rodata);
-        build/sa2/src/game/stage/results_init.o(.rodata);
+        build/sa2/src/game/stage/boss_to_results_transition.o(.rodata);
         build/sa2/src/game/stage/intro.o(.rodata);
         build/sa2/src/game/stage/results.o(.rodata);
         build/sa2/src/game/character_select.o(.rodata);
