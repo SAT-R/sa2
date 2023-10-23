@@ -233,7 +233,7 @@ sub_802B708: @ 0x0802B708
 	strh r6, [r0, #0x14]
 	ldr r0, _0802B7E0 @ =gCourseTime
 	str r4, [r0]
-	ldr r0, _0802B7E4 @ =sub_802BC10
+	ldr r0, _0802B7E4 @ =Task_802BC10
 	movs r1, #0xc0
 	lsls r1, r1, #1
 	ldr r2, _0802B7E8 @ =0x00004040
@@ -322,7 +322,7 @@ sub_802B708: @ 0x0802B708
 _0802B7D8: .4byte gRingCount
 _0802B7DC: .4byte gPlayer
 _0802B7E0: .4byte gCourseTime
-_0802B7E4: .4byte sub_802BC10
+_0802B7E4: .4byte Task_802BC10
 _0802B7E8: .4byte 0x00004040
 _0802B7EC: .4byte sSuperSonicTask
 _0802B7F0: .4byte IWRAM_START + 0x22
@@ -820,8 +820,8 @@ _0802BC04: .4byte IWRAM_START + 0x154
 _0802BC08: .4byte IWRAM_START + 0x13C
 _0802BC0C: .4byte IWRAM_START + 0x22
 
-	thumb_func_start sub_802BC10
-sub_802BC10: @ 0x0802BC10
+	thumb_func_start Task_802BC10
+Task_802BC10: @ 0x0802BC10
 	push {r4, r5, lr}
 	ldr r0, _0802BC84 @ =gCurTask
 	ldr r0, [r0]

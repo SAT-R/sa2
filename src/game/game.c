@@ -175,10 +175,7 @@ void CreateGameStage(void)
         sub_80213C0(gSelectedCharacter, gCurrentLevel, &gPlayer);
     }
 
-    if ((gCurrentLevel & ACTS_PER_ZONE) == ACT_BOSS
-        || (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
-            && gUnknown_030054B0 == 0)
-        || gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+    if (IS_BOSS_STAGE(gCurrentLevel)) {
         gUnknown_03005440 = gUnknown_080D5964[LEVEL_TO_ZONE(gCurrentLevel)][0];
         gUnknown_030054BC = gUnknown_080D5964[LEVEL_TO_ZONE(gCurrentLevel)][1];
 
