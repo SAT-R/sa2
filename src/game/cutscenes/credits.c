@@ -97,11 +97,11 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     }
 
     transition = &scene->unk40;
-    transition->unk0 = 0;
-    transition->unk4 = Q_8_8(0);
-    transition->unkA = 0;
+    transition->window = SCREEN_FADE_USE_WINDOW_0;
+    transition->brightness = Q_8_8(0);
+    transition->bldAlpha = 0;
     transition->speed = 0x100;
-    transition->unk8 = 0x3FFF;
+    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
 
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -126,14 +126,14 @@ static void sub_808EBC4(void)
     struct CreditsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
 
-    transition->unk2 = 2;
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
         gCurTask->main = sub_808ECB4;
     }
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_24_8(0);
         gCurTask->main = sub_808EC64;
     }
 }
@@ -142,10 +142,10 @@ static void sub_808EC28(void)
 {
     struct CreditsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
-    transition->unk2 = 1;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_24_8(0);
         gCurTask->main = sub_808ED04;
     }
 }
@@ -170,11 +170,11 @@ static void sub_808ECB4(void)
 {
     struct CreditsCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
-    transition->unk2 = 1;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_24_8(0);
         CreateCreditsEndCutScene(scene->variant);
         TaskDestroy(gCurTask);
     }
