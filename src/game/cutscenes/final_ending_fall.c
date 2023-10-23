@@ -194,12 +194,12 @@ void CreateFinalEndingFallCutScene(void)
     scene->unk498 = 0;
 
     transition = &scene->unk350;
-    transition->unk2 = 2;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->speed = 0x50;
-    transition->unk8 = 0x3FBF;
-    transition->unkA = 0;
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    transition->window = SCREEN_FADE_USE_WINDOW_1;
+    transition->brightness = Q_24_8(0);
+    transition->speed = Q_24_8(5. / 16.);
+    transition->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    transition->bldAlpha = 0;
 
     scene->unk494 = OBJ_VRAM0;
     {
@@ -475,8 +475,8 @@ void sub_8091E60(void)
     struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk350;
 
-    transition->speed = 0x50;
-    transition->unk2 = 1;
+    transition->speed = Q_24_8(5. / 16.);
+    transition->flags = 1;
 
     sub_8091F68(scene);
     sub_809205C(scene);
@@ -763,7 +763,7 @@ void sub_8092690(void)
 {
     struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk350;
-    transition->unk2 = 2;
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     sub_8091F68(scene);
     sub_809205C(scene);
@@ -774,7 +774,7 @@ void sub_8092690(void)
     sub_80923AC(scene);
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_24_8(0);
         if (scene->unk35C == 0) {
             gCurTask->main = sub_8092780;
         } else {
@@ -787,7 +787,7 @@ void sub_8092714(void)
 {
     struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk350;
-    transition->unk2 = 1;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
 
     sub_8091F68(scene);
     sub_809205C(scene);
@@ -798,7 +798,7 @@ void sub_8092714(void)
     sub_80923AC(scene);
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_24_8(0);
         gCurTask->main = sub_8091CB0;
     }
 }
