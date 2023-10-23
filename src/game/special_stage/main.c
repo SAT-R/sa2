@@ -320,7 +320,7 @@ void Task_FadeToResultScreen(void)
 
     if (NextTransitionFrame(transition) == 0) {
         gDispCnt = 0x9641;
-        gWinRegs[5] = 0x103F;
+        gWinRegs[WINREG_WINOUT] = 0x103F;
         return;
     }
 
