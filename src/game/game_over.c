@@ -24,12 +24,12 @@ void CreateGameOverScreen(u8 type)
     GameOverScreenTransition *screen = TASK_DATA(t);
 
     struct TransitionState *transition = &screen->unk0;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 1;
-    transition->speed = 0x40;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    transition->window = SCREEN_FADE_USE_WINDOW_1;
+    transition->brightness = Q_24_8(0);
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    transition->speed = Q_24_8(1. / 4.);
+    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    transition->bldAlpha = 0;
 
     screen->unkC = type;
     screen->unkD = 10;
@@ -149,12 +149,12 @@ void sub_8036780(u8 unkC)
     UpdateSpriteAnimation(s);
 
     transition = &screen->unk0;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 2;
-    transition->speed = 0x200;
-    transition->unk8 = 0x3FD0;
-    transition->unkA = 0;
+    transition->window = SCREEN_FADE_USE_WINDOW_1;
+    transition->brightness = Q_24_8(0);
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    transition->speed = Q_24_8(2.0);
+    transition->bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_OBJ);
+    transition->bldAlpha = 0;
 }
 
 void sub_8036BD4(GameOverScreen *screen);
@@ -169,21 +169,23 @@ void sub_8036918(void)
     gBldRegs.bldCnt = 0x3FEF;
 
     if (screen->unk6C == 0x3C) {
-        screen->unk0.unk0 = 1;
-        screen->unk0.unk4 = 0;
-        screen->unk0.unk2 = 1;
-        screen->unk0.speed = 0x400;
-        screen->unk0.unk8 = 0x3F90;
-        screen->unk0.unkA = 0;
+        screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
+        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
+        screen->unk0.speed = Q_24_8(4.0);
+        screen->unk0.bldCnt
+            = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
+        screen->unk0.bldAlpha = 0;
     }
 
     if (screen->unk6C == 0x32) {
-        screen->unk0.unk0 = 1;
-        screen->unk0.unk4 = 0;
-        screen->unk0.unk2 = 2;
-        screen->unk0.speed = 0x400;
-        screen->unk0.unk8 = 0x3F90;
-        screen->unk0.unkA = 0;
+        screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
+        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+        screen->unk0.speed = Q_24_8(4.0);
+        screen->unk0.bldCnt
+            = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
+        screen->unk0.bldAlpha = 0;
     }
 
     if (screen->unk6C >= 0x3D) {
@@ -200,12 +202,14 @@ void sub_8036918(void)
     screen->unk6C--;
 
     if (screen->unk6C == 0) {
-        screen->unk0.unk0 = 1;
-        screen->unk0.unk4 = 0;
-        screen->unk0.unk2 = 1;
-        screen->unk0.speed = 0x40;
-        screen->unk0.unk8 = 0x3FAF;
-        screen->unk0.unkA = 0;
+        screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
+        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
+        screen->unk0.speed = Q_24_8(1. / 4.);
+        screen->unk0.bldCnt
+            = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_BD | BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1
+               | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3 | BLDCNT_TGT2_ALL);
+        screen->unk0.bldAlpha = 0;
 
         screen->unk6C = 120;
         gCurTask->main = sub_80369D8;
@@ -222,13 +226,14 @@ void sub_80369D8(void)
     NextTransitionFrame(&screen->unk0);
 
     if (--screen->unk6C == 0) {
-        screen->unk0.unk0 = 1;
-        screen->unk0.unk4 = 0;
-        screen->unk0.unk2 = 1;
-        screen->unk0.speed = 0x100;
-        screen->unk0.unk8 = 0x3FBF;
-        screen->unk0.unkA = 0;
-        memset(gBgPalette, 0xFF, 0x200);
+        screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
+        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.flags = (SCREEN_FADE_FLAG_LIGHTEN);
+        screen->unk0.speed = Q_24_8(1.0);
+        screen->unk0.bldCnt
+            = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+        screen->unk0.bldAlpha = 0;
+        memset(gBgPalette, RGB(31, 7, 0), sizeof(gBgPalette));
         gFlags |= 0x1;
         gCurTask->main = sub_8036B30;
     }
@@ -247,30 +252,32 @@ void sub_8036A44(void)
     gBldRegs.bldCnt = 0x3FEF;
 
     if (screen->unk6C == 0x96) {
-        screen->unk0.unk0 = 1;
-        screen->unk0.unk4 = 0;
-        screen->unk0.unk2 = 1;
-        screen->unk0.speed = 0x400;
-        screen->unk0.unk8 = 0x3F90;
-        screen->unk0.unkA = 0;
+        screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
+        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
+        screen->unk0.speed = Q_24_8(4.0);
+        screen->unk0.bldCnt
+            = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
+        screen->unk0.bldAlpha = 0;
     }
 
     if (screen->unk6C == 0x8C) {
-        screen->unk0.unk0 = 1;
-        screen->unk0.unk4 = 0;
-        screen->unk0.unk2 = 2;
-        screen->unk0.speed = 0x200;
-        screen->unk0.unk8 = 0x3F90;
-        screen->unk0.unkA = 0;
+        screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
+        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+        screen->unk0.speed = Q_24_8(2.0);
+        screen->unk0.bldCnt
+            = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
+        screen->unk0.bldAlpha = 0;
     }
 
     if (screen->unk6C == 0x1E) {
-        screen->unk0.unk0 = 1;
-        screen->unk0.unk4 = 0;
-        screen->unk0.unk2 = 1;
-        screen->unk0.speed = 0x200;
-        screen->unk0.unk8 = 0x3FD0;
-        screen->unk0.unkA = 0;
+        screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
+        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
+        screen->unk0.speed = Q_24_8(2.0);
+        screen->unk0.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_OBJ);
+        screen->unk0.bldAlpha = 0;
     }
 
     NextTransitionFrame(&screen->unk0);
