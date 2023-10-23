@@ -86,11 +86,11 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
     scene->unk51 = scene->unk50 + gUnknown_080E12AA[scene->unk4F];
 
     transition = &scene->unk40;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unkA = 0;
+    transition->window = SCREEN_FADE_USE_WINDOW_1;
+    transition->brightness = Q_24_8(0);
+    transition->bldAlpha = 0;
     transition->speed = 0x200;
-    transition->unk8 = 0x3FFF;
+    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
 
     if (sTilemapsCreditsSlides[scene->unk50] != 0) {
         background = &scene->unk0;
@@ -119,9 +119,9 @@ void sub_808EF38(void)
     CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
 
-    transition->unk2 = 1;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_24_8(0);
         scene->unk50++;
 
         if (scene->unk50 < scene->unk51) {
@@ -157,14 +157,14 @@ void sub_808F004(void)
 {
     CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
-    transition->unk2 = 2;
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
         gCurTask->main = sub_808F0BC;
     }
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_24_8(0);
         gCurTask->main = sub_808F068;
     }
 }
@@ -189,11 +189,11 @@ void sub_808F0BC(void)
 {
     CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
     struct TransitionState *transition = &scene->unk40;
-    transition->unk2 = 1;
+    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
 
     if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+        transition->brightness = Q_24_8(0);
         CreateCreditsEndCutScene(scene->creditsVariant);
         TaskDestroy(gCurTask);
     }
