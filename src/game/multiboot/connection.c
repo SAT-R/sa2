@@ -23,7 +23,7 @@
 #include "constants/tilemaps.h"
 
 struct SinglePakConnectScreen {
-    struct TransitionState unk0;
+    struct TransitionState transition;
     Sprite unkC;
     Sprite unk3C;
     Sprite unk6C;
@@ -165,13 +165,13 @@ void StartSinglePakConnect(void)
     connectScreen->unkE8 = 0;
     connectScreen->unkEC = 0;
 
-    transition = &connectScreen->unk0;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 2;
-    transition->speed = 0x100;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    transition = &connectScreen->transition;
+    transition->window = SCREEN_FADE_USE_WINDOW_1;
+    transition->brightness = Q_8_8(0);
+    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    transition->speed = Q_24_8(1.0);
+    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    transition->bldAlpha = 0;
     NextTransitionFrame(transition);
 
     ram = OBJ_VRAM0;
@@ -272,7 +272,7 @@ void sub_8081604(void)
     s8 result;
     s32 multiBootFlags;
     struct MultiBootParam *params;
-    NextTransitionFrame(&connectScreen->unk0);
+    NextTransitionFrame(&connectScreen->transition);
     DisplaySprite(&connectScreen->unkC);
     result = sub_8081D70(connectScreen);
 

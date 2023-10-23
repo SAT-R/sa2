@@ -212,12 +212,12 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
         UpdateSpriteAnimation(s);
     }
 
-    lobbyScreen->transition.unk0 = 1;
-    lobbyScreen->transition.unk4 = 0;
-    lobbyScreen->transition.unk2 = 2;
-    lobbyScreen->transition.speed = 0x200;
-    lobbyScreen->transition.unk8 = 0x3FFF;
-    lobbyScreen->transition.unkA = 0;
+    lobbyScreen->transition.window = 1;
+    lobbyScreen->transition.brightness = 0;
+    lobbyScreen->transition.flags = 2;
+    lobbyScreen->transition.speed = Q_24_8(2.0);
+    lobbyScreen->transition.bldCnt = 0x3FFF;
+    lobbyScreen->transition.bldAlpha = 0;
 }
 
 static void Task_FadeInOrHandleExit(void)
@@ -471,10 +471,10 @@ static void Task_ListenForExit(void)
 static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     Sprite *chao = &lobbyScreen->chao;
-    lobbyScreen->transition.unk4 = 0;
-    lobbyScreen->transition.unk2 = 1;
-    lobbyScreen->transition.unkA = 0;
-    lobbyScreen->transition.speed = 0x100;
+    lobbyScreen->transition.brightness = 0;
+    lobbyScreen->transition.flags = 1;
+    lobbyScreen->transition.bldAlpha = 0;
+    lobbyScreen->transition.speed = Q_24_8(1.0);
     lobbyScreen->idleFrame = CHAO_EXIT_WAVE_ANIM_LENGTH;
     m4aSongNumStop(MUS_VS_LOBBY);
     m4aSongNumStart(MUS_VS_EXIT);
@@ -552,10 +552,10 @@ static void MultiplayerLobbyScreenOnDestroy(struct Task *t)
 static void ExitToCharacterSelect(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     lobbyScreen->idleFrame = 0;
-    lobbyScreen->transition.unk4 = 0;
-    lobbyScreen->transition.unk2 = 1;
-    lobbyScreen->transition.speed = 0x200;
-    lobbyScreen->transition.unkA = 0;
+    lobbyScreen->transition.brightness = 0;
+    lobbyScreen->transition.flags = 1;
+    lobbyScreen->transition.speed = Q_24_8(2.0);
+    lobbyScreen->transition.bldAlpha = 0;
     gCurTask->main = Task_FadeInOrHandleExit;
 }
 

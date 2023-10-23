@@ -21,7 +21,7 @@
 #include "constants/tilemaps.h"
 
 struct MultiPakConnectScreen {
-    struct TransitionState unk0;
+    struct TransitionState transition;
     Sprite s;
     Sprite s2;
     Sprite unk6C;
@@ -61,7 +61,7 @@ void StartMultiPakConnect(void)
 {
     struct Task *t;
     struct MultiPakConnectScreen *connectScreen;
-    struct TransitionState *unk0;
+    struct TransitionState *transition;
     Sprite *s;
     Background *background;
     const TileInfo *unkD64;
@@ -92,14 +92,14 @@ void StartMultiPakConnect(void)
         connectScreen->unkF2[i] = 0;
     }
 
-    unk0 = &connectScreen->unk0;
-    unk0->unk0 = 1;
-    unk0->unk4 = 0;
-    unk0->unk2 = 2;
-    unk0->speed = 0x100;
-    unk0->unk8 = 0x3FFF;
-    unk0->unkA = 0;
-    NextTransitionFrame(unk0);
+    transition = &connectScreen->transition;
+    transition->window = 1;
+    transition->brightness = 0;
+    transition->flags = 2;
+    transition->speed = 0x100;
+    transition->bldCnt = 0x3FFF;
+    transition->bldAlpha = 0;
+    NextTransitionFrame(transition);
 
     s = &connectScreen->s;
     s->graphics.dest = vramAddr;
@@ -207,7 +207,7 @@ static void sub_805ADAC(void)
     struct MultiSioData_0_0 *data;
     Sprite *r4p;
 
-    NextTransitionFrame(&connectScreen->unk0);
+    NextTransitionFrame(&connectScreen->transition);
 
     if (gMultiSioStatusFlags & (MULTI_SIO_PARENT | MULTI_SIO_RECV_ID0)) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(SIO_MULTI_CNT->id))) {

@@ -227,11 +227,11 @@ void CreateStageResultsCutscene(u8 mode)
     }
 
     transition = &scene->unk64;
-    transition->unk0 = 0;
-    transition->unk2 = 0xFF00;
-    transition->unk4 = Q_8_8(1);
-    transition->speed = 0;
-    transition->unk8 = 0;
+    transition->window = 0;
+    transition->flags = SCREEN_FADE_FLAG_FF00;
+    transition->brightness = Q_8_8(1);
+    transition->speed = Q_24_8(0);
+    transition->bldCnt = 0;
 }
 
 static void sub_808DD9C(void)
@@ -280,14 +280,14 @@ static void sub_808DD9C(void)
     }
 
     if (scene->unk7A == 1) {
-        transition->unk0 = scene->unk0->rotation * 4;
+        transition->window = scene->unk0->rotation * 4;
     }
 
     s->x = scene->unk70 >> 8;
     s->y = scene->unk72 >> 8;
 
     transition->speed = scene->unk70 >> 8;
-    transition->unk8 = scene->unk72 >> 8;
+    transition->bldCnt = scene->unk72 >> 8;
 
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
@@ -450,12 +450,12 @@ void sub_808E274(struct CharacterUnlockCutScene *scene)
     sub_808E35C(scene);
 
     transition = &scene->unk100;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 2;
+    transition->window = 1;
+    transition->brightness = Q_8_8(0);
+    transition->flags = 2;
     transition->speed = 0x200;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    transition->bldCnt = 0x3FFF;
+    transition->bldAlpha = 0;
 
     NextTransitionFrame(transition);
 }
@@ -594,11 +594,11 @@ void sub_808E63C(void)
         struct TransitionState *transition;
         scene->unk110 = 0;
         transition = &scene->unk100;
-        transition->unk0 = 1;
-        transition->unk8 = 0x3FFF;
-        transition->unk4 = Q_8_8(0);
-        transition->unk2 = 1;
-        transition->unkA = 0;
+        transition->window = 1;
+        transition->bldCnt = 0x3FFF;
+        transition->brightness = Q_8_8(0);
+        transition->flags = 1;
+        transition->bldAlpha = 0;
 
         gCurTask->main = sub_808E6B0;
     }
