@@ -181,8 +181,8 @@ _0801FE6C: .4byte gUnknown_03005424
 _0801FE70: .4byte 0x00196225
 _0801FE74: .4byte 0x3C6EF35F
 
-	thumb_func_start RingsScatterSingleplayerMain
-RingsScatterSingleplayerMain: @ 0x0801FE78
+	thumb_func_start RingsScatterSingleplayer_FlippedGravity
+RingsScatterSingleplayer_FlippedGravity: @ 0x0801FE78
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -595,8 +595,8 @@ _080201AC: .4byte 0x80000003
 _080201B0: .4byte 0x000001FF
 _080201B4: .4byte 0x0000FFFC
 
-	thumb_func_start sub_80201B8
-sub_80201B8: @ 0x080201B8
+	thumb_func_start RingsScatterSingleplayer_NormalGravity
+RingsScatterSingleplayer_NormalGravity: @ 0x080201B8
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -2882,12 +2882,12 @@ Task_RingsScatter_Singleplayer: @ 0x08021368
 	ands r0, r1
 	cmp r0, #0
 	beq _08021380
-	bl RingsScatterSingleplayerMain
+	bl RingsScatterSingleplayer_FlippedGravity
 	b _08021384
 	.align 2, 0
 _0802137C: .4byte gUnknown_03005424
 _08021380:
-	bl sub_80201B8
+	bl RingsScatterSingleplayer_NormalGravity
 _08021384:
 	pop {r0}
 	bx r0
