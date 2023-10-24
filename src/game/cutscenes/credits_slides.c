@@ -4,7 +4,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
@@ -14,7 +14,7 @@
 
 typedef struct {
     Background unk0;
-    struct TransitionState unk40;
+    ScreenFade unk40;
 
     u8 creditsVariant;
     u8 unk4D;
@@ -47,7 +47,7 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
     struct Task *t;
     CreditsSlidesCutScene *scene = NULL;
     Background *background;
-    struct TransitionState *transition = NULL;
+    ScreenFade *fade = NULL;
     u8 i;
 
     gDispCnt = 0x1241;
@@ -85,12 +85,12 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
 
     scene->unk51 = scene->unk50 + gUnknown_080E12AA[scene->unk4F];
 
-    transition = &scene->unk40;
-    transition->window = SCREEN_FADE_USE_WINDOW_1;
-    transition->brightness = Q_24_8(0);
-    transition->bldAlpha = 0;
-    transition->speed = 0x200;
-    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade = &scene->unk40;
+    fade->window = SCREEN_FADE_USE_WINDOW_1;
+    fade->brightness = Q_24_8(0);
+    fade->bldAlpha = 0;
+    fade->speed = 0x200;
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
 
     if (sTilemapsCreditsSlides[scene->unk50] != 0) {
         background = &scene->unk0;
@@ -117,11 +117,11 @@ void sub_808F10C(void);
 void sub_808EF38(void)
 {
     CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk40;
+    ScreenFade *fade = &scene->unk40;
 
-    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         scene->unk50++;
 
         if (scene->unk50 < scene->unk51) {
@@ -156,15 +156,15 @@ void sub_808F068(void);
 void sub_808F004(void)
 {
     CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk40;
-    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    ScreenFade *fade = &scene->unk40;
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
         gCurTask->main = sub_808F0BC;
     }
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         gCurTask->main = sub_808F068;
     }
 }
@@ -188,12 +188,12 @@ void sub_808F068(void)
 void sub_808F0BC(void)
 {
     CreditsSlidesCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk40;
-    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    ScreenFade *fade = &scene->unk40;
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         CreateCreditsEndCutScene(scene->creditsVariant);
         TaskDestroy(gCurTask);
     }

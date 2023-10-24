@@ -2,7 +2,7 @@
 #include "core.h"
 #include "sprite.h"
 #include "game/save.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/game.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
@@ -22,7 +22,7 @@ struct TimeAttackLobbyScreen {
     Background unk40;
     Sprite unk80;
     Sprite unkB0[5];
-    struct TransitionState unk1A0;
+    ScreenFade unk1A0;
     u8 unk1AC;
     u8 unk1AD;
     u8 unk1AE;
@@ -64,7 +64,7 @@ const TileInfo gUnknown_080E04D4[] = {
 
 void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
 {
-    struct TransitionState *transition;
+    ScreenFade *fade;
     Background *background;
     Sprite *s;
     s8 lang = gLoadedSaveGame->language - 1;
@@ -224,16 +224,16 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
     InitBackground(background);
 
-    transition = &lobbyScreen->unk1A0;
-    transition->window = 1;
-    transition->brightness = Q_8_8(0);
-    transition->flags = 2;
-    transition->speed = 0x200;
-    transition->bldCnt = 0x3FFF;
-    transition->bldAlpha = 0;
+    fade = &lobbyScreen->unk1A0;
+    fade->window = 1;
+    fade->brightness = Q_8_8(0);
+    fade->flags = 2;
+    fade->speed = 0x200;
+    fade->bldCnt = 0x3FFF;
+    fade->bldAlpha = 0;
 
     m4aSongNumStart(MUS_TIME_ATTACK_MENU);
-    NextTransitionFrame(transition);
+    UpdateScreenFade(fade);
 }
 
 void sub_8088EB4(void);
@@ -263,7 +263,7 @@ void sub_8088CC4(void)
         DisplaySprite(s);
     }
 
-    if (NextTransitionFrame(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&lobbyScreen->unk1A0) == SCREEN_FADE_COMPLETE) {
         gCurTask->main = sub_8088EB4;
     }
 }
@@ -273,7 +273,7 @@ void sub_8088D60(void)
     struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
     Sprite *s;
     u32 i;
-    if (NextTransitionFrame(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&lobbyScreen->unk1A0) == SCREEN_FADE_COMPLETE) {
         TaskDestroy(gCurTask);
         switch (lobbyScreen->unk1AD) {
             case 0:
@@ -337,7 +337,7 @@ void sub_8088EB4(void)
 {
     struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
     Sprite *s;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     u32 i;
 
     if (gRepeatedKeys & (DPAD_UP) && lobbyScreen->unk1AD != 0) {

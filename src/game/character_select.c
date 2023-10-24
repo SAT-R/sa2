@@ -1,6 +1,6 @@
 #include "global.h"
 #include "core.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/game.h"
 #include "sprite.h"
 #include "game/character_select.h"
@@ -24,7 +24,7 @@
 #include "constants/tilemaps.h"
 
 struct CharacterSelectionScreen {
-    struct TransitionState screenFade;
+    ScreenFade fade;
     Background unkC;
     Background unk4C;
     Background unk8C;
@@ -202,7 +202,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
 {
     struct Task *t;
     struct CharacterSelectionScreen *characterScreen;
-    struct TransitionState *screenFade;
+    ScreenFade *fade;
     Background *background;
     Sprite *s;
     u32 a;
@@ -278,14 +278,14 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
         }
     }
 
-    screenFade = &characterScreen->screenFade;
-    screenFade->window = SCREEN_FADE_USE_WINDOW_0;
-    screenFade->brightness = 0;
-    screenFade->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
-    screenFade->speed = 0x180;
-    screenFade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-    screenFade->bldAlpha = 0;
-    NextTransitionFrame(screenFade);
+    fade = &characterScreen->fade;
+    fade->window = SCREEN_FADE_USE_WINDOW_0;
+    fade->brightness = 0;
+    fade->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
+    fade->speed = 0x180;
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+    fade->bldAlpha = 0;
+    UpdateScreenFade(fade);
 
     background = &characterScreen->unk8C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
@@ -548,7 +548,7 @@ static void Task_FadeInAndStartRollInAnim(void)
         gCurTask->main = Task_RollInAnim;
     }
 
-    NextTransitionFrame(&characterScreen->screenFade);
+    UpdateScreenFade(&characterScreen->fade);
     DisplaySprite(&characterScreen->scrollUpArrow);
     DisplaySprite(&characterScreen->scrollDownArrow);
 
@@ -619,7 +619,7 @@ static void Task_CharacterSelectMain(void)
 {
     u8 i;
     Sprite *s;
-    struct TransitionState *screenFade;
+    ScreenFade *fade;
     union MultiSioData *packet;
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     characterScreen->cursorAnimFrame = (characterScreen->cursorAnimFrame & 0x3F) + 1;
@@ -629,13 +629,13 @@ static void Task_CharacterSelectMain(void)
     if (IS_MULTI_PLAYER) {
         ReadMultiplayerSelections(characterScreen, i, packet);
     } else if (gPressedKeys & B_BUTTON || characterScreen->exiting) {
-        screenFade = &characterScreen->screenFade;
-        screenFade->window = SCREEN_FADE_USE_WINDOW_0;
-        screenFade->brightness = 0;
-        screenFade->flags = SCREEN_FADE_FLAG_LIGHTEN;
-        screenFade->speed = 0x180;
-        screenFade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-        screenFade->bldAlpha = 0;
+        fade = &characterScreen->fade;
+        fade->window = SCREEN_FADE_USE_WINDOW_0;
+        fade->brightness = 0;
+        fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+        fade->speed = 0x180;
+        fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+        fade->bldAlpha = 0;
         gCurTask->main = Task_FadeOutAndExitToPrevious;
 
         if (!characterScreen->exiting) {
@@ -663,13 +663,13 @@ static void Task_CharacterSelectMain(void)
 
         characterScreen->animFrame = 0;
 
-        screenFade = &characterScreen->screenFade;
-        screenFade->window = SCREEN_FADE_USE_WINDOW_0;
-        screenFade->brightness = 0;
-        screenFade->flags = SCREEN_FADE_FLAG_LIGHTEN;
-        screenFade->speed = 0x180;
-        screenFade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-        screenFade->bldAlpha = 0;
+        fade = &characterScreen->fade;
+        fade->window = SCREEN_FADE_USE_WINDOW_0;
+        fade->brightness = 0;
+        fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+        fade->speed = 0x180;
+        fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+        fade->bldAlpha = 0;
 
         m4aSongNumStart(gCharacterAnnouncements[characterScreen->selectedCharacter]);
 
@@ -763,13 +763,13 @@ static void Task_CharacterSelectMain(void)
                 gSelectedCharacter = characterScreen->selectedCharacter;
                 characterScreen->animFrame = 0;
 
-                screenFade = &characterScreen->screenFade;
-                screenFade->window = SCREEN_FADE_USE_WINDOW_0;
-                screenFade->brightness = 0;
-                screenFade->flags = SCREEN_FADE_FLAG_LIGHTEN;
-                screenFade->speed = 0x180;
-                screenFade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-                screenFade->bldAlpha = 0;
+                fade = &characterScreen->fade;
+                fade->window = SCREEN_FADE_USE_WINDOW_0;
+                fade->brightness = 0;
+                fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+                fade->speed = 0x180;
+                fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+                fade->bldAlpha = 0;
                 m4aSongNumStart(
                     gCharacterAnnouncements[characterScreen->selectedCharacter]);
 
@@ -1007,7 +1007,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
     union MultiSioData *packet;
     Sprite *s;
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &characterScreen->screenFade;
+    ScreenFade *unk0 = &characterScreen->fade;
     MultiPakHeartbeat();
 
     if (IS_MULTI_PLAYER) {
@@ -1039,7 +1039,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
 
     if ((characterScreen->animFrame
          >= sCharacterChosenAnimLengths[characterScreen->selectedCharacter])
-        && NextTransitionFrame(unk0) == SCREEN_TRANSITION_COMPLETE) {
+        && UpdateScreenFade(unk0) == SCREEN_FADE_COMPLETE) {
         TaskDestroy(gCurTask);
 
         if (IS_MULTI_PLAYER) {
@@ -1083,9 +1083,9 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
 static void Task_FadeOutAndExitToPrevious(void)
 {
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
-    struct TransitionState *unk0 = &characterScreen->screenFade;
+    ScreenFade *unk0 = &characterScreen->fade;
 
-    if (NextTransitionFrame(unk0) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(unk0) == SCREEN_FADE_COMPLETE) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;

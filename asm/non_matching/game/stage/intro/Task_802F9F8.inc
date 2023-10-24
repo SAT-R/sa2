@@ -284,7 +284,7 @@ _0802FC12:
 	ldr r1, [sp, #4]
 	strh r0, [r1, #8]
 	ldr r0, [sp, #4]
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 	ldr r1, _0802FC54 @ =gWinRegs
 	ldr r0, _0802FC58 @ =0x00001F3F
 	strh r0, [r1, #8]
@@ -306,7 +306,7 @@ _0802FC5C:
 	ldr r3, [sp, #4]
 	strh r0, [r3, #8]
 	ldr r0, [sp, #4]
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 	ldr r1, _0802FCC4 @ =gWinRegs
 	ldr r0, _0802FCC8 @ =0x00003F3F
 	strh r0, [r1, #8]

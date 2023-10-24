@@ -12,7 +12,7 @@
 #include "game/time_attack/results.h"
 #include "game/cutscenes/level_endings.h"
 
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 
 #include "lib/m4a.h"
 #include "constants/songs.h"
@@ -21,7 +21,7 @@
 #include "flags.h"
 
 typedef struct {
-    struct TransitionState transition; /* 0xB4 */
+    ScreenFade fade; /* 0xB4 */
     u8 fillerB4[0x38];
 
     u32 unkF8[6][6];
@@ -325,7 +325,7 @@ extern const u16 gUnknown_080D6DE4[][2];
 void sub_803AA40(void)
 {
     EggHammerTankII *boss = TASK_DATA(gCurTask);
-    struct TransitionState *ts = &boss->unkB4.transition;
+    ScreenFade *ts = &boss->unkB4.fade;
     boss->unkA8++;
 
     if (boss->unkA8 > 8) {
@@ -343,13 +343,13 @@ void sub_803AA40(void)
             ts->brightness = 0x800;
             ts->speed = 0xC0;
         }
-        NextTransitionFrame(ts);
+        UpdateScreenFade(ts);
     } else if (boss->unkA8 < 0x79) {
         UNK_30056A4 *thing;
         ts->flags = 2;
         ts->brightness = 0;
         ts->speed = 0;
-        NextTransitionFrame(ts);
+        UpdateScreenFade(ts);
 
         if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC
             && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
@@ -391,7 +391,7 @@ void sub_803AA40(void)
     } else {
         ts->speed = 0x28;
 
-        if (NextTransitionFrame(ts) == SCREEN_TRANSITION_COMPLETE) {
+        if (UpdateScreenFade(ts) == SCREEN_FADE_COMPLETE) {
             if (!IS_FINAL_STAGE(gCurrentLevel)) {
                 if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
                     CreateTimeAttackResults(gCourseTime);

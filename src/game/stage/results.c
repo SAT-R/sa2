@@ -9,7 +9,7 @@
 #include "game/cutscenes/endings.h"
 #include "game/cutscenes/level_endings.h"
 #include "game/save.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/special_stage/main.h"
 #include "game/stage/results.h"
 #include "game/stage/ui.h"
@@ -19,7 +19,7 @@
 #include "constants/zones.h"
 
 typedef struct {
-    /*  0x00 */ struct TransitionState transition;
+    /*  0x00 */ ScreenFade fade;
     /*  0x0C */ Sprite s1[3];
     /*  0x9C */ Sprite sprScores[3];
     /* 0x12C */ Sprite s7;
@@ -101,21 +101,21 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     outro->counter = zero;
     outro->isCountingDone = zero;
 
-    outro->transition.window = zero;
-    outro->transition.flags = 1;
-    outro->transition.speed = Q_24_8(1.0);
-    outro->transition.brightness = zero;
-    outro->transition.bldCnt = 0x3FFF;
-    outro->transition.bldAlpha = zero;
+    outro->fade.window = zero;
+    outro->fade.flags = 1;
+    outro->fade.speed = Q_24_8(1.0);
+    outro->fade.brightness = zero;
+    outro->fade.bldCnt = 0x3FFF;
+    outro->fade.bldAlpha = zero;
 
     if ((gPlayer.moveState & MOVESTATE_8000000)
         && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
-        outro->transition.speed = Q_24_8(0.25);
-        outro->transition.bldCnt = 0x3FBF;
+        outro->fade.speed = Q_24_8(0.25);
+        outro->fade.bldCnt = 0x3FBF;
     } else if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
-        outro->transition.bldCnt = 0x3FAF;
-        outro->transition.brightness = 0x2000;
-        NextTransitionFrame(&outro->transition);
+        outro->fade.bldCnt = 0x3FAF;
+        outro->fade.brightness = 0x2000;
+        UpdateScreenFade(&outro->fade);
     }
 
     if (courseTime < ZONE_TIME_TO_INT(0, 30)) {
@@ -396,7 +396,7 @@ void Task_UpdateStageResults(void)
                 return;
             }
         } else {
-            if (NextTransitionFrame(&outro->transition) == 1) {
+            if (UpdateScreenFade(&outro->fade) == 1) {
                 gBldRegs.bldY = 0x10;
                 gPlayer.moveState |= MOVESTATE_100000;
 

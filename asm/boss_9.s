@@ -1900,7 +1900,7 @@ _0804DC24: .4byte gIntrTable + 4
 _0804DC28: .4byte gCamera
 _0804DC2C:
 	adds r0, r7, #0
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #1

@@ -78,7 +78,7 @@
 	ldr r1, _0802F224 @ =0x00003FFF
 	strh r1, [r0, #8]
 	strh r4, [r0, #0xa]
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 	ldr r0, _0802F228 @ =Task_IntroColorAnimation
 	ldr r2, _0802F22C @ =0x00002220
 	mov r1, r8

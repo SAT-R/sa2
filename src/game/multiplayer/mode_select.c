@@ -10,7 +10,7 @@
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiboot/connection.h"
 #include "game/save.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/stage/boss_results_transition.h"
 #include "game/title_screen.h"
 
@@ -31,7 +31,7 @@ struct MultiplayerModeSelectScreen {
     Sprite unkE0;
     Sprite subText;
 
-    struct TransitionState transition;
+    ScreenFade fade;
 
     // animFrame
     u8 animFrame;
@@ -84,7 +84,7 @@ void CreateMultiplayerModeSelectScreen(void)
 {
     struct Task *t;
     struct MultiplayerModeSelectScreen *modeScreen;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     Sprite *s;
     Background *background;
 
@@ -109,14 +109,14 @@ void CreateMultiplayerModeSelectScreen(void)
     modeScreen->pakMode = PAK_MODE_MULTI;
     modeScreen->enterAnimDone = FALSE;
 
-    transition = &modeScreen->transition;
-    transition->window = 1;
-    transition->brightness = Q_24_8(0.0);
-    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-    transition->speed = Q_24_8(1.0);
-    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
-    transition->bldAlpha = 0;
-    NextTransitionFrame(transition);
+    fade = &modeScreen->fade;
+    fade->window = 1;
+    fade->brightness = Q_24_8(0.0);
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->speed = Q_24_8(1.0);
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade->bldAlpha = 0;
+    UpdateScreenFade(fade);
 
     s = &modeScreen->unk80;
     s->graphics.dest = VramMalloc(0x32);
@@ -302,27 +302,27 @@ static void Task_EnterAnimPart2(void)
 static void Task_ScreenMain(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    struct TransitionState *transition;
+    ScreenFade *fade;
     if (gPressedKeys & A_BUTTON) {
-        transition = &modeScreen->transition;
-        transition->window = 1;
-        transition->brightness = 0;
-        transition->flags = 1;
-        transition->speed = 0x100;
-        transition->bldCnt = 0x3FFF;
-        transition->bldAlpha = 0;
+        fade = &modeScreen->fade;
+        fade->window = 1;
+        fade->brightness = 0;
+        fade->flags = 1;
+        fade->speed = 0x100;
+        fade->bldCnt = 0x3FFF;
+        fade->bldAlpha = 0;
         m4aSongNumStart(SE_SELECT);
         MultiSioStop();
         MultiSioInit(0);
         gCurTask->main = Task_FadeOutToSelectedMode;
     } else if (gPressedKeys & B_BUTTON) {
-        transition = &modeScreen->transition;
-        transition->window = 1;
-        transition->brightness = 0;
-        transition->flags = 1;
-        transition->speed = 0x100;
-        transition->bldCnt = 0x3FFF;
-        transition->bldAlpha = 0;
+        fade = &modeScreen->fade;
+        fade->window = 1;
+        fade->brightness = 0;
+        fade->flags = 1;
+        fade->speed = 0x100;
+        fade->bldCnt = 0x3FFF;
+        fade->bldAlpha = 0;
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = Task_FadeOutAndExitToTitleScreen;
     }
@@ -367,7 +367,7 @@ static void Task_ScreenMain(void)
 static void Task_FadeOutToSelectedMode(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    if (NextTransitionFrame(&modeScreen->transition) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
         gCurTask->main = Task_ExitAndInitSelectedPakMode;
@@ -388,7 +388,7 @@ static void Task_FadeOutToSelectedMode(void)
 static void Task_FadeOutAndExitToTitleScreen(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    if (NextTransitionFrame(&modeScreen->transition) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
         gFlags &= ~0x4;
         CreateTitleScreenAtPlayModeMenu();
         TaskDestroy(gCurTask);
@@ -409,7 +409,7 @@ static void Task_FadeOutAndExitToTitleScreen(void)
 static void Task_FadeInAndStartEnterAnim(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    if (NextTransitionFrame(&modeScreen->transition) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
         modeScreen->animFrame = 15;
         gCurTask->main = Task_EnterAnimPart1;
     }

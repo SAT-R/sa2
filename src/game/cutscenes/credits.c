@@ -5,7 +5,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
@@ -14,7 +14,7 @@
 
 struct CreditsCutScene {
     Background unk0;
-    struct TransitionState unk40;
+    ScreenFade unk40;
 
     u8 variant;
     u8 unk4D;
@@ -57,7 +57,7 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     struct Task *t;
     struct CreditsCutScene *scene = NULL;
     Background *background;
-    struct TransitionState *transition;
+    ScreenFade *fade;
 
     gDispCnt = 0x1140;
     gBgCntRegs[0] = 0x5c00;
@@ -96,12 +96,12 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
         scene->unk4D = 0;
     }
 
-    transition = &scene->unk40;
-    transition->window = SCREEN_FADE_USE_WINDOW_0;
-    transition->brightness = Q_8_8(0);
-    transition->bldAlpha = 0;
-    transition->speed = 0x100;
-    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade = &scene->unk40;
+    fade->window = SCREEN_FADE_USE_WINDOW_0;
+    fade->brightness = Q_8_8(0);
+    fade->bldAlpha = 0;
+    fade->speed = 0x100;
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
 
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -124,16 +124,16 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
 static void sub_808EBC4(void)
 {
     struct CreditsCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk40;
+    ScreenFade *fade = &scene->unk40;
 
-    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
         gCurTask->main = sub_808ECB4;
     }
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         gCurTask->main = sub_808EC64;
     }
 }
@@ -141,11 +141,11 @@ static void sub_808EBC4(void)
 static void sub_808EC28(void)
 {
     struct CreditsCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk40;
-    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    ScreenFade *fade = &scene->unk40;
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         gCurTask->main = sub_808ED04;
     }
 }
@@ -153,7 +153,7 @@ static void sub_808EC28(void)
 static void sub_808EC64(void)
 {
     struct CreditsCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk40;
+    ScreenFade *fade = &scene->unk40;
 
     if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
         gCurTask->main = sub_808ECB4;
@@ -169,12 +169,12 @@ static void sub_808EC64(void)
 static void sub_808ECB4(void)
 {
     struct CreditsCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk40;
-    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    ScreenFade *fade = &scene->unk40;
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         CreateCreditsEndCutScene(scene->variant);
         TaskDestroy(gCurTask);
     }

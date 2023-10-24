@@ -13,7 +13,7 @@
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiplayer/mode_select.h"
 #include "game/save.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/stage/entities_manager.h"
 #include "game/title_screen.h"
 
@@ -23,7 +23,7 @@
 #include "constants/tilemaps.h"
 
 struct SinglePakConnectScreen {
-    struct TransitionState transition;
+    ScreenFade fade;
     Sprite unkC;
     Sprite unk3C;
     Sprite unk6C;
@@ -132,7 +132,7 @@ void StartSinglePakConnect(void)
 {
     struct Task *t;
     struct SinglePakConnectScreen *connectScreen;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     Sprite *s;
     Background *background;
     struct MultiBootParam *mbParams;
@@ -165,14 +165,14 @@ void StartSinglePakConnect(void)
     connectScreen->unkE8 = 0;
     connectScreen->unkEC = 0;
 
-    transition = &connectScreen->transition;
-    transition->window = SCREEN_FADE_USE_WINDOW_1;
-    transition->brightness = Q_8_8(0);
-    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-    transition->speed = Q_24_8(1.0);
-    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
-    transition->bldAlpha = 0;
-    NextTransitionFrame(transition);
+    fade = &connectScreen->fade;
+    fade->window = SCREEN_FADE_USE_WINDOW_1;
+    fade->brightness = Q_8_8(0);
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->speed = Q_24_8(1.0);
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade->bldAlpha = 0;
+    UpdateScreenFade(fade);
 
     ram = OBJ_VRAM0;
     s = &connectScreen->unkC;
@@ -272,7 +272,7 @@ void sub_8081604(void)
     s8 result;
     s32 multiBootFlags;
     struct MultiBootParam *params;
-    NextTransitionFrame(&connectScreen->transition);
+    UpdateScreenFade(&connectScreen->fade);
     DisplaySprite(&connectScreen->unkC);
     result = sub_8081D70(connectScreen);
 
