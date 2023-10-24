@@ -291,8 +291,7 @@ void CreateTitleScreen(void)
     s32 i, val;
     s16 denom;
 
-    t = TaskCreate(Task_IntroStartSegaLogoAnim, sizeof(TitleScreen), 0x1000, 0,
-                   NULL);
+    t = TaskCreate(Task_IntroStartSegaLogoAnim, sizeof(TitleScreen), 0x1000, 0, NULL);
     titleScreen = TASK_DATA(t);
 
     titleScreen->unkF34 = 512;
@@ -1669,8 +1668,7 @@ static void Task_MenuItemTransitionInAnim(void)
 
 static void CreateLensFlareAnimation(void)
 {
-    struct Task *t
-        = TaskCreate(Task_LensFlareAnim, sizeof(LensFlare), 0x2000, 0, 0);
+    struct Task *t = TaskCreate(Task_LensFlareAnim, sizeof(LensFlare), 0x2000, 0, 0);
     LensFlare *lensFlare = TASK_DATA(t);
     Sprite *s;
     SpriteTransform *transform;
@@ -1819,8 +1817,7 @@ void CreateTitleScreenAtSinglePlayerMenu(void)
     struct Task *t;
     REG_SIOCNT |= SIO_INTR_ENABLE;
 
-    t = TaskCreate(Task_JumpToSinglePlayerMenu, sizeof(TitleScreen), 0x1000, 0,
-                   0);
+    t = TaskCreate(Task_JumpToSinglePlayerMenu, sizeof(TitleScreen), 0x1000, 0, 0);
     CreateTitleScreenWithoutIntro(TASK_DATA(t));
 }
 

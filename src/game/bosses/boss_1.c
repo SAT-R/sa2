@@ -21,7 +21,7 @@
 #include "flags.h"
 
 typedef struct {
-    struct TransitionState transition; /* 0xB4 */
+    ScreenFade fade; /* 0xB4 */
     u8 fillerB4[0x38];
 
     u32 unkF8[6][6];
@@ -325,7 +325,7 @@ extern const u16 gUnknown_080D6DE4[][2];
 void sub_803AA40(void)
 {
     EggHammerTankII *boss = TASK_DATA(gCurTask);
-    struct TransitionState *ts = &boss->unkB4.transition;
+    ScreenFade *ts = &boss->unkB4.fade;
     boss->unkA8++;
 
     if (boss->unkA8 > 8) {
