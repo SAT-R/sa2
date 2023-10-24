@@ -2,6 +2,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "game/rings_scatter.h"
+#include "game/stage/rings_manager.h" // for RESERVED_RING_TILES_VRAM
 
 #include "constants/animations.h"
 
@@ -61,7 +62,7 @@ void InitPlayerHitRingsScatter(void)
     s = &rs->sprRing;
     s->x = 0;
     s->y = 0;
-    s->graphics.dest = (void *)(OBJ_VRAM0 + 0x1F00);
+    s->graphics.dest = RESERVED_RING_TILES_VRAM;
     s->unk1A = SPRITE_OAM_ORDER(20);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_RING;
