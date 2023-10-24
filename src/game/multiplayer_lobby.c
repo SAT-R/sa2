@@ -241,7 +241,7 @@ static void Task_FadeInOrHandleExit(void)
 
     // Wait for idle frame to reach 0
     if (lobbyScreen->idleFrame == 0) {
-        if (UpdateScreenFade(&lobbyScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
+        if (UpdateScreenFade(&lobbyScreen->fade) == SCREEN_FADE_COMPLETE) {
             if (lobbyScreen->fadeInComplete) {
                 TaskDestroy(gCurTask);
                 if (lobbyScreen->cursor != CURSOR_YES) {

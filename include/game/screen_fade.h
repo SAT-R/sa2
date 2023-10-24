@@ -11,8 +11,8 @@
 #define SCREEN_FADE_FLAG_2       (1 << 1)
 #define SCREEN_FADE_FLAG_FF00    0xFF00
 
-#define SCREEN_TRANSITION_RUNNING  0
-#define SCREEN_TRANSITION_COMPLETE 1
+#define SCREEN_FADE_RUNNING  0
+#define SCREEN_FADE_COMPLETE 1
 
 // NOTE: The GBA's internal brightness coefficient (BLDY)
 //       only has a range of 0 to 16,
@@ -20,7 +20,6 @@
 //       Any value above 16 will just cap out at 16/16.
 #define SCREEN_FADE_BLEND_MAX 32
 
-// Possibly transition configuration?
 typedef struct {
     // TODO: Is this a bool16?
     /* 0x00 */ s16 window;

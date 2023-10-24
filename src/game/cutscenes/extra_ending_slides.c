@@ -77,7 +77,7 @@ void sub_8091590(void)
     ScreenFade *fade = &scene->unk40;
 
     fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
         fade->brightness = Q_24_8(0);
         gCurTask->main = sub_8091608;
     }
@@ -91,7 +91,7 @@ void sub_80915CC(void)
     ScreenFade *fade = &scene->unk40;
 
     fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
-    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
         fade->brightness = Q_24_8(0);
         gCurTask->main = sub_8091638;
     }

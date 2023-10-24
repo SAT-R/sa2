@@ -367,7 +367,7 @@ static void Task_ScreenMain(void)
 static void Task_FadeOutToSelectedMode(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
         gCurTask->main = Task_ExitAndInitSelectedPakMode;
@@ -388,7 +388,7 @@ static void Task_FadeOutToSelectedMode(void)
 static void Task_FadeOutAndExitToTitleScreen(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
         gFlags &= ~0x4;
         CreateTitleScreenAtPlayModeMenu();
         TaskDestroy(gCurTask);
@@ -409,7 +409,7 @@ static void Task_FadeOutAndExitToTitleScreen(void)
 static void Task_FadeInAndStartEnterAnim(void)
 {
     struct MultiplayerModeSelectScreen *modeScreen = TASK_DATA(gCurTask);
-    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->fade) == SCREEN_FADE_COMPLETE) {
         modeScreen->animFrame = 15;
         gCurTask->main = Task_EnterAnimPart1;
     }

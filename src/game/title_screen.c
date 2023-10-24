@@ -1263,7 +1263,7 @@ static void Task_HandleTitleScreenExit(void)
     Sprite *menuItem;
     u8 i;
 
-    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_FADE_COMPLETE) {
         gUnknown_03005424 = EXTRA_STATE__CLEAR;
         gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
         gSelectedCharacter = CHARACTER_SONIC;
@@ -1414,7 +1414,7 @@ static void Task_JumpToPlayModeMenu(void)
     DisplaySprite(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
-    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_FADE_COMPLETE) {
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_PlayModeMenuMain;
@@ -1436,7 +1436,7 @@ static void Task_JumpToSinglePlayerMenu(void)
 
     ShowGameLogo(titleScreen);
 
-    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_FADE_COMPLETE) {
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_SinglePlayerMenuMain;
@@ -1848,7 +1848,7 @@ static void Task_ShowPressStartMenu(void)
     DisplaySprite(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
-    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_FADE_COMPLETE) {
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_PressStartMenuMain;
@@ -1860,7 +1860,7 @@ static void Task_IntroStartSegaLogoAnim(void)
     TitleScreen *titleScreen = TASK_DATA(gCurTask);
     WavesBackgroundAnim(titleScreen);
 
-    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_FADE_COMPLETE) {
         gCurTask->main = Task_IntroFadeInSegaLogoAnim;
 
         gBldRegs.bldAlpha = FadeInBlend(0);

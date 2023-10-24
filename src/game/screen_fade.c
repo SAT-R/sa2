@@ -42,9 +42,9 @@ u8 UpdateScreenFade(ScreenFade *fade)
 
     if (fade->brightness >= Q_8_8(SCREEN_FADE_BLEND_MAX)) {
         fade->brightness = Q_8_8(SCREEN_FADE_BLEND_MAX);
-        return SCREEN_TRANSITION_COMPLETE;
+        return SCREEN_FADE_COMPLETE;
     } else {
-        return SCREEN_TRANSITION_RUNNING;
+        return SCREEN_FADE_RUNNING;
     }
 }
 

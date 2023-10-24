@@ -292,7 +292,7 @@ static void Task_FadeOut(void)
 
     RenderExtraEndingElements(scene);
 
-    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
         fade->brightness = Q_24_8(0);
 
         if (scene->sequence == SEQUENCE_FADE_TO_COPYRIGHT_SCREEN) {
@@ -570,7 +570,7 @@ static void Task_FadeIn(void)
 
     RenderExtraEndingElements(scene);
 
-    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
         fade->brightness = Q_24_8(0);
         gCurTask->main = Task_SequenceMain;
     }

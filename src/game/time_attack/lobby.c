@@ -263,7 +263,7 @@ void sub_8088CC4(void)
         DisplaySprite(s);
     }
 
-    if (UpdateScreenFade(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&lobbyScreen->unk1A0) == SCREEN_FADE_COMPLETE) {
         gCurTask->main = sub_8088EB4;
     }
 }
@@ -273,7 +273,7 @@ void sub_8088D60(void)
     struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
     Sprite *s;
     u32 i;
-    if (UpdateScreenFade(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&lobbyScreen->unk1A0) == SCREEN_FADE_COMPLETE) {
         TaskDestroy(gCurTask);
         switch (lobbyScreen->unk1AD) {
             case 0:

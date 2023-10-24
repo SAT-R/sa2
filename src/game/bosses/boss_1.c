@@ -391,7 +391,7 @@ void sub_803AA40(void)
     } else {
         ts->speed = 0x28;
 
-        if (UpdateScreenFade(ts) == SCREEN_TRANSITION_COMPLETE) {
+        if (UpdateScreenFade(ts) == SCREEN_FADE_COMPLETE) {
             if (!IS_FINAL_STAGE(gCurrentLevel)) {
                 if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
                     CreateTimeAttackResults(gCourseTime);

@@ -407,7 +407,7 @@ static void Task_FadeOutModeSelected(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
-    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_FADE_COMPLETE) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
         gCurTask->main = Task_HandleModeSelectedExit;
@@ -430,7 +430,7 @@ static void Task_FadeOutToTitleScreen(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
-    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_FADE_COMPLETE) {
         gFlags &= ~0x4;
         CreateTitleScreenAtSinglePlayerMenu();
         TaskDestroy(gCurTask);
@@ -452,7 +452,7 @@ static void Task_FadeOutToTitleScreen(void)
 static void Task_FadeInAndStartIntro(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
-    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_FADE_COMPLETE) {
         modeScreen->animFrame = 0xF;
         gCurTask->main = Task_IntroSweepAnim;
     }

@@ -523,7 +523,7 @@ void sub_808E424(void)
     }
 
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
-    if (UpdateScreenFade(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&scene->unk100) == SCREEN_FADE_COMPLETE) {
         scene->unk110 = 0;
         gCurTask->main = sub_808E4C8;
     }
@@ -609,7 +609,7 @@ void sub_808E6B0(void)
     struct CharacterUnlockCutScene *scene = TASK_DATA(gCurTask);
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
 
-    if (UpdateScreenFade(&scene->unk100) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&scene->unk100) == SCREEN_FADE_COMPLETE) {
         if (gCurrentLevel >= gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
             CreateCourseSelectionScreen(
                 gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);

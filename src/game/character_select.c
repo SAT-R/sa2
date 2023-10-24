@@ -1039,7 +1039,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
 
     if ((characterScreen->animFrame
          >= sCharacterChosenAnimLengths[characterScreen->selectedCharacter])
-        && UpdateScreenFade(unk0) == SCREEN_TRANSITION_COMPLETE) {
+        && UpdateScreenFade(unk0) == SCREEN_FADE_COMPLETE) {
         TaskDestroy(gCurTask);
 
         if (IS_MULTI_PLAYER) {
@@ -1085,7 +1085,7 @@ static void Task_FadeOutAndExitToPrevious(void)
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     ScreenFade *unk0 = &characterScreen->fade;
 
-    if (UpdateScreenFade(unk0) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(unk0) == SCREEN_FADE_COMPLETE) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;

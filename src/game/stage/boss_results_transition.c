@@ -34,7 +34,7 @@ void Task_802ED98(void)
     StageResultsInit *sri = TASK_DATA(gCurTask);
     ScreenFade *ts = &sri->ts;
 
-    if (UpdateScreenFade(ts) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(ts) == SCREEN_FADE_COMPLETE) {
         TaskDestroy(gCurTask);
 
         if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {

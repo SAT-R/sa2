@@ -773,7 +773,7 @@ void sub_8092690(void)
     sub_8092850(scene);
     sub_80923AC(scene);
 
-    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
         fade->brightness = Q_24_8(0);
         if (scene->unk35C == 0) {
             gCurTask->main = sub_8092780;
@@ -797,7 +797,7 @@ void sub_8092714(void)
     sub_8092850(scene);
     sub_80923AC(scene);
 
-    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
         fade->brightness = Q_24_8(0);
         gCurTask->main = sub_8091CB0;
     }
