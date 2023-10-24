@@ -99,7 +99,7 @@ void StartMultiPakConnect(void)
     fade->speed = 0x100;
     fade->bldCnt = 0x3FFF;
     fade->bldAlpha = 0;
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
 
     s = &connectScreen->s;
     s->graphics.dest = vramAddr;
@@ -207,7 +207,7 @@ static void sub_805ADAC(void)
     struct MultiSioData_0_0 *data;
     Sprite *r4p;
 
-    NextTransitionFrame(&connectScreen->fade);
+    UpdateScreenFade(&connectScreen->fade);
 
     if (gMultiSioStatusFlags & (MULTI_SIO_PARENT | MULTI_SIO_RECV_ID0)) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(SIO_MULTI_CNT->id))) {

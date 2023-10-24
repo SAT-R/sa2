@@ -1412,7 +1412,7 @@ static void OptionsScreenInitRegisters(struct OptionsScreen *optionsScreen, s16 
         fade->bldAlpha = 0;
         fade->bldCnt = 0xFF;
 
-        NextTransitionFrame(fade);
+        UpdateScreenFade(fade);
     }
 }
 
@@ -2101,7 +2101,7 @@ static void Task_PlayerDataMenuFadeOutToTimeRecordsScreen(void)
     PlayerDataMenuRenderUI();
 
     // fade out until complete
-    if (NextTransitionFrame(unk150)) {
+    if (UpdateScreenFade(unk150)) {
         if (playerDataMenu->optionsScreen->bossTimeAttackUnlocked) {
             // give player the choice
             CreateTimeRecordsScreen(playerDataMenu);
@@ -2983,7 +2983,7 @@ static void LanguageScreenInitRegisters(struct LanguageScreen *languageScreen)
     fade->bldAlpha = 0;
     fade->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
-    NextTransitionFrame(&languageScreen->unk1F0);
+    UpdateScreenFade(&languageScreen->unk1F0);
 }
 
 static void LanguageScreenCreateUI(struct LanguageScreen *languageScreen)
@@ -3161,7 +3161,7 @@ static void DeleteScreenInitRegisters(struct DeleteScreen *deleteScreen)
     fade->bldAlpha = 0;
     fade->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
-    NextTransitionFrame(&deleteScreen->unk130);
+    UpdateScreenFade(&deleteScreen->unk130);
 }
 
 static void DeleteScreenCreateUI(struct DeleteScreen *deleteScreen)
@@ -3308,7 +3308,7 @@ static void Task_DeleteScreenFadeOutAndExit(void)
 {
     struct DeleteScreen *deleteScreen = TASK_DATA(gCurTask);
 
-    if (!NextTransitionFrame(&deleteScreen->unk130)) {
+    if (!UpdateScreenFade(&deleteScreen->unk130)) {
         DeleteScreenRenderUI();
         return;
     }
@@ -3837,7 +3837,7 @@ static void ProfileNameScreenFadeOutAndExit(void)
     s16 onCompleteAction = profileNameScreen->onCompleteAction;
     s16 i;
 
-    if (!NextTransitionFrame(fade)) {
+    if (!UpdateScreenFade(fade)) {
         ProfileNameScreenRenderUI();
         return;
     }
@@ -4820,7 +4820,7 @@ static void Task_TimeRecordsScreenFadeToPrevious(void)
     u8 availableCharacters;
     bool8 allCharactersUnlocked;
 
-    if (!NextTransitionFrame(unk0)) {
+    if (!UpdateScreenFade(unk0)) {
         TimeRecordsScreenRenderCoursesViewUI(0);
         return;
     }
@@ -5518,7 +5518,7 @@ static void Task_OptionScreenFadeIn(void)
     ScreenFade *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (NextTransitionFrame(unk774)) {
+    if (UpdateScreenFade(unk774)) {
         gCurTask->main = Task_OptionsScreenMain;
     }
 }
@@ -5588,7 +5588,7 @@ static void Task_OptionsScreenFadeOutToLanguageScreen(void)
     ScreenFade *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (NextTransitionFrame(unk774)) {
+    if (UpdateScreenFade(unk774)) {
         CreateEditLanguageScreen(optionsScreen);
         optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_OPEN;
         gCurTask->main = Task_OptionsScreenWaitForLanguageScreenExit;
@@ -5601,7 +5601,7 @@ static void Task_OptionsScreenFadeInFromLanguageScreen(void)
     ScreenFade *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (NextTransitionFrame(unk774)) {
+    if (UpdateScreenFade(unk774)) {
         gCurTask->main = Task_OptionsScreenMain;
     }
 }
@@ -5629,7 +5629,7 @@ static void Task_OptionScreenFadeOutToSoundTest(void)
     ScreenFade *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (NextTransitionFrame(unk774)) {
+    if (UpdateScreenFade(unk774)) {
         CreateSoundTestScreen(optionsScreen);
         optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_OPEN;
         gCurTask->main = Task_OptionsScreenWaitForSoundTestExit;
@@ -5642,7 +5642,7 @@ static void Task_OptionsScreenFadeInFromSoundTest(void)
     ScreenFade *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (NextTransitionFrame(unk774)) {
+    if (UpdateScreenFade(unk774)) {
         gCurTask->main = Task_OptionsScreenMain;
     }
 }
@@ -5669,7 +5669,7 @@ static void Task_OptionsScreenFadeOutToDeleteScreen(void)
     ScreenFade *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (NextTransitionFrame(unk774)) {
+    if (UpdateScreenFade(unk774)) {
         CreateDeleteScreen(optionsScreen);
         optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_OPEN;
         gCurTask->main = Task_OptionsScreenWaitForDeleteScreenExit;
@@ -5682,7 +5682,7 @@ static void Task_OptionsScreenFadeInFromDeleteScreen(void)
     ScreenFade *unk774 = &optionsScreen->unk774;
     OptionsScreenRenderUI();
 
-    if (NextTransitionFrame(unk774)) {
+    if (UpdateScreenFade(unk774)) {
         gCurTask->main = Task_OptionsScreenMain;
     }
 }
@@ -5709,7 +5709,7 @@ static void Task_PlayerDataMenuFadeOutToProfileNameScreen(void)
     ScreenFade *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
-    if (NextTransitionFrame(unk150)) {
+    if (UpdateScreenFade(unk150)) {
         CreateEditProfileNameScreen(playerDataMenu);
         playerDataMenu->state = PLAYER_DATA_MENU_STATE_SCREEN_OPEN;
         playerDataMenu->optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_SCREEN_OPEN;
@@ -5723,7 +5723,7 @@ static void Task_PlayerDataMenuFadeInFromProfileNameScreen(void)
     ScreenFade *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
-    if (NextTransitionFrame(unk150)) {
+    if (UpdateScreenFade(unk150)) {
         gCurTask->main = Task_PlayerDataMenuOpenAnimWait;
     }
 }
@@ -5750,7 +5750,7 @@ static void Task_PlayerDataMenuFadeInFromTimeRecordsScreen(void)
     ScreenFade *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
-    if (NextTransitionFrame(unk150)) {
+    if (UpdateScreenFade(unk150)) {
         gCurTask->main = Task_PlayerDataMenuOpenAnimWait;
     }
 }
@@ -5777,7 +5777,7 @@ static void Task_PlayerDataMenuFadeOutToMultiplayerRecordsScreen(void)
     ScreenFade *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
-    if (NextTransitionFrame(unk150)) {
+    if (UpdateScreenFade(unk150)) {
         CreateMultiplayerRecordsScreen(playerDataMenu);
         playerDataMenu->state = PLAYER_DATA_MENU_STATE_SCREEN_OPEN;
         playerDataMenu->optionsScreen->state = OPTIONS_SCREEN_STATE_SUB_MENU_SCREEN_OPEN;
@@ -5791,7 +5791,7 @@ static void Task_PlayerDataMenuFadeInFromMultiplayerRecordsScreen(void)
     ScreenFade *unk150 = &playerDataMenu->unk150;
     PlayerDataMenuRenderUI();
 
-    if (NextTransitionFrame(unk150)) {
+    if (UpdateScreenFade(unk150)) {
         gCurTask->main = Task_PlayerDataMenuOpenAnimWait;
     }
 }
@@ -5814,7 +5814,7 @@ static void Task_OptionsScreenFadeOutAndExit(void)
 {
     struct OptionsScreen *optionsScreen = TASK_DATA(gCurTask);
     ScreenFade *unk270 = &optionsScreen->unk774;
-    if (!NextTransitionFrame(unk270)) {
+    if (!UpdateScreenFade(unk270)) {
         OptionsScreenRenderUI();
         return;
     }
@@ -5997,7 +5997,7 @@ static void Task_LanguageScreenFadeIn(void)
     LanguageScreenRenderUI();
     ReseedRng();
 
-    if (NextTransitionFrame(unk1F0)) {
+    if (UpdateScreenFade(unk1F0)) {
         gCurTask->main = Task_LanguageScreenMain;
     }
 }
@@ -6013,7 +6013,7 @@ static void LanguageScreenHandleExit(void)
     fade->bldAlpha = 0;
     fade->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
     gCurTask->main = Task_LanguageScreenFadeOutAndExit;
 }
 
@@ -6023,7 +6023,7 @@ static void Task_LanguageScreenFadeOutAndExit(void)
     ScreenFade *unk1F0 = &languageScreen->unk1F0;
     ReseedRng();
 
-    if (!NextTransitionFrame(unk1F0)) {
+    if (!UpdateScreenFade(unk1F0)) {
         LanguageScreenRenderUI();
         return;
     }
@@ -6072,7 +6072,7 @@ static void Task_DeleteScreenFadeIn(void)
     struct DeleteScreen *deleteScreen = TASK_DATA(gCurTask);
     ScreenFade *unk130 = &deleteScreen->unk130;
     DeleteScreenRenderUI();
-    if (NextTransitionFrame(unk130)) {
+    if (UpdateScreenFade(unk130)) {
         gCurTask->main = Task_DeleteScreenConfrimationMain;
     }
 }
@@ -6091,7 +6091,7 @@ static void Task_DeleteScreenHandleExit(void)
     fade->bldAlpha = 0;
     fade->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
     gCurTask->main = Task_DeleteScreenFadeOutAndExit;
 }
 
@@ -6123,7 +6123,7 @@ static void Task_ProfileNameScreenFadeIn(void)
 
     ProfileNameScreenRenderUI();
 
-    if (NextTransitionFrame(fade)) {
+    if (UpdateScreenFade(fade)) {
         profileNameScreen->matrixCursorIndex = 0;
         gCurTask->main = Task_ProfileNameScreenMain;
     }
@@ -6151,7 +6151,7 @@ static void Task_TimeRecordsScreenChoiceViewFadeIn(void)
 
     TimeRecordsScreenRenderModeChoiceUI();
 
-    if (NextTransitionFrame(fade)) {
+    if (UpdateScreenFade(fade)) {
         gCurTask->main = Task_TimeRecordsScreenModeChoiceMain;
     }
 }
@@ -6177,7 +6177,7 @@ static void Task_TimeRecordsScreenFadeOutAndExit(void)
     ScreenFade *fade = &timeRecordsScreen->fade;
     struct PlayerDataMenu *playerDataMenu = timeRecordsScreen->playerDataMenu;
 
-    if (!NextTransitionFrame(fade)) {
+    if (!UpdateScreenFade(fade)) {
         TimeRecordsScreenRenderModeChoiceUI();
         return;
     }
@@ -6206,7 +6206,7 @@ static void TimeRecordsScreenFadeOutToCoursesView(void)
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     ScreenFade *fade = &timeRecordsScreen->fade;
 
-    if (!NextTransitionFrame(fade)) {
+    if (!UpdateScreenFade(fade)) {
         TimeRecordsScreenRenderModeChoiceUI();
         return;
     }
@@ -6262,7 +6262,7 @@ static void Task_TimeRecordsScreenCoursesViewFadeIn(void)
     ScreenFade *fade = &timeRecordsScreen->fade;
     TimeRecordsScreenRenderCoursesViewUI(0);
 
-    if (NextTransitionFrame(fade)) {
+    if (UpdateScreenFade(fade)) {
         timeRecordsScreen->animFrame = 0;
         gCurTask->main = Task_TimeRecordsScreenCoursesViewMain;
     }
@@ -6306,7 +6306,7 @@ static void Task_TimeRecordsScreenFadeOutToSelectedCourse(void)
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
     ScreenFade *fade = &timeRecordsScreen->fade;
 
-    if (!NextTransitionFrame(fade)) {
+    if (!UpdateScreenFade(fade)) {
         TimeRecordsScreenRenderCoursesViewUI(0);
         return;
     }
@@ -6352,7 +6352,7 @@ static void Task_MultiplayerRecordsScreenFadeIn(void)
     ScreenFade *unk0 = &multiplayerRecordsScreen->fade;
     MultiplayerRecordsScreenRenderUI();
 
-    if (NextTransitionFrame(unk0)) {
+    if (UpdateScreenFade(unk0)) {
         gCurTask->main = Task_MultiplayerRecordsScreenMain;
     }
 }
@@ -6377,7 +6377,7 @@ static void Task_MultiplayerRecordsScreenFadeOutAndExit(void)
     ScreenFade *fade = &multiplayerRecordsScreen->fade;
     struct PlayerDataMenu *playerDataMenu = multiplayerRecordsScreen->playerDataMenu;
 
-    if (!NextTransitionFrame(fade)) {
+    if (!UpdateScreenFade(fade)) {
         MultiplayerRecordsScreenRenderUI();
         return;
     }

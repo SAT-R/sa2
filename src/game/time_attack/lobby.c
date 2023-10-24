@@ -233,7 +233,7 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     fade->bldAlpha = 0;
 
     m4aSongNumStart(MUS_TIME_ATTACK_MENU);
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
 }
 
 void sub_8088EB4(void);
@@ -263,7 +263,7 @@ void sub_8088CC4(void)
         DisplaySprite(s);
     }
 
-    if (NextTransitionFrame(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
         gCurTask->main = sub_8088EB4;
     }
 }
@@ -273,7 +273,7 @@ void sub_8088D60(void)
     struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
     Sprite *s;
     u32 i;
-    if (NextTransitionFrame(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&lobbyScreen->unk1A0) == SCREEN_TRANSITION_COMPLETE) {
         TaskDestroy(gCurTask);
         switch (lobbyScreen->unk1AD) {
             case 0:

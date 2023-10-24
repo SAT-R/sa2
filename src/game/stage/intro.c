@@ -313,7 +313,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     fade->speed = 0;
     fade->bldCnt = 0x3FFF;
     fade->bldAlpha = 0;
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
 
     t2 = TaskCreate(Task_IntroColorAnimation, sizeof(SITaskB), 0x2220, 0,
                     TaskDestructor_nop_8030458);
@@ -741,7 +741,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
         fade->bldCnt = 0x3FCF;
-        NextTransitionFrame(fade);
+        UpdateScreenFade(fade);
 
         // TODO: Use #defines here
         gWinRegs[WINREG_WININ] = 0x1F3F;
@@ -750,7 +750,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
     } else {
         // _0802FC5C
         fade->bldCnt = 0x30EF;
-        NextTransitionFrame(fade);
+        UpdateScreenFade(fade);
 
         gWinRegs[WINREG_WININ] = (WININ_WIN0_ALL | WININ_WIN1_ALL);
         gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_OBJ | WINOUT_WINOBJ_OBJ);

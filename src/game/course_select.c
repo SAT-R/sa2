@@ -347,7 +347,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     fade->speed = 0x180;
     fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
     fade->bldAlpha = 0;
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
 
     background = &coursesScreen->header;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
@@ -551,7 +551,7 @@ static void Task_FadeInIntro(void)
     SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX + CAM_MAX_X_SPEED);
 
     // Wait for fade
-    if (NextTransitionFrame(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
         if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X
             || coursesScreen->cameraScrollX
                 >= coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2)) {
@@ -586,7 +586,7 @@ static void Task_FadeInIntroAndStartUnlockCutScene(void)
 
     ScrollInZoneName(zoneName, 16);
 
-    if (NextTransitionFrame(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
         if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X
             || coursesScreen->cameraScrollX
                 >= ((sZoneMapCourseXPositions[coursesScreen->unlockedCourse]
@@ -1087,7 +1087,7 @@ static void Task_FadeOutAndExitToSelectedLevel(void)
 {
     struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
 
         gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
@@ -1109,7 +1109,7 @@ static void Task_FadeOutAndExitToSelectedMultiplayerLevel(void)
 {
     struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
         gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
         GameStageStart();
@@ -1124,7 +1124,7 @@ static void Task_FadeOutAndExitToCharacterSelect(void)
 {
     struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
         CreateCharacterSelectionScreen(gSelectedCharacter,
                                        gLoadedSaveGame->unlockedCharacters & 0x10);

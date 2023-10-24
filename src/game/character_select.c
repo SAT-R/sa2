@@ -285,7 +285,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     fade->speed = 0x180;
     fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
     fade->bldAlpha = 0;
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
 
     background = &characterScreen->unk8C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
@@ -548,7 +548,7 @@ static void Task_FadeInAndStartRollInAnim(void)
         gCurTask->main = Task_RollInAnim;
     }
 
-    NextTransitionFrame(&characterScreen->fade);
+    UpdateScreenFade(&characterScreen->fade);
     DisplaySprite(&characterScreen->scrollUpArrow);
     DisplaySprite(&characterScreen->scrollDownArrow);
 
@@ -1039,7 +1039,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
 
     if ((characterScreen->animFrame
          >= sCharacterChosenAnimLengths[characterScreen->selectedCharacter])
-        && NextTransitionFrame(unk0) == SCREEN_TRANSITION_COMPLETE) {
+        && UpdateScreenFade(unk0) == SCREEN_TRANSITION_COMPLETE) {
         TaskDestroy(gCurTask);
 
         if (IS_MULTI_PLAYER) {
@@ -1085,7 +1085,7 @@ static void Task_FadeOutAndExitToPrevious(void)
     struct CharacterSelectionScreen *characterScreen = TASK_DATA(gCurTask);
     ScreenFade *unk0 = &characterScreen->fade;
 
-    if (NextTransitionFrame(unk0) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(unk0) == SCREEN_TRANSITION_COMPLETE) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;

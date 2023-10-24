@@ -120,7 +120,7 @@ void sub_808EF38(void)
     ScreenFade *fade = &scene->unk40;
 
     fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
-    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
         fade->brightness = Q_24_8(0);
         scene->unk50++;
 
@@ -163,7 +163,7 @@ void sub_808F004(void)
         gCurTask->main = sub_808F0BC;
     }
 
-    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
         fade->brightness = Q_24_8(0);
         gCurTask->main = sub_808F068;
     }
@@ -192,7 +192,7 @@ void sub_808F0BC(void)
     fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
 
-    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
         fade->brightness = Q_24_8(0);
         CreateCreditsEndCutScene(scene->creditsVariant);
         TaskDestroy(gCurTask);

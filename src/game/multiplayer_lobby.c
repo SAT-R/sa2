@@ -113,7 +113,7 @@ void CreateMultiplayerLobbyScreen(void)
     lobbyScreen->animFrame = 0;
     lobbyScreen->playersWaiting = 0;
     CreateUI(lobbyScreen);
-    NextTransitionFrame(&lobbyScreen->fade);
+    UpdateScreenFade(&lobbyScreen->fade);
     m4aSongNumStart(MUS_VS_LOBBY);
 }
 
@@ -241,7 +241,7 @@ static void Task_FadeInOrHandleExit(void)
 
     // Wait for idle frame to reach 0
     if (lobbyScreen->idleFrame == 0) {
-        if (NextTransitionFrame(&lobbyScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
+        if (UpdateScreenFade(&lobbyScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
             if (lobbyScreen->fadeInComplete) {
                 TaskDestroy(gCurTask);
                 if (lobbyScreen->cursor != CURSOR_YES) {

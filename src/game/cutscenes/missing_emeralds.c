@@ -266,7 +266,7 @@ void sub_809449C(void)
 
     sub_80945A4(scene);
 
-    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
         fade->brightness = Q_8_8(0);
         scene->unkBE = 1;
         gCurTask->main = sub_8094530;
@@ -283,7 +283,7 @@ void sub_80944EC(void)
 
     sub_80945A4(scene);
 
-    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(fade) == SCREEN_TRANSITION_COMPLETE) {
         fade->brightness = Q_8_8(0);
 
         gCurTask->main = sub_8094570;

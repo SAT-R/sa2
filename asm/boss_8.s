@@ -839,7 +839,7 @@ sub_804AD68: @ 0x0804AD68
 	adds r5, r6, r0
 	ldr r1, _0804ADC4 @ =IWRAM_START + 0x48
 	adds r0, r6, r1
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #1
@@ -985,7 +985,7 @@ _0804AEA0:
 	strh r0, [r1]
 	adds r0, r5, #0
 	adds r0, #0x48
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 _0804AEC2:
 	ldr r0, _0804AED0 @ =gFlags
 	ldr r1, [r0]
@@ -1018,7 +1018,7 @@ _0804AED4:
 	strh r0, [r1]
 	adds r0, r5, #0
 	adds r0, #0x48
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 	ldrb r0, [r5, #8]
 	movs r2, #0xb4
 	lsls r2, r2, #1
@@ -1135,7 +1135,7 @@ _0804AF34:
 	strh r0, [r1]
 	adds r0, r5, #0
 	adds r0, #0x48
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 	b _0804B0CE
 	.align 2, 0
 _0804AFF4: .4byte gSineTable
@@ -1236,7 +1236,7 @@ _0804B096:
 	strh r0, [r1]
 	adds r0, r5, #0
 	adds r0, #0x48
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 _0804B0CE:
 	add sp, #8
 	pop {r3, r4, r5}
@@ -4761,7 +4761,7 @@ sub_804CC30: @ 0x0804CC30
 	strh r1, [r2]
 	ldr r1, _0804CC80 @ =IWRAM_START + 0x48
 	adds r0, r0, r1
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 	ldr r0, _0804CC84 @ =gCourseTime
 	ldr r0, [r0]
 	ldr r1, _0804CC88 @ =gRingCount

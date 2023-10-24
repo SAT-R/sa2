@@ -34,7 +34,7 @@ void Task_802ED98(void)
     StageResultsInit *sri = TASK_DATA(gCurTask);
     ScreenFade *ts = &sri->ts;
 
-    if (NextTransitionFrame(ts) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(ts) == SCREEN_TRANSITION_COMPLETE) {
         TaskDestroy(gCurTask);
 
         if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
@@ -81,7 +81,7 @@ void Task_802EE78(void)
 {
     StageResultsInit *sri = TASK_DATA(gCurTask);
     ScreenFade *ts = &sri->ts;
-    NextTransitionFrame(ts);
+    UpdateScreenFade(ts);
 
     if (++sri->unk10 > 8) {
         ts->brightness = Q_24_8(0);
@@ -170,7 +170,7 @@ void Task_802F06C(void)
     StageResultsInit *sri = TASK_DATA(gCurTask);
 
     ScreenFade *ts = &sri->ts;
-    NextTransitionFrame(ts);
+    UpdateScreenFade(ts);
 
     if (++sri->unk10 > ZONE_TIME_TO_INT(0, 2)) {
         ts->speed = 60;

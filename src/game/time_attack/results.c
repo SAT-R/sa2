@@ -430,7 +430,7 @@ void sub_8089AEC(void)
 void sub_8089B40(void)
 {
     struct TimeAttackResultsCutScene *resultsCutScene = TASK_DATA(gCurTask);
-    if (NextTransitionFrame(&resultsCutScene->unk0) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&resultsCutScene->unk0) == SCREEN_TRANSITION_COMPLETE) {
         WriteSaveGame();
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;

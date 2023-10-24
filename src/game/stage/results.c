@@ -115,7 +115,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     } else if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
         outro->fade.bldCnt = 0x3FAF;
         outro->fade.brightness = 0x2000;
-        NextTransitionFrame(&outro->fade);
+        UpdateScreenFade(&outro->fade);
     }
 
     if (courseTime < ZONE_TIME_TO_INT(0, 30)) {
@@ -396,7 +396,7 @@ void Task_UpdateStageResults(void)
                 return;
             }
         } else {
-            if (NextTransitionFrame(&outro->fade) == 1) {
+            if (UpdateScreenFade(&outro->fade) == 1) {
                 gBldRegs.bldY = 0x10;
                 gPlayer.moveState |= MOVESTATE_100000;
 

@@ -301,7 +301,7 @@ void sub_806BFD0(void)
     fade->speed = 0x40;
     fade->bldAlpha = 0;
     fade->bldCnt = 0xBF;
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
 
     gDispCnt = 0x9641;
     gWinRegs[WINREG_WINOUT] = 0x103F;
@@ -318,7 +318,7 @@ void Task_FadeToResultScreen(void)
     ScreenFade *fade = &stage->fade;
     struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
-    if (NextTransitionFrame(fade) == 0) {
+    if (UpdateScreenFade(fade) == 0) {
         gDispCnt = 0x9641;
         gWinRegs[WINREG_WINOUT] = 0x103F;
         return;
@@ -587,7 +587,7 @@ void sub_806C638(void)
 void sub_806C6A4(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
-    if (NextTransitionFrame(&stage->fade) == 0) {
+    if (UpdateScreenFade(&stage->fade) == 0) {
         return;
     }
 
@@ -734,7 +734,7 @@ void Task_FadeInSpecialStage(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&stage->fade) != 0) {
+    if (UpdateScreenFade(&stage->fade) != 0) {
         stage->animFrame = 0;
         stage->state = 4;
         m4aSongNumStart(MUS_SPECIAL_STAGE);

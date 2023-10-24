@@ -34,7 +34,7 @@ static inline void ScreenFadeUpdateValues_inline(ScreenFade *fade)
     gBldRegs.bldY /= 2;
 }
 
-u8 NextTransitionFrame(ScreenFade *fade)
+u8 UpdateScreenFade(ScreenFade *fade)
 {
     ScreenFadeUpdateValues_inline(fade);
 

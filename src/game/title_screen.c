@@ -345,7 +345,7 @@ void CreateTitleScreen(void)
     m4aSongNumStart(MUS_INTRO);
     gFlags |= 0x8000;
 
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
 }
 
 static void CreateTitleScreenWithoutIntro(TitleScreen *titleScreen)
@@ -459,7 +459,7 @@ static void CreateTitleScreenWithoutIntro(TitleScreen *titleScreen)
 
     m4aSongNumStart(MUS_TITLE_FANFARE);
 
-    NextTransitionFrame(&titleScreen->unk270);
+    UpdateScreenFade(&titleScreen->unk270);
 }
 
 // Maybe create background sprites
@@ -1263,7 +1263,7 @@ static void Task_HandleTitleScreenExit(void)
     Sprite *menuItem;
     u8 i;
 
-    if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
         gUnknown_03005424 = EXTRA_STATE__CLEAR;
         gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
         gSelectedCharacter = CHARACTER_SONIC;
@@ -1397,7 +1397,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     gBldRegs.bldCnt = 0;
     gFlags &= ~0x8000;
 
-    NextTransitionFrame(&titleScreen->unk270);
+    UpdateScreenFade(&titleScreen->unk270);
     m4aSongNumStart(MUS_TITLE_FANFARE);
 
     ShowGameLogo(titleScreen);
@@ -1414,7 +1414,7 @@ static void Task_JumpToPlayModeMenu(void)
     DisplaySprite(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
-    if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_PlayModeMenuMain;
@@ -1436,7 +1436,7 @@ static void Task_JumpToSinglePlayerMenu(void)
 
     ShowGameLogo(titleScreen);
 
-    if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_SinglePlayerMenuMain;
@@ -1832,7 +1832,7 @@ static void SkipIntro(TitleScreen *titleScreen)
     fade->speed = 0x100;
     fade->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
     fade->bldAlpha = 0;
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
 
     m4aMPlayAllStop();
 
@@ -1848,7 +1848,7 @@ static void Task_ShowPressStartMenu(void)
     DisplaySprite(&titleScreen->unkC0);
     ShowGameLogo(titleScreen);
 
-    if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         titleScreen->animFrame = 0;
         gCurTask->main = Task_PressStartMenuMain;
@@ -1860,7 +1860,7 @@ static void Task_IntroStartSegaLogoAnim(void)
     TitleScreen *titleScreen = TASK_DATA(gCurTask);
     WavesBackgroundAnim(titleScreen);
 
-    if (NextTransitionFrame(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_TRANSITION_COMPLETE) {
         gCurTask->main = Task_IntroFadeInSegaLogoAnim;
 
         gBldRegs.bldAlpha = FadeInBlend(0);

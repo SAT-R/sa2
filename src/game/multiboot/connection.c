@@ -172,7 +172,7 @@ void StartSinglePakConnect(void)
     fade->speed = Q_24_8(1.0);
     fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
     fade->bldAlpha = 0;
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
 
     ram = OBJ_VRAM0;
     s = &connectScreen->unkC;
@@ -272,7 +272,7 @@ void sub_8081604(void)
     s8 result;
     s32 multiBootFlags;
     struct MultiBootParam *params;
-    NextTransitionFrame(&connectScreen->fade);
+    UpdateScreenFade(&connectScreen->fade);
     DisplaySprite(&connectScreen->unkC);
     result = sub_8081D70(connectScreen);
 

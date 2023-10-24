@@ -757,13 +757,13 @@ static void Task_SoundTestScreenInOutTransition(void)
         UpdateSpriteAnimation(idleCream);
         // Wait for bow animation to finish
         if (soundTestScreen->animFrame > (60 - 16)) {
-            NextTransitionFrame(&soundTestScreen->fade);
+            UpdateScreenFade(&soundTestScreen->fade);
         }
     } else {
         if (soundTestScreen->animFrame > 20) {
             UpdateSpriteAnimation(idleCream);
         }
-        NextTransitionFrame(&soundTestScreen->fade);
+        UpdateScreenFade(&soundTestScreen->fade);
     }
 
     if (soundTestScreen->animFrame > 60) {

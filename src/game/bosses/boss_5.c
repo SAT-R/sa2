@@ -1063,7 +1063,7 @@ void sub_8044784(EggSaucer *boss)
     if (!PLAYER_IS_ALIVE) {
         if (fade->brightness != Q_24_8(SCREEN_FADE_BLEND_MAX)) {
             fade->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
-            NextTransitionFrame(fade);
+            UpdateScreenFade(fade);
         }
         gFlags &= ~FLAGS_4;
         return;
@@ -1071,7 +1071,7 @@ void sub_8044784(EggSaucer *boss)
 
     if (boss->unk11 == 0) {
         fade->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
-        NextTransitionFrame(fade);
+        UpdateScreenFade(fade);
         gFlags &= ~FLAGS_4;
         return;
     }
@@ -1120,7 +1120,7 @@ void sub_8044784(EggSaucer *boss)
         }
     }
 
-    NextTransitionFrame(fade);
+    UpdateScreenFade(fade);
 
     y = Q_24_8_TO_INT(gPlayer.y);
     y += 0x13;
