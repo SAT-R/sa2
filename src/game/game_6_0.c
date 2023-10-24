@@ -8,6 +8,7 @@
 #include "game/player_actions.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
+#include "game/rings_scatter.h"
 #include "game/stage/stage.h"
 #include "game/water_effects.h"
 
@@ -25,7 +26,6 @@ typedef struct {
 
 extern void InitNewInputCounters(void);
 void Task_8023FC0(void);
-extern void InitPlayerHitRingsSpawner(void);
 void AllocateCharacterStageGfx(Player *, UNK_3005A70 *);
 void AllocateCharacterMidAirGfx(Player *, UNK_3005A70 *);
 void InitializePlayer(Player *);
@@ -66,7 +66,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     PLAYERFN_SET(PlayerCB_8025318);
 
     sub_801F754();
-    InitPlayerHitRingsSpawner();
+    InitPlayerHitRingsScatter();
 
     if ((gInputRecorder.mode == RECORDER_RECORD)) {
         InputRecorderLoadTape();

@@ -11,9 +11,10 @@ gPlayerCharacterIdleAnims: @ 0x080D672C
 .syntax unified
 .arm
 
+.if 0
 @ Called on Stage Initialization
-	thumb_func_start InitPlayerHitRingsSpawner
-InitPlayerHitRingsSpawner: @ 0x0801FC2C
+	thumb_func_start InitPlayerHitRingsScatter
+InitPlayerHitRingsScatter: @ 0x0801FC2C
 	push {r4, r5, lr}
 	sub sp, #8
 	ldr r0, _0801FC44 @ =gGameMode
@@ -22,23 +23,23 @@ InitPlayerHitRingsSpawner: @ 0x0801FC2C
 	beq _0801FC60
 	cmp r0, #2
 	bhi _0801FC50
-	ldr r4, _0801FC48 @ =gUnknown_030059D8
-	ldr r0, _0801FC4C @ =sub_8021368
+	ldr r4, _0801FC48 @ =gRingsScatterTask
+	ldr r0, _0801FC4C @ =Task_RingsScatter_Singleplayer
 	b _0801FC64
 	.align 2, 0
 _0801FC44: .4byte gGameMode
-_0801FC48: .4byte gUnknown_030059D8
-_0801FC4C: .4byte sub_8021368
+_0801FC48: .4byte gRingsScatterTask
+_0801FC4C: .4byte Task_RingsScatter_Singleplayer
 _0801FC50:
-	ldr r4, _0801FC58 @ =gUnknown_030059D8
-	ldr r0, _0801FC5C @ =sub_8021388
+	ldr r4, _0801FC58 @ =gRingsScatterTask
+	ldr r0, _0801FC5C @ =Task_RingsScatter_MP_Multipak
 	b _0801FC64
 	.align 2, 0
-_0801FC58: .4byte gUnknown_030059D8
-_0801FC5C: .4byte sub_8021388
+_0801FC58: .4byte gRingsScatterTask
+_0801FC5C: .4byte Task_RingsScatter_MP_Multipak
 _0801FC60:
-	ldr r4, _0801FCF0 @ =gUnknown_030059D8
-	ldr r0, _0801FCF4 @ =Task_80213A8
+	ldr r4, _0801FCF0 @ =gRingsScatterTask
+	ldr r0, _0801FCF4 @ =Task_RingsScatter_MP_Singlepak
 _0801FC64:
 	movs r1, #0xae
 	lsls r1, r1, #2
@@ -109,8 +110,8 @@ _0801FC64:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0801FCF0: .4byte gUnknown_030059D8
-_0801FCF4: .4byte Task_80213A8
+_0801FCF0: .4byte gRingsScatterTask
+_0801FCF4: .4byte Task_RingsScatter_MP_Singlepak
 _0801FCF8: .4byte 0x00002001
 _0801FCFC: .4byte TaskDestructor_80213B4
 _0801FD00: .4byte 0x06011F00
@@ -126,6 +127,7 @@ _0801FD24: .4byte IWRAM_START + 0x2B0
 _0801FD28: .4byte IWRAM_START + 0x30
 _0801FD2C: .4byte 0x040000D4
 _0801FD30: .4byte 0x81000140
+.endif
 
 	thumb_func_start sub_801FD34
 sub_801FD34: @ 0x0801FD34
@@ -138,7 +140,7 @@ sub_801FD34: @ 0x0801FD34
 	str r0, [sp]
 	str r1, [sp, #4]
 	adds r7, r2, #0
-	ldr r0, _0801FDB8 @ =gUnknown_030059D8
+	ldr r0, _0801FDB8 @ =gRingsScatterTask
 	ldr r0, [r0]
 	ldrh r0, [r0, #6]
 	ldr r1, _0801FDBC @ =IWRAM_START + 0x30
@@ -199,7 +201,7 @@ _0801FD8A:
 	adds r0, #9
 	b _0801FDD2
 	.align 2, 0
-_0801FDB8: .4byte gUnknown_030059D8
+_0801FDB8: .4byte gRingsScatterTask
 _0801FDBC: .4byte IWRAM_START + 0x30
 _0801FDC0: .4byte gPlayer
 _0801FDC4: .4byte gGameMode
@@ -294,8 +296,8 @@ _0801FE6C: .4byte gUnknown_03005424
 _0801FE70: .4byte 0x00196225
 _0801FE74: .4byte 0x3C6EF35F
 
-	thumb_func_start sub_801FE78
-sub_801FE78: @ 0x0801FE78
+	thumb_func_start RingsScatterSingleplayerMain
+RingsScatterSingleplayerMain: @ 0x0801FE78
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1133,8 +1135,8 @@ _08020508: .4byte 0x80000003
 _0802050C: .4byte 0x000001FF
 _08020510: .4byte 0x0000FFFC
 
-	thumb_func_start sub_8020514
-sub_8020514: @ 0x08020514
+	thumb_func_start RingsScatterMultipak_FlippedGravity
+RingsScatterMultipak_FlippedGravity: @ 0x08020514
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1717,8 +1719,8 @@ _0802098C: .4byte 0x80000003
 _08020990: .4byte 0x000001FF
 _08020994: .4byte 0x0000FFFC
 
-	thumb_func_start sub_8020998
-sub_8020998: @ 0x08020998
+	thumb_func_start RingsScatterMultipak_NormalGravity
+RingsScatterMultipak_NormalGravity: @ 0x08020998
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -2302,8 +2304,8 @@ _08020E14: .4byte 0x80000003
 _08020E18: .4byte 0x000001FF
 _08020E1C: .4byte 0x0000FFFC
 
-	thumb_func_start sub_8020E20
-sub_8020E20: @ 0x08020E20
+	thumb_func_start RingsScatterSinglepakMain
+RingsScatterSinglepakMain: @ 0x08020E20
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -2972,10 +2974,10 @@ _08021344: .4byte 0x80000003
 _08021348: .4byte 0x000001FF
 _0802134C: .4byte 0x0000FFFC
 
-	thumb_func_start sub_8021350
-sub_8021350: @ 0x08021350
+	thumb_func_start DestroyRingsScatterTask
+DestroyRingsScatterTask: @ 0x08021350
 	push {r4, lr}
-	ldr r4, _08021364 @ =gUnknown_030059D8
+	ldr r4, _08021364 @ =gRingsScatterTask
 	ldr r0, [r4]
 	bl TaskDestroy
 	movs r0, #0
@@ -2984,10 +2986,10 @@ sub_8021350: @ 0x08021350
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08021364: .4byte gUnknown_030059D8
+_08021364: .4byte gRingsScatterTask
 
-	thumb_func_start sub_8021368
-sub_8021368: @ 0x08021368
+	thumb_func_start Task_RingsScatter_Singleplayer
+Task_RingsScatter_Singleplayer: @ 0x08021368
 	push {lr}
 	ldr r0, _0802137C @ =gUnknown_03005424
 	ldrh r1, [r0]
@@ -2995,7 +2997,7 @@ sub_8021368: @ 0x08021368
 	ands r0, r1
 	cmp r0, #0
 	beq _08021380
-	bl sub_801FE78
+	bl RingsScatterSingleplayerMain
 	b _08021384
 	.align 2, 0
 _0802137C: .4byte gUnknown_03005424
@@ -3005,8 +3007,8 @@ _08021384:
 	pop {r0}
 	bx r0
 
-	thumb_func_start sub_8021388
-sub_8021388: @ 0x08021388
+	thumb_func_start Task_RingsScatter_MP_Multipak
+Task_RingsScatter_MP_Multipak: @ 0x08021388
 	push {lr}
 	ldr r0, _0802139C @ =gUnknown_03005424
 	ldrh r1, [r0]
@@ -3014,29 +3016,29 @@ sub_8021388: @ 0x08021388
 	ands r0, r1
 	cmp r0, #0
 	beq _080213A0
-	bl sub_8020514
+	bl RingsScatterMultipak_FlippedGravity
 	b _080213A4
 	.align 2, 0
 _0802139C: .4byte gUnknown_03005424
 _080213A0:
-	bl sub_8020998
+	bl RingsScatterMultipak_NormalGravity
 _080213A4:
 	pop {r0}
 	bx r0
 
-	thumb_func_start Task_80213A8
-Task_80213A8: @ 0x080213A8
+	thumb_func_start Task_RingsScatter_MP_Singlepak
+Task_RingsScatter_MP_Singlepak: @ 0x080213A8
 	push {lr}
-	bl sub_8020E20
+	bl RingsScatterSinglepakMain
 	pop {r0}
 	bx r0
 	.align 2, 0
 
 	thumb_func_start TaskDestructor_80213B4
 TaskDestructor_80213B4: @ 0x080213B4
-	ldr r1, _080213BC @ =gUnknown_030059D8
+	ldr r1, _080213BC @ =gRingsScatterTask
 	movs r0, #0
 	str r0, [r1]
 	bx lr
 	.align 2, 0
-_080213BC: .4byte gUnknown_030059D8
+_080213BC: .4byte gRingsScatterTask

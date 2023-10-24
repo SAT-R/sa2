@@ -12,6 +12,7 @@
 #include "game/multiboot/collect_rings/results.h"
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiplayer/mode_select.h"
+#include "game/rings_scatter.h"
 #include "game/save.h"
 #include "game/screen_fade.h"
 #include "game/stage/entities_manager.h"
@@ -107,7 +108,7 @@ void sub_8081200(void)
     u8 *gameMode = &gGameMode;
     u8 val = 5;
 
-    gUnknown_030059D8 = NULL;
+    gRingsScatterTask = NULL;
     gUnknown_03005844 = NULL;
     gGameStageTask = NULL;
     gPlayer.spriteTask = NULL;

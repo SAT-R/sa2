@@ -11,10 +11,11 @@
 #include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
 #include "game/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/dust_effect_spindash.h" // CreateSpindashDustEffect
-#include "game/time_attack/results.h" // for PlayerCB_80278D4
 #include "game/parameters/characters.h"
 #include "game/playerfn_cmds.h"
+#include "game/rings_scatter.h"
 #include "game/special_stage/main.h"
+#include "game/time_attack/results.h" // for PlayerCB_80278D4
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -2607,7 +2608,7 @@ void sub_80299FC(Player *p)
 
     if (p->unk60 == 0) {
         sub_801F78C();
-        sub_8021350();
+        DestroyRingsScatterTask();
     }
 }
 
