@@ -21,12 +21,17 @@ void TaskDestructor_80213B4(struct Task *);
 // Called on Stage Initialization
 void InitPlayerHitRingsScatter(void)
 {
+#ifndef NON_MATCHING
+    register TaskMain taskFn asm("r0");
+#else
     TaskMain taskFn;
+#endif
     RingsScatter *rs;
     Sprite *s;
     struct Task **tgtTask;
     struct Task *t;
     u16 *dmaDest;
+    u32 size;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         if (IS_SINGLE_PLAYER) {
@@ -41,7 +46,13 @@ void InitPlayerHitRingsScatter(void)
         taskFn = Task_RingsScatter_MP_Singlepak;
     }
 
-    t = TaskCreate(taskFn, sizeof(RingsScatter), 0x2001, 0, TaskDestructor_80213B4);
+    size = sizeof(RingsScatter);
+
+#ifndef NON_MATCHING
+    asm("" :);
+#endif
+
+    t = TaskCreate(taskFn, size, 0x2001, 0, TaskDestructor_80213B4);
 
     *tgtTask = t;
 
