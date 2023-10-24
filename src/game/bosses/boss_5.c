@@ -10,7 +10,7 @@
 #include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/player_callbacks_1.h"
 
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 
 #include "lib/m4a.h"
 #include "constants/songs.h"
@@ -87,7 +87,7 @@ typedef struct {
 
     /* 0x130 */ s16 introTimer;
 
-    /* 0x134 */ struct TransitionState screenTransition;
+    /* 0x134 */ ScreenFade screenTransition;
 
     /* 0x140 */ Sprite disk;
     /* 0x170 */ Sprite cabin;
@@ -193,7 +193,7 @@ void CreateEggSaucer(void)
     u8 i;
     u32 r2;
     EggSaucer *boss;
-    struct TransitionState *screenTransition;
+    ScreenFade *fade;
     Sprite *s;
     void *vram;
     void *vramBase;
@@ -227,15 +227,15 @@ void CreateEggSaucer(void)
                                  TaskDestructor_EggSaucerMain);
     boss = TASK_DATA(gActiveBossTask);
 
-    screenTransition = &boss->screenTransition;
-    screenTransition->window = SCREEN_FADE_USE_WINDOW_0;
-    screenTransition->brightness = 0;
-    screenTransition->flags = 2;
-    screenTransition->speed = 0;
-    screenTransition->bldCnt
+    fade = &boss->screenTransition;
+    fade->window = SCREEN_FADE_USE_WINDOW_0;
+    fade->brightness = 0;
+    fade->flags = 2;
+    fade->speed = 0;
+    fade->bldCnt
         = (BLDCNT_TGT2_BD | BLDCNT_TGT2_OBJ | BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_BD
            | BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3);
-    screenTransition->bldAlpha = 0;
+    fade->bldAlpha = 0;
 
     if (gDifficultyLevel != 0 && gGameMode != GAME_MODE_BOSS_TIME_ATTACK) {
         boss->unk10 = 6;
@@ -1058,20 +1058,20 @@ void sub_8044784(EggSaucer *boss)
     bool32 someBool;
     u16 temp;
 
-    struct TransitionState *transition = &boss->screenTransition;
+    ScreenFade *fade = &boss->screenTransition;
 
     if (!PLAYER_IS_ALIVE) {
-        if (transition->brightness != Q_24_8(SCREEN_FADE_BLEND_MAX)) {
-            transition->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
-            NextTransitionFrame(transition);
+        if (fade->brightness != Q_24_8(SCREEN_FADE_BLEND_MAX)) {
+            fade->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
+            NextTransitionFrame(fade);
         }
         gFlags &= ~FLAGS_4;
         return;
     }
 
     if (boss->unk11 == 0) {
-        transition->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
-        NextTransitionFrame(transition);
+        fade->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
+        NextTransitionFrame(fade);
         gFlags &= ~FLAGS_4;
         return;
     }
@@ -1087,7 +1087,7 @@ void sub_8044784(EggSaucer *boss)
 
     someBool = FALSE;
     if (boss->unk1E != 0 && boss->unk1C == 0) {
-        transition->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX) - Q_8_8((--boss->unk1E));
+        fade->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX) - Q_8_8((--boss->unk1E));
         sub_802E784(boss->unk1A, boss->unk1E + 8, 6, x, y, 0x20);
 
         someBool = TRUE;
@@ -1096,14 +1096,14 @@ void sub_8044784(EggSaucer *boss)
         }
     } else {
         s32 tmp;
-        transition->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
+        fade->brightness = Q_24_8(SCREEN_FADE_BLEND_MAX);
         tmp = boss->unk1C;
         boss->unk1C--;
         if (boss->unk1C == 0) {
             m4aSongNumStart(SE_252);
             boss->unk1E = 0x10;
         } else if (boss->unk1C >= 0xB && boss->unk1C < 40) {
-            transition->brightness = 0x2000 - ((tmp - 0xB) * 0x80);
+            fade->brightness = 0x2000 - ((tmp - 0xB) * 0x80);
             sub_802E784(boss->unk1A, 10, 6, x, y, 0x20);
         }
 
@@ -1120,7 +1120,7 @@ void sub_8044784(EggSaucer *boss)
         }
     }
 
-    NextTransitionFrame(transition);
+    NextTransitionFrame(fade);
 
     y = Q_24_8_TO_INT(gPlayer.y);
     y += 0x13;

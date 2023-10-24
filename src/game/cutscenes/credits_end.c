@@ -9,7 +9,7 @@
 #include "game/cutscenes/credits_end.h"
 #include "game/cutscenes/missing_emeralds.h"
 #include "game/save.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/title_screen.h"
 
 #include "constants/animations.h"
@@ -24,7 +24,7 @@ struct CreditsEndCutScene {
     Sprite unkC0;
     Sprite unkF0;
     Sprite unk120;
-    struct TransitionState transition;
+    ScreenFade fade;
     u8 creditsVariant;
     u8 sequence;
     u8 unk15E;
@@ -84,7 +84,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
     s32 r6 = 1;
     struct Task *t;
     struct CreditsEndCutScene *scene = NULL;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     gDispCnt = 0x1040;
 
     gBgCntRegs[0] = 0x160D;
@@ -135,13 +135,13 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         scene->unk170[2][i] = Q_24_8(200);
     }
 
-    transition = &scene->transition;
-    transition->window = 1;
-    transition->brightness = Q_24_8(0);
-    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-    transition->bldAlpha = 0;
-    transition->speed = 0x100;
-    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade = &scene->fade;
+    fade->window = 1;
+    fade->brightness = Q_24_8(0);
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->bldAlpha = 0;
+    fade->speed = 0x100;
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
 
     scene->unk16C = OBJ_VRAM0;
 
@@ -282,8 +282,8 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 static void Task_FadeOut(void)
 {
     struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->transition;
-    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    ScreenFade *fade = &scene->fade;
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         UpdateCongratsMessagePos(scene);
         UpdateMessageLine1Pos(scene);
@@ -292,8 +292,8 @@ static void Task_FadeOut(void)
 
     RenderExtraEndingElements(scene);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+        fade->brightness = Q_24_8(0);
 
         if (scene->sequence == SEQUENCE_FADE_TO_COPYRIGHT_SCREEN) {
             gCurTask->main = Task_CreateCopyrightScreen;
@@ -481,12 +481,12 @@ static void Task_HandleGameCompletion(void)
                     WriteSaveGame();
                     scene->hasAllEmeralds = FALSE;
                     scene->delayFrames = 105;
-                    scene->transition.bldCnt
+                    scene->fade.bldCnt
                         = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
                 }
             } else {
                 scene->hasAllEmeralds = FALSE;
-                scene->transition.bldCnt
+                scene->fade.bldCnt
                     = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
                 scene->delayFrames = 105;
             }
@@ -559,8 +559,8 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
 static void Task_FadeIn(void)
 {
     struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->transition;
-    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    ScreenFade *fade = &scene->fade;
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         UpdateCongratsMessagePos(scene);
@@ -570,8 +570,8 @@ static void Task_FadeIn(void)
 
     RenderExtraEndingElements(scene);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         gCurTask->main = Task_SequenceMain;
     }
 }

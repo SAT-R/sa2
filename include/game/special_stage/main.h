@@ -3,7 +3,7 @@
 
 #include "global.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 
 #define SPECIAL_STAGE_REQUIRED_SP_RING_COUNT 7
 
@@ -31,7 +31,7 @@ struct SpecialStage {
 
     Sprite introText;
     Background unk48;
-    struct TransitionState transition;
+    ScreenFade fade;
     s32 unk94[DISPLAY_HEIGHT][2];
     s32 cameraX;
     s32 cameraY;

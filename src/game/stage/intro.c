@@ -8,7 +8,7 @@
 #include "game/countdown.h"
 #include "game/player_actions.h"
 #include "game/player_mp_actor.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/stage/ui.h"
 #include "game/stage/boss_results_transition.h"
 #include "game/water_effects.h"
@@ -236,7 +236,7 @@ typedef struct {
 // TODO: Are SITaskB/C/F the same struct?
 typedef struct {
     /* 0x00 */ SITaskA *parent;
-    /* 0x04 */ struct TransitionState transition;
+    /* 0x04 */ ScreenFade fade;
     /* 0x10 */ Vec2_16 unk10;
     /* 0x14 */ Vec2_16 unk14;
 } SITaskB; /* size: 0x18 */
@@ -279,7 +279,7 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     SITaskD *sit_d; // r8
     SITaskE *sit_e;
     // SITaskF *sit_f;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     Vec2_16 *vec;
     void *tilesCursor;
     Sprite *s;
@@ -306,14 +306,14 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     sit_b = TASK_DATA(t2);
     sit_b->parent = sit_a;
 
-    transition = &sit_b->transition;
-    transition->window = 0;
-    transition->brightness = 0;
-    transition->flags = 2;
-    transition->speed = 0;
-    transition->bldCnt = 0x3FFF;
-    transition->bldAlpha = 0;
-    NextTransitionFrame(transition);
+    fade = &sit_b->fade;
+    fade->window = 0;
+    fade->brightness = 0;
+    fade->flags = 2;
+    fade->speed = 0;
+    fade->bldCnt = 0x3FFF;
+    fade->bldAlpha = 0;
+    NextTransitionFrame(fade);
 
     t2 = TaskCreate(Task_IntroColorAnimation, sizeof(SITaskB), 0x2220, 0,
                     TaskDestructor_nop_8030458);
@@ -668,7 +668,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
 {
     SITaskB *sit_b = TASK_DATA(gCurTask);
     SITaskA *parent = sit_b->parent; // sp00
-    struct TransitionState *transition = &sit_b->transition;
+    ScreenFade *fade = &sit_b->fade;
     s32 frameCounter = parent->counter;
     u8 i;
 
@@ -680,10 +680,10 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
         if ((unsigned)frameCounter >= (166 - 150)) {
             frameCounter = 16;
         }
-        transition->brightness = frameCounter << 9;
+        fade->brightness = frameCounter << 9;
 
         if (((frameCounter << 25) >> 16) >= 0x2000) {
-            transition->brightness = 0x2000;
+            fade->brightness = 0x2000;
         }
         // _0802FA4C
 
@@ -740,8 +740,8 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
         }
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
-        transition->bldCnt = 0x3FCF;
-        NextTransitionFrame(transition);
+        fade->bldCnt = 0x3FCF;
+        NextTransitionFrame(fade);
 
         // TODO: Use #defines here
         gWinRegs[WINREG_WININ] = 0x1F3F;
@@ -749,8 +749,8 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
 
     } else {
         // _0802FC5C
-        transition->bldCnt = 0x30EF;
-        NextTransitionFrame(transition);
+        fade->bldCnt = 0x30EF;
+        NextTransitionFrame(fade);
 
         gWinRegs[WINREG_WININ] = (WININ_WIN0_ALL | WININ_WIN1_ALL);
         gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_OBJ | WINOUT_WINOBJ_OBJ);

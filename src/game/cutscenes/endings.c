@@ -3,7 +3,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "task.h"
 #include "game/cutscenes/extra_ending_fall.h"
 #include "game/cutscenes/final_ending_fall.h"
@@ -28,11 +28,11 @@ void sub_808E9F8(struct Task *);
 void StartEndingCutscenes(void)
 {
     struct Task *t = TaskCreate(sub_808E9AC, 0x74, 0x3100, 0, sub_808E9F8);
-    struct EndingCutSceneTransition *transition = TASK_DATA(t);
+    struct EndingCutSceneTransition *fade = TASK_DATA(t);
 
-    transition->unk6C = 0;
-    transition->unk6D = 0;
-    transition->unk6E = 0xB4;
+    fade->unk6C = 0;
+    fade->unk6D = 0;
+    fade->unk6E = 0xB4;
 }
 
 void sub_808E8F8(s16 *ptr, s16 a, u8 b)
@@ -65,10 +65,10 @@ void sub_808E95C(s32 *ptr, s32 a, u8 b)
 
 void sub_808E9AC(void)
 {
-    struct EndingCutSceneTransition *transition = TASK_DATA(gCurTask);
+    struct EndingCutSceneTransition *fade = TASK_DATA(gCurTask);
 
-    if (transition->unk6E != 0) {
-        transition->unk6E--;
+    if (fade->unk6E != 0) {
+        fade->unk6E--;
     } else {
         if (gCurrentLevel == (LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) + 1)) {
             CreateExtraEndingFallCutScene();
@@ -86,12 +86,12 @@ void sub_808E9F8(UNUSED struct Task *t)
 
 UNUSED void sub_808E9FC(void)
 {
-    struct EndingCutSceneTransition *transition = TASK_DATA(gCurTask);
+    struct EndingCutSceneTransition *fade = TASK_DATA(gCurTask);
     if (gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
         > (LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
-        transition->unk6D = 2;
+        fade->unk6D = 2;
     } else {
-        transition->unk6D = 1;
+        fade->unk6D = 1;
     }
 
     gCurTask->main = sub_808E9AC;

@@ -6,12 +6,12 @@
 #include "game/game.h"
 #include "game/time_attack/lobby.h"
 #include "game/title_screen.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 
 #include "constants/songs.h"
 
 typedef struct {
-    struct TransitionState unk0;
+    ScreenFade unk0;
     u8 unkC;
     u8 unkD;
 } GameOverScreenTransition;
@@ -23,13 +23,13 @@ void CreateGameOverScreen(u8 type)
     struct Task *t = TaskCreate(sub_80366F0, 0x10, 0x2220, 0, NULL);
     GameOverScreenTransition *screen = TASK_DATA(t);
 
-    struct TransitionState *transition = &screen->unk0;
-    transition->window = SCREEN_FADE_USE_WINDOW_1;
-    transition->brightness = Q_24_8(0);
-    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
-    transition->speed = Q_24_8(1. / 4.);
-    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
-    transition->bldAlpha = 0;
+    ScreenFade *fade = &screen->unk0;
+    fade->window = SCREEN_FADE_USE_WINDOW_1;
+    fade->brightness = Q_24_8(0);
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    fade->speed = Q_24_8(1. / 4.);
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade->bldAlpha = 0;
 
     screen->unkC = type;
     screen->unkD = 10;
@@ -44,15 +44,15 @@ void sub_8036780(u8);
 
 void sub_80366F0(void)
 {
-    GameOverScreenTransition *gameover_transition = TASK_DATA(gCurTask);
-    u8 unkC = gameover_transition->unkC;
+    GameOverScreenTransition *gameover_fade = TASK_DATA(gCurTask);
+    u8 unkC = gameover_fade->unkC;
 
-    if (gameover_transition->unkD != 0) {
-        gameover_transition->unkD--;
+    if (gameover_fade->unkD != 0) {
+        gameover_fade->unkD--;
         return;
     }
 
-    if (NextTransitionFrame(&gameover_transition->unk0) != 0) {
+    if (NextTransitionFrame(&gameover_fade->unk0) != 0) {
         gBldRegs.bldY = 0x10;
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -69,7 +69,7 @@ void sub_80366F0(void)
 }
 
 typedef struct {
-    struct TransitionState unk0;
+    ScreenFade unk0;
     Sprite unkC;
     Sprite unk3C;
     u32 unk6C;
@@ -84,7 +84,7 @@ void sub_8036780(u8 unkC)
     struct Task *t;
     GameOverScreen *screen;
     Sprite *s;
-    struct TransitionState *transition;
+    ScreenFade *fade;
 
     gWinRegs[4] = 0;
     gWinRegs[5] = 0;
@@ -148,13 +148,13 @@ void sub_8036780(u8 unkC)
     s->unk10 = 0;
     UpdateSpriteAnimation(s);
 
-    transition = &screen->unk0;
-    transition->window = SCREEN_FADE_USE_WINDOW_1;
-    transition->brightness = Q_24_8(0);
-    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-    transition->speed = Q_24_8(2.0);
-    transition->bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_OBJ);
-    transition->bldAlpha = 0;
+    fade = &screen->unk0;
+    fade->window = SCREEN_FADE_USE_WINDOW_1;
+    fade->brightness = Q_24_8(0);
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->speed = Q_24_8(2.0);
+    fade->bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_OBJ);
+    fade->bldAlpha = 0;
 }
 
 void sub_8036BD4(GameOverScreen *screen);

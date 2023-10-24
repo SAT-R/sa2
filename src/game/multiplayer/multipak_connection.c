@@ -9,7 +9,7 @@
 #include "game/save.h"
 #include "game/title_screen.h"
 #include "multi_sio.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "lib/m4a.h"
 #include "constants/text.h"
 #include "game/game.h"
@@ -21,7 +21,7 @@
 #include "constants/tilemaps.h"
 
 struct MultiPakConnectScreen {
-    struct TransitionState transition;
+    ScreenFade fade;
     Sprite s;
     Sprite s2;
     Sprite unk6C;
@@ -61,7 +61,7 @@ void StartMultiPakConnect(void)
 {
     struct Task *t;
     struct MultiPakConnectScreen *connectScreen;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     Sprite *s;
     Background *background;
     const TileInfo *unkD64;
@@ -92,14 +92,14 @@ void StartMultiPakConnect(void)
         connectScreen->unkF2[i] = 0;
     }
 
-    transition = &connectScreen->transition;
-    transition->window = 1;
-    transition->brightness = 0;
-    transition->flags = 2;
-    transition->speed = 0x100;
-    transition->bldCnt = 0x3FFF;
-    transition->bldAlpha = 0;
-    NextTransitionFrame(transition);
+    fade = &connectScreen->fade;
+    fade->window = 1;
+    fade->brightness = 0;
+    fade->flags = 2;
+    fade->speed = 0x100;
+    fade->bldCnt = 0x3FFF;
+    fade->bldAlpha = 0;
+    NextTransitionFrame(fade);
 
     s = &connectScreen->s;
     s->graphics.dest = vramAddr;
@@ -207,7 +207,7 @@ static void sub_805ADAC(void)
     struct MultiSioData_0_0 *data;
     Sprite *r4p;
 
-    NextTransitionFrame(&connectScreen->transition);
+    NextTransitionFrame(&connectScreen->fade);
 
     if (gMultiSioStatusFlags & (MULTI_SIO_PARENT | MULTI_SIO_RECV_ID0)) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(SIO_MULTI_CNT->id))) {

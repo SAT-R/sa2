@@ -6,7 +6,7 @@
 #include "game/game.h"
 #include "game/save.h"
 #include "game/cutscenes/level_endings.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/stage/results.h"
 #include "game/time_attack/results.h"
 
@@ -20,7 +20,7 @@ const u16 gUnknown_080D6DE4[][2] = {
 };
 
 typedef struct {
-    /* 0x00 */ struct TransitionState ts;
+    /* 0x00 */ ScreenFade ts;
     /* 0x0C */ s16 unkC;
     /* 0x0C */ s16 unkE;
     /* 0x10 */ u8 unk10;
@@ -32,7 +32,7 @@ void Task_802F06C(void);
 void Task_802ED98(void)
 {
     StageResultsInit *sri = TASK_DATA(gCurTask);
-    struct TransitionState *ts = &sri->ts;
+    ScreenFade *ts = &sri->ts;
 
     if (NextTransitionFrame(ts) == SCREEN_TRANSITION_COMPLETE) {
         TaskDestroy(gCurTask);
@@ -80,7 +80,7 @@ void Task_802ED98(void)
 void Task_802EE78(void)
 {
     StageResultsInit *sri = TASK_DATA(gCurTask);
-    struct TransitionState *ts = &sri->ts;
+    ScreenFade *ts = &sri->ts;
     NextTransitionFrame(ts);
 
     if (++sri->unk10 > 8) {
@@ -128,7 +128,7 @@ void sub_802EF68(s16 p0, s16 p1, u8 p2)
 {
     struct Task *t = TaskCreate(Task_802EE78, sizeof(StageResultsInit), 0x6080, 0, NULL);
     StageResultsInit *sri = TASK_DATA(t);
-    struct TransitionState *ts = &sri->ts;
+    ScreenFade *ts = &sri->ts;
 
     sri->unk10 = 0;
     sri->unkC = p0;
@@ -169,7 +169,7 @@ void Task_802F06C(void)
 {
     StageResultsInit *sri = TASK_DATA(gCurTask);
 
-    struct TransitionState *ts = &sri->ts;
+    ScreenFade *ts = &sri->ts;
     NextTransitionFrame(ts);
 
     if (++sri->unk10 > ZONE_TIME_TO_INT(0, 2)) {

@@ -7,7 +7,7 @@
 #include "flags.h"
 #include "trig.h"
 #include "game/backgrounds.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "data/palettes.h"
 
 #include "constants/animations.h"
@@ -19,7 +19,7 @@
 
 struct SoundTestScreen {
     struct OptionsScreen *optionsScreen;
-    struct TransitionState transition;
+    ScreenFade fade;
     struct UNK_3005B80_UNK4 unk10;
 
     // Only 1 used, but fits 2
@@ -277,11 +277,11 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
         = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen),
                      0x1800, TASK_x0004, SoundTestScreenOnDestroy);
     struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
-    struct TransitionState *transition;
+    ScreenFade *fade;
     struct UNK_3005B80_UNK4 *unk10;
     u32 i;
 
-    transition = &soundTestScreen->transition;
+    fade = &soundTestScreen->fade;
     unk10 = &soundTestScreen->unk10;
     m4aMPlayAllStop();
 
@@ -309,12 +309,12 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
     SoundTestScreenInitRegistersAndBackground(t);
     SoundTestScreenCreateUI(t);
 
-    transition->window = 0;
-    transition->flags = 2;
-    transition->brightness = 0;
-    transition->speed = Q_24_8(1.0);
-    transition->bldAlpha = 0;
-    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+    fade->window = 0;
+    fade->flags = 2;
+    fade->brightness = 0;
+    fade->speed = Q_24_8(1.0);
+    fade->bldAlpha = 0;
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
 
     unk10->unk0 = 0;
     unk10->unk2 = 0;
@@ -425,7 +425,7 @@ static void Task_SoundTestScreenMain(void)
 
     Sprite *numberDisplayDigit = soundTestScreen->numberDisplay;
     Sprite *backControlName = &soundTestScreen->backControlName;
-    struct TransitionState *transition = &soundTestScreen->transition;
+    ScreenFade *fade = &soundTestScreen->fade;
 
     const u8 *soundsList;
     u8 numSounds;
@@ -551,12 +551,12 @@ static void Task_SoundTestScreenMain(void)
         } else {
             SoundTestScreenSetCreamAnim(CREAM_ANIM_BOW);
             m4aSongNumStart(SE_RETURN);
-            transition->window = 0;
-            transition->flags = 1;
-            transition->brightness = 0;
-            transition->speed = Q_24_8(1.0);
-            transition->bldAlpha = 0;
-            transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->window = 0;
+            fade->flags = 1;
+            fade->brightness = 0;
+            fade->speed = Q_24_8(1.0);
+            fade->bldAlpha = 0;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
 
             soundTestScreen->animFrame = 0;
             soundTestScreen->barBeat = 0;
@@ -757,13 +757,13 @@ static void Task_SoundTestScreenInOutTransition(void)
         UpdateSpriteAnimation(idleCream);
         // Wait for bow animation to finish
         if (soundTestScreen->animFrame > (60 - 16)) {
-            NextTransitionFrame(&soundTestScreen->transition);
+            NextTransitionFrame(&soundTestScreen->fade);
         }
     } else {
         if (soundTestScreen->animFrame > 20) {
             UpdateSpriteAnimation(idleCream);
         }
-        NextTransitionFrame(&soundTestScreen->transition);
+        NextTransitionFrame(&soundTestScreen->fade);
     }
 
     if (soundTestScreen->animFrame > 60) {

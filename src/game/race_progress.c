@@ -3,7 +3,7 @@
 #include "game/game.h"
 #include "task.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "malloc_vram.h"
 
 #include "constants/animations.h"

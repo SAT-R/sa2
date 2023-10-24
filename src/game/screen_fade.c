@@ -1,10 +1,10 @@
 #include "core.h"
 #include "game/game.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 
-static inline void ScreenFadeUpdateValues_inline(struct TransitionState *transition)
+static inline void ScreenFadeUpdateValues_inline(ScreenFade *fade)
 {
-    if (transition->window != SCREEN_FADE_USE_WINDOW_0) {
+    if (fade->window != SCREEN_FADE_USE_WINDOW_0) {
         gDispCnt |= DISPCNT_WIN1_ON;
         gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
         gWinRegs[WINREG_WIN1V] = WIN_RANGE(0, DISPLAY_HEIGHT);
@@ -18,13 +18,13 @@ static inline void ScreenFadeUpdateValues_inline(struct TransitionState *transit
         gWinRegs[WINREG_WINOUT] |= (WINOUT_WIN01_OBJ | WINOUT_WIN01_BG_ALL);
     }
 
-    gBldRegs.bldCnt = transition->bldCnt;
-    gBldRegs.bldAlpha = transition->bldAlpha;
+    gBldRegs.bldCnt = fade->bldCnt;
+    gBldRegs.bldAlpha = fade->bldAlpha;
 
-    if (transition->flags & SCREEN_FADE_FLAG_LIGHTEN) {
-        gBldRegs.bldY = Q_8_8_TO_INT(transition->brightness);
+    if (fade->flags & SCREEN_FADE_FLAG_LIGHTEN) {
+        gBldRegs.bldY = Q_8_8_TO_INT(fade->brightness);
     } else {
-        gBldRegs.bldY = SCREEN_FADE_BLEND_MAX - Q_8_8_TO_INT(transition->brightness);
+        gBldRegs.bldY = SCREEN_FADE_BLEND_MAX - Q_8_8_TO_INT(fade->brightness);
     }
 
     if (gBldRegs.bldY >= SCREEN_FADE_BLEND_MAX) {
@@ -34,21 +34,21 @@ static inline void ScreenFadeUpdateValues_inline(struct TransitionState *transit
     gBldRegs.bldY /= 2;
 }
 
-u8 NextTransitionFrame(struct TransitionState *transition)
+u8 NextTransitionFrame(ScreenFade *fade)
 {
-    ScreenFadeUpdateValues_inline(transition);
+    ScreenFadeUpdateValues_inline(fade);
 
-    transition->brightness += transition->speed;
+    fade->brightness += fade->speed;
 
-    if (transition->brightness >= Q_8_8(SCREEN_FADE_BLEND_MAX)) {
-        transition->brightness = Q_8_8(SCREEN_FADE_BLEND_MAX);
+    if (fade->brightness >= Q_8_8(SCREEN_FADE_BLEND_MAX)) {
+        fade->brightness = Q_8_8(SCREEN_FADE_BLEND_MAX);
         return SCREEN_TRANSITION_COMPLETE;
     } else {
         return SCREEN_TRANSITION_RUNNING;
     }
 }
 
-static void ScreenFadeUpdateValues(struct TransitionState *transition)
+static void ScreenFadeUpdateValues(ScreenFade *fade)
 {
-    ScreenFadeUpdateValues_inline(transition);
+    ScreenFadeUpdateValues_inline(fade);
 }

@@ -10,7 +10,7 @@
 #include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/player_callbacks_1.h"
 
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 
 #include "lib/m4a.h"
 #include "constants/songs.h"

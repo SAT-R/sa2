@@ -4,7 +4,7 @@
 #include "global.h"
 #include "game/save.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "constants/text.h"
 
 #define RENDER_TARGET_SCREEN   0
@@ -60,7 +60,7 @@ struct OptionsScreen {
     Sprite metaItems[4];
 
     Sprite playerNameDisplay[6];
-    struct TransitionState unk774;
+    ScreenFade unk774;
     s8 menuCursor;
     s8 prevCursorPosition;
     s8 initialSubMenuCursorPosition;

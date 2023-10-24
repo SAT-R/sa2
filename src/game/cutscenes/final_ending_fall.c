@@ -4,7 +4,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
@@ -29,7 +29,7 @@ struct FinalEndingFallCutScene {
     Sprite unk1D0[2];
     Sprite unk230[6];
 
-    struct TransitionState unk350;
+    ScreenFade unk350;
 
     u8 unk35C;
     u8 unk35D[6];
@@ -115,7 +115,7 @@ void CreateFinalEndingFallCutScene(void)
     Background *background;
     struct Task *t;
     struct FinalEndingFallCutScene *scene = NULL;
-    struct TransitionState *transition = NULL;
+    ScreenFade *fade = NULL;
 
     u8 i, j;
 
@@ -193,13 +193,13 @@ void CreateFinalEndingFallCutScene(void)
 
     scene->unk498 = 0;
 
-    transition = &scene->unk350;
-    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-    transition->window = SCREEN_FADE_USE_WINDOW_1;
-    transition->brightness = Q_24_8(0);
-    transition->speed = Q_24_8(5. / 16.);
-    transition->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
-    transition->bldAlpha = 0;
+    fade = &scene->unk350;
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->window = SCREEN_FADE_USE_WINDOW_1;
+    fade->brightness = Q_24_8(0);
+    fade->speed = Q_24_8(5. / 16.);
+    fade->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade->bldAlpha = 0;
 
     scene->unk494 = OBJ_VRAM0;
     {
@@ -473,10 +473,10 @@ void sub_809289C(struct FinalEndingFallCutScene *);
 void sub_8091E60(void)
 {
     struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk350;
+    ScreenFade *fade = &scene->unk350;
 
-    transition->speed = Q_24_8(5. / 16.);
-    transition->flags = 1;
+    fade->speed = Q_24_8(5. / 16.);
+    fade->flags = 1;
 
     sub_8091F68(scene);
     sub_809205C(scene);
@@ -762,8 +762,8 @@ void sub_8092780(void);
 void sub_8092690(void)
 {
     struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk350;
-    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    ScreenFade *fade = &scene->unk350;
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     sub_8091F68(scene);
     sub_809205C(scene);
@@ -773,8 +773,8 @@ void sub_8092690(void)
     sub_8092850(scene);
     sub_80923AC(scene);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         if (scene->unk35C == 0) {
             gCurTask->main = sub_8092780;
         } else {
@@ -786,8 +786,8 @@ void sub_8092690(void)
 void sub_8092714(void)
 {
     struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk350;
-    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    ScreenFade *fade = &scene->unk350;
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
 
     sub_8091F68(scene);
     sub_809205C(scene);
@@ -797,8 +797,8 @@ void sub_8092714(void)
     sub_8092850(scene);
     sub_80923AC(scene);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         gCurTask->main = sub_8091CB0;
     }
 }

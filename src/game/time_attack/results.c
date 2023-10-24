@@ -1,7 +1,7 @@
 #include "game/time_attack/results.h"
 #include "core.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/save.h"
 #include "game/game.h"
 #include "game/stage/ui.h"
@@ -16,7 +16,7 @@
 #include "constants/songs.h"
 
 struct TimeAttackResultsCutScene {
-    struct TransitionState unk0;
+    ScreenFade unk0;
     Sprite unkC[3];
     Sprite unk9C[3];
     Sprite unk12C;
@@ -45,7 +45,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 {
     struct Task *t;
     struct TimeAttackResultsCutScene *resultsCutScene;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     Sprite *s = NULL;
     s16 millis, minutes, seconds;
     u8 i;
@@ -56,18 +56,18 @@ u32 CreateTimeAttackResults(u32 finishTime)
     t = TaskCreate(sub_8089AEC, sizeof(struct TimeAttackResultsCutScene), 0xC100, 0,
                    sub_8089BB0);
     resultsCutScene = TASK_DATA(t);
-    transition = &resultsCutScene->unk0;
+    fade = &resultsCutScene->unk0;
 
     resultsCutScene->unk168 = 0;
     resultsCutScene->unk2D4 = 0x800;
     resultsCutScene->unk2D6 = 0x4000;
 
-    transition->window = 0;
-    transition->flags = 1;
-    transition->speed = 0x100;
-    transition->brightness = Q_8_8(0);
-    transition->bldCnt = 0x3FFF;
-    transition->bldAlpha = 0;
+    fade->window = 0;
+    fade->flags = 1;
+    fade->speed = 0x100;
+    fade->brightness = Q_8_8(0);
+    fade->bldCnt = 0x3FFF;
+    fade->bldAlpha = 0;
 
     resultsCutScene->unk15C = finishTime;
 

@@ -2,7 +2,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/save.h"
 #include "lib/m4a.h"
 #include "game/character_select.h"
@@ -16,7 +16,7 @@
 #include "constants/tilemaps.h"
 
 struct CourseSelectionScreen {
-    struct TransitionState screenFade;
+    ScreenFade fade;
     Background zoneMap;
     Background header;
     Sprite playerAvatar;
@@ -242,7 +242,7 @@ static const u8 sCourseIndexToLevelIndex[] = {
 void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
 {
     struct Task *t;
-    struct TransitionState *fadeTransition;
+    ScreenFade *fade;
     Background *background;
     Sprite *s = NULL;
     struct CourseSelectionScreen *coursesScreen;
@@ -340,14 +340,14 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     coursesScreen->cutScenes = cutScenes;
     coursesScreen->maxCourse = maxCourseIndex;
 
-    fadeTransition = &coursesScreen->screenFade;
-    fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
-    fadeTransition->brightness = 0;
-    fadeTransition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-    fadeTransition->speed = 0x180;
-    fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-    fadeTransition->bldAlpha = 0;
-    NextTransitionFrame(fadeTransition);
+    fade = &coursesScreen->fade;
+    fade->window = SCREEN_FADE_USE_WINDOW_0;
+    fade->brightness = 0;
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->speed = 0x180;
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+    fade->bldAlpha = 0;
+    NextTransitionFrame(fade);
 
     background = &coursesScreen->header;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
@@ -551,7 +551,7 @@ static void Task_FadeInIntro(void)
     SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX + CAM_MAX_X_SPEED);
 
     // Wait for fade
-    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
         if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X
             || coursesScreen->cameraScrollX
                 >= coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2)) {
@@ -586,7 +586,7 @@ static void Task_FadeInIntroAndStartUnlockCutScene(void)
 
     ScrollInZoneName(zoneName, 16);
 
-    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
         if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X
             || coursesScreen->cameraScrollX
                 >= ((sZoneMapCourseXPositions[coursesScreen->unlockedCourse]
@@ -676,7 +676,7 @@ static void Task_CourseSelectMain(void)
     struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
     Sprite *zoneName = &coursesScreen->zoneName;
-    struct TransitionState *fadeTransition = &coursesScreen->screenFade;
+    ScreenFade *fade = &coursesScreen->fade;
     union MultiSioData *recv, *send;
     MultiPakHeartbeat();
 
@@ -693,12 +693,12 @@ static void Task_CourseSelectMain(void)
 
     if (IS_SINGLE_PLAYER || gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         if (coursesScreen->levelChosen && IS_SINGLE_PLAYER) {
-            fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
-            fadeTransition->brightness = 0;
-            fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
-            fadeTransition->speed = 0x180;
-            fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-            fadeTransition->bldAlpha = 0;
+            fade->window = SCREEN_FADE_USE_WINDOW_0;
+            fade->brightness = 0;
+            fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            fade->speed = 0x180;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
         } else if (gInput & (DPAD_LEFT) && !coursesScreen->levelChosen) {
@@ -725,31 +725,31 @@ static void Task_CourseSelectMain(void)
             }
         } else if (!(gInput & (DPAD_RIGHT | DPAD_LEFT)) && (gPressedKeys & A_BUTTON)
                    && IS_SINGLE_PLAYER) {
-            fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
-            fadeTransition->brightness = 0;
-            fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
-            fadeTransition->speed = 0x180;
-            fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-            fadeTransition->bldAlpha = 0;
+            fade->window = SCREEN_FADE_USE_WINDOW_0;
+            fade->brightness = 0;
+            fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            fade->speed = 0x180;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
         } else if ((gPressedKeys & B_BUTTON) && IS_SINGLE_PLAYER) {
-            fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
-            fadeTransition->brightness = 0;
-            fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
-            fadeTransition->speed = 0x180;
-            fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-            fadeTransition->bldAlpha = 0;
+            fade->window = SCREEN_FADE_USE_WINDOW_0;
+            fade->brightness = 0;
+            fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            fade->speed = 0x180;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->bldAlpha = 0;
             m4aSongNumStart(SE_RETURN);
             gCurTask->main = Task_FadeOutAndExitToCharacterSelect;
         } else if (!(gInput & (DPAD_RIGHT | DPAD_LEFT)) && (gPressedKeys & A_BUTTON)
                    && (IS_SINGLE_PLAYER || gGameMode == GAME_MODE_MULTI_PLAYER)) {
-            fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
-            fadeTransition->brightness = 0;
-            fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
-            fadeTransition->speed = 0x180;
-            fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-            fadeTransition->bldAlpha = 0;
+            fade->window = SCREEN_FADE_USE_WINDOW_0;
+            fade->brightness = 0;
+            fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            fade->speed = 0x180;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutAndExitToSelectedMultiplayerLevel;
         }
@@ -772,12 +772,12 @@ static void Task_CourseSelectMain(void)
         recv = &gMultiSioRecv[0];
 
         if (recv->pat1.unk0 == 0x4051) {
-            fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
-            fadeTransition->brightness = 0;
-            fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
-            fadeTransition->speed = 0x180;
-            fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-            fadeTransition->bldAlpha = 0;
+            fade->window = SCREEN_FADE_USE_WINDOW_0;
+            fade->brightness = 0;
+            fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            fade->speed = 0x180;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->bldAlpha = 0;
             gCurTask->main = Task_FadeOutAndExitToSelectedMultiplayerLevel;
             m4aSongNumStart(SE_SELECT);
         }
@@ -929,16 +929,16 @@ static void Task_UnlockCutSceneNextCoursePause(void)
 {
     struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     s8 unk4BE = coursesScreen->zoneNameAnimFrame + 1;
-    struct TransitionState *fadeTransition = &coursesScreen->screenFade;
+    ScreenFade *fade = &coursesScreen->fade;
 
     coursesScreen->zoneNameAnimFrame = unk4BE;
     if (coursesScreen->zoneNameAnimFrame > 60) {
-        fadeTransition->window = SCREEN_FADE_USE_WINDOW_0;
-        fadeTransition->brightness = 0;
-        fadeTransition->flags = SCREEN_FADE_FLAG_LIGHTEN;
-        fadeTransition->speed = 0x180;
-        fadeTransition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
-        fadeTransition->bldAlpha = 0;
+        fade->window = SCREEN_FADE_USE_WINDOW_0;
+        fade->brightness = 0;
+        fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+        fade->speed = 0x180;
+        fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+        fade->bldAlpha = 0;
         gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
     }
 
@@ -1087,7 +1087,7 @@ static void Task_FadeOutAndExitToSelectedLevel(void)
 {
     struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
 
         gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
@@ -1109,7 +1109,7 @@ static void Task_FadeOutAndExitToSelectedMultiplayerLevel(void)
 {
     struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
         gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
         GameStageStart();
@@ -1124,7 +1124,7 @@ static void Task_FadeOutAndExitToCharacterSelect(void)
 {
     struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (NextTransitionFrame(&coursesScreen->fade) == SCREEN_TRANSITION_COMPLETE) {
         DestroyUI(coursesScreen);
         CreateCharacterSelectionScreen(gSelectedCharacter,
                                        gLoadedSaveGame->unlockedCharacters & 0x10);

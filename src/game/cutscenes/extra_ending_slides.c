@@ -3,7 +3,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
@@ -14,7 +14,7 @@
 
 struct ExtraEndingCutSceneSlides {
     Background unk0;
-    struct TransitionState unk40;
+    ScreenFade unk40;
     u16 unk4C;
 }; /* 0x50 */
 
@@ -26,7 +26,7 @@ void CreateExtraEndingSlidesCutScene(void)
     struct Task *t = NULL;
     struct ExtraEndingCutSceneSlides *scene;
     Background *background;
-    struct TransitionState *transition = NULL;
+    ScreenFade *fade = NULL;
 
     gDispCnt = 0x1140;
     gBgCntRegs[0] = 0x5C00;
@@ -43,13 +43,13 @@ void CreateExtraEndingSlidesCutScene(void)
 
     scene->unk4C = 0xF0;
 
-    transition = &scene->unk40;
-    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
-    transition->window = SCREEN_FADE_USE_WINDOW_1;
-    transition->brightness = Q_24_8(0);
-    transition->speed = Q_24_8(0.5);
-    transition->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
-    transition->bldAlpha = 0;
+    fade = &scene->unk40;
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    fade->window = SCREEN_FADE_USE_WINDOW_1;
+    fade->brightness = Q_24_8(0);
+    fade->speed = Q_24_8(0.5);
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade->bldAlpha = 0;
 
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -74,11 +74,11 @@ void sub_8091608(void);
 void sub_8091590(void)
 {
     struct ExtraEndingCutSceneSlides *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk40;
+    ScreenFade *fade = &scene->unk40;
 
-    transition->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         gCurTask->main = sub_8091608;
     }
 }
@@ -88,11 +88,11 @@ void sub_8091638(void);
 void sub_80915CC(void)
 {
     struct ExtraEndingCutSceneSlides *scene = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &scene->unk40;
+    ScreenFade *fade = &scene->unk40;
 
-    transition->flags = SCREEN_FADE_FLAG_LIGHTEN;
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->brightness = Q_24_8(0);
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+    if (NextTransitionFrame(fade) == SCREEN_TRANSITION_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         gCurTask->main = sub_8091638;
     }
 }

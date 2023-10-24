@@ -3,7 +3,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "task.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
@@ -20,7 +20,7 @@ typedef struct {
     Player *unk0;
     Sprite unk4;
     Sprite unk34;
-    struct TransitionState unk64;
+    ScreenFade unk64;
     u16 unk70;
     u16 unk72;
     u16 unk74;
@@ -36,7 +36,7 @@ struct CharacterUnlockCutScene {
     Background unk40;
     Background unk80;
     Background unkC0;
-    struct TransitionState unk100;
+    ScreenFade unk100;
 
     // slide
     u16 unk10C;
@@ -158,7 +158,7 @@ void CreateStageResultsCutscene(u8 mode)
     struct Task *t;
     ResultsCutScene *scene;
     Sprite *s;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     memcpy(mains, gUnknown_080E1208, sizeof(gUnknown_080E1208));
     memcpy(unk1214, gUnknown_080E1214, sizeof(gUnknown_080E1214));
     memcpy(unk1220, gUnknown_080E1220, sizeof(gUnknown_080E1220));
@@ -226,12 +226,12 @@ void CreateStageResultsCutscene(u8 mode)
         m4aSongNumStart(SE_236);
     }
 
-    transition = &scene->unk64;
-    transition->window = 0;
-    transition->flags = SCREEN_FADE_FLAG_FF00;
-    transition->brightness = Q_8_8(1);
-    transition->speed = Q_24_8(0);
-    transition->bldCnt = 0;
+    fade = &scene->unk64;
+    fade->window = 0;
+    fade->flags = SCREEN_FADE_FLAG_FF00;
+    fade->brightness = Q_8_8(1);
+    fade->speed = Q_24_8(0);
+    fade->bldCnt = 0;
 }
 
 static void sub_808DD9C(void)
@@ -239,7 +239,7 @@ static void sub_808DD9C(void)
     ResultsCutScene *scene = TASK_DATA(gCurTask);
     Sprite *s = &scene->unk4;
     Player *player = scene->unk0;
-    struct TransitionState *transition = &scene->unk64;
+    ScreenFade *fade = &scene->unk64;
 
     scene->unk70 -= scene->unk74;
     scene->unk72 += scene->unk76;
@@ -280,14 +280,14 @@ static void sub_808DD9C(void)
     }
 
     if (scene->unk7A == 1) {
-        transition->window = scene->unk0->rotation * 4;
+        fade->window = scene->unk0->rotation * 4;
     }
 
     s->x = scene->unk70 >> 8;
     s->y = scene->unk72 >> 8;
 
-    transition->speed = scene->unk70 >> 8;
-    transition->bldCnt = scene->unk72 >> 8;
+    fade->speed = scene->unk70 >> 8;
+    fade->bldCnt = scene->unk72 >> 8;
 
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
@@ -416,7 +416,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene);
 
 void sub_808E274(struct CharacterUnlockCutScene *scene)
 {
-    struct TransitionState *transition;
+    ScreenFade *fade;
     gDispCnt = 0x1600;
     gDispCnt |= 0x40;
 
@@ -449,15 +449,15 @@ void sub_808E274(struct CharacterUnlockCutScene *scene)
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
     sub_808E35C(scene);
 
-    transition = &scene->unk100;
-    transition->window = 1;
-    transition->brightness = Q_8_8(0);
-    transition->flags = 2;
-    transition->speed = 0x200;
-    transition->bldCnt = 0x3FFF;
-    transition->bldAlpha = 0;
+    fade = &scene->unk100;
+    fade->window = 1;
+    fade->brightness = Q_8_8(0);
+    fade->flags = 2;
+    fade->speed = 0x200;
+    fade->bldCnt = 0x3FFF;
+    fade->bldAlpha = 0;
 
-    NextTransitionFrame(transition);
+    NextTransitionFrame(fade);
 }
 
 void sub_808E35C(struct CharacterUnlockCutScene *scene)
@@ -591,14 +591,14 @@ void sub_808E63C(void)
     sub_8003EE4(0, 0x100, 0x100, 0, 0, 0, 0, gBgAffineRegs);
 
     if (scene->unk110++ > 300) {
-        struct TransitionState *transition;
+        ScreenFade *fade;
         scene->unk110 = 0;
-        transition = &scene->unk100;
-        transition->window = 1;
-        transition->bldCnt = 0x3FFF;
-        transition->brightness = Q_8_8(0);
-        transition->flags = 1;
-        transition->bldAlpha = 0;
+        fade = &scene->unk100;
+        fade->window = 1;
+        fade->bldCnt = 0x3FFF;
+        fade->brightness = Q_8_8(0);
+        fade->flags = 1;
+        fade->bldAlpha = 0;
 
         gCurTask->main = sub_808E6B0;
     }

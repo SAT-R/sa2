@@ -8,7 +8,7 @@
 #include "game/stage/boss_results_transition.h"
 #include "game/save.h"
 #include "game/time_attack/mode_select.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "game/title_screen.h"
 
 #include "constants/animations.h"
@@ -23,7 +23,7 @@ struct TimeAttackModeSelectionScreen {
     Sprite unkB0;
     Sprite unkE0;
     Sprite infoText;
-    struct TransitionState unk140;
+    ScreenFade unk140;
     u8 animFrame;
     u8 unk14D;
     u8 unk14E;
@@ -89,7 +89,7 @@ void CreateTimeAttackModeSelectionScreen(void)
 {
     struct Task *t;
     struct TimeAttackModeSelectionScreen *modeScreen;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     Sprite *s;
     Background *background;
 
@@ -120,15 +120,15 @@ void CreateTimeAttackModeSelectionScreen(void)
     modeScreen->unk14D = 0;
     modeScreen->unk14E = 0;
 
-    transition = &modeScreen->unk140;
-    transition->window = 1;
-    transition->brightness = Q_8_8(0);
-    transition->flags = 2;
-    transition->speed = 0x100;
-    transition->bldCnt = 0x3FFF;
-    transition->bldAlpha = 0;
+    fade = &modeScreen->unk140;
+    fade->window = 1;
+    fade->brightness = Q_8_8(0);
+    fade->flags = 2;
+    fade->speed = 0x100;
+    fade->bldCnt = 0x3FFF;
+    fade->bldAlpha = 0;
 
-    NextTransitionFrame(transition);
+    NextTransitionFrame(fade);
 
     s = &modeScreen->unk80;
     s->graphics.dest = VramMalloc(0x6C);
@@ -318,7 +318,7 @@ static void Task_IntroUIAnim(void)
 static void Task_ScreenMain(void)
 {
     struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
-    struct TransitionState *transition;
+    ScreenFade *fade;
     Sprite *s;
     s8 lang;
 
@@ -326,24 +326,24 @@ static void Task_ScreenMain(void)
         if (modeScreen->unk14D && !gLoadedSaveGame->bossTimeAttackUnlocked) {
             m4aSongNumStart(SE_ABORT);
         } else {
-            transition = &modeScreen->unk140;
-            transition->window = 1;
-            transition->brightness = Q_8_8(0);
-            transition->flags = 1;
-            transition->speed = 0x100;
-            transition->bldCnt = 0x3FFF;
-            transition->bldAlpha = 0;
+            fade = &modeScreen->unk140;
+            fade->window = 1;
+            fade->brightness = Q_8_8(0);
+            fade->flags = 1;
+            fade->speed = 0x100;
+            fade->bldCnt = 0x3FFF;
+            fade->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutModeSelected;
         }
     } else if (gPressedKeys & B_BUTTON) {
-        transition = &modeScreen->unk140;
-        transition->window = 1;
-        transition->brightness = Q_8_8(0);
-        transition->flags = 1;
-        transition->speed = 0x100;
-        transition->bldCnt = 0x3FFF;
-        transition->bldAlpha = 0;
+        fade = &modeScreen->unk140;
+        fade->window = 1;
+        fade->brightness = Q_8_8(0);
+        fade->flags = 1;
+        fade->speed = 0x100;
+        fade->bldCnt = 0x3FFF;
+        fade->bldAlpha = 0;
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = Task_FadeOutToTitleScreen;
     }

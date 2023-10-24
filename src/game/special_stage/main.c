@@ -11,7 +11,7 @@
 #include "game/game.h"
 #include "game/save.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "lib/m4a.h"
 #include "task.h"
 #include "game/title_screen.h"
@@ -159,7 +159,7 @@ void Task_IntroScreenMain(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
 
-    struct TransitionState *transition = &stage->transition;
+    ScreenFade *fade = &stage->fade;
     DisplaySprite(&stage->introText);
     gBldRegs.bldCnt = 0xAF;
 
@@ -169,12 +169,12 @@ void Task_IntroScreenMain(void)
         gBldRegs.bldCnt = 0xBF;
         gBldRegs.bldY = 0x10;
 
-        transition->window = 0;
-        transition->flags = 2;
-        transition->brightness = Q_8_8(0);
-        transition->speed = Q_24_8(1.0);
-        transition->bldAlpha = 0;
-        transition->bldCnt = 0xBF;
+        fade->window = 0;
+        fade->flags = 2;
+        fade->brightness = Q_8_8(0);
+        fade->speed = Q_24_8(1.0);
+        fade->bldAlpha = 0;
+        fade->bldCnt = 0xBF;
         stage->animFrame = 0;
         gCurTask->main = Task_InitComponents;
     }
@@ -289,19 +289,19 @@ void Task_SpecialStageMain(void)
 void sub_806BFD0(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &stage->transition;
+    ScreenFade *fade = &stage->fade;
     struct SpecialStageGuardRobo *guardRobo = TASK_DATA(stage->guardRoboTask);
     struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
     guardRobo->state = 0;
 
-    transition->window = 1;
-    transition->flags = 1;
-    transition->brightness = Q_8_8(0);
-    transition->speed = 0x40;
-    transition->bldAlpha = 0;
-    transition->bldCnt = 0xBF;
-    NextTransitionFrame(transition);
+    fade->window = 1;
+    fade->flags = 1;
+    fade->brightness = Q_8_8(0);
+    fade->speed = 0x40;
+    fade->bldAlpha = 0;
+    fade->bldCnt = 0xBF;
+    NextTransitionFrame(fade);
 
     gDispCnt = 0x9641;
     gWinRegs[WINREG_WINOUT] = 0x103F;
@@ -315,10 +315,10 @@ void sub_806BFD0(void)
 void Task_FadeToResultScreen(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &stage->transition;
+    ScreenFade *fade = &stage->fade;
     struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
-    if (NextTransitionFrame(transition) == 0) {
+    if (NextTransitionFrame(fade) == 0) {
         gDispCnt = 0x9641;
         gWinRegs[WINREG_WINOUT] = 0x103F;
         return;
@@ -508,7 +508,7 @@ void sub_806C42C(void)
 void sub_806C49C(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
-    struct TransitionState *transition = &stage->transition;
+    ScreenFade *fade = &stage->fade;
     stage->animFrame++;
 
     if (stage->unk5C7 == 1) {
@@ -519,12 +519,12 @@ void sub_806C49C(void)
     }
 
     if (gPressedKeys & A_BUTTON || stage->animFrame > 60) {
-        transition->window = 0;
-        transition->flags = 1;
-        transition->brightness = Q_8_8(0);
-        transition->speed = 0x40;
-        transition->bldAlpha = 0;
-        transition->bldCnt = 0xBF;
+        fade->window = 0;
+        fade->flags = 1;
+        fade->brightness = Q_8_8(0);
+        fade->speed = 0x40;
+        fade->bldAlpha = 0;
+        fade->bldCnt = 0xBF;
 
         stage->animFrame = 0;
         if (stage->targetReached) {
@@ -587,7 +587,7 @@ void sub_806C638(void)
 void sub_806C6A4(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
-    if (NextTransitionFrame(&stage->transition) == 0) {
+    if (NextTransitionFrame(&stage->fade) == 0) {
         return;
     }
 
@@ -734,7 +734,7 @@ void Task_FadeInSpecialStage(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&stage->transition) != 0) {
+    if (NextTransitionFrame(&stage->fade) != 0) {
         stage->animFrame = 0;
         stage->state = 4;
         m4aSongNumStart(MUS_SPECIAL_STAGE);
