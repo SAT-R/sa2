@@ -12,8 +12,6 @@ gPlayerCharacterIdleAnims: @ 0x080D672C
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start sub_801FD34
 sub_801FD34: @ 0x0801FD34
 	push {r4, r5, r6, r7, lr}
@@ -22,21 +20,21 @@ sub_801FD34: @ 0x0801FD34
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0xc
-	str r0, [sp]
-	str r1, [sp, #4]
-	adds r7, r2, #0
+	str r0, [sp]        @ sp00 = x
+	str r1, [sp, #4]    @ sp04 = y
+	adds r7, r2, #0     @ r7 = numRings
 	ldr r0, _0801FDB8 @ =gRingsScatterTask
 	ldr r0, [r0]
 	ldrh r0, [r0, #6]
 	ldr r1, _0801FDBC @ =IWRAM_START + 0x30
-	adds r4, r0, r1
+	adds r4, r0, r1     @ r4 = s
 	ldr r6, _0801FDC0 @ =gPlayer
-	str r6, [sp, #8]
+	str r6, [sp, #8]    @sp08 = p
 	movs r5, #0
 	movs r6, #0
 	cmp r7, #0
 	bne _0801FD5E
-	b _0801FE5A
+	b sub_801FD34_return
 _0801FD5E:
 	cmp r7, #0x20
 	ble _0801FD64
@@ -64,7 +62,7 @@ _0801FD72:
 _0801FD8A:
 	ldrh r0, [r4, #0xc]
 	cmp r0, #0
-	bne _0801FE4E
+	bne sub_801FD34_continue
 	movs r0, #0xb4
 	strh r0, [r4, #0xc]
 	ldr r0, [sp, #8]
@@ -159,15 +157,15 @@ _0801FE3A:
 	movs r0, #1
 	add ip, r0
 	cmp ip, r7
-	bge _0801FE5A
-_0801FE4E:
+	bge sub_801FD34_return
+sub_801FD34_continue:
 	adds r4, #0x14
 	movs r1, #1
 	add r8, r1
 	mov r0, r8
 	cmp r0, #0x1f
 	ble _0801FD8A
-_0801FE5A:
+sub_801FD34_return:
 	add sp, #0xc
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -180,6 +178,7 @@ _0801FE5A:
 _0801FE6C: .4byte gUnknown_03005424
 _0801FE70: .4byte 0x00196225
 _0801FE74: .4byte 0x3C6EF35F
+.endif
 
 	thumb_func_start RingsScatterSingleplayer_FlippedGravity
 RingsScatterSingleplayer_FlippedGravity: @ 0x0801FE78
