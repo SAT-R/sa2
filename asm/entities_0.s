@@ -1802,7 +1802,7 @@ _0800CC44:
 	ldr r1, [r2, #0xc]
 	asrs r1, r1, #8
 	adds r2, r4, #0
-	bl sub_801FD34
+	bl InitScatteringRings
 	ldr r0, _0800CC7C @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #2
@@ -4179,7 +4179,7 @@ _0800DE04:
 	ldr r1, [r5, #0xc]
 	asrs r1, r1, #8
 	adds r2, r4, #0
-	bl sub_801FD34
+	bl InitScatteringRings
 	ldrh r0, [r6]
 	subs r0, r0, r4
 	strh r0, [r6]
@@ -4306,7 +4306,7 @@ _0800DEFA:
 	ldr r1, [r5, #0xc]
 	asrs r1, r1, #8
 	adds r2, r4, #0
-	bl sub_801FD34
+	bl InitScatteringRings
 	ldrh r0, [r6]
 	subs r0, r0, r4
 	strh r0, [r6]

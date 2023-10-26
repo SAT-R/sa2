@@ -77,11 +77,11 @@ struct MultiSioData_0_4 {
     // id
     u16 unk0;
     // value
-    s16 unk2;
-    s16 unk4;
+    s16 x;
+    s16 y;
 
     u8 filler3[0x9];
-    u8 unkF;
+    u8 numRings;
     u8 unk10;
     u8 unk11;
     u8 unk12;

@@ -17,7 +17,7 @@ typedef struct {
     s32 y;
     s16 unk8;
     s16 unkA;
-    s16 unkC;
+    u16 unkC;
     s16 unkE;
     u16 unk10;
 } ScatterRing; /* size: 0x14 */
@@ -98,13 +98,13 @@ void InitPlayerHitRingsScatter(void)
     DmaFill16(3, 0, dmaDest, sizeof(rs->rings));
 }
 
-void sub_801FD34(s32 x, s32 y, s32 numRings)
+void InitScatteringRings(s32 x, s32 y, s32 numRings)
 {
     RingsScatter *rs = TASK_DATA(gRingsScatterTask);
-    ScatterRing *rings = rs->rings; // r4
+    ScatterRing *ring = &rs->rings[0];
     Player *p = &gPlayer;
     s32 i;
-    s32 r2, r3, r5, r6;
+    s32 r2, r3, r5 = 0, r6 = 0;
     s32 ip;
 
     if (numRings == 0) {
@@ -122,14 +122,10 @@ void sub_801FD34(s32 x, s32 y, s32 numRings)
     }
 
     m4aSongNumStart(SE_RINGS_LOST);
-    r3 = 0x498;
 
-    // _0801FD72+8
+    r3 = Q_24_8(4.53125); // 0x488
 
-    i = 0;
-    ip = 0;
-    for (; i < 32; i++) {
-        ScatterRing *ring = &rings[i];
+    for (i = 0, ip = 0; i < (signed)ARRAY_COUNT(rs->rings); ring++, i++) {
 
         if (ring->unkC == 0) {
             ring->unkC = 180;
@@ -140,7 +136,7 @@ void sub_801FD34(s32 x, s32 y, s32 numRings)
             if (r3 >= 0) {
                 s32 r0;
 
-                r2 = (r3 >> 8);
+                r2 = Q_24_8_TO_INT(r3);
 
                 if (r2 > 5) {
                     r0 = -r2;
@@ -161,7 +157,6 @@ void sub_801FD34(s32 x, s32 y, s32 numRings)
                 r3 += 0x10;
                 r3 |= 0x80;
             }
-            // _0801FE00
 
             r2 = 0;
             ring->unk8 = r5;

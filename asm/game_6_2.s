@@ -606,7 +606,7 @@ _08023CDC:
 	ldr r1, [r4, #0xc]
 	asrs r1, r1, #8
 	movs r2, #1
-	bl sub_801FD34
+	bl InitScatteringRings
 _08023CFE:
 	pop {r4}
 	pop {r0}

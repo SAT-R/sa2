@@ -53,8 +53,6 @@ u32 sub_800CDBC(Sprite *, s32, s32, Player *);
 u32 sub_800DF38(Sprite *, s32, s32, Player *);
 u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
 
-void sub_801FD34(s32, s32, s32);
-
 // After a MapEntity is initialized, its x-value in the layout-data gets set to -2.
 // TODO:
 // Find out whether casting these to u8 can work while still matching!
