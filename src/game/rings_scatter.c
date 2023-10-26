@@ -235,6 +235,7 @@ void RingsScatterSingleplayer_FlippedGravity(void)
             && (HB_RIGHT(p, &unk90->s.hitboxes[0]) >= (ringIntX - TILE_WIDTH))))) {
             // _0801FF4A
 
+            // NOTE: _0801FF4A is actually the vertical collision check, part of the "big if"
         } else {
             // _08020008
         }
