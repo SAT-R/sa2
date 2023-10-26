@@ -13,13 +13,13 @@
 #define MAX_SCATTERING_RINGS_COUNT_MP 16
 
 typedef struct {
-    s32 x;
-    s32 y;
-    s16 unk8;
-    s16 unkA;
-    u16 unkC;
-    s16 unkE;
-    u16 unk10;
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    /* 0x08 */ s16 velX;
+    /* 0x0A */ s16 velY;
+    /* 0x0C */ u16 unkC;
+    /* 0x0E */ s16 unkE;
+    /* 0x10 */ u16 unk10;
 } ScatterRing; /* size: 0x14 */
 
 typedef struct {
@@ -33,7 +33,7 @@ typedef struct {
 void Task_RingsScatter_Singleplayer(void);
 void Task_RingsScatter_MP_Singlepak(void);
 void Task_RingsScatter_MP_Multipak(void);
-void TaskDestructor_80213B4(struct Task *);
+void TaskDestructor_RingsScatter(struct Task *);
 
 // Called on Stage Initialization
 void InitPlayerHitRingsScatter(void)
@@ -69,7 +69,7 @@ void InitPlayerHitRingsScatter(void)
     asm("" :);
 #endif
 
-    t = TaskCreate(taskFn, size, 0x2001, 0, TaskDestructor_80213B4);
+    t = TaskCreate(taskFn, size, 0x2001, 0, TaskDestructor_RingsScatter);
 
     *tgtTask = t;
 
@@ -104,8 +104,9 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
     ScatterRing *ring = &rs->rings[0];
     Player *p = &gPlayer;
     s32 i;
-    s32 r2, r3, r5 = 0, r6 = 0;
     s32 ip;
+    s32 r2, r3;
+    s32 velX = 0, velY = 0;
 
     if (numRings == 0) {
         return;
@@ -146,28 +147,28 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
                 }
                 r2 = r0;
 
-                r5 = SIN((r3 & 0xFF) * 4);
-                r5 >>= r2;
-                r6 = COS((r3 & 0xFF) * 4);
-                r6 >>= r2;
+                velX = SIN((r3 & 0xFF) * 4);
+                velX >>= r2;
+                velY = COS((r3 & 0xFF) * 4);
+                velY >>= r2;
 
-                r5 -= (r5 >> 2);
-                r6 -= (r6 >> 2);
+                velX -= (velX >> 2);
+                velY -= (velY >> 2);
 
                 r3 += 0x10;
                 r3 |= 0x80;
             }
 
             r2 = 0;
-            ring->unk8 = r5;
-            ring->unkA = r6;
+            ring->velX = velX;
+            ring->velY = velY;
 
             if (GRAVITY_IS_INVERTED) {
-                ring->unkA = -r6;
+                ring->velY = -velY;
             }
 
             r3 = -r3;
-            r5 = -r5;
+            velX = -velX;
             ring->unk10 = r2;
 
             if (!(PseudoRandom32() & 0x10000)) {
@@ -183,3 +184,60 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
         }
     }
 }
+
+// TODO: Use improved version of these globally!
+#define HB_LEFT(p, hb) ((p)->x + (hb)->left)
+#define HB_WIDTH(hb) ((hb)->right - (hb)->left)
+#define HB_RIGHT(p, hb) ((p)->x + HB_WIDTH(hb))
+
+#if 01
+void RingsScatterSingleplayer_FlippedGravity(void)
+{
+    RingsScatter *rs = TASK_DATA(gCurTask);
+    ScatterRing *ring = &rs->rings[0];
+    Sprite *s = &rs->sprRing;
+    s32 sp08 = rs->unk2B0;
+    s32 sp0C = rs->unk2B4;
+    s32 sp10 = 0;
+    s32 i = 0; // sp14
+    s32 ringIntX;
+    s32 ringIntY;
+    s32 screenX; // sp18;
+    s32 screenY; // sl
+    UNK_3005A70 *unk90; // r2
+    Player *p;
+
+    UpdateSpriteAnimation(s);
+
+    for(i = 0; i < (signed)ARRAY_COUNT(rs->rings); ring++, i++) {
+        if(ring->unkC == 0) {
+            continue;
+        }
+
+        ring->x += ring->velX;
+        ring->y += ring->velY;
+
+        ringIntX = Q_24_8_TO_INT(ring->x);
+        screenX = ringIntX - gCamera.x;
+        ringIntY = Q_24_8_TO_INT(ring->y);
+        screenY = ringIntY - gCamera.y;
+
+        p = &gPlayer;
+        unk90 = p->unk90;
+        
+        if((ring->unkC <= sp0C)
+        && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
+        && ( IS_ALIVE(p) )
+        && ((( (ringIntX - TILE_WIDTH) > HB_LEFT(p, &unk90->s.hitboxes[0]))
+            && (HB_RIGHT(p, &unk90->s.hitboxes[0]) >= (ringIntX - TILE_WIDTH)))
+        || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, &unk90->s.hitboxes[0]))
+        || (( (ringIntX - TILE_WIDTH) >= HB_LEFT(p, &unk90->s.hitboxes[0]))
+            && (HB_RIGHT(p, &unk90->s.hitboxes[0]) >= (ringIntX - TILE_WIDTH))))) {
+            // _0801FF4A
+
+        } else {
+            // _08020008
+        }
+    }
+}
+#endif
