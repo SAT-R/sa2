@@ -187,6 +187,14 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
 }
 
 #if 01
+#define USE_HITBOX_RECT 1
+typedef struct {
+    /* 0x00 */ s8 left;
+    /* 0x01 */ s8 top;
+    /* 0x02 */ s8 right;
+    /* 0x03 */ s8 bottom;
+} HitboxRect;
+
 // TODO: Use improved version of these globally!
 #define HB_LEFT(p, hb)   (Q_24_8_TO_INT((p)->x) + (hb)->left)
 #define HB_WIDTH(hb)     ((hb)->right - (hb)->left)
@@ -195,7 +203,7 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
 #define HB_HEIGHT(hb)    ((hb)->bottom - (hb)->top)
 #define HB_BOTTOM(p, hb) (Q_24_8_TO_INT((p)->y) + HB_HEIGHT(hb))
 
-// (90.34%) https://decomp.me/scratch/jdAe4
+// (90.40%) https://decomp.me/scratch/jdAe4
 void RingsScatterSingleplayer_FlippedGravity(void)
 {
     RingsScatter *rs = TASK_DATA(gCurTask);
@@ -210,7 +218,11 @@ void RingsScatterSingleplayer_FlippedGravity(void)
     s32 screenX; // sp18;
     s32 screenY; // sl
     Player *p;
+#if USE_HITBOX_RECT
+    HitboxRect *hb;
+#else
     Hitbox *hb;
+#endif
 
     UpdateSpriteAnimation(s);
 
@@ -229,7 +241,11 @@ void RingsScatterSingleplayer_FlippedGravity(void)
 
         p = &gPlayer;
 
+#if USE_HITBOX_RECT
+        hb = (HitboxRect *)&p->unk90->s.hitboxes[0].left;
+#else
         hb = &p->unk90->s.hitboxes[0];
+#endif
         if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
             && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
@@ -298,6 +314,7 @@ void RingsScatterSingleplayer_FlippedGravity(void)
                         OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
                         if (iwram_end != oamAlloced) {
+                            // NOTE: This will not work out for widescreen resolutions
                             u32 dimOffX, dimOffY;
                             DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
                             oamAlloced->all.attr0 &= 0xFF00;
@@ -316,7 +333,7 @@ void RingsScatterSingleplayer_FlippedGravity(void)
             // _08020166
             {
                 u16 sprFlags = ring->unk10;
-                ring->unk10 &= ~0x4;
+                ring->unk10 &= ~0x3;
                 ring->unk10 |= (sprFlags + 1) & 0x3;
                 ring->unkC--;
             }
