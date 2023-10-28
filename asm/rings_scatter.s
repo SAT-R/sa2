@@ -221,13 +221,13 @@ _08020008:
 	ands r0, r1
 	cmp r0, #0
 	bne _08020046
-	mov r0, r8
+	mov r0, r8          @ r0 = r8 = ringIntY
 	subs r0, #0x10
 	movs r1, #0xe
 	ldrsh r2, [r5, r1]
 	ldr r1, _080200EC @ =sub_801EC3C
 	str r1, [sp]
-	adds r1, r7, #0
+	adds r1, r7, #0     @ r1 = r7 = ringIntX
 	movs r3, #8
 	rsbs r3, r3, #0
 	bl sub_801F100
@@ -243,7 +243,7 @@ _08020008:
 	subs r0, r0, r1
 	strh r0, [r5, #0xa]
 _08020046:
-	ldr r2, [sp, #4]
+	ldr r2, [sp, #4]        @ r2 = sp04 = rs
 	ldr r4, _080200F0 @ =0x000002B6
 	adds r0, r2, r4
 	ldrh r1, [r0]
@@ -284,7 +284,7 @@ _08020090:
 	ldr r1, [sp, #8]
 	subs r0, r0, r1
 	strh r0, [r5, #0xa]
-	ldr r0, [sp, #0x18]
+	ldr r0, [sp, #0x18]     @ r0 = sp18 = screenX
 	adds r0, #7
 	cmp r0, #0xfe
 	bhi _08020166
@@ -292,7 +292,7 @@ _08020090:
 	rsbs r0, r0, #0
 	cmp sl, r0
 	ble _08020166
-	mov r2, sl
+	mov r2, sl              @ r2 = sl = screenY
 	cmp r2, #0xa7
 	bgt _08020166
 	ldrh r0, [r5, #0xc]
@@ -305,7 +305,7 @@ _08020090:
 	cmp r0, #0
 	bne _08020166
 _080200C0:
-	mov r2, sb
+	mov r2, sb              @ r2 = sb = s
 	adds r2, #0x23
 	ldr r4, [sp, #0x10]
 	cmp r4, #0
@@ -318,7 +318,7 @@ _080200D2:
 	movs r0, #0xff
 	strb r0, [r2]
 	mov r0, sp
-	ldrh r1, [r0, #0x18]
+	ldrh r1, [r0, #0x18]    @ r1 = sp18 =screenX
 	mov r0, sb
 	strh r1, [r0, #0x16]
 	mov r2, sl
@@ -335,7 +335,7 @@ _080200F8:
 	ldrb r0, [r1]
 	lsls r0, r0, #3
 	ldr r1, _080201A0 @ =gUnknown_030022D0
-	adds r4, r0, r1
+	adds r4, r0, r1         @ r4 = oam = gUnknown_030022D0[s->oamBaseIndex];
 	mov r1, sb
 	ldrh r0, [r1, #0x1a]
 	movs r2, #0xf8
@@ -364,7 +364,7 @@ _080200F8:
 	mov r1, sb
 	ldr r0, [r1, #0xc]
 	ldrh r0, [r0, #0xa]
-	mov r4, sl
+	mov r4, sl          @ r4 = sl = screenY
 	subs r0, r4, r0
 	movs r1, #0xff
 	ands r0, r1
@@ -376,7 +376,7 @@ _080200F8:
 	adds r0, r1, #0
 	ands r2, r0
 	strh r2, [r3, #2]
-	mov r4, sb
+	mov r4, sb          @ r4 = sb = s
 	ldr r0, [r4, #0xc]
 	ldrh r0, [r0, #8]
 	ldr r1, [sp, #0x18]
