@@ -341,3 +341,540 @@ NONMATCH(
     }
 }
 END_NONMATCH
+
+// (93.27%) https://decomp.me/scratch/VhHrU
+NONMATCH(
+    "asm/non_matching/game/rings_scatter/RingsScatterSingleplayer_NormalGravity.inc",
+    void RingsScatterSingleplayer_NormalGravity(void))
+{
+    RingsScatter *rs = TASK_DATA(gCurTask);
+    ScatterRing *ring = &rs->rings[0];
+    Sprite *s = &rs->sprRing;
+    s32 sp08 = rs->unk2B0;
+    s32 sp0C = rs->unk2B4;
+    bool32 sp10 = FALSE;
+    s32 i = 0; // sp14
+    s32 ringIntX;
+    s32 ringIntY;
+    s32 screenX; // sp18;
+    s32 screenY; // sl
+    Player *p;
+#if USE_HITBOX_RECT
+    HitboxRect *hb;
+#else
+    Hitbox *hb;
+#endif
+
+    UpdateSpriteAnimation(s);
+
+    for (i = 0; i < (signed)ARRAY_COUNT(rs->rings); ring++, i++) {
+        if (ring->unkC == 0) {
+            continue;
+        }
+
+        ring->x += ring->velX + gUnknown_030054FC;
+        ring->y += ring->velY + gUnknown_030054E0;
+
+        ringIntX = Q_24_8_TO_INT(ring->x);
+        ringIntY = Q_24_8_TO_INT(ring->y);
+        screenX = ringIntX - gCamera.x;
+        screenY = ringIntY - gCamera.y;
+
+        p = &gPlayer;
+
+#if USE_HITBOX_RECT
+        hb = (HitboxRect *)&p->unk90->s.hitboxes[0].left;
+#else
+        hb = &p->unk90->s.hitboxes[0];
+#endif
+        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
+            && (IS_ALIVE(p))
+            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
+                 && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
+                || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
+                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb))
+                    && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
+            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY >= HB_TOP(p, hb)))
+                && ((ringIntY - 16) >= HB_TOP(p, hb)))
+            && (HB_BOTTOM(p, hb) >= (ringIntY - 16))) {
+            s32 oldRingCount;
+
+            CreateCollectRingEffect(ringIntX, ringIntY);
+
+            INCREMENT_RINGS2(1);
+
+            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                if (gRingCount > 255) {
+                    gRingCount = 255;
+                }
+            }
+
+            ring->unkC = 0;
+        } else {
+
+            if ((ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
+                s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, +8, sub_801EC3C);
+                if (res <= 0) {
+                    ring->y -= Q_24_8(res);
+                    ring->velY = (ring->velY >> 2) - ring->velY;
+                }
+            }
+
+            if ((rs->unk2B6 & 0x1) && (ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
+                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
+                                      sub_801EC3C);
+                if (res <= 0) {
+                    ring->y += Q_24_8(res);
+                    ring->velY = (ring->velY >> 2) - ring->velY;
+                }
+            }
+
+            ring->velY -= sp08;
+
+            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8)
+                && (screenY < (DISPLAY_HEIGHT + 8))) {
+                if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
+                    if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
+                        s->oamBaseIndex = 0xFF;
+                        s->x = screenX;
+                        s->y = screenY;
+                        DisplaySprite(s);
+
+                        sp10 = TRUE;
+                    } else {
+                        OamData *oam = &gUnknown_030022D0[s->oamBaseIndex];
+
+                        OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
+
+                        if (iwram_end != oamAlloced) {
+                            // NOTE: This will not work out for widescreen resolutions
+                            u32 dimOffX, dimOffY;
+                            DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
+                            oamAlloced->all.attr0 &= 0xFF00;
+
+                            dimOffY = screenY - (u16)s->dimensions->offsetY;
+                            oamAlloced->all.attr0 += dimOffY & 0xFF;
+
+                            oamAlloced->all.attr1 &= 0xFE00;
+
+                            dimOffX = screenX - (u16)s->dimensions->offsetX;
+                            oamAlloced->all.attr1 += dimOffX & 0x1FF;
+                        }
+                    }
+                }
+            }
+
+            {
+                u16 sprFlags = ring->unk10;
+                ring->unk10 &= ~0x3;
+                ring->unk10 |= (sprFlags + 1) & 0x3;
+                ring->unkC--;
+            }
+        }
+    }
+}
+END_NONMATCH
+
+// NOTE: VERY WRONG!!!
+//       A ton of code is missing here.
+//       (Basically a copy-paste of RingsScatterSingleplayer_FlippedGravity)
+// (66.09%) https://decomp.me/scratch/qHlN9
+NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterMultipak_FlippedGravity.inc",
+         void RingsScatterMultipak_FlippedGravity(void))
+{
+    RingsScatter *rs = TASK_DATA(gCurTask);
+    ScatterRing *ring = &rs->rings[0];
+    Sprite *s = &rs->sprRing;
+    s32 sp08 = rs->unk2B0;
+    s32 sp0C = rs->unk2B4;
+    bool32 sp10 = FALSE;
+    s32 i = 0; // sp14
+    s32 ringIntX;
+    s32 ringIntY;
+    s32 screenX; // sp18;
+    s32 screenY; // sl
+    Player *p;
+#if USE_HITBOX_RECT
+    HitboxRect *hb;
+#else
+    Hitbox *hb;
+#endif
+
+    UpdateSpriteAnimation(s);
+
+    for (i = 0; i < (signed)ARRAY_COUNT(rs->rings); ring++, i++) {
+        if (ring->unkC == 0) {
+            continue;
+        }
+
+        ring->x += ring->velX;
+        ring->y += ring->velY;
+
+        ringIntX = Q_24_8_TO_INT(ring->x);
+        ringIntY = Q_24_8_TO_INT(ring->y);
+        screenX = ringIntX - gCamera.x;
+        screenY = ringIntY - gCamera.y;
+
+        p = &gPlayer;
+
+#if USE_HITBOX_RECT
+        hb = (HitboxRect *)&p->unk90->s.hitboxes[0].left;
+#else
+        hb = &p->unk90->s.hitboxes[0];
+#endif
+        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
+            && (IS_ALIVE(p))
+            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
+                 && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
+                || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
+                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb))
+                    && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
+            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY < HB_TOP(p, hb)))
+                && ((ringIntY - 16) >= HB_TOP(p, hb)))
+            && (HB_BOTTOM(p, hb) >= (ringIntY - 16))) {
+            s32 oldRingCount;
+
+            CreateCollectRingEffect(ringIntX, ringIntY);
+
+            INCREMENT_RINGS(1);
+
+            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                if (gRingCount > 255) {
+                    gRingCount = 255;
+                }
+            }
+
+            ring->unkC = 0;
+        } else {
+            if ((ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
+                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
+                                      sub_801EC3C);
+                if (res <= 0) {
+                    ring->y -= Q_24_8(res);
+                    ring->velY = (ring->velY >> 2) - ring->velY;
+                }
+            }
+
+            if ((rs->unk2B6 & 0x1) && (ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
+                s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, 8, sub_801EC3C);
+                if (res <= 0) {
+                    ring->y += Q_24_8(res);
+                    ring->velY = (ring->velY >> 2) - ring->velY;
+                }
+            }
+
+            ring->velY -= sp08;
+
+            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8)
+                && (screenY < (DISPLAY_HEIGHT + 8))) {
+                if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
+                    if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
+                        s->oamBaseIndex = 0xFF;
+                        s->x = screenX;
+                        s->y = screenY;
+                        DisplaySprite(s);
+
+                        sp10 = TRUE;
+                    } else {
+                        OamData *oam = &gUnknown_030022D0[s->oamBaseIndex];
+
+                        OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
+
+                        if (iwram_end != oamAlloced) {
+                            // NOTE: This will not work out for widescreen resolutions
+                            u32 dimOffX, dimOffY;
+                            DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
+                            oamAlloced->all.attr0 &= 0xFF00;
+
+                            dimOffY = screenY - (u16)s->dimensions->offsetY;
+                            oamAlloced->all.attr0 += dimOffY & 0xFF;
+
+                            oamAlloced->all.attr1 &= 0xFE00;
+
+                            dimOffX = screenX - (u16)s->dimensions->offsetX;
+                            oamAlloced->all.attr1 += dimOffX & 0x1FF;
+                        }
+                    }
+                }
+            }
+            {
+                u16 sprFlags = ring->unk10;
+                ring->unk10 &= ~0x3;
+                ring->unk10 |= (sprFlags + 1) & 0x3;
+                ring->unkC--;
+            }
+        }
+    }
+}
+END_NONMATCH
+
+// NOTE: VERY WRONG!!!
+//       A ton of code is missing here.
+//       (Basically a copy-paste of RingsScatterSingleplayer_NormalGravity)
+// (64.03%) https://decomp.me/scratch/KBtBo
+NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterMultipak_NormalGravity.inc",
+         void RingsScatterMultipak_NormalGravity(void))
+{
+    RingsScatter *rs = TASK_DATA(gCurTask);
+    ScatterRing *ring = &rs->rings[0];
+    Sprite *s = &rs->sprRing;
+    s32 sp08 = rs->unk2B0;
+    s32 sp0C = rs->unk2B4;
+    bool32 sp10 = FALSE;
+    s32 i = 0; // sp14
+    s32 ringIntX;
+    s32 ringIntY;
+    s32 screenX; // sp18;
+    s32 screenY; // sl
+    Player *p;
+#if USE_HITBOX_RECT
+    HitboxRect *hb;
+#else
+    Hitbox *hb;
+#endif
+
+    UpdateSpriteAnimation(s);
+
+    for (i = 0; i < (signed)ARRAY_COUNT(rs->rings); ring++, i++) {
+        if (ring->unkC == 0) {
+            continue;
+        }
+
+        ring->x += ring->velX + gUnknown_030054FC;
+        ring->y += ring->velY + gUnknown_030054E0;
+
+        ringIntX = Q_24_8_TO_INT(ring->x);
+        ringIntY = Q_24_8_TO_INT(ring->y);
+        screenX = ringIntX - gCamera.x;
+        screenY = ringIntY - gCamera.y;
+
+        p = &gPlayer;
+
+#if USE_HITBOX_RECT
+        hb = (HitboxRect *)&p->unk90->s.hitboxes[0].left;
+#else
+        hb = &p->unk90->s.hitboxes[0];
+#endif
+        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
+            && (IS_ALIVE(p))
+            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
+                 && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
+                || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
+                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb))
+                    && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
+            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY >= HB_TOP(p, hb)))
+                && ((ringIntY - 16) >= HB_TOP(p, hb)))
+            && (HB_BOTTOM(p, hb) >= (ringIntY - 16))) {
+            s32 oldRingCount;
+
+            CreateCollectRingEffect(ringIntX, ringIntY);
+
+            INCREMENT_RINGS2(1);
+
+            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                if (gRingCount > 255) {
+                    gRingCount = 255;
+                }
+            }
+
+            ring->unkC = 0;
+        } else {
+
+            if ((ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
+                s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, +8, sub_801EC3C);
+                if (res <= 0) {
+                    ring->y -= Q_24_8(res);
+                    ring->velY = (ring->velY >> 2) - ring->velY;
+                }
+            }
+
+            if ((rs->unk2B6 & 0x1) && (ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
+                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
+                                      sub_801EC3C);
+                if (res <= 0) {
+                    ring->y += Q_24_8(res);
+                    ring->velY = (ring->velY >> 2) - ring->velY;
+                }
+            }
+
+            ring->velY -= sp08;
+
+            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8)
+                && (screenY < (DISPLAY_HEIGHT + 8))) {
+                if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
+                    if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
+                        s->oamBaseIndex = 0xFF;
+                        s->x = screenX;
+                        s->y = screenY;
+                        DisplaySprite(s);
+
+                        sp10 = TRUE;
+                    } else {
+                        OamData *oam = &gUnknown_030022D0[s->oamBaseIndex];
+
+                        OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
+
+                        if (iwram_end != oamAlloced) {
+                            // NOTE: This will not work out for widescreen resolutions
+                            u32 dimOffX, dimOffY;
+                            DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
+                            oamAlloced->all.attr0 &= 0xFF00;
+
+                            dimOffY = screenY - (u16)s->dimensions->offsetY;
+                            oamAlloced->all.attr0 += dimOffY & 0xFF;
+
+                            oamAlloced->all.attr1 &= 0xFE00;
+
+                            dimOffX = screenX - (u16)s->dimensions->offsetX;
+                            oamAlloced->all.attr1 += dimOffX & 0x1FF;
+                        }
+                    }
+                }
+            }
+
+            {
+                u16 sprFlags = ring->unk10;
+                ring->unk10 &= ~0x3;
+                ring->unk10 |= (sprFlags + 1) & 0x3;
+                ring->unkC--;
+            }
+        }
+    }
+}
+
+END_NONMATCH
+
+// NOTE: VERY WRONG!!!
+//       A ton of code is missing here.
+//       (Basically a copy-paste of RingsScatterSingleplayer_NormalGravity)
+// (54.61%) https://decomp.me/scratch/v9rXO
+NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterSinglepakMain.inc",
+         void RingsScatterSinglepakMain(void))
+{
+    RingsScatter *rs = TASK_DATA(gCurTask);
+    ScatterRing *ring = &rs->rings[0];
+    Sprite *s = &rs->sprRing;
+    s32 sp08 = rs->unk2B0;
+    s32 sp0C = rs->unk2B4;
+    bool32 sp10 = FALSE;
+    s32 i = 0; // sp14
+    s32 ringIntX;
+    s32 ringIntY;
+    s32 screenX; // sp18;
+    s32 screenY; // sl
+    Player *p;
+#if USE_HITBOX_RECT
+    HitboxRect *hb;
+#else
+    Hitbox *hb;
+#endif
+
+    UpdateSpriteAnimation(s);
+
+    for (i = 0; i < (signed)ARRAY_COUNT(rs->rings); ring++, i++) {
+        if (ring->unkC == 0) {
+            continue;
+        }
+
+        ring->x += ring->velX + gUnknown_030054FC;
+        ring->y += ring->velY + gUnknown_030054E0;
+
+        ringIntX = Q_24_8_TO_INT(ring->x);
+        ringIntY = Q_24_8_TO_INT(ring->y);
+        screenX = ringIntX - gCamera.x;
+        screenY = ringIntY - gCamera.y;
+
+        p = &gPlayer;
+
+#if USE_HITBOX_RECT
+        hb = (HitboxRect *)&p->unk90->s.hitboxes[0].left;
+#else
+        hb = &p->unk90->s.hitboxes[0];
+#endif
+        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
+            && (IS_ALIVE(p))
+            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
+                 && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
+                || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
+                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb))
+                    && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
+            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY >= HB_TOP(p, hb)))
+                && ((ringIntY - 16) >= HB_TOP(p, hb)))
+            && (HB_BOTTOM(p, hb) >= (ringIntY - 16))) {
+            s32 oldRingCount;
+
+            CreateCollectRingEffect(ringIntX, ringIntY);
+
+            INCREMENT_RINGS2(1);
+
+            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                if (gRingCount > 255) {
+                    gRingCount = 255;
+                }
+            }
+
+            ring->unkC = 0;
+        } else {
+
+            if ((ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
+                s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, +8, sub_801EC3C);
+                if (res <= 0) {
+                    ring->y -= Q_24_8(res);
+                    ring->velY = (ring->velY >> 2) - ring->velY;
+                }
+            }
+
+            if ((rs->unk2B6 & 0x1) && (ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
+                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
+                                      sub_801EC3C);
+                if (res <= 0) {
+                    ring->y += Q_24_8(res);
+                    ring->velY = (ring->velY >> 2) - ring->velY;
+                }
+            }
+
+            ring->velY -= sp08;
+
+            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8)
+                && (screenY < (DISPLAY_HEIGHT + 8))) {
+                if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
+                    if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
+                        s->oamBaseIndex = 0xFF;
+                        s->x = screenX;
+                        s->y = screenY;
+                        DisplaySprite(s);
+
+                        sp10 = TRUE;
+                    } else {
+                        OamData *oam = &gUnknown_030022D0[s->oamBaseIndex];
+
+                        OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
+
+                        if (iwram_end != oamAlloced) {
+                            // NOTE: This will not work out for widescreen resolutions
+                            u32 dimOffX, dimOffY;
+                            DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
+                            oamAlloced->all.attr0 &= 0xFF00;
+
+                            dimOffY = screenY - (u16)s->dimensions->offsetY;
+                            oamAlloced->all.attr0 += dimOffY & 0xFF;
+
+                            oamAlloced->all.attr1 &= 0xFE00;
+
+                            dimOffX = screenX - (u16)s->dimensions->offsetX;
+                            oamAlloced->all.attr1 += dimOffX & 0x1FF;
+                        }
+                    }
+                }
+            }
+
+            {
+                u16 sprFlags = ring->unk10;
+                ring->unk10 &= ~0x3;
+                ring->unk10 |= (sprFlags + 1) & 0x3;
+                ring->unkC--;
+            }
+        }
+    }
+}
+END_NONMATCH
