@@ -186,7 +186,6 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
     }
 }
 
-#if 01
 #define USE_HITBOX_RECT 1
 typedef struct {
     /* 0x00 */ s8 left;
@@ -204,7 +203,10 @@ typedef struct {
 #define HB_BOTTOM(p, hb) (Q_24_8_TO_INT((p)->y) + HB_HEIGHT(hb))
 
 // (90.40%) https://decomp.me/scratch/jdAe4
-void RingsScatterSingleplayer_FlippedGravity(void)
+// (92.98%) https://decomp.me/scratch/TxbaC
+NONMATCH(
+    "asm/non_matching/game/rings_scatter/RingsScatterSingleplayer_FlippedGravity.inc",
+    void RingsScatterSingleplayer_FlippedGravity(void))
 {
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
@@ -249,15 +251,13 @@ void RingsScatterSingleplayer_FlippedGravity(void)
         if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
             && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
-                 && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH)))
+                 && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
                 || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb))
                     && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
-            && ((((ringIntY - 16) > HB_TOP(p, hb))
-                 && (HB_BOTTOM(p, hb) >= (ringIntY - 16)))
-                || (ringIntY >= HB_TOP(p, hb))
-                || (((ringIntY - 16) >= HB_TOP(p, hb))
-                    && (HB_BOTTOM(p, hb) >= (ringIntY - 16))))) {
+            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY < HB_TOP(p, hb)))
+                && ((ringIntY - 16) >= HB_TOP(p, hb)))
+            && (HB_BOTTOM(p, hb) >= (ringIntY - 16))) {
             s32 oldRingCount;
             // _0801FF70
 
@@ -340,4 +340,4 @@ void RingsScatterSingleplayer_FlippedGravity(void)
         }
     }
 }
-#endif
+END_NONMATCH
