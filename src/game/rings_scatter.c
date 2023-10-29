@@ -36,6 +36,14 @@ void Task_RingsScatter_MP_Singlepak(void);
 void Task_RingsScatter_MP_Multipak(void);
 void TaskDestructor_RingsScatter(struct Task *);
 
+const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS] = {
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_SONIC),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_CREAM),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_TAILS),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_KNUCKLES),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_AMY),
+};
+
 // Called on Stage Initialization
 void InitPlayerHitRingsScatter(void)
 {
@@ -878,3 +886,31 @@ NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterSinglepakMain.inc",
     }
 }
 END_NONMATCH
+
+void DestroyRingsScatterTask(void)
+{
+    TaskDestroy(gRingsScatterTask);
+    gRingsScatterTask = NULL;
+}
+
+void Task_RingsScatter_Singleplayer(void)
+{
+    if (GRAVITY_IS_INVERTED) {
+        RingsScatterSingleplayer_FlippedGravity();
+    } else {
+        RingsScatterSingleplayer_NormalGravity();
+    }
+}
+
+void Task_RingsScatter_MP_Multipak(void)
+{
+    if (GRAVITY_IS_INVERTED) {
+        RingsScatterMultipak_FlippedGravity();
+    } else {
+        RingsScatterMultipak_NormalGravity();
+    }
+}
+
+void Task_RingsScatter_MP_Singlepak(void) { RingsScatterSinglepakMain(); }
+
+void TaskDestructor_RingsScatter(struct Task UNUSED *t) { gRingsScatterTask = NULL; }
