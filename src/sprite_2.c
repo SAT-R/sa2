@@ -21,7 +21,7 @@ const u8 sUnknown_080984A4[] = {
 
 // This function gets called as long as an enemy is on-screen.
 // Potentially something to do with collision/distance?
-s32 sub_8004418(s16 x, s16 y)
+s16 sub_8004418(s16 x, s16 y)
 {
     u8 index = 0;
     u8 array[ARRAY_COUNT(sUnknown_080984A4)];

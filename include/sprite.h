@@ -218,7 +218,7 @@ s32 sub_80036E0(Sprite *);
 void sub_8003914(Sprite *);
 void sub_80047A0(u16, s16, s16, u16);
 
-s32 sub_8004418(s16 x, s16 y);
+s16 sub_8004418(s16 x, s16 y);
 
 #define SpriteShouldUpdate(sprite)                                                      \
     (((sprite)->prevVariant != (sprite)->variant)                                       \

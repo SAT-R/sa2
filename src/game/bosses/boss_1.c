@@ -13,6 +13,7 @@
 #include "game/cutscenes/level_endings.h"
 
 #include "game/screen_fade.h"
+#include "game/screen_shake.h"
 
 #include "lib/m4a.h"
 #include "constants/songs.h"
@@ -38,7 +39,7 @@ typedef struct {
     u32 unk50;
     s32 unk54[2][8];
 
-    u32 unk94;
+    s32 unk94;
     s32 unk98;
     s32 unk9C;
     u32 unkA0;
@@ -520,4 +521,186 @@ void sub_803AC2C(EggHammerTankII *boss)
     UpdateSpriteAnimation(s);
     sub_8004860(s, transform);
     DisplaySprite(s);
+}
+
+extern const s16 gUnknown_080D7A18[];
+
+void sub_803B018(void)
+{
+    s32 result;
+    s32 x, y;
+    EggHammerTankII *boss = TASK_DATA(gCurTask);
+    s32 origY;
+    s32 idx;
+    boss->unkA = 0;
+    origY = boss->unk4;
+    x = (boss->unk0 + 0x1800);
+    y = (origY + boss->unk9C + 0xE80);
+
+    result = sub_801F100(Q_24_8_TO_INT(y), Q_24_8_TO_INT(x), 1, 8, sub_801EC3C);
+    if (result < 1) {
+        boss->unk4 += result * 0x40;
+        idx = -result;
+        if (idx > 7) {
+            idx = 7;
+        }
+        boss->unk9C -= (idx * gUnknown_080D7A18[idx] - idx * 0x40);
+    } else {
+        boss->unk9C += 0x120;
+    }
+
+    boss->unk4 -= ((0x1280 - boss->unk9C) * 0x60) >> 8;
+
+    if (boss->unk9C < 0xE80) {
+        boss->unk9C = 0xE80;
+    }
+    if (boss->unk9C > 0x1780) {
+        boss->unk9C = 0x1780;
+    }
+
+    x = (boss->unk0 - 0x1600);
+    y = (origY + boss->unk98 + 0xE80);
+
+    result = sub_801F100(Q_24_8_TO_INT(y), Q_24_8_TO_INT(x), 1, 8, sub_801EC3C);
+    if (result < 1) {
+        boss->unk4 += (result * 0x40);
+
+        idx = -result;
+        if (idx > 7) {
+            idx = 7;
+        }
+        boss->unk98 -= (idx * gUnknown_080D7A18[idx] - idx * 0x40);
+    } else {
+        boss->unk98 += 0x120;
+    }
+
+    boss->unk4 -= ((0x1280 - boss->unk98) * 0x60) >> 8;
+
+    if (boss->unk98 < 0xE80) {
+        boss->unk98 = 0xE80;
+    }
+    if (boss->unk98 > 0x1780) {
+        boss->unk98 = 0x1780;
+    }
+}
+extern const s16 gUnknown_080D7A78[];
+
+void sub_803B17C(EggHammerTankII *boss)
+{
+    u8 i;
+
+    boss->unk94 -= 8;
+
+    if (boss->unk94 < 0x300) {
+        boss->unk94 = 0x300;
+    }
+    boss->unk54[1][0] = boss->unk94;
+
+    for (i = 1; i < 8; i++) {
+        boss->unk54[1][i] += Q_24_8_TO_INT((boss->unk54[1][i - 1] - boss->unk54[1][i])
+                                           * gUnknown_080D7A78[i + 8]);
+    }
+
+    boss->unkAC -= 1;
+
+    if (boss->unkAC == 0) {
+        boss->unkAC = 10;
+        boss->unkA0 = 1;
+
+        for (i = 0; i < 8; i++) {
+            boss->unk54[1][i] = 0x300;
+            boss->unk54[0][i] = gUnknown_080D7A58[i];
+        }
+
+        boss->unk94 = 0x300;
+        if (boss->unkA4 & 2) {
+            boss->unkA4 = 1;
+        } else {
+            boss->unkA4 = boss->unkA4 << 1;
+        }
+    }
+}
+extern const u16 gUnknown_080D7A98[];
+
+void sub_803B264(EggHammerTankII *boss)
+{
+    u8 i, j;
+    s16 acc, val;
+    for (i = 0, val = 1; i < 5; i++) {
+        if ((boss->unkA4 & val)) {
+            val = gUnknown_080D7A98[i];
+            break;
+        }
+        val = val << 1;
+    }
+
+    acc = 0;
+    for (j = 0; j < 8; j++) {
+        acc += val;
+        boss->unk54[0][j] += acc;
+    }
+
+    boss->unkAC--;
+
+    if (boss->unkAC == 0) {
+        boss->unkAC = 15;
+        boss->unkA0 = 2;
+    }
+}
+
+extern const u8 gUnknown_080D7AA2[];
+
+void sub_803B2F8(EggHammerTankII *boss)
+{
+    s32 x, y;
+    u8 i, val;
+    s32 result;
+
+    for (i = 0, val = 1; i < 5; i++) {
+        if (boss->unkA4 & val) {
+            val = gUnknown_080D7AA2[i];
+            break;
+        }
+        val <<= 1;
+    }
+
+    boss->unk94 -= (SIN((0x3C - boss->unkAC) * 4) >> 9);
+    boss->unk94 &= (SIN_PERIOD - 1);
+    boss->unk54[1][0] = boss->unk94;
+
+    for (i = 1; i < 8; i++) {
+        boss->unk54[1][i]
+            += ((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i]) >> 8;
+    }
+
+    x = Q_24_8_TO_INT(boss->unk0)
+        + ((boss->unk54[0][7] * COS((boss->unk54[1][7] - val) & (SIN_PERIOD - 1)))
+           >> 0x17);
+    y = Q_24_8_TO_INT(boss->unk4)
+        + ((boss->unk54[0][7] * SIN((boss->unk54[1][7] - val) & (SIN_PERIOD - 1)))
+           >> 0x17);
+
+    result = sub_801E6D4(y, x, 1, 8, NULL, sub_801EE64);
+
+    if (result < 1) {
+        m4aSongNumStart(SE_238);
+        boss->unkAC = 30;
+        boss->unkA0 = 4;
+
+        result = sub_8004418(SIN((boss->unk54[1][7] + val) & (SIN_PERIOD - 1)) >> 6,
+                             (COS((boss->unk54[1][7] + val) & (SIN_PERIOD - 1)) >> 6)
+                                 + result);
+
+        for (i = 0; i < 8; i++) {
+            boss->unk54[1][i] = result;
+        }
+        boss->unk94 = result;
+        CreateScreenShake(0x800, 0x10, 0x80, 0x14, 0x83);
+    } else {
+        boss->unkAC--;
+        if (boss->unkAC == 0) {
+            boss->unkAC = 0x1E;
+            boss->unkA0 = 4;
+        }
+    }
 }
