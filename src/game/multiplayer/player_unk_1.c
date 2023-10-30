@@ -3,6 +3,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/multiplayer/unknown_1.h"
+#include "game/rings_scatter.h"
 #include "game/stage/entities_manager.h"
 
 struct UNK_3005510 *sub_8019224(void)
@@ -123,7 +124,7 @@ void sub_80192FC(union MultiSioData *msioData, u32 UNUSED someId)
 
 void sub_8019350(union MultiSioData *msioData, u32 UNUSED someId)
 {
-    sub_801FD34(msioData->pat4.unk2, msioData->pat4.unk4, msioData->pat4.unkF);
+    InitScatteringRings(msioData->pat4.x, msioData->pat4.y, msioData->pat4.numRings);
 }
 
 void sub_8019368(union MultiSioData *msioData, u32 UNUSED someId)

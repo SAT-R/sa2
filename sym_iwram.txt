@@ -87,7 +87,7 @@ build/sa2/src/game/boost_effect.o(.data);
 /* part of camera */
 . = 0x000059C8; gUnknown_030059C8 = .;
 . = 0x000059D0; gUnknown_030059D0 = .;
-. = 0x000059D8; gUnknown_030059D8 = .;
+. = 0x000059D8; gRingsScatterTask = .;
 
 . = 0x000059E0; gPlayer = .;
 . = 0x00005AA0; gUnknown_03005AA0 = .;

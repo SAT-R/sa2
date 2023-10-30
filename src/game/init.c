@@ -10,6 +10,7 @@
 #include "game/title_screen.h"
 #include "game/options_screen.h"
 #include "game/multiboot/connection.h"
+#include "game/rings_scatter.h"
 #include "game/stage/entities_manager.h"
 
 void GameStart(void)
@@ -25,7 +26,7 @@ void GameStart(void)
 
     gUnknown_03005424 = gUnknown_0300544C = EXTRA_STATE__CLEAR;
 
-    gUnknown_030059D8 = NULL;
+    gRingsScatterTask = NULL;
     gUnknown_03005844 = NULL;
     gGameStageTask = NULL;
     gPlayer.spriteTask = NULL;

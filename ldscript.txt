@@ -120,7 +120,7 @@ SECTIONS
         build/sa2/src/game/dust_effect_braking.o(.text);
         build/sa2/src/game/dust_effect_spindash.o(.text);
         build/sa2/src/game/spark_effect.o(.text);
-        build/sa2/asm/ring_on_hit_spawner.o(.text);
+        build/sa2/src/game/rings_scatter.o(.text);
         build/sa2/src/game/game_6_0.o(.text);
         build/sa2/asm/game_6_1.o(.text);
         build/sa2/asm/game_6_2.o(.text);
@@ -351,7 +351,7 @@ SECTIONS
         build/sa2/src/data/tilemap_table.o(.rodata);
         build/sa2/src/game/stage/stage.o(.rodata);
         build/sa2/asm/player_super_sonic_data.o(.rodata);
-        build/sa2/asm/ring_on_hit_spawner.o(.rodata);
+        build/sa2/src/game/rings_scatter.o(.rodata);
         build/sa2/src/game/game_6_3.o(.rodata);
         build/sa2/src/game/player_callbacks_1.o(.rodata);
         build/sa2/asm/player_super_sonic.o(.rodata);

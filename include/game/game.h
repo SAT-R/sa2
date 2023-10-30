@@ -59,7 +59,6 @@ extern s8 gCurrentLevel;
 extern s8 gSelectedCharacter;
 
 extern u8 gMultiplayerLanguage;
-extern struct Task *gUnknown_030059D8;
 extern struct Task *gGameStageTask;
 
 typedef struct {
@@ -674,8 +673,6 @@ extern void sub_801F78C(void);
 
 extern void sub_802C668(s32 *x, s32 *y);
 
-extern void sub_8021350(void);
-
 // NOTE: Proc type should be the same as SetStageSpawnPosInternal!
 extern void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *player);
 
@@ -720,6 +717,55 @@ extern void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *player);
             });                                                                         \
                                                                                         \
             gUnknown_030054A8.unk3 = 16;                                                \
+        }                                                                               \
+    }
+
+#define INCREMENT_RINGS(incVal)                                                         \
+    {                                                                                   \
+        s32 prevLives, newLives;                                                        \
+        s32 oldRings = gRingCount;                                                      \
+        gRingCount += incVal;                                                           \
+                                                                                        \
+        if (!IS_EXTRA_STAGE(gCurrentLevel)) {                                           \
+            newLives = Div(gRingCount, 100);                                            \
+            prevLives = Div(oldRings, 100);                                             \
+                                                                                        \
+            if ((newLives != prevLives) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {    \
+                u16 lives = gNumLives + 1;                                              \
+                                                                                        \
+                gNumLives = ({                                                          \
+                    if (lives > 255)                                                    \
+                        lives = 255;                                                    \
+                    lives;                                                              \
+                });                                                                     \
+                                                                                        \
+                gUnknown_030054A8.unk3 = 16;                                            \
+            }                                                                           \
+        }                                                                               \
+    }
+
+#define INCREMENT_RINGS2(incVal)                                                        \
+    {                                                                                   \
+        s32 prevLives, newLives;                                                        \
+        s32 oldRings = gRingCount;                                                      \
+        gRingCount += incVal;                                                           \
+                                                                                        \
+        if (!IS_EXTRA_STAGE(gCurrentLevel)) {                                           \
+            newLives = Div(gRingCount, 100);                                            \
+            prevLives = Div(oldRings, 100);                                             \
+                                                                                        \
+            /* RingsScatterSingleplayer_NormalGravity turns the if around */            \
+            if ((newLives != prevLives) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {    \
+                u16 lives = gNumLives + 1;                                              \
+                                                                                        \
+                gNumLives = ({                                                          \
+                    if (lives > 255)                                                    \
+                        lives = 255;                                                    \
+                    lives;                                                              \
+                });                                                                     \
+                                                                                        \
+                gUnknown_030054A8.unk3 = 16;                                            \
+            }                                                                           \
         }                                                                               \
     }
 
