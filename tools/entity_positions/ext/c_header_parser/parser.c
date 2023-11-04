@@ -35,40 +35,40 @@ static long getFileSize(FILE *f)
     return size;
 }
 
-static bool get_single_char_token_type(char *text)
+static bool_ get_single_char_token_type(char *text)
 {
     return text[0];
 }
 
-static bool is_single_char_token(char *text)
+static bool_ is_single_char_token(char *text)
 {
-    char *tokens = "()[]{}+-*/.,:;";
+    char *tokens = "()[]{}+-*/.,:;=~";
 
     return (strchr(tokens, text[0]) != NULL);
 }
 
-static inline bool is_digit(char c)
+static inline bool_ is_digit(char c)
 {
     return ((c >= '0') && (c <= '9'));
 }
 
-static inline bool is_hex(char c)
+static inline bool_ is_hex(char c)
 {
     return (is_digit(c) || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'));
 }
 
-static inline bool is_binary(char c)
+static inline bool_ is_binary(char c)
 {
     return (c == '0' || c == '1');
 }
 
-static inline bool is_line_break(char c)
+static inline bool_ is_line_break(char c)
 {
     return ((c == '\r') 
         ||  (c == '\n'));
 }
 
-static inline bool is_whitespace(char c)
+static inline bool_ is_whitespace(char c)
 {
     return ((c == ' ')
         ||  (c == '\t'));

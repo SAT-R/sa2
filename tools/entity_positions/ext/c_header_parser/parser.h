@@ -29,6 +29,7 @@ enum TokenTypes {
     /* 0x2F */ DIV           = '/',
     /* 0x3A */ COLON         = ':',
     /* 0x3B */ SEMICOLON     = ';',
+    /* 0x3D */ EQUALS        = '=',
     /* 0x5B */ L_SQ_PAREN    = '[',
     /* 0x5D */ R_SQ_PAREN    = ']',
     /* 0x7B */ L_CURLY_PAREN = '{',
