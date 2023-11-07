@@ -161,6 +161,11 @@ typedef struct {
 } Tilemap;
 
 typedef struct {
+    Texture *elements;
+    int capacity, count;
+} TextureList;
+
+typedef struct {
     File enemiesCSV;
     File interactablesCSV;
     File itemboxesCSV;
@@ -192,6 +197,14 @@ typedef struct {
     int capacity, count;
 } EntityMetaList;
 
+typedef struct {
+    Texture txItembox;
+    TextureList oneUpIcons;
+    EntityMetaList items;
+    unsigned short animItembox;
+    unsigned short animItemType;
+} ItemMetaList;
+
 
 
 typedef struct {
@@ -217,7 +230,7 @@ typedef struct {
 
     EntityMetaList enemies;
     EntityMetaList interactables;
-    EntityMetaList items;
+    ItemMetaList items;
     EntityMeta ring;
 } FileInfo;
 
@@ -323,18 +336,25 @@ static void DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Text
 static inline void DrawMetatilePreviewButton(AppState *state, int x, int y, Texture2D txAtlas);
 static void DrawPalette(int palX, int palY, const int colorWidth, Color *colors, int numColors);
 static void DrawPalettes(FileInfo *paths);
+
 static void DrawMainHeader(AppState *state, Texture2D txAtlas);
 static void DrawUI(AppState *state, Texture2D txAtlas);
 static void DrawUIWindow(UIWindow *window);
 
+static void DrawItem(AppState *state, int x, int y, int index);
+
 static inline int GetMetatileIndex(AppState *state, int x, int y, MetatileLayer layer);
 static void ParseMetadataTxt(AppState *state, Tilemap* tm);
 static Vector2i GetMetatilePointBelowMouse(StageMap *map, Rectangle recMap);
-static void HandleMouseInput();
+static void HandleMouseInput(AppState *state, Rectangle recMap);
+static void HandleKeyInput(AppState *state, Rectangle recMap);
 static bool HandleMouseInputUIWindows(AppState *state);
 static void SetupFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir);
 static void LoadEntityNamesAndIDs(AppState *state);
-static void LoadEntityTextures(AppState *state);
+static void LoadAllEntityTextures(AppState *state);
+
+static Rectangle GetSpawnPosRectangle(StageMap *map, CharacterList *chars);
+static void HandleMouseInputSpawnPos(AppState *state);
 
 int main(void)
 {
@@ -390,7 +410,7 @@ int main(void)
     SetupFilePaths(&state.paths, rootDir, mapDir);
 
     LoadEntityNamesAndIDs(&state);
-    LoadEntityTextures(&state);
+    LoadAllEntityTextures(&state);
 
     CreateUIWindows(&state);
     
@@ -439,6 +459,8 @@ int main(void)
     {
         HandleMouseInput(&state, recMap);
 
+        HandleKeyInput(&state, recMap);
+
         BeginDrawing();
             ClearBackground(UI_COLOR_BACKGROUND);
             
@@ -450,6 +472,13 @@ int main(void)
             DrawPalettes(&state.paths);
 
             DrawUI(&state, txAtlas);
+
+            HandleMouseInputSpawnPos(&state);
+            //DrawRectangleRec(GetSpawnPosRectangle(&state.map, &state.paths.characters), DARKGREEN);
+
+            for(int item = 0; item < state.paths.items.items.count; item++) {
+                DrawItem(&state, 200 + 32*item, 200, item);
+            }
 
             closeBtnClicked |= DrawAndHandleCloseButton(&state);
         EndDrawing();
@@ -573,6 +602,71 @@ HandleMouseInputUIWindows(AppState *state)
     return mouseHoversUi;
 }
 
+static Rectangle
+GetSpawnPosRectangle(StageMap *map, CharacterList *chars)
+{
+    short selectedChar = chars->selected;
+    Texture2D *txChar = &chars->elements[selectedChar].texture;
+    // TODO: Don't hardcode -METATILE_DIM here
+    int sx = map->spawnX - txChar->width/2  - map->camera.x;
+    int sy = map->spawnY - txChar->height/2 - map->camera.y + METATILE_DIM;
+    Rectangle recChar = {sx, sy,
+                         txChar->width, txChar->height};
+
+    return recChar;
+}
+
+static inline bool
+IsMouseOnSpawn(StageMap *map, CharacterList *chars)
+{
+    Vector2 mouse      = GetMousePosition();
+    Rectangle recSpawn = GetSpawnPosRectangle(map, chars);
+
+    return CheckCollisionPointRec(mouse, recSpawn);
+}
+
+static void
+HandleMouseInputSpawnPos(AppState *state)
+{
+    if(!IsMouseAboveUiElements(state)) {
+        CharacterList *chars = &state->paths.characters;
+        if(IsMouseOnSpawn(&state->map, chars)) {
+            SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+                chars->selected = (++chars->selected) % chars->count;
+            }
+        }
+    }
+}
+
+static void
+SetNewMetatiles(AppState *state, int x, int y)
+{
+    StageMap *map = &state->map;
+    short targetIndex = y * map->width + x;
+
+    if(targetIndex < (state->paths.map.tilemap.dataSize / sizeof(short))) {
+        if(map->flags & MAP_FLAG_SHOW_BACK_LAYER) {
+            unsigned short *layoutBack  = state->paths.map.layers[LAYER_BACK].data;
+
+            if(layoutBack[targetIndex] != map->selectedMetatileIndexBack) {
+                layoutBack[targetIndex]  = map->selectedMetatileIndexBack;
+                state->unsavedChangesExist = true;
+            }
+        }
+
+        if(map->flags & MAP_FLAG_SHOW_FRONT_LAYER) {
+            unsigned short *layoutFront = state->paths.map.layers[LAYER_FRONT].data;
+
+            if(layoutFront[targetIndex] != map->selectedMetatileIndexFront) {
+                layoutFront[targetIndex] = map->selectedMetatileIndexFront;
+                state->unsavedChangesExist = true;
+            }
+        }
+    }
+}
+
 static void
 HandleMouseInput(AppState *state, Rectangle recMap)
 {
@@ -585,38 +679,15 @@ HandleMouseInput(AppState *state, Rectangle recMap)
         if(CheckCollisionPointRec(GetMousePosition(), recMap)) {
             SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 
-            Vector2i mt = GetMetatilePointBelowMouse(map, recMap);
+            Vector2i mtMouse = GetMetatilePointBelowMouse(map, recMap);
 
 
-            if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-                short targetIndex = mt.y * map->width + mt.x;
-
-                if(targetIndex < (state->paths.map.tilemap.dataSize / sizeof(short))) {
-                    if(state->map.flags & MAP_FLAG_SHOW_BACK_LAYER) {
-                        unsigned short *layoutBack  = paths->map.layers[LAYER_BACK].data;
-
-                        if(layoutBack[targetIndex] != map->selectedMetatileIndexBack) {
-                            layoutBack[targetIndex]  = map->selectedMetatileIndexBack;
-                            state->unsavedChangesExist = true;
-                        }
-                    }
-
-                    if(state->map.flags & MAP_FLAG_SHOW_FRONT_LAYER) {
-                        unsigned short *layoutFront = paths->map.layers[LAYER_FRONT].data;
-
-                        if(layoutFront[targetIndex] != map->selectedMetatileIndexFront) {
-                            layoutFront[targetIndex] = map->selectedMetatileIndexFront;
-                            state->unsavedChangesExist = true;
-                        }
-                    }
-
-                }
+            if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsMouseOnSpawn(map, &paths->characters)) {
+                SetNewMetatiles(state, mtMouse.x, mtMouse.y);
             }
 
             if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
                 SetMouseCursor(MOUSE_CURSOR_CROSSHAIR);
-
-                Vector2i mtMouse = GetMetatilePointBelowMouse(map, recMap);
 
                 if( (map->initialMetatile.x < 0)
                  && (map->initialMetatile.y < 0) ) {
@@ -625,8 +696,6 @@ HandleMouseInput(AppState *state, Rectangle recMap)
                 }
             }
             if(IsMouseButtonReleased(MOUSE_BUTTON_RIGHT)) {
-                Vector2i mtMouse = GetMetatilePointBelowMouse(map, recMap);
-
                 if( (map->initialMetatile.x == mtMouse.x)
                  && (map->initialMetatile.y == mtMouse.y) ) {
                     map->selectedMetatile.x = mtMouse.x;
@@ -655,6 +724,17 @@ HandleMouseInput(AppState *state, Rectangle recMap)
         } else {
             SetMouseCursor(MOUSE_CURSOR_DEFAULT);
         }
+    }
+}
+
+static void
+HandleKeyInput(AppState *state, Rectangle recMap)
+{
+    if(IsKeyPressed(KEY_HOME)) {
+        state->map.camera.x = state->map.spawnX - recMap.width/2;
+        state->map.camera.y = state->map.spawnY - recMap.height/2;
+        state->map.camera.x = CLAMP(state->map.camera.x, 0, (state->map.width  * METATILE_DIM) - recMap.width);
+        state->map.camera.y = CLAMP(state->map.camera.y, 0, (state->map.height * METATILE_DIM) - recMap.height);
     }
 }
 
@@ -877,7 +957,7 @@ CreateMetatileAtlas(AppState *state, int numMetatiles, Image *atlas)
 }
 
 static inline Vector2
-GetMousePositionRec(Rectangle rec) {
+GetMousePositionInRec(Rectangle rec) {
     Vector2 mousePos = GetMousePosition();
 
     return CLITERAL(Vector2){
@@ -900,7 +980,7 @@ GetMetatilePointBelowMouse(StageMap *map, Rectangle recMap) {
     Vector2 mouse = GetMousePosition();
 
     if(CheckCollisionPointRec(mouse, recMap)) {
-        Vector2 mouseInRect = GetMousePositionRec(recMap);
+        Vector2 mouseInRect = GetMousePositionInRec(recMap);
         return CLITERAL(Vector2i) {
             (map->camera.x + mouseInRect.x) / METATILE_DIM,
             (map->camera.y + mouseInRect.y) / METATILE_DIM,
@@ -945,7 +1025,8 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
                 txBackdrop = LoadTextureFromImage(backdrop);
             }
             
-            bool isHoveringUI = IsMouseAboveUiElements(state);
+            bool isHoveringUI    = IsMouseAboveUiElements(state);
+            bool isHoveringSpawn = IsMouseOnSpawn(map, &state->paths.characters);
 
             for(int y = 0; y < (recMap.height / METATILE_DIM) + 1; y++) {
                 for(int x = 0; x < (recMap.width / METATILE_DIM) + 1; x++) {
@@ -956,7 +1037,7 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
                     int mtY = (y + (map->camera.y / METATILE_DIM));
                     
                     bool isHoveredOver     = (mtX == mtMouse.x && mtY == mtMouse.y);
-                    bool drawMouseMetatile = (isHoveredOver && !isHoveringUI);
+                    bool drawMouseMetatile = (isHoveredOver && !isHoveringUI && !isHoveringSpawn);
                     bool isSelected        = (mtX == map->selectedMetatile.x && mtY == map->selectedMetatile.y);
                     bool isFirstMouse      = (mtX == map->initialMetatile.x && mtY == map->initialMetatile.y);
                     bool firstMouseExists  = (map->initialMetatile.x >= 0 && map->initialMetatile.y >= 0);
@@ -969,7 +1050,7 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
                     Color tintDarkened = tint;
                     
                     // Darken even further on button-press
-                    if(isHoveredOver && (isFirstMouse || IsMouseButtonDown(MOUSE_BUTTON_LEFT))) {
+                    if(metatileShouldDarken && (isFirstMouse || IsMouseButtonDown(MOUSE_BUTTON_LEFT))) {
                         tint = CLITERAL(Color) {
                             tint.r * 0.8,
                             tint.g * 0.8,
@@ -1027,13 +1108,15 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
             }
             
             // Draw Player character at spawn position
-            // TODO: Maybe only do this inside and on some border of recMap?
-            int sx = recMap.x + state->map.spawnX - state->map.camera.x;
-            int sy = recMap.y + state->map.spawnY - state->map.camera.y - 24;
+            // TODO: Maybe only do this inside and on some border of recMap to save resources?
+            int selectedChar = state->paths.characters.selected;
+            Texture2D *txChar = &state->paths.characters.elements[selectedChar].texture;
+            int sx = recMap.x + state->map.spawnX - state->map.camera.x - (txChar->width * 0.5);;
+            int sy = recMap.y + state->map.spawnY - state->map.camera.y - (txChar->height * 0.5);
 
-            int selectedChar = (int)GetTime() % state->paths.characters.count;
-            DrawTexture(state->paths.characters.elements[selectedChar].texture, sx, sy, WHITE);
-
+            DrawTexturePro(*txChar, CLITERAL(Rectangle){0, 0,  -txChar->width, txChar->height},
+                                    CLITERAL(Rectangle){sx, sy,  txChar->width, txChar->height},
+                                    CLITERAL(Vector2){0.0, 0.0}, 0.0, WHITE);
         EndScissorMode();
         }
     }
@@ -1341,7 +1424,7 @@ SetMetaEntityValues(TokenList *tokList, EntityMetaList *entities, const char *pr
             if((tokenPound->type == POUND_DEFINE)
             && (tokenName->type == IDENTIFIER)
             && (tokenID->type == VALUE)) {
-                if(TextFindIndex(tokenName->text, prefix) >= 0) {
+                if(TextFindIndex(tokenName->text, prefix) == 0) {
                     EntityMeta e = {0};
 
                     e.name = TextReplace(tokenName->text, prefix, "");
@@ -1357,7 +1440,7 @@ SetMetaEntityValues(TokenList *tokList, EntityMetaList *entities, const char *pr
 }
 
 static inline void
-LoadCharacterTexture(char *gameRoot, CharacterList *chars)
+LoadCharacterTextures(char *gameRoot, CharacterList *chars)
 {
     for(int c = 0; c < chars->count; c++) {
         Character *character = &chars->elements[c];
@@ -1369,7 +1452,7 @@ LoadCharacterTexture(char *gameRoot, CharacterList *chars)
 }
 
 static inline void
-LoadEntitiesTexture(char *gameRoot, EntityMetaList *ents)
+LoadEntityTextures(char *gameRoot, EntityMetaList *ents)
 {
     for(int c = 0; c < ents->count; c++) {
         EntityMeta *ent = &ents->elements[c];
@@ -1380,15 +1463,63 @@ LoadEntitiesTexture(char *gameRoot, EntityMetaList *ents)
     }
 }
 
+static inline void
+LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
+{
+    const char *pathFormat = "%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png";
+
+    // Itembox
+    unsigned short animId = items->animItembox;
+    const char *itemboxPath   = TextFormat(pathFormat, gameRoot, animId, 0);
+    items->txItembox = LoadTexture(itemboxPath);
+
+    // 1-Up icons
+    for(int c = 0; c < numCharacters; c++) {
+        unsigned short animId = items->animItemType;
+        const char *iconPath = TextFormat(pathFormat, gameRoot, animId, c);
+        Texture tx1Up  = LoadTexture(iconPath);
+
+        da_append(&items->oneUpIcons, &tx1Up);
+    }
+
+    // Load all items
+    for(int i = 0; i < items->items.count; i++) {
+        EntityMeta *ent = &items->items.elements[i];
+
+        if(i == 0) {
+            ent->texture = items->oneUpIcons.elements[0];
+        } else {
+            const char *animPath = TextFormat(pathFormat, gameRoot, items->animItemType, (i - 1) + numCharacters);
+            ent->texture = LoadTexture(animPath);
+        }
+    }
+}
+
 static void
-LoadEntityTextures(AppState *state)
+DrawItem(AppState *state, int x, int y, int index)
+{
+    ItemMetaList *items = &state->paths.items;
+
+    DrawTexture(items->txItembox, x - (items->txItembox.width / 2), y - (items->txItembox.height / 2), WHITE);
+
+    if(index == 0) {
+        Texture *tx = &items->oneUpIcons.elements[state->paths.characters.selected];
+        DrawTexture(*tx, x - (tx->width / 2), y - (tx->height / 2), WHITE);
+    } else {
+        Texture *tx = &items->items.elements[index].texture;
+        DrawTexture(*tx, x - (tx->width / 2), y - (tx->height / 2), WHITE);
+    }
+}
+
+static void
+LoadAllEntityTextures(AppState *state)
 {
     FileInfo *paths = &state->paths;
 
-    LoadCharacterTexture(paths->gameRoot, &paths->characters);
-    LoadEntitiesTexture(paths->gameRoot, &paths->enemies);
-    LoadEntitiesTexture(paths->gameRoot, &paths->interactables);
-    LoadEntitiesTexture(paths->gameRoot, &paths->items);
+    LoadCharacterTextures(paths->gameRoot, &paths->characters);
+    LoadEntityTextures(paths->gameRoot,    &paths->enemies);
+    LoadEntityTextures(paths->gameRoot,    &paths->interactables);
+    LoadItemTextures(paths->gameRoot, &paths->items, paths->characters.count);
 }
 
 static void
@@ -1407,8 +1538,12 @@ LoadEntityNamesAndIDs(AppState *state)
     // Find enemy names and IDs
     SetMetaEntityValues(&tokensEnemies, &state->paths.enemies,       "ENEMY__");
     SetMetaEntityValues(&tokensIAs,     &state->paths.interactables, "IA__");
-    SetMetaEntityValues(&tokensItems,   &state->paths.items, "ITEM__");
+    SetMetaEntityValues(&tokensItems,   &state->paths.items.items, "ITEM__");
     
+    // Find and set item anim IDs
+    //TODO: Should itmebox be first or last element in EntityMetaList?
+
+
     // Find all character IDs
     int numCharacters = 0;
     int numCharactersFromTokens = 0;
@@ -1424,67 +1559,69 @@ LoadEntityNamesAndIDs(AppState *state)
                 if(TextIsEqual(tokenName->text, "NUM_CHARACTERS")) {
                     numCharactersFromTokens = TextToInteger(tokenID->text);
                     break;
-                } else {
-                    int index  = TextFindIndex(tokenName->text, "CHARACTER_");
-                    if(index >= 0) {
-                        Character character = {0};
-                        character.name = TextReplace(&tokenName->text[index], "CHARACTER_", "");
-                        character.id   = TextToInteger(tokenID->text);
+                } else if(TextFindIndex(tokenName->text, "CHARACTER_") == 0) {
+                    Character character = {0};
+                    character.name = TextReplace(tokenName->text, "CHARACTER_", "");
+                    character.id   = TextToInteger(tokenID->text);
 
-                        da_append(&state->paths.characters, &character);
-                        numCharacters++;
-                    }
+                    da_append(&state->paths.characters, &character);
+                    numCharacters++;
                 }
             }
         }
     }
 
-    // Look for character animations
+    // Look for animations
     if(((numCharacters != 0) && numCharactersFromTokens != 0) && (numCharacters == numCharactersFromTokens)) {
         // We found all characters, search for their animations
 
         CharacterList *chars = &state->paths.characters;
 
-        if(state->game < GAME_KATAM) {
-            // Extract character animations
-            unsigned short animBeforeCountdown = 0;
-            int foundIdleAnims = 0;
-            for(int i = 0; i < tokensAnims.count && (foundIdleAnims != numCharacters); i++) {
-                if(i < tokensAnims.count - 2) {
-                    Token *tokenPound = &tokensAnims.tokens[i+0];
-                    Token *tokenName  = &tokensAnims.tokens[i+1];
-                    Token *tokenID    = &tokensAnims.tokens[i+2];
+        // Find animation IDs
+        // TODO: Maybe we should just prefix them with ANIM_, not something game-specific?
+        unsigned short animBeforeCountdown = 0;
+        int foundIdleAnims = 0;
+        for(int i = 0; i < tokensAnims.count - 2; i++) {
+            Token *tokenPound = &tokensAnims.tokens[i+0];
+            Token *tokenName  = &tokensAnims.tokens[i+1];
+            Token *tokenID    = &tokensAnims.tokens[i+2];
                 
-                    if((tokenPound->type == POUND_DEFINE)
-                    && (tokenName->type == IDENTIFIER)
-                    && (tokenID->type == VALUE)) {
-                        // NOTE: These are only in SA2, so we can just do it explicitly
-                        if(state->game == GAME_SA2 && TextIsEqual(tokenName->text, "SA2_CHAR_ANIM_BEFORE_COUNTDOWN")) {
-                            animBeforeCountdown = TextToInteger(tokenID->text);
-                            i += 2;
-                            continue;
-                        }
+            if((tokenPound->type == POUND_DEFINE)
+            && (tokenName->type == IDENTIFIER)
+            && (tokenID->type == VALUE)) {
+                // NOTE: These are only in SA2, so we can just do it explicitly
+                if((state->game == GAME_SA2)
+                    && TextIsEqual(tokenName->text, "SA2_CHAR_ANIM_BEFORE_COUNTDOWN")) {
+                    animBeforeCountdown = TextToInteger(tokenID->text);
+                    i += 2;
+                    continue;
+                }
 
-                        const char *animPrefix = TextFormat("SA%d_ANIM_", state->game);
-                        int index = TextFindIndex(tokenName->text, animPrefix);
-                        if(index >= 0) {
-                            char *charName = chars->elements[foundIdleAnims].name;
+                const char *animPrefix = TextFormat("SA%d_ANIM_", state->game);
+                int index = TextFindIndex(tokenName->text, animPrefix);
+                if(index == 0) {
+                    char *charName = chars->elements[foundIdleAnims].name;
 
-                            if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_%s_IDLE", state->game, charName))) {
-                                chars->elements[foundIdleAnims].animIdle = TextToInteger(tokenID->text);
-                                foundIdleAnims++;
-                                i += 2;
-                                continue;
-                            }
-                        }
+                    if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_%s_IDLE", state->game, charName))) {
+                        chars->elements[foundIdleAnims].animIdle = TextToInteger(tokenID->text);
+                        foundIdleAnims++;
+                        i += 2;
+                        continue;
+                    }
+
+                    if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_ITEMBOX", state->game))) {
+                        state->paths.items.animItembox = TextToInteger(tokenID->text);
+                    } else if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_ITEMBOX_TYPE", state->game))) {
+                        state->paths.items.animItemType = TextToInteger(tokenID->text);
                     }
                 }
             }
+        }
 
-            // Set "Before countdown" animation (will be the idle anim for games != SA2.)
-            for(int c = 0; c < numCharacters; c++) {
-                chars->elements[c].animGettingReady = chars->elements[c].animIdle + animBeforeCountdown;
-            }
+        // Set "Before countdown" animation (will be the idle anim for games != SA2.)
+        // To visually test the stage startup
+        for(int c = 0; c < numCharacters; c++) {
+            chars->elements[c].animGettingReady = chars->elements[c].animIdle + animBeforeCountdown;
         }
     } else {
         if(numCharacters == 0) {
