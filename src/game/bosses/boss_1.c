@@ -73,8 +73,8 @@ typedef struct {
 void Task_EggHammerTankIIMain(void);
 void TaskDestructor_EggHammerTankIIMain(struct Task *);
 
-extern const u32 gUnknown_080D7A38[8];
-extern const u32 gUnknown_080D7A58[8];
+extern const s32 gUnknown_080D7A38[8];
+extern const s32 gUnknown_080D7A58[8];
 
 void CreateEggHammerTankII(void)
 {
@@ -620,7 +620,7 @@ void sub_803B17C(EggHammerTankII *boss)
         }
     }
 }
-extern const u16 gUnknown_080D7A98[];
+extern const s16 gUnknown_080D7A98[];
 
 void sub_803B264(EggHammerTankII *boss)
 {
@@ -702,5 +702,75 @@ void sub_803B2F8(EggHammerTankII *boss)
             boss->unkAC = 0x1E;
             boss->unkA0 = 4;
         }
+    }
+}
+
+void sub_803B4A0(EggHammerTankII *boss)
+{
+    u8 i;
+    s32 val;
+    s32 result;
+
+    boss->unk94 += 8;
+    boss->unk54[1][0] = boss->unk94;
+
+    for (i = 1; i < 8; i++) {
+        boss->unk54[1][i] += Q_24_8_TO_INT((boss->unk54[1][i - 1] - boss->unk54[1][i])
+                                           * gUnknown_080D7A78[i + 8]);
+    }
+
+    for (i = 0, val = 1; i < 5; i++) {
+        if (boss->unkA4 & val) {
+            val = gUnknown_080D7A98[i] * 2;
+            break;
+        }
+        val <<= 1;
+    }
+
+    if (boss->unkAC < 0x3A) {
+        for (i = 0; i < 8; i++) {
+            boss->unk54[0][i] -= val;
+            if (boss->unk54[0][i] < gUnknown_080D7A58[i]) {
+                boss->unk54[0][i] = gUnknown_080D7A58[i];
+            }
+        }
+    }
+
+    boss->unkAC--;
+
+    if (boss->unkAC == 0) {
+        boss->unkAC = 0x50;
+        boss->unkA0 = 0;
+    }
+}
+
+void sub_803B57C(EggHammerTankII *boss)
+{
+    s32 i;
+    s32 acc, val;
+    for (i = 0, val = 1; i < 5; i++) {
+        if ((boss->unkA4 & val)) {
+            val = gUnknown_080D7A98[i] >> 2;
+            break;
+        }
+        val = val << 1;
+    }
+
+    acc = val;
+    for (i = 0; i < 8; i++) {
+        acc += val;
+        boss->unk54[0][i] -= acc;
+        if (boss->unk54[0][i] < gUnknown_080D7A58[i]) {
+            boss->unk54[0][i] = gUnknown_080D7A58[i];
+            boss->unkAC = 0x44;
+            boss->unkA0 = 5;
+        }
+    }
+
+    boss->unkAC--;
+
+    if (boss->unkAC == 0) {
+        boss->unkAC = 0x44;
+        boss->unkA0 = 5;
     }
 }
