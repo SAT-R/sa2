@@ -6,6 +6,9 @@
 
 typedef signed char bool;
 
+// TEMP HACK
+typedef bool bool_;
+
 typedef signed char         s8;
 typedef signed short       s16;
 typedef signed int         s32;

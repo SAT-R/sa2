@@ -297,7 +297,7 @@ TokenList tokenize(MemArena *arena, char *headerPath)
         MemArena scratch;
         memArenaInit(&scratch);
     
-        tokens.tokens = arena->memory;
+        tokens.tokens = (void*)(((u8*)arena->memory) + arena->offset);
         tokens.count = 0;
 
         for(int cursor = 0; cursor < headerSize; cursor++)
