@@ -774,3 +774,57 @@ void sub_803B57C(EggHammerTankII *boss)
         boss->unkA0 = 5;
     }
 }
+
+void sub_803B62C(EggHammerTankII *boss)
+{
+    u8 i;
+    boss->unk94 += 0xC;
+    if (boss->unkAC > 0x300) {
+        boss->unk94 = 0x300;
+    }
+
+    boss->unk54[1][0] = boss->unk94;
+    for (i = 1; i < 8; i++) {
+        boss->unk54[1][i] += Q_24_8_TO_INT((boss->unk54[1][i - 1] - boss->unk54[1][i])
+                                           * gUnknown_080D7A78[i]);
+    }
+
+    boss->unkAC--;
+
+    if (boss->unkAC == 0) {
+        boss->unkAC = 0x50;
+        boss->unkA0 = 0;
+    }
+}
+
+void sub_803B6AC(EggHammerTankII *boss)
+{
+    Sprite *s;
+
+    if (boss->unkB0 != 0) {
+        boss->unkB0--;
+        if (boss->unkB0 & 1) {
+            m4aSongNumStart(SE_143);
+        } else {
+            m4aSongNumStart(SE_235);
+        }
+
+        boss->unkB1 = 0x1E;
+
+        s = &boss->unk378;
+        if (boss->unkB0 == 0) {
+            s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+            s->variant = 3;
+            INCREMENT_SCORE(1000);
+        } else {
+            s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+            s->variant = 2;
+        }
+
+        s->prevVariant = -1;
+    }
+
+    if (!IS_FINAL_STAGE(gCurrentLevel) && boss->unkB0 == 4) {
+        gUnknown_030054A8.unk1 = 0x11;
+    }
+}
