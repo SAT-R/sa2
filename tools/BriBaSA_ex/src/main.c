@@ -17,8 +17,10 @@
 #include "jasc_parser/jasc_parser.h"
 #include "c_header_parser/parser.h"
 
-#define METATILE_DIM (12*8)
+#define TILE_DIM 8
+#define METATILE_DIM (12*TILE_DIM)
 #define NUM_TILES_INSIDE_METATILES (12*12)
+
 
 #define ATLAS_WIDTH   32
 #define ATLAS_HEIGHT  32
@@ -66,14 +68,18 @@
 // Adds an element to any dynamic array (with "capacity", "count" and "SomeType *elements").
 // Please make sure to initialize your list to all-zeroes before calling this macro.
 #define DA_DEFAULT_CAP 128
-#define da_append(list, new_element_ptr)                                                                    \
+#define da_append_to(list, new_element_ptr, _arrayName)                                                  \
 {                                                                                                           \
     while((list)->count + 1 > (list)->capacity) {                                                           \
         (list)->capacity += DA_DEFAULT_CAP;                                                                 \
-        (list)->elements = realloc((list)->elements, (list)->capacity * sizeof((list)->elements[0]));       \
+        (list)->_arrayName = realloc((list)->_arrayName, (list)->capacity * sizeof((list)->_arrayName[0])); \
     }                                                                                                       \
                                                                                                             \
-    memcpy(&(list)->elements[(list)->count++], new_element_ptr, sizeof(*new_element_ptr));                  \
+    memcpy(&(list)->_arrayName[(list)->count++], new_element_ptr, sizeof(*new_element_ptr));                  \
+}
+#define da_append(list, new_element_ptr)                                                                    \
+{                                                                                                           \
+    da_append_to(list, new_element_ptr, elements);                                                          \
 }
 
 #define MIN(a, b) ( ((a) < (b)) ? (a) : (b) )
@@ -294,6 +300,9 @@ typedef struct {
 typedef struct {
     UIWindowList windows;
 
+    Rectangle recHeader;
+    Rectangle recMap;
+
     // FALSE (split): Display preview metatile's layers separately
     // TRUE (merged): Display preview metatile's layers ontop eachother
     bool isMtPreviewMerged;
@@ -330,7 +339,8 @@ static bool DrawButton(int x, int y, int width, int height, char *text);
 static bool DrawButtonRec(Rectangle rec, char *text);
 static bool DrawButtonColored(Rectangle rec, char *text, int fontSize, Color tint, Color hoverTint, Color PressTint, Color textTint);
 
-static void CreateMetatileAtlas(AppState *state, int numMetatiles, Image *atlas);
+static Texture2D CreateMetatileAtlas(AppState *state, int numMetatiles);
+static Texture2D CreateMapTexture(Rectangle recMap, int pixelFormat);
 static bool DrawAndHandleCloseButton(AppState *state);
 static void DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap);
 static inline void DrawMetatilePreviewButton(AppState *state, int x, int y, Texture2D txAtlas);
@@ -355,6 +365,7 @@ static void LoadAllEntityTextures(AppState *state);
 
 static Rectangle GetSpawnPosRectangle(StageMap *map, CharacterList *chars);
 static void HandleMouseInputSpawnPos(AppState *state);
+static inline void MoveCameraToSpawn(AppState *state, Rectangle recMap);
 
 int main(void)
 {
@@ -398,11 +409,39 @@ int main(void)
         exit(-1);
     }
     
+    const char *mapsRoot = TextFormat("%s/data/maps/", rootDir);
+    bool mapsRootExists  = DirectoryExists(mapsRoot);
 
+    if(!mapsRootExists) {
+        printf("ERROR: %s could not be found. Closing...\n", mapsRoot);
+        exit(-2);
+    }
 
     // TODO: Ask user to select map directory and game!
     char mapDir[MAX_FILEPATH_LENGTH];
-    TextCopy(mapDir, TextFormat("%s/data/maps/zone_1/act_1/", rootDir));
+    FilePathList fpl = LoadDirectoryFiles(TextFormat("%s/data/maps/", rootDir));
+    FilePathList mapDirs = {0};
+    for(int i = 0; i < fpl.count; i++) {
+        char *zone = fpl.paths[i];
+
+        if(!IsPathFile(zone)) {
+            FilePathList fplActs = LoadDirectoryFiles(zone);
+
+            for(int actI = 0; actI < fplActs.count; actI++) {
+                char *act = fplActs.paths[actI];
+                
+                if(!IsPathFile(act)) {
+                    da_append_to(&mapDirs, &act, paths);
+                }
+            }
+
+            // Free 'paths' member but not the allocated path strings themselves.
+            RL_FREE(fplActs.paths);
+        }
+    }
+    UnloadDirectoryFiles(fpl);
+
+    TextCopy(mapDir, mapDirs.paths[0]);
     state.game = GAME_SA2;
 
 
@@ -426,35 +465,20 @@ int main(void)
     const int metatileTileCount = state.paths.map.xTiles * state.paths.map.yTiles;
     int numMetatiles = state.paths.map.tilemap.dataSize / metatileTileCount;
 
-
-    Image mtAtlas = {0};
-    mtAtlas.width  = ATLAS_WIDTH  * state.paths.map.xTiles * 8;
-    mtAtlas.height = ATLAS_HEIGHT * state.paths.map.yTiles * 8;
-    mtAtlas.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
-    mtAtlas.mipmaps = 1;
-    mtAtlas.data = malloc(mtAtlas.width * mtAtlas.height * sizeof(Color));
-    
-    CreateMetatileAtlas(&state, numMetatiles, &mtAtlas);
-
-    Texture2D txAtlas = LoadTextureFromImage(mtAtlas);
+    Texture2D txAtlas = CreateMetatileAtlas(&state, numMetatiles);
     
     Rectangle recMap = {               0, METATILE_DIM ,   // x, y
                          GetScreenWidth(), GetScreenHeight() - METATILE_DIM}; // w, h
 
-    Image imgMap = {0};
-    imgMap.width  = recMap.width;
-    imgMap.height = recMap.height;
-    imgMap.format = mtAtlas.format;
-    imgMap.mipmaps = 1;
-    imgMap.data = malloc(imgMap.width * imgMap.height * sizeof(Color));
+    Texture2D txMap = CreateMapTexture(recMap, txAtlas.format);
 
-    Texture2D txMap = LoadTextureFromImage(imgMap);
 
     recMap.width  = MIN(recMap.width,  state.map.width  * METATILE_DIM);
     recMap.height = MIN(recMap.height, state.map.height * METATILE_DIM);
 
-    bool closeBtnClicked = false;
+    MoveCameraToSpawn(&state, recMap);
 
+    bool closeBtnClicked = false;
     while (!WindowShouldClose())
     {
         HandleMouseInput(&state, recMap);
@@ -474,7 +498,6 @@ int main(void)
             DrawUI(&state, txAtlas);
 
             HandleMouseInputSpawnPos(&state);
-            //DrawRectangleRec(GetSpawnPosRectangle(&state.map, &state.paths.characters), DARKGREEN);
 
             for(int item = 0; item < state.paths.items.items.count; item++) {
                 DrawItem(&state, 200 + 32*item, 200, item);
@@ -499,11 +522,26 @@ int main(void)
             }
         }
     }
-    free(mtAtlas.data);
 
     CloseWindow();
 
     return 0;
+}
+
+static Texture2D
+CreateMapTexture(Rectangle recMap, int pixelFormat)
+{
+    Image imgMap   = {0};
+    imgMap.width   = recMap.width;
+    imgMap.height  = recMap.height;
+    imgMap.format  = pixelFormat;
+    imgMap.mipmaps = 1;
+    imgMap.data    = malloc(imgMap.width * imgMap.height * sizeof(Color));
+
+    Texture2D txMap = LoadTextureFromImage(imgMap);
+    free(imgMap.data);
+
+    return txMap;
 }
 
 static bool
@@ -727,14 +765,20 @@ HandleMouseInput(AppState *state, Rectangle recMap)
     }
 }
 
+static inline void
+MoveCameraToSpawn(AppState *state, Rectangle recMap)
+{
+    state->map.camera.x = state->map.spawnX - recMap.width/2;
+    state->map.camera.y = state->map.spawnY - recMap.height/2;
+    state->map.camera.x = CLAMP(state->map.camera.x, 0, (state->map.width  * METATILE_DIM) - recMap.width);
+    state->map.camera.y = CLAMP(state->map.camera.y, 0, (state->map.height * METATILE_DIM) - recMap.height);
+}
+
 static void
 HandleKeyInput(AppState *state, Rectangle recMap)
 {
     if(IsKeyPressed(KEY_HOME)) {
-        state->map.camera.x = state->map.spawnX - recMap.width/2;
-        state->map.camera.y = state->map.spawnY - recMap.height/2;
-        state->map.camera.x = CLAMP(state->map.camera.x, 0, (state->map.width  * METATILE_DIM) - recMap.width);
-        state->map.camera.y = CLAMP(state->map.camera.y, 0, (state->map.height * METATILE_DIM) - recMap.height);
+        MoveCameraToSpawn(state, recMap);
     }
 }
 
@@ -888,24 +932,32 @@ SetupFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
 }
 
 
-static void
-CreateMetatileAtlas(AppState *state, int numMetatiles, Image *atlas)
+static Texture2D
+CreateMetatileAtlas(AppState *state, int numMetatiles)
 {
     // NOTE: Max capacity is 32*32 (= 1024)
-    assert (numMetatiles < (32*32) );
+    assert (numMetatiles < (ATLAS_WIDTH*ATLAS_HEIGHT) );
 
     FileInfo *paths = &state->paths;
     
-    int numTilesetTiles = (paths->map.tileset.width / 8) * (paths->map.tileset.height / 8);
+    Image atlas     = {0};
+    atlas.width     = ATLAS_WIDTH  * paths->map.xTiles * TILE_DIM;
+    atlas.height    = ATLAS_HEIGHT * paths->map.yTiles * TILE_DIM;
+    atlas.format    = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
+    atlas.mipmaps   = 1;
+    atlas.data      = malloc(atlas.width * atlas.height * sizeof(Color));
+    
+    // TODO: Account for "empty" tiles at the end of a tileset file.
+    int numTilesetTiles = (paths->map.tileset.width / TILE_DIM) * (paths->map.tileset.height / TILE_DIM);
 
-    memset(atlas->data, 0, GetPixelDataSize(atlas->width, atlas->height, atlas->format));
+    memset(atlas.data, 0, GetPixelDataSize(atlas.width, atlas.height, atlas.format));
 
     for(int mtAtlasY = 0; mtAtlasY < ATLAS_HEIGHT; mtAtlasY++) {
         for(int mtAtlasX = 0; mtAtlasX < ATLAS_WIDTH; mtAtlasX++) {
             int mtAtlasIndex = mtAtlasY * ATLAS_WIDTH + mtAtlasX;
 
             if(mtAtlasIndex >= numMetatiles) {
-                return;
+                goto CreateMetatileAtlas_defer;
             }
 
             MetatileTile *metaTile = ((MetatileTile*)paths->map.tilemap.data) + (mtAtlasIndex * NUM_TILES_INSIDE_METATILES); 
@@ -920,16 +972,16 @@ CreateMetatileAtlas(AppState *state, int numMetatiles, Image *atlas)
 
 
                     if(metatileTile.tileIndex >= numTilesetTiles) {
-                        return;
+                        goto CreateMetatileAtlas_defer;
                     }
 
-                    u8 *tile = tileset + metatileTile.tileIndex * (8*8);
+                    u8 *tile = tileset + metatileTile.tileIndex * (TILE_DIM*TILE_DIM);
 
 
-                    for(int ty = 0; ty < 8; ty++) {
+                    for(int ty = 0; ty < TILE_DIM; ty++) {
                         u8 cy = (metatileTile.yFlip) ? 7 - ty : ty;
 
-                        for(int tx = 0; tx < 8; tx++) {
+                        for(int tx = 0; tx < TILE_DIM; tx++) {
                             u8 cx = (metatileTile.xFlip) ? 7 - tx : tx;
 
                             // NOTE: Per default GBAGFX stores colors inverted
@@ -945,15 +997,22 @@ CreateMetatileAtlas(AppState *state, int numMetatiles, Image *atlas)
                                 c.a = 0;
                             }
 
-                            int pixelX = mtAtlasX*METATILE_DIM + tx + (x * 8);
-                            int pixelY = mtAtlasY*METATILE_DIM + ty + (y * 8);
-                            ImageDrawPixel(atlas, pixelX, pixelY, c);
+                            int pixelX = mtAtlasX*METATILE_DIM + tx + (x * TILE_DIM);
+                            int pixelY = mtAtlasY*METATILE_DIM + ty + (y * TILE_DIM);
+                            ImageDrawPixel(&atlas, pixelX, pixelY, c);
                         }
                     }
                 }
             }
         }
     }
+CreateMetatileAtlas_defer:
+
+    
+    Texture2D txAtlas = LoadTextureFromImage(atlas);
+    free(atlas.data);
+
+    return txAtlas;
 }
 
 static inline Vector2
@@ -1600,13 +1659,16 @@ LoadEntityNamesAndIDs(AppState *state)
                 const char *animPrefix = TextFormat("SA%d_ANIM_", state->game);
                 int index = TextFindIndex(tokenName->text, animPrefix);
                 if(index == 0) {
-                    char *charName = chars->elements[foundIdleAnims].name;
+                    // Character Idle Anims
+                    if(foundIdleAnims < numCharacters) {
+                        char *charName = chars->elements[foundIdleAnims].name;
 
-                    if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_%s_IDLE", state->game, charName))) {
-                        chars->elements[foundIdleAnims].animIdle = TextToInteger(tokenID->text);
-                        foundIdleAnims++;
-                        i += 2;
-                        continue;
+                        if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_%s_IDLE", state->game, charName))) {
+                            chars->elements[foundIdleAnims].animIdle = TextToInteger(tokenID->text);
+                            foundIdleAnims++;
+                            i += 2;
+                            continue;
+                        }
                     }
 
                     if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_ITEMBOX", state->game))) {
@@ -1719,7 +1781,7 @@ ParseMetadataTxt(AppState *state, Tilemap* tm)
                         // Found both values, so output them
                         FILE *meta = fopen(metadataTxtPath, "w");
                         if(meta) {
-                            // Assume metatile-tile width/height
+                            // TODO: Assume metatile-tile width/height (12)?
                             fprintf(meta, "tilemap_dim = {%d,%d}\n", state->paths.map.xTiles, state->paths.map.yTiles);
                             fprintf(meta, "map_dim     = {%d,%d}\n", map->width, map->height);
                             fprintf(meta, "spawn_pos   = {%d,%d}\n", state->map.spawnX, state->map.spawnY);
