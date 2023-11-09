@@ -828,3 +828,50 @@ void sub_803B6AC(EggHammerTankII *boss)
         gUnknown_030054A8.unk1 = 0x11;
     }
 }
+
+void sub_803B7B0(EggHammerTankII *boss)
+{
+    Sprite *s = &boss->unk378;
+    if (boss->unkB1 != 0) {
+        boss->unkB2 = 0;
+        boss->unkB1--;
+
+        if (boss->unkB1 != 0) {
+            return;
+        }
+
+        if (boss->unkB0 == 0) {
+            s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+            s->variant = 3;
+        } else {
+            s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+            s->variant = 0;
+        }
+        s->prevVariant = -1;
+    } else {
+#ifndef NON_MATCHING
+        register u32 r2 asm("r2");
+#endif
+        if (boss->unkB2 == 0) {
+            return;
+        }
+
+        boss->unkB2--;
+#ifndef NON_MATCHING
+        r2 = 0xFF;
+#endif
+
+        if (boss->unkB2 != 0) {
+            return;
+        }
+
+        s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+        s->variant = 0;
+
+#ifndef NON_MATCHING
+        s->prevVariant |= r2;
+#else
+        s->prevVariant = -1;
+#endif
+    }
+}
