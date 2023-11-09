@@ -351,7 +351,10 @@ static void DrawMainHeader(AppState *state, Texture2D txAtlas);
 static void DrawUI(AppState *state, Texture2D txAtlas);
 static void DrawUIWindow(UIWindow *window);
 
-static void DrawItem(AppState *state, int x, int y, int index);
+static void DrawEntInteractable(AppState *state, int x, int y, int index);
+static void DrawEntItem(AppState *state, int x, int y, int index);
+static void DrawEntEnemy(AppState *state, int x, int y, int index);
+static void DrawEntRing(AppState *state, int x, int y);
 
 static inline int GetMetatileIndex(AppState *state, int x, int y, MetatileLayer layer);
 static void ParseMetadataTxt(AppState *state, Tilemap* tm);
@@ -499,9 +502,31 @@ int main(void)
 
             HandleMouseInputSpawnPos(&state);
 
-            for(int item = 0; item < state.paths.items.items.count; item++) {
-                DrawItem(&state, 200 + 32*item, 200, item);
+
+            /* TEMP Test-Code */
+            int testX = 200;
+            int testY = 120;
+            int iaCount = state.paths.interactables.count;
+            for(int iaIndex = 0; iaIndex < iaCount; iaIndex++) {
+                DrawEntInteractable(&state,
+                    testX + 40*(iaIndex % 32), testY + 40*(iaIndex / 32),
+                    iaIndex);
             }
+            testY += 42*(iaCount/32 + 1);
+
+            for(int item = 0; item < state.paths.items.items.count; item++) {
+                DrawEntItem(&state, testX + 32*item, testY, item);
+            }
+            testY += 32;
+            
+            for(int enemy = 0; enemy < state.paths.enemies.count; enemy++) {
+                DrawEntEnemy(&state, testX + 32*enemy, testY, enemy);
+            }
+            testY += 32;
+            
+            DrawEntRing(&state, testX, testY);
+            
+
 
             closeBtnClicked |= DrawAndHandleCloseButton(&state);
         EndDrawing();
@@ -1523,6 +1548,16 @@ LoadEntityTextures(char *gameRoot, EntityMetaList *ents)
 }
 
 static inline void
+LoadRingTexture(char *gameRoot, EntityMeta *ring)
+{
+    int frame = 0;
+    const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
+                                        gameRoot, ring->anim, frame);
+    ring->texture = LoadTexture(animPath);
+    
+}
+
+static inline void
 LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
 {
     const char *pathFormat = "%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png";
@@ -1555,7 +1590,15 @@ LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
 }
 
 static void
-DrawItem(AppState *state, int x, int y, int index)
+DrawEntInteractable(AppState *state, int x, int y, int index)
+{
+    EntityMeta *ia = &state->paths.interactables.elements[index];
+
+    DrawTexture(ia->texture, x - (ia->texture.width / 2), y - (ia->texture.height / 2), WHITE);
+}
+
+static void
+DrawEntItem(AppState *state, int x, int y, int index)
 {
     ItemMetaList *items = &state->paths.items;
 
@@ -1571,6 +1614,26 @@ DrawItem(AppState *state, int x, int y, int index)
 }
 
 static void
+DrawEntEnemy(AppState *state, int x, int y, int index)
+{
+    EntityMeta *enemy = &state->paths.enemies.elements[index];
+
+    DrawTexture(enemy->texture, x - (enemy->texture.width / 2), y - (enemy->texture.height / 2), WHITE);
+}
+
+static void
+DrawEntRing(AppState *state, int x, int y)
+{
+    EntityMeta *ring = &state->paths.ring;
+
+    // TODO: Right now there are 4 ring frames in a single PNG file, so we've got to draw it a little unintuitively
+    DrawTextureRec(ring->texture,
+                   CLITERAL(Rectangle){0, 0, ring->texture.width, ring->texture.width},
+                   CLITERAL(Vector2){x - (ring->texture.width / 2), y - ((ring->texture.height / 4) / 2)},
+                   WHITE);
+}
+
+static void
 LoadAllEntityTextures(AppState *state)
 {
     FileInfo *paths = &state->paths;
@@ -1578,7 +1641,8 @@ LoadAllEntityTextures(AppState *state)
     LoadCharacterTextures(paths->gameRoot, &paths->characters);
     LoadEntityTextures(paths->gameRoot,    &paths->enemies);
     LoadEntityTextures(paths->gameRoot,    &paths->interactables);
-    LoadItemTextures(paths->gameRoot, &paths->items, paths->characters.count);
+    LoadRingTexture(paths->gameRoot,       &paths->ring);
+    LoadItemTextures(paths->gameRoot,      &paths->items, paths->characters.count);
 }
 
 static void
@@ -1597,7 +1661,7 @@ LoadEntityNamesAndIDs(AppState *state)
     // Find enemy names and IDs
     SetMetaEntityValues(&tokensEnemies, &state->paths.enemies,       "ENEMY__");
     SetMetaEntityValues(&tokensIAs,     &state->paths.interactables, "IA__");
-    SetMetaEntityValues(&tokensItems,   &state->paths.items.items, "ITEM__");
+    SetMetaEntityValues(&tokensItems,   &state->paths.items.items,   "ITEM__");
     
     // Find and set item anim IDs
     //TODO: Should itmebox be first or last element in EntityMetaList?
@@ -1639,7 +1703,8 @@ LoadEntityNamesAndIDs(AppState *state)
         // Find animation IDs
         // TODO: Maybe we should just prefix them with ANIM_, not something game-specific?
         unsigned short animBeforeCountdown = 0;
-        int foundIdleAnims = 0;
+        int foundIdleAnims  = 0;
+        int foundEnemyAnims = 0;
         for(int i = 0; i < tokensAnims.count - 2; i++) {
             Token *tokenPound = &tokensAnims.tokens[i+0];
             Token *tokenName  = &tokensAnims.tokens[i+1];
@@ -1648,17 +1713,17 @@ LoadEntityNamesAndIDs(AppState *state)
             if((tokenPound->type == POUND_DEFINE)
             && (tokenName->type == IDENTIFIER)
             && (tokenID->type == VALUE)) {
-                // NOTE: These are only in SA2, so we can just do it explicitly
-                if((state->game == GAME_SA2)
-                    && TextIsEqual(tokenName->text, "SA2_CHAR_ANIM_BEFORE_COUNTDOWN")) {
-                    animBeforeCountdown = TextToInteger(tokenID->text);
-                    i += 2;
-                    continue;
-                }
-
                 const char *animPrefix = TextFormat("SA%d_ANIM_", state->game);
                 int index = TextFindIndex(tokenName->text, animPrefix);
                 if(index == 0) {
+                    // NOTE: These are only in SA2, so we can just do it explicitly
+                    if((state->game == GAME_SA2)
+                        && TextIsEqual(tokenName->text, "SA2_CHAR_ANIM_BEFORE_COUNTDOWN")) {
+                        animBeforeCountdown = TextToInteger(tokenID->text);
+                        i += 2;
+                        continue;
+                    }
+
                     // Character Idle Anims
                     if(foundIdleAnims < numCharacters) {
                         char *charName = chars->elements[foundIdleAnims].name;
@@ -1675,8 +1740,25 @@ LoadEntityNamesAndIDs(AppState *state)
                         state->paths.items.animItembox = TextToInteger(tokenID->text);
                     } else if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_ITEMBOX_TYPE", state->game))) {
                         state->paths.items.animItemType = TextToInteger(tokenID->text);
-                    }
+                    } else if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_RING", state->game))) {
+                        state->paths.ring.anim = TextToInteger(tokenID->text);
+                    } else if(foundEnemyAnims < state->paths.enemies.count) {
+                        for(int ei = 0; ei < state->paths.enemies.count; ei++) {
+                            unsigned short id = state->paths.enemies.elements[ei].id;
+                            EntityMeta *enemy = &state->paths.enemies.elements[id];
+                            const char *format = TextFormat("SA%d_ANIM_%s", state->game, enemy->name);
+
+                            if(TextIsEqual((char *)tokenName->text, format)) {                    
+                                enemy->anim = TextToInteger(tokenID->text);
+
+                                foundEnemyAnims++;
+                                break;
+                            }
+                        }
+                    }                    
                 }
+
+                i += 2;
             }
         }
 
