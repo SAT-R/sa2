@@ -211,6 +211,10 @@ typedef struct {
     unsigned short animItemType;
 } ItemMetaList;
 
+typedef struct {
+    EntityMetaList interactables;
+} InteractableMetaList;
+
 
 
 typedef struct {
@@ -745,11 +749,11 @@ HandleMouseInput(AppState *state, Rectangle recMap)
             Vector2i mtMouse = GetMetatilePointBelowMouse(map, recMap);
 
 
-            if(IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !IsMouseOnSpawn(map, &paths->characters)) {
+            if((IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsKeyDown(KEY_X)) && !IsMouseOnSpawn(map, &paths->characters)) {
                 SetNewMetatiles(state, mtMouse.x, mtMouse.y);
             }
 
-            if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
+            if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT) || IsKeyDown(KEY_V)) {
                 SetMouseCursor(MOUSE_CURSOR_CROSSHAIR);
 
                 if( (map->initialMetatile.x < 0)
@@ -758,7 +762,7 @@ HandleMouseInput(AppState *state, Rectangle recMap)
                     map->initialMetatile.y = mtMouse.y;
                 }
             }
-            if(IsMouseButtonReleased(MOUSE_BUTTON_RIGHT)) {
+            if(IsMouseButtonReleased(MOUSE_BUTTON_RIGHT) || IsKeyReleased(KEY_V)) {
                 if( (map->initialMetatile.x == mtMouse.x)
                  && (map->initialMetatile.y == mtMouse.y) ) {
                     map->selectedMetatile.x = mtMouse.x;
@@ -775,7 +779,7 @@ HandleMouseInput(AppState *state, Rectangle recMap)
                 map->initialMetatile.y = -1;
             }
 
-            if(IsMouseButtonDown(MOUSE_BUTTON_MIDDLE)) {
+            if(IsMouseButtonDown(MOUSE_BUTTON_MIDDLE) || IsKeyDown(KEY_C)) {
                 SetMouseCursor(MOUSE_CURSOR_RESIZE_ALL);
                 Vector2 dtMouse = GetMouseDelta();
                 map->camera.x -= dtMouse.x;
@@ -1639,10 +1643,10 @@ LoadAllEntityTextures(AppState *state)
     FileInfo *paths = &state->paths;
 
     LoadCharacterTextures(paths->gameRoot, &paths->characters);
-    LoadEntityTextures(paths->gameRoot,    &paths->enemies);
     LoadEntityTextures(paths->gameRoot,    &paths->interactables);
-    LoadRingTexture(paths->gameRoot,       &paths->ring);
+    LoadEntityTextures(paths->gameRoot,    &paths->enemies);
     LoadItemTextures(paths->gameRoot,      &paths->items, paths->characters.count);
+    LoadRingTexture(paths->gameRoot,       &paths->ring);
 }
 
 static void
@@ -1653,18 +1657,15 @@ LoadEntityNamesAndIDs(AppState *state)
     
     TokenList tokensGame    = tokenize(&arena, state->paths.game_h);
     TokenList tokensAnims   = tokenize(&arena, state->paths.animations_h);
-    TokenList tokensEnemies = tokenize(&arena, state->paths.enemies_h);
     TokenList tokensIAs     = tokenize(&arena, state->paths.interactables_h);
     TokenList tokensItems   = tokenize(&arena, state->paths.items_h);
+    TokenList tokensEnemies = tokenize(&arena, state->paths.enemies_h);
     
 
-    // Find enemy names and IDs
-    SetMetaEntityValues(&tokensEnemies, &state->paths.enemies,       "ENEMY__");
+    // Find entity names and IDs
     SetMetaEntityValues(&tokensIAs,     &state->paths.interactables, "IA__");
     SetMetaEntityValues(&tokensItems,   &state->paths.items.items,   "ITEM__");
-    
-    // Find and set item anim IDs
-    //TODO: Should itmebox be first or last element in EntityMetaList?
+    SetMetaEntityValues(&tokensEnemies, &state->paths.enemies,       "ENEMY__");
 
 
     // Find all character IDs
