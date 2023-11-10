@@ -30,7 +30,7 @@ typedef struct {
     /* 0x50 */ u16 width;
     /* 0x52 */ s16 fanSpeed;
     /* 0x54 */ s16 playerDeltaX;
-} Sprite_SmallPropeller; /* size: 0x58 */
+} Sprite_Fan; /* size: 0x58 */
 
 // Durations for each of the "stages" of the propellers with periodic fan speed
 
@@ -48,40 +48,39 @@ typedef struct {
 #define PROP_SPEED_MIN Q_24_8(0.0)
 #define PROP_SPEED_MAX Q_24_8(1.0)
 
-#define PROP_DIR_LEFT                          0
-#define PROP_DIR_RIGHT                         1
-#define PROP_MASK_PERIODIC                     2
-#define SKYCAN_PROPELLER_KIND(dir, isPeriodic) (((isPeriodic) << 1) | (dir))
+#define FAN_DIR_LEFT                          0
+#define FAN_DIR_RIGHT                         1
+#define FAN_MASK_PERIODIC                     2
+#define SKYCAN_FAN_KIND(dir, isPeriodic) (((isPeriodic) << 1) | (dir))
 #define IS_PROPELLER_DIR_LEFT(kind)                                                     \
-    (((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, FALSE))                            \
-     || ((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE)))
+    (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, FALSE))                            \
+     || ((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE)))
 
-#define IS_PROPELLER_PERIODIC(kind)                                                     \
-    (((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE))                             \
-     || ((kind) == SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE)))
+#define IS_FAN_PERIODIC(kind)                                                     \
+    (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE))                             \
+     || ((kind) == SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE)))
 
-static void Task_IA_SmallPropeller_UpdateRegular(void);
-static void TaskDestructor_IA_SmallPropeller_UpdateRegular(struct Task *);
+static void Task_IA_Fan_UpdateRegular(void);
+static void TaskDestructor_IA_Fan_UpdateRegular(struct Task *);
 
-static void SetTaskMain_807D978(Sprite_SmallPropeller *unused);
-static void sub_807D468(Sprite_SmallPropeller *);
-static void UpdateFanSpeed(Sprite_SmallPropeller *);
-static void UpdateFanSpritePosition(Sprite_SmallPropeller *);
-static bool32 IsPlayerInFanRegion(Sprite_SmallPropeller *);
+static void SetTaskMain_807D978(Sprite_Fan *unused);
+static void sub_807D468(Sprite_Fan *);
+static void UpdateFanSpeed(Sprite_Fan *);
+static void UpdateFanSpritePosition(Sprite_Fan *);
+static bool32 IsPlayerInFanRegion(Sprite_Fan *);
 static s16 ClampPlayerSpeed(s16);
-static bool32 IsPropellerOffScreen(Sprite_SmallPropeller *);
+static bool32 IsPropellerOffScreen(Sprite_Fan *);
 
 void Task_IA_SmallPropeller_UpdateInFanRegion(void);
-void SetTaskMain_UpdateRegular(Sprite_SmallPropeller *unused);
-void DestroyTask_Interactable087(Sprite_SmallPropeller *);
+void SetTaskMain_UpdateRegular(Sprite_Fan *unused);
+void DestroyTask_Interactable087(Sprite_Fan *);
 
-static void CreateEntity_SmallPropeller(MapEntity *me, u16 spriteRegionX,
-                                        u16 spriteRegionY, u8 spriteY, u32 kind)
+static void CreateEntity_Fan(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u32 kind)
 {
     struct Task *t
-        = TaskCreate(Task_IA_SmallPropeller_UpdateRegular, sizeof(Sprite_SmallPropeller),
-                     0x2010, 0, TaskDestructor_IA_SmallPropeller_UpdateRegular);
-    Sprite_SmallPropeller *prop = TASK_DATA(t);
+        = TaskCreate(Task_IA_Fan_UpdateRegular, sizeof(Sprite_Fan),
+                     0x2010, 0, TaskDestructor_IA_Fan_UpdateRegular);
+    Sprite_Fan *prop = TASK_DATA(t);
     Sprite *s;
 
     prop->kind = kind;
@@ -112,7 +111,7 @@ static void CreateEntity_SmallPropeller(MapEntity *me, u16 spriteRegionX,
 
     s->unk10 = 0x2000;
     s->graphics.dest = VramMalloc(12);
-    s->graphics.anim = SA2_ANIM_SMALL_PROPELLOR;
+    s->graphics.anim = SA2_ANIM_FAN;
     s->variant = 2;
 
     if (IS_PROPELLER_DIR_LEFT(kind)) {
@@ -122,7 +121,7 @@ static void CreateEntity_SmallPropeller(MapEntity *me, u16 spriteRegionX,
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-static void sub_807D468(Sprite_SmallPropeller *prop)
+static void sub_807D468(Sprite_Fan *prop)
 {
     s32 temp;
     s32 r3;
@@ -154,7 +153,7 @@ static void sub_807D468(Sprite_SmallPropeller *prop)
 
             r3 = Q_24_8(prop->posX + prop->right) - Q_24_8(48);
 
-            if ((prop->kind != SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE))
+            if ((prop->kind != SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE))
                 && newPlayerX > r3) {
                 gPlayer.x = r3;
             }
@@ -174,7 +173,7 @@ static void sub_807D468(Sprite_SmallPropeller *prop)
 
             r3 = Q_24_8(prop->posX + prop->left) + Q_24_8(48);
 
-            if ((prop->kind != SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE))
+            if ((prop->kind != SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE))
                 && newPlayerX < r3) {
                 gPlayer.x = r3;
             }
@@ -187,11 +186,11 @@ static void sub_807D468(Sprite_SmallPropeller *prop)
     }
 }
 
-static void UpdateFanSpeed(Sprite_SmallPropeller *prop)
+static void UpdateFanSpeed(Sprite_Fan *prop)
 {
     Sprite *s = &prop->s;
 
-    if (IS_PROPELLER_PERIODIC(prop->kind)) {
+    if (IS_FAN_PERIODIC(prop->kind)) {
         u32 fanSpeed = gStageTime % PERIODIC_PROP_FULL_DURATION;
         if (fanSpeed < PERIOD_END__OFF) {
             prop->fanSpeed = PROP_SPEED_MIN;
@@ -239,7 +238,7 @@ static void UpdateFanSpeed(Sprite_SmallPropeller *prop)
         }
 
         s->animSpeed = prop->fanSpeed >> 4;
-        s->graphics.anim = SA2_ANIM_SMALL_PROPELLOR;
+        s->graphics.anim = SA2_ANIM_FAN;
         s->variant = 2;
 
     } else {
@@ -247,7 +246,7 @@ static void UpdateFanSpeed(Sprite_SmallPropeller *prop)
     }
 }
 
-static void UpdateFanSpritePosition(Sprite_SmallPropeller *prop)
+static void UpdateFanSpritePosition(Sprite_Fan *prop)
 {
     Sprite *s = &prop->s;
 
@@ -263,7 +262,7 @@ static void UpdateFanSpritePosition(Sprite_SmallPropeller *prop)
     DisplaySprite(s);
 }
 
-static bool32 IsPlayerInFanRegion(Sprite_SmallPropeller *prop)
+static bool32 IsPlayerInFanRegion(Sprite_Fan *prop)
 {
     if (PLAYER_IS_ALIVE) {
         s16 propX = prop->posX - gCamera.x;
@@ -285,9 +284,9 @@ static bool32 IsPlayerInFanRegion(Sprite_SmallPropeller *prop)
     return FALSE;
 }
 
-static void Task_IA_SmallPropeller_UpdateRegular(void)
+static void Task_IA_Fan_UpdateRegular(void)
 {
-    Sprite_SmallPropeller *prop = TASK_DATA(gCurTask);
+    Sprite_Fan *prop = TASK_DATA(gCurTask);
 
     if (IsPlayerInFanRegion(prop)) {
         SetTaskMain_807D978(prop);
@@ -301,13 +300,13 @@ static void Task_IA_SmallPropeller_UpdateRegular(void)
     }
 }
 
-static void TaskDestructor_IA_SmallPropeller_UpdateRegular(struct Task *t)
+static void TaskDestructor_IA_Fan_UpdateRegular(struct Task *t)
 {
-    Sprite_SmallPropeller *prop = TASK_DATA(t);
+    Sprite_Fan *prop = TASK_DATA(t);
     VramFree(prop->s.graphics.dest);
 }
 
-static void SetTaskMain_807D978(Sprite_SmallPropeller *unused)
+static void SetTaskMain_807D978(Sprite_Fan *unused)
 {
     gCurTask->main = Task_IA_SmallPropeller_UpdateInFanRegion;
 }
@@ -329,7 +328,7 @@ static s16 ClampPlayerSpeed(s16 speed)
     return speed;
 }
 
-static bool32 IsPropellerOffScreen(Sprite_SmallPropeller *prop)
+static bool32 IsPropellerOffScreen(Sprite_Fan *prop)
 {
     s16 posX, posY;
 
@@ -343,43 +342,43 @@ static bool32 IsPropellerOffScreen(Sprite_SmallPropeller *prop)
     return FALSE;
 }
 
-void DestroyTask_Interactable087(Sprite_SmallPropeller *prop)
+void DestroyTask_Interactable087(Sprite_Fan *prop)
 {
     SET_MAP_ENTITY_NOT_INITIALIZED(prop->base.me, prop->base.spriteX);
     TaskDestroy(gCurTask);
 }
 
-void CreateEntity_SmallPropeller_Left(MapEntity *me, u16 spriteRegionX,
+void CreateEntity_Fan_Left(MapEntity *me, u16 spriteRegionX,
                                       u16 spriteRegionY, u8 spriteY)
 {
-    CreateEntity_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
-                                SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, FALSE));
+    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
+                                SKYCAN_FAN_KIND(FAN_DIR_LEFT, FALSE));
 }
 
-void CreateEntity_SmallPropeller_Right(MapEntity *me, u16 spriteRegionX,
+void CreateEntity_Fan_Right(MapEntity *me, u16 spriteRegionX,
                                        u16 spriteRegionY, u8 spriteY)
 {
-    CreateEntity_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
-                                SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, FALSE));
+    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
+                                SKYCAN_FAN_KIND(FAN_DIR_RIGHT, FALSE));
 }
 
-void CreateEntity_SmallPropeller_Left_Periodic(MapEntity *me, u16 spriteRegionX,
+void CreateEntity_Fan_Left_Periodic(MapEntity *me, u16 spriteRegionX,
                                                u16 spriteRegionY, u8 spriteY)
 {
-    CreateEntity_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
-                                SKYCAN_PROPELLER_KIND(PROP_DIR_LEFT, TRUE));
+    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
+                                SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE));
 }
 
-void CreateEntity_SmallPropeller_Right_Periodic(MapEntity *me, u16 spriteRegionX,
+void CreateEntity_Fan_Right_Periodic(MapEntity *me, u16 spriteRegionX,
                                                 u16 spriteRegionY, u8 spriteY)
 {
-    CreateEntity_SmallPropeller(me, spriteRegionX, spriteRegionY, spriteY,
-                                SKYCAN_PROPELLER_KIND(PROP_DIR_RIGHT, TRUE));
+    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
+                                SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE));
 }
 
 void Task_IA_SmallPropeller_UpdateInFanRegion(void)
 {
-    Sprite_SmallPropeller *prop = TASK_DATA(gCurTask);
+    Sprite_Fan *prop = TASK_DATA(gCurTask);
 
     sub_807D468(prop);
 
@@ -391,7 +390,7 @@ void Task_IA_SmallPropeller_UpdateInFanRegion(void)
     UpdateFanSpritePosition(prop);
 }
 
-void SetTaskMain_UpdateRegular(Sprite_SmallPropeller *unused)
+void SetTaskMain_UpdateRegular(Sprite_Fan *unused)
 {
-    gCurTask->main = Task_IA_SmallPropeller_UpdateRegular;
+    gCurTask->main = Task_IA_Fan_UpdateRegular;
 }

@@ -57,7 +57,7 @@
 #include "game/interactables_2/ice_paradise/slowing_snow.h"
 
 #include "game/interactables_2/sky_canyon/giant_propeller.h"
-#include "game/interactables_2/sky_canyon/small_propeller.h"
+#include "game/interactables_2/sky_canyon/fan.h"
 #include "game/interactables_2/sky_canyon/small_windmill.h"
 #include "game/interactables_2/sky_canyon/whirlwind.h"
 #include "game/interactables_2/sky_canyon/propeller_spring.h"
@@ -347,10 +347,10 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_SmallSpinnyWindmill,
     CreateEntity_PropellerSpring,
     CreateEntity_Whirlwind_A,
-    CreateEntity_SmallPropeller_Left,
-    CreateEntity_SmallPropeller_Right,
-    CreateEntity_SmallPropeller_Left_Periodic,
-    CreateEntity_SmallPropeller_Right_Periodic,
+    CreateEntity_Fan_Left,
+    CreateEntity_Fan_Right,
+    CreateEntity_Fan_Left_Periodic,
+    CreateEntity_Fan_Right_Periodic,
     CreateEntity_Launcher_Left_GDown,
     CreateEntity_Launcher_Right_GDown,
     CreateEntity_Cannon,

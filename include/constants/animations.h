@@ -265,9 +265,9 @@
 #define SA2_ANIM_PLATFORM_SKY_CAN                586
 #define SA2_ANIM_PLATFORM_587                    587
 #define SA2_ANIM_WHIRLWIND                       588
-#define SA2_ANIM_PROPELLOR                       589
+#define SA2_ANIM_PROPELLER                       589
 #define SA2_ANIM_SPRING_FLYING                   590
-#define SA2_ANIM_SMALL_PROPELLOR                 591
+#define SA2_ANIM_FAN                             591
 #define SA2_ANIM_FLYING_HANDLE                   592
 #define SA2_ANIM_PLATFORM_SKY_CAN_2              593
 #define SA2_ANIM_PLATFORM_SQUARE_SKY_CAN         594
@@ -351,7 +351,7 @@
 #define SA2_ANIM_VARIANT_SCORE_1000 4
 #define TILE_COUNT__ANIM_SCORE      2 // TODO: Automate
 
-#define SA2_ANIM_COLLECTIBLE_SPECIAL_RING 730
+#define SA2_ANIM_SPECIAL_RING 730
 #define SA2_ANIM_VARIANT_SP_RING__IDLE    0
 #define SA2_ANIM_VARIANT_SP_RING__COLLECT 1
 

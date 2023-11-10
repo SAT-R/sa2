@@ -60,7 +60,7 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         s->unk10 = 0x2000;
 
         s->graphics.dest = VramMalloc(9);
-        s->graphics.anim = SA2_ANIM_COLLECTIBLE_SPECIAL_RING;
+        s->graphics.anim = SA2_ANIM_SPECIAL_RING;
         s->variant = SA2_ANIM_VARIANT_SP_RING__IDLE;
         SET_MAP_ENTITY_INITIALIZED(me);
     }
@@ -127,7 +127,7 @@ static void sub_80810FC(Sprite_SpecialRing *ring)
 {
     gSpecialRingCount++;
 
-    ring->displayed.graphics.anim = SA2_ANIM_COLLECTIBLE_SPECIAL_RING;
+    ring->displayed.graphics.anim = SA2_ANIM_SPECIAL_RING;
     ring->displayed.variant = SA2_ANIM_VARIANT_SP_RING__COLLECT;
     m4aSongNumStart(SE_SPECIAL_RING);
     gCurTask->main = Task_80811BC;
