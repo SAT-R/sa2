@@ -3,7 +3,7 @@
 set RL_BUILD_DIR="build/raylib/"
 
 if not exist %RL_BUILD_DIR%/raylib.lib (
-	build_raylib.bat
+	call build_raylib.bat
 )
 
 REM Debug
