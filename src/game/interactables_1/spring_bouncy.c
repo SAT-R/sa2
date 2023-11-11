@@ -24,9 +24,9 @@ static void Task_805E02C(void);
 static void TaskDestructor_Interactable_BouncySpring(struct Task *);
 
 static const TileInfo gUnknown_080D948C[3] = {
-    { 24, SA2_ANIM_SPRING_BOUNCY, 1 },
-    { 24, SA2_ANIM_SPRING_BOUNCY, 2 },
-    { 24, SA2_ANIM_SPRING_BOUNCY, 3 },
+    { 24, SA2_ANIM_BOUNCY_SPRING, 1 },
+    { 24, SA2_ANIM_BOUNCY_SPRING, 2 },
+    { 24, SA2_ANIM_BOUNCY_SPRING, 3 },
 };
 
 static const TileInfo gUnknown_080D94A4[3] = {
@@ -71,7 +71,7 @@ void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
         s->variant = variant;
     } else {
         s->graphics.dest = VramMalloc(24);
-        s->graphics.anim = SA2_ANIM_SPRING_BOUNCY;
+        s->graphics.anim = SA2_ANIM_BOUNCY_SPRING;
         s->variant = variant;
     }
 
@@ -187,7 +187,7 @@ static void Task_805E02C()
                 s->graphics.anim = SA2_ANIM_603;
                 s->variant = variant;
             } else {
-                s->graphics.anim = SA2_ANIM_SPRING_BOUNCY;
+                s->graphics.anim = SA2_ANIM_BOUNCY_SPRING;
                 s->variant = variant;
             }
             s->prevVariant = -1;

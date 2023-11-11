@@ -36,7 +36,7 @@ static void RenderWindmill(Sprite_SmallWindmill *);
 static void Despawn(Sprite_SmallWindmill *);
 static void ResetWindmill(Sprite_SmallWindmill *);
 
-void CreateEntity_SmallSpinnyWindmill(MapEntity *me, u16 spriteRegionX,
+void CreateEntity_SmallWindmill(MapEntity *me, u16 spriteRegionX,
                                       u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t
@@ -66,7 +66,7 @@ void CreateEntity_SmallSpinnyWindmill(MapEntity *me, u16 spriteRegionX,
     s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
     s->graphics.dest = VramMalloc(WINDMILL_NUM_TILES);
-    s->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
+    s->graphics.anim = SA2_ANIM_SMALL_WINDMILL;
     s->variant = 2;
     UpdateSpriteAnimation(s);
 
@@ -111,14 +111,14 @@ static void StartSpinSequence(Sprite_SmallWindmill *windmill)
         case 3:
         case 5:
         case 7:
-            s->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
+            s->graphics.anim = SA2_ANIM_SMALL_WINDMILL;
             s->variant = 0;
             break;
         case 2:
         case 4:
         case 6:
         case 8:
-            s->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
+            s->graphics.anim = SA2_ANIM_SMALL_WINDMILL;
             s->variant = 1;
             break;
     }
@@ -312,7 +312,7 @@ static void TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill(struct Tas
 static void ResetWindmill(Sprite_SmallWindmill *windmill)
 {
     Sprite *s = &windmill->s;
-    s->graphics.anim = SA2_ANIM_CROSS_SKY_CAN;
+    s->graphics.anim = SA2_ANIM_SMALL_WINDMILL;
     s->variant = 2;
     s->animSpeed = 16;
     UpdateSpriteAnimation(s);

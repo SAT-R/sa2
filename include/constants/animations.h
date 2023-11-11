@@ -202,7 +202,7 @@
 #define SA2_ANIM_WATER_SURFACE           534
 #define SA2_ANIM_LEAF_FOREST_GROUND_TILE 535
 #define SA2_ANIM_SPRING                  536
-#define SA2_ANIM_SPRING_BOUNCY           537
+#define SA2_ANIM_BOUNCY_SPRING           537
 #define SA2_ANIM_BOUNCY_BAR              538
 #define SA2_ANIM_PLATFORM_LF_WIDE        539
 #define SA2_ANIM_BOOSTER                 540
@@ -261,7 +261,7 @@
 #define SA2_ANIM_BIG_SNOWBALL                    582
 #define SA2_ANIM_583                             583
 #define SA2_ANIM_DASH_RING                       584
-#define SA2_ANIM_CROSS_SKY_CAN                   585
+#define SA2_ANIM_SMALL_WINDMILL                  585
 #define SA2_ANIM_PLATFORM_SKY_CAN                586
 #define SA2_ANIM_PLATFORM_587                    587
 #define SA2_ANIM_WHIRLWIND                       588
