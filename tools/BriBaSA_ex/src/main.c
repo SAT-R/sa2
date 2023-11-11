@@ -18,8 +18,9 @@
 #include "c_header_parser/parser.h"
 
 #define TILE_DIM 8
-#define METATILE_DIM (12*TILE_DIM)
-#define NUM_TILES_INSIDE_METATILES (12*12)
+#define TILES_PER_METATILE 12
+#define METATILE_DIM (TILES_PER_METATILE*TILE_DIM)
+#define NUM_TILES_INSIDE_METATILES (TILES_PER_METATILE*TILES_PER_METATILE)
 
 
 #define ATLAS_WIDTH   32
@@ -100,6 +101,15 @@ typedef enum {
 
     LAYER_COUNT
 } MetatileLayer;
+
+typedef enum {
+    ET_INTERACTABLE = 0,
+    ET_ITEM         = 1,
+    ET_ENEMY        = 2,
+    ET_RING         = 3,
+
+    ENTITY_TYPE_COUNT
+} EntityType;
 
 typedef enum {
     MAP_FLAG_SHOW_BACK_LAYER  = 0x1,
@@ -199,9 +209,22 @@ typedef struct {
 } EntityMeta;
 
 typedef struct {
+    char *name;
+    char *type;
+    unsigned short id;
+    unsigned short anim;
+    Texture2D texture;
+} InteractableMeta;
+
+typedef struct {
     EntityMeta *elements;
     int capacity, count;
 } EntityMetaList;
+
+typedef struct {
+    InteractableMeta *elements;
+    int capacity, count;
+} InteractableMetaList;
 
 typedef struct {
     Texture txItembox;
@@ -210,10 +233,6 @@ typedef struct {
     unsigned short animItembox;
     unsigned short animItemType;
 } ItemMetaList;
-
-typedef struct {
-    EntityMetaList interactables;
-} InteractableMetaList;
 
 
 
@@ -239,7 +258,7 @@ typedef struct {
     CharacterList characters;
 
     EntityMetaList enemies;
-    EntityMetaList interactables;
+    InteractableMetaList interactables;
     ItemMetaList items;
     EntityMeta ring;
 } FileInfo;
@@ -374,6 +393,9 @@ static Rectangle GetSpawnPosRectangle(StageMap *map, CharacterList *chars);
 static void HandleMouseInputSpawnPos(AppState *state);
 static inline void MoveCameraToSpawn(AppState *state, Rectangle recMap);
 
+static void
+Debug_DrawAllEntityTextures(AppState *state);
+
 int main(void)
 {
     AppState state = {0};
@@ -381,7 +403,7 @@ int main(void)
     state.windowWidth  = 1600;
     state.windowHeight =  900;
     InitWindow(state.windowWidth, state.windowHeight, "BriBaSA: SAT-R ver.");
-    //SetWindowPosition(0, 0);
+    SetWindowPosition(200, 900/3);
     SetWindowState(FLAG_WINDOW_UNDECORATED);
 
     SetTargetFPS(60);
@@ -505,32 +527,8 @@ int main(void)
             DrawUI(&state, txAtlas);
 
             HandleMouseInputSpawnPos(&state);
-
-
-            /* TEMP Test-Code */
-            int testX = 200;
-            int testY = 120;
-            int iaCount = state.paths.interactables.count;
-            for(int iaIndex = 0; iaIndex < iaCount; iaIndex++) {
-                DrawEntInteractable(&state,
-                    testX + 40*(iaIndex % 32), testY + 40*(iaIndex / 32),
-                    iaIndex);
-            }
-            testY += 42*(iaCount/32 + 1);
-
-            for(int item = 0; item < state.paths.items.items.count; item++) {
-                DrawEntItem(&state, testX + 32*item, testY, item);
-            }
-            testY += 32;
             
-            for(int enemy = 0; enemy < state.paths.enemies.count; enemy++) {
-                DrawEntEnemy(&state, testX + 32*enemy, testY, enemy);
-            }
-            testY += 32;
-            
-            DrawEntRing(&state, testX, testY);
-            
-
+            //Debug_DrawAllEntityTextures(&state);
 
             closeBtnClicked |= DrawAndHandleCloseButton(&state);
         EndDrawing();
@@ -555,6 +553,33 @@ int main(void)
     CloseWindow();
 
     return 0;
+}
+
+static void
+Debug_DrawAllEntityTextures(AppState *state)
+{
+    /* TEMP Test-Code */
+    int testX = 200;
+    int testY = 120;
+    int iaCount = state->paths.interactables.count;
+    for(int iaIndex = 0; iaIndex < iaCount; iaIndex++) {
+        DrawEntInteractable(state,
+            testX + 40*(iaIndex % 32), testY + 40*(iaIndex / 32),
+            iaIndex);
+    }
+    testY += 42*(iaCount/32 + 1);
+
+    for(int item = 0; item < state->paths.items.items.count; item++) {
+        DrawEntItem(state, testX + 32*item, testY, item);
+    }
+    testY += 32;
+            
+    for(int enemy = 0; enemy < state->paths.enemies.count; enemy++) {
+        DrawEntEnemy(state, testX + 32*enemy, testY, enemy);
+    }
+    testY += 32;
+            
+    DrawEntRing(state, testX, testY);
 }
 
 static Texture2D
@@ -993,9 +1018,9 @@ CreateMetatileAtlas(AppState *state, int numMetatiles)
 
             u8 *tileset = paths->map.tileset.data;
 
-            for(int y = 0; y < 12; y++) {
-                for(int x = 0; x < 12; x++) {
-                    int mti = y * 12 + x;
+            for(int y = 0; y < TILES_PER_METATILE; y++) {
+                for(int x = 0; x < TILES_PER_METATILE; x++) {
+                    int mti = y * TILES_PER_METATILE + x;
 
                     MetatileTile metatileTile = metaTile[mti];
 
@@ -1500,7 +1525,7 @@ DrawUIWindow(UIWindow *window)
 }
 
 static void
-SetMetaEntityValues(TokenList *tokList, EntityMetaList *entities, const char *prefix)
+SetMetaEntityValues(TokenList *tokList, void *inentities, EntityType et)
 {
     int count = 0;
     for(int i = 0; i < tokList->count; i++) {
@@ -1512,16 +1537,50 @@ SetMetaEntityValues(TokenList *tokList, EntityMetaList *entities, const char *pr
             if((tokenPound->type == POUND_DEFINE)
             && (tokenName->type == IDENTIFIER)
             && (tokenID->type == VALUE)) {
-                if(TextFindIndex(tokenName->text, prefix) == 0) {
-                    EntityMeta e = {0};
+                char *prefixes[ENTITY_TYPE_COUNT] = {
+                    "IA__",
+                    "ITEM__",
+                    "ENEMY__",
+                    NULL, // There's only "rings", no other types of them
+                };
+                char *prefix = prefixes[et];
 
-                    e.name = TextReplace(tokenName->text, prefix, "");
-                    e.id   = TextToInteger(tokenID->text);
-                    da_append(entities, &e);
+                switch(et) {
+                    case ET_INTERACTABLE: {
+                        if(TextFindIndex(tokenName->text, prefix) == 0) {
+                            InteractableMetaList *entities = (InteractableMetaList*)inentities;
+                            InteractableMeta ia = {0};
+                            
+                            ia.name = TextReplace(tokenName->text, prefix, "");
+                            ia.id   = TextToInteger(tokenID->text);
 
-                    i += 2;
-                    continue;
-                }            
+                            int delimOffset = TextFindIndex(ia.name, "__");
+                            bool iaHasType  = (delimOffset >= 0);
+                            if (iaHasType) {
+                                ia.name[delimOffset+0] = '\0';
+                                ia.name[delimOffset+1] = '\0';
+                                ia.type = &ia.name[delimOffset + 2];
+                            }
+
+                            da_append(entities, &ia);
+                        }
+                    } break;
+
+                    default: {
+                        EntityMetaList *entities = (EntityMetaList*)inentities;
+
+                        if(TextFindIndex(tokenName->text, prefix) == 0) {
+                            EntityMeta e = {0};
+
+                            e.name = TextReplace(tokenName->text, prefix, "");
+                            e.id   = TextToInteger(tokenID->text);
+                            da_append(entities, &e);
+                        }
+                    } break;
+                }
+                
+                i += 2;
+                continue;
             }
         }
     }
@@ -1548,6 +1607,18 @@ LoadEntityTextures(char *gameRoot, EntityMetaList *ents)
         const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
                                           gameRoot, ent->anim, frame);
         ent->texture = LoadTexture(animPath);
+    }
+}
+
+static inline void
+LoadInteractableTextures(char *gameRoot, InteractableMetaList *ias)
+{
+    for(int c = 0; c < ias->count; c++) {
+        InteractableMeta *ia = &ias->elements[c];
+        int frame = 0;
+        const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
+                                          gameRoot, ia->anim, frame);
+        ia->texture = LoadTexture(animPath);
     }
 }
 
@@ -1596,7 +1667,7 @@ LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
 static void
 DrawEntInteractable(AppState *state, int x, int y, int index)
 {
-    EntityMeta *ia = &state->paths.interactables.elements[index];
+    InteractableMeta *ia = &state->paths.interactables.elements[index];
 
     DrawTexture(ia->texture, x - (ia->texture.width / 2), y - (ia->texture.height / 2), WHITE);
 }
@@ -1643,7 +1714,7 @@ LoadAllEntityTextures(AppState *state)
     FileInfo *paths = &state->paths;
 
     LoadCharacterTextures(paths->gameRoot, &paths->characters);
-    LoadEntityTextures(paths->gameRoot,    &paths->interactables);
+    LoadInteractableTextures(paths->gameRoot,    &paths->interactables);
     LoadEntityTextures(paths->gameRoot,    &paths->enemies);
     LoadItemTextures(paths->gameRoot,      &paths->items, paths->characters.count);
     LoadRingTexture(paths->gameRoot,       &paths->ring);
@@ -1663,9 +1734,9 @@ LoadEntityNamesAndIDs(AppState *state)
     
 
     // Find entity names and IDs
-    SetMetaEntityValues(&tokensIAs,     &state->paths.interactables, "IA__");
-    SetMetaEntityValues(&tokensItems,   &state->paths.items.items,   "ITEM__");
-    SetMetaEntityValues(&tokensEnemies, &state->paths.enemies,       "ENEMY__");
+    SetMetaEntityValues(&tokensIAs,     &state->paths.interactables, ET_INTERACTABLE);
+    SetMetaEntityValues(&tokensItems,   &state->paths.items.items,   ET_ITEM);
+    SetMetaEntityValues(&tokensEnemies, &state->paths.enemies,       ET_ENEMY);
 
 
     // Find all character IDs
@@ -1706,6 +1777,7 @@ LoadEntityNamesAndIDs(AppState *state)
         unsigned short animBeforeCountdown = 0;
         int foundIdleAnims  = 0;
         int foundEnemyAnims = 0;
+        int foundIAAnims = 0;
         for(int i = 0; i < tokensAnims.count - 2; i++) {
             Token *tokenPound = &tokensAnims.tokens[i+0];
             Token *tokenName  = &tokensAnims.tokens[i+1];
@@ -1756,7 +1828,26 @@ LoadEntityNamesAndIDs(AppState *state)
                                 break;
                             }
                         }
-                    }                    
+                    } else if(foundIAAnims < state->paths.interactables.count) {
+                        for(int ii = 0; ii < state->paths.interactables.count; ii++) {
+                            unsigned short id    = state->paths.interactables.elements[ii].id;
+                            InteractableMeta *ia = &state->paths.interactables.elements[id];
+                            const char *format   = TextFormat("SA%d_ANIM_%s", state->game, ia->name);
+
+                            if(TextIsEqual((char *)tokenName->text, format)) {
+                                do {
+                                    ia->anim = TextToInteger(tokenID->text);
+
+                                    foundIAAnims++;
+
+                                } while((++ii < state->paths.interactables.count) && TextIsEqual(ia->name, (ia+1)->name) && ++ia);
+                                ii--;
+
+                                
+                                break;
+                            }
+                        }
+                    }
                 }
 
                 i += 2;
@@ -1839,8 +1930,8 @@ ParseMetadataTxt(AppState *state, Tilemap* tm)
         if(FileExists(headerPath)) {
             TokenList tokens = tokenize(&arena, headerPath);
 
-            state->paths.map.xTiles = 12;
-            state->paths.map.yTiles = 12;
+            state->paths.map.xTiles = TILES_PER_METATILE;
+            state->paths.map.yTiles = TILES_PER_METATILE;
             state->map.spawnX = 0;
             state->map.spawnY = 0;
 
@@ -1864,7 +1955,6 @@ ParseMetadataTxt(AppState *state, Tilemap* tm)
                         // Found both values, so output them
                         FILE *meta = fopen(metadataTxtPath, "w");
                         if(meta) {
-                            // TODO: Assume metatile-tile width/height (12)?
                             fprintf(meta, "tilemap_dim = {%d,%d}\n", state->paths.map.xTiles, state->paths.map.yTiles);
                             fprintf(meta, "map_dim     = {%d,%d}\n", map->width, map->height);
                             fprintf(meta, "spawn_pos   = {%d,%d}\n", state->map.spawnX, state->map.spawnY);
