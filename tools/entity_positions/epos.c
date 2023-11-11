@@ -434,13 +434,19 @@ void FillMapRegions(char *bin_path, CsvLines lines, EntityNameList name_list, Ma
 
             char *ent_type_str = strtok(NULL, ",");
             int ent_id = GetEntityId(name_list, ent_type_str);
-            me.kind = ent_id;
+            if(ent_id >= 0) {
+                me.kind = ent_id;
 
-            int data_size = GetMapEntitySize(game_id, etype) - 3;
-            for(int d = 0; d < data_size; d++)
-            {
-                char *data_str = strtok(NULL, ",");
-                me.data[d] = atoi(data_str);
+                int data_size = GetMapEntitySize(game_id, etype) - 3;
+                for(int d = 0; d < data_size; d++)
+                {
+                    char *data_str = strtok(NULL, ",");
+                    me.data[d] = atoi(data_str);
+                }
+            } else {
+                fprintf(stderr, "ERROR: Unknown entity name '%s' in source when trying to create\n"
+                                "       '%s'\n", ent_type_str, bin_path);
+                exit(-22);
             }
         } break;
 
@@ -453,7 +459,7 @@ void FillMapRegions(char *bin_path, CsvLines lines, EntityNameList name_list, Ma
 
             if(ent_id < 0) {
                 fprintf(stderr, "ERROR: Invalid entity ID in CSV line %d: %d\n", line_i+1, ent_id);
-                return;
+                exit(-23);
             }
             me.kind = ent_id;
         } break;
@@ -524,10 +530,12 @@ void HandleCsvToBinaryConversion(CsvLines lines, char *bin_path, TokenList token
                 }
             } else {
                 fprintf(stderr, "ERROR: Unknown EntityType '%s'\n", etype_str);
+                exit(-20);
             }
         }
     } else {
         fprintf(stderr, "ERROR: Unknown game identifier '%s'\n", ident);
+        exit(-21);
     }
 }
 
@@ -548,9 +556,16 @@ CsvLines RemoveAllBackslashRs(CsvLines lines)
     return lines;
 }
 
-void ConvertCsvToBinary(char* csv_path, char *bin_path, TokenList tokens)
+void ConvertCsvToBinary(char* csv_path, char *bin_path, char *c_header_path)
 {
     File file = OpenWholeFile(csv_path);
+
+    TokenList tokens = {0};
+    MemArena arena;
+    memArenaInit(&arena);
+
+    if(c_header_path != NULL)
+        tokens = tokenize(&arena, c_header_path);
 
     if(file.data) {
         CsvLines lines = GetCsvLines(file);
@@ -652,9 +667,14 @@ void PrintCsvFile(char *csv_path, EntityNameList name_list, EntitiesHeader *eh, 
     fclose(csv_handle);
 }
 
-void ConvertBinaryToCsv(char* bin_path, char *csv_path, TokenList tokens, GameId game, EntityType etype)
+void ConvertBinaryToCsv(char* bin_path, char *csv_path, char *c_header_path, GameId game, EntityType etype)
 {
     File file = OpenWholeFile(bin_path);
+
+    TokenList tokens = {0};
+    MemArena arena;
+    memArenaInit(&arena);
+    tokens = tokenize(&arena, c_header_path);
 
     if(file.data) {
         int uncomp_size = *((u32*)file.data) >> 8;
@@ -727,6 +747,7 @@ int main(int argc, char **argv)
     char *path_b = GetProgramArg(&argc, &argv);
     char *ext_a  = GetFileExtension(path_a);
     char *ext_b  = GetFileExtension(path_b);
+    char *c_header_path = NULL;
 
     MemArena arena;
     memArenaInit(&arena);
@@ -740,8 +761,7 @@ int main(int argc, char **argv)
             return -5;
         } else if(argc > 0) {
             if(!strcmp(arg, "-header")) {
-                char *c_header_path = GetProgramArg(&argc, &argv);
-                tokens              = tokenize(&arena, c_header_path);
+                c_header_path = GetProgramArg(&argc, &argv);
             } else if(!strcmp(arg, "-entities")) {
                 char *arg_entity = GetProgramArg(&argc, &argv);
 
@@ -771,10 +791,10 @@ int main(int argc, char **argv)
     }
     
     if(!strcmp(ext_a, "csv") && !strcmp(ext_b, "bin")) {
-        ConvertCsvToBinary(path_a, path_b, tokens);
+        ConvertCsvToBinary(path_a, path_b, c_header_path);
     } else if(!strcmp(ext_a, "bin") && !strcmp(ext_b, "csv")) {
         // TODO: We need to find out the targeted game and etype through parameters!
-        ConvertBinaryToCsv(path_a, path_b, tokens, SA2, entity_type);
+        ConvertBinaryToCsv(path_a, path_b, c_header_path, SA2, entity_type);
     } else {
         // ERROR: Unk ext
         printf("Don't know how to convert from '%s' to '%s'\n", ext_a, ext_b);
