@@ -594,7 +594,7 @@ static void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *i
     fprintf(csv_handle, "\n");
 }
 
-static void PrintCsvFile(char *csv_path, EntityNameList name_list, EntitiesHeader *eh, GameId game, EntityType etype)
+static void OutputCsvFile(char *csv_path, EntityNameList name_list, EntitiesHeader *eh, GameId game, EntityType etype)
 {
     FILE *csv_handle = fopen(csv_path, "w");
     if(!csv_handle) {
@@ -636,12 +636,7 @@ void ConvertBinaryToCsv(char* bin_path, char *csv_path, char *c_header_path, Gam
 {
     File file = OpenWholeFile(bin_path);
 
-    TokenList tokens = {0};
-    MemArena arena;
-    memArenaInit(&arena);
-    tokens = tokenize(&arena, c_header_path);
-
-    if(file.data) {
+    if(file.data && (file.size > 4)) {
         int uncomp_size = *((u32*)file.data) >> 8;
 
         if(uncomp_size == file.size)
@@ -651,9 +646,13 @@ void ConvertBinaryToCsv(char* bin_path, char *csv_path, char *c_header_path, Gam
             if(num_regions > 0
             && (int)(num_regions * sizeof(int)) < uncomp_size)
             {
+                MemArena arena;
+                memArenaInit(&arena);
+                TokenList tokens = tokenize(&arena, c_header_path);
+
                 EntityNameList enl = CreateEntityNameList(tokens, etype);
 
-                PrintCsvFile(csv_path, enl, eh, game, etype);
+                OutputCsvFile(csv_path, enl, eh, game, etype);
             }
             else
             {
@@ -672,6 +671,7 @@ void ConvertBinaryToCsv(char* bin_path, char *csv_path, char *c_header_path, Gam
                 uncomp_size, (int)file.size);
         }
     } else {
-        fprintf(stderr, "ERROR: Couldn't create CSV file because '%s' doesn't exist\n", bin_path);
+        fprintf(stderr, "ERROR: Couldn't create CSV file because '%s' doesn't exist \n"
+                        "       or doesn't contain the correct data\n", bin_path);
     }
 }
