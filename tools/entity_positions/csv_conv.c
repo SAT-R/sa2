@@ -502,20 +502,20 @@ MapRegions CsvToBinaryData(char *csv_file_data, long csv_file_size, char *bin_pa
                         }
                     } else {
                         fprintf(stderr, "ERROR: Allocating %zu bytes failed.\n", (num_regions * sizeof(MapRegion)));
-                        return mapRegions;
                     }
+                } else if(map_regions_x == 0) {
+                    fprintf(stderr, "ERROR: Number of X map regions is 0\n");
+                } else {
+                    fprintf(stderr, "ERROR: Number of Y map regions is 0\n");
                 }
             } else {
                 fprintf(stderr, "ERROR: Unknown EntityType '%s'\n", etype_str);
-                exit(-20);
             }
         } else {
             fprintf(stderr, "ERROR: Unknown game identifier '%s'\n", ident);
-            exit(-21);
         }
     } else {
         fprintf(stderr, "ERROR: Unknown game identifier '%s'\n", ident);
-        exit(-21);
     }
 
     return mapRegions;
@@ -526,15 +526,17 @@ MapRegions ConvertCsvToBinary(char* csv_path, char *bin_path, char *c_header_pat
     MapRegions mapRegions = {0};
     File file = OpenWholeFile(csv_path);
 
-    TokenList tokens = {0};
-    MemArena arena;
-    memArenaInit(&arena);
 
-    if(c_header_path != NULL)
-        tokens = tokenize(&arena, c_header_path);
+    if(file.data) {
+        TokenList tokens = {0};
+        MemArena  arena;
+        memArenaInit(&arena);
+        
+        if(c_header_path != NULL) {
+            tokens = tokenize(&arena, c_header_path);
+        }
 
-    if(file.data) {        
-        return CsvToBinaryData((char*)file.data, file.size, bin_path, tokens, TRUE);
+        return CsvToBinaryData((char*)file.data, file.size, bin_path, tokens, outputBinaryFile);
     } else {
         fprintf(stderr, "ERROR: Couldn't create binary file because '%s' doesn't exist\n", csv_path);
     }

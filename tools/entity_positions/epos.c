@@ -2,6 +2,7 @@
 #include <assert.h>
 #endif
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -104,7 +105,7 @@ int main(int argc, char **argv)
     }
     
     if(!strcmp(ext_a, ".csv") && !strcmp(ext_b, ".bin")) {
-        ConvertCsvToBinary(path_a, path_b, c_header_path, 1);
+        ConvertCsvToBinary(path_a, path_b, c_header_path, true);
     } else if(!strcmp(ext_a, ".bin") && !strcmp(ext_b, ".csv")) {
         // TODO: We need to find out the targeted game and etype through parameters!
         ConvertBinaryToCsv(path_a, path_b, c_header_path, SA2, entity_type);
