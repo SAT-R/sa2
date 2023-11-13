@@ -15,7 +15,7 @@
 #include <raylib.h>
 
 #include "jasc_parser/jasc_parser.h"
-#include "parser.h"
+#include "../../_shared/c_header_parser/parser.h"
 
 #define TILE_DIM 8
 #define TILES_PER_METATILE 12
@@ -882,12 +882,12 @@ static inline char *allocPath(char *folder, char *fileName)
     return dest;
 }
 
-static inline loadFile(File *out, char *fileName) {
+static inline void loadFile(File *out, char *fileName) {
     out->data = LoadFileData(fileName, &out->dataSize);
     out->path = fileName;
 }
 
-static inline loadTextFile(File *out, char *fileName) {
+static inline void loadTextFile(File *out, char *fileName) {
     char *txt = LoadFileText(fileName);
     int length = TextLength(txt);
 
