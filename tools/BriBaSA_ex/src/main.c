@@ -380,7 +380,7 @@ static void DrawEntEnemy(AppState *state, int x, int y, int index);
 static void DrawEntRing(AppState *state, int x, int y);
 
 static inline int GetMetatileIndex(AppState *state, int x, int y, MetatileLayer layer);
-static void ParseMetadataTxt(AppState *state, Tilemap* tm);
+static void ParseOrCreateMetadataTxt(AppState *state, Tilemap* tm);
 static Vector2i GetMetatilePointBelowMouse(StageMap *map, Rectangle recMap);
 static void HandleMouseInput(AppState *state, Rectangle recMap);
 static void HandleKeyInput(AppState *state, Rectangle recMap);
@@ -414,6 +414,7 @@ int main(void)
     char workingDir[MAX_FILEPATH_LENGTH];
     TextCopy(workingDir, GetWorkingDirectory());
 
+
     // NOTE: "settings.txt" is for app-specific stuff,
     //       unlike metadata.txt, which is per-map
     if(FileExists("settings.txt")) {
@@ -421,6 +422,9 @@ int main(void)
     } else {
         // TODO: Create new settings.txt file
     }
+
+    state.game = GAME_SA2; // TODO: Load from settings.txt if it exists
+
 
     // NOTE: We could just use "../../" for the check,
     //       but then it takes more work to get the normalized path.
@@ -431,24 +435,20 @@ int main(void)
     // NOTE: Do not use TextFormat strings for long,
     //       without copying them to your own allocated memory!
     const char *tempDataDir = TextFormat("%s/data", rootDir);
-    bool dataDirExists = DirectoryExists(tempDataDir);
-
-    if(!dataDirExists) {
+    
+    if(!DirectoryExists(tempDataDir)) {
         printf("ERROR: %s could not be found. Closing...\n", tempDataDir);
         exit(-1);
     }
     
     const char *mapsRoot = TextFormat("%s/data/maps/", rootDir);
-    bool mapsRootExists  = DirectoryExists(mapsRoot);
-
-    if(!mapsRootExists) {
-        printf("ERROR: %s could not be found. Closing...\n", mapsRoot);
+    if(!DirectoryExists(mapsRoot)) {
+        printf("ERROR: '%s' could not be found. Closing...\n", mapsRoot);
         exit(-2);
     }
 
     // TODO: Ask user to select map directory and game!
-    char mapDir[MAX_FILEPATH_LENGTH];
-    FilePathList fpl = LoadDirectoryFiles(TextFormat("%s/data/maps/", rootDir));
+    FilePathList fpl = LoadDirectoryFiles(mapsRoot);
     FilePathList mapDirs = {0};
     for(int i = 0; i < fpl.count; i++) {
         char *zone = fpl.paths[i];
@@ -470,8 +470,8 @@ int main(void)
     }
     UnloadDirectoryFiles(fpl);
 
+    char mapDir[MAX_FILEPATH_LENGTH];
     TextCopy(mapDir, mapDirs.paths[0]);
-    state.game = GAME_SA2;
 
 
 
@@ -489,7 +489,7 @@ int main(void)
     state.map.selectedMetatile.x = -1;
     state.map.selectedMetatile.y = -1;
     
-    ParseMetadataTxt(&state, &state.paths.map);
+    ParseOrCreateMetadataTxt(&state, &state.paths.map);
     
     const int metatileTileCount = state.paths.map.xTiles * state.paths.map.yTiles;
     int numMetatiles = state.paths.map.tilemap.dataSize / metatileTileCount;
@@ -502,10 +502,12 @@ int main(void)
     Texture2D txMap = CreateMapTexture(recMap, txAtlas.format);
 
 
+
     recMap.width  = MIN(recMap.width,  state.map.width  * METATILE_DIM);
     recMap.height = MIN(recMap.height, state.map.height * METATILE_DIM);
 
     MoveCameraToSpawn(&state, recMap);
+
 
     bool closeBtnClicked = false;
     while (!WindowShouldClose())
@@ -1877,7 +1879,7 @@ LoadEntityNamesAndIDs(AppState *state)
 
 
 static void
-ParseMetadataTxt(AppState *state, Tilemap* tm)
+ParseOrCreateMetadataTxt(AppState *state, Tilemap* tm)
 {
     StageMap *map = &state->map;
     char *mapPath = tm->dir;

@@ -71,10 +71,11 @@ struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
     TaskPtr fast;
     struct EwramNode *temp;
 
-    // ???
+#ifndef NON_MATCHING
     do
         ;
     while (0);
+#endif
 
     task = NULL;
     slow = NULL;
