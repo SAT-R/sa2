@@ -146,7 +146,7 @@ static inline int GetMapEntitySize(GameId game, EntityType etype)
         case EntInteractable:
         case EntEnemy:
             // x, y, index, data[4|5]
-            size = 7 + ((game == SA3) ? 1 : 0);
+            size = 3 + ((game == SA3) ? 5 : 4);
             break;
             
         case EntItem:
@@ -536,7 +536,7 @@ MapRegions ConvertCsvToBinary(char* csv_path, char *bin_path, char *c_header_pat
             tokens = tokenize(&arena, c_header_path);
         }
 
-        return CsvToBinaryData((char*)file.data, file.size, bin_path, tokens, outputBinaryFile);
+        mapRegions = CsvToBinaryData((char*)file.data, file.size, bin_path, tokens, outputBinaryFile);
     } else {
         fprintf(stderr, "ERROR: Couldn't create binary file because '%s' doesn't exist\n", csv_path);
     }
