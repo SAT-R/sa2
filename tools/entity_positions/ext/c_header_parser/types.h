@@ -4,7 +4,9 @@
 #define FALSE 0
 #define TRUE  1
 
+#ifndef bool
 typedef signed char bool;
+#endif
 
 // TEMP HACK
 typedef bool bool_;

@@ -10,7 +10,7 @@ CFLAGS = -I $(PARSER_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2 -s
 .PHONY: all clean
 
 
-SRCS = epos.c $(PARSER_DIR)/ArenaAlloc.c $(PARSER_DIR)/parser.c
+SRCS = epos.c csv_conv.c $(PARSER_DIR)/ArenaAlloc.c $(PARSER_DIR)/parser.c
 
 all: epos
 	@:
