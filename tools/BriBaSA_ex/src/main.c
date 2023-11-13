@@ -15,7 +15,7 @@
 #include <raylib.h>
 
 #include "jasc_parser/jasc_parser.h"
-#include "c_header_parser/parser.h"
+#include "parser.h"
 
 #define TILE_DIM 8
 #define TILES_PER_METATILE 12
@@ -65,6 +65,8 @@
 #define UI_COLOR_WINDOW_HEADER        LIGHTGRAY
 
 #define UIWND_ID_UNSAVED_CHANGES      0
+
+#define IS_USER_KEY_DOWN_LEFT (IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsKeyDown(KEY_X))
 
 // Adds an element to any dynamic array (with "capacity", "count" and "SomeType *elements").
 // Please make sure to initialize your list to all-zeroes before calling this macro.
@@ -1008,6 +1010,7 @@ CreateMetatileAtlas(AppState *state, int numMetatiles)
 
     memset(atlas.data, 0, GetPixelDataSize(atlas.width, atlas.height, atlas.format));
 
+    Texture2D txAtlas = {0};
     for(int mtAtlasY = 0; mtAtlasY < ATLAS_HEIGHT; mtAtlasY++) {
         for(int mtAtlasX = 0; mtAtlasX < ATLAS_WIDTH; mtAtlasX++) {
             int mtAtlasIndex = mtAtlasY * ATLAS_WIDTH + mtAtlasX;
@@ -1065,7 +1068,7 @@ CreateMetatileAtlas(AppState *state, int numMetatiles)
 CreateMetatileAtlas_defer:
 
     
-    Texture2D txAtlas = LoadTextureFromImage(atlas);
+    txAtlas = LoadTextureFromImage(atlas);
     free(atlas.data);
 
     return txAtlas;
@@ -1165,7 +1168,7 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
                     Color tintDarkened = tint;
                     
                     // Darken even further on button-press
-                    if(metatileShouldDarken && (isFirstMouse || IsMouseButtonDown(MOUSE_BUTTON_LEFT))) {
+                    if(metatileShouldDarken && (isFirstMouse || IS_USER_KEY_DOWN_LEFT)) {
                         tint = CLITERAL(Color) {
                             tint.r * 0.8,
                             tint.g * 0.8,
