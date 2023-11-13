@@ -3,8 +3,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "ext/c_header_parser/ArenaAlloc.h"
-#include "ext/c_header_parser/parser.h"
+#include "../arena_alloc/ArenaAlloc.h"
+#include "../c_header_parser/parser.h"
 
 #include "csv_conv.h"
 
@@ -490,8 +490,10 @@ MapRegions CsvToBinaryData(char *csv_file_data, long csv_file_size, char *bin_pa
 
                 if(map_regions_x > 0 && map_regions_y > 0) {
                     mapRegions.regions = calloc(num_regions, sizeof(MapRegion));
+
                     if(mapRegions.regions) {
-                        mapRegions.count   = num_regions;
+                        mapRegions.map_regions_x = map_regions_x;
+                        mapRegions.map_regions_y = map_regions_y;
                     
                         EntityNameList enl = CreateEntityNameList(tokens, etype);
 

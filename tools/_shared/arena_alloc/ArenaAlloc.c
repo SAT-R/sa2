@@ -267,3 +267,8 @@ memArenaExpand(MemArena *arena, s32 numNewArenas) {
     assert(arena->memory);
     arena->size = newSize;
 }
+
+#ifdef NEEDS_MAIN_DUMMY
+int main(void) {}
+#endif
+

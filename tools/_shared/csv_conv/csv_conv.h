@@ -49,7 +49,7 @@ typedef struct {
 
 typedef struct {
     MapRegion *regions;
-    int count;
+    int map_regions_x, map_regions_y;
 } MapRegions;
 
 // Converts the input CSV file into binary data and optionally outputs it as its in-game format
