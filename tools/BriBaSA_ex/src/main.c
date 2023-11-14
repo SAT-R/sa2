@@ -16,6 +16,9 @@
 
 #include "jasc_parser/jasc_parser.h"
 #include "../../_shared/c_header_parser/parser.h"
+#include "../../_shared/csv_conv/csv_conv.h"
+
+#include "../../../include/constants/interactables.h"
 
 #define TILE_DIM 8
 #define TILES_PER_METATILE 12
@@ -60,25 +63,30 @@
 #define UI_COLOR_BUTTON_SAVE_WARN_PRESSED  ORANGE
 #define UI_COLOR_BUTTON_SAVE_WARN_TEXT     GRAY
 #define UI_COLOR_TEXT                 DARKBLUE
-#define UI_COLOR_TRANSLUCENT          CLITERAL(Rectangle){WHITE.r, WHITE.g, WHITE.b, 127}
+#define UI_COLOR_TRANSLUCENT          CLITERAL(Color){WHITE.r, WHITE.g, WHITE.b, 127}
 #define UI_COLOR_WINDOW_BACK          RAYWHITE
 #define UI_COLOR_WINDOW_HEADER        LIGHTGRAY
 
 #define UIWND_ID_UNSAVED_CHANGES      0
 
-#define IS_USER_KEY_DOWN_LEFT (IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsKeyDown(KEY_X))
+#define IS_USER_KEY_DOWN_LEFT       (IsMouseButtonDown(MOUSE_BUTTON_LEFT)   || IsKeyDown(KEY_X))
+#define IS_USER_KEY_DOWN_MIDDLE     (IsMouseButtonDown(MOUSE_BUTTON_MIDDLE) || IsKeyDown(KEY_C))
+#define IS_USER_KEY_DOWN_RIGHT      (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)  || IsKeyDown(KEY_V))
+#define IS_USER_KEY_RELEASED_LEFT   (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)   || IsKeyReleased(KEY_X))
+#define IS_USER_KEY_RELEASED_MIDDLE (IsMouseButtonReleased(MOUSE_BUTTON_MIDDLE) || IsKeyReleased(KEY_C))
+#define IS_USER_KEY_RELEASED_RIGHT  (IsMouseButtonReleased(MOUSE_BUTTON_RIGHT)  || IsKeyReleased(KEY_V))
 
 // Adds an element to any dynamic array (with "capacity", "count" and "SomeType *elements").
 // Please make sure to initialize your list to all-zeroes before calling this macro.
 #define DA_DEFAULT_CAP 128
-#define da_append_to(list, new_element_ptr, _arrayName)                                                  \
+#define da_append_to(list, new_element_ptr, _arrayName)                                                     \
 {                                                                                                           \
     while((list)->count + 1 > (list)->capacity) {                                                           \
         (list)->capacity += DA_DEFAULT_CAP;                                                                 \
         (list)->_arrayName = realloc((list)->_arrayName, (list)->capacity * sizeof((list)->_arrayName[0])); \
     }                                                                                                       \
                                                                                                             \
-    memcpy(&(list)->_arrayName[(list)->count++], new_element_ptr, sizeof(*new_element_ptr));                  \
+    memcpy(&(list)->_arrayName[(list)->count++], new_element_ptr, sizeof(*new_element_ptr));                \
 }
 #define da_append(list, new_element_ptr)                                                                    \
 {                                                                                                           \
@@ -184,11 +192,18 @@ typedef struct {
 } TextureList;
 
 typedef struct {
-    File enemiesCSV;
-    File interactablesCSV;
-    File itemboxesCSV;
-    File ringsCSV;
-} Entities;
+    char *interactables;
+    char *items;
+    char *enemies;
+    char *rings;
+} EntityCSVs;
+
+typedef struct {
+    MapRegions interactables;
+    MapRegions items;
+    MapRegions enemies;
+    MapRegions rings;
+} EntityPositions;
 
 typedef struct {
     char *name;
@@ -247,7 +262,8 @@ typedef struct {
 
     Tilemap background;
     Tilemap map;
-    Entities entities;
+    EntityCSVs entityCSVs;
+    EntityPositions entityPositions;
 
     /* C-Header paths containing constants */
     char *game_h;
@@ -293,6 +309,7 @@ typedef struct {
     int width;
     int height;
     unsigned short spawnX, spawnY;
+    unsigned short endX, endY;
 
     MapFlags flags;
     
@@ -376,9 +393,9 @@ static void DrawMainHeader(AppState *state, Texture2D txAtlas);
 static void DrawUI(AppState *state, Texture2D txAtlas);
 static void DrawUIWindow(UIWindow *window);
 
-static void DrawEntInteractable(AppState *state, int x, int y, int index);
-static void DrawEntItem(AppState *state, int x, int y, int index);
-static void DrawEntEnemy(AppState *state, int x, int y, int index);
+static void DrawEntInteractable(AppState *state, int x, int y, int index, char data[5]);
+static void DrawEntItem(AppState *state, int x, int y, int index, char data[5]);
+static void DrawEntEnemy(AppState *state, int x, int y, int index, char data[5]);
 static void DrawEntRing(AppState *state, int x, int y);
 
 static inline int GetMetatileIndex(AppState *state, int x, int y, MetatileLayer layer);
@@ -395,8 +412,9 @@ static Rectangle GetSpawnPosRectangle(StageMap *map, CharacterList *chars);
 static void HandleMouseInputSpawnPos(AppState *state);
 static inline void MoveCameraToSpawn(AppState *state, Rectangle recMap);
 
-static void
-Debug_DrawAllEntityTextures(AppState *state);
+static void Debug_DrawAllEntityTextures(AppState *state);
+static void DrawEntities(AppState *state, Rectangle recMap);
+
 
 int main(void)
 {
@@ -450,6 +468,8 @@ int main(void)
     }
 
     // TODO: Ask user to select map directory and game!
+    // 
+    // Load all map directories
     FilePathList fpl = LoadDirectoryFiles(mapsRoot);
     FilePathList mapDirs = {0};
     for(int i = 0; i < fpl.count; i++) {
@@ -481,10 +501,11 @@ int main(void)
 
     LoadEntityNamesAndIDs(&state);
     LoadAllEntityTextures(&state);
+    LoadEntityDataFromCSVs(&state);
 
     CreateUIWindows(&state);
     
-    memset(&state.map, 0, sizeof(state.map));
+    //memset(&state.map, 0, sizeof(state.map)); // TODO: Can this be removed entirely?
     state.map.flags |= MAP_FLAGS_ON_INIT;
     state.map.initialMetatile.x = -1;
     state.map.initialMetatile.y = -1;
@@ -533,6 +554,7 @@ int main(void)
             HandleMouseInputSpawnPos(&state);
             
             //Debug_DrawAllEntityTextures(&state);
+            DrawEntities(&state, recMap);
 
             closeBtnClicked |= DrawAndHandleCloseButton(&state);
         EndDrawing();
@@ -559,27 +581,141 @@ int main(void)
     return 0;
 }
 
+static LoadEntityDataFromCSVs(AppState *state)
+{
+    FileInfo *paths = &state->paths;
+    paths->entityPositions.interactables = ConvertCsvToBinary(paths->entityCSVs.interactables, NULL, paths->interactables_h, false);
+    paths->entityPositions.items         = ConvertCsvToBinary(paths->entityCSVs.items,         NULL, paths->items_h,         false);
+    paths->entityPositions.enemies       = ConvertCsvToBinary(paths->entityCSVs.enemies,       NULL, paths->enemies_h,       false);
+    paths->entityPositions.rings         = ConvertCsvToBinary(paths->entityCSVs.rings,         NULL, NULL,                   false);
+
+    int numRegionsX = paths->entityPositions.interactables.map_regions_x;
+    int numRegionsY = paths->entityPositions.interactables.map_regions_y;
+    int regionCount = numRegionsX * numRegionsY;
+
+    MapRegion *regions = paths->entityPositions.interactables.regions;
+    for(int iaRegion = 0; iaRegion < regionCount; iaRegion++) {
+        if(regions[iaRegion].list) {
+            int regionX = iaRegion % numRegionsX;
+            int regionY = iaRegion / numRegionsX;
+
+            for(int iaIndex = 0; iaIndex < regions[iaRegion].count; iaIndex++) {
+                EntityData *ia = &regions[iaRegion].list[iaIndex];
+
+                int screenX = TO_WORLD_POS(ia->x, regionX);
+                int screenY = TO_WORLD_POS(ia->y, regionY);
+
+                if(ia->kind == IA__GOAL_LEVER) {
+                    state->map.endX = screenX;
+                    state->map.endY = screenY;
+                }
+            }        
+        }
+    }
+}
+
+// TODO:
+// - Don't iterate through all regions, only the currently visible ones
+// - CheckCollisionPointRec doesn't properly work with recSpawn
+#define SPAWN_POPUP_DIM 128.0
+static void
+DrawEntities(AppState *state, Rectangle recMap)
+{
+    FileInfo *paths = &state->paths;
+    EntityPositions *entityPositions = &paths->entityPositions;
+
+    Rectangle recSpawn = {
+        recMap.x - SPAWN_POPUP_DIM,
+        recMap.y - SPAWN_POPUP_DIM,
+        recMap.width  + SPAWN_POPUP_DIM,
+        recMap.height + SPAWN_POPUP_DIM
+    };
+
+    BeginScissorMode(recMap.x, recMap.y, recMap.width, recMap.height);
+        for(int ry = 0; ry < entityPositions->rings.map_regions_y; ry++) {
+            for(int rx = 0; rx < entityPositions->rings.map_regions_x; rx++) {
+                int ri = ry * entityPositions->rings.map_regions_x + rx;
+                MapRegion *iaRegion    = &entityPositions->interactables.regions[ri];
+                MapRegion *itemRegion  = &entityPositions->items.regions[ri];
+                MapRegion *enemyRegion = &entityPositions->enemies.regions[ri];
+                MapRegion *ringRegion  = &entityPositions->rings.regions[ri];
+
+
+                if(iaRegion) {
+                    for(int entIndex = 0; entIndex < iaRegion->count; entIndex++) {
+                        EntityData *ia = &iaRegion->list[entIndex];
+
+                        int screenX = recMap.x + TO_WORLD_POS(ia->x, rx) - state->map.camera.x;
+                        int screenY = recMap.y + TO_WORLD_POS(ia->y, ry) - state->map.camera.y;
+
+                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                            DrawEntInteractable(state, screenX, screenY, ia->kind, ia->data);
+                        }
+                    }
+                }
+                if(itemRegion) {
+                    for(int entIndex = 0; entIndex < itemRegion->count; entIndex++) {
+                        EntityData *item = &itemRegion->list[entIndex];
+
+                        int screenX = recMap.x + TO_WORLD_POS(item->x, rx) - state->map.camera.x;
+                        int screenY = recMap.y + TO_WORLD_POS(item->y, ry) - state->map.camera.y;
+                        
+                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                            DrawEntItem(state, screenX, screenY, item->kind, item->data);
+                        }
+                    }
+                }
+                if(enemyRegion) {
+                    for(int entIndex = 0; entIndex < enemyRegion->count; entIndex++) {
+                        EntityData *enemy = &enemyRegion->list[entIndex];
+
+                        int screenX = recMap.x + TO_WORLD_POS(enemy->x, rx) - state->map.camera.x;
+                        int screenY = recMap.y + TO_WORLD_POS(enemy->y, ry) - state->map.camera.y;
+                        
+                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                            DrawEntEnemy(state, screenX, screenY, enemy->kind, enemy->data);
+                        }
+                    }
+                }
+                if(ringRegion) {
+                    for(int entIndex = 0; entIndex < ringRegion->count; entIndex++) {
+                        EntityData *ring = &ringRegion->list[entIndex];
+
+                        int screenX = recMap.x + TO_WORLD_POS(ring->x, rx) - state->map.camera.x;
+                        int screenY = recMap.y + TO_WORLD_POS(ring->y, ry) - state->map.camera.y;
+                        
+                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                            DrawEntRing(state, screenX, screenY);
+                        }
+                    }
+                }
+            }
+        }
+    EndScissorMode();
+}
+
 static void
 Debug_DrawAllEntityTextures(AppState *state)
 {
     /* TEMP Test-Code */
     int testX = 200;
     int testY = 120;
+    char data[5] = {0};
     int iaCount = state->paths.interactables.count;
     for(int iaIndex = 0; iaIndex < iaCount; iaIndex++) {
         DrawEntInteractable(state,
             testX + 40*(iaIndex % 32), testY + 40*(iaIndex / 32),
-            iaIndex);
+            iaIndex, data);
     }
     testY += 42*(iaCount/32 + 1);
 
     for(int item = 0; item < state->paths.items.items.count; item++) {
-        DrawEntItem(state, testX + 32*item, testY, item);
+        DrawEntItem(state, testX + 32*item, testY, item, data);
     }
     testY += 32;
             
     for(int enemy = 0; enemy < state->paths.enemies.count; enemy++) {
-        DrawEntEnemy(state, testX + 32*enemy, testY, enemy);
+        DrawEntEnemy(state, testX + 32*enemy, testY, enemy, data);
     }
     testY += 32;
             
@@ -778,11 +914,11 @@ HandleMouseInput(AppState *state, Rectangle recMap)
             Vector2i mtMouse = GetMetatilePointBelowMouse(map, recMap);
 
 
-            if((IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsKeyDown(KEY_X)) && !IsMouseOnSpawn(map, &paths->characters)) {
+            if(IS_USER_KEY_DOWN_LEFT && !IsMouseOnSpawn(map, &paths->characters)) {
                 SetNewMetatiles(state, mtMouse.x, mtMouse.y);
             }
 
-            if(IsMouseButtonDown(MOUSE_BUTTON_RIGHT) || IsKeyDown(KEY_V)) {
+            if(IS_USER_KEY_DOWN_RIGHT) {
                 SetMouseCursor(MOUSE_CURSOR_CROSSHAIR);
 
                 if( (map->initialMetatile.x < 0)
@@ -791,7 +927,7 @@ HandleMouseInput(AppState *state, Rectangle recMap)
                     map->initialMetatile.y = mtMouse.y;
                 }
             }
-            if(IsMouseButtonReleased(MOUSE_BUTTON_RIGHT) || IsKeyReleased(KEY_V)) {
+            if(IS_USER_KEY_RELEASED_RIGHT) {
                 if( (map->initialMetatile.x == mtMouse.x)
                  && (map->initialMetatile.y == mtMouse.y) ) {
                     map->selectedMetatile.x = mtMouse.x;
@@ -808,7 +944,7 @@ HandleMouseInput(AppState *state, Rectangle recMap)
                 map->initialMetatile.y = -1;
             }
 
-            if(IsMouseButtonDown(MOUSE_BUTTON_MIDDLE) || IsKeyDown(KEY_C)) {
+            if(IS_USER_KEY_DOWN_MIDDLE) {
                 SetMouseCursor(MOUSE_CURSOR_RESIZE_ALL);
                 Vector2 dtMouse = GetMouseDelta();
                 map->camera.x -= dtMouse.x;
@@ -832,11 +968,22 @@ MoveCameraToSpawn(AppState *state, Rectangle recMap)
     state->map.camera.y = CLAMP(state->map.camera.y, 0, (state->map.height * METATILE_DIM) - recMap.height);
 }
 
+static inline void
+MoveCameraToEnd(AppState *state, Rectangle recMap)
+{
+    state->map.camera.x = state->map.endX - recMap.width/2;
+    state->map.camera.y = state->map.endY - recMap.height/2;
+    state->map.camera.x = CLAMP(state->map.camera.x, 0, (state->map.width  * METATILE_DIM) - recMap.width);
+    state->map.camera.y = CLAMP(state->map.camera.y, 0, (state->map.height * METATILE_DIM) - recMap.height);
+}
+
 static void
 HandleKeyInput(AppState *state, Rectangle recMap)
 {
     if(IsKeyPressed(KEY_HOME)) {
         MoveCameraToSpawn(state, recMap);
+    } else if(IsKeyPressed(KEY_END)) {
+        MoveCameraToEnd(state, recMap);
     }
 }
 
@@ -986,7 +1133,16 @@ SetupFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
     info.interactables_h = allocPath(gameDir, "include/constants/interactables.h");
     info.items_h         = allocPath(gameDir, "include/constants/items.h");
 
-    memcpy(outInfo, &info, sizeof(*outInfo));
+    /* Entity data */
+    info.entityCSVs.enemies       = allocPath(mapDir, "entities/enemies.csv");
+    info.entityCSVs.interactables = allocPath(mapDir, "entities/interactables.csv");
+    info.entityCSVs.items         = allocPath(mapDir, "entities/itemboxes.csv");
+    info.entityCSVs.rings         = allocPath(mapDir, "entities/rings.csv");
+
+    // Copy local data into output
+    if(outInfo) {
+        memcpy(outInfo, &info, sizeof(*outInfo));
+    }
 }
 
 
@@ -1669,36 +1825,77 @@ LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
     }
 }
 
-static void
-DrawEntInteractable(AppState *state, int x, int y, int index)
-{
-    InteractableMeta *ia = &state->paths.interactables.elements[index];
-
-    DrawTexture(ia->texture, x - (ia->texture.width / 2), y - (ia->texture.height / 2), WHITE);
+#define DRAW_ENTITY_RECT(_x, _y, _tint)                                                     \
+{                                                                                           \
+    int rx = _x + data[0] * TILE_DIM;                                                       \
+    int ry = _y + data[1] * TILE_DIM;                                                       \
+                                                                                            \
+    DrawRectangle(rx, ry, data[2] * TILE_DIM, data[3] * TILE_DIM, UI_COLOR_TRANSLUCENT);    \
+    DrawRectangleLines(rx, ry, data[2] * TILE_DIM, data[3] * TILE_DIM, _tint);              \
 }
 
 static void
-DrawEntItem(AppState *state, int x, int y, int index)
+DrawEntInteractable(AppState *state, int x, int y, int kind, char data[5])
 {
-    ItemMetaList *items = &state->paths.items;
+    InteractableMeta *ia = &state->paths.interactables.elements[kind];
 
-    DrawTexture(items->txItembox, x - (items->txItembox.width / 2), y - (items->txItembox.height / 2), WHITE);
+    bool drawUsingTextureId = false;
 
-    if(index == 0) {
-        Texture *tx = &items->oneUpIcons.elements[state->paths.characters.selected];
-        DrawTexture(*tx, x - (tx->width / 2), y - (tx->height / 2), WHITE);
-    } else {
-        Texture *tx = &items->items.elements[index].texture;
-        DrawTexture(*tx, x - (tx->width / 2), y - (tx->height / 2), WHITE);
+    int offsetX = -(ia->texture.width / 2);
+    int offsetY = -ia->texture.height;
+
+    switch(kind) {
+    case IA__TOGGLE_PLAYER_LAYER__FOREGROUND: {
+        DRAW_ENTITY_RECT(x, y, RED);
+    } break;
+
+    case IA__TOGGLE_PLAYER_LAYER__BACKGROUND: {
+        DRAW_ENTITY_RECT(x, y, GREEN);
+    } break;
+        
+    case IA__BOUNCY_BAR: {
+        // TODO: X-Flip
+        offsetX -= (ia->texture.width / 2);
+        offsetY += (ia->texture.height / 2);
+
+        drawUsingTextureId = true;
+    } break;
+        
+    default: {
+        drawUsingTextureId = true;
+    } break;
+    }
+
+    if(drawUsingTextureId) {
+        DrawTexture(ia->texture, x + offsetX, y + offsetY, WHITE);
     }
 }
 
 static void
-DrawEntEnemy(AppState *state, int x, int y, int index)
+DrawEntItem(AppState *state, int x, int y, int index, char data[5])
+{
+    ItemMetaList *items = &state->paths.items;
+
+    x -= (items->txItembox.width / 2);
+    y -= (items->txItembox.height) - 3; // TODO: Where do these 3 pixels come from?
+
+    DrawTexture(items->txItembox, x, y, WHITE);
+
+    if(index == 0) {
+        Texture *tx = &items->oneUpIcons.elements[state->paths.characters.selected];
+        DrawTexture(*tx, x + (tx->width / 2), y + (tx->height / 2), WHITE);
+    } else {
+        Texture *tx = &items->items.elements[index].texture;
+        DrawTexture(*tx, x + (tx->width / 2), y + (tx->height / 2), WHITE);
+    }
+}
+
+static void
+DrawEntEnemy(AppState *state, int x, int y, int index, char data[5])
 {
     EntityMeta *enemy = &state->paths.enemies.elements[index];
 
-    DrawTexture(enemy->texture, x - (enemy->texture.width / 2), y - (enemy->texture.height / 2), WHITE);
+    DrawTexture(enemy->texture, x - (enemy->texture.width / 2), y - enemy->texture.height, WHITE);
 }
 
 static void
@@ -1709,7 +1906,7 @@ DrawEntRing(AppState *state, int x, int y)
     // TODO: Right now there are 4 ring frames in a single PNG file, so we've got to draw it a little unintuitively
     DrawTextureRec(ring->texture,
                    CLITERAL(Rectangle){0, 0, ring->texture.width, ring->texture.width},
-                   CLITERAL(Vector2){x - (ring->texture.width / 2), y - ((ring->texture.height / 4) / 2)},
+                   CLITERAL(Vector2){x - (ring->texture.width / 2), y - (ring->texture.width)},
                    WHITE);
 }
 
