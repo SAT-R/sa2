@@ -19,6 +19,7 @@
 #include "../../_shared/csv_conv/csv_conv.h"
 
 #include "../../../include/constants/interactables.h"
+#include "../../../include/constants/zones.h"
 
 #define TILE_DIM 8
 #define TILES_PER_METATILE 12
@@ -394,6 +395,7 @@ static void DrawUI(AppState *state, Texture2D txAtlas);
 static void DrawUIWindow(UIWindow *window);
 
 static void DrawEntInteractable(AppState *state, int x, int y, int index, char data[5]);
+static void DrawEntInteractableSA2(AppState *state, int x, int y, int index, char data[5]);
 static void DrawEntItem(AppState *state, int x, int y, int index, char data[5]);
 static void DrawEntEnemy(AppState *state, int x, int y, int index, char data[5]);
 static void DrawEntRing(AppState *state, int x, int y);
@@ -493,7 +495,7 @@ int main(void)
     UnloadDirectoryFiles(fpl);
 
     char mapDir[MAX_FILEPATH_LENGTH];
-    TextCopy(mapDir, mapDirs.paths[0]);
+    TextCopy(mapDir, mapDirs.paths[4 + (ZONE_2-1)*3]);
 
 
 
@@ -1825,49 +1827,107 @@ LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
     }
 }
 
-#define DRAW_ENTITY_RECT(_x, _y, _tint)                                                     \
+#define DRAW_ENTITY_RECT(_x, _y, _boundingDim, _tint)                                       \
 {                                                                                           \
     int rx = _x + data[0] * TILE_DIM;                                                       \
     int ry = _y + data[1] * TILE_DIM;                                                       \
                                                                                             \
-    DrawRectangle(rx, ry, data[2] * TILE_DIM, data[3] * TILE_DIM, UI_COLOR_TRANSLUCENT);    \
-    DrawRectangleLines(rx, ry, data[2] * TILE_DIM, data[3] * TILE_DIM, _tint);              \
+    DrawRectangle(rx, ry, (u8)data[2] * boundingWidth, data[3] * TILE_DIM, UI_COLOR_TRANSLUCENT);    \
+    DrawRectangleLines(rx, ry, (u8)data[2] * boundingWidth, data[3] * TILE_DIM, _tint);              \
 }
+
+#define DRAWIA_FLAG_DRAW_TEXTURE      0x1
+#define DRAWIA_FLAG_DRAW_BOUNDING_BOX 0x2
+#define DRAWIA_FLAG_XFLIP             0x4
+#define DRAWIA_FLAG_YFLIP             0x8
 
 static void
 DrawEntInteractable(AppState *state, int x, int y, int kind, char data[5])
 {
+    switch(state->game) {
+    case SA1: {
+        // TODO
+        //DrawEntInteractableSA1(state, x, y, kind, data);
+    } break;
+
+    case SA2: {
+        DrawEntInteractableSA2(state, x, y, kind, data);
+    } break;
+
+    case SA3: {
+        // TODO
+        //DrawEntInteractableSA3(state, x, y, kind, data);
+    } break;
+    }
+}
+
+static void
+DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
+{
     InteractableMeta *ia = &state->paths.interactables.elements[kind];
 
-    bool drawUsingTextureId = false;
+    unsigned int flags = 0;
+    Color boundingTint;
 
     int offsetX = -(ia->texture.width / 2);
     int offsetY = -ia->texture.height;
+    int boundingWidth = TILE_DIM;
 
     switch(kind) {
     case IA__TOGGLE_PLAYER_LAYER__FOREGROUND: {
-        DRAW_ENTITY_RECT(x, y, RED);
+        boundingTint = RED;
+        flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
     } break;
 
     case IA__TOGGLE_PLAYER_LAYER__BACKGROUND: {
-        DRAW_ENTITY_RECT(x, y, GREEN);
+        boundingTint = GREEN;
+        flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
+    } break;
+
+    case IA__GRIND_RAIL__START_GROUND:
+    case IA__GRIND_RAIL__START_AIR:
+    case IA__GRIND_RAIL__END_GROUND:
+    case IA__GRIND_RAIL__END_FORCED_JUMP:
+    case IA__GRIND_RAIL__END_ALTERNATE:
+    case IA__GRIND_RAIL__END_AIR:
+    case IA__GRIND_RAIL__END_GROUND_LEFT:
+    case IA__GRIND_RAIL__END_AIR_LEFT: {
+        boundingTint = DARKBLUE;
+        flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
     } break;
         
     case IA__BOUNCY_BAR: {
-        // TODO: X-Flip
         offsetX -= (ia->texture.width / 2);
         offsetY += (ia->texture.height / 2);
 
-        drawUsingTextureId = true;
+        if(data[0]) {
+            flags |= DRAWIA_FLAG_XFLIP;
+        }
+        flags |= DRAWIA_FLAG_DRAW_TEXTURE;
+    } break;
+
+    case IA__CHECKPOINT: {
+        offsetX = -(ia->texture.width / 4);
+        offsetY = -(ia->texture.height / 4);
+        flags |= DRAWIA_FLAG_DRAW_TEXTURE;
+    } break;
+        
+    case IA__WINDUP_STICK: {
+        boundingTint = PINK;
+        flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
     } break;
         
     default: {
-        drawUsingTextureId = true;
+        flags |= DRAWIA_FLAG_DRAW_TEXTURE;
     } break;
     }
 
-    if(drawUsingTextureId) {
+    if(flags & DRAWIA_FLAG_DRAW_TEXTURE) {
         DrawTexture(ia->texture, x + offsetX, y + offsetY, WHITE);
+    }
+    
+    if(flags & DRAWIA_FLAG_DRAW_BOUNDING_BOX) {
+        DRAW_ENTITY_RECT(x, y, boundingWidth, boundingTint);
     }
 }
 
