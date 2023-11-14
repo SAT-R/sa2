@@ -1,11 +1,13 @@
-C_HEADER_PARSER_DIR = ../c_header_parser
+CSV_CONV_DIR = ../csv_conv
 
 AR = ar
 CC = gcc
 NO_ERROR = -Wno-error=unused-parameter -Wno-error=unused-variable
 
 SRCS = csv_conv.c
-LDFLAGS = -L $(C_HEADER_PARSER_DIR) -lc_header_parser
+
+CFLAGS = -I $(CSV_CONV_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2 -s
+LDFLAGS = -L $(CSV_CONV_DIR) 
 
 .PHONY: all clean
 
