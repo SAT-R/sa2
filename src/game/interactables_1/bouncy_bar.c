@@ -55,7 +55,7 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(0x18);
-    s->graphics.anim = 0x21A;
+    s->graphics.anim = SA2_ANIM_BOUNCY_BAR;
     s->variant = 0;
 
     s->unk1A = SPRITE_OAM_ORDER(18);
@@ -69,7 +69,7 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->unk10 = 0x2000;
 
     if (me->d.sData[0] != 0) {
-        s->unk10 |= 0x400;
+        SPRITE_FLAG_SET(s, X_FLIP);
     }
 }
 

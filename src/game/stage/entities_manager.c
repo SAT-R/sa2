@@ -39,9 +39,9 @@
 
 #include "game/interactables_2/hot_crater/crane.h"
 #include "game/interactables_2/hot_crater/dash_ring.h"
-#include "game/interactables_2/hot_crater/wind_up_stick.h"
+#include "game/interactables_2/hot_crater/windup_stick.h"
 #include "game/interactables_2/hot_crater/floating_spring.h"
-#include "game/interactables_2/hot_crater/turn_around_bar.h"
+#include "game/interactables_2/hot_crater/turnaround_bar.h"
 #include "game/interactables_2/hot_crater/hook_rail.h"
 
 #include "game/interactables_2/music_plant/note_sphere.h"

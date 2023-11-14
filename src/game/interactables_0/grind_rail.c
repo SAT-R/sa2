@@ -26,7 +26,7 @@ typedef struct {
 #define INITIALIZE_RAIL_AIR(type)                                                       \
     CreateEntity_GrindRail_Air(me, spriteRegionX, spriteRegionY, spriteY, type)
 
-extern void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+static void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                    u8 spriteY, u8 railType);
 
 void Task_GrindRail(void);
@@ -79,9 +79,9 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
                     if (!(railKind & RAIL_KIND_1)) {
                         if (player->moveState & MOVESTATE_FACING_LEFT) {
                             s32 newPlayerX = Q_24_8_TO_INT(player->x);
-                            s32 width = me->d.sData[0] * TILE_WIDTH;
-                            s32 r0 = width + me->d.uData[2] * 4;
-                            if (newPlayerX >= r0) {
+                            s32 left = me->d.sData[0] * TILE_WIDTH;
+                            s32 middle = left + me->d.uData[2] * 4;
+                            if (newPlayerX >= middle) {
                                 if ((!(player->unk5C & gPlayerControls.jump)
                                      || !(railKind & RAIL_KIND_2))
                                     && !(railKind & RAIL_KIND_1))
@@ -108,9 +108,9 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
                     // _0800FFF0
                     if (!(player->moveState & MOVESTATE_FACING_LEFT)) {
                         s32 playerX = Q_24_8_TO_INT(player->x);
-                        s32 rightP = posX + me->d.sData[0] * TILE_WIDTH;
-                        rightP += me->d.uData[2] * 4;
-                        if (playerX <= rightP) {
+                        s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
+                        middle += me->d.uData[2] * 4;
+                        if (playerX <= middle) {
                             if ((!(player->unk5C & gPlayerControls.jump))
                                 || !(railKind & RAIL_KIND_2))
                                 goto _080100B0;
@@ -133,18 +133,18 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
                     // _08010060
                     if (railKind & RAIL_KIND_1) {
                         s32 playerX = Q_24_8_TO_INT(player->x);
-                        s32 rightP = posX + me->d.sData[0] * TILE_WIDTH;
-                        rightP += me->d.uData[2] * 4;
-                        if (playerX < rightP)
+                        s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
+                        middle += me->d.uData[2] * 4;
+                        if (playerX < middle)
                             goto _08010096;
                         else
                             goto _080100B0;
                     } else {
                         // _08010080
                         s32 playerX = Q_24_8_TO_INT(player->x);
-                        s32 rightP = posX + me->d.sData[0] * TILE_WIDTH;
-                        rightP += me->d.uData[2] * 4;
-                        if (playerX <= rightP)
+                        s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
+                        middle += me->d.uData[2] * 4;
+                        if (playerX <= middle)
                             goto _080100B0;
                     }
                 _08010096:
