@@ -15,358 +15,15 @@
 #include <raylib.h>
 
 #include "jasc_parser/jasc_parser.h"
-#include "../../_shared/c_header_parser/parser.h"
 #include "../../_shared/csv_conv/csv_conv.h"
 
 #include "../../../include/constants/interactables.h"
 #include "../../../include/constants/zones.h"
 
-#define TILE_DIM 8
-#define TILES_PER_METATILE 12
-#define METATILE_DIM (TILES_PER_METATILE*TILE_DIM)
-#define NUM_TILES_INSIDE_METATILES (TILES_PER_METATILE*TILES_PER_METATILE)
-
-
-#define ATLAS_WIDTH   32
-#define ATLAS_HEIGHT  32
-
-#define GBA_DISPLAY_WIDTH  240
-#define GBA_DISPLAY_HEIGHT 160
-#define GBA_DISPLAY_BORDER_COLOR RED
-
-#define UI_HEADER_HEIGHT               18
-
-#define UI_APP_CLOSE_BUTTON_DIM       20
-
-#define UI_COLOR_APP_HEADER           LIGHTGRAY
-#define UI_COLOR_BACKGROUND           RAYWHITE
-#define UI_COLOR_BACKGROUND_SAVE      DARKBLUE
-#define UI_COLOR_BUTTON               GRAY
-#define UI_COLOR_BUTTON_HOVER         LIGHTGRAY
-#define UI_COLOR_BUTTON_PRESSED       DARKGRAY
-#define UI_COLOR_BUTTON_TEXT          WHITE
-#define UI_COLOR_BUTTON_OFF           RED
-#define UI_COLOR_BUTTON_OFF_HOVER     PINK
-#define UI_COLOR_BUTTON_OFF_PRESSED   MAROON
-#define UI_COLOR_BUTTON_OFF_TEXT      WHITE
-#define UI_COLOR_BUTTON_ON            LIME
-#define UI_COLOR_BUTTON_ON_HOVER      GREEN
-#define UI_COLOR_BUTTON_ON_PRESSED    DARKGREEN
-#define UI_COLOR_BUTTON_ON_TEXT       WHITE
-#define UI_COLOR_BUTTON_PREVIEW_BACK  BLUE
-#define UI_COLOR_BUTTON_PREVIEW_FRONT MAROON
-#define UI_COLOR_BUTTON_SAVE          LIME
-#define UI_COLOR_BUTTON_SAVE_HOVER    GREEN
-#define UI_COLOR_BUTTON_SAVE_PRESSED  DARKGREEN
-#define UI_COLOR_BUTTON_SAVE_TEXT     WHITE
-#define UI_COLOR_BUTTON_SAVE_WARN          GOLD
-#define UI_COLOR_BUTTON_SAVE_WARN_HOVER    YELLOW
-#define UI_COLOR_BUTTON_SAVE_WARN_PRESSED  ORANGE
-#define UI_COLOR_BUTTON_SAVE_WARN_TEXT     GRAY
-#define UI_COLOR_TEXT                 DARKBLUE
-#define UI_COLOR_TRANSLUCENT          CLITERAL(Color){WHITE.r, WHITE.g, WHITE.b, 127}
-#define UI_COLOR_WINDOW_BACK          RAYWHITE
-#define UI_COLOR_WINDOW_HEADER        LIGHTGRAY
-
-#define UIWND_ID_UNSAVED_CHANGES      0
-
-#define IS_USER_KEY_DOWN_LEFT       (IsMouseButtonDown(MOUSE_BUTTON_LEFT)   || IsKeyDown(KEY_X))
-#define IS_USER_KEY_DOWN_MIDDLE     (IsMouseButtonDown(MOUSE_BUTTON_MIDDLE) || IsKeyDown(KEY_C))
-#define IS_USER_KEY_DOWN_RIGHT      (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)  || IsKeyDown(KEY_V))
-#define IS_USER_KEY_RELEASED_LEFT   (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)   || IsKeyReleased(KEY_X))
-#define IS_USER_KEY_RELEASED_MIDDLE (IsMouseButtonReleased(MOUSE_BUTTON_MIDDLE) || IsKeyReleased(KEY_C))
-#define IS_USER_KEY_RELEASED_RIGHT  (IsMouseButtonReleased(MOUSE_BUTTON_RIGHT)  || IsKeyReleased(KEY_V))
-
-// Adds an element to any dynamic array (with "capacity", "count" and "SomeType *elements").
-// Please make sure to initialize your list to all-zeroes before calling this macro.
-#define DA_DEFAULT_CAP 128
-#define da_append_to(list, new_element_ptr, _arrayName)                                                     \
-{                                                                                                           \
-    while((list)->count + 1 > (list)->capacity) {                                                           \
-        (list)->capacity += DA_DEFAULT_CAP;                                                                 \
-        (list)->_arrayName = realloc((list)->_arrayName, (list)->capacity * sizeof((list)->_arrayName[0])); \
-    }                                                                                                       \
-                                                                                                            \
-    memcpy(&(list)->_arrayName[(list)->count++], new_element_ptr, sizeof(*new_element_ptr));                \
-}
-#define da_append(list, new_element_ptr)                                                                    \
-{                                                                                                           \
-    da_append_to(list, new_element_ptr, elements);                                                          \
-}
-
-#define MIN(a, b) ( ((a) < (b)) ? (a) : (b) )
-#define MAX(a, b) ( ((a) > (b)) ? (a) : (b) )
-#define CLAMP(value, min, max) (MIN(MAX(value, min), max))
-
-typedef enum {
-    GAME_UNK = 0,
-    GAME_SA1 = 1,
-    GAME_SA2 = 2,
-    GAME_SA3 = 3,
-    GAME_KATAM = 4,
-} Game;
-
-typedef enum {
-    LAYER_BACK = 0,
-    LAYER_FRONT = 1,
-
-    LAYER_COUNT
-} MetatileLayer;
-
-typedef enum {
-    ET_INTERACTABLE = 0,
-    ET_ITEM         = 1,
-    ET_ENEMY        = 2,
-    ET_RING         = 3,
-
-    ENTITY_TYPE_COUNT
-} EntityType;
-
-typedef enum {
-    MAP_FLAG_SHOW_BACK_LAYER  = 0x1,
-    MAP_FLAG_SHOW_FRONT_LAYER = 0x2,
-
-    // A little GBA display preview which might help to test visual consistency
-    MAP_FLAG_SHOW_GBA_RECT    = 0x4,
-
-    MAP_FLAGS_ON_INIT = (MAP_FLAG_SHOW_BACK_LAYER | MAP_FLAG_SHOW_FRONT_LAYER),
-} MapFlags;
-
-typedef enum {
-    UIWND_FLAG_IS_VISIBLE        = 0x1,
-    UIWND_FLAG_SHALL_HIDE        = 0x2,
-
-    // Set only after processing UIWND_FLAG_SHALL_HIDE.
-    UIWND_FLAG_HID_AWAY          = 0x4,
-
-    UIWND_FLAG_HAS_CLOSE_BUTTON  = 0x8,
-} UIWindowFlag;
-
-typedef enum {
-    UIWND_TYPE_DEFAULT      = 0,
-    UIWND_TYPE_OK           = 1,
-    UIWND_TYPE_YESNO        = 2,
-    // UIWND_TYPE_SOMEOTHER    = 3,
-} UIWindowType;
-
-typedef enum {
-    UIWND_RESULT_NO             = -1,
-    UIWND_RESULT_DEFAULT        = 0,
-    UIWND_RESULT_CLOSE_BUTTON   = UIWND_RESULT_DEFAULT,
-    UIWND_RESULT_YES            = 1,
-} UIWindowResult;
-
-typedef struct {
-    Color *colors;
-    int count;
-} Palette;
-
-typedef struct {
-    char *path;
-    void *data;
-    int dataSize;
-} File;
-
-typedef struct {
-    char *dir;
-
-    Image tileset;
-    Palette palette;
-
-    // Used for metatiles in maps
-    File tilemap;
-
-    // 12 for metatiles
-    unsigned short xTiles, yTiles;
-    char bytesPerTilemapIndex;
-
-    /* Only used for stage maps */
-    File layers[LAYER_COUNT];
-    File collisionFlags;
-    File collisionHeightmap;
-    File collisionRotation;
-} Tilemap;
-
-typedef struct {
-    Texture *elements;
-    int capacity, count;
-} TextureList;
-
-typedef struct {
-    char *interactables;
-    char *items;
-    char *enemies;
-    char *rings;
-} EntityCSVs;
-
-typedef struct {
-    MapRegions interactables;
-    MapRegions items;
-    MapRegions enemies;
-    MapRegions rings;
-} EntityPositions;
-
-typedef struct {
-    char *name;
-    unsigned short id;
-    unsigned short animIdle, animGettingReady;
-    Texture2D texture;
-} Character;
-
-typedef struct {
-    Character *elements;
-    short count, capacity;
-    short selected;
-} CharacterList;
-
-typedef struct {
-    char *name;
-    unsigned short id;
-    unsigned short anim;
-    Texture2D texture;
-} EntityMeta;
-
-typedef struct {
-    char *name;
-    char *type;
-    unsigned short id;
-    unsigned short anim;
-    Texture2D texture;
-} InteractableMeta;
-
-typedef struct {
-    EntityMeta *elements;
-    int capacity, count;
-} EntityMetaList;
-
-typedef struct {
-    InteractableMeta *elements;
-    int capacity, count;
-} InteractableMetaList;
-
-typedef struct {
-    Texture txItembox;
-    TextureList oneUpIcons;
-    EntityMetaList items;
-    unsigned short animItembox;
-    unsigned short animItemType;
-} ItemMetaList;
-
-
-
-typedef struct {
-    // The dir containing "data/", "graphics/", "src/", etc.
-    char *gameRoot;
-
-    // e.g. ./data/maps/zone_1/act_1/
-    char *mapRoot;
-
-    Tilemap background;
-    Tilemap map;
-    EntityCSVs entityCSVs;
-    EntityPositions entityPositions;
-
-    /* C-Header paths containing constants */
-    char *game_h;
-    char *animations_h;
-    char *enemies_h;
-    char *interactables_h;
-    char *items_h;
-
-    // "SONIC", "TAILS", ...
-    CharacterList characters;
-
-    EntityMetaList enemies;
-    InteractableMetaList interactables;
-    ItemMetaList items;
-    EntityMeta ring;
-} FileInfo;
-
-
-typedef struct {
-    int x;
-    int y;
-} Vector2i;
-
-typedef struct {
-    void *data; // SA1: u8*, SA2/SA3: u16*
-    int size;
-} MapLayout;
-
-typedef struct {
-    int x, y;
-} MapCamera;
-
-typedef struct {
-    // The metatile indices currently selected, in the following format:
-    // (BBBB: Back, FFFF: Front - 16 bits each)
-    // BBBB FFFF BBBB FFFF
-    unsigned short *metatiles;
-    short width, height;
-    int capacity;
-} MapSelection;
-
-typedef struct {
-    int width;
-    int height;
-    unsigned short spawnX, spawnY;
-    unsigned short endX, endY;
-
-    MapFlags flags;
-    
-    MapCamera camera;
-
-    // Position of Metatile on first mouse-down
-    Vector2i initialMetatile;
-
-    // Position of Metatile that is selected
-    Vector2i selectedMetatile;
-    short selectedMetatileIndexFront;
-    short selectedMetatileIndexBack;
-} StageMap;
-
-typedef struct {
-    int x, y;
-    int width, height;
-    UIWindowFlag flags;
-    UIWindowType type;
-    UIWindowResult lastResult;
-    char *headerText;
-    char *message;
-} UIWindow;
-
-typedef struct {
-    int count, capacity;
-    UIWindow *elements;
-} UIWindowList;
-
-typedef struct {
-    UIWindowList windows;
-
-    Rectangle recHeader;
-    Rectangle recMap;
-
-    // FALSE (split): Display preview metatile's layers separately
-    // TRUE (merged): Display preview metatile's layers ontop eachother
-    bool isMtPreviewMerged;
-} Ui;
-
-typedef struct {
-    int windowWidth;
-    int windowHeight;
-    bool ignoreUnsavedChanges;
-    bool unsavedChangesExist;
-
-    // Root directory of one of the SAT-R decomp projects
-    // or a project based on them.
-    // TODO: Remove (replaced with FileInfo!)
-    Game game;
-
-    FileInfo paths;
-
-    StageMap map;
-    Ui ui;
-} AppState;
+#include "global.h"
+#include "draw.h"
+#include "map.h"
+#include "parsing.h"
 
 
 /* Data structures for asset files */
@@ -378,36 +35,15 @@ typedef struct {
 } MetatileTile;
 
 static void CreateUIWindows(AppState *state);
-static bool DrawButton(int x, int y, int width, int height, char *text);
-static bool DrawButtonRec(Rectangle rec, char *text);
-static bool DrawButtonColored(Rectangle rec, char *text, int fontSize, Color tint, Color hoverTint, Color PressTint, Color textTint);
 
-static Texture2D CreateMetatileAtlas(AppState *state, int numMetatiles);
 static Texture2D CreateMapTexture(Rectangle recMap, int pixelFormat);
-static bool DrawAndHandleCloseButton(AppState *state);
-static void DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap);
-static inline void DrawMetatilePreviewButton(AppState *state, int x, int y, Texture2D txAtlas);
 static void DrawPalette(int palX, int palY, const int colorWidth, Color *colors, int numColors);
 static void DrawPalettes(FileInfo *paths);
 
-static void DrawMainHeader(AppState *state, Texture2D txAtlas);
-static void DrawUI(AppState *state, Texture2D txAtlas);
-static void DrawUIWindow(UIWindow *window);
-
-static void DrawEntInteractable(AppState *state, int x, int y, int index, char data[5]);
-static void DrawEntInteractableSA2(AppState *state, int x, int y, int index, char data[5]);
-static void DrawEntItem(AppState *state, int x, int y, int index, char data[5]);
-static void DrawEntEnemy(AppState *state, int x, int y, int index, char data[5]);
-static void DrawEntRing(AppState *state, int x, int y);
-
-static inline int GetMetatileIndex(AppState *state, int x, int y, MetatileLayer layer);
-static void ParseOrCreateMetadataTxt(AppState *state, Tilemap* tm);
-static Vector2i GetMetatilePointBelowMouse(StageMap *map, Rectangle recMap);
 static void HandleMouseInput(AppState *state, Rectangle recMap);
 static void HandleKeyInput(AppState *state, Rectangle recMap);
 static bool HandleMouseInputUIWindows(AppState *state);
 static void SetupFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir);
-static void LoadEntityNamesAndIDs(AppState *state);
 static void LoadAllEntityTextures(AppState *state);
 
 static Rectangle GetSpawnPosRectangle(StageMap *map, CharacterList *chars);
@@ -416,6 +52,27 @@ static inline void MoveCameraToSpawn(AppState *state, Rectangle recMap);
 
 static void Debug_DrawAllEntityTextures(AppState *state);
 static void DrawEntities(AppState *state, Rectangle recMap);
+
+#if MEASURE_MALLOC
+static int TempMallocCounter = 0;
+static int TempMallocAllocated = 0;
+static int TempMemcpyCounter = 0;
+static unsigned int TempTotalMemcpyCopied  = 0;
+
+void *_Realloc(void *block, size_t size)
+{
+    TempMallocCounter++;
+    TempMallocAllocated += size;
+    return realloc(block, size);
+}
+
+void *_Memcpy(void *dst, void *src, size_t size)
+{
+    TempMemcpyCounter++;
+    TempTotalMemcpyCopied += size;
+    return memcpy(dst, src, size);
+}
+#endif
 
 
 int main(void)
@@ -522,7 +179,7 @@ int main(void)
     Texture2D txAtlas = CreateMetatileAtlas(&state, numMetatiles);
     
     Rectangle recMap = {               0, METATILE_DIM ,   // x, y
-                         GetScreenWidth(), GetScreenHeight() - METATILE_DIM}; // w, h
+                        GetScreenWidth(), GetScreenHeight() - METATILE_DIM}; // w, h
 
     Texture2D txMap = CreateMapTexture(recMap, txAtlas.format);
 
@@ -532,7 +189,6 @@ int main(void)
     recMap.height = MIN(recMap.height, state.map.height * METATILE_DIM);
 
     MoveCameraToSpawn(&state, recMap);
-
 
     bool closeBtnClicked = false;
     while (!WindowShouldClose())
@@ -551,12 +207,13 @@ int main(void)
             DrawMainHeader(&state, txAtlas);
             DrawPalettes(&state.paths);
 
+            Debug_DrawAllEntityTextures(&state);
+            //DrawEntities(&state, recMap);
+
             DrawUI(&state, txAtlas);
 
             HandleMouseInputSpawnPos(&state);
             
-            //Debug_DrawAllEntityTextures(&state);
-            DrawEntities(&state, recMap);
 
             closeBtnClicked |= DrawAndHandleCloseButton(&state);
         EndDrawing();
@@ -577,6 +234,13 @@ int main(void)
             }
         }
     }
+    
+#if MEASURE_MALLOC
+    FILE *fTime = fopen("malloc.txt", "w");
+    fprintf(fTime, "malloc calls: %d, bytes: 0x%X\n", TempMallocCounter, TempMallocAllocated);
+    fprintf(fTime, "memcpy calls: %d, bytes: 0x%X\n", TempMemcpyCounter, TempTotalMemcpyCopied);
+    fclose(fTime);
+#endif
 
     CloseWindow();
 
@@ -740,22 +404,6 @@ CreateMapTexture(Rectangle recMap, int pixelFormat)
     return txMap;
 }
 
-static bool
-DrawAndHandleCloseButton(AppState *state)
-{
-    Rectangle recCloseBtn = {state->windowWidth - UI_APP_CLOSE_BUTTON_DIM, 0, UI_APP_CLOSE_BUTTON_DIM, UI_APP_CLOSE_BUTTON_DIM};
-
-    bool clicked = DrawButtonColored(recCloseBtn, "X", UI_APP_CLOSE_BUTTON_DIM,
-        UI_COLOR_BUTTON_OFF, UI_COLOR_BUTTON_OFF_HOVER, UI_COLOR_BUTTON_OFF_PRESSED, UI_COLOR_BUTTON_OFF_TEXT);
-
-    if(clicked && state->unsavedChangesExist) {
-        UIWindow *window = &state->ui.windows.elements[UIWND_ID_UNSAVED_CHANGES];
-        window->flags |= UIWND_FLAG_IS_VISIBLE;
-    }
-
-    return clicked;
-}
-
 static void
 CreateUIWindows(AppState *state)
 {
@@ -770,11 +418,11 @@ CreateUIWindows(AppState *state)
     warnChangesMade.headerText = "Unsaved changes";
     warnChangesMade.message    = "There are unsaved changes.\n"
                                  "Do you still want to exit?";
-    
+
     da_append(&state->ui.windows, &warnChangesMade);
 }
 
-static bool
+bool
 IsMouseAboveUiElements(AppState *state)
 {
     bool isHovering = false;
@@ -850,7 +498,7 @@ GetSpawnPosRectangle(StageMap *map, CharacterList *chars)
     return recChar;
 }
 
-static inline bool
+inline bool
 IsMouseOnSpawn(StageMap *map, CharacterList *chars)
 {
     Vector2 mouse      = GetMousePosition();
@@ -1022,11 +670,11 @@ LoadPaletteFromJascFile(char *jascPath, Palette *pal)
     pal->count  = jasc.count;
 }
 
-static inline char *allocPath(char *folder, char *fileName)
+inline char *allocPath(char *folder, char *fileName)
 {
     const char *source      = TextFormat("%s/%s", folder, fileName);
     int allocatedSize = TextLength(source) + 1;
-    char *dest        = calloc(allocatedSize, 1);
+    char *dest        = _Realloc(NULL, allocatedSize);
     TextCopy(dest, source);
     return dest;
 }
@@ -1119,6 +767,16 @@ SetupFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
     info.gameRoot = gameDir;
     info.mapRoot  = mapDir;
     
+    /* Global C Headers */
+    info.game_h          = allocPath(gameDir, "include/game/game.h");
+    info.animations_h    = allocPath(gameDir, "include/constants/animations.h");
+    info.enemies_h       = allocPath(gameDir, "include/constants/enemies.h");
+    info.interactables_h = allocPath(gameDir, "include/constants/interactables.h");
+    info.items_h         = allocPath(gameDir, "include/constants/items.h");
+
+
+    /* Map-specific */
+
     // Base Paths
     char fgPath[MAX_FILEPATH_LENGTH];
     char bgPath[MAX_FILEPATH_LENGTH];
@@ -1128,18 +786,12 @@ SetupFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
     SetupTilemapPaths(&info.background, bgPath);
     SetupTilemapPaths(&info.map, fgPath);
 
-    /* C Headers */
-    info.game_h          = allocPath(gameDir, "include/game/game.h");
-    info.animations_h    = allocPath(gameDir, "include/constants/animations.h");
-    info.enemies_h       = allocPath(gameDir, "include/constants/enemies.h");
-    info.interactables_h = allocPath(gameDir, "include/constants/interactables.h");
-    info.items_h         = allocPath(gameDir, "include/constants/items.h");
-
-    /* Entity data */
+    // Entity data
     info.entityCSVs.enemies       = allocPath(mapDir, "entities/enemies.csv");
     info.entityCSVs.interactables = allocPath(mapDir, "entities/interactables.csv");
     info.entityCSVs.items         = allocPath(mapDir, "entities/itemboxes.csv");
     info.entityCSVs.rings         = allocPath(mapDir, "entities/rings.csv");
+
 
     // Copy local data into output
     if(outInfo) {
@@ -1148,11 +800,11 @@ SetupFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
 }
 
 
-static Texture2D
+Texture2D
 CreateMetatileAtlas(AppState *state, int numMetatiles)
 {
     // NOTE: Max capacity is 32*32 (= 1024)
-    assert (numMetatiles < (ATLAS_WIDTH*ATLAS_HEIGHT) );
+    //assert (numMetatiles < (ATLAS_WIDTH*ATLAS_HEIGHT) );
 
     FileInfo *paths = &state->paths;
     
@@ -1161,7 +813,7 @@ CreateMetatileAtlas(AppState *state, int numMetatiles)
     atlas.height    = ATLAS_HEIGHT * paths->map.yTiles * TILE_DIM;
     atlas.format    = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
     atlas.mipmaps   = 1;
-    atlas.data      = malloc(atlas.width * atlas.height * sizeof(Color));
+    atlas.data      = calloc(atlas.width * atlas.height * sizeof(Color), 1);
     
     // TODO: Account for "empty" tiles at the end of a tileset file.
     int numTilesetTiles = (paths->map.tileset.width / TILE_DIM) * (paths->map.tileset.height / TILE_DIM);
@@ -1242,7 +894,7 @@ GetMousePositionInRec(Rectangle rec) {
     };
 }
 
-static inline int
+inline int
 GetMetatileIndex(AppState *state, int x, int y, MetatileLayer layer)
 {
     ///assert(layer < LAYER_COUNT);
@@ -1251,7 +903,7 @@ GetMetatileIndex(AppState *state, int x, int y, MetatileLayer layer)
     return mtIndices[y * state->map.width + x];
 }
 
-static Vector2i
+Vector2i
 GetMetatilePointBelowMouse(StageMap *map, Rectangle recMap) {
     Vector2 mouse = GetMousePosition();
 
@@ -1263,489 +915,6 @@ GetMetatilePointBelowMouse(StageMap *map, Rectangle recMap) {
         };
     } else {
         return CLITERAL(Vector2i){-1, -1};
-    }
-}
-
-static void
-DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
-{
-    StageMap *map = &state->map;
-
-    //if(map->bytesPerIndex == 2)
-    {
-        Rectangle rectDest = {0};
-        Rectangle rectSrc = {0, 0, METATILE_DIM, METATILE_DIM};
-        rectDest.width  = rectSrc.width;
-        rectDest.height = rectSrc.height;
-        
-        Vector2i mtMouse = GetMetatilePointBelowMouse(map, recMap);
-
-        { // Only draw inside the map "widget"
-        BeginScissorMode(recMap.x, recMap.y, recMap.width, recMap.height);
-
-            // Clear the buffer
-            ClearBackground(state->paths.map.palette.colors[0]);
-
-            // TEMP?
-            // Create a 1-pixel backdrop, because 0th color is fully transparent,
-            // so the mouse-hover isn't shown
-            static Texture txBackdrop = {0};
-            if(!txBackdrop.id) {
-                Image backdrop = {
-                    .width = 1,
-                    .height = 1,
-                    .mipmaps = 1,
-                    .format = txMap.format,
-                    .data = &state->paths.map.palette.colors[0],
-                };
-                txBackdrop = LoadTextureFromImage(backdrop);
-            }
-            
-            bool isHoveringUI    = IsMouseAboveUiElements(state);
-            bool isHoveringSpawn = IsMouseOnSpawn(map, &state->paths.characters);
-
-            for(int y = 0; y < (recMap.height / METATILE_DIM) + 1; y++) {
-                for(int x = 0; x < (recMap.width / METATILE_DIM) + 1; x++) {
-                    rectDest.x = x*METATILE_DIM - (map->camera.x % METATILE_DIM) + recMap.x;
-                    rectDest.y = y*METATILE_DIM - (map->camera.y % METATILE_DIM) + recMap.y;
-                    
-                    int mtX = (x + (map->camera.x / METATILE_DIM));
-                    int mtY = (y + (map->camera.y / METATILE_DIM));
-                    
-                    bool isHoveredOver     = (mtX == mtMouse.x && mtY == mtMouse.y);
-                    bool drawMouseMetatile = (isHoveredOver && !isHoveringUI && !isHoveringSpawn);
-                    bool isSelected        = (mtX == map->selectedMetatile.x && mtY == map->selectedMetatile.y);
-                    bool isFirstMouse      = (mtX == map->initialMetatile.x && mtY == map->initialMetatile.y);
-                    bool firstMouseExists  = (map->initialMetatile.x >= 0 && map->initialMetatile.y >= 0);
-
-                    bool metatileShouldDarken =
-                            (firstMouseExists &&  isFirstMouse) ||
-                            !firstMouseExists && drawMouseMetatile;
-
-                    Color tint = (metatileShouldDarken) ? LIGHTGRAY : WHITE;
-                    Color tintDarkened = tint;
-                    
-                    // Darken even further on button-press
-                    if(metatileShouldDarken && (isFirstMouse || IS_USER_KEY_DOWN_LEFT)) {
-                        tint = CLITERAL(Color) {
-                            tint.r * 0.8,
-                            tint.g * 0.8,
-                            tint.b * 0.8,
-                            tint.a,
-                        };
-                    }
-
-                    // Draw backdrop for 0th color
-                    if(metatileShouldDarken) { 
-                        DrawTexturePro(txBackdrop,
-                            CLITERAL(Rectangle){0,0,1,1},
-                            CLITERAL(Rectangle){rectDest.x, rectDest.y, METATILE_DIM, METATILE_DIM},
-                            CLITERAL(Vector2){0, 0}, 0,
-                            tint
-                        );
-                    }
-                    
-                    int mtIndexBack  = GetMetatileIndex(state, mtX, mtY, LAYER_BACK);
-                    int mtIndexFront = GetMetatileIndex(state, mtX, mtY, LAYER_FRONT);
-
-                    bool iterateAgain = false;
-                    do {
-                        // Metatile 0 is always fully transparent, so don't draw that.
-                        if(mtIndexBack && (map->flags & MAP_FLAG_SHOW_BACK_LAYER)) {
-                            rectSrc.x = (mtIndexBack % ATLAS_WIDTH) * METATILE_DIM;
-                            rectSrc.y = (mtIndexBack / ATLAS_WIDTH) * METATILE_DIM;
-
-                            DrawTextureRec(txMtAtlas, rectSrc, CLITERAL(Vector2){rectDest.x, rectDest.y}, tint);
-                        }
-
-                        if(mtIndexFront && (map->flags & MAP_FLAG_SHOW_FRONT_LAYER)) {
-                            rectSrc.x = (mtIndexFront % ATLAS_WIDTH) * METATILE_DIM;
-                            rectSrc.y = (mtIndexFront / ATLAS_WIDTH) * METATILE_DIM;
-                            DrawTextureRec(txMtAtlas, rectSrc, CLITERAL(Vector2){rectDest.x, rectDest.y}, tint);
-                        }
-
-                        if(!iterateAgain) {
-                            if(drawMouseMetatile) {
-                                mtIndexBack  = map->selectedMetatileIndexBack;
-                                mtIndexFront = map->selectedMetatileIndexFront;
-                                
-                                iterateAgain = true;
-                            }
-                        } else {
-                            break;
-                        }
-                    } while (iterateAgain);
-
-                    // Draw outline for selected metatile in map
-                    if(isSelected) {
-                        DrawRectangleLines(rectDest.x, rectDest.y, rectDest.width, rectDest.height, RED);
-                    }
-                }
-            }
-            
-            // Draw Player character at spawn position
-            // TODO: Maybe only do this inside and on some border of recMap to save resources?
-            int selectedChar = state->paths.characters.selected;
-            Texture2D *txChar = &state->paths.characters.elements[selectedChar].texture;
-            int sx = recMap.x + state->map.spawnX - state->map.camera.x - (txChar->width * 0.5);;
-            int sy = recMap.y + state->map.spawnY - state->map.camera.y - (txChar->height * 0.5);
-
-            DrawTexturePro(*txChar, CLITERAL(Rectangle){0, 0,  -txChar->width, txChar->height},
-                                    CLITERAL(Rectangle){sx, sy,  txChar->width, txChar->height},
-                                    CLITERAL(Vector2){0.0, 0.0}, 0.0, WHITE);
-        EndScissorMode();
-        }
-    }
-    // else
-    {
-        // TODO: bytesPerIndex == 1
-    }
-}
-
-static inline bool
-DrawButton(int x, int y, int width, int height, char *text) {
-    return DrawButtonRec(CLITERAL(Rectangle){x, y, width, height}, text);
-}
-
-static inline bool
-DrawButtonRec(Rectangle rec, char *text) {
-    return DrawButtonColored(rec, text, 20,
-        UI_COLOR_BUTTON, UI_COLOR_BUTTON_HOVER, UI_COLOR_BUTTON_PRESSED, UI_COLOR_BUTTON_TEXT);
-}
-
-static inline bool
-DrawButtonColored(Rectangle rec, char *text, int fontSize, Color tint, Color hoverTint, Color PressTint, Color textTint)
-{
-    bool wasReleased = false;
-
-    bool mouseIsHovering = CheckCollisionPointRec(GetMousePosition(), rec);
-
-    BeginScissorMode(rec.x, rec.y, rec.width, rec.height);
-        if(mouseIsHovering) {
-            SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
-
-            if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-                DrawRectangleRec(rec, PressTint);
-            } else {
-                DrawRectangleRec(rec, hoverTint);
-            }
-
-            if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-                wasReleased = true;
-            }
-        } else {
-            DrawRectangleRec(rec, tint);
-        }
-
-        DrawText(text, rec.x + 1, rec.y + 1, fontSize, textTint);
-    EndScissorMode();
-
-    return wasReleased;
-}
-
-// Colors the button depending on 'cond' param
-//  false: red
-//  true:  green
-static inline bool
-DrawOnOffButton(Rectangle rec, char *text, bool cond)
-{
-    Color tintNeutral = (cond) ? UI_COLOR_BUTTON_ON         : UI_COLOR_BUTTON_OFF;
-    Color tintHover   = (cond) ? UI_COLOR_BUTTON_ON_HOVER   : UI_COLOR_BUTTON_OFF_HOVER;
-    Color tintPress   = (cond) ? UI_COLOR_BUTTON_ON_PRESSED : UI_COLOR_BUTTON_OFF_PRESSED;
-    Color tintText    = (cond) ? UI_COLOR_BUTTON_ON_TEXT    : UI_COLOR_BUTTON_OFF_TEXT;
-
-    return DrawButtonColored(rec, text, 20, tintNeutral, tintHover, tintPress, tintText);
-}
-
-static inline void
-DrawMetatileScaled(Texture2D txAtlas, int x, int y, float scale, int metatileIndex, Color tint)
-{
-    Rectangle recSrc = {
-        (metatileIndex % ATLAS_WIDTH) * METATILE_DIM,
-        (metatileIndex / ATLAS_WIDTH) * METATILE_DIM,
-        METATILE_DIM, METATILE_DIM,
-    };
-    
-    DrawTexturePro(txAtlas, recSrc, CLITERAL(Rectangle){x, y, scale*METATILE_DIM, scale*METATILE_DIM}, CLITERAL(Vector2){0, 0}, 0.0, tint);
-}
-
-static inline void
-DrawMetatile(Texture2D txAtlas, int x, int y, int metatileIndex, Color tint)
-{
-    Rectangle recSrc = {
-        (metatileIndex % ATLAS_WIDTH) * METATILE_DIM,
-        (metatileIndex / ATLAS_WIDTH) * METATILE_DIM,
-        METATILE_DIM, METATILE_DIM,
-    };
-
-    DrawTextureRec(txAtlas, recSrc, CLITERAL(Vector2){x, y}, tint);
-}
-
-static inline
-void DrawMetatilePreviewButton(AppState *state, int x, int y, Texture2D txAtlas)
-{
-    const char *previewState = (state->ui.isMtPreviewMerged) ? "Merged" : "Split";
-    char *btnTextMetatilePreview = (char*)TextFormat("Preview: %s", previewState);
-    bool previewBtnPressed = DrawButtonRec(CLITERAL(Rectangle){x, y, 170, 20}, btnTextMetatilePreview);
-    
-    if(previewBtnPressed) {
-        state->ui.isMtPreviewMerged = !state->ui.isMtPreviewMerged;
-    }
-
-    int mtBackX     = x+180;
-    int mtBackY     = 0;
-    int mtFrontX    = mtBackX;
-    int mtFrontY    = mtBackY;
-
-    bool isPreviewMerged = state->ui.isMtPreviewMerged;
-    if(!isPreviewMerged) {
-        mtFrontX      = mtBackX + METATILE_DIM + 1;
-        mtFrontY      = mtBackY;
-    }
-
-    // Pos and dimensions of the background
-    Rectangle recBack  = {0};
-    Rectangle recFront = {0};
-    Color bgTintBack  = UI_COLOR_BUTTON_PREVIEW_BACK;
-    Color bgTintFront = UI_COLOR_BUTTON_PREVIEW_FRONT;
-
-    if(isPreviewMerged) {
-        recBack = CLITERAL(Rectangle){
-            mtBackX - 1,
-            mtBackY,
-            METATILE_DIM + 3,
-            METATILE_DIM
-        };
-
-        recFront = recBack;
-
-        bgTintBack.r = (bgTintBack.r + bgTintFront.r) * 2 / 3;
-        bgTintBack.g = (bgTintBack.g + bgTintFront.g) * 2 / 3;
-        bgTintBack.b = (bgTintBack.b + bgTintFront.b) * 2 / 3;
-
-        DrawRectangle(recBack.x,   recBack.y,  recBack.width,  recBack.height, bgTintBack);
-    } else {
-        recBack = CLITERAL(Rectangle){
-            mtBackX - 1,
-            mtBackY,
-            METATILE_DIM + 3,
-            METATILE_DIM
-        };
-        
-        recFront = CLITERAL(Rectangle){
-            mtFrontX - 1,
-            mtFrontY,
-            METATILE_DIM + 3,
-            METATILE_DIM
-        };
-        
-        DrawRectangle(recBack.x,   recBack.y,  recBack.width,  recBack.height, bgTintBack);
-        DrawRectangle(recFront.x, recFront.y, recFront.width, recFront.height, bgTintFront);
-    }
-
-    int mtIndexFront = state->map.selectedMetatileIndexFront;
-    int mtIndexBack  = state->map.selectedMetatileIndexBack ;
-
-    DrawMetatile(txAtlas, mtBackX, mtBackY, mtIndexBack, WHITE);
-    DrawMetatile(txAtlas, mtFrontX, mtFrontY, mtIndexFront, WHITE);
-}
-
-static void
-SaveAllData(AppState *state)
-{
-    Tilemap *map = &state->paths.map;
-
-    File *backLayer = &map->layers[LAYER_BACK];
-    SaveFileData(backLayer->path, backLayer->data, backLayer->dataSize);
-    
-    File *frontLayer = &map->layers[LAYER_FRONT];
-    SaveFileData(frontLayer->path, frontLayer->data, frontLayer->dataSize);
-}
-
-static void
-DrawSaveButton(AppState *state, int x, int y)
-{
-    // Save button
-    Rectangle recBtn = CLITERAL(Rectangle){x, y, 110, 20};
-
-    Color tint      = (state->unsavedChangesExist) ? UI_COLOR_BUTTON_SAVE_WARN         : UI_COLOR_BUTTON_SAVE;
-    Color hoverTint = (state->unsavedChangesExist) ? UI_COLOR_BUTTON_SAVE_WARN_HOVER   : UI_COLOR_BUTTON_SAVE_HOVER;
-    Color pressTint = (state->unsavedChangesExist) ? UI_COLOR_BUTTON_SAVE_WARN_PRESSED : UI_COLOR_BUTTON_SAVE_PRESSED;
-    Color textTint  = (state->unsavedChangesExist) ? UI_COLOR_BUTTON_SAVE_WARN_TEXT    : UI_COLOR_BUTTON_SAVE_TEXT;
-
-    bool saveButtonPressed = DrawButtonColored(recBtn,"SAVE MAP", 20, tint, hoverTint, pressTint, textTint);
-    if(saveButtonPressed) {
-        state->ignoreUnsavedChanges = true;
-        state->unsavedChangesExist  = false;
-        SaveAllData(state);
-    }
-}
-
-static void
-DrawMainHeader(AppState *state, Texture2D txAtlas)
-{
-    int initialX = 300;
-    int initialY = 0;
-    int posX     = initialX;
-    int posY     = initialY;
-
-    DrawText("Map Layers", posX, posY, 20, UI_COLOR_TEXT);
-    int backLayerFlag  = state->map.flags & MAP_FLAG_SHOW_BACK_LAYER;
-    int frontLayerFlag = state->map.flags & MAP_FLAG_SHOW_FRONT_LAYER;
-
-    bool bLayerBtnPressed = DrawOnOffButton(CLITERAL(Rectangle){posX, posY += 22, 80, 20}, "Back",  backLayerFlag);
-    bool fLayerBtnPressed = DrawOnOffButton(CLITERAL(Rectangle){posX += 85, posY, 83, 20}, "Front", frontLayerFlag);
-
-    if(bLayerBtnPressed) {
-        state->map.flags ^= MAP_FLAG_SHOW_BACK_LAYER;
-    }
-
-    if(fLayerBtnPressed) {
-        state->map.flags ^= MAP_FLAG_SHOW_FRONT_LAYER;
-    }
-    
-    const char *txtMetatiles = TextFormat(
-        "Metatiles %3d, %3d",
-        state->map.selectedMetatileIndexBack,
-        state->map.selectedMetatileIndexFront);
-
-    DrawText(txtMetatiles, posX -= 85, posY += 30, 20, UI_COLOR_TEXT);
-    DrawMetatilePreviewButton(state, initialX, posY += 20, txAtlas);
-    
-    DrawSaveButton(state, 4, initialY + METATILE_DIM - 20 - 4);
-}
-
-static void
-DrawUI(AppState *state, Texture2D txAtlas)
-{
-    for(int i = 0; i < state->ui.windows.count; i++) {
-        UIWindow *window = &state->ui.windows.elements[i];
-        DrawUIWindow(window);
-    }
-}
-
-static void
-DrawUIWindow(UIWindow *window)
-{
-    Rectangle rec       = CLITERAL(Rectangle){window->x, window->y, window->width, window->height};
-    Rectangle recHeader = CLITERAL(Rectangle){window->x, window->y, window->width, UI_HEADER_HEIGHT};
-
-    if(window->flags & UIWND_FLAG_IS_VISIBLE) {
-        // Background
-        BeginScissorMode(rec.x, rec.y, rec.width, rec.height);
-            DrawRectangleRec(rec, UI_COLOR_WINDOW_BACK);
-
-            // Header
-            DrawRectangleRec(recHeader, UI_COLOR_WINDOW_HEADER);
-            if(window->headerText != NULL) {
-                int fontSize = 10;
-                DrawText(window->headerText, recHeader.x + 2, recHeader.y + recHeader.height/2 - fontSize/2, fontSize, UI_COLOR_TEXT);
-            }
-
-            // Main Message Text
-            if(window->message != NULL) {
-                int fontSize = 10;
-                DrawText(window->message, rec.x + 2, recHeader.y + recHeader.height + fontSize, fontSize, UI_COLOR_TEXT);
-            }
-
-            // Close-Button
-            if(window->flags & UIWND_FLAG_HAS_CLOSE_BUTTON) {
-                Rectangle recX      = CLITERAL(Rectangle){window->x + window->width - UI_HEADER_HEIGHT, window->y, UI_HEADER_HEIGHT, UI_HEADER_HEIGHT};
-                bool closeBtnClicked = DrawButtonColored(recX, NULL, 0, UI_COLOR_BUTTON_OFF, UI_COLOR_BUTTON_OFF_HOVER, UI_COLOR_BUTTON_OFF_PRESSED, UI_COLOR_BUTTON_OFF_TEXT); 
-                if(closeBtnClicked) {
-                    window->lastResult = UIWND_RESULT_CLOSE_BUTTON;
-                    window->flags |= UIWND_FLAG_SHALL_HIDE;
-                }
-            }
-
-            switch(window->type) {
-            case UIWND_TYPE_OK: {
-                // TODO
-            } break;
-                
-            case UIWND_TYPE_YESNO: {
-                int fontSize = 10;
-                Rectangle recYes = CLITERAL(Rectangle){window->x + 0.2*window->width, window->y + window->height - 2*fontSize, 30, fontSize};
-                Rectangle recNo  = CLITERAL(Rectangle){window->x + 0.8*window->width, window->y + window->height - 2*fontSize, 20, fontSize};
-
-                bool yesClicked = DrawButtonColored(recYes, "YES", 10, UI_COLOR_BUTTON_ON,  UI_COLOR_BUTTON_ON_HOVER,  UI_COLOR_BUTTON_ON_PRESSED,  UI_COLOR_BUTTON_ON_TEXT);
-                bool noClicked  = DrawButtonColored(recNo,  "NO",  10, UI_COLOR_BUTTON_OFF, UI_COLOR_BUTTON_OFF_HOVER, UI_COLOR_BUTTON_OFF_PRESSED, UI_COLOR_BUTTON_OFF_TEXT);
-
-                if(yesClicked) {
-                    window->lastResult = UIWND_RESULT_YES;
-                    window->flags |= UIWND_FLAG_SHALL_HIDE;
-                }
-
-                if(noClicked) {
-                    window->lastResult = UIWND_RESULT_NO;
-                    window->flags |= UIWND_FLAG_SHALL_HIDE;
-                }
-            } break;
-
-            }
-        EndScissorMode();
-    }
-}
-
-static void
-SetMetaEntityValues(TokenList *tokList, void *inentities, EntityType et)
-{
-    int count = 0;
-    for(int i = 0; i < tokList->count; i++) {
-        if(i < tokList->count - 2) {
-            Token *tokenPound = &tokList->tokens[i+0];
-            Token *tokenName  = &tokList->tokens[i+1];
-            Token *tokenID    = &tokList->tokens[i+2];
-
-            if((tokenPound->type == POUND_DEFINE)
-            && (tokenName->type == IDENTIFIER)
-            && (tokenID->type == VALUE)) {
-                char *prefixes[ENTITY_TYPE_COUNT] = {
-                    "IA__",
-                    "ITEM__",
-                    "ENEMY__",
-                    NULL, // There's only "rings", no other types of them
-                };
-                char *prefix = prefixes[et];
-
-                switch(et) {
-                    case ET_INTERACTABLE: {
-                        if(TextFindIndex(tokenName->text, prefix) == 0) {
-                            InteractableMetaList *entities = (InteractableMetaList*)inentities;
-                            InteractableMeta ia = {0};
-                            
-                            ia.name = TextReplace(tokenName->text, prefix, "");
-                            ia.id   = TextToInteger(tokenID->text);
-
-                            int delimOffset = TextFindIndex(ia.name, "__");
-                            bool iaHasType  = (delimOffset >= 0);
-                            if (iaHasType) {
-                                ia.name[delimOffset+0] = '\0';
-                                ia.name[delimOffset+1] = '\0';
-                                ia.type = &ia.name[delimOffset + 2];
-                            }
-
-                            da_append(entities, &ia);
-                        }
-                    } break;
-
-                    default: {
-                        EntityMetaList *entities = (EntityMetaList*)inentities;
-
-                        if(TextFindIndex(tokenName->text, prefix) == 0) {
-                            EntityMeta e = {0};
-
-                            e.name = TextReplace(tokenName->text, prefix, "");
-                            e.id   = TextToInteger(tokenID->text);
-                            da_append(entities, &e);
-                        }
-                    } break;
-                }
-                
-                i += 2;
-                continue;
-            }
-        }
     }
 }
 
@@ -1827,149 +996,6 @@ LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
     }
 }
 
-#define DRAW_ENTITY_RECT(_x, _y, _boundingDim, _tint)                                       \
-{                                                                                           \
-    int rx = _x + data[0] * TILE_DIM;                                                       \
-    int ry = _y + data[1] * TILE_DIM;                                                       \
-                                                                                            \
-    DrawRectangle(rx, ry, (u8)data[2] * boundingWidth, data[3] * TILE_DIM, UI_COLOR_TRANSLUCENT);    \
-    DrawRectangleLines(rx, ry, (u8)data[2] * boundingWidth, data[3] * TILE_DIM, _tint);              \
-}
-
-#define DRAWIA_FLAG_DRAW_TEXTURE      0x1
-#define DRAWIA_FLAG_DRAW_BOUNDING_BOX 0x2
-#define DRAWIA_FLAG_XFLIP             0x4
-#define DRAWIA_FLAG_YFLIP             0x8
-
-static void
-DrawEntInteractable(AppState *state, int x, int y, int kind, char data[5])
-{
-    switch(state->game) {
-    case SA1: {
-        // TODO
-        //DrawEntInteractableSA1(state, x, y, kind, data);
-    } break;
-
-    case SA2: {
-        DrawEntInteractableSA2(state, x, y, kind, data);
-    } break;
-
-    case SA3: {
-        // TODO
-        //DrawEntInteractableSA3(state, x, y, kind, data);
-    } break;
-    }
-}
-
-static void
-DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
-{
-    InteractableMeta *ia = &state->paths.interactables.elements[kind];
-
-    unsigned int flags = 0;
-    Color boundingTint;
-
-    int offsetX = -(ia->texture.width / 2);
-    int offsetY = -ia->texture.height;
-    int boundingWidth = TILE_DIM;
-
-    switch(kind) {
-    case IA__TOGGLE_PLAYER_LAYER__FOREGROUND: {
-        boundingTint = RED;
-        flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
-    } break;
-
-    case IA__TOGGLE_PLAYER_LAYER__BACKGROUND: {
-        boundingTint = GREEN;
-        flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
-    } break;
-
-    case IA__GRIND_RAIL__START_GROUND:
-    case IA__GRIND_RAIL__START_AIR:
-    case IA__GRIND_RAIL__END_GROUND:
-    case IA__GRIND_RAIL__END_FORCED_JUMP:
-    case IA__GRIND_RAIL__END_ALTERNATE:
-    case IA__GRIND_RAIL__END_AIR:
-    case IA__GRIND_RAIL__END_GROUND_LEFT:
-    case IA__GRIND_RAIL__END_AIR_LEFT: {
-        boundingTint = DARKBLUE;
-        flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
-    } break;
-        
-    case IA__BOUNCY_BAR: {
-        offsetX -= (ia->texture.width / 2);
-        offsetY += (ia->texture.height / 2);
-
-        if(data[0]) {
-            flags |= DRAWIA_FLAG_XFLIP;
-        }
-        flags |= DRAWIA_FLAG_DRAW_TEXTURE;
-    } break;
-
-    case IA__CHECKPOINT: {
-        offsetX = -(ia->texture.width / 4);
-        offsetY = -(ia->texture.height / 4);
-        flags |= DRAWIA_FLAG_DRAW_TEXTURE;
-    } break;
-        
-    case IA__WINDUP_STICK: {
-        boundingTint = PINK;
-        flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
-    } break;
-        
-    default: {
-        flags |= DRAWIA_FLAG_DRAW_TEXTURE;
-    } break;
-    }
-
-    if(flags & DRAWIA_FLAG_DRAW_TEXTURE) {
-        DrawTexture(ia->texture, x + offsetX, y + offsetY, WHITE);
-    }
-    
-    if(flags & DRAWIA_FLAG_DRAW_BOUNDING_BOX) {
-        DRAW_ENTITY_RECT(x, y, boundingWidth, boundingTint);
-    }
-}
-
-static void
-DrawEntItem(AppState *state, int x, int y, int index, char data[5])
-{
-    ItemMetaList *items = &state->paths.items;
-
-    x -= (items->txItembox.width / 2);
-    y -= (items->txItembox.height) - 3; // TODO: Where do these 3 pixels come from?
-
-    DrawTexture(items->txItembox, x, y, WHITE);
-
-    if(index == 0) {
-        Texture *tx = &items->oneUpIcons.elements[state->paths.characters.selected];
-        DrawTexture(*tx, x + (tx->width / 2), y + (tx->height / 2), WHITE);
-    } else {
-        Texture *tx = &items->items.elements[index].texture;
-        DrawTexture(*tx, x + (tx->width / 2), y + (tx->height / 2), WHITE);
-    }
-}
-
-static void
-DrawEntEnemy(AppState *state, int x, int y, int index, char data[5])
-{
-    EntityMeta *enemy = &state->paths.enemies.elements[index];
-
-    DrawTexture(enemy->texture, x - (enemy->texture.width / 2), y - enemy->texture.height, WHITE);
-}
-
-static void
-DrawEntRing(AppState *state, int x, int y)
-{
-    EntityMeta *ring = &state->paths.ring;
-
-    // TODO: Right now there are 4 ring frames in a single PNG file, so we've got to draw it a little unintuitively
-    DrawTextureRec(ring->texture,
-                   CLITERAL(Rectangle){0, 0, ring->texture.width, ring->texture.width},
-                   CLITERAL(Vector2){x - (ring->texture.width / 2), y - (ring->texture.width)},
-                   WHITE);
-}
-
 static void
 LoadAllEntityTextures(AppState *state)
 {
@@ -1982,261 +1008,3 @@ LoadAllEntityTextures(AppState *state)
     LoadRingTexture(paths->gameRoot,       &paths->ring);
 }
 
-static void
-LoadEntityNamesAndIDs(AppState *state)
-{
-    MemArena arena;
-    memArenaInit(&arena);
-    
-    TokenList tokensGame    = tokenize(&arena, state->paths.game_h);
-    TokenList tokensAnims   = tokenize(&arena, state->paths.animations_h);
-    TokenList tokensIAs     = tokenize(&arena, state->paths.interactables_h);
-    TokenList tokensItems   = tokenize(&arena, state->paths.items_h);
-    TokenList tokensEnemies = tokenize(&arena, state->paths.enemies_h);
-    
-
-    // Find entity names and IDs
-    SetMetaEntityValues(&tokensIAs,     &state->paths.interactables, ET_INTERACTABLE);
-    SetMetaEntityValues(&tokensItems,   &state->paths.items.items,   ET_ITEM);
-    SetMetaEntityValues(&tokensEnemies, &state->paths.enemies,       ET_ENEMY);
-
-
-    // Find all character IDs
-    int numCharacters = 0;
-    int numCharactersFromTokens = 0;
-    for(int i = 0; i < tokensGame.count; i++) {
-        if(i < tokensGame.count - 2) {
-            Token *tokenPound = &tokensGame.tokens[i+0];
-            Token *tokenName  = &tokensGame.tokens[i+1];
-            Token *tokenID    = &tokensGame.tokens[i+2];
-
-            if((tokenPound->type == POUND_DEFINE)
-            && (tokenName->type == IDENTIFIER)
-            && (tokenID->type == VALUE)) {
-                if(TextIsEqual(tokenName->text, "NUM_CHARACTERS")) {
-                    numCharactersFromTokens = TextToInteger(tokenID->text);
-                    break;
-                } else if(TextFindIndex(tokenName->text, "CHARACTER_") == 0) {
-                    Character character = {0};
-                    character.name = TextReplace(tokenName->text, "CHARACTER_", "");
-                    character.id   = TextToInteger(tokenID->text);
-
-                    da_append(&state->paths.characters, &character);
-                    numCharacters++;
-                }
-            }
-        }
-    }
-
-    // Look for animations
-    if(((numCharacters != 0) && numCharactersFromTokens != 0) && (numCharacters == numCharactersFromTokens)) {
-        // We found all characters, search for their animations
-
-        CharacterList *chars = &state->paths.characters;
-
-        // Find animation IDs
-        // TODO: Maybe we should just prefix them with ANIM_, not something game-specific?
-        unsigned short animBeforeCountdown = 0;
-        int foundIdleAnims  = 0;
-        int foundEnemyAnims = 0;
-        int foundIAAnims = 0;
-        for(int i = 0; i < tokensAnims.count - 2; i++) {
-            Token *tokenPound = &tokensAnims.tokens[i+0];
-            Token *tokenName  = &tokensAnims.tokens[i+1];
-            Token *tokenID    = &tokensAnims.tokens[i+2];
-                
-            if((tokenPound->type == POUND_DEFINE)
-            && (tokenName->type == IDENTIFIER)
-            && (tokenID->type == VALUE)) {
-                const char *animPrefix = TextFormat("SA%d_ANIM_", state->game);
-                int index = TextFindIndex(tokenName->text, animPrefix);
-                if(index == 0) {
-                    // NOTE: These are only in SA2, so we can just do it explicitly
-                    if((state->game == GAME_SA2)
-                        && TextIsEqual(tokenName->text, "SA2_CHAR_ANIM_BEFORE_COUNTDOWN")) {
-                        animBeforeCountdown = TextToInteger(tokenID->text);
-                        i += 2;
-                        continue;
-                    }
-
-                    // Character Idle Anims
-                    if(foundIdleAnims < numCharacters) {
-                        char *charName = chars->elements[foundIdleAnims].name;
-
-                        if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_%s_IDLE", state->game, charName))) {
-                            chars->elements[foundIdleAnims].animIdle = TextToInteger(tokenID->text);
-                            foundIdleAnims++;
-                            i += 2;
-                            continue;
-                        }
-                    }
-
-                    if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_ITEMBOX", state->game))) {
-                        state->paths.items.animItembox = TextToInteger(tokenID->text);
-                    } else if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_ITEMBOX_TYPE", state->game))) {
-                        state->paths.items.animItemType = TextToInteger(tokenID->text);
-                    } else if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_RING", state->game))) {
-                        state->paths.ring.anim = TextToInteger(tokenID->text);
-                    } else if(foundEnemyAnims < state->paths.enemies.count) {
-                        for(int ei = 0; ei < state->paths.enemies.count; ei++) {
-                            unsigned short id = state->paths.enemies.elements[ei].id;
-                            EntityMeta *enemy = &state->paths.enemies.elements[id];
-                            const char *format = TextFormat("SA%d_ANIM_%s", state->game, enemy->name);
-
-                            if(TextIsEqual((char *)tokenName->text, format)) {                    
-                                enemy->anim = TextToInteger(tokenID->text);
-
-                                foundEnemyAnims++;
-                                break;
-                            }
-                        }
-                    } else if(foundIAAnims < state->paths.interactables.count) {
-                        for(int ii = 0; ii < state->paths.interactables.count; ii++) {
-                            unsigned short id    = state->paths.interactables.elements[ii].id;
-                            InteractableMeta *ia = &state->paths.interactables.elements[id];
-                            const char *format   = TextFormat("SA%d_ANIM_%s", state->game, ia->name);
-
-                            if(TextIsEqual((char *)tokenName->text, format)) {
-                                do {
-                                    ia->anim = TextToInteger(tokenID->text);
-
-                                    foundIAAnims++;
-
-                                } while((++ii < state->paths.interactables.count) && TextIsEqual(ia->name, (ia+1)->name) && ++ia);
-                                ii--;
-
-                                
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                i += 2;
-            }
-        }
-
-        // Set "Before countdown" animation (will be the idle anim for games != SA2.)
-        // To visually test the stage startup
-        for(int c = 0; c < numCharacters; c++) {
-            chars->elements[c].animGettingReady = chars->elements[c].animIdle + animBeforeCountdown;
-        }
-    } else {
-        if(numCharacters == 0) {
-            printf("ERROR: Either NUM_CHARACTERS is not defined or not in\n"
-                   "'%s'", state->paths.game_h);
-        } else if(numCharactersFromTokens == 0) {
-            printf("Did not find any 'CHARACTER_XYZ' values in\n"
-                   "'%s'", state->paths.game_h);
-        } else {
-            printf("ERROR: Number of found player characters (%d) does not match NUM_CHARACTERS (%d).\n"
-                   "       Please make sure NUM_CHARACTERS is defined after the individual characters.\n"
-                   "       (Searched in '%s')\n",
-                numCharacters, numCharactersFromTokens, state->paths.game_h);
-        }
-    }
-}
-
-
-static void
-ParseOrCreateMetadataTxt(AppState *state, Tilemap* tm)
-{
-    StageMap *map = &state->map;
-    char *mapPath = tm->dir;
-
-    MemArena arena;
-    memArenaInit(&arena);
-
-    char *metadataTxtPath = allocPath(tm->dir, "metadata.txt");
-
-    if(metadataTxtPath && FileExists(metadataTxtPath)) {
-        TokenList tokens = tokenize(&arena, metadataTxtPath);
-
-        for(int i = 0; i < tokens.count; i++) {
-            if(i < tokens.count - 6) {
-                Token *tokenName   = &tokens.tokens[i+0];
-                Token *tokenEq     = &tokens.tokens[i+1];
-                Token *tokenCurlyO = &tokens.tokens[i+2];
-                Token *tokenValL   = &tokens.tokens[i+3];
-                Token *tokenComma  = &tokens.tokens[i+4];
-                Token *tokenValR   = &tokens.tokens[i+5];
-                Token *tokenCurlyC = &tokens.tokens[i+6];
-
-                if((tokenName->type  == UNKNOWN || tokenName->type   == IDENTIFIER)
-                && tokenEq->type     == EQUALS
-                && tokenCurlyO->type == L_CURLY_PAREN
-                && tokenValL->type   == VALUE
-                && tokenComma->type  == COMMA
-                && tokenValR->type   == VALUE
-                && tokenCurlyC->type == R_CURLY_PAREN) {
-                    if(TextIsEqual(tokenName->text, "tilemap_dim")) {
-                        tm->xTiles = TextToInteger(tokenValL->text);
-                        tm->yTiles = TextToInteger(tokenValR->text);
-                        i += 7-1;
-                    } else if(TextIsEqual(tokenName->text, "map_dim")) {
-                        map->width  = TextToInteger(tokenValL->text);
-                        map->height = TextToInteger(tokenValR->text);
-                        i += 7-1;
-                    } else if(TextIsEqual(tokenName->text, "spawn_pos")) {
-                        map->spawnX  = TextToInteger(tokenValL->text);
-                        map->spawnY = TextToInteger(tokenValR->text);
-                        i += 7-1;
-                    }
-                }
-            }
-        }
-    } else {
-        // Create metadata.txt file
-        char *headerPath = allocPath(tm->dir, "header.c");
-
-        if(FileExists(headerPath)) {
-            TokenList tokens = tokenize(&arena, headerPath);
-
-            state->paths.map.xTiles = TILES_PER_METATILE;
-            state->paths.map.yTiles = TILES_PER_METATILE;
-            state->map.spawnX = 0;
-            state->map.spawnY = 0;
-
-            if(tokens.count >= 3) {
-                for(int ii = 0; ii < tokens.count-2; ii++) {
-                    Token *token = &tokens.tokens[ii+0];
-                    Token *nextToken = &tokens.tokens[ii+1];
-                    Token *nextToken2 = &tokens.tokens[ii+2];
-
-                    if(TextIsEqual(token->text, "mapWidth")
-                    && nextToken->type == EQUALS
-                    && nextToken2->type == VALUE) {
-                        map->width = atoi(nextToken2->text);
-                    }
-            
-                    if(TextIsEqual(token->text, "mapHeight")
-                    && nextToken->type == EQUALS
-                    && nextToken2->type == VALUE) {
-                        map->height = atoi(nextToken2->text);
-                
-                        // Found both values, so output them
-                        FILE *meta = fopen(metadataTxtPath, "w");
-                        if(meta) {
-                            fprintf(meta, "tilemap_dim = {%d,%d}\n", state->paths.map.xTiles, state->paths.map.yTiles);
-                            fprintf(meta, "map_dim     = {%d,%d}\n", map->width, map->height);
-                            fprintf(meta, "spawn_pos   = {%d,%d}\n", state->map.spawnX, state->map.spawnY);
-                            fclose( meta);
-                        }
-                    }
-                }
-            } else {
-                // Log an error?
-            }
-        } else {
-            // Log an error?
-        }
-
-        if(headerPath) {
-            free(headerPath);
-        }
-    }
-
-    if(metadataTxtPath) {
-        free(metadataTxtPath);
-    }
-}
