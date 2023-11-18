@@ -92,9 +92,9 @@ static File OpenWholeFile(char* path)
             if((long)bytes_read != (long)file.size) {
                 fprintf(stderr,
                     "ERROR reading '%s':\n"
-                    "Bytes expected: %zd\n"
+                    "Bytes expected: %zu\n"
                     "Bytes read:     %zu\n",
-                    path, file.size, bytes_read);
+                    path, (size_t)file.size, bytes_read);
             }
         }
 
