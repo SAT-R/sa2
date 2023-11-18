@@ -23,9 +23,31 @@
 
 typedef struct {
     ScreenFade fade; /* 0xB4 */
-    u8 fillerB4[0x38];
 
-    u32 unkF8[6][6];
+    s32 unkC0;
+    s32 unkC4;
+    s32 unkC8;
+    s32 unkCC;
+
+    s32 unkD0;
+    s32 unkD4;
+    s32 unkD8;
+    s32 unkDC;
+    s32 unkE0;
+    s32 unkE4;
+
+    s32 unkE8;
+    s32 unkEC;
+    s32 unkF0;
+    s32 unkF4;
+
+    s32 unkF8[8][6];
+    s32 unk1B8[8][6];
+    s32 unk278[4][6];
+    u16 unk2D8;
+    u8 filler2DA[2];
+    u8 unk2DC;
+    u8 unk2DD;
 } EggHammerTankII_UNKB4;
 
 typedef struct {
@@ -53,8 +75,6 @@ typedef struct {
     u8 unkB3;
 
     EggHammerTankII_UNKB4 unkB4;
-
-    u8 filler188[0x155];
 
     Sprite unk2E0;
     Hitbox reserved0;
@@ -875,3 +895,284 @@ void sub_803B7B0(EggHammerTankII *boss)
 #endif
     }
 }
+
+void sub_803B84C(EggHammerTankII *boss)
+{
+
+    s32 result;
+    u8 i;
+    EggHammerTankII_UNKB4 *unkB4 = &boss->unkB4;
+    if (unkB4->unkC8 < 0) {
+        unkB4->unkC8 = 0;
+    }
+
+    unkB4->unkCC += 0x40;
+    unkB4->unkC0 += unkB4->unkC8;
+    unkB4->unkC4 += unkB4->unkCC;
+
+    result = sub_801F100(Q_24_8_TO_INT(unkB4->unkC4) + 0x1C, Q_24_8_TO_INT(unkB4->unkC0),
+                         1, 8, sub_801EC3C);
+    if (unkB4->unk2DC != 0) {
+        unkB4->unk278[0][0] = unkB4->unkC0 - 0x1600;
+        unkB4->unk278[0][1] = unkB4->unkC4 + boss->unk98 + 0xE80;
+        unkB4->unk278[1][0] = unkB4->unkC0 + 0x1800;
+        unkB4->unk278[1][1] = unkB4->unkC4 + boss->unk9C + 0xE80;
+        unkB4->unk278[2][0] = unkB4->unkC0 - 0x1600;
+        unkB4->unk278[2][1] = unkB4->unkC4 + boss->unk98 + 0xE80;
+        unkB4->unk278[3][0] = unkB4->unkC0 + 0x1800;
+        unkB4->unk278[3][1] = unkB4->unkC4 + boss->unk9C + 0xE80;
+    } else {
+        for (i = 0; i < 4; i++) {
+            s32 result1;
+            unkB4->unk278[i][2]--;
+            if (unkB4->unk278[i][2] < 0x80) {
+                unkB4->unk278[i][2] = 0x80;
+            }
+            unkB4->unk278[i][3] += 0x28;
+            unkB4->unk278[i][0] += unkB4->unk278[i][2];
+            unkB4->unk278[i][1] += unkB4->unk278[i][3];
+
+            result1 = sub_801F100(Q_24_8_TO_INT(unkB4->unk278[i][1]),
+                                  Q_24_8_TO_INT(unkB4->unk278[i][0]), 1, 8, sub_801EC3C);
+            if (result1 < 0) {
+                s32 r0;
+                if (unkB4->unk278[i][4] != 0) {
+                    unkB4->unk278[i][4]--;
+                }
+                unkB4->unk278[i][1] += Q_24_8(result1);
+                r0 = unkB4->unk278[i][3] * 3;
+                r0 = (r0 * 4) - unkB4->unk278[i][3];
+                r0 *= 16;
+                unkB4->unk278[i][3] = Q_24_8_TO_INT(-r0);
+            }
+
+            if (unkB4->unk278[i][4] == 0) {
+                if (unkB4->unk278[i][5] != 0) {
+                    unkB4->unk278[i][5]--;
+                }
+            }
+        }
+    }
+
+    if (result < 0) {
+        if (unkB4->unk2DC != 0) {
+            unkB4->unk2DC--;
+            unkB4->unkCC = -unkB4->unkCC;
+        } else {
+            s32 r0;
+            unkB4->unkC8 -= 32;
+            r0 = unkB4->unkCC * 7;
+            r0 = (r0 * 4) - unkB4->unkCC;
+            r0 *= 8;
+            unkB4->unkCC = Q_24_8_TO_INT(-r0);
+        }
+
+        if (unkB4->unkCC > -0xA0) {
+            unkB4->unkCC = 0;
+        }
+
+        unkB4->unkC4 += Q_24_8_NEW(result);
+    }
+
+    for (i = 0; i < 8; i++) {
+        unkB4->unkF8[i][3] += 0x20;
+        if (unkB4->unkF8[i][2] > 0) {
+            unkB4->unkF8[i][0] += unkB4->unkF8[i][2];
+        }
+
+        unkB4->unkF8[i][1] += unkB4->unkF8[i][3];
+
+        result = sub_801F100(Q_24_8_TO_INT(unkB4->unkF8[i][1]) + 5,
+                             Q_24_8_TO_INT(unkB4->unkF8[i][0]), 1, 8, sub_801EC3C);
+
+        if (result < 0) {
+            if (unkB4->unkF8[i][4] != 0) {
+                unkB4->unkF8[i][4]--;
+            }
+            unkB4->unkF8[i][2] -= 0x20;
+            unkB4->unkF8[i][1] += Q_24_8_NEW(result);
+            unkB4->unkF8[i][3] = Q_24_8_TO_INT(unkB4->unkF8[i][3] * ((i * 4) - 0x40));
+        }
+
+        if (unkB4->unkF8[i][4] == 0) {
+            if (unkB4->unkF8[i][5] != 0) {
+                unkB4->unkF8[i][5]--;
+            }
+        }
+
+        unkB4->unk1B8[i][3] += 0x28;
+        if (unkB4->unk1B8[i][2] > 0) {
+            unkB4->unk1B8[i][0] += unkB4->unk1B8[i][2];
+        }
+
+        unkB4->unk1B8[i][1] += unkB4->unk1B8[i][3];
+
+        result = sub_801F100(Q_24_8_TO_INT(unkB4->unk1B8[i][1]) + 5,
+                             Q_24_8_TO_INT(unkB4->unk1B8[i][0]), 1, 8, sub_801EC3C);
+
+        if (result < 0) {
+            if (unkB4->unk1B8[i][4] != 0) {
+                unkB4->unk1B8[i][4]--;
+            }
+            unkB4->unk1B8[i][2] -= 0x20;
+            unkB4->unk1B8[i][1] += Q_24_8_NEW(result);
+            unkB4->unk1B8[i][3] = Q_24_8_TO_INT(unkB4->unk1B8[i][3] * -((i * 4) + 0x40));
+        }
+
+        if (unkB4->unk1B8[i][4] == 0) {
+            if (unkB4->unk1B8[i][5] != 0) {
+                unkB4->unk1B8[i][5]--;
+            }
+        }
+    }
+
+    unkB4->unkDC += 0x60;
+    unkB4->unkD0 += unkB4->unkD8;
+    unkB4->unkD4 += unkB4->unkDC;
+
+    result = sub_801F100(Q_24_8_TO_INT(unkB4->unkD4) + 0x18, Q_24_8_TO_INT(unkB4->unkD0),
+                         1, 8, sub_801EC3C);
+    if (result < 0) {
+        ExplosionPartsInfo parts;
+
+        if (unkB4->unkE4 == 0) {
+            u32 rand;
+            parts.spawnX = Q_24_8_TO_INT(unkB4->unkD0) - gCamera.x;
+            parts.spawnY = Q_24_8_TO_INT(unkB4->unkD4) - gCamera.y;
+            parts.velocity = 0;
+            parts.rotation = 1000;
+            parts.speed = 0x300;
+            parts.vram = (void *)OBJ_VRAM0 + 0x2980;
+            parts.anim = SA2_ANIM_EXPLOSION;
+            parts.variant = 0;
+            parts.unk4 = unkB4->unkE4;
+            CreateBossParticleWithExplosionUpdate(&parts, &unkB4->unk2DD);
+
+            rand = PseudoRandom32();
+            parts.spawnX = (Q_24_8_TO_INT(unkB4->unkD0) - gCamera.x) + (rand & 0xF);
+            rand = PseudoRandom32();
+            parts.spawnY = (Q_24_8_TO_INT(unkB4->unkD4) - gCamera.y) + (rand & 0xF);
+
+            CreateBossParticleWithExplosionUpdate(&parts, &unkB4->unk2DD);
+
+            rand = PseudoRandom32();
+            parts.spawnX = (Q_24_8_TO_INT(unkB4->unkD0) - gCamera.x) + (rand & 0xF);
+            rand = PseudoRandom32();
+            parts.spawnY = (Q_24_8_TO_INT(unkB4->unkD4) - gCamera.y) + (rand & 0xF);
+
+            CreateBossParticleWithExplosionUpdate(&parts, &unkB4->unk2DD);
+        }
+
+        if (unkB4->unkDC < 0x300) {
+            if (unkB4->unkE4 == 0) {
+                unkB4->unkE4 = 1;
+            }
+            unkB4->unkDC = 0;
+        }
+        if (unkB4->unkE0 != 0) {
+            unkB4->unkE0 = 0;
+        } else {
+            unkB4->unkE0 = 1;
+        }
+        unkB4->unkD8 -= 0x20;
+
+        if (unkB4->unkD8 < 0) {
+            unkB4->unkD8 = 0;
+        }
+
+        unkB4->unkD4 += Q_24_8_NEW(result);
+        unkB4->unkDC = Q_24_8_TO_INT(-(unkB4->unkDC * 0xC0));
+    }
+
+    if (unkB4->unkE0 != 0) {
+        unkB4->unk2D8 = CLAMP_SIN_PERIOD(unkB4->unk2D8 + 0x30);
+    } else {
+        unkB4->unk2D8 = CLAMP_SIN_PERIOD(unkB4->unk2D8 - 0x30);
+    }
+}
+
+// Basically 100% matched, a silly side effect of optimising means that the stack is
+// wrong for 2 instructions https://decomp.me/scratch/yZ3Hw :(
+NONMATCH("asm/non_matching/game/bosses/boss_1__sub_803BDB8.inc", void sub_803BDB8(void))
+{
+    s8 i;
+    s32 x, y;
+    SpriteTransform *transform;
+    EggHammerTankII *boss = TASK_DATA(gCurTask);
+    EggHammerTankII_UNKB4 *unkB4 = &boss->unkB4;
+    Sprite *s;
+
+    boss->unkA8 = 0;
+    unkB4->unk2DC = 5;
+    unkB4->unk2DD = 0;
+    s = &boss->unk2E0;
+    s->graphics.anim = SA2_ANIM_HAMMERTANK_BODY_DESTROYED;
+    s->variant = 0;
+    s->prevVariant = -1;
+
+    unkB4->unkC0 = boss->unk0;
+    unkB4->unkC4 = boss->unk4;
+    unkB4->unkC8 = boss->unk8;
+    unkB4->unkCC = -768;
+
+    for (i = 0; i < 4; i++) {
+        s32 temp;
+        if (i < 2) {
+            unkB4->unk278[i][0] = boss->unk0 - 0x1600;
+        } else {
+            unkB4->unk278[i][0] = boss->unk0 + 0x1800;
+        }
+
+        unkB4->unk278[i][1] = boss->unk4 + boss->unk98 + 0xE80;
+
+        if (i < 2) {
+            unkB4->unk278[i][2] = boss->unk8 + (i + 2) * 5;
+        } else {
+            unkB4->unk278[i][2] = boss->unk8 + i * 0x30;
+        }
+
+        unkB4->unk278[i][3] = Q_24_8_TO_INT((boss->unk98 * (-0x60 - (i * 2))));
+        unkB4->unk278[i][4] = 4;
+        unkB4->unk278[i][5] = 0x3C;
+    }
+
+    for (i = 0; i < 8; i++) {
+        unkB4->unkF8[i][0] += gCamera.x;
+        unkB4->unkF8[i][1] += gCamera.y;
+
+        unkB4->unkF8[i][0] = Q_24_8(unkB4->unkF8[i][0]);
+        unkB4->unkF8[i][1] = Q_24_8(unkB4->unkF8[i][1]);
+
+        unkB4->unkF8[i][2]
+            = boss->unk8 + ((COS(boss->unkC[1][i] & 0x3FF) * boss->unkC[0][i]) >> 0x12);
+
+        unkB4->unkF8[i][3] = (SIN(boss->unkC[1][i] & 0x3FF) * boss->unkC[0][i]) >> 0x12;
+        unkB4->unkF8[i][4] = 3;
+        unkB4->unkF8[i][5] = 0x1E;
+    }
+
+    x = boss->unk0;
+    y = boss->unk4;
+    for (i = 0; i < 8; i++) {
+        unkB4->unk1B8[i][0] = x
+            + ((COS((boss->unk54[1][i] + 0x300) & 0x3FF) * boss->unk54[0][i]) >> 0xF);
+        unkB4->unk1B8[i][1] = y
+            + ((SIN((boss->unk54[1][i] + 0x300) & 0x3FF) * boss->unk54[0][i]) >> 0xf);
+        unkB4->unk1B8[i][2] = boss->unk8
+            + ((COS((boss->unk54[1][i]) & 0x3FF) * boss->unk54[0][i]) >> 0x12);
+        unkB4->unk1B8[i][3]
+            = (SIN(boss->unk54[1][i] & 0x3FF) * boss->unk54[0][i]) >> 0x12;
+        unkB4->unk1B8[i][4] = 3;
+        unkB4->unk1B8[i][5] = 0x1E;
+    }
+
+    transform = &boss->transform;
+    unkB4->unkD0 = x + ((COS(boss->unk54[1][5] & 0x3FF) * boss->unk54[0][5]) >> 0xF);
+    unkB4->unkD4 = y + ((SIN(boss->unk54[1][5] & 0x3FF) * boss->unk54[0][5]) >> 0xF);
+    unkB4->unkD8 = boss->unk8;
+    unkB4->unkDC = boss->unkA - 0x800;
+    unkB4->unk2D8 = transform->rotation;
+    unkB4->unkE0 = 1;
+    unkB4->unkE4 = 0;
+}
+END_NONMATCH
