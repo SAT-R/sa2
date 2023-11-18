@@ -4,7 +4,7 @@
 #include "trig.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/interactables_2/sky_canyon/giant_propeller.h"
+#include "game/interactables_2/sky_canyon/propeller.h"
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
@@ -19,28 +19,28 @@ typedef struct {
     s16 unk44;
     s16 unk46;
     u8 unk48;
-} Sprite_GiantPropeller;
+} Sprite_Propeller;
 
 #define PROPELLER_HITBOX_WIDTH  148
 #define PROPELLER_HITBOX_HEIGHT 128
 
-static void sub_807B8FC(Sprite_GiantPropeller *);
-static void sub_807B74C(Sprite_GiantPropeller *);
+static void sub_807B8FC(Sprite_Propeller *);
+static void sub_807B74C(Sprite_Propeller *);
 static void Task_GiantPropellerIdle(void);
-static bool32 IsPlayerInAirCurrent(Sprite_GiantPropeller *);
-static void sub_807B7BC(Sprite_GiantPropeller *);
+static bool32 IsPlayerInAirCurrent(Sprite_Propeller *);
+static void sub_807B7BC(Sprite_Propeller *);
 static void sub_807BA70(void);
-static void Render(Sprite_GiantPropeller *);
-static void StartPlayerFloatingTask(Sprite_GiantPropeller *);
-static bool32 ShouldDespawn(Sprite_GiantPropeller *);
-static void DestroyPropeller(Sprite_GiantPropeller *);
+static void Render(Sprite_Propeller *);
+static void StartPlayerFloatingTask(Sprite_Propeller *);
+static bool32 ShouldDespawn(Sprite_Propeller *);
+static void DestroyPropeller(Sprite_Propeller *);
 UNK_807C5F8 *sub_807BA54(void);
 static void TaskDestructor_GiantPropeller(struct Task *);
-static bool32 sub_807B9F0(Sprite_GiantPropeller *);
+static bool32 sub_807B9F0(Sprite_Propeller *);
 
 static void Task_PlayerFloating(void)
 {
-    Sprite_GiantPropeller *propeller = TASK_DATA(gCurTask);
+    Sprite_Propeller *propeller = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_GiantPropellerIdle;
@@ -94,7 +94,7 @@ static void Task_PlayerFloating(void)
 
 static void sub_807B530(void)
 {
-    Sprite_GiantPropeller *propeller = TASK_DATA(gCurTask);
+    Sprite_Propeller *propeller = TASK_DATA(gCurTask);
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_GiantPropellerIdle;
     } else {
@@ -162,7 +162,7 @@ static void sub_807B530(void)
     Render(propeller);
 }
 
-static void sub_807B74C(Sprite_GiantPropeller *propeller)
+static void sub_807B74C(Sprite_Propeller *propeller)
 {
     propeller->unk48 = 0;
     propeller->unk46 = SIN_24_8(0) * 16;
@@ -177,7 +177,7 @@ static void sub_807B74C(Sprite_GiantPropeller *propeller)
     gCurTask->main = sub_807B530;
 }
 
-static void sub_807B7BC(Sprite_GiantPropeller *propeller)
+static void sub_807B7BC(Sprite_Propeller *propeller)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     gPlayer.transition = PLTRANS_PT5;
@@ -197,7 +197,7 @@ static void sub_807B7BC(Sprite_GiantPropeller *propeller)
     gCurTask->main = Task_GiantPropellerIdle;
 }
 
-bool32 IsPlayerInteracting(Sprite_GiantPropeller *propeller)
+bool32 IsPlayerInteracting(Sprite_Propeller *propeller)
 {
     s16 x, playerX, y, playerY;
     if (!PLAYER_IS_ALIVE) {
@@ -221,7 +221,7 @@ bool32 IsPlayerInteracting(Sprite_GiantPropeller *propeller)
 
 static void Task_GiantPropellerIdle(void)
 {
-    Sprite_GiantPropeller *propeller = TASK_DATA(gCurTask);
+    Sprite_Propeller *propeller = TASK_DATA(gCurTask);
 
     if (IsPlayerInteracting(propeller)) {
         StartPlayerFloatingTask(propeller);
@@ -236,13 +236,13 @@ static void Task_GiantPropellerIdle(void)
     Render(propeller);
 }
 
-static void StartPlayerFloatingTask(Sprite_GiantPropeller *propeller)
+static void StartPlayerFloatingTask(Sprite_Propeller *propeller)
 {
     sub_807B8FC(propeller);
     gCurTask->main = Task_PlayerFloating;
 }
 
-static void sub_807B8FC(Sprite_GiantPropeller *propeller)
+static void sub_807B8FC(Sprite_Propeller *propeller)
 {
 
     sub_80218E4(&gPlayer);
@@ -253,7 +253,7 @@ static void sub_807B8FC(Sprite_GiantPropeller *propeller)
     gPlayer.unk64 = 44;
 }
 
-static void Render(Sprite_GiantPropeller *propeller)
+static void Render(Sprite_Propeller *propeller)
 {
     Sprite *sprite = &sub_807BA54()->sprite2;
     sprite->x = propeller->x - gCamera.x;
@@ -261,7 +261,7 @@ static void Render(Sprite_GiantPropeller *propeller)
     DisplaySprite(sprite);
 }
 
-static bool32 ShouldDespawn(Sprite_GiantPropeller *propeller)
+static bool32 ShouldDespawn(Sprite_Propeller *propeller)
 {
     s16 x = propeller->x - gCamera.x;
     s16 y = propeller->y - gCamera.y;
@@ -273,7 +273,7 @@ static bool32 ShouldDespawn(Sprite_GiantPropeller *propeller)
     return FALSE;
 }
 
-static bool32 IsPlayerInAirCurrent(Sprite_GiantPropeller *propeller)
+static bool32 IsPlayerInAirCurrent(Sprite_Propeller *propeller)
 {
     if (PLAYER_IS_ALIVE) {
         s16 x = propeller->x - gCamera.x;
@@ -288,7 +288,7 @@ static bool32 IsPlayerInAirCurrent(Sprite_GiantPropeller *propeller)
     return FALSE;
 }
 
-static bool32 sub_807B9F0(Sprite_GiantPropeller *propeller)
+static bool32 sub_807B9F0(Sprite_Propeller *propeller)
 {
     if (PLAYER_IS_ALIVE) {
         s16 y = propeller->y - gCamera.y;
@@ -302,7 +302,7 @@ static bool32 sub_807B9F0(Sprite_GiantPropeller *propeller)
     return FALSE;
 }
 
-static void DestroyPropeller(Sprite_GiantPropeller *propeller)
+static void DestroyPropeller(Sprite_Propeller *propeller)
 {
     SET_MAP_ENTITY_NOT_INITIALIZED(propeller->base.me, propeller->base.spriteX);
     TaskDestroy(gCurTask);
@@ -322,13 +322,13 @@ static void sub_807BA70(void)
     unk807->unk62++;
 }
 
-void CreateEntity_GiantPropeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+void CreateEntity_Propeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                  u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GiantPropellerIdle, sizeof(Sprite_GiantPropeller),
+    struct Task *t = TaskCreate(Task_GiantPropellerIdle, sizeof(Sprite_Propeller),
                                 0x2010, 0, TaskDestructor_GiantPropeller);
 
-    Sprite_GiantPropeller *propeller = TASK_DATA(t);
+    Sprite_Propeller *propeller = TASK_DATA(t);
     propeller->x = TO_WORLD_POS(me->x, spriteRegionX);
     propeller->y = TO_WORLD_POS(me->y, spriteRegionY);
     propeller->base.regionX = spriteRegionX;
