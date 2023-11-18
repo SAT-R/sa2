@@ -56,7 +56,7 @@
 #include "game/interactables_2/ice_paradise/half_pipe.h"
 #include "game/interactables_2/ice_paradise/slowing_snow.h"
 
-#include "game/interactables_2/sky_canyon/giant_propeller.h"
+#include "game/interactables_2/sky_canyon/propeller.h"
 #include "game/interactables_2/sky_canyon/fan.h"
 #include "game/interactables_2/sky_canyon/small_windmill.h"
 #include "game/interactables_2/sky_canyon/whirlwind.h"
@@ -342,7 +342,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Platform_B,
     CreateEntity_LightGlobe,
     CreateEntity_Platform_Square,
-    CreateEntity_GiantPropeller,
+    CreateEntity_Propeller,
     CreateEntity_SlidyIce,
     CreateEntity_SmallWindmill,
     CreateEntity_PropellerSpring,

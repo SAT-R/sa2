@@ -85,8 +85,8 @@
 #define IA__SPIKE_PLATFORM                  78
 #define IA__PLATFORM_B                      79
 #define IA__LIGHT_GLOBE                     80
-#define IA__PLATFORM_SQAURE                 81
-#define IA__GIANT_PROPELLER                 82
+#define IA__PLATFORM_SQUARE                 81
+#define IA__PROPELLER                       82
 #define IA__SLIDY_ICE                       83
 #define IA__SMALL_WINDMILL                  84
 #define IA__PROPELLER_SPRING                85
