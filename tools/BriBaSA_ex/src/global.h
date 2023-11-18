@@ -28,7 +28,7 @@
 
 // TEMP
 
-#define MEASURE_MALLOC 1
+#define MEASURE_MALLOC 0
 #if MEASURE_MALLOC
 extern void *_Realloc(void *block, size_t size);
 extern void *_Memcpy(void *dst, void *src, size_t size);
@@ -89,8 +89,6 @@ typedef enum {
 
     // A little GBA display preview which might help to test visual consistency
     MAP_FLAG_SHOW_GBA_RECT    = 0x4,
-
-    MAP_FLAGS_ON_INIT = (MAP_FLAG_SHOW_BACK_LAYER | MAP_FLAG_SHOW_FRONT_LAYER),
 } MapFlags;
 
 typedef enum {

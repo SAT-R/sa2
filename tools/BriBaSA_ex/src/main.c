@@ -15,7 +15,7 @@
 #include <raylib.h>
 
 #include "jasc_parser/jasc_parser.h"
-#include "../../_shared/csv_conv/csv_conv.h"
+//#include "../../_shared/csv_conv/csv_conv.h"
 
 #include "../../../include/constants/interactables.h"
 #include "../../../include/constants/zones.h"
@@ -24,6 +24,7 @@
 #include "draw.h"
 #include "map.h"
 #include "parsing.h"
+#include "texture.h"
 
 
 /* Data structures for asset files */
@@ -49,9 +50,6 @@ static void LoadAllEntityTextures(AppState *state);
 static Rectangle GetSpawnPosRectangle(StageMap *map, CharacterList *chars);
 static void HandleMouseInputSpawnPos(AppState *state);
 static inline void MoveCameraToSpawn(AppState *state, Rectangle recMap);
-
-static void Debug_DrawAllEntityTextures(AppState *state);
-static void DrawEntities(AppState *state, Rectangle recMap);
 
 #if MEASURE_MALLOC
 static int TempMallocCounter = 0;
@@ -82,17 +80,13 @@ int main(void)
     state.windowWidth  = 1600;
     state.windowHeight =  900;
     InitWindow(state.windowWidth, state.windowHeight, "BriBaSA: SAT-R ver.");
-    SetWindowPosition(200, 900/3);
+    SetWindowPosition(200, 300);
     SetWindowState(FLAG_WINDOW_UNDECORATED);
 
     SetTargetFPS(60);
 
     // Disable the Escape key as means to exit
     SetExitKey(KEY_NULL);
-
-    char workingDir[MAX_FILEPATH_LENGTH];
-    TextCopy(workingDir, GetWorkingDirectory());
-
 
     // NOTE: "settings.txt" is for app-specific stuff,
     //       unlike metadata.txt, which is per-map
@@ -108,15 +102,12 @@ int main(void)
     // NOTE: We could just use "../../" for the check,
     //       but then it takes more work to get the normalized path.
     char rootDir[MAX_FILEPATH_LENGTH];
-    TextCopy(rootDir, GetPrevDirectoryPath(workingDir));
+    TextCopy(rootDir, GetPrevDirectoryPath(GetWorkingDirectory()));
     TextCopy(rootDir, GetPrevDirectoryPath(rootDir));
     
-    // NOTE: Do not use TextFormat strings for long,
-    //       without copying them to your own allocated memory!
-    const char *tempDataDir = TextFormat("%s/data", rootDir);
-    
-    if(!DirectoryExists(tempDataDir)) {
-        printf("ERROR: %s could not be found. Closing...\n", tempDataDir);
+
+    if(!DirectoryExists(TextFormat("%s/data", rootDir))) {
+        printf("ERROR: '%s/data' could not be found. Closing...\n", rootDir);
         exit(-1);
     }
     
@@ -129,16 +120,17 @@ int main(void)
     // TODO: Ask user to select map directory and game!
     // 
     // Load all map directories
-    FilePathList fpl = LoadDirectoryFiles(mapsRoot);
+#if 0
+    FilePathList zones = LoadDirectoryFiles(mapsRoot);
     FilePathList mapDirs = {0};
-    for(int i = 0; i < fpl.count; i++) {
-        char *zone = fpl.paths[i];
+    for(int i = 0; i < zones.count; i++) {
+        char *zone = zones.paths[i];
 
         if(!IsPathFile(zone)) {
-            FilePathList fplActs = LoadDirectoryFiles(zone);
+            FilePathList acts = LoadDirectoryFiles(zone);
 
-            for(int actI = 0; actI < fplActs.count; actI++) {
-                char *act = fplActs.paths[actI];
+            for(int actI = 0; actI < acts.count; actI++) {
+                char *act = acts.paths[actI];
                 
                 if(!IsPathFile(act)) {
                     da_append_to(&mapDirs, &act, paths);
@@ -146,17 +138,20 @@ int main(void)
             }
 
             // Free 'paths' member but not the allocated path strings themselves.
-            RL_FREE(fplActs.paths);
+            RL_FREE(acts.paths);
         }
     }
-    UnloadDirectoryFiles(fpl);
+    UnloadDirectoryFiles(zones);
 
     char mapDir[MAX_FILEPATH_LENGTH];
     TextCopy(mapDir, mapDirs.paths[4 + (ZONE_2-1)*3]);
+#else
+    const char *pMapDir = TextFormat("%s/zone_5/act_1/", mapsRoot);
+    char *mapDir  = malloc(TextLength(pMapDir) + 1);
+    TextCopy(mapDir, pMapDir);
+#endif
 
-
-
-    SetupFilePaths(&state.paths, rootDir, mapDir);
+    SetupFilePaths(&state.paths, (char*)rootDir, (char*)mapDir);
 
     LoadEntityNamesAndIDs(&state);
     LoadAllEntityTextures(&state);
@@ -165,7 +160,7 @@ int main(void)
     CreateUIWindows(&state);
     
     //memset(&state.map, 0, sizeof(state.map)); // TODO: Can this be removed entirely?
-    state.map.flags |= MAP_FLAGS_ON_INIT;
+    state.map.flags |= (MAP_FLAG_SHOW_BACK_LAYER | MAP_FLAG_SHOW_FRONT_LAYER);
     state.map.initialMetatile.x = -1;
     state.map.initialMetatile.y = -1;
     state.map.selectedMetatile.x = -1;
@@ -199,16 +194,14 @@ int main(void)
 
         BeginDrawing();
             ClearBackground(UI_COLOR_BACKGROUND);
-            
-            DrawText(state.paths.gameRoot, 2, 0, 10, UI_COLOR_TEXT);
-            
-            DrawMap(&state, recMap, txAtlas, txMap);
 
             DrawMainHeader(&state, txAtlas);
             DrawPalettes(&state.paths);
 
+            DrawMap(&state, recMap, txAtlas, txMap);
+
+            DrawEntities(&state, recMap);
             Debug_DrawAllEntityTextures(&state);
-            //DrawEntities(&state, recMap);
 
             DrawUI(&state, txAtlas);
 
@@ -247,6 +240,11 @@ int main(void)
     return 0;
 }
 
+static bool
+HasDataDir(char *gameRootPath)
+{
+}
+
 static LoadEntityDataFromCSVs(AppState *state)
 {
     FileInfo *paths = &state->paths;
@@ -278,114 +276,6 @@ static LoadEntityDataFromCSVs(AppState *state)
             }        
         }
     }
-}
-
-// TODO:
-// - Don't iterate through all regions, only the currently visible ones
-// - CheckCollisionPointRec doesn't properly work with recSpawn
-#define SPAWN_POPUP_DIM 128.0
-static void
-DrawEntities(AppState *state, Rectangle recMap)
-{
-    FileInfo *paths = &state->paths;
-    EntityPositions *entityPositions = &paths->entityPositions;
-
-    Rectangle recSpawn = {
-        recMap.x - SPAWN_POPUP_DIM,
-        recMap.y - SPAWN_POPUP_DIM,
-        recMap.width  + SPAWN_POPUP_DIM,
-        recMap.height + SPAWN_POPUP_DIM
-    };
-
-    BeginScissorMode(recMap.x, recMap.y, recMap.width, recMap.height);
-        for(int ry = 0; ry < entityPositions->rings.map_regions_y; ry++) {
-            for(int rx = 0; rx < entityPositions->rings.map_regions_x; rx++) {
-                int ri = ry * entityPositions->rings.map_regions_x + rx;
-                MapRegion *iaRegion    = &entityPositions->interactables.regions[ri];
-                MapRegion *itemRegion  = &entityPositions->items.regions[ri];
-                MapRegion *enemyRegion = &entityPositions->enemies.regions[ri];
-                MapRegion *ringRegion  = &entityPositions->rings.regions[ri];
-
-
-                if(iaRegion) {
-                    for(int entIndex = 0; entIndex < iaRegion->count; entIndex++) {
-                        EntityData *ia = &iaRegion->list[entIndex];
-
-                        int screenX = recMap.x + TO_WORLD_POS(ia->x, rx) - state->map.camera.x;
-                        int screenY = recMap.y + TO_WORLD_POS(ia->y, ry) - state->map.camera.y;
-
-                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                            DrawEntInteractable(state, screenX, screenY, ia->kind, ia->data);
-                        }
-                    }
-                }
-                if(itemRegion) {
-                    for(int entIndex = 0; entIndex < itemRegion->count; entIndex++) {
-                        EntityData *item = &itemRegion->list[entIndex];
-
-                        int screenX = recMap.x + TO_WORLD_POS(item->x, rx) - state->map.camera.x;
-                        int screenY = recMap.y + TO_WORLD_POS(item->y, ry) - state->map.camera.y;
-                        
-                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                            DrawEntItem(state, screenX, screenY, item->kind, item->data);
-                        }
-                    }
-                }
-                if(enemyRegion) {
-                    for(int entIndex = 0; entIndex < enemyRegion->count; entIndex++) {
-                        EntityData *enemy = &enemyRegion->list[entIndex];
-
-                        int screenX = recMap.x + TO_WORLD_POS(enemy->x, rx) - state->map.camera.x;
-                        int screenY = recMap.y + TO_WORLD_POS(enemy->y, ry) - state->map.camera.y;
-                        
-                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                            DrawEntEnemy(state, screenX, screenY, enemy->kind, enemy->data);
-                        }
-                    }
-                }
-                if(ringRegion) {
-                    for(int entIndex = 0; entIndex < ringRegion->count; entIndex++) {
-                        EntityData *ring = &ringRegion->list[entIndex];
-
-                        int screenX = recMap.x + TO_WORLD_POS(ring->x, rx) - state->map.camera.x;
-                        int screenY = recMap.y + TO_WORLD_POS(ring->y, ry) - state->map.camera.y;
-                        
-                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                            DrawEntRing(state, screenX, screenY);
-                        }
-                    }
-                }
-            }
-        }
-    EndScissorMode();
-}
-
-static void
-Debug_DrawAllEntityTextures(AppState *state)
-{
-    /* TEMP Test-Code */
-    int testX = 200;
-    int testY = 120;
-    char data[5] = {0};
-    int iaCount = state->paths.interactables.count;
-    for(int iaIndex = 0; iaIndex < iaCount; iaIndex++) {
-        DrawEntInteractable(state,
-            testX + 40*(iaIndex % 32), testY + 40*(iaIndex / 32),
-            iaIndex, data);
-    }
-    testY += 42*(iaCount/32 + 1);
-
-    for(int item = 0; item < state->paths.items.items.count; item++) {
-        DrawEntItem(state, testX + 32*item, testY, item, data);
-    }
-    testY += 32;
-            
-    for(int enemy = 0; enemy < state->paths.enemies.count; enemy++) {
-        DrawEntEnemy(state, testX + 32*enemy, testY, enemy, data);
-    }
-    testY += 32;
-            
-    DrawEntRing(state, testX, testY);
 }
 
 static Texture2D
@@ -549,6 +439,42 @@ SetNewMetatiles(AppState *state, int x, int y)
     }
 }
 
+// Get the entity below the mouse, if any
+static int
+GetHotEntity(AppState *state, Rectangle recMap)
+{
+    int result = -1;
+
+    if(!CheckCollisionPointRec(GetMousePosition(), recMap)) {
+        return result;
+    }
+
+    int camX = state->map.camera.x;
+    int camY = state->map.camera.y;
+
+    int startRegionX = camX / METATILE_DIM;
+    int startRegionY = camY / METATILE_DIM;
+
+    MapRegions enemies = state->paths.entityPositions.enemies;
+    int rWidth       = enemies.map_regions_x;
+    int rHeight      = enemies.map_regions_y;
+
+    for (int ry = startRegionY; ry < rHeight; ry++) {
+        for (int rx = startRegionX; rx < rWidth; rx++) {
+            int index = ry * rWidth + rx;
+            MapRegion *region = &enemies.regions[index];
+
+            for(int i = 0; i < region->count; i++) {
+                int screenX = TO_WORLD_POS(region->list[i].x, rx) - camX;
+                int screenY = TO_WORLD_POS(region->list[i].y, ry) - camY;
+
+            }
+        }
+    }
+
+    return result;
+}
+
 static void
 HandleMouseInput(AppState *state, Rectangle recMap)
 {
@@ -560,6 +486,8 @@ HandleMouseInput(AppState *state, Rectangle recMap)
     if(!mouseHoversUi) {
         if(CheckCollisionPointRec(GetMousePosition(), recMap)) {
             SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+
+
 
             Vector2i mtMouse = GetMetatilePointBelowMouse(map, recMap);
 
@@ -899,8 +827,13 @@ GetMetatileIndex(AppState *state, int x, int y, MetatileLayer layer)
 {
     ///assert(layer < LAYER_COUNT);
 
-    u16 *mtIndices = state->paths.map.layers[layer].data;
-    return mtIndices[y * state->map.width + x];
+    if(x >= 0 && y >= 0
+    && x < state->map.width && y < state->map.height) {        
+        u16 *mtIndices = state->paths.map.layers[layer].data;
+        return mtIndices[y * state->map.width + x];
+    } else {
+        return 0;
+    }
 }
 
 Vector2i
