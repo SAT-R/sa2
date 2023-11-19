@@ -72,7 +72,7 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     s->graphics.dest = (void *)OBJ_VRAM0 + 0x2C80;
 
     // TODO: anim cannon?
-    s->graphics.anim = SA2_ANIM_CANNON_EGG_UTO;
+    s->graphics.anim = SA2_ANIM_CANNON;
     s->variant = 1;
     UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);

@@ -74,7 +74,7 @@
 #define IA__HALFPIPE__END                   67
 #define IA__HALFPIPE__START                 68
 #define IA__BIG_SNOWBALL                    69
-#define IA__NOTE_BLOCK_2                    70
+#define IA__NOTE_BLOCK__2                   70
 #define IA__IA044__B                        71 // Same code as IA__044__A
 #define IA__PIPE__START                     72
 #define IA__PIPE__END                       73
@@ -95,8 +95,8 @@
 #define IA__FAN__RIGHT                      88
 #define IA__FAN__PERIODIC_LEFT              89
 #define IA__FAN__PERIODIC_RIGHT             90
-#define IA__LAUNCHER_LEFT__DOWN             91
-#define IA__LAUNCHER_RIGHT__DOWN            92
+#define IA__LAUNCHER__DOWN_LEFT             91
+#define IA__LAUNCHER__DOWN_RIGHT            92
 #define IA__CANNON                          93
 #define IA__POLE                            94
 #define IA__IRON_BALL                       95
@@ -105,8 +105,8 @@
 #define IA__TOGGLE_GRAVITY__DOWN            98
 #define IA__TOGGLE_GRAVITY__UP              99
 #define IA__TOGGLE_GRAVITY__TOGGLE          100
-#define IA__LAUNCHER_LEFT__UP               101
-#define IA__LAUNCHER_RIGHT__UP              102
+#define IA__LAUNCHER__UP_LEFT               101
+#define IA__LAUNCHER__UP_RIGHT              102
 #define IA__SPECIAL_RING                    103
 #define IA__WHIRLWIND__B                    104
 #define IA__IA105                           105

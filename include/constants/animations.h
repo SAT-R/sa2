@@ -278,7 +278,7 @@
 #define SA2_ANIM_NOTE_BLOCK_TEC_BASE             598
 #define SA2_ANIM_ARROW_SCREEN_BORDER             599
 #define SA2_ANIM_LIGHT_GLOBE                     600
-#define SA2_ANIM_LIGHT_BRIDGE_TEC_BASE           601
+#define SA2_ANIM_LIGHT_BRIDGE                    601
 #define SA2_ANIM_602                             602
 #define SA2_ANIM_603                             603
 #define SA2_ANIM_SPRING_TEC_BAS                  604
@@ -291,9 +291,9 @@
 #define SA2_ANIM_SPEEDING_PLATFORM      612
 #define SA2_ANIM_PLATFORM_SQUARE_COMMON 613
 
-#define SA2_ANIM_LAUNCHER_EGG_UTO 614
+#define SA2_ANIM_LAUNCHER         614
 
-#define SA2_ANIM_CANNON_EGG_UTO   616
+#define SA2_ANIM_CANNON           616
 #define SA2_ANIM_PLATFORM_EGG_UTO 617
 #define SA2_ANIM_IRON_BALL        618
 #define SA2_ANIM_EXPLOSION        619
