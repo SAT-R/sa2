@@ -1490,3 +1490,106 @@ void Task_803CA1C(void)
     sub_803B84C(boss);
     sub_803C198(boss);
 }
+
+bool8 sub_803CA40(void)
+{
+    EggHammerTankII *boss = TASK_DATA(gCurTask);
+    s32 x, y;
+    s32 result;
+    x = (boss->unk0 + 0x1800);
+    y = (boss->unk4 + boss->unk9C + 0xE80);
+
+    result = sub_801F100(Q_24_8_TO_INT(y), Q_24_8_TO_INT(x), 1, 8, sub_801EC3C);
+    if (result > 0) {
+        x = (boss->unk0 - 0x1600);
+        y = (boss->unk4 + boss->unk98 + 0xE80);
+        result = sub_801F100(Q_24_8_TO_INT(y), Q_24_8_TO_INT(x), 1, 8, sub_801EC3C);
+
+        if (result > 0) {
+            return FALSE;
+        }
+    }
+
+    return TRUE;
+}
+
+void sub_803CAC8(void)
+{
+    EggHammerTankII *boss = TASK_DATA(gCurTask);
+    boss->unkA += 0x40;
+    boss->unk9C += 0x120;
+    boss->unk98 += 0x120;
+
+    if (boss->unk9C > 0x1780) {
+        boss->unk9C = 0x1780;
+    }
+
+    if (boss->unk98 > 0x1780) {
+        boss->unk98 = 0x1780;
+    }
+}
+
+extern const s16 gUnknown_080D7A28[];
+
+void sub_803CB18(EggHammerTankII *boss)
+{
+    u8 i;
+    boss->unk4C = (boss->unk4C + 8) & 0x3FF;
+    boss->unk50 = SIN(boss->unk4C) >> 8;
+    boss->unkC[1][0] = boss->unk50;
+
+    for (i = 1; i < 8; i++) {
+        boss->unkC[1][i] += Q_24_8_TO_INT(
+            (boss->unkC[1][i - 1] - boss->unkC[1][i]) * gUnknown_080D7A28[i] - 0xC00);
+    }
+}
+
+void sub_803CB84(EggHammerTankII *boss)
+{
+    boss->unkAC--;
+
+    if (boss->unkAC == 0) {
+        boss->unkAC = 0x3C;
+        boss->unkA0 = 3;
+    }
+}
+
+void sub_803CBA4(EggHammerTankII *boss)
+{
+    boss->unkAC--;
+    if (boss->unkAC == 0) {
+        if (PseudoRandom32() & 3) {
+            boss->unkAC = 0x44;
+            boss->unkA0 = 5;
+        } else {
+            m4aSongNumStart(SE_239);
+            boss->unkAC = 0x3C;
+            boss->unkA0 = 6;
+        }
+    }
+}
+
+void sub_803CBFC(EggHammerTankII *boss)
+{
+    boss->unkB2 = 0x1E;
+    if (boss->unkB1 == 0) {
+        Sprite *s = &boss->unk378;
+        s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+        s->variant = 1;
+        s->prevVariant = -1;
+    }
+}
+
+extern const u16 gUnknown_080D7AD0[2][16];
+
+void sub_803CC3C(EggHammerTankII *boss)
+{
+    if (boss->unkB1 != 0) {
+        u8 i;
+
+        for (i = 0; i < 16; i++) {
+            gObjPalette[i + 0x80] = gUnknown_080D7AD0[(boss->unkB1 & 4) >> 2][i];
+        }
+        gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
+    }
+}
