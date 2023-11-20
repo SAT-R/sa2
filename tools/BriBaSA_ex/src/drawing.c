@@ -1,10 +1,19 @@
 #include <raylib.h>
 
 #include "global.h"
-#include "draw.h"
+#include "drawing.h"
 #include "map.h"
 #include "save.h"
 #include "texture.h"
+
+/* TODO: Make including <entity>.h from game code work */
+
+// From light_bridge.h
+#define BRIDGE_SEGMENT_WIDTH 12
+#define BRIDGE_WIDTH         (28 * TILE_WIDTH)
+#define BRIDGE_TYPE_STRAIGHT 0
+#define BRIDGE_TYPE_CURVED   1
+
 
 #include "../../../include/constants/interactables.h"
 #include "../../../include/constants/zones.h"
@@ -18,13 +27,19 @@ static void DrawSaveButton(AppState *state, int x, int y);
 static void DrawUIWindow(UIWindow *window);
 
 
-#define DRAW_ENTITY_RECT(_x, _y, _boundingDim, _tint)                                       \
-{                                                                                           \
-    int rx = _x + data[0] * TILE_DIM;                                                       \
-    int ry = _y + data[1] * TILE_DIM;                                                       \
-                                                                                            \
-    DrawRectangle(rx, ry, (unsigned)data[2] * boundingWidth, data[3] * TILE_DIM, UI_COLOR_TRANSLUCENT);    \
-    DrawRectangleLines(rx, ry, (unsigned)data[2] * boundingWidth, data[3] * TILE_DIM, _tint);              \
+#define DRAW_ENTITY_RECT_CUSTOM_DIM(_x, _y, _offsetX, _offsetY, _width, _height, _tint)                                       \
+{                                                                                                         \
+    int rx = _x + _offsetX;                                                                     \
+    int ry = _y + _offsetY;                                                                     \
+                                                                                                          \
+    DrawRectangle(rx, ry, _width, _height, UI_COLOR_TRANSLUCENT);    \
+    DrawRectangleLines(rx, ry, _width, _height, _tint);              \
+}
+
+#define DRAW_ENTITY_RECT(_x, _y, _boundingDim, _tint)                                                     \
+{                                                                                                         \
+    DRAW_ENTITY_RECT_CUSTOM_DIM(_x, _y, (data[0] * TILE_DIM), (data[1] * TILE_DIM),                       \
+        ((unsigned)data[2] * _boundingDim), data[3] * TILE_DIM, _tint);                                 \
 }
 
 #define DRAWIA_FLAG_DRAW_TEXTURE       0x1
@@ -34,15 +49,6 @@ static void DrawUIWindow(UIWindow *window);
 #define DRAWIA_FLAG_FLIP_Y             0x20
 #define DRAWIA_FLAG_MIRROR_X           0x40
 #define DRAWIA_FLAG_MIRROR_Y           0x80
-
-static inline int
-GetMetatileIndex(AppState *state, int x, int y, MetatileLayer layer)
-{
-    ///assert(layer < LAYER_COUNT);
-
-    unsigned short *mtIndices = state->paths.map.layers[layer].data;
-    return mtIndices[y * state->map.width + x];
-}
 
 bool
 DrawAndHandleCloseButton(AppState *state)
@@ -134,6 +140,22 @@ DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
     case IA__WINDUP_STICK: {
         boundingTint = PINK;
         flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
+    } break;
+
+    case IA__LIGHT_BRIDGE: {
+
+        if(data[0] == BRIDGE_TYPE_STRAIGHT) {
+            boundingTint = GREEN;
+
+            int offX = -(BRIDGE_WIDTH / 2);
+            int offY = -8;
+            boundingWidth = BRIDGE_WIDTH;
+
+
+            DRAW_ENTITY_RECT_CUSTOM_DIM(x, y, offX, offY, BRIDGE_WIDTH, 16, GREEN);
+        }
+
+        flags |= DRAWIA_FLAG_DRAW_TEXTURE;
     } break;
         
     default: {
@@ -649,8 +671,8 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
                         );
                     }
                     
-                    int mtIndexBack  = GetMetatileIndex(state, mtX, mtY, LAYER_BACK);
-                    int mtIndexFront = GetMetatileIndex(state, mtX, mtY, LAYER_FRONT);
+                    int mtIndexBack  = GetMetatileIndex(&state->map, &state->paths.map, LAYER_BACK, mtX, mtY);
+                    int mtIndexFront = GetMetatileIndex(&state->map, &state->paths.map, LAYER_FRONT, mtX, mtY);
 
                     bool iterateAgain = false;
                     do {

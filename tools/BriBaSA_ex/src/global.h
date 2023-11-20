@@ -40,13 +40,13 @@ extern void *_Memcpy(void *dst, void *src, size_t size);
 // Adds an element to any dynamic array (with "capacity", "count" and "SomeType *elements").
 // Please make sure to initialize your list to all-zeroes before calling this macro.
 #define DA_DEFAULT_CAP 256
-#define da_append_to(list, new_element_ptr, _arrayName)                                                     \
-{                                                                                                           \
-    while((list)->count + 1 > (list)->capacity) {                                                           \
-        (list)->capacity += DA_DEFAULT_CAP;                                                                 \
+#define da_append_to(list, new_element_ptr, _arrayName)                                                      \
+{                                                                                                            \
+    while((list)->count + 1 > (list)->capacity) {                                                            \
+        (list)->capacity += DA_DEFAULT_CAP;                                                                  \
         (list)->_arrayName = _Realloc((list)->_arrayName, (list)->capacity * sizeof((list)->_arrayName[0])); \
-    }                                                                                                       \
-                                                                                                            \
+    }                                                                                                        \
+                                                                                                             \
     _Memcpy(&(list)->_arrayName[(list)->count++], new_element_ptr, sizeof(*new_element_ptr));                \
 }
 #define da_append(list, new_element_ptr)                                                                    \

@@ -21,7 +21,7 @@
 #include "../../../include/constants/zones.h"
 
 #include "global.h"
-#include "draw.h"
+#include "drawing.h"
 #include "map.h"
 #include "parsing.h"
 #include "texture.h"
@@ -45,7 +45,6 @@ static void HandleMouseInput(AppState *state, Rectangle recMap);
 static void HandleKeyInput(AppState *state, Rectangle recMap);
 static bool HandleMouseInputUIWindows(AppState *state);
 static void SetupFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir);
-static void LoadAllEntityTextures(AppState *state);
 
 static Rectangle GetSpawnPosRectangle(StageMap *map, CharacterList *chars);
 static void HandleMouseInputSpawnPos(AppState *state);
@@ -146,7 +145,7 @@ int main(void)
     char mapDir[MAX_FILEPATH_LENGTH];
     TextCopy(mapDir, mapDirs.paths[4 + (ZONE_2-1)*3]);
 #else
-    const char *pMapDir = TextFormat("%s/zone_5/act_1/", mapsRoot);
+    const char *pMapDir = TextFormat("%s/zone_4/act_1/", mapsRoot);
     char *mapDir  = malloc(TextLength(pMapDir) + 1);
     TextCopy(mapDir, pMapDir);
 #endif
@@ -189,8 +188,8 @@ int main(void)
     while (!WindowShouldClose())
     {
         HandleMouseInput(&state, recMap);
-
         HandleKeyInput(&state, recMap);
+        HandleMouseInputSpawnPos(&state);
 
         BeginDrawing();
             ClearBackground(UI_COLOR_BACKGROUND);
@@ -201,12 +200,9 @@ int main(void)
             DrawMap(&state, recMap, txAtlas, txMap);
 
             DrawEntities(&state, recMap);
-            Debug_DrawAllEntityTextures(&state);
+            //Debug_DrawAllEntityTextures(&state);
 
             DrawUI(&state, txAtlas);
-
-            HandleMouseInputSpawnPos(&state);
-            
 
             closeBtnClicked |= DrawAndHandleCloseButton(&state);
         EndDrawing();
@@ -238,11 +234,6 @@ int main(void)
     CloseWindow();
 
     return 0;
-}
-
-static bool
-HasDataDir(char *gameRootPath)
-{
 }
 
 static LoadEntityDataFromCSVs(AppState *state)
@@ -439,42 +430,6 @@ SetNewMetatiles(AppState *state, int x, int y)
     }
 }
 
-// Get the entity below the mouse, if any
-static int
-GetHotEntity(AppState *state, Rectangle recMap)
-{
-    int result = -1;
-
-    if(!CheckCollisionPointRec(GetMousePosition(), recMap)) {
-        return result;
-    }
-
-    int camX = state->map.camera.x;
-    int camY = state->map.camera.y;
-
-    int startRegionX = camX / METATILE_DIM;
-    int startRegionY = camY / METATILE_DIM;
-
-    MapRegions enemies = state->paths.entityPositions.enemies;
-    int rWidth       = enemies.map_regions_x;
-    int rHeight      = enemies.map_regions_y;
-
-    for (int ry = startRegionY; ry < rHeight; ry++) {
-        for (int rx = startRegionX; rx < rWidth; rx++) {
-            int index = ry * rWidth + rx;
-            MapRegion *region = &enemies.regions[index];
-
-            for(int i = 0; i < region->count; i++) {
-                int screenX = TO_WORLD_POS(region->list[i].x, rx) - camX;
-                int screenY = TO_WORLD_POS(region->list[i].y, ry) - camY;
-
-            }
-        }
-    }
-
-    return result;
-}
-
 static void
 HandleMouseInput(AppState *state, Rectangle recMap)
 {
@@ -488,9 +443,7 @@ HandleMouseInput(AppState *state, Rectangle recMap)
             SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 
 
-
             Vector2i mtMouse = GetMetatilePointBelowMouse(map, recMap);
-
 
             if(IS_USER_KEY_DOWN_LEFT && !IsMouseOnSpawn(map, &paths->characters)) {
                 SetNewMetatiles(state, mtMouse.x, mtMouse.y);
@@ -504,15 +457,15 @@ HandleMouseInput(AppState *state, Rectangle recMap)
                     map->initialMetatile.x = mtMouse.x;
                     map->initialMetatile.y = mtMouse.y;
                 }
-            }
-            if(IS_USER_KEY_RELEASED_RIGHT) {
+            } else if(IS_USER_KEY_RELEASED_RIGHT) {
                 if( (map->initialMetatile.x == mtMouse.x)
                  && (map->initialMetatile.y == mtMouse.y) ) {
                     map->selectedMetatile.x = mtMouse.x;
                     map->selectedMetatile.y = mtMouse.y;
 
-                    int mtIndexFront = GetMetatileIndex(state, state->map.selectedMetatile.x, state->map.selectedMetatile.y, LAYER_FRONT);
-                    int mtIndexBack  = GetMetatileIndex(state, state->map.selectedMetatile.x, state->map.selectedMetatile.y, LAYER_BACK);
+                    //GetMetatileIndex(Tilemap* layers, MetatileLayer layer, int x, int y);
+                    int mtIndexFront = GetMetatileIndex(&state->map, &state->paths.map, LAYER_FRONT, state->map.selectedMetatile.x, state->map.selectedMetatile.y);
+                    int mtIndexBack  = GetMetatileIndex(&state->map, &state->paths.map, LAYER_BACK , state->map.selectedMetatile.x, state->map.selectedMetatile.y);
     
                     state->map.selectedMetatileIndexFront = mtIndexFront;
                     state->map.selectedMetatileIndexBack  = mtIndexBack;
@@ -823,14 +776,14 @@ GetMousePositionInRec(Rectangle rec) {
 }
 
 inline int
-GetMetatileIndex(AppState *state, int x, int y, MetatileLayer layer)
+GetMetatileIndex(StageMap *map, Tilemap* tilemap, MetatileLayer layer, int x, int y)
 {
     ///assert(layer < LAYER_COUNT);
 
     if(x >= 0 && y >= 0
-    && x < state->map.width && y < state->map.height) {        
-        u16 *mtIndices = state->paths.map.layers[layer].data;
-        return mtIndices[y * state->map.width + x];
+    && x < map->width && y < map->height) {        
+        u16 *mtIndices = tilemap->layers[layer].data;
+        return mtIndices[y * map->width + x];
     } else {
         return 0;
     }
@@ -850,94 +803,3 @@ GetMetatilePointBelowMouse(StageMap *map, Rectangle recMap) {
         return CLITERAL(Vector2i){-1, -1};
     }
 }
-
-static inline void
-LoadCharacterTextures(char *gameRoot, CharacterList *chars)
-{
-    for(int c = 0; c < chars->count; c++) {
-        Character *character = &chars->elements[c];
-        int frame = 0;
-        const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
-                                          gameRoot, character->animIdle, frame);
-        character->texture = LoadTexture(animPath);
-    }
-}
-
-static inline void
-LoadEntityTextures(char *gameRoot, EntityMetaList *ents)
-{
-    for(int c = 0; c < ents->count; c++) {
-        EntityMeta *ent = &ents->elements[c];
-        int frame = 0;
-        const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
-                                          gameRoot, ent->anim, frame);
-        ent->texture = LoadTexture(animPath);
-    }
-}
-
-static inline void
-LoadInteractableTextures(char *gameRoot, InteractableMetaList *ias)
-{
-    for(int c = 0; c < ias->count; c++) {
-        InteractableMeta *ia = &ias->elements[c];
-        int frame = 0;
-        const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
-                                          gameRoot, ia->anim, frame);
-        ia->texture = LoadTexture(animPath);
-    }
-}
-
-static inline void
-LoadRingTexture(char *gameRoot, EntityMeta *ring)
-{
-    int frame = 0;
-    const char *animPath = TextFormat("%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png",
-                                        gameRoot, ring->anim, frame);
-    ring->texture = LoadTexture(animPath);
-    
-}
-
-static inline void
-LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
-{
-    const char *pathFormat = "%s/graphics/obj_tiles/4bpp/anim_%04d/f%03d.png";
-
-    // Itembox
-    unsigned short animId = items->animItembox;
-    const char *itemboxPath   = TextFormat(pathFormat, gameRoot, animId, 0);
-    items->txItembox = LoadTexture(itemboxPath);
-
-    // 1-Up icons
-    for(int c = 0; c < numCharacters; c++) {
-        unsigned short animId = items->animItemType;
-        const char *iconPath = TextFormat(pathFormat, gameRoot, animId, c);
-        Texture tx1Up  = LoadTexture(iconPath);
-
-        da_append(&items->oneUpIcons, &tx1Up);
-    }
-
-    // Load all items
-    for(int i = 0; i < items->items.count; i++) {
-        EntityMeta *ent = &items->items.elements[i];
-
-        if(i == 0) {
-            ent->texture = items->oneUpIcons.elements[0];
-        } else {
-            const char *animPath = TextFormat(pathFormat, gameRoot, items->animItemType, (i - 1) + numCharacters);
-            ent->texture = LoadTexture(animPath);
-        }
-    }
-}
-
-static void
-LoadAllEntityTextures(AppState *state)
-{
-    FileInfo *paths = &state->paths;
-
-    LoadCharacterTextures(paths->gameRoot, &paths->characters);
-    LoadInteractableTextures(paths->gameRoot,    &paths->interactables);
-    LoadEntityTextures(paths->gameRoot,    &paths->enemies);
-    LoadItemTextures(paths->gameRoot,      &paths->items, paths->characters.count);
-    LoadRingTexture(paths->gameRoot,       &paths->ring);
-}
-
