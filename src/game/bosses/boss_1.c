@@ -230,6 +230,9 @@ u8 sub_803CA40(void);
 
 extern const TaskMain gUnknown_080D7AA8[];
 
+typedef void (*HammertankFunc)(EggHammerTankII *);
+extern const HammertankFunc gUnknown_080D7AB0[];
+
 void sub_803CB18(EggHammerTankII *);
 void sub_803AC2C(EggHammerTankII *);
 
@@ -1176,3 +1179,314 @@ NONMATCH("asm/non_matching/game/bosses/boss_1__sub_803BDB8.inc", void sub_803BDB
     unkB4->unkE4 = 0;
 }
 END_NONMATCH
+
+void sub_803C198(EggHammerTankII *boss)
+{
+    u8 result;
+    s32 i;
+    Sprite *s;
+    ExplosionPartsInfo init;
+    EggHammerTankII_UNKB4 *unkB4 = &boss->unkB4;
+
+    SpriteTransform *transform;
+    u8 *unkB3;
+
+    boss->unkA8++;
+
+    result = Div(boss->unkA8, 0x3C);
+    result = boss->unkA8 + (result * -0x3C);
+
+    if (!(boss->unkA8 & 7)) {
+        i = result - (Div(result, 6) * 6);
+
+        init.spawnX = Q_24_8_TO_INT(unkB4->unkC0) - gCamera.x;
+        init.spawnY = Q_24_8_TO_INT(unkB4->unkC4) - gCamera.y;
+        init.velocity = 0x40;
+        init.rotation = PseudoRandom32() & 0x3FF;
+        init.speed = 0x600;
+        init.vram = (void *)OBJ_VRAM0 + (gUnknown_080D79D0[i][0] * 0x20);
+        init.anim = gUnknown_080D79D0[i][1];
+        init.variant = gUnknown_080D79D0[i][2];
+        init.unk4 = 1;
+        CreateBossParticleWithExplosionUpdate(&init, &unkB4->unk2DD);
+    }
+
+    if (Mod(boss->unkA8 + PseudoRandom32(), 0xD) == 0) {
+        m4aSongNumStart(SE_144);
+    }
+
+    s = &boss->unk2E0;
+    s->x = Q_24_8_TO_INT(unkB4->unkC0) - gCamera.x;
+    s->y = Q_24_8_TO_INT(unkB4->unkC4) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    // required for match
+    unkB3 = &boss->unkB3;
+
+    for (i = 0; i < 2; i++) {
+        result += 0xF;
+        if (result == 0x3C) {
+            init.spawnX = s->x;
+            init.spawnY = s->y;
+            init.velocity = 0;
+            init.rotation = 1000;
+            init.speed = 0x300;
+            init.vram = (void *)OBJ_VRAM0 + 0x2980;
+            init.anim = SA2_ANIM_EXPLOSION;
+            init.variant = 0;
+            init.unk4 = 1;
+            CreateBossParticleWithExplosionUpdate(&init, &unkB4->unk2DD);
+            result = 0;
+        } else if (result > 0x3C) {
+            result -= 0x3C;
+        }
+
+        result += 0xF;
+        if (result == 0x3C) {
+            init.spawnX = s->x + 10;
+            init.spawnY = s->y + 16;
+            init.velocity = 0;
+            init.rotation = 1000;
+            init.speed = 0x300;
+            init.vram = (void *)OBJ_VRAM0 + 0x2980;
+            init.anim = SA2_ANIM_EXPLOSION;
+            init.variant = 0;
+            init.unk4 = 1;
+            CreateBossParticleWithExplosionUpdate(&init, &unkB4->unk2DD);
+            result = 0;
+        } else if (result > 0x3C) {
+            result -= 0x3C;
+        }
+
+        result += 0xF;
+        if (result == 0x3C) {
+            init.spawnX = s->x - 10;
+            init.spawnY = s->y + 8;
+            init.velocity = 0;
+            init.rotation = 1000;
+            init.speed = 0x300;
+            init.vram = (void *)OBJ_VRAM0 + 0x2980;
+            init.anim = SA2_ANIM_EXPLOSION;
+            init.variant = 0;
+            init.unk4 = 1;
+            CreateBossParticleWithExplosionUpdate(&init, &unkB4->unk2DD);
+            result = 0;
+        } else if (result > 0x3C) {
+            result -= 0x3C;
+        }
+
+        result += 0xF;
+        if (result == 0x3C) {
+            init.spawnX = s->x + 10;
+            init.spawnY = s->y - 0x10;
+            init.velocity = 0;
+            init.rotation = 1000;
+            init.speed = 0x300;
+            init.vram = (void *)OBJ_VRAM0 + 0x2980;
+            init.anim = SA2_ANIM_EXPLOSION;
+            init.variant = 0;
+            init.unk4 = 1;
+            CreateBossParticleWithExplosionUpdate(&init, &unkB4->unk2DD);
+            result = 0;
+        } else if (result > 0x3C) {
+            result -= 0x3C;
+        }
+
+        result += 0xF;
+        if (result == 0x3C) {
+            init.spawnX = s->x - 10;
+            init.spawnY = s->y - 8;
+            init.velocity = 0;
+            init.rotation = 1000;
+            init.speed = 0x300;
+            init.vram = (void *)OBJ_VRAM0 + 0x2980;
+            init.anim = SA2_ANIM_EXPLOSION;
+            init.variant = 0;
+            init.unk4 = 1;
+            CreateBossParticleWithExplosionUpdate(&init, &unkB4->unk2DD);
+            result = 0;
+        } else if (result > 0x3C) {
+            result -= 0x3C;
+        }
+    }
+
+    if (s->x < 0x32 && *unkB3 == 0) {
+        *unkB3 = 1;
+        CreateEggmobileEscapeSequence(s->x, s->y, SPRITE_FLAG(PRIORITY, 2));
+    }
+
+    if (Q_24_8_TO_INT(unkB4->unkC0) - gCamera.x < -200) {
+        unkB4->fade.window = 0;
+        unkB4->fade.brightness = 0;
+        unkB4->fade.flags = 2;
+        unkB4->fade.speed = 0;
+        unkB4->fade.bldCnt = 0xBF;
+        unkB4->fade.bldAlpha = 0;
+        boss->unkA8 = 0;
+        gCurTask->main = sub_803AA40;
+    }
+
+    if (*unkB3 == 0) {
+        s = &boss->unk378;
+        s->x = Q_24_8_TO_INT(unkB4->unkC0) - gCamera.x;
+        s->y = Q_24_8_TO_INT(unkB4->unkC4) - gCamera.y;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+
+    if (unkB4->unk278[0][4] != 0 || (unkB4->unk278[0][5] & 1)) {
+        s = &boss->unk3A8;
+        s->x = Q_24_8_TO_INT(unkB4->unk278[0][0]) - gCamera.x;
+        s->y = Q_24_8_TO_INT(unkB4->unk278[0][1]) - gCamera.y;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+
+    if (unkB4->unk278[1][4] != 0 || (unkB4->unk278[1][5] & 1)) {
+        s = &boss->unk3A8;
+        s->x = Q_24_8_TO_INT(unkB4->unk278[1][0]) - gCamera.x;
+        s->y = Q_24_8_TO_INT(unkB4->unk278[1][1]) - gCamera.y;
+        DisplaySprite(s);
+    }
+
+    if (unkB4->unk278[2][4] != 0 || (unkB4->unk278[2][5] & 1)) {
+        s = &boss->unk3D8;
+        s->x = Q_24_8_TO_INT(unkB4->unk278[2][0]) - gCamera.x;
+        s->y = Q_24_8_TO_INT(unkB4->unk278[2][1]) - gCamera.y;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+
+    if (unkB4->unk278[3][4] != 0 || (unkB4->unk278[3][5] & 1)) {
+        s = &boss->unk3D8;
+        s->x = Q_24_8_TO_INT(unkB4->unk278[3][0]) - gCamera.x;
+        s->y = Q_24_8_TO_INT(unkB4->unk278[3][1]) - gCamera.y;
+        DisplaySprite(s);
+    }
+
+    s = &boss->unk318;
+    s->unk1A = SPRITE_OAM_ORDER(18);
+
+    for (i = 6; i > -1; i--) {
+        s->x = Q_24_8_TO_INT(unkB4->unkF8[i][0]) - gCamera.x;
+        s->y = Q_24_8_TO_INT(unkB4->unkF8[i][1]) - gCamera.y;
+        if (unkB4->unkF8[i][4] != 0 || (unkB4->unkF8[i][5] != 0 && boss->unkA8 & 1)) {
+            DisplaySprite(s);
+        }
+    }
+
+    s = &boss->unk318;
+    s->unk1A = SPRITE_OAM_ORDER(25);
+    for (i = 0; i < 6; i++) {
+        s->x = Q_24_8_TO_INT(unkB4->unk1B8[i][0]) - gCamera.x;
+        s->y = Q_24_8_TO_INT(unkB4->unk1B8[i][1]) - gCamera.y;
+        if (unkB4->unk1B8[i][4] != 0 || (unkB4->unk1B8[i][5] != 0 && boss->unkA8 & 1)) {
+            DisplaySprite(s);
+        }
+    }
+
+    s = &boss->unk408;
+    transform = &boss->transform;
+
+    s->x = Q_24_8_TO_INT(unkB4->unkD0) - gCamera.x;
+    s->y = Q_24_8_TO_INT(unkB4->unkD4) - gCamera.y;
+    s->unk10 = gUnknown_030054B8++ | 0x2060;
+
+    if (unkB4->unkE4 != 0) {
+        unkB4->unkE4 = 2;
+    } else {
+        transform->rotation = unkB4->unk2D8;
+        transform->width = 0x100;
+        transform->height = 0x100;
+        transform->x = s->x;
+        transform->y = s->y;
+        sub_8004860(s, transform);
+        DisplaySprite(s);
+    }
+}
+
+void sub_803C80C(s32 x, s32 y)
+{
+    u8 i;
+    EggHammerTankII *boss = TASK_DATA(gActiveBossTask);
+    EggHammerTankII_UNKB4 *unkB4 = &boss->unkB4;
+
+    unkB4->unkC0 += x;
+    boss->unk0 += x;
+    unkB4->unkC4 += y;
+    boss->unk4 += y;
+
+    for (i = 0; i < 4; i++) {
+        unkB4->unk278[i][0] += x;
+        unkB4->unk278[i][1] += y;
+    }
+
+    for (i = 0; i < 8; i++) {
+        unkB4->unkF8[i][0] += x;
+        unkB4->unkF8[i][1] += y;
+    }
+
+    for (i = 0; i < 8; i++) {
+        unkB4->unk1B8[i][0] += x;
+        unkB4->unk1B8[i][1] += y;
+    }
+
+    unkB4->unkD0 += x;
+    unkB4->unkD4 += y;
+}
+
+void TaskDestructor_EggHammerTankIIMain(struct Task *t)
+{
+    EggHammerTankII *boss = TASK_DATA(t);
+    VramFree(boss->unk2E0.graphics.dest);
+    VramFree(boss->unk318.graphics.dest);
+    VramFree(boss->unk348.graphics.dest);
+    VramFree(boss->unk378.graphics.dest);
+    VramFree(boss->unk3A8.graphics.dest);
+    VramFree(boss->unk3D8.graphics.dest);
+    VramFree(boss->unk408.graphics.dest);
+
+    if (boss->unk444.graphics.dest != NULL) {
+        VramFree(boss->unk444.graphics.dest);
+    }
+    if (boss->unk474.graphics.dest != NULL) {
+        VramFree(boss->unk474.graphics.dest);
+    }
+
+    gActiveBossTask = NULL;
+}
+
+void Task_803CA1C(void);
+void sub_803CC3C(EggHammerTankII *boss);
+
+void Task_803C980(void)
+{
+    u8 result;
+    EggHammerTankII *boss = TASK_DATA(gCurTask);
+    boss->unk0 += boss->unk8;
+    boss->unk4 += boss->unkA;
+
+    gUnknown_080D7AA8[sub_803CA40()]();
+    gUnknown_080D7AB0[boss->unkA0](boss);
+
+    sub_803CB18(boss);
+    sub_803A8E4(boss);
+    sub_803B7B0(boss);
+    sub_803AC2C(boss);
+    sub_803CC3C(boss);
+
+    if (boss->unkB0 == 0) {
+        sub_803BDB8();
+        gCurTask->main = Task_803CA1C;
+        sub_802A018();
+    }
+}
+
+void Task_803CA1C(void)
+{
+    EggHammerTankII *boss = TASK_DATA(gCurTask);
+
+    sub_803B84C(boss);
+    sub_803C198(boss);
+}
