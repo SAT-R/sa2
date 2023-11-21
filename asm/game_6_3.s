@@ -582,6 +582,7 @@ _08024F68: .4byte 0x0000F7FF
 _08024F6C: .4byte 0x04000128
 _08024F70: .4byte 0x0000F9FF
 
+;@ void sub_8024F74(Player* player, UNK_3005A70* playerUnk94)
 	thumb_func_start sub_8024F74
 sub_8024F74: @ 0x08024F74
 	push {r4, r5, r6, r7, lr}
