@@ -9,6 +9,7 @@
 #include "game/screen_fade.h"
 #include "game/stage/results.h"
 #include "game/time_attack/results.h"
+#include "game/stage/boss_results_transition.h"
 
 #include "constants/songs.h"
 #include "constants/zones.h"
