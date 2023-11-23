@@ -6,7 +6,7 @@
 #include "game/heart_particles_effect.h"
 #include "game/stage/music_manager.h"
 
-#include "game/game_6.h"
+#include "game/player.h"
 #include "game/amy_attack_heart_effect.h"
 #include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
 #include "game/dust_effect_braking.h" // CreateSpindashDustEffect

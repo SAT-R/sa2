@@ -22,7 +22,7 @@ extern u16 gUnknown_080D6736[115][2];
 typedef struct {
     /* 0x00 */ u8 unk0;
     /* 0x04 */ u32 unk4; // TODO: Check the type!
-} Game_6_0_Task; /* size: 0x8 */
+} player_0_Task; /* size: 0x8 */
 
 extern void InitNewInputCounters(void);
 void Task_8023FC0(void);
@@ -45,9 +45,9 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 
     s32 unk60 = p->unk60;
     struct Task *t;
-    Game_6_0_Task *gt;
+    player_0_Task *gt;
 
-    t = TaskCreate(Task_8023FC0, sizeof(Game_6_0_Task), 0x3000, 0,
+    t = TaskCreate(Task_8023FC0, sizeof(player_0_Task), 0x3000, 0,
                    TaskDestructor_802A07C);
     p->spriteTask = t;
     gt = TASK_DATA(t);

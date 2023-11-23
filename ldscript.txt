@@ -77,6 +77,8 @@ SECTIONS
         build/sa2/src/game/interactables_0/pipe.o(.text);
         build/sa2/src/game/interactables_0/platform_thin.o(.text);
         build/sa2/src/game/interactables_0/slidy_ice.o(.text);
+        /* game/globals? */
+
         build/sa2/src/game/water_effects.o(.text);
         build/sa2/src/game/player_callbacks_0.o(.text);
         build/sa2/src/game/player_actor.o(.text);
@@ -125,17 +127,17 @@ SECTIONS
         build/sa2/src/game/rings_scatter.o(.text);
 
         /* player */
-        build/sa2/src/game/game_6_0.o(.text);
-        build/sa2/asm/game_6_1.o(.text);
-        build/sa2/asm/game_6_2.o(.text);
-        build/sa2/src/game/game_6_3.o(.text);
-        build/sa2/asm/game_6_3.o(.text);
+        build/sa2/src/game/player_0.o(.text);
+        build/sa2/asm/player_1.o(.text);
+        build/sa2/asm/player_2.o(.text);
+        build/sa2/src/game/player_3.o(.text);
+        build/sa2/asm/player_3.o(.text);
         build/sa2/src/game/player_callbacks_1.o(.text);
 
         build/sa2/src/game/item_tasks.o(.text);
         build/sa2/src/game/underwater_effects.o(.text);
         build/sa2/src/game/screen_shake.o(.text);
-        build/sa2/src/game/game_5.o(.text);
+        build/sa2/src/game/player_controls.o(.text);
     
         build/sa2/asm/player_super_sonic.o(.text);
         build/sa2/src/game/stage/ui.o(.text);
@@ -359,7 +361,7 @@ SECTIONS
 
         build/sa2/asm/player_super_sonic_data.o(.rodata);
         build/sa2/src/game/rings_scatter.o(.rodata);
-        build/sa2/src/game/game_6_3.o(.rodata);
+        build/sa2/src/game/player_3.o(.rodata);
         build/sa2/src/game/player_callbacks_1.o(.rodata);
         build/sa2/asm/player_super_sonic.o(.rodata);
         build/sa2/src/game/stage/ui.o(.rodata);

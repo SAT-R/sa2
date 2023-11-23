@@ -13,8 +13,7 @@ build/sa2/src/core.o(.data);
 
 . = ALIGN(32); 
 
-/* it's likely all the below belong to game.c as their order doesn't */
-/* match the file order. They likely belong to something like game/game.c */
+/* it's likely all the below belong to the sakit lib */
                 gUnknown_030053E0 = .;
 . = 0x000053E4; gCheckpointTime = .;
 . = 0x000053E8; gUnknown_030053E8 = .;
@@ -79,6 +78,7 @@ build/sa2/src/core.o(.data);
 . = 0x000055D4; gNewInputCountersIndex = .;
 . = 0x000055D8; gUnknown_030055D8 = .;
 . = 0x000055E0; gNewInputCounters = .;
+/* sakit end */
 
 /* These are all in the right order */
 
@@ -97,7 +97,7 @@ build/sa2/src/game/boost_effect.o(.data);
 /* multiplayer player_unk_2 */
 . = 0x00005840; gUnknown_03005840 = .;
 
-/* init */
+/* dummy task (after game.c) */
 . = 0x00005844; gUnknown_03005844 = .;
 
 /* stage */
@@ -122,7 +122,7 @@ build/sa2/src/game/boost_effect.o(.data);
 /* underwater_effects */
 . = 0x00005B34; gSmallAirBubbleCount = .;
 
-/* game_5.c */
+/* player_controls.c */
 . = 0x00005B38; gPlayerControls = .;
 
 /* player_super_sonic */
@@ -147,7 +147,7 @@ build/sa2/src/game/math_0.o(.data);
 . = ALIGN(8); 
 
 /* unknown effect */
-build/sa2/src/game/game_6_0.o(.data);
+build/sa2/src/game/player_0.o(.data);
 . = ALIGN(16); 
 
 build/sa2/src/game/backgrounds.o(.data);

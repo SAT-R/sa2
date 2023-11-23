@@ -17,7 +17,7 @@
 #include "game/screen_shake.h"
 #include "game/time_attack/lobby.h"
 #include "game/game_over.h"
-#include "game/game_5.h"
+#include "game/player_controls.h"
 
 #include "game/multiboot/collect_rings/time_display.h"
 

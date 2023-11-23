@@ -511,6 +511,7 @@ extern Struct_30054C0 gUnknown_030054C0;
 
 extern u8 gMultiplayerConnections;
 
+// TODO: move to player_controls.c
 extern struct ButtonConfig gPlayerControls;
 
 // Only set after the player passed it, used to determine extra score
