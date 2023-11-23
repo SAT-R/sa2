@@ -4,6 +4,8 @@
 #include "global.h"
 #include "core.h"
 
+#include "lib/sakit/camera.h"
+
 extern const Background gStageCameraBgTemplates[4];
 
 void UpdateCamera(void);

@@ -262,7 +262,13 @@
     "stage.h": "c",
     "screen_fade.h": "c",
     "player_actor.h": "c",
-    "amy_attack_heart_effect.h": "c"
+    "amy_attack_heart_effect.h": "c",
+    "zone_3.h": "c",
+    "zone_5.h": "c",
+    "camera.h": "c",
+    "dummy.h": "c",
+    "animation_commands_bg.h": "c",
+    "zone_4.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

@@ -1,6 +1,8 @@
 #include "global.h"
 #include "core.h"
+#include "sprite.h"
 #include "animation_commands_bg.h"
+
 #include "game/game.h"
 #include "game/stage/background/dummy.h"
 #include "game/stage/background/zone_1.h"
