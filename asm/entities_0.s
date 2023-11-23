@@ -713,7 +713,7 @@ sub_800C418: @ 0x0800C418
 	mov ip, r0
 	cmp r1, r5
 	beq _0800C4F0
-	ldr r0, _0800C4EC @ =gUnknown_030056A4
+	ldr r0, _0800C4EC @ =gPlayerActor
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0800C4F0
@@ -799,7 +799,7 @@ _0800C4E8:
 	movs r0, #1
 	b _0800C4F2
 	.align 2, 0
-_0800C4EC: .4byte gUnknown_030056A4
+_0800C4EC: .4byte gPlayerActor
 _0800C4F0:
 	movs r0, #0
 _0800C4F2:
@@ -1108,7 +1108,7 @@ _0800C734:
 	ldr r0, _0800C82C @ =gPlayer
 	bl sub_800CBA4
 _0800C73A:
-	ldr r0, _0800C830 @ =gUnknown_030056A4
+	ldr r0, _0800C830 @ =gPlayerActor
 	ldr r0, [r0]
 	cmp r0, #0
 	bne _0800C744
@@ -1233,7 +1233,7 @@ _0800C802:
 	b _0800C83A
 	.align 2, 0
 _0800C82C: .4byte gPlayer
-_0800C830: .4byte gUnknown_030056A4
+_0800C830: .4byte gPlayerActor
 _0800C834: .4byte gGameMode
 _0800C838:
 	movs r0, #0

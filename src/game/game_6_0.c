@@ -5,7 +5,7 @@
 #include "game/game.h"
 #include "game/dust_effect_braking.h"
 #include "game/mp_unknown_task.h"
-#include "game/player_actions.h"
+#include "game/boost_effect.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
 #include "game/rings_scatter.h"
@@ -31,6 +31,7 @@ void AllocateCharacterMidAirGfx(Player *, UNK_3005A70 *);
 void InitializePlayer(Player *);
 void TaskDestructor_802A07C(struct Task *);
 
+// Unknown effect globals
 s32 gUnused_03005B78 = 0;
 u8 gUnknown_03005B7C = 0;
 

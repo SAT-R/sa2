@@ -4,6 +4,7 @@
 #include "game/save.h"
 #include "game/screen_fade.h"
 #include "game/game.h"
+#include "game/stage/stage.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 #include "game/character_select.h"

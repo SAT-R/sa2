@@ -1455,7 +1455,7 @@ _0804B21E:
 _0804B280: .4byte gSelectedCharacter
 _0804B284: .4byte 0x00000177
 _0804B288:
-	ldr r0, _0804B2E0 @ =gUnknown_030056A4
+	ldr r0, _0804B2E0 @ =gPlayerActor
 	ldr r2, [r0]
 	cmp r2, #0
 	beq _0804B2CC
@@ -1500,7 +1500,7 @@ _0804B2CE:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0804B2E0: .4byte gUnknown_030056A4
+_0804B2E0: .4byte gPlayerActor
 _0804B2E4: .4byte 0x00000177
 _0804B2E8: .4byte gUnknown_03005498
 
@@ -1622,7 +1622,7 @@ _0804B3CC: .4byte gUnknown_080D8888
 _0804B3D0: .4byte gSelectedCharacter
 _0804B3D4: .4byte 0x00000177
 _0804B3D8:
-	ldr r0, _0804B430 @ =gUnknown_030056A4
+	ldr r0, _0804B430 @ =gPlayerActor
 	ldr r2, [r0]
 	cmp r2, #0
 	beq _0804B41C
@@ -1667,7 +1667,7 @@ _0804B41E:
 	pop {r1}
 	bx r1
 	.align 2, 0
-_0804B430: .4byte gUnknown_030056A4
+_0804B430: .4byte gPlayerActor
 _0804B434: .4byte 0x00000177
 _0804B438: .4byte gUnknown_03005498
 

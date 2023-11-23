@@ -1,5 +1,6 @@
 #include "core.h"
 #include "game/game.h"
+#include "game/stage/stage.h"
 #include "game/true_area_53/intro.h"
 #include "task.h"
 #include "lib/m4a.h"

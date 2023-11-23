@@ -13,6 +13,7 @@
 #include "game/math.h"
 #include "game/options_screen.h"
 #include "game/game.h"
+#include "game/stage/stage.h"
 #include "game/time_attack/lobby.h"
 #include "constants/zones.h"
 #include "data/recordings.h"

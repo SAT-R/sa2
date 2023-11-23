@@ -51,14 +51,14 @@ CreatePlayerActor: @ 0x08013FAC
 	asrs r0, r0, #0x18
 	cmp r0, #0x1d
 	bne _08013FDC
-	ldr r1, _08013FD8 @ =gUnknown_030056A4
+	ldr r1, _08013FD8 @ =gPlayerActor
 	movs r0, #0
 	str r0, [r1]
 	b _08014112
 	.align 2, 0
 _08013FD0: .4byte gGameMode
 _08013FD4: .4byte gCurrentLevel
-_08013FD8: .4byte gUnknown_030056A4
+_08013FD8: .4byte gPlayerActor
 _08013FDC:
 	adds r0, r1, #0
 	adds r0, #0x85
@@ -82,7 +82,7 @@ _08013FEC:
 	adds r6, r1, r0
 	adds r0, #0x1c
 	adds r7, r1, r0
-	ldr r0, _08014024 @ =gUnknown_030056A4
+	ldr r0, _08014024 @ =gPlayerActor
 	str r6, [r0]
 	ldr r1, _08014028 @ =gPlayer
 	ldr r0, [r1, #8]
@@ -93,7 +93,7 @@ _08013FEC:
 _08014018: .4byte sub_801420C
 _0801401C: .4byte 0x00005010
 _08014020: .4byte sub_8015360
-_08014024: .4byte gUnknown_030056A4
+_08014024: .4byte gPlayerActor
 _08014028: .4byte gPlayer
 _0801402C:
 	lsls r0, r1, #2
@@ -159,7 +159,7 @@ _080140A0:
 	beq _08014112
 	adds r7, r6, #0
 	adds r7, #0x1c
-	ldr r0, _08014124 @ =gUnknown_030056A4
+	ldr r0, _08014124 @ =gPlayerActor
 	str r6, [r0]
 	movs r0, #0
 	str r0, [r6]
@@ -220,7 +220,7 @@ _08014112:
 	.align 2, 0
 _0801411C: .4byte gMultiplayerPlayerTasks
 _08014120: .4byte gMultiplayerCharacters
-_08014124: .4byte gUnknown_030056A4
+_08014124: .4byte gPlayerActor
 _08014128: .4byte gUnknown_080D5548
 
 	thumb_func_start sub_801412C

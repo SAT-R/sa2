@@ -4,6 +4,7 @@
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/game.h"
+#include "game/player_actor.h"
 #include "game/save.h"
 #include "game/cutscenes/level_endings.h"
 #include "game/screen_fade.h"
@@ -113,9 +114,9 @@ void Task_802EE78(void)
             gCamera.unk10 += x;
             gCamera.unk14 += y;
 
-            if (gUnknown_030056A4 != NULL) {
-                gUnknown_030056A4->posX += Q_24_8(x);
-                gUnknown_030056A4->posY += Q_24_8(y);
+            if (gPlayerActor != NULL) {
+                gPlayerActor->posX += Q_24_8(x);
+                gPlayerActor->posY += Q_24_8(y);
             }
 
             gUnknown_030055B0++;

@@ -6,6 +6,7 @@
 
 #include "game/game.h"
 #include "game/save.h"
+#include "game/player_actor.h"
 #include "game/bosses/boss_1.h"
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
@@ -422,7 +423,7 @@ static void sub_803AA40(void)
         }
         UpdateScreenFade(ts);
     } else if (boss->unkA8 < 121) {
-        UNK_30056A4 *thing;
+        PlayerActor *thing;
         ts->flags = 2;
         ts->brightness = 0;
         ts->speed = 0;
@@ -457,7 +458,7 @@ static void sub_803AA40(void)
             gCamera.unk10 += x;
             gCamera.unk14 += y;
 
-            thing = gUnknown_030056A4;
+            thing = gPlayerActor;
             if (thing != NULL) {
                 thing->posX += Q_24_8_NEW(x);
                 thing->posY += Q_24_8_NEW(y);

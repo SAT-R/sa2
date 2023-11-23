@@ -3981,7 +3981,7 @@ sub_80498CC: @ 0x080498CC
 	subs r0, #0x78
 	adds r0, r0, r4
 	str r0, [r1, #0x14]
-	ldr r0, _080499D4 @ =gUnknown_030056A4
+	ldr r0, _080499D4 @ =gPlayerActor
 	ldr r1, [r0]
 	cmp r1, #0
 	beq _080499A6
@@ -4009,7 +4009,7 @@ _080499C4: .4byte gUnknown_030054BC
 _080499C8: .4byte gPlayer
 _080499CC: .4byte gUnknown_080D87E6
 _080499D0: .4byte gCamera
-_080499D4: .4byte gUnknown_030056A4
+_080499D4: .4byte gPlayerActor
 
 	thumb_func_start sub_80499D8
 sub_80499D8: @ 0x080499D8
@@ -4221,7 +4221,7 @@ _08049B4E:
 	ldr r0, [r1, #0x10]
 	adds r0, r0, r4
 	str r0, [r1, #0x10]
-	ldr r0, _08049BA8 @ =gUnknown_030056A4
+	ldr r0, _08049BA8 @ =gPlayerActor
 	ldr r1, [r0]
 	cmp r1, #0
 	beq _08049C4C
@@ -4235,7 +4235,7 @@ _08049B98: .4byte gUnknown_080D8808
 _08049B9C: .4byte gUnknown_030054FC
 _08049BA0: .4byte gBossRingsShallRespawn
 _08049BA4: .4byte gCamera
-_08049BA8: .4byte gUnknown_030056A4
+_08049BA8: .4byte gPlayerActor
 _08049BAC:
 	cmp r0, #5
 	bhi _08049C4C
@@ -4309,7 +4309,7 @@ _08049BEE:
 	ldr r0, [r6, #0x10]
 	adds r0, r0, r4
 	str r0, [r6, #0x10]
-	ldr r0, _08049CB0 @ =gUnknown_030056A4
+	ldr r0, _08049CB0 @ =gPlayerActor
 	ldr r1, [r0]
 	cmp r1, #0
 	beq _08049C4C
@@ -4359,7 +4359,7 @@ _08049CA0: .4byte 0x0000FFFD
 _08049CA4: .4byte gUnknown_080D8808
 _08049CA8: .4byte gActiveBossTask
 _08049CAC: .4byte gUnknown_030054FC
-_08049CB0: .4byte gUnknown_030056A4
+_08049CB0: .4byte gPlayerActor
 _08049CB4: .4byte 0xFFFFFDA8
 _08049CB8: .4byte gUnknown_030054B0
 _08049CBC:

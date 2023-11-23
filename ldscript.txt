@@ -79,6 +79,7 @@ SECTIONS
         build/sa2/src/game/interactables_0/slidy_ice.o(.text);
         build/sa2/src/game/water_effects.o(.text);
         build/sa2/src/game/player_callbacks_0.o(.text);
+        build/sa2/src/game/player_actor.o(.text);
         build/sa2/asm/player_actor.o(.text);
         build/sa2/src/game/boost_effect.o(.text);
         build/sa2/src/game/amy_attack_heart_effect.o(.text);
@@ -88,8 +89,9 @@ SECTIONS
         build/sa2/asm/player_mp_indicators.o(.text);
         build/sa2/src/game/multiplayer/finish.o(.text);
         build/sa2/src/game/multiplayer/player_unk_2.o(.text);
-        build/sa2/src/game/init.o(.text);
         build/sa2/src/game/game.o(.text);
+    
+        build/sa2/src/game/stage/stage.o(.text);
         build/sa2/src/game/stage/camera.o(.text);
         build/sa2/src/game/stage/background/zone_1.o(.text);
         build/sa2/src/game/stage/background/zone_2.o(.text);
@@ -121,16 +123,20 @@ SECTIONS
         build/sa2/src/game/dust_effect_spindash.o(.text);
         build/sa2/src/game/spark_effect.o(.text);
         build/sa2/src/game/rings_scatter.o(.text);
+
+        /* player */
         build/sa2/src/game/game_6_0.o(.text);
         build/sa2/asm/game_6_1.o(.text);
         build/sa2/asm/game_6_2.o(.text);
         build/sa2/src/game/game_6_3.o(.text);
         build/sa2/asm/game_6_3.o(.text);
         build/sa2/src/game/player_callbacks_1.o(.text);
+
         build/sa2/src/game/item_tasks.o(.text);
         build/sa2/src/game/underwater_effects.o(.text);
         build/sa2/src/game/screen_shake.o(.text);
         build/sa2/src/game/game_5.o(.text);
+    
         build/sa2/asm/player_super_sonic.o(.text);
         build/sa2/src/game/stage/ui.o(.text);
         build/sa2/src/game/stage/debug_text_printer.o(.text);
@@ -336,7 +342,8 @@ SECTIONS
         build/sa2/asm/player_mp_actor.o(.rodata);
         build/sa2/asm/player_mp_unknown_task.o(.rodata);
         build/sa2/src/game/multiplayer/finish.o(.rodata);
-        build/sa2/src/game/game.o(.rodata);
+
+        build/sa2/src/game/stage/stage.o(.rodata);
         build/sa2/src/game/stage/camera.o(.rodata);
         build/sa2/src/game/stage/background/zone_1.o(.rodata);
         build/sa2/src/game/stage/background/zone_2.o(.rodata);
@@ -348,7 +355,8 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_7_2.o(.rodata);
         build/sa2/src/game/stage/background/zone_final.o(.rodata);
         build/sa2/src/data/tilemap_table.o(.rodata);
-        build/sa2/src/game/stage/stage.o(.rodata);
+        build/sa2/src/game/stage/data.o(.rodata);
+
         build/sa2/asm/player_super_sonic_data.o(.rodata);
         build/sa2/src/game/rings_scatter.o(.rodata);
         build/sa2/src/game/game_6_3.o(.rodata);

@@ -12,19 +12,27 @@ build/sa2/src/sio32_multi_load.o(COMMON);
 build/sa2/src/core.o(.data);
 
 . = ALIGN(32); 
-/* game/game.o */
+
+/* it's likely all the below belong to game.c as their order doesn't */
+/* match the file order. They likely belong to something like game/game.c */
                 gUnknown_030053E0 = .;
 . = 0x000053E4; gCheckpointTime = .;
 . = 0x000053E8; gUnknown_030053E8 = .;
 . = 0x000053EC; gMultiplayerLanguage = .;
+
+/* maybe these are in the same object */
 . = 0x000053F0; gRingCount = .;
 . = 0x0000540C; gActiveCollectRingEffectCount = .;
+
 . = 0x00005410; gMultiplayerIds = .;
 . = 0x00005420; gUnknown_03005420 = .;
 . = 0x00005424; gUnknown_03005424 = .;
 . = 0x00005428; gUnknown_03005428 = .;
+
+/* maybe these are in the same object */
 . = 0x0000542C; gBossRingsRespawnCount = .;
 . = 0x00005430; gBossRingsShallRespawn = .;
+
 . = 0x00005434; gMultiplayerPseudoRandom = .;
 . = 0x00005438; gUnknown_03005438 = .;
 . = 0x0000543C; gUnknown_0300543C = .;
@@ -71,33 +79,62 @@ build/sa2/src/core.o(.data);
 . = 0x000055D4; gNewInputCountersIndex = .;
 . = 0x000055D8; gUnknown_030055D8 = .;
 . = 0x000055E0; gNewInputCounters = .;
+
+/* These are all in the right order */
+
+/* water_effects */
 . = 0x00005660; gWater = .;
-. = 0x000056A4; gUnknown_030056A4 = .;
+
+/* player_actor */
+. = 0x000056A4; gPlayerActor = .;
 
 . = ALIGN(16); 
 build/sa2/src/game/boost_effect.o(.data);
 
+/* player_mp_actor */
 . = 0x0000583C; gUnknown_0300583C = .;
+
+/* multiplayer player_unk_2 */
 . = 0x00005840; gUnknown_03005840 = .;
+
+/* init */
 . = 0x00005844; gUnknown_03005844 = .;
+
+/* stage */
 . = 0x00005848; gGameStageTask = .;
 . = 0x00005850; gStageBackgroundsRam = .;
-. = 0x00005960; gCamera = .;
 
-/* part of camera */
+/* camera */
+. = 0x00005960; gCamera = .;
 . = 0x000059C8; gUnknown_030059C8 = .;
+
+/* dust effect braking */
 . = 0x000059D0; gUnknown_030059D0 = .;
+
+/* rings scatter */
 . = 0x000059D8; gRingsScatterTask = .;
 
+/* player */
 . = 0x000059E0; gPlayer = .;
 . = 0x00005AA0; gUnknown_03005AA0 = .;
 . = 0x00005AF0; gUnknown_03005AF0 = .;
-. = 0x00005AFC; gUnknown_03005AFC = .;
+
+/* underwater_effects */
 . = 0x00005B34; gSmallAirBubbleCount = .;
+
+/* game_5.c */
 . = 0x00005B38; gPlayerControls = .;
+
+/* player_super_sonic */
 . = 0x00005B40; sSuperSonicTask = .;
+
+/* stage UI */
 . = 0x00005B44; gStageUITask = .;
+
+/* stage debug */
 . = 0x00005B48; gDebugUITask = .;
+
+/* boss common */
 . = 0x00005B4C; gActiveBossTask = .;
 . = 0x00005B50; 
 
@@ -108,8 +145,11 @@ build/sa2/src/game/multiboot/collect_rings/time_display.o(.data);
 
 build/sa2/src/game/math_0.o(.data);
 . = ALIGN(8); 
+
+/* unknown effect */
 build/sa2/src/game/game_6_0.o(.data);
 . = ALIGN(16); 
+
 build/sa2/src/game/backgrounds.o(.data);
 . = ALIGN(16);
 build/sa2/src/lib/agb_flash.o(.data);

@@ -757,7 +757,7 @@ _08023DAC:
 	asrs r0, r0, #0x18
 	cmp r0, #1
 	bne _08023E3E
-	ldr r0, _08023E74 @ =gUnknown_030056A4
+	ldr r0, _08023E74 @ =gPlayerActor
 	ldr r1, [r0]
 	cmp r1, #0
 	beq _08023E3E
@@ -784,7 +784,7 @@ _08023E64: .4byte gUnknown_03005424
 _08023E68: .4byte 0x0000FF7F
 _08023E6C: .4byte 0xFFFFCFFF
 _08023E70: .4byte 0x0000FFFC
-_08023E74: .4byte gUnknown_030056A4
+_08023E74: .4byte gPlayerActor
 _08023E78: .4byte gCurTask
 _08023E7C: .4byte Task_8023FC0
 _08023E80: .4byte PlayerCB_8025318

@@ -4,7 +4,7 @@
 #include "malloc_vram.h"
 #include "data/sprite_data.h"
 #include "game/game.h"
-#include "game/player_actions.h"
+#include "game/boost_effect.h"
 
 #include "constants/animations.h"
 #include "constants/anim_commands.h"

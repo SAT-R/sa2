@@ -3,6 +3,7 @@
 #include "lib/m4a.h"
 
 #include "game/game.h"
+#include "game/player_actor.h"
 #include "task.h"
 #include "core.h"
 
@@ -68,7 +69,7 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
 static bool32 sub_8081010(Sprite_SpecialRing *ring)
 {
-    UNK_30056A4 *ptr = gUnknown_030056A4;
+    PlayerActor *ptr = gPlayerActor;
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         u32 flags = sub_800DF38(&ring->displayed, ring->posX, ring->posY, &gPlayer);

@@ -8,6 +8,7 @@
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
 #include "game/game.h"
+#include "game/stage/stage.h"
 #include "game/multiboot/connection.h"
 #include "game/multiboot/collect_rings/results.h"
 #include "game/multiplayer/multipak_connection.h"

@@ -2475,7 +2475,7 @@ _0803E034:
 	movs r0, #0x1e
 	strb r0, [r1]
 _0803E042:
-	ldr r0, _0803E09C @ =gUnknown_030056A4
+	ldr r0, _0803E09C @ =gPlayerActor
 	ldr r2, [r0]
 	cmp r2, #0
 	beq _0803E0C2
@@ -2519,7 +2519,7 @@ _0803E080:
 	b _0803E0AA
 	.align 2, 0
 _0803E098: .4byte gPlayer
-_0803E09C: .4byte gUnknown_030056A4
+_0803E09C: .4byte gPlayerActor
 _0803E0A0: .4byte 0x00000383
 _0803E0A4:
 	movs r0, #0xeb

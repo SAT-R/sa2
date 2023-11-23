@@ -3,8 +3,6 @@
 
 #include "gba/types.h"
 
-extern u8 gActiveCollectRingEffectCount;
-
 void CreateCollectRingEffect(s16 x, s16 y);
 
 #endif // GUARD_COLLECT_RING_EFFECT_H

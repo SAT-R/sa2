@@ -2,6 +2,7 @@
 #include "core.h"
 #include "game/screen_fade.h"
 #include "game/game.h"
+#include "game/stage/stage.h"
 #include "sprite.h"
 #include "game/character_select.h"
 #include "game/save.h"

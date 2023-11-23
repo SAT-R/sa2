@@ -40,6 +40,8 @@
     (CHARACTER_BIT(CHARACTER_SONIC) | CHARACTER_BIT(CHARACTER_CREAM)                    \
      | CHARACTER_BIT(CHARACTER_TAILS) | CHARACTER_BIT(CHARACTER_KNUCKLES))
 
+void GameStart(void);
+
 struct ButtonConfig {
     u16 jump;
     u16 attack;
@@ -151,19 +153,6 @@ extern u8
     gUnknown_030055B0; // TODO: Boss ID in XX-Stage? But it's used in checkpointc.c ...
 extern u8 gUnknown_030054F8;
 
-typedef struct {
-    /* 0x00 */ s32 posX;
-    /* 0x04 */ s32 posY;
-
-    /* 0x08 */ s32 filler8;
-
-    // Following here might be a Sprite (incl. unk4C-unk53)?
-    /* 0x0C */ Sprite s;
-    /* 0x3C */ Hitbox reserved;
-    /* 0x4C */ Hitbox reserved2;
-} UNK_30056A4; /* size: unknown */
-extern UNK_30056A4 *gUnknown_030056A4;
-
 // Incremented by 1 every frame if the game is not paused.
 extern u32 gStageTime;
 
@@ -172,6 +161,10 @@ extern u32 gUnknown_030054A0;
 extern u32 gCheckpointTime; // Checkpoint timer?
 
 extern u8 gUnknown_03005438;
+
+extern u8 gBossRingsRespawnCount;
+extern bool8 gBossRingsShallRespawn;
+extern bool8 gUnknown_030055BC;
 
 struct MultiplayerPlayer {
     // TODO: Verify that this is Sprite!
@@ -195,6 +188,7 @@ extern s8 gUnknown_030054B4[4];
 extern u8 gUnknown_030054B8;
 
 extern u8 gMultiplayerMissingHeartbeats[4];
+extern u8 gActiveCollectRingEffectCount;
 
 // Some sort of unused task variable
 extern struct Task *gUnknown_03005844;
@@ -588,21 +582,14 @@ extern const u8 gUnknown_08CB41C0[0x6a44];
 
 extern const u8 gUnknown_08CBAC04[];
 
-// Possibly CreateGameStageAtSelectedCourse
-void GameStageStart(void);
-
 // TODO: Might need to be moved out of this header?
 void Player_SetMovestate_IsInScriptedSequence(void);
 void Player_ClearMovestate_IsInScriptedSequence(void);
 
 void sub_802E164(s32, u16);
 
-// ApplyGamePlaySettings
-void ApplyGameStageSettings(void);
-
 void CreateTrueArea53Intro(void);
 
-void CreateGameStage(void);
 // Sweep anim
 void sub_802E044(s32, u16);
 

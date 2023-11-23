@@ -1,9 +1,11 @@
 #include "game/course_select.h"
 #include "core.h"
-#include "game/game.h"
 #include "sprite.h"
+
 #include "game/screen_fade.h"
 #include "game/save.h"
+#include "game/stage/stage.h"
+
 #include "lib/m4a.h"
 #include "game/character_select.h"
 #include "constants/songs.h"
