@@ -110,7 +110,7 @@ void sub_8081200(void)
     u8 val = 5;
 
     gRingsScatterTask = NULL;
-    gUnknown_03005844 = NULL;
+    gDummyTask = NULL;
     gGameStageTask = NULL;
     gPlayer.spriteTask = NULL;
     gCamera.movementTask = NULL;

@@ -26,7 +26,7 @@ void GameStart(void)
     gUnknown_03005424 = gUnknown_0300544C = EXTRA_STATE__CLEAR;
 
     gRingsScatterTask = NULL;
-    gUnknown_03005844 = NULL;
+    gDummyTask = NULL;
     gGameStageTask = NULL;
     gPlayer.spriteTask = NULL;
     gCamera.movementTask = NULL;
@@ -93,15 +93,15 @@ static void DummyTaskOnDestroy(struct Task *);
 
 UNUSED static void CreateDummyTask(void)
 {
-    gUnknown_03005844 = TaskCreate(Task_DummyFunc, 0, 0x100, 0, DummyTaskOnDestroy);
+    gDummyTask = TaskCreate(Task_DummyFunc, 0, 0x100, 0, DummyTaskOnDestroy);
 }
 
 UNUSED static void DestroyDummyTask(void)
 {
-    TaskDestroy(gUnknown_03005844);
-    gUnknown_03005844 = NULL;
+    TaskDestroy(gDummyTask);
+    gDummyTask = NULL;
 }
 
 void Task_DummyFunc(void) { }
 
-UNUSED static void DummyTaskOnDestroy(struct Task *task) { gUnknown_03005844 = NULL; }
+UNUSED static void DummyTaskOnDestroy(struct Task *task) { gDummyTask = NULL; }

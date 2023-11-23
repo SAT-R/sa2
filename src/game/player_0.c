@@ -11,6 +11,7 @@
 #include "game/rings_scatter.h"
 #include "game/stage/stage.h"
 #include "game/water_effects.h"
+#include "game/unknown_effect.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
@@ -30,10 +31,6 @@ void AllocateCharacterStageGfx(Player *, UNK_3005A70 *);
 void AllocateCharacterMidAirGfx(Player *, UNK_3005A70 *);
 void InitializePlayer(Player *);
 void TaskDestructor_802A07C(struct Task *);
-
-// Unknown effect globals
-s32 gUnused_03005B78 = 0;
-u8 gUnknown_03005B7C = 0;
 
 void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 {

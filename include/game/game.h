@@ -192,7 +192,7 @@ extern u8 gMultiplayerMissingHeartbeats[4];
 extern u8 gActiveCollectRingEffectCount;
 
 // Some sort of unused task variable
-extern struct Task *gUnknown_03005844;
+extern struct Task *gDummyTask;
 
 // Declared beforehand because it's used inside Player struct
 struct Player_;

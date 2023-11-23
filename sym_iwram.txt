@@ -98,7 +98,7 @@ build/sa2/src/game/boost_effect.o(.data);
 . = 0x00005840; gUnknown_03005840 = .;
 
 /* dummy task (after game.c) */
-. = 0x00005844; gUnknown_03005844 = .;
+. = 0x00005844; gDummyTask = .;
 
 /* stage */
 . = 0x00005848; gGameStageTask = .;
@@ -145,11 +145,8 @@ build/sa2/src/game/multiboot/collect_rings/time_display.o(.data);
 
 build/sa2/src/game/math_0.o(.data);
 . = ALIGN(8); 
-
-/* unknown effect */
-build/sa2/src/game/player_0.o(.data);
+build/sa2/src/game/unknown_effect.o(.data);
 . = ALIGN(16); 
-
 build/sa2/src/game/backgrounds.o(.data);
 . = ALIGN(16);
 build/sa2/src/lib/agb_flash.o(.data);
