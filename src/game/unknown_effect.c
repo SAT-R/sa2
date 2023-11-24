@@ -1,6 +1,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "game/unknown_effect.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 #include "lib/m4a.h"
 

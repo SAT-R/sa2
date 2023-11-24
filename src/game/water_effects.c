@@ -5,6 +5,7 @@
 #include "task.h"
 #include "game/game.h"
 #include "game/boost_effect.h"
+#include "game/stage/camera.h"
 
 #include "data/sprite_data.h"
 #include "game/water_effects.h"

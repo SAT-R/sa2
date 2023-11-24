@@ -3,6 +3,7 @@
 
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/stage/camera.h"
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"

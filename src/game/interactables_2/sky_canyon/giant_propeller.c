@@ -4,6 +4,7 @@
 #include "trig.h"
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/sky_canyon/giant_propeller.h"
 #include "lib/m4a.h"
 

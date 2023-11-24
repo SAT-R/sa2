@@ -6,6 +6,7 @@
 #include "game/enemies/kubinaga.h"
 #include "game/stage/entities_manager.h"
 #include "game/enemies/projectiles.h"
+#include "game/stage/camera.h"
 #include "trig.h"
 
 #include "constants/animations.h"

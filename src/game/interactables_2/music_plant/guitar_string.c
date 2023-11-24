@@ -7,6 +7,7 @@
 #include "task.h"
 
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/music_plant/guitar_string.h"
 
 #include "constants/animations.h"

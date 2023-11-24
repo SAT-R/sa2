@@ -5,6 +5,7 @@
 #include "trig.h"
 #include "lib/m4a.h"
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 #include "game/interactables_2/ice_paradise/big_snowball.h"
 #include "constants/animations.h"

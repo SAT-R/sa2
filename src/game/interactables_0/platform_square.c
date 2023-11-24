@@ -9,6 +9,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/interactables_0/platform_square.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/interactables.h"

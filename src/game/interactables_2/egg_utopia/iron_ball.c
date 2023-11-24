@@ -3,6 +3,7 @@
 #include "malloc_vram.h"
 #include "task.h"
 #include "trig.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/egg_utopia/iron_ball.h"
 
 #include "constants/animations.h"

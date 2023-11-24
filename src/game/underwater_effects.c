@@ -4,6 +4,7 @@
 #include "sprite.h"
 #include "trig.h"
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/underwater_effects.h"
 #include "game/game_3.h"
 

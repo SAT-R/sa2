@@ -2,6 +2,7 @@
 #include "gba/types.h"
 
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 #include "sprite.h"
 #include "task.h"

@@ -2,6 +2,7 @@
 #include "trig.h"
 #include "game/game.h"
 #include "game/stage/ui.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"

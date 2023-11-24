@@ -6,6 +6,7 @@
 #include "game/game.h"
 #include "game/player_actor.h"
 #include "game/save.h"
+#include "game/stage/camera.h"
 #include "game/cutscenes/level_endings.h"
 #include "game/screen_fade.h"
 #include "game/stage/results.h"

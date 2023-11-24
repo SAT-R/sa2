@@ -5,6 +5,7 @@
 #include "game/game.h"
 #include "game/stage/collect_ring_effect.h"
 #include "game/stage/rings_manager.h"
+#include "sakit/camera.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"

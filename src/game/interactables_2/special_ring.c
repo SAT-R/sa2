@@ -3,6 +3,7 @@
 #include "lib/m4a.h"
 
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/player_actor.h"
 #include "task.h"
 #include "core.h"

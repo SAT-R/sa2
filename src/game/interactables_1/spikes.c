@@ -6,6 +6,7 @@
 #include "malloc_vram.h"
 
 #include "game/entity.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/interactables.h"

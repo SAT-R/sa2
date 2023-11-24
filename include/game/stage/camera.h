@@ -4,12 +4,14 @@
 #include "global.h"
 #include "core.h"
 
-#include "lib/sakit/camera.h"
+#include "sakit/camera.h"
 
 extern const Background gStageCameraBgTemplates[4];
 
 void UpdateCamera(void);
 
-extern const u16 gUnknown_080D5964[9][2];
+extern const u32 *gUnknown_030059C8;
+
+extern const u16 gUnknown_080D5964[][2];
 
 #endif // GUARD_GAME_STAGE_CAMERA_H

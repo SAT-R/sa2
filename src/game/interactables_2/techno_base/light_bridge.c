@@ -1,5 +1,6 @@
 #include "global.h"
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 #include "game/interactables_2/techno_base/light_bridge.h"
 #include "sprite.h"

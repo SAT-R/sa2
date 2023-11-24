@@ -3,6 +3,8 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/player_controls.h"
 #include "game/dust_effect_braking.h"
 #include "game/mp_unknown_task.h"
 #include "game/boost_effect.h"
@@ -29,7 +31,6 @@ extern void InitNewInputCounters(void);
 void Task_8023FC0(void);
 void AllocateCharacterStageGfx(Player *, UNK_3005A70 *);
 void AllocateCharacterMidAirGfx(Player *, UNK_3005A70 *);
-void InitializePlayer(Player *);
 void TaskDestructor_802A07C(struct Task *);
 
 void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)

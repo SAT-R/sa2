@@ -1,5 +1,5 @@
 #include "global.h"
-#include "game/game.h"
+#include "game/player_controls.h"
 #include "game/save.h"
 
 UNUSED void sub_802B584(u16 jump, u16 attack, u16 trick)

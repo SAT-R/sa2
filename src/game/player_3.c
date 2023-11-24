@@ -3,6 +3,7 @@
 #include "game/game.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"

@@ -5,6 +5,7 @@
 #include "malloc_vram.h"
 #include "task.h"
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/multiplayer/finish.h"
 #include "game/save.h"
 

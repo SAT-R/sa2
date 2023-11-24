@@ -2,6 +2,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "game/stage/background/zone_3.h"
+#include "game/stage/camera.h"
 
 // Unused
 void sub_801E3F0(void)

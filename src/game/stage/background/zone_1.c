@@ -5,6 +5,7 @@
 #include "trig.h"
 #include "game/game.h"
 #include "game/special_stage/main.h"
+#include "game/stage/camera.h"
 
 #include "constants/tilemaps.h"
 #include "constants/zones.h"

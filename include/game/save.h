@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "constants/zones.h"
+#include "game/player_controls.h"
 #include "game/game.h"
 
 #define PLAYER_NAME_END_CHAR 0xFFFF

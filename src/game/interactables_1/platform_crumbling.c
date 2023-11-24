@@ -6,6 +6,7 @@
 #include "task.h"
 
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 #include "game/interactables_1/platform_crumbling.h"
 

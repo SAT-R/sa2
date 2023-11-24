@@ -3,6 +3,7 @@
 #include "game/entity.h"
 #include "game/enemies/kiki.h"
 #include "game/stage/entities_manager.h"
+#include "game/stage/camera.h"
 #include "malloc_vram.h"
 #include "sprite.h"
 

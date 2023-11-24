@@ -3,7 +3,10 @@
 #include "sprite.h"
 #include "animation_commands_bg.h"
 
-#include "game/game.h"
+#include "sakit/globals.h"
+
+#include "game/stage/camera.h"
+#include "game/stage/player.h"
 #include "game/stage/background/dummy.h"
 #include "game/stage/background/zone_1.h"
 #include "game/stage/background/zone_2.h"
@@ -16,6 +19,18 @@
 
 #include "constants/tilemaps.h"
 #include "constants/zones.h"
+#include "constants/game_modes.h"
+#include "constants/characters.h"
+
+// TODO: move to right place
+struct Backgrounds {
+    Background unk0;
+    Background unk40;
+    Background unk80;
+    Background unkC0;
+};
+
+extern struct Backgrounds gStageBackgroundsRam;
 
 extern const CameraMain sStageBgUpdateFuncs[];
 extern const u32 *gCollisionTable[NUM_LEVEL_IDS];
@@ -23,6 +38,8 @@ extern const u32 *gCollisionTable[NUM_LEVEL_IDS];
 static void sub_801C708(s32, s32);
 void Task_801E0A8(void);
 void TaskDestructor_801E040(struct Task *);
+
+extern void sub_802C668(s32 *x, s32 *y);
 
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 

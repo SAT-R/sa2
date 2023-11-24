@@ -7,6 +7,7 @@
 
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/egg_utopia/speeding_platform.h"
 
 #include "constants/animations.h"

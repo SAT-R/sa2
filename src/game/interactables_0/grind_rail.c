@@ -1,8 +1,10 @@
 #include "global.h"
 #include "core.h"
 
+#include "game/player_controls.h"
 #include "game/entity.h"
 #include "game/interactables_0/grind_rail.h"
+#include "game/stage/camera.h"
 
 #include "lib/m4a.h"
 

@@ -9,6 +9,7 @@
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/player_callbacks_1.h"
+#include "game/stage/camera.h"
 
 #include "game/screen_fade.h"
 

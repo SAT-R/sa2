@@ -1,6 +1,7 @@
 #include "global.h"
 #include "game/interactables_2/music_plant/note_block.h"
 #include "trig.h"
+#include "game/stage/camera.h"
 #include "game/game.h"
 #include "lib/m4a.h"
 

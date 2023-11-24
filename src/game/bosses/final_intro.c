@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "trig.h"
 #include "game/math.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

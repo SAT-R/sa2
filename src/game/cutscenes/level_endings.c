@@ -10,6 +10,7 @@
 #include "trig.h"
 #include "game/course_select.h"
 #include "game/save.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

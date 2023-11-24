@@ -7,6 +7,8 @@
 #include "game/stage/music_manager.h"
 
 #include "game/player.h"
+#include "game/player_controls.h"
+#include "game/stage/camera.h"
 #include "game/amy_attack_heart_effect.h"
 #include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
 #include "game/dust_effect_braking.h" // CreateSpindashDustEffect

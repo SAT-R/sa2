@@ -4,6 +4,7 @@
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/item_tasks.h"
 
 #include "constants/animations.h"

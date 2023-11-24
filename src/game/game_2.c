@@ -4,6 +4,7 @@
 #include "task.h"
 #include "trig.h"
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/stage/stage.h"
 
 #include "constants/animations.h"

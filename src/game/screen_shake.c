@@ -2,6 +2,7 @@
 #include "core.h"
 #include "trig.h"
 #include "game/game.h"
+#include "game/stage/camera.h"
 
 #include "game/screen_shake.h"
 

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "game/entity.h"
 #include "game/enemies/projectiles.h"
+#include "game/stage/camera.h"
 #include "malloc_vram.h"
 #include "task.h"
 #include "trig.h"

@@ -14,6 +14,7 @@
 #include "game/time_attack/results.h"
 #include "game/cutscenes/level_endings.h"
 #include "game/stage/boss_results_transition.h"
+#include "game/stage/camera.h"
 
 #include "game/screen_fade.h"
 #include "game/screen_shake.h"

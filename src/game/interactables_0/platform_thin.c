@@ -9,6 +9,8 @@
 #include "game/entity.h"
 #include "game/interactables_0/platform_thin.h"
 #include "game/multiplayer/unknown_1.h"
+#include "game/stage/camera.h"
+
 #include "constants/zones.h"
 
 #include "constants/songs.h"

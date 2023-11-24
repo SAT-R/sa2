@@ -1,5 +1,7 @@
 #include "global.h"
 #include "game/interactables_2/sky_canyon/propeller_spring.h"
+#include "game/player_controls.h"
+#include "game/stage/camera.h"
 #include "game/game.h"
 #include "trig.h"
 #include "lib/m4a.h"

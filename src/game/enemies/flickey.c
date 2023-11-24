@@ -3,6 +3,7 @@
 #include "game/entity.h"
 #include "game/game.h"
 #include "game/stage/entities_manager.h"
+#include "game/stage/camera.h"
 #include "task.h"
 #include "sprite.h"
 

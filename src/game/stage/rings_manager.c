@@ -9,6 +9,7 @@
 #include "game/stage/rings_manager.h"
 #include "game/stage/collect_ring_effect.h"
 #include "game/assets/compressed/entities.h"
+#include "sakit/camera.h"
 
 #include "constants/animations.h"
 

@@ -2,6 +2,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/enemies/geji_geji.h"
+#include "game/stage/camera.h"
 #include "malloc_vram.h"
 #include "sprite.h"
 

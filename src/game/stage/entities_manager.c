@@ -7,6 +7,7 @@
 #include "lib/m4a.h"
 
 #include "game/game.h"
+#include "sakit/camera.h"
 #include "game/entity.h"
 #include "game/stage/item_box.h"
 #include "game/stage/entities_manager.h"

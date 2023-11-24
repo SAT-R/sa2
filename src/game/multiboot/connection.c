@@ -12,8 +12,11 @@
 #include "game/multiboot/connection.h"
 #include "game/multiboot/collect_rings/results.h"
 #include "game/multiplayer/multipak_connection.h"
+#include "game/stage/camera.h"
 #include "game/multiplayer/mode_select.h"
 #include "game/rings_scatter.h"
+
+#include "game/player_controls.h"
 #include "game/save.h"
 #include "game/screen_fade.h"
 #include "game/stage/entities_manager.h"
