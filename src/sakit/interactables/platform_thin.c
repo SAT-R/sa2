@@ -7,7 +7,7 @@
 
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/interactables_0/platform_thin.h"
+#include "sakit/interactables/platform_thin.h"
 #include "game/multiplayer/unknown_1.h"
 #include "game/stage/camera.h"
 
@@ -213,7 +213,7 @@ static void Task_CommonPlatformThinMain(void)
     return;
 }
 // (95.35%) https://decomp.me/scratch/8xD3v
-NONMATCH("asm/non_matching/game/interactables_0/sub_8010D1C.inc",
+NONMATCH("asm/non_matching/sakit/interactables/sub_8010D1C.inc",
          static void CreatePlatformBreakParticles(s16 x, s16 y))
 {
     struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(Platform_D1C),

@@ -10,7 +10,7 @@
 #include "task.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/stage/palette_loader.h"
+#include "sakit/palette_loader.h"
 #include "game/stage/camera.h"
 
 #include "constants/animations.h"

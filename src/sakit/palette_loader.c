@@ -2,7 +2,7 @@
 #include "task.h"
 #include "game/entity.h"
 
-#include "game/stage/palette_loader.h"
+#include "sakit/palette_loader.h"
 
 static void Task_StagePaletteLoader(void);
 

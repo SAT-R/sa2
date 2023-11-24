@@ -5,7 +5,7 @@
 #include "game/entity.h"
 
 #include "game/enemies/pen.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 
 #include "constants/animations.h"
 

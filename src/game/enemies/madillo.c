@@ -2,7 +2,7 @@
 #include "malloc_vram.h"
 #include "game/entity.h"
 #include "game/enemies/madillo.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 #include "game/stage/camera.h"
 
 #include "constants/animations.h"

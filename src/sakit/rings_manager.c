@@ -5,9 +5,9 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/player_super_sonic.h"
-#include "game/stage/ring.h"
-#include "game/stage/rings_manager.h"
-#include "game/stage/collect_ring_effect.h"
+#include "sakit/ring.h"
+#include "sakit/rings_manager.h"
+#include "sakit/collect_ring_effect.h"
 #include "game/assets/compressed/entities.h"
 #include "sakit/camera.h"
 

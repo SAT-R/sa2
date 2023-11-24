@@ -19,7 +19,7 @@
 #include "game/player_controls.h"
 #include "game/save.h"
 #include "game/screen_fade.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 #include "game/title_screen.h"
 
 #include "constants/animations.h"

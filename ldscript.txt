@@ -50,34 +50,34 @@ SECTIONS
         build/sa2/src/malloc_vram.o(.text);
         build/sa2/src/input_recorder.o(.text);
 
-        /* game */
-        build/sa2/src/game/stage/rings_manager.o(.text);
-        build/sa2/src/game/stage/entities_manager.o(.text);
-        build/sa2/src/game/stage/palette_loader.o(.text);
-        build/sa2/src/game/unused_level_select.o(.text);
-        build/sa2/src/game/stage/unknown_task.o(.text);
-        build/sa2/src/game/stage/enemy_defeat_score.o(.text);
-        build/sa2/src/game/stage/demo_manager.o(.text);
-        build/sa2/src/game/unused_unknown_task.o(.text);
-        build/sa2/src/game/stage/unknown_sprite.o(.text);
-        build/sa2/src/game/stage/spot_light.o(.text);
-        build/sa2/src/game/stage/pause_menu.o(.text);
-        build/sa2/src/game/stage/collect_ring_effect.o(.text);
-        build/sa2/src/game/stage/item_box.o(.text);
-        build/sa2/src/game/stage/dust_cloud.o(.text);
-        build/sa2/src/game/stage/ring.o(.text);
-        build/sa2/src/game/stage/music_manager.o(.text);
+        /* sakit */
+        build/sa2/src/sakit/rings_manager.o(.text);
+        build/sa2/src/sakit/entities_manager.o(.text);
+        build/sa2/src/sakit/palette_loader.o(.text);
+        build/sa2/src/sakit/unused_level_select.o(.text);
+        build/sa2/src/sakit/unknown_task.o(.text);
+        build/sa2/src/sakit/enemy_defeat_score.o(.text);
+        build/sa2/src/sakit/demo_manager.o(.text);
+        build/sa2/src/sakit/unused_unknown_task.o(.text);
+        build/sa2/src/sakit/unknown_sprite.o(.text);
+        build/sa2/src/sakit/spot_light.o(.text);
+        build/sa2/src/sakit/pause_menu.o(.text);
+        build/sa2/src/sakit/collect_ring_effect.o(.text);
+        build/sa2/src/sakit/item_box.o(.text);
+        build/sa2/src/sakit/dust_cloud.o(.text);
+        build/sa2/src/sakit/ring.o(.text);
+        build/sa2/src/sakit/music_manager.o(.text);
         build/sa2/asm/entities_0.o(.text);
-        build/sa2/src/game/interactables_0/spring.o(.text);
-        build/sa2/src/game/interactables_0/platform.o(.text);
-        build/sa2/src/game/interactables_0/platform_square.o(.text);
-        build/sa2/src/game/interactables_0/ramp.o(.text);
-        build/sa2/src/game/interactables_0/grind_rail.o(.text);
-        build/sa2/src/game/interactables_0/044.o(.text);
-        build/sa2/src/game/interactables_0/pipe.o(.text);
-        build/sa2/src/game/interactables_0/platform_thin.o(.text);
-        build/sa2/src/game/interactables_0/slidy_ice.o(.text);
-        /* game/globals? */
+        build/sa2/src/sakit/interactables/spring.o(.text);
+        build/sa2/src/sakit/interactables/platform.o(.text);
+        build/sa2/src/sakit/interactables/platform_square.o(.text);
+        build/sa2/src/sakit/interactables/ramp.o(.text);
+        build/sa2/src/sakit/interactables/grind_rail.o(.text);
+        build/sa2/src/sakit/interactables/044.o(.text);
+        build/sa2/src/sakit/interactables/pipe.o(.text);
+        build/sa2/src/sakit/interactables/platform_thin.o(.text);
+        build/sa2/src/sakit/interactables/slidy_ice.o(.text);
+        /* sakit/globals? */
 
         build/sa2/src/game/water_effects.o(.text);
         build/sa2/src/game/player_callbacks_0.o(.text);
@@ -324,18 +324,22 @@ SECTIONS
         /* game Data */
         build/sa2/src/game/assets/compressed/entities.o(.rodata);
         build/sa2/src/game/assets/compressed/roms.o(.rodata);
-        build/sa2/src/game/stage/rings_manager.o(.rodata);
-        build/sa2/src/game/stage/entities_manager.o(.rodata);
-        build/sa2/src/game/unused_level_select.o(.rodata);
-        build/sa2/src/game/unused_unknown_task.o(.rodata);
-        build/sa2/src/game/stage/pause_menu.o(.rodata);
-        build/sa2/src/game/stage/item_box.o(.rodata);
-        build/sa2/src/game/stage/music_manager.o(.rodata);
+
+        /* sakit data */
+        build/sa2/src/sakit/rings_manager.o(.rodata);
+        build/sa2/src/sakit/entities_manager.o(.rodata);
+        build/sa2/src/sakit/unused_level_select.o(.rodata);
+        build/sa2/src/sakit/unused_unknown_task.o(.rodata);
+        build/sa2/src/sakit/pause_menu.o(.rodata);
+        build/sa2/src/sakit/item_box.o(.rodata);
+        build/sa2/src/sakit/music_manager.o(.rodata);
         build/sa2/asm/entities_0.o(.rodata);
-        build/sa2/src/game/interactables_0/spring.o(.rodata);
-        build/sa2/src/game/interactables_0/platform.o(.rodata);
-        build/sa2/src/game/interactables_0/platform_square.o(.rodata);
-        build/sa2/src/game/interactables_0/platform_thin.o(.rodata);
+        build/sa2/src/sakit/interactables/spring.o(.rodata);
+        build/sa2/src/sakit/interactables/platform.o(.rodata);
+        build/sa2/src/sakit/interactables/platform_square.o(.rodata);
+        build/sa2/src/sakit/interactables/platform_thin.o(.rodata);
+
+        /* game */
         build/sa2/src/game/water_effects.o(.rodata);
         build/sa2/src/game/player_callbacks_0.o(.rodata);
         build/sa2/asm/player_actor.o(.rodata);

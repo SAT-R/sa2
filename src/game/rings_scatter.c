@@ -5,8 +5,8 @@
 #include "game/game.h"
 #include "game/stage/camera.h"
 #include "game/rings_scatter.h"
-#include "game/stage/collect_ring_effect.h"
-#include "game/stage/rings_manager.h" // for RESERVED_RING_TILES_VRAM
+#include "sakit/collect_ring_effect.h"
+#include "sakit/rings_manager.h" // for RESERVED_RING_TILES_VRAM
 
 #include "constants/animations.h"
 #include "constants/songs.h"

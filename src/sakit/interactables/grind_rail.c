@@ -3,7 +3,7 @@
 
 #include "game/player_controls.h"
 #include "game/entity.h"
-#include "game/interactables_0/grind_rail.h"
+#include "sakit/interactables/grind_rail.h"
 #include "game/stage/camera.h"
 
 #include "lib/m4a.h"
@@ -35,7 +35,7 @@ void Task_GrindRail(void);
 void sub_8010464(void);
 
 // (79.90%) https://decomp.me/scratch/ncgh4
-NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
+NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
          void Task_GrindRail(void))
 {
     Player *player = &gPlayer;
@@ -186,7 +186,7 @@ NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail.inc",
 END_NONMATCH
 
 // (87.88%) https://decomp.me/scratch/Wvuov
-NONMATCH("asm/non_matching/game/interactables_0/Task_GrindRail_Air.inc",
+NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
          void Task_GrindRail_Air(void))
 {
     Player *player = &gPlayer;

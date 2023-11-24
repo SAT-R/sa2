@@ -8,7 +8,7 @@
 #include "game/player_controls.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
-#include "game/interactables_0/ramp.h"
+#include "sakit/interactables/ramp.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"

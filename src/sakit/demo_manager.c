@@ -3,10 +3,15 @@
 #include "malloc_vram.h"
 #include "sprite.h"
 #include "task.h"
+
+#include "lib/m4a.h"
+
+#include "sakit/demo_manager.h"
+
+// TODO: add headers for these into sakit
+// instead of including from the main game
 #include "game/save.h"
 #include "game/title_screen.h"
-#include "lib/m4a.h"
-#include "game/stage/demo_manager.h"
 
 #include "constants/animations.h"
 

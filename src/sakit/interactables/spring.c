@@ -9,7 +9,7 @@
 #include "game/game.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
-#include "game/interactables_0/spring.h"
+#include "sakit/interactables/spring.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"

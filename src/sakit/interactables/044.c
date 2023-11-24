@@ -5,7 +5,7 @@
 
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/interactables_0/044.h"
+#include "sakit/interactables/044.h"
 #include "game/stage/camera.h"
 
 #include "constants/player_transitions.h"

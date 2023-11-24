@@ -3,8 +3,8 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 #include "game/stage/camera.h"
-#include "game/stage/collect_ring_effect.h"
-#include "game/stage/rings_manager.h"
+#include "sakit/collect_ring_effect.h"
+#include "sakit/rings_manager.h"
 
 #include "constants/animations.h"
 

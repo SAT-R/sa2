@@ -4,8 +4,8 @@
 #include "trig.h"
 
 #include "game/game.h"
-#include "game/stage/spot_light.h"
-#include "game/stage/unknown_task.h"
+#include "sakit/spot_light.h"
+#include "sakit/unknown_task.h"
 
 /* Spot Lights that appear in the background of Ice Paradise
    (seem to be the same as in Sonic Advance's Secret Base Zone) */

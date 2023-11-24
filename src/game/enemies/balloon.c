@@ -3,7 +3,7 @@
 #include "game/enemies/balloon.h"
 #include "game/entity.h"
 #include "game/game.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 #include "game/enemies/projectiles.h"
 #include "task.h"
 #include "trig.h"

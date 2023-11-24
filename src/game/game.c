@@ -10,7 +10,7 @@
 #include "game/options_screen.h"
 #include "game/multiboot/connection.h"
 #include "game/rings_scatter.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 #include "game/stage/camera.h"
 
 void GameStart(void)

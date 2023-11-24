@@ -2,7 +2,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/enemies/mouse.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 #include "game/stage/camera.h"
 #include "malloc_vram.h"
 #include "sprite.h"

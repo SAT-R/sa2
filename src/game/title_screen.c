@@ -23,7 +23,7 @@
 #include "game/character_select.h"
 #include "malloc_vram.h"
 #include "game/time_attack/mode_select.h"
-#include "game/stage/demo_manager.h"
+#include "sakit/demo_manager.h"
 
 #include "game/assets/compressed/roms.h"
 

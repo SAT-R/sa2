@@ -4,7 +4,7 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "game/heart_particles_effect.h"
-#include "game/stage/music_manager.h"
+#include "sakit/music_manager.h"
 
 #include "game/player.h"
 #include "game/player_controls.h"
