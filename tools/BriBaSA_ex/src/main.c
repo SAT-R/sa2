@@ -25,6 +25,7 @@
 #include "map.h"
 #include "parsing.h"
 #include "texture.h"
+#include "ui.h"
 
 
 /* Data structures for asset files */
@@ -35,6 +36,8 @@ typedef struct {
     u16 pal : 4;
 } MetatileTile;
 
+static char *GetMapDirectory(const char *mapsRoot);
+static void InitUiHeaderWidgets(UiHeader *hdr);
 static void CreateUIWindows(AppState *state);
 
 static Texture2D CreateMapTexture(Rectangle recMap, int pixelFormat);
@@ -43,12 +46,14 @@ static void DrawPalettes(FileInfo *paths);
 
 static void HandleMouseInput(AppState *state, Rectangle recMap);
 static void HandleKeyInput(AppState *state, Rectangle recMap);
-static bool HandleMouseInputUIWindows(AppState *state);
-static void SetupFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir);
+static void HandleMouseInputUIWindows(AppState *state);
+static void InitFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir);
 
 static Rectangle GetSpawnPosRectangle(StageMap *map, CharacterList *chars);
 static void HandleMouseInputSpawnPos(AppState *state);
 static inline void MoveCameraToSpawn(AppState *state, Rectangle recMap);
+static inline void MoveCameraToSpawn(AppState *state, Rectangle recMap);
+static inline void MoveCameraToEnd(AppState *state, Rectangle recMap);
 
 #if MEASURE_MALLOC
 static int TempMallocCounter = 0;
@@ -70,7 +75,6 @@ void *_Memcpy(void *dst, void *src, size_t size)
     return memcpy(dst, src, size);
 }
 #endif
-
 
 int main(void)
 {
@@ -116,46 +120,15 @@ int main(void)
         exit(-2);
     }
 
-    // TODO: Ask user to select map directory and game!
-    // 
-    // Load all map directories
-#if 0
-    FilePathList zones = LoadDirectoryFiles(mapsRoot);
-    FilePathList mapDirs = {0};
-    for(int i = 0; i < zones.count; i++) {
-        char *zone = zones.paths[i];
+    char *mapDir = GetMapDirectory(mapsRoot);
 
-        if(!IsPathFile(zone)) {
-            FilePathList acts = LoadDirectoryFiles(zone);
-
-            for(int actI = 0; actI < acts.count; actI++) {
-                char *act = acts.paths[actI];
-                
-                if(!IsPathFile(act)) {
-                    da_append_to(&mapDirs, &act, paths);
-                }
-            }
-
-            // Free 'paths' member but not the allocated path strings themselves.
-            RL_FREE(acts.paths);
-        }
-    }
-    UnloadDirectoryFiles(zones);
-
-    char mapDir[MAX_FILEPATH_LENGTH];
-    TextCopy(mapDir, mapDirs.paths[4 + (ZONE_2-1)*3]);
-#else
-    const char *pMapDir = TextFormat("%s/zone_4/act_1/", mapsRoot);
-    char *mapDir  = malloc(TextLength(pMapDir) + 1);
-    TextCopy(mapDir, pMapDir);
-#endif
-
-    SetupFilePaths(&state.paths, (char*)rootDir, (char*)mapDir);
+    InitFilePaths(&state.paths, (char*)rootDir, (char*)mapDir);
 
     LoadEntityNamesAndIDs(&state);
-    LoadAllEntityTextures(&state);
+    LoadAllEntityTextures(state.paths.gameRoot, &state.paths);
     LoadEntityDataFromCSVs(&state);
-
+    
+    InitUiHeaderWidgets(&state.uiHeader);
     CreateUIWindows(&state);
     
     //memset(&state.map, 0, sizeof(state.map)); // TODO: Can this be removed entirely?
@@ -183,13 +156,11 @@ int main(void)
     recMap.height = MIN(recMap.height, state.map.height * METATILE_DIM);
 
     MoveCameraToSpawn(&state, recMap);
-
+        
     bool closeBtnClicked = false;
     while (!WindowShouldClose())
     {
         HandleMouseInput(&state, recMap);
-        HandleKeyInput(&state, recMap);
-        HandleMouseInputSpawnPos(&state);
 
         BeginDrawing();
             ClearBackground(UI_COLOR_BACKGROUND);
@@ -199,7 +170,7 @@ int main(void)
 
             DrawMap(&state, recMap, txAtlas, txMap);
 
-            DrawEntities(&state, recMap);
+            DrawMapSprites(&state, recMap);
             //Debug_DrawAllEntityTextures(&state);
 
             DrawUI(&state, txAtlas);
@@ -208,7 +179,9 @@ int main(void)
         EndDrawing();
 
         if(closeBtnClicked) {
-            if (state.unsavedChangesExist) {
+            if (!state.unsavedChangesExist) {
+                break;
+            } else {
                 UIWindow *window = &state.ui.windows.elements[UIWND_ID_UNSAVED_CHANGES];
 
                 if(window->flags & UIWND_FLAG_HID_AWAY) {
@@ -218,8 +191,6 @@ int main(void)
 
                     closeBtnClicked = false;
                 }
-            } else {
-                break;
             }
         }
     }
@@ -234,6 +205,64 @@ int main(void)
     CloseWindow();
 
     return 0;
+}
+
+static char *GetMapDirectory(const char *mapsRoot)
+{
+    // TODO: Ask user to select map directory and game!
+    // 
+    // Load all map directories
+#if 01
+    FilePathList zones = LoadDirectoryFiles(mapsRoot);
+    FilePathList mapDirs = {0};
+    for(int i = 0; i < zones.count; i++) {
+        char *zone = zones.paths[i];
+
+        if(!IsPathFile(zone)) {
+            FilePathList acts = LoadDirectoryFiles(zone);
+
+            for(int actI = 0; actI < acts.count; actI++) {
+                char *act = acts.paths[actI];
+                
+                if(!IsPathFile(act)) {
+                    da_append_to(&mapDirs, &act, paths);
+                }
+            }
+
+            // Free 'paths' member but not the allocated path strings themselves.
+            RL_FREE(acts.paths);
+        }
+    }
+    UnloadDirectoryFiles(zones);
+
+    int mapIndex = 4 + (ZONE_2-1)*3;
+    const char *pMapDir = mapDirs.paths[mapIndex];
+#else
+    const char *pMapDir = TextFormat("%s/zone_3/act_1/", mapsRoot);
+#endif
+    char *mapDir  = malloc(TextLength(pMapDir) + 1);
+    TextCopy(mapDir, pMapDir);
+
+    return mapDir;
+}
+
+void InitUiHeaderWidgets(UiHeader *hdr)
+{
+    hdr->btnPreview.type = UIID_BUTTON;
+    hdr->btnPreview.ident.btn.idleTint   = UI_COLOR_BUTTON;
+    hdr->btnPreview.ident.btn.hotTint    = UI_COLOR_BUTTON_HOVER;
+    hdr->btnPreview.ident.btn.activeTint = UI_COLOR_BUTTON_PRESSED;
+    hdr->btnPreview.ident.btn.textTint   = UI_COLOR_BUTTON_TEXT;
+    
+    /* These buttons change color based on state, so no need to set them */
+    hdr->btnBackLayer.type  = UIID_BUTTON;
+    hdr->btnBackLayer.ident.btn.text = "Back";
+
+    hdr->btnFrontLayer.type = UIID_BUTTON;
+    hdr->btnFrontLayer.ident.btn.text = "Front";
+
+    hdr->btnSaveMap.type    = UIID_BUTTON;
+    hdr->btnSaveMap.ident.btn.text = "SAVE MAP";
 }
 
 static LoadEntityDataFromCSVs(AppState *state)
@@ -285,20 +314,68 @@ CreateMapTexture(Rectangle recMap, int pixelFormat)
     return txMap;
 }
 
+static UIWindow
+CreateYesNoWindow(AppState *state, int x, int y, int width, int height, char *headerText, char *mainText)
+{
+    UIWindow window = {0};
+
+    window.x = x;
+    window.y = y;
+    window.width  = width;
+    window.height = height;
+    window.flags = 0;
+    window.type = UIWND_TYPE_YESNO;
+    window.header.ident.rec.text = headerText;
+    window.recMain.ident.rec.text = mainText;
+
+    return window;
+}
+
 static void
 CreateUIWindows(AppState *state)
 {
     // UIWND_ID_UNSAVED_CHANGES = 0
-    UIWindow warnChangesMade = {0};
-    warnChangesMade.width  = 200;
-    warnChangesMade.height = 100;
-    warnChangesMade.x = state->windowWidth  / 2 - warnChangesMade.width  / 2;
-    warnChangesMade.y = state->windowHeight / 2 - warnChangesMade.height / 2;
-    warnChangesMade.flags = 0;
-    warnChangesMade.type = UIWND_TYPE_YESNO;
-    warnChangesMade.headerText = "Unsaved changes";
-    warnChangesMade.message    = "There are unsaved changes.\n"
-                                 "Do you still want to exit?";
+    int appWidth  = state->windowWidth;
+    int appHeight = state->windowHeight;
+    int windowWidth  = 200;
+    int windowHeight = 100;
+    int x = (appWidth  / 2) - (windowWidth / 2);
+    int y = (appHeight / 2) - (windowHeight / 2);
+
+    UIWindow warnChangesMade = CreateYesNoWindow(state,
+        x, y, windowWidth, windowHeight,
+        "Unsaved changes",
+        "There are unsaved changes.\n"
+        "Do you still want to exit?");
+
+    warnChangesMade.header.type  = UIID_RECTANGLE;
+    warnChangesMade.header.ident.rec.fontSize = 10;
+    warnChangesMade.header.ident.rec.textTint = UI_COLOR_TEXT;
+    warnChangesMade.header.ident.rec.backTint = UI_COLOR_WINDOW_HEADER;
+    warnChangesMade.recMain.type = UIID_RECTANGLE;
+    warnChangesMade.recMain.ident.rec.fontSize = 10;
+    warnChangesMade.recMain.ident.rec.textTint = UI_COLOR_TEXT;
+    warnChangesMade.recMain.ident.rec.backTint = UI_COLOR_WINDOW_BACK;
+
+    UiIdent btnYes;
+    btnYes.type = UIID_BUTTON;
+    btnYes.ident.btn.fontSize   = 20;
+    btnYes.ident.btn.text       = "YES";
+    btnYes.ident.btn.idleTint   = UI_COLOR_BUTTON_ON;
+    btnYes.ident.btn.hotTint    = UI_COLOR_BUTTON_ON_HOVER;
+    btnYes.ident.btn.activeTint = UI_COLOR_BUTTON_ON_PRESSED;
+    btnYes.ident.btn.textTint   = UI_COLOR_BUTTON_ON_TEXT;
+    da_append(&warnChangesMade.buttons, &btnYes);
+
+    UiIdent btnNo;
+    btnNo.type = UIID_BUTTON;
+    btnNo.ident.btn.fontSize   = 20;
+    btnNo.ident.btn.text       = "NO";
+    btnNo.ident.btn.idleTint   = UI_COLOR_BUTTON_OFF;
+    btnNo.ident.btn.hotTint    = UI_COLOR_BUTTON_OFF_HOVER;
+    btnNo.ident.btn.activeTint = UI_COLOR_BUTTON_OFF_PRESSED;
+    btnNo.ident.btn.textTint   = UI_COLOR_BUTTON_OFF_TEXT;
+    da_append(&warnChangesMade.buttons, &btnNo);
 
     da_append(&state->ui.windows, &warnChangesMade);
 }
@@ -329,11 +406,9 @@ IsMouseAboveUiElements(AppState *state)
     return isHovering;
 }
 
-static bool
+static void
 HandleMouseInputUIWindows(AppState *state)
 {
-    bool mouseHoversUi = false;
-
     for(int i = 0; i < state->ui.windows.count; i++) {
         UIWindow *window = &state->ui.windows.elements[i];
 
@@ -342,27 +417,12 @@ HandleMouseInputUIWindows(AppState *state)
                 window->flags &= ~UIWND_FLAG_SHALL_HIDE;
                 window->flags &= ~UIWND_FLAG_IS_VISIBLE;
                 window->flags |= UIWND_FLAG_HID_AWAY;
-                continue;
             } else {
                 // Window did not have to hide, so we flag that it didn't
                 window->flags &= ~UIWND_FLAG_HID_AWAY;
             }
-
-            Rectangle recWindow = {
-                window->x,
-                window->y,
-                window->width,
-                window->height
-            };
-
-            if(CheckCollisionPointRec(GetMousePosition(), recWindow))
-            {
-                mouseHoversUi = true;
-            }
         }
     }
-
-    return mouseHoversUi;
 }
 
 static Rectangle
@@ -430,15 +490,54 @@ SetNewMetatiles(AppState *state, int x, int y)
     }
 }
 
+static inline Vector2
+GetMousePositionInRec(Rectangle rec) {
+    Vector2 mousePos = GetMousePosition();
+
+    return CLITERAL(Vector2){
+        mousePos.x - rec.x,
+        mousePos.y - rec.y
+    };
+}
+
+inline int
+GetMetatileIndex(StageMap *map, Tilemap* tilemap, MetatileLayer layer, int x, int y)
+{
+    ///assert(layer < LAYER_COUNT);
+
+    if(x >= 0 && y >= 0
+    && x < map->width && y < map->height) {        
+        u16 *mtIndices = tilemap->layers[layer].data;
+        return mtIndices[y * map->width + x];
+    } else {
+        return 0;
+    }
+}
+
+Vector2i
+GetMetatilePointBelowMouse(StageMap *map, Rectangle recMap) {
+    Vector2 mouse = GetMousePosition();
+
+    if(CheckCollisionPointRec(mouse, recMap)) {
+        Vector2 mouseInRect = GetMousePositionInRec(recMap);
+        return CLITERAL(Vector2i) {
+            (map->camera.x + mouseInRect.x) / METATILE_DIM,
+            (map->camera.y + mouseInRect.y) / METATILE_DIM,
+        };
+    } else {
+        return CLITERAL(Vector2i){-1, -1};
+    }
+}
+
 static void
 HandleMouseInput(AppState *state, Rectangle recMap)
 {
     StageMap *map   = &state->map;
     FileInfo *paths = &state->paths;
 
-    bool mouseHoversUi = HandleMouseInputUIWindows(state);
+    HandleMouseInputUIWindows(state);
 
-    if(!mouseHoversUi) {
+    if(!state->uiCtx.hot) {
         if(CheckCollisionPointRec(GetMousePosition(), recMap)) {
             SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 
@@ -463,7 +562,6 @@ HandleMouseInput(AppState *state, Rectangle recMap)
                     map->selectedMetatile.x = mtMouse.x;
                     map->selectedMetatile.y = mtMouse.y;
 
-                    //GetMetatileIndex(Tilemap* layers, MetatileLayer layer, int x, int y);
                     int mtIndexFront = GetMetatileIndex(&state->map, &state->paths.map, LAYER_FRONT, state->map.selectedMetatile.x, state->map.selectedMetatile.y);
                     int mtIndexBack  = GetMetatileIndex(&state->map, &state->paths.map, LAYER_BACK , state->map.selectedMetatile.x, state->map.selectedMetatile.y);
     
@@ -488,6 +586,14 @@ HandleMouseInput(AppState *state, Rectangle recMap)
             SetMouseCursor(MOUSE_CURSOR_DEFAULT);
         }
     }
+    
+    if(IsKeyPressed(KEY_HOME)) {
+        MoveCameraToSpawn(state, recMap);
+    } else if(IsKeyPressed(KEY_END)) {
+        MoveCameraToEnd(state, recMap);
+    }
+
+    HandleMouseInputSpawnPos(state);
 }
 
 static inline void
@@ -506,16 +612,6 @@ MoveCameraToEnd(AppState *state, Rectangle recMap)
     state->map.camera.y = state->map.endY - recMap.height/2;
     state->map.camera.x = CLAMP(state->map.camera.x, 0, (state->map.width  * METATILE_DIM) - recMap.width);
     state->map.camera.y = CLAMP(state->map.camera.y, 0, (state->map.height * METATILE_DIM) - recMap.height);
-}
-
-static void
-HandleKeyInput(AppState *state, Rectangle recMap)
-{
-    if(IsKeyPressed(KEY_HOME)) {
-        MoveCameraToSpawn(state, recMap);
-    } else if(IsKeyPressed(KEY_END)) {
-        MoveCameraToEnd(state, recMap);
-    }
 }
 
 static void
@@ -641,7 +737,7 @@ SetupTilemapPaths(Tilemap *out, char *directory)
 }
 
 static void
-SetupFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
+InitFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
 {
     FileInfo info = {0};
 
@@ -763,43 +859,4 @@ CreateMetatileAtlas_defer:
     free(atlas.data);
 
     return txAtlas;
-}
-
-static inline Vector2
-GetMousePositionInRec(Rectangle rec) {
-    Vector2 mousePos = GetMousePosition();
-
-    return CLITERAL(Vector2){
-        mousePos.x - rec.x,
-        mousePos.y - rec.y
-    };
-}
-
-inline int
-GetMetatileIndex(StageMap *map, Tilemap* tilemap, MetatileLayer layer, int x, int y)
-{
-    ///assert(layer < LAYER_COUNT);
-
-    if(x >= 0 && y >= 0
-    && x < map->width && y < map->height) {        
-        u16 *mtIndices = tilemap->layers[layer].data;
-        return mtIndices[y * map->width + x];
-    } else {
-        return 0;
-    }
-}
-
-Vector2i
-GetMetatilePointBelowMouse(StageMap *map, Rectangle recMap) {
-    Vector2 mouse = GetMousePosition();
-
-    if(CheckCollisionPointRec(mouse, recMap)) {
-        Vector2 mouseInRect = GetMousePositionInRec(recMap);
-        return CLITERAL(Vector2i) {
-            (map->camera.x + mouseInRect.x) / METATILE_DIM,
-            (map->camera.y + mouseInRect.y) / METATILE_DIM,
-        };
-    } else {
-        return CLITERAL(Vector2i){-1, -1};
-    }
 }

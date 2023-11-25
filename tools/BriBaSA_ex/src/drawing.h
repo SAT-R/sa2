@@ -9,11 +9,11 @@ void DrawEntInteractable(AppState *state, int x, int y, int kind, char data[5]);
 void DrawEntItem(AppState *state, int x, int y, int index, char data[5]);
 void DrawEntEnemy(AppState *state, int x, int y, int index, char data[5]);
 void DrawEntRing(AppState *state, int x, int y);
-void DrawEntities(AppState *state, Rectangle recMap);
+void DrawMapSprites(AppState *state, Rectangle recMap);
 
 bool DrawButton(int x, int y, int width, int height, char *text);
 bool DrawButtonRec(Rectangle rec, char *text);
-inline bool DrawButtonColored(Rectangle rec, char *text, int fontSize, Color tint, Color hoverTint, Color PressTint, Color textTint);
+inline bool DrawButtonColored(Rectangle rec, char *text, int fontSize, Color idleTint, Color hotTint, Color activeTint, Color textTint);
 bool DrawAndHandleCloseButton(AppState *state);
 void DrawMainHeader(AppState *state, Texture2D txAtlas);
 void DrawUI(AppState *state, Texture2D txAtlas);

@@ -1,6 +1,8 @@
 #ifndef GUARD_BRIBASA_EX_GLOBAL_H
 #define GUARD_BRIBASA_EX_GLOBAL_H
 
+#include "ui.h"
+
 #include "../../_shared/csv_conv/csv_conv.h"
 
 #define TILE_DIM 8
@@ -25,6 +27,8 @@
 #define IS_USER_KEY_RELEASED_LEFT   (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)   || IsKeyReleased(KEY_X))
 #define IS_USER_KEY_RELEASED_MIDDLE (IsMouseButtonReleased(MOUSE_BUTTON_MIDDLE) || IsKeyReleased(KEY_C))
 #define IS_USER_KEY_RELEASED_RIGHT  (IsMouseButtonReleased(MOUSE_BUTTON_RIGHT)  || IsKeyReleased(KEY_V))
+
+#define IS_MOUSE_ON_RECT(_rectangle) (CheckCollisionPointRec(GetMousePosition(), (_rectangle)))
 
 // TEMP
 
@@ -103,7 +107,7 @@ typedef enum {
 
 typedef enum {
     UIWND_TYPE_DEFAULT      = 0,
-    UIWND_TYPE_OK           = 1,
+    //UIWND_TYPE_OK           = 1,
     UIWND_TYPE_YESNO        = 2,
     UIWND_TYPE_ENTITY_INFO  = 3,
 } UIWindowType;
@@ -148,7 +152,7 @@ typedef struct {
 
 typedef struct {
     Texture *elements;
-    int capacity, count;
+    int count, capacity;
 } TextureList;
 
 typedef struct {
@@ -195,12 +199,12 @@ typedef struct {
 
 typedef struct {
     EntityMeta *elements;
-    int capacity, count;
+    int count, capacity;
 } EntityMetaList;
 
 typedef struct {
     InteractableMeta *elements;
-    int capacity, count;
+    int count, capacity;
 } InteractableMetaList;
 
 typedef struct {
@@ -214,7 +218,10 @@ typedef struct {
 
 
 typedef struct {
-    // The dir containing "data/", "graphics/", "src/", etc.
+    // Root directory of one of the SAT-R decomp projects
+    // or a project based on them.
+    // 
+    // (Contains "data/", "graphics/", "src/", etc.)
     char *gameRoot;
 
     // e.g. ./data/maps/zone_1/act_1/
@@ -290,8 +297,9 @@ typedef struct {
     UIWindowFlag flags;
     UIWindowType type;
     UIWindowResult lastResult;
-    char *headerText;
-    char *message;
+    UiIdent header;
+    UiIdent recMain;
+    UiIdentList buttons;
 } UIWindow;
 
 typedef struct {
@@ -300,13 +308,23 @@ typedef struct {
 } UIWindowList;
 
 typedef struct {
+    // TODO: Only reference this Rectangle for the header
+    Rectangle rec;
+
+    UiIdent btnFrontLayer;
+    UiIdent btnBackLayer;
+    UiIdent btnPreview;
+    UiIdent btnSaveMap;
+} UiHeader;
+
+typedef struct {
     UIWindowList windows;
 
     Rectangle recHeader;
     Rectangle recMap;
 
     // FALSE (split): Display preview metatile's layers separately
-    // TRUE (merged): Display preview metatile's layers ontop eachother
+    // TRUE (merged): Display preview metatile's layers ontop of eachother
     bool isMtPreviewMerged;
 } Ui;
 
@@ -316,15 +334,16 @@ typedef struct {
     bool ignoreUnsavedChanges;
     bool unsavedChangesExist;
 
-    // Root directory of one of the SAT-R decomp projects
-    // or a project based on them.
-    // TODO: Remove (replaced with FileInfo!)
     Game game;
 
     FileInfo paths;
 
     StageMap map;
-    Ui ui;
+
+    Ui ui; // TODO: Remove
+    
+    UiContext uiCtx;
+    UiHeader uiHeader;
 } AppState;
 
 #endif // GUARD_BRIBASA_EX_GLOBAL_H

@@ -5,8 +5,12 @@
 #include "map.h"
 #include "save.h"
 #include "texture.h"
+#include "ui.h"
 
 /* TODO: Make including <entity>.h from game code work */
+
+//From "game/interactables_2/music_plant/guitar_string.h"
+#define NUM_GUITAR_STRING_ELEMS 6
 
 // From light_bridge.h
 #define BRIDGE_SEGMENT_WIDTH 12
@@ -19,12 +23,12 @@
 #include "../../../include/constants/zones.h"
 
 static void DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4]);
-static inline bool DrawOnOffButton(Rectangle rec, char *text, bool cond);
+static inline bool DrawOnOffButton(UiContext *ui, UiIdent *id, Rectangle rec, char *text, bool cond);
 static inline void DrawMetatile(Texture2D txAtlas, int x, int y, int metatileIndex, Color tint);
 static inline void DrawMetatileScaled(Texture2D txAtlas, int x, int y, float scale, int metatileIndex, Color tint);
-static inline void DrawMetatilePreviewButton(AppState *state, int x, int y, Texture2D txAtlas);
+static inline void DrawMetatilePreviewButton(UiContext *ui, UiHeader *header, AppState *state, int x, int y, Texture2D txAtlas);
 static void DrawSaveButton(AppState *state, int x, int y);
-static void DrawUIWindow(UIWindow *window);
+static void DrawUIWindow(UiContext *ui, UIWindow *window);
 
 
 #define DRAW_ENTITY_RECT_CUSTOM_DIM(_x, _y, _offsetX, _offsetY, _width, _height, _tint)                                       \
@@ -142,6 +146,15 @@ DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
         flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
     } break;
 
+#if 0
+    // NOTE: The frame for the guitar string elements is in
+    //       variant 15 of NOTE_BLOCK, for some reason.
+    case IA__GUITAR_STRING: {
+        for(int i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
+
+        }
+    } break;
+#endif
     case IA__LIGHT_BRIDGE: {
 
         if(data[0] == BRIDGE_TYPE_STRAIGHT) {
@@ -210,12 +223,23 @@ DrawEntRing(AppState *state, int x, int y)
                    CLITERAL(Vector2){x - (ring->texture.width / 2), y - (ring->texture.width)},
                    WHITE);
 }
+void DrawSpawnPosCharacter(AppState *state, Rectangle recMap)
+{
+    int selectedChar = state->paths.characters.selected;
+    Texture2D *txChar = &state->paths.characters.elements[selectedChar].texture;
+    int sx = recMap.x + state->map.spawnX - state->map.camera.x - (txChar->width * 0.5);;
+    int sy = recMap.y + state->map.spawnY - state->map.camera.y - (txChar->height * 0.5);
+
+    DrawTexturePro(*txChar, CLITERAL(Rectangle){0, 0,  -txChar->width, txChar->height},
+                            CLITERAL(Rectangle){sx, sy,  txChar->width, txChar->height},
+                            CLITERAL(Vector2){0.0, 0.0}, 0.0, WHITE);
+}
 
 // TODO:
 // - Don't iterate through all regions, only the currently visible ones
 #define SPAWN_POPUP_DIM 128.0
 void
-DrawEntities(AppState *state, Rectangle recMap)
+DrawMapSprites(AppState *state, Rectangle recMap)
 {
     FileInfo *paths = &state->paths;
     EntityPositions *entityPositions = &paths->entityPositions;
@@ -228,6 +252,8 @@ DrawEntities(AppState *state, Rectangle recMap)
     };
 
     BeginScissorMode(recMap.x, recMap.y, recMap.width, recMap.height);
+        DrawSpawnPosCharacter(state, recMap);
+
         for(int ry = 0; ry < entityPositions->rings.map_regions_y; ry++) {
             for(int rx = 0; rx < entityPositions->rings.map_regions_x; rx++) {
                 int ri = ry * entityPositions->rings.map_regions_x + rx;
@@ -237,54 +263,49 @@ DrawEntities(AppState *state, Rectangle recMap)
                 MapRegion *ringRegion  = &entityPositions->rings.regions[ri];
 
 
-                if(iaRegion) {
-                    for(int entIndex = 0; entIndex < iaRegion->count; entIndex++) {
-                        EntityData *ia = &iaRegion->list[entIndex];
+                for(int entIndex = 0; entIndex < iaRegion->count; entIndex++) {
+                    EntityData *ia = &iaRegion->list[entIndex];
 
-                        int screenX = recMap.x + TO_WORLD_POS(ia->x, rx) - state->map.camera.x;
-                        int screenY = recMap.y + TO_WORLD_POS(ia->y, ry) - state->map.camera.y;
+                    int screenX = recMap.x + TO_WORLD_POS(ia->x, rx) - state->map.camera.x;
+                    int screenY = recMap.y + TO_WORLD_POS(ia->y, ry) - state->map.camera.y;
 
-                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                            DrawEntInteractable(state, screenX, screenY, ia->kind, ia->data);
-                        }
+                    if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                        DrawEntInteractable(state, screenX, screenY, ia->kind, ia->data);
                     }
                 }
-                if(itemRegion) {
-                    for(int entIndex = 0; entIndex < itemRegion->count; entIndex++) {
-                        EntityData *item = &itemRegion->list[entIndex];
+                
+                for(int entIndex = 0; entIndex < itemRegion->count; entIndex++) {
+                    EntityData *item = &itemRegion->list[entIndex];
 
-                        int screenX = recMap.x + TO_WORLD_POS(item->x, rx) - state->map.camera.x;
-                        int screenY = recMap.y + TO_WORLD_POS(item->y, ry) - state->map.camera.y;
+                    int screenX = recMap.x + TO_WORLD_POS(item->x, rx) - state->map.camera.x;
+                    int screenY = recMap.y + TO_WORLD_POS(item->y, ry) - state->map.camera.y;
                         
-                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                            DrawEntItem(state, screenX, screenY, item->kind, item->data);
-                        }
+                    if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                        DrawEntItem(state, screenX, screenY, item->kind, item->data);
                     }
                 }
-                if(enemyRegion) {
-                    for(int entIndex = 0; entIndex < enemyRegion->count; entIndex++) {
-                        EntityData *enemy = &enemyRegion->list[entIndex];
+                
+                for(int entIndex = 0; entIndex < enemyRegion->count; entIndex++) {
+                    EntityData *enemy = &enemyRegion->list[entIndex];
 
-                        int screenX = recMap.x + TO_WORLD_POS(enemy->x, rx) - state->map.camera.x;
-                        int screenY = recMap.y + TO_WORLD_POS(enemy->y, ry) - state->map.camera.y;
+                    int screenX = recMap.x + TO_WORLD_POS(enemy->x, rx) - state->map.camera.x;
+                    int screenY = recMap.y + TO_WORLD_POS(enemy->y, ry) - state->map.camera.y;
                         
-                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                            DrawEntEnemy(state, screenX, screenY, enemy->kind, enemy->data);
-                        }
+                    if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                        DrawEntEnemy(state, screenX, screenY, enemy->kind, enemy->data);
                     }
                 }
-                if(ringRegion) {
-                    for(int entIndex = 0; entIndex < ringRegion->count; entIndex++) {
-                        EntityData *ring = &ringRegion->list[entIndex];
+                
+                for(int entIndex = 0; entIndex < ringRegion->count; entIndex++) {
+                    EntityData *ring = &ringRegion->list[entIndex];
 
-                        int screenX = recMap.x + TO_WORLD_POS(ring->x, rx) - state->map.camera.x;
-                        int screenY = recMap.y + TO_WORLD_POS(ring->y, ry) - state->map.camera.y;
+                    int screenX = recMap.x + TO_WORLD_POS(ring->x, rx) - state->map.camera.x;
+                    int screenY = recMap.y + TO_WORLD_POS(ring->y, ry) - state->map.camera.y;
                         
-                        if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                            DrawEntRing(state, screenX, screenY);
-                        }
+                    if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                        DrawEntRing(state, screenX, screenY);
                     }
-                }
+                }                
             }
         }
     EndScissorMode();
@@ -297,6 +318,7 @@ Debug_DrawAllEntityTextures(AppState *state)
     int testX = 200;
     int testY = 120;
     char data[5] = {0};
+
     int iaCount = state->paths.interactables.count;
     for(int iaIndex = 0; iaIndex < iaCount; iaIndex++) {
         DrawEntInteractable(state,
@@ -331,27 +353,25 @@ DrawButtonRec(Rectangle rec, char *text) {
 }
 
 inline bool
-DrawButtonColored(Rectangle rec, char *text, int fontSize, Color tint, Color hoverTint, Color PressTint, Color textTint)
+DrawButtonColored(Rectangle rec, char *text, int fontSize, Color idleTint, Color hotTint, Color activeTint, Color textTint)
 {
     bool wasReleased = false;
 
-    bool mouseIsHovering = CheckCollisionPointRec(GetMousePosition(), rec);
-
     BeginScissorMode(rec.x, rec.y, rec.width, rec.height);
-        if(mouseIsHovering) {
+        if(IS_MOUSE_ON_RECT(rec)) {
             SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 
             if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-                DrawRectangleRec(rec, PressTint);
+                DrawRectangleRec(rec, activeTint);
             } else {
-                DrawRectangleRec(rec, hoverTint);
+                DrawRectangleRec(rec, hotTint);
             }
 
             if(IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
                 wasReleased = true;
             }
         } else {
-            DrawRectangleRec(rec, tint);
+            DrawRectangleRec(rec, idleTint);
         }
 
         DrawText(text, rec.x + 1, rec.y + 1, fontSize, textTint);
@@ -364,14 +384,19 @@ DrawButtonColored(Rectangle rec, char *text, int fontSize, Color tint, Color hov
 //  false: red
 //  true:  green
 static inline bool
-DrawOnOffButton(Rectangle rec, char *text, bool cond)
+DrawOnOffButton(UiContext *ui, UiIdent *id, Rectangle rec, char *text, bool cond)
 {
     Color tintNeutral = (cond) ? UI_COLOR_BUTTON_ON         : UI_COLOR_BUTTON_OFF;
     Color tintHover   = (cond) ? UI_COLOR_BUTTON_ON_HOVER   : UI_COLOR_BUTTON_OFF_HOVER;
     Color tintPress   = (cond) ? UI_COLOR_BUTTON_ON_PRESSED : UI_COLOR_BUTTON_OFF_PRESSED;
     Color tintText    = (cond) ? UI_COLOR_BUTTON_ON_TEXT    : UI_COLOR_BUTTON_OFF_TEXT;
 
-    return DrawButtonColored(rec, text, 20, tintNeutral, tintHover, tintPress, tintText);
+    id->ident.btn.idleTint   = tintNeutral;
+    id->ident.btn.hotTint    = tintHover;
+    id->ident.btn.activeTint = tintPress;
+    id->ident.btn.textTint   = tintText;
+
+    return UiElement(ui,id,rec.x, rec.y, rec.width, rec.height, text);
 }
 
 static inline void
@@ -399,11 +424,11 @@ DrawMetatileScaled(Texture2D txAtlas, int x, int y, float scale, int metatileInd
 }
 
 static inline
-void DrawMetatilePreviewButton(AppState *state, int x, int y, Texture2D txAtlas)
+void DrawMetatilePreviewButton(UiContext *ui, UiHeader *header, AppState *state, int x, int y, Texture2D txAtlas)
 {
     const char *previewState = (state->ui.isMtPreviewMerged) ? "Merged" : "Split";
     char *btnTextMetatilePreview = (char*)TextFormat("Preview: %s", previewState);
-    bool previewBtnPressed = DrawButtonRec(CLITERAL(Rectangle){x, y, 170, 20}, btnTextMetatilePreview);
+    bool previewBtnPressed = UiElement(ui, &header->btnPreview, x, y, 170, 20, btnTextMetatilePreview);
     
     if(previewBtnPressed) {
         state->ui.isMtPreviewMerged = !state->ui.isMtPreviewMerged;
@@ -436,6 +461,7 @@ void DrawMetatilePreviewButton(AppState *state, int x, int y, Texture2D txAtlas)
 
         recFront = recBack;
 
+        // Mix both previews' background colors
         bgTintBack.r = (bgTintBack.r + bgTintFront.r) * 2 / 3;
         bgTintBack.g = (bgTintBack.g + bgTintFront.g) * 2 / 3;
         bgTintBack.b = (bgTintBack.b + bgTintFront.b) * 2 / 3;
@@ -478,7 +504,12 @@ DrawSaveButton(AppState *state, int x, int y)
     Color pressTint = (state->unsavedChangesExist) ? UI_COLOR_BUTTON_SAVE_WARN_PRESSED : UI_COLOR_BUTTON_SAVE_PRESSED;
     Color textTint  = (state->unsavedChangesExist) ? UI_COLOR_BUTTON_SAVE_WARN_TEXT    : UI_COLOR_BUTTON_SAVE_TEXT;
 
-    bool saveButtonPressed = DrawButtonColored(recBtn,"SAVE MAP", 20, tint, hoverTint, pressTint, textTint);
+    state->uiHeader.btnSaveMap.ident.btn.idleTint   = tint;
+    state->uiHeader.btnSaveMap.ident.btn.hotTint    = hoverTint;
+    state->uiHeader.btnSaveMap.ident.btn.activeTint = pressTint;
+    state->uiHeader.btnSaveMap.ident.btn.textTint   = textTint;
+
+    bool saveButtonPressed = UiElement(&state->uiCtx, &state->uiHeader.btnSaveMap, x, y, 110, 20, NULL);
     if(saveButtonPressed) {
         state->ignoreUnsavedChanges = true;
         state->unsavedChangesExist  = false;
@@ -498,8 +529,8 @@ DrawMainHeader(AppState *state, Texture2D txAtlas)
     int backLayerFlag  = state->map.flags & MAP_FLAG_SHOW_BACK_LAYER;
     int frontLayerFlag = state->map.flags & MAP_FLAG_SHOW_FRONT_LAYER;
 
-    bool bLayerBtnPressed = DrawOnOffButton(CLITERAL(Rectangle){posX, posY += 22, 80, 20}, "Back",  backLayerFlag);
-    bool fLayerBtnPressed = DrawOnOffButton(CLITERAL(Rectangle){posX += 85, posY, 83, 20}, "Front", frontLayerFlag);
+    bool bLayerBtnPressed = DrawOnOffButton(&state->uiCtx, &state->uiHeader.btnBackLayer, CLITERAL(Rectangle){posX, posY += 22, 80, 20}, NULL,  backLayerFlag);
+    bool fLayerBtnPressed = DrawOnOffButton(&state->uiCtx, &state->uiHeader.btnFrontLayer, CLITERAL(Rectangle){posX += 85, posY, 83, 20}, NULL, frontLayerFlag);
 
     if(bLayerBtnPressed) {
         state->map.flags ^= MAP_FLAG_SHOW_BACK_LAYER;
@@ -515,7 +546,7 @@ DrawMainHeader(AppState *state, Texture2D txAtlas)
         state->map.selectedMetatileIndexFront);
 
     DrawText(txtMetatiles, posX -= 85, posY += 30, 20, UI_COLOR_TEXT);
-    DrawMetatilePreviewButton(state, initialX, posY += 20, txAtlas);
+    DrawMetatilePreviewButton(&state->uiCtx, &state->uiHeader, state, initialX, posY += 20, txAtlas);
     
     DrawSaveButton(state, 4, initialY + METATILE_DIM - 20 - 4);
 }
@@ -525,70 +556,81 @@ DrawUI(AppState *state, Texture2D txAtlas)
 {
     for(int i = 0; i < state->ui.windows.count; i++) {
         UIWindow *window = &state->ui.windows.elements[i];
-        DrawUIWindow(window);
-    }
+        DrawUIWindow(&state->uiCtx, window);
+    }   
+
 }
 
 static void
-DrawUIWindow(UIWindow *window)
+DrawUIWindow(UiContext *ui, UIWindow *window)
 {
-    Rectangle rec       = CLITERAL(Rectangle){window->x, window->y, window->width, window->height};
-    Rectangle recHeader = CLITERAL(Rectangle){window->x, window->y, window->width, UI_HEADER_HEIGHT};
+    Rectangle recWindow  = CLITERAL(Rectangle){window->x, window->y, window->width, window->height};
+    Rectangle recHeader  = CLITERAL(Rectangle){window->x, window->y, window->width, UI_HEADER_HEIGHT};
+    Rectangle recMessage = CLITERAL(Rectangle){ recHeader.x, recHeader.y + recHeader.height,
+                                                window->width, window->height-recHeader.height};
 
     if(window->flags & UIWND_FLAG_IS_VISIBLE) {
-        // Background
-        BeginScissorMode(rec.x, rec.y, rec.width, rec.height);
-            DrawRectangleRec(rec, UI_COLOR_WINDOW_BACK);
+        if(ui->active == &window->header) {
+            if(IS_USER_KEY_DOWN_LEFT) {
+                Vector2 dtMouse = GetMouseDelta();
+                window->x += dtMouse.x;
+                window->y += dtMouse.y;
 
-            // Header
-            DrawRectangleRec(recHeader, UI_COLOR_WINDOW_HEADER);
-            if(window->headerText != NULL) {
-                int fontSize = 10;
-                DrawText(window->headerText, recHeader.x + 2, recHeader.y + recHeader.height/2 - fontSize/2, fontSize, UI_COLOR_TEXT);
+                recHeader.x = window->x;
+                recHeader.y = window->y;
+                recMessage.x = recHeader.x;
+                recMessage.y = recHeader.y + recHeader.height;
+            }
+        }
+
+        // Header
+        UiElement(ui, &window->header, recHeader.x, recHeader.y, recHeader.width, recHeader.height, NULL);
+
+            
+        // Main Message
+        UiElement(ui, &window->recMain, recMessage.x, recMessage.y, recMessage.width, recMessage.height, NULL);
+
+        // Close-Button
+        if(window->flags & UIWND_FLAG_HAS_CLOSE_BUTTON) {
+            Rectangle recX      = CLITERAL(Rectangle){window->x + window->width - UI_HEADER_HEIGHT, window->y, UI_HEADER_HEIGHT, UI_HEADER_HEIGHT};
+            bool closeBtnClicked = DrawButtonColored(recX, NULL, 0, UI_COLOR_BUTTON_OFF, UI_COLOR_BUTTON_OFF_HOVER, UI_COLOR_BUTTON_OFF_PRESSED, UI_COLOR_BUTTON_OFF_TEXT); 
+            if(closeBtnClicked) {
+                window->lastResult = UIWND_RESULT_CLOSE_BUTTON;
+                window->flags |= UIWND_FLAG_SHALL_HIDE;
+            }
+        }
+
+        switch(window->type) {
+        case UIWND_TYPE_YESNO: {
+            if(window->buttons.count < 2) {
+                break;
             }
 
-            // Main Message Text
-            if(window->message != NULL) {
-                int fontSize = 10;
-                DrawText(window->message, rec.x + 2, recHeader.y + recHeader.height + fontSize, fontSize, UI_COLOR_TEXT);
+            int fontSize = window->buttons.elements[0].ident.btn.fontSize;
+
+            int x  = window->x;
+            int y  = window->y + window->height;
+            int dx = window->width / window->buttons.count;
+            int wYes = dx, wNo = dx;
+
+            Rectangle recYes = CLITERAL(Rectangle){x + dx*0, y, wYes, fontSize};
+            Rectangle recNo  = CLITERAL(Rectangle){x + dx*1, y, wNo,  fontSize};
+
+            bool yesClicked = UiElement(ui, &window->buttons.elements[0], recYes.x, recYes.y, recYes.width, recYes.height, NULL);
+            bool noClicked  = UiElement(ui, &window->buttons.elements[1], recNo.x,  recNo.y,  recNo.width,  recNo.height,  NULL);
+
+            if(yesClicked) {
+                window->lastResult = UIWND_RESULT_YES;
+                window->flags |= UIWND_FLAG_SHALL_HIDE;
             }
 
-            // Close-Button
-            if(window->flags & UIWND_FLAG_HAS_CLOSE_BUTTON) {
-                Rectangle recX      = CLITERAL(Rectangle){window->x + window->width - UI_HEADER_HEIGHT, window->y, UI_HEADER_HEIGHT, UI_HEADER_HEIGHT};
-                bool closeBtnClicked = DrawButtonColored(recX, NULL, 0, UI_COLOR_BUTTON_OFF, UI_COLOR_BUTTON_OFF_HOVER, UI_COLOR_BUTTON_OFF_PRESSED, UI_COLOR_BUTTON_OFF_TEXT); 
-                if(closeBtnClicked) {
-                    window->lastResult = UIWND_RESULT_CLOSE_BUTTON;
-                    window->flags |= UIWND_FLAG_SHALL_HIDE;
-                }
+            if(noClicked) {
+                window->lastResult = UIWND_RESULT_NO;
+                window->flags |= UIWND_FLAG_SHALL_HIDE;
             }
+        } break;
 
-            switch(window->type) {
-            case UIWND_TYPE_OK: {
-                // TODO
-            } break;
-                
-            case UIWND_TYPE_YESNO: {
-                int fontSize = 10;
-                Rectangle recYes = CLITERAL(Rectangle){window->x + 0.2*window->width, window->y + window->height - 2*fontSize, 30, fontSize};
-                Rectangle recNo  = CLITERAL(Rectangle){window->x + 0.8*window->width, window->y + window->height - 2*fontSize, 20, fontSize};
-
-                bool yesClicked = DrawButtonColored(recYes, "YES", 10, UI_COLOR_BUTTON_ON,  UI_COLOR_BUTTON_ON_HOVER,  UI_COLOR_BUTTON_ON_PRESSED,  UI_COLOR_BUTTON_ON_TEXT);
-                bool noClicked  = DrawButtonColored(recNo,  "NO",  10, UI_COLOR_BUTTON_OFF, UI_COLOR_BUTTON_OFF_HOVER, UI_COLOR_BUTTON_OFF_PRESSED, UI_COLOR_BUTTON_OFF_TEXT);
-
-                if(yesClicked) {
-                    window->lastResult = UIWND_RESULT_YES;
-                    window->flags |= UIWND_FLAG_SHALL_HIDE;
-                }
-
-                if(noClicked) {
-                    window->lastResult = UIWND_RESULT_NO;
-                    window->flags |= UIWND_FLAG_SHALL_HIDE;
-                }
-            } break;
-
-            }
-        EndScissorMode();
+        }
     }
 }
 
@@ -608,7 +650,6 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
 
         { // Only draw inside the map "widget"
         BeginScissorMode(recMap.x, recMap.y, recMap.width, recMap.height);
-
             // Clear the buffer
             ClearBackground(state->paths.map.palette.colors[0]);
 
@@ -627,7 +668,7 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
                 txBackdrop = LoadTextureFromImage(backdrop);
             }
             
-            bool isHoveringUI    = IsMouseAboveUiElements(state);
+            bool isHoveringUI    = (state->uiCtx.hot != NULL);
             bool isHoveringSpawn = IsMouseOnSpawn(map, &state->paths.characters);
 
             for(int y = 0; y < (recMap.height / METATILE_DIM) + 1; y++) {
@@ -671,7 +712,7 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
                         );
                     }
                     
-                    int mtIndexBack  = GetMetatileIndex(&state->map, &state->paths.map, LAYER_BACK, mtX, mtY);
+                    int mtIndexBack  = GetMetatileIndex(&state->map, &state->paths.map, LAYER_BACK,  mtX, mtY);
                     int mtIndexFront = GetMetatileIndex(&state->map, &state->paths.map, LAYER_FRONT, mtX, mtY);
 
                     bool iterateAgain = false;
@@ -708,17 +749,6 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
                     }
                 }
             }
-            
-            // Draw Player character at spawn position
-            // TODO: Maybe only do this inside and on some border of recMap to save resources?
-            int selectedChar = state->paths.characters.selected;
-            Texture2D *txChar = &state->paths.characters.elements[selectedChar].texture;
-            int sx = recMap.x + state->map.spawnX - state->map.camera.x - (txChar->width * 0.5);;
-            int sy = recMap.y + state->map.spawnY - state->map.camera.y - (txChar->height * 0.5);
-
-            DrawTexturePro(*txChar, CLITERAL(Rectangle){0, 0,  -txChar->width, txChar->height},
-                                    CLITERAL(Rectangle){sx, sy,  txChar->width, txChar->height},
-                                    CLITERAL(Vector2){0.0, 0.0}, 0.0, WHITE);
         EndScissorMode();
         }
     }
