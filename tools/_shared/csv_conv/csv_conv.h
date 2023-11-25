@@ -44,7 +44,7 @@ typedef struct {
 
 typedef struct {
     EntityData *list;
-    int capacity, count;
+    int count, capacity;
 } MapRegion;
 
 typedef struct {

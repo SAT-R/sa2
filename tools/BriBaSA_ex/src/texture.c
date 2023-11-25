@@ -126,14 +126,12 @@ LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
 }
 
 void
-LoadAllEntityTextures(AppState *state)
+LoadAllEntityTextures(char *gamePath, FileInfo *paths)
 {
-    FileInfo *paths = &state->paths;
-
-    LoadCharacterTextures(paths->gameRoot, &paths->characters);
-    LoadInteractableTextures(paths->gameRoot,    &paths->interactables);
-    LoadEntityTextures(paths->gameRoot,    &paths->enemies);
-    LoadItemTextures(paths->gameRoot,      &paths->items, paths->characters.count);
-    LoadRingTexture(paths->gameRoot,       &paths->ring);
+    LoadCharacterTextures(gamePath, &paths->characters);
+    LoadInteractableTextures(gamePath, &paths->interactables);
+    LoadEntityTextures(gamePath, &paths->enemies);
+    LoadItemTextures(gamePath,   &paths->items, paths->characters.count);
+    LoadRingTexture(gamePath,    &paths->ring);
 }
 
