@@ -3,7 +3,7 @@
 #include "flags.h"
 #include "trig.h"
 #include "game/game.h"
-#include "game/special_stage/main.h"
+#include "game/stage/player.h"
 
 // (88.05%) https://decomp.me/scratch/ekyaq
 NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",

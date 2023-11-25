@@ -291,7 +291,15 @@
     "zone_6.h": "c",
     "zone_final.h": "c",
     "pause_menu.h": "c",
-    "title_screen.h": "c"
+    "title_screen.h": "c",
+    "game_modes.h": "c",
+    "main.h": "c",
+    "unknown_task.h": "c",
+    "entities_0.h": "c",
+    "dust_cloud.h": "c",
+    "unknown_effect.h": "c",
+    "underwater_effects.h": "c",
+    "dust_effect_braking.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

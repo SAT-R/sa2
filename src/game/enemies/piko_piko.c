@@ -1,5 +1,8 @@
 #include "global.h"
 #include "malloc_vram.h"
+
+#include "sakit/entities_0.h"
+
 #include "game/entity.h"
 
 #include "constants/animations.h"

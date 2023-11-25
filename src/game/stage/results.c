@@ -5,6 +5,7 @@
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/game.h"
+#include "game/stage/player.h"
 #include "game/stage/stage.h"
 #include "game/course_select.h"
 #include "game/cutscenes/endings.h"

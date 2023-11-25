@@ -14,9 +14,9 @@
 #include "game/stage/stage.h"
 #include "game/water_effects.h"
 #include "game/unknown_effect.h"
+#include "game/multiplayer/player_unk_2.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 

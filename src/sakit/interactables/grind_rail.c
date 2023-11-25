@@ -4,6 +4,7 @@
 #include "game/player_controls.h"
 #include "game/entity.h"
 #include "sakit/interactables/grind_rail.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 
 #include "lib/m4a.h"

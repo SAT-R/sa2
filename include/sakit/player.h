@@ -2,6 +2,10 @@
 #define GUARD_SAKIT_PLAYER_H
 
 #include "core.h"
+#include "constants/move_states.h"
+
+#define PLAYER_IS_ALIVE  (!(gPlayer.moveState & MOVESTATE_DEAD))
+#define IS_ALIVE(player) (!(player->moveState & MOVESTATE_DEAD))
 
 typedef struct {
     /*0x00 */ u16 unk0[6]; // might be [5]

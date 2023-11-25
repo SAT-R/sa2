@@ -2,7 +2,9 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
+#include "game/dust_effect_braking.h"
 
 #include "constants/animations.h"
 

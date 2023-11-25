@@ -4,9 +4,13 @@
 
 #include "core.h"
 #include "malloc_vram.h"
+
+#include "sakit/globals.h"
+
 #include "game/save.h"
 #include "game/time_attack/lobby.h"
 #include "game/title_screen.h"
+#include "game/water_effects.h"
 
 #include "constants/animations.h"
 #include "flags.h"

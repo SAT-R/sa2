@@ -3,10 +3,10 @@
 #include "game/game.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
 #include "constants/player_transitions.h"
 
 const u16 gUnknown_080D6736[115][2] = {

@@ -14,4 +14,14 @@ void ApplyGameStageSettings(void);
 void GameStageStart(void);
 void CreateGameStage(void);
 
+struct Backgrounds {
+    Background unk0;
+    Background unk40;
+    Background unk80;
+    Background unkC0;
+};
+
+extern struct Task *gGameStageTask;
+extern struct Backgrounds gStageBackgroundsRam;
+
 #endif // GUARD_STAGE_H

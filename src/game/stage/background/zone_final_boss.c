@@ -1,8 +1,8 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
-#include "game/game.h"
-
+#include "sakit/globals.h"
+#include "game/stage/player.h"
 #include "game/stage/background/callbacks.h"
 
 void StageBgUpdate_ZoneFinalActXX(void)

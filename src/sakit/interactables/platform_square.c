@@ -9,6 +9,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "sakit/interactables/platform_square.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 
 #include "constants/animations.h"

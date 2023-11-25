@@ -15,44 +15,12 @@
 #include "task.h"
 
 #include "sakit/globals.h"
-#include "constants/game_modes.h"
+#include "sakit/player.h"
 #include "constants/characters.h"
 
-// TODO: force users to include player
-#include "game/stage/player.h"
-
-#define ZONE_TIME_TO_INT(minutes, seconds)                                              \
-    (((minutes * 60) + seconds) * GBA_FRAMES_PER_SECOND)
-#define MAX_COURSE_TIME (ZONE_TIME_TO_INT(10, 0))
-
-#define TIME_RECORDS_PER_COURSE 3
-
-// TODO: move to staging
-#define NUM_MULTIPLAYER_SCORES 10
-#define MAX_MULTIPLAYER_SCORE  99
+#define SPECIAL_STAGE_REQUIRED_SP_RING_COUNT 7
 
 void GameStart(void);
-
-extern struct Task *gGameStageTask;
-
-typedef struct {
-    s8 unk0;
-    u8 filler1[3];
-    struct Task *t;
-} UNK_30059D0;
-
-extern UNK_30059D0 gUnknown_030059D0;
-
-// Copies of BG control regs for Multiplayer(?)
-typedef struct {
-    u16 unk0;
-    u16 unk2;
-    u16 unk4;
-    u16 unk6;
-} MultiPlayerBgCtrlRegs; /* size: 8 */
-extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
-
-extern u8 gSmallAirBubbleCount;
 
 struct MultiplayerPlayer {
     // TODO: Verify that this is Sprite!
@@ -72,35 +40,6 @@ struct MultiplayerPlayer {
 
 // Some sort of unused task variable
 extern struct Task *gDummyTask;
-
-struct UNK_80D62D8 {
-    u8 unk0[28];
-    u32 unk1C;
-    u32 unk20;
-    u8 unk24[12];
-};
-
-typedef struct {
-    u16 pal[16 * 16];
-} WaterData;
-
-// Seems to be belonging to water effect
-typedef struct {
-    /* 0x00 */ bool8 isActive;
-    /* 0x01 */ u8 unk1;
-    /* 0x01 */ u8 unk2;
-    /* 0x01 */ u8 unk3;
-    /* 0x04 */ s16 currentWaterLevel;
-    /* 0x06 */ s16 targetWaterLevel;
-    /* 0x08 */ u32 unk8;
-    /* 0x0C */ u32 mask;
-
-    // t -> u16 palette[16*16] (additional "palette memory" for GUI stuff?)
-    /* 0x10 */ struct Task *t; /* size: 0x400 */
-    /* 0x14 */ Sprite s;
-} Water;
-
-extern Water gWater;
 
 // TODO: find out what task is parent to IA
 typedef struct {
@@ -123,15 +62,6 @@ typedef struct {
     /* 0x2C */ Sprite s;
 } TaskStrc_8011C98; /* size: 0x5C */
 
-struct Backgrounds {
-    Background unk0;
-    Background unk40;
-    Background unk80;
-    Background unkC0;
-};
-
-extern struct Backgrounds gStageBackgroundsRam;
-
 // rodata
 extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
 
@@ -150,27 +80,11 @@ extern const u8 gUnknown_08CB41C0[0x6a44];
 
 extern const u8 gUnknown_08CBAC04[];
 
-// TODO: Might need to be moved out of this header?
-void Player_SetMovestate_IsInScriptedSequence(void);
-void Player_ClearMovestate_IsInScriptedSequence(void);
-
-void sub_802E164(s32, u16);
-
-void CreateTrueArea53Intro(void);
-
 // Sweep anim
-void sub_802E044(s32, u16);
 
-u16 CreateStageResults(u32, u16, u8);
-
-void sub_8019F08(void);
 struct Task *CreateStageGoalBonusPointsAnim(s32, s32, u16);
 extern void Task_801F214(void);
 void sub_801F550(struct Task *);
-
-void sub_80218E4(Player *);
-void sub_8023B5C(Player *, s8);
-void sub_8023260(Player *);
 
 // HandlePlayerDestroy?
 extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
@@ -192,17 +106,6 @@ s32 sub_801E6D4(s32, s32, s32, s32, void *, Func801F100);
 s32 sub_801F07C(s32, s32, s32, s32, void *, Func801F100);
 
 s32 sub_801F100(s32, s32, s32, s32, Func801F100);
-
-// TODO: Include header this belongs to
-u32 sub_800C944(Sprite *, s32, s32);
-
-// TODO: Include header this belongs to
-bool32 sub_800CA20(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
-bool32 sub_800C320(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
-bool32 sub_800C418(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
-
-// Lose rings?
-bool32 sub_800CBA4(Player *);
 
 // TODO: Move this into the module sub_801F15C gets defined in, once it's decomped
 typedef struct {

@@ -6,8 +6,8 @@
 #include "game/heart_particles_effect.h"
 #include "sakit/music_manager.h"
 
-#include "game/player.h"
 #include "game/player_controls.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/amy_attack_heart_effect.h"
 #include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
@@ -16,8 +16,8 @@
 #include "game/parameters/characters.h"
 #include "game/playerfn_cmds.h"
 #include "game/rings_scatter.h"
-#include "game/special_stage/main.h"
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
+#include "game/stage/results.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"

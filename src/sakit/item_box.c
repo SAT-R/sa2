@@ -5,11 +5,15 @@
 #include "task.h"
 #include "trig.h"
 #include "lib/m4a.h"
+
+#include "sakit/entities_0.h"
+#include "sakit/dust_cloud.h"
+
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/item_tasks.h"
 #include "game/multiplayer/unknown_1.h"
-#include "sakit/dust_cloud.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 
 #include "constants/animations.h"

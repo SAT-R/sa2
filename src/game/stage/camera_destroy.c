@@ -2,6 +2,7 @@
 #include "core.h"
 #include "flags.h"
 #include "game/game.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 
 #include "constants/zones.h"

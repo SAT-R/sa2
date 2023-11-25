@@ -7,6 +7,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "sakit/interactables/pipe.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 
 #include "constants/player_transitions.h"

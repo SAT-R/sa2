@@ -9,6 +9,7 @@
 #include "game/entity.h"
 #include "sakit/interactables/platform_thin.h"
 #include "game/multiplayer/unknown_1.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 
 #include "constants/zones.h"

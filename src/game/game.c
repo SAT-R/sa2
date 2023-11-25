@@ -11,7 +11,12 @@
 #include "game/multiboot/connection.h"
 #include "game/rings_scatter.h"
 #include "sakit/entities_manager.h"
+#include "game/stage/stage.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
+#include "game/water_effects.h"
+#include "game/underwater_effects.h"
+#include "game/dust_effect_braking.h"
 
 void GameStart(void)
 {

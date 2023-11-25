@@ -3,6 +3,7 @@
 #include "task.h"
 #include "trig.h"
 #include "game/enemies/hammerhead.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
 

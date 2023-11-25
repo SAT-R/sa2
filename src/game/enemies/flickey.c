@@ -3,6 +3,7 @@
 #include "game/entity.h"
 #include "game/game.h"
 #include "sakit/entities_manager.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "task.h"
 #include "sprite.h"

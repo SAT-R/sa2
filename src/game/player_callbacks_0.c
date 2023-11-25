@@ -9,6 +9,7 @@
 #include "game/boost_effect.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/parameters/characters.h"
 

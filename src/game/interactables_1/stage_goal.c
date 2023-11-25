@@ -6,6 +6,7 @@
 
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/interactables_1/stage_goal.h"
 #include "game/multiplayer/unknown_1.h"

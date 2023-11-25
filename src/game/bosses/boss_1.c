@@ -4,6 +4,8 @@
 #include "malloc_vram.h"
 #include "trig.h"
 
+#include "sakit/entities_0.h"
+
 #include "game/game.h"
 #include "game/save.h"
 #include "game/player_actor.h"
@@ -14,7 +16,9 @@
 #include "game/time_attack/results.h"
 #include "game/cutscenes/level_endings.h"
 #include "game/stage/boss_results_transition.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
+#include "game/stage/results.h"
 
 #include "game/screen_fade.h"
 #include "game/screen_shake.h"

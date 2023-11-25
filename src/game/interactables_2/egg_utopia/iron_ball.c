@@ -3,6 +3,10 @@
 #include "malloc_vram.h"
 #include "task.h"
 #include "trig.h"
+
+#include "sakit/entities_0.h"
+
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/interactables_2/egg_utopia/iron_ball.h"
 

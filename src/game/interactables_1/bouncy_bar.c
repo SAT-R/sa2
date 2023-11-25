@@ -4,6 +4,7 @@
 #include "sprite.h"
 #include "game/entity.h"
 #include "malloc_vram.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/game.h"
 #include "lib/m4a.h"

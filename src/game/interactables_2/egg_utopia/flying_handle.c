@@ -2,6 +2,7 @@
 #include "core.h"
 #include "task.h"
 
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/player_controls.h"
 #include "game/interactables_2/egg_utopia/flying_handle.h"

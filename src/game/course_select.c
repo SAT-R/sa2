@@ -13,6 +13,7 @@
 #include "task.h"
 #include "malloc_vram.h"
 #include "game/multiplayer/multipak_connection.h"
+#include "game/bosses/final_intro.h"
 #include "trig.h"
 
 #include "constants/tilemaps.h"

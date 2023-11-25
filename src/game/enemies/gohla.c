@@ -2,6 +2,9 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/enemies/gohla.h"
+
+#include "sakit/entities_0.h"
+
 #include "malloc_vram.h"
 #include "sprite.h"
 #include "trig.h"

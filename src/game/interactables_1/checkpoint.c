@@ -11,6 +11,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "sakit/palette_loader.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 
 #include "constants/animations.h"

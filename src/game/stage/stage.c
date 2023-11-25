@@ -6,6 +6,7 @@
 #include "game/save.h"
 #include "game/player_actor.h"
 #include "game/stage/stage.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "sakit/entities_manager.h"
 #include "sakit/music_manager.h"
@@ -18,6 +19,7 @@
 #include "game/time_attack/lobby.h"
 #include "game/game_over.h"
 #include "game/player_controls.h"
+#include "game/multiplayer/finish.h"
 
 #include "game/multiboot/collect_rings/time_display.h"
 

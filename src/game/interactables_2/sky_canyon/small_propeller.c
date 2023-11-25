@@ -3,7 +3,9 @@
 
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
+
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
@@ -11,7 +13,7 @@
 #include "malloc_vram.h"
 
 #include "constants/animations.h"
-#include "constants/move_states.h"
+#include "constants/zones.h"
 
 /* This is the small propellers appearing in Sky Canyon,
    which you can run at while keeping a distance from them and increasing your speed.

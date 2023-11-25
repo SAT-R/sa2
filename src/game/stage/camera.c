@@ -5,6 +5,7 @@
 
 #include "sakit/globals.h"
 
+#include "game/stage/stage.h"
 #include "game/stage/camera.h"
 #include "game/stage/player.h"
 #include "game/stage/background/dummy.h"
@@ -19,21 +20,7 @@
 
 #include "constants/tilemaps.h"
 #include "constants/zones.h"
-#include "constants/game_modes.h"
 #include "constants/characters.h"
-
-// TODO: move to right place
-struct Backgrounds {
-    Background unk0;
-    Background unk40;
-    Background unk80;
-    Background unkC0;
-};
-
-extern struct Backgrounds gStageBackgroundsRam;
-
-extern const CameraMain sStageBgUpdateFuncs[];
-extern const u32 *gCollisionTable[NUM_LEVEL_IDS];
 
 static void sub_801C708(s32, s32);
 void Task_801E0A8(void);
@@ -370,7 +357,7 @@ void InitCamera(u32 level)
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gUnknown_030059C8 = gCollisionTable[level];
+        gUnknown_030059C8 = (u32 *)gCollisionTable[level];
     } else {
         gUnknown_030059C8 = *(u32 **)(EWRAM_START + 0x33004);
     }

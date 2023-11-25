@@ -4,6 +4,7 @@
 
 #include "malloc_vram.h"
 
+#include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/player_controls.h"
 #include "game/entity.h"
