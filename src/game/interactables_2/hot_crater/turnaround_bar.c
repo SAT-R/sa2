@@ -3,7 +3,6 @@
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/interactables_2/hot_crater/turn_around_bar.h"
 #include "game/interactables_2/hot_crater/turnaround_bar.h"
 #include "task.h"
 #include "sprite.h"

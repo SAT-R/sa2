@@ -117,7 +117,9 @@ LoadItemTextures(char *gameRoot, ItemMetaList *items, short numCharacters)
         EntityMeta *ent = &items->items.elements[i];
 
         if(i == 0) {
-            ent->texture = items->oneUpIcons.elements[0];
+            if(items->oneUpIcons.count > 0) {
+                ent->texture = items->oneUpIcons.elements[0];
+            }
         } else {
             const char *animPath = TextFormat(pathFormat, gameRoot, items->animItemType, (i - 1) + numCharacters);
             ent->texture = LoadTexture(animPath);
