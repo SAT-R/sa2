@@ -4,7 +4,9 @@
 #include "malloc_vram.h"
 #include "data/sprite_data.h"
 #include "game/game.h"
-#include "game/player_actions.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
+#include "game/boost_effect.h"
 
 #include "constants/animations.h"
 #include "constants/anim_commands.h"
@@ -33,7 +35,7 @@ typedef struct {
 #define DEC_BE_INDEX(_bufferName) ADD_BE_INDEX(_bufferName, -1)
 
 // Ring Buffers storing the
-static PlayerState sPlayerStateBuffer[BE_BUFFER_SIZE] = { 0 };
+static PlayerState ALIGNED(16) sPlayerStateBuffer[BE_BUFFER_SIZE] = { 0 };
 static Vec2_32 sPlayerPosBuffer[BE_BUFFER_SIZE] = { 0 };
 static u8 ALIGNED(4) sPlayerStateBufferIndex = 0;
 static u8 ALIGNED(4) sPlayerPosBufferIndex = 0;

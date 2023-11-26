@@ -2,6 +2,9 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
+#include "game/dust_effect_braking.h"
 
 #include "constants/animations.h"
 
@@ -12,6 +15,8 @@ typedef struct {
     /* 0x06 */ u16 unk6;
     /* 0x08 */ Sprite s;
 } BrakeDustEffect;
+
+UNK_30059D0 ALIGNED(8) gUnknown_030059D0 = {};
 
 void Task_801F6E0(void);
 void TaskDestructor_801F7A8(struct Task *);

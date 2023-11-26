@@ -13,6 +13,7 @@
 #include "game/math.h"
 #include "game/options_screen.h"
 #include "game/game.h"
+#include "game/stage/stage.h"
 #include "game/time_attack/lobby.h"
 #include "constants/zones.h"
 #include "data/recordings.h"
@@ -22,7 +23,7 @@
 #include "game/character_select.h"
 #include "malloc_vram.h"
 #include "game/time_attack/mode_select.h"
-#include "game/stage/demo_manager.h"
+#include "sakit/demo_manager.h"
 
 #include "game/assets/compressed/roms.h"
 

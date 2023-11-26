@@ -3,9 +3,11 @@
 #include "trig.h"
 #include "lib/m4a.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/rings_scatter.h"
-#include "game/stage/collect_ring_effect.h"
-#include "game/stage/rings_manager.h" // for RESERVED_RING_TILES_VRAM
+#include "sakit/collect_ring_effect.h"
+#include "sakit/rings_manager.h" // for RESERVED_RING_TILES_VRAM
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -30,6 +32,8 @@ typedef struct {
     /* 0x2B4 */ u16 unk2B4;
     /* 0x2B6 */ u16 unk2B6;
 } RingsScatter; /* size: 0x2B8 */
+
+struct Task *gRingsScatterTask = NULL;
 
 void Task_RingsScatter_Singleplayer(void);
 void Task_RingsScatter_MP_Singlepak(void);

@@ -8,15 +8,21 @@
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
 #include "game/game.h"
+#include "game/stage/stage.h"
 #include "game/multiboot/connection.h"
 #include "game/multiboot/collect_rings/results.h"
 #include "game/multiplayer/multipak_connection.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/multiplayer/mode_select.h"
 #include "game/rings_scatter.h"
+
+#include "game/player_controls.h"
 #include "game/save.h"
 #include "game/screen_fade.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 #include "game/title_screen.h"
+#include "game/dummy_task.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -109,7 +115,7 @@ void sub_8081200(void)
     u8 val = 5;
 
     gRingsScatterTask = NULL;
-    gUnknown_03005844 = NULL;
+    gDummyTask = NULL;
     gGameStageTask = NULL;
     gPlayer.spriteTask = NULL;
     gCamera.movementTask = NULL;

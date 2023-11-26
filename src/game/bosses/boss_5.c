@@ -4,11 +4,15 @@
 #include "malloc_vram.h"
 #include "trig.h"
 
+#include "sakit/entities_0.h"
+
 #include "game/game.h"
 #include "game/save.h"
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/player_callbacks_1.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "game/screen_fade.h"
 

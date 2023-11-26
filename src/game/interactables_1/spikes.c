@@ -5,7 +5,11 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 
+#include "sakit/entities_0.h"
+
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/interactables.h"

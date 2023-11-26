@@ -1,7 +1,13 @@
 #include "global.h"
 #include "core.h"
+#include "sprite.h"
 #include "animation_commands_bg.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
+
+#include "game/stage/stage.h"
+#include "game/stage/camera.h"
+#include "game/stage/player.h"
 #include "game/stage/background/dummy.h"
 #include "game/stage/background/zone_1.h"
 #include "game/stage/background/zone_2.h"
@@ -14,13 +20,21 @@
 
 #include "constants/tilemaps.h"
 #include "constants/zones.h"
+#include "constants/characters.h"
 
-extern const CameraMain sStageBgUpdateFuncs[];
-extern const u32 *gCollisionTable[NUM_LEVEL_IDS];
+// Probably a array (as it's aligned 16)
+struct Backgrounds ALIGNED(16) gStageBackgroundsRam = {};
+
+UNUSED u32 unused_3005950[3] = {};
+
+struct Camera ALIGNED(8) gCamera = {};
+const u32 *gUnknown_030059C8 = NULL;
 
 static void sub_801C708(s32, s32);
 void Task_801E0A8(void);
 void TaskDestructor_801E040(struct Task *);
+
+extern void sub_802C668(s32 *x, s32 *y);
 
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
@@ -351,7 +365,7 @@ void InitCamera(u32 level)
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gUnknown_030059C8 = gCollisionTable[level];
+        gUnknown_030059C8 = (u32 *)gCollisionTable[level];
     } else {
         gUnknown_030059C8 = *(u32 **)(EWRAM_START + 0x33004);
     }

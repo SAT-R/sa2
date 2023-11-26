@@ -6,14 +6,14 @@
 
 #include "constants/animations.h"
 
-void Task_802D4B4(void);
-void TaskDestructor_802D4B8(struct Task *);
-
-extern struct Task *gDebugUITask;
-
 typedef struct {
     Sprite chars[SA2_ANIM_NUM_ASCII_CHARS];
 } DebugTextPrinter; /* size: 0x11A0 */
+
+static struct Task *sDebugUITask = NULL;
+
+void Task_802D4B4(void);
+void TaskDestructor_802D4B8(struct Task *);
 
 #define DBG_UI_REQUIRED_TILES (2 * SA2_ANIM_NUM_ASCII_CHARS)
 #define DBG_UI_CHAR_SIZE      (2 * TILE_SIZE_4BPP)
@@ -57,14 +57,14 @@ struct Task *Debug_CreateAsciiTask(s16 x, s16 y)
         s->unk10 = SPRITE_FLAG(PRIORITY, 0);
     }
 
-    gDebugUITask = t;
+    sDebugUITask = t;
 
     return t;
 }
 
 void Debug_PrintIntegerAt(u32 value, u16 x, u16 y)
 {
-    Sprite *digits = DGB_UI_GET_CHAR_FROM_TASK(gDebugUITask, '0');
+    Sprite *digits = DGB_UI_GET_CHAR_FROM_TASK(sDebugUITask, '0');
     s32 base = 10;
     u32 remaining = 1;
     u32 numDigits;
@@ -111,7 +111,7 @@ void Debug_PrintTextAt(char *text, s16 x, s16 y)
 {
     // NOTE: Unlike in Debug_PrintIntegerAt this is NOT the digit '0',
     //       but the character with the hexcode 0x00!
-    Sprite *baseChar = DGB_UI_GET_CHAR_FROM_TASK(gDebugUITask, '\000');
+    Sprite *baseChar = DGB_UI_GET_CHAR_FROM_TASK(sDebugUITask, '\000');
     u8 i;
 
     for (i = 0; text[i] != '\0'; i++) {

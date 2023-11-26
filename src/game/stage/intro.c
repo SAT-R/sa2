@@ -2,11 +2,13 @@
 #include "flags.h"
 #include "malloc_vram.h"
 #include "trig.h"
-#include "game/game.h"
+#include "sakit/globals.h"
+#include "game/stage/player.h"
+#include "game/cheese.h"
 #include "game/game_7.h"
 #include "game/bosses/common.h"
 #include "game/countdown.h"
-#include "game/player_actions.h"
+#include "game/boost_effect.h"
 #include "game/player_mp_actor.h"
 #include "game/screen_fade.h"
 #include "game/stage/ui.h"
@@ -698,7 +700,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
 
                 gObjPalette[i] = RGB(r, g, b);
 
-                if (gUnknown_030056A4 != NULL) {
+                if (gCheese != NULL) {
                     r = (gUnknown_080D6FF5[index + 80][0] * frameCounter) / 16u;
                     g = ((gUnknown_080D6FF5[index + 80][1] * frameCounter) / 16u);
                     b = ((gUnknown_080D6FF5[index + 80][2] * frameCounter) / 16u);
@@ -722,7 +724,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
                 }
             }
         }
-        if (gUnknown_030056A4 != NULL) {
+        if (gCheese != NULL) {
             for (i = 0; i < 16; i++) {
                 s32 index;
                 u8 r, b, g;

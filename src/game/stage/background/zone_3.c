@@ -2,8 +2,9 @@
 #include "core.h"
 #include "flags.h"
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/stage/background/callbacks.h"
-#include "game/special_stage/main.h"
+#include "game/stage/player.h"
 
 extern const Background gStageCameraBgTemplates[4];
 

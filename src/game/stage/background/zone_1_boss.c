@@ -2,6 +2,8 @@
 #include "core.h"
 #include "flags.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "game/stage/background/callbacks.h"
 #include "game/stage/background/zone_1.h"

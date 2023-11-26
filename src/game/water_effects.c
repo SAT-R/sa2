@@ -4,7 +4,9 @@
 #include "malloc_vram.h"
 #include "task.h"
 #include "game/game.h"
-#include "game/player_actions.h"
+#include "game/boost_effect.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "data/sprite_data.h"
 #include "game/water_effects.h"
@@ -18,6 +20,8 @@
 #define WATER_MASK_B       ((WATER_MASK_COLOR_B << 16) | WATER_MASK_COLOR_B)
 
 #define WATER_SURFACE_SPRITE_COUNT ((DISPLAY_WIDTH + 16) / 16)
+
+Water gWater = {};
 
 static const u16 gUnknown_080D550C[NUM_CHARACTERS] = {
     SA2_ANIM_UNDERWATER_1UP_SONIC, SA2_ANIM_UNDERWATER_1UP_CREAM,

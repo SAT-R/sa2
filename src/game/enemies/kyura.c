@@ -7,7 +7,7 @@
 #include "game/entity.h"
 #include "game/enemies/kyura.h"
 #include "game/enemies/projectiles.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 
 #include "constants/animations.h"
 

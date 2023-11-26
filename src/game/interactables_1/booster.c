@@ -6,9 +6,11 @@
 #include "task.h"
 
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "sprite.h"
 #include "game/game.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

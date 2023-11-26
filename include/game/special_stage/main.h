@@ -5,8 +5,6 @@
 #include "sprite.h"
 #include "game/screen_fade.h"
 
-#define SPECIAL_STAGE_REQUIRED_SP_RING_COUNT 7
-
 #define SPECIAL_STAGE_ZONE_SIZE 8
 
 #define MIN_SPECIAL_STAGE_PLAYER_X 48

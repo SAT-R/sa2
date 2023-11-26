@@ -1,8 +1,11 @@
 #include "global.h"
 #include "core.h"
 #include "lib/m4a.h"
-#include "game/game.h"
+
+#include "game/player_controls.h"
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/egg_utopia/pole.h"
 
 #include "constants/player_transitions.h"

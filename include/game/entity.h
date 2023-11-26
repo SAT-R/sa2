@@ -5,6 +5,8 @@
 #include "gba/types.h"
 #include "sprite.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #define ENTITY_DATA_SIZE_SA1 4
 #define ENTITY_DATA_SIZE_SA2 4

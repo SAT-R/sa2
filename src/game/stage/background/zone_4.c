@@ -3,8 +3,9 @@
 #include "flags.h"
 #include "animation_commands_bg.h"
 #include "game/game.h"
-#include "game/stage/spot_light.h"
-#include "game/special_stage/main.h"
+#include "sakit/spot_light.h"
+#include "game/stage/camera.h"
+#include "game/stage/player.h"
 
 #include "constants/tilemaps.h"
 

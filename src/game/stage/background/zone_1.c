@@ -4,12 +4,12 @@
 #include "sprite.h"
 #include "trig.h"
 #include "game/game.h"
-#include "game/special_stage/main.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "constants/tilemaps.h"
 #include "constants/zones.h"
 
-extern struct Backgrounds gStageBackgroundsRam;
 extern const Background gStageCameraBgTemplates[4];
 
 void CreateStageBg_Zone1(void)

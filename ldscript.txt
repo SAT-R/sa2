@@ -18,7 +18,56 @@ SECTIONS
     IWRAM (NOLOAD) :
     ALIGN(4)
     {
-        INCLUDE "sym_iwram.txt"
+        /**** bss ****/
+        build/sa2/src/lib/m4a.o(.bss.code);
+        build/sa2/src/multi_boot.o(.bss);
+        /* space 0x20 for stuff used in game_1.s */ 
+        . = 0x0000042C; 
+        build/sa2/src/lib/agb_flash.o(.bss);
+
+        /**** common ****/
+        . = ALIGN(16); 
+        build/sa2/src/multi_sio.o(.data);
+        build/sa2/src/sio32_multi_load.o(COMMON);
+
+        /* engine */
+        build/sa2/src/core.o(.data);
+
+        /* sakit */
+        . = ALIGN(32); 
+        build/sa2/src/sakit/globals.o(.data);
+
+        /* game */
+        build/sa2/src/game/water_effects.o(.data);
+        build/sa2/src/game/cheese.o(.data);
+        build/sa2/src/game/boost_effect.o(.data);
+        build/sa2/src/game/player_mp_actor.o(.data);
+        build/sa2/src/game/multiplayer/player_unk_2.o(.data);
+        build/sa2/src/game/dummy_task.o(.data);
+        build/sa2/src/game/stage/stage.o(.data);
+        build/sa2/src/game/stage/camera.o(.data);
+        build/sa2/src/game/dust_effect_braking.o(.data);
+        build/sa2/src/game/rings_scatter.o(.data);
+        build/sa2/src/game/player_0.o(.data);
+        build/sa2/src/game/underwater_effects.o(.data);
+        build/sa2/src/game/player_controls.o(.data);
+        build/sa2/src/game/player_super_sonic.o(.data);
+        build/sa2/src/game/stage/ui.o(.data);
+        build/sa2/src/game/stage/debug_text_printer.o(.data);
+        build/sa2/src/game/bosses/common.o(.data);
+        build/sa2/src/game/options_screen.o(.data);
+        build/sa2/src/game/special_stage/utils.o(.data);
+        build/sa2/src/game/save.o(.data);
+        build/sa2/src/game/multiboot/collect_rings/time_display.o(.data);
+        build/sa2/src/game/math_0.o(.data);
+        build/sa2/src/game/unknown_effect.o(.data);
+        build/sa2/src/game/backgrounds.o(.data);
+
+        /* libs */
+        . = ALIGN(16);
+        build/sa2/src/lib/agb_flash.o(.data);
+
+        iwram_end = .;
     }
     
 	. = 0x08000000;
@@ -50,36 +99,39 @@ SECTIONS
         build/sa2/src/malloc_vram.o(.text);
         build/sa2/src/input_recorder.o(.text);
 
-        /* game */
-        build/sa2/src/game/stage/rings_manager.o(.text);
-        build/sa2/src/game/stage/entities_manager.o(.text);
-        build/sa2/src/game/stage/palette_loader.o(.text);
-        build/sa2/src/game/unused_level_select.o(.text);
-        build/sa2/src/game/stage/unknown_task.o(.text);
-        build/sa2/src/game/stage/enemy_defeat_score.o(.text);
-        build/sa2/src/game/stage/demo_manager.o(.text);
-        build/sa2/src/game/unused_unknown_task.o(.text);
-        build/sa2/src/game/stage/unknown_sprite.o(.text);
-        build/sa2/src/game/stage/spot_light.o(.text);
-        build/sa2/src/game/stage/pause_menu.o(.text);
-        build/sa2/src/game/stage/collect_ring_effect.o(.text);
-        build/sa2/src/game/stage/item_box.o(.text);
-        build/sa2/src/game/stage/dust_cloud.o(.text);
-        build/sa2/src/game/stage/ring.o(.text);
-        build/sa2/src/game/stage/music_manager.o(.text);
+        /* sakit */
+        build/sa2/src/sakit/rings_manager.o(.text);
+        build/sa2/src/sakit/entities_manager.o(.text);
+        build/sa2/src/sakit/palette_loader.o(.text);
+        build/sa2/src/sakit/unused_level_select.o(.text);
+        build/sa2/src/sakit/unknown_task.o(.text);
+        build/sa2/src/sakit/enemy_defeat_score.o(.text);
+        build/sa2/src/sakit/demo_manager.o(.text);
+        build/sa2/src/sakit/unused_unknown_task.o(.text);
+        build/sa2/src/sakit/unknown_sprite.o(.text);
+        build/sa2/src/sakit/spot_light.o(.text);
+        build/sa2/src/sakit/pause_menu.o(.text);
+        build/sa2/src/sakit/collect_ring_effect.o(.text);
+        build/sa2/src/sakit/item_box.o(.text);
+        build/sa2/src/sakit/dust_cloud.o(.text);
+        build/sa2/src/sakit/ring.o(.text);
+        build/sa2/src/sakit/music_manager.o(.text);
         build/sa2/asm/entities_0.o(.text);
-        build/sa2/src/game/interactables_0/spring.o(.text);
-        build/sa2/src/game/interactables_0/platform.o(.text);
-        build/sa2/src/game/interactables_0/platform_square.o(.text);
-        build/sa2/src/game/interactables_0/ramp.o(.text);
-        build/sa2/src/game/interactables_0/grind_rail.o(.text);
-        build/sa2/src/game/interactables_0/044.o(.text);
-        build/sa2/src/game/interactables_0/pipe.o(.text);
-        build/sa2/src/game/interactables_0/platform_thin.o(.text);
-        build/sa2/src/game/interactables_0/slidy_ice.o(.text);
+        build/sa2/src/sakit/interactables/spring.o(.text);
+        build/sa2/src/sakit/interactables/platform.o(.text);
+        build/sa2/src/sakit/interactables/platform_square.o(.text);
+        build/sa2/src/sakit/interactables/ramp.o(.text);
+        build/sa2/src/sakit/interactables/grind_rail.o(.text);
+        build/sa2/src/sakit/interactables/044.o(.text);
+        build/sa2/src/sakit/interactables/pipe.o(.text);
+        build/sa2/src/sakit/interactables/platform_thin.o(.text);
+        build/sa2/src/sakit/interactables/slidy_ice.o(.text);
+        /* sakit/globals? */
+
         build/sa2/src/game/water_effects.o(.text);
         build/sa2/src/game/player_callbacks_0.o(.text);
-        build/sa2/asm/player_actor.o(.text);
+        build/sa2/src/game/cheese.o(.text);
+        build/sa2/asm/cheese.o(.text);
         build/sa2/src/game/boost_effect.o(.text);
         build/sa2/src/game/amy_attack_heart_effect.o(.text);
         build/sa2/asm/player_mp_actor.o(.text);
@@ -88,8 +140,10 @@ SECTIONS
         build/sa2/asm/player_mp_indicators.o(.text);
         build/sa2/src/game/multiplayer/finish.o(.text);
         build/sa2/src/game/multiplayer/player_unk_2.o(.text);
-        build/sa2/src/game/init.o(.text);
         build/sa2/src/game/game.o(.text);
+        build/sa2/src/game/dummy_task.o(.text);
+    
+        build/sa2/src/game/stage/stage.o(.text);
         build/sa2/src/game/stage/camera.o(.text);
         build/sa2/src/game/stage/background/zone_1.o(.text);
         build/sa2/src/game/stage/background/zone_2.o(.text);
@@ -121,16 +175,20 @@ SECTIONS
         build/sa2/src/game/dust_effect_spindash.o(.text);
         build/sa2/src/game/spark_effect.o(.text);
         build/sa2/src/game/rings_scatter.o(.text);
-        build/sa2/src/game/game_6_0.o(.text);
-        build/sa2/asm/game_6_1.o(.text);
-        build/sa2/asm/game_6_2.o(.text);
-        build/sa2/src/game/game_6_3.o(.text);
-        build/sa2/asm/game_6_3.o(.text);
+
+        /* player */
+        build/sa2/src/game/player_0.o(.text);
+        build/sa2/asm/player_1.o(.text);
+        build/sa2/asm/player_2.o(.text);
+        build/sa2/src/game/player_3.o(.text);
+        build/sa2/asm/player_3.o(.text);
         build/sa2/src/game/player_callbacks_1.o(.text);
+
         build/sa2/src/game/item_tasks.o(.text);
         build/sa2/src/game/underwater_effects.o(.text);
         build/sa2/src/game/screen_shake.o(.text);
-        build/sa2/src/game/game_5.o(.text);
+        build/sa2/src/game/player_controls.o(.text);
+    
         build/sa2/asm/player_super_sonic.o(.text);
         build/sa2/src/game/stage/ui.o(.text);
         build/sa2/src/game/stage/debug_text_printer.o(.text);
@@ -150,7 +208,6 @@ SECTIONS
         build/sa2/src/game/bosses/common.o(.text);
         build/sa2/src/game/bosses/eggmobile_escape_sequence.o(.text);
         build/sa2/src/game/bosses/boss_1.o(.text);
-        build/sa2/asm/boss_1.o(.text);
         build/sa2/asm/boss_2.o(.text);
         build/sa2/asm/boss_3.o(.text);
         build/sa2/asm/boss_4.o(.text);
@@ -317,27 +374,32 @@ SECTIONS
         /* game Data */
         build/sa2/src/game/assets/compressed/entities.o(.rodata);
         build/sa2/src/game/assets/compressed/roms.o(.rodata);
-        build/sa2/src/game/stage/rings_manager.o(.rodata);
-        build/sa2/src/game/stage/entities_manager.o(.rodata);
-        build/sa2/src/game/unused_level_select.o(.rodata);
-        build/sa2/src/game/unused_unknown_task.o(.rodata);
-        build/sa2/src/game/stage/pause_menu.o(.rodata);
-        build/sa2/src/game/stage/item_box.o(.rodata);
-        build/sa2/src/game/stage/music_manager.o(.rodata);
+
+        /* sakit data */
+        build/sa2/src/sakit/rings_manager.o(.rodata);
+        build/sa2/src/sakit/entities_manager.o(.rodata);
+        build/sa2/src/sakit/unused_level_select.o(.rodata);
+        build/sa2/src/sakit/unused_unknown_task.o(.rodata);
+        build/sa2/src/sakit/pause_menu.o(.rodata);
+        build/sa2/src/sakit/item_box.o(.rodata);
+        build/sa2/src/sakit/music_manager.o(.rodata);
         build/sa2/asm/entities_0.o(.rodata);
-        build/sa2/src/game/interactables_0/spring.o(.rodata);
-        build/sa2/src/game/interactables_0/platform.o(.rodata);
-        build/sa2/src/game/interactables_0/platform_square.o(.rodata);
-        build/sa2/src/game/interactables_0/platform_thin.o(.rodata);
+        build/sa2/src/sakit/interactables/spring.o(.rodata);
+        build/sa2/src/sakit/interactables/platform.o(.rodata);
+        build/sa2/src/sakit/interactables/platform_square.o(.rodata);
+        build/sa2/src/sakit/interactables/platform_thin.o(.rodata);
+
+        /* game */
         build/sa2/src/game/water_effects.o(.rodata);
         build/sa2/src/game/player_callbacks_0.o(.rodata);
-        build/sa2/asm/player_actor.o(.rodata);
+        build/sa2/asm/cheese.o(.rodata);
         build/sa2/src/game/boost_effect.o(.rodata);
         build/sa2/src/game/amy_attack_heart_effect.o(.rodata);
         build/sa2/asm/player_mp_actor.o(.rodata);
         build/sa2/asm/player_mp_unknown_task.o(.rodata);
         build/sa2/src/game/multiplayer/finish.o(.rodata);
-        build/sa2/src/game/game.o(.rodata);
+
+        build/sa2/src/game/stage/stage.o(.rodata);
         build/sa2/src/game/stage/camera.o(.rodata);
         build/sa2/src/game/stage/background/zone_1.o(.rodata);
         build/sa2/src/game/stage/background/zone_2.o(.rodata);
@@ -349,10 +411,11 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_7_2.o(.rodata);
         build/sa2/src/game/stage/background/zone_final.o(.rodata);
         build/sa2/src/data/tilemap_table.o(.rodata);
-        build/sa2/src/game/stage/stage.o(.rodata);
+        build/sa2/src/game/stage/data.o(.rodata);
+
         build/sa2/asm/player_super_sonic_data.o(.rodata);
         build/sa2/src/game/rings_scatter.o(.rodata);
-        build/sa2/src/game/game_6_3.o(.rodata);
+        build/sa2/src/game/player_3.o(.rodata);
         build/sa2/src/game/player_callbacks_1.o(.rodata);
         build/sa2/asm/player_super_sonic.o(.rodata);
         build/sa2/src/game/stage/ui.o(.rodata);
@@ -365,7 +428,7 @@ SECTIONS
         build/sa2/src/game/countdown.o(.rodata);
         build/sa2/src/game/bosses/final_intro.o(.rodata);
         build/sa2/src/game/bosses/common.o(.rodata);
-        build/sa2/asm/boss_1.o(.rodata);
+        build/sa2/src/game/bosses/boss_1.o(.rodata);
         build/sa2/asm/boss_2.o(.rodata);
         build/sa2/asm/boss_3.o(.rodata);
         build/sa2/asm/boss_4.o(.rodata);

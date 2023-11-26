@@ -4,7 +4,12 @@
 #include "task.h"
 #include "trig.h"
 #include "lib/m4a.h"
+
+#include "sakit/entities_0.h"
+
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 #include "game/interactables_2/techno_base/spike_platform.h"
 #include "constants/animations.h"

@@ -7,6 +7,7 @@
 #include "game/time_attack/lobby.h"
 #include "game/title_screen.h"
 #include "game/screen_fade.h"
+#include "game/stage/stage.h"
 
 #include "constants/songs.h"
 

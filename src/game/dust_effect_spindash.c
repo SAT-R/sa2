@@ -1,5 +1,7 @@
 #include "global.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "core.h"
 #include "malloc_vram.h"
 #include "task.h"

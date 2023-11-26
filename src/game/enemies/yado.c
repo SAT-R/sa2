@@ -2,9 +2,10 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/cheese.h"
 #include "game/enemies/projectiles.h"
-#include "game/stage/dust_cloud.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/dust_cloud.h"
+#include "sakit/entities_manager.h"
 #include "game/trapped_animals.h"
 #include "game/multiplayer/unknown_1.h"
 #include "lib/m4a.h"
@@ -144,25 +145,25 @@ void Task_8055084(void)
         s32 x = pos.x;
         s32 y = pos.y;
 
-        if (gUnknown_030056A4 != NULL) {
-            UNK_30056A4 *a4 = gUnknown_030056A4;
+        if (gCheese != NULL) {
+            Cheese *a4 = gCheese;
             Sprite_Yado *yado2 = TASK_DATA(gCurTask);
 
-            if ((a4->s.hitboxes[3].index != -1)) {
+            if ((a4->s.hitboxes[1].index != -1)) {
                 s32 x1, x2;
                 x1 = x + s->hitboxes[0].left;
-                x2 = Q_24_8_TO_INT(a4->posX) + a4->s.hitboxes[3].left;
+                x2 = Q_24_8_TO_INT(a4->posX) + a4->s.hitboxes[1].left;
                 if ((x1 <= x2 && x1 + (s->hitboxes[0].right - s->hitboxes[0].left) >= x2)
                     || (x1 >= x2
-                        && x2 + (a4->s.hitboxes[3].right - a4->s.hitboxes[3].left)
+                        && x2 + (a4->s.hitboxes[1].right - a4->s.hitboxes[1].left)
                             >= x1)) {
                     s32 y1, y2;
                     y1 = y + s->hitboxes[0].top;
-                    y2 = Q_24_8_TO_INT(a4->posY) + a4->s.hitboxes[3].top;
+                    y2 = Q_24_8_TO_INT(a4->posY) + a4->s.hitboxes[1].top;
                     if ((y1 <= y2
                          && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
                         || (y1 >= y2
-                            && y2 + (a4->s.hitboxes[3].bottom - a4->s.hitboxes[3].top)
+                            && y2 + (a4->s.hitboxes[1].bottom - a4->s.hitboxes[1].top)
                                 >= y1)) {
                         s16 x3, y3;
                         if (IS_MULTI_PLAYER) {

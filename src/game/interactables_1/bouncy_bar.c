@@ -4,9 +4,11 @@
 #include "sprite.h"
 #include "game/entity.h"
 #include "malloc_vram.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/game.h"
 #include "lib/m4a.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"

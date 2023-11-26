@@ -2,11 +2,13 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 
-#include "game/game.h"
 #include "task.h"
 #include "core.h"
 #include "sprite.h"
 #include "trig.h"
+#include "game/player_controls.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 
 #include "constants/animations.h"

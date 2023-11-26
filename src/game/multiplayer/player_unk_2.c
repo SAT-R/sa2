@@ -1,8 +1,12 @@
 #include "global.h"
 #include "core.h"
 #include "game/game.h"
+#include "game/multiplayer/player_unk_2.h"
 
 #include "constants/zones.h"
+
+// Not clear why this is 16 aligned
+MultiPlayerBgCtrlRegs ALIGNED(16) *gUnknown_03005840 = NULL;
 
 void Task_PlayerMPUnk2(void);
 void TaskDestructor_PlayerMPUnk2(struct Task *);

@@ -4,11 +4,15 @@
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/game.h"
+#include "game/cheese.h"
 #include "game/save.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/cutscenes/level_endings.h"
 #include "game/screen_fade.h"
 #include "game/stage/results.h"
 #include "game/time_attack/results.h"
+#include "game/stage/boss_results_transition.h"
 
 #include "constants/songs.h"
 #include "constants/zones.h"
@@ -112,9 +116,9 @@ void Task_802EE78(void)
             gCamera.unk10 += x;
             gCamera.unk14 += y;
 
-            if (gUnknown_030056A4 != NULL) {
-                gUnknown_030056A4->posX += Q_24_8(x);
-                gUnknown_030056A4->posY += Q_24_8(y);
+            if (gCheese != NULL) {
+                gCheese->posX += Q_24_8(x);
+                gCheese->posY += Q_24_8(y);
             }
 
             gUnknown_030055B0++;
