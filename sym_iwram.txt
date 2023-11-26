@@ -12,75 +12,9 @@ build/sa2/src/sio32_multi_load.o(COMMON);
 build/sa2/src/core.o(.data);
 
 . = ALIGN(32); 
+build/sa2/src/sakit/globals.o(.data);
 
-/* it's likely all the below belong to the sakit lib */
-                gUnknown_030053E0 = .;
-. = 0x000053E4; gCheckpointTime = .;
-. = 0x000053E8; gUnknown_030053E8 = .;
-. = 0x000053EC; gMultiplayerLanguage = .;
-
-/* maybe these are in the same object */
-. = 0x000053F0; gRingCount = .;
-. = 0x0000540C; gActiveCollectRingEffectCount = .;
-
-. = 0x00005410; gMultiplayerIds = .;
-. = 0x00005420; gUnknown_03005420 = .;
-. = 0x00005424; gUnknown_03005424 = .;
-. = 0x00005428; gUnknown_03005428 = .;
-
-/* maybe these are in the same object */
-. = 0x0000542C; gBossRingsRespawnCount = .;
-. = 0x00005430; gBossRingsShallRespawn = .;
-
-. = 0x00005434; gMultiplayerPseudoRandom = .;
-. = 0x00005438; gUnknown_03005438 = .;
-. = 0x0000543C; gUnknown_0300543C = .;
-. = 0x00005440; gUnknown_03005440 = .;
-. = 0x00005444; gTrappedAnimalVariant = .;
-. = 0x00005448; gNumLives = .;
-. = 0x0000544C; gUnknown_0300544C = .;
-. = 0x00005450; gLevelScore = .;
-. = 0x00005460; gMultiplayerNames = .;
-. = 0x00005490; gCourseTime = .;
-. = 0x00005498; gUnknown_03005498 = .;
-. = 0x000054A0; gUnknown_030054A0 = .;
-. = 0x000054A8; gUnknown_030054A8 = .;
-. = 0x000054B0; gUnknown_030054B0 = .;
-. = 0x000054B4; gUnknown_030054B4 = .;
-. = 0x000054B8; gUnknown_030054B8 = .;
-. = 0x000054BC; gUnknown_030054BC = .;
-. = 0x000054C0; gUnknown_030054C0 = .;
-
-. = 0x000054C8; gDemoPlayCounter = .;
-. = 0x000054CC; gGameMode = .;
-. = 0x000054D0; gStageGoalX = .;
-. = 0x000054D4; gMultiplayerMissingHeartbeats = .;
-. = 0x000054D8; gMultiplayerUnlockedLevels = .;
-. = 0x000054DC; gEntitiesManagerTask = .;
-. = 0x000054E0; gUnknown_030054E0 = .;
-. = 0x000054E4; gUnknown_030054E4 = .;
-. = 0x000054E8; gRandomItemBox  = .;
-. = 0x000054EC; gDifficultyLevel = .;
-. = 0x000054F0; gSelectedCharacter = .;
-. = 0x000054F4; gSpecialRingCount = .;
-. = 0x000054F8; gUnknown_030054F8 = .;
-. = 0x000054FC; gUnknown_030054FC = .;
-. = 0x00005500; gMultiplayerCharacters = .;
-. = 0x00005510; gUnknown_03005510 = .;
-. = 0x00005590; gStageTime = .;
-. = 0x00005594; gMultiplayerUnlockedCharacters = .;
-. = 0x000055A0; gMultiplayerPlayerTasks = .;
-. = 0x000055B0; gUnknown_030055B0 = .;
-. = 0x000055B4; gCurrentLevel = .;
-. = 0x000055B8; gMultiplayerConnections = .;
-. = 0x000055BC; gUnknown_030055BC = .;
-. = 0x000055D0; gUnknown_030055D0 = .;
-. = 0x000055D4; gNewInputCountersIndex = .;
-. = 0x000055D8; gUnknown_030055D8 = .;
-. = 0x000055E0; gNewInputCounters = .;
-/* sakit end */
-
-/* These are all in the right order */
+/* These are all in the right order compared to their source files */
 
 /* water_effects */
 . = 0x00005660; gWater = .;

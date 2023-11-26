@@ -1,7 +1,10 @@
 #include "global.h"
-#include "game/game.h"
+#include "core.h"
+
+#include "sakit/globals.h"
+#include "sakit/player.h"
 #include "sakit/music_manager.h"
-#include "gba/m4a_internal.h"
+
 #include "lib/m4a.h"
 
 #include "constants/songs.h"
