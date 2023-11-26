@@ -91,6 +91,7 @@ int main(void)
     // Disable the Escape key as means to exit
     SetExitKey(KEY_NULL);
 
+#if 0
     // NOTE: "settings.txt" is for app-specific stuff,
     //       unlike metadata.txt, which is per-map
     if(FileExists("settings.txt")) {
@@ -98,6 +99,7 @@ int main(void)
     } else {
         // TODO: Create new settings.txt file
     }
+#endif
 
     state.game = GAME_SA2; // TODO: Load from settings.txt if it exists
 
