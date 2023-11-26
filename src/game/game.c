@@ -17,6 +17,7 @@
 #include "game/water_effects.h"
 #include "game/underwater_effects.h"
 #include "game/dust_effect_braking.h"
+#include "game/dummy_task.h"
 
 void GameStart(void)
 {
@@ -93,21 +94,3 @@ void GameStart(void)
 
     CreateTitleScreen();
 }
-
-void Task_DummyFunc(void);
-static void DummyTaskOnDestroy(struct Task *);
-
-UNUSED static void CreateDummyTask(void)
-{
-    gDummyTask = TaskCreate(Task_DummyFunc, 0, 0x100, 0, DummyTaskOnDestroy);
-}
-
-UNUSED static void DestroyDummyTask(void)
-{
-    TaskDestroy(gDummyTask);
-    gDummyTask = NULL;
-}
-
-void Task_DummyFunc(void) { }
-
-UNUSED static void DummyTaskOnDestroy(struct Task *task) { gDummyTask = NULL; }

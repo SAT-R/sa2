@@ -88,4 +88,4 @@ u8 gNewInputCountersIndex = 0;
 u8 ALIGNED(4) gUnknown_030055D8 = 0;
 
 // Fills available space, but size not yet confirmed
-u8 ALIGNED(8) gNewInputCounters[32] = {};
+u8 ALIGNED(8) gNewInputCounters[128] = {};

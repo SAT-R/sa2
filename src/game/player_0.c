@@ -6,7 +6,7 @@
 #include "game/stage/player.h"
 #include "game/player_controls.h"
 #include "game/dust_effect_braking.h"
-#include "game/mp_unknown_task.h"
+#include "game/player_mp_actor.h"
 #include "game/boost_effect.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
@@ -27,7 +27,15 @@ typedef struct {
     /* 0x04 */ u32 unk4; // TODO: Check the type!
 } player_0_Task; /* size: 0x8 */
 
+Player ALIGNED(8) gPlayer = {};
+
+// Poentially some extra space on player for this to be aligned 16 (should be 8)
+UNK_3005A70 ALIGNED(16) gUnknown_03005AA0 = {};
+UNK_3005A70 ALIGNED(16) gUnknown_03005AF0 = {};
+
+// sakit
 extern void InitNewInputCounters(void);
+
 void Task_8023FC0(void);
 void AllocateCharacterStageGfx(Player *, UNK_3005A70 *);
 void AllocateCharacterMidAirGfx(Player *, UNK_3005A70 *);

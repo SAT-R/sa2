@@ -18,7 +18,56 @@ SECTIONS
     IWRAM (NOLOAD) :
     ALIGN(4)
     {
-        INCLUDE "sym_iwram.txt"
+        /**** bss ****/
+        build/sa2/src/lib/m4a.o(.bss.code);
+        build/sa2/src/multi_boot.o(.bss);
+        /* space 0x20 for stuff used in game_1.s */ 
+        . = 0x0000042C; 
+        build/sa2/src/lib/agb_flash.o(.bss);
+
+        /**** common ****/
+        . = ALIGN(16); 
+        build/sa2/src/multi_sio.o(.data);
+        build/sa2/src/sio32_multi_load.o(COMMON);
+
+        /* engine */
+        build/sa2/src/core.o(.data);
+
+        /* sakit */
+        . = ALIGN(32); 
+        build/sa2/src/sakit/globals.o(.data);
+
+        /* game */
+        build/sa2/src/game/water_effects.o(.data);
+        build/sa2/src/game/player_actor.o(.data);
+        build/sa2/src/game/boost_effect.o(.data);
+        build/sa2/src/game/player_mp_actor.o(.data);
+        build/sa2/src/game/multiplayer/player_unk_2.o(.data);
+        build/sa2/src/game/dummy_task.o(.data);
+        build/sa2/src/game/stage/stage.o(.data);
+        build/sa2/src/game/stage/camera.o(.data);
+        build/sa2/src/game/dust_effect_braking.o(.data);
+        build/sa2/src/game/rings_scatter.o(.data);
+        build/sa2/src/game/player_0.o(.data);
+        build/sa2/src/game/underwater_effects.o(.data);
+        build/sa2/src/game/player_controls.o(.data);
+        build/sa2/src/game/player_super_sonic.o(.data);
+        build/sa2/src/game/stage/ui.o(.data);
+        build/sa2/src/game/stage/debug_text_printer.o(.data);
+        build/sa2/src/game/bosses/common.o(.data);
+        build/sa2/src/game/options_screen.o(.data);
+        build/sa2/src/game/special_stage/utils.o(.data);
+        build/sa2/src/game/save.o(.data);
+        build/sa2/src/game/multiboot/collect_rings/time_display.o(.data);
+        build/sa2/src/game/math_0.o(.data);
+        build/sa2/src/game/unknown_effect.o(.data);
+        build/sa2/src/game/backgrounds.o(.data);
+
+        /* libs */
+        . = ALIGN(16);
+        build/sa2/src/lib/agb_flash.o(.data);
+
+        iwram_end = .;
     }
     
 	. = 0x08000000;
@@ -92,6 +141,7 @@ SECTIONS
         build/sa2/src/game/multiplayer/finish.o(.text);
         build/sa2/src/game/multiplayer/player_unk_2.o(.text);
         build/sa2/src/game/game.o(.text);
+        build/sa2/src/game/dummy_task.o(.text);
     
         build/sa2/src/game/stage/stage.o(.text);
         build/sa2/src/game/stage/camera.o(.text);

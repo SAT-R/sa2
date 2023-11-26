@@ -18,7 +18,7 @@ void sub_80871C4(s16, s16, s16);
 void sub_8087088(void);
 void sub_80870E8(void);
 
-s32 gUnused_03005B78 = 0;
+s32 ALIGNED(8) gUnused_03005B78 = 0;
 u8 gUnknown_03005B7C = 0;
 
 void Task_UnknownEffect(void)

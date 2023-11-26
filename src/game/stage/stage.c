@@ -29,6 +29,8 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 
+struct Task *gGameStageTask = NULL;
+
 extern void CallSetStageSpawnPos(u32, u32, u32, Player *);
 
 void sub_801AB3C(void);

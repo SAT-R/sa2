@@ -22,6 +22,7 @@
 #include "game/screen_fade.h"
 #include "sakit/entities_manager.h"
 #include "game/title_screen.h"
+#include "game/dummy_task.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

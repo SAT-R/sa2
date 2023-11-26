@@ -12,14 +12,16 @@
 
 #include "constants/animations.h"
 
+typedef struct {
+    Player *p;
+} DrownBubbles;
+
+u8 gSmallAirBubbleCount = 0;
+
 static void Task_DrowningCountdown(void);
 static void Task_SpawnAirBubbles(void);
 
 static void TaskDestructor_SpawnAirBubbles(struct Task *t);
-
-typedef struct {
-    Player *p;
-} DrownBubbles;
 
 static void Task_DrowningCountdown(void)
 {
@@ -29,11 +31,8 @@ static void Task_DrowningCountdown(void)
 
     s32 r2;
 
-    {
-        struct Camera *cam = &gCamera;
-        transform->x = Q_24_8_TO_INT(ts->x);
-        transform->y = Q_24_8_TO_INT(ts->y);
-    }
+    transform->x = Q_24_8_TO_INT(ts->x);
+    transform->y = Q_24_8_TO_INT(ts->y);
 
     r2 = ((ts->unk10 + 1) << 3);
     r2 = MIN(r2, 0x100);

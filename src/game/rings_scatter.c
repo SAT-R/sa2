@@ -33,6 +33,8 @@ typedef struct {
     /* 0x2B6 */ u16 unk2B6;
 } RingsScatter; /* size: 0x2B8 */
 
+struct Task *gRingsScatterTask = NULL;
+
 void Task_RingsScatter_Singleplayer(void);
 void Task_RingsScatter_MP_Singlepak(void);
 void Task_RingsScatter_MP_Multipak(void);

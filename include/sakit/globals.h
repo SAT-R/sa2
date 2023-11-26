@@ -163,7 +163,7 @@ extern SomeStruct_3005498 gUnknown_03005498;
 extern u8 gUnknown_030055D0[4];
 
 extern u8 gNewInputCountersIndex;
-extern u8 gNewInputCounters[32];
+extern u8 gNewInputCounters[128];
 
 extern u8 gUnknown_030055D8;
 

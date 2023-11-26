@@ -2,6 +2,8 @@
 #include "game/player_controls.h"
 #include "game/save.h"
 
+struct ButtonConfig gPlayerControls = {};
+
 UNUSED void sub_802B584(u16 jump, u16 attack, u16 trick)
 {
     struct ButtonConfig *controls = &gPlayerControls;

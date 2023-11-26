@@ -22,6 +22,14 @@
 #include "constants/zones.h"
 #include "constants/characters.h"
 
+// Probably a array (as it's aligned 16)
+struct Backgrounds ALIGNED(16) gStageBackgroundsRam = {};
+
+UNUSED u32 unused_3005950[3] = {};
+
+struct Camera ALIGNED(8) gCamera = {};
+const u32 *gUnknown_030059C8 = NULL;
+
 static void sub_801C708(s32, s32);
 void Task_801E0A8(void);
 void TaskDestructor_801E040(struct Task *);

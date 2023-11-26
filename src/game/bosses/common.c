@@ -21,6 +21,8 @@
 #include "constants/player_transitions.h"
 #include "constants/zones.h"
 
+struct Task *gActiveBossTask = NULL;
+
 const VoidFn sBossCreationFuncs[] = {
     CreateEggHammerTankII, CreateEggBomberTank, CreateEggTotem,
     CreateAeroEgg,         CreateEggSaucer,     CreateEggGoRound,

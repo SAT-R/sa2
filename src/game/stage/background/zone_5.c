@@ -2,7 +2,7 @@
 #include "core.h"
 #include "flags.h"
 #include "game/game.h"
-#include "game/stage/stage.h"
+#include "game/stage/camera.h"
 
 #include "constants/tilemaps.h"
 

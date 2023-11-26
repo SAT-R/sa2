@@ -17,6 +17,8 @@
 #define UI_POS_RING_COUNT_X 32
 #define UI_POS_RING_COUNT_Y 16
 
+struct Task *gStageUITask = NULL;
+
 const u16 sAnimsAsciiDigits[12][2] = {
     { SA2_ANIM_ASCII, '0' - 32 },
     { SA2_ANIM_ASCII, '1' - 32 },

@@ -38,9 +38,6 @@ struct MultiplayerPlayer {
     u32 unk5C; // flags?
 };
 
-// Some sort of unused task variable
-extern struct Task *gDummyTask;
-
 // TODO: find out what task is parent to IA
 typedef struct {
     u8 filler0[0x18];

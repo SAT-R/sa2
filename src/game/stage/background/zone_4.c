@@ -4,7 +4,7 @@
 #include "animation_commands_bg.h"
 #include "game/game.h"
 #include "sakit/spot_light.h"
-#include "game/stage/stage.h"
+#include "game/stage/camera.h"
 #include "game/stage/player.h"
 
 #include "constants/tilemaps.h"

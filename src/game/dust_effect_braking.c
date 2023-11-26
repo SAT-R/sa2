@@ -16,6 +16,8 @@ typedef struct {
     /* 0x08 */ Sprite s;
 } BrakeDustEffect;
 
+UNK_30059D0 ALIGNED(8) gUnknown_030059D0 = {};
+
 void Task_801F6E0(void);
 void TaskDestructor_801F7A8(struct Task *);
 void Task_801F7B4(void);
