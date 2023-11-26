@@ -238,8 +238,8 @@ typedef struct {
     EntityMeta ring;
 
     /* C-Header paths containing constants */
-    char *game_h;
     char *animations_h;
+    char *characters_h;
     char *enemies_h;
     char *interactables_h;
     char *items_h;

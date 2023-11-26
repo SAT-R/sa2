@@ -78,7 +78,7 @@ LoadEntityNamesAndIDs(AppState *state)
     MemArena arena;
     memArenaInit(&arena);
     
-    TokenList tokensGame    = tokenize(&arena, state->paths.game_h);
+    TokenList tokensGame    = tokenize(&arena, state->paths.characters_h);
     TokenList tokensAnims   = tokenize(&arena, state->paths.animations_h);
     TokenList tokensIAs     = tokenize(&arena, state->paths.interactables_h);
     TokenList tokensItems   = tokenize(&arena, state->paths.items_h);
@@ -214,15 +214,15 @@ LoadEntityNamesAndIDs(AppState *state)
     } else {
         if(numCharacters == 0) {
             printf("ERROR: Either NUM_CHARACTERS is not defined or not in\n"
-                   "'%s'", state->paths.game_h);
+                   "'%s'", state->paths.characters_h);
         } else if(numCharactersFromTokens == 0) {
             printf("Did not find any 'CHARACTER_XYZ' values in\n"
-                   "'%s'", state->paths.game_h);
+                   "'%s'", state->paths.characters_h);
         } else {
             printf("ERROR: Number of found player characters (%d) does not match NUM_CHARACTERS (%d).\n"
                    "       Please make sure NUM_CHARACTERS is defined after the individual characters.\n"
                    "       (Searched in '%s')\n",
-                numCharacters, numCharactersFromTokens, state->paths.game_h);
+                numCharacters, numCharactersFromTokens, state->paths.characters_h);
         }
     }
 }

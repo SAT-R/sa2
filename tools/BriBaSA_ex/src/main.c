@@ -747,8 +747,8 @@ InitFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
     info.mapRoot  = mapDir;
     
     /* Global C Headers */
-    info.game_h          = allocPath(gameDir, "include/game/game.h");
     info.animations_h    = allocPath(gameDir, "include/constants/animations.h");
+    info.characters_h    = allocPath(gameDir, "include/constants/characters.h");
     info.enemies_h       = allocPath(gameDir, "include/constants/enemies.h");
     info.interactables_h = allocPath(gameDir, "include/constants/interactables.h");
     info.items_h         = allocPath(gameDir, "include/constants/items.h");
