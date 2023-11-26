@@ -4,7 +4,7 @@
 #include "trig.h"
 #include "sakit/globals.h"
 #include "game/stage/player.h"
-#include "game/player_actor.h"
+#include "game/cheese.h"
 #include "game/game_7.h"
 #include "game/bosses/common.h"
 #include "game/countdown.h"
@@ -700,7 +700,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
 
                 gObjPalette[i] = RGB(r, g, b);
 
-                if (gPlayerActor != NULL) {
+                if (gCheese != NULL) {
                     r = (gUnknown_080D6FF5[index + 80][0] * frameCounter) / 16u;
                     g = ((gUnknown_080D6FF5[index + 80][1] * frameCounter) / 16u);
                     b = ((gUnknown_080D6FF5[index + 80][2] * frameCounter) / 16u);
@@ -724,7 +724,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
                 }
             }
         }
-        if (gPlayerActor != NULL) {
+        if (gCheese != NULL) {
             for (i = 0; i < 16; i++) {
                 s32 index;
                 u8 r, b, g;

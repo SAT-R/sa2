@@ -566,7 +566,7 @@ _0802333E:
 	add r8, r3
 	lsls r1, r6, #8
 	add sb, r1
-	ldr r0, _080233B4 @ =gPlayerActor
+	ldr r0, _080233B4 @ =gCheese
 	ldr r2, [r0]
 	cmp r2, #0
 	beq _08023366
@@ -611,7 +611,7 @@ _080233A4: .4byte gCurrentLevel
 _080233A8: .4byte gUnknown_030054B0
 _080233AC: .4byte gUnknown_080D650C
 _080233B0: .4byte gUnknown_080D661C
-_080233B4: .4byte gPlayerActor
+_080233B4: .4byte gCheese
 _080233B8: .4byte gUnknown_030054FC
 _080233BC: .4byte gUnknown_030054E0
 _080233C0: .4byte gBossRingsShallRespawn
@@ -664,7 +664,7 @@ _080233C4:
 	ldr r0, [r4, #0x10]
 	adds r0, r0, r1
 	str r0, [r4, #0x10]
-	ldr r0, _080234C4 @ =gPlayerActor
+	ldr r0, _080234C4 @ =gCheese
 	ldr r2, [r0]
 	cmp r2, #0
 	beq _08023432
@@ -707,7 +707,7 @@ _08023432:
 	ldr r0, [r4, #0x24]
 	adds r0, r0, r1
 	str r0, [r4, #0x24]
-	ldr r0, _080234C4 @ =gPlayerActor
+	ldr r0, _080234C4 @ =gCheese
 	ldr r2, [r0]
 	cmp r2, #0
 	beq _08023486
@@ -743,7 +743,7 @@ _080234B4: .4byte gPlayer
 _080234B8: .4byte gSpecialRingCount
 _080234BC: .4byte gUnknown_080D650C
 _080234C0: .4byte gUnknown_080D661C
-_080234C4: .4byte gPlayerActor
+_080234C4: .4byte gCheese
 _080234C8: .4byte 0x80000080
 _080234CC: .4byte gCamera
 _080234D0: .4byte gUnknown_03005424

@@ -5,7 +5,7 @@
 #include "game/game.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/player_actor.h"
+#include "game/cheese.h"
 #include "task.h"
 #include "core.h"
 
@@ -71,7 +71,7 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
 static bool32 sub_8081010(Sprite_SpecialRing *ring)
 {
-    PlayerActor *ptr = gPlayerActor;
+    Cheese *ptr = gCheese;
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         u32 flags = sub_800DF38(&ring->displayed, ring->posX, ring->posY, &gPlayer);

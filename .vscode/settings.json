@@ -261,7 +261,7 @@
     "player_controls.h": "c",
     "stage.h": "c",
     "screen_fade.h": "c",
-    "player_actor.h": "c",
+    "cheese.h": "c",
     "amy_attack_heart_effect.h": "c",
     "zone_3.h": "c",
     "zone_5.h": "c",

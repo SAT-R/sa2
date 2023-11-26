@@ -2,7 +2,7 @@
 #include "malloc_vram.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/player_actor.h"
+#include "game/cheese.h"
 #include "game/enemies/projectiles.h"
 #include "sakit/dust_cloud.h"
 #include "sakit/entities_manager.h"
@@ -145,8 +145,8 @@ void Task_8055084(void)
         s32 x = pos.x;
         s32 y = pos.y;
 
-        if (gPlayerActor != NULL) {
-            PlayerActor *a4 = gPlayerActor;
+        if (gCheese != NULL) {
+            Cheese *a4 = gCheese;
             Sprite_Yado *yado2 = TASK_DATA(gCurTask);
 
             if ((a4->s.hitboxes[1].index != -1)) {

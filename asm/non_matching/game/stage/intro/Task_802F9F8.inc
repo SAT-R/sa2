@@ -97,7 +97,7 @@ _0802FA66:
 	orrs r0, r1
 	orrs r0, r4
 	strh r0, [r3]
-	ldr r3, _0802FB24 @ =gPlayerActor
+	ldr r3, _0802FB24 @ =gCheese
 	ldr r0, [r3]
 	cmp r0, #0
 	beq _0802FAF8
@@ -150,7 +150,7 @@ _0802FB14: .4byte gGameMode
 _0802FB18: .4byte gUnknown_080D6FF5
 _0802FB1C: .4byte gObjPalette
 _0802FB20: .4byte gSelectedCharacter
-_0802FB24: .4byte gPlayerActor
+_0802FB24: .4byte gCheese
 _0802FB28:
 	movs r2, #0
 _0802FB2A:
@@ -224,7 +224,7 @@ _0802FBA8:
 	lsrs r2, r0, #0x18
 	cmp r2, #3
 	bls _0802FB2A
-	ldr r3, _0802FC48 @ =gPlayerActor
+	ldr r3, _0802FC48 @ =gCheese
 	ldr r0, [r3]
 	cmp r0, #0
 	beq _0802FC12
@@ -296,7 +296,7 @@ _0802FC38: .4byte gUnknown_080D6FF5
 _0802FC3C: .4byte gMultiplayerCharacters
 _0802FC40: .4byte gObjPalette
 _0802FC44: .4byte gUnknown_080D6FF5+2
-_0802FC48: .4byte gPlayerActor
+_0802FC48: .4byte gCheese
 _0802FC4C: .4byte gFlags
 _0802FC50: .4byte 0x00003FCF
 _0802FC54: .4byte gWinRegs

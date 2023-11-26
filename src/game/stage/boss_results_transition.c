@@ -4,7 +4,7 @@
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/game.h"
-#include "game/player_actor.h"
+#include "game/cheese.h"
 #include "game/save.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -116,9 +116,9 @@ void Task_802EE78(void)
             gCamera.unk10 += x;
             gCamera.unk14 += y;
 
-            if (gPlayerActor != NULL) {
-                gPlayerActor->posX += Q_24_8(x);
-                gPlayerActor->posY += Q_24_8(y);
+            if (gCheese != NULL) {
+                gCheese->posX += Q_24_8(x);
+                gCheese->posY += Q_24_8(y);
             }
 
             gUnknown_030055B0++;

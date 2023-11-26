@@ -22,22 +22,6 @@
 
 void GameStart(void);
 
-struct MultiplayerPlayer {
-    // TODO: Verify that this is Sprite!
-    //       (Used in Task_Item_Invincibility @ 0x0802AC60)
-    Sprite s;
-
-    u8 filler[0x20];
-    // x
-    s16 unk50;
-    s16 unk52;
-    u16 unk54;
-    u8 unk56;
-    u8 unk57;
-    u8 unk58[4];
-    u32 unk5C; // flags?
-};
-
 // TODO: find out what task is parent to IA
 typedef struct {
     u8 filler0[0x18];

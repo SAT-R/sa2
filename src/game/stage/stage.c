@@ -4,7 +4,7 @@
 
 #include "game/game.h"
 #include "game/save.h"
-#include "game/player_actor.h"
+#include "game/cheese.h"
 #include "game/stage/stage.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -13,7 +13,7 @@
 #include "sakit/palette_loader.h"
 #include "sakit/pause_menu.h"
 #include "sakit/rings_manager.h"
-#include "game/player_actor.h"
+#include "game/cheese.h"
 #include "game/race_progress.h"
 #include "game/screen_shake.h"
 #include "game/time_attack/lobby.h"
@@ -140,7 +140,7 @@ void GameStageStart(void)
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
         CallSetStageSpawnPos(gSelectedCharacter, gCurrentLevel, 0, &gPlayer);
-        gPlayerActor = NULL;
+        gCheese = NULL;
     }
 
     gStageTime = 0;
@@ -267,10 +267,10 @@ void CreateGameStage(void)
         }
     }
 
-    gPlayerActor = NULL;
+    gCheese = NULL;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        CreatePlayerActor(&gPlayer);
+        CreateCheese(&gPlayer);
     }
 
     if (IS_MULTI_PLAYER && gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
