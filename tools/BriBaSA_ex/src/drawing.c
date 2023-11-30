@@ -1,4 +1,6 @@
 #include <raylib.h>
+#include <stdlib.h> // ABS
+#include <math.h>   // sin
 
 #include "global.h"
 #include "drawing.h"
@@ -303,11 +305,20 @@ DrawMapSprites(AppState *state, Rectangle recMap)
             int screenY = (recMap.y + ent->worldY) - state->map.camera.y;
 
             Texture2D txEnt = GetEntityTextureById(state, ent->etype, ent->kind);
-            Rectangle recUi = {screenX - txEnt.width/2, screenY - txEnt.height, txEnt.width, txEnt.height};
+            Rectangle recUi = GetEntityOffsetRect(state, ent->etype, screenX, screenY, ent->kind, ent->data);
             
-            UiElement(&state->uiCtx, (UiIdent*)&ent->ui, recUi.x, recUi.y, recUi.width, recUi.height, NULL);
+            // TODO/HACK
+            if(ent->etype == ET_INTERACTABLE) {
+                recUi = CLITERAL(Rectangle){screenX - txEnt.width/2, screenY - txEnt.height, txEnt.width, txEnt.height};
+            }
             
             if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                bool clickedEnt = UiElement(&state->uiCtx, (UiIdent*)&ent->ui, recUi.x, recUi.y, recUi.width, recUi.height, NULL);
+
+                if(clickedEnt) {
+                    state->map.entities.active = ent;
+                }
+
                 switch(ent->etype) {
                 case ET_INTERACTABLE: {
                     DrawEntInteractable(state, screenX, screenY, ent->kind, ent->data);
@@ -325,6 +336,13 @@ DrawMapSprites(AppState *state, Rectangle recMap)
                     DrawEntRing(state, screenX, screenY);
                 } break;
 
+                }
+
+                if(state->map.entities.active == ent) {
+                    Color tint = GREEN;
+                    tint.a *= fabs(sin(GetTime() * 2)) * 0.8;
+                    DrawRectangle(recUi.x-1, recUi.y-1, recUi.width+2, recUi.height+2, tint);
+                    DrawRectangleLines(recUi.x-1, recUi.y-1, recUi.width+2, recUi.height+2, BLACK);
                 }
             }
         }
@@ -535,7 +553,7 @@ DrawMainHeader(AppState *state, Texture2D txAtlas)
     int backLayerFlag  = state->map.flags & MAP_FLAG_SHOW_BACK_LAYER;
     int frontLayerFlag = state->map.flags & MAP_FLAG_SHOW_FRONT_LAYER;
 
-    bool bLayerBtnPressed = DrawOnOffButton(&state->uiCtx, &state->uiHeader.btnBackLayer, CLITERAL(Rectangle){posX, posY += 22, 80, 20}, NULL,  backLayerFlag);
+    bool bLayerBtnPressed = DrawOnOffButton(&state->uiCtx, &state->uiHeader.btnBackLayer,  CLITERAL(Rectangle){posX, posY += 22, 80, 20}, NULL,  backLayerFlag);
     bool fLayerBtnPressed = DrawOnOffButton(&state->uiCtx, &state->uiHeader.btnFrontLayer, CLITERAL(Rectangle){posX += 85, posY, 83, 20}, NULL, frontLayerFlag);
 
     if(bLayerBtnPressed) {
@@ -555,6 +573,66 @@ DrawMainHeader(AppState *state, Texture2D txAtlas)
     DrawMetatilePreviewButton(&state->uiCtx, &state->uiHeader, state, initialX, posY += 20, txAtlas);
     
     DrawSaveButton(state, 4, initialY + METATILE_DIM - 20 - 4);
+
+    // Display info of active entity
+    if(state->map.entities.active) {
+        EditorEntity *ent = state->map.entities.active;
+
+        const char *entTypes[ENTITY_TYPE_COUNT] = {
+            "Interactable",
+            "Item",
+            "Enemy",
+            "Ring"
+        };
+
+        int fontSize = 20;
+        int posX = initialX + 380;
+        int posY = 0;
+        int entId = (ent - state->map.entities.elements);
+        const char *txtId  = TextFormat("%s", entTypes[ent->etype]);
+        const char *txtPos = TextFormat("X: %5d, Y: %5d", ent->worldX, ent->worldY);
+        DrawText(txtId,  posX, posY, fontSize, UI_COLOR_TEXT);
+        posY += fontSize + 2;
+        fontSize = 10;
+        
+        char *txtName = NULL;
+        char *data = NULL;
+        switch(ent->etype) {
+        case ET_ITEM: {
+            txtName = state->paths.items.items.elements[ent->kind].name;
+        } break;
+        case ET_ENEMY: {
+            txtName = state->paths.enemies.elements[ent->kind].name;
+            data = ent->data;
+        } break;
+        case ET_INTERACTABLE: {
+            txtName = state->paths.interactables.elements[ent->kind].name;
+
+            data = ent->data;
+        } break;
+        }
+        
+        if(txtName) {
+            DrawText(txtName, posX, posY, fontSize, UI_COLOR_TEXT);
+            posY += fontSize + 2;
+        }
+
+        DrawText(txtPos, posX, posY, fontSize, UI_COLOR_TEXT);
+        posY += fontSize + 2;
+        
+        if(data) {
+            for(int i = 0; i < ENT_DATA_SIZE(state->game); i++) {
+                if(i < 2) {
+                    const char *txtData = TextFormat("data[%d]: %d", i, data[i]);
+                    DrawText(txtData, posX, posY, fontSize, UI_COLOR_TEXT);
+                } else {
+                    const char *txtData = TextFormat("data[%d]: %d", i, (unsigned char)data[i]);
+                    DrawText(txtData, posX, posY, fontSize, UI_COLOR_TEXT);
+                }
+                posY += fontSize + 2;
+            }
+        }
+    }
 }
 
 void

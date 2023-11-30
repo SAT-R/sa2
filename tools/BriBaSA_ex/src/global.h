@@ -62,6 +62,8 @@ extern void *_Memcpy(void *dst, void *src, size_t size);
 #define MAX(a, b) ( ((a) > (b)) ? (a) : (b) )
 #define CLAMP(value, min, max) (MIN(MAX(value, min), max))
 
+#define ENT_DATA_SIZE(_game) (((_game) == GAME_SA3) ? 5 : 4)
+
 typedef enum {
     GAME_UNK = 0,
     GAME_SA1 = 1,
@@ -69,6 +71,7 @@ typedef enum {
     GAME_SA3 = 3,
     GAME_KATAM = 4,
 } Game;
+
 
 typedef enum {
     LAYER_BACK = 0,
@@ -174,6 +177,8 @@ typedef struct EditorEntity {
 typedef struct EditorEntities {
     EditorEntity *elements;
     int count, capacity;
+
+    EditorEntity *active;
 } EditorEntities;
 
 typedef struct {
