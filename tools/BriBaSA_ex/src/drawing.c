@@ -191,7 +191,7 @@ DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
 }
 
 void
-DrawEntItem(AppState *state, int x, int y, int index, char data[5])
+DrawEntItem(AppState *state, int x, int y, int index)
 {
     ItemMetaList *items = &state->paths.items;
 
@@ -242,7 +242,6 @@ void
 DrawMapSprites(AppState *state, Rectangle recMap)
 {
     FileInfo *paths = &state->paths;
-    EntityPositions *entityPositions = &paths->entityPositions;
 
     Rectangle recSpawn = {
         recMap.x - SPAWN_POPUP_DIM,
@@ -254,58 +253,32 @@ DrawMapSprites(AppState *state, Rectangle recMap)
     BeginScissorMode(recMap.x, recMap.y, recMap.width, recMap.height);
         DrawSpawnPosCharacter(state, recMap);
 
-        for(int ry = 0; ry < entityPositions->rings.map_regions_y; ry++) {
-            for(int rx = 0; rx < entityPositions->rings.map_regions_x; rx++) {
-                int ri = ry * entityPositions->rings.map_regions_x + rx;
-                MapRegion *iaRegion    = &entityPositions->interactables.regions[ri];
-                MapRegion *itemRegion  = &entityPositions->items.regions[ri];
-                MapRegion *enemyRegion = &entityPositions->enemies.regions[ri];
-                MapRegion *ringRegion  = &entityPositions->rings.regions[ri];
+        EditorEntities *entities = &state->map.entities;
+        for(int i = 0; i < state->map.entities.count; i++) {
+            EditorEntity *ent = &entities->elements[i];
 
+            int screenX = (recMap.x + ent->worldX) - state->map.camera.x;
+            int screenY = (recMap.y + ent->worldY) - state->map.camera.y;
+            
+            if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                switch(ent->etype) {
+                case ET_INTERACTABLE: {
+                    DrawEntInteractable(state, screenX, screenY, ent->kind, ent->data);
+                } break;
+                    
+                case ET_ITEM: {
+                    DrawEntItem(state, screenX, screenY, ent->kind);
+                } break;
+                    
+                case ET_ENEMY: {
+                    DrawEntEnemy(state, screenX, screenY, ent->kind, ent->data);
+                } break;
+                    
+                case ET_RING: {
+                    DrawEntRing(state, screenX, screenY);
+                } break;
 
-                for(int entIndex = 0; entIndex < iaRegion->count; entIndex++) {
-                    EntityData *ia = &iaRegion->list[entIndex];
-
-                    int screenX = recMap.x + TO_WORLD_POS(ia->x, rx) - state->map.camera.x;
-                    int screenY = recMap.y + TO_WORLD_POS(ia->y, ry) - state->map.camera.y;
-
-                    if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                        DrawEntInteractable(state, screenX, screenY, ia->kind, ia->data);
-                    }
                 }
-                
-                for(int entIndex = 0; entIndex < itemRegion->count; entIndex++) {
-                    EntityData *item = &itemRegion->list[entIndex];
-
-                    int screenX = recMap.x + TO_WORLD_POS(item->x, rx) - state->map.camera.x;
-                    int screenY = recMap.y + TO_WORLD_POS(item->y, ry) - state->map.camera.y;
-                        
-                    if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                        DrawEntItem(state, screenX, screenY, item->kind, item->data);
-                    }
-                }
-                
-                for(int entIndex = 0; entIndex < enemyRegion->count; entIndex++) {
-                    EntityData *enemy = &enemyRegion->list[entIndex];
-
-                    int screenX = recMap.x + TO_WORLD_POS(enemy->x, rx) - state->map.camera.x;
-                    int screenY = recMap.y + TO_WORLD_POS(enemy->y, ry) - state->map.camera.y;
-                        
-                    if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                        DrawEntEnemy(state, screenX, screenY, enemy->kind, enemy->data);
-                    }
-                }
-                
-                for(int entIndex = 0; entIndex < ringRegion->count; entIndex++) {
-                    EntityData *ring = &ringRegion->list[entIndex];
-
-                    int screenX = recMap.x + TO_WORLD_POS(ring->x, rx) - state->map.camera.x;
-                    int screenY = recMap.y + TO_WORLD_POS(ring->y, ry) - state->map.camera.y;
-                        
-                    if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
-                        DrawEntRing(state, screenX, screenY);
-                    }
-                }                
             }
         }
     EndScissorMode();
@@ -328,7 +301,7 @@ Debug_DrawAllEntityTextures(AppState *state)
     testY += 42*(iaCount/32 + 1);
 
     for(int item = 0; item < state->paths.items.items.count; item++) {
-        DrawEntItem(state, testX + 32*item, testY, item, data);
+        DrawEntItem(state, testX + 32*item, testY, item);
     }
     testY += 32;
             

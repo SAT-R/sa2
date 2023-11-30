@@ -5,6 +5,7 @@ typedef enum {
     UIID_UNKNOWN = 0,
     UIID_RECTANGLE = 1,
     UIID_BUTTON = 2,
+    UIID_MAP_ENTITY = 3,
     // UIID_TEXTURE?
 } UiIdentType;
 
@@ -29,6 +30,12 @@ typedef struct {
 typedef struct {
     Texture texture;
 } UiIdentTexture;
+
+//typedef struct {
+    // TBD
+    //EntityDataPointer d;
+    //EntityType etype;
+//} UiIdentEntity;
 
 struct UiIdent;
 

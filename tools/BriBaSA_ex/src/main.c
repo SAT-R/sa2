@@ -168,7 +168,7 @@ int main(void)
             ClearBackground(UI_COLOR_BACKGROUND);
 
             DrawMainHeader(&state, txAtlas);
-            DrawPalettes(&state.paths);
+            //DrawPalettes(&state.paths);
 
             DrawMap(&state, recMap, txAtlas, txMap);
 
@@ -270,34 +270,71 @@ void InitUiHeaderWidgets(UiHeader *hdr)
 static LoadEntityDataFromCSVs(AppState *state)
 {
     FileInfo *paths = &state->paths;
-    paths->entityPositions.interactables = ConvertCsvToBinary(paths->entityCSVs.interactables, NULL, paths->interactables_h, false);
-    paths->entityPositions.items         = ConvertCsvToBinary(paths->entityCSVs.items,         NULL, paths->items_h,         false);
-    paths->entityPositions.enemies       = ConvertCsvToBinary(paths->entityCSVs.enemies,       NULL, paths->enemies_h,       false);
-    paths->entityPositions.rings         = ConvertCsvToBinary(paths->entityCSVs.rings,         NULL, NULL,                   false);
+    EditorEntities entities = {0};
 
-    int numRegionsX = paths->entityPositions.interactables.map_regions_x;
-    int numRegionsY = paths->entityPositions.interactables.map_regions_y;
-    int regionCount = numRegionsX * numRegionsY;
+    MapRegions regions[ENTITY_TYPE_COUNT];
 
-    MapRegion *regions = paths->entityPositions.interactables.regions;
-    for(int iaRegion = 0; iaRegion < regionCount; iaRegion++) {
-        if(regions[iaRegion].list) {
-            int regionX = iaRegion % numRegionsX;
-            int regionY = iaRegion / numRegionsX;
+    regions[ET_INTERACTABLE] = ConvertCsvToBinary(paths->entityCSVs.interactables, NULL, paths->interactables_h, false);
+    regions[ET_ITEM]         = ConvertCsvToBinary(paths->entityCSVs.items,         NULL, paths->items_h,         false);
+    regions[ET_ENEMY]        = ConvertCsvToBinary(paths->entityCSVs.enemies,       NULL, paths->enemies_h,       false);
+    regions[ET_RING]         = ConvertCsvToBinary(paths->entityCSVs.rings,         NULL, NULL,                   false);
 
-            for(int iaIndex = 0; iaIndex < regions[iaRegion].count; iaIndex++) {
-                EntityData *ia = &regions[iaRegion].list[iaIndex];
+    // Convert the in-game data representation to one that's easier to work with in the editor
+    for(int entityType = 0; entityType < ENTITY_TYPE_COUNT; entityType++) {
+        int numRegionsX = regions[entityType].map_regions_x;
+        int numRegionsY = regions[entityType].map_regions_y;
 
-                int screenX = TO_WORLD_POS(ia->x, regionX);
-                int screenY = TO_WORLD_POS(ia->y, regionY);
+        MapRegion *region = regions[entityType].regions;
 
-                if(ia->kind == IA__GOAL_LEVER) {
-                    state->map.endX = screenX;
-                    state->map.endY = screenY;
+        for(int ry = 0; ry < numRegionsY; ry++) {
+            for(int rx = 0; rx < numRegionsX; rx++) {
+                int ri = ry * numRegionsX + rx;
+
+                if(!region[ri].list) {
+                    continue;
                 }
-            }        
+
+                for(int iaIndex = 0; iaIndex < region[ri].count; iaIndex++) {
+                    EditorEntity ent = {0};
+                    EntityData *entData = &region[ri].list[iaIndex];
+
+                    int worldX = TO_WORLD_POS(entData->x, rx);
+                    int worldY = TO_WORLD_POS(entData->y, ry);
+
+                    ent.etype  = entityType;
+                    ent.kind   = entData->kind;
+                    ent.worldX = worldX;
+                    ent.worldY = worldY;
+                    memcpy(&ent.data, &entData->data, sizeof(ent.data));
+
+                    da_append(&entities, &ent);
+                }
+
+                free(region[ri].list);
+                region[ri].list     = NULL;
+                region[ri].capacity = 0;
+                region[ri].count    = 0;
+            }
         }
     }
+
+    // Look for the goal
+    for(int i = 0; entities.count; i++) {
+        EditorEntity *ent = &entities.elements[i];
+
+        if(ent->etype == ET_INTERACTABLE) {
+            if(ent->kind == IA__GOAL_LEVER) {
+                state->map.endX = ent->worldX;
+                state->map.endY = ent->worldY;
+            }
+        } else {
+            // We just created the list in order, so we can be sure that
+            // once we encounter a non-Interactable, we went through all Entities
+            break;
+        }
+    }
+
+    memcpy(&state->map.entities, &entities, sizeof(state->map.entities));
 }
 
 static Texture2D
@@ -747,8 +784,8 @@ InitFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
     info.mapRoot  = mapDir;
     
     /* Global C Headers */
-    info.animations_h    = allocPath(gameDir, "include/constants/animations.h");
     info.characters_h    = allocPath(gameDir, "include/constants/characters.h");
+    info.animations_h    = allocPath(gameDir, "include/constants/animations.h");
     info.enemies_h       = allocPath(gameDir, "include/constants/enemies.h");
     info.interactables_h = allocPath(gameDir, "include/constants/interactables.h");
     info.items_h         = allocPath(gameDir, "include/constants/items.h");

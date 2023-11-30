@@ -11,7 +11,7 @@ void ParseOrCreateMetadataTxt(AppState *state, Tilemap* tm);
 void SetMetaEntityValues(TokenList *tokList, void *inentities, EntityType et);
 
 void
-SetMetaEntityValues(TokenList *tokList, void *inentities, EntityType et)
+SetMetaEntityValues(TokenList *tokList, void *inEntities, EntityType et)
 {
     int count = 0;
     for(int i = 0; i < tokList->count; i++) {
@@ -34,7 +34,7 @@ SetMetaEntityValues(TokenList *tokList, void *inentities, EntityType et)
                 switch(et) {
                     case ET_INTERACTABLE: {
                         if(TextFindIndex(tokenName->text, prefix) == 0) {
-                            InteractableMetaList *entities = (InteractableMetaList*)inentities;
+                            InteractableMetaList *entities = (InteractableMetaList*)inEntities;
                             InteractableMeta ia = {0};
                             
                             ia.name = TextReplace(tokenName->text, prefix, "");
@@ -53,7 +53,7 @@ SetMetaEntityValues(TokenList *tokList, void *inentities, EntityType et)
                     } break;
 
                     default: {
-                        EntityMetaList *entities = (EntityMetaList*)inentities;
+                        EntityMetaList *entities = (EntityMetaList*)inEntities;
 
                         if(TextFindIndex(tokenName->text, prefix) == 0) {
                             EntityMeta e = {0};
@@ -118,11 +118,15 @@ LoadEntityNamesAndIDs(AppState *state)
         }
     }
 
-    // Look for animations
-    if(((numCharacters != 0) && numCharactersFromTokens != 0) && (numCharacters == numCharactersFromTokens)) {
+    if(numCharacters && (numCharacters == numCharactersFromTokens)) {
         // We found all characters, search for their animations
 
-        CharacterList *chars = &state->paths.characters;
+        FileInfo *paths           = &state->paths;
+        InteractableMetaList *ias = &paths->interactables;
+        EntityMetaList *enemies   = &paths->enemies;
+        ItemMetaList *items       = &paths->items;
+        EntityMeta *ring          = &paths->ring;
+        CharacterList *chars = &paths->characters;
 
         // Find animation IDs
         // TODO: Maybe we should just prefix them with ANIM_, not something game-specific?
@@ -162,15 +166,15 @@ LoadEntityNamesAndIDs(AppState *state)
                     }
 
                     if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_ITEMBOX", state->game))) {
-                        state->paths.items.animItembox = TextToInteger(tokenID->text);
+                        items->animItembox = TextToInteger(tokenID->text);
                     } else if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_ITEMBOX_TYPE", state->game))) {
-                        state->paths.items.animItemType = TextToInteger(tokenID->text);
+                        items->animItemType = TextToInteger(tokenID->text);
                     } else if(TextIsEqual(tokenName->text, TextFormat("SA%d_ANIM_RING", state->game))) {
-                        state->paths.ring.anim = TextToInteger(tokenID->text);
-                    } else if(foundEnemyAnims < state->paths.enemies.count) {
-                        for(int ei = 0; ei < state->paths.enemies.count; ei++) {
-                            unsigned short id = state->paths.enemies.elements[ei].id;
-                            EntityMeta *enemy = &state->paths.enemies.elements[id];
+                        ring->anim = TextToInteger(tokenID->text);
+                    } else if(foundEnemyAnims < enemies->count) {
+                        for(int ei = 0; ei < enemies->count; ei++) {
+                            unsigned short id = enemies->elements[ei].id;
+                            EntityMeta *enemy = &enemies->elements[id];
                             const char *format = TextFormat("SA%d_ANIM_%s", state->game, enemy->name);
 
                             if(TextIsEqual((char *)tokenName->text, format)) {                    
@@ -180,10 +184,10 @@ LoadEntityNamesAndIDs(AppState *state)
                                 break;
                             }
                         }
-                    } else if(foundIAAnims < state->paths.interactables.count) {
-                        for(int ii = 0; ii < state->paths.interactables.count; ii++) {
-                            unsigned short id    = state->paths.interactables.elements[ii].id;
-                            InteractableMeta *ia = &state->paths.interactables.elements[id];
+                    } else if(foundIAAnims < ias->count) {
+                        for(int ii = 0; ii < ias->count; ii++) {
+                            unsigned short id    = ias->elements[ii].id;
+                            InteractableMeta *ia = &ias->elements[id];
                             const char *format   = TextFormat("SA%d_ANIM_%s", state->game, ia->name);
 
                             if(TextIsEqual((char *)tokenName->text, format)) {
@@ -192,7 +196,7 @@ LoadEntityNamesAndIDs(AppState *state)
 
                                     foundIAAnims++;
 
-                                } while((++ii < state->paths.interactables.count) && TextIsEqual(ia->name, (ia+1)->name) && ++ia);
+                                } while((++ii < ias->count) && TextIsEqual(ia->name, (ia+1)->name) && ++ia);
                                 ii--;
 
                                 
@@ -216,8 +220,8 @@ LoadEntityNamesAndIDs(AppState *state)
             printf("ERROR: Either NUM_CHARACTERS is not defined or not in\n"
                    "'%s'", state->paths.characters_h);
         } else if(numCharactersFromTokens == 0) {
-            printf("Did not find any 'CHARACTER_XYZ' values in\n"
-                   "'%s'", state->paths.characters_h);
+            printf("ERROR: Did not find any 'CHARACTER_XYZ' values in\n"
+                   "       '%s'", state->paths.characters_h);
         } else {
             printf("ERROR: Number of found player characters (%d) does not match NUM_CHARACTERS (%d).\n"
                    "       Please make sure NUM_CHARACTERS is defined after the individual characters.\n"

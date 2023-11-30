@@ -42,8 +42,30 @@ typedef struct {
     signed   char data[5]; // SA1/SA2: [4], SA3: [5]
 } EntityData;
 
+typedef EntityData EntityDataInteractable;
+typedef EntityData EntityDataEnemy;
+
 typedef struct {
-    EntityData *list;
+    unsigned char x, y, kind;
+} EntityDataItem;
+
+typedef struct {
+    unsigned char x, y;
+} EntityDataRing;
+
+typedef union {
+    EntityDataInteractable *ia;
+    EntityDataItem  *item;
+    EntityDataEnemy *enemy;
+    EntityDataRing  *ring;
+} EntityDataPointer;
+
+typedef struct {
+    union {
+        EntityData *list;
+        EntityDataPointer d;
+    };
+
     int count, capacity;
 } MapRegion;
 

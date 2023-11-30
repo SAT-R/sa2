@@ -162,12 +162,18 @@ typedef struct {
     char *rings;
 } EntityCSVs;
 
-typedef struct {
-    MapRegions interactables;
-    MapRegions items;
-    MapRegions enemies;
-    MapRegions rings;
-} EntityPositions;
+typedef struct EditorEntity {
+    EntityType etype;
+    unsigned char kind;
+    char data[5]; // Size in SA1/SA2: 4, SA3: 5
+
+    unsigned int worldX, worldY;
+} EditorEntity;
+
+typedef struct EditorEntities {
+    EditorEntity *elements;
+    int count, capacity;
+} EditorEntities;
 
 typedef struct {
     char *name;
@@ -226,23 +232,23 @@ typedef struct {
 
     // e.g. ./data/maps/zone_1/act_1/
     char *mapRoot;
-
-    Tilemap map;
-    Tilemap background;
-    EntityCSVs entityCSVs;
-    EntityPositions entityPositions;
     
-    EntityMetaList enemies;
-    InteractableMetaList interactables;
-    ItemMetaList items;
-    EntityMeta ring;
-
     /* C-Header paths containing constants */
     char *animations_h;
     char *characters_h;
     char *enemies_h;
     char *interactables_h;
     char *items_h;
+
+    /* TODO: All data below this shall be removed from the struct */
+    Tilemap map;
+    Tilemap background;
+    EntityCSVs entityCSVs;
+    
+    EntityMetaList enemies;
+    InteractableMetaList interactables;
+    ItemMetaList items;
+    EntityMeta ring;
 
     // "SONIC", "TAILS", ...
     CharacterList characters;
@@ -289,6 +295,9 @@ typedef struct {
     Vector2i selectedMetatile;
     short selectedMetatileIndexFront;
     short selectedMetatileIndexBack;
+    
+    // Positions and data of all entities
+    EditorEntities entities;
 } StageMap;
 
 typedef struct {

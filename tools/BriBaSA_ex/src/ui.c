@@ -46,6 +46,10 @@ char *GetUiElementText(UiIdent *id)
         case UIID_BUTTON: {
             result = id->ident.btn.text;
         } break;
+
+        case UIID_MAP_ENTITY: {
+            ;
+        } break;
         }
     }
 
@@ -54,12 +58,12 @@ char *GetUiElementText(UiIdent *id)
 
 bool UiElement(UiContext *ui, UiIdent *id, int x, int y, int width, int height, char *text)
 {
-    bool result = false;
+    bool clicked = false;
 
     if(ui->active == id) {
         if(IS_USER_KEY_RELEASED_LEFT) {
             if(ui->hot == id) {
-                result = true;
+                clicked = true;
             }
 
             ui->active = NULL;
@@ -114,7 +118,11 @@ bool UiElement(UiContext *ui, UiIdent *id, int x, int y, int width, int height, 
 
         DrawButton(ui, id, fontSize, x, y, width, height, text);
     } break;
+
+    case UIID_MAP_ENTITY: {
+
+    } break;
     }
 
-    return result;
+    return clicked;
 }
