@@ -1,6 +1,7 @@
 #include <raylib.h>
 
 #include "global.h"
+#include "drawing.h"
 #include "ui.h"
 
 // Design inspired by Casey Muratori's presentation:
@@ -17,19 +18,19 @@ DrawButton(UiContext *ui, UiIdent *id, int fontSize, int x, int y, int width, in
             SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 
             if(ui->active == id) {
-                DrawRectangleRec(rec, id->ident.btn.activeTint);
+                DrawRectangleRec(rec, id->btn.activeTint);
             } else {
-                DrawRectangleRec(rec, id->ident.btn.hotTint);
+                DrawRectangleRec(rec, id->btn.hotTint);
             }
         } else {
             if(ui->active == id) {
-                DrawRectangleRec(rec, id->ident.btn.activeTint);
+                DrawRectangleRec(rec, id->btn.activeTint);
             } else {
-                DrawRectangleRec(rec, id->ident.btn.idleTint);
+                DrawRectangleRec(rec, id->btn.idleTint);
             }
         }
 
-        DrawText(text, rec.x + 1, rec.y + 1, fontSize, id->ident.btn.textTint);
+        DrawText(text, rec.x + 1, rec.y + 1, fontSize, id->btn.textTint);
     EndScissorMode();
 }
 
@@ -40,15 +41,11 @@ char *GetUiElementText(UiIdent *id)
     if(id) {
         switch(id->type) {
         case UIID_RECTANGLE: {
-            result = id->ident.rec.text;
+            result = id->rec.text;
         } break;
 
         case UIID_BUTTON: {
-            result = id->ident.btn.text;
-        } break;
-
-        case UIID_MAP_ENTITY: {
-            ;
+            result = id->btn.text;
         } break;
         }
     }
@@ -95,12 +92,12 @@ bool UiElement(UiContext *ui, UiIdent *id, int x, int y, int width, int height, 
             SetMouseCursor(MOUSE_CURSOR_DEFAULT);
         }
 
-        char *txtRectangle = id->ident.rec.text;
-        short fontSize = id->ident.rec.fontSize;
-        Color textTint = id->ident.rec.textTint;
+        char *txtRectangle = id->rec.text;
+        short fontSize = id->rec.fontSize;
+        Color textTint = id->rec.textTint;
         fontSize = (fontSize <= 0) ? height : fontSize;
 
-        DrawRectangle(x, y, width, height, id->ident.rec.backTint);
+        DrawRectangle(x, y, width, height, id->rec.backTint);
 
         if(txtRectangle) {
             DrawText((const char*)txtRectangle, x+2, y+2, fontSize, textTint);
@@ -108,8 +105,8 @@ bool UiElement(UiContext *ui, UiIdent *id, int x, int y, int width, int height, 
     } break;
 
     case UIID_BUTTON: {
-        char *txtButton  = id->ident.btn.text;
-        short fontSize = id->ident.btn.fontSize;
+        char *txtButton  = id->btn.text;
+        short fontSize = id->btn.fontSize;
         fontSize = (fontSize <= 0) ? height : fontSize;
 
         if(!text && txtButton) {
@@ -120,7 +117,11 @@ bool UiElement(UiContext *ui, UiIdent *id, int x, int y, int width, int height, 
     } break;
 
     case UIID_MAP_ENTITY: {
-
+        if(ui->active == id) {
+            DrawRectangle(x,y,width,height, CLITERAL(Color){10,10,10,127});
+        } else if(ui->hot == id) {
+            DrawRectangle(x,y,width,height, UI_COLOR_TRANSLUCENT);
+        }
     } break;
     }
 

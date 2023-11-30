@@ -11,6 +11,10 @@ typedef enum {
 
 
 typedef struct {
+    // Shared
+    UiIdentType type;
+
+    // Local
     Color backTint;
     Color textTint;
     char *text;
@@ -19,6 +23,10 @@ typedef struct {
 
 // TODO: Is it really necessary to store this here?
 typedef struct {
+    // Shared
+    UiIdentType type;
+
+    // Local
     Color idleTint;
     Color hotTint;
     Color activeTint;
@@ -28,8 +36,20 @@ typedef struct {
 } UiIdentButton;
 
 typedef struct {
+    // Shared
+    UiIdentType type;
+
+    // Local
     Texture texture;
 } UiIdentTexture;
+
+typedef struct {
+    // Shared
+    UiIdentType type;
+
+    // Local
+    unsigned int id;
+} UiIdentEntity;
 
 //typedef struct {
     // TBD
@@ -44,14 +64,14 @@ typedef struct {
     int count, capacity;
 } UiIdentList;
 
-typedef struct UiIdent {
+typedef union UiIdent {
     UiIdentType type;
 
-    union {
-        UiIdentRectangle rec;
-        UiIdentButton btn;
-        UiIdentTexture tx;
-    } ident;
+    // TODO: Find some way of occupying less space
+    UiIdentRectangle rec;
+    UiIdentButton btn;
+    UiIdentTexture tx;
+    UiIdentEntity ent;
 } UiIdent;
 
 typedef struct {

@@ -251,20 +251,20 @@ static char *GetMapDirectory(const char *mapsRoot)
 void InitUiHeaderWidgets(UiHeader *hdr)
 {
     hdr->btnPreview.type = UIID_BUTTON;
-    hdr->btnPreview.ident.btn.idleTint   = UI_COLOR_BUTTON;
-    hdr->btnPreview.ident.btn.hotTint    = UI_COLOR_BUTTON_HOVER;
-    hdr->btnPreview.ident.btn.activeTint = UI_COLOR_BUTTON_PRESSED;
-    hdr->btnPreview.ident.btn.textTint   = UI_COLOR_BUTTON_TEXT;
+    hdr->btnPreview.btn.idleTint   = UI_COLOR_BUTTON;
+    hdr->btnPreview.btn.hotTint    = UI_COLOR_BUTTON_HOVER;
+    hdr->btnPreview.btn.activeTint = UI_COLOR_BUTTON_PRESSED;
+    hdr->btnPreview.btn.textTint   = UI_COLOR_BUTTON_TEXT;
     
     /* These buttons change color based on state, so no need to set them */
     hdr->btnBackLayer.type  = UIID_BUTTON;
-    hdr->btnBackLayer.ident.btn.text = "Back";
+    hdr->btnBackLayer.btn.text = "Back";
 
     hdr->btnFrontLayer.type = UIID_BUTTON;
-    hdr->btnFrontLayer.ident.btn.text = "Front";
+    hdr->btnFrontLayer.btn.text = "Front";
 
     hdr->btnSaveMap.type    = UIID_BUTTON;
-    hdr->btnSaveMap.ident.btn.text = "SAVE MAP";
+    hdr->btnSaveMap.btn.text = "SAVE MAP";
 }
 
 static LoadEntityDataFromCSVs(AppState *state)
@@ -305,6 +305,7 @@ static LoadEntityDataFromCSVs(AppState *state)
                     ent.kind   = entData->kind;
                     ent.worldX = worldX;
                     ent.worldY = worldY;
+                    ent.ui.type = UIID_MAP_ENTITY;
                     memcpy(&ent.data, &entData->data, sizeof(ent.data));
 
                     da_append(&entities, &ent);
@@ -364,8 +365,8 @@ CreateYesNoWindow(AppState *state, int x, int y, int width, int height, char *he
     window.height = height;
     window.flags = 0;
     window.type = UIWND_TYPE_YESNO;
-    window.header.ident.rec.text = headerText;
-    window.recMain.ident.rec.text = mainText;
+    window.header.rec.text = headerText;
+    window.recMain.rec.text = mainText;
 
     return window;
 }
@@ -388,32 +389,32 @@ CreateUIWindows(AppState *state)
         "Do you still want to exit?");
 
     warnChangesMade.header.type  = UIID_RECTANGLE;
-    warnChangesMade.header.ident.rec.fontSize = 10;
-    warnChangesMade.header.ident.rec.textTint = UI_COLOR_TEXT;
-    warnChangesMade.header.ident.rec.backTint = UI_COLOR_WINDOW_HEADER;
+    warnChangesMade.header.rec.fontSize = 10;
+    warnChangesMade.header.rec.textTint = UI_COLOR_TEXT;
+    warnChangesMade.header.rec.backTint = UI_COLOR_WINDOW_HEADER;
     warnChangesMade.recMain.type = UIID_RECTANGLE;
-    warnChangesMade.recMain.ident.rec.fontSize = 10;
-    warnChangesMade.recMain.ident.rec.textTint = UI_COLOR_TEXT;
-    warnChangesMade.recMain.ident.rec.backTint = UI_COLOR_WINDOW_BACK;
+    warnChangesMade.recMain.rec.fontSize = 10;
+    warnChangesMade.recMain.rec.textTint = UI_COLOR_TEXT;
+    warnChangesMade.recMain.rec.backTint = UI_COLOR_WINDOW_BACK;
 
     UiIdent btnYes;
     btnYes.type = UIID_BUTTON;
-    btnYes.ident.btn.fontSize   = 20;
-    btnYes.ident.btn.text       = "YES";
-    btnYes.ident.btn.idleTint   = UI_COLOR_BUTTON_ON;
-    btnYes.ident.btn.hotTint    = UI_COLOR_BUTTON_ON_HOVER;
-    btnYes.ident.btn.activeTint = UI_COLOR_BUTTON_ON_PRESSED;
-    btnYes.ident.btn.textTint   = UI_COLOR_BUTTON_ON_TEXT;
+    btnYes.btn.fontSize   = 20;
+    btnYes.btn.text       = "YES";
+    btnYes.btn.idleTint   = UI_COLOR_BUTTON_ON;
+    btnYes.btn.hotTint    = UI_COLOR_BUTTON_ON_HOVER;
+    btnYes.btn.activeTint = UI_COLOR_BUTTON_ON_PRESSED;
+    btnYes.btn.textTint   = UI_COLOR_BUTTON_ON_TEXT;
     da_append(&warnChangesMade.buttons, &btnYes);
 
     UiIdent btnNo;
     btnNo.type = UIID_BUTTON;
-    btnNo.ident.btn.fontSize   = 20;
-    btnNo.ident.btn.text       = "NO";
-    btnNo.ident.btn.idleTint   = UI_COLOR_BUTTON_OFF;
-    btnNo.ident.btn.hotTint    = UI_COLOR_BUTTON_OFF_HOVER;
-    btnNo.ident.btn.activeTint = UI_COLOR_BUTTON_OFF_PRESSED;
-    btnNo.ident.btn.textTint   = UI_COLOR_BUTTON_OFF_TEXT;
+    btnNo.btn.fontSize   = 20;
+    btnNo.btn.text       = "NO";
+    btnNo.btn.idleTint   = UI_COLOR_BUTTON_OFF;
+    btnNo.btn.hotTint    = UI_COLOR_BUTTON_OFF_HOVER;
+    btnNo.btn.activeTint = UI_COLOR_BUTTON_OFF_PRESSED;
+    btnNo.btn.textTint   = UI_COLOR_BUTTON_OFF_TEXT;
     da_append(&warnChangesMade.buttons, &btnNo);
 
     da_append(&state->ui.windows, &warnChangesMade);

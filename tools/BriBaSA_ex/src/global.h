@@ -168,6 +168,7 @@ typedef struct EditorEntity {
     char data[5]; // Size in SA1/SA2: 4, SA3: 5
 
     unsigned int worldX, worldY;
+    UiIdentEntity ui;
 } EditorEntity;
 
 typedef struct EditorEntities {

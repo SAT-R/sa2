@@ -195,21 +195,22 @@ DrawEntItem(AppState *state, int x, int y, int index)
 {
     ItemMetaList *items = &state->paths.items;
 
-    x -= (items->txItembox.width / 2);
-    y -= (items->txItembox.height) - 3; // TODO: Where do these 3 pixels come from?
+    Rectangle rec = GetEntityOffsetRect(state, ET_ITEM, x, y, index, NULL);
 
-    DrawTexture(items->txItembox, x, y, WHITE);
+    DrawTexture(items->txItembox, rec.x, rec.y, WHITE);
 
     Texture tx = GetEntityTextureById(state, EntItem, index);
-    DrawTexture(tx, x + (tx.width / 2), y + (tx.height / 2), WHITE);
+    DrawTexture(tx, rec.x + (tx.width / 2), rec.y + (tx.height / 2), WHITE);
 }
 
 void
 DrawEntEnemy(AppState *state, int x, int y, int index, char data[5])
 {
     EntityMeta *enemy = &state->paths.enemies.elements[index];
+    
+    Rectangle rec = GetEntityOffsetRect(state, ET_ENEMY, x, y, index, data);
 
-    DrawTexture(enemy->texture, x - (enemy->texture.width / 2), y - enemy->texture.height, WHITE);
+    DrawTexture(enemy->texture, rec.x, rec.y, WHITE);
 }
 
 void
@@ -217,12 +218,14 @@ DrawEntRing(AppState *state, int x, int y)
 {
     EntityMeta *ring = &state->paths.ring;
 
-    // TODO: Right now there are 4 ring frames in a single PNG file, so we've got to draw it a little unintuitively
+    Rectangle rec = GetEntityOffsetRect(state, ET_RING, x, y, 0, NULL);
+
     DrawTextureRec(ring->texture,
-                   CLITERAL(Rectangle){0, 0, ring->texture.width, ring->texture.width},
-                   CLITERAL(Vector2){x - (ring->texture.width / 2), y - (ring->texture.width)},
+                   CLITERAL(Rectangle){0, 0, rec.width, rec.height},
+                   CLITERAL(Vector2){rec.x, rec.y},
                    WHITE);
 }
+
 void DrawSpawnPosCharacter(AppState *state, Rectangle recMap)
 {
     int selectedChar = state->paths.characters.selected;
@@ -233,6 +236,45 @@ void DrawSpawnPosCharacter(AppState *state, Rectangle recMap)
     DrawTexturePro(*txChar, CLITERAL(Rectangle){0, 0,  -txChar->width, txChar->height},
                             CLITERAL(Rectangle){sx, sy,  txChar->width, txChar->height},
                             CLITERAL(Vector2){0.0, 0.0}, 0.0, WHITE);
+}
+
+inline Rectangle
+GetEntityOffsetRect(AppState *state, EntityType etype, int x, int y, int kind, char data[5])
+{
+    Rectangle rec = {x,y,0,0};
+
+    switch(etype) {
+    case ET_INTERACTABLE: {
+
+    } break;
+
+    case ET_ITEM: {
+        rec.width  = state->paths.items.txItembox.width;
+        rec.height = state->paths.items.txItembox.height;
+
+        rec.x -= rec.width / 2;
+        rec.y -= rec.height - 3; // TODO: Where do these 3 pixels come from?
+    } break;
+
+    case ET_ENEMY: {
+        EntityMeta *enemy = &state->paths.enemies.elements[kind];
+        rec.width  = enemy->texture.width;
+        rec.height = enemy->texture.height;
+
+        rec.x -= rec.width / 2;
+        rec.y -= rec.height;
+    } break;
+
+    case ET_RING: {
+        rec.width  = state->paths.ring.texture.width;
+        rec.height = state->paths.ring.texture.height;
+
+        rec.x -= rec.width/2;
+        rec.y -= rec.height;
+    } break;
+    }
+
+    return rec;
 }
 
 // TODO:
@@ -259,6 +301,11 @@ DrawMapSprites(AppState *state, Rectangle recMap)
 
             int screenX = (recMap.x + ent->worldX) - state->map.camera.x;
             int screenY = (recMap.y + ent->worldY) - state->map.camera.y;
+
+            Texture2D txEnt = GetEntityTextureById(state, ent->etype, ent->kind);
+            Rectangle recUi = {screenX - txEnt.width/2, screenY - txEnt.height, txEnt.width, txEnt.height};
+            
+            UiElement(&state->uiCtx, (UiIdent*)&ent->ui, recUi.x, recUi.y, recUi.width, recUi.height, NULL);
             
             if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
                 switch(ent->etype) {
@@ -313,18 +360,6 @@ Debug_DrawAllEntityTextures(AppState *state)
     DrawEntRing(state, testX, testY);
 }
 
-
-static inline bool
-DrawButton(int x, int y, int width, int height, char *text) {
-    return DrawButtonRec(CLITERAL(Rectangle){x, y, width, height}, text);
-}
-
-static inline bool
-DrawButtonRec(Rectangle rec, char *text) {
-    return DrawButtonColored(rec, text, 20,
-        UI_COLOR_BUTTON, UI_COLOR_BUTTON_HOVER, UI_COLOR_BUTTON_PRESSED, UI_COLOR_BUTTON_TEXT);
-}
-
 inline bool
 DrawButtonColored(Rectangle rec, char *text, int fontSize, Color idleTint, Color hotTint, Color activeTint, Color textTint)
 {
@@ -332,8 +367,6 @@ DrawButtonColored(Rectangle rec, char *text, int fontSize, Color idleTint, Color
 
     BeginScissorMode(rec.x, rec.y, rec.width, rec.height);
         if(IS_MOUSE_ON_RECT(rec)) {
-            SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
-
             if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
                 DrawRectangleRec(rec, activeTint);
             } else {
@@ -364,10 +397,10 @@ DrawOnOffButton(UiContext *ui, UiIdent *id, Rectangle rec, char *text, bool cond
     Color tintPress   = (cond) ? UI_COLOR_BUTTON_ON_PRESSED : UI_COLOR_BUTTON_OFF_PRESSED;
     Color tintText    = (cond) ? UI_COLOR_BUTTON_ON_TEXT    : UI_COLOR_BUTTON_OFF_TEXT;
 
-    id->ident.btn.idleTint   = tintNeutral;
-    id->ident.btn.hotTint    = tintHover;
-    id->ident.btn.activeTint = tintPress;
-    id->ident.btn.textTint   = tintText;
+    id->btn.idleTint   = tintNeutral;
+    id->btn.hotTint    = tintHover;
+    id->btn.activeTint = tintPress;
+    id->btn.textTint   = tintText;
 
     return UiElement(ui,id,rec.x, rec.y, rec.width, rec.height, text);
 }
@@ -477,10 +510,10 @@ DrawSaveButton(AppState *state, int x, int y)
     Color pressTint = (state->unsavedChangesExist) ? UI_COLOR_BUTTON_SAVE_WARN_PRESSED : UI_COLOR_BUTTON_SAVE_PRESSED;
     Color textTint  = (state->unsavedChangesExist) ? UI_COLOR_BUTTON_SAVE_WARN_TEXT    : UI_COLOR_BUTTON_SAVE_TEXT;
 
-    state->uiHeader.btnSaveMap.ident.btn.idleTint   = tint;
-    state->uiHeader.btnSaveMap.ident.btn.hotTint    = hoverTint;
-    state->uiHeader.btnSaveMap.ident.btn.activeTint = pressTint;
-    state->uiHeader.btnSaveMap.ident.btn.textTint   = textTint;
+    state->uiHeader.btnSaveMap.btn.idleTint   = tint;
+    state->uiHeader.btnSaveMap.btn.hotTint    = hoverTint;
+    state->uiHeader.btnSaveMap.btn.activeTint = pressTint;
+    state->uiHeader.btnSaveMap.btn.textTint   = textTint;
 
     bool saveButtonPressed = UiElement(&state->uiCtx, &state->uiHeader.btnSaveMap, x, y, 110, 20, NULL);
     if(saveButtonPressed) {
@@ -579,7 +612,7 @@ DrawUIWindow(UiContext *ui, UIWindow *window)
                 break;
             }
 
-            int fontSize = window->buttons.elements[0].ident.btn.fontSize;
+            int fontSize = window->buttons.elements[0].btn.fontSize;
 
             int x  = window->x;
             int y  = window->y + window->height;
