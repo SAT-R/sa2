@@ -584,7 +584,7 @@ HandleMouseInput(AppState *state, Rectangle recMap)
 
             Vector2i mtMouse = GetMetatilePointBelowMouse(map, recMap);
 
-            if(IS_USER_KEY_DOWN_LEFT && !IsMouseOnSpawn(map, &paths->characters)) {
+            if(IS_USER_KEY_DOWN_LEFT && !IsMouseOnSpawn(map, &paths->characters) && !(state->uiCtx.active)) {
                 SetNewMetatiles(state, mtMouse.x, mtMouse.y);
             }
 

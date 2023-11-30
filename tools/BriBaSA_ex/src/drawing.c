@@ -127,6 +127,11 @@ DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
         flags |= DRAWIA_FLAG_DRAW_MIDDLE_CIRCLE;
     } break;
         
+    case IA__HOOK_RAIL__UNUSED:
+    case IA__HOOK_RAIL__START:
+    case IA__HOOK_RAIL__END: {
+        flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
+    }
     case IA__BOUNCY_BAR: {
         offsetX -= (ia->texture.width / 2);
         offsetY += (ia->texture.height / 2);
@@ -541,6 +546,72 @@ DrawSaveButton(AppState *state, int x, int y)
     }
 }
 
+void DrawActiveEntityInfo(AppState *state, int x, int y)
+{
+    EditorEntity *ent = state->map.entities.active;
+
+    if(!ent) {
+        return;
+    }
+
+    const char *entTypes[ENTITY_TYPE_COUNT] = {
+        "Interactable",
+        "Item",
+        "Enemy",
+        "Ring"
+    };
+
+    int fontSize = 20;
+    int posX = x;
+    int posY = y;
+    int entId = (ent - state->map.entities.elements);
+    const char *txtId  = TextFormat("%s", entTypes[ent->etype]);
+    const char *txtPos = TextFormat("X: %5d, Y: %5d", ent->worldX, ent->worldY);
+    DrawText(txtId,  posX, posY, fontSize, UI_COLOR_TEXT);
+    posY += fontSize + 2;
+    fontSize = 10;
+        
+    char *txtName = NULL;
+    char *data = NULL;
+    switch(ent->etype) {
+    case ET_ITEM: {
+        txtName = state->paths.items.items.elements[ent->kind].name;
+    } break;
+    case ET_ENEMY: {
+        txtName = state->paths.enemies.elements[ent->kind].name;
+        data = ent->data;
+    } break;
+    case ET_INTERACTABLE: {
+        const char *name = state->paths.interactables.elements[ent->kind].name;
+        const char *type = state->paths.interactables.elements[ent->kind].type;
+        txtName = (char*)((type) ? TextFormat("%s (%s)", name, type) : name);
+
+        data = ent->data;
+    } break;
+    }
+        
+    if(txtName) {
+        DrawText(txtName, posX, posY, fontSize, UI_COLOR_TEXT);
+        posY += fontSize + 2;
+    }
+
+    DrawText(txtPos, posX, posY, fontSize, UI_COLOR_TEXT);
+    posY += fontSize + 2;
+        
+    if(data) {
+        for(int i = 0; i < ENT_DATA_SIZE(state->game); i++) {
+            if(i < 2) {
+                const char *txtData = TextFormat("data[%d]: %d", i, data[i]);
+                DrawText(txtData, posX, posY, fontSize, UI_COLOR_TEXT);
+            } else {
+                const char *txtData = TextFormat("data[%d]: %d", i, (unsigned char)data[i]);
+                DrawText(txtData, posX, posY, fontSize, UI_COLOR_TEXT);
+            }
+            posY += fontSize + 2;
+        }
+    }
+}
+
 void
 DrawMainHeader(AppState *state, Texture2D txAtlas)
 {
@@ -574,65 +645,7 @@ DrawMainHeader(AppState *state, Texture2D txAtlas)
     
     DrawSaveButton(state, 4, initialY + METATILE_DIM - 20 - 4);
 
-    // Display info of active entity
-    if(state->map.entities.active) {
-        EditorEntity *ent = state->map.entities.active;
-
-        const char *entTypes[ENTITY_TYPE_COUNT] = {
-            "Interactable",
-            "Item",
-            "Enemy",
-            "Ring"
-        };
-
-        int fontSize = 20;
-        int posX = initialX + 380;
-        int posY = 0;
-        int entId = (ent - state->map.entities.elements);
-        const char *txtId  = TextFormat("%s", entTypes[ent->etype]);
-        const char *txtPos = TextFormat("X: %5d, Y: %5d", ent->worldX, ent->worldY);
-        DrawText(txtId,  posX, posY, fontSize, UI_COLOR_TEXT);
-        posY += fontSize + 2;
-        fontSize = 10;
-        
-        char *txtName = NULL;
-        char *data = NULL;
-        switch(ent->etype) {
-        case ET_ITEM: {
-            txtName = state->paths.items.items.elements[ent->kind].name;
-        } break;
-        case ET_ENEMY: {
-            txtName = state->paths.enemies.elements[ent->kind].name;
-            data = ent->data;
-        } break;
-        case ET_INTERACTABLE: {
-            txtName = state->paths.interactables.elements[ent->kind].name;
-
-            data = ent->data;
-        } break;
-        }
-        
-        if(txtName) {
-            DrawText(txtName, posX, posY, fontSize, UI_COLOR_TEXT);
-            posY += fontSize + 2;
-        }
-
-        DrawText(txtPos, posX, posY, fontSize, UI_COLOR_TEXT);
-        posY += fontSize + 2;
-        
-        if(data) {
-            for(int i = 0; i < ENT_DATA_SIZE(state->game); i++) {
-                if(i < 2) {
-                    const char *txtData = TextFormat("data[%d]: %d", i, data[i]);
-                    DrawText(txtData, posX, posY, fontSize, UI_COLOR_TEXT);
-                } else {
-                    const char *txtData = TextFormat("data[%d]: %d", i, (unsigned char)data[i]);
-                    DrawText(txtData, posX, posY, fontSize, UI_COLOR_TEXT);
-                }
-                posY += fontSize + 2;
-            }
-        }
-    }
+    DrawActiveEntityInfo(state, initialX + 380, 0);
 }
 
 void
@@ -764,7 +777,7 @@ DrawMap(AppState *state, Rectangle recMap, Texture2D txMtAtlas, Texture2D txMap)
                     int mtY = (y + (map->camera.y / METATILE_DIM));
                     
                     bool isHoveredOver     = (mtX == mtMouse.x && mtY == mtMouse.y);
-                    bool drawMouseMetatile = (isHoveredOver && !isHoveringUI && !isHoveringSpawn);
+                    bool drawMouseMetatile = (isHoveredOver && !isHoveringUI && !isHoveringSpawn && !(state->uiCtx.active));
                     bool isSelected        = (mtX == map->selectedMetatile.x && mtY == map->selectedMetatile.y);
                     bool isFirstMouse      = (mtX == map->initialMetatile.x && mtY == map->initialMetatile.y);
                     bool firstMouseExists  = (map->initialMetatile.x >= 0 && map->initialMetatile.y >= 0);
