@@ -214,7 +214,7 @@ static char *GetMapDirectory(const char *mapsRoot)
     // TODO: Ask user to select map directory and game!
     // 
     // Load all map directories
-#if 01
+#if 0
     FilePathList zones = LoadDirectoryFiles(mapsRoot);
     FilePathList mapDirs = {0};
     for(int i = 0; i < zones.count; i++) {
@@ -240,7 +240,7 @@ static char *GetMapDirectory(const char *mapsRoot)
     int mapIndex = 4 + (ZONE_2-1)*3;
     const char *pMapDir = mapDirs.paths[mapIndex];
 #else
-    const char *pMapDir = TextFormat("%s/zone_3/act_1/", mapsRoot);
+    const char *pMapDir = TextFormat("%s/zone_1/act_1/", mapsRoot);
 #endif
     char *mapDir  = malloc(TextLength(pMapDir) + 1);
     TextCopy(mapDir, pMapDir);

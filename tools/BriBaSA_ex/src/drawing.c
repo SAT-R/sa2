@@ -42,10 +42,10 @@ static void DrawUIWindow(UiContext *ui, UIWindow *window);
     DrawRectangleLines(rx, ry, _width, _height, _tint);              \
 }
 
-#define DRAW_ENTITY_RECT(_x, _y, _boundingDim, _tint)                                                     \
+#define DRAW_ENTITY_RECT(_x, _y, _data, _boundingDim, _tint)                                                     \
 {                                                                                                         \
-    DRAW_ENTITY_RECT_CUSTOM_DIM(_x, _y, (data[0] * TILE_DIM), (data[1] * TILE_DIM),                       \
-        ((unsigned)data[2] * _boundingDim), data[3] * TILE_DIM, _tint);                                 \
+    DRAW_ENTITY_RECT_CUSTOM_DIM(_x, _y, (_data[0] * TILE_DIM), (_data[1] * TILE_DIM),                       \
+        ((unsigned)_data[2] * _boundingDim), _data[3] * TILE_DIM, _tint);                                 \
 }
 
 #define DRAWIA_FLAG_DRAW_TEXTURE       0x1
@@ -131,7 +131,8 @@ DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
     case IA__HOOK_RAIL__START:
     case IA__HOOK_RAIL__END: {
         flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
-    }
+    } break;
+
     case IA__BOUNCY_BAR: {
         offsetX -= (ia->texture.width / 2);
         offsetY += (ia->texture.height / 2);
@@ -146,6 +147,10 @@ DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
         offsetX = -(ia->texture.width / 4);
         offsetY = -(ia->texture.height / 4);
         flags |= DRAWIA_FLAG_DRAW_TEXTURE;
+    } break;
+
+    case IA__IA044__A: {
+        flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
     } break;
         
     case IA__WINDUP_STICK: {
@@ -188,7 +193,7 @@ DrawEntInteractableSA2(AppState *state, int x, int y, int kind, char data[4])
     }
     
     if(flags & DRAWIA_FLAG_DRAW_BOUNDING_BOX) {
-        DRAW_ENTITY_RECT(x, y, boundingWidth, boundingTint);
+        DRAW_ENTITY_RECT(x, y, data, boundingWidth, boundingTint);
     }
 
     if(flags & DRAWIA_FLAG_DRAW_MIDDLE_CIRCLE) {
@@ -252,7 +257,80 @@ GetEntityOffsetRect(AppState *state, EntityType etype, int x, int y, int kind, c
 
     switch(etype) {
     case ET_INTERACTABLE: {
+        InteractableMeta *ia = &state->paths.interactables.elements[kind];
 
+        unsigned int flags = 0;
+
+        int offsetX = -(ia->texture.width / 2);
+        int offsetY = -ia->texture.height;
+        int boundingWidth = TILE_DIM;
+
+        switch(kind) {
+        case IA__TOGGLE_PLAYER_LAYER__FOREGROUND: {
+            flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
+        } break;
+
+        case IA__TOGGLE_PLAYER_LAYER__BACKGROUND: {
+            flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
+        } break;
+
+        case IA__GRIND_RAIL__START_GROUND:
+        case IA__GRIND_RAIL__START_AIR:
+        case IA__GRIND_RAIL__END_GROUND:
+        case IA__GRIND_RAIL__END_FORCED_JUMP:
+        case IA__GRIND_RAIL__END_ALTERNATE:
+        case IA__GRIND_RAIL__END_AIR:
+        case IA__GRIND_RAIL__END_GROUND_LEFT:
+        case IA__GRIND_RAIL__END_AIR_LEFT: {
+            flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
+        } break;
+        
+        case IA__HOOK_RAIL__UNUSED:
+        case IA__HOOK_RAIL__START:
+        case IA__HOOK_RAIL__END: {
+            flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
+        }
+        case IA__BOUNCY_BAR: {
+            offsetX = -ia->texture.width;
+            offsetY = -(ia->texture.height / 2);
+        } break;
+
+        case IA__CHECKPOINT: {
+            offsetX = -(ia->texture.width / 4);
+            offsetY = -(ia->texture.height / 4);
+        } break;
+        
+        case IA__IA044__A: {
+            flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
+        } break;
+        
+        case IA__WINDUP_STICK: {
+            flags |= DRAWIA_FLAG_DRAW_BOUNDING_BOX;
+        } break;
+
+        case IA__LIGHT_BRIDGE: {
+            if(data[0] == BRIDGE_TYPE_STRAIGHT) {
+                offsetX = -(BRIDGE_WIDTH / 2);
+                offsetY = -8;
+                boundingWidth = BRIDGE_WIDTH;
+            }
+
+        } break;
+
+        }
+
+    
+        if(flags & DRAWIA_FLAG_DRAW_BOUNDING_BOX) {
+            rec.width  = data[2] * boundingWidth;
+            rec.height = data[3] * TILE_DIM;
+            rec.x = x +  (data[0] * TILE_DIM);
+            rec.y = y +  (data[1] * TILE_DIM);
+        } else {
+            rec.width  = ia->texture.width;
+            rec.height = ia->texture.height;
+            rec.x = x + offsetX;
+            rec.y = y + offsetY;
+        }
     } break;
 
     case ET_ITEM: {
@@ -311,12 +389,7 @@ DrawMapSprites(AppState *state, Rectangle recMap)
 
             Texture2D txEnt = GetEntityTextureById(state, ent->etype, ent->kind);
             Rectangle recUi = GetEntityOffsetRect(state, ent->etype, screenX, screenY, ent->kind, ent->data);
-            
-            // TODO/HACK
-            if(ent->etype == ET_INTERACTABLE) {
-                recUi = CLITERAL(Rectangle){screenX - txEnt.width/2, screenY - txEnt.height, txEnt.width, txEnt.height};
-            }
-            
+
             if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
                 bool clickedEnt = UiElement(&state->uiCtx, (UiIdent*)&ent->ui, recUi.x, recUi.y, recUi.width, recUi.height, NULL);
 
@@ -566,7 +639,6 @@ void DrawActiveEntityInfo(AppState *state, int x, int y)
     int posY = y;
     int entId = (ent - state->map.entities.elements);
     const char *txtId  = TextFormat("%s", entTypes[ent->etype]);
-    const char *txtPos = TextFormat("X: %5d, Y: %5d", ent->worldX, ent->worldY);
     DrawText(txtId,  posX, posY, fontSize, UI_COLOR_TEXT);
     posY += fontSize + 2;
     fontSize = 10;
@@ -594,7 +666,8 @@ void DrawActiveEntityInfo(AppState *state, int x, int y)
         DrawText(txtName, posX, posY, fontSize, UI_COLOR_TEXT);
         posY += fontSize + 2;
     }
-
+    
+    const char *txtPos = TextFormat("X: %5d, Y: %5d", ent->worldX, ent->worldY);
     DrawText(txtPos, posX, posY, fontSize, UI_COLOR_TEXT);
     posY += fontSize + 2;
         
