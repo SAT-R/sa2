@@ -66,6 +66,7 @@ typedef union {
     EntityDataItem  *item;
     EntityDataEnemy *enemy;
     EntityDataRing  *ring;
+    EntityData      *data;
 } EntityDataPointer;
 
 typedef struct {
