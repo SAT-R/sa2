@@ -3,9 +3,13 @@
 
 #include "sakit/globals.h"
 #include "game/cheese.h"
+#include "game/stage/camera.h"
+
+#include "lib/m4a.h"
 
 #include "constants/zones.h"
 #include "constants/characters.h"
+#include "constants/songs.h"
 
 Cheese *gCheese = NULL;
 
@@ -87,4 +91,183 @@ void CreateCheese(Player *player)
     s->hitboxes[0].index = -1;
     s->hitboxes[0].index = -1;
     s->hitboxes[1].index = -1;
+}
+
+void sub_801412C(Cheese *cheese)
+{
+    Sprite *s = &cheese->s;
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+    u32 temp;
+    if (cheese->unk10 != 18
+        && cheese->unk14
+            != gUnknown_080D5548[cheese->unk10][0]
+                + gUnknown_080D5548[cheese->unk10][1]) {
+        s->graphics.anim = gUnknown_080D5548[cheese->unk10][0];
+        s->variant = gUnknown_080D5548[cheese->unk10][1];
+        cheese->unk14 = s->graphics.anim + s->variant;
+        s->prevVariant = -1;
+        s->hitboxes[0].index = -1;
+        s->hitboxes[1].index = -1;
+    }
+
+    s->x = Q_24_8_TO_INT(cheese->posX) - gCamera.x;
+    s->y = Q_24_8_TO_INT(cheese->posY) - gCamera.y;
+
+    temp = 0x400;
+    if (cheese->unkC & 1) {
+        temp = 0;
+    }
+
+    if ((u8)(unk54->unk64 + 0x40) > 0x80) {
+        temp ^= 0x800;
+    }
+
+    if (cheese->unkC & 8) {
+        temp ^= 0x800;
+    }
+
+    s->unk10 = (temp | (s->unk10 & ~0xC00)) & ~0x3000;
+    s->unk10 |= (unk54->unk68->unk10) & 0x3000;
+    UpdateSpriteAnimation(s);
+    if (!(cheese->unkC & 2)) {
+        DisplaySprite(s);
+    }
+}
+
+u8 sub_8015118(Cheese *);
+void sub_8014EFC(Cheese *, s16, s16, u8);
+void sub_80142AC(void);
+void sub_8014350(void);
+
+void sub_801420C(void)
+{
+    struct Task **t = &gCurTask;
+    Cheese *cheese = TASK_DATA(*t);
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+
+    sub_8015118(cheese);
+    sub_8014EFC(cheese, 0, 0x18, 0);
+
+    if (unk54->unk68->graphics.anim == 0x79 && unk54->unk68->variant == 0) {
+        sub_8014EFC(cheese, 0, 0, 0);
+        cheese->unkA = 0;
+        (*t)->main = sub_80142AC;
+    } else {
+        (*t)->main = sub_8014350;
+    }
+
+    sub_801412C(cheese);
+
+    if (IS_BOSS_STAGE(gCurrentLevel)) {
+        gCurTask->main = sub_8014350;
+    }
+}
+
+void sub_80142AC(void)
+{
+    Cheese *cheese = TASK_DATA(gCurTask);
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+    sub_8015118(cheese);
+    sub_8014EFC(cheese, 0, 0, 0);
+
+    cheese->unkC &= ~0x1;
+
+    if (unk54->unk68->animCursor > 0xB6) {
+        cheese->unkA = 1;
+    }
+
+    if ((cheese->unkA == 0 && unk54->unk68->variant != 0)) {
+        sub_8014EFC(cheese, -0x20, 0x10, 0);
+        gCurTask->main = sub_8014350;
+    } else if (cheese->unkA != 0 && unk54->unk68->graphics.anim != 0x79) {
+        sub_8014EFC(cheese, -0x20, 0x10, 0);
+        gCurTask->main = sub_8014350;
+    }
+
+    cheese->unk10 = 15;
+    if (unk54->unk60 & 0x100000) {
+        cheese->unkC |= 2;
+    } else {
+        cheese->unkC &= ~0x2;
+    }
+
+    sub_801412C(cheese);
+}
+
+void sub_8014CC8(Cheese *);
+
+extern const u8 gUnknown_080D5590[];
+
+extern const u8 gUnknown_080D5628[];
+
+void sub_80145D8(void);
+void sub_8014A68(void);
+void sub_80144CC(void);
+void sub_8015378(void);
+void sub_8015464(void);
+void sub_80154B0(void);
+
+void sub_8014350(void)
+{
+    Cheese *cheese = TASK_DATA(gCurTask);
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+
+    if (sub_8015118(cheese) == 1) {
+        sub_8014EFC(cheese, 0x20, 0x20, 0);
+        return;
+    }
+
+    sub_8014CC8(cheese);
+
+    if (unk54->unk68->graphics.anim < 0xB6) {
+        cheese->unk10
+            = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
+                                + unk54->unk68->variant];
+    }
+
+    if (unk54->unk60 & 0x100000) {
+        cheese->unkC |= 2;
+    } else {
+        cheese->unkC &= ~0x2;
+    }
+
+    switch (cheese->unk10) {
+        case 11:
+            gCurTask->main = sub_8015378;
+            break;
+
+        case 12:
+            cheese->unk10 = 0;
+            gCurTask->main = sub_8015464;
+            break;
+
+        case 13:
+            cheese->unkA = 0;
+            gCurTask->main = sub_80154B0;
+            cheese->unk10 = 0;
+            sub_801412C(cheese);
+            return;
+
+        case 4:
+            cheese->unkA = 0;
+            m4aSongNumStart(SE_228);
+            gCurTask->main = sub_8014A68;
+            break;
+
+        case 2:
+            gCurTask->main = sub_80145D8;
+            break;
+
+        case 15:
+            cheese->unkA = 0;
+            gCurTask->main = sub_80142AC;
+            break;
+
+        case 9:
+            cheese->unk10 = 9;
+            cheese->unkA = 0;
+            gCurTask->main = sub_80144CC;
+            break;
+    }
+    sub_801412C(cheese);
 }
