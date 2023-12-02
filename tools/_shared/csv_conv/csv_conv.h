@@ -12,7 +12,15 @@
 #endif
 
 #ifndef TO_WORLD_POS
-#define TO_WORLD_POS(pos, region) ((pos)*TILE_WIDTH + (region)*CAM_REGION_WIDTH)
+#define TO_WORLD_POS(pos, region)     ((pos)*TILE_WIDTH + (region)*CAM_REGION_WIDTH)
+#endif
+
+#ifndef WORLD_TO_REGION
+#define WORLD_TO_REGION(worldPos)     ((worldPos) / CAM_REGION_WIDTH)
+#endif
+
+#ifndef WORLD_TO_ENTITY_POS
+#define WORLD_TO_ENTITY_POS(worldPos) (((worldPos) % CAM_REGION_WIDTH) / TILE_WIDTH)
 #endif
 
 typedef enum {
@@ -77,6 +85,7 @@ typedef struct {
 // Converts the input CSV file into binary data and optionally outputs it as its in-game format
 extern MapRegions ConvertCsvToBinary(char* csv_path, char *bin_path, char *c_header_path, bool outputBinaryFile);
 extern void ConvertBinaryToCsv(char* bin_path, char *csv_path, char *c_header_path, GameId game, EntityType etype);
+extern void ConvertMapRegionsToCsv(MapRegions regions, char *csv_path, char *c_header_path, GameId game, EntityType etype);
 
 extern const char *sMapEntityKinds[4];
 

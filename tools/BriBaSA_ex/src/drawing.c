@@ -1,6 +1,7 @@
 #include <raylib.h>
 #include <stdlib.h> // ABS
 #include <math.h>   // sin
+#include <string.h> // memcpy
 
 #include "global.h"
 #include "drawing.h"
@@ -595,6 +596,109 @@ void DrawMetatilePreviewButton(UiContext *ui, UiHeader *header, AppState *state,
     DrawMetatile(txAtlas, mtFrontX, mtFrontY, mtIndexFront, WHITE);
 }
 
+static MapRegions
+ConvertEditorEntitiesToMapRegions(EditorEntities entities, EntityType etype, int regionsX, int regionsY)
+{
+    MapRegions regions = {0};
+    regions.map_regions_x = regionsX;
+    regions.map_regions_y = regionsY;
+
+    // Make sure all entities fit in the region boundaries we expect,
+    // and expand if necessary
+    for(int eid = 0; eid < entities.count; eid++) {
+        EditorEntity *ent = &entities.elements[eid];
+
+        int rx = WORLD_TO_REGION(ent->worldX);
+        int ry = WORLD_TO_REGION(ent->worldY);
+
+        if(rx >= regionsX) {
+            regions.map_regions_x = regionsX = rx+1;
+
+            printf("Entity Map Region X (%d) is outside horizontal Map Region count (%d).\n"
+                   "Expanded to (%d).\n",
+                    rx, regionsX, (rx+1));
+        }
+        
+        if(ry >= regionsY) {
+            regions.map_regions_y = regionsY = ry+1;
+
+            printf("Entity Map Region Y (%d) is outside vertical Map Region count (%d).\n"
+                   "Expanded to (%d).\n",
+                    ry, regionsY, (ry+1));
+        }
+    }
+
+    // Fill regions
+    int numRegions  = regionsX * regionsY;
+    regions.regions = calloc(numRegions * sizeof(*regions.regions), 1);
+    if(regions.regions) {
+        for(int eid = 0; eid < entities.count; eid++) {
+            EditorEntity *ent = &entities.elements[eid];
+
+            if(ent->etype != etype)
+                continue;
+
+            int rx = WORLD_TO_REGION(ent->worldX);
+            int ry = WORLD_TO_REGION(ent->worldY);
+            int ri = ry * regionsX + rx;
+
+            EntityData edat = {0};
+            switch(etype) {
+            case ET_RING: {
+                edat.x = WORLD_TO_ENTITY_POS(ent->worldX);
+                edat.y = WORLD_TO_ENTITY_POS(ent->worldY);
+            } break;
+
+            case ET_ITEM: {
+                edat.x    = WORLD_TO_ENTITY_POS(ent->worldX);
+                edat.y    = WORLD_TO_ENTITY_POS(ent->worldY);
+                edat.kind = ent->kind;
+            } break;
+                
+            case ET_INTERACTABLE:
+            case ET_ENEMY: {
+                edat.x    = WORLD_TO_ENTITY_POS(ent->worldX);
+                edat.y    = WORLD_TO_ENTITY_POS(ent->worldY);
+                edat.kind = ent->kind;
+                memcpy(edat.data, ent->data, sizeof(edat.data));
+            } break;
+            }
+
+            da_append_to(&regions.regions[ri], &edat, list);
+        }
+    }
+
+    return regions;
+}
+
+static void
+SaveMapEntities(AppState *state)
+{
+    EntityType etype = ET_INTERACTABLE;
+    int regionsX = state->map.entities.numRegions[etype].x;
+    int regionsY = state->map.entities.numRegions[etype].y;
+    MapRegions regions = ConvertEditorEntitiesToMapRegions(state->map.entities, etype, regionsX, regionsY);
+    ConvertMapRegionsToCsv(regions, state->paths.entityCSVs.interactables, state->paths.interactables_h, state->game, etype);
+
+    etype = ET_ITEM;
+    regionsX = state->map.entities.numRegions[etype].x;
+    regionsY = state->map.entities.numRegions[etype].y;
+    regions = ConvertEditorEntitiesToMapRegions(state->map.entities, etype, regionsX, regionsY);
+    ConvertMapRegionsToCsv(regions, state->paths.entityCSVs.items, state->paths.items_h, state->game, etype);
+    
+    etype = ET_ENEMY;
+    regionsX = state->map.entities.numRegions[etype].x;
+    regionsY = state->map.entities.numRegions[etype].y;
+    regions = ConvertEditorEntitiesToMapRegions(state->map.entities, etype, regionsX, regionsY);
+    ConvertMapRegionsToCsv(regions, state->paths.entityCSVs.enemies, state->paths.enemies_h, state->game, etype);
+    
+    etype = ET_RING;
+    regionsX = state->map.entities.numRegions[etype].x;
+    regionsY = state->map.entities.numRegions[etype].y;
+    regions = ConvertEditorEntitiesToMapRegions(state->map.entities, etype, regionsX, regionsY);
+    ConvertMapRegionsToCsv(regions, state->paths.entityCSVs.rings, NULL, state->game, etype);
+}
+
 static void
 DrawSaveButton(AppState *state, int x, int y)
 {
@@ -616,6 +720,8 @@ DrawSaveButton(AppState *state, int x, int y)
         state->ignoreUnsavedChanges = true;
         state->unsavedChangesExist  = false;
         SaveMapLayouts(state);
+
+        SaveMapEntities(state);
     }
 }
 

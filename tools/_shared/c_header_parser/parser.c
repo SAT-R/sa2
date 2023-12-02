@@ -286,6 +286,7 @@ static char *read_entire_file(char* path, long *outSize)
     }
 }
 
+// TODO: Make this work without ArenaAlloc.c!
 TokenList tokenize(MemArena *arena, char *headerPath)
 {
     TokenList tokens = {0};

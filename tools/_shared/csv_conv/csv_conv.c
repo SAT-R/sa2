@@ -39,6 +39,8 @@ typedef struct {
     int count;
 } EntityNameList;
 
+EntityNameList sEntNameLists[EntCount] = {0};
+
 typedef struct {
     char **list;
     int capacity;
@@ -60,19 +62,22 @@ typedef struct {
     (arr)->list[(arr)->count++] = entry;                                                    \
 }
 
-const char *sMapEntityKinds[4] = {
+const char *sMapEntityKinds[EntCount] = {
     "INTERACTABLES",
     "ITEMS",
     "ENEMIES",
     "RINGS",
 };
 
-const char *sETypeIdents[4] = {
+const char *sETypeIdents[EntCount] = {
     [EntInteractable] = "IA__",
     [EntItem]         = "ITEM__",
     [EntEnemy]        = "ENEMY__",
     [EntRing]         = "",
 };
+
+static void PrintCsvFirstLineCommas(FILE *csv_handle, GameId game, EntityType etype);
+static void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data, int region_x, int region_y, GameId game, EntityType etype);
 
 static File OpenWholeFile(char* path)
 {
@@ -236,6 +241,17 @@ static EntityNameList CreateEntityNameList(TokenList tokens, EntityType etype)
 #endif
 
     return list;
+}
+
+static void DeleteEntityNameList(EntityNameList enl)
+{
+    if(enl.list) {
+        free(enl.list);
+        enl.list = NULL;
+    }
+
+    enl.count = 0;
+    enl.capacity = 0;
 }
 
 static int GetExpectedCsvDataLineCommaCount(GameId game_id, EntityType etype)
@@ -502,6 +518,8 @@ MapRegions CsvToBinaryData(char *csv_file_data, long csv_file_size, char *bin_pa
                         if(outputBinaryFile) {
                             CreateMapEntityBinaryFile(bin_path, game_id, etype, mapRegions.regions, map_regions_x, map_regions_y);
                         }
+
+                        DeleteEntityNameList(enl);
                     } else {
                         fprintf(stderr, "ERROR: Allocating %zu bytes failed.\n", (num_regions * sizeof(MapRegion)));
                     }
@@ -544,6 +562,52 @@ MapRegions ConvertCsvToBinary(char* csv_path, char *bin_path, char *c_header_pat
     }
 
     return mapRegions;
+}
+
+void ConvertMapRegionsToCsv(MapRegions regions, char *csv_path, char *c_header_path, GameId game, EntityType etype)
+{
+    int regions_x = regions.map_regions_x;
+    int regions_y = regions.map_regions_y;
+
+    FILE *csv_handle = fopen(csv_path, "wb");
+    if(!csv_handle) {
+        fprintf(stderr, "ERROR: %s could not be created.\n", csv_path);
+        return;
+    }
+
+    // Ident-line
+    fprintf(csv_handle, "Adv%d,%s,%d,%d", game, sMapEntityKinds[etype], regions_x, regions_y);
+    PrintCsvFirstLineCommas(csv_handle, game, etype);
+    fprintf(csv_handle, "\n");
+    
+    int meSize = GetMapEntitySize(game, etype);
+    
+    TokenList tokens = {0};
+    MemArena  arena = {0};
+    memArenaInit(&arena);
+        
+    if(c_header_path != NULL) {
+        tokens = tokenize(&arena, c_header_path);
+    }
+
+    EntityNameList enl = CreateEntityNameList(tokens, etype);
+
+    // Print data lines
+    for(int ry = 0; ry < regions_y; ry++) {
+        for(int rx = 0; rx < regions_x; rx++) {
+            MapRegion *region = &regions.regions[ry * regions_x + rx];
+            if(region) {
+                int entityCount = region->count;
+                for(int ei = 0; ei < entityCount; ei++) {
+                    PrintCsvDataLine(csv_handle, enl, &region->list[ei], rx, ry, game, etype);
+                }
+            }
+        }
+    }
+
+    memArenaFree(&arena);
+
+    fclose(csv_handle);
 }
 
 static void PrintCsvFirstLineCommas(FILE *csv_handle, GameId game, EntityType etype)
@@ -600,7 +664,7 @@ static void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *i
 
 static void OutputCsvFile(char *csv_path, EntityNameList name_list, EntitiesHeader *eh, GameId game, EntityType etype)
 {
-    FILE *csv_handle = fopen(csv_path, "w");
+    FILE *csv_handle = fopen(csv_path, "wb");
     if(!csv_handle) {
         fprintf(stderr, "ERROR: %s could not be created.\n", csv_path);
         return;

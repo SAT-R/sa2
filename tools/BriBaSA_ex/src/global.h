@@ -123,6 +123,11 @@ typedef enum {
 } UIWindowResult;
 
 typedef struct {
+    int x;
+    int y;
+} Vector2i;
+
+typedef struct {
     Color *colors;
     int count;
 } Palette;
@@ -179,6 +184,9 @@ typedef struct EditorEntities {
     int count, capacity;
 
     EditorEntity *active;
+
+    // Cached entity
+    Vector2i numRegions[ENTITY_TYPE_COUNT];
 } EditorEntities;
 
 typedef struct {
@@ -260,11 +268,6 @@ typedef struct {
     CharacterList characters;
 } FileInfo;
 
-
-typedef struct {
-    int x;
-    int y;
-} Vector2i;
 
 typedef struct {
     void *data; // SA1: u8*, SA2/SA3: u16*

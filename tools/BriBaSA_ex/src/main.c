@@ -283,6 +283,8 @@ static LoadEntityDataFromCSVs(AppState *state)
     for(int entityType = 0; entityType < ENTITY_TYPE_COUNT; entityType++) {
         int numRegionsX = regions[entityType].map_regions_x;
         int numRegionsY = regions[entityType].map_regions_y;
+        entities.numRegions[entityType].x = numRegionsX;
+        entities.numRegions[entityType].y = numRegionsY;
 
         MapRegion *region = regions[entityType].regions;
 

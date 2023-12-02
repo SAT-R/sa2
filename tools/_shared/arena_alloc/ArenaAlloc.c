@@ -108,6 +108,9 @@ static void memArenaVirtualFree(MemArena* arena) {
 #endif
 #endif
     }
+
+    arena->size = 0;
+    arena->offset = 0;
 }
 
 void
