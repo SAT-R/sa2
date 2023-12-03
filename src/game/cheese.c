@@ -1,5 +1,6 @@
 #include "core.h"
 #include "malloc_vram.h"
+#include "trig.h"
 
 #include "sakit/globals.h"
 #include "game/cheese.h"
@@ -271,3 +272,154 @@ void sub_8014350(void)
     }
     sub_801412C(cheese);
 }
+
+void sub_80144CC(void)
+{
+    u8 temp;
+    Cheese *cheese = TASK_DATA(gCurTask);
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+
+    if (sub_8015118(cheese) == 1) {
+        sub_8014EFC(cheese, 0x20, 0x20, 0);
+        return;
+    }
+
+    if (unk54->unk68->animCursor >= 0xB0) {
+        cheese->unk10 = 10;
+        if (unk54->unk68->animCursor >= 0x100) {
+            sub_8014EFC(cheese, 0x1C, 4, 4);
+
+            if (unk54->unk60 & 1) {
+                cheese->unkC |= 1;
+            } else {
+                cheese->unkC &= ~1;
+            }
+        } else {
+            if (unk54->unk68->animCursor > 0xBF) {
+                sub_8014EFC(cheese, -28, 4, 4);
+
+                if (unk54->unk60 & 1) {
+                    cheese->unkC &= ~1;
+                } else {
+                    cheese->unkC |= 1;
+                }
+            }
+        }
+        cheese->unkA += 2;
+        cheese->posY += (SIN(cheese->unkA * 4) >> 9);
+    } else {
+        cheese->unk10 = 9;
+    }
+
+    temp = 10;
+    if (unk54->unk68->graphics.anim < 0xB6) {
+        temp = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5B]
+                                 + unk54->unk68->variant];
+    }
+
+    if (temp != 9) {
+        gCurTask->main = sub_8014350;
+    }
+    sub_801412C(cheese);
+}
+
+void sub_801464C(void);
+
+void sub_80149EC(void);
+void sub_80152EC(void);
+
+void sub_80145D8(void)
+{
+    Cheese *cheese = TASK_DATA(gCurTask);
+    sub_8015118(cheese);
+    cheese->unk10 = 0;
+
+    if (gUnknown_03005498.someDistanceSquared < 40000) {
+        cheese->unk18 = gUnknown_03005498.t;
+
+        gUnknown_03005498.t->unk15 = 1;
+        cheese->unkA = 0;
+        m4aSongNumStart(SE_CREAM_CHEESE_ATTACK);
+        gCurTask->main = sub_801464C;
+        cheese->unkC |= 0x10;
+    } else {
+        cheese->unkA = 0;
+        gCurTask->main = sub_80149EC;
+    }
+
+    sub_80152EC();
+    sub_801412C(cheese);
+}
+
+void sub_80155D0(Cheese *);
+void sub_80148B8(void);
+
+// void sub_801464C(void)
+// {
+//     Cheese *cheese = TASK_DATA(gCurTask);
+//     Cheese_UNK54 *unk54 = &cheese->unk54;
+//     struct Task *t = cheese->unk18;
+//     s32 temp1;
+//     s32 temp2;
+//     s32 temp3;
+//     s32 temp4;
+
+//     temp1 = 3;
+//     temp2 = 0xC;
+//     temp3 = 0;
+//     temp4 = 0;
+
+//     if (IS_BOSS_STAGE(gCurrentLevel)) {
+//         sub_80155D0(cheese);
+//         temp1 = 2;
+//         temp2 = 0x20;
+//     }
+
+//     if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69
+//         && unk54->unk68->graphics.anim != 0x6D && unk54->unk68->graphics.anim != 0x71)
+//         { cheese->unkC &= ~0x10;
+//     }
+
+//     cheese->unk10 = 5;
+//     if (cheese->unkA != 0) {
+//         cheese->unk10 = 6;
+//         cheese->unkA++;
+//     }
+
+//     if (cheese->unkA > 8) {
+//         cheese->unkA = 0;
+//         cheese->unkE = 0;
+//         gCurTask->main = sub_80148B8;
+//     }
+
+//     if (t->unk16 - Q_24_8_TO_INT(cheese->posX) < 0
+//         && (Q_24_8_TO_INT(cheese->posY) - t->unk16) > temp2) {
+//         s32 temp = t->unk18 - (Q_24_8_TO_INT(cheese->posY) + 4);
+//         if (temp < 0) {
+//             temp = (Q_24_8_TO_INT(cheese->posY) + 4) - t->unk18;
+//         }
+
+//         if (temp < temp2) {
+//             if (cheese->unkA == 0) {
+//                 cheese->unkA = 1;
+//             }
+//             cheese->unk10 = 6;
+//         }
+//     } else if (t->unk16 - Q_24_8_TO_INT(cheese->posX) >= 0
+//                && (Q_24_8_TO_INT(cheese->posY) - t->unk16) < temp2) {
+//         s32 temp = t->unk18 - (Q_24_8_TO_INT(cheese->posY) + 4);
+//         if (temp < 0) {
+//             temp = (Q_24_8_TO_INT(cheese->posY) + 4) - t->unk18;
+//         }
+
+//         if (temp < temp2) {
+//             if (cheese->unkA == 0) {
+//                 cheese->unkA = 1;
+//             }
+//             cheese->unk10 = 6;
+//         }
+//     }
+
+//     temp2 = Q_24_8(t->unk16);
+
+// }
