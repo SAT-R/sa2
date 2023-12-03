@@ -58,6 +58,8 @@ bool UiElement(UiContext *ui, UiIdent *id, int x, int y, int width, int height, 
     bool clicked = false;
 
     if(ui->active == id) {
+        SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+
         if(IS_USER_KEY_RELEASED_LEFT) {
             if(ui->hot == id) {
                 clicked = true;
@@ -66,6 +68,8 @@ bool UiElement(UiContext *ui, UiIdent *id, int x, int y, int width, int height, 
             ui->active = NULL;
         }
     } else if(ui->hot == id) {
+        SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+
         // TODO: This shouldn't be whether it _is_ down,
         //       but whether it was just pressed.
         // 

@@ -333,6 +333,11 @@ typedef struct {
     UiIdent btnBackLayer;
     UiIdent btnPreview;
     UiIdent btnSaveMap;
+
+    UiIdent btnEntityMinus;
+    UiIdent btnEntityPlus;
+    UiIdent btnsDataMinus[ENT_DATA_SIZE(SA3)];
+    UiIdent btnsDataPlus [ENT_DATA_SIZE(SA3)];
 } UiHeader;
 
 typedef struct {

@@ -256,6 +256,39 @@ void InitUiHeaderWidgets(UiHeader *hdr)
     hdr->btnPreview.btn.activeTint = UI_COLOR_BUTTON_PRESSED;
     hdr->btnPreview.btn.textTint   = UI_COLOR_BUTTON_TEXT;
     
+    hdr->btnEntityMinus.type           = UIID_BUTTON;
+    hdr->btnEntityMinus.btn.text       = "-";
+    hdr->btnEntityMinus.btn.idleTint   = UI_COLOR_BUTTON_OFF;
+    hdr->btnEntityMinus.btn.hotTint    = UI_COLOR_BUTTON_OFF_HOVER;
+    hdr->btnEntityMinus.btn.activeTint = UI_COLOR_BUTTON_OFF_PRESSED;
+    hdr->btnEntityMinus.btn.textTint   = UI_COLOR_BUTTON_OFF_TEXT;
+    
+    hdr->btnEntityPlus.type           = UIID_BUTTON;
+    hdr->btnEntityPlus.btn.text       = "+";
+    hdr->btnEntityPlus.btn.idleTint   = UI_COLOR_BUTTON_ON;
+    hdr->btnEntityPlus.btn.hotTint    = UI_COLOR_BUTTON_ON_HOVER;
+    hdr->btnEntityPlus.btn.activeTint = UI_COLOR_BUTTON_ON_PRESSED;
+    hdr->btnEntityPlus.btn.textTint   = UI_COLOR_BUTTON_ON_TEXT;
+
+    for(int i = 0; i < ENT_DATA_SIZE(SA3); i++) {
+        hdr->btnsDataMinus[i].type           = UIID_BUTTON;
+        hdr->btnsDataMinus[i].btn.text       = "-";
+        hdr->btnsDataMinus[i].btn.idleTint   = UI_COLOR_BUTTON_OFF;
+        hdr->btnsDataMinus[i].btn.hotTint    = UI_COLOR_BUTTON_OFF_HOVER;
+        hdr->btnsDataMinus[i].btn.activeTint = UI_COLOR_BUTTON_OFF_PRESSED;
+        hdr->btnsDataMinus[i].btn.textTint   = UI_COLOR_BUTTON_OFF_TEXT;
+    }
+    
+    for(int i = 0; i < ENT_DATA_SIZE(SA3); i++) {
+        hdr->btnsDataPlus[i].type       = UIID_BUTTON;
+        hdr->btnsDataPlus[i].btn.text       = "+";
+        hdr->btnsDataPlus[i].btn.fontSize   = 10;
+        hdr->btnsDataPlus[i].btn.idleTint   = UI_COLOR_BUTTON_ON;
+        hdr->btnsDataPlus[i].btn.hotTint    = UI_COLOR_BUTTON_ON_HOVER;
+        hdr->btnsDataPlus[i].btn.activeTint = UI_COLOR_BUTTON_ON_PRESSED;
+        hdr->btnsDataPlus[i].btn.textTint   = UI_COLOR_BUTTON_ON_TEXT;
+    }
+
     /* These buttons change color based on state, so no need to set them */
     hdr->btnBackLayer.type  = UIID_BUTTON;
     hdr->btnBackLayer.btn.text = "Back";

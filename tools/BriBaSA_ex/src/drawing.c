@@ -363,8 +363,6 @@ GetEntityOffsetRect(AppState *state, EntityType etype, int x, int y, int kind, c
     return rec;
 }
 
-// TODO:
-// - Don't iterate through all regions, only the currently visible ones
 #define SPAWN_POPUP_DIM 128.0
 void
 DrawMapSprites(AppState *state, Rectangle recMap)
@@ -388,10 +386,10 @@ DrawMapSprites(AppState *state, Rectangle recMap)
             int screenX = (recMap.x + ent->worldX) - state->map.camera.x;
             int screenY = (recMap.y + ent->worldY) - state->map.camera.y;
 
-            Texture2D txEnt = GetEntityTextureById(state, ent->etype, ent->kind);
-            Rectangle recUi = GetEntityOffsetRect(state, ent->etype, screenX, screenY, ent->kind, ent->data);
-
             if(CheckCollisionPointRec(CLITERAL(Vector2){screenX, screenY}, recSpawn)) {
+                Texture2D txEnt = GetEntityTextureById(state, ent->etype, ent->kind);
+                Rectangle recUi = GetEntityOffsetRect(state, ent->etype, screenX, screenY, ent->kind, ent->data);
+
                 bool clickedEnt = UiElement(&state->uiCtx, (UiIdent*)&ent->ui, recUi.x, recUi.y, recUi.width, recUi.height, NULL);
 
                 if(clickedEnt) {
@@ -727,7 +725,11 @@ DrawSaveButton(AppState *state, int x, int y)
 
 void DrawActiveEntityInfo(AppState *state, int x, int y)
 {
+    InteractableMetaList *ias = &state->paths.interactables;
+    ItemMetaList *items     = &state->paths.items;
+    EntityMetaList *enemies = &state->paths.enemies;
     EditorEntity *ent = state->map.entities.active;
+    UiContext *uiCtx = &state->uiCtx;
 
     if(!ent) {
         return;
@@ -743,33 +745,48 @@ void DrawActiveEntityInfo(AppState *state, int x, int y)
     int fontSize = 20;
     int posX = x;
     int posY = y;
-    int entId = (ent - state->map.entities.elements);
     const char *txtId  = TextFormat("%s", entTypes[ent->etype]);
     DrawText(txtId,  posX, posY, fontSize, UI_COLOR_TEXT);
     posY += fontSize + 2;
     fontSize = 10;
-        
+
+    bool minusClicked = UiElement(uiCtx, &state->uiHeader.btnEntityMinus, posX, posY, fontSize, fontSize, NULL);
+    bool plusClicked  = UiElement(uiCtx, &state->uiHeader.btnEntityPlus,  posX+fontSize, posY, fontSize, fontSize, NULL);
+
+    if(minusClicked) {ent->kind--; state->unsavedChangesExist = true; }
+    if(plusClicked)  {ent->kind++; state->unsavedChangesExist = true; }
+
     char *txtName = NULL;
     char *data = NULL;
     switch(ent->etype) {
     case ET_ITEM: {
-        txtName = state->paths.items.items.elements[ent->kind].name;
+        ent->kind %= items->items.count;
+
+        txtName = (char*)TextFormat("%3d: %s", ent->kind, items->items.elements[ent->kind].name);
     } break;
     case ET_ENEMY: {
-        txtName = state->paths.enemies.elements[ent->kind].name;
+        ent->kind %= enemies->count;
+
+        txtName = (char*)TextFormat("%3d: %s", ent->kind, enemies->elements[ent->kind].name);
         data = ent->data;
     } break;
     case ET_INTERACTABLE: {
-        const char *name = state->paths.interactables.elements[ent->kind].name;
-        const char *type = state->paths.interactables.elements[ent->kind].type;
-        txtName = (char*)((type) ? TextFormat("%s (%s)", name, type) : name);
+        ent->kind %= ias->count;
+
+        const char *name = ias->elements[ent->kind].name;
+
+        const char *type = ias->elements[ent->kind].type;
+
+        txtName = (char*)((type) ?
+            TextFormat("%3d: %s (%s)", ent->kind, name, type) :
+            TextFormat("%3d: %s", ent->kind, name));
 
         data = ent->data;
     } break;
     }
         
     if(txtName) {
-        DrawText(txtName, posX, posY, fontSize, UI_COLOR_TEXT);
+        DrawText(txtName, posX + 2 * fontSize + 2, posY, fontSize, UI_COLOR_TEXT);
         posY += fontSize + 2;
     }
     
@@ -779,12 +796,18 @@ void DrawActiveEntityInfo(AppState *state, int x, int y)
         
     if(data) {
         for(int i = 0; i < ENT_DATA_SIZE(state->game); i++) {
+            minusClicked = UiElement(uiCtx, &state->uiHeader.btnsDataMinus[i], posX,            posY, fontSize, fontSize, NULL);
+            plusClicked  = UiElement(uiCtx, &state->uiHeader.btnsDataPlus[i],  posX + fontSize, posY, fontSize, fontSize, NULL);
+
+            if(minusClicked) {data[i]--; state->unsavedChangesExist = true; }
+            if(plusClicked)  {data[i]++; state->unsavedChangesExist = true; }
+
             if(i < 2) {
                 const char *txtData = TextFormat("data[%d]: %d", i, data[i]);
-                DrawText(txtData, posX, posY, fontSize, UI_COLOR_TEXT);
+                DrawText(txtData, posX + 2 * fontSize + 2, posY, fontSize, UI_COLOR_TEXT);
             } else {
                 const char *txtData = TextFormat("data[%d]: %d", i, (unsigned char)data[i]);
-                DrawText(txtData, posX, posY, fontSize, UI_COLOR_TEXT);
+                DrawText(txtData, posX + 2 * fontSize + 2, posY, fontSize, UI_COLOR_TEXT);
             }
             posY += fontSize + 2;
         }
