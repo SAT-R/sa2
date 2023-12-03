@@ -27,6 +27,9 @@
 #define IS_USER_KEY_RELEASED_LEFT   (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)   || IsKeyReleased(KEY_X))
 #define IS_USER_KEY_RELEASED_MIDDLE (IsMouseButtonReleased(MOUSE_BUTTON_MIDDLE) || IsKeyReleased(KEY_C))
 #define IS_USER_KEY_RELEASED_RIGHT  (IsMouseButtonReleased(MOUSE_BUTTON_RIGHT)  || IsKeyReleased(KEY_V))
+#define IS_USER_KEY_PRESSED_LEFT   (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)   || IsKeyPressed(KEY_X))
+#define IS_USER_KEY_PRESSED_MIDDLE (IsMouseButtonPressed(MOUSE_BUTTON_MIDDLE) || IsKeyPressed(KEY_C))
+#define IS_USER_KEY_PRESSED_RIGHT  (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)  || IsKeyPressed(KEY_V))
 
 #define IS_MOUSE_ON_RECT(_rectangle) (CheckCollisionPointRec(GetMousePosition(), (_rectangle)))
 

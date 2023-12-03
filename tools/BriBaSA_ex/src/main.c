@@ -531,7 +531,7 @@ HandleMouseInputSpawnPos(AppState *state)
         if(IsMouseOnSpawn(&state->map, chars)) {
             SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
 
-            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            if(IS_USER_KEY_PRESSED_LEFT) {
                 chars->selected = (++chars->selected) % chars->count;
             }
         }
