@@ -27,7 +27,7 @@ typedef struct {
     /* 0x10 */ u16 unk10;
     /* 0x12 */ s16 unk12;
     /* 0x14 */ u32 unk14;
-    /* 0x18 */ s32 filler18;
+    /* 0x18 */ struct Task *unk18;
 
     // Following here might be a Sprite (incl. unk4C-unk53)?
     /* 0x1C */ Sprite s;
