@@ -2,9 +2,9 @@
 - By JaceCear
 
 Usage:
-- Left   Mouse Button: Set metatile at the current position
-- Middle Mouse Button: Move around the map
-- Right  Mouse Button: Select a metatile from the ones in the map
+- Left   Mouse Button or X: Set metatile or select entity at the current mouse position
+- Middle Mouse Button or C: Move around the map
+- Right  Mouse Button or V: Select a metatile from the ones in the map
 
 - Click the Front/Back buttons to show/hide the repective layer
 - Click the preview button to show the selected Metatile merged (as it appears in-game) or split.
