@@ -1,7 +1,8 @@
-#include <raylib.h>
+#include <stdio.h> // printf
 #include <stdlib.h> // ABS
 #include <math.h>   // sin
 #include <string.h> // memcpy
+#include <raylib.h>
 
 #include "global.h"
 #include "drawing.h"
@@ -750,11 +751,15 @@ void DrawActiveEntityInfo(AppState *state, int x, int y)
     posY += fontSize + 2;
     fontSize = 10;
 
-    bool minusClicked = UiElement(uiCtx, &state->uiHeader.btnEntityMinus, posX, posY, fontSize, fontSize, NULL);
-    bool plusClicked  = UiElement(uiCtx, &state->uiHeader.btnEntityPlus,  posX+fontSize, posY, fontSize, fontSize, NULL);
+    bool minusClicked = false;
+    bool plusClicked = false;
+    if(ent->etype != ET_RING) {
+        bool minusClicked = UiElement(uiCtx, &state->uiHeader.btnEntityMinus, posX, posY, fontSize, fontSize, NULL);
+        bool plusClicked  = UiElement(uiCtx, &state->uiHeader.btnEntityPlus,  posX+fontSize, posY, fontSize, fontSize, NULL);
 
-    if(minusClicked) {ent->kind--; state->unsavedChangesExist = true; }
-    if(plusClicked)  {ent->kind++; state->unsavedChangesExist = true; }
+        if(minusClicked) {ent->kind--; state->unsavedChangesExist = true; }
+        if(plusClicked)  {ent->kind++; state->unsavedChangesExist = true; }
+    }
 
     char *txtName = NULL;
     char *data = NULL;

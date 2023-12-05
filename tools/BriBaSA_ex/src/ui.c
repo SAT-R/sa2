@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <raylib.h>
 
 #include "global.h"
