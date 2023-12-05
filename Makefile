@@ -161,11 +161,11 @@ tools: $(TOOLDIRS)
 
 format:
 	@echo $(FORMAT) -i -style=file "**/*.c" "**/*.h"
-	@$(FORMAT) -i -style=file $(shell find . -name "*.c" ! -path '*/build/*') $(shell find . -name "*.h" ! -path '*/build/*')
+	@$(FORMAT) -i -style=file $(shell find . -name "*.c" ! -path '*/build/*' ! -path '*/tools/*') $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/tools/*')
 
 check_format:
 	@echo $(FORMAT) -i -style=file --dry-run --Werror "**/*.c" "**/*.h"
-	@$(FORMAT) -i -style=file --dry-run --Werror $(shell find . -name "*.c" ! -path '*/build/*') $(shell find . -name "*.h" ! -path '*/build/*')
+	@$(FORMAT) -i -style=file --dry-run --Werror $(shell find . -name "*.c" ! -path '*/build/*' ! -path '*/tools/*') $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/tools/*')
 
 $(TOOLDIRS):
 	@$(MAKE) -C $@
