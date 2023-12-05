@@ -456,7 +456,7 @@ Debug_DrawAllEntityTextures(AppState *state)
     DrawEntRing(state, testX, testY);
 }
 
-inline bool
+bool
 DrawButtonColored(Rectangle rec, char *text, int fontSize, Color idleTint, Color hotTint, Color activeTint, Color textTint)
 {
     bool wasReleased = false;
@@ -769,12 +769,14 @@ void DrawActiveEntityInfo(AppState *state, int x, int y)
 
         txtName = (char*)TextFormat("%3d: %s", ent->kind, items->items.elements[ent->kind].name);
     } break;
+
     case ET_ENEMY: {
         ent->kind %= enemies->count;
 
         txtName = (char*)TextFormat("%3d: %s", ent->kind, enemies->elements[ent->kind].name);
         data = ent->data;
     } break;
+
     case ET_INTERACTABLE: {
         ent->kind %= ias->count;
 
@@ -788,6 +790,7 @@ void DrawActiveEntityInfo(AppState *state, int x, int y)
 
         data = ent->data;
     } break;
+
     }
         
     if(txtName) {

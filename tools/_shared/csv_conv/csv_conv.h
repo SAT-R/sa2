@@ -38,7 +38,7 @@ typedef enum {
     EntRing         = 3,
 
     EntCount
-} EntityType;
+} CsvEntityType;
 
 // Different entity types use more/less data.
 // Interactable: x, y, kind, data
@@ -85,8 +85,8 @@ typedef struct {
 
 // Converts the input CSV file into binary data and optionally outputs it as its in-game format
 extern MapRegions ConvertCsvToBinary(char* csv_path, char *bin_path, char *c_header_path, bool outputBinaryFile);
-extern void ConvertBinaryToCsv(char* bin_path, char *csv_path, char *c_header_path, GameId game, EntityType etype);
-extern void ConvertMapRegionsToCsv(MapRegions regions, char *csv_path, char *c_header_path, GameId game, EntityType etype);
+extern void ConvertBinaryToCsv(char* bin_path, char *csv_path, char *c_header_path, GameId game, CsvEntityType etype);
+extern void ConvertMapRegionsToCsv(MapRegions regions, char *csv_path, char *c_header_path, GameId game, CsvEntityType etype);
 
 extern const char *sMapEntityKinds[4];
 

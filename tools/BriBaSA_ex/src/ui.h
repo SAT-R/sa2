@@ -57,14 +57,7 @@ typedef struct {
     //EntityType etype;
 //} UiIdentEntity;
 
-struct UiIdent;
-
-typedef struct {
-    struct UiIdent *elements;
-    int count, capacity;
-} UiIdentList;
-
-typedef union UiIdent {
+typedef union {
     UiIdentType type;
 
     // TODO: Find some way of occupying less space
@@ -73,6 +66,11 @@ typedef union UiIdent {
     UiIdentTexture tx;
     UiIdentEntity ent;
 } UiIdent;
+
+typedef struct {
+    UiIdent *elements;
+    int count, capacity;
+} UiIdentList;
 
 typedef struct {
     UiIdent *hot;

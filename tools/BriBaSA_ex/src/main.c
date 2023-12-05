@@ -9,19 +9,18 @@
 #include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 
-#include <config.h> // from Raylib
+#include <config.h> // from raylib, for MAX_FILEPATH_LENGTH
 #include <raylib.h>
-
-#include "jasc_parser/jasc_parser.h"
-//#include "../../_shared/csv_conv/csv_conv.h"
 
 #include "../../../include/constants/interactables.h"
 #include "../../../include/constants/zones.h"
 
 #include "global.h"
 #include "drawing.h"
+#include "file_paths.h"
 #include "map.h"
 #include "parsing.h"
 #include "texture.h"
@@ -30,10 +29,10 @@
 
 /* Data structures for asset files */
 typedef struct {
-    u16 tileIndex : 10;
-    u16 xFlip : 1;
-    u16 yFlip : 1;
-    u16 pal : 4;
+    uint16_t tileIndex : 10;
+    uint16_t xFlip : 1;
+    uint16_t yFlip : 1;
+    uint16_t pal : 4;
 } MetatileTile;
 
 static char *GetMapDirectory(const char *mapsRoot);
@@ -47,13 +46,13 @@ static void DrawPalettes(FileInfo *paths);
 static void HandleMouseInput(AppState *state, Rectangle recMap);
 static void HandleKeyInput(AppState *state, Rectangle recMap);
 static void HandleMouseInputUIWindows(AppState *state);
-static void InitFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir);
 
 static Rectangle GetSpawnPosRectangle(StageMap *map, CharacterList *chars);
 static void HandleMouseInputSpawnPos(AppState *state);
 static inline void MoveCameraToSpawn(AppState *state, Rectangle recMap);
 static inline void MoveCameraToSpawn(AppState *state, Rectangle recMap);
 static inline void MoveCameraToEnd(AppState *state, Rectangle recMap);
+static void LoadEntityDataFromCSVs(AppState *state);
 
 #if MEASURE_MALLOC
 static int TempMallocCounter = 0;
@@ -209,7 +208,8 @@ int main(void)
     return 0;
 }
 
-static char *GetMapDirectory(const char *mapsRoot)
+static char *
+GetMapDirectory(const char *mapsRoot)
 {
     // TODO: Ask user to select map directory and game!
     // 
@@ -248,7 +248,8 @@ static char *GetMapDirectory(const char *mapsRoot)
     return mapDir;
 }
 
-void InitUiHeaderWidgets(UiHeader *hdr)
+void
+InitUiHeaderWidgets(UiHeader *hdr)
 {
     hdr->btnPreview.type = UIID_BUTTON;
     hdr->btnPreview.btn.idleTint   = UI_COLOR_BUTTON;
@@ -300,7 +301,8 @@ void InitUiHeaderWidgets(UiHeader *hdr)
     hdr->btnSaveMap.btn.text = "SAVE MAP";
 }
 
-static LoadEntityDataFromCSVs(AppState *state)
+static void
+LoadEntityDataFromCSVs(AppState *state)
 {
     FileInfo *paths = &state->paths;
     EditorEntities entities = {0};
@@ -582,7 +584,7 @@ GetMetatileIndex(StageMap *map, Tilemap* tilemap, MetatileLayer layer, int x, in
 
     if(x >= 0 && y >= 0
     && x < map->width && y < map->height) {        
-        u16 *mtIndices = tilemap->layers[layer].data;
+        uint16_t *mtIndices = tilemap->layers[layer].data;
         return mtIndices[y * map->width + x];
     } else {
         return 0;
@@ -712,145 +714,6 @@ DrawPalettes(FileInfo *paths)
     DrawPalette(palX+16*colorWidth, palY, colorWidth, paths->background.palette.colors, paths->background.palette.count);
 }
 
-static void
-LoadPaletteFromJascFile(char *jascPath, Palette *pal)
-{
-    Jasc jasc;
-    parse_jasc(jascPath, &jasc);
-
-    pal->colors = (Color*)jasc.colors;
-    pal->count  = jasc.count;
-}
-
-inline char *allocPath(char *folder, char *fileName)
-{
-    const char *source      = TextFormat("%s/%s", folder, fileName);
-    int allocatedSize = TextLength(source) + 1;
-    char *dest        = _Realloc(NULL, allocatedSize);
-    TextCopy(dest, source);
-    return dest;
-}
-
-static inline void loadFile(File *out, char *fileName) {
-    out->data = LoadFileData(fileName, &out->dataSize);
-    out->path = fileName;
-}
-
-static inline void loadTextFile(File *out, char *fileName) {
-    char *txt = LoadFileText(fileName);
-    int length = TextLength(txt);
-
-    out->data = txt;
-    out->dataSize = length;
-    out->path = fileName;
-}
-
-static void
-SetupTilemapPaths(Tilemap *out, char *directory)
-{
-    Tilemap tm = {0};
-
-    tm.dir = allocPath(directory, "");
-
-    // Shared paths
-    char *tileset = allocPath(directory, "tileset.png");
-    char *palette = allocPath(directory, "palette.pal");
-    char *tilemap = allocPath(directory, "metatiles.tilemap2");
-
-    // Map-exclusive paths
-    char *mapBack            = allocPath(directory, "map_back.bin");
-    char *mapFront           = allocPath(directory, "map_front.bin");
-    char *collisionFlags     = allocPath(directory, "flags.coll");
-    char *collisionHeightmap = allocPath(directory, "height_map.coll");
-    char *collisionRotation  = allocPath(directory, "tile_rot.coll");
-    char *stageInfo          = allocPath(directory, "metadata.txt");
-
-    // TODO: Standardize tileset and tilemap file names in the future!
-    if(!FileExists(tileset)) {
-        // Assume that this is a non-stage-map tilemap
-
-        // NOTE: GetFileName returns pointer inside the src string
-        char *tilesetName = (char *)GetFileName(tileset);
-        TextCopy(tilesetName, "tiles.png");
-    }
-
-    if(!FileExists(tilemap)) {
-        // Didn't find a metatiles file,
-        // so check whether it's a 2-byte tilemap
-        char *tilemapName = (char *)GetFileName(tilemap);
-        TextCopy(tilemapName, "tilemap.tilemap2");
-
-        if(!FileExists(tilemap)) {
-            // Assume that it's a 1-byte-per-tile tilemap
-            char *tilemapName = (char *)GetFileName(tilemap);
-            TextCopy(tilemapName, "tilemap.tilemap1");
-        }
-    }
-
-    if(FileExists(tileset)) tm.tileset = LoadImage(tileset);
-    if(FileExists(palette)) LoadPaletteFromJascFile(palette, &tm.palette);
-    if(FileExists(tilemap)) {
-        loadFile(&tm.tilemap, tilemap);
-        
-        const char *ext = GetFileExtension(tilemap);
-        const char *tilemap1or2 = TextSubtext(ext, TextLength("tilemap2"), 1);
-        int bytesPerIndex = TextToInteger(tilemap1or2);
-        if(bytesPerIndex < 0)
-            bytesPerIndex = 0;
-
-        tm.bytesPerTilemapIndex = bytesPerIndex;
-    }
-
-    /* Only used by stage maps */
-    if(FileExists(mapBack))            loadFile(&tm.layers[LAYER_BACK], mapBack);    
-    if(FileExists(mapFront))           loadFile(&tm.layers[LAYER_FRONT], mapFront);
-    if(FileExists(collisionFlags))     loadFile(&tm.collisionFlags, collisionFlags);
-    if(FileExists(collisionHeightmap)) loadFile(&tm.collisionHeightmap, collisionHeightmap);
-    if(FileExists(collisionRotation))  loadFile(&tm.collisionRotation, collisionRotation);
-    
-    memcpy(out, &tm, sizeof(*out));
-}
-
-static void
-InitFilePaths(FileInfo *outInfo, char *gameDir, char *mapDir)
-{
-    FileInfo info = {0};
-
-    info.gameRoot = gameDir;
-    info.mapRoot  = mapDir;
-    
-    /* Global C Headers */
-    info.characters_h    = allocPath(gameDir, "include/constants/characters.h");
-    info.animations_h    = allocPath(gameDir, "include/constants/animations.h");
-    info.enemies_h       = allocPath(gameDir, "include/constants/enemies.h");
-    info.interactables_h = allocPath(gameDir, "include/constants/interactables.h");
-    info.items_h         = allocPath(gameDir, "include/constants/items.h");
-
-
-    /* Map-specific */
-
-    // Base Paths
-    char fgPath[MAX_FILEPATH_LENGTH];
-    char bgPath[MAX_FILEPATH_LENGTH];
-    TextCopy(fgPath, TextFormat("%s/tilemaps/fg/", mapDir));
-    TextCopy(bgPath, TextFormat("%s/tilemaps/bg/", mapDir));
-
-    SetupTilemapPaths(&info.background, bgPath);
-    SetupTilemapPaths(&info.map, fgPath);
-
-    // Entity data
-    info.entityCSVs.enemies       = allocPath(mapDir, "entities/enemies.csv");
-    info.entityCSVs.interactables = allocPath(mapDir, "entities/interactables.csv");
-    info.entityCSVs.items         = allocPath(mapDir, "entities/itemboxes.csv");
-    info.entityCSVs.rings         = allocPath(mapDir, "entities/rings.csv");
-
-
-    // Copy local data into output
-    if(outInfo) {
-        memcpy(outInfo, &info, sizeof(*outInfo));
-    }
-}
-
 
 Texture2D
 CreateMetatileAtlas(AppState *state, int numMetatiles)
@@ -883,7 +746,7 @@ CreateMetatileAtlas(AppState *state, int numMetatiles)
 
             MetatileTile *metaTile = ((MetatileTile*)paths->map.tilemap.data) + (mtAtlasIndex * NUM_TILES_INSIDE_METATILES); 
 
-            u8 *tileset = paths->map.tileset.data;
+            uint8_t *tileset = paths->map.tileset.data;
 
             for(int y = 0; y < TILES_PER_METATILE; y++) {
                 for(int x = 0; x < TILES_PER_METATILE; x++) {
@@ -896,20 +759,20 @@ CreateMetatileAtlas(AppState *state, int numMetatiles)
                         goto CreateMetatileAtlas_defer;
                     }
 
-                    u8 *tile = tileset + metatileTile.tileIndex * (TILE_DIM*TILE_DIM);
+                    uint8_t *tile = tileset + metatileTile.tileIndex * (TILE_DIM*TILE_DIM);
 
 
                     for(int ty = 0; ty < TILE_DIM; ty++) {
-                        u8 cy = (metatileTile.yFlip) ? 7 - ty : ty;
+                        uint8_t cy = (metatileTile.yFlip) ? 7 - ty : ty;
 
                         for(int tx = 0; tx < TILE_DIM; tx++) {
-                            u8 cx = (metatileTile.xFlip) ? 7 - tx : tx;
+                            uint8_t cx = (metatileTile.xFlip) ? 7 - tx : tx;
 
                             // NOTE: Per default GBAGFX stores colors inverted
                             //       when using its own grayscale palette
-                            u8 colorId = 15 - (tile[cy*paths->map.tileset.width + cx] % 16u);
+                            uint8_t colorId = 15 - (tile[cy*paths->map.tileset.width + cx] % 16u);
 
-                            u8 palId = metaTile[mti].pal * 16 + colorId;
+                            uint8_t palId = metaTile[mti].pal * 16 + colorId;
                         
                             Color c = ((Color*)paths->map.palette.colors)[palId];
 

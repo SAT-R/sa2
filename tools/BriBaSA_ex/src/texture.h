@@ -3,6 +3,6 @@
 
 extern Texture2D GetEntityTextureById(AppState *state, EntityType etype, unsigned char id);
 
-extern LoadAllEntityTextures(char *gamePath, FileInfo *paths);
+extern void LoadAllEntityTextures(char *gamePath, FileInfo *paths);
 
 #endif // GUARD_BRISABA_EX_TEXTURE_H

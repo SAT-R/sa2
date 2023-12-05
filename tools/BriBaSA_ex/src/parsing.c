@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <raylib.h>
 
 #include "global.h"
@@ -7,7 +8,6 @@
 
 #include "../../_shared/c_header_parser/parser.h"
 
-void ParseOrCreateMetadataTxt(AppState *state, Tilemap* tm);
 void SetMetaEntityValues(TokenList *tokList, void *inentities, EntityType et);
 
 void

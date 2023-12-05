@@ -76,8 +76,8 @@ const char *sETypeIdents[EntCount] = {
     [EntRing]         = "",
 };
 
-static void PrintCsvFirstLineCommas(FILE *csv_handle, GameId game, EntityType etype);
-static void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data, int region_x, int region_y, GameId game, EntityType etype);
+static void PrintCsvFirstLineCommas(FILE *csv_handle, GameId game, CsvEntityType etype);
+static void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data, int region_x, int region_y, GameId game, CsvEntityType etype);
 
 static File OpenWholeFile(char* path)
 {
@@ -127,22 +127,22 @@ static CsvLines GetCsvLines(char *csv_file_data, long file_size)
     return lines;
 }
 
-static EntityType GetEntityTypeFromToken(char *token)
+static CsvEntityType GetEntityTypeFromToken(char *token)
 {
-    EntityType result = EntUnknown;
+    CsvEntityType result = EntUnknown;
 
     for(int i = 0; i < EntCount; i++)
     {
         int len = strlen(token);
         if(len > 0 && !strcmp(token, sMapEntityKinds[i])) {
-            result = (EntityType)i;
+            result = (CsvEntityType)i;
         }
     }
 
     return result;
 }
 
-static inline int GetMapEntitySize(GameId game, EntityType etype)
+static inline int GetMapEntitySize(GameId game, CsvEntityType etype)
 {
     int size;
 
@@ -202,7 +202,7 @@ static int GetEntityId(EntityNameList name_list, char *name)
     }
 }
 
-static EntityNameList CreateEntityNameList(TokenList tokens, EntityType etype)
+static EntityNameList CreateEntityNameList(TokenList tokens, CsvEntityType etype)
 {
     EntityNameList list = {0};
 
@@ -254,7 +254,7 @@ static void DeleteEntityNameList(EntityNameList enl)
     enl.capacity = 0;
 }
 
-static int GetExpectedCsvDataLineCommaCount(GameId game_id, EntityType etype)
+static int GetExpectedCsvDataLineCommaCount(GameId game_id, CsvEntityType etype)
 {
     int expected = 0;
 
@@ -297,7 +297,7 @@ static int count_commas(char *str)
 
 // NOTE:
 // Make sure to call FillMapRegions() before calling this!
-static void CreateMapEntityBinaryFile(char *bin_path, GameId game_id, EntityType etype, MapRegion *regions, int map_regions_x, int map_regions_y)
+static void CreateMapEntityBinaryFile(char *bin_path, GameId game_id, CsvEntityType etype, MapRegion *regions, int map_regions_x, int map_regions_y)
 {
     int region_count = map_regions_x * map_regions_y;
 
@@ -344,7 +344,7 @@ static void CreateMapEntityBinaryFile(char *bin_path, GameId game_id, EntityType
     }
 }
 
-void FillMapRegions(char *target_name, CsvLines lines, EntityNameList name_list, MapRegion *regions, GameId game_id, EntityType etype, int map_regions_x, int map_regions_y)
+void FillMapRegions(char *target_name, CsvLines lines, EntityNameList name_list, MapRegion *regions, GameId game_id, CsvEntityType etype, int map_regions_x, int map_regions_y)
 {
     int expected_comma_count = GetExpectedCsvDataLineCommaCount(game_id, etype);
 
@@ -497,7 +497,7 @@ MapRegions CsvToBinaryData(char *csv_file_data, long csv_file_size, char *bin_pa
             char *map_regions_x_str = strtok(NULL, ",");
             char *map_regions_y_str = strtok(NULL, ",");
 
-            EntityType etype = GetEntityTypeFromToken(etype_str);
+            CsvEntityType etype = GetEntityTypeFromToken(etype_str);
 
             if(etype != EntUnknown) {
                 int map_regions_x = atoi(map_regions_x_str);
@@ -529,7 +529,7 @@ MapRegions CsvToBinaryData(char *csv_file_data, long csv_file_size, char *bin_pa
                     fprintf(stderr, "ERROR: Number of Y map regions is 0\n");
                 }
             } else {
-                fprintf(stderr, "ERROR: Unknown EntityType '%s'\n", etype_str);
+                fprintf(stderr, "ERROR: Unknown CsvEntityType '%s'\n", etype_str);
             }
         } else {
             fprintf(stderr, "ERROR: Unknown game identifier '%s'\n", ident);
@@ -564,7 +564,7 @@ MapRegions ConvertCsvToBinary(char* csv_path, char *bin_path, char *c_header_pat
     return mapRegions;
 }
 
-void ConvertMapRegionsToCsv(MapRegions regions, char *csv_path, char *c_header_path, GameId game, EntityType etype)
+void ConvertMapRegionsToCsv(MapRegions regions, char *csv_path, char *c_header_path, GameId game, CsvEntityType etype)
 {
     int regions_x = regions.map_regions_x;
     int regions_y = regions.map_regions_y;
@@ -610,7 +610,7 @@ void ConvertMapRegionsToCsv(MapRegions regions, char *csv_path, char *c_header_p
     fclose(csv_handle);
 }
 
-static void PrintCsvFirstLineCommas(FILE *csv_handle, GameId game, EntityType etype)
+static void PrintCsvFirstLineCommas(FILE *csv_handle, GameId game, CsvEntityType etype)
 {
     int num_commas = 0;
     int meSize = GetMapEntitySize(game, etype);
@@ -625,7 +625,7 @@ static void PrintCsvFirstLineCommas(FILE *csv_handle, GameId game, EntityType et
     }
 }
 
-static void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data, int region_x, int region_y, GameId game, EntityType etype)
+static void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *in_data, int region_x, int region_y, GameId game, CsvEntityType etype)
 {
     EntityData *data = (EntityData *)in_data;
 
@@ -662,7 +662,7 @@ static void PrintCsvDataLine(FILE *csv_handle, EntityNameList name_list, void *i
     fprintf(csv_handle, "\n");
 }
 
-static void OutputCsvFile(char *csv_path, EntityNameList name_list, EntitiesHeader *eh, GameId game, EntityType etype)
+static void OutputCsvFile(char *csv_path, EntityNameList name_list, EntitiesHeader *eh, GameId game, CsvEntityType etype)
 {
     FILE *csv_handle = fopen(csv_path, "wb");
     if(!csv_handle) {
@@ -700,7 +700,7 @@ static void OutputCsvFile(char *csv_path, EntityNameList name_list, EntitiesHead
     fclose(csv_handle);
 }
 
-void ConvertBinaryToCsv(char* bin_path, char *csv_path, char *c_header_path, GameId game, EntityType etype)
+void ConvertBinaryToCsv(char* bin_path, char *csv_path, char *c_header_path, GameId game, CsvEntityType etype)
 {
     File file = OpenWholeFile(bin_path);
 

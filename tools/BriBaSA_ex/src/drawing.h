@@ -11,7 +11,7 @@ void DrawEntEnemy(AppState *state, int x, int y, int index, char data[5]);
 void DrawEntRing(AppState *state, int x, int y);
 void DrawMapSprites(AppState *state, Rectangle recMap);
 
-inline bool DrawButtonColored(Rectangle rec, char *text, int fontSize, Color idleTint, Color hotTint, Color activeTint, Color textTint);
+bool DrawButtonColored(Rectangle rec, char *text, int fontSize, Color idleTint, Color hotTint, Color activeTint, Color textTint);
 bool DrawAndHandleCloseButton(AppState *state);
 void DrawMainHeader(AppState *state, Texture2D txAtlas);
 void DrawUI(AppState *state, Texture2D txAtlas);
