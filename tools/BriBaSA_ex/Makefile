@@ -7,11 +7,16 @@ RAYLIB_DIR = ext/raylib/src/
 RAYLIB_LIB = $(RAYLIB_DIR)/libraylib.a
 
 CC   = gcc
-SRCS = src/main.c src/drawing.c src/file_paths.c src/parsing.c src/save.c src/texture.c src/ui.c
+SRCS = src/main.c src/drawing.c src/file_paths.c src/parsing.c src/save.c src/texture.c src/ui.c src/jasc_parser/jasc_parser.c
 
 CFLAGS   = -std=c11 -O2 
 INCLUDES = -I src/jasc_parser -I $(RAYLIB_DIR) -I $(CSV_CONV_DIR)
-LDFLAGS  = -L $(ARENA_ALLOC_DIR) -L $(RAYLIB_DIR) -L $(C_HEADER_PARSER_DIR) -L $(CSV_CONV_DIR) -larena_alloc -lc_header_parser -lraylib -lcsv_conv
+LDFLAGS  = -L $(ARENA_ALLOC_DIR) -L $(RAYLIB_DIR) -L $(C_HEADER_PARSER_DIR) -L $(CSV_CONV_DIR) -larena_alloc -lc_header_parser -lraylib -lcsv_conv -lm -lpthread -ldl
+
+.PHONY: all clean
+
+all: BriBaSA_ex
+	@:
 
 BriBaSA_ex: $(SRCS) $(ARENA_ALLOC_LIB) $(RAYLIB_LIB) $(CSV_CONV_LIB)
 	$(CC) $(INCLUDES) $(CFLAGS) $(SRCS) -o $@ $(LDFLAGS)
@@ -27,3 +32,6 @@ $(CSV_CONV_LIB):
 
 $(RAYLIB_LIB):
 	make -C $(RAYLIB_DIR)
+
+clean:
+	$(RM) BriBaSA_ex BriBaSA_ex.exe

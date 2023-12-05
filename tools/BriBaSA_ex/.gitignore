@@ -3,6 +3,7 @@ build/*.obj
 *.o
 *.lib
 *.exe
+BriBaSA_ex
 
 # Debugging files
 *.rdbg

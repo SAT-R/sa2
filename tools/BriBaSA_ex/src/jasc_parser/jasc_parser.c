@@ -8,6 +8,15 @@
 #include "my_types.h"
 #include "jasc_parser.h"
 
+#ifdef __unix
+#define fopen_s(pFile,filename,mode) ((*(pFile))=fopen((filename),(mode)))==NULL
+#endif
+
+#ifdef __unix
+#define fread_s(ptr, size, elem_size, _unused, stream) (fread(ptr, elem_size, size, stream))
+#endif
+
+
 // free the result of this if != NULL!
 static char* open_jasc(char* path)
 {
@@ -20,10 +29,12 @@ static char* open_jasc(char* path)
         fseek(file, 0, SEEK_END);
         long size = ftell(file);
         fseek(file, 0, SEEK_SET);
+        printf("size: %d\n", size);
 
         char* jasc_contents = (char*)malloc(size + 1);
         if(jasc_contents) {
             size_t bytes_read = fread_s(jasc_contents, size, sizeof(char), size, file);
+            printf("read: %d\n", bytes_read);
             // Textfiles with CRLF newlines lead to bytes_read being smaller than size...
             if(bytes_read > 0 && bytes_read <= (unsigned)size) {
                 jasc_contents[bytes_read] = '\0';
@@ -78,6 +89,7 @@ void parse_jasc(char* path, Jasc *jasc)
     int line_count = count_lines(jasc_text, strlen(jasc_text));
     int current_line = 1;
 
+    
     if(strncmp(remainder, "JASC-PAL", 8) == 0) {
         eat_line(&remainder, &current_line);
 
@@ -123,6 +135,7 @@ void parse_jasc(char* path, Jasc *jasc)
             fprintf(stderr, "ERROR: Missing '0100' in line 2.\n");
         }
     } else {
+        fprintf(stdout, remainder);
         fprintf(stderr, "ERROR: Missing 'JASC-PAL' in line 1.\n"
                         "       This does not appear to be a JASC-Palette.\n");
     }
