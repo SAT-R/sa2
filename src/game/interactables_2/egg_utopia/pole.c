@@ -230,8 +230,8 @@ static bool32 sub_807EDB8(Sprite_Pole *pole)
 
     temp = pole->unk0 - gCamera.x;
     temp3 = pole->unk4 - gCamera.y;
-    if (temp + pole->unkC < -128 || temp + pole->unk8 > (DISPLAY_WIDTH + 128) || temp3 + pole->unkE < -128
-        || temp3 + pole->unkA > (DISPLAY_HEIGHT + 128)) {
+    if (temp + pole->unkC < -128 || temp + pole->unk8 > (DISPLAY_WIDTH + 128)
+        || temp3 + pole->unkE < -128 || temp3 + pole->unkA > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 

@@ -51,16 +51,16 @@ typedef struct {
 #define PROP_SPEED_MIN Q_24_8(0.0)
 #define PROP_SPEED_MAX Q_24_8(1.0)
 
-#define FAN_DIR_LEFT                          0
-#define FAN_DIR_RIGHT                         1
-#define FAN_MASK_PERIODIC                     2
+#define FAN_DIR_LEFT                     0
+#define FAN_DIR_RIGHT                    1
+#define FAN_MASK_PERIODIC                2
 #define SKYCAN_FAN_KIND(dir, isPeriodic) (((isPeriodic) << 1) | (dir))
 #define IS_PROPELLER_DIR_LEFT(kind)                                                     \
-    (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, FALSE))                            \
+    (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, FALSE))                                   \
      || ((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE)))
 
-#define IS_FAN_PERIODIC(kind)                                                     \
-    (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE))                             \
+#define IS_FAN_PERIODIC(kind)                                                           \
+    (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE))                                    \
      || ((kind) == SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE)))
 
 static void Task_IA_Fan_UpdateRegular(void);
@@ -78,11 +78,11 @@ void Task_IA_SmallPropeller_UpdateInFanRegion(void);
 void SetTaskMain_UpdateRegular(Sprite_Fan *unused);
 void DestroyTask_Interactable087(Sprite_Fan *);
 
-static void CreateEntity_Fan(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u32 kind)
+static void CreateEntity_Fan(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                             u8 spriteY, u32 kind)
 {
-    struct Task *t
-        = TaskCreate(Task_IA_Fan_UpdateRegular, sizeof(Sprite_Fan),
-                     0x2010, 0, TaskDestructor_IA_Fan_UpdateRegular);
+    struct Task *t = TaskCreate(Task_IA_Fan_UpdateRegular, sizeof(Sprite_Fan), 0x2010, 0,
+                                TaskDestructor_IA_Fan_UpdateRegular);
     Sprite_Fan *prop = TASK_DATA(t);
     Sprite *s;
 
@@ -156,8 +156,7 @@ static void sub_807D468(Sprite_Fan *prop)
 
             r3 = Q_24_8(prop->posX + prop->right) - Q_24_8(48);
 
-            if ((prop->kind != SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE))
-                && newPlayerX > r3) {
+            if ((prop->kind != SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE)) && newPlayerX > r3) {
                 gPlayer.x = r3;
             }
 
@@ -351,32 +350,32 @@ void DestroyTask_Interactable087(Sprite_Fan *prop)
     TaskDestroy(gCurTask);
 }
 
-void CreateEntity_Fan_Left(MapEntity *me, u16 spriteRegionX,
-                                      u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Fan_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY)
 {
     CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
-                                SKYCAN_FAN_KIND(FAN_DIR_LEFT, FALSE));
+                     SKYCAN_FAN_KIND(FAN_DIR_LEFT, FALSE));
 }
 
-void CreateEntity_Fan_Right(MapEntity *me, u16 spriteRegionX,
-                                       u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Fan_Right(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                            u8 spriteY)
 {
     CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
-                                SKYCAN_FAN_KIND(FAN_DIR_RIGHT, FALSE));
+                     SKYCAN_FAN_KIND(FAN_DIR_RIGHT, FALSE));
 }
 
-void CreateEntity_Fan_Left_Periodic(MapEntity *me, u16 spriteRegionX,
-                                               u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Fan_Left_Periodic(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                    u8 spriteY)
 {
     CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
-                                SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE));
+                     SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE));
 }
 
-void CreateEntity_Fan_Right_Periodic(MapEntity *me, u16 spriteRegionX,
-                                                u16 spriteRegionY, u8 spriteY)
+void CreateEntity_Fan_Right_Periodic(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                     u8 spriteY)
 {
     CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
-                                SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE));
+                     SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE));
 }
 
 void Task_IA_SmallPropeller_UpdateInFanRegion(void)

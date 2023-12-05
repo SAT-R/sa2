@@ -38,8 +38,8 @@ static void RenderWindmill(Sprite_SmallWindmill *);
 static void Despawn(Sprite_SmallWindmill *);
 static void ResetWindmill(Sprite_SmallWindmill *);
 
-void CreateEntity_SmallWindmill(MapEntity *me, u16 spriteRegionX,
-                                      u16 spriteRegionY, u8 spriteY)
+void CreateEntity_SmallWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                u8 spriteY)
 {
     struct Task *t
         = TaskCreate(Task_SmallSpinnyWindmill, 0x48, 0x2010, 0,

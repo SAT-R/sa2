@@ -2,8 +2,8 @@
 #define GUARD_CONSTANTS_INTERACTABLES_H
 
 // NOTE: Keep the format as: IA__<name>__<type> if you add Interactables to this list
-//       (or create a new list) that have multiple entries, like the springs and spikes do.
-//       This will ensure compatibility with our tools.
+//       (or create a new list) that have multiple entries, like the springs and spikes
+//       do. This will ensure compatibility with our tools.
 #define IA__TOGGLE_PLAYER_LAYER__FOREGROUND 0
 #define IA__TOGGLE_PLAYER_LAYER__BACKGROUND 1
 #define IA__PLATFORM_A                      2

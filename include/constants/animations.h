@@ -224,7 +224,7 @@
 #define SA2_ANIM_DECORATION__ROCK              551
 #define SA2_ANIM_DECORATION__552               552
 // TODO: Unused for decoration module?
-#define SA2_ANIM_WATER_FALL_HIT_SURFACE 553
+#define SA2_ANIM_WATER_FALL_HIT_SURFACE          553
 #define SA2_ANIM_PALETTE_554                     554
 #define SA2_ANIM_UNDERWATER_1UP_SONIC            555
 #define SA2_ANIM_UNDERWATER_1UP_TAILS            556
@@ -291,7 +291,7 @@
 #define SA2_ANIM_SPEEDING_PLATFORM      612
 #define SA2_ANIM_PLATFORM_SQUARE_COMMON 613
 
-#define SA2_ANIM_LAUNCHER         614
+#define SA2_ANIM_LAUNCHER 614
 
 #define SA2_ANIM_CANNON           616
 #define SA2_ANIM_PLATFORM_EGG_UTO 617
@@ -353,7 +353,7 @@
 #define SA2_ANIM_VARIANT_SCORE_1000 4
 #define TILE_COUNT__ANIM_SCORE      2 // TODO: Automate
 
-#define SA2_ANIM_SPECIAL_RING 730
+#define SA2_ANIM_SPECIAL_RING             730
 #define SA2_ANIM_VARIANT_SP_RING__IDLE    0
 #define SA2_ANIM_VARIANT_SP_RING__COLLECT 1
 
