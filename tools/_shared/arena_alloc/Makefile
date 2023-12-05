@@ -1,15 +1,15 @@
 AR = ar
 CC = gcc
 
-SRCS = ArenaAlloc.c
+SOURCE = ArenaAlloc.c
 
 .PHONY: all clean
 
 all: libarena_alloc.a
 	@:
 
-%.o: $(SRCS)
-	$(CC) -O2 $(SRCS) -static -c $< $(LDFLAGS)
+%.o: $(SOURCE)
+	$(CC) -O2 $(SOURCE) -static -c $< $(LDFLAGS)
 
 libarena_alloc.a: ArenaAlloc.o
 	$(AR) -rcs $@ $<
