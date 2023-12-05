@@ -58,7 +58,7 @@ int main(int argc, char **argv)
         return 0;
     }
     
-    EntityType entity_type  = (EntityType)-1;
+    CsvEntityType entity_type  = EntUnknown;
 
     char *path_a = GetProgramArg(&argc, &argv);
     char *path_b = GetProgramArg(&argc, &argv);
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
                         entity_type = i;
                 }
 
-                if(entity_type == -1) {
+                if(entity_type == EntUnknown) {
                     printf("ERROR: Unknown entity type '%s'\n"
                            "Can be: '%s', '%s', '%s' or '%s'\n",
                         arg_entity,
