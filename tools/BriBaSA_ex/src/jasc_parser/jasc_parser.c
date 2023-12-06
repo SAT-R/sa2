@@ -29,12 +29,10 @@ static char* open_jasc(char* path)
         fseek(file, 0, SEEK_END);
         long size = ftell(file);
         fseek(file, 0, SEEK_SET);
-        printf("size: %d\n", size);
 
         char* jasc_contents = (char*)malloc(size + 1);
         if(jasc_contents) {
             size_t bytes_read = fread_s(jasc_contents, size, sizeof(char), size, file);
-            printf("read: %d\n", bytes_read);
             // Textfiles with CRLF newlines lead to bytes_read being smaller than size...
             if(bytes_read > 0 && bytes_read <= (unsigned)size) {
                 jasc_contents[bytes_read] = '\0';
@@ -135,7 +133,6 @@ void parse_jasc(char* path, Jasc *jasc)
             fprintf(stderr, "ERROR: Missing '0100' in line 2.\n");
         }
     } else {
-        fprintf(stdout, remainder);
         fprintf(stderr, "ERROR: Missing 'JASC-PAL' in line 1.\n"
                         "       This does not appear to be a JASC-Palette.\n");
     }
