@@ -8,22 +8,13 @@
 #include "my_types.h"
 #include "jasc_parser.h"
 
-#ifdef __unix
-#define fopen_s(pFile,filename,mode) ((*(pFile))=fopen((filename),(mode)))==NULL
-#endif
-
-#ifdef __unix
-#define fread_s(ptr, size, elem_size, _unused, stream) (fread(ptr, elem_size, size, stream))
-#endif
-
 
 // free the result of this if != NULL!
 static char* open_jasc(char* path)
 {
     char* result = NULL;
 
-    FILE *file;
-    fopen_s(&file, path, "r");
+    FILE *file = fopen(path, "r");
 
     if(file) {
         fseek(file, 0, SEEK_END);
@@ -32,7 +23,7 @@ static char* open_jasc(char* path)
 
         char* jasc_contents = (char*)malloc(size + 1);
         if(jasc_contents) {
-            size_t bytes_read = fread_s(jasc_contents, size, sizeof(char), size, file);
+            size_t bytes_read = fread(jasc_contents, sizeof(char), size, file);
             // Textfiles with CRLF newlines lead to bytes_read being smaller than size...
             if(bytes_read > 0 && bytes_read <= (unsigned)size) {
                 jasc_contents[bytes_read] = '\0';
