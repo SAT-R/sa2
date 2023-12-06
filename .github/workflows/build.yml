@@ -57,7 +57,7 @@ jobs:
 
       - name: Install tools
         run: |
-          sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libx11-dev
+          sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi libxcursor-dev
           python3 -m pip install gitpython
         # build-essential, git, and libpng-dev are already installed
         # gcc-arm-none-eabi is only needed for the modern build
