@@ -55,6 +55,7 @@ Temporary Items
 *.map
 *.bin
 
+*.a
 *.hex
 *.o
 *.dump

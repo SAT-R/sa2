@@ -1,6 +1,9 @@
 #ifndef GUARD_CONSTANTS_INTERACTABLES_H
 #define GUARD_CONSTANTS_INTERACTABLES_H
 
+// NOTE: Keep the format as: IA__<name>__<type> if you add Interactables to this list
+//       (or create a new list) that have multiple entries, like the springs and spikes
+//       do. This will ensure compatibility with our tools.
 #define IA__TOGGLE_PLAYER_LAYER__FOREGROUND 0
 #define IA__TOGGLE_PLAYER_LAYER__BACKGROUND 1
 #define IA__PLATFORM_A                      2
@@ -43,22 +46,22 @@
 #define IA__GRIND_RAIL__END_AIR_LEFT        39
 #define IA__CORKSCREW__START                40
 #define IA__CORKSCREW__END                  41
-#define IA__STAGE_GOAL                      42
+#define IA__GOAL_LEVER                      42
 #define IA__CHECKPOINT                      43
-#define IA__IA044                           44
+#define IA__IA044__A                        44
 #define IA__TOGGLE__CHECKPOINT              45
-#define IA__TOGGLE__STAGE_GOAL              46
+#define IA__TOGGLE__GOAL                    46
 #define IA__WINDUP_STICK                    47
-#define IA__HOOK_RAIL_UNUSED                48
-#define IA__HOOK_RAIL_START                 49
-#define IA__HOOK_RAIL_END                   50
+#define IA__HOOK_RAIL__UNUSED               48
+#define IA__HOOK_RAIL__START                49
+#define IA__HOOK_RAIL__END                  50
 #define IA__WINDMILL                        51
-#define IA__TURN_AROUND_BAR                 52
-#define IA__HOT_CRATER__CRANE               53
+#define IA__TURNAROUND_BAR                  52
+#define IA__CRANE                           53
 #define IA__DASH_RING                       54
 #define IA__FLOATING_SPRING                 55
-#define IA__NOTE_SPHERE                     56
-#define IA__NOTE_BLOCK                      57
+#define IA__NOTE_BLOCK__SPHERE              56
+#define IA__NOTE_BLOCK__BLOCK               57
 #define IA__GUITAR_STRING                   58
 #define IA__KEYBOARD_VERTICAL               59
 #define IA__KEYBOARD_HORIZONTAL_LEFT        60
@@ -71,8 +74,8 @@
 #define IA__HALFPIPE__END                   67
 #define IA__HALFPIPE__START                 68
 #define IA__BIG_SNOWBALL                    69
-#define IA__NOTE_BLOCK_2                    70
-#define IA__IA071                           71 // Same code as IA__044
+#define IA__NOTE_BLOCK__2                   70
+#define IA__IA044__B                        71 // Same code as IA__044__A
 #define IA__PIPE__START                     72
 #define IA__PIPE__END                       73
 #define IA__LIGHT_BRIDGE                    74
@@ -82,30 +85,30 @@
 #define IA__SPIKE_PLATFORM                  78
 #define IA__PLATFORM_B                      79
 #define IA__LIGHT_GLOBE                     80
-#define IA__PLATFORM_SQAURE                 81
-#define IA__GIANT_PROPELLER                 82
+#define IA__PLATFORM_SQUARE                 81
+#define IA__PROPELLER                       82
 #define IA__SLIDY_ICE                       83
-#define IA__SMALL_SPINNY_WINDMILL           84
+#define IA__SMALL_WINDMILL                  84
 #define IA__PROPELLER_SPRING                85
-#define IA__WHIRLWIND_A                     86
-#define IA__SMALL_PROPELLER__LEFT           87
-#define IA__SMALL_PROPELLER__RIGHT          88
-#define IA__SMALL_PROPELLER__PERIODIC_LEFT  89
-#define IA__SMALL_PROPELLER__PERIODIC_RIGHT 90
-#define IA__LAUNCHER_LEFT__DOWN             91
-#define IA__LAUNCHER_RIGHT__DOWN            92
+#define IA__WHIRLWIND__A                    86
+#define IA__FAN__LEFT                       87
+#define IA__FAN__RIGHT                      88
+#define IA__FAN__PERIODIC_LEFT              89
+#define IA__FAN__PERIODIC_RIGHT             90
+#define IA__LAUNCHER__DOWN_LEFT             91
+#define IA__LAUNCHER__DOWN_RIGHT            92
 #define IA__CANNON                          93
 #define IA__POLE                            94
 #define IA__IRON_BALL                       95
-#define IA__SKY_CANYON__FLYING_HANDLE       96
+#define IA__FLYING_HANDLE                   96
 #define IA__SPEEDING_PLATFORM               97
 #define IA__TOGGLE_GRAVITY__DOWN            98
 #define IA__TOGGLE_GRAVITY__UP              99
 #define IA__TOGGLE_GRAVITY__TOGGLE          100
-#define IA__LAUNCHER_LEFT__UP               101
-#define IA__LAUNCHER_RIGHT__UP              102
+#define IA__LAUNCHER__UP_LEFT               101
+#define IA__LAUNCHER__UP_RIGHT              102
 #define IA__SPECIAL_RING                    103
-#define IA__WHIRLWIND_B                     104
+#define IA__WHIRLWIND__B                    104
 #define IA__IA105                           105
 
 #endif // GUARD_CONSTANTS_INTERACTABLES_H

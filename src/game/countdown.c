@@ -14,8 +14,8 @@
 #include "constants/text.h"
 
 struct CourseStartCountdown {
-    Sprite unk0;
-    Sprite unk30;
+    Sprite sprMachine;
+    Sprite sprCountdownDigits;
     u32 unk60; // x ?
     u32 unk64; // y ?
     s16 unk68;
@@ -62,7 +62,7 @@ void CreateCourseStartCountdown(bool8 playerSkippedIntro)
         countdown->unk68 = GBA_FRAMES_PER_SECOND * 3;
     }
 
-    s = &countdown->unk30;
+    s = &countdown->sprCountdownDigits;
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = SA2_ANIM_COUNTDOWN;
     s->variant = SA2_ANIM_VARIANT_COUNTDOWN_3;
@@ -76,7 +76,7 @@ void CreateCourseStartCountdown(bool8 playerSkippedIntro)
     s->hitboxes[0].index = -1;
     s->unk10 = 0;
 
-    s = &countdown->unk0;
+    s = &countdown->sprMachine;
     s->graphics.dest = VramMalloc(0xE);
     s->graphics.anim = SA2_ANIM_LEVEL_START_MACHINE;
     s->variant = 0;
@@ -142,14 +142,14 @@ void sub_8036168(void)
         }
     }
 
-    s = &countdown->unk0;
+    s = &countdown->sprMachine;
     s->x = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
     s->y = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
     if (countdown->unk68 < (GBA_FRAMES_PER_SECOND * 3)) {
-        s = &countdown->unk30;
+        s = &countdown->sprCountdownDigits;
         s->variant = SA2_ANIM_VARIANT_COUNTDOWN_1
             - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         s->prevVariant = -1;
@@ -176,7 +176,7 @@ void sub_8036168(void)
 void sub_8036398(void)
 {
     struct CourseStartCountdown *countdown = TASK_DATA(gCurTask);
-    Sprite *s = &countdown->unk0;
+    Sprite *s = &countdown->sprMachine;
 
     s->x = countdown->unk60 - gCamera.x;
     s->y = countdown->unk64 - gCamera.y;
@@ -300,8 +300,8 @@ void sub_8036524(void)
 void sub_8036638(struct Task *t)
 {
     struct CourseStartCountdown *countdown = TASK_DATA(t);
-    VramFree(countdown->unk0.graphics.dest);
-    VramFree(countdown->unk30.graphics.dest);
+    VramFree(countdown->sprMachine.graphics.dest);
+    VramFree(countdown->sprCountdownDigits.graphics.dest);
 }
 
 void sub_8036654(struct Task *t)

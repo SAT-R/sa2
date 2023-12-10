@@ -270,9 +270,9 @@ SECTIONS
         build/sa2/src/game/special_stage/ui.o(.text);
         build/sa2/src/game/special_stage/guard_robo.o(.text);
         build/sa2/src/game/save.o(.text);
-        build/sa2/src/game/interactables_2/hot_crater/wind_up_stick.o(.text);
+        build/sa2/src/game/interactables_2/hot_crater/windup_stick.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/hook_rail.o(.text);
-        build/sa2/src/game/interactables_2/hot_crater/turn_around_bar.o(.text);
+        build/sa2/src/game/interactables_2/hot_crater/turnaround_bar.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/crane.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/dash_ring.o(.text);
         build/sa2/src/game/interactables_2/hot_crater/floating_spring.o(.text);
@@ -291,11 +291,11 @@ SECTIONS
         build/sa2/src/game/interactables_2/techno_base/arrow_platform.o(.text);
         build/sa2/src/game/interactables_2/techno_base/spike_platform.o(.text);
         build/sa2/src/game/interactables_2/techno_base/light_globe.o(.text);
-        build/sa2/src/game/interactables_2/sky_canyon/giant_propeller.o(.text);
+        build/sa2/src/game/interactables_2/sky_canyon/propeller.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/small_windmill.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/propeller_spring.o(.text);
         build/sa2/src/game/interactables_2/sky_canyon/whirlwind.o(.text);
-        build/sa2/src/game/interactables_2/sky_canyon/small_propeller.o(.text);
+        build/sa2/src/game/interactables_2/sky_canyon/fan.o(.text);
         build/sa2/src/game/interactables_2/egg_utopia/launcher.o(.text);
         build/sa2/src/game/interactables_2/egg_utopia/cannon.o(.text);
         build/sa2/src/game/interactables_2/egg_utopia/pole.o(.text);

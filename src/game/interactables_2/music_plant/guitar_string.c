@@ -15,11 +15,6 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
-#define NUM_GUITAR_STRING_ELEMS 6
-#define GUITARSTR_WIDTH_PX      (NUM_GUITAR_STRING_ELEMS * TILE_WIDTH)
-#define GUITARSTR_MIN_ACCEL     Q_8_8(4.0)
-#define GUITARSTR_MAX_ACCEL     Q_8_8(12.0)
-
 typedef struct {
     // elems:
     // [0] = xCoord
@@ -80,7 +75,7 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 
     for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
         s16 *elem = gs->elements[i];
-        s16 offsetX = Q_8_8(i << 3);
+        s16 offsetX = Q_8_8(i * TILE_WIDTH);
         s16 offsetY = 0;
 
         elem[0] = offsetX;

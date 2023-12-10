@@ -58,8 +58,10 @@ void Task_Interactable_044(void)
                     gPlayer.transition = PLTRANS_PT23;
                     gPlayer.unk6E = 0;
 
-                    if (me->index != IA__IA044)
+                    if (me->index != IA__IA044__A) {
+                        // me->index == IA__IA044__B
                         gPlayer.unk6E = 1;
+                    }
                 }
             }
         } else {

@@ -40,9 +40,9 @@
 
 #include "game/interactables_2/hot_crater/crane.h"
 #include "game/interactables_2/hot_crater/dash_ring.h"
-#include "game/interactables_2/hot_crater/wind_up_stick.h"
+#include "game/interactables_2/hot_crater/windup_stick.h"
 #include "game/interactables_2/hot_crater/floating_spring.h"
-#include "game/interactables_2/hot_crater/turn_around_bar.h"
+#include "game/interactables_2/hot_crater/turnaround_bar.h"
 #include "game/interactables_2/hot_crater/hook_rail.h"
 
 #include "game/interactables_2/music_plant/note_sphere.h"
@@ -57,8 +57,8 @@
 #include "game/interactables_2/ice_paradise/half_pipe.h"
 #include "game/interactables_2/ice_paradise/slowing_snow.h"
 
-#include "game/interactables_2/sky_canyon/giant_propeller.h"
-#include "game/interactables_2/sky_canyon/small_propeller.h"
+#include "game/interactables_2/sky_canyon/propeller.h"
+#include "game/interactables_2/sky_canyon/fan.h"
 #include "game/interactables_2/sky_canyon/small_windmill.h"
 #include "game/interactables_2/sky_canyon/whirlwind.h"
 #include "game/interactables_2/sky_canyon/propeller_spring.h"
@@ -343,15 +343,15 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Platform_B,
     CreateEntity_LightGlobe,
     CreateEntity_Platform_Square,
-    CreateEntity_GiantPropeller,
+    CreateEntity_Propeller,
     CreateEntity_SlidyIce,
-    CreateEntity_SmallSpinnyWindmill,
+    CreateEntity_SmallWindmill,
     CreateEntity_PropellerSpring,
     CreateEntity_Whirlwind_A,
-    CreateEntity_SmallPropeller_Left,
-    CreateEntity_SmallPropeller_Right,
-    CreateEntity_SmallPropeller_Left_Periodic,
-    CreateEntity_SmallPropeller_Right_Periodic,
+    CreateEntity_Fan_Left,
+    CreateEntity_Fan_Right,
+    CreateEntity_Fan_Left_Periodic,
+    CreateEntity_Fan_Right_Periodic,
     CreateEntity_Launcher_Left_GDown,
     CreateEntity_Launcher_Right_GDown,
     CreateEntity_Cannon,

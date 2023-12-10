@@ -19,13 +19,13 @@ void Task_Decoration(void);
 void TaskDestructor_Decoration(struct Task *);
 
 static const TileInfo sDecoTileAnimInfo[7] = {
-    { 2, SA2_ANIM_FLOWER_BLUE_SMALL, 0 },
-    { 4, SA2_ANIM_FLOWER_BLUE, 0 },
-    { 2, SA2_ANIM_FLOWER_RED_SMALL, 0 },
-    { 4, SA2_ANIM_FLOWER_YELLOW, 0 },
-    { 14, SA2_ANIM_ROCK, 0 },
-    { 0, SA2_ANIM_552, 0 },
-    { 12, SA2_ANIM_WATER_GROUND_SPLASH, 0 },
+    { 2, SA2_ANIM_DECORATION__FLOWER_BLUE_SMALL, 0 },
+    { 4, SA2_ANIM_DECORATION__FLOWER_BLUE, 0 },
+    { 2, SA2_ANIM_DECORATION__FLOWER_RED_SMALL, 0 },
+    { 4, SA2_ANIM_DECORATION__FLOWER_YELLOW, 0 },
+    { 14, SA2_ANIM_DECORATION__ROCK, 0 },
+    { 0, SA2_ANIM_DECORATION__552, 0 },
+    { 12, SA2_ANIM_DECORATION__WATER_GROUND_SPLASH, 0 },
 };
 
 #define decoId d.sData[0]

@@ -152,7 +152,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             s->hitboxes[0].index = -1;
             s->unk10 = SPRITE_FLAG(PRIORITY, 2);
             s->graphics.dest = VramMalloc(EGG_UTO_LAUNCHER_TILE_COUNT);
-            s->graphics.anim = SA2_ANIM_LAUNCHER_EGG_UTO;
+            s->graphics.anim = SA2_ANIM_LAUNCHER;
             launcher->s.variant = 0;
 
 #ifndef NON_MATCHING

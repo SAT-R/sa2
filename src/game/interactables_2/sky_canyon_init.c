@@ -58,7 +58,7 @@ struct Task *sub_80807CC(void)
     propellor->hitboxes[0].index = -1;
     propellor->unk10 = 0x2000;
     propellor->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
-    propellor->graphics.anim = SA2_ANIM_PROPELLOR;
+    propellor->graphics.anim = SA2_ANIM_PROPELLER;
     propellor->variant = 0;
     UpdateSpriteAnimation(&init->propellor);
 

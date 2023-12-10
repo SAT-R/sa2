@@ -202,7 +202,7 @@
 #define SA2_ANIM_WATER_SURFACE           534
 #define SA2_ANIM_LEAF_FOREST_GROUND_TILE 535
 #define SA2_ANIM_SPRING                  536
-#define SA2_ANIM_SPRING_BOUNCY           537
+#define SA2_ANIM_BOUNCY_SPRING           537
 #define SA2_ANIM_BOUNCY_BAR              538
 #define SA2_ANIM_PLATFORM_LF_WIDE        539
 #define SA2_ANIM_BOOSTER                 540
@@ -216,13 +216,14 @@
 #define SA2_ANIM_RAMP                    543
 #define SA2_ANIM_WATER_RUNNING_PARTICLES 544
 
-#define SA2_ANIM_ROTATING_HANDLE                 546
-#define SA2_ANIM_FLOWER_YELLOW                   547
-#define SA2_ANIM_FLOWER_RED_SMALL                548
-#define SA2_ANIM_FLOWER_BLUE                     549
-#define SA2_ANIM_FLOWER_BLUE_SMALL               550
-#define SA2_ANIM_ROCK                            551
-#define SA2_ANIM_552                             552
+#define SA2_ANIM_ROTATING_HANDLE               546
+#define SA2_ANIM_DECORATION__FLOWER_YELLOW     547
+#define SA2_ANIM_DECORATION__FLOWER_RED_SMALL  548
+#define SA2_ANIM_DECORATION__FLOWER_BLUE       549
+#define SA2_ANIM_DECORATION__FLOWER_BLUE_SMALL 550
+#define SA2_ANIM_DECORATION__ROCK              551
+#define SA2_ANIM_DECORATION__552               552
+// TODO: Unused for decoration module?
 #define SA2_ANIM_WATER_FALL_HIT_SURFACE          553
 #define SA2_ANIM_PALETTE_554                     554
 #define SA2_ANIM_UNDERWATER_1UP_SONIC            555
@@ -230,7 +231,7 @@
 #define SA2_ANIM_UNDERWATER_1UP_KNUCKLES         557
 #define SA2_ANIM_UNDERWATER_1UP_CREAM            558
 #define SA2_ANIM_UNDERWATER_1UP_AMY              559
-#define SA2_ANIM_WATER_GROUND_SPLASH             560
+#define SA2_ANIM_DECORATION__WATER_GROUND_SPLASH 560
 #define SA2_ANIM_WIND_MILL_PART                  561
 #define SA2_ANIM_562                             562
 #define SA2_ANIM_563                             563
@@ -261,13 +262,13 @@
 #define SA2_ANIM_BIG_SNOWBALL                    582
 #define SA2_ANIM_583                             583
 #define SA2_ANIM_DASH_RING                       584
-#define SA2_ANIM_CROSS_SKY_CAN                   585
+#define SA2_ANIM_SMALL_WINDMILL                  585
 #define SA2_ANIM_PLATFORM_SKY_CAN                586
 #define SA2_ANIM_PLATFORM_587                    587
 #define SA2_ANIM_WHIRLWIND                       588
-#define SA2_ANIM_PROPELLOR                       589
+#define SA2_ANIM_PROPELLER                       589
 #define SA2_ANIM_SPRING_FLYING                   590
-#define SA2_ANIM_SMALL_PROPELLOR                 591
+#define SA2_ANIM_FAN                             591
 #define SA2_ANIM_FLYING_HANDLE                   592
 #define SA2_ANIM_PLATFORM_SKY_CAN_2              593
 #define SA2_ANIM_PLATFORM_SQUARE_SKY_CAN         594
@@ -277,7 +278,7 @@
 #define SA2_ANIM_NOTE_BLOCK_TEC_BASE             598
 #define SA2_ANIM_ARROW_SCREEN_BORDER             599
 #define SA2_ANIM_LIGHT_GLOBE                     600
-#define SA2_ANIM_LIGHT_BRIDGE_TEC_BASE           601
+#define SA2_ANIM_LIGHT_BRIDGE                    601
 #define SA2_ANIM_602                             602
 #define SA2_ANIM_603                             603
 #define SA2_ANIM_SPRING_TEC_BAS                  604
@@ -290,9 +291,9 @@
 #define SA2_ANIM_SPEEDING_PLATFORM      612
 #define SA2_ANIM_PLATFORM_SQUARE_COMMON 613
 
-#define SA2_ANIM_LAUNCHER_EGG_UTO 614
+#define SA2_ANIM_LAUNCHER 614
 
-#define SA2_ANIM_CANNON_EGG_UTO   616
+#define SA2_ANIM_CANNON           616
 #define SA2_ANIM_PLATFORM_EGG_UTO 617
 #define SA2_ANIM_IRON_BALL        618
 #define SA2_ANIM_EXPLOSION        619
@@ -352,7 +353,7 @@
 #define SA2_ANIM_VARIANT_SCORE_1000 4
 #define TILE_COUNT__ANIM_SCORE      2 // TODO: Automate
 
-#define SA2_ANIM_COLLECTIBLE_SPECIAL_RING 730
+#define SA2_ANIM_SPECIAL_RING             730
 #define SA2_ANIM_VARIANT_SP_RING__IDLE    0
 #define SA2_ANIM_VARIANT_SP_RING__COLLECT 1
 

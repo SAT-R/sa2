@@ -20,15 +20,6 @@
         temp;                                                                           \
     })
 
-#define BRIDGE_SEGMENT_WIDTH 12
-#define BRIDGE_WIDTH         (28 * TILE_WIDTH)
-
-#define SPRITE_TILES       2
-#define NUM_BRIDGE_SPRITES 2
-
-#define BRIDGE_TYPE_STRAIGHT 0
-#define BRIDGE_TYPE_CURVED   1
-
 typedef struct {
     Sprite sprites[NUM_BRIDGE_SPRITES];
     s32 posX;
@@ -62,8 +53,8 @@ static void ActivateBridge(Sprite_LightBridge *lightBridge);
 static void DespawnBridge(Sprite_LightBridge *lightBridge);
 
 static const u16 sBridgeSprites[NUM_BRIDGE_SPRITES][3] = {
-    { SA2_ANIM_LIGHT_BRIDGE_TEC_BASE, 0, SPRITE_TILES },
-    { SA2_ANIM_LIGHT_BRIDGE_TEC_BASE, 1, SPRITE_TILES },
+    { SA2_ANIM_LIGHT_BRIDGE, 0, SPRITE_TILES },
+    { SA2_ANIM_LIGHT_BRIDGE, 1, SPRITE_TILES },
 };
 
 static const struct UNK_80E0044 sOutOfRangeDimensions[] = {
@@ -221,9 +212,9 @@ static bool32 IsPlayerOutOfRange(Sprite_LightBridge *lightBridge)
     s32 cameraY = gCamera.y;
     s16 y = MACRO_F7C(posY, cameraY, 0);
     if (x + sOutOfRangeDimensions[lightBridge->type].maxX < -128
-        || x + sOutOfRangeDimensions[lightBridge->type].minX > 368
+        || x + sOutOfRangeDimensions[lightBridge->type].minX > (DISPLAY_WIDTH + 128)
         || y + sOutOfRangeDimensions[lightBridge->type].maxY < -128
-        || y + sOutOfRangeDimensions[lightBridge->type].minY > 288) {
+        || y + sOutOfRangeDimensions[lightBridge->type].minY > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 
