@@ -2,6 +2,29 @@
 #include "core.h"
 #include "flags.h"
 
+void sub_80078D4(u8 param0, u8 param1, u8 param2, s16 param3, u16 param4)
+{
+    u16 *cursor;
+    u32 fillSize;
+    s32 fillVal;
+
+    gFlags |= FLAGS_4;
+
+    gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[param0 * 4];
+    gUnknown_03002A80 = 4;
+
+    if (param1 < param2) {
+#ifndef NON_MATCHING
+        param3 %= 512u;
+#endif
+
+        fillVal = (param3 % 512u) | ((param4 % 512u) << 16);
+
+        DmaFill32(3, fillVal, &((u16 *)gBgOffsetsHBlank)[param1 * 2],
+                  (param2 - param1) * 4);
+    }
+}
+
 void sub_8007958(u8 param0, u8 param1, u8 param2, s16 param3, s8 param4, u16 param5,
                  u16 param6)
 {
