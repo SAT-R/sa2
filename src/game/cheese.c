@@ -136,7 +136,7 @@ void sub_801412C(Cheese *cheese)
 }
 
 u8 sub_8015118(Cheese *);
-void sub_8014EFC(Cheese *, s16, s16, u8);
+u8 sub_8014EFC(Cheese *, s16, s16, u8);
 void sub_80142AC(void);
 void sub_8014350(void);
 
@@ -354,72 +354,355 @@ void sub_80145D8(void)
 void sub_80155D0(Cheese *);
 void sub_80148B8(void);
 
-// void sub_801464C(void)
-// {
-//     Cheese *cheese = TASK_DATA(gCurTask);
-//     Cheese_UNK54 *unk54 = &cheese->unk54;
-//     struct Task *t = cheese->unk18;
-//     s32 temp1;
-//     s32 temp2;
-//     s32 temp3;
-//     s32 temp4;
+void sub_801464C(void)
+{
+    Cheese *cheese = TASK_DATA(gCurTask);
+    struct Task *t = cheese->unk18;
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+    u32 temp5;
+    s32 r0;
 
-//     temp1 = 3;
-//     temp2 = 0xC;
-//     temp3 = 0;
-//     temp4 = 0;
+    s32 temp1 = 3;
+    s32 temp2 = 0xC;
+    s32 temp3 = 0;
+    s32 temp4 = 0;
 
-//     if (IS_BOSS_STAGE(gCurrentLevel)) {
-//         sub_80155D0(cheese);
-//         temp1 = 2;
-//         temp2 = 0x20;
-//     }
+    if (IS_BOSS_STAGE(gCurrentLevel)) {
+        sub_80155D0(cheese);
+        temp1 = 2;
+        temp2 = 0x20;
+    }
 
-//     if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69
-//         && unk54->unk68->graphics.anim != 0x6D && unk54->unk68->graphics.anim != 0x71)
-//         { cheese->unkC &= ~0x10;
-//     }
+    if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69
+        && unk54->unk68->graphics.anim != 0x6D && unk54->unk68->graphics.anim != 0x71) {
+        cheese->unkC &= ~0x10;
+    }
 
-//     cheese->unk10 = 5;
-//     if (cheese->unkA != 0) {
-//         cheese->unk10 = 6;
-//         cheese->unkA++;
-//     }
+    cheese->unk10 = 5;
+    if (cheese->unkA != 0) {
+        cheese->unk10 = 6;
+        cheese->unkA++;
+    }
 
-//     if (cheese->unkA > 8) {
-//         cheese->unkA = 0;
-//         cheese->unkE = 0;
-//         gCurTask->main = sub_80148B8;
-//     }
+    if (cheese->unkA > 8) {
+        cheese->unkA = 0;
+        cheese->unkE = 0;
+        gCurTask->main = sub_80148B8;
+    }
 
-//     if (t->unk16 - Q_24_8_TO_INT(cheese->posX) < 0
-//         && (Q_24_8_TO_INT(cheese->posY) - t->unk16) > temp2) {
-//         s32 temp = t->unk18 - (Q_24_8_TO_INT(cheese->posY) + 4);
-//         if (temp < 0) {
-//             temp = (Q_24_8_TO_INT(cheese->posY) + 4) - t->unk18;
-//         }
+    // TODO: lots of NON_MATCHING hacks here
+    if (t->unk16 - Q_24_8_TO_INT(cheese->posX) >= 0) {
+        if (t->unk16 - Q_24_8_TO_INT(cheese->posX) < temp2) {
+            goto lab2;
+        }
+    } else if (Q_24_8_TO_INT(cheese->posX) - t->unk16 < temp2) {
+        s32 temp;
+    lab2:
+        temp = t->unk18 - ({ Q_24_8_TO_INT(cheese->posY) + 4; });
 
-//         if (temp < temp2) {
-//             if (cheese->unkA == 0) {
-//                 cheese->unkA = 1;
-//             }
-//             cheese->unk10 = 6;
-//         }
-//     } else if (t->unk16 - Q_24_8_TO_INT(cheese->posX) >= 0
-//                && (Q_24_8_TO_INT(cheese->posY) - t->unk16) < temp2) {
-//         s32 temp = t->unk18 - (Q_24_8_TO_INT(cheese->posY) + 4);
-//         if (temp < 0) {
-//             temp = (Q_24_8_TO_INT(cheese->posY) + 4) - t->unk18;
-//         }
+        if (temp < 0) {
+            r0 = ({ Q_24_8_TO_INT(cheese->posY) + 4; }) - t->unk18;
+        } else {
+            if (temp < temp2) {
+                goto lab;
+            }
+            goto end;
+        }
 
-//         if (temp < temp2) {
-//             if (cheese->unkA == 0) {
-//                 cheese->unkA = 1;
-//             }
-//             cheese->unk10 = 6;
-//         }
-//     }
+        if (r0 < temp2) {
+        lab:
+            if (cheese->unkA == 0) {
+                cheese->unkA = 1;
+            }
+            cheese->unk10 = 6;
+        }
+    }
+end:
 
-//     temp2 = Q_24_8(t->unk16);
+    temp5 = Q_24_8_NEW(t->unk16) - cheese->posX > -1
+        ? Q_24_8(t->unk16) - cheese->posX
+        : cheese->posX - Q_24_8_NEW(t->unk16);
 
-// }
+    if (Q_24_8_NEW(t->unk16) > cheese->posX) {
+        temp3 = temp5 >> temp1;
+        if (temp3 == 0 && temp5 != 0) {
+            temp3 = 0x200;
+        }
+
+    } else {
+        if (Q_24_8_NEW(t->unk16) < cheese->posX) {
+            temp3 = -(temp5 >> temp1);
+            if (temp3 == 0 && temp5 != 0) {
+                temp3 = -512;
+            }
+        }
+    }
+
+    temp5 = Q_24_8_NEW(t->unk18 - 4) - cheese->posY > -1
+        ? Q_24_8_NEW(t->unk18 - 4) - cheese->posY
+        : cheese->posY - Q_24_8_NEW(t->unk18 - 4);
+
+    if (Q_24_8_NEW(t->unk18 - 4) > cheese->posY) {
+        temp4 = temp5 >> temp1;
+        if (temp4 == 0 && temp5 != 0) {
+            temp4 = 0x200;
+        }
+    } else {
+        if (Q_24_8(t->unk18 - 4) < cheese->posY) {
+            temp4 = -(temp5 >> temp1);
+            if (temp4 == 0 && temp5 != 0) {
+                temp4 = -512;
+            }
+        }
+    }
+
+    r0 = -4095;
+    if (temp3 < -0xFFF) {
+        temp3 = r0;
+    } else {
+        r0 = 0xFFF;
+        if (temp3 > 0xFFF) {
+            temp3 = r0;
+        }
+    }
+
+    r0 = -4095;
+    if (temp4 < -0xFFF) {
+        temp4 = r0;
+    } else {
+        r0 = 0xFFF;
+        if (temp4 > 0xFFF) {
+            temp4 = r0;
+        }
+    }
+
+    cheese->posX += temp3;
+    cheese->posY += temp4;
+
+    if (t->unk15 == 0) {
+        cheese->unkA = 0;
+        cheese->unkE = 0;
+        gCurTask->main = sub_80148B8;
+    }
+    sub_80152EC();
+    sub_801412C(cheese);
+}
+
+void sub_8014834(void)
+{
+    Cheese *cheese = TASK_DATA(gCurTask);
+    struct Task *t = cheese->unk18;
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+    if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69
+        && unk54->unk68->graphics.anim != 0x6D && unk54->unk68->graphics.anim != 0x71) {
+        cheese->unkC &= ~0x10;
+    }
+
+    cheese->unk10 = 6;
+    if (cheese->unkA++ > 8) {
+        gCurTask->main = sub_80148B8;
+        cheese->unkA = 0;
+        cheese->unkE = 0;
+    }
+
+    if (t->unk15 == 0) {
+        gCurTask->main = sub_80148B8;
+        cheese->unkA = 0;
+        cheese->unkE = 0;
+    }
+
+    sub_80152EC();
+    sub_801412C(cheese);
+}
+
+void sub_80148B8(void)
+{
+    Cheese *cheese = TASK_DATA(gCurTask);
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+
+    u8 temp0 = 0;
+    u8 temp1 = 3;
+
+    if (IS_BOSS_STAGE(gCurrentLevel)) {
+        temp1 = 1;
+    }
+
+    if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69
+        && unk54->unk68->graphics.anim != 0x6D && unk54->unk68->graphics.anim != 0x71) {
+        cheese->unkC &= ~0x10;
+    }
+
+    sub_8015118(cheese);
+
+    if (sub_8014EFC(cheese, 0x20, 0x20, temp1) == 1) {
+        if (unk54->unk68->graphics.anim < 0xB6) {
+            cheese->unk10
+                = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
+                                    + unk54->unk68->variant];
+        }
+
+        if (cheese->unkE > 0x3C && cheese->unk10 != 2) {
+            cheese->unkA = 0;
+            gCurTask->main = sub_8014350;
+        }
+    }
+
+    // ??
+    cheese->unk10 = 0;
+
+    if (unk54->unk68->graphics.anim < 0xB6) {
+        temp0 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
+                                  + unk54->unk68->variant];
+    }
+
+    if (!(cheese->unkC & 0x10)) {
+        if (temp0 == 2) {
+            cheese->unkA = 8;
+        }
+        if (cheese->unkA != 0) {
+            cheese->unk10 = 0x10;
+            cheese->unkA--;
+        }
+    }
+
+    if (cheese->unkE > 0x78) {
+        cheese->unkA = 0;
+        gCurTask->main = sub_8014350;
+    }
+
+    cheese->unkE++;
+
+    sub_80152EC();
+    sub_801412C(cheese);
+}
+
+void sub_80149EC(void)
+{
+    Cheese *cheese = TASK_DATA(gCurTask);
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+
+    cheese->unk10 = 7;
+    if (cheese->unkA++ > 0x3C) {
+        if (unk54->unk68->graphics.anim < 0xB6) {
+            cheese->unk10
+                = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
+                                    + unk54->unk68->variant];
+        }
+        if (cheese->unk10 != 7) {
+            gCurTask->main = sub_8014350;
+        }
+    }
+
+    sub_8015118(cheese);
+    sub_8014CC8(cheese);
+    sub_80152EC();
+    sub_801412C(cheese);
+}
+
+void sub_8014A68(void)
+{
+    Cheese *cheese = TASK_DATA(gCurTask);
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+    s16 cos, sin;
+    sub_8015118(cheese);
+
+    cos = COS(cheese->unkA * 4) >> 9;
+    sin = SIN(cheese->unkA * 4) >> 9;
+
+    cheese->unkA += 0x10;
+
+    sub_8014EFC(cheese, cos, sin, 0);
+
+    if (unk54->unk68->graphics.anim < 0xB6) {
+        cheese->unk10
+            = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
+                                + unk54->unk68->variant];
+    }
+
+    if (cheese->unk10 != 4) {
+        m4aSongNumStop(SE_228);
+        gCurTask->main = sub_8014350;
+    }
+    sub_801412C(cheese);
+}
+
+void sub_8014BB0(Cheese *cheese);
+void sub_8014AFC(void)
+{
+    Cheese *cheese = TASK_DATA(gCurTask);
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+    s16 cos, sin;
+    s16 cursor;
+    sub_8015118(cheese);
+
+    cos = COS(cheese->unkA * 4) >> 9;
+    sin = SIN(cheese->unkA * 4) >> 11;
+
+    cheese->unkA += 2;
+
+    sub_8014EFC(cheese, cos, sin + 0x30, 0);
+
+    if (unk54->unk68->graphics.anim < 0xB6) {
+        cheese->unk10
+            = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
+                                + unk54->unk68->variant];
+    }
+
+    if (cheese->unk10 != 0xC) {
+        gCurTask->main = sub_8014350;
+    }
+
+    cursor = cheese->s.animCursor;
+
+    sub_801412C(cheese);
+    if (cheese->s.animCursor == 0x3F && cursor != 0x3F) {
+        sub_8014BB0(cheese);
+    }
+
+    if (cheese->s.animCursor == 0x12 && cursor != 0x12) {
+        sub_8014BB0(cheese);
+    }
+}
+
+typedef struct {
+    Sprite s;
+    s32 unk30;
+    s32 unk34;
+    s32 unk38;
+    u8 unk3C;
+} Cheese_UNK8014BB0;
+
+void sub_8014C60(void);
+void sub_8015604(struct Task *);
+
+void sub_8014BB0(Cheese *cheese)
+{
+    struct Task *t
+        = TaskCreate(sub_8014C60, sizeof(Cheese_UNK8014BB0), 0x5040, 0, sub_8015604);
+    Cheese_UNK8014BB0 *unk4BB0 = TASK_DATA(t);
+
+    unk4BB0->unk3C = 0;
+
+    if (cheese->s.animCursor == 0x12) {
+        unk4BB0->unk30 = -64;
+    } else {
+        unk4BB0->unk30 = 0x40;
+    }
+
+    unk4BB0->unk34 = cheese->posX;
+    unk4BB0->unk38 = cheese->posY;
+
+    unk4BB0->s.graphics.dest = VramMalloc(4);
+    unk4BB0->s.graphics.anim = 469;
+    unk4BB0->s.variant = 0;
+    unk4BB0->s.graphics.size = 0;
+    unk4BB0->s.prevVariant = -1;
+    unk4BB0->s.x = Q_24_8_TO_INT(unk4BB0->unk34) - gCamera.x;
+    unk4BB0->s.y = Q_24_8_TO_INT(unk4BB0->unk38) - gCamera.y;
+    unk4BB0->s.unk1A = SPRITE_OAM_ORDER(8);
+    unk4BB0->s.unk10 = SPRITE_FLAG(PRIORITY, 2);
+    unk4BB0->s.timeUntilNextFrame = 0;
+
+    unk4BB0->s.animSpeed = SPRITE_ANIM_SPEED(1.0);
+    unk4BB0->s.palId = 0;
+}
