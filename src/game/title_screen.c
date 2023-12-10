@@ -1452,9 +1452,9 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
 
     REG_SIOCNT &= ~SIO_INTR_ENABLE;
     gDispCnt |= 0x4000;
-    gWinRegs[1] = 0xF0;
+    gWinRegs[1] = WIN_RANGE(0, DISPLAY_WIDTH);
     gWinRegs[3] = (titleScreen->wavesTopOffset - 2) * 0x100;
-    gWinRegs[3] |= 0xA0;
+    gWinRegs[3] |= WIN_RANGE(0, DISPLAY_HEIGHT);
     gWinRegs[4] |= 0x3F00;
     gWinRegs[5] &= 0x13;
 
@@ -1472,7 +1472,7 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     gHBlankCallbacks[gNumHBlankCallbacks++] = sub_808DB2C;
 
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
-    gFlags |= 0x4;
+    gFlags |= FLAGS_4;
     gUnknown_03002A80 = 16;
     gUnknown_03002878 = (void *)REG_ADDR_BG2PA;
 

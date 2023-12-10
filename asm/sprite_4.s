@@ -3988,6 +3988,7 @@ _0800794C: .4byte 0x000001FF
 _08007950: .4byte 0x040000D4
 _08007954: .4byte gBgOffsetsHBlank
 
+.if 0
 	thumb_func_start sub_8007958
 sub_8007958: @ 0x08007958
 	push {r4, r5, r6, r7, lr}
@@ -3999,22 +4000,22 @@ sub_8007958: @ 0x08007958
 	ldr r5, [sp, #0x24]
 	ldr r6, [sp, #0x28]
 	mov r8, r6
-	lsls r0, r0, #0x18
+	lsls r0, r0, #0x18      @ r0 = param0
 	lsls r1, r1, #0x18
-	lsrs r7, r1, #0x18
+	lsrs r7, r1, #0x18      @ r7 = param1
 	lsls r2, r2, #0x18
 	lsrs r2, r2, #0x18
-	mov ip, r2
+	mov ip, r2              @ ip = param2
 	lsls r3, r3, #0x10
-	lsrs r6, r3, #0x10
+	lsrs r6, r3, #0x10      @ r6 = param3
 	lsls r4, r4, #0x18
-	lsrs r4, r4, #0x18
+	lsrs r4, r4, #0x18      @ r4 = param4
 	lsls r5, r5, #0x10
 	lsrs r5, r5, #0x10
-	mov sb, r5
+	mov sb, r5              @ sb = param5
 	mov r1, r8
 	lsls r1, r1, #0x10
-	lsrs r5, r1, #0x10
+	lsrs r5, r1, #0x10      @ r5 = param6
 	ldr r2, _080079F0 @ =gFlags
 	ldr r1, [r2]
 	movs r3, #4
@@ -4030,7 +4031,7 @@ sub_8007958: @ 0x08007958
 	ldr r0, _08007A00 @ =gBgOffsetsHBlank
 	lsls r1, r7, #2
 	ldr r0, [r0]
-	adds r2, r0, r1
+	adds r2, r0, r1     @ r2 = cursor
 	cmp r7, ip
 	bhs _080079E0
 	ldr r0, _08007A04 @ =0x000001FF
@@ -4074,149 +4075,4 @@ _080079F8: .4byte 0x04000010
 _080079FC: .4byte gUnknown_03002A80
 _08007A00: .4byte gBgOffsetsHBlank
 _08007A04: .4byte 0x000001FF
-
-	thumb_func_start sub_8007A08
-sub_8007A08: @ 0x08007A08
-	push {r4, r5, r6, r7, lr}
-	ldr r4, [sp, #0x14]
-	lsls r0, r0, #0x18
-	lsrs r6, r0, #0x18
-	lsls r1, r1, #0x18
-	lsrs r7, r1, #0x18
-	lsls r2, r2, #0x18
-	lsrs r5, r2, #0x18
-	lsls r3, r3, #0x18
-	lsrs r3, r3, #0x18
-	lsls r4, r4, #0x18
-	lsrs r4, r4, #0x18
-	ldr r1, _08007A44 @ =gFlags
-	ldr r0, [r1]
-	movs r2, #4
-	orrs r0, r2
-	str r0, [r1]
-	cmp r6, #1
-	bls _08007A5C
-	ldr r1, _08007A48 @ =gUnknown_03002A80
-	strb r2, [r1]
-	movs r0, #1
-	ands r0, r6
-	adds r6, r1, #0
-	cmp r0, #0
-	beq _08007A50
-	ldr r0, _08007A4C @ =gBgOffsetsHBlank
-	ldr r0, [r0]
-	adds r2, r0, #2
-	b _08007A88
-	.align 2, 0
-_08007A44: .4byte gFlags
-_08007A48: .4byte gUnknown_03002A80
-_08007A4C: .4byte gBgOffsetsHBlank
-_08007A50:
-	ldr r0, _08007A58 @ =gBgOffsetsHBlank
-	ldr r2, [r0]
-	b _08007A88
-	.align 2, 0
-_08007A58: .4byte gBgOffsetsHBlank
-_08007A5C:
-	ldr r1, _08007A78 @ =gUnknown_03002A80
-	movs r0, #2
-	strb r0, [r1]
-	ldr r0, _08007A7C @ =gBgOffsetsHBlank
-	ldr r2, [r0]
-	movs r0, #1
-	ands r0, r6
-	adds r6, r1, #0
-	cmp r0, #0
-	beq _08007A88
-	ldr r1, _08007A80 @ =gUnknown_03002878
-	ldr r0, _08007A84 @ =0x04000042
-	b _08007A8C
-	.align 2, 0
-_08007A78: .4byte gUnknown_03002A80
-_08007A7C: .4byte gBgOffsetsHBlank
-_08007A80: .4byte gUnknown_03002878
-_08007A84: .4byte 0x04000042
-_08007A88:
-	ldr r1, _08007AB8 @ =gUnknown_03002878
-	ldr r0, _08007ABC @ =0x04000040
-_08007A8C:
-	str r0, [r1]
-	ldrb r0, [r6]
-	muls r0, r5, r0
-	adds r2, r2, r0
-	cmp r5, r4
-	bhs _08007AB0
-	adds r1, r6, #0
-_08007A9A:
-	strb r3, [r2]
-	adds r2, #1
-	strb r7, [r2]
-	ldrb r0, [r1]
-	adds r0, r0, r2
-	subs r2, r0, #1
-	adds r0, r5, #1
-	lsls r0, r0, #0x18
-	lsrs r5, r0, #0x18
-	cmp r5, r4
-	blo _08007A9A
-_08007AB0:
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08007AB8: .4byte gUnknown_03002878
-_08007ABC: .4byte 0x04000040
-
-	thumb_func_start sub_8007AC0
-sub_8007AC0: @ 0x08007AC0
-	push {r4, r5, lr}
-	lsls r0, r0, #0x18
-	lsls r1, r1, #0x18
-	lsrs r4, r1, #0x18
-	lsls r2, r2, #0x18
-	lsrs r5, r2, #0x18
-	ldr r3, _08007B14 @ =gFlags
-	ldr r1, [r3]
-	movs r2, #4
-	orrs r1, r2
-	str r1, [r3]
-	ldr r2, _08007B18 @ =gUnknown_03002878
-	lsrs r0, r0, #0x14
-	subs r0, #0x20
-	ldr r3, _08007B1C @ =0x04000020
-	adds r1, r0, r3
-	str r1, [r2]
-	ldr r2, _08007B20 @ =gUnknown_03002A80
-	movs r1, #2
-	strb r1, [r2]
-	ldr r1, _08007B24 @ =gBgOffsetsHBlank
-	lsls r2, r4, #1
-	ldr r1, [r1]
-	adds r2, r1, r2
-	ldr r1, _08007B28 @ =gBgAffineRegs
-	adds r0, r0, r1
-	ldrh r1, [r0]
-	cmp r4, r5
-	bhs _08007B0E
-_08007AFA:
-	subs r0, r5, r4
-	lsls r0, r0, #2
-	adds r0, r1, r0
-	strh r0, [r2]
-	adds r2, #2
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	cmp r4, r5
-	blo _08007AFA
-_08007B0E:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08007B14: .4byte gFlags
-_08007B18: .4byte gUnknown_03002878
-_08007B1C: .4byte 0x04000020
-_08007B20: .4byte gUnknown_03002A80
-_08007B24: .4byte gBgOffsetsHBlank
-_08007B28: .4byte gBgAffineRegs
+.endif
