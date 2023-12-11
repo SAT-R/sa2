@@ -3863,18 +3863,19 @@ _0800784C: .4byte gSineTable
 _08007850: .4byte 0x000003FF
 _08007854: .4byte 0x000001FF
 
+.if 01
 	thumb_func_start sub_8007858
 sub_8007858: @ 0x08007858
 	push {r4, r5, r6, r7, lr}
-	adds r7, r3, #0
+	adds r7, r3, #0		@ r7 = param3
 	ldr r3, [sp, #0x14]
 	lsls r0, r0, #0x18
 	lsls r1, r1, #0x18
-	lsrs r5, r1, #0x18
+	lsrs r5, r1, #0x18	@ r5 = param1
 	lsls r2, r2, #0x18
-	lsrs r6, r2, #0x18
+	lsrs r6, r2, #0x18	@ r6 = param2
 	lsls r3, r3, #0x10
-	lsrs r4, r3, #0x10
+	lsrs r4, r3, #0x10	@ r4 = param4
 	ldr r2, _080078BC @ =gFlags
 	ldr r1, [r2]
 	movs r3, #4
@@ -3923,6 +3924,4 @@ _080078C4: .4byte 0x04000010
 _080078C8: .4byte gUnknown_03002A80
 _080078CC: .4byte gBgOffsetsHBlank
 _080078D0: .4byte 0x000001FF
-
-.if 0
 .endif

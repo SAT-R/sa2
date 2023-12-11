@@ -255,7 +255,7 @@ extern u16 gDispCnt;
 #define WINREG_WINOUT 5
 extern u16 gWinRegs[6];
 extern struct BlendRegs gBldRegs;
-extern BgAffineReg gBgAffineRegs[2];
+extern BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS];
 extern u16 gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgPalette[BG_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgCntRegs[4];

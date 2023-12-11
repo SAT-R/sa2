@@ -2,31 +2,12 @@
 #include "core.h"
 #include "flags.h"
 
-void sub_80078D4(u8 param0, u8 param1, u8 param2, s16 param3, u16 param4)
-{
-    u16 *cursor;
-    u32 fillSize;
-    s32 fillVal;
+/* TODO: Rename this module to something background-related */
+#include "sprite_4.h"
 
-    gFlags |= FLAGS_4;
 
-    gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[param0 * 4];
-    gUnknown_03002A80 = 4;
-
-    if (param1 < param2) {
-#ifndef NON_MATCHING
-        param3 %= 512u;
-#endif
-
-        fillVal = (param3 % 512u) | ((param4 % 512u) << 16);
-
-        DmaFill32(3, fillVal, &((u16 *)gBgOffsetsHBlank)[param1 * 2],
-                  (param2 - param1) * 4);
-    }
-}
-
-void sub_8007958(u8 param0, u8 param1, u8 param2, s16 param3, s8 param4, u16 param5,
-                 u16 param6)
+#if 01
+void sub_8007858(u8 param0, u8 param1, u8 param2, u16 param3, u16 param4)
 {
     u16 *cursor;
 
@@ -37,7 +18,53 @@ void sub_8007958(u8 param0, u8 param1, u8 param2, s16 param3, s8 param4, u16 par
 
     cursor = &((u16 *)gBgOffsetsHBlank)[param1 * 2];
 
-    while (param1 < param2) {
+    param4 = (param4 - param1) % 512;
+    param3 %= 512;
+
+	while (param1 < param2) {
+        *cursor = param3;
+        cursor++;
+        *cursor = param4--;
+        cursor++;
+
+		param1++;
+	}
+}
+#endif
+
+void sub_80078D4(u8 bg, int_vcount minY, int_vcount maxY, u16 offsetEven, u16 offsetOdd)
+{
+    u16 *cursor;
+    u32 fillSize;
+    s32 fillVal;
+
+    gFlags |= FLAGS_4;
+
+    gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[bg * 4];
+    gUnknown_03002A80 = 4;
+
+    if (minY < maxY) {
+        fillVal = (offsetEven %= 512u) | ((offsetOdd % 512u) << 16);
+
+        DmaFill32(3, fillVal, &((u16 *)gBgOffsetsHBlank)[minY * 2],
+                  (maxY - minY) * 4);
+    }
+}
+
+void sub_8007958(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4,
+                 u16 param5,
+                 u16 param6)
+{
+    u16 *cursor;
+
+    gFlags |= FLAGS_4;
+
+    gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[bg * 4];
+    gUnknown_03002A80 = 4;
+
+    cursor = &((u16 *)gBgOffsetsHBlank)[minY * 2];
+
+    while (minY < maxY) {
         *cursor = (param3 + param5) & 0x1FF;
         cursor++;
         *cursor = param6;
@@ -46,21 +73,20 @@ void sub_8007958(u8 param0, u8 param1, u8 param2, s16 param3, s8 param4, u16 par
         param3 = -(param3 + param4);
         param4 = -param4;
 
-        param1++;
+        minY++;
     }
 }
 
-// NOTE: sub_8007AC0 might be able to be inlined in this proc
-void sub_8007A08(u8 param0, u8 param1, u8 param2, u8 param3, u8 param4)
+void sub_8007A08(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4)
 {
     u8 *cursor;
 
     gFlags |= FLAGS_4;
 
-    if (param0 >= 2) {
+    if (bg >= 2) {
         gUnknown_03002A80 = 4;
 
-        if (param0 & 1) {
+        if (bg & 1) {
             cursor = &((u8 *)gBgOffsetsHBlank)[2];
             gUnknown_03002878 = (void *)&REG_WIN0H;
         } else {
@@ -72,7 +98,7 @@ void sub_8007A08(u8 param0, u8 param1, u8 param2, u8 param3, u8 param4)
         gUnknown_03002A80 = 2;
         cursor = &((u8 *)gBgOffsetsHBlank)[0];
 
-        if (param0 & 1) {
+        if (bg & 1) {
             gUnknown_03002878 = (void *)&REG_WIN1H;
         } else {
             gUnknown_03002878 = (void *)&REG_WIN0H;
@@ -104,35 +130,39 @@ void sub_8007A08(u8 param0, u8 param1, u8 param2, u8 param3, u8 param4)
     }
 }
 
-void sub_8007AC0(u8 param0, u8 param1, u8 param2)
+void sub_8007AC0(u8 affineBg, int_vcount minY, int_vcount maxY)
 {
     u16 *cursor;
     u16 affine;
     void **ptr;
-    u32 param = param0;
+    u32 bg = affineBg;
 
     gFlags |= FLAGS_4;
 
     ptr = &gUnknown_03002878;
 
-    param *= 16;
+    bg *= 16;
 #ifndef NON_MATCHING
-    asm("sub %0, #0x20" ::"r"(param));
+    asm("sub %0, #0x20" ::"r"(bg));
 #else
-    param -= 0x20;
+    bg -= 0x20;
 #endif
-    *ptr = (void *)(REG_ADDR_BG2PA + param);
+    *ptr = (void *)(REG_ADDR_BG2PA + bg);
 
     gUnknown_03002A80 = 2;
 
-    cursor = &((u16 *)gBgOffsetsHBlank)[param1];
+    cursor = &((u16 *)gBgOffsetsHBlank)[minY];
 
-    affine = gBgAffineRegs[param0].pa;
+#ifdef NON_MATCHING
+    assert(affineBg < NUM_AFFINE_BACKGROUNDS)
+#endif
 
-    while (param1 < param2) {
-        *cursor = affine + ((param2 - param1) * 4);
+    affine = gBgAffineRegs[affineBg].pa;
+
+    while (minY < maxY) {
+        *cursor = affine + ((maxY - minY) * 4);
 
         cursor++;
-        param1++;
+        minY++;
     }
 }

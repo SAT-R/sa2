@@ -7,6 +7,7 @@
 #include "game/multiboot/collect_rings/results.h"
 #include "task.h"
 #include "sprite.h"
+#include "sprite_4.h"
 #include "game/save.h"
 #include "game/title_screen.h"
 #include "game/screen_fade.h"
@@ -136,8 +137,6 @@ void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
     InitBackground(background);
 }
 
-extern void sub_80078D4(u8, u8, u8, u16, u16);
-
 void sub_80823FC(void);
 
 void sub_808207C(void)
@@ -239,22 +238,23 @@ void sub_808207C(void)
         for (i = 0; i < 4; i++) {
             if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i + 8))) {
                 if (gUnknown_030054B4[i] & 1) {
-                    sub_80078D4(3, i * 40, (i + 1) * 40, 0xF0 - resultsScreen->unk430,
-                                0xA0 - i * 0x28);
+                    sub_80078D4(3, i * 40, (i + 1) * 40, DISPLAY_WIDTH - resultsScreen->unk430,
+                                DISPLAY_HEIGHT - i * 40);
                 } else {
-                    sub_80078D4(3, i * 40, (i + 1) * 40, resultsScreen->unk430 - 0xF0,
-                                0xA0 - i * 0x28);
+                    sub_80078D4(3, i * 40, (i + 1) * 40,
+                                resultsScreen->unk430 - DISPLAY_WIDTH,
+                                DISPLAY_HEIGHT - i * 40);
                 }
             } else {
                 if (gUnknown_030054B4[i] & 1) {
                     sub_80078D4(3, gUnknown_030054B4[i] * 40,
                                 (gUnknown_030054B4[i] + 1) * 40,
-                                0xF0 - resultsScreen->unk430,
+                                DISPLAY_WIDTH - resultsScreen->unk430,
                                 (i * 5 - gUnknown_030054B4[i] * 5) * 8);
                 } else {
                     sub_80078D4(3, gUnknown_030054B4[i] * 40,
                                 (gUnknown_030054B4[i] + 1) * 40,
-                                resultsScreen->unk430 - 0xF0,
+                                resultsScreen->unk430 - DISPLAY_WIDTH,
                                 (i * 5 - gUnknown_030054B4[i] * 5) * 8);
                 }
             }
@@ -437,10 +437,10 @@ void sub_8082788(void)
 
     for (i = 0; i < 4; i++) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i + 8))) {
-            sub_80078D4(3, i * 40, (i + 1) * 40, 0, 0xA0 - i * 0x28);
+            sub_80078D4(3, i * 40, (i + 1) * 40, 0, DISPLAY_HEIGHT - i * 40);
         } else {
             sub_80078D4(3, gUnknown_030054B4[i] * 40, (gUnknown_030054B4[i] + 1) * 40, 0,
-                        i * 0x28 - gUnknown_030054B4[i] * 0x28);
+                        i * 40 - gUnknown_030054B4[i] * 40);
             if (resultsScreen->unk434) {
                 u16 temp;
 

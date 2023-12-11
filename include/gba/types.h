@@ -13,9 +13,10 @@ typedef int32_t  s32;
 typedef int64_t  s64;
 
 // If the DISPLAY_HEIGHT was >255, scanline effects would break,
-// so we have to make this variable bigger
+// so we have to make this variable bigger.
+// (u16 should be plenty for screen coordinates, right?)
 #if (DISPLAY_HEIGHT > 255)
-typedef u32 int_vcount;
+typedef u16 int_vcount;
 #else
 typedef u8 int_vcount;
 #endif
