@@ -9,7 +9,9 @@
 #include "game/stage/player.h"
 
 typedef struct {
-    /* 0x54 */ u8 filler54[12];
+    /* 0x54 */ s32 unk54;
+    /* 0x54 */ s32 unk58;
+    /* 0x58 */ u8 filler5C[4];
     /* 0x60 */ s32 unk60;
     /* 0x64 */ u8 unk64;
     /* 0x68 */ Sprite *unk68;
@@ -19,8 +21,8 @@ typedef struct {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 posY;
 
-    /* 0x08 */ s8 unk8;
-    /* 0x09 */ s8 unk9;
+    /* 0x08 */ u8 unk8;
+    /* 0x09 */ u8 unk9;
     /* 0x0C */ u8 unkA;
     /* 0x0C */ u16 unkC;
     /* 0x0E */ s16 unkE;

@@ -195,7 +195,7 @@ void sub_80142AC(void)
     sub_801412C(cheese);
 }
 
-void sub_8014CC8(Cheese *);
+u8 sub_8014CC8(Cheese *);
 
 extern const u8 gUnknown_080D5590[];
 
@@ -705,4 +705,163 @@ void sub_8014BB0(Cheese *cheese)
 
     unk4BB0->s.animSpeed = SPRITE_ANIM_SPEED(1.0);
     unk4BB0->s.palId = 0;
+}
+
+void sub_8014C60(void)
+{
+    Cheese_UNK8014BB0 *unk4BB0 = TASK_DATA(gCurTask);
+    Sprite *s = &unk4BB0->s;
+    if (unk4BB0->unk3C++ > 0x20) {
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    unk4BB0->unk34 += unk4BB0->unk30;
+    unk4BB0->unk38 += 0x100;
+    s->x = Q_24_8_TO_INT(unk4BB0->unk34) - gCamera.x;
+    s->y = Q_24_8_TO_INT(unk4BB0->unk38) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+}
+
+u8 sub_8014CC8(Cheese *cheese)
+{
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+    u8 temp;
+    u32 temp2;
+    s32 sin, cos;
+    s32 r0, temp3, temp4, temp5;
+    u8 ret;
+
+    temp3 = 0;
+    temp4 = 0;
+
+    if (IS_BOSS_STAGE(gCurrentLevel)) {
+        sub_80155D0(cheese);
+    }
+
+    temp = unk54->unk64 + 0xA0;
+
+    if (cheese->unkC & 8) {
+        if (unk54->unk64 == 0) {
+            temp = (0x9F - unk54->unk64);
+            temp -= 128;
+        } else {
+            temp = (0x9F - unk54->unk64);
+            temp -= 128;
+        }
+
+        if (unk54->unk60 & 1) {
+            cheese->unkC |= 1;
+        } else {
+            cheese->unkC &= ~1;
+            temp += 0x40;
+        }
+
+    } else {
+        if (unk54->unk60 & 1) {
+            temp += 0x40;
+            if (unk54->unk64 + 0x40 > 0x80) {
+                cheese->unkC &= ~1;
+            } else {
+                cheese->unkC |= 1;
+            }
+        } else {
+            if (unk54->unk64 + 0x40 > 0x80) {
+                cheese->unkC |= 1;
+            } else {
+                cheese->unkC &= ~1;
+            }
+        }
+    }
+
+    cos = ((COS(temp * 4) >> 6) * 0x20) + unk54->unk54;
+    sin = ((SIN(temp * 4) >> 6) * 0x20) + unk54->unk58;
+
+    if (cheese->unk8 != 2) {
+        temp2 = unk54->unk54 - cheese->posX > -1 ? unk54->unk54 - cheese->posX
+                                                 : cheese->posX - unk54->unk54;
+        if (temp2 > 0x5000) {
+            cheese->unk8 = 2;
+        } else {
+            if (temp2 > 0x3000) {
+                cheese->unk8 = 3;
+            } else {
+                cheese->unk8 = 4;
+            }
+        }
+    }
+
+    temp2 = cos - cheese->posX > -1 ? cos - cheese->posX : cheese->posX - cos;
+    if (temp2 < 0x400) {
+        cheese->unk8 = 4;
+    }
+
+    if (cos > cheese->posX) {
+        temp3 = (temp2 >> cheese->unk8);
+        if (temp3 > 0x100) {
+            cheese->unkC &= ~1;
+        }
+    } else {
+        if (cos < cheese->posX) {
+            temp3 = -(temp2 >> cheese->unk8);
+            if (temp3 < -0x100) {
+                cheese->unkC |= 1;
+            }
+        }
+    }
+
+    if (cheese->unk9 != 2) {
+        temp2 = unk54->unk58 - cheese->posY > -1 ? unk54->unk58 - cheese->posY
+                                                 : cheese->posY - unk54->unk58;
+
+        if (temp2 > 0x5000) {
+            cheese->unk9 = 2;
+        } else {
+            if (temp2 > 0x3000) {
+                cheese->unk9 = 3;
+            } else {
+                cheese->unk9 = 4;
+            }
+        }
+    }
+
+    temp2 = sin - cheese->posY > -1 ? sin - cheese->posY : cheese->posY - sin;
+    if (temp2 < 0x400) {
+        cheese->unk9 = 4;
+        ret = 1;
+    } else {
+        ret = 0;
+    }
+
+    if (sin > cheese->posY) {
+        temp4 = temp2 >> cheese->unk9;
+    } else if (sin < cheese->posY) {
+        temp4 = -(temp2 >> cheese->unk9);
+    }
+
+    r0 = -4095;
+    if (temp3 < -0xFFF) {
+        temp3 = r0;
+    } else {
+        r0 = 0xFFF;
+        if (temp3 > 0xFFF) {
+            temp3 = r0;
+        }
+    }
+
+    r0 = -4095;
+    if (temp4 < -0xFFF) {
+        temp4 = r0;
+    } else {
+        r0 = 0xFFF;
+        if (temp4 > 0xFFF) {
+            temp4 = r0;
+        }
+    }
+
+    cheese->posX += temp3;
+    cheese->posY += temp4;
+
+    return ret;
 }
