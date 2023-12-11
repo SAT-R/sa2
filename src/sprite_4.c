@@ -18,8 +18,8 @@ void sub_8007858(u8 param0, u8 param1, u8 param2, u16 param3, u16 param4)
 
     cursor = &((u16 *)gBgOffsetsHBlank)[param1 * 2];
 
-    param4 = (param4 - param1) % 512;
-    param3 %= 512;
+    param4 = (param4 - param1) & 0x1FF;
+    param3 &= 0x1FF;
 
 	while (param1 < param2) {
         *cursor = param3;
