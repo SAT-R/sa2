@@ -6,10 +6,89 @@
 /* TODO: Rename this module to something background-related */
 #include "sprite_4.h"
 
+void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, u16 param4, u16 param5)
+{
+    int_vcount *cursor;
+    s16 r1;
+    u16 sb = (param5 * param5);
+
+    gFlags |= FLAGS_4;
+
+    if (bg >= 2) {
+        gUnknown_03002A80 = 4;
+
+        if (bg & 1) {
+            cursor = &((u8 *)gBgOffsetsHBlank)[2];
+            gUnknown_03002878 = (void *)&REG_WIN0H;
+        } else {
+            cursor = &((u8 *)gBgOffsetsHBlank)[0];
+            gUnknown_03002878 = (void *)&REG_WIN0H;
+        }
+    } else {
+        // _08007640
+        gUnknown_03002A80 = 2;
+        cursor = &((u8 *)gBgOffsetsHBlank)[0];
+
+        if (bg & 1) {
+            gUnknown_03002878 = (void *)&REG_WIN1H;
+        } else {
+            gUnknown_03002878 = (void *)&REG_WIN0H;
+        }
+    }
+
+    r1 = param4;
+
+    if ((r1 - param1) > param5) {
+        param1 = (param4 - param5);
+    }
+
+    if ((param2 - r1) > param5) {
+        param2 = (param4 + param5);
+    }
+
+    cursor += (gUnknown_03002A80 * param1);
+
+    for (; param1 < param2; param1++) {
+        // _080076A2
+        s16 num = param1 - param4;
+        s16 sqrtRes;
+
+        num = num * num;
+        sqrtRes = Sqrt(sb - num);
+
+        r1 = param3 + sqrtRes;
+        if (r1 < 0) {
+            *cursor = 0;
+            cursor++;
+        } else if (r1 > DISPLAY_WIDTH) {
+            *cursor = DISPLAY_WIDTH;
+            cursor++;
+        } else {
+            *cursor = r1;
+            cursor++;
+        }
+
+        r1 = param3 - sqrtRes;
+        if (r1 > DISPLAY_WIDTH) {
+            *cursor = DISPLAY_WIDTH;
+            cursor++;
+        } else if (r1 < 0) {
+            *cursor = 0;
+            cursor++;
+        } else {
+            *cursor = r1;
+            cursor++;
+        }
+
+        cursor += (gUnknown_03002A80 - 2);
+    }
+}
+
 void sub_8007738(u8 bg, u8 minY, u8 maxY, u16 param3, u8 param4, u8 param5, u16 param6,
                  u8 param7, u8 param8, s16 param9, s16 param10)
 {
     u16 *cursor;
+
     gFlags |= FLAGS_4;
 
     gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[bg * 4];
