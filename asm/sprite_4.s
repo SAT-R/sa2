@@ -3064,6 +3064,7 @@ _08007238:
 	.align 2, 0
 _08007248: .4byte gUnknown_03002A80
 
+.if 0
 	thumb_func_start sub_800724C
 sub_800724C: @ 0x0800724C
 	push {r4, r5, r6, r7, lr}
@@ -3072,9 +3073,9 @@ sub_800724C: @ 0x0800724C
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x20
-	mov sl, r1
+	mov sl, r1              @ sl = param1
 	lsls r0, r0, #0x18
-	lsrs r7, r0, #0x18
+	lsrs r7, r0, #0x18      @ r7 = bg
 	add r6, sp, #4
 	ldr r1, _080072A8 @ =gUnknown_080984F4
 	adds r0, r6, #0
@@ -3142,7 +3143,7 @@ _080072EC:
 	ldr r0, _08007404 @ =0x04000040
 _080072F0:
 	str r0, [r1]
-	mov r1, sl
+	mov r1, sl          @ r1 = sl = param1
 	ldrb r0, [r1, #5]
 	ldrb r2, [r1, #1]
 	adds r7, r2, #0
@@ -3161,7 +3162,7 @@ _08007302:
 _08007310:
 	lsls r0, r1, #0x18
 	lsrs r0, r0, #0x18
-	str r0, [sp, #0x18]
+	str r0, [sp, #0x18]     
 	ldr r2, _08007408 @ =gUnknown_03002A80
 	ldrb r0, [r2]
 	muls r0, r4, r0
@@ -3172,7 +3173,7 @@ _08007310:
 	ldrb r1, [r3]
 	subs r0, r0, r1
 	strh r0, [r2]
-	mov r3, r8
+	mov r3, r8          @ r3 = r8 = &sp[1]
 	mov r6, sl
 	ldrb r0, [r6, #3]
 	ldrb r1, [r6, #1]
@@ -3240,7 +3241,7 @@ _08007388:
 	ldrh r0, [r6, #2]
 	rsbs r0, r0, #0
 	strh r0, [r1, #2]
-	mov r8, r2
+	mov r8, r2          @ r8 = sp14
 	mov ip, r1
 	ldr r0, [sp, #0x18]
 	cmp r4, r0
@@ -3535,6 +3536,4 @@ _080075BA:
 	bx r0
 	.align 2, 0
 _080075CC: .4byte gUnknown_03002A80
-
-.if 0
 .endif

@@ -2,6 +2,7 @@
 #include "core.h"
 #include "flags.h"
 #include "sprite.h"
+#include "sprite_4.h"
 #include "task.h"
 #include "trig.h"
 #include "gba/syscall.h"

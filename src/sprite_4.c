@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "global.h"
 #include "core.h"
 #include "trig.h"
@@ -5,6 +7,138 @@
 
 /* TODO: Rename this module to something background-related */
 #include "sprite_4.h"
+
+extern u16 gUnknown_080984F4[];
+
+typedef struct {
+    s16 unk0;
+    s16 unk2;
+} Unknown;
+
+#if 01
+// When this function is called, the background layer that is
+// "lightened" by spot lights is fully lit.
+// This function filters out all non-lit parts to display them normally.
+// TODO: validate type of param1!
+// https://decomp.me/scratch/hMdDM
+void sub_800724C(u8 bg, u8 param1[8])
+{
+    Unknown sp00;
+    Unknown sp04;
+    Unknown sp08;
+    Unknown sp0C;
+    Unknown sp10;
+    u8 *cursor;
+    u32 r0, r1, r4, sb;
+    u8 sp14[2];
+    u8 sp18;
+
+    memcpy(&sp04, &gUnknown_080984F4, sizeof(sp04));
+    memset(&sp0C, 0, sizeof(sp0C));
+    memset(&sp10, 0, sizeof(sp10));
+
+    gFlags |= FLAGS_4;
+
+    if (bg >= 2) {
+        gUnknown_03002A80 = 4;
+
+        if (bg & 1) {
+            cursor = &((u8 *)gBgOffsetsHBlank)[2];
+            gUnknown_03002878 = (void *)&REG_WIN0H;
+        } else {
+            cursor = &((u8 *)gBgOffsetsHBlank)[0];
+            gUnknown_03002878 = (void *)&REG_WIN0H;
+        }
+    } else {
+        gUnknown_03002A80 = 2;
+        cursor = &((u8 *)gBgOffsetsHBlank)[0];
+
+        if (bg & 1) {
+            gUnknown_03002878 = (void *)&REG_WIN1H;
+        } else {
+            gUnknown_03002878 = (void *)&REG_WIN0H;
+        }
+    }
+
+    r0 = param1[5];
+    r1 = r0;
+    if(r0 > param1[1]) {
+        r0 = param1[1];
+    }
+    r4 = r0;
+
+    sb = r0;
+    if(sb < param1[1]) {
+        r1 = param1[1];
+    }
+    sp18 = r1;
+
+    cursor += (r4 * gUnknown_03002A80);
+
+    sp00.unk0 = param1[2] - param1[0];
+    sp04.unk0 = param1[3] - param1[1];
+
+    if(sp00.unk0 < 0) {
+        sp0C.unk0 = -sp00.unk0;
+    } else {
+        sp0C.unk0 = sp00.unk0;
+    }
+    
+    if(sp00.unk0 < 0) {
+        sp0C.unk0 = -sp00.unk0;
+    } else {
+        sp0C.unk0 = +sp00.unk0;
+    }
+
+    if(sp04.unk0 < 0) {
+        sp10.unk0 = -sp04.unk0 * 2;
+    } else {
+        sp10.unk0 = +sp04.unk0 * 2;
+    }
+
+    // _08007352 + 6
+    sp00.unk2 = param1[6] - param1[4];
+    sp04.unk2 = param1[7] - param1[5];
+
+    if(sp00.unk2 < 0) {
+        sp0C.unk2 = -sp00.unk2 * 2;
+    } else {
+        sp0C.unk2 = +sp00.unk2 * 2;
+    }
+    if(sp04.unk2 < 0) {
+        sp10.unk2 = -sp04.unk2 * 2;
+    } else {
+        sp10.unk2 = +sp04.unk2 * 2;
+    }
+
+    // _08007388+6
+    sp14[0] = param1[0];
+    sp14[1] = param1[4];
+
+    sp08.unk0 = -sp04.unk0;
+    sp08.unk2 = -sp04.unk2;
+
+    if(r4 != sp18) {
+        // _080073B6
+        if(bg < sb) {
+            if(r4 < r0) {
+                // _080073C0
+
+            }
+        } else {
+            // _08007448
+
+            while(r4 < sp18)
+            {
+                // _08007450
+                cursor[0] = sp14[0];
+                cursor[1] = 0;
+            }
+        }
+    }
+    // _080074C8
+}
+#endif
 
 void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, u16 param4, u16 param5)
 {
@@ -25,7 +159,6 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, u16 param4, u16 param5
             gUnknown_03002878 = (void *)&REG_WIN0H;
         }
     } else {
-        // _08007640
         gUnknown_03002A80 = 2;
         cursor = &((u8 *)gBgOffsetsHBlank)[0];
 
@@ -49,7 +182,6 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, u16 param4, u16 param5
     cursor += (gUnknown_03002A80 * param1);
 
     for (; param1 < param2; param1++) {
-        // _080076A2
         s16 num = param1 - param4;
         s16 sqrtRes;
 
@@ -84,7 +216,7 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, u16 param4, u16 param5
     }
 }
 
-void sub_8007738(u8 bg, u8 minY, u8 maxY, u16 param3, u8 param4, u8 param5, u16 param6,
+void sub_8007738(u8 bg, int_vcount minY, int_vcount maxY, u16 param3, u8 param4, u8 param5, u16 param6,
                  u8 param7, u8 param8, s16 param9, s16 param10)
 {
     u16 *cursor;
@@ -109,7 +241,7 @@ void sub_8007738(u8 bg, u8 minY, u8 maxY, u16 param3, u8 param4, u8 param5, u16 
     }
 }
 
-void sub_8007858(u8 param0, u8 param1, u8 param2, u16 param3, u16 param4)
+void sub_8007858(u8 param0, int_vcount minY, int_vcount maxY, u16 param3, u16 param4)
 {
     u16 *cursor;
 
@@ -118,18 +250,18 @@ void sub_8007858(u8 param0, u8 param1, u8 param2, u16 param3, u16 param4)
     gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[param0 * 4];
     gUnknown_03002A80 = 4;
 
-    cursor = &((u16 *)gBgOffsetsHBlank)[param1 * 2];
+    cursor = &((u16 *)gBgOffsetsHBlank)[minY * 2];
 
-    param4 = (param4 - param1) & 0x1FF;
+    param4 = (param4 - minY) & 0x1FF;
     param3 &= 0x1FF;
 
-    while (param1 < param2) {
+    while (minY < maxY) {
         *cursor = param3;
         cursor++;
         *cursor = param4--;
         cursor++;
 
-        param1++;
+        minY++;
     }
 }
 
@@ -193,7 +325,6 @@ void sub_8007A08(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4)
             gUnknown_03002878 = (void *)&REG_WIN0H;
         }
     } else {
-        // _08007A5C
         gUnknown_03002A80 = 2;
         cursor = &((u8 *)gBgOffsetsHBlank)[0];
 
