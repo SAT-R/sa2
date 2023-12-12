@@ -3722,6 +3722,7 @@ _08007724:
 	.align 2, 0
 _08007734: .4byte gUnknown_03002A80
 
+.if 0
 	thumb_func_start sub_8007738
 sub_8007738: @ 0x08007738
 	push {r4, r5, r6, r7, lr}
@@ -3739,39 +3740,39 @@ sub_8007738: @ 0x08007738
 	mov sb, r7
 	ldr r7, [sp, #0x4c]
 	mov sl, r7
-	lsls r0, r0, #0x18
+	lsls r0, r0, #0x18      @ r0 = param0
 	lsls r1, r1, #0x18
-	lsrs r7, r1, #0x18
+	lsrs r7, r1, #0x18      @ r7 = minY
 	lsls r2, r2, #0x18
 	lsrs r2, r2, #0x18
-	str r2, [sp]
+	str r2, [sp]            @ sp00 = maxY
 	lsls r3, r3, #0x10
 	lsrs r3, r3, #0x10
-	mov ip, r3
+	mov ip, r3              @ ip = param3
 	lsls r4, r4, #0x18
 	lsrs r4, r4, #0x18
-	str r4, [sp, #4]
+	str r4, [sp, #4]        @ sp04 = param4
 	lsls r5, r5, #0x18
 	lsrs r5, r5, #0x18
-	str r5, [sp, #8]
+	str r5, [sp, #8]        @ sp08 = param5
 	lsls r6, r6, #0x10
-	lsrs r6, r6, #0x10
+	lsrs r6, r6, #0x10      @ r6 = param6
 	mov r1, r8
 	lsls r1, r1, #0x18
 	lsrs r1, r1, #0x18
-	str r1, [sp, #0xc]
+	str r1, [sp, #0xc]      @ sp0C = param7
 	mov r2, sb
 	lsls r2, r2, #0x18
 	lsrs r2, r2, #0x18
-	str r2, [sp, #0x10]
+	str r2, [sp, #0x10]     @ sp10 = param8
 	mov r5, sl
 	lsls r5, r5, #0x10
-	lsrs r5, r5, #0x10
+	lsrs r5, r5, #0x10      @ r5 = param9
 	ldr r1, [sp, #0x50]
 	lsls r1, r1, #0x10
-	str r1, [sp, #0x14]
+	str r1, [sp, #0x14]     @ sp14 = (param10 << 16)
 	lsrs r1, r1, #0x10
-	mov r8, r1
+	mov r8, r1              @ r8 = param10
 	ldr r2, _08007838 @ =gFlags
 	ldr r1, [r2]
 	movs r3, #4
@@ -3862,6 +3863,4 @@ _08007848: .4byte gBgOffsetsHBlank
 _0800784C: .4byte gSineTable
 _08007850: .4byte 0x000003FF
 _08007854: .4byte 0x000001FF
-
-.if 0
 .endif

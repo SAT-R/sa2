@@ -238,7 +238,8 @@ void sub_808207C(void)
         for (i = 0; i < 4; i++) {
             if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i + 8))) {
                 if (gUnknown_030054B4[i] & 1) {
-                    sub_80078D4(3, i * 40, (i + 1) * 40, DISPLAY_WIDTH - resultsScreen->unk430,
+                    sub_80078D4(3, i * 40, (i + 1) * 40,
+                                DISPLAY_WIDTH - resultsScreen->unk430,
                                 DISPLAY_HEIGHT - i * 40);
                 } else {
                     sub_80078D4(3, i * 40, (i + 1) * 40,
