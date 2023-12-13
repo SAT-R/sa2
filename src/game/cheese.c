@@ -865,3 +865,120 @@ u8 sub_8014CC8(Cheese *cheese)
 
     return ret;
 }
+
+u8 sub_8014EFC(Cheese *cheese, s16 x, s16 y, u8 p4)
+{
+    Cheese_UNK54 *unk54 = &cheese->unk54;
+    u8 temp;
+    u32 temp2;
+    s32 sin, cos;
+    s32 r0, temp3, temp4;
+    u8 ret;
+
+    temp3 = 0;
+    temp4 = 0;
+    ret = 0;
+
+    if (IS_BOSS_STAGE(gCurrentLevel)) {
+        sub_80155D0(cheese);
+    }
+
+    temp = unk54->unk64 + 0xA0;
+
+    if (cheese->unkC & 8) {
+        if (unk54->unk64 == 0) {
+            temp = (0x9F - unk54->unk64);
+            temp -= 128;
+        } else {
+            temp = (0x9F - unk54->unk64);
+            temp -= 128;
+        }
+
+        if (unk54->unk60 & 1) {
+            cheese->unkC |= 1;
+        } else {
+            cheese->unkC &= ~1;
+            temp += 0x40;
+        }
+
+    } else {
+        if (unk54->unk60 & 1) {
+            temp += 0x40;
+            if (unk54->unk64 + 0x40 > 0x80) {
+                cheese->unkC &= ~1;
+            } else {
+                cheese->unkC |= 1;
+            }
+        } else {
+            if (unk54->unk64 + 0x40 > 0x80) {
+                cheese->unkC |= 1;
+            } else {
+                cheese->unkC &= ~1;
+            }
+        }
+    }
+    do {
+        cos = ((COS(temp * 4) >> 6) * x) + unk54->unk54;
+    } while (0);
+    sin = ((SIN(temp * 4) >> 6) * y) + unk54->unk58;
+
+    if (p4 == 0) {
+        cheese->posX = cos;
+        cheese->posY = sin;
+        return 1;
+    }
+    if ((cos - cheese->posX > -1 ? cos - cheese->posX : cheese->posX - cos) < 0x600) {
+        if ((sin - cheese->posY > -1 ? sin - cheese->posY : cheese->posY - sin)
+            < 0x600) {
+            ret = 1;
+        }
+    }
+
+    temp2 = cos - cheese->posX > -1 ? cos - cheese->posX : cheese->posX - cos;
+
+    if (cos > cheese->posX) {
+        temp3 = (temp2 >> p4);
+        if (temp3 != 0) {
+            cheese->unkC &= ~1;
+        }
+    } else {
+        if (cos < cheese->posX) {
+            temp3 = -(temp2 >> p4);
+            if (temp3 != 0) {
+                cheese->unkC |= 1;
+            }
+        }
+    }
+
+    temp2 = sin - cheese->posY > -1 ? sin - cheese->posY : cheese->posY - sin;
+    if (sin > cheese->posY) {
+        temp4 = temp2 >> p4;
+    } else if (sin < cheese->posY) {
+        temp4 = -(temp2 >> p4);
+    }
+
+    r0 = -4095;
+    if (temp3 < -0xFFF) {
+        temp3 = r0;
+    } else {
+        r0 = 0xFFF;
+        if (temp3 > 0xFFF) {
+            temp3 = r0;
+        }
+    }
+
+    r0 = -4095;
+    if (temp4 < -0xFFF) {
+        temp4 = r0;
+    } else {
+        r0 = 0xFFF;
+        if (temp4 > 0xFFF) {
+            temp4 = r0;
+        }
+    }
+
+    cheese->posX += temp3;
+    cheese->posY += temp4;
+
+    return ret;
+}
