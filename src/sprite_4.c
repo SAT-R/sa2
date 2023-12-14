@@ -11,8 +11,8 @@
 extern u16 gUnknown_080984F4[];
 
 typedef struct {
-    s16 unk0;
-    s16 unk2;
+    s16 x;
+    s16 y;
 } Unknown;
 
 #if 01
@@ -20,24 +20,24 @@ typedef struct {
 // "lightened" by spot lights is fully lit.
 // This function filters out all non-lit parts to display them normally.
 // TODO: validate type of param1!
-// https://decomp.me/scratch/oY3s7
-void sub_800724C(u8 bg, u8 param1[8])
+// (73.98%) https://decomp.me/scratch/oY3s7
+void sub_800724C(u8 bg, Param1 *param1)
 {
-    Unknown sp00;
-    Unknown sp04;
-    Unknown sp08;
-    Unknown sp0C;
-    Unknown sp10;
+    Unknown *u;
+    Unknown sp00[5];
     u8 *cursor;
-    u32 r0, r1, sb;
-    u8 r4;
+    u32 r0, r1;
+    u8 sb, r4;
     int_vcount sp14[2]; // TODO: type might be inaccurate? Find out whether this is
                         // display resolutions
     u8 sp18;
+    s32 temp;
+    s16 *sp;
 
-    memcpy(&sp04, &gUnknown_080984F4, sizeof(sp04));
-    memset(&sp0C, 0, sizeof(sp0C));
-    memset(&sp10, 0, sizeof(sp10));
+    memcpy(&sp00[1], &gUnknown_080984F4, sizeof(sp00[1]));
+    cursor = (u8 *)&sp00[3];
+    memset(cursor, 0, sizeof(sp00[3]));
+    memset(&sp00[4], 01, sizeof(sp00[4]));
 
     gFlags |= FLAGS_4;
 
@@ -62,63 +62,41 @@ void sub_800724C(u8 bg, u8 param1[8])
         }
     }
 
-    r0 = param1[5];
+    r0 = param1->unk5;
     r1 = r0;
-    if (r0 > param1[1]) {
-        r0 = param1[1];
+    if (r0 > param1->unk1) {
+        r0 = param1->unk1;
     }
     r4 = r0;
 
     sb = r0;
-    if (sb < param1[1]) {
-        r1 = param1[1];
+    if (sb < param1->unk1) {
+        r1 = param1->unk1;
     }
     sp18 = r1;
 
     cursor += (r4 * gUnknown_03002A80);
 
-    sp00.unk0 = param1[2] - param1[0];
-    sp04.unk0 = param1[3] - param1[1];
+    sp00[0].x = param1->unk2 - param1->unk0;
+    sp00[1].x = param1->unk3 - param1->unk1;
 
-    if (sp00.unk0 < 0) {
-        sp0C.unk0 = -sp00.unk0;
-    } else {
-        sp0C.unk0 = sp00.unk0;
-    }
-
-    if (sp00.unk0 < 0) {
-        sp0C.unk0 = -sp00.unk0;
-    } else {
-        sp0C.unk0 = +sp00.unk0;
-    }
-
-    if (sp04.unk0 < 0) {
-        sp10.unk0 = -sp04.unk0 * 2;
-    } else {
-        sp10.unk0 = +sp04.unk0 * 2;
-    }
+    u = &sp00[3];
+    u->x = abs(sp00[0].x) * 2;
+    sp00[4].x = abs(sp00[1].x) * 2;
 
     // _08007352 + 6
-    sp00.unk2 = param1[6] - param1[4];
-    sp04.unk2 = param1[7] - param1[5];
+    sp00[0].y = param1->unk6 - param1->unk4;
+    sp00[1].y = param1->unk7 - param1->unk5;
 
-    if (sp00.unk2 < 0) {
-        sp0C.unk2 = -sp00.unk2 * 2;
-    } else {
-        sp0C.unk2 = +sp00.unk2 * 2;
-    }
-    if (sp04.unk2 < 0) {
-        sp10.unk2 = -sp04.unk2 * 2;
-    } else {
-        sp10.unk2 = +sp04.unk2 * 2;
-    }
+    sp00[3].y = abs(sp00[0].y) * 2;
+    sp00[4].y = abs(sp00[1].y) * 2;
 
     // _08007388+6
-    sp14[0] = param1[0];
-    sp14[1] = param1[4];
+    sp14[0] = param1->unk0;
+    sp14[1] = param1->unk4;
 
-    sp08.unk0 = -sp04.unk0;
-    sp08.unk2 = -sp04.unk2;
+    sp00[2].x = -sp00[1].x;
+    sp00[2].y = -sp00[1].y;
 
     if (r4 != sp18) {
         // _080073B6
@@ -128,21 +106,22 @@ void sub_800724C(u8 bg, u8 param1[8])
                 cursor[0] = DISPLAY_WIDTH;
                 cursor[1] = sp14[0];
 
-                sp08.unk0 += sp0C.unk0;
+                sp00[2].x += sp00[3].x;
 
                 r4++;
 
-                while (sp08.unk0 >= 0) {
-                    if (sp00.unk0 > 0) {
+                while (sp00[2].x >= 0) {
+                    if (sp00[0].x > 0) {
                         sp14[0]++;
-                        sp08.unk0 -= sp10.unk0;
+                        sp00[2].x -= sp00[4].x;
+                        asm("");
                     } else {
                         // _0800740C
                         sp14[0]--;
-                        sp08.unk0 -= sp10.unk0;
+                        sp00[2].x -= sp00[4].x;
                     }
 
-                    if (sp08.unk0 >= 0) {
+                    if (sp00[2].x >= 0) {
                         cursor[1] = sp14[0];
                     }
                 }
@@ -158,22 +137,22 @@ void sub_800724C(u8 bg, u8 param1[8])
                 cursor[0] = sp14[0];
                 cursor[1] = 0;
 
-                sp08.unk2 += sp0C.unk2;
+                sp00[2].y += sp00[3].y;
 
-                r4++;
+                sb = ++r4;
 
-                while (sp08.unk2 >= 0) {
-                    if (sp00.unk2 > 0) {
+                while (sp00[2].y >= 0) {
+                    if (sp00[0].y > 0) {
                         sp14[1]++;
-                        sp08.unk2 -= sp10.unk2;
+                        sp00[2].y -= sp00[4].y;
 
-                        if (sp08.unk2 >= 0) {
+                        if (sp00[2].y >= 0) {
                             *cursor = sp14[1] + 1;
                         }
                     } else {
                         // _0800749E
                         sp14[1]--;
-                        sp08.unk2 -= sp10.unk2;
+                        sp00[2].y -= sp00[4].y;
                     }
                     // _080074AC
                 }
@@ -184,8 +163,8 @@ void sub_800724C(u8 bg, u8 param1[8])
     }
     // _080074C8
 
-    r0 = param1[7];
-    r1 = param1[3];
+    r0 = param1->unk7;
+    r1 = param1->unk3;
 
     if (r0 > r1) {
         r0 = r1;
@@ -193,44 +172,48 @@ void sub_800724C(u8 bg, u8 param1[8])
 
     sp18 = r0;
 
-    while (sb < sp18) {
+    for (; sb < sp18; sb++) {
+        Unknown *sp0;
+        Unknown *sp2;
+        Unknown *sp4;
         // _080074E0
         cursor[0] = sp14[1];
         cursor[1] = sp14[0];
 
-        sp08.unk0 += sp0C.unk0;
-        sp08.unk2 += sp0C.unk2;
+        sp00[2].x += sp00[3].x;
+        sp00[2].y += sp00[3].y;
 
-        sb = ++r4;
-
-        while (sp08.unk0 >= 0) {
-            if (sp00.unk0 > 0) {
+        while (sp00[2].x >= 0) {
+            if (sp00[0].x > 0) {
                 sp14[0]++;
-                sp08.unk0 -= sp10.unk0;
+                sp00[2].x -= sp00[4].x;
             } else {
                 // _08007530
                 sp14[0]--;
-                sp08.unk0 -= sp10.unk0;
+                sp00[2].x -= sp00[4].x;
 
-                if (sp08.unk0 >= 0) {
+                if (sp00[2].x >= 0) {
                     cursor[1] = sp14[0];
                 }
             }
         }
         // _08007558
 
-        while (sp08.unk2 >= 0) {
-            if (sp00.unk2 > 0) {
+        sp4 = &sp00[4];
+        sp2 = &sp00[2];
+        while (sp2->y >= 0) {
+            sp0 = &sp00[0];
+            if (sp0->y > 0) {
                 sp14[1]++;
-                sp08.unk2 -= sp10.unk2;
+                sp2->y -= sp4->y;
+
+                if (sp2->y >= 0) {
+                    cursor[0] = sp14[1] + 1;
+                }
             } else {
                 // _08007590
                 sp14[1]--;
-                sp08.unk2 -= sp10.unk2;
-
-                if (sp08.unk2 >= 0) {
-                    cursor[1] = sp14[1] + 1;
-                }
+                sp2->y -= sp4->y;
             }
         }
         // _080075A8

@@ -3076,7 +3076,7 @@ sub_800724C: @ 0x0800724C
 	mov sl, r1              @ sl = param1
 	lsls r0, r0, #0x18
 	lsrs r7, r0, #0x18      @ r7 = bg
-	add r6, sp, #4
+	add r6, sp, #4          @ r6 = sp04
 	ldr r1, _080072A8 @ =gUnknown_080984F4
 	adds r0, r6, #0
 	movs r2, #4
@@ -3096,7 +3096,7 @@ sub_800724C: @ 0x0800724C
 	movs r2, #4
 	orrs r0, r2
 	str r0, [r1]
-	mov r8, r6
+	mov r8, r6              @ r8 = r6 = sp08
 	cmp r7, #1
 	bls _080072C4
 	ldr r1, _080072B0 @ =gUnknown_03002A80
@@ -3168,13 +3168,13 @@ _08007310:
 	muls r0, r4, r0
 	adds r5, r5, r0
 	mov r2, sp
-	mov r3, sl
+	mov r3, sl          @ r3 = sl = param1
 	ldrb r0, [r3, #2]
 	ldrb r1, [r3]
 	subs r0, r0, r1
 	strh r0, [r2]
 	mov r3, r8          @ r3 = r8 = &sp[1]
-	mov r6, sl
+	mov r6, sl          @ r6 = sl = param1
 	ldrb r0, [r6, #3]
 	ldrb r1, [r6, #1]
 	subs r0, r0, r1
@@ -3199,7 +3199,7 @@ _08007352:
 	mov r1, sp
 	strh r0, [r1, #0x10]
 	mov r2, sp
-	mov r6, sl
+	mov r6, sl          @ r6 = sl = param1
 	ldrb r0, [r6, #6]
 	ldrb r1, [r6, #4]
 	subs r0, r0, r1
@@ -3228,7 +3228,7 @@ _08007388:
 	mov r1, sp
 	strh r0, [r1, #0x12]
 	add r2, sp, #0x14
-	mov r3, sl
+	mov r3, sl          @ r3 = sl = param1
 	ldrb r0, [r3]
 	strb r0, [r2]
 	ldrb r0, [r3, #4]
