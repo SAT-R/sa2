@@ -20,7 +20,7 @@ typedef struct {
 // "lightened" by spot lights is fully lit.
 // This function filters out all non-lit parts to display them normally.
 // TODO: validate type of param1!
-// https://decomp.me/scratch/hMdDM
+// https://decomp.me/scratch/oY3s7
 void sub_800724C(u8 bg, u8 param1[8])
 {
     Unknown sp00;
@@ -29,8 +29,10 @@ void sub_800724C(u8 bg, u8 param1[8])
     Unknown sp0C;
     Unknown sp10;
     u8 *cursor;
-    u32 r0, r1, r4, sb;
-    u8 sp14[2];
+    u32 r0, r1, sb;
+    u8 r4;
+    int_vcount sp14[2]; // TODO: type might be inaccurate? Find out whether this is
+                        // display resolutions
     u8 sp18;
 
     memcpy(&sp04, &gUnknown_080984F4, sizeof(sp04));
@@ -62,13 +64,13 @@ void sub_800724C(u8 bg, u8 param1[8])
 
     r0 = param1[5];
     r1 = r0;
-    if(r0 > param1[1]) {
+    if (r0 > param1[1]) {
         r0 = param1[1];
     }
     r4 = r0;
 
     sb = r0;
-    if(sb < param1[1]) {
+    if (sb < param1[1]) {
         r1 = param1[1];
     }
     sp18 = r1;
@@ -78,19 +80,19 @@ void sub_800724C(u8 bg, u8 param1[8])
     sp00.unk0 = param1[2] - param1[0];
     sp04.unk0 = param1[3] - param1[1];
 
-    if(sp00.unk0 < 0) {
+    if (sp00.unk0 < 0) {
         sp0C.unk0 = -sp00.unk0;
     } else {
         sp0C.unk0 = sp00.unk0;
     }
-    
-    if(sp00.unk0 < 0) {
+
+    if (sp00.unk0 < 0) {
         sp0C.unk0 = -sp00.unk0;
     } else {
         sp0C.unk0 = +sp00.unk0;
     }
 
-    if(sp04.unk0 < 0) {
+    if (sp04.unk0 < 0) {
         sp10.unk0 = -sp04.unk0 * 2;
     } else {
         sp10.unk0 = +sp04.unk0 * 2;
@@ -100,12 +102,12 @@ void sub_800724C(u8 bg, u8 param1[8])
     sp00.unk2 = param1[6] - param1[4];
     sp04.unk2 = param1[7] - param1[5];
 
-    if(sp00.unk2 < 0) {
+    if (sp00.unk2 < 0) {
         sp0C.unk2 = -sp00.unk2 * 2;
     } else {
         sp0C.unk2 = +sp00.unk2 * 2;
     }
-    if(sp04.unk2 < 0) {
+    if (sp04.unk2 < 0) {
         sp10.unk2 = -sp04.unk2 * 2;
     } else {
         sp10.unk2 = +sp04.unk2 * 2;
@@ -118,25 +120,123 @@ void sub_800724C(u8 bg, u8 param1[8])
     sp08.unk0 = -sp04.unk0;
     sp08.unk2 = -sp04.unk2;
 
-    if(r4 != sp18) {
+    if (r4 != sp18) {
         // _080073B6
-        if(bg < sb) {
-            if(r4 < r0) {
+        if (bg < sb) {
+            while (r4 < sp18) {
                 // _080073C0
+                cursor[0] = DISPLAY_WIDTH;
+                cursor[1] = sp14[0];
 
+                sp08.unk0 += sp0C.unk0;
+
+                r4++;
+
+                while (sp08.unk0 >= 0) {
+                    if (sp00.unk0 > 0) {
+                        sp14[0]++;
+                        sp08.unk0 -= sp10.unk0;
+                    } else {
+                        // _0800740C
+                        sp14[0]--;
+                        sp08.unk0 -= sp10.unk0;
+                    }
+
+                    if (sp08.unk0 >= 0) {
+                        cursor[1] = sp14[0];
+                    }
+                }
+                // _08007430
+
+                cursor += gUnknown_03002A80;
             }
         } else {
             // _08007448
 
-            while(r4 < sp18)
-            {
+            while (r4 < sp18) {
                 // _08007450
                 cursor[0] = sp14[0];
                 cursor[1] = 0;
+
+                sp08.unk2 += sp0C.unk2;
+
+                r4++;
+
+                while (sp08.unk2 >= 0) {
+                    if (sp00.unk2 > 0) {
+                        sp14[1]++;
+                        sp08.unk2 -= sp10.unk2;
+
+                        if (sp08.unk2 >= 0) {
+                            *cursor = sp14[1] + 1;
+                        }
+                    } else {
+                        // _0800749E
+                        sp14[1]--;
+                        sp08.unk2 -= sp10.unk2;
+                    }
+                    // _080074AC
+                }
+                // _080074B6
+                cursor += gUnknown_03002A80;
             }
         }
     }
     // _080074C8
+
+    r0 = param1[7];
+    r1 = param1[3];
+
+    if (r0 > r1) {
+        r0 = r1;
+    }
+
+    sp18 = r0;
+
+    while (sb < sp18) {
+        // _080074E0
+        cursor[0] = sp14[1];
+        cursor[1] = sp14[0];
+
+        sp08.unk0 += sp0C.unk0;
+        sp08.unk2 += sp0C.unk2;
+
+        sb = ++r4;
+
+        while (sp08.unk0 >= 0) {
+            if (sp00.unk0 > 0) {
+                sp14[0]++;
+                sp08.unk0 -= sp10.unk0;
+            } else {
+                // _08007530
+                sp14[0]--;
+                sp08.unk0 -= sp10.unk0;
+
+                if (sp08.unk0 >= 0) {
+                    cursor[1] = sp14[0];
+                }
+            }
+        }
+        // _08007558
+
+        while (sp08.unk2 >= 0) {
+            if (sp00.unk2 > 0) {
+                sp14[1]++;
+                sp08.unk2 -= sp10.unk2;
+            } else {
+                // _08007590
+                sp14[1]--;
+                sp08.unk2 -= sp10.unk2;
+
+                if (sp08.unk2 >= 0) {
+                    cursor[1] = sp14[1] + 1;
+                }
+            }
+        }
+        // _080075A8
+        cursor += gUnknown_03002A80;
+    }
+    // _080075BA
 }
 #endif
 
@@ -216,8 +316,8 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, u16 param4, u16 param5
     }
 }
 
-void sub_8007738(u8 bg, int_vcount minY, int_vcount maxY, u16 param3, u8 param4, u8 param5, u16 param6,
-                 u8 param7, u8 param8, s16 param9, s16 param10)
+void sub_8007738(u8 bg, int_vcount minY, int_vcount maxY, u16 param3, u8 param4,
+                 u8 param5, u16 param6, u8 param7, u8 param8, s16 param9, s16 param10)
 {
     u16 *cursor;
 

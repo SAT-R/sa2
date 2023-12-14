@@ -3242,7 +3242,7 @@ _08007388:
 	rsbs r0, r0, #0
 	strh r0, [r1, #2]
 	mov r8, r2          @ r8 = sp14
-	mov ip, r1
+	mov ip, r1          @ ip = r1 = sp08
 	ldr r0, [sp, #0x18]
 	cmp r4, r0
 	bne _080073B6
@@ -3272,7 +3272,7 @@ _080073C0:
 	blt _08007430
 	mov r3, r8
 	add r4, sp, #0x10
-	mov r6, ip
+	mov r6, ip          @ r6 = ip = sp08
 _080073E6:
 	mov r0, sp
 	movs r7, #0
@@ -3302,7 +3302,7 @@ _0800740C:
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	blt _08007426
-	mov r1, r8
+	mov r1, r8          @ r1 = r8 = sp14
 	ldrb r0, [r1]
 	strb r0, [r5, #1]
 _08007426:
@@ -3328,7 +3328,7 @@ _08007448:
 	ldr r6, [sp, #0x18]
 	cmp r4, r6
 	bhs _080074C8
-	mov r7, ip
+	mov r7, ip          @ r7 = ip = sp08
 _08007450:
 	mov r1, r8
 	ldrb r0, [r1, #1]
@@ -3395,7 +3395,7 @@ _080074B6:
 	cmp r4, r6
 	blo _08007450
 _080074C8:
-	mov r7, sl
+	mov r7, sl          @ r7 = sl = param1
 	ldrb r0, [r7, #7]
 	ldrb r1, [r7, #3]
 	cmp r0, r1
@@ -3405,17 +3405,17 @@ _080074D4:
 	str r0, [sp, #0x18]
 	cmp r4, r0
 	bhs _080075BA
-	mov r7, ip
+	mov r7, ip          @ r7 = ip = sp08
 	add r0, sp, #0xc
-	mov sl, r0
+	mov sl, r0          @ sl = sp0C
 _080074E0:
-	mov r1, r8
+	mov r1, r8          @ r1 = r8 = sp14
 	ldrb r0, [r1, #1]
 	strb r0, [r5]
 	ldrb r0, [r1]
 	strb r0, [r5, #1]
-	adds r3, r7, #0
-	mov r6, sl
+	adds r3, r7, #0     @ r3 = r7 = sp08
+	mov r6, sl          @ r6 = sl = sp0C
 	ldrh r2, [r6]
 	ldrh r0, [r7]
 	adds r2, r2, r0
@@ -3429,9 +3429,9 @@ _080074E0:
 	mov sb, r4
 	cmp r2, #0
 	blt _08007558
-	mov r2, r8
-	add r4, sp, #0x10
-	mov r1, ip
+	mov r2, r8          @ r2 = r8 = sp14
+	add r4, sp, #0x10   @ r4 = sp10
+	mov r1, ip          @ r1 = ip = sp08
 	str r1, [sp, #0x1c]
 _08007510:
 	mov r0, sp
@@ -3472,14 +3472,14 @@ _0800754E:
 	cmp r0, #0
 	bge _08007510
 _08007558:
-	adds r2, r7, #0
+	adds r2, r7, #0     @ r2 = r7 = sp08
 	ldrh r0, [r2, #2]
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	blt _080075A8
-	mov r3, r8
-	add r4, sp, #0x10
-	mov r6, ip
+	mov r3, r8          @ r3 = r8 = sp14
+	add r4, sp, #0x10   @ r4 = sp10
+	mov r6, ip          @ r6 = ip = sp08
 _08007568:
 	mov r0, sp
 	ldrh r0, [r0, #2]
