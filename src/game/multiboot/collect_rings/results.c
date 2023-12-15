@@ -7,7 +7,7 @@
 #include "game/multiboot/collect_rings/results.h"
 #include "task.h"
 #include "sprite.h"
-#include "sprite_4.h"
+#include "bg_triangles.h"
 #include "game/save.h"
 #include "game/title_screen.h"
 #include "game/screen_fade.h"

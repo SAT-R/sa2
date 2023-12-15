@@ -61,6 +61,7 @@ gUnknown_080984F4:
 .syntax unified
 .arm
 
+    @ Unused
 	thumb_func_start sub_8005C54
 sub_8005C54: @ 0x08005C54
 	push {r4, r5, r6, r7, lr}
@@ -507,6 +508,7 @@ _08005F9E:
 	.align 2, 0
 _08005FB0: .4byte 0x000001FF
 
+    @ Unused
 	thumb_func_start sub_8005FB4
 sub_8005FB4: @ 0x08005FB4
 	push {r4, r5, r6, r7, lr}
@@ -1525,6 +1527,7 @@ _08006718:
 	.align 2, 0
 _08006728: .4byte gUnknown_03002A80
 
+    @ Unused
 	thumb_func_start sub_800672C
 sub_800672C: @ 0x0800672C
 	push {r4, r5, r6, r7, lr}
@@ -2428,6 +2431,8 @@ _08006D9E:
 	.align 2, 0
 _08006DB0: .4byte gUnknown_03002A80
 
+    @ Unused
+    @ Very similar to sub_800724C
 	thumb_func_start sub_8006DB4
 sub_8006DB4: @ 0x08006DB4
 	push {r4, r5, r6, r7, lr}

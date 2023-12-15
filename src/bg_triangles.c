@@ -6,7 +6,7 @@
 #include "flags.h"
 
 /* TODO: Rename this module to something background-related */
-#include "sprite_4.h"
+#include "bg_triangles.h"
 
 extern u16 gUnknown_080984F4[];
 
@@ -20,8 +20,8 @@ typedef struct {
 // "lightened" by spot lights is fully lit.
 // This function filters out all non-lit parts to display them normally.
 // TODO: validate type of param1!
-// (76.37%) https://decomp.me/scratch/8wQzE
-void sub_800724C(u8 bg, Param1 *param1)
+// (80.10%) https://decomp.me/scratch/8wQzE
+void sub_800724C(u8 bg, TriParam1 *param1)
 {
     Unknown *u;
     Unknown sp00[5];
@@ -29,14 +29,17 @@ void sub_800724C(u8 bg, Param1 *param1)
     u8 *cursor, *cursor2;
     register u32 r0 asm("r0");
     register u32 r1 asm("r1");
-    u8 sb;
-    register u8 r4 asm("r4");
+    register u32 r2 asm("r2");
+    register u16 sb asm("sb");
+    register u16 r4 asm("r4");
+    register u32 r7 asm("r7");
     int_vcount sp14[2]; // TODO: type might be inaccurate? Find out whether this is
                         // display resolutions
-    u8 sp18;
+    u32 sp18;
     u8 a, b;
     s32 temp;
     s16 *sp;
+    register Unknown *ip asm("ip");
 
     pSp0 = &sp00[1];
     memcpy(pSp0, &gUnknown_080984F4, sizeof(sp00[1]));
@@ -69,14 +72,15 @@ void sub_800724C(u8 bg, Param1 *param1)
     }
 
     r0 = param1->unk5;
+    r7 = r2 = param1->unk1;
     r1 = r0;
-    if (r0 > param1->unk1) {
+    if (r0 > r7) {
         r0 = param1->unk1;
     }
     r4 = r0;
 
-    sb = r0;
-    if (sb < param1->unk1) {
+    sb = (u8)r1;
+    if (sb < r7) {
         r1 = param1->unk1;
     }
     sp18 = r1;
@@ -88,7 +92,7 @@ void sub_800724C(u8 bg, Param1 *param1)
 
     u = &sp00[3];
     u->x = abs(sp00[0].x) * 2;
-    sp00[4].x = abs(sp00[1].x) * 2;
+    sp00[4].x = abs(pSp0->x) * 2;
 
     // _08007352 + 6
     sp00[0].y = param1->unk6 - param1->unk4;
@@ -104,6 +108,7 @@ void sub_800724C(u8 bg, Param1 *param1)
     sp00[2].x = -sp00[1].x;
     sp00[2].y = -sp00[1].y;
 
+    ip = &sp00[2];
     if (r4 != sp18) {
         // _080073B6
         if (bg < sb) {
@@ -136,6 +141,7 @@ void sub_800724C(u8 bg, Param1 *param1)
                 cursor += gUnknown_03002A80;
             }
         } else {
+            Unknown *sp2, *sp4;
             // _08007448
 
             while (r4 < sp18) {
@@ -143,23 +149,24 @@ void sub_800724C(u8 bg, Param1 *param1)
                 cursor[0] = sp14[1];
                 cursor[1] = 0;
 
-                sp00[2].y += sp00[3].y;
+                sp2 = &sp00[2];
+                sp2->y += sp00[3].y;
 
                 sb = ++r4;
 
-                while (sp00[2].y >= 0) {
+                for (sp4 = &sp00[4]; sp2->y >= 0;) {
                     if (sp00[0].y > 0) {
                         sp14[1]++;
-                        sp00[2].y -= sp00[4].y;
+                        sp2->y -= sp4->y;
 
-                        if (sp00[2].y >= 0) {
+                        if (sp2->y >= 0) {
                             *cursor = sp14[1] + 1;
                         }
                         asm("");
                     } else {
                         // _0800749E
                         sp14[1]--;
-                        sp00[2].y -= sp00[4].y;
+                        sp2->y -= sp4->y;
                     }
                     // _080074AC
                 }
@@ -184,6 +191,7 @@ void sub_800724C(u8 bg, Param1 *param1)
         Unknown *sp2;
         Unknown *sp3;
         Unknown *sp4;
+        register Unknown *r6 asm("r6");
         // _080074E0
         cursor[0] = sp14[1];
         cursor[1] = sp14[0];
@@ -193,6 +201,9 @@ void sub_800724C(u8 bg, Param1 *param1)
         sp2->x += sp3->x;
         sp2->y += sp3->y;
         sp4 = &sp00[4];
+
+        ++r4;
+        sb = r4;
 
         while (sp2->x >= 0) {
             if (sp00[0].x > 0) {
@@ -214,6 +225,7 @@ void sub_800724C(u8 bg, Param1 *param1)
         sp4 = &sp00[4];
         sp2 = &sp00[2];
         while (sp2->y >= 0) {
+            r6 = &sp00[2];
             sp0 = &sp00[0];
             if (sp0->y > 0) {
                 sp14[1]++;
