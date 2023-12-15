@@ -20,24 +20,30 @@ typedef struct {
 // "lightened" by spot lights is fully lit.
 // This function filters out all non-lit parts to display them normally.
 // TODO: validate type of param1!
-// (73.98%) https://decomp.me/scratch/oY3s7
+// (76.37%) https://decomp.me/scratch/8wQzE
 void sub_800724C(u8 bg, Param1 *param1)
 {
     Unknown *u;
     Unknown sp00[5];
-    u8 *cursor;
-    u32 r0, r1;
-    u8 sb, r4;
+    Unknown *pSp0;
+    u8 *cursor, *cursor2;
+    register u32 r0 asm("r0");
+    register u32 r1 asm("r1");
+    u8 sb;
+    register u8 r4 asm("r4");
     int_vcount sp14[2]; // TODO: type might be inaccurate? Find out whether this is
                         // display resolutions
     u8 sp18;
+    u8 a, b;
     s32 temp;
     s16 *sp;
 
-    memcpy(&sp00[1], &gUnknown_080984F4, sizeof(sp00[1]));
+    pSp0 = &sp00[1];
+    memcpy(pSp0, &gUnknown_080984F4, sizeof(sp00[1]));
     cursor = (u8 *)&sp00[3];
     memset(cursor, 0, sizeof(sp00[3]));
-    memset(&sp00[4], 01, sizeof(sp00[4]));
+    cursor2 = (u8 *)&sp00[4];
+    memset(cursor2, 0, sizeof(sp00[4]));
 
     gFlags |= FLAGS_4;
 
@@ -78,7 +84,7 @@ void sub_800724C(u8 bg, Param1 *param1)
     cursor += (r4 * gUnknown_03002A80);
 
     sp00[0].x = param1->unk2 - param1->unk0;
-    sp00[1].x = param1->unk3 - param1->unk1;
+    pSp0->x = param1->unk3 - param1->unk1;
 
     u = &sp00[3];
     u->x = abs(sp00[0].x) * 2;
@@ -134,7 +140,7 @@ void sub_800724C(u8 bg, Param1 *param1)
 
             while (r4 < sp18) {
                 // _08007450
-                cursor[0] = sp14[0];
+                cursor[0] = sp14[1];
                 cursor[1] = 0;
 
                 sp00[2].y += sp00[3].y;
@@ -149,6 +155,7 @@ void sub_800724C(u8 bg, Param1 *param1)
                         if (sp00[2].y >= 0) {
                             *cursor = sp14[1] + 1;
                         }
+                        asm("");
                     } else {
                         // _0800749E
                         sp14[1]--;
@@ -175,26 +182,31 @@ void sub_800724C(u8 bg, Param1 *param1)
     for (; sb < sp18; sb++) {
         Unknown *sp0;
         Unknown *sp2;
+        Unknown *sp3;
         Unknown *sp4;
         // _080074E0
         cursor[0] = sp14[1];
         cursor[1] = sp14[0];
 
-        sp00[2].x += sp00[3].x;
-        sp00[2].y += sp00[3].y;
+        sp3 = &sp00[3];
+        sp2 = &sp00[2];
+        sp2->x += sp3->x;
+        sp2->y += sp3->y;
+        sp4 = &sp00[4];
 
-        while (sp00[2].x >= 0) {
+        while (sp2->x >= 0) {
             if (sp00[0].x > 0) {
                 sp14[0]++;
-                sp00[2].x -= sp00[4].x;
+                sp2->x -= sp4->x;
             } else {
                 // _08007530
                 sp14[0]--;
-                sp00[2].x -= sp00[4].x;
+                sp2->x -= sp4->x;
 
-                if (sp00[2].x >= 0) {
+                if (sp2->x >= 0) {
                     cursor[1] = sp14[0];
                 }
+                asm("");
             }
         }
         // _08007558
@@ -210,6 +222,7 @@ void sub_800724C(u8 bg, Param1 *param1)
                 if (sp2->y >= 0) {
                     cursor[0] = sp14[1] + 1;
                 }
+                asm("");
             } else {
                 // _08007590
                 sp14[1]--;
