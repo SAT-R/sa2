@@ -176,7 +176,8 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc",
                             gWinRegs[4] = WIN_RANGE(sp08.unk5, DISPLAY_HEIGHT);
                         }
 
-                        sub_8006228(ut->unkA, sp08.unk4, sp08.unk5, sp08.unk6, sp08.unk7, 0);
+                        sub_8006228(ut->unkA, sp08.unk4, sp08.unk5, sp08.unk6, sp08.unk7,
+                                    0);
                     } else {
                         // _08009CFC
                         if (ut->unkA & 0x1) {

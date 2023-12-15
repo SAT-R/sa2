@@ -15,13 +15,13 @@ typedef struct {
     s16 y;
 } Unknown;
 
-#if 01
 // When this function is called, the background layer that is
 // "lightened" by spot lights is fully lit.
 // This function filters out all non-lit parts to display them normally.
 // TODO: validate type of param1!
 // (80.10%) https://decomp.me/scratch/8wQzE
-void sub_800724C(u8 bg, TriParam1 *param1)
+NONMATCH("asm/non_matching/engine/sub_800724C.inc",
+         void sub_800724C(u8 bg, TriParam1 *param1))
 {
     Unknown *u;
     Unknown sp00[5];
@@ -246,7 +246,7 @@ void sub_800724C(u8 bg, TriParam1 *param1)
     }
     // _080075BA
 }
-#endif
+END_NONMATCH
 
 void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, u16 param4, u16 param5)
 {
