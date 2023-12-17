@@ -86,9 +86,9 @@ _080062BC:
 	mov r2, sl              @ r2 = sl = param2
 	subs r0, r4, r2
 	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10      @ r4 = 
+	lsrs r4, r0, #0x10      @ r4 = (param4 - param2)
 	lsls r5, r1, #0x10
-	asrs r2, r5, #0x10
+	asrs r2, r5, #0x10      @ r2 = (param3 - param1)
 	adds r0, r2, #0
 	cmp r2, #0
 	bge _080062D6
@@ -96,21 +96,21 @@ _080062BC:
 _080062D6:
 	lsls r0, r0, #0x11
 	lsrs r0, r0, #0x10
-	mov r8, r0
+	mov r8, r0              @ r8 = r0 * 2
 	lsls r0, r4, #0x10
 	asrs r1, r0, #0x10
 	adds r4, r1, #0
-	mov sb, r0
+	mov sb, r0              @ sb = r4
 	cmp r1, #0
 	bge _080062EA
 	rsbs r4, r1, #0
 _080062EA:
 	lsls r0, r4, #0x11
-	lsrs r7, r0, #0x10
+	lsrs r7, r0, #0x10      @ r7 = ABS(r4) * 2;
 	ldr r4, _08006328 @ =gUnknown_03002A80
 	ldrb r0, [r4]
 	mov r4, sl              @ r4 = sl = param2
-	muls r4, r0, r4
+	muls r4, r0, r4         @ r4 *= gUnknown_03002A80
 	adds r0, r4, #0
 	adds r3, r3, r0
 	adds r4, r2, #0
@@ -127,10 +127,10 @@ _0800630A:
 	ble _080063DC
 	rsbs r0, r2, #0
 	lsls r0, r0, #0x10
-	lsrs r4, r0, #0x10
+	lsrs r4, r0, #0x10      @ r4 = -r2;
 	cmp r2, #0
 	ble _0800637C
-	mov r0, ip
+	mov r0, ip              @ r0 = ip = param5
 	strb r0, [r3, #1]
 	movs r2, #0
 	b _08006364
@@ -141,7 +141,7 @@ _08006328: .4byte gUnknown_03002A80
 _0800632C:
 	adds r0, r6, #1
 	lsls r0, r0, #0x18
-	lsrs r6, r0, #0x18
+	lsrs r6, r0, #0x18      @ r6 = ++param1
 	lsls r1, r4, #0x10
 	asrs r1, r1, #0x10
 	lsls r0, r7, #0x10
@@ -162,7 +162,7 @@ _0800632C:
 	ldr r1, _08006378 @ =gUnknown_03002A80
 	ldrb r0, [r1]
 	adds r3, r3, r0
-	mov r0, ip
+	mov r0, ip              @ r0 = ip = param5
 	strb r0, [r3, #1]
 _0800635E:
 	adds r0, r2, #1
@@ -190,7 +190,7 @@ _0800637C:
 _08006384:
 	subs r0, r6, #1
 	lsls r0, r0, #0x18
-	lsrs r6, r0, #0x18
+	lsrs r6, r0, #0x18      @ r6 = --param1;
 	lsls r1, r4, #0x10
 	asrs r1, r1, #0x10
 	lsls r0, r7, #0x10
@@ -207,7 +207,7 @@ _08006384:
 	subs r0, r1, r0
 	lsls r0, r0, #0x10
 	lsrs r4, r0, #0x10
-	mov r0, ip
+	mov r0, ip              @ r0 = ip = param5
 	strb r0, [r3]
 	ldr r1, _080063D8 @ =gUnknown_03002A80
 	ldrb r0, [r1]
@@ -229,7 +229,7 @@ _080063C0:
 _080063CC:
 	cmp r2, r0
 	blt _08006384
-	mov r2, ip
+	mov r2, ip              @ r0 = ip = param5
 	strb r2, [r3]
 	b _08006496
 	.align 2, 0
@@ -252,7 +252,7 @@ _080063F6:
 	adds r2, r6, #1
 	strb r2, [r3]
 	adds r3, #1
-	mov r0, ip
+	mov r0, ip              @ r0 = ip = param5
 	strb r0, [r3]
 	ldr r1, _0800643C @ =gUnknown_03002A80
 	ldrb r0, [r1]
@@ -302,7 +302,7 @@ _08006450:
 	adds r0, r6, #1
 	strb r0, [r3]
 	adds r3, #1
-	mov r0, ip
+	mov r0, ip              @ r0 = ip = param5
 	strb r0, [r3]
 	ldr r1, _080064A4 @ =gUnknown_03002A80
 	ldrb r0, [r1]

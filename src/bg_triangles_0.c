@@ -9,12 +9,13 @@
 #include "bg_triangles.h"
 
 #if 01
-// (36.65%) https://decomp.me/scratch/cTe86
+// (81.09%) https://decomp.me/scratch/78CWY
 void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
 {
     int_vcount *cursor;
-    s16 r1, r2, r4;
-    u16 sb = (param5 * param5);
+    s16 r0, r1, r2, r3, r4, r7, r8, sb;
+    s32 r5;
+    // u16 sb = (param5 * param5);
 
     gFlags |= FLAGS_4;
 
@@ -43,47 +44,94 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
     r4 = (param4 - param2);
 
     r2 = r1;
-    if (r2 < 0) {
-        r2 = -r1 * 2;
-    }
-    param3 = r2;
+    r0 = r2;
+    r8 = ABS(r2) * 2;
+    sb = r4;
 
-    if ((param2 - r1) > param5) {
-        param2 = (param4 + param5);
-    }
+    // _080062EA
+    r7 = ABS(r4) * 2;
+    cursor += (param2 * gUnknown_03002A80);
 
-    for (; param1 < param2; param1++) {
-        s16 num = param1 - param4;
-        s16 sqrtRes;
+    // _08006302
+    r4 = ABS(r2);
 
-        num = num * num;
-        sqrtRes = Sqrt(sb - num);
+    if (r4 > ABS(r1)) {
+        // _0800630A+8
+        r4 = -r2;
 
-        r1 = param3 + sqrtRes;
-        if (r1 < 0) {
-            *cursor = 0;
-            cursor++;
-        } else if (r1 > DISPLAY_WIDTH) {
-            *cursor = DISPLAY_WIDTH;
-            cursor++;
+        if (r2 > 0) {
+            cursor[1] = param5;
+
+            for (r2 = 0; r2 < ABS(r1); r2++) {
+                param1++;
+                r4 += r7;
+
+                if (r4 >= 0) {
+                    r4 = r4 - param3;
+                    cursor[0] = param1;
+                    cursor += gUnknown_03002A80;
+                    cursor[1] = param5;
+                }
+            }
         } else {
-            *cursor = r1;
+            cursor[0] = param1;
             cursor++;
+
+            for (r2 = 0; r2 < ABS(r1); cursor++, r2++) {
+                param1--;
+                r4 += r7;
+
+                if (r4 >= 0) {
+                    r4 -= param3;
+                    cursor[0] = param1;
+                    cursor += gUnknown_03002A80;
+                    cursor[1] = param5;
+                }
+            }
+            cursor[0] = param5;
         }
 
-        r1 = param3 - sqrtRes;
-        if (r1 > DISPLAY_WIDTH) {
-            *cursor = DISPLAY_WIDTH;
-            cursor++;
-        } else if (r1 < 0) {
-            *cursor = 0;
-            cursor++;
-        } else {
-            *cursor = r1;
-            cursor++;
-        }
+    } else {
+        r4 = -r1;
+        // _080063DC
+        if (r2 > 0) {
+            for (r2 = 0; r2 < ABS(r5); r2++) {
+                // _080063F6
+                *cursor = param1 + 1;
+                cursor++;
+                *cursor = param5;
+                cursor = (cursor + gUnknown_03002A80) - 1;
 
-        cursor += (gUnknown_03002A80 - 2);
+                r4 += r8;
+
+                if (r4 >= 0) {
+                    param1++;
+                    r4 -= r7;
+                }
+            }
+        } else {
+            // _08006440
+            s32 r8_;
+            r2 = 0;
+            r8_ = r8;
+            ;
+
+            // _08006450
+            for (r2 = 0; r2 < ABS(sb); r2++) {
+                *cursor = param1 + 1;
+                cursor++;
+                *cursor = param5;
+
+                cursor = (cursor + gUnknown_03002A80) - 1;
+
+                r4 += r8_;
+
+                if (r4 >= 0) {
+                    param1--;
+                    r4 -= r5;
+                }
+            }
+        }
     }
 }
 #endif
