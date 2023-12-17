@@ -9,11 +9,11 @@
 #include "bg_triangles.h"
 
 #if 01
-// (81.09%) https://decomp.me/scratch/78CWY
+// (95.11%) https://decomp.me/scratch/78CWY
 void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
 {
     int_vcount *cursor;
-    s16 r0, r1, r2, r3, r4, r7, r8, sb;
+    s16 r0, r1, r2, r4, r7, r8;
     s32 r5;
     // u16 sb = (param5 * param5);
 
@@ -44,18 +44,15 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
     r4 = (param4 - param2);
 
     r2 = r1;
-    r0 = r2;
     r8 = ABS(r2) * 2;
-    sb = r4;
 
     // _080062EA
     r7 = ABS(r4) * 2;
-    cursor += (param2 * gUnknown_03002A80);
+    cursor += (gUnknown_03002A80 * param2);
 
     // _08006302
-    r4 = ABS(r2);
 
-    if (r4 > ABS(r1)) {
+    if (ABS(r2) > ABS(r1)) {
         // _0800630A+8
         r4 = -r2;
 
@@ -67,7 +64,7 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
                 r4 += r7;
 
                 if (r4 >= 0) {
-                    r4 = r4 - param3;
+                    r4 = ((r4 << 16) >> 16) - r8;
                     cursor[0] = param1;
                     cursor += gUnknown_03002A80;
                     cursor[1] = param5;
@@ -78,18 +75,22 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
             cursor[0] = param1;
             cursor++;
 
-            for (r2 = 0; r2 < ABS(r1); cursor++, r2++) {
+            for (r2 = 0; r2 < ABS(r1); r2++) {
                 param1--;
                 r4 += r7;
 
                 if (r4 >= 0) {
-                    r4 -= param3;
-                    cursor[0] = param1;
-                    cursor += gUnknown_03002A80;
-                    cursor[1] = param5;
+                    r4 -= r8;
+                    *cursor = param5;
+                    cursor = (cursor + gUnknown_03002A80) - 1;
+                    *cursor = param1;
+#ifndef NON_MATCHING
+                    asm("" : "=r"(cursor));
+#endif
+                    cursor++;
                 }
             }
-            cursor[0] = param5;
+            *cursor = param5;
         }
 
     } else {
@@ -112,20 +113,18 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
             }
         } else {
             // _08006440
-            s32 r8_;
             r2 = 0;
-            r8_ = r8;
-            ;
+            r5 = r7;
 
             // _08006450
-            for (r2 = 0; r2 < ABS(sb); r2++) {
+            for (; r2 < ABS(r5); r2++) {
                 *cursor = param1 + 1;
                 cursor++;
                 *cursor = param5;
 
                 cursor = (cursor + gUnknown_03002A80) - 1;
 
-                r4 += r8_;
+                r4 += r8;
 
                 if (r4 >= 0) {
                     param1--;
