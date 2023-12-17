@@ -73,6 +73,7 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
                     cursor[1] = param5;
                 }
             }
+            cursor[0] = param1;
         } else {
             cursor[0] = param1;
             cursor++;
