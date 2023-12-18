@@ -269,8 +269,8 @@ extern s16 gUnknown_03000408;
 extern s16 gBgScrollRegs[4][2];
 
 extern OamData gUnknown_030022C8;
-extern OamData gUnknown_030022D0[128];
-extern OamData gOamBuffer[128];
+extern OamData gUnknown_030022D0[OAM_ENTRY_COUNT];
+extern OamData gOamBuffer[OAM_ENTRY_COUNT];
 
 // NOTE(Jace): This could be u16[2][DISPLAY_HEIGHT][2] (or unsigned Vec2_16?)
 extern u32 gUnknown_03001B60[2][DISPLAY_HEIGHT];
