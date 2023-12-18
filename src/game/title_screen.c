@@ -863,10 +863,10 @@ static void Task_IntroPanSkyAnim(void)
         gCurTask->main = Task_IntroSkyAnim;
 
         titleScreen->animFrame = 0;
-        gWinRegs[1] = 0xF0;
-        gWinRegs[3] = 0xA0;
-        gWinRegs[4] |= 0x3F00;
-        gWinRegs[5] |= 0x3F;
+        gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
+        gWinRegs[WINREG_WIN1V] = WIN_RANGE(0, DISPLAY_HEIGHT);
+        gWinRegs[WINREG_WININ] |= 0x3F00;
+        gWinRegs[WINREG_WINOUT] |= 0x3F;
 
         gBldRegs.bldCnt = 0x3FBF;
         gBldRegs.bldY = 0;
@@ -904,11 +904,10 @@ static void Task_IntroSkyAnim(void)
         gDispCnt &= 0xFEFF;
         gDispCnt |= 0x4000;
 
-        gWinRegs[1] = 0xF0;
-        // Display height?
-        gWinRegs[3] = 0xA0;
-        gWinRegs[4] |= 0x3F00;
-        gWinRegs[5] |= 0x3F;
+        gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
+        gWinRegs[WINREG_WIN1V] = WIN_RANGE(0, DISPLAY_HEIGHT);
+        gWinRegs[WINREG_WININ] |= 0x3F00;
+        gWinRegs[WINREG_WINOUT] |= 0x3F;
 
         gBldRegs.bldCnt = 0x3FBF;
 
@@ -1452,11 +1451,11 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
 
     REG_SIOCNT &= ~SIO_INTR_ENABLE;
     gDispCnt |= 0x4000;
-    gWinRegs[1] = WIN_RANGE(0, DISPLAY_WIDTH);
-    gWinRegs[3] = (titleScreen->wavesTopOffset - 2) * 0x100;
-    gWinRegs[3] |= WIN_RANGE(0, DISPLAY_HEIGHT);
-    gWinRegs[4] |= 0x3F00;
-    gWinRegs[5] &= 0x13;
+    gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
+    gWinRegs[WINREG_WIN1V]
+        = WIN_RANGE((titleScreen->wavesTopOffset - 2), DISPLAY_HEIGHT);
+    gWinRegs[WINREG_WININ] |= 0x3F00;
+    gWinRegs[WINREG_WINOUT] &= 0x13;
 
     // Something which effects wave length
     titleScreen->unkF3A -= 768;
