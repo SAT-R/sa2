@@ -9,13 +9,12 @@
 #include "bg_triangles.h"
 
 #if 01
-// (95.11%) https://decomp.me/scratch/78CWY
+// (98.93%) https://decomp.me/scratch/78CWY
 void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
 {
     int_vcount *cursor;
-    s16 r0, r1, r2, r4, r7, r8;
-    s32 r5;
-    // u16 sb = (param5 * param5);
+    s16 r0, r1, r2, r4, r5, r7, r8;
+    s32 argh;
 
     gFlags |= FLAGS_4;
 
@@ -41,18 +40,18 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
     }
 
     r1 = (param3 - param1);
-    r4 = (param4 - param2);
+    r5 = r4 = (param4 - param2);
 
     r2 = r1;
     r8 = ABS(r2) * 2;
 
     // _080062EA
-    r7 = ABS(r4) * 2;
+    r7 = (ABS(r4) * 2);
     cursor += (gUnknown_03002A80 * param2);
 
     // _08006302
 
-    if (ABS(r2) > ABS(r1)) {
+    if (ABS(r2) > ABS(r4)) {
         // _0800630A+8
         r4 = -r2;
 
@@ -112,12 +111,8 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
                 }
             }
         } else {
-            // _08006440
-            r2 = 0;
-            r5 = r7;
-
             // _08006450
-            for (; r2 < ABS(r5); r2++) {
+            for (r2 = 0; r2 < ABS(r5); r2++) {
                 *cursor = param1 + 1;
                 cursor++;
                 *cursor = param5;
@@ -128,7 +123,7 @@ void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5)
 
                 if (r4 >= 0) {
                     param1--;
-                    r4 -= r5;
+                    r4 -= r7;
                 }
             }
         }
