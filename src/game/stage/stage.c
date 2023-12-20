@@ -414,7 +414,7 @@ void Task_GameStageMain(void)
                 CreateScreenShake(0x800, 8, 16, -1, 208);
             }
             gPlayer.moveState |= MOVESTATE_DEAD;
-            m4aSongNumStart(SE_149);
+            m4aSongNumStart(SE_TIME_UP);
         } else {
             gUnknown_03005424 |= EXTRA_STATE__ACT_START;
             sub_8019F08();
@@ -441,7 +441,7 @@ void Task_GameStageMain(void)
                 gPlayer.speedAirY = -Q_24_8(4.875);
             }
             gPlayer.moveState |= MOVESTATE_DEAD;
-            m4aSongNumStart(SE_149);
+            m4aSongNumStart(SE_TIME_UP);
         } else {
             gUnknown_03005424 |= EXTRA_STATE__ACT_START;
             sub_8019F08();
@@ -465,7 +465,7 @@ void sub_801AE48(void)
 
     if (--gNumLives == 0) {
         gUnknown_03005424 |= EXTRA_STATE__ACT_START;
-        CreateGameOverOrTimeOverScreen(GAMEOVER_CAUSE_ZERO_LIVES);
+        CreateGameOverScreen(OVER_CAUSE_ZERO_LIVES);
     } else {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -746,9 +746,9 @@ void sub_801B6B4(void)
     }
 
     if (--gNumLives == 0) {
-        CreateGameOverOrTimeOverScreen(GAMEOVER_CAUSE_ZERO_LIVES);
+        CreateGameOverScreen(OVER_CAUSE_ZERO_LIVES);
     } else {
-        CreateGameOverOrTimeOverScreen(GAMEOVER_CAUSE_TIME_UP);
+        CreateGameOverScreen(OVER_CAUSE_TIME_UP);
     }
 }
 

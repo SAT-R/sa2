@@ -15,15 +15,15 @@
 
 typedef struct {
     ScreenFade unk0;
-    u8 lostLifeCause;
+    LostLifeCause lostLifeCause;
     u8 delay;
 } GameOverScreenFade;
 
-void Task_FadeoutToGameOverScreen(void);
+void Task_FadeoutToOverScreen(void);
 
-void CreateGameOverOrTimeOverScreen(u8 lostLifeCause)
+void CreateGameOverScreen(LostLifeCause lostLifeCause)
 {
-    struct Task *t = TaskCreate(Task_FadeoutToGameOverScreen, sizeof(GameOverScreenFade),
+    struct Task *t = TaskCreate(Task_FadeoutToOverScreen, sizeof(GameOverScreenFade),
                                 0x2220, 0, NULL);
     GameOverScreenFade *screen = TASK_DATA(t);
 
@@ -44,12 +44,12 @@ void CreateGameOverOrTimeOverScreen(u8 lostLifeCause)
     m4aMPlayFadeOut(&gMPlayInfo_SE3, 8);
 }
 
-static void InitGameOverOrTimeOverScreen(u8);
+static void InitOverScreen(LostLifeCause lostLifeCause);
 
-void Task_FadeoutToGameOverScreen(void)
+void Task_FadeoutToOverScreen(void)
 {
     GameOverScreenFade *gameover_fade = TASK_DATA(gCurTask);
-    u8 unkC = gameover_fade->lostLifeCause;
+    LostLifeCause lostLifeCause = gameover_fade->lostLifeCause;
 
     if (gameover_fade->delay != 0) {
         gameover_fade->delay--;
@@ -62,12 +62,12 @@ void Task_FadeoutToGameOverScreen(void)
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
-        InitGameOverOrTimeOverScreen(unkC);
+        InitOverScreen(lostLifeCause);
 
-        if (unkC & 1) {
+        if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
             m4aSongNumStart(MUS_GAME_OVER);
         } else {
-            m4aSongNumStart(SE_149);
+            m4aSongNumStart(SE_TIME_UP);
         }
     }
 }
@@ -80,10 +80,10 @@ typedef struct {
 } GameOverScreen;
 
 void Task_GameOverScreenMain(void);
-void sub_8036C38(struct Task *);
+void TaskDestructor_GameOverTimeOverScreen(struct Task *);
 void Task_TimeOverScreenMain(void);
 
-static void InitGameOverOrTimeOverScreen(u8 lostLifeCause)
+static void InitOverScreen(LostLifeCause lostLifeCause)
 {
     struct Task *t;
     GameOverScreen *screen;
@@ -104,15 +104,17 @@ static void InitGameOverOrTimeOverScreen(u8 lostLifeCause)
     memset(gBgPalette, 0, 0x200);
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
-    if (lostLifeCause & GAMEOVER_CAUSE_ZERO_LIVES) {
-        t = TaskCreate(Task_GameOverScreenMain, 0x70, 0x1000, 0, sub_8036C38);
+    if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
+        t = TaskCreate(Task_GameOverScreenMain, 0x70, 0x1000, 0,
+                       TaskDestructor_GameOverTimeOverScreen);
     } else {
-        t = TaskCreate(Task_TimeOverScreenMain, 0x70, 0x1000, 0, sub_8036C38);
+        t = TaskCreate(Task_TimeOverScreenMain, 0x70, 0x1000, 0,
+                       TaskDestructor_GameOverTimeOverScreen);
     }
 
     screen = TASK_DATA(t);
 
-    if (lostLifeCause & GAMEOVER_CAUSE_ZERO_LIVES) {
+    if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
         screen->framesUntilDone = 140;
     } else {
         screen->framesUntilDone = 180;
@@ -120,7 +122,7 @@ static void InitGameOverOrTimeOverScreen(u8 lostLifeCause)
 
     s = &screen->unkC;
     s->graphics.dest = VramMalloc(0x40);
-    if (lostLifeCause & GAMEOVER_CAUSE_ZERO_LIVES) {
+    if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
         s->graphics.anim = SA2_ANIM_GAME_OVER;
         s->variant = SA2_ANIM_VARIANT_GAME_OVER_GAME;
     } else {
@@ -162,7 +164,7 @@ static void InitGameOverOrTimeOverScreen(u8 lostLifeCause)
     fade->bldAlpha = 0;
 }
 
-void sub_8036BD4(GameOverScreen *screen);
+void DisplayOverScreenTextSprites(GameOverScreen *screen);
 void sub_80369D8(void);
 
 void Task_GameOverScreenMain(void)
@@ -218,7 +220,7 @@ void Task_GameOverScreenMain(void)
         gCurTask->main = sub_80369D8;
     }
 
-    sub_8036BD4(screen);
+    DisplayOverScreenTextSprites(screen);
 }
 
 void sub_8036B30(void);
@@ -241,7 +243,7 @@ void sub_80369D8(void)
         gCurTask->main = sub_8036B30;
     }
 
-    sub_8036BD4(screen);
+    DisplayOverScreenTextSprites(screen);
 }
 
 void sub_8036BEC(GameOverScreen *screen);
@@ -315,7 +317,7 @@ void sub_8036B30(void)
         gCurTask->main = sub_8036B70;
     }
 
-    sub_8036BD4(screen);
+    DisplayOverScreenTextSprites(screen);
 }
 
 void sub_8036B70(void)
@@ -331,10 +333,10 @@ void sub_8036B70(void)
         return;
     }
 
-    sub_8036BD4(screen);
+    DisplayOverScreenTextSprites(screen);
 }
 
-void sub_8036BD4(GameOverScreen *screen)
+void DisplayOverScreenTextSprites(GameOverScreen *screen)
 {
     Sprite *s = &screen->unkC;
     Sprite *sprite2 = &screen->unk3C;
@@ -365,7 +367,7 @@ void sub_8036BEC(GameOverScreen *screen)
     DisplaySprite(sprite2);
 }
 
-void sub_8036C38(struct Task *t)
+void TaskDestructor_GameOverTimeOverScreen(struct Task *t)
 {
     GameOverScreen *screen = TASK_DATA(t);
 

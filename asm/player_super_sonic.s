@@ -871,8 +871,8 @@ Task_802BC10: @ 0x0802BC10
 	ldr r0, _0802BCAC @ =0x00008C9F
 	cmp r1, r0
 	bls _0802BCB0
-	movs r0, #2 @ GAMEOVER_CAUSE_TIME_UP
-	bl CreateGameOverOrTimeOverScreen
+	movs r0, #2 @ OVER_CAUSE_TIME_UP
+	bl CreateGameOverScreen
 	b _0802BCC4
 	.align 2, 0
 _0802BC84: .4byte gCurTask
@@ -890,8 +890,8 @@ _0802BCB0:
 	bl GameStageStart
 	b _0802BCC4
 _0802BCB6:
-	movs r0, #1 @ GAMEOVER_CAUSE_ZERO_LIVES
-	bl CreateGameOverOrTimeOverScreen
+	movs r0, #1 @ OVER_CAUSE_ZERO_LIVES
+	bl CreateGameOverScreen
 	b _0802BCC4
 _0802BCBE:
 	adds r0, r5, #0

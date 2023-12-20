@@ -119,7 +119,7 @@
 #define SE_146                       146
 #define SE_SPIN                      147
 #define SE_148                       148
-#define SE_149                       149
+#define SE_TIME_UP                   149
 #define SE_ITEM_BOX_2                150
 #define SE_ACTIVATE_SHIELD           151
 #define SE_CHECKPOINT                152
