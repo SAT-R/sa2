@@ -3,6 +3,9 @@
 
 #include "global.h"
 
-void CreateGameOverScreen(u8 type);
+#define GAMEOVER_CAUSE_ZERO_LIVES 0x1
+#define GAMEOVER_CAUSE_TIME_UP    0x2
+
+void CreateGameOverOrTimeOverScreen(u8 lostLifeCause);
 
 #endif

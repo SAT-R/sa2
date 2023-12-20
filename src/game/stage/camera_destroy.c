@@ -7,7 +7,7 @@
 
 #include "constants/zones.h"
 
-static void Task_CallUpdateCamera(void);
+static void Task_CallUpdateCameraInternal(void);
 
 void DestroyCameraMovementTask(void)
 {
@@ -34,9 +34,9 @@ void TaskDestructor_801E040(struct Task *unused)
     gFlags &= ~FLAGS_4;
 }
 
-void Task_801E0A8(void)
+void Task_CallUpdateCamera(void)
 {
-    gDispCnt |= 0x1E00;
+    gDispCnt |= (DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_ON);
     if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
         gDispCnt &= ~DISPCNT_BG3_ON;
     }
@@ -45,10 +45,10 @@ void Task_801E0A8(void)
         gDispCnt &= ~DISPCNT_WIN0_ON;
     }
 
-    gCurTask->main = Task_CallUpdateCamera;
+    gCurTask->main = Task_CallUpdateCameraInternal;
 }
 
-static void Task_CallUpdateCamera(void)
+static void Task_CallUpdateCameraInternal(void)
 {
     UpdateCamera();
     gUnknown_030054B8 = 4;

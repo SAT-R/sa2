@@ -133,8 +133,6 @@ extern u8 gUnknown_030054F8;
 // Incremented by 1 every frame if the game is not paused.
 extern u32 gStageTime;
 
-extern u32 gUnknown_030054A0;
-
 extern u32 gCheckpointTime; // Checkpoint timer?
 
 extern u8 gUnknown_03005438;

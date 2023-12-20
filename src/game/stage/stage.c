@@ -33,7 +33,9 @@ struct Task *gGameStageTask = NULL;
 
 extern void CallSetStageSpawnPos(u32, u32, u32, Player *);
 
-void sub_801AB3C(void);
+extern u32 sMPStageStartFrameCount;
+
+void Task_GameStageMain(void);
 
 void sub_801B7A8(struct Task *);
 void sub_801F044(void);
@@ -55,48 +57,74 @@ void sub_80193C4(u8);
 
 void sub_80191A4(void);
 
-void sub_801AF14(void);
-void sub_801AFA4(void);
-void sub_801B03C(void);
-void sub_801B0D4(void);
-void sub_801B180(void);
-void sub_801B22C(void);
-void sub_801B324(void);
-void sub_801B41C(void);
-void sub_801B4EC(void);
-void sub_801B5BC(void);
-void sub_801B7BC(void);
-void sub_801B83C(void);
-void sub_801B8A8(void);
-void sub_801B914(void);
-void sub_801B980(void);
-void sub_801B9EC(void);
-void sub_801BA58(void);
-void sub_801BAC4(void);
-void sub_801BB30(void);
-void sub_801BB9C(void);
-void sub_801BC88(void);
-void sub_801BC1C(void);
-void sub_801BD08(void);
-void sub_801BD74(void);
-void sub_801BDE0(void);
-void sub_801BE4C(void);
-void sub_801BEB8(void);
-void sub_801BF24(void);
+void StageInit_Zone1Act1(void);
+void StageInit_Zone3Act1(void);
+void StageInit_Zone3Act2(void);
+void StageInit_Zone4Act1(void);
+void StageInit_Zone4Act2(void);
+void StageInit_Zone6Act1(void);
+void StageInit_Zone6Act2(void);
+void StageInit_Zone7Act1(void);
+void StageInit_Zone7Act2(void);
+void StageInit_Zone7ActBoss(void);
+void StageInit_Zone1Act2(void);
+void StageInit_Zone1ActBoss(void);
+void StageInit_Zone2Act1(void);
+void StageInit_Zone2Act2(void);
+void StageInit_Zone2ActBoss(void);
+void StageInit_Zone3ActBoss(void);
+void StageInit_Zone4ActBoss(void);
+void StageInit_Zone5Act1(void);
+void StageInit_Zone5Act2(void);
+void StageInit_Zone5ActBoss(void);
+void StageInit_ZoneFinalActXX(void);
+void StageInit_Zone6ActBoss(void);
+void StageInit_ZoneFinalActTA53(void);
+void StageInit_MultiplayerSinglePak(void);
+void StageInit_31(void);
+void StageInit_32(void);
+void StageInit_33(void);
+void StageInit_Dummy(void);
 
-void Task_801E0A8(void);
 void TaskDestructor_801E040(struct Task *);
 
-const VoidFn gUnknown_080D57DC[NUM_LEVEL_IDS]
-    = { sub_801AF14, sub_801B7BC, sub_801B83C, sub_801BF24, // Anti-Formatting
-        sub_801B8A8, sub_801B914, sub_801B980, sub_801BF24, //
-        sub_801AFA4, sub_801B03C, sub_801B9EC, sub_801BF24, //
-        sub_801B0D4, sub_801B180, sub_801BA58, sub_801BF24, //
-        sub_801BAC4, sub_801BB30, sub_801BB9C, sub_801BF24, //
-        sub_801B22C, sub_801B324, sub_801BC1C, sub_801BF24, //
-        sub_801B41C, sub_801B4EC, sub_801B5BC, sub_801BF24, //
-        sub_801BC88, sub_801BD08, sub_801BD74, sub_801BDE0, //
-        sub_801BE4C, sub_801BEB8 };
+// NOTE(Jace): Many of these call copies of the exact same procedure,
+//             so for non-matching builds we could just exclude
+//             codegen for those copies and have pointers to a single one?
+const VoidFn sStageInitProcs[NUM_LEVEL_IDS] = { StageInit_Zone1Act1,
+                                                StageInit_Zone1Act2,
+                                                StageInit_Zone1ActBoss,
+                                                StageInit_Dummy,
+                                                StageInit_Zone2Act1,
+                                                StageInit_Zone2Act2,
+                                                StageInit_Zone2ActBoss,
+                                                StageInit_Dummy,
+                                                StageInit_Zone3Act1,
+                                                StageInit_Zone3Act2,
+                                                StageInit_Zone3ActBoss,
+                                                StageInit_Dummy,
+                                                StageInit_Zone4Act1,
+                                                StageInit_Zone4Act2,
+                                                StageInit_Zone4ActBoss,
+                                                StageInit_Dummy,
+                                                StageInit_Zone5Act1,
+                                                StageInit_Zone5Act2,
+                                                StageInit_Zone5ActBoss,
+                                                StageInit_Dummy,
+                                                StageInit_Zone6Act1,
+                                                StageInit_Zone6Act2,
+                                                StageInit_Zone6ActBoss,
+                                                StageInit_Dummy,
+                                                StageInit_Zone7Act1,
+                                                StageInit_Zone7Act2,
+                                                StageInit_Zone7ActBoss,
+                                                StageInit_Dummy,
+                                                StageInit_ZoneFinalActXX,
+                                                StageInit_ZoneFinalActTA53,
+                                                StageInit_MultiplayerSinglePak,
+                                                StageInit_31,
+                                                StageInit_32,
+                                                StageInit_33 };
 
 extern const u8 CollHeightMap_zone_1_act_1_fg[];
 extern const u8 CollTileRot_zone_1_act_1_fg[];
@@ -116,13 +144,13 @@ void ApplyGameStageSettings(void)
 
     if ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK
          || gGameMode == GAME_MODE_MULTI_PLAYER || gGameMode == GAME_MODE_TEAM_PLAY)
-        || (gUnknown_03005424 & 0x40)) {
+        || (gUnknown_03005424 & EXTRA_STATE__DEMO_RUNNING)) {
         gDifficultyLevel = 0;
     } else {
         gDifficultyLevel = gLoadedSaveGame->difficultyLevel;
     }
 
-    if ((gUnknown_03005424 & 0x40)) {
+    if ((gUnknown_03005424 & EXTRA_STATE__DEMO_RUNNING)) {
         SetPlayerControls(A_BUTTON, B_BUTTON, R_BUTTON);
     } else {
         SetPlayerControls(gLoadedSaveGame->buttonConfig.jump,
@@ -147,7 +175,7 @@ void GameStageStart(void)
     gUnknown_03005424 &= ~0x80;
 
     if (IS_MULTI_PLAYER) {
-        gUnknown_030054A0 = gFrameCount;
+        sMPStageStartFrameCount = gFrameCount;
     }
 
     gCheckpointTime = ZONE_TIME_TO_INT(0, 0);
@@ -164,13 +192,13 @@ void GameStageStart(void)
 void CreateGameStage(void)
 {
     u8 i;
-    gGameStageTask = TaskCreate(sub_801AB3C, 0, 0xff00, 0, sub_801B7A8);
+    gGameStageTask = TaskCreate(Task_GameStageMain, 0, 0xff00, 0, sub_801B7A8);
     gActiveCollectRingEffectCount = 0;
     gSpecialRingCount = 0;
     gUnknown_030054B0 = 0;
 
-    gUnknown_03005424 |= 0x21;
-    gUnknown_03005424 &= ~0x80;
+    gUnknown_03005424 |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__ACT_START);
+    gUnknown_03005424 &= ~EXTRA_STATE__GRAVITY_INVERTED;
 
     gBossRingsShallRespawn = FALSE;
     gBossRingsRespawnCount = BOSS_RINGS_DEFAULT_RESPAWN_COUNT;
@@ -202,24 +230,24 @@ void CreateGameStage(void)
         CreateStageMusicManager();
         SetupStageIntro();
         InitCamera(gCurrentLevel);
-        gUnknown_080D57DC[gCurrentLevel]();
+        sStageInitProcs[gCurrentLevel]();
     } else {
         InitCamera(0);
         sub_801BF90();
         CreateCollectRingsTimeDisplay();
         gPlayer.moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
-        gUnknown_03005424 &= ~0x1;
+        gUnknown_03005424 &= ~EXTRA_STATE__ACT_START;
     }
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_1, ACT_1)) {
         CreateStageWaterTask(-1, 0, 0);
     }
 
-    gUnknown_03005424 &= ~0x2;
-    gUnknown_03005424 &= ~0x4;
+    gUnknown_03005424 &= ~EXTRA_STATE__2;
+    gUnknown_03005424 &= ~EXTRA_STATE__4;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gUnknown_03005424 |= 4;
+        gUnknown_03005424 |= EXTRA_STATE__4;
     }
 
     CreateStageRingsManager();
@@ -278,29 +306,32 @@ void CreateGameStage(void)
     }
 }
 
-void sub_801AB3C(void)
+void Task_GameStageMain(void)
 {
     u16 sioId = SIO_MULTI_CNT->id;
     u32 timeStep;
 
     if (IS_SINGLE_PLAYER) {
-        if (!(gUnknown_03005424 & 0x20) && (gPressedKeys & START_BUTTON)
-            && !(gUnknown_03005424 & 0x40)) {
+        if (!(gUnknown_03005424 & EXTRA_STATE__DISABLE_PAUSE_MENU)
+            && (gPressedKeys & START_BUTTON)
+            && !(gUnknown_03005424 & EXTRA_STATE__DEMO_RUNNING)) {
             CreatePauseMenu();
         }
         gStageTime++;
         timeStep = 1;
     } else {
-        u32 temp = (gFrameCount - gUnknown_030054A0);
-        timeStep = temp - gStageTime;
-        gStageTime = temp;
+        u32 framesSinceStageStart = (gFrameCount - sMPStageStartFrameCount);
+        timeStep = framesSinceStageStart - gStageTime;
+        gStageTime = framesSinceStageStart;
 
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            if ((temp & ~(0x1FF)) != ((temp - timeStep) & ~(0x1FF))) {
+            if ((framesSinceStageStart & ~(0x1FF))
+                != ((framesSinceStageStart - timeStep) & ~(0x1FF))) {
                 u32 mask, rand;
                 MultiplayerPseudoRandom32();
 
-                if ((temp & ~(0xFFF)) != ((temp - timeStep) & ~(0xFFF))) {
+                if ((framesSinceStageStart & ~(0xFFF))
+                    != ((framesSinceStageStart - timeStep) & ~(0xFFF))) {
                     u32 value = (gRandomItemBox >> 4) + 1;
                     gRandomItemBox = ((gRandomItemBox & 0xF) | (value * 16));
                 }
@@ -309,7 +340,8 @@ void sub_801AB3C(void)
                 gRandomItemBox = (gRandomItemBox & 0xF8) | (rand & mask);
             }
 
-        } else if ((temp & ~(0x3F)) != ((temp - timeStep) & ~(0x3F))) {
+        } else if ((framesSinceStageStart & ~(0x3F))
+                   != ((framesSinceStageStart - timeStep) & ~(0x3F))) {
             MultiplayerPseudoRandom32();
         }
 
@@ -351,7 +383,7 @@ void sub_801AB3C(void)
 
     gUnknown_0300544C = gUnknown_03005424;
 
-    if (gUnknown_03005424 & 1) {
+    if (gUnknown_03005424 & EXTRA_STATE__ACT_START) {
         return;
     }
 
@@ -372,16 +404,16 @@ void sub_801AB3C(void)
 
             gPlayer.itemEffect = 0;
 
-            if (gPlayer.moveState & 0x40) {
-                gPlayer.speedAirY = -0x2A0;
+            if (gPlayer.moveState & MOVESTATE_40) {
+                gPlayer.speedAirY = -Q_24_8(2.625);
             } else {
-                gPlayer.speedAirY = -0x4E0;
+                gPlayer.speedAirY = -Q_24_8(4.875);
             }
 
             if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_BOSS)) {
                 CreateScreenShake(0x800, 8, 16, -1, 208);
             }
-            gPlayer.moveState |= 0x80;
+            gPlayer.moveState |= MOVESTATE_DEAD;
             m4aSongNumStart(SE_149);
         } else {
             gUnknown_03005424 |= EXTRA_STATE__ACT_START;
@@ -403,12 +435,12 @@ void sub_801AB3C(void)
 
             gPlayer.itemEffect = 0;
 
-            if (gPlayer.moveState & 0x40) {
-                gPlayer.speedAirY = -0x2A0;
+            if (gPlayer.moveState & MOVESTATE_40) {
+                gPlayer.speedAirY = -Q_24_8(2.625);
             } else {
-                gPlayer.speedAirY = -0x4E0;
+                gPlayer.speedAirY = -Q_24_8(4.875);
             }
-            gPlayer.moveState |= 0x80;
+            gPlayer.moveState |= MOVESTATE_DEAD;
             m4aSongNumStart(SE_149);
         } else {
             gUnknown_03005424 |= EXTRA_STATE__ACT_START;
@@ -420,7 +452,7 @@ void sub_801AB3C(void)
 // HandleDeath
 void sub_801AE48(void)
 {
-    gUnknown_03005424 |= 0x20;
+    gUnknown_03005424 |= EXTRA_STATE__DISABLE_PAUSE_MENU;
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -433,7 +465,7 @@ void sub_801AE48(void)
 
     if (--gNumLives == 0) {
         gUnknown_03005424 |= EXTRA_STATE__ACT_START;
-        CreateGameOverScreen(1);
+        CreateGameOverOrTimeOverScreen(GAMEOVER_CAUSE_ZERO_LIVES);
     } else {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -443,7 +475,7 @@ void sub_801AE48(void)
     }
 }
 
-void sub_801AF14(void)
+void StageInit_Zone1Act1(void)
 {
     u16 level;
     CreateStageWaterTask(0x830, 0x7F207F20, 0);
@@ -464,7 +496,7 @@ void sub_801AF14(void)
     }
 }
 
-void sub_801AFA4(void)
+void StageInit_Zone3Act1(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 900, 0, NULL);
@@ -486,7 +518,7 @@ void sub_801AFA4(void)
     }
 }
 
-void sub_801B03C(void)
+void StageInit_Zone3Act2(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 900, 0, NULL);
@@ -508,7 +540,7 @@ void sub_801B03C(void)
     }
 }
 
-void sub_801B0D4(void)
+void StageInit_Zone4Act1(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 906, 2, NULL);
@@ -531,7 +563,7 @@ void sub_801B0D4(void)
     }
 }
 
-void sub_801B180(void)
+void StageInit_Zone4Act2(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 906, 2, NULL);
@@ -554,7 +586,7 @@ void sub_801B180(void)
     }
 }
 
-void sub_801B22C(void)
+void StageInit_Zone6Act1(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 940, 0, NULL);
@@ -584,7 +616,7 @@ void sub_801B22C(void)
     }
 }
 
-void sub_801B324(void)
+void StageInit_Zone6Act2(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 940, 0, NULL);
@@ -614,7 +646,7 @@ void sub_801B324(void)
     }
 }
 
-void sub_801B41C(void)
+void StageInit_Zone7Act1(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 941, 0, NULL);
@@ -639,7 +671,7 @@ void sub_801B41C(void)
     }
 }
 
-void sub_801B4EC(void)
+void StageInit_Zone7Act2(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 941, 0, NULL);
@@ -664,7 +696,7 @@ void sub_801B4EC(void)
     }
 }
 
-void sub_801B5BC(void)
+void StageInit_Zone7ActBoss(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 941, 0, NULL);
@@ -702,7 +734,7 @@ void sub_801B68C(void)
 
 void sub_801B6B4(void)
 {
-    gUnknown_03005424 |= 0x20;
+    gUnknown_03005424 |= EXTRA_STATE__DISABLE_PAUSE_MENU;
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -714,9 +746,9 @@ void sub_801B6B4(void)
     }
 
     if (--gNumLives == 0) {
-        CreateGameOverScreen(1);
+        CreateGameOverOrTimeOverScreen(GAMEOVER_CAUSE_ZERO_LIVES);
     } else {
-        CreateGameOverScreen(2);
+        CreateGameOverOrTimeOverScreen(GAMEOVER_CAUSE_TIME_UP);
     }
 }
 
@@ -742,7 +774,7 @@ void sub_801B7A8(struct Task *t)
     m4aMPlayAllStop();
 }
 
-void sub_801B7BC(void)
+void StageInit_Zone1Act2(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 897, 0, NULL);
@@ -762,7 +794,7 @@ void sub_801B7BC(void)
     }
 }
 
-void sub_801B83C(void)
+void StageInit_Zone1ActBoss(void)
 {
     u16 level = gCurrentLevel;
 
@@ -779,7 +811,7 @@ void sub_801B83C(void)
     }
 }
 
-void sub_801B8A8(void)
+void StageInit_Zone2Act1(void)
 {
     u16 level = gCurrentLevel;
 
@@ -796,7 +828,7 @@ void sub_801B8A8(void)
     }
 }
 
-void sub_801B914(void)
+void StageInit_Zone2Act2(void)
 {
     u16 level = gCurrentLevel;
 
@@ -813,7 +845,7 @@ void sub_801B914(void)
     }
 }
 
-void sub_801B980(void)
+void StageInit_Zone2ActBoss(void)
 {
     u16 level = gCurrentLevel;
 
@@ -830,7 +862,7 @@ void sub_801B980(void)
     }
 }
 
-void sub_801B9EC(void)
+void StageInit_Zone3ActBoss(void)
 {
     u16 level = gCurrentLevel;
 
@@ -847,7 +879,7 @@ void sub_801B9EC(void)
     }
 }
 
-void sub_801BA58(void)
+void StageInit_Zone4ActBoss(void)
 {
     u16 level = gCurrentLevel;
 
@@ -864,7 +896,7 @@ void sub_801BA58(void)
     }
 }
 
-void sub_801BAC4(void)
+void StageInit_Zone5Act1(void)
 {
     u16 level = gCurrentLevel;
 
@@ -881,7 +913,7 @@ void sub_801BAC4(void)
     }
 }
 
-void sub_801BB30(void)
+void StageInit_Zone5Act2(void)
 {
     u16 level = gCurrentLevel;
 
@@ -898,7 +930,7 @@ void sub_801BB30(void)
     }
 }
 
-void sub_801BB9C(void)
+void StageInit_Zone5ActBoss(void)
 {
     u16 level;
     CreatePaletteLoaderTask(0x2000, 686, 0, NULL);
@@ -918,7 +950,7 @@ void sub_801BB9C(void)
     }
 }
 
-void sub_801BC1C(void)
+void StageInit_Zone6ActBoss(void)
 {
     u16 level = gCurrentLevel;
 
@@ -935,7 +967,7 @@ void sub_801BC1C(void)
     }
 }
 
-void sub_801BC88(void)
+void StageInit_ZoneFinalActXX(void)
 {
     u16 level;
 
@@ -956,7 +988,7 @@ void sub_801BC88(void)
     }
 }
 
-void sub_801BD08(void)
+void StageInit_ZoneFinalActTA53(void)
 {
     u16 level = gCurrentLevel;
 
@@ -973,7 +1005,7 @@ void sub_801BD08(void)
     }
 }
 
-void sub_801BD74(void)
+void StageInit_MultiplayerSinglePak(void)
 {
     u16 level = gCurrentLevel;
 
@@ -990,7 +1022,7 @@ void sub_801BD74(void)
     }
 }
 
-void sub_801BDE0(void)
+void StageInit_31(void)
 {
     u16 level = gCurrentLevel;
 
@@ -1007,7 +1039,7 @@ void sub_801BDE0(void)
     }
 }
 
-void sub_801BE4C(void)
+void StageInit_32(void)
 {
     u16 level = gCurrentLevel;
 
@@ -1024,7 +1056,7 @@ void sub_801BE4C(void)
     }
 }
 
-void sub_801BEB8(void)
+void StageInit_33(void)
 {
     u16 level = gCurrentLevel;
 
@@ -1041,7 +1073,7 @@ void sub_801BEB8(void)
     }
 }
 
-void sub_801BF24(void)
+void StageInit_Dummy(void)
 {
     u16 level = gCurrentLevel;
 

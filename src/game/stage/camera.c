@@ -31,7 +31,7 @@ struct Camera ALIGNED(8) gCamera = {};
 const u32 *gUnknown_030059C8 = NULL;
 
 static void sub_801C708(s32, s32);
-void Task_801E0A8(void);
+void Task_CallUpdateCamera(void);
 void TaskDestructor_801E040(struct Task *);
 
 extern void sub_802C668(s32 *x, s32 *y);
@@ -429,7 +429,8 @@ void InitCamera(u32 level)
     camera->unk60 = 0;
     camera->unk62 = 0;
 
-    camera->movementTask = TaskCreate(Task_801E0A8, 0, 0xF00, 0, TaskDestructor_801E040);
+    camera->movementTask
+        = TaskCreate(Task_CallUpdateCamera, 0, 0xF00, 0, TaskDestructor_801E040);
 
     camera->unk58 = sStageBgUpdateFuncs[level];
 
