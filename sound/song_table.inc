@@ -150,7 +150,7 @@ gSongTable:	@ 0x08AD4F4C
 	song se_146, 3, 3
 	song se_spin, 2, 2
 	song se_148, 3, 3
-	song se_149, 3, 3
+	song se_time_up, 3, 3
 	song se_item_box_2, 2, 2
 	song se_151, 2, 2
 	song se_checkpoint, 2, 2

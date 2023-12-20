@@ -280,7 +280,7 @@ $(MID_SUBDIR)/se_spin.s: %.s: %.mid
 $(MID_SUBDIR)/se_148.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V120
     
-$(MID_SUBDIR)/se_149.s: %.s: %.mid
+$(MID_SUBDIR)/se_time_up.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G3 -P20 -V89
     
 $(MID_SUBDIR)/se_item_box_2.s: %.s: %.mid
