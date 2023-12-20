@@ -246,7 +246,7 @@ void sub_80369D8(void)
     DisplayOverScreenTextSprites(screen);
 }
 
-void sub_8036BEC(GameOverScreen *screen);
+void UpdateTimeOverScreenSprites(GameOverScreen *screen);
 
 void Task_TimeOverScreenMain(void)
 {
@@ -302,7 +302,7 @@ void Task_TimeOverScreenMain(void)
         return;
     }
 
-    sub_8036BEC(screen);
+    UpdateTimeOverScreenSprites(screen);
 }
 
 void sub_8036B70(void);
@@ -344,7 +344,7 @@ void DisplayOverScreenTextSprites(GameOverScreen *screen)
     DisplaySprite(sprite2);
 }
 
-void sub_8036BEC(GameOverScreen *screen)
+void UpdateTimeOverScreenSprites(GameOverScreen *screen)
 {
     Sprite *s = &screen->sprGameOrTime;
     Sprite *sprite2 = &screen->sprOver;
