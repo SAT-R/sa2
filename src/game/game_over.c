@@ -79,9 +79,9 @@ typedef struct {
     u32 unk6C;
 } GameOverScreen;
 
-void sub_8036918(void);
+void Task_GameOverScreenMain(void);
 void sub_8036C38(struct Task *);
-void sub_8036A44(void);
+void Task_TimeOverScreenMain(void);
 
 static void InitGameOverOrTimeOverScreen(u8 lostLifeCause)
 {
@@ -105,9 +105,9 @@ static void InitGameOverOrTimeOverScreen(u8 lostLifeCause)
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
     if (lostLifeCause & GAMEOVER_CAUSE_ZERO_LIVES) {
-        t = TaskCreate(sub_8036918, 0x70, 0x1000, 0, sub_8036C38);
+        t = TaskCreate(Task_GameOverScreenMain, 0x70, 0x1000, 0, sub_8036C38);
     } else {
-        t = TaskCreate(sub_8036A44, 0x70, 0x1000, 0, sub_8036C38);
+        t = TaskCreate(Task_TimeOverScreenMain, 0x70, 0x1000, 0, sub_8036C38);
     }
 
     screen = TASK_DATA(t);
@@ -165,7 +165,7 @@ static void InitGameOverOrTimeOverScreen(u8 lostLifeCause)
 void sub_8036BD4(GameOverScreen *screen);
 void sub_80369D8(void);
 
-void sub_8036918(void)
+void Task_GameOverScreenMain(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
     Sprite *s = &screen->unkC;
@@ -204,9 +204,7 @@ void sub_8036918(void)
 
     UpdateScreenFade(&screen->unk0);
 
-    screen->unk6C--;
-
-    if (screen->unk6C == 0) {
+    if (--screen->unk6C == 0) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q_24_8(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -248,7 +246,7 @@ void sub_80369D8(void)
 
 void sub_8036BEC(GameOverScreen *screen);
 
-void sub_8036A44(void)
+void Task_TimeOverScreenMain(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
     Sprite *s = &screen->unkC;
