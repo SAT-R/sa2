@@ -373,6 +373,9 @@ SECTIONS
         build/sa2/src/animation_commands.o(.rodata);
         build/sa2/src/sprite_3.o(.rodata);
         build/sa2/src/bg_triangles.o(.rodata);
+        build/sa2/src/malloc_ewram.o(.rodata);
+        build/sa2/src/malloc_vram.o(.rodata);
+        build/sa2/src/input_recorder.o(.rodata);
     
         /* game Data */
         build/sa2/src/game/assets/compressed/entities.o(.rodata);
@@ -390,7 +393,12 @@ SECTIONS
         build/sa2/src/sakit/interactables/spring.o(.rodata);
         build/sa2/src/sakit/interactables/platform.o(.rodata);
         build/sa2/src/sakit/interactables/platform_square.o(.rodata);
+        build/sa2/src/sakit/interactables/ramp.o(.rodata);
+        build/sa2/src/sakit/interactables/grind_rail.o(.rodata);
+        build/sa2/src/sakit/interactables/044.o(.rodata);
+        build/sa2/src/sakit/interactables/pipe.o(.rodata);
         build/sa2/src/sakit/interactables/platform_thin.o(.rodata);
+        build/sa2/src/sakit/interactables/slidy_ice.o(.rodata);
 
         /* game */
         build/sa2/src/game/water_effects.o(.rodata);
