@@ -74,8 +74,8 @@ void Task_FadeoutToOverScreen(void)
 
 typedef struct {
     ScreenFade unk0;
-    Sprite unkC;
-    Sprite unk3C;
+    Sprite sprGameOrTime;
+    Sprite sprOver;
     u32 framesUntilDone;
 } GameOverScreen;
 
@@ -90,12 +90,12 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     Sprite *s;
     ScreenFade *fade;
 
-    gWinRegs[4] = 0;
-    gWinRegs[5] = 0;
-    gWinRegs[0] = 0;
-    gWinRegs[2] = 0;
-    gWinRegs[1] = 0;
-    gWinRegs[3] = 0;
+    gWinRegs[WINREG_WININ] = WIN_RANGE(0, 0);
+    gWinRegs[WINREG_WINOUT] = WIN_RANGE(0, 0);
+    gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, 0);
+    gWinRegs[WINREG_WIN0V] = WIN_RANGE(0, 0);
+    gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, 0);
+    gWinRegs[WINREG_WIN1V] = WIN_RANGE(0, 0);
     gBldRegs.bldCnt = 0;
     gBldRegs.bldY = 0;
     gBldRegs.bldAlpha = 0;
@@ -105,10 +105,10 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
     if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
-        t = TaskCreate(Task_GameOverScreenMain, 0x70, 0x1000, 0,
+        t = TaskCreate(Task_GameOverScreenMain, sizeof(GameOverScreen), 0x1000, 0,
                        TaskDestructor_GameOverTimeOverScreen);
     } else {
-        t = TaskCreate(Task_TimeOverScreenMain, 0x70, 0x1000, 0,
+        t = TaskCreate(Task_TimeOverScreenMain, sizeof(GameOverScreen), 0x1000, 0,
                        TaskDestructor_GameOverTimeOverScreen);
     }
 
@@ -120,7 +120,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
         screen->framesUntilDone = 180;
     }
 
-    s = &screen->unkC;
+    s = &screen->sprGameOrTime;
     s->graphics.dest = VramMalloc(0x40);
     if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
         s->graphics.anim = SA2_ANIM_GAME_OVER;
@@ -140,7 +140,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     s->unk10 = 0;
     UpdateSpriteAnimation(s);
 
-    s = &screen->unk3C;
+    s = &screen->sprOver;
     s->graphics.dest = VramMalloc(0x40);
     s->graphics.anim = SA2_ANIM_GAME_OVER;
     s->variant = SA2_ANIM_VARIANT_GAME_OVER_OVER;
@@ -170,8 +170,8 @@ void sub_80369D8(void);
 void Task_GameOverScreenMain(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
-    Sprite *s = &screen->unkC;
-    Sprite *sprite2 = &screen->unk3C;
+    Sprite *s = &screen->sprGameOrTime;
+    Sprite *sprite2 = &screen->sprOver;
 
     gBldRegs.bldCnt = 0x3FEF;
 
@@ -200,8 +200,8 @@ void Task_GameOverScreenMain(void)
         s->x = temp;
         sprite2->x = temp;
     } else {
-        s->x = 120;
-        sprite2->x = 120;
+        s->x = (DISPLAY_WIDTH / 2);
+        sprite2->x = (DISPLAY_WIDTH / 2);
     }
 
     UpdateScreenFade(&screen->unk0);
@@ -251,8 +251,8 @@ void sub_8036BEC(GameOverScreen *screen);
 void Task_TimeOverScreenMain(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
-    Sprite *s = &screen->unkC;
-    Sprite *sprite2 = &screen->unk3C;
+    Sprite *s = &screen->sprGameOrTime;
+    Sprite *sprite2 = &screen->sprOver;
 
     gBldRegs.bldCnt = 0x3FEF;
 
@@ -338,25 +338,25 @@ void sub_8036B70(void)
 
 void DisplayOverScreenTextSprites(GameOverScreen *screen)
 {
-    Sprite *s = &screen->unkC;
-    Sprite *sprite2 = &screen->unk3C;
+    Sprite *s = &screen->sprGameOrTime;
+    Sprite *sprite2 = &screen->sprOver;
     DisplaySprite(s);
     DisplaySprite(sprite2);
 }
 
 void sub_8036BEC(GameOverScreen *screen)
 {
-    Sprite *s = &screen->unkC;
-    Sprite *sprite2 = &screen->unk3C;
+    Sprite *s = &screen->sprGameOrTime;
+    Sprite *sprite2 = &screen->sprOver;
     if (screen->framesUntilDone > 140) {
         s16 temp = (screen->framesUntilDone * 2) - 160;
         s->x = temp;
         sprite2->x = temp;
     } else if (screen->framesUntilDone > 40) {
-        s->x = 120;
-        sprite2->x = 120;
+        s->x = (DISPLAY_WIDTH / 2);
+        sprite2->x = (DISPLAY_WIDTH / 2);
     } else if (screen->framesUntilDone > 0) {
-        s16 temp = 120 - ((40 - screen->framesUntilDone) * 2);
+        s16 temp = (DISPLAY_WIDTH / 2) - ((40 - screen->framesUntilDone) * 2);
         s->x = temp;
         sprite2->x = temp;
     } else {
@@ -371,6 +371,6 @@ void TaskDestructor_GameOverTimeOverScreen(struct Task *t)
 {
     GameOverScreen *screen = TASK_DATA(t);
 
-    VramFree(screen->unkC.graphics.dest);
-    VramFree(screen->unk3C.graphics.dest);
+    VramFree(screen->sprGameOrTime.graphics.dest);
+    VramFree(screen->sprOver.graphics.dest);
 }
