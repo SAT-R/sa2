@@ -76,7 +76,7 @@ typedef struct {
     ScreenFade unk0;
     Sprite unkC;
     Sprite unk3C;
-    u32 unk6C;
+    u32 framesUntilDone;
 } GameOverScreen;
 
 void Task_GameOverScreenMain(void);
@@ -113,9 +113,9 @@ static void InitGameOverOrTimeOverScreen(u8 lostLifeCause)
     screen = TASK_DATA(t);
 
     if (lostLifeCause & GAMEOVER_CAUSE_ZERO_LIVES) {
-        screen->unk6C = 140;
+        screen->framesUntilDone = 140;
     } else {
-        screen->unk6C = 180;
+        screen->framesUntilDone = 180;
     }
 
     s = &screen->unkC;
@@ -173,7 +173,7 @@ void Task_GameOverScreenMain(void)
 
     gBldRegs.bldCnt = 0x3FEF;
 
-    if (screen->unk6C == 60) {
+    if (screen->framesUntilDone == 60) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q_24_8(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -183,7 +183,7 @@ void Task_GameOverScreenMain(void)
         screen->unk0.bldAlpha = 0;
     }
 
-    if (screen->unk6C == 50) {
+    if (screen->framesUntilDone == 50) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q_24_8(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
@@ -193,8 +193,8 @@ void Task_GameOverScreenMain(void)
         screen->unk0.bldAlpha = 0;
     }
 
-    if (screen->unk6C >= 61) {
-        s16 temp = screen->unk6C + 60;
+    if (screen->framesUntilDone >= 61) {
+        s16 temp = screen->framesUntilDone + 60;
         s->x = temp;
         sprite2->x = temp;
     } else {
@@ -204,7 +204,7 @@ void Task_GameOverScreenMain(void)
 
     UpdateScreenFade(&screen->unk0);
 
-    if (--screen->unk6C == 0) {
+    if (--screen->framesUntilDone == 0) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q_24_8(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -214,7 +214,7 @@ void Task_GameOverScreenMain(void)
                | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3 | BLDCNT_TGT2_ALL);
         screen->unk0.bldAlpha = 0;
 
-        screen->unk6C = 120;
+        screen->framesUntilDone = 120;
         gCurTask->main = sub_80369D8;
     }
 
@@ -228,7 +228,7 @@ void sub_80369D8(void)
     GameOverScreen *screen = TASK_DATA(gCurTask);
     UpdateScreenFade(&screen->unk0);
 
-    if (--screen->unk6C == 0) {
+    if (--screen->framesUntilDone == 0) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q_24_8(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_LIGHTEN);
@@ -254,7 +254,7 @@ void Task_TimeOverScreenMain(void)
 
     gBldRegs.bldCnt = 0x3FEF;
 
-    if (screen->unk6C == 0x96) {
+    if (screen->framesUntilDone == 150) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q_24_8(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -264,7 +264,7 @@ void Task_TimeOverScreenMain(void)
         screen->unk0.bldAlpha = 0;
     }
 
-    if (screen->unk6C == 0x8C) {
+    if (screen->framesUntilDone == 140) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q_24_8(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
@@ -274,7 +274,7 @@ void Task_TimeOverScreenMain(void)
         screen->unk0.bldAlpha = 0;
     }
 
-    if (screen->unk6C == 0x1E) {
+    if (screen->framesUntilDone == 30) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
         screen->unk0.brightness = Q_24_8(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
@@ -285,7 +285,7 @@ void Task_TimeOverScreenMain(void)
 
     UpdateScreenFade(&screen->unk0);
 
-    if (--screen->unk6C == 0) {
+    if (--screen->framesUntilDone == 0) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
@@ -310,7 +310,7 @@ void sub_8036B30(void)
     GameOverScreen *screen = TASK_DATA(gCurTask);
 
     if (UpdateScreenFade(&screen->unk0) != 0) {
-        screen->unk6C = 140;
+        screen->framesUntilDone = 140;
         UpdateScreenFade(&screen->unk0);
         gCurTask->main = sub_8036B70;
     }
@@ -322,7 +322,7 @@ void sub_8036B70(void)
 {
     GameOverScreen *screen = TASK_DATA(gCurTask);
 
-    if (--screen->unk6C == 0) {
+    if (--screen->framesUntilDone == 0) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
@@ -346,15 +346,15 @@ void sub_8036BEC(GameOverScreen *screen)
 {
     Sprite *s = &screen->unkC;
     Sprite *sprite2 = &screen->unk3C;
-    if (screen->unk6C > 140) {
-        s16 temp = (screen->unk6C * 2) - 160;
+    if (screen->framesUntilDone > 140) {
+        s16 temp = (screen->framesUntilDone * 2) - 160;
         s->x = temp;
         sprite2->x = temp;
-    } else if (screen->unk6C > 40) {
+    } else if (screen->framesUntilDone > 40) {
         s->x = 120;
         sprite2->x = 120;
-    } else if (screen->unk6C > 0) {
-        s16 temp = 120 - ((40 - screen->unk6C) * 2);
+    } else if (screen->framesUntilDone > 0) {
+        s16 temp = 120 - ((40 - screen->framesUntilDone) * 2);
         s->x = temp;
         sprite2->x = temp;
     } else {
