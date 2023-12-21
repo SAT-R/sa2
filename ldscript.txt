@@ -192,7 +192,9 @@ SECTIONS
         build/sa2/src/game/screen_shake.o(.text);
         build/sa2/src/game/player_controls.o(.text);
     
+        build/sa2/src/game/player_super_sonic_0.o(.text);
         build/sa2/asm/player_super_sonic.o(.text);
+        build/sa2/src/game/player_super_sonic.o(.text);
         build/sa2/src/game/stage/ui.o(.text);
         build/sa2/src/game/stage/debug_text_printer.o(.text);
         build/sa2/src/game/screen_fade.o(.text);

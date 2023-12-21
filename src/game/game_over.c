@@ -330,10 +330,9 @@ void sub_8036B70(void)
         gUnknown_03005390 = 0;
         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
         CreateTitleScreen();
-        return;
+    } else {
+        DisplayOverScreenTextSprites(screen);
     }
-
-    DisplayOverScreenTextSprites(screen);
 }
 
 void DisplayOverScreenTextSprites(GameOverScreen *screen)
