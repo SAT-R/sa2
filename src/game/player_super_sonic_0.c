@@ -2,18 +2,25 @@
 #include "sakit/globals.h"
 #include "sakit/player.h"
 #include "game/player_super_sonic.h"
+#include "game/save.h"
+#include "game/bosses/boss_9.h"
+
+#include "lib/m4a.h"
 
 #include "constants/characters.h"
-
-#define RESERVED_SUPER_SONIC_TILES_VRAM (void *)(OBJ_VRAM0)
-#define EXTRA_BOSS__INITIAL_RING_COUNT  50
+#include "constants/songs.h"
 
 void Task_802BC10(void);
+void Task_802C7E8(void);
+void sub_802C828(struct SuperSonic *);
+void sub_802C8A0(struct SuperSonic *);
+void sub_802C8EC(struct SuperSonic *);
 
 extern struct Task *sSuperSonicTask;
 extern const TileInfo gAnims_SuperSonic_080D69C8[23];
 
-void sub_802C828(struct SuperSonic *);
+#define RESERVED_SUPER_SONIC_TILES_VRAM (void *)(OBJ_VRAM0)
+#define EXTRA_BOSS__INITIAL_RING_COUNT  50
 
 void SuperSonicInitPlayer(void)
 {
@@ -88,7 +95,7 @@ void SuperSonicInitPlayer(void)
 void sub_802B708()
 {
     struct Task *t;
-    SuperSonic *sonic;
+    struct SuperSonic *sonic;
     Sprite *spr;
 
     SuperSonicInitPlayer();
@@ -101,7 +108,7 @@ void sub_802B708()
 
     gCourseTime = 0;
 
-    t = TaskCreate(Task_802BC10, sizeof(SuperSonic), 0x4040, 0, NULL);
+    t = TaskCreate(Task_802BC10, sizeof(struct SuperSonic), 0x4040, 0, NULL);
     sSuperSonicTask = t;
     sonic = TASK_DATA(t);
 
@@ -139,5 +146,120 @@ void sub_802B708()
     spr->unk10 = (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_X_FLIP);
 }
 
+void sub_802B81C(void)
+{
+    struct SuperSonic *sonic;
+
+    if (!sSuperSonicTask) {
+        return;
+    }
+
+    sonic = TASK_DATA(sSuperSonicTask);
+    sSuperSonicTask->main = Task_802C7E8;
+    sonic->func24 = sub_802C8A0;
+
+    sonic->tileInfoId = 2;
+    sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[2].anim;
+    sonic->spr134.variant = gAnims_SuperSonic_080D69C8[2].variant;
+
+    sonic->spr134.prevVariant = -1;
+    sonic->spr134.graphics.size = 0;
+    sonic->spr134.animCursor = 0;
+    sonic->spr134.timeUntilNextFrame = 0;
+
+    sonic->unk10 = 0;
+    sonic->unk14 = 0;
+    sonic->unk22 = 0;
+}
+
 #if 001
+int sub_802B8A8(struct SuperSonic *sonic)
+{
+    int zero = 0;
+
+    if (!(sonic->unk0 & 0x10) && !(gUnknown_03005424 & EXTRA_STATE__100)) {
+        if (gCourseTime >= MAX_COURSE_TIME && !gLoadedSaveGame->timeLimitDisabled) {
+            Sprite *spr;
+            // _0802B8CC+0x14
+            gPlayer.moveState = MOVESTATE_DEAD;
+
+            sonic->func24 = sub_802C8EC;
+            sonic->unkC = 60;
+            sonic->unk1A = 0;
+            sonic->unk18 = 0x100;
+            sonic->unk0 = 0x10;
+
+            sonic->tileInfoId = 21;
+            sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[21].anim;
+            sonic->spr134.variant = gAnims_SuperSonic_080D69C8[21].variant;
+
+            sonic->spr134.prevVariant = -1;
+            sonic->spr134.graphics.size = 0;
+            sonic->spr134.animCursor = 0;
+            sonic->spr134.timeUntilNextFrame = 0;
+
+            sonic->unk10 = 0;
+            sonic->unk14 = 0;
+            sonic->unk22 = 0;
+        } else if (!(sonic->unk0 & 0x200)) {
+            // _0802B964
+            if (Mod(gStageTime, GBA_FRAMES_PER_SECOND) == 0) {
+                if (gRingCount == 0) {
+                    int ten;
+                    gPlayer.moveState = MOVESTATE_DEAD;
+                    ten = 0x10;
+
+                    sonic->func24 = sub_802C8EC;
+                    sonic->unkC = 60;
+                    sonic->unk1A = 0;
+                    sonic->unk18 = 0x100;
+                    sonic->unk0 = ten;
+
+                    sonic->tileInfoId = 21;
+                    sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[21].anim;
+                    sonic->spr134.variant = gAnims_SuperSonic_080D69C8[21].variant;
+
+                    sonic->spr134.prevVariant = -1;
+                    sonic->spr134.graphics.size = 0;
+                    sonic->spr134.animCursor = 0;
+                    sonic->spr134.timeUntilNextFrame = 0;
+
+                    sonic->unk10 = 0;
+                    sonic->unk14 = 0;
+                    sonic->unk22 = 0;
+
+                    m4aSongNumStart(SE_LIFE_LOST);
+                } else {
+                    // _0802BA08
+                    gRingCount--;
+                }
+            }
+        } else {
+            if (ExtraBossIsDead() == TRUE) {
+                // _0802BA0E+6
+                gUnknown_03005424 |= (EXTRA_STATE__ACT_START | EXTRA_STATE__2);
+                sonic->func24 = sub_802C8A0;
+
+                sonic->tileInfoId = 2;
+                sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[2].anim;
+                sonic->spr134.variant = gAnims_SuperSonic_080D69C8[2].variant;
+
+                sonic->spr134.prevVariant = -1;
+                sonic->spr134.graphics.size = 0;
+                sonic->spr134.animCursor = 0;
+                sonic->spr134.timeUntilNextFrame = 0;
+
+                sonic->unk10 = 0;
+                sonic->unk14 = 0;
+                sonic->unk22 = 0;
+            }
+        }
+    }
+
+#ifndef NON_MATCHING
+    asm("" ::"r"(zero));
+#endif
+
+    return 0;
+}
 #endif

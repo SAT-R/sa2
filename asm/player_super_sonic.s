@@ -101,305 +101,8 @@ gAnims_SuperSonic_080D69C8:
 .syntax unified
 .text
 
-.if 0
+.if 00
 .endif
-
-	thumb_func_start sub_802B81C
-sub_802B81C: @ 0x0802B81C
-	push {r4, r5, r6, lr}
-	ldr r0, _0802B880 @ =sSuperSonicTask
-	ldr r2, [r0]
-	cmp r2, #0
-	beq _0802B878
-	ldrh r1, [r2, #6]
-	movs r5, #0xc0
-	lsls r5, r5, #0x12
-	adds r5, r1, r5
-	ldr r0, _0802B884 @ =sub_802C7E8
-	str r0, [r2, #8]
-	ldr r0, _0802B888 @ =sub_802C8A0
-	str r0, [r5, #0x24]
-	ldr r0, _0802B88C @ =IWRAM_START + 0x23
-	adds r2, r1, r0
-	movs r4, #0
-	movs r0, #2
-	strb r0, [r2]
-	ldr r3, _0802B890 @ =gAnims_SuperSonic_080D69C8
-	ldrh r2, [r3, #0x14]
-	ldr r6, _0802B894 @ =IWRAM_START + 0x13E
-	adds r0, r1, r6
-	movs r6, #0
-	strh r2, [r0]
-	ldrb r2, [r3, #0x16]
-	ldr r3, _0802B898 @ =IWRAM_START + 0x154
-	adds r0, r1, r3
-	strb r2, [r0]
-	ldr r0, _0802B89C @ =IWRAM_START + 0x155
-	adds r2, r1, r0
-	movs r0, #0xff
-	strb r0, [r2]
-	ldr r2, _0802B8A0 @ =IWRAM_START + 0x13C
-	adds r0, r1, r2
-	strh r4, [r0]
-	subs r3, #0xc
-	adds r0, r1, r3
-	strh r4, [r0]
-	adds r2, #0x14
-	adds r0, r1, r2
-	strh r4, [r0]
-	str r4, [r5, #0x10]
-	str r4, [r5, #0x14]
-	ldr r3, _0802B8A4 @ =IWRAM_START + 0x22
-	adds r1, r1, r3
-	strb r6, [r1]
-_0802B878:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0802B880: .4byte sSuperSonicTask
-_0802B884: .4byte sub_802C7E8
-_0802B888: .4byte sub_802C8A0
-_0802B88C: .4byte IWRAM_START + 0x23
-_0802B890: .4byte gAnims_SuperSonic_080D69C8
-_0802B894: .4byte IWRAM_START + 0x13E
-_0802B898: .4byte IWRAM_START + 0x154
-_0802B89C: .4byte IWRAM_START + 0x155
-_0802B8A0: .4byte IWRAM_START + 0x13C
-_0802B8A4: .4byte IWRAM_START + 0x22
-
-	thumb_func_start sub_802B8A8
-sub_802B8A8: @ 0x0802B8A8
-	push {r4, r5, r6, r7, lr}
-	adds r4, r0, #0
-	movs r6, #0
-	ldr r0, [r4]
-	movs r5, #0x10
-	ands r0, r5
-	cmp r0, #0
-	beq _0802B8BA
-	b _0802BA72
-_0802B8BA:
-	ldr r0, _0802B944 @ =gUnknown_03005424
-	ldrh r1, [r0]
-	movs r3, #0x80
-	lsls r3, r3, #1
-	adds r0, r3, #0
-	ands r0, r1
-	cmp r0, #0
-	beq _0802B8CC
-	b _0802BA72
-_0802B8CC:
-	ldr r0, _0802B948 @ =gCourseTime
-	ldr r1, [r0]
-	ldr r0, _0802B94C @ =0x00008C9F
-	cmp r1, r0
-	bls _0802B964
-	ldr r0, _0802B950 @ =gLoadedSaveGame
-	ldr r0, [r0]
-	ldrb r0, [r0, #5]
-	cmp r0, #0
-	bne _0802B964
-	ldr r1, _0802B954 @ =gPlayer
-	movs r0, #0x80
-	str r0, [r1, #0x20]
-	ldr r0, _0802B958 @ =sub_802C8EC
-	str r0, [r4, #0x24]
-	movs r0, #0x3c
-	str r0, [r4, #0xc]
-	movs r2, #0
-	strh r6, [r4, #0x1a]
-	strh r3, [r4, #0x18]
-	str r5, [r4]
-	adds r1, r4, #0
-	adds r1, #0x23
-	movs r0, #0x15
-	strb r0, [r1]
-	ldr r1, _0802B95C @ =gAnims_SuperSonic_080D69C8
-	adds r0, r1, #0
-	adds r0, #0xac
-	ldrh r0, [r0]
-	movs r5, #0x9f
-	lsls r5, r5, #1
-	adds r3, r4, r5
-	strh r0, [r3]
-	adds r1, #0xae
-	ldrb r1, [r1]
-	movs r7, #0xaa
-	lsls r7, r7, #1
-	adds r0, r4, r7
-	strb r1, [r0]
-	ldr r0, _0802B960 @ =0x00000155
-	adds r1, r4, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	movs r1, #0x9e
-	lsls r1, r1, #1
-	adds r0, r4, r1
-	strh r6, [r0]
-	movs r3, #0xa4
-	lsls r3, r3, #1
-	adds r0, r4, r3
-	strh r6, [r0]
-	adds r5, #0x12
-	adds r0, r4, r5
-	strh r6, [r0]
-	str r6, [r4, #0x10]
-	str r6, [r4, #0x14]
-	adds r0, r4, #0
-	adds r0, #0x22
-	strb r2, [r0]
-	b _0802BA72
-	.align 2, 0
-_0802B944: .4byte gUnknown_03005424
-_0802B948: .4byte gCourseTime
-_0802B94C: .4byte 0x00008C9F
-_0802B950: .4byte gLoadedSaveGame
-_0802B954: .4byte gPlayer
-_0802B958: .4byte sub_802C8EC
-_0802B95C: .4byte gAnims_SuperSonic_080D69C8
-_0802B960: .4byte 0x00000155
-_0802B964:
-	ldr r0, [r4]
-	movs r1, #0x80
-	lsls r1, r1, #2
-	ands r0, r1
-	cmp r0, #0
-	bne _0802BA0E
-	ldr r0, _0802B9F4 @ =gStageTime
-	ldr r0, [r0]
-	movs r1, #0x3c
-	bl Mod
-	cmp r0, #0
-	bne _0802BA72
-	ldr r1, _0802B9F8 @ =gRingCount
-	ldrh r0, [r1]
-	adds r5, r0, #0
-	cmp r5, #0
-	bne _0802BA08
-	ldr r1, _0802B9FC @ =gPlayer
-	movs r0, #0x80
-	str r0, [r1, #0x20]
-	movs r1, #0x10
-	ldr r0, _0802BA00 @ =sub_802C8EC
-	str r0, [r4, #0x24]
-	movs r0, #0x3c
-	str r0, [r4, #0xc]
-	movs r2, #0
-	strh r5, [r4, #0x1a]
-	adds r0, #0xc4
-	strh r0, [r4, #0x18]
-	str r1, [r4]
-	adds r1, r4, #0
-	adds r1, #0x23
-	movs r0, #0x15
-	strb r0, [r1]
-	ldr r1, _0802BA04 @ =gAnims_SuperSonic_080D69C8
-	adds r0, r1, #0
-	adds r0, #0xac
-	ldrh r0, [r0]
-	movs r7, #0x9f
-	lsls r7, r7, #1
-	adds r3, r4, r7
-	strh r0, [r3]
-	adds r1, #0xae
-	ldrb r1, [r1]
-	movs r3, #0xaa
-	lsls r3, r3, #1
-	adds r0, r4, r3
-	strb r1, [r0]
-	adds r7, #0x17
-	adds r1, r4, r7
-	movs r0, #0xff
-	strb r0, [r1]
-	movs r1, #0x9e
-	lsls r1, r1, #1
-	adds r0, r4, r1
-	strh r5, [r0]
-	subs r3, #0xc
-	adds r0, r4, r3
-	strh r5, [r0]
-	subs r7, #5
-	adds r0, r4, r7
-	strh r5, [r0]
-	str r5, [r4, #0x10]
-	str r5, [r4, #0x14]
-	adds r0, r4, #0
-	adds r0, #0x22
-	strb r2, [r0]
-	movs r0, #0x77
-	bl m4aSongNumStart
-	b _0802BA72
-	.align 2, 0
-_0802B9F4: .4byte gStageTime
-_0802B9F8: .4byte gRingCount
-_0802B9FC: .4byte gPlayer
-_0802BA00: .4byte sub_802C8EC
-_0802BA04: .4byte gAnims_SuperSonic_080D69C8
-_0802BA08:
-	subs r0, #1
-	strh r0, [r1]
-	b _0802BA72
-_0802BA0E:
-	bl sub_8050BB0
-	cmp r0, #1
-	bne _0802BA72
-	ldr r2, _0802BA7C @ =gUnknown_03005424
-	ldrh r0, [r2]
-	movs r1, #3
-	orrs r0, r1
-	strh r0, [r2]
-	ldr r0, _0802BA80 @ =sub_802C8A0
-	str r0, [r4, #0x24]
-	adds r1, r4, #0
-	adds r1, #0x23
-	movs r2, #0
-	movs r0, #2
-	strb r0, [r1]
-	ldr r1, _0802BA84 @ =gAnims_SuperSonic_080D69C8
-	ldrh r0, [r1, #0x14]
-	movs r3, #0x9f
-	lsls r3, r3, #1
-	adds r3, r3, r4
-	mov ip, r3
-	movs r3, #0
-	mov r5, ip
-	strh r0, [r5]
-	ldrb r1, [r1, #0x16]
-	movs r7, #0xaa
-	lsls r7, r7, #1
-	adds r0, r4, r7
-	strb r1, [r0]
-	ldr r0, _0802BA88 @ =0x00000155
-	adds r1, r4, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	movs r1, #0x9e
-	lsls r1, r1, #1
-	adds r0, r4, r1
-	strh r2, [r0]
-	movs r5, #0xa4
-	lsls r5, r5, #1
-	adds r0, r4, r5
-	strh r2, [r0]
-	subs r7, #4
-	adds r0, r4, r7
-	strh r2, [r0]
-	str r2, [r4, #0x10]
-	str r2, [r4, #0x14]
-	adds r0, r4, #0
-	adds r0, #0x22
-	strb r3, [r0]
-_0802BA72:
-	movs r0, #0
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0802BA7C: .4byte gUnknown_03005424
-_0802BA80: .4byte sub_802C8A0
-_0802BA84: .4byte gAnims_SuperSonic_080D69C8
-_0802BA88: .4byte 0x00000155
 
 	thumb_func_start sub_802BA8C
 sub_802BA8C: @ 0x0802BA8C
@@ -410,7 +113,7 @@ sub_802BA8C: @ 0x0802BA8C
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r6, r5, r0
-	bl sub_8050BB0
+	bl ExtraBossIsDead
 	cmp r0, #1
 	beq _0802BB4C
 	ldr r1, [r6]
@@ -507,7 +210,7 @@ sub_802BB54: @ 0x0802BB54
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r6, r5, r0
-	bl sub_8050BB0
+	bl ExtraBossIsDead
 	cmp r0, #1
 	beq _0802BBE8
 	ldr r1, [r6]
@@ -2100,7 +1803,7 @@ sub_802C798: @ 0x0802C798
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r4, r1, r0
-	bl sub_8050BB0
+	bl ExtraBossIsDead
 	cmp r0, #1
 	beq _0802C7DA
 	ldr r1, [r4]
@@ -2133,8 +1836,8 @@ _0802C7DA:
 _0802C7E0: .4byte sSuperSonicTask
 _0802C7E4: .4byte sub_802C92C
 
-	thumb_func_start sub_802C7E8
-sub_802C7E8: @ 0x0802C7E8
+	thumb_func_start Task_802C7E8
+Task_802C7E8: @ 0x0802C7E8
 	push {r4, lr}
 	ldr r0, _0802C820 @ =gCurTask
 	ldr r0, [r0]

@@ -3,9 +3,10 @@
 
 struct SuperSonic;
 
+// TODO: Check whether return type is correct!
 typedef void (*SuperSonicFn)(struct SuperSonic *sonic);
 
-typedef struct SuperSonic {
+struct SuperSonic {
     /*  0x00 */ u32 unk0;
     /*  0x04 */ u32 unk4;
     /*  0x08 */ u32 unk8;
@@ -18,6 +19,7 @@ typedef struct SuperSonic {
     /*  0x1E */ u16 pressedKeys; // pressed this frame (gPressedKeys)
     /*  0x20 */ s16 unk20;
     /*  0x22 */ u8 unk22;
+    /*  0x23 */ u8 tileInfoId;
     /*  0x24 */ SuperSonicFn func24;
     /*  0x28 */ u8 filler28[0x100];
     /* 0x128 */ u8 unk128;
@@ -25,7 +27,7 @@ typedef struct SuperSonic {
     /* 0x12A */ u8 filler12A[0xA];
     /* 0x134 */ Sprite spr134;
     /* 0x164 */ u8 filler164[0x1C];
-} SuperSonic; /* size: 0x180 */
+}; /* size: 0x180 */
 
 u32 sub_802C6E4(void);
 

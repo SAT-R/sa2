@@ -2,6 +2,7 @@
 #define GUARD_GAME_BOSS_9_H
 
 extern void CreateTrueArea53Boss(void);
+extern bool32 ExtraBossIsDead(void);
 extern void sub_804D594(s32, s32);
 
 typedef struct {

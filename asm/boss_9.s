@@ -7916,8 +7916,8 @@ _08050BA2:
 _08050BA8: .4byte IWRAM_START + 0x1C
 _08050BAC: .4byte gSineTable
 
-	thumb_func_start sub_8050BB0
-sub_8050BB0: @ 0x08050BB0
+	thumb_func_start ExtraBossIsDead
+ExtraBossIsDead: @ 0x08050BB0
 	push {lr}
 	movs r2, #0
 	ldr r0, _08050BD4 @ =gActiveBossTask
