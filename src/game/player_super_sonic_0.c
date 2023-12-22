@@ -12,6 +12,7 @@
 
 void Task_802BC10(void);
 void sub_802C480(struct SuperSonic *);
+void sub_802C55C(struct SuperSonic *);
 void Task_802C7E8(void);
 void sub_802C828(struct SuperSonic *);
 void sub_802C8A0(struct SuperSonic *);
@@ -301,6 +302,48 @@ bool32 sub_802BA8C(void)
     sonic->unk22 = 0;
 
     return TRUE;
+}
+
+void sub_802BB54(void)
+{
+    struct SuperSonic *sonic = TASK_DATA(sSuperSonicTask);
+
+    if (ExtraBossIsDead() == TRUE) {
+        return;
+    }
+    if (sonic->unk0 & 0x10) {
+        return;
+    }
+    if (sonic->unk0 & 0x80) {
+        return;
+    }
+    if (sonic->unk0 & 0x8) {
+        return;
+    }
+
+    sonic->func24 = sub_802C55C;
+    sonic->unk1A = 0;
+    sonic->unkC = 300;
+    sonic->unk18 = 0;
+
+    sonic->unk0 &= ~0x1;
+    sonic->unk0 &= ~0x2;
+    sonic->unk0 |= 0x8;
+
+    sonic->tileInfoId = 20;
+    sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[20].anim;
+    sonic->spr134.variant = gAnims_SuperSonic_080D69C8[20].variant;
+
+    sonic->spr134.prevVariant = -1;
+    sonic->spr134.graphics.size = 0;
+    sonic->spr134.animCursor = 0;
+    sonic->spr134.timeUntilNextFrame = 0;
+
+    sonic->unk10 = 0;
+    sonic->unk14 = 0;
+    sonic->unk22 = 0;
+
+    return;
 }
 
 #if 001
