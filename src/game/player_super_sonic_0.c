@@ -172,15 +172,12 @@ void sub_802B81C(void)
     sonic->unk22 = 0;
 }
 
-#if 001
 int sub_802B8A8(struct SuperSonic *sonic)
 {
     int zero = 0;
 
     if (!(sonic->unk0 & 0x10) && !(gUnknown_03005424 & EXTRA_STATE__100)) {
         if (gCourseTime >= MAX_COURSE_TIME && !gLoadedSaveGame->timeLimitDisabled) {
-            Sprite *spr;
-            // _0802B8CC+0x14
             gPlayer.moveState = MOVESTATE_DEAD;
 
             sonic->func24 = sub_802C8EC;
@@ -202,7 +199,6 @@ int sub_802B8A8(struct SuperSonic *sonic)
             sonic->unk14 = 0;
             sonic->unk22 = 0;
         } else if (!(sonic->unk0 & 0x200)) {
-            // _0802B964
             if (Mod(gStageTime, GBA_FRAMES_PER_SECOND) == 0) {
                 if (gRingCount == 0) {
                     int ten;
@@ -230,13 +226,11 @@ int sub_802B8A8(struct SuperSonic *sonic)
 
                     m4aSongNumStart(SE_LIFE_LOST);
                 } else {
-                    // _0802BA08
                     gRingCount--;
                 }
             }
         } else {
             if (ExtraBossIsDead() == TRUE) {
-                // _0802BA0E+6
                 gUnknown_03005424 |= (EXTRA_STATE__ACT_START | EXTRA_STATE__2);
                 sonic->func24 = sub_802C8A0;
 
@@ -262,4 +256,6 @@ int sub_802B8A8(struct SuperSonic *sonic)
 
     return 0;
 }
+
+#if 001
 #endif
