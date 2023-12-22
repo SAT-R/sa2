@@ -21,7 +21,7 @@ struct SuperSonic {
     /*  0x22 */ u8 unk22;
     /*  0x23 */ u8 tileInfoId;
     /*  0x24 */ SuperSonicFn func24;
-    /*  0x28 */ u8 filler28[0x100];
+    /*  0x28 */ Vec2_32 unk28[32];
     /* 0x128 */ u8 unk128;
     /* 0x129 */ u8 unk129;
     /* 0x12A */ u8 filler12A[0xA];

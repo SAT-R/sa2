@@ -1,8 +1,11 @@
 #include "global.h"
 #include "sakit/globals.h"
+#include "sakit/camera.h"
 #include "sakit/player.h"
 #include "game/player_super_sonic.h"
+#include "game/game_over.h"
 #include "game/save.h"
+#include "game/stage/stage.h"
 #include "game/bosses/boss_9.h"
 
 #include "lib/m4a.h"
@@ -11,6 +14,9 @@
 #include "constants/songs.h"
 
 void Task_802BC10(void);
+void sub_802C9B0(struct SuperSonic *);
+void sub_802BCCC(struct SuperSonic *);
+void sub_802BE1C(struct SuperSonic *);
 void sub_802C480(struct SuperSonic *);
 void sub_802C55C(struct SuperSonic *);
 void Task_802C7E8(void);
@@ -20,6 +26,8 @@ void sub_802C8EC(struct SuperSonic *);
 
 extern struct Task *sSuperSonicTask;
 extern const TileInfo gAnims_SuperSonic_080D69C8[23];
+extern const Vec2_32 gUnknown_080D650C[NUM_LEVEL_IDS];
+extern const Vec2_32 gUnknown_080D661C[NUM_LEVEL_IDS];
 
 #define RESERVED_SUPER_SONIC_TILES_VRAM (void *)(OBJ_VRAM0)
 #define EXTRA_BOSS__INITIAL_RING_COUNT  50
@@ -115,8 +123,8 @@ void sub_802B708()
     sonic = TASK_DATA(t);
 
     sonic->unk0 = 0x20;
-    sonic->unk4 = 0x25800; // = 153600
-    sonic->unk8 = 0x12000; // =  73728
+    sonic->unk4 = Q_24_8(600);
+    sonic->unk8 = Q_24_8(288);
     sonic->unk10 = 0;
     sonic->unk14 = 0;
     sonic->unk1A = 0;
@@ -345,6 +353,96 @@ void sub_802BB54(void)
 
     return;
 }
+
+void Task_802BC10(void)
+{
+    struct SuperSonic *sonic = TASK_DATA(gCurTask);
+    sub_802BCCC(sonic);
+    sonic->func24(sonic);
+    sub_802C9B0(sonic);
+    sub_802B8A8(sonic);
+
+    if (sonic->unk129) {
+        TasksDestroyAll();
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+
+        if ((gNumLives != 0) && (--gNumLives != 0)) {
+            if (gCourseTime >= MAX_COURSE_TIME) {
+                CreateGameOverScreen(OVER_CAUSE_TIME_UP);
+            } else {
+                GameStageStart();
+            }
+        } else {
+            CreateGameOverScreen(OVER_CAUSE_ZERO_LIVES);
+        }
+    } else {
+        sub_802BE1C(sonic);
+    }
+}
+
+// (99.25%) https://decomp.me/scratch/2dbbE
+NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
+         void sub_802BCCC(struct SuperSonic *sonic))
+{
+    s32 ssx, ssx2;
+    u8 i;
+    u8 *id;
+    u8 id2;
+    Vec2_32 *idk;
+
+    if (!(sonic->unk0 & 0x10)) {
+        sonic->unk4 += Q_24_8(5);
+    }
+
+    ssx = sonic->unk4;
+    if ((sonic->unk20 == 0) || (--sonic->unk20 == 0)) {
+        sonic->unk0 &= ~0x80;
+    }
+    // _0802BD0E
+
+    ssx2 = Q_24_8(gUnknown_080D650C[gCurrentLevel].x);
+    id = &sonic->unk128;
+
+    if (ssx >= ssx2) {
+        s32 someX, someY;
+        someX = (gUnknown_080D661C[gCurrentLevel].x);
+        someY = (gUnknown_080D661C[gCurrentLevel].y);
+
+        ssx += Q_24_8(someX);
+        sub_804D594(Q_24_8(someX), Q_24_8(someY));
+
+        for (i = 0; i < ARRAY_COUNT(sonic->unk28); i++) {
+            sonic->unk28[i].x += Q_24_8(someX);
+            sonic->unk28[i].y += Q_24_8(someY);
+        }
+
+        gBossRingsShallRespawn = TRUE;
+        gCamera.x += someX;
+        gCamera.unk20 += someX;
+        gCamera.unk10 += someX;
+        gCamera.y += someY;
+        gCamera.unk24 += someY;
+        gCamera.unk14 += someY;
+    }
+    // _0802BDAA
+
+    if (sonic->func24 != sub_802C8A0) {
+        if (ssx < (Q_24_8(gCamera.unk10) + Q_24_8(8))) {
+            ssx = Q_24_8(gCamera.unk10) + Q_24_8(8);
+        } else if (ssx > (Q_24_8(gCamera.unk10) + Q_24_8(312))) {
+            ssx = Q_24_8(gCamera.unk10) + Q_24_8(312);
+        }
+    }
+    sonic->unk4 = ssx;
+
+    id2 = *id;
+    sonic->unk28[id2].x = sonic->unk4;
+    sonic->unk28[id2].y = sonic->unk8;
+    *id = (id2 + 1) & 0x1F;
+}
+END_NONMATCH
 
 #if 001
 #endif
