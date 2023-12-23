@@ -122,7 +122,7 @@ void sub_802B708()
     sSuperSonicTask = t;
     sonic = TASK_DATA(t);
 
-    sonic->unk0 = 0x20;
+    sonic->flags = 0x20;
     sonic->unk4 = Q_24_8(600);
     sonic->unk8 = Q_24_8(288);
     sonic->unk10 = 0;
@@ -186,7 +186,7 @@ int sub_802B8A8(struct SuperSonic *sonic)
 {
     int zero = 0;
 
-    if (!(sonic->unk0 & 0x10) && !(gUnknown_03005424 & EXTRA_STATE__100)) {
+    if (!(sonic->flags & 0x10) && !(gUnknown_03005424 & EXTRA_STATE__100)) {
         if (gCourseTime >= MAX_COURSE_TIME && !gLoadedSaveGame->timeLimitDisabled) {
             gPlayer.moveState = MOVESTATE_DEAD;
 
@@ -194,7 +194,7 @@ int sub_802B8A8(struct SuperSonic *sonic)
             sonic->unkC = 60;
             sonic->unk1A = 0;
             sonic->unk18 = 0x100;
-            sonic->unk0 = 0x10;
+            sonic->flags = 0x10;
 
             sonic->tileInfoId = 21;
             sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[21].anim;
@@ -208,7 +208,7 @@ int sub_802B8A8(struct SuperSonic *sonic)
             sonic->unk10 = 0;
             sonic->unk14 = 0;
             sonic->unk22 = 0;
-        } else if (!(sonic->unk0 & 0x200)) {
+        } else if (!(sonic->flags & 0x200)) {
             if (Mod(gStageTime, GBA_FRAMES_PER_SECOND) == 0) {
                 if (gRingCount == 0) {
                     int ten;
@@ -219,7 +219,7 @@ int sub_802B8A8(struct SuperSonic *sonic)
                     sonic->unkC = 60;
                     sonic->unk1A = 0;
                     sonic->unk18 = 0x100;
-                    sonic->unk0 = ten;
+                    sonic->flags = ten;
 
                     sonic->tileInfoId = 21;
                     sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[21].anim;
@@ -274,13 +274,13 @@ bool32 sub_802BA8C(void)
     if (ExtraBossIsDead() == TRUE) {
         return FALSE;
     }
-    if (sonic->unk0 & 0x10) {
+    if (sonic->flags & 0x10) {
         return FALSE;
     }
-    if (sonic->unk0 & 0x80) {
+    if (sonic->flags & 0x80) {
         return FALSE;
     }
-    if (sonic->unk0 & 0x200) {
+    if (sonic->flags & 0x200) {
         return FALSE;
     }
 
@@ -289,12 +289,12 @@ bool32 sub_802BA8C(void)
     sonic->unkC = 48;
     sonic->unk18 = 0x200;
 
-    sonic->unk0 &= ~0x1;
-    sonic->unk0 &= ~0x2;
-    sonic->unk0 &= ~0x8;
-    sonic->unk0 &= ~0x40;
-    sonic->unk0 |= 0x4;
-    sonic->unk0 |= 0x80;
+    sonic->flags &= ~0x1;
+    sonic->flags &= ~0x2;
+    sonic->flags &= ~0x8;
+    sonic->flags &= ~0x40;
+    sonic->flags |= 0x4;
+    sonic->flags |= 0x80;
 
     sonic->tileInfoId = 3;
     sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[3].anim;
@@ -319,13 +319,13 @@ void sub_802BB54(void)
     if (ExtraBossIsDead() == TRUE) {
         return;
     }
-    if (sonic->unk0 & 0x10) {
+    if (sonic->flags & 0x10) {
         return;
     }
-    if (sonic->unk0 & 0x80) {
+    if (sonic->flags & 0x80) {
         return;
     }
-    if (sonic->unk0 & 0x8) {
+    if (sonic->flags & 0x8) {
         return;
     }
 
@@ -334,9 +334,9 @@ void sub_802BB54(void)
     sonic->unkC = 300;
     sonic->unk18 = 0;
 
-    sonic->unk0 &= ~0x1;
-    sonic->unk0 &= ~0x2;
-    sonic->unk0 |= 0x8;
+    sonic->flags &= ~0x1;
+    sonic->flags &= ~0x2;
+    sonic->flags |= 0x8;
 
     sonic->tileInfoId = 20;
     sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[20].anim;
@@ -392,13 +392,13 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
     u8 id2;
     Vec2_32 *idk;
 
-    if (!(sonic->unk0 & 0x10)) {
+    if (!(sonic->flags & 0x10)) {
         sonic->unk4 += Q_24_8(5);
     }
 
     ssx = sonic->unk4;
     if ((sonic->unk20 == 0) || (--sonic->unk20 == 0)) {
-        sonic->unk0 &= ~0x80;
+        sonic->flags &= ~0x80;
     }
     // _0802BD0E
 
@@ -445,4 +445,5 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
 END_NONMATCH
 
 #if 001
+
 #endif
