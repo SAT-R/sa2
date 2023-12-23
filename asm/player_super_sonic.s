@@ -1562,6 +1562,7 @@ _0802C920:
 _0802C924: .4byte gCamera
 _0802C928: .4byte 0x00000129
 
+.if 0
 	thumb_func_start sub_802C92C
 sub_802C92C: @ 0x0802C92C
 	push {r4, lr}
@@ -1609,6 +1610,4 @@ _0802C94A:
 	.align 2, 0
 _0802C980: .4byte sub_802C988
 _0802C984: .4byte gSineTable
-
-.if 0
 .endif

@@ -1,9 +1,24 @@
 #include "core.h"
+#include "trig.h"
 #include "game/player_super_sonic.h"
 
 struct Task *sSuperSonicTask = NULL;
 
 bool32 sub_802BA8C();
+void sub_802C988(struct SuperSonic *sonic);
+
+void sub_802C92C(struct SuperSonic *sonic)
+{
+    if (--sonic->unkC == 0) {
+        sonic->func24 = sub_802C988;
+        sonic->flags |= 0x40;
+        sonic->unkC = 100;
+    }
+
+    sonic->unk1A = Q_24_8(1.0);
+    sonic->unk4 += COS_24_8(sonic->unk18);
+    sonic->unk8 += SIN_24_8(sonic->unk18);
+}
 
 void sub_802C988(struct SuperSonic *sonic)
 {
