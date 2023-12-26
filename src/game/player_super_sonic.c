@@ -25,6 +25,44 @@ void sub_802C988(struct SuperSonic *sonic);
 #if 01
 #endif
 
+void sub_802C358(struct SuperSonic *sonic)
+{
+    Sprite *spr;
+    if (--sonic->unkC == 0) {
+        spr = &sonic->spr134;
+        sonic->func24 = sub_802C058;
+        sonic->flags &= ~SUPER_FLAG__2;
+        sonic->flags |= SUPER_FLAG__1;
+        spr->hitboxes[1].index = -1;
+
+        sonic->tileInfoId = 0;
+        sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[0].anim;
+        sonic->spr134.variant = gAnims_SuperSonic_080D69C8[0].variant;
+        sonic->spr134.prevVariant = -1;
+        sonic->spr134.graphics.size = 0;
+        sonic->spr134.animCursor = 0;
+        sonic->spr134.timeUntilNextFrame = 0;
+        sonic->unk10 = 0;
+        sonic->unk14 = 0;
+        sonic->unk22 = 0;
+    }
+
+    if (sonic->unkC == 8) {
+        sonic->spr134.graphics.anim
+            = gAnims_SuperSonic_080D69C8[sonic->tileInfoId + 1].anim;
+        sonic->spr134.variant
+            = gAnims_SuperSonic_080D69C8[sonic->tileInfoId + 1].variant;
+        sonic->spr134.prevVariant = -1;
+        sonic->flags &= ~SUPER_FLAG__80;
+    } else if (sonic->unkC > 8) {
+        sonic->flags |= SUPER_FLAG__80;
+    }
+
+    sonic->unk1A = (SIN(sonic->unkC * 12) * 3) >> 5;
+    sonic->unk4 += (COS(sonic->rotation) * sonic->unk1A) >> 14;
+    sonic->unk8 += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
+}
+
 void sub_802C480(struct SuperSonic *sonic)
 {
     Sprite *spr;
