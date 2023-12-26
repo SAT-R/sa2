@@ -26,7 +26,8 @@ struct SuperSonic {
     /* 0x129 */ u8 unk129;
     /* 0x12A */ u8 filler12A[0xA];
     /* 0x134 */ Sprite spr134;
-    /* 0x164 */ u8 filler164[0x1C];
+    /* 0x164 */ Hitbox reserved;
+    /* 0x16C */ u8 filler16C[0x14];
 }; /* size: 0x180 */
 
 #define SUPER_FLAG__1   0x1
