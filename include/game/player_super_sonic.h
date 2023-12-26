@@ -30,9 +30,14 @@ struct SuperSonic {
 }; /* size: 0x180 */
 
 #define SUPER_FLAG__1   0x1
+#define SUPER_FLAG__2   0x2
 #define SUPER_FLAG__4   0x4
+#define SUPER_FLAG__8   0x8
+#define SUPER_FLAG__10  0x10
 #define SUPER_FLAG__20  0x20
 #define SUPER_FLAG__40  0x40
+#define SUPER_FLAG__80  0x80
+#define SUPER_FLAG__100 0x100
 #define SUPER_FLAG__200 0x200
 
 extern u32 sub_802C6E4(void);

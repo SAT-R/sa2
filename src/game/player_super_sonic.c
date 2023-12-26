@@ -1,7 +1,8 @@
 #include "core.h"
+#include "trig.h"
 #include "sakit/globals.h"
 #include "sakit/camera.h"
-#include "trig.h"
+#include "game/bosses/boss_9.h"
 #include "game/player_super_sonic.h"
 
 struct Task *sSuperSonicTask = NULL;
@@ -9,10 +10,27 @@ struct Task *sSuperSonicTask = NULL;
 bool32 sub_802BA8C();
 void sub_802BE1C(struct SuperSonic *sonic);
 void sub_802C8A0(struct SuperSonic *sonic);
+void sub_802C92C(struct SuperSonic *sonic);
 void sub_802C9B0(struct SuperSonic *sonic);
 void sub_802BCCC(struct SuperSonic *sonic);
 void sub_802C058(struct SuperSonic *sonic);
 void sub_802C988(struct SuperSonic *sonic);
+
+void sub_802C798(void)
+{
+    struct SuperSonic *sonic = TASK_DATA(sSuperSonicTask);
+
+    if ((ExtraBossIsDead() != TRUE) && !(sonic->flags & SUPER_FLAG__10)) {
+        sonic->func24 = sub_802C92C;
+        sonic->unkC = 20;
+        sonic->rotation = 0;
+        sonic->flags &= ~SUPER_FLAG__1;
+        sonic->flags &= ~SUPER_FLAG__2;
+        sonic->flags &= ~SUPER_FLAG__8;
+        sonic->flags |= SUPER_FLAG__200;
+        sonic->flags |= SUPER_FLAG__80;
+    }
+}
 
 void Task_802C7E8(void)
 {

@@ -1355,47 +1355,5 @@ _0802C78A:
 _0802C790: .4byte sSuperSonicTask
 _0802C794: .4byte 0x000003FF
 
-	thumb_func_start sub_802C798
-sub_802C798: @ 0x0802C798
-	push {r4, lr}
-	ldr r0, _0802C7E0 @ =sSuperSonicTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	bl ExtraBossIsDead
-	cmp r0, #1
-	beq _0802C7DA
-	ldr r1, [r4]
-	movs r2, #0x10
-	ands r2, r1
-	cmp r2, #0
-	bne _0802C7DA
-	ldr r0, _0802C7E4 @ =sub_802C92C
-	str r0, [r4, #0x24]
-	movs r0, #0x14
-	str r0, [r4, #0xc]
-	strh r2, [r4, #0x18]
-	subs r0, #0x16
-	ands r1, r0
-	subs r0, #1
-	ands r1, r0
-	subs r0, #6
-	ands r1, r0
-	movs r0, #0x80
-	lsls r0, r0, #2
-	orrs r1, r0
-	movs r0, #0x80
-	orrs r1, r0
-	str r1, [r4]
-_0802C7DA:
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0802C7E0: .4byte sSuperSonicTask
-_0802C7E4: .4byte sub_802C92C
-
 .if 0
 .endif
