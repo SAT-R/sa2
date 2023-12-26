@@ -294,22 +294,19 @@ void sub_802C8EC(struct SuperSonic *sonic)
     }
 }
 
-// (76.48%) https://decomp.me/scratch/y8kIL
-NONMATCH("asm/non_matching/game/super_sonic__sub_802C92C.inc",
-         void sub_802C92C(struct SuperSonic *sonic))
+void sub_802C92C(struct SuperSonic *sonic)
 {
-    s32 v;
+    s32 v, w;
     if (--sonic->unkC == 0) {
         sonic->func24 = sub_802C988;
-        sonic->flags |= SUPER_FLAG__40;
+        sonic->flags |= 0x40;
         sonic->unkC = 100;
     }
 
     sonic->unk1A = Q_24_8(1.0);
-    sonic->unk4 += COS_24_8(sonic->rotation);
-    sonic->unk8 += SIN_24_8(sonic->rotation);
+    sonic->unk4 += Q_24_8_TO_INT(COS(sonic->rotation) * 4);
+    sonic->unk8 += Q_24_8_TO_INT(SIN(sonic->rotation) * 4);
 }
-END_NONMATCH
 
 void sub_802C988(struct SuperSonic *sonic)
 {
