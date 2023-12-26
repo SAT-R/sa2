@@ -34,7 +34,7 @@ static void sub_801C708(s32, s32);
 void Task_CallUpdateCamera(void);
 void TaskDestructor_801E040(struct Task *);
 
-extern void sub_802C668(s32 *x, s32 *y);
+extern void SuperSonicGetPos(s32 *x, s32 *y);
 
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
@@ -380,7 +380,7 @@ void InitCamera(u32 level)
             && (gUnknown_030054B0 == 0))
         || (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            sub_802C668(&player->x, &player->y);
+            SuperSonicGetPos(&player->x, &player->y);
             gUnknown_03005440 = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][0];
             gUnknown_030054BC = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][1];
             camera->x = 600;
@@ -462,7 +462,7 @@ void UpdateCamera(void)
         }
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            sub_802C668(&player->x, &player->y);
+            SuperSonicGetPos(&player->x, &player->y);
         }
 
         camera->unk10 += BOSS_CAM_FRAME_DELTA_PIXELS;

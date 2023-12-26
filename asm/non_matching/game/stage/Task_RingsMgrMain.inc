@@ -92,7 +92,7 @@ _08007FBE:
 	asrs r0, r0, #0x18
 	cmp r0, #0x1d
 	bne _08007FFA
-	bl sub_802C6E4
+	bl SuperSonicGetFlags
 	movs r1, #0x87
 	lsls r1, r1, #2
 	ands r1, r0
@@ -105,7 +105,7 @@ _08007FBE:
 _08007FE4:
 	ldr r0, _080082AC @ =gPlayer + 0x8
 	adds r1, r0, #4
-	bl sub_802C668
+	bl SuperSonicGetPos
 	mov r0, sp
 	movs r1, #0xf6
 	strb r1, [r0]

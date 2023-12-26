@@ -18,7 +18,7 @@ struct SuperSonic {
     /*  0x1C */ u16 rawKeys; // raw keys (gInput)
     /*  0x1E */ u16 pressedKeys; // pressed this frame (gPressedKeys)
     /*  0x20 */ s16 unk20;
-    /*  0x22 */ u8 unk22;
+    /*  0x22 */ s8 unk22;
     /*  0x23 */ u8 tileInfoId;
     /*  0x24 */ SuperSonicFn func24;
     /*  0x28 */ Vec2_32 unk28[32];
@@ -40,7 +40,10 @@ struct SuperSonic {
 #define SUPER_FLAG__100 0x100
 #define SUPER_FLAG__200 0x200
 
-extern u32 sub_802C6E4(void);
+extern u32 SuperSonicGetFlags(void);
+extern void SuperSonicGetPos(s32 *outX, s32 *outY);
+extern void SuperSonicSetPos(s32 x, s32 y);
+extern u32 SuperSonicGetFlags();
 extern bool32 sub_802BA8C(void);
 
 #endif // GUARD_PLAYER_SUPER_SONIC_H

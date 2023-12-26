@@ -1542,7 +1542,7 @@ sub_804D8E0: @ 0x0804D8E0
 	ldr r2, _0804D9C4 @ =0x00000654
 	adds r2, r2, r5
 	mov sb, r2
-	bl sub_802C6E4
+	bl SuperSonicGetFlags
 	movs r1, #0x80
 	lsls r1, r1, #2
 	ands r1, r0
@@ -2773,7 +2773,7 @@ _0804E2EE:
 _0804E30A:
 	add r0, sp, #8
 	ldr r1, [sp, #0x18]
-	bl sub_802C668
+	bl SuperSonicGetPos
 	ldrh r0, [r7, #0x38]
 	adds r6, r5, r0
 	ldr r3, _0804E3F8 @ =0x000003FF
@@ -3588,7 +3588,7 @@ sub_804E974: @ 0x0804E974
 	mov r8, r0
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
+	bl SuperSonicGetPos
 	ldr r0, [sp]
 	movs r1, #0x80
 	lsls r1, r1, #5
@@ -3706,7 +3706,7 @@ _0804EA00:
 	ldr r0, [r5, #0x18]
 	adds r0, r0, r1
 	str r0, [r5, #0x18]
-	bl sub_802C6E4
+	bl SuperSonicGetFlags
 	movs r1, #0x82
 	lsls r1, r1, #2
 	ands r1, r0
@@ -3723,7 +3723,7 @@ _0804EA00:
 	ldr r0, _0804EAE4 @ =gUnknown_080D8E14
 	ldr r0, [r0, #4]
 	str r0, [r5]
-	bl sub_802C770
+	bl SuperSonicGetRotation
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	mov r2, sb
@@ -4003,7 +4003,7 @@ sub_804ECC4: @ 0x0804ECC4
 	adds r6, r0, #0
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
+	bl SuperSonicGetPos
 	adds r1, r6, #0
 	adds r1, #0x1c
 	adds r6, #0x48
@@ -4226,12 +4226,12 @@ sub_804EE84: @ 0x0804EE84
 	movs r0, #0
 	str r0, [sp]
 	str r0, [sp, #4]
-	bl sub_802C750
+	bl SuperSonicGetSprite
 	adds r6, r0, #0
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
-	bl sub_802C6E4
+	bl SuperSonicGetPos
+	bl SuperSonicGetFlags
 	movs r1, #0x82
 	lsls r1, r1, #2
 	ands r1, r0
@@ -4443,12 +4443,12 @@ sub_804F010: @ 0x0804F010
 	movs r0, #0
 	str r0, [sp]
 	str r0, [sp, #4]
-	bl sub_802C750
+	bl SuperSonicGetSprite
 	adds r6, r0, #0
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
-	bl sub_802C6E4
+	bl SuperSonicGetPos
+	bl SuperSonicGetFlags
 	ldr r0, _0804F0F4 @ =gPlayer
 	ldr r0, [r0, #0x20]
 	movs r1, #0x80
@@ -4786,7 +4786,7 @@ _0804F24C:
 	add sb, r0
 	add r1, sp, #0xc
 	add r0, sp, #8
-	bl sub_802C668
+	bl SuperSonicGetPos
 	ldr r0, [sp, #8]
 	movs r1, #0xa0
 	lsls r1, r1, #4
@@ -4807,7 +4807,7 @@ _0804F24C:
 	adds r1, r0, #0
 	str r1, [sp, #0xc]
 	ldr r0, [sp, #8]
-	bl sub_802C6B4
+	bl SuperSonicSetPos
 	mov r6, sl
 	asrs r4, r6, #8
 	mov r0, sb
@@ -5220,7 +5220,7 @@ _0804F632:
 	ldr r0, [r5]
 	adds r0, r0, r1
 	str r0, [r5]
-	bl sub_802C6E4
+	bl SuperSonicGetFlags
 	movs r1, #0x82
 	lsls r1, r1, #2
 	ands r1, r0
@@ -6364,7 +6364,7 @@ _0804FF22:
 	bne _0804FF80
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
+	bl SuperSonicGetPos
 	movs r1, #0x20
 	ldrsh r0, [r4, r1]
 	lsls r0, r0, #8
@@ -6443,7 +6443,7 @@ sub_804FF9C: @ 0x0804FF9C
 	strb r0, [r1]
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
+	bl SuperSonicGetPos
 	movs r1, #0x20
 	ldrsh r0, [r5, r1]
 	lsls r0, r0, #8

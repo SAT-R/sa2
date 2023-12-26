@@ -2,14 +2,14 @@
 #include "global.h"
 #include "core.h"
 #include "malloc_ewram.h"
+#include "sakit/camera.h"
+#include "sakit/collect_ring_effect.h"
+#include "sakit/ring.h"
+#include "sakit/rings_manager.h"
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/player_super_sonic.h"
-#include "sakit/ring.h"
-#include "sakit/rings_manager.h"
-#include "sakit/collect_ring_effect.h"
 #include "game/assets/compressed/entities.h"
-#include "sakit/camera.h"
 
 #include "constants/animations.h"
 
@@ -156,7 +156,8 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
         // _08007FBE
         sp08 = FALSE;
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            u32 res = sub_802C6E4() & 0x21C;
+            u32 res = SuperSonicGetFlags()
+                & (SUPER_FLAG__200 | SUPER_FLAG__10 | SUPER_FLAG__8 | SUPER_FLAG__4);
             sp08 = TRUE;
 
             if (res) {
@@ -164,7 +165,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
             }
 
             // _08007FE4
-            sub_802C668(&gPlayer.x, &gPlayer.y);
+            SuperSonicGetPos(&gPlayer.x, &gPlayer.y);
             sp00[0] = -10;
             sp00[1] = -10;
             sp00[2] = +10;
