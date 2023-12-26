@@ -29,6 +29,12 @@ struct SuperSonic {
     /* 0x164 */ u8 filler164[0x1C];
 }; /* size: 0x180 */
 
+#define SUPER_FLAG__1   0x1
+#define SUPER_FLAG__4   0x4
+#define SUPER_FLAG__20  0x20
+#define SUPER_FLAG__40  0x40
+#define SUPER_FLAG__200 0x200
+
 extern u32 sub_802C6E4(void);
 extern bool32 sub_802BA8C(void);
 

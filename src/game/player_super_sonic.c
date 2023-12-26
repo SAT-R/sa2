@@ -1,4 +1,5 @@
 #include "core.h"
+#include "sakit/globals.h"
 #include "sakit/camera.h"
 #include "trig.h"
 #include "game/player_super_sonic.h"
@@ -6,12 +7,33 @@
 struct Task *sSuperSonicTask = NULL;
 
 bool32 sub_802BA8C();
+void sub_802C058(struct SuperSonic *sonic);
 void sub_802C988(struct SuperSonic *sonic);
+
+void sub_802C828(struct SuperSonic *sonic)
+{
+    s32 a, r4;
+
+    if (!(gUnknown_03005424 & EXTRA_STATE__100)) {
+        if (--sonic->unkC == 0) {
+            sonic->func24 = sub_802C058;
+            sonic->flags &= ~SUPER_FLAG__20;
+            sonic->flags |= SUPER_FLAG__1;
+        }
+        // _0802C856
+        a = Q_24_8(gCamera.x + 80);
+        r4 = Q_24_8(gCamera.y + 90);
+        sonic->unk4 += Div(((a - sonic->unk4) * 3), 100);
+
+        r4 -= sonic->unk8;
+        sonic->unk8 += Div((r4 * 3), 100);
+    }
+}
 
 void sub_802C8A0(struct SuperSonic *sonic)
 {
     s32 a, r4, divRes;
-    sonic->flags &= ~0x4;
+    sonic->flags &= ~SUPER_FLAG__4;
 
     a = Q_24_8(gCamera.x + (DISPLAY_WIDTH + 76));
     r4 = Q_24_8(gCamera.y + (DISPLAY_HEIGHT / 2));
@@ -43,7 +65,7 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802C92C.inc",
     s32 v;
     if (--sonic->unkC == 0) {
         sonic->func24 = sub_802C988;
-        sonic->flags |= 0x40;
+        sonic->flags |= SUPER_FLAG__40;
         sonic->unkC = 100;
     }
 
@@ -56,8 +78,8 @@ END_NONMATCH
 void sub_802C988(struct SuperSonic *sonic)
 {
     if (--sonic->unkC == 0) {
-        sonic->flags &= ~0x40;
-        sonic->flags &= ~0x200;
+        sonic->flags &= ~SUPER_FLAG__40;
+        sonic->flags &= ~SUPER_FLAG__200;
         sub_802BA8C();
     }
 }
