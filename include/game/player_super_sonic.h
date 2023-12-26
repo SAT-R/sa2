@@ -13,8 +13,8 @@ struct SuperSonic {
     /*  0x0C */ s32 unkC;
     /*  0x10 */ s32 unk10;
     /*  0x14 */ s32 unk14;
-    /*  0x18 */ u16 unk18;
-    /*  0x1a */ u16 unk1A;
+    /*  0x18 */ u16 rotation;
+    /*  0x1a */ s16 unk1A;
     /*  0x1C */ u16 rawKeys; // raw keys (gInput)
     /*  0x1E */ u16 pressedKeys; // pressed this frame (gPressedKeys)
     /*  0x20 */ s16 unk20;

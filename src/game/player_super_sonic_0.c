@@ -128,7 +128,7 @@ void sub_802B708()
     sonic->unk10 = 0;
     sonic->unk14 = 0;
     sonic->unk1A = 0;
-    sonic->unk18 = 0;
+    sonic->rotation = 0;
     sonic->unk20 = 0;
     sonic->unkC = 300;
     sonic->unk22 = 0;
@@ -136,7 +136,7 @@ void sub_802B708()
     sonic->unk128 = 0;
     sonic->rawKeys = gInput;
     sonic->pressedKeys = gPressedKeys;
-    sonic->unk129 = 0;
+    sonic->unk129 = FALSE;
 
     spr = &sonic->spr134;
     spr->graphics.dest = RESERVED_SUPER_SONIC_TILES_VRAM;
@@ -193,7 +193,7 @@ int sub_802B8A8(struct SuperSonic *sonic)
             sonic->func24 = sub_802C8EC;
             sonic->unkC = 60;
             sonic->unk1A = 0;
-            sonic->unk18 = 0x100;
+            sonic->rotation = 0x100;
             sonic->flags = 0x10;
 
             sonic->tileInfoId = 21;
@@ -218,7 +218,7 @@ int sub_802B8A8(struct SuperSonic *sonic)
                     sonic->func24 = sub_802C8EC;
                     sonic->unkC = 60;
                     sonic->unk1A = 0;
-                    sonic->unk18 = 0x100;
+                    sonic->rotation = 0x100;
                     sonic->flags = ten;
 
                     sonic->tileInfoId = 21;
@@ -287,7 +287,7 @@ bool32 sub_802BA8C(void)
     sonic->func24 = sub_802C480;
     sonic->unk20 = 120;
     sonic->unkC = 48;
-    sonic->unk18 = 0x200;
+    sonic->rotation = 0x200;
 
     sonic->flags &= ~0x1;
     sonic->flags &= ~0x2;
@@ -332,7 +332,7 @@ void sub_802BB54(void)
     sonic->func24 = sub_802C55C;
     sonic->unk1A = 0;
     sonic->unkC = 300;
-    sonic->unk18 = 0;
+    sonic->rotation = 0;
 
     sonic->flags &= ~0x1;
     sonic->flags &= ~0x2;
