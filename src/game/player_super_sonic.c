@@ -7,8 +7,27 @@
 struct Task *sSuperSonicTask = NULL;
 
 bool32 sub_802BA8C();
+void sub_802BE1C(struct SuperSonic *sonic);
+void sub_802C8A0(struct SuperSonic *sonic);
+void sub_802C9B0(struct SuperSonic *sonic);
+void sub_802BCCC(struct SuperSonic *sonic);
 void sub_802C058(struct SuperSonic *sonic);
 void sub_802C988(struct SuperSonic *sonic);
+
+void Task_802C7E8(void)
+{
+    struct SuperSonic *sonic = TASK_DATA(gCurTask);
+
+    sub_802BCCC(sonic);
+
+    if (sonic->func24 != sub_802C8A0) {
+        sonic->func24 = sub_802C8A0;
+    }
+
+    sonic->func24(sonic);
+    sub_802C9B0(sonic);
+    sub_802BE1C(sonic);
+}
 
 void sub_802C828(struct SuperSonic *sonic)
 {

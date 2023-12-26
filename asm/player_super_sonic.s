@@ -1397,36 +1397,5 @@ _0802C7DA:
 _0802C7E0: .4byte sSuperSonicTask
 _0802C7E4: .4byte sub_802C92C
 
-	thumb_func_start Task_802C7E8
-Task_802C7E8: @ 0x0802C7E8
-	push {r4, lr}
-	ldr r0, _0802C820 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	adds r0, r4, #0
-	bl sub_802BCCC
-	ldr r0, [r4, #0x24]
-	ldr r1, _0802C824 @ =sub_802C8A0
-	cmp r0, r1
-	beq _0802C806
-	str r1, [r4, #0x24]
-_0802C806:
-	ldr r1, [r4, #0x24]
-	adds r0, r4, #0
-	bl _call_via_r1
-	adds r0, r4, #0
-	bl sub_802C9B0
-	adds r0, r4, #0
-	bl sub_802BE1C
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0802C820: .4byte gCurTask
-_0802C824: .4byte sub_802C8A0
-
 .if 0
 .endif
