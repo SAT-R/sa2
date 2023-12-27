@@ -21,7 +21,7 @@ extern const s16 gSineTable[1280];
 #define SIN_24_8(radAngle) Q_2_14_TO_Q_24_8(SIN(radAngle))
 #define COS_24_8(radAngle) Q_2_14_TO_Q_24_8(COS(radAngle))
 
-#define DEG_TO_SIN(deg) ((int)((((double)(deg)) / 360.0) * (ONE_CYCLE + 1)))
+#define DEG_TO_SIN(deg) ((int)((((double)(deg)) / 360.0) * SIN_PERIOD))
 
 // NOTE: Returns a Q_24_8!
 #define SIN_DEG(degrees) Q_2_14_TO_Q_24_8(gSineTable[DEG_TO_SIN(degrees)])

@@ -21,20 +21,58 @@ void sub_802C8A0(struct SuperSonic *sonic);
 void sub_802C92C(struct SuperSonic *sonic);
 void sub_802C9B0(struct SuperSonic *sonic);
 void sub_802BCCC(struct SuperSonic *sonic);
-u8 sub_802BFA8(struct SuperSonic *sonic);
+u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic);
 void sub_802C058(struct SuperSonic *sonic);
 void sub_802C988(struct SuperSonic *sonic);
 
 #if 01
 #endif
 
+u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic)
+{
+    sonic->rawKeys = gInput;
+    sonic->pressedKeys = gPressedKeys;
+
+    if (sonic->rawKeys & DPAD_LEFT) {
+        if (sonic->rawKeys & DPAD_UP) {
+            sonic->rotation = Q_24_8(2.5);
+            return 16;
+        } else if (sonic->rawKeys & DPAD_DOWN) {
+            sonic->rotation = Q_24_8(1.5);
+            return 12;
+        } else {
+            sonic->rotation = Q_24_8(2.0);
+            return 6;
+        }
+    } else if (sonic->rawKeys & DPAD_RIGHT) {
+        if (sonic->rawKeys & DPAD_UP) {
+            sonic->rotation = Q_24_8(3.5);
+            return 18;
+        } else if (sonic->rawKeys & DPAD_DOWN) {
+            sonic->rotation = Q_24_8(0.5);
+            return 14;
+        } else {
+            sonic->rotation = Q_24_8(0.0);
+            return 4;
+        }
+    } else if (sonic->rawKeys & DPAD_UP) {
+        sonic->rotation = Q_24_8(3.0);
+        return 8;
+    } else if (!(sonic->rawKeys & DPAD_DOWN)) {
+        return 0;
+    } else {
+        sonic->rotation = Q_24_8(1.0);
+        return 10;
+    }
+}
+
 void sub_802C058(struct SuperSonic *sonic)
 {
-    u32 r6;
+    u32 dir;
     Sprite *spr = &sonic->spr134;
     spr->hitboxes[1].index = -1;
-    r6 = sub_802BFA8(sonic);
-    if (r6) {
+    dir = SuperSonicHandleDirectionalInput(sonic);
+    if (dir) {
         sonic->unk1A = ABS(sonic->unk1A);
         sonic->unk1A += 0x40;
 
@@ -83,8 +121,8 @@ void sub_802C058(struct SuperSonic *sonic)
         sonic->flags |= (SUPER_FLAG__80 | SUPER_FLAG__2);
         m4aSongNumStart(SE_SONIC_MIDAIR_SOMERSAULT);
 
-        if (r6 != 0) {
-            SUPER_SWITCH_ANIM(sonic, r6);
+        if (dir != 0) {
+            SUPER_SWITCH_ANIM(sonic, dir);
         } else {
             sonic->rotation = 0;
 
@@ -147,7 +185,7 @@ void sub_802C480(struct SuperSonic *sonic)
 
 void sub_802C55C(struct SuperSonic *sonic)
 {
-    sub_802BFA8(sonic);
+    SuperSonicHandleDirectionalInput(sonic);
 
 #ifndef NON_MATCHING
     sonic->unk10 = -((sonic->unk10 * 55) << 1) >> 7;
@@ -253,7 +291,7 @@ u16 SuperSonicGetRotation(void)
 
     if (sSuperSonicTask) {
         struct SuperSonic *sonic = TASK_DATA(sSuperSonicTask);
-        result = sonic->rotation & 0x3FF;
+        result = sonic->rotation & ONE_CYCLE;
     }
 
     return result;
