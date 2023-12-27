@@ -25,8 +25,6 @@ u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic);
 void sub_802C058(struct SuperSonic *sonic);
 void sub_802C988(struct SuperSonic *sonic);
 
-#if 001
-// (99.59%) https://decomp.me/scratch/louDb
 void sub_802BE1C(struct SuperSonic *sonic)
 {
     u8 i;
@@ -53,17 +51,10 @@ void sub_802BE1C(struct SuperSonic *sonic)
     spr->x = Q_24_8_TO_INT(sonic->x) - gCamera.x + Q_24_8_TO_INT(sonic->unk10);
     spr->y = Q_24_8_TO_INT(sonic->y) - gCamera.y + Q_24_8_TO_INT(sonic->unk14);
 
-    if (sonic->flags & SUPER_FLAG__200) {
-        r2 = 3;
-    } else {
-        r2 = 0;
-    }
+    r2 = (sonic->flags & SUPER_FLAG__200) ? 3 : 0;
 
     if (sonic->flags & 0x4) {
-        r2 <<= 12;
-        r2 |= gUnknown_030054B8++;
-        r2 |= 0x60;
-        spr->unk10 = r2;
+        spr->unk10 = (r2 << 12) | gUnknown_030054B8++ | 0x60;
     } else {
         spr->unk10 = (r2 << 12) | 0x400;
     }
@@ -102,7 +93,6 @@ void sub_802BE1C(struct SuperSonic *sonic)
         }
     }
 }
-#endif
 
 u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic)
 {
