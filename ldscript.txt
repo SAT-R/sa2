@@ -192,7 +192,6 @@ SECTIONS
         build/sa2/src/game/screen_shake.o(.text);
         build/sa2/src/game/player_controls.o(.text);
     
-        build/sa2/src/game/player_super_sonic_0.o(.text);
         build/sa2/asm/player_super_sonic.o(.text);
         build/sa2/src/game/player_super_sonic.o(.text);
         build/sa2/src/game/stage/ui.o(.text);
@@ -430,7 +429,7 @@ SECTIONS
         build/sa2/src/game/rings_scatter.o(.rodata);
         build/sa2/src/game/player_3.o(.rodata);
         build/sa2/src/game/player_callbacks_1.o(.rodata);
-        build/sa2/asm/player_super_sonic.o(.rodata);
+        build/sa2/src/game/player_super_sonic.o(.rodata);
         build/sa2/src/game/stage/ui.o(.rodata);
         build/sa2/src/game/trapped_animals.o(.rodata);
         build/sa2/src/game/stage/boss_results_transition.o(.rodata);
