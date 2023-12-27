@@ -41,6 +41,7 @@ struct SuperSonic {
 #define SUPER_FLAG__100 0x100
 #define SUPER_FLAG__200 0x200
 
+extern void SuperSonicInit(void);
 extern u32 SuperSonicGetFlags(void);
 extern void SuperSonicGetPos(s32 *outX, s32 *outY);
 extern void SuperSonicSetPos(s32 x, s32 y);

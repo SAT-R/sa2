@@ -102,7 +102,7 @@ void SuperSonicInitPlayer(void)
     p->unk88 = 0;
 }
 
-void sub_802B708()
+void SuperSonicInit()
 {
     struct Task *t;
     struct SuperSonic *sonic;

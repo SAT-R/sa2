@@ -5,6 +5,7 @@
 #include "game/game.h"
 #include "game/save.h"
 #include "game/cheese.h"
+#include "game/player_super_sonic.h"
 #include "game/stage/stage.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -42,7 +43,6 @@ void sub_801F044(void);
 
 void sub_80213C0(u32, u32, Player *);
 void sub_80498CC(u8);
-void sub_802B708(void);
 void InitCamera(u32);
 void sub_801BF90(void);
 
@@ -220,7 +220,7 @@ void CreateGameStage(void)
         }
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            sub_802B708();
+            SuperSonicInit();
             gUnknown_03005440 = gUnknown_080D5964[ZONE_FINAL + 1][0];
             gUnknown_030054BC = gUnknown_080D5964[ZONE_FINAL + 1][1];
         }
