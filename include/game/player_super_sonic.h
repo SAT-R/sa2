@@ -8,8 +8,8 @@ typedef void (*SuperSonicFn)(struct SuperSonic *sonic);
 
 struct SuperSonic {
     /*  0x00 */ u32 flags;
-    /*  0x04 */ s32 x;
-    /*  0x08 */ s32 y;
+    /*  0x04 */ s32 worldX;
+    /*  0x08 */ s32 worldY;
     /*  0x0C */ s32 unkC;
     /*  0x10 */ s32 unk10;
     /*  0x14 */ s32 unk14;

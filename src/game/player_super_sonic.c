@@ -159,8 +159,8 @@ void SuperSonicInit()
     sonic = TASK_DATA(t);
 
     sonic->flags = SUPER_FLAG__20;
-    sonic->x = Q_24_8(600);
-    sonic->y = Q_24_8(288);
+    sonic->worldX = Q_24_8(600);
+    sonic->worldY = Q_24_8(288);
     sonic->unk10 = 0;
     sonic->unk14 = 0;
     sonic->unk1A = 0;
@@ -225,15 +225,15 @@ int sub_802B8A8(struct SuperSonic *sonic)
         } else if (!(sonic->flags & SUPER_FLAG__200)) {
             if (Mod(gStageTime, GBA_FRAMES_PER_SECOND) == 0) {
                 if (gRingCount == 0) {
-                    int ten;
+                    u32 flags;
                     gPlayer.moveState = MOVESTATE_DEAD;
-                    ten = SUPER_FLAG__10;
+                    flags = SUPER_FLAG__10;
 
                     sonic->func24 = sub_802C8EC;
                     sonic->unkC = 60;
                     sonic->unk1A = 0;
-                    sonic->rotation = 0x100;
-                    sonic->flags = ten;
+                    sonic->rotation = Q_24_8(1.0);
+                    sonic->flags = flags;
 
                     SUPER_SWITCH_ANIM(sonic, 21);
 
@@ -363,10 +363,10 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
     Vec2_32 *idk;
 
     if (!(sonic->flags & SUPER_FLAG__10)) {
-        sonic->x += Q_24_8(5);
+        sonic->worldX += Q_24_8(5);
     }
 
-    ssx = sonic->x;
+    ssx = sonic->worldX;
     if ((sonic->unk20 == 0) || (--sonic->unk20 == 0)) {
         sonic->flags &= ~SUPER_FLAG__80;
     }
@@ -405,19 +405,19 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
             ssx = Q_24_8(gCamera.unk10) + Q_24_8(312);
         }
     }
-    sonic->x = ssx;
+    sonic->worldX = ssx;
 
     id2 = *id;
-    sonic->unk28[id2].x = sonic->x;
-    sonic->unk28[id2].y = sonic->y;
-    *id = (id2 + 1) & 0x1F;
+    sonic->unk28[id2].x = sonic->worldX;
+    sonic->unk28[id2].y = sonic->worldY;
+    *id = (id2 + 1) % ARRAY_COUNT(sonic->unk28);
 }
 END_NONMATCH
 
 void sub_802BE1C(struct SuperSonic *sonic)
 {
     u8 i;
-    s32 r2;
+    s32 prio;
     u8 *unk128;
     Sprite *spr;
     SpriteTransform *transform;
@@ -437,15 +437,16 @@ void sub_802BE1C(struct SuperSonic *sonic)
     spr = &sonic->spr;
     transform = &sonic->transform;
 
-    spr->x = Q_24_8_TO_INT(sonic->x) - gCamera.x + Q_24_8_TO_INT(sonic->unk10);
-    spr->y = Q_24_8_TO_INT(sonic->y) - gCamera.y + Q_24_8_TO_INT(sonic->unk14);
+    spr->x = Q_24_8_TO_INT(sonic->worldX) - gCamera.x + Q_24_8_TO_INT(sonic->unk10);
+    spr->y = Q_24_8_TO_INT(sonic->worldY) - gCamera.y + Q_24_8_TO_INT(sonic->unk14);
 
-    r2 = (sonic->flags & SUPER_FLAG__200) ? 3 : 0;
+    prio = (sonic->flags & SUPER_FLAG__200) ? 3 : 0;
 
     if (sonic->flags & 0x4) {
-        spr->unk10 = (r2 << 12) | gUnknown_030054B8++ | 0x60;
+        spr->unk10 = SPRITE_FLAG(PRIORITY, prio) | gUnknown_030054B8++
+            | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     } else {
-        spr->unk10 = (r2 << 12) | 0x400;
+        spr->unk10 = SPRITE_FLAG(PRIORITY, prio) | SPRITE_FLAG_MASK_X_FLIP;
     }
     UpdateSpriteAnimation(spr);
 
@@ -473,8 +474,8 @@ void sub_802BE1C(struct SuperSonic *sonic)
         for (; i < SUPER_SONIC_AFTERIMAGE_COUNT; i++) {
             if (Mod(gStageTime, i + 2) == 0) {
                 s32 ii = (i + 1) * 3;
-                u32 r2 = *unk128 - ii;
-                r2 &= 0x1F;
+
+                u32 r2 = (*unk128 - ii) % 32u;
                 spr->x = Q_24_8_TO_INT(sonic->unk28[r2].x) - gCamera.x;
                 spr->y = Q_24_8_TO_INT(sonic->unk28[r2].y) - gCamera.y;
                 DisplaySprite(spr);
@@ -566,7 +567,7 @@ void sub_802C058(struct SuperSonic *sonic)
         if (sonic->spr.variant != 2) {
             SUPER_SWITCH_ANIM(sonic, 0);
         }
-        sonic->x -= Q_24_8(0.5);
+        sonic->worldX -= Q_24_8(0.5);
     }
 
     if (sonic->pressedKeys & (A_BUTTON | B_BUTTON)) {
@@ -585,13 +586,14 @@ void sub_802C058(struct SuperSonic *sonic)
         }
     }
 
-    sonic->x += (COS(sonic->rotation) * sonic->unk1A) >> 14;
-    sonic->y += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
+    sonic->worldX += (COS(sonic->rotation) * sonic->unk1A) >> 14;
+    sonic->worldY += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
 }
 
 void sub_802C358(struct SuperSonic *sonic)
 {
     Sprite *spr;
+
     if (--sonic->unkC == 0) {
         spr = &sonic->spr;
         sonic->func24 = sub_802C058;
@@ -613,13 +615,14 @@ void sub_802C358(struct SuperSonic *sonic)
     }
 
     sonic->unk1A = (SIN(sonic->unkC * 12) * 3) >> 5;
-    sonic->x += (COS(sonic->rotation) * sonic->unk1A) >> 14;
-    sonic->y += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
+    sonic->worldX += (COS(sonic->rotation) * sonic->unk1A) >> 14;
+    sonic->worldY += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
 }
 
 void sub_802C480(struct SuperSonic *sonic)
 {
     Sprite *spr;
+
     if (--sonic->unkC == 0) {
         sonic->func24 = sub_802C058;
         sonic->flags &= ~SUPER_FLAG__4;
@@ -633,8 +636,8 @@ void sub_802C480(struct SuperSonic *sonic)
     spr->hitboxes[1].index = -1;
 
     sonic->unk1A = (SIN(sonic->unkC * 5) * 3) >> 5;
-    sonic->x += (COS(sonic->rotation) * sonic->unk1A) >> 14;
-    sonic->y += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
+    sonic->worldX += (COS(sonic->rotation) * sonic->unk1A) >> 14;
+    sonic->worldY += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
 }
 
 void sub_802C55C(struct SuperSonic *sonic)
@@ -674,8 +677,9 @@ void SuperSonicGetPos(s32 *outX, s32 *outY)
 {
     if (sSuperSonicTask) {
         struct SuperSonic *sonic = TASK_DATA(sSuperSonicTask);
-        *outX = sonic->x;
-        *outY = sonic->y;
+
+        *outX = sonic->worldX;
+        *outY = sonic->worldY;
 
         if (!(sonic->flags & SUPER_FLAG__10)) {
             gPlayer.moveState = 0;
@@ -696,8 +700,8 @@ void SuperSonicSetPos(s32 x, s32 y)
         struct SuperSonic *sonic = TASK_DATA(sSuperSonicTask);
 
         if (!(sonic->flags & SUPER_FLAG__10)) {
-            sonic->x = x;
-            sonic->y = y;
+            sonic->worldX = x;
+            sonic->worldY = y;
         }
     }
 }
@@ -718,10 +722,10 @@ void sub_802C704(u8 index, s32 *outX, s32 *outY)
 {
     if (sSuperSonicTask) {
         struct SuperSonic *sonic = TASK_DATA(sSuperSonicTask);
-        s32 r1 = (sonic->unk128 - index) & 0x1F;
 
-        *outX = sonic->unk28[r1].x;
-        *outY = sonic->unk28[r1].y;
+        s32 posIndex = (sonic->unk128 - index) % ARRAY_COUNT(sonic->unk28);
+        *outX = sonic->unk28[posIndex].x;
+        *outY = sonic->unk28[posIndex].y;
     }
 }
 
@@ -782,7 +786,7 @@ void Task_802C7E8(void)
 
 void sub_802C828(struct SuperSonic *sonic)
 {
-    s32 a, r4;
+    s32 x, y;
 
     if (!(gUnknown_03005424 & EXTRA_STATE__100)) {
         if (--sonic->unkC == 0) {
@@ -790,29 +794,26 @@ void sub_802C828(struct SuperSonic *sonic)
             sonic->flags &= ~SUPER_FLAG__20;
             sonic->flags |= SUPER_FLAG__1;
         }
-        // _0802C856
-        a = Q_24_8(gCamera.x + 80);
-        r4 = Q_24_8(gCamera.y + 90);
-        sonic->x += Div(((a - sonic->x) * 3), 100);
 
-        r4 -= sonic->y;
-        sonic->y += Div((r4 * 3), 100);
+        x = Q_24_8(gCamera.x + 80);
+        y = Q_24_8(gCamera.y + 90);
+
+        sonic->worldX += Div(((x - sonic->worldX) * 3), 100);
+        sonic->worldY += Div(((y - sonic->worldY) * 3), 100);
     }
 }
 
 void sub_802C8A0(struct SuperSonic *sonic)
 {
-    s32 a, r4, divRes;
+    s32 x, y;
+
     sonic->flags &= ~SUPER_FLAG__4;
 
-    a = Q_24_8(gCamera.x + (DISPLAY_WIDTH + 76));
-    r4 = Q_24_8(gCamera.y + (DISPLAY_HEIGHT / 2));
-    divRes = Div(a - sonic->x, 100);
+    x = Q_24_8(gCamera.x + (DISPLAY_WIDTH + 76));
+    y = Q_24_8(gCamera.y + (DISPLAY_HEIGHT / 2));
 
-    sonic->x += divRes;
-
-    r4 -= sonic->y;
-    sonic->y += Div(r4, 100);
+    sonic->worldX += Div((x - sonic->worldX), 100);
+    sonic->worldY += Div((y - sonic->worldY), 100);
 }
 
 void sub_802C8EC(struct SuperSonic *sonic)
@@ -820,10 +821,10 @@ void sub_802C8EC(struct SuperSonic *sonic)
     Sprite *spr = &sonic->spr;
     spr->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-    sonic->unk1A += 0x20;
-    sonic->y += sonic->unk1A;
+    sonic->unk1A += Q_24_8(0.125);
+    sonic->worldY += sonic->unk1A;
 
-    if ((Q_24_8_TO_INT(sonic->y) - gCamera.y) > DISPLAY_HEIGHT) {
+    if ((Q_24_8_TO_INT(sonic->worldY) - gCamera.y) > DISPLAY_HEIGHT) {
         sonic->unk129 = TRUE;
     }
 }
@@ -832,13 +833,13 @@ void sub_802C92C(struct SuperSonic *sonic)
 {
     if (--sonic->unkC == 0) {
         sonic->func24 = sub_802C988;
-        sonic->flags |= 0x40;
+        sonic->flags |= SUPER_FLAG__40;
         sonic->unkC = 100;
     }
 
     sonic->unk1A = Q_24_8(1.0);
-    sonic->x += Q_24_8_TO_INT(COS(sonic->rotation) * 4);
-    sonic->y += Q_24_8_TO_INT(SIN(sonic->rotation) * 4);
+    sonic->worldX += Q_24_8_TO_INT(COS(sonic->rotation) * 4);
+    sonic->worldY += Q_24_8_TO_INT(SIN(sonic->rotation) * 4);
 }
 
 void sub_802C988(struct SuperSonic *sonic)
@@ -852,11 +853,11 @@ void sub_802C988(struct SuperSonic *sonic)
 
 void sub_802C9B0(struct SuperSonic *sonic)
 {
-    if (!(sonic->flags & 0x30)) {
+    if (!(sonic->flags & (SUPER_FLAG__20 | SUPER_FLAG__10))) {
 #ifndef NON_MATCHING
-        CLAMP_INLINE_NO_ELSE(sonic->y, Q_24_8(50), Q_24_8(254));
+        CLAMP_INLINE_NO_ELSE(sonic->worldY, Q_24_8(50), Q_24_8(254));
 #else
-        CLAMP_INLINE(sonic->y, Q_24_8(50), Q_24_8(254));
+        CLAMP_INLINE(sonic->worldY, Q_24_8(50), Q_24_8(254));
 #endif
     }
 }
