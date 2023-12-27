@@ -41,6 +41,20 @@ struct SuperSonic {
 #define SUPER_FLAG__100 0x100
 #define SUPER_FLAG__200 0x200
 
+#define SUPER_SWITCH_ANIM(_sonic, _tileInfoIndex)                                       \
+    {                                                                                   \
+        _sonic->tileInfoId = _tileInfoIndex;                                            \
+        _sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[_tileInfoIndex].anim; \
+        _sonic->spr134.variant = gAnims_SuperSonic_080D69C8[_tileInfoIndex].variant;    \
+        _sonic->spr134.prevVariant = -1;                                                \
+        _sonic->spr134.graphics.size = 0;                                               \
+        _sonic->spr134.animCursor = 0;                                                  \
+        _sonic->spr134.timeUntilNextFrame = 0;                                          \
+        _sonic->unk10 = 0;                                                              \
+        _sonic->unk14 = 0;                                                              \
+        _sonic->unk22 = 0;                                                              \
+    }
+
 extern void SuperSonicInit(void);
 extern u32 SuperSonicGetFlags(void);
 extern void SuperSonicGetPos(s32 *outX, s32 *outY);

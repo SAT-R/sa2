@@ -44,50 +44,18 @@ void sub_802C058(struct SuperSonic *sonic)
 
         if (sonic->rawKeys & DPAD_UP) {
             if (sonic->spr134.variant != 1) {
-                // _0802C0B6
-                sonic->tileInfoId = 1;
-                sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[1].anim;
-                sonic->spr134.variant = gAnims_SuperSonic_080D69C8[1].variant;
-                sonic->spr134.prevVariant = -1;
-                sonic->spr134.graphics.size = 0;
-                sonic->spr134.animCursor = 0;
-                sonic->spr134.timeUntilNextFrame = 0;
-                sonic->unk10 = 0;
-                sonic->unk14 = 0;
-                sonic->unk22 = 0;
+                SUPER_SWITCH_ANIM(sonic, 1);
             }
         } else if (sonic->rawKeys & DPAD_DOWN) {
-            // _0802C0FC+0xC
             if (sonic->spr134.variant != 3) {
-                // _0802C116
-                sonic->tileInfoId = 2;
-                sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[2].anim;
-                sonic->spr134.variant = gAnims_SuperSonic_080D69C8[2].variant;
-                sonic->spr134.prevVariant = -1;
-                sonic->spr134.graphics.size = 0;
-                sonic->spr134.animCursor = 0;
-                sonic->spr134.timeUntilNextFrame = 0;
-                sonic->unk10 = 0;
-                sonic->unk14 = 0;
-                sonic->unk22 = 0;
+                SUPER_SWITCH_ANIM(sonic, 2);
             }
         } else {
             if (sonic->spr134.variant != 2) {
-                // _0802C164+0xC
-                sonic->tileInfoId = 0;
-                sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[0].anim;
-                sonic->spr134.variant = gAnims_SuperSonic_080D69C8[0].variant;
-                sonic->spr134.prevVariant = -1;
-                sonic->spr134.graphics.size = 0;
-                sonic->spr134.animCursor = 0;
-                sonic->spr134.timeUntilNextFrame = 0;
-                sonic->unk10 = 0;
-                sonic->unk14 = 0;
-                sonic->unk22 = 0;
+                SUPER_SWITCH_ANIM(sonic, 0);
             }
         }
     } else {
-        // _0802C1BC
         if (sonic->unk1A < 0) {
             sonic->unk1A += 0x40;
             if (sonic->unk1A >= 0) {
@@ -95,7 +63,6 @@ void sub_802C058(struct SuperSonic *sonic)
                 sonic->rotation = 0;
             }
         } else if (sonic->unk1A > 0) {
-            // _0802C1D2
             sonic->unk1A -= 0x40;
             if (sonic->unk1A <= 0) {
                 sonic->unk1A = 0;
@@ -104,17 +71,7 @@ void sub_802C058(struct SuperSonic *sonic)
         }
 
         if (sonic->spr134.variant != 2) {
-            // _0802C1E4+0xC
-            sonic->tileInfoId = 0;
-            sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[0].anim;
-            sonic->spr134.variant = gAnims_SuperSonic_080D69C8[0].variant;
-            sonic->spr134.prevVariant = -1;
-            sonic->spr134.graphics.size = 0;
-            sonic->spr134.animCursor = 0;
-            sonic->spr134.timeUntilNextFrame = 0;
-            sonic->unk10 = 0;
-            sonic->unk14 = 0;
-            sonic->unk22 = 0;
+            SUPER_SWITCH_ANIM(sonic, 0);
         }
         sonic->unk4 -= Q_24_8(0.5);
     }
@@ -127,32 +84,14 @@ void sub_802C058(struct SuperSonic *sonic)
         m4aSongNumStart(SE_SONIC_MIDAIR_SOMERSAULT);
 
         if (r6 != 0) {
-            sonic->tileInfoId = r6;
-            sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[r6].anim;
-            sonic->spr134.variant = gAnims_SuperSonic_080D69C8[r6].variant;
-            sonic->spr134.prevVariant = -1;
-            sonic->spr134.graphics.size = 0;
-            sonic->spr134.animCursor = 0;
-            sonic->spr134.timeUntilNextFrame = 0;
-            sonic->unk10 = 0;
-            sonic->unk14 = 0;
-            sonic->unk22 = 0;
+            SUPER_SWITCH_ANIM(sonic, r6);
         } else {
-            // _0802C2C0
             sonic->rotation = 0;
-            sonic->tileInfoId = 4;
-            sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[4].anim;
-            sonic->spr134.variant = gAnims_SuperSonic_080D69C8[4].variant;
-            sonic->spr134.prevVariant = -1;
-            sonic->spr134.graphics.size = 0;
-            sonic->spr134.animCursor = 0;
-            sonic->spr134.timeUntilNextFrame = 0;
-            sonic->unk10 = 0;
-            sonic->unk14 = 0;
-            sonic->unk22 = 0;
+
+            SUPER_SWITCH_ANIM(sonic, 4);
         }
     }
-    // _0802C30C
+
     sonic->unk4 += (COS(sonic->rotation) * sonic->unk1A) >> 14;
     sonic->unk8 += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
 }
@@ -167,16 +106,7 @@ void sub_802C358(struct SuperSonic *sonic)
         sonic->flags |= SUPER_FLAG__1;
         spr->hitboxes[1].index = -1;
 
-        sonic->tileInfoId = 0;
-        sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[0].anim;
-        sonic->spr134.variant = gAnims_SuperSonic_080D69C8[0].variant;
-        sonic->spr134.prevVariant = -1;
-        sonic->spr134.graphics.size = 0;
-        sonic->spr134.animCursor = 0;
-        sonic->spr134.timeUntilNextFrame = 0;
-        sonic->unk10 = 0;
-        sonic->unk14 = 0;
-        sonic->unk22 = 0;
+        SUPER_SWITCH_ANIM(sonic, 0);
     }
 
     if (sonic->unkC == 8) {
@@ -203,16 +133,7 @@ void sub_802C480(struct SuperSonic *sonic)
         sonic->flags &= ~SUPER_FLAG__4;
         sonic->flags |= SUPER_FLAG__1;
 
-        sonic->tileInfoId = 0;
-        sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[0].anim;
-        sonic->spr134.variant = gAnims_SuperSonic_080D69C8[0].variant;
-        sonic->spr134.prevVariant = -1;
-        sonic->spr134.graphics.size = 0;
-        sonic->spr134.animCursor = 0;
-        sonic->spr134.timeUntilNextFrame = 0;
-        sonic->unk10 = 0;
-        sonic->unk14 = 0;
-        sonic->unk22 = 0;
+        SUPER_SWITCH_ANIM(sonic, 0);
     }
 
     spr = &sonic->spr134;
@@ -242,16 +163,7 @@ void sub_802C55C(struct SuperSonic *sonic)
         sonic->flags &= ~SUPER_FLAG__8;
         sonic->flags |= SUPER_FLAG__1;
 
-        sonic->tileInfoId = 0;
-        sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[0].anim;
-        sonic->spr134.variant = gAnims_SuperSonic_080D69C8[0].variant;
-        sonic->spr134.prevVariant = -1;
-        sonic->spr134.graphics.size = 0;
-        sonic->spr134.animCursor = 0;
-        sonic->spr134.timeUntilNextFrame = 0;
-        sonic->unk10 = 0;
-        sonic->unk14 = 0;
-        sonic->unk22 = 0;
+        SUPER_SWITCH_ANIM(sonic, 0);
     } else if (sonic->pressedKeys & (DPAD_ANY | A_BUTTON | B_BUTTON)) {
         if (sonic->unkC <= 4) {
             sonic->unkC = 1;

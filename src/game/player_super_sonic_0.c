@@ -168,18 +168,7 @@ void sub_802B81C(void)
     sSuperSonicTask->main = Task_802C7E8;
     sonic->func24 = sub_802C8A0;
 
-    sonic->tileInfoId = 2;
-    sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[2].anim;
-    sonic->spr134.variant = gAnims_SuperSonic_080D69C8[2].variant;
-
-    sonic->spr134.prevVariant = -1;
-    sonic->spr134.graphics.size = 0;
-    sonic->spr134.animCursor = 0;
-    sonic->spr134.timeUntilNextFrame = 0;
-
-    sonic->unk10 = 0;
-    sonic->unk14 = 0;
-    sonic->unk22 = 0;
+    SUPER_SWITCH_ANIM(sonic, 2);
 }
 
 int sub_802B8A8(struct SuperSonic *sonic)
@@ -196,18 +185,7 @@ int sub_802B8A8(struct SuperSonic *sonic)
             sonic->rotation = 0x100;
             sonic->flags = 0x10;
 
-            sonic->tileInfoId = 21;
-            sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[21].anim;
-            sonic->spr134.variant = gAnims_SuperSonic_080D69C8[21].variant;
-
-            sonic->spr134.prevVariant = -1;
-            sonic->spr134.graphics.size = 0;
-            sonic->spr134.animCursor = 0;
-            sonic->spr134.timeUntilNextFrame = 0;
-
-            sonic->unk10 = 0;
-            sonic->unk14 = 0;
-            sonic->unk22 = 0;
+            SUPER_SWITCH_ANIM(sonic, 21);
         } else if (!(sonic->flags & 0x200)) {
             if (Mod(gStageTime, GBA_FRAMES_PER_SECOND) == 0) {
                 if (gRingCount == 0) {
@@ -221,18 +199,7 @@ int sub_802B8A8(struct SuperSonic *sonic)
                     sonic->rotation = 0x100;
                     sonic->flags = ten;
 
-                    sonic->tileInfoId = 21;
-                    sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[21].anim;
-                    sonic->spr134.variant = gAnims_SuperSonic_080D69C8[21].variant;
-
-                    sonic->spr134.prevVariant = -1;
-                    sonic->spr134.graphics.size = 0;
-                    sonic->spr134.animCursor = 0;
-                    sonic->spr134.timeUntilNextFrame = 0;
-
-                    sonic->unk10 = 0;
-                    sonic->unk14 = 0;
-                    sonic->unk22 = 0;
+                    SUPER_SWITCH_ANIM(sonic, 21);
 
                     m4aSongNumStart(SE_LIFE_LOST);
                 } else {
@@ -244,18 +211,7 @@ int sub_802B8A8(struct SuperSonic *sonic)
                 gUnknown_03005424 |= (EXTRA_STATE__ACT_START | EXTRA_STATE__2);
                 sonic->func24 = sub_802C8A0;
 
-                sonic->tileInfoId = 2;
-                sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[2].anim;
-                sonic->spr134.variant = gAnims_SuperSonic_080D69C8[2].variant;
-
-                sonic->spr134.prevVariant = -1;
-                sonic->spr134.graphics.size = 0;
-                sonic->spr134.animCursor = 0;
-                sonic->spr134.timeUntilNextFrame = 0;
-
-                sonic->unk10 = 0;
-                sonic->unk14 = 0;
-                sonic->unk22 = 0;
+                SUPER_SWITCH_ANIM(sonic, 2);
             }
         }
     }
@@ -296,18 +252,7 @@ bool32 sub_802BA8C(void)
     sonic->flags |= 0x4;
     sonic->flags |= 0x80;
 
-    sonic->tileInfoId = 3;
-    sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[3].anim;
-    sonic->spr134.variant = gAnims_SuperSonic_080D69C8[3].variant;
-
-    sonic->spr134.prevVariant = -1;
-    sonic->spr134.graphics.size = 0;
-    sonic->spr134.animCursor = 0;
-    sonic->spr134.timeUntilNextFrame = 0;
-
-    sonic->unk10 = 0;
-    sonic->unk14 = 0;
-    sonic->unk22 = 0;
+    SUPER_SWITCH_ANIM(sonic, 3);
 
     return TRUE;
 }
@@ -338,18 +283,7 @@ void sub_802BB54(void)
     sonic->flags &= ~0x2;
     sonic->flags |= 0x8;
 
-    sonic->tileInfoId = 20;
-    sonic->spr134.graphics.anim = gAnims_SuperSonic_080D69C8[20].anim;
-    sonic->spr134.variant = gAnims_SuperSonic_080D69C8[20].variant;
-
-    sonic->spr134.prevVariant = -1;
-    sonic->spr134.graphics.size = 0;
-    sonic->spr134.animCursor = 0;
-    sonic->spr134.timeUntilNextFrame = 0;
-
-    sonic->unk10 = 0;
-    sonic->unk14 = 0;
-    sonic->unk22 = 0;
+    SUPER_SWITCH_ANIM(sonic, 20);
 
     return;
 }
