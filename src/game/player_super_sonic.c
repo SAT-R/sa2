@@ -18,21 +18,21 @@
 #include "constants/songs.h"
 
 bool32 sub_802BA8C();
-void Task_802BC10(void);
-void sub_802BE1C(struct SuperSonic *sonic);
-void sub_802C358(struct SuperSonic *sonic);
-void sub_802C480(struct SuperSonic *);
-void sub_802C55C(struct SuperSonic *);
-void Task_802C7E8(void);
-void sub_802C828(struct SuperSonic *);
-void sub_802C8A0(struct SuperSonic *sonic);
-void sub_802C8EC(struct SuperSonic *);
-void sub_802C92C(struct SuperSonic *sonic);
-void sub_802C9B0(struct SuperSonic *sonic);
-void sub_802BCCC(struct SuperSonic *sonic);
-u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic);
-void sub_802C058(struct SuperSonic *sonic);
-void sub_802C988(struct SuperSonic *sonic);
+static void Task_802BC10(void);
+static void sub_802BE1C(struct SuperSonic *sonic);
+static void sub_802C358(struct SuperSonic *sonic);
+static void sub_802C480(struct SuperSonic *);
+static void sub_802C55C(struct SuperSonic *);
+static void Task_802C7E8(void);
+static void sub_802C828(struct SuperSonic *);
+static void sub_802C8A0(struct SuperSonic *sonic);
+static void sub_802C8EC(struct SuperSonic *);
+static void sub_802C92C(struct SuperSonic *sonic);
+static void sub_802C9B0(struct SuperSonic *sonic);
+static void sub_802BCCC(struct SuperSonic *sonic);
+static u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic);
+static void sub_802C058(struct SuperSonic *sonic);
+static void sub_802C988(struct SuperSonic *sonic);
 
 #define RESERVED_SUPER_SONIC_TILES_VRAM (void *)(OBJ_VRAM0)
 #define EXTRA_BOSS__INITIAL_RING_COUNT  50
@@ -68,7 +68,7 @@ const TileInfo gAnims_SuperSonic_080D69C8[23] = {
     { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 2 },
 };
 
-void SuperSonicInitPlayer(void)
+static void SuperSonicInitPlayer(void)
 {
     Player *p = &gPlayer;
     p->unk4 = 0;
@@ -172,7 +172,7 @@ void SuperSonicInit()
     sonic->unk128 = 0;
     sonic->rawKeys = gInput;
     sonic->pressedKeys = gPressedKeys;
-    sonic->unk129 = FALSE;
+    sonic->shouldDestroy = FALSE;
 
     spr = &sonic->spr;
     spr->graphics.dest = RESERVED_SUPER_SONIC_TILES_VRAM;
@@ -207,7 +207,7 @@ void sub_802B81C(void)
     SUPER_SWITCH_ANIM(sonic, 2);
 }
 
-int sub_802B8A8(struct SuperSonic *sonic)
+static int sub_802B8A8(struct SuperSonic *sonic)
 {
     int zero = 0;
 
@@ -227,6 +227,7 @@ int sub_802B8A8(struct SuperSonic *sonic)
                 if (gRingCount == 0) {
                     u32 flags;
                     gPlayer.moveState = MOVESTATE_DEAD;
+
                     flags = SUPER_FLAG__10;
 
                     sonic->func24 = sub_802C8EC;
@@ -324,7 +325,7 @@ void sub_802BB54(void)
     return;
 }
 
-void Task_802BC10(void)
+static void Task_802BC10(void)
 {
     struct SuperSonic *sonic = TASK_DATA(gCurTask);
     sub_802BCCC(sonic);
@@ -332,7 +333,7 @@ void Task_802BC10(void)
     sub_802C9B0(sonic);
     sub_802B8A8(sonic);
 
-    if (sonic->unk129) {
+    if (sonic->shouldDestroy) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
@@ -354,7 +355,7 @@ void Task_802BC10(void)
 
 // (99.25%) https://decomp.me/scratch/2dbbE
 NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
-         void sub_802BCCC(struct SuperSonic *sonic))
+         static void sub_802BCCC(struct SuperSonic *sonic))
 {
     s32 ssx, ssx2;
     u8 i;
@@ -414,7 +415,7 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
 }
 END_NONMATCH
 
-void sub_802BE1C(struct SuperSonic *sonic)
+static void sub_802BE1C(struct SuperSonic *sonic)
 {
     u8 i;
     s32 prio;
@@ -484,7 +485,7 @@ void sub_802BE1C(struct SuperSonic *sonic)
     }
 }
 
-u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic)
+static u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic)
 {
     sonic->rawKeys = gInput;
     sonic->pressedKeys = gPressedKeys;
@@ -522,11 +523,12 @@ u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic)
     }
 }
 
-void sub_802C058(struct SuperSonic *sonic)
+static void sub_802C058(struct SuperSonic *sonic)
 {
     u32 dir;
     Sprite *spr = &sonic->spr;
     spr->hitboxes[1].index = -1;
+
     dir = SuperSonicHandleDirectionalInput(sonic);
     if (dir) {
         sonic->unk1A = ABS(sonic->unk1A);
@@ -590,7 +592,7 @@ void sub_802C058(struct SuperSonic *sonic)
     sonic->worldY += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
 }
 
-void sub_802C358(struct SuperSonic *sonic)
+static void sub_802C358(struct SuperSonic *sonic)
 {
     Sprite *spr;
 
@@ -619,7 +621,7 @@ void sub_802C358(struct SuperSonic *sonic)
     sonic->worldY += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
 }
 
-void sub_802C480(struct SuperSonic *sonic)
+static void sub_802C480(struct SuperSonic *sonic)
 {
     Sprite *spr;
 
@@ -640,7 +642,7 @@ void sub_802C480(struct SuperSonic *sonic)
     sonic->worldY += (SIN(sonic->rotation) * sonic->unk1A) >> 14;
 }
 
-void sub_802C55C(struct SuperSonic *sonic)
+static void sub_802C55C(struct SuperSonic *sonic)
 {
     SuperSonicHandleDirectionalInput(sonic);
 
@@ -769,7 +771,7 @@ void sub_802C798(void)
     }
 }
 
-void Task_802C7E8(void)
+static void Task_802C7E8(void)
 {
     struct SuperSonic *sonic = TASK_DATA(gCurTask);
 
@@ -784,7 +786,7 @@ void Task_802C7E8(void)
     sub_802BE1C(sonic);
 }
 
-void sub_802C828(struct SuperSonic *sonic)
+static void sub_802C828(struct SuperSonic *sonic)
 {
     s32 x, y;
 
@@ -803,7 +805,7 @@ void sub_802C828(struct SuperSonic *sonic)
     }
 }
 
-void sub_802C8A0(struct SuperSonic *sonic)
+static void sub_802C8A0(struct SuperSonic *sonic)
 {
     s32 x, y;
 
@@ -816,7 +818,7 @@ void sub_802C8A0(struct SuperSonic *sonic)
     sonic->worldY += Div((y - sonic->worldY), 100);
 }
 
-void sub_802C8EC(struct SuperSonic *sonic)
+static void sub_802C8EC(struct SuperSonic *sonic)
 {
     Sprite *spr = &sonic->spr;
     spr->unk10 = SPRITE_FLAG(PRIORITY, 2);
@@ -825,11 +827,11 @@ void sub_802C8EC(struct SuperSonic *sonic)
     sonic->worldY += sonic->unk1A;
 
     if ((Q_24_8_TO_INT(sonic->worldY) - gCamera.y) > DISPLAY_HEIGHT) {
-        sonic->unk129 = TRUE;
+        sonic->shouldDestroy = TRUE;
     }
 }
 
-void sub_802C92C(struct SuperSonic *sonic)
+static void sub_802C92C(struct SuperSonic *sonic)
 {
     if (--sonic->unkC == 0) {
         sonic->func24 = sub_802C988;
@@ -842,7 +844,7 @@ void sub_802C92C(struct SuperSonic *sonic)
     sonic->worldY += Q_24_8_TO_INT(SIN(sonic->rotation) * 4);
 }
 
-void sub_802C988(struct SuperSonic *sonic)
+static void sub_802C988(struct SuperSonic *sonic)
 {
     if (--sonic->unkC == 0) {
         sonic->flags &= ~SUPER_FLAG__40;
@@ -851,7 +853,7 @@ void sub_802C988(struct SuperSonic *sonic)
     }
 }
 
-void sub_802C9B0(struct SuperSonic *sonic)
+static void sub_802C9B0(struct SuperSonic *sonic)
 {
     if (!(sonic->flags & (SUPER_FLAG__20 | SUPER_FLAG__10))) {
 #ifndef NON_MATCHING

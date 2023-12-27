@@ -23,7 +23,7 @@ struct SuperSonic {
     /*  0x24 */ SuperSonicFn func24;
     /*  0x28 */ Vec2_32 unk28[32];
     /* 0x128 */ u8 unk128;
-    /* 0x129 */ u8 unk129;
+    /* 0x129 */ bool8 shouldDestroy;
     /* 0x12A */ u8 filler12A[0xA];
     /* 0x134 */ Sprite spr;
     /* 0x164 */ Hitbox reserved;
