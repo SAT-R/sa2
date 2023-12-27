@@ -8,8 +8,8 @@ typedef void (*SuperSonicFn)(struct SuperSonic *sonic);
 
 struct SuperSonic {
     /*  0x00 */ u32 flags;
-    /*  0x04 */ s32 unk4;
-    /*  0x08 */ s32 unk8;
+    /*  0x04 */ s32 x;
+    /*  0x08 */ s32 y;
     /*  0x0C */ s32 unkC;
     /*  0x10 */ s32 unk10;
     /*  0x14 */ s32 unk14;
@@ -42,15 +42,17 @@ struct SuperSonic {
 #define SUPER_FLAG__100 0x100
 #define SUPER_FLAG__200 0x200
 
+#define SUPER_SONIC_AFTERIMAGE_COUNT 3
+
 #define SUPER_SWITCH_ANIM(_sonic, _tileInfoIndex)                                       \
     {                                                                                   \
         _sonic->tileInfoId = _tileInfoIndex;                                            \
-        _sonic->spr.graphics.anim = gAnims_SuperSonic_080D69C8[_tileInfoIndex].anim; \
-        _sonic->spr.variant = gAnims_SuperSonic_080D69C8[_tileInfoIndex].variant;    \
-        _sonic->spr.prevVariant = -1;                                                \
-        _sonic->spr.graphics.size = 0;                                               \
-        _sonic->spr.animCursor = 0;                                                  \
-        _sonic->spr.timeUntilNextFrame = 0;                                          \
+        _sonic->spr.graphics.anim = gAnims_SuperSonic_080D69C8[_tileInfoIndex].anim;    \
+        _sonic->spr.variant = gAnims_SuperSonic_080D69C8[_tileInfoIndex].variant;       \
+        _sonic->spr.prevVariant = -1;                                                   \
+        _sonic->spr.graphics.size = 0;                                                  \
+        _sonic->spr.animCursor = 0;                                                     \
+        _sonic->spr.timeUntilNextFrame = 0;                                             \
         _sonic->unk10 = 0;                                                              \
         _sonic->unk14 = 0;                                                              \
         _sonic->unk22 = 0;                                                              \

@@ -123,8 +123,8 @@ void SuperSonicInit()
     sonic = TASK_DATA(t);
 
     sonic->flags = SUPER_FLAG__20;
-    sonic->unk4 = Q_24_8(600);
-    sonic->unk8 = Q_24_8(288);
+    sonic->x = Q_24_8(600);
+    sonic->y = Q_24_8(288);
     sonic->unk10 = 0;
     sonic->unk14 = 0;
     sonic->unk1A = 0;
@@ -327,10 +327,10 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
     Vec2_32 *idk;
 
     if (!(sonic->flags & SUPER_FLAG__10)) {
-        sonic->unk4 += Q_24_8(5);
+        sonic->x += Q_24_8(5);
     }
 
-    ssx = sonic->unk4;
+    ssx = sonic->x;
     if ((sonic->unk20 == 0) || (--sonic->unk20 == 0)) {
         sonic->flags &= ~SUPER_FLAG__80;
     }
@@ -369,11 +369,11 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
             ssx = Q_24_8(gCamera.unk10) + Q_24_8(312);
         }
     }
-    sonic->unk4 = ssx;
+    sonic->x = ssx;
 
     id2 = *id;
-    sonic->unk28[id2].x = sonic->unk4;
-    sonic->unk28[id2].y = sonic->unk8;
+    sonic->unk28[id2].x = sonic->x;
+    sonic->unk28[id2].y = sonic->y;
     *id = (id2 + 1) & 0x1F;
 }
 END_NONMATCH
