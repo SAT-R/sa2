@@ -7,164 +7,11 @@
 .syntax unified
 .arm
 
-@; CreatePlayerPositionIndicator
-	thumb_func_start sub_80193C4
-sub_80193C4: @ 0x080193C4
-	push {r4, r5, r6, r7, lr}
-	sub sp, #4
-	lsls r0, r0, #0x18
-	lsrs r7, r0, #0x18
-	ldr r0, _080193E8 @ =gGameMode
-	ldrb r0, [r0]
-	cmp r0, #5
-	beq _080193F8
-	ldr r0, _080193EC @ =sub_801951C
-	ldr r2, _080193F0 @ =0x00002001
-	ldr r1, _080193F4 @ =sub_8019CC8
-	str r1, [sp]
-	movs r1, #0x40
-	movs r3, #0
-	bl TaskCreate
-	b _08019408
-	.align 2, 0
-_080193E8: .4byte gGameMode
-_080193EC: .4byte sub_801951C
-_080193F0: .4byte 0x00002001
-_080193F4: .4byte sub_8019CC8
-_080193F8:
-	ldr r0, _08019468 @ =sub_8019898
-	ldr r2, _0801946C @ =0x00002001
-	ldr r1, _08019470 @ =sub_8019CC8
-	str r1, [sp]
-	movs r1, #0x40
-	movs r3, #0
-	bl TaskCreate
-_08019408:
-	ldrh r2, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r0, r2, r0
-	movs r4, #0
-	strb r7, [r0]
-	ldr r0, _08019474 @ =IWRAM_START + 0x10
-	adds r1, r2, r0
-	ldr r3, _08019478 @ =IWRAM_START+4
-	adds r5, r2, r3
-	ldr r0, _0801947C @ =0x06012700
-	str r0, [r1, #4]
-	movs r6, #0
-	movs r0, #0x40
-	strh r0, [r1, #0x1a]
-	strh r4, [r1, #8]
-	strh r4, [r1, #0x14]
-	strh r4, [r1, #0x1c]
-	ldr r0, _08019480 @ =IWRAM_START + 0x31
-	adds r3, r2, r0
-	movs r0, #0xff
-	strb r0, [r3]
-	ldr r0, _08019484 @ =IWRAM_START + 0x32
-	adds r3, r2, r0
-	movs r0, #0x10
-	strb r0, [r3]
-	ldr r3, _08019488 @ =IWRAM_START + 0x35
-	adds r0, r2, r3
-	strb r7, [r0]
-	movs r0, #1
-	rsbs r0, r0, #0
-	str r0, [r1, #0x28]
-	ldr r0, _0801948C @ =0x000C0060
-	str r0, [r1, #0x10]
-	ldr r0, _08019490 @ =0x0000035F
-	strh r0, [r1, #0xa]
-	ldr r0, _08019494 @ =IWRAM_START + 0x30
-	adds r2, r2, r0
-	strb r6, [r2]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	strh r0, [r5, #2]
-	strh r0, [r5, #4]
-	strh r4, [r5]
-	add sp, #4
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08019468: .4byte sub_8019898
-_0801946C: .4byte 0x00002001
-_08019470: .4byte sub_8019CC8
-_08019474: .4byte IWRAM_START + 0x10
-_08019478: .4byte IWRAM_START+4
-_0801947C: .4byte 0x06012700
-_08019480: .4byte IWRAM_START + 0x31
-_08019484: .4byte IWRAM_START + 0x32
-_08019488: .4byte IWRAM_START + 0x35
-_0801948C: .4byte 0x000C0060
-_08019490: .4byte 0x0000035F
-_08019494: .4byte IWRAM_START + 0x30
+.if 0
+.endif
 
-@; CreateSelfIndicator ?
-	thumb_func_start sub_8019498
-sub_8019498: @ 0x08019498
-	push {r4, r5, lr}
-	sub sp, #4
-	ldr r0, _08019500 @ =sub_8019CAC
-	movs r2, #0x80
-	lsls r2, r2, #6
-	movs r4, #0
-	str r4, [sp]
-	movs r1, #0x30
-	movs r3, #0
-	bl TaskCreate
-	ldrh r3, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r0, r3, r0
-	ldr r1, _08019504 @ =0x06012700
-	str r1, [r0, #4]
-	movs r5, #0
-	movs r1, #0x40
-	strh r1, [r0, #0x1a]
-	strh r4, [r0, #8]
-	strh r4, [r0, #0x14]
-	strh r4, [r0, #0x1c]
-	ldr r1, _08019508 @ =IWRAM_START + 0x21
-	adds r2, r3, r1
-	movs r1, #0xff
-	strb r1, [r2]
-	ldr r1, _0801950C @ =IWRAM_START + 0x22
-	adds r2, r3, r1
-	movs r1, #0x10
-	strb r1, [r2]
-	ldr r2, _08019510 @ =IWRAM_START + 0x25
-	adds r1, r3, r2
-	strb r5, [r1]
-	movs r1, #1
-	rsbs r1, r1, #0
-	str r1, [r0, #0x28]
-	movs r1, #0x80
-	lsls r1, r1, #0xb
-	str r1, [r0, #0x10]
-	ldr r1, _08019514 @ =0x0000035F
-	strh r1, [r0, #0xa]
-	ldr r1, _08019518 @ =IWRAM_START + 0x20
-	adds r3, r3, r1
-	strb r5, [r3]
-	bl UpdateSpriteAnimation
-	add sp, #4
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08019500: .4byte sub_8019CAC
-_08019504: .4byte 0x06012700
-_08019508: .4byte IWRAM_START + 0x21
-_0801950C: .4byte IWRAM_START + 0x22
-_08019510: .4byte IWRAM_START + 0x25
-_08019514: .4byte 0x0000035F
-_08019518: .4byte IWRAM_START + 0x20
-
-	thumb_func_start sub_801951C
-sub_801951C: @ 0x0801951C
+	thumb_func_start Task_801951C
+Task_801951C: @ 0x0801951C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -623,8 +470,8 @@ _08019882:
 	.align 2, 0
 _08019894: .4byte gUnknown_030054B8
 
-	thumb_func_start sub_8019898
-sub_8019898: @ 0x08019898
+	thumb_func_start Task_8019898
+Task_8019898: @ 0x08019898
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -1169,8 +1016,8 @@ _08019C96:
 	.align 2, 0
 _08019CA8: .4byte gUnknown_030054B8
 
-	thumb_func_start sub_8019CAC
-sub_8019CAC: @ 0x08019CAC
+	thumb_func_start Task_SelfPositionIndicator
+Task_SelfPositionIndicator: @ 0x08019CAC
 	push {lr}
 	ldr r0, _08019CC4 @ =gCurTask
 	ldr r0, [r0]
@@ -1184,7 +1031,7 @@ sub_8019CAC: @ 0x08019CAC
 	.align 2, 0
 _08019CC4: .4byte gCurTask
 
-	thumb_func_start sub_8019CC8
-sub_8019CC8: @ 0x08019CC8
+	thumb_func_start TaskDestructor_8019CC8
+TaskDestructor_8019CC8: @ 0x08019CC8
 	bx lr
 	.align 2, 0

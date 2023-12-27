@@ -2,25 +2,25 @@
 #include "core.h"
 #include "sprite.h"
 
-#include "game/game.h"
-#include "game/save.h"
-#include "game/cheese.h"
-#include "game/player_super_sonic.h"
-#include "game/stage/stage.h"
-#include "game/stage/player.h"
-#include "game/stage/camera.h"
 #include "sakit/entities_manager.h"
 #include "sakit/music_manager.h"
 #include "sakit/palette_loader.h"
 #include "sakit/pause_menu.h"
 #include "sakit/rings_manager.h"
+#include "game/game.h"
+#include "game/save.h"
+#include "game/game_over.h"
 #include "game/cheese.h"
+#include "game/player_controls.h"
+#include "game/player_super_sonic.h"
 #include "game/race_progress.h"
 #include "game/screen_shake.h"
+#include "game/stage/stage.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/time_attack/lobby.h"
-#include "game/game_over.h"
-#include "game/player_controls.h"
 #include "game/multiplayer/finish.h"
+#include "game/multiplayer/indicators.h"
 
 #include "game/multiboot/collect_rings/time_display.h"
 
@@ -52,8 +52,6 @@ void CreateStageWaterTask(u32, u32, u32);
 
 void sub_8019120(void);
 void CreateMultiplayerPlayer(u8);
-void sub_8019498(void);
-void sub_80193C4(u8);
 
 void sub_80191A4(void);
 
@@ -274,9 +272,9 @@ void CreateGameStage(void)
             if (GetBit(gMultiplayerConnections, i)) {
                 CreateMultiplayerPlayer(i);
                 if (i != SIO_MULTI_CNT->id) {
-                    sub_80193C4(i);
+                    CreateOpponentPositionIndicator(i);
                 } else {
-                    sub_8019498();
+                    CreateSelfPositionIndicator();
                 }
             }
 
