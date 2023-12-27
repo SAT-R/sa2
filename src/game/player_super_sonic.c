@@ -25,7 +25,26 @@ u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic);
 void sub_802C058(struct SuperSonic *sonic);
 void sub_802C988(struct SuperSonic *sonic);
 
-#if 01
+#if 0
+void sub_802BE1C(struct SuperSonic *sonic)
+{
+    Sprite *spr;
+    SpriteTransform *transform;
+
+    if(sonic->flags & SUPER_FLAG__40) {
+        return;
+    }
+
+    if(((sonic->flags & (SUPER_FLAG__80 | SUPER_FLAG__2)) == SUPER_FLAG__80)
+    || (gStageTime & 0x4)){
+        return;
+    } else if((sonic->flags & SUPER_FLAG__4) && (gStageTime != 0)){
+        return;
+    }
+
+    spr = &sonic->spr;
+    transform = &sonic->transform;
+}
 #endif
 
 u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic)
@@ -69,7 +88,7 @@ u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic)
 void sub_802C058(struct SuperSonic *sonic)
 {
     u32 dir;
-    Sprite *spr = &sonic->spr134;
+    Sprite *spr = &sonic->spr;
     spr->hitboxes[1].index = -1;
     dir = SuperSonicHandleDirectionalInput(sonic);
     if (dir) {
@@ -81,15 +100,15 @@ void sub_802C058(struct SuperSonic *sonic)
         }
 
         if (sonic->rawKeys & DPAD_UP) {
-            if (sonic->spr134.variant != 1) {
+            if (sonic->spr.variant != 1) {
                 SUPER_SWITCH_ANIM(sonic, 1);
             }
         } else if (sonic->rawKeys & DPAD_DOWN) {
-            if (sonic->spr134.variant != 3) {
+            if (sonic->spr.variant != 3) {
                 SUPER_SWITCH_ANIM(sonic, 2);
             }
         } else {
-            if (sonic->spr134.variant != 2) {
+            if (sonic->spr.variant != 2) {
                 SUPER_SWITCH_ANIM(sonic, 0);
             }
         }
@@ -108,7 +127,7 @@ void sub_802C058(struct SuperSonic *sonic)
             }
         }
 
-        if (sonic->spr134.variant != 2) {
+        if (sonic->spr.variant != 2) {
             SUPER_SWITCH_ANIM(sonic, 0);
         }
         sonic->unk4 -= Q_24_8(0.5);
@@ -138,7 +157,7 @@ void sub_802C358(struct SuperSonic *sonic)
 {
     Sprite *spr;
     if (--sonic->unkC == 0) {
-        spr = &sonic->spr134;
+        spr = &sonic->spr;
         sonic->func24 = sub_802C058;
         sonic->flags &= ~SUPER_FLAG__2;
         sonic->flags |= SUPER_FLAG__1;
@@ -148,11 +167,11 @@ void sub_802C358(struct SuperSonic *sonic)
     }
 
     if (sonic->unkC == 8) {
-        sonic->spr134.graphics.anim
+        sonic->spr.graphics.anim
             = gAnims_SuperSonic_080D69C8[sonic->tileInfoId + 1].anim;
-        sonic->spr134.variant
+        sonic->spr.variant
             = gAnims_SuperSonic_080D69C8[sonic->tileInfoId + 1].variant;
-        sonic->spr134.prevVariant = -1;
+        sonic->spr.prevVariant = -1;
         sonic->flags &= ~SUPER_FLAG__80;
     } else if (sonic->unkC > 8) {
         sonic->flags |= SUPER_FLAG__80;
@@ -174,7 +193,7 @@ void sub_802C480(struct SuperSonic *sonic)
         SUPER_SWITCH_ANIM(sonic, 0);
     }
 
-    spr = &sonic->spr134;
+    spr = &sonic->spr;
     spr->hitboxes[0].index = -1;
     spr->hitboxes[1].index = -1;
 
@@ -279,7 +298,7 @@ Sprite *SuperSonicGetSprite(void)
 
     if (sSuperSonicTask) {
         struct SuperSonic *sonic = TASK_DATA(sSuperSonicTask);
-        spr = &sonic->spr134;
+        spr = &sonic->spr;
     }
 
     return spr;
@@ -365,7 +384,7 @@ void sub_802C8A0(struct SuperSonic *sonic)
 
 void sub_802C8EC(struct SuperSonic *sonic)
 {
-    Sprite *spr = &sonic->spr134;
+    Sprite *spr = &sonic->spr;
     spr->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     sonic->unk1A += 0x20;

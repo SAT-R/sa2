@@ -138,7 +138,7 @@ void SuperSonicInit()
     sonic->pressedKeys = gPressedKeys;
     sonic->unk129 = FALSE;
 
-    spr = &sonic->spr134;
+    spr = &sonic->spr;
     spr->graphics.dest = RESERVED_SUPER_SONIC_TILES_VRAM;
     spr->graphics.anim = gAnims_SuperSonic_080D69C8[0].anim;
     spr->variant = gAnims_SuperSonic_080D69C8[0].variant;
@@ -377,7 +377,3 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
     *id = (id2 + 1) & 0x1F;
 }
 END_NONMATCH
-
-#if 001
-
-#endif
