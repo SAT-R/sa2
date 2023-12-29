@@ -171,6 +171,10 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ u16 rotation;
+
+    // TODO:
+    //     The names "width" and "height" appear to be inaccurate.
+    //     Maybe "scaleX" and "scaleY" would be more fitting?
     /* 0x02 */ s16 width;
     /* 0x04 */ s16 height;
     /* 0x06 */ s16 x;

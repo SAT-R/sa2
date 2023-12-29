@@ -30,13 +30,13 @@ Task_801951C: @ 0x0801951C
 	adds r0, r0, r2
 	ldr r0, [r0]
 	ldrh r4, [r0, #6]
-	adds r3, r4, r3
+	adds r3, r4, r3     @ r3 = mpp
 	ldr r0, _080195B8 @ =IWRAM_START + 0x10
 	adds r0, r1, r0
-	str r0, [sp]
+	str r0, [sp]        @ sp00 = spr
 	ldr r2, _080195BC @ =IWRAM_START+4
 	adds r2, r2, r1
-	mov sl, r2
+	mov sl, r2          @ sl = transform
 	ldr r5, _080195C0 @ =IWRAM_START + 0x50
 	adds r0, r4, r5
 	movs r2, #0
@@ -56,28 +56,28 @@ Task_801951C: @ 0x0801951C
 	blt _08019576
 	cmp r0, #0xa0
 	bgt _08019576
-	b _08019882
+	b Task_801951C_return
 _08019576:
-	adds r0, r3, #0
+	adds r0, r3, #0     @ r3 = mpp
 	adds r0, #0x50
 	ldrh r0, [r0]
 	subs r0, #0x78
-	ldr r1, [r2]
+	ldr r1, [r2]        @ r1 = [r2] = gCamera.x
 	subs r0, r0, r1
 	lsls r0, r0, #0x10
-	lsrs r6, r0, #0x10
+	lsrs r6, r0, #0x10  @ r6 = opponentX2
 	adds r0, r3, #0
 	adds r0, #0x52
 	ldrh r0, [r0]
 	subs r0, #0x50
-	ldr r1, [r2, #4]
+	ldr r1, [r2, #4]    @ r1 = [r2, 4] = gCamera.y
 	subs r0, r0, r1
 	lsls r0, r0, #0x10
-	lsrs r5, r0, #0x10
+	lsrs r5, r0, #0x10  @ r5 = opponentY2
 	lsls r0, r6, #0x10
-	lsrs r1, r0, #0x10
+	lsrs r1, r0, #0x10  @ r1 = r6 = opponentX2
 	lsls r2, r5, #0x10
-	lsrs r4, r2, #0x10
+	lsrs r4, r2, #0x10  @ r4 = r5 = opponentY2
 	ldr r7, [sp]
 	adds r7, #0x22
 	cmp r0, #0
@@ -93,7 +93,7 @@ _080195B8: .4byte IWRAM_START + 0x10
 _080195BC: .4byte IWRAM_START+4
 _080195C0: .4byte IWRAM_START + 0x50
 _080195C4: .4byte gCamera
-_080195C8:
+_080195C8_loop:
 	lsls r0, r1, #0x10
 	asrs r2, r0, #0x10
 	lsrs r0, r0, #0x1f
@@ -130,14 +130,14 @@ _080195FC:
 	rsbs r0, r0, #0
 _08019606:
 	cmp r0, #0x7f
-	bgt _080195C8
+	bgt _080195C8_loop
 	asrs r0, r3, #0x10
 	cmp r0, #0
 	bge _08019612
 	rsbs r0, r0, #0
 _08019612:
 	cmp r0, #0x7f
-	bgt _080195C8
+	bgt _080195C8_loop
 _08019616:
 	lsls r0, r1, #0x10
 	asrs r1, r0, #0x10
@@ -185,21 +185,22 @@ _0801965A:
 	ldr r2, _08019690 @ =0x000003FF
 	adds r1, r2, #0
 	ands r0, r1
-	mov r1, sl
+	mov r1, sl          @ r1 = sl = transform
 	strh r0, [r1]
+__0801966E:
 	lsls r3, r6, #0x10
-	asrs r0, r3, #0x10
+	asrs r0, r3, #0x10  @ r0 = opponentX2
 	adds r1, r0, #0
-	muls r1, r0, r1
+	muls r1, r0, r1     @ r1 = (opponentX2 * opponentX2)
 	lsls r2, r5, #0x10
 	asrs r0, r2, #0x10
-	adds r5, r0, #0
+	adds r5, r0, #0     @ r5 = opponentY2
 	muls r5, r0, r5
 	adds r0, r5, #0
-	adds r1, r1, r0
+	adds r1, r1, r0     @ r1 = opponentDistSq
 	ldr r0, _08019694 @ =0x0000FFFF
 	adds r5, r3, #0
-	str r2, [sp, #4]
+	str r2, [sp, #4]    @ sp04 = r2 = (opponentY2 << 16)
 	cmp r1, r0
 	bgt _08019698
 	movs r0, #0x18
@@ -223,7 +224,7 @@ _080196A8:
 	bgt _080196C0
 	movs r0, #0xf0
 	lsls r0, r0, #1
-	mov r2, sl
+	mov r2, sl          @ r2 = sl = transform
 	strh r0, [r2, #2]
 	strh r0, [r2, #4]
 	b _080196DC
@@ -241,7 +242,7 @@ _080196C0:
 	bl Div
 	adds r0, #0x40
 _080196D6:
-	mov r1, sl
+	mov r1, sl          @ r1 = sl = transform
 	strh r0, [r1, #2]
 	strh r0, [r1, #4]
 _080196DC:
@@ -458,7 +459,7 @@ _0801984A:
 	bl sub_8004860
 	ldr r0, [sp]
 	bl DisplaySprite
-_08019882:
+Task_801951C_return:
 	add sp, #8
 	pop {r3, r4, r5}
 	mov r8, r3
