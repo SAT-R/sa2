@@ -8,8 +8,6 @@
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start Task_801951C
 Task_801951C: @ 0x0801951C
 	push {r4, r5, r6, r7, lr}
@@ -470,6 +468,7 @@ Task_801951C_return:
 	bx r0
 	.align 2, 0
 _08019894: .4byte gUnknown_030054B8
+.endif
 
 	thumb_func_start Task_8019898
 Task_8019898: @ 0x08019898

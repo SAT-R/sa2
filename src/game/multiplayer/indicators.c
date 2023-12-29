@@ -90,15 +90,16 @@ void CreateSelfPositionIndicator(void)
     UpdateSpriteAnimation(spr);
 }
 
-#if 0
+#if 01
+// (79.22%) https://decomp.me/scratch/SKNlg
 void Task_801951C(void)
 {
     s32 opponentX, opponentY;
     s32 opponentDistSq;
     s16 opponentX2, opponentY2;
-    s32 tfx, tfy;
+    s16 tfx, tfy;
     s16 r4;
-    u8 *animSpeed;
+    s32 sinVal;
     Sprite *spr;
     SpriteTransform *transform;
     OpponentIndicator *pi;
@@ -125,14 +126,12 @@ void Task_801951C(void)
     opponentX2 = mpp->unk50 - (DISPLAY_WIDTH / 2) - gCamera.x;
     opponentY2 = mpp->unk52 - (DISPLAY_HEIGHT / 2) - gCamera.y;
 
-    animSpeed = &spr->animSpeed;
-
     if ((opponentX2 != 0) && (opponentY2 != 0)) {
         while ((ABS(opponentY2) >= 128) || (ABS(opponentX2) >= 128)) {
             // _080195C8
             // NOTE: This has GOT to be wrong!
-            opponentX2 = !!(opponentX2) >> 1;
-            opponentY2 = !!(opponentY2) >> 1;
+            opponentX2 = -(opponentX2) >> 1;
+            opponentY2 = -(opponentY2) >> 1;
 
             if (ABS(opponentX2) < 2) {
                 break;
@@ -176,6 +175,7 @@ void Task_801951C(void)
     } else if (opponentDistSq < 0x10000) {
         transform->width = 0x1E0;
         transform->height = 0x1E0;
+        asm(""); // TEMP
     } else {
         // _080196C0
         s32 dist = (0x06000000 - opponentDistSq) >> 16;
@@ -186,41 +186,81 @@ void Task_801951C(void)
     // _080196DC
 
     if (r4 == 0) {
+        tfy = (DISPLAY_HEIGHT / 2);
+label:
         tfx = DISPLAY_WIDTH;
-        tfy = (DISPLAY_HEIGHT / 2);
+        asm("");
     } else if (r4 == 0x100) {
-        tfx = (DISPLAY_WIDTH / 2);
         tfy = DISPLAY_HEIGHT;
-    } else if (r4 == 0x200) {
-        tfx = 0;
-        tfy = (DISPLAY_HEIGHT / 2);
-    } else if (r4 == 0x300) {
         tfx = (DISPLAY_WIDTH / 2);
+    } else if (r4 == 0x200) {
+        tfy = (DISPLAY_HEIGHT / 2);
+        tfx = 0;
+    } else if (r4 == 0x300) {
         tfy = 0;
+        tfx = (DISPLAY_WIDTH / 2);
     } else {
         // _08019716
         if (opponentX2 > 0) {
             s16 divRes = Div(SIN_24_8(r4) * 0x100, COS_24_8(r4));
-            tfy = ((divRes * 15) >> 5) + 0x50;
+            tfy = ((divRes * 15) >> 5) + (DISPLAY_HEIGHT/2);
 
             if (opponentY2 > 0) {
                 if (tfy >= DISPLAY_HEIGHT) {
                     tfy = DISPLAY_HEIGHT;
+
+                    sinVal = (0x100 - r4) & ONE_CYCLE;
+                    goto label2_0;
                 } else {
-                    tfx = DISPLAY_WIDTH;
+                    //tfx = DISPLAY_WIDTH;
+                    goto label;
                 }
             } else {
                 // _08019768
                 if (tfy < 0) {
                     tfy = 0;
+                    
+                    sinVal = (0x100 - r4) & ONE_CYCLE;
+                    goto label2;
                 } else {
-                    tfx = DISPLAY_WIDTH;
+                    //tfx = DISPLAY_WIDTH;
+                    goto label;
                 }
             }
 
             // _08019818
         } else {
             // _0801977C
+            s16 divRes = Div((SIN_24_8((r4 - (SIN_PERIOD/2)) & ONE_CYCLE)) * 0x100, 
+                (COS_24_8((r4 - (SIN_PERIOD/2)) & ONE_CYCLE)));
+            tfy = (DISPLAY_HEIGHT/2) - ((divRes * 15) >> 5);
+            
+            if (opponentY2 > 0) {
+                if (tfy >= DISPLAY_HEIGHT) {
+                    tfy = DISPLAY_HEIGHT;
+
+                    sinVal = (0x300 - r4) & ONE_CYCLE;
+label2_0:
+                    divRes = Div(SIN_24_8(sinVal) * 0x100, COS_24_8(sinVal));
+                    tfx = ((divRes * 5) >> 4) + (DISPLAY_WIDTH/2);
+                } else {
+                    tfx = 0;
+                }
+
+            } else {
+                // _08019808
+                if(tfy < 0) {
+                    tfy = 0;
+
+                    sinVal = (0x300 - r4) & ONE_CYCLE;
+label2:
+                    divRes = Div(SIN_24_8(sinVal) * 0x100, COS_24_8(sinVal));
+                    tfx = (DISPLAY_WIDTH/2) - ((divRes * 5) >> 4);
+                } else {
+                    // _08019848
+                    tfx = 0;
+                }
+            }
         }
     }
     transform->x = tfx;
