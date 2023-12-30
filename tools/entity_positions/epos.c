@@ -1,4 +1,5 @@
-#ifdef __unix__
+#if defined(__unix__) || defined(__unix) || \
+        (defined(__APPLE__) && defined(__MACH__))
 #include <assert.h>
 #endif
 

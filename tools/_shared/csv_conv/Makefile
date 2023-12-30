@@ -2,11 +2,11 @@ CSV_CONV_DIR = ../csv_conv
 
 AR = ar
 CC = gcc
-NO_ERROR = -Wno-error=unused-parameter -Wno-error=unused-variable
+NO_ERROR = -Wno-error=unused-parameter -Wno-error=unused-variable -Wno-error=unused-command-line-argument
 
 SRCS = csv_conv.c
 
-CFLAGS = -I $(CSV_CONV_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2 -s
+CFLAGS = -I $(CSV_CONV_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2
 LDFLAGS = -L $(CSV_CONV_DIR) 
 
 .PHONY: all clean

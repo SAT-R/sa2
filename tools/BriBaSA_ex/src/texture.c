@@ -1,4 +1,4 @@
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <raylib.h>
 #include "global.h"

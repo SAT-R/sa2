@@ -2,11 +2,11 @@ ARENA_ALLOC_DIR = ../arena_alloc
 
 AR = ar
 CC = gcc
-NO_ERROR = -Wno-error=unused-parameter -Wno-error=unused-variable
+NO_ERROR = -Wno-error=unused-parameter -Wno-error=unused-variable -Wno-error=unused-command-line-argument
 
 SRCS = parser.c
 
-CFLAGS = -I $(ARENA_ALLOC_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2 -s
+CFLAGS = -I $(ARENA_ALLOC_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2
 LDFLAGS = -L $(ARENA_ALLOC_DIR) 
 
 .PHONY: all clean
