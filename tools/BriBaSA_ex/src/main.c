@@ -6,7 +6,6 @@
  * "BriBaSA" and "BriBaSA SAT-R" created by JaceCear
 */
 
-#include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>

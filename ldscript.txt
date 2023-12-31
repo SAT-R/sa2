@@ -212,6 +212,7 @@ SECTIONS
         build/sa2/src/game/bosses/common.o(.text);
         build/sa2/src/game/bosses/eggmobile_escape_sequence.o(.text);
         build/sa2/src/game/bosses/boss_1.o(.text);
+        build/sa2/src/game/bosses/boss_2.o(.text);
         build/sa2/asm/boss_2.o(.text);
         build/sa2/asm/boss_3.o(.text);
         build/sa2/asm/boss_4.o(.text);

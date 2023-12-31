@@ -6,8 +6,7 @@ NO_ERROR = -Wno-error=unused-parameter -Wno-error=unused-variable
 
 SRCS = parser.c
 
-CFLAGS = -I $(ARENA_ALLOC_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2 -s
-LDFLAGS = -L $(ARENA_ALLOC_DIR) 
+CFLAGS = -I $(ARENA_ALLOC_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2
 
 .PHONY: all clean
 

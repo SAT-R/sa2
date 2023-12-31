@@ -6,8 +6,8 @@ NO_ERROR = -Wno-error=unused-parameter -Wno-error=unused-variable
 
 SRCS = csv_conv.c
 
-CFLAGS = -I $(CSV_CONV_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2 -s
-LDFLAGS = -L $(CSV_CONV_DIR) 
+CFLAGS = -I $(CSV_CONV_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2
+LDFLAGS = 
 
 .PHONY: all clean
 
