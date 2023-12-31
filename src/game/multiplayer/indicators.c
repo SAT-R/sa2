@@ -90,7 +90,7 @@ void CreateSelfPositionIndicator(void)
     UpdateSpriteAnimation(spr);
 }
 
-#if 01
+#if 0
 // (79.22%) https://decomp.me/scratch/SKNlg
 void Task_801951C(void)
 {

@@ -40,10 +40,10 @@ typedef struct {
 void sub_800B1AC(Entity_ItemBox *);
 void sub_800B580(Entity_ItemBox *, bool32);
 void sub_800B860(Entity_ItemBox *, bool32);
-void Task_800B704(void);
+void Task_ItemBoxMain(void);
 void Task_800B780(void);
 void Task_800B7D0(void);
-void TaskDestructor_800B80C(struct Task *);
+void TaskDestructor_ItemBox(struct Task *);
 void sub_800B828(Entity_ItemBox *);
 bool32 sub_800B8AC(Entity_ItemBox *);
 bool32 sub_800B8F4(Entity_ItemBox *);
@@ -90,8 +90,8 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         }
     }
 
-    t = TaskCreate(Task_800B704, sizeof(Entity_ItemBox), 0x2000, 0,
-                   TaskDestructor_800B80C);
+    t = TaskCreate(Task_ItemBoxMain, sizeof(Entity_ItemBox), 0x2000, 0,
+                   TaskDestructor_ItemBox);
     itembox = TASK_DATA(t);
     itembox->kind = me->index;
     itembox->unk74 = 0;
@@ -397,7 +397,7 @@ void sub_800B580(Entity_ItemBox *itembox, bool32 p1)
     }
 }
 
-void Task_800B704(void)
+void Task_ItemBoxMain(void)
 {
     Entity_ItemBox *itembox = TASK_DATA(gCurTask);
 
@@ -444,7 +444,7 @@ void Task_800B7D0(void)
         sub_800B860(itembox, TRUE);
 }
 
-void TaskDestructor_800B80C(struct Task *t)
+void TaskDestructor_ItemBox(struct Task *t)
 {
     Entity_ItemBox *itembox = TASK_DATA(t);
     VramFree(itembox->s.graphics.dest);
