@@ -359,9 +359,9 @@ void InitCamera(u32 level)
     }
 
     if (level != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        InitBackground(&bgs->unk40);
-        InitBackground(&bgs->unk80);
-        InitBackground(&bgs->unkC0);
+        DrawBackground(&bgs->unk40);
+        DrawBackground(&bgs->unk80);
+        DrawBackground(&bgs->unkC0);
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -384,13 +384,13 @@ void InitCamera(u32 level)
             gUnknown_03005440 = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][0];
             gUnknown_030054BC = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][1];
             camera->x = 600;
-            camera->unk10 = 0x78;
+            camera->unk10 = (DISPLAY_WIDTH / 2);
             camera->unk14 = 0;
             camera->y = 0;
-            camera->unk64 = 0xFFFC;
+            camera->unk64 = -4;
         } else {
             camera->x = Q_24_8_TO_INT(player->x);
-            camera->unk10 = Q_24_8_TO_INT(player->x) - 0x1E0;
+            camera->unk10 = Q_24_8_TO_INT(player->x) - (2 * DISPLAY_WIDTH);
             camera->y = Q_24_8_TO_INT(player->y) - 0x54;
             camera->unk14 = camera->y;
             camera->unk64 = player->unk17 - 4;
@@ -627,7 +627,7 @@ static void sub_801C708(s32 x, s32 y)
         gBgScrollRegs[1][1] = y & 7;
         layer->scrollX = x;
         layer->scrollY = y;
-        InitBackground(layer);
+        DrawBackground(layer);
         UpdateBgAnimationTiles(layer);
 
         layer = &gStageBackgroundsRam.unk80;
@@ -635,6 +635,6 @@ static void sub_801C708(s32 x, s32 y)
         gBgScrollRegs[2][1] = y & 7;
         layer->scrollX = x;
         layer->scrollY = y;
-        InitBackground(layer);
+        DrawBackground(layer);
     }
 }

@@ -105,7 +105,7 @@ _0801D5F8_case0:
 	strh r0, [r4, #0x26]
 	strh r0, [r4, #0x28]
 	adds r0, r4, #0
-	bl InitBackground
+	bl DrawBackground
 	b StageBgUpdate_Zone6Acts12_return
 	.align 2, 0
 _0801D624: .4byte gStageCameraBgTemplates
@@ -247,7 +247,7 @@ _0801D718_case4:
 	strh r0, [r4, #0x26]
 	strh r0, [r4, #0x28]
 	adds r0, r4, #0
-	bl InitBackground
+	bl DrawBackground
 	b _0801D76C
 	.align 2, 0
 _0801D744: .4byte 0x00000381

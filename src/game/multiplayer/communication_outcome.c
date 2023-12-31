@@ -172,7 +172,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
     background->tilemapId = TM_MP_MESSAGE_BOX_UNKNOWN;
-    InitBackground(background);
+    DrawBackground(background);
     m4aMPlayAllStop();
     if (outcome != OUTCOME_CONNECTION_SUCCESS) {
         m4aSongNumStart(MUS_VS_MISS);

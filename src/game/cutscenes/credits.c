@@ -118,7 +118,7 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    InitBackground(background);
+    DrawBackground(background);
 }
 
 static void sub_808EBC4(void)

@@ -486,7 +486,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background->targetTilesY = 5;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    InitBackground(background);
+    DrawBackground(background);
 
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
@@ -503,7 +503,7 @@ void sub_808E35C(struct CharacterUnlockCutScene *scene)
     background->targetTilesY = 20;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(2);
-    InitBackground(background);
+    DrawBackground(background);
 }
 
 void sub_808E4C8(void);
@@ -569,7 +569,7 @@ void sub_808E4C8(void)
             background->targetTilesY = 5;
             background->paletteOffset = 0;
             background->flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(0);
-            InitBackground(background);
+            DrawBackground(background);
             gDispCnt |= DISPCNT_BG0_ON;
             m4aSongNumStart(MUS_GOT_ALL_CHAOS_EMERALDS);
             gCurTask->main = sub_808E63C;

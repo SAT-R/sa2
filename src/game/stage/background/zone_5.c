@@ -20,7 +20,7 @@ void CreateStageBg_Zone5(void)
         background->layoutVram = (void *)BG_SCREEN_ADDR(27);
         background->targetTilesX = 0x20;
         background->targetTilesY = 0x20;
-        InitBackground(background);
+        DrawBackground(background);
     }
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;

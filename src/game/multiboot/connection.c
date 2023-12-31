@@ -248,7 +248,7 @@ void StartSinglePakConnect(void)
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    InitBackground(background);
+    DrawBackground(background);
     m4aSongNumStart(MUS_CONNECTION_PENDING);
 
     if (!SomeSioCheck()) {
@@ -487,7 +487,7 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    InitBackground(background);
+    DrawBackground(background);
 
     CpuFill16(0, &gBgPalette[17], 30);
 

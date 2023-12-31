@@ -96,5 +96,5 @@ void CreateStageBg_Zone6_Boss(void)
     background->targetTilesX = 0x20;
     background->targetTilesY = 0x20;
 
-    InitBackground(background);
+    DrawBackground(background);
 }

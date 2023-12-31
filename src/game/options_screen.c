@@ -6409,7 +6409,7 @@ void OptionsInitBackground(Background *background, u32 a, u32 b, u8 tilemapId, u
     background->flags = BACKGROUND_FLAGS_BG_ID(bg_id);
     background->scrollX = scrollX;
     background->scrollY = scrollY;
-    InitBackground(background);
+    DrawBackground(background);
 }
 
 // Finds the max unk4 of the item text array

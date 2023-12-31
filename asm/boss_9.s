@@ -1502,7 +1502,7 @@ _0804D878:
 	strb r1, [r2]
 	movs r1, #1
 	strh r1, [r0, #0x2e]
-	bl InitBackground
+	bl DrawBackground
 	ldr r1, _0804D8D8 @ =gBgCntRegs
 	ldr r0, _0804D8DC @ =0x00001C02
 	strh r0, [r1, #2]

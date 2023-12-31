@@ -134,7 +134,7 @@ void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
     background->targetTilesY = 0x19;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(3);
-    InitBackground(background);
+    DrawBackground(background);
 }
 
 void sub_80823FC(void);
@@ -311,7 +311,7 @@ void sub_80823FC(void)
             background->targetTilesY = 4;
             background->paletteOffset = 0;
             background->flags = BACKGROUND_FLAGS_BG_ID(2);
-            InitBackground(background);
+            DrawBackground(background);
         }
 
         gDispCnt |= 0x400;

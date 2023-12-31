@@ -193,7 +193,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     background->targetTilesY = 0x20;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(3);
-    InitBackground(background);
+    DrawBackground(background);
 
     for (; count < 4; count++) {
         if (gUnknown_030054B4[count] == -1) {
