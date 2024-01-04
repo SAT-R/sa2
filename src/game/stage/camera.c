@@ -210,7 +210,7 @@ static const VoidFn sStageBgInitProcedures[] = {
     [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = NULL,
 };
 
-static const CameraMain sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
+static const BgUpdate sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
     // Zone 1
     [LEVEL_INDEX(ZONE_1, ACT_1)] = StageBgUpdate_Zone1Acts12,
     [LEVEL_INDEX(ZONE_1, ACT_2)] = StageBgUpdate_Zone1Acts12,
@@ -311,9 +311,11 @@ void InitCamera(u32 level)
     struct Camera *camera = &gCamera;
     const s8 *unkA98 = gUnknown_080D5A98[level];
 
-    gDispCnt = 0x3E40;
+    gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON
+                | DISPCNT_BG3_ON | DISPCNT_OBJ_1D_MAP);
     if (level == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        gDispCnt = 0x3741;
+        gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG0_ON | DISPCNT_BG1_ON
+                    | DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
     }
 
     gBgCntRegs[1]
@@ -324,7 +326,8 @@ void InitCamera(u32 level)
     gBgCntRegs[3] = temp | 3 | (unkA98[3] << 8) | (unkA98[2] << 2);
 
     if (level == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        gDispCnt = 0x3641;
+        gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON
+                    | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
     }
 
     bgs = &gStageBackgroundsRam;
@@ -432,7 +435,7 @@ void InitCamera(u32 level)
     camera->movementTask
         = TaskCreate(Task_CallUpdateCamera, 0, 0xF00, 0, TaskDestructor_801E040);
 
-    camera->unk58 = sStageBgUpdateFuncs[level];
+    camera->fnBgUpdate = sStageBgUpdateFuncs[level];
 
     if (sStageBgInitProcedures[level] != NULL) {
         sStageBgInitProcedures[level]();
@@ -455,8 +458,8 @@ void UpdateCamera(void)
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         s32 delta, playerY;
         if (player->moveState & MOVESTATE_DEAD) {
-            if (camera->unk58 != NULL) {
-                camera->unk58(gCamera.x, gCamera.y);
+            if (camera->fnBgUpdate != NULL) {
+                camera->fnBgUpdate(gCamera.x, gCamera.y);
             }
             return;
         }
@@ -613,8 +616,8 @@ void UpdateCamera(void)
 
     sub_801C708(newX, newY);
 
-    if (camera->unk58 != NULL) {
-        camera->unk58(newX, newY);
+    if (camera->fnBgUpdate != NULL) {
+        camera->fnBgUpdate(newX, newY);
     }
 }
 

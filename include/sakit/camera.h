@@ -11,7 +11,7 @@
 #define CAM_BOUND_X ((DISPLAY_WIDTH) + (CAM_REGION_WIDTH))
 #define CAM_BOUND_Y ((DISPLAY_HEIGHT) + ((CAM_REGION_WIDTH) / 2))
 
-typedef void (*CameraMain)(s32, s32);
+typedef void (*BgUpdate)(s32, s32);
 
 #define CAM_MODE_SPECTATOR 4
 
@@ -44,7 +44,7 @@ struct Camera {
     /* 0x52 */ u16 unk52;
     /* 0x54 */ u16 unk54;
     /* 0x56 */ s16 unk56;
-    /* 0x58 */ CameraMain unk58;
+    /* 0x58 */ BgUpdate fnBgUpdate;
     /* 0x5C */ struct Task *movementTask;
     /* 0x60 */ s16 unk60;
     /* 0x62 */ s16 unk62;
