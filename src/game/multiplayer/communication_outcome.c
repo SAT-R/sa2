@@ -245,7 +245,7 @@ static void sub_805BC40(void)
             MultiSioInit(0);
 
             // TODO: Fix cast!
-            gUnknown_03002260 = (struct MapHeader **)gTilemaps;
+            gTilemapsRef = (struct MapHeader **)gTilemaps;
             CreateTitleScreenAndSkipIntro();
         }
     }

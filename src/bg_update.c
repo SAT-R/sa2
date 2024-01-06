@@ -7,7 +7,7 @@
 
 void DrawBackground(Background *background)
 {
-    struct MapHeader *mapHeader = gUnknown_03002260[background->tilemapId];
+    struct MapHeader *mapHeader = gTilemapsRef[background->tilemapId];
     const u16 *pal;
     u32 palSize;
     u16 gfxSize;

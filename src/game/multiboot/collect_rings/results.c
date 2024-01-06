@@ -75,7 +75,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     CpuFastCopy(unk92208, (void *)VRAM, VRAM_SIZE - BG_VRAM_SIZE);
     CpuFastCopy(unk408, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 
-    gUnknown_03002260 = ((struct MapHeader ***)(EWRAM_START + 0x33000))[0];
+    gTilemapsRef = ((struct MapHeader ***)(EWRAM_START + 0x33000))[0];
     gMultiplayerLanguage = gLoadedSaveGame->language;
 
     sub_8081FB0();
