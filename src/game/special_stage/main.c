@@ -714,8 +714,8 @@ void SpecialStagePauseMenuMain(void)
 
 static void SpecialStageOnDestroy(UNUSED struct Task *t)
 {
-    gUnknown_03004D54 = &gUnknown_03001B60[0];
-    gUnknown_030022C0 = &gUnknown_03001B60[1];
+    gUnknown_03004D54 = &gBgOffsetsBuffer[0];
+    gUnknown_030022C0 = &gBgOffsetsBuffer[1];
 }
 
 static void Task_ShowIntroScreen(void)

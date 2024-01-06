@@ -151,10 +151,10 @@ void sub_802EF68(s16 p0, s16 p1, u8 p2)
 
 void InitHBlankBgOffsets(u16 xOffset)
 {
-    if (gBgOffsetsHBlank == &gUnknown_03001B60) {
-        DmaFill16(3, xOffset, &gUnknown_03001B60[0][0], sizeof(gUnknown_03001B60[0]));
+    if (gBgOffsetsHBlank == &gBgOffsetsBuffer) {
+        DmaFill16(3, xOffset, &gBgOffsetsBuffer[0][0], sizeof(gBgOffsetsBuffer[0]));
     } else {
-        DmaFill16(3, xOffset, &gUnknown_03001B60[1][0], sizeof(gUnknown_03001B60[1]));
+        DmaFill16(3, xOffset, &gBgOffsetsBuffer[1][0], sizeof(gBgOffsetsBuffer[1]));
     }
 }
 

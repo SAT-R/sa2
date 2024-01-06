@@ -27,8 +27,8 @@ void GameStart(void)
     // TODO: Fix cast
     gTilemapsRef = (struct MapHeader **)gTilemaps;
     gUnknown_03002794 = &gSpriteTables;
-    gUnknown_03004D54 = gUnknown_03001B60[0];
-    gUnknown_030022C0 = gUnknown_03001B60[1];
+    gUnknown_03004D54 = gBgOffsetsBuffer[0];
+    gUnknown_030022C0 = gBgOffsetsBuffer[1];
 
     gUnknown_03005424 = gUnknown_0300544C = EXTRA_STATE__CLEAR;
 

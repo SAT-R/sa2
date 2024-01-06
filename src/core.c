@@ -46,7 +46,8 @@ u32 gMultiSioStatusFlags = 0;
 bool8 gMultiSioEnabled = FALSE;
 
 struct Task *gTaskPtrs[] ALIGNED(16) = {};
-u32 gUnknown_03001B60[2][DISPLAY_HEIGHT] = {};
+u32 gBgOffsetsBuffer[2][DISPLAY_HEIGHT]
+    = {}; /* TODO: Find out how this is different from gBgOffsetsHBlank */
 u16 gObjPalette[] = {};
 struct MapHeader **gTilemapsRef = NULL;
 u32 gFrameCount = 0;
@@ -284,10 +285,10 @@ void GameInit(void)
         gIntrTable[i] = gIntrTableTemplate[i];
     }
 
-    DmaFill32(3, 0, &gUnknown_03001B60, sizeof(gUnknown_03001B60));
+    DmaFill32(3, 0, &gBgOffsetsBuffer, sizeof(gBgOffsetsBuffer));
 
-    gBgOffsetsHBlank = gUnknown_03001B60[0];
-    gUnknown_030022AC = (void *)gUnknown_03001B60[1];
+    gBgOffsetsHBlank = gBgOffsetsBuffer[0];
+    gUnknown_030022AC = (void *)gBgOffsetsBuffer[1];
     gUnknown_03002878 = NULL;
     gUnknown_03002A80 = 0;
     gNumHBlankCallbacks = 0;

@@ -273,7 +273,7 @@ extern OamData gUnknown_030022D0[OAM_ENTRY_COUNT];
 extern OamData gOamBuffer[OAM_ENTRY_COUNT];
 
 // NOTE(Jace): This could be u16[2][DISPLAY_HEIGHT][2] (or unsigned Vec2_16?)
-extern u32 gUnknown_03001B60[2][DISPLAY_HEIGHT];
+extern u32 gBgOffsetsBuffer[2][DISPLAY_HEIGHT];
 extern Background *gUnknown_03001800[16];
 
 // This is used to buffer the xy-shift for each background scanline
