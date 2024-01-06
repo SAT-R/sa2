@@ -33,7 +33,7 @@ void sub_801A384(void)
             regs->unk4 = 0;
             regs->unk6 = 0;
 
-            gUnknown_030026D0 = 0;
+            gMosaicReg = 0;
 
             gBgCntRegs[0] |= 0x40;
             gBgCntRegs[1] |= 0x40;
@@ -71,10 +71,10 @@ void Task_PlayerMPUnk2(void)
 
     {
         u16 value = regs->unk6 & 0xF;
-        gUnknown_030026D0 = (value << 12);
-        gUnknown_030026D0 |= (value << 8);
-        gUnknown_030026D0 |= (value << 4);
-        gUnknown_030026D0 |= (value << 0);
+        gMosaicReg = (value << 12);
+        gMosaicReg |= (value << 8);
+        gMosaicReg |= (value << 4);
+        gMosaicReg |= (value << 0);
     }
 
     gBgCntRegs[0] |= 0x40;
@@ -92,5 +92,5 @@ void TaskDestructor_PlayerMPUnk2(struct Task *t)
     gBgCntRegs[2] &= ~0x40;
     gBgCntRegs[3] &= ~0x40;
 
-    gUnknown_030026D0 = 0;
+    gMosaicReg = 0;
 }

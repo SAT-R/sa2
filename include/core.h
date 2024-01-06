@@ -269,7 +269,7 @@ extern s16 gUnknown_03000408;
 extern s16 gBgScrollRegs[4][2];
 
 extern OamData gUnknown_030022C8;
-extern OamData gUnknown_030022D0[OAM_ENTRY_COUNT];
+extern OamData gOamBuffer2[OAM_ENTRY_COUNT];
 extern OamData gOamBuffer[OAM_ENTRY_COUNT];
 
 // NOTE(Jace): This could be u16[2][DISPLAY_HEIGHT][2] (or unsigned Vec2_16?)
@@ -295,7 +295,7 @@ extern u8 gUnknown_03004D80[16];
 
 extern u16 *gUnknown_030022AC;
 extern void *gUnknown_030022C0;
-extern s16 gUnknown_030026D0;
+extern s16 gMosaicReg;
 extern u8 gUnknown_030026F4;
 extern const struct SpriteTables *gUnknown_03002794;
 extern struct GraphicsData *gVramGraphicsCopyQueue[32];

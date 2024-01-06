@@ -62,8 +62,8 @@ u16 gRepeatedKeys ALIGNED(4) = 0;
 struct Task *gNextTask = NULL;
 void *gUnknown_030022C0 = NULL;
 
-OamData gUnknown_030022D0[] ALIGNED(16) = {};
-s16 gUnknown_030026D0 = 0;
+OamData gOamBuffer2[OAM_ENTRY_COUNT] ALIGNED(16) = {};
+s16 gMosaicReg = 0;
 
 HBlankFunc gHBlankCallbacks[4] ALIGNED(16) = {};
 struct Task *gCurTask = NULL;
@@ -221,7 +221,7 @@ void GameInit(void)
     gOamFirstPausedIndex = 0;
 
     DmaFill16(3, 0x200, gOamBuffer, sizeof(gOamBuffer));
-    DmaFill16(3, 0x200, gUnknown_030022D0, sizeof(gUnknown_030022D0));
+    DmaFill16(3, 0x200, gOamBuffer2, sizeof(gOamBuffer2));
     DmaFill32(3, ~0, gUnknown_03001850, sizeof(gUnknown_03001850));
     DmaFill32(3, ~0, gUnknown_03004D60, sizeof(gUnknown_03004D60));
     DmaFill32(3, 0, gObjPalette, sizeof(gObjPalette));
@@ -262,8 +262,8 @@ void GameInit(void)
     gBldRegs.bldCnt = 0;
     gBldRegs.bldAlpha = 0;
     gBldRegs.bldY = 0;
+    gMosaicReg = 0;
 
-    gUnknown_030026D0 = 0;
     gPseudoRandom = 0;
 
     for (i = 0; i < 10; i++) {
@@ -401,7 +401,7 @@ static void UpdateScreenDma(void)
 
     DmaCopy32(3, gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
     DmaCopy16(3, &gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
-    DmaCopy16(3, &gUnknown_030026D0, (void *)REG_ADDR_MOSAIC, 4);
+    DmaCopy16(3, &gMosaicReg, (void *)REG_ADDR_MOSAIC, 4);
     DmaCopy16(3, gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
     DmaCopy32(3, &gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 
@@ -501,7 +501,7 @@ static void UpdateScreenCpuSet(void)
 
     CpuCopy32(gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
     CpuCopy16(&gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
-    CpuCopy16(&gUnknown_030026D0, (void *)REG_ADDR_MOSAIC, 4);
+    CpuCopy16(&gMosaicReg, (void *)REG_ADDR_MOSAIC, 4);
     CpuCopy16(gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
     CpuCopy32(&gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 

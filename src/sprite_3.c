@@ -69,7 +69,7 @@ void DisplaySprite(Sprite *sprite)
 
         if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && // fmt
             y + sprHeight >= 0 && y <= DISPLAY_HEIGHT) {
-            u8 unk6D0 = gUnknown_030026D0 >> 8;
+            u8 unk6D0 = gMosaicReg >> 8;
 
             for (i = 0; i < sprDims->numSubframes; i++) {
                 oamData = gUnknown_03002794->oamData[sprite->graphics.anim];

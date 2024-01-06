@@ -321,7 +321,7 @@ NONMATCH(
                         sp10 = TRUE;
                     } else {
                         // _080200F8
-                        OamData *oam = &gUnknown_030022D0[s->oamBaseIndex];
+                        OamData *oam = &gOamBuffer2[s->oamBaseIndex];
 
                         OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
@@ -454,7 +454,7 @@ NONMATCH(
 
                         sp10 = TRUE;
                     } else {
-                        OamData *oam = &gUnknown_030022D0[s->oamBaseIndex];
+                        OamData *oam = &gOamBuffer2[s->oamBaseIndex];
 
                         OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
@@ -588,7 +588,7 @@ NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterMultipak_FlippedGravit
 
                         sp10 = TRUE;
                     } else {
-                        OamData *oam = &gUnknown_030022D0[s->oamBaseIndex];
+                        OamData *oam = &gOamBuffer2[s->oamBaseIndex];
 
                         OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
@@ -722,7 +722,7 @@ NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterMultipak_NormalGravity
 
                         sp10 = TRUE;
                     } else {
-                        OamData *oam = &gUnknown_030022D0[s->oamBaseIndex];
+                        OamData *oam = &gOamBuffer2[s->oamBaseIndex];
 
                         OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
@@ -858,7 +858,7 @@ NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterSinglepakMain.inc",
 
                         sp10 = TRUE;
                     } else {
-                        OamData *oam = &gUnknown_030022D0[s->oamBaseIndex];
+                        OamData *oam = &gOamBuffer2[s->oamBaseIndex];
 
                         OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 

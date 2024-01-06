@@ -418,7 +418,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                         } else {
                                             // _08008788
                                             OamData *oamDat
-                                                = &gUnknown_030022D0[s->oamBaseIndex];
+                                                = &gOamBuffer2[s->oamBaseIndex];
                                             OamData *oamAllocated
                                                 = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
@@ -500,7 +500,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                         } else {
                                             // _08008788
                                             OamData *oamDat
-                                                = &gUnknown_030022D0[s->oamBaseIndex];
+                                                = &gOamBuffer2[s->oamBaseIndex];
                                             OamData *oamAllocated
                                                 = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
