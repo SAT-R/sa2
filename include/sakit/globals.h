@@ -96,6 +96,8 @@ extern u8 gMultiplayerLanguage;
 extern u16 gRingCount;
 
 extern UNK_30054A8 gUnknown_030054A8;
+
+// Time that is being used to score the player (or in Time Attack)
 extern u32 gCourseTime;
 
 // Collected Special Rings in current stage?
@@ -131,6 +133,7 @@ extern u8
 extern u8 gUnknown_030054F8;
 
 // Incremented by 1 every frame if the game is not paused.
+// Starts before the stage-timer that is used for scores does.
 extern u32 gStageTime;
 
 extern u32 gCheckpointTime; // Checkpoint timer?

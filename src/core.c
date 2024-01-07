@@ -424,7 +424,7 @@ static void UpdateScreenDma(void)
 
     if (gUnknown_030026F4 == 0xff) {
         CopyOamBufferToOam();
-        DmaCopy16(3, gOamBuffer, (void *)OAM, 0x100);
+        DmaCopy16(3, gOamBuffer + 0x00, (void *)OAM + 0x000, 0x100);
         DmaCopy16(3, gOamBuffer + 0x20, (void *)OAM + 0x100, 0x100);
         DmaCopy16(3, gOamBuffer + 0x40, (void *)OAM + 0x200, 0x100);
         DmaCopy16(3, gOamBuffer + 0x60, (void *)OAM + 0x300, 0x100);
@@ -474,7 +474,7 @@ static void ClearOamBufferDma(void)
         }
     }
     gFlags &= ~FLAGS_4;
-    DmaFill16(3, 0x200, gOamBuffer, 0x100);
+    DmaFill16(3, 0x200, gOamBuffer + 0x00, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x20, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x40, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x60, 0x100);
