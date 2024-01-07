@@ -185,7 +185,7 @@ void sub_8083040(TimeDisplay *timeDisplay)
         s->palId = i;
         DisplaySprite(s);
 
-        j = sub_8004518(gUnknown_030053E8[i]);
+        j = sub_8004518(gMultiplayerCharRings[i]);
         x = s->x + 0x17;
         y = s->y + 0x13;
         do {

@@ -457,7 +457,7 @@ void sub_8082788(void)
                 DisplaySprite(s);
 
                 // TODO: Fix type
-                temp = sub_8004518(gUnknown_030053E8[i]);
+                temp = sub_8004518(gMultiplayerCharRings[i]);
                 s = &resultsScreen->unk160[((temp) >> 8) & 0xF];
 
                 if (s != &resultsScreen->unk160[0]) {

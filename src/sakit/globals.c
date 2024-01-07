@@ -4,7 +4,7 @@
 
 u8 gUnknown_030053E0 = 0;
 u32 gCheckpointTime = 0;
-u8 gUnknown_030053E8[MULTI_SIO_PLAYERS_MAX] = {};
+u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX] = {};
 u8 gMultiplayerLanguage = 0;
 
 u16 ALIGNED(4) gRingCount = 0;

@@ -171,7 +171,7 @@ extern u8 gMultiplayerConnections;
 extern s32 gStageGoalX;
 
 extern u8 gUnknown_03005428[4];
-extern u8 gUnknown_030053E8[4];
+extern u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX];
 
 extern struct UNK_3005510 gUnknown_03005510[16];
 

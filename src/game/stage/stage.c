@@ -267,7 +267,7 @@ void CreateGameStage(void)
         gRandomItemBox = 0;
 
         for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-            gUnknown_030053E8[i] = 0;
+            gMultiplayerCharRings[i] = 0;
 
             if (GetBit(gMultiplayerConnections, i)) {
                 CreateMultiplayerPlayer(i);
