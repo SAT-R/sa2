@@ -1,11 +1,14 @@
 #include "core.h"
 #include "sprite.h"
 #include "malloc_vram.h"
+#include "trig.h"
 #include "sakit/globals.h"
+#include "game/game.h"
 
 #include "game/stage/player.h"
 
 #include "game/bosses/common.h"
+#include "game/player_callbacks_1.h"
 
 #include "constants/zones.h"
 #include "constants/animations.h"
@@ -167,21 +170,101 @@ void CreateEggBomberTank(void)
 }
 
 void sub_803E63C(EggBomberTank *boss);
+void sub_803E494(void);
 u8 sub_803DF34(EggBomberTank *boss);
+u8 sub_803DB1C(EggBomberTank *boss);
+void sub_803DA8C(EggBomberTank *boss);
+u8 sub_803D430(EggBomberTank *boss);
+void sub_803D978(EggBomberTank *boss);
+u8 sub_803E0D8(EggBomberTank *boss, Player *player);
+void Task_803E520(void);
 
-// void Task_803D088(void)
-// {
-//     EggBomberTank *boss = TASK_DATA(gCurTask);
+void Task_803D088(void)
+{
+    Sprite *s;
+    EggBomberTank *boss = TASK_DATA(gCurTask);
+    s = &boss->unk148;
 
-//     boss->unk8++;
+    boss->x += boss->unk8;
 
-//     sub_803E63C(boss);
+    sub_803E63C(boss);
 
-//     if (boss->unk68 != 0) {
-//         boss->unk68--;
-//     }
+    if (boss->unk68 != 0) {
+        boss->unk68--;
+    }
 
-//     if (sub_803DF34(boss) != 0) {
-//         boss->unk54 = Q_24_8(Div(boss->unk8, 0x100) - 8);
-//     }
-// }
+    if (sub_803DF34(boss) != 0) {
+
+        boss->unk54 = Q_24_8(Div(boss->x, 0x100) - 8);
+        boss->unk58 = Q_24_8(Div(boss->y, 0x100) - 22);
+
+        boss->unk54 += (COS(boss->unk60) * 0xF) >> 5;
+        boss->unk58 += (SIN(boss->unk60) * 0xF) >> 5;
+
+        s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_CANNON;
+        s->variant = 2;
+        s->prevVariant = -1;
+
+        s = &boss->unk80;
+        s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_BODY;
+        s->variant = 1;
+        s->prevVariant = -1;
+
+        s = &boss->unkB8;
+        s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_BODY_PARTS;
+        s->variant = 1;
+        s->prevVariant = -1;
+
+        {
+            s32 divResA, divResB;
+            s32 oldScore = gLevelScore;
+            gLevelScore += 500;
+
+            divResA = Div(gLevelScore, 50000);
+            divResB = Div(oldScore, 50000);
+
+            if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
+                u16 lives = divResA - divResB;
+                lives += gNumLives;
+
+                if (lives > 255) {
+                    gNumLives = 255;
+                } else {
+                    gNumLives = lives;
+                }
+
+                gUnknown_030054A8.unk3 = 16;
+            }
+        }
+
+        if (!IS_FINAL_STAGE(gCurrentLevel)) {
+            gUnknown_030054A8.unk1 = 0x11;
+        }
+    }
+
+    if (sub_803DB1C(boss) != 0) {
+        boss->unk68 = 0x96;
+        gCurTask->main = sub_803E494;
+    }
+
+    sub_803DA8C(boss);
+    if (sub_803D430(boss) != 0) {
+        if (boss->unk71 != 0) {
+            Sprite *s2;
+            s2 = &boss->unk148;
+            s2->graphics.anim = 0x286;
+            s2->variant = 0;
+            s2->prevVariant = -1;
+        }
+
+        boss->unk68 = 0x96;
+        gCurTask->main = sub_803E494;
+    }
+
+    sub_803D978(boss);
+    if (sub_803E0D8(boss, &gPlayer)) {
+        sub_802A018();
+        boss->unk68 = 0x103;
+        gCurTask->main = Task_803E520;
+    }
+}
