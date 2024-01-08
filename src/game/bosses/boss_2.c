@@ -3,26 +3,29 @@
 #include "malloc_vram.h"
 #include "trig.h"
 #include "sakit/globals.h"
+
 #include "game/game.h"
+#include "game/stage/camera.h"
 
 #include "game/stage/player.h"
 
 #include "game/bosses/common.h"
+#include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/player_callbacks_1.h"
+
+#include "lib/m4a.h"
 
 #include "constants/zones.h"
 #include "constants/animations.h"
+#include "constants/songs.h"
 
 typedef struct {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
     /* 0x08 */ s16 unk8;
     /* 0x0A */ s16 unkA;
-    /* 0xC */ s32 unkC[3][2];
-
-    // Guess
-    /* 0x24 */ Sprite filler24;
-
+    /* 0xC */ s32 unkC[6][2];
+    /* 0x3C */ s16 unk3C[6][2];
     // Cannon ball maybe?
     /* 0x54 */ s32 unk54;
     /* 0x58 */ s32 unk58;
@@ -266,5 +269,58 @@ void Task_803D088(void)
         sub_802A018();
         boss->unk68 = 0x103;
         gCurTask->main = Task_803E520;
+    }
+}
+
+void sub_803D754(EggBomberTank *boss);
+void sub_803D640(EggBomberTank *boss, s32);
+void sub_803E214(EggBomberTank *boss);
+void sub_803E5B0(void);
+
+void sub_803D2C0(void)
+{
+    s32 rand;
+    EggBomberTank *boss = TASK_DATA(gCurTask);
+    s32 x = Q_24_8_TO_INT(boss->x) - gCamera.x;
+    sub_803D754(boss);
+    sub_803D640(boss, 1);
+    sub_803D978(boss);
+    sub_803E214(boss);
+
+    rand = PseudoRandom32();
+
+    if (Mod(gStageTime + rand, 0x11) == 0) {
+        m4aSongNumStart(SE_144);
+    }
+
+    if (x < 0x32) {
+        CreateEggmobileEscapeSequence(Q_24_8_TO_INT(boss->x) - gCamera.x - 4,
+                                      Q_24_8_TO_INT(boss->y) - gCamera.y - 0x21, 0x2000);
+        gCurTask->main = sub_803E5B0;
+    }
+}
+
+extern const s8 gUnknown_080D7B10[];
+extern const u16 gUnknown_080D7B4E[][2];
+
+void sub_803D368(EggBomberTank *boss)
+{
+    u8 i, j;
+    boss->unkA = -768;
+
+    for (i = 0; i < 2; i++) {
+        s8 temp = -0xC;
+
+        if (i == 0) {
+            temp = 0;
+        }
+
+        for (j = 0; j < 3; j++) {
+            u8 idx = j + (i * 3);
+            boss->unkC[idx][0] = boss->x + Q_24_8_NEW(gUnknown_080D7B10[j] + temp);
+            boss->unkC[idx][1] = boss->unkC[j][1] + 0x400;
+            boss->unk3C[idx][0] = gUnknown_080D7B4E[idx][0];
+            boss->unk3C[idx][1] = gUnknown_080D7B4E[idx][1];
+        }
     }
 }
