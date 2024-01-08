@@ -1,25 +1,31 @@
 #include "core.h"
 #include "sprite.h"
 #include "malloc_vram.h"
+#include "trig.h"
 #include "sakit/globals.h"
+
+#include "game/game.h"
+#include "game/stage/camera.h"
 
 #include "game/stage/player.h"
 
 #include "game/bosses/common.h"
+#include "game/bosses/eggmobile_escape_sequence.h"
+#include "game/player_callbacks_1.h"
+
+#include "lib/m4a.h"
 
 #include "constants/zones.h"
 #include "constants/animations.h"
+#include "constants/songs.h"
 
 typedef struct {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
     /* 0x08 */ s16 unk8;
     /* 0x0A */ s16 unkA;
-    /* 0xC */ s32 unkC[3][2];
-
-    // Guess
-    /* 0x24 */ Sprite filler24;
-
+    /* 0xC */ s32 unkC[6][2];
+    /* 0x3C */ s16 unk3C[6][2];
     // Cannon ball maybe?
     /* 0x54 */ s32 unk54;
     /* 0x58 */ s32 unk58;
@@ -167,21 +173,154 @@ void CreateEggBomberTank(void)
 }
 
 void sub_803E63C(EggBomberTank *boss);
+void sub_803E494(void);
 u8 sub_803DF34(EggBomberTank *boss);
+u8 sub_803DB1C(EggBomberTank *boss);
+void sub_803DA8C(EggBomberTank *boss);
+u8 sub_803D430(EggBomberTank *boss);
+void sub_803D978(EggBomberTank *boss);
+u8 sub_803E0D8(EggBomberTank *boss, Player *player);
+void Task_803E520(void);
 
-// void Task_803D088(void)
-// {
-//     EggBomberTank *boss = TASK_DATA(gCurTask);
+void Task_803D088(void)
+{
+    Sprite *s;
+    EggBomberTank *boss = TASK_DATA(gCurTask);
+    s = &boss->unk148;
 
-//     boss->unk8++;
+    boss->x += boss->unk8;
 
-//     sub_803E63C(boss);
+    sub_803E63C(boss);
 
-//     if (boss->unk68 != 0) {
-//         boss->unk68--;
-//     }
+    if (boss->unk68 != 0) {
+        boss->unk68--;
+    }
 
-//     if (sub_803DF34(boss) != 0) {
-//         boss->unk54 = Q_24_8(Div(boss->unk8, 0x100) - 8);
-//     }
-// }
+    if (sub_803DF34(boss) != 0) {
+
+        boss->unk54 = Q_24_8(Div(boss->x, 0x100) - 8);
+        boss->unk58 = Q_24_8(Div(boss->y, 0x100) - 22);
+
+        boss->unk54 += (COS(boss->unk60) * 0xF) >> 5;
+        boss->unk58 += (SIN(boss->unk60) * 0xF) >> 5;
+
+        s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_CANNON;
+        s->variant = 2;
+        s->prevVariant = -1;
+
+        s = &boss->unk80;
+        s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_BODY;
+        s->variant = 1;
+        s->prevVariant = -1;
+
+        s = &boss->unkB8;
+        s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_BODY_PARTS;
+        s->variant = 1;
+        s->prevVariant = -1;
+
+        {
+            s32 divResA, divResB;
+            s32 oldScore = gLevelScore;
+            gLevelScore += 500;
+
+            divResA = Div(gLevelScore, 50000);
+            divResB = Div(oldScore, 50000);
+
+            if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
+                u16 lives = divResA - divResB;
+                lives += gNumLives;
+
+                if (lives > 255) {
+                    gNumLives = 255;
+                } else {
+                    gNumLives = lives;
+                }
+
+                gUnknown_030054A8.unk3 = 16;
+            }
+        }
+
+        if (!IS_FINAL_STAGE(gCurrentLevel)) {
+            gUnknown_030054A8.unk1 = 0x11;
+        }
+    }
+
+    if (sub_803DB1C(boss) != 0) {
+        boss->unk68 = 0x96;
+        gCurTask->main = sub_803E494;
+    }
+
+    sub_803DA8C(boss);
+    if (sub_803D430(boss) != 0) {
+        if (boss->unk71 != 0) {
+            Sprite *s2;
+            s2 = &boss->unk148;
+            s2->graphics.anim = 0x286;
+            s2->variant = 0;
+            s2->prevVariant = -1;
+        }
+
+        boss->unk68 = 0x96;
+        gCurTask->main = sub_803E494;
+    }
+
+    sub_803D978(boss);
+    if (sub_803E0D8(boss, &gPlayer)) {
+        sub_802A018();
+        boss->unk68 = 0x103;
+        gCurTask->main = Task_803E520;
+    }
+}
+
+void sub_803D754(EggBomberTank *boss);
+void sub_803D640(EggBomberTank *boss, s32);
+void sub_803E214(EggBomberTank *boss);
+void sub_803E5B0(void);
+
+void sub_803D2C0(void)
+{
+    s32 rand;
+    EggBomberTank *boss = TASK_DATA(gCurTask);
+    s32 x = Q_24_8_TO_INT(boss->x) - gCamera.x;
+    sub_803D754(boss);
+    sub_803D640(boss, 1);
+    sub_803D978(boss);
+    sub_803E214(boss);
+
+    rand = PseudoRandom32();
+
+    if (Mod(gStageTime + rand, 0x11) == 0) {
+        m4aSongNumStart(SE_144);
+    }
+
+    if (x < 0x32) {
+        CreateEggmobileEscapeSequence(Q_24_8_TO_INT(boss->x) - gCamera.x - 4,
+                                      Q_24_8_TO_INT(boss->y) - gCamera.y - 0x21, 0x2000);
+        gCurTask->main = sub_803E5B0;
+    }
+}
+
+extern const s8 gUnknown_080D7B10[];
+extern const u16 gUnknown_080D7B4E[][2];
+
+void sub_803D368(EggBomberTank *boss)
+{
+    u8 i, j;
+    boss->unkA = -768;
+
+    for (i = 0; i < 2; i++) {
+        s8 temp = -0xC;
+
+        if (i == 0) {
+            temp = 0;
+        }
+
+        for (j = 0; j < 3; j++) {
+            u8 idx = j + (i * 3);
+            boss->unkC[idx][0] = boss->x + Q_24_8_NEW(gUnknown_080D7B10[j] + temp);
+            boss->unkC[idx][1] = boss->unkC[j][1] + 0x400;
+            boss->unk3C[idx][0] = gUnknown_080D7B4E[idx][0];
+            boss->unk3C[idx][1] = gUnknown_080D7B4E[idx][1];
+        }
+    }
+}
