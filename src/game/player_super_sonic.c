@@ -207,9 +207,9 @@ void sub_802B81C(void)
     SUPER_SWITCH_ANIM(sonic, 2);
 }
 
-static int sub_802B8A8(struct SuperSonic *sonic)
+static s32 sub_802B8A8(struct SuperSonic *sonic)
 {
-    int zero = 0;
+    s32 zero = 0;
 
     if (!(sonic->flags & SUPER_FLAG__10) && !(gUnknown_03005424 & EXTRA_STATE__100)) {
         if (gCourseTime >= MAX_COURSE_TIME && !gLoadedSaveGame->timeLimitDisabled) {
