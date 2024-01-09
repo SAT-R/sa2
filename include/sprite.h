@@ -171,6 +171,11 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ u16 rotation;
+
+    // TODO:
+    //     The names "width" and "height" appear to be inaccurate.
+    //     Maybe "scaleX" and "scaleY" would be more fitting?
+    //     It's 0x100 or Q_8_8(1.0) for 1x, Q_8_8(2.0) for 2x, etc.
     /* 0x02 */ s16 width;
     /* 0x04 */ s16 height;
     /* 0x06 */ s16 x;
@@ -194,7 +199,7 @@ extern const u8 gOamShapesSizes[12][2];
 s32 UpdateSpriteAnimation(Sprite *);
 
 void DisplaySprite(Sprite *);
-void InitBackground(Background *);
+void DrawBackground(Background *);
 u32 sub_8004010(void);
 u32 sub_80039E4(void);
 bool32 sub_8002B20(void);
@@ -210,9 +215,6 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
                  BgAffineReg *affine);
 void sub_8006228(u8 p0, u8 p1, u8 p2, u8 p3, u8 p4, u8 p5);
 void sub_80064A8(u8 p0, u8 p1, u8 p2, u8 p3, u8 p4, u8 p5);
-
-// TODO: Find out type of p1!
-void sub_800724C(u8 p0, void *p1);
 
 s32 sub_80036E0(Sprite *);
 void sub_8003914(Sprite *);

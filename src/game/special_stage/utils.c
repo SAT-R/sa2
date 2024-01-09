@@ -204,7 +204,7 @@ void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
     background->flags = (bg_id);
     background->scrollX = scrollX;
     background->scrollY = scrollY;
-    InitBackground(background);
+    DrawBackground(background);
 }
 
 s16 MaxSpriteSize(const struct UNK_80DF670 *spriteConfig)

@@ -186,16 +186,17 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
 }
 END_NONMATCH
 
-// (87.88%) https://decomp.me/scratch/Wvuov
+// (94.19%) https://decomp.me/scratch/mrRim
 NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
          void Task_GrindRail_Air(void))
 {
     Player *player = &gPlayer;
     Sprite_GrindRail *rail = TASK_DATA(gCurTask);
     MapEntity *me = rail->me;
-    s32 right, bottom;
-    u8 smolRight;
-    s16 left, top;
+    s16 right;
+    s16 bottom;
+    s16 left;
+    s16 top;
 
     // This pointer madness seems to be necessary for matching
     u8 *pSpriteX = &rail->spriteX;
@@ -212,8 +213,18 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
 
     if (!(player->moveState & MOVESTATE_DEAD)) {
         // _080101AA
-        s32 someX, someWidth, someY, otherY;
-        right = (left + (me->d.sData[0] * TILE_WIDTH));
+        s32 someX;
+        s32 someWidth;
+        s32 someY;
+        s32 otherY;
+#if 1
+        // This path somehow gets a higher percentage, while less instructions match
+        // Also right_ being s8 is WRONG, it's 16bits!!!
+        s8 right_ = left;
+        right = right_ + (me->d.uData[0] * TILE_WIDTH);
+#else
+        right = left + (me->d.uData[0] * TILE_WIDTH);
+#endif
 
         if (right <= Q_24_8_TO_INT(player->x)) {
             someWidth = me->d.uData[2] * TILE_WIDTH;
@@ -230,18 +241,20 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
                         if ((player->moveState & MOVESTATE_1000000)) {
 
                             if (kind & RAIL_KIND_1) {
-                                if ((gPlayer.moveState & MOVESTATE_FACING_LEFT)) {
-                                    if (left < right + (someWidth >> 1)
+                                if ((gPlayer.moveState & 1)) {
+                                    if (left < ((someWidth >> 1) + right)
                                         || ((player->unk5C & gPlayerControls.jump)
                                             && (kind & RAIL_KIND_2))) {
-                                        if ((kind & RAIL_KIND_2))
-                                            player->transition = PLTRANS_PT13;
-                                        else
-                                            player->transition = PLTRANS_PT12;
+                                        if ((kind & RAIL_KIND_2)) {
+                                            player->transition = 13;
+                                            goto set13;
+                                        } else
+                                            goto set12;
+                                        // player->transition = 12;
                                     }
                                 }
                             }
-                            if (!(kind & RAIL_KIND_1)) {
+                            if (!(kind & 1)) {
                                 if (!(player->moveState & MOVESTATE_FACING_LEFT)) {
                                     s32 playerX = Q_24_8_TO_INT(player->x);
                                     s32 newLeft = left;
@@ -251,10 +264,12 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
                                     if (playerX > newLeft
                                         || ((player->unk5C & gPlayerControls.jump)
                                             && (kind & RAIL_KIND_2))) {
-                                        if ((kind & RAIL_KIND_2))
-                                            player->transition = PLTRANS_PT13;
-                                        else
-                                            player->transition = PLTRANS_PT12;
+                                        if ((kind & RAIL_KIND_2)) {
+                                            player->transition = 13;
+                                        set13:;
+                                        } else
+                                        set12:
+                                            player->transition = 12;
                                     }
                                 }
                             }

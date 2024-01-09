@@ -38,7 +38,7 @@ void CreateStageBg_ZoneFinal_0(void)
     bgDst->targetTilesX = 10;
     bgDst->targetTilesY = 9;
     bgDst->flags |= BACKGROUND_FLAG_4;
-    InitBackground(bgDst);
+    DrawBackground(bgDst);
 
     bgDst = &gStageBackgroundsRam.unk0;
     gBgCntRegs[0]
@@ -54,7 +54,7 @@ void CreateStageBg_ZoneFinal_0(void)
     bgDst->targetTilesX = 32;
     bgDst->targetTilesY = 20;
     bgDst->flags = BACKGROUND_FLAGS_BG_ID(0);
-    InitBackground(bgDst);
+    DrawBackground(bgDst);
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;

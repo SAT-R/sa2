@@ -69,7 +69,7 @@ s16 sub_8004418(s16 x, s16 y)
 
         // If array[index] is odd,
         if (array[index] & 0x01) {
-            fraction = Q_8_8(0.5) - fraction;
+            fraction = Q_24_8(0.5) - fraction;
         }
 
         {
@@ -208,21 +208,21 @@ s32 animCmd_GetTiles(void *cursor, Sprite *s)
 s32 animCmd_AddHitbox(void *cursor, Sprite *s)
 {
     ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
-    s32 index = cmd->hitbox.index & 0xF;
+    s32 hitboxId = cmd->hitbox.index % 16u;
     s->animCursor += AnimCommandSizeInWords(ACmd_Hitbox);
 
-    DmaCopy32(3, &cmd->hitbox, &s->hitboxes[index].index, 8);
+    DmaCopy32(3, &cmd->hitbox, &s->hitboxes[hitboxId].index, 8);
 
     if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0)
         && (cmd->hitbox.bottom == 0)) {
-        s->hitboxes[index].index = -1;
+        s->hitboxes[hitboxId].index = -1;
     } else {
         if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
-            SWAP_AND_NEGATE(s->hitboxes[index].top, s->hitboxes[index].bottom);
+            SWAP_AND_NEGATE(s->hitboxes[hitboxId].top, s->hitboxes[hitboxId].bottom);
         }
 
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            SWAP_AND_NEGATE(s->hitboxes[index].left, s->hitboxes[index].right);
+            SWAP_AND_NEGATE(s->hitboxes[hitboxId].left, s->hitboxes[hitboxId].right);
         }
     }
 
@@ -248,7 +248,7 @@ void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
 }
 
 // Similar to sub_8004ABC and sub_8004E14
-// (52.72%) https://decomp.me/scratch/mCDYD
+// (53.42%) https://decomp.me/scratch/llwGy
 NONMATCH("asm/non_matching/engine/sub_8004860.inc",
          void sub_8004860(Sprite *s, SpriteTransform *transform))
 {
@@ -258,12 +258,18 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
     u16 sp00[8];
 
     if (dimensions != (SpriteOffset *)-1) {
+        int temp;
         s16 res;
         s32 sp10, sp14; // posX, posY
-        s16 sp18[2][2];
+        s16 sp18[2];
+        s16 sp1C[2];
         s32 affineIndex = s->unk10 & 0x1F; // sp20
         u16 *affine = &gOamBuffer[affineIndex * 4].all.affineParam;
+        u16 *pTemp, *pTemp2;
 
+#if 0
+        sub_80047A0(transform->rotation & ONE_CYCLE, transform->width, transform->height, affineIndex);
+#else
         sp00[4] = COS_24_8(transform->rotation & ONE_CYCLE);
         sp00[5] = SIN_24_8(transform->rotation & ONE_CYCLE);
 
@@ -281,12 +287,13 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
 
         res = Div(0x10000, sp00[7]);
         affine[12] = Q_24_8_TO_INT(sp00[5] * res);
-
-        if (transform->width < 0)
-            sp00[6] = -transform->width;
+#endif
 
         if (transform->height < 0)
-            sp00[7] = -transform->height;
+            sp00[6] = -transform->height;
+
+        if (transform->width < 0)
+            sp00[7] = -transform->width;
 
         // _0800497A
         sp00[0] = Q_24_8_TO_INT(sp00[4] * sp00[6]);
@@ -294,10 +301,12 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
         sp00[2] = Q_24_8_TO_INT(sp00[5] * sp00[7]);
         sp00[3] = Q_24_8_TO_INT(sp00[6] * sp00[7]);
 
-        sp18[0][0] = 0x100;
-        sp18[0][1] = 0;
-        sp18[1][0] = 0;
-        sp18[1][1] = 0x100;
+        pTemp = &sp18[0];
+        *pTemp++ = 0x100;
+        *pTemp = 0;
+        pTemp2 = &sp1C[0];
+        *pTemp2++ = 0;
+        *pTemp2++ = 0x100;
 
         sp10 = transform->x;
         sp14 = transform->y;
@@ -306,13 +315,13 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
         {
             s16 r3;
             s32 r0, r1, r2, r4;
-            s32 r5;
+            u32 r5;
 
             if (transform->width > 0) {
-                r4 = dimensions->offsetX;
+                r4 = (u16)dimensions->offsetX;
                 r2 = dimensions->width;
             } else {
-                r4 = dimensions->width - dimensions->offsetX;
+                r4 = dimensions->width - (u16)dimensions->offsetX;
                 r2 = dimensions->width;
             }
 
@@ -320,11 +329,11 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
             r3 = transform->height;
 
             if (r3 > 0) {
-                r3 = dimensions->offsetY;
+                r3 = (u16)dimensions->offsetY;
                 r5 = dimensions->height;
             } else {
                 // _08004A3E
-                r3 = dimensions->height - dimensions->offsetY;
+                r3 = dimensions->height - (u16)dimensions->offsetY;
                 r5 = dimensions->height;
             }
 
@@ -333,9 +342,11 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
             r4 -= dimensions->width / 2;
             r1 = r0;
             r1 *= r4;
+            r0 = sp00[1];
             r5 >>= 1;
             r3 -= r5;
-            r1 += sp00[1] * r3;
+            r0 *= r3;
+            r1 += r0;
             r1 += (r2 << 8);
             r1 >>= 8;
             sp10 -= r1;

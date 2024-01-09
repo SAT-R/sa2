@@ -430,7 +430,7 @@ static void CreateTitleScreenWithoutIntro(TitleScreen *titleScreen)
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
-    InitBackground(bg0);
+    DrawBackground(bg0);
 
     gDispCnt &= ~DISPCNT_BG0_ON;
     gDispCnt |= DISPCNT_BG1_ON | DISPCNT_BG2_ON;
@@ -456,7 +456,7 @@ static void CreateTitleScreenWithoutIntro(TitleScreen *titleScreen)
     config40->paletteOffset = 0;
     config40->flags = BACKGROUND_FLAGS_BG_ID(1);
 
-    InitBackground(config40);
+    DrawBackground(config40);
 
     m4aSongNumStart(MUS_TITLE_FANFARE);
 
@@ -516,7 +516,7 @@ static void InitTitleScreenBackgrounds(TitleScreen *titleScreen)
     bg80->paletteOffset = 0;
     bg80->flags = 0;
 
-    InitBackground(bg80);
+    DrawBackground(bg80);
 
     bg0 = &titleScreen->unk0;
 
@@ -535,7 +535,7 @@ static void InitTitleScreenBackgrounds(TitleScreen *titleScreen)
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
-    InitBackground(bg0);
+    DrawBackground(bg0);
 }
 
 static void InitTitleScreenUI(TitleScreen *titleScreen)
@@ -700,7 +700,7 @@ static void Task_IntroStartSonicTeamLogoAnim(void)
         bg->targetTilesY = 20;
         bg->paletteOffset = 0;
         bg->flags = 0x10;
-        InitBackground(bg);
+        DrawBackground(bg);
     }
 
     if (titleScreen->animFrame > 2) {
@@ -779,7 +779,7 @@ static void Task_IntroStartSkyTransition(void)
         config40->targetTilesY = 0x40;
         config40->paletteOffset = 0;
         config40->flags = BACKGROUND_FLAGS_BG_ID(1);
-        InitBackground(config40);
+        DrawBackground(config40);
     }
 
     // Once the animation frame is at 140
@@ -857,16 +857,16 @@ static void Task_IntroPanSkyAnim(void)
         bg0->targetTilesY = 0x10;
         bg0->paletteOffset = 0;
         bg0->flags = 0x10;
-        InitBackground(bg0);
+        DrawBackground(bg0);
 
         gBgScrollRegs[0][1] = 0x4F;
         gCurTask->main = Task_IntroSkyAnim;
 
         titleScreen->animFrame = 0;
-        gWinRegs[1] = 0xF0;
-        gWinRegs[3] = 0xA0;
-        gWinRegs[4] |= 0x3F00;
-        gWinRegs[5] |= 0x3F;
+        gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
+        gWinRegs[WINREG_WIN1V] = WIN_RANGE(0, DISPLAY_HEIGHT);
+        gWinRegs[WINREG_WININ] |= 0x3F00;
+        gWinRegs[WINREG_WINOUT] |= 0x3F;
 
         gBldRegs.bldCnt = 0x3FBF;
         gBldRegs.bldY = 0;
@@ -904,11 +904,10 @@ static void Task_IntroSkyAnim(void)
         gDispCnt &= 0xFEFF;
         gDispCnt |= 0x4000;
 
-        gWinRegs[1] = 0xF0;
-        // Display height?
-        gWinRegs[3] = 0xA0;
-        gWinRegs[4] |= 0x3F00;
-        gWinRegs[5] |= 0x3F;
+        gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
+        gWinRegs[WINREG_WIN1V] = WIN_RANGE(0, DISPLAY_HEIGHT);
+        gWinRegs[WINREG_WININ] |= 0x3F00;
+        gWinRegs[WINREG_WINOUT] |= 0x3F;
 
         gBldRegs.bldCnt = 0x3FBF;
 
@@ -962,7 +961,7 @@ static void Task_IntroSkyAnim(void)
         bg0->paletteOffset = 0;
         bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
 
-        InitBackground(bg0);
+        DrawBackground(bg0);
 
         gBgCntRegs[2] &= 0xDFFF;
         gCurTask->main = Task_IntroFadeInTitleScreenAnim;
@@ -1371,7 +1370,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     bg0->targetTilesY = 10;
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
-    InitBackground(bg0);
+    DrawBackground(bg0);
 
     config40 = &titleScreen->unk40;
     config40->graphics.dest = (void *)BG_SCREEN_ADDR(16);
@@ -1388,7 +1387,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     config40->targetTilesY = 0x40;
     config40->paletteOffset = 0;
     config40->flags = BACKGROUND_FLAGS_BG_ID(1);
-    InitBackground(config40);
+    DrawBackground(config40);
 
     gDispCnt &= ~0x100;
     gDispCnt |= 0x600;
@@ -1452,11 +1451,11 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
 
     REG_SIOCNT &= ~SIO_INTR_ENABLE;
     gDispCnt |= 0x4000;
-    gWinRegs[1] = 0xF0;
-    gWinRegs[3] = (titleScreen->wavesTopOffset - 2) * 0x100;
-    gWinRegs[3] |= 0xA0;
-    gWinRegs[4] |= 0x3F00;
-    gWinRegs[5] &= 0x13;
+    gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
+    gWinRegs[WINREG_WIN1V]
+        = WIN_RANGE((titleScreen->wavesTopOffset - 2), DISPLAY_HEIGHT);
+    gWinRegs[WINREG_WININ] |= 0x3F00;
+    gWinRegs[WINREG_WINOUT] &= 0x13;
 
     // Something which effects wave length
     titleScreen->unkF3A -= 768;
@@ -1472,7 +1471,7 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     gHBlankCallbacks[gNumHBlankCallbacks++] = sub_808DB2C;
 
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
-    gFlags |= 0x4;
+    gFlags |= FLAGS_4;
     gUnknown_03002A80 = 16;
     gUnknown_03002878 = (void *)REG_ADDR_BG2PA;
 

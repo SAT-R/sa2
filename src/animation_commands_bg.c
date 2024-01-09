@@ -37,7 +37,7 @@ const AnimationCommandFunc animCmdTable_BG[12] = {
 
 void UpdateBgAnimationTiles(Background *bg)
 {
-    struct MapHeader *header = gUnknown_03002260[bg->tilemapId];
+    struct MapHeader *header = gTilemapsRef[bg->tilemapId];
     if (header->h.animFrameCount) {
         if (header->h.animDelay <= ++bg->animDelayCounter) {
             u32 animTileSize;

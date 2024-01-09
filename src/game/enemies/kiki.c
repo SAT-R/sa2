@@ -32,11 +32,11 @@ typedef struct {
 static void Task_KikiMain(void);
 static void sub_8053A38(void);
 
-static void CreateProjectile(s16, s16);
-static void Task_ProjMain(void);
-static void Task_ProjSplit(void);
+static void CreateKikiProjectile(s16, s16);
+static void Task_KikiProjMain(void);
+static void Task_KikiProjSplit(void);
 
-static void CreateProjectilePiece(s16, s16);
+static void CreateKikiProjectilePiece(s16, s16);
 static void Task_ProjPieceMain(void);
 
 static void TaskDestructor_KikiProj(struct Task *);
@@ -161,9 +161,9 @@ static void sub_8053A38(void)
 
     if (kiki->unk3F == 0x12) {
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            CreateProjectile(x - 4, y + 2);
+            CreateKikiProjectile(x - 4, y + 2);
         } else {
-            CreateProjectile(x + 9, y + 2);
+            CreateKikiProjectile(x + 9, y + 2);
         }
     }
     if (UpdateSpriteAnimation(s) == 0) {
@@ -173,9 +173,9 @@ static void sub_8053A38(void)
     DisplaySprite(s);
 }
 
-static void CreateProjectile(s16 x, s16 y)
+static void CreateKikiProjectile(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(Task_ProjMain, sizeof(Kiki_Proj), 0x4028, 0,
+    struct Task *t = TaskCreate(Task_KikiProjMain, sizeof(Kiki_Proj), 0x4028, 0,
                                 TaskDestructor_KikiProj);
     Kiki_Proj *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
@@ -211,7 +211,7 @@ static void CreateProjectile(s16 x, s16 y)
     UpdateSpriteAnimation(s);
 }
 
-static void Task_ProjMain(void)
+static void Task_KikiProjMain(void)
 {
     Kiki_Proj *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
@@ -231,7 +231,7 @@ static void Task_ProjMain(void)
                 proj->unk32 = -(proj->unk32 >> 2);
                 proj->unk30 += 1;
             } else {
-                gCurTask->main = Task_ProjSplit;
+                gCurTask->main = Task_KikiProjSplit;
                 proj->unk30 = 0;
                 proj->unk32 = 0;
             }
@@ -244,7 +244,7 @@ static void Task_ProjMain(void)
         s->prevVariant = -1;
         s->graphics.anim = SA2_ANIM_DUST_CLOUD;
         s->variant = 0;
-        CreateProjectilePiece(x, y);
+        CreateKikiProjectilePiece(x, y);
         TaskDestroy(gCurTask);
         return;
     }
@@ -256,7 +256,7 @@ static void Task_ProjMain(void)
     s->y = y;
 }
 
-static void Task_ProjSplit(void)
+static void Task_KikiProjSplit(void)
 {
     Kiki_Proj *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
@@ -265,13 +265,13 @@ static void Task_ProjSplit(void)
     x = s->x;
     y = s->y;
     if (proj->unk30++ >= 0x60) {
-        CreateProjectilePiece(x, y);
+        CreateKikiProjectilePiece(x, y);
         TaskDestroy(gCurTask);
         return;
     }
 
     if (sub_800C84C(s, x, y) != 0) {
-        CreateProjectilePiece(x, y);
+        CreateKikiProjectilePiece(x, y);
         TaskDestroy(gCurTask);
         return;
     }
@@ -284,7 +284,7 @@ static void Task_ProjSplit(void)
     s->y = y;
 }
 
-static void CreateProjectilePiece(s16 x, s16 y)
+static void CreateKikiProjectilePiece(s16 x, s16 y)
 {
     struct Task *t = TaskCreate(Task_ProjPieceMain, sizeof(Kiki_Proj), 0x2000, 0,
                                 TaskDestructor_KikiProj);

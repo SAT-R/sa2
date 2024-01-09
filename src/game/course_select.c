@@ -373,7 +373,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    InitBackground(background);
+    DrawBackground(background);
 
     background = &coursesScreen->zoneMap;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -390,7 +390,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    InitBackground(background);
+    DrawBackground(background);
 
     s = &coursesScreen->playerAvatar;
     s->x = 0;

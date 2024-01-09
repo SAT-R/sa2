@@ -19,8 +19,8 @@
 typedef struct {
     /* 0x00 */ Sprite textPressStart;
     /* 0x30 */ Sprite textDemoPlay;
-    /* 0x60 */ u16 unk60;
-    /* 0x62 */ u16 unk62;
+    /* 0x60 */ u16 fadeBlendFactor;
+    /* 0x62 */ u16 tFadeout;
     /* 0x64 */ bool8 playerPressedStart;
     /* 0x65 */ bool8 timeLimitDisabled;
 } DemoManager;
@@ -30,23 +30,23 @@ typedef struct {
     /* 0x02 */ u16 unk2;
 } DemoMusicFadeout;
 
-void Task_800A110(void);
-void Task_800A310(void);
+void Task_DemoManagerMain(void);
+void Task_DemoManagerFadeout(void);
 void CreateMusicFadeoutTask(u16);
-void TaskDestructor_800A350(struct Task *);
-void Task_800A3D4(void);
+void TaskDestructor_DemoManagerMain(struct Task *);
+void Task_DemoManagerMusicFadeout(void);
 
 void CreateDemoManager(void)
 {
     u8 blendCtrl = gBldRegs.bldCnt & 0xC0;
     s8 lang = gLoadedSaveGame->language;
-    struct Task *t
-        = TaskCreate(Task_800A110, sizeof(DemoManager), 1, 0, TaskDestructor_800A350);
+    struct Task *t = TaskCreate(Task_DemoManagerMain, sizeof(DemoManager), 1, 0,
+                                TaskDestructor_DemoManagerMain);
     DemoManager *dm = TASK_DATA(t);
     Sprite *s;
 
-    dm->unk60 = 0;
-    dm->unk62 = 0;
+    dm->fadeBlendFactor = 0;
+    dm->tFadeout = 0;
     dm->playerPressedStart = FALSE;
     dm->timeLimitDisabled = gLoadedSaveGame->timeLimitDisabled;
 
@@ -97,7 +97,7 @@ void CreateDemoManager(void)
     UpdateSpriteAnimation(s);
 }
 
-void Task_800A110(void)
+void Task_DemoManagerMain(void)
 {
     DemoManager *dm = TASK_DATA(gCurTask);
 
@@ -109,7 +109,7 @@ void Task_800A110(void)
 
         dm->playerPressedStart = TRUE;
 
-        gCurTask->main = Task_800A310;
+        gCurTask->main = Task_DemoManagerFadeout;
 
         gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
         gBldRegs.bldY = 0;
@@ -119,7 +119,7 @@ void Task_800A110(void)
     } else if (gCheckpointTime > (u32)ZONE_TIME_TO_INT(0, 24.5)) {
         dm->playerPressedStart = FALSE;
 
-        gCurTask->main = Task_800A310;
+        gCurTask->main = Task_DemoManagerFadeout;
 
         gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
         gBldRegs.bldY = 0;
@@ -152,17 +152,17 @@ void Task_800A110(void)
     }
 }
 
-void Task_800A24C(void)
+void Task_DemoManagerEndFadeout(void)
 {
     DemoManager *dm = TASK_DATA(gCurTask);
-    dm->unk62++;
+    dm->tFadeout++;
 
     m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 0);
     m4aMPlayVolumeControl(&gMPlayInfo_SE1, 0xFFFF, 0);
     m4aMPlayVolumeControl(&gMPlayInfo_SE2, 0xFFFF, 0);
     m4aMPlayVolumeControl(&gMPlayInfo_SE3, 0xFFFF, 0);
 
-    if (dm->unk62 >= 0x30) {
+    if (dm->tFadeout >= 48) {
         gLoadedSaveGame->timeLimitDisabled = dm->timeLimitDisabled;
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -177,19 +177,19 @@ void Task_800A24C(void)
     }
 }
 
-void Task_800A310(void)
+void Task_DemoManagerFadeout(void)
 {
     DemoManager *dm = TASK_DATA(gCurTask);
-    dm->unk60 += Q_24_8(0.25);
+    dm->fadeBlendFactor += Q_24_8(0.25);
 
-    gBldRegs.bldY = dm->unk60 >> 8;
+    gBldRegs.bldY = dm->fadeBlendFactor >> 8;
 
-    if (dm->unk60 >= Q_24_8(16.0)) {
-        gCurTask->main = Task_800A24C;
+    if (dm->fadeBlendFactor >= Q_24_8(16.0)) {
+        gCurTask->main = Task_DemoManagerEndFadeout;
     }
 }
 
-void TaskDestructor_800A350(struct Task *t)
+void TaskDestructor_DemoManagerMain(struct Task *t)
 {
     DemoManager *dm = TASK_DATA(t);
     VramFree(dm->textPressStart.graphics.dest);
@@ -201,14 +201,15 @@ void TaskDestructor_800A350(struct Task *t)
 
 void CreateMusicFadeoutTask(u16 factor)
 {
-    struct Task *t = TaskCreate(Task_800A3D4, sizeof(DemoMusicFadeout), 0xFFFE, 0, NULL);
+    struct Task *t = TaskCreate(Task_DemoManagerMusicFadeout, sizeof(DemoMusicFadeout),
+                                0xFFFE, 0, NULL);
     DemoMusicFadeout *mf = TASK_DATA(t);
     mf->volume = 0x100;
     mf->unk2 = (s32)mf->volume / factor;
     gUnknown_030054A8.unk0 = 0xFF;
 }
 
-void Task_800A3D4(void)
+void Task_DemoManagerMusicFadeout(void)
 {
     DemoMusicFadeout *mf = TASK_DATA(gCurTask);
 

@@ -253,7 +253,7 @@ _08031602:
 	movs r0, #1
 	strh r0, [r1, #0x2e]
 	adds r0, r1, #0
-	bl InitBackground
+	bl DrawBackground
 	mov r1, sl
 	adds r1, #0xc
 	movs r0, #0xc0
@@ -278,7 +278,7 @@ _08031602:
 	strb r7, [r0]
 	strh r4, [r1, #0x2e]
 	adds r0, r1, #0
-	bl InitBackground
+	bl DrawBackground
 	mov r1, sl
 	adds r1, #0x4c
 	ldr r0, _080319D8 @ =0x06004000
@@ -303,7 +303,7 @@ _08031602:
 	mov r2, r8
 	strh r2, [r1, #0x2e]
 	adds r0, r1, #0
-	bl InitBackground
+	bl DrawBackground
 	movs r5, #0
 	movs r0, #0xb9
 	lsls r0, r0, #2

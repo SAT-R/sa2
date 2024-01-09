@@ -323,8 +323,8 @@ _080200F4: .4byte gStageTime
 _080200F8:
 	ldrb r0, [r1]
 	lsls r0, r0, #3
-	ldr r1, _080201A0 @ =gUnknown_030022D0
-	adds r4, r0, r1         @ r4 = oam = gUnknown_030022D0[s->oamBaseIndex];
+	ldr r1, _080201A0 @ =gOamBuffer2
+	adds r4, r0, r1         @ r4 = oam = gOamBuffer2[s->oamBaseIndex];
 	mov r1, sb
 	ldrh r0, [r1, #0x1a]
 	movs r2, #0xf8
@@ -408,7 +408,7 @@ _0802018E:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080201A0: .4byte gUnknown_030022D0
+_080201A0: .4byte gOamBuffer2
 _080201A4: .4byte iwram_end
 _080201A8: .4byte 0x040000D4
 _080201AC: .4byte 0x80000003

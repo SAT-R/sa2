@@ -214,7 +214,7 @@ static void Task_CommonPlatformThinMain(void)
     return;
 }
 // (95.35%) https://decomp.me/scratch/8xD3v
-NONMATCH("asm/non_matching/sakit/interactables/sub_8010D1C.inc",
+NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc",
          static void CreatePlatformBreakParticles(s16 x, s16 y))
 {
     struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(Platform_D1C),

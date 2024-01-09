@@ -46,9 +46,10 @@ u32 gMultiSioStatusFlags = 0;
 bool8 gMultiSioEnabled = FALSE;
 
 struct Task *gTaskPtrs[] ALIGNED(16) = {};
-u32 gUnknown_03001B60[2][DISPLAY_HEIGHT] = {};
+u32 gBgOffsetsBuffer[2][DISPLAY_HEIGHT]
+    = {}; /* TODO: Find out how this is different from gBgOffsetsHBlank */
 u16 gObjPalette[] = {};
-struct MapHeader **gUnknown_03002260 = NULL;
+struct MapHeader **gTilemapsRef = NULL;
 u32 gFrameCount = 0;
 u16 gWinRegs[6] ALIGNED(16) = {};
 s32 gNumTasks = 0;
@@ -61,8 +62,8 @@ u16 gRepeatedKeys ALIGNED(4) = 0;
 struct Task *gNextTask = NULL;
 void *gUnknown_030022C0 = NULL;
 
-OamData gUnknown_030022D0[] ALIGNED(16) = {};
-s16 gUnknown_030026D0 = 0;
+OamData gOamBuffer2[OAM_ENTRY_COUNT] ALIGNED(16) = {};
+s16 gMosaicReg = 0;
 
 HBlankFunc gHBlankCallbacks[4] ALIGNED(16) = {};
 struct Task *gCurTask = NULL;
@@ -220,7 +221,7 @@ void GameInit(void)
     gOamFirstPausedIndex = 0;
 
     DmaFill16(3, 0x200, gOamBuffer, sizeof(gOamBuffer));
-    DmaFill16(3, 0x200, gUnknown_030022D0, sizeof(gUnknown_030022D0));
+    DmaFill16(3, 0x200, gOamBuffer2, sizeof(gOamBuffer2));
     DmaFill32(3, ~0, gUnknown_03001850, sizeof(gUnknown_03001850));
     DmaFill32(3, ~0, gUnknown_03004D60, sizeof(gUnknown_03004D60));
     DmaFill32(3, 0, gObjPalette, sizeof(gObjPalette));
@@ -261,8 +262,8 @@ void GameInit(void)
     gBldRegs.bldCnt = 0;
     gBldRegs.bldAlpha = 0;
     gBldRegs.bldY = 0;
+    gMosaicReg = 0;
 
-    gUnknown_030026D0 = 0;
     gPseudoRandom = 0;
 
     for (i = 0; i < 10; i++) {
@@ -284,10 +285,10 @@ void GameInit(void)
         gIntrTable[i] = gIntrTableTemplate[i];
     }
 
-    DmaFill32(3, 0, &gUnknown_03001B60, sizeof(gUnknown_03001B60));
+    DmaFill32(3, 0, &gBgOffsetsBuffer, sizeof(gBgOffsetsBuffer));
 
-    gBgOffsetsHBlank = gUnknown_03001B60[0];
-    gUnknown_030022AC = (void *)gUnknown_03001B60[1];
+    gBgOffsetsHBlank = gBgOffsetsBuffer[0];
+    gUnknown_030022AC = (void *)gBgOffsetsBuffer[1];
     gUnknown_03002878 = NULL;
     gUnknown_03002A80 = 0;
     gNumHBlankCallbacks = 0;
@@ -400,7 +401,7 @@ static void UpdateScreenDma(void)
 
     DmaCopy32(3, gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
     DmaCopy16(3, &gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
-    DmaCopy16(3, &gUnknown_030026D0, (void *)REG_ADDR_MOSAIC, 4);
+    DmaCopy16(3, &gMosaicReg, (void *)REG_ADDR_MOSAIC, 4);
     DmaCopy16(3, gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
     DmaCopy32(3, &gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 
@@ -423,7 +424,7 @@ static void UpdateScreenDma(void)
 
     if (gUnknown_030026F4 == 0xff) {
         CopyOamBufferToOam();
-        DmaCopy16(3, gOamBuffer, (void *)OAM, 0x100);
+        DmaCopy16(3, gOamBuffer + 0x00, (void *)OAM + 0x000, 0x100);
         DmaCopy16(3, gOamBuffer + 0x20, (void *)OAM + 0x100, 0x100);
         DmaCopy16(3, gOamBuffer + 0x40, (void *)OAM + 0x200, 0x100);
         DmaCopy16(3, gOamBuffer + 0x60, (void *)OAM + 0x300, 0x100);
@@ -473,7 +474,7 @@ static void ClearOamBufferDma(void)
         }
     }
     gFlags &= ~FLAGS_4;
-    DmaFill16(3, 0x200, gOamBuffer, 0x100);
+    DmaFill16(3, 0x200, gOamBuffer + 0x00, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x20, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x40, 0x100);
     DmaFill16(3, 0x200, gOamBuffer + 0x60, 0x100);
@@ -500,7 +501,7 @@ static void UpdateScreenCpuSet(void)
 
     CpuCopy32(gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
     CpuCopy16(&gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
-    CpuCopy16(&gUnknown_030026D0, (void *)REG_ADDR_MOSAIC, 4);
+    CpuCopy16(&gMosaicReg, (void *)REG_ADDR_MOSAIC, 4);
     CpuCopy16(gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
     CpuCopy32(&gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 

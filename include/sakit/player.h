@@ -71,7 +71,7 @@ typedef void (*PlayerCallback)(struct Player_ *);
 // Not sure what these are yet
 typedef struct Player_ {
     /* 0x00 */ PlayerCallback callback;
-    /* 0x04 */ u32 filler4;
+    /* 0x04 */ u16 unk4;
 
     /* 0x08 */ s32 x;
     /* 0x0C */ s32 y;
@@ -95,13 +95,13 @@ typedef struct Player_ {
     /* 0x25 */ u8 unk25;
     /* 0x26 */ s16 spindashAccel;
     /* 0x28 */ u8 unk28;
-    /* 0x28 */ u8 unk29;
+    /* 0x29 */ u8 unk29;
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 unk2C;
     /* 0x2E */ u16 timerInvincibility;
     /* 0x30 */ u16 timerSpeedup;
     /* 0x32 */ u16 unk32;
-    /* 0x34 */ u8 filler34[2];
+    /* 0x34 */ u16 unk34;
     /* 0x36 */ s8 unk36;
     /* 0x37 */ u8 itemEffect; // bitfield
     /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
@@ -115,7 +115,7 @@ typedef struct Player_ {
     /* 0x50 */ u16 unk50;
     /* 0x52 */ u16 unk52;
     /* 0x54 */ u16 unk54; // some other anim-variant?
-    /* 0x56 */ u8 filler56[0x2];
+    /* 0x56 */ u16 unk56;
     /* 0x58 */ s16 unk58;
     /* 0x5A */ bool8 unk5A; // boost?
     /* 0x5B */ u8 unk5B;

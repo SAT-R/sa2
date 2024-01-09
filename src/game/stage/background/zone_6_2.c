@@ -62,7 +62,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 bg->layoutVram = (void *)BG_SCREEN_ADDR(26);
                 bg->targetTilesX = 32;
                 bg->targetTilesY = 32;
-                InitBackground(bg);
+                DrawBackground(bg);
             } else if (r6 > 1) {
                 // _0801D636
                 gDispCnt |= DISPCNT_BG0_ON;
@@ -127,7 +127,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 bg->layoutVram = (void *)BG_SCREEN_ADDR(26);
                 bg->targetTilesX = 32;
                 bg->targetTilesY = 32;
-                InitBackground(bg);
+                DrawBackground(bg);
             } else {
                 gDispCnt |= DISPCNT_BG0_ON;
                 gBgCntRegs[0] |= BGCNT_PRIORITY(3);

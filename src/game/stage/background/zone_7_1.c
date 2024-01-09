@@ -43,7 +43,7 @@ void CreateStageBg_Zone7(void)
     bg->layoutVram = (void *)BG_SCREEN_ADDR(22);
     bg->targetTilesX = 32;
     bg->targetTilesY = 20;
-    InitBackground(bg);
+    DrawBackground(bg);
 
     gBgCntRegs[3] &= ~BGCNT_PRIORITY(3);
     gBgCntRegs[3] |= BGCNT_PRIORITY(3);

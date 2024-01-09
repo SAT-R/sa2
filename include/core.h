@@ -255,7 +255,7 @@ extern u16 gDispCnt;
 #define WINREG_WINOUT 5
 extern u16 gWinRegs[6];
 extern struct BlendRegs gBldRegs;
-extern BgAffineReg gBgAffineRegs[2];
+extern BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS];
 extern u16 gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgPalette[BG_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgCntRegs[4];
@@ -269,11 +269,11 @@ extern s16 gUnknown_03000408;
 extern s16 gBgScrollRegs[4][2];
 
 extern OamData gUnknown_030022C8;
-extern OamData gUnknown_030022D0[128];
-extern OamData gOamBuffer[128];
+extern OamData gOamBuffer2[OAM_ENTRY_COUNT];
+extern OamData gOamBuffer[OAM_ENTRY_COUNT];
 
 // NOTE(Jace): This could be u16[2][DISPLAY_HEIGHT][2] (or unsigned Vec2_16?)
-extern u32 gUnknown_03001B60[2][DISPLAY_HEIGHT];
+extern u32 gBgOffsetsBuffer[2][DISPLAY_HEIGHT];
 extern Background *gUnknown_03001800[16];
 
 // This is used to buffer the xy-shift for each background scanline
@@ -289,13 +289,13 @@ extern u16 gUnknown_03001944;
 extern u8 gUnknown_03001948;
 extern u16 gUnknown_0300194C;
 
-struct MapHeader **gUnknown_03002260; // TODO: make this an array and add size
+struct MapHeader **gTilemapsRef; // TODO: make this an array and add size
 extern u8 gUnknown_03002280[4][4];
 extern u8 gUnknown_03004D80[16];
 
 extern u16 *gUnknown_030022AC;
 extern void *gUnknown_030022C0;
-extern s16 gUnknown_030026D0;
+extern s16 gMosaicReg;
 extern u8 gUnknown_030026F4;
 extern const struct SpriteTables *gUnknown_03002794;
 extern struct GraphicsData *gVramGraphicsCopyQueue[32];

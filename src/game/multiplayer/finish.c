@@ -150,7 +150,7 @@ typedef struct {
 } Finish2; /* size: 4 */
 
 void Task_801A04C(void);
-void Task_801A0E0(void);
+void Task_TransitionToResultsScreen(void);
 
 void sub_8019F08(void)
 {
@@ -234,19 +234,19 @@ void Task_801A04C(void)
             m4aMPlayFadeOut(&gMPlayInfo_SE3, 4);
 
             f2->unk0 = 0;
-            gCurTask->main = Task_801A0E0;
+            gCurTask->main = Task_TransitionToResultsScreen;
         }
     }
 }
 
-void Task_801A0E0(void)
+void Task_TransitionToResultsScreen(void)
 {
     u32 i; // r7
 
     Finish2 *f2 = TASK_DATA(gCurTask);
-    f2->unk0 += 64;
+    f2->unk0 += Q_24_8(0.25);
 
-    gBldRegs.bldY = (f2->unk0 >> 8);
+    gBldRegs.bldY = Q_24_8_TO_INT(f2->unk0);
 
     if (f2->unk0 >= 0x1000) {
         // _0801A110
@@ -258,7 +258,7 @@ void Task_801A0E0(void)
             u8 sp04[4] = { 0 };
 
             m4aMPlayAllStop();
-            *((u32 *)sp04) = *((u32 *)gUnknown_030053E8);
+            *((u32 *)sp04) = *((u32 *)gMultiplayerCharRings);
 
             for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
                 s32 m;

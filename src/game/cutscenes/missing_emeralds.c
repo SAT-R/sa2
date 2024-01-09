@@ -217,7 +217,7 @@ void Task_8094360(void)
             gBgScrollRegs[1][1] = 400;
             background = &scene->unk40;
             background->tilemapId = sTilemapsPlayerNotifs[scene->unkBF - 1];
-            InitBackground(background);
+            DrawBackground(background);
         }
 
         // "Collect all Chaos Emeralds!" message
@@ -226,7 +226,7 @@ void Task_8094360(void)
         gBgScrollRegs[0][1] = 0;
         background = &scene->unk0;
         background->tilemapId = sTilemapsPlayerNotifs[0];
-        InitBackground(background);
+        DrawBackground(background);
     } else {
         s32 base;
         u16 index;
@@ -237,7 +237,7 @@ void Task_8094360(void)
         // "Unlocked Tiny Chao Garden" message
         background = &scene->unk0;
         background->tilemapId = sTilemapsPlayerNotifs[7];
-        InitBackground(background);
+        DrawBackground(background);
 
         if (scene->unkBD > 1 || scene->unkBF > 1) {
             gDispCnt |= 0x200;
@@ -248,7 +248,7 @@ void Task_8094360(void)
             base = scene->unkBF;
             index = (base + 6 + ((scene->unkBD - 1) * 7));
             background->tilemapId = sTilemapsPlayerNotifs[index];
-            InitBackground(background);
+            DrawBackground(background);
         }
     }
 

@@ -496,7 +496,7 @@ void CreateFinalEndingLandingCutScene(void)
         background->targetTilesY = 0x20;
         background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(0);
-        InitBackground(background);
+        DrawBackground(background);
     }
 
     if (value == 2) {
@@ -520,7 +520,7 @@ void CreateFinalEndingLandingCutScene(void)
         background->targetTilesY = 0x20;
         background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(1);
-        InitBackground(background);
+        DrawBackground(background);
     }
 
     if (!(gLoadedSaveGame->chaosEmeralds[gSelectedCharacter]

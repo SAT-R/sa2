@@ -31,10 +31,10 @@ struct Camera ALIGNED(8) gCamera = {};
 const u32 *gUnknown_030059C8 = NULL;
 
 static void sub_801C708(s32, s32);
-void Task_801E0A8(void);
+void Task_CallUpdateCamera(void);
 void TaskDestructor_801E040(struct Task *);
 
-extern void sub_802C668(s32 *x, s32 *y);
+extern void SuperSonicGetPos(s32 *x, s32 *y);
 
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
@@ -210,7 +210,7 @@ static const VoidFn sStageBgInitProcedures[] = {
     [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = NULL,
 };
 
-static const CameraMain sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
+static const BgUpdate sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
     // Zone 1
     [LEVEL_INDEX(ZONE_1, ACT_1)] = StageBgUpdate_Zone1Acts12,
     [LEVEL_INDEX(ZONE_1, ACT_2)] = StageBgUpdate_Zone1Acts12,
@@ -311,9 +311,11 @@ void InitCamera(u32 level)
     struct Camera *camera = &gCamera;
     const s8 *unkA98 = gUnknown_080D5A98[level];
 
-    gDispCnt = 0x3E40;
+    gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON
+                | DISPCNT_BG3_ON | DISPCNT_OBJ_1D_MAP);
     if (level == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        gDispCnt = 0x3741;
+        gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG0_ON | DISPCNT_BG1_ON
+                    | DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
     }
 
     gBgCntRegs[1]
@@ -324,7 +326,8 @@ void InitCamera(u32 level)
     gBgCntRegs[3] = temp | 3 | (unkA98[3] << 8) | (unkA98[2] << 2);
 
     if (level == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        gDispCnt = 0x3641;
+        gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON
+                    | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
     }
 
     bgs = &gStageBackgroundsRam;
@@ -359,9 +362,9 @@ void InitCamera(u32 level)
     }
 
     if (level != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        InitBackground(&bgs->unk40);
-        InitBackground(&bgs->unk80);
-        InitBackground(&bgs->unkC0);
+        DrawBackground(&bgs->unk40);
+        DrawBackground(&bgs->unk80);
+        DrawBackground(&bgs->unkC0);
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -380,17 +383,17 @@ void InitCamera(u32 level)
             && (gUnknown_030054B0 == 0))
         || (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            sub_802C668(&player->x, &player->y);
+            SuperSonicGetPos(&player->x, &player->y);
             gUnknown_03005440 = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][0];
             gUnknown_030054BC = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][1];
             camera->x = 600;
-            camera->unk10 = 0x78;
+            camera->unk10 = (DISPLAY_WIDTH / 2);
             camera->unk14 = 0;
             camera->y = 0;
-            camera->unk64 = 0xFFFC;
+            camera->unk64 = -4;
         } else {
             camera->x = Q_24_8_TO_INT(player->x);
-            camera->unk10 = Q_24_8_TO_INT(player->x) - 0x1E0;
+            camera->unk10 = Q_24_8_TO_INT(player->x) - (2 * DISPLAY_WIDTH);
             camera->y = Q_24_8_TO_INT(player->y) - 0x54;
             camera->unk14 = camera->y;
             camera->unk64 = player->unk17 - 4;
@@ -429,9 +432,10 @@ void InitCamera(u32 level)
     camera->unk60 = 0;
     camera->unk62 = 0;
 
-    camera->movementTask = TaskCreate(Task_801E0A8, 0, 0xF00, 0, TaskDestructor_801E040);
+    camera->movementTask
+        = TaskCreate(Task_CallUpdateCamera, 0, 0xF00, 0, TaskDestructor_801E040);
 
-    camera->unk58 = sStageBgUpdateFuncs[level];
+    camera->fnBgUpdate = sStageBgUpdateFuncs[level];
 
     if (sStageBgInitProcedures[level] != NULL) {
         sStageBgInitProcedures[level]();
@@ -454,14 +458,14 @@ void UpdateCamera(void)
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         s32 delta, playerY;
         if (player->moveState & MOVESTATE_DEAD) {
-            if (camera->unk58 != NULL) {
-                camera->unk58(gCamera.x, gCamera.y);
+            if (camera->fnBgUpdate != NULL) {
+                camera->fnBgUpdate(gCamera.x, gCamera.y);
             }
             return;
         }
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            sub_802C668(&player->x, &player->y);
+            SuperSonicGetPos(&player->x, &player->y);
         }
 
         camera->unk10 += BOSS_CAM_FRAME_DELTA_PIXELS;
@@ -612,8 +616,8 @@ void UpdateCamera(void)
 
     sub_801C708(newX, newY);
 
-    if (camera->unk58 != NULL) {
-        camera->unk58(newX, newY);
+    if (camera->fnBgUpdate != NULL) {
+        camera->fnBgUpdate(newX, newY);
     }
 }
 
@@ -626,7 +630,7 @@ static void sub_801C708(s32 x, s32 y)
         gBgScrollRegs[1][1] = y & 7;
         layer->scrollX = x;
         layer->scrollY = y;
-        InitBackground(layer);
+        DrawBackground(layer);
         UpdateBgAnimationTiles(layer);
 
         layer = &gStageBackgroundsRam.unk80;
@@ -634,6 +638,6 @@ static void sub_801C708(s32 x, s32 y)
         gBgScrollRegs[2][1] = y & 7;
         layer->scrollX = x;
         layer->scrollY = y;
-        InitBackground(layer);
+        DrawBackground(layer);
     }
 }

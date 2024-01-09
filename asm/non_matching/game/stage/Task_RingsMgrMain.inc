@@ -92,7 +92,7 @@ _08007FBE:
 	asrs r0, r0, #0x18
 	cmp r0, #0x1d
 	bne _08007FFA
-	bl sub_802C6E4
+	bl SuperSonicGetFlags
 	movs r1, #0x87
 	lsls r1, r1, #2
 	ands r1, r0
@@ -105,7 +105,7 @@ _08007FBE:
 _08007FE4:
 	ldr r0, _080082AC @ =gPlayer + 0x8
 	adds r1, r0, #4
-	bl sub_802C668
+	bl SuperSonicGetPos
 	mov r0, sp
 	movs r1, #0xf6
 	strb r1, [r0]
@@ -880,7 +880,7 @@ _080085C0: .4byte gCamera
 _080085C4:
 	ldrb r1, [r2]
 	lsls r1, r1, #3
-	ldr r0, _0800869C @ =gUnknown_030022D0
+	ldr r0, _0800869C @ =gOamBuffer2
 	adds r6, r1, r0
 	ldr r4, [sp, #0x18]
 	ldrh r0, [r4, #0x1a]
@@ -993,7 +993,7 @@ _08008692:
 _0800869A:
 	b Task_RingsMgrMain_Return
 	.align 2, 0
-_0800869C: .4byte gUnknown_030022D0
+_0800869C: .4byte gOamBuffer2
 _080086A0: .4byte iwram_end
 _080086A4: .4byte 0x040000D4
 _080086A8: .4byte 0x80000003
@@ -1115,7 +1115,7 @@ _08008784: .4byte gCamera
 _08008788:
 	ldrb r1, [r1]
 	lsls r1, r1, #3     @ r1 = s->oamIndex * 8
-	ldr r0, _0800885C @ =gUnknown_030022D0
+	ldr r0, _0800885C @ =gOamBuffer2
 	adds r6, r1, r0     @ r6 = oamDat
 	ldr r4, [sp, #0x18]
 	ldrh r0, [r4, #0x1a]
@@ -1223,7 +1223,7 @@ Task_RingsMgrMain_Return:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0800885C: .4byte gUnknown_030022D0
+_0800885C: .4byte gOamBuffer2
 _08008860: .4byte iwram_end
 _08008864: .4byte 0x040000D4
 _08008868: .4byte 0x80000003

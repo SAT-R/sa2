@@ -507,7 +507,7 @@ void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void)
         gUnknown_03002280[2][2] = 0xff;
         gUnknown_03002280[2][3] = 0x14;
 
-        InitBackground(&sequence->background);
+        DrawBackground(&sequence->background);
         gCurTask->main = Task_DisplaySonicSonicArtworkAndDestroyTask;
         return;
     }
@@ -1580,7 +1580,7 @@ void CreateBackgrounds(void)
     background->targetTilesY = 0x20;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    InitBackground(background);
+    DrawBackground(background);
 
     background = &worldBgs->bg2;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
@@ -1597,7 +1597,7 @@ void CreateBackgrounds(void)
     background->targetTilesY = 0x20;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(1);
-    InitBackground(background);
+    DrawBackground(background);
 }
 
 void sub_803997C(void)

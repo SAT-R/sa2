@@ -5,9 +5,6 @@
 .syntax unified
 .text
 
-.if 0
-.endif
-
 	thumb_func_start sub_802E49C
 sub_802E49C: @ 0x0802E49C
 	push {r4, r5, r6, r7, lr}
@@ -470,7 +467,7 @@ _0802E7E8:
 _0802E7EE:
 	ldr r0, _0802E820 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
-	ldr r2, _0802E824 @ =gUnknown_03001B60
+	ldr r2, _0802E824 @ =gBgOffsetsBuffer
 	cmp r0, r2
 	bne _0802E830
 	add r1, sp, #0x1c
@@ -490,7 +487,7 @@ _0802E814: .4byte 0x04000040
 _0802E818: .4byte gFlags
 _0802E81C: .4byte 0xFFFF0000
 _0802E820: .4byte gBgOffsetsHBlank
-_0802E824: .4byte gUnknown_03001B60
+_0802E824: .4byte gBgOffsetsBuffer
 _0802E828: .4byte 0x040000D4
 _0802E82C: .4byte 0x81000140
 _0802E830:
@@ -845,7 +842,7 @@ _0802EABC:
 	bne _0802EB14
 	ldr r0, _0802EAE4 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
-	ldr r3, _0802EAE8 @ =gUnknown_03001B60
+	ldr r3, _0802EAE8 @ =gBgOffsetsBuffer
 	cmp r0, r3
 	bne _0802EAF4
 	add r1, sp, #0x1c
@@ -859,7 +856,7 @@ _0802EABC:
 	b sub_802E784_return
 	.align 2, 0
 _0802EAE4: .4byte gBgOffsetsHBlank
-_0802EAE8: .4byte gUnknown_03001B60
+_0802EAE8: .4byte gBgOffsetsBuffer
 _0802EAEC: .4byte 0x040000D4
 _0802EAF0: .4byte 0x81000140
 _0802EAF4:
@@ -911,7 +908,7 @@ _0802EB14:
 	movs r3, #0xf1
 	ldr r0, _0802EB74 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
-	ldr r2, _0802EB78 @ =gUnknown_03001B60
+	ldr r2, _0802EB78 @ =gBgOffsetsBuffer
 	cmp r0, r2
 	bne _0802EB84
 	add r1, sp, #0x1c
@@ -927,7 +924,7 @@ _0802EB14:
 _0802EB6C: .4byte 0xFFFFFEFF
 _0802EB70: .4byte gSineTable
 _0802EB74: .4byte gBgOffsetsHBlank
-_0802EB78: .4byte gUnknown_03001B60
+_0802EB78: .4byte gBgOffsetsBuffer
 _0802EB7C: .4byte 0x040000D4
 _0802EB80: .4byte 0x81000140
 _0802EB84:
@@ -1015,7 +1012,7 @@ _0802EBE8:
 	movs r3, #0xf1
 	ldr r0, _0802EC44 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
-	ldr r2, _0802EC48 @ =gUnknown_03001B60
+	ldr r2, _0802EC48 @ =gBgOffsetsBuffer
 	cmp r0, r2
 	bne _0802EC54
 	add r1, sp, #0x1c
@@ -1030,7 +1027,7 @@ _0802EBE8:
 	.align 2, 0
 _0802EC40: .4byte gSineTable
 _0802EC44: .4byte gBgOffsetsHBlank
-_0802EC48: .4byte gUnknown_03001B60
+_0802EC48: .4byte gBgOffsetsBuffer
 _0802EC4C: .4byte 0x040000D4
 _0802EC50: .4byte 0x81000140
 _0802EC54:
@@ -1119,7 +1116,7 @@ _0802ECC2:
 	movs r3, #0xf1
 	ldr r0, _0802ED14 @ =gBgOffsetsHBlank
 	ldr r0, [r0]
-	ldr r2, _0802ED18 @ =gUnknown_03001B60
+	ldr r2, _0802ED18 @ =gBgOffsetsBuffer
 	cmp r0, r2
 	bne _0802ED24
 	add r1, sp, #0x1c
@@ -1134,7 +1131,7 @@ _0802ECC2:
 	.align 2, 0
 _0802ED10: .4byte gSineTable
 _0802ED14: .4byte gBgOffsetsHBlank
-_0802ED18: .4byte gUnknown_03001B60
+_0802ED18: .4byte gBgOffsetsBuffer
 _0802ED1C: .4byte 0x040000D4
 _0802ED20: .4byte 0x81000140
 _0802ED24:

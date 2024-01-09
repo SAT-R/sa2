@@ -175,7 +175,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     background->targetTilesY = 0x14;
     background->paletteOffset = 0;
     background->flags = BACKGROUND_FLAGS_BG_ID(0);
-    InitBackground(background);
+    DrawBackground(background);
 
     s = &lobbyScreen->chao;
     s->graphics.dest = VramMalloc(0x38);

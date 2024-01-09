@@ -4,7 +4,7 @@
 
 u8 gUnknown_030053E0 = 0;
 u32 gCheckpointTime = 0;
-u8 gUnknown_030053E8[MULTI_SIO_PLAYERS_MAX] = {};
+u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX] = {};
 u8 gMultiplayerLanguage = 0;
 
 u16 ALIGNED(4) gRingCount = 0;
@@ -37,7 +37,7 @@ u16 ALIGNED(16) gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH]
 u32 gCourseTime = 0;
 
 SomeStruct_3005498 ALIGNED(8) gUnknown_03005498 = {};
-u32 gUnknown_030054A0 = 0;
+u32 sMPStageStartFrameCount = 0;
 UNK_30054A8 ALIGNED(8) gUnknown_030054A8 = {};
 u8 gUnknown_030054B0 = 0;
 s8 ALIGNED(4) gUnknown_030054B4[MULTI_SIO_PLAYERS_MAX] = {};

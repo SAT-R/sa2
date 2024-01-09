@@ -334,7 +334,7 @@ _08020450: .4byte gStageTime
 _08020454:
 	ldrb r0, [r1]
 	lsls r0, r0, #3
-	ldr r1, _080204FC @ =gUnknown_030022D0
+	ldr r1, _080204FC @ =gOamBuffer2
 	adds r4, r0, r1
 	mov r1, sb
 	ldrh r0, [r1, #0x1a]
@@ -419,7 +419,7 @@ _080204EA:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080204FC: .4byte gUnknown_030022D0
+_080204FC: .4byte gOamBuffer2
 _08020500: .4byte iwram_end
 _08020504: .4byte 0x040000D4
 _08020508: .4byte 0x80000003

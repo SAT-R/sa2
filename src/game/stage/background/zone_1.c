@@ -40,7 +40,7 @@ void CreateStageBg_Zone1(void)
         background->targetTilesY = 0x1E;
     }
 
-    InitBackground(background);
+    DrawBackground(background);
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 }

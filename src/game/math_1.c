@@ -2,6 +2,7 @@
 #include "game/math.h"
 #include "trig.h"
 
+// Might be equivalent to UNK_8085D14?
 struct UNK_8085F1C_1 {
     u8 filler0[2];
     s16 unk2[9];

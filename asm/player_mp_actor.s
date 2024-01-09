@@ -693,7 +693,7 @@ _08016576:
 	mov r4, r8
 	ldrh r1, [r4, #6]
 	ldrb r3, [r4, #6]
-	ldr r2, _080165C8 @ =gUnknown_030053E8
+	ldr r2, _080165C8 @ =gMultiplayerCharRings
 	mov r5, sl
 	ldrb r0, [r5]
 	adds r0, r0, r2
@@ -720,7 +720,7 @@ _080165B8: .4byte 0xFFFFFEFF
 _080165BC: .4byte PlayerCB_8025318
 _080165C0: .4byte 0xFFBFFFFF
 _080165C4: .4byte gGameMode
-_080165C8: .4byte gUnknown_030053E8
+_080165C8: .4byte gMultiplayerCharRings
 _080165CC: .4byte gPlayerCharacterIdleAnims
 _080165D0:
 	mov r0, r8

@@ -25,17 +25,17 @@ OamData *OamMalloc(u8 order)
         result = (OamData *)iwram_end;
     } else {
         if (gUnknown_03001850[order] == 0xFF) {
-            gUnknown_030022D0[gOamFreeIndex].split.fractional = 0xFF;
+            gOamBuffer2[gOamFreeIndex].split.fractional = 0xFF;
             gUnknown_03001850[order] = gOamFreeIndex;
             gUnknown_03004D60[order] = gOamFreeIndex;
         } else {
-            gUnknown_030022D0[gOamFreeIndex].split.fractional = 0xFF;
-            gUnknown_030022D0[gUnknown_03004D60[order]].split.fractional = gOamFreeIndex;
+            gOamBuffer2[gOamFreeIndex].split.fractional = 0xFF;
+            gOamBuffer2[gUnknown_03004D60[order]].split.fractional = gOamFreeIndex;
             gUnknown_03004D60[order] = gOamFreeIndex;
         }
 
         gOamFreeIndex++;
-        result = &gUnknown_030022D0[gOamFreeIndex - 1];
+        result = &gOamBuffer2[gOamFreeIndex - 1];
     }
 
     return result;
@@ -53,13 +53,13 @@ void CopyOamBufferToOam(void)
         while (index != -1) {
             u8 newI;
             u8 *byteArray = gUnknown_03002710;
-            DmaCopy16(3, &gUnknown_030022D0[index], dstOam, sizeof(OamDataShort));
+            DmaCopy16(3, &gOamBuffer2[index], dstOam, sizeof(OamDataShort));
             dstOam++;
 
             byteArray += index;
             newI = i++;
             *byteArray = newI;
-            index = gUnknown_030022D0[index].split.fractional;
+            index = gOamBuffer2[index].split.fractional;
         };
     }
 
