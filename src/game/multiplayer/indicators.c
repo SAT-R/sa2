@@ -145,7 +145,7 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     // _08019616
 
     if (ABS(opponentX2) < 2) {
-        // _08019622+0x4
+        // _08019622+4
         r4 = Q_24_8(3.0);
         if (opponentY2 > 0) {
             r4 = Q_24_8(1.0);
