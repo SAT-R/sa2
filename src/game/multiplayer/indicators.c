@@ -90,9 +90,9 @@ void CreateSelfPositionIndicator(void)
     UpdateSpriteAnimation(spr);
 }
 
-#if 0
 // (79.22%) https://decomp.me/scratch/SKNlg
-void Task_801951C(void)
+NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
+         void Task_801951C(void))
 {
     s32 opponentX, opponentY;
     s32 opponentDistSq;
@@ -187,7 +187,7 @@ void Task_801951C(void)
 
     if (r4 == 0) {
         tfy = (DISPLAY_HEIGHT / 2);
-label:
+    label:
         tfx = DISPLAY_WIDTH;
         asm("");
     } else if (r4 == 0x100) {
@@ -203,7 +203,7 @@ label:
         // _08019716
         if (opponentX2 > 0) {
             s16 divRes = Div(SIN_24_8(r4) * 0x100, COS_24_8(r4));
-            tfy = ((divRes * 15) >> 5) + (DISPLAY_HEIGHT/2);
+            tfy = ((divRes * 15) >> 5) + (DISPLAY_HEIGHT / 2);
 
             if (opponentY2 > 0) {
                 if (tfy >= DISPLAY_HEIGHT) {
@@ -212,18 +212,18 @@ label:
                     sinVal = (0x100 - r4) & ONE_CYCLE;
                     goto label2_0;
                 } else {
-                    //tfx = DISPLAY_WIDTH;
+                    // tfx = DISPLAY_WIDTH;
                     goto label;
                 }
             } else {
                 // _08019768
                 if (tfy < 0) {
                     tfy = 0;
-                    
+
                     sinVal = (0x100 - r4) & ONE_CYCLE;
                     goto label2;
                 } else {
-                    //tfx = DISPLAY_WIDTH;
+                    // tfx = DISPLAY_WIDTH;
                     goto label;
                 }
             }
@@ -231,31 +231,31 @@ label:
             // _08019818
         } else {
             // _0801977C
-            s16 divRes = Div((SIN_24_8((r4 - (SIN_PERIOD/2)) & ONE_CYCLE)) * 0x100, 
-                (COS_24_8((r4 - (SIN_PERIOD/2)) & ONE_CYCLE)));
-            tfy = (DISPLAY_HEIGHT/2) - ((divRes * 15) >> 5);
-            
+            s16 divRes = Div((SIN_24_8((r4 - (SIN_PERIOD / 2)) & ONE_CYCLE)) * 0x100,
+                             (COS_24_8((r4 - (SIN_PERIOD / 2)) & ONE_CYCLE)));
+            tfy = (DISPLAY_HEIGHT / 2) - ((divRes * 15) >> 5);
+
             if (opponentY2 > 0) {
                 if (tfy >= DISPLAY_HEIGHT) {
                     tfy = DISPLAY_HEIGHT;
 
                     sinVal = (0x300 - r4) & ONE_CYCLE;
-label2_0:
+                label2_0:
                     divRes = Div(SIN_24_8(sinVal) * 0x100, COS_24_8(sinVal));
-                    tfx = ((divRes * 5) >> 4) + (DISPLAY_WIDTH/2);
+                    tfx = ((divRes * 5) >> 4) + (DISPLAY_WIDTH / 2);
                 } else {
                     tfx = 0;
                 }
 
             } else {
                 // _08019808
-                if(tfy < 0) {
+                if (tfy < 0) {
                     tfy = 0;
 
                     sinVal = (0x300 - r4) & ONE_CYCLE;
-label2:
+                label2:
                     divRes = Div(SIN_24_8(sinVal) * 0x100, COS_24_8(sinVal));
-                    tfx = (DISPLAY_WIDTH/2) - ((divRes * 5) >> 4);
+                    tfx = (DISPLAY_WIDTH / 2) - ((divRes * 5) >> 4);
                 } else {
                     // _08019848
                     tfx = 0;
@@ -273,7 +273,7 @@ label2:
     sub_8004860(spr, transform);
     DisplaySprite(spr);
 }
-#endif
+END_NONMATCH
 
 /*
  * These two procedures match
