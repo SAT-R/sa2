@@ -1,3 +1,4 @@
+#include "sprite.h"
 #include "data/sprite_data.h"
 
 // 0 - 0x08137078
