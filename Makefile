@@ -156,15 +156,18 @@ __rom: $(ROM)
 # even when rom is already built
 	@echo > /dev/null
 
-tools: $(TOOLDIRS)
+FORMAT_SRC_PATHS := $(shell find . -name "*.c" ! -path '*/src/data/*' ! -path '*/build/*' ! -path '*/ext/*')
+FORMAT_H_PATHS   := $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ext/*')
 
 format:
 	@echo $(FORMAT) -i -style=file "**/*.c" "**/*.h"
-	@$(FORMAT) -i --verbose -style=file $(shell find . -name "*.c" ! -path '*/build/*' ! -path '*/ext/*') $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ext/*')
+	@$(FORMAT) -i --verbose -style=file $(FORMAT_SRC_PATHS) $(FORMAT_H_PATHS)
 
 check_format:
 	@echo $(FORMAT) -i -style=file --dry-run --Werror "**/*.c" "**/*.h"
-	@$(FORMAT) -i --verbose -style=file --dry-run --Werror $(shell find . -name "*.c" ! -path '*/build/*' ! -path '*/ext/*') $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ext/*')
+	@$(FORMAT) -i --verbose -style=file --dry-run --Werror $(FORMAT_SRC_PATHS) $(FORMAT_H_PATHS)
+
+tools: $(TOOLDIRS)
 
 $(TOOLDIRS): tool_libs
 	@$(MAKE) -C $@
