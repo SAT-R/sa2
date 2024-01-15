@@ -475,3 +475,171 @@ void sub_803D754(EggBomberTank *boss)
         }
     }
 }
+
+u32 sub_803D88C(EggBomberTank *boss)
+{
+    Sprite *s = &boss->unk184;
+    u32 ret = 0;
+
+    if (boss->unk72 != 0) {
+        return 0;
+    }
+
+    if (boss->unk70 != 0) {
+        boss->unk70--;
+        if (boss->unk70 & 1) {
+            m4aSongNumStart(SE_143);
+        } else {
+            m4aSongNumStart(SE_235);
+        }
+
+        boss->unk72 = 30;
+        if (boss->unk70 == 0) {
+
+            s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_PILOT;
+            s->variant = 3;
+            INCREMENT_SCORE(1000);
+        } else {
+            s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_PILOT;
+            s->variant = 2;
+        }
+        s->prevVariant = -1;
+    } else {
+        ret = 1;
+    }
+
+    return ret;
+}
+
+extern const u16 gUnknown_080D7B90[];
+extern const u16 gUnknown_080D7B70[][16];
+
+void sub_803D978(EggBomberTank *boss)
+{
+    u8 i;
+    if (boss->unk72 != 0) {
+        for (i = 0; i < 16; i++) {
+            gObjPalette[i + 0x80] = gUnknown_080D7B70[(gStageTime & 2) >> 1][i];
+        }
+    } else {
+        for (i = 0; i < 16; i++) {
+            gObjPalette[i + 0x80] = gUnknown_080D7B70[1][i];
+        }
+    }
+
+    if (boss->unk78 != 0) {
+        boss->unk78--;
+        for (i = 0; i < 16; i++) {
+            gObjPalette[i + 0xD0] = gUnknown_080D7B70[(gStageTime & 2) >> 1][i];
+        }
+    } else {
+        for (i = 0; i < 16; i++) {
+            gObjPalette[i + 0xD0] = gUnknown_080D7B70[1][i];
+        }
+    }
+
+    gFlags |= 2;
+}
+
+void sub_803DA8C(EggBomberTank *boss)
+{
+    Sprite *s = &boss->unk184;
+    if (boss->unk72 != 0) {
+        boss->unk73 = 0;
+        boss->unk72--;
+        if (boss->unk72 == 0) {
+            if (boss->unk70 == 0) {
+                s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_PILOT;
+                s->variant = 3;
+            } else {
+                s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_PILOT;
+                s->variant = 0;
+            }
+            s->prevVariant = -1;
+        }
+    } else {
+        if (boss->unk73 == 0) {
+            return;
+        }
+
+        boss->unk73--;
+
+        if (boss->unk73 == 0) {
+            s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_PILOT;
+            s->variant = 0;
+            s->prevVariant = -1;
+        }
+    }
+}
+
+extern const s8 gUnknown_080D7B43[][2];
+
+u8 sub_803DB1C(EggBomberTank *boss)
+{
+    s32 ground;
+    ExplosionPartsInfo explosion;
+    s32 i;
+    Sprite *s = &boss->unk148;
+    SpriteTransform *transform = &boss->transform;
+    u8 ret = 0;
+
+    if (boss->unk77 == 0 || boss->unk71 != 0) {
+        return 0;
+    }
+
+    boss->unk60 = (boss->unk60 + 0x52) & (SIN_PERIOD - 1);
+    boss->unk5E += 0x40;
+
+    boss->unk54 += boss->unk5C;
+    boss->unk58 += boss->unk5E;
+
+    ground = sub_801F100(Q_24_8_TO_INT(boss->unk58) + 0x18, Q_24_8_TO_INT(boss->unk54),
+                         1, 8, sub_801EC3C);
+
+    if (ground < 0) {
+        m4aSongNumStart(SE_143);
+        boss->unk77 = 0;
+        explosion.velocity = 0;
+        explosion.rotation = 1000;
+        explosion.speed = 0x600;
+        explosion.vram = (void *)OBJ_VRAM0 + 0x2980;
+        explosion.anim = SA2_ANIM_EXPLOSION;
+        explosion.variant = 0;
+        explosion.unk4 = 0;
+
+        for (i = 0; i < 5; i++) {
+            explosion.spawnX
+                = (Q_24_8_TO_INT(boss->unk54) - gCamera.x) + gUnknown_080D7B43[i][0];
+            explosion.spawnY
+                = (Q_24_8_TO_INT(boss->unk58) - gCamera.y) + gUnknown_080D7B43[i][1];
+            CreateBossParticleWithExplosionUpdate(&explosion, &boss->unk76);
+        }
+        ret = 1;
+    } else if ((gStageTime & 3) == 0) {
+        explosion.spawnX = (Q_24_8_TO_INT(boss->unk54) - gCamera.x);
+        explosion.spawnY = (Q_24_8_TO_INT(boss->unk58) - gCamera.y);
+        explosion.velocity = 0;
+        explosion.rotation = 1000;
+        explosion.speed = 0x200;
+        explosion.vram = (void *)OBJ_VRAM0 + 0x2980;
+        explosion.anim = SA2_ANIM_EXPLOSION;
+        explosion.variant = 0;
+        explosion.unk4 = 0;
+        CreateBossParticleWithExplosionUpdate(&explosion, &boss->unk76);
+    }
+
+    s->x = (Q_24_8_TO_INT(boss->unk54) - gCamera.x);
+    s->y = (Q_24_8_TO_INT(boss->unk58) - gCamera.y);
+    s->unk10 = gUnknown_030054B8++ | 0x2060;
+
+    transform->rotation = boss->unk60;
+    transform->width = 0x100;
+    transform->height = 0x100;
+    transform->x = s->x;
+    transform->y = s->y;
+    UpdateSpriteAnimation(s);
+    sub_8004860(s, transform);
+    DisplaySprite(s);
+
+    return ret;
+}
