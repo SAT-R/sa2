@@ -166,8 +166,11 @@ check_format:
 	@echo $(FORMAT) -i -style=file --dry-run --Werror "**/*.c" "**/*.h"
 	@$(FORMAT) -i --verbose -style=file --dry-run --Werror $(shell find . -name "*.c" ! -path '*/build/*' ! -path '*/ext/*') $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ext/*')
 
-$(TOOLDIRS):
+$(TOOLDIRS): tool_libs
 	@$(MAKE) -C $@
+
+tool_libs:
+	@$(MAKE) -C tools/_shared
 
 compare: rom
 	$(SHA1) $(BUILD_NAME).sha1
