@@ -31,7 +31,7 @@ typedef struct {
     /* 0x58 */ s32 unk58;
     /* 0x5C */ s16 unk5C;
     /* 0x5E */ s16 unk5E;
-    /* 0x60 */ s16 unk60;
+    /* 0x60 */ s16 unk60; // cannonAngle
     /* 0x64 */ s32 unk64;
     /* 0x68 */ s32 unk68;
     /* 0x6C */ void *unk6C;
@@ -642,4 +642,81 @@ u8 sub_803DB1C(EggBomberTank *boss)
     DisplaySprite(s);
 
     return ret;
+}
+
+extern const u8 gUnknown_080D7B13[];
+
+void sub_803E7D4(EggBomberTank *boss, s32 x, s32 y, u16 angle, u32, u8);
+
+void sub_803DCF4(EggBomberTank *boss)
+{
+    s32 x, y;
+    s32 cos, sin;
+    Sprite *s = &boss->unk148;
+    if (sub_803DF34(boss) != 0) {
+        boss->unk54 = Q_24_8_NEW(Div(boss->x, 256) - 8);
+        boss->unk58 = Q_24_8_NEW(Div(boss->y, 256) - 22);
+        boss->unk54 += ((COS(boss->unk60) * 0xF) >> 5);
+        boss->unk58 += ((SIN(boss->unk60) * 0xF) >> 5);
+
+        s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_CANNON;
+        s->variant = 2;
+        s->prevVariant = -1;
+        sub_803DB1C(boss);
+
+        s = &boss->unk80;
+        s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_BODY;
+        s->variant = 1;
+        s->prevVariant = -1;
+
+        s = &boss->unkB8;
+        s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_BODY_PARTS;
+        s->variant = 1;
+        s->prevVariant = -1;
+
+        {
+            s32 divResA, divResB;
+            s32 oldScore = gLevelScore;
+            gLevelScore += 500;
+
+            divResA = Div(gLevelScore, 50000);
+            divResB = Div(oldScore, 50000);
+
+            if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
+                u16 lives = divResA - divResB;
+                lives += gNumLives;
+
+                if (lives > 255) {
+                    gNumLives = 255;
+                } else {
+                    gNumLives = lives;
+                }
+
+                gUnknown_030054A8.unk3 = 16;
+            }
+        }
+        if (!IS_FINAL_STAGE(gCurrentLevel)) {
+            gUnknown_030054A8.unk1 = 0x11;
+        }
+    } else {
+        if (boss->unk68 == 0) {
+            x = Q_24_8_NEW(Div(boss->x, 256) - 8);
+            y = Q_24_8_NEW(Div(boss->y, 256) - 22);
+            x += (COS(boss->unk60) * 0x32) >> 6;
+            y += (SIN(boss->unk60) * 50) >> 6;
+            s = &boss->unk148;
+            s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_CANNON;
+            s->variant = 1;
+            s->prevVariant = -1;
+
+            boss->unk68 = 0xC;
+            gCurTask->main = Task_803D088;
+            m4aSongNumStart(SE_241);
+            sub_803E7D4(boss, x, y, boss->unk60, 64,
+                        gUnknown_080D7B13[PseudoRandom32() & 0xF]);
+
+        } else {
+            boss->unk68--;
+        }
+    }
 }
