@@ -70,8 +70,11 @@ struct MultiplayerPlayer {
     // TODO: Verify that this is Sprite!
     //       (Used in Task_Item_Invincibility @ 0x0802AC60)
     Sprite s;
+    s32 filler30;
+    s32 filler34;
+    u16 unk38;
 
-    u8 filler[0x20];
+    u8 filler[0x20 - 10];
     // x
     s16 unk50;
     s16 unk52;

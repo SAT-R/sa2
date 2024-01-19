@@ -10,8 +10,9 @@
 
 typedef struct {
     /* 0x54 */ s32 unk54;
-    /* 0x54 */ s32 unk58;
-    /* 0x58 */ u8 filler5C[4];
+    /* 0x58 */ s32 unk58;
+    /* 0x5C */ s16 unk5C;
+    /* 0x5E */ s16 unk5E;
     /* 0x60 */ s32 unk60;
     /* 0x64 */ u8 unk64;
     /* 0x68 */ Sprite *unk68;
