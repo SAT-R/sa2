@@ -134,7 +134,6 @@ SECTIONS
         build/sa2/src/game/water_effects.o(.text);
         build/sa2/src/game/player_callbacks_0.o(.text);
         build/sa2/src/game/cheese.o(.text);
-        build/sa2/asm/cheese.o(.text);
         build/sa2/src/game/boost_effect.o(.text);
         build/sa2/src/game/amy_attack_heart_effect.o(.text);
         build/sa2/asm/player_mp_actor.o(.text);
@@ -405,7 +404,7 @@ SECTIONS
         /* game */
         build/sa2/src/game/water_effects.o(.rodata);
         build/sa2/src/game/player_callbacks_0.o(.rodata);
-        build/sa2/asm/cheese.o(.rodata);
+        build/sa2/src/game/cheese.o(.rodata);
         build/sa2/src/game/boost_effect.o(.rodata);
         build/sa2/src/game/amy_attack_heart_effect.o(.rodata);
         build/sa2/asm/player_mp_actor.o(.rodata);

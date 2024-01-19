@@ -13,12 +13,73 @@
 #include "constants/songs.h"
 #include "constants/animations.h"
 
+typedef struct {
+    Sprite s;
+    s32 unk30;
+    s32 unk34;
+    s32 unk38;
+    u8 unk3C;
+} Cheese_UNK8014BB0;
+
 Cheese *gCheese = NULL;
 
 void sub_801420C(void);
 void sub_8015360(struct Task *);
 
-extern const u16 gUnknown_080D5548[][2];
+void sub_801555C(void);
+
+void sub_8015500(void);
+
+void sub_80153F8(void);
+
+void sub_8014C60(void);
+void sub_8015604(struct Task *);
+
+void sub_8014BB0(Cheese *cheese);
+void sub_80155D0(Cheese *);
+void sub_80148B8(void);
+
+bool8 sub_8015118(Cheese *);
+u8 sub_8014EFC(Cheese *, s16, s16, u8);
+void sub_80142AC(void);
+void sub_8014350(void);
+
+u8 sub_8014CC8(Cheese *);
+
+void sub_80145D8(void);
+void sub_8014A68(void);
+void sub_80144CC(void);
+void sub_8015378(void);
+void sub_8015464(void);
+void sub_80154B0(void);
+void sub_801464C(void);
+
+void sub_80149EC(void);
+void sub_80152EC(void);
+
+const u16 gUnknown_080D5548[][2] = {
+    { 0x1C7, 0 }, { 0x1C8, 0 }, { 0x1C9, 0 }, { 0x1C7, 0 }, { 0x1C8, 0 }, { 0x1C9, 0 },
+    { 0x1C9, 1 }, { 0x1CA, 0 }, { 0x1CB, 0 }, { 0x1CC, 0 }, { 0x1CC, 1 }, { 0x1CD, 0 },
+    { 0x1CE, 0 }, { 0x1CF, 0 }, { 0x1CF, 1 }, { 0x1D0, 0 }, { 0x1D1, 0 }, { 0x1D6, 0 },
+};
+
+const u8 gUnknown_080D5590[] = {
+    0,  9,  10, 10, 0, 0, 0, 0, 0,  0,  3,  3,  0, 0,  0, 0, 0, 0, 0, 0,  1, 1,
+    0,  0,  0,  0,  0, 0, 0, 0, 2,  2,  4,  4,  0, 4,  0, 2, 0, 0, 0, 11, 2, 16,
+    16, 16, 16, 15, 0, 0, 0, 0, 12, 12, 13, 14, 0, 17, 0, 0, 0, 0, 0, 0,  0, 0,
+    0,  0,  8,  8,  8, 8, 8, 5, 5,  5,  5,  5,  0, 0,  0, 0, 0, 0, 0, 0,  0, 0,
+    0,  0,  0,  0,  0, 0, 0, 0, 0,  0,  0,  0,  0, 0,  0, 0, 0, 0, 0, 0,  0, 0,
+    0,  0,  0,  0,  0, 0, 0, 0, 0,  0,  0,  0,  0, 0,  0, 8, 8, 8, 0, 0,  0, 0,
+    0,  0,  0,  0,  0, 0, 0, 0, 0,  0,  0,  0,  0, 0,  0, 0, 0, 0, 0, 0,
+};
+
+const u8 gUnknown_080D5628[] = {
+    0,   1,   4,   6,   8,   10,  11,  12,  14,  16,  22,  25,  28,  29,  30,  30,
+    32,  35,  30,  38,  40,  41,  42,  0,   0,   0,   0,   0,   43,  46,  47,  49,
+    52,  54,  56,  57,  58,  0,   62,  64,  0,   0,   0,   66,  0,   0,   0,   0,
+    68,  71,  73,  76,  78,  81,  83,  85,  86,  0,   94,  95,  107, 119, 120, 122,
+    124, 125, 128, 131, 132, 141, 143, 144, 146, 147, 150, 151,
+};
 
 void CreateCheese(Player *player)
 {
@@ -136,11 +197,6 @@ void sub_801412C(Cheese *cheese)
     }
 }
 
-u8 sub_8015118(Cheese *);
-u8 sub_8014EFC(Cheese *, s16, s16, u8);
-void sub_80142AC(void);
-void sub_8014350(void);
-
 void sub_801420C(void)
 {
     struct Task **t = &gCurTask;
@@ -195,19 +251,6 @@ void sub_80142AC(void)
 
     sub_801412C(cheese);
 }
-
-u8 sub_8014CC8(Cheese *);
-
-extern const u8 gUnknown_080D5590[];
-
-extern const u8 gUnknown_080D5628[];
-
-void sub_80145D8(void);
-void sub_8014A68(void);
-void sub_80144CC(void);
-void sub_8015378(void);
-void sub_8015464(void);
-void sub_80154B0(void);
 
 void sub_8014350(void)
 {
@@ -324,11 +367,6 @@ void sub_80144CC(void)
     sub_801412C(cheese);
 }
 
-void sub_801464C(void);
-
-void sub_80149EC(void);
-void sub_80152EC(void);
-
 void sub_80145D8(void)
 {
     Cheese *cheese = TASK_DATA(gCurTask);
@@ -351,9 +389,6 @@ void sub_80145D8(void)
     sub_80152EC();
     sub_801412C(cheese);
 }
-
-void sub_80155D0(Cheese *);
-void sub_80148B8(void);
 
 void sub_801464C(void)
 {
@@ -627,7 +662,6 @@ void sub_8014A68(void)
     sub_801412C(cheese);
 }
 
-void sub_8014BB0(Cheese *cheese);
 void sub_8014AFC(void)
 {
     Cheese *cheese = TASK_DATA(gCurTask);
@@ -664,17 +698,6 @@ void sub_8014AFC(void)
         sub_8014BB0(cheese);
     }
 }
-
-typedef struct {
-    Sprite s;
-    s32 unk30;
-    s32 unk34;
-    s32 unk38;
-    u8 unk3C;
-} Cheese_UNK8014BB0;
-
-void sub_8014C60(void);
-void sub_8015604(struct Task *);
 
 void sub_8014BB0(Cheese *cheese)
 {
@@ -984,7 +1007,7 @@ u8 sub_8014EFC(Cheese *cheese, s16 x, s16 y, u8 p4)
     return ret;
 }
 
-u8 sub_8015118(Cheese *cheese)
+bool8 sub_8015118(Cheese *cheese)
 {
     Cheese_UNK54 *unk54 = &cheese->unk54;
 
@@ -1099,8 +1122,6 @@ void sub_8015360(struct Task *t)
     VramFree(s->graphics.dest);
 }
 
-void sub_80153F8(void);
-
 void sub_8015378(void)
 {
     Cheese *cheese = TASK_DATA(gCurTask);
@@ -1155,7 +1176,6 @@ void sub_8015464(void)
     sub_801412C(cheese);
 }
 
-void sub_8015500(void);
 void sub_80154B0(void)
 {
     Cheese *cheese = TASK_DATA(gCurTask);
@@ -1169,8 +1189,6 @@ void sub_80154B0(void)
     cheese->unk10 = 0;
     sub_801412C(cheese);
 }
-
-void sub_801555C(void);
 
 void sub_8015500(void)
 {
