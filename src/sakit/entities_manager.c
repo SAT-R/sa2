@@ -274,7 +274,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Spring_Big_DownLeft,
     CreateEntity_Spring_Small_UpRight,
     CreateEntity_Spring_Small_UpLeft,
-    CreateEntity_CommonThinPlatform,
+    CreateEntity_PlatformThin,
     CreateEntity_Decoration,
     CreateEntity_Ramp,
     CreateEntity_Booster,
