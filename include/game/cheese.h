@@ -34,7 +34,7 @@ typedef struct {
 
     // Following here might be a Sprite (incl. unk4C-unk53)?
     /* 0x1C */ Sprite s;
-    /* 0x3C */ Hitbox reserved;
+    /* 0x4C */ Hitbox reserved;
     /* 0x54 */ Cheese_UNK54 unk54;
     /* 0x6C */ struct MultiplayerPlayer *unk6C;
 } Cheese; /* size: 0x70 */

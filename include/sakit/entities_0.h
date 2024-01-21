@@ -14,5 +14,6 @@ bool32 sub_800C418(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
 
 // Lose rings?
 bool32 sub_800CBA4(Player *);
+void sub_800CB18(Player *);
 
 #endif // GUARD_STAGE_ENTITIES_0_H
