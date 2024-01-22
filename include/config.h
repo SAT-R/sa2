@@ -8,6 +8,6 @@
 #define GAME_SA3 3
 
 // TODO: Define this in Makefile through a compiler macro!
-#define GAME     GAME_SA2
+#define GAME GAME_SA2
 
 #endif // GUARD_SA1_CONFIG_H

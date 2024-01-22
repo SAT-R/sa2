@@ -77,11 +77,10 @@ static const u16 sPlatformBreakAnimations[][6] = {
 static const u16 unused = 0;
 
 void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+                               u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_PlatformThinMain, sizeof(Sprite_CommonThinPlatform),
-                     0x2010, 0, TaskDestructor_PlatformThin);
+    struct Task *t = TaskCreate(Task_PlatformThinMain, sizeof(Sprite_CommonThinPlatform),
+                                0x2010, 0, TaskDestructor_PlatformThin);
     Sprite_CommonThinPlatform *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
