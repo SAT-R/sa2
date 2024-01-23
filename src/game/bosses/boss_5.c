@@ -10,6 +10,7 @@
 #include "game/save.h"
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
+#include "game/stage/boss_results_transition.h"
 #include "game/player_callbacks_1.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -156,7 +157,6 @@ static const u16 gUnknown_080D7FF0[][0x10] = {
 };
 
 // stage intro related
-extern void sub_802EF68(s16, s16, u8);
 extern void sub_802E784(u16, u16, u16, s16 x, s16 y, s16);
 
 void Task_EggSaucerIntro(void);
