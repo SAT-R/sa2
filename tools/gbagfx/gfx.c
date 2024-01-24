@@ -379,7 +379,7 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
 	else if (numTiles > maxNumTiles)
 		FATAL_ERROR("The specified number of tiles (%d) is greater than the maximum possible value (%d).\n", numTiles, maxNumTiles);
     
-    int tileSize = (8*8 * bitDepth) / 8;
+    int tileSize = (8*8 * bitDepth) / 8u;
 	int bufferSize = numTiles * tileSize;
 	unsigned char *buffer = malloc(bufferSize);
 
@@ -407,8 +407,8 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
             FATAL_ERROR("It is not supported to use -ignore_trailing and -split_into_oam_shapes simultaneously.");
 
         // TODO: Add 8bpp support
-        if(bitDepth != 4)
-            FATAL_ERROR("Only 4bpp images supported for -split_into_oam_shapes");
+        if(bitDepth != 4 && bitDepth != 8)
+            FATAL_ERROR("Only 4bpp and 8bpp images supported for -split_into_oam_shapes");
 
         unsigned char* scratchBuffer = malloc(bufferSize);
 
