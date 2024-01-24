@@ -28,3 +28,6 @@ tiles.8bpp: tiles.png
 
 graphics/obj_tiles/4bpp/%.4bpp: graphics/obj_tiles/4bpp/%.png
 	$(GFX) $< $@ -split_into_oam_shapes
+
+graphics/obj_tiles/8bpp/%.8bpp: graphics/obj_tiles/8bpp/%.png
+	$(GFX) $< $@ -split_into_oam_shapes
