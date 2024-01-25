@@ -1094,7 +1094,7 @@ void sub_803E8DC(void);
 
 void sub_803E7D4(EggBomberTank *boss, s32 x, s32 y, u16 angle, u16 p5, u8 p6)
 {
-    struct Task *t = TaskCreate(sub_803E8DC, 0x44, 0x6100, 0, NULL);
+    struct Task *t = TaskCreate(sub_803E8DC, sizeof(EggBomberTankBomb), 0x6100, 0, NULL);
     Sprite *s;
     EggBomberTankBomb *bomb = TASK_DATA(t);
     bomb->unk0 = x - Q_24_8_NEW(gCamera.x);
@@ -1119,8 +1119,13 @@ void sub_803E7D4(EggBomberTank *boss, s32 x, s32 y, u16 angle, u16 p5, u8 p6)
     s->graphics.dest = boss->unk6C;
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_BOMBER_TANK_BOMB, 0, 25, 2, 0);
 }
+typedef struct {
+    void *vram;
+    AnimId anim;
+    u8 variant;
+} ExplosionGraphics;
 
-void sub_803EAF4(EggBomberTank *boss, s32 x, s32 y, s32, s32);
+void sub_803EAF4(EggBomberTank *boss, s32 x, s32 y, ExplosionGraphics);
 void sub_803EC84(void);
 
 void sub_803E8DC(void)
@@ -1171,33 +1176,24 @@ void sub_803E8DC(void)
     bomb->unkC--;
 
     if (bomb->unkC == 0 || bomb->unk10->unk70 == 0) {
-#ifndef NON_MATCHING
-        register s32 r5 asm("r5");
-#else
-        s32 r5
-#endif
-
-        s32 someArray[2];
+        ExplosionGraphics graphics;
 
         if (ground >= 16) {
             m4aSongNumStart(SE_242);
-            someArray[0] = (s32)s->graphics.dest + 0x120;
-            r5 = 0xFFFF0000;
-            r5 &= someArray[1];
-            r5 |= 0x27E;
-            r5 &= 0xFF00FFFF;
+            graphics.vram = s->graphics.dest + 0x120;
+            graphics.anim = SA2_ANIM_EXPLOSION_1;
+            graphics.variant = 0;
+
             sub_803EAF4(bomb->unk10, Q_24_8_TO_INT(bomb->unk0) + gCamera.x,
-                        Q_24_8_TO_INT(bomb->unk4) + gCamera.y, someArray[0], r5);
+                        Q_24_8_TO_INT(bomb->unk4) + gCamera.y, graphics);
         } else {
             m4aSongNumStart(SE_243);
-            someArray[0] = (s32)s->graphics.dest + 0x740;
-            r5 = 0xFFFF0000;
-            r5 &= someArray[1];
-            r5 |= 0x27F;
-            r5 &= 0xFF00FFFF;
+            graphics.vram = s->graphics.dest + 0x740;
+            graphics.anim = SA2_ANIM_EXPLOSION_2;
+            graphics.variant = 0;
+
             sub_803EAF4(bomb->unk10, Q_24_8_TO_INT(bomb->unk0) + gCamera.x,
-                        Q_24_8_TO_INT(bomb->unk4) + 0xF + ground + gCamera.y,
-                        someArray[0], r5);
+                        Q_24_8_TO_INT(bomb->unk4) + 0xF + ground + gCamera.y, graphics);
         }
 
         gCurTask->main = sub_803EC84;
@@ -1209,21 +1205,25 @@ void sub_803E8DC(void)
 
 void sub_803EBBC(void);
 
-// void sub_803EAF4(EggBomberTank *boss, s32 x, s32 y, s32 p4, s32 p5)
-// {
-//     struct Task *t = TaskCreate(sub_803EBBC, 0x44, 0x6200, 0, NULL);
-//     Sprite *s;
-//     EggBomberTankBomb *bomb = TASK_DATA(t);
-//     bomb->unk0 = x - gCamera.x;
-//     bomb->unk4 = y - gCamera.y;
-//     bomb->unk8 = 0;
-//     bomb->unkA = 0;
-//     bomb->unk10 = boss;
+void sub_803EAF4(EggBomberTank *boss, s32 x, s32 y, ExplosionGraphics graphics)
+{
+    struct Task *t;
+    Sprite *s;
+    EggBomberTankBomb *bomb;
 
-//     s = &bomb->s;
-//     s->x = x;
-//     s->y = y;
+    t = TaskCreate(sub_803EBBC, sizeof(EggBomberTankBomb), 0x6200, 0, NULL);
 
-//     s->graphics.dest = (void *)p4;
-//     SPRITE_INIT_WITHOUT_VRAM(s, p5, (p5 >> 0x10), 25, 2, 0);
-// }
+    bomb = TASK_DATA(t);
+    bomb->unk0 = x - gCamera.x;
+    bomb->unk4 = y - gCamera.y;
+    bomb->unk8 = 0;
+    bomb->unkA = 0;
+    bomb->unk10 = boss;
+
+    s = &bomb->s;
+    s->x = x;
+    s->y = y;
+
+    s->graphics.dest = graphics.vram;
+    SPRITE_INIT_WITHOUT_VRAM(s, graphics.anim, graphics.variant, 25, 2, 0);
+}
