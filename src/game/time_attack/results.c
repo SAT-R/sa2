@@ -322,17 +322,17 @@ void sub_80897E8(void)
         }
     }
 
-    if (unk168 > 0x59) {
+    if (unk168 > 89) {
         s = &resultsCutScene->unk9C[0];
-        if ((unk168 - 0x5A) < 0xB) {
-            s->x = (100 - unk168) * 16 + 40;
+        if ((unk168 - 90) < 0xB) {
+            s->x = (((DISPLAY_WIDTH / 2) - 20) - unk168) * 16 + 40;
         }
         DisplaySprite(s);
     }
 
-    if (unk168 > 0x77) {
-        s32 temp = (unk168 - 0x7F);
-        if (temp > 0x10) {
+    if (unk168 > 119) {
+        s32 temp = (unk168 - 127);
+        if (temp > 16) {
             if (resultsCutScene->unk2D8) {
                 s = &resultsCutScene->unk9C[1];
                 resultsCutScene->transform.width
@@ -361,7 +361,7 @@ void sub_80897E8(void)
         }
 
         for (i = 0; i < 7; i++) {
-            s32 index = (unk168 - 0x78) - i;
+            s32 index = (unk168 - 120) - i;
             if (index < 0) {
                 break;
             }
@@ -421,7 +421,7 @@ void sub_8089AEC(void)
     sub_8031314();
     sub_80897E8();
 
-    if (((unk168 > 0xA0) && (gPressedKeys & (A_BUTTON | START_BUTTON)))
+    if (((unk168 > 160) && (gPressedKeys & (A_BUTTON | START_BUTTON)))
         || (unk168 > 600)) {
         gCurTask->main = sub_8089B40;
     }
