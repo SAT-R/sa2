@@ -1227,3 +1227,37 @@ void sub_803EAF4(EggBomberTank *boss, s32 x, s32 y, ExplosionGraphics graphics)
     s->graphics.dest = graphics.vram;
     SPRITE_INIT_WITHOUT_VRAM(s, graphics.anim, graphics.variant, 25, 2, 0);
 }
+
+void sub_803EBBC(void)
+{
+    EggBomberTankBomb *explosion = TASK_DATA(gCurTask);
+    Sprite *s = &explosion->s;
+    if (PLAYER_IS_ALIVE) {
+        explosion->unk0 += gCamera.unk38;
+        explosion->unk4 += gCamera.unk3C;
+    }
+
+    s->x = explosion->unk0;
+    s->y = explosion->unk4;
+
+    if (explosion->unk10->unk70) {
+        if (sub_800CA20(s, explosion->unk0 + gCamera.x, explosion->unk4 + gCamera.y, 0,
+                        &gPlayer)
+            == 1) {
+            if (explosion->unk10->unk72 == 0) {
+                Sprite *s = &explosion->unk10->unk184;
+                explosion->unk10->unk73 = 0x1E;
+                s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+                s->variant = 1;
+                s->prevVariant = -1;
+            }
+        }
+    }
+
+    if (UpdateSpriteAnimation(s) == 0) {
+        gCurTask->main = sub_803EC84;
+    }
+    DisplaySprite(s);
+}
+
+void sub_803EC84(void) { TaskDestroy(gCurTask); }
