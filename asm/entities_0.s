@@ -713,7 +713,7 @@ sub_800C418: @ 0x0800C418
 	mov ip, r0
 	cmp r1, r5
 	beq _0800C4F0
-	ldr r0, _0800C4EC @ =gUnknown_030056A4
+	ldr r0, _0800C4EC @ =gCheese
 	ldr r0, [r0]
 	cmp r0, #0
 	beq _0800C4F0
@@ -799,7 +799,7 @@ _0800C4E8:
 	movs r0, #1
 	b _0800C4F2
 	.align 2, 0
-_0800C4EC: .4byte gUnknown_030056A4
+_0800C4EC: .4byte gCheese
 _0800C4F0:
 	movs r0, #0
 _0800C4F2:
@@ -1108,7 +1108,7 @@ _0800C734:
 	ldr r0, _0800C82C @ =gPlayer
 	bl sub_800CBA4
 _0800C73A:
-	ldr r0, _0800C830 @ =gUnknown_030056A4
+	ldr r0, _0800C830 @ =gCheese
 	ldr r0, [r0]
 	cmp r0, #0
 	bne _0800C744
@@ -1233,7 +1233,7 @@ _0800C802:
 	b _0800C83A
 	.align 2, 0
 _0800C82C: .4byte gPlayer
-_0800C830: .4byte gUnknown_030056A4
+_0800C830: .4byte gCheese
 _0800C834: .4byte gGameMode
 _0800C838:
 	movs r0, #0
@@ -1706,6 +1706,8 @@ _0800CB8E:
 	.align 2, 0
 _0800CBA0: .4byte gPlayer
 
+@ In:
+@  r0 = Player*
 	thumb_func_start sub_800CBA4
 sub_800CBA4: @ 0x0800CBA4
 	push {r4, r5, lr}
@@ -1800,7 +1802,7 @@ _0800CC44:
 	ldr r1, [r2, #0xc]
 	asrs r1, r1, #8
 	adds r2, r4, #0
-	bl sub_801FD34
+	bl InitScatteringRings
 	ldr r0, _0800CC7C @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #2
@@ -1851,6 +1853,9 @@ _0800CCB0:
 	bx r1
 	.align 2, 0
 
+@ Called by: Boss 3,6,7, hammerhead, platform (square),
+@            spikes, spring bouncy, speeding platform,
+@            arrow platform, spike platform
 @ Returns some flags
 @ u32 sub_800CCB8 (Sprite*, s32 x, s32 y, Player*);
 	thumb_func_start sub_800CCB8
@@ -1990,6 +1995,7 @@ _0800CDB0: .4byte gCurrentLevel
 _0800CDB4: .4byte gUnknown_030054B0
 _0800CDB8: .4byte gCamera
 
+@; Called by IAs ramp, spring, floating spring, bounce block, spike platform
 	thumb_func_start sub_800CDBC
 sub_800CDBC: @ 0x0800CDBC
 	push {r4, r5, r6, r7, lr}
@@ -2390,6 +2396,7 @@ _0800D088:
 _0800D098: .4byte 0xFFFF00FF
 _0800D09C: .4byte 0xFFFFFF00
 
+@ Called by: player_mp_actor.s
 	thumb_func_start sub_800D0A0
 sub_800D0A0: @ 0x0800D0A0
 	push {r4, r5, r6, r7, lr}
@@ -4172,7 +4179,7 @@ _0800DE04:
 	ldr r1, [r5, #0xc]
 	asrs r1, r1, #8
 	adds r2, r4, #0
-	bl sub_801FD34
+	bl InitScatteringRings
 	ldrh r0, [r6]
 	subs r0, r0, r4
 	strh r0, [r6]
@@ -4299,7 +4306,7 @@ _0800DEFA:
 	ldr r1, [r5, #0xc]
 	asrs r1, r1, #8
 	adds r2, r4, #0
-	bl sub_801FD34
+	bl InitScatteringRings
 	ldrh r0, [r6]
 	subs r0, r0, r4
 	strh r0, [r6]
@@ -4364,7 +4371,11 @@ sub_800DF38: @ 0x0800DF38
 	pop {r1}
 	bx r1
 	.align 2, 0
-
+    
+@ The current value in gNewInputCounters[gNewInputCountersIndex]
+@ gets increased until either it reaches 0xFF or a new button was pressed.
+@ Letting go of a button does not trigger the index increase.
+@ (This might be used for timing in multiplayer?)
 @ In:
 @  r0: Player*
 	thumb_func_start sub_800DF8C
@@ -4427,7 +4438,7 @@ _0800DFB4:
 	beq _0800E0AE
 	str r2, [sp, #8]
 _0800E002:
-	ldr r0, _0800E054 @ =gUnknown_030055D4
+	ldr r0, _0800E054 @ =gNewInputCountersIndex
 	ldrb r4, [r0]
 	cmp r6, #0
 	beq _0800E07A
@@ -4450,7 +4461,7 @@ _0800E012:
 	ands r1, r2
 _0800E02A:
 	lsls r0, r4, #2
-	ldr r2, _0800E058 @ =gUnknown_030055E0
+	ldr r2, _0800E058 @ =gNewInputCounters
 	adds r0, r0, r2
 	ldrb r3, [r0]
 	ands r3, r7
@@ -4469,8 +4480,8 @@ _0800E02A:
 	b _0800E072
 	.align 2, 0
 _0800E050: .4byte gUnknown_08C871D4
-_0800E054: .4byte gUnknown_030055D4
-_0800E058: .4byte gUnknown_030055E0
+_0800E054: .4byte gNewInputCountersIndex
+_0800E058: .4byte gNewInputCounters
 _0800E05C:
 	subs r4, #1
 	mov r1, sb
@@ -4574,8 +4585,8 @@ sub_800E0C0: @ 0x0800E0C0
 	ands r5, r0
 	lsls r0, r5, #0x18
 	lsrs r5, r0, #0x18
-	ldr r1, _0800E140 @ =gUnknown_030055E0
-	ldr r2, _0800E144 @ =gUnknown_030055D4
+	ldr r1, _0800E140 @ =gNewInputCounters
+	ldr r2, _0800E144 @ =gNewInputCountersIndex
 	ldrb r0, [r2]
 	lsls r0, r0, #2
 	adds r3, r0, r1
@@ -4593,8 +4604,8 @@ sub_800E0C0: @ 0x0800E0C0
 	.align 2, 0
 _0800E138: .4byte gUnknown_030055D8
 _0800E13C: .4byte gUnknown_030055D0
-_0800E140: .4byte gUnknown_030055E0
-_0800E144: .4byte gUnknown_030055D4
+_0800E140: .4byte gNewInputCounters
+_0800E144: .4byte gNewInputCountersIndex
 _0800E148:
 	ldrb r0, [r2]
 	adds r0, #1
@@ -4616,10 +4627,10 @@ _0800E164:
 	bx r0
 	.align 2, 0
 
-	thumb_func_start sub_800E16C
-sub_800E16C: @ 0x0800E16C
+	thumb_func_start InitNewInputCounters
+InitNewInputCounters: @ 0x0800E16C
 	sub sp, #4
-	ldr r1, _0800E18C @ =gUnknown_030055D4
+	ldr r1, _0800E18C @ =gNewInputCountersIndex
 	movs r0, #0
 	strb r0, [r1]
 	movs r0, #0
@@ -4627,7 +4638,7 @@ sub_800E16C: @ 0x0800E16C
 	ldr r1, _0800E190 @ =0x040000D4
 	mov r0, sp
 	str r0, [r1]
-	ldr r0, _0800E194 @ =gUnknown_030055E0
+	ldr r0, _0800E194 @ =gNewInputCounters
 	str r0, [r1, #4]
 	ldr r0, _0800E198 @ =0x8500001F
 	str r0, [r1, #8]
@@ -4635,7 +4646,7 @@ sub_800E16C: @ 0x0800E16C
 	add sp, #4
 	bx lr
 	.align 2, 0
-_0800E18C: .4byte gUnknown_030055D4
+_0800E18C: .4byte gNewInputCountersIndex
 _0800E190: .4byte 0x040000D4
-_0800E194: .4byte gUnknown_030055E0
+_0800E194: .4byte gNewInputCounters
 _0800E198: .4byte 0x8500001F

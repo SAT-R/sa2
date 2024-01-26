@@ -4,8 +4,10 @@
 #include "global.h"
 #include "game/save.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "constants/text.h"
+#include "game/player_controls.h"
+#include "game/game.h"
 
 #define RENDER_TARGET_SCREEN   0
 #define RENDER_TARGET_SUB_MENU 1
@@ -60,7 +62,7 @@ struct OptionsScreen {
     Sprite metaItems[4];
 
     Sprite playerNameDisplay[6];
-    struct TransitionState unk774;
+    ScreenFade unk774;
     s8 menuCursor;
     s8 prevCursorPosition;
     s8 initialSubMenuCursorPosition;
@@ -94,7 +96,7 @@ void CreateNewProfileScreen(void);
 void CreateNewProfileNameScreen(s16 mode);
 
 void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
-                 s16 yPos, u16 g, u8 h, u8 palId);
+                 s16 yPos, u16 oamOrder, u8 variant, u8 palId);
 void OptionsInitBackground(Background *unk2400, u32 a, u32 b, u8 tilemapId, u16 d, u16 e,
                            u16 f, u8 g, u16 scrollX, u16 scrollY);
 

@@ -1,0 +1,4 @@
+#ifndef GUARD_CONSTANTS_GAME_MODE_H
+#define GUARD_CONSTANTS_GAME_MODE_H
+
+#endif

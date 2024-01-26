@@ -5,7 +5,7 @@
 #include "game/entity.h"
 
 #include "game/enemies/pen.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 
 #include "constants/animations.h"
 
@@ -31,7 +31,7 @@ void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
 {
     struct Task *t = TaskCreate(Task_PenMove, sizeof(Sprite_Pen), 0x4040, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Pen *pen = TaskGetStructPtr(t);
+    Sprite_Pen *pen = TASK_DATA(t);
     Sprite *s = &pen->s;
     pen->base.regionX = spriteRegionX;
     pen->base.regionY = spriteRegionY;
@@ -54,12 +54,12 @@ void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 12, SA2_ANIM_PEN, SA2_ANIM_PEN_VARIANT_MOVE, 0x480, 2);
+    SPRITE_INIT(s, 12, SA2_ANIM_PEN, SA2_ANIM_PEN_VARIANT_MOVE, 18, 2);
 }
 
 static void Task_PenMove(void)
 {
-    Sprite_Pen *pen = TaskGetStructPtr(gCurTask);
+    Sprite_Pen *pen = TASK_DATA(gCurTask);
     Sprite *s = &pen->s;
     MapEntity *me = pen->base.me;
     Vec2_32 pos;
@@ -94,7 +94,7 @@ static void Task_PenMove(void)
             if (!pen->boosting) {
                 s->graphics.anim = SA2_ANIM_PEN;
                 s->variant = SA2_ANIM_PEN_VARIANT_BOOST;
-                s->unk21 = -1;
+                s->prevVariant = -1;
             }
             pen->boosting = TRUE;
         }
@@ -105,7 +105,7 @@ static void Task_PenMove(void)
             if (!pen->boosting) {
                 s->graphics.anim = SA2_ANIM_PEN;
                 s->variant = SA2_ANIM_PEN_VARIANT_BOOST;
-                s->unk21 = -1;
+                s->prevVariant = -1;
             }
             pen->boosting = TRUE;
         }
@@ -116,13 +116,13 @@ static void Task_PenMove(void)
         gCurTask->main = Task_PenTurn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     } else if (ENEMY_CROSSED_RIGHT_BORDER(pen, me)
                && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = Task_PenTurn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
 
     // TODO: Fix posX_24_8!
@@ -131,7 +131,7 @@ static void Task_PenMove(void)
 
 static void Task_PenTurn(void)
 {
-    Sprite_Pen *pen = TaskGetStructPtr(gCurTask);
+    Sprite_Pen *pen = TASK_DATA(gCurTask);
     Sprite *s = &pen->s;
     MapEntity *me = pen->base.me;
     Vec2_32 pos;
@@ -144,7 +144,7 @@ static void Task_PenTurn(void)
     ENEMY_DESTROY_IF_OFFSCREEN(pen, me, s);
 
     sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         pen->boosting = FALSE;
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
             s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
@@ -153,8 +153,8 @@ static void Task_PenTurn(void)
         }
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_MOVE;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = Task_PenMove;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

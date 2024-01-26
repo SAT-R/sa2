@@ -43,6 +43,7 @@ AS 		  := $(PREFIX)as
 FORMAT    := clang-format-13
 
 GFX 	  := tools/gbagfx/gbagfx$(EXE)
+EPOS 	  := tools/entity_positions/epos$(EXE)
 AIF		  := tools/aif2pcm/aif2pcm$(EXE)
 MID2AGB   := tools/mid2agb/mid2agb$(EXE)
 SCANINC   := tools/scaninc/scaninc$(EXE)
@@ -155,18 +156,24 @@ __rom: $(ROM)
 # even when rom is already built
 	@echo > /dev/null
 
-tools: $(TOOLDIRS)
+FORMAT_SRC_PATHS := $(shell find . -name "*.c" ! -path '*/src/data/*' ! -path '*/build/*' ! -path '*/ext/*')
+FORMAT_H_PATHS   := $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ext/*')
 
 format:
 	@echo $(FORMAT) -i -style=file "**/*.c" "**/*.h"
-	@$(FORMAT) -i -style=file $(shell find . -name "*.c" ! -path '*/build/*') $(shell find . -name "*.h" ! -path '*/build/*')
+	@$(FORMAT) -i --verbose -style=file $(FORMAT_SRC_PATHS) $(FORMAT_H_PATHS)
 
 check_format:
 	@echo $(FORMAT) -i -style=file --dry-run --Werror "**/*.c" "**/*.h"
-	@$(FORMAT) -i -style=file --dry-run --Werror $(shell find . -name "*.c" ! -path '*/build/*') $(shell find . -name "*.h" ! -path '*/build/*')
+	@$(FORMAT) -i --verbose -style=file --dry-run --Werror $(FORMAT_SRC_PATHS) $(FORMAT_H_PATHS)
 
-$(TOOLDIRS):
+tools: $(TOOLDIRS)
+
+$(TOOLDIRS): tool_libs
 	@$(MAKE) -C $@
+
+tool_libs:
+	@$(MAKE) -C tools/_shared
 
 compare: rom
 	$(SHA1) $(BUILD_NAME).sha1
@@ -178,7 +185,7 @@ clean: tidy clean-tools
 	@$(MAKE) clean -C multi_boot/collect_rings
 
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
-	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
+	find . \( -iwholename './data/maps/*/*/entities/*.bin' -o -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
 
 clean-tools:
 	@$(foreach tooldir,$(TOOLDIRS),$(MAKE) clean -C $(tooldir);)
@@ -205,6 +212,18 @@ include graphics.mk
 
 chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba 
 	$(GFX) $< $@ -search 1
+
+%interactables.bin: %interactables.csv
+	$(EPOS) $< $@ -entities INTERACTABLES -header "./include/constants/interactables.h"
+
+%itemboxes.bin: %itemboxes.csv
+	$(EPOS) $< $@ -entities ITEMS -header "./include/constants/items.h"
+
+%enemies.bin: %enemies.csv
+	$(EPOS) $< $@ -entities ENEMIES -header "./include/constants/enemies.h"
+
+%rings.bin: %rings.csv
+	$(EPOS) $< $@ -entities RINGS
 
 %.gba.lz: %.gba 
 	$(GFX) $< $@

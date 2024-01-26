@@ -4,9 +4,12 @@
 #include "trig.h"
 
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/music_plant/keyboard.h"
 
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -58,7 +61,7 @@ void CreateEntity_Keyboard(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     struct Task *t = TaskCreate(Task_Keyboard, sizeof(Sprite_Keyboard), 0x2010, 0,
                                 TaskDestructor_Keyboard);
 
-    Sprite_Keyboard *kb = TaskGetStructPtr(t);
+    Sprite_Keyboard *kb = TASK_DATA(t);
     kb->kbType = type;
     kb->unk1 = 0;
     kb->posX = TO_WORLD_POS(me->x, spriteRegionX);
@@ -88,7 +91,7 @@ static void sub_8076448(Sprite_Keyboard *kb)
 
     kb->unk1 = 8;
     gPlayer.unk64 = 4;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
         m4aSongNumStart(SE_TECHNO_BASE_COMMON);
@@ -260,7 +263,7 @@ static bool32 sub_8076780(Sprite_Keyboard *kb)
 
 static void Task_Keyboard(void)
 {
-    Sprite_Keyboard *kb = TaskGetStructPtr(gCurTask);
+    Sprite_Keyboard *kb = TASK_DATA(gCurTask);
     if (sub_8076780(kb)) {
         sub_8076448(kb);
     }

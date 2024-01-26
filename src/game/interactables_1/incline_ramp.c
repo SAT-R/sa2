@@ -3,10 +3,13 @@
 #include "lib/m4a.h"
 
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
 
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -15,7 +18,7 @@ typedef struct {
 
 static void Task_InclineRamp(void)
 {
-    Sprite_InclineRamp *ramp = TaskGetStructPtr(gCurTask);
+    Sprite_InclineRamp *ramp = TASK_DATA(gCurTask);
     MapEntity *me = ramp->base.me;
     u32 moveState;
     s16 screenX, screenY;
@@ -54,7 +57,7 @@ static void Task_InclineRamp(void)
                 gPlayer.unk17 = 14;
 
                 gPlayer.unk64 = 39;
-                gPlayer.unk6D = 7;
+                gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }
         } else {
@@ -80,7 +83,7 @@ static void Task_InclineRamp(void)
                 gPlayer.unk17 = 14;
 
                 gPlayer.unk64 = 11;
-                gPlayer.unk6D = 7;
+                gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }
         }
@@ -101,7 +104,7 @@ void CreateEntity_InclineRamp(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 {
     struct Task *t
         = TaskCreate(Task_InclineRamp, sizeof(Sprite_InclineRamp), 0x2000, 0, NULL);
-    Sprite_InclineRamp *ramp = TaskGetStructPtr(t);
+    Sprite_InclineRamp *ramp = TASK_DATA(t);
 
     // @BUG? (regionY gets set to regionX and vice versa)
     ramp->base.regionY = spriteRegionX;

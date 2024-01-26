@@ -13,37 +13,37 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
                  s16 yPos, u16 g, u8 variant, u8 palId)
 {
     Sprite newObj;
-    Sprite *element;
-    element = &newObj;
+    Sprite *s;
+    s = &newObj;
 
     if (obj != NULL) {
-        element = obj;
+        s = obj;
     }
 
     if (target != 0) {
         if (gUnknown_03005B58 == NULL) {
             gUnknown_03005B58 = gUnknown_03005B5C;
         }
-        element->graphics.dest = gUnknown_03005B58;
+        s->graphics.dest = gUnknown_03005B58;
     } else {
-        element->graphics.dest = gUnknown_03005B5C;
+        s->graphics.dest = gUnknown_03005B5C;
     }
 
-    element->graphics.size = 0;
-    element->graphics.anim = anim;
-    element->unk10 = unk10;
-    element->x = xPos;
-    element->y = yPos;
-    element->unk1A = g << 6;
-    element->unk1C = 0;
-    element->unk1E = 0xffff;
-    element->variant = variant;
-    element->unk21 = 0xff;
-    element->unk22 = 0x10;
-    element->palId = palId;
-    element->unk28[0].unk0 = -1;
+    s->graphics.size = 0;
+    s->graphics.anim = anim;
+    s->unk10 = unk10;
+    s->x = xPos;
+    s->y = yPos;
+    s->unk1A = g << 6;
+    s->timeUntilNextFrame = 0;
+    s->prevAnim = 0xffff;
+    s->variant = variant;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = palId;
+    s->hitboxes[0].index = -1;
 
-    sub_8004558(element);
+    UpdateSpriteAnimation(s);
 
     switch (target) {
         case RENDER_TARGET_SCREEN:
@@ -62,7 +62,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a,
                    struct SpecialStageCollectables_UNK874_2 *unk874,
                    struct SpecialStage *stage)
 {
-    struct SpecialStageWorld *world = TaskGetStructPtr(stage->worldTask);
+    struct SpecialStageWorld *world = TASK_DATA(stage->worldTask);
     s32 r9;
     s32 r4;
     s16 val2, val;
@@ -133,7 +133,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a,
     return TRUE;
 }
 
-void sub_806CD68(Sprite *element)
+void sub_806CD68(Sprite *s)
 {
     u16 *reference;
     OamData *oam;
@@ -143,25 +143,25 @@ void sub_806CD68(Sprite *element)
     s16 numSubframes;
 
     s16 i;
-    SpriteOffset *sprDims = (void *)element->dimensions;
+    SpriteOffset *sprDims = (void *)s->dimensions;
 
-    element->numSubFrames = sprDims->numSubframes;
+    s->numSubFrames = sprDims->numSubframes;
     sprWidth = sprDims->width;
     sprHeight = sprDims->height;
-    unk16 = (s16)element->x - (sprWidth / 2);
-    unk18 = (s16)element->y - (sprHeight / 2);
+    unk16 = (s16)s->x - (sprWidth / 2);
+    unk18 = (s16)s->y - (sprHeight / 2);
 
     numSubframes = sprDims->numSubframes;
     for (i = 0; i < numSubframes; i++) {
         u32 attr1_2;
-        reference = gUnknown_03002794->oamData[element->graphics.anim];
-        oam = OamMalloc((element->unk1A & 0x7C0) >> 6);
+        reference = gUnknown_03002794->oamData[s->graphics.anim];
+        oam = OamMalloc((s->unk1A & 0x7C0) >> 6);
         if (oam == iwram_end) {
             return;
         }
 
         if (i == 0) {
-            element->oamBaseIndex = gOamFreeIndex - 1;
+            s->oamBaseIndex = gOamFreeIndex - 1;
         }
 
         DmaCopy16(3, &reference[(sprDims->oamIndex + i) * 3], oam, 0x6);
@@ -169,11 +169,11 @@ void sub_806CD68(Sprite *element)
         oam->all.attr0 = (unk18 + (oam->all.attr0 & 0xff)) & 0xff;
         oam->all.attr0 |= 0x300;
         oam->all.attr1 &= 0xfe00;
-        oam->all.attr1 |= ((element->unk10 & 0x1f) << 9);
+        oam->all.attr1 |= ((s->unk10 & 0x1f) << 9);
         oam->all.attr1 |= ((unk16 + attr1_2) & 0x1ff);
-        oam->all.attr2 += element->palId * 0x1000;
-        oam->all.attr2 |= ((element->unk10 & 0x3000) >> 2);
-        oam->all.attr2 += GET_TILE_NUM(element->graphics.dest);
+        oam->all.attr2 += s->palId * 0x1000;
+        oam->all.attr2 |= ((s->unk10 & 0x3000) >> 2);
+        oam->all.attr2 += GET_TILE_NUM(s->graphics.dest);
     }
 }
 
@@ -183,12 +183,12 @@ void InitSpecialStageScreenVram(void)
     gUnknown_03005B58 = NULL;
 }
 
-void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 f,
-                 u8 g, u16 scrollX, u16 scrollY)
+void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
+                 u16 palOffset, u8 bg_id, u16 scrollX, u16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(b);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(b);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = assetId;
@@ -196,15 +196,15 @@ void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = d;
-    background->unk28 = e;
-    background->unk2A = f;
+    background->targetTilesX = d;
+    background->targetTilesY = e;
+    background->paletteOffset = palOffset;
     background->animFrameCounter = 0;
     background->animDelayCounter = 0;
-    background->unk2E = g;
+    background->flags = (bg_id);
     background->scrollX = scrollX;
     background->scrollY = scrollY;
-    sub_8002A3C(background);
+    DrawBackground(background);
 }
 
 s16 MaxSpriteSize(const struct UNK_80DF670 *spriteConfig)

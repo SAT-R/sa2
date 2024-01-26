@@ -5,7 +5,7 @@
 #include "game/entity.h"
 
 #include "game/enemies/star.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 
 #include "constants/animations.h"
 
@@ -31,7 +31,7 @@ static void Task_StarOpen(void);
         _star->timer = _time;                                                           \
         _sprite->graphics.anim = _anim;                                                 \
         _sprite->variant = _variant;                                                    \
-        _sprite->unk21 = -1;                                                            \
+        _sprite->prevVariant = -1;                                                      \
         gCurTask->main = _task;                                                         \
     }
 
@@ -39,7 +39,7 @@ void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 {
     struct Task *t = TaskCreate(Task_StarIdle, sizeof(Sprite_Star), 0x4050, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Star *star = TaskGetStructPtr(t);
+    Sprite_Star *star = TASK_DATA(t);
     Sprite *s = &star->s;
     star->base.regionX = spriteRegionX;
     star->base.regionY = spriteRegionY;
@@ -55,12 +55,12 @@ void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s->y = 0;
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 25, SA2_ANIM_STAR, 0, 0x480, 2);
+    SPRITE_INIT(s, 25, SA2_ANIM_STAR, 0, 18, 2);
 }
 
 #define STAR_TASK(_time, _anim, _variant, _nextTask, _code_insert)                      \
     {                                                                                   \
-        Sprite_Star *star = TaskGetStructPtr(gCurTask);                                 \
+        Sprite_Star *star = TASK_DATA(gCurTask);                                        \
         Sprite *s = &star->s;                                                           \
         MapEntity *me = star->base.me;                                                  \
                                                                                         \

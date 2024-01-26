@@ -3,12 +3,18 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/player_controls.h"
+#include "game/amy_attack_heart_effect.h"
 #include "game/dust_effect_braking.h"
+#include "game/boost_effect.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/parameters/characters.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 /* NOTE: We consider Player Callbacks to be all procedures
@@ -49,9 +55,6 @@ void PlayerCB_8013C34(Player *p);
 void sub_8013C50(Player *p);
 void sub_8013CA0(Player *p);
 
-void sub_8015BD4(u16);
-
-void Task_801F214(void);
 void TaskDestructor_801F550(struct Task *);
 
 void sub_8022318(Player *p);
@@ -64,7 +67,7 @@ void PlayerFn_Cmd_UpdateAirFallSpeed(Player *p);
 
 extern u16 gUnknown_080D6736[115][2];
 
-const u16 gUnknown_080D5518[3][3] = {
+const ALIGNED(4) u16 gUnknown_080D5518[3][3] = {
     { 15, SA2_ANIM_CHAR(SA2_CHAR_ANIM_16, CHARACTER_SONIC), 3 },
     { 16, SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_SONIC), 1 },
     { 16, SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_SONIC), 3 },
@@ -91,12 +94,12 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
     }
 
     t = sub_801F15C(x, y, 0xE8, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
-    ts = TaskGetStructPtr(t);
+    ts = TASK_DATA(t);
 
     switch (p2) {
         case 0: {
-            ts->playerAnim = gPlayer.unk68;
-            ts->playerVariant = gPlayer.unk6A;
+            ts->playerAnim = gPlayer.anim;
+            ts->playerVariant = gPlayer.variant;
         } break;
 
         case 1:
@@ -117,7 +120,7 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
     s->graphics.dest = VramMalloc(gUnknown_080D5518[p2][0]);
     s->graphics.anim = gUnknown_080D5518[p2][1];
     s->variant = gUnknown_080D5518[p2][2];
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     return t;
@@ -132,7 +135,7 @@ struct Task *sub_8011C98(s32 x, s32 y)
         struct Task *t = TaskCreate(Task_8012034, sizeof(TaskStrc_8011C98), 0x4001, 0,
                                     TaskDestructor_80124B8);
 
-        TaskStrc_8011C98 *strc = TaskGetStructPtr(t);
+        TaskStrc_8011C98 *strc = TASK_DATA(t);
         Sprite *s = &strc->s;
 
         s16 i;
@@ -146,10 +149,10 @@ struct Task *sub_8011C98(s32 x, s32 y)
         s->graphics.size = 0;
         s->graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_SONIC);
         s->variant = 3;
-        s->unk21 = -1;
-        s->unk1A = 0x440;
-        s->unk1C = 0;
-        s->unk22 = 0x10;
+        s->prevVariant = -1;
+        s->unk1A = SPRITE_OAM_ORDER(17);
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
         s->palId = 0;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
@@ -201,9 +204,9 @@ void PlayerCB_8011DCC(Player *p)
     if (p->unk90->s.unk10 & MOVESTATE_4000) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->unk64 = 50;
-            p->unk6D = 5;
+            p->transition = PLTRANS_PT5;
         } else {
-            p->unk6A = 1;
+            p->variant = 1;
             p->unk6C = 1;
 
             PLAYERFN_SET(PlayerCB_8011E88);
@@ -244,9 +247,9 @@ void PlayerCB_8011E88(Player *p)
     if (--p->unk72 == -1) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->unk64 = 50;
-            p->unk6D = 5;
+            p->transition = PLTRANS_PT5;
         } else {
-            p->unk6A = 2;
+            p->variant = 2;
             p->unk6C = 1;
 
             PLAYERFN_SET(PlayerCB_80123D0);
@@ -323,22 +326,25 @@ void PlayerCB_8011F94(Player *p)
 
 void Task_8012034(void)
 {
-    TaskStrc_8011C98 *strc = TaskGetStructPtr(gCurTask);
+    TaskStrc_8011C98 *strc = TASK_DATA(gCurTask);
     Sprite *s = &strc->s;
-    TrickBoundPos pos;
+    Vec2_32 pos;
 
     if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.speedAirY < Q_24_8(2.0))
         || (gPlayer.unk64 != 36)) {
         TaskDestroy(gCurTask);
     } else {
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
 
         strc->unk28 = ((strc->unk28 - 1) & 0x6);
-        sub_80157C8(&pos, strc->unk28);
+
+        // Get player's previous position 'unk28' frames ago
+        // and display it
+        GetPreviousPlayerPos(&pos, strc->unk28);
         s->x = Q_24_8_TO_INT(pos.x) - gCamera.x;
         s->y = Q_24_8_TO_INT(pos.y) - gCamera.y;
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -496,7 +502,7 @@ void PlayerCB_80123FC(Player *p)
     sub_80283C4(p);
 
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
-        p->unk6A++;
+        p->variant++;
 
         p->speedAirY = Q_24_8(2.0);
         PLAYERFN_SET(PlayerCB_8011F94);
@@ -504,7 +510,7 @@ void PlayerCB_80123FC(Player *p)
         if (p->character == CHARACTER_SONIC) {
             sub_8011C98(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y));
         } else if (p->character == CHARACTER_AMY) {
-            sub_8015BD4(3);
+            CreateAmyAttackHeartEffect(3);
         }
     }
 }
@@ -514,7 +520,7 @@ void PlayerCB_8012460(Player *p)
     p->speedAirY += Q_24_8(56.0 / 256.0);
 
     if (p->speedAirY >= 0) {
-        p->unk6A++;
+        p->variant++;
         p->unk6C = 1;
         PLAYERFN_SET(PlayerCB_8012498);
     }
@@ -527,13 +533,13 @@ void PlayerCB_8012498(Player *p)
     sub_8027EF0(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->unk6D = 1;
+        p->transition = PLTRANS_PT1;
     }
 }
 
 void TaskDestructor_80124B8(struct Task *t)
 {
-    TaskStrc_8011C98 *strc = TaskGetStructPtr(t);
+    TaskStrc_8011C98 *strc = TASK_DATA(t);
     Sprite *s = &strc->s;
     VramFree(s->graphics.dest);
 }
@@ -548,7 +554,7 @@ void PlayerCB_80124D0(Player *p)
     sub_8027EF0(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->unk6D = 1;
+        p->transition = PLTRANS_PT1;
     }
 }
 
@@ -588,7 +594,7 @@ void sub_8012548(Player *p)
 
 void sub_80125BC(Player *p)
 {
-    if (p->w.flyingDurationCream == 0) {
+    if (p->w.cf.flyingDuration == 0) {
         if (p->unk64 == 85)
             m4aSongNumStop(SE_CREAM_FLYING);
 
@@ -619,7 +625,7 @@ void sub_8012644(Player *p)
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
     }
 
-    p->w.flyingDurationCream = CREAM_FLYING_DURATION;
+    p->w.cf.flyingDuration = CREAM_FLYING_DURATION;
     p->unk61 = 1;
     p->unk5A = 0;
     p->unk58 = 0;
@@ -629,12 +635,12 @@ void sub_8012644(Player *p)
 
 void PlayerCB_80126B0(Player *p)
 {
-    if (p->w.flyingDurationCream != 0) {
-        p->w.flyingDurationCream--;
+    if (p->w.cf.flyingDuration != 0) {
+        p->w.cf.flyingDuration--;
 
         if (p->unk5C & gPlayerControls.attack) {
             p->unk64 = 86;
-            p->unk6D = 0x5;
+            p->transition = PLTRANS_PT5;
 
             m4aSongNumStop(SE_CREAM_FLYING);
             return;
@@ -653,7 +659,7 @@ void PlayerCB_80126B0(Player *p)
         }
     } else {
         if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q_24_8(0.75))
-            && (p->w.flyingDurationCream != 0)) {
+            && (p->w.cf.flyingDuration != 0)) {
             p->unk61 = 2;
         }
 
@@ -682,10 +688,10 @@ void PlayerCB_80126B0(Player *p)
     sub_80282EC(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->unk6D = 1;
+        p->transition = PLTRANS_PT1;
     } else if (p->moveState & MOVESTATE_40) {
         p->unk64 = 14;
-        p->unk6D = 5;
+        p->transition = PLTRANS_PT5;
     }
 }
 
@@ -694,9 +700,9 @@ void PlayerCB_80127F0(Player *p)
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->unk64 = 9;
-            p->unk6D = 5;
+            p->transition = PLTRANS_PT5;
         } else {
-            p->unk6D = 1;
+            p->transition = PLTRANS_PT1;
         }
     }
 
@@ -753,9 +759,9 @@ void PlayerCB_8012938(Player *p)
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->unk64 = 50;
-            p->unk6D = 5;
+            p->transition = PLTRANS_PT5;
         } else {
-            p->unk6D = 1;
+            p->transition = PLTRANS_PT1;
         }
     }
 
@@ -765,16 +771,16 @@ void PlayerCB_8012938(Player *p)
 void PlayerCB_8012978(Player *p)
 {
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
-        if ((p->unk68 == SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_CREAM))
-            && p->unk6A == 0) {
-            p->unk6A++;
+        if ((p->anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_CREAM))
+            && p->variant == 0) {
+            p->variant++;
         }
     }
 
     sub_8027EF0(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->unk6D = 1;
+        p->transition = PLTRANS_PT1;
     }
 }
 
@@ -783,7 +789,7 @@ void PlayerCB_80129BC(Player *p)
     sub_8027EF0(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->unk6D = 1;
+        p->transition = PLTRANS_PT1;
     }
 }
 
@@ -798,7 +804,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
         TaskStrc_801F15C *ts;
         Sprite *s;
         t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
-        ts = TaskGetStructPtr(t);
+        ts = TASK_DATA(t);
         ts->playerAnim = gPlayerCharacterIdleAnims[gPlayer.character];
 
         // This is += because it's adding to the base Idle character animation
@@ -817,7 +823,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
             s->variant = 1;
         }
 
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
         result = t;
@@ -851,7 +857,7 @@ void sub_8012AD0(Player *p)
 
 void sub_8012B44(Player *p)
 {
-    if (p->flyingDurationTails == 0) {
+    if (p->w.tf.flyingDuration == 0) {
         p->unk64 = 90;
         m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
     } else {
@@ -879,7 +885,7 @@ void sub_8012BC0(Player *p)
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
     }
 
-    p->flyingDurationTails = TAILS_FLYING_DURATION;
+    p->w.tf.flyingDuration = TAILS_FLYING_DURATION;
     p->unk61 = 1;
     p->unk5A = 0;
     p->unk58 = 0;
@@ -892,8 +898,8 @@ void PlayerCB_8012C2C(Player *p)
 {
     // Only decrease Tails' counter every 2nd frame, giving him 8 seconds of flight.
     // ...why didn't they just set his timer to a bigger value?
-    if ((gUnknown_03005590 & 0x1) && (p->flyingDurationTails != 0)) {
-        p->flyingDurationTails--;
+    if ((gStageTime & 0x1) && (p->w.tf.flyingDuration != 0)) {
+        p->w.tf.flyingDuration--;
     }
 
     if (p->unk61 != 1) {
@@ -908,7 +914,7 @@ void PlayerCB_8012C2C(Player *p)
         }
     } else {
         if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q_24_8(0.75))
-            && (p->flyingDurationTails != 0)) {
+            && (p->w.tf.flyingDuration != 0)) {
             p->unk61 = 2;
         }
 
@@ -930,17 +936,17 @@ void PlayerCB_8012C2C(Player *p)
     sub_80282EC(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->unk6D = 1;
+        p->transition = PLTRANS_PT1;
     } else if (p->moveState & MOVESTATE_40) {
         p->unk64 = 14;
-        p->unk6D = 5;
+        p->transition = PLTRANS_PT5;
     }
 }
 
 void PlayerCB_8012D1C(Player *p)
 {
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->unk6D = 1;
+        p->transition = PLTRANS_PT1;
     }
 
     sub_8028204(p);
@@ -999,7 +1005,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
         Sprite *s;
         struct Task *t;
         t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
-        ts = TaskGetStructPtr(t);
+        ts = TASK_DATA(t);
 
         ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
         ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
@@ -1014,7 +1020,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
         s->graphics.anim = sKnucklesAnimData_FX[p2][1];
         s->variant = sKnucklesAnimData_FX[p2][2];
 
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
         result = t;
@@ -1064,9 +1070,9 @@ void PlayerCB_8012F6C(Player *p)
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->unk64 = 50;
-            p->unk6D = 5;
+            p->transition = PLTRANS_PT5;
         } else {
-            p->unk6A++;
+            p->variant++;
             p->unk6C = 1;
 
             if (ABS(p->speedGroundX) < Q_24_8(3.0)) {
@@ -1102,9 +1108,9 @@ void PlayerCB_8013010(Player *p)
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->unk64 = 50;
-            p->unk6D = 5;
+            p->transition = PLTRANS_PT5;
         } else {
-            p->unk6D = 1;
+            p->transition = PLTRANS_PT1;
         }
     }
 
@@ -1151,7 +1157,7 @@ void PlayerCB_80130E4(Player *p)
     sub_8029C84(p);
 
     if (--p->unk72 == -1) {
-        p->unk6A++;
+        p->variant++;
         p->unk6C = 1;
         PLAYERFN_SET(PlayerCB_8013B6C);
     }
@@ -1208,7 +1214,7 @@ void sub_80131B4(Player *p)
 
             sub_8022318(p);
 
-            p->unk6D = 1;
+            p->transition = PLTRANS_PT1;
         } else {
             PLAYERFN_SET(PlayerCB_8013C18);
             p->unk64 = 95;
@@ -1382,7 +1388,7 @@ void sub_8013498(Player *p)
         sub_8022318(p);
 
         if ((p->rotation + Q_24_8(0.125)) & Q_24_8(0.75)) {
-            p->unk6D = 1;
+            p->transition = PLTRANS_PT1;
         } else {
             p->unk2A = 15;
             p->unk64 = 94;
@@ -1397,7 +1403,7 @@ void sub_801350C(Player *p)
     s32 p2;
     s32 res;
 
-    if ((gUnknown_03005590 & 0x3) == 0) {
+    if ((gStageTime & 0x3) == 0) {
         s32 offsetY = p->unk17;
 
         if (GRAVITY_IS_INVERTED)
@@ -1463,7 +1469,7 @@ void sub_80135BC(Player *p)
     sub_8022318(p);
 
     p->unk2A = 15;
-    p->unk6D = 1;
+    p->transition = PLTRANS_PT1;
 }
 
 s32 sub_8013644(Player *p)
@@ -1684,12 +1690,12 @@ void sub_801394C(Player *p)
         p->unk16 = 6;
         p->unk17 = 9;
         p->unk64 = 50;
-        p->unk6D = 4;
+        p->transition = PLTRANS_PT4;
     }
 }
 
-// https://decomp.me/scratch/8fUWD
-NONMATCH("asm/non_matching/playercb__sub_80139B0.inc", void sub_80139B0(Player *p))
+// (76.32%) https://decomp.me/scratch/8fUWD
+NONMATCH("asm/non_matching/game/playercb__sub_80139B0.inc", void sub_80139B0(Player *p))
 {
     s32 speedGrnd = ABS(p->speedGroundX);
     s8 r2 = p->w.tf.shift;
@@ -1798,9 +1804,9 @@ void PlayerCB_8013B6C(Player *p)
     if ((p->unk90->s.unk10) & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->unk64 = 50;
-            p->unk6D = 5;
+            p->transition = PLTRANS_PT5;
         } else {
-            p->unk6D = 1;
+            p->transition = PLTRANS_PT1;
         }
     }
 
@@ -1825,7 +1831,7 @@ void PlayerCB_8013BD4(Player *p)
 void PlayerCB_8013BF0(Player *p)
 {
     if ((p->unk90->s.unk10) & SPRITE_FLAG_MASK_ANIM_OVER) {
-        p->unk6D = 1;
+        p->transition = PLTRANS_PT1;
     }
 
     sub_8027EF0(p);
@@ -1983,7 +1989,7 @@ void PlayerCB_8013E34(Player *p)
     p->speedAirY = 0;
 
     if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
-        p->unk6D = 1;
+        p->transition = PLTRANS_PT1;
     }
 }
 
@@ -2049,7 +2055,7 @@ void sub_8013F04(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    sub_8015BD4(0);
+    CreateAmyAttackHeartEffect(0);
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8013F60, p);
 }

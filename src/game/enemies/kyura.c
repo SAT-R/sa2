@@ -7,7 +7,7 @@
 #include "game/entity.h"
 #include "game/enemies/kyura.h"
 #include "game/enemies/projectiles.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 
 #include "constants/animations.h"
 
@@ -35,7 +35,7 @@ void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 {
     struct Task *t = TaskCreate(Task_KyuraMain, sizeof(Sprite_Kyura), 0x4040, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Kyura *kyura = TaskGetStructPtr(t);
+    Sprite_Kyura *kyura = TASK_DATA(t);
     Sprite *s = &kyura->s;
     kyura->base.regionX = spriteRegionX;
     kyura->base.regionY = spriteRegionY;
@@ -57,12 +57,12 @@ void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     s->y = 0;
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 24, SA2_ANIM_KYURA, 0, 0x480, 2);
+    SPRITE_INIT(s, 24, SA2_ANIM_KYURA, 0, 18, 2);
 }
 
 void Task_KyuraMain(void)
 {
-    Sprite_Kyura *kyura = TaskGetStructPtr(gCurTask);
+    Sprite_Kyura *kyura = TASK_DATA(gCurTask);
     Sprite *s = &kyura->s;
     MapEntity *me = kyura->base.me;
     u32 unk54 = kyura->unk54;
@@ -124,7 +124,7 @@ void Task_KyuraMain(void)
 
 void Task_KyuraRecover(void)
 {
-    Sprite_Kyura *kyura = TaskGetStructPtr(gCurTask);
+    Sprite_Kyura *kyura = TASK_DATA(gCurTask);
     Sprite *s = &kyura->s;
 
     if (--kyura->framesUntilTaskSwitch == 0) {
@@ -132,6 +132,6 @@ void Task_KyuraRecover(void)
         kyura->unk54 = (kyura->unk54 + 8) & ONE_CYCLE;
         gCurTask->main = Task_KyuraMain;
     }
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }

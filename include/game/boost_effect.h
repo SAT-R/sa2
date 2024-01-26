@@ -1,8 +1,13 @@
-#ifndef GUARD_BOOST_EFFECT_H
-#define GUARD_BOOST_EFFECT_H
+#ifndef GUARD_PLAYER_ACTIONS_H
+#define GUARD_PLAYER_ACTIONS_H
 
-#include "global.h"
+#include "game/game.h"
 
-void CreateBoostModeParticles(void);
+void sub_801561C(void);
+void sub_8015750(void);
+void GetPreviousPlayerPos(Vec2_32 *pos, u8 pastFrameDelta);
+void sub_801583C(void);
 
-#endif // GUARD_BOOST_EFFECT_H
+extern const AnimId sCharacterPalettesBoostEffect[NUM_CHARACTERS];
+
+#endif // GUARD_PLAYER_ACTIONS_H

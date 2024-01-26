@@ -4,7 +4,7 @@
 #include "global.h"
 #include "game/entity.h"
 
-void CreateEntity_Whirlwind_0(MapEntity *, u16, u16, u8);
-void CreateEntity_Whirlwind_1(MapEntity *, u16, u16, u8);
+void CreateEntity_Whirlwind_A(MapEntity *, u16, u16, u8);
+void CreateEntity_Whirlwind_B(MapEntity *, u16, u16, u8);
 
 #endif

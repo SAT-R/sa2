@@ -3,15 +3,15 @@
 #include "task.h"
 #include "malloc_vram.h"
 #include "game/entity.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_0.h"
+#include "sakit/entities_manager.h"
 
 #include "constants/animations.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite_UNK28
-        reserved; // may wanna use s->unk28[1] for code if it matches?
+    /* 0x3C */ Hitbox reserved; // may wanna use s->hitboxes[1] for code if it matches?
     /* 0x44 */ s32 spawnX;
     /* 0x48 */ s32 spawnY;
 } Sprite_Spinner;
@@ -25,7 +25,7 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_EnemySpinner, sizeof(Sprite_Spinner), 0x4040, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Spinner *spinner = TaskGetStructPtr(t);
+    Sprite_Spinner *spinner = TASK_DATA(t);
     Sprite *s = &spinner->s;
     spinner->base.regionX = spriteRegionX;
     spinner->base.regionY = spriteRegionY;
@@ -43,74 +43,54 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(GFX_TILE_COUNT_SPINNER);
     s->graphics.anim = SA2_ANIM_SPINNER;
     s->variant = 0;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
-    s->unk28[1].unk0 = -1;
+    s->hitboxes[0].index = -1;
+    s->hitboxes[1].index = -1;
     s->unk10 = 0x2000;
 }
 
-// https://decomp.me/scratch/fdN7S
-NONMATCH("asm/non_matching/Task_EnemySpinner.inc", void Task_EnemySpinner(void))
+void Task_EnemySpinner(void)
 {
-    s32 posX, posY;
-    s32 someX, otherX;
-    s32 someY, otherY;
-    Sprite_Spinner *spinner = TaskGetStructPtr(gCurTask);
+    Vec2_32 pos;
+    // Must be declared first (for match)
+    MapEntity *me;
+    Sprite_Spinner *spinner = TASK_DATA(gCurTask);
     Sprite *s = &spinner->s;
-    MapEntity *me = spinner->base.me;
 
-    posX = Q_24_8_TO_INT(spinner->spawnX);
-    posY = Q_24_8_TO_INT(spinner->spawnY);
-    s->x = posX - gCamera.x;
-    s->y = posY - gCamera.y;
+    me = spinner->base.me;
+    ENEMY_UPDATE_POSITION_STATIC(spinner, s, pos.x, pos.y);
 
     if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
-        struct UNK_3005A70 *u90 = gPlayer.unk90;
-        if ((u90->s.unk28[0].unk0 == -1) && (u90->s.unk28[1].unk0 == -1)) {
-            someX = spinner->reserved.unk4 + posX;
-            otherX = Q_24_8_TO_INT(gPlayer.x) + u90->s.unk28->unk4;
-            if ((someX > otherX)
-                || (someX + (spinner->reserved.unk6 - spinner->reserved.unk4))
-                    >= otherX) {
-                // _080570C2
-                int diff = (u90->s.unk28[0].unk6 - u90->s.unk28[0].unk4);
-                if (otherX + diff >= someX) {
-                _080570D4:
-                    someY = spinner->reserved.unk5 + posY;
-                    otherY = Q_24_8_TO_INT(gPlayer.y) + u90->s.unk28[0].unk5;
-                    if ((someY <= otherY) || (someY >= otherY)) {
-
-                    } else {
+        Player *p = &gPlayer;
+        Sprite *s2 = &p->unk90->s;
+        if ((s2->hitboxes[0].index != -1) && s->hitboxes[1].index != -1) {
+            s32 x1, x2;
+            x1 = pos.x + s->hitboxes[1].left;
+            x2 = Q_24_8_TO_INT(p->x) + s2->hitboxes[0].left;
+            if ((x1 <= x2 && x1 + (s->hitboxes[1].right - s->hitboxes[1].left) >= x2)
+                || (x1 >= x2
+                    && x2 + (s2->hitboxes[0].right - s2->hitboxes[0].left) >= x1)) {
+                s32 y1, y2;
+                y1 = pos.y + s->hitboxes[1].top;
+                y2 = Q_24_8_TO_INT(p->y) + s2->hitboxes[0].top;
+                if ((y1 <= y2 && y1 + (s->hitboxes[1].bottom - s->hitboxes[1].top) >= y2)
+                    || (y1 >= y2
+                        && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {
+                    if ((p->itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE) {
+                        sub_800CBA4(p);
                     }
                 }
             }
+        }
+        ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
+    }
 
-            // _0805711A
-            if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
-                sub_800CBA4(&gPlayer);
-            }
-        }
-        //_0805712E
-        if (sub_800C4FC(s, posX, posY, 0)) {
-            SET_MAP_ENTITY_NOT_INITIALIZED(me, spinner->base.spriteX);
-            TaskDestroy(gCurTask);
-            return;
-        }
-    }
-    // _0805713E
-    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, spinner->base.spriteX);
-        TaskDestroy(gCurTask);
-    } else {
-        sub_80122DC(Q_24_8(s->x), Q_24_8(s->y));
-        sub_8004558(s);
-        sub_80051E8(s);
-    }
+    ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(spinner, me, s);
+    ENEMY_UPDATE(s, pos.x, pos.y);
 }
-END_NONMATCH

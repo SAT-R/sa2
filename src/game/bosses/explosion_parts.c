@@ -3,6 +3,8 @@
 #include "task.h"
 #include "trig.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/bosses/common.h"
 #include "game/bosses/boss_1.h"
 #include "game/bosses/boss_2.h"
@@ -28,7 +30,7 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
     if (!(info->unk4 & 1) || *numCreatedParts < 16) {
         struct Task *t = TaskCreate(Task_BossParticleWithExplosionUpdate,
                                     sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
-        Sprite_ExplosionParts *parts = TaskGetStructPtr(t);
+        Sprite_ExplosionParts *parts = TASK_DATA(t);
         Sprite *s = &parts->s;
         s32 cos, sin;
 
@@ -48,23 +50,23 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         s->x = 0;
         s->y = 0;
         s->graphics.dest = info->vram;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = -1;
-        s->unk22 = 0x10;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk28->unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 1);
     }
 }
 
 void Task_BossParticleWithExplosionUpdate(void)
 {
-    Sprite_ExplosionParts *parts = TaskGetStructPtr(gCurTask);
+    Sprite_ExplosionParts *parts = TASK_DATA(gCurTask);
     Sprite *s = &parts->s;
 
     if (s->graphics.anim == SA2_ANIM_EXPLOSION) {
@@ -85,11 +87,11 @@ void Task_BossParticleWithExplosionUpdate(void)
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
@@ -97,7 +99,7 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
     if (!(info->unk4 & 1) || *numCreatedParts < 16) {
         struct Task *t = TaskCreate(Task_BossParticleStatic,
                                     sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
-        Sprite_ExplosionParts *parts = TaskGetStructPtr(t);
+        Sprite_ExplosionParts *parts = TASK_DATA(t);
         Sprite *s = &parts->s;
         s32 cos, sin;
 
@@ -117,23 +119,23 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         s->x = 0;
         s->y = 0;
         s->graphics.dest = info->vram;
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = -1;
-        s->unk22 = 0x10;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk28->unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 1);
     }
 }
 
 void Task_BossParticleStatic(void)
 {
-    Sprite_ExplosionParts *parts = TaskGetStructPtr(gCurTask);
+    Sprite_ExplosionParts *parts = TASK_DATA(gCurTask);
     Sprite *s = &parts->s;
 
     parts->accelY += parts->velocityY;
@@ -150,9 +152,9 @@ void Task_BossParticleStatic(void)
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         gCurTask->main = Task_DestroyBossParts;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }

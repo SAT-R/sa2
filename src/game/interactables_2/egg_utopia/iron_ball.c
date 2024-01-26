@@ -3,13 +3,18 @@
 #include "malloc_vram.h"
 #include "task.h"
 #include "trig.h"
+
+#include "sakit/entities_0.h"
+
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/egg_utopia/iron_ball.h"
 
 #include "constants/animations.h"
 
 typedef struct {
     SpriteBase base;
-    Sprite sprite;
+    Sprite s;
     s32 unk3C;
     s32 unk40;
     s32 unk44;
@@ -29,12 +34,13 @@ static bool32 sub_807F120(Sprite_IA95 *);
 static void TaskDestructor_Interactable095(struct Task *);
 static void DestroyInteractable095(Sprite_IA95 *);
 
-void CreateEntity_095(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                           u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IA95), 0x2010, 0,
                                 TaskDestructor_Interactable095);
-    Sprite_IA95 *ia95 = TaskGetStructPtr(t);
-    Sprite *sprite;
+    Sprite_IA95 *ia95 = TASK_DATA(t);
+    Sprite *s;
     ia95->unk44 = 0;
     ia95->unk48 = 0;
 
@@ -44,20 +50,20 @@ void CreateEntity_095(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     ia95->base.spriteX = me->x;
     ia95->base.spriteY = spriteY;
 
-    sprite = &ia95->sprite;
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = 0x2000;
-    sprite->graphics.dest = VramMalloc(0x12);
-    sprite->graphics.anim = SA2_ANIM_IRON_BALL;
-    sprite->variant = 0;
-    sub_8004558(sprite);
+    s = &ia95->s;
+    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
+    s->graphics.dest = VramMalloc(0x12);
+    s->graphics.anim = SA2_ANIM_IRON_BALL;
+    s->variant = 0;
+    UpdateSpriteAnimation(s);
 
     if (me->d.uData[2] > me->d.uData[3]) {
         if (me->d.sData[0] >= 0) {
@@ -91,17 +97,17 @@ static void sub_807EFC4(Sprite_IA95 *ia95)
 
     if (ia95->unk4C != 0) {
         s32 temp = me->d.uData[2] * 0x800;
-        ia95->unk44 = (temp
-                       * SIN((ia95->unk4C * ((gUnknown_03005590 + ia95->unk50) & 0xFF))
-                             & ONE_CYCLE))
+        ia95->unk44
+            = (temp
+               * SIN((ia95->unk4C * ((gStageTime + ia95->unk50) & 0xFF)) & ONE_CYCLE))
             >> 0xF;
     }
 
     if (ia95->unk4E != 0) {
         s32 temp = (me->d.uData[3] * 0x800);
-        ia95->unk48 = (temp
-                       * SIN((ia95->unk4E * ((gUnknown_03005590 + ia95->unk50) & 0xFF))
-                             & ONE_CYCLE))
+        ia95->unk48
+            = (temp
+               * SIN((ia95->unk4E * ((gStageTime + ia95->unk50) & 0xFF)) & ONE_CYCLE))
             >> 0xF;
     }
 
@@ -112,7 +118,7 @@ static void sub_807EFC4(Sprite_IA95 *ia95)
 
 static void Task_Interactable095Main(void)
 {
-    Sprite_IA95 *ia95 = TaskGetStructPtr(gCurTask);
+    Sprite_IA95 *ia95 = TASK_DATA(gCurTask);
 
     sub_807EFC4(ia95);
 
@@ -129,18 +135,18 @@ static void Task_Interactable095Main(void)
 
 static void TaskDestructor_Interactable095(struct Task *t)
 {
-    Sprite_IA95 *ia95 = TaskGetStructPtr(t);
-    VramFree(ia95->sprite.graphics.dest);
+    Sprite_IA95 *ia95 = TASK_DATA(t);
+    VramFree(ia95->s.graphics.dest);
 }
 
 static void sub_807F0D8(Sprite_IA95 *ia95)
 {
-    ia95->sprite.x = ia95->unk3C - gCamera.x;
-    ia95->sprite.y = ia95->unk40 - gCamera.y;
-    ia95->sprite.unk10 &= ~0x400;
-    sub_80051E8(&ia95->sprite);
-    ia95->sprite.unk10 |= 0x400;
-    sub_80051E8(&ia95->sprite);
+    ia95->s.x = ia95->unk3C - gCamera.x;
+    ia95->s.y = ia95->unk40 - gCamera.y;
+    ia95->s.unk10 &= ~0x400;
+    DisplaySprite(&ia95->s);
+    ia95->s.unk10 |= 0x400;
+    DisplaySprite(&ia95->s);
 }
 
 static bool32 sub_807F120(Sprite_IA95 *ia95)
@@ -166,7 +172,7 @@ static bool32 sub_807F17C(Sprite_IA95 *ia95)
         return FALSE;
     }
 
-    if (sub_800DF38(&ia95->sprite, ia95->unk3C, ia95->unk40, &gPlayer) & 0xF0000) {
+    if (sub_800DF38(&ia95->s, ia95->unk3C, ia95->unk40, &gPlayer) & 0xF0000) {
         return TRUE;
     }
 

@@ -8,10 +8,13 @@
 #include "trig.h"
 
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/music_plant/note_sphere.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -61,7 +64,7 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 {
     struct Task *t = TaskCreate(Task_Note_Sphere, sizeof(Sprite_NoteSphere), 0x2010, 0,
                                 TaskDestructor_Interactable_MusicPlant_Note_Sphere);
-    Sprite_NoteSphere *note = TaskGetStructPtr(t);
+    Sprite_NoteSphere *note = TASK_DATA(t);
     Sprite *s = &note->disp;
     note->unk44 = 0;
     note->unk46 = 0;
@@ -72,14 +75,14 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     note->base.me = me;
     note->base.spriteX = me->x;
     note->base.spriteY = spriteY;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
 
     s->graphics.dest
@@ -91,12 +94,12 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     note->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_80754B8(void)
 {
-    Sprite_NoteSphere *note = TaskGetStructPtr(gCurTask);
+    Sprite_NoteSphere *note = TASK_DATA(gCurTask);
 
     switch (note->unk4A++) {
         case 0: {
@@ -178,7 +181,7 @@ static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
                                           * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
     }
 
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
 
     return angle;
 }
@@ -203,7 +206,7 @@ static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *note)
 
 static void Task_Note_Sphere(void)
 {
-    Sprite_NoteSphere *note = TaskGetStructPtr(gCurTask);
+    Sprite_NoteSphere *note = TASK_DATA(gCurTask);
 
     if (NoteSphere_IsPlayerColliding(note)) {
         NoteSphere_ApplyCollisionPlayer(note);
@@ -232,10 +235,10 @@ static void NoteSphere_80758B8(Sprite_NoteSphere *note)
     Sprite *s = &note->disp;
 
     s->unk10 |= 0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->unk10 &= ~0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 NoteSphere_ShouldDespawn(Sprite_NoteSphere *note)

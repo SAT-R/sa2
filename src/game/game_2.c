@@ -4,13 +4,16 @@
 #include "task.h"
 #include "trig.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/stage/stage.h"
+#include "game/water_effects.h"
 
 #include "constants/animations.h"
 
 void Task_801F214(void)
 {
-    TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
+    TaskStrc_801F15C *ts = TASK_DATA(gCurTask);
     Sprite *s = &ts->s;
 
     if (!PLAYER_IS_ALIVE) {
@@ -18,7 +21,8 @@ void Task_801F214(void)
         return;
     }
     if ((ts->unk14 & 0x8)
-        && ((ts->playerAnim != gPlayer.unk68) || (ts->playerVariant != gPlayer.unk6A))) {
+        && ((ts->playerAnim != gPlayer.anim)
+            || (ts->playerVariant != gPlayer.variant))) {
         TaskDestroy(gCurTask);
         return;
     } else {
@@ -34,7 +38,7 @@ void Task_801F214(void)
                         if (IS_MULTI_PLAYER) {
                             s8 id = SIO_MULTI_CNT->id;
                             struct Task *tmpp = gMultiplayerPlayerTasks[id];
-                            struct MultiplayerPlayer *mpp = TaskGetStructPtr(tmpp);
+                            struct MultiplayerPlayer *mpp = TASK_DATA(tmpp);
                             ts->x = mpp->unk50;
                             ts->y = mpp->unk52;
                         } else {
@@ -44,7 +48,7 @@ void Task_801F214(void)
                     } break;
 
                     case 0x10: {
-                        ts->y = gUnknown_03005660.unk4;
+                        ts->y = gWater.currentWaterLevel;
                     } break;
                 }
 
@@ -83,12 +87,12 @@ void Task_801F214(void)
             }
         }
 
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
-struct Task *sub_801F3A4(s32 x, s32 y, u16 score)
+struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
 {
     if ((score != 100) && (score != 200) && (score != 300) && (score != 500)
         && (score != 800)) {
@@ -98,7 +102,7 @@ struct Task *sub_801F3A4(s32 x, s32 y, u16 score)
         TaskStrc_801F15C *ts;
         Sprite *s;
         t = sub_801F15C(x, y, 32, 0, Task_801F214, TaskDestructor_801F550);
-        ts = TaskGetStructPtr(t);
+        ts = TASK_DATA(t);
 
         switch (score) {
             case 100: {
@@ -126,7 +130,7 @@ struct Task *sub_801F3A4(s32 x, s32 y, u16 score)
         s->graphics.dest = VramMalloc(sAnimData_StageGoalScoreBonus[score][0]);
         s->graphics.anim = sAnimData_StageGoalScoreBonus[score][1];
         s->variant = sAnimData_StageGoalScoreBonus[score][2];
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
         return t;
     }
@@ -135,7 +139,7 @@ struct Task *sub_801F3A4(s32 x, s32 y, u16 score)
 void sub_801F488(void)
 {
     Player *p = &gPlayer;
-    if ((gUnknown_03005590 & 0x7) == 0) {
+    if ((gStageTime & 0x7) == 0) {
         struct Task *t;
         TaskStrc_801F15C *ts;
         Sprite *s;
@@ -159,19 +163,19 @@ void sub_801F488(void)
 
         t = sub_801F15C(x2, y2, 192, 0, Task_801F214, TaskDestructor_801F550);
 
-        ts = TaskGetStructPtr(t);
+        ts = TASK_DATA(t);
         s = &ts->s;
         s->graphics.dest = VramMalloc(20);
         s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
         s->variant = 0;
-        s->unk1A = 0x200;
+        s->unk1A = SPRITE_OAM_ORDER(8);
         s->unk10 = SPRITE_FLAG(PRIORITY, 1);
     }
 }
 
 void TaskDestructor_801F550(struct Task *t)
 {
-    TaskStrc_801F15C *ts = TaskGetStructPtr(t);
+    TaskStrc_801F15C *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
 
     VramFree(s->graphics.dest);
@@ -180,13 +184,13 @@ void TaskDestructor_801F550(struct Task *t)
 struct Task *sub_801F568(s16 x, s16 y)
 {
     struct Task *t = sub_801F15C(x, y, 192, 0, Task_801F214, TaskDestructor_801F550);
-    TaskStrc_801F15C *ts = TaskGetStructPtr(t);
+    TaskStrc_801F15C *ts = TASK_DATA(t);
     Sprite *s = &ts->s;
 
     s->graphics.dest = VramMalloc(20);
     s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
     s->variant = 0;
-    s->unk1A = 0x200;
+    s->unk1A = SPRITE_OAM_ORDER(8);
     s->unk10 = SPRITE_FLAG(PRIORITY, 1);
 
     return t;

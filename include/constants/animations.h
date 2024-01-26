@@ -26,16 +26,37 @@
 #define SA2_CHAR_ANIM_JUMP_1             10
 #define SA2_CHAR_ANIM_JUMP_2             11
 #define SA2_CHAR_ANIM_FALLING_VULNERABLE 13
+#define SA2_CHAR_ANIM_14                 14
+#define SA2_CHAR_ANIM_15                 15
 #define SA2_CHAR_ANIM_16                 16
 
 // TODO: Rename. "These "Insta Shield" is true for Sonic, but not the other characters.
 #define SA2_CHAR_ANIM_INSTA_SHIELD_1 17
 #define SA2_CHAR_ANIM_INSTA_SHIELD_2 18
 
+#define SA2_CHAR_ANIM_20                                     20
+#define SA2_CHAR_ANIM_28                                     28
+#define SA2_CHAR_ANIM_29                                     29
 #define SA2_CHAR_ANIM_BEFORE_COUNTDOWN                       30
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1
 #define SA2_CHAR_ANIM_31                                     31
+#define SA2_CHAR_ANIM_ACT_CLEAR                              32
+#define SA2_CHAR_ANIM_33                                     33
+#define SA2_CHAR_ANIM_34                                     34
+#define SA2_CHAR_ANIM_35                                     35
+#define SA2_CHAR_ANIM_36                                     36
+#define SA2_CHAR_ANIM_37                                     37
+#define SA2_CHAR_ANIM_38                                     38
+#define SA2_CHAR_ANIM_39                                     39
+#define SA2_CHAR_ANIM_40                                     40
+#define SA2_CHAR_ANIM_41                                     41
+#define SA2_CHAR_ANIM_42                                     42
+#define SA2_CHAR_ANIM_43                                     43
+#define SA2_CHAR_ANIM_44                                     44
+#define SA2_CHAR_ANIM_45                                     45
+#define SA2_CHAR_ANIM_46                                     46
+#define SA2_CHAR_ANIM_47                                     47
 #define SA2_CHAR_ANIM_TRICK_UP                               48
 #define SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX           3 // Knuckles-only(?)
 #define SA2_CHAR_ANIM_TRICK_SIDE                             49
@@ -44,12 +65,25 @@
 #define SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX         2 // Sonic-only
 #define SA2_CHAR_ANIM_50                                     50
 #define SA2_CHAR_ANIM_51                                     51 // Sonic: Bound-Attack
+#define SA2_CHAR_ANIM_52                                     52
+#define SA2_CHAR_ANIM_53                                     53
+#define SA2_CHAR_ANIM_54                                     54
 #define SA2_CHAR_ANIM_55                                     55
+#define SA2_CHAR_ANIM_56                                     56
+#define SA2_CHAR_ANIM_57                                     57
+#define SA2_CHAR_ANIM_65                                     65
+#define SA2_CHAR_ANIM_66                                     66
+#define SA2_CHAR_ANIM_67                                     67
 #define SA2_CHAR_ANIM_68                                     68
+#define SA2_CHAR_ANIM_69                                     69
 #define SA2_CHAR_ANIM_70                                     70
+#define SA2_CHAR_ANIM_BOOST_PALETTE                          74
+#define SA2_CHAR_ANIM_80                                     80
 
-#define SA2_ANIM_SONIC_IDLE    0
-#define SA2_ANIM_CREAM_IDLE    91
+#define SA2_ANIM_SONIC_IDLE     0
+#define SA2_ANIM_CREAM_IDLE     91
+#define SA2_ANIM_CREAM_CAPTURED 129
+
 #define SA2_ANIM_TAILS_IDLE    182
 #define SA2_ANIM_KNUCKLES_IDLE 273
 #define SA2_ANIM_AMY_IDLE      364
@@ -165,11 +199,10 @@
 #define SA2_ANIM_VARIANT_CHECKPOINT_HIT  1
 #define SA2_ANIM_GOAL_LEVER              532
 #define SA2_ANIM_WATER_SPLASH            533
-#define SA2_ANIM_534                     534
-
+#define SA2_ANIM_WATER_SURFACE           534
 #define SA2_ANIM_LEAF_FOREST_GROUND_TILE 535
 #define SA2_ANIM_SPRING                  536
-#define SA2_ANIM_SPRING_BOUNCY           537
+#define SA2_ANIM_BOUNCY_SPRING           537
 #define SA2_ANIM_BOUNCY_BAR              538
 #define SA2_ANIM_PLATFORM_LF_WIDE        539
 #define SA2_ANIM_BOOSTER                 540
@@ -181,16 +214,24 @@
 #define SA2_ANIM_VARIANT_SPIKES_UP_MID   2
 #define SA2_ANIM_VARIANT_SPIKES_SIDEWAYS 3
 #define SA2_ANIM_RAMP                    543
+#define SA2_ANIM_WATER_RUNNING_PARTICLES 544
 
-#define SA2_ANIM_ROTATING_HANDLE   546
-#define SA2_ANIM_FLOWER_YELLOW     547
-#define SA2_ANIM_FLOWER_RED_SMALL  548
-#define SA2_ANIM_FLOWER_BLUE       549
-#define SA2_ANIM_FLOWER_BLUE_SMALL 550
-#define SA2_ANIM_ROCK              551
-#define SA2_ANIM_552               552
-
-#define SA2_ANIM_WATER_GROUND_SPLASH             560
+#define SA2_ANIM_ROTATING_HANDLE               546
+#define SA2_ANIM_DECORATION__FLOWER_YELLOW     547
+#define SA2_ANIM_DECORATION__FLOWER_RED_SMALL  548
+#define SA2_ANIM_DECORATION__FLOWER_BLUE       549
+#define SA2_ANIM_DECORATION__FLOWER_BLUE_SMALL 550
+#define SA2_ANIM_DECORATION__ROCK              551
+#define SA2_ANIM_DECORATION__552               552
+// TODO: Unused for decoration module?
+#define SA2_ANIM_WATER_FALL_HIT_SURFACE          553
+#define SA2_ANIM_PALETTE_554                     554
+#define SA2_ANIM_UNDERWATER_1UP_SONIC            555
+#define SA2_ANIM_UNDERWATER_1UP_TAILS            556
+#define SA2_ANIM_UNDERWATER_1UP_KNUCKLES         557
+#define SA2_ANIM_UNDERWATER_1UP_CREAM            558
+#define SA2_ANIM_UNDERWATER_1UP_AMY              559
+#define SA2_ANIM_DECORATION__WATER_GROUND_SPLASH 560
 #define SA2_ANIM_WIND_MILL_PART                  561
 #define SA2_ANIM_562                             562
 #define SA2_ANIM_563                             563
@@ -218,26 +259,26 @@
 #define SA2_ANIM_579                             579
 #define SA2_ANIM_SPIKES_MUS_PLA                  580
 #define SA2_ANIM_PLATFORM_ICE_PAR                581
-#define SA2_ANIM_SNOWBALL                        582
+#define SA2_ANIM_BIG_SNOWBALL                    582
 #define SA2_ANIM_583                             583
 #define SA2_ANIM_DASH_RING                       584
-#define SA2_ANIM_CROSS_SKY_CAN                   585
+#define SA2_ANIM_SMALL_WINDMILL                  585
 #define SA2_ANIM_PLATFORM_SKY_CAN                586
 #define SA2_ANIM_PLATFORM_587                    587
 #define SA2_ANIM_WHIRLWIND                       588
-#define SA2_ANIM_PROPELLOR                       589
+#define SA2_ANIM_PROPELLER                       589
 #define SA2_ANIM_SPRING_FLYING                   590
-#define SA2_ANIM_SMALL_PROPELLOR                 591
+#define SA2_ANIM_FAN                             591
 #define SA2_ANIM_FLYING_HANDLE                   592
 #define SA2_ANIM_PLATFORM_SKY_CAN_2              593
 #define SA2_ANIM_PLATFORM_SQUARE_SKY_CAN         594
 #define SA2_ANIM_ARROW_SCREEN                    595
-#define SA2_ANIM_SPIKE_SCREEN                    596
+#define SA2_ANIM_SPIKE_PLATFORM                  596
 #define SA2_ANIM_PLATFORM_TEC_BAS                597
 #define SA2_ANIM_NOTE_BLOCK_TEC_BASE             598
 #define SA2_ANIM_ARROW_SCREEN_BORDER             599
 #define SA2_ANIM_LIGHT_GLOBE                     600
-#define SA2_ANIM_LIGHT_BRIDGE_TEC_BASE           601
+#define SA2_ANIM_LIGHT_BRIDGE                    601
 #define SA2_ANIM_602                             602
 #define SA2_ANIM_603                             603
 #define SA2_ANIM_SPRING_TEC_BAS                  604
@@ -250,24 +291,66 @@
 #define SA2_ANIM_SPEEDING_PLATFORM      612
 #define SA2_ANIM_PLATFORM_SQUARE_COMMON 613
 
-#define SA2_ANIM_LAUNCHER_EGG_UTO 614
+#define SA2_ANIM_LAUNCHER 614
 
-#define SA2_ANIM_CANNON_EGG_UTO   616
+#define SA2_ANIM_CANNON           616
 #define SA2_ANIM_PLATFORM_EGG_UTO 617
 #define SA2_ANIM_IRON_BALL        618
 #define SA2_ANIM_EXPLOSION        619
 
+#define SA2_ANIM_HAMMERTANK_BODY_DESTROYED 628
+#define SA2_ANIM_HAMMERTANK_PILOT          629
+#define SA2_ANIM_HAMMERTANK_HAMMER         630
+#define SA2_ANIM_HAMMERTANK_HAND           631
+#define SA2_ANIM_HAMMERTANK_BODY           632
+#define SA2_ANIM_HAMMERTANK_ARM_SEGMENT    633
+#define SA2_ANIM_HAMMERTANK_WHEEL          634
+#define SA2_ANIM_HAMMERTANK_SPINNING_WHEEL 635
+
 #define SA2_ANIM_EGGMOBILE   636
 #define SA2_ANIM_EGGMAN_HEAD 637
+#define SA2_ANIM_EXPLOSION_1 638
+#define SA2_ANIM_EXPLOSION_2 639
+
+#define SA2_ANIM_EGG_BOMBER_TANK_BODY       641
+#define SA2_ANIM_EGG_BOMBER_TANK_BODY_PARTS 642
+
+#define SA2_ANIM_EGG_BOMBER_TANK_WHEEL       644
+#define SA2_ANIM_EGG_BOMBER_TANK_WHEEL_PARTS 645
+#define SA2_ANIM_EGG_BOMBER_TANK_CANNON      646
+#define SA2_ANIM_EGG_BOMBER_TANK_BOMB        647
+#define SA2_ANIM_EGG_BOMBER_TANK_PILOT       648
 
 #define SA2_ANIM_TAILS_CAPTURED_COPY 659
+
+#define SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES 315
+#define SA2_ANIM_EGG_SAUCER_CABIN          669
+#define SA2_ANIM_EGG_SAUCER_ARM_BASE       670
+#define SA2_ANIM_EGG_SAUCER_GUN_BASE       671
+#define SA2_ANIM_EGG_SAUCER_HAND           672
+
+#define SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_DOWN_RIGHT 676
+#define SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_DOWN       678
+#define SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_DOWN_LEFT  675
+#define SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_LEFT       679
+#define SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP_LEFT    673
+#define SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP         677
+#define SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP_RIGHT   674
+#define SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_RIGHT      680
+
+#define SA2_ANIM_EGG_SAUCER_ARM_SEGMENT  681
+#define SA2_ANIM_EGG_SAUCER_GUN          682
+#define SA2_ANIM_EGG_SAUCER_GUN_CHARGE   683
+#define SA2_ANIM_EGG_SAUCER_PILOT_EGGMAN 684
+#define SA2_ANIM_EGG_SAUCER_DISK         685
 
 #define SA2_ANIM_ITEMBOX      724
 #define SA2_ANIM_ITEMBOX_TYPE 725
 
-// Might be RING_UI instead of STATIC?
-#define SA2_ANIM_RING_STATIC          726
-#define SA2_ANIM_RING_COLLECT         727
+// Used both for rings placed in the stage and
+// ones the player loses when hit.
+#define SA2_ANIM_RING                 726
+#define SA2_ANIM_RING_COLLECT_EFFECT  727
 #define TILE_COUNT__ANIM_ITEMBOX      16 // TODO: Automate
 #define TILE_COUNT__ANIM_ITEMBOX_TYPE 4 // TODO: Automate
 
@@ -279,9 +362,16 @@
 #define SA2_ANIM_VARIANT_SCORE_1000 4
 #define TILE_COUNT__ANIM_SCORE      2 // TODO: Automate
 
-#define SA2_ANIM_COLLECTIBLE_SPECIAL_RING 730
+#define SA2_ANIM_SPECIAL_RING             730
 #define SA2_ANIM_VARIANT_SP_RING__IDLE    0
 #define SA2_ANIM_VARIANT_SP_RING__COLLECT 1
+
+#define SA2_ANIM_GAME_OVER               731
+#define SA2_ANIM_VARIANT_GAME_OVER_GAME  0
+#define SA2_ANIM_VARIANT_GAME_OVER_OVER  1
+#define SA2_ANIM_VARIANT_GAME_OVER_CONTI 2
+#define SA2_ANIM_VARIANT_GAME_OVER_NUE   3
+#define SA2_ANIM_VARIANT_GAME_OVER_TIME  4
 
 #define SA2_ANIM_NOTIFICATION_RING_BONUS                735
 #define SA2_ANIM_CHAR_SELECT_CHARACTER                  736
@@ -335,7 +425,11 @@
 
 #define SA2_ANIM_HEART 858
 
-#define SA2_ANIM_TRIANGLE_RED 866
+#define SA2_ANIM_INDICATOR_SONIC    863
+#define SA2_ANIM_INDICATOR_CREAM    864
+#define SA2_ANIM_INDICATOR_TAILS    865
+#define SA2_ANIM_INDICATOR_KNUCKLES 866
+#define SA2_ANIM_INDICATOR_AMY      867
 
 #define SA2_ANIM_SOME_JAPANESE_TXT           868
 #define SA2_ANIM_VARIANT_SOME_JAPANESE_TXT_7 7
@@ -349,7 +443,7 @@
 #define SA2_ANIM_VARIANT_DROWN_COUNTDOWN_0 5
 #define SA2_ANIM_STAGE_GOAL_SCORE_BONUS    871
 #define SA2_ANIM_BRAKING_DUST_EFFECT       872
-#define SA2_ANIM_BOOST_EFFECT              873
+#define SA2_ANIM_SONIC_BOOM_PARTICLES      873
 #define SA2_ANIM_MAIN_MENU                 874
 #define SA2_ANIM_VARIANT_MAIN_MENU_OPTIONS 3
 
@@ -358,8 +452,7 @@
 
 #define SA2_ANIM_CONFUSION 881
 
-// Likely the Player UI ring
-#define SA2_ANIM_RING                    882
+#define SA2_ANIM_RING_SP_STAGE           882
 #define SA2_ANIM_E100_ALPHA              883
 #define SA2_ANIM_SP_STAGE_HOLE           884
 #define SA2_ANIM_VARIANT_SP_STAGE_HOLE_0 0
@@ -522,29 +615,63 @@
 #define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_ROUND_LOSE 1
 #define SA2_ANIM_VARIANT_MP_SINGLE_PAK_RESULTS_ROUND_DRAW 2
 
+#define SA2_ANIM_MP_RESULT_JP   1101
+#define SA2_ANIM_MP_RESULT      1102
+#define SA2_ANIM_MP_RESULT_WIN  0
+#define SA2_ANIM_MP_RESULT_LOSE 1
+#define SA2_ANIM_MP_RESULT_DRAW 2
+#define SA2_ANIM_MP_RESULT_1ST  3
+#define SA2_ANIM_MP_RESULT_2ND  4
+#define SA2_ANIM_MP_RESULT_3RD  5
+#define SA2_ANIM_MP_RESULT_4TH  6
+
 // We can infer this Chao is Cheese, since they have a red bow
-#define SA2_ANIM_MP_CHEESE_WAVING   1103
-#define SA2_ANIM_MP_CHEESE_SITTING  1104
-#define SA2_ANIM_DIGITS             1105
-#define SA2_ANIM_PRESS_START_MSG_JP 1106
-#define SA2_ANIM_PRESS_START_MSG_EN 1107
-#define SA2_ANIM_PRESS_START_MSG_DE 1108
-#define SA2_ANIM_PRESS_START_MSG_FR 1109
-#define SA2_ANIM_PRESS_START_MSG_ES 1110
-#define SA2_ANIM_PRESS_START_MSG_IT 1111
+#define SA2_ANIM_MP_CHEESE_WAVING                1103
+#define SA2_ANIM_MP_CHEESE_SITTING               1104
+#define SA2_ANIM_DIGITS                          1105
+#define SA2_ANIM_PRESS_START_MSG_JP              1106
+#define SA2_ANIM_PRESS_START_MSG_EN              1107
+#define SA2_ANIM_PRESS_START_MSG_DE              1108
+#define SA2_ANIM_PRESS_START_MSG_FR              1109
+#define SA2_ANIM_PRESS_START_MSG_ES              1110
+#define SA2_ANIM_PRESS_START_MSG_IT              1111
+#define SA2_ANIM_STAGE_INTRO_ACT_LETTERS         1112
+#define SA2_ANIM_STAGE_INTRO_TRIANGLES           1113
+#define SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO      1114
+#define SA2_ANIM_STAGE_INTRO_LOADING_WHEEL       1115
+#define SA2_ANIM_STAGE_INTRO_LOADING_WHEEL_ICONS 1116
+#define SA2_ANIM_STAGE_INTRO_ZONE_NAMES          1117
+#define SA2_ANIM_STAGE_INTRO_UNLOCKED_ICONS      1118
 
 #define SA2_ANIM_ASCII            1119
 #define SA2_ANIM_ASCII_FIRST_CHAR '!'
 #define SA2_ANIM_ASCII_YEN        '\\'
 #define SA2_ANIM_NUM_ASCII_CHARS  94
 
-#define SA2_ANIM_TA_WHITE_BAR 1120
+// Used in Time Attack and stage results screen (/ stage outro)
+#define SA2_ANIM_TA_WHITE_BAR                      1120
+#define SA2_ANIM_CHAR_GOT_THROUGH                  1121
+#define SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_SONIC    0
+#define SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_CREAM    4
+#define SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_TAILS    1
+#define SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_KNUCKLES 2
+#define SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_AMY      3
 
-#define SA2_ANIM_STAGE               1123
-#define SA2_ANIM_VARIANT_STAGE_ACT_1 0
-#define SA2_ANIM_VARIANT_STAGE_ACT_2 1
-#define SA2_ANIM_VARIANT_STAGE_FINAL 2
-#define SA2_ANIM_VARIANT_STAGE_EXTRA 3
+#define SA2_ANIM_RESULTS_HEADLINE                        1122
+#define SA2_ANIM_VARIANT_RESULTS_HEADLINE_GOT_THROUGH    0
+#define SA2_ANIM_VARIANT_RESULTS_HEADLINE_BOSS_DESTROYED 1
+
+#define SA2_ANIM_STAGE                    1123
+#define SA2_ANIM_VARIANT_STAGE_ACT_1      0
+#define SA2_ANIM_VARIANT_STAGE_ACT_2      1
+#define SA2_ANIM_VARIANT_STAGE_FINAL      2
+#define SA2_ANIM_VARIANT_STAGE_EXTRA      3
+#define SA2_ANIM_VARIANT_STAGE_ZONE(zone) (4 + (zone))
+
+#define SA2_ANIM_SCORE_BONUSES                 1124
+#define SA2_ANIM_VARIANT_SCORE_BONUSES_TIME    0
+#define SA2_ANIM_VARIANT_SCORE_BONUSES_RING    1
+#define SA2_ANIM_VARIANT_SCORE_BONUSES_SP_RING 2
 
 #define SA2_ANIM_LIFE_COUNTER                  1125
 #define SA2_ANIM_VARIANT_LIFE_COUNTER_SONIC    0

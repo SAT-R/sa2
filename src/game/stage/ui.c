@@ -17,6 +17,8 @@
 #define UI_POS_RING_COUNT_X 32
 #define UI_POS_RING_COUNT_Y 16
 
+struct Task *gStageUITask = NULL;
+
 const u16 sAnimsAsciiDigits[12][2] = {
     { SA2_ANIM_ASCII, '0' - 32 },
     { SA2_ANIM_ASCII, '1' - 32 },
@@ -135,7 +137,7 @@ struct Task *CreateStageUI(void)
     struct Task *t = TaskCreate(Task_CreateStageUIMain, sizeof(StageUI), 0x2102, 0,
                                 TaskDestructor_CreateStageUI);
     gStageUITask = t;
-    ui = TaskGetStructPtr(t);
+    ui = TASK_DATA(t);
 
     for (i = 0; i < ARRAY_COUNT(ui->digits); i++) {
         s = &ui->digits[i];
@@ -150,20 +152,20 @@ struct Task *CreateStageUI(void)
 
         ui->unk2D8[i] = (GET_TILE_NUM(s->graphics.dest) & 0x3FF) | 0x6000;
 
-        s->unk1A = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->graphics.anim = sAnimsAsciiDigits[i][0];
         s->variant = sAnimsAsciiDigits[i][1];
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = 0xFF;
-        s->unk22 = 0x10;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk28[0].unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(18, 1);
 
         if (i != (ARRAY_COUNT(sAnimsAsciiDigits) - 1)) {
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
     }
 
@@ -177,14 +179,14 @@ struct Task *CreateStageUI(void)
         ui->unk2D4 = (GET_TILE_NUM(s->graphics.dest) & 0x3FF);
         s->graphics.anim = sAnims1UpIcons[gSelectedCharacter][1];
         s->variant = sAnims1UpIcons[gSelectedCharacter][2];
-        s->unk1A = 0x100;
+        s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = 0xFF;
-        s->unk22 = 0x10;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk28[0].unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = 0;
 
         // This can never be reached
@@ -193,7 +195,7 @@ struct Task *CreateStageUI(void)
             s->palId = id;
             ui->unk2D4 |= (id << 12);
         }
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     s = &ui->ringContainer;
@@ -204,16 +206,16 @@ struct Task *CreateStageUI(void)
     ui->unk2D6 |= 0x6000;
     s->graphics.anim = SA2_ANIM_UI_RING_CONTAINER;
     s->variant = 0;
-    s->unk1A = 0xC0;
+    s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &ui->ring;
     ui->ring.x = 7;
@@ -223,15 +225,15 @@ struct Task *CreateStageUI(void)
     ui->unk2D2 |= 0x6000;
     s->graphics.anim = SA2_ANIM_UI_RING;
     s->variant = 0;
-    s->unk1A = 0;
+    s->unk1A = SPRITE_OAM_ORDER(0);
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->unk10 = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0;
     ui->unk2D0 = 0;
 
@@ -253,7 +255,7 @@ void Task_CreateStageUIMain(void)
         OamData *oam;
         u32 courseTime;
 
-        StageUI *ui = TaskGetStructPtr(gCurTask);
+        StageUI *ui = TASK_DATA(gCurTask);
         Sprite *digits = &ui->digits[0];
         Sprite *sd;
         u32 seconds, minutes;
@@ -261,9 +263,9 @@ void Task_CreateStageUIMain(void)
         if (gGameMode == GAME_MODE_SINGLE_PLAYER) {
             if (ACT_INDEX(gCurrentLevel) != ACT_BOSS) {
                 sd = &digits[UI_ASCII_SP_RING];
-                sub_8004558(sd);
+                UpdateSpriteAnimation(sd);
 
-                for (i = 0; i < gUnknown_030054F4; i++) {
+                for (i = 0; i < gSpecialRingCount; i++) {
                     oam = OamMalloc(3);
                     oam->all.attr0 = 31;
                     oam->all.attr1 = i * 8 + 4;
@@ -328,8 +330,8 @@ void Task_CreateStageUIMain(void)
         ui->unk2D0 += ((gPlayer.speedAirX >> 3) + Q_24_8(0.25));
         ui->unk2D0 &= 0x7FF;
         ui->ring.variant = ui->unk2D0 >> 8;
-        ui->ring.unk21 = 0xFF;
-        sub_8004558(&ui->ring);
+        ui->ring.prevVariant = -1;
+        UpdateSpriteAnimation(&ui->ring);
 
         /* Ring-Count */
         oam = OamMalloc(3);
@@ -341,20 +343,20 @@ void Task_CreateStageUIMain(void)
             sd = &digits[9];
             sd->y = UI_POS_RING_COUNT_Y;
             sd->x = UI_POS_RING_COUNT_X + 0 * 8;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             sd->y = UI_POS_RING_COUNT_Y;
             sd->x = UI_POS_RING_COUNT_X + 1 * 8;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             sd->y = UI_POS_RING_COUNT_Y;
             sd->x = UI_POS_RING_COUNT_X + 2 * 8;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
         } else {
             // _0802CF28
             u32 processed2;
             u16 processed;
-            sl = (gRingCount == 0) && gUnknown_03005590 & 0x10 ? 0x7000 : 0;
+            sl = (gRingCount == 0) && gStageTime & 0x10 ? 0x7000 : 0;
 
             { /* 100s */
                 u16 hundreds;
@@ -422,7 +424,7 @@ void Task_CreateStageUIMain(void)
             tempB = ZONE_TIME_TO_INT(9, 0);
             sl = 0;
             if (tempTime > tempB) {
-                sl = (-(gUnknown_03005590 & 0x10)) >> 31;
+                sl = (-(gStageTime & 0x10)) >> 31;
             }
 
             // Milliseconds-L
@@ -430,46 +432,46 @@ void Task_CreateStageUIMain(void)
             sd->x = ((DISPLAY_WIDTH / 2) + 16) + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Milliseconds-R
             sd = &digits[gMillisUnpackTable[r5][1]];
             sd->x = ((DISPLAY_WIDTH / 2) + 16) + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Seconds-L
             sd = &digits[gSecondsTable[seconds][0]];
             sd->x = ((DISPLAY_WIDTH / 2) - 8) + 0 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Seconds-R
             sd = &digits[gSecondsTable[seconds][1]];
             sd->x = ((DISPLAY_WIDTH / 2) - 8) + 1 * 8;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
 
             // Minutes
             sd = &digits[minutes];
             sd->x = (DISPLAY_WIDTH / 2) - 24;
             sd->y = 16;
             sd->palId = sl;
-            sub_80051E8(sd);
+            DisplaySprite(sd);
         }
     }
 }
 
 // Almost identical to Debug_PrintIntegerAt()"
-void StageUI_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
+void StageUI_PrintIntegerAt(u32 value, s16 x, s16 y, u8 palId)
 {
-    StageUI *ui = TaskGetStructPtr(gStageUITask);
+    StageUI *ui = TASK_DATA(gStageUITask);
     Sprite *digits = &ui->digits[0];
     u32 numDigits;
-    u32 digitX;
+    s32 digitX;
 
     s32 base = 10;
     u32 remaining = 1;
@@ -493,7 +495,8 @@ void StageUI_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
     if (remaining == 0 || numDigits == 0)
         return;
 
-    for (digitX = x; remaining > 0 && numDigits > 0; digitX -= 8, numDigits--) {
+    // NOTE: (u16)x cast needed for matching
+    for (digitX = (u16)x; remaining > 0 && numDigits > 0; digitX -= 8, numDigits--) {
         Sprite *digit;
 
         remaining = Div(value, base);
@@ -508,7 +511,7 @@ void StageUI_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
 
         digit->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
 
-        sub_80051E8(digit);
+        DisplaySprite(digit);
 
         value = remaining;
     }
@@ -516,7 +519,7 @@ void StageUI_PrintIntegerAt(u32 value, u16 x, u16 y, u8 palId)
 
 void TaskDestructor_CreateStageUI(struct Task *t)
 {
-    StageUI *ui = TaskGetStructPtr(t);
+    StageUI *ui = TASK_DATA(t);
     VramFree(ui->ring.graphics.dest);
     VramFree(ui->ringContainer.graphics.dest);
 

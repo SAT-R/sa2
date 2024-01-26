@@ -6,25 +6,25 @@
 
 #include "constants/animations.h"
 
-void Task_802D4B4(void);
-void TaskDestructor_802D4B8(struct Task *);
-
-extern struct Task *gDebugUITask;
-
 typedef struct {
     Sprite chars[SA2_ANIM_NUM_ASCII_CHARS];
 } DebugTextPrinter; /* size: 0x11A0 */
 
+static struct Task *sDebugUITask = NULL;
+
+void Task_802D4B4(void);
+void TaskDestructor_802D4B8(struct Task *);
+
 #define DBG_UI_REQUIRED_TILES (2 * SA2_ANIM_NUM_ASCII_CHARS)
 #define DBG_UI_CHAR_SIZE      (2 * TILE_SIZE_4BPP)
 #define DGB_UI_GET_CHAR_FROM_TASK(task, ascii)                                          \
-    (Sprite *)&(((DebugTextPrinter *)TaskGetStructPtr(task))->chars[(ascii) - '!'])
+    (Sprite *)&(((DebugTextPrinter *)TASK_DATA(task))->chars[(ascii) - '!'])
 
 struct Task *Debug_CreateAsciiTask(s16 x, s16 y)
 {
     struct Task *t = TaskCreate(Task_802D4B4, sizeof(DebugTextPrinter), 0xE100, 0,
                                 TaskDestructor_802D4B8);
-    DebugTextPrinter *printer = TaskGetStructPtr(t);
+    DebugTextPrinter *printer = TASK_DATA(t);
     u32 i;
 
     for (i = 0; i < SA2_ANIM_NUM_ASCII_CHARS; i++) {
@@ -48,23 +48,23 @@ struct Task *Debug_CreateAsciiTask(s16 x, s16 y)
         //       ( But to convert i to ASCII, you add '!' (0x21),
         //         or subtract it for the other way around. )
         s->variant = i + 1;
-        s->unk14 = 0;
-        s->unk1C = 0;
-        s->unk21 = 0xFF;
-        s->unk22 = 0x10;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk28[0].unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 0);
     }
 
-    gDebugUITask = t;
+    sDebugUITask = t;
 
     return t;
 }
 
 void Debug_PrintIntegerAt(u32 value, u16 x, u16 y)
 {
-    Sprite *digits = DGB_UI_GET_CHAR_FROM_TASK(gDebugUITask, '0');
+    Sprite *digits = DGB_UI_GET_CHAR_FROM_TASK(sDebugUITask, '0');
     s32 base = 10;
     u32 remaining = 1;
     u32 numDigits;
@@ -98,10 +98,10 @@ void Debug_PrintIntegerAt(u32 value, u16 x, u16 y)
 
         digit->x = digitX;
         digit->y = y;
-        sub_8004558(digit);
+        UpdateSpriteAnimation(digit);
 
         digit->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
-        sub_80051E8(digit);
+        DisplaySprite(digit);
 
         value = remaining;
     }
@@ -111,7 +111,7 @@ void Debug_PrintTextAt(char *text, s16 x, s16 y)
 {
     // NOTE: Unlike in Debug_PrintIntegerAt this is NOT the digit '0',
     //       but the character with the hexcode 0x00!
-    Sprite *baseChar = DGB_UI_GET_CHAR_FROM_TASK(gDebugUITask, '\000');
+    Sprite *baseChar = DGB_UI_GET_CHAR_FROM_TASK(sDebugUITask, '\000');
     u8 i;
 
     for (i = 0; text[i] != '\0'; i++) {
@@ -120,10 +120,10 @@ void Debug_PrintTextAt(char *text, s16 x, s16 y)
 
             digit->x = x;
             digit->y = y;
-            sub_8004558(digit);
+            UpdateSpriteAnimation(digit);
 
             digit->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
-            sub_80051E8(digit);
+            DisplaySprite(digit);
         }
 
         x += 8;
@@ -133,7 +133,7 @@ void Task_802D4B4(void) { }
 
 void TaskDestructor_802D4B8(struct Task *t)
 {
-    DebugTextPrinter *printer = TaskGetStructPtr(t);
+    DebugTextPrinter *printer = TASK_DATA(t);
 
     // First Sprite in 'chars' holds the allocation pointer
     Sprite *s = &printer->chars[0];

@@ -5,7 +5,7 @@
 #include "malloc_vram.h"
 #include "game/entity.h"
 #include "game/enemies/bell.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 
 #include "constants/animations.h"
 
@@ -27,7 +27,7 @@ void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
 {
     struct Task *t = TaskCreate(Task_BellMain, sizeof(Sprite_Bell), 0x4080, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Bell *bell = TaskGetStructPtr(t);
+    Sprite_Bell *bell = TASK_DATA(t);
     Sprite *s = &bell->s;
     bell->unk4C = 120;
     bell->base.regionX = spriteRegionX;
@@ -43,12 +43,12 @@ void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, ANIM_BELL_TILES, SA2_ANIM_BELL, 0, 0x480, 2);
+    SPRITE_INIT(s, ANIM_BELL_TILES, SA2_ANIM_BELL, 0, 18, 2);
 }
 
 static void Task_BellMain(void)
 {
-    Sprite_Bell *bell = TaskGetStructPtr(gCurTask);
+    Sprite_Bell *bell = TASK_DATA(gCurTask);
     Sprite *s = &bell->s;
     MapEntity *me = bell->base.me;
 
@@ -74,10 +74,10 @@ static void Task_BellMain(void)
         }
 
         gCurTask->main = sub_8054D20;
-        s->unk28[0].unk0 = -1;
+        s->hitboxes[0].index = -1;
         s->graphics.anim = SA2_ANIM_BELL;
         s->variant = 1;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
 
     ENEMY_UPDATE_EX_RAW(s, bell->spawnX, bell->spawnY, {});
@@ -85,7 +85,7 @@ static void Task_BellMain(void)
 
 void sub_8054D20(void)
 {
-    Sprite_Bell *bell = TaskGetStructPtr(gCurTask);
+    Sprite_Bell *bell = TASK_DATA(gCurTask);
     Sprite *s = &bell->s;
     MapEntity *me = bell->base.me;
     Vec2_32 pos;
@@ -113,16 +113,16 @@ void sub_8054D20(void)
             s->graphics.anim = SA2_ANIM_BELL;
             s->variant = 0;
 #ifndef NON_MATCHING
-            s->unk21 |= r2;
+            s->prevVariant |= r2;
 #else
-            s->unk21 = -1;
+            s->prevVariant = -1;
 #endif
 
-            s->unk28[1].unk0 = -1;
+            s->hitboxes[1].index = -1;
             gCurTask->main = Task_BellMain;
         }
     }
 
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }

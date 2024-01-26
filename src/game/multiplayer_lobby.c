@@ -3,7 +3,7 @@
 #include "game/multiplayer_lobby.h"
 #include "task.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "lib/m4a.h"
 #include "constants/songs.h"
 #include "game/save.h"
@@ -20,7 +20,7 @@ struct MultiplayerLobbyScreen {
     Sprite chao;
     Sprite uiElements[3];
     Background background;
-    struct TransitionState transition;
+    ScreenFade fade;
     bool8 fadeInComplete;
     u8 cursor;
     u16 idleFrame;
@@ -105,7 +105,7 @@ void CreateMultiplayerLobbyScreen(void)
     struct Task *t
         = TaskCreate(Task_FadeInOrHandleExit, sizeof(struct MultiplayerLobbyScreen),
                      0x1000, 0, MultiplayerLobbyScreenOnDestroy);
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(t);
 
     lobbyScreen->fadeInComplete = FALSE;
     lobbyScreen->cursor = CURSOR_YES;
@@ -113,16 +113,16 @@ void CreateMultiplayerLobbyScreen(void)
     lobbyScreen->animFrame = 0;
     lobbyScreen->playersWaiting = 0;
     CreateUI(lobbyScreen);
-    NextTransitionFrame(&lobbyScreen->transition);
+    UpdateScreenFade(&lobbyScreen->fade);
     m4aSongNumStart(MUS_VS_LOBBY);
 }
 
 static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     u8 i;
-    Sprite *element;
+    Sprite *s;
     Background *background;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     s8 lang = gLoadedSaveGame->language - 1;
 
     if (lang < 0) {
@@ -163,7 +163,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     background = &lobbyScreen->background;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_MESSAGE_BOX_UNKNOWN;
@@ -171,59 +171,59 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
-    background->unk2E = 0;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
 
-    element = &lobbyScreen->chao;
-    element->graphics.dest = VramMalloc(0x38);
-    element->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
-    element->variant = 3;
-    element->unk21 = 0xFF;
-    element->x = (DISPLAY_WIDTH / 2);
-    element->y = (DISPLAY_HEIGHT)-50;
-    element->unk1A = 0xC0;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk10 = 0x1000;
-    sub_8004558(element);
+    s = &lobbyScreen->chao;
+    s->graphics.dest = VramMalloc(0x38);
+    s->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
+    s->variant = 3;
+    s->prevVariant = -1;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = (DISPLAY_HEIGHT)-50;
+    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0x1000;
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(lobbyScreen->uiElements); i++) {
-        element = &lobbyScreen->uiElements[i];
-        element->graphics.dest
+        s = &lobbyScreen->uiElements[i];
+        s->graphics.dest
             = VramMalloc(sUiText[TextElementOffsetAlt(lang, 3, i)].numTiles);
-        element->graphics.anim = sUiText[TextElementOffsetAlt(lang, 3, i)].anim;
-        element->variant = sUiText[TextElementOffsetAlt(lang, 3, i)].variant;
-        element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH / 2);
-        element->y = (DISPLAY_HEIGHT / 4) - 4;
-        element->unk1A = 0x100;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        sub_8004558(element);
+        s->graphics.anim = sUiText[TextElementOffsetAlt(lang, 3, i)].anim;
+        s->variant = sUiText[TextElementOffsetAlt(lang, 3, i)].variant;
+        s->prevVariant = -1;
+        s->x = (DISPLAY_WIDTH / 2);
+        s->y = (DISPLAY_HEIGHT / 4) - 4;
+        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        UpdateSpriteAnimation(s);
     }
 
-    lobbyScreen->transition.unk0 = 1;
-    lobbyScreen->transition.unk4 = 0;
-    lobbyScreen->transition.unk2 = 2;
-    lobbyScreen->transition.speed = 0x200;
-    lobbyScreen->transition.unk8 = 0x3FFF;
-    lobbyScreen->transition.unkA = 0;
+    lobbyScreen->fade.window = 1;
+    lobbyScreen->fade.brightness = 0;
+    lobbyScreen->fade.flags = 2;
+    lobbyScreen->fade.speed = Q_24_8(2.0);
+    lobbyScreen->fade.bldCnt = 0x3FFF;
+    lobbyScreen->fade.bldAlpha = 0;
 }
 
 static void Task_FadeInOrHandleExit(void)
 {
     u8 i;
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
     union MultiSioData *send;
     MultiPakHeartbeat();
 
@@ -241,8 +241,7 @@ static void Task_FadeInOrHandleExit(void)
 
     // Wait for idle frame to reach 0
     if (lobbyScreen->idleFrame == 0) {
-        if (NextTransitionFrame(&lobbyScreen->transition)
-            == SCREEN_TRANSITION_COMPLETE) {
+        if (UpdateScreenFade(&lobbyScreen->fade) == SCREEN_FADE_COMPLETE) {
             if (lobbyScreen->fadeInComplete) {
                 TaskDestroy(gCurTask);
                 if (lobbyScreen->cursor != CURSOR_YES) {
@@ -287,7 +286,7 @@ static void Task_FadeInOrHandleExit(void)
 static void ScreenMain(void)
 {
     u8 i;
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
 #ifndef NON_MATCHING
     register union MultiSioData *recv asm("r4"), *send;
 #else
@@ -315,14 +314,14 @@ static void ScreenMain(void)
                 if (chao->variant != 5) {
                     chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                     chao->variant = 4;
-                    chao->unk21 = 0xFF;
+                    chao->prevVariant = -1;
                 }
 
             } else {
                 if (chao->variant != 3) {
                     chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                     chao->variant = 6;
-                    chao->unk21 = 0xFF;
+                    chao->prevVariant = -1;
                 }
             }
         }
@@ -342,7 +341,7 @@ static void ScreenMain(void)
             if (chao->variant != 3) {
                 chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                 chao->variant = 6;
-                chao->unk21 = 0xFF;
+                chao->prevVariant = -1;
             }
             send->pat0.unk3 = 1;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -354,7 +353,7 @@ static void ScreenMain(void)
             if (chao->variant != 5) {
                 chao->graphics.anim = SA2_ANIM_MP_CHEESE_SITTING;
                 chao->variant = 4;
-                chao->unk21 = 0xFF;
+                chao->prevVariant = -1;
             }
             send->pat0.unk3 = 1;
             m4aSongNumStart(SE_MENU_CURSOR_MOVE);
@@ -392,7 +391,7 @@ static void ScreenMain(void)
 static void Task_NotifyExit(void)
 {
     u8 i;
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
 #ifndef NON_MATCHING
     register union MultiSioData *send asm("r4");
 #else
@@ -440,7 +439,7 @@ static void Task_NotifyExit(void)
 
 static void Task_ListenForExit(void)
 {
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(gCurTask);
 #ifndef NON_MATCHING
     register union MultiSioData *recv, *send asm("r4");
 #else
@@ -471,10 +470,10 @@ static void Task_ListenForExit(void)
 static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     Sprite *chao = &lobbyScreen->chao;
-    lobbyScreen->transition.unk4 = 0;
-    lobbyScreen->transition.unk2 = 1;
-    lobbyScreen->transition.unkA = 0;
-    lobbyScreen->transition.speed = 0x100;
+    lobbyScreen->fade.brightness = 0;
+    lobbyScreen->fade.flags = 1;
+    lobbyScreen->fade.bldAlpha = 0;
+    lobbyScreen->fade.speed = Q_24_8(1.0);
     lobbyScreen->idleFrame = CHAO_EXIT_WAVE_ANIM_LENGTH;
     m4aSongNumStop(MUS_VS_LOBBY);
     m4aSongNumStart(MUS_VS_EXIT);
@@ -482,56 +481,56 @@ static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
     // Cheese waves at the Player
     chao->graphics.anim = SA2_ANIM_MP_CHEESE_WAVING;
     chao->variant = 0;
-    chao->unk21 = 0xFF;
+    chao->prevVariant = -1;
     gCurTask->main = Task_FadeInOrHandleExit;
 }
 
 static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
 {
-    Sprite *element = &lobbyScreen->chao;
+    Sprite *s = &lobbyScreen->chao;
     // Chao anim finished
-    if (!sub_8004558(element)) {
+    if (!UpdateSpriteAnimation(s)) {
         if (lobbyScreen->cursor != CURSOR_YES
-            && element->graphics.anim == SA2_ANIM_MP_CHEESE_WAVING) {
-            element->variant = 1;
+            && s->graphics.anim == SA2_ANIM_MP_CHEESE_WAVING) {
+            s->variant = 1;
         } else {
-            if (element->variant == 6) {
-                element->variant = 3;
+            if (s->variant == 6) {
+                s->variant = 3;
             }
 
-            if (element->variant == 4) {
-                element->variant = 5;
+            if (s->variant == 4) {
+                s->variant = 5;
             }
         }
     }
 
-    sub_80051E8(element);
+    DisplaySprite(s);
 
-    element = &lobbyScreen->uiElements[ELEMENT_TITLE];
-    sub_80051E8(element);
+    s = &lobbyScreen->uiElements[ELEMENT_TITLE];
+    DisplaySprite(s);
 
-    element = &lobbyScreen->uiElements[ELEMENT_YES];
+    s = &lobbyScreen->uiElements[ELEMENT_YES];
     if (lobbyScreen->cursor != CURSOR_YES) {
-        element->x = (DISPLAY_WIDTH / 6) + 4;
-        element->palId = 1;
+        s->x = (DISPLAY_WIDTH / 6) + 4;
+        s->palId = 1;
     } else {
-        element->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0x2C;
-        element->palId = 0;
+        s->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0x2C;
+        s->palId = 0;
     }
-    element->y = DISPLAY_HEIGHT - 50;
-    sub_80051E8(element);
+    s->y = DISPLAY_HEIGHT - 50;
+    DisplaySprite(s);
 
-    element = &lobbyScreen->uiElements[ELEMENT_NO];
+    s = &lobbyScreen->uiElements[ELEMENT_NO];
 
     if (lobbyScreen->cursor != CURSOR_YES) {
-        element->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0xC0;
-        element->palId = 15;
+        s->x = sShakeAnimPositions[lobbyScreen->animFrame] + 0xC0;
+        s->palId = 15;
     } else {
-        element->x = (DISPLAY_WIDTH - 48);
-        element->palId = 0;
+        s->x = (DISPLAY_WIDTH - 48);
+        s->palId = 0;
     }
-    element->y = DISPLAY_HEIGHT - 50;
-    sub_80051E8(element);
+    s->y = DISPLAY_HEIGHT - 50;
+    DisplaySprite(s);
 
     if (lobbyScreen->animFrame > 0) {
         lobbyScreen->animFrame--;
@@ -541,7 +540,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
 static void MultiplayerLobbyScreenOnDestroy(struct Task *t)
 {
     u8 i;
-    struct MultiplayerLobbyScreen *lobbyScreen = TaskGetStructPtr(t);
+    struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(t);
     VramFree(lobbyScreen->chao.graphics.dest);
 
     for (i = 0; i < 3; i++) {
@@ -552,10 +551,10 @@ static void MultiplayerLobbyScreenOnDestroy(struct Task *t)
 static void ExitToCharacterSelect(struct MultiplayerLobbyScreen *lobbyScreen)
 {
     lobbyScreen->idleFrame = 0;
-    lobbyScreen->transition.unk4 = 0;
-    lobbyScreen->transition.unk2 = 1;
-    lobbyScreen->transition.speed = 0x200;
-    lobbyScreen->transition.unkA = 0;
+    lobbyScreen->fade.brightness = 0;
+    lobbyScreen->fade.flags = 1;
+    lobbyScreen->fade.speed = Q_24_8(2.0);
+    lobbyScreen->fade.bldAlpha = 0;
     gCurTask->main = Task_FadeInOrHandleExit;
 }
 

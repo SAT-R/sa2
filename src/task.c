@@ -19,8 +19,12 @@ u32 TasksInit(void)
     gNextTask = NULL;
     gNumTasks = 0;
 
-    // 0x4 * MAX_TASK_NUM = 0x200, but that woud assume gTasks is an array of pointers
+#ifndef BUG_FIX
+    // 0x4 * MAX_TASK_NUM = 0x200, but that would assume gTasks is an array of pointers
     DmaFill32(3, 0, gTasks, 0x200);
+#else
+    DmaFill32(3, 0, gTasks, sizeof(gTasks));
+#endif
 
     for (i = 0; i < MAX_TASK_NUM; ++i)
         gTaskPtrs[i] = &gTasks[i];
@@ -67,10 +71,11 @@ struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
     TaskPtr fast;
     struct EwramNode *temp;
 
-    // ???
+#ifndef NON_MATCHING
     do
         ;
     while (0);
+#endif
 
     task = NULL;
     slow = NULL;
@@ -125,7 +130,7 @@ void TaskDestroy(struct Task *task)
                 }
 
                 if (task == gNextTask) {
-                    gNextTask = TaskGetNext(task);
+                    gNextTask = TASK_NEXT(task);
                 }
 
                 prev = TASK_PTR(task->prev);
@@ -134,7 +139,7 @@ void TaskDestroy(struct Task *task)
                 ((struct Task *)next)->prev = prev;
 
                 if (task->data != (IwramData)NULL) {
-                    IwramFree(TaskGetStructPtr(task));
+                    IwramFree(TASK_DATA(task));
                 }
 
                 gTaskPtrs[--gNumTasks] = task;
@@ -156,7 +161,7 @@ void TaskDestroy(struct Task *task)
 void TasksExec(void)
 {
     gCurTask = gTaskPtrs[0];
-    if (!(gFlags & 0x800) && TASK_IS_NOT_NULL(gTaskPtrs[0])) {
+    if (!(gFlags & FLAGS_800) && TASK_IS_NOT_NULL(gTaskPtrs[0])) {
         while (TASK_IS_NOT_NULL(gCurTask)) {
             gNextTask = (struct Task *)TASK_PTR(gCurTask->next);
 

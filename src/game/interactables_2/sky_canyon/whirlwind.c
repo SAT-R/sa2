@@ -5,10 +5,14 @@
 #include "core.h"
 #include "task.h"
 #include "lib/m4a.h"
-#include "game/interactables_2/tec_base/080.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
+#include "game/interactables_2/techno_base/light_globe.h"
 #include "malloc_vram.h"
 #include "trig.h"
+
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -93,7 +97,7 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_807D06C, sizeof(Sprite_IA86), 0x2010, 0,
                                 TaskDestructor_Interactable086);
-    Sprite_IA86 *ia086 = TaskGetStructPtr(t);
+    Sprite_IA86 *ia086 = TASK_DATA(t);
     s32 someX, someY;
     s32 value;
     u32 width;
@@ -133,12 +137,12 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         for (i = 0; i < ARRAY_COUNT(ia086->sprites); i++) {
             Sprite *s = &ia086->sprites[i];
             s->graphics.size = 0;
-            s->unk14 = 0;
-            s->unk1C = 0;
-            s->unk21 = 0xFF;
-            s->unk22 = 0x10;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->prevVariant = -1;
+            s->animSpeed = 0x10;
             s->palId = 0;
-            s->unk28->unk0 = -1;
+            s->hitboxes[0].index = -1;
             s->graphics.dest = vram;
             s->graphics.anim = gUnknown_080E0124[i][0];
             s->variant = gUnknown_080E0124[i][1];
@@ -151,7 +155,7 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 }
 
 #ifdef NON_MATCHING
-// https://decomp.me/scratch/Jl2c3
+// (fake-matched) https://decomp.me/scratch/Jl2c3
 void sub_807C9C0(Sprite_IA86 *ia086)
 {
     gPlayer.moveState |= MOVESTATE_400000;
@@ -333,11 +337,11 @@ void sub_807CCBC(Sprite_IA86 *ia086)
     bool32 bIdk = FALSE;
     u8 i;
 
-    if ((gUnknown_03005590 & 0xF) == 0)
+    if ((gStageTime & 0xF) == 0)
         bIdk = TRUE;
 
     for (i = 0; i < ARRAY_COUNT(ia086->sprites); i++) {
-        sub_8004558(&ia086->sprites[i]);
+        UpdateSpriteAnimation(&ia086->sprites[i]);
     }
 
     for (i = 0; i < ARRAY_COUNT(ia086->unk0); i++) {
@@ -468,7 +472,7 @@ void sub_807CE94(Sprite_IA86 *ia086)
             else
                 unk086->s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-            sub_80051E8(unk086->s);
+            DisplaySprite(unk086->s);
         }
     }
 }
@@ -519,7 +523,7 @@ bool32 sub_807CFB4(Sprite_IA86 *ia086)
 
 void Task_807D06C(void)
 {
-    Sprite_IA86 *ia086 = TaskGetStructPtr(gCurTask);
+    Sprite_IA86 *ia086 = TASK_DATA(gCurTask);
 
     if (sub_807CFB4(ia086)) {
         m4aSongNumStart(SE_WHIRLWIND);
@@ -537,7 +541,7 @@ void Task_807D06C(void)
 
 void Task_807D0C4(void)
 {
-    Sprite_IA86 *ia086 = TaskGetStructPtr(gCurTask);
+    Sprite_IA86 *ia086 = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_807D06C;
@@ -552,7 +556,7 @@ void Task_807D0C4(void)
 
 void TaskDestructor_Interactable086(struct Task *t)
 {
-    Sprite_IA86 *ia086 = TaskGetStructPtr(t);
+    Sprite_IA86 *ia086 = TASK_DATA(t);
     VramFree(ia086->unk228.vramMem);
 }
 
@@ -566,7 +570,7 @@ void sub_807D130(Sprite_IA86 *ia086)
 
 void sub_807D16C(Sprite_IA86 *unused)
 {
-    if ((gUnknown_03005590 & 0xFF) == 0) {
+    if ((gStageTime & 0xFF) == 0) {
         m4aSongNumStartOrContinue(SE_WHIRLWIND);
     }
 }
@@ -598,13 +602,13 @@ void sub_807D1BC(Sprite_IA86 *ia086)
     sub_807CCBC(ia086);
 }
 
-void CreateEntity_Whirlwind_0(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+void CreateEntity_Whirlwind_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                               u8 spriteY)
 {
     CreateEntity_Whirlwind(me, spriteRegionX, spriteRegionY, spriteY, 0);
 }
 
-void CreateEntity_Whirlwind_1(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+void CreateEntity_Whirlwind_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                               u8 spriteY)
 {
     CreateEntity_Whirlwind(me, spriteRegionX, spriteRegionY, spriteY, 1);
@@ -612,7 +616,7 @@ void CreateEntity_Whirlwind_1(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
 void Task_807D268(void)
 {
-    Sprite_IA86 *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_IA86 *sprite = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         gCurTask->main = Task_807D06C;
@@ -627,7 +631,7 @@ void Task_807D268(void)
 void sub_807D2BC(Sprite_IA86 *unused)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.unk6D = 7;
+    gPlayer.transition = PLTRANS_PT7;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = -Q_24_8(8.0);
 

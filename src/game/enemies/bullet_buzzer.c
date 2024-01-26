@@ -2,7 +2,7 @@
 #include "malloc_vram.h"
 #include "game/entity.h"
 #include "game/game.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 #include "game/enemies/projectiles.h"
 #include "task.h"
 #include "trig.h"
@@ -12,7 +12,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite_UNK28 reserved;
+    /* 0x3C */ Hitbox reserved;
     /* 0x44 */ s32 spawnX;
     /* 0x48 */ s32 spawnY;
     /* 0x4C */ s32 offsetX;
@@ -33,7 +33,7 @@ void CreateEntity_BulletBuzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 {
     struct Task *t = TaskCreate(Task_BulletBuzzerMain, sizeof(Sprite_BulletBuzzer),
                                 0x4040, 0, TaskDestructor_80095E8);
-    Sprite_BulletBuzzer *bbuzzer = TaskGetStructPtr(t);
+    Sprite_BulletBuzzer *bbuzzer = TASK_DATA(t);
     Sprite *s = &bbuzzer->s;
     bbuzzer->base.regionX = spriteRegionX;
     bbuzzer->base.regionY = spriteRegionY;
@@ -53,15 +53,16 @@ void CreateEntity_BulletBuzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT_WITH_FLAGS(s, 24, SA2_ANIM_BULLETBUZZER, 0, 0x480, 2,
-                           SPRITE_FLAG_MASK_X_FLIP);
+    s->graphics.dest = VramMalloc(24);
+    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_BULLETBUZZER, 0, 18, 2,
+                             SPRITE_FLAG_MASK_X_FLIP);
 }
 
 void sub_8059B04(void);
 
 void Task_BulletBuzzerMain(void)
 {
-    Sprite_BulletBuzzer *bbuzzer = TaskGetStructPtr(gCurTask);
+    Sprite_BulletBuzzer *bbuzzer = TASK_DATA(gCurTask);
     Sprite *s = &bbuzzer->s;
     MapEntity *me = bbuzzer->base.me;
     s32 oldOffsetX = bbuzzer->offsetX;
@@ -85,13 +86,13 @@ void Task_BulletBuzzerMain(void)
         if (oldOffsetX < bbuzzer->offsetX) {
             s->graphics.anim = SA2_ANIM_BULLETBUZZER;
             s->variant = 1;
-            s->unk21 = -1;
+            s->prevVariant = -1;
         }
 
     } else if (oldOffsetX > bbuzzer->offsetX) {
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;
         s->variant = 1;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
 
     if (oldOffsetX < bbuzzer->offsetX) {
@@ -115,25 +116,25 @@ void Task_BulletBuzzerMain(void)
             bbuzzer->unk5D = 0;
             s->graphics.anim = SA2_ANIM_BULLETBUZZER;
             s->variant = 2;
-            s->unk21 = -1;
+            s->prevVariant = -1;
             gCurTask->main = sub_8059B04;
         }
     }
 
     sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
-    if (sub_8004558(s) == 0) {
+    if (UpdateSpriteAnimation(s) == 0) {
         ENEMY_TURN_AROUND(s);
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;
         s->variant = 0;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 void sub_8059B04(void)
 {
 
-    Sprite_BulletBuzzer *bbuzzer = TaskGetStructPtr(gCurTask);
+    Sprite_BulletBuzzer *bbuzzer = TASK_DATA(gCurTask);
     Sprite *s = &bbuzzer->s;
     MapEntity *me = bbuzzer->base.me;
     ProjInit init;
@@ -161,14 +162,14 @@ void sub_8059B04(void)
 
     sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
-    if (sub_8004558(s) == 0) {
-        sub_80051E8(s);
+    if (UpdateSpriteAnimation(s) == 0) {
+        DisplaySprite(s);
         bbuzzer->unk5E = 60;
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;
         s->variant = 0;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = Task_BulletBuzzerMain;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }

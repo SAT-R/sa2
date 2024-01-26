@@ -6,7 +6,9 @@
 
 #include "game/entity.h"
 #include "game/enemies/straw.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 
@@ -34,7 +36,7 @@ void CreateEntity_Straw(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         s32 rand;
         struct Task *t = TaskCreate(Task_StrawMain, sizeof(Sprite_Straw), 0x4040, 0,
                                     TaskDestructor_80095E8);
-        Sprite_Straw *straw = TaskGetStructPtr(t);
+        Sprite_Straw *straw = TASK_DATA(t);
         Sprite *s = &straw->s;
         straw->base.regionX = spriteRegionX;
         straw->base.regionY = spriteRegionY;
@@ -54,13 +56,13 @@ void CreateEntity_Straw(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        SPRITE_INIT(s, NUM_TILES_STRAW, SA2_ANIM_STRAW, 0, 0x480, 1);
+        SPRITE_INIT(s, NUM_TILES_STRAW, SA2_ANIM_STRAW, 0, 18, 1);
     }
 }
 
 void sub_80567F8(void)
 {
-    Sprite_Straw *straw = TaskGetStructPtr(gCurTask);
+    Sprite_Straw *straw = TASK_DATA(gCurTask);
     Sprite *s = &straw->s;
     MapEntity *me = straw->base.me;
     Vec2_32 pos = {
@@ -91,7 +93,7 @@ void sub_80567F8(void)
 
 void Task_StrawMain(void)
 {
-    Sprite_Straw *straw = TaskGetStructPtr(gCurTask);
+    Sprite_Straw *straw = TASK_DATA(gCurTask);
     Sprite *s = &straw->s;
     MapEntity *me = straw->base.me;
     Vec2_32 pos;
@@ -130,7 +132,7 @@ void Task_StrawMain(void)
 
 void sub_8056AF4(void)
 {
-    Sprite_Straw *straw = TaskGetStructPtr(gCurTask);
+    Sprite_Straw *straw = TASK_DATA(gCurTask);
     Sprite *s = &straw->s;
     MapEntity *me = straw->base.me;
     Vec2_32 pos;

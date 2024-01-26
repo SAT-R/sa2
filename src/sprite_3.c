@@ -23,7 +23,7 @@ const u8 gOamShapesSizes[12][2] = {
     { 32, 64 },
 };
 
-void sub_80051E8(Sprite *sprite)
+void DisplaySprite(Sprite *sprite)
 {
     OamData *oam;
     s32 x, y, sprWidth, sprHeight;
@@ -38,6 +38,7 @@ void sub_80051E8(Sprite *sprite)
         sprite->numSubFrames = sprDims->numSubframes;
         x = sprite->x;
         y = sprite->y;
+
         if (sprite->unk10 & SPRITE_FLAG_MASK_17) {
             x -= gUnknown_030017F4[0];
             y -= gUnknown_030017F4[1];
@@ -68,13 +69,13 @@ void sub_80051E8(Sprite *sprite)
 
         if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && // fmt
             y + sprHeight >= 0 && y <= DISPLAY_HEIGHT) {
-            u8 unk6D0 = gUnknown_030026D0 >> 8;
+            u8 unk6D0 = gMosaicReg >> 8;
 
             for (i = 0; i < sprDims->numSubframes; i++) {
                 oamData = gUnknown_03002794->oamData[sprite->graphics.anim];
 
                 // oam gets zero-initialized(?)
-                oam = OamMalloc((sprite->unk1A & 0x7C0) >> 6);
+                oam = OamMalloc(GET_SPRITE_OAM_ORDER(sprite));
                 if (iwram_end == oam) {
                     return;
                 }

@@ -2,6 +2,8 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "game/multiboot/collect_rings/time_display.h"
 #include "game/entity.h"
@@ -30,7 +32,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ Sprite s;
-    /* 0x30 */ u16 unk30;
+    /* 0x30 */ u16 framesVisible;
     /* 0x32 */ u8 filler32[2];
 } Sprite_Notif_RingBonus; /* size: 0x34 */
 
@@ -52,7 +54,7 @@ void CreateEntity_MultiplayerTeleport(MapEntity *me, u16 spriteRegionX,
 
     struct Task *t
         = TaskCreate(Task_80806F4, sizeof(Sprite_MultiplayerTeleport), 0x2010, 0, NULL);
-    Sprite_MultiplayerTeleport *sprite = TaskGetStructPtr(t);
+    Sprite_MultiplayerTeleport *sprite = TASK_DATA(t);
 
     sprite->timer = 0;
     sprite->unk18 = 0;
@@ -195,27 +197,22 @@ void CreateSprite_Notif_RingBonus(void)
 {
     struct Task *t = TaskCreate(Task_8080750, sizeof(Sprite_Notif_RingBonus), 0x2010, 0,
                                 TaskDestructor_8080790);
-    Sprite_Notif_RingBonus *notif = TaskGetStructPtr(t);
+    Sprite_Notif_RingBonus *notif = TASK_DATA(t);
+    Sprite *s = &notif->s;
 
-    notif->unk30 = 120;
-    notif->s.unk1A = 0x40;
-    notif->s.graphics.size = 0;
-    notif->s.unk14 = 0;
-    notif->s.unk1C = 0;
-    notif->s.unk21 = 0xFF;
-    notif->s.unk22 = 0x10;
-    notif->s.palId = 0;
-    notif->s.unk28->unk0 = -1;
-    notif->s.unk10 = 0x1000;
-    notif->s.graphics.dest = VramMalloc(26);
-    notif->s.graphics.anim = SA2_ANIM_NOTIFICATION_RING_BONUS;
-    notif->s.variant = 0;
-    sub_8004558(&notif->s);
+    notif->framesVisible = ZONE_TIME_TO_INT(0, 2);
+
+    SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 1, 1, 0);
+
+    s->graphics.dest = VramMalloc(26);
+    s->graphics.anim = SA2_ANIM_NOTIFICATION_RING_BONUS;
+    s->variant = 0;
+    UpdateSpriteAnimation(s);
 }
 
 void Task_80806F4(void)
 {
-    Sprite_MultiplayerTeleport *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_MultiplayerTeleport *sprite = TASK_DATA(gCurTask);
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         sprite->unk18 = sprite->unk1A;
     }
@@ -231,25 +228,25 @@ void sub_808073C(Sprite_MultiplayerTeleport UNUSED *s) { gCurTask->main = Task_8
 
 void Task_8080750(void)
 {
-    Sprite_Notif_RingBonus *sprite = TaskGetStructPtr(gCurTask);
-    if (--sprite->unk30 == (u16)-1) {
+    Sprite_Notif_RingBonus *sprite = TASK_DATA(gCurTask);
+    if (--sprite->framesVisible == (u16)-1) {
         TaskDestroy(gCurTask);
     } else {
         sprite->s.x = (DISPLAY_WIDTH * 0.5);
         sprite->s.y = (DISPLAY_HEIGHT * 0.3);
-        sub_80051E8(&sprite->s);
+        DisplaySprite(&sprite->s);
     }
 }
 
 static void TaskDestructor_8080790(struct Task *t)
 {
-    Sprite_Notif_RingBonus *sprite = TaskGetStructPtr(t);
+    Sprite_Notif_RingBonus *sprite = TASK_DATA(t);
     VramFree(sprite->s.graphics.dest);
 }
 
 static void Task_80807A4(void)
 {
-    Sprite_MultiplayerTeleport *sprite = TaskGetStructPtr(gCurTask);
+    Sprite_MultiplayerTeleport *sprite = TASK_DATA(gCurTask);
     if (sub_808055C(sprite) == 0)
         sub_80803FC(sprite);
 }

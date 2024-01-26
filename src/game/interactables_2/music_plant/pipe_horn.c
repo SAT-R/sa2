@@ -5,10 +5,13 @@
 
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/music_plant/pipe_horn.h"
 
 #include "data/handlers_ia_pipe_horn_sequences.h"
 
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *, const Pipe_Data[]);
@@ -913,7 +916,7 @@ void sub_80777C8(Sprite_Pipe_Horn *pipe)
     Player_ClearMovestate_IsInScriptedSequence();
 
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
 
     gPlayer.speedAirX = gUnknown_080DFE90[pipe->kind][0];
     gPlayer.speedAirY = gUnknown_080DFE90[pipe->kind][1];
@@ -956,7 +959,7 @@ bool32 sub_8077840(Sprite_Pipe_Horn *pipe)
 
 void sub_80778AC(void)
 {
-    Sprite_Pipe_Horn *pipe = TaskGetStructPtr(gCurTask);
+    Sprite_Pipe_Horn *pipe = TASK_DATA(gCurTask);
 
     if (sub_8077840(pipe)) {
         sub_80778E4(pipe);
@@ -1012,7 +1015,7 @@ void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX,
 {
     struct Task *t = TaskCreate(sub_80778AC, sizeof(Sprite_Pipe_Horn), 0x2010, 0,
                                 TaskDestructor_Pipe);
-    Sprite_Pipe_Horn *pipe = TaskGetStructPtr(t);
+    Sprite_Pipe_Horn *pipe = TASK_DATA(t);
 
     pipe->kind = me->d.sData[0];
     pipe->me = me;
@@ -1026,7 +1029,7 @@ void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX,
 
 void sub_8077A3C(void)
 {
-    Sprite_Pipe_Horn *pipe = TaskGetStructPtr(gCurTask);
+    Sprite_Pipe_Horn *pipe = TASK_DATA(gCurTask);
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         Player_ClearMovestate_IsInScriptedSequence();
@@ -1056,7 +1059,7 @@ void sub_8077AAC(Sprite_Pipe_Horn *horn)
 
 void sub_8077ABC(void)
 {
-    Sprite_Pipe_Horn *horn = TaskGetStructPtr(gCurTask);
+    Sprite_Pipe_Horn *horn = TASK_DATA(gCurTask);
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         Player_ClearMovestate_IsInScriptedSequence();
         gCurTask->main = Task_FrenchHorn_8077C04;
@@ -1085,7 +1088,7 @@ void sub_8077B28(Sprite_Pipe_Horn *horn)
     gPlayer.moveState &= ~(MOVESTATE_IN_SCRIPTED | MOVESTATE_400000);
 #endif
 
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
     gPlayer.speedAirX = gUnknown_080DFFF4[horn->kind][0];
     gPlayer.speedAirY = gUnknown_080DFFF4[horn->kind][1];
     gPlayer.rotation = gUnknown_080E0000[horn->kind];
@@ -1127,7 +1130,7 @@ bool32 sub_8077B98(Sprite_Pipe_Horn *horn)
 
 void Task_FrenchHorn_8077C04(void)
 {
-    Sprite_Pipe_Horn *horn = TaskGetStructPtr(gCurTask);
+    Sprite_Pipe_Horn *horn = TASK_DATA(gCurTask);
 
     if (sub_8077B98(horn)) {
         sub_8077C3C(horn);
@@ -1189,7 +1192,7 @@ void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteR
 {
     struct Task *t = TaskCreate(Task_FrenchHorn_8077C04, sizeof(Sprite_Pipe_Horn),
                                 0x2010, 0, TaskDestructor_FrenchHorn);
-    Sprite_Pipe_Horn *horn = TaskGetStructPtr(t);
+    Sprite_Pipe_Horn *horn = TASK_DATA(t);
 
     horn->kind = me->d.sData[0];
     horn->me = me;

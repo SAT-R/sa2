@@ -1,5 +1,5 @@
 #include "core.h"
-#include "game/init.h"
+#include "game/game.h"
 
 void AgbMain(void)
 {

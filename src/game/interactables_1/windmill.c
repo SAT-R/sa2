@@ -3,12 +3,14 @@
 #include "sprite.h"
 #include "trig.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_1/windmill.h"
 
 #include "constants/animations.h"
 
 typedef struct {
-    /* 0x00 */ Sprite sprite;
+    /* 0x00 */ Sprite s;
     /* 0x30 */ SpriteTransform transform;
 } BladePiece;
 
@@ -32,59 +34,59 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     u8 i, j;
     void *ramDests[4];
-    Sprite *sprite;
+    Sprite *s;
     struct Task *t = TaskCreate(Task_WindmillMain, sizeof(InteractableWindmill), 0x2010,
                                 0, TaskDestructor_Windmill);
-    InteractableWindmill *windmill = TaskGetStructPtr(t);
+    InteractableWindmill *windmill = TASK_DATA(t);
 
-    sprite = &windmill->center;
+    s = &windmill->center;
     windmill->base.regionX = spriteRegionX;
     windmill->base.regionY = spriteRegionY;
     windmill->base.me = me;
     windmill->base.spriteX = me->x;
     windmill->base.spriteY = spriteY;
 
-    sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
-    sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sprite->graphics.dest = VramMalloc(sWindmillParts[4].numTiles);
-    sprite->graphics.anim = sWindmillParts[4].anim;
-    sprite->variant = sWindmillParts[4].variant;
-    sprite->unk1A = 0x480;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = 0x2000;
-    sub_8004558(sprite);
+    s->graphics.dest = VramMalloc(sWindmillParts[4].numTiles);
+    s->graphics.anim = sWindmillParts[4].anim;
+    s->variant = sWindmillParts[4].variant;
+    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 4; j++) {
-            sprite = &windmill->blades[i * 4 + j].sprite;
-            sprite->x = 0;
-            sprite->y = 0;
+            s = &windmill->blades[i * 4 + j].s;
+            s->x = 0;
+            s->y = 0;
             if (i == 0) {
-                sprite->graphics.dest = VramMalloc(sWindmillParts[j].numTiles);
-                ramDests[j] = sprite->graphics.dest;
+                s->graphics.dest = VramMalloc(sWindmillParts[j].numTiles);
+                ramDests[j] = s->graphics.dest;
             } else {
-                sprite->graphics.dest = ramDests[j];
+                s->graphics.dest = ramDests[j];
             }
-            sprite->graphics.anim = sWindmillParts[j].anim;
-            sprite->variant = sWindmillParts[j].variant;
-            sprite->unk1A = 0x480;
-            sprite->graphics.size = 0;
-            sprite->unk14 = 0;
-            sprite->unk1C = 0;
-            sprite->unk21 = 0xFF;
-            sprite->unk22 = 0x10;
-            sprite->palId = 0;
-            sprite->unk28[0].unk0 = -1;
-            sprite->unk10 = 0;
-            sub_8004558(sprite);
+            s->graphics.anim = sWindmillParts[j].anim;
+            s->variant = sWindmillParts[j].variant;
+            s->unk1A = SPRITE_OAM_ORDER(18);
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->prevVariant = -1;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->hitboxes[0].index = -1;
+            s->unk10 = 0;
+            UpdateSpriteAnimation(s);
         }
     }
 }
@@ -93,8 +95,8 @@ static void Task_WindmillMain(void)
 {
     u8 i, j;
     SpriteTransform *transform;
-    InteractableWindmill *windmill = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &windmill->center;
+    InteractableWindmill *windmill = TASK_DATA(gCurTask);
+    Sprite *s = &windmill->center;
     MapEntity *me = windmill->base.me;
 
     s32 screenX, screenY;
@@ -102,50 +104,48 @@ static void Task_WindmillMain(void)
 
     screenX = TO_WORLD_POS(windmill->base.spriteX, windmill->base.regionX);
     screenY = TO_WORLD_POS(me->y, windmill->base.regionY);
-    sprite->x = screenX - gCamera.x;
-    sprite->y = screenY - gCamera.y;
+    s->x = screenX - gCamera.x;
+    s->y = screenY - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = windmill->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }
 
-    sub_80051E8(sprite);
-    screenX = sprite->x;
-    screenY = sprite->y;
+    DisplaySprite(s);
+    screenX = s->x;
+    screenY = s->y;
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 4; j++) {
             u32 temp, mask, r0;
 
-            sprite = &windmill->blades[i * 4 + j].sprite;
+            s = &windmill->blades[i * 4 + j].s;
             transform = &windmill->blades[i * 4 + j].transform;
-            temp = (gUnknown_03005590 * 2 + (i * 256));
+            temp = (gStageTime * 2 + (i * 256));
 
-            sprite->x
-                = screenX + ((COS(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
-            sprite->y
-                = screenY + ((SIN(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
-            transform->unk0 = CLAMP_SIN_PERIOD(temp);
+            s->x = screenX + ((COS(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
+            s->y = screenY + ((SIN(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
+            transform->rotation = CLAMP_SIN_PERIOD(temp);
             transform->width = 256;
             transform->height = 256;
-            transform->x = sprite->x;
-            transform->y = sprite->y;
+            transform->x = s->x;
+            transform->y = s->y;
 
-            sprite->unk10 = (gUnknown_030054B8++ | 0x1060);
-            sub_8004860(sprite, transform);
-            sub_80051E8(sprite);
+            s->unk10 = (gUnknown_030054B8++ | 0x1060);
+            sub_8004860(s, transform);
+            DisplaySprite(s);
         }
     }
 }
 
 static void TaskDestructor_Windmill(struct Task *t)
 {
-    InteractableWindmill *windmill = TaskGetStructPtr(t);
+    InteractableWindmill *windmill = TASK_DATA(t);
     VramFree(windmill->center.graphics.dest);
-    VramFree(windmill->blades[0].sprite.graphics.dest);
-    VramFree(windmill->blades[1].sprite.graphics.dest);
-    VramFree(windmill->blades[2].sprite.graphics.dest);
-    VramFree(windmill->blades[3].sprite.graphics.dest);
+    VramFree(windmill->blades[0].s.graphics.dest);
+    VramFree(windmill->blades[1].s.graphics.dest);
+    VramFree(windmill->blades[2].s.graphics.dest);
+    VramFree(windmill->blades[3].s.graphics.dest);
 }

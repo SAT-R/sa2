@@ -4,7 +4,9 @@
 
 #include "malloc_vram.h"
 
-#include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
+#include "game/player_controls.h"
 #include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
@@ -12,6 +14,7 @@
 #include "game/game.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -81,7 +84,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_807DE98, sizeof(Sprite_EggUtopia_Launcher), 0x2010,
                                 0, TaskDestructor_807DF38);
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(t);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(t);
 
     launcher->kind = kind;
     launcher->posX = TO_WORLD_POS(me->x, spriteRegionX);
@@ -137,19 +140,19 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 #else
             Sprite *s = &launcher->s;
 #endif
-            s->unk1A = 0x180;
+            s->unk1A = SPRITE_OAM_ORDER(6);
             s->graphics.size = 0;
-            s->unk14 = 0;
-            s->unk1C = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
 
-            launcher->s.unk21 = 0xFF;
-            launcher->s.unk22 = 0x10;
+            launcher->s.prevVariant = -1;
+            launcher->s.animSpeed = 0x10;
             launcher->s.palId = 0;
 
-            s->unk28->unk0 = -1;
+            s->hitboxes[0].index = -1;
             s->unk10 = SPRITE_FLAG(PRIORITY, 2);
             s->graphics.dest = VramMalloc(EGG_UTO_LAUNCHER_TILE_COUNT);
-            s->graphics.anim = SA2_ANIM_LAUNCHER_EGG_UTO;
+            s->graphics.anim = SA2_ANIM_LAUNCHER;
             launcher->s.variant = 0;
 
 #ifndef NON_MATCHING
@@ -176,7 +179,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                 } break;
             }
 
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
         SET_MAP_ENTITY_INITIALIZED(me);
     }
@@ -184,7 +187,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
 static void Task_807DBF0(void)
 {
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER)
         sub_807E0D0(launcher);
@@ -199,7 +202,7 @@ static void Task_807DBF0(void)
     } else {
         if (gPlayer.unk2C != 120) {
             if (gPlayer.unk5E & gPlayerControls.jump) {
-                gPlayer.unk6D = 3;
+                gPlayer.transition = PLTRANS_PT3;
 
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 launcher->unk48 = FALSE;
@@ -246,7 +249,7 @@ static void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
     if (PLAYER_IS_ALIVE && launcher->unk48) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk64 = 65;
-        gPlayer.unk6D = 0x7;
+        gPlayer.transition = PLTRANS_PT7;
 
         switch (launcher->kind) {
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN):
@@ -285,7 +288,7 @@ static void sub_807DDA0(Sprite_EggUtopia_Launcher *launcher)
         s->y = Q_24_8_TO_INT(launcher->unk58) - gCamera.y;
     }
 
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 static bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
@@ -321,7 +324,7 @@ static bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
 // static
 void Task_807DE98(void)
 {
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER) {
         sub_807E0D0(launcher);
@@ -340,7 +343,7 @@ void Task_807DE98(void)
 
 static void Task_807DEEC(void)
 {
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(gCurTask);
 
     if (IS_MULTI_PLAYER) {
         sub_807E0D0(launcher);
@@ -356,7 +359,7 @@ static void Task_807DEEC(void)
 // static
 void TaskDestructor_807DF38(struct Task *t)
 {
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(t);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(t);
     VramFree(launcher->s.graphics.dest);
 }
 
@@ -479,7 +482,7 @@ void CreateEntity_Launcher_Right_GUp(MapEntity *me, u16 spriteRegionX, u16 sprit
 
 static void Task_807E16C(void)
 {
-    Sprite_EggUtopia_Launcher *launcher = TaskGetStructPtr(gCurTask);
+    Sprite_EggUtopia_Launcher *launcher = TASK_DATA(gCurTask);
 
     if (!IS_SINGLE_PLAYER) {
         sub_807E0D0(launcher);

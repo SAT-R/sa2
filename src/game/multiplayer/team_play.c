@@ -95,7 +95,7 @@ void CreateMultiplayerTeamPlayScreen(void)
 {
     struct Task *t;
     struct MultiplayerTeamPlayScreen *teamPlayScreen;
-    Sprite *element;
+    Sprite *s;
     Background *background;
     u32 lang, vram;
     u8 i;
@@ -139,7 +139,7 @@ void CreateMultiplayerTeamPlayScreen(void)
 
     t = TaskCreate(sub_805CB34, sizeof(struct MultiplayerTeamPlayScreen), 0x3000, 0,
                    NULL);
-    teamPlayScreen = TaskGetStructPtr(t);
+    teamPlayScreen = TASK_DATA(t);
     teamPlayScreen->unk310 = 0;
     teamPlayScreen->unk312 = 0;
     teamPlayScreen->unk314 = 0;
@@ -147,65 +147,65 @@ void CreateMultiplayerTeamPlayScreen(void)
     teamPlayScreen->unk317 = 0;
 
     for (i = 0, vram = OBJ_VRAM0; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        element = &teamPlayScreen->unk0[i];
-        element->x = 0;
-        element->y = 0;
-        element->graphics.dest = (void *)vram;
+        s = &teamPlayScreen->unk0[i];
+        s->x = 0;
+        s->y = 0;
+        s->graphics.dest = (void *)vram;
         vram += gUnknown_080D92BC[i].numTiles * TILE_SIZE_4BPP;
-        element->unk1A = 0x100;
-        element->graphics.size = 0;
-        element->graphics.anim = gUnknown_080D92BC[i].anim;
-        element->variant = gUnknown_080D92BC[i].variant;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk21 = 0xFF;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk28[0].unk0 = -1;
-        element->unk10 = 0x1000;
-        sub_8004558(element);
+        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->graphics.size = 0;
+        s->graphics.anim = gUnknown_080D92BC[i].anim;
+        s->variant = gUnknown_080D92BC[i].variant;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0x1000;
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 5; i++) {
-        element = &teamPlayScreen->unkC0[i];
-        element->x = 0;
-        element->y = 0;
-        element->graphics.dest = (void *)vram;
+        s = &teamPlayScreen->unkC0[i];
+        s->x = 0;
+        s->y = 0;
+        s->graphics.dest = (void *)vram;
         vram += gUnknown_080D92DC[TextElementOffset(lang, 5, i)].numTiles
             * TILE_SIZE_4BPP;
-        element->unk1A = 0xC0;
-        element->graphics.size = 0;
-        element->graphics.anim = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].anim;
-        element->variant = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].variant;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk21 = 0xFF;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk28[0].unk0 = -1;
-        element->unk10 = 0;
-        sub_8004558(element);
+        s->unk1A = SPRITE_OAM_ORDER(3);
+        s->graphics.size = 0;
+        s->graphics.anim = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].anim;
+        s->variant = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].variant;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0;
+        UpdateSpriteAnimation(s);
     }
-    element = &teamPlayScreen->unk1B0;
-    element->x = 0;
-    element->y = 0;
-    element->graphics.dest = (void *)vram;
-    element->unk1A = 0xC0;
-    element->graphics.size = 0;
-    element->graphics.anim = SA2_ANIM_MULTIPLAYER_UNKNOWN;
-    element->variant = SA2_ANIM_VARIANT_MULTIPLAYER_UNKNOWN_ARROWS;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk21 = 0xFF;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0;
+    s = &teamPlayScreen->unk1B0;
+    s->x = 0;
+    s->y = 0;
+    s->graphics.dest = (void *)vram;
+    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->graphics.size = 0;
+    s->graphics.anim = SA2_ANIM_MULTIPLAYER_UNKNOWN;
+    s->variant = SA2_ANIM_VARIANT_MULTIPLAYER_UNKNOWN_ARROWS;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0;
 
     background = &teamPlayScreen->unk210;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(6);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(6);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_UNKNOWN_GREEN;
@@ -213,16 +213,16 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
-    background->unk2E = 0;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
 
     background = &teamPlayScreen->unk250;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(14);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(14);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_UNKNOWN_ORANGE_ZIGZAG;
@@ -230,16 +230,16 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x28;
-    background->unk2A = 0;
-    background->unk2E = 1;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x28;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
+    DrawBackground(background);
 
     background = &teamPlayScreen->unk290;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_UNKNOWN_MESSAGE_BOX_WHITE;
@@ -247,16 +247,16 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 10;
-    background->unk2A = 0;
-    background->unk2E = 3;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 10;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(3);
+    DrawBackground(background);
 
     background = &teamPlayScreen->unk2D0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_VS_BACKGROUND_TEXT;
@@ -264,11 +264,11 @@ void CreateMultiplayerTeamPlayScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
-    background->unk2E = 3;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(3);
+    DrawBackground(background);
 }
 
 static void sub_805CB34(void)
@@ -277,7 +277,7 @@ static void sub_805CB34(void)
 
     MultiPakHeartbeat();
 
-    teamPlayScreen = TaskGetStructPtr(gCurTask);
+    teamPlayScreen = TASK_DATA(gCurTask);
     gWinRegs[5] = 0x3F;
     gBldRegs.bldCnt = 0x3F48;
     gBldRegs.bldAlpha = 0x810;
@@ -299,14 +299,14 @@ static void sub_805CC34(void)
     u8 i, j;
     u8 count;
     Background *background;
-    Sprite *element;
+    Sprite *s;
     struct MultiplayerTeamPlayScreen *teamPlayScreen;
     union MultiSioData *msd;
     gDispCnt |= 0x400;
 
     MultiPakHeartbeat();
 
-    teamPlayScreen = TaskGetStructPtr(gCurTask);
+    teamPlayScreen = TASK_DATA(gCurTask);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT && !teamPlayScreen->unk317) {
         if (gPressedKeys & DPAD_LEFT) {
@@ -363,7 +363,7 @@ static void sub_805CC34(void)
 
                     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                     background->graphics.anim = 0;
-                    background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+                    background->layoutVram = (void *)BG_SCREEN_ADDR(22);
                     background->unk18 = 0;
                     background->unk1A = 0;
                     background->tilemapId = TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL;
@@ -371,11 +371,11 @@ static void sub_805CC34(void)
                     background->unk20 = 0;
                     background->unk22 = 0;
                     background->unk24 = 0;
-                    background->unk26 = 0x1E;
-                    background->unk28 = 7;
-                    background->unk2A = 0;
-                    background->unk2E = 3;
-                    sub_8002A3C(background);
+                    background->targetTilesX = 0x1E;
+                    background->targetTilesY = 7;
+                    background->paletteOffset = 0;
+                    background->flags = BACKGROUND_FLAGS_BG_ID(3);
+                    DrawBackground(background);
 
                     gMultiSioSend.pat0.unk0 = 0x4035;
                     teamPlayScreen->unk317 = 0;
@@ -408,7 +408,7 @@ static void sub_805CC34(void)
 
                 background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
                 background->graphics.anim = 0;
-                background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+                background->layoutVram = (void *)BG_SCREEN_ADDR(22);
                 background->unk18 = 0;
                 background->unk1A = 0;
                 background->tilemapId = TM_UNKNOWN_MESSAGE_BOX_WHITE_SMALL;
@@ -416,11 +416,11 @@ static void sub_805CC34(void)
                 background->unk20 = 0;
                 background->unk22 = 0;
                 background->unk24 = 0;
-                background->unk26 = 0x1E;
-                background->unk28 = 7;
-                background->unk2A = 0;
-                background->unk2E = 3;
-                sub_8002A3C(background);
+                background->targetTilesX = 0x1E;
+                background->targetTilesY = 7;
+                background->paletteOffset = 0;
+                background->flags = BACKGROUND_FLAGS_BG_ID(3);
+                DrawBackground(background);
 
                 gMultiSioSend.pat0.unk0 = 0x4035;
                 teamPlayScreen->unk317 = 0;
@@ -441,35 +441,35 @@ static void sub_805CC34(void)
     sub_805D118(teamPlayScreen);
     sub_805D644(teamPlayScreen);
 
-    element = &teamPlayScreen->unkC0[0];
-    element->x = (DISPLAY_WIDTH / 2);
-    element->y = 28;
-    sub_80051E8(element);
+    s = &teamPlayScreen->unkC0[0];
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = 28;
+    DisplaySprite(s);
 
-    element = &teamPlayScreen->unkC0[2];
-    element->x = 70;
-    element->y = 52;
+    s = &teamPlayScreen->unkC0[2];
+    s->x = 70;
+    s->y = 52;
     if (teamPlayScreen->unk316 != 0) {
-        element->palId = 0;
+        s->palId = 0;
     } else {
-        element->palId = 0xFF;
+        s->palId = 0xFF;
     }
-    sub_80051E8(element);
+    DisplaySprite(s);
 
-    element = &teamPlayScreen->unkC0[3];
-    element->x = 0xAA;
-    element->y = 0x34;
+    s = &teamPlayScreen->unkC0[3];
+    s->x = 0xAA;
+    s->y = 0x34;
     if (teamPlayScreen->unk316 != 0) {
-        element->palId = 0;
+        s->palId = 0;
     } else {
-        element->palId = 1;
+        s->palId = 1;
     }
-    sub_80051E8(element);
+    DisplaySprite(s);
 
-    element = &teamPlayScreen->unkC0[4];
-    element->x = (DISPLAY_WIDTH / 2);
-    element->y = 52;
-    sub_80051E8(element);
+    s = &teamPlayScreen->unkC0[4];
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = 52;
+    DisplaySprite(s);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         union MultiSioData *msd = &gMultiSioSend;
@@ -486,7 +486,7 @@ static void sub_805D118(struct MultiplayerTeamPlayScreen *teamPlayScreen)
     u16 i;
     s16 unk312, unk310;
 
-    u16 *unk1884 = gUnknown_03001884;
+    u16 *unk1884 = gBgOffsetsHBlank;
     teamPlayScreen->unk314 = (teamPlayScreen->unk314 + 1) & 1023;
     teamPlayScreen->unk310 += gSineTable[teamPlayScreen->unk314] >> 4;
     teamPlayScreen->unk312 += gSineTable[teamPlayScreen->unk314 + 0x100] >> 4;
@@ -512,10 +512,10 @@ static void sub_805D1F8(void)
     bool8 someVar = TRUE;
     u8 pos[2] = { 0, 0 };
     struct MultiplayerTeamPlayScreen *teamPlayScreen;
-    Sprite *element;
+    Sprite *s;
     union MultiSioData *packet;
 
-    teamPlayScreen = TaskGetStructPtr(gCurTask);
+    teamPlayScreen = TASK_DATA(gCurTask);
     if (teamPlayScreen->unk31F == 0) {
         if (gRepeatedKeys & DPAD_RIGHT) {
             if (teamPlayScreen->unk31E == 0) {
@@ -532,44 +532,44 @@ static void sub_805D1F8(void)
 
     MultiPakHeartbeat();
 
-    element = &teamPlayScreen->unkC0[1];
-    element->x = (DISPLAY_WIDTH / 2);
-    element->y = 28;
-    sub_80051E8(element);
+    s = &teamPlayScreen->unkC0[1];
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = 28;
+    DisplaySprite(s);
 
     for (i = 0; i < 4 && GetBit(gMultiplayerConnections, i); i++) {
         packet = &gMultiSioRecv[i];
 
         if (i == 0) {
-            element = &teamPlayScreen->unk1B0;
-            sub_8004558(element);
+            s = &teamPlayScreen->unk1B0;
+            UpdateSpriteAnimation(s);
         }
 
         if (packet->pat0.unk0 == 0x4040 || packet->pat0.unk0 == 0x4041) {
             if (packet->pat0.unk0 != 0x4041) {
-                element = &teamPlayScreen->unk0[i];
-                element->y = (i * 24) + 64;
-                element->x = gUnknown_080D92B8[packet->pat0.unk2];
-                sub_80051E8(element);
+                s = &teamPlayScreen->unk0[i];
+                s->y = (i * 24) + 64;
+                s->x = gUnknown_080D92B8[packet->pat0.unk2];
+                DisplaySprite(s);
 
-                element = &teamPlayScreen->unk1B0;
-                element->y = (i * 24) + 64;
-                element->x = gUnknown_080D92BA[packet->pat0.unk2];
+                s = &teamPlayScreen->unk1B0;
+                s->y = (i * 24) + 64;
+                s->x = gUnknown_080D92BA[packet->pat0.unk2];
 
                 if (packet->pat0.unk2 == 0) {
-                    element->unk10 &= ~0x400;
+                    s->unk10 &= ~0x400;
                     gMultiplayerConnections &= ~(0x10 << (i));
                 } else {
-                    element->unk10 |= 0x400;
+                    s->unk10 |= 0x400;
                     gMultiplayerConnections |= (0x10 << (i));
                 }
-                sub_80051E8(element);
+                DisplaySprite(s);
                 someVar = FALSE;
             } else {
                 s16 a;
-                element = &teamPlayScreen->unk0[i];
-                sub_80051E8(element);
-                a = element->x;
+                s = &teamPlayScreen->unk0[i];
+                DisplaySprite(s);
+                a = s->x;
 
                 if (a == gUnknown_080D92B8[0]) {
                     pos[0]++;
@@ -633,7 +633,7 @@ static void sub_805D1F8(void)
 
 static void sub_805D5C8(void)
 {
-    struct MultiplayerTeamPlayScreen *teamPlayScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerTeamPlayScreen *teamPlayScreen = TASK_DATA(gCurTask);
     teamPlayScreen->unk31E = SIO_MULTI_CNT->id & 1;
     teamPlayScreen->unk31F = 0;
     gCurTask->main = sub_805D1F8;
@@ -651,14 +651,14 @@ static void sub_805D610(void)
 static void sub_805D644(struct MultiplayerTeamPlayScreen *teamPlayScreen)
 {
     u8 i;
-    Sprite *element;
+    Sprite *s;
 
     for (i = 0; i < 4; i++) {
         if (GetBit(gMultiplayerConnections, i)) {
-            element = &teamPlayScreen->unk0[i];
-            element->x = gUnknown_080D92B8[i & 1];
-            element->y = i * 0x18 + 0x40;
-            sub_80051E8(element);
+            s = &teamPlayScreen->unk0[i];
+            s->x = gUnknown_080D92B8[i & 1];
+            s->y = i * 0x18 + 0x40;
+            DisplaySprite(s);
         }
     }
 }

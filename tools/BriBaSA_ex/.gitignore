@@ -1,0 +1,16 @@
+# Binaries
+build/*.obj
+*.o
+*.lib
+*.exe
+BriBaSA_ex
+
+# Debugging files
+*.rdbg
+*.pdb
+
+# Win links
+*.ilk
+
+# BriBaSA Setttings file
+settings.txt

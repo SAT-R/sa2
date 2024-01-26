@@ -9,7 +9,7 @@
 #define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle)*4) * 60))
 
 #define GET_CHARACTER_ANIM(player)                                                      \
-    (player->unk68 - gPlayerCharacterIdleAnims[player->character])
+    (player->anim - gPlayerCharacterIdleAnims[player->character])
 
 #define PLAYERFN_SET(proc)          gPlayer.callback = proc;
 #define PLAYERFN_CALL(proc, player) proc(player);
@@ -68,29 +68,6 @@
         player->rotation = 0;                                                           \
     }
 
-#define PLAYERFN_MAYBE_INCREMENT_LIVES(player, incVal)                                  \
-    {                                                                                   \
-        s32 divResA, divResB;                                                           \
-        s32 old_3005450 = gLevelScore;                                                  \
-        gLevelScore += incVal;                                                          \
-                                                                                        \
-        divResA = Div(gLevelScore, 50000);                                              \
-        divResB = Div(old_3005450, 50000);                                              \
-                                                                                        \
-        if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
-            u16 lives = divResA - divResB;                                              \
-            lives += gNumLives;                                                         \
-                                                                                        \
-            gNumLives = ({                                                              \
-                if (lives > 255)                                                        \
-                    lives = 255;                                                        \
-                lives;                                                                  \
-            });                                                                         \
-                                                                                        \
-            gUnknown_030054A8.unk3 = 16;                                                \
-        }                                                                               \
-    }
-
 // TODO(Jace): This name is speculative right now, check for accuracy!
 #define PLAYERFN_MAYBE_TRANSITION_TO_GROUND(player)                                     \
     {                                                                                   \
@@ -136,4 +113,21 @@
         PLAYERFN_SET_SHIFT_OFFSETS(player, x, y)                                        \
     }
 
+#define PLAYERFN_SET_ANIM_SPEED(_p, _s)                                                 \
+    {                                                                                   \
+        s32 speed = _p->speedGroundX;                                                   \
+        speed = (speed >> 5) + (speed >> 6);                                            \
+                                                                                        \
+        /* TODO: Try ABS macro */                                                       \
+        speed = ABS(speed);                                                             \
+                                                                                        \
+        if (speed >= SPRITE_ANIM_SPEED(0.5)) {                                          \
+            if (speed > SPRITE_ANIM_SPEED(8.0)) {                                       \
+                speed = SPRITE_ANIM_SPEED(8.0);                                         \
+            }                                                                           \
+        } else {                                                                        \
+            speed = SPRITE_ANIM_SPEED(0.5);                                             \
+        }                                                                               \
+        _s->animSpeed = speed;                                                          \
+    }
 #endif // GUARD_PLAYER_CB_COMMANDS_H

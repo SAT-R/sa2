@@ -1,14 +1,16 @@
-#include "game/time_attack/mode_select.h"
 #include "core.h"
-#include "sprite.h"
-#include "game/screen_transition.h"
-#include "game/save.h"
-#include "task.h"
 #include "malloc_vram.h"
+#include "sprite.h"
+#include "task.h"
 #include "lib/m4a.h"
-#include "game/title_screen.h"
 #include "game/game.h"
 #include "game/character_select.h"
+#include "game/stage/boss_results_transition.h"
+#include "game/save.h"
+#include "game/time_attack/mode_select.h"
+#include "game/screen_fade.h"
+#include "game/title_screen.h"
+#include "game/game_7.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -22,7 +24,7 @@ struct TimeAttackModeSelectionScreen {
     Sprite unkB0;
     Sprite unkE0;
     Sprite infoText;
-    struct TransitionState unk140;
+    ScreenFade unk140;
     u8 animFrame;
     u8 unk14D;
     u8 unk14E;
@@ -88,8 +90,8 @@ void CreateTimeAttackModeSelectionScreen(void)
 {
     struct Task *t;
     struct TimeAttackModeSelectionScreen *modeScreen;
-    struct TransitionState *transition;
-    Sprite *element;
+    ScreenFade *fade;
+    Sprite *s;
     Background *background;
 
     s8 lang = gLoadedSaveGame->language - 1;
@@ -113,96 +115,96 @@ void CreateTimeAttackModeSelectionScreen(void)
     t = TaskCreate(Task_FadeInAndStartIntro,
                    sizeof(struct TimeAttackModeSelectionScreen), 0x2000, 0,
                    TimeAttackModeSelectionScreenOnDestroy);
-    modeScreen = TaskGetStructPtr(t);
+    modeScreen = TASK_DATA(t);
 
     modeScreen->animFrame = 0;
     modeScreen->unk14D = 0;
     modeScreen->unk14E = 0;
 
-    transition = &modeScreen->unk140;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 2;
-    transition->speed = 0x100;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    fade = &modeScreen->unk140;
+    fade->window = 1;
+    fade->brightness = Q_8_8(0);
+    fade->flags = 2;
+    fade->speed = 0x100;
+    fade->bldCnt = 0x3FFF;
+    fade->bldAlpha = 0;
 
-    NextTransitionFrame(transition);
+    UpdateScreenFade(fade);
 
-    element = &modeScreen->unk80;
-    element->graphics.dest = VramMalloc(0x6C);
-    element->graphics.anim = SA2_ANIM_TIME_ATTACK_JP;
-    element->variant = SA2_ANIM_VARIANT_TA_TITLE;
-    element->unk21 = 0xFF;
-    element->x = 0;
-    element->y = 0;
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0x1000;
-    sub_8004558(element);
+    s = &modeScreen->unk80;
+    s->graphics.dest = VramMalloc(0x6C);
+    s->graphics.anim = SA2_ANIM_TIME_ATTACK_JP;
+    s->variant = SA2_ANIM_VARIANT_TA_TITLE;
+    s->prevVariant = -1;
+    s->x = 0;
+    s->y = 0;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
+    UpdateSpriteAnimation(s);
 
-    element = &modeScreen->unkB0;
-    element->graphics.dest
+    s = &modeScreen->unkB0;
+    s->graphics.dest
         = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 0)].numTiles);
-    element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].anim;
-    element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].variant;
-    element->unk21 = 0xFF;
-    element->x = 0;
-    element->y = 0;
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0x1000;
-    sub_8004558(element);
+    s->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].anim;
+    s->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 0)].variant;
+    s->prevVariant = -1;
+    s->x = 0;
+    s->y = 0;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
+    UpdateSpriteAnimation(s);
 
-    element = &modeScreen->unkE0;
-    element->graphics.dest
+    s = &modeScreen->unkE0;
+    s->graphics.dest
         = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 1)].numTiles);
-    element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].anim;
-    element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].variant;
-    element->unk21 = 0xFF;
-    element->x = 0;
-    element->y = 0;
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0x1000;
-    sub_8004558(element);
+    s->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].anim;
+    s->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 1)].variant;
+    s->prevVariant = -1;
+    s->x = 0;
+    s->y = 0;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
+    UpdateSpriteAnimation(s);
 
-    element = &modeScreen->infoText;
-    element->graphics.dest
+    s = &modeScreen->infoText;
+    s->graphics.dest
         = VramMalloc(gUnknown_080E0384[TextElementOffset(lang, 5, 2)].numTiles);
-    element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
-    element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
-    element->unk21 = 0xFF;
-    element->x = 8;
-    element->y = 103;
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0;
+    s->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
+    s->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
+    s->prevVariant = -1;
+    s->x = 8;
+    s->y = 103;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0;
 
     background = &modeScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(20);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_TA_AND_MP_WHITE_BG;
@@ -210,16 +212,16 @@ void CreateTimeAttackModeSelectionScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
-    background->unk2E = 0;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
 
     background = &modeScreen->unk40;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(22);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_TA_ORANGE_BG;
@@ -227,18 +229,18 @@ void CreateTimeAttackModeSelectionScreen(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
-    background->unk2E = 1;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
+    DrawBackground(background);
 
     m4aSongNumStart(MUS_TIME_ATTACK_MENU);
 }
 
 void Task_IntroSweepAnim(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
     gUnknown_03002A80 = 2;
     gUnknown_03002878 = (void *)REG_ADDR_WIN1H;
@@ -247,7 +249,7 @@ void Task_IntroSweepAnim(void)
     gWinRegs[5] = 0x11;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, modeScreen->animFrame * 20 + 700);
 
     if (gPressedKeys & A_BUTTON) {
@@ -263,8 +265,8 @@ void Task_IntroSweepAnim(void)
 
 static void Task_IntroUIAnim(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    Sprite *element;
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
+    Sprite *s;
     if (++modeScreen->animFrame == 32) {
         modeScreen->unk14E = 1;
         gCurTask->main = Task_ScreenMain;
@@ -281,68 +283,68 @@ static void Task_IntroUIAnim(void)
     gWinRegs[5] = 0x11;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
 
-    element = &modeScreen->unk80;
+    s = &modeScreen->unk80;
     if (modeScreen->animFrame < 10) {
-        element->x = modeScreen->animFrame * 10 - 50;
+        s->x = modeScreen->animFrame * 10 - 50;
     } else {
-        element->x = 50;
+        s->x = 50;
     }
-    element->y = 10;
+    s->y = 10;
 
-    element = &modeScreen->unkB0;
+    s = &modeScreen->unkB0;
     if (modeScreen->animFrame < 10) {
-        element->x = -80;
+        s->x = -80;
     } else if (modeScreen->animFrame < 20) {
-        element->x = (modeScreen->animFrame * 16) - 250;
+        s->x = (modeScreen->animFrame * 16) - 250;
     } else {
-        element->x = 70;
+        s->x = 70;
     }
-    element->y = 60;
+    s->y = 60;
 
-    element = &modeScreen->unkE0;
+    s = &modeScreen->unkE0;
     if (modeScreen->animFrame < 20) {
-        element->x = -90;
+        s->x = -90;
     } else if (modeScreen->animFrame < 30) {
-        element->x = (modeScreen->animFrame * 16) - 400;
+        s->x = (modeScreen->animFrame * 16) - 400;
     } else {
-        element->x = 80;
+        s->x = 80;
     }
-    element->y = 76;
+    s->y = 76;
     RenderUI(modeScreen);
 }
 
 static void Task_ScreenMain(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    struct TransitionState *transition;
-    Sprite *element;
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
+    ScreenFade *fade;
+    Sprite *s;
     s8 lang;
 
     if (gPressedKeys & A_BUTTON) {
         if (modeScreen->unk14D && !gLoadedSaveGame->bossTimeAttackUnlocked) {
             m4aSongNumStart(SE_ABORT);
         } else {
-            transition = &modeScreen->unk140;
-            transition->unk0 = 1;
-            transition->unk4 = Q_8_8(0);
-            transition->unk2 = 1;
-            transition->speed = 0x100;
-            transition->unk8 = 0x3FFF;
-            transition->unkA = 0;
+            fade = &modeScreen->unk140;
+            fade->window = 1;
+            fade->brightness = Q_8_8(0);
+            fade->flags = 1;
+            fade->speed = 0x100;
+            fade->bldCnt = 0x3FFF;
+            fade->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutModeSelected;
         }
     } else if (gPressedKeys & B_BUTTON) {
-        transition = &modeScreen->unk140;
-        transition->unk0 = 1;
-        transition->unk4 = Q_8_8(0);
-        transition->unk2 = 1;
-        transition->speed = 0x100;
-        transition->unk8 = 0x3FFF;
-        transition->unkA = 0;
+        fade = &modeScreen->unk140;
+        fade->window = 1;
+        fade->brightness = Q_8_8(0);
+        fade->flags = 1;
+        fade->speed = 0x100;
+        fade->bldCnt = 0x3FFF;
+        fade->bldAlpha = 0;
         m4aSongNumStart(SE_RETURN);
         gCurTask->main = Task_FadeOutToTitleScreen;
     }
@@ -354,7 +356,7 @@ static void Task_ScreenMain(void)
     gWinRegs[5] = 0x11;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
 
     if (gPressedKeys & (DPAD_UP | DPAD_DOWN)) {
@@ -368,47 +370,45 @@ static void Task_ScreenMain(void)
             lang = 0;
         }
 
-        element = &modeScreen->unkB0;
-        element->palId = 1;
+        s = &modeScreen->unkB0;
+        s->palId = 1;
 
-        element = &modeScreen->unkE0;
-        element->palId = 0xFF;
+        s = &modeScreen->unkE0;
+        s->palId = 0xFF;
 
-        element = &modeScreen->infoText;
+        s = &modeScreen->infoText;
         if (gLoadedSaveGame->bossTimeAttackUnlocked) {
-            element->graphics.anim
-                = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].anim;
-            element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].variant;
+            s->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].anim;
+            s->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 3)].variant;
         } else {
-            element->graphics.anim
-                = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].anim;
-            element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].variant;
+            s->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].anim;
+            s->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 4)].variant;
         }
-        element->unk21 = 0xFF;
+        s->prevVariant = -1;
     } else {
         lang = gLoadedSaveGame->language - 1;
         if (lang < 0) {
             lang = 0;
         }
-        element = &modeScreen->unkB0;
-        element->palId = 0;
+        s = &modeScreen->unkB0;
+        s->palId = 0;
 
-        element = &modeScreen->unkE0;
-        element->palId = 0;
+        s = &modeScreen->unkE0;
+        s->palId = 0;
 
-        element = &modeScreen->infoText;
-        element->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
-        element->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
-        element->unk21 = 0xFF;
+        s = &modeScreen->infoText;
+        s->graphics.anim = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].anim;
+        s->variant = gUnknown_080E0384[TextElementOffset(lang, 5, 2)].variant;
+        s->prevVariant = -1;
     }
     RenderUI(modeScreen);
 }
 
 static void Task_FadeOutModeSelected(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_FADE_COMPLETE) {
         gFlags &= ~0x4;
         gMultiSioEnabled = TRUE;
         gCurTask->main = Task_HandleModeSelectedExit;
@@ -422,16 +422,16 @@ static void Task_FadeOutModeSelected(void)
     gWinRegs[5] = 0x31;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
     RenderUI(modeScreen);
 }
 
 static void Task_FadeOutToTitleScreen(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_FADE_COMPLETE) {
         gFlags &= ~0x4;
         CreateTitleScreenAtSinglePlayerMenu();
         TaskDestroy(gCurTask);
@@ -445,15 +445,15 @@ static void Task_FadeOutToTitleScreen(void)
     gWinRegs[5] = 0x31;
 
     gFlags |= 0x4;
-    sub_802EFDC(0xF0);
+    InitHBlankBgOffsets(DISPLAY_WIDTH);
     sub_802E044(0x6400, 700);
     RenderUI(modeScreen);
 }
 
 static void Task_FadeInAndStartIntro(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
-    if (NextTransitionFrame(&modeScreen->unk140) == SCREEN_TRANSITION_COMPLETE) {
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
+    if (UpdateScreenFade(&modeScreen->unk140) == SCREEN_FADE_COMPLETE) {
         modeScreen->animFrame = 0xF;
         gCurTask->main = Task_IntroSweepAnim;
     }
@@ -461,7 +461,7 @@ static void Task_FadeInAndStartIntro(void)
 
 static void Task_HandleModeSelectedExit(void)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(gCurTask);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(gCurTask);
 
     if (modeScreen->unk14D != 0) {
         gGameMode = GAME_MODE_BOSS_TIME_ATTACK;
@@ -478,24 +478,24 @@ static void Task_HandleModeSelectedExit(void)
 
 static void RenderUI(struct TimeAttackModeSelectionScreen *modeScreen)
 {
-    Sprite *element;
-    element = &modeScreen->unk80;
-    sub_80051E8(element);
-    element = &modeScreen->unkB0;
-    sub_80051E8(element);
-    element = &modeScreen->unkE0;
-    sub_80051E8(element);
+    Sprite *s;
+    s = &modeScreen->unk80;
+    DisplaySprite(s);
+    s = &modeScreen->unkB0;
+    DisplaySprite(s);
+    s = &modeScreen->unkE0;
+    DisplaySprite(s);
 
     if (modeScreen->unk14E != 0) {
-        element = &modeScreen->infoText;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &modeScreen->infoText;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
 static void TimeAttackModeSelectionScreenOnDestroy(struct Task *t)
 {
-    struct TimeAttackModeSelectionScreen *modeScreen = TaskGetStructPtr(t);
+    struct TimeAttackModeSelectionScreen *modeScreen = TASK_DATA(t);
     VramFree(modeScreen->unk80.graphics.dest);
     VramFree(modeScreen->unkB0.graphics.dest);
     VramFree(modeScreen->unkE0.graphics.dest);

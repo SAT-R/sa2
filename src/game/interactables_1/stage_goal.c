@@ -6,17 +6,21 @@
 
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_1/stage_goal.h"
 #include "game/multiplayer/unknown_1.h"
+#include "game/multiplayer/finish.h"
 
 #include "sprite.h"
 #include "task.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite sprite;
+    /* 0x0C */ Sprite s;
 } Sprite_StageGoal;
 
 typedef struct {
@@ -36,8 +40,8 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0,
                                 TaskDestructor_8062E7C);
-    Sprite_StageGoal *stageGoal = TaskGetStructPtr(t);
-    Sprite *sprite = &stageGoal->sprite;
+    Sprite_StageGoal *stageGoal = TASK_DATA(t);
+    Sprite *s = &stageGoal->s;
 
     stageGoal->base.regionX = spriteRegionX;
     stageGoal->base.regionY = spriteRegionY;
@@ -45,79 +49,79 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     stageGoal->base.spriteX = me->x;
     stageGoal->base.spriteY = spriteY;
 
-    sprite->x = TO_WORLD_POS(me->x, spriteRegionX);
-    sprite->y = TO_WORLD_POS(me->y, spriteRegionY);
+    s->x = TO_WORLD_POS(me->x, spriteRegionX);
+    s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sprite->graphics.dest = VramMalloc(GOAL_LEVER_TILES);
-    sprite->graphics.anim = SA2_ANIM_GOAL_LEVER;
-    sprite->variant = 1;
-    sprite->unk21 = -1;
-    sprite->unk1A = 0x100;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk22 = 0x10;
-    sprite->palId = FALSE;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = 0x1000;
-    sub_8004558(sprite);
+    s->graphics.dest = VramMalloc(GOAL_LEVER_TILES);
+    s->graphics.anim = SA2_ANIM_GOAL_LEVER;
+    s->variant = 1;
+    s->prevVariant = -1;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = FALSE;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
+    UpdateSpriteAnimation(s);
 }
 
 static void Task_StageGoalMain(void)
 {
-    Sprite_StageGoal *stageGoal = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &stageGoal->sprite;
+    Sprite_StageGoal *stageGoal = TASK_DATA(gCurTask);
+    Sprite *s = &stageGoal->s;
     MapEntity *me = stageGoal->base.me;
 
     s32 x = TO_WORLD_POS(stageGoal->base.spriteX, stageGoal->base.regionX);
     s32 y = TO_WORLD_POS(me->y, stageGoal->base.regionY);
 
-    sprite->x = x - gCamera.x;
-    sprite->y = y - gCamera.y;
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = stageGoal->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }
 
     if (PLAYER_IS_ALIVE && !(gPlayer.moveState & MOVESTATE_400000)) {
-        if (sub_800C204(sprite, x, y, 0, &gPlayer, 0) == 1) {
-            sprite->graphics.anim = SA2_ANIM_GOAL_LEVER;
-            sprite->variant = 0;
-            sprite->unk21 = -1;
+        if (sub_800C204(s, x, y, 0, &gPlayer, 0) == 1) {
+            s->graphics.anim = SA2_ANIM_GOAL_LEVER;
+            s->variant = 0;
+            s->prevVariant = -1;
             gCurTask->main = Task_StageGoalAnimate;
         }
     }
-    sub_80051E8(sprite);
+    DisplaySprite(s);
 }
 
 static void Task_StageGoalAnimate(void)
 {
-    Sprite_StageGoal *stageGoal = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &stageGoal->sprite;
+    Sprite_StageGoal *stageGoal = TASK_DATA(gCurTask);
+    Sprite *s = &stageGoal->s;
     MapEntity *me = stageGoal->base.me;
 
     s32 x = TO_WORLD_POS(stageGoal->base.spriteX, stageGoal->base.regionX);
     s32 y = TO_WORLD_POS(me->y, stageGoal->base.regionY);
 
-    sprite->x = x - gCamera.x;
-    sprite->y = y - gCamera.y;
+    s->x = x - gCamera.x;
+    s->y = y - gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         me->x = stageGoal->base.spriteX;
         TaskDestroy(gCurTask);
         return;
     }
 
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 static void Task_StageGoalToggleMain(void)
 {
-    Sprite_StageGoalToggle *stageGoalToggle = TaskGetStructPtr(gCurTask);
+    Sprite_StageGoalToggle *stageGoalToggle = TASK_DATA(gCurTask);
     MapEntity *me = stageGoalToggle->base.me;
 
     u8 spriteX = stageGoalToggle->base.spriteX;
@@ -129,34 +133,35 @@ static void Task_StageGoalToggleMain(void)
     if (IS_MULTI_PLAYER) {
         if (x <= Q_24_8_TO_INT(gPlayer.x)
             && !(gPlayer.moveState & (MOVESTATE_8000000 | MOVESTATE_8))) {
-            gPlayer.unk6D = 10;
-            gUnknown_030054D0 = x;
+            gPlayer.transition = PLTRANS_PT10;
+            gStageGoalX = x;
             StageGoalToggle_HandleMultiplayerFinish();
         }
     } else if (x <= Q_24_8_TO_INT(gPlayer.x)
                && !(gPlayer.moveState & MOVESTATE_8000000)) {
-        gPlayer.unk6D = 10;
+        gPlayer.transition = PLTRANS_PT10;
         gUnknown_03005424 |= 0x21;
-        gUnknown_030054D0 = x;
+        gStageGoalX = x;
 
         if (gGameMode == GAME_MODE_SINGLE_PLAYER
-            && !(gPlayer.moveState & MOVESTATE_IN_AIR) && gPlayer.speedGroundX > 0x280) {
-            u32 temp;
-            if (gPlayer.speedGroundX < 0x401) {
-                temp = 200;
-            } else if (gPlayer.speedGroundX < 0x901) {
-                temp = 300;
-            } else if (gPlayer.speedGroundX < 0xA01) {
-                temp = 500;
+            && !(gPlayer.moveState & MOVESTATE_IN_AIR)
+            && gPlayer.speedGroundX > Q_24_8(2.5)) {
+            u32 extraScore;
+            if (gPlayer.speedGroundX <= Q_24_8(4.0)) {
+                extraScore = 200;
+            } else if (gPlayer.speedGroundX <= Q_24_8(9.0)) {
+                extraScore = 300;
+            } else if (gPlayer.speedGroundX <= Q_24_8(10.0)) {
+                extraScore = 500;
             } else {
-                temp = 800;
+                extraScore = 800;
             }
 
             // Redundant check :/
-            if (temp != 0) {
+            if (extraScore != 0) {
                 u32 temp2, temp3;
                 u32 prev = gLevelScore;
-                gLevelScore += temp;
+                gLevelScore += extraScore;
                 temp2 = Div(gLevelScore, 50000);
                 temp3 = Div(prev, 50000);
                 if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
@@ -170,7 +175,8 @@ static void Task_StageGoalToggleMain(void)
                     gNumLives = numLives;
                     gUnknown_030054A8.unk3 = 0x10;
                 }
-                sub_801F3A4(Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), temp);
+                CreateStageGoalBonusPointsAnim(Q_24_8_TO_INT(gPlayer.x),
+                                               Q_24_8_TO_INT(gPlayer.y), extraScore);
             }
         }
     }
@@ -188,7 +194,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
     struct UNK_3005510 *unk5510;
     u32 count = 0;
     struct MultiplayerPlayer *player
-        = TaskGetStructPtr(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+        = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__40;
     gPlayer.unk32 = 0;
 
@@ -198,7 +204,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
              && gMultiplayerPlayerTasks[j] != NULL;
              j++) {
             struct MultiplayerPlayer *otherPlayer
-                = TaskGetStructPtr(gMultiplayerPlayerTasks[j]);
+                = TASK_DATA(gMultiplayerPlayerTasks[j]);
             if (otherPlayer->unk5C & 1) {
                 count++;
             }
@@ -276,7 +282,7 @@ static void sub_8062D44(void)
         struct Task **tasks;
         for (j = 0, tasks = gMultiplayerPlayerTasks;
              j < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[j] != NULL; j++) {
-            struct MultiplayerPlayer *otherPlayer = TaskGetStructPtr(tasks[j]);
+            struct MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[j]);
             if (otherPlayer->unk54 & 0x100) {
                 count++;
             }
@@ -289,7 +295,7 @@ static void sub_8062D44(void)
             if (gMultiplayerPlayerTasks[0] != NULL) {
                 for (i = 0, tasks = gMultiplayerPlayerTasks;
                      i < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[i] != NULL; i++) {
-                    struct MultiplayerPlayer *otherPlayer = TaskGetStructPtr(tasks[i]);
+                    struct MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[i]);
                     if (!(otherPlayer->unk5C & 1) && gGameMode != GAME_MODE_TEAM_PLAY) {
                         otherPlayer->unk5C |= 1;
                         gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
@@ -309,7 +315,7 @@ void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteR
 {
     struct Task *t = TaskCreate(Task_StageGoalToggleMain, sizeof(Sprite_StageGoalToggle),
                                 0x2010, 0, NULL);
-    Sprite_StageGoalToggle *stageGoalToggle = TaskGetStructPtr(t);
+    Sprite_StageGoalToggle *stageGoalToggle = TASK_DATA(t);
 
     stageGoalToggle->base.regionX = spriteRegionX;
     stageGoalToggle->base.regionY = spriteRegionY;
@@ -320,6 +326,6 @@ void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteR
 
 static void TaskDestructor_8062E7C(struct Task *t)
 {
-    Sprite_StageGoal *stageGoal = TaskGetStructPtr(t);
-    VramFree(stageGoal->sprite.graphics.dest);
+    Sprite_StageGoal *stageGoal = TASK_DATA(t);
+    VramFree(stageGoal->s.graphics.dest);
 }

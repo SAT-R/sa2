@@ -1,8 +1,12 @@
 #include "global.h"
 #include "core.h"
 #include "game/game.h"
+#include "game/multiplayer/player_unk_2.h"
 
 #include "constants/zones.h"
+
+// Not clear why this is 16 aligned
+MultiPlayerBgCtrlRegs ALIGNED(16) *gUnknown_03005840 = NULL;
 
 void Task_PlayerMPUnk2(void);
 void TaskDestructor_PlayerMPUnk2(struct Task *);
@@ -20,7 +24,7 @@ void sub_801A384(void)
             struct Task *t
                 = TaskCreate(Task_PlayerMPUnk2, (sizeof(MultiPlayerBgCtrlRegs)), 0xE000,
                              0, TaskDestructor_PlayerMPUnk2);
-            MultiPlayerBgCtrlRegs *regs = TaskGetStructPtr(t);
+            MultiPlayerBgCtrlRegs *regs = TASK_DATA(t);
 
             gUnknown_03005840 = regs;
 
@@ -29,7 +33,7 @@ void sub_801A384(void)
             regs->unk4 = 0;
             regs->unk6 = 0;
 
-            gUnknown_030026D0 = 0;
+            gMosaicReg = 0;
 
             gBgCntRegs[0] |= 0x40;
             gBgCntRegs[1] |= 0x40;
@@ -41,7 +45,7 @@ void sub_801A384(void)
 
 void Task_PlayerMPUnk2(void)
 {
-    MultiPlayerBgCtrlRegs *regs = TaskGetStructPtr(gCurTask);
+    MultiPlayerBgCtrlRegs *regs = TASK_DATA(gCurTask);
     s16 *p;
 
     regs->unk0++;
@@ -67,10 +71,10 @@ void Task_PlayerMPUnk2(void)
 
     {
         u16 value = regs->unk6 & 0xF;
-        gUnknown_030026D0 = (value << 12);
-        gUnknown_030026D0 |= (value << 8);
-        gUnknown_030026D0 |= (value << 4);
-        gUnknown_030026D0 |= (value << 0);
+        gMosaicReg = (value << 12);
+        gMosaicReg |= (value << 8);
+        gMosaicReg |= (value << 4);
+        gMosaicReg |= (value << 0);
     }
 
     gBgCntRegs[0] |= 0x40;
@@ -88,5 +92,5 @@ void TaskDestructor_PlayerMPUnk2(struct Task *t)
     gBgCntRegs[2] &= ~0x40;
     gBgCntRegs[3] &= ~0x40;
 
-    gUnknown_030026D0 = 0;
+    gMosaicReg = 0;
 }

@@ -1,11 +1,17 @@
 #include "core.h"
+
+#include "game/player_controls.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/egg_utopia/cannon.h"
+
 #include "lib/m4a.h"
 #include "trig.h"
 #include "game/math.h"
 
-#include "constants/songs.h"
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
+#include "constants/songs.h"
 
 typedef struct {
     // Completely unused, maybe the base?
@@ -41,10 +47,10 @@ static void sub_807E7B0(void);
 
 void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    Sprite *sprite;
+    Sprite *s;
     struct Task *t = TaskCreate(Task_Interactable093, sizeof(Sprite_Cannon), 0x2010, 0,
                                 TaskDestructor_Interactable093);
-    Sprite_Cannon *cannon = TaskGetStructPtr(t);
+    Sprite_Cannon *cannon = TASK_DATA(t);
     cannon->unk68 = me->d.sData[0];
     cannon->x = TO_WORLD_POS(me->x, spriteRegionX);
     cannon->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -58,28 +64,28 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
         cannon->unk6A = 0;
     }
 
-    sprite = &cannon->sprite2;
-    sprite->unk1A = 0x1C0;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = -1;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = 0x2000;
-    sprite->graphics.dest = (void *)OBJ_VRAM0 + 0x2C80;
+    s = &cannon->sprite2;
+    s->unk1A = SPRITE_OAM_ORDER(7);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x2000;
+    s->graphics.dest = (void *)OBJ_VRAM0 + 0x2C80;
 
     // TODO: anim cannon?
-    sprite->graphics.anim = SA2_ANIM_CANNON_EGG_UTO;
-    sprite->variant = 1;
-    sub_8004558(sprite);
+    s->graphics.anim = SA2_ANIM_CANNON;
+    s->variant = 1;
+    UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
 static void sub_807E314(void)
 {
-    Sprite_Cannon *cannon = TaskGetStructPtr(gCurTask);
+    Sprite_Cannon *cannon = TASK_DATA(gCurTask);
     if (!PLAYER_IS_ALIVE || --cannon->unk6C == 0xFFFF
         || gPlayer.unk5E & (gPlayerControls.jump | gPlayerControls.attack)) {
         sub_807E408(cannon);
@@ -119,7 +125,7 @@ static void sub_807E408(Sprite_Cannon *cannon)
 
     if (PLAYER_IS_ALIVE) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
 
         gPlayer.x += COS_24_8(cannon->unk6A) * 0x20;
         gPlayer.y += SIN_24_8(cannon->unk6A) * 0x20;
@@ -224,30 +230,34 @@ static void sub_807E56C(Sprite_Cannon *cannon)
 static void sub_807E5F0(Sprite_Cannon *cannon)
 {
     SpriteTransform transform;
-    Sprite *sprite = &cannon->sprite2;
-    sprite->x = cannon->x - gCamera.x;
-    sprite->y = cannon->y - gCamera.y;
+    Sprite *s = &cannon->sprite2;
+    s->x = cannon->x - gCamera.x;
+    s->y = cannon->y - gCamera.y;
 
-    transform.unk0 = cannon->unk6A;
+    transform.rotation = cannon->unk6A;
     transform.width = 0x100;
     transform.height = 0x100;
-    transform.x = sprite->x;
-    transform.y = sprite->y;
+    transform.x = s->x;
+    transform.y = s->y;
 
-    sprite->unk10 = 0x2060 | gUnknown_030054B8++;
+    s->unk10 = 0x2060 | gUnknown_030054B8++;
     if (cannon->unk68 == 0) {
-        sprite->unk10 |= 0x400;
+        s->unk10 |= 0x400;
     }
 
-    sub_8004860(sprite, &transform);
-    sub_80051E8(sprite);
+    sub_8004860(s, &transform);
+    DisplaySprite(s);
 }
 
-// https://decomp.me/scratch/TDVLh
-NONMATCH("asm/non_matching/sub_807E66C.inc",
+// (68.07%) https://decomp.me/scratch/TDVLh
+NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
          static bool32 sub_807E66C(Sprite_Cannon *cannon))
 {
-    register Sprite *sprite asm("r6") = &cannon->sprite2;
+#ifndef NON_MATCHING
+    register Sprite *s asm("r6") = &cannon->sprite2;
+#else
+    Sprite *s = &cannon->sprite2;
+#endif
     s16 x, y;
     s32 biggerX, biggerY, temp2, temp3;
     s32 r4;
@@ -256,8 +266,10 @@ NONMATCH("asm/non_matching/sub_807E66C.inc",
     if (PLAYER_IS_ALIVE) {
         // Maybe log
         {
+#ifndef NON_MATCHING
             register u16 r0 asm("r0") = cannon->unk68;
             asm("" ::"r"(r0));
+#endif
         }
 
         x = cannon->x - gCamera.x;
@@ -266,18 +278,21 @@ NONMATCH("asm/non_matching/sub_807E66C.inc",
         playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
 
         biggerX = x;
-        r4 = sprite->unk28[0].unk4;
+        r4 = s->hitboxes[0].left;
         biggerX += r4;
-        temp2 = playerX + gUnknown_03005AF0.unk38;
-        if (((biggerX > temp2 || biggerX + (sprite->unk28[0].unk6 - r4) >= temp2))
-            && biggerX >= temp2 + (gUnknown_03005AF0.unk3A - gUnknown_03005AF0.unk38)) {
+        temp2 = playerX + gUnknown_03005AF0.s.hitboxes[0].left;
+        if (((biggerX > temp2 || biggerX + (s->hitboxes[0].right - r4) >= temp2))
+            && biggerX >= temp2
+                    + (gUnknown_03005AF0.s.hitboxes[0].right
+                       - gUnknown_03005AF0.s.hitboxes[0].left)) {
             biggerY = y;
-            r4 = sprite->unk28[0].unk5;
+            r4 = s->hitboxes[0].top;
             biggerY += r4;
-            temp3 = playerY + gUnknown_03005AF0.unk39;
-            if (((biggerY > temp3 || (biggerY) + (sprite->unk28[0].unk7 - r4) >= temp3))
-                && biggerY
-                    >= temp3 + (gUnknown_03005AF0.unk3B - gUnknown_03005AF0.unk39)) {
+            temp3 = playerY + gUnknown_03005AF0.s.hitboxes[0].top;
+            if (((biggerY > temp3 || (biggerY) + (s->hitboxes[0].bottom - r4) >= temp3))
+                && biggerY >= temp3
+                        + (gUnknown_03005AF0.s.hitboxes[0].bottom
+                           - gUnknown_03005AF0.s.hitboxes[0].top)) {
                 return 1;
             }
         }
@@ -289,7 +304,7 @@ END_NONMATCH
 
 static void Task_Interactable093(void)
 {
-    Sprite_Cannon *cannon = TaskGetStructPtr(gCurTask);
+    Sprite_Cannon *cannon = TASK_DATA(gCurTask);
     if (sub_807E66C(cannon)) {
         sub_807E384(cannon);
     }
@@ -303,7 +318,7 @@ static void Task_Interactable093(void)
 
 static void sub_807E7B0(void)
 {
-    Sprite_Cannon *cannon = TaskGetStructPtr(gCurTask);
+    Sprite_Cannon *cannon = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_807E86C(cannon);
@@ -317,7 +332,7 @@ static void sub_807E7B0(void)
 
 static void sub_807E7F8(void)
 {
-    Sprite_Cannon *cannon = TaskGetStructPtr(gCurTask);
+    Sprite_Cannon *cannon = TASK_DATA(gCurTask);
 
     if (cannon->unk6E++ > 60) {
         sub_807E884(cannon);
@@ -373,7 +388,7 @@ static void sub_807E8E0(Sprite_Cannon *cannon)
 
 static void sub_807E8FC(void)
 {
-    Sprite_Cannon *cannon = TaskGetStructPtr(gCurTask);
+    Sprite_Cannon *cannon = TASK_DATA(gCurTask);
 
     if (sub_807E954(cannon)) {
         sub_807E940(cannon);

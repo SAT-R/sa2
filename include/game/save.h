@@ -2,10 +2,19 @@
 #define GUARD_SAVE_H
 
 #include "global.h"
+
+#include "sakit/globals.h"
+
+#include "game/player_controls.h"
 #include "constants/zones.h"
-#include "game/game.h"
+#include "constants/characters.h"
 
 #define PLAYER_NAME_END_CHAR 0xFFFF
+
+#define NUM_MULTIPLAYER_SCORES 10
+#define MAX_MULTIPLAYER_SCORE  99
+
+#define TIME_RECORDS_PER_COURSE 3
 
 struct MultiplayerScore {
     u32 playerId;

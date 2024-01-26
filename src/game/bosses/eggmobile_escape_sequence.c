@@ -23,11 +23,11 @@ static void Task_EggmobileSwitchMovement(void);
 static void Task_EggmobileMoveRight(void);
 static void TaskDestructor_EggmobileEscape(struct Task *t);
 
-void CreateEggmobileEscapeSequence(u16 x, u16 y, u32 spriteFlags)
+void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
 {
     struct Task *t = TaskCreate(Task_EggmobileMoveUp, sizeof(Sprite_EggMobile), 0x3800,
                                 0, TaskDestructor_EggmobileEscape);
-    Sprite_EggMobile *em = TaskGetStructPtr(t);
+    Sprite_EggMobile *em = TASK_DATA(t);
     Sprite *s;
 
     m4aSongNumStart(SE_EGGMOBILE_FLEES);
@@ -41,16 +41,16 @@ void CreateEggmobileEscapeSequence(u16 x, u16 y, u32 spriteFlags)
     s->graphics.dest = VramMalloc(8);
     s->graphics.anim = SA2_ANIM_EGGMAN_HEAD;
     s->variant = 0;
-    s->unk1A = 0x640;
+    s->unk1A = SPRITE_OAM_ORDER(25);
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = spriteFlags;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &em->s;
     s->x = x;
@@ -58,16 +58,16 @@ void CreateEggmobileEscapeSequence(u16 x, u16 y, u32 spriteFlags)
     s->graphics.dest = VramMalloc(36);
     s->graphics.anim = SA2_ANIM_EGGMOBILE;
     s->variant = 0;
-    s->unk1A = 0x600;
+    s->unk1A = SPRITE_OAM_ORDER(24);
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28[0].unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = spriteFlags;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     if (spriteFlags & SPRITE_FLAG_MASK_X_FLIP) {
         em->direction = EGGMOBILE_DIR_RIGHT;
@@ -78,17 +78,17 @@ void CreateEggmobileEscapeSequence(u16 x, u16 y, u32 spriteFlags)
 
 static void Task_EggmobileMoveUp(void)
 {
-    Sprite_EggMobile *em = TaskGetStructPtr(gCurTask);
+    Sprite_EggMobile *em = TASK_DATA(gCurTask);
     Sprite *s = &em->s;
     Sprite *s2 = &em->s2;
 
     s2->y -= 2;
-    sub_8004558(s2);
-    sub_80051E8(s2);
+    UpdateSpriteAnimation(s2);
+    DisplaySprite(s2);
 
     s->y -= 2;
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if (s->y <= 50) {
         gCurTask->main = Task_EggmobileSwitchMovement;
@@ -98,7 +98,7 @@ static void Task_EggmobileMoveUp(void)
 // EggMobile - Init movement to the right
 static void Task_EggmobileSwitchMovement(void)
 {
-    Sprite_EggMobile *em = TaskGetStructPtr(gCurTask);
+    Sprite_EggMobile *em = TASK_DATA(gCurTask);
     Sprite *s;
 
     if (--em->frames == 0) {
@@ -112,17 +112,17 @@ static void Task_EggmobileSwitchMovement(void)
     }
 
     s = &em->s2;
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     s = &em->s;
-    sub_8004558(s);
-    sub_80051E8(s);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 static void Task_EggmobileMoveRight(void)
 {
-    Sprite_EggMobile *em = TaskGetStructPtr(gCurTask);
+    Sprite_EggMobile *em = TASK_DATA(gCurTask);
     Sprite *s = &em->s2;
 
     if (s->x > DISPLAY_WIDTH + 30) {
@@ -130,19 +130,19 @@ static void Task_EggmobileMoveRight(void)
         TaskDestroy(gCurTask);
     } else {
         s->x += 2;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
 
         s = &em->s;
         s->x += 2;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
 static void TaskDestructor_EggmobileEscape(struct Task *t)
 {
-    Sprite_EggMobile *em = TaskGetStructPtr(t);
+    Sprite_EggMobile *em = TASK_DATA(t);
     VramFree(em->s.graphics.dest);
     VramFree(em->s2.graphics.dest);
 }

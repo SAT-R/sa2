@@ -7,7 +7,7 @@
 #include "flags.h"
 #include "trig.h"
 #include "game/backgrounds.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "data/palettes.h"
 
 #include "constants/animations.h"
@@ -19,7 +19,7 @@
 
 struct SoundTestScreen {
     struct OptionsScreen *optionsScreen;
-    struct TransitionState unk4;
+    ScreenFade fade;
     struct UNK_3005B80_UNK4 unk10;
 
     // Only 1 used, but fits 2
@@ -276,12 +276,12 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
     struct Task *t
         = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen),
                      0x1800, TASK_x0004, SoundTestScreenOnDestroy);
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(t);
-    struct TransitionState *unk4;
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
+    ScreenFade *fade;
     struct UNK_3005B80_UNK4 *unk10;
     u32 i;
 
-    unk4 = &soundTestScreen->unk4;
+    fade = &soundTestScreen->fade;
     unk10 = &soundTestScreen->unk10;
     m4aMPlayAllStop();
 
@@ -309,12 +309,12 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
     SoundTestScreenInitRegistersAndBackground(t);
     SoundTestScreenCreateUI(t);
 
-    unk4->unk0 = 0;
-    unk4->unk2 = 2;
-    unk4->unk4 = 0;
-    unk4->speed = 0x100;
-    unk4->unkA = 0;
-    unk4->unk8 = 0xff;
+    fade->window = 0;
+    fade->flags = 2;
+    fade->brightness = 0;
+    fade->speed = Q_24_8(1.0);
+    fade->bldAlpha = 0;
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
 
     unk10->unk0 = 0;
     unk10->unk2 = 0;
@@ -333,7 +333,7 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
 
 static void SoundTestScreenCreateUI(struct Task *t)
 {
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(t);
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
 
     Sprite *title = &soundTestScreen->title;
     Sprite *titleTrimAndControls = soundTestScreen->titleTrimAndControls;
@@ -390,8 +390,9 @@ static void SoundTestScreenCreateUI(struct Task *t)
                     0x5a, 6, 0, 0);
     }
 
+    // Transforms static circle
     for (i = 0; i < 4; i++) {
-        transforms[i].unk0 = i << 8;
+        transforms[i].rotation = DEG_TO_SIN(90) * i;
         transforms[i].width = 0x100;
         transforms[i].height = 0x100;
         transforms[i].x = 0x4C;
@@ -420,11 +421,11 @@ static void SoundTestScreenCreateUI(struct Task *t)
 
 static void Task_SoundTestScreenMain(void)
 {
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
 
     Sprite *numberDisplayDigit = soundTestScreen->numberDisplay;
     Sprite *backControlName = &soundTestScreen->backControlName;
-    struct TransitionState *unk4 = &soundTestScreen->unk4;
+    ScreenFade *fade = &soundTestScreen->fade;
 
     const u8 *soundsList;
     u8 numSounds;
@@ -492,9 +493,9 @@ static void Task_SoundTestScreenMain(void)
         numberDisplayDigit[1].variant = soundTestScreen->soundNumber / 10 % 10 + 16;
         numberDisplayDigit[2].variant = soundTestScreen->soundNumber / 100 % 10 + 16;
 
-        sub_8004558(&numberDisplayDigit[0]);
-        sub_8004558(&numberDisplayDigit[1]);
-        sub_8004558(&numberDisplayDigit[2]);
+        UpdateSpriteAnimation(&numberDisplayDigit[0]);
+        UpdateSpriteAnimation(&numberDisplayDigit[1]);
+        UpdateSpriteAnimation(&numberDisplayDigit[2]);
 
         if (soundTestScreen->state == SOUND_TEST_SCREEN_STOPPED) {
             SoundTestScreenSetNameDisplay(soundsList[soundTestScreen->soundNumber - 1]);
@@ -505,7 +506,7 @@ static void Task_SoundTestScreenMain(void)
         && gMPlayTable[0].info->status == MUSICPLAYER_STATUS_PAUSE) {
         soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
         backControlName->variant = 1;
-        sub_8004558(backControlName);
+        UpdateSpriteAnimation(backControlName);
         m4aMPlayAllStop();
         soundTestScreen->animFrame = 0;
         soundTestScreen->barBeat = 0;
@@ -516,7 +517,7 @@ static void Task_SoundTestScreenMain(void)
         u32 songTempo;
         soundTestScreen->songTempo = songTempo
             = sSoundTempos[soundsList[soundTestScreen->soundNumber - 1]];
-        soundTestScreen->creams[DANCING_CREAM].unk22 = Q_20_12_TO_INT(songTempo);
+        soundTestScreen->creams[DANCING_CREAM].animSpeed = Q_20_12_TO_INT(songTempo);
         m4aMPlayAllStop();
 
         MPlayStart(
@@ -532,7 +533,7 @@ static void Task_SoundTestScreenMain(void)
         soundTestScreen->scrollArrowAnimFrame = 0;
         soundTestScreen->creamDanceAnimStep = 0;
 
-        sub_8004558(backControlName);
+        UpdateSpriteAnimation(backControlName);
 
         SoundTestScreenSetNameDisplay(soundsList[soundTestScreen->soundNumber - 1]);
         SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_RIGHT);
@@ -542,7 +543,7 @@ static void Task_SoundTestScreenMain(void)
         if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING) {
             soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
             backControlName->variant = 1;
-            sub_8004558(backControlName);
+            UpdateSpriteAnimation(backControlName);
             m4aMPlayAllStop();
             soundTestScreen->animFrame = 0;
             soundTestScreen->barBeat = 0;
@@ -550,12 +551,12 @@ static void Task_SoundTestScreenMain(void)
         } else {
             SoundTestScreenSetCreamAnim(CREAM_ANIM_BOW);
             m4aSongNumStart(SE_RETURN);
-            unk4->unk0 = 0;
-            unk4->unk2 = 1;
-            unk4->unk4 = 0;
-            unk4->speed = 0x100;
-            unk4->unkA = 0;
-            unk4->unk8 = 0xFF;
+            fade->window = 0;
+            fade->flags = 1;
+            fade->brightness = 0;
+            fade->speed = Q_24_8(1.0);
+            fade->bldAlpha = 0;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
 
             soundTestScreen->animFrame = 0;
             soundTestScreen->barBeat = 0;
@@ -575,7 +576,7 @@ static void Task_SoundTestScreenMain(void)
 
 static void SoundTestScreenRenderUI(void)
 {
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
     Sprite *unkC8 = &soundTestScreen->title;
     Sprite *titleTrimAndControls = soundTestScreen->titleTrimAndControls;
     Sprite *backCountrolName = &soundTestScreen->backControlName;
@@ -616,18 +617,18 @@ static void SoundTestScreenRenderUI(void)
             }
         }
 
-        sub_80051E8(numberDisplayDigit);
+        DisplaySprite(numberDisplayDigit);
     }
 
     for (i = 0; i < 2; i++, titleTrimAndControls++) {
-        sub_80051E8(titleTrimAndControls);
+        DisplaySprite(titleTrimAndControls);
     }
 
-    sub_80051E8(backCountrolName);
-    sub_80051E8(unkC8);
-    sub_80051E8(unk2DC);
+    DisplaySprite(backCountrolName);
+    DisplaySprite(unkC8);
+    DisplaySprite(unk2DC);
     unk2DC->unk10 |= 0x400;
-    sub_80051E8(unk2DC);
+    DisplaySprite(unk2DC);
     unk2DC->unk10 &= ~0x400;
 
     if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING) {
@@ -707,7 +708,7 @@ static void SoundTestScreenRenderUI(void)
 
     for (i = 0; i < 4; i++) {
         if (unk2D8->graphics.anim != SA2_ANIM_SOUNDTEST_CREAM_BOW) {
-            speakerConeEffects[i].unk0 = i << 8;
+            speakerConeEffects[i].rotation = DEG_TO_SIN(90) * i;
             speakerConeEffects[i].height = speakerConeEffects[i].width
                 = soundTestScreen->speakerSize + 0x100;
         }
@@ -727,19 +728,19 @@ static void SoundTestScreenRenderUI(void)
     }
 
     for (i = 0; i < 4; i++) {
-        sub_80051E8(&speakerConeElement[i]);
+        DisplaySprite(&speakerConeElement[i]);
     }
 
-    sub_80051E8(unk2D8);
+    DisplaySprite(unk2D8);
 
     scrollArrows->x
         = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7)
         + 94;
-    sub_80051E8(scrollArrows);
+    DisplaySprite(scrollArrows);
     scrollArrows->x = 58
         - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
     scrollArrows->unk10 |= 0x400;
-    sub_80051E8(scrollArrows);
+    DisplaySprite(scrollArrows);
     scrollArrows->unk10 &= ~0x400;
 
     soundTestScreen->scrollArrowAnimFrame++;
@@ -747,22 +748,22 @@ static void SoundTestScreenRenderUI(void)
 
 static void Task_SoundTestScreenInOutTransition(void)
 {
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
     Sprite *idleCream = &soundTestScreen->creams[IDLE_CREAM];
 
     soundTestScreen->animFrame++;
 
     if (soundTestScreen->state == SOUND_TEST_SCREEN_EXITING) {
-        sub_8004558(idleCream);
+        UpdateSpriteAnimation(idleCream);
         // Wait for bow animation to finish
         if (soundTestScreen->animFrame > (60 - 16)) {
-            NextTransitionFrame(&soundTestScreen->unk4);
+            UpdateScreenFade(&soundTestScreen->fade);
         }
     } else {
         if (soundTestScreen->animFrame > 20) {
-            sub_8004558(idleCream);
+            UpdateSpriteAnimation(idleCream);
         }
-        NextTransitionFrame(&soundTestScreen->unk4);
+        UpdateScreenFade(&soundTestScreen->fade);
     }
 
     if (soundTestScreen->animFrame > 60) {
@@ -780,21 +781,21 @@ static void Task_SoundTestScreenInOutTransition(void)
 
 static void SoundTestScreenSetCreamAnim(u8 anim)
 {
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
     Sprite *animatedCream = soundTestScreen->activeCream;
 
     switch (anim) {
         case CREAM_ANIM_BOW:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
-            animatedCream->unk21 = 0xFF;
+            animatedCream->prevVariant = -1;
             animatedCream->variant = 0;
             animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_BOW;
             break;
         case CREAM_ANIM_IDLE:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
-            animatedCream->unk21 = 0xFF;
+            animatedCream->prevVariant = -1;
             animatedCream->variant = 0;
             animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CLAP_FORWARD;
             break;
@@ -822,7 +823,7 @@ static void SoundTestScreenSetCreamAnim(u8 anim)
         case CREAM_ANIM_SOUND_END:
             soundTestScreen->activeCream = &soundTestScreen->creams[IDLE_CREAM];
             animatedCream = soundTestScreen->activeCream;
-            animatedCream->unk21 = 0xFF;
+            animatedCream->prevVariant = -1;
             animatedCream->variant = 0;
             animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_WAITING;
             break;
@@ -830,29 +831,29 @@ static void SoundTestScreenSetCreamAnim(u8 anim)
             break;
     }
 
-    sub_8004558(animatedCream);
+    UpdateSpriteAnimation(animatedCream);
 }
 
 static void SoundTestScreenUpdateCreamAnim(void)
 {
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
     Sprite *animatedCream = soundTestScreen->activeCream;
 
     switch (soundTestScreen->state) {
         case SOUND_TEST_SCREEN_STOPPED:
             // If current animation is song end, set to anim idle
             if (animatedCream->graphics.anim == SA2_ANIM_SOUNDTEST_CREAM_WAITING) {
-                if (!sub_8004558(animatedCream)) {
+                if (!UpdateSpriteAnimation(animatedCream)) {
                     SoundTestScreenSetCreamAnim(CREAM_ANIM_IDLE);
                 }
             } else {
-                sub_8004558(animatedCream);
+                UpdateSpriteAnimation(animatedCream);
             }
             break;
         case SOUND_TEST_SCREEN_PLAYING:
             soundTestScreen->barBeat += soundTestScreen->songTempo;
             soundTestScreen->animFrame = soundTestScreen->barBeat >> 16;
-            sub_8004558(animatedCream);
+            UpdateSpriteAnimation(animatedCream);
 
             if (soundTestScreen->animFrame >= 55
                 && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_RIGHT) {
@@ -889,7 +890,7 @@ static void SoundTestScreenUpdateCreamAnim(void)
 
 static void SoundTestScreenOnDestroy(struct Task *t)
 {
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(t);
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
     soundTestScreen->optionsScreen->state = OPTIONS_SCREEN_STATE_ACTIVE;
 }
 
@@ -901,7 +902,7 @@ static void Task_SoundTestScreenCleanup(void)
 
 static void SoundTestScreenInitRegistersAndBackground(struct Task *t)
 {
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(t);
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
     gDispCnt = 0x1141;
     gBgCntRegs[0] = 0x703;
     gBgScrollRegs[0][0] = 0;
@@ -915,7 +916,7 @@ static void SoundTestScreenInitRegistersAndBackground(struct Task *t)
 
 static void SoundTestScreenSetNameDisplayPos(u8 unused_, s16 x, s16 y)
 {
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
     u32 i;
 
     for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
@@ -923,13 +924,13 @@ static void SoundTestScreenSetNameDisplayPos(u8 unused_, s16 x, s16 y)
         *pos = x + i * 10;
         pos++;
         *pos = y;
-        sub_80051E8(&soundTestScreen->nameDisplay[i]);
+        DisplaySprite(&soundTestScreen->nameDisplay[i]);
     }
 }
 
 static void SoundTestScreenSetNameDisplay(u8 soundId)
 {
-    struct SoundTestScreen *soundTestScreen = TaskGetStructPtr(gCurTask);
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
     u32 i;
     for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
         u8 soundTextChar = sSoundNames[soundId][i];
@@ -942,6 +943,6 @@ static void SoundTestScreenSetNameDisplay(u8 soundId)
             asset[0] = 0;
         }
 
-        sub_8004558(&soundTestScreen->nameDisplay[i]);
+        UpdateSpriteAnimation(&soundTestScreen->nameDisplay[i]);
     }
 }

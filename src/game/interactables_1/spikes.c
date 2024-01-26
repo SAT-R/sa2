@@ -5,7 +5,11 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 
+#include "sakit/entities_0.h"
+
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/interactables.h"
@@ -45,7 +49,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                             u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_805F810, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
     spikes->unk3C[1] = 0;
@@ -62,7 +66,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
 
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -72,21 +76,21 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     }
 
     s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2200;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                               u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_805F928, sizeof(Sprite_Spikes), 0x2000, 0, NULL);
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
     spikes->unk3C[1] = 0;
@@ -103,24 +107,24 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
     s->graphics.dest = (void *)(OBJ_VRAM0 + 204 * TILE_SIZE_4BPP);
 
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
 
     s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
 
     s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2A00;
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void sub_805F810(void)
 {
-    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite_Spikes *spikes = TASK_DATA(gCurTask);
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
@@ -153,15 +157,15 @@ static void sub_805F810(void)
         TaskDestroy(gCurTask);
     } else {
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
 static void sub_805F928(void)
 {
-    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite_Spikes *spikes = TASK_DATA(gCurTask);
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
     s16 screenX, screenY;
@@ -198,8 +202,8 @@ static void sub_805F928(void)
     } else {
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
             || (me->d.sData[0] != 0 || gUnknown_030053E0 != 0)) {
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -209,7 +213,7 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
 {
     struct Task *t = TaskCreate(sub_805FBA0, sizeof(Sprite_Spikes), 0x2000, 0,
                                 TaskDestructor_8060CF4);
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
     spikes->unk3C[1] = 0;
@@ -226,18 +230,18 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
 
     s->graphics.dest = VramMalloc(4 * 4);
 
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
 
     s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
 
     s->variant = SA2_ANIM_VARIANT_SPIKES_SIDEWAYS;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2200;
 
     switch (gGameMode) {
@@ -256,7 +260,7 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
         } break;
     }
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 static void sub_805FBA0(void)
@@ -266,7 +270,7 @@ static void sub_805FBA0(void)
     Sprite *s;
     MapEntity *me;
     Sprite_Spikes *spikes;
-    spikes = TaskGetStructPtr(gCurTask);
+    spikes = TASK_DATA(gCurTask);
     s = &spikes->s;
     me = spikes->base.me;
 
@@ -379,8 +383,8 @@ static void sub_805FBA0(void)
     } else {
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (me->d.sData[0] != 0)
             || (gUnknown_030053E0 != 0)) {
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -390,7 +394,7 @@ void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 {
     struct Task *t = TaskCreate(Task_805FF68, sizeof(Sprite_Spikes), 0x2000, 0,
                                 TaskDestructor_8060CF4);
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
     spikes->unk3C[1] = 0;
@@ -407,18 +411,18 @@ void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 
     s->graphics.dest = VramMalloc(4 * 4);
 
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
 
     s->graphics.size = 0;
     s->graphics.anim = -1;
 
     s->variant = 0xFF;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2200;
 }
 
@@ -426,7 +430,7 @@ static void Task_805FF68(void)
 {
     s16 screenX, screenY;
     u32 someParam = 0;
-    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite_Spikes *spikes = TASK_DATA(gCurTask);
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
 
@@ -447,8 +451,8 @@ static void Task_805FF68(void)
         }
 
         if (procResult) {
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -458,7 +462,7 @@ void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 sprite
 {
     struct Task *t = TaskCreate(Task_806012C, sizeof(Sprite_Spikes), 0x2000, 0,
                                 TaskDestructor_8060CF4);
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     Sprite *s = &spikes->s;
 
     spikes->unk3C[1] = 0;
@@ -475,18 +479,18 @@ void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 sprite
 
     s->graphics.dest = VramMalloc(4 * 4);
 
-    s->unk1A = 0x440;
+    s->unk1A = SPRITE_OAM_ORDER(17);
 
     s->graphics.size = 0;
     s->graphics.anim = -1;
 
     s->variant = 0xFF;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = -1;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2A00;
 }
 
@@ -494,7 +498,7 @@ static void Task_806012C(void)
 {
     s16 screenX, screenY;
     u32 someParam = 0;
-    Sprite_Spikes *spikes = TaskGetStructPtr(gCurTask);
+    Sprite_Spikes *spikes = TASK_DATA(gCurTask);
     Sprite *s = &spikes->s;
     MapEntity *me = spikes->base.me;
 
@@ -515,8 +519,8 @@ static void Task_806012C(void)
         }
 
         if (procResult) {
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -549,9 +553,9 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
             }
 
             if (!GRAVITY_IS_INVERTED) {
-                player->y = Q_24_8(screenY + s->unk28->unk5 - sp00[3]);
+                player->y = Q_24_8(screenY + s->hitboxes[0].top - sp00[3]);
             } else {
-                player->y = Q_24_8(screenY + s->unk28->unk7 + sp00[3]);
+                player->y = Q_24_8(screenY + s->hitboxes[0].bottom + sp00[3]);
             }
 
             if (sub_800CBA4(player)) {
@@ -588,7 +592,8 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
                 if (gravityInverted) {
                     if (flags & 0x20000) {
                         player->speedAirY = 0;
-                        player->y = Q_24_8(screenY + s->unk28->unk7 + player->unk17);
+                        player->y
+                            = Q_24_8(screenY + s->hitboxes[0].bottom + player->unk17);
                         player->moveState |= MOVESTATE_8;
                         player->moveState &= ~MOVESTATE_IN_AIR;
                         player->unk3C = s;
@@ -660,7 +665,8 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
         if (flags) {
             if ((flags & 0x20000) && !GRAVITY_IS_INVERTED) {
-                player->y = Q_24_8((screenY + s->unk28->unk7) + player->unk17 + 1);
+                player->y
+                    = Q_24_8((screenY + s->hitboxes[0].bottom) + player->unk17 + 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
 
@@ -670,7 +676,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                 }
             } else if ((flags & 0x10000) && GRAVITY_IS_INVERTED) {
                 // _080604D0
-                player->y = Q_24_8((screenY + s->unk28->unk5) - player->unk17 - 1);
+                player->y = Q_24_8((screenY + s->hitboxes[0].top) - player->unk17 - 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
 
@@ -694,7 +700,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                           Player *player, u32 *param4) //)
 {
     s16 screenX, screenY;
-    u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
+    u32 sp0C[1] = { gStageTime & 0x7F };
     s32 sl = player->unk60;
 
     screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
@@ -731,7 +737,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 64) {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
@@ -745,7 +751,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 124) {
         if ((s->variant != SA2_ANIM_VARIANT_SPIKES_UP)
             || ((player->unk60 != 0) && (*param4 != 0))) {
@@ -756,7 +762,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
             s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
             s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
 
             if (sub_800DF38(s, screenX, screenY, player) == 0x80000) {
                 if ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0) {
@@ -764,9 +770,9 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                     s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
                     if (!GRAVITY_IS_INVERTED) {
-                        player->y = Q_24_8((screenY + s->unk28->unk5) - sp00[3]);
+                        player->y = Q_24_8((screenY + s->hitboxes[0].top) - sp00[3]);
                     } else {
-                        player->y = Q_24_8((screenY + s->unk28->unk7) + sp00[3]);
+                        player->y = Q_24_8((screenY + s->hitboxes[0].bottom) + sp00[3]);
                     }
                     if (sub_800CBA4(player)) {
                         m4aSongNumStart(SE_SPIKES);
@@ -804,7 +810,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                         return TRUE;
                     }
                 } else if ((flags & 0x20000) && GRAVITY_IS_INVERTED) {
-                    player->y = Q_24_8(screenY + s->unk28->unk7 + player->unk17);
+                    player->y = Q_24_8(screenY + s->hitboxes[0].bottom + player->unk17);
                     player->moveState |= MOVESTATE_8;
                     player->moveState &= ~MOVESTATE_IN_AIR;
                     player->unk3C = s;
@@ -839,7 +845,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
@@ -853,7 +859,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     return TRUE;
@@ -863,7 +869,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                           Player *player, u32 *param4)
 {
     s16 screenX, screenY;
-    u32 sp0C[1] = { gUnknown_03005590 & 0x7F };
+    u32 sp0C[1] = { gStageTime & 0x7F };
     s32 sl = player->unk60;
 
     screenX = TO_WORLD_POS(spikes->base.spriteX, spikes->base.regionX);
@@ -900,7 +906,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 64) {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
@@ -914,7 +920,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else if (sp0C[0] < 124) {
         if ((s->variant != SA2_ANIM_VARIANT_SPIKES_UP)
             || ((player->unk60 != 0) && (*param4 != 0))) {
@@ -925,7 +931,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
             s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
             s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
-            sub_8004558(s);
+            UpdateSpriteAnimation(s);
 
             if ((sub_800DF38(s, screenX, screenY, player) == 0x80000)
                 && ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0)) {
@@ -934,9 +940,9 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                 s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
                 if (!GRAVITY_IS_INVERTED) {
-                    player->y = Q_24_8(s->unk28->unk7 + screenY - sp00[1]);
+                    player->y = Q_24_8(s->hitboxes[0].bottom + screenY - sp00[1]);
                 } else {
-                    player->y = Q_24_8(s->unk28->unk5 + screenY + sp00[1]);
+                    player->y = Q_24_8(s->hitboxes[0].top + screenY + sp00[1]);
                 }
                 if (!sub_800CBA4(player)) {
                     return TRUE;
@@ -965,7 +971,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_MID;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     } else {
         if ((player->moveState & MOVESTATE_8) && (player->unk3C == s)) {
             player->moveState &= ~MOVESTATE_8;
@@ -979,7 +985,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         }
         s->graphics.anim = sSpikesOfZone[LEVEL_TO_ZONE(gCurrentLevel)];
         s->variant = SA2_ANIM_VARIANT_SPIKES_UP_LOW;
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
     }
 
     return TRUE;
@@ -987,7 +993,7 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
 
 static void TaskDestructor_8060CF4(struct Task *t)
 {
-    Sprite_Spikes *spikes = TaskGetStructPtr(t);
+    Sprite_Spikes *spikes = TASK_DATA(t);
     VramFree(spikes->s.graphics.dest);
 }
 
@@ -995,13 +1001,13 @@ static u32 sub_8060D08(Sprite *s, s32 x, s32 y, Player *player)
 {
     u32 result;
 
-    s->unk28->unk4++;
-    s->unk28->unk6--;
+    s->hitboxes[0].left++;
+    s->hitboxes[0].right--;
 
     result = sub_800CCB8(s, x, y, player);
 
-    s->unk28->unk4--;
-    s->unk28->unk6++;
+    s->hitboxes[0].left--;
+    s->hitboxes[0].right++;
 
     return result;
 }

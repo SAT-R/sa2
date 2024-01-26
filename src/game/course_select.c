@@ -1,9 +1,11 @@
 #include "game/course_select.h"
 #include "core.h"
-#include "game/game.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+
+#include "game/screen_fade.h"
 #include "game/save.h"
+#include "game/stage/stage.h"
+
 #include "lib/m4a.h"
 #include "game/character_select.h"
 #include "constants/songs.h"
@@ -11,12 +13,13 @@
 #include "task.h"
 #include "malloc_vram.h"
 #include "game/multiplayer/multipak_connection.h"
+#include "game/bosses/final_intro.h"
 #include "trig.h"
 
 #include "constants/tilemaps.h"
 
 struct CourseSelectionScreen {
-    struct TransitionState screenFade;
+    ScreenFade fade;
     Background zoneMap;
     Background header;
     Sprite playerAvatar;
@@ -231,20 +234,20 @@ static const u8 sCourseIndexToLevelIndex[] = {
 
 // Text scrolls in from the right, so take that as base for pixel value
 #define CS_LOCAL_ZONE_TEXT_X (DISPLAY_WIDTH - 160)
-#define ScrollInZoneName(element, speed)                                                \
+#define ScrollInZoneName(s, speed)                                                      \
     ({                                                                                  \
-        (element)->x -= speed;                                                          \
-        if ((element)->x < CS_LOCAL_ZONE_TEXT_X) {                                      \
-            (element)->x = CS_LOCAL_ZONE_TEXT_X;                                        \
+        (s)->x -= speed;                                                                \
+        if ((s)->x < CS_LOCAL_ZONE_TEXT_X) {                                            \
+            (s)->x = CS_LOCAL_ZONE_TEXT_X;                                              \
         }                                                                               \
     })
 
 void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
 {
     struct Task *t;
-    struct TransitionState *fadeTransition;
+    ScreenFade *fade;
     Background *background;
-    Sprite *element = NULL;
+    Sprite *s = NULL;
     struct CourseSelectionScreen *coursesScreen;
 
     u8 i;
@@ -313,7 +316,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
                        CourseSelectionScreenOnDestroy);
     }
 
-    coursesScreen = TaskGetStructPtr(t);
+    coursesScreen = TASK_DATA(t);
     coursesScreen->cameraScrollX = 0;
 
     courseIndex = LEVEL_TO_COURSE_INDEX(currentLevel);
@@ -340,19 +343,19 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     coursesScreen->cutScenes = cutScenes;
     coursesScreen->maxCourse = maxCourseIndex;
 
-    fadeTransition = &coursesScreen->screenFade;
-    fadeTransition->unk0 = 0;
-    fadeTransition->unk4 = 0;
-    fadeTransition->unk2 = 2;
-    fadeTransition->speed = 0x180;
-    fadeTransition->unk8 = 0xFF;
-    fadeTransition->unkA = 0;
-    NextTransitionFrame(fadeTransition);
+    fade = &coursesScreen->fade;
+    fade->window = SCREEN_FADE_USE_WINDOW_0;
+    fade->brightness = 0;
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->speed = 0x180;
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+    fade->bldAlpha = 0;
+    UpdateScreenFade(fade);
 
     background = &coursesScreen->header;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
 
@@ -366,16 +369,16 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
-    background->unk2E = 1;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
+    DrawBackground(background);
 
     background = &coursesScreen->zoneMap;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(16);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(16);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_STAGE_SELECT_MAP;
@@ -383,116 +386,116 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x3C;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
-    background->unk2E = 0;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x3C;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
 
-    element = &coursesScreen->playerAvatar;
-    element->x = 0;
-    element->y = 0;
-    element->graphics.dest = VramMalloc(4);
-    element->graphics.anim = 0x2F7;
+    s = &coursesScreen->playerAvatar;
+    s->x = 0;
+    s->y = 0;
+    s->graphics.dest = VramMalloc(4);
+    s->graphics.anim = 0x2F7;
     if (IS_SINGLE_PLAYER) {
-        element->variant = gSelectedCharacter;
+        s->variant = gSelectedCharacter;
     } else {
-        element->variant = gMultiplayerCharacters[0];
+        s->variant = gMultiplayerCharacters[0];
     }
-    element->unk1A = 0xC0;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk21 = 0xFF;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0;
-    sub_8004558(element);
+    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0;
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->mapPaths); i++) {
-        element = &coursesScreen->mapPaths[i];
-        element->x = 0;
-        element->y = 0;
-        element->graphics.dest = VramMalloc(sZoneMapPathAssets[i][0]);
+        s = &coursesScreen->mapPaths[i];
+        s->x = 0;
+        s->y = 0;
+        s->graphics.dest = VramMalloc(sZoneMapPathAssets[i][0]);
         if ((cutScenes & (CUT_SCENE_UNLOCK_NEXT_COURSE | CUT_SCENE_UNLOCK_TRUE_AREA_53))
             && coursesScreen->zonePathsUnlocked == i) {
-            element->graphics.anim = sZoneMapPathAnimatedAssets[i][1];
-            element->variant = sZoneMapPathAnimatedAssets[i][2];
+            s->graphics.anim = sZoneMapPathAnimatedAssets[i][1];
+            s->variant = sZoneMapPathAnimatedAssets[i][2];
         } else {
-            element->graphics.anim = sZoneMapPathAssets[i][1];
-            element->variant = sZoneMapPathAssets[i][2];
+            s->graphics.anim = sZoneMapPathAssets[i][1];
+            s->variant = sZoneMapPathAssets[i][2];
         }
-        element->unk1A = 0x100;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk21 = 0xFF;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk28[0].unk0 = -1;
-        element->unk10 = 0;
+        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0;
     }
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->zoneActUnits); i++) {
-        element = &coursesScreen->zoneActUnits[i];
-        element->x = i * 0x20 + 0xB8;
-        element->y = 0;
-        element->graphics.dest = VramMalloc(4);
-        element->graphics.anim = 0x2F6;
-        element->variant = 0;
-        element->unk1A = 0x100;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk21 = 0xFF;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk28[0].unk0 = -1;
-        element->unk10 = 0;
-        sub_8004558(element);
+        s = &coursesScreen->zoneActUnits[i];
+        s->x = i * 0x20 + 0xB8;
+        s->y = 0;
+        s->graphics.dest = VramMalloc(4);
+        s->graphics.anim = 0x2F6;
+        s->variant = 0;
+        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0;
+        UpdateSpriteAnimation(s);
     }
 
-    element = &coursesScreen->zoneType;
-    element->x = 0x80;
-    element->y = 0;
-    element->graphics.dest = VramMalloc(0x1A);
-    element->graphics.anim = 0x2F5;
-    element->variant = 0;
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk21 = 0xFF;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0;
-    sub_8004558(element);
+    s = &coursesScreen->zoneType;
+    s->x = 0x80;
+    s->y = 0;
+    s->graphics.dest = VramMalloc(0x1A);
+    s->graphics.anim = 0x2F5;
+    s->variant = 0;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0;
+    UpdateSpriteAnimation(s);
 
-    element = &coursesScreen->zoneName;
-    element->x = 0xF0;
-    element->y = 0x18;
-    element->graphics.dest = VramMalloc(0x26);
-    element->graphics.anim = 0x2F9;
-    element->variant = 0;
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk21 = 0xFF;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0;
-    sub_8004558(element);
+    s = &coursesScreen->zoneName;
+    s->x = 0xF0;
+    s->y = 0x18;
+    s->graphics.dest = VramMalloc(0x26);
+    s->graphics.anim = 0x2F9;
+    s->variant = 0;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0;
+    UpdateSpriteAnimation(s);
 
-    element = &coursesScreen->screenTitle;
-    element->x = 0;
-    element->y = 0;
+    s = &coursesScreen->screenTitle;
+    s->x = 0;
+    s->y = 0;
     if (gLoadedSaveGame->language == LANG_JAPANESE) {
-        element->graphics.dest = VramMalloc(0x18);
-        element->graphics.anim = 0x2FB;
+        s->graphics.dest = VramMalloc(0x18);
+        s->graphics.anim = 0x2FB;
         // Set the background color based on the
         // character
         if (IS_SINGLE_PLAYER) {
@@ -502,56 +505,56 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
                 var = gSelectedCharacter;
             var = gSelectedCharacter;
 #endif
-            element->variant = gSelectedCharacter;
+            s->variant = gSelectedCharacter;
         } else {
-            element->variant = gMultiplayerCharacters[0];
+            s->variant = gMultiplayerCharacters[0];
         }
     } else {
-        element->graphics.dest = VramMalloc(0x1C);
-        element->graphics.anim = 0x2FC;
+        s->graphics.dest = VramMalloc(0x1C);
+        s->graphics.anim = 0x2FC;
         if (IS_SINGLE_PLAYER) {
-            element->variant = gSelectedCharacter;
+            s->variant = gSelectedCharacter;
         } else {
-            element->variant = gMultiplayerCharacters[0];
+            s->variant = gMultiplayerCharacters[0];
         }
     }
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk21 = 0xFF;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0;
-    sub_8004558(element);
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0;
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->chaosEmeralds); i++) {
-        element = &coursesScreen->chaosEmeralds[i];
-        element->x = 0;
-        element->y = 0x88;
-        element->graphics.dest = (void *)OBJ_VRAM0 + (i * 0x120);
-        element->graphics.anim = sChaoEmeraldAssets[i][0];
-        element->variant = sChaoEmeraldAssets[i][1];
-        element->unk1A = 0x100;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk21 = 0xFF;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk28[0].unk0 = -1;
-        element->unk10 = 0;
+        s = &coursesScreen->chaosEmeralds[i];
+        s->x = 0;
+        s->y = 0x88;
+        s->graphics.dest = (void *)OBJ_VRAM0 + (i * 0x120);
+        s->graphics.anim = sChaoEmeraldAssets[i][0];
+        s->variant = sChaoEmeraldAssets[i][1];
+        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0;
     }
 }
 
 static void Task_FadeInIntro(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX + CAM_MAX_X_SPEED);
 
     // Wait for fade
-    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&coursesScreen->fade) == SCREEN_FADE_COMPLETE) {
         if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X
             || coursesScreen->cameraScrollX
                 >= coursesScreen->avatarTargetX - (CAMERA_FOV_WIDTH / 2)) {
@@ -581,12 +584,12 @@ static void Task_FadeInIntro(void)
 
 static void Task_FadeInIntroAndStartUnlockCutScene(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
 
-    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&coursesScreen->fade) == SCREEN_FADE_COMPLETE) {
         if (coursesScreen->cameraScrollX == MAX_CAMERA_SCROLL_X
             || coursesScreen->cameraScrollX
                 >= ((sZoneMapCourseXPositions[coursesScreen->unlockedCourse]
@@ -610,7 +613,7 @@ static void Task_FadeInIntroAndStartUnlockCutScene(void)
 
 static void Task_UnlockCutSceneNewPathAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
     bool8 animDone;
     coursesScreen->zoneNameAnimFrame++;
@@ -629,7 +632,7 @@ static void Task_UnlockCutSceneNewPathAnim(void)
 
 static void Task_UnlockCutSceneScrollAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     SetCameraScrollX(coursesScreen, coursesScreen->cameraScrollX - CAM_MAX_X_SPEED);
 
     if (coursesScreen->cameraScrollX == MIN_CAMERA_SCROLL_X
@@ -648,12 +651,12 @@ static void Task_UnlockCutSceneScrollAnim(void)
         } else {
             if (coursesScreen->maxCourse
                 == COURSE_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) + 1) {
-                Sprite *element;
+                Sprite *s;
 
                 coursesScreen->maxCourse = COURSE_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
-                element = &coursesScreen->mapPaths[ZONE_FINAL];
-                element->graphics.anim = sZoneMapPathAssets[ZONE_FINAL][1];
-                element->variant = sZoneMapPathAssets[ZONE_FINAL][2];
+                s = &coursesScreen->mapPaths[ZONE_FINAL];
+                s->graphics.anim = sZoneMapPathAssets[ZONE_FINAL][1];
+                s->variant = sZoneMapPathAssets[ZONE_FINAL][2];
             }
             gCurTask->main = Task_CourseSelectMain;
         }
@@ -673,10 +676,10 @@ static void Task_UnlockCutSceneScrollAnim(void)
 
 static void Task_CourseSelectMain(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
     Sprite *zoneName = &coursesScreen->zoneName;
-    struct TransitionState *fadeTransition = &coursesScreen->screenFade;
+    ScreenFade *fade = &coursesScreen->fade;
     union MultiSioData *recv, *send;
     MultiPakHeartbeat();
 
@@ -693,12 +696,12 @@ static void Task_CourseSelectMain(void)
 
     if (IS_SINGLE_PLAYER || gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         if (coursesScreen->levelChosen && IS_SINGLE_PLAYER) {
-            fadeTransition->unk0 = 0;
-            fadeTransition->unk4 = 0;
-            fadeTransition->unk2 = 1;
-            fadeTransition->speed = 0x180;
-            fadeTransition->unk8 = 0xFF;
-            fadeTransition->unkA = 0;
+            fade->window = SCREEN_FADE_USE_WINDOW_0;
+            fade->brightness = 0;
+            fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            fade->speed = 0x180;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
         } else if (gInput & (DPAD_LEFT) && !coursesScreen->levelChosen) {
@@ -725,31 +728,31 @@ static void Task_CourseSelectMain(void)
             }
         } else if (!(gInput & (DPAD_RIGHT | DPAD_LEFT)) && (gPressedKeys & A_BUTTON)
                    && IS_SINGLE_PLAYER) {
-            fadeTransition->unk0 = 0;
-            fadeTransition->unk4 = 0;
-            fadeTransition->unk2 = 1;
-            fadeTransition->speed = 0x180;
-            fadeTransition->unk8 = 0xFF;
-            fadeTransition->unkA = 0;
+            fade->window = SCREEN_FADE_USE_WINDOW_0;
+            fade->brightness = 0;
+            fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            fade->speed = 0x180;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
         } else if ((gPressedKeys & B_BUTTON) && IS_SINGLE_PLAYER) {
-            fadeTransition->unk0 = 0;
-            fadeTransition->unk4 = 0;
-            fadeTransition->unk2 = 1;
-            fadeTransition->speed = 0x180;
-            fadeTransition->unk8 = 0xFF;
-            fadeTransition->unkA = 0;
+            fade->window = SCREEN_FADE_USE_WINDOW_0;
+            fade->brightness = 0;
+            fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            fade->speed = 0x180;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->bldAlpha = 0;
             m4aSongNumStart(SE_RETURN);
             gCurTask->main = Task_FadeOutAndExitToCharacterSelect;
         } else if (!(gInput & (DPAD_RIGHT | DPAD_LEFT)) && (gPressedKeys & A_BUTTON)
                    && (IS_SINGLE_PLAYER || gGameMode == GAME_MODE_MULTI_PLAYER)) {
-            fadeTransition->unk0 = 0;
-            fadeTransition->unk4 = 0;
-            fadeTransition->unk2 = 1;
-            fadeTransition->speed = 0x180;
-            fadeTransition->unk8 = 0xFF;
-            fadeTransition->unkA = 0;
+            fade->window = SCREEN_FADE_USE_WINDOW_0;
+            fade->brightness = 0;
+            fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            fade->speed = 0x180;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->bldAlpha = 0;
             m4aSongNumStart(SE_SELECT);
             gCurTask->main = Task_FadeOutAndExitToSelectedMultiplayerLevel;
         }
@@ -772,12 +775,12 @@ static void Task_CourseSelectMain(void)
         recv = &gMultiSioRecv[0];
 
         if (recv->pat1.unk0 == 0x4051) {
-            fadeTransition->unk0 = 0;
-            fadeTransition->unk4 = 0;
-            fadeTransition->unk2 = 1;
-            fadeTransition->speed = 0x180;
-            fadeTransition->unk8 = 0xFF;
-            fadeTransition->unkA = 0;
+            fade->window = SCREEN_FADE_USE_WINDOW_0;
+            fade->brightness = 0;
+            fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            fade->speed = 0x180;
+            fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+            fade->bldAlpha = 0;
             gCurTask->main = Task_FadeOutAndExitToSelectedMultiplayerLevel;
             m4aSongNumStart(SE_SELECT);
         }
@@ -790,7 +793,7 @@ static void Task_CourseSelectMain(void)
 
 static void Task_ScrollToPreviousLevelAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
     union MultiSioData *send;
     MultiPakHeartbeat();
@@ -833,7 +836,7 @@ static void Task_ScrollToPreviousLevelAnim(void)
 
 static void Task_ScrollToNextLevelAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
     union MultiSioData *send;
 
@@ -879,7 +882,7 @@ static void Task_ScrollToNextLevelAnim(void)
 
 static void Task_DisplayZoneNameAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
@@ -899,7 +902,7 @@ static void Task_DisplayZoneNameAnim(void)
 
 static void Task_UnlockCutSceneScrollToNextCourseAnim(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     Sprite *zoneName = &coursesScreen->zoneName;
 
     ScrollInZoneName(zoneName, 16);
@@ -927,18 +930,18 @@ static void Task_UnlockCutSceneScrollToNextCourseAnim(void)
 
 static void Task_UnlockCutSceneNextCoursePause(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
     s8 unk4BE = coursesScreen->zoneNameAnimFrame + 1;
-    struct TransitionState *fadeTransition = &coursesScreen->screenFade;
+    ScreenFade *fade = &coursesScreen->fade;
 
     coursesScreen->zoneNameAnimFrame = unk4BE;
     if (coursesScreen->zoneNameAnimFrame > 60) {
-        fadeTransition->unk0 = 0;
-        fadeTransition->unk4 = 0;
-        fadeTransition->unk2 = 1;
-        fadeTransition->speed = 0x180;
-        fadeTransition->unk8 = 0xFF;
-        fadeTransition->unkA = 0;
+        fade->window = SCREEN_FADE_USE_WINDOW_0;
+        fade->brightness = 0;
+        fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+        fade->speed = 0x180;
+        fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
+        fade->bldAlpha = 0;
         gCurTask->main = Task_FadeOutAndExitToSelectedLevel;
     }
 
@@ -949,23 +952,23 @@ static bool8 AnimateNewZonePath(struct CourseSelectionScreen *coursesScreen)
 {
     u8 i;
     bool8 animDone;
-    Sprite *element;
+    Sprite *s;
 
     for (i = 0; i < coursesScreen->zonePathsUnlocked; i++) {
-        element = &coursesScreen->mapPaths[i];
-        element->x = sZoneMapPathPositions[i][0]
+        s = &coursesScreen->mapPaths[i];
+        s->x = sZoneMapPathPositions[i][0]
             - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
-        element->y = sZoneMapPathPositions[i][1];
-        sub_8004558(element);
-        sub_80051E8(element);
+        s->y = sZoneMapPathPositions[i][1];
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
-    element = &coursesScreen->mapPaths[coursesScreen->zonePathsUnlocked];
-    element->x = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][0]
+    s = &coursesScreen->mapPaths[coursesScreen->zonePathsUnlocked];
+    s->x = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][0]
         - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
-    element->y = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][1];
-    animDone = sub_8004558(element) == 0;
-    sub_80051E8(element);
+    s->y = sZoneMapPathPositions[coursesScreen->zonePathsUnlocked][1];
+    animDone = UpdateSpriteAnimation(s) == 0;
+    DisplaySprite(s);
     RenderUI(coursesScreen);
 
     return animDone;
@@ -973,7 +976,7 @@ static bool8 AnimateNewZonePath(struct CourseSelectionScreen *coursesScreen)
 
 static void RenderUI(struct CourseSelectionScreen *coursesScreen)
 {
-    Sprite *element;
+    Sprite *s;
     s8 somethinga;
     s8 lang = gLoadedSaveGame->language;
 
@@ -983,62 +986,60 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
         somethinga = 1;
     }
 
-    element = &coursesScreen->playerAvatar;
-    element->x
-        = TO_SCREEN_COORD(coursesScreen->avatarTargetX - coursesScreen->cameraScrollX)
+    s = &coursesScreen->playerAvatar;
+    s->x = TO_SCREEN_COORD(coursesScreen->avatarTargetX - coursesScreen->cameraScrollX)
         + 5;
-    element->y = TO_SCREEN_COORD(coursesScreen->avatarTargetY) + 6;
-    sub_80051E8(element);
+    s->y = TO_SCREEN_COORD(coursesScreen->avatarTargetY) + 6;
+    DisplaySprite(s);
 
     if (coursesScreen->currentCourse < 0xE) {
-        element = &coursesScreen->zoneActUnits[0];
-        element->graphics.anim = 0x2F6;
-        element->variant = COURSE_INDEX_TO_ZONE_INDEX(coursesScreen->currentCourse);
-        element->unk21 = 0xFF;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &coursesScreen->zoneActUnits[0];
+        s->graphics.anim = 0x2F6;
+        s->variant = COURSE_INDEX_TO_ZONE_INDEX(coursesScreen->currentCourse);
+        s->prevVariant = -1;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
 
-        element = &coursesScreen->zoneActUnits[1];
-        element->graphics.anim = 0x2F6;
-        element->variant = COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse);
-        element->unk21 = 0xFF;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &coursesScreen->zoneActUnits[1];
+        s->graphics.anim = 0x2F6;
+        s->variant = COURSE_INDEX_TO_ACT_INDEX(coursesScreen->currentCourse);
+        s->prevVariant = -1;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
-    element = &coursesScreen->zoneType;
-    element->graphics.anim = sZoneTypeAssets[coursesScreen->currentCourse][0];
-    element->variant = sZoneTypeAssets[coursesScreen->currentCourse][1];
-    element->unk21 = 0xFF;
-    sub_8004558(element);
-    sub_80051E8(element);
+    s = &coursesScreen->zoneType;
+    s->graphics.anim = sZoneTypeAssets[coursesScreen->currentCourse][0];
+    s->variant = sZoneTypeAssets[coursesScreen->currentCourse][1];
+    s->prevVariant = -1;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
-    element = &coursesScreen->zoneName;
+    s = &coursesScreen->zoneName;
 #ifndef NON_MATCHING
     somethinga++;
     somethinga--;
 #endif
-    element->graphics.anim
+    s->graphics.anim
         = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][0];
-    element->variant
-        = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][1];
-    element->unk21 = 0xFF;
-    sub_8004558(element);
-    sub_80051E8(element);
-    element = &coursesScreen->screenTitle;
-    sub_80051E8(element);
+    s->variant = sZoneNameAssets[coursesScreen->currentCourse + (somethinga * 16)][1];
+    s->prevVariant = -1;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+    s = &coursesScreen->screenTitle;
+    DisplaySprite(s);
 
     if (IS_SINGLE_PLAYER) {
         u8 i;
         for (i = 0; i < NUM_COURSE_ZONES; i++) {
             if (gLoadedSaveGame->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALD(i)) {
-                element = &coursesScreen->chaosEmeralds[i + 1];
+                s = &coursesScreen->chaosEmeralds[i + 1];
             } else {
-                element = &coursesScreen->chaosEmeralds[0];
+                s = &coursesScreen->chaosEmeralds[0];
             }
-            element->x = (((i * 3)) * 8) + 0x24;
-            sub_8004558(element);
-            sub_80051E8(element);
+            s->x = (((i * 3)) * 8) + 0x24;
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -1087,9 +1088,9 @@ static void DestroyUI(struct CourseSelectionScreen *coursesScreen)
 
 static void Task_FadeOutAndExitToSelectedLevel(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&coursesScreen->fade) == SCREEN_FADE_COMPLETE) {
         DestroyUI(coursesScreen);
 
         gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
@@ -1109,9 +1110,9 @@ static void Task_FadeOutAndExitToSelectedLevel(void)
 
 static void Task_FadeOutAndExitToSelectedMultiplayerLevel(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&coursesScreen->fade) == SCREEN_FADE_COMPLETE) {
         DestroyUI(coursesScreen);
         gCurrentLevel = sCourseIndexToLevelIndex[coursesScreen->currentCourse];
         GameStageStart();
@@ -1124,9 +1125,9 @@ static void Task_FadeOutAndExitToSelectedMultiplayerLevel(void)
 
 static void Task_FadeOutAndExitToCharacterSelect(void)
 {
-    struct CourseSelectionScreen *coursesScreen = TaskGetStructPtr(gCurTask);
+    struct CourseSelectionScreen *coursesScreen = TASK_DATA(gCurTask);
 
-    if (NextTransitionFrame(&coursesScreen->screenFade) == SCREEN_TRANSITION_COMPLETE) {
+    if (UpdateScreenFade(&coursesScreen->fade) == SCREEN_FADE_COMPLETE) {
         DestroyUI(coursesScreen);
         CreateCharacterSelectionScreen(gSelectedCharacter,
                                        gLoadedSaveGame->unlockedCharacters & 0x10);
@@ -1139,21 +1140,18 @@ static void Task_FadeOutAndExitToCharacterSelect(void)
 static void RenderZoneMapPathsAndUI(struct CourseSelectionScreen *coursesScreen)
 {
     u8 i;
-    Sprite *element;
+    Sprite *s;
 
     for (i = 0; i < coursesScreen->zonePathsUnlocked; i++) {
-        element = &coursesScreen->mapPaths[i];
-        element->x = sZoneMapPathPositions[i][0]
+        s = &coursesScreen->mapPaths[i];
+        s->x = sZoneMapPathPositions[i][0]
             - TO_SCREEN_COORD(coursesScreen->cameraScrollX);
-        element->y = sZoneMapPathPositions[i][1];
-        sub_8004558(element);
-        sub_80051E8(element);
+        s->y = sZoneMapPathPositions[i][1];
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     RenderUI(coursesScreen);
 }
 
-static void CourseSelectionScreenOnDestroy(struct Task *t)
-{
-    DestroyUI(TaskGetStructPtr(t));
-}
+static void CourseSelectionScreenOnDestroy(struct Task *t) { DestroyUI(TASK_DATA(t)); }

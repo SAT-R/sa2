@@ -39,6 +39,6 @@ struct UNK_3005B80 {
 // Used outside of this module I think, so declared here
 extern struct UNK_3005B80 gUnknown_03005B80;
 
-void sub_808DB2C(u8 vcount);
+void sub_808DB2C(int_vcount vcount);
 
 #endif // GUARD_BACKGROUNDS_H

@@ -1,10 +1,11 @@
-#include "game/race_progress.h"
 #include "core.h"
-#include "game/game.h"
 #include "task.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
 #include "malloc_vram.h"
+#include "game/game.h"
+#include "game/race_progress.h"
+#include "game/stage/player.h"
+#include "game/screen_fade.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"
@@ -56,7 +57,7 @@ void CreateRaceProgressIndicator(void)
     struct Task *t
         = TaskCreate(Task_UpdateAvatarPositions, sizeof(struct RaceProgressIndicator),
                      0x1000, 0, RaceProgressIndicatorOnDestroy);
-    struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(t);
+    struct RaceProgressIndicator *progressIndicator = TASK_DATA(t);
 
     progressIndicator->course = COURSE_LEVEL_TO_COURSE_INDEX(gCurrentLevel);
 
@@ -74,65 +75,65 @@ void CreateRaceProgressIndicator(void)
 static void CreateUI(struct RaceProgressIndicator *progressIndicator)
 {
     u8 i;
-    Sprite *element;
+    Sprite *s;
     u8 avatarVariants[6];
 
     memcpy(avatarVariants, sCharacterAvatars, sizeof(sCharacterAvatars));
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         // Life Counter
-        element = &progressIndicator->avatars[i];
-        element->graphics.dest = VramMalloc(4);
-        element->graphics.anim = SA2_ANIM_LIFE_COUNTER;
-        element->variant = avatarVariants[gMultiplayerCharacters[i]];
-        element->unk21 = 0xFF;
-        element->x = 6;
-        element->y = (DISPLAY_HEIGHT - 18);
+        s = &progressIndicator->avatars[i];
+        s->graphics.dest = VramMalloc(4);
+        s->graphics.anim = SA2_ANIM_LIFE_COUNTER;
+        s->variant = avatarVariants[gMultiplayerCharacters[i]];
+        s->prevVariant = -1;
+        s->x = 6;
+        s->y = (DISPLAY_HEIGHT - 18);
         if (gMultiplayerCharacters[i] == gSelectedCharacter) {
-            element->unk1A = 0x80;
+            s->unk1A = SPRITE_OAM_ORDER(2);
         } else {
-            element->unk1A = 0xC0;
+            s->unk1A = SPRITE_OAM_ORDER(3);
         }
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = i;
-        element->unk10 = 0;
-        sub_8004558(element);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = i;
+        s->unk10 = 0;
+        UpdateSpriteAnimation(s);
     }
 
-    element = &progressIndicator->flags[START_FLAG];
-    element->graphics.dest = VramMalloc(4);
-    element->graphics.anim = SA2_ANIM_RACE_START_ICON;
-    element->variant = 0;
-    element->unk21 = 0xFF;
-    element->x = 0 + RACE_ICON_INDENT;
-    element->y = RACE_ICON_Y;
-    element->unk1A = 0x140;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk10 = 0;
-    sub_8004558(element);
+    s = &progressIndicator->flags[START_FLAG];
+    s->graphics.dest = VramMalloc(4);
+    s->graphics.anim = SA2_ANIM_RACE_START_ICON;
+    s->variant = 0;
+    s->prevVariant = -1;
+    s->x = 0 + RACE_ICON_INDENT;
+    s->y = RACE_ICON_Y;
+    s->unk1A = SPRITE_OAM_ORDER(5);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
+    UpdateSpriteAnimation(s);
 
-    element = &progressIndicator->flags[FINISH_FLAG];
-    element->graphics.dest = VramMalloc(4);
-    element->graphics.anim = SA2_ANIM_RACE_FINISH_ICON;
-    element->variant = 0;
-    element->unk21 = 0xFF;
-    element->x = DISPLAY_WIDTH - RACE_ICON_INDENT;
-    element->y = RACE_ICON_Y;
-    element->unk1A = 0x140;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk10 = 0;
-    sub_8004558(element);
+    s = &progressIndicator->flags[FINISH_FLAG];
+    s->graphics.dest = VramMalloc(4);
+    s->graphics.anim = SA2_ANIM_RACE_FINISH_ICON;
+    s->variant = 0;
+    s->prevVariant = -1;
+    s->x = DISPLAY_WIDTH - RACE_ICON_INDENT;
+    s->y = RACE_ICON_Y;
+    s->unk1A = SPRITE_OAM_ORDER(5);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
+    UpdateSpriteAnimation(s);
 }
 #undef RACE_ICON_INDENT
 
@@ -141,11 +142,11 @@ static void Task_UpdateAvatarPositions(void)
     u8 i;
     Sprite *avatar;
     struct MultiplayerPlayer *player;
-    struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(gCurTask);
+    struct RaceProgressIndicator *progressIndicator = TASK_DATA(gCurTask);
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         avatar = &progressIndicator->avatars[i];
-        player = TaskGetStructPtr(gMultiplayerPlayerTasks[i]);
+        player = TASK_DATA(gMultiplayerPlayerTasks[i]);
         avatar->x
             = ((player->unk50 * sCourseStepSizes[progressIndicator->course]) >> 0x10)
             + 6;
@@ -157,27 +158,27 @@ static void Task_UpdateAvatarPositions(void)
 static void RenderUI(struct RaceProgressIndicator *progressIndicator)
 {
     u8 i;
-    Sprite *element;
+    Sprite *s;
 
     if (gPlayer.moveState & MOVESTATE_100000) {
         return;
     }
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
-        element = &progressIndicator->avatars[i];
-        sub_80051E8(element);
+        s = &progressIndicator->avatars[i];
+        DisplaySprite(s);
     }
 
     for (i = 0; i < ARRAY_COUNT(progressIndicator->flags); i++) {
-        element = &progressIndicator->flags[i];
-        sub_80051E8(element);
+        s = &progressIndicator->flags[i];
+        DisplaySprite(s);
     }
 }
 
 static void RaceProgressIndicatorOnDestroy(struct Task *t)
 {
     u8 i;
-    struct RaceProgressIndicator *progressIndicator = TaskGetStructPtr(t);
+    struct RaceProgressIndicator *progressIndicator = TASK_DATA(t);
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         VramFree(progressIndicator->avatars[i].graphics.dest);

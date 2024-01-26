@@ -108,7 +108,7 @@ void SpecialStageHandleLoseRings(struct SpecialStage *stage, s16 num)
 
 void Task_InitObjects(void)
 {
-    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStageCollectables *collectables = TASK_DATA(gCurTask);
     s16 i;
 
     for (i = 0; i < MAX_OBJECTS; i++) {
@@ -141,14 +141,14 @@ void Task_InitObjects(void)
 
 void sub_806DB48(void)
 {
-    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStageCollectables *collectables = TASK_DATA(gCurTask);
     struct SpecialStage *stage = collectables->stage;
     if (stage->paused == FALSE) {
-        sub_8004558(&collectables->unk4);
-        sub_8004558(&collectables->unk64);
-        sub_8004558(&collectables->unk34);
-        sub_8004558(&collectables->unk94);
-        sub_8004558(&collectables->unkC4);
+        UpdateSpriteAnimation(&collectables->unk4);
+        UpdateSpriteAnimation(&collectables->unk64);
+        UpdateSpriteAnimation(&collectables->unk34);
+        UpdateSpriteAnimation(&collectables->unk94);
+        UpdateSpriteAnimation(&collectables->unkC4);
 
         sub_806DC98();
 
@@ -177,10 +177,10 @@ void sub_806DB48(void)
 
 void sub_806DC98(void)
 {
-    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStageCollectables *collectables = TASK_DATA(gCurTask);
     struct SpecialStage *stage = collectables->stage;
     const struct UNK_8C878E8 **unk78E8_vals = gUnknown_08C878E8[stage->zone];
-    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
     s32 playerX = Q_16_16_TO_INT(player->x);
     s32 playerY = Q_16_16_TO_INT(player->y);
@@ -228,7 +228,7 @@ bool16 sub_806DE10(void)
     u16 result;
     s16 unkF6CC[NUM_COURSE_ZONES];
     s16 val;
-    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStageCollectables *collectables = TASK_DATA(gCurTask);
     struct SpecialStage *stage = collectables->stage;
     result = FALSE;
     memcpy(unkF6CC, gUnknown_080DF6CC, sizeof(gUnknown_080DF6CC));
@@ -260,9 +260,9 @@ void sub_806DEA4(void)
     s16 cell;
 
     struct UNK_806DEA4 DEA4_Arr[16];
-    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStageCollectables *collectables = TASK_DATA(gCurTask);
     struct SpecialStage *stage = collectables->stage;
-    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
     const struct UNK_8C878E8 **unk78E8_vals = gUnknown_08C878E8[stage->zone];
     const struct UNK_8C878E8 **unk78E8;
     const struct UNK_8C878E8 *unk78E8_val = NULL;
@@ -337,7 +337,7 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *unk78E8,
     struct SpecialStageCollectables_UNK874_2 new_unk874;
     struct UNK_806CB84 new_unkCB84;
 
-    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStageCollectables *collectables = TASK_DATA(gCurTask);
     const struct UNK_8C878E8 *object = unk78E8;
     struct UNK_806DEA4 *found = NULL;
 
@@ -393,7 +393,7 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *unk78E8,
 
 void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
 {
-    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStageCollectables *collectables = TASK_DATA(gCurTask);
     struct SpecialStage *stage = collectables->stage;
 
     Sprite *element1 = &collectables->unk1B4[index];
@@ -448,9 +448,8 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
 static void AnimateRingsLost(struct SpecialStage *stage, s16 numLost)
 {
     s16 i, j;
-    struct SpecialStageCollectables *collectables
-        = TaskGetStructPtr(stage->collectablesTask);
-    struct SpecialStagePlayer *player = TaskGetStructPtr(stage->playerTask);
+    struct SpecialStageCollectables *collectables = TASK_DATA(stage->collectablesTask);
+    struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
     s32 x = player->x;
     s32 y = player->y;
@@ -499,8 +498,7 @@ static void AnimateRingsLost(struct SpecialStage *stage, s16 numLost)
 void sub_806E4FC(struct SpecialStage *stage)
 {
     s16 i;
-    struct SpecialStageCollectables *collectables
-        = TaskGetStructPtr(stage->collectablesTask);
+    struct SpecialStageCollectables *collectables = TASK_DATA(stage->collectablesTask);
 
     for (i = 0; i < 8; i++) {
         struct SpecialStageCollectables_UNK874 *unk874 = &collectables->unk874[i];
@@ -532,7 +530,7 @@ void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874 *unk874)
     struct SpecialStageCollectables_UNK874_2 new_unk874;
     struct UNK_806CB84 new_unkCB84;
 
-    struct SpecialStageCollectables *collectables = TaskGetStructPtr(gCurTask);
+    struct SpecialStageCollectables *collectables = TASK_DATA(gCurTask);
     struct SpecialStage *stage = collectables->stage;
 
     Sprite *unk7B4 = &collectables->unk7B4[index];
@@ -578,7 +576,7 @@ struct Task *CreateSpecialStageCollectables(struct SpecialStage *stage)
     memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
 
     t = TaskCreate(Task_InitObjects, 0xA5C, 0xB000, 0, NULL);
-    collectables = TaskGetStructPtr(t);
+    collectables = TASK_DATA(t);
     collectables->stage = stage;
     collectables->unkA58 = unkF6CC[stage->zone];
     collectables->animFrame = 0;

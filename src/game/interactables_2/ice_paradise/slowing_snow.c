@@ -2,6 +2,8 @@
 
 #include "task.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/ice_paradise/slowing_snow.h"
 
 #include "game/entity.h"
@@ -40,7 +42,7 @@ void CreateEntity_SlowingSnow(MapEntity *in_ia, u16 spriteRegionX, u16 spriteReg
     struct Task *t = TaskCreate(Task_SlowingSnow, sizeof(Sprite_SlowingSnow), 0x2010, 0,
                                 TaskDestructor_SlowingSnow);
 
-    Sprite_SlowingSnow *snow = TaskGetStructPtr(t);
+    Sprite_SlowingSnow *snow = TASK_DATA(t);
     Interactable_SlowingSnow *me = (Interactable_SlowingSnow *)in_ia;
     snow->left = me->offsetX * 8;
     snow->top = me->offsetY * 8;
@@ -79,7 +81,7 @@ static bool32 PlayerIsTouchingSnow(Sprite_SlowingSnow *snow)
 
 void Task_SlowingSnow(void)
 {
-    Sprite_SlowingSnow *snow = TaskGetStructPtr(gCurTask);
+    Sprite_SlowingSnow *snow = TASK_DATA(gCurTask);
 
     if (PlayerIsTouchingSnow(snow)) {
         gPlayer.speedGroundX = Q_24_8_MULTIPLY(gPlayer.speedGroundX, 0.95);

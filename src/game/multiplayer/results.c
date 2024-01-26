@@ -5,6 +5,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "game/game.h"
+#include "game/stage/stage.h"
 #include "game/course_select.h"
 #include "game/multiplayer/results.h"
 #include "game/multiplayer/multipak_connection.h"
@@ -128,7 +129,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     struct MultiplayerResultsScreen *resultsScreen;
     Background *background;
     u32 i;
-    Sprite *element;
+    Sprite *s;
 
     u32 count = 0;
     u32 lang = gLoadedSaveGame->language;
@@ -158,7 +159,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     DmaFill32(3, 0, (void *)VRAM + 0x9fe0, 0x40);
     t = TaskCreate(sub_805C0F0, sizeof(struct MultiplayerResultsScreen), 0x2000, 0,
                    NULL);
-    resultsScreen = TaskGetStructPtr(t);
+    resultsScreen = TASK_DATA(t);
 
     resultsScreen->animStep = 0;
 
@@ -180,7 +181,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     background = &resultsScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = sResultsScreenBgSelectedCharacters[lang];
@@ -188,11 +189,11 @@ void CreateMultiplayerResultsScreen(u8 mode)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
-    background->unk2E = 3;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(3);
+    DrawBackground(background);
 
     for (; count < 4; count++) {
         if (gUnknown_030054B4[count] == -1) {
@@ -204,49 +205,49 @@ void CreateMultiplayerResultsScreen(u8 mode)
         s32 temp2 = (i + 4) * 0x800;
         if (GetBit(gMultiplayerConnections, i)) {
             s32 temp;
-            element = &resultsScreen->resultRows[i];
-            element->x = 200;
-            element->y = 0x33 + (0x20 * i);
-            element->graphics.dest = (void *)(OBJ_VRAM0 + (i * 0x800));
-            element->unk1A = 0x400;
-            element->graphics.size = 0;
+            s = &resultsScreen->resultRows[i];
+            s->x = 200;
+            s->y = 0x33 + (0x20 * i);
+            s->graphics.dest = (void *)(OBJ_VRAM0 + (i * 0x800));
+            s->unk1A = SPRITE_OAM_ORDER(16);
+            s->graphics.size = 0;
             temp = gUnknown_030054B4[i];
             if (temp == 5) {
-                element->graphics.anim = gUnknown_080D9100[lang][1].anim;
-                element->variant = gUnknown_080D9100[lang][1].variant;
+                s->graphics.anim = gUnknown_080D9100[lang][1].anim;
+                s->variant = gUnknown_080D9100[lang][1].variant;
             } else if (temp == 4) {
-                element->graphics.anim = gUnknown_080D9100[lang][2].anim;
-                element->variant = gUnknown_080D9100[lang][2].variant;
+                s->graphics.anim = gUnknown_080D9100[lang][2].anim;
+                s->variant = gUnknown_080D9100[lang][2].variant;
             } else if (count == 2 || gGameMode == GAME_MODE_TEAM_PLAY) {
-                element->graphics.anim = gUnknown_080D9100[lang][0].anim;
-                element->variant = gUnknown_080D9100[lang][0].variant + temp;
+                s->graphics.anim = gUnknown_080D9100[lang][0].anim;
+                s->variant = gUnknown_080D9100[lang][0].variant + temp;
             } else {
-                element->graphics.anim = gUnknown_080D9100[lang][3].anim;
-                element->variant = gUnknown_080D9100[lang][3].variant + temp;
+                s->graphics.anim = gUnknown_080D9100[lang][3].anim;
+                s->variant = gUnknown_080D9100[lang][3].variant + temp;
             }
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk21 = 0xFF;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk10 = 0x1000;
-            sub_8004558(element);
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->prevVariant = -1;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->unk10 = 0x1000;
+            UpdateSpriteAnimation(s);
 
-            element = &resultsScreen->characterRows[i];
-            element->x = 0;
-            element->y = 0x1F + (0x20 * i);
-            element->graphics.dest = (void *)(OBJ_VRAM0 + temp2);
-            element->unk1A = 0x400;
-            element->graphics.size = 0;
-            element->graphics.anim = sResultsScreenPlayerCursor[i].anim;
-            element->variant = sResultsScreenPlayerCursor[i].variant;
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk21 = 0xFF;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk10 = 0x1000;
-            sub_8004558(element);
+            s = &resultsScreen->characterRows[i];
+            s->x = 0;
+            s->y = 0x1F + (0x20 * i);
+            s->graphics.dest = (void *)(OBJ_VRAM0 + temp2);
+            s->unk1A = SPRITE_OAM_ORDER(16);
+            s->graphics.size = 0;
+            s->graphics.anim = sResultsScreenPlayerCursor[i].anim;
+            s->variant = sResultsScreenPlayerCursor[i].variant;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->prevVariant = -1;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->unk10 = 0x1000;
+            UpdateSpriteAnimation(s);
         }
     }
 
@@ -258,12 +259,12 @@ void CreateMultiplayerResultsScreen(u8 mode)
 static void sub_805C0F0(void)
 {
     struct MultiplayerResultsScreen *selectionResultsScreen;
-    u16 *unk1884 = gUnknown_03001884;
+    u16 *unk1884 = gBgOffsetsHBlank;
     gDispCnt |= 0x1800;
 
     MultiPakHeartbeat();
 
-    selectionResultsScreen = TaskGetStructPtr(gCurTask);
+    selectionResultsScreen = TASK_DATA(gCurTask);
 
     if ((selectionResultsScreen->animStep += 0x400) > 0xF000) {
         selectionResultsScreen->animStep = 0;
@@ -313,7 +314,7 @@ static void sub_805C0F0(void)
 
 static void sub_805C30C(void)
 {
-    struct MultiplayerResultsScreen *selectionResultsScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerResultsScreen *selectionResultsScreen = TASK_DATA(gCurTask);
     bool32 somebool = FALSE;
 
     if (selectionResultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
@@ -343,7 +344,7 @@ static void sub_805C30C(void)
 
 static void sub_805C3D0(void)
 {
-    struct MultiplayerResultsScreen *resultsScreen = TaskGetStructPtr(gCurTask);
+    struct MultiplayerResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     resultsScreen->animStep += 0x200;
 
     if (resultsScreen->animStep > 0x1000) {
@@ -399,10 +400,10 @@ static void sub_805C504(void)
     u16 j, x;
 
     struct MultiplayerResultsScreen *selectionResultsScreen;
-    u16 *unk1884 = gUnknown_03001884;
+    u16 *unk1884 = gBgOffsetsHBlank;
     MultiPakHeartbeat();
 
-    selectionResultsScreen = TaskGetStructPtr(gCurTask);
+    selectionResultsScreen = TASK_DATA(gCurTask);
     gFlags |= 0x4;
     gUnknown_03002878 = (void *)REG_ADDR_BG3VOFS;
     gUnknown_03002A80 = 2;
@@ -443,15 +444,15 @@ static void sub_805C69C(void)
 
     MultiPakHeartbeat();
 
-    resultsScreen = TaskGetStructPtr(gCurTask);
+    resultsScreen = TASK_DATA(gCurTask);
 
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
         if (GetBit(gMultiplayerConnections, i)) {
             item = &resultsScreen->characterRows[i];
-            sub_80051E8(item);
+            DisplaySprite(item);
             if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
                 item = &resultsScreen->resultRows[i];
-                sub_80051E8(item);
+                DisplaySprite(item);
             }
         }
     }

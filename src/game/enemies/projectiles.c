@@ -1,6 +1,8 @@
 #include "global.h"
 #include "game/entity.h"
 #include "game/enemies/projectiles.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "malloc_vram.h"
 #include "task.h"
 #include "trig.h"
@@ -33,7 +35,7 @@ void CreateProjectile(ProjInit *init)
 {
     struct Task *t = TaskCreate(Task_805102C, sizeof(ProjectileA), 0x4000, 0,
                                 TaskDestructor_80511EC);
-    ProjectileA *proj = TaskGetStructPtr(t);
+    ProjectileA *proj = TASK_DATA(t);
     Sprite *s;
     s32 velocityX, velocityY;
 
@@ -47,14 +49,14 @@ void CreateProjectile(ProjInit *init)
     proj->velocityY = velocityY;
 
     s = &proj->s;
-    SPRITE_INIT_WITH_POS(s, init->numTiles, init->anim, init->variant, 0x200, 1);
+    SPRITE_INIT_WITH_POS(s, init->numTiles, init->anim, init->variant, 8, 1);
 }
 
 void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
 {
     struct Task *t = TaskCreate(Task_80510B0, sizeof(ProjectileB), 0x4000, 0,
                                 TaskDestructor_8051200);
-    ProjectileB *proj = TaskGetStructPtr(t);
+    ProjectileB *proj = TASK_DATA(t);
     Sprite *s;
     u8 i;
 
@@ -77,12 +79,12 @@ void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
     }
 
     s = &proj->s;
-    SPRITE_INIT_WITH_POS(s, init->numTiles, init->anim, init->variant, 0x200, 1);
+    SPRITE_INIT_WITH_POS(s, init->numTiles, init->anim, init->variant, 8, 1);
 }
 
 void Task_805102C(void)
 {
-    ProjectileA *proj = TaskGetStructPtr(gCurTask);
+    ProjectileA *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
 
     proj->x += proj->velocityX;
@@ -95,18 +97,18 @@ void Task_805102C(void)
         TaskDestroy(gCurTask);
     } else {
         sub_800C84C(s, Q_24_8_TO_INT(proj->x), Q_24_8_TO_INT(proj->y));
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
 void Task_80510B0(void)
 {
-    ProjectileB *proj = TaskGetStructPtr(gCurTask);
+    ProjectileB *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
     u8 count, i;
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     count = 0;
     for (i = 0; i < proj->count; i++) {
@@ -127,7 +129,7 @@ void Task_80510B0(void)
 
         sub_800C84C(s, Q_24_8_TO_INT(proj->positions[i].x),
                     Q_24_8_TO_INT(proj->positions[i].y));
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     if (count == 0) {
@@ -139,12 +141,12 @@ void Task_DestroyProjectileTask(void) { TaskDestroy(gCurTask); }
 
 void TaskDestructor_80511EC(struct Task *t)
 {
-    ProjectileA *proj = TaskGetStructPtr(t);
+    ProjectileA *proj = TASK_DATA(t);
     VramFree(proj->s.graphics.dest);
 }
 
 void TaskDestructor_8051200(struct Task *t)
 {
-    ProjectileB *proj = TaskGetStructPtr(t);
+    ProjectileB *proj = TASK_DATA(t);
     VramFree(proj->s.graphics.dest);
 }

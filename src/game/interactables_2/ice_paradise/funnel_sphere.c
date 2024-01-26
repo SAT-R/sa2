@@ -6,9 +6,12 @@
 #include "lib/m4a.h"
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/ice_paradise/funnel_sphere.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
@@ -50,7 +53,7 @@ static void sub_8077F7C(void)
     u8 r6;
     u16 r7;
     s32 r4;
-    Sprite_FunnelSphere *funnelSphere = TaskGetStructPtr(gCurTask);
+    Sprite_FunnelSphere *funnelSphere = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_80782FC(funnelSphere);
@@ -176,7 +179,7 @@ static void sub_8078254(Sprite_FunnelSphere *funnelSphere)
 {
     Player_ClearMovestate_IsInScriptedSequence();
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
 
     switch (gPlayer.character) {
         case CHARACTER_CREAM:
@@ -234,7 +237,7 @@ static bool32 sub_80783A4(Sprite_FunnelSphere *funnelSphere)
 
 static void sub_8078414(void)
 {
-    Sprite_FunnelSphere *funnelSphere = TaskGetStructPtr(gCurTask);
+    Sprite_FunnelSphere *funnelSphere = TASK_DATA(gCurTask);
     if (sub_80783A4(funnelSphere)) {
         sub_8078170(funnelSphere);
     }
@@ -246,7 +249,7 @@ static void sub_8078414(void)
 
 static void sub_807844C(void)
 {
-    Sprite_FunnelSphere *funnelSphere = TaskGetStructPtr(gCurTask);
+    Sprite_FunnelSphere *funnelSphere = TASK_DATA(gCurTask);
     if (!PLAYER_IS_ALIVE) {
         sub_80782FC(funnelSphere);
         return;
@@ -309,7 +312,7 @@ void CreateEntity_FunnelSphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
                                u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_8078414, 0x28, 0x2010, 0, sub_8078688);
-    Sprite_FunnelSphere *funnelSphere = TaskGetStructPtr(t);
+    Sprite_FunnelSphere *funnelSphere = TASK_DATA(t);
     funnelSphere->me = me;
     funnelSphere->spriteX = me->x;
     funnelSphere->spriteY = spriteY;
@@ -321,7 +324,7 @@ void CreateEntity_FunnelSphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 static void sub_8078634(void)
 {
     s16 y;
-    Sprite_FunnelSphere *funnelSphere = TaskGetStructPtr(gCurTask);
+    Sprite_FunnelSphere *funnelSphere = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_80782FC(funnelSphere);

@@ -9,7 +9,7 @@
 #include "game/save.h"
 #include "game/title_screen.h"
 #include "multi_sio.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "lib/m4a.h"
 #include "constants/text.h"
 #include "game/game.h"
@@ -21,9 +21,9 @@
 #include "constants/tilemaps.h"
 
 struct MultiPakConnectScreen {
-    struct TransitionState unk0;
-    Sprite unkC;
-    Sprite unk3C;
+    ScreenFade fade;
+    Sprite s;
+    Sprite s2;
     Sprite unk6C;
     Background unk9C;
     u32 unkDC;
@@ -61,8 +61,8 @@ void StartMultiPakConnect(void)
 {
     struct Task *t;
     struct MultiPakConnectScreen *connectScreen;
-    struct TransitionState *unk0;
-    Sprite *unkC;
+    ScreenFade *fade;
+    Sprite *s;
     Background *background;
     const TileInfo *unkD64;
     void *vramAddr = (void *)OBJ_VRAM0;
@@ -82,7 +82,7 @@ void StartMultiPakConnect(void)
     gBgScrollRegs[1][1] = 0;
 
     t = TaskCreate(sub_805ADAC, sizeof(struct MultiPakConnectScreen), 0x2000, 0, NULL);
-    connectScreen = TaskGetStructPtr(t);
+    connectScreen = TASK_DATA(t);
     connectScreen->unkEB = 0;
     connectScreen->unkFC = 1;
     connectScreen->unkFD = 0;
@@ -92,71 +92,71 @@ void StartMultiPakConnect(void)
         connectScreen->unkF2[i] = 0;
     }
 
-    unk0 = &connectScreen->unk0;
-    unk0->unk0 = 1;
-    unk0->unk4 = 0;
-    unk0->unk2 = 2;
-    unk0->speed = 0x100;
-    unk0->unk8 = 0x3FFF;
-    unk0->unkA = 0;
-    NextTransitionFrame(unk0);
+    fade = &connectScreen->fade;
+    fade->window = 1;
+    fade->brightness = 0;
+    fade->flags = 2;
+    fade->speed = 0x100;
+    fade->bldCnt = 0x3FFF;
+    fade->bldAlpha = 0;
+    UpdateScreenFade(fade);
 
-    unkC = &connectScreen->unkC;
-    unkC->graphics.dest = vramAddr;
+    s = &connectScreen->s;
+    s->graphics.dest = vramAddr;
     vramAddr += gUnknown_080D9050[gLoadedSaveGame->language].numTiles * TILE_SIZE_4BPP;
-    unkC->graphics.anim = gUnknown_080D9050[gLoadedSaveGame->language].anim;
-    unkC->variant = gUnknown_080D9050[gLoadedSaveGame->language].variant;
-    unkC->unk21 = 0xFF;
-    unkC->x = 8;
-    unkC->y = 24;
-    unkC->unk1A = 0x100;
-    unkC->graphics.size = 0;
-    unkC->unk14 = 0;
-    unkC->unk1C = 0;
-    unkC->unk22 = 0x10;
-    unkC->palId = 0;
-    unkC->unk28[0].unk0 = -1;
-    unkC->unk10 = 0x1000;
-    sub_8004558(unkC);
+    s->graphics.anim = gUnknown_080D9050[gLoadedSaveGame->language].anim;
+    s->variant = gUnknown_080D9050[gLoadedSaveGame->language].variant;
+    s->prevVariant = -1;
+    s->x = 8;
+    s->y = 24;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
+    UpdateSpriteAnimation(s);
 
-    unkC = &connectScreen->unk3C;
-    unkC->graphics.dest = vramAddr;
+    s = &connectScreen->s2;
+    s->graphics.dest = vramAddr;
     vramAddr += gPressStartTiles[gLoadedSaveGame->language].numTiles * TILE_SIZE_4BPP;
-    unkC->graphics.anim = gPressStartTiles[gLoadedSaveGame->language].anim;
-    unkC->variant = gPressStartTiles[gLoadedSaveGame->language].variant;
-    unkC->unk21 = 0xFF;
-    unkC->x = (DISPLAY_WIDTH / 2);
-    unkC->y = 122;
-    unkC->unk1A = 0x100;
-    unkC->graphics.size = 0;
-    unkC->unk14 = 0;
-    unkC->unk1C = 0;
-    unkC->unk22 = 0x10;
-    unkC->palId = 0;
-    unkC->unk28[0].unk0 = -1;
-    unkC->unk10 = 0x1000;
+    s->graphics.anim = gPressStartTiles[gLoadedSaveGame->language].anim;
+    s->variant = gPressStartTiles[gLoadedSaveGame->language].variant;
+    s->prevVariant = -1;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = 122;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
 
-    unkC = &connectScreen->unk6C;
-    unkC->graphics.dest = vramAddr;
-    unkC->graphics.anim = SA2_ANIM_MP_MSG;
-    unkC->variant = SA2_ANIM_VARIANT_MP_MSG_2;
-    unkC->unk21 = 0xFF;
-    unkC->x = (DISPLAY_WIDTH / 2);
-    unkC->y = (DISPLAY_HEIGHT * (7. / 8.));
-    unkC->unk1A = 0x100;
-    unkC->graphics.size = 0;
-    unkC->unk14 = 0;
-    unkC->unk1C = 0;
-    unkC->unk22 = 0x10;
-    unkC->palId = 0;
-    unkC->unk28[0].unk0 = -1;
-    unkC->unk10 = 0x1000;
+    s = &connectScreen->unk6C;
+    s->graphics.dest = vramAddr;
+    s->graphics.anim = SA2_ANIM_MP_MSG;
+    s->variant = SA2_ANIM_VARIANT_MP_MSG_2;
+    s->prevVariant = -1;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = (DISPLAY_HEIGHT * (7. / 8.));
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
 
     // TODO: make macro
     background = &connectScreen->unk9C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(20);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_WAIT_CONNECTION;
@@ -164,11 +164,11 @@ void StartMultiPakConnect(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
-    background->unk2E = 0;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         MultiSioStart();
@@ -202,12 +202,12 @@ static void sub_805ADAC(void)
     bool8 bool1 = FALSE;
     bool8 bool2 = FALSE;
     bool8 bool3 = TRUE;
-    struct MultiPakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct MultiPakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     struct MultiSioData_0_0 *send, *recv;
     struct MultiSioData_0_0 *data;
     Sprite *r4p;
 
-    NextTransitionFrame(&connectScreen->unk0);
+    UpdateScreenFade(&connectScreen->fade);
 
     if (gMultiSioStatusFlags & (MULTI_SIO_PARENT | MULTI_SIO_RECV_ID0)) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(SIO_MULTI_CNT->id))) {
@@ -392,21 +392,21 @@ static void sub_805ADAC(void)
     }
 
     if ((gMultiSioStatusFlags & MULTI_SIO_PARENT) && var2 > 1 && bool3) {
-        r4p = &connectScreen->unk3C;
-        sub_8004558(r4p);
-        sub_80051E8(r4p);
+        r4p = &connectScreen->s2;
+        UpdateSpriteAnimation(r4p);
+        DisplaySprite(r4p);
     }
 
     if (var2 > 1) {
         r4p = &connectScreen->unk6C;
         r4p->graphics.anim = SA2_ANIM_MP_MSG;
         r4p->variant = var2 + SA2_ANIM_VARIANT_MP_MSG_OK;
-        r4p->unk21 = 0xFF;
-        sub_8004558(r4p);
-        sub_80051E8(r4p);
+        r4p->prevVariant = -1;
+        UpdateSpriteAnimation(r4p);
+        DisplaySprite(r4p);
     }
-    r4p = &connectScreen->unkC;
-    sub_80051E8(r4p);
+    r4p = &connectScreen->s;
+    DisplaySprite(r4p);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
         if ((!bool2 && var1 > 1 && gPressedKeys & START_BUTTON)
@@ -451,7 +451,7 @@ static void sub_805ADAC(void)
 
 static void sub_805B454(void)
 {
-    struct MultiPakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct MultiPakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     gMultiSioSend.pat0.unk0 = 0;
     if (++connectScreen->unkE8 > 4) {
         gMultiSioEnabled = FALSE;
@@ -475,7 +475,7 @@ static void sub_805B4C0(void)
 
     u8 recv2;
     s32 count = 0;
-    struct MultiPakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct MultiPakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     MultiPakHeartbeat();
     recv = &gMultiSioRecv[0].pat0;
     recv2 = recv->unk2;
@@ -585,9 +585,9 @@ static void sub_805B4C0(void)
             r4p = &connectScreen->unk6C;
             r4p->graphics.anim = SA2_ANIM_MP_MSG;
             r4p->variant = count + SA2_ANIM_VARIANT_MP_MSG_OK;
-            r4p->unk21 = 0xFF;
-            sub_8004558(r4p);
-            sub_80051E8(r4p);
+            r4p->prevVariant = -1;
+            UpdateSpriteAnimation(r4p);
+            DisplaySprite(r4p);
         }
 
         if ((gMultiSioStatusFlags & MULTI_SIO_PARENT)) {
@@ -649,10 +649,10 @@ static void sub_805B4C0(void)
 
 UNUSED static void sub_805B98C(struct MultiPakConnectScreen *connectScreen)
 {
-    Sprite *unkC = &connectScreen->unkC;
-    sub_80051E8(unkC);
-    unkC++;
-    sub_80051E8(unkC);
+    Sprite *s = &connectScreen->s;
+    DisplaySprite(s);
+    s++;
+    DisplaySprite(s);
 }
 
 // HandleLinkCommunicationError
@@ -666,7 +666,7 @@ void MultiPakCommunicationError(void)
     MultiSioInit(0);
 
     // TODO: Fix cast!
-    gUnknown_03002260 = (struct MapHeader **)gTilemaps;
+    gTilemapsRef = (struct MapHeader **)gTilemaps;
     gUnknown_03002794 = &gSpriteTables;
     gMultiplayerMissingHeartbeats[0] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;

@@ -2,7 +2,7 @@
 #include "malloc_vram.h"
 #include "game/entity.h"
 #include "game/game.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
 #include "task.h"
 
 #include "constants/animations.h"
@@ -10,9 +10,9 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite_UNK28 reserved;
+    /* 0x3C */ Hitbox reserved;
     /* 0x44 */ Sprite s2;
-    /* 0x74 */ Sprite_UNK28 reserved2;
+    /* 0x74 */ Hitbox reserved2;
     /* 0x7C */ s32 spawnX;
     /* 0x80 */ s32 spawnY;
     /* 0x84 */ u8 unk84;
@@ -31,7 +31,7 @@ void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
 {
     struct Task *t = TaskCreate(Task_CircusMain, sizeof(Sprite_Circus), 0x4090, 0,
                                 TaskDestructor_Circus);
-    Sprite_Circus *circus = TaskGetStructPtr(t);
+    Sprite_Circus *circus = TASK_DATA(t);
     Sprite *s = &circus->s;
     circus->base.regionX = spriteRegionX;
     circus->base.regionY = spriteRegionY;
@@ -53,19 +53,19 @@ void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 20, SA2_ANIM_CIRCUS, 0, 0x480, 2);
+    SPRITE_INIT(s, 20, SA2_ANIM_CIRCUS, 0, 18, 2);
 
     s = &circus->s2;
     s->x = 0;
     s->y = 0;
-    SPRITE_INIT(s, 16, SA2_ANIM_CIRCUS_PROJ, 2, 0x480, 2);
+    SPRITE_INIT(s, 16, SA2_ANIM_CIRCUS_PROJ, 2, 18, 2);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_CircusMain(void)
 {
-    Sprite_Circus *circus = TaskGetStructPtr(gCurTask);
+    Sprite_Circus *circus = TASK_DATA(gCurTask);
     Sprite *s = &circus->s;
     Sprite *s2 = &circus->s2;
     MapEntity *me = circus->base.me;
@@ -85,7 +85,7 @@ void Task_CircusMain(void)
         gCurTask->main = Task_8055AB8;
         s->graphics.anim = SA2_ANIM_CIRCUS;
         s->variant = 1;
-        s->unk21 = -1;
+        s->prevVariant = -1;
     }
 
     ENEMY_UPDATE_EX_RAW(s, circus->spawnX, circus->spawnY, {});
@@ -93,12 +93,12 @@ void Task_CircusMain(void)
     s2->y = s->y - Q_24_8(0.125);
 
     sub_800C84C(s2, pos.x, pos.y - Q_24_8(0.125));
-    sub_80051E8(s2);
+    DisplaySprite(s2);
 }
 
 void Task_8055AB8(void)
 {
-    Sprite_Circus *circus = TaskGetStructPtr(gCurTask);
+    Sprite_Circus *circus = TASK_DATA(gCurTask);
     Sprite *s = &circus->s;
     Sprite *s2 = &circus->s2;
     MapEntity *me = circus->base.me;
@@ -112,31 +112,31 @@ void Task_8055AB8(void)
 
     sub_80122DC(circus->spawnX, circus->spawnY);
 
-    if (sub_8004558(s) == 0) {
-        sub_80051E8(s);
-        sub_8004558(s2);
-        sub_80051E8(s2);
+    if (UpdateSpriteAnimation(s) == 0) {
+        DisplaySprite(s);
+        UpdateSpriteAnimation(s2);
+        DisplaySprite(s2);
 
         circus->unk84 = 50;
 
         s->graphics.anim = SA2_ANIM_CIRCUS;
         s->variant = 2;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = Task_8055C0C;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
         s2->x = s->x;
         s2->y = s->y - Q_24_8(0.125);
 
         sub_800C84C(s2, pos.x, pos.y - Q_24_8(0.125));
-        sub_80051E8(s2);
+        DisplaySprite(s2);
     }
 }
 
 void Task_8055C0C(void)
 {
     MapEntity *me;
-    Sprite_Circus *circus = TaskGetStructPtr(gCurTask);
+    Sprite_Circus *circus = TASK_DATA(gCurTask);
     Sprite *s = &circus->s;
     Sprite *s2 = &circus->s2;
     Vec2_32 pos;
@@ -158,22 +158,22 @@ void Task_8055C0C(void)
 
     sub_80122DC(circus->spawnX, circus->spawnY);
 
-    sub_8004558(s);
-    sub_80051E8(s);
-    sub_8004558(s2);
-    sub_80051E8(s2);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+    UpdateSpriteAnimation(s2);
+    DisplaySprite(s2);
 
     if (--circus->unk84 == 0) {
         s->graphics.anim = SA2_ANIM_CIRCUS;
         s->variant = 3;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = Task_8055D7C;
     }
 }
 
 void Task_8055D7C(void)
 {
-    Sprite_Circus *circus = TaskGetStructPtr(gCurTask);
+    Sprite_Circus *circus = TASK_DATA(gCurTask);
     Sprite *s = &circus->s;
     Sprite *s2 = &circus->s2;
     MapEntity *me = circus->base.me;
@@ -187,29 +187,29 @@ void Task_8055D7C(void)
 
     sub_80122DC(circus->spawnX, circus->spawnY);
 
-    if (sub_8004558(s) == 0) {
-        sub_80051E8(s);
+    if (UpdateSpriteAnimation(s) == 0) {
+        DisplaySprite(s);
 
         circus->unk84 = 30;
 
         s->graphics.anim = SA2_ANIM_CIRCUS;
         s->variant = 0;
-        s->unk21 = -1;
+        s->prevVariant = -1;
         gCurTask->main = Task_CircusMain;
     } else {
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 
     s2->x = s->x;
     s2->y = s->y - Q_24_8(0.125);
 
     sub_800C84C(s2, pos.x, pos.y - Q_24_8(0.125));
-    sub_80051E8(s2);
+    DisplaySprite(s2);
 }
 
 void TaskDestructor_Circus(struct Task *t)
 {
-    Sprite_Circus *circus = TaskGetStructPtr(t);
+    Sprite_Circus *circus = TASK_DATA(t);
     VramFree(circus->s.graphics.dest);
     VramFree(circus->s2.graphics.dest);
 }

@@ -8,14 +8,21 @@
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
 #include "game/game.h"
+#include "game/stage/stage.h"
 #include "game/multiboot/connection.h"
 #include "game/multiboot/collect_rings/results.h"
 #include "game/multiplayer/multipak_connection.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/multiplayer/mode_select.h"
+#include "game/rings_scatter.h"
+
+#include "game/player_controls.h"
 #include "game/save.h"
-#include "game/screen_transition.h"
-#include "game/stage/entities_manager.h"
+#include "game/screen_fade.h"
+#include "sakit/entities_manager.h"
 #include "game/title_screen.h"
+#include "game/dummy_task.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -23,7 +30,7 @@
 #include "constants/tilemaps.h"
 
 struct SinglePakConnectScreen {
-    struct TransitionState unk0;
+    ScreenFade fade;
     Sprite unkC;
     Sprite unk3C;
     Sprite unk6C;
@@ -107,8 +114,8 @@ void sub_8081200(void)
     u8 *gameMode = &gGameMode;
     u8 val = 5;
 
-    gUnknown_030059D8 = NULL;
-    gUnknown_03005844 = NULL;
+    gRingsScatterTask = NULL;
+    gDummyTask = NULL;
     gGameStageTask = NULL;
     gPlayer.spriteTask = NULL;
     gCamera.movementTask = NULL;
@@ -132,8 +139,8 @@ void StartSinglePakConnect(void)
 {
     struct Task *t;
     struct SinglePakConnectScreen *connectScreen;
-    struct TransitionState *transition;
-    Sprite *element;
+    ScreenFade *fade;
+    Sprite *s;
     Background *background;
     struct MultiBootParam *mbParams;
     u32 ram;
@@ -149,7 +156,7 @@ void StartSinglePakConnect(void)
     gBgScrollRegs[1][1] = 0;
 
     t = TaskCreate(sub_8081604, 0xFC, 0x2000, 0, NULL);
-    connectScreen = TaskGetStructPtr(t);
+    connectScreen = TASK_DATA(t);
     connectScreen->unkFA = gLoadedSaveGame->language;
 
     if ((u8)LanguageIndex(connectScreen->unkFA) > LanguageIndex(LANG_ITALIAN)) {
@@ -165,71 +172,71 @@ void StartSinglePakConnect(void)
     connectScreen->unkE8 = 0;
     connectScreen->unkEC = 0;
 
-    transition = &connectScreen->unk0;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 2;
-    transition->speed = 0x100;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
-    NextTransitionFrame(transition);
+    fade = &connectScreen->fade;
+    fade->window = SCREEN_FADE_USE_WINDOW_1;
+    fade->brightness = Q_8_8(0);
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->speed = Q_24_8(1.0);
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade->bldAlpha = 0;
+    UpdateScreenFade(fade);
 
     ram = OBJ_VRAM0;
-    element = &connectScreen->unkC;
-    element->x = 8;
-    element->y = 24;
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0x1000;
-    element->graphics.anim = gUnknown_080E018C[connectScreen->unkFA][0];
-    element->variant = gUnknown_080E018C[connectScreen->unkFA][1];
-    element->unk21 = 0xFF;
-    element->graphics.dest = (void *)ram;
+    s = &connectScreen->unkC;
+    s->x = 8;
+    s->y = 24;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
+    s->graphics.anim = gUnknown_080E018C[connectScreen->unkFA][0];
+    s->variant = gUnknown_080E018C[connectScreen->unkFA][1];
+    s->prevVariant = -1;
+    s->graphics.dest = (void *)ram;
     ram += gUnknown_080E018C[connectScreen->unkFA][2] * 0x20;
-    sub_8004558(element);
+    UpdateSpriteAnimation(s);
 
-    element = &connectScreen->unk3C;
-    element->x = (DISPLAY_WIDTH / 2);
-    element->y = (DISPLAY_HEIGHT - 38);
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0x1000;
-    element->graphics.anim = gUnknown_080E01B6[connectScreen->unkFA][0];
-    element->variant = gUnknown_080E01B6[connectScreen->unkFA][1];
-    element->unk21 = 0xFF;
-    element->graphics.dest = (void *)ram;
+    s = &connectScreen->unk3C;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = (DISPLAY_HEIGHT - 38);
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
+    s->graphics.anim = gUnknown_080E01B6[connectScreen->unkFA][0];
+    s->variant = gUnknown_080E01B6[connectScreen->unkFA][1];
+    s->prevVariant = -1;
+    s->graphics.dest = (void *)ram;
     ram += gUnknown_080E01B6[connectScreen->unkFA][2] * 0x20;
 
-    element = &connectScreen->unk6C;
-    element->x = (DISPLAY_WIDTH / 2);
-    element->y = (DISPLAY_HEIGHT * (7. / 8.));
-    element->unk1A = 0x100;
-    element->graphics.size = 0;
-    element->unk14 = 0;
-    element->unk1C = 0;
-    element->unk22 = 0x10;
-    element->palId = 0;
-    element->unk28[0].unk0 = -1;
-    element->unk10 = 0x1000;
-    element->graphics.anim = SA2_ANIM_MP_MSG;
-    element->variant = SA2_ANIM_VARIANT_MP_MSG_2;
-    element->unk21 = 0xFF;
-    element->graphics.dest = (void *)ram;
+    s = &connectScreen->unk6C;
+    s->x = (DISPLAY_WIDTH / 2);
+    s->y = (DISPLAY_HEIGHT * (7. / 8.));
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->hitboxes[0].index = -1;
+    s->unk10 = 0x1000;
+    s->graphics.anim = SA2_ANIM_MP_MSG;
+    s->variant = SA2_ANIM_VARIANT_MP_MSG_2;
+    s->prevVariant = -1;
+    s->graphics.dest = (void *)ram;
 
     background = &connectScreen->unk9C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(20);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(20);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_MP_WAIT_CONNECTION;
@@ -237,11 +244,11 @@ void StartSinglePakConnect(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
-    background->unk2E = 0;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
     m4aSongNumStart(MUS_CONNECTION_PENDING);
 
     if (!SomeSioCheck()) {
@@ -268,12 +275,12 @@ void sub_8081C50(void);
 
 void sub_8081604(void)
 {
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     s8 result;
     s32 multiBootFlags;
     struct MultiBootParam *params;
-    NextTransitionFrame(&connectScreen->unk0);
-    sub_80051E8(&connectScreen->unkC);
+    UpdateScreenFade(&connectScreen->fade);
+    DisplaySprite(&connectScreen->unkC);
     result = sub_8081D70(connectScreen);
 
     if (SomeSioCheck()) {
@@ -372,7 +379,7 @@ void sub_80818B8(void)
 {
     u16 i, j;
     u32 temp;
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     if (gMultiSioStatusFlags & MULTI_SIO_LD_REQUEST
         && connectScreen->unkF9 < ARRAY_COUNT(gUnknown_080E0168)) {
         gCurTask->main = sub_8081D04;
@@ -436,7 +443,7 @@ void sub_8081E90(struct SinglePakConnectScreen *);
 void sub_8081A5C(void)
 {
     u32 progress = 0;
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     if (Sio32MultiLoadMain(&progress) != 0) {
         gCurTask->main = sub_8081C8C;
     }
@@ -468,7 +475,7 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     background = &connectScreen->unk9C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = gUnknown_080E0218[connectScreen->unkFA];
@@ -476,11 +483,11 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x1E;
-    background->unk28 = 0x14;
-    background->unk2A = 0;
-    background->unk2E = 0;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x1E;
+    background->targetTilesY = 0x14;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
 
     CpuFill16(0, &gBgPalette[17], 30);
 
@@ -519,7 +526,7 @@ void sub_8081DB4(struct SinglePakConnectScreen *);
 
 void sub_8081C50(void)
 {
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
@@ -533,7 +540,7 @@ void sub_8081CC4(void);
 
 void sub_8081C8C(void)
 {
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
@@ -559,7 +566,7 @@ void sub_8081CC4(void)
 // Send next segment
 void sub_8081D04(void)
 {
-    struct SinglePakConnectScreen *connectScreen = TaskGetStructPtr(gCurTask);
+    struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     MultiSioStop();
     gIntrTable[0] = Sio32MultiLoadIntr;
     Sio32MultiLoadInit(gMultiSioStatusFlags & MULTI_SIO_PARENT,
@@ -599,15 +606,15 @@ void sub_8081DB4(struct SinglePakConnectScreen *connectScreen)
 
 void sub_8081DF0(struct SinglePakConnectScreen *connectScreen, u8 a)
 {
-    sub_8004558(&connectScreen->unk3C);
-    sub_80051E8(&connectScreen->unk3C);
+    UpdateSpriteAnimation(&connectScreen->unk3C);
+    DisplaySprite(&connectScreen->unk3C);
 
     connectScreen->unk6C.graphics.anim = SA2_ANIM_MP_MSG;
     connectScreen->unk6C.variant = a + SA2_ANIM_VARIANT_MP_MSG_OK;
-    connectScreen->unk6C.unk21 = 0xFF;
+    connectScreen->unk6C.prevVariant = -1;
 
-    sub_8004558(&connectScreen->unk6C);
-    sub_80051E8(&connectScreen->unk6C);
+    UpdateSpriteAnimation(&connectScreen->unk6C);
+    DisplaySprite(&connectScreen->unk6C);
 }
 
 // HeartBeatClient

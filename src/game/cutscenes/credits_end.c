@@ -1,14 +1,15 @@
 #include "global.h"
+#include "core.h"
+#include "sprite.h"
+#include "task.h"
+#include "animation_commands_bg.h"
+#include "lib/m4a.h"
+#include "game/game.h"
 #include "game/cutscenes/credits.h"
 #include "game/cutscenes/credits_end.h"
 #include "game/cutscenes/missing_emeralds.h"
-#include "core.h"
-#include "game/game.h"
-#include "sprite.h"
-#include "game/screen_transition.h"
-#include "task.h"
-#include "lib/m4a.h"
 #include "game/save.h"
+#include "game/screen_fade.h"
 #include "game/title_screen.h"
 
 #include "constants/animations.h"
@@ -23,7 +24,7 @@ struct CreditsEndCutScene {
     Sprite unkC0;
     Sprite unkF0;
     Sprite unk120;
-    struct TransitionState transition;
+    ScreenFade fade;
     u8 creditsVariant;
     u8 sequence;
     u8 unk15E;
@@ -83,7 +84,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
     s32 r6 = 1;
     struct Task *t;
     struct CreditsEndCutScene *scene = NULL;
-    struct TransitionState *transition;
+    ScreenFade *fade;
     gDispCnt = 0x1040;
 
     gBgCntRegs[0] = 0x160D;
@@ -112,7 +113,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
     t = TaskCreate(Task_FadeIn, sizeof(struct CreditsEndCutScene), 0x3100, 0,
                    TaskDestroy_CreditsEndCutScene);
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
     scene->delayFrames = 270;
     scene->creditsVariant = creditsVariant;
     scene->sequence = SEQUENCE_GAME_END_SCREEN;
@@ -134,13 +135,13 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         scene->unk170[2][i] = Q_24_8(200);
     }
 
-    transition = &scene->transition;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->unk2 = 2;
-    transition->unkA = 0;
-    transition->speed = 0x100;
-    transition->unk8 = 0x3FFF;
+    fade = &scene->fade;
+    fade->window = 1;
+    fade->brightness = Q_24_8(0);
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->bldAlpha = 0;
+    fade->speed = 0x100;
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
 
     scene->unk16C = OBJ_VRAM0;
 
@@ -153,7 +154,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
             background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
             background->graphics.anim = 0;
-            background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+            background->layoutVram = (void *)BG_SCREEN_ADDR(22);
             background->unk18 = 0;
             background->unk1A = 0;
             background->tilemapId = sTilemapsCreditsEndSlides[2];
@@ -161,74 +162,74 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             background->unk20 = 0;
             background->unk22 = 0;
             background->unk24 = 0;
-            background->unk26 = 0x1E;
-            background->unk28 = 0x14;
-            background->unk2A = 0;
-            background->unk2E = 0;
-            sub_8002A3C(background);
+            background->targetTilesX = 0x1E;
+            background->targetTilesY = 0x14;
+            background->paletteOffset = 0;
+            background->flags = BACKGROUND_FLAGS_BG_ID(0);
+            DrawBackground(background);
         }
 
         {
-            Sprite *element;
-            element = &scene->unkC0;
-            element->graphics.dest = (void *)scene->unk16C;
+            Sprite *s;
+            s = &scene->unkC0;
+            s->graphics.dest = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[0].numTiles * TILE_SIZE_4BPP);
-            element->graphics.anim = gUnknown_080E12D0[0].anim;
-            element->variant = gUnknown_080E12D0[0].variant;
-            element->unk21 = 0xFF;
-            element->x = (DISPLAY_WIDTH / 2);
-            element->y = -20;
-            element->unk1A = 0;
-            element->graphics.size = 0;
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk10 = 0;
-            element->unk28[0].unk0 = -1;
-            sub_8004558(element);
+            s->graphics.anim = gUnknown_080E12D0[0].anim;
+            s->variant = gUnknown_080E12D0[0].variant;
+            s->prevVariant = -1;
+            s->x = (DISPLAY_WIDTH / 2);
+            s->y = -20;
+            s->unk1A = 0;
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->unk10 = 0;
+            s->hitboxes[0].index = -1;
+            UpdateSpriteAnimation(s);
         }
 
         {
-            Sprite *element;
-            element = &scene->unkF0;
-            element->graphics.dest = (void *)scene->unk16C;
+            Sprite *s;
+            s = &scene->unkF0;
+            s->graphics.dest = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[1].numTiles * TILE_SIZE_4BPP);
-            element->graphics.anim = gUnknown_080E12D0[1].anim;
-            element->variant = gUnknown_080E12D0[1].variant;
-            element->unk21 = 0xFF;
-            element->x = (DISPLAY_WIDTH / 2);
-            element->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
-            element->unk1A = 0;
-            element->graphics.size = 0;
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk10 = 0;
-            element->unk28[0].unk0 = -1;
-            sub_8004558(element);
+            s->graphics.anim = gUnknown_080E12D0[1].anim;
+            s->variant = gUnknown_080E12D0[1].variant;
+            s->prevVariant = -1;
+            s->x = (DISPLAY_WIDTH / 2);
+            s->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
+            s->unk1A = 0;
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->unk10 = 0;
+            s->hitboxes[0].index = -1;
+            UpdateSpriteAnimation(s);
         }
 
         {
-            Sprite *element;
-            element = &scene->unk120;
-            element->graphics.dest = (void *)scene->unk16C;
+            Sprite *s;
+            s = &scene->unk120;
+            s->graphics.dest = (void *)scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[2].numTiles * TILE_SIZE_4BPP);
-            element->graphics.anim = gUnknown_080E12D0[2].anim;
-            element->variant = gUnknown_080E12D0[2].variant;
-            element->unk21 = 0xFF;
-            element->x = (DISPLAY_WIDTH / 2);
-            element->y = DISPLAY_HEIGHT + 96;
-            element->unk1A = 0;
-            element->graphics.size = 0;
-            element->unk14 = 0;
-            element->unk1C = 0;
-            element->unk22 = 0x10;
-            element->palId = 0;
-            element->unk10 = 0;
-            element->unk28[0].unk0 = -1;
-            sub_8004558(element);
+            s->graphics.anim = gUnknown_080E12D0[2].anim;
+            s->variant = gUnknown_080E12D0[2].variant;
+            s->prevVariant = -1;
+            s->x = (DISPLAY_WIDTH / 2);
+            s->y = DISPLAY_HEIGHT + 96;
+            s->unk1A = 0;
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->animSpeed = 0x10;
+            s->palId = 0;
+            s->unk10 = 0;
+            s->hitboxes[0].index = -1;
+            UpdateSpriteAnimation(s);
         }
 
         gDispCnt |= 0x100;
@@ -237,7 +238,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
@@ -245,11 +246,11 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
-        background->unk2A = 0;
-        background->unk2E = 0;
-        sub_8002A3C(background);
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
+        background->paletteOffset = 0;
+        background->flags = BACKGROUND_FLAGS_BG_ID(0);
+        DrawBackground(background);
         UpdateBgAnimationTiles(background);
     }
 
@@ -262,7 +263,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(20);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(20);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[scene->unk160];
@@ -270,19 +271,19 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
-        background->unk2A = 0;
-        background->unk2E = 5;
-        sub_8002A3C(background);
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
+        background->paletteOffset = 0;
+        background->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(1);
+        DrawBackground(background);
     }
 }
 
 static void Task_FadeOut(void)
 {
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct TransitionState *transition = &scene->transition;
-    transition->unk2 = 1;
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
+    ScreenFade *fade = &scene->fade;
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         UpdateCongratsMessagePos(scene);
         UpdateMessageLine1Pos(scene);
@@ -291,8 +292,8 @@ static void Task_FadeOut(void)
 
     RenderExtraEndingElements(scene);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_24_8(0);
 
         if (scene->sequence == SEQUENCE_FADE_TO_COPYRIGHT_SCREEN) {
             gCurTask->main = Task_CreateCopyrightScreen;
@@ -304,7 +305,7 @@ static void Task_FadeOut(void)
 
 static void Task_CreateCopyrightScreen(void)
 {
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
 
     if (scene->delayFrames > 0) {
         scene->delayFrames--;
@@ -319,7 +320,7 @@ static void Task_CreateCopyrightScreen(void)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(22);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(22);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[13];
@@ -327,11 +328,11 @@ static void Task_CreateCopyrightScreen(void)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
-        background->unk2A = 0;
-        background->unk2E = 0;
-        sub_8002A3C(background);
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
+        background->paletteOffset = 0;
+        background->flags = BACKGROUND_FLAGS_BG_ID(0);
+        DrawBackground(background);
     }
 
     {
@@ -342,7 +343,7 @@ static void Task_CreateCopyrightScreen(void)
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(21);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(21);
         background->unk18 = 0;
         background->unk1A = 0;
         background->tilemapId = sTilemapsCreditsEndSlides[14];
@@ -350,11 +351,11 @@ static void Task_CreateCopyrightScreen(void)
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 3;
-        background->unk2A = 0;
-        background->unk2E = 2;
-        sub_8002A3C(background);
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 3;
+        background->paletteOffset = 0;
+        background->flags = BACKGROUND_FLAGS_BG_ID(2);
+        DrawBackground(background);
 
         scene->sequence = SEQUENCE_COPYRIGHT_SCREEN;
         scene->sonicAnimFrame++;
@@ -365,7 +366,7 @@ static void Task_CreateCopyrightScreen(void)
 
 static void Task_SequenceMain(void)
 {
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
 
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         UpdateCongratsMessagePos(scene);
@@ -383,10 +384,10 @@ static void Task_SequenceMain(void)
 
                 background->tilemapId
                     = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
-                background->unk26 = 0x1E;
-                background->unk28 = 0x14;
-                background->unk2E = 0;
-                sub_8002A3C(background);
+                background->targetTilesX = 0x1E;
+                background->targetTilesY = 0x14;
+                background->flags = BACKGROUND_FLAGS_BG_ID(0);
+                DrawBackground(background);
                 scene->sonicAnimFrame++;
 
                 scene->unk15E = gUnknown_080E12F0[scene->sonicAnimFrame];
@@ -418,7 +419,7 @@ static void Task_HandleGameCompletion(void)
     u8 charactersCompleted = 0;
     u8 zonesCompleteCharacters = 0;
     u8 i;
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
 
 #ifndef NON_MATCHING
     u16 var = zonesCompleteCharacters;
@@ -480,11 +481,13 @@ static void Task_HandleGameCompletion(void)
                     WriteSaveGame();
                     scene->hasAllEmeralds = FALSE;
                     scene->delayFrames = 105;
-                    scene->transition.unk8 = 0x3FFF;
+                    scene->fade.bldCnt
+                        = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
                 }
             } else {
                 scene->hasAllEmeralds = FALSE;
-                scene->transition.unk8 = 0x3FFF;
+                scene->fade.bldCnt
+                    = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
                 scene->delayFrames = 105;
             }
         } else {
@@ -507,7 +510,7 @@ static void Task_HandleGameCompletion(void)
 
 static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
 {
-    Sprite *element;
+    Sprite *s;
     if (scene->creditsVariant != CREDITS_VARIANT_EXTRA_ENDING) {
         return;
     }
@@ -518,13 +521,13 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
 
     // on for 30 frames
     if (scene->congratsAnimFrame >= 1) {
-        element = &scene->unkC0;
-        element->graphics.anim = gUnknown_080E12D0[0].anim;
-        element->variant = gUnknown_080E12D0[0].variant;
-        element->x = scene->unk170[0][0];
-        element->y = scene->unk170[0][1] >> 8;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &scene->unkC0;
+        s->graphics.anim = gUnknown_080E12D0[0].anim;
+        s->variant = gUnknown_080E12D0[0].variant;
+        s->x = scene->unk170[0][0];
+        s->y = scene->unk170[0][1] >> 8;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
         scene->congratsAnimFrame--;
     } else if (scene->congratsAnimFrame > -15 && scene->congratsAnimFrame < 1) {
         // off for 15 frames
@@ -535,29 +538,29 @@ static void RenderExtraEndingElements(struct CreditsEndCutScene *scene)
     }
 
     if (scene->sonicAnimFrame == 11) {
-        element = &scene->unkF0;
-        element->graphics.anim = gUnknown_080E12D0[1].anim;
-        element->variant = gUnknown_080E12D0[1].variant;
-        element->x = scene->unk170[1][0];
-        element->y = scene->unk170[1][1] >> 8;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &scene->unkF0;
+        s->graphics.anim = gUnknown_080E12D0[1].anim;
+        s->variant = gUnknown_080E12D0[1].variant;
+        s->x = scene->unk170[1][0];
+        s->y = scene->unk170[1][1] >> 8;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
 
-        element = &scene->unk120;
-        element->graphics.anim = gUnknown_080E12D0[2].anim;
-        element->variant = gUnknown_080E12D0[2].variant;
-        element->x = scene->unk170[2][0];
-        element->y = scene->unk170[2][1] >> 8;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &scene->unk120;
+        s->graphics.anim = gUnknown_080E12D0[2].anim;
+        s->variant = gUnknown_080E12D0[2].variant;
+        s->x = scene->unk170[2][0];
+        s->y = scene->unk170[2][1] >> 8;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
 static void Task_FadeIn(void)
 {
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct TransitionState *transition = &scene->transition;
-    transition->unk2 = 2;
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
+    ScreenFade *fade = &scene->fade;
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     if (scene->creditsVariant == CREDITS_VARIANT_EXTRA_ENDING) {
         UpdateCongratsMessagePos(scene);
@@ -567,15 +570,15 @@ static void Task_FadeIn(void)
 
     RenderExtraEndingElements(scene);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         gCurTask->main = Task_SequenceMain;
     }
 }
 
 static void Task_SequenceEnd(void)
 {
-    struct CreditsEndCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct CreditsEndCutScene *scene = TASK_DATA(gCurTask);
     if (scene->delayFrames > 0) {
         scene->delayFrames--;
         return;

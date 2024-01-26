@@ -2,6 +2,9 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
+#include "game/dust_effect_braking.h"
 
 #include "constants/animations.h"
 
@@ -12,6 +15,8 @@ typedef struct {
     /* 0x06 */ u16 unk6;
     /* 0x08 */ Sprite s;
 } BrakeDustEffect;
+
+UNK_30059D0 ALIGNED(8) gUnknown_030059D0 = {};
 
 void Task_801F6E0(void);
 void TaskDestructor_801F7A8(struct Task *);
@@ -36,7 +41,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
         t = TaskCreate(Task_801F6E0, sizeof(BrakeDustEffect), 0x4001, 0,
                        TaskDestructor_801F7B8);
 
-        bde = TaskGetStructPtr(t);
+        bde = TASK_DATA(t);
         bde->x = x;
         bde->y = y;
         bde->unk4 = 0;
@@ -62,10 +67,10 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
         }
 
         s->graphics.size = 0;
-        s->unk21 = 0xFF;
-        s->unk1A = 0x200;
-        s->unk1C = 0;
-        s->unk22 = 0x10;
+        s->prevVariant = -1;
+        s->unk1A = SPRITE_OAM_ORDER(8);
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
         s->palId = 0;
 
         return t;
@@ -75,7 +80,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
 void Task_801F6E0(void)
 {
     UNK_30059D0 *unk = &gUnknown_030059D0;
-    BrakeDustEffect *bde = TaskGetStructPtr(gCurTask);
+    BrakeDustEffect *bde = TASK_DATA(gCurTask);
     Sprite *s = &bde->s;
 
     if (unk->t == 0 || (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
@@ -85,8 +90,8 @@ void Task_801F6E0(void)
     } else {
         s->x = bde->x - gCamera.x;
         s->y = bde->y - gCamera.y;
-        sub_8004558(s);
-        sub_80051E8(s);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
 
         bde->x += bde->unk4;
         bde->y += bde->unk6;
@@ -116,7 +121,7 @@ void Task_801F7B4(void) { }
 
 void TaskDestructor_801F7B8(struct Task *t)
 {
-    BrakeDustEffect *bde = TaskGetStructPtr(t);
+    BrakeDustEffect *bde = TASK_DATA(t);
     Sprite *s = &bde->s;
 
     if (s->graphics.anim == SA2_ANIM_BRAKING_DUST_EFFECT) {

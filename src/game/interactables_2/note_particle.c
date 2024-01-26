@@ -3,6 +3,8 @@
 #include "malloc_vram.h"
 
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
@@ -20,8 +22,8 @@ typedef struct {
     /* 0x3C */ s32 offsetY;
     /* 0x40 */ s16 accelX;
     /* 0x42 */ s16 accelY;
-    /* 0x44 */ u16 unk44;
-    /* 0x46 */ u16 unk46;
+    /* 0x44 */ u16 framesUntilVisible;
+    /* 0x46 */ u16 framesUntilDestroyed;
     /* 0x48 */ u8 kind;
 } Sprite_NoteParticle; /* size: 0x4C */
 
@@ -37,101 +39,88 @@ static void Task_8080DB8(void);
 static void Task_8080E54(void);
 static void TaskDestructor_8080EF8(struct Task *);
 
-void sub_8080AFC(s32 posX, s32 posY, u16 p2, u16 p3, s16 velocity, u8 quarterAngle,
-                 u8 kind)
+void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed,
+                 s16 velocity, u8 quarterAngle, u8 kind)
 {
     struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_NoteParticle), 0x2010, 0,
                                 TaskDestructor_8080EF8);
-    Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
-    sprite->posX = posX;
-    sprite->posY = posY;
-    sprite->offsetX = 0;
-    sprite->offsetY = 0;
+    Sprite_NoteParticle *np = TASK_DATA(t);
+    Sprite *s = &np->s;
 
-    sprite->accelX = Q_24_8_TO_INT(velocity * Q_2_14_TO_Q_24_8(COS(quarterAngle * 4)));
-    sprite->accelY = Q_24_8_TO_INT(velocity * Q_2_14_TO_Q_24_8(SIN(quarterAngle * 4)));
-    sprite->unk44 = p2;
-    sprite->unk46 = p3;
-    sprite->kind = kind;
+    np->posX = posX;
+    np->posY = posY;
+    np->offsetX = 0;
+    np->offsetY = 0;
 
-    sprite->s.unk1A = 0x180;
-    sprite->s.graphics.size = 0;
-    sprite->s.unk14 = 0;
-    sprite->s.unk1C = 0;
-    sprite->s.unk21 = 0xFF;
-    sprite->s.unk22 = 0x10;
-    sprite->s.palId = 0;
-    sprite->s.unk28->unk0 = -1;
+    np->accelX = Q_24_8_TO_INT(velocity * Q_2_14_TO_Q_24_8(COS(quarterAngle * 4)));
+    np->accelY = Q_24_8_TO_INT(velocity * Q_2_14_TO_Q_24_8(SIN(quarterAngle * 4)));
+    np->framesUntilVisible = framesUntilVisible;
+    np->framesUntilDestroyed = framesUntilDestroyed;
+    np->kind = kind;
 
-    sprite->s.unk10 = gUnknown_080E0140[kind][4] << 12;
+    SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 6, gUnknown_080E0140[kind][4], 0);
 
     if (gUnknown_080E0140[kind][3] != 0) {
-        sprite->s.graphics.dest = VramMalloc(gUnknown_080E0140[kind][2]);
+        s->graphics.dest = VramMalloc(gUnknown_080E0140[kind][2]);
     } else {
-        sprite->s.graphics.dest
+        s->graphics.dest
             = (void *)(OBJ_VRAM0 + gUnknown_080E0140[kind][2] * TILE_SIZE_4BPP);
     }
 
-    sprite->s.graphics.anim = gUnknown_080E0140[kind][0];
-    sprite->s.variant = gUnknown_080E0140[kind][1];
-    sub_8004558(&sprite->s);
+    s->graphics.anim = gUnknown_080E0140[kind][0];
+    s->variant = gUnknown_080E0140[kind][1];
+    UpdateSpriteAnimation(s);
 }
 
-void sub_8080C78(s32 p0, s32 p1, u16 p2, u16 p3, s16 accelX, s16 accelY, u8 kind)
+void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed,
+                 s16 accelX, s16 accelY, u8 kind)
 {
     struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_NoteParticle), 0x2010, 0,
                                 TaskDestructor_8080EF8);
-    Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
-    sprite->posX = p0;
-    sprite->posY = p1;
-    sprite->offsetX = 0;
-    sprite->offsetY = 0;
+    Sprite_NoteParticle *np = TASK_DATA(t);
+    Sprite *s = &np->s;
 
-    sprite->accelX = accelX;
-    sprite->accelY = accelY;
-    sprite->unk44 = p2;
-    sprite->unk46 = p3;
-    sprite->kind = kind;
+    np->posX = posX;
+    np->posY = posY;
+    np->offsetX = 0;
+    np->offsetY = 0;
 
-    sprite->s.unk1A = 0x180;
-    sprite->s.graphics.size = 0;
-    sprite->s.unk14 = 0;
-    sprite->s.unk1C = 0;
-    sprite->s.unk21 = 0xFF;
-    sprite->s.unk22 = 0x10;
-    sprite->s.palId = 0;
-    sprite->s.unk28->unk0 = -1;
+    np->accelX = accelX;
+    np->accelY = accelY;
+    np->framesUntilVisible = framesUntilVisible;
+    np->framesUntilDestroyed = framesUntilDestroyed;
+    np->kind = kind;
 
-    sprite->s.unk10 = gUnknown_080E0140[kind][4] << 12;
+    SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(s, 6, gUnknown_080E0140[kind][4], 0);
 
     if (gUnknown_080E0140[kind][3] != 0) {
-        sprite->s.graphics.dest = VramMalloc(gUnknown_080E0140[kind][2]);
+        s->graphics.dest = VramMalloc(gUnknown_080E0140[kind][2]);
     } else {
-        sprite->s.graphics.dest
+        s->graphics.dest
             = (void *)(OBJ_VRAM0 + gUnknown_080E0140[kind][2] * TILE_SIZE_4BPP);
     }
 
-    sprite->s.graphics.anim = gUnknown_080E0140[kind][0];
-    sprite->s.variant = gUnknown_080E0140[kind][1];
+    s->graphics.anim = gUnknown_080E0140[kind][0];
+    s->variant = gUnknown_080E0140[kind][1];
 }
 
 static void Task_8080DB8(void)
 {
     struct Task *t = gCurTask;
-    Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
-    if (--sprite->unk46 == (u16)-1) {
+    Sprite_NoteParticle *np = TASK_DATA(t);
+    if (--np->framesUntilDestroyed == (u16)-1) {
         TaskDestroy(t);
     } else {
-        sprite->offsetX += sprite->accelX;
-        sprite->offsetY += sprite->accelY;
-        sprite->s.x = (sprite->posX - gCamera.x) + Q_24_8_TO_INT(sprite->offsetX);
-        sprite->s.y = (sprite->posY - gCamera.y) + Q_24_8_TO_INT(sprite->offsetY);
-        sub_8004558(&sprite->s);
+        np->offsetX += np->accelX;
+        np->offsetY += np->accelY;
+        np->s.x = (np->posX - gCamera.x) + Q_24_8_TO_INT(np->offsetX);
+        np->s.y = (np->posY - gCamera.y) + Q_24_8_TO_INT(np->offsetY);
+        UpdateSpriteAnimation(&np->s);
 
-        if (sprite->unk44 == 0) {
-            sub_80051E8(&sprite->s);
+        if (np->framesUntilVisible == 0) {
+            DisplaySprite(&np->s);
         } else {
-            sprite->unk44--;
+            np->framesUntilVisible--;
         }
     }
 }
@@ -139,32 +128,32 @@ static void Task_8080DB8(void)
 static void Task_8080E54(void)
 {
     struct Task *t = gCurTask;
-    Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
-    if (--sprite->unk46 == (u16)-1) {
+    Sprite_NoteParticle *np = TASK_DATA(t);
+    if (--np->framesUntilDestroyed == (u16)-1) {
         TaskDestroy(t);
     } else {
-        sprite->offsetX += sprite->accelX;
-        sprite->offsetY += sprite->accelY;
+        np->offsetX += np->accelX;
+        np->offsetY += np->accelY;
 
         // TODO: Remove magic number
-        sprite->accelY += Q_8_8(1. / 6.);
+        np->accelY += Q_8_8(1. / 6.);
 
-        sprite->s.x = (sprite->posX - gCamera.x) + Q_24_8_TO_INT(sprite->offsetX);
-        sprite->s.y = (sprite->posY - gCamera.y) + Q_24_8_TO_INT(sprite->offsetY);
-        sub_8004558(&sprite->s);
+        np->s.x = (np->posX - gCamera.x) + Q_24_8_TO_INT(np->offsetX);
+        np->s.y = (np->posY - gCamera.y) + Q_24_8_TO_INT(np->offsetY);
+        UpdateSpriteAnimation(&np->s);
 
-        if (sprite->unk44 == 0) {
-            sub_80051E8(&sprite->s);
+        if (np->framesUntilVisible == 0) {
+            DisplaySprite(&np->s);
         } else {
-            sprite->unk44--;
+            np->framesUntilVisible--;
         }
     }
 }
 
 static void TaskDestructor_8080EF8(struct Task *t)
 {
-    Sprite_NoteParticle *sprite = TaskGetStructPtr(t);
-    if (gUnknown_080E0140[sprite->kind][3] != 0) {
-        VramFree(sprite->s.graphics.dest);
+    Sprite_NoteParticle *np = TASK_DATA(t);
+    if (gUnknown_080E0140[np->kind][3] != 0) {
+        VramFree(np->s.graphics.dest);
     }
 }

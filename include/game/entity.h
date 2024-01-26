@@ -5,6 +5,8 @@
 #include "gba/types.h"
 #include "sprite.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #define ENTITY_DATA_SIZE_SA1 4
 #define ENTITY_DATA_SIZE_SA2 4
@@ -31,6 +33,12 @@ typedef struct PACKED {
     /* 0x02 */ u8 index;
 } MapEntity_Itembox;
 
+typedef struct PACKED {
+    /* 0x00 */ u8 x; // While an enemy is active, x gets repurposed as a "state"
+                     // (e.g. indicating that it's active)
+    /* 0x01 */ u8 y;
+} MapEntity_Ring;
+
 typedef struct {
     /* 0x00 */ MapEntity *me;
     /* 0x04 */ u16 regionX;
@@ -43,21 +51,18 @@ typedef struct {
 bool32 sub_800C204(Sprite *, s32, s32, s16, Player *, u32);
 
 u32 sub_800CDBC(Sprite *, s32, s32, Player *);
-bool32 sub_800CBA4(Player *);
+
 u32 sub_800DF38(Sprite *, s32, s32, Player *);
-
-// TODO: Include header this belongs to
-u32 sub_800C944(Sprite *, s32, s32);
-
-// TODO: Include header this belongs to
-bool32 sub_800CA20(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
 u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
 
-void sub_801FD34(s32, s32, s32);
-
 // After a MapEntity is initialized, its x-value in the layout-data gets set to -2.
+// TODO:
+// Find out whether casting these to u8 can work while still matching!
+#define MAP_ENTITY_STATE_ARRAY_END   (-1)
 #define MAP_ENTITY_STATE_INITIALIZED (-2)
 #define MAP_ENTITY_STATE_MINUS_THREE (-3)
+
+// TODO: Find a way to simplify/remove this macro!
 #define SET_MAP_ENTITY_INITIALIZED(mapEnt)                                              \
     {                                                                                   \
         s32 negativeTwo;                                                                \
@@ -99,8 +104,8 @@ void sub_801FD34(s32, s32, s32);
 #define ENEMY_UPDATE_EX_RAW(_s, _posX, _posY, code_insert)                              \
     sub_80122DC(_posX, _posY);                                                          \
     { code_insert };                                                                    \
-    sub_8004558(_s);                                                                    \
-    sub_80051E8(_s);
+    UpdateSpriteAnimation(_s);                                                          \
+    DisplaySprite(_s);
 
 #define ENEMY_UPDATE_EX(_s, _posX, _posY, code_insert)                                  \
     ENEMY_UPDATE_EX_RAW(_s, Q_24_8_NEW(_posX), Q_24_8_NEW(_posY), code_insert);
@@ -141,12 +146,18 @@ void sub_801FD34(s32, s32, s32);
     ((Q_24_8_TO_INT(_enemy->offsetX)                                                    \
       >= (_mapEntity->d.sData[0] * TILE_WIDTH + _mapEntity->d.uData[2] * TILE_WIDTH)))
 
+#define ENEMY_CROSSED_TOP_BORDER_RAW(_enemy, _mapEntity, _offsetY)                      \
+    ((_offsetY <= _mapEntity->d.sData[1] * TILE_WIDTH))
+
 #define ENEMY_CROSSED_TOP_BORDER(_enemy, _mapEntity)                                    \
-    ((Q_24_8_TO_INT(_enemy->offsetY) <= _mapEntity->d.sData[1] * TILE_WIDTH))
+    ENEMY_CROSSED_TOP_BORDER_RAW(_enemy, _mapEntity, Q_24_8_TO_INT(_enemy->offsetY))
+
+#define ENEMY_CROSSED_BOTTOM_BORDER_RAW(_enemy, _mapEntity, _offsetY)                   \
+    ((_offsetY                                                                          \
+      >= (_mapEntity->d.sData[1] * TILE_WIDTH + _mapEntity->d.uData[3] * TILE_WIDTH)))
 
 #define ENEMY_CROSSED_BOTTOM_BORDER(_enemy, _mapEntity)                                 \
-    ((Q_24_8_TO_INT(_enemy->offsetY)                                                    \
-      >= (_mapEntity->d.sData[1] * TILE_WIDTH + _mapEntity->d.uData[3] * TILE_WIDTH)))
+    ENEMY_CROSSED_BOTTOM_BORDER_RAW(_enemy, _mapEntity, Q_24_8_TO_INT(_enemy->offsetY))
 
 #define ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, _task)                        \
     sub_801F100(Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY),                        \
@@ -158,11 +169,11 @@ void sub_801FD34(s32, s32, s32);
                 Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY), _unknownBool, 8,       \
                 sub_801EC3C);
 
-#define ENEMY_CLAMP_TO_GROUND(_enemy, _unknownBool)                                     \
+#define ENEMY_CLAMP_TO_GROUND_RAW(_enemy, _unknownBool, _p)                             \
     {                                                                                   \
         s32 delta = sub_801F07C(Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY),        \
                                 Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX),        \
-                                _unknownBool, 8, NULL, sub_801EE64);                    \
+                                _unknownBool, 8, _p, sub_801EE64);                      \
                                                                                         \
         if (delta < 0) {                                                                \
             _enemy->offsetY += Q_24_8(delta);                                           \
@@ -171,6 +182,25 @@ void sub_801FD34(s32, s32, s32);
                                                                                         \
         if (delta > 0) {                                                                \
             _enemy->offsetY += Q_24_8(delta);                                           \
+        }                                                                               \
+    }
+
+#define ENEMY_CLAMP_TO_GROUND(_enemy, _unknownBool)                                     \
+    ENEMY_CLAMP_TO_GROUND_RAW(_enemy, _unknownBool, NULL)
+
+#define ENEMY_CLAMP_TO_GROUND_2(_enemy, _unknownBool)                                   \
+    {                                                                                   \
+        s32 delta = sub_801F07C(Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY),        \
+                                Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX),        \
+                                _unknownBool, -8, NULL, sub_801EE64);                   \
+                                                                                        \
+        if (delta < 0) {                                                                \
+            _enemy->offsetY -= Q_24_8(delta);                                           \
+            delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, sub_801EC3C);     \
+        }                                                                               \
+                                                                                        \
+        if (delta > 0) {                                                                \
+            _enemy->offsetY -= Q_24_8(delta);                                           \
         }                                                                               \
     }
 

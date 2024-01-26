@@ -4,6 +4,8 @@
 #include "task.h"
 
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 
 #include "constants/animations.h"
@@ -17,13 +19,13 @@ void Task_Decoration(void);
 void TaskDestructor_Decoration(struct Task *);
 
 static const TileInfo sDecoTileAnimInfo[7] = {
-    { 2, SA2_ANIM_FLOWER_BLUE_SMALL, 0 },
-    { 4, SA2_ANIM_FLOWER_BLUE, 0 },
-    { 2, SA2_ANIM_FLOWER_RED_SMALL, 0 },
-    { 4, SA2_ANIM_FLOWER_YELLOW, 0 },
-    { 14, SA2_ANIM_ROCK, 0 },
-    { 0, SA2_ANIM_552, 0 },
-    { 12, SA2_ANIM_WATER_GROUND_SPLASH, 0 },
+    { 2, SA2_ANIM_DECORATION__FLOWER_BLUE_SMALL, 0 },
+    { 4, SA2_ANIM_DECORATION__FLOWER_BLUE, 0 },
+    { 2, SA2_ANIM_DECORATION__FLOWER_RED_SMALL, 0 },
+    { 4, SA2_ANIM_DECORATION__FLOWER_YELLOW, 0 },
+    { 14, SA2_ANIM_DECORATION__ROCK, 0 },
+    { 0, SA2_ANIM_DECORATION__552, 0 },
+    { 12, SA2_ANIM_DECORATION__WATER_GROUND_SPLASH, 0 },
 };
 
 #define decoId d.sData[0]
@@ -31,47 +33,47 @@ static const TileInfo sDecoTileAnimInfo[7] = {
 void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY)
 {
     struct Task *t;
-    Sprite_Decoration *decoBase;
-    Sprite *deco;
+    Sprite_Decoration *base;
+    Sprite *s;
 
     if (me->decoId >= 0) {
         t = TaskCreate(Task_Decoration, sizeof(Sprite_Decoration), 0x2010, 0,
                        TaskDestructor_Decoration);
-        decoBase = TaskGetStructPtr(t);
-        deco = &decoBase->displayed;
+        base = TASK_DATA(t);
+        s = &base->displayed;
 
-        decoBase->base.regionX = regionX;
-        decoBase->base.regionY = regionY;
+        base->base.regionX = regionX;
+        base->base.regionY = regionY;
 
-        decoBase->base.me = me;
-        decoBase->base.spriteX = me->x;
-        decoBase->base.spriteY = spriteY;
+        base->base.me = me;
+        base->base.spriteX = me->x;
+        base->base.spriteY = spriteY;
 
-        deco->x = TO_WORLD_POS(me->x, regionX);
-        deco->y = TO_WORLD_POS(me->y, regionY);
+        s->x = TO_WORLD_POS(me->x, regionX);
+        s->y = TO_WORLD_POS(me->y, regionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        deco->graphics.dest = VramMalloc(sDecoTileAnimInfo[me->decoId].numTiles);
-        deco->graphics.anim = sDecoTileAnimInfo[me->decoId].anim;
-        deco->variant = sDecoTileAnimInfo[me->decoId].variant;
+        s->graphics.dest = VramMalloc(sDecoTileAnimInfo[me->decoId].numTiles);
+        s->graphics.anim = sDecoTileAnimInfo[me->decoId].anim;
+        s->variant = sDecoTileAnimInfo[me->decoId].variant;
 
-        deco->unk1A = 0x700;
-        deco->graphics.size = 0;
-        deco->unk14 = 0;
-        deco->unk1C = 0;
-        deco->unk21 = 0xFF;
-        deco->unk22 = 0x10;
-        deco->palId = 0;
-        deco->unk28[0].unk0 = -1;
-        deco->unk10 = 0x2000;
+        s->unk1A = SPRITE_OAM_ORDER(28);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0x2000;
     }
 }
 
 void Task_Decoration(void)
 {
-    Sprite_Decoration *decoBase = TaskGetStructPtr(gCurTask);
-    Sprite *deco = &decoBase->displayed;
-    MapEntity *me = decoBase->base.me;
+    Sprite_Decoration *base = TASK_DATA(gCurTask);
+    Sprite *s = &base->displayed;
+    MapEntity *me = base->base.me;
     s32 screenX;
 
 #ifndef NON_MATCHING
@@ -80,30 +82,30 @@ void Task_Decoration(void)
     s32 screenY;
 #endif
 
-    screenX = (decoBase->base.spriteX) * TILE_WIDTH;
-    screenX += (decoBase->base.regionX) * CAM_REGION_WIDTH;
+    screenX = (base->base.spriteX) * TILE_WIDTH;
+    screenX += (base->base.regionX) * CAM_REGION_WIDTH;
     screenY = (me->y) * TILE_WIDTH;
-    screenY += (decoBase->base.regionY) * CAM_REGION_WIDTH;
+    screenY += (base->base.regionY) * CAM_REGION_WIDTH;
 
     screenX -= gCamera.x;
-    deco->x = screenX;
+    s->x = screenX;
     screenY -= gCamera.y;
-    deco->y = screenY;
+    s->y = screenY;
 
-    if (IS_OUT_OF_CAM_RANGE(screenX, deco->y)) {
-        me->x = decoBase->base.spriteX;
+    if (IS_OUT_OF_CAM_RANGE(screenX, s->y)) {
+        me->x = base->base.spriteX;
         TaskDestroy(gCurTask);
     } else {
-        sub_8004558(deco);
-        sub_80051E8(deco);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
 // InteractableDecorationOnDestroy
 void TaskDestructor_Decoration(struct Task *t)
 {
-    Sprite_Decoration *deco = TaskGetStructPtr(t);
-    VramFree(deco->displayed.graphics.dest);
+    Sprite_Decoration *s = TASK_DATA(t);
+    VramFree(s->displayed.graphics.dest);
 }
 
 #undef decoId

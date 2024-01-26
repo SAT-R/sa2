@@ -4,33 +4,35 @@
 #include "sprite.h"
 #include "trig.h"
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/underwater_effects.h"
+#include "game/water_effects.h"
 #include "game/game_3.h"
 
 #include "constants/animations.h"
+
+typedef struct {
+    Player *p;
+} DrownBubbles;
+
+u8 gSmallAirBubbleCount = 0;
 
 static void Task_DrowningCountdown(void);
 static void Task_SpawnAirBubbles(void);
 
 static void TaskDestructor_SpawnAirBubbles(struct Task *t);
 
-typedef struct {
-    Player *p;
-} DrownBubbles;
-
 static void Task_DrowningCountdown(void)
 {
-    TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
+    TaskStrc_801F15C *ts = TASK_DATA(gCurTask);
     Sprite *s = &ts->s;
     SpriteTransform *transform = &ts->transform;
 
     s32 r2;
 
-    {
-        struct Camera *cam = &gCamera;
-        transform->x = Q_24_8_TO_INT(ts->x);
-        transform->y = Q_24_8_TO_INT(ts->y);
-    }
+    transform->x = Q_24_8_TO_INT(ts->x);
+    transform->y = Q_24_8_TO_INT(ts->y);
 
     r2 = ((ts->unk10 + 1) << 3);
     r2 = MIN(r2, 0x100);
@@ -44,7 +46,8 @@ static void Task_DrowningCountdown(void)
     if (ts->unk14 & 0x2)
         transform->height = -transform->height;
 
-    if (((u16)(transform->x + 0x20) > 0x130) || ((u16)(transform->y + 0x20) > 0xE0)
+    if ((transform->x < -32 || transform->x > DISPLAY_WIDTH + 32)
+        || (transform->y < -32 || transform->y > DISPLAY_HEIGHT + 32)
         || (ts->unk10 > 0x80)) {
         TaskDestroy(gCurTask);
         return;
@@ -57,9 +60,9 @@ static void Task_DrowningCountdown(void)
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
     s->unk10 |= (gUnknown_030054B8++ | 0x20);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
     sub_8004860(s, transform);
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
@@ -67,7 +70,7 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
     struct Camera *cam = &gCamera;
     struct Task *t
         = sub_801F15C(0, 0, 0, 0, Task_DrowningCountdown, TaskDestructor_801F550);
-    TaskStrc_801F15C *ts = TaskGetStructPtr(t);
+    TaskStrc_801F15C *ts = TASK_DATA(t);
     Sprite *s;
     SpriteTransform *transform;
     s32 temp;
@@ -84,11 +87,11 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
     s->graphics.anim = SA2_ANIM_DROWN_COUNTDOWN;
     s->variant = 5 - countdown;
 
-    s->unk1A = 0x240;
+    s->unk1A = SPRITE_OAM_ORDER(9);
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     transform = &ts->transform;
-    transform->unk0 = 0;
+    transform->rotation = 0;
     transform->width = 0;
     transform->height = 0;
     transform->x = 0;
@@ -113,7 +116,7 @@ struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
         t = sub_801F15C(0, 0, 0, 0, Task_SpawnAirBubbles,
                         TaskDestructor_SpawnAirBubbles);
 
-        ts = TaskGetStructPtr(t);
+        ts = TASK_DATA(t);
         s = &ts->s;
         transform = &ts->transform;
 
@@ -137,9 +140,9 @@ struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
             ts->unk14 = (((u32)PseudoRandom32() & 0x30000) >> 16);
         }
 
-        s->unk1A = 0x240;
+        s->unk1A = SPRITE_OAM_ORDER(9);
 
-        transform->unk0 = 0;
+        transform->rotation = 0;
         transform->width = 0;
         transform->height = 0;
         transform->x = 0;
@@ -155,7 +158,7 @@ bool32 RandomlySpawnAirBubbles(Player *p)
 
     u32 result = FALSE;
 
-    u32 flags = gUnknown_03005590 & 0x7;
+    u32 flags = gStageTime & 0x7;
     if (!flags) {
         rand = ((u32)PseudoRandom32() & 0x300);
         if (!rand) {
@@ -177,7 +180,7 @@ bool32 RandomlySpawnAirBubbles(Player *p)
 
 static void Task_SpawnAirBubbles(void)
 {
-    TaskStrc_801F15C *ts = TaskGetStructPtr(gCurTask);
+    TaskStrc_801F15C *ts = TASK_DATA(gCurTask);
     Sprite *s = &ts->s;
     SpriteTransform *transform = &ts->transform;
 
@@ -205,9 +208,10 @@ static void Task_SpawnAirBubbles(void)
     if (ts->unk14 & 0x2)
         transform->height = -transform->height;
 
-    if (((u16)(transform->x + 0x20) > 0x130) || ((u16)(transform->y + 0x20) > 0xE0)
-        || ((u16)gUnknown_03005660.unk0 != 1) || (gUnknown_03005660.unk4 < 0)
-        || (Q_24_8_TO_INT(r4) - 3 < gUnknown_03005660.unk4) || (ts->unk10 > 0x1E0)) {
+    if ((transform->x < -32 || transform->x > DISPLAY_WIDTH + 32)
+        || (transform->y < -32 || transform->y > DISPLAY_HEIGHT + 32)
+        || (gWater.isActive != TRUE) || (gWater.currentWaterLevel < 0)
+        || (Q_24_8_TO_INT(r4) - 3 < gWater.currentWaterLevel) || (ts->unk10 > 0x1E0)) {
         TaskDestroy(gCurTask);
         return;
     } else {
@@ -220,21 +224,21 @@ static void Task_SpawnAirBubbles(void)
 
         s->unk10 |= (gUnknown_030054B8++ | 0x20);
 
-        sub_8004558(s);
+        UpdateSpriteAnimation(s);
         sub_8004860(s, transform);
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
 static void Task_SpawnBubblesAfterDrowning(void)
 {
-    DrownBubbles *db = TaskGetStructPtr(gCurTask);
+    DrownBubbles *db = TASK_DATA(gCurTask);
     Player *p = db->p;
 
     if (IS_ALIVE(p)) {
         TaskDestroy(gCurTask);
         return;
-    } else if (!(gUnknown_03005590 & (0x2 | 0x1))) {
+    } else if (!(gStageTime & (0x2 | 0x1))) {
         if ((PseudoRandom32() & 0x300) == 0) {
             s32 r4 = ((u32)PseudoRandom32() & 0x100) >> 8;
 
@@ -259,7 +263,7 @@ struct Task *SpawnBubblesAfterDrowning(Player *p)
     struct Task *t
         = TaskCreate(Task_SpawnBubblesAfterDrowning, sizeof(Player **), 0x4001, 0, NULL);
 
-    DrownBubbles *db = TaskGetStructPtr(t);
+    DrownBubbles *db = TASK_DATA(t);
     db->p = p;
 
     return t;

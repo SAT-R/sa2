@@ -1,81 +1,81 @@
 
-#include "../data/tilemaps/zone_1_act_1_fg/header.c"
-#include "../data/tilemaps/zone_1_act_2_fg/header.c"
-#include "../data/tilemaps/zone_1_act_boss_fg/header.c"
+#include "../data/maps/zone_1/act_1/tilemaps/fg/header.c"
+#include "../data/maps/zone_1/act_2/tilemaps/fg/header.c"
+#include "../data/maps/zone_1/act_boss/tilemaps/fg/header.c"
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
-#include "../data/tilemaps/zone_1_act_dummy_fg/header.c"
+#include "../data/maps/zone_1/act_dummy/tilemaps/fg/header.c"
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
 // zone_1_act_dummy_fg shares the pointer with zone_1_act_dummy_fg.
-#include "../data/tilemaps/zone_2_act_1_fg/header.c"
-#include "../data/tilemaps/zone_2_act_2_fg/header.c"
-#include "../data/tilemaps/zone_2_act_boss_fg/header.c"
-#include "../data/tilemaps/zone_3_act_1_fg/header.c"
-#include "../data/tilemaps/zone_3_act_2_fg/header.c"
-#include "../data/tilemaps/zone_3_act_boss_fg/header.c"
-#include "../data/tilemaps/zone_4_act_1_fg/header.c"
-#include "../data/tilemaps/zone_4_act_2_fg/header.c"
-#include "../data/tilemaps/zone_4_act_boss_fg/header.c"
-#include "../data/tilemaps/zone_5_act_1_fg/header.c"
-#include "../data/tilemaps/zone_5_act_2_fg/header.c"
-#include "../data/tilemaps/zone_5_act_boss_fg/header.c"
-#include "../data/tilemaps/zone_6_act_1_fg/header.c"
-#include "../data/tilemaps/zone_6_act_2_fg/header.c"
-#include "../data/tilemaps/zone_6_act_boss_fg/header.c"
-#include "../data/tilemaps/zone_7_act_1_fg/header.c"
-#include "../data/tilemaps/zone_7_act_2_fg/header.c"
-#include "../data/tilemaps/zone_7_act_boss_fg/header.c"
-#include "../data/tilemaps/zone_final_act_xx_fg/header.c"
-#include "../data/tilemaps/zone_final_act_ta53_fg/header.c"
-#include "../data/tilemaps/zone_final_act_unused_fg/header.c"
-#include "../data/tilemaps/zone_1_act_1_bg/header.c"
+#include "../data/maps/zone_2/act_1/tilemaps/fg/header.c"
+#include "../data/maps/zone_2/act_2/tilemaps/fg/header.c"
+#include "../data/maps/zone_2/act_boss/tilemaps/fg/header.c"
+#include "../data/maps/zone_3/act_1/tilemaps/fg/header.c"
+#include "../data/maps/zone_3/act_2/tilemaps/fg/header.c"
+#include "../data/maps/zone_3/act_boss/tilemaps/fg/header.c"
+#include "../data/maps/zone_4/act_1/tilemaps/fg/header.c"
+#include "../data/maps/zone_4/act_2/tilemaps/fg/header.c"
+#include "../data/maps/zone_4/act_boss/tilemaps/fg/header.c"
+#include "../data/maps/zone_5/act_1/tilemaps/fg/header.c"
+#include "../data/maps/zone_5/act_2/tilemaps/fg/header.c"
+#include "../data/maps/zone_5/act_boss/tilemaps/fg/header.c"
+#include "../data/maps/zone_6/act_1/tilemaps/fg/header.c"
+#include "../data/maps/zone_6/act_2/tilemaps/fg/header.c"
+#include "../data/maps/zone_6/act_boss/tilemaps/fg/header.c"
+#include "../data/maps/zone_7/act_1/tilemaps/fg/header.c"
+#include "../data/maps/zone_7/act_2/tilemaps/fg/header.c"
+#include "../data/maps/zone_7/act_boss/tilemaps/fg/header.c"
+#include "../data/maps/zone_final/act_xx/tilemaps/fg/header.c"
+#include "../data/maps/zone_final/act_ta53/tilemaps/fg/header.c"
+#include "../data/maps/zone_final/act_unused/tilemaps/fg/header.c"
+#include "../data/maps/zone_1/act_1/tilemaps/bg/header.c"
 // zone_1_act_2_bg shares the pointer with zone_1_act_1_bg.
 // zone_1_act_boss_bg shares the pointer with zone_1_act_2_bg.
 // zone_1_act_dummy_bg shares the pointer with zone_1_act_boss_bg.
 #include "../data/tilemaps/stage_1_bg_0_copy/header.c"
-#include "../data/tilemaps/zone_3_act_1_bg/header.c"
+#include "../data/maps/zone_3/act_1/tilemaps/bg/header.c"
 // zone_3_act_2_bg shares the pointer with zone_3_act_1_bg.
 // zone_3_act_boss_bg shares the pointer with zone_3_act_2_bg.
 // zone_1_act_dummy_bg shares the pointer with zone_3_act_boss_bg.
 #include "../data/tilemaps/unknown_stars/header.c"
-#include "../data/tilemaps/zone_4_act_1_bg/header.c"
+#include "../data/maps/zone_4/act_1/tilemaps/bg/header.c"
 // zone_4_act_2_bg shares the pointer with zone_4_act_1_bg.
 // zone_4_act_boss_bg shares the pointer with zone_4_act_2_bg.
 // zone_1_act_dummy_bg shares the pointer with zone_4_act_boss_bg.
 #include "../data/tilemaps/spotlight_snow/header.c"
-#include "../data/tilemaps/zone_2_act_1_bg/header.c"
+#include "../data/maps/zone_2/act_1/tilemaps/bg/header.c"
 // zone_2_act_2_bg shares the pointer with zone_2_act_1_bg.
 // zone_2_act_boss_bg shares the pointer with zone_2_act_2_bg.
 #include "../data/tilemaps/sky_canyon_clouds_foreground/header.c"
-#include "../data/tilemaps/zone_5_act_1_bg/header.c"
+#include "../data/maps/zone_5/act_1/tilemaps/bg/header.c"
 // zone_5_act_2_bg shares the pointer with zone_5_act_1_bg.
 // zone_5_act_boss_bg shares the pointer with zone_5_act_2_bg.
 // zone_1_act_dummy_bg shares the pointer with zone_5_act_boss_bg.
 #include "../data/tilemaps/unk_space_bg/header.c"
-#include "../data/tilemaps/zone_7_act_1_bg/header.c"
+#include "../data/maps/zone_7/act_1/tilemaps/bg/header.c"
 // zone_7_act_2_bg shares the pointer with zone_7_act_1_bg.
 // zone_7_act_boss_bg shares the pointer with zone_7_act_2_bg.
 // zone_1_act_dummy_bg shares the pointer with zone_7_act_boss_bg.
 // regular_final_boss_building_bg shares the pointer with zone_1_act_dummy_bg.
-#include "../data/tilemaps/zone_6_act_1_bg/header.c"
+#include "../data/maps/zone_6/act_1/tilemaps/bg/header.c"
 // zone_6_act_2_bg shares the pointer with zone_6_act_1_bg.
 // zone_6_act_boss_bg shares the pointer with zone_6_act_2_bg.
 // zone_1_act_dummy_bg shares the pointer with zone_6_act_boss_bg.
 #include "../data/tilemaps/techno_base_bg_purple_grid/header.c"
 #include "../data/tilemaps/techno_base_bg_circuit_mask/header.c"
-#include "../data/tilemaps/zone_1_act_dummy_bg/header.c"
+#include "../data/maps/zone_1/act_dummy/tilemaps/bg/header.c"
 // zone_final_act_xx_bg shares the pointer with zone_1_act_dummy_bg.
-#include "../data/tilemaps/zone_final_act_ta53_bg/header.c"
+#include "../data/maps/zone_final/act_ta53/tilemaps/bg/header.c"
 // extra_boss_background shares the pointer with zone_final_act_ta53_bg.
-#include "../data/tilemaps/zone_final_act_unused_bg/header.c"
+#include "../data/maps/zone_final/act_unused/tilemaps/bg/header.c"
 #include "../data/tilemaps/character_select_background/header.c"
 #include "../data/tilemaps/character_select_wheel/header.c"
 #include "../data/tilemaps/character_select_background_0/header.c"

@@ -20,6 +20,10 @@ typedef void (*VoidFn)(void);
 #define UB_FIX
 #endif
 
+#if ((defined PORTABLE) && !(defined NON_MATCHING))
+#define NON_MATCHING 1
+#endif
+
 #ifdef NON_MATCHING
 #define ASM_FUNC(path, decl)
 #else
@@ -56,6 +60,10 @@ typedef void (*VoidFn)(void);
 #define INCBIN_S32 INCBIN
 #endif // IDE support
 
+// NOTE: This has to be kept as-is.
+//       If casted it to be signed,
+//          dataIndex = (dataIndex + 1) % ARRAY_COUNT(data)
+//       wouldn't match.
 #define ARRAY_COUNT(array) (sizeof(array) / sizeof((array)[0]))
 
 // Converts a number to Q8.8 fixed-point format
@@ -141,6 +149,17 @@ typedef void (*VoidFn)(void);
         }                                                                               \
     })
 
+#define CLAMP_INLINE_NO_ELSE(var, min, max)                                             \
+    ({                                                                                  \
+        if ((var) < (min)) {                                                            \
+            var = (min);                                                                \
+        }                                                                               \
+                                                                                        \
+        if ((var) > (max)) {                                                            \
+            var = (max);                                                                \
+        }                                                                               \
+    })
+
 #define CLAMP_INLINE2(var, min, max)                                                    \
     ({                                                                                  \
         if ((var) > (max)) {                                                            \
@@ -214,7 +233,7 @@ typedef struct {
 } BgAffineReg;
 
 // TODO: Find better place for this
-typedef void (*HBlankFunc)(u8 vcount);
+typedef void (*HBlankFunc)(int_vcount vcount);
 typedef void (*IntrFunc)(void);
 typedef void (*FuncType_030053A0)(void);
 typedef u32 (*SpriteUpdateFunc)(void);

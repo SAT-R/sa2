@@ -9,15 +9,28 @@
 #define IWRAM_DATA __attribute__((section("iwram_data")))
 #define EWRAM_DATA __attribute__((section("ewram_data")))
 
+// TODO: Move these elsewhere?
 #define NAKED __attribute__((naked))
 #define UNUSED __attribute__((unused))
 #define PACKED __attribute__((packed))
-
 #define ALIGNED(n) __attribute__((aligned(n)))
 
+#ifdef PORTABLE
+// NOTE(Jace): For this to work either "gba/types.h" needs to be
+//             included here, or this has to go into a different file.
+//             Including types.h here, has the sideeffect of not generating
+//             a non-matching ROM, and increasing the GBA ROM size by ~24 kilobytes
+extern struct SoundInfo *SOUND_INFO_PTR;
+extern uint16_t INTR_CHECK;
+extern void *INTR_VECTOR;
+#else
+// NOTE(Jace): I tried replacing these altogether,
+//             but that resulted in a nonmatching ROM
+//             (see notes above)
 #define SOUND_INFO_PTR (*(struct SoundInfo **)0x3007FF0)
 #define INTR_CHECK     (*(u16 *)0x3007FF8)
 #define INTR_VECTOR    (*(void **)0x3007FFC)
+#endif
 
 #define EWRAM_START 0x02000000
 #define EWRAM_SIZE  0x40000

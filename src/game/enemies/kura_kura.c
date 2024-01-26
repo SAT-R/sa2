@@ -6,7 +6,9 @@
 
 #include "game/entity.h"
 #include "game/enemies/kura_kura.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 
@@ -15,7 +17,7 @@ typedef struct {
     /* 0x0C */ Sprite s;
     /* 0x3C */ Sprite s1;
     /* 0x6C */ Sprite s2;
-    /* 0x9C */ Sprite_UNK28 reserved; // "overflow" from Sprite
+    /* 0x9C */ Hitbox reserved; // "overflow" from Sprite
     /* 0xA4 */ s32 spawnX;
     /* 0xA8 */ s32 spawnY;
     /* 0xAC */ s32 unkAC;
@@ -30,7 +32,7 @@ void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     struct Task *t = TaskCreate(Task_8052024, sizeof(Sprite_KuraKura), 0x4050, 0,
                                 TaskDestructor_8052264);
-    Sprite_KuraKura *kk = TaskGetStructPtr(t);
+    Sprite_KuraKura *kk = TASK_DATA(t);
     Sprite *s = &kk->s;
     kk->unkB0 = 0;
     kk->unkAC = 0;
@@ -46,28 +48,28 @@ void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 8, SA2_ANIM_KURAKURA, 0, 0x480, 2);
+    SPRITE_INIT(s, 8, SA2_ANIM_KURAKURA, 0, 18, 2);
 
     s = &kk->s1;
     s->x = 0;
     s->y = 0;
 
-    SPRITE_INIT(s, 1, SA2_ANIM_KURAKURA_PROJ, 0, 0x440, 2);
+    SPRITE_INIT(s, 1, SA2_ANIM_KURAKURA_PROJ, 0, 17, 2);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     s = &kk->s2;
     s->x = 0;
     s->y = 0;
 
-    SPRITE_INIT(s, 4, SA2_ANIM_KURAKURA_PROJ_FIREBALL, 0, 0x400, 2);
+    SPRITE_INIT(s, 4, SA2_ANIM_KURAKURA_PROJ_FIREBALL, 0, 16, 2);
 }
 
 void sub_805213C(Sprite_KuraKura *kk);
 
 void Task_8052024(void)
 {
-    Sprite_KuraKura *kk = TaskGetStructPtr(gCurTask);
+    Sprite_KuraKura *kk = TASK_DATA(gCurTask);
     Sprite *s = &kk->s;
     MapEntity *me = kk->base.me;
 
@@ -83,7 +85,7 @@ void Task_8052024(void)
 
     SPRITE_FLAG_SET(s, X_FLIP);
 
-    sub_80051E8(s);
+    DisplaySprite(s);
     sub_805213C(kk);
 }
 
@@ -94,12 +96,12 @@ void sub_805213C(Sprite_KuraKura *kk)
     Sprite *s1 = &kk->s1;
     Sprite *s2 = &kk->s2;
 
-    kk->unkAC = (SIN_24_8((gUnknown_03005590 * 4) & ONE_CYCLE) >> 1) & ONE_CYCLE;
+    kk->unkAC = (SIN_24_8((gStageTime * 4) & ONE_CYCLE) >> 1) & ONE_CYCLE;
 
     for (i = 0; i < 2; i++) {
         s1->x = (Q_24_8_TO_INT(kk->spawnX) + (SIN(kk->unkAC) >> (11 - i))) - gCamera.x;
         s1->y = (Q_24_8_TO_INT(kk->spawnY) + (COS(kk->unkAC) >> (11 - i))) - gCamera.y;
-        sub_80051E8(s1);
+        DisplaySprite(s1);
     }
 
     pos.x = (Q_24_8_TO_INT(kk->spawnX) + (SIN(kk->unkAC) >> 9)) - (SIN(kk->unkAC) >> 11);
@@ -109,13 +111,13 @@ void sub_805213C(Sprite_KuraKura *kk)
     s2->y = pos.y - gCamera.y;
     sub_800C84C(s2, pos.x, pos.y);
 
-    sub_8004558(s2);
-    sub_80051E8(s2);
+    UpdateSpriteAnimation(s2);
+    DisplaySprite(s2);
 }
 
 void TaskDestructor_8052264(struct Task *t)
 {
-    Sprite_KuraKura *kk = TaskGetStructPtr(t);
+    Sprite_KuraKura *kk = TASK_DATA(t);
     VramFree(kk->s.graphics.dest);
     VramFree(kk->s1.graphics.dest);
     VramFree(kk->s2.graphics.dest);

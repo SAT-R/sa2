@@ -7,9 +7,12 @@
 
 #include "game/game.h"
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/hot_crater/crane.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 
 typedef struct {
     /* 0x00 */ Sprite *s;
@@ -75,7 +78,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 {
     struct Task *t = TaskCreate(Task_8073AA8, sizeof(Sprite_HCCrane), 0x2010, 0,
                                 TaskDestructor_80743B8);
-    Sprite_HCCrane *crane = TaskGetStructPtr(t);
+    Sprite_HCCrane *crane = TASK_DATA(t);
     CraneStruct *cs;
     u16 i;
     u16 j;
@@ -97,17 +100,17 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     cs->s->unk1A = 0x480;
 
     cs->s->graphics.size = 0;
-    cs->s->unk14 = 0;
-    cs->s->unk1C = 0;
-    cs->s->unk21 = 0xFF;
-    cs->s->unk22 = 0x10;
+    cs->s->animCursor = 0;
+    cs->s->timeUntilNextFrame = 0;
+    cs->s->prevVariant = -1;
+    cs->s->animSpeed = 0x10;
     cs->s->palId = 0;
-    cs->s->unk28->unk0 = -1;
+    cs->s->hitboxes[0].index = -1;
     cs->s->unk10 = 0x2000;
     cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2BC0);
     cs->s->graphics.anim = SA2_ANIM_CRANE;
     cs->s->variant = 0;
-    sub_8004558(cs->s);
+    UpdateSpriteAnimation(cs->s);
 
     for (i = 0; i < 6; i++) {
         cs = &crane->cs[1 + i];
@@ -131,17 +134,17 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
                 cs->s->unk1A = 0x480;
 
                 cs->s->graphics.size = 0;
-                cs->s->unk14 = 0;
-                cs->s->unk1C = 0;
-                cs->s->unk21 = 0xFF;
-                cs->s->unk22 = 0x10;
+                cs->s->animCursor = 0;
+                cs->s->timeUntilNextFrame = 0;
+                cs->s->prevVariant = -1;
+                cs->s->animSpeed = 0x10;
                 cs->s->palId = 0;
-                cs->s->unk28->unk0 = -1;
+                cs->s->hitboxes[0].index = -1;
                 cs->s->unk10 = 0x2000;
                 cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B80);
                 cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
                 cs->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_ROPE_GREY;
-                sub_8004558(cs->s);
+                UpdateSpriteAnimation(cs->s);
             }
         }
         // _08073A00
@@ -159,17 +162,17 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         cs->unk10 = 0xC00;
         cs->s->unk1A = 0x480;
         cs->s->graphics.size = 0;
-        cs->s->unk14 = 0;
-        cs->s->unk1C = 0;
-        cs->s->unk21 = 0xFF;
-        cs->s->unk22 = 0x10;
+        cs->s->animCursor = 0;
+        cs->s->timeUntilNextFrame = 0;
+        cs->s->prevVariant = -1;
+        cs->s->animSpeed = 0x10;
         cs->s->palId = 0;
-        cs->s->unk28->unk0 = -1;
+        cs->s->hitboxes[0].index = -1;
         cs->s->unk10 = 0x2000;
         cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
         cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
         cs->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_HOOK;
-        sub_8004558(cs->s);
+        UpdateSpriteAnimation(cs->s);
 
         cs = &crane->cs[8];
         cs->s = NULL;
@@ -183,7 +186,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
 static void Task_8073AA8()
 {
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
     sub_8074260(crane);
 
@@ -209,7 +212,7 @@ static void Task_8073AA8()
 
 static void Task_8073B1C(void)
 {
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
     if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.unk2C == 120)) {
         gPlayer.moveState &= ~MOVESTATE_400000;
@@ -242,7 +245,7 @@ static void Task_8073B1C(void)
 
 static void Task_8073BD4(void)
 {
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
     if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.unk2C == 120)) {
         gPlayer.moveState &= ~MOVESTATE_400000;
@@ -277,7 +280,7 @@ static void Task_8073C6C(void)
 {
     bool32 result_744D0;
     u16 r1;
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
     result_744D0 = sub_80744D0(crane, crane->unk1B8.unk6);
 
@@ -326,7 +329,7 @@ static void Task_8073D48(void)
 {
     bool32 result_744D0;
     u16 r1;
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
     sub_8074260(crane);
 
@@ -373,7 +376,7 @@ static void Task_8073D48(void)
 
 static void Task_8073E20(void)
 {
-    Sprite_HCCrane *crane = TaskGetStructPtr(gCurTask);
+    Sprite_HCCrane *crane = TASK_DATA(gCurTask);
     sub_8074260(crane);
     sub_807447C(crane);
 
@@ -538,7 +541,7 @@ static void sub_8074138(Sprite_HCCrane *crane)
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && crane->unk1B8.unk0 != 0) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk64 = 0x26;
-        gPlayer.unk6D = 7;
+        gPlayer.transition = PLTRANS_PT7;
         gPlayer.speedAirX = 0;
         gPlayer.speedAirY = -crane->unk1B8.accelY;
         crane->unk1B8.unk0 = 0;
@@ -620,7 +623,7 @@ static void sub_80742A8(Sprite_HCCrane *crane)
 
             if (cs->unk4 & 0x1) {
                 u8 v;
-                transform.unk0 = cs->unk14;
+                transform.rotation = cs->unk14;
                 transform.width = 0x100;
                 transform.height = 0x100;
 
@@ -631,7 +634,7 @@ static void sub_80742A8(Sprite_HCCrane *crane)
 
                 sub_8004860(cs->s, &transform);
             }
-            sub_80051E8(cs->s);
+            DisplaySprite(cs->s);
         }
     }
 }

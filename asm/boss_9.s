@@ -1,6 +1,117 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+
+ 	.global gUnknown_080D88F0
+gUnknown_080D88F0:
+    .incbin "baserom.gba", 0x000D88F0, 0x28
+
+    .global gUnknown_080D8918
+gUnknown_080D8918:
+    .incbin "baserom.gba", 0x000D8918, 0x8D
+
+    .global gUnknown_080D89A5
+gUnknown_080D89A5:
+    .incbin "baserom.gba", 0x000D89A5, 0x7
+
+    .global gUnknown_080D89AC
+gUnknown_080D89AC:
+    .incbin "baserom.gba", 0x000D89AC, 0x1C
+
+    .global gUnknown_080D89C8
+gUnknown_080D89C8:
+    .incbin "baserom.gba", 0x000D89C8, 0x54
+
+    .global gUnknown_080D8A1C
+gUnknown_080D8A1C:
+    .incbin "baserom.gba", 0x000D8A1C, 0x18
+
+    .global gUnknown_080D8A34
+gUnknown_080D8A34:
+    .incbin "baserom.gba", 0x000D8A34, 0x18
+
+    .global gUnknown_080D8A4C
+gUnknown_080D8A4C:
+    .incbin "baserom.gba", 0x000D8A4C, 0x18
+
+    .global gUnknown_080D8A64
+gUnknown_080D8A64:
+    .incbin "baserom.gba", 0x000D8A64, 0x18
+
+    .global gUnknown_080D8A7C
+gUnknown_080D8A7C:
+    .incbin "baserom.gba", 0x000D8A7C, 0x18
+
+    .global gUnknown_080D8A94
+gUnknown_080D8A94:
+    .incbin "baserom.gba", 0x000D8A94, 0x18
+
+    .global gUnknown_080D8AAC
+gUnknown_080D8AAC:
+    .incbin "baserom.gba", 0x000D8AAC, 0x18
+
+    .global gUnknown_080D8AC4
+gUnknown_080D8AC4:
+    .incbin "baserom.gba", 0x000D8AC4, 0x18
+
+    .global gUnknown_080D8ADC
+gUnknown_080D8ADC:
+    .incbin "baserom.gba", 0x000D8ADC, 0x18
+
+    .global gUnknown_080D8AF4
+gUnknown_080D8AF4:
+    .incbin "baserom.gba", 0x000D8AF4, 0x158
+
+    .global gUnknown_080D8C4C
+gUnknown_080D8C4C:
+    .incbin "baserom.gba", 0x000D8C4C, 0x18
+
+    .global gUnknown_080D8C64
+gUnknown_080D8C64:
+    .incbin "baserom.gba", 0x000D8C64, 0x18
+
+    .global gUnknown_080D8C7C
+gUnknown_080D8C7C:
+    .incbin "baserom.gba", 0x000D8C7C, 0x18
+
+    .global gUnknown_080D8C94
+gUnknown_080D8C94:
+    .incbin "baserom.gba", 0x000D8C94, 0xD8
+
+    .global gUnknown_080D8D6C
+gUnknown_080D8D6C:
+    .incbin "baserom.gba", 0x000D8D6C, 0x60
+
+    .global gUnknown_080D8DCC
+gUnknown_080D8DCC:
+    .incbin "baserom.gba", 0x000D8DCC, 0x48
+
+    .global gUnknown_080D8E14
+gUnknown_080D8E14:
+    .incbin "baserom.gba", 0x000D8E14, 0xC
+
+    .global gUnknown_080D8E20
+gUnknown_080D8E20:
+    .incbin "baserom.gba", 0x000D8E20, 0x2
+
+    .global gUnknown_080D8E22
+gUnknown_080D8E22:
+    .incbin "baserom.gba", 0x000D8E22, 0xBE
+
+    .global gUnknown_080D8EE0
+gUnknown_080D8EE0:
+    .incbin "baserom.gba", 0x000D8EE0, 0x10
+
+    .global gUnknown_080D8EF0
+gUnknown_080D8EF0:
+    .incbin "baserom.gba", 0x000D8EF0, 0x20
+
+    .global gUnknown_080D8F10
+gUnknown_080D8F10:
+    .incbin "baserom.gba", 0x000D8F10, 0x20
+
+.text
 .syntax unified
 .arm
 
@@ -1220,11 +1331,11 @@ _0804D704:
 	ldr r1, _0804D78C @ =gUnknown_03002A80
 	movs r0, #2
 	strb r0, [r1]
-	ldr r0, _0804D790 @ =gUnknown_03001884
+	ldr r0, _0804D790 @ =gBgOffsetsHBlank
 	ldr r3, [r0]
 	movs r2, #0
 	ldr r6, _0804D794 @ =gSineTable
-	ldr r5, _0804D798 @ =gUnknown_03005590
+	ldr r5, _0804D798 @ =gStageTime
 	ldr r4, _0804D79C @ =0x000003FF
 _0804D74A:
 	ldr r1, [r5]
@@ -1257,9 +1368,9 @@ _0804D780: .4byte gFlags
 _0804D784: .4byte gUnknown_03002878
 _0804D788: .4byte 0x04000016
 _0804D78C: .4byte gUnknown_03002A80
-_0804D790: .4byte gUnknown_03001884
+_0804D790: .4byte gBgOffsetsHBlank
 _0804D794: .4byte gSineTable
-_0804D798: .4byte gUnknown_03005590
+_0804D798: .4byte gStageTime
 _0804D79C: .4byte 0x000003FF
 
 	thumb_func_start sub_804D7A0
@@ -1391,7 +1502,7 @@ _0804D878:
 	strb r1, [r2]
 	movs r1, #1
 	strh r1, [r0, #0x2e]
-	bl sub_8002A3C
+	bl DrawBackground
 	ldr r1, _0804D8D8 @ =gBgCntRegs
 	ldr r0, _0804D8DC @ =0x00001C02
 	strh r0, [r1, #2]
@@ -1431,7 +1542,7 @@ sub_804D8E0: @ 0x0804D8E0
 	ldr r2, _0804D9C4 @ =0x00000654
 	adds r2, r2, r5
 	mov sb, r2
-	bl sub_802C6E4
+	bl SuperSonicGetFlags
 	movs r1, #0x80
 	lsls r1, r1, #2
 	ands r1, r0
@@ -1768,9 +1879,9 @@ sub_804DB34: @ 0x0804DB34
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r7, #0x12]
 	cmp r0, #0
 	beq _0804DC2C
@@ -1789,7 +1900,7 @@ _0804DC24: .4byte gIntrTable + 4
 _0804DC28: .4byte gCamera
 _0804DC2C:
 	adds r0, r7, #0
-	bl NextTransitionFrame
+	bl UpdateScreenFade
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	cmp r0, #1
@@ -1855,9 +1966,9 @@ Task_804DC60: @ 0x0804DC60
 	ldr r0, [r0]
 	ldr r1, _0804DCE8 @ =gRingCount
 	ldrh r1, [r1]
-	ldr r2, _0804DCEC @ =gUnknown_030054F4
+	ldr r2, _0804DCEC @ =gSpecialRingCount
 	ldrb r2, [r2]
-	bl sub_80304DC
+	bl CreateStageResults
 	ldr r1, _0804DCF0 @ =gBldRegs
 	ldr r0, _0804DCF4 @ =0x00003FBF
 	strh r0, [r1]
@@ -1875,7 +1986,7 @@ _0804DCDC: .4byte gVramGraphicsCopyQueueIndex
 _0804DCE0: .4byte gUnknown_03005424
 _0804DCE4: .4byte gCourseTime
 _0804DCE8: .4byte gRingCount
-_0804DCEC: .4byte gUnknown_030054F4
+_0804DCEC: .4byte gSpecialRingCount
 _0804DCF0: .4byte gBldRegs
 _0804DCF4: .4byte 0x00003FBF
 
@@ -1884,7 +1995,7 @@ sub_804DCF8: @ 0x0804DCF8
 	push {r4, r5, r6, r7, lr}
 	sub sp, #0x20
 	adds r7, r0, #0
-	ldr r4, _0804DD80 @ =gUnknown_03005590
+	ldr r4, _0804DD80 @ =gStageTime
 	ldr r0, [r4]
 	movs r1, #0xd
 	bl Mod
@@ -1948,7 +2059,7 @@ _0804DD76:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_0804DD80: .4byte gUnknown_03005590
+_0804DD80: .4byte gStageTime
 _0804DD84: .4byte gPseudoRandom
 _0804DD88: .4byte 0x00196225
 _0804DD8C: .4byte 0x3C6EF35F
@@ -2033,9 +2144,9 @@ _0804DDB0:
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0804DE3A:
 	mov r0, sb
 	adds r0, #1
@@ -2312,12 +2423,12 @@ _0804DFEC:
 	cmp r0, #0
 	bne _0804E052
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r1, #1
 	mov sb, r1
 _0804E052:
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0804E058:
 	mov r0, r8
 	adds r0, #1
@@ -2373,7 +2484,7 @@ _0804E0B8: .4byte gCurTask
 _0804E0BC: .4byte 0x00000FFF
 _0804E0C0: .4byte gUnknown_080D8D6C
 _0804E0C4:
-	ldr r0, _0804E134 @ =gUnknown_03005590
+	ldr r0, _0804E134 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #3
 	bl Mod
@@ -2428,7 +2539,7 @@ _0804E112:
 	subs r0, #1
 	b _0804E148
 	.align 2, 0
-_0804E134: .4byte gUnknown_03005590
+_0804E134: .4byte gStageTime
 _0804E138: .4byte 0x00000FFF
 _0804E13C: .4byte gUnknown_080D8D6C
 _0804E140: .4byte gUnknown_080D8DCC
@@ -2662,7 +2773,7 @@ _0804E2EE:
 _0804E30A:
 	add r0, sp, #8
 	ldr r1, [sp, #0x18]
-	bl sub_802C668
+	bl SuperSonicGetPos
 	ldrh r0, [r7, #0x38]
 	adds r6, r5, r0
 	ldr r3, _0804E3F8 @ =0x000003FF
@@ -3093,7 +3204,7 @@ sub_804E66C: @ 0x0804E66C
 	lsls r0, r0, #1
 	strh r0, [r7, #4]
 _0804E68C:
-	ldr r0, _0804E73C @ =gUnknown_03005590
+	ldr r0, _0804E73C @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #4
 	bl Mod
@@ -3180,7 +3291,7 @@ _0804E71C:
 	bx r0
 	.align 2, 0
 _0804E738: .4byte sub_804E74C
-_0804E73C: .4byte gUnknown_03005590
+_0804E73C: .4byte gStageTime
 _0804E740: .4byte gSineTable
 _0804E744: .4byte sub_804EC6C
 _0804E748: .4byte 0x000003FF
@@ -3308,7 +3419,7 @@ _0804E792:
 	lsls r0, r0, #1
 	bl m4aSongNumStart
 _0804E836:
-	ldr r0, _0804E8E4 @ =gUnknown_03005590
+	ldr r0, _0804E8E4 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #4
 	bl Mod
@@ -3390,7 +3501,7 @@ _0804E8D4: .4byte gUnknown_080D8E14
 _0804E8D8: .4byte 0x000003FF
 _0804E8DC: .4byte gSineTable
 _0804E8E0: .4byte gUnknown_080D8918
-_0804E8E4: .4byte gUnknown_03005590
+_0804E8E4: .4byte gStageTime
 
 	thumb_func_start sub_804E8E8
 sub_804E8E8: @ 0x0804E8E8
@@ -3444,9 +3555,9 @@ _0804E932:
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0804E952:
 	adds r0, r5, #1
 	lsls r0, r0, #0x18
@@ -3477,7 +3588,7 @@ sub_804E974: @ 0x0804E974
 	mov r8, r0
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
+	bl SuperSonicGetPos
 	ldr r0, [sp]
 	movs r1, #0x80
 	lsls r1, r1, #5
@@ -3595,7 +3706,7 @@ _0804EA00:
 	ldr r0, [r5, #0x18]
 	adds r0, r0, r1
 	str r0, [r5, #0x18]
-	bl sub_802C6E4
+	bl SuperSonicGetFlags
 	movs r1, #0x82
 	lsls r1, r1, #2
 	ands r1, r0
@@ -3612,7 +3723,7 @@ _0804EA00:
 	ldr r0, _0804EAE4 @ =gUnknown_080D8E14
 	ldr r0, [r0, #4]
 	str r0, [r5]
-	bl sub_802C770
+	bl SuperSonicGetRotation
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
 	mov r2, sb
@@ -3892,7 +4003,7 @@ sub_804ECC4: @ 0x0804ECC4
 	adds r6, r0, #0
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
+	bl SuperSonicGetPos
 	adds r1, r6, #0
 	adds r1, #0x1c
 	adds r6, #0x48
@@ -4115,12 +4226,12 @@ sub_804EE84: @ 0x0804EE84
 	movs r0, #0
 	str r0, [sp]
 	str r0, [sp, #4]
-	bl sub_802C750
+	bl SuperSonicGetSprite
 	adds r6, r0, #0
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
-	bl sub_802C6E4
+	bl SuperSonicGetPos
+	bl SuperSonicGetFlags
 	movs r1, #0x82
 	lsls r1, r1, #2
 	ands r1, r0
@@ -4332,12 +4443,12 @@ sub_804F010: @ 0x0804F010
 	movs r0, #0
 	str r0, [sp]
 	str r0, [sp, #4]
-	bl sub_802C750
+	bl SuperSonicGetSprite
 	adds r6, r0, #0
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
-	bl sub_802C6E4
+	bl SuperSonicGetPos
+	bl SuperSonicGetFlags
 	ldr r0, _0804F0F4 @ =gPlayer
 	ldr r0, [r0, #0x20]
 	movs r1, #0x80
@@ -4541,9 +4652,9 @@ sub_804F108: @ 0x0804F108
 	adds r5, #5
 	strh r5, [r7, #0x18]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0804F1CA:
 	pop {r3, r4}
 	mov r8, r3
@@ -4675,7 +4786,7 @@ _0804F24C:
 	add sb, r0
 	add r1, sp, #0xc
 	add r0, sp, #8
-	bl sub_802C668
+	bl SuperSonicGetPos
 	ldr r0, [sp, #8]
 	movs r1, #0xa0
 	lsls r1, r1, #4
@@ -4696,7 +4807,7 @@ _0804F24C:
 	adds r1, r0, #0
 	str r1, [sp, #0xc]
 	ldr r0, [sp, #8]
-	bl sub_802C6B4
+	bl SuperSonicSetPos
 	mov r6, sl
 	asrs r4, r6, #8
 	mov r0, sb
@@ -4752,9 +4863,9 @@ _0804F36C:
 	subs r0, r5, r0
 	strh r0, [r3, #0x18]
 	ldr r0, [sp, #0x14]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r0, [sp, #0x14]
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r6, #0
 	movs r4, #2
 	mov r8, r4
@@ -4975,9 +5086,9 @@ _0804F496:
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	mov r0, r8
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, r8
-	bl sub_80051E8
+	bl DisplaySprite
 	ldrh r0, [r7, #6]
 	movs r1, #0xa
 	bl Mod
@@ -5083,10 +5194,10 @@ _0804F5FC:
 	movs r1, #1
 	mov sl, r1
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 _0804F632:
 	adds r0, r7, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldr r1, [r4]
 	movs r2, #0xa0
 	lsls r2, r2, #3
@@ -5109,7 +5220,7 @@ _0804F632:
 	ldr r0, [r5]
 	adds r0, r0, r1
 	str r0, [r5]
-	bl sub_802C6E4
+	bl SuperSonicGetFlags
 	movs r1, #0x82
 	lsls r1, r1, #2
 	ands r1, r0
@@ -6204,9 +6315,9 @@ _0804FE9A:
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	adds r0, r5, #0
 	bl sub_804F5BC
 	pop {r4, r5, r6}
@@ -6253,7 +6364,7 @@ _0804FF22:
 	bne _0804FF80
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
+	bl SuperSonicGetPos
 	movs r1, #0x20
 	ldrsh r0, [r4, r1]
 	lsls r0, r0, #8
@@ -6332,7 +6443,7 @@ sub_804FF9C: @ 0x0804FF9C
 	strb r0, [r1]
 	add r1, sp, #4
 	mov r0, sp
-	bl sub_802C668
+	bl SuperSonicGetPos
 	movs r1, #0x20
 	ldrsh r0, [r5, r1]
 	lsls r0, r0, #8
@@ -6818,7 +6929,7 @@ _08050392:
 	cmp r4, #3
 	bls _08050392
 	ldr r6, _08050584 @ =gSineTable
-	ldr r0, _08050598 @ =gUnknown_03005590
+	ldr r0, _08050598 @ =gStageTime
 	ldr r0, [r0]
 	lsls r0, r0, #1
 	ldr r1, _0805059C @ =0x000001FF
@@ -6853,9 +6964,9 @@ _08050392:
 	orrs r0, r1
 	str r0, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080503FA:
 	adds r0, r7, #0
 	adds r0, #0x8c
@@ -6958,12 +7069,12 @@ _0805042A:
 	ldrh r0, [r5, #0x18]
 	strh r0, [r6, #8]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	adds r1, r6, #0
 	bl sub_8004860
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	lsls r4, r4, #0x18
 	lsrs r4, r4, #0x18
 	cmp r4, #2
@@ -7031,12 +7142,12 @@ _0805042A:
 	ldrh r0, [r5, #0x18]
 	strh r0, [r6, #8]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	adds r1, r6, #0
 	bl sub_8004860
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0805056C:
 	add sp, #0x28
 	pop {r3, r4, r5}
@@ -7054,7 +7165,7 @@ _08050588: .4byte gUnknown_080D89A5
 _0805058C: .4byte gCamera
 _08050590: .4byte gBgAffineRegs
 _08050594: .4byte 0x000007C4
-_08050598: .4byte gUnknown_03005590
+_08050598: .4byte gStageTime
 _0805059C: .4byte 0x000001FF
 _080505A0: .4byte 0x000007B4
 _080505A4: .4byte 0xFFFFFF00
@@ -7221,9 +7332,9 @@ _080506AE:
 	orrs r0, r1
 	str r0, [r5, #0x10]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _080506FA:
 	adds r0, r7, #0
 	adds r0, #0x8c
@@ -7328,12 +7439,12 @@ _0805072C:
 	ldrh r0, [r5, #0x18]
 	strh r0, [r6, #8]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	adds r1, r6, #0
 	bl sub_8004860
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	lsls r4, r4, #0x18
 	lsrs r4, r4, #0x18
 	cmp r4, #2
@@ -7402,12 +7513,12 @@ _0805072C:
 	ldrh r0, [r5, #0x18]
 	strh r0, [r6, #8]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
 	adds r1, r6, #0
 	bl sub_8004860
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	add sp, #0x24
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -7552,7 +7663,7 @@ _080509A4: .4byte gObjPalette
 _080509A8: .4byte gUnknown_080D8F10
 _080509AC: .4byte gBgPalette
 _080509B0:
-	ldr r0, _080509F8 @ =gUnknown_03005590
+	ldr r0, _080509F8 @ =gStageTime
 	ldr r0, [r0]
 	lsrs r6, r0, #1
 	movs r0, #0xf
@@ -7590,7 +7701,7 @@ _080509D0:
 	bls _080509D0
 	b _08050A4C
 	.align 2, 0
-_080509F8: .4byte gUnknown_03005590
+_080509F8: .4byte gStageTime
 _080509FC: .4byte gFlags
 _08050A00: .4byte gObjPalette
 _08050A04: .4byte gUnknown_080D8EF0
@@ -7805,8 +7916,8 @@ _08050BA2:
 _08050BA8: .4byte IWRAM_START + 0x1C
 _08050BAC: .4byte gSineTable
 
-	thumb_func_start sub_8050BB0
-sub_8050BB0: @ 0x08050BB0
+	thumb_func_start ExtraBossIsDead
+ExtraBossIsDead: @ 0x08050BB0
 	push {lr}
 	movs r2, #0
 	ldr r0, _08050BD4 @ =gActiveBossTask

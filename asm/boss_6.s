@@ -1,6 +1,41 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
+.section .rodata
+
+  	.global gUnknown_080D8030
+gUnknown_080D8030:
+    .incbin "baserom.gba", 0x000D8030, 0x4
+
+    .global gUnknown_080D8034
+gUnknown_080D8034:
+    .incbin "baserom.gba", 0x000D8034, 0x10
+
+    .global gUnknown_080D8044
+gUnknown_080D8044:
+    .incbin "baserom.gba", 0x000D8044, 0xA
+
+    .global gUnknown_080D804E
+gUnknown_080D804E:
+    .incbin "baserom.gba", 0x000D804E, 0x28
+
+    .global gUnknown_080D8076
+gUnknown_080D8076:
+    .incbin "baserom.gba", 0x000D8076, 0x28
+
+    .global gUnknown_080D809E
+gUnknown_080D809E:
+    .incbin "baserom.gba", 0x000D809E, 0x28
+
+    .global gUnknown_080D80C6
+gUnknown_080D80C6:
+    .incbin "baserom.gba", 0x000D80C6, 0x20
+
+    .global gUnknown_080D80E6
+gUnknown_080D80E6:
+    .incbin "baserom.gba", 0x000D80E6, 0x22
+
+.text
 .syntax unified
 .arm
 
@@ -20,7 +55,7 @@ CreateEggGoRound: @ 0x080459EC
 	str r0, [r4, #0x20]
 	bl sub_8039ED4
 	ldr r1, _08045A74 @ =gPseudoRandom
-	ldr r0, _08045A78 @ =gUnknown_03005590
+	ldr r0, _08045A78 @ =gStageTime
 	ldr r0, [r0]
 	str r0, [r1]
 	ldr r1, _08045A7C @ =gUnknown_03005AF0
@@ -73,7 +108,7 @@ CreateEggGoRound: @ 0x080459EC
 	.align 2, 0
 _08045A70: .4byte gPlayer
 _08045A74: .4byte gPseudoRandom
-_08045A78: .4byte gUnknown_03005590
+_08045A78: .4byte gStageTime
 _08045A7C: .4byte gUnknown_03005AF0
 _08045A80: .4byte 0xFFFFCFFF
 _08045A84: .4byte gUnknown_03005AA0
@@ -404,7 +439,7 @@ _08045BB6:
 	str r1, [r7, #0x28]
 	str r6, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r5, #0
 	movs r0, #0
 	mov r8, r0
@@ -461,7 +496,7 @@ _08045D34:
 	lsls r0, r0, #5
 	str r0, [r7, #0x10]
 	adds r0, r7, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #1
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
@@ -522,7 +557,7 @@ _08045DB2:
 	str r0, [r7, #0x10]
 	adds r0, r7, #0
 	str r3, [sp, #0x4c]
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #1
 	lsls r0, r0, #0x18
 	lsrs r5, r0, #0x18
@@ -597,9 +632,9 @@ sub_8045E78: @ 0x08045E78
 	strb r0, [r1]
 _08045EC0:
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	b _08045F78
 	.align 2, 0
 _08045ED0: .4byte gCamera
@@ -749,7 +784,7 @@ _08045FD8:
 	cmp r1, #0
 	bne _08045FF6
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	movs r2, #1
 	mov r8, r2
 _08045FF6:
@@ -777,7 +812,7 @@ _0804600E:
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _0804602A:
 	adds r0, r6, #1
 	lsls r0, r0, #0x18
@@ -866,7 +901,7 @@ sub_80460DC: @ 0x080460DC
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r5, r1, r0
-	ldr r0, _08046114 @ =gUnknown_03005590
+	ldr r0, _08046114 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #0x15
 	bl Mod
@@ -886,7 +921,7 @@ _080460FE:
 	b _0804611E
 	.align 2, 0
 _08046110: .4byte gCurTask
-_08046114: .4byte gUnknown_03005590
+_08046114: .4byte gStageTime
 _08046118: .4byte 0x000003FF
 _0804611C:
 	movs r2, #0
@@ -953,7 +988,7 @@ sub_8046198: @ 0x08046198
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r4, r5, r0
-	ldr r0, _0804622C @ =gUnknown_03005590
+	ldr r0, _0804622C @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #0x11
 	bl Mod
@@ -1012,7 +1047,7 @@ _08046222:
 	bx r0
 	.align 2, 0
 _08046228: .4byte gCurTask
-_0804622C: .4byte gUnknown_03005590
+_0804622C: .4byte gStageTime
 _08046230: .4byte 0x000003FF
 _08046234: .4byte gSineTable
 _08046238: .4byte IWRAM_START + 0x2B
@@ -1040,7 +1075,7 @@ sub_8046244: @ 0x08046244
 	bl sub_804766C
 	adds r0, r4, #0
 	bl sub_8047138
-	ldr r0, _08046310 @ =gUnknown_03005590
+	ldr r0, _08046310 @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #0xd
 	bl Mod
@@ -1116,7 +1151,7 @@ _08046304:
 	bx r0
 	.align 2, 0
 _0804630C: .4byte gCurTask
-_08046310: .4byte gUnknown_03005590
+_08046310: .4byte gStageTime
 _08046314: .4byte IWRAM_START + 0x1C1
 _08046318: .4byte gCamera
 _0804631C: .4byte IWRAM_START + 0x20C
@@ -1147,9 +1182,9 @@ sub_8046328: @ 0x08046328
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r1, #0xfe
 	lsls r1, r1, #1
 	adds r5, r7, r1
@@ -1164,9 +1199,9 @@ sub_8046328: @ 0x08046328
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r2, #0
 	mov r8, r2
 	movs r3, #0x8b
@@ -1233,7 +1268,7 @@ _080463A6:
 	adds r1, r1, r0
 	strh r1, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	adds r0, r6, #1
 	lsls r0, r0, #0x18
 	lsrs r6, r0, #0x18
@@ -1258,7 +1293,7 @@ _08046424:
 	adds r0, r0, r2
 	adds r5, r7, r0
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, r8
 	adds r0, #1
 	lsls r0, r0, #0x18
@@ -1384,7 +1419,7 @@ _08046530:
 	str r0, [r5, #0x10]
 _08046536:
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r0, r8
 	adds r0, #1
 	lsls r0, r0, #0x18
@@ -1428,9 +1463,9 @@ sub_804655C: @ 0x0804655C
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	movs r1, #0xfe
 	lsls r1, r1, #1
 	adds r5, r7, r1
@@ -1445,9 +1480,9 @@ sub_804655C: @ 0x0804655C
 	subs r0, r0, r1
 	strh r0, [r5, #0x18]
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldr r1, [r7]
 	cmp r1, #0x2f
 	bhi _080465E0
@@ -1593,7 +1628,7 @@ _080466C4:
 	strh r1, [r5, #0x18]
 	adds r0, r5, #0
 	str r3, [sp, #8]
-	bl sub_80051E8
+	bl DisplaySprite
 	adds r0, r4, #1
 	lsls r0, r0, #0x18
 	lsrs r4, r0, #0x18
@@ -1622,7 +1657,7 @@ _08046702:
 	adds r0, r0, r2
 	adds r5, r7, r0
 	adds r0, r5, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	mov r0, r8
 	adds r0, #1
 	lsls r0, r0, #0x18
@@ -1749,7 +1784,7 @@ _08046810:
 	str r0, [r5, #0x10]
 _08046816:
 	adds r0, r5, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	mov r0, r8
 	adds r0, #1
 	lsls r0, r0, #0x18
@@ -2603,9 +2638,9 @@ sub_8046E90: @ 0x08046E90
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	ldr r1, _08046EFC @ =0x000001C1
 	adds r0, r5, r1
 	ldrb r0, [r0]
@@ -2625,9 +2660,9 @@ sub_8046E90: @ 0x08046E90
 	subs r0, r0, r1
 	strh r0, [r4, #0x18]
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	adds r0, r4, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08046EF0:
 	pop {r4, r5, r6, r7}
 	pop {r0}
@@ -2815,7 +2850,7 @@ sub_8047060: @ 0x08047060
 	push {r7}
 	sub sp, #0x20
 	mov ip, r0
-	ldr r0, _08047114 @ =gUnknown_03005590
+	ldr r0, _08047114 @ =gStageTime
 	ldr r7, [r0]
 	movs r0, #0xf
 	ands r7, r0
@@ -2900,7 +2935,7 @@ _08047106:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08047114: .4byte gUnknown_03005590
+_08047114: .4byte gStageTime
 _08047118: .4byte gCamera
 _0804711C: .4byte gPseudoRandom
 _08047120: .4byte 0x00196225
@@ -2920,7 +2955,7 @@ sub_8047138: @ 0x08047138
 	mov sb, r0
 	mov r4, sb
 	adds r4, #0x6c
-	ldr r0, _080471FC @ =gUnknown_03005590
+	ldr r0, _080471FC @ =gStageTime
 	ldr r0, [r0]
 	movs r1, #0xa
 	bl Mod
@@ -3010,7 +3045,7 @@ _080471EE:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080471FC: .4byte gUnknown_03005590
+_080471FC: .4byte gStageTime
 _08047200: .4byte 0x000001C1
 _08047204: .4byte gCamera
 _08047208: .4byte gPseudoRandom
@@ -3589,7 +3624,7 @@ sub_804766C: @ 0x0804766C
 	mov ip, r0
 	ldr r7, _080476B0 @ =gObjPalette
 	ldr r6, _080476B4 @ =gUnknown_080D80C6
-	ldr r5, _080476B8 @ =gUnknown_03005590
+	ldr r5, _080476B8 @ =gStageTime
 	movs r4, #2
 _08047684:
 	adds r2, r3, #0
@@ -3615,7 +3650,7 @@ _08047684:
 _080476AC: .4byte gFlags
 _080476B0: .4byte gObjPalette
 _080476B4: .4byte gUnknown_080D80C6
-_080476B8: .4byte gUnknown_03005590
+_080476B8: .4byte gStageTime
 _080476BC:
 	movs r3, #0
 	ldr r1, _080476F4 @ =gFlags

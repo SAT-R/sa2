@@ -3,6 +3,8 @@
 #include "task.h"
 #include "trig.h"
 #include "game/enemies/hammerhead.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 
 #include "constants/animations.h"
@@ -10,7 +12,7 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3C */ Sprite_UNK28 reserved; // "overflow" from Sprite
+    /* 0x3C */ Hitbox reserved; // "overflow" from Sprite
     /* 0x48 */ s16 unk44;
     /* 0x46 */ s16 unk46;
     /* 0x48 */ s32 unk48;
@@ -27,7 +29,7 @@ void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 {
     struct Task *t = TaskCreate(Task_Hammerhead, sizeof(Enemy_Hammerhead), 0x4040, 0,
                                 TaskDestructor_Hammerhead);
-    Enemy_Hammerhead *hammerhead = TaskGetStructPtr(t);
+    Enemy_Hammerhead *hammerhead = TASK_DATA(t);
     Sprite *s = &hammerhead->s;
     hammerhead->base.regionX = spriteRegionX;
     hammerhead->base.regionY = spriteRegionY;
@@ -45,13 +47,13 @@ void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, 36, SA2_ANIM_HAMMERHEAD, 0, 0x480, 2);
+    SPRITE_INIT(s, 36, SA2_ANIM_HAMMERHEAD, 0, 18, 2);
 }
 
 static void Task_Hammerhead(void)
 {
     Player *p = &gPlayer;
-    Enemy_Hammerhead *hammerhead = TaskGetStructPtr(gCurTask);
+    Enemy_Hammerhead *hammerhead = TASK_DATA(gCurTask);
     Sprite *s = &hammerhead->s;
     MapEntity *me = hammerhead->base.me;
     u32 unk4C;
@@ -66,7 +68,7 @@ static void Task_Hammerhead(void)
     }
 
     unk4C = hammerhead->unk4C;
-    temp = (((gUnknown_03005590 * 3) / 2) + (u16)hammerhead->unk44) % 256;
+    temp = (((gStageTime * 3) / 2) + (u16)hammerhead->unk44) % 256;
     temp = ((unk4C * temp) & 0x1FF) | 0x200;
 
     prevUnk48 = hammerhead->unk48;
@@ -110,8 +112,8 @@ static void Task_Hammerhead(void)
             TaskDestroy(gCurTask);
         } else {
             sub_80122DC(posX << 8, (posY << 8) + hammerhead->unk48);
-            sub_8004558(s);
-            sub_80051E8(s);
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
         }
     }
 }
@@ -125,7 +127,7 @@ static void sub_8056EDC(Enemy_Hammerhead *hammerhead)
 
 static void TaskDestructor_Hammerhead(struct Task *t)
 {
-    Enemy_Hammerhead *hammerhead = TaskGetStructPtr(t);
+    Enemy_Hammerhead *hammerhead = TASK_DATA(t);
     Sprite *s = &hammerhead->s;
     VramFree(s->graphics.dest);
 

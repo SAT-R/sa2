@@ -2,7 +2,8 @@
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
-#include "game/game.h"
+
+#include "game/stage/player.h"
 #include "game/bosses/common.h"
 #include "game/bosses/boss_1.h"
 #include "game/bosses/boss_2.h"
@@ -17,7 +18,10 @@
 #include "game/player_callbacks_1.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/zones.h"
+
+struct Task *gActiveBossTask = NULL;
 
 const VoidFn sBossCreationFuncs[] = {
     CreateEggHammerTankII, CreateEggBomberTank, CreateEggTotem,
@@ -25,9 +29,15 @@ const VoidFn sBossCreationFuncs[] = {
     CreateEggFrog,         CreateSuperEggRoboZ, CreateTrueArea53Boss,
 };
 
-const UnknownBossFunc gUnknown_080D79B0[] = {
-    sub_803C80C, sub_803E3EC, sub_803FA84, sub_80425F0,
-    sub_8043FD0, sub_8047224, sub_8048EB4, sub_804D594,
+// Move position functions (translate(x, y))
+const TranslateBossFunction gUnknown_080D79B0[] = {
+    sub_803C80C,   sub_803E3EC, sub_803FA84, sub_80425F0,
+    EggSaucerMove, sub_8047224, sub_8048EB4, sub_804D594,
+};
+
+const u32 gUnknown_080D79D0[][3] = {
+    { 412, 620, 0 }, { 416, 620, 1 }, { 420, 621, 0 },
+    { 436, 621, 1 }, { 448, 622, 0 }, { 449, 622, 1 },
 };
 
 void CreateZoneBoss(u8 boss)
@@ -44,7 +54,7 @@ void sub_8039ED4(void)
         gPlayer.moveState &= ~MOVESTATE_8000000;
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         PLAYERFN_SET(PlayerCB_8025318);
-        gPlayer.unk6D = 0;
+        gPlayer.transition = PLTRANS_NONE;
     }
 }
 
@@ -65,7 +75,7 @@ void sub_8039F50(s32 p0, u8 p1)
 
 void Task_DestroyBossParts(void)
 {
-    Sprite_ExplosionParts *parts = TaskGetStructPtr(gCurTask);
+    Sprite_ExplosionParts *parts = TASK_DATA(gCurTask);
     (*parts->numCreatedParts)--;
     TaskDestroy(gCurTask);
 }

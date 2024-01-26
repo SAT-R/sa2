@@ -1,11 +1,14 @@
 #include "core.h"
 #include "game/game.h"
-#include "game/true_area_53/intro.h"
+#include "game/stage/stage.h"
+#include "game/bosses/final_intro.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "sprite.h"
 #include "trig.h"
 #include "game/math.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -45,7 +48,7 @@ typedef struct {
     s32 y;
     s16 speedX;
     s16 speedY;
-    Sprite sprite;
+    Sprite s;
 } SuperSonicSpark;
 
 typedef struct {
@@ -61,7 +64,7 @@ typedef struct {
     s16 speedX;
     s16 speedY;
 
-    Sprite sprite;
+    Sprite s;
     Sprite ssGroundEffectSprite;
 } IntroActor;
 
@@ -122,12 +125,12 @@ void sub_803796C(void);
 void sub_80378BC(void);
 void sub_8037818(void);
 void sub_8037744(void);
-void sub_80370C0(void);
-void sub_8036FE4(void);
-void sub_8036EF8(void);
-void sub_8037254(void);
-void sub_80373CC(void);
-void Task_ActorSonicSlowToStop(void);
+void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void);
+void Task_OrbitingEmeraldsRotate(void);
+void Task_OrbitingEmeraldsMoveOutwards(void);
+void Task_DisplaySonicSonicArtworkAndDestroyTask(void);
+void Task_SuperSonicSpark(void);
+void Task_ActorSonicSlowDownTilStop(void);
 
 void Task_ActorSonicRunIn(void);
 void sub_80380B0(void);
@@ -137,7 +140,7 @@ void sub_8038E20(void);
 
 #define ACTOR_CHEESE 4
 
-#define NEXT_SEQUENCE_ANIM(actor, sprite)                                               \
+#define NEXT_SEQUENCE_ANIM(actor, s)                                                    \
     ({                                                                                  \
         const TileInfo *animSet, *tileInfo;                                             \
         (actor)->animFrame                                                              \
@@ -146,17 +149,17 @@ void sub_8038E20(void);
         animSet = gUnknown_080D76F0[(actor)->character];                                \
         tileInfo = &animSet[(actor)->sequence];                                         \
                                                                                         \
-        (sprite)->graphics.anim = tileInfo->anim;                                       \
-        (sprite)->variant = tileInfo->variant;                                          \
-        (sprite)->unk21 = 0xFF;                                                         \
+        (s)->graphics.anim = tileInfo->anim;                                            \
+        (s)->variant = tileInfo->variant;                                               \
+        (s)->prevVariant = -1;                                                          \
     })
 
-#define OBJ_RENDER_SPRITE(obj, sprite)                                                  \
+#define OBJ_RENDER_SPRITE(obj, s)                                                       \
     ({                                                                                  \
-        (sprite)->x = Q_24_8_TO_INT((obj)->x);                                          \
-        (sprite)->y = Q_24_8_TO_INT((obj)->y) - gCamera.y;                              \
-        sub_8004558(sprite);                                                            \
-        sub_80051E8(sprite);                                                            \
+        (s)->x = Q_24_8_TO_INT((obj)->x);                                               \
+        (s)->y = Q_24_8_TO_INT((obj)->y) - gCamera.y;                                   \
+        UpdateSpriteAnimation(s);                                                       \
+        DisplaySprite(s);                                                               \
     })
 
 #define OBJ_UPDATE_POS(obj)                                                             \
@@ -293,13 +296,13 @@ void CreateTrueArea53Intro(void)
     u8 i;
     struct Task *t;
     TrueArea53Intro *intro;
-    Sprite *sprite;
+    Sprite *s;
     gBldRegs.bldCnt = 0x3FFF;
     gBldRegs.bldAlpha = 0;
     gBldRegs.bldY = 0x10;
 
     t = TaskCreate(Task_IntroPanIn, sizeof(TrueArea53Intro), 0x7000, 0, NULL);
-    intro = TaskGetStructPtr(t);
+    intro = TASK_DATA(t);
     intro->cameraY = 0;
     intro->animFrame = 370;
     intro->unk8 = 0xE8;
@@ -318,37 +321,37 @@ void CreateTrueArea53Intro(void)
     intro->unk1B4 = Q_24_8(100);
     intro->unk1B8 = Q_24_8(180);
 
-    sprite = &intro->vanillaSprite;
-    sprite->x = 0;
-    sprite->y = 0;
-    sprite->graphics.dest = (void *)gUnknown_080D7560[0].numTiles;
-    sprite->graphics.anim = gUnknown_080D7560[4].anim;
-    sprite->variant = gUnknown_080D7560[4].variant;
-    sprite->unk1A = 0x100;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = 0xFF;
-    sprite->unk22 = 0x10;
-    sprite->palId = 5;
-    sprite->unk10 = 0x400;
+    s = &intro->vanillaSprite;
+    s->x = 0;
+    s->y = 0;
+    s->graphics.dest = (void *)gUnknown_080D7560[0].numTiles;
+    s->graphics.anim = gUnknown_080D7560[4].anim;
+    s->variant = gUnknown_080D7560[4].variant;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 5;
+    s->unk10 = 0x400;
 
     for (i = 0; i < 3; i++) {
-        sprite = &intro->birdSprites[i];
-        sprite->x = 0;
-        sprite->y = 0;
-        sprite->graphics.dest = (void *)gUnknown_080D7560[i + 1].numTiles;
-        sprite->graphics.anim = gUnknown_080D7560[i + 1].anim;
-        sprite->variant = gUnknown_080D7560[i + 1].variant;
-        sprite->unk1A = 0x100;
-        sprite->graphics.size = 0;
-        sprite->unk14 = 0;
-        sprite->unk1C = 0;
-        sprite->unk21 = 0xFF;
-        sprite->unk22 = 0x10;
-        sprite->palId = i + 1;
-        sprite->unk28[0].unk0 = -1;
-        sprite->unk10 = 0;
+        s = &intro->birdSprites[i];
+        s->x = 0;
+        s->y = 0;
+        s->graphics.dest = (void *)gUnknown_080D7560[i + 1].numTiles;
+        s->graphics.anim = gUnknown_080D7560[i + 1].anim;
+        s->variant = gUnknown_080D7560[i + 1].variant;
+        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevVariant = -1;
+        s->animSpeed = 0x10;
+        s->palId = i + 1;
+        s->hitboxes[0].index = -1;
+        s->unk10 = 0;
     }
 
     CreateBackgrounds();
@@ -362,15 +365,15 @@ void CreateOrbitingEmeraldsSequence(void)
     Background *background;
     Sprite *emerald;
 
-    struct Task *t
-        = TaskCreate(sub_8036EF8, sizeof(OrbitingEmeraldsSequence), 0x7000, 0, NULL);
-    OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(t);
+    struct Task *t = TaskCreate(Task_OrbitingEmeraldsMoveOutwards,
+                                sizeof(OrbitingEmeraldsSequence), 0x7000, 0, NULL);
+    OrbitingEmeraldsSequence *sequence = TASK_DATA(t);
     sequence->animFrame = 32;
 
     background = &sequence->background;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(16);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CUTSCENE_VANILLA_KIDNAPPED_SUPER_SONIC_ART;
@@ -378,10 +381,10 @@ void CreateOrbitingEmeraldsSequence(void)
     background->unk20 = 0;
     background->unk22 = 9;
     background->unk24 = 1;
-    background->unk26 = 0xD;
-    background->unk28 = 0x12;
-    background->unk2A = 0;
-    background->unk2E = 2;
+    background->targetTilesX = 0xD;
+    background->targetTilesY = 0x12;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(2);
 
     for (i = 0; i < 7; i++) {
         sequence->orbitSpeeds[i] = 0;
@@ -392,12 +395,12 @@ void CreateOrbitingEmeraldsSequence(void)
         emerald->graphics.dest = (void *)OBJ_VRAM0 + 0x3000 + (i * 0x200);
         emerald->graphics.anim = 0x345;
         emerald->variant = i;
-        emerald->unk21 = 0xFF;
-        emerald->unk1A = 0x500;
+        emerald->prevVariant = -1;
+        emerald->unk1A = SPRITE_OAM_ORDER(20);
         emerald->graphics.size = 0;
-        emerald->unk14 = 0;
-        emerald->unk1C = 0;
-        emerald->unk22 = 0x10;
+        emerald->animCursor = 0;
+        emerald->timeUntilNextFrame = 0;
+        emerald->animSpeed = 0x10;
         emerald->palId = 0;
         emerald->unk10 = 0;
     }
@@ -406,22 +409,22 @@ void CreateOrbitingEmeraldsSequence(void)
 #define ORBIT_BASE_X 120
 #define ORBIT_BASE_Y 100
 
-#define ORBIT_SET_SPRITE_POS(sprite, pos)                                               \
+#define ORBIT_SET_SPRITE_POS(s, pos)                                                    \
     ({                                                                                  \
-        sprite->x = pos[0] + ORBIT_BASE_X;                                              \
-        sprite->y = pos[1] + ORBIT_BASE_Y;                                              \
+        s->x = pos[0] + ORBIT_BASE_X;                                                   \
+        s->y = pos[1] + ORBIT_BASE_Y;                                                   \
     })
 
-void sub_8036EF8(void)
+void Task_OrbitingEmeraldsMoveOutwards(void)
 {
     u8 i;
     s32 pos[2];
     s32 temp[2];
-    Sprite *sprite;
-    OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(gCurTask);
+    Sprite *s;
+    OrbitingEmeraldsSequence *sequence = TASK_DATA(gCurTask);
 
     for (i = 0; i < 7; i++) {
-        sprite = &sequence->emerald[i];
+        s = &sequence->emerald[i];
         sequence->orbitSpeeds[i] += 5;
         sequence->orbitPositions[i] += sequence->orbitSpeeds[i];
 
@@ -431,29 +434,29 @@ void sub_8036EF8(void)
         pos[0] = Q_2_14_TO_INT(COS(temp[0]) * (32 - sequence->animFrame));
         pos[1] = Q_2_14_TO_INT(SIN(temp[1]) * (32 - sequence->animFrame)) >> 2;
 
-        ORBIT_SET_SPRITE_POS(sprite, pos);
+        ORBIT_SET_SPRITE_POS(s, pos);
 
-        sub_8004558(sprite);
-        sub_80051E8(sprite);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     if (--sequence->animFrame == 0) {
         sequence->animFrame = 360;
-        gCurTask->main = sub_8036FE4;
+        gCurTask->main = Task_OrbitingEmeraldsRotate;
     };
 }
 
-void sub_8036FE4(void)
+void Task_OrbitingEmeraldsRotate(void)
 {
     u8 i;
     s32 pos[2];
     s32 temp[2];
     s32 temp2;
-    Sprite *sprite;
-    OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(gCurTask);
+    Sprite *s;
+    OrbitingEmeraldsSequence *sequence = TASK_DATA(gCurTask);
 
     for (i = 0; i < 7; i++) {
-        sprite = &sequence->emerald[i];
+        s = &sequence->emerald[i];
         sequence->orbitSpeeds[i] += 5;
         sequence->orbitPositions[i] += sequence->orbitSpeeds[i];
 
@@ -466,26 +469,26 @@ void sub_8036FE4(void)
         temp2 = SIN(temp[1]);
         pos[1] = temp2 >> 11;
 
-        ORBIT_SET_SPRITE_POS(sprite, pos);
+        ORBIT_SET_SPRITE_POS(s, pos);
 
-        sub_8004558(sprite);
-        sub_80051E8(sprite);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     if (--sequence->animFrame == 0) {
         sequence->animFrame = 32;
-        gCurTask->main = sub_80370C0;
+        gCurTask->main = Task_OrbitingEmeraldsContractAndFadeScreenWhite;
     };
 }
 
-void sub_80370C0(void)
+void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void)
 {
     u8 i;
     s32 pos[2];
     s32 temp[2];
     s32 temp2;
-    Sprite *sprite;
-    OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(gCurTask);
+    Sprite *s;
+    OrbitingEmeraldsSequence *sequence = TASK_DATA(gCurTask);
 
     if (--sequence->animFrame == 0) {
         sequence->animFrame = 0x78;
@@ -504,8 +507,8 @@ void sub_80370C0(void)
         gUnknown_03002280[2][2] = 0xff;
         gUnknown_03002280[2][3] = 0x14;
 
-        sub_8002A3C(&sequence->background);
-        gCurTask->main = sub_8037254;
+        DrawBackground(&sequence->background);
+        gCurTask->main = Task_DisplaySonicSonicArtworkAndDestroyTask;
         return;
     }
 
@@ -520,7 +523,7 @@ void sub_80370C0(void)
     }
 
     for (i = 0; i < 7; i++) {
-        sprite = &sequence->emerald[i];
+        s = &sequence->emerald[i];
         sequence->orbitSpeeds[i] += 5;
         sequence->orbitPositions[i] += sequence->orbitSpeeds[i];
 
@@ -530,16 +533,16 @@ void sub_80370C0(void)
         pos[0] = Q_2_14_TO_INT(sequence->animFrame * COS(temp[0]));
         pos[1] = Q_2_14_TO_INT(sequence->animFrame * SIN(temp[1])) >> 2;
 
-        ORBIT_SET_SPRITE_POS(sprite, pos);
+        ORBIT_SET_SPRITE_POS(s, pos);
 
-        sub_8004558(sprite);
-        sub_80051E8(sprite);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
-void sub_8037254(void)
+void Task_DisplaySonicSonicArtworkAndDestroyTask(void)
 {
-    OrbitingEmeraldsSequence *sequence = TaskGetStructPtr(gCurTask);
+    OrbitingEmeraldsSequence *sequence = TASK_DATA(gCurTask);
 
     if (--sequence->animFrame == 0) {
         gDispCnt = 0x1140;
@@ -560,10 +563,11 @@ void sub_8037254(void)
 
 void CreateSuperSonicSpark(s32 x, s32 y)
 {
-    Sprite *sprite;
-    struct Task *t = TaskCreate(sub_80373CC, sizeof(SuperSonicSpark), 0x7000, 0, NULL);
+    Sprite *s;
+    struct Task *t
+        = TaskCreate(Task_SuperSonicSpark, sizeof(SuperSonicSpark), 0x7000, 0, NULL);
     u32 type = PseudoRandBetween(2, 3);
-    SuperSonicSpark *spark = TaskGetStructPtr(t);
+    SuperSonicSpark *spark = TASK_DATA(t);
     spark->animFrame = 40;
 
     spark->x = x + (s16)Q_24_8(PseudoRandBetween(-16, 15));
@@ -571,28 +575,28 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     spark->speedX = 0;
     spark->speedY = 0;
 
-    sprite = &spark->sprite;
-    sprite->x = 0;
-    sprite->y = 0;
-    sprite->graphics.dest = (void *)gUnknown_080D7540[type].numTiles;
-    sprite->graphics.anim = gUnknown_080D7540[type].anim;
-    sprite->variant = gUnknown_080D7540[type].variant;
-    sprite->unk21 = 0xFF;
-    sprite->unk1A = 0x100;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk22 = 0x20;
-    sprite->palId = 0;
-    sprite->unk10 = 0x1000;
+    s = &spark->s;
+    s->x = 0;
+    s->y = 0;
+    s->graphics.dest = (void *)gUnknown_080D7540[type].numTiles;
+    s->graphics.anim = gUnknown_080D7540[type].anim;
+    s->variant = gUnknown_080D7540[type].variant;
+    s->prevVariant = -1;
+    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x20;
+    s->palId = 0;
+    s->unk10 = 0x1000;
 }
 
-void sub_80373CC(void)
+void Task_SuperSonicSpark(void)
 {
     s32 unk4, unkC;
-    Sprite *sprite;
-    SuperSonicSpark *spark = TaskGetStructPtr(gCurTask);
-    sprite = &spark->sprite;
+    Sprite *s;
+    SuperSonicSpark *spark = TASK_DATA(gCurTask);
+    s = &spark->s;
 
     OBJ_ACCELERATE_Y(spark, 16);
     OBJ_UPDATE_POS(spark);
@@ -602,16 +606,16 @@ void sub_80373CC(void)
         return;
     }
 
-    OBJ_RENDER_SPRITE(spark, sprite);
+    OBJ_RENDER_SPRITE(spark, s);
 }
 
 void CreateActor(u8 character)
 {
-    Sprite *sprite;
+    Sprite *s;
     const TileInfo *tileInfo;
     struct Task *t
         = TaskCreate(gUnknown_080D7970[character], sizeof(IntroActor), 0x7000, 0, NULL);
-    IntroActor *actor = TaskGetStructPtr(t);
+    IntroActor *actor = TASK_DATA(t);
     actor->character = character;
     actor->sequence = 0;
 
@@ -623,138 +627,138 @@ void CreateActor(u8 character)
     actor->speedY = gUnknown_080D77D0[actor->character][3];
 
     tileInfo = gUnknown_080D76F0[character];
-    sprite = &actor->sprite;
+    s = &actor->s;
 
     // BUG: should have been `Q_24_8_TO_INT`
-    sprite->x = Q_24_8(gUnknown_080D77D0[actor->character][0]);
-    sprite->y = Q_24_8(gUnknown_080D77D0[actor->character][1]);
+    s->x = Q_24_8(gUnknown_080D77D0[actor->character][0]);
+    s->y = Q_24_8(gUnknown_080D77D0[actor->character][1]);
 
-    sprite->graphics.dest = (void *)tileInfo->numTiles;
-    sprite->graphics.anim = tileInfo->anim;
-    sprite->variant = tileInfo->variant;
-    sprite->unk21 = 0xFF;
-    sprite->unk1A = (16 - gUnknown_080D7984[character]) * 64;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk22 = 0x20;
+    s->graphics.dest = (void *)tileInfo->numTiles;
+    s->graphics.anim = tileInfo->anim;
+    s->variant = tileInfo->variant;
+    s->prevVariant = -1;
+    s->unk1A = SPRITE_OAM_ORDER(16 - gUnknown_080D7984[character]);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x20;
     if (character < ACTOR_CHEESE) {
-        sprite->palId = character;
+        s->palId = character;
     } else {
-        sprite->palId = 0;
+        s->palId = 0;
     }
 
-    sprite->unk10 = 0x1400;
+    s->unk10 = 0x1400;
 
     if (character < ACTOR_CHEESE) {
-        sprite = &actor->ssGroundEffectSprite;
-        sprite->x = 0;
-        sprite->y = 0;
+        s = &actor->ssGroundEffectSprite;
+        s->x = 0;
+        s->y = 0;
 
-        sprite->graphics.dest = (void *)gUnknown_080D7540[character].numTiles;
-        sprite->graphics.anim = gUnknown_080D7540[character].anim;
-        sprite->variant = gUnknown_080D7540[character].variant;
-        sprite->unk21 = 0xFF;
-        sprite->unk1A = 0x400;
-        sprite->graphics.size = 0;
-        sprite->unk14 = 0;
-        sprite->unk1C = 0;
-        sprite->unk22 = 0x10;
-        sprite->palId = 0;
-        sprite->unk10 = 0x1000;
+        s->graphics.dest = (void *)gUnknown_080D7540[character].numTiles;
+        s->graphics.anim = gUnknown_080D7540[character].anim;
+        s->variant = gUnknown_080D7540[character].variant;
+        s->prevVariant = -1;
+        s->unk1A = SPRITE_OAM_ORDER(16);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0x1000;
     }
 }
 
 void Task_ActorSonicRunIn(void)
 {
-    Sprite *sprite;
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    Sprite *s;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
 
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
-        sprite->unk22 = 0x10;
-        gCurTask->main = Task_ActorSonicSlowToStop;
+        NEXT_SEQUENCE_ANIM(actor, s);
+        s->animSpeed = 0x10;
+        gCurTask->main = Task_ActorSonicSlowDownTilStop;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
-void Task_ActorSonicSlowToStop(void)
+void Task_ActorSonicSlowDownTilStop(void)
 {
-    Sprite *sprite;
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    Sprite *s;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
-        sprite->unk22 = 0x10;
+        NEXT_SEQUENCE_ANIM(actor, s);
+        s->animSpeed = 0x10;
         gCurTask->main = sub_8037744;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8037744(void)
 {
-    Sprite *sprite;
+    Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
         actor->speedX = 0;
-        NEXT_SEQUENCE_ANIM(actor, sprite);
-        sprite->unk22 = 0x10;
+        NEXT_SEQUENCE_ANIM(actor, s);
+        s->animSpeed = 0x10;
         gCurTask->main = sub_8037818;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8037818(void)
 {
-    Sprite *sprite;
+    Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_80378BC;
     }
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_80378BC(void)
 {
-    Sprite *sprite;
+    Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         actor->unk4 = 0;
         gCurTask->main = sub_803796C;
     }
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_803796C(void)
 {
-    Sprite *sprite;
+    Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
 
     if (actor->animFrame < 0x135) {
         if (actor->animFrame == 0xF0) {
@@ -768,71 +772,71 @@ void sub_803796C(void)
     }
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
-        sprite->unk22 = 0x10;
+        NEXT_SEQUENCE_ANIM(actor, s);
+        s->animSpeed = 0x10;
         gCurTask->main = sub_8037A38;
     }
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8037A38(void)
 {
-    Sprite *sprite;
+    Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
 
     if (!(actor->animFrame & 7)) {
-        sprite->unk22++;
+        s->animSpeed++;
     }
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
-        sprite->unk22 = 0x10;
+        NEXT_SEQUENCE_ANIM(actor, s);
+        s->animSpeed = 0x10;
         m4aSongNumStart(SE_GRINDING);
         gCurTask->main = sub_8037B04;
     }
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8037B04(void)
 {
-    Sprite *sprite;
+    Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
     actor->y -= SIN(((++actor->unk4) * 5) & 0x3FF) >> 8;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8037BD0;
     }
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8037BD0(void)
 {
-    Sprite *sprite;
+    Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
     actor->y -= SIN(((++actor->unk4) * 5) & 0x3FF) >> 8;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8037CEC;
     }
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 
-    sprite = &actor->ssGroundEffectSprite;
-    sprite->x = Q_24_8_TO_INT(actor->x);
-    sprite->y = 178 - gCamera.y;
-    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    s = &actor->ssGroundEffectSprite;
+    s->x = Q_24_8_TO_INT(actor->x);
+    s->y = 178 - gCamera.y;
+    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
-    sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(sprite);
+    s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    DisplaySprite(s);
 
     if (!(actor->animFrame & 3)) {
         CreateSuperSonicSpark(actor->x, actor->y);
@@ -841,27 +845,27 @@ void sub_8037BD0(void)
 
 void sub_8037CEC(void)
 {
-    Sprite *sprite;
+    Sprite *s;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
     actor->y -= SIN(((++actor->unk4) * 5) & 0x3FF) >> 8;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8037E08;
     }
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 
-    sprite = &actor->ssGroundEffectSprite;
-    sprite->x = Q_24_8_TO_INT(actor->x);
-    sprite->y = 178 - gCamera.y;
-    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    s = &actor->ssGroundEffectSprite;
+    s->x = Q_24_8_TO_INT(actor->x);
+    s->y = 178 - gCamera.y;
+    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
-    sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(sprite);
+    s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    DisplaySprite(s);
 
     if (!(actor->animFrame & 3)) {
         CreateSuperSonicSpark(actor->x, actor->y);
@@ -870,38 +874,38 @@ void sub_8037CEC(void)
 
 void sub_8037E08(void)
 {
-    Sprite *sprite, *sprite2;
+    Sprite *s, *sprite2;
 
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    s = &actor->s;
     sprite2 = &actor->ssGroundEffectSprite;
     actor->y -= SIN(((++actor->unk4) * 5) & 0x3FF) >> 8;
 
     if (--actor->animFrame == 0) {
         gBldRegs.bldY = 0;
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
 
         sprite2->graphics.dest = (void *)gUnknown_080D7540[1].numTiles;
         sprite2->graphics.anim = gUnknown_080D7540[1].anim;
         sprite2->variant = gUnknown_080D7540[1].variant;
-        sprite2->unk21 = 0xFF;
+        sprite2->prevVariant = -1;
 
         gCurTask->main = sub_8037F68;
 
         m4aSongNumStop(SE_GRINDING);
         m4aSongNumStart(SE_221);
     }
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 
-    sprite = &actor->ssGroundEffectSprite;
-    sprite->x = Q_24_8_TO_INT(actor->x);
-    sprite->y = 178 - gCamera.y;
-    sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    s = &actor->ssGroundEffectSprite;
+    s->x = Q_24_8_TO_INT(actor->x);
+    s->y = 178 - gCamera.y;
+    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
-    sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-    sub_80051E8(sprite);
+    s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    DisplaySprite(s);
 
     if (!(actor->animFrame & 3)) {
         CreateSuperSonicSpark(actor->x, actor->y);
@@ -910,8 +914,8 @@ void sub_8037E08(void)
 
 void sub_8037F68(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
     if (actor->y > -0x2000) {
         actor->y -= 0x800;
     }
@@ -943,18 +947,18 @@ void sub_8037F68(void)
         actor->animFrame--;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 
     if (actor->animFrame > 0x99) {
-        sprite = &actor->ssGroundEffectSprite;
-        sprite->x = Q_24_8_TO_INT(actor->x);
-        sprite->y = 178 - gCamera.y;
-        sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-        sub_8004558(sprite);
-        sub_80051E8(sprite);
+        s = &actor->ssGroundEffectSprite;
+        s->x = Q_24_8_TO_INT(actor->x);
+        s->y = 178 - gCamera.y;
+        s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
 
-        sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-        sub_80051E8(sprite);
+        s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+        DisplaySprite(s);
     }
 
     if (!(actor->animFrame & 3)) {
@@ -965,305 +969,305 @@ void sub_8037F68(void)
 // Cream
 void sub_80380B0(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8038168;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038168(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
-        sprite->unk22 = 0x10;
+        NEXT_SEQUENCE_ANIM(actor, s);
+        s->animSpeed = 0x10;
         gCurTask->main = sub_8038238;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038238(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_80382F0;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_80382F0(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_80383B8;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_80383B8(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_803845C;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_803845C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8038500;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038500(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_803997C;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 // tails
 void sub_80385A4(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
-        sprite->unk22 = 0x10;
+        NEXT_SEQUENCE_ANIM(actor, s);
+        s->animSpeed = 0x10;
         gCurTask->main = sub_8038664;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038664(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_803872C;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_803872C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_80387F4;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_80387F4(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8038898;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038898(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_803893C;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_803893C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_80399A4;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 // Knuckles
 void sub_80389E0(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
-        sprite->unk22 = 0x10;
+        NEXT_SEQUENCE_ANIM(actor, s);
+        s->animSpeed = 0x10;
         gCurTask->main = sub_8038AA0;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038AA0(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
         actor->speedX = 0;
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8038B6C;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038B6C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8038C34;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038C34(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8038CD8;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038CD8(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8038D7C;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038D7C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_80399CC;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 // Maybe cheese?
 void sub_8038E20(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
-    sprite->unk22 = 0x10;
+    s->animSpeed = 0x10;
 
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8038EE4;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038EE4(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
     OBJ_UPDATE_POS(actor);
@@ -1271,106 +1275,106 @@ void sub_8038EE4(void)
     if (--actor->animFrame == 0) {
         actor->y -= 0x200;
         actor->speedX = 0;
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8038FBC;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8038FBC(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     OBJ_ACCELERATE_X(actor, -32);
     OBJ_UPDATE_POS(actor);
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8039084;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8039084(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (actor->x < 0xB800) {
         actor->x += 0x80;
     } else {
-        sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+        s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     }
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8039144;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8039144(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (actor->x < 0x9800) {
         actor->x += 0x40;
     }
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
-        sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+        NEXT_SEQUENCE_ANIM(actor, s);
+        s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
         gCurTask->main = sub_8039208;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8039208(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
 
     if (--actor->animFrame == 0) {
-        NEXT_SEQUENCE_ANIM(actor, sprite);
+        NEXT_SEQUENCE_ANIM(actor, s);
         gCurTask->main = sub_8039A10;
     }
 
-    OBJ_RENDER_SPRITE(actor, sprite);
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void Task_IntroPanIn(void)
 {
-    TrueArea53Intro *intro = TaskGetStructPtr(gCurTask);
+    TrueArea53Intro *intro = TASK_DATA(gCurTask);
 
-    if (!(gUnknown_03005590 & 3) && intro->cameraY < 44) {
+    if (!(gStageTime & 3) && intro->cameraY < 44) {
         intro->cameraY++;
     }
 
     intro->unk8 += 2;
     gCamera.x = 0;
     gCamera.y = intro->cameraY;
-    gUnknown_03005590++;
+    gStageTime++;
 
     IntroRenderSprites(0);
 
     if (intro->animFrame != 370) {
         if (--intro->animFrame == 0) {
-            Sprite *sprite;
+            Sprite *s;
             intro->unk8 = 0x100;
             gCurTask->main = sub_80393A4;
 
-            sprite = &intro->vanillaSprite;
-            sprite->graphics.dest = (void *)gUnknown_080D7560[0].numTiles;
-            sprite->graphics.anim = gUnknown_080D7560[0].anim;
-            sprite->variant = gUnknown_080D7560[0].variant;
-            sprite->unk10 = 0;
-            sprite->unk21 = 0xFF;
+            s = &intro->vanillaSprite;
+            s->graphics.dest = (void *)gUnknown_080D7560[0].numTiles;
+            s->graphics.anim = gUnknown_080D7560[0].anim;
+            s->variant = gUnknown_080D7560[0].variant;
+            s->unk10 = 0;
+            s->prevVariant = -1;
         }
 
         if (intro->animFrame == 60) {
@@ -1386,7 +1390,7 @@ void Task_IntroPanIn(void)
     }
 
     if (gBldRegs.bldY != 0) {
-        if ((gUnknown_03005590 & 3) == 0) {
+        if ((gStageTime & 3) == 0) {
             gBldRegs.bldY--;
         }
         return;
@@ -1399,10 +1403,10 @@ void sub_80393A4(void)
 {
     s32 x, y;
     u8 i;
-    TrueArea53Intro *intro = TaskGetStructPtr(gCurTask);
+    TrueArea53Intro *intro = TASK_DATA(gCurTask);
 
     intro->unk8++;
-    gUnknown_03005590++;
+    gStageTime++;
     gUnknown_030054B8 = 0;
 
     intro->animFrame += 7;
@@ -1465,16 +1469,16 @@ void IntroRenderSprites(u8 flockMode)
 {
     u8 i;
     s32 pos[2];
-    Sprite *sprite;
-    TrueArea53Intro *intro = TaskGetStructPtr(gCurTask);
+    Sprite *s;
+    TrueArea53Intro *intro = TASK_DATA(gCurTask);
     gBgScrollRegs[0][1] = intro->unkF + intro->cameraY;
     gBgScrollRegs[1][1] = intro->unkF + intro->cameraY;
     gBgScrollRegs[0][0] = intro->unkE;
     gBgScrollRegs[1][0] = intro->unkE;
 
-    sub_8004558(&intro->birdSprites[0]);
-    sub_8004558(&intro->birdSprites[1]);
-    sub_8004558(&intro->birdSprites[2]);
+    UpdateSpriteAnimation(&intro->birdSprites[0]);
+    UpdateSpriteAnimation(&intro->birdSprites[1]);
+    UpdateSpriteAnimation(&intro->birdSprites[2]);
 
     pos[0] = (intro->unk8 * 5) & ONE_CYCLE;
     pos[1] = (intro->unk8 * 3) & ONE_CYCLE;
@@ -1482,7 +1486,7 @@ void IntroRenderSprites(u8 flockMode)
     if (flockMode != 0) {
         for (i = 0; i < 32; i++) {
             if (intro->unk10[i] != 0) {
-                sprite = &intro->birdSprites[gUnknown_080D7830[i][4]];
+                s = &intro->birdSprites[gUnknown_080D7830[i][4]];
 
                 intro->birdPositions[i][0] += intro->birdSpeeds[i][0];
                 intro->birdPositions[i][1] += intro->birdSpeeds[i][1];
@@ -1490,16 +1494,16 @@ void IntroRenderSprites(u8 flockMode)
                 intro->birdSpeeds[i][0] -= 0x28;
                 intro->birdSpeeds[i][1] -= 0x10;
 
-                sprite->x = intro->birdPositions[i][0] >> 8;
-                sprite->y = (intro->birdPositions[i][1] >> 8) - intro->cameraY;
-                sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-                sub_80051E8(sprite);
+                s->x = intro->birdPositions[i][0] >> 8;
+                s->y = (intro->birdPositions[i][1] >> 8) - intro->cameraY;
+                s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+                DisplaySprite(s);
             }
         }
     } else {
         for (i = 0; i < 32; i++) {
             s32 prevPos[2];
-            sprite = &intro->birdSprites[gUnknown_080D7830[i][4]];
+            s = &intro->birdSprites[gUnknown_080D7830[i][4]];
             prevPos[0] = intro->birdPositions[i][0];
             prevPos[1] = intro->birdPositions[i][1];
 
@@ -1512,28 +1516,28 @@ void IntroRenderSprites(u8 flockMode)
             intro->birdSpeeds[i][0] = intro->birdPositions[i][0] - prevPos[0];
             intro->birdSpeeds[i][1] = intro->birdPositions[i][1] - prevPos[1];
 
-            sprite->x = Q_24_8_TO_INT(intro->birdPositions[i][0]);
-            sprite->y = Q_24_8_TO_INT(intro->birdPositions[i][1]) - intro->cameraY;
+            s->x = Q_24_8_TO_INT(intro->birdPositions[i][0]);
+            s->y = Q_24_8_TO_INT(intro->birdPositions[i][1]) - intro->cameraY;
 
             if (intro->birdSpeeds[i][0] < 0) {
-                sprite->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+                s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
             } else {
-                sprite->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
             }
 
-            sub_80051E8(sprite);
+            DisplaySprite(s);
             pos[0] = (pos[0] - 64) & ONE_CYCLE;
             pos[1] = (pos[1] - 64) & ONE_CYCLE;
         }
     }
 
     if (intro->unk1B0 != 0) {
-        sprite = &intro->vanillaSprite;
-        sprite->x = Q_24_8_TO_INT(intro->unk1B4);
-        sprite->y = Q_24_8_TO_INT(intro->unk1B8) - intro->cameraY + intro->unkF;
+        s = &intro->vanillaSprite;
+        s->x = Q_24_8_TO_INT(intro->unk1B4);
+        s->y = Q_24_8_TO_INT(intro->unk1B8) - intro->cameraY + intro->unkF;
 
-        sub_8004558(sprite);
-        sub_80051E8(sprite);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }
 
@@ -1559,12 +1563,12 @@ void CreateBackgrounds(void)
     gUnknown_03002280[2][3] = 0x20;
 
     t = TaskCreate(sub_8039A38, sizeof(WorldBackgrounds), 0x8100, 0, NULL);
-    worldBgs = TaskGetStructPtr(t);
+    worldBgs = TASK_DATA(t);
 
     background = &worldBgs->bg1;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(31);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(31);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP;
@@ -1572,16 +1576,16 @@ void CreateBackgrounds(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
-    background->unk2E = 0;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
 
     background = &worldBgs->bg2;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(30);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP_COPY;
@@ -1589,42 +1593,42 @@ void CreateBackgrounds(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
-    background->unk2E = 1;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
+    DrawBackground(background);
 }
 
 void sub_803997C(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
 
-    sub_8004558(&actor->sprite);
-    sub_80051E8(&actor->sprite);
+    UpdateSpriteAnimation(&actor->s);
+    DisplaySprite(&actor->s);
 }
 
 void sub_80399A4(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
 
-    sub_8004558(&actor->sprite);
-    sub_80051E8(&actor->sprite);
+    UpdateSpriteAnimation(&actor->s);
+    DisplaySprite(&actor->s);
 }
 
 void sub_80399CC(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &actor->sprite;
-    OBJ_RENDER_SPRITE(actor, sprite);
+    IntroActor *actor = TASK_DATA(gCurTask);
+    Sprite *s = &actor->s;
+    OBJ_RENDER_SPRITE(actor, s);
 }
 
 void sub_8039A10(void)
 {
-    IntroActor *actor = TaskGetStructPtr(gCurTask);
+    IntroActor *actor = TASK_DATA(gCurTask);
 
-    sub_8004558(&actor->sprite);
-    sub_80051E8(&actor->sprite);
+    UpdateSpriteAnimation(&actor->s);
+    DisplaySprite(&actor->s);
 }
 
 void sub_8039A38(void) { TaskDestroy(gCurTask); }
@@ -1654,8 +1658,8 @@ void sub_8039AD4(void)
 
     m4aMPlayAllStop();
     gGameMode = GAME_MODE_SINGLE_PLAYER;
-    gSelectedCharacter = 0;
-    gCurrentLevel = 0x1D;
+    gSelectedCharacter = CHARACTER_SONIC;
+    gCurrentLevel = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
     ApplyGameStageSettings();
     GameStageStart();
     TaskDestroy(gCurTask);

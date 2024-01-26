@@ -7,15 +7,13 @@
 #include "task.h"
 
 #include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/music_plant/guitar_string.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
-
-#define NUM_GUITAR_STRING_ELEMS 6
-#define GUITARSTR_WIDTH_PX      (NUM_GUITAR_STRING_ELEMS * TILE_WIDTH)
-#define GUITARSTR_MIN_ACCEL     Q_8_8(4.0)
-#define GUITARSTR_MAX_ACCEL     Q_8_8(12.0)
 
 typedef struct {
     // elems:
@@ -46,7 +44,7 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 {
     struct Task *t = TaskCreate(Task_GuitarString, sizeof(Sprite_GuitarString), 0x2010,
                                 0, TaskDestructor_GuitarString);
-    Sprite_GuitarString *gs = TaskGetStructPtr(t);
+    Sprite_GuitarString *gs = TASK_DATA(t);
     Sprite *s = &gs->s1;
     u16 i;
 
@@ -56,14 +54,14 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     gs->base.spriteX = me->x;
     gs->base.spriteY = spriteY;
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x3700);
     s->graphics.anim = SA2_ANIM_NOTE_BLOCK;
@@ -73,11 +71,11 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     gs->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 
     for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
         s16 *elem = gs->elements[i];
-        s16 offsetX = Q_8_8(i << 3);
+        s16 offsetX = Q_8_8(i * TILE_WIDTH);
         s16 offsetY = 0;
 
         elem[0] = offsetX;
@@ -110,7 +108,7 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 void sub_8075F58(void)
 {
     u8 r7 = 0;
-    Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
+    Sprite_GuitarString *gs = TASK_DATA(gCurTask);
     u8 i;
 
     sub_80762E0(gs);
@@ -151,7 +149,7 @@ void sub_8075F58(void)
 void sub_8076000(void)
 {
     u8 r5 = 0;
-    Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
+    Sprite_GuitarString *gs = TASK_DATA(gCurTask);
     u8 i;
 
     for (i = 0; i < NUM_GUITAR_STRING_ELEMS; i++) {
@@ -239,7 +237,7 @@ void sub_8076114(Sprite_GuitarString *gs)
         r1 -= gCamera.y;
         s->y = r1;
 
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
@@ -261,7 +259,7 @@ bool32 sub_807618C(Sprite_GuitarString *gs)
 
 void Task_GuitarString(void)
 {
-    Sprite_GuitarString *gs = TaskGetStructPtr(gCurTask);
+    Sprite_GuitarString *gs = TASK_DATA(gCurTask);
 
     if (sub_807618C(gs)) {
         sub_807608C(gs);
@@ -282,7 +280,7 @@ void sub_8076258(Sprite_GuitarString UNUSED *gs)
     if (PLAYER_IS_ALIVE) {
         Player_ClearMovestate_IsInScriptedSequence();
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
         gPlayer.speedAirY = -gPlayer.speedAirY;
         m4aSongNumStart(SE_MUSIC_PLANT_GUITAR_STRING);
     }

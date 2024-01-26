@@ -1,5 +1,8 @@
 #include "global.h"
 #include "malloc_vram.h"
+
+#include "sakit/entities_0.h"
+
 #include "game/entity.h"
 
 #include "constants/animations.h"
@@ -27,7 +30,7 @@ void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
         struct Task *t = TaskCreate(Task_PikoPiko, sizeof(Sprite_PikoPiko), 0x4080, 0,
                                     TaskDestructor_PikoPiko);
-        Sprite_PikoPiko *piko = TaskGetStructPtr(t);
+        Sprite_PikoPiko *piko = TASK_DATA(t);
         Sprite *s = &piko->s;
         piko->base.regionX = spriteRegionX;
         piko->base.regionY = spriteRegionY;
@@ -49,13 +52,13 @@ void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
-        SPRITE_INIT(s, 30, SA2_ANIM_PIKOPIKO, 0, 0x480, 2);
+        SPRITE_INIT(s, 30, SA2_ANIM_PIKOPIKO, 0, 18, 2);
     }
 }
 
 static void Task_PikoPiko(void)
 {
-    Sprite_PikoPiko *piko = TaskGetStructPtr(gCurTask);
+    Sprite_PikoPiko *piko = TASK_DATA(gCurTask);
     Sprite *s = &piko->s;
     MapEntity *me = piko->base.me;
     Vec2_32 pos;
@@ -82,6 +85,6 @@ static void Task_PikoPiko(void)
 
 static void TaskDestructor_PikoPiko(struct Task *t)
 {
-    Sprite_PikoPiko *piko = TaskGetStructPtr(t);
+    Sprite_PikoPiko *piko = TASK_DATA(t);
     VramFree(piko->s.graphics.dest);
 }

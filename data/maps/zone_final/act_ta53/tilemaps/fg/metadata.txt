@@ -1,0 +1,3 @@
+tilemap_dim = {12,12}
+map_dim     = {90,3}
+spawn_pos   = {96,96}

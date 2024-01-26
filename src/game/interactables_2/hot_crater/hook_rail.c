@@ -4,10 +4,15 @@
 #include "sprite.h"
 #include "trig.h"
 #include "lib/m4a.h"
+
 #include "game/entity.h"
+#include "game/player_controls.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/hot_crater/hook_rail.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -76,7 +81,7 @@ void CreateEntity_HookRail(u32 triggerType, MapEntity *me, u16 spriteRegionX,
             return;
     }
 
-    hookRail = TaskGetStructPtr(t);
+    hookRail = TASK_DATA(t);
     hookRail->triggerType = triggerType;
     hookRail->x = TO_WORLD_POS(me->x, spriteRegionX);
     hookRail->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -94,7 +99,7 @@ void CreateEntity_HookRail(u32 triggerType, MapEntity *me, u16 spriteRegionX,
 
 static void sub_8072BB8(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_8073068(hookRail);
@@ -128,7 +133,7 @@ static void sub_8072BB8(void)
 
 static void sub_8072C90(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_8073068(hookRail);
@@ -154,7 +159,7 @@ static void sub_8072C90(void)
 
 static void sub_8072D40(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_8073148(hookRail);
@@ -242,7 +247,7 @@ static u32 IsPlayerTouching(Sprite_HookRail *hookRail)
 
 static void sub_8072F38(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
     u16 touchDirection = IsPlayerTouching(hookRail);
     if (touchDirection != PLAYER_TOUCH_DIRECTION_NONE) {
         if (hookRail->triggerType == 0) {
@@ -261,7 +266,7 @@ static void sub_8072F38(void)
 
 static void sub_8072F8C(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
     if (IsPlayerTouching(hookRail) != PLAYER_TOUCH_DIRECTION_NONE
         && gPlayer.unk64 == 55) {
@@ -334,7 +339,7 @@ static void sub_80730F0(UNUSED Sprite_HookRail *hookRail)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
     gPlayer.unk64 = 14;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
     if (gPlayer.rotation == 128) {
         gPlayer.rotation = 109;
     } else {
@@ -389,7 +394,7 @@ static void sub_80731D4(void)
 static void sub_807321C(void)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.unk6D = 3;
+    gPlayer.transition = PLTRANS_PT3;
 }
 
 static bool32 sub_8073238(Sprite_HookRail *hookRail)
@@ -410,7 +415,8 @@ static void sub_8073280(Sprite_HookRail *hookRail)
     TaskDestroy(gCurTask);
 }
 
-void CreateEntity_048(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
+void CreateEntity_HookRail_Unused(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                                  u8 spriteY)
 {
     CreateEntity_HookRail(0, me, spriteRegionX, spriteRegionY, spriteY);
 }
@@ -429,7 +435,7 @@ void CreateEntity_HookRail_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 
 static void sub_8073320(void)
 {
-    Sprite_HookRail *hookRail = TaskGetStructPtr(gCurTask);
+    Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
     if (!PLAYER_IS_ALIVE) {
         sub_8073068(hookRail);

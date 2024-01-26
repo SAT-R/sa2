@@ -3,6 +3,7 @@
 #include "task.h"
 
 #include "game/game.h"
+#include "game/stage/camera.h"
 #include "game/entity.h"
 #include "sprite.h"
 
@@ -25,7 +26,7 @@ typedef struct {
 
 static void Task_Interactable_Toggle_PlayerLayer(void)
 {
-    Sprite_ChangePlayerLayer *layerChanger = TaskGetStructPtr(gCurTask);
+    Sprite_ChangePlayerLayer *layerChanger = TASK_DATA(gCurTask);
     SpriteBase *base = &layerChanger->base;
     Interactable_Toggle_PlayerLayer *me = (Interactable_Toggle_PlayerLayer *)base->me;
     u8 spriteX = base->spriteX;
@@ -66,7 +67,7 @@ void CreateEntity_Toggle_PlayerLayer(MapEntity *me, u16 spriteRegionX, u16 sprit
 {
     struct Task *t = TaskCreate(Task_Interactable_Toggle_PlayerLayer,
                                 sizeof(Sprite_ChangePlayerLayer), 0x2000, 0, NULL);
-    Sprite_ChangePlayerLayer *layerChanger = TaskGetStructPtr(t);
+    Sprite_ChangePlayerLayer *layerChanger = TASK_DATA(t);
     SpriteBase *base = &layerChanger->base;
 
     base->regionX = spriteRegionX;

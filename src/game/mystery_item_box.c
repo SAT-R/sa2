@@ -1,13 +1,18 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "game/game.h"
+#include "sakit/entities_0.h"
+
 #include "game/entity.h"
 #include "game/mystery_item_box.h"
 #include "game/multiplayer/unknown_1.h"
-#include "game/stage/dust_cloud.h"
+#include "sakit/dust_cloud.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -55,7 +60,7 @@ static const u16 unused = 0;
 void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                  u8 spriteY)
 {
-    Sprite *sprite;
+    Sprite *s;
     Sprite_MysteryItemBox *itemBox;
     struct Task *t;
     if ((gRandomItemBox & 7) == me->d.sData[0]
@@ -71,7 +76,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         me->d.sData[1] = (gRandomItemBox >> 4);
     }
 
-    itemBox = TaskGetStructPtr(t);
+    itemBox = TASK_DATA(t);
     itemBox->unk82 = gUnknown_080E029A[gMultiplayerPseudoRandom & 7];
     itemBox->iconOffsetY = Q_24_8(0.0);
     itemBox->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -83,40 +88,40 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     itemBox->base.spriteY = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sprite = &itemBox->box;
-    sprite->unk22 = 0x10;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = -1;
-    sprite->palId = 0;
-    sprite->unk1A = 0x480;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
-    sprite->graphics.dest = VramMalloc(16);
-    sprite->graphics.anim = SA2_ANIM_ITEMBOX;
-    sprite->variant = 0;
-    sub_8004558(sprite);
+    s = &itemBox->box;
+    s->animSpeed = 0x10;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->palId = 0;
+    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->hitboxes[0].index = -1;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->graphics.dest = VramMalloc(16);
+    s->graphics.anim = SA2_ANIM_ITEMBOX;
+    s->variant = 0;
+    UpdateSpriteAnimation(s);
 
-    sprite = &itemBox->identifier;
-    sprite->unk22 = 0x10;
-    sprite->graphics.size = 0;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = -1;
-    sprite->palId = 0;
-    sprite->unk1A = 0x4C0;
-    sprite->unk28[0].unk0 = -1;
-    sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
-    sprite->graphics.dest = VramMalloc(4);
-    sprite->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
-    sprite->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
-    sub_8004558(sprite);
+    s = &itemBox->identifier;
+    s->animSpeed = 0x10;
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->palId = 0;
+    s->unk1A = SPRITE_OAM_ORDER(19);
+    s->hitboxes[0].index = -1;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->graphics.dest = VramMalloc(4);
+    s->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
+    s->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
+    UpdateSpriteAnimation(s);
 }
 
 static void sub_808616C(void)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
     SpriteTransform *transform;
     Sprite *identifier;
 
@@ -126,13 +131,13 @@ static void sub_808616C(void)
     identifier = &itemBox->identifier;
     identifier->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
     identifier->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
-    sub_8004558(identifier);
+    UpdateSpriteAnimation(identifier);
 
     itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
     transform = &itemBox->transform;
-    transform->unk0 = 0;
+    transform->rotation = 0;
     transform->width = 0x100;
     transform->height = 0;
     transform->x = 0;
@@ -144,7 +149,7 @@ static void sub_808616C(void)
 // TODO: figure out how to move this down
 static inline void sub_80865E4_inline(void)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
     MapEntity *me = itemBox->base.me;
 
     if (me->d.sData[0] != (gRandomItemBox & 7)) {
@@ -171,7 +176,7 @@ static inline void sub_80865E4_inline(void)
 
 static void sub_808623C(void)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
 
     SpriteTransform *transform = &itemBox->transform;
     transform->x = itemBox->x - gCamera.x;
@@ -200,13 +205,13 @@ static void sub_808623C(void)
 
     sub_8004860(&itemBox->box, transform);
     sub_8004860(&itemBox->identifier, transform);
-    sub_80051E8(&itemBox->box);
-    sub_80051E8(&itemBox->identifier);
+    DisplaySprite(&itemBox->box);
+    DisplaySprite(&itemBox->identifier);
 }
 
 static inline void sub_808673C_inline(void)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
     MapEntity *me = itemBox->base.me;
 
     if (me->d.sData[0] == (gRandomItemBox & 7)
@@ -225,7 +230,7 @@ static inline void sub_808673C_inline(void)
 
 static void sub_808636C(void)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
 
     SpriteTransform *transform = &itemBox->transform;
     transform->x = itemBox->x - gCamera.x;
@@ -253,8 +258,8 @@ static void sub_808636C(void)
 
     sub_8004860(&itemBox->box, transform);
     sub_8004860(&itemBox->identifier, transform);
-    sub_80051E8(&itemBox->box);
-    sub_80051E8(&itemBox->identifier);
+    DisplaySprite(&itemBox->box);
+    DisplaySprite(&itemBox->identifier);
 }
 
 static void sub_8086474(Sprite_MysteryItemBox *itemBox)
@@ -265,7 +270,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
         gPlayer.speedAirY = -0x300;
         gPlayer.unk64 = 0x26;
         gPlayer.unk66 = -1;
-        gPlayer.unk6D = 5;
+        gPlayer.transition = PLTRANS_PT5;
     }
 
     itemBox->base.me->d.sData[1] += 1;
@@ -321,7 +326,7 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
 
 static void sub_80865E4(void)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
     MapEntity *me = itemBox->base.me;
 
     if (me->d.sData[0] != (gRandomItemBox & 7)) {
@@ -347,7 +352,7 @@ static void sub_80865E4(void)
 
 static void sub_808665C(void)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
 
     if (itemBox->framesSinceOpened++ >= ITEM_ICON_DISPLAY_TIME) {
         sub_8086504(itemBox);
@@ -360,7 +365,7 @@ static void sub_808665C(void)
 
 static void sub_80866AC(void)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
 
     if (itemBox->framesSinceOpened++ >= ITEM_ICON_DISPLAY_TIME) {
         sub_8086890(itemBox);
@@ -373,7 +378,7 @@ static void sub_80866AC(void)
 
 static void sub_80866FC(void)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
 
     if (itemBox->framesSinceOpened++ >= ITEM_ICON_DISPLAY_DELAY) {
         gCurTask->main = sub_808673C;
@@ -385,7 +390,7 @@ static void sub_80866FC(void)
 
 static void sub_808673C(void)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
     MapEntity *me = itemBox->base.me;
 
     if (me->d.sData[0] == (gRandomItemBox & 7)
@@ -405,12 +410,12 @@ static void sub_808673C(void)
 static inline void sub_808679C_inline(void)
 {
     SpriteTransform *transform;
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
     itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
     transform = &itemBox->transform;
-    transform->unk0 = 0;
+    transform->rotation = 0;
     transform->width = 0x100;
     transform->height = 0x100;
     transform->x = 0;
@@ -422,12 +427,12 @@ static inline void sub_808679C_inline(void)
 static void sub_808679C(void)
 {
     SpriteTransform *transform;
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(gCurTask);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
     itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
     transform = &itemBox->transform;
-    transform->unk0 = 0;
+    transform->rotation = 0;
     transform->width = 0x100;
     transform->height = 0x100;
     transform->x = 0;
@@ -438,7 +443,7 @@ static void sub_808679C(void)
 
 static void sub_80867E8(struct Task *t)
 {
-    Sprite_MysteryItemBox *itemBox = TaskGetStructPtr(t);
+    Sprite_MysteryItemBox *itemBox = TASK_DATA(t);
     VramFree(itemBox->box.graphics.dest);
     VramFree(itemBox->identifier.graphics.dest);
 }
@@ -472,10 +477,10 @@ static void sub_80868A8(Sprite_MysteryItemBox *itemBox, u32 p2)
     itemBox->identifier.y = itemBox->box.y + Q_24_8_TO_INT(itemBox->iconOffsetY);
 
     if (p2 == 0) {
-        sub_80051E8(&itemBox->box);
+        DisplaySprite(&itemBox->box);
     }
 
-    sub_80051E8(&itemBox->identifier);
+    DisplaySprite(&itemBox->identifier);
 }
 
 static bool32 sub_80868F4(Sprite_MysteryItemBox *itemBox)

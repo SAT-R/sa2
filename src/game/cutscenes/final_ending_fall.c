@@ -4,7 +4,7 @@
 #include "core.h"
 #include "game/game.h"
 #include "sprite.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "task.h"
 #include "lib/m4a.h"
 #include "game/save.h"
@@ -29,7 +29,7 @@ struct FinalEndingFallCutScene {
     Sprite unk1D0[2];
     Sprite unk230[6];
 
-    struct TransitionState unk350;
+    ScreenFade unk350;
 
     u8 unk35C;
     u8 unk35D[6];
@@ -115,7 +115,7 @@ void CreateFinalEndingFallCutScene(void)
     Background *background;
     struct Task *t;
     struct FinalEndingFallCutScene *scene = NULL;
-    struct TransitionState *transition = NULL;
+    ScreenFade *fade = NULL;
 
     u8 i, j;
 
@@ -143,7 +143,7 @@ void CreateFinalEndingFallCutScene(void)
     m4aSongNumStart(MUS_FINAL_ENDING);
 
     t = TaskCreate(sub_8092690, 0x49C, 0x3100, 0, sub_8092800);
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
 
     scene->unk35C = 0;
     scene->unk494 = 0;
@@ -193,177 +193,177 @@ void CreateFinalEndingFallCutScene(void)
 
     scene->unk498 = 0;
 
-    transition = &scene->unk350;
-    transition->unk2 = 2;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->speed = 0x50;
-    transition->unk8 = 0x3FBF;
-    transition->unkA = 0;
+    fade = &scene->unk350;
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
+    fade->window = SCREEN_FADE_USE_WINDOW_1;
+    fade->brightness = Q_24_8(0);
+    fade->speed = Q_24_8(5. / 16.);
+    fade->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade->bldAlpha = 0;
 
     scene->unk494 = OBJ_VRAM0;
     {
-        Sprite *element;
-        element = &scene->unk80;
-        element->graphics.dest = (void *)OBJ_VRAM0;
+        Sprite *s;
+        s = &scene->unk80;
+        s->graphics.dest = (void *)OBJ_VRAM0;
         scene->unk494 += gUnknown_080E1650[0].numTiles * 0x20;
-        element->graphics.anim = gUnknown_080E1650[0].anim;
-        element->variant = gUnknown_080E1650[0].variant;
-        element->unk21 = 0xFF;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E1650[0].anim;
+        s->variant = gUnknown_080E1650[0].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        UpdateSpriteAnimation(s);
     }
 
     {
-        Sprite *element;
-        element = &scene->unk110;
-        element->graphics.dest = (void *)scene->unk494;
+        Sprite *s;
+        s = &scene->unk110;
+        s->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 0x1A00;
-        element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH / 2);
-        element->y = (DISPLAY_HEIGHT / 2);
-        element->unk1A = 0;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
+        s->prevVariant = -1;
+        s->x = (DISPLAY_WIDTH / 2);
+        s->y = (DISPLAY_HEIGHT / 2);
+        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
     }
 
     {
-        Sprite *element;
+        Sprite *s;
 
-        element = &scene->unk140;
-        element->graphics.dest = (void *)scene->unk494;
+        s = &scene->unk140;
+        s->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 0xC00;
-        element->unk21 = 0xFF;
-        element->x = 0x78;
-        element->y = 0x50;
-        element->unk1A = 0;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
+        s->prevVariant = -1;
+        s->x = 0x78;
+        s->y = 0x50;
+        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
     }
 
     {
-        Sprite *element;
-        element = &scene->unk1A0;
-        element->graphics.dest = (void *)scene->unk494;
+        Sprite *s;
+        s = &scene->unk1A0;
+        s->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 0x3C0;
-        element->graphics.anim = gUnknown_080E1650[1].anim;
-        element->variant = gUnknown_080E1650[1].variant;
-        element->unk21 = 0xFF;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0x80;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 2;
-        element->unk10 = 0x2000;
-        element->unk28[0].unk0 = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E1650[1].anim;
+        s->variant = gUnknown_080E1650[1].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = SPRITE_OAM_ORDER(2);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 2;
+        s->unk10 = 0x2000;
+        s->hitboxes[0].index = -1;
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 2; i++) {
-        Sprite *element;
-        element = &scene->unk1D0[i];
-        element->graphics.dest = (void *)scene->unk494;
+        Sprite *s;
+        s = &scene->unk1D0[i];
+        s->graphics.dest = (void *)scene->unk494;
         scene->unk494 += gUnknown_080E1650[(i + 3)].numTiles * 0x20;
-        element->unk21 = 0xFF;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0x40;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 2;
-        element->unk10 = 0x2000;
-        element->unk28[0].unk0 = -1;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = SPRITE_OAM_ORDER(1);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 2;
+        s->unk10 = 0x2000;
+        s->hitboxes[0].index = -1;
     }
 
     for (i = 0; i < 6; i++) {
-        Sprite *element;
-        element = &scene->unk230[i];
+        Sprite *s;
+        s = &scene->unk230[i];
 
-        element->graphics.dest = (void *)scene->unk494;
+        s->graphics.dest = (void *)scene->unk494;
         scene->unk494 += gUnknown_080E1650[2].numTiles * 0x20;
-        element->unk21 = 0xFF;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 2;
-        element->unk10 = 0x2000;
-        element->unk28[0].unk0 = -1;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 2;
+        s->unk10 = 0x2000;
+        s->hitboxes[0].index = -1;
     }
 
     if (gSelectedCharacter == 1) {
-        Sprite *element;
-        element = &scene->unk170;
-        element->graphics.dest = (void *)scene->unk494;
+        Sprite *s;
+        s = &scene->unk170;
+        s->graphics.dest = (void *)scene->unk494;
         scene->unk494 += gUnknown_080E1650[27].numTiles * 0x20;
-        element->graphics.anim = gUnknown_080E1650[27].anim;
-        element->variant = gUnknown_080E1650[27].variant;
-        element->unk21 = 0xFF;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 2;
-        element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E1650[27].anim;
+        s->variant = gUnknown_080E1650[27].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 2;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        UpdateSpriteAnimation(s);
     }
 
     for (i = 0; i < 2; i++) {
-        Sprite *element;
-        element = &scene->unkB0[i];
-        element->graphics.dest = (void *)scene->unk494;
+        Sprite *s;
+        s = &scene->unkB0[i];
+        s->graphics.dest = (void *)scene->unk494;
         scene->unk494 += 1;
-        element->graphics.anim = gUnknown_080E1650[(i + 5)].anim;
-        element->variant = gUnknown_080E1650[(i + 5)].variant;
-        element->unk21 = 0xFF;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
-        sub_8004558(element);
+        s->graphics.anim = gUnknown_080E1650[(i + 5)].anim;
+        s->variant = gUnknown_080E1650[(i + 5)].variant;
+        s->prevVariant = -1;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        UpdateSpriteAnimation(s);
     }
 
     background = &scene->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(28);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = gUnknown_080E1648[1];
@@ -371,16 +371,16 @@ void CreateFinalEndingFallCutScene(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
-    background->unk2E = 0;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
 
     background = &scene->unk40;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
     background->graphics.anim = 0;
-    background->tilesVram = (void *)BG_SCREEN_ADDR(24);
+    background->layoutVram = (void *)BG_SCREEN_ADDR(24);
     background->unk18 = 0;
     background->unk1A = 0;
     background->tilemapId = gUnknown_080E1648[0];
@@ -388,11 +388,11 @@ void CreateFinalEndingFallCutScene(void)
     background->unk20 = 0;
     background->unk22 = 0;
     background->unk24 = 0;
-    background->unk26 = 0x20;
-    background->unk28 = 0x20;
-    background->unk2A = 0;
-    background->unk2E = 1;
-    sub_8002A3C(background);
+    background->targetTilesX = 0x20;
+    background->targetTilesY = 0x20;
+    background->paletteOffset = 0;
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
+    DrawBackground(background);
 }
 
 void sub_8091F68(struct FinalEndingFallCutScene *);
@@ -409,7 +409,7 @@ void sub_8091E60(void);
 
 void sub_8091CB0(void)
 {
-    struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     sub_8091F68(scene);
     sub_809205C(scene);
     sub_80920E4(scene);
@@ -472,11 +472,11 @@ void sub_809289C(struct FinalEndingFallCutScene *);
 
 void sub_8091E60(void)
 {
-    struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct TransitionState *transition = &scene->unk350;
+    struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
+    ScreenFade *fade = &scene->unk350;
 
-    transition->speed = 0x50;
-    transition->unk2 = 1;
+    fade->speed = Q_24_8(5. / 16.);
+    fade->flags = 1;
 
     sub_8091F68(scene);
     sub_809205C(scene);
@@ -660,58 +660,58 @@ void sub_80921E8(struct FinalEndingFallCutScene *scene)
 void sub_80923AC(struct FinalEndingFallCutScene *scene)
 {
     u8 i;
-    Sprite *element;
+    Sprite *s;
     u32 variant = 0;
 
-    element = &scene->unk80;
+    s = &scene->unk80;
     for (i = 0; i < 10; i++) {
-        element->graphics.anim = gUnknown_080E1650[0].anim;
-        element->variant = gUnknown_080E1650[0].variant;
+        s->graphics.anim = gUnknown_080E1650[0].anim;
+        s->variant = gUnknown_080E1650[0].variant;
 
-        element->x = scene->unk3F8[i][0];
-        element->y = scene->unk3F8[i][1] >> 8;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s->x = scene->unk3F8[i][0];
+        s->y = scene->unk3F8[i][1] >> 8;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk35C > 8) {
         variant = 1;
     }
 
-    element = &scene->unk1A0;
-    element->graphics.anim = gUnknown_080E1650[variant + 1].anim;
-    element->variant = gUnknown_080E1650[variant + 1].variant;
-    element->x = scene->unk3C0;
-    element->y = scene->unk3C4 >> 8;
+    s = &scene->unk1A0;
+    s->graphics.anim = gUnknown_080E1650[variant + 1].anim;
+    s->variant = gUnknown_080E1650[variant + 1].variant;
+    s->x = scene->unk3C0;
+    s->y = scene->unk3C4 >> 8;
 
-    sub_8004558(element);
-    sub_80051E8(element);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if (scene->unk35C < 10) {
         for (i = 0; i < 6; i++) {
             if (((scene->unk3C4 >> 8) + gBgScrollRegs[1][1]) < 0xE4) {
-                element = &scene->unk1D0[i & 1];
-                element->graphics.anim = gUnknown_080E1650[(i & 1) + 3].anim;
-                element->variant = gUnknown_080E1650[(i & 1) + 3].variant;
-                element->x = scene->unk378[i][0];
-                element->y = scene->unk378[i][1] >> 8;
-                sub_8004558(element);
-                sub_80051E8(element);
+                s = &scene->unk1D0[i & 1];
+                s->graphics.anim = gUnknown_080E1650[(i & 1) + 3].anim;
+                s->variant = gUnknown_080E1650[(i & 1) + 3].variant;
+                s->x = scene->unk378[i][0];
+                s->y = scene->unk378[i][1] >> 8;
+                UpdateSpriteAnimation(s);
+                DisplaySprite(s);
             }
 
             if (scene->unk365[i] != 0) {
-                element = &scene->unk230[i];
-                element->graphics.anim = gUnknown_080E1650[2].anim;
-                element->variant = gUnknown_080E1650[2].variant;
-                element->x = scene->unk3C8[i][0];
-                element->y = scene->unk3C8[i][1] >> 8;
+                s = &scene->unk230[i];
+                s->graphics.anim = gUnknown_080E1650[2].anim;
+                s->variant = gUnknown_080E1650[2].variant;
+                s->x = scene->unk3C8[i][0];
+                s->y = scene->unk3C8[i][1] >> 8;
 
-                if (sub_8004558(element) != 1) {
-                    element->unk14 = 0;
-                    element->unk1C = 0;
-                    element->unk10 &= ~0x4000;
+                if (UpdateSpriteAnimation(s) != 1) {
+                    s->animCursor = 0;
+                    s->timeUntilNextFrame = 0;
+                    s->unk10 &= ~0x4000;
                 }
-                sub_80051E8(element);
+                DisplaySprite(s);
             }
         }
     }
@@ -719,42 +719,39 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
     if (scene->unk35C > 0xB) {
         variant = 1;
     }
-    element = &scene->unk110;
-    element->graphics.anim
-        = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].anim;
-    element->variant = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].variant;
-    element->x = scene->unk3A8;
-    element->y = scene->unk3AC >> 8;
-    sub_8004558(element);
-    sub_80051E8(element);
+    s = &scene->unk110;
+    s->graphics.anim = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].anim;
+    s->variant = gUnknown_080E1650[(gSelectedCharacter * 2) + 7 + variant].variant;
+    s->x = scene->unk3A8;
+    s->y = scene->unk3AC >> 8;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if (scene->unk35C > 10) {
         variant = 1;
     }
 
-    element = &scene->unk140;
-    element->graphics.anim
-        = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].anim;
-    element->variant
-        = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].variant;
-    element->x = scene->unk3B4;
-    element->y = scene->unk3B8 >> 8;
-    sub_8004558(element);
-    sub_80051E8(element);
+    s = &scene->unk140;
+    s->graphics.anim = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].anim;
+    s->variant = gUnknown_080E1650[(gSelectedCharacter * 2) + 0x11 + variant].variant;
+    s->x = scene->unk3B4;
+    s->y = scene->unk3B8 >> 8;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 
     if (gSelectedCharacter == CHARACTER_CREAM) {
-        element = &scene->unk170;
-        element->graphics.anim = gUnknown_080E1650[variant + 0x1B].anim;
-        element->variant = gUnknown_080E1650[variant + 0x1B].variant;
-        element->x = scene->unk3B4;
-        element->y = scene->unk3B8 >> 8;
-        sub_8004558(element);
-        sub_80051E8(element);
+        s = &scene->unk170;
+        s->graphics.anim = gUnknown_080E1650[variant + 0x1B].anim;
+        s->variant = gUnknown_080E1650[variant + 0x1B].variant;
+        s->x = scene->unk3B4;
+        s->y = scene->unk3B8 >> 8;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 
     if (scene->unk35C > 10) {
         for (i = 0; i < 2; i++) {
-            sub_8004558(&scene->unkB0[i]);
+            UpdateSpriteAnimation(&scene->unkB0[i]);
         }
         scene->unk370++;
     }
@@ -764,9 +761,9 @@ void sub_8092780(void);
 
 void sub_8092690(void)
 {
-    struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct TransitionState *transition = &scene->unk350;
-    transition->unk2 = 2;
+    struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
+    ScreenFade *fade = &scene->unk350;
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     sub_8091F68(scene);
     sub_809205C(scene);
@@ -776,8 +773,8 @@ void sub_8092690(void)
     sub_8092850(scene);
     sub_80923AC(scene);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         if (scene->unk35C == 0) {
             gCurTask->main = sub_8092780;
         } else {
@@ -788,9 +785,9 @@ void sub_8092690(void)
 
 void sub_8092714(void)
 {
-    struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct TransitionState *transition = &scene->unk350;
-    transition->unk2 = 1;
+    struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
+    ScreenFade *fade = &scene->unk350;
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
 
     sub_8091F68(scene);
     sub_809205C(scene);
@@ -800,15 +797,15 @@ void sub_8092714(void)
     sub_8092850(scene);
     sub_80923AC(scene);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_24_8(0);
         gCurTask->main = sub_8091CB0;
     }
 }
 
 void sub_8092780(void)
 {
-    struct FinalEndingFallCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     sub_8091F68(scene);
     sub_809205C(scene);
     sub_80920E4(scene);
@@ -873,12 +870,12 @@ u32 sub_80928C8(struct FinalEndingFallCutScene *scene)
 
     background = &scene->unk0;
     background->tilemapId = gUnknown_080E1648[3];
-    background->unk2E = 0;
-    sub_8002A3C(background);
+    background->flags = BACKGROUND_FLAGS_BG_ID(0);
+    DrawBackground(background);
 
     background = &scene->unk40;
     background->tilemapId = gUnknown_080E1648[2];
-    background->unk2E = 1;
-    sub_8002A3C(background);
+    background->flags = BACKGROUND_FLAGS_BG_ID(1);
+    DrawBackground(background);
     return 0;
 }

@@ -251,7 +251,7 @@ _08016210:
 	str r0, [r4, #4]
 _08016214:
 	adds r0, r4, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r1, _08016238 @ =gMultiplayerPlayerTasks
 	ldrb r0, [r7]
 	lsls r0, r0, #2
@@ -693,7 +693,7 @@ _08016576:
 	mov r4, r8
 	ldrh r1, [r4, #6]
 	ldrb r3, [r4, #6]
-	ldr r2, _080165C8 @ =gUnknown_030053E8
+	ldr r2, _080165C8 @ =gMultiplayerCharRings
 	mov r5, sl
 	ldrb r0, [r5]
 	adds r0, r0, r2
@@ -720,7 +720,7 @@ _080165B8: .4byte 0xFFFFFEFF
 _080165BC: .4byte PlayerCB_8025318
 _080165C0: .4byte 0xFFBFFFFF
 _080165C4: .4byte gGameMode
-_080165C8: .4byte gUnknown_030053E8
+_080165C8: .4byte gMultiplayerCharRings
 _080165CC: .4byte gPlayerCharacterIdleAnims
 _080165D0:
 	mov r0, r8
@@ -927,7 +927,7 @@ _08016722:
 	str r0, [r6, #0x30]
 _08016766:
 	adds r0, r6, #0
-	bl sub_8004558
+	bl UpdateSpriteAnimation
 	ldr r0, _08016894 @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #4
@@ -1375,7 +1375,7 @@ _08016ACC:
 	beq _08016AEE
 	b _08016CE8
 _08016AEE:
-	ldr r0, _08016C14 @ =gUnknown_03005590
+	ldr r0, _08016C14 @ =gStageTime
 	ldr r0, [r0]
 	movs r4, #2
 	ands r0, r4
@@ -1521,12 +1521,12 @@ _08016BE6:
 	cmp r1, #0xdf
 	bgt _08016C38
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 	b _08016CE8
 	.align 2, 0
 _08016C0C: .4byte 0xFFFFF7FF
 _08016C10: .4byte 0xFFFFCFFF
-_08016C14: .4byte gUnknown_03005590
+_08016C14: .4byte gStageTime
 _08016C18: .4byte gUnknown_030054B4
 _08016C1C: .4byte 0xFFFFFE7F
 _08016C20: .4byte gGameMode
@@ -1621,9 +1621,9 @@ _08016CB0:
 	bl sub_8004860
 _08016CE2:
 	adds r0, r6, #0
-	bl sub_80051E8
+	bl DisplaySprite
 _08016CE8:
-	ldr r4, _08016D18 @ =IWRAM_START + 0x5B7C
+	ldr r4, _08016D18 @ =gUnknown_03005B7C
 	ldrb r0, [r4]
 	cmp r0, #0
 	beq _08016CF8
@@ -1648,7 +1648,7 @@ _08016D08:
 	pop {r0}
 	bx r0
 	.align 2, 0
-_08016D18: .4byte IWRAM_START + 0x5B7C
+_08016D18: .4byte gUnknown_03005B7C
 _08016D1C: .4byte gUnknown_0300583C
 
 	thumb_func_start sub_8016D20
@@ -4484,6 +4484,8 @@ _080182F0:
 	.align 2, 0
 _080182FC: .4byte gPlayer
 
+@ Out:
+@  bool32 (hit?)
 	thumb_func_start sub_8018300
 sub_8018300: @ 0x08018300
 	push {r4, r5, r6, r7, lr}

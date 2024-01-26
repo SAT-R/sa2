@@ -1,17 +1,17 @@
 # Sonic Advance 2
 [![CI status][ci-badge]][ci-status-link] [![Decompilation Progress][progress-badge]][progress-link] [![Contributors][contributors-badge]][contributors-link] [![Discord][discord-badge]][discord-link]
 
-[ci-status-link]: https://github.com/freshollie/sa2/actions/workflows/build.yml
-[ci-badge]: https://github.com/freshollie/sa2/actions/workflows/build.yml/badge.svg
+[ci-status-link]: https://github.com/SAT-R/sa2/actions/workflows/build.yml
+[ci-badge]: https://github.com/SAT-R/sa2/actions/workflows/build.yml/badge.svg
 
-[progress-link]: https://github.com/freshollie/sa2
-[progress-badge]: https://img.shields.io/endpoint?url=https://freshollie.github.io/sa2/reports/progress-sa2-shield.json
+[progress-link]: https://github.com/SAT-R/sa2
+[progress-badge]: https://img.shields.io/endpoint?url=https://sat-r.github.io/sa2/reports/progress-sa2-shield.json
 
-[contributors-link]: https://github.com/freshollie/sa2/graphs/contributors
-[contributors-badge]: https://img.shields.io/github/contributors/freshollie/sa2
+[contributors-link]: https://github.com/SAT-R/sa2/graphs/contributors
+[contributors-badge]: https://img.shields.io/github/contributors/SAT-R/sa2
 
 [discord-badge]: https://img.shields.io/discord/1052347299457671200
-[discord-link]: https://discord.gg/rckwpnYUXF
+[discord-link]: https://discord.gg/vZTvVH3gA9
 
 This is a work in progress matching decompilation of Sonic Advance 2
 
@@ -21,16 +21,18 @@ It so far builds the following ROMs:
 
 ### Current state
 
+- :tada: The build is shiftable! You can make any code or asset additions/modifications you like, and most aspects of the game will continue to function.
 - Assembly code [extracted, disassembled, and somewhat categorised](./asm/)
 - All libraries decompiled to C or referenced from `agbcc`
-- Initialisation of game state, main task logic, save game logic, UI, Multiplayer code, Special Stage
+- Most aspects of the game, including all interactables, have been decompiled to matching C code. Most have not been fully documented, but major functions are.
 - All songs have been extracted, and documented as [matching MIDI files](./sound/songs/midi)
-- :warning: The build is not yet shiftable, meaning all significant code modifications will cause the rom to crash
+- All sprite animation frames have been extracted to PNGs and are used to build the matching rom
+- Most tilemaps (backgrounds) have been documented and had their tiles extracted
 
 
 ### Community
 
-Join us on [discord](https://discord.gg/JQntqGR5Q) to get started in helping out
+Join us on [discord](https://discord.gg/vZTvVH3gA9) to get started in helping out
 
 ### Setting up the repository
 

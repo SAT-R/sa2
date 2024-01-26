@@ -2,6 +2,8 @@
 #include "trig.h"
 #include "game/game.h"
 #include "game/stage/ui.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"
@@ -22,7 +24,7 @@ typedef struct {
 } SpawnOptions;
 
 typedef struct {
-    Sprite sprite;
+    Sprite s;
     s32 x;
     s32 y;
     s16 unk38;
@@ -30,7 +32,7 @@ typedef struct {
 } FlyingAnimal;
 
 typedef struct {
-    Sprite sprite;
+    Sprite s;
     s32 x;
     s32 y;
     s16 moveSpeed;
@@ -40,7 +42,7 @@ typedef struct {
 } BouncingAnimal;
 
 typedef struct {
-    Sprite sprite;
+    Sprite s;
     s32 x;
     s32 y;
     s16 moveSpeed;
@@ -119,33 +121,33 @@ static void CreateFlyingAnimal(SpawnOptions *init)
 {
     struct Task *t
         = TaskCreate(Task_FlyingAnimal, sizeof(FlyingAnimal), 0x2000, 0, NULL);
-    FlyingAnimal *animal = TaskGetStructPtr(t);
-    Sprite *sprite;
+    FlyingAnimal *animal = TASK_DATA(t);
+    Sprite *s;
     animal->x = Q_24_8(init->x);
     animal->y = Q_24_8(init->y);
     animal->unk38 = 576;
     animal->flyingUp = TRUE;
 
-    sprite = &animal->sprite;
-    sprite->x = init->x;
-    sprite->y = init->y;
-    sprite->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
-    sprite->unk1A = 0x440;
-    sprite->graphics.size = 0;
-    sprite->graphics.anim = init->anim;
-    sprite->variant = init->variant;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = -1;
-    sprite->unk22 = 16;
-    sprite->palId = 0;
-    sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s = &animal->s;
+    s->x = init->x;
+    s->y = init->y;
+    s->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
+    s->unk1A = SPRITE_OAM_ORDER(17);
+    s->graphics.size = 0;
+    s->graphics.anim = init->anim;
+    s->variant = init->variant;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 }
 
 static void Task_FlyingAnimal(void)
 {
-    FlyingAnimal *animal = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &animal->sprite;
+    FlyingAnimal *animal = TASK_DATA(gCurTask);
+    Sprite *s = &animal->s;
 
     s32 sin, cos;
     s32 x = animal->x;
@@ -169,24 +171,24 @@ static void Task_FlyingAnimal(void)
     animal->x = x;
     animal->y = y;
 
-    sprite->x = Q_24_8_TO_INT(x) - gCamera.x;
-    sprite->y = Q_24_8_TO_INT(y) - gCamera.y;
+    s->x = Q_24_8_TO_INT(x) - gCamera.x;
+    s->y = Q_24_8_TO_INT(y) - gCamera.y;
 
-    if (IS_ANIMAL_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+    if (IS_ANIMAL_OUT_OF_CAM_RANGE(s->x, s->y)) {
         TaskDestroy(gCurTask);
         return;
     }
 
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 static void CreateBouncingAnimal(SpawnOptions *init)
 {
     struct Task *t
         = TaskCreate(Task_BouncingAnimal, sizeof(BouncingAnimal), 0x2000, 0, NULL);
-    BouncingAnimal *animal = TaskGetStructPtr(t);
-    Sprite *sprite;
+    BouncingAnimal *animal = TASK_DATA(t);
+    Sprite *s;
     animal->x = Q_24_8(init->x);
     animal->y = Q_24_8(init->y);
     animal->moveSpeed = ANIMAL_INITIAL_MOVE_SPEED;
@@ -194,26 +196,26 @@ static void CreateBouncingAnimal(SpawnOptions *init)
     animal->bouncing = FALSE;
     animal->inAirTimer = 42;
 
-    sprite = &animal->sprite;
-    sprite->x = init->x;
-    sprite->y = init->y;
-    sprite->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
-    sprite->unk1A = 0x440;
-    sprite->graphics.size = 0;
-    sprite->graphics.anim = init->anim;
-    sprite->variant = init->variant;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = -1;
-    sprite->unk22 = 0x10;
-    sprite->palId = 0;
-    sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s = &animal->s;
+    s->x = init->x;
+    s->y = init->y;
+    s->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
+    s->unk1A = SPRITE_OAM_ORDER(17);
+    s->graphics.size = 0;
+    s->graphics.anim = init->anim;
+    s->variant = init->variant;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 }
 
 static void Task_BouncingAnimal(void)
 {
-    BouncingAnimal *animal = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &animal->sprite;
+    BouncingAnimal *animal = TASK_DATA(gCurTask);
+    Sprite *s = &animal->s;
     s32 y;
 
     animal->fallSpeed += ANIMAL_GRAVITY;
@@ -239,24 +241,24 @@ static void Task_BouncingAnimal(void)
         }
     }
 
-    sprite->x = Q_24_8_TO_INT(animal->x) - gCamera.x;
-    sprite->y = Q_24_8_TO_INT(animal->y) - gCamera.y;
+    s->x = Q_24_8_TO_INT(animal->x) - gCamera.x;
+    s->y = Q_24_8_TO_INT(animal->y) - gCamera.y;
 
-    if (IS_ANIMAL_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+    if (IS_ANIMAL_OUT_OF_CAM_RANGE(s->x, s->y)) {
         TaskDestroy(gCurTask);
         return;
     }
 
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 static void CreateStaticAnimal(SpawnOptions *init)
 {
     struct Task *t
         = TaskCreate(Task_StaticAnimalMain, sizeof(StaticAnimal), 0x2000, 0, NULL);
-    StaticAnimal *animal = TaskGetStructPtr(t);
-    Sprite *sprite;
+    StaticAnimal *animal = TASK_DATA(t);
+    Sprite *s;
     animal->x = Q_24_8(init->x);
     animal->y = Q_24_8(init->y);
     // lol
@@ -265,26 +267,26 @@ static void CreateStaticAnimal(SpawnOptions *init)
     animal->fallSpeed = -ANIMAL_BOUNCE_SPEED;
     animal->inAirTimer = 42;
 
-    sprite = &animal->sprite;
-    sprite->x = init->x;
-    sprite->y = init->y;
-    sprite->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
-    sprite->unk1A = 0x440;
-    sprite->graphics.size = 0;
-    sprite->graphics.anim = init->anim;
-    sprite->variant = init->variant;
-    sprite->unk14 = 0;
-    sprite->unk1C = 0;
-    sprite->unk21 = -1;
-    sprite->unk22 = 16;
-    sprite->palId = 0;
-    sprite->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s = &animal->s;
+    s->x = init->x;
+    s->y = init->y;
+    s->graphics.dest = (void *)OBJ_VRAM0 + (init->vramOffset * TILE_SIZE_4BPP);
+    s->unk1A = SPRITE_OAM_ORDER(17);
+    s->graphics.size = 0;
+    s->graphics.anim = init->anim;
+    s->variant = init->variant;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 }
 
 static void Task_StaticAnimalMain(void)
 {
-    StaticAnimal *animal = TaskGetStructPtr(gCurTask);
-    Sprite *sprite = &animal->sprite;
+    StaticAnimal *animal = TASK_DATA(gCurTask);
+    Sprite *s = &animal->s;
     s32 y;
 
     animal->fallSpeed += ANIMAL_GRAVITY;
@@ -306,16 +308,16 @@ static void Task_StaticAnimalMain(void)
         }
     }
 
-    sprite->x = Q_24_8_TO_INT(animal->x) - gCamera.x;
-    sprite->y = Q_24_8_TO_INT(animal->y) - gCamera.y;
+    s->x = Q_24_8_TO_INT(animal->x) - gCamera.x;
+    s->y = Q_24_8_TO_INT(animal->y) - gCamera.y;
 
-    if (IS_ANIMAL_OUT_OF_CAM_RANGE(sprite->x, sprite->y)) {
+    if (IS_ANIMAL_OUT_OF_CAM_RANGE(s->x, s->y)) {
         TaskDestroy(gCurTask);
         return;
     }
 
-    sub_8004558(sprite);
-    sub_80051E8(sprite);
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
 
 void CreateTrappedAnimal(s16 x, s16 y)

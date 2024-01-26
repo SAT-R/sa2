@@ -97,7 +97,7 @@ struct Task *CreateSpecialStageWorld(struct SpecialStage *stage)
     memcpy(unkF776, gUnknown_080DF776, sizeof(gUnknown_080DF776));
 
     t = TaskCreate(sub_806EA04, 0x2A0, 0x8000, 0, sub_806EBF4);
-    world = TaskGetStructPtr(t);
+    world = TASK_DATA(t);
     world->stage = stage;
 
     world->unk4 = NULL;
@@ -156,7 +156,7 @@ void sub_806E7C0(struct SpecialStageWorld *world)
     }
 
     world->unk4 = EwramMalloc(0xA00);
-    gUnknown_03001884 = world->unk4;
+    gBgOffsetsHBlank = world->unk4;
     gUnknown_03004D54 = world->unk4;
     gUnknown_030022C0 = world->unk4;
     unk4 = world->unk4;
@@ -179,28 +179,28 @@ void sub_806E94C(struct SpecialStageWorld *world)
     s16 num = gUnknown_080DF6DC[*zone];
 
     for (i = 0; i < num; i++) {
-        Sprite *element = &world->unk90[i];
-        element->graphics.dest = gUnknown_03005B5C;
-        element->graphics.size = 0;
-        element->graphics.anim = assets[i].anim;
-        element->unk10 = 0x80000;
-        element->x = 0;
-        element->y = 0;
-        element->unk1A = 0;
-        element->unk1C = 0;
-        element->unk1E = 0xffff;
-        element->variant = assets[i].variant;
-        element->unk21 = 0xff;
-        element->unk22 = 16;
-        element->palId = 0;
-        element->unk28[0].unk0 = -1;
-        sub_80036E0(element);
+        Sprite *s = &world->unk90[i];
+        s->graphics.dest = gUnknown_03005B5C;
+        s->graphics.size = 0;
+        s->graphics.anim = assets[i].anim;
+        s->unk10 = 0x80000;
+        s->x = 0;
+        s->y = 0;
+        s->unk1A = 0;
+        s->timeUntilNextFrame = 0;
+        s->prevAnim = 0xffff;
+        s->variant = assets[i].variant;
+        s->prevVariant = -1;
+        s->animSpeed = 16;
+        s->palId = 0;
+        s->hitboxes[0].index = -1;
+        sub_80036E0(s);
     }
 }
 
 void sub_806EA04(void)
 {
-    struct SpecialStageWorld *world = TaskGetStructPtr(gCurTask);
+    struct SpecialStageWorld *world = TASK_DATA(gCurTask);
     struct SpecialStage *stage = world->stage;
     s32 sin1, sin2;
     s16 unk5CE;
@@ -209,7 +209,7 @@ void sub_806EA04(void)
     s16 *unk1884;
     gUnknown_03002A80 = 0x10;
     gUnknown_03002878 = (void *)REG_ADDR_BG2PA;
-    gUnknown_03001884 = world->unk4;
+    gBgOffsetsHBlank = world->unk4;
 
     unk5A0 = stage->cameraBearing;
     sin1 = gSineTable[unk5A0] * 4;
@@ -219,7 +219,7 @@ void sub_806EA04(void)
     gFlags |= 4;
 
     i = stage->unk5D1;
-    unk1884 = gUnknown_03001884 + (stage->unk5D1 * 0x10);
+    unk1884 = gBgOffsetsHBlank + (stage->unk5D1 * 0x10);
 
     for (; i < 0xA0; i++) {
         s32 *footer;
@@ -254,7 +254,7 @@ void sub_806EA04(void)
 void sub_806EB74(void)
 {
     s16 i;
-    struct SpecialStageWorld *world = TaskGetStructPtr(gCurTask);
+    struct SpecialStageWorld *world = TASK_DATA(gCurTask);
     struct SpecialStage *stage = world->stage;
     u8 *level = &stage->zone;
     s16 num = gUnknown_080DF6DC[*level];
@@ -265,17 +265,17 @@ void sub_806EB74(void)
 
     if (stage->paused != TRUE) {
         for (i = 0; i < num; i++) {
-            Sprite *element = &world->unk90[i];
+            Sprite *s = &world->unk90[i];
 
-            sub_80036E0(element);
-            sub_8003914(element);
+            sub_80036E0(s);
+            sub_8003914(s);
         }
     }
 }
 
 void sub_806EBF4(struct Task *t)
 {
-    struct SpecialStageWorld *world = TaskGetStructPtr(t);
+    struct SpecialStageWorld *world = TASK_DATA(t);
 
     if (world->unk8 != NULL) {
         EwramFree(world->unk8);

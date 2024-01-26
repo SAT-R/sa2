@@ -3,7 +3,9 @@
 #include "sprite.h"
 #include "game/entity.h"
 #include "game/enemies/mon.h"
-#include "game/stage/entities_manager.h"
+#include "sakit/entities_manager.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "constants/animations.h"
 
@@ -28,7 +30,7 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     u32 r2;
     struct Task *t = TaskCreate(Task_MonMain, sizeof(Sprite_Mon), 0x4010, 0,
                                 TaskDestructor_80095E8);
-    Sprite_Mon *mon = TaskGetStructPtr(t);
+    Sprite_Mon *mon = TASK_DATA(t);
     Sprite *s = &mon->s;
     mon->base.regionX = spriteRegionX;
     mon->base.regionY = spriteRegionY;
@@ -50,25 +52,25 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(25);
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
-    s->unk22 = 0x10;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     mon->speedY = -Q_24_8(5.5);
     mon->offsetY = +Q_24_8(0);
     s->graphics.anim = SA2_ANIM_MON;
     s->variant = 0;
-    s->unk21 = 0xFF;
+    s->prevVariant = -1;
 }
 
 static void Task_MonMain(void)
 {
-    Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
+    Sprite_Mon *mon = TASK_DATA(gCurTask);
     Sprite *s = &mon->s;
     MapEntity *me = mon->base.me;
 
@@ -87,7 +89,7 @@ static void Task_MonMain(void)
             gCurTask->main = Task_Mon_2;
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 2;
-            s->unk21 = 0xFF;
+            s->prevVariant = -1;
         }
 
         ENEMY_TURN_TO_PLAYER(mon->x, s);
@@ -98,7 +100,7 @@ static void Task_MonMain(void)
 
 static void Task_Mon_2(void)
 {
-    Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
+    Sprite_Mon *mon = TASK_DATA(gCurTask);
     Sprite *s = &mon->s;
     MapEntity *me = mon->base.me;
 
@@ -112,22 +114,22 @@ static void Task_Mon_2(void)
         TaskDestroy(gCurTask);
     } else {
         sub_80122DC(mon->x, mon->y);
-        if (sub_8004558(s) == 0) {
+        if (UpdateSpriteAnimation(s) == 0) {
             mon->speedY = -Q_24_8(5.5);
             mon->offsetY = +Q_24_8(0.0);
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 1;
-            s->unk21 = 0xFF;
+            s->prevVariant = -1;
 
             gCurTask->main = Task_Mon_3;
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }
 
 static void Task_Mon_3(void)
 {
-    Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
+    Sprite_Mon *mon = TASK_DATA(gCurTask);
     Sprite *s = &mon->s;
     MapEntity *me = mon->base.me;
 
@@ -146,7 +148,7 @@ static void Task_Mon_3(void)
         if (mon->offsetY >= 0) {
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 3;
-            s->unk21 = 0xFF;
+            s->prevVariant = -1;
 
             gCurTask->main = Task_Mon_4;
         }
@@ -157,7 +159,7 @@ static void Task_Mon_3(void)
 
 static void Task_Mon_4(void)
 {
-    Sprite_Mon *mon = TaskGetStructPtr(gCurTask);
+    Sprite_Mon *mon = TASK_DATA(gCurTask);
     Sprite *s = &mon->s;
     MapEntity *me = mon->base.me;
 
@@ -172,7 +174,7 @@ static void Task_Mon_4(void)
     } else {
         sub_80122DC(mon->x, mon->y);
 
-        if (sub_8004558(s) == 0) {
+        if (UpdateSpriteAnimation(s) == 0) {
             if ((gPlayer.x > mon->x - Q_24_8(DISPLAY_WIDTH / 2))
                 && (gPlayer.x < mon->x + Q_24_8(DISPLAY_WIDTH / 2))
                 && (gPlayer.y > mon->y - Q_24_8(50))
@@ -182,17 +184,17 @@ static void Task_Mon_4(void)
 
                 s->graphics.anim = SA2_ANIM_MON;
                 s->variant = 2;
-                s->unk21 = 0xFF;
+                s->prevVariant = -1;
 
                 gCurTask->main = Task_Mon_2;
             } else {
                 s->graphics.anim = SA2_ANIM_MON;
                 s->variant = 0;
-                s->unk21 = 0xFF;
+                s->prevVariant = -1;
 
                 gCurTask->main = Task_MonMain;
             }
         }
-        sub_80051E8(s);
+        DisplaySprite(s);
     }
 }

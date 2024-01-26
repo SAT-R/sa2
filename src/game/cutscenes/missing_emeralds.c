@@ -2,7 +2,7 @@
 #include "core.h"
 #include "game/cutscenes/missing_emeralds.h"
 #include "game/game.h"
-#include "game/screen_transition.h"
+#include "game/screen_fade.h"
 #include "sprite.h"
 #include "task.h"
 #include "lib/m4a.h"
@@ -20,7 +20,7 @@ struct MissingChaosEmaraldsCutScene {
     Background unk0;
     Background unk40;
     Sprite unk80;
-    struct TransitionState unkB0;
+    ScreenFade unkB0;
 
     u8 unkBC;
     u8 unkBD;
@@ -83,7 +83,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     u8 i;
     struct Task *t;
     struct MissingChaosEmaraldsCutScene *scene = NULL;
-    struct TransitionState *transition = NULL;
+    ScreenFade *fade = NULL;
 
     gDispCnt = 0x1040;
     gBgCntRegs[0] = 0x1e03;
@@ -102,7 +102,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
 
     t = TaskCreate(Task_8094360, 0xC8, 0x3100, 0, TaskDestructor_80945A0);
-    scene = TaskGetStructPtr(t);
+    scene = TASK_DATA(t);
 
     scene->unkBC = 0;
     scene->unkC0 = 0xF0;
@@ -126,41 +126,41 @@ void CreateMissingChaosEmaraldsCutScene(void)
     } else {
         m4aSongNumStart(MUS_MESSAGE_2);
     }
-    transition = &scene->unkB0;
-    transition->unk0 = 1;
-    transition->unk4 = Q_8_8(0);
-    transition->speed = 0x80;
-    transition->unk8 = 0x3FFF;
-    transition->unkA = 0;
+    fade = &scene->unkB0;
+    fade->window = SCREEN_FADE_USE_WINDOW_1;
+    fade->brightness = Q_24_8(0);
+    fade->speed = Q_24_8(0.5);
+    fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+    fade->bldAlpha = 0;
 
     scene->unkC4 = OBJ_VRAM0;
 
     {
-        Sprite *element;
-        element = &scene->unk80;
-        element->graphics.dest = (void *)OBJ_VRAM0;
+        Sprite *s;
+        s = &scene->unk80;
+        s->graphics.dest = (void *)OBJ_VRAM0;
         if (scene->unkBD < 4) {
             scene->unkC4 += gUnknown_080E1CA0[0].numTiles * TILE_SIZE_4BPP;
-            element->graphics.anim = gUnknown_080E1CA0[0].anim;
-            element->variant = gUnknown_080E1CA0[0].variant;
-            element->y = 85;
+            s->graphics.anim = gUnknown_080E1CA0[0].anim;
+            s->variant = gUnknown_080E1CA0[0].variant;
+            s->y = 85;
         } else {
             scene->unkC4 += 0xA00;
-            element->graphics.anim = gUnknown_080E1CA0[1].anim;
-            element->variant = gUnknown_080E1CA0[1].variant;
-            element->y = 90;
+            s->graphics.anim = gUnknown_080E1CA0[1].anim;
+            s->variant = gUnknown_080E1CA0[1].variant;
+            s->y = 90;
         }
-        element->unk21 = 0xFF;
-        element->x = (DISPLAY_WIDTH / 2);
-        element->unk1A = 0;
-        element->graphics.size = 0;
-        element->unk14 = 0;
-        element->unk1C = 0;
-        element->unk22 = 0x10;
-        element->palId = 0;
-        element->unk10 = 0;
-        element->unk28[0].unk0 = -1;
-        sub_8004558(element);
+        s->prevVariant = -1;
+        s->x = (DISPLAY_WIDTH / 2);
+        s->unk1A = 0;
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = 0x10;
+        s->palId = 0;
+        s->unk10 = 0;
+        s->hitboxes[0].index = -1;
+        UpdateSpriteAnimation(s);
     }
 
     {
@@ -168,38 +168,38 @@ void CreateMissingChaosEmaraldsCutScene(void)
         background = &scene->unk0;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(30);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(30);
         background->unk18 = 0;
         background->unk1A = 0;
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
-        background->unk28 = 0x14;
-        background->unk2A = 0;
-        background->unk2E = 0;
+        background->targetTilesX = 0x1E;
+        background->targetTilesY = 0x14;
+        background->paletteOffset = 0;
+        background->flags = BACKGROUND_FLAGS_BG_ID(0);
     }
     {
         Background *background;
         background = &scene->unk40;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         background->graphics.anim = 0;
-        background->tilesVram = (void *)BG_SCREEN_ADDR(28);
+        background->layoutVram = (void *)BG_SCREEN_ADDR(28);
         background->unk18 = 0;
         background->unk1A = 0;
         background->unk1E = 0;
         background->unk20 = 0;
         background->unk22 = 0;
         background->unk24 = 0;
-        background->unk26 = 0x1E;
+        background->targetTilesX = 0x1E;
         if (scene->unkBD != 0) {
-            background->unk28 = 7;
+            background->targetTilesY = 7;
         } else {
-            background->unk28 = 6;
+            background->targetTilesY = 6;
         }
-        background->unk2A = 0;
-        background->unk2E = 1;
+        background->paletteOffset = 0;
+        background->flags = BACKGROUND_FLAGS_BG_ID(1);
     }
 }
 
@@ -208,7 +208,7 @@ void sub_809449C(void);
 void Task_8094360(void)
 {
     Background *background = NULL;
-    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
 
     if (scene->unkBD == 0) {
         if (scene->unkBF > 1) {
@@ -217,7 +217,7 @@ void Task_8094360(void)
             gBgScrollRegs[1][1] = 400;
             background = &scene->unk40;
             background->tilemapId = sTilemapsPlayerNotifs[scene->unkBF - 1];
-            sub_8002A3C(background);
+            DrawBackground(background);
         }
 
         // "Collect all Chaos Emeralds!" message
@@ -226,7 +226,7 @@ void Task_8094360(void)
         gBgScrollRegs[0][1] = 0;
         background = &scene->unk0;
         background->tilemapId = sTilemapsPlayerNotifs[0];
-        sub_8002A3C(background);
+        DrawBackground(background);
     } else {
         s32 base;
         u16 index;
@@ -237,7 +237,7 @@ void Task_8094360(void)
         // "Unlocked Tiny Chao Garden" message
         background = &scene->unk0;
         background->tilemapId = sTilemapsPlayerNotifs[7];
-        sub_8002A3C(background);
+        DrawBackground(background);
 
         if (scene->unkBD > 1 || scene->unkBF > 1) {
             gDispCnt |= 0x200;
@@ -248,7 +248,7 @@ void Task_8094360(void)
             base = scene->unkBF;
             index = (base + 6 + ((scene->unkBD - 1) * 7));
             background->tilemapId = sTilemapsPlayerNotifs[index];
-            sub_8002A3C(background);
+            DrawBackground(background);
         }
     }
 
@@ -260,14 +260,14 @@ void sub_8094530(void);
 
 void sub_809449C(void)
 {
-    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct TransitionState *transition = &scene->unkB0;
-    transition->unk2 = 2;
+    struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
+    ScreenFade *fade = &scene->unkB0;
+    fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
 
     sub_80945A4(scene);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_8_8(0);
         scene->unkBE = 1;
         gCurTask->main = sub_8094530;
     }
@@ -277,14 +277,14 @@ void sub_8094570(void);
 
 void sub_80944EC(void)
 {
-    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
-    struct TransitionState *transition = &scene->unkB0;
-    transition->unk2 = 1;
+    struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
+    ScreenFade *fade = &scene->unkB0;
+    fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
 
     sub_80945A4(scene);
 
-    if (NextTransitionFrame(transition) == SCREEN_TRANSITION_COMPLETE) {
-        transition->unk4 = Q_8_8(0);
+    if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
+        fade->brightness = Q_8_8(0);
 
         gCurTask->main = sub_8094570;
     }
@@ -292,7 +292,7 @@ void sub_80944EC(void)
 
 void sub_8094530(void)
 {
-    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
     sub_80945A4(scene);
     if (scene->unkC0 != 0) {
         scene->unkC0--;
@@ -304,7 +304,7 @@ void sub_8094530(void)
 
 void sub_8094570(void)
 {
-    struct MissingChaosEmaraldsCutScene *scene = TaskGetStructPtr(gCurTask);
+    struct MissingChaosEmaraldsCutScene *scene = TASK_DATA(gCurTask);
     if (scene->unkC0 != 0) {
         scene->unkC0--;
     } else {
@@ -321,12 +321,12 @@ void TaskDestructor_80945A0(struct Task *t)
 void sub_80945A4(struct MissingChaosEmaraldsCutScene *scene)
 {
     if (scene->unkBD != 0) {
-        Sprite *element = &scene->unk80;
+        Sprite *s = &scene->unk80;
         if (scene->unkBD > 3 && scene->unkBE != 0) {
-            element->graphics.anim = gUnknown_080E1CA0[2].anim;
-            element->variant = gUnknown_080E1CA0[2].variant;
+            s->graphics.anim = gUnknown_080E1CA0[2].anim;
+            s->variant = gUnknown_080E1CA0[2].variant;
         }
-        sub_8004558(element);
-        sub_80051E8(element);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
     }
 }

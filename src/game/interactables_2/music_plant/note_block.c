@@ -4,15 +4,18 @@
 #include "trig.h"
 
 #include "game/entity.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/music_plant/note_block.h"
 
 #include "constants/animations.h"
+#include "constants/player_transitions.h"
 #include "constants/songs.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-    /* 0x0C */ Sprite disp;
+    /* 0x0C */ Sprite s;
     /* 0x3C */ s32 posX;
     /* 0x40 */ s32 posY;
     /* 0x44 */ s16 unk44;
@@ -52,7 +55,7 @@ const s16 gUnknown_080DFC6A[NUM_NOTE_BLOCK_TYPES] = {
     Q_8_8(0),
 };
 
-const u16 gUnknown_080DFC78[NUM_NOTE_BLOCK_TYPES + 1] = {
+const u16 sSfxGlockenspiel[NUM_NOTE_BLOCK_TYPES + 1] = {
     SE_MUSIC_PLANT_GLOCKENSPIEL_1, SE_MUSIC_PLANT_GLOCKENSPIEL_2,
     SE_MUSIC_PLANT_GLOCKENSPIEL_3, SE_MUSIC_PLANT_GLOCKENSPIEL_4,
     SE_MUSIC_PLANT_GLOCKENSPIEL_5, SE_MUSIC_PLANT_GLOCKENSPIEL_6,
@@ -64,8 +67,8 @@ void CreateEntity_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
 {
     struct Task *t = TaskCreate(Task_8075C6C, sizeof(Sprite_NoteBlock), 0x2010, 0,
                                 TaskDestructor_8075CC0);
-    Sprite_NoteBlock *block = TaskGetStructPtr(t);
-    Sprite *s = &block->disp;
+    Sprite_NoteBlock *block = TASK_DATA(t);
+    Sprite *s = &block->s;
 
     block->unk4B = 3;
     block->unk44 = 0;
@@ -79,15 +82,15 @@ void CreateEntity_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     block->base.spriteX = me->x;
     block->base.spriteY = spriteY;
 
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
-    s->unk14 = 0;
-    s->unk1C = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
 
-    s->unk21 = 0xFF;
-    s->unk22 = 0x10;
+    s->prevVariant = -1;
+    s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk28->unk0 = -1;
+    s->hitboxes[0].index = -1;
     s->unk10 = 0x2000;
 
     {
@@ -107,12 +110,12 @@ void CreateEntity_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     block->posY = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    sub_8004558(s);
+    UpdateSpriteAnimation(s);
 }
 
 void Task_8075A90(void)
 {
-    Sprite_NoteBlock *block = TaskGetStructPtr(gCurTask);
+    Sprite_NoteBlock *block = TASK_DATA(gCurTask);
 
     u32 index = block->unk4A++;
 
@@ -148,7 +151,7 @@ void sub_8075B50(Sprite_NoteBlock *block)
     block->unk49 = 192;
     gPlayer.speedAirY = -(gUnknown_080DFC6A[block->unk48]);
     gPlayer.unk64 = 0x39;
-    gPlayer.unk6D = 5;
+    gPlayer.transition = PLTRANS_PT5;
     gPlayer.unk66 = -1;
 
     block->unk4A = 0;
@@ -158,22 +161,22 @@ void sub_8075B50(Sprite_NoteBlock *block)
                 (-((gUnknown_080DFC6A[block->unk48] * 3) << 14)) >> 16, 1);
 
     if (--block->unk4B == 1) {
-        block->disp.graphics.dest
+        block->s.graphics.dest
             = &((u8 *)OBJ_VRAM0)[gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][2]
                                  * TILE_SIZE_4BPP];
-        block->disp.graphics.anim
+        block->s.graphics.anim
             = gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][0];
-        block->disp.variant = gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][1];
-        sub_8004558(&block->disp);
+        block->s.variant = gUnknown_080DFC40[ARRAY_COUNT(gUnknown_080DFC40) - 1][1];
+        UpdateSpriteAnimation(&block->s);
     }
 
-    m4aSongNumStart(gUnknown_080DFC78[block->unk48]);
+    m4aSongNumStart(sSfxGlockenspiel[block->unk48]);
     gCurTask->main = Task_8075A90;
 }
 
 void Task_8075C6C(void)
 {
-    Sprite_NoteBlock *block = TaskGetStructPtr(gCurTask);
+    Sprite_NoteBlock *block = TASK_DATA(gCurTask);
     if (sub_8075D98(block)) {
         sub_8075B50(block);
     }
@@ -202,7 +205,7 @@ void sub_8075CC4(Sprite_NoteBlock *block)
 
 void NoteBlock_UpdatePosition(Sprite_NoteBlock *block)
 {
-    Sprite *s = &block->disp;
+    Sprite *s = &block->s;
 
     s->x = block->posX - gCamera.x + Q_24_8_TO_INT(block->unk44);
     s->y = block->posY - gCamera.y + Q_24_8_TO_INT(block->unk46);
@@ -210,13 +213,13 @@ void NoteBlock_UpdatePosition(Sprite_NoteBlock *block)
 
 void sub_8075D28(Sprite_NoteBlock *block)
 {
-    Sprite *s = &block->disp;
+    Sprite *s = &block->s;
 
     s->unk10 |= 0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 
     s->unk10 &= ~0x400;
-    sub_80051E8(s);
+    DisplaySprite(s);
 }
 
 bool32 sub_8075D58(Sprite_NoteBlock *block)

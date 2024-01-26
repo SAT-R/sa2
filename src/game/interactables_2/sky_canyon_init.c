@@ -26,7 +26,7 @@ struct Task *sub_80807CC(void)
 {
     struct Task *t
         = TaskCreate(Task_80808DC, sizeof(Sprite_OnInit_SkyCanyon), 0x2001, 0, NULL);
-    Sprite_OnInit_SkyCanyon *init = TaskGetStructPtr(t);
+    Sprite_OnInit_SkyCanyon *init = TASK_DATA(t);
     Sprite *spring, *propellor;
 
     init->unk60 = 0;
@@ -35,46 +35,46 @@ struct Task *sub_80807CC(void)
     spring = &init->spring;
     spring->unk1A = 0x480;
     spring->graphics.size = 0;
-    spring->unk14 = 0;
-    spring->unk1C = 0;
-    spring->unk21 = 0xFF;
-    spring->unk22 = 0x10;
+    spring->animCursor = 0;
+    spring->timeUntilNextFrame = 0;
+    spring->prevVariant = -1;
+    spring->animSpeed = 0x10;
     spring->palId = 0;
-    spring->unk28->unk0 = -1;
+    spring->hitboxes[0].index = -1;
     spring->unk10 = 0x2000;
     spring->graphics.dest = (void *)(OBJ_VRAM0 + 0x3040);
     spring->graphics.anim = SA2_ANIM_SPRING_FLYING;
     spring->variant = 0;
-    sub_8004558(&init->spring);
+    UpdateSpriteAnimation(&init->spring);
 
     propellor = &init->propellor;
     propellor->unk1A = 0x480;
     propellor->graphics.size = 0;
-    propellor->unk14 = 0;
-    propellor->unk1C = 0;
-    propellor->unk21 = -1;
-    propellor->unk22 = 0x10;
+    propellor->animCursor = 0;
+    propellor->timeUntilNextFrame = 0;
+    propellor->prevVariant = -1;
+    propellor->animSpeed = 0x10;
     propellor->palId = 0;
-    propellor->unk28->unk0 = -1;
+    propellor->hitboxes[0].index = -1;
     propellor->unk10 = 0x2000;
     propellor->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
-    propellor->graphics.anim = SA2_ANIM_PROPELLOR;
+    propellor->graphics.anim = SA2_ANIM_PROPELLER;
     propellor->variant = 0;
-    sub_8004558(&init->propellor);
+    UpdateSpriteAnimation(&init->propellor);
 
     return t;
 }
 
 static void Task_80808DC(void)
 {
-    Sprite_OnInit_SkyCanyon *init = TaskGetStructPtr(gCurTask);
+    Sprite_OnInit_SkyCanyon *init = TASK_DATA(gCurTask);
     if (init->unk60) {
-        sub_8004558(&init->spring);
+        UpdateSpriteAnimation(&init->spring);
     }
     init->unk60 = 0;
 
     if (init->unk62 != 0) {
-        sub_8004558(&init->propellor);
+        UpdateSpriteAnimation(&init->propellor);
     }
     init->unk62 = 0;
 }
