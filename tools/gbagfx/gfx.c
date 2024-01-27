@@ -406,7 +406,6 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
         if(ignoreEmptyTrailingTiles)
             FATAL_ERROR("It is not supported to use -ignore_trailing and -split_into_oam_shapes simultaneously.");
 
-        // TODO: Add 8bpp support
         if(bitDepth != 4 && bitDepth != 8)
             FATAL_ERROR("Only 4bpp and 8bpp images supported for -split_into_oam_shapes");
 
