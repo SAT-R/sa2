@@ -11,7 +11,4 @@
 
 extern const struct SpriteTables gSpriteTables;
 
-// We need 'Tilemap' in data.h, so it has to be declared later
-extern const Tilemap *const gTilemaps[381];
-
 #endif

@@ -4,8 +4,8 @@
 #include "global.h"
 #include "task.h"
 #include "sprite.h"
+#include "tilemap.h"
 #include "input_recorder.h"
-#include "animation_commands.h"
 
 struct MultiSioData_0_0 {
     // id
@@ -95,39 +95,6 @@ union MultiSioData {
     struct MultiSioData_0_3 pat3;
     struct MultiSioData_0_4 pat4;
 }; /* size = MULTI_SIO_BLOCK_SIZE */
-
-typedef struct {
-    /* 0x00 */ u16 xTiles;
-    /* 0x02 */ u16 yTiles;
-    /* 0x04 */ u16 animTileSize;
-    /* 0x06 */ u8 animFrameCount;
-    /* 0x07 */ u8 animDelay;
-    /* 0x08 */ const u8 *tiles;
-    /* 0x0C */ u32 tilesSize;
-    /* 0x10 */ const u16 *palette;
-    /* 0x14 */ u16 palOffset;
-    /* 0x16 */ u16 palLength;
-
-    // Can be u8* in some instances
-    // map = metatiles, when using with non-background map layers
-    /* 0x18 */ const u16 *map;
-} Tilemap; /* size = 0x1C */
-
-struct SpriteTables {
-    /* 0x00 */ ACmd ***animations;
-    /* 0x04 */ SpriteOffset **dimensions;
-    /* 0x08 */ u16 **oamData;
-    /* 0x0C */ u16 *palettes;
-    /* 0x10 */ u8 *tiles_4bpp;
-    /* 0x14 */ u8 *tiles_8bpp;
-};
-
-struct MapHeader {
-    /* 0x00 */ Tilemap h;
-    /* 0x1C */ const u16 *metatileMap;
-    /* 0x20 */ u16 mapWidth; // in Metatiles
-    /* 0x22 */ u16 mapHeight; // in Metatiles
-};
 
 // Thanks @MainMemory_ for figuring out how collision works!
 typedef struct {
@@ -297,7 +264,6 @@ extern u16 *gUnknown_030022AC;
 extern void *gUnknown_030022C0;
 extern s16 gMosaicReg;
 extern u8 gUnknown_030026F4;
-extern const struct SpriteTables *gUnknown_03002794;
 extern struct GraphicsData *gVramGraphicsCopyQueue[32];
 extern u16 gUnknown_03002820;
 extern u8 gUnknown_03002874;

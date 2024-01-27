@@ -2,7 +2,9 @@
 #include "flags.h"
 #include "core.h"
 #include "sprite.h"
+#include "data/sprite_data.h"
 #include "trig.h"
+#include "animation_commands.h"
 
 extern const AnimationCommandFunc animCmdTable[];
 

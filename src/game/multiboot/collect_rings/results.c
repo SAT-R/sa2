@@ -7,6 +7,7 @@
 #include "game/multiboot/collect_rings/results.h"
 #include "task.h"
 #include "sprite.h"
+#include "data/sprite_data.h"
 #include "bg_triangles.h"
 #include "game/save.h"
 #include "game/title_screen.h"
