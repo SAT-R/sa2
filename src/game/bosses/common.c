@@ -31,8 +31,8 @@ const VoidFn sBossCreationFuncs[] = {
 
 // Move position functions (translate(x, y))
 const TranslateBossFunction gUnknown_080D79B0[] = {
-    sub_803C80C,   sub_803E3EC, sub_803FA84, sub_80425F0,
-    EggSaucerMove, sub_8047224, sub_8048EB4, sub_804D594,
+    sub_803C80C,   EggBomberTankMove, sub_803FA84, sub_80425F0,
+    EggSaucerMove, sub_8047224,       sub_8048EB4, sub_804D594,
 };
 
 const u32 gUnknown_080D79D0[][3] = {
