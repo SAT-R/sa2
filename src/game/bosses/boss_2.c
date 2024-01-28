@@ -63,10 +63,102 @@ typedef struct {
 
 } EggBomberTank; /* size: 0x1B4 */
 
+typedef struct {
+    s32 unk0; // x
+    s32 unk4; // y
+    s16 unk8;
+    s16 unkA;
+    u8 unkC;
+    EggBomberTank *unk10;
+    /* 0x14 */ Sprite s;
+} EggBomberTankBomb; /* 0x44*/
+
+typedef struct {
+    void *vram;
+    AnimId anim;
+    u8 variant;
+} ExplosionGraphics;
+
 typedef void (*BossFunction)(EggBomberTank *boss);
 
 void Task_EggBomberTankMain(void);
 void TaskDestructor_EggBomberTankMain(struct Task *);
+
+void sub_803E63C(EggBomberTank *boss);
+void sub_803E494(void);
+u8 sub_803DF34(EggBomberTank *boss);
+u8 sub_803DB1C(EggBomberTank *boss);
+void sub_803DA8C(EggBomberTank *boss);
+u8 sub_803D430(EggBomberTank *boss);
+void sub_803D978(EggBomberTank *boss);
+u8 sub_803E0D8(EggBomberTank *boss, Player *player);
+void Task_803E520(void);
+
+void sub_803D754(EggBomberTank *boss);
+void sub_803D640(EggBomberTank *boss, u8);
+void sub_803E214(EggBomberTank *boss);
+void sub_803E5B0(void);
+
+void CreateBomberTankBomb(EggBomberTank *boss, s32 x, s32 y, u16 angle, u16, u8);
+void sub_803E6A8(EggBomberTank *boss);
+void sub_803E520(void);
+
+void sub_803E8DC(void);
+
+void sub_803EC84(void);
+
+void CreateBombExplosion(EggBomberTank *boss, s32 x, s32 y, ExplosionGraphics);
+void sub_803EBBC(void);
+
+void sub_803DCF4(EggBomberTank *boss);
+void sub_803E6F0(EggBomberTank *boss);
+
+static const s8 gUnknown_080D7B10[] = { -28, 2, 32 };
+
+static const u8 gUnknown_080D7B13[]
+    = { 90, 60, 30, 90, 60, 90, 60, 30, 30, 60, 90, 30, 60, 30, 90, 30,
+        0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,
+        0,  1,  0,  0,  1,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0 };
+
+static const s8 gUnknown_080D7B43[][2] = {
+    { 0, 0 }, { -16, 16 }, { -16, -16 }, { 16, 16 }, { 16, -16 },
+};
+
+static const u16 gUnknown_080D7B4E[][2] = {
+    {
+        640,
+        64512,
+    },
+    {
+        704,
+        64384,
+    },
+    {
+        768,
+        64256,
+    },
+    {
+        768,
+        64512,
+    },
+    {
+        704,
+        64384,
+    },
+    {
+        640,
+        64256,
+    },
+};
+
+static const BossFunction gUnknown_080D7B68[] = { sub_803DCF4, sub_803E6F0 };
+
+static const u16 gUnknown_080D7B70[][16] = {
+    { 27005, 16895, 17150, 22335, 31832, 31960, 32314, 27256, 32633, 32700, 17464, 22842,
+      26107, 28284, 30461, 32671 },
+    { 11912, 32257, 32004, 21696, 959, 831, 471, 10655, 155, 78, 29662, 19158, 13840,
+      9612, 5384, 99 },
+};
 
 void CreateEggBomberTank(void)
 {
@@ -175,16 +267,6 @@ void CreateEggBomberTank(void)
     gActiveBossTask = t;
 }
 
-void sub_803E63C(EggBomberTank *boss);
-void sub_803E494(void);
-u8 sub_803DF34(EggBomberTank *boss);
-u8 sub_803DB1C(EggBomberTank *boss);
-void sub_803DA8C(EggBomberTank *boss);
-u8 sub_803D430(EggBomberTank *boss);
-void sub_803D978(EggBomberTank *boss);
-u8 sub_803E0D8(EggBomberTank *boss, Player *player);
-void Task_803E520(void);
-
 void Task_803D088(void)
 {
     Sprite *s;
@@ -275,11 +357,6 @@ void Task_803D088(void)
     }
 }
 
-void sub_803D754(EggBomberTank *boss);
-void sub_803D640(EggBomberTank *boss, u8);
-void sub_803E214(EggBomberTank *boss);
-void sub_803E5B0(void);
-
 void sub_803D2C0(void)
 {
     s32 rand;
@@ -302,9 +379,6 @@ void sub_803D2C0(void)
         gCurTask->main = sub_803E5B0;
     }
 }
-
-extern const s8 gUnknown_080D7B10[];
-extern const u16 gUnknown_080D7B4E[][2];
 
 void sub_803D368(EggBomberTank *boss)
 {
@@ -516,9 +590,6 @@ u32 sub_803D88C(EggBomberTank *boss)
     return ret;
 }
 
-extern const u16 gUnknown_080D7B90[];
-extern const u16 gUnknown_080D7B70[][16];
-
 void sub_803D978(EggBomberTank *boss)
 {
     u8 i;
@@ -576,8 +647,6 @@ void sub_803DA8C(EggBomberTank *boss)
         }
     }
 }
-
-extern const s8 gUnknown_080D7B43[][2];
 
 u8 sub_803DB1C(EggBomberTank *boss)
 {
@@ -649,10 +718,6 @@ u8 sub_803DB1C(EggBomberTank *boss)
     return ret;
 }
 
-extern const u8 gUnknown_080D7B13[];
-
-void sub_803E7D4(EggBomberTank *boss, s32 x, s32 y, u16 angle, u16, u8);
-
 void sub_803DCF4(EggBomberTank *boss)
 {
     s32 x, y;
@@ -717,8 +782,8 @@ void sub_803DCF4(EggBomberTank *boss)
             boss->unk68 = 0xC;
             gCurTask->main = Task_803D088;
             m4aSongNumStart(SE_241);
-            sub_803E7D4(boss, x, y, boss->unk60, 64,
-                        gUnknown_080D7B13[PseudoRandom32() & 0xF]);
+            CreateBomberTankBomb(boss, x, y, boss->unk60, 64,
+                                 gUnknown_080D7B13[PseudoRandom32() & 0xF]);
 
         } else {
             boss->unk68--;
@@ -930,8 +995,6 @@ void sub_803E3EC(s32 dX, s32 dY)
     boss->unk58 += dY;
 }
 
-void sub_803E6A8(EggBomberTank *boss);
-
 void Task_EggBomberTankMain(void)
 {
     EggBomberTank *boss = TASK_DATA(gCurTask);
@@ -948,10 +1011,6 @@ void Task_EggBomberTankMain(void)
         gCurTask->main = sub_803E494;
     }
 }
-
-extern const BossFunction gUnknown_080D7B68[];
-
-void sub_803E520(void);
 
 void sub_803E494(void)
 {
@@ -1050,8 +1109,8 @@ void sub_803E6F0(EggBomberTank *boss)
 {
     sub_803DB1C(boss);
     if (boss->unk68 == 0) {
-        sub_803E7D4(boss, boss->x - 0x800, boss->y - 0x1600, 0x200, 8,
-                    gUnknown_080D7B13[PseudoRandom32() & 0xF]);
+        CreateBomberTankBomb(boss, boss->x - 0x800, boss->y - 0x1600, 0x200, 8,
+                             gUnknown_080D7B13[PseudoRandom32() & 0xF]);
         boss->unk68 = 113;
     } else {
         if (boss->unk68 > 0x96) {
@@ -1080,19 +1139,7 @@ void sub_803E798(EggBomberTank *boss)
     }
 }
 
-typedef struct {
-    s32 unk0; // x
-    s32 unk4; // y
-    s16 unk8;
-    s16 unkA;
-    u8 unkC;
-    EggBomberTank *unk10;
-    /* 0x14 */ Sprite s;
-} EggBomberTankBomb; /* 0x44*/
-
-void sub_803E8DC(void);
-
-void sub_803E7D4(EggBomberTank *boss, s32 x, s32 y, u16 angle, u16 p5, u8 p6)
+void CreateBomberTankBomb(EggBomberTank *boss, s32 x, s32 y, u16 angle, u16 p5, u8 p6)
 {
     struct Task *t = TaskCreate(sub_803E8DC, sizeof(EggBomberTankBomb), 0x6100, 0, NULL);
     Sprite *s;
@@ -1119,14 +1166,6 @@ void sub_803E7D4(EggBomberTank *boss, s32 x, s32 y, u16 angle, u16 p5, u8 p6)
     s->graphics.dest = boss->unk6C;
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_BOMBER_TANK_BOMB, 0, 25, 2, 0);
 }
-typedef struct {
-    void *vram;
-    AnimId anim;
-    u8 variant;
-} ExplosionGraphics;
-
-void sub_803EAF4(EggBomberTank *boss, s32 x, s32 y, ExplosionGraphics);
-void sub_803EC84(void);
 
 void sub_803E8DC(void)
 {
@@ -1184,16 +1223,17 @@ void sub_803E8DC(void)
             graphics.anim = SA2_ANIM_EXPLOSION_1;
             graphics.variant = 0;
 
-            sub_803EAF4(bomb->unk10, Q_24_8_TO_INT(bomb->unk0) + gCamera.x,
-                        Q_24_8_TO_INT(bomb->unk4) + gCamera.y, graphics);
+            CreateBombExplosion(bomb->unk10, Q_24_8_TO_INT(bomb->unk0) + gCamera.x,
+                                Q_24_8_TO_INT(bomb->unk4) + gCamera.y, graphics);
         } else {
             m4aSongNumStart(SE_243);
             graphics.vram = s->graphics.dest + 0x740;
             graphics.anim = SA2_ANIM_EXPLOSION_2;
             graphics.variant = 0;
 
-            sub_803EAF4(bomb->unk10, Q_24_8_TO_INT(bomb->unk0) + gCamera.x,
-                        Q_24_8_TO_INT(bomb->unk4) + 0xF + ground + gCamera.y, graphics);
+            CreateBombExplosion(bomb->unk10, Q_24_8_TO_INT(bomb->unk0) + gCamera.x,
+                                Q_24_8_TO_INT(bomb->unk4) + 0xF + ground + gCamera.y,
+                                graphics);
         }
 
         gCurTask->main = sub_803EC84;
@@ -1203,9 +1243,7 @@ void sub_803E8DC(void)
     }
 }
 
-void sub_803EBBC(void);
-
-void sub_803EAF4(EggBomberTank *boss, s32 x, s32 y, ExplosionGraphics graphics)
+void CreateBombExplosion(EggBomberTank *boss, s32 x, s32 y, ExplosionGraphics graphics)
 {
     struct Task *t;
     Sprite *s;
