@@ -83,6 +83,7 @@ struct MultiplayerPlayer {
     u8 unk57;
     u8 unk58[4];
     u32 unk5C; // flags?
+    u8 unk60;
 };
 
 // Incomplete

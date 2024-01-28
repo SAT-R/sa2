@@ -3,6 +3,40 @@
 
 #include "global.h"
 
+// Might be equivalent to UNK_8085D14?
+struct UNK_8085F1C_1 {
+    s16 unk0;
+    s16 unk2[9];
+    s32 unk14;
+    s32 unk18;
+    s32 unk1C;
+};
+
+struct UNK_8085F1C {
+    struct UNK_8085F1C *unk0;
+    u8 unk4[8];
+    u32 unkC;
+    s32 unk10;
+    struct UNK_8085F1C_1 unk14;
+    struct UNK_8085F1C_1 unk34;
+
+    s16 unk54;
+    s16 unk56;
+    s16 unk58;
+    u8 unk59[2];
+
+    s16 unk5C;
+    s16 unk5E;
+    s16 unk60;
+    u8 unk62[2];
+
+    s32 unk64;
+    s32 unk68;
+    s32 unk6C;
+
+    u8 unk70[4];
+};
+
 // Returns a 16-bit pseudorandom number
 u16 Random(void);
 
@@ -24,6 +58,8 @@ u16 Random(void);
 
 // Sets the initial seed values of the pseudorandom number generator
 void SeedRng(u32 a, u32 b);
+
+struct UNK_8085F1C_1 *sub_80853F8(struct UNK_8085F1C *p1);
 
 u32 AbsMax(s32 a, s32 b);
 // AbsSumMul

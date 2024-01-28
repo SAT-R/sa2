@@ -137,6 +137,7 @@ SECTIONS
         build/sa2/src/game/boost_effect.o(.text);
         build/sa2/src/game/amy_attack_heart_effect.o(.text);
         build/sa2/asm/player_mp_actor.o(.text);
+        build/sa2/src/game/multiplayer/unknown_task.o(.text);
         build/sa2/asm/player_mp_unknown_task.o(.text);
         build/sa2/src/game/multiplayer/player_unk_1.o(.text);
         build/sa2/src/game/multiplayer/indicators.o(.text);
