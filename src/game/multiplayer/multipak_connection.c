@@ -6,6 +6,7 @@
 #include "game/multiplayer/mode_select.h"
 #include "task.h"
 #include "sprite.h"
+#include "data/sprite_data.h"
 #include "game/save.h"
 #include "game/title_screen.h"
 #include "multi_sio.h"

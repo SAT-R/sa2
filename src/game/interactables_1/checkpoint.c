@@ -7,6 +7,7 @@
 #include "data/sprite_data.h"
 #include "flags.h"
 #include "sprite.h"
+#include "data/sprite_data.h"
 #include "task.h"
 #include "game/game.h"
 #include "game/entity.h"

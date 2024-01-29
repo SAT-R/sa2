@@ -15,11 +15,11 @@ typedef struct {
     s16 unk30;
 } StageRing;
 
-void Task_StageRing(void);
+void Task_MagneticRing(void);
 
-void sub_800BAAC(s16 x, s16 y)
+void CreateMagneticRing(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(Task_StageRing, sizeof(StageRing), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_MagneticRing, sizeof(StageRing), 0x2000, 0, NULL);
     StageRing *ring = TASK_DATA(t);
     Sprite *s;
 
@@ -43,7 +43,8 @@ void sub_800BAAC(s16 x, s16 y)
 }
 
 // (88.87%) https://decomp.me/scratch/EmhmV
-NONMATCH("asm/non_matching/game/stage/Task_StageRing.inc", void Task_StageRing(void))
+NONMATCH("asm/non_matching/game/stage/Task_MagneticRing.inc",
+         void Task_MagneticRing(void))
 {
     StageRing *ring = TASK_DATA(gCurTask);
     Player *p = &gPlayer;

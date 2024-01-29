@@ -1,9 +1,9 @@
 #include "global.h"
 #include "core.h"
 #include "data.h"
-#include "game/game.h"
-#include "task.h"
 #include "flags.h"
+#include "task.h"
+#include "game/game.h"
 #include "game/save.h"
 #include "game/game.h"
 #include "game/title_screen.h"
@@ -18,6 +18,7 @@
 #include "game/underwater_effects.h"
 #include "game/dust_effect_braking.h"
 #include "game/dummy_task.h"
+#include "data/sprite_data.h"
 
 void GameStart(void)
 {

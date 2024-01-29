@@ -401,7 +401,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                                && ((ry - 72) <= Q_24_8_TO_INT(gPlayer.y))
                                                && ((ry + 56
                                                     >= Q_24_8_TO_INT(gPlayer.y)))) {
-                                        sub_800BAAC(rx, ry);
+                                        CreateMagneticRing(rx, ry);
                                         meRing->x = (u8)MAP_ENTITY_STATE_INITIALIZED;
                                         meRing++;
 

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "sprite.h"
+#include "data/sprite_data.h"
 #include "flags.h"
 
 const u8 gOamShapesSizes[12][2] = {

@@ -3,6 +3,7 @@
 
 #include "data.h"
 #include "sprite.h"
+#include "data/sprite_data.h"
 #include "task.h"
 
 #include "game/game.h"

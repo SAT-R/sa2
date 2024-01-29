@@ -4,6 +4,7 @@
 #include "game/special_stage/utils.h"
 #include "game/special_stage/data.h"
 #include "sprite.h"
+#include "data/sprite_data.h"
 #include "trig.h"
 
 void *gUnknown_03005B58 = NULL;
