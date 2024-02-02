@@ -119,6 +119,7 @@ SECTIONS
         build/sa2/src/sakit/dust_cloud.o(.text);
         build/sa2/src/sakit/ring.o(.text);
         build/sa2/src/sakit/music_manager.o(.text);
+        build/sa2/src/sakit/entities_0.o(.text);
         build/sa2/asm/entities_0.o(.text);
         build/sa2/src/sakit/interactables/spring.o(.text);
         build/sa2/src/sakit/interactables/platform.o(.text);
