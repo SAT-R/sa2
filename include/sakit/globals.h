@@ -35,6 +35,8 @@
 
 #define MAX_PLAYER_NAME_LENGTH 6
 
+#define GRAVITY_IS_INVERTED (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+
 typedef struct {
     u8 unk0;
     u8 unk1;
@@ -187,7 +189,5 @@ extern u8 gNewInputCountersIndex;
 extern u8 gNewInputCounters[128];
 
 extern u8 gUnknown_030055D8;
-
-#define GRAVITY_IS_INVERTED (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
 
 #endif // GUARD_SAKIT_GLOBALS_H

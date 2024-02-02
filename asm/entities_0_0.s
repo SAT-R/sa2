@@ -7,7 +7,7 @@
 .syntax unified
 .arm
 
-.if 01
+.if 0
     @ Returns flags/a bitarray
     @ Maybe collision-hit test?
 	thumb_func_start sub_800C060
@@ -18,7 +18,7 @@ sub_800C060: @ 0x0800C060
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #8
-	adds r6, r0, #0         @ r0 = s
+	adds r6, r0, #0         @ r6 = s
 	adds r7, r1, #0         @ r7 = sx
 	mov r8, r2              @ r8 = sy
 	adds r5, r3, #0         @ r5 = p
@@ -39,7 +39,7 @@ sub_800C060: @ 0x0800C060
 	movs r2, #4
 	bl memcpy
 	movs r0, #0
-	mov sl, r0
+	mov sl, r0              @ sl = result = 0;
 	mov ip, r0
 	ldr r1, [r6, #0x28]
 	subs r0, #1
