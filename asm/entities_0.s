@@ -4263,7 +4263,7 @@ sub_800DF38: @ 0x0800DF38
 	mov r1, r8
 	mov r2, sb
 	adds r3, r4, #0
-	bl sub_800BFAC
+	bl CheckRectCollision_SpritePlayer
 	add sp, #0xc
 	pop {r3, r4}
 	mov r8, r3

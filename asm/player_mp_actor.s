@@ -3126,7 +3126,7 @@ _08017860:
 	str r3, [sp]
 	mov r0, sb
 	adds r3, r5, #0
-	bl sub_800BFAC
+	bl CheckRectCollision_SpritePlayer
 	cmp r0, #0
 	bne _08017880
 	b _0801798E

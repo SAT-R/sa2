@@ -14,6 +14,7 @@ struct Rect8 {
 #define RECT_RIGHT(x, hb)  (RECT_LEFT(x, hb) + RECT_WIDTH(hb))
 #define RECT_TOP(y, hb)    ((y) + (hb)->top)
 #define RECT_BOTTOM(y, hb) (RECT_TOP(y, hb) + RECT_HEIGHT(hb))
+
 #define RECT_COLLISION_A_X(x0, hb0, x1, hb1)                                            \
     (RECT_LEFT(x0, hb0) <= RECT_LEFT(x1, hb1)                                           \
      && RECT_RIGHT(x0, hb0) >= RECT_LEFT(x1, hb1))
@@ -26,10 +27,12 @@ struct Rect8 {
 #define RECT_COLLISION_B_Y(y0, hb0, y1, hb1)                                            \
     (RECT_TOP((y0), hb0) >= RECT_TOP((y1), hb1)                                         \
      && RECT_BOTTOM((y1), hb1) >= RECT_TOP((y0), hb0))
+
 #define RECT_COLLISION_X(x0, hb0, x1, hb1)                                              \
     (RECT_COLLISION_A_X(x0, hb0, x1, hb1) || RECT_COLLISION_B_X(x0, hb0, x1, hb1))
 #define RECT_COLLISION_Y(y0, hb0, y1, hb1)                                              \
     (RECT_COLLISION_A_Y(y0, hb0, y1, hb1) || RECT_COLLISION_B_Y(y0, hb0, y1, hb1))
+
 #define RECT_COLLISION(x0, y0, hb0, x1, y1, hb1)                                        \
     (RECT_COLLISION_X(x0, hb0, x1, hb1) && RECT_COLLISION_Y(y0, hb0, y1, hb1))
 

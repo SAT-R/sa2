@@ -2,24 +2,21 @@
 #include "rect.h"
 #include "sprite.h"
 #include "sakit/player.h"
+#include "sakit/entities_0.h"
 
-u32 sub_800BFAC(Sprite *s, s32 x, s32 y, Player *p, struct Rect8 *param4)
+u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p,
+                                    struct Rect8 *rectPlayer)
 {
-    s32 left, right, top;
-
-    s32 px;
-
     u32 result = 0;
 
     if ((s->hitboxes[0].index == -1) || !IS_ALIVE(p)) {
         return result;
     }
 
-    if (RECT_COLLISION(x, y, &s->hitboxes[0], Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y),
-                       param4)) {
+    if (RECT_COLLISION(sx, sy, &s->hitboxes[0], Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y),
+                       rectPlayer)) {
         result |= 0x80000;
     }
 
     return result;
 }
-asm(".short 0");
