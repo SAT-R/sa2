@@ -5,6 +5,7 @@
 #include "sakit/player.h"
 #include "sakit/entities_0.h"
 
+#define COLL_NONE       0
 #define COLL_FLAG_8     0x00000008
 #define COLL_FLAG_80000 0x00080000
 
@@ -19,7 +20,7 @@ u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p,
 
     if (RECT_COLLISION(sx, sy, &s->hitboxes[0], Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y),
                        rectPlayer)) {
-        result |= 0x80000;
+        result |= COLL_FLAG_80000;
     }
 
     return result;
@@ -31,7 +32,7 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
 {
     s8 rectPlayer[4] = { -p->unk16, -p->unk17, +p->unk16, +p->unk17 };
 
-    u32 result = 0;
+    u32 result = COLL_NONE;
     bool32 ip = FALSE;
 
     if ((s->hitboxes[0].index == -1) || !IS_ALIVE(p)) {
@@ -55,7 +56,7 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
         rectPlayer[1] = -p->unk17;
         rectPlayer[3] = +p->unk17;
         p->moveState |= MOVESTATE_8;
-        result |= 0x8;
+        result |= COLL_FLAG_8;
 
         if (!ip) {
             p->rotation = 0;
@@ -84,4 +85,33 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
 }
 
 #if 001
+// https://decomp.me/scratch/y38aZ
+bool32 sub_800C204(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbIndexPlayer)
+{
+    PlayerSpriteInfo *psi = p->unk90;
+    Sprite *sprPlayer = &psi->s;
+
+    if (!IS_ALIVE(p)) {
+        return FALSE;
+    }
+
+    if (s->hitboxes[hbIndex].index == -1) {
+        return FALSE;
+    }
+    
+    if (psi->s.hitboxes[hbIndexPlayer].index == -1) {
+        return FALSE;
+    }
+    
+    // TODO: Turn these into directly-accessing macros (in addition to the ptr-ref ones)
+    if(((((sx) + s->hitboxes[hbIndex].left) <= (Q_24_8_TO_INT(p->x) + sprPlayer->hitboxes[hbIndexPlayer].left) && (((sx) + s->hitboxes[hbIndex].left) + (s->hitboxes[hbIndex].right - s->hitboxes[hbIndex].left)) >= (Q_24_8_TO_INT(p->x) + sprPlayer->hitboxes[hbIndexPlayer].left))
+    || ( ((sx) + s->hitboxes[hbIndex].left) >= (Q_24_8_TO_INT(p->x) + sprPlayer->hitboxes[hbIndexPlayer].left) && ((Q_24_8_TO_INT(p->x) + sprPlayer->hitboxes[hbIndexPlayer].left) + (sprPlayer->hitboxes[hbIndexPlayer].right - sprPlayer->hitboxes[hbIndexPlayer].left)) >= ((sx) + s->hitboxes[hbIndex].left) ))
+     && ((((sy) + s->hitboxes[hbIndex].top) <= (Q_24_8_TO_INT(p->y) +  sprPlayer->hitboxes[hbIndexPlayer].top) && (((sy) + s->hitboxes[hbIndex].top) + (s->hitboxes[hbIndex].bottom - s->hitboxes[hbIndex].top)) >= (Q_24_8_TO_INT(p->y) +  sprPlayer->hitboxes[hbIndexPlayer].top))
+     || ((sy + s->hitboxes[hbIndex].top) >= (Q_24_8_TO_INT(p->y) +  sprPlayer->hitboxes[hbIndexPlayer].top) && ((Q_24_8_TO_INT(p->y) + sprPlayer->hitboxes[hbIndexPlayer].top) + (sprPlayer->hitboxes[hbIndexPlayer].bottom - sprPlayer->hitboxes[hbIndexPlayer].top)) >= ((sy + s->hitboxes[hbIndex].top)))))
+    {
+        return TRUE;
+    }
+
+    return FALSE;
+}
 #endif
