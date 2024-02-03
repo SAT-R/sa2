@@ -743,7 +743,7 @@ void sub_80246DC(Player *p)
     }
 }
 
-void sub_802486C(Player *p, UNK_3005A70 *p2)
+void sub_802486C(Player *p, PlayerSpriteInfo *p2)
 {
 #ifndef NON_MATCHING
     s32 speed;

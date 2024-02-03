@@ -11,10 +11,10 @@ typedef struct {
     /*0x00 */ u16 unk0[6]; // might be [5]
     /*0x0C */ Sprite s;
     /*0x3C */ Hitbox reserved;
-} UNK_3005A70; /* 0x30 */
+} PlayerSpriteInfo; /* 0x30 */
 
-extern UNK_3005A70 gUnknown_03005AA0;
-extern UNK_3005A70 gUnknown_03005AF0;
+extern PlayerSpriteInfo gUnknown_03005AA0;
+extern PlayerSpriteInfo gUnknown_03005AF0;
 
 // TODO: Better name.
 //       This is used for an apparent around the value Cream uses for flying duration
@@ -168,11 +168,11 @@ typedef struct Player_ {
     /* 0x88 */ u8 unk88;
     /* 0x88 */ u8 filler88[3];
     /* 0x8C */ struct Task *spriteTask;
-    /* 0x90 */ UNK_3005A70 *unk90;
+    /* 0x90 */ PlayerSpriteInfo *unk90;
 
     // TODO: Only used for Cream/Tails?
     //       Alternatively, some of the following data might be a union
-    /* 0x94 */ UNK_3005A70 *unk94;
+    /* 0x94 */ PlayerSpriteInfo *unk94;
     /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
     /* 0x99 */ s8 unk99[15];
     /* 0xA8 */ u8 unkA8;

@@ -48,7 +48,7 @@ typedef struct {
 } SpriteBase;
 
 // IsColliding?
-bool32 sub_800C204(Sprite *, s32, s32, s16, Player *, u32);
+bool32 sub_800C204(Sprite *, s32, s32, s16, Player *, s16);
 
 u32 sub_800CDBC(Sprite *, s32, s32, Player *);
 
