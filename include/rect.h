@@ -40,36 +40,62 @@ struct Rect8 {
     (RECT_COLLISION_X(x0, hb0, x1, hb1) && RECT_COLLISION_Y(y0, hb0, y1, hb1))
 
 /* Rect collision checks using Fixed-point values */
-#define RECT_QWIDTH(hb)      Q_24_8_NEW(RECT_WIDTH(hb))
-#define RECT_QHEIGHT(hb)     Q_24_8_NEW(RECT_HEIGHT(hb))
-#define RECT_QLEFT(x, hb)    ((x) + Q_24_8((hb)->left))
-#define RECT_QLEFT2(x, hb)   Q_24_8_NEW((hb)->left + (x))
-#define RECT_QRIGHT(x, hb)   (RECT_QLEFT(x, hb) + RECT_QWIDTH(hb))
-#define RECT_QRIGHT2(x, hb)  (RECT_QLEFT2(x, hb) + RECT_QWIDTH(hb))
-#define RECT_QTOP(y, hb)     (((y) + Q_24_8((hb)->top)))
-#define RECT_QTOP2(y, hb)    Q_24_8_NEW(((hb)->top) + (y))
-#define RECT_QBOTTOM(y, hb)  (RECT_QTOP(y, hb) + RECT_QHEIGHT(hb))
-#define RECT_QBOTTOM2(y, hb) (RECT_QTOP2(y, hb) + RECT_QHEIGHT(hb))
+#define Q_RECT_WIDTH(hb)      Q_24_8_NEW(RECT_WIDTH(hb))
+#define Q_RECT_HEIGHT(hb)     Q_24_8_NEW(RECT_HEIGHT(hb))
+#define Q_RECT_LEFT(x, hb)    ((x) + Q_24_8((hb)->left))
+#define Q_RECT_LEFT2(x, hb)   Q_24_8_NEW((hb)->left + (x))
+#define Q_RECT_RIGHT(x, hb)   (Q_RECT_LEFT(x, hb) + Q_RECT_WIDTH(hb))
+#define Q_RECT_RIGHT2(x, hb)  (Q_RECT_LEFT2(x, hb) + Q_RECT_WIDTH(hb))
+#define Q_RECT_TOP(y, hb)     (((y) + Q_24_8((hb)->top)))
+#define Q_RECT_TOP2(y, hb)    Q_24_8_NEW(((hb)->top) + (y))
+#define Q_RECT_BOTTOM(y, hb)  (Q_RECT_TOP(y, hb) + Q_RECT_HEIGHT(hb))
+#define Q_RECT_BOTTOM2(y, hb) (Q_RECT_TOP2(y, hb) + Q_RECT_HEIGHT(hb))
 
-#define RECT_QCOLLISION_A_X(x0, hb0, x1, hb1)                                           \
-    (RECT_QLEFT2(x0, hb0) <= RECT_QLEFT(x1, hb1)                                        \
-     && RECT_QRIGHT2(x0, hb0) >= RECT_QLEFT(x1, hb1))
-#define RECT_QCOLLISION_B_X(x0, hb0, x1, hb1)                                           \
-    (RECT_QLEFT2(x0, hb0) >= RECT_QLEFT(x1, hb1)                                        \
-     && RECT_QRIGHT(x1, hb1) >= RECT_QLEFT2(x0, hb0))
-#define RECT_QCOLLISION_A_Y(y0, hb0, y1, hb1)                                           \
-    (RECT_QTOP2((y0), hb0) <= RECT_QTOP((y1), hb1)                                      \
-     && RECT_QBOTTOM2((y0), hb0) >= RECT_QTOP((y1), hb1))
-#define RECT_QCOLLISION_B_Y(y0, hb0, y1, hb1)                                           \
-    (RECT_QTOP2((y0), hb0) >= RECT_QTOP((y1), hb1)                                      \
-     && RECT_QBOTTOM((y1), hb1) >= RECT_QTOP2((y0), hb0))
+#define Q_RECT_COLLISION_A_X(x0, hb0, x1, hb1)                                          \
+    (Q_RECT_LEFT2(x0, hb0) <= Q_RECT_LEFT(x1, hb1)                                      \
+     && Q_RECT_RIGHT2(x0, hb0) >= Q_RECT_LEFT(x1, hb1))
+#define Q_RECT_COLLISION_B_X(x0, hb0, x1, hb1)                                          \
+    (Q_RECT_LEFT2(x0, hb0) >= Q_RECT_LEFT(x1, hb1)                                      \
+     && Q_RECT_RIGHT(x1, hb1) >= Q_RECT_LEFT2(x0, hb0))
+#define Q_RECT_COLLISION_A_Y(y0, hb0, y1, hb1)                                          \
+    (Q_RECT_TOP2((y0), hb0) <= Q_RECT_TOP((y1), hb1)                                    \
+     && Q_RECT_BOTTOM2((y0), hb0) >= Q_RECT_TOP((y1), hb1))
+#define Q_RECT_COLLISION_B_Y(y0, hb0, y1, hb1)                                          \
+    (Q_RECT_TOP2((y0), hb0) >= Q_RECT_TOP((y1), hb1)                                    \
+     && Q_RECT_BOTTOM((y1), hb1) >= Q_RECT_TOP2((y0), hb0))
 
-#define RECT_QCOLLISION_X(x0, hb0, x1, hb1)                                             \
-    (RECT_QCOLLISION_A_X(x0, hb0, x1, hb1) || RECT_QCOLLISION_B_X(x0, hb0, x1, hb1))
-#define RECT_QCOLLISION_Y(y0, hb0, y1, hb1)                                             \
-    (RECT_QCOLLISION_A_Y(y0, hb0, y1, hb1) || RECT_QCOLLISION_B_Y(y0, hb0, y1, hb1))
+#define Q_RECT_COLLISION_X(x0, hb0, x1, hb1)                                            \
+    (Q_RECT_COLLISION_A_X(x0, hb0, x1, hb1) || Q_RECT_COLLISION_B_X(x0, hb0, x1, hb1))
+#define Q_RECT_COLLISION_Y(y0, hb0, y1, hb1)                                            \
+    (Q_RECT_COLLISION_A_Y(y0, hb0, y1, hb1) || Q_RECT_COLLISION_B_Y(y0, hb0, y1, hb1))
 
 #define RECT_COLLISION_2(x0, y0, hb0, x1, y1, hb1)                                      \
-    (RECT_QCOLLISION_X(x0, hb0, x1, hb1) && RECT_QCOLLISION_Y(y0, hb0, y1, hb1))
+    (Q_RECT_COLLISION_X(x0, hb0, x1, hb1) && Q_RECT_COLLISION_Y(y0, hb0, y1, hb1))
+
+/* Rect collision checks using integer values
+   Clones of the RECT_ ,macros that access values directly */
+#define HB_WIDTH(hb)     ((hb).right - (hb).left)
+#define HB_HEIGHT(hb)    ((hb).bottom - (hb).top)
+#define HB_LEFT(x, hb)   ((x) + hb.left)
+#define HB_RIGHT(x, hb)  (HB_LEFT((x), (hb)) + HB_WIDTH(hb))
+#define HB_TOP(y, hb)    ((y) + hb.top)
+#define HB_BOTTOM(y, hb) (HB_TOP(y, hb) + HB_HEIGHT(hb))
+
+#define HB_COLLISION_A_X(x0, hb0, x1, hb1)                                              \
+    (HB_LEFT(x0, hb0) <= HB_LEFT(x1, hb1) && HB_RIGHT(x0, hb0) >= HB_LEFT(x1, hb1))
+#define HB_COLLISION_B_X(x0, hb0, x1, hb1)                                              \
+    (HB_LEFT(x0, hb0) >= HB_LEFT(x1, hb1) && HB_RIGHT(x1, hb1) >= HB_LEFT(x0, hb0))
+#define HB_COLLISION_A_Y(y0, hb0, y1, hb1)                                              \
+    (HB_TOP((y0), hb0) <= HB_TOP((y1), hb1) && HB_BOTTOM((y0), hb0) >= HB_TOP((y1), hb1))
+#define HB_COLLISION_B_Y(y0, hb0, y1, hb1)                                              \
+    (HB_TOP((y0), hb0) >= HB_TOP((y1), hb1) && HB_BOTTOM((y1), hb1) >= HB_TOP((y0), hb0))
+
+#define HB_COLLISION_X(x0, hb0, x1, hb1)                                                \
+    (HB_COLLISION_A_X(x0, hb0, x1, hb1) || HB_COLLISION_B_X(x0, hb0, x1, hb1))
+#define HB_COLLISION_Y(y0, hb0, y1, hb1)                                                \
+    (HB_COLLISION_A_Y(y0, hb0, y1, hb1) || HB_COLLISION_B_Y(y0, hb0, y1, hb1))
+
+#define HB_COLLISION(x0, y0, hb0, x1, y1, hb1)                                          \
+    (HB_COLLISION_X(x0, hb0, x1, hb1) && HB_COLLISION_Y(y0, hb0, y1, hb1))
 
 #endif // GUARD_RECT_H

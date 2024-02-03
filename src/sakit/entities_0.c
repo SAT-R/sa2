@@ -84,8 +84,6 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
     return result;
 }
 
-#if 001
-// https://decomp.me/scratch/y38aZ
 bool32 sub_800C204(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbIndexPlayer)
 {
     PlayerSpriteInfo *psi = p->unk90;
@@ -98,20 +96,18 @@ bool32 sub_800C204(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbInde
     if (s->hitboxes[hbIndex].index == -1) {
         return FALSE;
     }
-    
+
     if (psi->s.hitboxes[hbIndexPlayer].index == -1) {
         return FALSE;
     }
-    
-    // TODO: Turn these into directly-accessing macros (in addition to the ptr-ref ones)
-    if(((((sx) + s->hitboxes[hbIndex].left) <= (Q_24_8_TO_INT(p->x) + sprPlayer->hitboxes[hbIndexPlayer].left) && (((sx) + s->hitboxes[hbIndex].left) + (s->hitboxes[hbIndex].right - s->hitboxes[hbIndex].left)) >= (Q_24_8_TO_INT(p->x) + sprPlayer->hitboxes[hbIndexPlayer].left))
-    || ( ((sx) + s->hitboxes[hbIndex].left) >= (Q_24_8_TO_INT(p->x) + sprPlayer->hitboxes[hbIndexPlayer].left) && ((Q_24_8_TO_INT(p->x) + sprPlayer->hitboxes[hbIndexPlayer].left) + (sprPlayer->hitboxes[hbIndexPlayer].right - sprPlayer->hitboxes[hbIndexPlayer].left)) >= ((sx) + s->hitboxes[hbIndex].left) ))
-     && ((((sy) + s->hitboxes[hbIndex].top) <= (Q_24_8_TO_INT(p->y) +  sprPlayer->hitboxes[hbIndexPlayer].top) && (((sy) + s->hitboxes[hbIndex].top) + (s->hitboxes[hbIndex].bottom - s->hitboxes[hbIndex].top)) >= (Q_24_8_TO_INT(p->y) +  sprPlayer->hitboxes[hbIndexPlayer].top))
-     || ((sy + s->hitboxes[hbIndex].top) >= (Q_24_8_TO_INT(p->y) +  sprPlayer->hitboxes[hbIndexPlayer].top) && ((Q_24_8_TO_INT(p->y) + sprPlayer->hitboxes[hbIndexPlayer].top) + (sprPlayer->hitboxes[hbIndexPlayer].bottom - sprPlayer->hitboxes[hbIndexPlayer].top)) >= ((sy + s->hitboxes[hbIndex].top)))))
-    {
+
+    if ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(p->x),
+                      Q_24_8_TO_INT(p->y), sprPlayer->hitboxes[hbIndexPlayer]))) {
         return TRUE;
     }
 
     return FALSE;
 }
+
+#if 001
 #endif
