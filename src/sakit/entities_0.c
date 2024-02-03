@@ -25,6 +25,8 @@ u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p,
     return result;
 }
 
+// (Link included because of register-match)
+// (100.00%) https://decomp.me/scratch/0Ro0I
 u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
 {
     s8 rectPlayer[4] = { -p->unk16, -p->unk17, +p->unk16, +p->unk17 };
