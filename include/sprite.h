@@ -111,6 +111,10 @@ typedef struct {
     /* 0x0A */ s16 offsetY;
 } SpriteOffset;
 
+
+// TODO: Verify "inactive" name
+#define HITBOX_INACTIVE -1
+
 typedef struct {
     // index: -1 on init; lower 4 bits = index (in anim-cmds)
     /* 0x00 */ s32 index;
@@ -119,6 +123,7 @@ typedef struct {
     /* 0x06 */ s8 right;
     /* 0x07 */ s8 bottom;
 } Hitbox;
+
 
 #define SPRITE_ANIM_SPEED(speed) ((int)((float)(speed)*0x10))
 #define SPRITE_OAM_ORDER(index)  ((index) << 6)

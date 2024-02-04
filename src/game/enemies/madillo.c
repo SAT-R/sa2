@@ -3,7 +3,7 @@
 #include "game/entity.h"
 #include "game/enemies/madillo.h"
 #include "sakit/entities_manager.h"
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

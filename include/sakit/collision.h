@@ -15,7 +15,7 @@ u32 sub_800C944(Sprite *, s32, s32);
 // CollideWithPlayer
 bool32 sub_800CA20(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
 bool32 sub_800C320(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p);
-bool32 IsColliding_Cheese(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p);
+bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player *p);
 
 // Lose rings?
 bool32 sub_800CBA4(Player *);

@@ -47,6 +47,12 @@ typedef struct {
     /* 0x09 */ u8 spriteY;
 } SpriteBase;
 
+// TODO maybe(?): Integrate this with every enemy
+typedef struct {
+    SpriteBase base;
+    Sprite s;
+} EnemyBase;
+
 // IsColliding?
 bool32 sub_800C204(Sprite *, s32, s32, s16, Player *, s16);
 

@@ -8,8 +8,6 @@
 .arm
 
 .if 00
-.endif
-
 @; This appears to be the (or one of the?) collision procedure(s) 
 @; between the Player and enemies.
 @; Shares a ton of code with Task_8055084 in game/enemies/yado.c
@@ -21,17 +19,17 @@ sub_800C4FC: @ 0x0800C4FC
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #8
-	mov sb, r0
-	mov sl, r1
-	str r2, [sp]
+	mov sb, r0              @ sb = s
+	mov sl, r1              @ sl = sx
+	str r2, [sp]            @ sp00 = sy
 	lsls r3, r3, #0x18
 	lsrs r3, r3, #0x18
-	str r3, [sp, #4]
+	str r3, [sp, #4]        @ sp04 = r3 = hbIndex
 	ldr r0, _0800C58C @ =gPlayer
 	adds r0, #0x90
 	ldr r0, [r0]
 	adds r6, r0, #0
-	adds r6, #0xc
+	adds r6, #0xc           @ r6 = sprPlayer
 	lsls r1, r3, #3
 	mov r0, sb
 	adds r0, #0x28
@@ -41,7 +39,7 @@ sub_800C4FC: @ 0x0800C4FC
 	rsbs r0, r0, #0
 	cmp r1, r0
 	bne _0800C532
-	b _0800C838
+	b sub_800C4FC_return_0
 _0800C532:
     @ This might confirm that all enemies
     @ use one "base struct", as sub_800C4FC is
@@ -52,7 +50,7 @@ _0800C532:
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r1, r1, r0
-	mov r8, r1
+	mov r8, r1              @ r8 = eb
 	ldr r0, _0800C58C @ =gPlayer
 	ldr r1, [r0, #0x20]
 	movs r0, #0x80
@@ -60,14 +58,14 @@ _0800C532:
 	adds r2, r1, #0
 	cmp r0, #0
 	beq _0800C550
-	b _0800C838
+	b sub_800C4FC_return_0
 _0800C550:
 	ldr r0, _0800C594 @ =gGameMode
 	ldrb r1, [r0]
 	mov ip, r0
 	cmp r1, #2
 	bls _0800C598
-	mov r1, r8
+	mov r1, r8              @ r1 = r8 =eb
 	ldr r0, [r1]
 	movs r1, #0
 	ldrsb r1, [r0, r1]
@@ -88,7 +86,7 @@ _0800C550:
 	adds r1, r4, #0
 	bl CreateTrappedAnimal
 	movs r0, #1
-	b _0800C83A
+	b sub_800C4FC_return_1
 	.align 2, 0
 _0800C58C: .4byte gPlayer
 _0800C590: .4byte gCurTask
@@ -101,15 +99,15 @@ _0800C598:
 	beq _0800C5A4
 	b _0800C73A
 _0800C5A4:
-	ldr r1, [r6, #0x30]
+	ldr r1, [r6, #0x30]     @ r1 = sprPlayer.hitboxes[1].index
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r1, r0
 	beq _0800C674
-	ldr r1, [sp, #4]
+	ldr r1, [sp, #4]        @ r1 = hbIndex
 	lsls r2, r1, #3
 	mov r0, sb
-	adds r4, r0, r2
+	adds r4, r0, r2         @ s->hitboxes[hbIndex]
 	adds r0, r4, #0
 	adds r0, #0x2c
 	movs r5, #0
@@ -204,7 +202,7 @@ _0800C648:
 _0800C666:
 	ldr r0, _0800C670 @ =gPlayer
 	bl sub_800CB18
-	b _0800C802
+	b sub_800C4FC_CreateAnimal
 	.align 2, 0
 _0800C670: .4byte gPlayer
 _0800C674:
@@ -316,14 +314,14 @@ _0800C73A:
 	ldr r0, [r0]
 	cmp r0, #0
 	bne _0800C744
-	b _0800C838
+	b sub_800C4FC_return_0
 _0800C744:
 	adds r3, r0, #0
 	ldr r1, [r3, #0x4c]
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r1, r0
-	beq _0800C838
+	beq sub_800C4FC_return_0
 	ldr r0, [sp, #4]
 	lsls r2, r0, #3
 	mov r1, sb
@@ -353,7 +351,7 @@ _0800C744:
 	cmp r0, r1
 	bge _0800C79E
 	cmp r4, r1
-	blt _0800C838
+	blt sub_800C4FC_return_0
 _0800C78C:
 	adds r0, r3, #0
 	adds r0, #0x52
@@ -363,7 +361,7 @@ _0800C78C:
 	subs r0, r0, r7
 	adds r0, r1, r0
 	cmp r0, r4
-	blt _0800C838
+	blt sub_800C4FC_return_0
 _0800C79E:
 	mov r1, sb
 	adds r4, r1, r2
@@ -390,7 +388,7 @@ _0800C79E:
 	cmp r0, r1
 	bge _0800C7E4
 	cmp r2, r1
-	blt _0800C838
+	blt sub_800C4FC_return_0
 _0800C7D2:
 	adds r0, r3, #0
 	adds r0, #0x53
@@ -400,13 +398,13 @@ _0800C7D2:
 	subs r0, r0, r6
 	adds r0, r1, r0
 	cmp r0, r2
-	blt _0800C838
+	blt sub_800C4FC_return_0
 _0800C7E4:
 	ldr r0, _0800C834 @ =gGameMode
 	ldrb r0, [r0]
 _0800C7E8:
 	cmp r0, #2
-	bls _0800C802
+	bls sub_800C4FC_CreateAnimal
 	bl sub_8019224
 	movs r1, #3
 	strb r1, [r0]
@@ -417,7 +415,7 @@ _0800C7E8:
 	strb r1, [r0, #2]
 	ldrb r1, [r2, #9]
 	strb r1, [r0, #3]
-_0800C802:
+sub_800C4FC_CreateAnimal:
 	mov r0, sl
 	lsls r5, r0, #0x10
 	asrs r5, r5, #0x10
@@ -434,14 +432,14 @@ _0800C802:
 	adds r1, r4, #0
 	bl CreateEnemyDefeatScoreAndManageLives
 	movs r0, #1
-	b _0800C83A
+	b sub_800C4FC_return_1
 	.align 2, 0
 _0800C82C: .4byte gPlayer
 _0800C830: .4byte gCheese
 _0800C834: .4byte gGameMode
-_0800C838:
+sub_800C4FC_return_0:
 	movs r0, #0
-_0800C83A:
+sub_800C4FC_return_1:
 	add sp, #8
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -451,6 +449,7 @@ _0800C83A:
 	pop {r1}
 	bx r1
 	.align 2, 0
+.endif
 
 	thumb_func_start sub_800C84C
 sub_800C84C: @ 0x0800C84C

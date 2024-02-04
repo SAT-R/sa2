@@ -2,9 +2,14 @@
 #include "rect.h"
 #include "sprite.h"
 #include "sakit/globals.h"
+#include "sakit/collision.h"
+#include "sakit/dust_cloud.h"
+#include "sakit/entities_manager.h"
 #include "sakit/player.h"
-#include "sakit/entities_0.h"
 #include "game/cheese.h"
+#include "game/entity.h"
+#include "game/multiplayer/unknown_1.h"
+#include "game/trapped_animals.h"
 
 #define COLL_NONE       0
 #define COLL_FLAG_8     0x00000008
@@ -15,7 +20,7 @@ u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p,
 {
     u32 result = 0;
 
-    if ((s->hitboxes[0].index == -1) || !IS_ALIVE(p)) {
+    if ((s->hitboxes[0].index == HITBOX_INACTIVE) || !IS_ALIVE(p)) {
         return result;
     }
 
@@ -36,7 +41,7 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
     u32 result = COLL_NONE;
     bool32 ip = FALSE;
 
-    if ((s->hitboxes[0].index == -1) || !IS_ALIVE(p)) {
+    if ((s->hitboxes[0].index == HITBOX_INACTIVE) || !IS_ALIVE(p)) {
         return result;
     }
 
@@ -94,11 +99,11 @@ bool32 sub_800C204(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbInde
         return FALSE;
     }
 
-    if (s->hitboxes[hbIndex].index == -1) {
+    if (s->hitboxes[hbIndex].index == HITBOX_INACTIVE) {
         return FALSE;
     }
 
-    if (psi->s.hitboxes[hbIndexPlayer].index == -1) {
+    if (psi->s.hitboxes[hbIndexPlayer].index == HITBOX_INACTIVE) {
         return FALSE;
     }
 
@@ -119,11 +124,11 @@ bool32 sub_800C320(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
         return FALSE;
     }
 
-    if (s->hitboxes[hbIndex].index == -1) {
+    if (s->hitboxes[hbIndex].index == HITBOX_INACTIVE) {
         return FALSE;
     }
 
-    if (sprPlayer->hitboxes[1].index == -1) {
+    if (sprPlayer->hitboxes[1].index == HITBOX_INACTIVE) {
         return FALSE;
     }
 
@@ -142,14 +147,14 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
         return FALSE;
     }
 
-    if (sprTarget->hitboxes[hbIndex].index == -1) {
+    if (sprTarget->hitboxes[hbIndex].index == HITBOX_INACTIVE) {
         return FALSE;
     }
 
     if (gCheese) {
         Cheese *cheese = gCheese;
 
-        if (cheese->s.hitboxes[1].index == -1) {
+        if (cheese->s.hitboxes[1].index == HITBOX_INACTIVE) {
             return FALSE;
         }
 
@@ -162,6 +167,3 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
 
     return FALSE;
 }
-
-#if 001
-#endif

@@ -1,6 +1,6 @@
 #include "global.h"
 
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 
 #include "game/game.h"
 #include "game/entity.h"

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "gba/types.h"
 
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 
 #include "game/game.h"
 #include "game/stage/player.h"

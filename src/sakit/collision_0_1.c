@@ -1,7 +1,7 @@
 #include "global.h"
 #include "rect.h"
 #include "sprite.h"
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 #include "sakit/player.h"
 
 // TODO: This might be an inline.

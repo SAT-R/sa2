@@ -3,7 +3,7 @@
 #include "malloc_vram.h"
 #include "trig.h"
 #include "sakit/globals.h"
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 
 #include "game/game.h"
 #include "game/stage/camera.h"
