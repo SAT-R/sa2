@@ -167,3 +167,84 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
 
     return FALSE;
 }
+
+#if 001
+// (70.55%) https://decomp.me/scratch/qE8dy
+bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
+{
+    PlayerSpriteInfo *psi = gPlayer.unk90;
+    Sprite *sprPlayer = &psi->s;
+    EnemyBase *eb;
+    u32 movestate;
+    
+    if(s->hitboxes[hbIndex].index == HITBOX_INACTIVE) {
+        return FALSE;
+    }
+
+    eb = TASK_DATA(gCurTask);
+
+    movestate = gPlayer.moveState;
+    if(PLAYER_IS_ALIVE) {
+
+        if(IS_MULTI_PLAYER && ((s8)eb->base.me->x == (s8)MAP_ENTITY_STATE_MINUS_THREE)) {
+            // _0800C550 + 0x1C
+            CreateDustCloud(sx, sy);
+            CreateTrappedAnimal(sx, sy);
+
+            return TRUE;
+        }
+        if(movestate & MOVESTATE_IN_SCRIPTED) {
+            return FALSE;            
+        }
+        // _0800C5A4
+
+        if(sprPlayer->hitboxes[1].index != HITBOX_INACTIVE) {
+            // _0800C5A4 + 0xC
+
+            if(HB_COLLISION(sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), sprPlayer->hitboxes[1])) {
+                // _0800C648
+                if(IS_MULTI_PLAYER) {
+                    struct UNK_3005510 *v = sub_8019224();
+                    v->unk0 = 3;
+                    v->unk1 = eb->base.regionX;
+                    v->unk2 = eb->base.regionY;
+                    v->unk3 = eb->base.spriteY;
+                }
+
+                sub_800CB18(&gPlayer);
+            
+                // goto sub_800C4FC_CreateAnimal
+                CreateDustCloud(sx, sy);
+                CreateTrappedAnimal(sx, sy);
+                CreateEnemyDefeatScoreAndManageLives(sx, sy);
+
+                return TRUE;
+            }
+        }
+        _0800C674:
+        
+        if(sprPlayer->hitboxes[0].index != HITBOX_INACTIVE) {
+            if(HB_COLLISION(sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), sprPlayer->hitboxes[0])) {
+                sub_800CBA4(&gPlayer);
+                if(gCheese && IS_MULTI_PLAYER) {
+                    struct UNK_3005510 *v = sub_8019224();
+                    v->unk0 = 3;
+                    v->unk1 = eb->base.regionX;
+                    v->unk2 = eb->base.regionY;
+                    v->unk3 = eb->base.spriteY;
+                }
+
+                // goto sub_800C4FC_CreateAnimal
+                CreateDustCloud(sx, sy);
+                CreateTrappedAnimal(sx, sy);
+                CreateEnemyDefeatScoreAndManageLives(sx, sy);
+
+                return TRUE;
+            }
+        }
+        
+    }
+
+    return FALSE;
+}
+#endif
