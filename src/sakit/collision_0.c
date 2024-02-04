@@ -170,7 +170,8 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
 
 #if 001
 // (92.67%) https://decomp.me/scratch/qE8dy
-NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
+NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
+         bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
 {
     PlayerSpriteInfo *psi = gPlayer.unk90;
     Sprite *sprPlayer = &psi->s;
