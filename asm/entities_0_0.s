@@ -43,6 +43,9 @@ sub_800C4FC: @ 0x0800C4FC
 	bne _0800C532
 	b _0800C838
 _0800C532:
+    @ This might confirm that all enemies
+    @ use one "base struct", as sub_800C4FC is
+    @ only called by enemies.
 	ldr r0, _0800C590 @ =gCurTask
 	ldr r0, [r0]
 	ldrh r1, [r0, #6]
