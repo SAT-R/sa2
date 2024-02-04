@@ -398,7 +398,8 @@ static void sub_803A8E4(EggHammerTankII *boss)
                 sub_800CA20(s, pos.x, pos.y, 0, &gPlayer);
             }
 
-            if (boss->unkB1 == 0 && sub_800C418(s, pos.x, pos.y, 0, &gPlayer) == 1) {
+            if (boss->unkB1 == 0
+                && IsColliding_Cheese(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
                 sub_803B6AC(boss);
             }
         }

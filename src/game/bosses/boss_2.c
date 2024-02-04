@@ -923,7 +923,8 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
     sub_80122DC(boss->x, boss->y);
 
     if (boss->bossHitTimer == 0) {
-        if (sub_800C418(s, Q_24_8_TO_INT(boss->x), Q_24_8_TO_INT(boss->y), 0, player)
+        if (IsColliding_Cheese(s, Q_24_8_TO_INT(boss->x), Q_24_8_TO_INT(boss->y), 0,
+                               player)
                 == 1
             && boss->cannonHealth == 0) {
             ret = HandleBossHit(boss);

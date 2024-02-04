@@ -4,6 +4,7 @@
 #include "sakit/globals.h"
 #include "sakit/player.h"
 #include "sakit/entities_0.h"
+#include "game/cheese.h"
 
 #define COLL_NONE       0
 #define COLL_FLAG_8     0x00000008
@@ -104,6 +105,59 @@ bool32 sub_800C204(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbInde
     if ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(p->x),
                       Q_24_8_TO_INT(p->y), sprPlayer->hitboxes[hbIndexPlayer]))) {
         return TRUE;
+    }
+
+    return FALSE;
+}
+
+bool32 sub_800C320(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
+{
+    PlayerSpriteInfo *psi = p->unk90;
+    Sprite *sprPlayer = &psi->s;
+
+    if (!IS_ALIVE(p)) {
+        return FALSE;
+    }
+
+    if (s->hitboxes[hbIndex].index == -1) {
+        return FALSE;
+    }
+
+    if (sprPlayer->hitboxes[1].index == -1) {
+        return FALSE;
+    }
+
+    if ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(p->x),
+                      Q_24_8_TO_INT(p->y), sprPlayer->hitboxes[1]))) {
+        sub_800CB18(p);
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player *p)
+{
+    if (!IS_ALIVE(p)) {
+        return FALSE;
+    }
+
+    if (sprTarget->hitboxes[hbIndex].index == -1) {
+        return FALSE;
+    }
+
+    if (gCheese) {
+        Cheese *cheese = gCheese;
+
+        if (cheese->s.hitboxes[1].index == -1) {
+            return FALSE;
+        }
+
+        if ((HB_COLLISION(sx, sy, sprTarget->hitboxes[hbIndex],
+                          Q_24_8_TO_INT(cheese->posX), Q_24_8_TO_INT(cheese->posY),
+                          cheese->s.hitboxes[1]))) {
+            return TRUE;
+        }
     }
 
     return FALSE;

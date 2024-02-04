@@ -1263,7 +1263,7 @@ _0803F654:
 	mov r1, r8
 	adds r2, r7, #0
 	movs r3, #0
-	bl sub_800C418
+	bl IsColliding_Cheese
 	cmp r0, #1
 	bne _0803F684
 	adds r0, r4, #0
@@ -4058,7 +4058,7 @@ _08040C64:
 	adds r1, r4, #0
 	adds r2, r5, #0
 	movs r3, #0
-	bl sub_800C418
+	bl IsColliding_Cheese
 	cmp r0, #1
 	bne _08040D60
 	ldrb r0, [r7, #0x14]

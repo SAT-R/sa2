@@ -1314,7 +1314,7 @@ _08048482:
 	adds r1, r4, #0
 	adds r2, r5, #0
 	movs r3, #0
-	bl sub_800C418
+	bl IsColliding_Cheese
 	cmp r0, #1
 	bne _080484B0
 	adds r0, r6, #0
