@@ -170,7 +170,7 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
 
 #if 001
 // (92.67%) https://decomp.me/scratch/qE8dy
-bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
+NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
 {
     PlayerSpriteInfo *psi = gPlayer.unk90;
     Sprite *sprPlayer = &psi->s;
@@ -185,7 +185,6 @@ bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
 
     movestate = gPlayer.moveState;
     if (PLAYER_IS_ALIVE) {
-
         if (IS_MULTI_PLAYER
             && ((s8)eb->base.me->x == (s8)MAP_ENTITY_STATE_MINUS_THREE)) {
             // _0800C550 + 0x1C
@@ -222,7 +221,7 @@ bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
                 return TRUE;
             }
         }
-    _0800C674:
+        // _0800C674:
 
         if (sprPlayer->hitboxes[0].index != HITBOX_INACTIVE) {
             if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(gPlayer.x),
@@ -273,4 +272,5 @@ bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex)
 
     return FALSE;
 }
+END_NONMATCH
 #endif
