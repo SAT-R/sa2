@@ -1,6 +1,7 @@
 #include "global.h"
 #include "rect.h"
 #include "sprite.h"
+#include "lib/m4a.h"
 #include "sakit/globals.h"
 #include "sakit/collision.h"
 #include "sakit/dust_cloud.h"
@@ -9,14 +10,18 @@
 #include "game/cheese.h"
 #include "game/entity.h"
 #include "game/multiplayer/unknown_1.h"
+#include "game/rings_scatter.h"
 #include "game/trapped_animals.h"
 
 #include "constants/player_transitions.h"
+#include "constants/songs.h"
 #include "constants/zones.h"
 
 #define COLL_NONE       0
 #define COLL_FLAG_8     0x00000008
 #define COLL_FLAG_80000 0x00080000
+
+#define PLAYER_INVULNERABLE_DURATION ZONE_TIME_TO_INT(0, 2)
 
 u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p,
                                     struct Rect8 *rectPlayer)
@@ -357,19 +362,74 @@ void Collision_AdjustPlayerSpeed(Player *p)
     gPlayer.moveState |= MOVESTATE_4000;
 }
 
-#if 0
+// (100.00%) https://decomp.me/scratch/verla
+// TODO: Register fake-match
 bool32 sub_800CBA4(Player *p)
 {
-    if(p->timerInvincibility > 0 || p->timerInvulnerability > 0) {
+    if (p->timerInvincibility > 0 || p->timerInvulnerability > 0) {
         return FALSE;
     }
 
     // _0800CBBE
-    p->timerInvulnerability = ZONE_TIME_TO_INT(0, 2);
+    p->timerInvulnerability = PLAYER_INVULNERABLE_DURATION;
 
-    if(p->moveState & MOVESTATE_1000000) {
+    if (p->moveState & MOVESTATE_1000000) {
+        PlayerSpriteInfo *psi;
+
         p->unk38 = FLAG_PLAYER_x38__LAYER_BACK;
+
+        p->moveState &= ~MOVESTATE_1000000;
+        p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
+
+        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+        p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
     }
-    // _0800CC10
+
+    if (!(p->moveState & MOVESTATE_1000000)) {
+        p->transition = PLTRANS_PT9;
+    }
+    // _0800CC18
+
+    p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
+
+    if (!HAS_SHIELD(p)) {
+        if (gRingCount != 0) {
+            u32 rings = gRingCount;
+            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+#ifndef NON_MATCHING
+                register u32 rings2 asm("r0") = rings;
+#else
+                u32 rings2 = rings;
+#endif
+                if (rings > 10) {
+                    rings2 = 10;
+                }
+
+                rings = rings2;
+            }
+
+            InitScatteringRings(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), rings);
+
+            if (IS_MULTI_PLAYER) {
+                struct UNK_3005510 *unk = sub_8019224();
+                unk->unk0 = 4;
+                unk->unk1 = rings;
+            }
+
+            gRingCount -= rings;
+        } else {
+            // _0800CC80
+            if (!(gUnknown_03005424 & EXTRA_STATE__DEMO_RUNNING)) {
+                p->moveState |= MOVESTATE_DEAD;
+            }
+        }
+    } else {
+        m4aSongNumStart(SE_LIFE_LOST);
+        p->itemEffect &= ~(PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC
+                           | PLAYER_ITEM_EFFECT__SHIELD_NORMAL);
+    }
+
+    return TRUE;
 }
+#if 01
 #endif

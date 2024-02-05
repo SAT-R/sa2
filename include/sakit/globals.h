@@ -55,7 +55,7 @@ typedef struct {
 // Some Multiplayer struct
 struct UNK_3005510 {
     u8 unk0;
-    u8 unk1; // regionX (truncated)
+    u8 unk1; // regionX (truncated) [and sometimes ring-count(?)]
     u8 unk2; // regionY (truncated)
     u8 unk3; // spriteY (truncated) as per sub_800EDF8
     u8 unk4;

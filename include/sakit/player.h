@@ -63,6 +63,10 @@ typedef void (*PlayerCallback)(struct Player_ *);
 #define PLAYER_ITEM_EFFECT__10              0x10
 #define PLAYER_ITEM_EFFECT__20              0x20
 
+#define HAS_SHIELD(p)                                                                   \
+    ((p)->itemEffect                                                                    \
+     & (PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC | PLAYER_ITEM_EFFECT__SHIELD_NORMAL))
+
 // Confusion
 #define PLAYER_ITEM_EFFECT__40 0x40
 
@@ -103,7 +107,7 @@ typedef struct Player_ {
     /* 0x29 */ u8 unk29;
     /* 0x2A */ s16 unk2A;
     /* 0x2C */ s16 timerInvulnerability;
-    /* 0x2E */ u16 timerInvincibility;
+    /* 0x2E */ s16 timerInvincibility;
     /* 0x30 */ u16 timerSpeedup;
     /* 0x32 */ u16 unk32;
     /* 0x34 */ u16 unk34;
