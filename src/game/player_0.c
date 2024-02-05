@@ -231,7 +231,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->spindashAccel = 0;
     p->unk29 = 0;
     p->unk28 = 0;
-    p->unk38 = FLAG_PLAYER_x38__LAYER_BACKGROUND;
+    p->unk38 = FLAG_PLAYER_x38__LAYER_BACK;
     p->unk40 = 0x900;
     p->unk44 = 0x600;
     p->unk48 = 8;

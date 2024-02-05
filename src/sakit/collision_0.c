@@ -365,6 +365,11 @@ bool32 sub_800CBA4(Player *p)
     }
 
     // _0800CBBE
+    p->timerInvulnerability = ZONE_TIME_TO_INT(0, 2);
 
+    if(p->moveState & MOVESTATE_1000000) {
+        p->unk38 = FLAG_PLAYER_x38__LAYER_BACK;
+    }
+    // _0800CC10
 }
 #endif
