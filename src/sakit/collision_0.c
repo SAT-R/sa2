@@ -168,7 +168,7 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
     return FALSE;
 }
 
-// (92.67%) https://decomp.me/scratch/qE8dy
+// (92.68%) https://decomp.me/scratch/OWAhg
 NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
          bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
 {
@@ -193,43 +193,14 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
 
             return TRUE;
         }
-        if (movestate & MOVESTATE_IN_SCRIPTED) {
-            return FALSE;
-        }
-        // _0800C5A4
 
-        if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1])) {
-            // _0800C5A4 + 0xC
-
-            if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(gPlayer.x),
-                             Q_24_8_TO_INT(gPlayer.y), sprPlayer->hitboxes[1])) {
-                // _0800C648
-                if (IS_MULTI_PLAYER) {
-                    struct UNK_3005510 *v = sub_8019224();
-                    v->unk0 = 3;
-                    v->unk1 = eb->base.regionX;
-                    v->unk2 = eb->base.regionY;
-                    v->unk3 = eb->base.spriteY;
-                }
-
-                sub_800CB18(&gPlayer);
-
-                CreateDustCloud(sx, sy);
-                CreateTrappedAnimal(sx, sy);
-                CreateEnemyDefeatScoreAndManageLives(sx, sy);
-
-                return TRUE;
-            }
-        }
-        // _0800C674:
-
-        if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[0])) {
-            if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(gPlayer.x),
-                             Q_24_8_TO_INT(gPlayer.y), sprPlayer->hitboxes[0])) {
-                if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
-
-                    sub_800CBA4(&gPlayer);
-                } else {
+        if (!(movestate & MOVESTATE_IN_SCRIPTED)) {
+            if (sprPlayer->hitboxes[1].index != HITBOX_INACTIVE) {
+                // _0800C5A4 + 0xC
+    
+                if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(gPlayer.x),
+                                 Q_24_8_TO_INT(gPlayer.y), sprPlayer->hitboxes[1])) {
+                    // _0800C648
                     if (IS_MULTI_PLAYER) {
                         struct UNK_3005510 *v = sub_8019224();
                         v->unk0 = 3;
@@ -237,19 +208,47 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
                         v->unk2 = eb->base.regionY;
                         v->unk3 = eb->base.spriteY;
                     }
-
+    
+                    sub_800CB18(&gPlayer);
+    
                     CreateDustCloud(sx, sy);
                     CreateTrappedAnimal(sx, sy);
                     CreateEnemyDefeatScoreAndManageLives(sx, sy);
-
+    
                     return TRUE;
                 }
             }
+            // _0800C674:
+    
+            if (sprPlayer->hitboxes[0].index != HITBOX_INACTIVE) {
+                if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(gPlayer.x),
+                                 Q_24_8_TO_INT(gPlayer.y), sprPlayer->hitboxes[0])) {
+                    if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
+    
+                        sub_800CBA4(&gPlayer);
+                    } else {
+                        if (IS_MULTI_PLAYER) {
+                            struct UNK_3005510 *v = sub_8019224();
+                            v->unk0 = 3;
+                            v->unk1 = eb->base.regionX;
+                            v->unk2 = eb->base.regionY;
+                            v->unk3 = eb->base.spriteY;
+                        }
+    
+                        CreateDustCloud(sx, sy);
+                        CreateTrappedAnimal(sx, sy);
+                        CreateEnemyDefeatScoreAndManageLives(sx, sy);
+    
+                        return TRUE;
+                    }
+                }
+            }
+            
         }
-
-        if (gCheese) {
+    
+        if (gCheese != NULL) {
             Cheese *cheese = gCheese;
-            if (HITBOX_IS_ACTIVE(cheese->s.hitboxes[1])
+            if (cheese->s.hitboxes[1].index != -1
                 && ((HB_COLLISION(
                     sx, sy, s->hitboxes[hbIndex], Q_24_8_TO_INT(cheese->posX),
                     Q_24_8_TO_INT(cheese->posY), cheese->s.hitboxes[1])))) {
