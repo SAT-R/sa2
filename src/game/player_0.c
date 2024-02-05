@@ -240,7 +240,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->unk66 = -1;
     p->anim = -1;
     p->variant = -1;
-    p->unk2C = 0;
+    p->timerInvulnerability = 0;
     p->timerInvincibility = 0;
     p->timerSpeedup = 0;
     p->unk32 = 0;

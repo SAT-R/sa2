@@ -102,7 +102,7 @@ typedef struct Player_ {
     /* 0x28 */ u8 unk28;
     /* 0x29 */ u8 unk29;
     /* 0x2A */ s16 unk2A;
-    /* 0x2C */ s16 unk2C;
+    /* 0x2C */ s16 timerInvulnerability;
     /* 0x2E */ u16 timerInvincibility;
     /* 0x30 */ u16 timerSpeedup;
     /* 0x32 */ u16 unk32;

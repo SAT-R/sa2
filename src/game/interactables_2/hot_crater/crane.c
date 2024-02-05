@@ -214,7 +214,7 @@ static void Task_8073B1C(void)
 {
     Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
-    if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.unk2C == 120)) {
+    if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.timerInvulnerability == 120)) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         crane->unk1B8.unk0 = 0;
     }
@@ -247,7 +247,7 @@ static void Task_8073BD4(void)
 {
     Sprite_HCCrane *crane = TASK_DATA(gCurTask);
 
-    if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.unk2C == 120)) {
+    if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.timerInvulnerability == 120)) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         crane->unk1B8.unk0 = 0;
     }

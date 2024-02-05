@@ -137,7 +137,7 @@ static void sub_807E408(Sprite_Cannon *cannon)
         }
 
         gPlayer.rotation = cannon->unk6A >> 2;
-        gPlayer.unk2C = 4;
+        gPlayer.timerInvulnerability = 4;
         m4aSongNumStart(SE_289);
     }
 

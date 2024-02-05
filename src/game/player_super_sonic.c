@@ -87,7 +87,7 @@ static void SuperSonicInitPlayer(void)
     // /* 0x28 */ u8 unk28;
     // /* 0x29 */ u8 unk29;
     p->unk2A = 0;
-    p->unk2C = 0;
+    p->timerInvulnerability = 0;
     p->timerInvincibility = 0;
     p->timerSpeedup = 0;
     p->unk32 = 0;

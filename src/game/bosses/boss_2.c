@@ -848,7 +848,7 @@ static u8 HandleCannonCollision(EggBomberTank *boss)
             ret = 1;
         }
 
-        sub_800CB18(&gPlayer);
+        Collision_AdjustPlayerSpeed(&gPlayer);
         boss->cannonHitTimer = 30;
     }
 

@@ -161,7 +161,7 @@ static void sub_807A560(void)
             break;
     }
 
-    if (gPlayer.unk2C == 120 && ia75->unk90) {
+    if (gPlayer.timerInvulnerability == 120 && ia75->unk90) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         ia75->unk90 = 0;
     }
