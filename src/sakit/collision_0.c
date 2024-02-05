@@ -301,3 +301,22 @@ bool32 sub_800C84C(Sprite *s, s32 sx, s32 sy)
 
     return result;
 }
+
+bool32 sub_800C944(Sprite *s, s32 sx, s32 sy)
+{
+    bool32 result = FALSE;
+
+    Player *p = &gPlayer;
+    PlayerSpriteInfo *psi = p->unk90;
+    Sprite *sprPlayer = &psi->s;
+
+    if (PLAYER_IS_ALIVE && (sprPlayer->hitboxes[1].index != HITBOX_INACTIVE)
+        && (s->hitboxes[0].index != HITBOX_INACTIVE)) {
+        if (HB_COLLISION(sx, sy, s->hitboxes[0], Q_24_8_TO_INT(p->x),
+                         Q_24_8_TO_INT(p->y), sprPlayer->hitboxes[1])) {
+            result = TRUE;
+        }
+    }
+
+    return result;
+}
