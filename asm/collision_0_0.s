@@ -7,9 +7,7 @@
 .syntax unified
 .arm
 
-.if 00
-.endif
-
+.if 001
 @; bool32 sub_800CA20(Sprite *s, s32 x, s32 y, u16 p3, Player *p);
 	thumb_func_start sub_800CA20
 sub_800CA20: @ 0x0800CA20
@@ -142,6 +140,7 @@ _0800CB08:
 	pop {r1}
 	bx r1
 	.align 2, 0
+.endif
 
 	thumb_func_start sub_800CB18
 sub_800CB18: @ 0x0800CB18

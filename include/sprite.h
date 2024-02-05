@@ -111,8 +111,9 @@ typedef struct {
     /* 0x0A */ s16 offsetY;
 } SpriteOffset;
 
-// TODO: Verify "inactive" name
-#define HITBOX_INACTIVE -1
+// TODO: Verify "(in)active" name
+#define HITBOX_STATE_INACTIVE -1
+#define HITBOX_IS_ACTIVE(hb)  ((hb).index != HITBOX_STATE_INACTIVE)
 
 typedef struct {
     // index: -1 on init; lower 4 bits = index (in anim-cmds)
