@@ -2,6 +2,7 @@
 #include "trig.h"
 #include "lib/m4a.h"
 #include "malloc_vram.h"
+#include "sakit/collision.h"
 #include "game/game.h"
 #include "game/player_controls.h"
 #include "game/amy_attack_heart_effect.h"

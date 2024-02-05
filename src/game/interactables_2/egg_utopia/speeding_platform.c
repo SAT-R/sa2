@@ -5,6 +5,7 @@
 #include "trig.h"
 #include "lib/m4a.h"
 
+#include "sakit/collision.h"
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/stage/player.h"

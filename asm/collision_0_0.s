@@ -8,8 +8,6 @@
 .arm
 
 .if 00
-.endif
-
 @ Called by: Boss 3,6,7, hammerhead, platform (square),
 @            spikes, spring bouncy, speeding platform,
 @            arrow platform, spike platform
@@ -151,6 +149,7 @@ _0800CDA2:
 _0800CDB0: .4byte gCurrentLevel
 _0800CDB4: .4byte gUnknown_030054B0
 _0800CDB8: .4byte gCamera
+.endif
 
 @; Called by IAs ramp, spring, floating spring, bounce block, spike platform
 	thumb_func_start sub_800CDBC
@@ -2325,6 +2324,7 @@ _0800DDA2:
 	adds r1, #0x6d
 	movs r0, #9
 	strb r0, [r1]
+@ Following is similar to rings code in sub_800CBA4
 	ldr r0, _0800DE3C @ =gGameMode
 	ldrb r0, [r0]
 	cmp r0, #5
@@ -2349,7 +2349,7 @@ _0800DE04:
 	strb r1, [r0]
 	strb r4, [r0, #1]
 _0800DE22:
-	movs r0, #0x77
+	movs r0, #0x77 @ SE_LIFE_LOST
 	bl m4aSongNumStart
 	movs r0, #1
 _0800DE2A:
@@ -2476,7 +2476,7 @@ _0800DEFA:
 	strb r1, [r0]
 	strb r4, [r0, #1]
 _0800DF18:
-	movs r0, #0x77
+	movs r0, #0x77 @ SE_LIFE_LOST
 	bl m4aSongNumStart
 	movs r0, #1
 _0800DF20:

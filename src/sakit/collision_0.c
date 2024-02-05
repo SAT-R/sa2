@@ -10,18 +10,12 @@
 #include "game/cheese.h"
 #include "game/entity.h"
 #include "game/multiplayer/unknown_1.h"
+#include "game/parameters/characters.h"
 #include "game/rings_scatter.h"
 #include "game/trapped_animals.h"
 
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
-#include "constants/zones.h"
-
-#define COLL_NONE       0
-#define COLL_FLAG_8     0x00000008
-#define COLL_FLAG_80000 0x00080000
-
-#define PLAYER_INVULNERABLE_DURATION ZONE_TIME_TO_INT(0, 2)
 
 u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p,
                                     struct Rect8 *rectPlayer)
@@ -370,7 +364,6 @@ bool32 sub_800CBA4(Player *p)
         return FALSE;
     }
 
-    // _0800CBBE
     p->timerInvulnerability = PLAYER_INVULNERABLE_DURATION;
 
     if (p->moveState & MOVESTATE_1000000) {
@@ -388,7 +381,6 @@ bool32 sub_800CBA4(Player *p)
     if (!(p->moveState & MOVESTATE_1000000)) {
         p->transition = PLTRANS_PT9;
     }
-    // _0800CC18
 
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
 
@@ -417,11 +409,8 @@ bool32 sub_800CBA4(Player *p)
             }
 
             gRingCount -= rings;
-        } else {
-            // _0800CC80
-            if (!(gUnknown_03005424 & EXTRA_STATE__DEMO_RUNNING)) {
-                p->moveState |= MOVESTATE_DEAD;
-            }
+        } else if (!(gUnknown_03005424 & EXTRA_STATE__DEMO_RUNNING)) {
+            p->moveState |= MOVESTATE_DEAD;
         }
     } else {
         m4aSongNumStart(SE_LIFE_LOST);
@@ -430,6 +419,55 @@ bool32 sub_800CBA4(Player *p)
     }
 
     return TRUE;
+}
+
+u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
+{
+    s8 rectPlayer[4] = { -p->unk16, -p->unk17, +p->unk16, +p->unk17 };
+
+    bool32 r4 = COLL_NONE;
+
+    u32 mask;
+
+    if (!HITBOX_IS_ACTIVE(s->hitboxes[0])) {
+        return COLL_NONE;
+    }
+
+    if (!IS_ALIVE(p)) {
+        return COLL_NONE;
+    }
+
+    if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
+        r4 = COLL_FLAG_1;
+        p->moveState &= ~MOVESTATE_8;
+        p->moveState |= MOVESTATE_IN_AIR;
+    }
+
+    mask = sub_800CE94(s, sx, sy, (struct Rect8 *)rectPlayer, p);
+
+    if (mask) {
+        if (mask & 0x10000) {
+            p->moveState |= MOVESTATE_8;
+            p->moveState &= ~MOVESTATE_IN_AIR;
+            p->unk3C = s;
+
+            if (r4 == 0 && s == NULL) {
+                p->speedGroundX = p->speedAirX;
+            }
+        }
+    } else if (r4) {
+        if (!(p->moveState & MOVESTATE_8)) {
+            p->moveState &= ~MOVESTATE_20;
+            p->moveState |= MOVESTATE_IN_AIR;
+            p->unk3C = NULL;
+
+            if (IS_BOSS_STAGE(gCurrentLevel)) {
+                p->speedGroundX -= Q_24_8(gCamera.unk38);
+            }
+        }
+    }
+
+    return mask;
 }
 #if 01
 #endif
