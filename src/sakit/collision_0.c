@@ -472,5 +472,43 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
 
     return mask;
 }
+
+// Called by IAs ramp, spring, floating spring, bounce block, spike platform
+u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
+{
+    s8 rectPlayer[4] = { -p->unk16, -p->unk17, +p->unk16, +p->unk17 };
+
+    bool32 r4 = COLL_NONE;
+
+    u32 mask;
+
+    if (!HITBOX_IS_ACTIVE(s->hitboxes[0])) {
+        return COLL_NONE;
+    }
+
+    if (!IS_ALIVE(p)) {
+        return COLL_NONE;
+    }
+
+    if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
+        r4 = COLL_FLAG_1;
+        p->moveState &= ~MOVESTATE_8;
+    }
+
+    mask = sub_800CE94(s, sx, sy, (struct Rect8 *)rectPlayer, p);
+
+    if (mask & 0x10000) {
+        p->moveState |= MOVESTATE_8;
+        p->unk3C = s;
+    } else if (r4) {
+        p->unk3C = NULL;
+
+        if (IS_BOSS_STAGE(gCurrentLevel)) {
+            p->speedGroundX -= Q_24_8(gCamera.unk38);
+        }
+    }
+
+    return mask;
+}
 #if 01
 #endif
