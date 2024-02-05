@@ -168,7 +168,6 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
     return FALSE;
 }
 
-#if 001
 // (92.67%) https://decomp.me/scratch/qE8dy
 NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
          bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
@@ -275,8 +274,6 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
 }
 END_NONMATCH
 
-// (100.00%) https://decomp.me/scratch/fZGZt
-// TODO: Remove goto!
 bool32 sub_800C84C(Sprite *s, s32 sx, s32 sy)
 {
     Player *p;
@@ -287,30 +284,20 @@ bool32 sub_800C84C(Sprite *s, s32 sx, s32 sy)
         return result;
     }
 
-    if (s->hitboxes[0].index == HITBOX_INACTIVE) {
-        // TODO: Remove goto!
-        goto ret_test;
+    if (s->hitboxes[0].index != HITBOX_INACTIVE) {
+        p = &gPlayer;
+        sprPlayer = &p->unk90->s;
+
+        if ((!PLAYER_IS_ALIVE) || (sprPlayer->hitboxes[0].index == HITBOX_INACTIVE)) {
+            return result;
+        }
+
+        if ((HB_COLLISION(sx, sy, s->hitboxes[0], Q_24_8_TO_INT(p->x),
+                          Q_24_8_TO_INT(p->y), sprPlayer->hitboxes[0]))) {
+            sub_800CBA4(p);
+            result = TRUE;
+        }
     }
 
-    p = &gPlayer;
-    sprPlayer = &p->unk90->s;
-
-    if (!PLAYER_IS_ALIVE) {
-        return result;
-    }
-
-    if (sprPlayer->hitboxes[0].index == HITBOX_INACTIVE) {
-        return result;
-    }
-
-    if ((HB_COLLISION(sx, sy, s->hitboxes[0], Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y),
-                      sprPlayer->hitboxes[0]))) {
-        sub_800CBA4(p);
-        result = TRUE;
-    }
-
-ret_test:
     return result;
 }
-
-#endif
