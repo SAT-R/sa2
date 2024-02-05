@@ -4134,7 +4134,7 @@ _08040D1A:
 	movs r0, #0x90
 	bl m4aSongNumStart
 	ldr r0, _08040D30 @ =gPlayer
-	bl sub_800CB18
+	bl Collision_AdjustPlayerSpeed
 	ldr r0, _08040D54 @ =gUnknown_03005498
 	ldr r1, [r0, #4]
 	movs r0, #0

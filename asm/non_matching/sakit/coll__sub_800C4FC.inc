@@ -190,7 +190,7 @@ _0800C648:
 	strb r1, [r0, #3]
 _0800C666:
 	ldr r0, _0800C670 @ =gPlayer
-	bl sub_800CB18
+	bl Collision_AdjustPlayerSpeed
 	b sub_800C4FC_CreateAnimal
 	.align 2, 0
 _0800C670: .4byte gPlayer
