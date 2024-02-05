@@ -421,6 +421,9 @@ bool32 sub_800CBA4(Player *p)
     return TRUE;
 }
 
+// Called by: Boss 3,6,7, hammerhead, platform (square),
+//            spikes, spring bouncy, speeding platform,
+//            arrow platform, spike platform
 u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
 {
     s8 rectPlayer[4] = { -p->unk16, -p->unk17, +p->unk16, +p->unk17 };
