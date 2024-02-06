@@ -594,5 +594,3 @@ u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, struct Rect8 *inRect, Player *p)
 
     return result;
 }
-#if 01
-#endif

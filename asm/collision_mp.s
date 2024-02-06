@@ -7,6 +7,12 @@
 .syntax unified
 .arm
 
+@ These are all multiplayer-only, but there is one procedure (sub_800DF38)
+@ of collision code behind this that is not MP-exclusive.
+@
+@ Either everything gets merged into collision.c, which seems like the best approach,
+@ or we have a main collision.c and a collision_mp.c, the latter of which contains SP-called code.
+
 @ Called by: player_mp_actor.s
 	thumb_func_start sub_800D0A0
 sub_800D0A0: @ 0x0800D0A0
