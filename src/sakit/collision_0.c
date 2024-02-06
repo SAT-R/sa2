@@ -510,5 +510,89 @@ u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
 
     return mask;
 }
+
+// Looks like each byte in the result is one value
+// TODO: Remove gotos
+u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, struct Rect8 *inRect, Player *p)
+{
+    s32 px = Q_24_8_TO_INT(p->x);
+    s32 py = Q_24_8_TO_INT(p->y);
+    u32 result = 0;
+    s32 r1;
+    s32 r3, r6;
+
+    if (RECT_COLLISION(sx, sy, (struct Rect8 *)&s->hitboxes[0].left, px, py, inRect)) {
+        s32 sMidX = (sx + ((s->hitboxes[0].left + s->hitboxes[0].right) >> 1));
+        s32 sMidY = (sy + ((s->hitboxes[0].top + s->hitboxes[0].bottom) >> 1));
+        if ((sMidX <= px)) {
+            r6 = (sx + s->hitboxes[0].right - (px + inRect->left));
+            result |= 0x40000;
+        } else {
+            r6 = (sx + s->hitboxes[0].left - (px + inRect->right));
+            result |= 0x80000;
+        }
+
+        if (sMidY > py) {
+            r3 = sy + s->hitboxes[0].top - (py + inRect->bottom);
+            r1 = r3 + 5;
+
+            if ((r1) > 0) {
+                r1 = 0;
+            }
+            result |= 0x10000;
+        } else {
+            r3 = sy + s->hitboxes[0].bottom - (py + inRect->top);
+            r1 = r3 + 2;
+            if ((r1) < 0) {
+                r1 = 0;
+            }
+            result |= 0x20000;
+        }
+        // _0800CF90
+
+        if (ABS(r6) < (ABS(r1))) {
+            result &= 0xC0000;
+            goto temp_lbl;
+        } else {
+            result &= 0x30000;
+
+            if (!(result & 0x10000)) {
+                goto temp_lbl;
+            }
+        }
+
+        if (GRAVITY_IS_INVERTED) {
+            if (p->speedAirY > 0) {
+                return 0;
+            }
+        } else {
+            if (p->speedAirY < 0) {
+                return 0;
+            }
+        }
+
+        if (!(p->moveState & MOVESTATE_IN_AIR)) {
+            if ((p->rotation + 0x20) & 0x40) {
+                p->speedGroundX = 0;
+            }
+        }
+
+    temp_lbl:
+        result |= (((r6 << 8) & 0xFF00) | (r3 & 0xFF));
+        if (result & 0xC0000) {
+            if (!(result & 0xFF00)) {
+                result &= 0xFFF300FF;
+            }
+        } else {
+            result &= 0xFFFF00FF;
+        }
+
+        if (!(result & 0x30000)) {
+            result &= ~0xFF;
+        }
+    }
+
+    return result;
+}
 #if 01
 #endif
