@@ -526,10 +526,10 @@ u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, struct Rect8 *inRect, Player *p)
         s32 sMidY = (sy + ((s->hitboxes[0].top + s->hitboxes[0].bottom) >> 1));
         if ((sMidX <= px)) {
             r6 = (sx + s->hitboxes[0].right - (px + inRect->left));
-            result |= 0x40000;
+            result |= COLL_FLAG_40000;
         } else {
             r6 = (sx + s->hitboxes[0].left - (px + inRect->right));
-            result |= 0x80000;
+            result |= COLL_FLAG_80000;
         }
 
         if (sMidY > py) {
@@ -539,24 +539,24 @@ u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, struct Rect8 *inRect, Player *p)
             if ((r1) > 0) {
                 r1 = 0;
             }
-            result |= 0x10000;
+            result |= COLL_FLAG_10000;
         } else {
             r3 = sy + s->hitboxes[0].bottom - (py + inRect->top);
             r1 = r3 + 2;
             if ((r1) < 0) {
                 r1 = 0;
             }
-            result |= 0x20000;
+            result |= COLL_FLAG_20000;
         }
         // _0800CF90
 
         if (ABS(r6) < (ABS(r1))) {
-            result &= 0xC0000;
+            result &= (COLL_FLAG_40000 | COLL_FLAG_80000);
             goto temp_lbl;
         } else {
-            result &= 0x30000;
+            result &= (COLL_FLAG_10000 | COLL_FLAG_20000);
 
-            if (!(result & 0x10000)) {
+            if (!(result & COLL_FLAG_10000)) {
                 goto temp_lbl;
             }
         }
@@ -587,7 +587,7 @@ u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, struct Rect8 *inRect, Player *p)
             result &= 0xFFFF00FF;
         }
 
-        if (!(result & 0x30000)) {
+        if (!(result & (COLL_FLAG_10000 | COLL_FLAG_20000))) {
             result &= ~0xFF;
         }
     }

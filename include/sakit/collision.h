@@ -9,6 +9,8 @@
 #define COLL_FLAG_1     0x00000001
 #define COLL_FLAG_8     0x00000008
 #define COLL_FLAG_10000 0x00010000
+#define COLL_FLAG_20000 0x00020000
+#define COLL_FLAG_40000 0x00040000
 #define COLL_FLAG_80000 0x00080000
 
 u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p,
