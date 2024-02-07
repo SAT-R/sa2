@@ -303,7 +303,7 @@ void sub_80897E8(void)
     } else {
         s = &resultsCutScene->unk12C;
         for (i = 0; i < 8; i++) {
-            s->x = (i * 32); // TODO: Does (i * 32) match?
+            s->x = -(i * 32); // TODO: Does (i * 32) match?
             DisplaySprite(s);
         }
     }
@@ -324,7 +324,7 @@ void sub_80897E8(void)
 
     if (unk168 > 89) {
         s = &resultsCutScene->unk9C[0];
-        if ((unk168 - 90) < 0xB) {
+        if ((unk168 - 90) < 11) {
             s->x = (((DISPLAY_WIDTH / 2) - 20) - unk168) * 16 + 40;
         }
         DisplaySprite(s);
