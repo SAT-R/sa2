@@ -2,6 +2,7 @@
 #include "rect.h"
 #include "sprite.h"
 #include "lib/m4a.h"
+#include "sakit/globals.h"
 #include "sakit/collision.h"
 #include "sakit/player.h"
 #include "game/game.h"
@@ -15,6 +16,58 @@
 #include "constants/songs.h"
 
 // TODO: Maybe wrap sub_800DD54 and sub_800DE44 in a macro(?)
+
+#if 00
+u32 sub_800DA4C(struct MultiplayerPlayer *opponent, s16 oppX, s16 oppY,
+                UNUSED s32 param3, UNUSED s32 param4, u8 layer)
+{
+    struct MultiplayerPlayer *mpPlayer;
+    struct Task *mpt;
+
+    u32 result = 0;
+    s8 r4;
+
+    Player *p = &gPlayer;
+    if (!IS_ALIVE(p)) {
+        return 0;
+    }
+
+    if (p->moveState & MOVESTATE_8000000) {
+        return 0;
+    }
+
+    mpPlayer = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+
+    if (p->unk38 != layer) {
+        return 0;
+    }
+    // _0800DABC
+
+    if ((p->speedAirX == 0 && p->speedAirY == 0)
+        && HITBOX_IS_ACTIVE(opponent->s.hitboxes[1])) {
+        s32 oppLeft, oppRight;
+        oppLeft = oppX + opponent->s.hitboxes[1].left;
+
+        oppRight
+            = oppLeft + (opponent->s.hitboxes[1].right - opponent->s.hitboxes[1].left);
+
+        if (HB_COLLISION(oppX, oppY, opponent->s.hitboxes[1], mpPlayer->unk50,
+                         mpPlayer->unk52, mpPlayer->s.hitboxes[0])) {
+            // _0800DB68
+            result |= COLL_FLAG_2;
+        }
+    }
+    // _0800DB70
+
+    if (HITBOX_IS_ACTIVE(mpPlayer->s.hitboxes[1])
+        && HITBOX_IS_ACTIVE(opponent->s.hitboxes[0])) {
+        // _0800DB84
+    }
+    // _0800DC8C
+
+    return result;
+}
+#endif
 
 bool32 sub_800DD54(Player *p)
 {
