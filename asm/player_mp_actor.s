@@ -16,10 +16,10 @@ CreateMultiplayerPlayer: @ 0x08016028
 	adds r4, r0, #0
 	lsls r4, r4, #0x18
 	lsrs r4, r4, #0x18
-	ldr r0, _08016090 @ =sub_801623C
+	ldr r0, _08016090 @ =Task_CreateMultiplayerPlayer
 	movs r2, #0x80
 	lsls r2, r2, #6
-	ldr r1, _08016094 @ =sub_8018878
+	ldr r1, _08016094 @ =TaskDestructor_CreateMultiplayerPlayer
 	str r1, [sp]
 	movs r1, #0x6c
 	movs r3, #0
@@ -61,8 +61,8 @@ CreateMultiplayerPlayer: @ 0x08016028
 	movs r0, #0x1e
 	b _080160B2
 	.align 2, 0
-_08016090: .4byte sub_801623C
-_08016094: .4byte sub_8018878
+_08016090: .4byte Task_CreateMultiplayerPlayer
+_08016094: .4byte TaskDestructor_CreateMultiplayerPlayer
 _08016098: .4byte IWRAM_START + 0x56
 _0801609C: .4byte IWRAM_START + 0x54
 _080160A0: .4byte IWRAM_START + 0x66
@@ -268,8 +268,8 @@ _08016214:
 _08016234: .4byte 0x06010000
 _08016238: .4byte gMultiplayerPlayerTasks
 
-	thumb_func_start sub_801623C
-sub_801623C: @ 0x0801623C
+	thumb_func_start Task_CreateMultiplayerPlayer
+Task_CreateMultiplayerPlayer: @ 0x0801623C
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -5192,8 +5192,8 @@ _0801886C: .4byte gGameMode
 _08018870: .4byte gMultiplayerPlayerTasks
 _08018874: .4byte gPlayer
 
-	thumb_func_start sub_8018878
-sub_8018878: @ 0x08018878
+	thumb_func_start TaskDestructor_CreateMultiplayerPlayer
+TaskDestructor_CreateMultiplayerPlayer: @ 0x08018878
 	push {lr}
 	ldrh r0, [r0, #6]
 	movs r2, #0xc0

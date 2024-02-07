@@ -7,6 +7,8 @@
 
 #define COLL_NONE       0
 #define COLL_FLAG_1     0x00000001
+#define COLL_FLAG_2     0x00000002
+#define COLL_FLAG_4     0x00000004
 #define COLL_FLAG_8     0x00000008
 #define COLL_FLAG_10000 0x00010000
 #define COLL_FLAG_20000 0x00020000

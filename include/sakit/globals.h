@@ -72,8 +72,8 @@ struct MultiplayerPlayer {
     // TODO: Verify that this is Sprite!
     //       (Used in Task_Item_Invincibility @ 0x0802AC60)
     Sprite s;
-    s32 filler30;
-    s32 filler34;
+    Hitbox reserved; // Power-Up
+
     u16 unk38;
 
     u8 filler[0x20 - 10];
@@ -86,7 +86,7 @@ struct MultiplayerPlayer {
     u8 unk58[4];
     u32 unk5C; // flags?
     u8 unk60;
-};
+}; /* size: 0x6C */
 
 // Incomplete
 extern u8 gDemoPlayCounter;
