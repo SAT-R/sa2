@@ -14,6 +14,68 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 
+bool32 sub_800DD54(Player *p)
+{
+    if (p->timerInvincibility > 0 || p->timerInvulnerability > 0) {
+        return FALSE;
+    }
+
+    p->timerInvulnerability = PLAYER_INVULNERABLE_DURATION;
+
+    if (p->moveState & MOVESTATE_FACING_LEFT) {
+        p->speedAirX = +Q_24_8(1.5);
+    } else {
+        p->speedAirX = -Q_24_8(1.5);
+    }
+
+    p->speedAirY = -Q_24_8(3.0);
+
+    if (p->moveState & MOVESTATE_40) {
+        HALVE(p->speedAirY);
+        HALVE(p->speedAirX);
+    }
+
+    p->moveState &= ~MOVESTATE_8;
+    p->moveState &= ~MOVESTATE_20;
+    p->moveState &= ~MOVESTATE_4;
+    p->moveState &= ~MOVESTATE_10;
+    p->moveState |= MOVESTATE_IN_AIR;
+    p->moveState &= ~MOVESTATE_400;
+    p->moveState &= ~MOVESTATE_100;
+
+    p->unk64 = SA2_CHAR_ANIM_20;
+    PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
+
+    p->unk61 = 0;
+    p->unk62 = 0;
+
+    p->transition = 9;
+
+    if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        struct UNK_3005510 *unk;
+#ifndef NON_MATCHING
+        register u32 rings asm("r4") = gRingCount;
+#else
+        u32 rings = gRingCount;
+#endif
+
+        if (rings > 10) {
+            rings = 10;
+        }
+
+        InitScatteringRings(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), rings);
+        gRingCount -= rings;
+
+        unk = sub_8019224();
+        unk->unk0 = 4;
+        unk->unk1 = rings;
+    }
+
+    m4aSongNumStart(SE_LIFE_LOST);
+
+    return TRUE;
+}
+
 bool32 sub_800DE44(Player *p)
 {
     if (p->timerInvincibility > 0 || p->timerInvulnerability > 0) {
@@ -70,7 +132,7 @@ bool32 sub_800DE44(Player *p)
         unk->unk0 = 4;
         unk->unk1 = rings;
     }
-    // _0800DF18
+
     m4aSongNumStart(SE_LIFE_LOST);
 
     return TRUE;
