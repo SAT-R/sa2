@@ -14,6 +14,8 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 
+// TODO: Maybe wrap sub_800DD54 and sub_800DE44 in a macro(?)
+
 bool32 sub_800DD54(Player *p)
 {
     if (p->timerInvincibility > 0 || p->timerInvulnerability > 0) {
