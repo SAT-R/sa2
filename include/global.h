@@ -200,6 +200,8 @@ typedef void (*VoidFn)(void);
     })
 #define DIRECT_NEGATE(var) (var = -var;)
 
+#define HALVE(var) (var = (var >> 1))
+
 typedef struct {
     s16 x;
     s16 y;
