@@ -17,57 +17,76 @@
 
 // TODO: Maybe wrap sub_800DD54 and sub_800DE44 in a macro(?)
 
-#if 00
-u32 sub_800DA4C(struct MultiplayerPlayer *opponent, s16 oppX, s16 oppY,
-                UNUSED s32 param3, UNUSED s32 param4, u8 layer)
+// (96.05%) https://decomp.me/scratch/zpOMY
+NONMATCH("asm/non_matching/sakit/coll__sub_800DA4C.inc",
+         u32 sub_800DA4C(struct MultiplayerPlayer *opponent, s16 oppX, s16 oppY,
+                         UNUSED s32 param3, UNUSED s32 param4, u8 layer))
 {
     struct MultiplayerPlayer *mpPlayer;
-    struct Task *mpt;
-
-    u32 result = 0;
-    s8 r4;
+    struct MultiplayerPlayer *mpPlayer2;
+    u32 res2;
+    u32 result = COLL_NONE;
 
     Player *p = &gPlayer;
     if (!IS_ALIVE(p)) {
-        return 0;
+        return COLL_NONE;
     }
 
     if (p->moveState & MOVESTATE_8000000) {
-        return 0;
+        return COLL_NONE;
     }
 
     mpPlayer = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+    mpPlayer2 = mpPlayer;
 
-    if (p->unk38 != layer) {
-        return 0;
+    if (layer != p->unk38) {
+        return COLL_NONE;
     }
     // _0800DABC
 
     if ((p->speedAirX == 0 && p->speedAirY == 0)
         && HITBOX_IS_ACTIVE(opponent->s.hitboxes[1])) {
-        s32 oppLeft, oppRight;
-        oppLeft = oppX + opponent->s.hitboxes[1].left;
-
-        oppRight
-            = oppLeft + (opponent->s.hitboxes[1].right - opponent->s.hitboxes[1].left);
-
-        if (HB_COLLISION(oppX, oppY, opponent->s.hitboxes[1], mpPlayer->unk50,
-                         mpPlayer->unk52, mpPlayer->s.hitboxes[0])) {
+        if (HB_COLLISION(oppX, oppY, opponent->s.hitboxes[1], mpPlayer2->unk50,
+                         mpPlayer2->unk52, mpPlayer->s.hitboxes[0])) {
             // _0800DB68
             result |= COLL_FLAG_2;
         }
     }
     // _0800DB70
-
     if (HITBOX_IS_ACTIVE(mpPlayer->s.hitboxes[1])
-        && HITBOX_IS_ACTIVE(opponent->s.hitboxes[0])) {
-        // _0800DB84
+        && HITBOX_IS_ACTIVE(opponent->s.hitboxes[0])
+        && HB_COLLISION(oppX, oppY, opponent->s.hitboxes[0], mpPlayer->unk50,
+                        mpPlayer->unk52, mpPlayer->s.hitboxes[1])) {
+        // _0800DC34
+        if (mpPlayer->unk50 > oppX) {
+            result |= COLL_FLAG_40000;
+        } else {
+            result |= COLL_FLAG_20000;
+        }
+        // _0800DC66
+
+        if (mpPlayer->unk52 > oppY) {
+            result |= COLL_FLAG_10000;
+        } else {
+            result |= COLL_FLAG_100000;
+        }
+
+        res2 = COLL_FLAG_1;
+    } else if (HITBOX_IS_ACTIVE(mpPlayer2->s.hitboxes[0])
+               && HITBOX_IS_ACTIVE(opponent->s.hitboxes[1])
+               && HB_COLLISION(oppX, oppY, opponent->s.hitboxes[1], mpPlayer2->unk50,
+                               mpPlayer2->unk52, mpPlayer->s.hitboxes[0])) {
+        // _0800DC8C + 0x10
+        res2 = COLL_FLAG_2;
+    } else {
+        return result;
     }
-    // _0800DC8C
+
+    result |= res2;
 
     return result;
 }
-#endif
+END_NONMATCH
 
 bool32 sub_800DD54(Player *p)
 {
