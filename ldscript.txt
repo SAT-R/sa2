@@ -119,7 +119,10 @@ SECTIONS
         build/sa2/src/sakit/dust_cloud.o(.text);
         build/sa2/src/sakit/ring.o(.text);
         build/sa2/src/sakit/music_manager.o(.text);
-        build/sa2/asm/entities_0.o(.text);
+        build/sa2/src/sakit/collision.o(.text);
+        build/sa2/asm/collision_mp.o(.text);
+        build/sa2/src/sakit/collision_1.o(.text);
+        build/sa2/asm/input_buffer.o(.text);
         build/sa2/src/sakit/interactables/spring.o(.text);
         build/sa2/src/sakit/interactables/platform.o(.text);
         build/sa2/src/sakit/interactables/platform_square.o(.text);
@@ -390,7 +393,7 @@ SECTIONS
         build/sa2/src/sakit/pause_menu.o(.rodata);
         build/sa2/src/sakit/item_box.o(.rodata);
         build/sa2/src/sakit/music_manager.o(.rodata);
-        build/sa2/asm/entities_0.o(.rodata);
+        build/sa2/asm/input_buffer.o(.rodata);
         build/sa2/src/sakit/interactables/spring.o(.rodata);
         build/sa2/src/sakit/interactables/platform.o(.rodata);
         build/sa2/src/sakit/interactables/platform_square.o(.rodata);
@@ -786,7 +789,7 @@ SECTIONS
         *libgcc.a:_divdi3.o(.rodata);
 
         /* Asset data */
-        build/sa2/asm/entities_0.o(.rodata2);
+        build/sa2/asm/input_buffer.o(.rodata2);
         build/sa2/data/special_stage_levels.o(.rodata);
         build/sa2/data/handlers_ia_pipe_horn_sequences.o(.rodata);
         build/sa2/src/data/palettes.o(.rodata);

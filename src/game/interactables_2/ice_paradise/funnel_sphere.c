@@ -142,7 +142,6 @@ static void sub_8077F7C(void)
 static void sub_8078170(Sprite_FunnelSphere *funnelSphere)
 {
     s32 character;
-    struct UNK_3005A70 *obj;
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_400000;
     gPlayer.unk64 = 4;

@@ -260,7 +260,8 @@ NONMATCH(
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
+        if ((ring->unkC <= sp0C)
+            && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0))
             && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
                  && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
@@ -399,7 +400,8 @@ NONMATCH(
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
+        if ((ring->unkC <= sp0C)
+            && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0))
             && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
                  && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
@@ -534,7 +536,8 @@ NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterMultipak_FlippedGravit
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
+        if ((ring->unkC <= sp0C)
+            && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0))
             && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
                  && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
@@ -667,7 +670,8 @@ NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterMultipak_NormalGravity
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
+        if ((ring->unkC <= sp0C)
+            && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0))
             && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
                  && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
@@ -803,7 +807,8 @@ NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterSinglepakMain.inc",
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->unk2C == 0))
+        if ((ring->unkC <= sp0C)
+            && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0))
             && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
                  && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))

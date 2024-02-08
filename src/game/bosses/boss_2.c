@@ -3,7 +3,7 @@
 #include "malloc_vram.h"
 #include "trig.h"
 #include "sakit/globals.h"
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 
 #include "game/game.h"
 #include "game/stage/camera.h"
@@ -848,7 +848,7 @@ static u8 HandleCannonCollision(EggBomberTank *boss)
             ret = 1;
         }
 
-        sub_800CB18(&gPlayer);
+        Collision_AdjustPlayerSpeed(&gPlayer);
         boss->cannonHitTimer = 30;
     }
 
@@ -923,7 +923,8 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
     sub_80122DC(boss->x, boss->y);
 
     if (boss->bossHitTimer == 0) {
-        if (sub_800C418(s, Q_24_8_TO_INT(boss->x), Q_24_8_TO_INT(boss->y), 0, player)
+        if (IsColliding_Cheese(s, Q_24_8_TO_INT(boss->x), Q_24_8_TO_INT(boss->y), 0,
+                               player)
                 == 1
             && boss->cannonHealth == 0) {
             ret = HandleBossHit(boss);

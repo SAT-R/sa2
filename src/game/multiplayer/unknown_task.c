@@ -121,7 +121,7 @@ void sub_8018AD8(struct MultiSioData_0_0 *recv, u8 i)
                         gPlayer.unk38 = (mpp->unk54 >> 7) & 1;
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk60 = 30;
-                        gPlayer.unk2C = 120;
+                        gPlayer.timerInvulnerability = 120;
                         gCamera.x = (Q_24_8_TO_INT(gPlayer.x) + gCamera.shiftX) - 0x78;
                         gCamera.y = (Q_24_8_TO_INT(gPlayer.y) + gCamera.shiftY) - 0x50;
                         m4aSongNumStart(SE_218);

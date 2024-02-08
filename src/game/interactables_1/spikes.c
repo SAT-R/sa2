@@ -5,7 +5,7 @@
 #include "lib/m4a.h"
 #include "malloc_vram.h"
 
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 
 #include "game/entity.h"
 #include "game/stage/player.h"

@@ -200,7 +200,7 @@ static void Task_807DBF0(void)
     if (!PLAYER_IS_ALIVE) {
         launcher->unk48 = FALSE;
     } else {
-        if (gPlayer.unk2C != 120) {
+        if (gPlayer.timerInvulnerability != 120) {
             if (gPlayer.unk5E & gPlayerControls.jump) {
                 gPlayer.transition = PLTRANS_PT3;
 

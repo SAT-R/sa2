@@ -72,7 +72,7 @@ static void Task_807EA8C(void)
         sub_807ED68(pole);
         return;
     }
-    if (gPlayer.unk2C == 120) {
+    if (gPlayer.timerInvulnerability == 120) {
         sub_807ED88(pole);
         return;
     }

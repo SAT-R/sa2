@@ -1333,7 +1333,7 @@ void PlayerCB_8027190(Player *p)
 
 void PlayerCB_8027250(Player *p)
 {
-    p->unk2C = 0x78;
+    p->timerInvulnerability = 0x78;
     p->unk5A = 0;
 
     if (ABS(p->speedAirX) <= Q_24_8(2.5)) {
@@ -3216,8 +3216,8 @@ void sub_802A558(Player *p) { PLAYERFN_UPDATE_AIR_FALL_SPEED_B(p); }
 void sub_802A58C(Player *p)
 {
     if (p->unk64 != 20) {
-        if (p->unk2C > 0)
-            p->unk2C--;
+        if (p->timerInvulnerability > 0)
+            p->timerInvulnerability--;
     }
 }
 

@@ -1,6 +1,8 @@
 #ifndef GUARD_PARAMETERS_CHARACTERS_H
 #define GUARD_PARAMETERS_CHARACTERS_H
 
+#include "constants/zones.h"
+
 /*** Common ***/
 #define PLAYER_FLYING_END_GRAVITY  (0.033) // = (8. / 256.)
 #define PLAYER_GRAVITY             42.0 / 256.0
@@ -12,13 +14,15 @@
 #define PLAYER_MAX_NOT_HELD_JUMP_FORCE             3.0
 #define PLAYER_MAX_NOT_HELD_JUMP_FORCE_UNDER_WATER 1.5
 
+#define PLAYER_INVULNERABLE_DURATION ZONE_TIME_TO_INT(0, 2)
+
 #define PLAYER_AIR_SPEED_MAX 15.0
 
 /*** Tricks ***/
 #define TRICK__STOP_N_SLAM__DROP_SPEED Q_24_8(0.21875)
 
 /*** Cream ***/
-#define CREAM_FLYING_DURATION (4 * GBA_FRAMES_PER_SECOND)
+#define CREAM_FLYING_DURATION ZONE_TIME_TO_INT(0, 4)
 
 /*** Tails ***/
 // NOTE: Unlike Cream, Tails does fly for 8 seconds, but his initial value gets set to 4.

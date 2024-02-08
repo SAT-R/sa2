@@ -3,7 +3,7 @@
 #include "task.h"
 #include "malloc_vram.h"
 #include "game/entity.h"
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 #include "sakit/entities_manager.h"
 
 #include "constants/animations.h"

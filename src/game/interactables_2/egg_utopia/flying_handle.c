@@ -118,7 +118,7 @@ static void Task_ActiveMain(void)
 
     if (!PLAYER_IS_ALIVE) {
         sub_807F770(flyingHandle);
-    } else if (gPlayer.unk2C == 120) {
+    } else if (gPlayer.timerInvulnerability == 120) {
         sub_807F798(flyingHandle);
     } else if (flyingHandle->unk69 == 0) {
         if (gPlayer.unk5E & gPlayerControls.jump) {

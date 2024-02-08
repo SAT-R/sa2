@@ -3748,7 +3748,7 @@ _08047764:
 	adds r1, r7, #0
 	adds r2, r6, #0
 	movs r3, #0
-	bl sub_800C418
+	bl IsColliding_Cheese
 	cmp r0, #1
 	beq _08047794
 	str r5, [sp]

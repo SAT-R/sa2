@@ -1,6 +1,6 @@
 #include "core.h"
 #include "game/game.h"
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 #include "game/unknown_effect.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

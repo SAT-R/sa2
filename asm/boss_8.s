@@ -4249,7 +4249,7 @@ sub_804C830: @ 0x0804C830
 	adds r1, r7, #0
 	adds r2, r4, #0
 	movs r3, #0
-	bl sub_800C418
+	bl IsColliding_Cheese
 	cmp r0, #1
 	bne _0804C880
 	adds r0, r5, #0

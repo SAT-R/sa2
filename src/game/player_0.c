@@ -30,15 +30,15 @@ typedef struct {
 Player ALIGNED(8) gPlayer = {};
 
 // Poentially some extra space on player for this to be aligned 16 (should be 8)
-UNK_3005A70 ALIGNED(16) gUnknown_03005AA0 = {};
-UNK_3005A70 ALIGNED(16) gUnknown_03005AF0 = {};
+PlayerSpriteInfo ALIGNED(16) gUnknown_03005AA0 = {};
+PlayerSpriteInfo ALIGNED(16) gUnknown_03005AF0 = {};
 
 // sakit
 extern void InitNewInputCounters(void);
 
 void Task_8023FC0(void);
-void AllocateCharacterStageGfx(Player *, UNK_3005A70 *);
-void AllocateCharacterMidAirGfx(Player *, UNK_3005A70 *);
+void AllocateCharacterStageGfx(Player *, PlayerSpriteInfo *);
+void AllocateCharacterMidAirGfx(Player *, PlayerSpriteInfo *);
 void TaskDestructor_802A07C(struct Task *);
 
 void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
@@ -92,7 +92,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     AllocateCharacterMidAirGfx(p, p->unk94);
 }
 
-void AllocateCharacterStageGfx(Player *p, UNK_3005A70 *param2)
+void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
 {
     s32 unk60 = p->unk60;
     Sprite *s = &param2->s;
@@ -138,10 +138,10 @@ void AllocateCharacterStageGfx(Player *p, UNK_3005A70 *param2)
 }
 
 // Allocate VRAM for Tails' tails and Cream's ears while mid-air
-void AllocateCharacterMidAirGfx(Player *p, UNK_3005A70 *param2)
+void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
 {
     Sprite *s = &param2->s;
-    UNK_3005A70 *extraSprite = param2;
+    PlayerSpriteInfo *extraSprite = param2;
     u32 character = p->character;
 
     if (character == CHARACTER_CREAM) {
@@ -231,7 +231,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->spindashAccel = 0;
     p->unk29 = 0;
     p->unk28 = 0;
-    p->unk38 = FLAG_PLAYER_x38__LAYER_BACKGROUND;
+    p->unk38 = FLAG_PLAYER_x38__LAYER_BACK;
     p->unk40 = 0x900;
     p->unk44 = 0x600;
     p->unk48 = 8;
@@ -240,7 +240,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->unk66 = -1;
     p->anim = -1;
     p->variant = -1;
-    p->unk2C = 0;
+    p->timerInvulnerability = 0;
     p->timerInvincibility = 0;
     p->timerSpeedup = 0;
     p->unk32 = 0;

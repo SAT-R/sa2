@@ -47,13 +47,15 @@ typedef struct {
     /* 0x09 */ u8 spriteY;
 } SpriteBase;
 
-// IsColliding?
-bool32 sub_800C204(Sprite *, s32, s32, s16, Player *, u32);
+// TODO maybe(?): Integrate this with every enemy
+typedef struct {
+    SpriteBase base;
+    Sprite s;
+} EnemyBase;
 
 u32 sub_800CDBC(Sprite *, s32, s32, Player *);
 
 u32 sub_800DF38(Sprite *, s32, s32, Player *);
-u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
 
 // After a MapEntity is initialized, its x-value in the layout-data gets set to -2.
 // TODO:

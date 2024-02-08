@@ -3,7 +3,7 @@
 #include "game/entity.h"
 #include "game/enemies/gohla.h"
 
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 
 #include "malloc_vram.h"
 #include "sprite.h"

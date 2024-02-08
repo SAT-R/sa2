@@ -3,7 +3,7 @@
 #include "game/entity.h"
 #include "game/enemies/kiki.h"
 #include "sakit/entities_manager.h"
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "malloc_vram.h"
@@ -317,8 +317,6 @@ static void Task_ProjPieceMain(void)
     Sprite *s2 = &gUnknown_03005AF0.s;
     Kiki_Proj *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
-    UNK_3005A70 *u90;
-
     s16 x, y;
 
     x = s->x;

@@ -56,7 +56,7 @@ void sub_801561C(void)
     AnimId oldPlayerAnim = gPlayer.anim;
     u16 oldPlayerVariant = gPlayer.variant;
     u32 oldPlayerMovestate = gPlayer.moveState;
-    UNK_3005A70 *unk5A70 = gPlayer.unk90;
+    PlayerSpriteInfo *unk5A70 = gPlayer.unk90;
     u32 oldPlayerAnimSpeed = unk5A70->s.animSpeed;
     u32 oldPlayerUnk10 = unk5A70->s.unk10;
     u16 r6 = unk5A70->unk0[0];

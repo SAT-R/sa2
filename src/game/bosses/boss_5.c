@@ -4,7 +4,7 @@
 #include "malloc_vram.h"
 #include "trig.h"
 
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 
 #include "game/game.h"
 #include "game/save.h"
@@ -855,7 +855,7 @@ void HandleCollision(EggSaucer *boss)
 
     sub_80122DC(Q_24_8_NEW(x), Q_24_8_NEW(y));
 
-    if (boss->unk13 == 0 && sub_800C418(s, x, y, 0, &gPlayer) == 1) {
+    if (boss->unk13 == 0 && IsColliding_Cheese(s, x, y, 0, &gPlayer) == TRUE) {
         sub_8045368(boss);
         gUnknown_03005498.t->unk15 = 0;
     }
@@ -894,7 +894,7 @@ void HandleCollision(EggSaucer *boss)
         sub_80122DC(Q_24_8_NEW(x), Q_24_8_NEW(y));
 
         if (boss->unk1F == 0) {
-            if (sub_800C418(s, x, y, 0, &gPlayer) == 1) {
+            if (IsColliding_Cheese(s, x, y, 0, &gPlayer) == 1) {
                 boss->unk1F = 0x1E;
                 boss->unk11--;
 

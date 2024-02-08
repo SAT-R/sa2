@@ -802,7 +802,7 @@ _08041BC0:
 	adds r1, r7, #0
 	adds r2, r5, #0
 	movs r3, #0
-	bl sub_800C418
+	bl IsColliding_Cheese
 	cmp r0, #1
 	bne _08041BE8
 	adds r0, r4, #0

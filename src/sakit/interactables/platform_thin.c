@@ -5,9 +5,10 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 
+#include "sakit/collision.h"
+#include "sakit/interactables/platform_thin.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "sakit/interactables/platform_thin.h"
 #include "game/multiplayer/unknown_1.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

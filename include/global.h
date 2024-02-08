@@ -82,7 +82,8 @@ typedef void (*VoidFn)(void);
 #define Q_20_12(n) ((s32)((n)*4096))
 
 // Converts a number to Q24.8 fixed-point format
-#define Q_24_8(n) ((s32)((n)*256))
+#define Q_24_8(n)      ((s32)((n)*256))
+#define Q_24_8_FRAC(n) ((u8)(n))
 
 // This may be the "real" version as we are seeing better matches with
 // it in some cases
@@ -198,6 +199,8 @@ typedef void (*VoidFn)(void);
         var = -temp;                                                                    \
     })
 #define DIRECT_NEGATE(var) (var = -var;)
+
+#define HALVE(var) (var = (var >> 1))
 
 typedef struct {
     s16 x;
