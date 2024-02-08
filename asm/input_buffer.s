@@ -66,19 +66,11 @@ unk_8C871BC:
 unk_8C871C8:
     .4byte gUnknown_080D52C4, gUnknown_080D52D2, -1
 
-    .global gUnknown_08C871D4
-gUnknown_08C871D4:
-    .4byte unk_8C87198, unk_8C871A4, unk_8C871B0
-    .4byte unk_8C871BC, unk_8C871C8
-
 .text
 .syntax unified
 .arm
  
-@ The current value in gNewInputCounters[gNewInputCountersIndex]
-@ gets increased until either it reaches 0xFF or a new button was pressed.
-@ Letting go of a button does not trigger the index increase.
-@ (This might be used for timing in multiplayer?)
+.if 01
 @ In:
 @  r0: Player*
 	thumb_func_start sub_800DF8C
@@ -98,7 +90,7 @@ sub_800DF8C: @ 0x0800DF8C
 	movs r0, #0
 	movs r1, #0
 	bl sub_800E0C0
-	b _0800E0AE
+	b sub_800DF8C_return
 	.align 2, 0
 _0800DFB0: .4byte 0x00200080
 _0800DFB4:
@@ -111,7 +103,7 @@ _0800DFB4:
 	adds r0, #0x70
 	ldrb r0, [r0]
 	cmp r0, #0
-	beq _0800E0AE
+	beq sub_800DF8C_return
 	movs r0, #0
 	str r0, [sp, #4]
 	ldr r0, _0800E050 @ =gUnknown_08C871D4
@@ -128,17 +120,17 @@ _0800DFB4:
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r5, r0
-	beq _0800E0AE
+	beq sub_800DF8C_return
 	ldrb r6, [r5]
 	adds r5, #1
 	ldrb r1, [r5]
 	mov r8, r1
-	adds r5, #1
+	adds r5, #1             @ r5 = sp00.unk0
 	adds r2, r4, #0
 	adds r2, #0x71
 	ldrb r0, [r2]
 	cmp r0, r8
-	beq _0800E0AE
+	beq sub_800DF8C_return
 	str r2, [sp, #8]
 _0800E002:
 	ldr r0, _0800E054 @ =gNewInputCountersIndex
@@ -208,7 +200,7 @@ _0800E07A:
 	mov r1, r8
 	ldr r0, [sp, #8]
 	strb r1, [r0]
-	b _0800E0AE
+	b sub_800DF8C_return
 _0800E082:
 	ldr r0, [sp, #4]
 	adds r0, #1
@@ -222,7 +214,7 @@ _0800E082:
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r5, r0
-	beq _0800E0AE
+	beq sub_800DF8C_return
 	ldrb r6, [r5]
 	adds r5, #1
 	ldrb r0, [r5]
@@ -232,7 +224,7 @@ _0800E082:
 	ldrb r0, [r1]
 	cmp r0, r8
 	bne _0800E002
-_0800E0AE:
+sub_800DF8C_return:
 	add sp, #0xc
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -242,6 +234,7 @@ _0800E0AE:
 	pop {r0}
 	bx r0
 	.align 2, 0
+.endif
 
 	thumb_func_start sub_800E0C0
 sub_800E0C0: @ 0x0800E0C0
