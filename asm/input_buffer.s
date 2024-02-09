@@ -70,7 +70,7 @@ unk_8C871C8:
 .syntax unified
 .arm
  
-.if 01
+.if 1
 @ In:
 @  r0: Player*
 	thumb_func_start sub_800DF8C
@@ -135,7 +135,7 @@ __0800DFEC:
 	str r2, [sp, #8]
 _0800E002:
 	ldr r0, _0800E054 @ =gNewInputCountersIndex
-	ldrb r4, [r0]
+	ldrb r4, [r0]           @ r4 = cid = gNewInputCountersIndex
 	cmp r6, #0
 	beq _0800E07A
 	movs r2, #0xff
@@ -160,11 +160,11 @@ _0800E02A:
 	ldr r2, _0800E058 @ =gNewInputCounters
 	adds r0, r0, r2
 	ldrb r3, [r0]
-	ands r3, r7
+	ands r3, r7             @ r3 = 
 	ldrb r2, [r0, #1]
 	lsls r0, r1, #0x10
 	asrs r0, r0, #0x10
-	mov r1, sl				@ r2 = sl = 0xFF
+	mov r1, sl				@ r1 = sl = 0xFF
 	ands r2, r1
 	cmp r0, r2
 	blt _0800E06C

@@ -14,8 +14,8 @@ const u8 **gUnknown_08C871D4[NUM_CHARACTERS] = {
 // gets increased until either it reaches 0xFF or a new button was pressed.
 // Letting go of a button does not trigger the index increase.
 // (This might be used for timing in multiplayer?)
+//
 // https://decomp.me/scratch/p0wHI
-
 void sub_800DF8C(Player *p)
 {
     struct struc_800DF8C sp00;
@@ -54,9 +54,14 @@ void sub_800DF8C(Player *p)
         u8 cid = gNewInputCountersIndex;
 
         while (r6-- != 0) {
-            u32 ip = sp00.unk0[r6 * 3];
-            u32 r7, r1;
-            // r7 =
+            u32 ip = sp00.unk0[r6 * 3 + 0];
+            u32 r7 = sp00.unk0[r6 * 3 + 1];
+            u32 r1 = sp00.unk0[r6 * 3 + 2];
+
+            // _0800E02A
+            while (1) {
+                u32 r2 = gNewInputCounters[cid].unk1 & 0xFF;
+            }
         }
 
         if (r6 == 0) {
