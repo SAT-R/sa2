@@ -81,7 +81,7 @@ sub_800DF8C: @ 0x0800DF8C
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0xc
-	adds r4, r0, #0
+	adds r4, r0, #0				@ r4 = p
 	ldr r0, [r4, #0x20]
 	ldr r1, _0800DFB0 @ =0x00200080
 	ands r0, r1
@@ -114,13 +114,14 @@ _0800DFB4:
 	asrs r1, r1, #0x18
 	lsls r1, r1, #2
 	adds r1, r1, r0
-	ldr r1, [r1]
+	ldr r1, [r1]            @ r1 = gUnknown_08C871D4[p->character]
 	str r1, [sp]
 	ldr r5, [r1]
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r5, r0
 	beq sub_800DF8C_return
+__0800DFEC:
 	ldrb r6, [r5]
 	adds r5, #1
 	ldrb r1, [r5]
@@ -138,9 +139,9 @@ _0800E002:
 	cmp r6, #0
 	beq _0800E07A
 	movs r2, #0xff
-	mov sl, r2
+	mov sl, r2				@ sl = 0xFF
 	movs r0, #0x1f
-	mov sb, r0
+	mov sb, r0				@ sb = 0x1F
 _0800E012:
 	subs r0, r6, #1
 	lsls r0, r0, #0x10
@@ -149,10 +150,10 @@ _0800E012:
 	adds r0, r0, r6
 	adds r0, r0, r5
 	ldrb r1, [r0]
-	mov ip, r1
-	ldrb r7, [r0, #1]
-	ldrb r1, [r0, #2]
-	mov r2, sl
+	mov ip, r1              @ ip = sp00.unk0[r6 * 3].unk0;
+	ldrb r7, [r0, #1]       @ r7 = sp00.unk0[r6 * 3].unk1;
+	ldrb r1, [r0, #2]       @ r1 = sp00.unk0[r6 * 3].unk2;
+	mov r2, sl				@ r2 = sl = 0xFF
 	ands r1, r2
 _0800E02A:
 	lsls r0, r4, #2
@@ -163,14 +164,14 @@ _0800E02A:
 	ldrb r2, [r0, #1]
 	lsls r0, r1, #0x10
 	asrs r0, r0, #0x10
-	mov r1, sl
+	mov r1, sl				@ r2 = sl = 0xFF
 	ands r2, r1
 	cmp r0, r2
 	blt _0800E06C
 	cmp ip, r3
 	bne _0800E05C
 	subs r4, #1
-	mov r2, sb
+	mov r2, sb				@ r2 = sb = 0x1F
 	ands r4, r2
 	b _0800E072
 	.align 2, 0
@@ -179,7 +180,7 @@ _0800E054: .4byte gNewInputCountersIndex
 _0800E058: .4byte gNewInputCounters
 _0800E05C:
 	subs r4, #1
-	mov r1, sb
+	mov r1, sb				@ r1 = sb = 0x1F
 	ands r4, r1
 	subs r0, #1
 	subs r0, r0, r2
@@ -235,114 +236,3 @@ sub_800DF8C_return:
 	bx r0
 	.align 2, 0
 .endif
-
-	thumb_func_start sub_800E0C0
-sub_800E0C0: @ 0x0800E0C0
-	push {r4, r5, lr}
-	lsls r0, r0, #0x10
-	lsrs r0, r0, #0x10
-	lsls r1, r1, #0x10
-	lsrs r1, r1, #0x10
-	movs r4, #3
-	adds r3, r1, #0
-	ands r3, r4
-	movs r2, #0x80
-	lsls r2, r2, #1
-	ands r2, r1
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x16
-	lsls r2, r2, #0x10
-	lsrs r2, r2, #0x10
-	orrs r3, r2
-	movs r1, #0xf0
-	adds r5, r0, #0
-	ands r5, r1
-	orrs r5, r3
-	ldr r2, _0800E138 @ =gUnknown_030055D8
-	ldrb r1, [r2]
-	adds r1, #1
-	ands r1, r4
-	strb r1, [r2]
-	ldr r3, _0800E13C @ =gUnknown_030055D0
-	ldrb r1, [r2]
-	adds r1, r1, r3
-	strb r5, [r1]
-	ldrb r2, [r2]
-	subs r1, r2, #1
-	ands r1, r4
-	adds r1, r1, r3
-	ldrb r1, [r1]
-	orrs r5, r1
-	subs r2, #2
-	ands r2, r4
-	adds r2, r2, r3
-	ldrb r1, [r2]
-	orrs r5, r1
-	ands r5, r0
-	lsls r0, r5, #0x18
-	lsrs r5, r0, #0x18
-	ldr r1, _0800E140 @ =gNewInputCounters
-	ldr r2, _0800E144 @ =gNewInputCountersIndex
-	ldrb r0, [r2]
-	lsls r0, r0, #2
-	adds r3, r0, r1
-	ldrb r0, [r3]
-	adds r4, r1, #0
-	cmp r0, r5
-	bne _0800E148
-	ldrb r1, [r3, #1]
-	adds r0, r1, #0
-	cmp r0, #0xff
-	beq _0800E148
-	adds r0, r1, #1
-	strb r0, [r3, #1]
-	b _0800E164
-	.align 2, 0
-_0800E138: .4byte gUnknown_030055D8
-_0800E13C: .4byte gUnknown_030055D0
-_0800E140: .4byte gNewInputCounters
-_0800E144: .4byte gNewInputCountersIndex
-_0800E148:
-	ldrb r0, [r2]
-	adds r0, #1
-	movs r1, #0x1f
-	ands r0, r1
-	strb r0, [r2]
-	ldrb r0, [r2]
-	lsls r0, r0, #2
-	adds r0, r0, r4
-	movs r1, #0
-	strb r5, [r0]
-	ldrb r0, [r2]
-	lsls r0, r0, #2
-	adds r0, r0, r4
-	strb r1, [r0, #1]
-_0800E164:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-
-	thumb_func_start InitNewInputCounters
-InitNewInputCounters: @ 0x0800E16C
-	sub sp, #4
-	ldr r1, _0800E18C @ =gNewInputCountersIndex
-	movs r0, #0
-	strb r0, [r1]
-	movs r0, #0
-	str r0, [sp]
-	ldr r1, _0800E190 @ =0x040000D4
-	mov r0, sp
-	str r0, [r1]
-	ldr r0, _0800E194 @ =gNewInputCounters
-	str r0, [r1, #4]
-	ldr r0, _0800E198 @ =0x8500001F
-	str r0, [r1, #8]
-	ldr r0, [r1, #8]
-	add sp, #4
-	bx lr
-	.align 2, 0
-_0800E18C: .4byte gNewInputCountersIndex
-_0800E190: .4byte 0x040000D4
-_0800E194: .4byte gNewInputCounters
-_0800E198: .4byte 0x8500001F
