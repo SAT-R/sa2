@@ -86,6 +86,35 @@ void AeroEgg_UpdatePos(AeroEgg *boss);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
 
+void sub_80424EC(AeroEgg *boss)
+{
+    Sprite *s = &boss->sprC0;
+
+    if (boss->unk16 != 0) {
+        boss->unk15 = 0;
+
+        if (--boss->unk16 == 0) {
+            if (boss->lives == 0) {
+                s->graphics.anim = SA2_ANIM_AERO_EGG_PILOT;
+                s->variant = 4;
+            } else {
+                s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+                s->variant = 0;
+            }
+
+            s->prevVariant = -1;
+        }
+    } else if (boss->unk15 != 0) {
+        boss->unk15--;
+
+        if (boss->unk15 == 0) {
+            s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+            s->variant = 0;
+            s->prevVariant = -1;
+        }
+    }
+}
+
 void sub_8042560(AeroEgg *boss)
 {
     u8 i;
