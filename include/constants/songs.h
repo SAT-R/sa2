@@ -192,8 +192,8 @@
 #define SE_245 245
 #define SE_246 246
 // 247
-#define SE_248                248
-#define SE_249                249
+#define SE_PROJECTILE_DROP    248
+#define SE_PROJECTILE_IMPACT  249
 #define SE_250                250
 #define SE_251                251
 #define SE_252                252

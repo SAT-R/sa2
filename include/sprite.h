@@ -253,7 +253,7 @@ s16 sub_8004418(s16 x, s16 y);
     _sprite->prevVariant = -1;                                                          \
     _sprite->animSpeed = SPRITE_ANIM_SPEED(_speed);                                     \
     _sprite->palId = 0;                                                                 \
-    _sprite->hitboxes[0].index = -1;
+    _sprite->hitboxes[0].index = HITBOX_STATE_INACTIVE;
 
 #define SPRITE_INIT_ANIM_AND_SCRIPT(_sprite, _anim, _variant, _order)                   \
     SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order);                                 \
