@@ -151,7 +151,7 @@ static const TileInfo gUnknown_080D7FB0[] = {
     { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP_RIGHT, 0 },
 };
 
-static const u16 gUnknown_080D7FF0[][0x10] = {
+static const u16 gUnknown_080D7FF0[][16] = {
     INCBIN_U16("graphics/80D7FF0.gbapal"),
     INCBIN_U16("graphics/80D8010.gbapal"),
 };

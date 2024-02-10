@@ -3,14 +3,6 @@
 
 .section .rodata
 
-    .global gUnknown_080D7F54
-gUnknown_080D7F54:
-    .incbin "baserom.gba", 0x000D7F54, 0x20
-
-    .global gUnknown_080D7F74
-gUnknown_080D7F74:
-    .incbin "baserom.gba", 0x000D7F74, 0x20
-
 .text
 .syntax unified
 .arm
@@ -280,8 +272,8 @@ _08041794: .4byte 0x00000296
 _08041798: .4byte 0x00000141
 _0804179C: .4byte 0x00000145
 
-	thumb_func_start sub_80417A0
-sub_80417A0: @ 0x080417A0
+	thumb_func_start Task_80417A0
+Task_80417A0: @ 0x080417A0
 	push {r4, r5, r6, lr}
 	ldr r0, _08041868 @ =gCurTask
 	ldr r0, [r0]
@@ -369,7 +361,7 @@ _08041830:
 	bl sub_802EF68
 	ldr r0, _08041868 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0804187C @ =sub_8042748
+	ldr r0, _0804187C @ =Task_DeleteAeroEggTask
 	str r0, [r1, #8]
 _08041860:
 	pop {r4, r5, r6}
@@ -381,7 +373,7 @@ _0804186C: .4byte gStageTime
 _08041870: .4byte IWRAM_START + 0x84
 _08041874: .4byte gCamera
 _08041878: .4byte IWRAM_START + 0x80
-_0804187C: .4byte sub_8042748
+_0804187C: .4byte Task_DeleteAeroEggTask
 
 	thumb_func_start sub_8041880
 sub_8041880: @ 0x08041880
@@ -2033,291 +2025,6 @@ _08042558:
 	bx r0
 	.align 2, 0
 _0804255C: .4byte 0x00000275
-
-	thumb_func_start sub_8042560
-sub_8042560: @ 0x08042560
-	push {r4, r5, r6, r7, lr}
-	ldrb r0, [r0, #0x16]
-	cmp r0, #0
-	beq _080425AC
-	movs r3, #0
-	ldr r0, _0804259C @ =gFlags
-	mov ip, r0
-	ldr r7, _080425A0 @ =gObjPalette
-	ldr r6, _080425A4 @ =gUnknown_080D7F54
-	ldr r5, _080425A8 @ =gStageTime
-	movs r4, #2
-_08042576:
-	adds r2, r3, #0
-	adds r2, #0x80
-	lsls r2, r2, #1
-	adds r2, r2, r7
-	lsls r1, r3, #1
-	ldr r0, [r5]
-	ands r0, r4
-	lsrs r0, r0, #1
-	lsls r0, r0, #5
-	adds r1, r1, r0
-	adds r1, r1, r6
-	ldrh r0, [r1]
-	strh r0, [r2]
-	adds r0, r3, #1
-	lsls r0, r0, #0x18
-	lsrs r3, r0, #0x18
-	cmp r3, #0xf
-	bls _08042576
-	b _080425D0
-	.align 2, 0
-_0804259C: .4byte gFlags
-_080425A0: .4byte gObjPalette
-_080425A4: .4byte gUnknown_080D7F54
-_080425A8: .4byte gStageTime
-_080425AC:
-	movs r3, #0
-	ldr r1, _080425E4 @ =gFlags
-	mov ip, r1
-	ldr r4, _080425E8 @ =gObjPalette
-	ldr r2, _080425EC @ =gUnknown_080D7F74
-_080425B6:
-	adds r1, r3, #0
-	adds r1, #0x80
-	lsls r1, r1, #1
-	adds r1, r1, r4
-	lsls r0, r3, #1
-	adds r0, r0, r2
-	ldrh r0, [r0]
-	strh r0, [r1]
-	adds r0, r3, #1
-	lsls r0, r0, #0x18
-	lsrs r3, r0, #0x18
-	cmp r3, #0xf
-	bls _080425B6
-_080425D0:
-	mov r1, ip
-	ldr r0, [r1]
-	movs r1, #2
-	orrs r0, r1
-	mov r1, ip
-	str r0, [r1]
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080425E4: .4byte gFlags
-_080425E8: .4byte gObjPalette
-_080425EC: .4byte gUnknown_080D7F74
-
-	thumb_func_start sub_80425F0
-sub_80425F0: @ 0x080425F0
-	push {r4, r5, r6, r7, lr}
-	adds r5, r0, #0
-	adds r6, r1, #0
-	ldr r0, _08042660 @ =gActiveBossTask
-	ldr r0, [r0]
-	ldrh r2, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r1, r2, r1
-	ldr r0, _08042664 @ =IWRAM_START + 0x18
-	adds r4, r2, r0
-	ldr r0, [r1, #4]
-	adds r0, r0, r5
-	str r0, [r1, #4]
-	ldr r0, [r1, #8]
-	adds r0, r0, r6
-	str r0, [r1, #8]
-	ldr r0, [r4, #4]
-	adds r0, r0, r5
-	str r0, [r4, #4]
-	ldr r0, [r4, #8]
-	adds r0, r0, r6
-	str r0, [r4, #8]
-	movs r3, #0
-	ldr r0, _08042668 @ =IWRAM_START + 0x30
-	adds r0, r0, r2
-	mov ip, r0
-	ldr r0, _0804266C @ =IWRAM_START + 0x34
-	adds r7, r2, r0
-_0804262A:
-	lsls r1, r3, #2
-	adds r1, r1, r3
-	lsls r1, r1, #2
-	mov r0, ip
-	adds r2, r0, r1
-	ldr r0, [r2]
-	adds r0, r0, r5
-	str r0, [r2]
-	adds r1, r7, r1
-	ldr r0, [r1]
-	adds r0, r0, r6
-	str r0, [r1]
-	adds r0, r3, #1
-	lsls r0, r0, #0x18
-	lsrs r3, r0, #0x18
-	cmp r3, #2
-	bls _0804262A
-	ldr r0, [r4, #0x54]
-	adds r0, r0, r5
-	str r0, [r4, #0x54]
-	ldr r0, [r4, #0x58]
-	adds r0, r0, r6
-	str r0, [r4, #0x58]
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08042660: .4byte gActiveBossTask
-_08042664: .4byte IWRAM_START + 0x18
-_08042668: .4byte IWRAM_START + 0x30
-_0804266C: .4byte IWRAM_START + 0x34
-
-	thumb_func_start Task_AeroEggMain
-Task_AeroEggMain: @ 0x08042670
-	push {r4, r5, lr}
-	ldr r5, _080426BC @ =gCurTask
-	ldr r0, [r5]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	movs r0, #0xc
-	ldrsh r1, [r4, r0]
-	ldr r0, [r4, #4]
-	adds r0, r0, r1
-	movs r1, #0x90
-	lsls r1, r1, #2
-	adds r0, r0, r1
-	str r0, [r4, #4]
-	adds r0, r4, #0
-	bl sub_80424EC
-	adds r0, r4, #0
-	bl sub_8041880
-	adds r0, r4, #0
-	bl sub_8042560
-	ldr r0, [r4]
-	subs r0, #1
-	str r0, [r4]
-	cmp r0, #0
-	bne _080426B4
-	movs r0, #0xb4
-	strh r0, [r4, #0x12]
-	ldr r1, [r5]
-	ldr r0, _080426C0 @ =sub_80426C4
-	str r0, [r1, #8]
-_080426B4:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080426BC: .4byte gCurTask
-_080426C0: .4byte sub_80426C4
-
-	thumb_func_start sub_80426C4
-sub_80426C4: @ 0x080426C4
-	push {r4, r5, r6, lr}
-	ldr r6, _08042730 @ =gCurTask
-	ldr r0, [r6]
-	ldrh r5, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r5, r0
-	adds r0, r4, #0
-	bl sub_804275C
-	adds r0, r4, #0
-	bl sub_8041B44
-	adds r0, r4, #0
-	bl sub_80424EC
-	adds r0, r4, #0
-	bl sub_8041BF8
-	adds r0, r4, #0
-	bl sub_8041880
-	adds r0, r4, #0
-	bl sub_8042560
-	adds r0, r4, #0
-	bl sub_8041A08
-	ldrb r0, [r4, #0x14]
-	cmp r0, #0
-	bne _0804272A
-	ldr r0, _08042734 @ =IWRAM_START + 0x88
-	adds r1, r5, r0
-	ldr r0, _08042738 @ =0x00000295
-	strh r0, [r1, #0xa]
-	ldr r0, _0804273C @ =IWRAM_START + 0xA8
-	adds r1, r5, r0
-	movs r0, #3
-	strb r0, [r1]
-	ldr r0, _08042740 @ =IWRAM_START + 0xA9
-	adds r1, r5, r0
-	movs r0, #0xff
-	strb r0, [r1]
-	bl sub_802A018
-	adds r0, r4, #0
-	bl sub_8042024
-	ldr r1, [r6]
-	ldr r0, _08042744 @ =sub_80417A0
-	str r0, [r1, #8]
-_0804272A:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08042730: .4byte gCurTask
-_08042734: .4byte IWRAM_START + 0x88
-_08042738: .4byte 0x00000295
-_0804273C: .4byte IWRAM_START + 0xA8
-_08042740: .4byte IWRAM_START + 0xA9
-_08042744: .4byte sub_80417A0
-
-	thumb_func_start sub_8042748
-sub_8042748: @ 0x08042748
-	push {lr}
-	ldr r0, _08042758 @ =gCurTask
-	ldr r0, [r0]
-	bl TaskDestroy
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08042758: .4byte gCurTask
-
-	thumb_func_start sub_804275C
-sub_804275C: @ 0x0804275C
-	movs r1, #0xc
-	ldrsh r2, [r0, r1]
-	ldr r1, [r0, #4]
-	adds r1, r1, r2
-	str r1, [r0, #4]
-	movs r1, #0xe
-	ldrsh r2, [r0, r1]
-	ldr r1, [r0, #8]
-	adds r1, r1, r2
-	str r1, [r0, #8]
-	bx lr
-	.align 2, 0
-
-	thumb_func_start sub_8042774
-sub_8042774: @ 0x08042774
-	push {lr}
-	adds r2, r0, #0
-	adds r1, r2, #0
-	adds r1, #0xc0
-	movs r0, #0x1e
-	strb r0, [r2, #0x15]
-	ldrb r0, [r2, #0x16]
-	cmp r0, #0
-	bne _08042796
-	ldr r0, _0804279C @ =0x00000275
-	strh r0, [r1, #0xa]
-	adds r1, #0x20
-	movs r0, #1
-	strb r0, [r1]
-	adds r1, #1
-	movs r0, #0xff
-	strb r0, [r1]
-_08042796:
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0804279C: .4byte 0x00000275
 
 .if 0
 .endif

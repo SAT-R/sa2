@@ -1,4 +1,5 @@
 #include "global.h"
+#include "flags.h"
 #include "malloc_vram.h"
 #include "task.h"
 #include "trig.h"
@@ -9,22 +10,38 @@
 #include "game/game.h" // sub_801E4E4
 #include "game/bosses/common.h"
 #include "game/screen_shake.h"
+#include "game/player_callbacks_1.h" // sub_802A018
 
 #include "constants/animations.h"
 #include "constants/songs.h"
+#include "constants/zones.h"
+
+typedef struct {
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    /* 0x08 */ s32 x2;
+    /* 0x0C */ s32 y2;
+    /* 0x10 */ u8 filler10[0x4];
+} AeroEggPart; /* size: 0x14 */
 
 typedef struct {
     /* 0x000 */ s32 unk0;
     /* 0x004 */ s32 worldX;
     /* 0x008 */ s32 worldY;
-    /* 0x00C */ u8 fillerC[0x4];
+    /* 0x00C */ s16 dx;
+    /* 0x00E */ s16 dy;
     /* 0x010 */ s16 timerUnk;
     /* 0x012 */ s16 timerBombDrop;
-    /* 0x014 */ bool8 unk14;
+    /* 0x014 */ u8 lives;
     /* 0x015 */ u8 unk15;
     /* 0x016 */ u8 unk16;
     /* 0x017 */ u8 unk17;
-    /* 0x018 */ u8 filler18[0x70];
+    /* 0x018 */ s32 unk18[3];
+    /* 0x024 */ u8 filler24[0xC];
+    /* 0x030 */ AeroEggPart parts[3];
+    /* 0x06C */ s32 unk6C;
+    /* 0x070 */ s32 unk70;
+    /* 0x074 */ u8 filler74[0x14];
     /* 0x088 */ Sprite spr88;
     /* 0x0B8 */ u8 fillerB8[0x8];
     /* 0x0C0 */ Sprite sprC0;
@@ -45,12 +62,132 @@ typedef struct {
 
 typedef AeroEggBomb AeroEggDebris; /* size: 0x44 */
 
+#define PAL_BOSS_4_DEFAULT 0
+#define PAL_BOSS_4_HIT     1
+static const u16 gUnknown_080D7F54[][16] = {
+    INCBIN_U16("graphics/boss_4_a.gbapal"),
+    INCBIN_U16("graphics/boss_4_b.gbapal"),
+};
+
 static void Task_CreateAeroEggBombMain(void);
 static void Task_DeleteAeroEggBombTask(void);
 static void Task_AeroEggBombDebris(void);
+void Task_80417A0(void);
+void Task_80426C4(void);
 static void Task_8042AB0(void);
+void sub_8041B44(AeroEgg *boss);
+void sub_8041880(AeroEgg *boss);
+void sub_8041A08(AeroEgg *boss);
+void sub_8041BF8(AeroEgg *boss);
+void sub_8042024(AeroEgg *boss);
+void sub_80424EC(AeroEgg *boss);
+void sub_8042560(AeroEgg *boss);
+void AeroEgg_UpdatePos(AeroEgg *boss);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
+
+void sub_8042560(AeroEgg *boss)
+{
+    u8 i;
+
+    if (boss->unk16 != 0) {
+        for (i = 0; i < ARRAY_COUNT(gUnknown_080D7F54[PAL_BOSS_4_DEFAULT]); i++) {
+            gObjPalette[128 + i] = gUnknown_080D7F54[((gStageTime & 0x2) >> 1)][i];
+        }
+    } else {
+        for (i = 0; i < ARRAY_COUNT(gUnknown_080D7F54[PAL_BOSS_4_HIT]); i++) {
+            gObjPalette[128 + i] = gUnknown_080D7F54[PAL_BOSS_4_HIT][i];
+        }
+    }
+
+    gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
+}
+
+// temporary nonmatch
+NONMATCH("asm/non_matching/temp_AeroEggResetPos.inc",
+         void AeroEggResetPos(s32 dx, s32 dy))
+{
+    AeroEgg *boss = TASK_DATA(gCurTask);
+    u8 i;
+
+    boss->worldX += dx;
+    boss->worldY += dy;
+    boss->unk18[1] += dx;
+    boss->unk18[2] += dy;
+
+    for (i = 0; i < 3; i++) {
+        boss->parts[i].x += dx;
+        boss->parts[i].y += dy;
+    }
+
+    boss->unk6C += dx;
+    boss->unk70 += dy;
+}
+END_NONMATCH
+
+void Task_AeroEggMain(void)
+{
+    AeroEgg *boss = TASK_DATA(gCurTask);
+
+    boss->worldX += boss->dx;
+    boss->worldX += Q_24_8(2.25);
+
+    sub_80424EC(boss);
+    sub_8041880(boss);
+    sub_8042560(boss);
+
+    boss->unk0--;
+    if (boss->unk0 == 0) {
+        boss->timerBombDrop = ZONE_TIME_TO_INT(0, 3);
+
+        gCurTask->main = Task_80426C4;
+    }
+}
+
+void Task_80426C4(void)
+{
+    AeroEgg *boss = TASK_DATA(gCurTask);
+
+    AeroEgg_UpdatePos(boss);
+    sub_8041B44(boss);
+    sub_80424EC(boss);
+    sub_8041BF8(boss);
+    sub_8041880(boss);
+    sub_8042560(boss);
+    sub_8041A08(boss);
+
+    if (!boss->lives) {
+        Sprite *s = &boss->spr88;
+        s->graphics.anim = SA2_ANIM_AERO_EGG_COCKPIT;
+        s->variant = 3;
+        s->prevVariant = -1;
+
+        sub_802A018();
+        sub_8042024(boss);
+
+        gCurTask->main = Task_80417A0;
+    }
+}
+
+void Task_DeleteAeroEggTask(void) { TaskDestroy(gCurTask); }
+
+void AeroEgg_UpdatePos(AeroEgg *boss)
+{
+    boss->worldX += boss->dx;
+    boss->worldY += boss->dy;
+}
+
+void sub_8042774(AeroEgg *boss)
+{
+    Sprite *s = &boss->sprC0;
+    boss->unk15 = 30;
+
+    if (boss->unk16 == 0) {
+        s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+        s->variant = 1;
+        s->prevVariant = -1;
+    }
+}
 
 void TaskDestructor_AeroEggMain(struct Task *t)
 {
@@ -137,7 +274,7 @@ static void Task_CreateAeroEggBombMain(void)
         gCurTask->main = Task_8042AB0;
     }
 
-    if (eb->boss->unk14) {
+    if (eb->boss->lives) {
         if (sub_800CA20(s, Q_24_8_TO_INT(eb->screenX) + gCamera.x,
                         Q_24_8_TO_INT(eb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
@@ -171,7 +308,7 @@ static void Task_8042AB0(void)
     s->x = Q_24_8_TO_INT(eb->screenX);
     s->y = Q_24_8_TO_INT(eb->screenY);
 
-    if (eb->boss->unk14) {
+    if (eb->boss->lives) {
         if (sub_800CA20(s, Q_24_8_TO_INT(eb->screenX) + gCamera.x,
                         Q_24_8_TO_INT(eb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
@@ -256,7 +393,7 @@ static void Task_AeroEggBombDebris(void)
         }
     }
 
-    if (deb->boss->unk14) {
+    if (deb->boss->lives) {
         if (sub_800CA20(s, Q_24_8_TO_INT(deb->screenX) + gCamera.x,
                         Q_24_8_TO_INT(deb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
