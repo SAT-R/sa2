@@ -86,6 +86,48 @@ void AeroEgg_UpdatePos(AeroEgg *boss);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
 
+bool32 sub_80423EC(AeroEgg *boss)
+{
+    Sprite *s = &boss->sprC0;
+
+    bool32 result = FALSE;
+
+    if (boss->lives != 0) {
+        boss->lives--;
+
+        if (boss->lives & 0x1) {
+            m4aSongNumStart(SE_143);
+        } else {
+            m4aSongNumStart(SE_235);
+        }
+
+        boss->unk16 = 30;
+
+        if (boss->lives == 0) {
+            s->graphics.anim = SA2_ANIM_AERO_EGG_PILOT;
+            s->variant = 4;
+
+            INCREMENT_SCORE(1000);
+        } else {
+            // _0804249C
+            s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+            s->variant = 2;
+        }
+        s->prevVariant = -1;
+    } else {
+        // _080424B8
+        result = TRUE;
+    }
+
+    if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
+        if (boss->lives == 4) {
+            gUnknown_030054A8.unk1 = 0x11;
+        }
+    }
+
+    return result;
+}
+
 void sub_80424EC(AeroEgg *boss)
 {
     Sprite *s = &boss->sprC0;
