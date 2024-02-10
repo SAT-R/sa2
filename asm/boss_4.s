@@ -2319,40 +2319,5 @@ _08042796:
 	.align 2, 0
 _0804279C: .4byte 0x00000275
 
-	thumb_func_start TaskDestructor_AeroEggMain
-TaskDestructor_AeroEggMain: @ 0x080427A0
-	push {r4, lr}
-	ldrh r4, [r0, #6]
-	ldr r1, _080427E4 @ =IWRAM_START + 0x150
-	adds r0, r4, r1
-	ldr r0, [r0]
-	bl VramFree
-	ldr r1, _080427E8 @ =IWRAM_START + 0x8C
-	adds r0, r4, r1
-	ldr r0, [r0]
-	bl VramFree
-	ldr r1, _080427EC @ =IWRAM_START + 0xC4
-	adds r0, r4, r1
-	ldr r0, [r0]
-	bl VramFree
-	ldr r1, _080427F0 @ =IWRAM_START + 0xF4
-	adds r0, r4, r1
-	ldr r0, [r0]
-	bl VramFree
-	ldr r0, _080427F4 @ =IWRAM_START + 0x124
-	adds r4, r4, r0
-	ldr r0, [r4]
-	bl VramFree
-	ldr r1, _080427F8 @ =gActiveBossTask
-	movs r0, #0
-	str r0, [r1]
-	pop {r4}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_080427E4: .4byte IWRAM_START + 0x150
-_080427E8: .4byte IWRAM_START + 0x8C
-_080427EC: .4byte IWRAM_START + 0xC4
-_080427F0: .4byte IWRAM_START + 0xF4
-_080427F4: .4byte IWRAM_START + 0x124
-_080427F8: .4byte gActiveBossTask
+.if 0
+.endif

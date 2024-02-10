@@ -1,4 +1,5 @@
 #include "global.h"
+#include "malloc_vram.h"
 #include "task.h"
 #include "trig.h"
 #include "lib/m4a.h"
@@ -6,6 +7,7 @@
 #include "sakit/collision.h"
 #include "sakit/player.h"
 #include "game/game.h" // sub_801E4E4
+#include "game/bosses/common.h"
 #include "game/screen_shake.h"
 
 #include "constants/animations.h"
@@ -22,10 +24,13 @@ typedef struct {
     /* 0x015 */ u8 unk15;
     /* 0x016 */ u8 unk16;
     /* 0x017 */ u8 unk17;
-    /* 0x018 */ u8 filler18[0xA8];
-    /* 0x0C0 */ Sprite unkC0;
-    /* 0x0F0 */ u8 fillerF0[0x60];
-    /* 0x150 */ void *gfx;
+    /* 0x018 */ u8 filler18[0x70];
+    /* 0x088 */ Sprite spr88;
+    /* 0x0B8 */ u8 fillerB8[0x8];
+    /* 0x0C0 */ Sprite sprC0;
+    /* 0x0F0 */ Sprite sprF0;
+    /* 0x120 */ Sprite spr120;
+    /* 0x150 */ void *tilesBomb;
 } AeroEgg; /* size: 0x154 */
 
 typedef struct {
@@ -47,6 +52,19 @@ static void Task_8042AB0(void);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
 
+void TaskDestructor_AeroEggMain(struct Task *t)
+{
+    AeroEgg *boss = TASK_DATA(t);
+
+    VramFree(boss->tilesBomb);
+    VramFree(boss->spr88.graphics.dest);
+    VramFree(boss->sprC0.graphics.dest);
+    VramFree(boss->sprF0.graphics.dest);
+    VramFree(boss->spr120.graphics.dest);
+
+    gActiveBossTask = NULL;
+}
+
 void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY)
 {
     struct Task *t
@@ -64,7 +82,7 @@ void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY)
     s = &eb->s;
     s->x = Q_24_8_TO_INT(boss->worldX) - gCamera.x;
     s->y = Q_24_8_TO_INT(eb->screenY);
-    s->graphics.dest = boss->gfx;
+    s->graphics.dest = boss->tilesBomb;
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_AERO_EGG_BOMB, 0, 21, 2, 0);
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
@@ -124,7 +142,7 @@ static void Task_CreateAeroEggBombMain(void)
                         Q_24_8_TO_INT(eb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
             if (eb->boss->unk16 == 0) {
-                Sprite *s2 = &eb->boss->unkC0;
+                Sprite *s2 = &eb->boss->sprC0;
                 eb->boss->unk15 = 30;
                 s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s2->variant = 1;
@@ -158,7 +176,7 @@ static void Task_8042AB0(void)
                         Q_24_8_TO_INT(eb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
             if (eb->boss->unk16 == 0) {
-                Sprite *s2 = &eb->boss->unkC0;
+                Sprite *s2 = &eb->boss->sprC0;
                 eb->boss->unk15 = 30;
                 s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s2->variant = 1;
@@ -197,11 +215,11 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
     s->y = Q_24_8_TO_INT(deb->screenY);
 
     if (PseudoRandom32() % 2u) {
-        s->graphics.dest = boss->gfx + (32 * TILE_SIZE_4BPP);
+        s->graphics.dest = boss->tilesBomb + (32 * TILE_SIZE_4BPP);
         s->graphics.anim = SA2_ANIM_AERO_EGG_DEBRIS_BIG;
         s->variant = 0;
     } else {
-        s->graphics.dest = boss->gfx + (41 * TILE_SIZE_4BPP);
+        s->graphics.dest = boss->tilesBomb + (41 * TILE_SIZE_4BPP);
         s->graphics.anim = SA2_ANIM_AERO_EGG_DEBRIS_SMALL;
         s->variant = 0;
     }
@@ -243,7 +261,7 @@ static void Task_AeroEggBombDebris(void)
                         Q_24_8_TO_INT(deb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
             if (deb->boss->unk16 == 0) {
-                Sprite *s2 = &deb->boss->unkC0;
+                Sprite *s2 = &deb->boss->sprC0;
                 deb->boss->unk15 = 30;
                 s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s2->variant = 1;
