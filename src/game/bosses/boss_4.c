@@ -106,6 +106,8 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
                                     u16 param4);
 
 #if 01
+#endif
+
 void sub_804217C(AeroEgg *boss)
 {
     AeroEggSub *sub = &boss->sub;
@@ -118,7 +120,6 @@ void sub_804217C(AeroEgg *boss)
         if ((boss->sub.unk00 > 10) && (sub->unk14 == 0)) {
             sub->unk10 += 0x10;
         }
-        // _080421AC
         sub->unk04 += sub->unk0C;
         sub->unk08 += sub->unk10;
 
@@ -139,28 +140,24 @@ void sub_804217C(AeroEgg *boss)
 
                 CreateScreenShake(0x400, 0x20, 0x80, 0x14, 0x83);
             }
-            // _08042228
             sub->unk0C -= 8;
 
             if (sub->unk0C < 0) {
                 sub->unk0C = 0;
             }
         } else if (sub->unk14 != 0) {
-            // _0804223C + 6
             sub->unk08 += Q_24_8(res);
         }
     }
 
-    // _0804224A
     {
         u8 i;
 
         for (i = 0; i < 3; i++) {
-            // _0804226A
             if ((sub->unk00 > 10) && (sub->parts[i].unk10 == 0)) {
                 sub->parts[i].dy += 0x10;
             }
-            // _08042290
+
             sub->parts[i].x += sub->parts[i].dx;
             sub->parts[i].y += sub->parts[i].dy;
 
@@ -177,26 +174,21 @@ void sub_804217C(AeroEgg *boss)
                     sub->parts[i].dy = 0;
                     sub->parts[i].unk10 = 1;
                 }
-                // _0804230C
+
                 sub->parts[i].dx -= 8;
                 if (sub->parts[i].dx < 0) {
                     sub->parts[i].dx = 0;
                 }
             } else if (sub->parts[i].unk10 != 0) {
-                // _08042324
                 sub->parts[i].y += Q_24_8(res);
             }
-            // _08042340
-            // End-of-loop
         }
     }
-    // _08042340 + 0x10
 
     {
         if ((sub->unk00 > 10) && (sub->unk64 == 0)) {
             sub->unk60 += 0x10;
         }
-        // _08042360
 
         sub->unk54 += sub->unk5C;
         sub->unk58 += sub->unk60;
@@ -214,18 +206,16 @@ void sub_804217C(AeroEgg *boss)
                 sub->unk60 = 0;
                 sub->unk64 = 1;
             }
-            // _0804230C
+
             sub->unk5C -= 8;
             if (sub->unk5C < 0) {
                 sub->unk5C = 0;
             }
         } else if (sub->unk64 != 0) {
-            // _08042324
             sub->unk58 += Q_24_8(res);
         }
     }
 }
-#endif
 
 bool32 sub_80423EC(AeroEgg *boss)
 {
@@ -250,13 +240,11 @@ bool32 sub_80423EC(AeroEgg *boss)
 
             INCREMENT_SCORE(1000);
         } else {
-            // _0804249C
             s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
             s->variant = 2;
         }
         s->prevVariant = -1;
     } else {
-        // _080424B8
         result = TRUE;
     }
 
@@ -513,7 +501,6 @@ static void Task_8042AB0(void)
         eb->screenX += eb->dx + Q_24_8(gCamera.unk38);
         eb->screenY += Q_24_8(gCamera.unk3C);
     }
-    // _08042B04
 
     s->x = Q_24_8_TO_INT(eb->screenX);
     s->y = Q_24_8_TO_INT(eb->screenY);
@@ -531,7 +518,6 @@ static void Task_8042AB0(void)
             }
         }
     }
-    // _08042B5A
 
     if (UpdateSpriteAnimation(s) == 0) {
         gCurTask->main = Task_DeleteAeroEggBombTask;
