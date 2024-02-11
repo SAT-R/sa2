@@ -16,13 +16,23 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
+#define NUM_TAIL_SEGMENTS 3
+
+#define PAL_BOSS_4_DEFAULT 0
+#define PAL_BOSS_4_HIT     1
+
+static const u16 gUnknown_080D7F54[][16] = {
+    [PAL_BOSS_4_DEFAULT] = INCBIN_U16("graphics/boss_4_a.gbapal"),
+    [PAL_BOSS_4_HIT] = INCBIN_U16("graphics/boss_4_b.gbapal"),
+};
+
 typedef struct {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
     /* 0x08 */ s32 dx;
     /* 0x0C */ s32 dy;
-    /* 0x10 */ bool32 unk10;
-} AeroEggTail; /* size: 0x14 */
+    /* 0x10 */ bool32 status;
+} AeroEggPart; /* size: 0x14 */
 
 typedef struct {
     /* 0x000 */ s32 unk0;
@@ -40,17 +50,9 @@ typedef struct {
 
 typedef struct {
     /* 0x018 */ u32 unk00;
-    /* 0x01C */ s32 unk04; // some x
-    /* 0x020 */ s32 unk08; // some y
-    /* 0x024 */ s32 unk0C; // some dx
-    /* 0x028 */ s32 unk10; // some dy
-    /* 0x02C */ s32 unk14;
-    /* 0x030 */ AeroEggTail parts[3];
-    /* 0x06C */ s32 unk54; // some x
-    /* 0x070 */ s32 unk58; // some y
-    /* 0x080 */ s32 unk5C; // some dx
-    /* 0x080 */ s32 unk60; // some dy
-    /* 0x080 */ s32 unk64;
+    /* 0x01C */ AeroEggPart cockpit;
+    /* 0x030 */ AeroEggPart tail[NUM_TAIL_SEGMENTS];
+    /* 0x06C */ AeroEggPart tailTip;
     /* 0x080 */ u8 unk68;
     /* 0x081 */ u8 filler81[0x2];
     /* 0x083 */ u8 unk6B;
@@ -81,13 +83,6 @@ typedef struct {
 
 typedef AeroEggBomb AeroEggDebris; /* size: 0x44 */
 
-#define PAL_BOSS_4_DEFAULT 0
-#define PAL_BOSS_4_HIT     1
-static const u16 gUnknown_080D7F54[][16] = {
-    INCBIN_U16("graphics/boss_4_a.gbapal"),
-    INCBIN_U16("graphics/boss_4_b.gbapal"),
-};
-
 static void Task_CreateAeroEggBombMain(void);
 static void Task_DeleteAeroEggBombTask(void);
 static void Task_AeroEggBombDebris(void);
@@ -117,102 +112,102 @@ void sub_804217C(AeroEgg *boss)
     boss->sub.unk00++;
 
     {
-        if ((boss->sub.unk00 > 10) && (sub->unk14 == 0)) {
-            sub->unk10 += 0x10;
+        if ((boss->sub.unk00 > 10) && (sub->cockpit.status == 0)) {
+            sub->cockpit.dy += 0x10;
         }
-        sub->unk04 += sub->unk0C;
-        sub->unk08 += sub->unk10;
+        sub->cockpit.x += sub->cockpit.dx;
+        sub->cockpit.y += sub->cockpit.dy;
 
-        res = sub_801E4E4(Q_24_8_TO_INT(sub->unk08) + 13, Q_24_8_TO_INT(sub->unk04), 1,
-                          8, NULL, &sub_801EE64);
+        res = sub_801E4E4(Q_24_8_TO_INT(sub->cockpit.y) + 13,
+                          Q_24_8_TO_INT(sub->cockpit.x), 1, 8, NULL, &sub_801EE64);
 
-        if ((res <= 0) && (sub->unk10 >= 0)) {
+        if ((res <= 0) && (sub->cockpit.dy >= 0)) {
             //  y += res
             // dy *= -7/10
-            sub->unk08 += Q_24_8(res);
-            sub->unk10 = Div((sub->unk10 * -70), 100);
+            sub->cockpit.y += Q_24_8(res);
+            sub->cockpit.dy = Div((sub->cockpit.dy * -70), 100);
 
             if (sub->unk6B != 0) {
                 if (--sub->unk6B == 0) {
-                    sub->unk10 = 0;
-                    sub->unk14 = 1;
+                    sub->cockpit.dy = 0;
+                    sub->cockpit.status = 1;
                 }
 
                 CreateScreenShake(0x400, 0x20, 0x80, 0x14, 0x83);
             }
-            sub->unk0C -= 8;
+            sub->cockpit.dx -= 8;
 
-            if (sub->unk0C < 0) {
-                sub->unk0C = 0;
+            if (sub->cockpit.dx < 0) {
+                sub->cockpit.dx = 0;
             }
-        } else if (sub->unk14 != 0) {
-            sub->unk08 += Q_24_8(res);
+        } else if (sub->cockpit.status != 0) {
+            sub->cockpit.y += Q_24_8(res);
         }
     }
 
     {
         u8 i;
 
-        for (i = 0; i < 3; i++) {
-            if ((sub->unk00 > 10) && (sub->parts[i].unk10 == 0)) {
-                sub->parts[i].dy += 0x10;
+        for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
+            if ((sub->unk00 > 10) && (sub->tail[i].status == 0)) {
+                sub->tail[i].dy += 0x10;
             }
 
-            sub->parts[i].x += sub->parts[i].dx;
-            sub->parts[i].y += sub->parts[i].dy;
+            sub->tail[i].x += sub->tail[i].dx;
+            sub->tail[i].y += sub->tail[i].dy;
 
-            res = sub_801E4E4(Q_24_8_TO_INT(sub->parts[i].y) + 7,
-                              Q_24_8_TO_INT(sub->parts[i].x), 1, 8, NULL, sub_801EE64);
+            res = sub_801E4E4(Q_24_8_TO_INT(sub->tail[i].y) + 7,
+                              Q_24_8_TO_INT(sub->tail[i].x), 1, 8, NULL, sub_801EE64);
 
-            if ((res <= 0) && (sub->parts[i].dy >= 0)) {
+            if ((res <= 0) && (sub->tail[i].dy >= 0)) {
                 //  y += res
                 // dy *= -6/10
-                sub->parts[i].y += Q_24_8(res);
-                sub->parts[i].dy = Div((sub->parts[i].dy * -6), 10);
+                sub->tail[i].y += Q_24_8(res);
+                sub->tail[i].dy = Div((sub->tail[i].dy * -6), 10);
 
-                if (sub->parts[i].dy > -48) {
-                    sub->parts[i].dy = 0;
-                    sub->parts[i].unk10 = 1;
+                if (sub->tail[i].dy > -48) {
+                    sub->tail[i].dy = 0;
+                    sub->tail[i].status = 1;
                 }
 
-                sub->parts[i].dx -= 8;
-                if (sub->parts[i].dx < 0) {
-                    sub->parts[i].dx = 0;
+                sub->tail[i].dx -= 8;
+                if (sub->tail[i].dx < 0) {
+                    sub->tail[i].dx = 0;
                 }
-            } else if (sub->parts[i].unk10 != 0) {
-                sub->parts[i].y += Q_24_8(res);
+            } else if (sub->tail[i].status != 0) {
+                sub->tail[i].y += Q_24_8(res);
             }
         }
     }
 
     {
-        if ((sub->unk00 > 10) && (sub->unk64 == 0)) {
-            sub->unk60 += 0x10;
+        if ((sub->unk00 > 10) && (sub->tailTip.status == 0)) {
+            sub->tailTip.dy += 0x10;
         }
 
-        sub->unk54 += sub->unk5C;
-        sub->unk58 += sub->unk60;
+        sub->tailTip.x += sub->tailTip.dx;
+        sub->tailTip.y += sub->tailTip.dy;
 
-        res = sub_801E4E4(Q_24_8_TO_INT(sub->unk58) + 9, Q_24_8_TO_INT(sub->unk54), 1, 8,
-                          NULL, sub_801EE64);
+        res = sub_801E4E4(Q_24_8_TO_INT(sub->tailTip.y) + 9,
+                          Q_24_8_TO_INT(sub->tailTip.x), 1, 8, NULL, sub_801EE64);
 
-        if ((res <= 0) && (sub->unk60 >= 0)) {
+        if ((res <= 0) && (sub->tailTip.dy >= 0)) {
             //  y += res
             // dy *= -6/10
-            sub->unk58 += Q_24_8(res);
-            sub->unk60 = Div((sub->unk60 * -6), 10);
+            sub->tailTip.y += Q_24_8(res);
+            sub->tailTip.dy = Div((sub->tailTip.dy * -6), 10);
 
-            if (sub->unk60 > -48) {
-                sub->unk60 = 0;
-                sub->unk64 = 1;
+            if (sub->tailTip.dy > -48) {
+                sub->tailTip.dy = 0;
+                sub->tailTip.status = 1;
             }
 
-            sub->unk5C -= 8;
-            if (sub->unk5C < 0) {
-                sub->unk5C = 0;
+            sub->tailTip.dx -= 8;
+            if (sub->tailTip.dx < 0) {
+                sub->tailTip.dx = 0;
             }
-        } else if (sub->unk64 != 0) {
-            sub->unk58 += Q_24_8(res);
+        } else if (sub->tailTip.status != 0) {
+            sub->tailTip.y += Q_24_8(res);
         }
     }
 }
@@ -311,16 +306,16 @@ void AeroEggResetPos(s32 dx, s32 dy)
 
     boss->main.worldX += dx;
     boss->main.worldY += dy;
-    sub->unk04 += dx;
-    sub->unk08 += dy;
+    sub->cockpit.x += dx;
+    sub->cockpit.y += dy;
 
-    for (i = 0; i < 3; i++) {
-        sub->parts[i].x += dx;
-        sub->parts[i].y += dy;
+    for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
+        sub->tail[i].x += dx;
+        sub->tail[i].y += dy;
     }
 
-    sub->unk54 += dx;
-    sub->unk58 += dy;
+    sub->tailTip.x += dx;
+    sub->tailTip.y += dy;
 }
 
 void Task_AeroEggMain(void)
