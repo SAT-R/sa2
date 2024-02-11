@@ -49,6 +49,7 @@ extern void sub_8029FA4(Player *p);
 extern void PlayerCB_802A258(Player *p);
 extern void PlayerCB_802A300(Player *p);
 
-void sub_802A018(void);
+void Player_DisableInputAndBossTimer(void);
+void Player_DisableInputAndBossTimer_FinalBoss(void);
 
 #endif // GUARD_PLAYER_CALLBACKS_1_H

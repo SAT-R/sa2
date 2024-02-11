@@ -567,7 +567,7 @@ sub_8047E28: @ 0x08047E28
 	orrs r1, r2
 	str r1, [r0, #0x20]
 _08047E86:
-	bl sub_802A018
+	bl Player_DisableInputAndBossTimer
 	movs r1, #0
 	movs r0, #0xa0
 	lsls r0, r0, #3
@@ -3930,7 +3930,7 @@ sub_80498CC: @ 0x080498CC
 	strh r0, [r1]
 	cmp r4, #0
 	beq _080499AC
-	bl sub_802A018
+	bl Player_DisableInputAndBossTimer
 	ldr r3, _080499C8 @ =gPlayer
 	movs r0, #0xa0
 	lsls r0, r0, #3

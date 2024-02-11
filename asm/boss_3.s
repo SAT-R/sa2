@@ -997,7 +997,7 @@ _0803F416:
 	ldrb r5, [r0]
 	cmp r5, #0
 	bne _0803F4A4
-	bl sub_802A018
+	bl Player_DisableInputAndBossTimer
 	ldr r2, _0803F4AC @ =gPlayer
 	ldr r0, [r2, #0x3c]
 	cmp r0, #0

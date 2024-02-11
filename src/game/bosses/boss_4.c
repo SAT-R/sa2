@@ -10,7 +10,7 @@
 #include "game/game.h" // sub_801E4E4
 #include "game/bosses/common.h"
 #include "game/screen_shake.h"
-#include "game/player_callbacks_1.h" // sub_802A018
+#include "game/player_callbacks_1.h" // Player_DisableInputAndBossTimer
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -67,8 +67,8 @@ typedef struct {
 } AeroEggSub;
 
 typedef struct {
-    AeroEggMain main;
-    AeroEggSub sub;
+    /* 0x00 */ AeroEggMain main;
+    /* 0x18 */ AeroEggSub sub;
 } AeroEgg; /* size: 0x154 */
 
 typedef struct {
@@ -312,7 +312,7 @@ void Task_80426C4(void)
         s->variant = 3;
         s->prevVariant = -1;
 
-        sub_802A018();
+        Player_DisableInputAndBossTimer();
         sub_8042024(boss);
 
         gCurTask->main = Task_AeroEggExploding;

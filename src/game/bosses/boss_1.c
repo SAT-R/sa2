@@ -1547,7 +1547,7 @@ static void Task_803C980(void)
     if (boss->unkB0 == 0) {
         sub_803BDB8();
         gCurTask->main = Task_803CA1C;
-        sub_802A018();
+        Player_DisableInputAndBossTimer();
     }
 }
 

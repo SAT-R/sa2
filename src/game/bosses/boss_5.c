@@ -441,7 +441,7 @@ void sub_804352C(void)
 
     if (boss->unk10 == 0) {
         gBldRegs.bldCnt = 0;
-        sub_802A018();
+        Player_DisableInputAndBossTimer();
         sub_80436E4(boss);
         boss->unkC = Q_24_8(BOSS_SPEED);
         boss->unk11 = 0;

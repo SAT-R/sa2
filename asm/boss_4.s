@@ -1349,10 +1349,10 @@ sub_8042024: @ 0x08042024
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #4
-	adds r7, r0, #0
+	adds r7, r0, #0         @ r7 = 
 	movs r0, #0x18
 	adds r0, r0, r7
-	mov ip, r0
+	mov ip, r0              @ ip = 
 	movs r1, #0
 	str r1, [r7, #0x18]
 	adds r0, r7, #0

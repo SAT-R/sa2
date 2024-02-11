@@ -658,7 +658,7 @@ _0804ABF2:
 	str r0, [r1, #8]
 	movs r0, #0xff
 	str r0, [r7, #0x14]
-	bl sub_802A050
+	bl Player_DisableInputAndBossTimer_FinalBoss
 	ldr r2, _0804AC54 @ =gPlayer
 	ldr r1, [r2, #0x20]
 	movs r0, #0x80

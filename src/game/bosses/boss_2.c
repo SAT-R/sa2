@@ -356,7 +356,7 @@ static void Task_BomberTankCannonReload(void)
 
     UpdateBomberTankPalette(boss);
     if (CheckBossDestruction(boss, &gPlayer)) {
-        sub_802A018();
+        Player_DisableInputAndBossTimer();
         boss->timer = 259;
         gCurTask->main = Task_StartBossDestruction;
     }
@@ -1034,7 +1034,7 @@ static void Task_BomberTankMain(void)
     UpdateBomberTankPalette(boss);
 
     if (CheckBossDestruction(boss, &gPlayer) != 0) {
-        sub_802A018();
+        Player_DisableInputAndBossTimer();
         boss->timer = 259;
         gCurTask->main = Task_StartBossDestruction;
     }
