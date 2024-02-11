@@ -22,7 +22,7 @@ typedef struct {
     /* 0x08 */ s32 x2;
     /* 0x0C */ s32 y2;
     /* 0x10 */ u8 filler10[0x4];
-} AeroEggPart; /* size: 0x14 */
+} AeroEggTail; /* size: 0x14 */
 
 typedef struct {
     /* 0x000 */ s32 unk0;
@@ -36,18 +36,34 @@ typedef struct {
     /* 0x015 */ u8 unk15;
     /* 0x016 */ u8 unk16;
     /* 0x017 */ u8 unk17;
-    /* 0x018 */ s32 unk18[3];
-    /* 0x024 */ u8 filler24[0xC];
-    /* 0x030 */ AeroEggPart parts[3];
-    /* 0x06C */ s32 unk6C;
-    /* 0x070 */ s32 unk70;
-    /* 0x074 */ u8 filler74[0x14];
-    /* 0x088 */ Sprite spr88;
+} AeroEggMain;
+
+typedef struct {
+    /* 0x018 */ s32 unk00;
+    /* 0x01C */ s32 unk04; // some x
+    /* 0x020 */ s32 unk08; // some y
+    /* 0x024 */ s32 unk0C;
+    /* 0x028 */ s32 unk10;
+    /* 0x02C */ s32 unk14;
+    /* 0x030 */ AeroEggTail parts[3];
+    /* 0x06C */ s32 unk54; // some x
+    /* 0x070 */ s32 unk58; // some y
+    /* 0x074 */ u8 filler74[0xC];
+    /* 0x080 */ u8 unk68;
+    /* 0x081 */ u8 filler81[0x3];
+    /* 0x084 */ u8 unk6C;
+    /* 0x085 */ u8 filler85[0x3];
+    /* 0x088 */ Sprite unk70;
     /* 0x0B8 */ u8 fillerB8[0x8];
-    /* 0x0C0 */ Sprite sprC0;
-    /* 0x0F0 */ Sprite sprF0;
-    /* 0x120 */ Sprite spr120;
+    /* 0x0C0 */ Sprite sprA8;
+    /* 0x0F0 */ Sprite sprD8;
+    /* 0x120 */ Sprite spr108;
     /* 0x150 */ void *tilesBomb;
+} AeroEggSub;
+
+typedef struct {
+    AeroEggMain main;
+    AeroEggSub sub;
 } AeroEgg; /* size: 0x154 */
 
 typedef struct {
@@ -86,24 +102,38 @@ void AeroEgg_UpdatePos(AeroEgg *boss);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
 
+#if 0
+void sub_804217C(AeroEgg *boss)
+{
+    boss->sub.unk68 = 1;
+    boss->sub.unk00[0]++;
+
+    if((boss->sub.unk00[0] > 10) && (boss->sub.unk14 == 0)) {
+        boss->sub.unk10 += 0x10;
+    }
+    // _080421AC
+    boss->sub.unk00[1] + boss->sub.unk00[3];
+}
+#endif
+
 bool32 sub_80423EC(AeroEgg *boss)
 {
-    Sprite *s = &boss->sprC0;
+    Sprite *s = &boss->sub.sprA8;
 
     bool32 result = FALSE;
 
-    if (boss->lives != 0) {
-        boss->lives--;
+    if (boss->main.lives != 0) {
+        boss->main.lives--;
 
-        if (boss->lives & 0x1) {
+        if (boss->main.lives & 0x1) {
             m4aSongNumStart(SE_143);
         } else {
             m4aSongNumStart(SE_235);
         }
 
-        boss->unk16 = 30;
+        boss->main.unk16 = 30;
 
-        if (boss->lives == 0) {
+        if (boss->main.lives == 0) {
             s->graphics.anim = SA2_ANIM_AERO_EGG_PILOT;
             s->variant = 4;
 
@@ -120,7 +150,7 @@ bool32 sub_80423EC(AeroEgg *boss)
     }
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
-        if (boss->lives == 4) {
+        if (boss->main.lives == 4) {
             gUnknown_030054A8.unk1 = 0x11;
         }
     }
@@ -130,13 +160,13 @@ bool32 sub_80423EC(AeroEgg *boss)
 
 void sub_80424EC(AeroEgg *boss)
 {
-    Sprite *s = &boss->sprC0;
+    Sprite *s = &boss->sub.sprA8;
 
-    if (boss->unk16 != 0) {
-        boss->unk15 = 0;
+    if (boss->main.unk16 != 0) {
+        boss->main.unk15 = 0;
 
-        if (--boss->unk16 == 0) {
-            if (boss->lives == 0) {
+        if (--boss->main.unk16 == 0) {
+            if (boss->main.lives == 0) {
                 s->graphics.anim = SA2_ANIM_AERO_EGG_PILOT;
                 s->variant = 4;
             } else {
@@ -146,10 +176,10 @@ void sub_80424EC(AeroEgg *boss)
 
             s->prevVariant = -1;
         }
-    } else if (boss->unk15 != 0) {
-        boss->unk15--;
+    } else if (boss->main.unk15 != 0) {
+        boss->main.unk15--;
 
-        if (boss->unk15 == 0) {
+        if (boss->main.unk15 == 0) {
             s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
             s->variant = 0;
             s->prevVariant = -1;
@@ -161,7 +191,7 @@ void sub_8042560(AeroEgg *boss)
 {
     u8 i;
 
-    if (boss->unk16 != 0) {
+    if (boss->main.unk16 != 0) {
         for (i = 0; i < ARRAY_COUNT(gUnknown_080D7F54[PAL_BOSS_4_DEFAULT]); i++) {
             gObjPalette[128 + i] = gUnknown_080D7F54[((gStageTime & 0x2) >> 1)][i];
         }
@@ -174,42 +204,40 @@ void sub_8042560(AeroEgg *boss)
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
 }
 
-// temporary nonmatch
-NONMATCH("asm/non_matching/temp_AeroEggResetPos.inc",
-         void AeroEggResetPos(s32 dx, s32 dy))
+void AeroEggResetPos(s32 dx, s32 dy)
 {
-    AeroEgg *boss = TASK_DATA(gCurTask);
+    AeroEgg *boss = TASK_DATA(gActiveBossTask);
     u8 i;
+    AeroEggSub *sub = &boss->sub;
 
-    boss->worldX += dx;
-    boss->worldY += dy;
-    boss->unk18[1] += dx;
-    boss->unk18[2] += dy;
+    boss->main.worldX += dx;
+    boss->main.worldY += dy;
+    sub->unk04 += dx;
+    sub->unk08 += dy;
 
     for (i = 0; i < 3; i++) {
-        boss->parts[i].x += dx;
-        boss->parts[i].y += dy;
+        sub->parts[i].x += dx;
+        sub->parts[i].y += dy;
     }
 
-    boss->unk6C += dx;
-    boss->unk70 += dy;
+    sub->unk54 += dx;
+    sub->unk58 += dy;
 }
-END_NONMATCH
 
 void Task_AeroEggMain(void)
 {
     AeroEgg *boss = TASK_DATA(gCurTask);
 
-    boss->worldX += boss->dx;
-    boss->worldX += Q_24_8(2.25);
+    boss->main.worldX += boss->main.dx;
+    boss->main.worldX += Q_24_8(2.25);
 
     sub_80424EC(boss);
     sub_8041880(boss);
     sub_8042560(boss);
 
-    boss->unk0--;
-    if (boss->unk0 == 0) {
-        boss->timerBombDrop = ZONE_TIME_TO_INT(0, 3);
+    boss->main.unk0--;
+    if (boss->main.unk0 == 0) {
+        boss->main.timerBombDrop = ZONE_TIME_TO_INT(0, 3);
 
         gCurTask->main = Task_80426C4;
     }
@@ -227,8 +255,8 @@ void Task_80426C4(void)
     sub_8042560(boss);
     sub_8041A08(boss);
 
-    if (!boss->lives) {
-        Sprite *s = &boss->spr88;
+    if (!boss->main.lives) {
+        Sprite *s = &boss->sub.unk70;
         s->graphics.anim = SA2_ANIM_AERO_EGG_COCKPIT;
         s->variant = 3;
         s->prevVariant = -1;
@@ -244,16 +272,16 @@ void Task_DeleteAeroEggTask(void) { TaskDestroy(gCurTask); }
 
 void AeroEgg_UpdatePos(AeroEgg *boss)
 {
-    boss->worldX += boss->dx;
-    boss->worldY += boss->dy;
+    boss->main.worldX += boss->main.dx;
+    boss->main.worldY += boss->main.dy;
 }
 
 void sub_8042774(AeroEgg *boss)
 {
-    Sprite *s = &boss->sprC0;
-    boss->unk15 = 30;
+    Sprite *s = &boss->sub.sprA8;
+    boss->main.unk15 = 30;
 
-    if (boss->unk16 == 0) {
+    if (boss->main.unk16 == 0) {
         s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
         s->variant = 1;
         s->prevVariant = -1;
@@ -264,11 +292,11 @@ void TaskDestructor_AeroEggMain(struct Task *t)
 {
     AeroEgg *boss = TASK_DATA(t);
 
-    VramFree(boss->tilesBomb);
-    VramFree(boss->spr88.graphics.dest);
-    VramFree(boss->sprC0.graphics.dest);
-    VramFree(boss->sprF0.graphics.dest);
-    VramFree(boss->spr120.graphics.dest);
+    VramFree(boss->sub.tilesBomb);
+    VramFree(boss->sub.unk70.graphics.dest);
+    VramFree(boss->sub.sprA8.graphics.dest);
+    VramFree(boss->sub.sprD8.graphics.dest);
+    VramFree(boss->sub.spr108.graphics.dest);
 
     gActiveBossTask = NULL;
 }
@@ -288,9 +316,9 @@ void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY)
     eb->boss = boss;
 
     s = &eb->s;
-    s->x = Q_24_8_TO_INT(boss->worldX) - gCamera.x;
+    s->x = Q_24_8_TO_INT(boss->main.worldX) - gCamera.x;
     s->y = Q_24_8_TO_INT(eb->screenY);
-    s->graphics.dest = boss->tilesBomb;
+    s->graphics.dest = boss->sub.tilesBomb;
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_AERO_EGG_BOMB, 0, 21, 2, 0);
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
@@ -305,12 +333,12 @@ static void Task_CreateAeroEggBombMain(void)
 
     if (eb->tAlive < 16) {
         eb->screenY += Q_24_8(1.0);
-        s->x = Q_24_8_TO_INT(eb->boss->worldX) - gCamera.x;
+        s->x = Q_24_8_TO_INT(eb->boss->main.worldX) - gCamera.x;
         s->y = Q_24_8_TO_INT(eb->screenY);
 
         if (eb->tAlive == 16 - 1) {
             m4aSongNumStart(SE_PROJECTILE_DROP);
-            eb->screenX = eb->boss->worldX - Q_24_8(gCamera.x);
+            eb->screenX = eb->boss->main.worldX - Q_24_8(gCamera.x);
         }
     } else {
         eb->dy += Q_24_8(0.0625);
@@ -345,13 +373,13 @@ static void Task_CreateAeroEggBombMain(void)
         gCurTask->main = Task_8042AB0;
     }
 
-    if (eb->boss->lives) {
+    if (eb->boss->main.lives) {
         if (sub_800CA20(s, Q_24_8_TO_INT(eb->screenX) + gCamera.x,
                         Q_24_8_TO_INT(eb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
-            if (eb->boss->unk16 == 0) {
-                Sprite *s2 = &eb->boss->sprC0;
-                eb->boss->unk15 = 30;
+            if (eb->boss->main.unk16 == 0) {
+                Sprite *s2 = &eb->boss->sub.sprA8;
+                eb->boss->main.unk15 = 30;
                 s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s2->variant = 1;
                 s2->prevVariant = -1;
@@ -379,13 +407,13 @@ static void Task_8042AB0(void)
     s->x = Q_24_8_TO_INT(eb->screenX);
     s->y = Q_24_8_TO_INT(eb->screenY);
 
-    if (eb->boss->lives) {
+    if (eb->boss->main.lives) {
         if (sub_800CA20(s, Q_24_8_TO_INT(eb->screenX) + gCamera.x,
                         Q_24_8_TO_INT(eb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
-            if (eb->boss->unk16 == 0) {
-                Sprite *s2 = &eb->boss->sprC0;
-                eb->boss->unk15 = 30;
+            if (eb->boss->main.unk16 == 0) {
+                Sprite *s2 = &eb->boss->sub.sprA8;
+                eb->boss->main.unk15 = 30;
                 s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s2->variant = 1;
                 s2->prevVariant = -1;
@@ -423,11 +451,11 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
     s->y = Q_24_8_TO_INT(deb->screenY);
 
     if (PseudoRandom32() % 2u) {
-        s->graphics.dest = boss->tilesBomb + (32 * TILE_SIZE_4BPP);
+        s->graphics.dest = boss->sub.tilesBomb + (32 * TILE_SIZE_4BPP);
         s->graphics.anim = SA2_ANIM_AERO_EGG_DEBRIS_BIG;
         s->variant = 0;
     } else {
-        s->graphics.dest = boss->tilesBomb + (41 * TILE_SIZE_4BPP);
+        s->graphics.dest = boss->sub.tilesBomb + (41 * TILE_SIZE_4BPP);
         s->graphics.anim = SA2_ANIM_AERO_EGG_DEBRIS_SMALL;
         s->variant = 0;
     }
@@ -464,13 +492,13 @@ static void Task_AeroEggBombDebris(void)
         }
     }
 
-    if (deb->boss->lives) {
+    if (deb->boss->main.lives) {
         if (sub_800CA20(s, Q_24_8_TO_INT(deb->screenX) + gCamera.x,
                         Q_24_8_TO_INT(deb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
-            if (deb->boss->unk16 == 0) {
-                Sprite *s2 = &deb->boss->sprC0;
-                deb->boss->unk15 = 30;
+            if (deb->boss->main.unk16 == 0) {
+                Sprite *s2 = &deb->boss->sub.sprA8;
+                deb->boss->main.unk15 = 30;
                 s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s2->variant = 1;
                 s2->prevVariant = -1;
