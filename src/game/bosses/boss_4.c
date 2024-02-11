@@ -86,7 +86,7 @@ typedef AeroEggBomb AeroEggDebris; /* size: 0x44 */
 static void Task_CreateAeroEggBombMain(void);
 static void Task_DeleteAeroEggBombTask(void);
 static void Task_AeroEggBombDebris(void);
-void Task_80417A0(void);
+void Task_AeroEggExploding(void);
 void Task_80426C4(void);
 static void Task_8042AB0(void);
 void sub_8041B44(AeroEgg *boss);
@@ -103,113 +103,70 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
 #if 01
 #endif
 
-void sub_804217C(AeroEgg *boss)
+#define AE_DEFEATED_COLL_COCKPIT(_sub, _part)                                           \
+    {                                                                                   \
+        if (_sub->unk6B != 0) {                                                         \
+            if (--_sub->unk6B == 0) {                                                   \
+                _part.dy = 0;                                                           \
+                _part.status = 1;                                                       \
+            }                                                                           \
+                                                                                        \
+            CreateScreenShake(0x400, 0x20, 0x80, 0x14, 0x83);                           \
+        }                                                                               \
+    }
+
+#define AE_DEFEATED_COLL_PART(_part)                                                    \
+    {                                                                                   \
+        if (_part.dy > -48) {                                                           \
+            _part.dy = 0;                                                               \
+            _part.status = 1;                                                           \
+        }                                                                               \
+    }
+
+#define AE_UPDATE_PART_DEFEATED(_sub, _part, _halfHeight, _dyNum, _dyDenom,             \
+                                CODE_ON_COLL)                                           \
+    if ((_sub->unk00 > 10) && (_part.status == 0)) {                                    \
+        _part.dy += 0x10;                                                               \
+    }                                                                                   \
+    _part.x += _part.dx;                                                                \
+    _part.y += _part.dy;                                                                \
+                                                                                        \
+    res = sub_801E4E4(Q_24_8_TO_INT(_part.y) + _halfHeight, Q_24_8_TO_INT(_part.x), 1,  \
+                      8, NULL, &sub_801EE64);                                           \
+                                                                                        \
+    if ((res <= 0) && (_part.dy >= 0)) {                                                \
+        _part.y += Q_24_8(res);                                                         \
+        _part.dy = Div((_part.dy * (_dyNum)), (_dyDenom));                              \
+                                                                                        \
+        CODE_ON_COLL;                                                                   \
+                                                                                        \
+        _part.dx -= 8;                                                                  \
+        if (_part.dx < 0) {                                                             \
+            _part.dx = 0;                                                               \
+        }                                                                               \
+    } else if (_part.status != 0) {                                                     \
+        _part.y += Q_24_8(res);                                                         \
+    }
+
+void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss)
 {
     AeroEggSub *sub = &boss->sub;
     s32 res;
+    u8 i;
 
     boss->sub.unk68 = 1;
     boss->sub.unk00++;
 
-    {
-        if ((boss->sub.unk00 > 10) && (sub->cockpit.status == 0)) {
-            sub->cockpit.dy += 0x10;
-        }
-        sub->cockpit.x += sub->cockpit.dx;
-        sub->cockpit.y += sub->cockpit.dy;
+    AE_UPDATE_PART_DEFEATED(sub, sub->cockpit, 13, -70, 100,
+                            AE_DEFEATED_COLL_COCKPIT(sub, sub->cockpit));
 
-        res = sub_801E4E4(Q_24_8_TO_INT(sub->cockpit.y) + 13,
-                          Q_24_8_TO_INT(sub->cockpit.x), 1, 8, NULL, &sub_801EE64);
-
-        if ((res <= 0) && (sub->cockpit.dy >= 0)) {
-            //  y += res
-            // dy *= -7/10
-            sub->cockpit.y += Q_24_8(res);
-            sub->cockpit.dy = Div((sub->cockpit.dy * -70), 100);
-
-            if (sub->unk6B != 0) {
-                if (--sub->unk6B == 0) {
-                    sub->cockpit.dy = 0;
-                    sub->cockpit.status = 1;
-                }
-
-                CreateScreenShake(0x400, 0x20, 0x80, 0x14, 0x83);
-            }
-            sub->cockpit.dx -= 8;
-
-            if (sub->cockpit.dx < 0) {
-                sub->cockpit.dx = 0;
-            }
-        } else if (sub->cockpit.status != 0) {
-            sub->cockpit.y += Q_24_8(res);
-        }
+    for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
+        AE_UPDATE_PART_DEFEATED(sub, sub->tail[i], 7, -6, 10,
+                                AE_DEFEATED_COLL_PART(sub->tail[i]));
     }
 
-    {
-        u8 i;
-
-        for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
-            if ((sub->unk00 > 10) && (sub->tail[i].status == 0)) {
-                sub->tail[i].dy += 0x10;
-            }
-
-            sub->tail[i].x += sub->tail[i].dx;
-            sub->tail[i].y += sub->tail[i].dy;
-
-            res = sub_801E4E4(Q_24_8_TO_INT(sub->tail[i].y) + 7,
-                              Q_24_8_TO_INT(sub->tail[i].x), 1, 8, NULL, sub_801EE64);
-
-            if ((res <= 0) && (sub->tail[i].dy >= 0)) {
-                //  y += res
-                // dy *= -6/10
-                sub->tail[i].y += Q_24_8(res);
-                sub->tail[i].dy = Div((sub->tail[i].dy * -6), 10);
-
-                if (sub->tail[i].dy > -48) {
-                    sub->tail[i].dy = 0;
-                    sub->tail[i].status = 1;
-                }
-
-                sub->tail[i].dx -= 8;
-                if (sub->tail[i].dx < 0) {
-                    sub->tail[i].dx = 0;
-                }
-            } else if (sub->tail[i].status != 0) {
-                sub->tail[i].y += Q_24_8(res);
-            }
-        }
-    }
-
-    {
-        if ((sub->unk00 > 10) && (sub->tailTip.status == 0)) {
-            sub->tailTip.dy += 0x10;
-        }
-
-        sub->tailTip.x += sub->tailTip.dx;
-        sub->tailTip.y += sub->tailTip.dy;
-
-        res = sub_801E4E4(Q_24_8_TO_INT(sub->tailTip.y) + 9,
-                          Q_24_8_TO_INT(sub->tailTip.x), 1, 8, NULL, sub_801EE64);
-
-        if ((res <= 0) && (sub->tailTip.dy >= 0)) {
-            //  y += res
-            // dy *= -6/10
-            sub->tailTip.y += Q_24_8(res);
-            sub->tailTip.dy = Div((sub->tailTip.dy * -6), 10);
-
-            if (sub->tailTip.dy > -48) {
-                sub->tailTip.dy = 0;
-                sub->tailTip.status = 1;
-            }
-
-            sub->tailTip.dx -= 8;
-            if (sub->tailTip.dx < 0) {
-                sub->tailTip.dx = 0;
-            }
-        } else if (sub->tailTip.status != 0) {
-            sub->tailTip.y += Q_24_8(res);
-        }
-    }
+    AE_UPDATE_PART_DEFEATED(sub, sub->tailTip, 9, -6, 10,
+                            AE_DEFEATED_COLL_PART(sub->tailTip));
 }
 
 bool32 sub_80423EC(AeroEgg *boss)
@@ -358,7 +315,7 @@ void Task_80426C4(void)
         sub_802A018();
         sub_8042024(boss);
 
-        gCurTask->main = Task_80417A0;
+        gCurTask->main = Task_AeroEggExploding;
     }
 }
 

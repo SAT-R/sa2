@@ -272,8 +272,8 @@ _08041794: .4byte 0x00000296
 _08041798: .4byte 0x00000141
 _0804179C: .4byte 0x00000145
 
-	thumb_func_start Task_80417A0
-Task_80417A0: @ 0x080417A0
+	thumb_func_start Task_AeroEggExploding
+Task_AeroEggExploding: @ 0x080417A0
 	push {r4, r5, r6, lr}
 	ldr r0, _08041868 @ =gCurTask
 	ldr r0, [r0]
@@ -284,7 +284,7 @@ Task_80417A0: @ 0x080417A0
 	adds r0, #0x18
 	adds r6, r5, r0
 	adds r0, r4, #0
-	bl sub_804217C
+	bl AeroEgg_UpdatePartsAfterBossDefeated
 	adds r0, r4, #0
 	bl sub_80424EC
 	adds r0, r4, #0
