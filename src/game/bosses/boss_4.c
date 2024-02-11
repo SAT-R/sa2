@@ -19,9 +19,9 @@
 typedef struct {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
-    /* 0x08 */ s32 x2;
-    /* 0x0C */ s32 y2;
-    /* 0x10 */ u8 filler10[0x4];
+    /* 0x08 */ s32 dx;
+    /* 0x0C */ s32 dy;
+    /* 0x10 */ bool32 unk10;
 } AeroEggTail; /* size: 0x14 */
 
 typedef struct {
@@ -39,18 +39,21 @@ typedef struct {
 } AeroEggMain;
 
 typedef struct {
-    /* 0x018 */ s32 unk00;
+    /* 0x018 */ u32 unk00;
     /* 0x01C */ s32 unk04; // some x
     /* 0x020 */ s32 unk08; // some y
-    /* 0x024 */ s32 unk0C;
-    /* 0x028 */ s32 unk10;
+    /* 0x024 */ s32 unk0C; // some dx
+    /* 0x028 */ s32 unk10; // some dy
     /* 0x02C */ s32 unk14;
     /* 0x030 */ AeroEggTail parts[3];
     /* 0x06C */ s32 unk54; // some x
     /* 0x070 */ s32 unk58; // some y
-    /* 0x074 */ u8 filler74[0xC];
+    /* 0x080 */ s32 unk5C; // some dx
+    /* 0x080 */ s32 unk60; // some dy
+    /* 0x080 */ s32 unk64;
     /* 0x080 */ u8 unk68;
-    /* 0x081 */ u8 filler81[0x3];
+    /* 0x081 */ u8 filler81[0x2];
+    /* 0x083 */ u8 unk6B;
     /* 0x084 */ u8 unk6C;
     /* 0x085 */ u8 filler85[0x3];
     /* 0x088 */ Sprite unk70;
@@ -102,17 +105,125 @@ void AeroEgg_UpdatePos(AeroEgg *boss);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
 
-#if 0
+#if 01
 void sub_804217C(AeroEgg *boss)
 {
-    boss->sub.unk68 = 1;
-    boss->sub.unk00[0]++;
+    AeroEggSub *sub = &boss->sub;
+    s32 res;
 
-    if((boss->sub.unk00[0] > 10) && (boss->sub.unk14 == 0)) {
-        boss->sub.unk10 += 0x10;
+    boss->sub.unk68 = 1;
+    boss->sub.unk00++;
+
+    {
+        if ((boss->sub.unk00 > 10) && (sub->unk14 == 0)) {
+            sub->unk10 += 0x10;
+        }
+        // _080421AC
+        sub->unk04 += sub->unk0C;
+        sub->unk08 += sub->unk10;
+
+        res = sub_801E4E4(Q_24_8_TO_INT(sub->unk08) + 13, Q_24_8_TO_INT(sub->unk04), 1,
+                          8, NULL, &sub_801EE64);
+
+        if ((res <= 0) && (sub->unk10 >= 0)) {
+            //  y += res
+            // dy *= -7/10
+            sub->unk08 += Q_24_8(res);
+            sub->unk10 = Div((sub->unk10 * -70), 100);
+
+            if (sub->unk6B != 0) {
+                if (--sub->unk6B == 0) {
+                    sub->unk10 = 0;
+                    sub->unk14 = 1;
+                }
+
+                CreateScreenShake(0x400, 0x20, 0x80, 0x14, 0x83);
+            }
+            // _08042228
+            sub->unk0C -= 8;
+
+            if (sub->unk0C < 0) {
+                sub->unk0C = 0;
+            }
+        } else if (sub->unk14 != 0) {
+            // _0804223C + 6
+            sub->unk08 += Q_24_8(res);
+        }
     }
-    // _080421AC
-    boss->sub.unk00[1] + boss->sub.unk00[3];
+
+    // _0804224A
+    {
+        u8 i;
+
+        for (i = 0; i < 3; i++) {
+            // _0804226A
+            if ((sub->unk00 > 10) && (sub->parts[i].unk10 == 0)) {
+                sub->parts[i].dy += 0x10;
+            }
+            // _08042290
+            sub->parts[i].x += sub->parts[i].dx;
+            sub->parts[i].y += sub->parts[i].dy;
+
+            res = sub_801E4E4(Q_24_8_TO_INT(sub->parts[i].y) + 7,
+                              Q_24_8_TO_INT(sub->parts[i].x), 1, 8, NULL, sub_801EE64);
+
+            if ((res <= 0) && (sub->parts[i].dy >= 0)) {
+                //  y += res
+                // dy *= -6/10
+                sub->parts[i].y += Q_24_8(res);
+                sub->parts[i].dy = Div((sub->parts[i].dy * -6), 10);
+
+                if (sub->parts[i].dy > -48) {
+                    sub->parts[i].dy = 0;
+                    sub->parts[i].unk10 = 1;
+                }
+                // _0804230C
+                sub->parts[i].dx -= 8;
+                if (sub->parts[i].dx < 0) {
+                    sub->parts[i].dx = 0;
+                }
+            } else if (sub->parts[i].unk10 != 0) {
+                // _08042324
+                sub->parts[i].y += Q_24_8(res);
+            }
+            // _08042340
+            // End-of-loop
+        }
+    }
+    // _08042340 + 0x10
+
+    {
+        if ((sub->unk00 > 10) && (sub->unk64 == 0)) {
+            sub->unk60 += 0x10;
+        }
+        // _08042360
+
+        sub->unk54 += sub->unk5C;
+        sub->unk58 += sub->unk60;
+
+        res = sub_801E4E4(Q_24_8_TO_INT(sub->unk58) + 9, Q_24_8_TO_INT(sub->unk54), 1, 8,
+                          NULL, sub_801EE64);
+
+        if ((res <= 0) && (sub->unk60 >= 0)) {
+            //  y += res
+            // dy *= -6/10
+            sub->unk58 += Q_24_8(res);
+            sub->unk60 = Div((sub->unk60 * -6), 10);
+
+            if (sub->unk60 > -48) {
+                sub->unk60 = 0;
+                sub->unk64 = 1;
+            }
+            // _0804230C
+            sub->unk5C -= 8;
+            if (sub->unk5C < 0) {
+                sub->unk5C = 0;
+            }
+        } else if (sub->unk64 != 0) {
+            // _08042324
+            sub->unk58 += Q_24_8(res);
+        }
+    }
 }
 #endif
 
