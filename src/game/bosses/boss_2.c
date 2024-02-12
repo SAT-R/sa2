@@ -975,9 +975,9 @@ static void CreateDestructionExplosions(EggBomberTank *boss)
             init.rotation = PseudoRandom32() & (SIN_PERIOD - 1);
             init.speed = 0x600;
             init.vram = (void *)OBJ_VRAM0
-                + (gUnknown_080D79D0[boss->unk75][0] * TILE_SIZE_4BPP);
-            init.anim = gUnknown_080D79D0[boss->unk75][1];
-            init.variant = gUnknown_080D79D0[boss->unk75][2];
+                + (gTileInfoBossScrews[boss->unk75][0] * TILE_SIZE_4BPP);
+            init.anim = gTileInfoBossScrews[boss->unk75][1];
+            init.variant = gTileInfoBossScrews[boss->unk75][2];
             init.unk4 = 1;
             CreateBossParticleWithExplosionUpdate(&init, &boss->unk74);
         }

@@ -21,7 +21,7 @@
 #define PAL_BOSS_4_DEFAULT 0
 #define PAL_BOSS_4_HIT     1
 
-#define RESERVED_EXPLOSION_TILES_VRAM (void*)(OBJ_VRAM0 + 0x2980)
+#define RESERVED_EXPLOSION_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2980)
 
 static const u16 gUnknown_080D7F54[][16] = {
     [PAL_BOSS_4_DEFAULT] = INCBIN_U16("graphics/boss_4_a.gbapal"),
@@ -162,7 +162,7 @@ typedef struct {
     /* 0x1C */ s16 velocity;
 } ExplosionPartsInfo_TEMP_COPY___REMOVE_THIS;
 
-#if 01
+#if 0
 void sub_8041D34(AeroEgg *boss)
 {
     s32 res;
@@ -170,14 +170,14 @@ void sub_8041D34(AeroEgg *boss)
 
     sub->unk6A--;
 
-    if(sub->unk6C != 0) {
+    if (sub->unk6C != 0) {
         return;
     }
     // _08041D62
 
     res = Mod(sub->unk6A, 12);
 
-    if(res == 0) {
+    if (res == 0) {
         ExplosionPartsInfo partsInfo;
         s32 spawnX, spawnY;
         s32 rand;
@@ -187,7 +187,7 @@ void sub_8041D34(AeroEgg *boss)
         spawnX = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x;
         spawnX += (rand & 0x1F) - 0x1F;
         partsInfo.spawnX = spawnX;
-        
+
         rand = PseudoRandom32();
         spawnY = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y;
         spawnY += (rand & 0x3F) - 0x30;
@@ -209,8 +209,7 @@ void sub_8041D34(AeroEgg *boss)
     }
     // _08041DFA
 
-    
-    if((sub->unk6A & 0x3) == 0) {
+    if ((sub->unk6A & 0x3) == 0) {
         ExplosionPartsInfo partsInfo;
         s32 spawnX, spawnY;
         s32 rand, divRes;
@@ -218,7 +217,7 @@ void sub_8041D34(AeroEgg *boss)
 
         rand = PseudoRandom32() & 0xF;
         r7 = rand - Div(rand, 6) * 6;
-        
+
         rand = PseudoRandom32();
         spawnY = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y;
         spawnY += (rand & 0x3F) - 0x30;
@@ -239,8 +238,6 @@ void sub_8041D34(AeroEgg *boss)
         CreateBossParticleWithExplosionUpdate(&partsInfo, &sub->unk69);
     }
     // _08041ED0
-
-
 }
 #endif
 

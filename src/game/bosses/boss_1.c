@@ -1275,9 +1275,9 @@ static void sub_803C198(EggHammerTankII *boss)
         init.velocity = 0x40;
         init.rotation = PseudoRandom32() & (SIN_PERIOD - 1);
         init.speed = 0x600;
-        init.vram = (void *)OBJ_VRAM0 + (gUnknown_080D79D0[i][0] * TILE_SIZE_4BPP);
-        init.anim = gUnknown_080D79D0[i][1];
-        init.variant = gUnknown_080D79D0[i][2];
+        init.vram = (void *)OBJ_VRAM0 + (gTileInfoBossScrews[i][0] * TILE_SIZE_4BPP);
+        init.anim = gTileInfoBossScrews[i][1];
+        init.variant = gTileInfoBossScrews[i][2];
         init.unk4 = 1;
         CreateBossParticleWithExplosionUpdate(&init, &unkB4->unk2DD);
     }

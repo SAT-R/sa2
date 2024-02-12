@@ -1708,9 +1708,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc",
             rand = (PseudoRandom32() & ONE_CYCLE);
             e.rotation = rand;
             e.speed = 0x600;
-            e.vram = (void *)OBJ_VRAM0 + (gUnknown_080D79D0[val2][0] * 0x20);
-            e.anim = gUnknown_080D79D0[val2][1];
-            e.variant = gUnknown_080D79D0[val2][2];
+            e.vram = (void *)OBJ_VRAM0 + (gTileInfoBossScrews[val2][0] * 0x20);
+            e.anim = gTileInfoBossScrews[val2][1];
+            e.variant = gTileInfoBossScrews[val2][2];
             e.unk4 = 0;
             CreateBossParticleWithExplosionUpdate(&e, &boss->unk14);
         }

@@ -34,7 +34,8 @@ const TranslateBossFunction MoveBossPositionFuncs[] = {
     EggSaucerMove, sub_8047224,       sub_8048EB4, sub_804D594,
 };
 
-const u32 gUnknown_080D79D0[][3] = {
+// Anims for screws etc.
+const u32 gTileInfoBossScrews[][3] = {
     { 412, 620, 0 }, { 416, 620, 1 }, { 420, 621, 0 },
     { 436, 621, 1 }, { 448, 622, 0 }, { 449, 622, 1 },
 };

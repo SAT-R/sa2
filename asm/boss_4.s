@@ -970,6 +970,7 @@ _08041CC6:
 	.align 2, 0
 _08041D30: .4byte gCamera
 
+.if 01
 	thumb_func_start sub_8041D34
 sub_8041D34: @ 0x08041D34
 	push {r4, r5, r6, r7, lr}
@@ -978,23 +979,23 @@ sub_8041D34: @ 0x08041D34
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x2c
-	str r0, [sp, #0x20]
+	str r0, [sp, #0x20]     @ sp20 = boss
 	adds r0, #0x18
-	mov sl, r0
-	ldr r1, [sp, #0x20]
+	mov sl, r0              @ sl = sub
+	ldr r1, [sp, #0x20] 
 	adds r1, #0x82
-	mov sb, r1
+	mov sb, r1              @ sb = &sub->unk6A
 	ldrb r0, [r1]
 	subs r0, #1
 	strb r0, [r1]
 	ldrb r2, [r1]
-	str r2, [sp, #0x24]
+	str r2, [sp, #0x24]     @ sp24 = sub->unk6A
 	ldr r0, [sp, #0x20]
 	adds r0, #0x84
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq _08041D62
-	b _08041FEA
+	b sub_8041D34_return
 _08041D62:
 	adds r0, r2, #0
 	movs r1, #0xc
@@ -1006,19 +1007,19 @@ _08041D62:
 	mov r3, sb
 	strb r0, [r3]
 	ldr r0, _08041FFC @ =gPseudoRandom
-	mov r8, r0
+	mov r8, r0              @ r8 = &gPseudoRandom
 	ldr r0, [r0]
 	ldr r5, _08042000 @ =0x00196225
 	adds r2, r0, #0
 	muls r2, r5, r2
 	ldr r4, _08042004 @ =0x3C6EF35F
-	adds r2, r2, r4
-	mov r3, sl
+	adds r2, r2, r4         @ r2 = rand
+	mov r3, sl              @ r3 = sub
 	ldr r1, [r3, #4]
-	asrs r1, r1, #8
+	asrs r1, r1, #8         @ r1 = Q_24_8_TO_INT(sub->cockpit.x)
 	ldr r3, _08042008 @ =gCamera
 	ldr r0, [r3]
-	subs r1, r1, r0
+	subs r1, r1, r0         @ r1 = bossX = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x;
 	movs r0, #0x1f
 	ands r0, r2
 	adds r1, r1, r0
@@ -1026,7 +1027,7 @@ _08041D62:
 	str r1, [sp, #0x14]
 	muls r2, r5, r2
 	adds r2, r2, r4
-	mov r0, sl
+	mov r0, sl              @ r0 = sl = sub
 	ldr r1, [r0, #8]
 	asrs r1, r1, #8
 	ldr r0, [r3, #4]
@@ -1039,7 +1040,7 @@ _08041D62:
 	str r1, [sp, #0x18]
 	mov r0, sp
 	strh r7, [r0, #0x1c]
-	mov r3, sp
+	mov r3, sp              @ r3 = sp = partsInfo
 	muls r2, r5, r2
 	adds r2, r2, r4
 	adds r1, r2, #0
@@ -1071,14 +1072,14 @@ _08041D62:
 	adds r1, #0x81
 	bl CreateBossParticleWithExplosionUpdate
 _08041DFA:
-	mov r3, sb
+	mov r3, sb              @ r3 = sb = &sub->unk6A
 	ldrb r1, [r3]
 	movs r0, #3
 	ands r0, r1
 	cmp r0, #0
 	bne _08041ED0
 	ldr r0, _08041FFC @ =gPseudoRandom
-	mov sb, r0
+	mov sb, r0              @ sb = &gPseudoRandom
 	ldr r0, [r0]
 	ldr r1, _08042000 @ =0x00196225
 	mov r8, r1
@@ -1151,7 +1152,7 @@ _08041DFA:
 	lsls r0, r0, #3
 	subs r0, r0, r1
 	strh r0, [r2, #0xe]
-	ldr r2, _0804201C @ =gUnknown_080D79D0
+	ldr r2, _0804201C @ =gTileInfoBossScrews
 	lsls r1, r7, #1
 	adds r1, r1, r7
 	lsls r1, r1, #2
@@ -1265,12 +1266,12 @@ _08041F6A:
 	cmp r3, #0x29
 	beq _08041F7E
 	cmp r3, #0x12
-	bne _08041FEA
+	bne sub_8041D34_return
 _08041F7E:
 	mov r0, sl
 	ldr r7, [r0, #0x64]
 	cmp r7, #0
-	bne _08041FEA
+	bne sub_8041D34_return
 	ldr r0, [r0, #0x54]
 	asrs r0, r0, #8
 	ldr r2, _08042008 @ =gCamera
@@ -1320,7 +1321,7 @@ _08041F7E:
 	mov r1, sl
 	adds r1, #0x69
 	bl CreateBossParticleWithExplosionUpdate
-_08041FEA:
+sub_8041D34_return:
 	add sp, #0x2c
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -1338,8 +1339,7 @@ _0804200C: .4byte 0x000001FF
 _08042010: .4byte 0x06012980
 _08042014: .4byte 0x0000026B
 _08042018: .4byte 0x000003FF
-_0804201C: .4byte gUnknown_080D79D0
+_0804201C: .4byte gTileInfoBossScrews
 _08042020: .4byte 0x06010000
 
-.if 0
 .endif
