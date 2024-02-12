@@ -236,7 +236,7 @@ bool32 sub_80423EC(AeroEgg *boss)
 
     bool32 result = FALSE;
 
-    if (boss->main.lives != 0) {
+    if (boss->main.lives > 0) {
         boss->main.lives--;
 
         if (boss->main.lives & 0x1) {
@@ -367,7 +367,7 @@ void Task_80426C4(void)
     sub_8042560(boss);
     sub_8041A08(boss);
 
-    if (!boss->main.lives) {
+    if (boss->main.lives == 0) {
         Sprite *s = &boss->sub.spr70;
         s->graphics.anim = SA2_ANIM_AERO_EGG_COCKPIT;
         s->variant = 3;
@@ -485,7 +485,7 @@ static void Task_CreateAeroEggBombMain(void)
         gCurTask->main = Task_8042AB0;
     }
 
-    if (eb->boss->main.lives) {
+    if (eb->boss->main.lives > 0) {
         if (sub_800CA20(s, Q_24_8_TO_INT(eb->screenX) + gCamera.x,
                         Q_24_8_TO_INT(eb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
@@ -518,7 +518,7 @@ static void Task_8042AB0(void)
     s->x = Q_24_8_TO_INT(eb->screenX);
     s->y = Q_24_8_TO_INT(eb->screenY);
 
-    if (eb->boss->main.lives) {
+    if (eb->boss->main.lives > 0) {
         if (sub_800CA20(s, Q_24_8_TO_INT(eb->screenX) + gCamera.x,
                         Q_24_8_TO_INT(eb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
@@ -602,7 +602,7 @@ static void Task_AeroEggBombDebris(void)
         }
     }
 
-    if (deb->boss->main.lives) {
+    if (deb->boss->main.lives > 0) {
         if (sub_800CA20(s, Q_24_8_TO_INT(deb->screenX) + gCamera.x,
                         Q_24_8_TO_INT(deb->screenY) + gCamera.y, 0, &gPlayer)
             == TRUE) {
