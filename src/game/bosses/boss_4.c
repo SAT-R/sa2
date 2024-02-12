@@ -49,21 +49,23 @@ typedef struct {
 } AeroEggMain;
 
 typedef struct {
-    /* 0x018 */ u32 unk00;
-    /* 0x01C */ AeroEggPart cockpit;
-    /* 0x030 */ AeroEggPart tail[NUM_TAIL_SEGMENTS];
-    /* 0x06C */ AeroEggPart tailTip;
-    /* 0x080 */ u8 unk68;
-    /* 0x081 */ u8 filler81[0x2];
-    /* 0x083 */ u8 unk6B;
-    /* 0x084 */ u8 unk6C;
-    /* 0x085 */ u8 filler85[0x3];
-    /* 0x088 */ Sprite unk70;
-    /* 0x0B8 */ u8 fillerB8[0x8];
-    /* 0x0C0 */ Sprite sprA8;
-    /* 0x0F0 */ Sprite sprD8;
-    /* 0x120 */ Sprite spr108;
-    /* 0x150 */ void *tilesBomb;
+    /* Full  Sub   */
+    /* 0x018 0x00  */ u32 unk00;
+    /* 0x01C 0x04  */ AeroEggPart cockpit;
+    /* 0x030 0x18  */ AeroEggPart tail[NUM_TAIL_SEGMENTS];
+    /* 0x06C 0x54  */ AeroEggPart tailTip;
+    /* 0x080 0x68  */ u8 unk68;
+    /* 0x081 0x69  */ u8 unk69;
+    /* 0x082 0x6A  */ u8 unk6A;
+    /* 0x083 0x6B  */ u8 unk6B;
+    /* 0x084 0x6C  */ u8 unk6C;
+    /* 0x085 0x6D  */ u8 filler85[0x3];
+    /* 0x088 0x70  */ Sprite spr70;
+    /* 0x0B8 0xA0  */ u8 fillerB8[0x8];
+    /* 0x0C0 0xA8  */ Sprite sprA8;
+    /* 0x0F0 0xD8  */ Sprite sprD8;
+    /* 0x120 0x108 */ Sprite spr108;
+    /* 0x150 0x138 */ void *tilesBomb;
 } AeroEggSub;
 
 typedef struct {
@@ -100,9 +102,6 @@ void AeroEgg_UpdatePos(AeroEgg *boss);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
 
-#if 01
-#endif
-
 #define AE_DEFEATED_COLL_COCKPIT(_sub, _part)                                           \
     {                                                                                   \
         if (_sub->unk6B != 0) {                                                         \
@@ -111,7 +110,7 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
                 _part.status = 1;                                                       \
             }                                                                           \
                                                                                         \
-            CreateScreenShake(0x400, 0x20, 0x80, 0x14, 0x83);                           \
+            CreateScreenShake(0x400, 0x20, 0x80, 0x14, SCREENSHAKE_VERTICAL | 0x3);     \
         }                                                                               \
     }
 
@@ -148,14 +147,76 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
         _part.y += Q_24_8(res);                                                         \
     }
 
+#if 01
+// (93.60%) https://decomp.me/scratch/bgy7t
+void sub_8042024(AeroEgg *boss)
+{
+    AeroEggSub *sub = &boss->sub;
+    Sprite *s;
+
+    boss->sub.unk00 = 0;
+
+    boss->sub.unk68 = 0;
+    boss->sub.unk69 = 0;
+    boss->sub.unk6A = 0x30;
+    boss->sub.unk6B = 0x3;
+    boss->sub.unk6C = 0;
+
+    s = &boss->sub.spr70;
+    sub->cockpit.x = Q_24_8(s->x + gCamera.x);
+    sub->cockpit.y = Q_24_8(s->y + gCamera.y);
+    sub->cockpit.dx = Q_24_8(5.75);
+    sub->cockpit.dy = Q_24_8(0.00);
+    sub->cockpit.status = 0;
+
+    s = &boss->sub.spr108;
+    sub->tailTip.x = Q_24_8(s->x + gCamera.x);
+    sub->tailTip.y = Q_24_8(s->y + gCamera.y);
+    sub->tailTip.dx = Q_24_8(5.75);
+    sub->tailTip.dy = Q_24_8(0.00);
+    sub->tailTip.status = 0;
+
+    {
+        u8 i;
+        for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
+            s32 xVal, yVal;
+            u16 period = SIN_24_8(((gStageTime * 12) + (i << 7)) & ONE_CYCLE) >> 3;
+            s32 bossX, bossY;
+            s32 sinV, cosV;
+
+            bossX = Q_24_8_TO_INT(boss->main.worldX);
+            period = (period + 500) & ONE_CYCLE;
+            cosV = (COS(period) * 17);
+            cosV *= (i + 1);
+            cosV >>= 14;
+            bossX += cosV;
+
+            bossY = Q_24_8_TO_INT(boss->main.worldY);
+            sinV = (SIN(period) * 17);
+            sinV *= (i + 1);
+            sinV >>= 14;
+            sinV += 0x14;
+            bossY += sinV;
+
+            sub->tail[i].x = Q_24_8(bossX);
+            sub->tail[i].y = Q_24_8(bossY);
+            sub->tail[i].dx = Q_24_8(5.75);
+            sub->tail[i].dy = 0;
+            sub->tail[i].status = 0;
+        }
+    }
+}
+
+#endif
+
 void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss)
 {
     AeroEggSub *sub = &boss->sub;
     s32 res;
     u8 i;
 
-    boss->sub.unk68 = 1;
-    boss->sub.unk00++;
+    sub->unk68 = 1;
+    sub->unk00++;
 
     AE_UPDATE_PART_DEFEATED(sub, sub->cockpit, 13, -70, 100,
                             AE_DEFEATED_COLL_COCKPIT(sub, sub->cockpit));
@@ -307,7 +368,7 @@ void Task_80426C4(void)
     sub_8041A08(boss);
 
     if (!boss->main.lives) {
-        Sprite *s = &boss->sub.unk70;
+        Sprite *s = &boss->sub.spr70;
         s->graphics.anim = SA2_ANIM_AERO_EGG_COCKPIT;
         s->variant = 3;
         s->prevVariant = -1;
@@ -344,7 +405,7 @@ void TaskDestructor_AeroEggMain(struct Task *t)
     AeroEgg *boss = TASK_DATA(t);
 
     VramFree(boss->sub.tilesBomb);
-    VramFree(boss->sub.unk70.graphics.dest);
+    VramFree(boss->sub.spr70.graphics.dest);
     VramFree(boss->sub.sprA8.graphics.dest);
     VramFree(boss->sub.sprD8.graphics.dest);
     VramFree(boss->sub.spr108.graphics.dest);
