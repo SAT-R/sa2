@@ -95,7 +95,7 @@ void sub_8041B44(AeroEgg *boss);
 void sub_8041880(AeroEgg *boss);
 void sub_8041A08(AeroEgg *boss);
 void sub_8041BF8(AeroEgg *boss);
-void sub_8042024(AeroEgg *boss);
+void AeroEgg_InitPartsDefeated(AeroEgg *boss);
 void sub_80424EC(AeroEgg *boss);
 void sub_8042560(AeroEgg *boss);
 void AeroEgg_UpdatePos(AeroEgg *boss);
@@ -148,8 +148,11 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
     }
 
 #if 01
+#endif
+
 // (93.60%) https://decomp.me/scratch/bgy7t
-void sub_8042024(AeroEgg *boss)
+NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
+         void AeroEgg_InitPartsDefeated(AeroEgg *boss))
 {
     AeroEggSub *sub = &boss->sub;
     Sprite *s;
@@ -206,8 +209,7 @@ void sub_8042024(AeroEgg *boss)
         }
     }
 }
-
-#endif
+END_NONMATCH
 
 void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss)
 {
@@ -374,7 +376,7 @@ void Task_80426C4(void)
         s->prevVariant = -1;
 
         Player_DisableInputAndBossTimer();
-        sub_8042024(boss);
+        AeroEgg_InitPartsDefeated(boss);
 
         gCurTask->main = Task_AeroEggExploding;
     }
