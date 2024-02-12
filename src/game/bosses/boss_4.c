@@ -21,6 +21,8 @@
 #define PAL_BOSS_4_DEFAULT 0
 #define PAL_BOSS_4_HIT     1
 
+#define RESERVED_EXPLOSION_TILES_VRAM (void*)(OBJ_VRAM0 + 0x2980)
+
 static const u16 gUnknown_080D7F54[][16] = {
     [PAL_BOSS_4_DEFAULT] = INCBIN_U16("graphics/boss_4_a.gbapal"),
     [PAL_BOSS_4_HIT] = INCBIN_U16("graphics/boss_4_b.gbapal"),
@@ -55,7 +57,7 @@ typedef struct {
     /* 0x030 0x18  */ AeroEggPart tail[NUM_TAIL_SEGMENTS];
     /* 0x06C 0x54  */ AeroEggPart tailTip;
     /* 0x080 0x68  */ u8 unk68;
-    /* 0x081 0x69  */ u8 unk69;
+    /* 0x081 0x69  */ u8 unk69; // explosion parts count?
     /* 0x082 0x6A  */ u8 unk6A;
     /* 0x083 0x6B  */ u8 unk6B;
     /* 0x084 0x6C  */ u8 unk6C;
@@ -147,32 +149,124 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
         _part.y += Q_24_8(res);                                                         \
     }
 
+typedef struct {
+    /* 0x00 */ void *vram;
+    /* 0x04 */ u32 unk4;
+    /* 0x08 */ AnimId anim;
+    /* 0x0A */ u16 variant;
+    /* 0x0C */ u16 rotation;
+    /* 0x0E */ u16 speed;
+    /* 0x10 */ u8 filler10[0x4];
+    /* 0x14 */ s32 spawnX;
+    /* 0x18 */ s32 spawnY;
+    /* 0x1C */ s16 velocity;
+} ExplosionPartsInfo_TEMP_COPY___REMOVE_THIS;
+
 #if 01
+void sub_8041D34(AeroEgg *boss)
+{
+    s32 res;
+    AeroEggSub *sub = &boss->sub;
+
+    sub->unk6A--;
+
+    if(sub->unk6C != 0) {
+        return;
+    }
+    // _08041D62
+
+    res = Mod(sub->unk6A, 12);
+
+    if(res == 0) {
+        ExplosionPartsInfo partsInfo;
+        s32 spawnX, spawnY;
+        s32 rand;
+
+        sub->unk6A = 0x30;
+        rand = PseudoRandom32();
+        spawnX = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x;
+        spawnX += (rand & 0x1F) - 0x1F;
+        partsInfo.spawnX = spawnX;
+        
+        rand = PseudoRandom32();
+        spawnY = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y;
+        spawnY += (rand & 0x3F) - 0x30;
+        partsInfo.spawnY = spawnY;
+        partsInfo.velocity = 0;
+
+        rand = PseudoRandom32();
+        partsInfo.rotation = (1000 - (rand & 0x3F));
+
+        rand = PseudoRandom32();
+        partsInfo.speed = 1024 - (rand & 0x1FF);
+
+        partsInfo.vram = RESERVED_EXPLOSION_TILES_VRAM;
+        partsInfo.anim = SA2_ANIM_EXPLOSION;
+        partsInfo.variant = 0;
+        partsInfo.unk4 = 0;
+
+        CreateBossParticleWithExplosionUpdate(&partsInfo, &sub->unk69);
+    }
+    // _08041DFA
+
+    
+    if((sub->unk6A & 0x3) == 0) {
+        ExplosionPartsInfo partsInfo;
+        s32 spawnX, spawnY;
+        s32 rand, divRes;
+        u8 r7;
+
+        rand = PseudoRandom32() & 0xF;
+        r7 = rand - Div(rand, 6) * 6;
+        
+        rand = PseudoRandom32();
+        spawnY = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y;
+        spawnY += (rand & 0x3F) - 0x30;
+        partsInfo.spawnY = spawnY;
+        partsInfo.velocity = 0;
+
+        rand = PseudoRandom32();
+        partsInfo.rotation = (1000 - (rand & 0x3F));
+
+        rand = PseudoRandom32();
+        partsInfo.speed = 1024 - (rand & 0x1FF);
+
+        partsInfo.vram = RESERVED_EXPLOSION_TILES_VRAM;
+        partsInfo.anim = SA2_ANIM_EXPLOSION;
+        partsInfo.variant = 0;
+        partsInfo.unk4 = 0;
+
+        CreateBossParticleWithExplosionUpdate(&partsInfo, &sub->unk69);
+    }
+    // _08041ED0
+
+
+}
 #endif
 
 // (93.60%) https://decomp.me/scratch/bgy7t
 NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
          void AeroEgg_InitPartsDefeated(AeroEgg *boss))
 {
-    AeroEggSub *sub = &boss->sub;
     Sprite *s;
+    AeroEggSub *sub = &boss->sub;
 
-    boss->sub.unk00 = 0;
+    sub->unk00 = 0;
 
-    boss->sub.unk68 = 0;
-    boss->sub.unk69 = 0;
-    boss->sub.unk6A = 0x30;
-    boss->sub.unk6B = 0x3;
-    boss->sub.unk6C = 0;
+    sub->unk68 = 0;
+    sub->unk69 = 0;
+    sub->unk6A = 0x30;
+    sub->unk6B = 0x3;
+    sub->unk6C = 0;
 
-    s = &boss->sub.spr70;
+    s = &sub->spr70;
     sub->cockpit.x = Q_24_8(s->x + gCamera.x);
     sub->cockpit.y = Q_24_8(s->y + gCamera.y);
     sub->cockpit.dx = Q_24_8(5.75);
     sub->cockpit.dy = Q_24_8(0.00);
     sub->cockpit.status = 0;
 
-    s = &boss->sub.spr108;
+    s = &sub->spr108;
     sub->tailTip.x = Q_24_8(s->x + gCamera.x);
     sub->tailTip.y = Q_24_8(s->y + gCamera.y);
     sub->tailTip.dx = Q_24_8(5.75);
