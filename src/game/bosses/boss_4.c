@@ -21,8 +21,12 @@
 #define PAL_BOSS_4_DEFAULT 0
 #define PAL_BOSS_4_HIT     1
 
-#define AERO_EGG_PILOT_OFFSET_X (0)
-#define AERO_EGG_PILOT_OFFSET_Y (-14)
+// TODO: Probably these will be globally automated in the long run?
+#define AEROEGG_PILOT_OFFSET_X (0)
+#define AEROEGG_PILOT_OFFSET_Y (-14)
+
+#define AEROEGG_COOLDOWN_NORMAL ZONE_TIME_TO_INT(0, 2. + (1. / 3.))
+#define AEROEGG_COOLDOWN_PINCH  ZONE_TIME_TO_INT(0, 1. + (1. / 3.))
 
 #define RESERVED_EXPLOSION_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2980)
 
@@ -45,8 +49,8 @@ typedef struct {
     /* 0x008 */ s32 worldY;
     /* 0x00C */ s16 dx;
     /* 0x00E */ s16 dy;
-    /* 0x010 */ s16 timerUnk;
-    /* 0x012 */ s16 timerBombDrop;
+    /* 0x010 */ u16 timerUnk;
+    /* 0x012 */ u16 timerBombDrop;
     /* 0x014 */ u8 lives;
     /* 0x015 */ u8 unk15;
     /* 0x016 */ u8 unk16;
@@ -99,10 +103,13 @@ static void Task_8042AB0(void);
 void sub_8041B44(AeroEgg *boss);
 void sub_8041880(AeroEgg *boss);
 void sub_8041A08(AeroEgg *boss);
-void sub_8041BF8(AeroEgg *boss);
+void AeroEgg_CreateBombIfReady(AeroEgg *boss);
 void AeroEgg_InitPartsDefeated(AeroEgg *boss);
+bool32 sub_80423EC(AeroEgg *boss);
 void sub_80424EC(AeroEgg *boss);
+void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY);
 void sub_8042560(AeroEgg *boss);
+void sub_8042774(AeroEgg *boss);
 void AeroEgg_UpdatePos(AeroEgg *boss);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
@@ -152,7 +159,67 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
         _part.y += Q_24_8(res);                                                         \
     }
 
-void sub_8041C48(AeroEgg *boss)
+void sub_8041B44(AeroEgg *boss)
+{
+    Sprite *s;
+
+    if (boss->main.unk16 == 0) {
+        s32 worldX = Q_24_8_TO_INT(boss->main.worldX);
+        s32 worldY = Q_24_8_TO_INT(boss->main.worldY);
+
+        s = &boss->sub.spr70;
+
+        if (PLAYER_IS_ALIVE) {
+            if (sub_800C320(s, worldX, worldY, 0, &gPlayer) == 1) {
+                if (Q_24_8_TO_INT(gPlayer.y) > worldY) {
+                    sub_8042774(boss);
+                    sub_800CBA4(&gPlayer);
+                } else {
+                    sub_80423EC(boss);
+                }
+            } else {
+                sub_800CA20(s, worldX, worldY, 0, &gPlayer);
+                sub_800CA20(s, worldX, worldY, 1, &gPlayer);
+            }
+        }
+
+        // TODO(Jace): Could this be a bug?
+        //             I'd expect this to use boss->main.worldX/Y
+        //             instead of their floored counterparts.
+        sub_80122DC(Q_24_8(worldX), Q_24_8(worldY));
+
+        if (boss->main.unk16 == 0) {
+            if (IsColliding_Cheese(s, worldX, worldY, 0, &gPlayer) == TRUE) {
+                sub_80423EC(boss);
+            }
+        }
+    }
+}
+
+void AeroEgg_CreateBombIfReady(AeroEgg *boss)
+{
+    Sprite *s;
+
+    if (boss->main.timerBombDrop > 0) {
+        boss->main.timerBombDrop--;
+        return;
+    }
+
+    s = &boss->sub.spr70;
+    CreateAeroEggBomb(boss, boss->main.worldX, boss->main.worldY + Q_24_8(26.0));
+
+    if (boss->main.lives <= 4) {
+        boss->main.timerBombDrop = AEROEGG_COOLDOWN_PINCH;
+    } else {
+        boss->main.timerBombDrop = AEROEGG_COOLDOWN_NORMAL;
+    }
+
+    s->graphics.anim = SA2_ANIM_AERO_EGG_COCKPIT;
+    s->variant = 2;
+    s->prevVariant = -1;
+}
+
+void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss)
 {
     AeroEggSub *sub = &boss->sub;
     Sprite *s;
@@ -166,8 +233,8 @@ void sub_8041C48(AeroEgg *boss)
 
     if (sub->unk6C == 0) {
         s = &sub->sprA8;
-        s->x = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x + AERO_EGG_PILOT_OFFSET_X;
-        s->y = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y + AERO_EGG_PILOT_OFFSET_Y;
+        s->x = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x + AEROEGG_PILOT_OFFSET_X;
+        s->y = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y + AEROEGG_PILOT_OFFSET_Y;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
@@ -177,6 +244,8 @@ void sub_8041C48(AeroEgg *boss)
 
         s->x = Q_24_8_TO_INT(sub->tail[i].x) - gCamera.x;
         s->y = Q_24_8_TO_INT(sub->tail[i].y) - gCamera.y;
+        // NOTE(Jace): No need to call UpdateSpriteAnimation(s) here, since
+        //             the anim on consists of showing one image, anyway.
         DisplaySprite(s);
     }
 
@@ -538,7 +607,7 @@ void Task_80426C4(void)
     AeroEgg_UpdatePos(boss);
     sub_8041B44(boss);
     sub_80424EC(boss);
-    sub_8041BF8(boss);
+    AeroEgg_CreateBombIfReady(boss);
     sub_8041880(boss);
     sub_8042560(boss);
     sub_8041A08(boss);

@@ -288,7 +288,7 @@ Task_AeroEggExploding: @ 0x080417A0
 	adds r0, r4, #0
 	bl sub_80424EC
 	adds r0, r4, #0
-	bl sub_8041C48
+	bl AeroEgg_UpdateBossSpritesOnDefeat
 	adds r0, r4, #0
 	bl sub_8042560
 	adds r0, r4, #0
@@ -721,138 +721,6 @@ _08041B36:
 	.align 2, 0
 _08041B3C: .4byte 0x00000296
 _08041B40: .4byte 0x00000141
-
-	thumb_func_start sub_8041B44
-sub_8041B44: @ 0x08041B44
-	push {r4, r5, r6, r7, lr}
-	mov r7, r8
-	push {r7}
-	sub sp, #4
-	adds r4, r0, #0
-	ldrb r0, [r4, #0x16]
-	cmp r0, #0
-	bne _08041BE8
-	ldr r0, [r4, #4]
-	asrs r7, r0, #8
-	ldr r0, [r4, #8]
-	asrs r5, r0, #8
-	movs r0, #0x88
-	adds r0, r0, r4
-	mov r8, r0
-	ldr r6, _08041B98 @ =gPlayer
-	ldr r0, [r6, #0x20]
-	movs r1, #0x80
-	ands r0, r1
-	cmp r0, #0
-	bne _08041BC0
-	str r6, [sp]
-	mov r0, r8
-	adds r1, r7, #0
-	adds r2, r5, #0
-	movs r3, #0
-	bl sub_800C320
-	cmp r0, #1
-	bne _08041BA4
-	ldr r0, [r6, #0xc]
-	asrs r0, r0, #8
-	cmp r0, r5
-	ble _08041B9C
-	adds r0, r4, #0
-	bl sub_8042774
-	adds r0, r6, #0
-	bl sub_800CBA4
-	b _08041BC0
-	.align 2, 0
-_08041B98: .4byte gPlayer
-_08041B9C:
-	adds r0, r4, #0
-	bl sub_80423EC
-	b _08041BC0
-_08041BA4:
-	str r6, [sp]
-	mov r0, r8
-	adds r1, r7, #0
-	adds r2, r5, #0
-	movs r3, #0
-	bl sub_800CA20
-	str r6, [sp]
-	mov r0, r8
-	adds r1, r7, #0
-	adds r2, r5, #0
-	movs r3, #1
-	bl sub_800CA20
-_08041BC0:
-	lsls r0, r7, #8
-	lsls r1, r5, #8
-	bl sub_80122DC
-	ldrb r0, [r4, #0x16]
-	cmp r0, #0
-	bne _08041BE8
-	ldr r0, _08041BF4 @ =gPlayer
-	str r0, [sp]
-	mov r0, r8
-	adds r1, r7, #0
-	adds r2, r5, #0
-	movs r3, #0
-	bl IsColliding_Cheese
-	cmp r0, #1
-	bne _08041BE8
-	adds r0, r4, #0
-	bl sub_80423EC
-_08041BE8:
-	add sp, #4
-	pop {r3}
-	mov r8, r3
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08041BF4: .4byte gPlayer
-
-	thumb_func_start sub_8041BF8
-sub_8041BF8: @ 0x08041BF8
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	ldrh r0, [r4, #0x12]
-	cmp r0, #0
-	beq _08041C08
-	subs r0, #1
-	strh r0, [r4, #0x12]
-	b _08041C3C
-_08041C08:
-	adds r5, r4, #0
-	adds r5, #0x88
-	ldr r1, [r4, #4]
-	ldr r2, [r4, #8]
-	movs r0, #0xd0
-	lsls r0, r0, #5
-	adds r2, r2, r0
-	adds r0, r4, #0
-	bl CreateAeroEggBomb
-	ldrb r0, [r4, #0x14]
-	cmp r0, #4
-	bhi _08041C26
-	movs r0, #0x50
-	b _08041C28
-_08041C26:
-	movs r0, #0x8c
-_08041C28:
-	strh r0, [r4, #0x12]
-	ldr r0, _08041C44 @ =0x00000295
-	strh r0, [r5, #0xa]
-	adds r1, r5, #0
-	adds r1, #0x20
-	movs r0, #2
-	strb r0, [r1]
-	adds r1, #1
-	movs r0, #0xff
-	strb r0, [r1]
-_08041C3C:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08041C44: .4byte 0x00000295
 
 .if 0
 .endif
