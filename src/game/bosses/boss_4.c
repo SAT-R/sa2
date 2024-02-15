@@ -21,6 +21,9 @@
 #define PAL_BOSS_4_DEFAULT 0
 #define PAL_BOSS_4_HIT     1
 
+#define AERO_EGG_PILOT_OFFSET_X (0)
+#define AERO_EGG_PILOT_OFFSET_Y (-14)
+
 #define RESERVED_EXPLOSION_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2980)
 
 static const u16 gUnknown_080D7F54[][16] = {
@@ -149,8 +152,44 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
         _part.y += Q_24_8(res);                                                         \
     }
 
+void sub_8041C48(AeroEgg *boss)
+{
+    AeroEggSub *sub = &boss->sub;
+    Sprite *s;
+    u8 i;
+
+    s = &boss->sub.spr70;
+    s->x = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x;
+    s->y = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    if (sub->unk6C == 0) {
+        s = &sub->sprA8;
+        s->x = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x + AERO_EGG_PILOT_OFFSET_X;
+        s->y = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y + AERO_EGG_PILOT_OFFSET_Y;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+
+    s = &sub->sprD8;
+    for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
+
+        s->x = Q_24_8_TO_INT(sub->tail[i].x) - gCamera.x;
+        s->y = Q_24_8_TO_INT(sub->tail[i].y) - gCamera.y;
+        DisplaySprite(s);
+    }
+
+    s = &boss->sub.spr108;
+    s->x = Q_24_8_TO_INT(sub->tailTip.x) - gCamera.x;
+    s->y = Q_24_8_TO_INT(sub->tailTip.y) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+}
+
 // (93.54%) https://decomp.me/scratch/PPILk
-NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc", void sub_8041D34(AeroEgg *boss))
+NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
+         void sub_8041D34(AeroEgg *boss))
 {
     ExplosionPartsInfo partsInfo;
     s32 res, tmp;
