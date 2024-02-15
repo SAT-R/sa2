@@ -970,7 +970,7 @@ _08041CC6:
 	.align 2, 0
 _08041D30: .4byte gCamera
 
-.if 01
+.if 0
 	thumb_func_start sub_8041D34
 sub_8041D34: @ 0x08041D34
 	push {r4, r5, r6, r7, lr}
@@ -1101,8 +1101,8 @@ _08041DFA:
 	lsls r1, r1, #1
 	subs r1, r4, r1
 	lsls r1, r1, #0x18
-	lsrs r7, r1, #0x18
-	mov r1, sl
+	lsrs r7, r1, #0x18      @ r7 = rand - Div(rand, 6) * 6;
+	mov r1, sl              @ r1 = sl = sub
 	ldr r0, [r1, #4]
 	asrs r0, r0, #8
 	ldr r3, _08042008 @ =gCamera
@@ -1118,8 +1118,8 @@ _08041DFA:
 	mov r2, r8
 	muls r2, r0, r2
 	adds r2, r2, r6
-	ands r5, r2
-	mov r1, sl
+	ands r5, r2             @ r5 = rand
+	mov r1, sl              @ r1 = sl = sub
 	ldr r0, [r1, #8]
 	asrs r0, r0, #8
 	ldr r1, [r3, #4]
@@ -1131,7 +1131,7 @@ _08041DFA:
 	str r0, [sp, #0x18]
 	mov r1, sp
 	movs r0, #0x40
-	strh r0, [r1, #0x1c]
+	strh r0, [r1, #0x1c]    @ sp1C = partsInfo.velocity = Q_24_8(0.25);
 	mov r3, sp
 	mov r1, r8
 	muls r1, r2, r1
@@ -1180,10 +1180,10 @@ _08041DFA:
 _08041ED0:
 	movs r7, #0
 	ldr r0, [sp, #0x20]
-	adds r0, #0x40
-	str r0, [sp, #0x28]
+	adds r0, #0x40              @ r0 = &boss->sub.tail[0].status
+	str r0, [sp, #0x28]         @ sp00 = &boss->sub.tail[0].status
 	ldr r1, _08042008 @ =gCamera
-	mov sb, r1
+	mov sb, r1                  @ sb = r1 = gCamera
 	mov r5, sp
 	ldr r2, _08041FFC @ =gPseudoRandom
 	mov r8, r2
@@ -1191,44 +1191,44 @@ _08041ED0:
 _08041EE4:
 	lsls r0, r7, #2
 	adds r0, r0, r7
-	lsls r2, r0, #2
+	lsls r2, r0, #2             @ r2 = i * 20
 	ldr r3, [sp, #0x28]
 	adds r0, r3, r2
 	ldr r4, [r0]
 	cmp r4, #0
 	bne _08041F6A
 	adds r0, r7, #4
-	ldr r1, [sp, #0x24]
-	cmp r1, r0
+	ldr r1, [sp, #0x24]         @ r1 = sub->unk6A
+	cmp r1, r0                  @ if(sub->unk6A != i + 4)
 	beq _08041F02
 	adds r0, #0x1a
 	cmp r1, r0
 	bne _08041F6A
 _08041F02:
-	mov r0, sl
+	mov r0, sl                  @ r0 = sl = sub
 	adds r0, #0x18
 	adds r0, r0, r2
 	ldr r0, [r0]
-	asrs r0, r0, #8
-	mov r3, sb
+	asrs r0, r0, #8             @ r0 = Q_24_8_To_INT(sub->tail[i].x))
+	mov r3, sb                  @ r3 = sb = gCamera
 	ldr r1, [r3]
 	subs r0, r0, r1
-	str r0, [sp, #0x14]
-	mov r0, sl
+	str r0, [sp, #0x14]         @ sub->spawnX = Q_24_8_To_INT(sub->tail[i].x) - gCamera.x
+	mov r0, sl                  @ r0 = sl = sub
 	adds r0, #0x1c
 	adds r0, r0, r2
 	ldr r0, [r0]
 	asrs r0, r0, #8
 	ldr r1, [r3, #4]
 	subs r0, r0, r1
-	str r0, [sp, #0x18]
-	strh r4, [r5, #0x1c]
+	str r0, [sp, #0x18]         @ sub->spawnY = Q_24_8_To_INT(sub->tail[i].y) - gCamera.y
+	strh r4, [r5, #0x1c]        @ sub->velocity = 0
 	mov r1, r8
 	ldr r0, [r1]
 	adds r2, r0, #0
 	muls r2, r6, r2
 	ldr r3, _08042004 @ =0x3C6EF35F
-	adds r2, r2, r3
+	adds r2, r2, r3             @ r2 = PseudoRandom32()
 	movs r1, #0x3f
 	ands r1, r2
 	movs r0, #0xfa
@@ -1247,11 +1247,11 @@ _08041F02:
 	subs r0, r0, r1
 	strh r0, [r5, #0xe]
 	ldr r0, _08042010 @ =0x06012980
-	str r0, [sp]
+	str r0, [sp]                @ sub->vram = RESERVED_EXPLOSION_TILES_VRAM
 	ldr r0, _08042014 @ =0x0000026B
-	strh r0, [r5, #8]
-	strh r4, [r5, #0xa]
-	str r4, [sp, #4]
+	strh r0, [r5, #8]           @ sub->anim = SA2_ANIM_EXPLOSION
+	strh r4, [r5, #0xa]         @ sub->variant = 0
+	str r4, [sp, #4]            @ sub->unk4 = 0
 	mov r0, sp
 	mov r1, sl
 	adds r1, #0x69
@@ -1262,7 +1262,7 @@ _08041F6A:
 	lsrs r7, r0, #0x18
 	cmp r7, #2
 	bls _08041EE4
-	ldr r3, [sp, #0x24]
+	ldr r3, [sp, #0x24]         @ r3 = sub->unk6A
 	cmp r3, #0x29
 	beq _08041F7E
 	cmp r3, #0x12

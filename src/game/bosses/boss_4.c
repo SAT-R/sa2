@@ -162,43 +162,45 @@ typedef struct {
     /* 0x1C */ s16 velocity;
 } ExplosionPartsInfo_TEMP_COPY___REMOVE_THIS;
 
-#if 0
+#if 01
+// (89.35%) https://decomp.me/scratch/KnJSg
 void sub_8041D34(AeroEgg *boss)
 {
+    ExplosionPartsInfo partsInfo;
     s32 res;
     AeroEggSub *sub = &boss->sub;
 
-    sub->unk6A--;
+    u32 newUnk6A;
+    --sub->unk6A;
+    newUnk6A = sub->unk6A;
 
     if (sub->unk6C != 0) {
         return;
     }
     // _08041D62
 
-    res = Mod(sub->unk6A, 12);
+    res = Mod(newUnk6A, 12);
 
     if (res == 0) {
-        ExplosionPartsInfo partsInfo;
+        s32 rand, temp;
         s32 spawnX, spawnY;
-        s32 rand;
 
         sub->unk6A = 0x30;
         rand = PseudoRandom32();
         spawnX = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x;
-        spawnX += (rand & 0x1F) - 0x1F;
+        spawnX += (rand & 0x1F);
+        spawnX -= 0x1F;
         partsInfo.spawnX = spawnX;
 
         rand = PseudoRandom32();
-        spawnY = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y;
-        spawnY += (rand & 0x3F) - 0x30;
+        spawnY = (Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y) + (rand % 64u);
+        spawnY -= 0x30;
         partsInfo.spawnY = spawnY;
         partsInfo.velocity = 0;
 
-        rand = PseudoRandom32();
-        partsInfo.rotation = (1000 - (rand & 0x3F));
+        partsInfo.rotation = (1000 - (PseudoRandom32() & 0x3F));
 
-        rand = PseudoRandom32();
-        partsInfo.speed = 1024 - (rand & 0x1FF);
+        partsInfo.speed = 1024 - (PseudoRandom32() & 0x1FF);
 
         partsInfo.vram = RESERVED_EXPLOSION_TILES_VRAM;
         partsInfo.anim = SA2_ANIM_EXPLOSION;
@@ -210,38 +212,89 @@ void sub_8041D34(AeroEgg *boss)
     // _08041DFA
 
     if ((sub->unk6A & 0x3) == 0) {
-        ExplosionPartsInfo partsInfo;
+
         s32 spawnX, spawnY;
         s32 rand, divRes;
         u8 r7;
 
-        rand = PseudoRandom32() & 0xF;
+        rand = (PseudoRandom32() & 0xF);
         r7 = rand - Div(rand, 6) * 6;
+        spawnX = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x;
+        spawnX -= rand * 2;
+        spawnX += rand * 4;
+        partsInfo.spawnX = spawnX;
 
-        rand = PseudoRandom32();
+        rand = PseudoRandom32() & 0xF;
         spawnY = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y;
         spawnY += (rand & 0x3F) - 0x30;
         partsInfo.spawnY = spawnY;
-        partsInfo.velocity = 0;
 
-        rand = PseudoRandom32();
-        partsInfo.rotation = (1000 - (rand & 0x3F));
+        partsInfo.velocity = Q_24_8(0.25);
 
-        rand = PseudoRandom32();
-        partsInfo.speed = 1024 - (rand & 0x1FF);
+        partsInfo.rotation = (PseudoRandom32() & 0x3FF);
+        partsInfo.speed = 1792 - (PseudoRandom32() % 512u);
 
-        partsInfo.vram = RESERVED_EXPLOSION_TILES_VRAM;
-        partsInfo.anim = SA2_ANIM_EXPLOSION;
-        partsInfo.variant = 0;
-        partsInfo.unk4 = 0;
+        partsInfo.vram
+            = (void *)(OBJ_VRAM0 + (gTileInfoBossScrews[r7][0] * TILE_SIZE_4BPP));
+        partsInfo.anim = gTileInfoBossScrews[r7][1];
+        partsInfo.variant = gTileInfoBossScrews[r7][2];
+        partsInfo.unk4 = 1;
 
         CreateBossParticleWithExplosionUpdate(&partsInfo, &sub->unk69);
     }
     // _08041ED0
+
+    {
+        u8 i;
+        for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
+
+            s32 divRes;
+            u8 r7;
+
+            if (boss->sub.tail[i].status != 0) {
+                continue;
+            }
+
+            if ((newUnk6A == i + 4) || (newUnk6A == i + 30)) {
+                partsInfo.spawnX = Q_24_8_TO_INT(sub->tail[i].x) - gCamera.x;
+                partsInfo.spawnY = Q_24_8_TO_INT(sub->tail[i].y) - gCamera.y;
+                partsInfo.velocity = 0;
+
+                partsInfo.rotation = (1000 - (PseudoRandom32() & 0x3F));
+
+                partsInfo.speed = 1024 - (PseudoRandom32() & 0x1FF);
+
+                partsInfo.vram = RESERVED_EXPLOSION_TILES_VRAM;
+                partsInfo.anim = SA2_ANIM_EXPLOSION;
+                partsInfo.variant = 0;
+                partsInfo.unk4 = 0;
+                CreateBossParticleWithExplosionUpdate(&partsInfo, &sub->unk69);
+            }
+        }
+    }
+
+    if ((newUnk6A == 41) || (newUnk6A == 18)) {
+
+        if (sub->tailTip.status == 0) {
+            partsInfo.spawnX = Q_24_8_TO_INT(sub->tailTip.x) - gCamera.x;
+            partsInfo.spawnY = Q_24_8_TO_INT(sub->tailTip.y) - gCamera.y;
+            partsInfo.velocity = 0;
+
+            partsInfo.rotation = (1000 - (PseudoRandom32() % 64u));
+
+            partsInfo.speed = 1024 - (PseudoRandom32() % 512u);
+
+            partsInfo.vram = RESERVED_EXPLOSION_TILES_VRAM;
+            partsInfo.anim = SA2_ANIM_EXPLOSION;
+            partsInfo.variant = 0;
+            partsInfo.unk4 = 0;
+            CreateBossParticleWithExplosionUpdate(&partsInfo, &sub->unk69);
+        }
+    }
 }
 #endif
 
-// (93.60%) https://decomp.me/scratch/bgy7t
+// (99.64%) https://decomp.me/scratch/WJcpn
 NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
          void AeroEgg_InitPartsDefeated(AeroEgg *boss))
 {
