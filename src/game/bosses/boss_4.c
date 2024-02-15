@@ -162,9 +162,8 @@ typedef struct {
     /* 0x1C */ s16 velocity;
 } ExplosionPartsInfo_TEMP_COPY___REMOVE_THIS;
 
-#if 01
 // (93.54%) https://decomp.me/scratch/PPILk
-void sub_8041D34(AeroEgg *boss)
+NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc", void sub_8041D34(AeroEgg *boss))
 {
     ExplosionPartsInfo partsInfo;
     s32 res, tmp;
@@ -297,7 +296,7 @@ void sub_8041D34(AeroEgg *boss)
         }
     }
 }
-#endif
+END_NONMATCH
 
 // (99.64%) https://decomp.me/scratch/WJcpn
 NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
