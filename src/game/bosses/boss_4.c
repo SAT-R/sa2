@@ -149,19 +149,6 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
         _part.y += Q_24_8(res);                                                         \
     }
 
-typedef struct {
-    /* 0x00 */ void *vram;
-    /* 0x04 */ u32 unk4;
-    /* 0x08 */ AnimId anim;
-    /* 0x0A */ u16 variant;
-    /* 0x0C */ u16 rotation;
-    /* 0x0E */ u16 speed;
-    /* 0x10 */ u8 filler10[0x4];
-    /* 0x14 */ s32 spawnX;
-    /* 0x18 */ s32 spawnY;
-    /* 0x1C */ s16 velocity;
-} ExplosionPartsInfo_TEMP_COPY___REMOVE_THIS;
-
 // (93.54%) https://decomp.me/scratch/PPILk
 NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc", void sub_8041D34(AeroEgg *boss))
 {
