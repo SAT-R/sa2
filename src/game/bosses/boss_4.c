@@ -48,8 +48,8 @@ typedef struct {
 
 typedef struct {
     /* 0x000 */ s32 unk0;
-    /* 0x004 */ s32 worldX;
-    /* 0x008 */ s32 worldY;
+    /* 0x004 */ s32 qWorldX;
+    /* 0x008 */ s32 qWorldY;
     /* 0x00C */ s16 dx;
     /* 0x00E */ s16 dy;
     /* 0x010 */ u16 timerUnk;
@@ -162,32 +162,76 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
         _part.y += Q_24_8(res);                                                         \
     }
 
-// (91.86%) https://decomp.me/scratch/Lc32u
-NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8041A08.inc",
-         void sub_8041A08(AeroEgg *boss))
+#if 0
+void sub_8041880(AeroEgg *boss)
+{
+    u8 i;
+
+    Sprite *s = &boss->sub.spr70;
+    s->x = I(boss->main.qWorldX) - gCamera.x;
+    s->y = I(boss->main.qWorldY) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    s = &boss->sub.sprA8;
+    s->x = I(boss->main.qWorldX) - gCamera.x;
+    s->y = I(boss->main.qWorldY) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    s = &boss->sub.sprD8;
+    for(i = 0; i < ARRAY_COUNT(boss->sub.tail); i++)
+    {
+        s32 xVal, yVal;
+        s32 bossX, bossY;
+        s32 sinV, cosV;
+        u16 period = SIN_24_8(((gStageTime * 12) + (i << 7)) & ONE_CYCLE) >> 3;
+
+        bossX = I(boss->main.qWorldX);
+        period = (period + 500) & ONE_CYCLE;
+        cosV = (COS(period) * 17);
+        cosV *= (i + 1);
+        cosV >>= 14;
+        bossX += cosV;
+        s->x = bossX;
+
+        bossY = I(boss->main.qWorldY);
+        sinV = (SIN(period) * 17);
+        sinV *= (i + 1);
+        sinV >>= 14;
+        sinV += 0x14;
+        bossY += sinV;
+        s->y = bossY;
+
+        DisplaySprite(s);
+    }
+}
+#endif
+
+void sub_8041A08(AeroEgg *boss)
 {
     bool32 r7;
     u16 tVal16;
     Sprite *s;
     s32 worldX0, worldY0;
     s32 worldX, worldY;
+    u32 tVal;
 
     r7 = FALSE;
-    s = &boss->sub.spr108;
 
-    // tVal = ((u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3) + 500);
-    worldX0 = Q_24_8_TO_INT(boss->main.worldX)
+    tVal = ((u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3) + 500);
+    s = &boss->sub.spr108;
+    worldX0 = AEROEGG_UNK_OFFSET_X + Q_24_8_TO_INT(boss->main.qWorldX)
         + ((COS(((u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3) + 500)
                 & ONE_CYCLE)
             * 15)
            >> 12);
-    worldX = AEROEGG_UNK_OFFSET_X + worldX0;
-    worldY0 = Q_24_8_TO_INT(boss->main.worldY)
+    worldX = worldX0;
+    worldY0 = AEROEGG_UNK_OFFSET_Y + Q_24_8_TO_INT(boss->main.qWorldY)
         + ((SIN(((u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3) + 500)
                 & ONE_CYCLE)
             * 15)
-           >> 12)
-        + AEROEGG_UNK_OFFSET_Y;
+           >> 12);
     worldY = worldY0;
 
     if (boss->main.unk17 == 0) {
@@ -232,15 +276,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8041A08.inc",
         }
     }
 }
-END_NONMATCH
 
 void sub_8041B44(AeroEgg *boss)
 {
     Sprite *s;
 
     if (boss->main.unk16 == 0) {
-        s32 worldX = Q_24_8_TO_INT(boss->main.worldX);
-        s32 worldY = Q_24_8_TO_INT(boss->main.worldY);
+        s32 worldX = Q_24_8_TO_INT(boss->main.qWorldX);
+        s32 worldY = Q_24_8_TO_INT(boss->main.qWorldY);
 
         s = &boss->sub.spr70;
 
@@ -259,7 +302,7 @@ void sub_8041B44(AeroEgg *boss)
         }
 
         // TODO(Jace): Could this be a bug?
-        //             I'd expect this to use boss->main.worldX/Y
+        //             I'd expect this to use boss->main.qWorldX/Y
         //             instead of their floored counterparts.
         sub_80122DC(Q_24_8(worldX), Q_24_8(worldY));
 
@@ -281,7 +324,7 @@ void AeroEgg_CreateBombIfReady(AeroEgg *boss)
     }
 
     s = &boss->sub.spr70;
-    CreateAeroEggBomb(boss, boss->main.worldX, boss->main.worldY + Q_24_8(26.0));
+    CreateAeroEggBomb(boss, boss->main.qWorldX, boss->main.qWorldY + Q_24_8(26.0));
 
     if (boss->main.lives <= 4) {
         boss->main.timerBombDrop = AEROEGG_COOLDOWN_PINCH;
@@ -505,14 +548,14 @@ NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
             s32 bossX, bossY;
             s32 sinV, cosV;
 
-            bossX = Q_24_8_TO_INT(boss->main.worldX);
+            bossX = Q_24_8_TO_INT(boss->main.qWorldX);
             period = (period + 500) & ONE_CYCLE;
             cosV = (COS(period) * 17);
             cosV *= (i + 1);
             cosV >>= 14;
             bossX += cosV;
 
-            bossY = Q_24_8_TO_INT(boss->main.worldY);
+            bossY = Q_24_8_TO_INT(boss->main.qWorldY);
             sinV = (SIN(period) * 17);
             sinV *= (i + 1);
             sinV >>= 14;
@@ -642,8 +685,8 @@ void AeroEggResetPos(s32 dx, s32 dy)
     u8 i;
     AeroEggSub *sub = &boss->sub;
 
-    boss->main.worldX += dx;
-    boss->main.worldY += dy;
+    boss->main.qWorldX += dx;
+    boss->main.qWorldY += dy;
     sub->cockpit.x += dx;
     sub->cockpit.y += dy;
 
@@ -660,8 +703,8 @@ void Task_AeroEggMain(void)
 {
     AeroEgg *boss = TASK_DATA(gCurTask);
 
-    boss->main.worldX += boss->main.dx;
-    boss->main.worldX += Q_24_8(2.25);
+    boss->main.qWorldX += boss->main.dx;
+    boss->main.qWorldX += Q_24_8(2.25);
 
     sub_80424EC(boss);
     sub_8041880(boss);
@@ -704,8 +747,8 @@ void Task_DeleteAeroEggTask(void) { TaskDestroy(gCurTask); }
 
 void AeroEgg_UpdatePos(AeroEgg *boss)
 {
-    boss->main.worldX += boss->main.dx;
-    boss->main.worldY += boss->main.dy;
+    boss->main.qWorldX += boss->main.dx;
+    boss->main.qWorldY += boss->main.dy;
 }
 
 void sub_8042774(AeroEgg *boss)
@@ -748,7 +791,7 @@ void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY)
     eb->boss = boss;
 
     s = &eb->s;
-    s->x = Q_24_8_TO_INT(boss->main.worldX) - gCamera.x;
+    s->x = Q_24_8_TO_INT(boss->main.qWorldX) - gCamera.x;
     s->y = Q_24_8_TO_INT(eb->screenY);
     s->graphics.dest = boss->sub.tilesBomb;
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_AERO_EGG_BOMB, 0, 21, 2, 0);
@@ -765,12 +808,12 @@ static void Task_CreateAeroEggBombMain(void)
 
     if (eb->tAlive < 16) {
         eb->screenY += Q_24_8(1.0);
-        s->x = Q_24_8_TO_INT(eb->boss->main.worldX) - gCamera.x;
+        s->x = Q_24_8_TO_INT(eb->boss->main.qWorldX) - gCamera.x;
         s->y = Q_24_8_TO_INT(eb->screenY);
 
         if (eb->tAlive == 16 - 1) {
             m4aSongNumStart(SE_PROJECTILE_DROP);
-            eb->screenX = eb->boss->main.worldX - Q_24_8(gCamera.x);
+            eb->screenX = eb->boss->main.qWorldX - Q_24_8(gCamera.x);
         }
     } else {
         eb->dy += Q_24_8(0.0625);

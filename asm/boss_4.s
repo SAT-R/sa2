@@ -382,10 +382,10 @@ sub_8041880: @ 0x08041880
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
-	mov r8, r0
+	mov r8, r0              @ r8 = boss
 	mov r7, r8
-	adds r7, #0x88
-	mov r1, r8
+	adds r7, #0x88          @ r7 = s = boss->sub.spr70
+	mov r1, r8              @ r1 = r8 = boss
 	ldr r0, [r1, #4]
 	asrs r0, r0, #8
 	ldr r4, _080419F8 @ =gCamera
@@ -440,8 +440,8 @@ _080418E6:
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x19
 	lsls r0, r0, #0x10
-	lsrs r6, r0, #0x10
-	mov r0, r8
+	lsrs r6, r0, #0x10          @ r6 = period
+	mov r0, r8                  @ r0 = r8 = boss
 	ldr r2, [r0, #4]
 	asrs r2, r2, #8
 	mov r1, sl
