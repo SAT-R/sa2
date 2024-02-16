@@ -8,6 +8,8 @@
 
 #include "game/unknown_effect.h"
 
+#include "game/multiplayer/finish.h"
+
 #include "lib/m4a.h"
 
 #include "constants/songs.h"
@@ -167,4 +169,143 @@ void sub_8018AD8(struct MultiSioData_0_0 *recv, u8 i)
             }
         }
     }
+}
+
+void sub_8018E00(struct MultiSioData_0_0 *recv, u8 i)
+{
+    u32 j;
+    struct MultiplayerPlayer *mpp;
+
+    s32 count2 = 0;
+    s32 count3 = 0;
+    s32 count = 0;
+    bool8 somebool = FALSE;
+    mpp = TASK_DATA(gMultiplayerPlayerTasks[i]);
+
+    for (j = 0; j < 4; j++) {
+        // u32 id = SIO_MULTI_CNT->id;
+        struct MultiplayerPlayer *mpp2;
+        if (gMultiplayerPlayerTasks[j] == NULL) {
+            break;
+        }
+        count++;
+        mpp2 = TASK_DATA(gMultiplayerPlayerTasks[j]);
+        if (gGameMode != GAME_MODE_TEAM_PLAY) {
+
+            if (mpp2->unk5C & 1 && gUnknown_030054B4[j] != -1) {
+                count2++;
+                count3++;
+            }
+        } else {
+            if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
+                    != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
+                        >> (SIO_MULTI_CNT->id + 4)
+                && (s8)gUnknown_030054B4[j] == 0) {
+                count2 = 1;
+            }
+        }
+    }
+
+    if (gUnknown_030054B4[i] == -1) {
+        sub_8019CCC(i, count2);
+    } else {
+        somebool = 1;
+    }
+
+    if (gGameMode == GAME_MODE_TEAM_PLAY) {
+        for (j = 0; j < 4 && gMultiplayerPlayerTasks[j] != NULL; j++) {
+            if (j != i && gUnknown_030054B4[j] == -1
+                && (gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
+                    == (gMultiplayerConnections & (0x10 << (i))) >> (i + 4)) {
+                sub_8019CCC(j, count2);
+                if (j == SIO_MULTI_CNT->id) {
+                    sub_80218E4(&gPlayer);
+                    gPlayer.moveState &= ~MOVESTATE_8;
+                    gPlayer.moveState &= ~MOVESTATE_20;
+                    gPlayer.moveState &= ~MOVESTATE_4;
+                    gPlayer.moveState &= ~MOVESTATE_10;
+                    gPlayer.moveState |= MOVESTATE_IN_AIR;
+                    gPlayer.moveState &= ~MOVESTATE_400;
+                    gPlayer.moveState &= ~MOVESTATE_100;
+                    gPlayer.unk64 = 0x14;
+                    sub_8023B5C(&gPlayer, 0xe);
+                    gPlayer.unk16 = 6;
+                    gPlayer.unk17 = 0xE;
+                    gPlayer.unk61 = 0;
+                    gPlayer.unk62 = 0;
+                    gPlayer.speedGroundX = 0;
+                    gPlayer.speedAirX = 0;
+                    gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
+                    gPlayer.unk5C = 0;
+                    gPlayer.moveState |= MOVESTATE_FACING_LEFT;
+                    gPlayer.unk64 = 0x1C;
+                    gPlayer.moveState |= MOVESTATE_800000;
+                }
+            }
+        }
+    }
+
+    mpp->unk5C |= 1;
+
+    if (count2 == 0 && !(gUnknown_03005424 & 1)) {
+        gUnknown_03005424 |= 4;
+        gCourseTime = 3600; // max?
+    };
+
+    if ((count3 + 1) >= (u32)(count - 1) || gGameMode == GAME_MODE_TEAM_PLAY) {
+        for (j = 0; j < 4; j++) {
+            struct MultiplayerPlayer *mpp2;
+
+            if (gMultiplayerPlayerTasks[j] == NULL) {
+                break;
+            }
+
+            mpp2 = TASK_DATA(gMultiplayerPlayerTasks[j]);
+            if (gUnknown_030054B4[j] == -1) {
+                if (gGameMode == GAME_MODE_TEAM_PLAY) {
+                    sub_8019CCC(j, 1);
+                } else {
+                    u32 temp;
+                    struct UNK_3005510 *unk10;
+                    sub_8019CCC(j, count - 1);
+                    mpp2->unk5C |= 1;
+                    gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
+                    gPlayer.unk5C = 0;
+                    temp = gUnknown_03005438;
+                    unk10 = &gUnknown_03005510[temp];
+                    gUnknown_03005438++;
+                    gUnknown_03005438 &= 0xF;
+
+                    unk10->unk0 = 7;
+                }
+            }
+        }
+
+        if (!somebool) {
+            sub_8019F08();
+        }
+    }
+}
+
+void Task_80188FC(void);
+struct Task *sub_8019120(void)
+{
+    struct Task *t = TaskCreate(Task_80188FC, 0, -2, 0, NULL);
+    DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
+    DmaFill32(3, 0, &gMultiSioRecv, sizeof(gMultiSioRecv));
+    DmaFill32(3, 0, &gUnknown_03005510, sizeof(gUnknown_03005510));
+    gUnknown_03005438 = gUnknown_03005420 = 0;
+    return t;
+}
+
+void Task_8018A28(void);
+struct Task *sub_80191A4(void)
+{
+    struct Task *t = TaskCreate(Task_8018A28, 0, 1, 0, NULL);
+    DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
+    DmaFill32(3, 0, &gMultiSioRecv, sizeof(gMultiSioRecv));
+    DmaFill32(3, 0, &gUnknown_03005510, sizeof(gUnknown_03005510));
+    gUnknown_03005420 = 0;
+    gUnknown_03005438 = 0;
+    return t;
 }
