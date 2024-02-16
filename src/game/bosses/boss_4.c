@@ -10,8 +10,10 @@
 #include "game/game.h" // sub_801E4E4
 #include "game/entity.h" // sub_800DF38
 #include "game/bosses/common.h"
-#include "game/screen_shake.h"
+#include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/player_callbacks_1.h" // Player_DisableInputAndBossTimer
+#include "game/screen_shake.h"
+#include "game/stage/boss_results_transition.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -66,7 +68,7 @@ typedef struct {
     /* 0x01C 0x04  */ AeroEggPart body;
     /* 0x030 0x18  */ AeroEggPart tail[NUM_TAIL_SEGMENTS];
     /* 0x06C 0x54  */ AeroEggPart tailTip;
-    /* 0x080 0x68  */ u8 unk68;
+    /* 0x080 0x68  */ s8 unk68;
     /* 0x081 0x69  */ u8 unk69; // explosion parts count?
     /* 0x082 0x6A  */ u8 unk6A;
     /* 0x083 0x6B  */ u8 unk6B;
@@ -102,10 +104,12 @@ static void Task_DeleteAeroEggBombTask(void);
 static void Task_AeroEggBombDebris(void);
 void Task_AeroEggExploding(void);
 void Task_80426C4(void);
+void Task_DeleteAeroEggTask(void);
 static void Task_8042AB0(void);
 void sub_8041B44(AeroEgg *boss);
 void sub_8041880(AeroEgg *boss);
 void sub_8041A08(AeroEgg *boss);
+void sub_8041D34(AeroEgg *boss);
 void AeroEgg_CreateBombIfReady(AeroEgg *boss);
 void AeroEgg_InitPartsDefeated(AeroEgg *boss);
 bool32 sub_80423EC(AeroEgg *boss);
@@ -114,6 +118,8 @@ void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY);
 void sub_8042560(AeroEgg *boss);
 void sub_8042774(AeroEgg *boss);
 void AeroEgg_UpdatePos(AeroEgg *boss);
+void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss);
+void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
 
@@ -160,6 +166,38 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
     } else if (_part.status != 0) {                                                     \
         _part.y += Q(res);                                                              \
     }
+
+void Task_AeroEggExploding(void)
+{
+    AeroEgg *boss = TASK_DATA(gCurTask);
+    AeroEggSub *sub = &boss->sub;
+
+    AeroEgg_UpdatePartsAfterBossDefeated(boss);
+    sub_80424EC(boss);
+    AeroEgg_UpdateBossSpritesOnDefeat(boss);
+    sub_8042560(boss);
+    sub_8041D34(boss);
+
+    if (Mod(gStageTime, 13) == 0) {
+        m4aSongNumStart(SE_144);
+    }
+
+    if (sub->unk6C == 0) {
+        if ((I(sub->body.x) - gCamera.x < 50) && (sub->unk68 != 0)) {
+            sub->unk6C = 1;
+
+            CreateEggmobileEscapeSequence(I(sub->body.x) - gCamera.x,
+                                          I(sub->body.y) - gCamera.y - 15,
+                                          SPRITE_FLAG(PRIORITY, 2));
+        }
+    }
+    // _08041830
+
+    if ((I(boss->sub.body.x) - gCamera.x < -200) && (boss->sub.unk6C != 0)) {
+        sub_802EF68(-40, 150, 3);
+        gCurTask->main = Task_DeleteAeroEggTask;
+    }
+}
 
 // (85.03%) https://decomp.me/scratch/WXKoG
 NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
