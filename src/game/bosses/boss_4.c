@@ -23,10 +23,10 @@
 #define PAL_BOSS_4_HIT     1
 
 // TODO: Probably these will be globally automated in the long run?
-#define AEROEGG_PILOT_OFFSET_X (0)
-#define AEROEGG_PILOT_OFFSET_Y (-14)
-#define AEROEGG_UNK_OFFSET_X   (0)
-#define AEROEGG_UNK_OFFSET_Y   (20)
+#define AEROEGG_PILOT_OFFSET_X   (0)
+#define AEROEGG_PILOT_OFFSET_Y   (-14)
+#define AEROEGG_TAILTIP_OFFSET_X (0)
+#define AEROEGG_TAILTIP_OFFSET_Y (20)
 
 #define AEROEGG_COOLDOWN_NORMAL ZONE_TIME_TO_INT(0, 2. + (1. / 3.))
 #define AEROEGG_COOLDOWN_PINCH  ZONE_TIME_TO_INT(0, 1. + (1. / 3.))
@@ -63,7 +63,7 @@ typedef struct {
 typedef struct {
     /* Full  Sub   */
     /* 0x018 0x00  */ u32 unk00;
-    /* 0x01C 0x04  */ AeroEggPart cockpit;
+    /* 0x01C 0x04  */ AeroEggPart body;
     /* 0x030 0x18  */ AeroEggPart tail[NUM_TAIL_SEGMENTS];
     /* 0x06C 0x54  */ AeroEggPart tailTip;
     /* 0x080 0x68  */ u8 unk68;
@@ -72,11 +72,11 @@ typedef struct {
     /* 0x083 0x6B  */ u8 unk6B;
     /* 0x084 0x6C  */ u8 unk6C;
     /* 0x085 0x6D  */ u8 filler85[0x3];
-    /* 0x088 0x70  */ Sprite spr70;
-    /* 0x0B8 0xA0  */ u8 fillerB8[0x8];
-    /* 0x0C0 0xA8  */ Sprite sprA8;
-    /* 0x0F0 0xD8  */ Sprite sprD8;
-    /* 0x120 0x108 */ Sprite spr108;
+    /* 0x088 0x70  */ Sprite sprBody;
+    /* 0x0B8 0xA0  */ Hitbox reserved;
+    /* 0x0C0 0xA8  */ Sprite sprPilot;
+    /* 0x0F0 0xD8  */ Sprite sprTail;
+    /* 0x120 0x108 */ Sprite sprTailTip;
     /* 0x150 0x138 */ void *tilesBomb;
 } AeroEggSub;
 
@@ -117,7 +117,7 @@ void AeroEgg_UpdatePos(AeroEgg *boss);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
 
-#define AE_DEFEATED_COLL_COCKPIT(_sub, _part)                                           \
+#define AE_DEFEATED_COLL_BODY(_sub, _part)                                              \
     {                                                                                   \
         if (_sub->unk6B != 0) {                                                         \
             if (--_sub->unk6B == 0) {                                                   \
@@ -145,11 +145,10 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
     _part.x += _part.dx;                                                                \
     _part.y += _part.dy;                                                                \
                                                                                         \
-    res = sub_801E4E4(Q_24_8_TO_INT(_part.y) + _halfHeight, Q_24_8_TO_INT(_part.x), 1,  \
-                      8, NULL, &sub_801EE64);                                           \
+    res = sub_801E4E4(I(_part.y) + _halfHeight, I(_part.x), 1, 8, NULL, &sub_801EE64);  \
                                                                                         \
     if ((res <= 0) && (_part.dy >= 0)) {                                                \
-        _part.y += Q_24_8(res);                                                         \
+        _part.y += Q(res);                                                              \
         _part.dy = Div((_part.dy * (_dyNum)), (_dyDenom));                              \
                                                                                         \
         CODE_ON_COLL;                                                                   \
@@ -159,7 +158,7 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
             _part.dx = 0;                                                               \
         }                                                                               \
     } else if (_part.status != 0) {                                                     \
-        _part.y += Q_24_8(res);                                                         \
+        _part.y += Q(res);                                                              \
     }
 
 #if 0
@@ -167,19 +166,19 @@ void sub_8041880(AeroEgg *boss)
 {
     u8 i;
 
-    Sprite *s = &boss->sub.spr70;
+    Sprite *s = &boss->sub.sprBody;
     s->x = I(boss->main.qWorldX) - gCamera.x;
     s->y = I(boss->main.qWorldY) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    s = &boss->sub.sprA8;
+    s = &boss->sub.sprPilot;
     s->x = I(boss->main.qWorldX) - gCamera.x;
     s->y = I(boss->main.qWorldY) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    s = &boss->sub.sprD8;
+    s = &boss->sub.sprTail;
     for(i = 0; i < ARRAY_COUNT(boss->sub.tail); i++)
     {
         s32 xVal, yVal;
@@ -219,27 +218,19 @@ void sub_8041A08(AeroEgg *boss)
 
     r7 = FALSE;
 
-    tVal = ((u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3) + 500);
-    s = &boss->sub.spr108;
-    worldX0 = AEROEGG_UNK_OFFSET_X + Q_24_8_TO_INT(boss->main.qWorldX)
-        + ((COS(((u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3) + 500)
-                & ONE_CYCLE)
-            * 15)
-           >> 12);
-    worldX = worldX0;
-    worldY0 = AEROEGG_UNK_OFFSET_Y + Q_24_8_TO_INT(boss->main.qWorldY)
-        + ((SIN(((u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3) + 500)
-                & ONE_CYCLE)
-            * 15)
-           >> 12);
-    worldY = worldY0;
+    tVal = (u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3);
+    s = &boss->sub.sprTailTip;
+    worldX = AEROEGG_TAILTIP_OFFSET_X + I(boss->main.qWorldX)
+        + ((COS((tVal + 500) & ONE_CYCLE) * 15) >> 12);
+    worldY = AEROEGG_TAILTIP_OFFSET_Y + I(boss->main.qWorldY)
+        + ((SIN((tVal + 500) & ONE_CYCLE) * 15) >> 12);
 
     if (boss->main.unk17 == 0) {
         Player *p = &gPlayer;
 
         if ((p->speedAirY > 0) && (p->moveState & MOVESTATE_IN_AIR)) {
             if (!sub_800DF38(s, worldX, worldY, p) == COLL_NONE) {
-                s16 v = -Q_24_8(4.75);
+                s16 v = -Q(4.75);
                 p->speedAirY = v;
                 p->moveState &= ~(MOVESTATE_100 | MOVESTATE_8);
                 p->unk3C = NULL;
@@ -247,7 +238,6 @@ void sub_8041A08(AeroEgg *boss)
                 p->transition = 5;
                 r7 = TRUE;
             }
-            // _08041ABA
         }
 
         if (++boss->main.timerUnk > ZONE_TIME_TO_INT(0, 5)) {
@@ -262,14 +252,12 @@ void sub_8041A08(AeroEgg *boss)
             boss->main.unk17 = TRUE;
         }
     } else {
-        // _08041B08
         if (--boss->main.timerUnk == 18) {
             AnimId anim = SA2_ANIM_AERO_EGG_PLATFORM;
             s->graphics.anim = anim;
             s->variant = 3;
             s->prevVariant = -1;
         }
-        // _08041B2C
 
         if (boss->main.timerUnk == 0) {
             boss->main.unk17 = FALSE;
@@ -282,14 +270,14 @@ void sub_8041B44(AeroEgg *boss)
     Sprite *s;
 
     if (boss->main.unk16 == 0) {
-        s32 worldX = Q_24_8_TO_INT(boss->main.qWorldX);
-        s32 worldY = Q_24_8_TO_INT(boss->main.qWorldY);
+        s32 worldX = I(boss->main.qWorldX);
+        s32 worldY = I(boss->main.qWorldY);
 
-        s = &boss->sub.spr70;
+        s = &boss->sub.sprBody;
 
         if (PLAYER_IS_ALIVE) {
             if (sub_800C320(s, worldX, worldY, 0, &gPlayer) == 1) {
-                if (Q_24_8_TO_INT(gPlayer.y) > worldY) {
+                if (I(gPlayer.y) > worldY) {
                     sub_8042774(boss);
                     sub_800CBA4(&gPlayer);
                 } else {
@@ -304,7 +292,7 @@ void sub_8041B44(AeroEgg *boss)
         // TODO(Jace): Could this be a bug?
         //             I'd expect this to use boss->main.qWorldX/Y
         //             instead of their floored counterparts.
-        sub_80122DC(Q_24_8(worldX), Q_24_8(worldY));
+        sub_80122DC(Q(worldX), Q(worldY));
 
         if (boss->main.unk16 == 0) {
             if (IsColliding_Cheese(s, worldX, worldY, 0, &gPlayer) == TRUE) {
@@ -323,8 +311,8 @@ void AeroEgg_CreateBombIfReady(AeroEgg *boss)
         return;
     }
 
-    s = &boss->sub.spr70;
-    CreateAeroEggBomb(boss, boss->main.qWorldX, boss->main.qWorldY + Q_24_8(26.0));
+    s = &boss->sub.sprBody;
+    CreateAeroEggBomb(boss, boss->main.qWorldX, boss->main.qWorldY + Q(26.0));
 
     if (boss->main.lives <= 4) {
         boss->main.timerBombDrop = AEROEGG_COOLDOWN_PINCH;
@@ -332,7 +320,7 @@ void AeroEgg_CreateBombIfReady(AeroEgg *boss)
         boss->main.timerBombDrop = AEROEGG_COOLDOWN_NORMAL;
     }
 
-    s->graphics.anim = SA2_ANIM_AERO_EGG_COCKPIT;
+    s->graphics.anim = SA2_ANIM_AERO_EGG_BODY;
     s->variant = 2;
     s->prevVariant = -1;
 }
@@ -343,33 +331,33 @@ void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss)
     Sprite *s;
     u8 i;
 
-    s = &boss->sub.spr70;
-    s->x = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x;
-    s->y = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y;
+    s = &boss->sub.sprBody;
+    s->x = I(sub->body.x) - gCamera.x;
+    s->y = I(sub->body.y) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
     if (sub->unk6C == 0) {
-        s = &sub->sprA8;
-        s->x = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x + AEROEGG_PILOT_OFFSET_X;
-        s->y = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y + AEROEGG_PILOT_OFFSET_Y;
+        s = &sub->sprPilot;
+        s->x = I(sub->body.x) - gCamera.x + AEROEGG_PILOT_OFFSET_X;
+        s->y = I(sub->body.y) - gCamera.y + AEROEGG_PILOT_OFFSET_Y;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
 
-    s = &sub->sprD8;
+    s = &sub->sprTail;
     for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
 
-        s->x = Q_24_8_TO_INT(sub->tail[i].x) - gCamera.x;
-        s->y = Q_24_8_TO_INT(sub->tail[i].y) - gCamera.y;
+        s->x = I(sub->tail[i].x) - gCamera.x;
+        s->y = I(sub->tail[i].y) - gCamera.y;
         // NOTE(Jace): No need to call UpdateSpriteAnimation(s) here, since
         //             the anim on consists of showing one image, anyway.
         DisplaySprite(s);
     }
 
-    s = &boss->sub.spr108;
-    s->x = Q_24_8_TO_INT(sub->tailTip.x) - gCamera.x;
-    s->y = Q_24_8_TO_INT(sub->tailTip.y) - gCamera.y;
+    s = &boss->sub.sprTailTip;
+    s->x = I(sub->tailTip.x) - gCamera.x;
+    s->y = I(sub->tailTip.y) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 }
@@ -400,13 +388,13 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
 
         sub->unk6A = 0x30;
         rand = PseudoRandom32();
-        spawnX = (Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x);
+        spawnX = (I(sub->body.x) - gCamera.x);
         spawnX += (rand & 0x1F);
         spawnX -= 0x1F;
         partsInfo.spawnX = spawnX;
 
         rand = PseudoRandom32();
-        spawnY = (Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y) + (rand % 64u);
+        spawnY = (I(sub->body.y) - gCamera.y) + (rand % 64u);
         spawnY -= 48;
         partsInfo.spawnY = spawnY;
         partsInfo.velocity = 0;
@@ -430,18 +418,18 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
 
         rand = (PseudoRandom32() & 0xF);
         r7 = rand - Div(rand, 6) * 6;
-        spawnX = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x;
+        spawnX = I(sub->body.x) - gCamera.x;
         spawnX -= rand * 2;
         spawnX += rand * 4;
         partsInfo.spawnX = spawnX;
 
         rand = PseudoRandom32() % 16u;
-        spawnY = Q_24_8_TO_INT(sub->cockpit.y) - gCamera.y;
+        spawnY = I(sub->body.y) - gCamera.y;
         spawnY -= rand * 2;
         spawnY += rand * 4;
         partsInfo.spawnY = spawnY;
 
-        partsInfo.velocity = Q_24_8(0.25);
+        partsInfo.velocity = Q(0.25);
 
         partsInfo.rotation = (PseudoRandom32() & 0x3FF);
         partsInfo.speed = 1792 - (PseudoRandom32() % 512u);
@@ -467,8 +455,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
             }
 
             if ((newUnk6A == i + 4) || (newUnk6A == i + 30)) {
-                partsInfo.spawnX = Q_24_8_TO_INT(sub->tail[i].x) - gCamera.x;
-                partsInfo.spawnY = Q_24_8_TO_INT(sub->tail[i].y) - gCamera.y;
+                partsInfo.spawnX = I(sub->tail[i].x) - gCamera.x;
+                partsInfo.spawnY = I(sub->tail[i].y) - gCamera.y;
                 partsInfo.velocity = 0;
 
                 temp = (1000 - (PseudoRandom32() & 0x3F));
@@ -490,8 +478,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
         ExplosionPartsInfo *localInfo;
         s32 tmp;
         if (sub->tailTip.status == 0) {
-            partsInfo.spawnX = Q_24_8_TO_INT(sub->tailTip.x) - gCamera.x;
-            partsInfo.spawnY = Q_24_8_TO_INT(sub->tailTip.y) - gCamera.y;
+            partsInfo.spawnX = I(sub->tailTip.x) - gCamera.x;
+            partsInfo.spawnY = I(sub->tailTip.y) - gCamera.y;
             partsInfo.velocity = 0;
 
             localInfo = &partsInfo;
@@ -526,18 +514,18 @@ NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
     sub->unk6B = 0x3;
     sub->unk6C = 0;
 
-    s = &sub->spr70;
-    sub->cockpit.x = Q_24_8(s->x + gCamera.x);
-    sub->cockpit.y = Q_24_8(s->y + gCamera.y);
-    sub->cockpit.dx = Q_24_8(5.75);
-    sub->cockpit.dy = Q_24_8(0.00);
-    sub->cockpit.status = 0;
+    s = &sub->sprBody;
+    sub->body.x = Q(s->x + gCamera.x);
+    sub->body.y = Q(s->y + gCamera.y);
+    sub->body.dx = Q(5.75);
+    sub->body.dy = Q(0.00);
+    sub->body.status = 0;
 
-    s = &sub->spr108;
-    sub->tailTip.x = Q_24_8(s->x + gCamera.x);
-    sub->tailTip.y = Q_24_8(s->y + gCamera.y);
-    sub->tailTip.dx = Q_24_8(5.75);
-    sub->tailTip.dy = Q_24_8(0.00);
+    s = &sub->sprTailTip;
+    sub->tailTip.x = Q(s->x + gCamera.x);
+    sub->tailTip.y = Q(s->y + gCamera.y);
+    sub->tailTip.dx = Q(5.75);
+    sub->tailTip.dy = Q(0.00);
     sub->tailTip.status = 0;
 
     {
@@ -548,23 +536,23 @@ NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
             s32 bossX, bossY;
             s32 sinV, cosV;
 
-            bossX = Q_24_8_TO_INT(boss->main.qWorldX);
+            bossX = I(boss->main.qWorldX);
             period = (period + 500) & ONE_CYCLE;
             cosV = (COS(period) * 17);
             cosV *= (i + 1);
             cosV >>= 14;
             bossX += cosV;
 
-            bossY = Q_24_8_TO_INT(boss->main.qWorldY);
+            bossY = I(boss->main.qWorldY);
             sinV = (SIN(period) * 17);
             sinV *= (i + 1);
             sinV >>= 14;
             sinV += 0x14;
             bossY += sinV;
 
-            sub->tail[i].x = Q_24_8(bossX);
-            sub->tail[i].y = Q_24_8(bossY);
-            sub->tail[i].dx = Q_24_8(5.75);
+            sub->tail[i].x = Q(bossX);
+            sub->tail[i].y = Q(bossY);
+            sub->tail[i].dx = Q(5.75);
             sub->tail[i].dy = 0;
             sub->tail[i].status = 0;
         }
@@ -581,8 +569,8 @@ void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss)
     sub->unk68 = 1;
     sub->unk00++;
 
-    AE_UPDATE_PART_DEFEATED(sub, sub->cockpit, 13, -70, 100,
-                            AE_DEFEATED_COLL_COCKPIT(sub, sub->cockpit));
+    AE_UPDATE_PART_DEFEATED(sub, sub->body, 13, -70, 100,
+                            AE_DEFEATED_COLL_BODY(sub, sub->body));
 
     for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
         AE_UPDATE_PART_DEFEATED(sub, sub->tail[i], 7, -6, 10,
@@ -595,7 +583,7 @@ void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss)
 
 bool32 sub_80423EC(AeroEgg *boss)
 {
-    Sprite *s = &boss->sub.sprA8;
+    Sprite *s = &boss->sub.sprPilot;
 
     bool32 result = FALSE;
 
@@ -635,7 +623,7 @@ bool32 sub_80423EC(AeroEgg *boss)
 
 void sub_80424EC(AeroEgg *boss)
 {
-    Sprite *s = &boss->sub.sprA8;
+    Sprite *s = &boss->sub.sprPilot;
 
     if (boss->main.unk16 != 0) {
         boss->main.unk15 = 0;
@@ -687,8 +675,8 @@ void AeroEggResetPos(s32 dx, s32 dy)
 
     boss->main.qWorldX += dx;
     boss->main.qWorldY += dy;
-    sub->cockpit.x += dx;
-    sub->cockpit.y += dy;
+    sub->body.x += dx;
+    sub->body.y += dy;
 
     for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
         sub->tail[i].x += dx;
@@ -704,7 +692,7 @@ void Task_AeroEggMain(void)
     AeroEgg *boss = TASK_DATA(gCurTask);
 
     boss->main.qWorldX += boss->main.dx;
-    boss->main.qWorldX += Q_24_8(2.25);
+    boss->main.qWorldX += Q(2.25);
 
     sub_80424EC(boss);
     sub_8041880(boss);
@@ -731,8 +719,8 @@ void Task_80426C4(void)
     sub_8041A08(boss);
 
     if (boss->main.lives == 0) {
-        Sprite *s = &boss->sub.spr70;
-        s->graphics.anim = SA2_ANIM_AERO_EGG_COCKPIT;
+        Sprite *s = &boss->sub.sprBody;
+        s->graphics.anim = SA2_ANIM_AERO_EGG_BODY;
         s->variant = 3;
         s->prevVariant = -1;
 
@@ -753,7 +741,7 @@ void AeroEgg_UpdatePos(AeroEgg *boss)
 
 void sub_8042774(AeroEgg *boss)
 {
-    Sprite *s = &boss->sub.sprA8;
+    Sprite *s = &boss->sub.sprPilot;
     boss->main.unk15 = 30;
 
     if (boss->main.unk16 == 0) {
@@ -768,10 +756,10 @@ void TaskDestructor_AeroEggMain(struct Task *t)
     AeroEgg *boss = TASK_DATA(t);
 
     VramFree(boss->sub.tilesBomb);
-    VramFree(boss->sub.spr70.graphics.dest);
-    VramFree(boss->sub.sprA8.graphics.dest);
-    VramFree(boss->sub.sprD8.graphics.dest);
-    VramFree(boss->sub.spr108.graphics.dest);
+    VramFree(boss->sub.sprBody.graphics.dest);
+    VramFree(boss->sub.sprPilot.graphics.dest);
+    VramFree(boss->sub.sprTail.graphics.dest);
+    VramFree(boss->sub.sprTailTip.graphics.dest);
 
     gActiveBossTask = NULL;
 }
@@ -783,16 +771,16 @@ void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY)
     AeroEggBomb *eb = TASK_DATA(t);
     Sprite *s;
 
-    eb->screenX = spawnX - Q_24_8(gCamera.x);
-    eb->screenY = spawnY - Q_24_8(gCamera.y);
-    eb->dx = Q_24_8(5.00);
-    eb->dy = Q_24_8(1.00);
+    eb->screenX = spawnX - Q(gCamera.x);
+    eb->screenY = spawnY - Q(gCamera.y);
+    eb->dx = Q(5.00);
+    eb->dy = Q(1.00);
     eb->tAlive = 0;
     eb->boss = boss;
 
     s = &eb->s;
-    s->x = Q_24_8_TO_INT(boss->main.qWorldX) - gCamera.x;
-    s->y = Q_24_8_TO_INT(eb->screenY);
+    s->x = I(boss->main.qWorldX) - gCamera.x;
+    s->y = I(eb->screenY);
     s->graphics.dest = boss->sub.tilesBomb;
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_AERO_EGG_BOMB, 0, 21, 2, 0);
     UpdateSpriteAnimation(s);
@@ -807,31 +795,31 @@ static void Task_CreateAeroEggBombMain(void)
     eb->tAlive++;
 
     if (eb->tAlive < 16) {
-        eb->screenY += Q_24_8(1.0);
-        s->x = Q_24_8_TO_INT(eb->boss->main.qWorldX) - gCamera.x;
-        s->y = Q_24_8_TO_INT(eb->screenY);
+        eb->screenY += Q(1.0);
+        s->x = I(eb->boss->main.qWorldX) - gCamera.x;
+        s->y = I(eb->screenY);
 
         if (eb->tAlive == 16 - 1) {
             m4aSongNumStart(SE_PROJECTILE_DROP);
-            eb->screenX = eb->boss->main.qWorldX - Q_24_8(gCamera.x);
+            eb->screenX = eb->boss->main.qWorldX - Q(gCamera.x);
         }
     } else {
-        eb->dy += Q_24_8(0.0625);
+        eb->dy += Q(0.0625);
 
         if (!PLAYER_IS_ALIVE) {
             eb->screenX += eb->dx;
             eb->screenY += eb->dy;
         } else {
-            eb->screenX += eb->dx + Q_24_8(gCamera.unk38);
-            eb->screenY += eb->dy + Q_24_8(gCamera.unk3C);
+            eb->screenX += eb->dx + Q(gCamera.unk38);
+            eb->screenY += eb->dy + Q(gCamera.unk3C);
         }
 
-        s->x = Q_24_8_TO_INT(eb->screenX);
-        s->y = Q_24_8_TO_INT(eb->screenY);
+        s->x = I(eb->screenX);
+        s->y = I(eb->screenY);
     }
 
-    if (sub_801E4E4(Q_24_8_TO_INT(eb->screenY) + gCamera.y,
-                    Q_24_8_TO_INT(eb->screenX) + gCamera.x, 1, 8, NULL, sub_801EE64)
+    if (sub_801E4E4(I(eb->screenY) + gCamera.y, I(eb->screenX) + gCamera.x, 1, 8, NULL,
+                    sub_801EE64)
         < 0) {
         m4aSongNumStart(SE_PROJECTILE_IMPACT);
 
@@ -849,11 +837,11 @@ static void Task_CreateAeroEggBombMain(void)
     }
 
     if (eb->boss->main.lives > 0) {
-        if (sub_800CA20(s, Q_24_8_TO_INT(eb->screenX) + gCamera.x,
-                        Q_24_8_TO_INT(eb->screenY) + gCamera.y, 0, &gPlayer)
+        if (sub_800CA20(s, I(eb->screenX) + gCamera.x, I(eb->screenY) + gCamera.y, 0,
+                        &gPlayer)
             == TRUE) {
             if (eb->boss->main.unk16 == 0) {
-                Sprite *s2 = &eb->boss->sub.sprA8;
+                Sprite *s2 = &eb->boss->sub.sprPilot;
                 eb->boss->main.unk15 = 30;
                 s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s2->variant = 1;
@@ -874,19 +862,19 @@ static void Task_8042AB0(void)
     if (!PLAYER_IS_ALIVE) {
         eb->screenX += eb->dx;
     } else {
-        eb->screenX += eb->dx + Q_24_8(gCamera.unk38);
-        eb->screenY += Q_24_8(gCamera.unk3C);
+        eb->screenX += eb->dx + Q(gCamera.unk38);
+        eb->screenY += Q(gCamera.unk3C);
     }
 
-    s->x = Q_24_8_TO_INT(eb->screenX);
-    s->y = Q_24_8_TO_INT(eb->screenY);
+    s->x = I(eb->screenX);
+    s->y = I(eb->screenY);
 
     if (eb->boss->main.lives > 0) {
-        if (sub_800CA20(s, Q_24_8_TO_INT(eb->screenX) + gCamera.x,
-                        Q_24_8_TO_INT(eb->screenY) + gCamera.y, 0, &gPlayer)
+        if (sub_800CA20(s, I(eb->screenX) + gCamera.x, I(eb->screenY) + gCamera.y, 0,
+                        &gPlayer)
             == TRUE) {
             if (eb->boss->main.unk16 == 0) {
-                Sprite *s2 = &eb->boss->sub.sprA8;
+                Sprite *s2 = &eb->boss->sub.sprPilot;
                 eb->boss->main.unk15 = 30;
                 s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s2->variant = 1;
@@ -920,8 +908,8 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
     deb->boss = boss;
 
     s = &deb->s;
-    s->x = Q_24_8_TO_INT(screenX);
-    s->y = Q_24_8_TO_INT(deb->screenY);
+    s->x = I(screenX);
+    s->y = I(deb->screenY);
 
     if (PseudoRandom32() % 2u) {
         s->graphics.dest = boss->sub.tilesBomb + (32 * TILE_SIZE_4BPP);
@@ -943,21 +931,21 @@ static void Task_AeroEggBombDebris(void)
     AeroEggDebris *deb = TASK_DATA(gCurTask);
     Sprite *s = &deb->s;
 
-    deb->dy += Q_24_8(0.3125);
+    deb->dy += Q(0.3125);
 
     if (!PLAYER_IS_ALIVE) {
         deb->screenX += deb->dx;
         deb->screenY += deb->dy;
     } else {
-        deb->screenX += deb->dx + Q_24_8(gCamera.unk38);
-        deb->screenY += deb->dy + Q_24_8(gCamera.unk3C);
+        deb->screenX += deb->dx + Q(gCamera.unk38);
+        deb->screenY += deb->dy + Q(gCamera.unk3C);
     }
 
-    s->x = Q_24_8_TO_INT(deb->screenX);
-    s->y = Q_24_8_TO_INT(deb->screenY);
+    s->x = I(deb->screenX);
+    s->y = I(deb->screenY);
 
-    if (sub_801E4E4(Q_24_8_TO_INT(deb->screenY) + gCamera.y,
-                    Q_24_8_TO_INT(deb->screenX) + gCamera.x, 1, 8, NULL, sub_801EE64)
+    if (sub_801E4E4(I(deb->screenY) + gCamera.y, I(deb->screenX) + gCamera.x, 1, 8, NULL,
+                    sub_801EE64)
         < 0) {
         if (deb->dy > 0) {
             TaskDestroy(gCurTask);
@@ -966,11 +954,11 @@ static void Task_AeroEggBombDebris(void)
     }
 
     if (deb->boss->main.lives > 0) {
-        if (sub_800CA20(s, Q_24_8_TO_INT(deb->screenX) + gCamera.x,
-                        Q_24_8_TO_INT(deb->screenY) + gCamera.y, 0, &gPlayer)
+        if (sub_800CA20(s, I(deb->screenX) + gCamera.x, I(deb->screenY) + gCamera.y, 0,
+                        &gPlayer)
             == TRUE) {
             if (deb->boss->main.unk16 == 0) {
-                Sprite *s2 = &deb->boss->sub.sprA8;
+                Sprite *s2 = &deb->boss->sub.sprPilot;
                 deb->boss->main.unk15 = 30;
                 s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s2->variant = 1;

@@ -375,6 +375,7 @@ _08041874: .4byte gCamera
 _08041878: .4byte IWRAM_START + 0x80
 _0804187C: .4byte Task_DeleteAeroEggTask
 
+.if 01
 	thumb_func_start sub_8041880
 sub_8041880: @ 0x08041880
 	push {r4, r5, r6, r7, lr}
@@ -563,6 +564,4 @@ _080419F8: .4byte gCamera
 _080419FC: .4byte gSineTable
 _08041A00: .4byte gStageTime
 _08041A04: .4byte 0x000003FF
-
-.if 0
 .endif
