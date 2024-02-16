@@ -106,7 +106,7 @@ static void Task_AeroEggBombDebris(void);
 static void Task_AeroEggExploding(void);
 static void Task_80426C4(void);
 static void Task_DeleteAeroEggTask(void);
-static void Task_8042AB0(void);
+static void Task_AeroEggBombHitGround(void);
 static void sub_8041B44(AeroEgg *boss);
 static void sub_8041880(AeroEgg *boss);
 static void sub_8041A08(AeroEgg *boss);
@@ -965,7 +965,7 @@ static void Task_CreateAeroEggBombMain(void)
         CreateAeroEggBombDebris(eb->boss, eb->screenX, eb->screenY, 0x600, 798);
         CreateAeroEggBombDebris(eb->boss, eb->screenX, eb->screenY, 0x580, 708);
         CreateAeroEggBombDebris(eb->boss, eb->screenX, eb->screenY, 0x580, 828);
-        gCurTask->main = Task_8042AB0;
+        gCurTask->main = Task_AeroEggBombHitGround;
     }
 
     if (eb->boss->main.lives > 0) {
@@ -986,7 +986,7 @@ static void Task_CreateAeroEggBombMain(void)
     DisplaySprite(s);
 }
 
-static void Task_8042AB0(void)
+static void Task_AeroEggBombHitGround(void)
 {
     AeroEggBomb *eb = TASK_DATA(gCurTask);
     Sprite *s = &eb->s;
