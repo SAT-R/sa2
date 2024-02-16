@@ -112,6 +112,11 @@ typedef void (*VoidFn)(void);
 
 #define Q_24_8_MULTIPLY(intVal, floatVal) Q_24_8_TO_INT((intVal)*Q_24_8(floatVal))
 
+// Aliases for common macros
+#define Q(n) Q_24_8(n)
+#define QS(n) Q_24_8_NEW(n)
+#define I(n) Q_24_8_TO_INT(n)
+
 #define RED_VALUE(color)   ((color)&0x1F)
 #define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
 #define BLUE_VALUE(color)  (((color) >> 10) & 0x1F)
