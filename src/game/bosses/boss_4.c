@@ -8,6 +8,7 @@
 #include "sakit/collision.h"
 #include "sakit/player.h"
 #include "game/game.h" // sub_801E4E4
+#include "game/entity.h" // sub_800DF38
 #include "game/bosses/common.h"
 #include "game/screen_shake.h"
 #include "game/player_callbacks_1.h" // Player_DisableInputAndBossTimer
@@ -24,6 +25,8 @@
 // TODO: Probably these will be globally automated in the long run?
 #define AEROEGG_PILOT_OFFSET_X (0)
 #define AEROEGG_PILOT_OFFSET_Y (-14)
+#define AEROEGG_UNK_OFFSET_X   (0)
+#define AEROEGG_UNK_OFFSET_Y   (20)
 
 #define AEROEGG_COOLDOWN_NORMAL ZONE_TIME_TO_INT(0, 2. + (1. / 3.))
 #define AEROEGG_COOLDOWN_PINCH  ZONE_TIME_TO_INT(0, 1. + (1. / 3.))
@@ -40,7 +43,7 @@ typedef struct {
     /* 0x04 */ s32 y;
     /* 0x08 */ s32 dx;
     /* 0x0C */ s32 dy;
-    /* 0x10 */ bool32 status;
+    /* 0x10 */ bool32 status; // TODO: Is this actually 2 16bit values?
 } AeroEggPart; /* size: 0x14 */
 
 typedef struct {
@@ -158,6 +161,78 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
     } else if (_part.status != 0) {                                                     \
         _part.y += Q_24_8(res);                                                         \
     }
+
+// (91.86%) https://decomp.me/scratch/Lc32u
+NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8041A08.inc",
+         void sub_8041A08(AeroEgg *boss))
+{
+    bool32 r7;
+    u16 tVal16;
+    Sprite *s;
+    s32 worldX0, worldY0;
+    s32 worldX, worldY;
+
+    r7 = FALSE;
+    s = &boss->sub.spr108;
+
+    // tVal = ((u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3) + 500);
+    worldX0 = Q_24_8_TO_INT(boss->main.worldX)
+        + ((COS(((u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3) + 500)
+                & ONE_CYCLE)
+            * 15)
+           >> 12);
+    worldX = AEROEGG_UNK_OFFSET_X + worldX0;
+    worldY0 = Q_24_8_TO_INT(boss->main.worldY)
+        + ((SIN(((u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3) + 500)
+                & ONE_CYCLE)
+            * 15)
+           >> 12)
+        + AEROEGG_UNK_OFFSET_Y;
+    worldY = worldY0;
+
+    if (boss->main.unk17 == 0) {
+        Player *p = &gPlayer;
+
+        if ((p->speedAirY > 0) && (p->moveState & MOVESTATE_IN_AIR)) {
+            if (!sub_800DF38(s, worldX, worldY, p) == COLL_NONE) {
+                s16 v = -Q_24_8(4.75);
+                p->speedAirY = v;
+                p->moveState &= ~(MOVESTATE_100 | MOVESTATE_8);
+                p->unk3C = NULL;
+                p->unk64 = SA2_CHAR_ANIM_JUMP_2;
+                p->transition = 5;
+                r7 = TRUE;
+            }
+            // _08041ABA
+        }
+
+        if (++boss->main.timerUnk > ZONE_TIME_TO_INT(0, 5)) {
+            r7 = TRUE;
+        }
+
+        if (r7) {
+            s->graphics.anim = SA2_ANIM_AERO_EGG_PLATFORM;
+            s->variant = 2;
+            s->prevVariant = -1;
+            boss->main.timerUnk = ZONE_TIME_TO_INT(0, 5);
+            boss->main.unk17 = TRUE;
+        }
+    } else {
+        // _08041B08
+        if (--boss->main.timerUnk == 18) {
+            AnimId anim = SA2_ANIM_AERO_EGG_PLATFORM;
+            s->graphics.anim = anim;
+            s->variant = 3;
+            s->prevVariant = -1;
+        }
+        // _08041B2C
+
+        if (boss->main.timerUnk == 0) {
+            boss->main.unk17 = FALSE;
+        }
+    }
+}
+END_NONMATCH
 
 void sub_8041B44(AeroEgg *boss)
 {
