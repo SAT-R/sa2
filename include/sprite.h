@@ -277,9 +277,13 @@ s16 sub_8004418(s16 x, s16 y);
     SPRITE_INIT_SCRIPT(_sprite, 1.0);                                                   \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
-#define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _order, _priority)             \
+#define SPRITE_INIT_FLAGS(_sprite, _numTiles, _anim, _variant, _order, _priority,       \
+                          _flags)                                                       \
     _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
-    SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _order, _priority, 0);
+    SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _order, _priority, _flags);
+
+#define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _order, _priority)             \
+    SPRITE_INIT_FLAGS(_sprite, _numTiles, _anim, _variant, _order, _priority, 0)
 
 #define SF_SHIFT(name) (SPRITE_FLAG_SHIFT_##name)
 

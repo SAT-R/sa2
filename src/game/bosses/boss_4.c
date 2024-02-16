@@ -11,6 +11,7 @@
 #include "game/entity.h" // sub_800DF38
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
+#include "game/parameters/bosses.h"
 #include "game/player_callbacks_1.h" // Player_DisableInputAndBossTimer
 #include "game/screen_shake.h"
 #include "game/stage/boss_results_transition.h"
@@ -102,24 +103,28 @@ typedef AeroEggBomb AeroEggDebris; /* size: 0x44 */
 static void Task_CreateAeroEggBombMain(void);
 static void Task_DeleteAeroEggBombTask(void);
 static void Task_AeroEggBombDebris(void);
-void Task_AeroEggExploding(void);
-void Task_80426C4(void);
-void Task_DeleteAeroEggTask(void);
+static void Task_AeroEggExploding(void);
+static void Task_80426C4(void);
+static void Task_DeleteAeroEggTask(void);
 static void Task_8042AB0(void);
-void sub_8041B44(AeroEgg *boss);
-void sub_8041880(AeroEgg *boss);
-void sub_8041A08(AeroEgg *boss);
-void sub_8041D34(AeroEgg *boss);
-void AeroEgg_CreateBombIfReady(AeroEgg *boss);
-void AeroEgg_InitPartsDefeated(AeroEgg *boss);
-bool32 sub_80423EC(AeroEgg *boss);
-void sub_80424EC(AeroEgg *boss);
+static void sub_8041B44(AeroEgg *boss);
+static void sub_8041880(AeroEgg *boss);
+static void sub_8041A08(AeroEgg *boss);
+static void sub_8041D34(AeroEgg *boss);
+static void AeroEgg_CreateBombIfReady(AeroEgg *boss);
+static void AeroEgg_InitPartsDefeated(AeroEgg *boss);
+static bool32 sub_80423EC(AeroEgg *boss);
+static void sub_80424EC(AeroEgg *boss);
+static void sub_8042560(AeroEgg *boss);
+static void Task_AeroEggMain(void);
+static void sub_80426C4(AeroEgg *boss);
+static void sub_8042774(AeroEgg *boss);
+static void TaskDestructor_AeroEggMain(struct Task *t);
+
 void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY);
-void sub_8042560(AeroEgg *boss);
-void sub_8042774(AeroEgg *boss);
-void AeroEgg_UpdatePos(AeroEgg *boss);
-void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss);
-void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss);
+static void AeroEgg_UpdatePos(AeroEgg *boss);
+static void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss);
+static void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss);
 static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
                                     u16 param4);
 
@@ -167,7 +172,72 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
         _part.y += Q(res);                                                              \
     }
 
-void Task_AeroEggExploding(void)
+void CreateAeroEgg(void)
+{
+    AeroEgg *boss;
+    Sprite *s;
+
+    gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
+    sub_8039ED4();
+    gPseudoRandom = gStageTime;
+    gActiveBossTask = TaskCreate(Task_AeroEggMain, sizeof(AeroEgg), 0x4000, 0,
+                                 TaskDestructor_AeroEggMain);
+    boss = TASK_DATA(gActiveBossTask);
+
+    if (DIFFICULTY_BOSS_IS_NOT_NORMAL) {
+        boss->main.lives = BOSS4_LIVES_EASY;
+    } else {
+        boss->main.lives = BOSS4_LIVES_NORMAL;
+    }
+
+    if (IS_FINAL_STAGE(gCurrentLevel)) {
+        boss->main.lives /= 2u;
+    }
+
+    if (IS_FINAL_STAGE(gCurrentLevel)) {
+        boss->main.qWorldX = BOSS4_START_X_FINAL;
+        boss->main.qWorldY = BOSS4_START_Y_FINAL;
+    } else {
+        boss->main.qWorldX = BOSS4_START_X;
+        boss->main.qWorldY = BOSS4_START_Y;
+    }
+
+    boss->main.dx = BOSS4_VELOCITY_X;
+    boss->main.dy = BOSS4_VELOCITY_Y;
+    boss->main.unk15 = 0;
+    boss->main.unk16 = 0;
+    boss->main.timerBombDrop = 0;
+    boss->main.unk0 = ZONE_TIME_TO_INT(0, 2);
+    boss->main.timerUnk = 0;
+    boss->main.unk17 = 0;
+
+    boss->sub.tilesBomb = VramMalloc(45);
+
+    s = &boss->sub.sprBody;
+    s->x = 0;
+    s->y = 0;
+    SPRITE_INIT_FLAGS(s, 8 * 8, SA2_ANIM_AERO_EGG_BODY, 0, 20, 2,
+                      SPRITE_FLAG_MASK_X_FLIP);
+
+    s = &boss->sub.sprPilot;
+    s->x = 0;
+    s->y = 0;
+    SPRITE_INIT_FLAGS(s, 4 * 3, SA2_ANIM_HAMMERTANK_PILOT, 0, 21, 2,
+                      SPRITE_FLAG_MASK_X_FLIP);
+
+    s = &boss->sub.sprTail;
+    s->x = 0;
+    s->y = 0;
+    SPRITE_INIT(s, 2 * 4, SA2_ANIM_AERO_EGG_ELEMENT, 0, 18, 2);
+    UpdateSpriteAnimation(s);
+
+    s = &boss->sub.sprTailTip;
+    s->x = 0;
+    s->y = 0;
+    SPRITE_INIT(s, 5 * 5, SA2_ANIM_AERO_EGG_PLATFORM, 0, 17, 2);
+}
+
+static void Task_AeroEggExploding(void)
 {
     AeroEgg *boss = TASK_DATA(gCurTask);
     AeroEggSub *sub = &boss->sub;
@@ -191,7 +261,6 @@ void Task_AeroEggExploding(void)
                                           SPRITE_FLAG(PRIORITY, 2));
         }
     }
-    // _08041830
 
     if ((I(boss->sub.body.x) - gCamera.x < -200) && (boss->sub.unk6C != 0)) {
         sub_802EF68(-40, 150, 3);
@@ -201,7 +270,7 @@ void Task_AeroEggExploding(void)
 
 // (85.03%) https://decomp.me/scratch/WXKoG
 NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
-         void sub_8041880(AeroEgg *boss))
+         static void sub_8041880(AeroEgg *boss))
 {
     u8 i;
 
@@ -270,7 +339,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
 }
 END_NONMATCH
 
-void sub_8041A08(AeroEgg *boss)
+static void sub_8041A08(AeroEgg *boss)
 {
     bool32 r7;
     u16 tVal16;
@@ -328,7 +397,7 @@ void sub_8041A08(AeroEgg *boss)
     }
 }
 
-void sub_8041B44(AeroEgg *boss)
+static void sub_8041B44(AeroEgg *boss)
 {
     Sprite *s;
 
@@ -365,7 +434,7 @@ void sub_8041B44(AeroEgg *boss)
     }
 }
 
-void AeroEgg_CreateBombIfReady(AeroEgg *boss)
+static void AeroEgg_CreateBombIfReady(AeroEgg *boss)
 {
     Sprite *s;
 
@@ -388,7 +457,7 @@ void AeroEgg_CreateBombIfReady(AeroEgg *boss)
     s->prevVariant = -1;
 }
 
-void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss)
+static void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss)
 {
     AeroEggSub *sub = &boss->sub;
     Sprite *s;
@@ -427,7 +496,7 @@ void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss)
 
 // (93.54%) https://decomp.me/scratch/PPILk
 NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
-         void sub_8041D34(AeroEgg *boss))
+         static void sub_8041D34(AeroEgg *boss))
 {
     ExplosionPartsInfo partsInfo;
     s32 res, tmp;
@@ -564,7 +633,7 @@ END_NONMATCH
 
 // (99.64%) https://decomp.me/scratch/WJcpn
 NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
-         void AeroEgg_InitPartsDefeated(AeroEgg *boss))
+         static void AeroEgg_InitPartsDefeated(AeroEgg *boss))
 {
     Sprite *s;
     AeroEggSub *sub = &boss->sub;
@@ -623,7 +692,7 @@ NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
 }
 END_NONMATCH
 
-void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss)
+static void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss)
 {
     AeroEggSub *sub = &boss->sub;
     s32 res;
@@ -644,7 +713,7 @@ void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss)
                             AE_DEFEATED_COLL_PART(sub->tailTip));
 }
 
-bool32 sub_80423EC(AeroEgg *boss)
+static bool32 sub_80423EC(AeroEgg *boss)
 {
     Sprite *s = &boss->sub.sprPilot;
 
@@ -684,7 +753,7 @@ bool32 sub_80423EC(AeroEgg *boss)
     return result;
 }
 
-void sub_80424EC(AeroEgg *boss)
+static void sub_80424EC(AeroEgg *boss)
 {
     Sprite *s = &boss->sub.sprPilot;
 
@@ -713,7 +782,7 @@ void sub_80424EC(AeroEgg *boss)
     }
 }
 
-void sub_8042560(AeroEgg *boss)
+static void sub_8042560(AeroEgg *boss)
 {
     u8 i;
 
@@ -750,7 +819,7 @@ void AeroEggResetPos(s32 dx, s32 dy)
     sub->tailTip.y += dy;
 }
 
-void Task_AeroEggMain(void)
+static void Task_AeroEggMain(void)
 {
     AeroEgg *boss = TASK_DATA(gCurTask);
 
@@ -769,7 +838,7 @@ void Task_AeroEggMain(void)
     }
 }
 
-void Task_80426C4(void)
+static void Task_80426C4(void)
 {
     AeroEgg *boss = TASK_DATA(gCurTask);
 
@@ -794,15 +863,15 @@ void Task_80426C4(void)
     }
 }
 
-void Task_DeleteAeroEggTask(void) { TaskDestroy(gCurTask); }
+static void Task_DeleteAeroEggTask(void) { TaskDestroy(gCurTask); }
 
-void AeroEgg_UpdatePos(AeroEgg *boss)
+static void AeroEgg_UpdatePos(AeroEgg *boss)
 {
     boss->main.qWorldX += boss->main.dx;
     boss->main.qWorldY += boss->main.dy;
 }
 
-void sub_8042774(AeroEgg *boss)
+static void sub_8042774(AeroEgg *boss)
 {
     Sprite *s = &boss->sub.sprPilot;
     boss->main.unk15 = 30;
@@ -814,7 +883,7 @@ void sub_8042774(AeroEgg *boss)
     }
 }
 
-void TaskDestructor_AeroEggMain(struct Task *t)
+static void TaskDestructor_AeroEggMain(struct Task *t)
 {
     AeroEgg *boss = TASK_DATA(t);
 

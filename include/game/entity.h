@@ -83,6 +83,10 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
 #define DIFFICULTY_LEVEL_IS_NOT_EASY                                                    \
     (gGameMode == GAME_MODE_TIME_ATTACK || gDifficultyLevel != DIFFICULTY_EASY)
 
+// Used for bosses
+#define DIFFICULTY_BOSS_IS_NOT_NORMAL                                                   \
+    (gDifficultyLevel != DIFFICULTY_NORMAL && gGameMode != GAME_MODE_BOSS_TIME_ATTACK)
+
 #define DIFFICULTY_LEVEL_IS_NOT_EASY_AND_ZONE_IS_NOT_1                                  \
     (gGameMode == GAME_MODE_TIME_ATTACK || gCurrentLevel > 3                            \
      || gDifficultyLevel != DIFFICULTY_EASY)
