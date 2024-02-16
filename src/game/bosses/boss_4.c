@@ -161,8 +161,9 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
         _part.y += Q(res);                                                              \
     }
 
-#if 0
-void sub_8041880(AeroEgg *boss)
+// (85.03%) https://decomp.me/scratch/WXKoG
+NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
+         void sub_8041880(AeroEgg *boss))
 {
     u8 i;
 
@@ -173,29 +174,28 @@ void sub_8041880(AeroEgg *boss)
     DisplaySprite(s);
 
     s = &boss->sub.sprPilot;
-    s->x = I(boss->main.qWorldX) - gCamera.x;
-    s->y = I(boss->main.qWorldY) - gCamera.y;
+    s->x = I(boss->main.qWorldX) - gCamera.x - 0;
+    s->y = I(boss->main.qWorldY) - gCamera.y - 14;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    s = &boss->sub.sprTail;
-    for(i = 0; i < ARRAY_COUNT(boss->sub.tail); i++)
-    {
+    for (i = 0; i < ARRAY_COUNT(boss->sub.tail); i++) {
         s32 xVal, yVal;
         s32 bossX, bossY;
         s32 sinV, cosV;
-        u16 period = SIN_24_8(((gStageTime * 12) + (i << 7)) & ONE_CYCLE) >> 3;
+        u32 period;
+        s++;
+        period = (u16)(SIN_24_8(((gStageTime * 12) + (i << 7)) & ONE_CYCLE) >> 3);
 
-        bossX = I(boss->main.qWorldX);
-        period = (period + 500) & ONE_CYCLE;
-        cosV = (COS(period) * 17);
+        bossX = I(boss->main.qWorldX) - gCamera.x;
+        cosV = (COS((period + 500) & ONE_CYCLE) * 17);
         cosV *= (i + 1);
         cosV >>= 14;
         bossX += cosV;
         s->x = bossX;
 
-        bossY = I(boss->main.qWorldY);
-        sinV = (SIN(period) * 17);
+        bossY = I(boss->main.qWorldY) - gCamera.y;
+        sinV = (SIN(period + 500) * 17);
         sinV *= (i + 1);
         sinV >>= 14;
         sinV += 0x14;
@@ -204,8 +204,33 @@ void sub_8041880(AeroEgg *boss)
 
         DisplaySprite(s);
     }
+
+    {
+        s32 xVal, yVal;
+        s32 bossX, bossY;
+        s32 sinV, cosV;
+        u16 period = SIN_24_8(((gStageTime * 12) + 512) & ONE_CYCLE) >> 3;
+
+        s = &boss->sub.sprTailTip;
+        bossX = I(boss->main.qWorldX) - gCamera.x;
+        period = (period + 500) & ONE_CYCLE;
+        cosV = (COS(period) * 15);
+        cosV >>= 12;
+        bossX += cosV;
+        s->x = bossX;
+
+        bossY = I(boss->main.qWorldY) - gCamera.y;
+        sinV = (SIN(period) * 15);
+        sinV >>= 12;
+        sinV += 0x14;
+        bossY += sinV;
+        s->y = bossY;
+
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
 }
-#endif
+END_NONMATCH
 
 void sub_8041A08(AeroEgg *boss)
 {
