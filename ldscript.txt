@@ -123,7 +123,6 @@ SECTIONS
         build/sa2/asm/collision_mp.o(.text);
         build/sa2/src/sakit/collision_1.o(.text);
         build/sa2/src/sakit/input_buffer.o(.text);
-        build/sa2/asm/input_buffer.o(.text);
         build/sa2/src/sakit/input_buffer_1.o(.text);
         build/sa2/src/sakit/interactables/spring.o(.text);
         build/sa2/src/sakit/interactables/platform.o(.text);
@@ -790,7 +789,6 @@ SECTIONS
         *libgcc.a:_divdi3.o(.rodata);
 
         /* Asset data */
-        build/sa2/asm/input_buffer.o(.rodata2);
         build/sa2/src/sakit/input_buffer.o(.data);
         build/sa2/data/special_stage_levels.o(.rodata);
         build/sa2/data/handlers_ia_pipe_horn_sequences.o(.rodata);
