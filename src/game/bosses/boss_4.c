@@ -268,7 +268,7 @@ static void Task_AeroEggExploding(void)
     }
 }
 
-// (85.03%) https://decomp.me/scratch/WXKoG
+// (85.57%) https://decomp.me/scratch/OWUPJ
 NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
          static void sub_8041880(AeroEgg *boss))
 {
@@ -316,7 +316,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
         s32 xVal, yVal;
         s32 bossX, bossY;
         s32 sinV, cosV;
-        u16 period = SIN_24_8(((gStageTime * 12) + 512) & ONE_CYCLE) >> 3;
+        u32 period = (u16)(SIN_24_8(((gStageTime * 12) + 512) & ONE_CYCLE) >> 3);
 
         s = &boss->sub.sprTailTip;
         bossX = I(boss->main.qWorldX) - gCamera.x;

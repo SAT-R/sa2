@@ -145,7 +145,7 @@ _0800E002:
 _0800E012:
 	subs r0, r6, #1
 	lsls r0, r0, #0x10
-	lsrs r6, r0, #0x10
+	lsrs r6, r0, #0x10      @ r6--;
 	lsls r0, r6, #1
 	adds r0, r0, r6
 	adds r0, r0, r5
@@ -160,7 +160,7 @@ _0800E02A:
 	ldr r2, _0800E058 @ =gNewInputCounters
 	adds r0, r0, r2
 	ldrb r3, [r0]
-	ands r3, r7             @ r3 = 
+	ands r3, r7             @ r3 = gNewInputCounters[cid].unk0
 	ldrb r2, [r0, #1]
 	lsls r0, r1, #0x10
 	asrs r0, r0, #0x10
