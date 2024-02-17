@@ -410,7 +410,7 @@ SECTIONS
         build/sa2/src/game/boost_effect.o(.rodata);
         build/sa2/src/game/amy_attack_heart_effect.o(.rodata);
         build/sa2/asm/player_mp_actor.o(.rodata);
-        build/sa2/asm/player_mp_unknown_task.o(.rodata);
+        build/sa2/src/game/multiplayer/unknown_task.o(.rodata);
         build/sa2/src/game/multiplayer/finish.o(.rodata);
 
         build/sa2/src/game/stage/stage.o(.rodata);

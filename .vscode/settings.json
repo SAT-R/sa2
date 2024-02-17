@@ -306,7 +306,8 @@
     "dummy_task.h": "c",
     "player_super_sonic.h": "c",
     "assert.h": "c",
-    "arenaalloc.h": "c"
+    "arenaalloc.h": "c",
+    "player_unk_1.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

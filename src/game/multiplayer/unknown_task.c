@@ -6,6 +6,8 @@
 #include "game/stage/camera.h"
 #include "game/item_tasks.h"
 
+#include "game/multiplayer/player_unk_1.h"
+
 #include "game/unknown_effect.h"
 
 #include "game/multiplayer/finish.h"
@@ -13,6 +15,16 @@
 #include "lib/m4a.h"
 
 #include "constants/songs.h"
+
+void sub_8018E00(union MultiSioData *recv, u8 i);
+void sub_8018AD8(union MultiSioData *recv, u8 i);
+typedef void (*UnknownFunction)(union MultiSioData *recv, u8 i);
+
+const UnknownFunction gUnknown_080D5744[] = {
+    sub_8019240, sub_80192A8, sub_80192FC, sub_8019350,
+    sub_8019368, sub_8018AD8, sub_8018E00, VoidReturnSIOControl32,
+    NULL,
+};
 
 void Task_80188FC(void)
 {
@@ -45,10 +57,6 @@ void Task_80188FC(void)
     }
 }
 
-typedef void (*UnknownFunction)(struct MultiSioData_0_0 *recv, u8 i);
-
-extern const UnknownFunction gUnknown_080D5744[];
-
 void Task_8018A28(void)
 {
     u8 id = SIO_MULTI_CNT->id;
@@ -57,7 +65,7 @@ void Task_8018A28(void)
     u8 i;
 
     for (i = 0; i < 4; i++) {
-        struct MultiSioData_0_0 *recv;
+        union MultiSioData *recv;
         if (i == id) {
             continue;
         }
@@ -69,26 +77,26 @@ void Task_8018A28(void)
             continue;
         }
 
-        recv = &gMultiSioRecv[i].pat0;
-        if (recv->unk0 == 0x5000
-            && (recv->unk8[0] & (0x1000 << i)) != (send->unk8[0] & (0x1000 << i))) {
-            if ((u8)(recv->unkE - 1) < 8) {
+        recv = &gMultiSioRecv[i];
+        if (recv->pat0.unk0 == 0x5000
+            && (recv->pat0.unk8[0] & (0x1000 << i)) != (send->unk8[0] & (0x1000 << i))) {
+            if ((u8)(recv->pat0.unkE - 1) < 8) {
 
-                gUnknown_080D5744[recv->unkE - 1](recv, i);
+                gUnknown_080D5744[recv->pat0.unkE - 1](recv, i);
             }
             send->unk8[0] ^= (0x1000 << i);
         }
     }
 }
 
-void sub_8018AD8(struct MultiSioData_0_0 *recv, u8 i)
+void sub_8018AD8(union MultiSioData *recv, u8 i)
 {
     struct MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[i]);
     struct MultiplayerPlayer *us = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
 
     if (!(us->unk5C & 1) && PLAYER_IS_ALIVE
         && gUnknown_030054B4[SIO_MULTI_CNT->id] == -1) {
-        switch (recv->unkF) {
+        switch (recv->pat0.unkF) {
             case 0: {
                 if (gGameMode != GAME_MODE_TEAM_PLAY
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
@@ -102,7 +110,7 @@ void sub_8018AD8(struct MultiSioData_0_0 *recv, u8 i)
                 break;
             }
             case 1: {
-                if ((u8)recv->unk10 == SIO_MULTI_CNT->id
+                if ((u8)recv->pat0.unk10 == SIO_MULTI_CNT->id
                     && !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__80)) {
                     u32 prevMoveState = gPlayer.moveState
                         & (MOVESTATE_IN_SCRIPTED | MOVESTATE_IGNORE_INPUT
@@ -171,7 +179,7 @@ void sub_8018AD8(struct MultiSioData_0_0 *recv, u8 i)
     }
 }
 
-void sub_8018E00(struct MultiSioData_0_0 *recv, u8 i)
+void sub_8018E00(union MultiSioData *recv, u8 i)
 {
     u32 j;
     struct MultiplayerPlayer *mpp;
