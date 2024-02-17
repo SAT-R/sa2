@@ -5,18 +5,60 @@
 
 #include "constants/characters.h"
 
+// TODO(Jace): gUnknown_080D5254 is used in sakit/music_manager.c, with a different type.
+//             That doesn't make any sense...
+// const u8 gUnknown_080D5254[] = { 0x04, 0x01, 0x00, 0xF0, 0x08, 0x10, 0xF0, 0x08, 0x00,
+// 0xF0, 0x08, 0x10, 0xF0, 0x01 };
+extern const u8 gUnknown_080D5254[];
+const u8 gUnknown_080D5262[] = { 0x04, 0x01, 0x00, 0xF0, 0x08, 0x20, 0xF0,
+                                 0x08, 0x00, 0xF0, 0x08, 0x20, 0xF0, 0x01 };
+const u8 gUnknown_080D5270[] = { 0x04, 0x01, 0x10, 0xF0, 0x0F, 0x00, 0xF0,
+                                 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
+const u8 gUnknown_080D527E[] = { 0x04, 0x02, 0x10, 0xF0, 0x0F, 0x00, 0xF0,
+                                 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
+const u8 gUnknown_080D528C[] = { 0x04, 0x01, 0x10, 0xF0, 0x0F, 0x00, 0xF0,
+                                 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
+const u8 gUnknown_080D529A[] = { 0x04, 0x02, 0x10, 0xF0, 0x0F, 0x00, 0xF0,
+                                 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
+const u8 gUnknown_080D52A8[] = { 0x04, 0x01, 0x10, 0xF0, 0x0F, 0x00, 0xF0,
+                                 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
+const u8 gUnknown_080D52B6[] = { 0x04, 0x02, 0x10, 0xF0, 0x0F, 0x00, 0xF0,
+                                 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
+const u8 gUnknown_080D52C4[] = { 0x04, 0x01, 0x10, 0xF0, 0x0F, 0x00, 0xF0,
+                                 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
+const u8 gUnknown_080D52D2[] = { 0x04, 0x02, 0x10, 0xF0, 0x0F, 0x00, 0xF0,
+                                 0x0F, 0x10, 0xF0, 0x0F, 0x03, 0x07, 0x0F };
+
+const u8 *gUnknown_08c87098_unused[64] = { 0 };
+
+const u8 *unk_8C87198[3] = { gUnknown_080D5254, gUnknown_080D5262, INPUTBUF_NULL_PTR };
+
+const u8 *unk_8C871A4[3] = { gUnknown_080D5270, gUnknown_080D527E, INPUTBUF_NULL_PTR };
+
+const u8 *unk_8C871B0[3] = { gUnknown_080D528C, gUnknown_080D529A, INPUTBUF_NULL_PTR };
+
+const u8 *unk_8C871BC[3] = { gUnknown_080D52A8, gUnknown_080D52B6, INPUTBUF_NULL_PTR };
+
+const u8 *unk_8C871C8[3] = { gUnknown_080D52C4, gUnknown_080D52D2, INPUTBUF_NULL_PTR };
+
 const u8 **gUnknown_08C871D4[NUM_CHARACTERS] = {
     unk_8C87198, unk_8C871A4, unk_8C871B0, unk_8C871BC, unk_8C871C8,
 };
 
-#if 00
+typedef struct {
+    u8 unk0;
+    u8 unk1;
+    u8 unk2;
+} StrcUnkInBuf;
+
 // The current value in gNewInputCounters[gNewInputCountersIndex]
 // gets increased until either it reaches 0xFF or a new button was pressed.
 // Letting go of a button does not trigger the index increase.
 // (This might be used for timing in multiplayer?)
 //
-// (79.02%) https://decomp.me/scratch/zFRhq
-void sub_800DF8C(Player *p)
+// (89.58%) https://decomp.me/scratch/zFRhq
+NONMATCH("asm/non_matching/sakit/input_buf__sub_800DF8C.inc",
+         void sub_800DF8C(Player *p))
 {
     struct struc_800DF8C sp00;
 #ifndef NON_MATCHING
@@ -27,7 +69,7 @@ void sub_800DF8C(Player *p)
     u32 r8;
 #endif
     const u8 *data;
-    strc *bytes;
+    StrcUnkInBuf *bytes;
 
     if (p->moveState & (MOVESTATE_IGNORE_INPUT | MOVESTATE_DEAD)) {
         sub_800E0C0(0, 0);
@@ -53,7 +95,7 @@ void sub_800DF8C(Player *p)
 
                 // _0800E012
                 while (r6 != 0) {
-                    s32 r1;
+                    s16 r1;
                     u32 r7, ip;
 
 #ifndef NON_MATCHING
@@ -69,7 +111,7 @@ void sub_800DF8C(Player *p)
 #endif
                     r6 = (u16)r0_2;
 
-                    bytes = (strc *)&data[r6 * 3];
+                    bytes = (StrcUnkInBuf *)&data[r6 * 3];
                     ip = bytes->unk0;
                     r7 = bytes->unk1;
                     r1 = bytes->unk2 & maskFF;
@@ -79,17 +121,22 @@ void sub_800DF8C(Player *p)
                         u32 r3 = gNewInputCounters[cid].unk0 & r7;
                         s32 r2 = gNewInputCounters[cid].unk1;
 
-                        if ((s16)r1 < (r2 & maskFF))
-                            break;
-
-                        if (ip == r3) {
-                            cid = (cid - 1) & mask1F;
+                        if ((s16)r1 >= (signed)(r2 & maskFF)) {
+                            if (ip == r3) {
+                                cid = (cid - 1) & mask1F;
+                                break;
+                            } else {
+                                cid = (cid - 1) & mask1F;
+                                r1 = (r1 - 1) - r6;
+                            }
                         } else {
-                            cid = (cid - 1) & mask1F;
-                            r1--;
+                            // r2 should be set to 0 here, actually
+                            r6 = 0;
+                            break;
                         }
                     }
                 }
+            lbl:
 
                 if (r6 == 0) {
                     *sp00.unk8 = r8;
@@ -109,4 +156,4 @@ void sub_800DF8C(Player *p)
         }
     }
 }
-#endif
+END_NONMATCH

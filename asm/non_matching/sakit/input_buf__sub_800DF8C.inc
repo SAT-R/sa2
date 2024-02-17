@@ -1,80 +1,7 @@
-.include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-
-@; These are referenced in data3.s
-    .global gUnknown_080D5262
-gUnknown_080D5262:
-    .incbin "baserom.gba", 0x000D5262, 0x0E
-
-    .global gUnknown_080D5270
-gUnknown_080D5270:
-    .incbin "baserom.gba", 0x000D5270, 0x0E
-
-    .global gUnknown_080D527E
-gUnknown_080D527E:
-    .incbin "baserom.gba", 0x000D527E, 0x0E
-
-    .global gUnknown_080D528C
-gUnknown_080D528C:
-    .incbin "baserom.gba", 0x000D528C, 0x0E
-
-    .global gUnknown_080D529A
-gUnknown_080D529A:
-    .incbin "baserom.gba", 0x000D529A, 0x0E
-
-    .global gUnknown_080D52A8
-gUnknown_080D52A8:
-    .incbin "baserom.gba", 0x000D52A8, 0x0E
-
-    .global gUnknown_080D52B6
-gUnknown_080D52B6:
-    .incbin "baserom.gba", 0x000D52B6, 0x0E
-
-    .global gUnknown_080D52C4
-gUnknown_080D52C4:
-    .incbin "baserom.gba", 0x000D52C4, 0x0E
-
-    .global gUnknown_080D52D2
-gUnknown_080D52D2:
-    .incbin "baserom.gba", 0x000D52D2, 0x0E
-
-.section .rodata2
-
-    .global gUnknown_08c87098_unused
-gUnknown_08c87098_unused:
-    .space 0x100
-
-    .global unk_8C87198
-unk_8C87198:
-    .4byte gUnknown_080D5254, gUnknown_080D5262, -1
-    
-    .global unk_8C871A4
-unk_8C871A4:
-    .4byte gUnknown_080D5270, gUnknown_080D527E, -1
-    
-    .global unk_8C871B0
-unk_8C871B0:
-    .4byte gUnknown_080D528C, gUnknown_080D529A, -1
-    
-    .global unk_8C871BC
-unk_8C871BC:
-    .4byte gUnknown_080D52A8, gUnknown_080D52B6, -1
-    
-    .global unk_8C871C8
-unk_8C871C8:
-    .4byte gUnknown_080D52C4, gUnknown_080D52D2, -1
-
-.text
 .syntax unified
-.arm
- 
-.if 1
-@ In:
-@  r0: Player*
-	thumb_func_start sub_800DF8C
-sub_800DF8C: @ 0x0800DF8C
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -235,4 +162,5 @@ sub_800DF8C_return:
 	pop {r0}
 	bx r0
 	.align 2, 0
-.endif
+
+.syntax divided

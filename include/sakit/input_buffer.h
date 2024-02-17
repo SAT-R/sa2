@@ -12,7 +12,7 @@ extern const u8 *unk_8C871C8[3];
 #define INPUTBUF_NULL_PTR ((void *)((intptr_t)-1))
 
 struct struc_800DF8C {
-    const u8 *unk0;
+    const u8 **unk0;
     u32 unk4;
     u8 *unk8;
 };

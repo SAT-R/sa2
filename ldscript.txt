@@ -394,7 +394,7 @@ SECTIONS
         build/sa2/src/sakit/pause_menu.o(.rodata);
         build/sa2/src/sakit/item_box.o(.rodata);
         build/sa2/src/sakit/music_manager.o(.rodata);
-        build/sa2/asm/input_buffer.o(.rodata);
+        build/sa2/src/sakit/input_buffer.o(.rodata);
         build/sa2/src/sakit/interactables/spring.o(.rodata);
         build/sa2/src/sakit/interactables/platform.o(.rodata);
         build/sa2/src/sakit/interactables/platform_square.o(.rodata);
