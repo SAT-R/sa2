@@ -457,7 +457,7 @@ void UpdateCamera(void)
 
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         s32 delta, playerY;
-        if (player->moveState & MOVESTATE_DEAD) {
+        if (!IS_ALIVE(player)) {
             if (camera->fnBgUpdate != NULL) {
                 camera->fnBgUpdate(gCamera.x, gCamera.y);
             }
@@ -580,7 +580,7 @@ void UpdateCamera(void)
             camera->unk8 += Q_24_8(0.125);
         }
 
-        if ((player->moveState & 2)
+        if ((player->moveState & MOVESTATE_IN_AIR)
             && (player->character != CHARACTER_KNUCKLES || player->unk61 != 9)) {
             camera->unk48 += 4;
             camera->unk48 = camera->unk48 > 24 ? 24 : camera->unk48;
@@ -626,16 +626,16 @@ static void sub_801C708(s32 x, s32 y)
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
         Background *layer = &gStageBackgroundsRam.unk40;
-        gBgScrollRegs[1][0] = x & 7;
-        gBgScrollRegs[1][1] = y & 7;
+        gBgScrollRegs[1][0] = x % 8u;
+        gBgScrollRegs[1][1] = y % 8u;
         layer->scrollX = x;
         layer->scrollY = y;
         DrawBackground(layer);
         UpdateBgAnimationTiles(layer);
 
         layer = &gStageBackgroundsRam.unk80;
-        gBgScrollRegs[2][0] = x & 7;
-        gBgScrollRegs[2][1] = y & 7;
+        gBgScrollRegs[2][0] = x % 8u;
+        gBgScrollRegs[2][1] = y % 8u;
         layer->scrollX = x;
         layer->scrollY = y;
         DrawBackground(layer);
