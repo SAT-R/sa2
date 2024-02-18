@@ -127,7 +127,7 @@ static void Task_8056230(void)
     MapEntity *me = madillo->base.me;
     Vec2_32 pos;
     Player *p;
-    s32 sp0;
+    u8 sp0[4];
 
     if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
         madillo->offsetX -= madillo->unk4C;
@@ -135,7 +135,7 @@ static void Task_8056230(void)
         madillo->offsetX += madillo->unk4C;
     }
 
-    ENEMY_CLAMP_TO_GROUND_RAW(madillo, madillo->clampParam, &sp0);
+    ENEMY_CLAMP_TO_GROUND_RAW(madillo, madillo->clampParam, &sp0[0]);
     ENEMY_UPDATE_POSITION(madillo, s, pos.x, pos.y);
 
     p = &gPlayer;
@@ -186,7 +186,7 @@ static void Task_80564BC(void)
     MapEntity *me = madillo->base.me;
     Vec2_32 pos;
     Player *p;
-    s32 sp0;
+    u8 sp0[4];
 
     if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
         madillo->offsetX -= madillo->unk4C;
@@ -194,7 +194,7 @@ static void Task_80564BC(void)
         madillo->offsetX += madillo->unk4C;
     }
 
-    ENEMY_CLAMP_TO_GROUND_RAW(madillo, madillo->clampParam, &sp0);
+    ENEMY_CLAMP_TO_GROUND_RAW(madillo, madillo->clampParam, &sp0[0]);
 
     madillo->unk4C = Div(madillo->unk4C * 0x5A, 100);
     if ((u32)(madillo->unk4C + 0x1F) < 0x3F) {

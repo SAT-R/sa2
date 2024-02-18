@@ -18,7 +18,9 @@ extern const Collision *const gCollisionTable[];
 
 void UpdateCamera(void);
 
-// TODO: Collision
+// TODO:
+// gUnknown_030059C8 is of type "Collision"
+// ( gUnknown_030059C8 = gCollisionTable[level] )
 extern const u32 *gUnknown_030059C8;
 
 extern const u16 gUnknown_080D5964[][2];

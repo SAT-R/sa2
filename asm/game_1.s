@@ -1499,9 +1499,9 @@ sub_801EF94: @ 0x0801EF94
 	mov r7, sb
 	mov r6, r8
 	push {r6, r7}
-	adds r6, r1, #0
-	mov sb, r2
-	asrs r4, r0, #3
+	adds r6, r1, #0         @ r6 = p1
+	mov sb, r2              @ sb = p2
+	asrs r4, r0, #3         @ r4 = p0 / 8
 	ldr r5, _0801EFB0 @ =IWRAM_START + 0x410
 	ldr r0, [r5]
 	cmp r0, r4

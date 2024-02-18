@@ -70,9 +70,5 @@ const Collision CollHeader_zone_final_act_unused_fg
         CollFlags_zone_final_act_unused_fg, // -> 0x089300D4
         20,
         12,
-        0x80,
-        0x07,
-        0x00,
-        0x00,
-        0x0480,
-        0x0000 };
+        0x0780,
+        0x0480 };

@@ -68,9 +68,5 @@ const Collision CollHeader_zone_3_act_boss_fg = { CollHeightMap_zone_3_act_boss_
                                                   CollFlags_zone_3_act_boss_fg,
                                                   40,
                                                   3,
-                                                  0x00,
-                                                  0x0F,
-                                                  0x00,
-                                                  0x00,
-                                                  0x0120,
-                                                  0x0000 };
+                                                  0x0F00,
+                                                  0x0120 };

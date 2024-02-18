@@ -69,9 +69,5 @@ const Collision CollHeader_zone_final_act_ta53_fg
         CollFlags_zone_final_act_ta53_fg,
         90,
         3,
-        0xC0,
-        0x21,
-        0x00,
-        0x00,
-        0x0120,
-        0x0000 };
+        0x21C0,
+        0x0120 };
