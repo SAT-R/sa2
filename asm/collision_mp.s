@@ -22,22 +22,22 @@ sub_800D0A0: @ 0x0800D0A0
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x48
-	str r0, [sp, #0x18]
-	ldr r0, [sp, #0x68]
-	ldr r4, [sp, #0x6c]
-	ldr r5, [sp, #0x70]
+	str r0, [sp, #0x18]     @ sp18 = param0
+	ldr r0, [sp, #0x68]     @ r0 = param4
+	ldr r4, [sp, #0x6c]     @ r4 = param5
+	ldr r5, [sp, #0x70]     @ r5 = param6
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10
-	str r1, [sp, #0x1c]
+	str r1, [sp, #0x1c]     @ sp1C = param1
 	lsls r2, r2, #0x10
 	lsrs r2, r2, #0x10
-	str r2, [sp, #0x20]
+	str r2, [sp, #0x20]     @ sp20 = param2
 	lsls r3, r3, #0x10
 	lsrs r3, r3, #0x10
-	mov sl, r3
+	mov sl, r3              @ sl   = param3
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	str r0, [sp, #0x24]
+	str r0, [sp, #0x24]     @ sp24 = param4
 	lsls r4, r4, #0x18
 	lsrs r4, r4, #0x18
 	str r4, [sp, #0x28]

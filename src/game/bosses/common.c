@@ -29,13 +29,13 @@ const VoidFn sBossCreationFuncs[] = {
     CreateEggFrog,         CreateSuperEggRoboZ, CreateTrueArea53Boss,
 };
 
-// Move position functions (translate(x, y))
-const TranslateBossFunction gUnknown_080D79B0[] = {
-    sub_803C80C,   EggBomberTankMove, sub_803FA84, sub_80425F0,
+const TranslateBossFunction MoveBossPositionFuncs[] = {
+    sub_803C80C,   EggBomberTankMove, sub_803FA84, AeroEggMove,
     EggSaucerMove, sub_8047224,       sub_8048EB4, sub_804D594,
 };
 
-const u32 gUnknown_080D79D0[][3] = {
+// Anims for screws etc.
+const u32 gTileInfoBossScrews[][3] = {
     { 412, 620, 0 }, { 416, 620, 1 }, { 420, 621, 0 },
     { 436, 621, 1 }, { 448, 622, 0 }, { 449, 622, 1 },
 };
@@ -58,18 +58,19 @@ void sub_8039ED4(void)
     }
 }
 
+// Moves the bosses' position back when close to the end of the map.
 void sub_8039F14(s32 p0, s32 p1)
 {
     if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
         && (gActiveBossTask != NULL)) {
-        gUnknown_080D79B0[LEVEL_TO_ZONE(gCurrentLevel)](p0, p1);
+        MoveBossPositionFuncs[LEVEL_TO_ZONE(gCurrentLevel)](p0, p1);
     }
 }
 
 void sub_8039F50(s32 p0, u8 p1)
 {
     if ((p1 < ZONE_FINAL) && (gActiveBossTask != NULL)) {
-        gUnknown_080D79B0[p1](p0, 0);
+        MoveBossPositionFuncs[p1](p0, 0);
     }
 }
 

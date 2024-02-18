@@ -29,6 +29,6 @@
 //       For some reason they lower his timer only every 2nd frame (in PlayerCB_8012C2C),
 //       instead of using a bigger value from the get-go, even though they gave him a
 //       4-byte timer.
-#define TAILS_FLYING_DURATION ((8 * GBA_FRAMES_PER_SECOND) / 2)
+#define TAILS_FLYING_DURATION (ZONE_TIME_TO_INT(0, 8) / 2)
 
 #endif // GUARD_PARAMETERS_CHARACTERS_H

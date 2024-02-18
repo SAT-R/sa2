@@ -1325,6 +1325,7 @@ _0801EE4E:
 	bx r1
 	.align 2, 0
 
+@ Function prototype: Func801F100
 	thumb_func_start sub_801EE64
 sub_801EE64: @ 0x0801EE64
 	push {r4, r5, r6, r7, lr}

@@ -876,7 +876,7 @@ sub_8046040: @ 0x08046040
 	movs r1, #2
 	orrs r0, r1
 	str r0, [r2, #0x20]
-	bl sub_802A018
+	bl Player_DisableInputAndBossTimer
 	ldr r1, [r6]
 	ldr r0, _080460D8 @ =sub_80460DC
 	str r0, [r1, #8]

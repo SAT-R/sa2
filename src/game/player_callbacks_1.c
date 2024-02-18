@@ -2977,7 +2977,7 @@ void Player_ClearMovestate_IsInScriptedSequence(void)
     gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
 }
 
-void sub_802A018(void)
+void Player_DisableInputAndBossTimer(void)
 {
     gPlayer.transition = PLTRANS_PT10;
     gUnknown_03005424
@@ -2988,7 +2988,7 @@ void sub_802A018(void)
     }
 }
 
-void sub_802A050(void)
+void Player_DisableInputAndBossTimer_FinalBoss(void)
 {
     gUnknown_03005424
         |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__2 | EXTRA_STATE__ACT_START);

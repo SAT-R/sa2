@@ -658,7 +658,7 @@ _0804ABF2:
 	str r0, [r1, #8]
 	movs r0, #0xff
 	str r0, [r7, #0x14]
-	bl sub_802A050
+	bl Player_DisableInputAndBossTimer_FinalBoss
 	ldr r2, _0804AC54 @ =gPlayer
 	ldr r1, [r2, #0x20]
 	movs r0, #0x80
@@ -3436,7 +3436,7 @@ _0804C13C:
 	movs r0, #0x80
 	lsls r0, r0, #2
 	strh r0, [r1, #0xe]
-	ldr r2, _0804C238 @ =gUnknown_080D79D0
+	ldr r2, _0804C238 @ =gTileInfoBossScrews
 	lsls r1, r4, #1
 	adds r1, r1, r4
 	lsls r1, r1, #2
@@ -3481,7 +3481,7 @@ _0804C228: .4byte 0x06012980
 _0804C22C: .4byte 0x0000026B
 _0804C230: .4byte gMPlayInfo_SE3
 _0804C234: .4byte 0x0000FFFF
-_0804C238: .4byte gUnknown_080D79D0
+_0804C238: .4byte gTileInfoBossScrews
 _0804C23C: .4byte 0x06010000
 
 	thumb_func_start sub_804C240

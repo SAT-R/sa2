@@ -30,8 +30,8 @@ struct Camera {
     /* 0x2c */ s32 unk2C;
     /* 0x30 */ s32 unk30;
     /* 0x34 */ s32 unk34;
-    /* 0x38 */ s32 unk38;
-    /* 0x3c */ s32 unk3C;
+    /* 0x38 */ s32 unk38; // movementX?
+    /* 0x3c */ s32 unk3C; // movementY?
     /* 0x40 */ s16 unk40;
     /* 0x44 */ s32 unk44;
     /* 0x48 */ s32 unk48;

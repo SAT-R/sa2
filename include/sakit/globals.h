@@ -185,8 +185,18 @@ extern SomeStruct_3005498 gUnknown_03005498;
 
 extern u8 gUnknown_030055D0[4];
 
+#if 0
 extern u8 gNewInputCountersIndex;
 extern u8 gNewInputCounters[128];
+#else
+
+struct InputCounters {
+    u8 unk0, unk1, unk2, unk3;
+};
+
+extern u8 gNewInputCountersIndex;
+extern struct InputCounters gNewInputCounters[32];
+#endif
 
 extern u8 gUnknown_030055D8;
 

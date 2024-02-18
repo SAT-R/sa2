@@ -112,7 +112,20 @@ typedef void (*VoidFn)(void);
 
 #define Q_24_8_MULTIPLY(intVal, floatVal) Q_24_8_TO_INT((intVal)*Q_24_8(floatVal))
 
-#define RED_VALUE(color)   ((color)&0x1F)
+/*
+ * Aliases for common macros
+ */
+
+// Converts a number to Q24.8 fixed-point format
+#define Q(n) Q_24_8(n)
+
+// Converts a number to Q24.8 fixed-point format
+#define QS(n) Q_24_8_NEW(n)
+
+// Converts a Q24.8 fixed-point format number to a regular integer
+#define I(n) Q_24_8_TO_INT(n)
+
+#define RED_VALUE(color)   (((color) >> 0) & 0x1F)
 #define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
 #define BLUE_VALUE(color)  (((color) >> 10) & 0x1F)
 
