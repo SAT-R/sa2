@@ -1492,7 +1492,7 @@ _0801EF7E:
 	bx r1
 	.align 2, 0
     
-.if 01
+.if 0
 	thumb_func_start sub_801EF94
 sub_801EF94: @ 0x0801EF94
 	push {r4, r5, r6, r7, lr}
@@ -1500,7 +1500,7 @@ sub_801EF94: @ 0x0801EF94
 	mov r6, r8
 	push {r6, r7}
 	adds r6, r1, #0         @ r6 = p1
-	mov sb, r2              @ sb = p2
+	mov sb, r2              @ sb = layer
 	asrs r4, r0, #3         @ r4 = p0 / 8
 	ldr r5, _0801EFB0 @ =IWRAM_START + 0x410
 	ldr r0, [r5]
@@ -1553,22 +1553,22 @@ _0801EFFE:
 	ldr r4, [r0]
 	mov r1, sb
 	lsls r0, r1, #2
-	adds r1, r4, #0
+	adds r1, r4, #0         @ r1 = &gUnknown_030059C8[p2]
 	adds r1, #0xc
 	adds r1, r1, r0
 	ldrh r0, [r4, #0x18]
 	muls r0, r3, r0
 	add r0, r8
-	ldr r1, [r1]
+	ldr r1, [r1]            @ r1 = gUnknown_030059C8[p2].map_front
 	lsls r0, r0, #1
 	adds r0, r0, r1
-	ldrh r2, [r0]
+	ldrh r2, [r0]           @ r2 = mtIndex
 	lsls r1, r5, #3
 	lsls r0, r5, #2
 	adds r1, r1, r0
-	adds r1, r1, r7
-	lsls r3, r2, #8
-	lsls r2, r2, #5
+	adds r1, r1, r7         @ r1 = mapIndex2 = (r5 * TILES_PER_METATILE_AXIS + r7)
+	lsls r3, r2, #8         @ r3 = mtIndex * 256
+	lsls r2, r2, #5         @ r2 = mtIndex * 32
 	lsls r1, r1, #1
 	ldr r0, [r4, #8]
 	adds r0, r0, r3

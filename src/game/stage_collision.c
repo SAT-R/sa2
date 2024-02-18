@@ -5,10 +5,18 @@
 static ALIGNED(8) u32 gUnknown_3000410[3];
 static ALIGNED(8) u32 gUnknown_3000420[3];
 
-#if 0
-s32 sub_801EF94(s32 p0, s32 p1, s32 p2)
+#if 01
+
+// Parameter 'layer' should ONLY be 0 or 1.
+s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
 {
     s32 r1, r3, r5, r7, r8;
+    const Collision *coll;
+    u16 **layers;
+    const u16 *map;
+    u32 mapIndex;
+    u32 mapIndex2;
+    u32 mtIndex;
 
     p0 >>= 3;
 
@@ -16,8 +24,8 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 p2)
         r7 = gUnknown_3000410[2];
         r8 = gUnknown_3000410[1];
     } else {
-        s32 divRes = Div(p0, 12);
-        r1 = p0 - (divRes * 12);
+        s32 divRes = Div(p0, TILES_PER_METATILE_AXIS);
+        r1 = p0 - (divRes * TILES_PER_METATILE_AXIS);
 
         gUnknown_3000410[0] = p0;
         gUnknown_3000410[1] = divRes;
@@ -33,18 +41,25 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 p2)
         r5 = gUnknown_3000420[2];
         r3 = gUnknown_3000420[1];
     } else {
-        s32 divRes = Div(p1, 12);
-        r1 = p1 - (divRes * 12);
-        
-        gUnknown_3000410[0] = p1;
-        gUnknown_3000410[1] = divRes;
-        gUnknown_3000410[2] = r1;
+        s32 divRes = Div(p1, TILES_PER_METATILE_AXIS);
+        r1 = p1 - (divRes * TILES_PER_METATILE_AXIS);
+
+        gUnknown_3000420[0] = p1;
+        gUnknown_3000420[1] = divRes;
+        gUnknown_3000420[2] = r1;
 
         r3 = divRes;
         r5 = r1;
     }
 
-    gUnknown_030059C8
+    coll = gUnknown_030059C8;
+    layers = (u16**)&coll->map_front;
+    map = layers[layer];
+    mapIndex = (r3 * coll->levelX) + r8;
+    mtIndex = map[mapIndex];
+    mapIndex2 = (r5 * TILES_PER_METATILE_AXIS + r7);
+
+    return coll->metatiles[mtIndex * 256 + mtIndex * 32 + mapIndex2];
 }
 #endif
 

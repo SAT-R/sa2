@@ -178,7 +178,7 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_extra_boss.o(.text);
         build/sa2/src/game/stage/background/callbacks.o(.text);
         build/sa2/asm/player_super_sonic_data.o(.text);
-        build/sa2/asm/game_1.o(.text);
+        build/sa2/asm/stage_collision.o(.text);
         build/sa2/src/game/stage_collision.o(.text);
         build/sa2/src/game/game_2.o(.text);
         build/sa2/src/game/dust_effect_braking.o(.text);
