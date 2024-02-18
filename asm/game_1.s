@@ -1491,7 +1491,8 @@ _0801EF7E:
 	pop {r1}
 	bx r1
 	.align 2, 0
-
+    
+.if 01
 	thumb_func_start sub_801EF94
 sub_801EF94: @ 0x0801EF94
 	push {r4, r5, r6, r7, lr}
@@ -1582,6 +1583,4 @@ _0801EFFE:
 	bx r1
 	.align 2, 0
 _0801F040: .4byte gUnknown_030059C8
-
-.if 0
 .endif

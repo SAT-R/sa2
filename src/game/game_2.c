@@ -11,8 +11,8 @@
 
 #include "constants/animations.h"
 
-static ALIGNED(8) u32 gUnknown_3000410[3];
-static ALIGNED(8) u32 gUnknown_3000420[3];
+ALIGNED(8) u32 gUnknown_3000410[3];
+ALIGNED(8) u32 gUnknown_3000420[3];
 
 void sub_801F044(void)
 {
@@ -20,28 +20,21 @@ void sub_801F044(void)
     DmaFill32(3, 0, &gUnknown_3000420, sizeof(gUnknown_3000420));
 }
 
-// TODO: Match without ASM
-// (100.00%) https://decomp.me/scratch/gEO29
-s32 sub_801F07C(s32 p0, s32 p1, s32 p2, s32 p3, Strc801F07C *data, Func801F07C func)
+s32 sub_801F07C(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
 {
-    Strc801F07C dummy;
+    u8 dummy[4];
+    u8 *dummy_p;
 
     s32 result;
     s32 funcRes;
     u8 *data1;
 
     if (data == NULL)
-        data = &dummy;
+        data = dummy;
 
-#ifndef NON_MATCHING
-    data1 = &dummy.x;
-    asm("mov %0, sp\n"
-        "add %0, %0, #1\n"
-        : "=r"(data1)
-        : "r"(&dummy.x));
-#else
-    data1 = &dummy.y;
-#endif
+    dummy_p = &dummy[0];
+    dummy_p++;
+    data1 = dummy_p;
 
     funcRes = func(p0, p1, p2, data1);
 
@@ -52,7 +45,7 @@ s32 sub_801F07C(s32 p0, s32 p1, s32 p2, s32 p3, Strc801F07C *data, Func801F07C f
             result = (p0 % 8u) + 1;
         }
     } else if (funcRes == 8) {
-        data->x = *data1;
+        *data = *data1;
 
         if (p3 > 0) {
             result = ~(p0 % 8u);
@@ -60,7 +53,7 @@ s32 sub_801F07C(s32 p0, s32 p1, s32 p2, s32 p3, Strc801F07C *data, Func801F07C f
             result = (-8) | p0;
         }
     } else {
-        data->x = *data1;
+        *data = *data1;
 
         if (funcRes > 0) {
             funcRes--;
