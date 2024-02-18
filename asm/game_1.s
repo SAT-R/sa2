@@ -1614,25 +1614,26 @@ _0801F070: .4byte IWRAM_START + 0x410
 _0801F074: .4byte 0x85000003
 _0801F078: .4byte IWRAM_START + 0x420
 
+.if 0
 @; s32 sub_801F07C(s32, s32, s32, s32, void *, func);
 	thumb_func_start sub_801F07C
 sub_801F07C: @ 0x0801F07C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
-	sub sp, #4
-	adds r5, r0, #0
-	mov r8, r3
-	ldr r6, [sp, #0x1c]
+	sub sp, #4              @ sp00 = array
+	adds r5, r0, #0         @ r5 = r0 = p0
+	mov r8, r3              @ r8 = p3
+	ldr r6, [sp, #0x1c]     @ r6 = data
 	cmp r6, #0
 	bne _0801F090
-	mov r6, sp
+	mov r6, sp              @ r6 = data = &array
 _0801F090:
 	mov r4, sp
 	adds r4, #1
 	adds r0, r5, #0
 	adds r3, r4, #0
-	ldr r7, [sp, #0x20]
+	ldr r7, [sp, #0x20]     @ r7 = func
 	bl _call_via_r7
 	adds r1, r0, #0
 	cmp r1, #0
@@ -1644,29 +1645,29 @@ _0801F090:
 	ands r0, r5
 	movs r1, #8
 	subs r0, r1, r0
-	b _0801F0F2
+	b sub_801F07C_return
 _0801F0B4:
 	movs r0, #7
 	ands r0, r5
 	adds r0, #1
-	b _0801F0F2
+	b sub_801F07C_return
 _0801F0BC:
 	cmp r1, #8
 	bne _0801F0DA
 	ldrb r0, [r4]
 	strb r0, [r6]
-	mov r7, r8
+	mov r7, r8               @ r7 = r8 = p3
 	cmp r7, #0
 	ble _0801F0D2
 	movs r0, #7
 	ands r0, r5
 	mvns r0, r0
-	b _0801F0F2
+	b sub_801F07C_return
 _0801F0D2:
 	movs r0, #8
 	rsbs r0, r0, #0
 	orrs r0, r5
-	b _0801F0F2
+	b sub_801F07C_return
 _0801F0DA:
 	ldrb r0, [r4]
 	strb r0, [r6]
@@ -1676,12 +1677,12 @@ _0801F0DA:
 	movs r0, #7
 	ands r0, r5
 	subs r0, r1, r0
-	b _0801F0F2
+	b sub_801F07C_return
 _0801F0EC:
 	movs r0, #7
 	ands r0, r5
 	adds r0, r1, r0
-_0801F0F2:
+sub_801F07C_return:
 	add sp, #4
 	pop {r3}
 	mov r8, r3
@@ -1689,60 +1690,5 @@ _0801F0F2:
 	pop {r1}
 	bx r1
 	.align 2, 0
-
-	thumb_func_start sub_801F100
-sub_801F100: @ 0x0801F100
-	push {r4, r5, lr}
-	adds r4, r0, #0
-	adds r5, r3, #0
-	ldr r3, [sp, #0xc]
-	bl _call_via_r3
-	adds r1, r0, #0
-	cmp r1, #0
-	bne _0801F128
-	cmp r5, #0
-	ble _0801F120
-	movs r0, #7
-	ands r0, r4
-	movs r1, #8
-	subs r0, r1, r0
-	b _0801F154
-_0801F120:
-	movs r0, #7
-	ands r0, r4
-	adds r0, #1
-	b _0801F154
-_0801F128:
-	cmp r1, #8
-	bne _0801F140
-	cmp r5, #0
-	ble _0801F138
-	movs r0, #7
-	ands r0, r4
-	mvns r0, r0
-	b _0801F154
-_0801F138:
-	movs r0, #8
-	rsbs r0, r0, #0
-	orrs r0, r4
-	b _0801F154
-_0801F140:
-	cmp r1, #0
-	ble _0801F14E
-	subs r1, #1
-	movs r0, #7
-	ands r0, r4
-	subs r0, r1, r0
-	b _0801F154
-_0801F14E:
-	movs r0, #7
-	ands r0, r4
-	adds r0, r1, r0
-_0801F154:
-	pop {r4, r5}
-	pop {r1}
-	bx r1
-	.align 2, 0
-
-.if 0
+    
 .endif

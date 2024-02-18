@@ -11,6 +11,86 @@
 
 #include "constants/animations.h"
 
+// TODO: Match without ASM
+// (100.00%) https://decomp.me/scratch/gEO29
+s32 sub_801F07C(s32 p0, s32 p1, s32 p2, s32 p3, Strc801F07C *data, Func801F07C func)
+{
+    Strc801F07C dummy;
+
+    s32 result;
+    s32 funcRes;
+    u8 *data1;
+
+    if (data == NULL)
+        data = &dummy;
+
+#ifndef NON_MATCHING
+    data1 = &dummy.x;
+    asm("mov %0, sp\n"
+        "add %0, %0, #1\n"
+        : "=r"(data1)
+        : "r"(&dummy.x));
+#else
+    data1 = &dummy.y;
+#endif
+
+    funcRes = func(p0, p1, p2, data1);
+
+    if (funcRes == 0) {
+        if (p3 > 0) {
+            result = 8 - (p0 % 8u);
+        } else {
+            result = (p0 % 8u) + 1;
+        }
+    } else if (funcRes == 8) {
+        data->x = *data1;
+
+        if (p3 > 0) {
+            result = ~(p0 % 8u);
+        } else {
+            result = (-8) | p0;
+        }
+    } else {
+        data->x = *data1;
+
+        if (funcRes > 0) {
+            funcRes--;
+            result = funcRes - (p0 % 8u);
+        } else {
+            result = funcRes + (p0 % 8u);
+        }
+    }
+
+    return result;
+}
+
+s32 sub_801F100(s32 p0, s32 p1, s32 p2, s32 p3, Func801F100 func)
+{
+    s32 result;
+    s32 funcRes = func(p0, p1, p2);
+
+    if (funcRes == 0) {
+        if (p3 > 0) {
+            result = 8 - (p0 % 8u);
+        } else {
+            result = (p0 % 8u) + 1;
+        }
+    } else if (funcRes == 8) {
+        if (p3 > 0) {
+            result = ~(p0 % 8u);
+        } else {
+            result = (-8) | p0;
+        }
+    } else if (funcRes > 0) {
+        funcRes--;
+        result = funcRes - (p0 % 8u);
+    } else {
+        result = funcRes + (p0 % 8u);
+    }
+
+    return result;
+}
+
 struct Task *sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main,
                          TaskDestructor dtor)
 {
