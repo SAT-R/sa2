@@ -8,30 +8,25 @@
 
 extern const AnimationCommandFunc animCmdTable[];
 
-const u8 sUnknown_080984A4[] = {
-    /* 0x00 */ Q_24_8_TO_INT(Q_24_8(0.5 * 2)),
-    /* 0x01 */ Q_24_8_TO_INT(Q_24_8(0.0 * 2)),
-    /* 0x02 */ Q_24_8_TO_INT(Q_24_8(1.0 * 2)),
-    /* 0x03 */ Q_24_8_TO_INT(Q_24_8(1.5 * 2)),
-    /* 0x04 */ Q_24_8_TO_INT(Q_24_8(3.0 * 2)),
-    /* 0x05 */ Q_24_8_TO_INT(Q_24_8(3.5 * 2)),
-    /* 0x06 */ Q_24_8_TO_INT(Q_24_8(2.5 * 2)),
-    /* 0x07 */ Q_24_8_TO_INT(Q_24_8(2.0 * 2)),
-};
-
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
 // This function gets called as long as an enemy is on-screen.
 // Potentially something to do with collision/distance?
 s16 sub_8004418(s16 x, s16 y)
 {
-    u8 index = 0;
-    u8 array[ARRAY_COUNT(sUnknown_080984A4)];
-
     s16 fraction;
     s32 result;
-
-    memcpy(&array, sUnknown_080984A4, ARRAY_COUNT(sUnknown_080984A4));
+    u8 index = 0;
+    u8 array[] = {
+        /* 0x00 */ I(Q(0.5 * 2)),
+        /* 0x01 */ I(Q(0.0 * 2)),
+        /* 0x02 */ I(Q(1.0 * 2)),
+        /* 0x03 */ I(Q(1.5 * 2)),
+        /* 0x04 */ I(Q(3.0 * 2)),
+        /* 0x05 */ I(Q(3.5 * 2)),
+        /* 0x06 */ I(Q(2.5 * 2)),
+        /* 0x07 */ I(Q(2.0 * 2)),
+    };
 
     if ((x | y) == 0) {
         result = -1;
@@ -47,7 +42,7 @@ s16 sub_8004418(s16 x, s16 y)
         }
         if (x >= y) {
             // fraction = y*0.5 / x
-            y *= Q_24_8(0.5);
+            y *= Q(0.5);
 
             if (x == 0) {
                 // _0800447C
@@ -60,7 +55,7 @@ s16 sub_8004418(s16 x, s16 y)
             // _08004488
             index += 1;
 
-            x *= Q_24_8(0.5);
+            x *= Q(0.5);
 
             if (y == 0) {
                 fraction = x;
@@ -69,13 +64,12 @@ s16 sub_8004418(s16 x, s16 y)
             }
         }
 
-        // If array[index] is odd,
         if (array[index] & 0x01) {
-            fraction = Q_24_8(0.5) - fraction;
+            fraction = Q(0.5) - fraction;
         }
 
         {
-            s32 val = array[index] * Q_24_8(0.5);
+            s32 val = array[index] * Q(0.5);
             fraction += val;
             result = ((u32)(fraction << 22) >> 22);
         }
@@ -104,13 +98,13 @@ u32 sub_8004518(u16 num)
     u8 i;
     u16 result;
     u8 lowDigit;
-    u32 remainder = num;
+    u16 remainder = num;
 
     result = 0;
     for (i = 0; i < 4; i++) {
         s32 divisor = Div(remainder, 10);
         lowDigit = remainder - (divisor * 10);
-        remainder = (u16)divisor;
+        remainder = divisor;
 
         result |= lowDigit << (i * 4);
     }
@@ -237,16 +231,16 @@ void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
     s16 res;
 
     res = Div(0x10000, p1);
-    affine[0] = Q_24_8_TO_INT(COS_24_8(angle) * res);
+    affine[0] = I(COS_24_8(angle) * res);
 
     res = Div(0x10000, p1);
-    affine[4] = Q_24_8_TO_INT(SIN_24_8(angle) * res);
+    affine[4] = I(SIN_24_8(angle) * res);
 
     res = Div(0x10000, p2);
-    affine[8] = Q_24_8_TO_INT((-(SIN(angle)) >> 6) * res);
+    affine[8] = I((-(SIN(angle)) >> 6) * res);
 
     res = Div(0x10000, p2);
-    affine[12] = Q_24_8_TO_INT(COS_24_8(angle) * res);
+    affine[12] = I(COS_24_8(angle) * res);
 }
 
 // Similar to sub_8004ABC and sub_8004E14
@@ -359,7 +353,7 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
             r0 = sp00[7];
             r0 *= r3;
             r1 += r0;
-            r1 += Q_24_8(r5);
+            r1 += Q(r5);
             r1 >>= 8;
 
             sp14 -= r1;
