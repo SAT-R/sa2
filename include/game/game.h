@@ -105,7 +105,7 @@ typedef struct {
     /* 0x4C */ SpriteTransform transform;
 } TaskStrc_801F15C; /* size: 0x58 */
 
-extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
+extern struct Task *sub_801F15C(s16, s16, u8, s8, TaskMain, TaskDestructor);
 extern void TaskDestructor_801F550(struct Task *);
 
 extern void sub_801F78C(void);

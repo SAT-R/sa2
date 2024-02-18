@@ -11,6 +11,35 @@
 
 #include "constants/animations.h"
 
+struct Task *sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main,
+                         TaskDestructor dtor)
+{
+    struct Task *t = TaskCreate(main, sizeof(TaskStrc_801F15C), 0x4001, 0, dtor);
+
+    TaskStrc_801F15C *strc = TASK_DATA(t);
+    Sprite *s = &strc->s;
+
+    strc->x = x;
+    strc->y = y;
+    strc->unk14 = param2;
+    strc->unk1A = param3;
+    strc->playerAnim = 0;
+    strc->playerVariant = 0;
+
+    s->graphics.dest = NULL;
+    s->graphics.size = 0;
+    s->graphics.anim = 0;
+    s->variant = 0;
+    s->prevVariant = -1;
+    s->unk1A = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = 0x10;
+    s->palId = 0;
+    s->unk10 = 0;
+
+    return t;
+}
+
 void Task_801F214(void)
 {
     TaskStrc_801F15C *ts = TASK_DATA(gCurTask);
