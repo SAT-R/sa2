@@ -80,13 +80,8 @@ extern s32 sub_801EB44(s32, s32, s32);
 extern s32 sub_801EC3C(s32, s32, s32);
 extern s32 sub_801ED24(s32, s32, s32);
 
-typedef struct {
-    u8 x;
-    u8 y;
-} Strc801F07C;
-
 typedef s32 (*Func801F07C)(s32, s32, s32, u8 *);
-s32 sub_801F07C(s32, s32, s32, s32, Strc801F07C *, Func801F07C);
+s32 sub_801F07C(s32, s32, s32, s32, u8*, Func801F07C);
 extern s32 sub_801EE64(s32, s32, s32, s32);
 
 // ground collision clamp functions
