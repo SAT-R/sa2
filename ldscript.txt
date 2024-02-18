@@ -21,8 +21,10 @@ SECTIONS
         /**** bss ****/
         build/sa2/src/lib/m4a.o(.bss.code);
         build/sa2/src/multi_boot.o(.bss);
-        /* space 0x20 for stuff used in game_1.s */ 
-        . = 0x0000042C; 
+        
+        . = 0x00000410; 
+        build/sa2/src/game/game_2.o(.bss);
+
         build/sa2/src/lib/agb_flash.o(.bss);
 
         /**** common ****/

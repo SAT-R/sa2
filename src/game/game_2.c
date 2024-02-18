@@ -11,13 +11,13 @@
 
 #include "constants/animations.h"
 
-// Once decompiling these, make
-// (IWRAM_START + 0x410) and (IWRAM_START + 0x420) static u16[3]
-// and add to top of sym_iwram.txt
+static ALIGNED(8) u32 gUnknown_3000410[3];
+static ALIGNED(8) u32 gUnknown_3000420[3];
+
 void sub_801F044(void)
 {
-    DmaFill32(3, 0, (void *)(IWRAM_START + 0x410), 12);
-    DmaFill32(3, 0, (void *)(IWRAM_START + 0x420), 12);
+    DmaFill32(3, 0, &gUnknown_3000410, sizeof(gUnknown_3000410));
+    DmaFill32(3, 0, &gUnknown_3000420, sizeof(gUnknown_3000420));
 }
 
 // TODO: Match without ASM
