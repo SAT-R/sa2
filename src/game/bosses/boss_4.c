@@ -268,13 +268,13 @@ static void Task_AeroEggExploding(void)
     }
 }
 
-// (85.57%) https://decomp.me/scratch/OWUPJ
-NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
-         static void sub_8041880(AeroEgg *boss))
+static void sub_8041880(AeroEgg *boss)
 {
-    u8 i;
+
+    u32 period;
 
     Sprite *s = &boss->sub.sprBody;
+    u8 i;
     s->x = I(boss->main.qWorldX) - gCamera.x;
     s->y = I(boss->main.qWorldY) - gCamera.y;
     UpdateSpriteAnimation(s);
@@ -288,11 +288,12 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
 
     for (i = 0; i < ARRAY_COUNT(boss->sub.tail); i++) {
         s32 xVal, yVal;
-        s32 bossX, bossY;
+
         s32 sinV, cosV;
-        u32 period;
-        s++;
+        s32 bossX, bossY;
+
         period = (u16)(SIN_24_8(((gStageTime * 12) + (i << 7)) & ONE_CYCLE) >> 3);
+        s = &boss->sub.sprTail;
 
         bossX = I(boss->main.qWorldX) - gCamera.x;
         cosV = (COS((period + 500) & ONE_CYCLE) * 17);
@@ -302,7 +303,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
         s->x = bossX;
 
         bossY = I(boss->main.qWorldY) - gCamera.y;
-        sinV = (SIN(period + 500) * 17);
+        sinV = (SIN((period + 500) & ONE_CYCLE) * 17);
         sinV *= (i + 1);
         sinV >>= 14;
         sinV += 0x14;
@@ -313,21 +314,20 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
     }
 
     {
-        s32 xVal, yVal;
         s32 bossX, bossY;
+        s32 xVal, yVal;
         s32 sinV, cosV;
-        u32 period = (u16)(SIN_24_8(((gStageTime * 12) + 512) & ONE_CYCLE) >> 3);
+        period = (u16)(SIN_24_8(((gStageTime * 12) + 512) & ONE_CYCLE) >> 3);
 
         s = &boss->sub.sprTailTip;
         bossX = I(boss->main.qWorldX) - gCamera.x;
-        period = (period + 500) & ONE_CYCLE;
-        cosV = (COS(period) * 15);
+        cosV = (COS((period + 500) & ONE_CYCLE) * 15);
         cosV >>= 12;
         bossX += cosV;
         s->x = bossX;
 
         bossY = I(boss->main.qWorldY) - gCamera.y;
-        sinV = (SIN(period) * 15);
+        sinV = (SIN((period + 500) & ONE_CYCLE) * 15);
         sinV >>= 12;
         sinV += 0x14;
         bossY += sinV;
@@ -337,7 +337,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041880.inc",
         DisplaySprite(s);
     }
 }
-END_NONMATCH
 
 static void sub_8041A08(AeroEgg *boss)
 {
