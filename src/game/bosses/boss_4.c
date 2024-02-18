@@ -799,7 +799,7 @@ static void sub_8042560(AeroEgg *boss)
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
 }
 
-void AeroEggResetPos(s32 dx, s32 dy)
+void AeroEggMove(s32 dx, s32 dy)
 {
     AeroEgg *boss = TASK_DATA(gActiveBossTask);
     u8 i;
