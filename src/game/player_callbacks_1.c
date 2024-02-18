@@ -2885,10 +2885,10 @@ bool32 sub_8029DE8(Player *p)
 
     if (!(p->moveState & MOVESTATE_80000000)) {
         if (GRAVITY_IS_INVERTED) {
-            if (playerY <= Q_24_8(cam->unk28))
+            if (playerY <= Q_24_8(cam->minY))
                 return TRUE;
         } else {
-            if (playerY >= Q_24_8(cam->unk2C) - 1)
+            if (playerY >= Q_24_8(cam->maxY) - 1)
                 return TRUE;
         }
     }

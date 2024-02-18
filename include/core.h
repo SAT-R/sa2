@@ -105,8 +105,8 @@ typedef struct {
     /* 0x10 */ const u16 *map_back;
     /* 0x14 */ const u8 *flags;
     /* 0x18 */ u16 levelX, levelY;
-    /* 0x1C */ u32 unk1C;
-    /* 0x20 */ u32 unk20;
+    /* 0x1C */ u32 pxWidth; // u16 in SA1!
+    /* 0x20 */ u32 pxHeight; // u16 in SA1!
 } Collision;
 
 struct Unk_03003674_1_Sub {

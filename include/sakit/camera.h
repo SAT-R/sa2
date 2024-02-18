@@ -26,10 +26,15 @@ struct Camera {
     /* 0x1C */ s32 shiftY;
     /* 0x20 */ s32 unk20;
     /* 0x24 */ s32 unk24;
-    /* 0x28 */ s32 unk28;
-    /* 0x2c */ s32 unk2C;
-    /* 0x30 */ s32 unk30;
-    /* 0x34 */ s32 unk34;
+
+    // TODO: Why are X/Y swapped?
+    //       Did they make this a matrix or sth.?
+    //       (Used to calc min/max cam pos in UpdateCamera())
+    /* 0x28 */ s32 minY;
+    /* 0x2c */ s32 maxY;
+    /* 0x30 */ s32 minX;
+    /* 0x34 */ s32 maxX;
+
     /* 0x38 */ s32 unk38; // movementX?
     /* 0x3c */ s32 unk3C; // movementY?
     /* 0x40 */ s16 unk40;

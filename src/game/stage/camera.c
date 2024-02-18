@@ -28,7 +28,7 @@ struct Backgrounds ALIGNED(16) gStageBackgroundsRam = {};
 UNUSED u32 unused_3005950[3] = {};
 
 struct Camera ALIGNED(8) gCamera = {};
-const u32 *gUnknown_030059C8 = NULL;
+const Collision *gUnknown_030059C8 = NULL;
 
 static void sub_801C708(s32, s32);
 void Task_CallUpdateCamera(void);
@@ -368,15 +368,15 @@ void InitCamera(u32 level)
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gUnknown_030059C8 = (u32 *)gCollisionTable[level];
+        gUnknown_030059C8 = gCollisionTable[level];
     } else {
-        gUnknown_030059C8 = *(u32 **)(EWRAM_START + 0x33004);
+        gUnknown_030059C8 = *(Collision **)(EWRAM_START + 0x33004);
     }
 
-    camera->unk28 = 0;
-    camera->unk2C = gUnknown_030059C8[8];
-    camera->unk30 = 0;
-    camera->unk34 = gUnknown_030059C8[7];
+    camera->minY = 0;
+    camera->maxY = gUnknown_030059C8->pxHeight;
+    camera->minX = 0;
+    camera->maxX = gUnknown_030059C8->pxWidth;
 
     if (((gCurrentLevel & ACTS_PER_ZONE) == ACT_BOSS)
         || ((gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
@@ -452,8 +452,8 @@ void UpdateCamera(void)
     camera->unk38 = newX;
     camera->unk3C = newY;
 
-    newX = CLAMP(newX, camera->unk30, camera->unk34 - (DISPLAY_WIDTH + 1));
-    newY = CLAMP(newY, camera->unk28, camera->unk2C - (DISPLAY_HEIGHT + 1));
+    newX = CLAMP(newX, camera->minX, camera->maxX - (DISPLAY_WIDTH + 1));
+    newY = CLAMP(newY, camera->minY, camera->maxY - (DISPLAY_HEIGHT + 1));
 
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         s32 delta, playerY;
@@ -574,7 +574,7 @@ void UpdateCamera(void)
             newX += temp2;
         }
 
-        newX = CLAMP(newX, camera->unk30, camera->unk34 - DISPLAY_WIDTH);
+        newX = CLAMP(newX, camera->minX, camera->maxX - DISPLAY_WIDTH);
 
         if (camera->unk8 < Q_24_8(16)) {
             camera->unk8 += Q_24_8(0.125);
@@ -599,11 +599,11 @@ void UpdateCamera(void)
                 : -camera->unkC;
         }
 
-        newY = CLAMP(newY, camera->unk28, camera->unk2C - DISPLAY_HEIGHT);
+        newY = CLAMP(newY, camera->minY, camera->maxY - DISPLAY_HEIGHT);
 
         // maybe a macro, these values are already clamped
-        newX = CLAMP(newX, camera->unk30, camera->unk34 - DISPLAY_WIDTH);
-        newY = CLAMP(newY, camera->unk28, camera->unk2C - DISPLAY_HEIGHT);
+        newX = CLAMP(newX, camera->minX, camera->maxX - DISPLAY_WIDTH);
+        newY = CLAMP(newY, camera->minY, camera->maxY - DISPLAY_HEIGHT);
         newX = newX + camera->unk60;
         newY = newY + camera->unk62;
     }
