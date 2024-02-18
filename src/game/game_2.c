@@ -11,6 +11,15 @@
 
 #include "constants/animations.h"
 
+// Once decompiling these, make
+// (IWRAM_START + 0x410) and (IWRAM_START + 0x420) static u16[3]
+// and add to top of sym_iwram.txt
+void sub_801F044(void)
+{
+    DmaFill32(3, 0, (void *)(IWRAM_START + 0x410), 12);
+    DmaFill32(3, 0, (void *)(IWRAM_START + 0x420), 12);
+}
+
 // TODO: Match without ASM
 // (100.00%) https://decomp.me/scratch/gEO29
 s32 sub_801F07C(s32 p0, s32 p1, s32 p2, s32 p3, Strc801F07C *data, Func801F07C func)
