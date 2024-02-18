@@ -36,7 +36,7 @@
 
 #define RESERVED_EXPLOSION_TILES_VRAM (void *)(OBJ_VRAM0 + 0x2980)
 
-static const u16 gUnknown_080D7F54[][16] = {
+static const u16 sPalAeroEggHit[2][16] = {
     [PAL_BOSS_4_DEFAULT] = INCBIN_U16("graphics/boss_4_a.gbapal"),
     [PAL_BOSS_4_HIT] = INCBIN_U16("graphics/boss_4_b.gbapal"),
 };
@@ -787,12 +787,12 @@ static void sub_8042560(AeroEgg *boss)
     u8 i;
 
     if (boss->main.unk16 != 0) {
-        for (i = 0; i < ARRAY_COUNT(gUnknown_080D7F54[PAL_BOSS_4_DEFAULT]); i++) {
-            gObjPalette[128 + i] = gUnknown_080D7F54[((gStageTime & 0x2) >> 1)][i];
+        for (i = 0; i < ARRAY_COUNT(sPalAeroEggHit[PAL_BOSS_4_DEFAULT]); i++) {
+            gObjPalette[128 + i] = sPalAeroEggHit[((gStageTime & 0x2) >> 1)][i];
         }
     } else {
-        for (i = 0; i < ARRAY_COUNT(gUnknown_080D7F54[PAL_BOSS_4_HIT]); i++) {
-            gObjPalette[128 + i] = gUnknown_080D7F54[PAL_BOSS_4_HIT][i];
+        for (i = 0; i < ARRAY_COUNT(sPalAeroEggHit[PAL_BOSS_4_HIT]); i++) {
+            gObjPalette[128 + i] = sPalAeroEggHit[PAL_BOSS_4_HIT][i];
         }
     }
 
