@@ -30,7 +30,7 @@ const VoidFn sBossCreationFuncs[] = {
 };
 
 const TranslateBossFunction MoveBossPositionFuncs[] = {
-    sub_803C80C,   EggBomberTankMove, sub_803FA84, AeroEggResetPos,
+    sub_803C80C,   EggBomberTankMove, sub_803FA84, AeroEggMove,
     EggSaucerMove, sub_8047224,       sub_8048EB4, sub_804D594,
 };
 
