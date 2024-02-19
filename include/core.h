@@ -96,13 +96,15 @@ union MultiSioData {
     struct MultiSioData_0_4 pat4;
 }; /* size = MULTI_SIO_BLOCK_SIZE */
 
+// TODO: Have we defined this somewhere else already?
+#define MAP_LAYER_COUNT 2
+
 // Thanks @MainMemory_ for figuring out how collision works!
 typedef struct {
     /* 0x00 */ const u8 *height_map;
     /* 0x04 */ const u8 *tile_rotation;
     /* 0x08 */ const u16 *metatiles;
-    /* 0x0C */ const u16 *map_front;
-    /* 0x10 */ const u16 *map_back;
+    /* 0x0C */ const u16 *map[MAP_LAYER_COUNT];
     /* 0x14 */ const u8 *flags;
     /* 0x18 */ u16 levelX, levelY;
     /* 0x1C */ u32 pxWidth; // u16 in SA1!

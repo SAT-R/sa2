@@ -6,60 +6,103 @@ static ALIGNED(8) u32 gUnknown_3000410[3];
 static ALIGNED(8) u32 gUnknown_3000420[3];
 
 #if 01
-
 // Parameter 'layer' should ONLY be 0 or 1.
+// (98.43%) https://decomp.me/scratch/nh7WN
 s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
 {
-    s32 r1, r3, r5, r7, r8;
-    const Collision *coll;
+    s32 r0;
+#ifndef NON_MATCHING
+    register s32 r1 asm("r1");
+    register s32 r3 asm("r3");
+    register s32 r4 asm("r4");
+    register s32 r5 asm("r5");
+    register s32 r6 asm("r6") = p1;
+    s32 r7;
+    register s32 r8 asm("r8");
+    register s32 r9 asm("r9") = layer;
+    register u16 **layers asm("r1");
+#else
+    s32 r1;
+    s32 r3;
+    s32 r4;
+    s32 r5;
+    s32 r6 = p1;
+    s32 r7;
+    s32 r8;
+    s32 r9 = layer;
     u16 **layers;
-    const u16 *map;
+#endif
+    const Collision *coll;
+    u16 *map;
     u32 mapIndex;
     u32 mapIndex2;
     u32 mtIndex;
+    s32 i;
+    void *pMeta;
+    u16 result;
 
-    p0 >>= 3;
+    r4 = p0 >> 3;
 
-    if(gUnknown_3000410[0] == p0) {
+    if (gUnknown_3000410[0] == r4) {
         r7 = gUnknown_3000410[2];
-        r8 = gUnknown_3000410[1];
+        r0 = gUnknown_3000410[1];
     } else {
-        s32 divRes = Div(p0, TILES_PER_METATILE_AXIS);
-        r1 = p0 - (divRes * TILES_PER_METATILE_AXIS);
+        s32 divRes = Div(r4, TILES_PER_METATILE_AXIS);
+        r1 = r4 - (divRes * TILES_PER_METATILE_AXIS);
 
-        gUnknown_3000410[0] = p0;
+        gUnknown_3000410[0] = r4;
         gUnknown_3000410[1] = divRes;
         gUnknown_3000410[2] = r1;
 
-        r8 = divRes;
-        r7 = r1;
+        r7 = gUnknown_3000410[2];
+        r0 = gUnknown_3000410[1];
     }
+    r8 = r0;
     // _0801EFCC
 
-    p1 >>= 3;
-    if(gUnknown_3000420[0] == p1) {
+    r4 = p1 >> 3;
+    if (gUnknown_3000420[0] == r4) {
         r5 = gUnknown_3000420[2];
         r3 = gUnknown_3000420[1];
     } else {
-        s32 divRes = Div(p1, TILES_PER_METATILE_AXIS);
-        r1 = p1 - (divRes * TILES_PER_METATILE_AXIS);
-
-        gUnknown_3000420[0] = p1;
-        gUnknown_3000420[1] = divRes;
-        gUnknown_3000420[2] = r1;
+        s32 divRes = Div(r4, TILES_PER_METATILE_AXIS);
+        r1 = r4 - (divRes * TILES_PER_METATILE_AXIS);
 
         r3 = divRes;
+        gUnknown_3000420[0] = r4;
+        gUnknown_3000420[1] = r3;
+        gUnknown_3000420[2] = r1;
+
         r5 = r1;
     }
 
     coll = gUnknown_030059C8;
-    layers = (u16**)&coll->map_front;
-    map = layers[layer];
+    layers = (u16 **)&coll->map[0];
+    layers += r9;
     mapIndex = (r3 * coll->levelX) + r8;
+    map = *layers;
     mtIndex = map[mapIndex];
-    mapIndex2 = (r5 * TILES_PER_METATILE_AXIS + r7);
 
-    return coll->metatiles[mtIndex * 256 + mtIndex * 32 + mapIndex2];
+#ifndef NON_MATCHING
+    // ((r5 << 3) + (r5 << 2)) == r5 * TILES_PER_METATILE_AXIS
+    r1 = ((r5 << 3) + (r5 << 2) + r7);
+
+    asm("" ::"r"(r5));
+
+    r3 = mtIndex * 256;
+    mtIndex *= 32;
+    i = r1 * 2;
+    pMeta = (void *)coll->metatiles;
+    pMeta += r3;
+    pMeta += mtIndex;
+    pMeta += i;
+    result = *(u16 *)pMeta;
+#else
+    mtIndex = mtIndex * 288 + i;
+    result = coll->metatiles[mtIndex];
+#endif
+
+    return result;
 }
 #endif
 

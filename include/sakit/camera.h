@@ -3,8 +3,8 @@
 
 #include "core.h"
 
-#define TILE_WIDTH       8
-#define CAM_REGION_WIDTH 256
+#define TILE_WIDTH              8
+#define CAM_REGION_WIDTH        256
 #define TILES_PER_METATILE_AXIS 12
 
 #define TO_WORLD_POS(pos, region) ((pos)*TILE_WIDTH + (region)*CAM_REGION_WIDTH)
