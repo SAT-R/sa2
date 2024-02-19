@@ -5,59 +5,145 @@
 static ALIGNED(8) u32 gUnknown_3000410[3];
 static ALIGNED(8) u32 gUnknown_3000420[3];
 
-#if 0
-s32 sub_801EE64(s32 p0, s32 p1, s32 p2, u8 *p3)
+s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
+
+// TODO: Fix this register mess!
+// (100.00%) https://decomp.me/scratch/xGy3C
+s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
 {
-    s32 r0;
+#ifndef NON_MATCHING
+    register u32 r0 asm("r0");
+    register u32 r1 asm("r1");
+    register s32 r3 asm("r3");
+    register s32 p0 asm("r4") = p0in;
+    register s32 p1 asm("r5") = p1in;
+    register s32 r6 asm("r6");
+    register s32 p2 asm("r8") = p2in;
+    u32 r7;
+    register s32 sb asm("sb");
+    register u8 *p3 asm("sl") = p3in;
+    register s32 res asm("r4");
+    register u8 *hm asm("r1");
+#else
+    u32 r0;
+    u32 r1;
     s32 r3;
+    s32 p0 = p0in;
+    s32 p1 = p1in;
+    s32 r6;
+    s32 p2 = p2in;
     u32 r7;
     s32 sb;
+    u8 *p3 = p3in;
     s32 res;
-    s8 tileHeight;
+    u8 *hm;
+#endif
+    u8 rotation;
 
-    if(p1 >= 0) {
-        if(p1 > gUnknown_030059C8->pxWidth - 1) {
-            p1 = gUnknown_030059C8->pxWidth - 1;
+    if (p1 >= 0) {
+        r0 = gUnknown_030059C8->pxWidth;
+        r1 = r0 - 1;
+        r0 = p1;
+        if (r0 > r1) {
+            r0 = r1;
         }
     } else {
-        p1 = 0;
+        r0 = 0;
     }
+    p1 = r0;
     // _0801EE92 + 2
 
-    if(p0 >= 0) {
-        if(p0 > gUnknown_030059C8->pxHeight - 1) {
-            p0 = gUnknown_030059C8->pxHeight - 1;
+    if (p0 >= 0) {
+        r0 = gUnknown_030059C8->pxHeight;
+        r1 = r0 - 1;
+        r0 = p0;
+        if (r0 > r1) {
+            r0 = r1;
         }
     } else {
-        p0 = 0;
+        r0 = 0;
     }
+    p0 = r0;
     // _0801EEB2 + 2
 
     sb = 1;
 
-    res = sub_801EF94(p1, p0, p2 & 0x1);
-    r7 = res & 0x3FF;
-    r3 = p1 % 8u;
+    res = sub_801EF94(p1, p0, p2 & sb);
+    r7 = 0x3FF;
+    r7 &= res;
 
-    if(res & 0x400) {
-        r3 = 7 - r3;
+    r6 = 0x7;
+    r3 = r6;
+    r3 &= p1;
+
+    r0 = 0x400;
+    r0 &= res;
+    if (r0) {
+        r3 = r6 - r3;
     }
     // _0801EEDC
 
-    // tileHeight = r3
-    tileHeight = gUnknown_030059C8->height_map[r7 * 8 + r3];
+    // r3 = tileHeight
+    r3 = gUnknown_030059C8->height_map[(r7 << 3) + r3];
 
-    if((tileHeight >> 4) == -8) {
-        tileHeight = 8;
+    if ((r3 >>= 4) == -8) {
+        r3 = 8;
     }
     // _0801EEF8
 
-    if(p2 & 0x80) {
-        gUnknown_030059C8->flags[r7 / 8u];
+    if (p2 & 0x80) {
+        s32 flags = gUnknown_030059C8->flags[r7 / 8u];
+
+        // 2: one tile's flags' bit-width
+        flags >>= ((r7 & r6) * 2);
+
+        if (flags & sb) {
+            r3 = 0;
+        }
     }
     // _0801EF1E
-}
+
+    if (res & 0x800) {
+        if ((r3 != 8) && (r3 != 0)) {
+            r0 = r3 + 8;
+            r0 = (r3 > 0) ? r3 - 8 : r0;
+
+        } else {
+            r0 = r3;
+        }
+        r3 = r0;
+    }
+    // _0801EF48
+
+    rotation = gUnknown_030059C8->tile_rotation[r7];
+
+    if (p0 & 0x400) {
+        rotation = -rotation;
+    }
+
+    if (p0 & 0x800) {
+        u8 v;
+        if (r3 != 0) {
+            u32 v2 = (-0x80) - rotation;
+            v = v2;
+        } else {
+            v = rotation;
+        }
+        rotation = v;
+    }
+    // _0801EF7E
+
+    {
+#ifndef NON_MATCHING
+        register u8 *r1p asm("r1") = p3;
+        *r1p = rotation;
+#else
+        *p3in = rotation;
 #endif
+    }
+
+    return r3;
+}
 
 // Parameter 'layer' should ONLY be 0 or 1.
 // (98.43%) https://decomp.me/scratch/nh7WN
