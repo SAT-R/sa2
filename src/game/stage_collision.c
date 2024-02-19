@@ -146,9 +146,9 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
 }
 
 // Parameter 'layer' should ONLY be 0 or 1.
-// (98.43%) https://decomp.me/scratch/nh7WN
-NONMATCH("asm/non_matching/game/stg_coll__sub_801EF94.inc",
-         s32 sub_801EF94(s32 p0, s32 p1, s32 layer))
+// TODO: Fix this register mess!
+// (100.00%) https://decomp.me/scratch/nh7WN
+s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
 {
     s32 r0;
 #ifndef NON_MATCHING
@@ -159,7 +159,6 @@ NONMATCH("asm/non_matching/game/stg_coll__sub_801EF94.inc",
     register s32 r6 asm("r6") = p1;
     s32 r7;
     register s32 r8 asm("r8");
-    register s32 r9 asm("r9") = layer;
     register u16 **layers asm("r1");
 #else
     s32 r1;
@@ -169,7 +168,6 @@ NONMATCH("asm/non_matching/game/stg_coll__sub_801EF94.inc",
     s32 r6 = p1;
     s32 r7;
     s32 r8;
-    s32 r9 = layer;
     u16 **layers;
 #endif
     const Collision *coll;
@@ -217,11 +215,7 @@ NONMATCH("asm/non_matching/game/stg_coll__sub_801EF94.inc",
     }
 
     coll = gUnknown_030059C8;
-    layers = (u16 **)&coll->map[0];
-    layers += r9;
-    mapIndex = (r3 * coll->levelX) + r8;
-    map = *layers;
-    mtIndex = map[mapIndex];
+    mtIndex = ((u16 *)coll->map[layer])[(r3 * coll->levelX) + r8];
 
 #ifndef NON_MATCHING
     // ((r5 << 3) + (r5 << 2)) == r5 * TILES_PER_METATILE_AXIS
@@ -244,7 +238,6 @@ NONMATCH("asm/non_matching/game/stg_coll__sub_801EF94.inc",
 
     return result;
 }
-END_NONMATCH
 
 void sub_801F044(void)
 {
