@@ -101,11 +101,11 @@ union MultiSioData {
 
 // Thanks @MainMemory_ for figuring out how collision works!
 typedef struct {
-    /* 0x00 */ const u8 *height_map;
+    /* 0x00 */ const s8 *height_map;
     /* 0x04 */ const u8 *tile_rotation;
     /* 0x08 */ const u16 *metatiles;
     /* 0x0C */ const u16 *map[MAP_LAYER_COUNT];
-    /* 0x14 */ const u8 *flags;
+    /* 0x14 */ const u16 *flags;
     /* 0x18 */ u16 levelX, levelY;
     /* 0x1C */ u32 pxWidth; // u16 in SA1!
     /* 0x20 */ u32 pxHeight; // u16 in SA1!

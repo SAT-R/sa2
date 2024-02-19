@@ -8,8 +8,8 @@ const u8 CollHeightMap_zone_final_act_unused_fg[]
     = INCBIN_U8("data/maps/zone_final/act_unused/tilemaps/fg/height_map.coll");
 const u8 CollTileRot_zone_final_act_unused_fg[]
     = INCBIN_U8("data/maps/zone_final/act_unused/tilemaps/fg/tile_rot.coll");
-const u8 CollFlags_zone_final_act_unused_fg[]
-    = INCBIN_U8("data/maps/zone_final/act_unused/tilemaps/fg/flags.coll");
+const u16 CollFlags_zone_final_act_unused_fg[]
+    = INCBIN_U16("data/maps/zone_final/act_unused/tilemaps/fg/flags.coll");
 const u16 Metatiles_zone_final_act_unused_fg[]
     = INCBIN_U16("data/maps/zone_final/act_unused/tilemaps/fg/metatiles.tilemap2");
 

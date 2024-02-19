@@ -1333,10 +1333,10 @@ sub_801EE64: @ 0x0801EE64
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
-	adds r4, r0, #0
-	adds r5, r1, #0
-	mov r8, r2
-	mov sl, r3
+	adds r4, r0, #0         @ r4 = p0
+	adds r5, r1, #0         @ r5 = p1
+	mov r8, r2              @ r8 = p2
+	mov sl, r3              @ sl = p3
 	cmp r5, #0
 	blt _0801EE90
 	ldr r0, _0801EE8C @ =gUnknown_030059C8
@@ -1372,8 +1372,8 @@ _0801EEB0:
 _0801EEB2:
 	adds r4, r0, #0
 	movs r0, #1
-	mov sb, r0
-	mov r2, r8
+	mov sb, r0              @ sb = 1
+	mov r2, r8              @ r2 = r8 = p2
 	ands r2, r0
 	adds r0, r5, #0
 	adds r1, r4, #0
@@ -1381,20 +1381,20 @@ _0801EEB2:
 	adds r4, r0, #0
 	ldr r7, _0801EF3C @ =0x000003FF
 	ands r7, r4
-	movs r6, #7
+	movs r6, #7             @ R6 = 0x7
 	adds r3, r6, #0
-	ands r3, r5
+	ands r3, r5             @ r3 = p1 % 8u
 	movs r0, #0x80
 	lsls r0, r0, #3
 	ands r0, r4
 	cmp r0, #0
-	beq _0801EEDC
+	beq _0801EEDC           @ if(res & 0x400)
 	subs r3, r6, r3
 _0801EEDC:
 	ldr r2, _0801EF40 @ =gUnknown_030059C8
 	ldr r5, [r2]
 	lsls r0, r7, #3
-	ldr r1, [r5]
+	ldr r1, [r5]            @ r1 = heightMap = gUnknown_030059C8->height_map
 	adds r0, r0, r3
 	adds r1, r1, r0
 	movs r3, #0

@@ -5,6 +5,60 @@
 static ALIGNED(8) u32 gUnknown_3000410[3];
 static ALIGNED(8) u32 gUnknown_3000420[3];
 
+#if 0
+s32 sub_801EE64(s32 p0, s32 p1, s32 p2, u8 *p3)
+{
+    s32 r0;
+    s32 r3;
+    u32 r7;
+    s32 sb;
+    s32 res;
+    s8 tileHeight;
+
+    if(p1 >= 0) {
+        if(p1 > gUnknown_030059C8->pxWidth - 1) {
+            p1 = gUnknown_030059C8->pxWidth - 1;
+        }
+    } else {
+        p1 = 0;
+    }
+    // _0801EE92 + 2
+
+    if(p0 >= 0) {
+        if(p0 > gUnknown_030059C8->pxHeight - 1) {
+            p0 = gUnknown_030059C8->pxHeight - 1;
+        }
+    } else {
+        p0 = 0;
+    }
+    // _0801EEB2 + 2
+
+    sb = 1;
+
+    res = sub_801EF94(p1, p0, p2 & 0x1);
+    r7 = res & 0x3FF;
+    r3 = p1 % 8u;
+
+    if(res & 0x400) {
+        r3 = 7 - r3;
+    }
+    // _0801EEDC
+
+    // tileHeight = r3
+    tileHeight = gUnknown_030059C8->height_map[r7 * 8 + r3];
+
+    if((tileHeight >> 4) == -8) {
+        tileHeight = 8;
+    }
+    // _0801EEF8
+
+    if(p2 & 0x80) {
+        gUnknown_030059C8->flags[r7 / 8u];
+    }
+    // _0801EF1E
+}
+#endif
+
 // Parameter 'layer' should ONLY be 0 or 1.
 // (98.43%) https://decomp.me/scratch/nh7WN
 NONMATCH("asm/non_matching/game/stg_coll__sub_801EF94.inc",

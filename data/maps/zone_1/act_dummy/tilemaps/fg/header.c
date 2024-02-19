@@ -9,8 +9,8 @@ const u8 CollHeightMap_zone_1_act_dummy_fg[]
     = INCBIN_U8("data/maps/zone_1/act_dummy/tilemaps/fg/height_map.coll");
 const u8 CollTileRot_zone_1_act_dummy_fg[]
     = INCBIN_U8("data/maps/zone_1/act_dummy/tilemaps/fg/tile_rot.coll");
-const u8 CollFlags_zone_1_act_dummy_fg[]
-    = INCBIN_U8("data/maps/zone_1/act_dummy/tilemaps/fg/flags.coll");
+const u16 CollFlags_zone_1_act_dummy_fg[]
+    = INCBIN_U16("data/maps/zone_1/act_dummy/tilemaps/fg/flags.coll");
 const u16 Metatiles_zone_1_act_dummy_fg[]
     = INCBIN_U16("data/maps/zone_1/act_dummy/tilemaps/fg/metatiles.tilemap2");
 
