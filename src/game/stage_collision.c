@@ -5,10 +5,10 @@
 static ALIGNED(8) u32 gUnknown_3000410[3];
 static ALIGNED(8) u32 gUnknown_3000420[3];
 
-#if 01
 // Parameter 'layer' should ONLY be 0 or 1.
 // (98.43%) https://decomp.me/scratch/nh7WN
-s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
+NONMATCH("asm/non_matching/game/stg_coll__sub_801EF94.inc",
+         s32 sub_801EF94(s32 p0, s32 p1, s32 layer))
 {
     s32 r0;
 #ifndef NON_MATCHING
@@ -104,7 +104,7 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
 
     return result;
 }
-#endif
+END_NONMATCH
 
 void sub_801F044(void)
 {
