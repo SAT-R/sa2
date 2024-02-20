@@ -154,6 +154,18 @@ typedef void (*VoidFn)(void);
         clamped;                                                                        \
     })
 
+// Like CLAMP_16, but 32bit
+#define CLAMP_32(value, min, max)                                                       \
+    ({                                                                                  \
+        s32 clamped;                                                                    \
+        if ((value) >= (min)) {                                                         \
+            clamped = (value) > (max) ? (max) : (value);                                \
+        } else {                                                                        \
+            clamped = (min);                                                            \
+        }                                                                               \
+        clamped;                                                                        \
+    })
+
 #define CLAMP_INLINE(var, min, max)                                                     \
     ({                                                                                  \
         if ((var) < (min)) {                                                            \

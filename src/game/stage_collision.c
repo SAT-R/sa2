@@ -7,80 +7,52 @@ static ALIGNED(8) u32 gUnknown_3000420[3];
 
 s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
 
-// (99.46%) https://decomp.me/scratch/Sc5aL
 s32 sub_801EC3C(s32 p0, s32 p1, s32 p2)
 {
-    register u32 r0 asm("r0");
-    register u32 r1 asm("r1");
+    u32 r0;
     s32 r2;
-    s32 r3;
-    s32 r6;
-    s32 r8;
+    s32 mtTileIndex;
+    s32 mask7;
     s32 res;
     s32 hv;
+    const Collision *coll;
+    s8 *hmap;
+    s32 hIndex;
 
-    if (p1 >= 0) {
-        r0 = gUnknown_030059C8->pxWidth;
-        r1 = r0 - 1;
-        r0 = p1;
+    p1 = CLAMP_32(p1, 0, gUnknown_030059C8->pxWidth - 1);
+    p0 = CLAMP_32(p0, 0, gUnknown_030059C8->pxHeight - 1);
 
-        if (r0 > r1) {
-            r0 = r1;
-        }
-    } else {
-        r0 = 0;
-    }
-    p1 = r0;
+    res = sub_801EF94(p1, p0, p2 & 0x1);
+    mtTileIndex = 0x3FF;
+    mtTileIndex &= res;
 
-    if (p0 >= 0) {
-        r0 = gUnknown_030059C8->pxHeight;
-        r1 = r0 - 1;
-        r0 = p0;
-
-        if (r0 > r1) {
-            r0 = r1;
-        }
-    } else {
-        r0 = 0;
-    }
-    p0 = r0;
-
-    r8 = 1;
-    res = sub_801EF94(p1, p0, p2 & r8);
-    r3 = 0x3FF;
-    r3 &= res;
-
-    r6 = 0x7;
-    r2 = p1 & r6;
+    mask7 = 0x7;
+    r2 = p1 & mask7;
 
     if (res & 0x400) {
-        r2 = r6 - r2;
+        r2 = mask7 - r2;
     }
-    // _0801ECB0
 
-    hv = gUnknown_030059C8->height_map[r3 * 8 + r2];
+    coll = gUnknown_030059C8;
+    hIndex = mtTileIndex * 8;
+    hv = coll->height_map[hIndex + r2];
     hv >>= 4;
 
     if (hv == -8) {
         hv = 8;
     }
-    // _0801ECCC
 
     if (p2 & 0x80) {
-        s32 flags = gUnknown_030059C8->flags[r3 / 8u];
+        s32 flags = gUnknown_030059C8->flags[mtTileIndex / 8u];
 
         // 2: one tile's flags' bit-width
-        flags >>= ((r3 & r6) * 2);
+        flags >>= ((mtTileIndex & mask7) * 2);
 
-        if (flags & r8) {
+        if (flags & 0x1) {
             hv = 0;
         }
     }
-    // _0801ECEE
 
-#if 0
-
-#endif
     if (res & 0x800) {
         if ((hv != 8) && (hv != 0)) {
             r0 = hv + 8;
