@@ -18,7 +18,7 @@ extern const Collision *const gCollisionTable[];
 
 void UpdateCamera(void);
 
-extern const Collision *gUnknown_030059C8;
+extern const Collision *gRefCollision;
 
 extern const u16 gUnknown_080D5964[][2];
 

@@ -96,15 +96,6 @@ union MultiSioData {
     struct MultiSioData_0_4 pat4;
 }; /* size = MULTI_SIO_BLOCK_SIZE */
 
-// TODO: Should this struct go somewhere else?
-// TODO: This should be the type of Collision::metatiles, if that matches anywhere...
-typedef struct {
-    u16 index : 10;
-    u16 xFlip : 1;
-    u16 yFlip : 1;
-    u16 pal : 4;
-} Tile;
-
 // TODO: Have we defined this somewhere else already?
 #define MAP_LAYER_COUNT 2
 

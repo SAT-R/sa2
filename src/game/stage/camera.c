@@ -28,7 +28,7 @@ struct Backgrounds ALIGNED(16) gStageBackgroundsRam = {};
 UNUSED u32 unused_3005950[3] = {};
 
 struct Camera ALIGNED(8) gCamera = {};
-const Collision *gUnknown_030059C8 = NULL;
+const Collision *gRefCollision = NULL;
 
 static void sub_801C708(s32, s32);
 void Task_CallUpdateCamera(void);
@@ -368,15 +368,15 @@ void InitCamera(u32 level)
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gUnknown_030059C8 = gCollisionTable[level];
+        gRefCollision = gCollisionTable[level];
     } else {
-        gUnknown_030059C8 = *(Collision **)(EWRAM_START + 0x33004);
+        gRefCollision = *(Collision **)(EWRAM_START + 0x33004);
     }
 
     camera->minY = 0;
-    camera->maxY = gUnknown_030059C8->pxHeight;
+    camera->maxY = gRefCollision->pxHeight;
     camera->minX = 0;
-    camera->maxX = gUnknown_030059C8->pxWidth;
+    camera->maxX = gRefCollision->pxWidth;
 
     if (((gCurrentLevel & ACTS_PER_ZONE) == ACT_BOSS)
         || ((gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))

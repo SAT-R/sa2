@@ -903,7 +903,7 @@ sub_801EB44: @ 0x0801EB44
 	adds r7, r2, #0
 	cmp r3, #0
 	blt _0801EB6C
-	ldr r0, _0801EB68 @ =gUnknown_030059C8
+	ldr r0, _0801EB68 @ =gRefCollision
 	ldr r0, [r0]
 	ldr r0, [r0, #0x1c]
 	subs r1, r0, #1
@@ -913,14 +913,14 @@ sub_801EB44: @ 0x0801EB44
 	adds r0, r1, #0
 	b _0801EB6E
 	.align 2, 0
-_0801EB68: .4byte gUnknown_030059C8
+_0801EB68: .4byte gRefCollision
 _0801EB6C:
 	movs r0, #0
 _0801EB6E:
 	adds r3, r0, #0
 	cmp r4, #0
 	blt _0801EB8C
-	ldr r0, _0801EB88 @ =gUnknown_030059C8
+	ldr r0, _0801EB88 @ =gRefCollision
 	ldr r0, [r0]
 	ldr r0, [r0, #0x20]
 	subs r0, #1
@@ -930,7 +930,7 @@ _0801EB6E:
 	adds r1, r0, #0
 	b _0801EB8E
 	.align 2, 0
-_0801EB88: .4byte gUnknown_030059C8
+_0801EB88: .4byte gRefCollision
 _0801EB8C:
 	movs r1, #0
 _0801EB8E:
@@ -954,7 +954,7 @@ _0801EB8E:
 	beq _0801EBB6
 	subs r2, r6, r2
 _0801EBB6:
-	ldr r0, _0801EC28 @ =gUnknown_030059C8
+	ldr r0, _0801EC28 @ =gRefCollision
 	ldr r4, [r0]
 	lsls r0, r3, #3
 	ldr r1, [r4]
@@ -1013,7 +1013,7 @@ _0801EC04:
 	b _0801EC2E
 	.align 2, 0
 _0801EC24: .4byte 0x000003FF
-_0801EC28: .4byte gUnknown_030059C8
+_0801EC28: .4byte gRefCollision
 _0801EC2C:
 	adds r0, r2, #0
 _0801EC2E:

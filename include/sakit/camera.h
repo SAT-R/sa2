@@ -2,7 +2,9 @@
 #define GUARD_SAKIT_CAMERA_H
 
 #include "core.h"
+#include "tilemap.h"
 
+// TODO: Move TILE_WIDTH into "include/tilemap.h"
 #define TILE_WIDTH              8
 #define CAM_REGION_WIDTH        256
 #define TILES_PER_METATILE_AXIS 12

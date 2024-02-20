@@ -1,6 +1,8 @@
 #include "global.h"
+#include "tilemap.h"
 #include "game/game.h"
 #include "game/stage/camera.h"
+#include "sakit/player.h"
 
 static ALIGNED(8) u32 gUnknown_3000410[3];
 static ALIGNED(8) u32 gUnknown_3000420[3];
@@ -10,53 +12,50 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
 s32 sub_801EC3C(s32 p0, s32 p1, s32 p2)
 {
     u32 r0;
-    s32 r2;
+    s32 xPixel;
     s32 mtTileIndex;
-    s32 mask7;
-    s32 res;
+    u32 tile;
     s32 hv;
     const Collision *coll;
     s8 *hmap;
     s32 hIndex;
 
-    p1 = CLAMP_32(p1, 0, gUnknown_030059C8->pxWidth - 1);
-    p0 = CLAMP_32(p0, 0, gUnknown_030059C8->pxHeight - 1);
+    p1 = CLAMP_32(p1, 0, gRefCollision->pxWidth - 1);
+    p0 = CLAMP_32(p0, 0, gRefCollision->pxHeight - 1);
 
-    res = sub_801EF94(p1, p0, p2 & 0x1);
-    mtTileIndex = 0x3FF;
-    mtTileIndex &= res;
+    tile = sub_801EF94(p1, p0, p2 & FLAG_PLAYER_x38__LAYER_MASK);
+    mtTileIndex = tile & TILE_MASK_INDEX;
 
-    mask7 = 0x7;
-    r2 = p1 & mask7;
+    xPixel = p1 % (unsigned)TILE_WIDTH;
 
-    if (res & 0x400) {
-        r2 = mask7 - r2;
+    if (tile & TILE_MASK_X_FLIP) {
+        xPixel = (TILE_WIDTH - 1) - xPixel;
     }
 
-    coll = gUnknown_030059C8;
-    hIndex = mtTileIndex * 8;
-    hv = coll->height_map[hIndex + r2];
+    coll = gRefCollision;
+    hIndex = (mtTileIndex * TILE_WIDTH);
+    hv = coll->height_map[hIndex + xPixel];
     hv >>= 4;
 
-    if (hv == -8) {
-        hv = 8;
+    if (hv == -TILE_WIDTH) {
+        hv = TILE_WIDTH;
     }
 
-    if (p2 & 0x80) {
-        s32 flags = gUnknown_030059C8->flags[mtTileIndex / 8u];
+    if (p2 & FLAG_PLAYER_x38__80) {
+        s32 flags = gRefCollision->flags[mtTileIndex / (unsigned)TILE_WIDTH];
 
         // 2: one tile's flags' bit-width
-        flags >>= ((mtTileIndex & mask7) * 2);
+        flags >>= ((mtTileIndex % (unsigned)TILE_WIDTH) * 2);
 
         if (flags & 0x1) {
             hv = 0;
         }
     }
 
-    if (res & 0x800) {
-        if ((hv != 8) && (hv != 0)) {
-            r0 = hv + 8;
-            r0 = (hv > 0) ? hv - 8 : r0;
+    if (tile & TILE_MASK_Y_FLIP) {
+        if ((hv != TILE_WIDTH) && (hv != 0)) {
+            r0 = hv + TILE_WIDTH;
+            r0 = (hv > 0) ? hv - TILE_WIDTH : r0;
 
         } else {
             r0 = hv;
@@ -70,18 +69,16 @@ s32 sub_801EC3C(s32 p0, s32 p1, s32 p2)
 s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
 {
     u32 r0;
-    u32 r1;
     s32 r3;
     s32 mtTileIndex;
     s32 sb;
-    s32 res;
-    u8 *hm;
+    u32 res;
     const Collision *coll;
     s32 hIndex;
     u8 rotation;
 
-    p0 = CLAMP_32(p0, 0, gUnknown_030059C8->pxWidth - 1);
-    p1 = CLAMP_32(p1, 0, gUnknown_030059C8->pxHeight - 1);
+    p0 = CLAMP_32(p0, 0, gRefCollision->pxWidth - 1);
+    p1 = CLAMP_32(p1, 0, gRefCollision->pxHeight - 1);
 
     res = sub_801EF94(p0, p1, p2 & 0x1);
     mtTileIndex = res & 0x3FF;
@@ -92,7 +89,7 @@ s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
         r3 = (8 - 1) - r3;
     }
 
-    coll = gUnknown_030059C8;
+    coll = gRefCollision;
     hIndex = mtTileIndex * 8;
     r3 = coll->height_map[hIndex + r3] % 16u;
 
@@ -105,7 +102,7 @@ s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
     }
 
     if (p2 & 0x80) {
-        s32 flags = gUnknown_030059C8->flags[mtTileIndex / 8u];
+        s32 flags = gRefCollision->flags[mtTileIndex / 8u];
 
         // 2: one tile's flags' bit-width
         flags >>= ((mtTileIndex % 8u) * 2);
@@ -126,7 +123,7 @@ s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
         r3 = r0;
     }
 
-    rotation = gUnknown_030059C8->tile_rotation[mtTileIndex];
+    rotation = gRefCollision->tile_rotation[mtTileIndex];
 
     if (res & 0x800) {
         u32 v2 = -0x80 - rotation;
@@ -183,7 +180,7 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
     u8 rotation;
 
     if (p1 >= 0) {
-        r0 = gUnknown_030059C8->pxWidth;
+        r0 = gRefCollision->pxWidth;
         r1 = r0 - 1;
         r0 = p1;
         if (r0 > r1) {
@@ -196,7 +193,7 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
     // _0801EE92 + 2
 
     if (p0 >= 0) {
-        r0 = gUnknown_030059C8->pxHeight;
+        r0 = gRefCollision->pxHeight;
         r1 = r0 - 1;
         r0 = p0;
         if (r0 > r1) {
@@ -226,7 +223,7 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
     // _0801EEDC
 
     // r3 = tileHeight
-    r3 = gUnknown_030059C8->height_map[(r7 << 3) + r3];
+    r3 = gRefCollision->height_map[(r7 << 3) + r3];
 
     if ((r3 >>= 4) == -8) {
         r3 = 8;
@@ -234,7 +231,7 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
     // _0801EEF8
 
     if (p2 & 0x80) {
-        s32 flags = gUnknown_030059C8->flags[r7 / 8u];
+        s32 flags = gRefCollision->flags[r7 / 8u];
 
         // 2: one tile's flags' bit-width
         flags >>= ((r7 & r6) * 2);
@@ -257,7 +254,7 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
     }
     // _0801EF48
 
-    rotation = gUnknown_030059C8->tile_rotation[r7];
+    rotation = gRefCollision->tile_rotation[r7];
 
     if (p0 & 0x400) {
         rotation = -rotation;
@@ -288,6 +285,7 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
 }
 
 // Parameter 'layer' should ONLY be 0 or 1.
+// TODO: This should return a u16, representing a tile inside a metatile
 // TODO: Fix this register mess!
 // (100.00%) https://decomp.me/scratch/nh7WN
 s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
@@ -356,7 +354,7 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
         r5 = r1;
     }
 
-    coll = gUnknown_030059C8;
+    coll = gRefCollision;
     mtIndex = ((u16 *)coll->map[layer])[(r3 * coll->levelX) + r8];
 
 #ifndef NON_MATCHING
