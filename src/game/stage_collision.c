@@ -67,84 +67,34 @@ s32 sub_801EC3C(s32 p0, s32 p1, s32 p2)
     return hv;
 }
 
-// TODO: Fix this register mess!
-// (100.00%) https://decomp.me/scratch/wdFQh
-s32 sub_801ED24(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
+s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
 {
-#ifndef NON_MATCHING
-    register u32 r0 asm("r0");
-    register u32 r1 asm("r1");
-    register s32 r3 asm("r3");
-    register s32 p0 asm("r4") = p0in;
-    register s32 p1 asm("r5") = p1in;
-    s32 r6;
-    register s32 p2 asm("r8") = p2in;
-    u32 r7;
-    register s32 sb asm("sb");
-    register u8 *p3 asm("sl") = p3in;
-    register s32 res asm("r4");
-    register u8 *hm asm("r1");
-#else
     u32 r0;
     u32 r1;
     s32 r3;
-    s32 p0 = p0in;
-    s32 p1 = p1in;
-    s32 r6;
-    s32 p2 = p2in;
-    u32 r7;
+    s32 mtTileIndex;
     s32 sb;
-    u8 *p3 = p3in;
     s32 res;
     u8 *hm;
-#endif
+    const Collision *coll;
+    s32 hIndex;
     u8 rotation;
 
-    if (p0 >= 0) {
-        r0 = gUnknown_030059C8->pxWidth;
-        r1 = r0 - 1;
-        r0 = p0;
-        if (r0 > r1) {
-            r0 = r1;
-        }
-    } else {
-        r0 = 0;
-    }
-    p0 = r0;
+    p0 = CLAMP_32(p0, 0, gUnknown_030059C8->pxWidth - 1);
+    p1 = CLAMP_32(p1, 0, gUnknown_030059C8->pxHeight - 1);
 
-    if (p1 >= 0) {
-        r0 = gUnknown_030059C8->pxHeight - 1;
-        r1 = p1;
-        if (r1 > r0) {
-            r1 = r0;
-        }
-    } else {
-        r1 = 0;
-    }
-    p1 = r1;
+    res = sub_801EF94(p0, p1, p2 & 0x1);
+    mtTileIndex = res & 0x3FF;
 
-    sb = 1;
+    r3 = p1 % 8u;
 
-    res = sub_801EF94(p0, p1, p2 & sb);
-    r6 = 0x3FF;
-    r6 &= res;
-
-    r7 = 0x7;
-#ifndef NON_MATCHING
-    asm("\nadd %0, %1, #0\n" ::"r"(r3), "r"(r7));
-#else
-    r3 = r7;
-#endif
-    r3 &= p1;
-
-    r0 = 0x800;
-    r0 &= res;
-    if (r0) {
-        r3 = r7 - r3;
+    if (res & 0x800) {
+        r3 = (8 - 1) - r3;
     }
 
-    // r3 = tileHeight
-    r3 = gUnknown_030059C8->height_map[(r6 << 3) + r3] % 16u;
+    coll = gUnknown_030059C8;
+    hIndex = mtTileIndex * 8;
+    r3 = coll->height_map[hIndex + r3] % 16u;
 
     if ((r3 & 0x8) == +8) {
         r3 |= ~0xF;
@@ -155,12 +105,12 @@ s32 sub_801ED24(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
     }
 
     if (p2 & 0x80) {
-        s32 flags = gUnknown_030059C8->flags[r6 / 8u];
+        s32 flags = gUnknown_030059C8->flags[mtTileIndex / 8u];
 
         // 2: one tile's flags' bit-width
-        flags >>= ((r6 & r7) * 2);
+        flags >>= ((mtTileIndex % 8u) * 2);
 
-        if (flags & sb) {
+        if (flags & 0x1) {
             r3 = 0;
         }
     }
@@ -176,14 +126,14 @@ s32 sub_801ED24(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
         r3 = r0;
     }
 
-    rotation = gUnknown_030059C8->tile_rotation[r6];
+    rotation = gUnknown_030059C8->tile_rotation[mtTileIndex];
 
-    if (p0 & 0x800) {
+    if (res & 0x800) {
         u32 v2 = -0x80 - rotation;
         rotation = v2;
     }
 
-    if (p0 & 0x400) {
+    if (res & 0x400) {
         u8 v;
         if (r3 != 0) {
             u32 v2 = -rotation;
@@ -194,14 +144,7 @@ s32 sub_801ED24(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
         rotation = v;
     }
 
-    {
-#ifndef NON_MATCHING
-        register u8 *r1p asm("r1") = p3;
-        *r1p = rotation;
-#else
-        *p3in = rotation;
-#endif
-    }
+    *p3 = rotation;
 
     return r3;
 }
