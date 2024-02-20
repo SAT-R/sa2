@@ -7,6 +7,94 @@ static ALIGNED(8) u32 gUnknown_3000420[3];
 
 s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
 
+// (99.46%) https://decomp.me/scratch/Sc5aL
+s32 sub_801EC3C(s32 p0, s32 p1, s32 p2)
+{
+    register u32 r0 asm("r0");
+    register u32 r1 asm("r1");
+    s32 r2;
+    s32 r3;
+    s32 r6;
+    s32 r8;
+    s32 res;
+    s32 hv;
+
+    if (p1 >= 0) {
+        r0 = gUnknown_030059C8->pxWidth;
+        r1 = r0 - 1;
+        r0 = p1;
+
+        if (r0 > r1) {
+            r0 = r1;
+        }
+    } else {
+        r0 = 0;
+    }
+    p1 = r0;
+
+    if (p0 >= 0) {
+        r0 = gUnknown_030059C8->pxHeight;
+        r1 = r0 - 1;
+        r0 = p0;
+
+        if (r0 > r1) {
+            r0 = r1;
+        }
+    } else {
+        r0 = 0;
+    }
+    p0 = r0;
+
+    r8 = 1;
+    res = sub_801EF94(p1, p0, p2 & r8);
+    r3 = 0x3FF;
+    r3 &= res;
+
+    r6 = 0x7;
+    r2 = p1 & r6;
+
+    if (res & 0x400) {
+        r2 = r6 - r2;
+    }
+    // _0801ECB0
+
+    hv = gUnknown_030059C8->height_map[r3 * 8 + r2];
+    hv >>= 4;
+
+    if (hv == -8) {
+        hv = 8;
+    }
+    // _0801ECCC
+
+    if (p2 & 0x80) {
+        s32 flags = gUnknown_030059C8->flags[r3 / 8u];
+
+        // 2: one tile's flags' bit-width
+        flags >>= ((r3 & r6) * 2);
+
+        if (flags & r8) {
+            hv = 0;
+        }
+    }
+    // _0801ECEE
+
+#if 0
+
+#endif
+    if (res & 0x800) {
+        if ((hv != 8) && (hv != 0)) {
+            r0 = hv + 8;
+            r0 = (hv > 0) ? hv - 8 : r0;
+
+        } else {
+            r0 = hv;
+        }
+        hv = r0;
+    }
+
+    return hv;
+}
+
 // TODO: Fix this register mess!
 // (100.00%) https://decomp.me/scratch/wdFQh
 s32 sub_801ED24(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)

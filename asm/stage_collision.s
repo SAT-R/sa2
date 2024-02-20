@@ -1025,15 +1025,16 @@ _0801EC30:
 	pop {r4, r5, r6, r7}
 	pop {r1}
 	bx r1
-
+    
+.if 0
 	thumb_func_start sub_801EC3C
 sub_801EC3C: @ 0x0801EC3C
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
-	adds r3, r0, #0
-	adds r4, r1, #0
-	adds r7, r2, #0
+	adds r3, r0, #0         @ r3 = p0
+	adds r4, r1, #0         @ r4 = p1
+	adds r7, r2, #0         @ r7 = p2
 	cmp r4, #0
 	blt _0801EC64
 	ldr r0, _0801EC60 @ =gUnknown_030059C8
@@ -1075,7 +1076,7 @@ _0801EC86:
 	adds r0, r4, #0
 	adds r1, r3, #0
 	bl sub_801EF94
-	adds r5, r0, #0
+	adds r5, r0, #0         @ r5 = res
 	ldr r3, _0801ED0C @ =0x000003FF
 	ands r3, r5
 	movs r6, #7
@@ -1096,7 +1097,7 @@ _0801ECB0:
 	adds r1, r1, r0
 	movs r2, #0
 	ldrsb r2, [r1, r2]
-	asrs r2, r2, #4
+	asrs r2, r2, #4     @ r2 = hv >> 4
 	movs r0, #8
 	rsbs r0, r0, #0
 	cmp r2, r0
@@ -1150,6 +1151,4 @@ _0801ED18:
 	pop {r4, r5, r6, r7}
 	pop {r1}
 	bx r1
-
-.if 0
 .endif
