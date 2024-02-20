@@ -61,12 +61,12 @@ _0801E500:
 	ands r0, r6
 	movs r1, #0x18
 	subs r0, r1, r0
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E554:
 	movs r0, #7
 	ands r0, r6
 	adds r0, #0x11
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E55C:
 	cmp r1, #8
 	bne _0801E57C
@@ -79,12 +79,12 @@ _0801E55C:
 	ands r0, r6
 	mvns r0, r0
 	adds r0, #0x10
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E574:
 	movs r0, #7
 	ands r0, r6
 	adds r0, #8
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E57C:
 	ldrb r0, [r4]
 	strb r0, [r7]
@@ -96,13 +96,13 @@ _0801E57C:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	adds r0, #0x10
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E592:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	adds r0, #0x10
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E59C:
 	cmp r1, #8
 	bne _0801E5BA
@@ -115,11 +115,11 @@ _0801E59C:
 	ands r0, r6
 	mvns r0, r0
 	adds r0, #8
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E5B4:
 	movs r0, #7
 	ands r0, r6
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E5BA:
 	ldrb r0, [r4]
 	strb r0, [r7]
@@ -131,13 +131,13 @@ _0801E5BA:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	adds r0, #8
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E5D0:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	adds r0, #8
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E5DA:
 	cmp r1, #8
 	bne _0801E6AC
@@ -177,12 +177,12 @@ _0801E5DA:
 	ands r0, r6
 	mvns r0, r0
 	subs r0, #0x10
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E62C:
 	movs r0, #7
 	ands r0, r6
 	subs r0, #0x18
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E634:
 	cmp r1, #0
 	bne _0801E652
@@ -194,12 +194,12 @@ _0801E634:
 	movs r1, #9
 	rsbs r1, r1, #0
 	subs r0, r1, r0
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E64A:
 	movs r0, #7
 	ands r0, r6
 	subs r0, #0x10
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E652:
 	ldrb r0, [r4]
 	strb r0, [r7]
@@ -211,13 +211,13 @@ _0801E652:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	subs r0, #0x10
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E668:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	subs r0, #0x10
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E672:
 	cmp r1, #0
 	bne _0801E68C
@@ -227,12 +227,12 @@ _0801E672:
 	movs r0, #7
 	ands r0, r6
 	mvns r0, r0
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E684:
 	movs r0, #8
 	rsbs r0, r0, #0
 	orrs r0, r6
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E68C:
 	ldrb r0, [r4]
 	strb r0, [r7]
@@ -244,13 +244,13 @@ _0801E68C:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	subs r0, #8
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E6A2:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	subs r0, #8
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E6AC:
 	ldrb r0, [r4]
 	strb r0, [r7]
@@ -260,12 +260,12 @@ _0801E6AC:
 	movs r0, #7
 	ands r0, r6
 	subs r0, r1, r0
-	b _0801E6C4
+	b sub_801E4E4__return
 _0801E6BE:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
-_0801E6C4:
+sub_801E4E4__return:
 	add sp, #8
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -274,8 +274,9 @@ _0801E6C4:
 	pop {r4, r5, r6, r7}
 	pop {r1}
 	bx r1
-
-@ s32 sub_801E6D4(s32, s32, s32, s32, void *, Func801F100);
+    
+@ s32 sub_801E6D4(s32, s32, s32, s32, u8 *, Func801F100);
+.if 0
 	thumb_func_start sub_801E6D4
 sub_801E6D4: @ 0x0801E6D4
 	push {r4, r5, r6, r7, lr}
@@ -284,30 +285,30 @@ sub_801E6D4: @ 0x0801E6D4
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #4
-	adds r6, r0, #0
-	mov sb, r1
-	mov sl, r2
-	mov r8, r3
-	ldr r0, [sp, #0x24]
+	adds r6, r0, #0             @ r6 = p0
+	mov sb, r1                  @ sb = p1
+	mov sl, r2                  @ sl = p2
+	mov r8, r3                  @ r8 = p3
+	ldr r0, [sp, #0x24]         @ sp24 = data
 	cmp r0, #0
 	bne _0801E6F2
-	mov r1, sp
+	mov r1, sp                  @ r1 = sp = dummy
 	str r1, [sp, #0x24]
 _0801E6F2:
 	mov r5, sp
-	adds r5, #1
+	adds r5, #1                 @ r5 = data1
 	adds r0, r6, #0
 	mov r1, sb
 	mov r2, sl
 	adds r3, r5, #0
-	ldr r4, [sp, #0x28]
+	ldr r4, [sp, #0x28]         @ sp28 = func
 	bl _call_via_r4
 	adds r1, r0, #0
 	cmp r1, #0
 	beq _0801E70C
 	b _0801E8E0
 _0801E70C:
-	mov r7, r8
+	mov r7, r8                  @ r7 = r8 = p3
 	adds r0, r6, r7
 	mov r1, sb
 	mov r2, sl
@@ -318,7 +319,7 @@ _0801E70C:
 	beq _0801E722
 	b _0801E89E
 _0801E722:
-	lsls r4, r7, #1
+	lsls r4, r7, #1             @ r4 = p3 * 2
 	adds r0, r6, r4
 	mov r1, sb
 	mov r2, sl
@@ -330,7 +331,7 @@ _0801E722:
 	beq _0801E73A
 	b _0801E85A
 _0801E73A:
-	add r4, r8
+	add r4, r8                  @ r4 = p3 * 3
 	adds r0, r6, r4
 	mov r1, sb
 	mov r2, sl
@@ -339,7 +340,7 @@ _0801E73A:
 	adds r1, r0, #0
 	cmp r1, #0
 	bne _0801E816
-	add r4, r8
+	add r4, r8                  @ r4 = p3 * 4
 	adds r0, r6, r4
 	mov r1, sb
 	mov r2, sl
@@ -348,7 +349,7 @@ _0801E73A:
 	adds r1, r0, #0
 	cmp r1, #0
 	bne _0801E7D2
-	add r4, r8
+	add r4, r8                  @ r4 = p3 * 5
 	adds r0, r6, r4
 	mov r1, sb
 	mov r2, sl
@@ -364,31 +365,31 @@ _0801E73A:
 	ands r0, r6
 	movs r1, #0x30
 	subs r0, r1, r0
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E786:
 	movs r0, #7
 	ands r0, r6
 	adds r0, #0x29
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E78E:
 	cmp r1, #8
 	bne _0801E7B0
 	ldrb r0, [r5]
 	ldr r1, [sp, #0x24]
 	strb r0, [r1]
-	mov r2, r8
+	mov r2, r8              @ r2 = r8 = p3
 	cmp r2, #0
 	ble _0801E7A8
 	movs r0, #7
 	ands r0, r6
 	mvns r0, r0
 	adds r0, #0x28
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E7A8:
 	movs r0, #7
-	ands r0, r6
+	ands r0, r6             @ r0 = r6 % 8u = p0 % 8u
 	adds r0, #0x20
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E7B0:
 	ldrb r0, [r5]
 	ldr r4, [sp, #0x24]
@@ -401,32 +402,32 @@ _0801E7B0:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	adds r0, #0x28
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E7C8:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	adds r0, #0x28
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E7D2:
 	cmp r1, #8
 	bne _0801E7F4
 	ldrb r0, [r5]
 	ldr r7, [sp, #0x24]
 	strb r0, [r7]
-	mov r0, r8
+	mov r0, r8              @ r0 = r8 = p3
 	cmp r0, #0
 	ble _0801E7EC
 	movs r0, #7
 	ands r0, r6
 	mvns r0, r0
 	adds r0, #0x20
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E7EC:
 	movs r0, #7
 	ands r0, r6
 	adds r0, #0x18
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E7F4:
 	ldrb r0, [r5]
 	ldr r2, [sp, #0x24]
@@ -439,32 +440,32 @@ _0801E7F4:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	adds r0, #0x20
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E80C:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	adds r0, #0x20
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E816:
 	cmp r1, #8
 	bne _0801E838
 	ldrb r0, [r5]
 	ldr r4, [sp, #0x24]
 	strb r0, [r4]
-	mov r7, r8
+	mov r7, r8              @ r7 = r8 = p3
 	cmp r7, #0
 	ble _0801E830
 	movs r0, #7
 	ands r0, r6
 	mvns r0, r0
 	adds r0, #0x18
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E830:
 	movs r0, #7
 	ands r0, r6
 	adds r0, #0x10
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E838:
 	ldrb r0, [r5]
 	ldr r2, [sp, #0x24]
@@ -477,32 +478,32 @@ _0801E838:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	adds r0, #0x18
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E850:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	adds r0, #0x18
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E85A:
 	cmp r1, #8
 	bne _0801E87C
 	ldrb r0, [r5]
 	ldr r4, [sp, #0x24]
 	strb r0, [r4]
-	mov r7, r8
+	mov r7, r8              @ r7 = r8 = p3
 	cmp r7, #0
 	ble _0801E874
 	movs r0, #7
 	ands r0, r6
 	mvns r0, r0
 	adds r0, #0x10
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E874:
 	movs r0, #7
 	ands r0, r6
 	adds r0, #8
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E87C:
 	ldrb r0, [r5]
 	ldr r2, [sp, #0x24]
@@ -515,31 +516,31 @@ _0801E87C:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	adds r0, #0x10
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E894:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	adds r0, #0x10
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E89E:
 	cmp r1, #8
 	bne _0801E8BE
 	ldrb r0, [r5]
 	ldr r4, [sp, #0x24]
 	strb r0, [r4]
-	mov r7, r8
+	mov r7, r8              @ r7 = r8 = p3
 	cmp r7, #0
 	ble _0801E8B8
 	movs r0, #7
 	ands r0, r6
 	mvns r0, r0
 	adds r0, #8
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E8B8:
 	movs r0, #7
 	ands r0, r6
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E8BE:
 	ldrb r0, [r5]
 	ldr r2, [sp, #0x24]
@@ -552,13 +553,13 @@ _0801E8BE:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	adds r0, #8
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E8D6:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	adds r0, #8
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E8E0:
 	cmp r1, #8
 	beq _0801E8E6
@@ -661,12 +662,12 @@ _0801E944:
 	ands r0, r6
 	mvns r0, r0
 	subs r0, #0x28
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E9B0:
 	movs r0, #7
 	ands r0, r6
 	subs r0, #0x30
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E9B8:
 	cmp r1, #0
 	bne _0801E9D6
@@ -678,12 +679,12 @@ _0801E9B8:
 	movs r1, #0x21
 	rsbs r1, r1, #0
 	subs r0, r1, r0
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E9CE:
 	movs r0, #7
 	ands r0, r6
 	subs r0, #0x28
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E9D6:
 	ldrb r0, [r5]
 	ldr r2, [sp, #0x24]
@@ -696,13 +697,13 @@ _0801E9D6:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	subs r0, #0x28
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E9EE:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	subs r0, #0x28
-	b _0801EB34
+	b sub_801E6D4__return
 _0801E9F8:
 	cmp r1, #0
 	bne _0801EA16
@@ -714,12 +715,12 @@ _0801E9F8:
 	movs r1, #0x19
 	rsbs r1, r1, #0
 	subs r0, r1, r0
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EA0E:
 	movs r0, #7
 	ands r0, r6
 	subs r0, #0x20
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EA16:
 	ldrb r0, [r5]
 	ldr r7, [sp, #0x24]
@@ -732,13 +733,13 @@ _0801EA16:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	subs r0, #0x20
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EA2E:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	subs r0, #0x20
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EA38:
 	cmp r1, #0
 	bne _0801EA56
@@ -750,12 +751,12 @@ _0801EA38:
 	movs r1, #0x11
 	rsbs r1, r1, #0
 	subs r0, r1, r0
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EA4E:
 	movs r0, #7
 	ands r0, r6
 	subs r0, #0x18
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EA56:
 	ldrb r0, [r5]
 	ldr r2, [sp, #0x24]
@@ -768,13 +769,13 @@ _0801EA56:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	subs r0, #0x18
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EA6E:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	subs r0, #0x18
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EA78:
 	cmp r1, #0
 	bne _0801EA96
@@ -787,12 +788,12 @@ _0801EA82:
 	movs r1, #9
 	rsbs r1, r1, #0
 	subs r0, r1, r0
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EA8E:
 	movs r0, #7
 	ands r0, r6
 	subs r0, #0x10
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EA96:
 	ldrb r0, [r5]
 	ldr r7, [sp, #0x24]
@@ -806,13 +807,13 @@ _0801EAA0:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	subs r0, #0x10
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EAAE:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	subs r0, #0x10
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EAB8:
 	cmp r1, #0
 	bne _0801EACA
@@ -822,7 +823,7 @@ _0801EAB8:
 	movs r0, #7
 	ands r0, r6
 	subs r0, #0x10
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EACA:
 	ldrb r0, [r5]
 	ldr r2, [sp, #0x24]
@@ -833,7 +834,7 @@ _0801EACA:
 	ands r0, r6
 	adds r0, r1, r0
 	subs r0, #0x10
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EADE:
 	cmp r1, #0
 	bne _0801EAF8
@@ -843,12 +844,12 @@ _0801EADE:
 	movs r0, #7
 	ands r0, r6
 	mvns r0, r0
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EAF0:
 	movs r0, #8
 	rsbs r0, r0, #0
 	orrs r0, r6
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EAF8:
 	ldrb r0, [r5]
 	ldr r7, [sp, #0x24]
@@ -861,13 +862,13 @@ _0801EAF8:
 	subs r1, r1, r0
 	adds r0, r1, #0
 	subs r0, #8
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EB10:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
 	subs r0, #8
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EB1A:
 	ldrb r0, [r5]
 	ldr r2, [sp, #0x24]
@@ -878,12 +879,12 @@ _0801EB1A:
 	movs r0, #7
 	ands r0, r6
 	subs r0, r1, r0
-	b _0801EB34
+	b sub_801E6D4__return
 _0801EB2E:
 	movs r0, #7
 	ands r0, r6
 	adds r0, r1, r0
-_0801EB34:
+sub_801E6D4__return:
 	add sp, #4
 	pop {r3, r4, r5}
 	mov r8, r3
@@ -892,6 +893,4 @@ _0801EB34:
 	pop {r4, r5, r6, r7}
 	pop {r1}
 	bx r1
-    
-.if 0
 .endif
