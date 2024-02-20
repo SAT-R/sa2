@@ -1,8 +1,6 @@
 #ifndef GUARD_TILEMAP_H
 #define GUARD_TILEMAP_H
 
-#include "core.h"
-
 #define TILE_MASK_INDEX   0x03FF
 #define TILE_MASK_X_FLIP  0x0400
 #define TILE_MASK_Y_FLIP  0x0800

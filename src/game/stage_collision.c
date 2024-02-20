@@ -9,7 +9,68 @@ static ALIGNED(8) u32 gUnknown_3000420[3];
 
 s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
 
-s32 sub_801EC3C(s32 p0, s32 p1, s32 p2)
+s32 sub_801EB44(s32 p0, s32 p1, s32 layer)
+{
+    u32 r0;
+    s32 yPixel;
+    s32 mtTileIndex;
+    u32 tile;
+    s32 hv;
+    const Collision *coll;
+    s8 *hmap;
+    s32 hIndex;
+
+    p0 = CLAMP_32(p0, 0, gRefCollision->pxWidth - 1);
+    p1 = CLAMP_32(p1, 0, gRefCollision->pxHeight - 1);
+
+    tile = sub_801EF94(p0, p1, layer & FLAG_PLAYER_x38__LAYER_MASK);
+    mtTileIndex = tile & TILE_MASK_INDEX;
+
+    yPixel = p1 % (unsigned)TILE_WIDTH;
+
+    if (tile & TILE_MASK_Y_FLIP) {
+        yPixel = (TILE_WIDTH - 1) - yPixel;
+    }
+
+    coll = gRefCollision;
+    hIndex = (mtTileIndex * TILE_WIDTH);
+    hv = coll->height_map[hIndex + yPixel];
+    hv &= 0xF;
+
+    if ((hv & 0x8) == +8) {
+        hv |= ~0xF;
+    }
+
+    if (hv == -8) {
+        hv = 8;
+    }
+
+    if (layer & 0x80) {
+        s32 flags = gRefCollision->flags[mtTileIndex / (unsigned)TILE_WIDTH];
+
+        // 2: one tile's flags' bit-width
+        flags >>= ((mtTileIndex % (unsigned)TILE_WIDTH) * 2);
+
+        if (flags & 0x1) {
+            hv = 0;
+        }
+    }
+
+    if (tile & TILE_MASK_X_FLIP) {
+        if ((hv != TILE_WIDTH) && (hv != 0)) {
+            r0 = hv + TILE_WIDTH;
+            r0 = (hv > 0) ? hv - TILE_WIDTH : r0;
+
+        } else {
+            r0 = hv;
+        }
+        hv = r0;
+    }
+
+    return hv;
+}
+
+s32 sub_801EC3C(s32 p0, s32 p1, s32 layer)
 {
     u32 r0;
     s32 xPixel;
@@ -23,7 +84,7 @@ s32 sub_801EC3C(s32 p0, s32 p1, s32 p2)
     p1 = CLAMP_32(p1, 0, gRefCollision->pxWidth - 1);
     p0 = CLAMP_32(p0, 0, gRefCollision->pxHeight - 1);
 
-    tile = sub_801EF94(p1, p0, p2 & FLAG_PLAYER_x38__LAYER_MASK);
+    tile = sub_801EF94(p1, p0, layer & FLAG_PLAYER_x38__LAYER_MASK);
     mtTileIndex = tile & TILE_MASK_INDEX;
 
     xPixel = p1 % (unsigned)TILE_WIDTH;
@@ -41,7 +102,7 @@ s32 sub_801EC3C(s32 p0, s32 p1, s32 p2)
         hv = TILE_WIDTH;
     }
 
-    if (p2 & FLAG_PLAYER_x38__80) {
+    if (layer & FLAG_PLAYER_x38__80) {
         s32 flags = gRefCollision->flags[mtTileIndex / (unsigned)TILE_WIDTH];
 
         // 2: one tile's flags' bit-width
