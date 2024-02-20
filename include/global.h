@@ -143,9 +143,9 @@ typedef void (*VoidFn)(void);
         clamped;                                                                        \
     })
 
-#define CLAMP_16(value, min, max)                                                       \
+#define CLAMP_T(type, value, min, max)                                                  \
     ({                                                                                  \
-        s16 clamped;                                                                    \
+        type clamped;                                                                   \
         if ((value) >= (min)) {                                                         \
             clamped = (value) > (max) ? (max) : (value);                                \
         } else {                                                                        \
@@ -154,17 +154,8 @@ typedef void (*VoidFn)(void);
         clamped;                                                                        \
     })
 
-// Like CLAMP_16, but 32bit
-#define CLAMP_32(value, min, max)                                                       \
-    ({                                                                                  \
-        s32 clamped;                                                                    \
-        if ((value) >= (min)) {                                                         \
-            clamped = (value) > (max) ? (max) : (value);                                \
-        } else {                                                                        \
-            clamped = (min);                                                            \
-        }                                                                               \
-        clamped;                                                                        \
-    })
+#define CLAMP_16(value, min, max) CLAMP_T(s16, value, min, max)
+#define CLAMP_32(value, min, max) CLAMP_T(s32, value, min, max)
 
 #define CLAMP_INLINE(var, min, max)                                                     \
     ({                                                                                  \
