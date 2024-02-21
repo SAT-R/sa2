@@ -16,7 +16,8 @@ s32 sub_801E6D4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
     u8 *data1;
     s32 result;
     s32 res;
-    
+    s32 r4;
+
     if (data == NULL)
         data = dummy;
 
@@ -24,146 +25,270 @@ s32 sub_801E6D4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
     dummy_p++;
     data1 = dummy_p;
 
-    res = func(p0 + p3*0, p1, p2, data1);
+    res = func(p0 + p3 * 0, p1, p2, data1);
 
-    if(res == 0) {
+    if (res == 0) {
         // 0 - _0801E70C
-        res = func(p0 + p3*1, p1, p2, data1);
+        res = func(p0 + p3 * 1, p1, p2, data1);
 
-        if(res == 0) {
+        if (res == 0) {
             // 1 - _0801E722
-            res = func(p0 + p3*2, p1, p2, data1);
+            res = func(p0 + p3 * 2, p1, p2, data1);
 
-            if(res == 0) {
+            if (res == 0) {
                 // 2 - _0801E73A
-                res = func(p0 + p3*3, p1, p2, data1);
+                res = func(p0 + p3 * 3, p1, p2, data1);
 
-                if(res == 0) {
+                if (res == 0) {
                     // 3 -
-                    res = func(p0 + p3*4, p1, p2, data1);
-                    
-                    if(res == 0) {
-                        // 4 -
-                        res = func(p0 + p3*5, p1, p2, data1);
+                    res = func(p0 + p3 * 4, p1, p2, data1);
 
-                        if(res == 0) {
+                    if (res == 0) {
+                        // 4 -
+                        res = func(p0 + p3 * 5, p1, p2, data1);
+
+                        if (res == 0) {
                             // 5 -
-                            if(p3 > 0) {
+                            if (p3 > 0) {
                                 // 6+ -
                                 return 48 - (p0 % 8u);
                             } else {
                                 // 6 - _0801E786
-                                return (p0 % 8u) + (5*TILE_WIDTH + 1);
+                                return (p0 % 8u) + (5 * TILE_WIDTH + 1);
                             }
-                        } else if(res == 8) {
+                        } else if (res == 8) {
                             // 5 - _0801E78E + 0x4
                             *data = *data1;
 
-                            if(p3 > 0) {
-                                return ~(p0 % 8u) + 5*TILE_WIDTH;
+                            if (p3 > 0) {
+                                return ~(p0 % 8u) + 5 * TILE_WIDTH;
                             } else {
                                 // _0801E7A8
-                                return (p0 % 8u) + 4*TILE_WIDTH;
+                                return (p0 % 8u) + 4 * TILE_WIDTH;
                             }
                         } else {
                             // 5 - _0801E7B0
                             *data = *data1;
 
-                            if(res > 0) {
-                                return ((res - 1) - (p0 % 8u)) + 5*TILE_WIDTH;
+                            if (res > 0) {
+                                return ((res - 1) - (p0 % 8u)) + 5 * TILE_WIDTH;
                             } else {
                                 // _0801E7C8
-                                return ((p0 % 8u) + res) + 5*TILE_WIDTH;
+                                return ((p0 % 8u) + res) + 5 * TILE_WIDTH;
                             }
                         }
-                    } else if(res == 8) {
+                    } else if (res == 8) {
                         // 4 - _0801E7D2
                         *data = *data1;
 
-                        if(p3 > 0) {
-                            return ~(p0 % 8u) + 4*TILE_WIDTH;
+                        if (p3 > 0) {
+                            return ~(p0 % 8u) + 4 * TILE_WIDTH;
                         } else {
                             // _0801E7EC
-                            return (p0 % 8u) + 3*TILE_WIDTH;
+                            return (p0 % 8u) + 3 * TILE_WIDTH;
                         }
                     } else {
                         // _0801E7F4
                         *data = *data1;
 
-                        if(res > 0) {
-                            return ((res - 1) - (p0 % 8u)) + 4*TILE_WIDTH;
+                        if (res > 0) {
+                            return ((res - 1) - (p0 % 8u)) + 4 * TILE_WIDTH;
                         } else {
                             // _0801E80C
-                            return (res + (p0 % 8u)) + 4*TILE_WIDTH;
+                            return (res + (p0 % 8u)) + 4 * TILE_WIDTH;
                         }
                     }
-                } else if(res == 8){
+                } else if (res == 8) {
                     // 3 - _0801E816
                     *data = *data1;
 
-                    if(p3 > 0) {
-                        return ~(p0 % 8u) + 3*TILE_WIDTH;
+                    if (p3 > 0) {
+                        return ~(p0 % 8u) + 3 * TILE_WIDTH;
                     } else {
                         // _0801E830
-                        return (p0 % 8u) + 2*TILE_WIDTH;
+                        return (p0 % 8u) + 2 * TILE_WIDTH;
                     }
                 } else {
                     // 3 - _0801E838
                     *data = *data1;
 
-                    if(res > 0) {
-                        return ((res - 1) - (p0 % 8u)) + 3*TILE_WIDTH;
+                    if (res > 0) {
+                        return ((res - 1) - (p0 % 8u)) + 3 * TILE_WIDTH;
                     } else {
                         // _0801E850
-                        return (res + (p0 % 8u)) + 3*TILE_WIDTH;
+                        return (res + (p0 % 8u)) + 3 * TILE_WIDTH;
                     }
                 }
-            } else if(res == 8) {
+            } else if (res == 8) {
                 // 2 - _0801E85A
                 *data = *data1;
 
-                if(p3 > 0) {
-                    return ~(p0 % 8u) + 2*TILE_WIDTH;
+                if (p3 > 0) {
+                    return ~(p0 % 8u) + 2 * TILE_WIDTH;
                 } else {
-                    return (p0 % 8u) + 1*TILE_WIDTH;
+                    return (p0 % 8u) + 1 * TILE_WIDTH;
                 }
             } else {
                 // 2 - _0801E87C
                 *data = *data1;
 
-                if(res > 0) {
-                    return ((res - 1) - (p0 % 8u)) + 2*TILE_WIDTH;
+                if (res > 0) {
+                    return ((res - 1) - (p0 % 8u)) + 2 * TILE_WIDTH;
                 } else {
-                    return (res + (p0 % 8u)) + 2*TILE_WIDTH;
+                    return (res + (p0 % 8u)) + 2 * TILE_WIDTH;
                 }
             }
-        } else if(res == 8) {
+        } else if (res == 8) {
             // 1 - _0801E89E
             *data = *data1;
 
-            if(p3 > 0) {
-                return ~(p0 % 8u) + 1*TILE_WIDTH;
+            if (p3 > 0) {
+                return ~(p0 % 8u) + 1 * TILE_WIDTH;
             } else {
-                return (p0 % 8u) + 0*TILE_WIDTH;
+                return (p0 % 8u) + 0 * TILE_WIDTH;
             }
         } else {
             // 1 - _0801E8BE
             *data = *data1;
 
-            if(res > 0) {
-                return ((res - 1) - (p0 % 8u)) + 1*TILE_WIDTH;
+            if (res > 0) {
+                return ((res - 1) - (p0 % 8u)) + 1 * TILE_WIDTH;
             } else {
                 // _0801E8D6
-                return (res + (p0 % 8u)) + 1*TILE_WIDTH;
+                return (res + (p0 % 8u)) + 1 * TILE_WIDTH;
             }
         }
-    } else if(res == 8) {
-        // _0801E8E0 + 0x6
+    } else if (res == 8) {
+        // _0801E8E6
+        *data = *data1;
+
+        r4 = -p3;
+
+        res = func(p0 - p3, p1, p2, data1);
+
+        if (res == 8) {
+            // _0801E906
+            *data = *data1;
+            r4 -= p3;
+
+            res = func(p0 + (r4 - p3), p1, p2, data1);
+
+            if (res == 8) {
+                // _0801E924
+                *data = *data1;
+                r4 -= p3;
+                
+                res = func(p0 + (r4 - p3), p1, p2, data1);
+
+                if(res == 8) {
+                    // _0801E944
+                    *data = *data1;
+                    r4 -= p3;
+                    
+                    res = func(p0 + (r4 - p3), p1, p2, data1);
+
+                    if(res == 8) {
+                        *data = *data1;
+                        r4 -= p3;
+
+                        res = func(p0 + (r4 - p3), p1, p2, data1);
+
+                        if(res == 8) {
+                            *data = *data1;
+                            r4 -= p3;
+
+                            res = func(p0 + (r4 - p3), p1, p2, data1);
+                            
+                            if(res == 8) {
+                                *data = *data1;
+                                r4 -= p3;
+
+                                res = func(p0 + (r4 - p3), p1, p2, data1);
+                            
+                                if(res == 8) {
+                                    *data = *data1;
+
+                                    if(p3 > 0) {
+                                        return ~(p0 % 8u) - 5 * TILE_WIDTH;
+                                    } else {
+                                        // _0801E9B0
+                                        return (p0 % 8u) - 6 * TILE_WIDTH;
+                                    }
+                                } else if(res == 0) {
+                                    // _0801E9B8
+                                    if(p3 > 0) {
+
+                                    } else {
+                                        // _0801E9CE
+                                    }
+                                } else {
+                                    // _0801E9D6
+                                }
+                            } else {
+                                // _0801E9F8
+                            }
+                        } else {
+                            // _0801EA38
+                        }
+                    } else {
+                        // _0801EA38
+                    }
+                } else {
+                    // _0801EA78
+                    if(res == 0) {
+                        if(p3 > 0) {
+                            // _0801EA82
+                            return -9 - (p0 % 8u);
+                        } else {
+                            // _0801EA8E
+                            return (p0 % 8u) - 2 * TILE_WIDTH;
+                        }
+                    } else {
+                        // _0801EA96
+                        *data = *data1;
+
+                        if(res > 0) {
+                            // _0801EAA0
+                            return ((res - 1) - (p0 % 8u)) + 2 * TILE_WIDTH;
+                        } else {
+                            // _0801EAAE
+                            return (res + (p0 % 8u)) - 2 * TILE_WIDTH;
+                        }
+                    }
+                }
+            } else if (res == 0) {
+                // _0801EAB8
+
+                if(p3 > 0) {
+                    // [goto] _0801EA82
+                    return -9 - (p0 % 8u);
+                } else {
+                    return (p0 % 8u) - 2 * TILE_WIDTH;
+                }
+            }
+        } else if (res == 0) {
+            // _0801EADE
+
+            if(p3 > 0) {
+                return ~(p0 % 8u);
+            } else {
+                return (-8 | p0);
+            }
+        } else {
+            // _0801EAF8
+            *data = *data1;
+
+            if (res > 0) {
+                return (res - 1) - ((p0 % 8u) + 8);
+            } else {
+                return (res + (p0 % 8u) - 8);
+            }
+        }
     } else {
         // _0801EB1A
         *data = *data1;
 
-        if(res > 0) {
+        if (res > 0) {
             return ((res - 1) % (unsigned)TILE_WIDTH);
         } else {
             // _0801EB2E

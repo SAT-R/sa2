@@ -568,7 +568,7 @@ _0801E8E6:
 	ldrb r0, [r5]
 	ldr r4, [sp, #0x24]
 	strb r0, [r4]
-	mov r7, r8
+	mov r7, r8              @ r7 = r8 = p3
 	rsbs r4, r7, #0
 	adds r0, r6, r4
 	mov r1, sb
@@ -615,7 +615,7 @@ _0801E944:
 	ldrb r0, [r5]
 	ldr r1, [sp, #0x24]
 	strb r0, [r1]
-	mov r2, r8
+	mov r2, r8              @ r2 = r8 = p3
 	subs r4, r4, r2
 	adds r0, r6, r4
 	mov r1, sb
@@ -671,7 +671,7 @@ _0801E9B0:
 _0801E9B8:
 	cmp r1, #0
 	bne _0801E9D6
-	mov r0, r8
+	mov r0, r8              @ r2 = r8 = p3
 	cmp r0, #0
 	ble _0801E9CE
 	movs r0, #7
@@ -838,7 +838,7 @@ _0801EACA:
 _0801EADE:
 	cmp r1, #0
 	bne _0801EAF8
-	mov r4, r8
+	mov r4, r8              @ r4 = r8 = p3
 	cmp r4, #0
 	ble _0801EAF0
 	movs r0, #7
