@@ -9,6 +9,50 @@ static ALIGNED(8) u32 gUnknown_3000420[3];
 
 s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
 
+#define POS__NOT_MOD(i)                                                                 \
+    if (p3 > 0) {                                                                       \
+        return ~(p0 % 8u) + ((i)*TILE_WIDTH);                                           \
+    } else {                                                                            \
+        return (p0 % 8u) + ((i - 1) * TILE_WIDTH);                                      \
+    }
+
+#define NEG__NOT_MOD(i) POS__NOT_MOD(-i)
+
+#define NEG__INV_NOT_MOD(i)                                                             \
+    if (p3 > 0) {                                                                       \
+        return ~(p0 % 8u) - ((i)*TILE_WIDTH);                                           \
+    } else {                                                                            \
+        return (p0 % 8u) - ((i + 1) * TILE_WIDTH);                                      \
+    }
+
+#define POS__RES_IF(i)                                                                  \
+    if (res > 0) {                                                                      \
+        res = (--res) - (p0 % 8u);                                                      \
+        return res + ((i)*TILE_WIDTH);                                                  \
+    } else {                                                                            \
+        return res + (p0 % 8u) + ((i)*TILE_WIDTH);                                      \
+    }
+
+#define NEG__RES_IF(i) POS__RES_IF(-i)
+
+#define POS__P3_IF(i)                                                                   \
+    if (p3 > 0) {                                                                       \
+        s32 v = (p0 % 8u);                                                              \
+        res = (((i) + 1) * TILE_WIDTH);                                                 \
+        return res - v;                                                                 \
+    } else {                                                                            \
+        return (p0 % 8u) + ((i)*TILE_WIDTH + 1);                                        \
+    }
+
+#define NEG__P3_IF(i)                                                                   \
+    if (p3 > 0) {                                                                       \
+        s32 v = (p0 % 8u);                                                              \
+        res = -(((i)-1) * TILE_WIDTH + 1);                                              \
+        return res - v;                                                                 \
+    } else {                                                                            \
+        return (p0 % 8u) - ((i)*TILE_WIDTH);                                            \
+    }
+
 s32 sub_801E4E4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
 {
     u8 dummy[4];
@@ -35,49 +79,25 @@ s32 sub_801E4E4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
             res = func(p0 + it, p1, p2, data1);
 
             if (res == 0) {
-                if (p3 > 0) {
-                    v = (p0 % 8u);
-                    res = (3 * TILE_WIDTH);
-                    return res - v;
-                } else {
-                    return (p0 % 8u) + (2 * TILE_WIDTH + 1);
-                }
+                POS__P3_IF(2);
             } else if (res == 8) {
                 *data = *data1;
 
-                if (p3 > 0) {
-                    return ~(p0 % 8u) + 2 * TILE_WIDTH;
-                } else {
-                    return (p0 % 8u) + 1 * TILE_WIDTH;
-                }
+                POS__NOT_MOD(2);
             } else {
                 *data = *data1;
 
-                if (res > 0) {
-                    res = (--res) - (p0 % 8u);
-                    return res + 2 * TILE_WIDTH;
-                } else {
-                    return res + (p0 % 8u) + 2 * TILE_WIDTH;
-                }
+                POS__RES_IF(2);
             }
 
         } else if (res == 8) {
             *data = *data1;
 
-            if (p3 > 0) {
-                return ~(p0 % 8u) + 1 * TILE_WIDTH;
-            } else {
-                return (p0 % 8u) + 0 * TILE_WIDTH;
-            }
+            POS__NOT_MOD(1);
         } else {
             *data = *data1;
 
-            if (res > 0) {
-                res = (--res) - (p0 % 8u);
-                return res + 1 * TILE_WIDTH;
-            } else {
-                return res + (p0 % 8u) + 1 * TILE_WIDTH;
-            }
+            POS__RES_IF(1);
         }
     } else if (res == 8) {
         *data = *data1;
@@ -96,45 +116,20 @@ s32 sub_801E4E4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
             if (res == 8) {
                 *data = *data1;
 
-                if (p3 > 0) {
-                    v = ~(p0 % 8u);
-                    return v - (2 * TILE_WIDTH);
-                } else {
-                    return (p0 % 8u) - 3 * TILE_WIDTH;
-                }
+                NEG__INV_NOT_MOD(2);
             } else if (res == 0) {
-                if (p3 > 0) {
-                    v = (p0 % 8u);
-                    res = -(1 * TILE_WIDTH + 1);
-                    return res - v;
-                } else {
-                    return (p0 % 8u) - 2 * TILE_WIDTH;
-                }
+                NEG__P3_IF(2);
             } else {
                 *data = *data1;
 
-                if (res > 0) {
-                    res = (--res) - (p0 % 8u);
-                    return res - 2 * TILE_WIDTH;
-                } else {
-                    return res + (p0 % 8u) - 2 * TILE_WIDTH;
-                }
+                NEG__RES_IF(2);
             }
         } else if (res == 0) {
-            if (p3 > 0) {
-                return ~(p0 % 8u);
-            } else {
-                return (-8 | p0);
-            }
+            NEG__NOT_MOD(0);
         } else {
             *data = *data1;
 
-            if (res > 0) {
-                res = (--res) - (p0 % 8u);
-                return res - 1 * TILE_WIDTH;
-            } else {
-                return res + (p0 % 8u) - 1 * TILE_WIDTH;
-            }
+            NEG__RES_IF(1);
         }
     } else {
         *data = *data1;
@@ -196,120 +191,61 @@ s32 sub_801E6D4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
 
                         if (res == 0) {
                             // 5 -
-                            if (p3 > 0) {
-                                v = (p0 % 8u);
-                                res = (6 * TILE_WIDTH);
-                                return res - v;
-                            } else {
-                                // 6 - _0801E786
-                                return (p0 % 8u) + (5 * TILE_WIDTH + 1);
-                            }
+                            POS__P3_IF(5);
                         } else if (res == 8) {
                             // 5 - _0801E78E + 0x4
                             *data = *data1;
 
-                            if (p3 > 0) {
-                                return ~(p0 % 8u) + 5 * TILE_WIDTH;
-                            } else {
-                                // _0801E7A8
-                                return (p0 % 8u) + 4 * TILE_WIDTH;
-                            }
+                            POS__NOT_MOD(5);
                         } else {
                             // 5 - _0801E7B0
                             *data = *data1;
 
-                            if (res > 0) {
-                                res = (--res) - (p0 % 8u);
-                                return res + 5 * TILE_WIDTH;
-                            } else {
-                                // _0801E7C8
-                                return (res + (p0 % 8u)) + 5 * TILE_WIDTH;
-                            }
+                            POS__RES_IF(5);
                         }
                     } else if (res == 8) {
                         // 4 - _0801E7D2
                         *data = *data1;
 
-                        if (p3 > 0) {
-                            return ~(p0 % 8u) + 4 * TILE_WIDTH;
-                        } else {
-                            // _0801E7EC
-                            return (p0 % 8u) + 3 * TILE_WIDTH;
-                        }
+                        POS__NOT_MOD(4);
                     } else {
                         // _0801E7F4
                         *data = *data1;
 
-                        if (res > 0) {
-                            res = (--res) - (p0 % 8u);
-                            return res + 4 * TILE_WIDTH;
-                        } else {
-                            // _0801E80C
-                            return (res + (p0 % 8u)) + 4 * TILE_WIDTH;
-                        }
+                        POS__RES_IF(4);
                     }
                 } else if (res == 8) {
                     // 3 - _0801E816
                     *data = *data1;
 
-                    if (p3 > 0) {
-                        return ~(p0 % 8u) + 3 * TILE_WIDTH;
-                    } else {
-                        // _0801E830
-                        return (p0 % 8u) + 2 * TILE_WIDTH;
-                    }
+                    POS__NOT_MOD(3);
                 } else {
                     // 3 - _0801E838
                     *data = *data1;
 
-                    if (res > 0) {
-                        res = (--res) - (p0 % 8u);
-                        return res + 3 * TILE_WIDTH;
-                    } else {
-                        // _0801E850
-                        return (res + (p0 % 8u)) + 3 * TILE_WIDTH;
-                    }
+                    POS__RES_IF(3);
                 }
             } else if (res == 8) {
                 // 2 - _0801E85A
                 *data = *data1;
 
-                if (p3 > 0) {
-                    return ~(p0 % 8u) + 2 * TILE_WIDTH;
-                } else {
-                    return (p0 % 8u) + 1 * TILE_WIDTH;
-                }
+                POS__NOT_MOD(2);
             } else {
                 // 2 - _0801E87C
                 *data = *data1;
 
-                if (res > 0) {
-                    res = (--res) - (p0 % 8u);
-                    return res + 2 * TILE_WIDTH;
-                } else {
-                    return (res + (p0 % 8u)) + 2 * TILE_WIDTH;
-                }
+                POS__RES_IF(2);
             }
         } else if (res == 8) {
             // 1 - _0801E89E
             *data = *data1;
 
-            if (p3 > 0) {
-                return ~(p0 % 8u) + 1 * TILE_WIDTH;
-            } else {
-                return (p0 % 8u) + 0 * TILE_WIDTH;
-            }
+            POS__NOT_MOD(1);
         } else {
             // 1 - _0801E8BE
             *data = *data1;
 
-            if (res > 0) {
-                res = (--res) - (p0 % 8u);
-                return res + 1 * TILE_WIDTH;
-            } else {
-                // _0801E8D6
-                return (res + (p0 % 8u)) + 1 * TILE_WIDTH;
-            }
+            POS__RES_IF(1);
         }
     } else if (res == 8) {
         // _0801E8E6
@@ -318,112 +254,65 @@ s32 sub_801E6D4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
         r4 = -p3;
 
         res = func(p0 + r4, p1, p2, data1);
-
         if (res == 8) {
             // _0801E906
             *data = *data1;
             r4 -= p3;
 
             res = func(p0 + r4, p1, p2, data1);
-
             if (res == 8) {
                 // _0801E924
                 *data = *data1;
                 r4 -= p3;
 
                 res = func(p0 + r4, p1, p2, data1);
-
                 if (res == 8) {
                     // _0801E944
                     *data = *data1;
                     r4 -= p3;
 
                     res = func(p0 + r4, p1, p2, data1);
-
                     if (res == 8) {
                         *data = *data1;
                         r4 -= p3;
 
                         res = func(p0 + r4, p1, p2, data1);
-
                         if (res == 8) {
                             *data = *data1;
                             r4 -= p3;
 
                             res = func(p0 + r4, p1, p2, data1);
-
                             if (res == 8) {
                                 *data = *data1;
 
-                                if (p3 > 0) {
-                                    return ~(p0 % 8u) - 5 * TILE_WIDTH;
-                                } else {
-                                    // _0801E9B0
-                                    return (p0 % 8u) - 6 * TILE_WIDTH;
-                                }
+                                POS__NOT_MOD(-5);
                             } else if (res == 0) {
                                 // _0801E9B8
-                                if (p3 > 0) {
-                                    s32 v = (p0 % 8u);
-                                    res = -33;
-                                    return res - v;
-                                } else {
-                                    // _0801E9CE
-                                    return (p0 % 8u) - (5 * TILE_WIDTH);
-                                }
+
+                                NEG__P3_IF(5);
                             } else {
                                 // _0801E9D6
                                 *data = *data1;
 
-                                if (res > 0) {
-                                    res = (--res) - (p0 % 8u);
-                                    return res - 5 * TILE_WIDTH;
-                                } else {
-                                    return res + (p0 % 8u) - 5 * TILE_WIDTH;
-                                }
+                                NEG__RES_IF(5);
                             }
                         } else if (res == 0) {
                             // _0801E9F8
-                            if (p3 > 0) {
-                                s32 v = (p0 % 8u);
-                                res = -(3 * TILE_WIDTH + 1);
-                                return res - v;
-                            } else {
-                                // _0801EA0E
-                                return (p0 % 8u) - 4 * TILE_WIDTH;
-                            }
+                            NEG__P3_IF(4);
                         } else {
                             // _0801EA16
                             *data = *data1;
 
-                            if (res > 0) {
-                                res = (--res) - (p0 % 8u);
-                                return res - 4 * TILE_WIDTH;
-                            } else {
-                                // _0801EA2E
-                                return res + (p0 % 8u) - 4 * TILE_WIDTH;
-                            }
+                            NEG__RES_IF(4);
                         }
                     } else if (res == 0) {
                         // _0801EA38
-                        if (p3 > 0) {
-                            s32 v = (p0 % 8u);
-                            res = -(2 * TILE_WIDTH + 1);
-                            return res - v;
-                        } else {
-                            return (p0 % 8u) - 3 * TILE_WIDTH;
-                        }
+                        NEG__P3_IF(3);
                     } else {
                         // _0801EA56
                         *data = *data1;
 
-                        if (res > 0) {
-                            res = (--res) - (p0 % 8u);
-                            return res - 3 * TILE_WIDTH;
-                        } else {
-                            // _0801EA6E
-                            return res + (p0 % 8u) - 3 * TILE_WIDTH;
-                        }
+                        NEG__RES_IF(3);
                     }
                 } else {
                     // _0801EA78
@@ -442,6 +331,7 @@ s32 sub_801E6D4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
                         // _0801EA96
                         *data = *data1;
 
+                        // NEG__RES_IF(2); // can't use it now because of the GOTO
                         if (res > 0) {
                         _0801EAA0:
                             res = (--res) - (p0 % 8u);
@@ -490,12 +380,7 @@ s32 sub_801E6D4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
             // _0801EAF8
             *data = *data1;
 
-            if (res > 0) {
-                res = (--res) - (p0 % 8u);
-                return res - 1 * TILE_WIDTH;
-            } else {
-                return (res + (p0 % 8u) - 8);
-            }
+            NEG__RES_IF(1);
         }
     } else {
         // _0801EB1A
