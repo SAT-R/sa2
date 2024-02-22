@@ -317,29 +317,14 @@ s32 sub_801E6D4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
                 } else {
                     // _0801EA78
                     if (res == 0) {
-                        if (p3 > 0) {
-
-                        _0801EA82:
-                            v = (p0 % 8u);
-                            res = -(1 * TILE_WIDTH + 1);
-                            return res - v;
-                        } else {
-                            // _0801EA8E
-                            return (p0 % 8u) - 2 * TILE_WIDTH;
-                        }
+                    _0801EA82:
+                        NEG__P3_IF(2);
                     } else {
                         // _0801EA96
                         *data = *data1;
 
-                        // NEG__RES_IF(2); // can't use it now because of the GOTO
-                        if (res > 0) {
-                        _0801EAA0:
-                            res = (--res) - (p0 % 8u);
-                            return res - 2 * TILE_WIDTH;
-                        } else {
-                            // _0801EAAE
-                            return (res + (p0 % 8u)) - 2 * TILE_WIDTH;
-                        }
+                    _0801EAA0:
+                        NEG__RES_IF(2);
                     }
                 }
             } else if (res == 0) {
