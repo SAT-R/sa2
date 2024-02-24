@@ -224,6 +224,7 @@ SECTIONS
         build/sa2/asm/boss_6.o(.text);
         build/sa2/asm/boss_7.o(.text);
         build/sa2/asm/boss_8.o(.text);
+        build/sa2/src/game/bosses/boss_9.o(.text);
         build/sa2/asm/boss_9.o(.text);
         build/sa2/src/game/enemies/projectiles.o(.text);
         build/sa2/src/game/enemies/mon.o(.text);
