@@ -1,4 +1,5 @@
 #include "global.h"
+#include "gba/io_reg.h"
 #include "sprite.h"
 #include "task.h"
 #include "game/bosses/common.h"
@@ -21,13 +22,17 @@ typedef struct {
 
 typedef struct {
     void *unk0; // func
-    u8 filler4[0x28];
+    s16 unk4[4];
+    s16 unkC[4];
+    u16 unk14[4];
+    u16 unk1C[4];
+    u16 unk24[4];
     u16 unk2C;
     u16 unk2E;
     s32 unk30;
     void *unk34; // ref
-    u8 filler38[0x4];
-} TA53_unk48; /* size: ??? */
+    u8 filler38[0x8];
+} TA53_unk48; /* size: 0x40 */
 
 typedef struct {
     u8 filler0[0x4];
@@ -63,6 +68,11 @@ typedef struct {
     /* 0x7E4 */ u8 filler7E4[0x15C];
 } TA53Boss; /* size: 0x940 */
 
+extern s16 gUnknown_080D8A94[4];
+extern s16 gUnknown_080D8AAC[4];
+extern s16 gUnknown_080D8AC4[4];
+extern s16 gUnknown_080D8ADC[4];
+extern s16 gUnknown_080D8AF4[4];
 extern s16 gUnknown_080D8C7C[4];
 extern s16 gUnknown_080D8C94[4];
 extern TA53_Data0 gUnknown_080D8D6C[8];
@@ -72,7 +82,6 @@ extern void CreateTrueArea53Boss(void);
 extern void Task_EggmanKidnapsVanilla(void);
 extern void TaskDestructor_TrueArea53BossGfx(struct Task *);
 
-#if 0
 // Used when Vanilla gets captured
 void SetupEggmanKidnapsVanillaTask(void)
 {
@@ -81,7 +90,7 @@ void SetupEggmanKidnapsVanillaTask(void)
     TA53_unk48 *unk48;
     u8 i;
 
-    gActiveBossTask = TaskCreate(Task_EggmanKidnapsVanilla, sizeof(TA53Boss), 0x400, 0,
+    gActiveBossTask = TaskCreate(Task_EggmanKidnapsVanilla, sizeof(TA53Boss), 0x4000, 0,
                                  TaskDestructor_TrueArea53BossGfx);
 
     CreateTrueArea53Boss();
@@ -89,6 +98,7 @@ void SetupEggmanKidnapsVanillaTask(void)
     boss = TASK_DATA(gActiveBossTask);
     unk1C = &boss->unk1C;
     unk48 = &boss->unk48;
+    boss->unk12 = 0x230;
 
     unk48->unk30 &= 0xFFF;
     unk48->unk0 = gUnknown_080D8D6C[4].func;
@@ -112,6 +122,14 @@ void SetupEggmanKidnapsVanillaTask(void)
     unk48->unk2C = unk48->unk2E;
 
     // __0804CE02
-    for (i = 0; i < 4; i++) { }
+    for (i = 0; i < 4; i++) {
+        unk48->unk4[i] = gUnknown_080D8A94[i];
+        unk48->unkC[i] = gUnknown_080D8AAC[i];
+        unk48->unk14[i] = gUnknown_080D8AC4[i];
+        unk48->unk1C[i] = gUnknown_080D8ADC[i];
+        unk48->unk24[i] = gUnknown_080D8AF4[i];
+    }
+
+    gDispCnt = (DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP
+                | DISPCNT_MODE_1);
 }
-#endif

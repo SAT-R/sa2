@@ -146,180 +146,7 @@ gUnknown_080D8F10:
 .syntax unified
 .arm
 
-.if 01
-@; CreateTrueArea53IntroBoss - Used when Vanilla gets captured
-	thumb_func_start SetupEggmanKidnapsVanillaTask
-SetupEggmanKidnapsVanillaTask: @ 0x0804CD50
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #8
-	ldr r0, _0804CE7C @ =Task_EggmanKidnapsVanilla
-	movs r1, #0x94
-	lsls r1, r1, #4
-	movs r2, #0x80
-	lsls r2, r2, #7
-	ldr r3, _0804CE80 @ =TaskDestructor_TrueArea53BossGfx
-	str r3, [sp]
-	movs r3, #0
-	bl TaskCreate
-	ldr r4, _0804CE84 @ =gActiveBossTask
-	str r0, [r4]
-	bl CreateTrueArea53Boss
-	ldr r0, [r4]
-	ldrh r2, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r1, r2, r1         @ r1 = boss = TASK_DATA(gActiveBossTask)
-	ldr r0, _0804CE88 @ =IWRAM_START + 0x1C
-	adds r3, r2, r0         @ r3 = unk1C
-	ldr r7, _0804CE8C @ =IWRAM_START + 0x48
-	adds r4, r2, r7         @ r4 = unk48
-	movs r0, #0x8c
-	lsls r0, r0, #2
-	strh r0, [r1, #0x12]
-	ldr r0, [r4, #0x30]
-	ldr r1, _0804CE90 @ =0x00000FFF
-	ands r0, r1
-	str r0, [r4, #0x30]
-	ldr r1, _0804CE94 @ =gUnknown_080D8D6C
-	ldr r0, [r1, #0x30]
-	str r0, [r4]
-	ldr r0, [r1, #0x34]
-	str r0, [r4, #0x34]
-	ldrh r0, [r1, #0x38]
-	strh r0, [r4, #0x2e]
-	movs r0, #0xa5
-	lsls r0, r0, #9
-	str r0, [r3, #0x24]
-	movs r0, #0xb4
-	lsls r0, r0, #7
-	str r0, [r3, #0x28]
-	ldr r0, _0804CE98 @ =gUnknown_080D8DCC
-	ldrh r0, [r0, #0x38]
-	strh r0, [r3, #0x14]
-	movs r3, #0             @ r3 = i = 0
-	ldr r0, _0804CE9C @ =IWRAM_START + 0x20
-	adds r6, r2, r0
-	ldr r1, _0804CEA0 @ =gUnknown_080D8C7C
-	mov ip, r1
-	subs r7, #0x20
-	adds r5, r2, r7
-	ldr r0, _0804CEA4 @ =gUnknown_080D8C94
-	mov r8, r0
-_0804CDCA:
-	lsls r1, r3, #1
-	adds r2, r6, r1         @ r2 = 
-	mov r7, ip
-	adds r0, r1, r7
-	ldrh r0, [r0]
-	strh r0, [r2]
-	adds r2, r5, r1
-	add r1, r8
-	ldrh r0, [r1]
-	strh r0, [r2]
-	adds r0, r3, #1
-	lsls r0, r0, #0x18
-	lsrs r3, r0, #0x18
-	cmp r3, #3
-	bls _0804CDCA
-	ldr r0, [r4, #0x30]     @ r0 = unk48->unk30
-	ldr r1, _0804CE90 @ =0x00000FFF
-	ands r0, r1
-	str r0, [r4, #0x30]
-	ldr r0, _0804CE94 @ =gUnknown_080D8D6C
-	ldr r1, [r0, #0x3c]
-	str r1, [r4]
-	ldr r1, [r0, #0x40]
-	str r1, [r4, #0x34]
-	adds r0, #0x44
-	ldrh r0, [r0]
-	strh r0, [r4, #0x2e]
-	strh r0, [r4, #0x2c]
-__0804CE02:
-	movs r3, #0
-	adds r0, r4, #4
-	mov ip, r0
-	adds r1, r4, #0
-	adds r1, #0xc
-	str r1, [sp, #4]
-	adds r6, r4, #0
-	adds r6, #0x14
-	ldr r7, _0804CEA8 @ =gUnknown_080D8AC4
-	mov sl, r7
-	adds r5, r4, #0
-	adds r5, #0x1c
-	ldr r0, _0804CEAC @ =gUnknown_080D8ADC
-	mov sb, r0
-	adds r4, #0x24
-	ldr r1, _0804CEB0 @ =gUnknown_080D8AF4
-	mov r8, r1
-_0804CE24:
-	lsls r1, r3, #1
-	mov r7, ip
-	adds r2, r7, r1
-	ldr r7, _0804CEB4 @ =gUnknown_080D8A94
-	adds r0, r1, r7
-	ldrh r0, [r0]
-	strh r0, [r2]
-	ldr r0, [sp, #4]
-	adds r2, r0, r1
-	ldr r7, _0804CEB8 @ =gUnknown_080D8AAC
-	adds r0, r1, r7
-	ldrh r0, [r0]
-	strh r0, [r2]
-	adds r2, r6, r1
-	mov r7, sl
-	adds r0, r1, r7
-	ldrh r0, [r0]
-	strh r0, [r2]
-	adds r2, r5, r1
-	mov r7, sb
-	adds r0, r1, r7
-	ldrh r0, [r0]
-	strh r0, [r2]
-	adds r2, r4, r1
-	add r1, r8
-	ldrh r0, [r1]
-	strh r0, [r2]
-	adds r0, r3, #1
-	lsls r0, r0, #0x18
-	lsrs r3, r0, #0x18
-	cmp r3, #3
-	bls _0804CE24
-	ldr r1, _0804CEBC @ =0x00001341
-	adds r0, r1, #0
-	ldr r7, _0804CEC0 @ =gDispCnt
-	strh r0, [r7]
-	add sp, #8
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0804CE7C: .4byte Task_EggmanKidnapsVanilla
-_0804CE80: .4byte TaskDestructor_TrueArea53BossGfx
-_0804CE84: .4byte gActiveBossTask
-_0804CE88: .4byte IWRAM_START + 0x1C
-_0804CE8C: .4byte IWRAM_START + 0x48
-_0804CE90: .4byte 0x00000FFF
-_0804CE94: .4byte gUnknown_080D8D6C
-_0804CE98: .4byte gUnknown_080D8DCC
-_0804CE9C: .4byte IWRAM_START + 0x20
-_0804CEA0: .4byte gUnknown_080D8C7C
-_0804CEA4: .4byte gUnknown_080D8C94
-_0804CEA8: .4byte gUnknown_080D8AC4
-_0804CEAC: .4byte gUnknown_080D8ADC
-_0804CEB0: .4byte gUnknown_080D8AF4
-_0804CEB4: .4byte gUnknown_080D8A94
-_0804CEB8: .4byte gUnknown_080D8AAC
-_0804CEBC: .4byte 0x00001341
-_0804CEC0: .4byte gDispCnt
+.if 0
 .endif
 
 	thumb_func_start CreateTrueArea53Boss
@@ -334,12 +161,12 @@ CreateTrueArea53Boss: @ 0x0804CEC4
 	ldrh r0, [r2]
 	movs r1, #0x20
 	orrs r0, r1
-	strh r0, [r2]
+	strh r0, [r2]		@ gUnknown_03005424 |= EXTRA_STATE__DISABLE_PAUSE_MENU
 	ldr r4, _0804D2AC @ =gActiveBossTask
 	ldr r0, [r4]
 	cmp r0, #0
 	bne _0804CEF8
-	ldr r0, _0804D2B0 @ =sub_804D7A0
+	ldr r0, _0804D2B0 @ =Task_TrueArea53BossMain
 	movs r1, #0x94
 	lsls r1, r1, #4
 	movs r2, #0x80
@@ -348,7 +175,7 @@ CreateTrueArea53Boss: @ 0x0804CEC4
 	str r3, [sp]
 	movs r3, #0
 	bl TaskCreate
-	str r0, [r4]
+	str r0, [r4]		@ gActiveBossTask = TaskCreate(Task_TrueArea53BossMain, ...)
 _0804CEF8:
 	ldr r0, [r4]
 	ldrh r4, [r0, #6]
@@ -357,15 +184,15 @@ _0804CEF8:
 	adds r0, r4, r0
 	str r0, [sp, #4]
 	ldr r0, _0804D2B8 @ =IWRAM_START + 0x1C
-	adds r2, r4, r0
+	adds r2, r4, r0			@ r2 = &boss->unk1C
 	ldr r1, _0804D2BC @ =IWRAM_START + 0x48
-	adds r6, r4, r1
+	adds r6, r4, r1			@ r6 = &boss->unk48
 	ldr r5, _0804D2C0 @ =IWRAM_START + 0x98
-	adds r5, r4, r5
-	str r5, [sp, #8]
+	adds r5, r4, r5			@ r5 = &boss->unk98
+	str r5, [sp, #8]		@ sp08 = &boss->unk98
 	ldr r7, _0804D2C4 @ =IWRAM_START + 0x558
 	adds r7, r7, r4
-	mov r8, r7
+	mov r8, r7				@ r8 = r7 = boss->unk558
 	ldr r0, _0804D2C8 @ =IWRAM_START + 0x594
 	adds r7, r4, r0
 	ldr r1, _0804D2CC @ =IWRAM_START + 0x654
@@ -397,7 +224,7 @@ _0804CEF8:
 	strh r0, [r5, #8]
 	strh r3, [r5, #0xa]
 	ldr r0, _0804D2D0 @ =sub_8050DC8
-	mov r5, r8
+	mov r5, r8				@ r5 = r8 = &boss->unk558
 	str r0, [r5]
 	movs r0, #0xc8
 	strh r0, [r5, #6]
@@ -828,7 +655,7 @@ _0804D25C:
 	.align 2, 0
 _0804D2A8: .4byte gUnknown_03005424
 _0804D2AC: .4byte gActiveBossTask
-_0804D2B0: .4byte sub_804D7A0
+_0804D2B0: .4byte Task_TrueArea53BossMain
 _0804D2B4: .4byte TaskDestructor_TrueArea53BossGfx
 _0804D2B8: .4byte IWRAM_START + 0x1C
 _0804D2BC: .4byte IWRAM_START + 0x48
@@ -1407,8 +1234,8 @@ _0804D794: .4byte gSineTable
 _0804D798: .4byte gStageTime
 _0804D79C: .4byte 0x000003FF
 
-	thumb_func_start sub_804D7A0
-sub_804D7A0: @ 0x0804D7A0
+	thumb_func_start Task_TrueArea53BossMain
+Task_TrueArea53BossMain: @ 0x0804D7A0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sb
 	mov r6, r8
