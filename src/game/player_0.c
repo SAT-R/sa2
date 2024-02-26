@@ -3,19 +3,24 @@
 #include "trig.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
+#include "sakit/camera.h"
 #include "game/game.h"
-#include "game/stage/player.h"
-#include "game/player_controls.h"
-#include "game/dust_effect_braking.h"
-#include "game/player_mp_actor.h"
 #include "game/boost_effect.h"
+#include "game/bosses/common.h"
+#include "game/cheese.h"
+#include "game/dust_effect_braking.h"
+#include "game/stage/player.h"
+#include "game/multiplayer/player_unk_2.h"
+#include "game/parameters/bosses.h"
+#include "game/player_controls.h"
+#include "game/player_mp_actor.h"
 #include "game/player_callbacks_1.h"
+#include "game/player_super_sonic.h"
 #include "game/playerfn_cmds.h"
 #include "game/rings_scatter.h"
 #include "game/stage/stage.h"
-#include "game/water_effects.h"
 #include "game/unknown_effect.h"
-#include "game/multiplayer/player_unk_2.h"
+#include "game/water_effects.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -1891,7 +1896,6 @@ NONMATCH("asm/non_matching/game/sub_8022D6C.inc", void sub_8022D6C(Player *p))
 }
 END_NONMATCH
 
-#if 01
 // (100.00%) https://decomp.me/scratch/U0r54
 s32 sub_8022F58(u8 param0, Player *p)
 {
@@ -1997,7 +2001,6 @@ s32 sub_8022F58(u8 param0, Player *p)
 
     return result;
 }
-#endif
 
 // (98.07%) https://decomp.me/scratch/xgjsf
 NONMATCH("asm/non_matching/game/player__sub_802302C.inc",
@@ -2207,3 +2210,194 @@ void sub_8023260(Player *p)
         p->speedAirY += I(SIN_24_8(rot * 4) * r4);
     }
 }
+
+// (85.42%) https://decomp.me/scratch/NrjPo
+#if 0
+void sub_80232D0(Player *p)
+{
+    struct Camera *cam = &gCamera;
+    s32 qPX = p->x;
+    s32 qPY = p->y;
+
+    if (p->unk60 == 0) {
+        // _080232F4
+        if (IS_BOSS_STAGE(gCurrentLevel)) {
+            if (gCurrentLevel & 0x2) {
+                s32 ox = gUnknown_080D650C[gCurrentLevel].x;
+                if ((ox >= 0) && (qPX >= Q(ox))) {
+                    // _0802333E
+                    s32 ix = gUnknown_080D661C[gCurrentLevel].x;
+                    s32 iy = gUnknown_080D661C[gCurrentLevel].y;
+
+                    qPX += Q(ix);
+                    qPY += Q(iy);
+
+                    if (gCheese != NULL) {
+                        gCheese->posX += Q(ix);
+                        gCheese->posY += Q(iy);
+                    }
+                    // _08023366
+
+                    gUnknown_030054FC = Q(ix);
+                    gUnknown_030054E0 = Q(iy);
+
+                    sub_8039F14(Q(ix), Q(iy));
+
+                    gBossRingsShallRespawn = TRUE;
+
+                    cam->x += ix;
+                    cam->unk20 += ix;
+                    cam->unk10 += ix;
+                    cam->y += iy;
+                    cam->unk24 += iy;
+                    cam->unk14 += iy;
+                }
+            }
+        } else if ((gPlayer.moveState & MOVESTATE_8000000)
+                   && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+            // _080233C4 + 0x16
+            s32 ox, oy;
+
+            ox = gUnknown_080D650C[gCurrentLevel].x;
+            if ((ox >= 0) && (qPX >= Q(ox)) && (gCamera.unk8 != 0)) {
+                if (!(gCamera.unk50 & 0x1)) {
+                    s32 ix;
+
+                    ix = gUnknown_080D661C[gCurrentLevel].x;
+                    qPX += Q(ix);
+                    gCamera.x += ix;
+                    gCamera.unk20 += ix;
+                    gCamera.unk10 += ix;
+
+                    if (gCheese != NULL) {
+                        gCheese->posX += ix;
+                    }
+                }
+            }
+            // _08023432
+
+            oy = gUnknown_080D650C[gCurrentLevel].x;
+            if ((oy >= 0) && (qPY >= Q(oy)) && (gCamera.unkC != 0)) {
+                if (!(gCamera.unk50 & 0x2)) {
+                    s32 iy;
+
+                    iy = gUnknown_080D661C[gCurrentLevel].y;
+                    qPY += Q(iy);
+                    gCamera.y += iy;
+                    gCamera.unk24 += iy;
+
+                    if (gCheese != NULL) {
+                        gCheese->posY += iy;
+                    }
+                }
+            }
+        }
+    }
+    // _08023486
+
+    if ((p->moveState & (MOVESTATE_80000000 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
+        // _08023494
+        s32 r2, r3;
+        struct Camera *cam2 = &gCamera;
+
+        if ((s32)p->moveState >= 0) {
+            s32 r1;
+
+            if (GRAVITY_IS_INVERTED) {
+                if (p->y > Q(cam->minY)) {
+                    r1 = 0;
+                } else {
+                    r1 = 1;
+                }
+            } else {
+                // _080234D4
+                s32 qMaxY = Q(cam2->maxY) - 1;
+
+                r1 = 1;
+
+                if (p->y < qMaxY) {
+                    r1 = 0;
+                }
+            }
+            // _080234E6
+
+            if (r1 != 0) {
+                p->moveState |= MOVESTATE_DEAD;
+
+                if (p->moveState & MOVESTATE_40) {
+                    p->speedAirY = Q(2.625);
+                } else {
+                    p->speedAirY = Q(4.825);
+                }
+
+                if (GRAVITY_IS_INVERTED) {
+                    qPY = Q(cam->minY);
+                } else {
+                    qPY = Q(cam->maxY) - 1;
+                }
+            }
+        }
+        // _0802351C
+
+        if (IS_BOSS_STAGE(gCurrentLevel)) {
+            r2 = gUnknown_03005440;
+            r3 = gUnknown_030054BC;
+        } else {
+            // _08023558
+            r2 = cam->minY;
+            r3 = cam->maxY;
+        }
+        // _0802355C
+
+        {
+            s32 oldQPX = qPX;
+            s32 oldQPY = qPY;
+
+            if (qPX < Q(cam->minX)) {
+                qPX = Q(cam->minX);
+            } else if (qPX > Q(cam->maxX)) {
+                qPX = Q(cam->maxX);
+            }
+            // _08023576 + 0x2
+
+            if (qPY < Q(cam->minY)) {
+                qPY = Q(cam->minY);
+            } else if (qPY > Q(cam->maxY)) {
+                qPY = Q(cam->maxY);
+            }
+
+            if (qPX != oldQPX) {
+                p->speedAirX = 0;
+                p->speedGroundX = 0;
+            }
+
+            if (qPY != oldQPY) {
+                p->speedAirY = 0;
+                p->speedGroundX = 0;
+            }
+            // _080235A0
+
+            if (IS_BOSS_STAGE(gCurrentLevel)) {
+                // _080235C0
+                if (qPX < (Q(cam->unk10) + Q(8.0))) {
+                    qPX = (Q(cam->unk10) + Q(8.0));
+                    p->speedGroundX = BOSS_VELOCITY_X;
+                    p->speedAirX = BOSS_VELOCITY_X;
+
+                    p->moveState &= ~MOVESTATE_IN_AIR;
+                } else if (qPX > (Q(cam->unk10) + Q(312.0))) {
+                    // _080235E8 + 0xA
+                    qPX = (Q(cam->unk10) + Q(312.0));
+                    p->speedGroundX = BOSS_VELOCITY_X;
+                    p->speedAirX = BOSS_VELOCITY_X;
+                }
+            }
+            // _080235FC
+
+            p->x = qPX;
+            p->y = qPY;
+        }
+    }
+    // _08023604 (return)
+}
+#endif

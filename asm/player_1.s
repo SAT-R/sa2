@@ -5,6 +5,7 @@
 .syntax unified
 .arm
 
+.if 01
 @ Called in boss battles.
 @ It sets gBossRingsShallRespawn to TRUE, amongst other things
 	thumb_func_start sub_80232D0
@@ -13,12 +14,12 @@ sub_80232D0: @ 0x080232D0
 	mov r7, sb
 	mov r6, r8
 	push {r6, r7}
-	adds r7, r0, #0
-	ldr r4, _080233A0 @ =gCamera
+	adds r7, r0, #0         @ r7 = p
+	ldr r4, _080233A0 @ =gCamera    @ r4 = &gCamera
 	ldr r0, [r7, #8]
-	mov r8, r0
+	mov r8, r0              @ r8 = qPX
 	ldr r1, [r7, #0xc]
-	mov sb, r1
+	mov sb, r1              @ sb = qPY
 	adds r0, r7, #0
 	adds r0, #0x60
 	ldrb r0, [r0]
@@ -47,7 +48,7 @@ _08023312:
 	cmp r1, #0x1d
 	bne _080233C4
 _08023316:
-	mov r2, ip
+	mov r2, ip              @ r2 = ip = &gCurrentLevel
 	ldrb r1, [r2]
 	movs r0, #2
 	ands r0, r1
@@ -75,7 +76,7 @@ _0802333E:
 	ldr r5, [r1]
 	adds r0, #4
 	adds r0, r2, r0
-	ldr r6, [r0]
+	ldr r6, [r0]            @ r6 = 
 	lsls r3, r5, #8
 	add r8, r3
 	lsls r1, r6, #8
@@ -147,7 +148,7 @@ _080233C4:
 	ldrsb r1, [r2, r1]
 	lsls r2, r1, #3
 	adds r1, r2, r0
-	ldr r1, [r1]
+	ldr r1, [r1]        @ r1 = ox = gUnknown_080D650C[gCurrentLevel].x;
 	adds r5, r0, #0
 	cmp r1, #0
 	blt _08023432
@@ -186,7 +187,7 @@ _080233C4:
 	adds r0, r0, r3
 	str r0, [r2]
 _08023432:
-	mov r1, ip
+	mov r1, ip          @ r1 = ip = gCurrentLevel
 	movs r0, #0
 	ldrsb r0, [r1, r0]
 	lsls r2, r0, #3
@@ -237,8 +238,8 @@ _08023486:
 	bne _08023494
 	b _08023604
 _08023494:
-	ldr r5, _080234CC @ =gCamera
-	ldr r3, [r7, #0xc]
+	ldr r5, _080234CC @ =gCamera        @ r5 = cam2
+	ldr r3, [r7, #0xc]                  @ r3 = p->y
 	cmp r6, #0
 	blt _0802351C
 	ldr r2, _080234D0 @ =gUnknown_03005424
@@ -339,8 +340,8 @@ _08023558:
 	ldr r2, [r4, #0x28]
 	ldr r3, [r4, #0x2c]
 _0802355C:
-	mov r5, r8
-	mov r6, sb
+	mov r5, r8              @ r5 = r8 = qPX
+	mov r6, sb              @ r6 = sb = qPY
 	ldr r0, [r4, #0x30]
 	lsls r0, r0, #8
 	cmp r8, r0
@@ -438,6 +439,4 @@ _08023604:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
-
-.if 0
 .endif
