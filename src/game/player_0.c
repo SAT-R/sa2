@@ -1889,3 +1889,111 @@ NONMATCH("asm/non_matching/game/sub_8022D6C.inc", void sub_8022D6C(Player *p))
     }
 }
 END_NONMATCH
+
+#if 01
+// (100.00%) https://decomp.me/scratch/U0r54
+s32 sub_8022F58(u8 param0, Player *p)
+{
+    u32 p0;
+    s32 result = 0; // maybe u8?
+    s32 r4;
+    u8 sp0[4];
+    s32 sp4[4];
+#ifndef NON_MATCHING
+    register s32 fnRes asm("r3");
+#else
+    s32 fnRes;
+#endif
+
+    p->unk29 = param0;
+    p->unk28 = param0;
+
+    p0 = (param0 + Q(0.125)) & 0xC0;
+
+#ifndef NON_MATCHING
+    asm("asr %0, %1, #6\n" : "=r"(r4) : "r"(p0));
+#else
+    r4 = p0 >> 6;
+#endif
+
+    switch (r4) {
+        case 0: {
+            u8 *ptr = sp0;
+            u8 temp;
+            fnRes = sub_8029BB8(p, ptr, &sp4[0]);
+            temp = *ptr;
+
+            if (sp0[0] & 0x1) {
+                *ptr = result;
+            } else {
+                // _08023006
+                if (GRAVITY_IS_INVERTED) {
+                    s32 v = -0x80 - temp;
+                    *ptr = v;
+                }
+            }
+
+            result = fnRes;
+        } break;
+
+        case 1: {
+            u8 *ptr = sp0;
+            u8 temp;
+            fnRes = sub_802195C(p, ptr, &sp4[1]);
+            temp = *ptr;
+
+            if (temp & 0x1) {
+                *ptr = result;
+            } else {
+                // _08023006
+                if (GRAVITY_IS_INVERTED) {
+                    s32 v = -0x80 - temp;
+                    *ptr = v;
+                }
+            }
+
+            result = fnRes;
+        } break;
+
+        case 2: {
+            u8 *ptr = sp0;
+            u8 temp;
+            fnRes = sub_8021B08(p, ptr, &sp4[2]);
+            temp = *ptr;
+
+            if (temp & 0x1) {
+                *ptr = result;
+            } else {
+                // _08023006
+                if (GRAVITY_IS_INVERTED) {
+                    s32 v = -0x80 - temp;
+                    *ptr = v;
+                }
+            }
+
+            result = fnRes;
+        } break;
+
+        case 3: {
+            u8 *ptr = sp0;
+            u8 temp;
+            fnRes = sub_8021A34(p, ptr, &sp4[3]);
+            temp = *ptr;
+
+            if (temp & 0x1) {
+                *ptr = result;
+            } else {
+                // _08023006
+                if (GRAVITY_IS_INVERTED) {
+                    s32 v = -0x80 - temp;
+                    *ptr = v;
+                }
+            }
+
+            result = fnRes;
+        } break;
+    }
+
+    return result;
+}
+#endif
