@@ -2116,3 +2116,64 @@ void sub_8023128(Player *p)
         p->unk63 = 0;
     }
 }
+
+void sub_80231C0(Player *p)
+{
+    u8 r1;
+    u32 temp;
+    u8 r5;
+    s32 r2;
+
+    if (p->speedGroundX == 0) {
+        return;
+    }
+
+    r1 = Q(0.25);
+    if (p->speedGroundX >= 0) {
+        r1 = -Q(0.25);
+    }
+
+    // without temp, the add instr. sources get switched
+    temp = p->rotation + r1;
+    r5 = temp;
+
+    r2 = Q(sub_802302C(r5, p));
+
+    if (r2 <= 0) {
+        switch (((r5 + Q(0.125)) & 0xC0) >> 6) {
+
+            case 0: {
+                p->y += r2;
+                p->speedAirY = 0;
+            } break;
+
+            case 1: {
+                p->x -= r2;
+                p->speedAirX = 0;
+                p->moveState &= ~MOVESTATE_4;
+
+                sub_8023B5C(p, 14);
+                p->unk16 = 6;
+                p->unk17 = 14;
+                p->speedGroundX = 0;
+            } break;
+
+            case 2: {
+                p->y -= r2;
+                p->speedAirY = 0;
+                p->moveState |= MOVESTATE_IN_AIR;
+            } break;
+
+            case 3: {
+                p->x += r2;
+                p->speedAirX = 0;
+                p->moveState &= ~MOVESTATE_4;
+
+                sub_8023B5C(p, 14);
+                p->unk16 = 6;
+                p->unk17 = 14;
+                p->speedGroundX = 0;
+            } break;
+        }
+    }
+}
