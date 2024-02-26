@@ -6,38 +6,129 @@
 #include "sakit/player.h"
 #include "game/item_tasks.h"
 
+#include "constants/animations.h"
 #include "constants/songs.h"
 
-#if 0
-// https://decomp.me/scratch/U9MyE
+// TODO: Remvoe gotos
+// https://decomp.me/scratch/TeU3L
+void sub_8023610(Player *p)
+{
+    s32 r5 = p->unk48 * 2;
+    s32 r6 = p->unk44;
+
+    if ((p->unk64 != SA2_CHAR_ANIM_20) && !(p->moveState & MOVESTATE_10)) {
+        s16 r0;
+        u16 r2 = p->speedAirX;
+
+        if (p->unk5C & DPAD_LEFT) {
+            if ((p->unk64 != SA2_CHAR_ANIM_63) && !(p->moveState & MOVESTATE_2000)) {
+                p->moveState |= MOVESTATE_FACING_LEFT;
+            }
+
+            r0 = r2;
+            r2 = r0 - r5;
+            r0 = r2;
+
+            if (r0 >= -r6) {
+                goto set;
+            }
+
+            r2 = r0 + r5;
+            r0 = r2;
+
+            if (r0 <= -r6) {
+                goto set;
+            }
+
+            r2 = -r6;
+            goto set;
+
+        } else if (p->unk5C & DPAD_RIGHT) {
+            // _0802367C + 0x8
+            if ((p->unk64 != SA2_CHAR_ANIM_63) && !(p->moveState & MOVESTATE_2000)) {
+                p->moveState &= ~MOVESTATE_FACING_LEFT;
+            }
+
+            r0 = r2;
+            r2 = r0 + r5;
+            r0 = r2;
+
+            if (r0 <= r6) {
+                goto set;
+            }
+
+            r2 = r0 - r5;
+            r0 = r2;
+
+            if (r0 >= r6) {
+                goto set;
+            }
+
+            r2 = r6;
+        }
+
+    set:
+        p->speedAirX = r2;
+    }
+}
+
+void sub_80236C8(Player *p)
+{
+    s16 airX;
+    s16 airX2;
+    s16 diff;
+
+    if ((u16)p->speedAirY < (u16)Q_24_8(189))
+        return;
+
+    airX = p->speedAirX;
+    airX2 = (airX >> 5);
+
+    if (airX2 < 0) {
+        airX = (airX - airX2);
+        if (airX > 0) {
+            airX = 0;
+        }
+        p->speedAirX = airX;
+    } else if (airX2 > 0) {
+        airX = (airX - airX2);
+
+        if (airX < 0) {
+            airX = 0;
+        }
+
+        p->speedAirX = airX;
+    }
+}
+
 void sub_8023708(Player *p)
 {
-    u16 speed = p->speedAirY;
-    if (speed >= (u16)Q_8_8(189)) {
-        s16 airX  = p->speedAirX;
-        s16 airX2 = (p->speedAirX >> 6);
-        s16 diff;
+    s16 airX;
+    s16 airX2;
+    s16 diff;
 
-		if (airX2 < 0) {
-            diff = (airX - airX2);
-            if (diff <= 0) {
-                p->speedAirX = diff;
-            } else {
-                p->speedAirX = 0;
-            }
-		} else if(airX2 > 0) {
-            diff = (airX - airX2);
-            
-			// _08023730
-            if (diff < 0) {
-                p->speedAirX = 0;
-            } else {
-                p->speedAirX = diff;
-            }
-		}
-	}
+    if ((u16)p->speedAirY < (u16)Q_24_8(189))
+        return;
+
+    airX = p->speedAirX;
+    airX2 = (airX >> 6);
+
+    if (airX2 < 0) {
+        airX = (airX - airX2);
+        if (airX > 0) {
+            airX = 0;
+        }
+        p->speedAirX = airX;
+    } else if (airX2 > 0) {
+        airX = (airX - airX2);
+
+        if (airX < 0) {
+            airX = 0;
+        }
+
+        p->speedAirX = airX;
+    }
 }
-#endif
 
 // Unused?
 void sub_8023748(Player *p)
