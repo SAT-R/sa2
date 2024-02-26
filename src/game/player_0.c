@@ -1,5 +1,6 @@
 #include "global.h"
 #include "core.h"
+#include "trig.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 #include "game/game.h"
@@ -2175,5 +2176,34 @@ void sub_80231C0(Player *p)
                 p->speedGroundX = 0;
             } break;
         }
+    }
+}
+
+void sub_8023260(Player *p)
+{
+    s32 r4 = p->unk40;
+    s32 temp;
+
+    if (p->speedGroundX > (s16)r4) {
+        p->speedGroundX = +r4;
+    } else {
+        s32 speedX = p->speedGroundX;
+        if (speedX < -(s16)r4) {
+            p->speedGroundX = -r4;
+        }
+    }
+
+    r4 = p->speedGroundX;
+
+    {
+        s16 rot = p->rotation;
+
+        p->speedAirX = I(COS_24_8(rot * 4) * r4);
+
+        if (!(p->moveState & MOVESTATE_IN_AIR)) {
+            p->speedAirY = 0;
+        }
+
+        p->speedAirY += I(SIN_24_8(rot * 4) * r4);
     }
 }
