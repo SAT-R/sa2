@@ -1997,3 +1997,64 @@ s32 sub_8022F58(u8 param0, Player *p)
     return result;
 }
 #endif
+
+// (98.07%) https://decomp.me/scratch/xgjsf
+NONMATCH("asm/non_matching/game/player__sub_802302C.inc",
+         s32 sub_802302C(u8 param0, Player *p))
+{
+    s32 r3;
+    u32 r0;
+    s32 result;
+    u32 temp;
+
+    s32 px = I(p->x);
+    s32 py = I(p->y);
+
+    p->unk29 = param0;
+    r3 = (s8)param0;
+    p->unk28 = param0;
+
+    if (((param0 + Q(0.125)) << 24) > 0) {
+        if (r3 <= 0) {
+            asm("");
+            param0 += Q(0.125);
+        } else {
+            param0 += Q(0.125) - 1;
+        }
+    } else {
+        if (r3 <= 0) {
+            param0 += Q(0.125) - 1;
+        } else {
+            param0 += Q(0.125);
+        }
+    }
+
+    switch (param0 >> 6) {
+        case 0: {
+            s32 y = py + 2;
+            result = sub_801E4E4(y + p->unk16, px, p->unk38, +8, NULL, sub_801EE64);
+        } break;
+
+        case 2: {
+            s32 y = py - 2;
+            result = sub_801E4E4(y - p->unk16, px, p->unk38, -8, NULL, sub_801EE64);
+        } break;
+
+        case 1: {
+            s32 x = (px - 2);
+            result = sub_801E4E4(x - p->unk16, py, p->unk38, -8, NULL, sub_801ED24);
+        } break;
+
+        case 3: {
+            s32 x = (px + 2);
+            result = sub_801E4E4(x + p->unk16, py, p->unk38, +8, NULL, sub_801ED24);
+        } break;
+
+        default: {
+            result = 0;
+        }
+    }
+
+    return result;
+}
+END_NONMATCH
