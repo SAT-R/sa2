@@ -2211,11 +2211,11 @@ void sub_8023260(Player *p)
     }
 }
 
-// (85.42%) https://decomp.me/scratch/NrjPo
+// (95.10%) https://decomp.me/scratch/NrjPo
 #if 0
 void sub_80232D0(Player *p)
 {
-    struct Camera *cam = &gCamera;
+    register struct Camera *cam asm("r4") = &gCamera;
     s32 qPX = p->x;
     s32 qPY = p->y;
 
@@ -2259,15 +2259,15 @@ void sub_80232D0(Player *p)
             s32 ox, oy;
             
             ox = gUnknown_080D650C[gCurrentLevel].x;
-            if((ox >= 0) && (qPX >= Q(ox)) && (gCamera.unk8 != 0)) {
-                if(!(gCamera.unk50 & 0x1)) {
+            if((ox >= 0) && (qPX >= Q(ox)) && (cam->unk8 != 0)) {
+                if(!(cam->unk50 & 0x1)) {
                     s32 ix;
 
                     ix = gUnknown_080D661C[gCurrentLevel].x;
                     qPX += Q(ix);
-                    gCamera.x += ix;
-                    gCamera.unk20 += ix;
-                    gCamera.unk10 += ix;
+                    cam->x += ix;
+                    cam->unk20 += ix;
+                    cam->unk10 += ix;
 
                     if(gCheese != NULL) {
                         gCheese->posX += ix;
@@ -2276,15 +2276,15 @@ void sub_80232D0(Player *p)
             }
             // _08023432
             
-            oy = gUnknown_080D650C[gCurrentLevel].x;
-            if((oy >= 0) && (qPY >= Q(oy)) && (gCamera.unkC != 0)) {
-                if(!(gCamera.unk50 & 0x2)) {
+            oy = gUnknown_080D650C[gCurrentLevel].y;
+            if((oy >= 0) && (qPY >= Q(oy)) && (cam->unkC != 0)) {
+                if(!(cam->unk50 & 0x2)) {
                     s32 iy;
 
                     iy = gUnknown_080D661C[gCurrentLevel].y;
-                    qPY += Q(iy);
-                    gCamera.y += iy;
-                    gCamera.unk24 += iy;
+                    qPY += Q(gUnknown_080D661C[gCurrentLevel].y << 8);
+                    cam->y += Q(iy);
+                    cam->unk24 += iy;
 
                     if(gCheese != NULL) {
                         gCheese->posY += iy;
@@ -2299,15 +2299,14 @@ void sub_80232D0(Player *p)
         // _08023494
         s32 r2, r3;
         struct Camera *cam2 = &gCamera;
+        r3 = p->y;
 
         if((s32)p->moveState >= 0) {
-            s32 r1;
+            s32 r1 = gUnknown_03005424;
 
             if(GRAVITY_IS_INVERTED) {
                 if(p->y > Q(cam->minY)) {
                     r1 = 0;
-                } else {
-                    r1 = 1;
                 }
             } else {
                 // _080234D4
@@ -2325,9 +2324,9 @@ void sub_80232D0(Player *p)
                 p->moveState |= MOVESTATE_DEAD;
 
                 if(p->moveState & MOVESTATE_40) {
-                    p->speedAirY = Q(2.625);
+                    p->speedAirY = -Q(2.625);
                 } else {
-                    p->speedAirY = Q(4.825);
+                    p->speedAirY = -Q(4.875);
                 }
 
                 if(GRAVITY_IS_INVERTED) {
@@ -2352,16 +2351,21 @@ void sub_80232D0(Player *p)
         {
             s32 oldQPX = qPX;
             s32 oldQPY = qPY;
+            s32 qMinX = Q(cam->minX);
 
-            if(qPX < Q(cam->minX)) {
-                qPX = Q(cam->minX);
-            } else if (qPX > Q(cam->maxX) - 1) {
-                qPX = Q(cam->maxX) - 1;
+            if(qPX < qMinX) {
+                qPX = qMinX;
+            } else {
+                s32 qMaxX = Q(cam->maxX) ;
+                if (qPX > qMaxX - 1) {
+                    qPX = qMaxX - 1;
+                }
             }
             // _08023576 + 0x2
-        
-            if(qPY < Q(r2)) {
-                qPY = Q(r2);
+
+            qMinX = Q(r2);
+            if(qPY < qMinX) {
+                qPY = qMinX;
             } else if (qPY > Q(r3)-1) {
                 qPY = Q(r3) - 1;
             }
@@ -2379,15 +2383,16 @@ void sub_80232D0(Player *p)
 
             if(IS_BOSS_STAGE(gCurrentLevel)) {
                 // _080235C0
-                if(qPX < (Q(cam->unk10) + Q(8.0))) {
-                    qPX = (Q(cam->unk10) + Q(8.0));
+                s32 qPXMin = (Q(cam->unk10));
+                if(qPX < qPXMin + Q(8.0)) {
+                    qPX = qPXMin + Q(8.0);
                     p->speedGroundX = BOSS_VELOCITY_X;
                     p->speedAirX = BOSS_VELOCITY_X;
 
-                    p->moveState &= ~MOVESTATE_IN_AIR;
-                } else if(qPX > (Q(cam->unk10) + Q(312.0))) {
+                    p->moveState &= ~MOVESTATE_FACING_LEFT;
+                } else if(qPX > (qPXMin + Q(312.0))) {
                     // _080235E8 + 0xA
-                    qPX = (Q(cam->unk10) + Q(312.0));
+                    qPX = (qPXMin + Q(312.0));
                     p->speedGroundX = BOSS_VELOCITY_X;
                     p->speedAirX = BOSS_VELOCITY_X;
                 }
