@@ -301,13 +301,14 @@
     "underwater_effects.h": "c",
     "dust_effect_braking.h": "c",
     "water_effects.h": "c",
-    "player_mp_actor.h": "c",
+    "multiplayer/mp_player.h": "c",
     "player_unk_2.h": "c",
     "dummy_task.h": "c",
     "player_super_sonic.h": "c",
     "assert.h": "c",
     "arenaalloc.h": "c",
-    "player_unk_1.h": "c"
+    "player_unk_1.h": "c",
+    "mp_player.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

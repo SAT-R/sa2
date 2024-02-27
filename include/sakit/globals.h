@@ -68,6 +68,7 @@ typedef struct {
     /* 0x04 */ struct Task *t;
 } SomeStruct_3005498; /* size: unknown (but >= 0x8) */
 
+// TODO: (MAJOR) switch usage to MultiplayerPlayer in mp_player.h
 struct MultiplayerPlayer {
     // TODO: Verify that this is Sprite!
     //       (Used in Task_Item_Invincibility @ 0x0802AC60)

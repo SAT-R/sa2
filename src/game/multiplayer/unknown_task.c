@@ -1,7 +1,7 @@
 #include "core.h"
 #include "sakit/globals.h"
 
-#include "game/player_mp_actor.h"
+#include "game/multiplayer/mp_player.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/item_tasks.h"
