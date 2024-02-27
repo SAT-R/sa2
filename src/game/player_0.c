@@ -2213,7 +2213,6 @@ void sub_8023260(Player *p)
     }
 }
 
-// (100.00%)
 void sub_80232D0(Player *p)
 {
     struct Camera *cam = &gCamera;
