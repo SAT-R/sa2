@@ -43,7 +43,7 @@ SECTIONS
         build/sa2/src/game/water_effects.o(.data);
         build/sa2/src/game/cheese.o(.data);
         build/sa2/src/game/boost_effect.o(.data);
-        build/sa2/src/game/player_mp_actor.o(.data);
+        build/sa2/src/game/multiplayer/mp_player.o(.data);
         build/sa2/src/game/multiplayer/player_unk_2.o(.data);
         build/sa2/src/game/dummy_task.o(.data);
         build/sa2/src/game/stage/stage.o(.data);
@@ -142,6 +142,7 @@ SECTIONS
         build/sa2/src/game/cheese.o(.text);
         build/sa2/src/game/boost_effect.o(.text);
         build/sa2/src/game/amy_attack_heart_effect.o(.text);
+        build/sa2/src/game/multiplayer/mp_player.o(.text);
         build/sa2/asm/player_mp_actor.o(.text);
         build/sa2/src/game/multiplayer/unknown_task.o(.text);
         build/sa2/src/game/multiplayer/player_unk_1.o(.text);

@@ -23,6 +23,7 @@
 #include "game/multiplayer/indicators.h"
 
 #include "game/multiboot/collect_rings/time_display.h"
+#include "game/multiplayer/mp_player.h"
 
 #include "lib/m4a.h"
 
@@ -51,7 +52,6 @@ void SetupStageIntro(void);
 void CreateStageWaterTask(u32, u32, u32);
 
 void sub_8019120(void);
-void CreateMultiplayerPlayer(u8);
 
 void sub_80191A4(void);
 

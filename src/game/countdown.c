@@ -6,7 +6,7 @@
 #include "game/game.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/player_mp_actor.h"
+#include "game/multiplayer/mp_player.h"
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
