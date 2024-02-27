@@ -1,6 +1,8 @@
 #ifndef GUARD_PLAYER_SUPER_SONIC_H
 #define GUARD_PLAYER_SUPER_SONIC_H
 
+#include "constants/zones.h"
+
 struct SuperSonic;
 
 // TODO: Check whether return type is correct!
@@ -57,6 +59,9 @@ struct SuperSonic {
         _sonic->unk14 = 0;                                                              \
         _sonic->unk22 = 0;                                                              \
     }
+
+extern const Vec2_32 gUnknown_080D650C[NUM_LEVEL_IDS];
+extern const Vec2_32 gUnknown_080D661C[NUM_LEVEL_IDS];
 
 extern void SuperSonicInit(void);
 extern u32 SuperSonicGetFlags(void);

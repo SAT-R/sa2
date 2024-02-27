@@ -78,13 +78,15 @@ extern u32 sub_800C84C(Sprite *, s32, s32);
 typedef s32 (*Func801F100)(s32, s32, s32);
 extern s32 sub_801EB44(s32, s32, s32);
 extern s32 sub_801EC3C(s32, s32, s32);
-extern s32 sub_801ED24(s32, s32, s32);
-extern s32 sub_801EE64(s32, s32, s32);
+
+typedef s32 (*Func801F07C)(s32, s32, s32, u8 *);
+extern s32 sub_801ED24(s32, s32, s32, u8 *);
+extern s32 sub_801EE64(s32, s32, s32, u8 *);
+extern s32 sub_801F07C(s32, s32, s32, s32, u8 *, Func801F07C);
 
 // ground collision clamp functions
-s32 sub_801E4E4(s32, s32, u32, s32, void *, Func801F100);
-s32 sub_801E6D4(s32, s32, s32, s32, void *, Func801F100);
-s32 sub_801F07C(s32, s32, s32, s32, void *, Func801F100);
+s32 sub_801E4E4(s32, s32, s32, s32, u8 *, Func801F07C);
+s32 sub_801E6D4(s32, s32, s32, s32, u8 *, Func801F07C);
 
 s32 sub_801F100(s32, s32, s32, s32, Func801F100);
 
@@ -105,7 +107,7 @@ typedef struct {
     /* 0x4C */ SpriteTransform transform;
 } TaskStrc_801F15C; /* size: 0x58 */
 
-extern struct Task *sub_801F15C(s16, s16, u16, s8, TaskMain, TaskDestructor);
+extern struct Task *sub_801F15C(s16, s16, u8, s8, TaskMain, TaskDestructor);
 extern void TaskDestructor_801F550(struct Task *);
 
 extern void sub_801F78C(void);

@@ -11,8 +11,8 @@ const u8 CollHeightMap_zone_3_act_2_fg[]
     = INCBIN_U8("data/maps/zone_3/act_2/tilemaps/fg/height_map.coll");
 const u8 CollTileRot_zone_3_act_2_fg[]
     = INCBIN_U8("data/maps/zone_3/act_2/tilemaps/fg/tile_rot.coll");
-const u8 CollFlags_zone_3_act_2_fg[]
-    = INCBIN_U8("data/maps/zone_3/act_2/tilemaps/fg/flags.coll");
+const u16 CollFlags_zone_3_act_2_fg[]
+    = INCBIN_U16("data/maps/zone_3/act_2/tilemaps/fg/flags.coll");
 const u16 Metatiles_zone_3_act_2_fg[]
     = INCBIN_U16("data/maps/zone_3/act_2/tilemaps/fg/metatiles.tilemap2");
 
@@ -70,9 +70,5 @@ const Collision CollHeader_zone_3_act_2_fg = { CollHeightMap_zone_3_act_2_fg,
                                                CollFlags_zone_3_act_2_fg,
                                                278,
                                                42,
-                                               0x40,
-                                               0x68,
-                                               0x00,
-                                               0x00,
-                                               0x0FC0,
-                                               0x0000 };
+                                               0x6840,
+                                               0x0FC0 };

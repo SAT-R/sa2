@@ -21,8 +21,10 @@ SECTIONS
         /**** bss ****/
         build/sa2/src/lib/m4a.o(.bss.code);
         build/sa2/src/multi_boot.o(.bss);
-        /* space 0x20 for stuff used in game_1.s */ 
-        . = 0x0000042C; 
+        
+        . = 0x00000410; 
+        build/sa2/src/game/stage_collision.o(.bss);
+
         build/sa2/src/lib/agb_flash.o(.bss);
 
         /**** common ****/
@@ -177,7 +179,7 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_extra_boss.o(.text);
         build/sa2/src/game/stage/background/callbacks.o(.text);
         build/sa2/asm/player_super_sonic_data.o(.text);
-        build/sa2/asm/game_1.o(.text);
+        build/sa2/src/game/stage_collision.o(.text);
         build/sa2/src/game/game_2.o(.text);
         build/sa2/src/game/dust_effect_braking.o(.text);
         build/sa2/src/game/dust_effect_spindash.o(.text);
@@ -186,7 +188,7 @@ SECTIONS
 
         /* player */
         build/sa2/src/game/player_0.o(.text);
-        build/sa2/asm/player_1.o(.text);
+        build/sa2/src/game/player_1.o(.text);
         build/sa2/asm/player_2.o(.text);
         build/sa2/src/game/player_3.o(.text);
         build/sa2/asm/player_3.o(.text);
@@ -223,6 +225,7 @@ SECTIONS
         build/sa2/asm/boss_6.o(.text);
         build/sa2/asm/boss_7.o(.text);
         build/sa2/asm/boss_8.o(.text);
+        build/sa2/src/game/bosses/boss_9.o(.text);
         build/sa2/asm/boss_9.o(.text);
         build/sa2/src/game/enemies/projectiles.o(.text);
         build/sa2/src/game/enemies/mon.o(.text);

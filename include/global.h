@@ -143,9 +143,9 @@ typedef void (*VoidFn)(void);
         clamped;                                                                        \
     })
 
-#define CLAMP_16(value, min, max)                                                       \
+#define CLAMP_T(type, value, min, max)                                                  \
     ({                                                                                  \
-        s16 clamped;                                                                    \
+        type clamped;                                                                   \
         if ((value) >= (min)) {                                                         \
             clamped = (value) > (max) ? (max) : (value);                                \
         } else {                                                                        \
@@ -153,6 +153,9 @@ typedef void (*VoidFn)(void);
         }                                                                               \
         clamped;                                                                        \
     })
+
+#define CLAMP_16(value, min, max) CLAMP_T(s16, value, min, max)
+#define CLAMP_32(value, min, max) CLAMP_T(s32, value, min, max)
 
 #define CLAMP_INLINE(var, min, max)                                                     \
     ({                                                                                  \

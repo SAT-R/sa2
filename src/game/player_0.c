@@ -1,20 +1,28 @@
 #include "global.h"
 #include "core.h"
+#include "trig.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
+#include "sakit/camera.h"
 #include "game/game.h"
+#include "game/boost_effect.h"
+#include "game/bosses/common.h"
+#include "game/cheese.h"
+#include "game/dust_effect_braking.h"
 #include "game/stage/player.h"
+#include "game/multiplayer/player_unk_2.h"
+#include "game/parameters/bosses.h"
 #include "game/player_controls.h"
 #include "game/dust_effect_braking.h"
 #include "game/multiplayer/mp_player.h"
 #include "game/boost_effect.h"
 #include "game/player_callbacks_1.h"
+#include "game/player_super_sonic.h"
 #include "game/playerfn_cmds.h"
 #include "game/rings_scatter.h"
 #include "game/stage/stage.h"
-#include "game/water_effects.h"
 #include "game/unknown_effect.h"
-#include "game/multiplayer/player_unk_2.h"
+#include "game/water_effects.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -1889,3 +1897,478 @@ NONMATCH("asm/non_matching/game/sub_8022D6C.inc", void sub_8022D6C(Player *p))
     }
 }
 END_NONMATCH
+
+// (100.00%) https://decomp.me/scratch/U0r54
+s32 sub_8022F58(u8 param0, Player *p)
+{
+    u32 p0;
+    s32 result = 0; // maybe u8?
+    s32 r4;
+    u8 sp0[4];
+    s32 sp4[4];
+#ifndef NON_MATCHING
+    register s32 fnRes asm("r3");
+#else
+    s32 fnRes;
+#endif
+
+    p->unk29 = param0;
+    p->unk28 = param0;
+
+    p0 = (param0 + Q(0.125)) & 0xC0;
+
+#ifndef NON_MATCHING
+    asm("asr %0, %1, #6\n" : "=r"(r4) : "r"(p0));
+#else
+    r4 = p0 >> 6;
+#endif
+
+    switch (r4) {
+        case 0: {
+            u8 *ptr = sp0;
+            u8 temp;
+            fnRes = sub_8029BB8(p, ptr, &sp4[0]);
+            temp = *ptr;
+
+            if (sp0[0] & 0x1) {
+                *ptr = result;
+            } else {
+                // _08023006
+                if (GRAVITY_IS_INVERTED) {
+                    s32 v = -0x80 - temp;
+                    *ptr = v;
+                }
+            }
+
+            result = fnRes;
+        } break;
+
+        case 1: {
+            u8 *ptr = sp0;
+            u8 temp;
+            fnRes = sub_802195C(p, ptr, &sp4[1]);
+            temp = *ptr;
+
+            if (temp & 0x1) {
+                *ptr = result;
+            } else {
+                // _08023006
+                if (GRAVITY_IS_INVERTED) {
+                    s32 v = -0x80 - temp;
+                    *ptr = v;
+                }
+            }
+
+            result = fnRes;
+        } break;
+
+        case 2: {
+            u8 *ptr = sp0;
+            u8 temp;
+            fnRes = sub_8021B08(p, ptr, &sp4[2]);
+            temp = *ptr;
+
+            if (temp & 0x1) {
+                *ptr = result;
+            } else {
+                // _08023006
+                if (GRAVITY_IS_INVERTED) {
+                    s32 v = -0x80 - temp;
+                    *ptr = v;
+                }
+            }
+
+            result = fnRes;
+        } break;
+
+        case 3: {
+            u8 *ptr = sp0;
+            u8 temp;
+            fnRes = sub_8021A34(p, ptr, &sp4[3]);
+            temp = *ptr;
+
+            if (temp & 0x1) {
+                *ptr = result;
+            } else {
+                // _08023006
+                if (GRAVITY_IS_INVERTED) {
+                    s32 v = -0x80 - temp;
+                    *ptr = v;
+                }
+            }
+
+            result = fnRes;
+        } break;
+    }
+
+    return result;
+}
+
+// (98.07%) https://decomp.me/scratch/xgjsf
+NONMATCH("asm/non_matching/game/player__sub_802302C.inc",
+         s32 sub_802302C(u8 param0, Player *p))
+{
+    s32 r3;
+    u32 r0;
+    s32 result;
+    u32 temp;
+
+    s32 px = I(p->x);
+    s32 py = I(p->y);
+
+    p->unk29 = param0;
+    r3 = (s8)param0;
+    p->unk28 = param0;
+
+    if (((param0 + Q(0.125)) << 24) > 0) {
+        if (r3 <= 0) {
+            asm("");
+            param0 += Q(0.125);
+        } else {
+            param0 += Q(0.125) - 1;
+        }
+    } else {
+        if (r3 <= 0) {
+            param0 += Q(0.125) - 1;
+        } else {
+            param0 += Q(0.125);
+        }
+    }
+
+    switch (param0 >> 6) {
+        case 0: {
+            s32 y = py + 2;
+            result = sub_801E4E4(y + p->unk16, px, p->unk38, +8, NULL, sub_801EE64);
+        } break;
+
+        case 2: {
+            s32 y = py - 2;
+            result = sub_801E4E4(y - p->unk16, px, p->unk38, -8, NULL, sub_801EE64);
+        } break;
+
+        case 1: {
+            s32 x = (px - 2);
+            result = sub_801E4E4(x - p->unk16, py, p->unk38, -8, NULL, sub_801ED24);
+        } break;
+
+        case 3: {
+            s32 x = (px + 2);
+            result = sub_801E4E4(x + p->unk16, py, p->unk38, +8, NULL, sub_801ED24);
+        } break;
+
+        default: {
+            result = 0;
+        }
+    }
+
+    return result;
+}
+END_NONMATCH
+
+void sub_8023128(Player *p)
+{
+    u8 r1;
+    u32 temp;
+    u8 r5;
+    s32 r2;
+
+    if (p->speedGroundX == 0) {
+        return;
+    }
+
+    r1 = Q(0.25);
+    if (p->speedGroundX >= 0) {
+        r1 = -Q(0.25);
+    }
+
+    // without temp, the add instr. sources get switched
+    temp = p->rotation + r1;
+    r5 = temp;
+
+    r2 = Q(sub_802302C(r5, p));
+
+    if (r2 <= 0) {
+        s32 rot = (r5 + Q(0.125));
+
+        switch ((rot & 0xC0) >> 6) {
+
+            case 0: {
+                p->y += r2;
+                p->speedAirY = 0;
+            } break;
+
+            case 1: {
+                p->x -= r2;
+                p->speedAirX = 0;
+                p->moveState |= MOVESTATE_20;
+                p->speedGroundX = 0;
+            } break;
+
+            case 2: {
+                p->y -= r2;
+                p->speedAirY = 0;
+                p->moveState |= MOVESTATE_IN_AIR;
+            } break;
+
+            case 3: {
+                p->x += r2;
+                p->speedAirX = 0;
+                p->moveState |= MOVESTATE_20;
+                p->speedGroundX = 0;
+            } break;
+        }
+
+        p->unk62 = 0;
+        p->unk63 = 0;
+    }
+}
+
+void sub_80231C0(Player *p)
+{
+    u8 r1;
+    u32 temp;
+    u8 r5;
+    s32 r2;
+
+    if (p->speedGroundX == 0) {
+        return;
+    }
+
+    r1 = Q(0.25);
+    if (p->speedGroundX >= 0) {
+        r1 = -Q(0.25);
+    }
+
+    // without temp, the add instr. sources get switched
+    temp = p->rotation + r1;
+    r5 = temp;
+
+    r2 = Q(sub_802302C(r5, p));
+
+    if (r2 <= 0) {
+        switch (((r5 + Q(0.125)) & 0xC0) >> 6) {
+
+            case 0: {
+                p->y += r2;
+                p->speedAirY = 0;
+            } break;
+
+            case 1: {
+                p->x -= r2;
+                p->speedAirX = 0;
+                p->moveState &= ~MOVESTATE_4;
+
+                sub_8023B5C(p, 14);
+                p->unk16 = 6;
+                p->unk17 = 14;
+                p->speedGroundX = 0;
+            } break;
+
+            case 2: {
+                p->y -= r2;
+                p->speedAirY = 0;
+                p->moveState |= MOVESTATE_IN_AIR;
+            } break;
+
+            case 3: {
+                p->x += r2;
+                p->speedAirX = 0;
+                p->moveState &= ~MOVESTATE_4;
+
+                PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
+
+                p->speedGroundX = 0;
+            } break;
+        }
+    }
+}
+
+void sub_8023260(Player *p)
+{
+    s32 r4 = p->unk40;
+    s32 temp;
+
+    if (p->speedGroundX > (s16)r4) {
+        p->speedGroundX = +r4;
+    } else {
+        s32 speedX = p->speedGroundX;
+        if (speedX < -(s16)r4) {
+            p->speedGroundX = -r4;
+        }
+    }
+
+    r4 = p->speedGroundX;
+
+    {
+        s16 rot = p->rotation;
+
+        p->speedAirX = I(COS_24_8(rot * 4) * r4);
+
+        if (!(p->moveState & MOVESTATE_IN_AIR)) {
+            p->speedAirY = 0;
+        }
+
+        p->speedAirY += I(SIN_24_8(rot * 4) * r4);
+    }
+}
+
+void sub_80232D0(Player *p)
+{
+    struct Camera *cam = &gCamera;
+    s32 qPX = p->x;
+    s32 qPY = p->y;
+    s32 ix, iy;
+    s32 ox, oy;
+
+    if (p->unk60 == 0) {
+        if (IS_BOSS_STAGE(gCurrentLevel)) {
+            if (gCurrentLevel & 0x2) {
+                ox = gUnknown_080D650C[gCurrentLevel].x;
+                if ((ox >= 0) && (qPX >= Q(ox))) {
+                    ix = gUnknown_080D661C[gCurrentLevel].x;
+                    iy = gUnknown_080D661C[gCurrentLevel].y;
+
+                    qPX += Q(ix);
+                    qPY += Q(iy);
+
+                    if (gCheese != NULL) {
+                        gCheese->posX += Q(ix);
+                        gCheese->posY += Q(iy);
+                    }
+
+                    gUnknown_030054FC = Q(ix);
+                    gUnknown_030054E0 = Q(iy);
+
+                    sub_8039F14(Q(ix), Q(iy));
+
+                    gBossRingsShallRespawn = TRUE;
+
+                    cam->x += ix;
+                    cam->unk20 += ix;
+                    cam->unk10 += ix;
+                    cam->y += iy;
+                    cam->unk24 += iy;
+                    cam->unk14 += iy;
+                }
+            }
+        } else if ((gPlayer.moveState & MOVESTATE_8000000)
+                   && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+            ox = gUnknown_080D650C[gCurrentLevel].x;
+            if ((ox >= 0) && (qPX >= Q(ox)) && (cam->unk8 != 0)) {
+                if (!(cam->unk50 & 0x1)) {
+                    s32 ix;
+
+                    ix = gUnknown_080D661C[gCurrentLevel].x;
+                    qPX += Q(ix);
+                    cam->x += ix;
+                    cam->unk20 += ix;
+                    cam->unk10 += ix;
+
+                    if (gCheese != NULL) {
+                        gCheese->posX += Q(ix);
+                    }
+                }
+            }
+
+            oy = gUnknown_080D650C[gCurrentLevel].y;
+            if ((oy >= 0) && (qPY >= Q(oy)) && (cam->unkC != 0)) {
+                if (!(cam->unk50 & 0x2)) {
+                    s32 iy;
+
+                    iy = gUnknown_080D661C[gCurrentLevel].y;
+                    qPY += Q(iy << 8);
+                    cam->y += Q(iy);
+                    cam->unk24 += Q(iy);
+
+                    if (gCheese != NULL) {
+                        gCheese->posY += Q(iy << 8);
+                    }
+                }
+            }
+        }
+    }
+
+    if ((p->moveState & (MOVESTATE_80000000 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
+        s32 r2, r3;
+        struct Camera *cam2 = &gCamera;
+        r3 = p->y;
+
+        if ((s32)p->moveState >= 0) {
+            s32 r1;
+
+            if (GRAVITY_IS_INVERTED) {
+                if (p->y > Q(gCamera.minY)) {
+                    goto lbl0;
+                } else {
+                    r1 = 1;
+                }
+            } else {
+                s32 qMaxY = Q(cam2->maxY) - 1;
+
+                r1 = 1;
+
+                if (p->y < qMaxY) {
+                lbl0:
+                    r1 = 0;
+                }
+            }
+
+            if (r1 != 0) {
+                p->moveState |= MOVESTATE_DEAD;
+
+                if (p->moveState & MOVESTATE_40) {
+                    p->speedAirY = -Q(2.625);
+                } else {
+                    p->speedAirY = -Q(4.875);
+                }
+
+                qPY = GRAVITY_IS_INVERTED ? Q(cam->minY) : Q(cam->maxY) - 1;
+            }
+        }
+
+        if (IS_BOSS_STAGE(gCurrentLevel)) {
+            r2 = gUnknown_03005440;
+            r3 = gUnknown_030054BC;
+        } else {
+            r2 = cam->minY;
+            r3 = cam->maxY;
+        }
+
+        {
+            s32 oldQPX = qPX;
+            s32 oldQPY = qPY;
+            s32 qMinX = Q(cam->minX);
+
+            qPX = CLAMP_32(qPX, qMinX, Q(cam->maxX) - 1);
+            qPY = CLAMP_32(qPY, Q(r2), Q(r3) - 1);
+
+            if (qPX != oldQPX) {
+                p->speedAirX = 0;
+                p->speedGroundX = 0;
+            }
+
+            if (qPY != oldQPY) {
+                p->speedAirY = 0;
+                p->speedGroundX = 0;
+            }
+
+            if (IS_BOSS_STAGE(gCurrentLevel)) {
+                s32 qPXMin = (Q(cam->unk10));
+                if (qPX < qPXMin + Q(8.0)) {
+                    qPX = qPXMin + Q(8.0);
+                    p->speedGroundX = BOSS_VELOCITY_X;
+                    p->speedAirX = BOSS_VELOCITY_X;
+
+                    p->moveState &= ~MOVESTATE_FACING_LEFT;
+                } else if (qPX > (qPXMin + Q(312.0))) {
+                    qPX = (qPXMin + Q(312.0));
+                    p->speedGroundX = BOSS_VELOCITY_X;
+                    p->speedAirX = BOSS_VELOCITY_X;
+                }
+            }
+
+            p->x = qPX;
+            p->y = qPY;
+        }
+    }
+}

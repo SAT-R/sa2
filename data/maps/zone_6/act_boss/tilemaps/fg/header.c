@@ -11,8 +11,8 @@ const u8 CollHeightMap_zone_6_act_boss_fg[]
     = INCBIN_U8("data/maps/zone_6/act_boss/tilemaps/fg/height_map.coll");
 const u8 CollTileRot_zone_6_act_boss_fg[]
     = INCBIN_U8("data/maps/zone_6/act_boss/tilemaps/fg/tile_rot.coll");
-const u8 CollFlags_zone_6_act_boss_fg[]
-    = INCBIN_U8("data/maps/zone_6/act_boss/tilemaps/fg/flags.coll");
+const u16 CollFlags_zone_6_act_boss_fg[]
+    = INCBIN_U16("data/maps/zone_6/act_boss/tilemaps/fg/flags.coll");
 const u16 Metatiles_zone_6_act_boss_fg[]
     = INCBIN_U16("data/maps/zone_6/act_boss/tilemaps/fg/metatiles.tilemap2");
 
@@ -70,9 +70,5 @@ const Collision CollHeader_zone_6_act_boss_fg = { CollHeightMap_zone_6_act_boss_
                                                   CollFlags_zone_6_act_boss_fg,
                                                   90,
                                                   3,
-                                                  0xC0,
-                                                  0x21,
-                                                  0x00,
-                                                  0x00,
-                                                  0x0120,
-                                                  0x0000 };
+                                                  0x21C0,
+                                                  0x0120 };

@@ -71,6 +71,7 @@
 #define SA2_CHAR_ANIM_55                                     55
 #define SA2_CHAR_ANIM_56                                     56
 #define SA2_CHAR_ANIM_57                                     57
+#define SA2_CHAR_ANIM_63                                     63
 #define SA2_CHAR_ANIM_65                                     65
 #define SA2_CHAR_ANIM_66                                     66
 #define SA2_CHAR_ANIM_67                                     67

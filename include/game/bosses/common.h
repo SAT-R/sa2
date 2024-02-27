@@ -47,6 +47,7 @@ void CreateZoneBoss(u8 boss);
 void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *p0, u8 *numCreatedParts);
 void Task_DestroyBossParts(void);
 void sub_8039ED4(void);
+void sub_8039F14(s32 p0, s32 p1);
 
 extern const u32 gTileInfoBossScrews[][3];
 

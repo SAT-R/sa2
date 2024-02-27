@@ -75,6 +75,7 @@ typedef void (*PlayerCallback)(struct Player_ *);
 
 #define FLAG_PLAYER_x38__LAYER_FRONT 0x00
 #define FLAG_PLAYER_x38__LAYER_BACK  0x01
+#define FLAG_PLAYER_x38__LAYER_MASK  0x01
 #define FLAG_PLAYER_x38__80          0x80
 
 // Not sure what these are yet
