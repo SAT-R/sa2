@@ -2211,23 +2211,25 @@ void sub_8023260(Player *p)
     }
 }
 
-// (95.10%) https://decomp.me/scratch/NrjPo
+// (99.07%) https://decomp.me/scratch/NrjPo
 #if 0
 void sub_80232D0(Player *p)
 {
-    register struct Camera *cam asm("r4") = &gCamera;
+    struct Camera *cam = &gCamera;
     s32 qPX = p->x;
     s32 qPY = p->y;
+    s32 ix, iy;
+            s32 ox, oy;
 
     if(p->unk60 == 0) {
         // _080232F4
         if(IS_BOSS_STAGE(gCurrentLevel)) {
             if(gCurrentLevel & 0x2) {
-                s32 ox = gUnknown_080D650C[gCurrentLevel].x;
+                ox = gUnknown_080D650C[gCurrentLevel].x;
                 if((ox >= 0) && (qPX >= Q(ox))) {
                     // _0802333E
-                    s32 ix = gUnknown_080D661C[gCurrentLevel].x;
-                    s32 iy = gUnknown_080D661C[gCurrentLevel].y;
+                    ix = gUnknown_080D661C[gCurrentLevel].x;
+                    iy = gUnknown_080D661C[gCurrentLevel].y;
 
                     qPX += Q(ix);
                     qPY += Q(iy);
@@ -2256,7 +2258,6 @@ void sub_80232D0(Player *p)
         } else if((gPlayer.moveState & MOVESTATE_8000000)
             && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)){
             // _080233C4 + 0x16
-            s32 ox, oy;
             
             ox = gUnknown_080D650C[gCurrentLevel].x;
             if((ox >= 0) && (qPX >= Q(ox)) && (cam->unk8 != 0)) {
@@ -2284,7 +2285,7 @@ void sub_80232D0(Player *p)
                     iy = gUnknown_080D661C[gCurrentLevel].y;
                     qPY += Q(gUnknown_080D661C[gCurrentLevel].y << 8);
                     cam->y += Q(iy);
-                    cam->unk24 += iy;
+                    cam->unk24 += Q(iy);
 
                     if(gCheese != NULL) {
                         gCheese->posY += iy;
@@ -2305,8 +2306,8 @@ void sub_80232D0(Player *p)
             s32 r1 = gUnknown_03005424;
 
             if(GRAVITY_IS_INVERTED) {
-                if(p->y > Q(cam->minY)) {
-                    r1 = 0;
+                if(p->y > Q(cam2->minY)) {
+                    goto lbl0;
                 }
             } else {
                 // _080234D4
@@ -2315,6 +2316,7 @@ void sub_80232D0(Player *p)
                 r1 = 1;
 
                 if(p->y < qMaxY) {
+                    lbl0:
                     r1 = 0;
                 }
             }
@@ -2353,22 +2355,8 @@ void sub_80232D0(Player *p)
             s32 oldQPY = qPY;
             s32 qMinX = Q(cam->minX);
 
-            if(qPX < qMinX) {
-                qPX = qMinX;
-            } else {
-                s32 qMaxX = Q(cam->maxX) ;
-                if (qPX > qMaxX - 1) {
-                    qPX = qMaxX - 1;
-                }
-            }
-            // _08023576 + 0x2
-
-            qMinX = Q(r2);
-            if(qPY < qMinX) {
-                qPY = qMinX;
-            } else if (qPY > Q(r3)-1) {
-                qPY = Q(r3) - 1;
-            }
+            qPX = CLAMP_32(qPX, qMinX, Q(cam->maxX)- 1);
+            qPY = CLAMP_32(qPY, Q(r2), Q(r3)-1);
 
             if(qPX != oldQPX) {
                 p->speedAirX = 0;
@@ -2403,6 +2391,5 @@ void sub_80232D0(Player *p)
             p->y = qPY;
         }
     }
-    // _08023604 (return)
 }
 #endif
