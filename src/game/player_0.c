@@ -2211,34 +2211,30 @@ void sub_8023260(Player *p)
     }
 }
 
-// (99.07%) https://decomp.me/scratch/NrjPo
-#if 0
+// (100.00%)
 void sub_80232D0(Player *p)
 {
     struct Camera *cam = &gCamera;
     s32 qPX = p->x;
     s32 qPY = p->y;
     s32 ix, iy;
-            s32 ox, oy;
+    s32 ox, oy;
 
-    if(p->unk60 == 0) {
-        // _080232F4
-        if(IS_BOSS_STAGE(gCurrentLevel)) {
-            if(gCurrentLevel & 0x2) {
+    if (p->unk60 == 0) {
+        if (IS_BOSS_STAGE(gCurrentLevel)) {
+            if (gCurrentLevel & 0x2) {
                 ox = gUnknown_080D650C[gCurrentLevel].x;
-                if((ox >= 0) && (qPX >= Q(ox))) {
-                    // _0802333E
+                if ((ox >= 0) && (qPX >= Q(ox))) {
                     ix = gUnknown_080D661C[gCurrentLevel].x;
                     iy = gUnknown_080D661C[gCurrentLevel].y;
 
                     qPX += Q(ix);
                     qPY += Q(iy);
 
-                    if(gCheese != NULL) {
+                    if (gCheese != NULL) {
                         gCheese->posX += Q(ix);
                         gCheese->posY += Q(iy);
                     }
-                    // _08023366
 
                     gUnknown_030054FC = Q(ix);
                     gUnknown_030054E0 = Q(iy);
@@ -2255,13 +2251,11 @@ void sub_80232D0(Player *p)
                     cam->unk14 += iy;
                 }
             }
-        } else if((gPlayer.moveState & MOVESTATE_8000000)
-            && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)){
-            // _080233C4 + 0x16
-            
+        } else if ((gPlayer.moveState & MOVESTATE_8000000)
+                   && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             ox = gUnknown_080D650C[gCurrentLevel].x;
-            if((ox >= 0) && (qPX >= Q(ox)) && (cam->unk8 != 0)) {
-                if(!(cam->unk50 & 0x1)) {
+            if ((ox >= 0) && (qPX >= Q(ox)) && (cam->unk8 != 0)) {
+                if (!(cam->unk50 & 0x1)) {
                     s32 ix;
 
                     ix = gUnknown_080D661C[gCurrentLevel].x;
@@ -2270,126 +2264,111 @@ void sub_80232D0(Player *p)
                     cam->unk20 += ix;
                     cam->unk10 += ix;
 
-                    if(gCheese != NULL) {
-                        gCheese->posX += ix;
+                    if (gCheese != NULL) {
+                        gCheese->posX += Q(ix);
                     }
                 }
             }
-            // _08023432
-            
+
             oy = gUnknown_080D650C[gCurrentLevel].y;
-            if((oy >= 0) && (qPY >= Q(oy)) && (cam->unkC != 0)) {
-                if(!(cam->unk50 & 0x2)) {
+            if ((oy >= 0) && (qPY >= Q(oy)) && (cam->unkC != 0)) {
+                if (!(cam->unk50 & 0x2)) {
                     s32 iy;
 
                     iy = gUnknown_080D661C[gCurrentLevel].y;
-                    qPY += Q(gUnknown_080D661C[gCurrentLevel].y << 8);
+                    qPY += Q(iy << 8);
                     cam->y += Q(iy);
                     cam->unk24 += Q(iy);
 
-                    if(gCheese != NULL) {
-                        gCheese->posY += iy;
+                    if (gCheese != NULL) {
+                        gCheese->posY += Q(iy << 8);
                     }
                 }
             }
         }
     }
-    // _08023486
 
-    if((p->moveState & (MOVESTATE_80000000 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
-        // _08023494
+    if ((p->moveState & (MOVESTATE_80000000 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
         s32 r2, r3;
         struct Camera *cam2 = &gCamera;
         r3 = p->y;
 
-        if((s32)p->moveState >= 0) {
-            s32 r1 = gUnknown_03005424;
+        if ((s32)p->moveState >= 0) {
+            s32 r1;
 
-            if(GRAVITY_IS_INVERTED) {
-                if(p->y > Q(cam2->minY)) {
+            if (GRAVITY_IS_INVERTED) {
+                if (p->y > Q(gCamera.minY)) {
                     goto lbl0;
+                } else {
+                    r1 = 1;
                 }
             } else {
-                // _080234D4
                 s32 qMaxY = Q(cam2->maxY) - 1;
 
                 r1 = 1;
 
-                if(p->y < qMaxY) {
-                    lbl0:
+                if (p->y < qMaxY) {
+                lbl0:
                     r1 = 0;
                 }
             }
-            // _080234E6
 
-            if(r1 != 0) {
+            if (r1 != 0) {
                 p->moveState |= MOVESTATE_DEAD;
 
-                if(p->moveState & MOVESTATE_40) {
+                if (p->moveState & MOVESTATE_40) {
                     p->speedAirY = -Q(2.625);
                 } else {
                     p->speedAirY = -Q(4.875);
                 }
 
-                if(GRAVITY_IS_INVERTED) {
-                    qPY = Q(cam->minY);
-                } else {
-                    qPY = Q(cam->maxY) - 1;
-                }
+                qPY = GRAVITY_IS_INVERTED ? Q(cam->minY) : Q(cam->maxY) - 1;
             }
         }
-        // _0802351C
 
-        if(IS_BOSS_STAGE(gCurrentLevel)) {
+        if (IS_BOSS_STAGE(gCurrentLevel)) {
             r2 = gUnknown_03005440;
             r3 = gUnknown_030054BC;
         } else {
-            // _08023558
             r2 = cam->minY;
             r3 = cam->maxY;
         }
-        // _0802355C
 
         {
             s32 oldQPX = qPX;
             s32 oldQPY = qPY;
             s32 qMinX = Q(cam->minX);
 
-            qPX = CLAMP_32(qPX, qMinX, Q(cam->maxX)- 1);
-            qPY = CLAMP_32(qPY, Q(r2), Q(r3)-1);
+            qPX = CLAMP_32(qPX, qMinX, Q(cam->maxX) - 1);
+            qPY = CLAMP_32(qPY, Q(r2), Q(r3) - 1);
 
-            if(qPX != oldQPX) {
+            if (qPX != oldQPX) {
                 p->speedAirX = 0;
                 p->speedGroundX = 0;
             }
-            
-            if(qPY != oldQPY) {
+
+            if (qPY != oldQPY) {
                 p->speedAirY = 0;
                 p->speedGroundX = 0;
             }
-            // _080235A0
 
-            if(IS_BOSS_STAGE(gCurrentLevel)) {
-                // _080235C0
+            if (IS_BOSS_STAGE(gCurrentLevel)) {
                 s32 qPXMin = (Q(cam->unk10));
-                if(qPX < qPXMin + Q(8.0)) {
+                if (qPX < qPXMin + Q(8.0)) {
                     qPX = qPXMin + Q(8.0);
                     p->speedGroundX = BOSS_VELOCITY_X;
                     p->speedAirX = BOSS_VELOCITY_X;
 
                     p->moveState &= ~MOVESTATE_FACING_LEFT;
-                } else if(qPX > (qPXMin + Q(312.0))) {
-                    // _080235E8 + 0xA
+                } else if (qPX > (qPXMin + Q(312.0))) {
                     qPX = (qPXMin + Q(312.0));
                     p->speedGroundX = BOSS_VELOCITY_X;
                     p->speedAirX = BOSS_VELOCITY_X;
                 }
             }
-            // _080235FC
 
             p->x = qPX;
             p->y = qPY;
         }
     }
 }
-#endif
