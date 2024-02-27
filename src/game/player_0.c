@@ -2175,9 +2175,8 @@ void sub_80231C0(Player *p)
                 p->speedAirX = 0;
                 p->moveState &= ~MOVESTATE_4;
 
-                sub_8023B5C(p, 14);
-                p->unk16 = 6;
-                p->unk17 = 14;
+                PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
+
                 p->speedGroundX = 0;
             } break;
         }
