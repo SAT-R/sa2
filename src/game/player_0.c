@@ -6,7 +6,7 @@
 #include "game/stage/player.h"
 #include "game/player_controls.h"
 #include "game/dust_effect_braking.h"
-#include "game/player_mp_actor.h"
+#include "game/multiplayer/mp_player.h"
 #include "game/boost_effect.h"
 #include "game/player_callbacks_1.h"
 #include "game/playerfn_cmds.h"

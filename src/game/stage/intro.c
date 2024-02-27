@@ -9,7 +9,7 @@
 #include "game/bosses/common.h"
 #include "game/countdown.h"
 #include "game/boost_effect.h"
-#include "game/player_mp_actor.h"
+#include "game/multiplayer/mp_player.h"
 #include "game/screen_fade.h"
 #include "game/stage/ui.h"
 #include "game/stage/boss_results_transition.h"

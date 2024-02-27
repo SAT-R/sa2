@@ -4,6 +4,7 @@
 #define GUARD_MULTIPLAYER_PLAYER_UNK_1_H
 
 #include "global.h"
+#include "core.h"
 
 void sub_8019240(union MultiSioData *, u8);
 void sub_80192A8(union MultiSioData *, u8);
