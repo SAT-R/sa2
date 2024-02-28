@@ -21,8 +21,8 @@ typedef struct {
 } LevelSelect;
 
 static void Task_8009854(void);
-static void UnusedLevelSelectPoll(void);
-static void UnusedLevelSelectLoadStage(void);
+static void Task_Poll(void);
+static void Task_LoadStage(void);
 
 void CreateUnusedLevelSelect(void)
 {
@@ -62,7 +62,7 @@ void CreateUnusedLevelSelect(void)
     }
 }
 
-static void UnusedLevelSelectPoll(void)
+static void Task_Poll(void)
 {
     LevelSelect *levelSelect = TASK_DATA(gCurTask);
 
@@ -76,7 +76,7 @@ static void UnusedLevelSelectPoll(void)
         gUnknown_03002280[0][1] = 0;
         gUnknown_03002280[0][2] = 0xFF;
         gUnknown_03002280[0][3] = 0x20;
-        gCurTask->main = UnusedLevelSelectLoadStage;
+        gCurTask->main = Task_LoadStage;
     } else if (gPressedKeys & B_BUTTON) {
         m4aSongNumStart(SE_RETURN);
         TaskDestroy(gCurTask);
@@ -107,11 +107,11 @@ static void Task_8009854(void)
     levelSelect->vram += sub_8004274(levelSelect->vram, Tileset_Language, 0x6, 0xE, 0,
                                      gUnknown_080D5128, 0);
 
-    gCurTask->main = UnusedLevelSelectPoll;
+    gCurTask->main = Task_Poll;
     gCurTask->main();
 }
 
-static void UnusedLevelSelectLoadStage(void)
+static void Task_LoadStage(void)
 {
     LevelSelect *levelSelect = TASK_DATA(gCurTask);
 
