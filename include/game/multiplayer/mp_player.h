@@ -25,8 +25,8 @@ typedef struct {
     u8 unk61;
     u16 unk62;
     u8 unk64;
-    u16 unk66;
-    u16 unk68;
+    s16 unk66;
+    s16 unk68;
     u16 unk6A;
 } MultiplayerPlayer; /* size: 0x6C */
 
