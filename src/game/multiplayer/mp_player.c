@@ -17,6 +17,7 @@
 #include "game/multiplayer/player_unk_2.h"
 #include "game/multiplayer/multipak_connection.h"
 
+#include "constants/animations.h"
 #include "constants/game_modes.h"
 
 u32 unused_3005838 = 0;
@@ -640,5 +641,256 @@ void sub_8016D20(void)
 
         mpp->unk4C = val;
         return;
+    }
+}
+
+#define SOME_MACRO                                                                      \
+    (!(gUnknown_03005424 & 0x80) != !(mpp->unk54 & 8)                                   \
+     || !(mpp->unk5C & 0x100) != !(gUnknown_03005424 & 0x80))
+
+void sub_801707C(void)
+{
+
+    Sprite *playerSprite, *s;
+    MultiplayerPlayer *mpp;
+
+    bool8 someBool;
+    u32 moveStateVal, val;
+    s32 result;
+    u8 unusedByte;
+
+    playerSprite = &gPlayer.unk90->s;
+    someBool = FALSE;
+    mpp = TASK_DATA(gCurTask);
+    s = &mpp->s;
+    moveStateVal = (gPlayer.moveState >> 5) & 1;
+
+    if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
+        sub_8017F34();
+        someBool = TRUE;
+    }
+
+    if (gGameMode != GAME_MODE_TEAM_PLAY
+        || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
+            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
+                >> (SIO_MULTI_CNT->id + 4))) {
+        if (sub_8018300() == 0) {
+            return;
+        }
+
+        if (!(mpp->unk4C & MOVESTATE_20)) {
+            return;
+        }
+
+        gPlayer.moveState &= ~MOVESTATE_20;
+        mpp->unk4C = 0;
+        return;
+    }
+
+    if (gPlayer.unk61 != 0 && gPlayer.character == CHARACTER_KNUCKLES) {
+        return;
+    }
+
+    if (mpp->unk60 == 0 || (mpp->unk5C & 4)) {
+        u32 someOtherBool;
+
+        mpp->unk60 = 0;
+
+        if (s->graphics.anim != 204 && s->graphics.anim != 203
+            && s->graphics.anim != 202) {
+            if (sub_80181E0()) {
+                if (!(mpp->unk4C & 0x20)) {
+                    return;
+                }
+
+                gPlayer.moveState &= ~0x20;
+                mpp->unk4C = 0;
+                return;
+            }
+        }
+
+        if (s->graphics.anim != 204 && s->graphics.anim != 203 && s->graphics.anim != 202
+            && HITBOX_IS_ACTIVE(playerSprite->hitboxes[1])
+            && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
+            return;
+        }
+
+        someOtherBool = (gPlayer.moveState >> 1) & 1;
+        val = sub_800D0A0(s, mpp->unk50, mpp->unk52, mpp->unk66, mpp->unk68,
+                          mpp->unk54 >> 7 & 1, 1);
+
+        if ((mpp->unk4C & 0x20) && !(val & 0x20)) {
+            gPlayer.moveState &= ~MOVESTATE_20;
+        }
+
+        mpp->unk4C = val;
+
+        if (val & 0x200000) {
+            mpp->unk60 = 30;
+        }
+
+        if (!(mpp->unk5C & 4)) {
+            if ((someOtherBool || someBool)
+                && (val & 0x10028
+                    && (s->graphics.anim == 204 || s->graphics.anim == 203
+                        || s->graphics.anim == 202)
+                    && ((!!(gUnknown_03005424 & 0x80) != !(mpp->unk54 & 8))))) {
+
+                s32 y;
+                if (!(gUnknown_03005424 & 0x80)) {
+                    result = sub_801E4E4(MAX(I(gPlayer.y), mpp->unk52) + gPlayer.unk17,
+                                         I(gPlayer.x), gPlayer.unk38, 8, &unusedByte,
+                                         sub_801EE64);
+                } else {
+                    result = sub_801E4E4(MIN(I(gPlayer.y), mpp->unk52) - gPlayer.unk17,
+                                         I(gPlayer.x), gPlayer.unk38, -8, &unusedByte,
+                                         sub_801EE64);
+                }
+
+                if (result - gPlayer.unk17 > 0) {
+                    gPlayer.moveState |= MOVESTATE_400000;
+                    gPlayer.moveState &= ~MOVESTATE_8;
+
+                    mpp->unk5C |= 4;
+                    sub_8023B5C(&gPlayer, 14);
+                    gPlayer.unk16 = 6;
+                    gPlayer.unk17 = 14;
+
+                    {
+                        struct UNK_3005510 *thing = sub_8019224();
+                        thing->unk0 = 8;
+                        thing->unk1 = mpp->unk56;
+                        thing->unk2 = 1;
+                    }
+
+                    if (!(gUnknown_03005424 & 0x80)) {
+                        mpp->unk5C &= ~0x100;
+                    } else {
+                        mpp->unk5C |= 0x100;
+                    }
+                }
+            }
+
+            if (!(mpp->unk5C & 4)) {
+                return;
+            }
+        }
+
+        gPlayer.unk64 = 0;
+        gPlayer.callback = PlayerCB_8025318;
+        gPlayer.moveState |= 2;
+        gPlayer.unk61 = 0;
+        gPlayer.unk62 = 0;
+
+        if (sub_8029E6C(&gPlayer)) {
+            mpp->unk60 = 30;
+            gPlayer.moveState &= ~MOVESTATE_400000;
+            mpp->unk5C &= ~4;
+
+        } else {
+            if ((s->graphics.anim != 204 && s->graphics.anim != 203
+                 && s->graphics.anim != 202)
+                || I(gPlayer.x) <= gCamera.minX || I(gPlayer.x) >= gCamera.maxX
+                || SOME_MACRO || moveStateVal != 0) {
+                gPlayer.moveState &= ~MOVESTATE_400000;
+                mpp->unk5C &= ~4;
+                gPlayer.unk64 = 0;
+                gPlayer.callback = PlayerCB_8025318;
+                if (SOME_MACRO) {
+                    gPlayer.timerInvulnerability = 60;
+                }
+            } else {
+                if (gPlayer.moveState & 8) {
+                    gPlayer.moveState &= ~MOVESTATE_400000;
+                    mpp->unk5C &= ~4;
+                } else {
+                    s32 x, y;
+                    u32 thing = gUnknown_03005424 & 0x80;
+                    mpp->unk5C |= 4;
+                    x = Q_24_8_NEW(mpp->unk50);
+
+                    // TODO: potential macro
+                    if (!(thing)) {
+                        y = Q_24_8_NEW(mpp->unk52 + (s->hitboxes[0].bottom) + 0x11);
+                        result = sub_801E4E4(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x),
+                                             gPlayer.unk38, 8, &unusedByte, sub_801EE64);
+
+                        if (result < 0) {
+                            y += Q_24_8_NEW(result);
+                            gPlayer.moveState &= ~MOVESTATE_400000;
+                            gPlayer.moveState |= MOVESTATE_IN_AIR;
+                            mpp->unk5C &= ~4;
+                        }
+
+                    } else {
+                        y = Q_24_8_NEW(mpp->unk52 + (s->hitboxes[0].top) - 0x11);
+                        result
+                            = sub_801E4E4(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x),
+                                          gPlayer.unk38, -8, &unusedByte, sub_801EE64);
+
+                        if (result < 0) {
+                            y -= Q_24_8_NEW(result);
+                            gPlayer.moveState &= ~MOVESTATE_400000;
+                            gPlayer.moveState |= MOVESTATE_IN_AIR;
+                            mpp->unk5C &= ~4;
+                        }
+                    }
+                    gPlayer.x = x;
+                    gPlayer.y = y;
+                    if (mpp->unk5C & 4) {
+#ifndef NON_MATCHING
+                        // thanks pidgey
+                        u32 speed = 0;
+                        gPlayer.speedAirX = speed;
+                        thing = gUnknown_03005424 & 0x80;
+                        if (!thing) {
+                            thing = 0;
+                        } else {
+                            thing = 0;
+                        }
+                        gPlayer.speedAirY = speed;
+                        asm("" ::: "r2");
+#else
+                        gPlayer.speedAirX = 0;
+                        gPlayer.speedAirY = 0;
+#endif
+
+                        gPlayer.moveState &= ~MOVESTATE_20;
+                    }
+                }
+            }
+        }
+
+        if (!(mpp->unk5C & 4)) {
+            struct UNK_3005510 *thing = sub_8019224();
+            thing->unk0 = 8;
+            thing->unk1 = mpp->unk56;
+            thing->unk2 = 0;
+        }
+
+        if (!(gUnknown_03005424 & 0x80)) {
+            mpp->unk5C &= ~0x100;
+        } else {
+            mpp->unk5C |= 0x100;
+        }
+    } else {
+        mpp->unk60--;
+
+        if (!(gPlayer.moveState & MOVESTATE_8)) {
+            return;
+        }
+
+        if (gPlayer.unk3C != s) {
+            return;
+        }
+
+        val = sub_800D0A0(s, mpp->unk50, mpp->unk52, mpp->unk66, mpp->unk68,
+                          mpp->unk54 >> 7 & 1, 0);
+
+        if ((mpp->unk4C & MOVESTATE_20) && !(val & MOVESTATE_20)) {
+            gPlayer.moveState &= ~MOVESTATE_20;
+        }
+
+        mpp->unk4C = val;
     }
 }
