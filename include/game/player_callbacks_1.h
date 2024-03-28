@@ -52,5 +52,6 @@ extern void PlayerCB_802A300(Player *p);
 
 void Player_DisableInputAndBossTimer(void);
 void Player_DisableInputAndBossTimer_FinalBoss(void);
+bool32 sub_8029E6C(Player *);
 
 #endif // GUARD_PLAYER_CALLBACKS_1_H

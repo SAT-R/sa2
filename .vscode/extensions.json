@@ -1,5 +1,6 @@
 {
     "recommendations": [
-        "xaver.clang-format"
+        "xaver.clang-format",
+        "dan-c-underwood.arm"
     ]
 }
