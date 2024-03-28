@@ -481,9 +481,24 @@ static CsvLines RemoveAllBackslashRs(CsvLines lines)
 MapRegions CsvToBinaryData(char *csv_file_data, long csv_file_size, char *bin_path, TokenList tokens, bool outputBinaryFile)
 {
     MapRegions mapRegions = {0};
+    
+    if(csv_file_data == NULL) {
+        fprintf(stderr, "ERROR(%s,%d): csv_file_data is nullptr\n", __FILE__, __LINE__);
+        return mapRegions;
+    }
+    
+    if(csv_file_size == 0) {
+        fprintf(stderr, "ERROR(%s,%d): csv_file_size is 0\n", __FILE__, __LINE__);
+        return mapRegions;
+    }
 
     CsvLines lines = GetCsvLines(csv_file_data, csv_file_size);
     lines = RemoveAllBackslashRs(lines);
+
+    if(lines.list == NULL) {
+        fprintf(stderr, "ERROR(%s,%d): lines.list is NULL", __FILE__, __LINE__);
+        return mapRegions;
+    }
 
     char *header = lines.list[0];
 
