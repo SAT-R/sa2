@@ -33,15 +33,15 @@ gUnknown_080D7ED4:
 
     .global gUnknown_080D7F10
 gUnknown_080D7F10:
-    .incbin "baserom.gba", 0x000D7F10, 0x4
+    .byte 14, 14, 8, 0
 
     .global gUnknown_080D7F14
 gUnknown_080D7F14:
-    .incbin "baserom.gba", 0x000D7F14, 0x20
+    .incbin "graphics/boss_3_a.gbapal"
 
     .global gUnknown_080D7F34
 gUnknown_080D7F34:
-    .incbin "baserom.gba", 0x000D7F34, 0x20
+    .incbin "graphics/boss_3_b.gbapal"
 
 .text
 .syntax unified
