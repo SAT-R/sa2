@@ -23,7 +23,8 @@ typedef struct {
     /* 0x15 */ u8 unk15;
     /* 0x16 */ u8 unk16;
     /* 0x17 */ u8 unk17;
-    /* 0x18 */ u8 filler18[0x4];
+    /* 0x18 */ u8 unk18;
+    /* 0x19 */ u8 filler19[0x3];
 } Totem3C; /* size: 0x1C */
 
 typedef struct {
@@ -32,7 +33,7 @@ typedef struct {
     /* 0x08 */ s16 unk8;
     /* 0x08 */ s16 unkA;
     /* 0x0C */ Vec2_32 qDiscPos[3];
-    /* 0x24 */ u8 filler20[0xC];
+    /* 0x24 */ s16 unk24[3][2];
     /* 0x30 */ u16 unk30;
     /* 0x32 */ u8 unk32;
     /* 0x33 */ u8 unk33;
@@ -45,9 +46,21 @@ typedef struct {
     /* 0x3A */ u8 unk3A;
     /* 0x3B */ u8 unk3B;
     /* 0x3C */ Totem3C unk3C[3];
-    /* 0x90 */ u8 filler90[0x24];
+    /* 0x90 */ s32 unk90; // some x
+    /* 0x94 */ s32 unk94; // some y
+    /* 0x98 */ s16 unk98; // dx
+    /* 0x9A */ s16 unk9A; // dy
+    /* 0x9C */ s32 unk9C; // some x
+    /* 0xA0 */ s32 unkA0; // some y
+    /* 0xA4 */ s16 unkA4; // dx
+    /* 0xA6 */ s16 unkA6; // dy
+    /* 0xA8 */ s32 unkA8; // some x
+    /* 0xAC */ s32 unkAC; // some y
+    /* 0xB0 */ s16 unkB0; // dx
+    /* 0xB2 */ s16 unkB2; // dy
     /* 0xB4 */ s32 unkB4;
-    /* 0xB8 */ u8 fillerB8[0x8];
+    /* 0xB8 */ s32 unkB8;
+    /* 0xBC */ s32 unkBC;
     /* 0xC0 */ Sprite2 sprC0; // Main body
     /* 0xF8 */ Sprite sprF8[3];
     /* 0x188 */ Sprite3 spr188[3];
@@ -63,6 +76,7 @@ typedef struct {
 extern s16 sTotemDiscYs[3];
 extern TileInfo gUnknown_080D7BB0[3];
 extern TileInfo gUnknown_080D7BC8[2];
+extern s16 gUnknown_080D7BDC[3];
 extern u8 sOamOrderIds[3];
 
 void sub_803F4B8(EggTotem *);
@@ -399,5 +413,60 @@ void Task_803F3E8(void)
         totem->unk3A = 0;
 
         gCurTask->main = Task_8041138;
+    }
+}
+
+void sub_803F4B8(EggTotem *totem)
+{
+    u8 i;
+
+    totem->qDiscPos[0].x = totem->qWorldX + gUnknown_080D7BDC[0];
+    totem->qDiscPos[0].y = totem->qWorldY - Q(12);
+
+    totem->unk24[0][0] = +Q(5);
+    totem->unk24[0][1] = -Q(3);
+
+    totem->qDiscPos[1].x = totem->qWorldX + gUnknown_080D7BDC[1];
+    totem->qDiscPos[1].y = totem->qWorldY - Q(12);
+
+    totem->unk24[1][0] = +Q(5);
+    totem->unk24[1][1] = -Q(3);
+
+    totem->qDiscPos[2].x = totem->qWorldX + gUnknown_080D7BDC[2];
+    totem->qDiscPos[2].y = totem->qWorldY - Q(6);
+
+    totem->unk24[2][0] = +Q(5);
+    totem->unk24[2][1] = -Q(3);
+
+    totem->unk9C = totem->qWorldX;
+    totem->unkA0 = totem->qWorldY;
+    totem->unkA4 = +Q(5);
+    totem->unkA6 = -Q(2);
+
+    totem->unk90 = totem->qWorldX;
+    totem->unk94 = totem->qWorldY;
+    totem->unk98 = +Q(5);
+    totem->unk9A = -Q(1);
+
+    totem->unkA8 = totem->qWorldX;
+    totem->unkAC = totem->qWorldY - Q(26);
+    totem->unkB0 = +Q(5);
+    totem->unkB2 = -Q(0);
+
+    for (i = 0; i < ARRAY_COUNT(totem->unk3C); i++) {
+        Totem3C *t3c = &totem->unk3C[i];
+        t3c->unk8 = +Q(5);
+        t3c->unkA = -Q(1);
+        t3c->unk18 = i * 12 + 1;
+    }
+
+    if (totem->spr2D8.graphics.dest != NULL) {
+        Sprite *s = &totem->spr2D8;
+
+        totem->unkB8 = totem->qWorldX - Q(40);
+        totem->unkBC = totem->qWorldY - Q(98);
+
+        s->graphics.anim = SA2_ANIM_TAILS_CAPTURED;
+        s->variant = 1;
     }
 }
