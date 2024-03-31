@@ -1,5 +1,6 @@
 #include "global.h"
 #include "malloc_vram.h"
+#include "sakit/collision.h"
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/bosses/common.h"
@@ -87,9 +88,11 @@ void sub_804063C(EggTotem *);
 void sub_80407A4(EggTotem *);
 void sub_80408C4(EggTotem *);
 void sub_8040A00(EggTotem *);
+void sub_8040D74(EggTotem *);
 void sub_8040E78(EggTotem *);
 void sub_8040F14(EggTotem *);
 void sub_8041264(EggTotem *);
+void sub_80412B4(EggTotem *);
 void Task_EggTotemMain(void);
 void Task_8041138(void);
 void TaskDestructor_EggTotemMain(struct Task *t);
@@ -468,5 +471,32 @@ void sub_803F4B8(EggTotem *totem)
 
         s->graphics.anim = SA2_ANIM_TAILS_CAPTURED;
         s->variant = 1;
+    }
+}
+
+void sub_803F5E0(EggTotem *totem)
+{
+    Sprite *s = (Sprite *)&totem->sprC0;
+
+    s32 worldX = I(totem->qWorldX);
+    s32 worldY = I(totem->qWorldY);
+
+    s->x = worldX - gCamera.x;
+    s->y = worldY - gCamera.y;
+
+    sub_800CA20(s, worldX, worldY, 1, &gPlayer);
+
+    if (sub_800C320(s, worldX, worldY, 0, &gPlayer) == TRUE) {
+        sub_8040D74(totem);
+    } else if (sub_800CA20(s, worldX, worldY, 0, &gPlayer) == TRUE) {
+        sub_80412B4(totem);
+    }
+
+    sub_80122DC(totem->qWorldX, totem->qWorldY - Q(DISPLAY_HEIGHT / 2));
+
+    if (totem->unk35 == 0) {
+        if (IsColliding_Cheese(s, worldX, worldY, 0, &gPlayer) == TRUE) {
+            sub_8040D74(totem);
+        }
     }
 }
