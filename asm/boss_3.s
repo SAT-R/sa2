@@ -51,103 +51,8 @@ gUnknown_080D7F34:
 .syntax unified
 .arm
 
-
-
-	thumb_func_start sub_803F3E8
-sub_803F3E8: @ 0x0803F3E8
-	push {r4, r5, lr}
-	ldr r0, _0803F408 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	adds r0, #0x33
-	adds r1, r1, r0
-	ldrb r0, [r1]
-	cmp r0, #0
-	beq _0803F40C
-	subs r0, #1
-	strb r0, [r1]
-	b _0803F416
-	.align 2, 0
-_0803F408: .4byte gCurTask
-_0803F40C:
-	movs r0, #0x50
-	strb r0, [r1]
-	adds r0, r4, #0
-	bl sub_804063C
-_0803F416:
-	adds r0, r4, #0
-	bl sub_803FB88
-	adds r0, r4, #0
-	bl sub_80407A4
-	adds r0, r4, #0
-	bl sub_8041264
-	adds r0, r4, #0
-	bl sub_80408C4
-	adds r0, r4, #0
-	bl sub_8040A00
-	adds r0, r4, #0
-	bl sub_803F5E0
-	adds r0, r4, #0
-	bl sub_8040E78
-	adds r0, r4, #0
-	bl sub_803F698
-	adds r0, r4, #0
-	bl sub_8040F14
-	adds r0, r4, #0
-	adds r0, #0x32
-	ldrb r5, [r0]
-	cmp r5, #0
-	bne _0803F4A4
-	bl Player_DisableInputAndBossTimer
-	ldr r2, _0803F4AC @ =gPlayer
-	ldr r0, [r2, #0x3c]
-	cmp r0, #0
-	bne _0803F46C
-	ldr r0, [r2, #0x20]
-	movs r1, #8
-	ands r0, r1
-	cmp r0, #0
-	beq _0803F47C
-_0803F46C:
-	str r5, [r2, #0x3c]
-	ldr r0, [r2, #0x20]
-	movs r1, #9
-	rsbs r1, r1, #0
-	ands r0, r1
-	movs r1, #2
-	orrs r0, r1
-	str r0, [r2, #0x20]
-_0803F47C:
-	adds r0, r4, #0
-	bl sub_803F4B8
-	adds r0, r4, #0
-	adds r0, #0x37
-	movs r1, #0
-	strb r1, [r0]
-	adds r2, r4, #0
-	adds r2, #0x38
-	movs r0, #5
-	strb r0, [r2]
-	adds r0, r4, #0
-	adds r0, #0x39
-	strb r1, [r0]
-	adds r0, #1
-	strb r1, [r0]
-	ldr r0, _0803F4B0 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0803F4B4 @ =Task_8041138
-	str r0, [r1, #8]
-_0803F4A4:
-	pop {r4, r5}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0803F4AC: .4byte gPlayer
-_0803F4B0: .4byte gCurTask
-_0803F4B4: .4byte Task_8041138
+.if 0
+.endif
 
 	thumb_func_start sub_803F4B8
 sub_803F4B8: @ 0x0803F4B8
@@ -3741,7 +3646,7 @@ Task_EggTotemMain: @ 0x080410E0
 	cmp r0, #0
 	bne _08041124
 	ldr r1, [r6]
-	ldr r0, _08041134 @ =sub_803F3E8
+	ldr r0, _08041134 @ =Task_803F3E8
 	str r0, [r1, #8]
 _08041124:
 	pop {r4, r5, r6}
@@ -3750,7 +3655,7 @@ _08041124:
 	.align 2, 0
 _0804112C: .4byte gCurTask
 _08041130: .4byte IWRAM_START + 0xB4
-_08041134: .4byte sub_803F3E8
+_08041134: .4byte Task_803F3E8
 
 	thumb_func_start Task_8041138
 Task_8041138: @ 0x08041138
