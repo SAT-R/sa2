@@ -1,4 +1,6 @@
 #include "global.h"
+#include "global.h"
+#include "trig.h"
 #include "malloc_vram.h"
 #include "sakit/collision.h"
 #include "game/game.h"
@@ -13,9 +15,9 @@
 typedef struct {
     /* 0x00 */ s32 qWorldX;
     /* 0x04 */ s32 qWorldY;
-    /* 0x08 */ s16 unk8;
-    /* 0x0A */ s16 unkA;
-    /* 0x0C */ s16 unkC; // dx ?
+    /* 0x08 */ s16 qUnk8;
+    /* 0x0A */ s16 qUnkA;
+    /* 0x0C */ u16 qUnkC; // rotation
     /* 0x0E */ s16 unkE; // dy ?
     /* 0x10 */ s16 unk10;
     /* 0x12 */ u8 unk12;
@@ -23,7 +25,7 @@ typedef struct {
     /* 0x14 */ u8 unk14; // weapon lives?
     /* 0x15 */ u8 unk15;
     /* 0x16 */ u8 unk16;
-    /* 0x17 */ u8 unk17;
+    /* 0x17 */ s8 unk17;
     /* 0x18 */ u8 unk18;
     /* 0x19 */ u8 filler19[0x3];
 } Totem3C; /* size: 0x1C */
@@ -144,9 +146,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
             totem->unk3C[i].qWorldX = Q(13714);
             totem->unk3C[i].qWorldY = Q(170) + sTotemDiscYs[i];
 
-            totem->unk3C[i].unk8 = 0;
-            totem->unk3C[i].unkA = 0;
-            totem->unk3C[i].unkC = Q(3);
+            totem->unk3C[i].qUnk8 = 0;
+            totem->unk3C[i].qUnkA = 0;
+            totem->unk3C[i].qUnkC = SIN_DEG(270);
             totem->unk3C[i].unk12 = 0;
             totem->unk3C[i].unk13 = 0;
             totem->unk3C[i].unkE = 0;
@@ -179,9 +181,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
             totem->unk3C[i].qWorldX = Q(680);
             totem->unk3C[i].qWorldY = Q(170) + sTotemDiscYs[i];
 
-            totem->unk3C[i].unk8 = 0;
-            totem->unk3C[i].unkA = 0;
-            totem->unk3C[i].unkC = Q(3);
+            totem->unk3C[i].qUnk8 = 0;
+            totem->unk3C[i].qUnkA = 0;
+            totem->unk3C[i].qUnkC = SIN_DEG(270);
             totem->unk3C[i].unk12 = 0;
             totem->unk3C[i].unk13 = 0;
             totem->unk3C[i].unkE = 0;
@@ -458,8 +460,8 @@ void sub_803F4B8(EggTotem *totem)
 
     for (i = 0; i < ARRAY_COUNT(totem->unk3C); i++) {
         Totem3C *t3c = &totem->unk3C[i];
-        t3c->unk8 = +Q(5);
-        t3c->unkA = -Q(1);
+        t3c->qUnk8 = +Q(5);
+        t3c->qUnkA = -Q(1);
         t3c->unk18 = i * 12 + 1;
     }
 
@@ -476,7 +478,7 @@ void sub_803F4B8(EggTotem *totem)
 
 void sub_803F5E0(EggTotem *totem)
 {
-    Sprite *s = (Sprite *)&totem->sprC0;
+    Sprite *s = &totem->sprC0.s;
 
     s32 worldX = I(totem->qWorldX);
     s32 worldY = I(totem->qWorldY);
@@ -500,3 +502,82 @@ void sub_803F5E0(EggTotem *totem)
         }
     }
 }
+
+// (94.75%) https://decomp.me/scratch/epFsc
+NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803F698.inc",
+         void sub_803F698(EggTotem *totem))
+{
+    u8 i;
+
+    Sprite *s = &totem->sprC0.s;
+    s->x = I(totem->qWorldX) - gCamera.x;
+    s->y = I(totem->qWorldY) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    s = &totem->spr2A8;
+    s->x = I(totem->qWorldX) - gCamera.x;
+    s->y = I(totem->qWorldY) - gCamera.y - 82;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    for (i = 0; i < ARRAY_COUNT(totem->sprF8); i++) {
+        s = &totem->sprF8[i];
+        s->x = I(totem->qDiscPos[i].x) - gCamera.x;
+        s->y = I(totem->qDiscPos[i].y) - gCamera.y - 14;
+
+        if (i == 2) {
+            s->y += 6;
+        }
+
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+
+    // _0803F744
+    for (i = 0; i < ARRAY_COUNT(totem->unk3C); i++) {
+        Totem3C *t3c = &totem->unk3C[i];
+        s = &totem->spr188[i].s;
+        s->x = I(t3c->qWorldX) - gCamera.x;
+        s->y = I(t3c->qWorldY) - gCamera.y;
+        s->animSpeed = (SIN_24_8(t3c->qUnkC) >> 3) + 0x20;
+
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+
+        if (t3c->unk17 != 0) {
+            Sprite *s = (t3c->unk14 != 0) ? &totem->spr248[0] : &totem->spr248[1];
+            s8 r3;
+
+            if (t3c->unk17 > 0) {
+                r3 = 0;
+                SPRITE_FLAG_CLEAR(s, Y_FLIP);
+            } else {
+                // _0803F7C4
+                r3 = -1;
+                SPRITE_FLAG_SET(s, Y_FLIP);
+            }
+
+            s->x = I(t3c->qWorldX) - gCamera.x;
+            s->y = I(t3c->qWorldY) - gCamera.y + t3c->unk17 + r3;
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
+        }
+    }
+
+    if (totem->spr2D8.graphics.dest != NULL) {
+        s = &totem->spr308;
+
+        s->x = I(totem->qWorldX) - gCamera.x - 16;
+        s->y = I(totem->qWorldY) - gCamera.y;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+
+        s = &totem->spr2D8;
+        s->x = I(totem->qWorldX) - gCamera.x - 40;
+        s->y = I(totem->qWorldY) - gCamera.y - 98;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+}
+END_NONMATCH
