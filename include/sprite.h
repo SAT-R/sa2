@@ -212,7 +212,13 @@ typedef struct PACKED {
 
 extern const u8 gOamShapesSizes[12][2];
 
-s32 UpdateSpriteAnimation(Sprite *);
+typedef enum {
+    ACMD_RES__ANIM_CHANGED = -1,
+    ACMD_RES__ENDED = 0,
+    ACMD_RES__RUNNING  = +1,
+} AnimCmdResult;
+
+AnimCmdResult UpdateSpriteAnimation(Sprite *);
 
 void DisplaySprite(Sprite *);
 void DrawBackground(Background *);

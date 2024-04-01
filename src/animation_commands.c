@@ -8,18 +8,18 @@
 
 #include "animation_commands.h"
 
-extern s32 animCmd_GetTiles(void *cursor, Sprite *s);
-static s32 animCmd_GetPalette(void *cursor, Sprite *s);
-static s32 animCmd_JumpBack(void *cursor, Sprite *s);
-static s32 animCmd_End(void *cursor, Sprite *s);
-static s32 animCmd_PlaySoundEffect(void *cursor, Sprite *s);
-extern s32 animCmd_AddHitbox(void *cursor, Sprite *s);
-static s32 animCmd_TranslateSprite(void *cursor, Sprite *s);
-static s32 animCmd_8(void *cursor, Sprite *s);
-static s32 animCmd_SetIdAndVariant(void *cursor, Sprite *s);
-s32 animCmd_10(void *cursor, Sprite *s);
-static s32 animCmd_SetSpritePriority(void *cursor, Sprite *s);
-static s32 animCmd_SetOamOrder(void *cursor, Sprite *s);
+extern AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s);
+static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s);
+static AnimCmdResult animCmd_JumpBack(void *cursor, Sprite *s);
+static AnimCmdResult animCmd_End(void *cursor, Sprite *s);
+static AnimCmdResult animCmd_PlaySoundEffect(void *cursor, Sprite *s);
+extern AnimCmdResult animCmd_AddHitbox(void *cursor, Sprite *s);
+static AnimCmdResult animCmd_TranslateSprite(void *cursor, Sprite *s);
+static AnimCmdResult animCmd_8(void *cursor, Sprite *s);
+static AnimCmdResult animCmd_SetIdAndVariant(void *cursor, Sprite *s);
+extern AnimCmdResult animCmd_10(void *cursor, Sprite *s);
+static AnimCmdResult animCmd_SetSpritePriority(void *cursor, Sprite *s);
+static AnimCmdResult animCmd_SetOamOrder(void *cursor, Sprite *s);
 
 // make static
 const AnimationCommandFunc animCmdTable[] = {
@@ -35,7 +35,7 @@ const AnimationCommandFunc animCmdTable[] = {
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
 // (-2)
-s32 animCmd_GetPalette(void *cursor, Sprite *s)
+AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
 {
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
     s->animCursor += AnimCommandSizeInWords(ACmd_GetPalette);
@@ -53,7 +53,7 @@ s32 animCmd_GetPalette(void *cursor, Sprite *s)
 }
 
 // (-3)
-s32 animCmd_JumpBack(void *cursor, Sprite *s)
+AnimCmdResult animCmd_JumpBack(void *cursor, Sprite *s)
 {
     ACmd_JumpBack *cmd = cursor;
     s->animCursor -= cmd->offset;
@@ -62,7 +62,7 @@ s32 animCmd_JumpBack(void *cursor, Sprite *s)
 }
 
 // (-4)
-s32 animCmd_End(void *cursor, Sprite *s)
+AnimCmdResult animCmd_End(void *cursor, Sprite *s)
 {
     SPRITE_FLAG_SET(s, ANIM_OVER);
 
@@ -70,7 +70,7 @@ s32 animCmd_End(void *cursor, Sprite *s)
 }
 
 // (-5)
-s32 animCmd_PlaySoundEffect(void *cursor, Sprite *s)
+AnimCmdResult animCmd_PlaySoundEffect(void *cursor, Sprite *s)
 {
     ACmd_PlaySoundEffect *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
@@ -81,7 +81,7 @@ s32 animCmd_PlaySoundEffect(void *cursor, Sprite *s)
 }
 
 // (-7)
-s32 animCmd_TranslateSprite(void *cursor, Sprite *s)
+AnimCmdResult animCmd_TranslateSprite(void *cursor, Sprite *s)
 {
     ACmd_TranslateSprite *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(ACmd_TranslateSprite);
@@ -93,7 +93,7 @@ s32 animCmd_TranslateSprite(void *cursor, Sprite *s)
 }
 
 // (-8)
-s32 animCmd_8(void *cursor, Sprite *s)
+AnimCmdResult animCmd_8(void *cursor, Sprite *s)
 {
     ACmd_8 *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(ACmd_8);
@@ -102,7 +102,7 @@ s32 animCmd_8(void *cursor, Sprite *s)
 }
 
 // (-9)
-s32 animCmd_SetIdAndVariant(void *cursor, Sprite *s)
+AnimCmdResult animCmd_SetIdAndVariant(void *cursor, Sprite *s)
 {
     ACmd_SetIdAndVariant *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
@@ -115,7 +115,7 @@ s32 animCmd_SetIdAndVariant(void *cursor, Sprite *s)
 }
 
 // (-10)
-s32 animCmd_10(void *cursor, Sprite *s)
+AnimCmdResult animCmd_10(void *cursor, Sprite *s)
 {
     ACmd_10 *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(ACmd_10);
@@ -129,7 +129,7 @@ s32 animCmd_10(void *cursor, Sprite *s)
 
 // (-11)
 // Sets the priority the sprite has in OAM (0 - 3)
-s32 animCmd_SetSpritePriority(void *cursor, Sprite *s)
+AnimCmdResult animCmd_SetSpritePriority(void *cursor, Sprite *s)
 {
     ACmd_SetSpritePriority *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(ACmd_SetSpritePriority);
@@ -143,7 +143,7 @@ s32 animCmd_SetSpritePriority(void *cursor, Sprite *s)
 // (-12)
 // Sets the index 's' is expected to be put at in OAM
 // compared to sprites with a lower/higher value (0 - 31)
-s32 animCmd_SetOamOrder(void *cursor, Sprite *s)
+AnimCmdResult animCmd_SetOamOrder(void *cursor, Sprite *s)
 {
     ACmd_SetOamOrder *cmd = cursor;
 
