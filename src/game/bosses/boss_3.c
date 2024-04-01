@@ -795,38 +795,3 @@ void sub_804063C(EggTotem *totem)
     }
 }
 #endif
-
-// (98.25%) https://decomp.me/scratch/GM0bb
-void sub_8040D74(EggTotem *totem)
-{
-    Sprite *s = &totem->spr2A8;
-
-    if(totem->unk35 == 0) {
-        if(totem->unk32 > 0) {
-            if((--totem->unk32 % 2u) != 0) {
-                m4aSongNumStart(SE_143);
-            } else {
-                m4aSongNumStart(SE_235);
-            }
-
-            totem->unk35 = 30;
-
-            if(totem->unk32 == 0) {
-                s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
-                s->variant = 3;
-                INCREMENT_SCORE(1000);
-            } else {
-                // _08040E34
-                s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
-                s->variant = 2;
-            }
-
-            s->prevVariant = -1;
-        }
-        // _08040E48
-        
-        if(!IS_FINAL_STAGE(gCurrentLevel) && (totem->unk32 == 4)) {
-            gUnknown_030054A8.unk0 = 17;
-        }
-    }
-}
