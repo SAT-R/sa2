@@ -1,5 +1,6 @@
 #include "global.h"
 #include "global.h"
+#include "flags.h"
 #include "trig.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
@@ -83,32 +84,29 @@ void sub_8040E78(EggTotem *totem)
     }
 }
 
-// (96.85%) https://decomp.me/scratch/GIiSa 
 void sub_8040F14(EggTotem *totem)
 {
     u8 i;
 
-    if(totem->unk35 != 0) {
-        for(i = 0; i < 16; i++) {
-            gObjPalette[128 + i] = gUnknown_080D7F14[i*2 + ((gStageTime & 0x2) >> 1) * 32];
+    if (totem->unk35 != 0) {
+        for (i = 0; i < 16; i++) {
+            gObjPalette[128 + i] = gUnknown_080D7F14[((gStageTime & 0x2) / 2u)][i];
         }
     } else {
-        // _08040F70
-        for(i = 0; i < 16; i++) {
-            gObjPalette[128 + i] = gUnknown_080D7F34[i];
+        for (i = 0; i < 16; i++) {
+            gObjPalette[128 + i] = gUnknown_080D7F14[1][i];
         }
     }
 
-    if(totem->unk36 > 0) {
+    if (totem->unk36 > 0) {
         totem->unk36--;
-        
-        for(i = 0; i < 16; i++) {
-            gObjPalette[176 + i] = gUnknown_080D7F14[i*2 + ((gStageTime & 0x2) >> 1) * 32];
+
+        for (i = 0; i < 16; i++) {
+            gObjPalette[176 + i] = gUnknown_080D7F14[((gStageTime & 0x2) / 2u)][i];
         }
     } else {
-        
-        for(i = 0; i < 16; i++) {
-            gObjPalette[176 + i] = gUnknown_080D7F34[i];
+        for (i = 0; i < 16; i++) {
+            gObjPalette[176 + i] = gUnknown_080D7F14[1][i];
         }
     }
 
