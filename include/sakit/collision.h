@@ -1,6 +1,9 @@
 #ifndef GUARD_STAGE_ENTITIES_0_H
 #define GUARD_STAGE_ENTITIES_0_H
 
+// TODO: remove globals when MultiplayerPlayer comes
+// from `sakit/player.h`
+#include "globals.h"
 #include "core.h"
 #include "rect.h"
 #include "sakit/player.h"
@@ -26,6 +29,8 @@ bool32 sub_800C204(Sprite *, s32, s32, s16, Player *, s16);
 bool32 sub_800C320(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p);
 bool32 sub_800CA20(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p);
 bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player *p);
+u32 sub_800DA4C(struct MultiplayerPlayer *opponent, s16 oppX, s16 oppY,
+                UNUSED s32 param3, UNUSED s32 param4, u8 layer);
 
 // Lose rings?
 bool32 sub_800CBA4(Player *);
