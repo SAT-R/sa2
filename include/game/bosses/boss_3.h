@@ -82,6 +82,7 @@ extern u8 *gUnknown_080D7ED4[13];
 extern s16 gUnknown_080D7F14[2][16];
 extern u8 sOamOrderIds[3];
 
+void Task_803F3E8(void);
 void sub_803F4B8(EggTotem *);
 void sub_803F5E0(EggTotem *);
 void sub_803F698(EggTotem *);

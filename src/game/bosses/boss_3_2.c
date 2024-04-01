@@ -112,3 +112,52 @@ void sub_8040F14(EggTotem *totem)
 
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
 }
+
+void TaskDestructor_EggTotemMain(struct Task *t)
+{
+    u8 i;
+    EggTotem *totem = TASK_DATA(t);
+
+    VramFree(totem->sprC0.s.graphics.dest);
+
+    for (i = 0; i < ARRAY_COUNT(totem->sprF8); i++) {
+        VramFree(totem->sprF8[i].graphics.dest);
+    }
+
+    for (i = 0; i < ARRAY_COUNT(totem->spr188); i++) {
+        VramFree(totem->spr188[i].s.graphics.dest);
+    }
+
+    VramFree(totem->spr248[0].graphics.dest);
+    VramFree(totem->spr248[1].graphics.dest);
+
+    VramFree(totem->tilesEggman);
+
+    VramFree(totem->spr2A8.graphics.dest);
+
+    if (totem->spr308.graphics.dest != NULL) {
+        VramFree(totem->spr308.graphics.dest);
+    }
+
+    if (totem->spr2D8.graphics.dest != NULL) {
+        VramFree(totem->spr2D8.graphics.dest);
+    }
+
+    gActiveBossTask = NULL;
+}
+
+void Task_EggTotemMain(void)
+{
+    EggTotem *totem = TASK_DATA(gCurTask);
+
+    totem->qWorldX += Q(3.8125);
+
+    sub_803FB88(totem);
+    sub_8041264(totem);
+    sub_8040E78(totem);
+    sub_803F698(totem);
+
+    if (--totem->unkB4 == 0) {
+        gCurTask->main = Task_803F3E8;
+    }
+}
