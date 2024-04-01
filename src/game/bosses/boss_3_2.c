@@ -24,6 +24,7 @@ void sub_8040D74(EggTotem *totem)
     Sprite *s = &totem->spr2A8;
 
     if (totem->unk35 == 0) {
+        // NOTE: This matches, but it'd be better if this worked without 'a'
         u32 a = totem->unk32;
 
         if (a > 0) {
@@ -51,6 +52,33 @@ void sub_8040D74(EggTotem *totem)
 
         if (!IS_FINAL_STAGE(gCurrentLevel) && (totem->unk32 == 4)) {
             gUnknown_030054A8.unk1 = 17;
+        }
+    }
+}
+
+void sub_8040E78(EggTotem *totem)
+{
+    Sprite *s = &totem->spr2A8;
+
+    if (totem->unk35 > 0) {
+        totem->unk34 = 0;
+
+        if (--totem->unk35 == 0) {
+            if (totem->unk32 == 0) {
+                s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+                s->variant = 3;
+            } else {
+                s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+                s->variant = 0;
+            }
+
+            s->prevVariant = -1;
+        }
+    } else if (totem->unk34 > 0) {
+        if (--totem->unk34 == 0) {
+            s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+            s->variant = 0;
+            s->prevVariant = -1;
         }
     }
 }
