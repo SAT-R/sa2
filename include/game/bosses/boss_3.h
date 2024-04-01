@@ -77,6 +77,7 @@ typedef struct {
 extern s16 sTotemDiscYs[3];
 extern TileInfo gUnknown_080D7BB0[3];
 extern TileInfo gUnknown_080D7BC8[2];
+extern u8 *gUnknown_080D7ED4[13];
 extern s16 gUnknown_080D7BDC[3];
 extern u8 sOamOrderIds[3];
 

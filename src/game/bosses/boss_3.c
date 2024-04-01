@@ -2,6 +2,7 @@
 #include "global.h"
 #include "trig.h"
 #include "malloc_vram.h"
+#include "lib/m4a.h"
 #include "sakit/collision.h"
 #include "game/game.h"
 #include "game/entity.h"
@@ -13,6 +14,7 @@
 #include "game/save.h"
 
 #include "constants/animations.h"
+#include "constants/songs.h"
 #include "constants/zones.h"
 
 // (95.90%) https://decomp.me/scratch/Ip1jY
@@ -750,3 +752,81 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc",
     }
 }
 END_NONMATCH
+
+#if 0
+void sub_804063C(EggTotem *totem)
+{
+    Totem3C *t3c;
+    u8 rnd = PseudoRandom32();
+    u32 r4 = gStageTime % 4u;
+    u32 r2;
+    u8 *bp;
+    u32 r6;
+
+    s8 v = Mod(rnd, 3);
+
+    t3c = &totem->unk3C[v];
+
+    if(t3c->unk13 == 0) {
+        m4aSongNumStart(SE_246);
+        
+        r2 = r4 * 3 + v;
+
+        rnd = PseudoRandom32();
+
+        if((rnd % 2u) != 0) {
+            if((v == 0) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS-1].unk13 == 0)) {
+                r2 = 12;
+            } else if((v == 1) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS-1].unk13 == 0)) {
+                // _080406D0
+                r2 = 13;
+            } else if((v == 2) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS-2].unk13 == 0)) {
+                r2 = 14;
+            }
+        }
+        // _080406F8
+
+        bp = gUnknown_080D7ED4[r2];
+        r6 = *bp++;
+
+        while((signed)(--r6) >= 0) {
+
+        }
+    }
+}
+#endif
+
+// (98.25%) https://decomp.me/scratch/GM0bb
+void sub_8040D74(EggTotem *totem)
+{
+    Sprite *s = &totem->spr2A8;
+
+    if(totem->unk35 == 0) {
+        if(totem->unk32 > 0) {
+            if((--totem->unk32 % 2u) != 0) {
+                m4aSongNumStart(SE_143);
+            } else {
+                m4aSongNumStart(SE_235);
+            }
+
+            totem->unk35 = 30;
+
+            if(totem->unk32 == 0) {
+                s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+                s->variant = 3;
+                INCREMENT_SCORE(1000);
+            } else {
+                // _08040E34
+                s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+                s->variant = 2;
+            }
+
+            s->prevVariant = -1;
+        }
+        // _08040E48
+        
+        if(!IS_FINAL_STAGE(gCurrentLevel) && (totem->unk32 == 4)) {
+            gUnknown_030054A8.unk0 = 17;
+        }
+    }
+}
