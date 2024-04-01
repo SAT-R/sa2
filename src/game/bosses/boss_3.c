@@ -503,9 +503,7 @@ void sub_803F5E0(EggTotem *totem)
     }
 }
 
-// (94.75%) https://decomp.me/scratch/epFsc
-NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803F698.inc",
-         void sub_803F698(EggTotem *totem))
+void sub_803F698(EggTotem *totem)
 {
     u8 i;
 
@@ -534,7 +532,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803F698.inc",
         DisplaySprite(s);
     }
 
-    // _0803F744
     for (i = 0; i < ARRAY_COUNT(totem->unk3C); i++) {
         Totem3C *t3c = &totem->unk3C[i];
         s = &totem->spr188[i].s;
@@ -546,14 +543,13 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803F698.inc",
         DisplaySprite(s);
 
         if (t3c->unk17 != 0) {
-            Sprite *s = (t3c->unk14 != 0) ? &totem->spr248[0] : &totem->spr248[1];
             s8 r3;
+            s = (t3c->unk14 != 0) ? &totem->spr248[0] : &totem->spr248[1];
 
             if (t3c->unk17 > 0) {
                 r3 = 0;
                 SPRITE_FLAG_CLEAR(s, Y_FLIP);
             } else {
-                // _0803F7C4
                 r3 = -1;
                 SPRITE_FLAG_SET(s, Y_FLIP);
             }
@@ -580,4 +576,3 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803F698.inc",
         DisplaySprite(s);
     }
 }
-END_NONMATCH
