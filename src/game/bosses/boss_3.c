@@ -6,6 +6,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/bosses/common.h"
+#include "game/bosses/boss_3.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/parameters/bosses.h"
 #include "game/player_callbacks_1.h"
@@ -13,98 +14,6 @@
 
 #include "constants/animations.h"
 #include "constants/zones.h"
-
-// TODO: Should this stay here for better readability or go in
-//       game/parameters/bosses.h ?
-#define EGGTOTEM_NUM_PLATFORMS 3
-
-typedef struct {
-    /* 0x00 */ s32 qWorldX;
-    /* 0x04 */ s32 qWorldY;
-    /* 0x08 */ s16 qUnk8;
-    /* 0x0A */ s16 qUnkA;
-    /* 0x0C */ u16 qUnkC; // rotation
-    /* 0x0E */ s16 unkE; // dy ?
-    /* 0x10 */ s16 unk10;
-    /* 0x12 */ u8 unk12;
-    /* 0x13 */ u8 unk13;
-    /* 0x14 */ u8 unk14; // weapon lives?
-    /* 0x15 */ u8 unk15;
-    /* 0x16 */ u8 unk16;
-    /* 0x17 */ s8 unk17;
-    /* 0x18 */ u8 unk18;
-    /* 0x19 */ u8 filler19[0x3];
-} Totem3C; /* size: 0x1C */
-
-typedef struct {
-    /* 0x00 */ s32 qWorldX;
-    /* 0x04 */ s32 qWorldY;
-    /* 0x08 */ s16 unk8;
-    /* 0x08 */ s16 unkA;
-    /* 0x0C */ Vec2_32 qDiscPos[EGGTOTEM_NUM_PLATFORMS];
-    /* 0x24 */ s16 unk24[EGGTOTEM_NUM_PLATFORMS][2];
-    /* 0x30 */ u16 unk30;
-    /* 0x32 */ u8 unk32;
-    /* 0x33 */ u8 unk33;
-    /* 0x34 */ u8 unk34;
-    /* 0x35 */ u8 unk35;
-    /* 0x36 */ u8 unk36;
-    /* 0x37 */ u8 unk37;
-    /* 0x38 */ u8 unk38;
-    /* 0x39 */ u8 unk39; // numExplosions?
-    /* 0x3A */ u8 unk3A;
-    /* 0x3B */ u8 unk3B;
-    /* 0x3C */ Totem3C unk3C[EGGTOTEM_NUM_PLATFORMS];
-    /* 0x90 */ s32 qUnk90; // some x
-    /* 0x94 */ s32 qUnk94; // some y
-    /* 0x98 */ s16 qUnk98; // dx
-    /* 0x9A */ s16 qUnk9A; // dy
-    /* 0x9C */ s32 qUnk9C; // some x
-    /* 0xA0 */ s32 qUnkA0; // some y
-    /* 0xA4 */ s16 qUnkA4; // dx
-    /* 0xA6 */ s16 qUnkA6; // dy
-    /* 0xA8 */ s32 qUnkA8; // some x
-    /* 0xAC */ s32 qUnkAC; // some y
-    /* 0xB0 */ s16 qUnkB0; // dx
-    /* 0xB2 */ s16 qUnkB2; // dy
-    /* 0xB4 */ s32 unkB4;
-    /* 0xB8 */ s32 qUnkB8; // some x
-    /* 0xBC */ s32 qUnkBC; // some y
-    /* 0xC0 */ Sprite2 sprC0; // Main body
-    /* 0xF8 */ Sprite sprF8[EGGTOTEM_NUM_PLATFORMS];
-    /* 0x188 */ Sprite3 spr188[EGGTOTEM_NUM_PLATFORMS];
-    /* 0x248 */ Sprite spr248[2];
-    /* 0x2A8 */ Sprite spr2A8;
-    /* 0x2D8 */ Sprite spr2D8;
-    /* 0x308 */ Sprite spr308;
-    /* 0x338 */ Sprite spr338;
-    /* 0x368 */ Sprite spr368;
-    /* 0x398 */ void *tilesEggman;
-} EggTotem; /* size: 0x39C */
-
-extern s16 sTotemDiscYs[3];
-extern TileInfo gUnknown_080D7BB0[3];
-extern TileInfo gUnknown_080D7BC8[2];
-extern s16 gUnknown_080D7BDC[3];
-extern u8 sOamOrderIds[3];
-
-void sub_803F4B8(EggTotem *);
-void sub_803F5E0(EggTotem *);
-void sub_803F698(EggTotem *);
-void sub_803FB88(EggTotem *);
-void sub_804063C(EggTotem *);
-void sub_80407A4(EggTotem *);
-void sub_80408C4(EggTotem *);
-void sub_8040A00(EggTotem *);
-void sub_8040D74(EggTotem *);
-void sub_8040E78(EggTotem *);
-void sub_8040F14(EggTotem *);
-void sub_804124C(EggTotem *);
-void sub_8041264(EggTotem *);
-void sub_80412B4(EggTotem *);
-void Task_EggTotemMain(void);
-void Task_8041138(void);
-void TaskDestructor_EggTotemMain(struct Task *t);
 
 // (95.90%) https://decomp.me/scratch/Ip1jY
 NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
@@ -732,7 +641,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FB88.inc",
 END_NONMATCH
 
 // (91.19%) https://decomp.me/scratch/29ZCq
-NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC14(EggTotem *totem))
+NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc",
+         void sub_803FC14(EggTotem *totem))
 {
     u8 i;
     u8 numCreatedParts;
@@ -747,14 +657,13 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC1
     totem->qUnk9C += totem->qUnkA4;
     totem->qUnk90 += totem->qUnk98;
 
-    
-    if(Mod(gStageTime, 14) == 0) {
+    if (Mod(gStageTime, 14) == 0) {
         s32 rnd = PseudoRandom32();
         info.spawnX = (I(totem->qUnk90) - gCamera.x) + (rnd % 64u) - 31;
 
         rnd = PseudoRandom32();
         info.spawnY = ((I(totem->qUnk94) - gCamera.y) + (rnd % 32u)) - 75;
-        
+
         info.velocity = 0;
 
         rnd = PseudoRandom32();
@@ -762,7 +671,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC1
 
         rnd = PseudoRandom32();
         info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd % 512u);
-        info.vram = (void*)(OBJ_VRAM0 + 0x2980);
+        info.vram = (void *)(OBJ_VRAM0 + 0x2980);
         info.anim = SA2_ANIM_EXPLOSION;
         info.variant = 0;
         info.unk4 = 0;
@@ -770,19 +679,19 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC1
         CreateBossParticleWithExplosionUpdate(&info, &totem->unk39);
     }
     // _0803FD04
-    
-    if(Mod(gStageTime, 13) == 0) {
+
+    if (Mod(gStageTime, 13) == 0) {
         s32 rnd = PseudoRandom32();
         info.spawnX = (I(totem->qUnk9C) - gCamera.x) + (rnd % 64u) - 31;
 
         rnd = PseudoRandom32();
         info.spawnY = ((I(totem->qUnkA0) - gCamera.y) + (rnd % 32u)) - 75;
-        
+
         info.velocity = 0;
         info.rotation = 1000 - (PseudoRandom32() % 64u);
-        
+
         info.speed = BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u);
-        info.vram = (void*)(OBJ_VRAM0 + 0x2980);
+        info.vram = (void *)(OBJ_VRAM0 + 0x2980);
         info.anim = SA2_ANIM_EXPLOSION;
         info.variant = 0;
         info.unk4 = 0;
@@ -793,31 +702,30 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC1
 
     totem->qUnkA8 += totem->qUnkB0;
 
-    for(i = 0; i < EGGTOTEM_NUM_PLATFORMS; i++) {
+    for (i = 0; i < EGGTOTEM_NUM_PLATFORMS; i++) {
         // _0803FDAE
 
-        Totem3C * t3c = &totem->unk3C[i];
+        Totem3C *t3c = &totem->unk3C[i];
 
-        if(t3c->unk18 == 0) {
+        if (t3c->unk18 == 0) {
             t3c->qUnkA += 0x20;
-        } else if(--t3c->unk18 == 0) {
+        } else if (--t3c->unk18 == 0) {
             // _0803FE10
 
             // TODO: Check loop values
-            for(i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 s32 rnd = PseudoRandom32();
                 info.spawnX = ((I(t3c->qWorldX) - gCamera.x) + (rnd % 64u)) - 31;
-                
+
                 rnd = PseudoRandom32();
                 info.spawnY = ((I(t3c->qWorldY) - gCamera.y) + (rnd % 8u)) - 3;
                 info.velocity = 0;
                 info.rotation = 1000 - (PseudoRandom32() % 64u);
                 info.speed = BOSS_EXPLOSION_VELOCITY_X - (PseudoRandom32() % 512u);
-                info.vram = (void*)(OBJ_VRAM0 + 0x2980);
+                info.vram = (void *)(OBJ_VRAM0 + 0x2980);
                 info.anim = SA2_ANIM_EXPLOSION;
                 info.variant = 0;
                 info.unk4 = 0;
-
 
                 CreateBossParticleWithExplosionUpdate(&info, &totem->unk39);
             }
@@ -828,14 +736,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC1
         t3c->qWorldY += t3c->qUnkA;
 
         divRes = sub_801F100(I(t3c->qWorldY) + 3, I(t3c->qWorldX), 1, +8, sub_801EC3C);
-        if(divRes < 0) {
+        if (divRes < 0) {
             t3c->qWorldY += Q(divRes);
 
             // t3c->qUnkA * 7./10.;
             v = t3c->qUnkA * 35;
             t3c->qUnkA = Div(-(v * 2), 100);
 
-            if(t3c->qUnk8 > 0) {
+            if (t3c->qUnk8 > 0) {
                 t3c->qUnk8 -= Q(1.0);
             }
         }

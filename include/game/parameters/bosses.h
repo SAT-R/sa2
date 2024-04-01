@@ -1,8 +1,8 @@
 #ifndef GUARD_PARAMETERS_BOSSES_H
 #define GUARD_PARAMETERS_BOSSES_H
 
-#define BOSS_VELOCITY_X Q(5.00)
-#define BOSS_VELOCITY_Y Q(0.00)
+#define BOSS_VELOCITY_X           Q(5.00)
+#define BOSS_VELOCITY_Y           Q(0.00)
 #define BOSS_EXPLOSION_VELOCITY_X Q(5.50)
 
 /*
