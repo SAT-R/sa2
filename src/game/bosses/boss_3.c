@@ -63,8 +63,8 @@ typedef struct {
     /* 0xB0 */ s16 unkB0; // dx
     /* 0xB2 */ s16 unkB2; // dy
     /* 0xB4 */ s32 unkB4;
-    /* 0xB8 */ s32 qUnkB8;
-    /* 0xBC */ s32 qUnkBC;
+    /* 0xB8 */ s32 qUnkB8; // some x
+    /* 0xBC */ s32 qUnkBC; // some y
     /* 0xC0 */ Sprite2 sprC0; // Main body
     /* 0xF8 */ Sprite sprF8[3];
     /* 0x188 */ Sprite3 spr188[3];
@@ -658,3 +658,36 @@ bool32 sub_803F878(EggTotem *totem)
 
     return result;
 }
+
+NONMATCH("asm/non_matching/game/bosses/boss_3__EggTotemMove.inc",
+         void EggTotemMove(s32 dx, s32 dy))
+{
+    u8 i;
+    EggTotem *totem = TASK_DATA(gActiveBossTask);
+
+    totem->qWorldX += dx;
+    totem->qWorldY += dy;
+
+    for (i = 0; i < ARRAY_COUNT(totem->qDiscPos); i++) {
+        totem->qDiscPos[i].x += dx;
+        totem->qDiscPos[i].y += dy;
+    }
+
+    for (i = 0; i < ARRAY_COUNT(totem->unk3C); i++) {
+        totem->unk3C[i].qWorldX += dx;
+        totem->unk3C[i].qWorldY += dy;
+    }
+
+    totem->qUnk9C += dx;
+    totem->qUnkA0 += dy;
+
+    totem->qUnk90 += dx;
+    totem->qUnk94 += dy;
+
+    totem->qUnkA8 += dx;
+    totem->qUnkAC += dy;
+
+    totem->qUnkB8 += dx;
+    totem->qUnkBC += dy;
+}
+END_NONMATCH

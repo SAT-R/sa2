@@ -1477,7 +1477,7 @@ static void sub_803C198(EggHammerTankII *boss)
     }
 }
 
-void sub_803C80C(s32 x, s32 y)
+void EggHammerTankIIMove(s32 x, s32 y)
 {
     u8 i;
     EggHammerTankII *boss = TASK_DATA(gActiveBossTask);

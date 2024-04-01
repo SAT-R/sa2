@@ -52,24 +52,22 @@ gUnknown_080D7F34:
 .arm
 
 .if 0
-.endif
-
-	thumb_func_start sub_803FA84
-sub_803FA84: @ 0x0803FA84
+	thumb_func_start EggTotemMove
+EggTotemMove: @ 0x0803FA84
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x10
-	adds r5, r0, #0
-	adds r6, r1, #0
+	adds r5, r0, #0     @ r5 = dx
+	adds r6, r1, #0     @ r6 = dy
 	ldr r0, _0803FB7C @ =gActiveBossTask
 	ldr r0, [r0]
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r3, r1, r0
+	adds r3, r1, r0     @ r3 = totem
 	ldr r0, [r3]
 	adds r0, r0, r5
 	str r0, [r3]
@@ -101,26 +99,26 @@ _0803FAB8:
 	movs r4, #0
 	movs r1, #0x9c
 	adds r1, r1, r3
-	mov ip, r1
+	mov ip, r1          @ ip = totem->qUnk9C
 	movs r0, #0xa0
 	adds r0, r0, r3
-	mov r8, r0
+	mov r8, r0          @ r8 = totem->qUnkA0
 	movs r1, #0x90
 	adds r1, r1, r3
-	mov sb, r1
+	mov sb, r1          @ sb = totem->qUnk90
 	movs r0, #0x94
 	adds r0, r0, r3
-	mov sl, r0
+	mov sl, r0          @ sl = totem->qUnk94
 	adds r1, r3, #0
 	adds r1, #0xa8
-	str r1, [sp, #4]
+	str r1, [sp, #4]    @ sp04 = totem->qUnkA8
 	adds r0, r3, #0
 	adds r0, #0xac
-	str r0, [sp, #8]
+	str r0, [sp, #8]    @ sp08 = totem->qUnkAC
 	adds r1, #0x10
-	str r1, [sp, #0xc]
+	str r1, [sp, #0xc]    @ sp0C = totem->qUnkB8
 	adds r0, #0x10
-	str r0, [sp]
+	str r0, [sp]        @ sp00 = totem->qUnkBC
 	adds r7, r3, #0
 	adds r7, #0x3c
 	adds r3, #0x40
@@ -185,6 +183,7 @@ _0803FB0A:
 _0803FB7C: .4byte gActiveBossTask
 _0803FB80: .4byte IWRAM_START + 0xC
 _0803FB84: .4byte IWRAM_START + 0x10
+.endif
 
 	thumb_func_start sub_803FB88
 sub_803FB88: @ 0x0803FB88
