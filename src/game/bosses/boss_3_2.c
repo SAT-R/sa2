@@ -82,3 +82,35 @@ void sub_8040E78(EggTotem *totem)
         }
     }
 }
+
+// (96.85%) https://decomp.me/scratch/GIiSa 
+void sub_8040F14(EggTotem *totem)
+{
+    u8 i;
+
+    if(totem->unk35 != 0) {
+        for(i = 0; i < 16; i++) {
+            gObjPalette[128 + i] = gUnknown_080D7F14[i*2 + ((gStageTime & 0x2) >> 1) * 32];
+        }
+    } else {
+        // _08040F70
+        for(i = 0; i < 16; i++) {
+            gObjPalette[128 + i] = gUnknown_080D7F34[i];
+        }
+    }
+
+    if(totem->unk36 > 0) {
+        totem->unk36--;
+        
+        for(i = 0; i < 16; i++) {
+            gObjPalette[176 + i] = gUnknown_080D7F14[i*2 + ((gStageTime & 0x2) >> 1) * 32];
+        }
+    } else {
+        
+        for(i = 0; i < 16; i++) {
+            gObjPalette[176 + i] = gUnknown_080D7F34[i];
+        }
+    }
+
+    gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
+}

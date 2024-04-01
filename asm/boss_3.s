@@ -52,8 +52,6 @@ gUnknown_080D7F34:
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start sub_8040F14
 sub_8040F14: @ 0x08040F14
 	push {r4, r5, r6, r7, lr}
@@ -66,11 +64,11 @@ sub_8040F14: @ 0x08040F14
 	beq _08040F70
 	movs r3, #0
 	adds r4, r1, #0
-	adds r4, #0x36
+	adds r4, #0x36          @ r4 = &totem->unk36
 	ldr r0, _08040F60 @ =gFlags
-	mov r8, r0
+	mov r8, r0              @ r8 = gFlags
 	ldr r1, _08040F64 @ =gObjPalette
-	mov ip, r1
+	mov ip, r1              @ ip = gObjPalette
 	ldr r7, _08040F68 @ =gUnknown_080D7F14
 	ldr r6, _08040F6C @ =gStageTime
 	movs r5, #2
@@ -191,6 +189,7 @@ _08041008:
 	.align 2, 0
 _08041020: .4byte gObjPalette
 _08041024: .4byte gUnknown_080D7F34
+.endif
 
 	thumb_func_start TaskDestructor_EggTotemMain
 TaskDestructor_EggTotemMain: @ 0x08041028

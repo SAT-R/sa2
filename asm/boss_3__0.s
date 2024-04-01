@@ -876,6 +876,7 @@ _08040630: .4byte 0x0000026B
 _08040634: .4byte sub_801EC3C
 _08040638: .4byte 0xFFFFFF00
 
+@ First attempt of matching sub_804063C in boss_3.c
 	thumb_func_start sub_804063C
 sub_804063C: @ 0x0804063C
 	push {r4, r5, r6, r7, lr}
