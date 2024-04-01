@@ -51,265 +51,8 @@ gUnknown_080D7F34:
 .syntax unified
 .arm
 
-.if 01
+.if 0
 .endif
-
-	thumb_func_start sub_803F878
-sub_803F878: @ 0x0803F878
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	adds r6, r0, #0
-	movs r4, #0
-	ldr r7, _0803FA7C @ =gCamera
-_0803F888:
-	lsls r0, r4, #1
-	adds r0, r0, r4
-	lsls r0, r0, #4
-	adds r0, #0xf8
-	adds r5, r6, r0
-	lsls r2, r4, #3
-	adds r0, r6, #0
-	adds r0, #0xc
-	adds r0, r0, r2
-	ldr r0, [r0]
-	asrs r0, r0, #8
-	ldr r1, [r7]
-	subs r0, r0, r1
-	strh r0, [r5, #0x16]
-	adds r0, r6, #0
-	adds r0, #0x10
-	adds r0, r0, r2
-	ldr r0, [r0]
-	asrs r0, r0, #8
-	ldr r1, [r7, #4]
-	subs r0, r0, r1
-	strh r0, [r5, #0x18]
-	adds r0, r5, #0
-	bl UpdateSpriteAnimation
-	adds r0, r5, #0
-	bl DisplaySprite
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	cmp r4, #2
-	bls _0803F888
-	movs r0, #0
-	mov sl, r0
-	adds r4, r6, #0
-	adds r4, #0x37
-	ldrb r0, [r4]
-	cmp r0, #0
-	bne _0803F914
-	movs r1, #0xce
-	lsls r1, r1, #2
-	adds r5, r6, r1
-	adds r0, r6, #0
-	adds r0, #0xa8
-	ldr r0, [r0]
-	asrs r0, r0, #8
-	ldr r2, _0803FA7C @ =gCamera
-	ldr r1, [r2]
-	subs r0, r0, r1
-	strh r0, [r5, #0x16]
-	adds r0, r6, #0
-	adds r0, #0xac
-	ldr r0, [r0]
-	asrs r0, r0, #8
-	ldr r1, [r2, #4]
-	subs r0, r0, r1
-	strh r0, [r5, #0x18]
-	adds r0, r5, #0
-	bl UpdateSpriteAnimation
-	cmp r0, #0
-	bne _0803F90E
-	movs r2, #1
-	mov sl, r2
-	mov r3, sl
-	strb r3, [r4]
-_0803F90E:
-	adds r0, r5, #0
-	bl DisplaySprite
-_0803F914:
-	movs r0, #0xda
-	lsls r0, r0, #2
-	adds r5, r6, r0
-	adds r0, r6, #0
-	adds r0, #0x9c
-	ldr r0, [r0]
-	asrs r0, r0, #8
-	ldr r1, _0803FA7C @ =gCamera
-	mov r8, r1
-	ldr r1, [r1]
-	subs r0, r0, r1
-	movs r4, #0
-	strh r0, [r5, #0x16]
-	adds r0, r6, #0
-	adds r0, #0xa0
-	ldr r0, [r0]
-	asrs r0, r0, #8
-	mov r2, r8
-	ldr r1, [r2, #4]
-	subs r0, r0, r1
-	strh r0, [r5, #0x18]
-	adds r0, r5, #0
-	bl UpdateSpriteAnimation
-	adds r0, r5, #0
-	bl DisplaySprite
-	adds r5, r6, #0
-	adds r5, #0xc0
-	ldr r0, _0803FA80 @ =0x00000289
-	strh r0, [r5, #0xa]
-	adds r0, r6, #0
-	adds r0, #0xe0
-	strb r4, [r0]
-	adds r1, r6, #0
-	adds r1, #0xe1
-	movs r0, #0xff
-	strb r0, [r1]
-	adds r4, r6, #0
-	adds r4, #0x90
-	ldr r0, [r4]
-	asrs r0, r0, #8
-	mov r3, r8
-	ldr r1, [r3]
-	subs r0, r0, r1
-	strh r0, [r5, #0x16]
-	adds r7, r6, #0
-	adds r7, #0x94
-	ldr r0, [r7]
-	asrs r0, r0, #8
-	ldr r1, [r3, #4]
-	subs r0, r0, r1
-	strh r0, [r5, #0x18]
-	adds r0, r5, #0
-	bl UpdateSpriteAnimation
-	adds r0, r5, #0
-	bl DisplaySprite
-	movs r0, #0x3a
-	adds r0, r0, r6
-	mov sb, r0
-	ldrb r0, [r0]
-	cmp r0, #0
-	bne _0803F9F4
-	movs r1, #0xaa
-	lsls r1, r1, #2
-	adds r5, r6, r1
-	ldr r1, [r4]
-	asrs r1, r1, #8
-	mov r2, r8
-	ldr r0, [r2]
-	subs r1, r1, r0
-	strh r1, [r5, #0x16]
-	ldr r0, [r7]
-	asrs r0, r0, #8
-	ldr r2, [r2, #4]
-	subs r0, r0, r2
-	subs r0, #0x51
-	strh r0, [r5, #0x18]
-	lsls r1, r1, #0x10
-	asrs r1, r1, #0x10
-	cmp r1, #0x31
-	bgt _0803F9E8
-	ldr r0, [r4]
-	asrs r0, r0, #8
-	mov r3, r8
-	ldr r1, [r3]
-	subs r0, r0, r1
-	subs r0, #4
-	lsls r0, r0, #0x10
-	asrs r0, r0, #0x10
-	ldr r1, [r7]
-	asrs r1, r1, #8
-	ldr r2, [r3, #4]
-	subs r1, r1, r2
-	subs r1, #0x4f
-	lsls r1, r1, #0x10
-	asrs r1, r1, #0x10
-	movs r2, #0x80
-	lsls r2, r2, #6
-	bl CreateEggmobileEscapeSequence
-	movs r0, #1
-	mov r1, sb
-	strb r0, [r1]
-_0803F9E8:
-	adds r0, r5, #0
-	bl UpdateSpriteAnimation
-	adds r0, r5, #0
-	bl DisplaySprite
-_0803F9F4:
-	movs r4, #0
-	ldr r7, _0803FA7C @ =gCamera
-_0803F9F8:
-	lsls r2, r4, #3
-	subs r2, r2, r4
-	lsls r2, r2, #2
-	adds r2, #0x3c
-	adds r2, r6, r2
-	lsls r0, r4, #6
-	movs r3, #0xc4
-	lsls r3, r3, #1
-	adds r0, r0, r3
-	adds r5, r6, r0
-	ldr r0, [r2]
-	asrs r0, r0, #8
-	ldr r1, [r7]
-	subs r0, r0, r1
-	strh r0, [r5, #0x16]
-	ldr r0, [r2, #4]
-	asrs r0, r0, #8
-	ldr r1, [r7, #4]
-	subs r0, r0, r1
-	strh r0, [r5, #0x18]
-	adds r0, r5, #0
-	bl DisplaySprite
-	adds r0, r4, #1
-	lsls r0, r0, #0x18
-	lsrs r4, r0, #0x18
-	cmp r4, #2
-	bls _0803F9F8
-	movs r1, #0xb7
-	lsls r1, r1, #2
-	adds r0, r6, r1
-	ldr r0, [r0]
-	cmp r0, #0
-	beq _0803FA6C
-	movs r2, #0xb6
-	lsls r2, r2, #2
-	adds r5, r6, r2
-	adds r0, r6, #0
-	adds r0, #0xb8
-	ldr r0, [r0]
-	asrs r0, r0, #8
-	ldr r2, _0803FA7C @ =gCamera
-	ldr r1, [r2]
-	subs r0, r0, r1
-	strh r0, [r5, #0x16]
-	adds r0, r6, #0
-	adds r0, #0xbc
-	ldr r0, [r0]
-	asrs r0, r0, #8
-	ldr r1, [r2, #4]
-	subs r0, r0, r1
-	strh r0, [r5, #0x18]
-	adds r0, r5, #0
-	bl UpdateSpriteAnimation
-	adds r0, r5, #0
-	bl DisplaySprite
-_0803FA6C:
-	mov r0, sl
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r1}
-	bx r1
-	.align 2, 0
-_0803FA7C: .4byte gCamera
-_0803FA80: .4byte 0x00000289
 
 	thumb_func_start sub_803FA84
 sub_803FA84: @ 0x0803FA84
@@ -2216,7 +1959,7 @@ _08040940:
 	adds r0, r6, #0
 	movs r3, #0x80
 	lsls r3, r3, #2
-	bl sub_80412F0
+	bl CreateEggTotemBullet
 _0804098A:
 	ldrb r1, [r4, #0x16]
 	movs r0, #0x7f
@@ -3407,8 +3150,8 @@ _080412E2:
 _080412E8: .4byte 0x00000275
 _080412EC: .4byte 0x000002C9
 
-	thumb_func_start sub_80412F0
-sub_80412F0: @ 0x080412F0
+	thumb_func_start CreateEggTotemBullet
+CreateEggTotemBullet: @ 0x080412F0
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -3423,7 +3166,7 @@ sub_80412F0: @ 0x080412F0
 	mov r0, sb
 	lsrs r0, r0, #0x10
 	mov sb, r0
-	ldr r0, _080413FC @ =sub_8041420
+	ldr r0, _080413FC @ =Task_EggTotemBullet
 	movs r2, #0xc2
 	lsls r2, r2, #7
 	movs r7, #0
@@ -3542,7 +3285,7 @@ sub_80412F0: @ 0x080412F0
 	pop {r0}
 	bx r0
 	.align 2, 0
-_080413FC: .4byte sub_8041420
+_080413FC: .4byte Task_EggTotemBullet
 _08041400: .4byte gCamera
 _08041404: .4byte gPlayer
 _08041408: .4byte gSineTable
@@ -3552,8 +3295,8 @@ _08041414: .4byte IWRAM_START + 0x30
 _08041418: .4byte IWRAM_START + 0x31
 _0804141C: .4byte IWRAM_START + 0x35
 
-	thumb_func_start sub_8041420
-sub_8041420: @ 0x08041420
+	thumb_func_start Task_EggTotemBullet
+Task_EggTotemBullet: @ 0x08041420
 	push {r4, r5, r6, r7, lr}
 	sub sp, #4
 	ldr r3, _08041458 @ =gCurTask

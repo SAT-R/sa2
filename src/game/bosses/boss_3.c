@@ -6,6 +6,7 @@
 #include "game/game.h"
 #include "game/entity.h"
 #include "game/bosses/common.h"
+#include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/player_callbacks_1.h"
 #include "game/save.h"
 
@@ -49,21 +50,21 @@ typedef struct {
     /* 0x3A */ u8 unk3A;
     /* 0x3B */ u8 unk3B;
     /* 0x3C */ Totem3C unk3C[3];
-    /* 0x90 */ s32 unk90; // some x
-    /* 0x94 */ s32 unk94; // some y
+    /* 0x90 */ s32 qUnk90; // some x
+    /* 0x94 */ s32 qUnk94; // some y
     /* 0x98 */ s16 unk98; // dx
     /* 0x9A */ s16 unk9A; // dy
-    /* 0x9C */ s32 unk9C; // some x
-    /* 0xA0 */ s32 unkA0; // some y
+    /* 0x9C */ s32 qUnk9C; // some x
+    /* 0xA0 */ s32 qUnkA0; // some y
     /* 0xA4 */ s16 unkA4; // dx
     /* 0xA6 */ s16 unkA6; // dy
-    /* 0xA8 */ s32 unkA8; // some x
-    /* 0xAC */ s32 unkAC; // some y
+    /* 0xA8 */ s32 qUnkA8; // some x
+    /* 0xAC */ s32 qUnkAC; // some y
     /* 0xB0 */ s16 unkB0; // dx
     /* 0xB2 */ s16 unkB2; // dy
     /* 0xB4 */ s32 unkB4;
-    /* 0xB8 */ s32 unkB8;
-    /* 0xBC */ s32 unkBC;
+    /* 0xB8 */ s32 qUnkB8;
+    /* 0xBC */ s32 qUnkBC;
     /* 0xC0 */ Sprite2 sprC0; // Main body
     /* 0xF8 */ Sprite sprF8[3];
     /* 0x188 */ Sprite3 spr188[3];
@@ -443,18 +444,18 @@ void sub_803F4B8(EggTotem *totem)
     totem->unk24[2][0] = +Q(5);
     totem->unk24[2][1] = -Q(3);
 
-    totem->unk9C = totem->qWorldX;
-    totem->unkA0 = totem->qWorldY;
+    totem->qUnk9C = totem->qWorldX;
+    totem->qUnkA0 = totem->qWorldY;
     totem->unkA4 = +Q(5);
     totem->unkA6 = -Q(2);
 
-    totem->unk90 = totem->qWorldX;
-    totem->unk94 = totem->qWorldY;
+    totem->qUnk90 = totem->qWorldX;
+    totem->qUnk94 = totem->qWorldY;
     totem->unk98 = +Q(5);
     totem->unk9A = -Q(1);
 
-    totem->unkA8 = totem->qWorldX;
-    totem->unkAC = totem->qWorldY - Q(26);
+    totem->qUnkA8 = totem->qWorldX;
+    totem->qUnkAC = totem->qWorldY - Q(26);
     totem->unkB0 = +Q(5);
     totem->unkB2 = -Q(0);
 
@@ -468,8 +469,8 @@ void sub_803F4B8(EggTotem *totem)
     if (totem->spr2D8.graphics.dest != NULL) {
         Sprite *s = &totem->spr2D8;
 
-        totem->unkB8 = totem->qWorldX - Q(40);
-        totem->unkBC = totem->qWorldY - Q(98);
+        totem->qUnkB8 = totem->qWorldX - Q(40);
+        totem->qUnkBC = totem->qWorldY - Q(98);
 
         s->graphics.anim = SA2_ANIM_TAILS_CAPTURED;
         s->variant = 1;
@@ -575,4 +576,85 @@ void sub_803F698(EggTotem *totem)
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
+}
+
+bool32 sub_803F878(EggTotem *totem)
+{
+    Sprite *s;
+    u8 i;
+    bool32 result;
+
+    for (i = 0; i < ARRAY_COUNT(totem->sprF8); i++) {
+        s = &totem->sprF8[i];
+
+        s->x = I(totem->qDiscPos[i].x) - gCamera.x;
+        s->y = I(totem->qDiscPos[i].y) - gCamera.y;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+
+    result = FALSE;
+
+    if (totem->unk37 == 0) {
+        s = &totem->spr338;
+        s->x = I(totem->qUnkA8) - gCamera.x;
+        s->y = I(totem->qUnkAC) - gCamera.y;
+
+        if (UpdateSpriteAnimation(s) == ACMD_RESULT__ENDED) {
+            result = TRUE;
+            totem->unk37 = TRUE;
+        }
+
+        DisplaySprite(s);
+    }
+
+    s = &totem->spr368;
+    s->x = I(totem->qUnk9C) - gCamera.x;
+    s->y = I(totem->qUnkA0) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    s = &totem->sprC0.s;
+    s->graphics.anim = SA2_ANIM_EGG_TOTEM_COCKPIT;
+    s->variant = 0;
+    s->prevVariant = -1;
+    s->x = I(totem->qUnk90) - gCamera.x;
+    s->y = I(totem->qUnk94) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    if (totem->unk3A == 0) {
+        s = &totem->spr2A8;
+        s->x = I(totem->qUnk90) - gCamera.x;
+        s->y = I(totem->qUnk94) - gCamera.y - 81;
+
+        if (s->x < 50) {
+            CreateEggmobileEscapeSequence(I(totem->qUnk90) - gCamera.x - 4,
+                                          I(totem->qUnk94) - gCamera.y - 79, 0x2000);
+
+            totem->unk3A = TRUE;
+        }
+
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+
+    for (i = 0; i < ARRAY_COUNT(totem->spr188); i++) {
+        Totem3C *t3c = &totem->unk3C[i];
+
+        s = &totem->spr188[i].s;
+        s->x = I(t3c->qWorldX) - gCamera.x;
+        s->y = I(t3c->qWorldY) - gCamera.y;
+        DisplaySprite(s);
+    }
+
+    if (totem->spr2D8.graphics.dest != NULL) {
+        s = &totem->spr2D8;
+        s->x = I(totem->qUnkB8) - gCamera.x;
+        s->y = I(totem->qUnkBC) - gCamera.y;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+
+    return result;
 }

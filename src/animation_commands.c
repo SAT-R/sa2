@@ -49,7 +49,7 @@ AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }
 
-    return 1;
+    return ACMD_RESULT__RUNNING;
 }
 
 // (-3)
@@ -58,7 +58,7 @@ AnimCmdResult animCmd_JumpBack(void *cursor, Sprite *s)
     ACmd_JumpBack *cmd = cursor;
     s->animCursor -= cmd->offset;
 
-    return 1;
+    return ACMD_RESULT__RUNNING;
 }
 
 // (-4)
@@ -66,7 +66,7 @@ AnimCmdResult animCmd_End(void *cursor, Sprite *s)
 {
     SPRITE_FLAG_SET(s, ANIM_OVER);
 
-    return 0;
+    return ACMD_RESULT__ENDED;
 }
 
 // (-5)
@@ -77,7 +77,7 @@ AnimCmdResult animCmd_PlaySoundEffect(void *cursor, Sprite *s)
 
     m4aSongNumStart(cmd->songId);
 
-    return 1;
+    return ACMD_RESULT__RUNNING;
 }
 
 // (-7)
@@ -89,7 +89,7 @@ AnimCmdResult animCmd_TranslateSprite(void *cursor, Sprite *s)
     s->x += cmd->x;
     s->y += cmd->y;
 
-    return 1;
+    return ACMD_RESULT__RUNNING;
 }
 
 // (-8)
@@ -98,7 +98,7 @@ AnimCmdResult animCmd_8(void *cursor, Sprite *s)
     ACmd_8 *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(ACmd_8);
 
-    return 1;
+    return ACMD_RESULT__RUNNING;
 }
 
 // (-9)
@@ -111,7 +111,7 @@ AnimCmdResult animCmd_SetIdAndVariant(void *cursor, Sprite *s)
     s->prevVariant = -1;
     s->variant = cmd->variant;
 
-    return -1;
+    return ACMD_RESULT__ANIM_CHANGED;
 }
 
 // (-10)
@@ -121,7 +121,7 @@ AnimCmdResult animCmd_10(void *cursor, Sprite *s)
     s->animCursor += AnimCommandSizeInWords(ACmd_10);
 
 #ifdef UB_FIX
-    return 1; // I think this should be the correct behavior?
+    return ACMD_RESULT__RUNNING; // I think this should be the correct behavior?
 #else
     return (s32)cursor;
 #endif
@@ -137,7 +137,7 @@ AnimCmdResult animCmd_SetSpritePriority(void *cursor, Sprite *s)
     SPRITE_FLAG_CLEAR(s, PRIORITY);
     SPRITE_FLAG_SET_VALUE(s, PRIORITY, cmd->priority);
 
-    return 1;
+    return ACMD_RESULT__RUNNING;
 }
 
 // (-12)
@@ -150,5 +150,5 @@ AnimCmdResult animCmd_SetOamOrder(void *cursor, Sprite *s)
     s->animCursor += AnimCommandSizeInWords(ACmd_SetOamOrder);
     s->unk1A = SPRITE_OAM_ORDER(cmd->orderIndex);
 
-    return 1;
+    return ACMD_RESULT__RUNNING;
 }
