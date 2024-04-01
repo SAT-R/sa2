@@ -74,6 +74,15 @@ typedef struct {
     /* 0x398 */ void *tilesEggman;
 } EggTotem; /* size: 0x39C */
 
+typedef struct {
+    /* 0x00 */ s32 qWorldX;
+    /* 0x04 */ s32 qWorldY;
+    /* 0x08 */ s16 qDX;
+    /* 0x0A */ s16 qDY;
+    /* 0x0C */ EggTotem *totem;
+    /* 0x10 */ Sprite s;
+} EggTotemBullet;
+
 extern s16 sTotemDiscYs[3];
 extern TileInfo gUnknown_080D7BB0[3];
 extern TileInfo gUnknown_080D7BC8[2];
@@ -105,5 +114,6 @@ void sub_80412B4(EggTotem *);
 void Task_EggTotemMain(void);
 void Task_8041138(void);
 void TaskDestructor_EggTotemMain(struct Task *t);
+void Task_EggTotemBullet(void);
 
 #endif // GUARD_GAME_BOSS_3_H

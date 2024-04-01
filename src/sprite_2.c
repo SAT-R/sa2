@@ -12,6 +12,8 @@ extern const AnimationCommandFunc animCmdTable[];
 
 // This function gets called as long as an enemy is on-screen.
 // Potentially something to do with collision/distance?
+//
+// Vector-to-rotation(0-1023) ?
 s16 sub_8004418(s16 x, s16 y)
 {
     s16 fraction;
