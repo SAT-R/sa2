@@ -10,6 +10,7 @@
 #include "game/bosses/common.h"
 #include "game/bosses/boss_3.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
+#include "game/stage/boss_results_transition.h"
 #include "game/parameters/bosses.h"
 #include "game/player_callbacks_1.h"
 #include "game/save.h"
@@ -178,12 +179,64 @@ void Task_8041138(void)
             totem->qUnkBC -= Q(3);
         }
     }
-    // _08041184
+
     sub_803FC14(totem);
     sub_8040E78(totem);
 
     res = sub_803F878(totem);
     if (res != FALSE) {
         gCurTask->main = Task_80411CC;
+    }
+}
+
+void Task_80411CC(void)
+{
+    EggTotem *totem = TASK_DATA(gCurTask);
+
+    if (Mod(gStageTime, 13) == 0) {
+        m4aSongNumStart(SE_144);
+    }
+
+    sub_803FF44(totem);
+    sub_8040E78(totem);
+    sub_803F878(totem);
+
+    if (totem->sprC0.s.x < -200) {
+        sub_802EF68(-40, 150, 2);
+
+        gCurTask->main = Task_CallTaskDestroyTotem;
+    }
+}
+
+void Task_CallTaskDestroyTotem(void) { TaskDestroy(gCurTask); }
+
+void Totem_UpdateWorldPos(EggTotem *totem)
+{
+    totem->qWorldX += totem->unk8;
+    totem->qWorldY += totem->unkA;
+}
+
+void sub_8041264(EggTotem *totem)
+{
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(totem->unk3C); i++) {
+        if (totem->unk3C[i].unk13 == 0) {
+            totem->unk3C[i].qWorldX = totem->qWorldX;
+            totem->unk3C[i].qWorldY = totem->qWorldY + sTotemDiscYs[i];
+        }
+    }
+}
+
+void sub_80412B4(EggTotem *totem)
+{
+    Sprite *s = &totem->spr2A8;
+
+    totem->unk34 = 30;
+
+    if (totem->unk35 == 0) {
+        s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+        s->variant = 1;
+        s->prevVariant = -1;
     }
 }

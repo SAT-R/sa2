@@ -5,7 +5,7 @@
 	push {r4, r5, r6, r7, lr}
 	sub sp, #4
 	adds r5, r0, #0
-	bl sub_804124C
+	bl Totem_UpdateWorldPos
 	movs r7, #0             @ r7 = discY
 	movs r6, #0             @ r6 = i
 _0803FB96:

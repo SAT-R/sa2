@@ -617,7 +617,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FB88.inc",
     s32 res;
     u8 i;
 
-    sub_804124C(totem);
+    Totem_UpdateWorldPos(totem);
 
     discY = 0;
 
