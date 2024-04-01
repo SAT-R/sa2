@@ -161,3 +161,29 @@ void Task_EggTotemMain(void)
         gCurTask->main = Task_803F3E8;
     }
 }
+
+void Task_8041138(void)
+{
+    bool8 res;
+    EggTotem *totem = TASK_DATA(gCurTask);
+
+    if (Mod(gStageTime, 13) == 0) {
+        m4aSongNumStart(SE_144);
+    }
+
+    if (totem->spr2D8.graphics.dest != NULL) {
+        totem->qUnkB8 += Q(5);
+
+        if (totem->qUnkBC > -Q(48)) {
+            totem->qUnkBC -= Q(3);
+        }
+    }
+    // _08041184
+    sub_803FC14(totem);
+    sub_8040E78(totem);
+
+    res = sub_803F878(totem);
+    if (res != FALSE) {
+        gCurTask->main = Task_80411CC;
+    }
+}
