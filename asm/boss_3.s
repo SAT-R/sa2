@@ -29,11 +29,38 @@ gUnknown_080D7BE8:
 
     .global gUnknown_080D7E78
 gUnknown_080D7E78:
-    .incbin "baserom.gba", 0x000D7E78, 0x5C
+    .4byte gUnknown_080D7BE8 + 0*0x40
+    .4byte gUnknown_080D7BE8 + 1*0x40
+    .4byte gUnknown_080D7BE8 + 2*0x40
+    .4byte gUnknown_080D7BE8 + 3*0x40
+    .4byte gUnknown_080D7BE8 + 4*0x40
+    .4byte gUnknown_080D7BE8 + 5*0x40 - 0x8
+    .4byte gUnknown_080D7BE8 + 6*0x40 - 0x10
+    .4byte gUnknown_080D7BE8 + 7*0x40 + 0x8
+    .4byte gUnknown_080D7BE8 + 8*0x40 + 0x10
+    .4byte gUnknown_080D7BE8 + 9*0x40 + 0x10
+
+    .global gUnknown_080D7EA0
+gUnknown_080D7EA0:
+    .incbin "baserom.gba", 0x000D7EA0, 0x34
 
     .global gUnknown_080D7ED4
 gUnknown_080D7ED4:
-    .incbin "baserom.gba", 0x000D7ED4, 0x3C
+    .4byte gUnknown_080D7EA0 + 0*3
+    .4byte gUnknown_080D7EA0 + 1*3
+    .4byte gUnknown_080D7EA0 + 2*3
+    .4byte gUnknown_080D7EA0 + 3*3
+    .4byte gUnknown_080D7EA0 + 4*3
+    .4byte gUnknown_080D7EA0 + 5*3
+    .4byte gUnknown_080D7EA0 + 6*3
+    .4byte gUnknown_080D7EA0 + 7*3
+    .4byte gUnknown_080D7EA0 + 8*3
+    .4byte gUnknown_080D7EA0 + 9*3
+    .4byte gUnknown_080D7EA0 + 10*3
+    .4byte gUnknown_080D7EA0 + 11*3
+    .4byte gUnknown_080D7EA0 + 12*3
+    .4byte gUnknown_080D7EA0 + 13*3 + 0x2
+    .4byte gUnknown_080D7EA0 + 14*3 + 0x4
 
     .global gUnknown_080D7F10
 gUnknown_080D7F10:
@@ -931,7 +958,7 @@ sub_804063C: @ 0x0804063C
 	ldr r0, [r6]
 	ldr r1, _080406C4 @ =0x00196225
 	mov sb, r1
-	mov r4, sb
+	mov r4, sb          @ r4 = sb = 0x00196225
 	muls r4, r0, r4
 	adds r0, r4, #0
 	ldr r1, _080406C8 @ =0x3C6EF35F
