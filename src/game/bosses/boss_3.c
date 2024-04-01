@@ -94,6 +94,7 @@ void sub_8040A00(EggTotem *);
 void sub_8040D74(EggTotem *);
 void sub_8040E78(EggTotem *);
 void sub_8040F14(EggTotem *);
+void sub_804124C(EggTotem *);
 void sub_8041264(EggTotem *);
 void sub_80412B4(EggTotem *);
 void Task_EggTotemMain(void);
@@ -689,5 +690,38 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__EggTotemMove.inc",
 
     totem->qUnkB8 += dx;
     totem->qUnkBC += dy;
+}
+END_NONMATCH
+
+// (95.78%) https://decomp.me/scratch/ousCM
+NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FB88.inc",
+         void sub_803FB88(EggTotem *totem))
+{
+    s32 discY;
+    s32 res;
+    u8 i;
+
+    sub_804124C(totem);
+
+    discY = 0;
+
+    for (i = 0; i < ARRAY_COUNT(totem->qDiscPos); i++) {
+        totem->qDiscPos[i].x = totem->qWorldX + gUnknown_080D7BDC[i];
+
+        if (i == 0) {
+            totem->qDiscPos[i].y += 6;
+        }
+
+        discY += totem->qDiscPos[i].y;
+
+        res = sub_801F100(I(totem->qDiscPos[i].y) - 1, I(totem->qDiscPos[i].x), 1, +8,
+                          sub_801EC3C);
+
+        totem->qDiscPos[i].y += Q(res + 1);
+    }
+
+    res = Div(discY, 3) - Q(2.0);
+    totem->unk30 = totem->qWorldY - res;
+    totem->qWorldY = res;
 }
 END_NONMATCH
