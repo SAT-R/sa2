@@ -3,6 +3,7 @@
 
 #define BOSS_VELOCITY_X Q(5.00)
 #define BOSS_VELOCITY_Y Q(0.00)
+#define BOSS_EXPLOSION_VELOCITY_X Q(5.50)
 
 /*
  * Boss 4 - Aero Egg
