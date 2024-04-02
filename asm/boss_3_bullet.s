@@ -8,8 +8,8 @@
 @ TODO: Integrate this into boss_3.c !
 
 .if 01
-	thumb_func_start Task_EggTotemBullet
-Task_EggTotemBullet: @ 0x08041420
+	thumb_func_start Task_EggTotemBullet_
+Task_EggTotemBullet_: @ 0x08041420
 	push {r4, r5, r6, r7, lr}
 	sub sp, #4
 	ldr r3, _08041458 @ =gCurTask
@@ -19,7 +19,7 @@ Task_EggTotemBullet: @ 0x08041420
 	lsls r0, r0, #0x12
 	adds r4, r1, r0         @ r4 = bullet
 	adds r0, #0x10
-	adds r6, r1, r0
+	adds r6, r1, r0         @ r6 = s
 	ldr r2, _0804145C @ =gPlayer
 	ldr r1, [r2, #0x20]
 	movs r0, #0x80

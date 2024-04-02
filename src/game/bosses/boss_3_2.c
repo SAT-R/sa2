@@ -256,9 +256,9 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
 
     sinIndex = sub_8004418(I(gPlayer.y) - I(qY), I(gPlayer.x) - I(qX));
     bullet->qDX = ((COS(sinIndex) * qSpeed) >> 14);
-    bullet->qDX += +Q(5);
+    bullet->qDX += BOSS_VELOCITY_X;
     bullet->qDY = ((SIN(sinIndex) * qSpeed) >> 14);
-    bullet->qDY += Q(0);
+    bullet->qDX += BOSS_VELOCITY_Y;
     bullet->totem = totem;
 
     s = &bullet->s;
@@ -277,4 +277,51 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+}
+
+void Task_EggTotemBullet(void)
+{
+    EggTotemBullet *bullet = TASK_DATA(gCurTask);
+    Sprite *s = &bullet->s;
+
+    if(!PLAYER_IS_ALIVE) {
+        bullet->qScreenX += bullet->qDX;
+        bullet->qScreenX -= BOSS_VELOCITY_X;
+        bullet->qScreenY += bullet->qDY;
+    } else {
+        // _08041464
+        bullet->qScreenX += (bullet->qDX + Q(gCamera.unk38));
+        bullet->qScreenY += (bullet->qDY + Q(gCamera.unk3C));
+    }
+
+    s->x = bullet->qScreenX;
+    s->y = bullet->qScreenY;
+
+    if(IS_OUT_OF_DISPLAY_RANGE(bullet->qScreenX, bullet->qScreenY)) {
+        TaskDestroy(gCurTask);
+        return;
+    }
+    // _080414F0
+
+    if(bullet->totem->unk32 != 0) {
+        bool32 res = sub_800CA20(s,
+            I(bullet->qScreenX) + gCamera.x,
+            I(bullet->qScreenY) + gCamera.y,
+            0,
+            &gPlayer);
+
+
+        if(res == TRUE && bullet->totem->unk35 == 0) {
+            s = &bullet->totem->spr2A8;
+            bullet->totem->unk34 = 30;
+            s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+            s->variant = 1;
+            s->prevVariant = -1;
+        }
+    }
+
+
+    // _0804154C
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }
