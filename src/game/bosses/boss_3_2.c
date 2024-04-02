@@ -296,6 +296,7 @@ void Task_EggTotemBullet(void)
     s->x = I(bullet->qScreenX);
     s->y = I(bullet->qScreenY);
 
+    // TODO: Make stage values global and make this a #define:
     // NOTE: 752 in the last condition =
     //       (Boss 3 Stage width in pixels [8 * 96 = 768]) - (bullet GFX width [16])
     if ((s->x < -32 && bullet->qDX < 0)
