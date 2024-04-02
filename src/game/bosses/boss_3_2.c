@@ -241,25 +241,28 @@ void sub_80412B4(EggTotem *totem)
     }
 }
 
-#if 00
-void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, s16 param3)
+void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
 {
-    u16 sinIndex;
     Sprite *s;
+    u16 sinIndex;
+
     struct Task *t
         = TaskCreate(Task_EggTotemBullet, sizeof(EggTotemBullet), 0x6100, 0, NULL);
 
     EggTotemBullet *bullet = TASK_DATA(t);
 
-    bullet->qWorldX = qX - Q(gCamera.x);
-    bullet->qWorldY = qY - Q(gCamera.y);
+    bullet->qScreenX = qX - Q(gCamera.x);
+    bullet->qScreenY = qY - Q(gCamera.y);
 
     sinIndex = sub_8004418(I(gPlayer.y) - I(qY), I(gPlayer.x) - I(qX));
-    bullet->qDX = ((COS(sinIndex) * param3) >> 14) + Q(5);
-    bullet->qDY = ((SIN(sinIndex) * param3) >> 14) + Q(0);
+    bullet->qDX = ((COS(sinIndex) * qSpeed) >> 14);
+    bullet->qDX += +Q(5);
+    bullet->qDY = ((SIN(sinIndex) * qSpeed) >> 14);
+    bullet->qDY += Q(0);
     bullet->totem = totem;
 
     s = &bullet->s;
+
     s->x = I(qX);
     s->y = I(qY);
     s->graphics.dest = totem->tilesEggman;
@@ -275,4 +278,3 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, s16 param3)
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 }
-#endif

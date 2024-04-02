@@ -75,8 +75,8 @@ typedef struct {
 } EggTotem; /* size: 0x39C */
 
 typedef struct {
-    /* 0x00 */ s32 qWorldX;
-    /* 0x04 */ s32 qWorldY;
+    /* 0x00 */ s32 qScreenX;
+    /* 0x04 */ s32 qScreenY;
     /* 0x08 */ s16 qDX;
     /* 0x0A */ s16 qDY;
     /* 0x0C */ EggTotem *totem;
