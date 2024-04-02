@@ -258,7 +258,6 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
     bullet->qDX = ((COS(sinIndex) * qSpeed) >> 14);
     bullet->qDX += BOSS_VELOCITY_X;
     bullet->qDY = ((SIN(sinIndex) * qSpeed) >> 14);
-    bullet->qDX += BOSS_VELOCITY_Y;
     bullet->totem = totem;
 
     s = &bullet->s;
@@ -281,47 +280,49 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
 
 void Task_EggTotemBullet(void)
 {
+    EggTotem *totem;
     EggTotemBullet *bullet = TASK_DATA(gCurTask);
     Sprite *s = &bullet->s;
 
-    if(!PLAYER_IS_ALIVE) {
+    if (!PLAYER_IS_ALIVE) {
         bullet->qScreenX += bullet->qDX;
         bullet->qScreenX -= BOSS_VELOCITY_X;
         bullet->qScreenY += bullet->qDY;
     } else {
-        // _08041464
         bullet->qScreenX += (bullet->qDX + Q(gCamera.unk38));
         bullet->qScreenY += (bullet->qDY + Q(gCamera.unk3C));
     }
 
-    s->x = bullet->qScreenX;
-    s->y = bullet->qScreenY;
+    s->x = I(bullet->qScreenX);
+    s->y = I(bullet->qScreenY);
 
-    if(IS_OUT_OF_DISPLAY_RANGE(bullet->qScreenX, bullet->qScreenY)) {
+    // TODO: What is 752 in the last condition?
+    if ((s->x < -32 && bullet->qDX < 0)
+        || ((s->x > (DISPLAY_WIDTH + 32)) && bullet->qDX > 0)
+        || (s->y < -32 && bullet->qDY < 0)
+        || ((s->y > (DISPLAY_HEIGHT + 32)) && bullet->qDY > 0) || (s->x < -Q(2))
+        || s->x > 752) {
         TaskDestroy(gCurTask);
         return;
     }
-    // _080414F0
 
-    if(bullet->totem->unk32 != 0) {
-        bool32 res = sub_800CA20(s,
-            I(bullet->qScreenX) + gCamera.x,
-            I(bullet->qScreenY) + gCamera.y,
-            0,
-            &gPlayer);
+    if (bullet->totem->unk32 != 0) {
+        bool32 res;
 
+        res = sub_800CA20(s, I(bullet->qScreenX) + gCamera.x,
+                          I(bullet->qScreenY) + gCamera.y, 0, &gPlayer);
 
-        if(res == TRUE && bullet->totem->unk35 == 0) {
-            s = &bullet->totem->spr2A8;
-            bullet->totem->unk34 = 30;
-            s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
-            s->variant = 1;
-            s->prevVariant = -1;
+        if (res == TRUE && bullet->totem->unk35 == 0) {
+            Sprite *s2;
+            totem = bullet->totem;
+            s2 = &totem->spr2A8;
+            totem->unk34 = 30;
+            s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
+            s2->variant = res;
+            s2->prevVariant = -1;
         }
     }
 
-
-    // _0804154C
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 }

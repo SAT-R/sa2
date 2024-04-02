@@ -222,7 +222,6 @@ SECTIONS
         build/sa2/src/game/bosses/boss_3.o(.text);
         build/sa2/asm/boss_3.o(.text);
         build/sa2/src/game/bosses/boss_3_2.o(.text);
-        build/sa2/asm/boss_3_bullet.o(.text);
         build/sa2/src/game/bosses/boss_4.o(.text);
         build/sa2/src/game/bosses/boss_5.o(.text);
         build/sa2/asm/boss_6.o(.text);
