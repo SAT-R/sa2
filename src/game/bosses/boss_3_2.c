@@ -296,7 +296,8 @@ void Task_EggTotemBullet(void)
     s->x = I(bullet->qScreenX);
     s->y = I(bullet->qScreenY);
 
-    // TODO: What is 752 in the last condition?
+    // NOTE: 752 in the last condition =
+    //       (Boss 3 Stage width in pixels [8 * 96 = 768]) - (bullet GFX width [16])
     if ((s->x < -32 && bullet->qDX < 0)
         || ((s->x > (DISPLAY_WIDTH + 32)) && bullet->qDX > 0)
         || (s->y < -32 && bullet->qDY < 0)
