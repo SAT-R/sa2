@@ -22,7 +22,8 @@
 /* TODO: Merge this file with boss_3.c */
 
 // (90.90%) https://decomp.me/scratch/Nakn1
-bool32 sub_8040B30(EggTotem *totem, u8 i)
+NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
+         bool32 sub_8040B30(EggTotem *totem, u8 i))
 {
     ExplosionPartsInfo info, info2;
     Sprite *s;
@@ -102,6 +103,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
 
     return result;
 }
+END_NONMATCH
 
 void sub_8040D74(EggTotem *totem)
 {
