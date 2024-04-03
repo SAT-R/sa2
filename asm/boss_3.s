@@ -1616,9 +1616,9 @@ sub_8040B30: @ 0x08040B30
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x48
-	adds r2, r0, #0
+	adds r2, r0, #0         @ r2 = totem
 	lsls r1, r1, #0x18
-	lsrs r1, r1, #0x18
+	lsrs r1, r1, #0x18      @ r1 = i
 	movs r6, #0
 	cmp r1, #3
 	bhi _08040B62
@@ -1626,7 +1626,7 @@ sub_8040B30: @ 0x08040B30
 	subs r0, r0, r1
 	lsls r0, r0, #2
 	adds r0, #0x3c
-	adds r7, r2, r0
+	adds r7, r2, r0         @ r7 = &totem->unk3C[i]
 	ldrb r0, [r7, #0x14]
 	cmp r0, #0
 	beq _08040B62
@@ -1642,21 +1642,21 @@ _08040B66:
 	movs r0, #0x92
 	lsls r0, r0, #2
 	adds r0, r0, r2
-	mov sb, r0
+	mov sb, r0              @ sb = &totem->spr248
 	ldr r2, [r7]
-	lsls r2, r2, #8
+	lsls r2, r2, #8         @ r2 = (totem->unk3C[i].qWorldX << 8)
 	ldr r0, [r7, #4]
-	asrs r0, r0, #8
+	asrs r0, r0, #8         @ r0 = I(totem->unk3C[i].qWorldY)
 	movs r1, #0x17
 	ldrsb r1, [r7, r1]
-	adds r1, r1, r0
+	adds r1, r1, r0         @ r1 = totem->unk3C[i].unk17 + I(qWorldY)
 	lsls r1, r1, #0x10
 	lsrs r0, r2, #0x10
-	str r0, [sp, #0x44]
-	asrs r4, r2, #0x10
+	str r0, [sp, #0x44]     @ sp44 = (u16) I(totem->unk3C[i].qWorldX)
+	asrs r4, r2, #0x10      @ r4 = (s16) I(totem->unk3C[i].qWorldX)
 	lsrs r2, r1, #0x10
-	mov sl, r2
-	asrs r5, r1, #0x10
+	mov sl, r2              @ sl = I(totem->unk3C[i].qWorldY) + totem->unk3C[i].unk17
+	asrs r5, r1, #0x10      @ r5 = I(totem->unk3C[i].qWorldY) + totem->unk3C[i].unk17
 	ldr r0, _08040C38 @ =gPlayer
 	str r0, [sp]
 	mov r0, sb
@@ -1670,7 +1670,7 @@ _08040B66:
 	subs r0, #1
 	strb r0, [r7, #0x14]
 	movs r1, #0xff
-	mov r8, r1
+	mov r8, r1              @ r8 = (u8)-1
 	lsls r0, r0, #0x18
 	cmp r0, #0
 	bne _08040C5C
@@ -1681,11 +1681,11 @@ _08040B66:
 	ldr r0, [r1, #4]
 	subs r0, r5, r0
 	str r0, [sp, #0x1c]
-	add r0, sp, #4
+	add r0, sp, #4          @ sp04 = info
 	strh r6, [r0, #0x1c]
-	adds r1, r0, #0
+	adds r1, r0, #0         @ r1 = info
 	movs r0, #0xf0
-	lsls r0, r0, #2
+	lsls r0, r0, #2         @ r0 = 0x3C0
 	strh r0, [r1, #0xc]
 	movs r0, #0xc0
 	lsls r0, r0, #3
@@ -1756,18 +1756,18 @@ _08040C5C:
 _08040C62:
 	movs r6, #1
 _08040C64:
-	ldr r1, [sp, #0x44]
+	ldr r1, [sp, #0x44]         @ r1 = sp44 = (u16) I(totem->unk3C[i].qWorldX)
 	lsls r0, r1, #0x10
 	asrs r4, r0, #0x10
 	lsls r0, r4, #8
-	mov r2, sl
+	mov r2, sl                  @ r2 = sl = I(totem->unk3C[i].qWorldY) + totem->unk3C[i].unk17
 	lsls r1, r2, #0x10
 	asrs r5, r1, #0x10
 	lsls r1, r5, #8
 	bl Player_UpdateHomingPosition
 	ldr r0, _08040D30 @ =gPlayer
 	str r0, [sp]
-	mov r0, sb
+	mov r0, sb                  @ r0 = sb = &totem->spr248
 	adds r1, r4, #0
 	adds r2, r5, #0
 	movs r3, #0
@@ -1783,6 +1783,7 @@ _08040C64:
 	lsrs r3, r0, #0x18
 	cmp r3, #0
 	bne _08040D58
+_middlestep:
 	add r0, sp, #0x24
 	ldr r2, _08040D34 @ =gCamera
 	ldr r1, [r2]

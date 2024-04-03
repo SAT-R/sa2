@@ -21,6 +21,89 @@
 
 /* TODO: Merge this file with boss_3.c */
 
+// (82.17%) https://decomp.me/scratch/Nakn1
+bool32 sub_8040B30(EggTotem *totem, u8 i)
+{
+    ExplosionPartsInfo info, info2;
+    Sprite *s;
+    Totem3C *t3c;
+
+    register bool32 result asm("r6") = FALSE;
+
+    s16 t3CX, t3CY;
+
+    if (i > ARRAY_COUNT(totem->unk3C)) {
+        return FALSE;
+    }
+
+    t3c = &totem->unk3C[i];
+    if ((t3c->unk14 == 0) || (totem->unk32 == 0)) {
+        return FALSE;
+    }
+    // _08040B66
+
+    s = &totem->spr248[0];
+    t3CX = I(t3c->qWorldX);
+    t3CY = I(t3c->qWorldY) + t3c->unk17;
+
+    if (sub_800C320(s, (s16)I(t3c->qWorldX), I(t3c->qWorldY) + t3c->unk17, 0, &gPlayer)
+        == TRUE) {
+        if (--t3c->unk17 == 0) {
+            info.spawnX = I(t3c->qWorldX) - gCamera.x;
+            info.spawnY = I(t3c->qWorldY) - gCamera.y;
+            info.velocity = 0;
+            info.rotation = DEG_TO_SIN(337.5);
+            info.speed = Q(6.0);
+            info.vram = (void *)(OBJ_VRAM0 + 0x2980);
+            info.anim = SA2_ANIM_EXPLOSION;
+            info.variant = 0;
+            info.unk4 = 0;
+
+            CreateBossParticleWithExplosionUpdate(&info, &t3c->unk16);
+            INCREMENT_SCORE(500);
+
+            m4aSongNumStart(SE_144);
+        } else {
+            // _08040C5C
+            m4aSongNumStart(SE_143);
+        }
+
+        result = TRUE;
+    }
+    // _08040C64
+
+    Player_UpdateHomingPosition(Q(t3CX), Q(t3CY));
+
+    if (IsColliding_Cheese(&totem->spr248[0], Q(t3CX), Q(t3CY), 0, &gPlayer) == TRUE) {
+        if (--t3c->unk14 == 0) {
+            // _middlestep
+            info2.spawnX = I(t3c->qWorldX) - gCamera.x;
+            info2.spawnY = I(t3c->qWorldY) - gCamera.y;
+            info2.velocity = 0;
+            info2.rotation = DEG_TO_SIN(337.5);
+            info2.speed = Q(6.0);
+            info2.vram = (void *)(OBJ_VRAM0 + 0x2980);
+            info2.anim = SA2_ANIM_EXPLOSION;
+            info2.variant = 0;
+            info2.unk4 = 0;
+
+            CreateBossParticleWithExplosionUpdate(&info2, &t3c->unk16);
+            INCREMENT_SCORE(500);
+
+            m4aSongNumStart(SE_144);
+
+            Collision_AdjustPlayerSpeed(&gPlayer);
+            gUnknown_03005498.t->unk15 = 0;
+        } else {
+            m4aSongNumStart(SE_143);
+        }
+
+        result = TRUE;
+    }
+
+    return result;
+}
+
 void sub_8040D74(EggTotem *totem)
 {
     Sprite *s = &totem->spr2A8;
