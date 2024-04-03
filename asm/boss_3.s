@@ -1450,6 +1450,7 @@ _080409F8:
 	bx r0
 	.align 2, 0
 
+.if 0
 	thumb_func_start sub_8040A00
 sub_8040A00: @ 0x08040A00
 	push {r4, r5, r6, r7, lr}
@@ -1458,7 +1459,7 @@ sub_8040A00: @ 0x08040A00
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #4
-	mov sl, r0
+	mov sl, r0          @ sl = totem
 	adds r0, #0x32
 	ldrb r0, [r0]
 	cmp r0, #0
@@ -1470,19 +1471,19 @@ _08040A18:
 	ldr r1, _08040AD8 @ =gPlayer
 	mov sb, r1
 _08040A20:
-	mov r3, r8
+	mov r3, r8          @ r3 = r8 = i
 	lsls r0, r3, #6
 	movs r1, #0xc4
 	lsls r1, r1, #1
 	adds r0, r0, r1
-	mov r3, sl
-	adds r6, r3, r0
-	mov r1, r8
+	mov r3, sl          @ r3 = sl = totem
+	adds r6, r3, r0     @ r6 = s = &totem->spr188[i]
+	mov r1, r8          @ r1 = r8 = i
 	lsls r0, r1, #3
 	subs r0, r0, r1
 	lsls r0, r0, #2
 	adds r0, #0x3c
-	adds r4, r3, r0
+	adds r4, r3, r0     @ r4 = t3c
 	ldr r1, [r4]
 	asrs r1, r1, #8
 	ldr r2, [r4, #4]
@@ -1493,7 +1494,7 @@ _08040A20:
 	movs r3, #1
 	bl sub_800CA20
 	cmp r0, #0
-	bne _08040B08
+	bne _08040B08_cont
 	ldr r1, [r4]
 	asrs r1, r1, #8
 	ldr r2, [r4, #4]
@@ -1504,8 +1505,8 @@ _08040A20:
 	movs r3, #2
 	bl sub_800CA20
 	cmp r0, #0
-	bne _08040B08
-	mov r3, sb
+	bne _08040B08_cont
+	mov r3, sb          @ r3 = sb = &gPlayer
 	ldr r1, [r3, #0x20]
 	movs r0, #8
 	ands r1, r0
@@ -1553,19 +1554,19 @@ _08040A80:
 	adds r1, r1, r0
 	str r1, [r5, #0xc]
 	cmp r7, #0
-	bne _08040B08
+	bne _08040B08_cont
 	ldr r1, _08040ADC @ =0xFFFFFB00
 	adds r0, r1, #0
 	ldrh r3, [r5, #0x10]
 	adds r0, r0, r3
 	strh r0, [r5, #0x10]
-	b _08040B08
+	b _08040B08_cont
 	.align 2, 0
 _08040AD8: .4byte gPlayer
 _08040ADC: .4byte 0xFFFFFB00
 _08040AE0:
 	cmp r7, #0
-	beq _08040B08
+	beq _08040B08_cont
 	ldr r2, _08040B28 @ =gPlayer
 	ldr r1, [r2, #0x20]
 	movs r0, #9
@@ -1578,13 +1579,13 @@ _08040AE0:
 	lsls r0, r0, #1
 	ands r0, r1
 	cmp r0, #0
-	bne _08040B08
+	bne _08040B08_cont
 	ldr r0, _08040B2C @ =0xFFFFFEFF
 	ands r1, r0
 	movs r0, #2
 	orrs r1, r0
 	str r1, [r2, #0x20]
-_08040B08:
+_08040B08_cont:
 	mov r0, r8
 	adds r0, #1
 	lsls r0, r0, #0x18
@@ -1604,3 +1605,4 @@ _08040B16:
 	.align 2, 0
 _08040B28: .4byte gPlayer
 _08040B2C: .4byte 0xFFFFFEFF
+.endif

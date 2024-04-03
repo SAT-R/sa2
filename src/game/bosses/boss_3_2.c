@@ -21,6 +21,60 @@
 
 /* TODO: Merge this file with boss_3.c */
 
+// (98.52%) https://decomp.me/scratch/48KGw
+void sub_8040A00(EggTotem *totem)
+{
+    u8 i;
+    Sprite *s;
+    Totem3C *t3c;
+
+    if (totem->unk32 == 0) {
+        return;
+    }
+
+    for (i = 0; i < EGGTOTEM_NUM_PLATFORMS; i++) {
+        u32 coll;
+        bool32 r7;
+
+        s = &totem->spr188[i].s;
+        t3c = &totem->unk3C[i];
+
+        if (sub_800CA20(s, I(t3c->qWorldX), I(t3c->qWorldY), 1, &gPlayer) == FALSE
+            && sub_800CA20(s, I(t3c->qWorldX), I(t3c->qWorldY), 2, &gPlayer) == FALSE) {
+            Player *p;
+            u32 moveState = (gPlayer.moveState & MOVESTATE_8);
+            r7 = FALSE;
+
+            if (moveState && (gPlayer.unk3C == s)) {
+                r7 = TRUE;
+            }
+
+            p = &gPlayer;
+            coll = sub_800CCB8(s, I(t3c->qWorldX), I(t3c->qWorldY), p);
+
+            if ((p->moveState & MOVESTATE_8) && (coll & COLL_FLAG_10000)) {
+                p->x += t3c->qUnk8 + Q(5);
+                p->y += Q(2) + (s16)Q(coll);
+
+                if (!r7) {
+                    p->speedAirX -= Q(5);
+                }
+            } else {
+                // _08040AE0
+                if (r7) {
+                    gPlayer.moveState &= ~MOVESTATE_8;
+                    gPlayer.unk3C = NULL;
+
+                    if (!(gPlayer.moveState & MOVESTATE_100)) {
+                        gPlayer.moveState &= ~MOVESTATE_100;
+                        gPlayer.moveState |= MOVESTATE_IN_AIR;
+                    }
+                }
+            }
+        }
+    }
+}
+
 // (90.90%) https://decomp.me/scratch/Nakn1
 NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
          bool32 sub_8040B30(EggTotem *totem, u8 i))
