@@ -110,7 +110,7 @@ void Task_8055AB8(void)
 
     ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(circus, me, s);
 
-    sub_80122DC(circus->spawnX, circus->spawnY);
+    Player_UpdateHomingPosition(circus->spawnX, circus->spawnY);
 
     if (UpdateSpriteAnimation(s) == 0) {
         DisplaySprite(s);
@@ -156,7 +156,7 @@ void Task_8055C0C(void)
 
     ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(circus, me, s);
 
-    sub_80122DC(circus->spawnX, circus->spawnY);
+    Player_UpdateHomingPosition(circus->spawnX, circus->spawnY);
 
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
@@ -185,7 +185,7 @@ void Task_8055D7C(void)
 
     ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(circus, me, s);
 
-    sub_80122DC(circus->spawnX, circus->spawnY);
+    Player_UpdateHomingPosition(circus->spawnX, circus->spawnY);
 
     if (UpdateSpriteAnimation(s) == 0) {
         DisplaySprite(s);

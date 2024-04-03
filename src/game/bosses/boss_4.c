@@ -423,7 +423,7 @@ static void sub_8041B44(AeroEgg *boss)
         // TODO(Jace): Could this be a bug?
         //             I'd expect this to use boss->main.qWorldX/Y
         //             instead of their floored counterparts.
-        sub_80122DC(Q(worldX), Q(worldY));
+        Player_UpdateHomingPosition(Q(worldX), Q(worldY));
 
         if (boss->main.unk16 == 0) {
             if (IsColliding_Cheese(s, worldX, worldY, 0, &gPlayer) == TRUE) {

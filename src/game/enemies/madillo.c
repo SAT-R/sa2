@@ -205,7 +205,7 @@ static void Task_80564BC(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(madillo, me, s);
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     if (--madillo->unk51 == 0) {
         madillo->unk4C = -384;

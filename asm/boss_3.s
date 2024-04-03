@@ -1278,6 +1278,8 @@ _080408BA:
 	.align 2, 0
 _080408C0: .4byte 0x000003FF
 
+@ Input:
+    @ R0 = Totem
 	thumb_func_start sub_80408C4
 sub_80408C4: @ 0x080408C4
 	push {r4, r5, r6, r7, lr}
@@ -1603,6 +1605,9 @@ _08040B16:
 _08040B28: .4byte gPlayer
 _08040B2C: .4byte 0xFFFFFEFF
 
+@ Input:
+    @ R0 = totem
+    @ R1 = i
 	thumb_func_start sub_8040B30
 sub_8040B30: @ 0x08040B30
 	push {r4, r5, r6, r7, lr}
@@ -1759,7 +1764,7 @@ _08040C64:
 	lsls r1, r2, #0x10
 	asrs r5, r1, #0x10
 	lsls r1, r5, #8
-	bl sub_80122DC
+	bl Player_UpdateHomingPosition
 	ldr r0, _08040D30 @ =gPlayer
 	str r0, [sp]
 	mov r0, sb

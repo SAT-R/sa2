@@ -441,7 +441,7 @@ void PlayerCB_801225C(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_80261D8, p);
 }
 
-void sub_80122DC(s32 x, s32 y)
+void Player_UpdateHomingPosition(s32 x, s32 y)
 {
     s32 playerX, playerY, sqPlayerX, sqPlayerY, sqDistance;
 

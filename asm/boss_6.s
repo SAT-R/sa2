@@ -3702,7 +3702,7 @@ sub_8047700: @ 0x08047700
 	asrs r7, r0, #8
 	ldr r1, [r4, #8]
 	asrs r6, r1, #8
-	bl sub_80122DC
+	bl Player_UpdateHomingPosition
 	ldr r5, _08047760 @ =gPlayer
 	str r5, [sp]
 	mov r0, r8

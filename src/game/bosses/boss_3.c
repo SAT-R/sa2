@@ -412,7 +412,7 @@ void sub_803F5E0(EggTotem *totem)
         sub_80412B4(totem);
     }
 
-    sub_80122DC(totem->qWorldX, totem->qWorldY - Q(DISPLAY_HEIGHT / 2));
+    Player_UpdateHomingPosition(totem->qWorldX, totem->qWorldY - BOSS5_HEIGHT);
 
     if (totem->unk35 == 0) {
         if (IsColliding_Cheese(s, worldX, worldY, 0, &gPlayer) == TRUE) {

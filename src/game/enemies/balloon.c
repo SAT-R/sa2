@@ -128,7 +128,7 @@ void sub_805879C(void)
         CreateProjectile(&proj);
     }
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
     if (UpdateSpriteAnimation(s) == 0) {
         balloon->unk5E = 120;
         s->graphics.anim = SA2_ANIM_BALLOON;

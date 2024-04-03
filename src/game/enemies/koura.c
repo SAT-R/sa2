@@ -206,7 +206,7 @@ static void sub_805462C(void)
 
     ENEMY_DESTROY_IF_OFFSCREEN(koura, me, s);
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
         ENEMY_TURN_AROUND(s);
@@ -238,7 +238,7 @@ static void sub_8054904(void)
     ENEMY_UPDATE_POSITION(koura, s, pos.x, pos.y);
     ENEMY_DESTROY_IF_OFFSCREEN(koura, me, s);
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
         s->graphics.anim = gUnknown_080D8F38[koura->unk54 & 2][0];

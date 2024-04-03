@@ -387,7 +387,7 @@ static void sub_803A8E4(EggHammerTankII *boss)
         s->y = pos.y - gCamera.y;
 
         sub_800CA20(s, pos.x, pos.y, 1, &gPlayer);
-        sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+        Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
         if (boss->unkB1 == 0
             || ((gPlayer.speedAirY > 0 || !(gPlayer.moveState & 2))

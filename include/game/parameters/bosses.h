@@ -6,6 +6,12 @@
 #define BOSS_EXPLOSION_VELOCITY_X Q(5.50)
 
 /*
+ * Boss 3 - Egg Totem
+ */
+
+#define BOSS5_HEIGHT Q(80.0) // Used for Homing Positioning
+
+/*
  * Boss 4 - Aero Egg
  */
 

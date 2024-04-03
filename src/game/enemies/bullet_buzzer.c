@@ -121,7 +121,7 @@ void Task_BulletBuzzerMain(void)
         }
     }
 
-    sub_80122DC(Q_24_8(pos.x), Q_24_8(pos.y));
+    Player_UpdateHomingPosition(Q_24_8(pos.x), Q_24_8(pos.y));
     if (UpdateSpriteAnimation(s) == 0) {
         ENEMY_TURN_AROUND(s);
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;
@@ -160,7 +160,7 @@ void sub_8059B04(void)
         CreateSeveralProjectiles(&init, 3, 16);
     }
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
         DisplaySprite(s);

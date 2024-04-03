@@ -108,7 +108,7 @@ static void sub_80524D0(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN_RAW(k, me, s, pos.x, pos.y);
 
-    sub_80122DC(k->spawnX, k->spawnY);
+    Player_UpdateHomingPosition(k->spawnX, k->spawnY);
     if (k->unkB8 != 0) {
         k->unkB8--;
     } else if (gPlayer.x > k->spawnX - 0x7800 && gPlayer.x < k->spawnX + 0x7800
@@ -169,7 +169,7 @@ static void sub_80526C8(void)
 
     ENEMY_DESTROY_IF_OFFSCREEN_RAW(k, me, sBase, pos.x, pos.y);
 
-    sub_80122DC(k->spawnX, k->spawnY);
+    Player_UpdateHomingPosition(k->spawnX, k->spawnY);
 
     if (k->unkBE > 0x43FF) {
         k->unkB8 = 0x20;
@@ -216,7 +216,7 @@ static void sub_80528AC(void)
 
     ENEMY_DESTROY_IF_OFFSCREEN_RAW(k, me, sBase, pos.x, pos.y);
 
-    sub_80122DC(k->spawnX, k->spawnY);
+    Player_UpdateHomingPosition(k->spawnX, k->spawnY);
 
     if (k->unkB8 != 0) {
 
@@ -284,7 +284,7 @@ static void sub_8052AEC(void)
 
     ENEMY_DESTROY_IF_OFFSCREEN_RAW(k, me, sBase, pos.x, pos.y);
 
-    sub_80122DC(k->spawnX, k->spawnY);
+    Player_UpdateHomingPosition(k->spawnX, k->spawnY);
 
     if (k->unkBE < 0) {
         k->unkBE = 0;

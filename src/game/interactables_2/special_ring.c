@@ -105,7 +105,7 @@ static void Task_Interactable_SpecialRing(void)
     Sprite_SpecialRing *ring = TASK_DATA(gCurTask);
 
     if (gPlayer.character == CHARACTER_CREAM) {
-        sub_80122DC(Q_24_8(ring->posX), Q_24_8(ring->posY));
+        Player_UpdateHomingPosition(Q_24_8(ring->posX), Q_24_8(ring->posY));
     }
 
     if (sub_8081010(ring)) {

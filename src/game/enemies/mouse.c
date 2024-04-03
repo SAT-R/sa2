@@ -144,7 +144,7 @@ static void sub_8057348(void)
         s->prevVariant = -1;
     }
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
@@ -175,7 +175,7 @@ static void sub_8057618(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(mouse, me, s);
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
         mouse->unk52 = 0;

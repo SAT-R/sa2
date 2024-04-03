@@ -821,7 +821,7 @@ static u8 HandleCannonCollision(EggBomberTank *boss)
     distance = (SQUARE(dY) + SQUARE(dX));
 
     ret = 0;
-    sub_80122DC(x, y);
+    Player_UpdateHomingPosition(x, y);
 
     if (boss->cannonHitTimer != 0) {
         return 0;
@@ -920,7 +920,7 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
         }
     }
 
-    sub_80122DC(boss->x, boss->y);
+    Player_UpdateHomingPosition(boss->x, boss->y);
 
     if (boss->bossHitTimer == 0) {
         if (IsColliding_Cheese(s, Q_24_8_TO_INT(boss->x), Q_24_8_TO_INT(boss->y), 0,
