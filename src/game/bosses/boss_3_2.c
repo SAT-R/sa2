@@ -21,7 +21,7 @@
 
 /* TODO: Merge this file with boss_3.c */
 
-// (82.17%) https://decomp.me/scratch/Nakn1
+// (90.90%) https://decomp.me/scratch/Nakn1
 bool32 sub_8040B30(EggTotem *totem, u8 i)
 {
     ExplosionPartsInfo info, info2;
@@ -46,11 +46,10 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
     t3CX = I(t3c->qWorldX);
     t3CY = I(t3c->qWorldY) + t3c->unk17;
 
-    if (sub_800C320(s, (s16)I(t3c->qWorldX), I(t3c->qWorldY) + t3c->unk17, 0, &gPlayer)
-        == TRUE) {
-        if (--t3c->unk17 == 0) {
-            info.spawnX = I(t3c->qWorldX) - gCamera.x;
-            info.spawnY = I(t3c->qWorldY) - gCamera.y;
+    if (sub_800C320(s, t3CX, t3CY, 0, &gPlayer) == TRUE) {
+        if (--t3c->unk14 == 0) {
+            info.spawnX = t3CX - gCamera.x;
+            info.spawnY = t3CY - gCamera.y;
             info.velocity = 0;
             info.rotation = DEG_TO_SIN(337.5);
             info.speed = Q(6.0);
@@ -74,11 +73,11 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
 
     Player_UpdateHomingPosition(Q(t3CX), Q(t3CY));
 
-    if (IsColliding_Cheese(&totem->spr248[0], Q(t3CX), Q(t3CY), 0, &gPlayer) == TRUE) {
+    if (IsColliding_Cheese(s, Q(t3CX), Q(t3CY), 0, &gPlayer) == TRUE) {
         if (--t3c->unk14 == 0) {
             // _middlestep
-            info2.spawnX = I(t3c->qWorldX) - gCamera.x;
-            info2.spawnY = I(t3c->qWorldY) - gCamera.y;
+            info2.spawnX = t3CX - gCamera.x;
+            info2.spawnY = t3CY - gCamera.y;
             info2.velocity = 0;
             info2.rotation = DEG_TO_SIN(337.5);
             info2.speed = Q(6.0);
