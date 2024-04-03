@@ -10,8 +10,8 @@ typedef struct {
     Hitbox reserved; // Power-Up
 
     SpriteTransform transform;
-    u32 unk44;
-    u32 unk48;
+    s32 unk44;
+    s32 unk48;
     u32 unk4C;
     // x
     s16 unk50;

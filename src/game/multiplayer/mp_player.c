@@ -1252,3 +1252,91 @@ void sub_8017C28(void)
         mpp->unk4C = val;
     }
 }
+
+void sub_8017F34(void)
+{
+    MultiplayerPlayer *mpp = TASK_DATA(gCurTask);
+    MultiplayerPlayer *otherMpp;
+    s32 result;
+
+    if ((ABS(mpp->unk44) > 0x80) || (ABS(mpp->unk48) > 0x80)) {
+        gPlayer.moveState &= ~0x8;
+        gPlayer.moveState |= 2;
+        mpp->unk60 = 30;
+        return;
+    }
+
+    otherMpp = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+    if ((otherMpp->unk54 & 0x80) != (mpp->unk54 & 0x80)) {
+        gPlayer.moveState &= ~0x8;
+        gPlayer.unk3C = (void *)-1;
+        mpp->unk64 = mpp->unk56;
+        return;
+    }
+
+    gPlayer.x += Q(mpp->unk44);
+    if (!(gUnknown_03005424 & 0x80)) {
+        gPlayer.y += Q(mpp->unk48) + Q(1);
+    } else {
+        gPlayer.y += Q(mpp->unk48) - Q(2);
+    }
+
+    if (mpp->unk48 < 0) {
+        result = sub_801F100(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38,
+                             -8, sub_801EC3C);
+        if (result < 0) {
+            gPlayer.y -= Q(result);
+            gPlayer.moveState &= ~0x8;
+            gPlayer.moveState |= 2;
+            mpp->unk60 = 30;
+        }
+    } else if (mpp->unk48 > 0) {
+        result = sub_801F100(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x), gPlayer.unk38,
+                             8, sub_801EC3C);
+        if (result < 0) {
+            gPlayer.y += Q(result);
+            gPlayer.moveState &= ~0x8;
+            gPlayer.moveState |= 2;
+            mpp->unk60 = 30;
+        }
+    }
+
+    if (mpp->unk44 < 0) {
+        result = sub_801F100(I(gPlayer.x) - gPlayer.unk16, I(gPlayer.y), gPlayer.unk38,
+                             -8, sub_801EB44);
+        if (result < 0) {
+            gPlayer.x -= Q(result);
+        }
+        return;
+    } else if (mpp->unk44 > 0) {
+        result = sub_801F100(I(gPlayer.x) + gPlayer.unk16, I(gPlayer.y), gPlayer.unk38,
+                             8, sub_801EB44);
+        if (result < 0) {
+            gPlayer.x += Q(result);
+        }
+        return;
+    }
+}
+
+void sub_8018120(void)
+{
+    MultiplayerPlayer *mpp = TASK_DATA(gCurTask);
+    Sprite *s = &mpp->s;
+    if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
+        MultiplayerPlayer *otherMpp;
+        gPlayer.x += Q(mpp->unk44);
+        gPlayer.y += Q(mpp->unk48) + 0x100;
+
+        otherMpp = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+
+        if ((otherMpp->unk54 & 0x80) != (mpp->unk54 & 0x80)) {
+            gPlayer.moveState &= ~0x8;
+            gPlayer.unk3C = (void *)-1;
+            mpp->unk64 = mpp->unk56;
+        }
+    }
+    if (sub_8018300() && (mpp->unk4C & 0x20)) {
+        gPlayer.moveState &= ~0x20;
+        mpp->unk4C = 0;
+    }
+}
