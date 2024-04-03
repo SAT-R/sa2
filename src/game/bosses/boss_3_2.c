@@ -22,7 +22,8 @@
 /* TODO: Merge this file with boss_3.c */
 
 // (98.52%) https://decomp.me/scratch/48KGw
-void sub_8040A00(EggTotem *totem)
+NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040A00.inc",
+         void sub_8040A00(EggTotem *totem))
 {
     u8 i;
     Sprite *s;
@@ -74,6 +75,7 @@ void sub_8040A00(EggTotem *totem)
         }
     }
 }
+END_NONMATCH
 
 // (90.90%) https://decomp.me/scratch/Nakn1
 NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
