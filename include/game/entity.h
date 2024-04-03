@@ -108,7 +108,7 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
                                          _enemy->clampParam, 8, NULL, sub_801EE64));
 
 #define ENEMY_UPDATE_EX_RAW(_s, _posX, _posY, code_insert)                              \
-    Player_UpdateHomingPosition(_posX, _posY);                                                          \
+    Player_UpdateHomingPosition(_posX, _posY);                                          \
     { code_insert };                                                                    \
     UpdateSpriteAnimation(_s);                                                          \
     DisplaySprite(_s);
