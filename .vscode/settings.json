@@ -310,7 +310,8 @@
     "player_unk_1.h": "c",
     "mp_player.h": "c",
     "*.m": "c",
-    "ranges": "c"
+    "ranges": "c",
+    "rect.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

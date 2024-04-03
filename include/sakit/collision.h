@@ -1,11 +1,11 @@
 #ifndef GUARD_STAGE_ENTITIES_0_H
 #define GUARD_STAGE_ENTITIES_0_H
 
-// TODO: remove globals when MultiplayerPlayer comes
+// TODO: remove when MultiplayerPlayer comes
 // from `sakit/player.h`
-#include "globals.h"
 #include "core.h"
 #include "rect.h"
+#include "sakit/globals.h"
 #include "sakit/player.h"
 
 #define COLL_NONE        0
