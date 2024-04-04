@@ -1,9 +1,6 @@
 #ifndef GUARD_GAME_BOSS_3_H
 #define GUARD_GAME_BOSS_3_H
 
-extern void CreateEggTotem(void);
-extern void EggTotemMove(s32, s32);
-
 // TEMP - Move everything below here into boss_3.c, once it is completely decompiled.
 
 // TODO: Should this stay here for better readability or go in
@@ -83,13 +80,23 @@ typedef struct {
     /* 0x10 */ Sprite s;
 } EggTotemBullet;
 
+typedef struct {
+    u32 unk0;
+    u16 unk4;
+} EggTotemDataA;
+
 extern s16 sTotemDiscYs[3];
 extern TileInfo gUnknown_080D7BB0[3];
 extern TileInfo gUnknown_080D7BC8[2];
 extern s16 gUnknown_080D7BDC[3];
+extern EggTotemDataA *gUnknown_080D7E78[10];
 extern u8 *gUnknown_080D7ED4[13];
 extern s16 gUnknown_080D7F14[2][16];
 extern u8 sOamOrderIds[3];
+
+extern void CreateEggTotem(void);
+extern void EggTotemMove(s32, s32);
+extern void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed);
 
 void Task_803F3E8(void);
 void sub_803F4B8(EggTotem *);
@@ -99,6 +106,7 @@ bool32 sub_803F878(EggTotem *totem);
 void sub_803FB88(EggTotem *);
 void sub_803FC14(EggTotem *);
 void sub_803FF44(EggTotem *);
+bool32 sub_8040B30(EggTotem *totem, u8 i);
 void sub_804063C(EggTotem *);
 void sub_80407A4(EggTotem *);
 void sub_80408C4(EggTotem *);

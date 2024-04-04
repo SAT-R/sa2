@@ -9,7 +9,8 @@
  * Boss 3 - Egg Totem
  */
 
-#define BOSS5_HEIGHT Q(80.0) // Used for Homing Positioning
+#define BOSS5_BULLET_SPEED Q(2.0)
+#define BOSS5_HEIGHT       Q(80.0) // Used for Homing Positioning
 
 /*
  * Boss 4 - Aero Egg

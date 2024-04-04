@@ -21,6 +21,69 @@
 
 /* TODO: Merge this file with boss_3.c */
 
+void sub_80408C4(EggTotem *totem)
+{
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(totem->unk3C); i++) {
+        Totem3C *t3c = &totem->unk3C[i];
+
+        if (t3c->unk13 != 0) {
+            EggTotemDataA *ptr = gUnknown_080D7E78[t3c->unk12];
+            ptr = &ptr[t3c->unk13];
+
+            if (ptr->unk0 == 60 && ptr->unk4 == 0) {
+
+                if ((u16)t3c->unkE == 60) {
+                    if (gPlayer.y < t3c->qWorldY) {
+                        t3c->unk15 = 1;
+                    } else {
+                        t3c->unk15 = 0;
+                    }
+
+                    t3c->unk16 |= 0x80;
+                }
+                if ((u16)t3c->unkE >= 48) {
+                    // _08040926
+                    if (t3c->unk15 != 0) {
+                        t3c->unk17--;
+                    } else {
+                        t3c->unk17++;
+                    }
+                } else if ((u16)t3c->unkE == 30 && t3c->unk14 != 0) {
+                    // _08040940
+
+                    if (t3c->unk16 & 0x80) {
+                        if ((PseudoRandom32() & 0x1) == 0) {
+                            s32 qx = t3c->qWorldX;
+                            s32 qy = t3c->qWorldY + Q(t3c->unk17);
+                            qy -= Q(t3c->unk15 * 3);
+                            CreateEggTotemBullet(totem, qx, qy, BOSS5_BULLET_SPEED);
+                        }
+                    }
+                    t3c->unk16 &= ~0x80;
+                } else if ((u16)t3c->unkE < 18) {
+                    // _080409A0
+                    if (t3c->unk17 != 0) {
+                        if (t3c->unk15 != 0) {
+                            t3c->unk17++;
+                        } else {
+                            t3c->unk17--;
+                        }
+                    }
+                }
+                // _080409C0
+
+                if ((t3c->unk17 != 0) && (totem->unk36 == 0)
+                    && (sub_8040B30(totem, i) << 24 != 0)) {
+                    t3c->unk16 &= ~0x80;
+                    totem->unk36 = 30;
+                }
+            }
+        }
+    }
+}
+
 // (98.52%) https://decomp.me/scratch/48KGw
 NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040A00.inc",
          void sub_8040A00(EggTotem *totem))
