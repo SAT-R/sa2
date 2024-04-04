@@ -44,15 +44,12 @@ void sub_80408C4(EggTotem *totem)
                     t3c->unk16 |= 0x80;
                 }
                 if ((u16)t3c->unkE >= 48) {
-                    // _08040926
                     if (t3c->unk15 != 0) {
                         t3c->unk17--;
                     } else {
                         t3c->unk17++;
                     }
                 } else if ((u16)t3c->unkE == 30 && t3c->unk14 != 0) {
-                    // _08040940
-
                     if (t3c->unk16 & 0x80) {
                         if ((PseudoRandom32() & 0x1) == 0) {
                             s32 qx = t3c->qWorldX;
@@ -63,7 +60,6 @@ void sub_80408C4(EggTotem *totem)
                     }
                     t3c->unk16 &= ~0x80;
                 } else if ((u16)t3c->unkE < 18) {
-                    // _080409A0
                     if (t3c->unk17 != 0) {
                         if (t3c->unk15 != 0) {
                             t3c->unk17++;
@@ -72,7 +68,6 @@ void sub_80408C4(EggTotem *totem)
                         }
                     }
                 }
-                // _080409C0
 
                 if ((t3c->unk17 != 0) && (totem->unk36 == 0)
                     && (sub_8040B30(totem, i) << 24 != 0)) {
