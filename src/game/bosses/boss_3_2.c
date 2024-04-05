@@ -43,6 +43,7 @@ void sub_80408C4(EggTotem *totem)
 
                     t3c->unk16 |= 0x80;
                 }
+
                 if ((u16)t3c->unkE >= 48) {
                     if (t3c->unk15 != 0) {
                         t3c->unk17--;
