@@ -80,9 +80,7 @@ void sub_80408C4(EggTotem *totem)
     }
 }
 
-// (98.52%) https://decomp.me/scratch/48KGw
-NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040A00.inc",
-         void sub_8040A00(EggTotem *totem))
+void sub_8040A00(EggTotem *totem)
 {
     u8 i;
     Sprite *s;
@@ -101,16 +99,23 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040A00.inc",
 
         if (sub_800CA20(s, I(t3c->qWorldX), I(t3c->qWorldY), 1, &gPlayer) == FALSE
             && sub_800CA20(s, I(t3c->qWorldX), I(t3c->qWorldY), 2, &gPlayer) == FALSE) {
+#ifndef NON_MATCHING
+            register Player *p asm("r5");
+#else
             Player *p;
+#endif
             u32 moveState = (gPlayer.moveState & MOVESTATE_8);
+            s32 x, y;
             r7 = FALSE;
 
             if (moveState && (gPlayer.unk3C == s)) {
                 r7 = TRUE;
             }
 
+            x = I(t3c->qWorldX);
+            y = I(t3c->qWorldY);
             p = &gPlayer;
-            coll = sub_800CCB8(s, I(t3c->qWorldX), I(t3c->qWorldY), p);
+            coll = sub_800CCB8(s, x, y, p);
 
             if ((p->moveState & MOVESTATE_8) && (coll & COLL_FLAG_10000)) {
                 p->x += t3c->qUnk8 + Q(5);
@@ -134,7 +139,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040A00.inc",
         }
     }
 }
-END_NONMATCH
 
 // (90.90%) https://decomp.me/scratch/Nakn1
 NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
