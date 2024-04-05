@@ -21,6 +21,30 @@
 
 /* TODO: Merge this file with boss_3.c */
 
+#if 0
+void sub_80407A4(EggTotem *totem)
+{
+    u8 i;
+
+    for(i = 0; i < ARRAY_COUNT(totem->unk3C); i++)
+    {
+        Totem3C *t3c = &totem->unk3C[i];
+
+        if (t3c->unk13 != 0) {
+            EggTotemDataA *ptr = gUnknown_080D7E78[t3c->unk12];
+            ptr = &ptr[t3c->unk13];
+
+            if(--t3c->unkE == 0) {
+                // __middle
+                t3c->unk10 = (t3c->unk10 + ptr->) + 1024u;
+            } else if(t3c->unk8){
+
+            }
+        }
+    }
+}
+#endif
+
 void sub_80408C4(EggTotem *totem)
 {
     u8 i;
@@ -32,7 +56,7 @@ void sub_80408C4(EggTotem *totem)
             EggTotemDataA *ptr = gUnknown_080D7E78[t3c->unk12];
             ptr = &ptr[t3c->unk13];
 
-            if (ptr->unk0 == 60 && ptr->unk4 == 0) {
+            if (ptr->unk0 == 60 && ptr->unk2 == 0 && ptr->unk4 == 0) {
 
                 if ((u16)t3c->unkE == 60) {
                     if (gPlayer.y < t3c->qWorldY) {
