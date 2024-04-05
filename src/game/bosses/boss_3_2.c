@@ -44,14 +44,12 @@ void sub_804063C(EggTotem *totem)
                 r2 = 12;
             } else if ((v == 1)
                        && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 1].unk13 == 0)) {
-                // _080406D0
                 r2 = 13;
             } else if ((v == 0)
                        && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 2].unk13 == 0)) {
                 r2 = 14;
             }
         }
-        // _080406F8
 
         bp = gUnknown_080D7ED4[r2];
         r6 = *bp++;
