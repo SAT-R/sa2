@@ -21,6 +21,7 @@
 
 /* TODO: Merge this file with boss_3.c */
 
+// (97.68%) https://decomp.me/scratch/RX8Wf
 #if 0
 void sub_80407A4(EggTotem *totem)
 {
@@ -34,12 +35,49 @@ void sub_80407A4(EggTotem *totem)
             EggTotemDataA *ptr = gUnknown_080D7E78[t3c->unk12];
             ptr = &ptr[t3c->unk13];
 
-            if(--t3c->unkE == 0) {
+            if(--t3c->unkE != 0) {
                 // __middle
-                t3c->unk10 = (t3c->unk10 + ptr->) + 1024u;
-            } else if(t3c->unk8){
+                s32 x, y;
+                register u32 v0 asm("r0");
+                register u32 v1 asm("r4");
 
+                v0 = ptr->unk2;
+                v1 = t3c->unk10;
+                v0 = (v0 + v1) % 1024u;
+                t3c->unk10 = v0;
+                t3c->qUnk8 = ((COS(t3c->unk10) * ptr->unk4) >> 14);
+                t3c->qUnkA = ((SIN(t3c->unk10) * ptr->unk4) >> 14);
+
+                if(ptr->unk0 == 32 && ptr->unk2 == 0 && ptr->unk4 == 0) {
+                    // t3c->qUnkC += 22.5°
+                    t3c->qUnkC = (t3c->qUnkC + Q(0.0625)) % 1024u; 
+                }
+            } else if((++ptr)->unk0 == 0){
+                // _08040838
+                t3c->unkE = 0;
+                t3c->unk13 = 0;
+                t3c->unk12 = 0;
+                t3c->unk10 = 0;
+                t3c->qUnk8 = 0;
+                t3c->qUnkA = 0;
+            } else {
+                register u32 v0 asm("r0");
+                register u32 v1 asm("r1");
+                // _0804084C
+                t3c->unk13++;
+                t3c->unkE = ptr->unk0;
+
+                v0 = ptr->unk2;
+                v1 = t3c->unk10;
+                v0 = (v0 + v1) % 1024u;
+                t3c->unk10 = v0;
+                t3c->qUnk8 = ((COS(t3c->unk10) * ptr->unk4) >> 14);
+                t3c->qUnkA = ((SIN(t3c->unk10) * ptr->unk4) >> 14);
             }
+            // _0804088C
+
+            t3c->qWorldX += Q(5) + t3c->qUnk8;
+            t3c->qWorldY += t3c->qUnkA - totem->unk30;
         }
     }
 }
@@ -76,7 +114,7 @@ void sub_80408C4(EggTotem *totem)
                     }
                 } else if ((u16)t3c->unkE == 30 && t3c->unk14 != 0) {
                     if (t3c->unk16 & 0x80) {
-                        if ((PseudoRandom32() & 0x1) == 0) {
+                        if ((PseudoRandom32() % 2u) == 0) {
                             s32 qx = t3c->qWorldX;
                             s32 qy = t3c->qWorldY + Q(t3c->unk17);
                             qy -= Q(t3c->unk15 * 3);

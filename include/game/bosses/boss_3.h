@@ -14,7 +14,7 @@ typedef struct {
     /* 0x0A */ s16 qUnkA;
     /* 0x0C */ u16 qUnkC; // rotation
     /* 0x0E */ s16 unkE; // dy ?
-    /* 0x10 */ s16 unk10;
+    /* 0x10 */ u16 unk10;
     /* 0x12 */ u8 unk12;
     /* 0x13 */ u8 unk13;
     /* 0x14 */ u8 unk14; // weapon lives?
@@ -32,7 +32,7 @@ typedef struct {
     /* 0x08 */ s16 unkA;
     /* 0x0C */ Vec2_32 qDiscPos[EGGTOTEM_NUM_PLATFORMS];
     /* 0x24 */ s16 unk24[EGGTOTEM_NUM_PLATFORMS][2];
-    /* 0x30 */ u16 unk30;
+    /* 0x30 */ s16 unk30;
     /* 0x32 */ u8 unk32;
     /* 0x33 */ u8 unk33;
     /* 0x34 */ u8 unk34;
@@ -81,7 +81,8 @@ typedef struct {
 } EggTotemBullet;
 
 typedef struct {
-    u32 unk0;
+    u16 unk0;
+    u16 unk2;
     u16 unk4;
 } EggTotemDataA;
 

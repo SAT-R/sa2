@@ -1127,6 +1127,7 @@ _08040798: .4byte gUnknown_080D7ED4
 _0804079C: .4byte gUnknown_080D7E78
 _080407A0: .4byte gSineTable
 
+.if 01
 	thumb_func_start sub_80407A4
 sub_80407A4: @ 0x080407A4
 	push {r4, r5, r6, r7, lr}
@@ -1139,7 +1140,7 @@ _080407AC:
 	lsls r0, r0, #2
 	adds r0, #0x3c
 	mov r1, ip
-	adds r2, r1, r0
+	adds r2, r1, r0         @ r2 = t3c
 	ldrb r4, [r2, #0x13]
 	cmp r4, #0
 	beq _080408AE
@@ -1150,7 +1151,7 @@ _080407AC:
 	ldr r3, [r0]
 	ldrb r0, [r2, #0x13]
 	lsls r0, r0, #3
-	adds r3, r3, r0
+	adds r3, r3, r0         @ r3 = ptr
 	ldrh r0, [r2, #0xe]
 	subs r0, #1
 	movs r1, #0
@@ -1158,6 +1159,7 @@ _080407AC:
 	lsls r0, r0, #0x10
 	cmp r0, #0
 	beq _08040838
+__middle:
 	ldrh r0, [r3, #2]
 	ldrh r4, [r2, #0x10]
 	adds r0, r0, r4
@@ -1278,5 +1280,4 @@ _080408BA:
 	.align 2, 0
 _080408C0: .4byte 0x000003FF
 
-.if 0
 .endif
