@@ -21,35 +21,33 @@
 
 /* TODO: Merge this file with boss_3.c */
 
-#if 0
 void sub_804063C(EggTotem *totem)
 {
-    Totem3C *t3c, *t3c2;
+    Totem3C *t3c;
     s8 r2;
     u8 *bp;
     s8 r6;
 
-    u32 rnd32;
     u8 rnd = PseudoRandom32();
     s8 v = Mod(rnd, 3);
     s8 r4 = gStageTime % 4u;
 
     t3c = &totem->unk3C[v];
 
-    if(t3c->unk13 == 0) {
+    if (t3c->unk13 == 0) {
         m4aSongNumStart(SE_246);
-        
+
         r2 = r4 * 3 + v;
 
-        rnd32 = PseudoRandom32();
-
-        if((rnd32 % 2u) != 0) {
-            if((v == 0) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS-1].unk13 == 0)) {
+        if ((PseudoRandom32() % 2u) != 0) {
+            if ((v == 0) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 1].unk13 == 0)) {
                 r2 = 12;
-            } else if((v == 1) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS-1].unk13 == 0)) {
+            } else if ((v == 1)
+                       && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 1].unk13 == 0)) {
                 // _080406D0
                 r2 = 13;
-            } else if((v == 0) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS-2].unk13 == 0)) {
+            } else if ((v == 0)
+                       && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 2].unk13 == 0)) {
                 r2 = 14;
             }
         }
@@ -58,27 +56,24 @@ void sub_804063C(EggTotem *totem)
         bp = gUnknown_080D7ED4[r2];
         r6 = *bp++;
 
-        while((--r6) >= 0) {
-            s8 r7;
+        while ((--r6) >= 0) {
             EggTotemDataA *totemDataA;
-            Totem3C *t3c2;
-            r7 = *bp++;
+            v = *bp++;
             r4 = *bp++;
             totemDataA = gUnknown_080D7E78[r4];
-            t3c2 = &totem->unk3C[r7];
-            t3c2->unk13 = 1;
-            t3c2->unk12 = r4;
-            t3c2->unk10 = totemDataA->unk2;
+            t3c = &totem->unk3C[v];
+            t3c->unk13 = 1;
+            t3c->unk12 = r4;
+            t3c->unk10 = totemDataA->unk2;
             totemDataA++;
 
-            t3c2->unkE = totemDataA->unk0;
-            t3c2->qUnk8 = ((COS((u16)t3c2->unk10) * totemDataA->unk4) >> 14);
-            t3c2->qUnkA = ((SIN((u16)t3c2->unk10) * totemDataA->unk4) >> 14);
-            t3c2->qUnkC = Q(3);
+            t3c->unkE = totemDataA->unk0;
+            t3c->qUnk8 = ((COS((u16)t3c->unk10) * totemDataA->unk4) >> 14);
+            t3c->qUnkA = ((SIN((u16)t3c->unk10) * totemDataA->unk4) >> 14);
+            t3c->qUnkC = Q(3);
         }
     }
 }
-#endif
 
 // (97.68%) https://decomp.me/scratch/RX8Wf
 NONMATCH("asm/non_matching/game/bosses/boss_3__sub_80407A4.inc",
