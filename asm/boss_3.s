@@ -75,9 +75,7 @@ gUnknown_080D7F14:
 .syntax unified
 .arm
 
-.if 0
-.endif
-
+.if 01
 	thumb_func_start sub_803FF44
 sub_803FF44: @ 0x0803FF44
 	push {r4, r5, r6, r7, lr}
@@ -86,7 +84,7 @@ sub_803FF44: @ 0x0803FF44
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x5c
-	str r0, [sp, #0x24]
+	str r0, [sp, #0x24]     @ sp24 = totem
 	adds r0, #0x38
 	ldrb r0, [r0]
 	cmp r0, #0
@@ -96,59 +94,59 @@ _0803FF5C:
 	movs r6, #0
 	ldr r0, [sp, #0x24]
 	adds r0, #0x26
-	str r0, [sp, #0x38]
+	str r0, [sp, #0x38]     @ sp38 = totem->unk24[0][1]
 	ldr r1, [sp, #0x24]
 	adds r1, #0xc
-	str r1, [sp, #0x28]
+	str r1, [sp, #0x28]     @ sp28 = &totem->qDiscPos.x
 	ldr r2, [sp, #0x24]
 	adds r2, #0x24
-	str r2, [sp, #0x34]
+	str r2, [sp, #0x34]     @ sp34 = totem->unk24[0][0]
 	ldr r3, [sp, #0x24]
 	adds r3, #0x10
-	str r3, [sp, #0x2c]
+	str r3, [sp, #0x2c]     @ sp2C = &totem->qDiscPos.y
 	ldr r7, [sp, #0x24]
 	adds r7, #0xa6
-	mov sl, r7
+	mov sl, r7              @ sl = &totem->qUnkA6
 	ldr r0, [sp, #0x24]
 	adds r0, #0x9c
-	str r0, [sp, #0x4c]
+	str r0, [sp, #0x4c]     @ sp4C = &totem->qUnk9C
 	ldr r1, [sp, #0x24]
 	adds r1, #0xa4
-	str r1, [sp, #0x50]
+	str r1, [sp, #0x50]     @ sp50 = &totem->qUnkA4
 	ldr r2, [sp, #0x24]
 	adds r2, #0xa0
-	mov sb, r2
+	mov sb, r2              @ sb = &totem->qUnkA0
 	ldr r3, [sp, #0x24]
 	adds r3, #0x90
-	str r3, [sp, #0x40]
+	str r3, [sp, #0x40]     @ sp40 = &totem->qUnk90
 	ldr r7, [sp, #0x24]
 	adds r7, #0x94
-	str r7, [sp, #0x44]
+	str r7, [sp, #0x44]     @ sp44 = &totem->qUnk94
 _0803FF9A:
 	lsls r0, r6, #2
-	mov r8, r0
+	mov r8, r0              @ r8 = i * 4
 	ldr r5, [sp, #0x38]
-	add r5, r8
+	add r5, r8              @ r5 = &totem->unk24[i][1]
 	ldrh r0, [r5]
 	adds r0, #0x20
 	strh r0, [r5]
 	lsls r2, r6, #3
-	ldr r1, [sp, #0x28]
+	ldr r1, [sp, #0x28]     @ sp28 = &totem->qDiscPos[i].x
 	adds r3, r1, r2
-	ldr r7, [sp, #0x34]
+	ldr r7, [sp, #0x34]     @ sp34 = &totem->unk24[0][0]
 	add r7, r8
 	movs r0, #0
 	ldrsh r1, [r7, r0]
 	ldr r0, [r3]
 	adds r0, r0, r1
-	str r0, [r3]
+	str r0, [r3]            @ totem->qDiscPos.x += totem->unk24[i][0]
 	ldr r1, [sp, #0x2c]
 	adds r4, r1, r2
 	movs r2, #0
 	ldrsh r1, [r5, r2]
 	ldr r0, [r4]
 	adds r0, r0, r1
-	str r0, [r4]
+	str r0, [r4]            @ totem->qDiscPos.x += totem->unk24[i][0]
 	asrs r0, r0, #8
 	ldr r1, _080400AC @ =gUnknown_080D7F10
 	adds r1, r6, r1
@@ -388,30 +386,30 @@ _080401B4: .4byte 0x000001FF
 _080401B8: .4byte 0x06012980
 _080401BC: .4byte 0x0000026B
 _080401C0:
-	movs r6, #0
+	movs r6, #0                 @ r6 = i = 0
 	ldr r3, _080404C0 @ =sub_801EC3C
-	mov r8, r3
+	mov r8, r3                  @ r8 = sub_801EC3C
 	ldr r7, [sp, #0x24]
 	adds r7, #0x9c
-	str r7, [sp, #0x4c]
+	str r7, [sp, #0x4c]         @ sp4C = &totem->qUnk9C
 	ldr r0, [sp, #0x24]
 	adds r0, #0xa4
-	str r0, [sp, #0x50]
+	str r0, [sp, #0x50]         @ sp50 = &totem->qUnkA4
 	ldr r1, [sp, #0x24]
 	adds r1, #0x90
-	str r1, [sp, #0x40]
+	str r1, [sp, #0x40]         @ sp40 = &totem->qUnk90
 	ldr r2, [sp, #0x24]
 	adds r2, #0x94
-	str r2, [sp, #0x44]
+	str r2, [sp, #0x44]         @ sp44 = &totem->qUnk94
 	ldr r3, [sp, #0x24]
 	adds r3, #0x9a
-	str r3, [sp, #0x48]
+	str r3, [sp, #0x48]         @ sp48 = &totem->qUnk9A
 	ldr r5, [sp, #0x24]
-	adds r5, #0x98
+	adds r5, #0x98              @ r5 = totem->qUnk98
 	ldr r4, [sp, #0x24]
-	adds r4, #0xc
+	adds r4, #0xc               @ r4 = &totem->qDiscPos[0]
 	ldr r3, [sp, #0x24]
-	adds r3, #0x24
+	adds r3, #0x24              @ r3 = &totem->unk24[0][0]
 _080401F0:
 	lsls r1, r6, #3
 	adds r1, r4, r1
@@ -464,22 +462,22 @@ _080401F0:
 	blt _08040256
 	b _08040360
 _08040256:
-	ldr r1, [sp, #0x24]
+	ldr r1, [sp, #0x24]         @ r1 = sp24 = totem
 	adds r1, #0x38
 	ldrb r0, [r1]
 	subs r0, #1
 	strb r0, [r1]
 	lsls r0, r0, #0x18
-	str r1, [sp, #0x3c]
+	str r1, [sp, #0x3c]         @ sp3C = totem->unk38
 	lsls r2, r2, #8
 	str r2, [sp, #0x30]
 	cmp r0, #0
 	bne _08040324
 	movs r3, #0
-	ldr r7, [sp, #0x24]
+	ldr r7, [sp, #0x24]         @ r7 = sp24 = totem
 	adds r7, #0xa0
 	mov sb, r7
-	ldr r0, [sp, #0x24]
+	ldr r0, [sp, #0x24]         @ r0 = sp24 = totem
 	adds r0, #0x39
 	mov sl, r0
 	ldr r7, _080404C4 @ =gPseudoRandom
@@ -673,7 +671,7 @@ _08040360:
 	adds r0, r1, #0
 	strh r7, [r0, #0xa]
 	str r7, [sp, #8]
-	ldr r1, [sp, #0x24]
+	ldr r1, [sp, #0x24]         @ r1 = sp24 = totem
 	adds r1, #0x39
 	bl CreateBossParticleWithExplosionUpdate
 _08040400:
@@ -710,7 +708,7 @@ _08040400:
 	str r1, [sp, #0x18]
 	muls r2, r5, r2
 	adds r2, r2, r4
-	ldr r0, [sp, #0x24]
+	ldr r0, [sp, #0x24]         @ r0 = sp24 = totem
 	adds r0, #0xa0
 	ldr r1, [r0]
 	asrs r1, r1, #8
@@ -751,7 +749,7 @@ _08040400:
 	adds r0, r1, #0
 	strh r7, [r0, #0xa]
 	str r7, [sp, #8]
-	ldr r1, [sp, #0x24]
+	ldr r1, [sp, #0x24]         @ r1 = sp24 = totem
 	adds r1, #0x39
 	bl CreateBossParticleWithExplosionUpdate
 _0804049E:
@@ -761,7 +759,7 @@ _080404A0:
 	subs r0, r0, r6
 	lsls r0, r0, #2
 	adds r0, #0x3c
-	ldr r1, [sp, #0x24]
+	ldr r1, [sp, #0x24]         @ sp24 = totem
 	adds r4, r1, r0
 	ldrb r0, [r4, #0x18]
 	cmp r0, #0
@@ -791,7 +789,7 @@ _080404E4:
 	cmp r0, #0
 	bne _080405A0
 	movs r3, #0
-	ldr r2, [sp, #0x24]
+	ldr r2, [sp, #0x24]         @ r2 = sp24 = totem
 	adds r2, #0x39
 	mov sl, r2
 	ldr r7, _08040618 @ =gPseudoRandom
@@ -948,3 +946,4 @@ _0804062C: .4byte 0x06012980
 _08040630: .4byte 0x0000026B
 _08040634: .4byte sub_801EC3C
 _08040638: .4byte 0xFFFFFF00
+.endif

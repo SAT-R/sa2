@@ -752,3 +752,25 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc",
     }
 }
 END_NONMATCH
+
+#if 0
+void sub_803FF44(EggTotem *totem)
+{
+    u8 i;
+
+    if(totem->unk38 == 0) {
+        // _0803FF9A
+        for(i = 0; i < EGGTOTEM_NUM_PLATFORMS; i++) {
+            totem->unk24[i][0] += 0x20;
+            totem->qDiscPos[i].x += totem->unk24[i][0];
+            totem->qDiscPos[i].y += totem->unk24[i][1];
+        }
+    } else {
+        // _080401C0
+        
+        for(i = 0; i < EGGTOTEM_NUM_PLATFORMS; i++) {
+
+        }
+    }
+}
+#endif

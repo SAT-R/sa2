@@ -66,8 +66,8 @@ void sub_804063C(EggTotem *totem)
             totemDataA++;
 
             t3c->unkE = totemDataA->unk0;
-            t3c->qUnk8 = ((COS((u16)t3c->unk10) * totemDataA->unk4) >> 14);
-            t3c->qUnkA = ((SIN((u16)t3c->unk10) * totemDataA->unk4) >> 14);
+            t3c->qUnk8 = ((COS(t3c->unk10) * totemDataA->unk4) >> 14);
+            t3c->qUnkA = ((SIN(t3c->unk10) * totemDataA->unk4) >> 14);
             t3c->qUnkC = Q(3);
         }
     }
