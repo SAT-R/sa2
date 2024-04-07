@@ -1304,7 +1304,7 @@ _08048468:
 _08048482:
 	lsls r0, r4, #8
 	lsls r1, r5, #8
-	bl sub_80122DC
+	bl Player_UpdateHomingPosition
 	ldrb r7, [r6, #0x16]
 	cmp r7, #0
 	bne _080484B0

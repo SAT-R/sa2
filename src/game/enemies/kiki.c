@@ -157,7 +157,7 @@ static void sub_8053A38(void)
 
     kiki->unk3F++;
 
-    sub_80122DC(Q_24_8_NEW(x), Q_24_8_NEW(y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(x), Q_24_8_NEW(y));
 
     if (kiki->unk3F == 0x12) {
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {

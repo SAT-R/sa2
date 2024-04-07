@@ -6,7 +6,7 @@
 
 #define AnimCommandSizeInWords(_structType) ((sizeof(_structType)) / sizeof(s32))
 
-typedef s32 (*AnimationCommandFunc)(void *cursor, Sprite *sprite);
+typedef AnimCmdResult (*AnimationCommandFunc)(void *cursor, Sprite *sprite);
 
 typedef struct {
     /* 0x00 */ s32 cmdId; // -2

@@ -5,6 +5,9 @@
 .syntax unified
 .arm
 
+@ Input:
+    @ R0 = Player *
+    @ R1 = Sprite * (player->unk90)
 	thumb_func_start sub_8024B10
 sub_8024B10: @ 0x08024B10
 	push {r4, r5, r6, r7, lr}

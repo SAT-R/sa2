@@ -70,7 +70,7 @@ void sub_801F550(struct Task *);
 // HandlePlayerDestroy?
 extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
 
-extern void sub_80122DC(s32, s32);
+extern void Player_UpdateHomingPosition(s32, s32);
 
 // HandleHitPlayer
 extern u32 sub_800C84C(Sprite *, s32, s32);

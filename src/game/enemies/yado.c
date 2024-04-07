@@ -195,7 +195,7 @@ void Task_8055084(void)
         return;
     }
 
-    sub_80122DC(yado->spawnX, yado->spawnY);
+    Player_UpdateHomingPosition(yado->spawnX, yado->spawnY);
 
     if (--yado->unk4C == 0) {
         yado->unk4C = YADO_PROJ_COOLDOWN;
@@ -251,7 +251,7 @@ void Task_8055378(void)
 
     ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(yado, me, s);
 
-    sub_80122DC(yado->spawnX, yado->spawnY);
+    Player_UpdateHomingPosition(yado->spawnX, yado->spawnY);
 
     if (UpdateSpriteAnimation(s) == 0) {
         DisplaySprite(s);

@@ -143,7 +143,7 @@ static void sub_8051AF0(void)
 
     ENEMY_DESTROY_IF_OFFSCREEN(gohla, me, s);
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
     if (UpdateSpriteAnimation(s) == 0) {
         ENEMY_TURN_AROUND(s);
         s->graphics.anim = SA2_ANIM_GOHLA;

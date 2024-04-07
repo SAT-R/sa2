@@ -1,8 +1,16 @@
 #ifndef GUARD_PARAMETERS_BOSSES_H
 #define GUARD_PARAMETERS_BOSSES_H
 
-#define BOSS_VELOCITY_X Q(5.00)
-#define BOSS_VELOCITY_Y Q(0.00)
+#define BOSS_VELOCITY_X           Q(5.00)
+#define BOSS_VELOCITY_Y           Q(0.00)
+#define BOSS_EXPLOSION_VELOCITY_X Q(5.50)
+
+/*
+ * Boss 3 - Egg Totem
+ */
+
+#define BOSS5_BULLET_SPEED Q(2.0)
+#define BOSS5_HEIGHT       Q(80.0) // Used for Homing Positioning
 
 /*
  * Boss 4 - Aero Egg

@@ -853,7 +853,7 @@ void HandleCollision(EggSaucer *boss)
         }
     }
 
-    sub_80122DC(Q_24_8_NEW(x), Q_24_8_NEW(y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(x), Q_24_8_NEW(y));
 
     if (boss->unk13 == 0 && IsColliding_Cheese(s, x, y, 0, &gPlayer) == TRUE) {
         sub_8045368(boss);
@@ -891,7 +891,7 @@ void HandleCollision(EggSaucer *boss)
             }
         }
 
-        sub_80122DC(Q_24_8_NEW(x), Q_24_8_NEW(y));
+        Player_UpdateHomingPosition(Q_24_8_NEW(x), Q_24_8_NEW(y));
 
         if (boss->unk1F == 0) {
             if (IsColliding_Cheese(s, x, y, 0, &gPlayer) == 1) {

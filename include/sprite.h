@@ -128,7 +128,6 @@ typedef struct {
 #define SPRITE_OAM_ORDER(index)  ((index) << 6)
 #define GET_SPRITE_OAM_ORDER(s)  ((((s)->unk1A) & 0x7C0) >> 6)
 
-// TODO: work out what makes this struct different from the above
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
     /* 0x0C */ SpriteOffset *dimensions;
@@ -173,6 +172,19 @@ typedef struct {
     /* 0x28 */ Hitbox hitboxes[1];
 } Sprite /* size = 0x30 */;
 
+// TODO: Unify Sprite with variable hitbox count through a macro
+typedef struct {
+    Sprite s;
+    Hitbox hb1;
+} Sprite2;
+
+// TODO: Unify Sprite with variable hitbox count through a macro
+typedef struct {
+    Sprite s;
+    Hitbox hb1;
+    Hitbox hb2;
+} Sprite3;
+
 typedef struct {
     /* 0x00 */ u16 rotation;
 
@@ -200,7 +212,13 @@ typedef struct PACKED {
 
 extern const u8 gOamShapesSizes[12][2];
 
-s32 UpdateSpriteAnimation(Sprite *);
+typedef enum {
+    ACMD_RESULT__ANIM_CHANGED = -1,
+    ACMD_RESULT__ENDED = 0,
+    ACMD_RESULT__RUNNING = +1,
+} AnimCmdResult;
+
+AnimCmdResult UpdateSpriteAnimation(Sprite *);
 
 void DisplaySprite(Sprite *);
 void DrawBackground(Background *);

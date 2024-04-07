@@ -1400,7 +1400,7 @@ _0804B1DC:
 	adds r0, r6, #0
 	adds r1, r7, #0
 	str r2, [sp, #0xc]
-	bl sub_80122DC
+	bl Player_UpdateHomingPosition
 	ldr r2, [sp, #0xc]
 _0804B21E:
 	ldr r0, [r2, #0x20]
@@ -1565,7 +1565,7 @@ _0804B314:
 	beq _0804B364
 	adds r0, r4, #0
 	adds r1, r5, #0
-	bl sub_80122DC
+	bl Player_UpdateHomingPosition
 _0804B364:
 	mov r1, r8
 	ldr r0, [r1, #0x20]
@@ -4305,7 +4305,7 @@ _0804C8CC:
 	lsls r0, r1, #8
 	ldr r2, [sp, #8]
 	lsls r1, r2, #8
-	bl sub_80122DC
+	bl Player_UpdateHomingPosition
 _0804C8E4:
 	add sp, #0xc
 	pop {r3}

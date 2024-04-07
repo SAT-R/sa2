@@ -20,8 +20,8 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite displayed;
-    /* 0x3C */ s32 posX;
-    /* 0x40 */ s32 posY;
+    /* 0x3C */ s32 worldX;
+    /* 0x40 */ s32 worldY;
 } Sprite_SpecialRing; /* size = 0x44 */
 
 static void Task_Interactable_SpecialRing(void);
@@ -43,8 +43,8 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         Sprite_SpecialRing *ring = TASK_DATA(t);
         Sprite *s;
 
-        ring->posX = TO_WORLD_POS(me->x, spriteRegionX);
-        ring->posY = TO_WORLD_POS(me->y, spriteRegionY);
+        ring->worldX = TO_WORLD_POS(me->x, spriteRegionX);
+        ring->worldY = TO_WORLD_POS(me->y, spriteRegionY);
         ring->base.regionX = spriteRegionX;
         ring->base.regionY = spriteRegionY;
         ring->base.me = me;
@@ -71,20 +71,20 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
 static bool32 sub_8081010(Sprite_SpecialRing *ring)
 {
-    Cheese *ptr = gCheese;
+    Cheese *cheese = gCheese;
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
-        u32 flags = sub_800DF38(&ring->displayed, ring->posX, ring->posY, &gPlayer);
+        u32 flags = sub_800DF38(&ring->displayed, ring->worldX, ring->worldY, &gPlayer);
         if (flags & 0xF0000) {
             return TRUE;
         } else {
             s32 somePosX, somePosY;
             u16 posX, posY;
-            somePosX = Q_24_8_TO_INT(ptr->posX) + 16;
-            somePosX -= ring->posX;
+            somePosX = I(cheese->posX) + 16;
+            somePosX -= ring->worldX;
 
-            somePosY = Q_24_8_TO_INT(ptr->posY) + 32;
-            somePosY -= ring->posY;
+            somePosY = I(cheese->posY) + 32;
+            somePosY -= ring->worldY;
 
             posY = somePosY;
             posX = somePosX;
@@ -105,7 +105,7 @@ static void Task_Interactable_SpecialRing(void)
     Sprite_SpecialRing *ring = TASK_DATA(gCurTask);
 
     if (gPlayer.character == CHARACTER_CREAM) {
-        sub_80122DC(Q_24_8(ring->posX), Q_24_8(ring->posY));
+        Player_UpdateHomingPosition(Q(ring->worldX), Q(ring->worldY));
     }
 
     if (sub_8081010(ring)) {
@@ -140,8 +140,8 @@ static void sub_8081134(Sprite_SpecialRing *ring)
 {
     Sprite *s = &ring->displayed;
 
-    s->x = ring->posX - gCamera.x;
-    s->y = ring->posY - gCamera.y;
+    s->x = ring->worldX - gCamera.x;
+    s->y = ring->worldY - gCamera.y;
 
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
@@ -151,10 +151,10 @@ static bool32 sub_8081164(Sprite_SpecialRing *ring)
 {
     s32 screenPosX, screenPosY;
     u16 posX, posY;
-    screenPosX = (ring->posX + 128);
+    screenPosX = (ring->worldX + 128);
     screenPosX -= gCamera.x;
 
-    screenPosY = (ring->posY + 128);
+    screenPosY = (ring->worldY + 128);
     screenPosY -= gCamera.y;
 
     posY = screenPosY;

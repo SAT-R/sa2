@@ -242,7 +242,7 @@ static void sub_8058EDC(void)
     }
 
     ENEMY_DESTROY_IF_OFFSCREEN(flickey, me, s);
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
     if (UpdateSpriteAnimation(s) == 0) {
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
             SPRITE_FLAG_CLEAR(s, X_FLIP);
