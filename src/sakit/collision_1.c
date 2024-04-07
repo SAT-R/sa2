@@ -1,12 +1,17 @@
 #include "global.h"
 #include "rect.h"
 #include "sprite.h"
+
 #include "lib/m4a.h"
+
 #include "sakit/globals.h"
 #include "sakit/collision.h"
 #include "sakit/player.h"
 #include "game/game.h"
-#include "game/multiplayer/unknown_1.h"
+
+#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/mp_player.h"
+
 #include "game/parameters/characters.h"
 #include "game/playerfn_cmds.h"
 #include "game/rings_scatter.h"
@@ -19,7 +24,7 @@
 u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3,
                 UNUSED s32 param4, u8 layer)
 {
-    struct MultiplayerPlayer *mpPlayer;
+    MultiplayerPlayer *mpPlayer;
     Sprite *mpPlayerSprite;
     u32 res2;
     u32 result = COLL_NONE;

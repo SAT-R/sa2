@@ -1,16 +1,15 @@
 #include "core.h"
 #include "sakit/globals.h"
 
-#include "game/multiplayer/mp_player.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/item_tasks.h"
 
-#include "game/multiplayer/player_unk_1.h"
-
 #include "game/unknown_effect.h"
 
+#include "game/multiplayer/player_unk_1.h"
 #include "game/multiplayer/finish.h"
+#include "game/multiplayer/mp_player.h"
 
 #include "lib/m4a.h"
 
@@ -91,8 +90,8 @@ void Task_8018A28(void)
 
 void sub_8018AD8(union MultiSioData *recv, u8 i)
 {
-    struct MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[i]);
-    struct MultiplayerPlayer *us = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+    MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[i]);
+    MultiplayerPlayer *us = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
 
     if (!(us->unk5C & 1) && PLAYER_IS_ALIVE
         && gUnknown_030054B4[SIO_MULTI_CNT->id] == -1) {
@@ -182,7 +181,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
 void sub_8018E00(union MultiSioData *recv, u8 i)
 {
     u32 j;
-    struct MultiplayerPlayer *mpp;
+    MultiplayerPlayer *mpp;
 
     s32 count2 = 0;
     s32 count3 = 0;
@@ -192,7 +191,7 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
 
     for (j = 0; j < 4; j++) {
         // u32 id = SIO_MULTI_CNT->id;
-        struct MultiplayerPlayer *mpp2;
+        MultiplayerPlayer *mpp2;
         if (gMultiplayerPlayerTasks[j] == NULL) {
             break;
         }
@@ -262,7 +261,7 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
 
     if ((count3 + 1) >= (u32)(count - 1) || gGameMode == GAME_MODE_TEAM_PLAY) {
         for (j = 0; j < 4; j++) {
-            struct MultiplayerPlayer *mpp2;
+            MultiplayerPlayer *mpp2;
 
             if (gMultiplayerPlayerTasks[j] == NULL) {
                 break;

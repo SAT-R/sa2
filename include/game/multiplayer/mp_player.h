@@ -7,7 +7,7 @@ typedef struct {
     // TODO: Verify that this is Sprite!
     //       (Used in Task_Item_Invincibility @ 0x0802AC60)
     Sprite s;
-    Hitbox reserved; // Power-Up
+    Hitbox reserved;
 
     SpriteTransform transform;
     s32 unk44;

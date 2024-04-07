@@ -2,7 +2,6 @@
 #include "core.h"
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/multiplayer/unknown_1.h"
 #include "game/multiplayer/player_unk_1.h"
 #include "game/rings_scatter.h"
 #include "sakit/entities_manager.h"

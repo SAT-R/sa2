@@ -5,6 +5,7 @@
 #include "sakit/globals.h"
 #include "game/cheese.h"
 #include "game/stage/camera.h"
+#include "game/multiplayer/mp_player.h"
 
 #include "lib/m4a.h"
 
@@ -104,7 +105,7 @@ void CreateCheese(Player *player)
         cheese->posX = gPlayer.x;
         cheese->posY = gPlayer.y;
     } else {
-        struct MultiplayerPlayer *mpp = NULL;
+        MultiplayerPlayer *mpp = NULL;
         u8 i;
         u32 j;
         cheese = NULL;
@@ -1058,7 +1059,7 @@ bool8 sub_8015118(Cheese *cheese)
         }
 
         if (!thing) {
-            unk54->unk64 = cheese->unk6C->unk38 >> 2;
+            unk54->unk64 = cheese->unk6C->transform.rotation >> 2;
 
             if (cheese->unk6C->unk54 & 8) {
                 if (unk54->unk64) {

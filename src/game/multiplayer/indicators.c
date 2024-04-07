@@ -4,6 +4,8 @@
 #include "sakit/camera.h"
 #include "game/game.h"
 
+#include "game/multiplayer/mp_player.h"
+
 #include "constants/animations.h"
 
 typedef struct {
@@ -104,7 +106,7 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     SpriteTransform *transform;
     OpponentIndicator *pi;
     struct Task *t;
-    struct MultiplayerPlayer *mpp;
+    MultiplayerPlayer *mpp;
 
     pi = TASK_DATA(gCurTask);
     t = gMultiplayerPlayerTasks[pi->playerId];

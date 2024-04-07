@@ -33,8 +33,13 @@
 // TODO: Rename. "These "Insta Shield" is true for Sonic, but not the other characters.
 #define SA2_CHAR_ANIM_INSTA_SHIELD_1 17
 #define SA2_CHAR_ANIM_INSTA_SHIELD_2 18
+#define SA2_CHAR_ANIM_19             19
 
 #define SA2_CHAR_ANIM_20                                     20
+#define SA2_CHAR_ANIM_21                                     21
+#define SA2_CHAR_ANIM_22                                     22
+#define SA2_CHAR_ANIM_23                                     23
+#define SA2_CHAR_ANIM_24                                     24
 #define SA2_CHAR_ANIM_28                                     28
 #define SA2_CHAR_ANIM_29                                     29
 #define SA2_CHAR_ANIM_BEFORE_COUNTDOWN                       30

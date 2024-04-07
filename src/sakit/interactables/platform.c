@@ -11,7 +11,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
-#include "game/multiplayer/unknown_1.h"
+#include "game/multiplayer/player_unk_1.h"
 
 #include "constants/animations.h"
 #include "constants/interactables.h"

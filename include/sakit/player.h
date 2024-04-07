@@ -62,6 +62,7 @@ typedef void (*PlayerCallback)(struct Player_ *);
 #define PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC 0x08
 #define PLAYER_ITEM_EFFECT__10              0x10
 #define PLAYER_ITEM_EFFECT__20              0x20
+#define PLAYER_ITEM_EFFECT__80              0x80
 
 #define HAS_SHIELD(p)                                                                   \
     ((p)->itemEffect                                                                    \

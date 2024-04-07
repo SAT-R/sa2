@@ -9,8 +9,11 @@
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+
 #include "game/interactables_1/stage_goal.h"
-#include "game/multiplayer/unknown_1.h"
+
+#include "game/multiplayer/mp_player.h"
+#include "game/multiplayer/player_unk_1.h"
 #include "game/multiplayer/finish.h"
 
 #include "sprite.h"
@@ -194,8 +197,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
 {
     struct UNK_3005510 *unk5510;
     u32 count = 0;
-    struct MultiplayerPlayer *player
-        = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+    MultiplayerPlayer *player = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
     gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__40;
     gPlayer.unk32 = 0;
 
@@ -204,8 +206,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
         for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks)
              && gMultiplayerPlayerTasks[j] != NULL;
              j++) {
-            struct MultiplayerPlayer *otherPlayer
-                = TASK_DATA(gMultiplayerPlayerTasks[j]);
+            MultiplayerPlayer *otherPlayer = TASK_DATA(gMultiplayerPlayerTasks[j]);
             if (otherPlayer->unk5C & 1) {
                 count++;
             }
@@ -283,7 +284,7 @@ static void sub_8062D44(void)
         struct Task **tasks;
         for (j = 0, tasks = gMultiplayerPlayerTasks;
              j < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[j] != NULL; j++) {
-            struct MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[j]);
+            MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[j]);
             if (otherPlayer->unk54 & 0x100) {
                 count++;
             }
@@ -296,7 +297,7 @@ static void sub_8062D44(void)
             if (gMultiplayerPlayerTasks[0] != NULL) {
                 for (i = 0, tasks = gMultiplayerPlayerTasks;
                      i < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[i] != NULL; i++) {
-                    struct MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[i]);
+                    MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[i]);
                     if (!(otherPlayer->unk5C & 1) && gGameMode != GAME_MODE_TEAM_PLAY) {
                         otherPlayer->unk5C |= 1;
                         gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;

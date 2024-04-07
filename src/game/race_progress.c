@@ -5,6 +5,7 @@
 #include "game/game.h"
 #include "game/race_progress.h"
 #include "game/stage/player.h"
+#include "game/multiplayer/mp_player.h"
 #include "game/screen_fade.h"
 
 #include "constants/animations.h"
@@ -141,7 +142,7 @@ static void Task_UpdateAvatarPositions(void)
 {
     u8 i;
     Sprite *avatar;
-    struct MultiplayerPlayer *player;
+    MultiplayerPlayer *player;
     struct RaceProgressIndicator *progressIndicator = TASK_DATA(gCurTask);
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
