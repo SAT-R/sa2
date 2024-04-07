@@ -754,9 +754,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc",
 }
 END_NONMATCH
 
-#if 01
 // (81.46%) https://decomp.me/scratch/gT3he
-void sub_803FF44(EggTotem *totem)
+NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc",
+         void sub_803FF44(EggTotem *totem))
 {
     u8 i, j;
     s32 res;
@@ -995,4 +995,4 @@ void sub_803FF44(EggTotem *totem)
     }
     // _08040608 - return;
 }
-#endif
+END_NONMATCH
