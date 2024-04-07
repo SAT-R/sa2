@@ -42,7 +42,7 @@ typedef struct {
     /* 0x04 */ s32 qWorldY;
     /* 0x08 */ s16 unk8;
     /* 0x08 */ s16 unkA;
-    /* 0x0C */ Vec2_32 qDiscPos[EGGTOTEM_NUM_PLATFORMS];
+    /* 0x0C */ Vec2_32 qWheelPos[EGGTOTEM_NUM_PLATFORMS];
     /* 0x24 */ s16 unk24[EGGTOTEM_NUM_PLATFORMS][2];
     /* 0x30 */ s16 unk30;
     /* 0x32 */ u8 lives;
@@ -72,15 +72,15 @@ typedef struct {
     /* 0xB8 */ s32 qUnkB8; // some x
     /* 0xBC */ s32 qUnkBC; // some y
     /* 0xC0 */ Sprite2 sprC0; // Main body
-    /* 0xF8 */ Sprite sprF8[EGGTOTEM_NUM_PLATFORMS];
-    /* 0x188 */ Sprite3 spr188[EGGTOTEM_NUM_PLATFORMS];
-    /* 0x248 */ Sprite spr248[2];
-    /* 0x2A8 */ Sprite spr2A8;
-    /* 0x2D8 */ Sprite spr2D8;
-    /* 0x308 */ Sprite spr308;
-    /* 0x338 */ Sprite spr338;
-    /* 0x368 */ Sprite spr368;
-    /* 0x398 */ void *tilesEggman;
+    /* 0xF8 */ Sprite sprWheels[EGGTOTEM_NUM_PLATFORMS];
+    /* 0x188 */ Sprite3 sprPlatform[EGGTOTEM_NUM_PLATFORMS];
+    /* 0x248 */ Sprite sprBulletLauncher[2];
+    /* 0x2A8 */ Sprite sprPilot;
+    /* 0x2D8 */ Sprite sprTails;
+    /* 0x308 */ Sprite sprTailsHook;
+    /* 0x338 */ Sprite sprBodyEnergy;
+    /* 0x368 */ Sprite sprCart;
+    /* 0x398 */ void *tilesBullet;
 } EggTotem; /* size: 0x39C */
 
 typedef struct {
@@ -243,9 +243,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
         totem->qWorldX = Q(13714);
         totem->qWorldY = Q(170);
 
-        for (i = 0; i < ARRAY_COUNT(totem->qDiscPos); i++) {
-            totem->qDiscPos[i].x = Q(13714);
-            totem->qDiscPos[i].y = Q(170);
+        for (i = 0; i < ARRAY_COUNT(totem->qWheelPos); i++) {
+            totem->qWheelPos[i].x = Q(13714);
+            totem->qWheelPos[i].y = Q(170);
         }
         // _0803EE06
 
@@ -278,9 +278,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
         totem->qWorldX = Q(680);
         totem->qWorldY = Q(170);
 
-        for (i = 0; i < ARRAY_COUNT(totem->qDiscPos); i++) {
-            totem->qDiscPos[i].x = Q(680);
-            totem->qDiscPos[i].y = Q(170);
+        for (i = 0; i < ARRAY_COUNT(totem->qWheelPos); i++) {
+            totem->qWheelPos[i].x = Q(680);
+            totem->qWheelPos[i].y = Q(170);
         }
         // _0803EF72
 
@@ -317,7 +317,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
     totem->unk36 = 0;
 
     totem->unkB4 = 120;
-    totem->tilesEggman = VramMalloc(4 * 2);
+    totem->tilesBullet = VramMalloc((2*2) * 2);
 
     s = &totem->sprC0.s;
     s->x = 0;
@@ -336,7 +336,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-    s = &totem->spr368;
+    s = &totem->sprCart;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = tiles;
@@ -353,7 +353,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-    s = &totem->spr338;
+    s = &totem->sprBodyEnergy;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = tiles;
@@ -370,8 +370,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-    for (i = 0; i < ARRAY_COUNT(totem->sprF8); i++) {
-        s = &totem->sprF8[i];
+    for (i = 0; i < ARRAY_COUNT(totem->sprWheels); i++) {
+        s = &totem->sprWheels[i];
         s->x = 0;
         s->y = 0;
         s->graphics.dest = VramMalloc(sTileInfoWheels[i].numTiles);
@@ -389,8 +389,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
     }
 
     // _0803F1A8
-    for (i = 0; i < ARRAY_COUNT(totem->spr188); i++) {
-        s = &totem->spr188[i].s;
+    for (i = 0; i < ARRAY_COUNT(totem->sprPlatform); i++) {
+        s = &totem->sprPlatform[i].s;
         s->x = 0;
         s->y = 0;
         s->graphics.dest = VramMalloc(10 * 3);
@@ -408,8 +408,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
     }
 
     // _0803F206
-    for (i = 0; i < ARRAY_COUNT(totem->spr248); i++) {
-        s = &totem->spr248[i];
+    for (i = 0; i < ARRAY_COUNT(totem->sprBulletLauncher); i++) {
+        s = &totem->sprBulletLauncher[i];
         s->x = 0;
         s->y = 0;
         s->graphics.dest = VramMalloc(sTileInfoBulletLauncher[i].numTiles);
@@ -426,7 +426,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
     }
 
-    s = &totem->spr2A8;
+    s = &totem->sprPilot;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = VramMalloc(12);
@@ -446,7 +446,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
     if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC
         && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
         // __tails_kidnap
-        s = &totem->spr2D8;
+        s = &totem->sprTails;
         s->x = 0;
         s->y = 0;
         s->graphics.dest = VramMalloc(5 * 6);
@@ -462,7 +462,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-        s = &totem->spr308;
+        s = &totem->sprTailsHook;
         s->x = 0;
         s->y = 0;
         s->graphics.dest = VramMalloc(4 * 5);
@@ -479,8 +479,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     } else {
-        totem->spr2D8.graphics.dest = NULL;
-        totem->spr308.graphics.dest = NULL;
+        totem->sprTails.graphics.dest = NULL;
+        totem->sprTailsHook.graphics.dest = NULL;
     }
 
     gActiveBossTask = t;
@@ -532,20 +532,20 @@ void sub_803F4B8(EggTotem *totem)
 {
     u8 i;
 
-    totem->qDiscPos[0].x = totem->qWorldX + gUnknown_080D7BDC[0];
-    totem->qDiscPos[0].y = totem->qWorldY - Q(12);
+    totem->qWheelPos[0].x = totem->qWorldX + gUnknown_080D7BDC[0];
+    totem->qWheelPos[0].y = totem->qWorldY - Q(12);
 
     totem->unk24[0][0] = +Q(5);
     totem->unk24[0][1] = -Q(3);
 
-    totem->qDiscPos[1].x = totem->qWorldX + gUnknown_080D7BDC[1];
-    totem->qDiscPos[1].y = totem->qWorldY - Q(12);
+    totem->qWheelPos[1].x = totem->qWorldX + gUnknown_080D7BDC[1];
+    totem->qWheelPos[1].y = totem->qWorldY - Q(12);
 
     totem->unk24[1][0] = +Q(5);
     totem->unk24[1][1] = -Q(3);
 
-    totem->qDiscPos[2].x = totem->qWorldX + gUnknown_080D7BDC[2];
-    totem->qDiscPos[2].y = totem->qWorldY - Q(6);
+    totem->qWheelPos[2].x = totem->qWorldX + gUnknown_080D7BDC[2];
+    totem->qWheelPos[2].y = totem->qWorldY - Q(6);
 
     totem->unk24[2][0] = +Q(5);
     totem->unk24[2][1] = -Q(3);
@@ -572,8 +572,8 @@ void sub_803F4B8(EggTotem *totem)
         t3c->unk18 = i * 12 + 1;
     }
 
-    if (totem->spr2D8.graphics.dest != NULL) {
-        Sprite *s = &totem->spr2D8;
+    if (totem->sprTails.graphics.dest != NULL) {
+        Sprite *s = &totem->sprTails;
 
         totem->qUnkB8 = totem->qWorldX - Q(40);
         totem->qUnkBC = totem->qWorldY - Q(98);
@@ -620,16 +620,16 @@ void sub_803F698(EggTotem *totem)
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    s = &totem->spr2A8;
+    s = &totem->sprPilot;
     s->x = I(totem->qWorldX) - gCamera.x;
     s->y = I(totem->qWorldY) - gCamera.y - 82;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    for (i = 0; i < ARRAY_COUNT(totem->sprF8); i++) {
-        s = &totem->sprF8[i];
-        s->x = I(totem->qDiscPos[i].x) - gCamera.x;
-        s->y = I(totem->qDiscPos[i].y) - gCamera.y - 14;
+    for (i = 0; i < ARRAY_COUNT(totem->sprWheels); i++) {
+        s = &totem->sprWheels[i];
+        s->x = I(totem->qWheelPos[i].x) - gCamera.x;
+        s->y = I(totem->qWheelPos[i].y) - gCamera.y - 14;
 
         if (i == 2) {
             s->y += 6;
@@ -641,7 +641,7 @@ void sub_803F698(EggTotem *totem)
 
     for (i = 0; i < ARRAY_COUNT(totem->unk3C); i++) {
         Totem3C *t3c = &totem->unk3C[i];
-        s = &totem->spr188[i].s;
+        s = &totem->sprPlatform[i].s;
         s->x = I(t3c->qWorldX) - gCamera.x;
         s->y = I(t3c->qWorldY) - gCamera.y;
         s->animSpeed = (SIN_24_8(t3c->qUnkC) >> 3) + 0x20;
@@ -651,7 +651,8 @@ void sub_803F698(EggTotem *totem)
 
         if (t3c->unk17 != 0) {
             s8 r3;
-            s = (t3c->unk14 != 0) ? &totem->spr248[0] : &totem->spr248[1];
+            s = (t3c->unk14 != 0) ? &totem->sprBulletLauncher[0]
+                                  : &totem->sprBulletLauncher[1];
 
             if (t3c->unk17 > 0) {
                 r3 = 0;
@@ -668,15 +669,15 @@ void sub_803F698(EggTotem *totem)
         }
     }
 
-    if (totem->spr2D8.graphics.dest != NULL) {
-        s = &totem->spr308;
+    if (totem->sprTails.graphics.dest != NULL) {
+        s = &totem->sprTailsHook;
 
         s->x = I(totem->qWorldX) - gCamera.x - 16;
         s->y = I(totem->qWorldY) - gCamera.y;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
 
-        s = &totem->spr2D8;
+        s = &totem->sprTails;
         s->x = I(totem->qWorldX) - gCamera.x - 40;
         s->y = I(totem->qWorldY) - gCamera.y - 98;
         UpdateSpriteAnimation(s);
@@ -690,11 +691,11 @@ bool32 sub_803F878(EggTotem *totem)
     u8 i;
     bool32 result;
 
-    for (i = 0; i < ARRAY_COUNT(totem->sprF8); i++) {
-        s = &totem->sprF8[i];
+    for (i = 0; i < ARRAY_COUNT(totem->sprWheels); i++) {
+        s = &totem->sprWheels[i];
 
-        s->x = I(totem->qDiscPos[i].x) - gCamera.x;
-        s->y = I(totem->qDiscPos[i].y) - gCamera.y;
+        s->x = I(totem->qWheelPos[i].x) - gCamera.x;
+        s->y = I(totem->qWheelPos[i].y) - gCamera.y;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
@@ -702,7 +703,7 @@ bool32 sub_803F878(EggTotem *totem)
     result = FALSE;
 
     if (totem->unk37 == 0) {
-        s = &totem->spr338;
+        s = &totem->sprBodyEnergy;
         s->x = I(totem->qUnkA8) - gCamera.x;
         s->y = I(totem->qUnkAC) - gCamera.y;
 
@@ -714,7 +715,7 @@ bool32 sub_803F878(EggTotem *totem)
         DisplaySprite(s);
     }
 
-    s = &totem->spr368;
+    s = &totem->sprCart;
     s->x = I(totem->qUnk9C) - gCamera.x;
     s->y = I(totem->qUnkA0) - gCamera.y;
     UpdateSpriteAnimation(s);
@@ -730,7 +731,7 @@ bool32 sub_803F878(EggTotem *totem)
     DisplaySprite(s);
 
     if (totem->unk3A == 0) {
-        s = &totem->spr2A8;
+        s = &totem->sprPilot;
         s->x = I(totem->qUnk90) - gCamera.x;
         s->y = I(totem->qUnk94) - gCamera.y - 81;
 
@@ -745,17 +746,17 @@ bool32 sub_803F878(EggTotem *totem)
         DisplaySprite(s);
     }
 
-    for (i = 0; i < ARRAY_COUNT(totem->spr188); i++) {
+    for (i = 0; i < ARRAY_COUNT(totem->sprPlatform); i++) {
         Totem3C *t3c = &totem->unk3C[i];
 
-        s = &totem->spr188[i].s;
+        s = &totem->sprPlatform[i].s;
         s->x = I(t3c->qWorldX) - gCamera.x;
         s->y = I(t3c->qWorldY) - gCamera.y;
         DisplaySprite(s);
     }
 
-    if (totem->spr2D8.graphics.dest != NULL) {
-        s = &totem->spr2D8;
+    if (totem->sprTails.graphics.dest != NULL) {
+        s = &totem->sprTails;
         s->x = I(totem->qUnkB8) - gCamera.x;
         s->y = I(totem->qUnkBC) - gCamera.y;
         UpdateSpriteAnimation(s);
@@ -774,9 +775,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__EggTotemMove.inc",
     totem->qWorldX += dx;
     totem->qWorldY += dy;
 
-    for (i = 0; i < ARRAY_COUNT(totem->qDiscPos); i++) {
-        totem->qDiscPos[i].x += dx;
-        totem->qDiscPos[i].y += dy;
+    for (i = 0; i < ARRAY_COUNT(totem->qWheelPos); i++) {
+        totem->qWheelPos[i].x += dx;
+        totem->qWheelPos[i].y += dy;
     }
 
     for (i = 0; i < ARRAY_COUNT(totem->unk3C); i++) {
@@ -810,19 +811,19 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FB88.inc",
 
     discY = 0;
 
-    for (i = 0; i < ARRAY_COUNT(totem->qDiscPos); i++) {
-        totem->qDiscPos[i].x = totem->qWorldX + gUnknown_080D7BDC[i];
+    for (i = 0; i < ARRAY_COUNT(totem->qWheelPos); i++) {
+        totem->qWheelPos[i].x = totem->qWorldX + gUnknown_080D7BDC[i];
 
         if (i == 0) {
-            totem->qDiscPos[i].y += 6;
+            totem->qWheelPos[i].y += 6;
         }
 
-        discY += totem->qDiscPos[i].y;
+        discY += totem->qWheelPos[i].y;
 
-        res = sub_801F100(I(totem->qDiscPos[i].y) - 1, I(totem->qDiscPos[i].x), 1, +8,
+        res = sub_801F100(I(totem->qWheelPos[i].y) - 1, I(totem->qWheelPos[i].x), 1, +8,
                           sub_801EC3C);
 
-        totem->qDiscPos[i].y += Q(res + 1);
+        totem->qWheelPos[i].y += Q(res + 1);
     }
 
     res = Div(discY, 3) - Q(2.0);
@@ -841,8 +842,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc",
     s32 divRes;
     s32 v;
 
-    for (i = 0; i < ARRAY_COUNT(totem->qDiscPos); i++) {
-        totem->qDiscPos[i].x += totem->unk24[i][0];
+    for (i = 0; i < ARRAY_COUNT(totem->qWheelPos); i++) {
+        totem->qWheelPos[i].x += totem->unk24[i][0];
     }
 
     totem->qUnk9C += totem->qUnkA4;
@@ -957,18 +958,18 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc",
         // _0803FF9A
         for (i = 0; i < EGGTOTEM_NUM_PLATFORMS; i++) {
             totem->unk24[i][1] += 0x20;
-            totem->qDiscPos[i].x += totem->unk24[i][0];
-            totem->qDiscPos[i].y += totem->unk24[i][1];
+            totem->qWheelPos[i].x += totem->unk24[i][0];
+            totem->qWheelPos[i].y += totem->unk24[i][1];
 
-            y = I(totem->qDiscPos[i].y);
+            y = I(totem->qWheelPos[i].y);
             y += gUnknown_080D7F10[i];
             y -= 1;
-            x = I(totem->qDiscPos[i].x);
+            x = I(totem->qWheelPos[i].x);
             res = sub_801F100(y, x, 1, +8, sub_801EC3C);
 
             if (res < 0) {
                 // __minRes
-                totem->qDiscPos[i].y += Q(res);
+                totem->qWheelPos[i].y += Q(res);
 
                 divRes = Div(-(totem->unk24[i][1] * 80), 100);
                 totem->unk24[i][1] = divRes;
@@ -1039,7 +1040,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc",
         // _080401C0
 
         for (i = 0; i < EGGTOTEM_NUM_PLATFORMS; i++) {
-            totem->qDiscPos[i].x += totem->unk24[i][0];
+            totem->qWheelPos[i].x += totem->unk24[i][0];
         }
 
         totem->qUnk9C += totem->qUnkA4;
@@ -1371,7 +1372,7 @@ void sub_8040A00(EggTotem *totem)
         u32 coll;
         bool32 r7;
 
-        s = &totem->spr188[i].s;
+        s = &totem->sprPlatform[i].s;
         t3c = &totem->unk3C[i];
 
         if (sub_800CA20(s, I(t3c->qWorldX), I(t3c->qWorldY), 1, &gPlayer) == FALSE
@@ -1439,7 +1440,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
     }
     // _08040B66
 
-    s = &totem->spr248[0];
+    s = &totem->sprBulletLauncher[0];
     t3CX = I(t3c->qWorldX);
     t3CY = I(t3c->qWorldY) + t3c->unk17;
 
@@ -1503,7 +1504,7 @@ END_NONMATCH
 
 void sub_8040D74(EggTotem *totem)
 {
-    Sprite *s = &totem->spr2A8;
+    Sprite *s = &totem->sprPilot;
 
     if (totem->unk35 == 0) {
         // NOTE: This matches, but it'd be better if this worked without 'a'
@@ -1540,7 +1541,7 @@ void sub_8040D74(EggTotem *totem)
 
 void sub_8040E78(EggTotem *totem)
 {
-    Sprite *s = &totem->spr2A8;
+    Sprite *s = &totem->sprPilot;
 
     if (totem->unk35 > 0) {
         totem->unk34 = 0;
@@ -1601,27 +1602,27 @@ void TaskDestructor_EggTotemMain(struct Task *t)
 
     VramFree(totem->sprC0.s.graphics.dest);
 
-    for (i = 0; i < ARRAY_COUNT(totem->sprF8); i++) {
-        VramFree(totem->sprF8[i].graphics.dest);
+    for (i = 0; i < ARRAY_COUNT(totem->sprWheels); i++) {
+        VramFree(totem->sprWheels[i].graphics.dest);
     }
 
-    for (i = 0; i < ARRAY_COUNT(totem->spr188); i++) {
-        VramFree(totem->spr188[i].s.graphics.dest);
+    for (i = 0; i < ARRAY_COUNT(totem->sprPlatform); i++) {
+        VramFree(totem->sprPlatform[i].s.graphics.dest);
     }
 
-    VramFree(totem->spr248[0].graphics.dest);
-    VramFree(totem->spr248[1].graphics.dest);
+    VramFree(totem->sprBulletLauncher[0].graphics.dest);
+    VramFree(totem->sprBulletLauncher[1].graphics.dest);
 
-    VramFree(totem->tilesEggman);
+    VramFree(totem->tilesBullet);
 
-    VramFree(totem->spr2A8.graphics.dest);
+    VramFree(totem->sprPilot.graphics.dest);
 
-    if (totem->spr308.graphics.dest != NULL) {
-        VramFree(totem->spr308.graphics.dest);
+    if (totem->sprTailsHook.graphics.dest != NULL) {
+        VramFree(totem->sprTailsHook.graphics.dest);
     }
 
-    if (totem->spr2D8.graphics.dest != NULL) {
-        VramFree(totem->spr2D8.graphics.dest);
+    if (totem->sprTails.graphics.dest != NULL) {
+        VramFree(totem->sprTails.graphics.dest);
     }
 
     gActiveBossTask = NULL;
@@ -1652,7 +1653,7 @@ void Task_8041138(void)
         m4aSongNumStart(SE_144);
     }
 
-    if (totem->spr2D8.graphics.dest != NULL) {
+    if (totem->sprTails.graphics.dest != NULL) {
         totem->qUnkB8 += Q(5);
 
         if (totem->qUnkBC > -Q(48)) {
@@ -1710,7 +1711,7 @@ void sub_8041264(EggTotem *totem)
 
 void sub_80412B4(EggTotem *totem)
 {
-    Sprite *s = &totem->spr2A8;
+    Sprite *s = &totem->sprPilot;
 
     totem->unk34 = 30;
 
@@ -1744,7 +1745,7 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
 
     s->x = I(qX);
     s->y = I(qY);
-    s->graphics.dest = totem->tilesEggman;
+    s->graphics.dest = totem->tilesBullet;
     s->graphics.anim = SA2_ANIM_EGG_TOTEM_BULLET;
     s->variant = 0;
     s->unk1A = SPRITE_OAM_ORDER(16);
@@ -1797,7 +1798,7 @@ void Task_EggTotemBullet(void)
         if (res == TRUE && bullet->totem->unk35 == 0) {
             Sprite *s2;
             totem = bullet->totem;
-            s2 = &totem->spr2A8;
+            s2 = &totem->sprPilot;
             totem->unk34 = 30;
             s2->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
             s2->variant = res;
