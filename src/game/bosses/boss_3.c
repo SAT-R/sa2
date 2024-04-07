@@ -755,7 +755,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc",
 END_NONMATCH
 
 #if 01
-// (80.28%) https://decomp.me/scratch/gT3he
+// (81.46%) https://decomp.me/scratch/gT3he
 void sub_803FF44(EggTotem *totem)
 {
     u8 i, j;
@@ -773,7 +773,8 @@ void sub_803FF44(EggTotem *totem)
             totem->qDiscPos[i].y += totem->unk24[i][1];
 
             y = I(totem->qDiscPos[i].y);
-            y += gUnknown_080D7F10[i] - 1;
+            y += gUnknown_080D7F10[i];
+            y -= 1;
             x = I(totem->qDiscPos[i].x);
             res = sub_801F100(y, x, 1, +8, sub_801EC3C);
 
@@ -894,7 +895,8 @@ void sub_803FF44(EggTotem *totem)
             totem->qUnk94 += res;
 
             // totem->qUnk9A *= 0.60
-            totem->qUnk9A = Div(-(totem->qUnk9A * 60), 100);
+            divRes = Div(-(totem->qUnk9A * 60), 100);
+            totem->qUnk9A = divRes;
         }
         // _08040360
 
