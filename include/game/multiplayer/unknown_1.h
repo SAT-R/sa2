@@ -1,6 +1,0 @@
-#ifndef GUARD_PLAYER_MP_UNKNOWN_1
-#define GUARD_PLAYER_MP_UNKNOWN_1
-
-extern struct UNK_3005510 *sub_8019224(void);
-
-#endif // GUARD_PLAYER_MP_UNKNOWN_1

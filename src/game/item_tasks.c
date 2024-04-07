@@ -7,6 +7,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/item_tasks.h"
+#include "game/multiplayer/mp_player.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -277,7 +278,7 @@ void Task_Item_Invincibility(void)
     struct Camera *cam = &gCamera;
 
     if (IS_MULTI_PLAYER) {
-        struct MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[(s8)param]);
+        MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[(s8)param]);
 
         if (mpp->unk57 & 0x2) {
             x = mpp->unk50;
@@ -332,7 +333,7 @@ void Task_Item_Confusion(void)
     struct Camera *cam = &gCamera;
 
     if (IS_MULTI_PLAYER) {
-        struct MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[(s8)param]);
+        MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[param]);
 
         if (!(mpp->unk57 & (0x40 | 0x10))) {
             TaskDestroy(gCurTask);

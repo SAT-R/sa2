@@ -8,6 +8,7 @@
 #include "game/stage/camera.h"
 #include "game/stage/stage.h"
 #include "game/water_effects.h"
+#include "game/multiplayer/mp_player.h"
 
 #include "constants/animations.h"
 
@@ -67,7 +68,7 @@ void Task_801F214(void)
                         if (IS_MULTI_PLAYER) {
                             s8 id = SIO_MULTI_CNT->id;
                             struct Task *tmpp = gMultiplayerPlayerTasks[id];
-                            struct MultiplayerPlayer *mpp = TASK_DATA(tmpp);
+                            MultiplayerPlayer *mpp = TASK_DATA(tmpp);
                             ts->x = mpp->unk50;
                             ts->y = mpp->unk52;
                         } else {

@@ -1,10 +1,12 @@
 #include "global.h"
-#include "game/game.h"
-#include "game/stage/player.h"
-#include "game/stage/camera.h"
 #include "core.h"
 #include "malloc_vram.h"
 #include "task.h"
+
+#include "game/game.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
+#include "game/multiplayer/mp_player.h"
 
 #include "constants/animations.h"
 
@@ -67,7 +69,7 @@ void Task_SpindashDustEffect(void)
 
         if (IS_MULTI_PLAYER) {
             struct Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
-            struct MultiplayerPlayer *mpp = TASK_DATA(t);
+            MultiplayerPlayer *mpp = TASK_DATA(t);
             s->x = (mpp->unk50 - cam->x);
             s->y = ((mpp->unk52 + offY) - cam->y);
         } else {
@@ -122,7 +124,7 @@ void Task_SpindashDustEffectBig(void)
 
         if (IS_MULTI_PLAYER) {
             struct Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
-            struct MultiplayerPlayer *mpp = TASK_DATA(t);
+            MultiplayerPlayer *mpp = TASK_DATA(t);
             s->x = (mpp->unk50 - cam->x);
             s->y = ((mpp->unk52 + offY) - cam->y);
         } else {

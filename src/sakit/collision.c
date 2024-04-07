@@ -9,7 +9,7 @@
 #include "sakit/player.h"
 #include "game/cheese.h"
 #include "game/entity.h"
-#include "game/multiplayer/unknown_1.h"
+#include "game/multiplayer/player_unk_1.h"
 #include "game/parameters/characters.h"
 #include "game/rings_scatter.h"
 #include "game/trapped_animals.h"

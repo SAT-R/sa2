@@ -278,7 +278,6 @@
     "rings_scatter.h": "c",
     "mode_select.h": "c",
     "geji_geji.h": "c",
-    "unknown_1.h": "c",
     "platform.h": "c",
     "anim_commands.h": "c",
     "platform_crumbling.h": "c",
@@ -312,7 +311,9 @@
     "*.m": "c",
     "ranges": "c",
     "rect.h": "c",
-    "collision.h": "c"
+    "collision.h": "c",
+    "finish.h": "c",
+    "items.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

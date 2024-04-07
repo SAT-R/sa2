@@ -37,5 +37,7 @@ u32 sub_800CCB8(Sprite *, s32 x, s32 y, Player *);
 
 u32 sub_800CE94(Sprite *s, s32 sx, s32 sy, struct Rect8 *param3, Player *p);
 bool32 sub_800DD54(Player *p);
+bool32 sub_800DE44(Player *p);
+u32 sub_800D0A0(Sprite *, s16, s16, s16, s16, u8, u32);
 
 #endif // GUARD_STAGE_ENTITIES_0_H
