@@ -19,6 +19,86 @@
 #include "constants/songs.h"
 #include "constants/zones.h"
 
+const TileInfo sTileInfoWheels[] = {
+    { 16, SA2_ANIM_EGG_TOTEM_WHEEL_FRONT, 0 },
+    { 16, SA2_ANIM_EGG_TOTEM_WHEEL_BACK, 0 },
+    { 4, SA2_ANIM_EGG_TOTEM_WHEEL_SMALL, 0 },
+};
+
+const TileInfo sTileInfoBulletLauncher[] = {
+    { 6, SA2_ANIM_EGG_TOTEM_BULLET_LAUNCHER, 0 },
+    { 3, SA2_ANIM_EGG_TOTEM_BULLET_LAUNCHER, 1 },
+};
+
+const u8 sWheelsOamOrderIds[] = { 21, 25, 24 };
+
+const s16 gUnknown_080D7BDC[3] = { Q(22), Q(13), -Q(16) };
+
+const s16 sTotemDiscYs[3] = { -Q(32), -Q(48), -Q(64) };
+
+const EggTotemDataA gUnknown_080D7BE8[] = {
+    { 0x1, 0x200, 0x200, 0 }, { 0x20, 0, 0, 0 },        { 0x40, 0, 0x100, 0 },
+    { 0x3c, 0, 0, 0 },        { 0x1, 0x200, 0x100, 0 }, { 0x3f, 0, 0x100, 0 },
+    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x280, 0 },
+    { 0x20, 0, 0, 0 },        { 0x60, 0, 0x140, 0 },    { 0x3c, 0, 0, 0 },
+    { 0x1, 0x200, 0x140, 0 }, { 0x5f, 0, 0x140, 0 },    { 0x20, 0, 0, 0 },
+    { 0, 0, 0, 0 },           { 0x1, 0x200, 0x280, 0 }, { 0x20, 0, 0, 0 },
+    { 0x80, 0, 0x140, 0 },    { 0x3c, 0, 0, 0 },        { 0x1, 0x200, 0x140, 0 },
+    { 0x7f, 0, 0x140, 0 },    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },
+    { 0x1, 0x200, 0x200, 0 }, { 0x20, 0, 0, 0 },        { 0x80, 0, 0x100, 0 },
+    { 0x3c, 0, 0, 0 },        { 0x1, 0x200, 0x100, 0 }, { 0x7f, 0, 0x100, 0 },
+    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 },
+    { 0x20, 0, 0, 0 },        { 0x80, 0, 0x90, 0 },     { 0x40, 0x8, 0xc8, 0 },
+    { 0x80, 0, 0x90, 0 },     { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },
+    { 0x1, 0x200, 0x190, 0 }, { 0x20, 0, 0, 0 },        { 0x80, 0, 0x120, 0 },
+    { 0x40, 0x3f8, 0xca, 0 }, { 0x80, 0, 0x120, 0 },    { 0x20, 0, 0, 0 },
+    { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 }, { 0x20, 0, 0, 0 },
+    { 0x40, 0, 0xb8, 0 },     { 0x80, 0, 0, 0 },        { 0x1, 0x100, 0, 0 },
+    { 0x14, 0, 0xc8, 0 },     { 0x80, 0, 0, 0 },        { 0x1, 0x100, 0, 0 },
+    { 0x40, 0, 0xb8, 0 },     { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },
+    { 0x1, 0x200, 0x190, 0 }, { 0x20, 0, 0, 0 },        { 0xc0, 0, 0xb8, 0 },
+    { 0x1, 0x300, 0, 0 },     { 0x14, 0, 0xd0, 0 },     { 0x1, 0x300, 0, 0 },
+    { 0xc0, 0, 0xb8, 0 },     { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },
+    { 0x1, 0x200, 0x1b0, 0 }, { 0x20, 0, 0, 0 },        { 0xc0, 0, 0xd8, 0 },
+    { 0x1, 0x200, 0xd8, 0 },  { 0x96, 0, 0, 0 },        { 0xbf, 0, 0xd8, 0 },
+    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 },
+    { 0x20, 0, 0, 0 },        { 0xc0, 0, 0x80, 0 },     { 0x1, 0x200, 0x80, 0 },
+    { 0x96, 0, 0, 0 },        { 0xbf, 0, 0x80, 0 },     { 0x20, 0, 0, 0 },
+    { 0, 0, 0, 0 },
+};
+
+const EggTotemDataA *const gUnknown_080D7E78[10] = {
+    &gUnknown_080D7BE8[0 * 8],     &gUnknown_080D7BE8[1 * 8],
+    &gUnknown_080D7BE8[2 * 8],     &gUnknown_080D7BE8[3 * 8],
+    &gUnknown_080D7BE8[4 * 8],     &gUnknown_080D7BE8[5 * 8 - 1],
+    &gUnknown_080D7BE8[6 * 8 - 2], &gUnknown_080D7BE8[7 * 8 + 1],
+    &gUnknown_080D7BE8[8 * 8 + 2], &gUnknown_080D7BE8[9 * 8 + 2],
+};
+
+const u8 gUnknown_080D7EA0[0x34]
+    = { 0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x01, 0x02, 0x00, 0x01, 0x00, 0x01, 0x01,
+        0x01, 0x01, 0x01, 0x02, 0x01, 0x01, 0x00, 0x02, 0x01, 0x01, 0x02, 0x01, 0x02,
+        0x02, 0x01, 0x00, 0x03, 0x01, 0x01, 0x03, 0x01, 0x02, 0x03, 0x02, 0x00, 0x04,
+        0x02, 0x05, 0x02, 0x01, 0x06, 0x02, 0x07, 0x02, 0x00, 0x08, 0x01, 0x09, 0x00 };
+
+const u8 *const gUnknown_080D7ED4[] = {
+    &gUnknown_080D7EA0[0 * 3],        &gUnknown_080D7EA0[1 * 3],
+    &gUnknown_080D7EA0[2 * 3],        &gUnknown_080D7EA0[3 * 3],
+    &gUnknown_080D7EA0[4 * 3],        &gUnknown_080D7EA0[5 * 3],
+    &gUnknown_080D7EA0[6 * 3],        &gUnknown_080D7EA0[7 * 3],
+    &gUnknown_080D7EA0[8 * 3],        &gUnknown_080D7EA0[9 * 3],
+    &gUnknown_080D7EA0[10 * 3],       &gUnknown_080D7EA0[11 * 3],
+    &gUnknown_080D7EA0[12 * 3],       &gUnknown_080D7EA0[13 * 3 + 0x2],
+    &gUnknown_080D7EA0[14 * 3 + 0x4],
+};
+
+const u8 gUnknown_080D7F10[EGGTOTEM_NUM_PLATFORMS] = { 14, 14, 8 };
+
+const s16 gUnknown_080D7F14[2][16] = {
+    INCBIN_U16("graphics/boss_3_a.gbapal"),
+    INCBIN_U16("graphics/boss_3_b.gbapal"),
+};
+
 // (95.90%) https://decomp.me/scratch/Ip1jY
 NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
          void CreateEggTotem(void))
@@ -42,13 +122,13 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
     totem = TASK_DATA(t);
 
     if (DIFFICULTY_BOSS_IS_NOT_NORMAL) {
-        totem->unk32 = 6;
+        totem->lives = 6;
     } else {
-        totem->unk32 = 8;
+        totem->lives = 8;
     }
 
     if (IS_FINAL_STAGE(gCurrentLevel)) {
-        totem->unk32 = totem->unk32 /= 2u;
+        totem->lives = totem->lives /= 2u;
     }
 
     if (IS_FINAL_STAGE(gCurrentLevel)) {
@@ -187,10 +267,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
         s = &totem->sprF8[i];
         s->x = 0;
         s->y = 0;
-        s->graphics.dest = VramMalloc(gUnknown_080D7BB0[i].numTiles);
-        s->graphics.anim = gUnknown_080D7BB0[i].anim;
-        s->variant = gUnknown_080D7BB0[i].variant;
-        s->unk1A = SPRITE_OAM_ORDER(sOamOrderIds[i]);
+        s->graphics.dest = VramMalloc(sTileInfoWheels[i].numTiles);
+        s->graphics.anim = sTileInfoWheels[i].anim;
+        s->variant = sTileInfoWheels[i].variant;
+        s->unk1A = SPRITE_OAM_ORDER(sWheelsOamOrderIds[i]);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -225,9 +305,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
         s = &totem->spr248[i];
         s->x = 0;
         s->y = 0;
-        s->graphics.dest = VramMalloc(gUnknown_080D7BC8[i].numTiles);
-        s->graphics.anim = gUnknown_080D7BC8[i].anim;
-        s->variant = gUnknown_080D7BC8[i].variant;
+        s->graphics.dest = VramMalloc(sTileInfoBulletLauncher[i].numTiles);
+        s->graphics.anim = sTileInfoBulletLauncher[i].anim;
+        s->variant = sTileInfoBulletLauncher[i].variant;
         s->unk1A = SPRITE_OAM_ORDER(21);
         s->graphics.size = 0;
         s->animCursor = 0;
@@ -321,7 +401,7 @@ void Task_803F3E8(void)
     sub_803F698(totem);
     sub_8040F14(totem);
 
-    if (totem->unk32 == 0) {
+    if (totem->lives == 0) {
         Player_DisableInputAndBossTimer();
 
         if (gPlayer.unk3C != NULL || gPlayer.moveState & MOVESTATE_8) {
@@ -1002,7 +1082,7 @@ void sub_804063C(EggTotem *totem)
 {
     Totem3C *t3c;
     s8 r2;
-    u8 *bp;
+    const u8 *bp;
     s8 r6;
 
     u8 rnd = PseudoRandom32();
@@ -1032,7 +1112,7 @@ void sub_804063C(EggTotem *totem)
         r6 = *bp++;
 
         while ((--r6) >= 0) {
-            EggTotemDataA *totemDataA;
+            const EggTotemDataA *totemDataA;
             v = *bp++;
             r4 = *bp++;
             totemDataA = gUnknown_080D7E78[r4];
@@ -1060,7 +1140,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_80407A4.inc",
         Totem3C *t3c = &totem->unk3C[i];
 
         if (t3c->unk13 != 0) {
-            EggTotemDataA *ptr = gUnknown_080D7E78[t3c->unk12];
+            const EggTotemDataA *ptr = gUnknown_080D7E78[t3c->unk12];
             ptr = &ptr[t3c->unk13];
 
             if (--t3c->unkE != 0) {
@@ -1119,7 +1199,7 @@ void sub_80408C4(EggTotem *totem)
         Totem3C *t3c = &totem->unk3C[i];
 
         if (t3c->unk13 != 0) {
-            EggTotemDataA *ptr = gUnknown_080D7E78[t3c->unk12];
+            const EggTotemDataA *ptr = gUnknown_080D7E78[t3c->unk12];
             ptr = &ptr[t3c->unk13];
 
             if (ptr->unk0 == 60 && ptr->unk2 == 0 && ptr->unk4 == 0) {
@@ -1176,7 +1256,7 @@ void sub_8040A00(EggTotem *totem)
     Sprite *s;
     Totem3C *t3c;
 
-    if (totem->unk32 == 0) {
+    if (totem->lives == 0) {
         return;
     }
 
@@ -1247,7 +1327,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
     }
 
     t3c = &totem->unk3C[i];
-    if ((t3c->unk14 == 0) || (totem->unk32 == 0)) {
+    if ((t3c->unk14 == 0) || (totem->lives == 0)) {
         return FALSE;
     }
     // _08040B66
@@ -1320,10 +1400,10 @@ void sub_8040D74(EggTotem *totem)
 
     if (totem->unk35 == 0) {
         // NOTE: This matches, but it'd be better if this worked without 'a'
-        u32 a = totem->unk32;
+        u32 a = totem->lives;
 
         if (a > 0) {
-            totem->unk32 = a - 1;
+            totem->lives = a - 1;
 
             if (((a - 1) % 2u) != 0) {
                 m4aSongNumStart(SE_143);
@@ -1333,7 +1413,7 @@ void sub_8040D74(EggTotem *totem)
 
             totem->unk35 = 30;
 
-            if (totem->unk32 == 0) {
+            if (totem->lives == 0) {
                 s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s->variant = 3;
                 INCREMENT_SCORE(1000);
@@ -1345,7 +1425,7 @@ void sub_8040D74(EggTotem *totem)
             s->prevVariant = -1;
         }
 
-        if (!IS_FINAL_STAGE(gCurrentLevel) && (totem->unk32 == 4)) {
+        if (!IS_FINAL_STAGE(gCurrentLevel) && (totem->lives == 4)) {
             gUnknown_030054A8.unk1 = 17;
         }
     }
@@ -1359,7 +1439,7 @@ void sub_8040E78(EggTotem *totem)
         totem->unk34 = 0;
 
         if (--totem->unk35 == 0) {
-            if (totem->unk32 == 0) {
+            if (totem->lives == 0) {
                 s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
                 s->variant = 3;
             } else {
@@ -1601,7 +1681,7 @@ void Task_EggTotemBullet(void)
         return;
     }
 
-    if (bullet->totem->unk32 != 0) {
+    if (bullet->totem->lives != 0) {
         bool32 res;
 
         res = sub_800CA20(s, I(bullet->qScreenX) + gCamera.x,

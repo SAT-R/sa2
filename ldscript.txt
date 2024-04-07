@@ -450,6 +450,7 @@ SECTIONS
         build/sa2/src/game/bosses/common.o(.rodata);
         build/sa2/src/game/bosses/boss_1.o(.rodata);
         build/sa2/src/game/bosses/boss_2.o(.rodata);
+        build/sa2/src/game/bosses/boss_3.o(.rodata);
         build/sa2/asm/boss_3.o(.rodata);
         build/sa2/src/game/bosses/boss_4.o(.rodata);
         build/sa2/src/game/bosses/boss_5.o(.rodata);

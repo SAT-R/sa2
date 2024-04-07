@@ -581,7 +581,7 @@ _0803F136:
 	adds r7, r6, r0
 	strh r2, [r7, #0x16]
 	strh r2, [r7, #0x18]
-	ldr r0, _0803F384 @ =gUnknown_080D7BB0
+	ldr r0, _0803F384 @ =sTileInfoWheels
 	lsls r4, r5, #3
 	adds r4, r4, r0
 	ldr r0, [r4]
@@ -594,7 +594,7 @@ _0803F136:
 	adds r0, r7, #0
 	adds r0, #0x20
 	strb r1, [r0]
-	ldr r0, _0803F388 @ =sOamOrderIds
+	ldr r0, _0803F388 @ =sWheelsOamOrderIds
 	adds r0, r5, r0
 	ldrb r0, [r0]
 	lsls r0, r0, #6
@@ -687,7 +687,7 @@ _0803F206:
 	adds r7, r6, r0
 	strh r2, [r7, #0x16]
 	strh r2, [r7, #0x18]
-	ldr r0, _0803F390 @ =gUnknown_080D7BC8
+	ldr r0, _0803F390 @ =sTileInfoBulletLauncher
 	lsls r4, r5, #3
 	adds r4, r4, r0
 	ldr r0, [r4]
@@ -865,10 +865,10 @@ __tails_kidnap:
 	.align 2, 0
 _0803F37C: .4byte 0x0000028B
 _0803F380: .4byte 0x0000028A
-_0803F384: .4byte gUnknown_080D7BB0
-_0803F388: .4byte sOamOrderIds
+_0803F384: .4byte sTileInfoWheels
+_0803F388: .4byte sWheelsOamOrderIds
 _0803F38C: .4byte 0x0000028F
-_0803F390: .4byte gUnknown_080D7BC8
+_0803F390: .4byte sTileInfoBulletLauncher
 _0803F394: .4byte 0x00000275
 _0803F398: .4byte gCurrentLevel
 _0803F39C: .4byte gSelectedCharacter

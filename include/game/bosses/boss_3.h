@@ -33,7 +33,7 @@ typedef struct {
     /* 0x0C */ Vec2_32 qDiscPos[EGGTOTEM_NUM_PLATFORMS];
     /* 0x24 */ s16 unk24[EGGTOTEM_NUM_PLATFORMS][2];
     /* 0x30 */ s16 unk30;
-    /* 0x32 */ u8 unk32;
+    /* 0x32 */ u8 lives;
     /* 0x33 */ u8 unk33;
     /* 0x34 */ u8 unk34;
     /* 0x35 */ u8 unk35;
@@ -84,17 +84,8 @@ typedef struct {
     u16 unk0;
     u16 unk2;
     u16 unk4;
+    u16 padding6;
 } EggTotemDataA;
-
-extern s16 sTotemDiscYs[3];
-extern TileInfo gUnknown_080D7BB0[3];
-extern TileInfo gUnknown_080D7BC8[2];
-extern s16 gUnknown_080D7BDC[3];
-extern EggTotemDataA *gUnknown_080D7E78[10];
-extern u8 *gUnknown_080D7ED4[13];
-extern u8 gUnknown_080D7F10[4];
-extern s16 gUnknown_080D7F14[2][16];
-extern u8 sOamOrderIds[3];
 
 extern void CreateEggTotem(void);
 extern void EggTotemMove(s32, s32);
