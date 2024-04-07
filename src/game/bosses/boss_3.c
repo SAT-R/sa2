@@ -317,7 +317,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__CreateEggTotem.inc",
     totem->unk36 = 0;
 
     totem->unkB4 = 120;
-    totem->tilesBullet = VramMalloc((2*2) * 2);
+    totem->tilesBullet = VramMalloc((2 * 2) * 2);
 
     s = &totem->sprC0.s;
     s->x = 0;
