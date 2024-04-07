@@ -92,6 +92,7 @@ extern TileInfo gUnknown_080D7BC8[2];
 extern s16 gUnknown_080D7BDC[3];
 extern EggTotemDataA *gUnknown_080D7E78[10];
 extern u8 *gUnknown_080D7ED4[13];
+extern u8 gUnknown_080D7F10[4];
 extern s16 gUnknown_080D7F14[2][16];
 extern u8 sOamOrderIds[3];
 

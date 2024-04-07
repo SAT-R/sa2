@@ -12,6 +12,7 @@
 #include "game/parameters/bosses.h"
 #include "game/player_callbacks_1.h"
 #include "game/save.h"
+#include "game/screen_shake.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -753,24 +754,239 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc",
 }
 END_NONMATCH
 
-#if 0
+#if 01
 void sub_803FF44(EggTotem *totem)
 {
-    u8 i;
+    u8 i, j;
+    s32 res;
+    s16 divRes;
+    ExplosionPartsInfo info; // sp04 -> sp24
 
     if(totem->unk38 == 0) {
+        s32 x, y;
+
         // _0803FF9A
         for(i = 0; i < EGGTOTEM_NUM_PLATFORMS; i++) {
             totem->unk24[i][0] += 0x20;
             totem->qDiscPos[i].x += totem->unk24[i][0];
             totem->qDiscPos[i].y += totem->unk24[i][1];
+
+            y = I(totem->qDiscPos[i].y) + gUnknown_080D7F10[i] - 1;
+            x = I(totem->qDiscPos[i].x);
+            res = sub_801F100(y, x, 1, +8, sub_801EC3C);
+
+            if(res < 0) {
+                // __minRes
+                totem->qDiscPos[i].y += Q(res);
+
+                divRes = Div(-(totem->unk24[i][1] * 80), 100);
+                totem->unk24[i][1] = divRes;
+
+                if(divRes > -Q(1.0)) {
+                    totem->unk24[i][1] = 0;
+                }
+                
+                if(totem->unk24[i][0] > 0) {
+                    totem->unk24[i][0] -= 0x20;
+                    totem->unk24[i][0] -= i * 4;
+                }
+            }
+            // _0804002E - continue
+        }
+        // __unk38_is_0_post_loop
+
+        totem->qUnkA6 += 0x20;
+        totem->qUnk9C += totem->qUnkA4;
+        totem->qUnkA0 += totem->qUnkA6;
+        
+        y = I(totem->qUnkA0) + gUnknown_080D7F10[i] - 1;
+        x = I(totem->qUnk9C);
+        res = sub_801F100(y, x, 1, +8, sub_801EC3C);
+
+        if(res < 0) {
+            totem->qUnkA0 += Q(res);
+
+            divRes = Div(-(totem->qUnkA6 * 80), 100);
+            totem->qUnkA6 = divRes;
+
+            if(divRes > -Q(1.0)) {
+                totem->qUnkA6 = 0;
+            } else if(divRes < -Q(1.4375)) {
+                CreateScreenShake(0x400, 0x20, 0x80, 0x14, SCREENSHAKE_VERTICAL | 0x3);
+            }
+
+            if(totem->qUnkA4 > 0) {
+                totem->qUnkA4 -= Q(0.1875);
+            }
+        }
+        // _080400E2
+        totem->qUnk94 = totem->qUnkA0 + Q(50);
+        
+        if(Mod(gStageTime, 6) == 0) {
+            s32 rnd32 = PseudoRandom32();
+            info.spawnX = I(totem->qUnk9C) - gCamera.x + (rnd32 % 64u) - 31;
+
+            rnd32 = PseudoRandom32();
+            info.spawnY = I(totem->qUnkA0) - gCamera.y + (rnd32 % 64u) - 45;
+
+            info.velocity = 0;
+
+            rnd32 = PseudoRandom32();
+            info.rotation = 1000 - (rnd32 % 64u);
+
+            rnd32 = PseudoRandom32();
+            info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd32 % 512u);
+            info.vram = (void *)(OBJ_VRAM0 + 0x2980);
+            info.anim = SA2_ANIM_EXPLOSION;
+            info.variant = 0;
+            info.unk4 = 0;
+
+            CreateBossParticleWithExplosionUpdate(&info, &totem->unk39);
         }
     } else {
         // _080401C0
         
         for(i = 0; i < EGGTOTEM_NUM_PLATFORMS; i++) {
+            totem->qDiscPos[i].x += totem->unk24[i][0];
+        }
 
+        totem->qUnk9C += totem->qUnkA4;
+        totem->qUnk9A += 0x20;
+        totem->qUnk90 += totem->qUnk98;
+        totem->qUnk94 += totem->qUnk9A;
+
+        res = sub_801F100(I(totem->qUnk94) - 50, I(totem->qUnk90), 1, +8, sub_801EC3C);
+
+        if(res < 0) {
+            // _08040256
+            if(totem->unk38-- == 0) {
+                for(i = 0; i < 9; i++) {
+                    s32 rnd32 = PseudoRandom32();
+                    info.spawnX = I(totem->qUnk9C) - gCamera.x + (rnd32 % 64u) - 31;
+
+                    rnd32 = PseudoRandom32();
+                    info.spawnY = I(totem->qUnkA0) - gCamera.y + (rnd32 % 64u) - 45;
+
+                    info.velocity = 0;
+
+                    rnd32 = PseudoRandom32();
+                    info.rotation = 1000 - (rnd32 % 64u);
+
+                    rnd32 = PseudoRandom32();
+                    info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd32 % 512u);
+                    info.vram = (void *)(OBJ_VRAM0 + 0x2980);
+                    info.anim = SA2_ANIM_EXPLOSION;
+                    info.variant = 0;
+                    info.unk4 = 0;
+
+                    CreateBossParticleWithExplosionUpdate(&info, &totem->unk39);
+                }
+            }
+
+            if(totem->unk38 >= 3) {
+                CreateScreenShake(0x400, 0x20, 0x80, 0x14, SCREENSHAKE_VERTICAL | 0x3);
+            }
+            // _0804033E
+
+            totem->qUnk94 += res;
+
+            // totem->qUnk9A *= 0.60
+            totem->qUnk9A = Div(-(totem->qUnk9A * 60), 100);
+        }
+        // _08040360
+        
+        if(Mod(gStageTime, 14) == 0) {
+            s32 rnd32 = PseudoRandom32();
+            info.spawnX = I(totem->qUnk90) - gCamera.x + (rnd32 % 64u) - 31;
+
+            rnd32 = PseudoRandom32();
+            info.spawnY = I(totem->qUnk94) - gCamera.y + (rnd32 % 32u) - 75;
+
+            info.velocity = 0;
+
+            rnd32 = PseudoRandom32();
+            info.rotation = 1000 - (rnd32 % 64u);
+
+            rnd32 = PseudoRandom32();
+            info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd32 % 512u);
+            info.vram = (void *)(OBJ_VRAM0 + 0x2980);
+            info.anim = SA2_ANIM_EXPLOSION;
+            info.variant = 0;
+            info.unk4 = 0;
+
+            CreateBossParticleWithExplosionUpdate(&info, &totem->unk39);
+        }
+        // _08040400
+
+        if(Mod(gStageTime, 13) == 0) {
+            s32 rnd32 = PseudoRandom32();
+            info.spawnX = I(totem->qUnk90) - gCamera.x + (rnd32 % 64u) - 31;
+
+            rnd32 = PseudoRandom32();
+            info.spawnY = I(totem->qUnk94) - gCamera.y + (rnd32 % 32u) - 16;
+
+            info.velocity = 0;
+
+            rnd32 = PseudoRandom32();
+            info.rotation = 1000 - (rnd32 % 64u);
+
+            rnd32 = PseudoRandom32();
+            info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd32 % 512u);
+            info.vram = (void *)(OBJ_VRAM0 + 0x2980);
+            info.anim = SA2_ANIM_EXPLOSION;
+            info.variant = 0;
+            info.unk4 = 0;
+
+            CreateBossParticleWithExplosionUpdate(&info, &totem->unk39);
         }
     }
+    // _0804049E
+
+    for(i = 0; i < 4; i++) {
+        Totem3C *t3c = &totem->unk3C[i];
+
+        if(t3c->unk18 == 0) {
+            totem->unkA += 0x20;
+        } else if(--t3c->unk18 == 0) {
+            for(j = 0; j < 4; j++) {
+                s32 rnd32 = PseudoRandom32();
+                info.spawnX = I(totem->qUnk90) - gCamera.x + (rnd32 % 64u) - 31;
+
+                rnd32 = PseudoRandom32();
+                info.spawnY = I(totem->qUnk94) - gCamera.y + (rnd32 % 32u) - 75;
+
+                info.velocity = 0;
+
+                rnd32 = PseudoRandom32();
+                info.rotation = 1000 - (rnd32 % 64u);
+
+                rnd32 = PseudoRandom32();
+                info.speed = BOSS_EXPLOSION_VELOCITY_X - (rnd32 % 512u);
+                info.vram = (void *)(OBJ_VRAM0 + 0x2980);
+                info.anim = SA2_ANIM_EXPLOSION;
+                info.variant = 0;
+                info.unk4 = 0;
+
+                CreateBossParticleWithExplosionUpdate(&info, &totem->unk39);
+            }
+        }
+        // _080405A0
+        t3c->qWorldX += t3c->qUnk8;
+        t3c->qWorldY += t3c->qUnkA;
+
+        divRes = sub_801F100(I(t3c->qWorldY) + 3, I(t3c->qWorldX), 1, +8, sub_801EC3C);
+        if (divRes < 0) {
+            t3c->qWorldY += Q(divRes);
+
+            // t3c->qUnkA * 7./10.;
+            v = t3c->qUnkA * 35;
+            t3c->qUnkA = Div(-(v * 2), 100);
+
+            if (t3c->qUnk8 > 0) {
+                t3c->qUnk8 -= Q(1.0);
+            }
+        }
+    }
+    // _08040608 - return;
 }
 #endif
