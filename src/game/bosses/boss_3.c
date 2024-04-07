@@ -1425,7 +1425,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
     }
     // _08040B66
 
-    s = &totem->spr248[0];
+    s = &totem->sprBulletLauncher[0];
     t3CX = I(t3c->qWorldX);
     t3CY = I(t3c->qWorldY) + t3c->unk17;
 
