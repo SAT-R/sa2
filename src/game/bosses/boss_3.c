@@ -1431,7 +1431,10 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
 
     if (sub_800C320(s, t3CX, t3CY, 0, &gPlayer) == TRUE) {
         t3c->unk14 -= 1;
+
+#ifndef NON_MATCHING
         val = 0xFF;
+#endif
 
         if (t3c->unk14 == 0) {
             info.spawnX = t3CX - gCamera.x;
@@ -1484,7 +1487,9 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
 
     if (IsColliding_Cheese(s, t3CX, t3CY, 0, &gPlayer) == TRUE) {
         t3c->unk14--;
+#ifndef NON_MATCHING
         val = 0xFF;
+#endif
         if (t3c->unk14 == 0) {
             // _middlestep
             info2.spawnX = t3CX - gCamera.x;
