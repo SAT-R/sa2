@@ -1420,7 +1420,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
     }
 
     t3c = &totem->unk3C[i];
-    if ((t3c->unk14 == 0) || (totem->unk32 == 0)) {
+    if ((t3c->unk14 == 0) || (totem->lives == 0)) {
         return FALSE;
     }
     // _08040B66
