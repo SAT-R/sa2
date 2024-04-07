@@ -1256,7 +1256,7 @@ void sub_80407A4(EggTotem *totem)
                 t3c->qUnkA = ((SIN(t3c->unk10) * ptr->unk4) >> 14);
 
                 if (ptr->unk0 == 32 && ptr->unk2 == 0 && ptr->unk4 == 0) {
-                    // t3c->qUnkC += 22.5°
+                    // t3c->qUnkC += 22.5 degrees
                     t3c->qUnkC = CLAMP_SIN_PERIOD(t3c->qUnkC + Q(0.0625));
                 }
             } else if ((++ptr)->unk0 == 0) {
