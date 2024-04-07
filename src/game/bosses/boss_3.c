@@ -1238,9 +1238,7 @@ void sub_804063C(EggTotem *totem)
     }
 }
 
-// (97.68%) https://decomp.me/scratch/RX8Wf
-NONMATCH("asm/non_matching/game/bosses/boss_3__sub_80407A4.inc",
-         void sub_80407A4(EggTotem *totem))
+void sub_80407A4(EggTotem *totem)
 {
     u8 i;
 
@@ -1252,24 +1250,16 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_80407A4.inc",
             ptr = &ptr[t3c->unk13];
 
             if (--t3c->unkE != 0) {
-                // __middle
                 s32 x, y;
-                register u32 v0 asm("r0");
-                register u32 v1 asm("r4");
-
-                v0 = ptr->unk2;
-                v1 = t3c->unk10;
-                v0 = (v0 + v1) % 1024u;
-                t3c->unk10 = v0;
+                t3c->unk10 = CLAMP_SIN_PERIOD(t3c->unk10 + ptr->unk2);
                 t3c->qUnk8 = ((COS(t3c->unk10) * ptr->unk4) >> 14);
                 t3c->qUnkA = ((SIN(t3c->unk10) * ptr->unk4) >> 14);
 
                 if (ptr->unk0 == 32 && ptr->unk2 == 0 && ptr->unk4 == 0) {
-                    // t3c->qUnkC += 22.5 degrees
-                    t3c->qUnkC = (t3c->qUnkC + Q(0.0625)) % 1024u;
+                    // t3c->qUnkC += 22.5°
+                    t3c->qUnkC = CLAMP_SIN_PERIOD(t3c->qUnkC + Q(0.0625));
                 }
             } else if ((++ptr)->unk0 == 0) {
-                // _08040838
                 t3c->unkE = 0;
                 t3c->unk13 = 0;
                 t3c->unk12 = 0;
@@ -1277,27 +1267,19 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_80407A4.inc",
                 t3c->qUnk8 = 0;
                 t3c->qUnkA = 0;
             } else {
-                register u32 v0 asm("r0");
-                register u32 v1 asm("r1");
-                // _0804084C
                 t3c->unk13++;
                 t3c->unkE = ptr->unk0;
 
-                v0 = ptr->unk2;
-                v1 = t3c->unk10;
-                v0 = (v0 + v1) % 1024u;
-                t3c->unk10 = v0;
+                t3c->unk10 = CLAMP_SIN_PERIOD(t3c->unk10 + ptr->unk2);
                 t3c->qUnk8 = ((COS(t3c->unk10) * ptr->unk4) >> 14);
                 t3c->qUnkA = ((SIN(t3c->unk10) * ptr->unk4) >> 14);
             }
-            // _0804088C
 
             t3c->qWorldX += Q(5) + t3c->qUnk8;
             t3c->qWorldY += t3c->qUnkA - totem->unk30;
         }
     }
 }
-END_NONMATCH
 
 void sub_80408C4(EggTotem *totem)
 {
@@ -1426,7 +1408,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
     Sprite *s;
     Totem3C *t3c;
 
+#ifndef NON_MATCHING
     register bool32 result asm("r6") = FALSE;
+#else
+    bool32 result = FALSE;
+#endif
 
     s16 t3CX, t3CY;
 
