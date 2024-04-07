@@ -1400,38 +1400,40 @@ void sub_8040A00(EggTotem *totem)
     }
 }
 
-// (90.90%) https://decomp.me/scratch/Nakn1
-NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
-         bool32 sub_8040B30(EggTotem *totem, u8 i))
+bool32 sub_8040B30(EggTotem *totem, u8 i)
 {
     ExplosionPartsInfo info, info2;
     Sprite *s;
     Totem3C *t3c;
 
-#ifndef NON_MATCHING
-    register bool32 result asm("r6") = FALSE;
-#else
     bool32 result = FALSE;
+
+#ifndef NON_MATCHING
+    register s32 val asm("r8");
 #endif
 
     s16 t3CX, t3CY;
+    s32 x, y;
 
     if (i > ARRAY_COUNT(totem->unk3C)) {
         return FALSE;
     }
 
     t3c = &totem->unk3C[i];
-    if ((t3c->unk14 == 0) || (totem->lives == 0)) {
+    if ((t3c->unk14 == 0) || (totem->unk32 == 0)) {
         return FALSE;
     }
     // _08040B66
 
-    s = &totem->sprBulletLauncher[0];
+    s = &totem->spr248[0];
     t3CX = I(t3c->qWorldX);
     t3CY = I(t3c->qWorldY) + t3c->unk17;
 
     if (sub_800C320(s, t3CX, t3CY, 0, &gPlayer) == TRUE) {
-        if (--t3c->unk14 == 0) {
+        t3c->unk14 -= 1;
+        val = 0xFF;
+
+        if (t3c->unk14 == 0) {
             info.spawnX = t3CX - gCamera.x;
             info.spawnY = t3CY - gCamera.y;
             info.velocity = 0;
@@ -1443,8 +1445,31 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
             info.unk4 = 0;
 
             CreateBossParticleWithExplosionUpdate(&info, &t3c->unk16);
-            INCREMENT_SCORE(500);
+#ifndef NON_MATCHING
+            {
+                s32 divResA, divResB;
+                s32 oldScore = gLevelScore;
+                gLevelScore += 500;
 
+                divResA = Div(gLevelScore, 50000);
+                divResB = Div(oldScore, 50000);
+
+                if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
+                    u16 lives = divResA - divResB;
+                    lives += gNumLives;
+
+                    gNumLives = ({
+                        if (lives > 255)
+                            lives = val;
+                        lives;
+                    });
+
+                    gUnknown_030054A8.unk3 = 16;
+                }
+            }
+#else
+            INCREMENT_SCORE(500);
+#endif
             m4aSongNumStart(SE_144);
         } else {
             // _08040C5C
@@ -1457,8 +1482,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
 
     Player_UpdateHomingPosition(Q(t3CX), Q(t3CY));
 
-    if (IsColliding_Cheese(s, Q(t3CX), Q(t3CY), 0, &gPlayer) == TRUE) {
-        if (--t3c->unk14 == 0) {
+    if (IsColliding_Cheese(s, t3CX, t3CY, 0, &gPlayer) == TRUE) {
+        t3c->unk14--;
+        val = 0xFF;
+        if (t3c->unk14 == 0) {
             // _middlestep
             info2.spawnX = t3CX - gCamera.x;
             info2.spawnY = t3CY - gCamera.y;
@@ -1471,7 +1498,31 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
             info2.unk4 = 0;
 
             CreateBossParticleWithExplosionUpdate(&info2, &t3c->unk16);
+#ifndef NON_MATCHING
+            {
+                s32 divResA, divResB;
+                s32 oldScore = gLevelScore;
+                gLevelScore += 500;
+
+                divResA = Div(gLevelScore, 50000);
+                divResB = Div(oldScore, 50000);
+
+                if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
+                    u16 lives = divResA - divResB;
+                    lives += gNumLives;
+
+                    gNumLives = ({
+                        if (lives > 255)
+                            lives = val;
+                        lives;
+                    });
+
+                    gUnknown_030054A8.unk3 = 16;
+                }
+            }
+#else
             INCREMENT_SCORE(500);
+#endif
 
             m4aSongNumStart(SE_144);
 
@@ -1486,7 +1537,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_8040B30.inc",
 
     return result;
 }
-END_NONMATCH
 
 void sub_8040D74(EggTotem *totem)
 {
