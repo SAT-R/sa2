@@ -371,7 +371,7 @@ static void Task_RunOnWaterEffect(void)
     DisplaySprite(s);
 }
 
-struct Task *CreateWaterfallSurfaceHitEffect(s16 x, s16 y)
+struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
 {
     struct Task *t = sub_801F15C(x, y, 0x10, 0, Task_801F214, TaskDestructor_801F550);
     TaskStrc_801F15C *ts = TASK_DATA(t);

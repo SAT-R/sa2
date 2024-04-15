@@ -3,8 +3,13 @@
 #include "trig.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
+
 #include "sakit/camera.h"
+#include "sakit/music_manager.h"
+
 #include "game/game.h"
+#include "game/save.h"
+
 #include "game/boost_effect.h"
 #include "game/bosses/common.h"
 #include "game/cheese.h"
@@ -23,6 +28,8 @@
 #include "game/stage/stage.h"
 #include "game/unknown_effect.h"
 #include "game/water_effects.h"
+#include "game/underwater_effects.h"
+#include "game/item_tasks.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -48,6 +55,9 @@ void Task_8023FC0(void);
 void AllocateCharacterStageGfx(Player *, PlayerSpriteInfo *);
 void AllocateCharacterMidAirGfx(Player *, PlayerSpriteInfo *);
 void TaskDestructor_802A07C(struct Task *);
+void sub_802486C(Player *p, PlayerSpriteInfo *p2);
+void sub_8024B10(Player *p, PlayerSpriteInfo *s);
+void sub_8024F74(Player *p, PlayerSpriteInfo *s);
 
 void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 {
@@ -2372,3 +2382,423 @@ void sub_80232D0(Player *p)
         }
     }
 }
+
+// TODO: Remvoe gotos
+// https://decomp.me/scratch/TeU3L
+void sub_8023610(Player *p)
+{
+    s32 r5 = p->unk48 * 2;
+    s32 r6 = p->unk44;
+
+    if ((p->unk64 != SA2_CHAR_ANIM_20) && !(p->moveState & MOVESTATE_10)) {
+        s16 r0;
+        u16 r2 = p->speedAirX;
+
+        if (p->unk5C & DPAD_LEFT) {
+            if ((p->unk64 != SA2_CHAR_ANIM_63) && !(p->moveState & MOVESTATE_2000)) {
+                p->moveState |= MOVESTATE_FACING_LEFT;
+            }
+
+            r0 = r2;
+            r2 = r0 - r5;
+            r0 = r2;
+
+            if (r0 >= -r6) {
+                goto set;
+            }
+
+            r2 = r0 + r5;
+            r0 = r2;
+
+            if (r0 <= -r6) {
+                goto set;
+            }
+
+            r2 = -r6;
+            goto set;
+
+        } else if (p->unk5C & DPAD_RIGHT) {
+            // _0802367C + 0x8
+            if ((p->unk64 != SA2_CHAR_ANIM_63) && !(p->moveState & MOVESTATE_2000)) {
+                p->moveState &= ~MOVESTATE_FACING_LEFT;
+            }
+
+            r0 = r2;
+            r2 = r0 + r5;
+            r0 = r2;
+
+            if (r0 <= r6) {
+                goto set;
+            }
+
+            r2 = r0 - r5;
+            r0 = r2;
+
+            if (r0 >= r6) {
+                goto set;
+            }
+
+            r2 = r6;
+        }
+
+    set:
+        p->speedAirX = r2;
+    }
+}
+
+void sub_80236C8(Player *p)
+{
+    s16 airX;
+    s16 airX2;
+    s16 diff;
+
+    if ((u16)p->speedAirY < (u16)Q_24_8(189))
+        return;
+
+    airX = p->speedAirX;
+    airX2 = (airX >> 5);
+
+    if (airX2 < 0) {
+        airX = (airX - airX2);
+        if (airX > 0) {
+            airX = 0;
+        }
+        p->speedAirX = airX;
+    } else if (airX2 > 0) {
+        airX = (airX - airX2);
+
+        if (airX < 0) {
+            airX = 0;
+        }
+
+        p->speedAirX = airX;
+    }
+}
+
+void sub_8023708(Player *p)
+{
+    s16 airX;
+    s16 airX2;
+    s16 diff;
+
+    if ((u16)p->speedAirY < (u16)Q_24_8(189))
+        return;
+
+    airX = p->speedAirX;
+    airX2 = (airX >> 6);
+
+    if (airX2 < 0) {
+        airX = (airX - airX2);
+        if (airX > 0) {
+            airX = 0;
+        }
+        p->speedAirX = airX;
+    } else if (airX2 > 0) {
+        airX = (airX - airX2);
+
+        if (airX < 0) {
+            airX = 0;
+        }
+
+        p->speedAirX = airX;
+    }
+}
+
+// Unused?
+void sub_8023748(Player *p)
+{
+    if (p->itemEffect == PLAYER_ITEM_EFFECT__NONE)
+        return;
+
+    if ((p->itemEffect & PLAYER_ITEM_EFFECT__SPEED_UP) && (--p->timerSpeedup == 0)) {
+        m4aMPlayTempoControl(&gMPlayInfo_BGM, 0x100);
+        p->itemEffect &= ~PLAYER_ITEM_EFFECT__SPEED_UP;
+    }
+
+    if ((p->itemEffect & PLAYER_ITEM_EFFECT__10) && (--p->timerSpeedup == 0)) {
+        m4aMPlayTempoControl(&gMPlayInfo_BGM, 0x100);
+        p->itemEffect &= ~PLAYER_ITEM_EFFECT__10;
+    }
+    // _080237AA
+
+    if ((p->itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)
+        && (--p->timerInvincibility == 0)) {
+        p->itemEffect &= ~PLAYER_ITEM_EFFECT__INVINCIBILITY;
+
+        if (p->itemEffect & PLAYER_ITEM_EFFECT__SHIELD_NORMAL) {
+            CreateItemTask_Shield_Normal(gPlayer.unk60);
+        } else if (p->itemEffect & PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC) {
+            CreateItemTask_Shield_Magnetic(gPlayer.unk60);
+        }
+
+        // TODO: This could be a macro: IS_ACTICE_SONG(id)
+        if (gMPlayTable[0].info->songHeader == gSongTable[MUS_INVINCIBILITY].header) {
+            m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
+        }
+    }
+
+    if ((p->itemEffect & PLAYER_ITEM_EFFECT__20) && (--p->unk34 == 0)) {
+        p->itemEffect &= ~PLAYER_ITEM_EFFECT__20;
+        gDispCnt &= ~DISPCNT_OBJWIN_ON;
+        gWinRegs[WINREG_WINOUT] = WIN_RANGE(0, 63);
+    }
+}
+
+void sub_8023878(Player *p)
+{
+    p->moveState &= ~MOVESTATE_1000;
+    if (gWater.isActive == 1 && gWater.currentWaterLevel > -1
+        && (I(p->y) - 4) >= gWater.currentWaterLevel) {
+        if (!(p->moveState & MOVESTATE_40)) {
+            p->moveState |= MOVESTATE_40;
+            p->moveState |= MOVESTATE_1000;
+
+            p->speedAirX = p->speedAirX >> 1;
+            p->speedAirY = p->speedAirY >> 2;
+            if ((p->character != 3 || p->unk61 != 9) && (s8)p->unk88 < 1) {
+                p->unk88 = 10;
+                CreateWaterfallSurfaceHitEffect(I(p->x), gWater.currentWaterLevel);
+                m4aSongNumStart(SE_156);
+            }
+        }
+
+        if (--p->unk87 < 1) {
+            switch (p->unk86--) {
+                case 11:
+                    if (p->unk60 == 0) {
+                        gUnknown_030054A8.unk4 = 16;
+                    }
+                    break;
+                case 12:
+                    SpawnDrowningCountdownNum(p, 5);
+                    break;
+                case 10:
+                    SpawnDrowningCountdownNum(p, 4);
+                    break;
+                case 8:
+                    SpawnDrowningCountdownNum(p, 3);
+                    break;
+                case 6:
+                    SpawnDrowningCountdownNum(p, 2);
+                    break;
+                case 4:
+                    SpawnDrowningCountdownNum(p, 1);
+                    break;
+                case 2:
+                    SpawnDrowningCountdownNum(p, 0);
+                    break;
+            }
+            if (p->unk86 < 0) {
+                p->moveState |= MOVESTATE_DEAD;
+                p->speedAirY = 0;
+                SpawnAirBubbles(p->x, p->y - Q(12), 0, 1);
+                SpawnBubblesAfterDrowning(p);
+            }
+            p->unk87 = 60;
+        }
+        if (!(gStageTime & 0xF) && !(PseudoRandom32() & 0x300)) {
+            s32 dX = ((p->moveState & MOVESTATE_FACING_LEFT) ? -0x400 : 0x400);
+            SpawnAirBubbles(p->x + dX, p->y - Q(4), 0, 0);
+        }
+    } else {
+        if (p->moveState & MOVESTATE_40) {
+            p->moveState &= ~MOVESTATE_40;
+            p->moveState |= MOVESTATE_1000;
+            p->speedAirY = p->speedAirY << 1;
+            if ((p->character != 3 || p->unk61 != 9) && p->unk88 < 1) {
+                p->unk88 = 10;
+                CreateWaterfallSurfaceHitEffect(I(p->x), gWater.currentWaterLevel);
+                m4aSongNumStart(SE_156);
+            }
+        }
+        p->unk87 = 60;
+        p->unk86 = 30;
+
+        if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header
+            && p->unk60 == 0) {
+            m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
+        }
+    }
+
+    if (p->itemEffect & PLAYER_ITEM_EFFECT__SPEED_UP) {
+        p->unk48 = p->unk48 << 1;
+        p->unk4C = p->unk4C << 1;
+    } else if (p->itemEffect & PLAYER_ITEM_EFFECT__10) {
+        p->unk40 = p->unk40 >> 2;
+        p->unk48 = p->unk48 >> 2;
+        p->unk4C = p->unk4C >> 2;
+    }
+
+    if (p->unk88 != 0) {
+        p->unk88--;
+    }
+}
+
+// TODO: incomplete
+// void sub_8023B5C(Player *p, s8 spriteOffsetY)
+// {
+//     s8 rot;
+//     if (p->unk17 == spriteOffsetY) {
+//         return;
+//     }
+
+//     rot = p->rotation;
+//     if (GRAVITY_IS_INVERTED) {
+//         rot -= 0x40;
+//     }
+// }
+
+// void sub_80232D0(Player *p);
+
+// https://decomp.me/scratch/YiC8I
+// void sub_8023C10(Player *p)
+// {
+//     if ((s32)p->moveState < 0) {
+//         s32 speedGroundX = p->speedGroundX;
+//         if (gInput & DPAD_ANY) {
+//             speedGroundX += 0x20;
+//             speedGroundX = speedGroundX >= 0 ? CLAMP(speedGroundX, 0, 0x1000) : 0;
+//         } else {
+//             speedGroundX = 0;
+//         }
+//         p->speedGroundX = speedGroundX;
+
+//         if ((gInput & DPAD_SIDEWAYS) != DPAD_RIGHT) {
+//             if ((gInput & DPAD_SIDEWAYS) == 0x20) {
+//                 p->speedAirX = -speedGroundX;
+//             } else {
+//                 p->speedAirX = 0;
+//             }
+//         } else {
+//             p->speedAirX = speedGroundX;
+//         }
+
+//         if ((gInput & (DPAD_DOWN | DPAD_UP)) != DPAD_UP) {
+//             if ((gInput & (DPAD_DOWN | DPAD_UP)) != DPAD_DOWN) {
+//                 p->speedAirY = 0;
+
+//             } else {
+//                 p->speedAirY = speedGroundX;
+//             }
+//         } else {
+//             p->speedAirY = -speedGroundX;
+//         }
+
+//         p->x += p->speedAirX;
+//         if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+//             p->speedAirY = -p->speedAirY;
+//         }
+
+//         p->speedAirY = MIN(p->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
+
+//         p->y = GRAVITY_IS_INVERTED ? p->y - p->speedAirY : p->y + p->speedAirY;
+//         sub_80232D0(p);
+
+//         if (gPressedKeys & B_BUTTON) {
+//             InitScatteringRings(I(p->x), I(p->y), 1);
+//         }
+//     }
+// }
+
+// matching
+// void Task_8023D08(void)
+// {
+//     player_0_Task *gt = TASK_DATA(gCurTask);
+//     u32 val = gt->unk4;
+//     if (val == 0) {
+//         if (IS_SINGLE_PLAYER) {
+//             TaskDestroy(gCurTask);
+//             if ((!gLoadedSaveGame->timeLimitDisabled
+//                  && (gCourseTime > 36000
+//                      || (gUnknown_03005424 & EXTRA_STATE__4 && gCourseTime == 0)))
+//                 || ((gGameMode == GAME_MODE_TIME_ATTACK
+//                      || gGameMode == GAME_MODE_BOSS_TIME_ATTACK)
+//                     && gCourseTime > 36000)) {
+//                 sub_801B6B4();
+//             } else {
+//                 gRingCount = 0;
+//                 gSpecialRingCount = 0;
+//                 sub_801AE48();
+//             }
+//             return;
+//         }
+
+//         gRingCount = 0;
+
+//         if (gGameMode == GAME_MODE_MULTI_PLAYER) {
+//             gRingCount = 1;
+//         }
+
+//         gSpecialRingCount = 0;
+//         InitializePlayer(&gPlayer);
+//         gCamera.x = I(gPlayer.x) + gCamera.shiftX - 0x78;
+//         gCamera.y = I(gPlayer.y) + gCamera.shiftY - 0x50;
+//         m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
+//         gPlayer.moveState = 0;
+//         gUnknown_03005424 &= ~EXTRA_STATE__GRAVITY_INVERTED;
+
+//         gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+//         gPlayer.unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+//         gPlayer.unk94->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+//         gPlayer.unk94->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+
+//         gCamera.unk50 &= ~0x3;
+//         if (gPlayer.character == CHARACTER_CREAM && gCheese != NULL) {
+//             gCheese->posX = gPlayer.x;
+//             gCheese->posY = gPlayer.y;
+//         }
+
+//         gCurTask->main = Task_8023FC0;
+//         gPlayer.callback = PlayerCB_8025318;
+//     } else {
+//         val--;
+//         gt->unk4 = val;
+//     }
+// }
+
+// https://decomp.me/scratch/vWTo8
+// void Task_8023E90(void)
+// {
+//     Player *p = &gPlayer;
+//     u16 *r2;
+//     PlayerSpriteInfo *psi1 = p->unk90;
+//     PlayerSpriteInfo *psi2 = p->unk94;
+//     struct Camera *cam = &gCamera;
+//     s32 playerY = p->y;
+
+//     if ((s32)p->moveState < 0) {
+//         r2 = &gUnknown_03005424;
+//         goto thing;
+//     } else {
+//         if (((GRAVITY_IS_INVERTED && playerY > Q(cam->y - 0x50))
+//              || (!GRAVITY_IS_INVERTED && playerY < Q(cam->y) + 0xEFFF))) {
+//             player_0_Task *gt = TASK_DATA(gCurTask);
+//             gt->unk4 = 0x3C;
+//             gPlayer.moveState |= MOVESTATE_100000;
+//             if (IS_MULTI_PLAYER) {
+//                 sub_8024B10(p, psi1);
+//             }
+//             gCurTask->main = Task_8023D08;
+//             return;
+//         }
+//     }
+// thing:
+//     if (p->moveState & MOVESTATE_40) {
+//         p->speedAirY += Q_24_8(PLAYER_GRAVITY_UNDER_WATER);
+//     } else {
+//         p->speedAirY += Q_24_8(PLAYER_GRAVITY);
+//     }
+
+//     p->x += p->speedAirX;
+
+//     if ((*r2 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+//         p->speedAirY = -p->speedAirY;
+//     }
+
+//     p->speedAirY = MIN(p->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
+
+//     p->y = GRAVITY_IS_INVERTED ? p->y - p->speedAirY : p->y + p->speedAirY;
+//     sub_802486C(p, psi1);
+//     sub_8024B10(p, psi1);
+//     sub_8024F74(p, psi2);
+// }
