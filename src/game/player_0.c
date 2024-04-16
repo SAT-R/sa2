@@ -6,6 +6,7 @@
 
 #include "sakit/camera.h"
 #include "sakit/music_manager.h"
+#include "sakit/input_buffer.h"
 
 #include "game/game.h"
 #include "game/save.h"
@@ -30,12 +31,11 @@
 #include "game/water_effects.h"
 #include "game/underwater_effects.h"
 #include "game/item_tasks.h"
+#include "game/boost_effect.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
-
-extern u16 gUnknown_080D6736[115][2];
 
 typedef struct {
     /* 0x00 */ u8 unk0;
@@ -58,6 +58,469 @@ void TaskDestructor_802A07C(struct Task *);
 void sub_802486C(Player *p, PlayerSpriteInfo *p2);
 void sub_8024B10(Player *p, PlayerSpriteInfo *s);
 void sub_8024F74(Player *p, PlayerSpriteInfo *s);
+
+const u16 gUnknown_080D6736[115][2] = {
+    {
+        0,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        2,
+        0,
+    },
+    {
+        3,
+        0,
+    },
+    {
+        4,
+        0,
+    },
+    {
+        5,
+        0,
+    },
+    {
+        6,
+        0,
+    },
+    {
+        7,
+        0,
+    },
+    {
+        8,
+        0,
+    },
+    {
+        9,
+        0,
+    },
+    {
+        10,
+        0,
+    },
+    {
+        11,
+        0,
+    },
+    {
+        12,
+        0,
+    },
+    {
+        13,
+        0,
+    },
+    {
+        13,
+        0,
+    },
+    {
+        14,
+        0,
+    },
+    {
+        15,
+        0,
+    },
+    {
+        16,
+        0,
+    },
+    {
+        17,
+        0,
+    },
+    {
+        18,
+        0,
+    },
+    {
+        28,
+        0,
+    },
+    {
+        28,
+        1,
+    },
+    {
+        29,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        31,
+        0,
+    },
+    {
+        31,
+        1,
+    },
+    {
+        31,
+        2,
+    },
+    {
+        32,
+        0,
+    },
+    {
+        33,
+        0,
+    },
+    {
+        34,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        35,
+        0,
+    },
+    {
+        48,
+        0,
+    },
+    {
+        49,
+        0,
+    },
+    {
+        50,
+        0,
+    },
+    {
+        51,
+        0,
+    },
+    {
+        65,
+        0,
+    },
+    {
+        52,
+        0,
+    },
+    {
+        53,
+        0,
+    },
+    {
+        54,
+        0,
+    },
+    {
+        55,
+        0,
+    },
+    {
+        56,
+        0,
+    },
+    {
+        57,
+        0,
+    },
+    {
+        58,
+        0,
+    },
+    {
+        59,
+        0,
+    },
+    {
+        60,
+        0,
+    },
+    {
+        68,
+        0,
+    },
+    {
+        69,
+        0,
+    },
+    {
+        69,
+        1,
+    },
+    {
+        70,
+        0,
+    },
+    {
+        62,
+        0,
+    },
+    {
+        62,
+        1,
+    },
+    {
+        63,
+        0,
+    },
+    {
+        63,
+        1,
+    },
+    {
+        61,
+        0,
+    },
+    {
+        64,
+        0,
+    },
+    {
+        66,
+        0,
+    },
+    {
+        67,
+        0,
+    },
+    {
+        73,
+        0,
+    },
+    {
+        73,
+        1,
+    },
+    {
+        73,
+        2,
+    },
+    {
+        75,
+        0,
+    },
+    {
+        9,
+        2,
+    },
+    {
+        71,
+        0,
+    },
+    {
+        71,
+        1,
+    },
+    {
+        72,
+        0,
+    },
+    {
+        36,
+        0,
+    },
+    {
+        36,
+        1,
+    },
+    {
+        36,
+        2,
+    },
+    {
+        36,
+        3,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        19,
+        0,
+    },
+    {
+        37,
+        0,
+    },
+    {
+        37,
+        1,
+    },
+    {
+        110,
+        0,
+    },
+    {
+        110,
+        1,
+    },
+    {
+        112,
+        0,
+    },
+    {
+        111,
+        0,
+    },
+    {
+        113,
+        0,
+    },
+    {
+        202,
+        0,
+    },
+    {
+        203,
+        0,
+    },
+    {
+        204,
+        0,
+    },
+    {
+        201,
+        0,
+    },
+    {
+        292,
+        0,
+    },
+    {
+        295,
+        0,
+    },
+    {
+        295,
+        1,
+    },
+    {
+        294,
+        0,
+    },
+    {
+        293,
+        0,
+    },
+    {
+        293,
+        1,
+    },
+    {
+        293,
+        2,
+    },
+    {
+        293,
+        3,
+    },
+    {
+        296,
+        0,
+    },
+    {
+        297,
+        2,
+    },
+    {
+        297,
+        0,
+    },
+    {
+        297,
+        1,
+    },
+    {
+        297,
+        3,
+    },
+    {
+        297,
+        4,
+    },
+    {
+        324,
+        0,
+    },
+    {
+        324,
+        1,
+    },
+    {
+        324,
+        2,
+    },
+    {
+        416,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        378,
+        0,
+    },
+    {
+        383,
+        0,
+    },
+    {
+        1,
+        0,
+    },
+    {
+        382,
+        0,
+    },
+};
 
 void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 {
@@ -1767,146 +2230,130 @@ void sub_8022C44(Player *p)
     }
 }
 
-// (99.91%) https://decomp.me/scratch/WA4Qa
-NONMATCH("asm/non_matching/game/sub_8022D6C.inc", void sub_8022D6C(Player *p))
+void sub_8022D6C(Player *p)
 {
-    u32 zero = 0;
+    s8 r0;
+    u8 r1 = 0;
     if (p->moveState & MOVESTATE_8) {
-        p->unk29 = zero;
-        p->unk28 = zero;
-    } else {
-        if ((gCurrentLevel == 0) && (gWater.isActive == 1)) {
-            s32 r5 = Q_24_8(p->y) >> 16;
-            u32 mask = ~0x3;
-            s32 offsetY = p->unk17;
-            s32 waterLevel = gWater.currentWaterLevel;
-            s32 r0 = (waterLevel - offsetY) & mask;
-            s16 r6;
-            r0 <<= 16;
-            r5 &= mask;
-            r6 = (s16)(r0 >> 16);
-#ifndef NON_MATCHING
-            asm("\tasr %0, %0, #16\n" : "=r"(r0) : "r"(r0));
-#else
-            r0 = r0 >> 16;
-#endif
+        p->unk29 = 0;
+        p->unk28 = 0;
+        return;
+    }
+    if ((gCurrentLevel == 0) && (gWater.isActive == TRUE)) {
+        s32 r5 = Q_24_8(p->y) >> 16;
+        u32 mask = ~0x3;
+        s32 offsetY = p->unk17;
+        s32 unk4 = gWater.currentWaterLevel;
+        s16 r0 = (unk4 - offsetY) & mask;
+        r5 &= mask;
 
-            if ((r5 == r0) && (p->speedAirY >= 0) && ((u8)(p->rotation + 0x18) <= 0x30)
-                && (!(p->moveState & MOVESTATE_IN_AIR))
-                && (ABS(p->speedGroundX) >= Q_24_8(6.0))) {
-                sub_80228C0(p);
+        if ((r5 == (r0)) && (p->speedAirY >= 0) && ((u8)(p->rotation + 0x18) <= 0x30)
+            && (!(p->moveState & MOVESTATE_IN_AIR))
+            && (ABS(p->speedGroundX) >= Q_24_8(6.0))) {
+            sub_80228C0(p);
 
-                if (p->y >= Q_24_8(r5)) {
-                    if (!(p->moveState & MOVESTATE_20000)) {
-                        p->moveState |= MOVESTATE_20000;
+            if (p->y >= Q_24_8(r5)) {
+                if (!(p->moveState & MOVESTATE_20000)) {
+                    p->moveState |= MOVESTATE_20000;
 
-                        if (IS_SINGLE_PLAYER) {
-                            CreateRunOnWaterEffect();
-                        }
+                    if (IS_SINGLE_PLAYER) {
+                        CreateRunOnWaterEffect();
                     }
-
-                    m4aSongNumStartOrContinue(SE_281);
-                    p->y = (r6 << 8);
-                    p->rotation = 0;
-                    p->moveState &= ~MOVESTATE_IN_AIR;
-                } else {
-                    // _08022E54
-                    if (p->moveState & MOVESTATE_20000) {
-                        m4aSongNumStop(SE_281);
-                    }
-                    p->moveState &= ~MOVESTATE_20000;
                 }
-                return;
-            } else if (p->moveState & MOVESTATE_20000) {
+
+                m4aSongNumStartOrContinue(SE_281);
+                p->y = (r0 << 8);
+                p->rotation = 0;
+                p->moveState &= ~MOVESTATE_IN_AIR;
+            } else {
+                // _08022E54
+                if (p->moveState & MOVESTATE_20000) {
+                    m4aSongNumStop(SE_281);
+                }
                 p->moveState &= ~MOVESTATE_20000;
-                m4aSongNumStop(SE_281);
+            }
+            return;
+        } else if (p->moveState & MOVESTATE_20000) {
+            p->moveState &= ~MOVESTATE_20000;
+            m4aSongNumStop(SE_281);
+        }
+    }
+    // _08022E90
+    if (GRAVITY_IS_INVERTED) {
+        r0 = p->rotation;
+        r0 += 0x40;
+        r0 = -r0;
+        r0 -= 0x40;
+
+        // _08022EF4
+        if (r0 + 0x20 > 0) {
+            if (r0 <= 0) {
+                r1 = r0 + 0x20;
+            } else {
+                r1 = r0 + 0x1F;
+            }
+        } else {
+            if (r0 > 0) {
+                r1 = r0 + 0x20;
+            } else {
+                r1 = r0 + 0x1F;
             }
         }
-        // _08022E90
-        {
-            u8 r1;
-            s8 r0;
-            if (GRAVITY_IS_INVERTED) {
-                r0 = (s8)p->rotation;
-                r0 += 0x40;
-                r0 = NEGATE(r0);
-                r0 -= 0x40;
 
-                // _08022EF4
+        switch (r1 >> 6) {
+            case 0: {
+                sub_80228C0(p);
+            } break;
 
-                if (r0 + 0x20 > 0) {
-                    if (r0 <= 0) {
-                        r1 = r0 + 0x20;
-                    } else {
-                        r1 = r0 + 0x1F;
-                    }
-                } else {
-                    if (r0 > 0) {
-                        r1 = r0 + 0x20;
-                    } else {
-                        r1 = r0 + 0x1F;
-                    }
-                }
+            case 2: {
+                sub_80229EC(p);
+            } break;
 
-                r0 = r1 >> 6;
-                switch (r0) {
-                    case 0: {
-                        sub_80228C0(p);
-                    } break;
+            case 1: {
+                sub_8022B18(p);
+            } break;
 
-                    case 2: {
-                        sub_80229EC(p);
-                    } break;
+            case 3: {
+                sub_8022C44(p);
+            } break;
+        }
+    } else {
+        r0 = p->rotation;
+        // _08022EF4
 
-                    case 1: {
-                        sub_8022B18(p);
-                    } break;
-
-                    case 3: {
-                        sub_8022C44(p);
-                    } break;
-                }
-
+        if (r0 + 0x20 > 0) {
+            if (r0 <= 0) {
+                r1 = r0 + 0x20;
             } else {
-                r0 = (s8)p->rotation;
-                // _08022EF4
-
-                if (r0 + 0x20 > 0) {
-                    if (r0 <= 0) {
-                        r1 = r0 + 0x20;
-                    } else {
-                        r1 = r0 + 0x1F;
-                    }
-                } else {
-                    if (r0 > 0) {
-                        r1 = r0 + 0x20;
-                    } else {
-                        r1 = r0 + 0x1F;
-                    }
-                }
-
-                switch (r1 >> 6) {
-                    case 0: {
-                        sub_80228C0(p);
-                    } break;
-
-                    case 2: {
-                        sub_80229EC(p);
-                    } break;
-
-                    case 1: {
-                        sub_8022B18(p);
-                    } break;
-
-                    case 3: {
-                        sub_8022C44(p);
-                    } break;
-                }
+                r1 = r0 + 0x1F;
             }
+        } else {
+            if (r0 > 0) {
+                r1 = r0 + 0x20;
+            } else {
+                r1 = r0 + 0x1F;
+            }
+        }
+
+        switch (r1 >> 6) {
+            case 0: {
+                sub_80228C0(p);
+            } break;
+
+            case 2: {
+                sub_80229EC(p);
+            } break;
+
+            case 1: {
+                sub_8022B18(p);
+            } break;
+
+            case 3: {
+                sub_8022C44(p);
+            } break;
         }
     }
 }
-END_NONMATCH
 
 // (100.00%) https://decomp.me/scratch/U0r54
 s32 sub_8022F58(u8 param0, Player *p)
@@ -2504,7 +2951,6 @@ void sub_8023708(Player *p)
     }
 }
 
-// Unused?
 void sub_8023748(Player *p)
 {
     if (p->itemEffect == PLAYER_ITEM_EFFECT__NONE)
@@ -2635,170 +3081,665 @@ void sub_8023878(Player *p)
 }
 
 // TODO: incomplete
-// void sub_8023B5C(Player *p, s8 spriteOffsetY)
-// {
-//     s8 rot;
-//     if (p->unk17 == spriteOffsetY) {
-//         return;
-//     }
+NONMATCH("asm/non_matching/sub_8023B5C.inc",
+         void sub_8023B5C(Player *p, s8 spriteOffsetY))
+{
+    s8 rot;
+    if (p->unk17 == spriteOffsetY) {
+        return;
+    }
 
-//     rot = p->rotation;
-//     if (GRAVITY_IS_INVERTED) {
-//         rot -= 0x40;
-//     }
-// }
+    rot = p->rotation;
+    if (GRAVITY_IS_INVERTED) {
+        rot -= 0x40;
+    }
+}
+END_NONMATCH
 
-// void sub_80232D0(Player *p);
+void sub_8023C10(Player *p)
+{
+    if (p->moveState & MOVESTATE_80000000) {
+        s32 speedGroundX = p->speedGroundX;
+        if (gInput & DPAD_ANY) {
+            speedGroundX += 0x20;
+            speedGroundX = speedGroundX >= 0 ? CLAMP(speedGroundX, 0, 0x1000) : 0;
+        } else {
+            speedGroundX = 0;
+        }
+        p->speedGroundX = speedGroundX;
 
-// https://decomp.me/scratch/YiC8I
-// void sub_8023C10(Player *p)
-// {
-//     if ((s32)p->moveState < 0) {
-//         s32 speedGroundX = p->speedGroundX;
-//         if (gInput & DPAD_ANY) {
-//             speedGroundX += 0x20;
-//             speedGroundX = speedGroundX >= 0 ? CLAMP(speedGroundX, 0, 0x1000) : 0;
-//         } else {
-//             speedGroundX = 0;
-//         }
-//         p->speedGroundX = speedGroundX;
+        switch (gInput & DPAD_SIDEWAYS) {
+            case DPAD_LEFT:
+                p->speedAirX = -speedGroundX;
+                break;
 
-//         if ((gInput & DPAD_SIDEWAYS) != DPAD_RIGHT) {
-//             if ((gInput & DPAD_SIDEWAYS) == 0x20) {
-//                 p->speedAirX = -speedGroundX;
-//             } else {
-//                 p->speedAirX = 0;
-//             }
-//         } else {
-//             p->speedAirX = speedGroundX;
-//         }
+            case DPAD_RIGHT:
+                p->speedAirX = speedGroundX;
+                break;
 
-//         if ((gInput & (DPAD_DOWN | DPAD_UP)) != DPAD_UP) {
-//             if ((gInput & (DPAD_DOWN | DPAD_UP)) != DPAD_DOWN) {
-//                 p->speedAirY = 0;
+            default:
+                p->speedAirX = 0;
+        }
 
-//             } else {
-//                 p->speedAirY = speedGroundX;
-//             }
-//         } else {
-//             p->speedAirY = -speedGroundX;
-//         }
+        switch (gInput & (DPAD_DOWN | DPAD_UP)) {
+            case DPAD_UP:
+                p->speedAirY = -speedGroundX;
+                break;
 
-//         p->x += p->speedAirX;
-//         if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-//             p->speedAirY = -p->speedAirY;
-//         }
+            case DPAD_DOWN:
+                p->speedAirY = speedGroundX;
+                break;
 
-//         p->speedAirY = MIN(p->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
+            default:
+                p->speedAirY = 0;
+        }
 
-//         p->y = GRAVITY_IS_INVERTED ? p->y - p->speedAirY : p->y + p->speedAirY;
-//         sub_80232D0(p);
+        p->x += p->speedAirX;
+        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+            p->speedAirY = -p->speedAirY;
+        }
 
-//         if (gPressedKeys & B_BUTTON) {
-//             InitScatteringRings(I(p->x), I(p->y), 1);
-//         }
-//     }
-// }
+        p->speedAirY = MIN(p->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
 
-// matching
-// void Task_8023D08(void)
-// {
-//     player_0_Task *gt = TASK_DATA(gCurTask);
-//     u32 val = gt->unk4;
-//     if (val == 0) {
-//         if (IS_SINGLE_PLAYER) {
-//             TaskDestroy(gCurTask);
-//             if ((!gLoadedSaveGame->timeLimitDisabled
-//                  && (gCourseTime > 36000
-//                      || (gUnknown_03005424 & EXTRA_STATE__4 && gCourseTime == 0)))
-//                 || ((gGameMode == GAME_MODE_TIME_ATTACK
-//                      || gGameMode == GAME_MODE_BOSS_TIME_ATTACK)
-//                     && gCourseTime > 36000)) {
-//                 sub_801B6B4();
-//             } else {
-//                 gRingCount = 0;
-//                 gSpecialRingCount = 0;
-//                 sub_801AE48();
-//             }
-//             return;
-//         }
+        p->y = GRAVITY_IS_INVERTED ? p->y - p->speedAirY : p->y + p->speedAirY;
+        sub_80232D0(p);
 
-//         gRingCount = 0;
+        if (gPressedKeys & B_BUTTON) {
+            InitScatteringRings(I(p->x), I(p->y), 1);
+        }
+    }
+}
 
-//         if (gGameMode == GAME_MODE_MULTI_PLAYER) {
-//             gRingCount = 1;
-//         }
+void Task_8023D08(void)
+{
+    player_0_Task *gt = TASK_DATA(gCurTask);
+    u32 val = gt->unk4;
+    if (val == 0) {
+        if (IS_SINGLE_PLAYER) {
+            TaskDestroy(gCurTask);
+            if ((!gLoadedSaveGame->timeLimitDisabled
+                 && (gCourseTime > 36000
+                     || (gUnknown_03005424 & EXTRA_STATE__4 && gCourseTime == 0)))
+                || ((gGameMode == GAME_MODE_TIME_ATTACK
+                     || gGameMode == GAME_MODE_BOSS_TIME_ATTACK)
+                    && gCourseTime > 36000)) {
+                sub_801B6B4();
+            } else {
+                gRingCount = 0;
+                gSpecialRingCount = 0;
+                sub_801AE48();
+            }
+            return;
+        }
 
-//         gSpecialRingCount = 0;
-//         InitializePlayer(&gPlayer);
-//         gCamera.x = I(gPlayer.x) + gCamera.shiftX - 0x78;
-//         gCamera.y = I(gPlayer.y) + gCamera.shiftY - 0x50;
-//         m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
-//         gPlayer.moveState = 0;
-//         gUnknown_03005424 &= ~EXTRA_STATE__GRAVITY_INVERTED;
+        gRingCount = 0;
 
-//         gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-//         gPlayer.unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
-//         gPlayer.unk94->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-//         gPlayer.unk94->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+        if (gGameMode == GAME_MODE_MULTI_PLAYER) {
+            gRingCount = 1;
+        }
 
-//         gCamera.unk50 &= ~0x3;
-//         if (gPlayer.character == CHARACTER_CREAM && gCheese != NULL) {
-//             gCheese->posX = gPlayer.x;
-//             gCheese->posY = gPlayer.y;
-//         }
+        gSpecialRingCount = 0;
+        InitializePlayer(&gPlayer);
+        gCamera.x = I(gPlayer.x) + gCamera.shiftX - 0x78;
+        gCamera.y = I(gPlayer.y) + gCamera.shiftY - 0x50;
+        m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
+        gPlayer.moveState = 0;
+        gUnknown_03005424 &= ~EXTRA_STATE__GRAVITY_INVERTED;
 
-//         gCurTask->main = Task_8023FC0;
-//         gPlayer.callback = PlayerCB_8025318;
-//     } else {
-//         val--;
-//         gt->unk4 = val;
-//     }
-// }
+        gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+        gPlayer.unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+        gPlayer.unk94->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+        gPlayer.unk94->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
 
-// https://decomp.me/scratch/vWTo8
-// void Task_8023E90(void)
-// {
-//     Player *p = &gPlayer;
-//     u16 *r2;
-//     PlayerSpriteInfo *psi1 = p->unk90;
-//     PlayerSpriteInfo *psi2 = p->unk94;
-//     struct Camera *cam = &gCamera;
-//     s32 playerY = p->y;
+        gCamera.unk50 &= ~0x3;
+        if (gPlayer.character == CHARACTER_CREAM && gCheese != NULL) {
+            gCheese->posX = gPlayer.x;
+            gCheese->posY = gPlayer.y;
+        }
 
-//     if ((s32)p->moveState < 0) {
-//         r2 = &gUnknown_03005424;
-//         goto thing;
-//     } else {
-//         if (((GRAVITY_IS_INVERTED && playerY > Q(cam->y - 0x50))
-//              || (!GRAVITY_IS_INVERTED && playerY < Q(cam->y) + 0xEFFF))) {
-//             player_0_Task *gt = TASK_DATA(gCurTask);
-//             gt->unk4 = 0x3C;
-//             gPlayer.moveState |= MOVESTATE_100000;
-//             if (IS_MULTI_PLAYER) {
-//                 sub_8024B10(p, psi1);
-//             }
-//             gCurTask->main = Task_8023D08;
-//             return;
-//         }
-//     }
-// thing:
-//     if (p->moveState & MOVESTATE_40) {
-//         p->speedAirY += Q_24_8(PLAYER_GRAVITY_UNDER_WATER);
-//     } else {
-//         p->speedAirY += Q_24_8(PLAYER_GRAVITY);
-//     }
+        gCurTask->main = Task_8023FC0;
+        gPlayer.callback = PlayerCB_8025318;
+    } else {
+        val--;
+        gt->unk4 = val;
+    }
+}
 
-//     p->x += p->speedAirX;
+static inline bool32 SomePlayerYComparison(Player *p, struct Camera *cam, s32 playerY)
+{
+    if (p->moveState & MOVESTATE_80000000) {
+        return FALSE;
+    }
 
-//     if ((*r2 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-//         p->speedAirY = -p->speedAirY;
-//     }
+    if (GRAVITY_IS_INVERTED) {
+        if (playerY <= Q(cam->y - 80)) {
+            return TRUE;
+        }
+    } else {
+        if (playerY >= Q(cam->y) + Q(240) - 1) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
 
-//     p->speedAirY = MIN(p->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
+void Task_8023E90(void)
+{
+    Player *p = &gPlayer;
 
-//     p->y = GRAVITY_IS_INVERTED ? p->y - p->speedAirY : p->y + p->speedAirY;
-//     sub_802486C(p, psi1);
-//     sub_8024B10(p, psi1);
-//     sub_8024F74(p, psi2);
-// }
+    PlayerSpriteInfo *psi1 = gPlayer.unk90;
+    PlayerSpriteInfo *psi2 = gPlayer.unk94;
+
+    if (SomePlayerYComparison(&gPlayer, &gCamera, gPlayer.y)) {
+        player_0_Task *gt = TASK_DATA(gCurTask);
+        gt->unk4 = 0x3C;
+        gPlayer.moveState |= MOVESTATE_100000;
+        if (IS_MULTI_PLAYER) {
+            sub_8024B10(p, psi1);
+        }
+        gCurTask->main = Task_8023D08;
+        return;
+    }
+
+    if (p->moveState & MOVESTATE_40) {
+        p->speedAirY += Q_24_8(PLAYER_GRAVITY_UNDER_WATER);
+    } else {
+        p->speedAirY += Q_24_8(PLAYER_GRAVITY);
+    }
+
+    p->x += p->speedAirX;
+
+    if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+        p->speedAirY = -p->speedAirY;
+    }
+
+    p->speedAirY = MIN(p->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
+
+    p->y = GRAVITY_IS_INVERTED ? p->y - p->speedAirY : p->y + p->speedAirY;
+    sub_802486C(p, psi1);
+    sub_8024B10(p, psi1);
+    sub_8024F74(p, psi2);
+}
+
+void sub_80298DC(Player *p);
+void sub_802A1C8(Player *p);
+void sub_8029990(Player *p);
+void sub_802460C(Player *p);
+void CallPlayerTransition(Player *p);
+
+void Task_8023FC0(void)
+{
+    Player *p = &gPlayer;
+    sub_802989C(p);
+    sub_80298DC(p);
+    sub_802A1C8(p);
+    sub_8029990(p);
+
+    gUnknown_030054FC = 0;
+    gUnknown_030054E0 = 0;
+    sub_802460C(p);
+    sub_800DF8C(p);
+    sub_8023878(p);
+    CallPlayerTransition(p);
+
+    if (!(p->moveState & MOVESTATE_400000)) {
+        p->callback(p);
+    } else if (IS_BOSS_STAGE(gCurrentLevel)) {
+        sub_80232D0(p);
+    }
+
+    sub_802486C(p, p->unk90);
+    sub_8024B10(p, p->unk90);
+    sub_8024F74(p, p->unk94);
+
+    if (p->unk64 != 0x14 && p->timerInvulnerability > 0) {
+        p->timerInvulnerability--;
+    }
+
+    if (p->unk36 != 0) {
+        p->unk36--;
+    }
+
+    sub_8023748(p);
+    sub_8015790();
+    sub_80156D0();
+
+    p->moveState &= ~MOVESTATE_800;
+    gUnknown_030054C0.unk0 = 0x4000;
+    gUnknown_030054C0.unk4 = 0;
+    gUnknown_03005498.someDistanceSquared = 40000;
+    gUnknown_03005498.t = NULL;
+
+    if (p->moveState & MOVESTATE_DEAD) {
+        struct Camera *cam = &gCamera;
+        gCurTask->main = Task_8023E90;
+        p->unk64 = 0x16;
+        p->speedAirX = 0;
+
+        if (p->speedAirY < -0x400) {
+            p->speedAirY = -0x200;
+        } else if (p->speedAirY > 0) {
+            p->speedAirY = 0;
+        }
+
+        p->timerInvulnerability = 2;
+        p->itemEffect = 0;
+        p->moveState &= ~MOVESTATE_20;
+        p->moveState &= ~MOVESTATE_8;
+        p->unk3C = 0;
+        cam->unk50 |= 3;
+
+        if (IS_SINGLE_PLAYER) {
+            gUnknown_03005424 |= EXTRA_STATE__ACT_START;
+        }
+
+        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+        p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+        p->unk80 = 0x100;
+        p->unk82 = 0x100;
+
+        // TODO: macro IS_SONG_PLAYING(...)
+        if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header) {
+            m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
+        }
+        if (gMPlayTable[0].info->songHeader == gSongTable[MUS_INVINCIBILITY].header) {
+            m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
+        }
+
+        m4aSongNumStop(MUS_DROWNING);
+
+        if (p->character == CHARACTER_TAILS) {
+            m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
+        }
+
+        if (p->character == CHARACTER_CREAM) {
+            m4aSongNumStop(SE_CREAM_FLYING);
+        }
+
+        if (p->unk86 < 0) {
+            m4aSongNumStart(SE_157);
+        } else {
+            m4aSongNumStart(SE_LIFE_LOST);
+        }
+    }
+}
+
+void CallPlayerTransition(Player *p)
+{
+    if (p->transition) {
+        switch (p->transition - 1) {
+            case PLTRANS_PT1 - 1: {
+                PLAYERFN_SET(PlayerCB_8025318);
+            } break;
+            case PLTRANS_PT2 - 1: {
+                PLAYERFN_SET(PlayerCB_8025A0C);
+            } break;
+            case PLTRANS_PT3 - 1: {
+                p->moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
+                PLAYERFN_SET(PlayerCB_Jump);
+            } break;
+            case PLTRANS_PT4 - 1: {
+                p->moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
+                PLAYERFN_SET(PlayerCB_8025F84);
+            } break;
+            case PLTRANS_PT7 - 1: {
+                PLAYERFN_SET(PlayerCB_8028D74);
+            } break;
+            case PLTRANS_PT6 - 1: {
+                p->moveState |= MOVESTATE_100;
+                PLAYERFN_SET(PlayerCB_8026060);
+            } break;
+            case PLTRANS_PT5 - 1: {
+                p->moveState |= MOVESTATE_100;
+                PLAYERFN_SET(PlayerCB_802611C);
+            } break;
+            case PLTRANS_PT8 - 1: {
+                PLAYERFN_SET(PlayerCB_801225C);
+            } break;
+            case PLTRANS_PT9 - 1: {
+                PLAYERFN_SET(PlayerCB_8027250);
+            } break;
+            case PLTRANS_PT10 - 1: {
+                if (gGameMode == GAME_MODE_TIME_ATTACK) {
+                    gUnknown_03005424 |= EXTRA_STATE__TURN_OFF_TIMER;
+                }
+
+                if (p->moveState
+                    & (MOVESTATE_20000000 | MOVESTATE_10000000 | MOVESTATE_2000
+                       | MOVESTATE_8 | MOVESTATE_IN_AIR)) {
+                    p->moveState |= (MOVESTATE_8000000 | MOVESTATE_IGNORE_INPUT);
+                    p->unk5C = 0;
+                    p->unk5E = 0;
+                } else {
+                    // _080243D0
+                    p->moveState |= MOVESTATE_8000000;
+                    PLAYERFN_SET(PlayerCB_80273D0);
+                }
+            } break;
+            case PLTRANS_SPRING_UP - 1: {
+                // NOTE: Set to 0 or 3 in floating_spring.c
+                if (GRAVITY_IS_INVERTED) {
+                    p->unk6E |= 0x10;
+                }
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
+            } break;
+            case PLTRANS_SPRING_DOWN - 1: {
+                if (!GRAVITY_IS_INVERTED) {
+                    p->unk6E |= 0x10;
+                }
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
+            } break;
+            case PLTRANS_SPRING_LEFT - 1: {
+                p->unk6E |= 0x20;
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
+            } break;
+            case PLTRANS_SPRING_RIGHT - 1: {
+                p->unk6E |= 0x30;
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
+            } break;
+            case PLTRANS_SPRING_UP_LEFT - 1: {
+                if (GRAVITY_IS_INVERTED) {
+                    p->unk6E |= 0x60;
+                } else {
+                    p->unk6E |= 0x40;
+                }
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
+            } break;
+            case PLTRANS_SPRING_UP_RIGHT - 1: {
+                if (GRAVITY_IS_INVERTED) {
+                    p->unk6E |= 0x70;
+                } else {
+                    p->unk6E |= 0x50;
+                }
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
+            } break;
+            case PLTRANS_SPRING_DOWN_LEFT - 1: {
+                if (GRAVITY_IS_INVERTED) {
+                    p->unk6E |= 0x40;
+                } else {
+                    p->unk6E |= 0x60;
+                }
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
+            } break;
+            case PLTRANS_SPRING_DOWN_RIGHT - 1: {
+                if (GRAVITY_IS_INVERTED) {
+                    p->unk6E |= 0x50;
+                } else {
+                    p->unk6E |= 0x70;
+                }
+                PLAYERFN_SET(PlayerCB_TouchNormalSpring);
+            } break;
+            case PLTRANS_PT22 - 1: {
+                PLAYERFN_SET(PlayerCB_8029158);
+            } break;
+            case PLTRANS_PT24 - 1: {
+                PLAYERFN_SET(PlayerCB_802A300);
+            } break;
+            case PLTRANS_PT11 - 1: {
+                PLAYERFN_SET(PlayerCB_8026764);
+            } break;
+            case PLTRANS_PT12 - 1: {
+                PLAYERFN_SET(PlayerCB_80269C0);
+            } break;
+            case PLTRANS_PT13 - 1: {
+                PLAYERFN_SET(PlayerCB_8026A4C);
+            } break;
+            case PLTRANS_PT23 - 1: {
+                PLAYERFN_SET(PlayerCB_802A258);
+            } break;
+            case PLTRANS_PT25 - 1: {
+                PLAYERFN_SET(PlayerCB_8026E24);
+            } break;
+            case PLTRANS_PT28 - 1: {
+                PLAYERFN_SET(PlayerCB_8026F10);
+            } break;
+            case PLTRANS_PT26 - 1: {
+                PLAYERFN_SET(PlayerCB_8026FC8);
+            } break;
+            case PLTRANS_PT27 - 1: {
+                PLAYERFN_SET(PlayerCB_8027114);
+            } break;
+        }
+    }
+
+    p->prevTransition = p->transition;
+    p->transition = 0;
+}
+
+void sub_802460C(Player *p)
+{
+    u32 input;
+    u16 input2;
+
+    if (IS_MULTI_PLAYER && (SIO_MULTI_CNT->id != gCamera.spectatorTarget)) {
+        p->unk5C = 0;
+        input = 0;
+    } else {
+        input = p->unk5C;
+
+        if (!(p->moveState & MOVESTATE_IGNORE_INPUT)) {
+            p->unk5C = gInput;
+
+            if (IS_MULTI_PLAYER && (p->itemEffect & PLAYER_ITEM_EFFECT__40)) {
+                u8 dpad = (p->unk5C & DPAD_ANY) >> 4;
+                u32 r1 = gStageTime;
+
+                r1 = ((p->unk32 + r1) & 0x3);
+                if (!r1) {
+                    r1 = 1;
+                }
+
+                dpad <<= r1;
+                dpad = (dpad >> 4) | dpad;
+                dpad = (u8)(dpad << 4);
+
+                p->unk5C = (p->unk5C & ~DPAD_ANY) | dpad;
+
+                if (--p->unk32 == 0) {
+                    p->itemEffect &= 0xBF;
+                }
+            }
+        }
+    }
+
+    input2 = p->unk5C;
+    input ^= input2;
+#ifdef NON_MATCHING
+    input &= input2;
+#else
+    asm("and %0, %2" : "=r"(input) : "r"(input), "r"(input2));
+#endif
+    p->unk5E = input;
+}
+
+void sub_80246DC(Player *p)
+{
+    Sprite *s90 = &p->unk90->s;
+    u16 charAnim = p->unk64;
+    u32 r3 = p->anim;
+    u32 variant = p->variant;
+    u32 sl = variant;
+
+    AnimId baseAnim = gPlayerCharacterIdleAnims[p->character];
+    r3 = (u16)(r3 - baseAnim);
+
+    if ((charAnim == 10) || (charAnim == 11)) {
+        if (variant == 0 && (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
+            && (((u16)r3 - 10) == 0 || ((u16)r3 - 10) == 1)) {
+            p->variant = 1;
+            p->moveState |= MOVESTATE_4;
+
+            PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
+        } else {
+            if ((p->speedAirY > 0) && (p->variant == 1)
+                && ((((u16)r3 - 10) == 0) || (((u16)r3 - 10) == 1))) {
+                s32 newY
+                    = sub_801E6D4(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x),
+                                  p->unk38, 8, NULL, sub_801EE64);
+
+                if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                    if (newY <= 32) {
+                        p->variant = 2;
+                    }
+                }
+            }
+        }
+    } else {
+        if (charAnim == SA2_CHAR_ANIM_38) {
+            if (r3 == SA2_CHAR_ANIM_52) {
+                if (variant == 0) {
+                    if (p->speedAirY > 0) {
+                        p->variant = 1;
+                    }
+                } else if (variant == 1) {
+                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->variant = 2;
+                    }
+                }
+            }
+        } else if (charAnim == SA2_CHAR_ANIM_39) {
+            if (r3 == SA2_CHAR_ANIM_53) {
+                if (variant == 0) {
+                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->anim = (gPlayerCharacterIdleAnims[p->character]
+                                   + SA2_CHAR_ANIM_52);
+                        p->variant = 2;
+                    }
+                }
+            }
+        } else if (charAnim == SA2_CHAR_ANIM_37) {
+            if (r3 == SA2_CHAR_ANIM_65) {
+                if (variant == 0) {
+                    if (p->speedAirY > 0) {
+                        p->variant = 1;
+                    }
+                } else if (variant == 1) {
+                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->variant = 2;
+                    }
+                }
+            }
+        } else if (charAnim == SA2_CHAR_ANIM_57) {
+            if (r3 == SA2_CHAR_ANIM_66) {
+                if (variant == 0) {
+                    if (p->speedAirY > 0) {
+                        p->variant = 1;
+                    }
+                } else if (sl == 1) {
+                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                        p->variant = 2;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void sub_802486C(Player *p, PlayerSpriteInfo *p2)
+{
+#ifndef NON_MATCHING
+    s32 speed;
+    register s32 r0 asm("r0");
+#endif
+    Sprite *s = &p2->s;
+
+    if ((p->unk64 != -1) && (p->unk64 != p->unk66)) {
+        p->anim = gUnknown_080D6736[p->unk64][0];
+
+        // NOTE: Could it be that anims 80-91 are character-specific?
+        if (p->unk64 < SA2_CHAR_ANIM_80) {
+            p->anim += gPlayerCharacterIdleAnims[p->character];
+        }
+        // _080248C6
+        p->variant = gUnknown_080D6736[p->unk64][1];
+        p2->s.animSpeed = SPRITE_ANIM_SPEED(1.0);
+    }
+    // _080248E0
+
+    switch (((u16)(p->unk64 - 9) << 16) >> 16) {
+        case SA2_CHAR_ANIM_WALK - 9: {
+            // _080249E8
+            p->anim = gPlayerCharacterIdleAnims[p->character] + SA2_CHAR_ANIM_WALK;
+            p->variant = p->unk54;
+        } // FALLTHROUGH!!!
+
+        case 59 - 9:
+        case 60 - 9:
+        case 61 - 9: {
+            // _08024A10
+            PLAYERFN_SET_ANIM_SPEED(p, s);
+        } break;
+
+        case 16 - 9: {
+#ifndef NON_MATCHING
+            if (p->character != CHARACTER_CREAM) {
+                break;
+            }
+            // _08024A3A
+            speed = p->speedGroundX;
+            speed = (speed >> 5) + (speed >> 6);
+
+            /* TODO: Try ABS macro */
+            speed = ABS(speed);
+
+            if (speed >= SPRITE_ANIM_SPEED(0.5)) {
+                if (speed > SPRITE_ANIM_SPEED(8.0)) {
+                    speed = SPRITE_ANIM_SPEED(8.0);
+                }
+            } else {
+                speed = SPRITE_ANIM_SPEED(0.5);
+            }
+            s->animSpeed = speed;
+#else
+            PLAYERFN_SET_ANIM_SPEED(p, s);
+#endif
+        } break;
+
+        case 51 - 9:
+        case 52 - 9: {
+            // _08024A70
+#ifndef NON_MATCHING
+            r0 = p->speedAirY;
+            goto lab;
+#else
+            s->animSpeed = Q_24_8_TO_INT(ABS(p->speedAirY)) * 3 + 8;
+#endif
+        } break;
+
+        case 53 - 9:
+        case 54 - 9: {
+#ifndef NON_MATCHING
+            // _08024A76
+            r0 = p->speedGroundX;
+        lab:
+            speed = Q_24_8_TO_INT(ABS(r0)) * 3 + 8;
+            s->animSpeed = speed;
+#else
+            s->animSpeed = Q_24_8_TO_INT(ABS(p->speedGroundX)) * 3 + 8;
+            ;
+#endif
+        } break;
+    }
+    // _08024A96
+
+    if (IS_MULTI_PLAYER) {
+        p->unk98 = 0;
+    }
+    // _08024AA8
+
+    if ((p->unk6C != 0) || (s->graphics.anim != p->anim) || (s->variant != p->variant)) {
+        // _08024ACA
+        p->unk6C = 0;
+        s->graphics.anim = p->anim;
+        s->variant = p->variant;
+        s->prevVariant = -1;
+        s->hitboxes[0].index = -1;
+        s->hitboxes[1].index = -1;
+
+        if (IS_MULTI_PLAYER) {
+            p->unk98 = 1;
+        }
+    }
+    // _08024AF6
+    p->unk66 = p->unk64;
+}

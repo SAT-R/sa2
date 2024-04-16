@@ -75,7 +75,6 @@ const s16 sHeartOffsets[4][8][3] = {
         { 30, -19, 6 },
     },
 };
-extern const u16 gUnknown_080D6736[115][2];
 
 void CreateAmyAttackHeartEffect(u16 kind)
 {
