@@ -8,7 +8,7 @@
 #define IS_ALIVE(player) (!(player->moveState & MOVESTATE_DEAD))
 
 typedef struct {
-    /*0x00 */ u16 unk0[6]; // might be [5]
+    /*0x00 */ SpriteTransform transform;
     /*0x0C */ Sprite s;
     /*0x3C */ Hitbox reserved;
 } PlayerSpriteInfo; /* 0x30 */

@@ -59,467 +59,24 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2);
 void sub_8024B10(Player *p, PlayerSpriteInfo *s);
 void sub_8024F74(Player *p, PlayerSpriteInfo *s);
 
-const u16 gUnknown_080D6736[115][2] = {
-    {
-        0,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        2,
-        0,
-    },
-    {
-        3,
-        0,
-    },
-    {
-        4,
-        0,
-    },
-    {
-        5,
-        0,
-    },
-    {
-        6,
-        0,
-    },
-    {
-        7,
-        0,
-    },
-    {
-        8,
-        0,
-    },
-    {
-        9,
-        0,
-    },
-    {
-        10,
-        0,
-    },
-    {
-        11,
-        0,
-    },
-    {
-        12,
-        0,
-    },
-    {
-        13,
-        0,
-    },
-    {
-        13,
-        0,
-    },
-    {
-        14,
-        0,
-    },
-    {
-        15,
-        0,
-    },
-    {
-        16,
-        0,
-    },
-    {
-        17,
-        0,
-    },
-    {
-        18,
-        0,
-    },
-    {
-        28,
-        0,
-    },
-    {
-        28,
-        1,
-    },
-    {
-        29,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        31,
-        0,
-    },
-    {
-        31,
-        1,
-    },
-    {
-        31,
-        2,
-    },
-    {
-        32,
-        0,
-    },
-    {
-        33,
-        0,
-    },
-    {
-        34,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        35,
-        0,
-    },
-    {
-        48,
-        0,
-    },
-    {
-        49,
-        0,
-    },
-    {
-        50,
-        0,
-    },
-    {
-        51,
-        0,
-    },
-    {
-        65,
-        0,
-    },
-    {
-        52,
-        0,
-    },
-    {
-        53,
-        0,
-    },
-    {
-        54,
-        0,
-    },
-    {
-        55,
-        0,
-    },
-    {
-        56,
-        0,
-    },
-    {
-        57,
-        0,
-    },
-    {
-        58,
-        0,
-    },
-    {
-        59,
-        0,
-    },
-    {
-        60,
-        0,
-    },
-    {
-        68,
-        0,
-    },
-    {
-        69,
-        0,
-    },
-    {
-        69,
-        1,
-    },
-    {
-        70,
-        0,
-    },
-    {
-        62,
-        0,
-    },
-    {
-        62,
-        1,
-    },
-    {
-        63,
-        0,
-    },
-    {
-        63,
-        1,
-    },
-    {
-        61,
-        0,
-    },
-    {
-        64,
-        0,
-    },
-    {
-        66,
-        0,
-    },
-    {
-        67,
-        0,
-    },
-    {
-        73,
-        0,
-    },
-    {
-        73,
-        1,
-    },
-    {
-        73,
-        2,
-    },
-    {
-        75,
-        0,
-    },
-    {
-        9,
-        2,
-    },
-    {
-        71,
-        0,
-    },
-    {
-        71,
-        1,
-    },
-    {
-        72,
-        0,
-    },
-    {
-        36,
-        0,
-    },
-    {
-        36,
-        1,
-    },
-    {
-        36,
-        2,
-    },
-    {
-        36,
-        3,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        19,
-        0,
-    },
-    {
-        37,
-        0,
-    },
-    {
-        37,
-        1,
-    },
-    {
-        110,
-        0,
-    },
-    {
-        110,
-        1,
-    },
-    {
-        112,
-        0,
-    },
-    {
-        111,
-        0,
-    },
-    {
-        113,
-        0,
-    },
-    {
-        202,
-        0,
-    },
-    {
-        203,
-        0,
-    },
-    {
-        204,
-        0,
-    },
-    {
-        201,
-        0,
-    },
-    {
-        292,
-        0,
-    },
-    {
-        295,
-        0,
-    },
-    {
-        295,
-        1,
-    },
-    {
-        294,
-        0,
-    },
-    {
-        293,
-        0,
-    },
-    {
-        293,
-        1,
-    },
-    {
-        293,
-        2,
-    },
-    {
-        293,
-        3,
-    },
-    {
-        296,
-        0,
-    },
-    {
-        297,
-        2,
-    },
-    {
-        297,
-        0,
-    },
-    {
-        297,
-        1,
-    },
-    {
-        297,
-        3,
-    },
-    {
-        297,
-        4,
-    },
-    {
-        324,
-        0,
-    },
-    {
-        324,
-        1,
-    },
-    {
-        324,
-        2,
-    },
-    {
-        416,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        378,
-        0,
-    },
-    {
-        383,
-        0,
-    },
-    {
-        1,
-        0,
-    },
-    {
-        382,
-        0,
-    },
+const u16 gUnknown_080D6736[][2] = {
+    { 0, 0 },   { 1, 0 },   { 2, 0 },   { 3, 0 },   { 4, 0 },   { 5, 0 },   { 6, 0 },
+    { 7, 0 },   { 8, 0 },   { 9, 0 },   { 10, 0 },  { 11, 0 },  { 12, 0 },  { 13, 0 },
+    { 13, 0 },  { 14, 0 },  { 15, 0 },  { 16, 0 },  { 17, 0 },  { 18, 0 },  { 28, 0 },
+    { 28, 1 },  { 29, 0 },  { 1, 0 },   { 1, 0 },   { 31, 0 },  { 31, 1 },  { 31, 2 },
+    { 32, 0 },  { 33, 0 },  { 34, 0 },  { 1, 0 },   { 35, 0 },  { 48, 0 },  { 49, 0 },
+    { 50, 0 },  { 51, 0 },  { 65, 0 },  { 52, 0 },  { 53, 0 },  { 54, 0 },  { 55, 0 },
+    { 56, 0 },  { 57, 0 },  { 58, 0 },  { 59, 0 },  { 60, 0 },  { 68, 0 },  { 69, 0 },
+    { 69, 1 },  { 70, 0 },  { 62, 0 },  { 62, 1 },  { 63, 0 },  { 63, 1 },  { 61, 0 },
+    { 64, 0 },  { 66, 0 },  { 67, 0 },  { 73, 0 },  { 73, 1 },  { 73, 2 },  { 75, 0 },
+    { 9, 2 },   { 71, 0 },  { 71, 1 },  { 72, 0 },  { 36, 0 },  { 36, 1 },  { 36, 2 },
+    { 36, 3 },  { 1, 0 },   { 1, 0 },   { 1, 0 },   { 1, 0 },   { 1, 0 },   { 1, 0 },
+    { 1, 0 },   { 1, 0 },   { 1, 0 },   { 19, 0 },  { 37, 0 },  { 37, 1 },  { 110, 0 },
+    { 110, 1 }, { 112, 0 }, { 111, 0 }, { 113, 0 }, { 202, 0 }, { 203, 0 }, { 204, 0 },
+    { 201, 0 }, { 292, 0 }, { 295, 0 }, { 295, 1 }, { 294, 0 }, { 293, 0 }, { 293, 1 },
+    { 293, 2 }, { 293, 3 }, { 296, 0 }, { 297, 2 }, { 297, 0 }, { 297, 1 }, { 297, 3 },
+    { 297, 4 }, { 324, 0 }, { 324, 1 }, { 324, 2 }, { 416, 0 }, { 1, 0 },   { 378, 0 },
+    { 383, 0 }, { 1, 0 },   { 382, 0 },
 };
 
 void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
@@ -611,11 +168,11 @@ void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
     s->hitboxes[0].index = -1;
     s->hitboxes[1].index = -1;
 
-    param2->unk0[0] = 0;
-    param2->unk0[1] = 0x100;
-    param2->unk0[2] = 0x100;
-    param2->unk0[3] = 0;
-    param2->unk0[4] = 0;
+    param2->transform.rotation = 0;
+    param2->transform.width = 0x100;
+    param2->transform.height = 0x100;
+    param2->transform.x = 0;
+    param2->transform.y = 0;
 }
 
 // Allocate VRAM for Tails' tails and Cream's ears while mid-air
@@ -656,11 +213,11 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
     s->unk10 = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2)
                 | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG(ROT_SCALE, 4));
 
-    extraSprite->unk0[0] = 0;
-    extraSprite->unk0[1] = 0x100;
-    extraSprite->unk0[2] = 0x100;
-    extraSprite->unk0[3] = 0;
-    extraSprite->unk0[4] = 0;
+    extraSprite->transform.rotation = 0;
+    extraSprite->transform.width = 0x100;
+    extraSprite->transform.height = 0x100;
+    extraSprite->transform.x = 0;
+    extraSprite->transform.y = 0;
 }
 
 void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
@@ -3742,4 +3299,185 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
     }
     // _08024AF6
     p->unk66 = p->unk64;
+}
+
+void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
+{
+    struct MultiSioData_0_4 *send;
+    MultiplayerPlayer *mpp;
+
+    Sprite *s = &inPsi->s;
+    PlayerSpriteInfo *psi = inPsi;
+
+    struct Camera *cam = &gCamera;
+    s16 camX = cam->x;
+    s16 camY = cam->y;
+    bool32 cond;
+    bool32 r2 = s->prevVariant == 0xFF || s->prevAnim == 0xFFFF;
+
+    // required for match
+    cond = r2;
+    s->x = I(p->x) - camX;
+    s->y = I(p->y) - camY;
+
+    psi->transform.x = I(p->x) - camX;
+    psi->transform.y = I(p->y) - camY;
+
+    if (p->unk64 == 9 || p->unk64 == 0x29 || p->unk64 == 0x3E || p->unk64 == 0x3F
+        || (p->unk64 == 0x57 && p->character == CHARACTER_CREAM)) {
+        s32 x, y;
+        psi->transform.rotation = p->rotation << 2;
+        s->unk10 &= ~0xC00;
+        s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+        s->unk10 |= p->unk60 | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+
+        if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
+            psi->transform.width = 0xFF00;
+        } else {
+            psi->transform.width = 0x100;
+        }
+        if (GRAVITY_IS_INVERTED) {
+            psi->transform.width = -psi->transform.width;
+        }
+
+        if ((s16)psi->transform.width < 0) {
+            psi->transform.x--;
+        }
+
+        if (GRAVITY_IS_INVERTED) {
+            psi->transform.height = 0x100;
+            // Requires double wrap to match
+            psi->transform.rotation = CLAMP_SIN_PERIOD(CLAMP_SIN_PERIOD(
+                -0x100 - (psi->transform.rotation + psi->transform.height)));
+        } else {
+            psi->transform.height = 0x100;
+        }
+
+        x = I((s16)psi->transform.width * (s16)p->unk80);
+        y = I((s16)psi->transform.height * (s16)p->unk82);
+        psi->transform.width = x;
+        psi->transform.height = y;
+        UpdateSpriteAnimation(s);
+        if (IS_SINGLE_PLAYER) {
+            sub_8004860(s, &psi->transform);
+        }
+    } else {
+        psi->transform.rotation = 0;
+        s->unk10 &= ~(SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE);
+
+        if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
+            s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+        } else {
+            s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+            s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+            s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+            s->x++;
+        }
+
+        if (GRAVITY_IS_INVERTED) {
+            s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+        } else {
+            s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
+        }
+        UpdateSpriteAnimation(s);
+    }
+    if (IS_SINGLE_PLAYER) {
+        if (p->moveState & MOVESTATE_DEAD
+            || (!(p->moveState & MOVESTATE_100000)
+                && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
+            DisplaySprite(s);
+        }
+
+        if (IS_SINGLE_PLAYER) {
+            return;
+        }
+    }
+
+    send = &gMultiSioSend.pat4;
+    mpp = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+    send->unk0 = 0x5000;
+    send->x = I(p->x) + p->unk7C;
+    send->y = I(p->y);
+    send->unk6 = s->graphics.anim;
+    send->unkA = p->itemEffect;
+    if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+        send->unk6 -= gPlayerCharacterIdleAnims[p->character];
+        send->unk6 |= gRingCount << 8;
+    }
+    send->unkB = s->variant | (p->unk17 << 4);
+    send->unkC = s->animSpeed;
+    send->unkD = psi->transform.rotation >> 2;
+
+    if (s->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
+        send->unk8 |= 1;
+    } else {
+        send->unk8 &= ~1;
+    }
+
+    if (!(p->moveState & 1)) {
+        send->unk8 |= 2;
+    } else {
+        send->unk8 &= ~2;
+    }
+
+    if (GRAVITY_IS_INVERTED) {
+        send->unk8 |= 8;
+    } else {
+        send->unk8 &= ~8;
+    }
+
+    if (p->moveState & MOVESTATE_DEAD || mpp->unk5C & 1
+        || p->moveState & MOVESTATE_IN_SCRIPTED || p->timerInvulnerability != 0) {
+        send->unk8 |= 4;
+    } else {
+        send->unk8 &= ~4;
+    }
+
+    if (mpp->unk5C & 1) {
+        send->unk8 |= 0x100;
+    } else {
+        send->unk8 &= ~0x100;
+    }
+
+    if (p->moveState & MOVESTATE_100000) {
+        send->unk8 |= 0x40;
+    } else {
+        send->unk8 &= ~0x40;
+    }
+
+    send->unk8 &= ~0x30;
+    send->unk8 |= ((gPlayer.unk90->s.unk10 & 0x3000) >> 8);
+    if (p->unk38 != 0) {
+        send->unk8 |= 0x80;
+    } else {
+        send->unk8 &= ~0x80;
+    }
+
+    if (cond) {
+        send->unk8 |= 0x800;
+    } else {
+        send->unk8 &= ~0x800;
+    }
+
+    mpp->unk64 = SIO_MULTI_CNT->id;
+    if (gPlayer.moveState & MOVESTATE_8) {
+        u8 i;
+        for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {
+            s32 id = SIO_MULTI_CNT->id;
+            if (id != i) {
+                MultiplayerPlayer *mpp2;
+                if (gMultiplayerPlayerTasks[i] == NULL) {
+                    break;
+                }
+
+                mpp2 = TASK_DATA(gMultiplayerPlayerTasks[i]);
+                if (gPlayer.unk3C == &mpp2->s) {
+                    mpp->unk64 = i;
+                }
+            }
+        }
+    }
+
+    send->unk8 &= ~0x600;
+    send->unk8 |= (mpp->unk64 << 9);
 }

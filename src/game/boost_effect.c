@@ -59,7 +59,7 @@ void sub_801561C(void)
     PlayerSpriteInfo *unk5A70 = gPlayer.unk90;
     u32 oldPlayerAnimSpeed = unk5A70->s.animSpeed;
     u32 oldPlayerUnk10 = unk5A70->s.unk10;
-    u16 r6 = unk5A70->unk0[0];
+    u16 r6 = unk5A70->transform.rotation;
 
     oldPlayerMovestate &= ~MOVESTATE_80000000;
 
@@ -99,7 +99,7 @@ void sub_80156D0(void)
     sPlayerStateBuffer[i].moveState = oldMovestate;
     sPlayerStateBuffer[i].animSpeed = p->unk90->s.animSpeed;
     sPlayerStateBuffer[i].flags = p->unk90->s.unk10;
-    sPlayerStateBuffer[i].unkC = p->unk90->unk0[0];
+    sPlayerStateBuffer[i].unkC = p->unk90->transform.rotation;
 }
 
 void sub_8015750(void)

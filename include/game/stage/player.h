@@ -14,6 +14,6 @@ s32 sub_8021B08(Player *p, u8 *p1, s32 *out);
 void Player_SetMovestate_IsInScriptedSequence(void);
 void Player_ClearMovestate_IsInScriptedSequence(void);
 
-extern const u16 gUnknown_080D6736[115][2];
+extern const u16 gUnknown_080D6736[][2];
 
 #endif // GUARD_STAGE_PLAYER_H
