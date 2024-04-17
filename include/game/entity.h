@@ -4,7 +4,12 @@
 #include "gba/defines.h"
 #include "gba/types.h"
 #include "sprite.h"
+
 #include "game/game.h"
+
+#include "sakit/collision.h"
+
+#include "game/player_callbacks.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

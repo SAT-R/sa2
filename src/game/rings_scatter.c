@@ -40,14 +40,6 @@ void Task_RingsScatter_MP_Singlepak(void);
 void Task_RingsScatter_MP_Multipak(void);
 void TaskDestructor_RingsScatter(struct Task *);
 
-const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS] = {
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_SONIC),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_CREAM),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_TAILS),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_KNUCKLES),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_AMY),
-};
-
 // Called on Stage Initialization
 void InitPlayerHitRingsScatter(void)
 {

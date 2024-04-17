@@ -2,6 +2,7 @@
 #include "malloc_vram.h"
 #include "game/entity.h"
 #include "game/game.h"
+#include "sakit/collision.h"
 #include "sakit/entities_manager.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

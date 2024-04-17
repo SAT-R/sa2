@@ -6,7 +6,10 @@
 
 #include "game/entity.h"
 #include "game/enemies/straw.h"
+
+#include "sakit/collision.h"
 #include "sakit/entities_manager.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

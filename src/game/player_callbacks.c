@@ -53,8 +53,6 @@ void PlayerCB_8013C34(Player *p);
 void sub_8013C50(Player *p);
 void sub_8013CA0(Player *p);
 
-void TaskDestructor_801F550(struct Task *);
-
 void sub_8022318(Player *p);
 void sub_8022838(Player *p);
 void sub_80232D0(Player *p);

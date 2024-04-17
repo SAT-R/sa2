@@ -5,6 +5,7 @@
 
 struct Task *CreateBrakingDustEffect(s32, s32);
 void sub_801F754(void);
+void sub_801F78C(void);
 
 typedef struct {
     s8 unk0;

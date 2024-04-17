@@ -40,4 +40,10 @@ bool32 sub_800DD54(Player *p);
 bool32 sub_800DE44(Player *p);
 u32 sub_800D0A0(Sprite *, s16, s16, s16, s16, u8, u32);
 
+// HandlePlayerDestroy?
+bool32 sub_800C4FC(Sprite *, s32, s32, u8);
+
+// HandleHitPlayer
+u32 sub_800C84C(Sprite *, s32, s32);
+
 #endif // GUARD_STAGE_ENTITIES_0_H

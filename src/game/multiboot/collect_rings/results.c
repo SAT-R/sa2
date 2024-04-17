@@ -1,6 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "game/game.h"
+#include "game/stage/player.h"
 #include "game/stage/stage.h"
 #include "game/multiboot/connection.h"
 #include "game/multiplayer/multipak_connection.h"

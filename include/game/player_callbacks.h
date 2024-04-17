@@ -22,5 +22,6 @@ void sub_8013AD8(Player *);
 void PlayerCB_8013D18(Player *);
 void sub_8013F04(Player *);
 void PlayerCB_801225C(Player *p);
+void Player_UpdateHomingPosition(s32, s32);
 
 #endif // GUARD_player_callbacks_H

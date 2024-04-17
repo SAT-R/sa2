@@ -2,9 +2,11 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 
+#include "sakit/entities_manager.h"
+
 #include "game/entity.h"
 #include "game/enemies/kubinaga.h"
-#include "sakit/entities_manager.h"
+
 #include "game/enemies/projectiles.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

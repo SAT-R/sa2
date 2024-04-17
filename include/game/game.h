@@ -43,9 +43,6 @@ typedef struct {
     /* 0x2C */ Sprite s;
 } TaskStrc_8011C98; /* size: 0x5C */
 
-// rodata
-extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
-
 // Some unused rom thing?
 extern const u8 gUnknown_08C88408[0x8000];
 
@@ -65,16 +62,8 @@ extern const u8 gUnknown_08CBAC04[];
 
 struct Task *CreateStageGoalBonusPointsAnim(s32, s32, u16);
 extern void Task_801F214(void);
-void sub_801F550(struct Task *);
 
-// HandlePlayerDestroy?
-extern bool32 sub_800C4FC(Sprite *, s32, s32, u8);
-
-extern void Player_UpdateHomingPosition(s32, s32);
-
-// HandleHitPlayer
-extern u32 sub_800C84C(Sprite *, s32, s32);
-
+// Stage collisition
 typedef s32 (*Func801F100)(s32, s32, s32);
 extern s32 sub_801EB44(s32, s32, s32);
 extern s32 sub_801EC3C(s32, s32, s32);
@@ -110,12 +99,7 @@ typedef struct {
 extern struct Task *sub_801F15C(s16, s16, u8, s8, TaskMain, TaskDestructor);
 extern void TaskDestructor_801F550(struct Task *);
 
-extern void sub_801F78C(void);
-
 void sub_801F488(void);
-
-// NOTE: Proc type should be the same as SetStageSpawnPosInternal!
-extern void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *player);
 
 #define INCREMENT_SCORE_A(incVal)                                                       \
     {                                                                                   \

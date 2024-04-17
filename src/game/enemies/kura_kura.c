@@ -4,9 +4,11 @@
 #include "malloc_vram.h"
 #include "trig.h"
 
+#include "sakit/entities_manager.h"
+
 #include "game/entity.h"
 #include "game/enemies/kura_kura.h"
-#include "sakit/entities_manager.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
