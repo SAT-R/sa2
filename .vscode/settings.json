@@ -314,7 +314,8 @@
     "collision.h": "c",
     "finish.h": "c",
     "items.h": "c",
-    "variant": "c"
+    "variant": "c",
+    "player_callbacks_0.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

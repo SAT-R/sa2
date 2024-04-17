@@ -9,6 +9,7 @@
 #include "game/dust_effect_braking.h"
 #include "game/boost_effect.h"
 #include "game/player_callbacks_1.h"
+#include "game/player_callbacks_0.h"
 #include "game/playerfn_cmds.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

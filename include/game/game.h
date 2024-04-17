@@ -112,6 +112,8 @@ extern void TaskDestructor_801F550(struct Task *);
 
 extern void sub_801F78C(void);
 
+void sub_801F488(void);
+
 // NOTE: Proc type should be the same as SetStageSpawnPosInternal!
 extern void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *player);
 

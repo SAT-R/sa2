@@ -6,6 +6,9 @@
 #include "game/heart_particles_effect.h"
 #include "sakit/music_manager.h"
 
+#include "game/player_callbacks_0.h"
+#include "game/player_callbacks_1.h"
+
 #include "game/player_controls.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -18,6 +21,7 @@
 #include "game/rings_scatter.h"
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
 #include "game/stage/results.h"
+#include "game/boost_effect.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -30,31 +34,11 @@
  *       if they are only called directly in the code, those are NOT callbacks.
  */
 
-struct Task *sub_8011B88(s32 x, s32 y, u16 p2);
-extern void sub_8011D48(Player *);
-extern void PlayerCB_8011F1C(Player *);
-extern void sub_8012194(Player *);
-extern bool32 sub_801251C(Player *);
-extern void sub_8012644(Player *);
-extern void sub_8012888(Player *);
-extern void sub_80128E0(Player *);
-extern void sub_8012548(Player *);
-extern void sub_8012830(Player *);
-extern void sub_8012BC0(Player *);
-extern void sub_8012D3C(Player *);
-extern void sub_8012EEC(Player *);
-extern void sub_8013070(Player *);
-extern void sub_8013AD8(Player *);
-extern void PlayerCB_8013D18(Player *);
-extern void sub_8013F04(Player *);
-extern void sub_801583C(void);
-extern void sub_801F488(void);
-
-extern s32 sub_8022F58(u8, Player *);
-extern void sub_8022190(Player *);
+// player.c
 extern void sub_8022218(Player *);
-extern void sub_8022284(Player *);
 extern void sub_8022D6C(Player *);
+extern void sub_8022190(Player *);
+extern void sub_8022284(Player *);
 extern void sub_8023128(Player *);
 extern void sub_80231C0(Player *);
 extern void sub_8023260(Player *);
@@ -63,17 +47,16 @@ extern void sub_8023610(Player *);
 extern void sub_80236C8(Player *);
 extern void sub_8023708(Player *);
 extern void sub_80246DC(Player *);
+extern s32 sub_8022F58(u8, Player *);
 
 void PlayerCB_Idle(Player *);
 void PlayerCB_8025AB8(Player *);
 void PlayerCB_Jumping(Player *);
 void PlayerCB_8025F84(Player *);
-void PlayerCB_80261D8(Player *);
 void PlayerCB_Spindash(Player *);
 void PlayerCB_8026810(Player *);
 void PlayerCB_8027040(Player *);
 void PlayerCB_8027190(Player *);
-void PlayerCB_8027250(Player *);
 void PlayerCB_8027324(Player *);
 void PlayerCB_80273D0(Player *);
 void PlayerCB_GoalSlowdown(Player *);
@@ -88,7 +71,6 @@ void PlayerCB_8029314(Player *);
 bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
 bool32 sub_8029E6C(Player *);
-void sub_8029FA4(Player *);
 bool32 sub_802A0C8(Player *);
 bool32 sub_802A0FC(Player *);
 bool32 sub_802A184(Player *);
