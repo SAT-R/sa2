@@ -41,13 +41,14 @@ extern void sub_8022190(Player *);
 extern void sub_8022284(Player *);
 extern void sub_8023128(Player *);
 extern void sub_80231C0(Player *);
-extern void sub_8023260(Player *);
-extern void sub_80232D0(Player *);
-extern void sub_8023610(Player *);
 extern void sub_80236C8(Player *);
 extern void sub_8023708(Player *);
 extern void sub_80246DC(Player *);
 extern s32 sub_8022F58(u8, Player *);
+extern s32 sub_802195C(Player *p, u8 *p1, s32 *out);
+extern type8029A28 sub_8021A34(Player *player, u8 *p1, type8029A28 *out);
+extern type8029A28 sub_802195C(Player *player, u8 *p1, type8029A28 *out);
+extern type8029A28 sub_8021B08(Player *player, u8 *p1, type8029A28 *out);
 
 void PlayerCB_Idle(Player *);
 void PlayerCB_8025AB8(Player *);

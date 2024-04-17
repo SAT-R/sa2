@@ -21,5 +21,6 @@ void sub_8013070(Player *);
 void sub_8013AD8(Player *);
 void PlayerCB_8013D18(Player *);
 void sub_8013F04(Player *);
+void PlayerCB_801225C(Player *p);
 
 #endif // GUARD_PLAYER_CALLBACKS_0_H

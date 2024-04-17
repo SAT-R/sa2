@@ -15,7 +15,10 @@
 #include "game/bosses/common.h"
 #include "game/cheese.h"
 #include "game/dust_effect_braking.h"
+
 #include "game/stage/player.h"
+#include "game/player_callbacks_0.h"
+
 #include "game/multiplayer/player_unk_2.h"
 #include "game/parameters/bosses.h"
 #include "game/player_controls.h"
