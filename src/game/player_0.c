@@ -2691,14 +2691,7 @@ void sub_8023C10(Player *p)
                 p->speedAirY = 0;
         }
 
-        p->x += p->speedAirX;
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-            p->speedAirY = -p->speedAirY;
-        }
-
-        p->speedAirY = MIN(p->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
-
-        p->y = GRAVITY_IS_INVERTED ? p->y - p->speedAirY : p->y + p->speedAirY;
+        PLAYERFN_UPDATE_POSITION(p);
         sub_80232D0(p);
 
         if (gPressedKeys & B_BUTTON) {
@@ -2798,21 +2791,8 @@ void Task_8023E90(void)
         return;
     }
 
-    if (p->moveState & MOVESTATE_40) {
-        p->speedAirY += Q_24_8(PLAYER_GRAVITY_UNDER_WATER);
-    } else {
-        p->speedAirY += Q_24_8(PLAYER_GRAVITY);
-    }
-
-    p->x += p->speedAirX;
-
-    if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
-        p->speedAirY = -p->speedAirY;
-    }
-
-    p->speedAirY = MIN(p->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
-
-    p->y = GRAVITY_IS_INVERTED ? p->y - p->speedAirY : p->y + p->speedAirY;
+    PLAYERFN_UPDATE_AIR_FALL_SPEED(p);
+    PLAYERFN_UPDATE_POSITION(p);
     sub_802486C(p, psi1);
     sub_8024B10(p, psi1);
     sub_8024F74(p, psi2);
@@ -3301,6 +3281,38 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
     p->unk66 = p->unk64;
 }
 
+#define MACRO_8024B10_PSI_UPDATE(p, psi)                                                \
+    ({                                                                                  \
+        s32 x, y;                                                                       \
+        if (!(p->moveState & MOVESTATE_FACING_LEFT)) {                                  \
+            psi->transform.width = -Q(1.0);                                             \
+        } else {                                                                        \
+            psi->transform.width = Q(1.0);                                              \
+        }                                                                               \
+        if (GRAVITY_IS_INVERTED) {                                                      \
+            psi->transform.width = -psi->transform.width;                               \
+        }                                                                               \
+                                                                                        \
+        if (psi->transform.width < 0) {                                                 \
+            psi->transform.x--;                                                         \
+        }                                                                               \
+                                                                                        \
+        if (GRAVITY_IS_INVERTED) {                                                      \
+            psi->transform.height = Q(1.0);                                             \
+            /* requires double clamp to match */                                        \
+            psi->transform.rotation = CLAMP_SIN_PERIOD(CLAMP_SIN_PERIOD(                \
+                -Q(1.0) - (psi->transform.rotation + psi->transform.height)));          \
+        } else {                                                                        \
+            psi->transform.height = Q(1.0);                                             \
+        }                                                                               \
+                                                                                        \
+        x = I(psi->transform.width * p->unk80);                                         \
+        y = I(psi->transform.height * p->unk82);                                        \
+        psi->transform.width = x;                                                       \
+        psi->transform.height = y;                                                      \
+        UpdateSpriteAnimation(s);                                                       \
+    })
+
 void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
 {
     struct MultiSioData_0_4 *send;
@@ -3312,52 +3324,28 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     struct Camera *cam = &gCamera;
     s16 camX = cam->x;
     s16 camY = cam->y;
-    bool32 cond;
-    bool32 r2 = s->prevVariant == 0xFF || s->prevAnim == 0xFFFF;
 
     // required for match
-    cond = r2;
+    bool32 cond = ({
+        bool32 r2 = s->prevVariant == 0xFF || s->prevAnim == 0xFFFF;
+        r2;
+    });
+
     s->x = I(p->x) - camX;
     s->y = I(p->y) - camY;
 
     psi->transform.x = I(p->x) - camX;
     psi->transform.y = I(p->y) - camY;
 
-    if (p->unk64 == 9 || p->unk64 == 0x29 || p->unk64 == 0x3E || p->unk64 == 0x3F
-        || (p->unk64 == 0x57 && p->character == CHARACTER_CREAM)) {
-        s32 x, y;
+    if (p->unk64 == SA2_CHAR_ANIM_WALK || p->unk64 == SA2_CHAR_ANIM_41
+        || p->unk64 == SA2_CHAR_ANIM_62 || p->unk64 == 63
+        || (p->unk64 == SA2_CHAR_ANIM_87 && p->character == CHARACTER_CREAM)) {
         psi->transform.rotation = p->rotation << 2;
-        s->unk10 &= ~0xC00;
+        s->unk10 &= ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP);
         s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
         s->unk10 |= p->unk60 | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
-        if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
-            psi->transform.width = 0xFF00;
-        } else {
-            psi->transform.width = 0x100;
-        }
-        if (GRAVITY_IS_INVERTED) {
-            psi->transform.width = -psi->transform.width;
-        }
-
-        if ((s16)psi->transform.width < 0) {
-            psi->transform.x--;
-        }
-
-        if (GRAVITY_IS_INVERTED) {
-            psi->transform.height = 0x100;
-            // Requires double wrap to match
-            psi->transform.rotation = CLAMP_SIN_PERIOD(CLAMP_SIN_PERIOD(
-                -0x100 - (psi->transform.rotation + psi->transform.height)));
-        } else {
-            psi->transform.height = 0x100;
-        }
-
-        x = I((s16)psi->transform.width * (s16)p->unk80);
-        y = I((s16)psi->transform.height * (s16)p->unk82);
-        psi->transform.width = x;
-        psi->transform.height = y;
-        UpdateSpriteAnimation(s);
+        MACRO_8024B10_PSI_UPDATE(p, psi);
         if (IS_SINGLE_PLAYER) {
             sub_8004860(s, &psi->transform);
         }
@@ -3480,4 +3468,98 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
 
     send->unk8 &= ~0x600;
     send->unk8 |= (mpp->unk64 << 9);
+}
+
+#define MACRO_8024F74_ANIM_CHECK(anim, variant)                                         \
+    (((anim == SA2_CHAR_ANIM_JUMP_1 || anim == SA2_CHAR_ANIM_JUMP_2) && variant == 1)   \
+     || (anim == SA2_CHAR_ANIM_SPIN_ATTACK && variant == 0)                             \
+     || (anim == SA2_CHAR_ANIM_70 && variant == 0))
+
+void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
+{
+    struct MultiSioData_0_4 *recv;
+    MultiplayerPlayer *mpp;
+
+    Sprite *s = &inPsi->s;
+    PlayerSpriteInfo *psi = inPsi;
+
+    struct Camera *cam = &gCamera;
+    s16 camX = cam->x;
+    s16 camY = cam->y;
+
+    if (IS_MULTI_PLAYER) {
+        s32 id = SIO_MULTI_CNT->id;
+        recv = &gMultiSioRecv[id].pat4;
+        psi->transform.x = recv->x - camX;
+        psi->transform.y = recv->y - camY;
+    } else {
+        psi->transform.x = I(p->x) - camX;
+        psi->transform.y = I(p->y) - camY;
+    }
+
+    s->animSpeed = 0x10;
+    if (p->moveState & MOVESTATE_40) {
+        s->animSpeed = 8;
+    }
+
+    switch (p->character) {
+        case CHARACTER_AMY:
+        case CHARACTER_KNUCKLES:
+        case CHARACTER_SONIC:
+            break;
+
+        case CHARACTER_CREAM: {
+            u16 anim = p->anim;
+            u16 variant = p->variant;
+            anim = anim - gPlayerCharacterIdleAnims[p->character];
+            if (MACRO_8024F74_ANIM_CHECK(anim, variant)) {
+                u8 rotation = p->rotation;
+                p->w.cf.unkB0 = rotation;
+                psi->transform.rotation = rotation << 2;
+                s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+                s->unk10 |= gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+
+                MACRO_8024B10_PSI_UPDATE(p, psi);
+                sub_8004860(s, &psi->transform);
+
+                if (p->moveState & MOVESTATE_DEAD
+                    || (!(p->moveState & MOVESTATE_100000)
+                        && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
+                    DisplaySprite(s);
+                }
+            }
+            break;
+        }
+        case CHARACTER_TAILS: {
+            s32 asx = p->speedAirX;
+            s32 asy = p->speedAirY;
+
+            u16 anim = p->anim;
+            u16 variant = p->variant;
+            anim = anim - gPlayerCharacterIdleAnims[p->character];
+            if (MACRO_8024F74_ANIM_CHECK(anim, variant)) {
+                u8 shift;
+                if (asx != 0 || asy != 0) {
+                    shift = (I(ArcTan2(asx, asy)) + 0x40);
+                } else {
+                    shift = p->moveState & MOVESTATE_FACING_LEFT ? 0xC0 : 0x40;
+                }
+                p->w.tf.shift = shift;
+
+                psi->transform.rotation = shift << 2;
+                s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+                s->unk10 |= gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+
+                MACRO_8024B10_PSI_UPDATE(p, psi);
+                sub_8004860(s, &psi->transform);
+
+                if (p->moveState & MOVESTATE_DEAD
+                    || (!(p->moveState & MOVESTATE_100000)
+                        && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
+                    DisplaySprite(s);
+                }
+            }
+            break;
+        }
+    }
 }

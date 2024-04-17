@@ -76,6 +76,7 @@
 #define SA2_CHAR_ANIM_55                                     55
 #define SA2_CHAR_ANIM_56                                     56
 #define SA2_CHAR_ANIM_57                                     57
+#define SA2_CHAR_ANIM_62                                     62
 #define SA2_CHAR_ANIM_63                                     63
 #define SA2_CHAR_ANIM_65                                     65
 #define SA2_CHAR_ANIM_66                                     66
@@ -85,6 +86,7 @@
 #define SA2_CHAR_ANIM_70                                     70
 #define SA2_CHAR_ANIM_BOOST_PALETTE                          74
 #define SA2_CHAR_ANIM_80                                     80
+#define SA2_CHAR_ANIM_87                                     87
 
 #define SA2_ANIM_SONIC_IDLE     0
 #define SA2_ANIM_CREAM_IDLE     91

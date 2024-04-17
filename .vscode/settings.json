@@ -313,7 +313,8 @@
     "rect.h": "c",
     "collision.h": "c",
     "finish.h": "c",
-    "items.h": "c"
+    "items.h": "c",
+    "variant": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

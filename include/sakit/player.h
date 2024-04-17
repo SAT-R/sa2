@@ -161,8 +161,8 @@ typedef struct Player_ {
     /* 0x78 */ u32 checkpointTime;
     /* 0x7C */ u16 unk7C;
     /* 0x7E */ u16 unk7E;
-    /* 0x80 */ u16 unk80;
-    /* 0x82 */ u16 unk82;
+    /* 0x80 */ s16 unk80;
+    /* 0x82 */ s16 unk82;
 
     // Denotes how many points the player should get after defeating an enemy.
     // (see stage/enemy_defeat_score.c and stage/entity_manager.c for usage)
