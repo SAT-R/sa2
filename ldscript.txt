@@ -50,7 +50,7 @@ SECTIONS
         build/sa2/src/game/stage/camera.o(.data);
         build/sa2/src/game/dust_effect_braking.o(.data);
         build/sa2/src/game/rings_scatter.o(.data);
-        build/sa2/src/game/player_0.o(.data);
+        build/sa2/src/game/player.o(.data);
         build/sa2/src/game/underwater_effects.o(.data);
         build/sa2/src/game/player_controls.o(.data);
         build/sa2/src/game/player_super_sonic.o(.data);
@@ -186,7 +186,7 @@ SECTIONS
         build/sa2/src/game/rings_scatter.o(.text);
 
         /* player */
-        build/sa2/src/game/player_0.o(.text);
+        build/sa2/src/game/player.o(.text);
         build/sa2/src/game/player_callbacks_1.o(.text);
 
         build/sa2/src/game/item_tasks.o(.text);
@@ -428,7 +428,7 @@ SECTIONS
 
         build/sa2/asm/player_super_sonic_data.o(.rodata);
         build/sa2/src/game/rings_scatter.o(.rodata);
-        build/sa2/src/game/player_0.o(.rodata);
+        build/sa2/src/game/player.o(.rodata);
         build/sa2/src/game/player_callbacks_1.o(.rodata);
         build/sa2/src/game/player_super_sonic.o(.rodata);
         build/sa2/src/game/stage/ui.o(.rodata);
