@@ -5,7 +5,7 @@
 
 #include "sakit/globals.h"
 
-#include "game/player_controls.h"
+#include "game/stage/player_controls.h"
 #include "constants/zones.h"
 #include "constants/characters.h"
 

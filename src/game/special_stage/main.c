@@ -12,7 +12,7 @@
 #include "game/stage/stage.h"
 #include "game/save.h"
 #include "sprite.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "lib/m4a.h"
 #include "task.h"
 #include "game/title_screen.h"

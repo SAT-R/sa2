@@ -1,6 +1,6 @@
 #include "core.h"
 #include "game/game.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 
 static inline void ScreenFadeUpdateValues_inline(ScreenFade *fade)
 {

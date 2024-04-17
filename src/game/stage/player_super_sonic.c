@@ -8,7 +8,7 @@
 
 #include "game/bosses/boss_9.h"
 #include "game/game_over.h"
-#include "game/player_super_sonic.h"
+#include "game/stage/player_super_sonic.h"
 #include "game/save.h"
 #include "game/stage/stage.h"
 

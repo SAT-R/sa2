@@ -7,7 +7,7 @@
 #include "malloc_ewram.h"
 #include "game/math.h"
 #include "sprite.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "constants/songs.h"
 #include "constants/text.h"
 #include "game/title_screen.h"

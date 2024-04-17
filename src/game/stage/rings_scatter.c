@@ -5,7 +5,7 @@
 #include "game/game.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/rings_scatter.h"
+#include "game/stage/rings_scatter.h"
 #include "sakit/collect_ring_effect.h"
 #include "sakit/rings_manager.h" // for RESERVED_RING_TILES_VRAM
 
@@ -208,10 +208,12 @@ typedef struct {
 
 // (90.40%) https://decomp.me/scratch/jdAe4
 // (92.98%) https://decomp.me/scratch/TxbaC
-NONMATCH(
-    "asm/non_matching/game/rings_scatter/RingsScatterSingleplayer_FlippedGravity.inc",
-    void RingsScatterSingleplayer_FlippedGravity(void))
+
+// clang-format off
+NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_FlippedGravity.inc", void RingsScatterSingleplayer_FlippedGravity(void))
+// clang-format on
 {
+
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
     Sprite *s = &rs->sprRing;
@@ -348,9 +350,9 @@ NONMATCH(
 END_NONMATCH
 
 // (93.27%) https://decomp.me/scratch/VhHrU
-NONMATCH(
-    "asm/non_matching/game/rings_scatter/RingsScatterSingleplayer_NormalGravity.inc",
-    void RingsScatterSingleplayer_NormalGravity(void))
+// clang-format off
+NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_NormalGravity.inc", void RingsScatterSingleplayer_NormalGravity(void))
+// clang-format on
 {
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
@@ -485,8 +487,9 @@ END_NONMATCH
 //       A ton of code is missing here.
 //       (Basically a copy-paste of RingsScatterSingleplayer_FlippedGravity)
 // (66.09%) https://decomp.me/scratch/qHlN9
-NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterMultipak_FlippedGravity.inc",
-         void RingsScatterMultipak_FlippedGravity(void))
+NONMATCH(
+    "asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_FlippedGravity.inc",
+    void RingsScatterMultipak_FlippedGravity(void))
 {
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
@@ -619,8 +622,9 @@ END_NONMATCH
 //       A ton of code is missing here.
 //       (Basically a copy-paste of RingsScatterSingleplayer_NormalGravity)
 // (64.03%) https://decomp.me/scratch/KBtBo
-NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterMultipak_NormalGravity.inc",
-         void RingsScatterMultipak_NormalGravity(void))
+NONMATCH(
+    "asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_NormalGravity.inc",
+    void RingsScatterMultipak_NormalGravity(void))
 {
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
@@ -756,7 +760,7 @@ END_NONMATCH
 //       A ton of code is missing here.
 //       (Basically a copy-paste of RingsScatterSingleplayer_NormalGravity)
 // (54.61%) https://decomp.me/scratch/v9rXO
-NONMATCH("asm/non_matching/game/rings_scatter/RingsScatterSinglepakMain.inc",
+NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.inc",
          void RingsScatterSinglepakMain(void))
 {
     RingsScatter *rs = TASK_DATA(gCurTask);

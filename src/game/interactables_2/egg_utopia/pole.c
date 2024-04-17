@@ -2,7 +2,7 @@
 #include "core.h"
 #include "lib/m4a.h"
 
-#include "game/player_controls.h"
+#include "game/stage/player_controls.h"
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

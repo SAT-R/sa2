@@ -13,7 +13,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/multiplayer/mp_player.h"
-#include "game/item_tasks.h"
+#include "game/stage/item_tasks.h"
 
 #include "game/multiplayer/player_unk_1.h"
 #include "game/unknown_effect.h"

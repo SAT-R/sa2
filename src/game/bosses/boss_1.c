@@ -22,8 +22,8 @@
 
 #include "game/stage/results.h"
 
-#include "game/screen_fade.h"
-#include "game/screen_shake.h"
+#include "game/stage/screen_fade.h"
+#include "game/stage/screen_shake.h"
 
 #include "lib/m4a.h"
 #include "constants/songs.h"

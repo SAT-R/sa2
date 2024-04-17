@@ -6,7 +6,7 @@
 #include "game/race_progress.h"
 #include "game/stage/player.h"
 #include "game/multiplayer/mp_player.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"

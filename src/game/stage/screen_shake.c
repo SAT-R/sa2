@@ -5,7 +5,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
-#include "game/screen_shake.h"
+#include "game/stage/screen_shake.h"
 
 typedef struct {
     /* 0x00 */ s32 p0;

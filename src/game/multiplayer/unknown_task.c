@@ -3,7 +3,7 @@
 
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/item_tasks.h"
+#include "game/stage/item_tasks.h"
 
 #include "game/unknown_effect.h"
 

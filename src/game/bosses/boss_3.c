@@ -14,7 +14,7 @@
 #include "game/player_callbacks.h"
 #include "game/stage/player.h"
 #include "game/save.h"
-#include "game/screen_shake.h"
+#include "game/stage/screen_shake.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

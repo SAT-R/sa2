@@ -12,7 +12,7 @@
 #include "game/boost_effect.h"
 #include "game/bosses/common.h"
 #include "game/cheese.h"
-#include "game/dust_effect_braking.h"
+#include "game/stage/dust_effect_braking.h"
 
 #include "game/stage/camera.h"
 #include "game/stage/player.h"
@@ -20,23 +20,23 @@
 
 #include "game/multiplayer/player_unk_2.h"
 #include "game/parameters/bosses.h"
-#include "game/player_controls.h"
-#include "game/dust_effect_braking.h"
+#include "game/stage/player_controls.h"
+#include "game/stage/dust_effect_braking.h"
 #include "game/multiplayer/mp_player.h"
 #include "game/boost_effect.h"
-#include "game/player_super_sonic.h"
-#include "game/rings_scatter.h"
+#include "game/stage/player_super_sonic.h"
+#include "game/stage/rings_scatter.h"
 #include "game/stage/stage.h"
 #include "game/unknown_effect.h"
 #include "game/water_effects.h"
-#include "game/underwater_effects.h"
-#include "game/item_tasks.h"
+#include "game/stage/underwater_effects.h"
+#include "game/stage/item_tasks.h"
 #include "game/boost_effect.h"
 #include "game/amy_attack_heart_effect.h"
 
 #include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
-#include "game/dust_effect_braking.h" // CreateSpindashDustEffect
-#include "game/dust_effect_spindash.h" // CreateSpindashDustEffect
+#include "game/stage/dust_effect_braking.h" // CreateSpindashDustEffect
+#include "game/stage/dust_effect_spindash.h" // CreateSpindashDustEffect
 #include "game/time_attack/results.h" // for PlayerCB_80278D4
 #include "game/stage/results.h"
 #include "game/heart_particles_effect.h"

@@ -319,7 +319,8 @@
     "bosses.h": "c",
     "item_tasks.h": "c",
     "kubinaga.h": "c",
-    "propeller.h": "c"
+    "propeller.h": "c",
+    "game_3.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

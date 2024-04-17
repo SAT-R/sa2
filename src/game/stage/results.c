@@ -11,7 +11,7 @@
 #include "game/cutscenes/endings.h"
 #include "game/cutscenes/level_endings.h"
 #include "game/save.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "game/special_stage/main.h"
 #include "game/stage/results.h"
 #include "game/stage/ui.h"

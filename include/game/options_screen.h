@@ -4,9 +4,9 @@
 #include "global.h"
 #include "game/save.h"
 #include "sprite.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "constants/text.h"
-#include "game/player_controls.h"
+#include "game/stage/player_controls.h"
 #include "game/game.h"
 
 #define RENDER_TARGET_SCREEN   0

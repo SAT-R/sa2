@@ -10,7 +10,7 @@
 #include "game/save.h"
 #include "game/title_screen.h"
 #include "multi_sio.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "lib/m4a.h"
 #include "constants/text.h"
 #include "game/game.h"

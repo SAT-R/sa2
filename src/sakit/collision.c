@@ -11,8 +11,8 @@
 #include "game/cheese.h"
 #include "game/entity.h"
 #include "game/multiplayer/player_unk_1.h"
-#include "game/rings_scatter.h"
-#include "game/trapped_animals.h"
+#include "game/stage/rings_scatter.h"
+#include "game/stage/trapped_animals.h"
 
 #include "constants/player_transitions.h"
 #include "constants/songs.h"

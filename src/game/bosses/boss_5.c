@@ -16,7 +16,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 
 #include "lib/m4a.h"
 #include "constants/songs.h"

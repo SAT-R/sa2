@@ -7,7 +7,7 @@
 #include "task.h"
 #include "sprite.h"
 #include "game/save.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "input_recorder.h"
 #include "game/math.h"
 #include "game/math.h"

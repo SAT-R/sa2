@@ -12,7 +12,7 @@
 #include "bg_triangles.h"
 #include "game/save.h"
 #include "game/title_screen.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "lib/m4a.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"

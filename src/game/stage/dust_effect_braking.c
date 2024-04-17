@@ -4,7 +4,7 @@
 #include "game/game.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/dust_effect_braking.h"
+#include "game/stage/dust_effect_braking.h"
 
 #include "constants/animations.h"
 

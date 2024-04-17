@@ -8,9 +8,9 @@
 #include "game/stage/boss_results_transition.h"
 #include "game/save.h"
 #include "game/time_attack/mode_select.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "game/title_screen.h"
-#include "game/game_7.h"
+#include "game/stage/game_7.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

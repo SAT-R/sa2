@@ -1,7 +1,7 @@
 #include "game/time_attack/results.h"
 #include "core.h"
 #include "sprite.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "game/save.h"
 #include "game/game.h"
 #include "game/stage/ui.h"

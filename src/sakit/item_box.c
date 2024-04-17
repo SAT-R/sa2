@@ -11,7 +11,7 @@
 
 #include "game/game.h"
 #include "game/entity.h"
-#include "game/item_tasks.h"
+#include "game/stage/item_tasks.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

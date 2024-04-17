@@ -5,7 +5,7 @@
 
 #include "sakit/globals.h"
 
-#include "game/player_super_sonic.h"
+#include "game/stage/player_super_sonic.h"
 
 #include "game/stage/stage.h"
 #include "game/stage/camera.h"
