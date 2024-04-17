@@ -12,8 +12,6 @@
 #include "game/multiplayer/player_unk_1.h"
 #include "game/multiplayer/mp_player.h"
 
-#include "game/parameters/characters.h"
-#include "game/playerfn_cmds.h"
 #include "game/rings_scatter.h"
 #include "game/stage/player.h"
 

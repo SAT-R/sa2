@@ -1,5 +1,5 @@
-#ifndef GUARD_PLAYER_CALLBACKS_0_H
-#define GUARD_PLAYER_CALLBACKS_0_H
+#ifndef GUARD_player_callbacks_H
+#define GUARD_player_callbacks_H
 
 #include "core.h"
 #include "sakit/player.h"
@@ -23,4 +23,4 @@ void PlayerCB_8013D18(Player *);
 void sub_8013F04(Player *);
 void PlayerCB_801225C(Player *p);
 
-#endif // GUARD_PLAYER_CALLBACKS_0_H
+#endif // GUARD_player_callbacks_H

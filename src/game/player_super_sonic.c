@@ -2,8 +2,10 @@
 #include "core.h"
 #include "trig.h"
 #include "sakit/globals.h"
-#include "sakit/camera.h"
-#include "sakit/player.h"
+
+#include "game/stage/camera.h"
+#include "game/stage/player.h"
+
 #include "game/bosses/boss_9.h"
 #include "game/game_over.h"
 #include "game/player_super_sonic.h"

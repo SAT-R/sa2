@@ -3,6 +3,8 @@
 #include "task.h"
 #include "trig.h"
 
+#include "sakit/globals.h"
+
 #include "game/stage/player.h"
 #include "game/bosses/common.h"
 #include "game/bosses/boss_1.h"
@@ -14,8 +16,6 @@
 #include "game/bosses/boss_7.h"
 #include "game/bosses/boss_8.h"
 #include "game/bosses/boss_9.h"
-#include "game/playerfn_cmds.h"
-#include "game/player_callbacks_1.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"

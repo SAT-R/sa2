@@ -6,13 +6,15 @@
 #include "lib/m4a.h"
 #include "sakit/camera.h"
 #include "sakit/collision.h"
-#include "sakit/player.h"
+
 #include "game/game.h" // sub_801E4E4
+#include "game/stage/player.h"
+
 #include "game/entity.h" // sub_800DF38
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/parameters/bosses.h"
-#include "game/player_callbacks_1.h" // Player_DisableInputAndBossTimer
+
 #include "game/screen_shake.h"
 #include "game/stage/boss_results_transition.h"
 

@@ -138,7 +138,7 @@ SECTIONS
         /* sakit/globals? */
 
         build/sa2/src/game/water_effects.o(.text);
-        build/sa2/src/game/player_callbacks_0.o(.text);
+        build/sa2/src/game/player_callbacks.o(.text);
         build/sa2/src/game/cheese.o(.text);
         build/sa2/src/game/boost_effect.o(.text);
         build/sa2/src/game/amy_attack_heart_effect.o(.text);
@@ -187,7 +187,6 @@ SECTIONS
 
         /* player */
         build/sa2/src/game/player.o(.text);
-        build/sa2/src/game/player_callbacks_1.o(.text);
 
         build/sa2/src/game/item_tasks.o(.text);
         build/sa2/src/game/underwater_effects.o(.text);
@@ -405,7 +404,7 @@ SECTIONS
 
         /* game */
         build/sa2/src/game/water_effects.o(.rodata);
-        build/sa2/src/game/player_callbacks_0.o(.rodata);
+        build/sa2/src/game/player_callbacks.o(.rodata);
         build/sa2/src/game/cheese.o(.rodata);
         build/sa2/src/game/boost_effect.o(.rodata);
         build/sa2/src/game/amy_attack_heart_effect.o(.rodata);
@@ -429,7 +428,6 @@ SECTIONS
         build/sa2/asm/player_super_sonic_data.o(.rodata);
         build/sa2/src/game/rings_scatter.o(.rodata);
         build/sa2/src/game/player.o(.rodata);
-        build/sa2/src/game/player_callbacks_1.o(.rodata);
         build/sa2/src/game/player_super_sonic.o(.rodata);
         build/sa2/src/game/stage/ui.o(.rodata);
         build/sa2/src/game/trapped_animals.o(.rodata);

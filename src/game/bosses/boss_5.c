@@ -11,7 +11,7 @@
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
 #include "game/stage/boss_results_transition.h"
-#include "game/player_callbacks_1.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

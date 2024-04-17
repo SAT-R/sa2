@@ -8,12 +8,9 @@
 #include "game/amy_attack_heart_effect.h"
 #include "game/dust_effect_braking.h"
 #include "game/boost_effect.h"
-#include "game/player_callbacks_1.h"
-#include "game/player_callbacks_0.h"
-#include "game/playerfn_cmds.h"
+#include "game/player_callbacks.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/parameters/characters.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -25,7 +22,6 @@
  *       if they are only called directly in the code, those are NOT callbacks.
  */
 
-struct Task *sub_8011B88(s32 x, s32 y, u16 p2);
 void PlayerCB_8011DCC(Player *);
 void PlayerCB_8011E88(Player *);
 void Task_8012034(void);

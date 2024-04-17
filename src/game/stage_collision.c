@@ -2,7 +2,7 @@
 #include "tilemap.h"
 #include "game/game.h"
 #include "game/stage/camera.h"
-#include "sakit/player.h"
+#include "game/stage/player.h"
 
 static ALIGNED(8) u32 gUnknown_3000410[3];
 static ALIGNED(8) u32 gUnknown_3000420[3];

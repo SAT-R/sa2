@@ -5,6 +5,8 @@
 
 #include "sakit/globals.h"
 
+#include "game/player_super_sonic.h"
+
 #include "game/stage/stage.h"
 #include "game/stage/camera.h"
 #include "game/stage/player.h"
@@ -31,10 +33,10 @@ struct Camera ALIGNED(8) gCamera = {};
 const Collision *gRefCollision = NULL;
 
 static void sub_801C708(s32, s32);
+
+// camera_destroy.h
 void Task_CallUpdateCamera(void);
 void TaskDestructor_801E040(struct Task *);
-
-extern void SuperSonicGetPos(s32 *x, s32 *y);
 
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 

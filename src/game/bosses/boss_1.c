@@ -12,7 +12,6 @@
 #include "game/bosses/boss_1.h"
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
-#include "game/player_callbacks_1.h"
 #include "game/time_attack/results.h"
 #include "game/cutscenes/level_endings.h"
 #include "game/stage/boss_results_transition.h"
