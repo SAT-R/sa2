@@ -31,7 +31,12 @@ ifeq ($(GAME_REGION), EUROPE)
   BUILD_NAME := $(BUILD_NAME)_europe
   GAME_CODE  := $(GAME_CODE)P
 else
+ifeq ($(GAME_REGION), JAPAN)
+  BUILD_NAME := $(BUILD_NAME)_japan
+  GAME_CODE  := $(GAME_CODE)J
+else
   $(error unknown region $(GAME_REGION))
+endif
 endif
 endif
 

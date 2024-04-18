@@ -7264,7 +7264,7 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f027.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117/f028.4bpp"
 
-#ifdef EUROPE
+#ifndef USA
 .incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f029.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f030.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1117_europe/f031.4bpp"
