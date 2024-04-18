@@ -22,19 +22,6 @@
 
 void GameStart(void);
 
-// TODO: find out what task is parent to IA
-typedef struct {
-    u8 filler0[0x18];
-    struct Task *unk18; // UNK_807C5F8
-} UNK_807C5F8_Parent;
-
-typedef struct {
-    Sprite sprite1;
-    Sprite sprite2;
-    u16 unk60;
-    u16 unk62;
-} UNK_807C5F8;
-
 // TODO: Move this into the module sub_8011C98 gets defined in, once it's decomped
 typedef struct {
     /* 0x00 */ s32 px[5];

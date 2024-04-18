@@ -7,13 +7,6 @@
 
 #include "constants/animations.h"
 
-typedef struct {
-    /* 0x00 */ Sprite spring;
-    /* 0x30 */ Sprite propellor;
-    /* 0x60 */ u16 unk60;
-    /* 0x62 */ u16 unk62;
-} Sprite_OnInit_SkyCanyon;
-
 static void Task_80808DC(void);
 
 /* sub_80807CC is pointed to by 'gSpriteTileInits_PreStageEntry' inside collision.s
