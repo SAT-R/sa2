@@ -101,7 +101,7 @@ void CreateMultiplayerTeamPlayScreen(void)
 
     lang = gLoadedSaveGame->language;
     if (lang > NUM_LANGUAGES) {
-#ifdef JAPAN
+#ifndef EUROPE
         lang = LANG_JAPANESE;
 #else
         lang = LANG_ENGLISH;
