@@ -27,6 +27,11 @@ ifeq ($(GAME_REGION), USA)
   BUILD_NAME := $(BUILD_NAME)
   GAME_CODE  := $(GAME_CODE)E
 else
+ifeq ($(GAME_REGION), JAPAN)
+  BUILD_NAME := $(BUILD_NAME)_japan
+  GAME_CODE  := $(GAME_CODE)J
+  MAKER_CODE := 8P
+else
 ifeq ($(GAME_REGION), EUROPE)
   BUILD_NAME := $(BUILD_NAME)_europe
   GAME_CODE  := $(GAME_CODE)P

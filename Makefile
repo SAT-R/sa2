@@ -193,6 +193,7 @@ clean-tools:
 tidy:
 	$(RM) -f $(ROM) $(ELF) $(MAP)
 	$(RM) -f $(BUILD_NAME)_europe.gba $(BUILD_NAME)_europe.elf $(BUILD_NAME)_europe.map
+	$(RM) -f $(BUILD_NAME)_japan.gba $(BUILD_NAME)_japan.elf $(BUILD_NAME)_japan.map
 	$(RM) -r build/*
 
 #### Recipes ####
@@ -284,6 +285,8 @@ $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -I sound -o $@ $<"
 	@$(AS) $(ASFLAGS) -I sound -o $@ $<
 
+
+japan: ; @$(MAKE) GAME_REGION=JAPAN
 
 europe: ; @$(MAKE) GAME_REGION=EUROPE
 
