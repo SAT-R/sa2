@@ -3,7 +3,6 @@
 #include "sprite.h"
 #include "task.h"
 
-#include "game/game.h"
 #include "game/entity.h"
 #include "sakit/interactables/044.h"
 #include "game/stage/player.h"

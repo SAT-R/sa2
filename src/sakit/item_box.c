@@ -6,15 +6,16 @@
 #include "trig.h"
 #include "lib/m4a.h"
 
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 #include "sakit/dust_cloud.h"
 
-#include "game/game.h"
 #include "game/entity.h"
-#include "game/item_tasks.h"
-#include "game/multiplayer/unknown_1.h"
+#include "game/stage/item_tasks.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+
+#include "game/multiplayer/player_unk_1.h"
+#include "game/multiplayer/mp_player.h"
 
 #include "constants/animations.h"
 #include "constants/items.h"
@@ -281,7 +282,7 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
             for (playerId = 0; playerId < MULTI_SIO_PLAYERS_MAX
                  && gMultiplayerPlayerTasks[playerId] != NULL;
                  playerId++) {
-                struct MultiplayerPlayer *mpp;
+                MultiplayerPlayer *mpp;
                 s32 boxToPlayerX, boxToPlayerY;
                 s32 boxToPlayerMagnitude;
 

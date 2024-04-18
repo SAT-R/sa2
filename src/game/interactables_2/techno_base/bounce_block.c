@@ -3,7 +3,6 @@
 #include "trig.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/game.h"
 #include "lib/m4a.h"
 
 #include "constants/animations.h"

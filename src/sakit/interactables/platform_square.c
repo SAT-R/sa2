@@ -6,9 +6,9 @@
 #include "trig.h"
 #include "malloc_vram.h"
 
-#include "game/game.h"
-#include "game/entity.h"
+#include "sakit/collision.h"
 #include "sakit/interactables/platform_square.h"
+#include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

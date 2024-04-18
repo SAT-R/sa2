@@ -7,6 +7,73 @@ u32 gRngValue = 0;
 
 #define RAND_CONST 0x37119371;
 
+// void sub_8085314(struct UNK_8085F1C_1 *p1, struct UNK_8085F1C_1 *p2)
+// {
+//     s32 unk0 = p2->unk0 * 2;
+//     s32 unk2 = p2->unk2[0] * 2;
+//     s32 unk4 = p2->unk2[1] * 2;
+//     s32 temp0 = (p2->unk2[0] * unk2 * 0x40) >> 0x10;
+//     s32 temp1 = (p2->unk2[1] * unk4 * 0x40) >> 0x10;
+
+//     s16 temp2, temp3, temp4, temp5, temp6;
+
+//     p1->unk14 = 0;
+//     p1->unk2[0] = 0x400 - (temp0 + temp1);
+
+//     temp2 = (p2->unk2[2] * unk4 * 0x40) >> 0x10;
+//     temp3 = (p2->unk0 * unk2 * 0x40) >> 0x10;
+
+//     p1->unk2[1] = temp3 - temp2;
+
+//     temp4 = (p2->unk0 * unk4 * 0x40) >> 0x10;
+//     temp5 = (p2->unk2[2] * unk2 * 0x40) >> 0x10;
+
+//     p1->unk2[2] = temp4 + temp5;
+//     p1->unk2[3] = temp3 + temp2;
+
+//     temp3 = (p2->unk0 * unk0 * 0x40) >> 0x10;
+//     p1->unk2[4] = 0x400 - (temp1 + temp3);
+
+//     temp1 = (p2->unk2[2] * unk0 * 0x40) >> 0x10;
+//     temp6 = (p2->unk2[0] * unk4 * 0x40) >> 0x10;
+
+//     p1->unk2[5] = temp6 - temp1;
+//     p1->unk2[6] = temp4 - temp5;
+//     p1->unk2[7] = temp6 + temp1;
+//     p1->unk2[8] = 0x400 - (temp3 + temp0);
+//     p1->unk1C = p1->unk14;
+//     p1->unk18 = p1->unk14;
+// }
+
+void sub_8084B54(struct UNK_8085F1C_1 *, u16, u16, u16);
+
+struct UNK_8085F1C_1 *sub_80853F8(struct UNK_8085F1C *p1)
+{
+    if (!(p1->unkC & 1)) {
+        if (p1->unk10 == 1) {
+            sub_8084B54(&p1->unk34, p1->unk54, p1->unk56, p1->unk58);
+            p1->unk34.unk2[0] = (p1->unk5C * p1->unk34.unk2[0]) >> 10;
+            p1->unk34.unk2[1] = (p1->unk5C * p1->unk34.unk2[1]) >> 10;
+            p1->unk34.unk2[2] = (p1->unk5C * p1->unk34.unk2[2]) >> 10;
+
+            p1->unk34.unk2[3] = (p1->unk5E * p1->unk34.unk2[3]) >> 10;
+            p1->unk34.unk2[4] = (p1->unk5E * p1->unk34.unk2[4]) >> 10;
+            p1->unk34.unk2[5] = (p1->unk5E * p1->unk34.unk2[5]) >> 10;
+
+            p1->unk34.unk2[6] = (p1->unk60 * p1->unk34.unk2[6]) >> 10;
+            p1->unk34.unk2[7] = (p1->unk60 * p1->unk34.unk2[7]) >> 10;
+            p1->unk34.unk2[8] = (p1->unk60 * p1->unk34.unk2[8]) >> 10;
+
+            p1->unk34.unk14 = p1->unk64;
+            p1->unk34.unk18 = p1->unk68;
+            p1->unk34.unk1C = p1->unk6C;
+        }
+        p1->unkC |= 1;
+    }
+
+    return &p1->unk34;
+}
+
 u16 Random(void)
 {
     u32 new;

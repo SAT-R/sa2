@@ -201,7 +201,7 @@ _0804563E:
 	movs r1, #0xc0
 	lsls r1, r1, #3
 	strh r1, [r2, #0xe]
-	ldr r2, _08045890 @ =gUnknown_080D79D0
+	ldr r2, _08045890 @ =gTileInfoBossScrews
 	lsls r1, r0, #1
 	adds r1, r1, r0
 	lsls r1, r1, #2
@@ -396,7 +396,7 @@ _08045880: .4byte gSineTable
 _08045884: .4byte 0x00000407
 _08045888: .4byte 0x06012980
 _0804588C: .4byte 0x0000026B
-_08045890: .4byte gUnknown_080D79D0
+_08045890: .4byte gTileInfoBossScrews
 _08045894: .4byte 0x06010000
 
 	

@@ -2,7 +2,7 @@
 #include "core.h"
 #include "lib/m4a.h"
 
-#include "game/player_controls.h"
+#include "game/stage/player_controls.h"
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -72,7 +72,7 @@ static void Task_807EA8C(void)
         sub_807ED68(pole);
         return;
     }
-    if (gPlayer.unk2C == 120) {
+    if (gPlayer.timerInvulnerability == 120) {
         sub_807ED88(pole);
         return;
     }

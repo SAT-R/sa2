@@ -54,7 +54,10 @@
 #define IS_EXTRA_STAGE(lvl)          ((lvl) == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
 #define IS_FINAL_OR_EXTRA_STAGE(lvl) ((IS_FINAL_STAGE(lvl)) || (IS_EXTRA_STAGE(lvl)))
 
-#define ZONE_TIME_TO_INT(minutes, seconds) (((minutes * 60) + seconds) * 60)
-#define MAX_COURSE_TIME                    (ZONE_TIME_TO_INT(10, 0))
+#define ZONE_TIME_TO_INT(minutes, seconds)                                              \
+    (int)(((minutes * 60.) + seconds) * GBA_FRAMES_PER_SECOND)
+#define MAX_COURSE_TIME (ZONE_TIME_TO_INT(10, 0))
+
+#define SPECIAL_STAGE_REQUIRED_SP_RING_COUNT 7
 
 #endif // GUARD_ZONES_H

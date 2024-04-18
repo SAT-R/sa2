@@ -9,7 +9,6 @@
 #include "lib/m4a.h"
 #include "game/save.h"
 #include "trig.h"
-#include "game/game.h"
 #include "malloc_ewram.h"
 #include "constants/zones.h"
 #include "constants/songs.h"

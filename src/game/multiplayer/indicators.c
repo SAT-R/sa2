@@ -1,8 +1,11 @@
 #include "global.h"
 #include "sprite.h"
 #include "trig.h"
-#include "sakit/camera.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
+
+#include "game/stage/camera.h"
+#include "game/multiplayer/mp_player.h"
 
 #include "constants/animations.h"
 
@@ -104,7 +107,7 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     SpriteTransform *transform;
     OpponentIndicator *pi;
     struct Task *t;
-    struct MultiplayerPlayer *mpp;
+    MultiplayerPlayer *mpp;
 
     pi = TASK_DATA(gCurTask);
     t = gMultiplayerPlayerTasks[pi->playerId];

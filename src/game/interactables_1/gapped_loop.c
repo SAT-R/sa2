@@ -1,7 +1,6 @@
 #include "global.h"
 #include "core.h"
 #include "task.h"
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

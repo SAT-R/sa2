@@ -1,11 +1,16 @@
 #include "global.h"
-#include "game/interactables_2/sky_canyon/propeller_spring.h"
-#include "game/player_controls.h"
-#include "game/stage/player.h"
-#include "game/stage/camera.h"
-#include "game/game.h"
+
 #include "trig.h"
 #include "lib/m4a.h"
+
+#include "sakit/entities_manager.h"
+
+#include "game/interactables_2/sky_canyon/propeller_spring.h"
+#include "game/interactables_2/sky_canyon_init.h"
+
+#include "game/stage/player_controls.h"
+#include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
@@ -204,17 +209,17 @@ static void sub_807C5E0(Sprite_IA85 *ia85)
 
 static Sprite *sub_807C5F8(void)
 {
-    UNK_807C5F8_Parent *parent = TASK_DATA(TASK_PARENT(gCurTask));
-    UNK_807C5F8 *unk807 = TASK_DATA(parent->unk18);
-    return &unk807->sprite1;
+    EntitiesManager *em = TASK_DATA(TASK_PARENT(gCurTask));
+    Sprite_OnInit_SkyCanyon *level = TASK_DATA(em->preInit);
+    return &level->spring;
 }
 
 static void sub_807C614(void)
 {
-    UNK_807C5F8_Parent *parent = TASK_DATA(TASK_PARENT(gCurTask));
-    UNK_807C5F8 *unk807 = TASK_DATA(parent->unk18);
+    EntitiesManager *em = TASK_DATA(TASK_PARENT(gCurTask));
+    Sprite_OnInit_SkyCanyon *level = TASK_DATA(em->preInit);
 
-    unk807->unk60++;
+    level->unk60++;
 }
 
 void CreateEntity_PropellerSpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,

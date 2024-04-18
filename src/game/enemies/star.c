@@ -2,10 +2,11 @@
 #include "sprite.h"
 #include "task.h"
 #include "malloc_vram.h"
-#include "game/entity.h"
 
-#include "game/enemies/star.h"
 #include "sakit/entities_manager.h"
+
+#include "game/entity.h"
+#include "game/enemies/star.h"
 
 #include "constants/animations.h"
 

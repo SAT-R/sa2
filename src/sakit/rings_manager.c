@@ -2,13 +2,17 @@
 #include "global.h"
 #include "core.h"
 #include "malloc_ewram.h"
+
 #include "sakit/camera.h"
 #include "sakit/collect_ring_effect.h"
 #include "sakit/ring.h"
 #include "sakit/rings_manager.h"
-#include "game/game.h"
+
 #include "game/entity.h"
-#include "game/player_super_sonic.h"
+#include "game/stage/player_super_sonic.h"
+
+#include "game/multiplayer/mp_player.h"
+
 #include "game/assets/compressed/entities.h"
 
 #include "constants/animations.h"
@@ -287,8 +291,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
 
                 if ((i == playerId) && (gMultiplayerPlayerTasks[i] != NULL)) {
                     // _08008258
-                    struct MultiplayerPlayer *mpPlayer
-                        = TASK_DATA(gMultiplayerPlayerTasks[i]);
+                    MultiplayerPlayer *mpPlayer = TASK_DATA(gMultiplayerPlayerTasks[i]);
                     s16 px, py = mpPlayer->unk52;
                     s32 hbBottom, hbLeft, hbRight;
                     sl = Q_24_8(py + s->hitboxes[0].top);
@@ -401,7 +404,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                                && ((ry - 72) <= Q_24_8_TO_INT(gPlayer.y))
                                                && ((ry + 56
                                                     >= Q_24_8_TO_INT(gPlayer.y)))) {
-                                        sub_800BAAC(rx, ry);
+                                        CreateMagneticRing(rx, ry);
                                         meRing->x = (u8)MAP_ENTITY_STATE_INITIALIZED;
                                         meRing++;
 

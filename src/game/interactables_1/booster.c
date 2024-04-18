@@ -1,16 +1,15 @@
 #include "global.h"
 #include "malloc_vram.h"
+#include "sprite.h"
+#include "task.h"
 #include "lib/m4a.h"
 
-#include "game/game.h"
-#include "task.h"
+#include "sakit/collision.h"
+#include "sakit/entities_manager.h"
 
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "sprite.h"
-#include "game/game.h"
-#include "sakit/entities_manager.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

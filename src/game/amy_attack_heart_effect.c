@@ -2,7 +2,9 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "task.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/amy_attack_heart_effect.h"
@@ -75,7 +77,6 @@ const s16 sHeartOffsets[4][8][3] = {
         { 30, -19, 6 },
     },
 };
-extern const u16 gUnknown_080D6736[115][2];
 
 void CreateAmyAttackHeartEffect(u16 kind)
 {

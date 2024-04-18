@@ -5,10 +5,11 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 
-#include "game/game.h"
-#include "game/entity.h"
+#include "sakit/collision.h"
 #include "sakit/interactables/platform_thin.h"
-#include "game/multiplayer/unknown_1.h"
+#include "game/entity.h"
+
+#include "game/multiplayer/player_unk_1.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
@@ -42,8 +43,8 @@ typedef struct {
     s16 unkF2;
 } Platform_D1C /* size 0xF4*/;
 
-static void Task_CommonPlatformThinMain(void);
-static void TaskDestructor_CommonPlatformThin(struct Task *);
+static void Task_PlatformThinMain(void);
+static void TaskDestructor_PlatformThin(struct Task *);
 
 static void Task_PlatformBreakParticlesMain(void);
 static void TaskDestructor_PlatformBreakParticles(struct Task *);
@@ -76,12 +77,11 @@ static const u16 sPlatformBreakAnimations[][6] = {
 };
 static const u16 unused = 0;
 
-void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
+                               u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_CommonPlatformThinMain, sizeof(Sprite_CommonThinPlatform),
-                     0x2010, 0, TaskDestructor_CommonPlatformThin);
+    struct Task *t = TaskCreate(Task_PlatformThinMain, sizeof(Sprite_CommonThinPlatform),
+                                0x2010, 0, TaskDestructor_PlatformThin);
     Sprite_CommonThinPlatform *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
@@ -116,7 +116,7 @@ void CreateEntity_CommonThinPlatform(MapEntity *me, u16 spriteRegionX, u16 sprit
     UpdateSpriteAnimation(s);
 }
 
-static void Task_CommonPlatformThinMain(void)
+static void Task_PlatformThinMain(void)
 {
     // Have to be declared in this order to match
     Player *player;
@@ -439,7 +439,7 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->y = y;
 }
 
-static void TaskDestructor_CommonPlatformThin(struct Task *t)
+static void TaskDestructor_PlatformThin(struct Task *t)
 {
     Sprite_CommonThinPlatform *platform = TASK_DATA(t);
 

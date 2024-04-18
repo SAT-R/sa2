@@ -2,7 +2,6 @@
 #include "malloc_vram.h"
 #include "sprite.h"
 #include "trig.h"
-#include "game/game.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/interactables_1/windmill.h"

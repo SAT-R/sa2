@@ -6,7 +6,6 @@
 
 #include "lib/m4a.h"
 
-#include "game/game.h"
 #include "sakit/camera.h"
 #include "game/entity.h"
 #include "sakit/item_box.h"
@@ -274,7 +273,7 @@ const MapEntityInit gSpriteInits_Interactables[] = {
     CreateEntity_Spring_Big_DownLeft,
     CreateEntity_Spring_Small_UpRight,
     CreateEntity_Spring_Small_UpLeft,
-    CreateEntity_CommonThinPlatform,
+    CreateEntity_PlatformThin,
     CreateEntity_Decoration,
     CreateEntity_Ramp,
     CreateEntity_Booster,

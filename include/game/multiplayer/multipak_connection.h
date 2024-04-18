@@ -2,7 +2,6 @@
 #define GUARD_MULTIPLAYER_MULTIPAK_CONNECTION_H
 
 #include "global.h"
-#include "game/game.h"
 #include "multi_sio.h"
 
 extern u8 gMultiplayerUnlockedCharacters;

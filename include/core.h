@@ -4,8 +4,8 @@
 #include "global.h"
 #include "task.h"
 #include "sprite.h"
+#include "tilemap.h"
 #include "input_recorder.h"
-#include "animation_commands.h"
 
 struct MultiSioData_0_0 {
     // id
@@ -79,8 +79,14 @@ struct MultiSioData_0_4 {
     // value
     s16 x;
     s16 y;
+    u16 unk6;
+    u16 unk8;
+    u8 unkA;
+    u8 unkB;
+    u8 unkC;
+    u8 unkD;
 
-    u8 filler3[0x9];
+    u8 unkE;
     u8 numRings;
     u8 unk10;
     u8 unk11;
@@ -96,50 +102,19 @@ union MultiSioData {
     struct MultiSioData_0_4 pat4;
 }; /* size = MULTI_SIO_BLOCK_SIZE */
 
-typedef struct {
-    /* 0x00 */ u16 xTiles;
-    /* 0x02 */ u16 yTiles;
-    /* 0x04 */ u16 animTileSize;
-    /* 0x06 */ u8 animFrameCount;
-    /* 0x07 */ u8 animDelay;
-    /* 0x08 */ const u8 *tiles;
-    /* 0x0C */ u32 tilesSize;
-    /* 0x10 */ const u16 *palette;
-    /* 0x14 */ u16 palOffset;
-    /* 0x16 */ u16 palLength;
-
-    // Can be u8* in some instances
-    // map = metatiles, when using with non-background map layers
-    /* 0x18 */ const u16 *map;
-} Tilemap; /* size = 0x1C */
-
-struct SpriteTables {
-    /* 0x00 */ ACmd ***animations;
-    /* 0x04 */ SpriteOffset **dimensions;
-    /* 0x08 */ u16 **oamData;
-    /* 0x0C */ u16 *palettes;
-    /* 0x10 */ u8 *tiles_4bpp;
-    /* 0x14 */ u8 *tiles_8bpp;
-};
-
-struct MapHeader {
-    /* 0x00 */ Tilemap h;
-    /* 0x1C */ const u16 *metatileMap;
-    /* 0x20 */ u16 mapWidth; // in Metatiles
-    /* 0x22 */ u16 mapHeight; // in Metatiles
-};
+// TODO: Have we defined this somewhere else already?
+#define MAP_LAYER_COUNT 2
 
 // Thanks @MainMemory_ for figuring out how collision works!
 typedef struct {
-    const u8 *height_map;
-    const u8 *tile_rotation;
-    const u16 *metatiles;
-    const u16 *map_front;
-    const u16 *map_back;
-    const u8 *flags;
-    u16 levelX, levelY;
-    u8 unk1C[4];
-    u16 unk20, unk22;
+    /* 0x00 */ const s8 *height_map;
+    /* 0x04 */ const u8 *tile_rotation;
+    /* 0x08 */ const u16 *metatiles;
+    /* 0x0C */ const u16 *map[MAP_LAYER_COUNT];
+    /* 0x14 */ const u16 *flags;
+    /* 0x18 */ u16 levelX, levelY;
+    /* 0x1C */ u32 pxWidth; // u16 in SA1!
+    /* 0x20 */ u32 pxHeight; // u16 in SA1!
 } Collision;
 
 struct Unk_03003674_1_Sub {
@@ -297,7 +272,6 @@ extern u16 *gUnknown_030022AC;
 extern void *gUnknown_030022C0;
 extern s16 gMosaicReg;
 extern u8 gUnknown_030026F4;
-extern const struct SpriteTables *gUnknown_03002794;
 extern struct GraphicsData *gVramGraphicsCopyQueue[32];
 extern u16 gUnknown_03002820;
 extern u8 gUnknown_03002874;

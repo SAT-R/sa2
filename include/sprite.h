@@ -111,6 +111,10 @@ typedef struct {
     /* 0x0A */ s16 offsetY;
 } SpriteOffset;
 
+// TODO: Verify "(in)active" name
+#define HITBOX_STATE_INACTIVE -1
+#define HITBOX_IS_ACTIVE(hb)  ((hb).index != HITBOX_STATE_INACTIVE)
+
 typedef struct {
     // index: -1 on init; lower 4 bits = index (in anim-cmds)
     /* 0x00 */ s32 index;
@@ -124,7 +128,6 @@ typedef struct {
 #define SPRITE_OAM_ORDER(index)  ((index) << 6)
 #define GET_SPRITE_OAM_ORDER(s)  ((((s)->unk1A) & 0x7C0) >> 6)
 
-// TODO: work out what makes this struct different from the above
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
     /* 0x0C */ SpriteOffset *dimensions;
@@ -169,6 +172,19 @@ typedef struct {
     /* 0x28 */ Hitbox hitboxes[1];
 } Sprite /* size = 0x30 */;
 
+// TODO: Unify Sprite with variable hitbox count through a macro
+typedef struct {
+    Sprite s;
+    Hitbox hb1;
+} Sprite2;
+
+// TODO: Unify Sprite with variable hitbox count through a macro
+typedef struct {
+    Sprite s;
+    Hitbox hb1;
+    Hitbox hb2;
+} Sprite3;
+
 typedef struct {
     /* 0x00 */ u16 rotation;
 
@@ -196,7 +212,13 @@ typedef struct PACKED {
 
 extern const u8 gOamShapesSizes[12][2];
 
-s32 UpdateSpriteAnimation(Sprite *);
+typedef enum {
+    ACMD_RESULT__ANIM_CHANGED = -1,
+    ACMD_RESULT__ENDED = 0,
+    ACMD_RESULT__RUNNING = +1,
+} AnimCmdResult;
+
+AnimCmdResult UpdateSpriteAnimation(Sprite *);
 
 void DisplaySprite(Sprite *);
 void DrawBackground(Background *);
@@ -249,7 +271,7 @@ s16 sub_8004418(s16 x, s16 y);
     _sprite->prevVariant = -1;                                                          \
     _sprite->animSpeed = SPRITE_ANIM_SPEED(_speed);                                     \
     _sprite->palId = 0;                                                                 \
-    _sprite->hitboxes[0].index = -1;
+    _sprite->hitboxes[0].index = HITBOX_STATE_INACTIVE;
 
 #define SPRITE_INIT_ANIM_AND_SCRIPT(_sprite, _anim, _variant, _order)                   \
     SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order);                                 \
@@ -273,9 +295,13 @@ s16 sub_8004418(s16 x, s16 y);
     SPRITE_INIT_SCRIPT(_sprite, 1.0);                                                   \
     _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
-#define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _order, _priority)             \
+#define SPRITE_INIT_FLAGS(_sprite, _numTiles, _anim, _variant, _order, _priority,       \
+                          _flags)                                                       \
     _sprite->graphics.dest = VramMalloc(_numTiles);                                     \
-    SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _order, _priority, 0);
+    SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _order, _priority, _flags);
+
+#define SPRITE_INIT(_sprite, _numTiles, _anim, _variant, _order, _priority)             \
+    SPRITE_INIT_FLAGS(_sprite, _numTiles, _anim, _variant, _order, _priority, 0)
 
 #define SF_SHIFT(name) (SPRITE_FLAG_SHIFT_##name)
 
@@ -313,21 +339,23 @@ s16 sub_8004418(s16 x, s16 y);
 #define SPRITE_FLAG_SHIFT_30                    30
 #define SPRITE_FLAG_SHIFT_31                    31
 
-#define SPRITE_FLAG_MASK_ROT_SCALE             SPRITE_FLAG(ROT_SCALE, 0x1F)
-#define SPRITE_FLAG_MASK_ROT_SCALE_ENABLE      SPRITE_FLAG(ROT_SCALE_ENABLE, 1)
-#define SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1)
-#define SPRITE_FLAG_MASK_OBJ_MODE              SPRITE_FLAG(OBJ_MODE, 3)
-#define SPRITE_FLAG_MASK_MOSAIC                SPRITE_FLAG(MOSAIC, 1)
-#define SPRITE_FLAG_MASK_X_FLIP                SPRITE_FLAG(X_FLIP, 1) // 0x400
-#define SPRITE_FLAG_MASK_Y_FLIP                SPRITE_FLAG(Y_FLIP, 1) // 0x800
-#define SPRITE_FLAG_MASK_PRIORITY              SPRITE_FLAG(PRIORITY, 3) // 0x3000
-#define SPRITE_FLAG_MASK_ANIM_OVER             SPRITE_FLAG(ANIM_OVER, 1)
-#define SPRITE_FLAG_MASK_BG_ID                 SPRITE_FLAG(BG_ID, 3)
-#define SPRITE_FLAG_MASK_17                    SPRITE_FLAG(17, 1)
-#define SPRITE_FLAG_MASK_18                    SPRITE_FLAG(18, 1)
-#define SPRITE_FLAG_MASK_19                    SPRITE_FLAG(19, 1)
-#define SPRITE_FLAG_MASK_26                    SPRITE_FLAG(26, 1)
-#define SPRITE_FLAG_MASK_30                    SPRITE_FLAG(30, 1)
-#define SPRITE_FLAG_MASK_31                    SPRITE_FLAG(31, 1)
+#define SPRITE_FLAG_MASK_ROT_SCALE        SPRITE_FLAG(ROT_SCALE, 0x1F) // 0x1F
+#define SPRITE_FLAG_MASK_ROT_SCALE_ENABLE SPRITE_FLAG(ROT_SCALE_ENABLE, 1) // 0x20
+#define SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE                                          \
+    SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1) // 0x40
+
+#define SPRITE_FLAG_MASK_OBJ_MODE  SPRITE_FLAG(OBJ_MODE, 3)
+#define SPRITE_FLAG_MASK_MOSAIC    SPRITE_FLAG(MOSAIC, 1) // 0x200
+#define SPRITE_FLAG_MASK_X_FLIP    SPRITE_FLAG(X_FLIP, 1) // 0x400
+#define SPRITE_FLAG_MASK_Y_FLIP    SPRITE_FLAG(Y_FLIP, 1) // 0x800
+#define SPRITE_FLAG_MASK_PRIORITY  SPRITE_FLAG(PRIORITY, 3) // 0x3000
+#define SPRITE_FLAG_MASK_ANIM_OVER SPRITE_FLAG(ANIM_OVER, 1)
+#define SPRITE_FLAG_MASK_BG_ID     SPRITE_FLAG(BG_ID, 3)
+#define SPRITE_FLAG_MASK_17        SPRITE_FLAG(17, 1)
+#define SPRITE_FLAG_MASK_18        SPRITE_FLAG(18, 1)
+#define SPRITE_FLAG_MASK_19        SPRITE_FLAG(19, 1)
+#define SPRITE_FLAG_MASK_26        SPRITE_FLAG(26, 1)
+#define SPRITE_FLAG_MASK_30        SPRITE_FLAG(30, 1)
+#define SPRITE_FLAG_MASK_31        SPRITE_FLAG(31, 1)
 
 #endif

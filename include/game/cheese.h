@@ -4,8 +4,7 @@
 #include "global.h"
 #include "core.h"
 
-#include "sakit/globals.h"
-
+#include "game/multiplayer/mp_player.h"
 #include "game/stage/player.h"
 
 typedef struct {
@@ -36,7 +35,7 @@ typedef struct {
     /* 0x1C */ Sprite s;
     /* 0x4C */ Hitbox reserved;
     /* 0x54 */ Cheese_UNK54 unk54;
-    /* 0x6C */ struct MultiplayerPlayer *unk6C;
+    /* 0x6C */ MultiplayerPlayer *unk6C;
 } Cheese; /* size: 0x70 */
 
 extern Cheese *gCheese;

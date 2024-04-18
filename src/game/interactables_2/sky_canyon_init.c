@@ -7,16 +7,9 @@
 
 #include "constants/animations.h"
 
-typedef struct {
-    /* 0x00 */ Sprite spring;
-    /* 0x30 */ Sprite propellor;
-    /* 0x60 */ u16 unk60;
-    /* 0x62 */ u16 unk62;
-} Sprite_OnInit_SkyCanyon;
-
 static void Task_80808DC(void);
 
-/* sub_80807CC is pointed to by 'gSpriteTileInits_PreStageEntry' inside entities_0.s
+/* sub_80807CC is pointed to by 'gSpriteTileInits_PreStageEntry' inside collision.s
  * Which itself is referenced by 'CreateStageEntitiesManager'
  * It is called on stage-entry of ONLY Sky Canyon Acts 1 & 2,
  * the other pointers inside 'gSpriteTileInits_PreStageEntry' are empty.

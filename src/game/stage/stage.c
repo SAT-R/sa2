@@ -7,14 +7,13 @@
 #include "sakit/palette_loader.h"
 #include "sakit/pause_menu.h"
 #include "sakit/rings_manager.h"
-#include "game/game.h"
 #include "game/save.h"
 #include "game/game_over.h"
 #include "game/cheese.h"
-#include "game/player_controls.h"
-#include "game/player_super_sonic.h"
+#include "game/stage/player_controls.h"
+#include "game/stage/player_super_sonic.h"
 #include "game/race_progress.h"
-#include "game/screen_shake.h"
+#include "game/stage/screen_shake.h"
 #include "game/stage/stage.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -23,6 +22,7 @@
 #include "game/multiplayer/indicators.h"
 
 #include "game/multiboot/collect_rings/time_display.h"
+#include "game/multiplayer/mp_player.h"
 
 #include "lib/m4a.h"
 
@@ -31,8 +31,6 @@
 #include "constants/songs.h"
 
 struct Task *gGameStageTask = NULL;
-
-extern void CallSetStageSpawnPos(u32, u32, u32, Player *);
 
 extern u32 sMPStageStartFrameCount;
 
@@ -51,7 +49,6 @@ void SetupStageIntro(void);
 void CreateStageWaterTask(u32, u32, u32);
 
 void sub_8019120(void);
-void CreateMultiplayerPlayer(u8);
 
 void sub_80191A4(void);
 

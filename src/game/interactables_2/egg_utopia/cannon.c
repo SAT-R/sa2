@@ -1,6 +1,6 @@
 #include "core.h"
 
-#include "game/player_controls.h"
+#include "game/stage/player_controls.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/interactables_2/egg_utopia/cannon.h"
@@ -137,7 +137,7 @@ static void sub_807E408(Sprite_Cannon *cannon)
         }
 
         gPlayer.rotation = cannon->unk6A >> 2;
-        gPlayer.unk2C = 4;
+        gPlayer.timerInvulnerability = 4;
         m4aSongNumStart(SE_289);
     }
 

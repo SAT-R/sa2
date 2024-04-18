@@ -6,7 +6,7 @@
 #include "lib/m4a.h"
 
 #include "game/entity.h"
-#include "game/player_controls.h"
+#include "game/stage/player_controls.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/interactables_2/hot_crater/hook_rail.h"
@@ -106,7 +106,7 @@ static void sub_8072BB8(void)
         return;
     }
 
-    if (gPlayer.unk2C == 120) {
+    if (gPlayer.timerInvulnerability == 120) {
         sub_8073088(hookRail);
     } else if (gPlayer.unk5E & gPlayerControls.jump) {
         sub_807321C();
@@ -140,7 +140,7 @@ static void sub_8072C90(void)
         return;
     }
 
-    if (gPlayer.unk2C == 120) {
+    if (gPlayer.timerInvulnerability == 120) {
         sub_8073088(hookRail);
     } else if (gPlayer.unk5E & gPlayerControls.jump) {
         sub_807321C();
@@ -166,7 +166,7 @@ static void sub_8072D40(void)
         return;
     }
 
-    if (gPlayer.unk2C == 120) {
+    if (gPlayer.timerInvulnerability == 120) {
         sub_8073168(hookRail);
     } else if (gPlayer.unk5E & gPlayerControls.jump) {
         sub_807321C();

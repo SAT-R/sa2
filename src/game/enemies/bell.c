@@ -3,8 +3,10 @@
 #include "sprite.h"
 #include "task.h"
 #include "malloc_vram.h"
+
 #include "game/entity.h"
 #include "game/enemies/bell.h"
+
 #include "sakit/entities_manager.h"
 
 #include "constants/animations.h"

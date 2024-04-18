@@ -1,11 +1,10 @@
 #include "core.h"
 #include "malloc_vram.h"
-#include "game/game.h"
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 
 #include "game/entity.h"
 #include "game/mystery_item_box.h"
-#include "game/multiplayer/unknown_1.h"
+#include "game/multiplayer/player_unk_1.h"
 #include "sakit/dust_cloud.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

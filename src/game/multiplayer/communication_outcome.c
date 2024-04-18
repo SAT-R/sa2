@@ -9,7 +9,6 @@
 #include "game/title_screen.h"
 #include "multi_sio.h"
 #include "lib/m4a.h"
-#include "game/game.h"
 #include "flags.h"
 #include "game/character_select.h"
 

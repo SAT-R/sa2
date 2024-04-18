@@ -33,8 +33,13 @@
 // TODO: Rename. "These "Insta Shield" is true for Sonic, but not the other characters.
 #define SA2_CHAR_ANIM_INSTA_SHIELD_1 17
 #define SA2_CHAR_ANIM_INSTA_SHIELD_2 18
+#define SA2_CHAR_ANIM_19             19
 
 #define SA2_CHAR_ANIM_20                                     20
+#define SA2_CHAR_ANIM_21                                     21
+#define SA2_CHAR_ANIM_22                                     22
+#define SA2_CHAR_ANIM_23                                     23
+#define SA2_CHAR_ANIM_24                                     24
 #define SA2_CHAR_ANIM_28                                     28
 #define SA2_CHAR_ANIM_29                                     29
 #define SA2_CHAR_ANIM_BEFORE_COUNTDOWN                       30
@@ -71,6 +76,8 @@
 #define SA2_CHAR_ANIM_55                                     55
 #define SA2_CHAR_ANIM_56                                     56
 #define SA2_CHAR_ANIM_57                                     57
+#define SA2_CHAR_ANIM_62                                     62
+#define SA2_CHAR_ANIM_63                                     63
 #define SA2_CHAR_ANIM_65                                     65
 #define SA2_CHAR_ANIM_66                                     66
 #define SA2_CHAR_ANIM_67                                     67
@@ -79,6 +86,7 @@
 #define SA2_CHAR_ANIM_70                                     70
 #define SA2_CHAR_ANIM_BOOST_PALETTE                          74
 #define SA2_CHAR_ANIM_80                                     80
+#define SA2_CHAR_ANIM_87                                     87
 
 #define SA2_ANIM_SONIC_IDLE     0
 #define SA2_ANIM_CREAM_IDLE     91
@@ -315,13 +323,33 @@
 #define SA2_ANIM_EGG_BOMBER_TANK_BODY       641
 #define SA2_ANIM_EGG_BOMBER_TANK_BODY_PARTS 642
 
-#define SA2_ANIM_EGG_BOMBER_TANK_WHEEL       644
-#define SA2_ANIM_EGG_BOMBER_TANK_WHEEL_PARTS 645
-#define SA2_ANIM_EGG_BOMBER_TANK_CANNON      646
-#define SA2_ANIM_EGG_BOMBER_TANK_BOMB        647
-#define SA2_ANIM_EGG_BOMBER_TANK_PILOT       648
+#define SA2_ANIM_EGG_BOMBER_TANK_WHEEL_FOREGROUND 644
+#define SA2_ANIM_EGG_BOMBER_TANK_WHEEL_BACKGROUND 645
+#define SA2_ANIM_EGG_BOMBER_TANK_CANNON           646
+#define SA2_ANIM_EGG_BOMBER_TANK_BOMB             647
+#define SA2_ANIM_EGG_BOMBER_TANK_PILOT            648
 
-#define SA2_ANIM_TAILS_CAPTURED_COPY 659
+#define SA2_ANIM_EGG_TOTEM_COCKPIT         649
+#define SA2_ANIM_EGG_TOTEM_CART            650
+#define SA2_ANIM_EGG_TOTEM_BODY            651
+#define SA2_ANIM_EGG_TOTEM_WHEEL_FRONT     652
+#define SA2_ANIM_EGG_TOTEM_WHEEL_BACK      653
+#define SA2_ANIM_EGG_TOTEM_WHEEL_SMALL     654
+#define SA2_ANIM_EGG_TOTEM_PLATFORM        655
+#define SA2_ANIM_EGG_TOTEM_HOOK            656
+#define SA2_ANIM_EGG_TOTEM_BULLET_LAUNCHER 657
+#define SA2_ANIM_EGG_TOTEM_BULLET          658
+#define SA2_ANIM_TAILS_CAPTURED_COPY       659
+#define SA2_ANIM_EGG_TOTEM_ENERGY          660
+
+#define SA2_ANIM_AERO_EGG_BODY         661
+#define SA2_ANIM_AERO_EGG_PLATFORM     662
+#define SA2_ANIM_AERO_EGG_FIRE         663
+#define SA2_ANIM_AERO_EGG_BOMB         664
+#define SA2_ANIM_AERO_EGG_ELEMENT      665
+#define SA2_ANIM_AERO_EGG_DEBRIS_BIG   666
+#define SA2_ANIM_AERO_EGG_DEBRIS_SMALL 667
+#define SA2_ANIM_AERO_EGG_PILOT        668
 
 #define SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES 315
 #define SA2_ANIM_EGG_SAUCER_CABIN          669

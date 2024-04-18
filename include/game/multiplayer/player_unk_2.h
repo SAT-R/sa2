@@ -14,4 +14,6 @@ typedef struct {
 } MultiPlayerBgCtrlRegs; /* size: 8 */
 extern MultiPlayerBgCtrlRegs *gUnknown_03005840;
 
+void sub_801A384(void);
+
 #endif // GUARD_MULTIPLAYER_PLAYER_UNK_2_H

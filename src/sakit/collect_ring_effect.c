@@ -1,11 +1,13 @@
 #include "global.h"
 #include "task.h"
 #include "lib/m4a.h"
-#include "game/game.h"
-#include "game/stage/player.h"
-#include "game/stage/camera.h"
+
+#include "sakit/globals.h"
 #include "sakit/collect_ring_effect.h"
 #include "sakit/rings_manager.h"
+
+#include "sakit/player.h"
+#include "sakit/camera.h"
 
 #include "constants/animations.h"
 

@@ -4,7 +4,6 @@
 #include "task.h"
 #include "lib/m4a.h"
 
-#include "game/game.h"
 #include "game/entity.h"
 #include "sakit/interactables/pipe.h"
 #include "game/stage/player.h"
@@ -107,9 +106,9 @@ static void Task_Pipe_End(void)
         gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY; // priority bits
         gPlayer.unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
 
-        gPlayer.unk38 = FLAG_PLAYER_x38__LAYER_FOREGROUND;
+        gPlayer.unk38 = FLAG_PLAYER_x38__LAYER_FRONT;
         if (me->exitOnBackLayer) {
-            gPlayer.unk38 = FLAG_PLAYER_x38__LAYER_BACKGROUND;
+            gPlayer.unk38 = FLAG_PLAYER_x38__LAYER_BACK;
         }
 
         gPlayer.transition = PLTRANS_PT28;

@@ -1,9 +1,12 @@
 #include "global.h"
 #include "malloc_vram.h"
 #include "sprite.h"
+
+#include "sakit/entities_manager.h"
+
 #include "game/entity.h"
 #include "game/enemies/mon.h"
-#include "sakit/entities_manager.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
@@ -113,7 +116,7 @@ static void Task_Mon_2(void)
         SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        sub_80122DC(mon->x, mon->y);
+        Player_UpdateHomingPosition(mon->x, mon->y);
         if (UpdateSpriteAnimation(s) == 0) {
             mon->speedY = -Q_24_8(5.5);
             mon->offsetY = +Q_24_8(0.0);
@@ -172,7 +175,7 @@ static void Task_Mon_4(void)
         SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        sub_80122DC(mon->x, mon->y);
+        Player_UpdateHomingPosition(mon->x, mon->y);
 
         if (UpdateSpriteAnimation(s) == 0) {
             if ((gPlayer.x > mon->x - Q_24_8(DISPLAY_WIDTH / 2))

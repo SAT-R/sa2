@@ -27,6 +27,6 @@ extern Water gWater;
 
 extern void sub_8011328(void);
 extern void CreateRunOnWaterEffect(void);
-extern struct Task *CreateWaterfallSurfaceHitEffect(s16 x, s16 y);
+extern struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y);
 
 #endif // GUARD_WATER_EFFECT_H

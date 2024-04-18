@@ -5,6 +5,8 @@
 
 #include "sakit/globals.h"
 
+#include "game/stage/player_super_sonic.h"
+
 #include "game/stage/stage.h"
 #include "game/stage/camera.h"
 #include "game/stage/player.h"
@@ -28,13 +30,13 @@ struct Backgrounds ALIGNED(16) gStageBackgroundsRam = {};
 UNUSED u32 unused_3005950[3] = {};
 
 struct Camera ALIGNED(8) gCamera = {};
-const u32 *gUnknown_030059C8 = NULL;
+const Collision *gRefCollision = NULL;
 
 static void sub_801C708(s32, s32);
+
+// camera_destroy.h
 void Task_CallUpdateCamera(void);
 void TaskDestructor_801E040(struct Task *);
-
-extern void SuperSonicGetPos(s32 *x, s32 *y);
 
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
@@ -368,15 +370,15 @@ void InitCamera(u32 level)
     }
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gUnknown_030059C8 = (u32 *)gCollisionTable[level];
+        gRefCollision = gCollisionTable[level];
     } else {
-        gUnknown_030059C8 = *(u32 **)(EWRAM_START + 0x33004);
+        gRefCollision = *(Collision **)(EWRAM_START + 0x33004);
     }
 
-    camera->unk28 = 0;
-    camera->unk2C = gUnknown_030059C8[8];
-    camera->unk30 = 0;
-    camera->unk34 = gUnknown_030059C8[7];
+    camera->minY = 0;
+    camera->maxY = gRefCollision->pxHeight;
+    camera->minX = 0;
+    camera->maxX = gRefCollision->pxWidth;
 
     if (((gCurrentLevel & ACTS_PER_ZONE) == ACT_BOSS)
         || ((gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
@@ -452,12 +454,12 @@ void UpdateCamera(void)
     camera->unk38 = newX;
     camera->unk3C = newY;
 
-    newX = CLAMP(newX, camera->unk30, camera->unk34 - (DISPLAY_WIDTH + 1));
-    newY = CLAMP(newY, camera->unk28, camera->unk2C - (DISPLAY_HEIGHT + 1));
+    newX = CLAMP(newX, camera->minX, camera->maxX - (DISPLAY_WIDTH + 1));
+    newY = CLAMP(newY, camera->minY, camera->maxY - (DISPLAY_HEIGHT + 1));
 
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         s32 delta, playerY;
-        if (player->moveState & MOVESTATE_DEAD) {
+        if (!IS_ALIVE(player)) {
             if (camera->fnBgUpdate != NULL) {
                 camera->fnBgUpdate(gCamera.x, gCamera.y);
             }
@@ -574,13 +576,13 @@ void UpdateCamera(void)
             newX += temp2;
         }
 
-        newX = CLAMP(newX, camera->unk30, camera->unk34 - DISPLAY_WIDTH);
+        newX = CLAMP(newX, camera->minX, camera->maxX - DISPLAY_WIDTH);
 
         if (camera->unk8 < Q_24_8(16)) {
             camera->unk8 += Q_24_8(0.125);
         }
 
-        if ((player->moveState & 2)
+        if ((player->moveState & MOVESTATE_IN_AIR)
             && (player->character != CHARACTER_KNUCKLES || player->unk61 != 9)) {
             camera->unk48 += 4;
             camera->unk48 = camera->unk48 > 24 ? 24 : camera->unk48;
@@ -599,11 +601,11 @@ void UpdateCamera(void)
                 : -camera->unkC;
         }
 
-        newY = CLAMP(newY, camera->unk28, camera->unk2C - DISPLAY_HEIGHT);
+        newY = CLAMP(newY, camera->minY, camera->maxY - DISPLAY_HEIGHT);
 
         // maybe a macro, these values are already clamped
-        newX = CLAMP(newX, camera->unk30, camera->unk34 - DISPLAY_WIDTH);
-        newY = CLAMP(newY, camera->unk28, camera->unk2C - DISPLAY_HEIGHT);
+        newX = CLAMP(newX, camera->minX, camera->maxX - DISPLAY_WIDTH);
+        newY = CLAMP(newY, camera->minY, camera->maxY - DISPLAY_HEIGHT);
         newX = newX + camera->unk60;
         newY = newY + camera->unk62;
     }
@@ -626,16 +628,16 @@ static void sub_801C708(s32 x, s32 y)
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
         Background *layer = &gStageBackgroundsRam.unk40;
-        gBgScrollRegs[1][0] = x & 7;
-        gBgScrollRegs[1][1] = y & 7;
+        gBgScrollRegs[1][0] = x % 8u;
+        gBgScrollRegs[1][1] = y % 8u;
         layer->scrollX = x;
         layer->scrollY = y;
         DrawBackground(layer);
         UpdateBgAnimationTiles(layer);
 
         layer = &gStageBackgroundsRam.unk80;
-        gBgScrollRegs[2][0] = x & 7;
-        gBgScrollRegs[2][1] = y & 7;
+        gBgScrollRegs[2][0] = x % 8u;
+        gBgScrollRegs[2][1] = y % 8u;
         layer->scrollX = x;
         layer->scrollY = y;
         DrawBackground(layer);

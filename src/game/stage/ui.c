@@ -2,9 +2,11 @@
 #include "core.h"
 #include "flags.h"
 #include "malloc_vram.h"
-#include "game/game.h"
 #include "game/save.h"
+
+#include "game/stage/player.h"
 #include "game/stage/ui.h"
+
 #include "lib/m4a.h"
 
 #include "constants/animations.h"

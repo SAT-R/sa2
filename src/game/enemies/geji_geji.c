@@ -1,8 +1,7 @@
 #include "global.h"
 
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/enemies/geji_geji.h"
 #include "game/stage/player.h"
@@ -146,7 +145,7 @@ static void sub_8057F80(void)
         }
     }
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
@@ -182,7 +181,7 @@ static void sub_8058264(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(gg, me, s);
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     if (--gg->unk27D == 0) {
         if (gg->unk27C) {

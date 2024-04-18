@@ -1,6 +1,8 @@
 #include "core.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
 #include "game/multiboot/collect_rings/time_display.h"
+
 #include "malloc_vram.h"
 #include "animation_commands.h"
 

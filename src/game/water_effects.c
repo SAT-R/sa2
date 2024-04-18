@@ -3,10 +3,13 @@
 #include "flags.h"
 #include "malloc_vram.h"
 #include "task.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
 #include "game/boost_effect.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+#include "game/stage/game_2.h"
 
 #include "data/sprite_data.h"
 #include "game/water_effects.h"
@@ -371,7 +374,7 @@ static void Task_RunOnWaterEffect(void)
     DisplaySprite(s);
 }
 
-struct Task *CreateWaterfallSurfaceHitEffect(s16 x, s16 y)
+struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
 {
     struct Task *t = sub_801F15C(x, y, 0x10, 0, Task_801F214, TaskDestructor_801F550);
     TaskStrc_801F15C *ts = TASK_DATA(t);

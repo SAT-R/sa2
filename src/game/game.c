@@ -1,23 +1,25 @@
 #include "global.h"
 #include "core.h"
 #include "data.h"
-#include "game/game.h"
-#include "task.h"
 #include "flags.h"
-#include "game/save.h"
+#include "task.h"
+
 #include "game/game.h"
+#include "game/save.h"
+
 #include "game/title_screen.h"
 #include "game/options_screen.h"
 #include "game/multiboot/connection.h"
-#include "game/rings_scatter.h"
+#include "game/stage/rings_scatter.h"
 #include "sakit/entities_manager.h"
 #include "game/stage/stage.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/water_effects.h"
-#include "game/underwater_effects.h"
-#include "game/dust_effect_braking.h"
+#include "game/stage/underwater_effects.h"
+#include "game/stage/dust_effect_braking.h"
 #include "game/dummy_task.h"
+#include "data/sprite_data.h"
 
 void GameStart(void)
 {

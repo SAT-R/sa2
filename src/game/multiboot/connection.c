@@ -7,7 +7,6 @@
 #include "mb_programs.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"
-#include "game/game.h"
 #include "game/stage/stage.h"
 #include "game/multiboot/connection.h"
 #include "game/multiboot/collect_rings/results.h"
@@ -15,14 +14,16 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/multiplayer/mode_select.h"
-#include "game/rings_scatter.h"
+#include "game/stage/rings_scatter.h"
 
-#include "game/player_controls.h"
+#include "game/stage/player_controls.h"
 #include "game/save.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "sakit/entities_manager.h"
 #include "game/title_screen.h"
 #include "game/dummy_task.h"
+
+#include "data/collect_rings.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

@@ -6,12 +6,11 @@
 
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/player_controls.h"
+#include "game/stage/player_controls.h"
 #include "game/entity.h"
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
-#include "game/game.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -200,7 +199,7 @@ static void Task_807DBF0(void)
     if (!PLAYER_IS_ALIVE) {
         launcher->unk48 = FALSE;
     } else {
-        if (gPlayer.unk2C != 120) {
+        if (gPlayer.timerInvulnerability != 120) {
             if (gPlayer.unk5E & gPlayerControls.jump) {
                 gPlayer.transition = PLTRANS_PT3;
 

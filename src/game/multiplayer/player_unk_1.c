@@ -1,9 +1,8 @@
 #include "global.h"
 #include "core.h"
-#include "game/game.h"
 #include "game/entity.h"
-#include "game/multiplayer/unknown_1.h"
-#include "game/rings_scatter.h"
+#include "game/multiplayer/player_unk_1.h"
+#include "game/stage/rings_scatter.h"
 #include "sakit/entities_manager.h"
 
 struct UNK_3005510 *sub_8019224(void)
@@ -15,7 +14,7 @@ struct UNK_3005510 *sub_8019224(void)
     return result;
 }
 
-void sub_8019240(union MultiSioData *msioData, u32 someId)
+void sub_8019240(union MultiSioData *msioData, u8 someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -49,7 +48,7 @@ void sub_8019240(union MultiSioData *msioData, u32 someId)
     }
 }
 
-void sub_80192A8(union MultiSioData *msioData, u32 UNUSED someId)
+void sub_80192A8(union MultiSioData *msioData, u8 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -86,7 +85,7 @@ void sub_80192A8(union MultiSioData *msioData, u32 UNUSED someId)
     }
 }
 
-void sub_80192FC(union MultiSioData *msioData, u32 UNUSED someId)
+void sub_80192FC(union MultiSioData *msioData, u8 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -122,12 +121,12 @@ void sub_80192FC(union MultiSioData *msioData, u32 UNUSED someId)
     }
 }
 
-void sub_8019350(union MultiSioData *msioData, u32 UNUSED someId)
+void sub_8019350(union MultiSioData *msioData, u8 UNUSED someId)
 {
     InitScatteringRings(msioData->pat4.x, msioData->pat4.y, msioData->pat4.numRings);
 }
 
-void sub_8019368(union MultiSioData *msioData, u32 UNUSED someId)
+void sub_8019368(union MultiSioData *msioData, u8 UNUSED someId)
 {
     if (gEntitiesManagerTask != NULL) {
         EntitiesManager *em = TASK_DATA(gEntitiesManagerTask);
@@ -163,7 +162,7 @@ void sub_8019368(union MultiSioData *msioData, u32 UNUSED someId)
 }
 
 // Type of this is determined by it being referenced in a C func-array
-void VoidReturnSIOControl32(union MultiSioData *msioData, u32 UNUSED someId)
+void VoidReturnSIOControl32(union MultiSioData *msioData, u8 UNUSED someId)
 {
     REG_SIOCNT_32;
 }

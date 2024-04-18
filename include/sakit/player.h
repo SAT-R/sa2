@@ -8,13 +8,13 @@
 #define IS_ALIVE(player) (!(player->moveState & MOVESTATE_DEAD))
 
 typedef struct {
-    /*0x00 */ u16 unk0[6]; // might be [5]
+    /*0x00 */ SpriteTransform transform;
     /*0x0C */ Sprite s;
     /*0x3C */ Hitbox reserved;
-} UNK_3005A70; /* 0x30 */
+} PlayerSpriteInfo; /* 0x30 */
 
-extern UNK_3005A70 gUnknown_03005AA0;
-extern UNK_3005A70 gUnknown_03005AF0;
+extern PlayerSpriteInfo gUnknown_03005AA0;
+extern PlayerSpriteInfo gUnknown_03005AF0;
 
 // TODO: Better name.
 //       This is used for an apparent around the value Cream uses for flying duration
@@ -62,11 +62,22 @@ typedef void (*PlayerCallback)(struct Player_ *);
 #define PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC 0x08
 #define PLAYER_ITEM_EFFECT__10              0x10
 #define PLAYER_ITEM_EFFECT__20              0x20
-#define PLAYER_ITEM_EFFECT__40              0x40
 #define PLAYER_ITEM_EFFECT__80              0x80
-#define FLAG_PLAYER_x38__LAYER_FOREGROUND   0x00
-#define FLAG_PLAYER_x38__LAYER_BACKGROUND   0x01
-#define FLAG_PLAYER_x38__80                 0x80
+
+#define HAS_SHIELD(p)                                                                   \
+    ((p)->itemEffect                                                                    \
+     & (PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC | PLAYER_ITEM_EFFECT__SHIELD_NORMAL))
+
+// Confusion
+#define PLAYER_ITEM_EFFECT__40 0x40
+
+// Teleport
+#define PLAYER_ITEM_EFFECT__80 0x80
+
+#define FLAG_PLAYER_x38__LAYER_FRONT 0x00
+#define FLAG_PLAYER_x38__LAYER_BACK  0x01
+#define FLAG_PLAYER_x38__LAYER_MASK  0x01
+#define FLAG_PLAYER_x38__80          0x80
 
 // Not sure what these are yet
 typedef struct Player_ {
@@ -97,8 +108,8 @@ typedef struct Player_ {
     /* 0x28 */ u8 unk28;
     /* 0x29 */ u8 unk29;
     /* 0x2A */ s16 unk2A;
-    /* 0x2C */ s16 unk2C;
-    /* 0x2E */ u16 timerInvincibility;
+    /* 0x2C */ s16 timerInvulnerability;
+    /* 0x2E */ s16 timerInvincibility;
     /* 0x30 */ u16 timerSpeedup;
     /* 0x32 */ u16 unk32;
     /* 0x34 */ u16 unk34;
@@ -150,24 +161,24 @@ typedef struct Player_ {
     /* 0x78 */ u32 checkpointTime;
     /* 0x7C */ u16 unk7C;
     /* 0x7E */ u16 unk7E;
-    /* 0x80 */ u16 unk80;
-    /* 0x82 */ u16 unk82;
+    /* 0x80 */ s16 unk80;
+    /* 0x82 */ s16 unk82;
 
     // Denotes how many points the player should get after defeating an enemy.
     // (see stage/enemy_defeat_score.c and stage/entity_manager.c for usage)
     /* 0x84 */ s8 defeatScoreIndex;
 
     /* 0x85 */ s8 character;
-    /* 0x86 */ u8 unk86;
-    /* 0x87 */ u8 unk87;
-    /* 0x88 */ u8 unk88;
+    /* 0x86 */ s8 unk86;
+    /* 0x87 */ s8 unk87;
+    /* 0x88 */ s8 unk88;
     /* 0x88 */ u8 filler88[3];
     /* 0x8C */ struct Task *spriteTask;
-    /* 0x90 */ UNK_3005A70 *unk90;
+    /* 0x90 */ PlayerSpriteInfo *unk90;
 
     // TODO: Only used for Cream/Tails?
     //       Alternatively, some of the following data might be a union
-    /* 0x94 */ UNK_3005A70 *unk94;
+    /* 0x94 */ PlayerSpriteInfo *unk94;
     /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
     /* 0x99 */ s8 unk99[15];
     /* 0xA8 */ u8 unkA8;

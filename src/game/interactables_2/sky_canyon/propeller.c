@@ -2,12 +2,18 @@
 #include "sprite.h"
 #include "malloc_vram.h"
 #include "trig.h"
-#include "game/game.h"
+
+#include "lib/m4a.h"
+
+#include "sakit/entities_manager.h"
+
 #include "game/entity.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+
 #include "game/interactables_2/sky_canyon/propeller.h"
-#include "lib/m4a.h"
+#include "game/interactables_2/sky_canyon_init.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -36,7 +42,7 @@ static void Render(Sprite_Propeller *);
 static void StartPlayerFloatingTask(Sprite_Propeller *);
 static bool32 ShouldDespawn(Sprite_Propeller *);
 static void DestroyPropeller(Sprite_Propeller *);
-UNK_807C5F8 *sub_807BA54(void);
+Sprite_OnInit_SkyCanyon *sub_807BA54(void);
 static void TaskDestructor_GiantPropeller(struct Task *);
 static bool32 sub_807B9F0(Sprite_Propeller *);
 
@@ -257,7 +263,7 @@ static void sub_807B8FC(Sprite_Propeller *propeller)
 
 static void Render(Sprite_Propeller *propeller)
 {
-    Sprite *sprite = &sub_807BA54()->sprite2;
+    Sprite *sprite = &sub_807BA54()->propellor;
     sprite->x = propeller->x - gCamera.x;
     sprite->y = propeller->y - gCamera.y;
     DisplaySprite(sprite);
@@ -310,18 +316,18 @@ static void DestroyPropeller(Sprite_Propeller *propeller)
     TaskDestroy(gCurTask);
 }
 
-UNK_807C5F8 *sub_807BA54(void)
+Sprite_OnInit_SkyCanyon *sub_807BA54(void)
 {
-    UNK_807C5F8_Parent *parent = TASK_DATA(TASK_PARENT(gCurTask));
-    return TASK_DATA(parent->unk18);
+    EntitiesManager *em = TASK_DATA(TASK_PARENT(gCurTask));
+    return TASK_DATA(em->preInit);
 }
 
 static void sub_807BA70(void)
 {
-    UNK_807C5F8_Parent *parent = TASK_DATA(TASK_PARENT(gCurTask));
-    UNK_807C5F8 *unk807 = TASK_DATA(parent->unk18);
+    EntitiesManager *em = TASK_DATA(TASK_PARENT(gCurTask));
+    Sprite_OnInit_SkyCanyon *level = TASK_DATA(em->preInit);
 
-    unk807->unk62++;
+    level->unk62++;
 }
 
 void CreateEntity_Propeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,

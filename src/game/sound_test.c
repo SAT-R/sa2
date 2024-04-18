@@ -7,7 +7,7 @@
 #include "flags.h"
 #include "trig.h"
 #include "game/backgrounds.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 #include "data/palettes.h"
 
 #include "constants/animations.h"

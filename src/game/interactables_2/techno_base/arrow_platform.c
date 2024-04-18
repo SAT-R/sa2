@@ -4,7 +4,7 @@
 #include "task.h"
 #include "trig.h"
 #include "lib/m4a.h"
-#include "game/game.h"
+#include "sakit/collision.h"
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -161,7 +161,7 @@ static void sub_807A560(void)
             break;
     }
 
-    if (gPlayer.unk2C == 120 && ia75->unk90) {
+    if (gPlayer.timerInvulnerability == 120 && ia75->unk90) {
         gPlayer.moveState &= ~MOVESTATE_400000;
         ia75->unk90 = 0;
     }

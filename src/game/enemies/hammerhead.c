@@ -6,6 +6,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
+#include "sakit/collision.h"
 
 #include "constants/animations.h"
 
@@ -111,7 +112,7 @@ static void Task_Hammerhead(void)
             SET_MAP_ENTITY_NOT_INITIALIZED(me, hammerhead->base.spriteX);
             TaskDestroy(gCurTask);
         } else {
-            sub_80122DC(posX << 8, (posY << 8) + hammerhead->unk48);
+            Player_UpdateHomingPosition(posX << 8, (posY << 8) + hammerhead->unk48);
             UpdateSpriteAnimation(s);
             DisplaySprite(s);
         }

@@ -4,11 +4,13 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "task.h"
-#include "game/game.h"
+#include "game/save.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+
 #include "game/multiplayer/finish.h"
-#include "game/save.h"
+#include "game/multiplayer/mp_player.h"
 
 #include "constants/animations.h"
 #include "constants/text.h"
@@ -120,7 +122,7 @@ void Task_8019E70(void)
 {
     MpFinish1 *finish = TASK_DATA(gCurTask);
     Sprite *s = &finish->s;
-    struct MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[finish->unk30]);
+    MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[finish->unk30]);
 
     s->x = mpp->unk50 - gCamera.x;
 
@@ -205,7 +207,7 @@ void sub_8019F08(void)
         }
 
         if (gUnknown_030054B4[i] == -1) {
-            struct MultiplayerPlayer *mpp;
+            MultiplayerPlayer *mpp;
             mpt = gMultiplayerPlayerTasks[i];
             mpp = TASK_DATA(mpt);
             mpp->unk5C |= 1;

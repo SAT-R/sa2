@@ -1,8 +1,10 @@
 #include "global.h"
 #include "malloc_vram.h"
-#include "game/entity.h"
-#include "game/game.h"
+
 #include "sakit/entities_manager.h"
+
+#include "game/entity.h"
+
 #include "task.h"
 
 #include "constants/animations.h"
@@ -151,7 +153,7 @@ static void sub_80533B4(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(buzzer, me, s);
 
-    sub_80122DC(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
         ENEMY_TURN_AROUND(s);

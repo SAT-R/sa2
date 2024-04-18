@@ -4,8 +4,10 @@
 #include "trig.h"
 
 #include "game/entity.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/music_plant/german_flute.h"
 
@@ -66,7 +68,7 @@ static void sub_8076928(void)
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
         sub_8076CF4(flute);
-    } else if (gPlayer.unk2C == 0x78) {
+    } else if (gPlayer.timerInvulnerability == 0x78) {
         sub_8076D08(flute);
     } else {
         s32 posX, posY;
@@ -117,7 +119,7 @@ static void sub_80769E0(void)
         sub_8076CF4(flute);
     }
 
-    if (gPlayer.unk2C == 0x78) {
+    if (gPlayer.timerInvulnerability == 0x78) {
         sub_8076D08(flute);
     }
 
@@ -147,7 +149,7 @@ static void Task_8076A6C(void)
         sub_8076CF4(flute);
     }
 
-    if (gPlayer.unk2C == 0x78) {
+    if (gPlayer.timerInvulnerability == 0x78) {
         sub_8076D08(flute);
     }
 
@@ -325,7 +327,7 @@ static void Task_8076DE8(void)
         sub_8076CF4(flute);
     }
 
-    if (gPlayer.unk2C == 0x78) {
+    if (gPlayer.timerInvulnerability == 0x78) {
         sub_8076D08(flute);
     }
 

@@ -82,7 +82,8 @@ typedef void (*VoidFn)(void);
 #define Q_20_12(n) ((s32)((n)*4096))
 
 // Converts a number to Q24.8 fixed-point format
-#define Q_24_8(n) ((s32)((n)*256))
+#define Q_24_8(n)      ((s32)((n)*256))
+#define Q_24_8_FRAC(n) ((u8)(n))
 
 // This may be the "real" version as we are seeing better matches with
 // it in some cases
@@ -111,7 +112,20 @@ typedef void (*VoidFn)(void);
 
 #define Q_24_8_MULTIPLY(intVal, floatVal) Q_24_8_TO_INT((intVal)*Q_24_8(floatVal))
 
-#define RED_VALUE(color)   ((color)&0x1F)
+/*
+ * Aliases for common macros
+ */
+
+// Converts a number to Q24.8 fixed-point format
+#define Q(n) Q_24_8(n)
+
+// Converts a number to Q24.8 fixed-point format
+#define QS(n) Q_24_8_NEW(n)
+
+// Converts a Q24.8 fixed-point format number to a regular integer
+#define I(n) Q_24_8_TO_INT(n)
+
+#define RED_VALUE(color)   (((color) >> 0) & 0x1F)
 #define GREEN_VALUE(color) (((color) >> 5) & 0x1F)
 #define BLUE_VALUE(color)  (((color) >> 10) & 0x1F)
 
@@ -129,9 +143,9 @@ typedef void (*VoidFn)(void);
         clamped;                                                                        \
     })
 
-#define CLAMP_16(value, min, max)                                                       \
+#define CLAMP_T(type, value, min, max)                                                  \
     ({                                                                                  \
-        s16 clamped;                                                                    \
+        type clamped;                                                                   \
         if ((value) >= (min)) {                                                         \
             clamped = (value) > (max) ? (max) : (value);                                \
         } else {                                                                        \
@@ -139,6 +153,9 @@ typedef void (*VoidFn)(void);
         }                                                                               \
         clamped;                                                                        \
     })
+
+#define CLAMP_16(value, min, max) CLAMP_T(s16, value, min, max)
+#define CLAMP_32(value, min, max) CLAMP_T(s32, value, min, max)
 
 #define CLAMP_INLINE(var, min, max)                                                     \
     ({                                                                                  \
@@ -198,6 +215,8 @@ typedef void (*VoidFn)(void);
         var = -temp;                                                                    \
     })
 #define DIRECT_NEGATE(var) (var = -var;)
+
+#define HALVE(var) (var = (var >> 1))
 
 typedef struct {
     s16 x;

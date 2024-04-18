@@ -7,10 +7,13 @@
 #include "data/sprite_data.h"
 #include "flags.h"
 #include "sprite.h"
+#include "data/sprite_data.h"
 #include "task.h"
-#include "game/game.h"
-#include "game/entity.h"
+
+#include "sakit/globals.h"
 #include "sakit/palette_loader.h"
+
+#include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

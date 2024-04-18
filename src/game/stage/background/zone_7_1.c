@@ -3,7 +3,9 @@
 #include "core.h"
 #include "flags.h"
 #include "trig.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/stage/background/zone_7.h"

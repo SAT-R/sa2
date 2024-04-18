@@ -1,9 +1,8 @@
 #include "global.h"
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/enemies/kiki.h"
 #include "sakit/entities_manager.h"
-#include "sakit/entities_0.h"
+#include "sakit/collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "malloc_vram.h"
@@ -157,7 +156,7 @@ static void sub_8053A38(void)
 
     kiki->unk3F++;
 
-    sub_80122DC(Q_24_8_NEW(x), Q_24_8_NEW(y));
+    Player_UpdateHomingPosition(Q_24_8_NEW(x), Q_24_8_NEW(y));
 
     if (kiki->unk3F == 0x12) {
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
@@ -317,8 +316,6 @@ static void Task_ProjPieceMain(void)
     Sprite *s2 = &gUnknown_03005AF0.s;
     Kiki_Proj *proj = TASK_DATA(gCurTask);
     Sprite *s = &proj->s;
-    UNK_3005A70 *u90;
-
     s16 x, y;
 
     x = s->x;

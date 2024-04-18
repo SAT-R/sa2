@@ -494,5 +494,4 @@ _0803C18C: .4byte 0x000003FF
 _0803C190: .4byte gCamera
 _0803C194: .4byte 0xFFFFF800
 
-	
 .syntax divided

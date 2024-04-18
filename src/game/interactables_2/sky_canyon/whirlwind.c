@@ -1,5 +1,4 @@
 #include "global.h"
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/math.h"
 #include "core.h"

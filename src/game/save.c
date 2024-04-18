@@ -4,7 +4,6 @@
 #include "flags.h"
 #include "game/save.h"
 #include "lib/m4a.h"
-#include "game/game.h"
 #include "game/math.h"
 #include "constants/text.h"
 #include "constants/zones.h"

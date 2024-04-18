@@ -567,7 +567,7 @@ sub_8047E28: @ 0x08047E28
 	orrs r1, r2
 	str r1, [r0, #0x20]
 _08047E86:
-	bl sub_802A018
+	bl Player_DisableInputAndBossTimer
 	movs r1, #0
 	movs r0, #0xa0
 	lsls r0, r0, #3
@@ -1304,7 +1304,7 @@ _08048468:
 _08048482:
 	lsls r0, r4, #8
 	lsls r1, r5, #8
-	bl sub_80122DC
+	bl Player_UpdateHomingPosition
 	ldrb r7, [r6, #0x16]
 	cmp r7, #0
 	bne _080484B0
@@ -1314,7 +1314,7 @@ _08048482:
 	adds r1, r4, #0
 	adds r2, r5, #0
 	movs r3, #0
-	bl sub_800C418
+	bl IsColliding_Cheese
 	cmp r0, #1
 	bne _080484B0
 	adds r0, r6, #0
@@ -3930,7 +3930,7 @@ sub_80498CC: @ 0x080498CC
 	strh r0, [r1]
 	cmp r4, #0
 	beq _080499AC
-	bl sub_802A018
+	bl Player_DisableInputAndBossTimer
 	ldr r3, _080499C8 @ =gPlayer
 	movs r0, #0xa0
 	lsls r0, r0, #3

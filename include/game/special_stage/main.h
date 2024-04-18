@@ -3,7 +3,7 @@
 
 #include "global.h"
 #include "sprite.h"
-#include "game/screen_fade.h"
+#include "game/stage/screen_fade.h"
 
 #define SPECIAL_STAGE_ZONE_SIZE 8
 
