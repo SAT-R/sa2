@@ -303,7 +303,7 @@ void sub_80897E8(void)
     } else {
         s = &resultsCutScene->unk12C;
         for (i = 0; i < 8; i++) {
-            s->x = -(i * 32); // TODO: Does (i * 32) match?
+            s->x = (i * 32); // TODO: Does (i * 32) match?
             DisplaySprite(s);
         }
     }
