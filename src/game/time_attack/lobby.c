@@ -3,7 +3,6 @@
 #include "sprite.h"
 #include "game/save.h"
 #include "game/stage/screen_fade.h"
-#include "game/game.h"
 #include "game/stage/stage.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"

@@ -4,7 +4,6 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 #include "sakit/collision.h"
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/bosses/common.h"
 #include "game/bosses/boss_3.h"
@@ -12,6 +11,8 @@
 #include "game/stage/boss_results_transition.h"
 #include "game/parameters/bosses.h"
 #include "game/player_callbacks.h"
+
+#include "game/stage/collision.h"
 #include "game/stage/player.h"
 #include "game/save.h"
 #include "game/stage/screen_shake.h"

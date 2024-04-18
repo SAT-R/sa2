@@ -1,14 +1,19 @@
 #include "core.h"
-#include "game/game.h"
-#include "game/stage/stage.h"
-#include "game/bosses/final_intro.h"
 #include "task.h"
-#include "lib/m4a.h"
 #include "sprite.h"
 #include "trig.h"
+
+#include "lib/m4a.h"
+
+#include "sakit/globals.h"
+
+#include "game/bosses/final_intro.h"
+
 #include "game/math.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+#include "game/stage/stage.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

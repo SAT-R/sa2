@@ -4,14 +4,14 @@
 
 #include "lib/m4a.h"
 
-#include "game/game.h"
-
 #include "sakit/globals.h"
 #include "sakit/collision.h"
 
+#include "game/stage/collision.h"
 #include "game/stage/stage.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+
 #include "game/multiplayer/mp_player.h"
 #include "game/stage/item_tasks.h"
 

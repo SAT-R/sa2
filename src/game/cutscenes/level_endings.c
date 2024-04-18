@@ -1,7 +1,6 @@
 #include "global.h"
 #include "game/cutscenes/level_endings.h"
 #include "core.h"
-#include "game/game.h"
 #include "sprite.h"
 #include "game/stage/screen_fade.h"
 #include "task.h"
@@ -10,6 +9,8 @@
 #include "trig.h"
 #include "game/course_select.h"
 #include "game/save.h"
+
+#include "game/stage/collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/stage/results.h"

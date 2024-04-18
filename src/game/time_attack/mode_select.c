@@ -3,7 +3,6 @@
 #include "sprite.h"
 #include "task.h"
 #include "lib/m4a.h"
-#include "game/game.h"
 #include "game/character_select.h"
 #include "game/stage/boss_results_transition.h"
 #include "game/save.h"

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "tilemap.h"
-#include "game/game.h"
+
+#include "game/stage/collision.h"
 #include "game/stage/camera.h"
 #include "game/stage/player.h"
 

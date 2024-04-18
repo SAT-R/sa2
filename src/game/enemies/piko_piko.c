@@ -3,6 +3,9 @@
 
 #include "sakit/collision.h"
 
+#include "game/stage/collision.h"
+#include "game/stage/player.h"
+
 #include "game/entity.h"
 
 #include "constants/animations.h"

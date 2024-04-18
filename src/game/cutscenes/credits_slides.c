@@ -2,7 +2,6 @@
 #include "game/cutscenes/credits.h"
 #include "game/cutscenes/credits_end.h"
 #include "core.h"
-#include "game/game.h"
 #include "sprite.h"
 #include "game/stage/screen_fade.h"
 #include "task.h"

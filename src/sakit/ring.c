@@ -2,10 +2,12 @@
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
 #include "sakit/collect_ring_effect.h"
 #include "sakit/rings_manager.h"
 #include "sakit/camera.h"
+#include "sakit/player.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"

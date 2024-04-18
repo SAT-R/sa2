@@ -8,7 +8,6 @@
 #include "sakit/ring.h"
 #include "sakit/rings_manager.h"
 
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/stage/player_super_sonic.h"
 

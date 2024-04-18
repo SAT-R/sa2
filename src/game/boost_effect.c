@@ -2,8 +2,11 @@
 #include "core.h"
 #include "flags.h"
 #include "malloc_vram.h"
+
+#include "sakit/globals.h"
+
 #include "data/sprite_data.h"
-#include "game/game.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/boost_effect.h"

@@ -3,7 +3,6 @@
 #include "flags.h"
 #include "task.h"
 #include "lib/m4a.h"
-#include "game/game.h"
 #include "game/cheese.h"
 #include "game/save.h"
 #include "game/stage/player.h"

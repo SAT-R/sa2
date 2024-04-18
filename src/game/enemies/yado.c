@@ -3,7 +3,6 @@
 #include "sakit/collision.h"
 #include "sakit/dust_cloud.h"
 #include "sakit/entities_manager.h"
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/cheese.h"
 #include "game/enemies/projectiles.h"

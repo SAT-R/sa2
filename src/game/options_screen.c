@@ -11,7 +11,6 @@
 #include "constants/songs.h"
 #include "constants/text.h"
 #include "game/title_screen.h"
-#include "game/game.h"
 #include "game/sound_test.h"
 #include "game/stage/stage.h"
 #include "game/stage/ui.h"

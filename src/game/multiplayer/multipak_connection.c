@@ -13,7 +13,6 @@
 #include "game/stage/screen_fade.h"
 #include "lib/m4a.h"
 #include "constants/text.h"
-#include "game/game.h"
 #include "flags.h"
 #include "game/character_select.h"
 

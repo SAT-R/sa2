@@ -3,10 +3,13 @@
 #include "flags.h"
 #include "task.h"
 #include "lib/m4a.h"
+
+#include "sakit/globals.h"
+
 #include "game/game_over.h"
-#include "game/game.h"
 #include "game/time_attack/lobby.h"
 #include "game/title_screen.h"
+
 #include "game/stage/screen_fade.h"
 #include "game/stage/stage.h"
 

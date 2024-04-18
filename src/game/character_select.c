@@ -1,7 +1,6 @@
 #include "global.h"
 #include "core.h"
 #include "game/stage/screen_fade.h"
-#include "game/game.h"
 #include "game/stage/stage.h"
 #include "sprite.h"
 #include "game/character_select.h"

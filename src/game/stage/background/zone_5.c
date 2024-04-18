@@ -1,7 +1,9 @@
 #include "global.h"
 #include "core.h"
 #include "flags.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
+
 #include "game/stage/camera.h"
 
 #include "constants/tilemaps.h"

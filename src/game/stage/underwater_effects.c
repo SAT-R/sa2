@@ -3,10 +3,14 @@
 #include "malloc_vram.h"
 #include "sprite.h"
 #include "trig.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
+
+#include "game/stage/game_2.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/stage/underwater_effects.h"
+
 #include "game/water_effects.h"
 
 #include "constants/animations.h"

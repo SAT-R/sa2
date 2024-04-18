@@ -2,7 +2,9 @@
 #include "core.h"
 #include "flags.h"
 #include "trig.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
+
 #include "game/stage/player.h"
 
 // (88.05%) https://decomp.me/scratch/ekyaq

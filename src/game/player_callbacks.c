@@ -2,19 +2,31 @@
 #include "trig.h"
 #include "lib/m4a.h"
 #include "malloc_vram.h"
+
+#include "sakit/globals.h"
 #include "sakit/collision.h"
-#include "game/game.h"
+
+#include "game/stage/game_2.h"
 #include "game/stage/player_controls.h"
 #include "game/amy_attack_heart_effect.h"
 #include "game/stage/dust_effect_braking.h"
 #include "game/boost_effect.h"
 #include "game/player_callbacks.h"
+
+#include "game/stage/collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
+
+typedef struct {
+    /* 0x00 */ s32 px[5];
+    /* 0x14 */ s32 py[5];
+    /* 0x28 */ u16 unk28;
+    /* 0x2C */ Sprite s;
+} TaskStrc_8011C98; /* size: 0x5C */
 
 /* NOTE: We consider Player Callbacks to be all procedures
  *       that are passed to the first member of the Player struct.

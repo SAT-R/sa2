@@ -11,6 +11,7 @@
 
 #include "game/player_callbacks.h"
 #include "game/stage/player.h"
+#include "game/stage/collision.h"
 
 #include "game/entity.h" // sub_800DF38
 #include "game/bosses/common.h"

@@ -5,7 +5,6 @@
 
 #include "sakit/entities_manager.h"
 
-#include "game/game.h"
 #include "game/interactables_2/sky_canyon/propeller_spring.h"
 #include "game/interactables_2/sky_canyon_init.h"
 

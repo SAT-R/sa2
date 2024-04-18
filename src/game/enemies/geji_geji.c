@@ -2,7 +2,6 @@
 
 #include "sakit/collision.h"
 
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/enemies/geji_geji.h"
 #include "game/stage/player.h"

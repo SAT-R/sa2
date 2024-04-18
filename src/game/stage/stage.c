@@ -7,7 +7,6 @@
 #include "sakit/palette_loader.h"
 #include "sakit/pause_menu.h"
 #include "sakit/rings_manager.h"
-#include "game/game.h"
 #include "game/save.h"
 #include "game/game_over.h"
 #include "game/cheese.h"

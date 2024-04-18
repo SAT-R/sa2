@@ -7,7 +7,6 @@
 #include "game/stage/screen_fade.h"
 #include "constants/text.h"
 #include "game/stage/player_controls.h"
-#include "game/game.h"
 
 #define RENDER_TARGET_SCREEN   0
 #define RENDER_TARGET_SUB_MENU 1

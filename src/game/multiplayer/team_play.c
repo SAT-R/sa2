@@ -6,7 +6,6 @@
 #include "sprite.h"
 #include "multi_sio.h"
 #include "game/multiplayer/multipak_connection.h"
-#include "game/game.h"
 #include "lib/m4a.h"
 #include "flags.h"
 #include "game/course_select.h"

@@ -58,4 +58,6 @@
     (int)(((minutes * 60.) + seconds) * GBA_FRAMES_PER_SECOND)
 #define MAX_COURSE_TIME (ZONE_TIME_TO_INT(10, 0))
 
+#define SPECIAL_STAGE_REQUIRED_SP_RING_COUNT 7
+
 #endif // GUARD_ZONES_H

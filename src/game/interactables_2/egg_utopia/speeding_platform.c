@@ -6,10 +6,11 @@
 #include "lib/m4a.h"
 
 #include "sakit/collision.h"
-#include "game/game.h"
 #include "game/entity.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+
 #include "game/interactables_2/egg_utopia/speeding_platform.h"
 
 #include "constants/animations.h"

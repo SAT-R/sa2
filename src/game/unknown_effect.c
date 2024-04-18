@@ -1,5 +1,4 @@
 #include "core.h"
-#include "game/game.h"
 #include "sakit/collision.h"
 #include "game/unknown_effect.h"
 #include "game/stage/player.h"

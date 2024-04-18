@@ -180,4 +180,97 @@ extern struct InputCounters gNewInputCounters[32];
 
 extern u8 gUnknown_030055D8;
 
+#define INCREMENT_SCORE_A(incVal)                                                       \
+    {                                                                                   \
+        s32 divResA, divResB;                                                           \
+        s32 oldScore = gLevelScore;                                                     \
+        gLevelScore += incVal;                                                          \
+                                                                                        \
+        divResA = Div(gLevelScore, 50000);                                              \
+        divResB = Div(oldScore, 50000);                                                 \
+                                                                                        \
+        if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
+            u16 lives = divResA - divResB;                                              \
+            lives += gNumLives;                                                         \
+                                                                                        \
+            gNumLives = ({                                                              \
+                if (lives > 255)                                                        \
+                    lives = 255;                                                        \
+                lives;                                                                  \
+            });                                                                         \
+        }                                                                               \
+    }
+
+#define INCREMENT_SCORE(incVal)                                                         \
+    {                                                                                   \
+        s32 divResA, divResB;                                                           \
+        s32 oldScore = gLevelScore;                                                     \
+        gLevelScore += incVal;                                                          \
+                                                                                        \
+        divResA = Div(gLevelScore, 50000);                                              \
+        divResB = Div(oldScore, 50000);                                                 \
+                                                                                        \
+        if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
+            u16 lives = divResA - divResB;                                              \
+            lives += gNumLives;                                                         \
+                                                                                        \
+            gNumLives = ({                                                              \
+                if (lives > 255)                                                        \
+                    lives = 255;                                                        \
+                lives;                                                                  \
+            });                                                                         \
+                                                                                        \
+            gUnknown_030054A8.unk3 = 16;                                                \
+        }                                                                               \
+    }
+
+#define INCREMENT_RINGS(incVal)                                                         \
+    {                                                                                   \
+        s32 prevLives, newLives;                                                        \
+        s32 oldRings = gRingCount;                                                      \
+        gRingCount += incVal;                                                           \
+                                                                                        \
+        if (!IS_EXTRA_STAGE(gCurrentLevel)) {                                           \
+            newLives = Div(gRingCount, 100);                                            \
+            prevLives = Div(oldRings, 100);                                             \
+                                                                                        \
+            if ((newLives != prevLives) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {    \
+                u16 lives = gNumLives + 1;                                              \
+                                                                                        \
+                gNumLives = ({                                                          \
+                    if (lives > 255)                                                    \
+                        lives = 255;                                                    \
+                    lives;                                                              \
+                });                                                                     \
+                                                                                        \
+                gUnknown_030054A8.unk3 = 16;                                            \
+            }                                                                           \
+        }                                                                               \
+    }
+
+#define INCREMENT_RINGS2(incVal)                                                        \
+    {                                                                                   \
+        s32 prevLives, newLives;                                                        \
+        s32 oldRings = gRingCount;                                                      \
+        gRingCount += incVal;                                                           \
+                                                                                        \
+        if (!IS_EXTRA_STAGE(gCurrentLevel)) {                                           \
+            newLives = Div(gRingCount, 100);                                            \
+            prevLives = Div(oldRings, 100);                                             \
+                                                                                        \
+            /* RingsScatterSingleplayer_NormalGravity turns the if around */            \
+            if ((newLives != prevLives) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {    \
+                u16 lives = gNumLives + 1;                                              \
+                                                                                        \
+                gNumLives = ({                                                          \
+                    if (lives > 255)                                                    \
+                        lives = 255;                                                    \
+                    lives;                                                              \
+                });                                                                     \
+                                                                                        \
+                gUnknown_030054A8.unk3 = 16;                                            \
+            }                                                                           \
+        }                                                                               \
+    }
+
 #endif // GUARD_SAKIT_GLOBALS_H

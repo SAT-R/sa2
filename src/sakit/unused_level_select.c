@@ -2,7 +2,9 @@
 #include "core.h"
 #include "lib/m4a.h"
 #include "task.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
+
 #include "game/stage/stage.h"
 #include "game/bosses/common.h"
 #include "game/title_screen.h"

@@ -1,9 +1,10 @@
 #include "global.h"
 #include "sprite.h"
 #include "trig.h"
-#include "sakit/camera.h"
-#include "game/game.h"
 
+#include "sakit/globals.h"
+
+#include "game/stage/camera.h"
 #include "game/multiplayer/mp_player.h"
 
 #include "constants/animations.h"

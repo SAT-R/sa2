@@ -7,7 +7,6 @@
 
 #include "sakit/collision.h"
 
-#include "game/game.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"

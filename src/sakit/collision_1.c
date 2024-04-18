@@ -7,7 +7,6 @@
 #include "sakit/globals.h"
 #include "sakit/collision.h"
 #include "sakit/player.h"
-#include "game/game.h"
 
 #include "game/multiplayer/player_unk_1.h"
 #include "game/multiplayer/mp_player.h"

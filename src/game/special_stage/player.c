@@ -1,5 +1,4 @@
 #include "core.h"
-#include "game/game.h"
 #include "game/special_stage/main.h"
 #include "game/special_stage/player.h"
 #include "game/special_stage/utils.h"
@@ -7,6 +6,7 @@
 #include "game/special_stage/data.h"
 
 #include "constants/animations.h"
+#include "constants/characters.h"
 
 void sub_806D788(void);
 void sub_806D2C8(void);

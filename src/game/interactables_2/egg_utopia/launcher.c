@@ -11,7 +11,6 @@
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
-#include "game/game.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"

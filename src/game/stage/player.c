@@ -14,9 +14,11 @@
 #include "game/cheese.h"
 #include "game/stage/dust_effect_braking.h"
 
+#include "game/stage/collision.h"
 #include "game/stage/camera.h"
 #include "game/stage/player.h"
 #include "game/player_callbacks.h"
+#include "game/stage/game_2.h"
 
 #include "game/multiplayer/player_unk_2.h"
 #include "game/parameters/bosses.h"

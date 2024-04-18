@@ -1,7 +1,8 @@
-#ifndef GUARD_GAME_2_H
-#define GUARD_GAME_2_H
+#ifndef GUARD_UNDERWATER_EFFECTS_H
+#define GUARD_UNDERWATER_EFFECTS_H
 
-#include "game/game.h"
+#include "core.h"
+#include "sakit/player.h"
 
 struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown);
 struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3);
@@ -10,4 +11,4 @@ bool32 RandomlySpawnAirBubbles(Player *p);
 
 extern u8 gSmallAirBubbleCount;
 
-#endif // GUARD_GAME_2_H
+#endif // GUARD_UNDERWATER_EFFECTS_H

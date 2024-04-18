@@ -1,5 +1,4 @@
 #include "global.h"
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/enemies/gohla.h"
 

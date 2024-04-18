@@ -6,7 +6,6 @@
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "game/game.h"
 #include "lib/m4a.h"
 #include "sakit/collision.h"
 #include "sakit/entities_manager.h"

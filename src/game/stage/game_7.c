@@ -1,7 +1,6 @@
 #include "global.h"
 #include "core.h"
 #include "trig.h"
-#include "game/game.h"
 
 void sub_802DBC0(u8 p0, u16 p1)
 {

@@ -9,7 +9,6 @@
 #include "sakit/collision.h"
 #include "sakit/dust_cloud.h"
 
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/stage/item_tasks.h"
 #include "game/stage/player.h"

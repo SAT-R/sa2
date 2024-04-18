@@ -1,6 +1,9 @@
 #include "global.h"
 #include "core.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
+
+#include "game/stage/player.h"
 #include "game/stage/background/zone_7.h"
 
 #include "constants/zones.h"

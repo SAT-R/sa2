@@ -7,7 +7,6 @@
 
 #include "sakit/collision.h"
 #include "sakit/interactables/platform_thin.h"
-#include "game/game.h"
 #include "game/entity.h"
 
 #include "game/multiplayer/player_unk_1.h"

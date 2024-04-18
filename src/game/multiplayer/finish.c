@@ -4,7 +4,6 @@
 #include "core.h"
 #include "malloc_vram.h"
 #include "task.h"
-#include "game/game.h"
 #include "game/save.h"
 
 #include "game/stage/player.h"

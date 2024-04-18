@@ -6,7 +6,6 @@
 
 #include "sakit/collision.h"
 
-#include "game/game.h"
 #include "game/save.h"
 #include "game/cheese.h"
 #include "game/bosses/boss_1.h"
@@ -16,6 +15,7 @@
 #include "game/cutscenes/level_endings.h"
 #include "game/stage/boss_results_transition.h"
 
+#include "game/stage/collision.h"
 #include "game/player_callbacks.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

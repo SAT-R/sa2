@@ -6,6 +6,7 @@
 #include "malloc_vram.h"
 
 #include "sakit/collision.h"
+#include "sakit/globals.h"
 
 #include "game/entity.h"
 #include "game/stage/player.h"

@@ -2,7 +2,6 @@
 
 #include "task.h"
 
-#include "game/game.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
 #include "sprite.h"

@@ -1,6 +1,5 @@
 #include "core.h"
 #include "malloc_vram.h"
-#include "game/game.h"
 #include "sakit/collision.h"
 
 #include "game/entity.h"

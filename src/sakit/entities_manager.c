@@ -6,7 +6,6 @@
 
 #include "lib/m4a.h"
 
-#include "game/game.h"
 #include "sakit/camera.h"
 #include "game/entity.h"
 #include "sakit/item_box.h"

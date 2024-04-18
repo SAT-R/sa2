@@ -4,7 +4,6 @@
 #include "task.h"
 #include "lib/m4a.h"
 
-#include "game/game.h"
 #include "game/entity.h"
 #include "sakit/interactables/pipe.h"
 #include "game/stage/player.h"

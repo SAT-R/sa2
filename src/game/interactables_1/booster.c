@@ -4,11 +4,9 @@
 #include "task.h"
 #include "lib/m4a.h"
 
-#include "game/game.h"
 #include "sakit/collision.h"
 #include "sakit/entities_manager.h"
 
-#include "game/game.h"
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

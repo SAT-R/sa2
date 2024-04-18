@@ -3,7 +3,9 @@
 #include "sprite.h"
 #include "task.h"
 #include "malloc_vram.h"
-#include "game/game.h"
+
+#include "sakit/globals.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/multiplayer/mp_player.h"

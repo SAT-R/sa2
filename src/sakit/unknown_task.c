@@ -6,7 +6,6 @@
 #include "task.h"
 #include "trig.h"
 #include "gba/syscall.h"
-#include "game/game.h"
 #include "sakit/unknown_task.h"
 
 void Task_CreateStageUnknownTask(void);
