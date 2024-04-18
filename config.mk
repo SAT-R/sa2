@@ -40,6 +40,8 @@ ifeq ($(GAME_REGION), EUROPE)
 else
   $(error unknown region $(GAME_REGION))
 endif
+endif
+endif
 
 # Debug
 ifeq ($(DEBUG), 1)
