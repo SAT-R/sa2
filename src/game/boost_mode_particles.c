@@ -6,7 +6,7 @@
 #include "task.h"
 #include "malloc_vram.h"
 #include "game/math.h"
-#include "game/sonic_boom_particles.h"
+#include "game/boost_mode_particles.h"
 #include "trig.h"
 
 #include "constants/animations.h"

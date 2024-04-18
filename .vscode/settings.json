@@ -325,7 +325,8 @@
     "sprite_data.h": "c",
     "game_2.h": "c",
     "palette_loader.h": "c",
-    "final_intro.h": "c"
+    "final_intro.h": "c",
+    "sonic_boom_particles.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
