@@ -43,19 +43,18 @@ You must have a copy of the Sonic Advance 2 (USA) ROM named `baserom.gba` in the
 
 **Dev container**
 
-If you use `vscode` then consider using the provided [Dev Container](https://code.visualstudio.com/docs/remote/containers) which skips the requirement for any setup.
-
+If you use `vscode` then consider using the provided [Dev Container](https://code.visualstudio.com/docs/remote/containers) which skips the requirement for any setup. This requires docker is installed on your system. Once running skip to ..
 
 **Install build requirements** *(without dev container)*
  
 On Linux systems
 ```
-sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev
+sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev
 ```
 
 On MacOS and Windows install [**devkitARM**](http://devkitpro.org/wiki/Getting_Started/devkitARM)
 
-**Install `agbcc` into the repo**
+**Install `agbcc` into the repo** *(without dev container)*
 
 Clone the [agbcc](https://github.com/pret/agbcc) repo into another folder
 

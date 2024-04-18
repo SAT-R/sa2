@@ -45,3 +45,9 @@ $(RAYLIB_LIB):
 
 clean:
 	$(RM) BriBaSA_ex BriBaSA_ex.exe
+	make -C $(RAYLIB_DIR) clean
+	make -C $(C_HEADER_PARSER_DIR) clean
+	make -C $(ARENA_ALLOC_DIR) clean
+	make -C $(CSV_CONV_DIR) clean
+
+
