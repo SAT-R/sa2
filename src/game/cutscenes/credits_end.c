@@ -88,17 +88,22 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
     gBgCntRegs[0] = 0x160D;
     gBgCntRegs[1] = 0x5480;
+
+#ifndef JAPAN
     gBgCntRegs[2] = 0x1504;
+
 #ifndef NON_MATCHING
     DmaFill32(3, 0, BG_CHAR_ADDR((++r6, --r6)), 0x4000);
 #else
     DmaFill32(3, 0, BG_CHAR_ADDR(r6), 0x4000);
 #endif
+
     gUnknown_03004D80[2] = 0x5a;
     gUnknown_03002280[2][0] = 0;
     gUnknown_03002280[2][1] = 0;
     gUnknown_03002280[2][2] = 0xff;
     gUnknown_03002280[2][3] = 0x20;
+#endif
     gUnknown_03004D80[0] = 0;
     gUnknown_03002280[0][0] = 0;
     gUnknown_03002280[0][1] = 0;
@@ -333,7 +338,7 @@ static void Task_CreateCopyrightScreen(void)
         background->flags = BACKGROUND_FLAGS_BG_ID(0);
         DrawBackground(background);
     }
-
+#ifndef JAPAN
     {
         Background *background = &scene->unk80;
         gDispCnt |= 0x400;
@@ -355,12 +360,12 @@ static void Task_CreateCopyrightScreen(void)
         background->paletteOffset = 0;
         background->flags = BACKGROUND_FLAGS_BG_ID(2);
         DrawBackground(background);
-
-        scene->sequence = SEQUENCE_COPYRIGHT_SCREEN;
-        scene->sonicAnimFrame++;
-        scene->delayFrames = 270;
-        gCurTask->main = Task_FadeIn;
     }
+#endif
+    scene->sequence = SEQUENCE_COPYRIGHT_SCREEN;
+    scene->sonicAnimFrame++;
+    scene->delayFrames = 270;
+    gCurTask->main = Task_FadeIn;
 }
 
 static void Task_SequenceMain(void)

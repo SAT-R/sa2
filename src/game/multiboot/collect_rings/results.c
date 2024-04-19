@@ -183,10 +183,23 @@ void sub_808207C(void)
                 var = 0x44c;
                 asm("" ::"r"(var));
 #endif
-                if (gMultiplayerLanguage == 1) {
-                    s->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE;
-                } else {
-                    s->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_ROUND;
+                switch (gMultiplayerLanguage) {
+#ifdef JAPAN
+                    case LANG_DEFAULT:
+                        s->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE;
+                        break;
+#endif
+                    case LANG_JAPANESE:
+                        s->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_CUMULATIVE;
+                        break;
+#ifdef JAPAN
+                    case LANG_ENGLISH:
+                        s->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_ROUND;
+                        break;
+#endif
+                    default:
+                        s->graphics.anim = SA2_ANIM_MP_SINGLE_PAK_RESULTS_ROUND;
+                        break;
                 }
 
                 s->variant = i;
@@ -212,10 +225,24 @@ void sub_808207C(void)
             }
             s->unk1A = SPRITE_OAM_ORDER(0);
             s->graphics.size = 0;
-            if (gMultiplayerLanguage == 1) {
-                s->graphics.anim = SA2_ANIM_PRESS_START_MSG_JP;
-            } else {
-                s->graphics.anim = SA2_ANIM_PRESS_START_MSG_EN;
+
+            switch (gMultiplayerLanguage) {
+#ifdef JAPAN
+                case LANG_DEFAULT:
+                    s->graphics.anim = SA2_ANIM_PRESS_START_MSG_JP;
+                    break;
+#endif
+                case LANG_JAPANESE:
+                    s->graphics.anim = SA2_ANIM_PRESS_START_MSG_JP;
+                    break;
+#ifdef JAPAN
+                case LANG_ENGLISH:
+                    s->graphics.anim = SA2_ANIM_PRESS_START_MSG_EN;
+                    break;
+#endif
+                default:
+                    s->graphics.anim = SA2_ANIM_PRESS_START_MSG_EN;
+                    break;
             }
             s->variant = 0;
             s->animCursor = 0;
