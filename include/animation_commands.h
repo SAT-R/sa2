@@ -67,7 +67,7 @@ typedef struct {
     /* 0x00 */ s32 cmdId; // -9
 
     /* 0x04 */ AnimId animId;
-    /* 0x08 */ u16 variant;
+    /* 0x06 */ u16 variant;
 } ACmd_SetIdAndVariant;
 
 typedef struct {

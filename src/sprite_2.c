@@ -114,7 +114,7 @@ u32 sub_8004518(u16 num)
     return result;
 }
 
-s32 UpdateSpriteAnimation(Sprite *s)
+AnimCmdResult UpdateSpriteAnimation(Sprite *s)
 {
     SPRITE_MAYBE_SWITCH_ANIM(s);
 
@@ -137,13 +137,13 @@ s32 UpdateSpriteAnimation(Sprite *s)
         while (cmd->id < 0) {
             // TODO: make this const void*
             ret = animCmdTable[~cmd->id]((void *)cmd, s);
-            if (ret != 1) {
+            if (ret != ACMD_RESULT__RUNNING) {
 #ifndef NON_MATCHING
                 register const ACmd *newScript asm("r2");
 #else
                 ACmd *newScript;
 #endif
-                if (ret != -1) {
+                if (ret != ACMD_RESULT__ANIM_CHANGED) {
                     return ret;
                 }
 
@@ -180,7 +180,7 @@ s32 UpdateSpriteAnimation(Sprite *s)
 }
 
 // (-1)
-s32 animCmd_GetTiles(void *cursor, Sprite *s)
+AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s)
 {
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
     s->animCursor += AnimCommandSizeInWords(ACmd_GetTiles);
@@ -204,7 +204,7 @@ s32 animCmd_GetTiles(void *cursor, Sprite *s)
 }
 
 // (-6)
-s32 animCmd_AddHitbox(void *cursor, Sprite *s)
+AnimCmdResult animCmd_AddHitbox(void *cursor, Sprite *s)
 {
     ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
     s32 hitboxId = cmd->hitbox.index % 16u;

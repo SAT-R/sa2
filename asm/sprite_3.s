@@ -14,12 +14,12 @@ sub_800550C: @ 0x0800550C
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x2c
-	mov r8, r0
-	str r1, [sp, #8]
+	mov r8, r0          @ r8 = Sprite* 
+	str r1, [sp, #8]    @ sp08 = p1
 	lsls r2, r2, #0x18
 	lsrs r2, r2, #0x18
 	str r2, [sp, #0xc]
-	ldr r2, [r0, #0xc]
+	ldr r2, [r0, #0xc]  @ r2 = SpriteOffset *dims ???
 	movs r0, #1
 	rsbs r0, r0, #0
 	cmp r2, r0
