@@ -56,12 +56,15 @@ static void sub_0203b798(void);
 // 8P
 #define DIMPS_MAKER_CODE 0x96
 
-#ifndef EUROPE
+#ifdef USA
 // "A2NE"
 #define EXPECTED_GAME_CODE 0x454e3241
-#else
+#elif EUROPE
 // "A2NP"
 #define EXPECTED_GAME_CODE 0x504e3241
+#else
+// "A2NJ"
+#define EXPECTED_GAME_CODE 0x4a4e3241
 #endif
 
 // .rodata

@@ -165,7 +165,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     s = &outro->s7;
     s->x = DISPLAY_WIDTH + 16;
-    s->y = 80;
+    s->y = (DISPLAY_HEIGHT / 2);
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
     s->variant = 0;

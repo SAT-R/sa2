@@ -64,7 +64,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     fade->window = 0;
     fade->flags = 1;
-    fade->speed = 0x100;
+    fade->speed = Q_8_8(1);
     fade->brightness = Q_8_8(0);
     fade->bldCnt = 0x3FFF;
     fade->bldAlpha = 0;
@@ -125,7 +125,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     resultsCutScene->unk2D8 = sub_80899B8(finishTime);
 
     s = &resultsCutScene->unk12C;
-    s->x = 256;
+    s->x = DISPLAY_WIDTH + 16;
     s->y = (DISPLAY_HEIGHT / 2);
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
@@ -142,7 +142,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unkC[0];
-    s->x = 256;
+    s->x = DISPLAY_WIDTH + 16;
     s->y = 41;
     s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
@@ -161,7 +161,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     isBossLevel = ACT_INDEX(gCurrentLevel) >> 1;
 
     s = &resultsCutScene->unkC[1];
-    s->x = 256;
+    s->x = DISPLAY_WIDTH + 16;
     s->y = 49;
     s->graphics.dest = VramMalloc(sStageResultsHeadlineTexts[isBossLevel][0]);
     s->graphics.anim = sStageResultsHeadlineTexts[isBossLevel][1];
@@ -219,7 +219,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     s = &resultsCutScene->unk9C[1];
     s->x = (DISPLAY_WIDTH / 2);
-    s->y = (DISPLAY_HEIGHT * (3. / 4.));
+    s->y = (DISPLAY_HEIGHT / 2) + 40;
     s->graphics.dest = VramMalloc(16);
     s->graphics.anim = SA2_ANIM_TIME_ATTACK_DIGITS;
     if (resultsCutScene->unk2D8 != 0) {
@@ -288,27 +288,27 @@ void sub_80897E8(void)
     u32 unk168 = resultsCutScene->unk168;
     u32 i;
 
-    if (unk168 < 0x18) {
+    if (unk168 < 24) {
         s32 temp;
         s = &resultsCutScene->unk12C;
         temp = 0;
-        if (unk168 < 0x11) {
-            temp = (0x10 - unk168) * 0x18;
+        if (unk168 < 17) {
+            temp = ((16 - unk168) * 24);
         }
 
         for (i = 0; i < 8; i++) {
-            s->x = temp + i * 0x20;
+            s->x = temp + (i * 32);
             DisplaySprite(s);
         }
     } else {
         s = &resultsCutScene->unk12C;
         for (i = 0; i < 8; i++) {
-            s->x = i << 5; // TODO: Does (i * 32) match?
+            s->x = (i * 32); // TODO: Does (i * 32) match?
             DisplaySprite(s);
         }
     }
 
-    if (unk168 > 0x1C) {
+    if (unk168 > 28) {
         s32 temp;
         if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
             temp = 2;
@@ -322,17 +322,17 @@ void sub_80897E8(void)
         }
     }
 
-    if (unk168 > 0x59) {
+    if (unk168 > 89) {
         s = &resultsCutScene->unk9C[0];
-        if ((unk168 - 0x5A) < 0xB) {
-            s->x = (100 - unk168) * 16 + 40;
+        if ((unk168 - 90) < 11) {
+            s->x = (((DISPLAY_WIDTH / 2) - 20) - unk168) * 16 + 40;
         }
         DisplaySprite(s);
     }
 
-    if (unk168 > 0x77) {
-        s32 temp = (unk168 - 0x7F);
-        if (temp > 0x10) {
+    if (unk168 > 119) {
+        s32 temp = (unk168 - 127);
+        if (temp > 16) {
             if (resultsCutScene->unk2D8) {
                 s = &resultsCutScene->unk9C[1];
                 resultsCutScene->transform.width
@@ -361,7 +361,7 @@ void sub_80897E8(void)
         }
 
         for (i = 0; i < 7; i++) {
-            s32 index = (unk168 - 0x78) - i;
+            s32 index = (unk168 - 120) - i;
             if (index < 0) {
                 break;
             }
@@ -421,7 +421,7 @@ void sub_8089AEC(void)
     sub_8031314();
     sub_80897E8();
 
-    if (((unk168 > 0xA0) && (gPressedKeys & (A_BUTTON | START_BUTTON)))
+    if (((unk168 > 160) && (gPressedKeys & (A_BUTTON | START_BUTTON)))
         || (unk168 > 600)) {
         gCurTask->main = sub_8089B40;
     }

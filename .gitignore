@@ -49,6 +49,7 @@ Temporary Items
 # =========================
 # Build Outputs
 # =========================
+
 *.gba
 *.sav
 *.elf
@@ -56,6 +57,7 @@ Temporary Items
 *.bin
 
 *.a
+
 *.hex
 *.o
 *.dump
@@ -73,4 +75,6 @@ reports
 *.4bpp
 *.8bpp
 
+
 !data/maps/*/*/tilemaps/*/*.bin
+*.exe
