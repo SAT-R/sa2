@@ -56,6 +56,8 @@ Temporary Items
 *.map
 *.bin
 
+*.a
+
 *.hex
 *.o
 *.dump
@@ -72,4 +74,7 @@ reports
 ./maps
 *.4bpp
 *.8bpp
+
+
+!data/maps/*/*/tilemaps/*/*.bin
 *.exe
