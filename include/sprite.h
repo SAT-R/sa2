@@ -130,7 +130,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
-    /* 0x0C */ SpriteOffset *dimensions;
+    /* 0x0C */ const SpriteOffset *dimensions;
 
     // Bitfield description from KATAM decomp
     /* 0x10 */ u32 unk10; // bit 0-4: affine-index / rotscale param selection

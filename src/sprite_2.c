@@ -126,19 +126,20 @@ s32 UpdateSpriteAnimation(Sprite *s)
     else {
         /* Call all commands for the new frame */
         s32 ret;
-        ACmd *cmd;
-        ACmd *script;
-        ACmd **variants;
+        const ACmd *cmd;
+        const ACmd *script;
+        const ACmd **variants;
 
         // Handle all the "regular" Animation commands with an ID < 0
         variants = gUnknown_03002794->animations[s->graphics.anim];
         script = variants[s->variant];
         cmd = ReadInstruction(script, s->animCursor);
         while (cmd->id < 0) {
-            ret = animCmdTable[~cmd->id](cmd, s);
+            // TODO: make this const void*
+            ret = animCmdTable[~cmd->id]((void *)cmd, s);
             if (ret != 1) {
 #ifndef NON_MATCHING
-                register ACmd *newScript asm("r2");
+                register const ACmd *newScript asm("r2");
 #else
                 ACmd *newScript;
 #endif
@@ -251,7 +252,7 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
          void sub_8004860(Sprite *s, SpriteTransform *transform))
 {
     // sp24 = s
-    SpriteOffset *dimensions = s->dimensions;
+    const SpriteOffset *dimensions = s->dimensions;
 
     u16 sp00[8];
 

@@ -524,12 +524,14 @@ SECTIONS
         build/sa2/src/game/cutscenes/missing_emeralds.o(.rodata);
 
         build/sa2/src/data/tilemap_data_old_logos.o(.rodata);
-        build/sa2/data/sprite_data.o(.rodata);
+
+        build/sa2/src/data/sprite_tables.o(.rodata);
+        build/sa2/data/sprite_animation_scripts.o(.rodata);
         build/sa2/src/data/sprite_dimensions.o(.rodata);
-        build/sa2/src/data/oam_data.o(.rodata);
-        build/sa2/data/sprite_data_2.o(.rodata);
+        build/sa2/src/data/sprite_oam_data.o(.rodata);
+        build/sa2/data/sprite_animation_data.o(.rodata);
+
         build/sa2/src/data/tileset_language.o(.rodata);
-        build/sa2/data/map_data.o(.rodata);
         build/sa2/src/data/tilemap_data.o(.rodata);
 
         build/sa2/src/lib/m4a_tables.o(.rodata);
@@ -808,7 +810,7 @@ SECTIONS
         build/sa2/data/handlers_ia_pipe_horn_sequences.o(.rodata);
         build/sa2/src/data/palettes.o(.rodata);
         build/sa2/src/data/recordings.o(.rodata);
-        build/sa2/data/data4.o(.rodata);
+        build/sa2/data/multiboot_collect_rings.o(.rodata);
         build/sa2/data/multiboot_subgame_loader.o(.rodata);
 
         build/sa2/asm/rom_footer.o(.rodata);

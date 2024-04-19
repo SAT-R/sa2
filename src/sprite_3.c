@@ -34,7 +34,7 @@ void DisplaySprite(Sprite *sprite)
     const u16 *oamData;
 
     if ((u32)sprite->dimensions != -1) {
-        SpriteOffset *sprDims = sprite->dimensions;
+        const SpriteOffset *sprDims = sprite->dimensions;
 
         sprite->numSubFrames = sprDims->numSubframes;
         x = sprite->x;

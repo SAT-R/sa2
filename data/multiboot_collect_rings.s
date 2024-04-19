@@ -1,10 +1,6 @@
 	.section .rodata
  
      .align 2
-    .global gUnknown_08C882C8
-gUnknown_08C882C8:
-    .incbin "baserom.gba", 0x00C882C8, 0x140 ;@ Unused but no idea what this is
-
 ;@ collect_rings tilemaps
     .global gCollectRingsTilemaps
 gCollectRingsTilemaps:
@@ -14,7 +10,7 @@ gCollectRingsTilemaps:
 ;@ obj_vram
     .global gCollectRingsTextTiles
 gCollectRingsTextTiles:
-    .incbin "multi_boot/collect_rings/graphics/obj_tiles/4bpp/text.4bpp" ;@ This is potentially 0x1B10 instead of 0x1E00
+    .incbin "multi_boot/roms/collect_rings/graphics/obj_tiles/4bpp/text.4bpp" ;@ This is potentially 0x1B10 instead of 0x1E00
 
 ;@ if the above is 0x1B10 then the below would be:
 ;@ 0x8C91f18 -> 0x8C92208 = 0x2f0 potentially some pointers/rodata, not sure
@@ -22,12 +18,14 @@ gCollectRingsTextTiles:
 ;@ bg map tileset
     .global gCollectRingsBgStageTileset
 gCollectRingsBgStageTileset:
-    .incbin "multi_boot/collect_rings/data/tilemaps/stage_tiles.4bpp"
+    .incbin "multi_boot/roms/collect_rings/data/tilemaps/stage_tiles.4bpp"
+
+;@ these might all include the animation scripts
 
 ;@ compressed obj tiles
     .global gCollectRingsAnimationTiles_Compressed
 gCollectRingsAnimationTiles_Compressed:
-    .incbin "multi_boot/collect_rings/graphics/obj_tiles/4bpp/animations.4bpp.lz"
+    .incbin "multi_boot/roms/collect_rings/graphics/obj_tiles/4bpp/animations.4bpp.lz"
 
 ;@ compressed obj tiles
     .global gCollectRings_ObjTiles_1

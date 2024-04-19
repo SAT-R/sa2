@@ -36,8 +36,8 @@ with open('baserom.gba', 'rb') as rom:
     #     print(f"{read_s16(rom)}, ")
     for i in range(length // 32):
         print("{ ", end="")
-        for j in range(16):
-            print(f"{hex(read_u16(rom))}" + ", ", end="")
+        for j in range(32):
+            print(f"{(read_u8(rom))}" + ", ", end="")
         print("},")
 
     # print("{ ", end="")
