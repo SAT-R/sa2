@@ -109,6 +109,15 @@ void AgbMain()
     }
 }
 
+#define SEGMENT_ROM_FINAL  2
+#define SEGMENT_BG_TILESET 3
+
+#define SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_1 4
+#define SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_2 5
+#define SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_3 6
+#define SEGMENT_TEXT_OBJ_TILES                7
+#define SEGMENT_TILEMAPS                      8
+
 static u16 sub_0203b2f0(u16 state, Loader *loader)
 {
     REG_IME = 0;
@@ -124,26 +133,33 @@ static u16 sub_0203b2f0(u16 state, Loader *loader)
     } else {
         state = 2;
         switch (loader->segment) {
-            case 2:
+            case SEGMENT_ROM_FINAL:
                 // When rom has been received, copy into EWRAM
                 LZ77UnCompWram(PROGRAM_WORK_BUFFER, (void *)EWRAM_START);
                 break;
-            case 3:
-                // When backgrounds received, copy into BG VRAM
+            case SEGMENT_BG_TILESET:
+                // When the BG tileset received, copy into BG VRAM
                 CpuCopy16(PROGRAM_WORK_BUFFER, (void *)BG_VRAM, SIO32ML_BLOCK_SIZE);
                 break;
-            case 4:
-            case 5:
-            case 6:
-                // Decompress something which relates to our character?
-                if (loader->sioId == loader->segment - 3) {
+            case SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_1:
+            case SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_2:
+            case SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_3:
+                // Uncompress the sprite object tiles for our device, ignore the others
+                if (loader->sioId
+                    == loader->segment - (SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_1 - 1)) {
                     LZ77UnCompWram(RECV_BUFFER, PROGRAM_WORK_BUFFER);
                 }
                 break;
-            case 7:
-                // When obj vram recieved, copy into obj vram
+            case SEGMENT_TEXT_OBJ_TILES:
+
+                // When the text obj tiles recieved, copy into obj vram
                 CpuCopy16(RECV_BUFFER, (void *)OBJ_VRAM0, 0x5000);
                 break;
+
+#if 0 // The tilemaps are left in the RECV_BUFFER so the case is ignored
+            case SEGMENT_TILEMAPS:
+                break;
+#endif
         }
     }
 
@@ -165,14 +181,15 @@ static u16 sub_0203b3d8(u16 state, Loader *loader)
         if (*ROM_MAKER_CODE_ADDR == DIMPS_MAKER_CODE
             && *ROM_GAME_CODE_ADDR == EXPECTED_GAME_CODE) {
             u8 i;
-            for (i = 0; i < 12; i++) {
+            for (i = 0; i < ARRAY_COUNT(expectedTitle) - 1; i++) {
                 if (actualTitle[i] != expectedTitle[i]) {
                     break;
                 }
             }
 
-            if (i == 12) {
-                SoftResetRom(0xC0);
+            // matches
+            if (i == ARRAY_COUNT(expectedTitle) - 1) {
+                SoftResetRom(RESET_SOUND_REGS | RESET_REGS);
             }
         }
 
@@ -193,7 +210,7 @@ static u16 sub_0203b3d8(u16 state, Loader *loader)
     REG_IE &= ~0xC0;
     REG_IME = 1;
     gIntrTable[0] = Sio32MultiLoadIntr;
-    Sio32MultiLoadInit(0, gUnknown_0203C280[loader->segment]);
+    Sio32MultiLoadInit(0, gSegmentLoadBuffers[loader->segment]);
     sub_0203b610(loader);
     return 5;
 }

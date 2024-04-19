@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-extern void *const gUnknown_0203C280[];
+extern void *const gSegmentLoadBuffers[];
 extern const u8 gUnknown_0203EBC0[];
 extern const u8 gUnknown_0203EDC0[];
 
