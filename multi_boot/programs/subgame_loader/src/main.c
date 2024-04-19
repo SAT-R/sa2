@@ -112,14 +112,17 @@ void AgbMain()
     }
 }
 
-#define SEGMENT_ROM_FINAL  2
-#define SEGMENT_BG_TILESET 3
+#define SEGMENT_ROM_CODE_1 0
+#define SEGMENT_ROM_CODE_2 1
+#define SEGMENT_ROM_CODE_3 2
+
+#define SEGMENT_TILEMAPS_3 3
 
 #define SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_1 4
 #define SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_2 5
 #define SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_3 6
-#define SEGMENT_TEXT_OBJ_TILES                7
-#define SEGMENT_TILEMAPS                      8
+#define SEGMENT_TILEMAPS_2                    7
+#define SEGMENT_TILEMAPS_1                    8
 
 static u16 sub_0203b2f0(u16 state, Loader *loader)
 {
@@ -136,11 +139,11 @@ static u16 sub_0203b2f0(u16 state, Loader *loader)
     } else {
         state = 2;
         switch (loader->segment) {
-            case SEGMENT_ROM_FINAL:
-                // When rom has been received, copy into EWRAM
+            case SEGMENT_ROM_CODE_3:
+                // When ROM Code has been received, copy into EWRAM
                 LZ77UnCompWram(PROGRAM_WORK_BUFFER, (void *)EWRAM_START);
                 break;
-            case SEGMENT_BG_TILESET:
+            case SEGMENT_TILEMAPS_3:
                 // When the BG tileset received, copy into BG VRAM
                 CpuCopy16(PROGRAM_WORK_BUFFER, (void *)BG_VRAM, SIO32ML_BLOCK_SIZE);
                 break;
@@ -153,14 +156,14 @@ static u16 sub_0203b2f0(u16 state, Loader *loader)
                     LZ77UnCompWram(RECV_BUFFER, PROGRAM_WORK_BUFFER);
                 }
                 break;
-            case SEGMENT_TEXT_OBJ_TILES:
+            case SEGMENT_TILEMAPS_2:
 
                 // When the text obj tiles recieved, copy into obj vram
                 CpuCopy16(RECV_BUFFER, (void *)OBJ_VRAM0, 0x5000);
                 break;
 
 #if 0 // The tilemaps are left in the RECV_BUFFER so the case is ignored
-            case SEGMENT_TILEMAPS:
+            case SEGMENT_TILEMAPS_1:
                 break;
 #endif
         }

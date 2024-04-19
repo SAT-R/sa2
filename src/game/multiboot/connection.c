@@ -61,21 +61,22 @@ void *const gCollectRingsSegments[9] = {
     // Tileset for level
     &gCollectRingsBgStageTileset,
 
-    // character sprites
+    // Animations for each client
+
     // cream
-    &gCollectRings_ObjTiles_1,
+    &gCollectRingsAnimations_Cream_Compressed,
 
     // tails
-    &gCollectRings_ObjTiles_2,
+    &gCollectRingsAnimations_Tails_Compressed,
 
     // knuckles
-    &gCollectRings_ObjTiles_3,
+    &gCollectRingsAnimations_Knuckles_Compressed,
 
-    // tile maps
-    &gCollectRingsTextTiles,
+    // tile maps copied directly into OBJ_VRAM0
+    (void *)gCollectRingsTilemaps + (SIO32ML_BLOCK_SIZE * 1),
 
     // tile map pointers
-    &gCollectRingsTilemaps,
+    (void *)gCollectRingsTilemaps + (SIO32ML_BLOCK_SIZE * 0),
 };
 
 static const u16 gUnknown_080E018C[7][3] = {
