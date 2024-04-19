@@ -56,8 +56,8 @@ void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *);
 void CreateMultiplayerSinglePakResultsScreen(u32 a)
 {
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
-    const u8 *unk408 = gUnknown_08C88408;
-    const u8 *unk92208 = gUnknown_08C92208;
+    const u8 *tilemaps = gCollectRingsTilemaps;
+    const u8 *bgStageTileset = gCollectRingsBgStageTileset;
 
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
@@ -75,10 +75,10 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     m4aSoundVSyncOn();
     gGameMode = GAME_MODE_MULTI_PLAYER_COLLECT_RINGS;
 
-    CpuFastCopy(unk92208, (void *)VRAM, VRAM_SIZE - BG_VRAM_SIZE);
-    CpuFastCopy(unk408, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
+    CpuFastCopy(bgStageTileset, (void *)BG_VRAM, SIO32ML_BLOCK_SIZE);
+    CpuFastCopy(tilemaps, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 
-    gTilemapsRef = ((struct MapHeader ***)(EWRAM_START + 0x33000))[0];
+    gTilemapsRef = *((struct MapHeader ***)(EWRAM_START + 0x33000));
     gMultiplayerLanguage = gLoadedSaveGame->language;
 
     sub_8081FB0();

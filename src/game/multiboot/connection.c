@@ -52,19 +52,30 @@ struct SinglePakConnectScreen {
 #define SomeSioCheck()         ((*(vu8 *)REG_ADDR_SIOCNT) & SIO_ID)
 #define MB_SUBGAME_LOADER_SIZE 0x314C
 
-void *const gUnknown_080E0168[9] = {
-    (void *)gUnknown_08CBAC04 + SIO32ML_BLOCK_SIZE * 0,
-    (void *)gUnknown_08CBAC04 + SIO32ML_BLOCK_SIZE * 1,
-    (void *)gUnknown_08CBAC04 + SIO32ML_BLOCK_SIZE * 2,
-    &gUnknown_08C92208,
+void *const gCollectRingsSegments[9] = {
+    // collect rings rom
+    (void *)gCollectRingsRom_Compressed + SIO32ML_BLOCK_SIZE * 0,
+    (void *)gCollectRingsRom_Compressed + SIO32ML_BLOCK_SIZE * 1,
+    (void *)gCollectRingsRom_Compressed + SIO32ML_BLOCK_SIZE * 2,
 
-    // character code?
-    &gUnknown_08CA6760,
-    &gUnknown_08CAD1DC,
-    &gUnknown_08CB41C0,
+    // Tileset for level
+    &gCollectRingsBgStageTileset,
 
-    &gUnknown_08C90408,
-    &gUnknown_08C88408,
+    // character sprites
+    // cream
+    &gCollectRings_ObjTiles_1,
+
+    // tails
+    &gCollectRings_ObjTiles_2,
+
+    // knuckles
+    &gCollectRings_ObjTiles_3,
+
+    // tile maps
+    &gCollectRingsTextTiles,
+
+    // tile map pointers
+    &gCollectRingsTilemaps,
 };
 
 static const u16 gUnknown_080E018C[7][3] = {
@@ -382,7 +393,7 @@ void sub_80818B8(void)
     u32 temp;
     struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     if (gMultiSioStatusFlags & MULTI_SIO_LD_REQUEST
-        && connectScreen->unkF9 < ARRAY_COUNT(gUnknown_080E0168)) {
+        && connectScreen->unkF9 < ARRAY_COUNT(gCollectRingsSegments)) {
         gCurTask->main = sub_8081D04;
     }
 
@@ -571,7 +582,7 @@ void sub_8081D04(void)
     MultiSioStop();
     gIntrTable[0] = Sio32MultiLoadIntr;
     Sio32MultiLoadInit(gMultiSioStatusFlags & MULTI_SIO_PARENT,
-                       gUnknown_080E0168[connectScreen->unkF9]);
+                       gCollectRingsSegments[connectScreen->unkF9]);
     gCurTask->main = sub_8081A5C;
 }
 
