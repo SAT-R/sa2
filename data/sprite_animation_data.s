@@ -1,5 +1,6 @@
 	.section .rodata
 
+@ TODO: move these into C files in src/data?
     .global gSpritePalettes @ 0x0816ADC8
 gSpritePalettes:
     .include "graphics/obj_palettes.inc"

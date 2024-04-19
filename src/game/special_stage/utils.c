@@ -136,7 +136,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a,
 
 void sub_806CD68(Sprite *s)
 {
-    u16 *reference;
+    const u16 *reference;
     OamData *oam;
     u32 unk16, unk18;
     u16 sprHeight;
@@ -144,7 +144,7 @@ void sub_806CD68(Sprite *s)
     s16 numSubframes;
 
     s16 i;
-    SpriteOffset *sprDims = (void *)s->dimensions;
+    const SpriteOffset *sprDims = s->dimensions;
 
     s->numSubFrames = sprDims->numSubframes;
     sprWidth = sprDims->width;

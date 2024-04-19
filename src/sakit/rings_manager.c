@@ -146,7 +146,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
         void *rings = rm->rings; // sp14
         s32 *rings_header;
         Sprite *s; // sp18
-        SpriteOffset *dimensions; // sp20
+        const SpriteOffset *dimensions; // sp20
         u16 sl; // sl / sp40
         u16 sb;
 

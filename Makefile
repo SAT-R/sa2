@@ -291,27 +291,27 @@ japan: ; @$(MAKE) GAME_REGION=JAPAN
 europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 chao_garden/mb_chao_garden.gba: 
-	$(MAKE) -C chao_garden
+	@$(MAKE) -C chao_garden
 
 chao_garden: tools
-	$(MAKE) -C chao_garden
+	@$(MAKE) -C chao_garden
 
 # Dependency here is already explicit, but we sometimes get a race condition if this
 # is not specified
 multi_boot/subgame_bootstrap/subgame_bootstrap.gba: multi_boot/programs/subgame_loader/subgame_loader.bin
-	$(MAKE) -C multi_boot/subgame_bootstrap
+	@$(MAKE) -C multi_boot/subgame_bootstrap
 
 multi_boot/programs/subgame_loader/subgame_loader.bin:
-	$(MAKE) -C multi_boot/programs/subgame_loader
+	@$(MAKE) -C multi_boot/programs/subgame_loader
 
 multi_boot/collect_rings/mb_signed_collect_rings.gba:
-	$(MAKE) -C multi_boot/collect_rings
+	@$(MAKE) -C multi_boot/collect_rings
 
 subgame_bootstrap: tools
-	$(MAKE) -C multi_boot/subgame_bootstrap
+	@$(MAKE) -C multi_boot/subgame_bootstrap
 
 subgame_loader: tools
-	$(MAKE) -C multi_boot/programs/subgame_loader
+	@$(MAKE) -C multi_boot/programs/subgame_loader
 
 collect_rings: tools
-	$(MAKE) -C multi_boot/collect_rings
+	@$(MAKE) -C multi_boot/collect_rings

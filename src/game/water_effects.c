@@ -73,7 +73,7 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
 {
     s32 k;
     u16 animId;
-    s32 **animation;
+    const ACmd **animation;
     s32 pal;
     u32 *dst, *src;
     u32 waterMask;
@@ -97,7 +97,7 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
             u16 mpChar = gMultiplayerCharacters[j];
             animId = gUnknown_080D550C[mpChar];
             animation = gAnimations[animId];
-            pal = (animation[0])[1];
+            pal = animation[0]->pal.palId;
             src = (u32 *)&gSpritePalettes[pal * 16];
             dst = (u32 *)&wd->pal[j * 16];
             sub_8011B54_inline(dst, src, 1, 0);
@@ -106,23 +106,23 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
         u16 playerChar = gPlayer.character;
 
         animId = gUnknown_080D550C[playerChar];
-        animation = (s32 **)gAnimations[animId];
-        pal = ((animation[0])[1]);
+        animation = gAnimations[animId];
+        pal = animation[0]->pal.palId;
         sub_8011B54_inline((u32 *)&wd->pal[0 * 16], (u32 *)&gSpritePalettes[pal * 16], 1,
                            0);
 
         playerChar = gPlayer.character;
         animId = sCharacterPalettesBoostEffect[playerChar];
-        animation = (s32 **)gAnimations[animId];
-        pal = ((animation[0])[1] + 0) * 16;
+        animation = gAnimations[animId];
+        pal = (animation[0]->pal.palId + 0) * 16;
         dst = (u32 *)&wd->pal[1 * 16];
         src = (u32 *)&gSpritePalettes[pal];
         sub_8011B54_inline(dst, src, 1, 0);
     }
 
     animId = SA2_ANIM_PALETTE_554;
-    animation = (s32 **)gAnimations[animId];
-    pal = ((animation[0])[1] + 4) * 16;
+    animation = gAnimations[animId];
+    pal = (animation[0]->pal.palId + 4) * 16;
     dst = (u32 *)&wd->pal[4 * 16];
     src = (u32 *)&gSpritePalettes[(pal)];
     sub_8011B54_inline(dst, src, 12, 0);

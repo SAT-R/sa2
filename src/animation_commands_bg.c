@@ -96,19 +96,20 @@ s32 sub_80036E0(Sprite *s)
         s->timeUntilNextFrame -= s->animSpeed * 16;
     else {
         s32 ret;
-        ACmd *cmd;
-        ACmd *script;
-        ACmd **variants;
+        const ACmd *cmd;
+        const ACmd *script;
+        const ACmd **variants;
 
         // Handle all the "regular" Animation commands with an ID < 0
         variants = gUnknown_03002794->animations[s->graphics.anim];
         script = variants[s->variant];
         cmd = ReadInstruction(script, s->animCursor);
         while (cmd->id < 0) {
-            ret = animCmdTable_BG[~cmd->id](cmd, s);
+            // TODO: Fix types to make these const
+            ret = animCmdTable_BG[~cmd->id]((void *)cmd, s);
             if (ret != 1) {
 #ifndef NON_MATCHING
-                register ACmd *newScript asm("r1");
+                register const ACmd *newScript asm("r1");
 #else
                 ACmd *newScript;
 #endif
@@ -201,7 +202,7 @@ s32 animCmd_AddHitbox_BG(void *cursor, Sprite *s)
 
 void sub_8003914(Sprite *s)
 {
-    SpriteOffset *dims;
+    const SpriteOffset *dims;
     gUnknown_03004D10[gUnknown_03005390] = s;
     gUnknown_03005390++;
 
@@ -259,9 +260,9 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
         s32 sp08;
         u16 shapeAndSize;
         Sprite *s; // = sp0C
-        SpriteOffset *dims;
+        const SpriteOffset *dims;
         u32 sp10; // bg_affine_pixelcount
-        u16 **oamSub;
+        const u16 *const *oamSub;
         OamDataShort *sp1C;
         u32 tilesX; // =sp20
         u32 tilesY; // =ip

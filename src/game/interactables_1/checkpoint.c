@@ -44,8 +44,6 @@ extern u32 gCheckpointTime;
 extern const struct SpriteTables *gUnknown_03002794;
 extern const u32 gUnknown_080D63FC[34][2];
 
-extern s32 **const gAnimations[];
-
 #define CHECKPOINT_BALL_TILE_COUNT 4
 
 /* [0] = animId
@@ -205,8 +203,8 @@ void Task_8063228(struct Task *unused)
 {
     u8 zone = LEVEL_TO_ZONE(gCurrentLevel);
     s32 animId = sAnimIdsCheckpoint[zone][0];
-    s32 **anim = gAnimations[animId];
-    s32 *cmd = anim[0];
+    const ACmd **anim = gAnimations[animId];
+    const s32 *cmd = (const s32 *)anim[0];
     u32 palId;
     u32 numColors;
     u32 offset;

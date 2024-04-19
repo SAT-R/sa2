@@ -171,8 +171,8 @@ void Task_805E480(void)
     s16 screenX, screenY;
     s16 otherPos;
     u8 r6, x, y;
-    u16 *oam_ptr;
-    u16 *oam;
+    const u16 *oam_ptr;
+    const u16 *oam;
 
     screenX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
     screenY = TO_WORLD_POS(me->y, platform->base.regionY);
@@ -259,8 +259,8 @@ void Task_805E6A4(void)
     s16 screenX, screenY;
     s16 otherPos;
     u8 r6, x, y;
-    u16 *oam_ptr;
-    u16 *oam;
+    const u16 *oam_ptr;
+    const u16 *oam;
 
     screenX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
     screenY = TO_WORLD_POS(me->y, platform->base.regionY);
