@@ -141,7 +141,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
 #ifndef NON_MATCHING
                 register const ACmd *newScript asm("r2");
 #else
-                ACmd *newScript;
+                const ACmd *newScript;
 #endif
                 if (ret != ACMD_RESULT__ANIM_CHANGED) {
                     return ret;
@@ -246,82 +246,96 @@ void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
     affine[12] = I(COS_24_8(angle) * res);
 }
 
+typedef struct {
+    /* 0x00 */ u16 unk0[8];
+    /* 0x08 */ s16 unk8;
+    /* 0x0A */ s16 unkA;
+
+    /* 0x0C */ s16 unkC[2];
+
+    /* 0x10 */ s32 posX;
+    /* 0x14 */ s32 posY;
+
+    /* 0x18 */ s16 unk18[2][2];
+    u16 affineIndex;
+} UnkStruct;
+
 // Similar to sub_8004ABC and sub_8004E14
 // (53.42%) https://decomp.me/scratch/llwGy
+// (56.74%) https://decomp.me/scratch/rXgtp
 NONMATCH("asm/non_matching/engine/sub_8004860.inc",
          void sub_8004860(Sprite *s, SpriteTransform *transform))
 {
     // sp24 = s
+    UnkStruct big;
     const SpriteOffset *dimensions = s->dimensions;
 
-    u16 sp00[8];
-
     if (dimensions != (SpriteOffset *)-1) {
-        int temp;
         s16 res;
-        s32 sp10, sp14; // posX, posY
-        s16 sp18[2];
-        s16 sp1C[2];
-        s32 affineIndex = s->unk10 & 0x1F; // sp20
-        u16 *affine = &gOamBuffer[affineIndex * 4].all.affineParam;
+        u16 *affine;
         u16 *pTemp, *pTemp2;
+        big.affineIndex = s->unk10 % 32u;
+        affine = &gOamBuffer[big.affineIndex * 4].all.affineParam;
 
 #if 0
-        sub_80047A0(transform->rotation & ONE_CYCLE, transform->width, transform->height, affineIndex);
+        sub_80047A0(transform->rotation & ONE_CYCLE, transform->width, transform->height, big.affineIndex);
 #else
-        sp00[4] = COS_24_8(transform->rotation & ONE_CYCLE);
-        sp00[5] = SIN_24_8(transform->rotation & ONE_CYCLE);
+        big.unk0[4] = COS_24_8(transform->rotation & ONE_CYCLE);
+        big.unk0[5] = SIN_24_8(transform->rotation & ONE_CYCLE);
 
-        sp00[6] = transform->width;
-        sp00[7] = transform->height;
+        big.unk0[6] = transform->width;
+        big.unk0[7] = transform->height;
 
-        res = Div(0x10000, sp00[6]);
-        affine[0] = Q_8_8_TO_INT(((sp00[4] << 16) >> 16) * res);
+        res = Div(0x10000, big.unk0[6]);
+        affine[0] = Q_8_8_TO_INT(((big.unk0[4] << 16) >> 16) * res);
 
-        res = Div(0x10000, sp00[6]);
-        affine[4] = Q_24_8_TO_INT(sp00[5] * res);
+        res = Div(0x10000, big.unk0[6]);
+        affine[4] = Q_24_8_TO_INT(big.unk0[5] * res);
 
-        res = Div(0x10000, sp00[7]);
-        affine[8] = Q_24_8_TO_INT(-sp00[4] * res);
+        res = Div(0x10000, big.unk0[7]);
+        affine[8] = Q_24_8_TO_INT(-big.unk0[4] * res);
 
-        res = Div(0x10000, sp00[7]);
-        affine[12] = Q_24_8_TO_INT(sp00[5] * res);
+        res = Div(0x10000, big.unk0[7]);
+        affine[12] = Q_24_8_TO_INT(big.unk0[5] * res);
 #endif
 
         if (transform->height < 0)
-            sp00[6] = -transform->height;
+            big.unk0[6] = -transform->height;
 
         if (transform->width < 0)
-            sp00[7] = -transform->width;
+            big.unk0[7] = -transform->width;
 
         // _0800497A
-        sp00[0] = Q_24_8_TO_INT(sp00[4] * sp00[6]);
-        sp00[1] = Q_24_8_TO_INT(-sp00[5] * sp00[6]);
-        sp00[2] = Q_24_8_TO_INT(sp00[5] * sp00[7]);
-        sp00[3] = Q_24_8_TO_INT(sp00[6] * sp00[7]);
+        big.unk0[0] = Q_24_8_TO_INT(big.unk0[4] * big.unk0[6]);
+        big.unk0[1] = Q_24_8_TO_INT(-big.unk0[5] * big.unk0[6]);
+        big.unk0[2] = Q_24_8_TO_INT(big.unk0[5] * big.unk0[7]);
+        big.unk0[3] = Q_24_8_TO_INT(big.unk0[6] * big.unk0[7]);
 
-        pTemp = &sp18[0];
-        *pTemp++ = 0x100;
-        *pTemp = 0;
-        pTemp2 = &sp1C[0];
-        *pTemp2++ = 0;
-        *pTemp2++ = 0x100;
+        big.unk18[0][0] = 0x100;
+        big.unk18[0][1] = 0;
+        big.unk18[1][0] = 0;
+        big.unk18[1][1] = 0x100;
 
-        sp10 = transform->x;
-        sp14 = transform->y;
+        big.posX = transform->x;
+        big.posY = transform->y;
 
         // _08004A20
         {
+            s32 r0;
+            s16 r1_16;
+            s32 r1;
+            s32 r2;
+            s16 r4;
             s16 r3;
-            s32 r0, r1, r2, r4;
             u32 r5;
 
             if (transform->width > 0) {
                 r4 = (u16)dimensions->offsetX;
                 r2 = dimensions->width;
             } else {
-                r4 = dimensions->width - (u16)dimensions->offsetX;
-                r2 = dimensions->width;
+                s32 w = dimensions->width;
+                r4 = w - (u16)dimensions->offsetX;
+                r2 = w;
             }
 
             // _08004A2E
@@ -332,37 +346,31 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
                 r5 = dimensions->height;
             } else {
                 // _08004A3E
-                r3 = dimensions->height - (u16)dimensions->offsetY;
-                r5 = dimensions->height;
+                s32 h = dimensions->height;
+                r3 = h - (u16)dimensions->offsetY;
+                r5 = h;
             }
 
             // _08004A4C
-            r0 = sp00[0];
-            r4 -= dimensions->width / 2;
-            r1 = r0;
-            r1 *= r4;
-            r0 = sp00[1];
-            r5 >>= 1;
-            r3 -= r5;
-            r0 *= r3;
-            r1 += r0;
-            r1 += (r2 << 8);
-            r1 >>= 8;
-            sp10 -= r1;
+            r1_16 = big.unk0[0] * (r4 - dimensions->width / 2);
+            r0 = big.unk0[1] * (r3 - dimensions->height / 2);
+            r1_16 += r0;
+            r1_16 = r1_16 + (r2 << 8);
+            big.posX -= (r1_16 >> 8);
 
             // __080004A7E
-            r1 = sp00[2];
+            r1 = big.unk0[2];
             r1 *= r4;
-            r0 = sp00[7];
+            r0 = big.unk0[7];
             r0 *= r3;
             r1 += r0;
-            r1 += Q(r5);
+            r1 += Q_24_8(r5);
             r1 >>= 8;
 
-            sp14 -= r1;
+            big.posY -= r1;
 
-            s->x = sp10;
-            s->y = sp14;
+            s->x = big.posX;
+            s->y = big.posY;
         }
     }
 }
