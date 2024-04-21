@@ -1,7 +1,10 @@
 #include "global.h"
 #include "core.h"
+
 #include "game/stage/player.h"
 #include "game/stage/stage.h"
+#include "game/stage/tilemap_table.h"
+
 #include "game/multiboot/connection.h"
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiboot/collect_rings/results.h"

@@ -146,7 +146,6 @@ SECTIONS
         build/sa2/src/game/multiplayer/unknown_task.o(.text);
         build/sa2/src/game/multiplayer/player_unk_1.o(.text);
         build/sa2/src/game/multiplayer/indicators.o(.text);
-        build/sa2/asm/player_mp_indicators.o(.text);
         build/sa2/src/game/multiplayer/finish.o(.text);
         build/sa2/src/game/multiplayer/player_unk_2.o(.text);
         build/sa2/src/game/game.o(.text);
@@ -177,7 +176,6 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_final_boss.o(.text);
         build/sa2/src/game/stage/background/zone_extra_boss.o(.text);
         build/sa2/src/game/stage/background/callbacks.o(.text);
-        build/sa2/asm/player_super_sonic_data.o(.text);
         build/sa2/src/game/stage/collision.o(.text);
         build/sa2/src/game/stage/game_2.o(.text);
         build/sa2/src/game/stage/dust_effect_braking.o(.text);
@@ -440,10 +438,10 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_7_1.o(.rodata);
         build/sa2/src/game/stage/background/zone_7_2.o(.rodata);
         build/sa2/src/game/stage/background/zone_final.o(.rodata);
-        build/sa2/src/data/tilemap_table.o(.rodata);
-        build/sa2/src/game/stage/data.o(.rodata);
-
-        build/sa2/asm/player_super_sonic_data.o(.rodata);
+        build/sa2/src/game/stage/tilemap_table.o(.rodata);
+        build/sa2/src/game/stage/collision.o(.rodata);
+        build/sa2/src/game/stage/game_2.o(.rodata);
+        build/sa2/src/game/stage/spawn_positions.o(.rodata);
         build/sa2/src/game/stage/rings_scatter.o(.rodata);
         build/sa2/src/game/stage/player.o(.rodata);
         build/sa2/src/game/stage/player_super_sonic.o(.rodata);

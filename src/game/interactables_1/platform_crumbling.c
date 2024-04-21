@@ -1,16 +1,16 @@
 #include "global.h"
 #include "malloc_vram.h"
-
-#include "data.h"
 #include "sprite.h"
-#include "data/sprite_data.h"
 #include "task.h"
 
 #include "sakit/globals.h"
+
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
 #include "game/interactables_1/platform_crumbling.h"
+
+#include "data/sprite_data.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"

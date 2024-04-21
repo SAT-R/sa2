@@ -14,7 +14,6 @@ struct Backgrounds {
 };
 
 extern const Background gStageCameraBgTemplates[4];
-extern const Collision *const gCollisionTable[];
 
 void UpdateCamera(void);
 

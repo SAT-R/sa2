@@ -1,18 +1,8 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-
-.text
 .syntax unified
-.arm
-
-.if 01
-.endif
-
-@ Almost identical to Task_801951C
-	thumb_func_start Task_8019898
-Task_8019898: @ 0x08019898
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -557,22 +547,5 @@ _08019C96:
 	.align 2, 0
 _08019CA8: .4byte gUnknown_030054B8
 
-	thumb_func_start Task_SelfPositionIndicator
-Task_SelfPositionIndicator: @ 0x08019CAC
-	push {lr}
-	ldr r0, _08019CC4 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r0, [r0, #6]
-	movs r1, #0xc0
-	lsls r1, r1, #0x12
-	adds r0, r0, r1
-	bl UpdateSpriteAnimation
-	pop {r0}
-	bx r0
-	.align 2, 0
-_08019CC4: .4byte gCurTask
-
-	thumb_func_start TaskDestructor_8019CC8
-TaskDestructor_8019CC8: @ 0x08019CC8
-	bx lr
-	.align 2, 0
+	
+.syntax divided

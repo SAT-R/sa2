@@ -126,8 +126,11 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     }
     // _08019576
 
-    opponentX2 = mpp->unk50 - (DISPLAY_WIDTH / 2) - gCamera.x;
-    opponentY2 = mpp->unk52 - (DISPLAY_HEIGHT / 2) - gCamera.y;
+    opponentX2 = mpp->unk50 - (DISPLAY_WIDTH / 2);
+    opponentY2 = mpp->unk52 - (DISPLAY_HEIGHT / 2);
+
+    opponentX2 -= gCamera.x;
+    opponentY2 -= gCamera.y;
 
     if ((opponentX2 != 0) && (opponentY2 != 0)) {
         while ((ABS(opponentY2) >= 128) || (ABS(opponentX2) >= 128)) {
@@ -149,10 +152,8 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
 
     if (ABS(opponentX2) < 2) {
         // _08019622+4
-        r4 = Q_24_8(3.0);
-        if (opponentY2 > 0) {
-            r4 = Q_24_8(1.0);
-        }
+        r4 = opponentY2 > 0 ? Q_24_8(1.0) : Q_24_8(3.0);
+
     } else if (ABS(opponentY2) < 2) {
         // _08019636
         r4 = Q_24_8(2.0);
@@ -167,7 +168,8 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     opponentDistSq = SQUARE(opponentX2) + SQUARE(opponentY2);
 
     if (opponentDistSq < 0x10000) {
-        spr->animSpeed = SPRITE_ANIM_SPEED(1.5);
+        spr->animSpeed
+            = opponentDistSq < 0x10000 ? SPRITE_ANIM_SPEED(1.5) : SPRITE_ANIM_SPEED(1.0);
     } else {
         spr->animSpeed = SPRITE_ANIM_SPEED(1.0);
     }
@@ -182,7 +184,7 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     } else {
         // _080196C0
         s32 dist = (0x06000000 - opponentDistSq) >> 16;
-        s32 scale = Div(dist * 0x1A0, 0x600) + 0x40;
+        s32 scale = Div(dist * 0x1A0, 0x5FF) + 0x40;
         transform->width = scale;
         transform->height = scale;
     }
@@ -278,9 +280,10 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
 }
 END_NONMATCH
 
-/*
- * These two procedures match
- *
+// Almost identical to Task_801951C
+NONMATCH("asm/non_matching/Task_8019898.inc", void Task_8019898()) { }
+END_NONMATCH
+
 void Task_SelfPositionIndicator(void)
 {
     SelfIndicator *pi = TASK_DATA(gCurTask);
@@ -288,8 +291,4 @@ void Task_SelfPositionIndicator(void)
     UpdateSpriteAnimation(s);
 }
 
-void TaskDestructor_8019CC8(OpponentIndicator *pi)
-{
-    return;
-}
-*/
+void TaskDestructor_8019CC8(struct Task *t) { return; }

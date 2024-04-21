@@ -60,9 +60,6 @@ struct SuperSonic {
         _sonic->unk22 = 0;                                                              \
     }
 
-extern const Vec2_32 gUnknown_080D650C[NUM_LEVEL_IDS];
-extern const Vec2_32 gUnknown_080D661C[NUM_LEVEL_IDS];
-
 extern void SuperSonicInit(void);
 extern u32 SuperSonicGetFlags(void);
 extern void SuperSonicGetPos(s32 *outX, s32 *outY);

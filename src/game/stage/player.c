@@ -14,6 +14,7 @@
 #include "game/cheese.h"
 #include "game/stage/dust_effect_braking.h"
 
+#include "game/stage/spawn_positions.h"
 #include "game/stage/collision.h"
 #include "game/stage/camera.h"
 #include "game/stage/player.h"

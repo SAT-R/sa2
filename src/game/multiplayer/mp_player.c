@@ -7,6 +7,7 @@
 #include "sakit/globals.h"
 #include "sakit/collision.h"
 
+#include "game/stage/spawn_positions.h"
 #include "game/stage/collision.h"
 #include "game/stage/stage.h"
 #include "game/stage/player.h"

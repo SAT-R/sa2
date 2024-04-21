@@ -54,6 +54,51 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
         return (p0 % 8u) - ((i)*TILE_WIDTH);                                            \
     }
 
+extern const Collision CollHeader_zone_1_act_1_fg;
+extern const Collision CollHeader_zone_1_act_2_fg;
+extern const Collision CollHeader_zone_1_act_boss_fg;
+extern const Collision CollHeader_zone_1_act_dummy_fg;
+extern const Collision CollHeader_zone_2_act_1_fg;
+extern const Collision CollHeader_zone_2_act_2_fg;
+extern const Collision CollHeader_zone_2_act_boss_fg;
+extern const Collision CollHeader_zone_3_act_1_fg;
+extern const Collision CollHeader_zone_3_act_2_fg;
+extern const Collision CollHeader_zone_3_act_boss_fg;
+extern const Collision CollHeader_zone_4_act_1_fg;
+extern const Collision CollHeader_zone_4_act_2_fg;
+extern const Collision CollHeader_zone_4_act_boss_fg;
+extern const Collision CollHeader_zone_5_act_1_fg;
+extern const Collision CollHeader_zone_5_act_2_fg;
+extern const Collision CollHeader_zone_5_act_boss_fg;
+extern const Collision CollHeader_zone_6_act_1_fg;
+extern const Collision CollHeader_zone_6_act_2_fg;
+extern const Collision CollHeader_zone_6_act_boss_fg;
+extern const Collision CollHeader_zone_7_act_1_fg;
+extern const Collision CollHeader_zone_7_act_2_fg;
+extern const Collision CollHeader_zone_7_act_boss_fg;
+extern const Collision CollHeader_zone_final_act_xx_fg;
+extern const Collision CollHeader_zone_final_act_ta53_fg;
+extern const Collision CollHeader_zone_final_act_unused_fg;
+
+const Collision *const gCollisionTable[] = {
+    &CollHeader_zone_1_act_1_fg,          &CollHeader_zone_1_act_2_fg,
+    &CollHeader_zone_1_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_2_act_1_fg,          &CollHeader_zone_2_act_2_fg,
+    &CollHeader_zone_2_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_3_act_1_fg,          &CollHeader_zone_3_act_2_fg,
+    &CollHeader_zone_3_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_4_act_1_fg,          &CollHeader_zone_4_act_2_fg,
+    &CollHeader_zone_4_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_5_act_1_fg,          &CollHeader_zone_5_act_2_fg,
+    &CollHeader_zone_5_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_6_act_1_fg,          &CollHeader_zone_6_act_2_fg,
+    &CollHeader_zone_6_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_7_act_1_fg,          &CollHeader_zone_7_act_2_fg,
+    &CollHeader_zone_7_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_final_act_xx_fg,     &CollHeader_zone_final_act_ta53_fg,
+    &CollHeader_zone_final_act_unused_fg,
+};
+
 s32 sub_801E4E4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
 {
     u8 dummy[4];

@@ -16,6 +16,14 @@
 
 #include "constants/animations.h"
 
+const u16 sAnimData_StageGoalScoreBonus[][3] = {
+    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 1 },
+    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 2 },
+    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 3 },
+    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 4 },
+    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 5 },
+};
+
 struct Task *sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main,
                          TaskDestructor dtor)
 {
