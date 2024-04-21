@@ -20,6 +20,8 @@ endif
 
 PREFIX := arm-none-eabi-
 
+include config.mk
+
 ifeq ($(OS),Windows_NT)
 EXE := .exe
 else
@@ -47,8 +49,8 @@ RAMSCRGEN := ../tools/ramscrgen/ramscrgen$(EXE)
 FIX 	  := ../tools/gbafix/gbafix$(EXE)
 
 CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
-CPPFLAGS := -I ../tools/agbcc/include -iquote include -nostdinc
-ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork
+CPPFLAGS := -I ../tools/agbcc/include -iquote include -nostdinc -D $(GAME_REGION)
+ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork --defsym $(GAME_REGION)=1
 
 
 # Clear the default suffixes
@@ -66,7 +68,7 @@ OBJ_DIR:= build/mb_chao_garden
 ROM      := mb_chao_garden.gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
-LDSCRIPT := ldscript.txt
+LDSCRIPT := $(OBJ_DIR)/ldscript.txt
 
 C_SUBDIR = src
 ASM_SUBDIR = asm
@@ -123,7 +125,7 @@ endif
 MAKEFLAGS += --no-print-directory
 
 compare: $(ROM)
-	$(SHA1) checksum.sha1
+	$(SHA1) $(BUILD_NAME).sha1
 
 clean: tidy
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
@@ -152,6 +154,9 @@ include songs.mk
 %.rl: % ; $(GFX) $< $@
 
 %.bin: %.aif ; $(AIF) $< $@
+
+$(LDSCRIPT):
+	@$(CPP) $(CPPFLAGS) ldscript.txt -o $(LDSCRIPT)
 
 $(ELF): $(OBJS) $(LDSCRIPT)
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"

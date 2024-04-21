@@ -4,7 +4,7 @@ import sys
 address = int(sys.argv[1], 16)
 length = int(sys.argv[2], 16)
 
-with open('baserom.gba', 'rb') as rom:
+with open('baserom_japan.gba', 'rb') as rom:
     rom.seek(address)
     base_name = str(hex(0x8000000 + address).upper())[2:]
     name = base_name+ ".bin.lz"
