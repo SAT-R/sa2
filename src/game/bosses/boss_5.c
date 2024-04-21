@@ -16,6 +16,7 @@
 #include "game/stage/collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+#include "game/stage/game_7.h"
 
 #include "game/stage/screen_fade.h"
 
@@ -157,9 +158,6 @@ static const u16 gUnknown_080D7FF0[][16] = {
     INCBIN_U16("graphics/80D7FF0.gbapal"),
     INCBIN_U16("graphics/80D8010.gbapal"),
 };
-
-// stage intro related
-extern void sub_802E784(u16, u16, u16, s16 x, s16 y, s16);
 
 void Task_EggSaucerIntro(void);
 void TaskDestructor_EggSaucerMain(struct Task *);
