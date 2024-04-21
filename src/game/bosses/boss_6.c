@@ -1,23 +1,26 @@
 #include "core.h"
 #include "task.h"
 #include "sprite.h"
+#include "trig.h"
 
 #include "sakit/globals.h"
+#include "sakit/collision.h"
 
 #include "game/bosses/boss_6.h"
 #include "game/bosses/common.h"
 
 #include "game/stage/player.h"
+#include "game/stage/camera.h"
 
 #include "constants/move_states.h"
 #include "constants/animations.h"
 
 typedef struct {
     u8 unk0;
-    u32 unk4;
-    u32 unk8;
-    u16 unkC;
-    u16 unkE;
+    s32 unk4;
+    s32 unk8;
+    s16 unkC;
+    s16 unkE;
 } EggGoRound_unk3C;
 
 typedef struct {
@@ -38,7 +41,7 @@ typedef struct {
     s16 unk1C;
     s16 unk1E;
     s16 unk20;
-    s16 unk22;
+    u16 unk22;
     u8 unk24;
     u8 unk25;
     u8 unk26;
@@ -222,5 +225,87 @@ void CreateEggGoRound(void)
         s->hitboxes[0].index = -1;
         s->unk10 = SPRITE_FLAG(PRIORITY, 1);
         UpdateSpriteAnimation(s);
+    }
+}
+
+void sub_8045E78(EggGoRound *boss)
+{
+    if (--boss->unk22 < 106) {
+        if (boss->unk22 > 90 && boss->unk22 < 106) {
+            Sprite *s = &boss->unk36C;
+            s->x = I(boss->unk4) - gCamera.x;
+            s->y = I(boss->unk8) - gCamera.y;
+            if (boss->unk22 == 45) {
+                s->prevVariant = -1;
+            }
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
+            return;
+        }
+
+        if (boss->unk22 == 0) {
+            if (boss->unk28 < 5) {
+                boss->unk22 = 320;
+            } else {
+                boss->unk22 = 450;
+            }
+        }
+
+        if (Mod(boss->unk22, 30) == 0) {
+            u8 i;
+            u16 result
+                = sub_8004418(I(gPlayer.y - boss->unk8), I(gPlayer.x - boss->unk4));
+
+            for (i = 0; i < 3; i++) {
+                EggGoRound_unk3C *unk3C = &boss->unk3C[i];
+                if (unk3C->unk0 == 0) {
+                    s32 sin;
+                    unk3C->unk4 = boss->unk4;
+                    unk3C->unk8 = boss->unk8 + Q(14);
+                    sin = COS(result & (SIN_PERIOD - 1));
+                    unk3C->unkC = sin >> 5;
+                    sin = SIN(result & (SIN_PERIOD - 1));
+                    unk3C->unkE = sin >> 5;
+                    unk3C->unk0 = -1;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void sub_8045F84(EggGoRound *boss)
+{
+
+    Sprite *s = &boss->unk39C;
+    bool32 animUpdated = FALSE;
+    u8 i;
+
+    for (i = 0; i < 3; i++) {
+        EggGoRound_unk3C *unk3C = &boss->unk3C[i];
+
+        if (unk3C->unk0 != 0) {
+            unk3C->unk0--;
+
+            if (!PLAYER_IS_ALIVE) {
+                unk3C->unk4 += unk3C->unkC;
+            } else {
+                unk3C->unk4 += unk3C->unkC + 0x500;
+            }
+            unk3C->unk8 += unk3C->unkE;
+
+            if (!animUpdated) {
+                UpdateSpriteAnimation(s);
+                animUpdated = TRUE;
+            }
+
+            if (boss->unk28 != 0) {
+                sub_800C84C(s, I(unk3C->unk4), I(unk3C->unk8));
+            }
+
+            s->x = I(unk3C->unk4) - gCamera.x;
+            s->y = I(unk3C->unk8) - gCamera.y;
+            DisplaySprite(s);
+        }
     }
 }
