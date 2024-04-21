@@ -558,7 +558,7 @@ static void VBlankIntr(void)
     INTR_CHECK |= 1;
     gExecSoundMain = TRUE;
 
-    if (gFlagsPreVBlank & 4) {
+    if (gFlagsPreVBlank & FLAGS_4) {
         REG_IE |= INTR_FLAG_HBLANK;
         DmaWait(0);
         DmaCopy16(0, gBgOffsetsHBlank, gUnknown_03002878, gUnknown_03002A80);
@@ -570,7 +570,7 @@ static void VBlankIntr(void)
         gUnknown_03002878 = NULL;
     }
 
-    if (gFlagsPreVBlank & 0x40) {
+    if (gFlagsPreVBlank & FLAGS_40) {
         REG_DISPSTAT |= DISPSTAT_VCOUNT_INTR;
         REG_DISPSTAT &= 0xff;
         REG_DISPSTAT |= gUnknown_03002874 << 8;
@@ -583,16 +583,16 @@ static void VBlankIntr(void)
         REG_IE &= ~INTR_FLAG_VCOUNT;
     }
 
-    if (!(gFlagsPreVBlank & 0x8000)) {
+    if (!(gFlagsPreVBlank & FLAGS_8000)) {
         keys = ~REG_KEYINPUT & (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON);
         if (keys == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
-            gFlags |= 0x8000;
+            gFlags |= FLAGS_8000;
             REG_IE = 0;
             REG_IME = 0;
             REG_DISPSTAT = DISPCNT_MODE_0;
             m4aMPlayAllStop();
             m4aSoundVSyncOff();
-            gFlags &= ~4;
+            gFlags &= ~FLAGS_4;
             DmaStop(0);
             DmaStop(1);
             DmaStop(2);

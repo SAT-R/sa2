@@ -277,8 +277,9 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
         big.affineIndex = s->unk10 % 32u;
         affine = &gOamBuffer[big.affineIndex * 4].all.affineParam;
 
-#if 0
-        sub_80047A0(transform->rotation & ONE_CYCLE, transform->width, transform->height, big.affineIndex);
+#if 01
+        sub_80047A0(transform->rotation & ONE_CYCLE, transform->width, transform->height,
+                    big.affineIndex);
 #else
         big.unk0[4] = COS_24_8(transform->rotation & ONE_CYCLE);
         big.unk0[5] = SIN_24_8(transform->rotation & ONE_CYCLE);
