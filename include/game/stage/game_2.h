@@ -2,6 +2,7 @@
 #define GUARD_GAME_2_H
 
 #include "global.h"
+#include "sprite.h"
 
 typedef struct {
     /* 0x00 */ s32 x;
