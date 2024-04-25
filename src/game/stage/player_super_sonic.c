@@ -3,6 +3,7 @@
 #include "trig.h"
 #include "sakit/globals.h"
 
+#include "game/stage/spawn_positions.h"
 #include "game/stage/camera.h"
 #include "game/stage/player.h"
 
@@ -19,7 +20,6 @@
 #include "constants/move_states.h"
 #include "constants/songs.h"
 
-bool32 sub_802BA8C();
 static void Task_802BC10(void);
 static void sub_802BE1C(struct SuperSonic *sonic);
 static void sub_802C358(struct SuperSonic *sonic);
@@ -40,9 +40,6 @@ static void sub_802C988(struct SuperSonic *sonic);
 #define EXTRA_BOSS__INITIAL_RING_COUNT  50
 
 struct Task *sSuperSonicTask = NULL;
-
-extern const Vec2_32 gUnknown_080D650C[NUM_LEVEL_IDS];
-extern const Vec2_32 gUnknown_080D661C[NUM_LEVEL_IDS];
 
 const TileInfo gAnims_SuperSonic_080D69C8[23] = {
     { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 2 },

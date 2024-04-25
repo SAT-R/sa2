@@ -93,8 +93,6 @@ SECTIONS
         build/sa2/src/sprite_2.o(.text);
         build/sa2/asm/sprite_2.o(.text);
         build/sa2/src/sprite_3.o(.text);
-        build/sa2/asm/sprite_3.o(.text);
-        build/sa2/src/sprite_3_2.o(.text);
         build/sa2/src/animation_commands.o(.text);
         build/sa2/asm/bg_triangles_unused_0.o(.text);
         build/sa2/src/bg_triangles_0.o(.text);
@@ -146,7 +144,6 @@ SECTIONS
         build/sa2/src/game/multiplayer/unknown_task.o(.text);
         build/sa2/src/game/multiplayer/player_unk_1.o(.text);
         build/sa2/src/game/multiplayer/indicators.o(.text);
-        build/sa2/asm/player_mp_indicators.o(.text);
         build/sa2/src/game/multiplayer/finish.o(.text);
         build/sa2/src/game/multiplayer/player_unk_2.o(.text);
         build/sa2/src/game/game.o(.text);
@@ -175,7 +172,6 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_final_boss.o(.text);
         build/sa2/src/game/stage/background/zone_extra_boss.o(.text);
         build/sa2/src/game/stage/background/callbacks.o(.text);
-        build/sa2/asm/player_super_sonic_data.o(.text);
         build/sa2/src/game/stage/collision.o(.text);
         build/sa2/src/game/stage/game_2.o(.text);
         build/sa2/src/game/stage/dust_effect_braking.o(.text);
@@ -217,6 +213,7 @@ SECTIONS
         build/sa2/src/game/bosses/boss_3.o(.text);
         build/sa2/src/game/bosses/boss_4.o(.text);
         build/sa2/src/game/bosses/boss_5.o(.text);
+        build/sa2/src/game/bosses/boss_6.o(.text);
         build/sa2/asm/boss_6.o(.text);
         build/sa2/asm/boss_7.o(.text);
         build/sa2/asm/boss_8.o(.text);
@@ -438,10 +435,10 @@ SECTIONS
         build/sa2/src/game/stage/background/zone_7_1.o(.rodata);
         build/sa2/src/game/stage/background/zone_7_2.o(.rodata);
         build/sa2/src/game/stage/background/zone_final.o(.rodata);
-        build/sa2/src/data/tilemap_table.o(.rodata);
-        build/sa2/src/game/stage/data.o(.rodata);
-
-        build/sa2/asm/player_super_sonic_data.o(.rodata);
+        build/sa2/src/game/stage/tilemap_table.o(.rodata);
+        build/sa2/src/game/stage/collision.o(.rodata);
+        build/sa2/src/game/stage/game_2.o(.rodata);
+        build/sa2/src/game/stage/spawn_positions.o(.rodata);
         build/sa2/src/game/stage/rings_scatter.o(.rodata);
         build/sa2/src/game/stage/player.o(.rodata);
         build/sa2/src/game/stage/player_super_sonic.o(.rodata);

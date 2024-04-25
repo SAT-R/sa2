@@ -2,6 +2,7 @@
 #define GUARD_STAGE_COLLISION_H
 
 #include "global.h"
+#include "core.h"
 
 typedef s32 (*Func801F100)(s32, s32, s32);
 s32 sub_801EB44(s32, s32, s32);
@@ -17,5 +18,7 @@ s32 sub_801E4E4(s32, s32, s32, s32, u8 *, Func801F07C);
 s32 sub_801E6D4(s32, s32, s32, s32, u8 *, Func801F07C);
 
 s32 sub_801F100(s32, s32, s32, s32, Func801F100);
+
+extern const Collision *const gCollisionTable[];
 
 #endif // GUARD_STAGE_COLLISION_H

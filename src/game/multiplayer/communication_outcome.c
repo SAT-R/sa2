@@ -1,16 +1,19 @@
 #include "global.h"
 #include "core.h"
-#include "data.h"
-#include "game/multiplayer/communication_outcome.h"
-#include "game/multiplayer/multipak_connection.h"
 #include "task.h"
 #include "sprite.h"
+#include "multi_sio.h"
+#include "flags.h"
+
+#include "lib/m4a.h"
+
+#include "game/character_select.h"
 #include "game/save.h"
 #include "game/title_screen.h"
-#include "multi_sio.h"
-#include "lib/m4a.h"
-#include "flags.h"
-#include "game/character_select.h"
+#include "game/multiplayer/communication_outcome.h"
+#include "game/multiplayer/multipak_connection.h"
+
+#include "game/stage/tilemap_table.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

@@ -1,21 +1,21 @@
 #include "global.h"
+#include "core.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 
-#include "core.h"
-#include "data.h"
-#include "data/sprite_data.h"
 #include "flags.h"
 #include "sprite.h"
-#include "data/sprite_data.h"
 #include "task.h"
 
 #include "sakit/globals.h"
 #include "sakit/palette_loader.h"
 
 #include "game/entity.h"
+#include "game/stage/spawn_positions.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+
+#include "data/sprite_data.h"
 
 #include "constants/animations.h"
 #include "constants/anim_commands.h"
@@ -42,7 +42,6 @@ static void Task_8063228(struct Task *);
 
 extern u32 gCheckpointTime;
 extern const struct SpriteTables *gUnknown_03002794;
-extern const u32 gUnknown_080D63FC[34][2];
 
 #define CHECKPOINT_BALL_TILE_COUNT 4
 

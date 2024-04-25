@@ -2,6 +2,7 @@
 #define GUARD_SPRITE_H
 
 #include "global.h"
+#include "malloc_vram.h"
 
 typedef u16 AnimId;
 

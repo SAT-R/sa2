@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-#include "data/tilemap_table.h"
+#include "data/tilemap_data.h"
 
 #include "constants/tilemaps.h"
 #include "constants/zones.h"

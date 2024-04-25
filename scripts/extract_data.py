@@ -34,10 +34,10 @@ with open('baserom.gba', 'rb') as rom:
     #     print(f"Q_24_8({read_s32(rom) / 256}), ")
     # for i in range(length // 2):
     #     print(f"{read_s16(rom)}, ")
-    for i in range(length // 32):
+    for i in range(length // 8):
         print("{ ", end="")
-        for j in range(32):
-            print(f"{(read_u8(rom))}" + ", ", end="")
+        for j in range(2):
+            print(f"{(read_s32(rom))}" + ", ", end="")
         print("},")
 
     # print("{ ", end="")

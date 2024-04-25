@@ -1,6 +1,8 @@
 #ifndef GUARD_ENEMY_PROJECTILE_H
 #define GUARD_ENEMY_PROJECTILE_H
 
+#include "sprite.h"
+
 /* TODO: move to projectile file */
 typedef struct {
     /* 0x00 */ u16 numTiles;

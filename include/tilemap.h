@@ -38,6 +38,4 @@ struct MapHeader {
     /* 0x22 */ u16 mapHeight; // in Metatiles
 };
 
-extern const Tilemap *const gTilemaps[];
-
 #endif // GUARD_TILEMAP_H

@@ -1,7 +1,7 @@
 #ifndef GUARD_TILEMAP_TABLE_H
 #define GUARD_TILEMAP_TABLE_H
 
-#include "data.h"
+#include "tilemap.h"
 
 extern const struct MapHeader MapHeader_zone_1_act_1_fg0;
 extern const struct MapHeader MapHeader_zone_1_act_1_fg1;

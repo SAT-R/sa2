@@ -313,8 +313,10 @@ static void Task_ScreenMain(void)
         fade->bldCnt = 0x3FFF;
         fade->bldAlpha = 0;
         m4aSongNumStart(SE_SELECT);
+#ifndef JAPAN
         MultiSioStop();
         MultiSioInit(0);
+#endif
         gCurTask->main = Task_FadeOutToSelectedMode;
     } else if (gPressedKeys & B_BUTTON) {
         fade = &modeScreen->fade;

@@ -1,6 +1,5 @@
 #include "core.h"
 #include "global.h"
-#include "data.h"
 #include "lib/m4a.h"
 #include "malloc_ewram.h"
 #include "multi_sio.h"

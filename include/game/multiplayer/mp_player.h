@@ -2,6 +2,7 @@
 #define GUARD_MULTIPLAYER_MP_PLAYER_H
 
 #include "global.h"
+#include "sprite.h"
 
 typedef struct {
     // TODO: Verify that this is Sprite!

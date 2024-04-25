@@ -9,7 +9,6 @@
 #include "task.h"
 #include "core.h"
 
-#include "data.h"
 #include "flags.h"
 #include "game/entity.h"
 #include "sprite.h"

@@ -214,6 +214,9 @@ include graphics.mk
 chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba 
 	$(GFX) $< $@ -search 1
 
+data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
+	$(GFX) $< $@ -search 1
+
 %interactables.bin: %interactables.csv
 	$(EPOS) $< $@ -entities INTERACTABLES -header "./include/constants/interactables.h"
 
