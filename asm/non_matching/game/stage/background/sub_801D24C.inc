@@ -1,15 +1,8 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-
-.text
 .syntax unified
-.arm
-
-.if 0
-	thumb_func_start sub_801D24C
-sub_801D24C: @ 0x0801D24C
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -384,4 +377,4 @@ _0801D4B4:
 _0801D528: .4byte gUnknown_080D5C02
 _0801D52C: .4byte gBgPalette
 _0801D530: .4byte gFlags
-.endif
+.syntax divided

@@ -109,9 +109,9 @@ void CreateStageBg_Zone6_Boss(void)
     DrawBackground(background);
 }
 
-#if 01
 // (82.58%) https://decomp.me/scratch/tB3Bs
-void sub_801D24C(u8 p0, s32 p1, u8 p2)
+NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc",
+         void sub_801D24C(u8 p0, s32 p1, u8 p2))
 {
     s16 r6;
     u16 *hOffsets;
@@ -232,4 +232,4 @@ void sub_801D24C(u8 p0, s32 p1, u8 p2)
 
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 }
-#endif
+END_NONMATCH
