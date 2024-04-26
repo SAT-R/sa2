@@ -450,7 +450,7 @@ void sub_8091CB0(void)
     } else if (scene->unk35C == 10) {
         sub_80928C8(scene);
         gDispCnt |= 0x2000;
-        gWinRegs[0] = 0xA0;
+        gWinRegs[0] = WIN_RANGE(0, DISPLAY_HEIGHT);
         gWinRegs[2] = 0xF0;
         gWinRegs[4] |= 0x3F;
         gWinRegs[5] |= 0x1F;

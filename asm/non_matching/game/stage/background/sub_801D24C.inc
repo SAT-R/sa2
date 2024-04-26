@@ -1,14 +1,8 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-
-.text
 .syntax unified
-.arm
-
-	thumb_func_start sub_801D24C
-sub_801D24C: @ 0x0801D24C
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -17,10 +11,10 @@ sub_801D24C: @ 0x0801D24C
 	sub sp, #8
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
-	str r0, [sp]
+	str r0, [sp]            @ sp00 = p0
 	lsls r2, r2, #0x18
 	lsrs r2, r2, #0x18
-	mov sb, r2
+	mov sb, r2              @ sb = p2
 	ldr r4, _0801D374 @ =gFlags
 	ldr r0, [r4]
 	movs r3, #4
@@ -50,14 +44,14 @@ sub_801D24C: @ 0x0801D24C
 	ldr r0, _0801D394 @ =gStageTime
 	ldr r0, [r0]
 	ldr r5, _0801D398 @ =0x000003FF
-	mov ip, r5
+	mov ip, r5          @ ip = 0x3FF
 	adds r5, r0, #0
-	mov r6, ip
-	ands r5, r6
+	mov r6, ip          @ r6 = ip = 0x3FF
+	ands r5, r6         @ r5 = stageTime & 0x3FF
 	lsrs r7, r0, #1
-	ands r7, r6
+	ands r7, r6         @ r7 = stageTime2 = ((gStageTime >> 1) & 0x3FF);
 	lsls r2, r1, #0x10
-	asrs r1, r2, #0xf
+	asrs r1, r2, #0xf   @ r1 = (p1 * 2)
 	asrs r0, r2, #0x11
 	adds r1, r1, r0
 	movs r0, #0x9f
@@ -69,12 +63,12 @@ sub_801D24C: @ 0x0801D24C
 	ble _0801D2C2
 	movs r6, #0x9f
 _0801D2C2:
-	mov r0, sb
+	mov r0, sb      @ r0 = sb = p2
 	cmp r0, #0
 	bne _0801D2CA
 	b _0801D3D6
 _0801D2CA:
-	asrs r0, r2, #0x14
+	asrs r0, r2, #0x14  @ r0 = (p1 >> 4)
 	movs r1, #0x10
 	subs r0, r1, r0
 	lsls r0, r0, #8
@@ -95,12 +89,12 @@ _0801D2CA:
 	movs r6, #0xff
 	adds r2, r1, #0
 _0801D2F2:
-	mov r0, sb
+	mov r0, sb      @ r0 = sb = 0
 	strh r0, [r3]
 	adds r3, #2
 	lsls r1, r4, #0x10
 	asrs r1, r1, #0x10
-	mov r4, r8
+	mov r4, r8      @ r4 = r8 -15
 	subs r0, r4, r1
 	ands r0, r6
 	strh r0, [r3]
@@ -122,7 +116,7 @@ _0801D31C:
 	mov ip, r6
 	lsls r0, r5, #0x10
 	asrs r0, r0, #0x10
-	str r0, [sp, #4]
+	str r0, [sp, #4]        @ sp04 = stageTime
 	ldr r0, _0801D398 @ =0x000003FF
 	mov sb, r0
 	movs r2, #0xff
@@ -133,7 +127,7 @@ _0801D332:
 	asrs r1, r1, #0x10
 	lsls r0, r1, #4
 	adds r0, r0, r7
-	ldr r2, [sp, #4]
+	ldr r2, [sp, #4]        @ r2 = stageTime
 	adds r0, r0, r2
 	mov r6, sb
 	ands r0, r6
@@ -145,7 +139,7 @@ _0801D332:
 	adds r0, #1
 	lsls r2, r1, #1
 	subs r0, r0, r2
-	mov r6, r8
+	mov r6, r8          @ r6 = r8 = 0xFF
 	ands r0, r6
 	strh r0, [r3]
 	adds r3, #2
@@ -204,25 +198,25 @@ _0801D3BE:
 	ble _0801D332
 	b _0801D498
 _0801D3D6:
-	asrs r0, r2, #0x15
+	asrs r0, r2, #0x15      @ r0 = (p1 * 2)
 	movs r1, #0x10
-	subs r0, r1, r0
+	subs r0, r1, r0         @ r0 = 16 - (p1 * 2)
 	lsls r0, r0, #8
 	orrs r0, r1
-	mov r2, r8
-	strh r0, [r2, #2]
-	lsls r6, r6, #0x10
+	mov r2, r8              @ r2 = r8 gBldRegs
+	strh r0, [r2, #2]       @ gBldRegs.bldAlpha = ((16 - (p1 * 2)) << 8) | 16
+	lsls r6, r6, #0x10      @ r6 = (r6 << 16)
 	movs r4, #0
-	mov sl, r6
+	mov sl, r6              @ sl = (r6 << 16)
 	cmp r6, #0
 	ble _0801D44C
 	ldr r0, _0801D478 @ =gSineTable
 	mov sb, r0
 	lsls r0, r5, #0x10
 	asrs r5, r0, #0x10
-	mov r8, ip
+	mov r8, ip              @ r8 = ip = 0x3FF
 	movs r1, #0xff
-	mov ip, r1
+	mov ip, r1              @ ip = 0xFF
 _0801D3FC:
 	lsls r1, r4, #0x10
 	asrs r1, r1, #0x10
@@ -269,8 +263,8 @@ _0801D44C:
 	asrs r0, r1, #0x10
 	cmp r0, #0x9e
 	bgt _0801D498
-	mov r5, sl
-	asrs r2, r5, #0x10
+	mov r5, sl          @ r5 = sl (r6 << 16)
+	asrs r2, r5, #0x10  @ r2 = r6
 	movs r5, #0xff
 _0801D45A:
 	movs r0, #0
@@ -323,19 +317,19 @@ _0801D4A2:
 	mov r8, r4
 _0801D4B4:
 	lsls r3, r5, #0x10
-	asrs r3, r3, #0x10
+	asrs r3, r3, #0x10  @ r3 = i
 	lsls r1, r3, #1
 	adds r1, r1, r3
 	adds r0, r6, #0
 	adds r0, #0x30
 	adds r0, r1, r0
-	ldrb r7, [r0]
-	ldr r5, [sp]
+	ldrb r7, [r0]       @ r7 = gUnknown_080D5C02[24 + i*3]
+	ldr r5, [sp]        @ r5 = p0
 	adds r4, r7, #0
 	muls r4, r5, r4
-	asrs r4, r4, #4
+	asrs r4, r4, #4     @ r4 = (p0 * gUnknown_080D5C02[24 + i*3]) >> 4;
 	mov r0, ip
-	ands r4, r0
+	ands r4, r0         @ r4 &= 0x1F
 	adds r0, r6, #0
 	adds r0, #0x31
 	adds r0, r1, r0
@@ -347,11 +341,11 @@ _0801D4B4:
 	ands r2, r5
 	add r1, sb
 	ldrb r0, [r1]
-	ldr r1, [sp]
+	ldr r1, [sp]        @ r1 = p0
 	muls r0, r1, r0
 	asrs r0, r0, #4
 	ands r0, r5
-	adds r1, r3, #0
+	adds r1, r3, #0     @ r1 = r3 = i
 	adds r1, #0xf0
 	lsls r1, r1, #1
 	add r1, r8
@@ -383,4 +377,4 @@ _0801D4B4:
 _0801D528: .4byte gUnknown_080D5C02
 _0801D52C: .4byte gBgPalette
 _0801D530: .4byte gFlags
-
+.syntax divided
