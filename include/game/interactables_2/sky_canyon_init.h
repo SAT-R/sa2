@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "task.h"
+#include "sprite.h"
 
 typedef struct {
     /* 0x00 */ Sprite spring;

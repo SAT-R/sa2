@@ -48,9 +48,9 @@ typedef struct {
 
     s32 unk10;
     s32 unk14;
-    s32 unk18;
+    u32 unk18;
     s16 unk1C;
-    s16 unk1E;
+    u16 unk1E;
     s16 unk20;
     u16 unk22;
     u8 unk24;
@@ -60,7 +60,7 @@ typedef struct {
     u8 unk28;
     u8 unk29;
     u8 unk2A;
-    u8 unk2B;
+    s8 unk2B;
     s32 unk2C;
     s32 unk30;
     s32 unk34;
@@ -470,61 +470,370 @@ void sub_8046244(void)
 
 extern const u8 gUnknown_080D8030[];
 
-// void sub_8046328(EggGoRound *boss)
+void sub_8046328(EggGoRound *boss)
+{
+    u8 i, j;
+    Sprite *s = &boss->unk1C4;
+    s32 x, y;
+    u32 idx;
+
+    s->x = I(boss->unk4) - gCamera.x;
+    s->y = I(boss->unk8) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    s = &boss->unk1FC;
+    s->x = I(boss->unk4) - gCamera.x;
+    s->y = I(boss->unk8) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    for (i = 0; i < 4; i++) {
+        idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
+        s = &boss->unk22C;
+        for (j = 0; j < 3; j++) {
+            s->x = (I(boss->unk4) - gCamera.x)
+                + ((gUnknown_080D8030[j]
+                    * COS(CLAMP_SIN_PERIOD(idx + (j * boss->unk2B))))
+                   >> 14);
+            s->y = (I(boss->unk8) - gCamera.y)
+                + ((gUnknown_080D8030[j]
+                    * SIN(CLAMP_SIN_PERIOD(idx + (j * boss->unk2B))))
+                   >> 14);
+            DisplaySprite(s);
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        s = &boss->unk25C[i].s;
+        UpdateSpriteAnimation(s);
+    }
+
+    for (i = 0; i < 4; i++) {
+        u8 temp2 = gUnknown_080D8030[3];
+        idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
+        idx = CLAMP_SIN_PERIOD(idx + (boss->unk2B * 3));
+        s = &boss->unk25C[i].s;
+
+        s->x = (I(boss->unk4) - gCamera.x) + ((COS(idx) * temp2) >> 14);
+        s->y = (I(boss->unk8) - gCamera.y) + ((SIN(idx) * temp2) >> 14);
+
+        if (boss->unk1E != 0 && boss->unk24 == 0 && (i & 1)
+            && (u8)(boss->unk25 - 1) <= 1) {
+            SpriteTransform *transform = &boss->unk25C[i].transform;
+            transform->rotation = I(boss->unk18);
+            transform->width = 0x100;
+            transform->height = 0x100;
+            transform->x = s->x;
+            transform->y = s->y;
+
+            s->unk10 = gUnknown_030054B8++ | 0x1020;
+            sub_8004860(s, transform);
+        } else {
+            s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+        }
+        DisplaySprite(s);
+    }
+}
+
+void sub_804655C(EggGoRound *boss, u8 val)
+{
+    Sprite *s = &boss->unk1C4;
+    u8 temp;
+    u8 i, j;
+    u32 idx;
+
+    s->x = I(boss->unk4) - gCamera.x;
+    s->y = I(boss->unk8) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    s = &boss->unk1FC;
+    s->x = I(boss->unk4) - gCamera.x;
+    s->y = I(boss->unk8) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    if (boss->unk0 < 0x30 && val != 0) {
+        temp = (Div(48 - boss->unk0, 16)) + 1;
+    } else {
+        temp = 0;
+    }
+
+    for (i = 0; i < 4; i++) {
+        idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
+        s = &boss->unk22C;
+        for (j = temp; j < 3; j++) {
+            if (j & 1) {
+                s->x = (I(boss->unk4) - gCamera.x)
+                    + ((gUnknown_080D8030[j]
+                        * COS(CLAMP_SIN_PERIOD(idx + (j * boss->unk2B))))
+                       >> 14);
+                s->y = (I(boss->unk8) - gCamera.y)
+                    + ((gUnknown_080D8030[j]
+                        * SIN(CLAMP_SIN_PERIOD(idx + (j * boss->unk2B))))
+                       >> 14);
+            } else {
+                s->x = (I(boss->unk4) - gCamera.x)
+                    + ((gUnknown_080D8030[j]
+                        * COS(CLAMP_SIN_PERIOD(idx - (j * boss->unk2B))))
+                       >> 14);
+                s->y = (I(boss->unk8) - gCamera.y)
+                    + ((gUnknown_080D8030[j]
+                        * SIN(CLAMP_SIN_PERIOD(idx - (j * boss->unk2B))))
+                       >> 14);
+            }
+
+            DisplaySprite(s);
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        s = &boss->unk25C[i].s;
+        UpdateSpriteAnimation(s);
+    }
+
+    for (i = 0; i < 4; i++) {
+        u8 temp2 = gUnknown_080D8030[3];
+        idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
+        idx = CLAMP_SIN_PERIOD(idx + (boss->unk2B * 3));
+        s = &boss->unk25C[i].s;
+
+        s->x = (I(boss->unk4) - gCamera.x) + ((COS(idx) * temp2) >> 14);
+        s->y = (I(boss->unk8) - gCamera.y) + ((SIN(idx) * temp2) >> 14);
+
+        if (boss->unk1E != 0 && boss->unk24 == 0 && (i & 1)
+            && (u8)(boss->unk25 - 1) <= 1) {
+            SpriteTransform *transform = &boss->unk25C[i].transform;
+            transform->rotation = I(boss->unk18);
+            transform->width = 0x100;
+            transform->height = 0x100;
+            transform->x = s->x;
+            transform->y = s->y;
+
+            s->unk10 = gUnknown_030054B8++ | 0x1020;
+            sub_8004860(s, transform);
+        } else {
+            s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+        }
+        DisplaySprite(s);
+    }
+}
+
+extern const u8 gUnknown_080D8044[];
+extern const u16 gUnknown_080D804E[];
+extern const u16 gUnknown_080D8076[];
+
+// void sub_804683C(EggGoRound *boss)
 // {
-//     u8 i, j;
-//     Sprite *s = &boss->unk1FC;
-//     EggGoRound_unk25C *unk25C;
-//     s32 sin, idx;
-//     s->x = I(boss->unk4) - gCamera.x;
-//     s->y = I(boss->unk8) - gCamera.y;
-//     UpdateSpriteAnimation(s);
-//     DisplaySprite(s);
+//     Sprite *s;
 
-//     s = &boss->unk1FC;
-//     s->x = I(boss->unk4) - gCamera.x;
-//     s->y = I(boss->unk8) - gCamera.y;
-//     UpdateSpriteAnimation(s);
-//     DisplaySprite(s);
+//     if (boss->unk1E != 0) {
+//         if (boss->unk24 != 0) {
+//             if (--boss->unk24 == 0) {
+//                 switch (boss->unk25) {
+//                     case 0:
+//                         m4aSongNumStart(SE_255);
+//                         s = &boss->unk25C[0].s;
+//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+//                         s->variant = 3;
+//                         s->prevVariant = -1;
 
-//     s = &boss->unk22C;
-//     for (i = 0; i < 4; i++) {
-//         for (j = 0; j < 3; j++) {
-//             idx = CLAMP_SIN_PERIOD((i * 256) + (j * boss->unk2B));
-//             sin = COS(idx) >> 0xE;
-//             s->x = I(boss->unk4) - gCamera.x + (gUnknown_080D8030[j] * sin);
-//             sin = SIN(idx) >> 0xE;
-//             s->y = I(boss->unk8) - gCamera.y + (gUnknown_080D8030[j] * sin);
-//             DisplaySprite(s);
-//         }
-//     }
+//                         s = &boss->unk25C[2].s;
+//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+//                         s->variant = 3;
+//                         s->prevVariant - 1;
+//                         break;
 
-//     for (i = 0; i < 4; i++) {
-//         s = &boss->unk25C[i];
-//         UpdateSpriteAnimation(s);
-//     }
+//                     case 1:
+//                         m4aSongNumStart(SE_255);
+//                         s = &boss->unk25C[1].s;
+//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+//                         s->variant = 1;
+//                         s->prevVariant = -1;
 
-//     for (i = 0; i < 4; i++) {
-//         idx = CLAMP_SIN_PERIOD((i * 256) + (boss->unk2B * 3));
-//         unk25C = &boss->unk25C[i];
-//         sin = (COS(idx) * 66) >> 0xE;
-//         unk25C->s.x = I(boss->unk4) - gCamera.x + (sin);
-//         sin = (SIN(idx) * 66) >> 0xE;
-//         unk25C->s.y = I(boss->unk8) - gCamera.y + (sin);
+//                         s = &boss->unk25C[3].s;
+//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+//                         s->variant = 1;
+//                         s->prevVariant - 1;
+//                         break;
 
-//         if (boss->unk1E == 0 || boss->unk24 != 0 || !(i & 1)
-//             || (u8)(boss->unk25 - 1) > 1) {
-//             unk25C->s.unk10 = SPRITE_FLAG(PRIORITY, 1);
+//                     case 2:
+//                         m4aSongNumStart(SE_255);
+//                         s = &boss->unk25C[0].s;
+//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+//                         s->variant = 3;
+//                         s->prevVariant = -1;
+
+//                         s = &boss->unk25C[2].s;
+//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+//                         s->variant = 3;
+//                         s->prevVariant - 1;
+
+//                         s = &boss->unk25C[1].s;
+//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+//                         s->variant = 1;
+//                         s->prevVariant - 1;
+
+//                         s = &boss->unk25C[3].s;
+//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+//                         s->variant = 1;
+//                         s->prevVariant - 1;
+//                         break;
+//                 }
+//             }
 //         } else {
-//             unk25C->transform.rotation = I(boss->unk18);
-//             unk25C->transform.width = 256;
-//             unk25C->transform.height = 256;
-//             unk25C->transform.x = unk25C->s.x;
-//             unk25C->transform.y = unk25C->s.y;
+//             if (boss->unk27 == 0) {
+//                 u16 val4;
+//                 u16 val;
 
-//             unk25C->s.unk10 = gUnknown_030054B8++ | 0x1020;
-//             sub_8004860(&unk25C->s, &unk25C->transform);
+//                 // OPTIONS
+//                 // Most accurate
+//                 // 1.
+//                 val = gUnknown_080D804E[({
+//                     u32 val2 = boss->unk26;
+//                     u8 val3 = boss->unk28;
+//                     if (val3 < 5) {
+//                         val2 = val2 + 20;
+//                     }
+//                     val2;
+//                 })];
+
+//                 // 2.
+//                 // val = boss->unk28 < 5 ? gUnknown_080D804E[boss->unk26 + 10] :
+//                 gUnknown_080D804E[boss->unk26];
+
+//                 // 3.
+//                 // if (boss->unk28 < 5) {
+//                 //     val = gUnknown_080D804E[boss->unk26 + 10];
+//                 // } else {
+//                 //     val = gUnknown_080D804E[boss->unk26];
+//                 // }
+
+//                 // 4.
+//                 // val = gUnknown_080D804E[boss->unk26];
+//                 // if (boss->unk28 < 5) {
+//                 //     val = gUnknown_080D804E[boss->unk26 + 10];
+//                 // }
+
+//                 // 5.
+//                 // val = gUnknown_080D804E[boss->unk28 < 5 ? boss->unk26 + 10 :
+//                 boss->unk26];
+
+//                 // 6.
+//                 // val = gUnknown_080D804E[something(boss->unk26, boss->unk28)];
+
+//                 boss->unk20 += val;
+
+//                 val4 = gUnknown_080D8076[({
+//                         u32 val2 = boss->unk26;
+//                         u8 val3 = boss->unk28;
+//                         if (val3 < 5) {
+//                             val2 = val2 + 20;
+//                         }
+//                         val2;
+//                 })];
+//                 if (boss->unk20
+//                     == val4) {
+//                     boss->unk27 = 1;
+//                 }
+//             } else if (boss->unk27 == 1) {
+//                 u16 val = gUnknown_080D804E[({
+//                     u32 val2 = boss->unk26;
+//                     u8 val3 = boss->unk28;
+//                     if (val3 < 5) {
+//                         val2 = val2 + 20;
+//                     }
+//                     val2;
+//                 })];
+//                 boss->unk20 -= val;
+
+//                 if (boss->unk20 == 0) {
+//                     boss->unk27 = 2;
+//                     boss->unk18 = 0;
+//                     boss->unk20 = 0;
+//                 }
+//             }
 //         }
-//         DisplaySprite(&unk25C->s);
+
+//         boss->unk18 = (boss->unk18 + boss->unk20) & (0x3FFFF);
+//         if (--boss->unk1E == 0) {
+//             u8 i;
+//             for (i = 0; i < 4; i++) {
+//                 s = &boss->unk25C[i].s;
+//                 s->graphics.anim = gUnknown_080D8034[i & 1].anim;
+//                 s->variant = 0;
+//                 s->prevVariant = -1;
+//             }
+//             boss->unk27 = 0;
+//             boss->unk18 = 0;
+//             boss->unk20 = 0;
+//         }
+//     } else {
+//         u16 val;
+//         boss->unk25 = gUnknown_080D8044[Mod(PseudoRandom32() & 0xFF, 10)];
+//         boss->unk26 = Mod(PseudoRandom32() & 0xFF, 10);
+
+//         val = gUnknown_080D804E[({
+//             u32 val2 = boss->unk26;
+//             u8 val3 = boss->unk28;
+//             if (val3 < 5) {
+//                 val2 = val2 + 20;
+//             }
+//             val2;
+//         })];
+//         boss->unk1E = val;
+//         boss->unk24 = 0x1E;
+
+//         switch (boss->unk25) {
+//             case 0:
+//                 m4aSongNumStart(SE_254);
+//                 s = &boss->unk25C[0].s;
+//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+//                 s->variant = 2;
+//                 s->prevVariant = -1;
+
+//                 s = &boss->unk25C[2].s;
+//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+//                 s->variant = 2;
+//                 s->prevVariant - 1;
+//                 break;
+
+//             case 1:
+//                 m4aSongNumStart(SE_254);
+//                 s = &boss->unk25C[1].s;
+//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+//                 s->variant = 2;
+//                 s->prevVariant = -1;
+
+//                 s = &boss->unk25C[3].s;
+//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+//                 s->variant = 2;
+//                 s->prevVariant - 1;
+//                 break;
+
+//             case 2:
+//                 m4aSongNumStart(SE_254);
+//                 s = &boss->unk25C[0].s;
+//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+//                 s->variant = 2;
+//                 s->prevVariant = -1;
+
+//                 s = &boss->unk25C[2].s;
+//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+//                 s->variant = 2;
+//                 s->prevVariant - 1;
+
+//                 s = &boss->unk25C[1].s;
+//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+//                 s->variant = 2;
+//                 s->prevVariant - 1;
+
+//                 s = &boss->unk25C[3].s;
+//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+//                 s->variant = 2;
+//                 s->prevVariant - 1;
+//                 break;
+//         }
 //     }
 // }
