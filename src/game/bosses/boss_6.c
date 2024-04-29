@@ -51,7 +51,7 @@ typedef struct {
     u32 unk18;
     s16 unk1C;
     u16 unk1E;
-    s16 unk20;
+    u16 unk20;
     u16 unk22;
     u8 unk24;
     u8 unk25;
@@ -61,10 +61,7 @@ typedef struct {
     u8 unk29;
     u8 unk2A;
     s8 unk2B;
-    s32 unk2C;
-    s32 unk30;
-    s32 unk34;
-    s32 unk38;
+    s32 unk2C[4];
     EggGoRound_unk3C unk3C[3];
 
     EggGoRound_unk6C unk6C;
@@ -143,10 +140,10 @@ void CreateEggGoRound(void)
     boss->unk20 = 0;
     boss->unk24 = 0;
     boss->unk25 = 0;
-    boss->unk2C = 0;
-    boss->unk30 = 0;
-    boss->unk34 = 0;
-    boss->unk38 = 0;
+    boss->unk2C[0] = 0;
+    boss->unk2C[1] = 0;
+    boss->unk2C[2] = 0;
+    boss->unk2C[3] = 0;
     boss->unk0 = 0x80;
     boss->unk10 = 0xC00;
     boss->unk2B = 0xE0;
@@ -621,219 +618,236 @@ void sub_804655C(EggGoRound *boss, u8 val)
 }
 
 extern const u8 gUnknown_080D8044[];
-extern const u16 gUnknown_080D804E[];
-extern const u16 gUnknown_080D8076[];
 
-// void sub_804683C(EggGoRound *boss)
+extern const u16 gUnknown_080D804E[][10];
+extern const u16 gUnknown_080D809E[][10];
+extern const u16 gUnknown_080D8076[][10];
+
+void sub_804683C(EggGoRound *boss)
+{
+    Sprite *s;
+
+    if (boss->unk1E != 0) {
+        if (boss->unk24 != 0) {
+            if (--boss->unk24 == 0) {
+                switch (boss->unk25) {
+                    case 0:
+                        m4aSongNumStart(SE_255);
+                        s = &boss->unk25C[0].s;
+                        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+                        s->variant = 3;
+                        s->prevVariant = -1;
+
+                        s = &boss->unk25C[2].s;
+                        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+                        s->variant = 3;
+                        s->prevVariant = -1;
+                        break;
+
+                    case 1:
+                        m4aSongNumStart(SE_255);
+                        s = &boss->unk25C[1].s;
+                        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+                        s->variant = 1;
+                        s->prevVariant = -1;
+
+                        s = &boss->unk25C[3].s;
+                        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+                        s->variant = 1;
+                        s->prevVariant = -1;
+                        break;
+
+                    case 2:
+                        m4aSongNumStart(SE_255);
+                        s = &boss->unk25C[0].s;
+                        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+                        s->variant = 3;
+                        s->prevVariant = -1;
+
+                        s = &boss->unk25C[2].s;
+                        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+                        s->variant = 3;
+                        s->prevVariant = -1;
+
+                        s = &boss->unk25C[1].s;
+                        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+                        s->variant = 1;
+                        s->prevVariant = -1;
+
+                        s = &boss->unk25C[3].s;
+                        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+                        s->variant = 1;
+                        s->prevVariant = -1;
+                        break;
+                }
+            }
+        } else {
+            if (boss->unk27 == 0) {
+                boss->unk20 += gUnknown_080D809E[(boss->unk28 < 5) ? 1 : 0][boss->unk26];
+                if (boss->unk20
+                    == gUnknown_080D8076[boss->unk28 < 5 ? 1 : 0][boss->unk26]) {
+                    boss->unk27 = 1;
+                }
+            } else if (boss->unk27 == 1) {
+                boss->unk20 -= gUnknown_080D809E[boss->unk28 < 5 ? 1 : 0][boss->unk26];
+
+                if (boss->unk20 == 0) {
+                    boss->unk27 = 2;
+                    boss->unk18 = 0;
+                    boss->unk20 = 0;
+                }
+            }
+        }
+
+        boss->unk18 = (boss->unk18 + boss->unk20) & (0x3FFFF);
+        if (--boss->unk1E == 0) {
+            u8 i;
+            for (i = 0; i < 4; i++) {
+                s = &boss->unk25C[i].s;
+                s->graphics.anim = gUnknown_080D8034[i & 1].anim;
+                s->variant = 0;
+                s->prevVariant = -1;
+            }
+            boss->unk27 = 0;
+            boss->unk18 = 0;
+            boss->unk20 = 0;
+        }
+    } else {
+        boss->unk25 = gUnknown_080D8044[Mod(PseudoRandom32() & 0xFF, 10)];
+        boss->unk26 = Mod(PseudoRandom32() & 0xFF, 10);
+
+        boss->unk1E = gUnknown_080D804E[boss->unk28 < 5 ? 1 : 0][boss->unk26];
+        boss->unk24 = 0x1E;
+
+        switch (boss->unk25) {
+            case 0:
+                m4aSongNumStart(SE_254);
+                s = &boss->unk25C[0].s;
+                s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+                s->variant = 2;
+                s->prevVariant = -1;
+
+                s = &boss->unk25C[2].s;
+                s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+                s->variant = 2;
+                s->prevVariant = -1;
+                break;
+
+            case 1:
+                m4aSongNumStart(SE_254);
+                s = &boss->unk25C[1].s;
+                s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+                s->variant = 2;
+                s->prevVariant = -1;
+
+                s = &boss->unk25C[3].s;
+                s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+                s->variant = 2;
+                s->prevVariant = -1;
+                break;
+
+            case 2:
+                m4aSongNumStart(SE_254);
+                s = &boss->unk25C[0].s;
+                s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+                s->variant = 2;
+                s->prevVariant = -1;
+
+                s = &boss->unk25C[2].s;
+                s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
+                s->variant = 2;
+                s->prevVariant = -1;
+
+                s = &boss->unk25C[1].s;
+                s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+                s->variant = 2;
+                s->prevVariant = -1;
+
+                s = &boss->unk25C[3].s;
+                s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
+                s->variant = 2;
+                s->prevVariant = -1;
+                break;
+        }
+    }
+}
+
+void sub_8047940(EggGoRound *boss);
+
+// void sub_8046C28(EggGoRound *boss)
 // {
-//     Sprite *s;
-
-//     if (boss->unk1E != 0) {
-//         if (boss->unk24 != 0) {
-//             if (--boss->unk24 == 0) {
-//                 switch (boss->unk25) {
-//                     case 0:
-//                         m4aSongNumStart(SE_255);
-//                         s = &boss->unk25C[0].s;
-//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
-//                         s->variant = 3;
-//                         s->prevVariant = -1;
-
-//                         s = &boss->unk25C[2].s;
-//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
-//                         s->variant = 3;
-//                         s->prevVariant - 1;
-//                         break;
-
-//                     case 1:
-//                         m4aSongNumStart(SE_255);
-//                         s = &boss->unk25C[1].s;
-//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
-//                         s->variant = 1;
-//                         s->prevVariant = -1;
-
-//                         s = &boss->unk25C[3].s;
-//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
-//                         s->variant = 1;
-//                         s->prevVariant - 1;
-//                         break;
-
-//                     case 2:
-//                         m4aSongNumStart(SE_255);
-//                         s = &boss->unk25C[0].s;
-//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
-//                         s->variant = 3;
-//                         s->prevVariant = -1;
-
-//                         s = &boss->unk25C[2].s;
-//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
-//                         s->variant = 3;
-//                         s->prevVariant - 1;
-
-//                         s = &boss->unk25C[1].s;
-//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
-//                         s->variant = 1;
-//                         s->prevVariant - 1;
-
-//                         s = &boss->unk25C[3].s;
-//                         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
-//                         s->variant = 1;
-//                         s->prevVariant - 1;
-//                         break;
-//                 }
-//             }
-//         } else {
-//             if (boss->unk27 == 0) {
-//                 u16 val4;
+//     if (boss->unk28 != 0) {
+//         u32 idx;
+//         s32 x, y;
+//         Sprite *s;
+//         u8 i;
+//         for (i = 0; i < 4; i++) {
+//             idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
+//             idx = CLAMP_SIN_PERIOD(idx + (boss->unk2B * 3));
+//             s = &boss->unk25C[i];
+//             x = I(boss->unk4) + ((COS(idx) * 66) >> 0xE);
+//             y = I(boss->unk8) + ((SIN(idx) * 66) >> 0xE);
+//             if (boss->unk1E == 0) {
+//             here:
 //                 u16 val;
+//                 u8 someBool = FALSE;
+//                 if (gPlayer.unk60 == s) {
+//                     someBool = TRUE;
+//                 }
 
-//                 // OPTIONS
-//                 // Most accurate
-//                 // 1.
-//                 val = gUnknown_080D804E[({
-//                     u32 val2 = boss->unk26;
-//                     u8 val3 = boss->unk28;
-//                     if (val3 < 5) {
-//                         val2 = val2 + 20;
+//                 if (gPlayer.moveState & 2 || !(gPlayer.moveState & 8)
+//                     || gPlayer.unk60 != s) {
+//                     val = 0;
+//                 } else {
+//                     val = sub_800CCB8(s, x, y, &gPlayer);
+//                 }
+
+//                 if (val & 0x10000) {
+//                     if (!someBool && gPlayer.unk60 == s && gPlayer.speedAirY > 0) {
+//                         gPlayer.speedAirX -= 0x500;
+//                         gPlayer.speedGroundX -= 0x500;
 //                     }
-//                     val2;
-//                 })];
 
-//                 // 2.
-//                 // val = boss->unk28 < 5 ? gUnknown_080D804E[boss->unk26 + 10] :
-//                 gUnknown_080D804E[boss->unk26];
+//                     if (boss->unk1E && !boss->unk24 && (i & 1) == 0
+//                         && (boss->unk25 == 0 || boss->unk25 == 2)) {
+//                         sub_8047940(boss);
+//                         sub_800CBA4(&gPlayer);
+//                         return;
+//                     }
 
-//                 // 3.
-//                 // if (boss->unk28 < 5) {
-//                 //     val = gUnknown_080D804E[boss->unk26 + 10];
-//                 // } else {
-//                 //     val = gUnknown_080D804E[boss->unk26];
-//                 // }
-
-//                 // 4.
-//                 // val = gUnknown_080D804E[boss->unk26];
-//                 // if (boss->unk28 < 5) {
-//                 //     val = gUnknown_080D804E[boss->unk26 + 10];
-//                 // }
-
-//                 // 5.
-//                 // val = gUnknown_080D804E[boss->unk28 < 5 ? boss->unk26 + 10 :
-//                 boss->unk26];
-
-//                 // 6.
-//                 // val = gUnknown_080D804E[something(boss->unk26, boss->unk28)];
-
-//                 boss->unk20 += val;
-
-//                 val4 = gUnknown_080D8076[({
-//                         u32 val2 = boss->unk26;
-//                         u8 val3 = boss->unk28;
-//                         if (val3 < 5) {
-//                             val2 = val2 + 20;
+//                     gPlayer.y += 0x200 + (val * 2);
+//                     if ((boss->unk2C[i]) != 0) {
+//                         gPlayer.x += Q(x - (boss->unk2C[i]));
+//                     }
+//                 } else {
+//                     if (someBool) {
+//                         gPlayer.moveState &= ~8;
+//                         gPlayer.unk60 = s;
+//                         if (!(gPlayer.moveState & 0x100)) {
+//                             gPlayer.moveState &= ~0x100;
+//                             gPlayer.moveState |= 2;
 //                         }
-//                         val2;
-//                 })];
-//                 if (boss->unk20
-//                     == val4) {
-//                     boss->unk27 = 1;
-//                 }
-//             } else if (boss->unk27 == 1) {
-//                 u16 val = gUnknown_080D804E[({
-//                     u32 val2 = boss->unk26;
-//                     u8 val3 = boss->unk28;
-//                     if (val3 < 5) {
-//                         val2 = val2 + 20;
 //                     }
-//                     val2;
-//                 })];
-//                 boss->unk20 -= val;
-
-//                 if (boss->unk20 == 0) {
-//                     boss->unk27 = 2;
-//                     boss->unk18 = 0;
-//                     boss->unk20 = 0;
 //                 }
+//                 boss->unk2C[i] = x;
+//             } else {
+//                 if (boss->unk24 != 0 || (i & 1) == 0 || (u8)(boss->unk25 - 1) > 1
+//                     || !(gPlayer.moveState & 8) || gPlayer.unk60 != s) {
+//                     if (boss->unk1E == 0 || boss->unk24 != 0 || (i & 1) == 0
+//                         || (u8)(boss->unk25 - 1) > 1) {
+//                         goto here;
+//                     } else {
+//                         boss->unk2C[i] = x;
+//                     }
+//                 }
+//                 gPlayer.moveState &= ~0x100;
+//                 gPlayer.moveState &= ~0x8;
+//                 gPlayer.moveState |= 2;
+//                 gPlayer.speedAirX += 0x500;
+//                 gPlayer.speedGroundX += 0x500;
+//                 gPlayer.speedAirY -= 0x200;
+//                 gPlayer.unk60 = s;
 //             }
-//         }
-
-//         boss->unk18 = (boss->unk18 + boss->unk20) & (0x3FFFF);
-//         if (--boss->unk1E == 0) {
-//             u8 i;
-//             for (i = 0; i < 4; i++) {
-//                 s = &boss->unk25C[i].s;
-//                 s->graphics.anim = gUnknown_080D8034[i & 1].anim;
-//                 s->variant = 0;
-//                 s->prevVariant = -1;
-//             }
-//             boss->unk27 = 0;
-//             boss->unk18 = 0;
-//             boss->unk20 = 0;
-//         }
-//     } else {
-//         u16 val;
-//         boss->unk25 = gUnknown_080D8044[Mod(PseudoRandom32() & 0xFF, 10)];
-//         boss->unk26 = Mod(PseudoRandom32() & 0xFF, 10);
-
-//         val = gUnknown_080D804E[({
-//             u32 val2 = boss->unk26;
-//             u8 val3 = boss->unk28;
-//             if (val3 < 5) {
-//                 val2 = val2 + 20;
-//             }
-//             val2;
-//         })];
-//         boss->unk1E = val;
-//         boss->unk24 = 0x1E;
-
-//         switch (boss->unk25) {
-//             case 0:
-//                 m4aSongNumStart(SE_254);
-//                 s = &boss->unk25C[0].s;
-//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
-//                 s->variant = 2;
-//                 s->prevVariant = -1;
-
-//                 s = &boss->unk25C[2].s;
-//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
-//                 s->variant = 2;
-//                 s->prevVariant - 1;
-//                 break;
-
-//             case 1:
-//                 m4aSongNumStart(SE_254);
-//                 s = &boss->unk25C[1].s;
-//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
-//                 s->variant = 2;
-//                 s->prevVariant = -1;
-
-//                 s = &boss->unk25C[3].s;
-//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
-//                 s->variant = 2;
-//                 s->prevVariant - 1;
-//                 break;
-
-//             case 2:
-//                 m4aSongNumStart(SE_254);
-//                 s = &boss->unk25C[0].s;
-//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
-//                 s->variant = 2;
-//                 s->prevVariant = -1;
-
-//                 s = &boss->unk25C[2].s;
-//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM;
-//                 s->variant = 2;
-//                 s->prevVariant - 1;
-
-//                 s = &boss->unk25C[1].s;
-//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
-//                 s->variant = 2;
-//                 s->prevVariant - 1;
-
-//                 s = &boss->unk25C[3].s;
-//                 s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PLATFORM;
-//                 s->variant = 2;
-//                 s->prevVariant - 1;
-//                 break;
 //         }
 //     }
 // }
