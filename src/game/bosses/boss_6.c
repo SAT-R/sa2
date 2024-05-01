@@ -37,6 +37,12 @@ typedef struct {
 typedef struct {
     s32 unk6C;
     s32 unk70;
+
+    u8 fillerunk74[0x14C];
+
+    u8 unk1C0;
+    u8 unk1C1;
+
 } EggGoRound_unk6C;
 
 typedef struct {
@@ -65,10 +71,7 @@ typedef struct {
     EggGoRound_unk3C unk3C[3];
 
     EggGoRound_unk6C unk6C;
-    u8 fillerunk74[0x14C];
 
-    u8 unk1C0;
-    u8 unk1C1;
     Sprite unk1C4;
     Hitbox reserved0;
 
@@ -348,7 +351,7 @@ void sub_8046040(void)
         boss->unk2B = 0;
         boss->unk10 = 0;
         boss->unk0 = 0x80;
-        boss->unk1C0 = 0;
+        boss->unk6C.unk1C0 = 0;
 
         gPlayer.unk3C = NULL;
         gPlayer.moveState &= ~MOVESTATE_8;
@@ -423,7 +426,7 @@ void sub_8046198(void)
     sub_8047060(boss);
 
     if (--boss->unk0 == 0) {
-        boss->unk1C1 = 0;
+        boss->unk6C.unk1C1 = 0;
         sub_804732C(boss);
         gCurTask->main = sub_8046244;
     }
@@ -450,16 +453,16 @@ void sub_8046244(void)
         m4aSongNumStart(SE_144);
     }
 
-    if (boss->unk1C1 == 0 && (I(unk6C->unk6C) - gCamera.x) < 50) {
+    if (boss->unk6C.unk1C1 == 0 && (I(unk6C->unk6C) - gCamera.x) < 50) {
         u32 flags = boss->unk1FC.unk10;
         flags &= 0x400;
         flags |= 0x1000;
-        boss->unk1C1 = 1;
+        boss->unk6C.unk1C1 = 1;
         CreateEggmobileEscapeSequence(I(unk6C->unk6C) - gCamera.x,
                                       I(unk6C->unk70) - gCamera.y - 0xF, flags);
     }
 
-    if (I(boss->unk6C.unk6C) - gCamera.x < -200 && boss->unk1C1 != 0) {
+    if (I(boss->unk6C.unk6C) - gCamera.x < -200 && boss->unk6C.unk1C1 != 0) {
         sub_802EF68(-40, 150, 5);
         gCurTask->main = sub_8047868;
     }
@@ -774,79 +777,145 @@ void sub_804683C(EggGoRound *boss)
 
 void sub_8047940(EggGoRound *boss);
 
-// void sub_8046C28(EggGoRound *boss)
+void sub_8046C28(EggGoRound *boss)
+{
+    if (boss->unk28 != 0) {
+        u8 i;
+
+        for (i = 0; i < 4; i++) {
+            u8 someVal = gUnknown_080D8030[3];
+            u32 idx = CLAMP_SIN_PERIOD(
+                ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16) + (boss->unk2B * 3));
+            Sprite *s = &boss->unk25C[i].s;
+            s32 x = I(boss->unk4) + ((COS(idx) * someVal) >> 14);
+            s32 y = I(boss->unk8) + ((SIN(idx) * someVal) >> 14);
+
+            if (boss->unk1E != 0 && boss->unk24 == 0 && (i % 2)
+                && (boss->unk25 == 1 || boss->unk25 == 2)
+                && ((gPlayer.moveState & MOVESTATE_8) && gPlayer.unk3C == s)) {
+                gPlayer.moveState &= ~MOVESTATE_8;
+                gPlayer.moveState &= ~MOVESTATE_100;
+                gPlayer.moveState |= 2;
+                gPlayer.unk3C = NULL;
+                gPlayer.speedAirX += Q(5);
+                gPlayer.speedGroundX += Q(5);
+                gPlayer.speedAirY = -Q(2);
+                continue;
+            }
+
+            if (boss->unk1E == 0 || boss->unk24 != 0 || !(i % 2)
+                || (boss->unk25 != 1 && boss->unk25 != 2)) {
+                u32 val;
+                u8 someBool;
+                s32 speedAirY;
+
+                if (gPlayer.unk3C == s) {
+                    someBool = TRUE;
+                } else {
+                    someBool = FALSE;
+                }
+                speedAirY = gPlayer.speedAirY;
+
+                if (gPlayer.moveState & MOVESTATE_IN_AIR
+                    || (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s)) {
+                    val = sub_800CCB8(s, x, y, &gPlayer);
+                } else {
+                    val = 0;
+                }
+
+                if (val & 0x10000) {
+                    if (!someBool && gPlayer.unk3C == s && speedAirY > 0) {
+                        gPlayer.speedAirX -= Q(5);
+                        gPlayer.speedGroundX -= Q(5);
+                    }
+
+                    if (boss->unk1E && !boss->unk24 && !(i % 2)
+                        && (boss->unk25 == 0 || boss->unk25 == 2)) {
+                        sub_8047940(boss);
+                        sub_800CBA4(&gPlayer);
+                        return;
+                    }
+
+                    gPlayer.y += Q(2) + Q_8_8(val);
+                    if (boss->unk2C[i] != 0) {
+                        gPlayer.x += Q(x - (boss->unk2C[i]));
+                    }
+                } else if (someBool) {
+                    gPlayer.moveState &= ~MOVESTATE_8;
+                    gPlayer.unk3C = NULL;
+                    if (!(gPlayer.moveState & MOVESTATE_100)) {
+                        gPlayer.moveState &= ~MOVESTATE_100;
+                        gPlayer.moveState |= MOVESTATE_IN_AIR;
+                    }
+                }
+            }
+
+            boss->unk2C[i] = x;
+        }
+    }
+}
+
+void sub_8046E90(EggGoRound *boss)
+{
+    EggGoRound_unk6C *unk6C = &boss->unk6C;
+    Sprite *s = &boss->unk1C4;
+    s->x = I(unk6C->unk6C) - gCamera.x;
+    s->y = I(unk6C->unk70) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    if (boss->unk6C.unk1C1 == 0) {
+        s = &boss->unk1FC;
+        s->x = I(unk6C->unk6C) - gCamera.x;
+        s->y = I(unk6C->unk70) - gCamera.y;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+}
+
+// void sub_8046F00(EggGoRound *boss)
 // {
-//     if (boss->unk28 != 0) {
-//         u32 idx;
-//         s32 x, y;
-//         Sprite *s;
+//     ExplosionPartsInfo explosion;
+//     EggGoRound_unk6C *unk6C = &boss->unk6C;
+//     if (boss->unk0 < 0x32) {
 //         u8 i;
+//         u8 temp = Div(0x31 - boss->unk0, 0x10);
+//         if ((0x31 - (temp & 0xFF) * 0x10) != boss->unk0) {
+//             return;
+//         }
+
+//         m4aSongNumStart(SE_144);
+
 //         for (i = 0; i < 4; i++) {
-//             idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
-//             idx = CLAMP_SIN_PERIOD(idx + (boss->unk2B * 3));
-//             s = &boss->unk25C[i];
-//             x = I(boss->unk4) + ((COS(idx) * 66) >> 0xE);
-//             y = I(boss->unk8) + ((SIN(idx) * 66) >> 0xE);
-//             if (boss->unk1E == 0) {
-//             here:
-//                 u16 val;
-//                 u8 someBool = FALSE;
-//                 if (gPlayer.unk60 == s) {
-//                     someBool = TRUE;
-//                 }
+//             u8 j;
 
-//                 if (gPlayer.moveState & 2 || !(gPlayer.moveState & 8)
-//                     || gPlayer.unk60 != s) {
-//                     val = 0;
-//                 } else {
-//                     val = sub_800CCB8(s, x, y, &gPlayer);
-//                 }
+//              u32 idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
 
-//                 if (val & 0x10000) {
-//                     if (!someBool && gPlayer.unk60 == s && gPlayer.speedAirY > 0) {
-//                         gPlayer.speedAirX -= 0x500;
-//                         gPlayer.speedGroundX -= 0x500;
-//                     }
+//             s16 x;
+//             s16 y;
+//             x = (I(boss->unk4) - gCamera.x) + ((gUnknown_080D8030[temp] * COS(idx)) >>
+//             14); y = (I(boss->unk8) - gCamera.y) + ((gUnknown_080D8030[temp] *
+//             SIN(idx)) >> 14); for (j = 0; j < 3; j++) {
+//                 u32 rand;
+//                 register u32 r3 asm("r3");
 
-//                     if (boss->unk1E && !boss->unk24 && (i & 1) == 0
-//                         && (boss->unk25 == 0 || boss->unk25 == 2)) {
-//                         sub_8047940(boss);
-//                         sub_800CBA4(&gPlayer);
-//                         return;
-//                     }
+//                 explosion.spawnX = x + (PseudoRandom32() & 0xF) - 8;
 
-//                     gPlayer.y += 0x200 + (val * 2);
-//                     if ((boss->unk2C[i]) != 0) {
-//                         gPlayer.x += Q(x - (boss->unk2C[i]));
-//                     }
-//                 } else {
-//                     if (someBool) {
-//                         gPlayer.moveState &= ~8;
-//                         gPlayer.unk60 = s;
-//                         if (!(gPlayer.moveState & 0x100)) {
-//                             gPlayer.moveState &= ~0x100;
-//                             gPlayer.moveState |= 2;
-//                         }
-//                     }
-//                 }
-//                 boss->unk2C[i] = x;
-//             } else {
-//                 if (boss->unk24 != 0 || (i & 1) == 0 || (u8)(boss->unk25 - 1) > 1
-//                     || !(gPlayer.moveState & 8) || gPlayer.unk60 != s) {
-//                     if (boss->unk1E == 0 || boss->unk24 != 0 || (i & 1) == 0
-//                         || (u8)(boss->unk25 - 1) > 1) {
-//                         goto here;
-//                     } else {
-//                         boss->unk2C[i] = x;
-//                     }
-//                 }
-//                 gPlayer.moveState &= ~0x100;
-//                 gPlayer.moveState &= ~0x8;
-//                 gPlayer.moveState |= 2;
-//                 gPlayer.speedAirX += 0x500;
-//                 gPlayer.speedGroundX += 0x500;
-//                 gPlayer.speedAirY -= 0x200;
-//                 gPlayer.unk60 = s;
+//                 rand = PseudoRandom32();
+//                 explosion.spawnY = y + (rand & 0xF) - 8;
+
+//                 r3 = 0;
+//                 explosion.velocity = r3;
+
+//                 rand = PseudoRandom32();
+//                 explosion.rotation = ({ idx - ((rand & 0x3F)) + 0x1F; });
+//                 explosion.speed = 0xA00 - (j * 0x200);
+//                 explosion.vram = (void *)OBJ_VRAM0 + (0x2980);
+//                 explosion.anim = SA2_ANIM_EXPLOSION;
+//                 explosion.variant = 0; // r3
+//                 explosion.unk4 = 0; // r3
+
+//                 CreateBossParticleWithExplosionUpdate(&explosion, &unk6C->unk1C0);
 //             }
 //         }
 //     }
