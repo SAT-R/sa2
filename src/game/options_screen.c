@@ -1931,7 +1931,7 @@ static void PlayerDataMenuCreateUI(struct PlayerDataMenu *playerDataMenu)
         // Interesting to note that gcc
         // uses some trickery here to set this
         // and the actual logic is `(u32)(-temp0 | temp0) >> 31;`
-        menuItem->palId = !!(menuCursor ^ i);
+        menuItem->palId = (menuCursor ^ i) ? 1 : 0;
     }
 
     sub_806A568(menuItemOutline, RENDER_TARGET_SUB_MENU, 0x3f, 0x3bd, 0x1000,
@@ -1992,7 +1992,7 @@ static void Task_PlayerDataMenuMain(void)
         }
 
         for (i = 0; i < 4; i++, menuItem++) {
-            menuItem->palId = !!(playerDataMenu->menuCursor ^ i);
+            menuItem->palId = (playerDataMenu->menuCursor ^ i) ? 1 : 0;
         }
         menuItemOutline->y = playerDataMenu->menuCursor * 19 + 46;
     }
@@ -2178,7 +2178,7 @@ static void DifficultyMenuCreateUI(struct SwitchMenu *difficultyMenu)
 
     for (i = 0, difficultyOption = difficultyMenu->options; i < 2;
          i++, difficultyOption++) {
-        difficultyOption->palId = !!(difficultyLevel ^ i);
+        difficultyOption->palId = (difficultyLevel ^ i) ? 1 : 0;
     }
 }
 
@@ -2225,7 +2225,7 @@ static void Task_DifficultyMenuMain(void)
         difficultyMenu->switchValue = difficultyMenu->switchValue == 0;
 
         for (i = 0; i < 2; i++, difficultyOption++) {
-            difficultyOption->palId = !!(difficultyMenu->switchValue ^ i);
+            difficultyOption->palId = (difficultyMenu->switchValue ^ i) ? 1 : 0;
         }
 
         switchValueOutline->x
@@ -2331,7 +2331,7 @@ static void TimeLimitMenuCreateUI(struct SwitchMenu *timeLimitMenu)
 
     for (i = 0, timeLimitOption = timeLimitMenu->options; i < 2;
          i++, timeLimitOption++) {
-        timeLimitOption->palId = !!(timeLimitDisabled ^ i);
+        timeLimitOption->palId = (timeLimitDisabled ^ i) ? 1 : 0;
     }
 }
 
@@ -2379,7 +2379,7 @@ static void Task_TimeLimitMenuMain(void)
         timeLimitMenu->switchValue = timeLimitMenu->switchValue == 0;
 
         for (i = 0; i < 2; i++, timeLimitOption++) {
-            timeLimitOption->palId = !!(timeLimitMenu->switchValue ^ i);
+            timeLimitOption->palId = (timeLimitMenu->switchValue ^ i) ? 1 : 0;
         }
 
         switchValueOutline->x
@@ -3022,7 +3022,7 @@ static void LanguageScreenCreateUI(struct LanguageScreen *languageScreen)
          i++, languageOption++, optionText++, yPos += 15) {
         sub_806A568(languageOption, RENDER_TARGET_SCREEN, optionText->unk4,
                     optionText->unk0, 0x3000, 0x28, yPos, 0xD, optionText->unk2, 0);
-        languageOption->palId = !!(selectedLanguage ^ i);
+        languageOption->palId = (selectedLanguage ^ i) ? 1 : 0;
     }
 
     sub_806A568(optionOutline, RENDER_TARGET_SCREEN, 0x3F, 0x3BD, 0x3000, 0x26,
@@ -3104,7 +3104,7 @@ static void LanguageScreenHandleLanguageChanged(void)
     menuItemOutline->y = languageScreen->menuCursor * 15 + 40;
 
     for (i = 0; i < NUM_LANGUAGES; i++, menuItems++) {
-        menuItems->palId = !!(languageScreen->menuCursor ^ i);
+        menuItems->palId = (languageScreen->menuCursor ^ i) ? 1 : 0;
     }
 
     headerFooter->variant = titleText->unk2;
@@ -3209,7 +3209,7 @@ static void Task_DeleteScreenConfrimationMain(void)
         deleteScreen->confirmationCursor = !deleteScreen->confirmationCursor;
 
         for (i = 0; i < 2; i++, option++) {
-            option->palId = !!(deleteScreen->confirmationCursor ^ i);
+            option->palId = (deleteScreen->confirmationCursor ^ i) ? 1 : 0;
         }
         optionOutline->x = deleteScreen->confirmationCursor * 60 + 56;
     }
@@ -3255,7 +3255,7 @@ static void Task_DeleteScreenCreateAbsoluteConfirmation(void)
     deleteScreen->confirmationCursor = DELETE_SCREEN_CONFIRMATION_NO;
 
     for (i = 0; i < 2; i++, option++) {
-        option->palId = !!(deleteScreen->confirmationCursor ^ i);
+        option->palId = (deleteScreen->confirmationCursor ^ i) ? 1 : 0;
     }
 
     optionOutline->x = deleteScreen->confirmationCursor * 60 + 56;
@@ -3276,7 +3276,7 @@ static void Task_DeleteScreenAbsoluteConfirmMain(void)
         deleteScreen->confirmationCursor = deleteScreen->confirmationCursor == 0;
 
         for (i = 0; i < 2; i++, option++) {
-            option->palId = !!(deleteScreen->confirmationCursor ^ i);
+            option->palId = (deleteScreen->confirmationCursor ^ i) ? 1 : 0;
         }
         optionOutline->x = deleteScreen->confirmationCursor * 60 + 56;
     }

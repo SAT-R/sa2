@@ -1048,8 +1048,9 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
         }
 
         if (gGameMode != GAME_MODE_SINGLE_PLAYER) {
-            CreateTimeAttackLevelSelectScreen(!!(gGameMode & GAME_MODE_BOSS_TIME_ATTACK),
-                                              gSelectedCharacter, gCurrentLevel);
+            CreateTimeAttackLevelSelectScreen(
+                (gGameMode & GAME_MODE_BOSS_TIME_ATTACK) ? 1 : 0, gSelectedCharacter,
+                gCurrentLevel);
             return;
         }
 
