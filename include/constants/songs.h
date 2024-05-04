@@ -234,7 +234,7 @@
 #define SE_287                287
 #define SE_288                288
 #define SE_289                289
-#define SE_290                290
+#define SE_POLE_SLIDING       290
 #define SE_291                291
 #define SE_ICE_PARADISE_SLIDE 292
 #define SE_293                293

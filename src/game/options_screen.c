@@ -192,7 +192,7 @@ struct MultiplayerRecordsScreen {
     Sprite scrollArrows[2];
     Sprite playerNameDisplay[6];
     Sprite playerWinsDigits[2];
-    Sprite playerLosesDigits[2];
+    Sprite playerLossesDigits[2];
     Sprite playerDrawsDigits[2];
 
     struct PlayerDataMenu *playerDataMenu;
@@ -5032,7 +5032,7 @@ static void MultiplayerRecordsScreenCreatePlayerRowUI(
     Sprite *scrollArrows = multiplayerRecordsScreen->scrollArrows;
     Sprite *playerNameDisplayChar = multiplayerRecordsScreen->playerNameDisplay;
     Sprite *playerWinsDigit = multiplayerRecordsScreen->playerWinsDigits;
-    Sprite *playerLosesDigit = multiplayerRecordsScreen->playerLosesDigits;
+    Sprite *playerLossesDigit = multiplayerRecordsScreen->playerLossesDigits;
     Sprite *playerDrawsDigit = multiplayerRecordsScreen->playerDrawsDigits;
 
     const struct UNK_080D95E8 *titleAndColumnHeadersText
@@ -5087,13 +5087,13 @@ static void MultiplayerRecordsScreenCreatePlayerRowUI(
                 0x2000, 0x84, 0x40, 0xD, digitTile->unk2, 0);
 
     digitTile = &digitTiles[TENS_DIGIT(loses)];
-    sub_806A568(playerLosesDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
-                0x2000, 0xA4, 0x40, 0xD, digitTile->unk2, 0);
+    sub_806A568(playerLossesDigit, RENDER_TARGET_SCREEN, digitTile->unk4,
+                digitTile->unk0, 0x2000, 0xA4, 0x40, 0xD, digitTile->unk2, 0);
 
-    playerLosesDigit++;
+    playerLossesDigit++;
     digitTile = &digitTiles[UNITS_DIGIT(loses)];
-    sub_806A568(playerLosesDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
-                0x2000, 0xAC, 0x40, 0xD, digitTile->unk2, 0);
+    sub_806A568(playerLossesDigit, RENDER_TARGET_SCREEN, digitTile->unk4,
+                digitTile->unk0, 0x2000, 0xAC, 0x40, 0xD, digitTile->unk2, 0);
 
     digitTile = &digitTiles[TENS_DIGIT(draws)];
     sub_806A568(playerDrawsDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
@@ -5286,7 +5286,7 @@ static void MultiplayerRecordsScreenRenderUI(void)
     Sprite *columnHeaders = &multiplayerRecordsScreen->columnHeaders;
     Sprite *playerNameDisplayChar = multiplayerRecordsScreen->playerNameDisplay;
     Sprite *playerWinsDigit = multiplayerRecordsScreen->playerWinsDigits;
-    Sprite *playerLosesDigit = multiplayerRecordsScreen->playerLosesDigits;
+    Sprite *playerLossesDigit = multiplayerRecordsScreen->playerLossesDigits;
     Sprite *playerDrawsDigit = multiplayerRecordsScreen->playerDrawsDigits;
     Sprite *scrollArrow;
 
@@ -5329,8 +5329,8 @@ static void MultiplayerRecordsScreenRenderUI(void)
         DisplaySprite(playerWinsDigit);
     }
 
-    for (i = 0; i < 2; i++, playerLosesDigit++) {
-        DisplaySprite(playerLosesDigit);
+    for (i = 0; i < 2; i++, playerLossesDigit++) {
+        DisplaySprite(playerLossesDigit);
     }
 
     for (i = 0; i < 2; i++, playerDrawsDigit++) {
@@ -5357,16 +5357,16 @@ static void MultiplayerRecordsScreenRenderUI(void)
         }
 
         playerWinsDigit = row->winsDigits;
-        playerLosesDigit = row->losesDigits;
+        playerLossesDigit = row->losesDigits;
         playerDrawsDigit = row->defeatsDigits;
 
         DisplaySprite(playerWinsDigit);
         ++playerWinsDigit;
         DisplaySprite(playerWinsDigit);
 
-        DisplaySprite(playerLosesDigit);
-        ++playerLosesDigit;
-        DisplaySprite(playerLosesDigit);
+        DisplaySprite(playerLossesDigit);
+        ++playerLossesDigit;
+        DisplaySprite(playerLossesDigit);
 
         DisplaySprite(playerDrawsDigit);
         ++playerDrawsDigit;
