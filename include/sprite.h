@@ -223,9 +223,9 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *);
 
 void DisplaySprite(Sprite *);
 void DrawBackground(Background *);
-u32 sub_8004010(void);
-u32 sub_80039E4(void);
 bool32 sub_8002B20(void);
+bool32 sub_80039E4(void);
+bool32 sub_8004010(void);
 void CopyOamBufferToOam(void);
 OamData *OamMalloc(u8 order);
 

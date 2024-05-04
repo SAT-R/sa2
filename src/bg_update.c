@@ -65,7 +65,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
         Background *bg;
 
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK))
-            return 0;
+            return FALSE;
 
         // _08002B64
         REG_VCOUNT;

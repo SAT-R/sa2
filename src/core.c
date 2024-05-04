@@ -66,7 +66,7 @@ s16 gMosaicReg = 0;
 
 HBlankFunc gHBlankCallbacks[4] ALIGNED(16) = {};
 struct Task *gCurTask = NULL;
-u8 gUnknown_030026F4 = 0;
+u8 sLastCalledVblankFuncId = 0;
 u8 gKeysFirstRepeatIntervals[10] ALIGNED(16) = {};
 
 u16 gReleasedKeys ALIGNED(4) = 0;
@@ -128,7 +128,7 @@ static void UpdateScreenCpuSet(void);
 static void ClearOamBufferCpuSet(void);
 static void ClearOamBufferDma(void);
 static void GetInput(void);
-static u32 ProcessVramGraphicsCopyQueue(void);
+static bool32 ProcessVramGraphicsCopyQueue(void);
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -162,7 +162,13 @@ IntrFunc const gIntrTableTemplate[] = {
     NULL,
 };
 
-static SpriteUpdateFunc const spriteUpdateFuncs[] = {
+// TODO: Better name
+#define VBLANK_FUNC_ID_NONE 0xFF
+
+// Result of these:
+// FALSE: Not currently in vblank
+// TRUE:  Currently in VBlank /
+static VBlankFunc const sVblankFuncs[] = {
     ProcessVramGraphicsCopyQueue,
     sub_8004010,
     sub_80039E4,
@@ -178,9 +184,9 @@ void GameInit(void)
     gFlags = 0;
     gFlagsPreVBlank = 0;
 
-    if ((REG_RCNT & 0xc000) != 0x8000) {
+    if ((REG_RCNT & 0xC000) != 0x8000) {
         gFlags = FLAGS_200;
-        DmaSet(3, (void *)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x80002800);
+        DmaCopy16(3, (void *)OBJ_VRAM0, EWRAM_START + 0x3B000, 0x5000);
     }
 
     // Skip the intro if these
@@ -195,7 +201,7 @@ void GameInit(void)
     DmaFill32(3, 0, (void *)OAM, OAM_SIZE);
     DmaFill32(3, 0, (void *)PLTT, PLTT_SIZE);
 
-    gUnknown_030026F4 = 0xff;
+    sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
     gUnknown_03002AE4 = 0;
     gUnknown_0300287C = 0;
     gUnknown_03005390 = 0;
@@ -251,12 +257,12 @@ void GameInit(void)
     gUnknown_03002820 = 0;
     gUnknown_03005398 = 0x100;
 
-    gWinRegs[0] = 0;
-    gWinRegs[1] = 0;
-    gWinRegs[2] = 0;
-    gWinRegs[3] = 0;
-    gWinRegs[4] = 0;
-    gWinRegs[5] = 0;
+    gWinRegs[WINREG_WIN0H] = 0;
+    gWinRegs[WINREG_WIN1H] = 0;
+    gWinRegs[WINREG_WIN0V] = 0;
+    gWinRegs[WINREG_WIN1V] = 0;
+    gWinRegs[WINREG_WININ] = 0;
+    gWinRegs[WINREG_WINOUT] = 0;
 
     gBldRegs.bldCnt = 0;
     gBldRegs.bldAlpha = 0;
@@ -349,28 +355,33 @@ void GameLoop(void)
             m4aSoundMain();
         }
 
-        if (gUnknown_030026F4 == 0xff) {
+        if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
             GetInput();
+
             if (gMultiSioEnabled) {
                 gMultiSioStatusFlags = MultiSioMain(&gMultiSioSend, gMultiSioRecv, 0);
             }
+
             TasksExec();
         }
 
         gFlagsPreVBlank = gFlags;
         VBlankIntrWait();
+
         if (gFlags & FLAGS_4000) {
             UpdateScreenCpuSet();
+
             if (!(gFlags & FLAGS_PAUSE_GAME)) {
                 ClearOamBufferCpuSet();
             }
         } else {
             UpdateScreenDma();
+
             if (!(gFlags & FLAGS_PAUSE_GAME)) {
                 ClearOamBufferDma();
             }
         }
-        if ((gFlags & FLAGS_PAUSE_GAME)) {
+        if (gFlags & FLAGS_PAUSE_GAME) {
             gFlags |= FLAGS_800;
         } else {
             gFlags &= ~FLAGS_800;
@@ -421,7 +432,7 @@ static void UpdateScreenDma(void)
         DmaCopy16(3, gBgOffsetsHBlank, gUnknown_03002878, gUnknown_03002A80);
     }
 
-    if (gUnknown_030026F4 == 0xff) {
+    if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
         CopyOamBufferToOam();
         DmaCopy16(3, gOamBuffer + 0x00, (void *)OAM + 0x000, 0x100);
         DmaCopy16(3, gOamBuffer + 0x20, (void *)OAM + 0x100, 0x100);
@@ -444,15 +455,15 @@ static void UpdateScreenDma(void)
         gUnknown_03001948 = 0;
     }
 
-    j = gUnknown_030026F4;
-    if (j == 0xff) {
+    j = sLastCalledVblankFuncId;
+    if (j == VBLANK_FUNC_ID_NONE) {
         j = 0;
     }
 
-    gUnknown_030026F4 = 0xff;
-    for (; j < ARRAY_COUNT(spriteUpdateFuncs); j++) {
-        if (spriteUpdateFuncs[j]() == 0) {
-            gUnknown_030026F4 = j;
+    sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
+    for (; j < ARRAY_COUNT(sVblankFuncs); j++) {
+        if (sVblankFuncs[j]() == 0) {
+            sLastCalledVblankFuncId = j;
             break;
         }
     }
@@ -516,7 +527,7 @@ static void UpdateScreenCpuSet(void)
         gNumHBlankIntrs = 0;
     }
 
-    if (gUnknown_030026F4 == 0xff) {
+    if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
         CopyOamBufferToOam();
         CpuFastCopy(gOamBuffer, (void *)OAM, OAM_SIZE);
     }
@@ -535,15 +546,15 @@ static void UpdateScreenCpuSet(void)
         gUnknown_03001948 = 0;
     }
 
-    j = gUnknown_030026F4;
-    if (j == 0xff) {
+    j = sLastCalledVblankFuncId;
+    if (j == VBLANK_FUNC_ID_NONE) {
         j = 0;
     }
 
-    gUnknown_030026F4 = 0xff;
-    for (; j < ARRAY_COUNT(spriteUpdateFuncs); j++) {
-        if (spriteUpdateFuncs[j]() == 0) {
-            gUnknown_030026F4 = j;
+    sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
+    for (; j < ARRAY_COUNT(sVblankFuncs); j++) {
+        if (sVblankFuncs[j]() == FALSE) {
+            sLastCalledVblankFuncId = j;
             break;
         }
     }
@@ -607,14 +618,14 @@ static void VBlankIntr(void)
 
 // TODO: Fix ProcessVramGraphicsCopyQueue so no need to cast
 struct GraphicsData_Hack {
-    u32 src;
-    u32 dest;
+    uintptr_t src;
+    uintptr_t dest;
     u16 remainingBytes;
 };
 
 #define COPY_CHUNK_SIZE 1024
 
-static u32 ProcessVramGraphicsCopyQueue(void)
+static bool32 ProcessVramGraphicsCopyQueue(void)
 {
     u32 offset;
     struct GraphicsData_Hack *graphics;
@@ -641,10 +652,11 @@ static u32 ProcessVramGraphicsCopyQueue(void)
         gVramGraphicsCopyCursor &= ARRAY_COUNT(gVramGraphicsCopyQueue) - 1;
 
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK)) {
-            return 0;
+            return FALSE;
         }
     }
-    return 1;
+
+    return TRUE;
 }
 
 static void GetInput(void)
