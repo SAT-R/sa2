@@ -1,3 +1,5 @@
+#include <stdlib.h> // abs
+
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"

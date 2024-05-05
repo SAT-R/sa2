@@ -1,3 +1,5 @@
+#include <string.h> // memset
+
 #include "core.h"
 #include "malloc_vram.h"
 #include "flags.h"

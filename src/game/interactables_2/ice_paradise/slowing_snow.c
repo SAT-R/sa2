@@ -8,7 +8,7 @@
 #include "game/entity.h"
 #include "sprite.h"
 
-typedef struct {
+typedef struct PACKED {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
@@ -17,7 +17,7 @@ typedef struct {
     /* 0x04 */ s8 offsetY;
     /* 0x05 */ u8 width;
     /* 0x06 */ u8 height;
-} Interactable_SlowingSnow PACKED;
+} Interactable_SlowingSnow;
 
 typedef struct {
     /* 0x00 */ s16 left;

@@ -6,7 +6,7 @@
 #include "game/entity.h"
 #include "sakit/interactables/slidy_ice.h"
 
-typedef struct {
+typedef struct PACKED {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
@@ -15,7 +15,7 @@ typedef struct {
     /* 0x04 */ s8 offsetY;
     /* 0x05 */ u8 width;
     /* 0x06 */ u8 height;
-} MapEntity_SlidyIce PACKED;
+} MapEntity_SlidyIce;
 
 typedef struct {
     /* 0x00 */ SpriteBase base;

@@ -15,7 +15,7 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_ClearPipe;
 
-typedef struct {
+typedef struct PACKED {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
@@ -23,9 +23,9 @@ typedef struct {
     /* 0x03 */ s8 unk3;
     /* 0x04 */ s8 unk4;
     /* 0x05 */ u8 unused[ENTITY_DATA_SIZE - 2];
-} MapEntity_PipeStart PACKED;
+} MapEntity_PipeStart;
 
-typedef struct {
+typedef struct PACKED {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
@@ -33,7 +33,7 @@ typedef struct {
     /* 0x03 */ s8 exitOnBackLayer;
     /* 0x04 */ s8 unk4;
     /* 0x05 */ u8 unused[ENTITY_DATA_SIZE - 2];
-} MapEntity_PipeEnd PACKED;
+} MapEntity_PipeEnd;
 
 static void Task_Pipe_Start(void)
 {

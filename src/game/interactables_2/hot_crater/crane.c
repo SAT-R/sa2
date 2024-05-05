@@ -1,3 +1,5 @@
+#include <stdlib.h> // abs
+
 #include "global.h"
 #include "sprite.h"
 #include "task.h"

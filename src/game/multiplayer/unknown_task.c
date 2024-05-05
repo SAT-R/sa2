@@ -40,7 +40,7 @@ void Task_80188FC(void)
         } else {
             recv = &gMultiSioRecv[i].pat0;
             if (0x5000 == recv->unk0
-                && something == 0 != (!(recv->unk8[0] & (0x1000 << id)))) {
+                && (something == 0) != (!(recv->unk8[0] & (0x1000 << id)))) {
                 return;
             }
         }

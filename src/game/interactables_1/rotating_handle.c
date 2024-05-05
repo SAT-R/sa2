@@ -1,3 +1,5 @@
+#include <stdlib.h> // abs
+
 #include "global.h"
 #include "gba/types.h"
 #include "lib/m4a.h"

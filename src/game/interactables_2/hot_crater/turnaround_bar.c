@@ -1,3 +1,5 @@
+#include <stdlib.h> // abs
+
 #include "global.h"
 #include "game/entity.h"
 #include "game/stage/player.h"

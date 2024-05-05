@@ -59,18 +59,18 @@ void *const gCollectRingsSegments[9] = {
     (void *)gCollectRingsRom_Compressed + SIO32ML_BLOCK_SIZE * 2,
 
     // Tileset for level
-    &gCollectRingsBgStageTileset,
+    (void *)&gCollectRingsBgStageTileset,
 
     // Animations for each client
 
     // cream
-    &gCollectRingsAnimations_Cream_Compressed,
+    (void *)&gCollectRingsAnimations_Cream_Compressed,
 
     // tails
-    &gCollectRingsAnimations_Tails_Compressed,
+    (void *)&gCollectRingsAnimations_Tails_Compressed,
 
     // knuckles
-    &gCollectRingsAnimations_Knuckles_Compressed,
+    (void *)&gCollectRingsAnimations_Knuckles_Compressed,
 
     // tile maps copied directly into OBJ_VRAM0
     (void *)gCollectRingsTilemaps + (SIO32ML_BLOCK_SIZE * 1),
@@ -103,12 +103,12 @@ static const u16 gUnknown_080E01B6[7][3] = {
 
 static void *const gUnknown_080E01E0[7][2] = {
     { NULL, NULL },
-    { &gMultiBootProgram_SubgameLoader, &rom_footer },
-    { &gMultiBootProgram_SubgameLoader, &rom_footer },
-    { &gMultiBootProgram_SubgameLoader, &rom_footer },
-    { &gMultiBootProgram_SubgameLoader, &rom_footer },
-    { &gMultiBootProgram_SubgameLoader, &rom_footer },
-    { &gMultiBootProgram_SubgameLoader, &rom_footer },
+    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
+    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
+    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
+    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
+    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
+    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
 };
 
 static const u32 gUnknown_080E0218[7] = {

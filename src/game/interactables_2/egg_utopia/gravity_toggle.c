@@ -3,7 +3,7 @@
 #include "game/stage/camera.h"
 #include "game/interactables_2/egg_utopia/gravity_toggle.h"
 
-typedef struct {
+typedef struct PACKED {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
@@ -12,7 +12,7 @@ typedef struct {
     /* 0x04 */ s8 offsetY;
     /* 0x05 */ u8 width;
     /* 0x06 */ u8 height;
-} Interactable_GravityToggle PACKED;
+} Interactable_GravityToggle;
 
 typedef struct {
     /* 0x00 */ u32 x;

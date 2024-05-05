@@ -1,3 +1,5 @@
+#include <stdlib.h> // abs
+
 #include "core.h"
 
 #include "game/stage/player_controls.h"
