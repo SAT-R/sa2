@@ -71,7 +71,11 @@ u32 gStageTime = 0;
 
 u8 ALIGNED(4) gMultiplayerUnlockedCharacters = 0;
 
+#ifndef NON_MATCHING
 struct Task *ALIGNED(16) gMultiplayerPlayerTasks[MULTI_SIO_PLAYERS_MAX] = {};
+#else
+struct Task *ALIGNED(4) gMultiplayerPlayerTasks[MULTI_SIO_PLAYERS_MAX] = {};
+#endif
 
 u8 gUnknown_030055B0 = 0;
 

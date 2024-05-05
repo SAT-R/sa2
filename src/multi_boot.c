@@ -517,6 +517,7 @@ static inline void MultiBootWaitCycles(u32 cycles)
      * (If V blank interrupt is processed during this, actual wait is longer)
      */
 
+#ifndef PORTABLE
     asm("mov r2, pc\n\t"
         "lsr r2, #24\n\t"
         "mov r1, #12\n\t"
@@ -532,6 +533,7 @@ static inline void MultiBootWaitCycles(u32 cycles)
         :
         :
         : "r0", "r1", "r2");
+#endif
 }
 
 /*------------------------------------------------------------------*/

@@ -80,19 +80,33 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc",
     Unknown sp00[5];
     Unknown *pSp0;
     u8 *cursor, *cursor2;
+#ifndef NON_MATCHING
     register u32 r0 asm("r0");
     register u32 r1 asm("r1");
     register u32 r2 asm("r2");
     register u16 sb asm("sb");
     register u16 r4 asm("r4");
     register u32 r7 asm("r7");
+#else
+    u32 r0;
+    u32 r1;
+    u32 r2;
+    u16 sb;
+    u16 r4;
+    u32 r7;
+#endif
     int_vcount sp14[2]; // TODO: type might be inaccurate? Find out whether this is
                         // display resolutions
     u32 sp18;
     u8 a, b;
     s32 temp;
     s16 *sp;
+
+#ifndef NON_MATCHING
     register Unknown *ip asm("ip");
+#else
+    Unknown *ip;
+#endif
 
     pSp0 = &sp00[1];
     memcpy(pSp0, &gUnknown_080984F4, sizeof(sp00[1]));
@@ -244,7 +258,11 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc",
         Unknown *sp2;
         Unknown *sp3;
         Unknown *sp4;
+#ifndef NON_MATCHING
         register Unknown *r6 asm("r6");
+#else
+        Unknown *r6;
+#endif
         // _080074E0
         cursor[0] = sp14[1];
         cursor[1] = sp14[0];
@@ -545,7 +563,8 @@ void sub_8007AC0(u8 affineBg, int_vcount minY, int_vcount maxY)
     cursor = &((u16 *)gBgOffsetsHBlank)[minY];
 
 #ifdef NON_MATCHING
-    assert(affineBg < NUM_AFFINE_BACKGROUNDS)
+    //assert(affineBg < NUM_AFFINE_BACKGROUNDS);
+    assert(affineBg < 2);
 #endif
 
         affine

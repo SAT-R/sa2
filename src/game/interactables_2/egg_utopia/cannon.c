@@ -197,7 +197,11 @@ static void sub_807E56C(Sprite_Cannon *cannon)
     s16 temp2;
     s16 temp3;
     s32 mask;
+#ifndef NON_MATCHING
     register s16 r0 asm("r0");
+#else
+    s16 r0;
+#endif
     s32 r1;
 
     r3 = cannon->unk68 == 0  ? cannon->unk6E == 0 ? 0x280 : 0x180

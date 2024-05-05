@@ -176,7 +176,11 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
     }
 
     if (gPlayer.unk5E & gPlayerControls.jump) {
+#ifndef NON_MATCHING
         register u32 temp2 asm("r4");
+#else
+        u32 temp2;
+#endif
         gPlayer.transition = PLTRANS_PT5;
         me->x = rotatingHandle->base.spriteX;
         sub_80218E4(&gPlayer);
@@ -210,7 +214,11 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
 
                 break;
             case 3: {
+#ifndef NON_MATCHING
                 register s32 r1 asm("r1") = 0x220;
+#else
+                s32 r1 = 0x220;
+#endif
                 temp2 = (r1 - temp) & cycle;
                 sin = SIN(temp);
                 gPlayer.x -= sin >> 1;

@@ -138,6 +138,7 @@ void PlayerCB_802A714(Player *);
 #define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle)*4) * 60))
 
 // TODO: Match this without ASM!
+#ifndef NON_MATCHING
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                        \
     {                                                                                   \
         s16 speed = (player->moveState & MOVESTATE_40)                                  \
@@ -156,6 +157,20 @@ void PlayerCB_802A714(Player *);
                                                                                         \
         player->speedAirY += speed;                                                     \
     }
+#else
+#define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                        \
+    {                                                                                   \
+        s16 speed = (player->moveState & MOVESTATE_40)                                  \
+            ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER)                                         \
+            : Q_8_8(PLAYER_GRAVITY);                                                    \
+                                                                                        \
+        if (player->speedAirY < 0) {                                                    \
+            speed /= 2;                                                                 \
+        }                                                                               \
+                                                                                        \
+        player->speedAirY += speed;                                                     \
+    }
+#endif
 
 #define PLAYERFN_UPDATE_UNK2A(player)                                                   \
     {                                                                                   \

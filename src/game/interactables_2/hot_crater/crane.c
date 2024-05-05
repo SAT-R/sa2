@@ -570,7 +570,11 @@ static void sub_80741B4(Sprite_HCCrane *crane)
         s16 sin = Q_2_14_TO_Q_24_8(SIN(sinIndex));
         s32 sinV2 = Q_24_8_TO_INT(cs->unk10 * sin);
         s32 diff, temp;
+#ifndef NON_MATCHING
         register u32 mask asm("r1");
+#else
+        u32 mask;
+#endif
 
         diff = cosV2 - sinV2;
         screenX += diff;

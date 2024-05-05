@@ -222,7 +222,11 @@ NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc"
     Platform_D1C *platform = TASK_DATA(t);
 
     // Hack for better match
+#ifndef NON_MATCHING
     register s32 r6 asm("r6");
+#else
+    s32 r6;
+#endif
 
     {
         Sprite *s = &platform->unk0;
