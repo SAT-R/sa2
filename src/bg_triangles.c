@@ -563,12 +563,11 @@ void sub_8007AC0(u8 affineBg, int_vcount minY, int_vcount maxY)
     cursor = &((u16 *)gBgOffsetsHBlank)[minY];
 
 #ifdef NON_MATCHING
-    //assert(affineBg < NUM_AFFINE_BACKGROUNDS);
+    // assert(affineBg < NUM_AFFINE_BACKGROUNDS);
     assert(affineBg < 2);
 #endif
 
-        affine
-        = gBgAffineRegs[affineBg].pa;
+    affine = gBgAffineRegs[affineBg].pa;
 
     while (minY < maxY) {
         *cursor = affine + ((maxY - minY) * 4);

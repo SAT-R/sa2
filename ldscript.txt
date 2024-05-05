@@ -123,7 +123,6 @@ SECTIONS
         build/sa2/asm/collision_mp.o(.text);
         build/sa2/src/sakit/collision_1.o(.text);
         build/sa2/src/sakit/input_buffer.o(.text);
-        build/sa2/src/sakit/input_buffer_1.o(.text);
         build/sa2/src/sakit/interactables/spring.o(.text);
         build/sa2/src/sakit/interactables/platform.o(.text);
         build/sa2/src/sakit/interactables/platform_square.o(.text);
