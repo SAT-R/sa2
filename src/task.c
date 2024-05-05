@@ -317,7 +317,7 @@ static void sub_80028DC(void)
                 DmaCopy32(3, nextNodeSpace, space,
                           cur->state + sizeof(struct IwramNode));
                 {
-                    struct IwramNode *newLoc = (void *)cur + cur->state;
+                    struct IwramNode *newLoc = (struct IwramNode *)((u8 *)cur + cur->state);
                     newLoc->next = cur->next;
                     newLoc->state = curStateBackup;
                     cur = newLoc;
