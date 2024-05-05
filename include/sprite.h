@@ -2,6 +2,7 @@
 #define GUARD_SPRITE_H
 
 #include "global.h"
+#include "packed.h"
 #include "malloc_vram.h"
 
 typedef u16 AnimId;
@@ -205,11 +206,11 @@ typedef struct {
     /* 0x06 */ u8 variant;
 } TileInfo;
 
-typedef struct PACKED {
+PACKED(TileInfo16, {
     /* 0x00 */ u16 numTiles;
     /* 0x02 */ AnimId anim;
     /* 0x04 */ u16 variant;
-} TileInfo16;
+});
 
 extern const u8 gOamShapesSizes[12][2];
 

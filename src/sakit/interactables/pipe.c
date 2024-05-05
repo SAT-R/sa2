@@ -15,7 +15,7 @@ typedef struct {
     /* 0x00 */ SpriteBase base;
 } Sprite_ClearPipe;
 
-typedef struct PACKED {
+typedef struct {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
@@ -25,7 +25,7 @@ typedef struct PACKED {
     /* 0x05 */ u8 unused[ENTITY_DATA_SIZE - 2];
 } MapEntity_PipeStart;
 
-typedef struct PACKED {
+typedef struct {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;

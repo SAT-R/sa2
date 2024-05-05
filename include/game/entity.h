@@ -18,7 +18,7 @@
 #define ENTITY_DATA_SIZE_SA3 5
 #define ENTITY_DATA_SIZE     ENTITY_DATA_SIZE_SA2
 
-typedef struct PACKED {
+PACKED(MapEntity, {
     /* 0x00 */ u8 x; // While an enemy is active, x gets repurposed as a "state"
                      // (e.g. indicating that it's active)
     /* 0x01 */ u8 y;
@@ -29,20 +29,20 @@ typedef struct PACKED {
         s8 sData[ENTITY_DATA_SIZE];
         u8 uData[ENTITY_DATA_SIZE];
     } d;
-} MapEntity;
+});
 
-typedef struct PACKED {
+PACKED(MapEntity_Itembox, {
     /* 0x00 */ u8 x; // While an enemy is active, x gets repurposed as a "state"
                      // (e.g. indicating that it's active)
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
-} MapEntity_Itembox;
+});
 
-typedef struct PACKED {
+PACKED(MapEntity_Ring, {
     /* 0x00 */ u8 x; // While an enemy is active, x gets repurposed as a "state"
                      // (e.g. indicating that it's active)
     /* 0x01 */ u8 y;
-} MapEntity_Ring;
+});
 
 typedef struct {
     /* 0x00 */ MapEntity *me;

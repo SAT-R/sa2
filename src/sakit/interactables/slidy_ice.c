@@ -6,7 +6,7 @@
 #include "game/entity.h"
 #include "sakit/interactables/slidy_ice.h"
 
-typedef struct PACKED {
+typedef struct {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
