@@ -474,8 +474,8 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                                     for (i = 0; i < bg->targetTilesX; i++) {
                                         r7Ptr[i] = *(r4Ptr - i) ^ TileMask_FlipX;
                                     }
-                                    ((u8 *)r7Ptr) += sp0C;
-                                    ((u8 *)r4Ptr) += sp00 * sp08;
+                                    r7Ptr = CastPointer(r7Ptr, sp0C);
+                                    r4Ptr = CastPointer(r4Ptr, sp00 * sp08);
                                 }
                             }
                         } else {

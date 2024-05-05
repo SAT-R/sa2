@@ -1,3 +1,4 @@
+#include <stdlib.h> // abs()
 #include <string.h>
 
 #include "global.h"
