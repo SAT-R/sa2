@@ -3,7 +3,8 @@
 
 #if defined(_MSC_VER)
 #define PACKED(name, struct_body)                                                       \
-    __pragma(pack(push, 1)) typedef struct struct_body name; __pragma(pack(pop))
+    __pragma(pack(push, 1)) typedef struct struct_body name;                            \
+    __pragma(pack(pop))
 #else
 // NOTE: Please make sure NOT to add a ; to the end
 //       of the structs you enclose with this macro.
