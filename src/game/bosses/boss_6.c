@@ -15,6 +15,7 @@
 #include "game/stage/boss_results_transition.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+#include "game/player_callbacks.h"
 
 #include "constants/move_states.h"
 #include "constants/animations.h"
@@ -1060,3 +1061,128 @@ NONMATCH("asm/non_matching/game/bosses/boss_6__sub_804732C.inc",
     }
 }
 END_NONMATCH
+
+u32 sub_80474C0(EggGoRound *boss)
+{
+    Sprite *s = &boss->unk1FC;
+    u32 result = 0;
+    if (boss->unk28 != 0) {
+        boss->unk28--;
+        if (boss->unk28 & 1) {
+            m4aSongNumStart(SE_143);
+        } else {
+            m4aSongNumStart(SE_235);
+        }
+
+        boss->unk2A = 0x1E;
+        if (boss->unk28 == 0) {
+            s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
+            s->variant = 3;
+            INCREMENT_SCORE(1000);
+        } else {
+            s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
+            s->variant = 0;
+        }
+        s->prevVariant = -1;
+
+    } else {
+        result = 1;
+    }
+
+    if (!IS_FINAL_STAGE(gCurrentLevel) && boss->unk28 == 4) {
+        gUnknown_030054A8.unk1 = 0x11;
+    }
+
+    return result;
+}
+
+void sub_80475D0(EggGoRound *boss)
+{
+    Sprite *s = &boss->unk1FC;
+    if (boss->unk2A != 0) {
+        boss->unk29 = 0;
+        if (--boss->unk2A != 0) {
+            return;
+        }
+
+        if (boss->unk28 == 0) {
+            s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
+            s->variant = 3;
+        } else {
+            s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
+            s->variant = 0;
+        }
+        s->prevVariant = -1;
+    } else {
+        if (boss->unk29 == 0) {
+            return;
+        }
+
+        if (--boss->unk29 != 0) {
+            return;
+        }
+
+        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
+        s->variant = 0;
+        s->prevVariant = -1;
+    }
+}
+
+extern const u16 gUnknown_080D80C6[][0x10];
+
+void sub_804766C(EggGoRound *boss)
+{
+    u8 i;
+    if (boss->unk2A != 0) {
+        for (i = 0; i < 16; i++) {
+            gObjPalette[0x80 + i] = gUnknown_080D80C6[(gStageTime & 2) >> 1][i];
+        }
+    } else {
+        for (i = 0; i < 16; i++) {
+            gObjPalette[0x80 + i] = gUnknown_080D80C6[1][i];
+        }
+    }
+
+    gFlags |= 2;
+}
+
+void sub_8047700(EggGoRound *boss)
+{
+    Sprite *s = &boss->unk1C4;
+    s32 x = I(boss->unk4);
+    s32 y = I(boss->unk8);
+
+    Player_UpdateHomingPosition(boss->unk4, boss->unk8);
+    if (sub_800C320(s, x, y, 1, &gPlayer) != 0) {
+        if (gPlayer.x > boss->unk4) {
+            gPlayer.speedAirX += 0x240;
+            gPlayer.x += 0x200;
+        }
+
+        gPlayer.speedAirY += 0x200;
+        return;
+    }
+
+    if (boss->unk2A == 0) {
+        if (IsColliding_Cheese(s, x, y, 0, &gPlayer) == TRUE
+            || sub_800C320(s, x, y, 0, &gPlayer) == TRUE) {
+            sub_80474C0(boss);
+        } else {
+            Sprite *s2;
+            if (sub_800CA20(s, x, y, 0, &gPlayer) != TRUE) {
+                return;
+            }
+            s2 = &boss->unk1FC;
+
+            boss->unk29 = 30;
+            if (boss->unk2A != 0) {
+                return;
+            }
+
+            s2->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
+            s2->variant = 1;
+            s2->prevVariant = -1;
+            return;
+        }
+    }
+}
