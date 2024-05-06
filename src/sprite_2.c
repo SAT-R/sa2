@@ -273,7 +273,6 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
     if (dimensions != (SpriteOffset *)-1) {
         s16 res;
         u16 *affine;
-        u16 *pTemp, *pTemp2;
         big.affineIndex = s->unk10 % 32u;
         affine = &gOamBuffer[big.affineIndex * 4].all.affineParam;
 

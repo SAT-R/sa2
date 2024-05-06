@@ -31,7 +31,6 @@ void DisplaySprite(Sprite *sprite)
     s32 x, y, sprWidth, sprHeight;
     u8 i;
     u32 r5, r7;
-    u32 r0, r1;
     const u16 *oamData;
 
     if ((u32)sprite->dimensions != -1) {
