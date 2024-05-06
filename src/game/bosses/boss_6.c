@@ -15,6 +15,7 @@
 #include "game/stage/boss_results_transition.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+#include "game/stage/collision.h"
 #include "game/player_callbacks.h"
 
 #include "constants/move_states.h"
@@ -480,7 +481,6 @@ void sub_8046328(EggGoRound *boss)
 {
     u8 i, j;
     Sprite *s = &boss->unk1C4;
-    s32 x, y;
     u32 idx;
 
     s->x = I(boss->unk4) - gCamera.x;
@@ -1185,4 +1185,102 @@ void sub_8047700(EggGoRound *boss)
             return;
         }
     }
+}
+
+void sub_804787C(EggGoRound *boss);
+
+void Task_EggGoRound(void)
+{
+    EggGoRound *boss = TASK_DATA(gCurTask);
+    sub_804787C(boss);
+    sub_80475D0(boss);
+    sub_8046328(boss);
+
+    if (boss->unk0 < 0x40) {
+        if (boss->unk0 & 1) {
+            boss->unk2B++;
+        }
+        boss->unk10 -= 0x2C;
+        boss->unk10 -= (boss->unk0 - 0x20) * 4;
+    }
+
+    if (--boss->unk0 == 0) {
+        boss->unk2B = 0;
+        boss->unk10 = 0x100;
+        gCurTask->main = sub_8046040;
+    }
+}
+
+void sub_8047868(void) { TaskDestroy(gCurTask); }
+
+void sub_804787C(EggGoRound *boss)
+{
+    boss->unk4 += boss->unkC + (boss->unk0 * 8);
+    boss->unk8 += boss->unkE;
+    boss->unk8 += Q(sub_801E4E4(I(boss->unk8), I(boss->unk4), 0, 8, 0, sub_801EE64));
+    boss->unk14 = (boss->unk14 + boss->unk10) & 0x3FFFF;
+}
+
+void sub_80478D4(EggGoRound *boss)
+{
+    boss->unk4 += boss->unkC;
+    boss->unk8 += boss->unkE;
+
+    boss->unk8 += Q(sub_801F07C(I(boss->unk8), I(boss->unk4), 0, 8, 0, sub_801EE64));
+    boss->unk14 = (boss->unk14 + boss->unk10) & 0x3FFFF;
+
+    if (boss->unk28 < 5 && boss->unk10 != -0x100) {
+        boss->unk10--;
+    }
+}
+
+void sub_8047940(EggGoRound *boss)
+{
+    Sprite *s = &boss->unk1FC;
+    boss->unk29 = 30;
+    if (boss->unk2A == 0) {
+        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
+        s->variant = 1;
+        s->prevVariant = -1;
+    }
+}
+
+void sub_804797C(EggGoRound *boss)
+{
+    s32 result;
+    EggGoRound_unk6C *unk6C = &boss->unk6C;
+    unk6C->unk78 += 0x30;
+    unk6C->unk6C += unk6C->unk74;
+    unk6C->unk70 += unk6C->unk78;
+
+    result = sub_801F100(I(unk6C->unk70) + 0x14, I(unk6C->unk6C), 1, 8, sub_801EC3C);
+    if (result < 0) {
+        u32 temp;
+        unk6C->unk74 -= 0x40;
+        if (unk6C->unk74 < 0) {
+            unk6C->unk74 = 0;
+        }
+
+        temp = unk6C->unk78 * 9;
+        temp *= 4;
+        temp -= unk6C->unk78;
+        temp *= 2;
+
+        unk6C->unk78 = Div(-temp, 100);
+        unk6C->unk70 += Q(result);
+    }
+}
+
+void TaskDestructor_EggGoRound(struct Task *t)
+{
+    EggGoRound *boss = TASK_DATA(t);
+    VramFree(boss->unk39C.graphics.dest);
+    VramFree(boss->unk36C.graphics.dest);
+    VramFree(boss->unk1C4.graphics.dest);
+    VramFree(boss->unk1FC.graphics.dest);
+    VramFree(boss->unk25C[0].s.graphics.dest);
+    VramFree(boss->unk25C[1].s.graphics.dest);
+    VramFree(boss->unk22C.graphics.dest);
+
+    gActiveBossTask = NULL;
 }
