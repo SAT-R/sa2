@@ -1,8 +1,6 @@
 #include "global.h"
 #include "lib/m4a.h"
 
-#include "packed.h"
-
 #include "flags.h"
 #include "sprite.h"
 #include "data/sprite_data.h"
