@@ -38,7 +38,12 @@ typedef struct {
     s32 unk6C;
     s32 unk70;
 
-    u8 fillerunk74[0x14C];
+    s32 unk74;
+    s32 unk78;
+    s32 unk7C;
+
+    s32 unk80[4][5];
+    s32 unkD0[4][3][5];
 
     u8 unk1C0;
     u8 unk1C1;
@@ -873,50 +878,185 @@ void sub_8046E90(EggGoRound *boss)
     }
 }
 
-// void sub_8046F00(EggGoRound *boss)
-// {
-//     ExplosionPartsInfo explosion;
-//     EggGoRound_unk6C *unk6C = &boss->unk6C;
-//     if (boss->unk0 < 0x32) {
-//         u8 i;
-//         u8 temp = Div(0x31 - boss->unk0, 0x10);
-//         if ((0x31 - (temp & 0xFF) * 0x10) != boss->unk0) {
-//             return;
-//         }
+// https://decomp.me/scratch/2bvYC
+// Functionally matched, but there is something wrong with
+// the zero value being optimised and set once at the start of the loop
+// when it should be r3 and set
+NONMATCH("asm/non_matching/game/bosses/boss_6__sub_8046F00.inc",
+         void sub_8046F00(EggGoRound *boss))
+{
+    ExplosionPartsInfo explosion;
+    EggGoRound_unk6C *unk6C = &boss->unk6C;
+    if (boss->unk0 < 0x32) {
+        u8 i;
+        u8 temp = Div(0x31 - boss->unk0, 0x10);
+        if ((0x31 - (temp & 0xFF) * 0x10) != boss->unk0) {
+            return;
+        }
 
-//         m4aSongNumStart(SE_144);
+        m4aSongNumStart(SE_144);
 
-//         for (i = 0; i < 4; i++) {
-//             u8 j;
+        for (i = 0; i < 4; i++) {
+            u8 j;
 
-//              u32 idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
+            u32 idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
+            s16 x = ((I(boss->unk4) - gCamera.x)
+                     + ((gUnknown_080D8030[temp] * COS(idx)) >> 14));
+            s16 y = ((I(boss->unk8) - gCamera.y)
+                     + ((gUnknown_080D8030[temp] * SIN(idx)) >> 14));
+            for (j = 0; j < 3; j++) {
+                u32 rand;
 
-//             s16 x;
-//             s16 y;
-//             x = (I(boss->unk4) - gCamera.x) + ((gUnknown_080D8030[temp] * COS(idx)) >>
-//             14); y = (I(boss->unk8) - gCamera.y) + ((gUnknown_080D8030[temp] *
-//             SIN(idx)) >> 14); for (j = 0; j < 3; j++) {
-//                 u32 rand;
-//                 register u32 r3 asm("r3");
+                rand = PseudoRandom32();
+                explosion.spawnX = ({ x + (rand & 0xF) - 8; });
 
-//                 explosion.spawnX = x + (PseudoRandom32() & 0xF) - 8;
+                rand = PseudoRandom32();
+                explosion.spawnY = ({ y + (rand & 0xF) - 8; });
 
-//                 rand = PseudoRandom32();
-//                 explosion.spawnY = y + (rand & 0xF) - 8;
+                explosion.velocity = 0; // r3
+                rand = PseudoRandom32();
+                explosion.rotation = ({ idx - ((rand & 0x3F)) + 0x1F; });
+                explosion.speed = 0xA00 - (j * 0x200);
+                explosion.vram = (void *)OBJ_VRAM0 + (0x2980);
+                explosion.anim = SA2_ANIM_EXPLOSION;
+                explosion.variant = 0; // r3
+                explosion.unk4 = 0; // r3
 
-//                 r3 = 0;
-//                 explosion.velocity = r3;
+                CreateBossParticleWithExplosionUpdate(&explosion, &unk6C->unk1C0);
+            }
+        }
+    }
+}
+END_NONMATCH
 
-//                 rand = PseudoRandom32();
-//                 explosion.rotation = ({ idx - ((rand & 0x3F)) + 0x1F; });
-//                 explosion.speed = 0xA00 - (j * 0x200);
-//                 explosion.vram = (void *)OBJ_VRAM0 + (0x2980);
-//                 explosion.anim = SA2_ANIM_EXPLOSION;
-//                 explosion.variant = 0; // r3
-//                 explosion.unk4 = 0; // r3
+void sub_8047060(EggGoRound *boss)
+{
+    if ((gStageTime & 0xF) == 0) {
+        u32 rand;
+        s16 x, y;
 
-//                 CreateBossParticleWithExplosionUpdate(&explosion, &unk6C->unk1C0);
-//             }
-//         }
-//     }
-// }
+        ExplosionPartsInfo explosion;
+        x = (I(boss->unk4) - gCamera.x);
+        y = (I(boss->unk8) - gCamera.y);
+        rand = PseudoRandom32();
+        explosion.spawnX = ({ x + (rand & 0x3F) - 0x1F; });
+
+        rand = PseudoRandom32();
+        explosion.spawnY = ({ y + (rand & 0x3F) - 0x1F; });
+
+        explosion.velocity = 0;
+        explosion.rotation = ({ 0x407 - ((PseudoRandom32() & 0x3F)); });
+        explosion.speed = ({ 0x400 - (PseudoRandom32() & 0x1FF); });
+        explosion.vram = (void *)OBJ_VRAM0 + 0x2980;
+        explosion.anim = SA2_ANIM_EXPLOSION;
+        explosion.variant = 0;
+        explosion.unk4 = 0;
+
+        CreateBossParticleWithExplosionUpdate(&explosion, &boss->unk6C.unk1C0);
+    }
+}
+
+void sub_8047138(EggGoRound *boss)
+{
+    EggGoRound_unk6C *unk6C = &boss->unk6C;
+    if (Mod(gStageTime, 10) == 0 && unk6C->unk1C1 == 0) {
+        u32 rand;
+        s16 x, y;
+
+        ExplosionPartsInfo explosion;
+        x = (I(unk6C->unk6C) - gCamera.x);
+        y = (I(unk6C->unk70) - gCamera.y);
+        rand = PseudoRandom32();
+        explosion.spawnX = ({ x + (rand & 0x3F) - 0x1F; });
+
+        rand = PseudoRandom32();
+        explosion.spawnY = ({ y + (rand & 0x3F) - 0x1F; });
+
+        explosion.velocity = 0;
+        explosion.rotation = ({ 0x407 - ((PseudoRandom32() & 0x3F)); });
+        explosion.speed = ({ 0x400 - (PseudoRandom32() & 0x1FF); });
+        explosion.vram = (void *)OBJ_VRAM0 + 0x2980;
+        explosion.anim = SA2_ANIM_EXPLOSION;
+        explosion.variant = 0;
+        explosion.unk4 = 0;
+
+        CreateBossParticleWithExplosionUpdate(&explosion, &boss->unk6C.unk1C0);
+    }
+}
+
+void sub_8047224(s32 dX, s32 dY)
+{
+    EggGoRound_unk6C *unk6C;
+    EggGoRound *boss;
+
+    u8 j, i;
+
+    boss = TASK_DATA(gActiveBossTask);
+    unk6C = &boss->unk6C;
+
+    boss->unk4 += dX;
+    boss->unk8 += dY;
+    unk6C->unk6C += dX;
+    unk6C->unk70 += dY;
+
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            unk6C->unkD0[i][j][0] += dX;
+            unk6C->unkD0[i][j][1] += dY;
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        unk6C->unk80[i][0] = dX;
+        unk6C->unk80[i][1] = dY;
+        boss->unk2C[i] = 0;
+    }
+
+    for (i = 0; i < 3; i++) {
+        EggGoRound_unk3C *unk3C = &boss->unk3C[i];
+        unk3C->unk4 += dX;
+        unk3C->unk8 += dY;
+    }
+}
+
+NONMATCH("asm/non_matching/game/bosses/boss_6__sub_804732C.inc",
+         void sub_804732C(EggGoRound *boss))
+{
+    u8 j, i;
+    u8 someVal;
+    u32 idx;
+    EggGoRound_unk6C *unk6C;
+
+    unk6C = &boss->unk6C;
+    boss->unk1C = 0;
+    unk6C->unk6C = boss->unk4;
+    unk6C->unk70 = boss->unk8;
+    unk6C->unk74 = 0x580;
+    unk6C->unk78 = 0;
+    unk6C->unk7C = 300;
+
+    for (i = 0; i < 4; i++) {
+        idx = (u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16;
+
+        for (j = 0; j < 3; j++) {
+            unk6C->unkD0[i][j][0]
+                = boss->unk4 + ((gUnknown_080D8030[j] * COS(idx)) >> 6);
+            unk6C->unkD0[i][j][1]
+                = boss->unk8 + ((gUnknown_080D8030[j] * SIN(idx)) >> 6);
+            unk6C->unkD0[i][j][2] = (7 - j) * 0x14;
+            unk6C->unkD0[i][j][3] = 1;
+            unk6C->unkD0[i][j][4] = idx;
+        }
+    }
+
+    for (i = 0; i < 4; i++) {
+        someVal = gUnknown_080D8030[3];
+        idx = (u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16;
+        unk6C->unk80[i][0] = boss->unk4 + (someVal * (COS(idx)) >> 6);
+        unk6C->unk80[i][1] = boss->unk8 + (someVal * (SIN(idx)) >> 6);
+        unk6C->unk80[i][2] = (6 - j) * 0x14;
+        unk6C->unk80[i][3] = 1;
+        unk6C->unk80[i][4] = idx;
+    }
+}
+END_NONMATCH
