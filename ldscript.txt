@@ -213,7 +213,6 @@ SECTIONS
         build/sa2/src/game/bosses/boss_4.o(.text);
         build/sa2/src/game/bosses/boss_5.o(.text);
         build/sa2/src/game/bosses/boss_6.o(.text);
-        build/sa2/asm/boss_6.o(.text);
         build/sa2/asm/boss_7.o(.text);
         build/sa2/asm/boss_8.o(.text);
         build/sa2/src/game/bosses/boss_9.o(.text);
@@ -456,7 +455,7 @@ SECTIONS
         build/sa2/src/game/bosses/boss_3.o(.rodata);
         build/sa2/src/game/bosses/boss_4.o(.rodata);
         build/sa2/src/game/bosses/boss_5.o(.rodata);
-        build/sa2/asm/boss_6.o(.rodata);
+        build/sa2/src/game/bosses/boss_6.o(.rodata);
         build/sa2/asm/boss_7.o(.rodata);
         build/sa2/asm/boss_8.o(.rodata);
         build/sa2/asm/boss_9.o(.rodata);

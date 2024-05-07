@@ -3,6 +3,8 @@
 
 .section .rodata
 
+.align 2, 0
+
  	.global gUnknown_080D8108
 gUnknown_080D8108:
     .incbin "baserom.gba", 0x000D8108, 0x40
