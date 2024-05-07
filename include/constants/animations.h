@@ -293,6 +293,7 @@
 #define SA2_ANIM_DASH_RING_TEC_BAS               605
 #define SA2_ANIM_DIR_ARROW_TEC_BAS               606
 #define SA2_ANIM_SPIKES_TEC_BAS                  607
+#define SA2_ANIM_RAMP_TECHNO_BASE                608
 #define SA2_ANIM_609                             609
 #define SA2_ANIM_610                             610
 

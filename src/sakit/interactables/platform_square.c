@@ -391,7 +391,7 @@ static void sub_800F990(Sprite_PlatformSquare *platform)
 }
 
 // Seems to be unused
-static u32 sub_800F9AC(Sprite *s, s32 x, s32 y, Player *p)
+static u32 UNUSED sub_800F9AC(Sprite *s, s32 x, s32 y, Player *p)
 {
     u32 result;
 
