@@ -421,6 +421,7 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
 
 // (57.61%) https://decomp.me/scratch/6Xm6S
 // (58.36%) https://decomp.me/scratch/ClyxP
+// (48.23%) https://decomp.me/scratch/bDTEe
 NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
 {
     u8 bgIndex = 0;
@@ -456,7 +457,7 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                 if (gUnknown_03002280[bgIndex][3] == 0xFF) {
                     // _080040A2
                     u16 v = gUnknown_03004D80[bgIndex];
-                    u32 value;
+                    s32 value = 0xFF - gUnknown_03002280[bgIndex][1];
                     v |= v << 8;
 
                     value = ((gUnknown_03002280[bgIndex][3] - r4) * bgSize_TxtOrAff);
@@ -467,7 +468,6 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                     // u8 i2 = i + 1;
                     for (; r4 < gUnknown_03002280[bgIndex][3]; r4++) {
                         u16 v = gUnknown_03004D80[bgIndex];
-                        u32 value;
                         v |= v << 8;
 
                         DmaFill16(
@@ -494,6 +494,7 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                 } else {
                     // _080041D8
                     for (; r4 <= gUnknown_03002280[bgIndex][3]; r4++) {
+                        // _080041F6
                         DmaFill16(3, gUnknown_03004D80[bgIndex],
                                   &gUnknown_03002280[bgIndex][tileSize],
                                   ARRAY_COUNT(gUnknown_03002280[0]));
@@ -501,7 +502,7 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                 }
             }
             // _0800422C
-            DmaFill32(3, 0, &gUnknown_03002280[bgIndex], 4);
+            DmaFill32(3, 0, &gUnknown_03002280[bgIndex], ARRAY_COUNT(gUnknown_03002280[bgIndex]));
         }
     }
 
