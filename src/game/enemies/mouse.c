@@ -47,8 +47,8 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
             mouse->unk50 = 0;
         }
 
-        mouse->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-        mouse->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
+        mouse->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
+        mouse->spawnY = Q(TO_WORLD_POS(me->y, spriteRegionY));
 
         mouse->offsetX = 0;
 
@@ -59,13 +59,13 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         }
 
         if (mouse->unk51) {
-            mouse->offsetY = Q_24_8(sub_801F07C(Q_24_8_TO_INT(mouse->spawnY),
-                                                Q_24_8_TO_INT(mouse->spawnX),
-                                                mouse->unk50, 8, 0, sub_801EE64));
+            mouse->offsetY = Q(sub_801F07C(Q_24_8_TO_INT(mouse->spawnY),
+                                           Q_24_8_TO_INT(mouse->spawnX), mouse->unk50, 8,
+                                           0, sub_801EE64));
         } else {
-            mouse->offsetY = Q_24_8(sub_801F07C(Q_24_8_TO_INT(mouse->spawnY),
-                                                Q_24_8_TO_INT(mouse->spawnX),
-                                                mouse->unk50, 8, 0, sub_801EE64));
+            mouse->offsetY = Q(sub_801F07C(Q_24_8_TO_INT(mouse->spawnY),
+                                           Q_24_8_TO_INT(mouse->spawnX), mouse->unk50, 8,
+                                           0, sub_801EE64));
         }
         mouse->unk4C = 0;
         mouse->unk52 = 0;

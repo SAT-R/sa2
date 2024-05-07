@@ -45,7 +45,7 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     u8 i;
     s32 x, y;
-    Vec2_32 pos;
+
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
         struct Task *t = TaskCreate(Task_FlickeyMain, sizeof(Sprite_Flickey), 0x4040, 0,
                                     TaskDestructor_Flickey);

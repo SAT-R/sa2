@@ -152,7 +152,6 @@ static void sub_808EC28(void)
 static void sub_808EC64(void)
 {
     struct CreditsCutScene *scene = TASK_DATA(gCurTask);
-    ScreenFade *fade = &scene->unk40;
 
     if (scene->unk4D != 0 && (gPressedKeys & START_BUTTON)) {
         gCurTask->main = sub_808ECB4;

@@ -81,7 +81,7 @@ static void sub_8051928(void)
 {
 #ifndef NON_MATCHING
     register IwramData ref asm("r1") = gCurTask->data;
-    Sprite_Gohla *gohla = (void *)IWRAM_START + ref;
+    Sprite_Gohla *gohla = (Sprite_Gohla *)IWRAM_PTR(ref);
     register Sprite *s asm("r5") = &gohla->s;
 #else
     Sprite_Gohla *gohla = TASK_DATA(gCurTask);

@@ -491,7 +491,6 @@ void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void)
     u8 i;
     s32 pos[2];
     s32 temp[2];
-    s32 temp2;
     Sprite *s;
     OrbitingEmeraldsSequence *sequence = TASK_DATA(gCurTask);
 
@@ -598,10 +597,8 @@ void CreateSuperSonicSpark(s32 x, s32 y)
 
 void Task_SuperSonicSpark(void)
 {
-    s32 unk4, unkC;
-    Sprite *s;
     SuperSonicSpark *spark = TASK_DATA(gCurTask);
-    s = &spark->s;
+    Sprite *s = &spark->s;
 
     OBJ_ACCELERATE_Y(spark, 16);
     OBJ_UPDATE_POS(spark);

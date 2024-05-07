@@ -122,7 +122,6 @@ static bool32 sub_80423EC(AeroEgg *boss);
 static void sub_80424EC(AeroEgg *boss);
 static void sub_8042560(AeroEgg *boss);
 static void Task_AeroEggMain(void);
-static void sub_80426C4(AeroEgg *boss);
 static void sub_8042774(AeroEgg *boss);
 static void TaskDestructor_AeroEggMain(struct Task *t);
 
@@ -292,8 +291,6 @@ static void sub_8041880(AeroEgg *boss)
     DisplaySprite(s);
 
     for (i = 0; i < ARRAY_COUNT(boss->sub.tail); i++) {
-        s32 xVal, yVal;
-
         s32 sinV, cosV;
         s32 bossX, bossY;
 
@@ -320,7 +317,6 @@ static void sub_8041880(AeroEgg *boss)
 
     {
         s32 bossX, bossY;
-        s32 xVal, yVal;
         s32 sinV, cosV;
         period = (u16)(SIN_24_8(((gStageTime * 12) + 512) & ONE_CYCLE) >> 3);
 
@@ -346,9 +342,7 @@ static void sub_8041880(AeroEgg *boss)
 static void sub_8041A08(AeroEgg *boss)
 {
     bool32 r7;
-    u16 tVal16;
     Sprite *s;
-    s32 worldX0, worldY0;
     s32 worldX, worldY;
     u32 tVal;
 
@@ -503,7 +497,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
          static void sub_8041D34(AeroEgg *boss))
 {
     ExplosionPartsInfo partsInfo;
-    s32 res, tmp;
+    s32 res;
     AeroEggSub *sub = &boss->sub;
 
     u32 newUnk6A;
@@ -520,7 +514,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
     res = Mod(newUnk6A, 12);
 
     if (res == 0) {
-        s32 rand, temp;
+        s32 rand;
 
         sub->unk6A = 0x30;
         rand = PseudoRandom32();
@@ -584,7 +578,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
         u8 i;
         for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
             s32 temp;
-            u8 r7;
 
             if (boss->sub.tail[i].status != 0) {
                 continue;
@@ -667,7 +660,6 @@ NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
     {
         u8 i;
         for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
-            s32 xVal, yVal;
             u16 period = SIN_24_8(((gStageTime * 12) + (i << 7)) & ONE_CYCLE) >> 3;
             s32 bossX, bossY;
             s32 sinV, cosV;
@@ -1033,7 +1025,6 @@ static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16
         = TaskCreate(Task_AeroEggBombDebris, sizeof(AeroEggDebris), 0x6100, 0, NULL);
     AeroEggDebris *deb = TASK_DATA(t);
     Sprite *s;
-    s16 cos, sin;
 
     deb->screenX = screenX;
     deb->screenY = screenY;

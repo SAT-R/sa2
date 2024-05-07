@@ -529,7 +529,7 @@ void sub_8090520(void)
 void sub_80905C0(void)
 {
     struct ExtraEndingCutScene *scene = TASK_DATA(gCurTask);
-    ScreenFade *fade = &scene->unk370;
+
     sub_8090E18(scene);
     sub_8091484(scene);
 
@@ -704,7 +704,6 @@ void sub_8090904(struct ExtraEndingCutScene *scene)
             }
 
             if (scene->unk381[i] > 0xF) {
-                s32 temp;
                 scene->unk47C[i][3] += scene->unk47C[i][2] * 2;
 
                 if (scene->unk47C[i][3] > 0x3FF00) {

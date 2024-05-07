@@ -195,7 +195,6 @@ void sub_804352C(void);
 void CreateEggSaucer(void)
 {
     u8 i;
-    u32 r2;
     EggSaucer *boss;
     ScreenFade *fade;
     Sprite *s;
@@ -825,11 +824,9 @@ void EggSaucerMove(s32 dX, s32 dY)
 void HandleCollision(EggSaucer *boss)
 {
     u8 i;
-    Sprite *s;
     u8 idx;
     s32 x, y;
-    u32 temp;
-    s = &boss->cabin;
+    Sprite *s = &boss->cabin;
 
     x = Q_24_8_TO_INT(boss->x) + ((COS(boss->cabinDiskAngle) * 5) >> 11);
     y = Q_24_8_TO_INT(boss->y) + ((SIN(boss->cabinDiskAngle) * 5) >> 11);
@@ -1514,7 +1511,7 @@ static void sub_8044FE4(EggSaucer *boss)
 static void sub_80451C4(EggSaucer *boss)
 {
     Sprite *s;
-    s32 val, temp, index;
+    s32 val;
 #ifndef NON_MATCHING
     register u8 r2 asm("r2");
 #endif
@@ -1574,6 +1571,7 @@ static void sub_80451C4(EggSaucer *boss)
 void sub_80452F8(EggSaucer *boss)
 {
     Sprite *s = &boss->pilot;
+
     if (boss->unk13 == 0) {
         boss->unk12 = 0x1E;
         if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)

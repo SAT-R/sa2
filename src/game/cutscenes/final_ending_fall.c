@@ -824,7 +824,7 @@ void CreateFinalEndingLandingCutScene(void);
 
 void sub_80927E8(void)
 {
-    struct Task *t = gCurTask;
+    struct Task UNUSED *t = gCurTask;
     CreateFinalEndingLandingCutScene();
     TaskDestroy(gCurTask);
 }
