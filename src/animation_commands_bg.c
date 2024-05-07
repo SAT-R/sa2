@@ -22,7 +22,7 @@ static AnimCmdResult animCmd_8_BG(void *, Sprite *);
 static AnimCmdResult animCmd_SetIdAndVariant_BG(void *, Sprite *);
 static AnimCmdResult animCmd_10_BG(void *, Sprite *);
 static AnimCmdResult animCmd_SetSpritePriority_BG(void *, Sprite *);
-static AnimCmdResult animCmd_12_BG(void *, Sprite *);
+static AnimCmdResult animCmd_SetOamOrder_BG(void *, Sprite *);
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
@@ -32,7 +32,7 @@ const AnimationCommandFunc animCmdTable_BG[12] = {
     animCmd_PlaySoundEffect_BG,   animCmd_AddHitbox_BG,
     animCmd_TranslateSprite_BG,   animCmd_8_BG,
     animCmd_SetIdAndVariant_BG,   animCmd_10_BG,
-    animCmd_SetSpritePriority_BG, animCmd_12_BG,
+    animCmd_SetSpritePriority_BG, animCmd_SetOamOrder_BG,
 };
 
 void UpdateBgAnimationTiles(Background *bg)
@@ -147,7 +147,7 @@ s32 sub_80036E0(Sprite *s)
 AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
 {
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_GetTiles);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
@@ -175,7 +175,7 @@ AnimCmdResult animCmd_AddHitbox_BG(void *cursor, Sprite *s)
 {
     ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
     s32 index = cmd->hitbox.index & 0xF;
-    s->animCursor += AnimCommandSizeInWords(ACmd_Hitbox);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     DmaCopy32(3, &cmd->hitbox, &s->hitboxes[index].index, 8);
 
@@ -289,7 +289,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
                 //       DISPCNT_MODE_3 or DISPCNT_MODE_5.
                 if ((bgId >= 2) && ((gDispCnt & 0x3) != DISPCNT_MODE_0)) {
                     // _08003A84
-                    u16 sp24;
+                    // u16 sp24;
                     u8 sp30;
                     s32 shrunkTileId;
                     void *r7;
@@ -323,7 +323,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
                         // sp08++;
                         while (tilesY-- != 0) {
                             // _08003B74
-                            (r7 + (oam.tileNum >> 3));
+                            //(r7 + (oam.tileNum >> 3));
 
                             // UNFINISHED //
                         }
@@ -562,7 +562,7 @@ s32 sub_8004274(void *dest, const void *tilesSrc, u16 param2, u16 param3, u8 bgC
 AnimCmdResult animCmd_GetPalette_BG(void *cursor, Sprite *s)
 {
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_GetPalette);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     if (!(s->unk10 & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
@@ -597,7 +597,7 @@ AnimCmdResult animCmd_End_BG(void *cursor, Sprite *s)
 AnimCmdResult animCmd_PlaySoundEffect_BG(void *cursor, Sprite *s)
 {
     ACmd_PlaySoundEffect *cmd = cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     m4aSongNumStart(cmd->songId);
 
@@ -608,7 +608,7 @@ AnimCmdResult animCmd_PlaySoundEffect_BG(void *cursor, Sprite *s)
 AnimCmdResult animCmd_TranslateSprite_BG(void *cursor, Sprite *s)
 {
     ACmd_TranslateSprite *cmd = cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_TranslateSprite);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     s->x += cmd->x;
     s->y += cmd->y;
@@ -620,7 +620,7 @@ AnimCmdResult animCmd_TranslateSprite_BG(void *cursor, Sprite *s)
 AnimCmdResult animCmd_8_BG(void *cursor, Sprite *s)
 {
     ACmd_8 *cmd = cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_8);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     return 1;
 }
@@ -628,7 +628,7 @@ AnimCmdResult animCmd_8_BG(void *cursor, Sprite *s)
 AnimCmdResult animCmd_SetIdAndVariant_BG(void *cursor, Sprite *s)
 {
     ACmd_SetIdAndVariant *cmd = cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     s->graphics.anim = cmd->animId;
     s->prevVariant = 0xFF;
@@ -639,7 +639,8 @@ AnimCmdResult animCmd_SetIdAndVariant_BG(void *cursor, Sprite *s)
 
 AnimCmdResult animCmd_10_BG(void *cursor, Sprite *s)
 {
-    s->animCursor += AnimCommandSizeInWords(ACmd_10);
+    ACmd_10 *cmd = cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
 #ifdef UB_FIX
     return 1; // I think this should be the correct behavior?
@@ -651,13 +652,15 @@ AnimCmdResult animCmd_10_BG(void *cursor, Sprite *s)
 // This is not a NOP-instruction in the regular version
 AnimCmdResult animCmd_SetSpritePriority_BG(void *cursor, Sprite *s)
 {
-    s->animCursor += AnimCommandSizeInWords(ACmd_SetSpritePriority);
+    ACmd_SetSpritePriority *cmd = cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
     return 1;
 }
 
 // This is not a NOP-instruction in the regular version
-AnimCmdResult animCmd_12_BG(void *cursor, Sprite *s)
+AnimCmdResult animCmd_SetOamOrder_BG(void *cursor, Sprite *s)
 {
-    s->animCursor += AnimCommandSizeInWords(ACmd_SetOamOrder);
+    ACmd_SetOamOrder *cmd = cursor;
+    s->animCursor += AnimCommandSizeInWords(*cmd);
     return 1;
 }
