@@ -22,38 +22,47 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 
-#define NUM_PLATFORMS 4
+#define NUM_PLATFORMS      4
+#define NUM_LINKS          3
+#define NUM_PROJECTILES    3
+#define NUM_PLATFORM_TYPES 2
+
+// TODO: why did they do this when they could have used boss->speedX
+#define BOSS_X_SPEED Q(5)
 
 typedef struct {
-    u8 unk0;
-    s32 unk4;
-    s32 unk8;
-    s16 unkC;
-    s16 unkE;
-} EggGoRound_unk3C;
+    u8 timer;
+    s32 x;
+    s32 y;
+    s16 speedX;
+    s16 speedY;
+} ProjectilePosition;
 
 typedef struct {
     Sprite s;
     Hitbox reserved;
     SpriteTransform transform;
-} EggGoRound_platforms;
+} Platform;
 
 typedef struct {
-    s32 unk6C;
-    s32 unk70;
+    s32 x;
+    s32 y;
+    s32 speedX;
+    s32 speedY;
+    s32 unk10;
+} DestructionProp;
 
-    s32 unk74;
-    s32 unk78;
-    s32 unk7C;
+typedef struct {
+    DestructionProp cabin;
 
     // Both of these are set but never read
-    s32 unk80[NUM_PLATFORMS][5];
-    s32 unkD0[NUM_PLATFORMS][3][5];
+    DestructionProp platforms[NUM_PLATFORMS];
+    DestructionProp platformLinks[NUM_PLATFORMS][NUM_LINKS];
 
-    u8 unk1C0;
+    u8 explosionState;
     u8 unk1C1;
 
-} EggGoRound_unk6C;
+} DestructionProps;
 
 typedef struct {
     u32 timer;
@@ -63,24 +72,28 @@ typedef struct {
     s16 speedY;
 
     s32 rotationSpeed;
-    s32 unk14;
-    u32 unk18;
+    u32 rotation;
+    u32 platformRotation;
     s16 unk1C;
     u16 unk1E;
-    u16 unk20;
+    u16 platformRotSpeed;
     u16 unk22;
     u8 unk24;
-    u8 unk25;
+    u8 state;
     u8 unk26;
     u8 unk27;
     u8 health;
     u8 unk29;
-    u8 unk2A;
-    s8 unk2B;
-    s32 prevPlatformXPositions[4];
-    EggGoRound_unk3C unk3C[3];
+    u8 invincibilityTimer;
 
-    EggGoRound_unk6C unk6C;
+    // Used to give the illusion the links are connected when rotation
+    // speeds up and slows down
+    s8 linkRotOffset;
+
+    s32 prevPlatformXPositions[NUM_PLATFORMS];
+    ProjectilePosition projectilePositions[NUM_PROJECTILES];
+
+    DestructionProps destructionProps;
 
     Sprite cabin;
     Hitbox reserved0;
@@ -88,56 +101,55 @@ typedef struct {
     Sprite pilot;
     Sprite link;
 
-    EggGoRound_platforms platforms[NUM_PLATFORMS];
+    Platform platforms[NUM_PLATFORMS];
 
     Sprite gun;
     Sprite projectile;
 
 } EggGoRound; /* 0x3CC */
 
-static void Task_EggGoRound(void);
+static void Task_IntroRollIn(void);
 static void TaskDestructor_EggGoRound(struct Task *);
-static void sub_80460DC(void);
+static void Task_DestructionCutScene1(void);
 
-static void sub_80475D0(EggGoRound *);
-static void sub_8046328(EggGoRound *);
-static void sub_804766C(EggGoRound *);
-static void sub_80478D4(EggGoRound *);
+static void UpdatePilotAnim(EggGoRound *);
+static void Render(EggGoRound *);
+static void SetPalette(EggGoRound *);
+static void UpdatePos(EggGoRound *);
 static void sub_804683C(EggGoRound *);
 static void sub_8046C28(EggGoRound *);
-static void sub_8047700(EggGoRound *);
+static void HandleCollisions(EggGoRound *);
 
 static void sub_804732C(EggGoRound *);
 static void sub_8046F00(EggGoRound *);
-static void sub_8046244(void);
+static void Task_DestructionCutScene3(void);
 static void sub_8047940(EggGoRound *boss);
-static void sub_804787C(EggGoRound *boss);
-static void sub_8047868(void);
+static void UpdateIntroPos(EggGoRound *boss);
+static void Task_HandleDestroy(void);
 
-static void sub_804797C(EggGoRound *);
-static void sub_80475D0(EggGoRound *);
+static void UpdateDestructionPropPositions(EggGoRound *);
+static void UpdatePilotAnim(EggGoRound *);
 static void sub_8047138(EggGoRound *);
-static void sub_8046E90(EggGoRound *);
-static void sub_8046198(void);
+static void RenderDestructionProps(EggGoRound *);
+static void Task_DestructionCutScene2(void);
 
 static void sub_804655C(EggGoRound *, u8);
-static void sub_8045F84(EggGoRound *);
+static void UpdateProjectiles(EggGoRound *);
 static void sub_8047060(EggGoRound *);
 
-// arm lengths
-static const u8 gUnknown_080D8030[NUM_PLATFORMS] = {
+static const u8 sLinkPositions[NUM_LINKS + 1] = {
     30,
     42,
     54,
     66,
 };
 
-static const TileInfo sPlatformAnimations[] = {
+static const TileInfo sPlatformAnimations[NUM_PLATFORM_TYPES] = {
     { 24, SA2_ANIM_EGG_GO_ROUND_SPIKED_PLATFORM, 0 },
     { 64, SA2_ANIM_EGG_GO_ROUND_PLATFORM, 0 },
 };
 
-static const u8 gUnknown_080D8044[] = {
+static const u8 sStateChoices[] = {
     0, 0, 0, 1, 1, 1, 1, 2, 3, 3,
 };
 
@@ -156,9 +168,9 @@ static const u16 gUnknown_080D809E[][10] = {
     { 257, 257, 257, 257, 257, 256, 256, 256, 222, 222 },
 };
 
-static const u16 gUnknown_080D80C6[][16] = {
-    INCBIN_U16("graphics/80D80C6.gbapal"),
-    INCBIN_U16("graphics/80D80E6.gbapal"),
+static const u16 sPalettes[][16] = {
+    INCBIN_U16("graphics/80D80C6.gbapal"), // hit palette
+    INCBIN_U16("graphics/80D80E6.gbapal"), // normal palette
 };
 
 void CreateEggGoRound(void)
@@ -166,7 +178,7 @@ void CreateEggGoRound(void)
     u8 i;
     EggGoRound *boss;
     Sprite *s;
-    void *vrams[2];
+    void *vrams[NUM_PLATFORM_TYPES];
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     sub_8039ED4();
     gPseudoRandom = gStageTime;
@@ -180,7 +192,7 @@ void CreateEggGoRound(void)
     gPlayer.unk3C = NULL;
     gPlayer.moveState &= ~MOVESTATE_8;
 
-    gActiveBossTask = TaskCreate(Task_EggGoRound, sizeof(EggGoRound), 0x4000, 0,
+    gActiveBossTask = TaskCreate(Task_IntroRollIn, sizeof(EggGoRound), 0x4000, 0,
                                  TaskDestructor_EggGoRound);
     boss = TASK_DATA(gActiveBossTask);
 
@@ -191,45 +203,45 @@ void CreateEggGoRound(void)
     }
 
     if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
-        boss->health = boss->health >> 1;
+        boss->health = boss->health / 2;
     }
 
     if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
-        boss->x = Q_24_8(29076);
-        boss->y = Q_24_8(100);
+        boss->x = Q(29076);
+        boss->y = Q(100);
     } else {
-        boss->x = Q_24_8(900);
-        boss->y = Q_24_8(150);
+        boss->x = Q(900);
+        boss->y = Q(150);
     }
 
-    boss->speedX = 0x500;
+    boss->speedX = BOSS_X_SPEED;
     boss->speedY = 0;
     boss->unk29 = 0;
-    boss->unk2A = 0;
-    boss->unk14 = 0;
-    boss->unk18 = 0;
+    boss->invincibilityTimer = 0;
+    boss->rotation = 0;
+    boss->platformRotation = 0;
     boss->unk27 = 0;
     boss->unk1E = 0;
     boss->unk26 = 0;
-    boss->unk20 = 0;
+    boss->platformRotSpeed = 0;
     boss->unk24 = 0;
-    boss->unk25 = 0;
+    boss->state = 0;
     boss->prevPlatformXPositions[0] = 0;
     boss->prevPlatformXPositions[1] = 0;
     boss->prevPlatformXPositions[2] = 0;
     boss->prevPlatformXPositions[3] = 0;
     boss->timer = 128;
     boss->rotationSpeed = Q(12);
-    boss->unk2B = 0xE0;
+    boss->linkRotOffset = 0xE0;
     boss->unk22 = 0x1C2;
 
-    for (i = 0; i < 3; i++) {
-        EggGoRound_unk3C *unk3C = &boss->unk3C[i];
-        unk3C->unk0 = 0;
-        unk3C->unk4 = 0;
-        unk3C->unk8 = 0;
-        unk3C->unkC = 0;
-        unk3C->unkE = 0;
+    for (i = 0; i < NUM_LINKS; i++) {
+        ProjectilePosition *projPos = &boss->projectilePositions[i];
+        projPos->timer = 0;
+        projPos->x = 0;
+        projPos->y = 0;
+        projPos->speedX = 0;
+        projPos->speedY = 0;
     }
 
     s = &boss->projectile;
@@ -295,9 +307,9 @@ void CreateEggGoRound(void)
         s = &boss->platforms[i].s;
         s->x = 0;
         s->y = 0;
-        s->graphics.dest = vrams[i & 1];
-        s->graphics.anim = sPlatformAnimations[i & 1].anim;
-        s->variant = sPlatformAnimations[i & 1].variant;
+        s->graphics.dest = vrams[i % NUM_PLATFORM_TYPES];
+        s->graphics.anim = sPlatformAnimations[i % NUM_PLATFORM_TYPES].anim;
+        s->variant = sPlatformAnimations[i % NUM_PLATFORM_TYPES].variant;
 
         s->unk1A = SPRITE_OAM_ORDER(21);
         s->graphics.size = 0;
@@ -337,19 +349,20 @@ static void sub_8045E78(EggGoRound *boss)
 
         if (Mod(boss->unk22, 30) == 0) {
             u8 i;
-            u16 result = sub_8004418(I(gPlayer.y - boss->y), I(gPlayer.x - boss->x));
+            u16 targetAngle
+                = sub_8004418(I(gPlayer.y - boss->y), I(gPlayer.x - boss->x));
 
-            for (i = 0; i < 3; i++) {
-                EggGoRound_unk3C *unk3C = &boss->unk3C[i];
-                if (unk3C->unk0 == 0) {
+            for (i = 0; i < NUM_PROJECTILES; i++) {
+                ProjectilePosition *projPos = &boss->projectilePositions[i];
+                if (projPos->timer == 0) {
                     s32 sin;
-                    unk3C->unk4 = boss->x;
-                    unk3C->unk8 = boss->y + Q(14);
-                    sin = COS(result & (SIN_PERIOD - 1));
-                    unk3C->unkC = sin >> 5;
-                    sin = SIN(result & (SIN_PERIOD - 1));
-                    unk3C->unkE = sin >> 5;
-                    unk3C->unk0 = -1;
+                    projPos->x = boss->x;
+                    projPos->y = boss->y + Q(14);
+                    sin = COS(targetAngle & (SIN_PERIOD - 1));
+                    projPos->speedX = sin >> 5;
+                    sin = SIN(targetAngle & (SIN_PERIOD - 1));
+                    projPos->speedY = sin >> 5;
+                    projPos->timer = 255;
                     return;
                 }
             }
@@ -357,71 +370,71 @@ static void sub_8045E78(EggGoRound *boss)
     }
 }
 
-static void sub_8045F84(EggGoRound *boss)
+static void UpdateProjectiles(EggGoRound *boss)
 {
 
     Sprite *s = &boss->projectile;
     bool32 animUpdated = FALSE;
     u8 i;
 
-    for (i = 0; i < 3; i++) {
-        EggGoRound_unk3C *unk3C = &boss->unk3C[i];
+    for (i = 0; i < NUM_PROJECTILES; i++) {
+        ProjectilePosition *projPos = &boss->projectilePositions[i];
 
-        if (unk3C->unk0 != 0) {
-            unk3C->unk0--;
+        if (projPos->timer != 0) {
+            projPos->timer--;
 
             if (!PLAYER_IS_ALIVE) {
-                unk3C->unk4 += unk3C->unkC;
+                projPos->x += projPos->speedX;
             } else {
-                unk3C->unk4 += unk3C->unkC + Q(5);
+                projPos->x += projPos->speedX + BOSS_X_SPEED;
             }
-            unk3C->unk8 += unk3C->unkE;
+            projPos->y += projPos->speedY;
 
             if (!animUpdated) {
                 UpdateSpriteAnimation(s);
                 animUpdated = TRUE;
             }
 
-            if (boss->health != 0) {
-                sub_800C84C(s, I(unk3C->unk4), I(unk3C->unk8));
+            if (boss->health > 0) {
+                sub_800C84C(s, I(projPos->x), I(projPos->y));
             }
 
-            s->x = I(unk3C->unk4) - gCamera.x;
-            s->y = I(unk3C->unk8) - gCamera.y;
+            s->x = I(projPos->x) - gCamera.x;
+            s->y = I(projPos->y) - gCamera.y;
             DisplaySprite(s);
         }
     }
 }
 
-static void sub_8046040(void)
+static void Task_Main(void)
 {
     EggGoRound *boss = TASK_DATA(gCurTask);
-    sub_80478D4(boss);
+    UpdatePos(boss);
     sub_804683C(boss);
     sub_8046C28(boss);
-    sub_8047700(boss);
+    HandleCollisions(boss);
     sub_8045E78(boss);
-    sub_8045F84(boss);
-    sub_80475D0(boss);
-    sub_8046328(boss);
-    sub_804766C(boss);
+    UpdateProjectiles(boss);
+    UpdatePilotAnim(boss);
+    Render(boss);
+    SetPalette(boss);
 
     if (boss->health == 0) {
-        boss->unk2B = 0;
+        boss->linkRotOffset = 0;
         boss->rotationSpeed = 0;
         boss->timer = 128;
-        boss->unk6C.unk1C0 = 0;
+        boss->destructionProps.explosionState = 0;
 
         gPlayer.unk3C = NULL;
         gPlayer.moveState &= ~MOVESTATE_8;
         gPlayer.moveState |= MOVESTATE_IN_AIR;
 
         Player_DisableInputAndBossTimer();
-        gCurTask->main = sub_80460DC;
+        gCurTask->main = Task_DestructionCutScene1;
     }
 }
 
-static void sub_80460DC(void)
+static void Task_DestructionCutScene1(void)
 {
     EggGoRound *boss = TASK_DATA(gCurTask);
     s32 idx;
@@ -429,88 +442,92 @@ static void sub_80460DC(void)
         m4aSongNumStart(SE_144);
     }
 
-    if (boss->timer >= 0x40) {
+    if (boss->timer >= 64) {
         idx = CLAMP_SIN_PERIOD((boss->timer - 64) * 256);
 
     } else {
         idx = 0;
     }
 
-    boss->unk2B = SIN(idx) >> 12;
+    boss->linkRotOffset = SIN(idx) >> 12;
 
-    sub_80478D4(boss);
-    sub_8045F84(boss);
-    sub_80475D0(boss);
+    UpdatePos(boss);
+    UpdateProjectiles(boss);
+    UpdatePilotAnim(boss);
     sub_804655C(boss, 0);
-    sub_804766C(boss);
+    SetPalette(boss);
     sub_8047060(boss);
 
     gPlayer.unk3C = NULL;
     gPlayer.moveState &= ~MOVESTATE_8;
 
     if (--boss->timer == 0) {
-        boss->unk2B = 0;
+        boss->linkRotOffset = 0;
         boss->rotationSpeed = 0;
         boss->timer = 128;
-        gCurTask->main = sub_8046198;
+        gCurTask->main = Task_DestructionCutScene2;
     }
 }
 
-static void sub_8046198(void)
+static void Task_DestructionCutScene2(void)
 {
     EggGoRound *boss = TASK_DATA(gCurTask);
     s32 idx;
     if (Mod(gStageTime, 17) == 0) {
         m4aSongNumStart(SE_144);
     }
-    idx = CLAMP_SIN_PERIOD((boss->timer) * 256);
-    boss->unk2B = SIN(idx) >> 12;
+    idx = CLAMP_SIN_PERIOD(boss->timer * 256);
+    boss->linkRotOffset = SIN(idx) >> 12;
     boss->rotationSpeed = 0;
-    sub_80478D4(boss);
-    sub_8045F84(boss);
-    sub_80475D0(boss);
+    UpdatePos(boss);
+    UpdateProjectiles(boss);
+    UpdatePilotAnim(boss);
     sub_804655C(boss, 1);
-    sub_804766C(boss);
+    SetPalette(boss);
     sub_8046F00(boss);
     sub_8047060(boss);
 
     if (--boss->timer == 0) {
-        boss->unk6C.unk1C1 = 0;
+        boss->destructionProps.unk1C1 = 0;
         sub_804732C(boss);
-        gCurTask->main = sub_8046244;
+        gCurTask->main = Task_DestructionCutScene3;
     }
 }
 
-static void sub_8046244(void)
+static void Task_DestructionCutScene3(void)
 {
     EggGoRound *boss = TASK_DATA(gCurTask);
-    EggGoRound_unk6C *unk6C = &boss->unk6C;
-    sub_804797C(boss);
-    sub_80475D0(boss);
-    sub_8046E90(boss);
-    sub_804766C(boss);
+    DestructionProps *destruction = &boss->destructionProps;
+    UpdateDestructionPropPositions(boss);
+    UpdatePilotAnim(boss);
+    RenderDestructionProps(boss);
+    SetPalette(boss);
     sub_8047138(boss);
 
     if (Mod(gStageTime, 13) == 0) {
         m4aSongNumStart(SE_144);
     }
 
-    if (boss->unk6C.unk1C1 == 0 && (I(unk6C->unk6C) - gCamera.x) < 50) {
+    if (boss->destructionProps.unk1C1 == 0
+        && (I(destruction->cabin.x) - gCamera.x) < 50) {
         u32 flags = boss->pilot.unk10;
         flags &= SPRITE_FLAG_MASK_X_FLIP;
         flags |= SPRITE_FLAG(PRIORITY, 1);
-        boss->unk6C.unk1C1 = 1;
-        CreateEggmobileEscapeSequence(I(unk6C->unk6C) - gCamera.x,
-                                      I(unk6C->unk70) - gCamera.y - 15, flags);
+        boss->destructionProps.unk1C1 = 1;
+        CreateEggmobileEscapeSequence(I(destruction->cabin.x) - gCamera.x,
+                                      I(destruction->cabin.y) - gCamera.y - 15, flags);
     }
 
-    if (I(boss->unk6C.unk6C) - gCamera.x < -200 && boss->unk6C.unk1C1 != 0) {
+    // when off screen
+    if (I(boss->destructionProps.cabin.x) - gCamera.x < -200
+        && boss->destructionProps.unk1C1 != 0) {
         sub_802EF68(-40, 150, 5);
-        gCurTask->main = sub_8047868;
+        // destroy the task on the next frame
+        gCurTask->main = Task_HandleDestroy;
     }
 }
 
-static void sub_8046328(EggGoRound *boss)
+static void Render(EggGoRound *boss)
 {
     u8 i, j;
     Sprite *s = &boss->cabin;
@@ -528,16 +545,16 @@ static void sub_8046328(EggGoRound *boss)
     DisplaySprite(s);
 
     for (i = 0; i < NUM_PLATFORMS; i++) {
-        idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
+        idx = ((u32)((boss->rotation + (i << 0x10)) << 0xE) >> 0x16);
         s = &boss->link;
-        for (j = 0; j < 3; j++) {
+        for (j = 0; j < NUM_LINKS; j++) {
             s->x = (I(boss->x) - gCamera.x)
-                + ((gUnknown_080D8030[j]
-                    * COS(CLAMP_SIN_PERIOD(idx + (j * boss->unk2B))))
+                + ((sLinkPositions[j]
+                    * COS(CLAMP_SIN_PERIOD(idx + (j * boss->linkRotOffset))))
                    >> 14);
             s->y = (I(boss->y) - gCamera.y)
-                + ((gUnknown_080D8030[j]
-                    * SIN(CLAMP_SIN_PERIOD(idx + (j * boss->unk2B))))
+                + ((sLinkPositions[j]
+                    * SIN(CLAMP_SIN_PERIOD(idx + (j * boss->linkRotOffset))))
                    >> 14);
             DisplaySprite(s);
         }
@@ -549,18 +566,18 @@ static void sub_8046328(EggGoRound *boss)
     }
 
     for (i = 0; i < NUM_PLATFORMS; i++) {
-        u8 temp2 = gUnknown_080D8030[3];
-        idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
-        idx = CLAMP_SIN_PERIOD(idx + (boss->unk2B * 3));
+        u8 platformPos = sLinkPositions[ARRAY_COUNT(sLinkPositions) - 1];
+        idx = ((u32)((boss->rotation + (i << 0x10)) << 0xE) >> 0x16);
+        idx = CLAMP_SIN_PERIOD(idx + (boss->linkRotOffset * NUM_LINKS));
         s = &boss->platforms[i].s;
 
-        s->x = (I(boss->x) - gCamera.x) + ((COS(idx) * temp2) >> 14);
-        s->y = (I(boss->y) - gCamera.y) + ((SIN(idx) * temp2) >> 14);
+        s->x = (I(boss->x) - gCamera.x) + ((COS(idx) * platformPos) >> 14);
+        s->y = (I(boss->y) - gCamera.y) + ((SIN(idx) * platformPos) >> 14);
 
-        if (boss->unk1E != 0 && boss->unk24 == 0 && (i & 1)
-            && (boss->unk25 == 1 || boss->unk25 == 2)) {
+        if (boss->unk1E != 0 && boss->unk24 == 0 && (i % 2)
+            && (boss->state == 1 || boss->state == 2)) {
             SpriteTransform *transform = &boss->platforms[i].transform;
-            transform->rotation = I(boss->unk18);
+            transform->rotation = I(boss->platformRotation);
             transform->width = 0x100;
             transform->height = 0x100;
             transform->x = s->x;
@@ -593,33 +610,33 @@ static void sub_804655C(EggGoRound *boss, u8 val)
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    if (boss->timer < 0x30 && val != 0) {
+    if (boss->timer < 48 && val != 0) {
         temp = (Div(48 - boss->timer, 16)) + 1;
     } else {
         temp = 0;
     }
 
     for (i = 0; i < NUM_PLATFORMS; i++) {
-        idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
+        idx = ((u32)((boss->rotation + (i << 0x10)) << 0xE) >> 0x16);
         s = &boss->link;
-        for (j = temp; j < 3; j++) {
+        for (j = temp; j < NUM_LINKS; j++) {
             if (j & 1) {
                 s->x = (I(boss->x) - gCamera.x)
-                    + ((gUnknown_080D8030[j]
-                        * COS(CLAMP_SIN_PERIOD(idx + (j * boss->unk2B))))
+                    + ((sLinkPositions[j]
+                        * COS(CLAMP_SIN_PERIOD(idx + (j * boss->linkRotOffset))))
                        >> 14);
                 s->y = (I(boss->y) - gCamera.y)
-                    + ((gUnknown_080D8030[j]
-                        * SIN(CLAMP_SIN_PERIOD(idx + (j * boss->unk2B))))
+                    + ((sLinkPositions[j]
+                        * SIN(CLAMP_SIN_PERIOD(idx + (j * boss->linkRotOffset))))
                        >> 14);
             } else {
                 s->x = (I(boss->x) - gCamera.x)
-                    + ((gUnknown_080D8030[j]
-                        * COS(CLAMP_SIN_PERIOD(idx - (j * boss->unk2B))))
+                    + ((sLinkPositions[j]
+                        * COS(CLAMP_SIN_PERIOD(idx - (j * boss->linkRotOffset))))
                        >> 14);
                 s->y = (I(boss->y) - gCamera.y)
-                    + ((gUnknown_080D8030[j]
-                        * SIN(CLAMP_SIN_PERIOD(idx - (j * boss->unk2B))))
+                    + ((sLinkPositions[j]
+                        * SIN(CLAMP_SIN_PERIOD(idx - (j * boss->linkRotOffset))))
                        >> 14);
             }
 
@@ -633,18 +650,18 @@ static void sub_804655C(EggGoRound *boss, u8 val)
     }
 
     for (i = 0; i < NUM_PLATFORMS; i++) {
-        u8 temp2 = gUnknown_080D8030[3];
-        idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
-        idx = CLAMP_SIN_PERIOD(idx + (boss->unk2B * 3));
+        u8 platformPos = sLinkPositions[ARRAY_COUNT(sLinkPositions) - 1];
+        idx = ((u32)((boss->rotation + (i << 0x10)) << 0xE) >> 0x16);
+        idx = CLAMP_SIN_PERIOD(idx + (boss->linkRotOffset * NUM_LINKS));
         s = &boss->platforms[i].s;
 
-        s->x = (I(boss->x) - gCamera.x) + ((COS(idx) * temp2) >> 14);
-        s->y = (I(boss->y) - gCamera.y) + ((SIN(idx) * temp2) >> 14);
+        s->x = (I(boss->x) - gCamera.x) + ((COS(idx) * platformPos) >> 14);
+        s->y = (I(boss->y) - gCamera.y) + ((SIN(idx) * platformPos) >> 14);
 
-        if (boss->unk1E != 0 && boss->unk24 == 0 && (i & 1)
-            && (u8)(boss->unk25 - 1) <= 1) {
+        if (boss->unk1E != 0 && boss->unk24 == 0 && (i % 2)
+            && (boss->state == 1 || boss->state == 2)) {
             SpriteTransform *transform = &boss->platforms[i].transform;
-            transform->rotation = I(boss->unk18);
+            transform->rotation = I(boss->platformRotation);
             transform->width = 0x100;
             transform->height = 0x100;
             transform->x = s->x;
@@ -666,7 +683,7 @@ static void sub_804683C(EggGoRound *boss)
     if (boss->unk1E != 0) {
         if (boss->unk24 != 0) {
             if (--boss->unk24 == 0) {
-                switch (boss->unk25) {
+                switch (boss->state) {
                     case 0:
                         m4aSongNumStart(SE_255);
                         s = &boss->platforms[0].s;
@@ -719,45 +736,47 @@ static void sub_804683C(EggGoRound *boss)
             }
         } else {
             if (boss->unk27 == 0) {
-                boss->unk20
+                boss->platformRotSpeed
                     += gUnknown_080D809E[(boss->health < 5) ? 1 : 0][boss->unk26];
-                if (boss->unk20
+                if (boss->platformRotSpeed
                     == gUnknown_080D8076[boss->health < 5 ? 1 : 0][boss->unk26]) {
                     boss->unk27 = 1;
                 }
             } else if (boss->unk27 == 1) {
-                boss->unk20 -= gUnknown_080D809E[boss->health < 5 ? 1 : 0][boss->unk26];
+                boss->platformRotSpeed
+                    -= gUnknown_080D809E[boss->health < 5 ? 1 : 0][boss->unk26];
 
-                if (boss->unk20 == 0) {
+                if (boss->platformRotSpeed == 0) {
                     boss->unk27 = 2;
-                    boss->unk18 = 0;
-                    boss->unk20 = 0;
+                    boss->platformRotation = 0;
+                    boss->platformRotSpeed = 0;
                 }
             }
         }
 
-        boss->unk18 = (boss->unk18 + boss->unk20) & (0x3FFFF);
+        boss->platformRotation
+            = (boss->platformRotation + boss->platformRotSpeed) % (unsigned)Q(1024);
         if (--boss->unk1E == 0) {
             u8 i;
             for (i = 0; i < NUM_PLATFORMS; i++) {
                 s = &boss->platforms[i].s;
-                s->graphics.anim = sPlatformAnimations[i & 1].anim;
+                s->graphics.anim = sPlatformAnimations[i % 2].anim;
                 s->variant = 0;
                 s->prevVariant = -1;
             }
             boss->unk27 = 0;
-            boss->unk18 = 0;
-            boss->unk20 = 0;
+            boss->platformRotation = 0;
+            boss->platformRotSpeed = 0;
         }
     } else {
-        boss->unk25 = gUnknown_080D8044[Mod(PseudoRandBetween(0, 255),
-                                            ARRAY_COUNT(gUnknown_080D8044))];
+        boss->state
+            = sStateChoices[Mod(PseudoRandBetween(0, 255), ARRAY_COUNT(sStateChoices))];
         boss->unk26 = Mod(PseudoRandBetween(0, 255), 10);
 
         boss->unk1E = gUnknown_080D804E[boss->health < 5 ? 1 : 0][boss->unk26];
-        boss->unk24 = 0x1E;
+        boss->unk24 = 30;
 
-        switch (boss->unk25) {
+        switch (boss->state) {
             case 0:
                 m4aSongNumStart(SE_254);
                 s = &boss->platforms[0].s;
@@ -816,28 +835,29 @@ static void sub_8046C28(EggGoRound *boss)
         u8 i;
 
         for (i = 0; i < NUM_PLATFORMS; i++) {
-            u8 someVal = gUnknown_080D8030[3];
-            u32 idx = CLAMP_SIN_PERIOD(
-                ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16) + (boss->unk2B * 3));
+            u8 platformPos = sLinkPositions[ARRAY_COUNT(sLinkPositions) - 1];
+            u32 idx
+                = CLAMP_SIN_PERIOD(((u32)((boss->rotation + (i << 0x10)) << 0xE) >> 0x16)
+                                   + (boss->linkRotOffset * NUM_LINKS));
             Sprite *s = &boss->platforms[i].s;
-            s32 x = I(boss->x) + ((COS(idx) * someVal) >> 14);
-            s32 y = I(boss->y) + ((SIN(idx) * someVal) >> 14);
+            s32 x = I(boss->x) + ((COS(idx) * platformPos) >> 14);
+            s32 y = I(boss->y) + ((SIN(idx) * platformPos) >> 14);
 
             if (boss->unk1E != 0 && boss->unk24 == 0 && (i % 2)
-                && (boss->unk25 == 1 || boss->unk25 == 2)
+                && (boss->state == 1 || boss->state == 2)
                 && ((gPlayer.moveState & MOVESTATE_8) && gPlayer.unk3C == s)) {
                 gPlayer.moveState &= ~MOVESTATE_8;
                 gPlayer.moveState &= ~MOVESTATE_100;
                 gPlayer.moveState |= 2;
                 gPlayer.unk3C = NULL;
-                gPlayer.speedAirX += Q(5);
-                gPlayer.speedGroundX += Q(5);
+                gPlayer.speedAirX += BOSS_X_SPEED;
+                gPlayer.speedGroundX += BOSS_X_SPEED;
                 gPlayer.speedAirY = -Q(2);
                 continue;
             }
 
             if (boss->unk1E == 0 || boss->unk24 != 0 || !(i % 2)
-                || (boss->unk25 != 1 && boss->unk25 != 2)) {
+                || (boss->state != 1 && boss->state != 2)) {
                 u32 val;
                 u8 someBool;
                 s32 speedAirY;
@@ -858,12 +878,12 @@ static void sub_8046C28(EggGoRound *boss)
 
                 if (val & 0x10000) {
                     if (!someBool && gPlayer.unk3C == s && speedAirY > 0) {
-                        gPlayer.speedAirX -= Q(5);
-                        gPlayer.speedGroundX -= Q(5);
+                        gPlayer.speedAirX -= BOSS_X_SPEED;
+                        gPlayer.speedGroundX -= BOSS_X_SPEED;
                     }
 
                     if (boss->unk1E != 0 && !boss->unk24 && !(i % 2)
-                        && (boss->unk25 == 0 || boss->unk25 == 2)) {
+                        && (boss->state == 0 || boss->state == 2)) {
                         sub_8047940(boss);
                         sub_800CBA4(&gPlayer);
                         return;
@@ -888,19 +908,19 @@ static void sub_8046C28(EggGoRound *boss)
     }
 }
 
-static void sub_8046E90(EggGoRound *boss)
+static void RenderDestructionProps(EggGoRound *boss)
 {
-    EggGoRound_unk6C *unk6C = &boss->unk6C;
+    DestructionProps *destruction = &boss->destructionProps;
     Sprite *s = &boss->cabin;
-    s->x = I(unk6C->unk6C) - gCamera.x;
-    s->y = I(unk6C->unk70) - gCamera.y;
+    s->x = I(destruction->cabin.x) - gCamera.x;
+    s->y = I(destruction->cabin.y) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    if (boss->unk6C.unk1C1 == 0) {
+    if (boss->destructionProps.unk1C1 == 0) {
         s = &boss->pilot;
-        s->x = I(unk6C->unk6C) - gCamera.x;
-        s->y = I(unk6C->unk70) - gCamera.y;
+        s->x = I(destruction->cabin.x) - gCamera.x;
+        s->y = I(destruction->cabin.y) - gCamera.y;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
@@ -909,7 +929,7 @@ static void sub_8046E90(EggGoRound *boss)
 static void sub_8046F00(EggGoRound *boss)
 {
     ExplosionPartsInfo explosion;
-    EggGoRound_unk6C *unk6C = &boss->unk6C;
+    DestructionProps *destruction = &boss->destructionProps;
     if (boss->timer < 50) {
         u8 i;
         u8 temp = Div(49 - boss->timer, 16);
@@ -922,12 +942,12 @@ static void sub_8046F00(EggGoRound *boss)
         for (i = 0; i < NUM_PLATFORMS; i++) {
             u8 j;
 
-            u16 idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
-            s16 x = ((I(boss->x) - gCamera.x)
-                     + ((gUnknown_080D8030[temp] * COS(idx)) >> 14));
-            s16 y = ((I(boss->y) - gCamera.y)
-                     + ((gUnknown_080D8030[temp] * SIN(idx)) >> 14));
-            for (j = 0; j < 3; j++) {
+            u16 idx = ((u32)((boss->rotation + (i << 0x10)) << 0xE) >> 0x16);
+            s16 x
+                = ((I(boss->x) - gCamera.x) + ((sLinkPositions[temp] * COS(idx)) >> 14));
+            s16 y
+                = ((I(boss->y) - gCamera.y) + ((sLinkPositions[temp] * SIN(idx)) >> 14));
+            for (j = 0; j < NUM_LINKS; j++) {
                 u32 rand;
 
                 rand = PseudoRandom32();
@@ -945,7 +965,8 @@ static void sub_8046F00(EggGoRound *boss)
                 explosion.variant = 0;
                 explosion.unk4 = 0;
 
-                CreateBossParticleWithExplosionUpdate(&explosion, &unk6C->unk1C0);
+                CreateBossParticleWithExplosionUpdate(&explosion,
+                                                      &destruction->explosionState);
             }
         }
     }
@@ -974,20 +995,21 @@ static void sub_8047060(EggGoRound *boss)
         explosion.variant = 0;
         explosion.unk4 = 0;
 
-        CreateBossParticleWithExplosionUpdate(&explosion, &boss->unk6C.unk1C0);
+        CreateBossParticleWithExplosionUpdate(&explosion,
+                                              &boss->destructionProps.explosionState);
     }
 }
 
 static void sub_8047138(EggGoRound *boss)
 {
-    EggGoRound_unk6C *unk6C = &boss->unk6C;
-    if (Mod(gStageTime, 10) == 0 && unk6C->unk1C1 == 0) {
+    DestructionProps *destruction = &boss->destructionProps;
+    if (Mod(gStageTime, 10) == 0 && destruction->unk1C1 == 0) {
         u32 rand;
         s16 x, y;
 
         ExplosionPartsInfo explosion;
-        x = (I(unk6C->unk6C) - gCamera.x);
-        y = (I(unk6C->unk70) - gCamera.y);
+        x = (I(destruction->cabin.x) - gCamera.x);
+        y = (I(destruction->cabin.y) - gCamera.y);
         rand = PseudoRandom32();
         explosion.spawnX = x + (rand % 64) - 31;
 
@@ -1002,101 +1024,106 @@ static void sub_8047138(EggGoRound *boss)
         explosion.variant = 0;
         explosion.unk4 = 0;
 
-        CreateBossParticleWithExplosionUpdate(&explosion, &boss->unk6C.unk1C0);
+        CreateBossParticleWithExplosionUpdate(&explosion,
+                                              &boss->destructionProps.explosionState);
     }
 }
 
 void sub_8047224(s32 dX, s32 dY)
 {
-    EggGoRound_unk6C *unk6C;
+    DestructionProps *destruction;
     EggGoRound *boss;
 
     u8 j, i;
 
     boss = TASK_DATA(gActiveBossTask);
-    unk6C = &boss->unk6C;
+    destruction = &boss->destructionProps;
 
     boss->x += dX;
     boss->y += dY;
-    unk6C->unk6C += dX;
-    unk6C->unk70 += dY;
+    destruction->cabin.x += dX;
+    destruction->cabin.y += dY;
 
     for (i = 0; i < NUM_PLATFORMS; i++) {
-        for (j = 0; j < 3; j++) {
-            unk6C->unkD0[i][j][0] += dX;
-            unk6C->unkD0[i][j][1] += dY;
+        for (j = 0; j < NUM_LINKS; j++) {
+            destruction->platformLinks[i][j].x += dX;
+            destruction->platformLinks[i][j].y += dY;
         }
     }
 
     for (i = 0; i < NUM_PLATFORMS; i++) {
-        unk6C->unk80[i][0] = dX;
-        unk6C->unk80[i][1] = dY;
+        destruction->platforms[i].x = dX;
+        destruction->platforms[i].y = dY;
         boss->prevPlatformXPositions[i] = 0;
     }
 
-    for (i = 0; i < 3; i++) {
-        EggGoRound_unk3C *unk3C = &boss->unk3C[i];
-        unk3C->unk4 += dX;
-        unk3C->unk8 += dY;
+    for (i = 0; i < NUM_PROJECTILES; i++) {
+        ProjectilePosition *projPos = &boss->projectilePositions[i];
+        projPos->x += dX;
+        projPos->y += dY;
     }
 }
 
 static void sub_804732C(EggGoRound *boss)
 {
     u8 j, i;
-    u8 someVal;
+
 // solves some stack issue
 #ifndef NON_MATCHING
-    EggGoRound_unk6C *unk6C_2;
+    DestructionProps *destruction_2;
 #endif
-    EggGoRound_unk6C *unk6C;
+    DestructionProps *destruction;
 
     u32 idx;
 
-    unk6C = &boss->unk6C;
+    destruction = &boss->destructionProps;
     boss->unk1C = 0;
 #ifndef NON_MATCHING
-    unk6C_2 = unk6C;
+    destruction_2 = destruction;
 #endif
-    unk6C->unk6C = boss->x;
-    unk6C->unk70 = boss->y;
-    unk6C->unk74 = 0x580;
-    unk6C->unk78 = 0;
-    unk6C->unk7C = 300;
+    destruction->cabin.x = boss->x;
+    destruction->cabin.y = boss->y;
+    destruction->cabin.speedX = Q(5.5);
+    destruction->cabin.speedY = 0;
+    destruction->cabin.unk10 = 300;
 
     for (i = 0; i < NUM_PLATFORMS; i++) {
-        idx = (u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16;
+        idx = (u32)((boss->rotation + (i << 0x10)) << 0xE) >> 0x16;
 
-        for (j = 0; j < 3; j++) {
+        for (j = 0; j < NUM_LINKS; j++) {
 #ifndef NON_MATCHING
-            unk6C_2->unkD0[i][j][0] = boss->x + ((gUnknown_080D8030[j] * COS(idx)) >> 6);
-            unk6C_2->unkD0[i][j][1] = boss->y + ((gUnknown_080D8030[j] * SIN(idx)) >> 6);
+            destruction_2->platformLinks[i][j].x
+                = boss->x + ((sLinkPositions[j] * COS(idx)) >> 6);
+            destruction_2->platformLinks[i][j].y
+                = boss->y + ((sLinkPositions[j] * SIN(idx)) >> 6);
 #else
-            unk6C->unkD0[i][j][0] = boss->x + ((gUnknown_080D8030[j] * COS(idx)) >> 6);
-            unk6C->unkD0[i][j][1] = boss->y + ((gUnknown_080D8030[j] * SIN(idx)) >> 6);
+            destruction->platformLinks[i][j].x
+                = boss->x + ((sLinkPositions[j] * COS(idx)) >> 6);
+            destruction->platformLinks[i][j].y
+                = boss->y + ((sLinkPositions[j] * SIN(idx)) >> 6);
 #endif
-            unk6C->unkD0[i][j][2] = (7 - j) * 20;
-            unk6C->unkD0[i][j][3] = 1;
-            unk6C->unkD0[i][j][4] = idx;
+            destruction->platformLinks[i][j].speedX = (7 - j) * 20;
+            destruction->platformLinks[i][j].speedY = 1;
+            destruction->platformLinks[i][j].unk10 = idx;
         }
     }
 
     for (i = 0; i < NUM_PLATFORMS; i++) {
-        someVal = gUnknown_080D8030[3];
-        idx = (u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16;
-        unk6C->unk80[i][0] = boss->x + (someVal * (COS(idx)) >> 6);
-        unk6C->unk80[i][1] = boss->y + (someVal * (SIN(idx)) >> 6);
-        unk6C->unk80[i][2] = (6 - j) * 20;
-        unk6C->unk80[i][3] = 1;
-        unk6C->unk80[i][4] = idx;
+        u8 platformPos = sLinkPositions[ARRAY_COUNT(sLinkPositions) - 1];
+        idx = (u32)((boss->rotation + (i << 0x10)) << 0xE) >> 0x16;
+        destruction->platforms[i].x = boss->x + (platformPos * (COS(idx)) >> 6);
+        destruction->platforms[i].y = boss->y + (platformPos * (SIN(idx)) >> 6);
+        destruction->platforms[i].speedX = (6 - j) * 20;
+        destruction->platforms[i].speedY = 1;
+        destruction->platforms[i].unk10 = idx;
     }
 }
 
-u32 sub_80474C0(EggGoRound *boss)
+bool32 HandleHit(EggGoRound *boss)
 {
     Sprite *s = &boss->pilot;
-    u32 result = 0;
-    if (boss->health != 0) {
+    bool32 result = FALSE;
+    if (boss->health > 0) {
         boss->health--;
         if (boss->health & 1) {
             m4aSongNumStart(SE_143);
@@ -1104,7 +1131,7 @@ u32 sub_80474C0(EggGoRound *boss)
             m4aSongNumStart(SE_235);
         }
 
-        boss->unk2A = 0x1E;
+        boss->invincibilityTimer = 30;
         if (boss->health == 0) {
             s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
             s->variant = 3;
@@ -1116,7 +1143,7 @@ u32 sub_80474C0(EggGoRound *boss)
         s->prevVariant = -1;
 
     } else {
-        result = 1;
+        result = TRUE;
     }
 
     if (!IS_FINAL_STAGE(gCurrentLevel) && boss->health == 4) {
@@ -1126,12 +1153,13 @@ u32 sub_80474C0(EggGoRound *boss)
     return result;
 }
 
-static void sub_80475D0(EggGoRound *boss)
+static void UpdatePilotAnim(EggGoRound *boss)
 {
     Sprite *s = &boss->pilot;
-    if (boss->unk2A != 0) {
+
+    if (boss->invincibilityTimer > 0) {
         boss->unk29 = 0;
-        if (--boss->unk2A != 0) {
+        if (--boss->invincibilityTimer > 0) {
             return;
         }
 
@@ -1143,44 +1171,46 @@ static void sub_80475D0(EggGoRound *boss)
             s->variant = 0;
         }
         s->prevVariant = -1;
-    } else {
-        if (boss->unk29 == 0) {
-            return;
-        }
-
-        if (--boss->unk29 != 0) {
-            return;
-        }
-
-        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
-        s->variant = 0;
-        s->prevVariant = -1;
+        return;
     }
+
+    if (boss->unk29 == 0) {
+        return;
+    }
+
+    if (--boss->unk29 != 0) {
+        return;
+    }
+
+    s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
+    s->variant = 0;
+    s->prevVariant = -1;
 }
 
-static void sub_804766C(EggGoRound *boss)
+static void SetPalette(EggGoRound *boss)
 {
     u8 i;
-    if (boss->unk2A != 0) {
+    if (boss->invincibilityTimer > 0) {
         for (i = 0; i < 16; i++) {
-            gObjPalette[0x80 + i] = gUnknown_080D80C6[(gStageTime & 2) >> 1][i];
+            gObjPalette[128 + i] = sPalettes[(gStageTime & 2) / 2][i];
         }
     } else {
         for (i = 0; i < 16; i++) {
-            gObjPalette[0x80 + i] = gUnknown_080D80C6[1][i];
+            gObjPalette[128 + i] = sPalettes[1][i];
         }
     }
 
     gFlags |= 2;
 }
 
-static void sub_8047700(EggGoRound *boss)
+static void HandleCollisions(EggGoRound *boss)
 {
     Sprite *s = &boss->cabin;
     s32 x = I(boss->x);
     s32 y = I(boss->y);
 
     Player_UpdateHomingPosition(boss->x, boss->y);
+
     if (sub_800C320(s, x, y, 1, &gPlayer) != 0) {
         if (gPlayer.x > boss->x) {
             gPlayer.speedAirX += Q(2.25);
@@ -1191,69 +1221,69 @@ static void sub_8047700(EggGoRound *boss)
         return;
     }
 
-    if (boss->unk2A == 0) {
-        if (IsColliding_Cheese(s, x, y, 0, &gPlayer) == TRUE
-            || sub_800C320(s, x, y, 0, &gPlayer) == TRUE) {
-            sub_80474C0(boss);
-        } else {
-            Sprite *s2;
-            if (sub_800CA20(s, x, y, 0, &gPlayer) != TRUE) {
-                return;
-            }
-            s2 = &boss->pilot;
+    if (boss->invincibilityTimer > 0) {
+        return;
+    }
 
-            boss->unk29 = 30;
-            if (boss->unk2A != 0) {
-                return;
-            }
+    if (IsColliding_Cheese(s, x, y, 0, &gPlayer) == TRUE
+        || sub_800C320(s, x, y, 0, &gPlayer) == TRUE) {
+        HandleHit(boss);
+        return;
+    }
 
+    if (sub_800CA20(s, x, y, 0, &gPlayer) == TRUE) {
+        Sprite *s2 = &boss->pilot;
+
+        boss->unk29 = 30;
+
+        // always true
+        if (boss->invincibilityTimer == 0) {
             s2->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
             s2->variant = 1;
             s2->prevVariant = -1;
-            return;
         }
     }
 }
 
-static void Task_EggGoRound(void)
+static void Task_IntroRollIn(void)
 {
     EggGoRound *boss = TASK_DATA(gCurTask);
-    sub_804787C(boss);
-    sub_80475D0(boss);
-    sub_8046328(boss);
+    UpdateIntroPos(boss);
+    UpdatePilotAnim(boss);
+    Render(boss);
 
     if (boss->timer < 64) {
         if (boss->timer & 1) {
-            boss->unk2B++;
+            boss->linkRotOffset++;
         }
-        boss->rotationSpeed -= 44;
-        boss->rotationSpeed -= (boss->timer - 32) * 4;
+        boss->rotationSpeed -= Q(0.171875);
+        boss->rotationSpeed -= (boss->timer - Q(0.125)) * 4;
     }
 
     if (--boss->timer == 0) {
-        boss->unk2B = 0;
-        boss->rotationSpeed = 256;
-        gCurTask->main = sub_8046040;
+        boss->linkRotOffset = 0;
+        boss->rotationSpeed = Q(1);
+        gCurTask->main = Task_Main;
     }
 }
 
-static void sub_8047868(void) { TaskDestroy(gCurTask); }
+static void Task_HandleDestroy(void) { TaskDestroy(gCurTask); }
 
-static void sub_804787C(EggGoRound *boss)
+static void UpdateIntroPos(EggGoRound *boss)
 {
     boss->x += boss->speedX + (boss->timer * 8);
     boss->y += boss->speedY;
     boss->y += Q(sub_801E4E4(I(boss->y), I(boss->x), 0, 8, 0, sub_801EE64));
-    boss->unk14 = (boss->unk14 + boss->rotationSpeed) & 0x3FFFF;
+    boss->rotation = (boss->rotation + boss->rotationSpeed) % (unsigned)Q(1024);
 }
 
-static void sub_80478D4(EggGoRound *boss)
+static void UpdatePos(EggGoRound *boss)
 {
     boss->x += boss->speedX;
     boss->y += boss->speedY;
 
     boss->y += Q(sub_801F07C(I(boss->y), I(boss->x), 0, 8, 0, sub_801EE64));
-    boss->unk14 = (boss->unk14 + boss->rotationSpeed) & 0x3FFFF;
+    boss->rotation = (boss->rotation + boss->rotationSpeed) % (unsigned)Q(1024);
 
     if (boss->health < 5 && boss->rotationSpeed != -256) {
         boss->rotationSpeed--;
@@ -1264,36 +1294,37 @@ static void sub_8047940(EggGoRound *boss)
 {
     Sprite *s = &boss->pilot;
     boss->unk29 = 30;
-    if (boss->unk2A == 0) {
+    if (boss->invincibilityTimer == 0) {
         s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
         s->variant = 1;
         s->prevVariant = -1;
     }
 }
 
-static void sub_804797C(EggGoRound *boss)
+static void UpdateDestructionPropPositions(EggGoRound *boss)
 {
     s32 result;
-    EggGoRound_unk6C *unk6C = &boss->unk6C;
-    unk6C->unk78 += 0x30;
-    unk6C->unk6C += unk6C->unk74;
-    unk6C->unk70 += unk6C->unk78;
+    DestructionProps *destruction = &boss->destructionProps;
+    destruction->cabin.speedY += Q(0.1875);
+    destruction->cabin.x += destruction->cabin.speedX;
+    destruction->cabin.y += destruction->cabin.speedY;
 
-    result = sub_801F100(I(unk6C->unk70) + 20, I(unk6C->unk6C), 1, 8, sub_801EC3C);
+    result = sub_801F100(I(destruction->cabin.y) + 20, I(destruction->cabin.x), 1, 8,
+                         sub_801EC3C);
     if (result < 0) {
         u32 temp;
-        unk6C->unk74 -= 64;
-        if (unk6C->unk74 < 0) {
-            unk6C->unk74 = 0;
+        destruction->cabin.speedX -= Q(0.25);
+        if (destruction->cabin.speedX < 0) {
+            destruction->cabin.speedX = 0;
         }
 
-        temp = unk6C->unk78 * 9;
+        temp = destruction->cabin.speedY * 9;
         temp *= 4;
-        temp -= unk6C->unk78;
+        temp -= destruction->cabin.speedY;
         temp *= 2;
 
-        unk6C->unk78 = Div(-temp, 100);
-        unk6C->unk70 += Q(result);
+        destruction->cabin.speedY = Div(-temp, 100);
+        destruction->cabin.y += Q(result);
     }
 }
 
