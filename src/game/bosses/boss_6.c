@@ -15,6 +15,7 @@
 #include "game/stage/boss_results_transition.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
+#include "game/stage/collision.h"
 #include "game/player_callbacks.h"
 
 #include "constants/move_states.h"
@@ -480,7 +481,6 @@ void sub_8046328(EggGoRound *boss)
 {
     u8 i, j;
     Sprite *s = &boss->unk1C4;
-    s32 x, y;
     u32 idx;
 
     s->x = I(boss->unk4) - gCamera.x;
@@ -879,12 +879,7 @@ void sub_8046E90(EggGoRound *boss)
     }
 }
 
-// https://decomp.me/scratch/2bvYC
-// Functionally matched, but there is something wrong with
-// the zero value being optimised and set once at the start of the loop
-// when it should be r3 and set
-NONMATCH("asm/non_matching/game/bosses/boss_6__sub_8046F00.inc",
-         void sub_8046F00(EggGoRound *boss))
+void sub_8046F00(EggGoRound *boss)
 {
     ExplosionPartsInfo explosion;
     EggGoRound_unk6C *unk6C = &boss->unk6C;
@@ -900,7 +895,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_6__sub_8046F00.inc",
         for (i = 0; i < 4; i++) {
             u8 j;
 
-            u32 idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
+            u16 idx = ((u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16);
             s16 x = ((I(boss->unk4) - gCamera.x)
                      + ((gUnknown_080D8030[temp] * COS(idx)) >> 14));
             s16 y = ((I(boss->unk8) - gCamera.y)
@@ -909,26 +904,25 @@ NONMATCH("asm/non_matching/game/bosses/boss_6__sub_8046F00.inc",
                 u32 rand;
 
                 rand = PseudoRandom32();
-                explosion.spawnX = ({ x + (rand & 0xF) - 8; });
+                explosion.spawnX = x + (rand & 0xF) - 8;
 
                 rand = PseudoRandom32();
-                explosion.spawnY = ({ y + (rand & 0xF) - 8; });
+                explosion.spawnY = y + (rand & 0xF) - 8;
 
-                explosion.velocity = 0; // r3
+                explosion.velocity = 0;
                 rand = PseudoRandom32();
-                explosion.rotation = ({ idx - ((rand & 0x3F)) + 0x1F; });
+                explosion.rotation = idx - ((rand & 0x3F)) + 0x1F;
                 explosion.speed = 0xA00 - (j * 0x200);
                 explosion.vram = (void *)OBJ_VRAM0 + (0x2980);
                 explosion.anim = SA2_ANIM_EXPLOSION;
-                explosion.variant = 0; // r3
-                explosion.unk4 = 0; // r3
+                explosion.variant = 0;
+                explosion.unk4 = 0;
 
                 CreateBossParticleWithExplosionUpdate(&explosion, &unk6C->unk1C0);
             }
         }
     }
 }
-END_NONMATCH
 
 void sub_8047060(EggGoRound *boss)
 {
@@ -1020,16 +1014,23 @@ void sub_8047224(s32 dX, s32 dY)
     }
 }
 
-NONMATCH("asm/non_matching/game/bosses/boss_6__sub_804732C.inc",
-         void sub_804732C(EggGoRound *boss))
+void sub_804732C(EggGoRound *boss)
 {
     u8 j, i;
     u8 someVal;
-    u32 idx;
+// solves some stack issue
+#ifndef NON_MATCHING
+    EggGoRound_unk6C *unk6C_2;
+#endif
     EggGoRound_unk6C *unk6C;
+
+    u32 idx;
 
     unk6C = &boss->unk6C;
     boss->unk1C = 0;
+#ifndef NON_MATCHING
+    unk6C_2 = unk6C;
+#endif
     unk6C->unk6C = boss->unk4;
     unk6C->unk70 = boss->unk8;
     unk6C->unk74 = 0x580;
@@ -1040,10 +1041,17 @@ NONMATCH("asm/non_matching/game/bosses/boss_6__sub_804732C.inc",
         idx = (u32)((boss->unk14 + (i << 0x10)) << 0xE) >> 0x16;
 
         for (j = 0; j < 3; j++) {
+#ifndef NON_MATCHING
+            unk6C_2->unkD0[i][j][0]
+                = boss->unk4 + ((gUnknown_080D8030[j] * COS(idx)) >> 6);
+            unk6C_2->unkD0[i][j][1]
+                = boss->unk8 + ((gUnknown_080D8030[j] * SIN(idx)) >> 6);
+#else
             unk6C->unkD0[i][j][0]
                 = boss->unk4 + ((gUnknown_080D8030[j] * COS(idx)) >> 6);
             unk6C->unkD0[i][j][1]
                 = boss->unk8 + ((gUnknown_080D8030[j] * SIN(idx)) >> 6);
+#endif
             unk6C->unkD0[i][j][2] = (7 - j) * 0x14;
             unk6C->unkD0[i][j][3] = 1;
             unk6C->unkD0[i][j][4] = idx;
@@ -1060,7 +1068,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_6__sub_804732C.inc",
         unk6C->unk80[i][4] = idx;
     }
 }
-END_NONMATCH
 
 u32 sub_80474C0(EggGoRound *boss)
 {
@@ -1185,4 +1192,102 @@ void sub_8047700(EggGoRound *boss)
             return;
         }
     }
+}
+
+void sub_804787C(EggGoRound *boss);
+
+void Task_EggGoRound(void)
+{
+    EggGoRound *boss = TASK_DATA(gCurTask);
+    sub_804787C(boss);
+    sub_80475D0(boss);
+    sub_8046328(boss);
+
+    if (boss->unk0 < 0x40) {
+        if (boss->unk0 & 1) {
+            boss->unk2B++;
+        }
+        boss->unk10 -= 0x2C;
+        boss->unk10 -= (boss->unk0 - 0x20) * 4;
+    }
+
+    if (--boss->unk0 == 0) {
+        boss->unk2B = 0;
+        boss->unk10 = 0x100;
+        gCurTask->main = sub_8046040;
+    }
+}
+
+void sub_8047868(void) { TaskDestroy(gCurTask); }
+
+void sub_804787C(EggGoRound *boss)
+{
+    boss->unk4 += boss->unkC + (boss->unk0 * 8);
+    boss->unk8 += boss->unkE;
+    boss->unk8 += Q(sub_801E4E4(I(boss->unk8), I(boss->unk4), 0, 8, 0, sub_801EE64));
+    boss->unk14 = (boss->unk14 + boss->unk10) & 0x3FFFF;
+}
+
+void sub_80478D4(EggGoRound *boss)
+{
+    boss->unk4 += boss->unkC;
+    boss->unk8 += boss->unkE;
+
+    boss->unk8 += Q(sub_801F07C(I(boss->unk8), I(boss->unk4), 0, 8, 0, sub_801EE64));
+    boss->unk14 = (boss->unk14 + boss->unk10) & 0x3FFFF;
+
+    if (boss->unk28 < 5 && boss->unk10 != -0x100) {
+        boss->unk10--;
+    }
+}
+
+void sub_8047940(EggGoRound *boss)
+{
+    Sprite *s = &boss->unk1FC;
+    boss->unk29 = 30;
+    if (boss->unk2A == 0) {
+        s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
+        s->variant = 1;
+        s->prevVariant = -1;
+    }
+}
+
+void sub_804797C(EggGoRound *boss)
+{
+    s32 result;
+    EggGoRound_unk6C *unk6C = &boss->unk6C;
+    unk6C->unk78 += 0x30;
+    unk6C->unk6C += unk6C->unk74;
+    unk6C->unk70 += unk6C->unk78;
+
+    result = sub_801F100(I(unk6C->unk70) + 0x14, I(unk6C->unk6C), 1, 8, sub_801EC3C);
+    if (result < 0) {
+        u32 temp;
+        unk6C->unk74 -= 0x40;
+        if (unk6C->unk74 < 0) {
+            unk6C->unk74 = 0;
+        }
+
+        temp = unk6C->unk78 * 9;
+        temp *= 4;
+        temp -= unk6C->unk78;
+        temp *= 2;
+
+        unk6C->unk78 = Div(-temp, 100);
+        unk6C->unk70 += Q(result);
+    }
+}
+
+void TaskDestructor_EggGoRound(struct Task *t)
+{
+    EggGoRound *boss = TASK_DATA(t);
+    VramFree(boss->unk39C.graphics.dest);
+    VramFree(boss->unk36C.graphics.dest);
+    VramFree(boss->unk1C4.graphics.dest);
+    VramFree(boss->unk1FC.graphics.dest);
+    VramFree(boss->unk25C[0].s.graphics.dest);
+    VramFree(boss->unk25C[1].s.graphics.dest);
+    VramFree(boss->unk22C.graphics.dest);
+
+    gActiveBossTask = NULL;
 }
