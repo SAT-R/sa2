@@ -82,10 +82,6 @@ void UpdateBgAnimationTiles(Background *bg)
 // - Uses animCmdTable_BG instead of animCmdTable
 s32 sub_80036E0(Sprite *s)
 {
-    ACmd **variants;
-    ACmd *script;
-    ACmd *cmd;
-
     if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
@@ -118,7 +114,7 @@ s32 sub_80036E0(Sprite *s)
 
                 // animation has changed
                 variants = gUnknown_03002794->animations[s->graphics.anim];
-                newScript = variants[s->variant];
+                newScript = (ACmd*)variants[s->variant];
                 // reset cursor
                 s->animCursor = 0;
                 // load the new script
@@ -424,9 +420,10 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
 }
 
 // (57.61%) https://decomp.me/scratch/6Xm6S
+// (58.36%) https://decomp.me/scratch/ClyxP
 NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
 {
-    u8 bgIndex;
+    u8 bgIndex = 0;
     u16 sp00[2];
     u8 r4;
     u8 *spVramPtr;
@@ -434,7 +431,7 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
 
     s32 sp08;
 
-    for (bgIndex = 0; bgIndex < 4; bgIndex++) {
+    for (; bgIndex < 4; bgIndex++) {
 
         if ((gUnknown_03002280[bgIndex][1] == gUnknown_03002280[bgIndex][3])
             && (gUnknown_03002280[bgIndex][0] == gUnknown_03002280[bgIndex][2]))
@@ -443,8 +440,7 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
         { // _08004056
             u16 target = gBgCntRegs[bgIndex];
             u16 *vramBgCtrl = (u16 *)VRAM;
-            target &= (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
-                       | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0);
+            target &= BGCNT_SCREENBASE_MASK;
             vramBgCtrl += target * 4;
 
             r4 = gUnknown_03002280[bgIndex][1];
@@ -455,17 +451,16 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                 && (gDispCnt & (DISPCNT_MODE_2 | DISPCNT_MODE_1 | DISPCNT_MODE_0))) {
                 // _0800408E
                 spVramPtr = (u8 *)&vramBgCtrl[sp08];
-                bgSize_TxtOrAff = 0x10 << (gBgCntRegs[bgIndex] >> 14);
+                bgSize_TxtOrAff = (0x10 << (gBgCntRegs[bgIndex] >> 14));
 
                 if (gUnknown_03002280[bgIndex][3] == 0xFF) {
                     // _080040A2
                     u16 v = gUnknown_03004D80[bgIndex];
                     u32 value;
                     v |= v << 8;
-                    sp00[0] = v;
 
                     value = ((gUnknown_03002280[bgIndex][3] - r4) * bgSize_TxtOrAff);
-                    DmaCopy16(3, &sp00, &spVramPtr[bgSize_TxtOrAff],
+                    DmaFill16(3, v, (void *)&spVramPtr[bgSize_TxtOrAff],
                               (((s32)(value + (value >> 31))) >> 1));
                 } else {
                     // _080040F8
@@ -474,10 +469,9 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                         u16 v = gUnknown_03004D80[bgIndex];
                         u32 value;
                         v |= v << 8;
-                        sp00[0] = v;
 
-                        DmaCopy32(
-                            3, &sp00, &spVramPtr[bgIndex * r4],
+                        DmaFill16(
+                            3, v, &spVramPtr[bgIndex * r4],
                             (s32)(bgIndex * 4 - gUnknown_03002280[bgIndex][0] + 1));
                     }
                 }
@@ -495,20 +489,19 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                     p1p = &gUnknown_03002280[bgIndex][tileSize];
                     sp00[0] = r1;
 
-                    DmaCopy32(3, &sp00, &gUnknown_03002280[bgIndex][tileSize],
+                    DmaFill16(3, sp00[0], &gUnknown_03002280[bgIndex][tileSize],
                               gUnknown_03002280[bgIndex][3] - r4);
                 } else {
                     // _080041D8
                     for (; r4 <= gUnknown_03002280[bgIndex][3]; r4++) {
-                        u32 r1 = gUnknown_03004D80[bgIndex];
-                        sp00[0] = r1;
-                        DmaCopy32(3, &sp00, &gUnknown_03002280[bgIndex][tileSize],
+                        DmaFill16(3, gUnknown_03004D80[bgIndex],
+                                  &gUnknown_03002280[bgIndex][tileSize],
                                   ARRAY_COUNT(gUnknown_03002280[0]));
                     }
                 }
             }
             // _0800422C
-            DmaFill32(3, 0, spVramPtr, 4);
+            DmaFill32(3, 0, &gUnknown_03002280[bgIndex], 4);
         }
     }
 

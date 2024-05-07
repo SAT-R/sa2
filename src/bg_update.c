@@ -167,7 +167,6 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                         while (r5-- != 0) {
                             u16 i;
-                            void *r2;
                             sb = sp00 * sp08;
 
                             for (i = 0; i < bg->targetTilesX; i++) {

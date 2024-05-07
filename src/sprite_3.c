@@ -105,7 +105,7 @@ void DisplaySprite(Sprite *sprite)
                     u32 r6;
 
                     shapeAndSize |= ((oam->all.attr1 & 0xC000) >> 14);
-                    flipY = sprite->unk10 >> 11;
+                    flipY = sprite->unk10 >> SPRITE_FLAG_SHIFT_Y_FLIP;
                     r6 = 1;
 
                     // y-flip
@@ -115,7 +115,8 @@ void DisplaySprite(Sprite *sprite)
                     }
 
                     // x-flip
-                    if (((sprite->unk10 >> 10) & r6) != (sprDims->flip & 1)) {
+                    if (((sprite->unk10 >> SPRITE_FLAG_SHIFT_X_FLIP) & r6)
+                        != (sprDims->flip & 1)) {
                         oam->all.attr1 ^= 0x1000;
                         r7 = sprWidth - gOamShapesSizes[shapeAndSize][0] - r7;
                     }
