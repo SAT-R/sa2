@@ -114,7 +114,7 @@ s32 sub_80036E0(Sprite *s)
 
                 // animation has changed
                 variants = gUnknown_03002794->animations[s->graphics.anim];
-                newScript = (ACmd*)variants[s->variant];
+                newScript = (ACmd *)variants[s->variant];
                 // reset cursor
                 s->animCursor = 0;
                 // load the new script
