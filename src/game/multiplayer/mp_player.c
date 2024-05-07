@@ -750,7 +750,7 @@ void sub_801707C(void)
                             == SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_TAILS)
                         || s->graphics.anim
                             == SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS))
-                    && ((GRAVITY_IS_INVERTED ? 1 : 0) != !(mpp->unk54 & 8)))) {
+                    && (!!GRAVITY_IS_INVERTED != !(mpp->unk54 & 8)))) {
 
                 s32 y;
                 if (!GRAVITY_IS_INVERTED) {
