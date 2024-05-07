@@ -312,7 +312,7 @@ static void Task_EggHammerTankIIMain(void)
     if (unkA8 < 127) {
         u32 r0, r2;
 #ifndef NON_MATCHING
-        register u32 r1 asm("r1") = (unkA8 - 0x3D);
+        register u32 UNUSED r1 asm("r1") = (unkA8 - 0x3D);
 #endif
 
         if (IS_FINAL_STAGE(gCurrentLevel)) {
@@ -797,7 +797,6 @@ static void sub_803B4A0(EggHammerTankII *boss)
 {
     u8 i;
     s32 val;
-    s32 result;
 
     boss->unk94 += 8;
     boss->unk54[1][0] = boss->unk94;
@@ -1186,7 +1185,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_1__sub_803BDB8.inc",
     unkB4->unkCC = -768;
 
     for (i = 0; i < 4; i++) {
-        s32 temp;
         if (i < 2) {
             unkB4->unk278[i][0] = boss->x - Q_24_8(22);
         } else {
@@ -1532,7 +1530,6 @@ static void TaskDestructor_EggHammerTankIIMain(struct Task *t)
 
 static void Task_803C980(void)
 {
-    u8 result;
     EggHammerTankII *boss = TASK_DATA(gCurTask);
     boss->x += boss->speedX;
     boss->y += boss->speedY;

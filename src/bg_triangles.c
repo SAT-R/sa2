@@ -446,8 +446,6 @@ void sub_8007858(u8 param0, int_vcount minY, int_vcount maxY, u16 param3, u16 pa
 
 void sub_80078D4(u8 bg, int_vcount minY, int_vcount maxY, u16 offsetEven, u16 offsetOdd)
 {
-    u16 *cursor;
-    u32 fillSize;
     s32 fillVal;
 
     gFlags |= FLAGS_4;
@@ -478,7 +476,7 @@ void sub_8007958(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4,
         *cursor = (param3 + param5) & 0x1FF;
         cursor++;
         *cursor = param6;
-        *cursor++;
+        cursor++;
 
         param3 = -(param3 + param4);
         param4 = -param4;

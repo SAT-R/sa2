@@ -138,19 +138,17 @@ u32 MultiSioRecvDataCheck(void *recvp)
 {
     u32 (*multiSioRecvBufChangeOnRam)(void) = (u32(*)(void))gMultiSioRecvFuncBuf;
     s32 checkSum;
-    vu32 recvCheck = 0;
+    vu32 UNUSED recvCheck = 0;
     u8 syncRecvFlagBak[4];
-    u8 counterDiff;
-    u16 *bufpTmp;
     s32 i, ii;
-    struct MultiSioPacket *test;
 
 #ifdef MULTI_SIO_DI_FUNC_FAST // Update Receive Data/Check Buffer
     *(u32 *)syncRecvFlagBak = multiSioRecvBufChangeOnRam();
 #else
     REG_IME = 0; // Disable Interrupt (Approx. 80 Clocks)
     for (i = 0; i < 4; ++i) {
-        bufpTmp = gMultiSioArea.recvCheckBufp[i]; // Update Receive Data/Check Buffer
+        u16 *bufpTmp
+            = gMultiSioArea.recvCheckBufp[i]; // Update Receive Data/Check Buffer
         gMultiSioArea.recvCheckBufp[i] = gMultiSioArea.lastRecvBufp[i];
         gMultiSioArea.lastRecvBufp[i] = bufpTmp;
     }

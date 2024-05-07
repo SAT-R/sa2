@@ -13,7 +13,7 @@ NONMATCH("asm/non_matching/engine/sub_8006228.inc",
          void sub_8006228(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5))
 {
     int_vcount *cursor;
-    s16 r0, r1, r2, r4, r5, r7, r8;
+    s16 r1, r2, r4, r5, r7, r8;
 
     gFlags |= FLAGS_4;
 
@@ -138,7 +138,7 @@ NONMATCH("asm/non_matching/engine/sub_80064A8.inc",
          void sub_80064A8(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4, u8 param5))
 {
     int_vcount *cursor;
-    s16 r0, r1, r2, r4, r5, r7, r8;
+    s16 r1, r2, r4, r5, r7, r8;
 
     gFlags |= FLAGS_4;
 

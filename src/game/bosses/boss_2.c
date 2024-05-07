@@ -452,7 +452,6 @@ static u8 RenderEggBomberTank(EggBomberTank *boss)
 
     ret = 0;
     if (boss->cannonHealth != 0) {
-        s32 temp2;
         SpriteTransform *transform;
         s = &boss->cannon;
         transform = &boss->transform;
@@ -508,7 +507,6 @@ static void RenderEscapeBomberTank(EggBomberTank *boss, bool8 renderPilot)
     }
 
     for (i = 0; i < 2; i++) {
-        s8 temp;
         s = &boss->wheels[i];
         UpdateSpriteAnimation(s);
 
@@ -727,8 +725,8 @@ static u8 RenderCannon(EggBomberTank *boss)
 static void HandleCannonBombTrigger(EggBomberTank *boss)
 {
     s32 x, y;
-    s32 cos, sin;
     Sprite *s = &boss->cannon;
+
     if (HandleCannonCollision(boss) != 0) {
         boss->unk54 = Q_24_8_NEW(Div(boss->x, 256) - 8);
         boss->unk58 = Q_24_8_NEW(Div(boss->y, 256) - 22);
@@ -750,27 +748,8 @@ static void HandleCannonBombTrigger(EggBomberTank *boss)
         s->variant = 1;
         s->prevVariant = -1;
 
-        {
-            s32 divResA, divResB;
-            s32 oldScore = gLevelScore;
-            gLevelScore += 500;
+        INCREMENT_SCORE_B(500);
 
-            divResA = Div(gLevelScore, 50000);
-            divResB = Div(oldScore, 50000);
-
-            if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
-                u16 lives = divResA - divResB;
-                lives += gNumLives;
-
-                if (lives > 255) {
-                    gNumLives = 255;
-                } else {
-                    gNumLives = lives;
-                }
-
-                gUnknown_030054A8.unk3 = 16;
-            }
-        }
         if (!IS_FINAL_STAGE(gCurrentLevel)) {
             gUnknown_030054A8.unk1 = 0x11;
         }

@@ -69,7 +69,6 @@ struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
     struct Task *slow;
     struct Task *task;
     TaskPtr fast;
-    struct EwramNode *temp;
 
 #ifndef NON_MATCHING
     do
@@ -279,7 +278,7 @@ static void IwramFree(void *p)
 }
 
 /* The function is probably for cleaning up the IWRAM nodes, but it's not working. */
-static void sub_80028DC(void)
+static void UNUSED sub_80028DC(void)
 {
     struct IwramNode *cur = (struct IwramNode *)&gIwramHeap[0];
     s32 curStateBackup;
