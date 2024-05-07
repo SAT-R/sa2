@@ -172,11 +172,11 @@ static void Task_Platform_Square(void)
     posY = TO_WORLD_POS(me->y, platform->base.regionY);
 
     if (IS_MULTI_PLAYER) {
-        s->x = posX - gCamera.x + Q_24_8_TO_INT(platform->unk50[1][0]);
-        s->y = posY - gCamera.y + Q_24_8_TO_INT(platform->unk50[1][1]);
+        s->x = posX - gCamera.x + I(platform->unk50[1][0]);
+        s->y = posY - gCamera.y + I(platform->unk50[1][1]);
     } else {
-        s->x = posX - gCamera.x + Q_24_8_TO_INT(platform->unk40);
-        s->y = posY - gCamera.y + Q_24_8_TO_INT(platform->unk44);
+        s->x = posX - gCamera.x + I(platform->unk40);
+        s->y = posY - gCamera.y + I(platform->unk44);
     }
 
     if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
@@ -184,43 +184,40 @@ static void Task_Platform_Square(void)
         p->x += deltaX;
 
         if (!GRAVITY_IS_INVERTED) {
-            p->y += deltaY + Q_24_8(1.0);
+            p->y += deltaY + Q(1.0);
         } else {
-            p->y += deltaY - Q_24_8(2.0);
+            p->y += deltaY - Q(2.0);
         }
 
-        res = sub_801F100(Q_24_8_TO_INT(gPlayer.y) + gPlayer.unk17,
-                          Q_24_8_TO_INT(gPlayer.x) + gPlayer.unk16, gPlayer.unk38, +8,
-                          sub_801EC3C);
+        res = sub_801F100(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x) + gPlayer.unk16,
+                          gPlayer.unk38, +8, sub_801EC3C);
         if (res < 0) {
-            gPlayer.y += Q_24_8(res);
+            gPlayer.y += Q(res);
 
             p->moveState &= ~MOVESTATE_8;
             p->moveState |= MOVESTATE_IN_AIR;
             p->unk3C = NULL;
         }
 
-        temp = Q_24_8_TO_INT(p->x) + 2;
-        res = sub_801F100(temp + p->unk16, Q_24_8_TO_INT(p->y), p->unk38, +8,
-                          sub_801EB44);
+        temp = I(p->x) + 2;
+        res = sub_801F100(temp + p->unk16, I(p->y), p->unk38, +8, sub_801EB44);
 
         if (res < 0) {
-            p->x += Q_24_8(res);
+            p->x += Q(res);
         }
 
-        temp2 = Q_24_8_TO_INT(p->x) - 2;
-        res = sub_801F100(temp2 - p->unk16, Q_24_8_TO_INT(p->y), p->unk38, -8,
-                          sub_801EB44);
+        temp2 = I(p->x) - 2;
+        res = sub_801F100(temp2 - p->unk16, I(p->y), p->unk38, -8, sub_801EB44);
 
         if (res < 0) {
-            p->x -= Q_24_8(res);
+            p->x -= Q(res);
         }
 
-        res = sub_801F100(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x) - p->unk16,
-                          p->unk38, +8, sub_801EC3C);
+        res = sub_801F100(I(p->y) + p->unk17, I(p->x) - p->unk16, p->unk38, +8,
+                          sub_801EC3C);
 
         if (res < 0) {
-            p->y += Q_24_8(res);
+            p->y += Q(res);
 
             p->moveState &= ~MOVESTATE_8;
             p->moveState |= MOVESTATE_IN_AIR;
@@ -235,8 +232,8 @@ static void Task_Platform_Square(void)
         s32 movStateCopy = p->moveState;
 
         s->hitboxes[0].top -= 3;
-        x = (posX + Q_24_8_TO_INT(platform->unk40));
-        y = (posY + Q_24_8_TO_INT(platform->unk44));
+        x = (posX + I(platform->unk40));
+        y = (posY + I(platform->unk44));
         result = sub_800CCB8(s, x, y, p);
 
         if (result & 0x30000) {
@@ -258,8 +255,7 @@ static void Task_Platform_Square(void)
                     p->speedAirY = 0;
                 }
 
-                res = sub_801F100(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x),
-                                  p->unk38, 8, sub_801EC3C);
+                res = sub_801F100(I(p->y) + p->unk17, I(p->x), p->unk38, 8, sub_801EC3C);
 
                 if ((res < 0) && (deltaY > 0)) {
                     Platform_Square_KillPlayer();
@@ -272,8 +268,8 @@ static void Task_Platform_Square(void)
                     s->hitboxes[0].left += 16;
                     s->hitboxes[0].right -= 16;
 
-                    otherRes = sub_800CCB8(s, posX + Q_24_8_TO_INT(platform->unk40),
-                                           posY + Q_24_8_TO_INT(platform->unk44), p);
+                    otherRes = sub_800CCB8(s, posX + I(platform->unk40),
+                                           posY + I(platform->unk44), p);
 
                     s->hitboxes[0].left -= 16;
                     s->hitboxes[0].right += 16;
@@ -285,11 +281,11 @@ static void Task_Platform_Square(void)
                         s32 tempXX = (s16)(otherRes & 0xFF00);
                         s16 value = tempXX;
                         if (value < 0) {
-                            p->x += -Q_24_8(16.0) + value;
+                            p->x += -Q(16.0) + value;
                         }
 
                         if (value > 0) {
-                            p->x += +Q_24_8(16.0) + value;
+                            p->x += +Q(16.0) + value;
                         }
 
                         p->speedAirX = 0;
@@ -297,9 +293,8 @@ static void Task_Platform_Square(void)
                     }
 
                     if (otherRes & 0x10000) {
-                        s32 newRes = sub_801F100(Q_24_8_TO_INT(p->y) - p->unk17,
-                                                 Q_24_8_TO_INT(p->x), p->unk38, -8,
-                                                 sub_801EC3C);
+                        s32 newRes = sub_801F100(I(p->y) - p->unk17, I(p->x), p->unk38,
+                                                 -8, sub_801EC3C);
 
                         if (newRes < 0) {
                             if (deltaY < 0) {
@@ -320,8 +315,8 @@ static void Task_Platform_Square(void)
                 } else {
                     s32 newRes;
                     p->speedAirY = 0;
-                    newRes = sub_801F100(Q_24_8_TO_INT(p->y) - p->unk17,
-                                         Q_24_8_TO_INT(p->x), p->unk38, -8, sub_801EC3C);
+                    newRes = sub_801F100(I(p->y) - p->unk17, I(p->x), p->unk38, -8,
+                                         sub_801EC3C);
 
                     if ((newRes < 0) && (deltaY < 0)) {
                         Platform_Square_KillPlayer();
@@ -338,18 +333,16 @@ static void Task_Platform_Square(void)
             p->speedGroundX = 0;
 
             if (result & 0x40000) {
-                s32 tempXVal = Q_24_8_TO_INT(p->x) + 2;
-                if (sub_801F100(tempXVal + p->unk16, Q_24_8_TO_INT(p->y), p->unk38, -8,
-                                sub_801EB44)
+                s32 tempXVal = I(p->x) + 2;
+                if (sub_801F100(tempXVal + p->unk16, I(p->y), p->unk38, -8, sub_801EB44)
                     < 0) {
                     Platform_Square_KillPlayer();
                 }
             }
 
             if (result & 0x80000) {
-                s32 tempXVal = Q_24_8_TO_INT(p->x) - 2;
-                if (sub_801F100(tempXVal - p->unk16, Q_24_8_TO_INT(p->y), p->unk38, +8,
-                                sub_801EB44)
+                s32 tempXVal = I(p->x) - 2;
+                if (sub_801F100(tempXVal - p->unk16, I(p->y), p->unk38, +8, sub_801EB44)
                     < 0) {
                     Platform_Square_KillPlayer();
                 }
@@ -390,7 +383,6 @@ static void sub_800F990(Sprite_PlatformSquare *platform)
     platform->unk50[0][1] = platform->unk44;
 }
 
-// Seems to be unused
 static u32 UNUSED sub_800F9AC(Sprite *s, s32 x, s32 y, Player *p)
 {
     u32 result;

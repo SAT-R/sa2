@@ -37,7 +37,7 @@ const AnimationCommandFunc animCmdTable[] = {
 AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
 {
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_GetPalette);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     if (!(s->unk10 & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
@@ -72,7 +72,7 @@ AnimCmdResult animCmd_End(void *cursor, Sprite *s)
 AnimCmdResult animCmd_PlaySoundEffect(void *cursor, Sprite *s)
 {
     ACmd_PlaySoundEffect *cmd = cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_PlaySoundEffect);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     m4aSongNumStart(cmd->songId);
 
@@ -83,7 +83,7 @@ AnimCmdResult animCmd_PlaySoundEffect(void *cursor, Sprite *s)
 AnimCmdResult animCmd_TranslateSprite(void *cursor, Sprite *s)
 {
     ACmd_TranslateSprite *cmd = cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_TranslateSprite);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     s->x += cmd->x;
     s->y += cmd->y;
@@ -95,7 +95,7 @@ AnimCmdResult animCmd_TranslateSprite(void *cursor, Sprite *s)
 AnimCmdResult animCmd_8(void *cursor, Sprite *s)
 {
     ACmd_8 *cmd = cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_8);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     return ACMD_RESULT__RUNNING;
 }
@@ -104,7 +104,7 @@ AnimCmdResult animCmd_8(void *cursor, Sprite *s)
 AnimCmdResult animCmd_SetIdAndVariant(void *cursor, Sprite *s)
 {
     ACmd_SetIdAndVariant *cmd = cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_SetIdAndVariant);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     s->graphics.anim = cmd->animId;
     s->prevVariant = -1;
@@ -117,7 +117,7 @@ AnimCmdResult animCmd_SetIdAndVariant(void *cursor, Sprite *s)
 AnimCmdResult animCmd_10(void *cursor, Sprite *s)
 {
     ACmd_10 *cmd = cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_10);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
 #ifdef UB_FIX
     return ACMD_RESULT__RUNNING; // I think this should be the correct behavior?
@@ -131,7 +131,7 @@ AnimCmdResult animCmd_10(void *cursor, Sprite *s)
 AnimCmdResult animCmd_SetSpritePriority(void *cursor, Sprite *s)
 {
     ACmd_SetSpritePriority *cmd = cursor;
-    s->animCursor += AnimCommandSizeInWords(ACmd_SetSpritePriority);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
 
     SPRITE_FLAG_CLEAR(s, PRIORITY);
     SPRITE_FLAG_SET_VALUE(s, PRIORITY, cmd->priority);
@@ -146,7 +146,7 @@ AnimCmdResult animCmd_SetOamOrder(void *cursor, Sprite *s)
 {
     ACmd_SetOamOrder *cmd = cursor;
 
-    s->animCursor += AnimCommandSizeInWords(ACmd_SetOamOrder);
+    s->animCursor += AnimCommandSizeInWords(*cmd);
     s->unk1A = SPRITE_OAM_ORDER(cmd->orderIndex);
 
     return ACMD_RESULT__RUNNING;
