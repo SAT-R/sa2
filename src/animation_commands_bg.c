@@ -457,7 +457,7 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                 if (gUnknown_03002280[bgIndex][3] == 0xFF) {
                     // _080040A2
                     u16 v = gUnknown_03004D80[bgIndex];
-                    s32 value = 0xFF - gUnknown_03002280[bgIndex][1];
+                    u32 value;
                     v |= v << 8;
 
                     value = ((gUnknown_03002280[bgIndex][3] - r4) * bgSize_TxtOrAff);
@@ -502,7 +502,8 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                 }
             }
             // _0800422C
-            DmaFill32(3, 0, &gUnknown_03002280[bgIndex], ARRAY_COUNT(gUnknown_03002280[bgIndex]));
+            DmaFill32(3, 0, &gUnknown_03002280[bgIndex],
+                      ARRAY_COUNT(gUnknown_03002280[bgIndex]));
         }
     }
 
