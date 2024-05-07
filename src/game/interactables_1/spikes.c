@@ -554,9 +554,9 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
             }
 
             if (!GRAVITY_IS_INVERTED) {
-                player->y = Q_24_8(screenY + s->hitboxes[0].top - sp00[3]);
+                player->y = Q(screenY + s->hitboxes[0].top - sp00[3]);
             } else {
-                player->y = Q_24_8(screenY + s->hitboxes[0].bottom + sp00[3]);
+                player->y = Q(screenY + s->hitboxes[0].bottom + sp00[3]);
             }
 
             if (sub_800CBA4(player)) {
@@ -593,8 +593,7 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
                 if (gravityInverted) {
                     if (flags & 0x20000) {
                         player->speedAirY = 0;
-                        player->y
-                            = Q_24_8(screenY + s->hitboxes[0].bottom + player->unk17);
+                        player->y = Q(screenY + s->hitboxes[0].bottom + player->unk17);
                         player->moveState |= MOVESTATE_8;
                         player->moveState &= ~MOVESTATE_IN_AIR;
                         player->unk3C = s;
@@ -666,8 +665,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
         if (flags) {
             if ((flags & 0x20000) && !GRAVITY_IS_INVERTED) {
-                player->y
-                    = Q_24_8((screenY + s->hitboxes[0].bottom) + player->unk17 + 1);
+                player->y = Q((screenY + s->hitboxes[0].bottom) + player->unk17 + 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
 
@@ -677,7 +675,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                 }
             } else if ((flags & 0x10000) && GRAVITY_IS_INVERTED) {
                 // _080604D0
-                player->y = Q_24_8((screenY + s->hitboxes[0].top) - player->unk17 - 1);
+                player->y = Q((screenY + s->hitboxes[0].top) - player->unk17 - 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
 
@@ -771,9 +769,9 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                     s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
                     if (!GRAVITY_IS_INVERTED) {
-                        player->y = Q_24_8((screenY + s->hitboxes[0].top) - sp00[3]);
+                        player->y = Q((screenY + s->hitboxes[0].top) - sp00[3]);
                     } else {
-                        player->y = Q_24_8((screenY + s->hitboxes[0].bottom) + sp00[3]);
+                        player->y = Q((screenY + s->hitboxes[0].bottom) + sp00[3]);
                     }
                     if (sub_800CBA4(player)) {
                         m4aSongNumStart(SE_SPIKES);
@@ -811,7 +809,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                         return TRUE;
                     }
                 } else if ((flags & 0x20000) && GRAVITY_IS_INVERTED) {
-                    player->y = Q_24_8(screenY + s->hitboxes[0].bottom + player->unk17);
+                    player->y = Q(screenY + s->hitboxes[0].bottom + player->unk17);
                     player->moveState |= MOVESTATE_8;
                     player->moveState &= ~MOVESTATE_IN_AIR;
                     player->unk3C = s;
@@ -941,9 +939,9 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes,
                 s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
 
                 if (!GRAVITY_IS_INVERTED) {
-                    player->y = Q_24_8(s->hitboxes[0].bottom + screenY - sp00[1]);
+                    player->y = Q(s->hitboxes[0].bottom + screenY - sp00[1]);
                 } else {
-                    player->y = Q_24_8(s->hitboxes[0].top + screenY + sp00[1]);
+                    player->y = Q(s->hitboxes[0].top + screenY + sp00[1]);
                 }
                 if (!sub_800CBA4(player)) {
                     return TRUE;

@@ -135,52 +135,35 @@ static void Task_StageGoalToggleMain(void)
     s32 y = TO_WORLD_POS(me->y, regionY);
 
     if (IS_MULTI_PLAYER) {
-        if (x <= Q_24_8_TO_INT(gPlayer.x)
+        if (x <= I(gPlayer.x)
             && !(gPlayer.moveState & (MOVESTATE_8000000 | MOVESTATE_8))) {
             gPlayer.transition = PLTRANS_PT10;
             gStageGoalX = x;
             StageGoalToggle_HandleMultiplayerFinish();
         }
-    } else if (x <= Q_24_8_TO_INT(gPlayer.x)
-               && !(gPlayer.moveState & MOVESTATE_8000000)) {
+    } else if (x <= I(gPlayer.x) && !(gPlayer.moveState & MOVESTATE_8000000)) {
         gPlayer.transition = PLTRANS_PT10;
         gUnknown_03005424 |= 0x21;
         gStageGoalX = x;
 
         if (gGameMode == GAME_MODE_SINGLE_PLAYER
             && !(gPlayer.moveState & MOVESTATE_IN_AIR)
-            && gPlayer.speedGroundX > Q_24_8(2.5)) {
+            && gPlayer.speedGroundX > Q(2.5)) {
             u32 extraScore;
-            if (gPlayer.speedGroundX <= Q_24_8(4.0)) {
+            if (gPlayer.speedGroundX <= Q(4.0)) {
                 extraScore = 200;
-            } else if (gPlayer.speedGroundX <= Q_24_8(9.0)) {
+            } else if (gPlayer.speedGroundX <= Q(9.0)) {
                 extraScore = 300;
-            } else if (gPlayer.speedGroundX <= Q_24_8(10.0)) {
+            } else if (gPlayer.speedGroundX <= Q(10.0)) {
                 extraScore = 500;
             } else {
                 extraScore = 800;
             }
 
-            // Redundant check :/
             if (extraScore != 0) {
-                u32 temp2, temp3;
-                u32 prev = gLevelScore;
-                gLevelScore += extraScore;
-                temp2 = Div(gLevelScore, 50000);
-                temp3 = Div(prev, 50000);
-                if (temp2 != temp3 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
-                    u16 numLives = (temp2 - temp3);
-                    numLives += gNumLives;
+                INCREMENT_SCORE(extraScore);
 
-                    if (numLives > 0xFF) {
-                        numLives = 0xFF;
-                    }
-
-                    gNumLives = numLives;
-                    gUnknown_030054A8.unk3 = 0x10;
-                }
-                CreateStageGoalBonusPointsAnim(Q_24_8_TO_INT(gPlayer.x),
-                                               Q_24_8_TO_INT(gPlayer.y), extraScore);
+                CreateStageGoalBonusPointsAnim(I(gPlayer.x), I(gPlayer.y), extraScore);
             }
         }
     }
@@ -227,7 +210,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
     }
 }
 
-static void sub_8062BD0(void)
+static UNUSED void sub_8062BD0(void)
 {
     u32 thing = 0;
     struct Task **mpTasks = gMultiplayerPlayerTasks;

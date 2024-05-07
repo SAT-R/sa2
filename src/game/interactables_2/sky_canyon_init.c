@@ -61,6 +61,7 @@ struct Task *sub_80807CC(void)
 static void Task_80808DC(void)
 {
     Sprite_OnInit_SkyCanyon *init = TASK_DATA(gCurTask);
+
     if (init->unk60) {
         UpdateSpriteAnimation(&init->spring);
     }

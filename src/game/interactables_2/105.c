@@ -56,8 +56,8 @@ static bool32 sub_80809B8(Sprite_IA105 *ia105)
         screenX = (ia105->posX + ia105->offsetX) - gCamera.x;
         screenY = (ia105->posY + ia105->offsetY) - gCamera.y;
 
-        playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.x) - gCamera.x;
+        playerY = I(gPlayer.y) - gCamera.y;
 
         someX = ia105->width - ia105->offsetX;
         someY = ia105->height - ia105->offsetY;
