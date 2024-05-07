@@ -910,6 +910,7 @@ static void sub_8046C28(EggGoRound *boss)
 
 static void RenderDestructionProps(EggGoRound *boss)
 {
+    u8 i, j;
     DestructionProps *destruction = &boss->destructionProps;
     Sprite *s = &boss->cabin;
     s->x = I(destruction->cabin.x) - gCamera.x;
@@ -924,6 +925,23 @@ static void RenderDestructionProps(EggGoRound *boss)
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
+
+    // not in the rom but this code may have existed
+    // for (i = 0; i < NUM_PLATFORMS; i++) {
+    //     s = &boss->platforms[i].s;
+    //     s->x = I(destruction->platforms[i].x) - gCamera.x;
+    //     s->y = I(destruction->platforms[i].y) - gCamera.y;
+    //     UpdateSpriteAnimation(s);
+    //     DisplaySprite(s);
+
+    //     for (j = 0; j < NUM_LINKS; j++) {
+    //         s = &boss->link;
+    //         s->x = I(destruction->platformLinks[i][j].x) - gCamera.x;
+    //         s->y = I(destruction->platformLinks[i][j].y) - gCamera.y;
+    //         UpdateSpriteAnimation(s);
+    //         DisplaySprite(s);
+    //     }
+    // }
 }
 
 static void sub_8046F00(EggGoRound *boss)
@@ -1301,31 +1319,47 @@ static void sub_8047940(EggGoRound *boss)
     }
 }
 
-static void UpdateDestructionPropPositions(EggGoRound *boss)
+// this doesn't need to be an inline function but it matches
+// and may have been what they did to handle the other prop
+// positions
+static inline void UpdatePropPos(DestructionProp *prop)
 {
     s32 result;
-    DestructionProps *destruction = &boss->destructionProps;
-    destruction->cabin.speedY += Q(0.1875);
-    destruction->cabin.x += destruction->cabin.speedX;
-    destruction->cabin.y += destruction->cabin.speedY;
+    prop->speedY += Q(0.1875);
+    prop->x += prop->speedX;
+    prop->y += prop->speedY;
 
-    result = sub_801F100(I(destruction->cabin.y) + 20, I(destruction->cabin.x), 1, 8,
-                         sub_801EC3C);
+    result = sub_801F100(I(prop->y) + 20, I(prop->x), 1, 8, sub_801EC3C);
     if (result < 0) {
         u32 temp;
-        destruction->cabin.speedX -= Q(0.25);
-        if (destruction->cabin.speedX < 0) {
-            destruction->cabin.speedX = 0;
+        prop->speedX -= Q(0.25);
+        if (prop->speedX < 0) {
+            prop->speedX = 0;
         }
 
-        temp = destruction->cabin.speedY * 9;
+        temp = prop->speedY * 9;
         temp *= 4;
-        temp -= destruction->cabin.speedY;
+        temp -= prop->speedY;
         temp *= 2;
 
-        destruction->cabin.speedY = Div(-temp, 100);
-        destruction->cabin.y += Q(result);
+        prop->speedY = Div(-temp, 100);
+        prop->y += Q(result);
     }
+}
+
+static void UpdateDestructionPropPositions(EggGoRound *boss)
+{
+    u8 i, j;
+    DestructionProps *destruction = &boss->destructionProps;
+    UpdatePropPos(&destruction->cabin);
+
+    // not real code, but may have been used to render the rest of the props
+    // for (i = 0; i < NUM_PLATFORMS; i++) {
+    //     UpdatePropPos(&destruction->platforms[i]);
+    //     for (j = 0; j < NUM_LINKS; j++) {
+    //         UpdatePropPos(&destruction->platformLinks[i][j]);
+    //     }
+    // }
 }
 
 static void TaskDestructor_EggGoRound(struct Task *t)
