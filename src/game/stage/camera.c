@@ -477,9 +477,9 @@ void UpdateCamera(void)
 
         if (newX + ((DISPLAY_WIDTH / 2) + 1) < I(player->x)) {
             if ((camera->unk10 + (DISPLAY_HEIGHT / 2)) > newX) {
-                s32 temp = I(player->x);
-                temp -= DISPLAY_WIDTH / 2;
-                camera->shiftX = temp - newX;
+                s32 playerScreenX = I(player->x);
+                playerScreenX -= DISPLAY_WIDTH / 2;
+                camera->shiftX = playerScreenX - newX;
             } else {
                 newX = (camera->unk10 + (DISPLAY_HEIGHT / 2));
                 camera->shiftX = 0;
@@ -626,8 +626,7 @@ void UpdateCamera(void)
 
 static void sub_801C708(s32 x, s32 y)
 {
-
-    if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+    if (!IS_EXTRA_STAGE(gCurrentLevel)) {
         Background *layer = &gStageBackgroundsRam.unk40;
         gBgScrollRegs[1][0] = x % 8u;
         gBgScrollRegs[1][1] = y % 8u;
