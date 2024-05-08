@@ -86,7 +86,7 @@ ifeq ($(THUMB_SUPPORT),1)
 	CC1FLAGS += -mthumb-interwork
 endif
 else
-# Allow file input through stdin on modern GCC
+# Allow file input through stdin on modern GCC and set it to "compile only"
 	CC1FLAGS += -x c -S
 endif
 
