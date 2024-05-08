@@ -71,12 +71,15 @@ ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude --defsym $(GAME_REGIO
 .SECONDEXPANSION:
 
 # these commands will run regardless of deps being completed
-.PHONY: __rom clean tools clean-tools $(TOOLDIRS)
+.PHONY: clean tools clean-tools $(TOOLDIRS)
 
-# ensure that we don't scan deps if we are not running
-# any of these commands
-ifeq (,$(filter-out all rom __rom compare,$(MAKECMDGOALS)))
-$(call infoshell, $(MAKE) -f tools/Makefile)
+infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
+
+# Build tools when building the rom
+# Disable dependency scanning for clean/tidy/tools
+ifeq (,$(filter-out all rom compare,$(MAKECMDGOALS)))
+# if we are doing any of these things, build tools first
+$(call infoshell, $(MAKE) tools -j$(nproc))
 else
 NODEP ?= 1
 endif
@@ -148,13 +151,7 @@ MAKEFLAGS += --no-print-directory
 
 all: compare
 
-# Ensure that tools are built before building the rom
-rom: tools
-	@$(MAKE) __rom
-__rom: $(ROM)
-# Dummy command to make sure we don't print
-# even when rom is already built
-	@echo > /dev/null
+rom: $(ROM)
 
 FORMAT_SRC_PATHS := $(shell find . -name "*.c" ! -path '*/src/data/*' ! -path '*/build/*' ! -path '*/ext/*')
 FORMAT_H_PATHS   := $(shell find . -name "*.h" ! -path '*/build/*' ! -path '*/ext/*')
