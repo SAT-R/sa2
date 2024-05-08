@@ -1,3 +1,5 @@
+#include <stdlib.h> // abs
+
 #include "core.h"
 #include "sprite.h"
 #include "malloc_vram.h"
@@ -102,10 +104,10 @@ static void StartSpinSequence(Sprite_SmallWindmill *windmill)
     }
 
     windmill->rotation = windmill->rotationTarget;
-    gPlayer.x = COS_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER
-        + Q_24_8(windmill->x);
-    gPlayer.y = SIN_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER
-        + Q_24_8(windmill->y);
+    gPlayer.x
+        = COS_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->x);
+    gPlayer.y
+        = SIN_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->y);
 
     switch (windmill->initialTouchAngle) {
         case 1:
@@ -140,28 +142,28 @@ static void HandleRotationComplete(Sprite_SmallWindmill *windmill)
         switch (windmill->initialTouchAngle) {
             case 2:
                 gPlayer.moveState |= MOVESTATE_FACING_LEFT;
-                gPlayer.speedAirX = -Q_24_8(8);
+                gPlayer.speedAirX = -Q(8);
                 gPlayer.speedAirY = 0;
                 break;
             case 1:
             case 4:
                 gPlayer.speedAirX = 0;
-                gPlayer.speedAirY = -Q_24_8(8);
+                gPlayer.speedAirY = -Q(8);
                 break;
             case 5:
                 gPlayer.moveState |= MOVESTATE_FACING_LEFT;
-                gPlayer.speedAirX = -Q_24_8(8);
+                gPlayer.speedAirX = -Q(8);
                 gPlayer.speedAirY = 0;
                 break;
             case 6:
             case 7:
                 gPlayer.speedAirX = 0;
-                gPlayer.speedAirY = Q_24_8(8);
+                gPlayer.speedAirY = Q(8);
                 break;
             case 3:
             case 8:
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
-                gPlayer.speedAirX = Q_24_8(8);
+                gPlayer.speedAirX = Q(8);
                 gPlayer.speedAirY = 0;
                 break;
         }
@@ -188,10 +190,10 @@ static bool32 RotateWindmill(Sprite_SmallWindmill *windmill)
     }
 
     if (PLAYER_IS_ALIVE) {
-        gPlayer.x = COS_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER
-            + Q_24_8(windmill->x);
-        gPlayer.y = SIN_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER
-            + Q_24_8(windmill->y);
+        gPlayer.x
+            = COS_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->x);
+        gPlayer.y
+            = SIN_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->y);
     }
 
     return windmill->rotation == windmill->rotationTarget;
@@ -202,8 +204,8 @@ static u32 GetPlayerTouchingAngle(Sprite_SmallWindmill *windmill)
     if (PLAYER_IS_ALIVE) {
         s16 x = windmill->x - gCamera.x;
         s16 y = windmill->y - gCamera.y;
-        s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        s16 playerX = I(gPlayer.x) - gCamera.x;
+        s16 playerY = I(gPlayer.y) - gCamera.y;
 
         s16 dX = (x - playerX);
         s16 dY = (y - playerY);

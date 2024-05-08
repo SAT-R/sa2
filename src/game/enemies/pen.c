@@ -24,8 +24,8 @@ typedef struct {
 static void Task_PenMove(void);
 static void Task_PenTurn(void);
 
-#define PEN_BOOST_SPEED Q_24_8(2.0)
-#define PEN_MOVE_SPEED  Q_24_8(0.5)
+#define PEN_BOOST_SPEED Q(2.0)
+#define PEN_MOVE_SPEED  Q(0.5)
 
 void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -89,8 +89,8 @@ static void Task_PenMove(void)
     if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
         s32 playerX = gPlayer.x;
         // Feels like a fake match, oh well
-        posX_24_8 = Q_24_8(pos.x);
-        if (playerX > posX_24_8 && playerX < Q_24_8(pos.x + 100)) {
+        posX_24_8 = Q(pos.x);
+        if (playerX > posX_24_8 && playerX < Q(pos.x + 100)) {
             if (!pen->boosting) {
                 s->graphics.anim = SA2_ANIM_PEN;
                 s->variant = SA2_ANIM_PEN_VARIANT_BOOST;
@@ -100,8 +100,8 @@ static void Task_PenMove(void)
         }
     } else {
         s32 playerX = gPlayer.x;
-        posX_24_8 = Q_24_8(pos.x);
-        if (playerX < posX_24_8 && playerX > Q_24_8(pos.x - 100)) {
+        posX_24_8 = Q(pos.x);
+        if (playerX < posX_24_8 && playerX > Q(pos.x - 100)) {
             if (!pen->boosting) {
                 s->graphics.anim = SA2_ANIM_PEN;
                 s->variant = SA2_ANIM_PEN_VARIANT_BOOST;
@@ -126,7 +126,7 @@ static void Task_PenMove(void)
     }
 
     // TODO: Fix posX_24_8!
-    ENEMY_UPDATE_EX_RAW(s, posX_24_8, Q_24_8(pos.y), {});
+    ENEMY_UPDATE_EX_RAW(s, posX_24_8, Q(pos.y), {});
 }
 
 static void Task_PenTurn(void)
@@ -143,7 +143,7 @@ static void Task_PenTurn(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(pen, me, s);
 
-    Player_UpdateHomingPosition(Q_24_8(pos.x), Q_24_8(pos.y));
+    Player_UpdateHomingPosition(Q(pos.x), Q(pos.y));
     if (UpdateSpriteAnimation(s) == 0) {
         pen->boosting = FALSE;
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {

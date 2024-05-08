@@ -70,7 +70,13 @@ struct UNK_3005510 ALIGNED(16) gUnknown_03005510[16] = {};
 u32 gStageTime = 0;
 
 u8 ALIGNED(4) gMultiplayerUnlockedCharacters = 0;
+
+#ifndef NON_MATCHING
 struct Task *ALIGNED(16) gMultiplayerPlayerTasks[MULTI_SIO_PLAYERS_MAX] = {};
+#else
+struct Task *ALIGNED(4) gMultiplayerPlayerTasks[MULTI_SIO_PLAYERS_MAX] = {};
+#endif
+
 u8 gUnknown_030055B0 = 0;
 
 s8 ALIGNED(4) gCurrentLevel = 0;

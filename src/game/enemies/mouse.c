@@ -47,8 +47,8 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
             mouse->unk50 = 0;
         }
 
-        mouse->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-        mouse->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
+        mouse->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
+        mouse->spawnY = Q(TO_WORLD_POS(me->y, spriteRegionY));
 
         mouse->offsetX = 0;
 
@@ -59,13 +59,11 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         }
 
         if (mouse->unk51) {
-            mouse->offsetY = Q_24_8(sub_801F07C(Q_24_8_TO_INT(mouse->spawnY),
-                                                Q_24_8_TO_INT(mouse->spawnX),
-                                                mouse->unk50, 8, 0, sub_801EE64));
+            mouse->offsetY = Q(sub_801F07C(I(mouse->spawnY), I(mouse->spawnX),
+                                           mouse->unk50, 8, 0, sub_801EE64));
         } else {
-            mouse->offsetY = Q_24_8(sub_801F07C(Q_24_8_TO_INT(mouse->spawnY),
-                                                Q_24_8_TO_INT(mouse->spawnX),
-                                                mouse->unk50, 8, 0, sub_801EE64));
+            mouse->offsetY = Q(sub_801F07C(I(mouse->spawnY), I(mouse->spawnX),
+                                           mouse->unk50, 8, 0, sub_801EE64));
         }
         mouse->unk4C = 0;
         mouse->unk52 = 0;
@@ -107,13 +105,13 @@ static void sub_8057348(void)
 
     if (mouse->unk51) {
         ENEMY_CLAMP_TO_GROUND_2(mouse, mouse->unk50);
-        pos.x = Q_24_8_TO_INT(mouse->spawnX + mouse->offsetX) + 8;
-        pos.y = Q_24_8_TO_INT(mouse->spawnY + mouse->offsetY) + 8;
+        pos.x = I(mouse->spawnX + mouse->offsetX) + 8;
+        pos.y = I(mouse->spawnY + mouse->offsetY) + 8;
 
     } else {
         ENEMY_CLAMP_TO_GROUND(mouse, mouse->unk50);
-        pos.x = Q_24_8_TO_INT(mouse->spawnX + mouse->offsetX);
-        pos.y = Q_24_8_TO_INT(mouse->spawnY + mouse->offsetY);
+        pos.x = I(mouse->spawnX + mouse->offsetX);
+        pos.y = I(mouse->spawnY + mouse->offsetY);
     }
 
     s->x = pos.x - gCamera.x;
@@ -131,14 +129,13 @@ static void sub_8057348(void)
         }
     }
 
-    if (Q_24_8_TO_INT(mouse->offsetX) <= (me->d.sData[0] * TILE_WIDTH)
+    if (I(mouse->offsetX) <= (me->d.sData[0] * TILE_WIDTH)
         && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = sub_8057618;
         s->graphics.anim = SA2_ANIM_MOUSE;
         s->variant = 1;
         s->prevVariant = -1;
-    } else if ((Q_24_8_TO_INT(mouse->offsetX)
-                    >= ((me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)
+    } else if ((I(mouse->offsetX) >= ((me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)
                 && s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = sub_8057618;
         s->graphics.anim = SA2_ANIM_MOUSE;
@@ -163,12 +160,12 @@ static void sub_8057618(void)
 
     if (mouse->unk51) {
         ENEMY_CLAMP_TO_GROUND_2(mouse, mouse->unk50);
-        pos.x = Q_24_8_TO_INT(mouse->spawnX + mouse->offsetX) + 8;
-        pos.y = Q_24_8_TO_INT(mouse->spawnY + mouse->offsetY) + 8;
+        pos.x = I(mouse->spawnX + mouse->offsetX) + 8;
+        pos.y = I(mouse->spawnY + mouse->offsetY) + 8;
     } else {
         ENEMY_CLAMP_TO_GROUND(mouse, mouse->unk50);
-        pos.x = Q_24_8_TO_INT(mouse->spawnX + mouse->offsetX);
-        pos.y = Q_24_8_TO_INT(mouse->spawnY + mouse->offsetY);
+        pos.x = I(mouse->spawnX + mouse->offsetX);
+        pos.y = I(mouse->spawnY + mouse->offsetY);
     }
 
     s->x = pos.x - gCamera.x;

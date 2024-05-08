@@ -102,23 +102,23 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
     switch (launcher->kind) {
         case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN): {
-            launcher->unk54 = Q_24_8(launcher->posX + launcher->unk50);
-            launcher->unk58 = Q_24_8(launcher->posY + launcher->unk52);
+            launcher->unk54 = Q(launcher->posX + launcher->unk50);
+            launcher->unk58 = Q(launcher->posY + launcher->unk52);
         } break;
 
         case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN): {
-            launcher->unk54 = Q_24_8(launcher->posX + launcher->unk4C);
-            launcher->unk58 = Q_24_8(launcher->posY + launcher->unk52);
+            launcher->unk54 = Q(launcher->posX + launcher->unk4C);
+            launcher->unk58 = Q(launcher->posY + launcher->unk52);
         } break;
 
         case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP): {
-            launcher->unk54 = Q_24_8(launcher->posX + launcher->unk50);
-            launcher->unk58 = Q_24_8(launcher->posY + launcher->unk4E);
+            launcher->unk54 = Q(launcher->posX + launcher->unk50);
+            launcher->unk58 = Q(launcher->posY + launcher->unk4E);
         } break;
 
         case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP): {
-            launcher->unk54 = Q_24_8(launcher->posX + launcher->unk4C);
-            launcher->unk58 = Q_24_8(launcher->posY + launcher->unk4E);
+            launcher->unk54 = Q(launcher->posX + launcher->unk4C);
+            launcher->unk58 = Q(launcher->posY + launcher->unk4E);
         } break;
     }
 
@@ -253,14 +253,14 @@ static void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
         switch (launcher->kind) {
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN):
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP): {
-                gPlayer.speedAirX = -Q_24_8(15.0);
-                gPlayer.speedAirY = -Q_24_8(3.0);
+                gPlayer.speedAirX = -Q(15.0);
+                gPlayer.speedAirY = -Q(3.0);
             } break;
 
             case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN):
             case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP): {
-                gPlayer.speedAirX = +Q_24_8(15.0);
-                gPlayer.speedAirY = -Q_24_8(3.0);
+                gPlayer.speedAirX = +Q(15.0);
+                gPlayer.speedAirY = -Q(3.0);
             } break;
         }
 
@@ -280,11 +280,11 @@ static void sub_807DDA0(Sprite_EggUtopia_Launcher *launcher)
     Sprite *s = &launcher->s;
 
     if (IS_MULTI_PLAYER) {
-        s->x = Q_24_8_TO_INT(launcher->unk60[1][0]) - gCamera.x;
-        s->y = Q_24_8_TO_INT(launcher->unk60[1][1]) - gCamera.y;
+        s->x = I(launcher->unk60[1][0]) - gCamera.x;
+        s->y = I(launcher->unk60[1][1]) - gCamera.y;
     } else {
-        s->x = Q_24_8_TO_INT(launcher->unk54) - gCamera.x;
-        s->y = Q_24_8_TO_INT(launcher->unk58) - gCamera.y;
+        s->x = I(launcher->unk54) - gCamera.x;
+        s->y = I(launcher->unk58) - gCamera.y;
     }
 
     DisplaySprite(s);
@@ -305,11 +305,11 @@ static bool32 sub_807DDF0(Sprite_EggUtopia_Launcher *launcher)
                 return FALSE;
         }
 
-        someX = Q_24_8_TO_INT(launcher->unk54) - gCamera.x;
-        someY = Q_24_8_TO_INT(launcher->unk58) - gCamera.y;
+        someX = I(launcher->unk54) - gCamera.x;
+        someY = I(launcher->unk58) - gCamera.y;
 
-        playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.x) - gCamera.x;
+        playerY = I(gPlayer.y) - gCamera.y;
 
         if ((someX - 2 * TILE_WIDTH <= playerX) && (someX + 2 * TILE_WIDTH >= playerX)
             && (someY - 2 * TILE_WIDTH <= playerY)
@@ -373,16 +373,16 @@ static bool16 sub_807DF60(Sprite_EggUtopia_Launcher *launcher)
 
     if (IS_LAUNCHER_DIR_LEFT(launcher->kind)) {
         s32 someX;
-        launcher->unk54 -= Q_24_8(15);
-        someX = Q_24_8(launcher->posX + launcher->unk4C);
+        launcher->unk54 -= Q(15);
+        someX = Q(launcher->posX + launcher->unk4C);
         if (launcher->unk54 <= someX) {
             launcher->unk54 = someX;
             result = TRUE;
         }
     } else {
         s32 someX;
-        launcher->unk54 += Q_24_8(15);
-        someX = Q_24_8(launcher->posX + launcher->unk50);
+        launcher->unk54 += Q(15);
+        someX = Q(launcher->posX + launcher->unk50);
         if (launcher->unk54 >= someX) {
             launcher->unk54 = someX;
             result = TRUE;
@@ -397,23 +397,23 @@ static void sub_807DFBC(Sprite_EggUtopia_Launcher *launcher)
     if (PLAYER_IS_ALIVE && launcher->unk48) {
         switch (launcher->kind) {
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN): {
-                gPlayer.x = launcher->unk54 - Q_24_8(8);
-                gPlayer.y = launcher->unk58 - Q_24_8(16);
+                gPlayer.x = launcher->unk54 - Q(8);
+                gPlayer.y = launcher->unk58 - Q(16);
             } break;
 
             case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN): {
-                gPlayer.x = launcher->unk54 + Q_24_8(8);
-                gPlayer.y = launcher->unk58 - Q_24_8(16);
+                gPlayer.x = launcher->unk54 + Q(8);
+                gPlayer.y = launcher->unk58 - Q(16);
             } break;
 
             case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP): {
-                gPlayer.x = launcher->unk54 - Q_24_8(8);
-                gPlayer.y = launcher->unk58 + Q_24_8(16);
+                gPlayer.x = launcher->unk54 - Q(8);
+                gPlayer.y = launcher->unk58 + Q(16);
             } break;
 
             case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP): {
-                gPlayer.x = launcher->unk54 + Q_24_8(8);
-                gPlayer.y = launcher->unk58 + Q_24_8(16);
+                gPlayer.x = launcher->unk54 + Q(8);
+                gPlayer.y = launcher->unk58 + Q(16);
             } break;
         }
     }
@@ -505,16 +505,16 @@ static bool16 sub_807E1C4(Sprite_EggUtopia_Launcher *launcher)
 
     if (IS_LAUNCHER_DIR_LEFT(launcher->kind)) {
         s32 value;
-        launcher->unk54 += Q_24_8(1.0);
-        value = Q_24_8(launcher->posX + launcher->unk50);
+        launcher->unk54 += Q(1.0);
+        value = Q(launcher->posX + launcher->unk50);
         if (launcher->unk54 >= value) {
             launcher->unk54 = value;
             result = TRUE;
         }
     } else {
         s32 value;
-        launcher->unk54 -= Q_24_8(1.0);
-        value = Q_24_8(launcher->posX + launcher->unk4C);
+        launcher->unk54 -= Q(1.0);
+        value = Q(launcher->posX + launcher->unk4C);
         if (launcher->unk54 <= value) {
             launcher->unk54 = value;
             result = TRUE;

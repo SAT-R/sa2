@@ -36,10 +36,9 @@ static void Task_Interactable_Toggle_PlayerLayer(void)
     screenX = TO_WORLD_POS(spriteX, regionX);
     screenY = TO_WORLD_POS(me->y, regionY);
 
-    if ((screenX <= Q_24_8_TO_INT(gPlayer.x))
-        && (screenX + (me->width * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.x))
-        && (screenY <= Q_24_8_TO_INT(gPlayer.y))
-        && (screenY + (me->height * TILE_WIDTH) >= Q_24_8_TO_INT(gPlayer.y))) {
+    if ((screenX <= I(gPlayer.x)) && (screenX + (me->width * TILE_WIDTH) >= I(gPlayer.x))
+        && (screenY <= I(gPlayer.y))
+        && (screenY + (me->height * TILE_WIDTH) >= I(gPlayer.y))) {
 
         // The interactable-index determines, whether the layer we switch to
         // should be the foreground- or the background layer.

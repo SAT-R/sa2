@@ -69,8 +69,8 @@ void sub_80567F8(void)
     Sprite *s = &straw->s;
     MapEntity *me = straw->base.me;
     Vec2_32 pos = {
-        .x = Q_24_8_TO_INT(straw->spawnX + straw->offsetX),
-        .y = Q_24_8_TO_INT(straw->spawnY + straw->offsetY),
+        .x = I(straw->spawnX + straw->offsetX),
+        .y = I(straw->spawnY + straw->offsetY),
     };
 
     s->x = pos.x - gCamera.x;
@@ -130,7 +130,7 @@ void Task_StrawMain(void)
         straw->unk54 = 30;
     }
 
-    ENEMY_UPDATE_EX(s, pos.x, pos.y, ENEMY_TURN_TO_PLAYER(Q_24_8(pos.x), s))
+    ENEMY_UPDATE_EX(s, pos.x, pos.y, ENEMY_TURN_TO_PLAYER(Q(pos.x), s))
 }
 
 void sub_8056AF4(void)

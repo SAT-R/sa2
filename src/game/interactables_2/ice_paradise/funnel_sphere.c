@@ -1,3 +1,5 @@
+#include <stdlib.h> // abs
+
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"
@@ -72,14 +74,14 @@ static void sub_8077F7C(void)
 #endif
 
     if (funnelSphere->unk1C == 1) {
-        r7 = Q_24_8_TO_INT(funnelSphere->unkC) - funnelSphere->y;
+        r7 = I(funnelSphere->unkC) - funnelSphere->y;
 
         r4 = (0x20 - r7) * 0x40;
-        r4 = Q_24_8_TO_INT(r4 * SIN_24_8(MUL_4(r6)));
+        r4 = I(r4 * SIN_24_8(MUL_4(r6)));
         gPlayer.y = funnelSphere->unkC + r4;
 
         r4 = r7 * 2;
-        r4 = Q_24_8_TO_INT(COS_24_8(MUL_4(r6)) * 0x20 * COS_24_8(MUL_4(r4 & 0xFF)));
+        r4 = I(COS_24_8(MUL_4(r6)) * 0x20 * COS_24_8(MUL_4(r4 & 0xFF)));
         gPlayer.x = funnelSphere->unk8 + r4;
 
         r4 = r6;
@@ -99,20 +101,19 @@ static void sub_8077F7C(void)
         r7--;
 #endif
 
-        gPlayer.rotation
-            = Q_24_8_TO_INT((0x40 - r4) * COS_24_8(MUL_4((r7 * 2) & 0xFF))) + 0x40;
+        gPlayer.rotation = I((0x40 - r4) * COS_24_8(MUL_4((r7 * 2) & 0xFF))) + 0x40;
 
         gPlayer.speedAirX = COS_24_8(MUL_4(gPlayer.rotation));
         gPlayer.speedAirY = SIN_24_8(MUL_4(gPlayer.rotation));
         funnelSphere->unkC += 0x40;
     } else {
-        r7 = funnelSphere->y - Q_24_8_TO_INT(funnelSphere->unkC);
+        r7 = funnelSphere->y - I(funnelSphere->unkC);
         r4 = (0x20 - r7) * 0x40;
-        r4 = Q_24_8_TO_INT(-(r4 * SIN_24_8(MUL_4(r6))));
+        r4 = I(-(r4 * SIN_24_8(MUL_4(r6))));
         gPlayer.y = funnelSphere->unkC + r4;
 
         r4 = r7 * 2;
-        r4 = Q_24_8_TO_INT(COS_24_8(MUL_4(r6)) * 0x20 * COS_24_8(MUL_4(r4 & 0xFF)));
+        r4 = I(COS_24_8(MUL_4(r6)) * 0x20 * COS_24_8(MUL_4(r4 & 0xFF)));
         gPlayer.x = funnelSphere->unk8 + r4;
 
         r4 = r6;
@@ -126,8 +127,7 @@ static void sub_8077F7C(void)
         r7--;
 #endif
 
-        gPlayer.rotation
-            = Q_24_8_TO_INT((0xC0 - r4) * COS_24_8(MUL_4((r7 * 2) & 0xFF))) - 0x40;
+        gPlayer.rotation = I((0xC0 - r4) * COS_24_8(MUL_4((r7 * 2) & 0xFF))) - 0x40;
 
         gPlayer.speedAirX = COS_24_8(MUL_4(gPlayer.rotation));
         gPlayer.speedAirY = SIN_24_8(MUL_4(gPlayer.rotation));
@@ -222,8 +222,8 @@ static bool32 sub_80783A4(Sprite_FunnelSphere *funnelSphere)
     } else {
         s16 x = funnelSphere->x - gCamera.x;
         s16 y = funnelSphere->y - gCamera.y;
-        s16 playerX = (Q_24_8_TO_INT(gPlayer.x) - gCamera.x);
-        s16 playerY = (Q_24_8_TO_INT(gPlayer.y) - gCamera.y);
+        s16 playerX = (I(gPlayer.x) - gCamera.x);
+        s16 playerY = (I(gPlayer.y) - gCamera.y);
         s16 dX = x - playerX;
         s16 dY = y - playerY;
         if (dX * dX + dY * dY <= (12 * 12)) {
@@ -259,17 +259,17 @@ static void sub_807844C(void)
         gPlayer.x += gPlayer.speedAirX;
     }
 
-    if (Q_24_8_TO_INT(gPlayer.x) >= funnelSphere->x + 0x20) {
+    if (I(gPlayer.x) >= funnelSphere->x + 0x20) {
         sub_80784B0(funnelSphere);
     }
 }
 
 static void sub_80784B0(Sprite_FunnelSphere *funnelSphere)
 {
-    gPlayer.x = Q_24_8(funnelSphere->x + 0x20);
+    gPlayer.x = Q(funnelSphere->x + 0x20);
     funnelSphere->unk10 = 0x200;
-    funnelSphere->unk8 = Q_24_8(funnelSphere->x + 0x40);
-    funnelSphere->unkC = Q_24_8(funnelSphere->y);
+    funnelSphere->unk8 = Q(funnelSphere->x + 0x40);
+    funnelSphere->unkC = Q(funnelSphere->y);
     m4aSongNumStart(SE_293);
     gCurTask->main = sub_8077F7C;
 }
@@ -330,7 +330,7 @@ static void sub_8078634(void)
     }
 
     gPlayer.y += gPlayer.speedAirY;
-    y = funnelSphere->y - Q_24_8_TO_INT(gPlayer.y);
+    y = funnelSphere->y - I(gPlayer.y);
 
     if (abs(y) >= 72) {
         sub_8078254(funnelSphere);

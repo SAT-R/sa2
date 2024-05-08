@@ -1,3 +1,5 @@
+#include <string.h> // memcpy
+
 #include "core.h"
 #include "game/special_stage/main.h"
 #include "game/special_stage/player.h"
@@ -311,7 +313,7 @@ static void HandlePaused(struct SpecialStageUI *ui)
     s16 lang = LanguageIndex(gLoadedSaveGame->language);
 
     const u16 pauseMenuSprites[6][3];
-    memcpy(&pauseMenuSprites, sPauseMenuVariants, 0x24);
+    memcpy((void *)&pauseMenuSprites, sPauseMenuVariants, 0x24);
 
     sub_806CA88(s, 1, pauseMenuSprites[lang][0], pauseMenuSprites[lang][1], 0x1000, 0x78,
                 0x50, 0, pauseMenuSprites[lang][2], 0);

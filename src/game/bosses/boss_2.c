@@ -190,11 +190,11 @@ void CreateEggBomberTank(void)
     }
 
     if (IS_FINAL_STAGE(gCurrentLevel)) {
-        boss->x = Q_24_8(6304);
-        boss->y = Q_24_8(170);
+        boss->x = Q(6304);
+        boss->y = Q(170);
     } else {
-        boss->x = Q_24_8(480);
-        boss->y = Q_24_8(170);
+        boss->x = Q(480);
+        boss->y = Q(170);
     }
 
     boss->speedX = 0x500;
@@ -218,8 +218,8 @@ void CreateEggBomberTank(void)
     boss->introTimer = 0;
 
     for (i = 0; i < 3; i++) {
-        boss->wheelPositions[i][0] = Q_24_8(170);
-        boss->wheelPositions[i][1] = Q_24_8(170);
+        boss->wheelPositions[i][0] = Q(170);
+        boss->wheelPositions[i][1] = Q(170);
     }
     vram = VramMalloc(239);
     boss->vram = vram;
@@ -286,8 +286,8 @@ static void Task_BomberTankCannonReload(void)
 
     if (HandleCannonCollision(boss) != 0) {
 
-        boss->unk54 = Q_24_8(Div(boss->x, 0x100) - 8);
-        boss->unk58 = Q_24_8(Div(boss->y, 0x100) - 22);
+        boss->unk54 = Q(Div(boss->x, 0x100) - 8);
+        boss->unk58 = Q(Div(boss->y, 0x100) - 22);
 
         boss->unk54 += (COS(boss->cannonAngle) * 0xF) >> 5;
         boss->unk58 += (SIN(boss->cannonAngle) * 0xF) >> 5;
@@ -365,7 +365,7 @@ static void Task_TransitionToEscapeSequence(void)
 {
     s32 rand;
     EggBomberTank *boss = TASK_DATA(gCurTask);
-    s32 x = Q_24_8_TO_INT(boss->x) - gCamera.x;
+    s32 x = I(boss->x) - gCamera.x;
     UpdatePosition(boss);
     RenderEscapeBomberTank(boss, 1);
     UpdateBomberTankPalette(boss);
@@ -378,8 +378,8 @@ static void Task_TransitionToEscapeSequence(void)
     }
 
     if (x < 50) {
-        CreateEggmobileEscapeSequence(Q_24_8_TO_INT(boss->x) - gCamera.x - 4,
-                                      Q_24_8_TO_INT(boss->y) - gCamera.y - 0x21, 0x2000);
+        CreateEggmobileEscapeSequence(I(boss->x) - gCamera.x - 4,
+                                      I(boss->y) - gCamera.y - 0x21, 0x2000);
         gCurTask->main = Task_WaitForBossOffScreen;
     }
 }
@@ -414,20 +414,20 @@ static u8 RenderEggBomberTank(EggBomberTank *boss)
     u8 ret;
 
     s = &boss->body;
-    s->x = Q_24_8_TO_INT(boss->x) - gCamera.x;
-    s->y = (Q_24_8_TO_INT(boss->y) - gCamera.y) + 4;
+    s->x = I(boss->x) - gCamera.x;
+    s->y = (I(boss->y) - gCamera.y) + 4;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
     s = &boss->brokenBody;
-    s->x = Q_24_8_TO_INT(boss->x) - gCamera.x;
-    s->y = (Q_24_8_TO_INT(boss->y) - gCamera.y) + 9;
+    s->x = I(boss->x) - gCamera.x;
+    s->y = (I(boss->y) - gCamera.y) + 9;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
     s = &boss->pilot;
-    s->x = (Q_24_8_TO_INT(boss->x) - gCamera.x) - 1;
-    s->y = (Q_24_8_TO_INT(boss->y) - gCamera.y) - 0x2A;
+    s->x = (I(boss->x) - gCamera.x) - 1;
+    s->y = (I(boss->y) - gCamera.y) - 0x2A;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
@@ -443,16 +443,14 @@ static u8 RenderEggBomberTank(EggBomberTank *boss)
         }
 
         for (j = 0; j < NUM_WHEELS / 2; j++) {
-            s->x = ((Q_24_8_TO_INT(boss->x)) + sBodyWheelPositionsX[j]) - gCamera.x
-                + temp;
-            s->y = (Q_24_8_TO_INT(boss->wheelPositions[j][1]) - gCamera.y) + 4;
+            s->x = ((I(boss->x)) + sBodyWheelPositionsX[j]) - gCamera.x + temp;
+            s->y = (I(boss->wheelPositions[j][1]) - gCamera.y) + 4;
             DisplaySprite(s);
         }
     }
 
     ret = 0;
     if (boss->cannonHealth != 0) {
-        s32 temp2;
         SpriteTransform *transform;
         s = &boss->cannon;
         transform = &boss->transform;
@@ -488,34 +486,33 @@ static void RenderEscapeBomberTank(EggBomberTank *boss, bool8 renderPilot)
     s8 i, j;
 
     s = &boss->body;
-    s->x = Q_24_8_TO_INT(boss->x) - gCamera.x;
-    s->y = (Q_24_8_TO_INT(boss->y) - gCamera.y) + 4;
+    s->x = I(boss->x) - gCamera.x;
+    s->y = (I(boss->y) - gCamera.y) + 4;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
     s = &boss->brokenBody;
-    s->x = Q_24_8_TO_INT(boss->x) - gCamera.x;
-    s->y = (Q_24_8_TO_INT(boss->y) - gCamera.y) + 9;
+    s->x = I(boss->x) - gCamera.x;
+    s->y = (I(boss->y) - gCamera.y) + 9;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
     if (renderPilot) {
         s = &boss->pilot;
-        s->x = (Q_24_8_TO_INT(boss->x) - gCamera.x) - 1;
-        s->y = (Q_24_8_TO_INT(boss->y) - gCamera.y) - 0x2A;
+        s->x = (I(boss->x) - gCamera.x) - 1;
+        s->y = (I(boss->y) - gCamera.y) - 0x2A;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
 
     for (i = 0; i < 2; i++) {
-        s8 temp;
         s = &boss->wheels[i];
         UpdateSpriteAnimation(s);
 
         for (j = 0; j < NUM_WHEELS / 2; j++) {
             s8 idx = j + (i * NUM_WHEELS / 2);
-            s->x = Q_24_8_TO_INT(boss->wheelPositions[idx][0]) - gCamera.x;
-            s->y = (Q_24_8_TO_INT(boss->wheelPositions[idx][1]) - gCamera.y) - 0x12;
+            s->x = I(boss->wheelPositions[idx][0]) - gCamera.x;
+            s->y = (I(boss->wheelPositions[idx][1]) - gCamera.y) - 0x12;
             DisplaySprite(s);
         }
     }
@@ -530,8 +527,7 @@ static void UpdatePosition(EggBomberTank *boss)
     boss->x += boss->speedX;
     boss->y += boss->speedY;
 
-    ground = sub_801E4E4(Q_24_8_TO_INT(boss->y), Q_24_8_TO_INT(boss->x), 1, 8, NULL,
-                         sub_801EE64);
+    ground = sub_801E4E4(I(boss->y), I(boss->x), 1, 8, NULL, sub_801EE64);
 
     if (ground < 0) {
         boss->y += Q_24_8_NEW(ground);
@@ -549,9 +545,8 @@ static void UpdatePosition(EggBomberTank *boss)
             boss->wheelPositions[idx][0] += boss->unk3C[idx][0];
             boss->wheelPositions[idx][1] += boss->unk3C[idx][1];
 
-            ground = sub_801E4E4(Q_24_8_TO_INT(boss->wheelPositions[idx][1]) - 8,
-                                 Q_24_8_TO_INT(boss->wheelPositions[idx][0]), 1, 8, 0,
-                                 sub_801EE64);
+            ground = sub_801E4E4(I(boss->wheelPositions[idx][1]) - 8,
+                                 I(boss->wheelPositions[idx][0]), 1, 8, 0, sub_801EE64);
             if (ground < 0) {
                 boss->wheelPositions[idx][1] += Q_24_8_NEW(ground);
                 boss->unk3C[idx][0] -= 0x20;
@@ -673,8 +668,7 @@ static u8 RenderCannon(EggBomberTank *boss)
     boss->unk54 += boss->unk5C;
     boss->unk58 += boss->unk5E;
 
-    ground = sub_801F100(Q_24_8_TO_INT(boss->unk58) + 0x18, Q_24_8_TO_INT(boss->unk54),
-                         1, 8, sub_801EC3C);
+    ground = sub_801F100(I(boss->unk58) + 0x18, I(boss->unk54), 1, 8, sub_801EC3C);
 
     if (ground < 0) {
         m4aSongNumStart(SE_143);
@@ -689,15 +683,15 @@ static u8 RenderCannon(EggBomberTank *boss)
 
         for (i = 0; i < 5; i++) {
             explosion.spawnX
-                = (Q_24_8_TO_INT(boss->unk54) - gCamera.x) + sExplositionPositions[i][0];
+                = (I(boss->unk54) - gCamera.x) + sExplositionPositions[i][0];
             explosion.spawnY
-                = (Q_24_8_TO_INT(boss->unk58) - gCamera.y) + sExplositionPositions[i][1];
+                = (I(boss->unk58) - gCamera.y) + sExplositionPositions[i][1];
             CreateBossParticleWithExplosionUpdate(&explosion, &boss->unk76);
         }
         ret = 1;
     } else if ((gStageTime & 3) == 0) {
-        explosion.spawnX = (Q_24_8_TO_INT(boss->unk54) - gCamera.x);
-        explosion.spawnY = (Q_24_8_TO_INT(boss->unk58) - gCamera.y);
+        explosion.spawnX = (I(boss->unk54) - gCamera.x);
+        explosion.spawnY = (I(boss->unk58) - gCamera.y);
         explosion.velocity = 0;
         explosion.rotation = 1000;
         explosion.speed = 0x200;
@@ -708,8 +702,8 @@ static u8 RenderCannon(EggBomberTank *boss)
         CreateBossParticleWithExplosionUpdate(&explosion, &boss->unk76);
     }
 
-    s->x = (Q_24_8_TO_INT(boss->unk54) - gCamera.x);
-    s->y = (Q_24_8_TO_INT(boss->unk58) - gCamera.y);
+    s->x = (I(boss->unk54) - gCamera.x);
+    s->y = (I(boss->unk58) - gCamera.y);
     s->unk10 = gUnknown_030054B8++ | 0x2060;
 
     transform->rotation = boss->cannonAngle;
@@ -727,8 +721,8 @@ static u8 RenderCannon(EggBomberTank *boss)
 static void HandleCannonBombTrigger(EggBomberTank *boss)
 {
     s32 x, y;
-    s32 cos, sin;
     Sprite *s = &boss->cannon;
+
     if (HandleCannonCollision(boss) != 0) {
         boss->unk54 = Q_24_8_NEW(Div(boss->x, 256) - 8);
         boss->unk58 = Q_24_8_NEW(Div(boss->y, 256) - 22);
@@ -750,27 +744,8 @@ static void HandleCannonBombTrigger(EggBomberTank *boss)
         s->variant = 1;
         s->prevVariant = -1;
 
-        {
-            s32 divResA, divResB;
-            s32 oldScore = gLevelScore;
-            gLevelScore += 500;
+        INCREMENT_SCORE_B(500);
 
-            divResA = Div(gLevelScore, 50000);
-            divResB = Div(oldScore, 50000);
-
-            if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
-                u16 lives = divResA - divResB;
-                lives += gNumLives;
-
-                if (lives > 255) {
-                    gNumLives = 255;
-                } else {
-                    gNumLives = lives;
-                }
-
-                gUnknown_030054A8.unk3 = 16;
-            }
-        }
         if (!IS_FINAL_STAGE(gCurrentLevel)) {
             gUnknown_030054A8.unk1 = 0x11;
         }
@@ -809,13 +784,13 @@ static u8 HandleCannonCollision(EggBomberTank *boss)
     x = dX + ((COS(boss->cannonAngle) * 5) >> 3);
 
     dX = x - gPlayer.x;
-    dX = Q_24_8_TO_INT(dX);
+    dX = I(dX);
 
     dY = Q_24_8_NEW(Div(boss->y, 256) - 22);
     y = dY + ((SIN(boss->cannonAngle) * 5) >> 3);
 
     dY = y - gPlayer.y;
-    dY = Q_24_8_TO_INT(dY);
+    dY = I(dY);
 
     distance = (SQUARE(dY) + SQUARE(dX));
 
@@ -853,9 +828,9 @@ static u8 HandleCannonCollision(EggBomberTank *boss)
 
     if (gCheese != NULL && gCheese->s.hitboxes[1].index != -1) {
         x -= gCheese->posX;
-        x = Q_24_8_TO_INT(x);
+        x = I(x);
         y -= gCheese->posY;
-        y = Q_24_8_TO_INT(y);
+        y = I(y);
         distance = SQUARE(y) + SQUARE(x);
 
         if (distance < 900) {
@@ -889,8 +864,8 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
         return 1;
     }
 
-    sub_800CA20(s, Q_24_8_TO_INT(boss->x), Q_24_8_TO_INT(boss->y), 1, player);
-    if (sub_800C320(s, Q_24_8_TO_INT(boss->x), Q_24_8_TO_INT(boss->y), 0, player) == 1) {
+    sub_800CA20(s, I(boss->x), I(boss->y), 1, player);
+    if (sub_800C320(s, I(boss->x), I(boss->y), 0, player) == 1) {
         if (boss->cannonHealth != 0) {
             Sprite *s = &boss->pilot;
             boss->unk73 = 30;
@@ -905,8 +880,7 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
             ret = HandleBossHit(boss);
         }
     } else {
-        if (sub_800CA20(s, Q_24_8_TO_INT(boss->x), Q_24_8_TO_INT(boss->y), 0, player)
-            == 1) {
+        if (sub_800CA20(s, I(boss->x), I(boss->y), 0, player) == 1) {
             Sprite *s = &boss->pilot;
             boss->unk73 = 30;
             if (boss->bossHitTimer == 0) {
@@ -922,9 +896,7 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
     Player_UpdateHomingPosition(boss->x, boss->y);
 
     if (boss->bossHitTimer == 0) {
-        if (IsColliding_Cheese(s, Q_24_8_TO_INT(boss->x), Q_24_8_TO_INT(boss->y), 0,
-                               player)
-                == 1
+        if (IsColliding_Cheese(s, I(boss->x), I(boss->y), 0, player) == 1
             && boss->cannonHealth == 0) {
             ret = HandleBossHit(boss);
         }
@@ -940,11 +912,9 @@ static void CreateDestructionExplosions(EggBomberTank *boss)
             u32 rand;
             ExplosionPartsInfo init;
             rand = PseudoRandom32();
-            init.spawnX
-                = (Q_24_8_TO_INT(boss->x) - gCamera.x) + ((rand * 0x22) & 63) - 0x34;
+            init.spawnX = (I(boss->x) - gCamera.x) + ((rand * 0x22) & 63) - 0x34;
             rand = PseudoRandom32();
-            init.spawnY
-                = (Q_24_8_TO_INT(boss->y) - gCamera.y) + ((rand * 0x34) & 63) - 0x30;
+            init.spawnY = (I(boss->y) - gCamera.y) + ((rand * 0x34) & 63) - 0x30;
             init.velocity = 0;
 
             init.rotation = 1000;
@@ -965,10 +935,10 @@ static void CreateDestructionExplosions(EggBomberTank *boss)
             }
 
             rand = PseudoRandom32();
-            init.spawnX = (Q_24_8_TO_INT(boss->x) - gCamera.x) + (rand & 63) - 0x20;
+            init.spawnX = (I(boss->x) - gCamera.x) + (rand & 63) - 0x20;
 
             rand = PseudoRandom32();
-            init.spawnY = (Q_24_8_TO_INT(boss->y) - gCamera.y) + (rand & 63) - 0x20;
+            init.spawnY = (I(boss->y) - gCamera.y) + (rand & 63) - 0x20;
             init.velocity = 0x40;
 
             init.rotation = PseudoRandom32() & (SIN_PERIOD - 1);
@@ -1068,7 +1038,7 @@ static void Task_WaitForBossOffScreen(void)
 {
     u32 rand;
     EggBomberTank *boss = TASK_DATA(gCurTask);
-    s32 x = Q_24_8_TO_INT(boss->x) - gCamera.x;
+    s32 x = I(boss->x) - gCamera.x;
     UpdatePosition(boss);
     RenderEscapeBomberTank(boss, 0);
     UpdateBomberTankPalette(boss);
@@ -1092,8 +1062,8 @@ static void UpdateWheelPositions(EggBomberTank *boss)
     u8 i;
 
     for (i = 0; i < 3; i++) {
-        s32 x = Q_24_8_TO_INT(boss->x) + sBodyWheelPositionsX[i];
-        s32 y = Q_24_8_TO_INT(boss->wheelPositions[i][1]) + 0x12;
+        s32 x = I(boss->x) + sBodyWheelPositionsX[i];
+        s32 y = I(boss->wheelPositions[i][1]) + 0x12;
         val += y;
 
         boss->wheelPositions[i][1] += Q_24_8_NEW(sub_801F100(y, x, 1, 8, sub_801EC3C));
@@ -1170,8 +1140,8 @@ static void CreateBomberTankBomb(EggBomberTank *boss, s32 x, s32 y, u16 angle, u
 
     s = &bomb->s;
 
-    s->x = Q_24_8_TO_INT(x);
-    s->y = Q_24_8_TO_INT(y);
+    s->x = I(x);
+    s->y = I(y);
     s->graphics.dest = boss->vram;
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_BOMBER_TANK_BOMB, 0, 25, 2, 0);
 }
@@ -1194,21 +1164,19 @@ static void Task_EggBomberTankBombExplosion(void)
         bomb->y += bomb->speedY + Q_24_8_NEW(gCamera.unk3C);
     }
 
-    ground = sub_801E4E4(Q_24_8_TO_INT(bomb->y) + 0xC + gCamera.y,
-                         Q_24_8_TO_INT(bomb->x) + gCamera.x, 1, 8, &unusedByte,
-                         sub_801EE64);
+    ground = sub_801E4E4(I(bomb->y) + 0xC + gCamera.y, I(bomb->x) + gCamera.x, 1, 8,
+                         &unusedByte, sub_801EE64);
     if (ground < 0) {
         bomb->y += Q_24_8_NEW(ground);
         bomb->speedY = Div(-(bomb->speedY * 8), 10);
     }
 
-    s->x = Q_24_8_TO_INT(bomb->x);
-    s->y = Q_24_8_TO_INT(bomb->y);
+    s->x = I(bomb->x);
+    s->y = I(bomb->y);
 
     if (bomb->boss->unk70) {
         // If hit player
-        if (sub_800CA20(s, Q_24_8_TO_INT(bomb->x) + gCamera.x,
-                        Q_24_8_TO_INT(bomb->y) + gCamera.y, 0, &gPlayer)
+        if (sub_800CA20(s, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, 0, &gPlayer)
             == 1) {
             if (bomb->boss->bossHitTimer == 0) {
                 Sprite *s = &bomb->boss->pilot;
@@ -1234,17 +1202,16 @@ static void Task_EggBomberTankBombExplosion(void)
             graphics.anim = SA2_ANIM_EXPLOSION_1;
             graphics.variant = 0;
 
-            CreateBombExplosion(bomb->boss, Q_24_8_TO_INT(bomb->x) + gCamera.x,
-                                Q_24_8_TO_INT(bomb->y) + gCamera.y, graphics);
+            CreateBombExplosion(bomb->boss, I(bomb->x) + gCamera.x,
+                                I(bomb->y) + gCamera.y, graphics);
         } else {
             m4aSongNumStart(SE_243);
             graphics.vram = s->graphics.dest + 0x740;
             graphics.anim = SA2_ANIM_EXPLOSION_2;
             graphics.variant = 0;
 
-            CreateBombExplosion(bomb->boss, Q_24_8_TO_INT(bomb->x) + gCamera.x,
-                                Q_24_8_TO_INT(bomb->y) + 0xF + ground + gCamera.y,
-                                graphics);
+            CreateBombExplosion(bomb->boss, I(bomb->x) + gCamera.x,
+                                I(bomb->y) + 0xF + ground + gCamera.y, graphics);
         }
 
         gCurTask->main = Task_EggBomberTankBombDestroy;

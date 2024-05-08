@@ -106,7 +106,6 @@ s32 sub_801E4E4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
     u8 *data1;
     s32 res;
     s32 it;
-    s32 v;
 
     if (data == NULL)
         data = dummy;
@@ -197,10 +196,8 @@ s32 sub_801E6D4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
     u8 dummy[4];
     u8 *dummy_p;
     u8 *data1;
-    s32 result;
     s32 res;
     s32 r4;
-    s32 v;
 
     if (data == NULL)
         data = dummy;
@@ -434,7 +431,6 @@ s32 sub_801EB44(s32 p0, s32 p1, s32 layer)
     u32 tile;
     s32 hv;
     const Collision *coll;
-    s8 *hmap;
     s32 hIndex;
 
     p0 = CLAMP_32(p0, 0, gRefCollision->pxWidth - 1);
@@ -495,7 +491,6 @@ s32 sub_801EC3C(s32 p0, s32 p1, s32 layer)
     u32 tile;
     s32 hv;
     const Collision *coll;
-    s8 *hmap;
     s32 hIndex;
 
     p1 = CLAMP_32(p1, 0, gRefCollision->pxWidth - 1);
@@ -549,7 +544,6 @@ s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
     u32 r0;
     s32 r3;
     s32 mtTileIndex;
-    s32 sb;
     u32 res;
     const Collision *coll;
     s32 hIndex;
@@ -640,7 +634,6 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
     register s32 sb asm("sb");
     register u8 *p3 asm("sl") = p3in;
     register s32 res asm("r4");
-    register u8 *hm asm("r1");
 #else
     u32 r0;
     u32 r1;
@@ -653,7 +646,6 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
     s32 sb;
     u8 *p3 = p3in;
     s32 res;
-    u8 *hm;
 #endif
     u8 rotation;
 
@@ -774,24 +766,17 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
     register s32 r3 asm("r3");
     register s32 r4 asm("r4");
     register s32 r5 asm("r5");
-    register s32 r6 asm("r6") = p1;
     s32 r7;
     register s32 r8 asm("r8");
-    register u16 **layers asm("r1");
 #else
     s32 r1;
     s32 r3;
     s32 r4;
     s32 r5;
-    s32 r6 = p1;
     s32 r7;
     s32 r8;
-    u16 **layers;
 #endif
     const Collision *coll;
-    u16 *map;
-    u32 mapIndex;
-    u32 mapIndex2;
     u32 mtIndex;
     s32 i;
     void *pMeta;

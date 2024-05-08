@@ -2,6 +2,7 @@
 #define GUARD_GBA_TYPES_H
 
 #include <stdint.h>
+#include "packed.h"
 
 typedef uint8_t   u8;
 typedef uint16_t u16;
@@ -64,7 +65,8 @@ struct PlttData
 //       usually generated during runtime, anyway.
 //       That's what this variation of 'OamData' is for,
 //       as well using this to determine the size for some DMAs to gOamBuffer.
-typedef struct PACKED {
+// TODO: Somehow this does not work by #include-ing main.h and using PACKED();
+PACKED(OamDataShort, {
     /*0x00*/
     u32 y : 8;
 
@@ -84,7 +86,7 @@ typedef struct PACKED {
     u16 tileNum : 10; // 0x3FF
     u16 priority : 2; // 0x400, 0x800 -> 0xC00
     u16 paletteNum : 4;
-} OamDataShort; /* size: 0x6 (important to not be 0x8, see comment above struct!) */
+}); /* size: 0x6 (important to not be 0x8, see comment above struct!) */
 
 typedef union {
     struct {

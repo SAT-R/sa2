@@ -2,6 +2,7 @@
 #define GUARD_SPRITE_H
 
 #include "global.h"
+#include "packed.h"
 #include "malloc_vram.h"
 
 typedef u16 AnimId;
@@ -205,11 +206,11 @@ typedef struct {
     /* 0x06 */ u8 variant;
 } TileInfo;
 
-typedef struct PACKED {
+PACKED(TileInfo16, {
     /* 0x00 */ u16 numTiles;
     /* 0x02 */ AnimId anim;
     /* 0x04 */ u16 variant;
-} TileInfo16;
+});
 
 extern const u8 gOamShapesSizes[12][2];
 
@@ -223,9 +224,9 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *);
 
 void DisplaySprite(Sprite *);
 void DrawBackground(Background *);
-u32 sub_8004010(void);
-u32 sub_80039E4(void);
 bool32 sub_8002B20(void);
+bool32 sub_80039E4(void);
+bool32 sub_8004010(void);
 void CopyOamBufferToOam(void);
 OamData *OamMalloc(u8 order);
 

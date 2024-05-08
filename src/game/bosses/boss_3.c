@@ -803,7 +803,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc",
          void sub_803FC14(EggTotem *totem))
 {
     u8 i;
-    u8 numCreatedParts;
     ExplosionPartsInfo info;
     s32 divRes;
     s32 v;
@@ -1216,7 +1215,6 @@ void sub_80407A4(EggTotem *totem)
             ptr = &ptr[t3c->unk13];
 
             if (--t3c->unkE != 0) {
-                s32 x, y;
                 t3c->unk10 = CLAMP_SIN_PERIOD(t3c->unk10 + ptr->unk2);
                 t3c->qUnk8 = ((COS(t3c->unk10) * ptr->unk4) >> 14);
                 t3c->qUnkA = ((SIN(t3c->unk10) * ptr->unk4) >> 14);
@@ -1350,16 +1348,13 @@ void sub_8040A00(EggTotem *totem)
                 if (!r7) {
                     p->speedAirX -= Q(5);
                 }
-            } else {
-                // _08040AE0
-                if (r7) {
-                    gPlayer.moveState &= ~MOVESTATE_8;
-                    gPlayer.unk3C = NULL;
+            } else if (r7) {
+                gPlayer.moveState &= ~MOVESTATE_8;
+                gPlayer.unk3C = NULL;
 
-                    if (!(gPlayer.moveState & MOVESTATE_100)) {
-                        gPlayer.moveState &= ~MOVESTATE_100;
-                        gPlayer.moveState |= MOVESTATE_IN_AIR;
-                    }
+                if (!(gPlayer.moveState & MOVESTATE_100)) {
+                    gPlayer.moveState &= ~MOVESTATE_100;
+                    gPlayer.moveState |= MOVESTATE_IN_AIR;
                 }
             }
         }
@@ -1379,7 +1374,6 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
 #endif
 
     s16 t3CX, t3CY;
-    s32 x, y;
 
     if (i > ARRAY_COUNT(totem->unk3C)) {
         return FALSE;

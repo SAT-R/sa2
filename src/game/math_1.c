@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "global.h"
 #include "game/math.h"
 #include "trig.h"
@@ -155,7 +157,14 @@ void sub_8085CA8(UNK_8085D14 *p1)
     UNK_8085D14 *curr = p1;
     // memset
     for (i = 0; i < 32; i += 4) {
+#ifndef NON_MATCHING
         *((u32 *)curr)++ = 0;
+#else
+        u32 *p = (u32 *)curr;
+        *p = 0;
+        p++;
+        curr = (UNK_8085D14 *)p;
+#endif
     }
 }
 
@@ -165,7 +174,14 @@ void sub_8085CC0(UNK_8085D14 *p1)
     UNK_8085D14 *curr = p1;
     // memset
     for (i = 0; i < 32; i += 4) {
+#ifndef NON_MATCHING
         *((u32 *)curr)++ = 0;
+#else
+        u32 *p = (u32 *)curr;
+        *p = 0;
+        p++;
+        curr = (UNK_8085D14 *)p;
+#endif
     }
     curr->unk12 = 0x400;
     curr->unkA = 0x400;
@@ -178,7 +194,14 @@ void sub_8085CE4(UNK_8085D14 *p1, u32 p2, u32 p3, u32 p4)
     UNK_8085D14 *curr = p1;
     // memset
     for (i = 0; i < 32; i += 4) {
+#ifndef NON_MATCHING
         *((u32 *)curr)++ = 0;
+#else
+        u32 *p = (u32 *)curr;
+        *p = 0;
+        p++;
+        curr = (UNK_8085D14 *)p;
+#endif
     }
     curr->unk12 = 0x400;
     curr->unkA = 0x400;
@@ -195,7 +218,14 @@ void sub_8085D14(UNK_8085D14 *p1, u32 p2, u32 p3, u32 p4)
     UNK_8085D14 *curr = p1;
     // memset
     for (i = 0; i < 32; i += 4) {
+#ifndef NON_MATCHING
         *((u32 *)curr)++ = 0;
+#else
+        u32 *p = (u32 *)curr;
+        *p = 0;
+        p++;
+        curr = (UNK_8085D14 *)p;
+#endif
     }
     curr->unk12 = 0x400;
     curr->unkA = 0x400;
@@ -319,18 +349,25 @@ void sub_8085E38(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2)
 void sub_8085E64(struct UNK_8085F1C *p1)
 {
     u8 i;
-    struct UNK_8085F1C_1 *unk34;
+    struct UNK_8085F1C_1 *curr;
     p1->unk10 = 0;
 
     // memset 0
-    unk34 = &p1->unk34;
+    curr = &p1->unk34;
     for (i = 0; i < 0x20; i += 4) {
-        *((u32 *)unk34)++ = 0;
+#ifndef NON_MATCHING
+        *((u32 *)curr)++ = 0;
+#else
+        u32 *p = (u32 *)curr;
+        *p = 0;
+        p++;
+        curr = (struct UNK_8085F1C_1 *)p;
+#endif
     }
 
-    unk34->unk2[8] = 0x400;
-    unk34->unk2[4] = 0x400;
-    unk34->unk2[0] = 0x400;
+    curr->unk2[8] = 0x400;
+    curr->unk2[4] = 0x400;
+    curr->unk2[0] = 0x400;
     p1->unkC |= 1;
 }
 

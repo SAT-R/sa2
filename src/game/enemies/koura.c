@@ -68,8 +68,7 @@ void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     ENEMY_SET_SPAWN_POS_STATIC(koura, me);
     koura->offsetX = 0;
     if (koura->unk54 < 2) {
-        koura->offsetY = Q_24_8_NEW(sub_801F07C(Q_24_8_TO_INT(koura->spawnY),
-                                                Q_24_8_TO_INT(koura->spawnX),
+        koura->offsetY = Q_24_8_NEW(sub_801F07C(I(koura->spawnY), I(koura->spawnX),
                                                 koura->unk54, 8, NULL, sub_801EE64));
     } else {
         koura->offsetY = 0;

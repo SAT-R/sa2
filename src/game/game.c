@@ -72,7 +72,8 @@ void GameStart(void)
         hasProfile = TRUE;
     }
 
-    if (gFlags & 0x200) {
+    // This flag is only set in GameInit
+    if (gFlags & FLAGS_200) {
         // Show singlepak results
         sub_8081C0C();
         return;

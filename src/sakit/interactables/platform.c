@@ -126,17 +126,13 @@ void CreateEntity_Platform_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     }
 
     {
-        s32 i;
-        s32 tileCount, anim, variant;
-
         s->x = TO_WORLD_POS(me->x, spriteRegionX);
         s->y = TO_WORLD_POS(me->y, spriteRegionY);
         SET_MAP_ENTITY_INITIALIZED(me);
 
         s->graphics.dest = VramMalloc(18);
 
-        anim = sPlatformLevelAnims[gCurrentLevel];
-        s->graphics.anim = anim;
+        s->graphics.anim = sPlatformLevelAnims[gCurrentLevel];
         s->variant = 0;
 
         s->unk1A = SPRITE_OAM_ORDER(18);
@@ -211,7 +207,6 @@ void Task_800E89C(void)
     s->y = posY - gCamera.y + Q_24_8_TO_INT(platform->unk44);
 
     if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
-        s32 res, temp, temp2;
         p->x += deltaX;
 
         if (!GRAVITY_IS_INVERTED) {
@@ -222,12 +217,9 @@ void Task_800E89C(void)
     }
 
     if (!(p->moveState & MOVESTATE_400000)) {
-        s32 x, y;
-        u32 otherRes;
-        s32 movStateCopy = p->moveState;
+        s32 x = (posX + Q_24_8_TO_INT(platform->unk40));
+        s32 y = (posY + Q_24_8_TO_INT(platform->unk44));
 
-        x = (posX + Q_24_8_TO_INT(platform->unk40));
-        y = (posY + Q_24_8_TO_INT(platform->unk44));
         result = sub_800CCB8(s, x, y, p);
 
         if (result & 0x10000) {
@@ -319,8 +311,6 @@ void Task_800EC58(void)
     s16 posY;
     MapEntity *me;
     u32 result;
-    s32 deltaX = 0, deltaY = 0;
-    s32 x, y;
 
     Sprite_Platform *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;
@@ -380,8 +370,6 @@ void Task_800EDF8(void)
     s16 posY;
     MapEntity *me;
     u32 result;
-    s32 deltaX = 0, deltaY = 0;
-    s32 x, y;
 
     Sprite_Platform *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;
@@ -454,8 +442,6 @@ void Task_800EFD0(void)
     s16 posY;
     MapEntity *me;
     u32 result;
-    s32 deltaX = 0, deltaY = 0;
-    s32 x, y;
 
     Sprite_Platform *platform = TASK_DATA(gCurTask);
     Sprite *s = &platform->s;

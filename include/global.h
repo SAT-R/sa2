@@ -255,7 +255,7 @@ typedef struct {
 typedef void (*HBlankFunc)(int_vcount vcount);
 typedef void (*IntrFunc)(void);
 typedef void (*FuncType_030053A0)(void);
-typedef u32 (*SpriteUpdateFunc)(void);
+typedef bool32 (*VBlankFunc)(void);
 
 extern void *iwram_end;
 extern void *ewram_end;

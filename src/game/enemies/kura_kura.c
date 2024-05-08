@@ -101,13 +101,13 @@ void sub_805213C(Sprite_KuraKura *kk)
     kk->unkAC = (SIN_24_8((gStageTime * 4) & ONE_CYCLE) >> 1) & ONE_CYCLE;
 
     for (i = 0; i < 2; i++) {
-        s1->x = (Q_24_8_TO_INT(kk->spawnX) + (SIN(kk->unkAC) >> (11 - i))) - gCamera.x;
-        s1->y = (Q_24_8_TO_INT(kk->spawnY) + (COS(kk->unkAC) >> (11 - i))) - gCamera.y;
+        s1->x = (I(kk->spawnX) + (SIN(kk->unkAC) >> (11 - i))) - gCamera.x;
+        s1->y = (I(kk->spawnY) + (COS(kk->unkAC) >> (11 - i))) - gCamera.y;
         DisplaySprite(s1);
     }
 
-    pos.x = (Q_24_8_TO_INT(kk->spawnX) + (SIN(kk->unkAC) >> 9)) - (SIN(kk->unkAC) >> 11);
-    pos.y = (Q_24_8_TO_INT(kk->spawnY) + (COS(kk->unkAC) >> 9)) - (COS(kk->unkAC) >> 11);
+    pos.x = (I(kk->spawnX) + (SIN(kk->unkAC) >> 9)) - (SIN(kk->unkAC) >> 11);
+    pos.y = (I(kk->spawnY) + (COS(kk->unkAC) >> 9)) - (COS(kk->unkAC) >> 11);
 
     s2->x = pos.x - gCamera.x;
     s2->y = pos.y - gCamera.y;

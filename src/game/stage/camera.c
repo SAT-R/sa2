@@ -1,3 +1,5 @@
+#include <string.h> // memcpy
+
 #include "global.h"
 #include "core.h"
 #include "sprite.h"
@@ -306,7 +308,6 @@ static const s8 gUnknown_080D5A98[NUM_LEVEL_IDS][4] = {
 
 void InitCamera(u32 level)
 {
-    s32 x;
     u32 temp;
 
     struct Backgrounds *bgs;
@@ -395,15 +396,15 @@ void InitCamera(u32 level)
             camera->y = 0;
             camera->unk64 = -4;
         } else {
-            camera->x = Q_24_8_TO_INT(player->x);
-            camera->unk10 = Q_24_8_TO_INT(player->x) - (2 * DISPLAY_WIDTH);
-            camera->y = Q_24_8_TO_INT(player->y) - 0x54;
+            camera->x = I(player->x);
+            camera->unk10 = I(player->x) - (2 * DISPLAY_WIDTH);
+            camera->y = I(player->y) - 0x54;
             camera->unk14 = camera->y;
             camera->unk64 = player->unk17 - 4;
         }
     } else {
-        camera->x = Q_24_8_TO_INT(player->x) - 0x78;
-        camera->y = Q_24_8_TO_INT(player->y) - 0x54;
+        camera->x = I(player->x) - 0x78;
+        camera->y = I(player->y) - 0x54;
 
         if (camera->x < 0) {
             camera->x = 0;
@@ -474,19 +475,19 @@ void UpdateCamera(void)
         camera->unk10 += BOSS_CAM_FRAME_DELTA_PIXELS;
         newX += BOSS_CAM_FRAME_DELTA_PIXELS;
 
-        if (newX + ((DISPLAY_WIDTH / 2) + 1) < Q_24_8_TO_INT(player->x)) {
+        if (newX + ((DISPLAY_WIDTH / 2) + 1) < I(player->x)) {
             if ((camera->unk10 + (DISPLAY_HEIGHT / 2)) > newX) {
-                s32 temp = Q_24_8_TO_INT(player->x);
-                temp -= DISPLAY_WIDTH / 2;
-                camera->shiftX = temp - newX;
+                s32 playerScreenX = I(player->x);
+                playerScreenX -= DISPLAY_WIDTH / 2;
+                camera->shiftX = playerScreenX - newX;
             } else {
                 newX = (camera->unk10 + (DISPLAY_HEIGHT / 2));
                 camera->shiftX = 0;
             }
         } else {
             camera->shiftX = 0;
-            if ((newX + 96) > Q_24_8_TO_INT(player->x)) {
-                newX = Q_24_8_TO_INT(player->x);
+            if ((newX + 96) > I(player->x)) {
+                newX = I(player->x);
                 newX -= 96;
                 if (newX < camera->unk10) {
                     newX = camera->unk10;
@@ -494,7 +495,7 @@ void UpdateCamera(void)
             }
         }
 
-        playerY = Q_24_8_TO_INT(player->y);
+        playerY = I(player->y);
         delta = playerY - newY;
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             if (delta < 49) {
@@ -528,8 +529,7 @@ void UpdateCamera(void)
         } else {
             if (!(camera->unk50 & 1)) {
                 s16 airSpeedX = player->speedAirX;
-                camera->unk10
-                    = Q_24_8_TO_INT(player->x) + camera->shiftX - (DISPLAY_WIDTH / 2);
+                camera->unk10 = I(player->x) + camera->shiftX - (DISPLAY_WIDTH / 2);
                 camera->unk56 = (airSpeedX + (camera->unk56 * 15)) >> 4;
                 camera->unk10 += (camera->unk56 >> 5);
             }
@@ -555,21 +555,21 @@ void UpdateCamera(void)
                     camera->unk64 = unk64;
                 }
 
-                camera->unk14 = Q_24_8_TO_INT(player->y) + camera->shiftY
-                    - (DISPLAY_HEIGHT / 2) + camera->unk4C + unk64;
+                camera->unk14 = I(player->y) + camera->shiftY - (DISPLAY_HEIGHT / 2)
+                    + camera->unk4C + unk64;
             }
         }
 
         if ((camera->unk10 - newX) > camera->unk44) {
             s32 temp = camera->unk10 - newX - camera->unk44;
-            s32 temp2 = Q_24_8_TO_INT(camera->unk8);
+            s32 temp2 = I(camera->unk8);
             if (temp2 > temp) {
                 temp2 = temp;
             }
             newX += temp2;
         } else if ((camera->unk10 - newX) < -camera->unk44) {
             s32 temp = (camera->unk10 - newX) + camera->unk44;
-            s32 temp2 = -Q_24_8_TO_INT(camera->unk8);
+            s32 temp2 = -I(camera->unk8);
             if (temp2 < temp) {
                 temp2 = temp;
             }
@@ -579,17 +579,17 @@ void UpdateCamera(void)
 
         newX = CLAMP(newX, camera->minX, camera->maxX - DISPLAY_WIDTH);
 
-        if (camera->unk8 < Q_24_8(16)) {
-            camera->unk8 += Q_24_8(0.125);
+        if (camera->unk8 < Q(16)) {
+            camera->unk8 += Q(0.125);
         }
 
         if ((player->moveState & MOVESTATE_IN_AIR)
             && (player->character != CHARACTER_KNUCKLES || player->unk61 != 9)) {
             camera->unk48 += 4;
-            camera->unk48 = camera->unk48 > 24 ? 24 : camera->unk48;
+            camera->unk48 = MIN(camera->unk48, 24);
         } else {
             camera->unk48 -= 4;
-            camera->unk48 = camera->unk48 < 0 ? 0 : camera->unk48;
+            camera->unk48 = MAX(camera->unk48, 0);
         }
 
         if ((camera->unk14 - newY) > camera->unk48) {
@@ -626,8 +626,7 @@ void UpdateCamera(void)
 
 static void sub_801C708(s32 x, s32 y)
 {
-
-    if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
+    if (!IS_EXTRA_STAGE(gCurrentLevel)) {
         Background *layer = &gStageBackgroundsRam.unk40;
         gBgScrollRegs[1][0] = x % 8u;
         gBgScrollRegs[1][1] = y % 8u;

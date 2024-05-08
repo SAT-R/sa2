@@ -38,8 +38,8 @@ void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     bell->base.spriteX = me->x;
     bell->base.spriteY = spriteY;
 
-    bell->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-    bell->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
+    bell->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
+    bell->spawnY = Q(TO_WORLD_POS(me->y, spriteRegionY));
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);

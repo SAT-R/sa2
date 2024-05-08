@@ -1,3 +1,5 @@
+#include <string.h> // memcpy
+
 #include "global.h"
 #include "core.h"
 #include "game/options_screen.h"
@@ -192,7 +194,7 @@ struct MultiplayerRecordsScreen {
     Sprite scrollArrows[2];
     Sprite playerNameDisplay[6];
     Sprite playerWinsDigits[2];
-    Sprite playerLosesDigits[2];
+    Sprite playerLossesDigits[2];
     Sprite playerDrawsDigits[2];
 
     struct PlayerDataMenu *playerDataMenu;
@@ -1931,7 +1933,7 @@ static void PlayerDataMenuCreateUI(struct PlayerDataMenu *playerDataMenu)
         // Interesting to note that gcc
         // uses some trickery here to set this
         // and the actual logic is `(u32)(-temp0 | temp0) >> 31;`
-        menuItem->palId = !!(menuCursor ^ i);
+        menuItem->palId = (menuCursor ^ i) ? 1 : 0;
     }
 
     sub_806A568(menuItemOutline, RENDER_TARGET_SUB_MENU, 0x3f, 0x3bd, 0x1000,
@@ -1992,7 +1994,7 @@ static void Task_PlayerDataMenuMain(void)
         }
 
         for (i = 0; i < 4; i++, menuItem++) {
-            menuItem->palId = !!(playerDataMenu->menuCursor ^ i);
+            menuItem->palId = (playerDataMenu->menuCursor ^ i) ? 1 : 0;
         }
         menuItemOutline->y = playerDataMenu->menuCursor * 19 + 46;
     }
@@ -2178,7 +2180,7 @@ static void DifficultyMenuCreateUI(struct SwitchMenu *difficultyMenu)
 
     for (i = 0, difficultyOption = difficultyMenu->options; i < 2;
          i++, difficultyOption++) {
-        difficultyOption->palId = !!(difficultyLevel ^ i);
+        difficultyOption->palId = (difficultyLevel ^ i) ? 1 : 0;
     }
 }
 
@@ -2225,7 +2227,7 @@ static void Task_DifficultyMenuMain(void)
         difficultyMenu->switchValue = difficultyMenu->switchValue == 0;
 
         for (i = 0; i < 2; i++, difficultyOption++) {
-            difficultyOption->palId = !!(difficultyMenu->switchValue ^ i);
+            difficultyOption->palId = (difficultyMenu->switchValue ^ i) ? 1 : 0;
         }
 
         switchValueOutline->x
@@ -2331,7 +2333,7 @@ static void TimeLimitMenuCreateUI(struct SwitchMenu *timeLimitMenu)
 
     for (i = 0, timeLimitOption = timeLimitMenu->options; i < 2;
          i++, timeLimitOption++) {
-        timeLimitOption->palId = !!(timeLimitDisabled ^ i);
+        timeLimitOption->palId = (timeLimitDisabled ^ i) ? 1 : 0;
     }
 }
 
@@ -2379,7 +2381,7 @@ static void Task_TimeLimitMenuMain(void)
         timeLimitMenu->switchValue = timeLimitMenu->switchValue == 0;
 
         for (i = 0; i < 2; i++, timeLimitOption++) {
-            timeLimitOption->palId = !!(timeLimitMenu->switchValue ^ i);
+            timeLimitOption->palId = (timeLimitMenu->switchValue ^ i) ? 1 : 0;
         }
 
         switchValueOutline->x
@@ -3022,7 +3024,7 @@ static void LanguageScreenCreateUI(struct LanguageScreen *languageScreen)
          i++, languageOption++, optionText++, yPos += 15) {
         sub_806A568(languageOption, RENDER_TARGET_SCREEN, optionText->unk4,
                     optionText->unk0, 0x3000, 0x28, yPos, 0xD, optionText->unk2, 0);
-        languageOption->palId = !!(selectedLanguage ^ i);
+        languageOption->palId = (selectedLanguage ^ i) ? 1 : 0;
     }
 
     sub_806A568(optionOutline, RENDER_TARGET_SCREEN, 0x3F, 0x3BD, 0x3000, 0x26,
@@ -3104,7 +3106,7 @@ static void LanguageScreenHandleLanguageChanged(void)
     menuItemOutline->y = languageScreen->menuCursor * 15 + 40;
 
     for (i = 0; i < NUM_LANGUAGES; i++, menuItems++) {
-        menuItems->palId = !!(languageScreen->menuCursor ^ i);
+        menuItems->palId = (languageScreen->menuCursor ^ i) ? 1 : 0;
     }
 
     headerFooter->variant = titleText->unk2;
@@ -3209,7 +3211,7 @@ static void Task_DeleteScreenConfrimationMain(void)
         deleteScreen->confirmationCursor = !deleteScreen->confirmationCursor;
 
         for (i = 0; i < 2; i++, option++) {
-            option->palId = !!(deleteScreen->confirmationCursor ^ i);
+            option->palId = (deleteScreen->confirmationCursor ^ i) ? 1 : 0;
         }
         optionOutline->x = deleteScreen->confirmationCursor * 60 + 56;
     }
@@ -3255,7 +3257,7 @@ static void Task_DeleteScreenCreateAbsoluteConfirmation(void)
     deleteScreen->confirmationCursor = DELETE_SCREEN_CONFIRMATION_NO;
 
     for (i = 0; i < 2; i++, option++) {
-        option->palId = !!(deleteScreen->confirmationCursor ^ i);
+        option->palId = (deleteScreen->confirmationCursor ^ i) ? 1 : 0;
     }
 
     optionOutline->x = deleteScreen->confirmationCursor * 60 + 56;
@@ -3276,7 +3278,7 @@ static void Task_DeleteScreenAbsoluteConfirmMain(void)
         deleteScreen->confirmationCursor = deleteScreen->confirmationCursor == 0;
 
         for (i = 0; i < 2; i++, option++) {
-            option->palId = !!(deleteScreen->confirmationCursor ^ i);
+            option->palId = (deleteScreen->confirmationCursor ^ i) ? 1 : 0;
         }
         optionOutline->x = deleteScreen->confirmationCursor * 60 + 56;
     }
@@ -4025,8 +4027,8 @@ static void TimeRecordsScreenCreateChoiceViewBackgroundsUI(
     ScreenFade *fade = &timeRecordsScreen->fade;
     fade->window = SCREEN_FADE_USE_WINDOW_0;
     fade->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
-    fade->brightness = Q_24_8(0);
-    fade->speed = Q_24_8(1.0);
+    fade->brightness = Q(0);
+    fade->speed = Q(1.0);
     fade->bldAlpha = 0;
     fade->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 
@@ -5032,7 +5034,7 @@ static void MultiplayerRecordsScreenCreatePlayerRowUI(
     Sprite *scrollArrows = multiplayerRecordsScreen->scrollArrows;
     Sprite *playerNameDisplayChar = multiplayerRecordsScreen->playerNameDisplay;
     Sprite *playerWinsDigit = multiplayerRecordsScreen->playerWinsDigits;
-    Sprite *playerLosesDigit = multiplayerRecordsScreen->playerLosesDigits;
+    Sprite *playerLossesDigit = multiplayerRecordsScreen->playerLossesDigits;
     Sprite *playerDrawsDigit = multiplayerRecordsScreen->playerDrawsDigits;
 
     const struct UNK_080D95E8 *titleAndColumnHeadersText
@@ -5087,13 +5089,13 @@ static void MultiplayerRecordsScreenCreatePlayerRowUI(
                 0x2000, 0x84, 0x40, 0xD, digitTile->unk2, 0);
 
     digitTile = &digitTiles[TENS_DIGIT(loses)];
-    sub_806A568(playerLosesDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
-                0x2000, 0xA4, 0x40, 0xD, digitTile->unk2, 0);
+    sub_806A568(playerLossesDigit, RENDER_TARGET_SCREEN, digitTile->unk4,
+                digitTile->unk0, 0x2000, 0xA4, 0x40, 0xD, digitTile->unk2, 0);
 
-    playerLosesDigit++;
+    playerLossesDigit++;
     digitTile = &digitTiles[UNITS_DIGIT(loses)];
-    sub_806A568(playerLosesDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
-                0x2000, 0xAC, 0x40, 0xD, digitTile->unk2, 0);
+    sub_806A568(playerLossesDigit, RENDER_TARGET_SCREEN, digitTile->unk4,
+                digitTile->unk0, 0x2000, 0xAC, 0x40, 0xD, digitTile->unk2, 0);
 
     digitTile = &digitTiles[TENS_DIGIT(draws)];
     sub_806A568(playerDrawsDigit, RENDER_TARGET_SCREEN, digitTile->unk4, digitTile->unk0,
@@ -5286,7 +5288,7 @@ static void MultiplayerRecordsScreenRenderUI(void)
     Sprite *columnHeaders = &multiplayerRecordsScreen->columnHeaders;
     Sprite *playerNameDisplayChar = multiplayerRecordsScreen->playerNameDisplay;
     Sprite *playerWinsDigit = multiplayerRecordsScreen->playerWinsDigits;
-    Sprite *playerLosesDigit = multiplayerRecordsScreen->playerLosesDigits;
+    Sprite *playerLossesDigit = multiplayerRecordsScreen->playerLossesDigits;
     Sprite *playerDrawsDigit = multiplayerRecordsScreen->playerDrawsDigits;
     Sprite *scrollArrow;
 
@@ -5329,8 +5331,8 @@ static void MultiplayerRecordsScreenRenderUI(void)
         DisplaySprite(playerWinsDigit);
     }
 
-    for (i = 0; i < 2; i++, playerLosesDigit++) {
-        DisplaySprite(playerLosesDigit);
+    for (i = 0; i < 2; i++, playerLossesDigit++) {
+        DisplaySprite(playerLossesDigit);
     }
 
     for (i = 0; i < 2; i++, playerDrawsDigit++) {
@@ -5357,16 +5359,16 @@ static void MultiplayerRecordsScreenRenderUI(void)
         }
 
         playerWinsDigit = row->winsDigits;
-        playerLosesDigit = row->losesDigits;
+        playerLossesDigit = row->losesDigits;
         playerDrawsDigit = row->defeatsDigits;
 
         DisplaySprite(playerWinsDigit);
         ++playerWinsDigit;
         DisplaySprite(playerWinsDigit);
 
-        DisplaySprite(playerLosesDigit);
-        ++playerLosesDigit;
-        DisplaySprite(playerLosesDigit);
+        DisplaySprite(playerLossesDigit);
+        ++playerLossesDigit;
+        DisplaySprite(playerLossesDigit);
 
         DisplaySprite(playerDrawsDigit);
         ++playerDrawsDigit;

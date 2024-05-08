@@ -161,8 +161,8 @@ void sub_8038E20(void);
 
 #define OBJ_RENDER_SPRITE(obj, s)                                                       \
     ({                                                                                  \
-        (s)->x = Q_24_8_TO_INT((obj)->x);                                               \
-        (s)->y = Q_24_8_TO_INT((obj)->y) - gCamera.y;                                   \
+        (s)->x = I((obj)->x);                                                           \
+        (s)->y = I((obj)->y) - gCamera.y;                                               \
         UpdateSpriteAnimation(s);                                                       \
         DisplaySprite(s);                                                               \
     })
@@ -266,12 +266,9 @@ static const u16 gUnknown_080D7704[][17] = {
 };
 
 static const s32 gUnknown_080D77D0[][4] = {
-    { Q_24_8(-344), Q_24_8(178), Q_24_8(2), Q_24_8(0) },
-    { Q_24_8(-4), Q_24_8(178), Q_24_8(2), Q_24_8(0) },
-    { Q_24_8(-406), Q_24_8(178), Q_24_8(2), Q_24_8(0) },
-    { Q_24_8(-388), Q_24_8(178), Q_24_8(2), Q_24_8(0) },
-    { Q_24_8(-14), Q_24_8(158), Q_24_8(2), Q_24_8(0) },
-    { Q_24_8(0), Q_24_8(0), Q_24_8(0), Q_24_8(0) },
+    { Q(-344), Q(178), Q(2), Q(0) }, { Q(-4), Q(178), Q(2), Q(0) },
+    { Q(-406), Q(178), Q(2), Q(0) }, { Q(-388), Q(178), Q(2), Q(0) },
+    { Q(-14), Q(158), Q(2), Q(0) },  { Q(0), Q(0), Q(0), Q(0) },
 };
 
 static const s16 gUnknown_080D7830[][5] = {
@@ -316,15 +313,15 @@ void CreateTrueArea53Intro(void)
 
     for (i = 0; i < 32; i++) {
         intro->unk10[i] = 1;
-        intro->birdPositions[i][0] = Q_24_8(gUnknown_080D7830[i][0]);
-        intro->birdPositions[i][1] = Q_24_8(gUnknown_080D7830[i][1]);
+        intro->birdPositions[i][0] = Q(gUnknown_080D7830[i][0]);
+        intro->birdPositions[i][1] = Q(gUnknown_080D7830[i][1]);
         intro->birdSpeeds[i][0] = 0;
         intro->birdSpeeds[i][1] = 0;
     }
 
     intro->unk1B0 = 1;
-    intro->unk1B4 = Q_24_8(100);
-    intro->unk1B8 = Q_24_8(180);
+    intro->unk1B4 = Q(100);
+    intro->unk1B8 = Q(180);
 
     s = &intro->vanillaSprite;
     s->x = 0;
@@ -393,7 +390,7 @@ void CreateOrbitingEmeraldsSequence(void)
 
     for (i = 0; i < 7; i++) {
         sequence->orbitSpeeds[i] = 0;
-        sequence->orbitPositions[i] = Q_24_8(180);
+        sequence->orbitPositions[i] = Q(180);
         emerald = &sequence->emerald[i];
         emerald->x = 0;
         emerald->y = 0;
@@ -491,7 +488,6 @@ void Task_OrbitingEmeraldsContractAndFadeScreenWhite(void)
     u8 i;
     s32 pos[2];
     s32 temp[2];
-    s32 temp2;
     Sprite *s;
     OrbitingEmeraldsSequence *sequence = TASK_DATA(gCurTask);
 
@@ -575,8 +571,8 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     SuperSonicSpark *spark = TASK_DATA(t);
     spark->animFrame = 40;
 
-    spark->x = x + (s16)Q_24_8(PseudoRandBetween(-16, 15));
-    spark->y = y + (s16)Q_24_8(PseudoRandBetween(-16, 15));
+    spark->x = x + (s16)Q(PseudoRandBetween(-16, 15));
+    spark->y = y + (s16)Q(PseudoRandBetween(-16, 15));
     spark->speedX = 0;
     spark->speedY = 0;
 
@@ -598,10 +594,8 @@ void CreateSuperSonicSpark(s32 x, s32 y)
 
 void Task_SuperSonicSpark(void)
 {
-    s32 unk4, unkC;
-    Sprite *s;
     SuperSonicSpark *spark = TASK_DATA(gCurTask);
-    s = &spark->s;
+    Sprite *s = &spark->s;
 
     OBJ_ACCELERATE_Y(spark, 16);
     OBJ_UPDATE_POS(spark);
@@ -634,9 +628,9 @@ void CreateActor(u8 character)
     tileInfo = gUnknown_080D76F0[character];
     s = &actor->s;
 
-    // BUG: should have been `Q_24_8_TO_INT`
-    s->x = Q_24_8(gUnknown_080D77D0[actor->character][0]);
-    s->y = Q_24_8(gUnknown_080D77D0[actor->character][1]);
+    // BUG: should have been `I`
+    s->x = Q(gUnknown_080D77D0[actor->character][0]);
+    s->y = Q(gUnknown_080D77D0[actor->character][1]);
 
     s->graphics.dest = (void *)tileInfo->numTiles;
     s->graphics.anim = tileInfo->anim;
@@ -834,7 +828,7 @@ void sub_8037BD0(void)
     OBJ_RENDER_SPRITE(actor, s);
 
     s = &actor->ssGroundEffectSprite;
-    s->x = Q_24_8_TO_INT(actor->x);
+    s->x = I(actor->x);
     s->y = 178 - gCamera.y;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
@@ -863,7 +857,7 @@ void sub_8037CEC(void)
     OBJ_RENDER_SPRITE(actor, s);
 
     s = &actor->ssGroundEffectSprite;
-    s->x = Q_24_8_TO_INT(actor->x);
+    s->x = I(actor->x);
     s->y = 178 - gCamera.y;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
@@ -903,7 +897,7 @@ void sub_8037E08(void)
     OBJ_RENDER_SPRITE(actor, s);
 
     s = &actor->ssGroundEffectSprite;
-    s->x = Q_24_8_TO_INT(actor->x);
+    s->x = I(actor->x);
     s->y = 178 - gCamera.y;
     s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
@@ -956,7 +950,7 @@ void sub_8037F68(void)
 
     if (actor->animFrame > 0x99) {
         s = &actor->ssGroundEffectSprite;
-        s->x = Q_24_8_TO_INT(actor->x);
+        s->x = I(actor->x);
         s->y = 178 - gCamera.y;
         s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
         UpdateSpriteAnimation(s);
@@ -1440,8 +1434,8 @@ void sub_80393A4(void)
         }
         if (intro->unk1B0 > 0) {
             m4aSongNumStartOrContinue(SE_SUCTION);
-            intro->unk1B4 = sub_8085698(Q_24_8(100), x, intro->animFrame + 32, 10, 3);
-            intro->unk1B8 = sub_8085698(Q_24_8(180), y, intro->animFrame + 96, 10, 3);
+            intro->unk1B4 = sub_8085698(Q(100), x, intro->animFrame + 32, 10, 3);
+            intro->unk1B8 = sub_8085698(Q(180), y, intro->animFrame + 96, 10, 3);
 
             if ((intro->unk1B4 + 2048) > x) {
                 intro->unk1B0 = 0;
@@ -1513,16 +1507,16 @@ void IntroRenderSprites(u8 flockMode)
             prevPos[1] = intro->birdPositions[i][1];
 
             intro->birdPositions[i][0] = (COS(pos[0]) * gUnknown_080D7830[i][2]) >> 4;
-            intro->birdPositions[i][0] += Q_24_8(gUnknown_080D7830[i][0]);
+            intro->birdPositions[i][0] += Q(gUnknown_080D7830[i][0]);
 
             intro->birdPositions[i][1] = (SIN(pos[1]) * gUnknown_080D7830[i][3]) >> 4;
-            intro->birdPositions[i][1] += Q_24_8(gUnknown_080D7830[i][1]);
+            intro->birdPositions[i][1] += Q(gUnknown_080D7830[i][1]);
 
             intro->birdSpeeds[i][0] = intro->birdPositions[i][0] - prevPos[0];
             intro->birdSpeeds[i][1] = intro->birdPositions[i][1] - prevPos[1];
 
-            s->x = Q_24_8_TO_INT(intro->birdPositions[i][0]);
-            s->y = Q_24_8_TO_INT(intro->birdPositions[i][1]) - intro->cameraY;
+            s->x = I(intro->birdPositions[i][0]);
+            s->y = I(intro->birdPositions[i][1]) - intro->cameraY;
 
             if (intro->birdSpeeds[i][0] < 0) {
                 s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
@@ -1538,8 +1532,8 @@ void IntroRenderSprites(u8 flockMode)
 
     if (intro->unk1B0 != 0) {
         s = &intro->vanillaSprite;
-        s->x = Q_24_8_TO_INT(intro->unk1B4);
-        s->y = Q_24_8_TO_INT(intro->unk1B8) - intro->cameraY + intro->unkF;
+        s->x = I(intro->unk1B4);
+        s->y = I(intro->unk1B8) - intro->cameraY + intro->unkF;
 
         UpdateSpriteAnimation(s);
         DisplaySprite(s);

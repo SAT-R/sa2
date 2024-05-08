@@ -111,7 +111,7 @@ static void Task_KikiMain(void)
         return;
     }
 
-    if (Q_24_8_TO_INT(gPlayer.x) < x) {
+    if (I(gPlayer.x) < x) {
         SPRITE_FLAG_CLEAR(s, X_FLIP);
     } else {
         SPRITE_FLAG_SET(s, X_FLIP);
@@ -147,7 +147,7 @@ static void sub_8053A38(void)
         return;
     }
 
-    if (Q_24_8_TO_INT(gPlayer.x) < x) {
+    if (I(gPlayer.x) < x) {
         SPRITE_FLAG_CLEAR(s, X_FLIP);
     } else {
         SPRITE_FLAG_SET(s, X_FLIP);
@@ -183,13 +183,13 @@ static void CreateKikiProjectile(s16 x, s16 y)
     proj->unk30 = 0;
     proj->unk36 = 0;
     proj->unk38 = x;
-    if (Q_24_8_TO_INT(gPlayer.x) < x) {
-        proj->unk34 = -Div((x - Q_24_8_TO_INT(gPlayer.x)) * 400, 800);
+    if (I(gPlayer.x) < x) {
+        proj->unk34 = -Div((x - I(gPlayer.x)) * 400, 800);
         if (proj->unk34 < -0x3C) {
             proj->unk34 = -60;
         }
     } else {
-        proj->unk34 = Div((Q_24_8_TO_INT(gPlayer.x) - x) * 400, 800);
+        proj->unk34 = Div((I(gPlayer.x) - x) * 400, 800);
 
         if (proj->unk34 >= 0x3D) {
             proj->unk34 = 60;
@@ -293,7 +293,7 @@ static void CreateKikiProjectilePiece(s16 x, s16 y)
     proj->unk32 = -512;
     proj->unk30 = 0;
 
-    if (Q_24_8_TO_INT(gPlayer.x) < x) {
+    if (I(gPlayer.x) < x) {
         proj->unk34 = -1;
     } else {
         proj->unk34 = 1;
@@ -323,12 +323,12 @@ static void Task_ProjPieceMain(void)
     if ((s->hitboxes[0].index != -1) && (s2->hitboxes[0].index != -1)) {
         s32 x1, x2;
         x1 = x + s->hitboxes[0].left;
-        x2 = Q_24_8_TO_INT(gPlayer.x) + s2->hitboxes[0].left;
+        x2 = I(gPlayer.x) + s2->hitboxes[0].left;
         if ((x1 <= x2 && x1 + (s->hitboxes[0].right - s->hitboxes[0].left) >= x2)
             || (x1 >= x2 && x2 + (s2->hitboxes[0].right - s2->hitboxes[0].left) >= x1)) {
             s32 y1, y2;
             y1 = y + s->hitboxes[0].top;
-            y2 = Q_24_8_TO_INT(gPlayer.y) + s2->hitboxes[0].top;
+            y2 = I(gPlayer.y) + s2->hitboxes[0].top;
             if ((y1 <= y2 && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
                 || (y1 >= y2
                     && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {

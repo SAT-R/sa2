@@ -124,7 +124,7 @@ void Task_8062FD8(void)
         TaskDestroy(gCurTask);
     } else {
         if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
-            && posX <= Q_24_8_TO_INT(gPlayer.x)) {
+            && posX <= I(gPlayer.x)) {
             gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
             gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
             gPlayer.checkpointTime = gCheckpointTime;
@@ -238,7 +238,7 @@ static void Task_Interactable_Toggle_Checkpoint(void)
         me->x = toggle->base.spriteX;
         TaskDestroy(gCurTask);
     } else if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
-               && posX <= Q_24_8_TO_INT(gPlayer.x)) {
+               && posX <= I(gPlayer.x)) {
         gPlayer.checkPointX = gUnknown_080D63FC[gCurrentLevel][0];
         gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
         gPlayer.checkpointTime = gCheckpointTime;

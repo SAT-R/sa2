@@ -84,9 +84,9 @@ static void Task_Hammerhead(void)
     s->x = posX - gCamera.x;
 
     if (IS_MULTI_PLAYER) {
-        s->y = (posY - gCamera.y) + Q_24_8_TO_INT(hammerhead->unk50[2]);
+        s->y = (posY - gCamera.y) + I(hammerhead->unk50[2]);
     } else {
-        s->y = (posY - gCamera.y) + Q_24_8_TO_INT(prevUnk48);
+        s->y = (posY - gCamera.y) + I(prevUnk48);
     }
 
     if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
@@ -94,14 +94,14 @@ static void Task_Hammerhead(void)
         p->y += ip;
     }
     if (!(p->moveState & MOVESTATE_400000)) {
-        s32 flags = sub_800CCB8(s, posX, posY + Q_24_8_TO_INT(hammerhead->unk48), p);
+        s32 flags = sub_800CCB8(s, posX, posY + I(hammerhead->unk48), p);
 
         if (flags & 0x10000) {
             p->y += (flags << 24) >> 16;
         }
     }
 
-    if (sub_800C4FC(s, posX, posY + Q_24_8_TO_INT(hammerhead->unk48), 1) == TRUE) {
+    if (sub_800C4FC(s, posX, posY + I(hammerhead->unk48), 1) == TRUE) {
         TaskDestroy(gCurTask);
     } else {
         posX -= gCamera.x;

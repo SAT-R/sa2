@@ -116,7 +116,7 @@ void Debug_PrintTextAt(char *text, s16 x, s16 y)
 
     for (i = 0; text[i] != '\0'; i++) {
         if (text[i] > ' ') {
-            Sprite *digit = &baseChar[text[i]];
+            Sprite *digit = &baseChar[(u8)text[i]];
 
             digit->x = x;
             digit->y = y;

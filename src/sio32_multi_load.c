@@ -106,11 +106,8 @@ u32 Sio32MultiLoadMain(u32 *progressCounterp)
 
 void Sio32MultiLoadIntr(void)
 {
-    u32 recvTmp;
-    u32 *bufpTmp;
-
     // Saves received data
-    recvTmp = REG_SIODATA32;
+    u32 recvTmp = REG_SIODATA32;
     // Slave prepares to receive
     if (gSio32MultiLoadArea.type != SIO_SCK_IN)
         REG_SIOCNT |= SIO_ENABLE;

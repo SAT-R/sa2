@@ -47,7 +47,7 @@ void CreateEntity_Buzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
 
         ENEMY_SET_SPAWN_POS_FLYING(buzzer, me);
 
-        buzzer->unk54 = Q_24_8(0.0);
+        buzzer->unk54 = Q(0.0);
         buzzer->unk58 = 0;
         buzzer->unk60 = 0;
         buzzer->unk64 = 0;
@@ -92,10 +92,9 @@ static void Task_BuzzerMain(void)
          --buzzer->unk68 == 0
 #endif
          )
-        && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP)
-        && Q_24_8_TO_INT(gPlayer.x) > (pos.x - 0x3C) && Q_24_8_TO_INT(gPlayer.x) < pos.x
-        && Q_24_8_TO_INT(gPlayer.y) > pos.y
-        && Q_24_8_TO_INT(gPlayer.y) < (pos.y + 0x50)) {
+        && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP) && I(gPlayer.x) > (pos.x - 0x3C)
+        && I(gPlayer.x) < pos.x && I(gPlayer.y) > pos.y
+        && I(gPlayer.y) < (pos.y + 0x50)) {
         gCurTask->main = sub_80534F0;
         s->graphics.anim = SA2_ANIM_BUZZER;
         s->variant = 1;
@@ -104,10 +103,8 @@ static void Task_BuzzerMain(void)
         buzzer->unk64 = Div(gPlayer.x - Q_24_8_NEW(pos.x), 0x20);
         buzzer->unk66 = Div(gPlayer.y - Q_24_8_NEW(pos.y), 0x20);
     } else if (buzzer->unk68 == 0 && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP)
-               && Q_24_8_TO_INT(gPlayer.x) > pos.x
-               && Q_24_8_TO_INT(gPlayer.x) < (pos.x + 0x3C)
-               && Q_24_8_TO_INT(gPlayer.y) > pos.y
-               && Q_24_8_TO_INT(gPlayer.y) < (pos.y + 0x50)) {
+               && I(gPlayer.x) > pos.x && I(gPlayer.x) < (pos.x + 0x3C)
+               && I(gPlayer.y) > pos.y && I(gPlayer.y) < (pos.y + 0x50)) {
         gCurTask->main = sub_80534F0;
         s->graphics.anim = SA2_ANIM_BUZZER;
         s->variant = 1;

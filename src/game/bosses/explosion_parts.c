@@ -33,8 +33,8 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         Sprite *s = &parts->s;
         s32 cos, sin;
 
-        parts->posX = Q_24_8(info->spawnX);
-        parts->posY = Q_24_8(info->spawnY);
+        parts->posX = Q(info->spawnX);
+        parts->posY = Q(info->spawnY);
 
         cos = COS(info->rotation & ONE_CYCLE) * info->speed;
         parts->accelX = cos >> 14;
@@ -69,15 +69,15 @@ void Task_BossParticleWithExplosionUpdate(void)
     Sprite *s = &parts->s;
 
     if (s->graphics.anim == SA2_ANIM_EXPLOSION) {
-        parts->accelX -= Q_24_8(1.0);
+        parts->accelX -= Q(1.0);
     }
 
     parts->accelY += parts->velocityY;
     parts->posX += parts->accelX;
     parts->posY += parts->accelY;
 
-    s->x = Q_24_8_TO_INT(parts->posX);
-    s->y = Q_24_8_TO_INT(parts->posY);
+    s->x = I(parts->posX);
+    s->y = I(parts->posY);
 
     if (((s->x < -BOSS_PARTS_DIMENSION) && (parts->accelX < 0))
         || ((s->x > (DISPLAY_WIDTH + BOSS_PARTS_DIMENSION)) && (parts->accelX > 0))
@@ -102,8 +102,8 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         Sprite *s = &parts->s;
         s32 cos, sin;
 
-        parts->posX = Q_24_8(info->spawnX);
-        parts->posY = Q_24_8(info->spawnY);
+        parts->posX = Q(info->spawnX);
+        parts->posY = Q(info->spawnY);
 
         cos = COS(info->rotation & ONE_CYCLE) * info->speed;
         parts->accelX = cos >> 14;
@@ -141,8 +141,8 @@ void Task_BossParticleStatic(void)
     parts->posX += parts->accelX;
     parts->posY += parts->accelY;
 
-    s->x = Q_24_8_TO_INT(parts->posX) - gCamera.x;
-    s->y = Q_24_8_TO_INT(parts->posY) - gCamera.y;
+    s->x = I(parts->posX) - gCamera.x;
+    s->y = I(parts->posY) - gCamera.y;
 
     if (((s->x < -BOSS_PARTS_DIMENSION) && (parts->accelX < 0))
         || ((s->x > (DISPLAY_WIDTH + BOSS_PARTS_DIMENSION)) && (parts->accelX > 0))

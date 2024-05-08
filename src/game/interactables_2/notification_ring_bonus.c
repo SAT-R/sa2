@@ -49,8 +49,6 @@ static void Task_80807A4(void);
 void CreateEntity_MultiplayerTeleport(MapEntity *me, u16 spriteRegionX,
                                       u16 spriteRegionY, UNUSED u8 spriteY)
 {
-    s32 screenX, screenY;
-
     struct Task *t
         = TaskCreate(Task_80806F4, sizeof(Sprite_MultiplayerTeleport), 0x2010, 0, NULL);
     Sprite_MultiplayerTeleport *sprite = TASK_DATA(t);
@@ -76,8 +74,8 @@ void CreateEntity_MultiplayerTeleport(MapEntity *me, u16 spriteRegionX,
 
 void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
 {
-    if ((sprite->someX < Q_24_8(sprite->posX + sprite->unk8))
-        && (gPlayer.x > Q_24_8(sprite->posX + sprite->unkC))) {
+    if ((sprite->someX < Q(sprite->posX + sprite->unk8))
+        && (gPlayer.x > Q(sprite->posX + sprite->unkC))) {
         if (sprite->unk1C != 0) {
             u16 timeDiff;
             u16 prevRingCount;
@@ -132,8 +130,8 @@ void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
             sprite->timer = gCheckpointTime;
         }
         sprite->someX = gPlayer.x;
-    } else if ((sprite->someX > Q_24_8(sprite->posX + sprite->unkC))
-               && (gPlayer.x < Q_24_8(sprite->posX + sprite->unk8))) {
+    } else if ((sprite->someX > Q(sprite->posX + sprite->unkC))
+               && (gPlayer.x < Q(sprite->posX + sprite->unk8))) {
         if (sprite->unk1C != 0) {
             sprite->unk18--;
         }
@@ -151,8 +149,8 @@ bool32 sub_808055C(Sprite_MultiplayerTeleport *sprite)
     spriteX = sprite->posX - gCamera.x;
     spriteY = sprite->posY - gCamera.y;
 
-    playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-    playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    playerX = I(gPlayer.x) - gCamera.x;
+    playerY = I(gPlayer.y) - gCamera.y;
 
     if ((spriteX + sprite->unk8 <= playerX) && (playerX <= spriteX + sprite->unkC)
         && (spriteY + sprite->unkA <= playerY) && (playerY <= spriteY + sprite->unkE)) {
@@ -167,20 +165,20 @@ void sub_80805D0(Sprite_MultiplayerTeleport *sprite)
     if (sprite->unk1C != 0) {
         s32 xValue, yValue;
 
-        if ((gPlayer.x < Q_24_8(240)) && (gPlayer.y < Q_24_8(288))) {
-            xValue = Q_24_8(1440);
-            yValue = Q_24_8(864);
-        } else if ((gPlayer.x > Q_24_8(1680)) && (gPlayer.y > Q_24_8(864))) {
-            xValue = Q_24_8(-1440);
-            yValue = Q_24_8(-864);
+        if ((gPlayer.x < Q(240)) && (gPlayer.y < Q(288))) {
+            xValue = Q(1440);
+            yValue = Q(864);
+        } else if ((gPlayer.x > Q(1680)) && (gPlayer.y > Q(864))) {
+            xValue = Q(-1440);
+            yValue = Q(-864);
         } else {
             return;
         }
         gPlayer.x += xValue;
         gPlayer.y += yValue;
 
-        xValue = Q_24_8_TO_INT(xValue);
-        yValue = Q_24_8_TO_INT(yValue);
+        xValue = I(xValue);
+        yValue = I(yValue);
 
         gCamera.x += xValue;
         gCamera.unk20 += xValue;

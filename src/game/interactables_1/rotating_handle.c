@@ -1,3 +1,5 @@
+#include <stdlib.h> // abs
+
 #include "global.h"
 #include "gba/types.h"
 #include "lib/m4a.h"
@@ -101,7 +103,7 @@ static void sub_805EA94(void)
 
         if (gPlayer.speedAirX > 0) {
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
-            if (Q_24_8_TO_INT(gPlayer.y) > y) {
+            if (I(gPlayer.y) > y) {
                 s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.unk64 = 0x2D;
                 rotatingHandle->unk40 = 0;
@@ -112,7 +114,7 @@ static void sub_805EA94(void)
             }
         } else {
             gPlayer.moveState |= 1;
-            if (Q_24_8_TO_INT(gPlayer.y) > y) {
+            if (I(gPlayer.y) > y) {
                 s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
                 gPlayer.unk64 = 0x2D;
                 rotatingHandle->unk40 = 2;
@@ -123,8 +125,8 @@ static void sub_805EA94(void)
             }
         }
 
-        gPlayer.x = Q_24_8(x);
-        gPlayer.y = Q_24_8(y);
+        gPlayer.x = Q(x);
+        gPlayer.y = Q(y);
         gPlayer.variant = 0;
         gPlayer.unk6C = 1;
         m4aSongNumStart(SE_SPEED_BOOSTER);
@@ -174,7 +176,11 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
     }
 
     if (gPlayer.unk5E & gPlayerControls.jump) {
+#ifndef NON_MATCHING
         register u32 temp2 asm("r4");
+#else
+        u32 temp2;
+#endif
         gPlayer.transition = PLTRANS_PT5;
         me->x = rotatingHandle->base.spriteX;
         sub_80218E4(&gPlayer);
@@ -208,7 +214,11 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
 
                 break;
             case 3: {
+#ifndef NON_MATCHING
                 register s32 r1 asm("r1") = 0x220;
+#else
+                s32 r1 = 0x220;
+#endif
                 temp2 = (r1 - temp) & cycle;
                 sin = SIN(temp);
                 gPlayer.x -= sin >> 1;
@@ -245,8 +255,8 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
         s->prevVariant = -1;
         gPlayer.variant = r2;
         gPlayer.unk6C = 1;
-        gPlayer.x = Q_24_8(x);
-        gPlayer.y = Q_24_8(y);
+        gPlayer.x = Q(x);
+        gPlayer.y = Q(y);
         gPlayer.speedAirX = 0;
         gPlayer.speedAirY = 0;
     }

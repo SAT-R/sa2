@@ -51,8 +51,8 @@ void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
     np->offsetX = 0;
     np->offsetY = 0;
 
-    np->accelX = Q_24_8_TO_INT(velocity * Q_2_14_TO_Q_24_8(COS(quarterAngle * 4)));
-    np->accelY = Q_24_8_TO_INT(velocity * Q_2_14_TO_Q_24_8(SIN(quarterAngle * 4)));
+    np->accelX = I(velocity * Q_2_14_TO_Q_24_8(COS(quarterAngle * 4)));
+    np->accelY = I(velocity * Q_2_14_TO_Q_24_8(SIN(quarterAngle * 4)));
     np->framesUntilVisible = framesUntilVisible;
     np->framesUntilDestroyed = framesUntilDestroyed;
     np->kind = kind;
@@ -112,8 +112,8 @@ static void Task_8080DB8(void)
     } else {
         np->offsetX += np->accelX;
         np->offsetY += np->accelY;
-        np->s.x = (np->posX - gCamera.x) + Q_24_8_TO_INT(np->offsetX);
-        np->s.y = (np->posY - gCamera.y) + Q_24_8_TO_INT(np->offsetY);
+        np->s.x = (np->posX - gCamera.x) + I(np->offsetX);
+        np->s.y = (np->posY - gCamera.y) + I(np->offsetY);
         UpdateSpriteAnimation(&np->s);
 
         if (np->framesUntilVisible == 0) {
@@ -137,8 +137,8 @@ static void Task_8080E54(void)
         // TODO: Remove magic number
         np->accelY += Q_8_8(1. / 6.);
 
-        np->s.x = (np->posX - gCamera.x) + Q_24_8_TO_INT(np->offsetX);
-        np->s.y = (np->posY - gCamera.y) + Q_24_8_TO_INT(np->offsetY);
+        np->s.x = (np->posX - gCamera.x) + I(np->offsetX);
+        np->s.y = (np->posY - gCamera.y) + I(np->offsetY);
         UpdateSpriteAnimation(&np->s);
 
         if (np->framesUntilVisible == 0) {

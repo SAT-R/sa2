@@ -1,7 +1,9 @@
 #ifndef GUARD_GBA_IO_REG_H
 #define GUARD_GBA_IO_REG_H
 
+#ifndef PORTABLE
 #define REG_BASE 0x4000000 // I/O register base address
+#endif
 
 // I/O register offsets
 
@@ -533,6 +535,7 @@
 #define BGCNT_16COLOR           0x0000 // 4 bits per pixel
 #define BGCNT_256COLOR          0x0080 // 8 bits per pixel
 #define BGCNT_SCREENBASE(n) ((n) << 8) // Values 0 - 31. Base block for tile map.
+#define BGCNT_SCREENBASE_MASK   0x1F00
 #define BGCNT_WRAP              0x2000 // Only affects affine BGs. Text BGs wrap by default.
 #define BGCNT_TXT256x256        0x0000 // Internal screen size size of text mode BG in pixels.
 #define BGCNT_TXT512x256        0x4000

@@ -138,6 +138,7 @@ void PlayerCB_802A714(Player *);
 #define GET_ROTATED_ACCEL_3(angle) ((SIN_24_8((angle)*4) * 60))
 
 // TODO: Match this without ASM!
+#ifndef NON_MATCHING
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                        \
     {                                                                                   \
         s16 speed = (player->moveState & MOVESTATE_40)                                  \
@@ -156,6 +157,20 @@ void PlayerCB_802A714(Player *);
                                                                                         \
         player->speedAirY += speed;                                                     \
     }
+#else
+#define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                        \
+    {                                                                                   \
+        s16 speed = (player->moveState & MOVESTATE_40)                                  \
+            ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER)                                         \
+            : Q_8_8(PLAYER_GRAVITY);                                                    \
+                                                                                        \
+        if (player->speedAirY < 0) {                                                    \
+            speed /= 2;                                                                 \
+        }                                                                               \
+                                                                                        \
+        player->speedAirY += speed;                                                     \
+    }
+#endif
 
 #define PLAYERFN_UPDATE_UNK2A(player)                                                   \
     {                                                                                   \
@@ -163,7 +178,7 @@ void PlayerCB_802A714(Player *);
             player->unk2A -= 1;                                                         \
         } else if ((player->rotation + 32) & 0xC0) {                                    \
             s32 absGroundSpeed = ABS(player->speedGroundX);                             \
-            if (absGroundSpeed < Q_24_8(1.875)) {                                       \
+            if (absGroundSpeed < Q(1.875)) {                                            \
                 player->speedGroundX = 0;                                               \
                                                                                         \
                 player->moveState |= MOVESTATE_IN_AIR;                                  \
@@ -191,7 +206,7 @@ void PlayerCB_802A714(Player *);
             player->speedAirY = -player->speedAirY;                                     \
         }                                                                               \
                                                                                         \
-        player->speedAirY = MIN(player->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));       \
+        player->speedAirY = MIN(player->speedAirY, Q(PLAYER_AIR_SPEED_MAX));            \
                                                                                         \
         player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY                 \
                                         : player->y + player->speedAirY;                \
@@ -215,9 +230,9 @@ void PlayerCB_802A714(Player *);
 
 #define PLAYERFN_UPDATE_AIR_FALL_SPEED(player)                                          \
     if (player->moveState & MOVESTATE_40) {                                             \
-        player->speedAirY += Q_24_8(PLAYER_GRAVITY_UNDER_WATER);                        \
+        player->speedAirY += Q(PLAYER_GRAVITY_UNDER_WATER);                             \
     } else {                                                                            \
-        player->speedAirY += Q_24_8(PLAYER_GRAVITY);                                    \
+        player->speedAirY += Q(PLAYER_GRAVITY);                                         \
     }
 
 #define PLAYERFN_SET_ANIM_SPEED(_p, _s)                                                 \
@@ -457,8 +472,8 @@ void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
     s->graphics.anim = p->anim;
     s->variant = p->variant;
     s->prevVariant = -1;
-    s->x = Q_24_8_TO_INT(p->x);
-    s->y = Q_24_8_TO_INT(p->y);
+    s->x = I(p->x);
+    s->y = I(p->y);
     s->unk1A = SPRITE_OAM_ORDER(16 + unk60);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
@@ -510,8 +525,8 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
 
     s->graphics.size = 0;
     s->prevVariant = -1;
-    s->x = Q_24_8_TO_INT(p->x);
-    s->y = Q_24_8_TO_INT(p->y);
+    s->x = I(p->x);
+    s->y = I(p->y);
     s->unk1A = SPRITE_OAM_ORDER(17);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
@@ -560,11 +575,11 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
 {
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
         && (((p->x & p->y) + 1) != 0)) {
-        p->x = Q_24_8(460);
+        p->x = Q(460);
     } else {
-        p->x = Q_24_8(p->checkPointX);
+        p->x = Q(p->checkPointX);
     }
-    p->y = Q_24_8(p->checkPointY);
+    p->y = Q(p->checkPointY);
 
     p->callback = PlayerCB_8025318;
 
@@ -730,21 +745,21 @@ s32 sub_802195C(Player *p, u8 *p1, s32 *out)
     if (out == NULL)
         out = &dummyInt;
 
-    playerX2 = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
-    playerY2 = Q_24_8_TO_INT(p->y) - (p->unk17);
+    playerX2 = I(p->x) - (2 + p->unk16);
+    playerY2 = I(p->y) - (p->unk17);
 
     mask = p->unk38;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
 
     r5 = sub_801E4E4(playerX2, playerY2, mask, -8, &anotherByte, sub_801ED24);
 
-    playerX = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
-    playerY = Q_24_8_TO_INT(p->y) + (p->unk17);
+    playerX = I(p->x) - (2 + p->unk16);
+    playerY = I(p->y) + (p->unk17);
 
     mask = p->unk38;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
 
@@ -780,21 +795,21 @@ s32 sub_8021A34(Player *p, u8 *p1, s32 *out)
     if (out == NULL)
         out = &dummyInt;
 
-    playerX2 = Q_24_8_TO_INT(p->x) + (2 + p->unk16);
-    playerY2 = Q_24_8_TO_INT(p->y) - (p->unk17);
+    playerX2 = I(p->x) + (2 + p->unk16);
+    playerY2 = I(p->y) - (p->unk17);
 
     mask = p->unk38;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
 
     r5 = sub_801E4E4(playerX2, playerY2, mask, +8, &anotherByte, sub_801ED24);
 
-    playerX = Q_24_8_TO_INT(p->x) + (2 + p->unk16);
-    playerY = Q_24_8_TO_INT(p->y) + (p->unk17);
+    playerX = I(p->x) + (2 + p->unk16);
+    playerY = I(p->y) + (p->unk17);
 
     mask = p->unk38;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
 
@@ -830,21 +845,21 @@ s32 sub_8021B08(Player *p, u8 *p1, s32 *out)
     if (out == NULL)
         out = &dummyInt;
 
-    playerY2 = Q_24_8_TO_INT(p->y) - (p->unk17);
-    playerX2 = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
+    playerY2 = I(p->y) - (p->unk17);
+    playerX2 = I(p->x) - (2 + p->unk16);
 
     mask = p->unk38;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
 
     r5 = sub_801E4E4(playerY2, playerX2, mask, -8, &anotherByte, sub_801EE64);
 
-    playerY = Q_24_8_TO_INT(p->y) - (p->unk17);
-    playerX = Q_24_8_TO_INT(p->x) + (2 + p->unk16);
+    playerY = I(p->y) - (p->unk17);
+    playerX = I(p->x) + (2 + p->unk16);
 
     mask = p->unk38;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
 
@@ -885,7 +900,7 @@ void sub_8021BE0(Player *p)
 
 void sub_8021C4C(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
@@ -895,11 +910,11 @@ void sub_8021C4C(Player *p)
     u32 mask;
     u32 mask2 = p->unk38;
 
-    playerX = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
-    playerY = Q_24_8_TO_INT(p->y);
+    playerX = I(p->x) - (3 + p->unk16);
+    playerY = I(p->y);
 
     mask = mask2;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask = 0x80;
         mask |= mask2;
     }
@@ -907,22 +922,22 @@ void sub_8021C4C(Player *p)
     result = sub_801E4E4(playerX, playerY, mask, -8, 0, sub_801ED24);
 
     if (result <= 0) {
-        p->x -= Q_24_8(result);
+        p->x -= Q(result);
         p->speedAirX = 0;
     }
 
-    playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
-    playerY2 = Q_24_8_TO_INT(p->y);
+    playerX2 = I(p->x) + (3 + p->unk16);
+    playerY2 = I(p->y);
 
     mask = mask2;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
 
     result = sub_801E4E4(playerX2, playerY2, mask, +8, 0, sub_801ED24);
 
     if (result <= 0) {
-        p->x += Q_24_8(result);
+        p->x += Q(result);
         p->speedAirX = 0;
     }
 
@@ -935,7 +950,7 @@ void sub_8021C4C(Player *p)
 
     if (result < 0) {
         s8 rotCopy;
-        s32 r1 = Q_24_8_TO_INT(p->speedAirY);
+        s32 r1 = I(p->speedAirY);
         r1 += 6;
         r1 = -r1;
 
@@ -954,8 +969,8 @@ void sub_8021C4C(Player *p)
             if ((rotation + 32) & 0x40) {
                 p->speedAirX = 0;
 
-                if (p->speedAirY > Q_24_8(11.8125)) {
-                    p->speedAirY = Q_24_8(11.8125);
+                if (p->speedAirY > Q(11.8125)) {
+                    p->speedAirY = Q(11.8125);
                 }
             } else if (!((rotation + 16) & 0x20)) {
                 p->speedAirY = 0;
@@ -981,7 +996,7 @@ void sub_8021C4C(Player *p)
 
 void sub_8021DB8(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
@@ -991,11 +1006,11 @@ void sub_8021DB8(Player *p)
     u32 mask;
     u32 mask2 = p->unk38;
 
-    playerX = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
-    playerY = Q_24_8_TO_INT(p->y);
+    playerX = I(p->x) - (3 + p->unk16);
+    playerY = I(p->y);
 
     mask = mask2;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask = 0x80;
         mask |= mask2;
     }
@@ -1003,22 +1018,22 @@ void sub_8021DB8(Player *p)
     result = sub_801E4E4(playerX, playerY, mask, -8, 0, sub_801ED24);
 
     if (result <= 0) {
-        p->x -= Q_24_8(result);
+        p->x -= Q(result);
         p->speedAirX = 0;
     }
 
-    playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
-    playerY2 = Q_24_8_TO_INT(p->y);
+    playerX2 = I(p->x) + (3 + p->unk16);
+    playerY2 = I(p->y);
 
     mask = mask2;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
 
     result = sub_801E4E4(playerX2, playerY2, mask, +8, 0, sub_801ED24);
 
     if (result <= 0) {
-        p->x += Q_24_8(result);
+        p->x += Q(result);
         p->speedAirX = 0;
     }
 
@@ -1058,7 +1073,7 @@ void sub_8021DB8(Player *p)
 
 void sub_8021EE4(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
@@ -1071,22 +1086,22 @@ void sub_8021EE4(Player *p)
 
     gravity = GRAVITY_IS_INVERTED;
     if (gravity) {
-        playerX = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
-        playerY = Q_24_8_TO_INT(p->y);
+        playerX = I(p->x) - (3 + p->unk16);
+        playerY = I(p->y);
         result = sub_801E4E4(playerX, playerY, mask2, -8, NULL, sub_801ED24);
     } else {
-        playerX2 = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
-        playerY2 = Q_24_8_TO_INT(p->y);
+        playerX2 = I(p->x) - (3 + p->unk16);
+        playerY2 = I(p->y);
 
         mask = mask2;
-        if (p->speedAirY < Q_24_8(3.0)) {
+        if (p->speedAirY < Q(3.0)) {
             mask |= 0x80;
         }
         result = sub_801E4E4(playerX2, playerY2, mask, -8, NULL, sub_801ED24);
     }
 
     if (result <= 0) {
-        p->x -= Q_24_8(result);
+        p->x -= Q(result);
         p->speedAirX = 0;
         p->speedGroundX = p->speedAirY;
     }
@@ -1103,7 +1118,7 @@ void sub_8021EE4(Player *p)
             result = -result;
         }
 
-        p->y -= Q_24_8(result);
+        p->y -= Q(result);
 
         if (p->speedAirY < 0) {
             p->speedAirY = 0;
@@ -1120,7 +1135,7 @@ void sub_8021EE4(Player *p)
                 result = -result;
             }
 
-            p->y += Q_24_8(result);
+            p->y += Q(result);
 
             p->rotation = rotation;
             sub_8021BE0(p);
@@ -1133,7 +1148,7 @@ void sub_8021EE4(Player *p)
 
 void sub_802203C(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
@@ -1146,22 +1161,22 @@ void sub_802203C(Player *p)
 
     gravity = GRAVITY_IS_INVERTED;
     if (gravity) {
-        playerX = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
-        playerY = Q_24_8_TO_INT(p->y);
+        playerX = I(p->x) + (3 + p->unk16);
+        playerY = I(p->y);
         result = sub_801E4E4(playerX, playerY, mask2, +8, NULL, sub_801ED24);
     } else {
-        playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
-        playerY2 = Q_24_8_TO_INT(p->y);
+        playerX2 = I(p->x) + (3 + p->unk16);
+        playerY2 = I(p->y);
 
         mask = mask2;
-        if (p->speedAirY < Q_24_8(3.0)) {
+        if (p->speedAirY < Q(3.0)) {
             mask |= 0x80;
         }
         result = sub_801E4E4(playerX2, playerY2, mask, +8, NULL, sub_801ED24);
     }
 
     if (result <= 0) {
-        p->x += Q_24_8(result);
+        p->x += Q(result);
         p->speedAirX = 0;
         p->speedGroundX = p->speedAirY;
     }
@@ -1178,7 +1193,7 @@ void sub_802203C(Player *p)
             result = -result;
         }
 
-        p->y -= Q_24_8(result);
+        p->y -= Q(result);
 
         if (p->speedAirY < 0) {
             p->speedAirY = 0;
@@ -1195,7 +1210,7 @@ void sub_802203C(Player *p)
                 result = -result;
             }
 
-            p->y += Q_24_8(result);
+            p->y += Q(result);
 
             p->rotation = rotation;
             sub_8021BE0(p);
@@ -1213,7 +1228,7 @@ void sub_8022190(Player *p)
     s16 airX = p->speedAirX;
 
     if (airX || airY) {
-        arcResult = Q_24_8_TO_INT(ArcTan2(airX, airY));
+        arcResult = I(ArcTan2(airX, airY));
     }
 
     arcResult = (arcResult - 0x20) & 0xC0;
@@ -1257,7 +1272,7 @@ void sub_8022218(Player *p)
             res = -res;
         }
 
-        p->y += Q_24_8(res);
+        p->y += Q(res);
         p->rotation = rotation;
         sub_8021BE0(p);
 
@@ -1287,7 +1302,7 @@ void sub_8022284(Player *p)
             res = -res;
         }
 
-        p->y -= Q_24_8(res);
+        p->y -= Q(res);
         p->rotation = rotation;
         sub_8021BE0(p);
 
@@ -1332,7 +1347,7 @@ void sub_8022318(Player *p)
         p->unk16 = 6;
         p->unk17 = 14;
 
-        p->y += Q_24_8(offsetY);
+        p->y += Q(offsetY);
     }
 
     p->moveState &= ~MOVESTATE_IN_AIR;
@@ -1351,45 +1366,44 @@ void sub_8022318(Player *p)
 
 void sub_80223BC(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
     s32 playerX2, playerY2;
     s32 *ptr;
-    u16 gravity;
 
     u32 mask;
     u32 mask2 = p->unk38;
 
-    playerX = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
-    playerY = Q_24_8_TO_INT(p->y);
+    playerX = I(p->x) - (3 + p->unk16);
+    playerY = I(p->y);
 
     mask = mask2;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask = 0x80;
         mask |= mask2;
     }
     result = sub_801E4E4(playerX, playerY, mask, -8, NULL, sub_801ED24);
 
     if (result <= 0) {
-        p->x -= Q_24_8(result);
+        p->x -= Q(result);
         p->speedAirX = 0;
         // TODO: Find out which character(s) call this, to use the appropriate 'flags'
         p->w.sf.flags |= 0x20;
     }
 
-    playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
-    playerY2 = Q_24_8_TO_INT(p->y);
+    playerX2 = I(p->x) + (3 + p->unk16);
+    playerY2 = I(p->y);
 
     mask = mask2;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
     result = sub_801E4E4(playerX2, playerY2, mask, +8, NULL, sub_801ED24);
 
     if (result <= 0) {
-        p->x += Q_24_8(result);
+        p->x += Q(result);
         p->speedAirX = 0;
         p->w.sf.flags |= 0x20;
     }
@@ -1406,7 +1420,7 @@ void sub_80223BC(Player *p)
             result = -result;
         }
 
-        p->y += Q_24_8(result);
+        p->y += Q(result);
 
         p->rotation = rotation;
         p->speedAirY = 0;
@@ -1417,45 +1431,44 @@ void sub_80223BC(Player *p)
 // Similar to sub_80223BC
 void sub_80224DC(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
     s32 playerX2, playerY2;
     s32 *ptr;
-    u16 gravity;
 
     u32 mask;
     u32 mask2 = p->unk38;
 
-    playerX = Q_24_8_TO_INT(p->x) - (3 + p->unk16);
-    playerY = Q_24_8_TO_INT(p->y);
+    playerX = I(p->x) - (3 + p->unk16);
+    playerY = I(p->y);
 
     mask = mask2;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask = 0x80;
         mask |= mask2;
     }
     result = sub_801E4E4(playerX, playerY, mask, -8, NULL, sub_801ED24);
 
     if (result <= 0) {
-        p->x -= Q_24_8(result);
+        p->x -= Q(result);
         p->speedAirX = 0;
         // TODO: Find out which character(s) call this, to use the appropriate 'flags'
         p->w.sf.flags |= 0x20;
     }
 
-    playerX2 = Q_24_8_TO_INT(p->x) + (3 + p->unk16);
-    playerY2 = Q_24_8_TO_INT(p->y);
+    playerX2 = I(p->x) + (3 + p->unk16);
+    playerY2 = I(p->y);
 
     mask = mask2;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
     result = sub_801E4E4(playerX2, playerY2, mask, +8, NULL, sub_801ED24);
 
     if (result <= 0) {
-        p->x += Q_24_8(result);
+        p->x += Q(result);
         p->speedAirX = 0;
         p->w.sf.flags |= 0x20;
     }
@@ -1472,7 +1485,7 @@ void sub_80224DC(Player *p)
             result = -result;
         }
 
-        p->y -= Q_24_8(result);
+        p->y -= Q(result);
 
         p->speedAirY = 0;
     }
@@ -1480,28 +1493,27 @@ void sub_80224DC(Player *p)
 
 void sub_80225E8(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
-    s32 playerX2, playerY2;
     s32 *ptr;
     u16 gravity;
 
     u32 mask;
     u8 *mask2 = &p->unk38;
 
-    playerX = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
-    playerY = Q_24_8_TO_INT(p->y);
+    playerX = I(p->x) - (2 + p->unk16);
+    playerY = I(p->y);
 
     mask = *mask2;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
     result = sub_801E4E4(playerX, playerY, mask, -8, NULL, sub_801ED24);
 
     if (result <= 0) {
-        p->x -= Q_24_8(result);
+        p->x -= Q(result);
         p->speedAirX = 0;
         // TODO: Find out which character(s) call this, to use the appropriate 'flags'
         p->w.sf.flags |= 0x20;
@@ -1519,7 +1531,7 @@ void sub_80225E8(Player *p)
         if (GRAVITY_IS_INVERTED) {
             result = -result;
         }
-        p->y -= Q_24_8(result);
+        p->y -= Q(result);
 
         if (p->speedAirY < 0) {
             p->speedAirY = 0;
@@ -1537,7 +1549,7 @@ void sub_80225E8(Player *p)
                 result = -result;
             }
 
-            p->y += Q_24_8(result);
+            p->y += Q(result);
 
             p->rotation = rotation;
             p->speedAirY = 0;
@@ -1549,28 +1561,27 @@ void sub_80225E8(Player *p)
 // Similar to sub_80225E8
 void sub_8022710(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
-    s32 playerX2, playerY2;
     s32 *ptr;
     u16 gravity;
 
     u32 mask;
     u8 *mask2 = &p->unk38;
 
-    playerX = Q_24_8_TO_INT(p->x) + (2 + p->unk16);
-    playerY = Q_24_8_TO_INT(p->y);
+    playerX = I(p->x) + (2 + p->unk16);
+    playerY = I(p->y);
 
     mask = *mask2;
-    if (p->speedAirY < Q_24_8(3.0)) {
+    if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
     result = sub_801E4E4(playerX, playerY, mask, +8, NULL, sub_801ED24);
 
     if (result <= 0) {
-        p->x += Q_24_8(result);
+        p->x += Q(result);
         p->speedAirX = 0;
         // TODO: Find out which character(s) call this, to use the appropriate 'flags'
         p->w.sf.flags |= 0x20;
@@ -1588,7 +1599,7 @@ void sub_8022710(Player *p)
         if (GRAVITY_IS_INVERTED) {
             result = -result;
         }
-        p->y -= Q_24_8(result);
+        p->y -= Q(result);
 
         if (p->speedAirY < 0) {
             p->speedAirY = 0;
@@ -1606,7 +1617,7 @@ void sub_8022710(Player *p)
                 result = -result;
             }
 
-            p->y += Q_24_8(result);
+            p->y += Q(result);
 
             p->rotation = rotation;
             p->speedAirY = 0;
@@ -1626,7 +1637,7 @@ void sub_8022838(Player *p)
         p->unk29 = 0;
         p->unk28 = 0;
     } else {
-        arcResult = Q_24_8_TO_INT(ArcTan2(airX, airY));
+        arcResult = I(ArcTan2(airX, airY));
 
         arcResult = (arcResult - 0x20) & 0xC0;
 
@@ -1669,11 +1680,10 @@ void sub_80228C0(Player *p)
     s32 playerY = (p->y);
 #endif
     u32 mask = p->unk38;
-    s32 py = Q_24_8_TO_INT(playerY);
+    s32 py = I(playerY);
 
-    resultA
-        = sub_801E4E4(py + p->unk17, (playerX = Q_24_8_TO_INT(playerX)) - (2 + p->unk16),
-                      mask, 8, &p->unk28, sub_801EE64);
+    resultA = sub_801E4E4(py + p->unk17, (playerX = I(playerX)) - (2 + p->unk16), mask,
+                          8, &p->unk28, sub_801EE64);
 
     py = py + (p->unk17);
     playerX += 2;
@@ -1692,7 +1702,7 @@ void sub_80228C0(Player *p)
                 return;
             }
 
-            playerY += Q_24_8(val);
+            playerY += Q(val);
 
             if (resultA < resultB) {
                 r0 = p->unk28;
@@ -1706,14 +1716,14 @@ void sub_80228C0(Player *p)
                 airX = -airX;
             }
 
-            airX = Q_24_8_TO_INT(airX);
+            airX = I(airX);
             airX += 3;
 
             if (airX > 11)
                 airX = 11;
 
             if (val <= airX) {
-                playerY += Q_24_8(val);
+                playerY += Q(val);
 
                 if (resultA < resultB) {
                     r0 = p->unk28;
@@ -1750,7 +1760,7 @@ void sub_80228C0(Player *p)
             r0 <<= 24;
             r0 = -r0;
             r1 = r0 >> 24;
-            asm("" ::"r"(r0, r1));
+            asm("" ::"r"(r0), "r"(r1));
             r0 = r1;
             r0 -= 0x40;
 
@@ -1783,11 +1793,10 @@ void sub_80229EC(Player *p)
     playerX = p->x;
     playerY = (p->y);
     mask = p->unk38;
-    py = Q_24_8_TO_INT(playerY);
+    py = I(playerY);
 
-    resultA
-        = sub_801E4E4(py - p->unk17, (playerX = Q_24_8_TO_INT(playerX)) + (2 + p->unk16),
-                      mask, -8, &p->unk28, sub_801EE64);
+    resultA = sub_801E4E4(py - p->unk17, (playerX = I(playerX)) + (2 + p->unk16), mask,
+                          -8, &p->unk28, sub_801EE64);
 
     py = py - (p->unk17);
     playerX -= 2;
@@ -1806,7 +1815,7 @@ void sub_80229EC(Player *p)
                 return;
             }
 
-            playerY -= Q_24_8(val);
+            playerY -= Q(val);
 
             if (resultA < resultB) {
                 r0 = p->unk28;
@@ -1820,14 +1829,14 @@ void sub_80229EC(Player *p)
                 airX = -airX;
             }
 
-            airX = Q_24_8_TO_INT(airX);
+            airX = I(airX);
             airX += 3;
 
             if (airX > 11)
                 airX = 11;
 
             if (val <= airX) {
-                playerY -= Q_24_8(val);
+                playerY -= Q(val);
 
                 if (resultA < resultB) {
                     r0 = p->unk28;
@@ -1864,7 +1873,7 @@ void sub_80229EC(Player *p)
             r0 <<= 24;
             r0 = -r0;
             r1 = r0 >> 24;
-            asm("" ::"r"(r0, r1));
+            asm("" ::"r"(r0), "r"(r1));
             r0 = r1;
             r0 -= 0x40;
 
@@ -1897,11 +1906,10 @@ void sub_8022B18(Player *p)
     playerX = p->x;
     playerY = (p->y);
     mask = p->unk38;
-    py = Q_24_8_TO_INT(playerX);
+    py = I(playerX);
 
-    resultA
-        = sub_801E4E4(py - p->unk17, (playerY = Q_24_8_TO_INT(playerY)) - (2 + p->unk16),
-                      mask, -8, &p->unk28, sub_801ED24);
+    resultA = sub_801E4E4(py - p->unk17, (playerY = I(playerY)) - (2 + p->unk16), mask,
+                          -8, &p->unk28, sub_801ED24);
 
     py = py - (p->unk17);
     playerY += 2;
@@ -1920,7 +1928,7 @@ void sub_8022B18(Player *p)
                 return;
             }
 
-            playerX -= Q_24_8(val);
+            playerX -= Q(val);
 
             if (resultA < resultB) {
                 r0 = p->unk28;
@@ -1934,14 +1942,14 @@ void sub_8022B18(Player *p)
                 airY = -airY;
             }
 
-            airY = Q_24_8_TO_INT(airY);
+            airY = I(airY);
             airY += 3;
 
             if (airY > 11)
                 airY = 11;
 
             if (val <= airY) {
-                playerX -= Q_24_8(val);
+                playerX -= Q(val);
 
                 if (resultA < resultB) {
                     r0 = p->unk28;
@@ -1978,7 +1986,7 @@ void sub_8022B18(Player *p)
             r0 <<= 24;
             r0 = -r0;
             r1 = r0 >> 24;
-            asm("" ::"r"(r0, r1));
+            asm("" ::"r"(r0), "r"(r1));
             r0 = r1;
             r0 -= 0x40;
 
@@ -2010,11 +2018,10 @@ void sub_8022C44(Player *p)
     playerX = p->x;
     playerY = (p->y);
     mask = p->unk38;
-    py = Q_24_8_TO_INT(playerX);
+    py = I(playerX);
 
-    resultA
-        = sub_801E4E4(py + p->unk17, (playerY = Q_24_8_TO_INT(playerY)) + (2 + p->unk16),
-                      mask, +8, &p->unk28, sub_801ED24);
+    resultA = sub_801E4E4(py + p->unk17, (playerY = I(playerY)) + (2 + p->unk16), mask,
+                          +8, &p->unk28, sub_801ED24);
 
     py = py + (p->unk17);
     playerY -= 2;
@@ -2032,7 +2039,7 @@ void sub_8022C44(Player *p)
                 return;
             }
 
-            playerX += Q_24_8(val);
+            playerX += Q(val);
 
             if (resultA < resultB) {
                 r0 = p->unk28;
@@ -2046,14 +2053,14 @@ void sub_8022C44(Player *p)
                 airY = -airY;
             }
 
-            airY = Q_24_8_TO_INT(airY);
+            airY = I(airY);
             airY += 3;
 
             if (airY > 11)
                 airY = 11;
 
             if (val <= airY) {
-                playerX += Q_24_8(val);
+                playerX += Q(val);
 
                 if (resultA < resultB) {
                     r0 = p->unk28;
@@ -2090,7 +2097,7 @@ void sub_8022C44(Player *p)
             r0 <<= 24;
             r0 = -r0;
             r1 = r0 >> 24;
-            asm("" ::"r"(r0, r1));
+            asm("" ::"r"(r0), "r"(r1));
             r0 = r1;
             r0 -= 0x40;
 
@@ -2109,7 +2116,7 @@ void sub_8022D6C(Player *p)
         return;
     }
     if ((gCurrentLevel == 0) && (gWater.isActive == TRUE)) {
-        s32 r5 = Q_24_8(p->y) >> 16;
+        s32 r5 = Q(p->y) >> 16;
         u32 mask = ~0x3;
         s32 offsetY = p->unk17;
         s32 unk4 = gWater.currentWaterLevel;
@@ -2118,10 +2125,10 @@ void sub_8022D6C(Player *p)
 
         if ((r5 == (r0)) && (p->speedAirY >= 0) && ((u8)(p->rotation + 0x18) <= 0x30)
             && (!(p->moveState & MOVESTATE_IN_AIR))
-            && (ABS(p->speedGroundX) >= Q_24_8(6.0))) {
+            && (ABS(p->speedGroundX) >= Q(6.0))) {
             sub_80228C0(p);
 
-            if (p->y >= Q_24_8(r5)) {
+            if (p->y >= Q(r5)) {
                 if (!(p->moveState & MOVESTATE_20000)) {
                     p->moveState |= MOVESTATE_20000;
 
@@ -2335,9 +2342,7 @@ NONMATCH("asm/non_matching/game/player__sub_802302C.inc",
          s32 sub_802302C(u8 param0, Player *p))
 {
     s32 r3;
-    u32 r0;
     s32 result;
-    u32 temp;
 
     s32 px = I(p->x);
     s32 py = I(p->y);
@@ -2512,7 +2517,6 @@ void sub_80231C0(Player *p)
 void sub_8023260(Player *p)
 {
     s32 r4 = p->unk40;
-    s32 temp;
 
     if (p->speedGroundX > (s16)r4) {
         p->speedGroundX = +r4;
@@ -2766,9 +2770,8 @@ void sub_80236C8(Player *p)
 {
     s16 airX;
     s16 airX2;
-    s16 diff;
 
-    if ((u16)p->speedAirY < (u16)Q_24_8(189))
+    if ((u16)p->speedAirY < (u16)Q(189))
         return;
 
     airX = p->speedAirX;
@@ -2795,9 +2798,8 @@ void sub_8023708(Player *p)
 {
     s16 airX;
     s16 airX2;
-    s16 diff;
 
-    if ((u16)p->speedAirY < (u16)Q_24_8(189))
+    if ((u16)p->speedAirY < (u16)Q(189))
         return;
 
     airX = p->speedAirX;
@@ -3422,9 +3424,8 @@ void sub_80246DC(Player *p)
         } else {
             if ((p->speedAirY > 0) && (p->variant == 1)
                 && ((((u16)r3 - 10) == 0) || (((u16)r3 - 10) == 1))) {
-                s32 newY
-                    = sub_801E6D4(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x),
-                                  p->unk38, 8, NULL, sub_801EE64);
+                s32 newY = sub_801E6D4(I(p->y) + p->unk17, I(p->x), p->unk38, 8, NULL,
+                                       sub_801EE64);
 
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                     if (newY <= 32) {
@@ -3551,7 +3552,7 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
             r0 = p->speedAirY;
             goto lab;
 #else
-            s->animSpeed = Q_24_8_TO_INT(ABS(p->speedAirY)) * 3 + 8;
+            s->animSpeed = I(ABS(p->speedAirY)) * 3 + 8;
 #endif
         } break;
 
@@ -3561,10 +3562,10 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
             // _08024A76
             r0 = p->speedGroundX;
         lab:
-            speed = Q_24_8_TO_INT(ABS(r0)) * 3 + 8;
+            speed = I(ABS(r0)) * 3 + 8;
             s->animSpeed = speed;
 #else
-            s->animSpeed = Q_24_8_TO_INT(ABS(p->speedGroundX)) * 3 + 8;
+            s->animSpeed = I(ABS(p->speedGroundX)) * 3 + 8;
             ;
 #endif
         } break;
@@ -3790,7 +3791,6 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
 void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
 {
     struct MultiSioData_0_4 *recv;
-    MultiplayerPlayer *mpp;
 
     Sprite *s = &inPsi->s;
     PlayerSpriteInfo *psi = inPsi;
@@ -3919,7 +3919,7 @@ void PlayerCB_Idle(Player *p)
                && !sub_802A2A8(p)) {
         sub_802966C(p);
 
-        if (((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+        if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
             s32 acceleration = GET_ROTATED_ACCEL(p->rotation);
 
             if (p->speedGroundX != 0) {
@@ -3952,7 +3952,7 @@ void PlayerCB_8025548(Player *p)
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
-        if (((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+        if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
             u32 acceleration = GET_ROTATED_ACCEL(p->rotation);
 
             if (p->speedGroundX != 0)
@@ -3995,7 +3995,7 @@ void PlayerCB_802569C(Player *p)
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
-        if (((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+        if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
             u32 acceleration = GET_ROTATED_ACCEL(p->rotation);
 
             if (p->speedGroundX != 0)
@@ -4038,7 +4038,7 @@ void PlayerCB_8025854(Player *p)
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
-        if (((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+        if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
             u32 acceleration = GET_ROTATED_ACCEL(p->rotation);
 
             if (p->speedGroundX != 0)
@@ -4062,7 +4062,6 @@ void PlayerCB_8025854(Player *p)
 
 void PlayerCB_8025A0C(Player *p)
 {
-    u32 mask;
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         if ((p->moveState & MOVESTATE_IN_AIR)) {
             PlayerCB_8025F84(p);
@@ -4104,21 +4103,21 @@ void PlayerCB_8025AB8(Player *p)
                         s32 val = p->speedGroundX;
                         if (val <= 0) {
                             p->moveState |= MOVESTATE_FACING_LEFT;
-                        } else if ((val - Q_24_8(0.09375)) < 0) {
-                            s32 deceleration = -Q_24_8(0.375);
+                        } else if ((val - Q(0.09375)) < 0) {
+                            s32 deceleration = -Q(0.375);
                             p->speedGroundX = deceleration;
                         } else {
-                            p->speedGroundX = (val - Q_24_8(0.09375));
+                            p->speedGroundX = (val - Q(0.09375));
                         }
                     }
                 } else {
                     s32 val = p->speedGroundX;
                     if (val >= 0) {
                         p->moveState &= ~MOVESTATE_FACING_LEFT;
-                    } else if ((val + Q_24_8(0.09375)) > 0) {
-                        p->speedGroundX = Q_24_8(0.375);
+                    } else if ((val + Q(0.09375)) > 0) {
+                        p->speedGroundX = Q(0.375);
                     } else {
-                        p->speedGroundX = (val + Q_24_8(0.09375));
+                        p->speedGroundX = (val + Q(0.09375));
                     }
                 }
             }
@@ -4136,7 +4135,7 @@ void PlayerCB_8025AB8(Player *p)
 
         p->speedGroundX -= p->unk50;
 
-        if ((p->speedGroundX > -Q_24_8(0.5)) && (p->speedGroundX < Q_24_8(0.5))) {
+        if ((p->speedGroundX > -Q(0.5)) && (p->speedGroundX < Q(0.5))) {
             p->unk50 = 0;
             p->speedGroundX = 0;
         }
@@ -4146,9 +4145,9 @@ void PlayerCB_8025AB8(Player *p)
         } else {
             s32 speedX = p->speedGroundX;
 
-            if ((((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) && (speedX != 0)) {
+            if ((((p->rotation + Q(0.375)) & 0xFF) < 0xC0) && (speedX != 0)) {
                 u32 sinVal = SIN_24_8((p->rotation) * 4) * 60;
-                s32 sinInt = (s32)(Q_24_8_TO_INT((s32)sinVal));
+                s32 sinInt = (s32)(I((s32)sinVal));
 
                 if (speedX > 0) {
                     if (sinInt <= 0) {
@@ -4199,7 +4198,7 @@ void PlayerCB_Jump(Player *p)
         p->moveState |= MOVESTATE_10;
     }
 
-    if (ABS(p->speedAirX) < Q_24_8(1.25)) {
+    if (ABS(p->speedAirX) < Q(1.25)) {
         p->unk64 = 10;
     } else {
         p->unk64 = 11;
@@ -4207,20 +4206,20 @@ void PlayerCB_Jump(Player *p)
 
     p->unk70 = 1;
 
-    jumpHeight = (p->moveState & MOVESTATE_40) ? Q_24_8(PLAYER_JUMP_HEIGHT_UNDER_WATER)
-                                               : Q_24_8(PLAYER_JUMP_HEIGHT);
+    jumpHeight = (p->moveState & MOVESTATE_40) ? Q(PLAYER_JUMP_HEIGHT_UNDER_WATER)
+                                               : Q(PLAYER_JUMP_HEIGHT);
 
     rot = p->rotation - 64;
 
-    accelX = Q_24_8_TO_INT(COS_24_8(rot * 4) * jumpHeight);
+    accelX = I(COS_24_8(rot * 4) * jumpHeight);
     p->speedAirX += accelX;
 
-    accelY = Q_24_8_TO_INT(SIN_24_8(rot * 4) * jumpHeight);
+    accelY = I(SIN_24_8(rot * 4) * jumpHeight);
     p->speedAirY += accelY;
 
     if (p->moveState & MOVESTATE_8) {
         if (IS_BOSS_STAGE(gCurrentLevel)) {
-            p->speedAirX -= Q_24_8(gCamera.unk38);
+            p->speedAirX -= Q(gCamera.unk38);
         }
     }
 
@@ -4233,10 +4232,10 @@ void PlayerCB_Jump(Player *p)
 
 void PlayerCB_Jumping(Player *p)
 {
-    s16 maxJumpSpeed = -Q_24_8(PLAYER_MAX_NOT_HELD_JUMP_FORCE);
+    s16 maxJumpSpeed = -Q(PLAYER_MAX_NOT_HELD_JUMP_FORCE);
 
     if (p->moveState & MOVESTATE_40) {
-        maxJumpSpeed = -Q_24_8(PLAYER_MAX_NOT_HELD_JUMP_FORCE_UNDER_WATER);
+        maxJumpSpeed = -Q(PLAYER_MAX_NOT_HELD_JUMP_FORCE_UNDER_WATER);
     }
 
     if (p->moveState & MOVESTATE_100) {
@@ -4283,7 +4282,7 @@ void PlayerCB_8025F84(Player *p)
         }
     }
 
-    if (ABS(p->speedAirX) < Q_24_8(1.25)) {
+    if (ABS(p->speedAirX) < Q(1.25)) {
         p->unk64 = 10;
     } else {
         p->unk64 = 11;
@@ -4409,7 +4408,7 @@ void PlayerCB_Spindash(Player *player)
         s32 speed;
         player->moveState &= ~MOVESTATE_400;
 
-        index = Q_24_8_TO_INT(player->spindashAccel);
+        index = I(player->spindashAccel);
         if (index > 8)
             index = 8;
 
@@ -4428,7 +4427,7 @@ void PlayerCB_Spindash(Player *player)
 
         s16 pitch2 = pitch;
         if (pitch2 != 0) {
-            pitch = pitch2 - (Q_24_8_TO_INT(pitch << 3));
+            pitch = pitch2 - (I(pitch << 3));
             if (pitch <= 0)
                 pitch = 0;
         }
@@ -4441,8 +4440,8 @@ void PlayerCB_Spindash(Player *player)
             m4aMPlayImmInit(mPlayerInfo);
             m4aMPlayPitchControl(mPlayerInfo, 0xFFFF, (pitch & ~0x7F));
 
-            pitch += Q_24_8(2.0);
-            pitch = MAX(pitch, Q_24_8(8.0));
+            pitch += Q(2.0);
+            pitch = MAX(pitch, Q(8.0));
 
             player->variant = 1;
             player->unk6C = 1;
@@ -4461,9 +4460,9 @@ void PlayerCB_Spindash(Player *player)
         sub_80232D0(player);
 
         if (player->moveState & MOVESTATE_40) {
-            player->speedAirY += Q_24_8(PLAYER_GRAVITY_UNDER_WATER);
+            player->speedAirY += Q(PLAYER_GRAVITY_UNDER_WATER);
         } else {
-            player->speedAirY += Q_24_8(PLAYER_GRAVITY);
+            player->speedAirY += Q(PLAYER_GRAVITY);
         }
 
         player->x += player->speedAirX;
@@ -4472,7 +4471,7 @@ void PlayerCB_Spindash(Player *player)
             player->speedAirY = -player->speedAirY;
         }
 
-        player->speedAirY = MIN(player->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
+        player->speedAirY = MIN(player->speedAirY, Q(PLAYER_AIR_SPEED_MAX));
 
         player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY
                                         : player->y + player->speedAirY;
@@ -4498,9 +4497,9 @@ void PlayerCB_Spindash(Player *player)
         // _08026598
         s32 groundSpeed = player->speedGroundX;
 
-        if ((((player->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) && (groundSpeed != 0)) {
+        if ((((player->rotation + Q(0.375)) & 0xFF) < 0xC0) && (groundSpeed != 0)) {
             u32 sinVal = SIN_24_8((player->rotation) * 4) * 60;
-            s32 sinInt = (s32)(Q_24_8_TO_INT((s32)sinVal));
+            s32 sinInt = (s32)(I((s32)sinVal));
 
             if (groundSpeed > 0) {
                 if (sinInt <= 0) {
@@ -4526,7 +4525,7 @@ void PlayerCB_Spindash(Player *player)
             player->speedAirY = -player->speedAirY;
         }
 
-        player->speedAirY = MIN(player->speedAirY, Q_24_8(PLAYER_AIR_SPEED_MAX));
+        player->speedAirY = MIN(player->speedAirY, Q(PLAYER_AIR_SPEED_MAX));
 
         player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY
                                         : player->y + player->speedAirY;
@@ -4537,7 +4536,7 @@ void PlayerCB_Spindash(Player *player)
             player->unk2A -= 1;
         } else if ((player->rotation + 32) & 0xC0) {
             s32 absGroundSpeed = ABS(player->speedGroundX);
-            if (absGroundSpeed < Q_24_8(1.875)) {
+            if (absGroundSpeed < Q(1.875)) {
                 player->speedGroundX = 0;
 
                 player->moveState |= MOVESTATE_IN_AIR;
@@ -4559,15 +4558,13 @@ void sub_802669C(Player *p)
     p->itemEffect |= PLAYER_ITEM_EFFECT__80;
 
     if (GRAVITY_IS_INVERTED) {
-        newY = sub_801E6D4(Q_24_8_TO_INT(p->y) - p->unk17, Q_24_8_TO_INT(p->x), p->unk38,
-                           -8, NULL, sub_801EE64);
+        newY = sub_801E6D4(I(p->y) - p->unk17, I(p->x), p->unk38, -8, NULL, sub_801EE64);
 
-        newY = p->y - Q_24_8(newY);
+        newY = p->y - Q(newY);
     } else {
-        newY = sub_801E6D4(Q_24_8_TO_INT(p->y) + p->unk17, Q_24_8_TO_INT(p->x), p->unk38,
-                           8, NULL, sub_801EE64);
+        newY = sub_801E6D4(I(p->y) + p->unk17, I(p->x), p->unk38, 8, NULL, sub_801EE64);
 
-        newY = p->y + Q_24_8(newY);
+        newY = p->y + Q(newY);
     }
     p->y = newY;
     p->moveState &= ~MOVESTATE_IN_AIR;
@@ -4589,13 +4586,13 @@ void PlayerCB_8026764(Player *p)
     if (p->unk6E != 0) {
         p->moveState |= MOVESTATE_FACING_LEFT;
 
-        p->speedAirX = MIN(p->speedAirX, -Q_24_8(1.0));
-        p->speedGroundX = MIN(p->speedAirX, -Q_24_8(1.0));
+        p->speedAirX = MIN(p->speedAirX, -Q(1.0));
+        p->speedGroundX = MIN(p->speedAirX, -Q(1.0));
     } else {
         p->moveState &= ~MOVESTATE_FACING_LEFT;
 
-        p->speedAirX = MAX(p->speedAirX, Q_24_8(1.0));
-        p->speedGroundX = MAX(p->speedAirX, Q_24_8(1.0));
+        p->speedAirX = MAX(p->speedAirX, Q(1.0));
+        p->speedGroundX = MAX(p->speedAirX, Q(1.0));
     }
 
     sub_802669C(p);
@@ -4621,7 +4618,7 @@ void PlayerCB_8026810(Player *p)
             p->moveState |= MOVESTATE_FACING_LEFT;
         }
 
-        if (((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0)
+        if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0)
             p->speedGroundX += GET_ROTATED_ACCEL_2(p->rotation);
 
         sub_80232D0(p);
@@ -4691,10 +4688,10 @@ void PlayerCB_8026A4C(Player *p)
         && (p->unk5C & gPlayerControls.jump)
         && (p->character == CHARACTER_SONIC || p->character == CHARACTER_AMY)) {
         p->unk64 = 42;
-        p->speedAirY = -Q_24_8(7.5);
+        p->speedAirY = -Q(7.5);
     } else {
         p->unk64 = 39;
-        p->speedAirY = -Q_24_8(4.875);
+        p->speedAirY = -Q(4.875);
     }
 
     if (p->moveState & MOVESTATE_40)
@@ -4727,14 +4724,14 @@ void sub_8026B64(Player *p)
 
     if ((p->unk2A == 0) && (p->unk5C & (DPAD_LEFT | DPAD_RIGHT))) {
         if ((p->unk5C & DPAD_RIGHT) && (groundSpeed < p->unk44)) {
-            groundSpeed += Q_24_8(1.0 / 32.0);
-        } else if ((p->unk5C & DPAD_LEFT) && (groundSpeed > Q_24_8(1.0))) {
-            groundSpeed -= Q_24_8(1.0 / 32.0);
+            groundSpeed += Q(1.0 / 32.0);
+        } else if ((p->unk5C & DPAD_LEFT) && (groundSpeed > Q(1.0))) {
+            groundSpeed -= Q(1.0 / 32.0);
         }
     }
 
-    if (groundSpeed < Q_24_8(1.0)) {
-        groundSpeed += Q_24_8(1.0 / 32.0);
+    if (groundSpeed < Q(1.0)) {
+        groundSpeed += Q(1.0 / 32.0);
     }
 
     p->speedGroundX = groundSpeed;
@@ -4746,7 +4743,7 @@ void PlayerCB_8026BCC(Player *p)
         sub_8026B64(p);
         sub_8023128(p);
 
-        if (((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+        if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
             s32 accel = GET_ROTATED_ACCEL(p->rotation);
             if (p->speedGroundX)
                 p->speedGroundX += accel;
@@ -4814,30 +4811,30 @@ void PlayerCB_8026E24(Player *p)
         case 0x00: {
             p->moveState |= MOVESTATE_IN_AIR;
             p->speedAirX = 0;
-            p->speedAirY = -Q_24_8(12.0);
-            p->speedGroundX = Q_24_8(12.0);
+            p->speedAirY = -Q(12.0);
+            p->speedGroundX = Q(12.0);
         } break;
 
         case 0x10: {
             p->moveState |= MOVESTATE_IN_AIR;
             p->speedAirX = 0;
-            p->speedAirY = Q_24_8(12.0);
-            p->speedGroundX = Q_24_8(12.0);
+            p->speedAirY = Q(12.0);
+            p->speedGroundX = Q(12.0);
         } break;
 
         case 0x20: {
             p->moveState &= ~MOVESTATE_IN_AIR;
             p->moveState |= MOVESTATE_FACING_LEFT;
-            p->speedAirX = -Q_24_8(12.0);
+            p->speedAirX = -Q(12.0);
             p->speedAirY = 0;
-            p->speedGroundX = -Q_24_8(12.0);
+            p->speedGroundX = -Q(12.0);
         } break;
 
         case 0x30: {
             p->moveState &= ~MOVESTATE_IN_AIR;
-            p->speedAirX = Q_24_8(12.0);
+            p->speedAirX = Q(12.0);
             p->speedAirY = 0;
-            p->speedGroundX = Q_24_8(12.0);
+            p->speedGroundX = Q(12.0);
         } break;
     }
 
@@ -4904,9 +4901,9 @@ void PlayerCB_8026FC8(Player *p)
 void PlayerCB_8027040(Player *p)
 {
     if (p->moveState & MOVESTATE_FACING_LEFT) {
-        p->rotation -= Q_24_8(4.0 / 256.0);
+        p->rotation -= Q(4.0 / 256.0);
     } else {
-        p->rotation += Q_24_8(4.0 / 256.0);
+        p->rotation += Q(4.0 / 256.0);
     }
 
     sub_8023610(p);
@@ -4965,9 +4962,9 @@ void PlayerCB_8027190(Player *p)
                 speed = +u40;
         }
     } else if (speed > 0) {
-        speed -= Q_24_8(8.0 / 256.0);
+        speed -= Q(8.0 / 256.0);
     } else {
-        speed += Q_24_8(8.0 / 256.0);
+        speed += Q(8.0 / 256.0);
     }
     p->speedGroundX = speed;
 
@@ -4981,31 +4978,31 @@ void PlayerCB_8027250(Player *p)
     p->timerInvulnerability = 0x78;
     p->unk5A = 0;
 
-    if (ABS(p->speedAirX) <= Q_24_8(2.5)) {
-        if (p->speedAirX <= Q_24_8(0.625)) {
-            if (p->speedAirX < -Q_24_8(0.625)) {
-                p->speedAirX = +Q_24_8(1.5);
+    if (ABS(p->speedAirX) <= Q(2.5)) {
+        if (p->speedAirX <= Q(0.625)) {
+            if (p->speedAirX < -Q(0.625)) {
+                p->speedAirX = +Q(1.5);
             } else {
                 if ((p->moveState & MOVESTATE_FACING_LEFT)) {
-                    p->speedAirX = +Q_24_8(1.5);
+                    p->speedAirX = +Q(1.5);
                 } else {
-                    p->speedAirX = -Q_24_8(1.5);
+                    p->speedAirX = -Q(1.5);
                 }
             }
         } else {
-            p->speedAirX = -Q_24_8(1.5);
+            p->speedAirX = -Q(1.5);
         }
         p->unk64 = 0x14;
     } else {
         if (p->speedAirX >= 0) {
-            p->speedAirX = +Q_24_8(1.5);
+            p->speedAirX = +Q(1.5);
         } else {
-            p->speedAirX = -Q_24_8(1.5);
+            p->speedAirX = -Q(1.5);
         }
         p->unk64 = 0x15;
     }
 
-    p->speedAirY = -Q_24_8(3.0);
+    p->speedAirY = -Q(3.0);
 
     if (p->moveState & MOVESTATE_40) {
         p->speedAirY >>= 1;
@@ -5068,13 +5065,12 @@ void PlayerCB_80273D0(Player *p)
 
 void PlayerCB_GoalSlowdown(Player *p)
 {
-    u32 playerX = Q_24_8_TO_INT(p->x);
+    u32 playerX = I(p->x);
     u16 playerX2;
 
     playerX2 = playerX - gStageGoalX;
 
-    if (((p->speedGroundX >= Q_24_8(2.0)) && (p->unk5E & DPAD_LEFT))
-        || (playerX2 > 0x579)) {
+    if (((p->speedGroundX >= Q(2.0)) && (p->unk5E & DPAD_LEFT)) || (playerX2 > 0x579)) {
         p->unk64 = 25;
 
         p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
@@ -5084,7 +5080,7 @@ void PlayerCB_GoalSlowdown(Player *p)
     } else {
         s32 grnd = p->speedGroundX;
         if (grnd > 0) {
-            s32 speedOg = p->speedGroundX - Q_24_8(8.0 / 256.0);
+            s32 speedOg = p->speedGroundX - Q(8.0 / 256.0);
             s16 speed = speedOg;
             if (speed <= 0)
                 speed = 0;
@@ -5130,7 +5126,7 @@ void PlayerCB_GoalBrake(Player *p)
             m4aSongNumStop(SE_LONG_BRAKE);
 
             if (gStageGoalX != 0) {
-                u16 playerX = Q_24_8_TO_INT(p->x) - gStageGoalX;
+                u16 playerX = I(p->x) - gStageGoalX;
                 s32 r8 = 0;
 
                 if (playerX <= 730)
@@ -5143,8 +5139,7 @@ void PlayerCB_GoalBrake(Player *p)
                 if (r8 != 0) {
                     INCREMENT_SCORE(r8);
 
-                    CreateStageGoalBonusPointsAnim(Q_24_8_TO_INT(p->x),
-                                                   Q_24_8_TO_INT(p->y), r8);
+                    CreateStageGoalBonusPointsAnim(I(p->x), I(p->y), r8);
                 }
             }
         }
@@ -5155,7 +5150,7 @@ void PlayerCB_GoalBrake(Player *p)
         }
     }
 
-    p->speedGroundX -= Q_24_8(0.125);
+    p->speedGroundX -= Q(0.125);
     if (p->speedGroundX < 0)
         p->speedGroundX = 0;
 
@@ -5224,12 +5219,12 @@ void PlayerCB_80278D4(Player *p)
 
 void PlayerCB_80279F8(Player *p)
 {
-    if (p->speedGroundX > Q_24_8(5.5)) {
-        p->speedGroundX -= Q_24_8(0.5);
-    } else if (p->speedAirX < Q_24_8(4.75)) {
-        p->speedGroundX += Q_24_8(0.25);
+    if (p->speedGroundX > Q(5.5)) {
+        p->speedGroundX -= Q(0.5);
+    } else if (p->speedAirX < Q(4.75)) {
+        p->speedGroundX += Q(0.25);
     } else {
-        p->speedGroundX = Q_24_8(5.0);
+        p->speedGroundX = Q(5.0);
     }
 
     if (p->unk72 < INT16_MAX)
@@ -5262,7 +5257,7 @@ void PlayerCB_80279F8(Player *p)
     if (p->moveState & MOVESTATE_4000000) {
         p->unk5A = 1;
         p->unk5C = 0x10;
-        p->speedGroundX = Q_24_8(10.0);
+        p->speedGroundX = Q(10.0);
         p->unk64 = 9;
         sub_801583C();
 
@@ -5290,14 +5285,14 @@ void PlayerCB_8027C5C(Player *p)
 {
     // TODO: Maybe this is actually to be considered the p's
     //       x-position relative to a sprite region?
-    s32 playerX = Q_24_8_TO_INT(p->x) - gCamera.x;
+    s32 playerX = I(p->x) - gCamera.x;
 
     if (playerX > 0x78) {
-        p->speedGroundX = Q_24_8(4.5);
+        p->speedGroundX = Q(4.5);
     } else if (playerX < 0x78) {
-        p->speedGroundX = Q_24_8(5.5);
+        p->speedGroundX = Q(5.5);
     } else {
-        p->speedGroundX = Q_24_8(5.0);
+        p->speedGroundX = Q(5.0);
     }
 
     sub_80232D0(p);
@@ -5319,7 +5314,7 @@ void PlayerCB_8027D3C(Player *p)
     u32 cmpX;
     s32 index = (0x40 + (r8 * 32));
 
-    cmpX = Q_24_8(*pCmpX + index);
+    cmpX = Q(*pCmpX + index);
     if (p->x < cmpX) {
         p->unk5C = DPAD_RIGHT;
     } else if (p->x > cmpX) {
@@ -5329,7 +5324,7 @@ void PlayerCB_8027D3C(Player *p)
     }
 
     sub_802966C(p);
-    if (((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+    if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
         s32 acceleration = GET_ROTATED_ACCEL(p->rotation);
 
         if (p->speedGroundX != 0) {
@@ -5465,7 +5460,7 @@ void sub_8028478(Player *p)
         PLAYERFN_UPDATE_ROTATION(p);
         PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
     } else {
-        if (((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+        if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
             s32 acceleration = GET_ROTATED_ACCEL(p->rotation);
 
             if (p->speedGroundX != 0) {
@@ -5560,10 +5555,10 @@ void PlayerCB_80287AC(Player *p)
 
         if (IS_SINGLE_PLAYER) {
             if (dir == TRICK_DIR_FORWARD && character == CHARACTER_SONIC) {
-                sub_8028640(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), 0);
+                sub_8028640(I(p->x), I(p->y), 0);
             }
             if (dir == TRICK_DIR_UP && character == CHARACTER_KNUCKLES) {
-                sub_8028640(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), 1);
+                sub_8028640(I(p->x), I(p->y), 1);
             }
             if (dir == TRICK_DIR_FORWARD && character == CHARACTER_AMY) {
                 CreateHeartParticles();
@@ -5719,7 +5714,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
     if ((gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1))
         || (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_2))) {
         p->unk64 = 37;
-    } else if (ABS(p->speedAirX) < Q_24_8(2.5)) {
+    } else if (ABS(p->speedAirX) < Q(2.5)) {
         p->unk64 = 38;
     } else {
         p->unk64 = 39;
@@ -5739,7 +5734,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
         case 2: {
             p->speedAirX = -sSpringAccelX[r6];
 
-            if (!(p->moveState & MOVESTATE_IN_AIR) && p->speedAirX < -Q_24_8(9.0)) {
+            if (!(p->moveState & MOVESTATE_IN_AIR) && p->speedAirX < -Q(9.0)) {
                 p->unk5A = 1;
             }
         } break;
@@ -5747,7 +5742,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
         case 3: {
             p->speedAirX = +sSpringAccelX[r6];
 
-            if (!(p->moveState & MOVESTATE_IN_AIR) && p->speedAirX > +Q_24_8(9.0)) {
+            if (!(p->moveState & MOVESTATE_IN_AIR) && p->speedAirX > +Q(9.0)) {
                 p->unk5A = 1;
             }
         } break;
@@ -5797,10 +5792,10 @@ void PlayerCB_TouchNormalSpring(Player *p)
         p->speedAirY /= 2;
     }
 
-    if (p->speedAirX > Q_24_8(1.25)) {
+    if (p->speedAirX > Q(1.25)) {
         p->moveState &= ~MOVESTATE_FACING_LEFT;
     }
-    if (p->speedAirX < -Q_24_8(1.25)) {
+    if (p->speedAirX < -Q(1.25)) {
         p->moveState |= MOVESTATE_FACING_LEFT;
     }
 
@@ -5832,10 +5827,10 @@ void PlayerCB_8029158(Player *p)
     p->unk64 = 40;
     p->unk66 = -1;
 
-    if (p->speedAirX > Q_24_8(1.25)) {
+    if (p->speedAirX > Q(1.25)) {
         p->moveState &= ~MOVESTATE_FACING_LEFT;
     }
-    if (p->speedAirX < -Q_24_8(1.25)) {
+    if (p->speedAirX < -Q(1.25)) {
         p->moveState |= MOVESTATE_FACING_LEFT;
     }
 
@@ -5852,8 +5847,8 @@ void PlayerCB_8029158(Player *p)
 
             res = -ABS(groundSpeed) / 6;
 
-            p->speedAirX = r5 + Q_24_8(3.75);
-            p->speedAirY = res + -Q_24_8(3.75);
+            p->speedAirX = r5 + Q(3.75);
+            p->speedAirY = res + -Q(3.75);
         } break;
 
         case 1:
@@ -5869,8 +5864,8 @@ void PlayerCB_8029158(Player *p)
 
             res = -ABS(groundSpeed) / 6;
 
-            p->speedAirX = r5 + Q_24_8(3.75);
-            p->speedAirY = res + -Q_24_8(7.50);
+            p->speedAirX = r5 + Q(3.75);
+            p->speedAirY = res + -Q(7.50);
         } break;
 
         case 3: {
@@ -5885,8 +5880,8 @@ void PlayerCB_8029158(Player *p)
 
             res = -ABS(groundSpeed) / 6;
 
-            p->speedAirX = r5 + Q_24_8(5.625);
-            p->speedAirY = res + -Q_24_8(2.50);
+            p->speedAirX = r5 + Q(5.625);
+            p->speedAirY = res + -Q(2.50);
         } break;
 
         case 4:
@@ -5902,8 +5897,8 @@ void PlayerCB_8029158(Player *p)
 
             res = -ABS(groundSpeed) / 6;
 
-            p->speedAirX = r5 + Q_24_8(11.25);
-            p->speedAirY = res + -Q_24_8(2.50);
+            p->speedAirX = r5 + Q(11.25);
+            p->speedAirY = res + -Q(2.50);
         } break;
     }
 
@@ -5993,7 +5988,7 @@ bool32 sub_80294F4(Player *p)
                     } else {
                         p->moveState |= MOVESTATE_20000000;
                         p->unk64 = 18;
-                        sub_8011B88(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), 1);
+                        sub_8011B88(I(p->x), I(p->y), 1);
                         song = SE_SONIC_INSTA_SHIELD;
                         goto sub_80294F4_PlaySfx;
                     }
@@ -6058,7 +6053,7 @@ NONMATCH("asm/non_matching/game/playercb__sub_802966C.inc", void sub_802966C(Pla
                     p->unk58 += u48;
                 }
                 p->moveState &= ~MOVESTATE_FACING_LEFT;
-            } else if (p->speedGroundX >= Q_24_8(2.0)) {
+            } else if (p->speedGroundX >= Q(2.0)) {
             // _080296D2
             argh:
                 if ((p->unk64 == 7) || (p->unk64 == 8)) {
@@ -6092,7 +6087,7 @@ NONMATCH("asm/non_matching/game/playercb__sub_802966C.inc", void sub_802966C(Pla
                 p->moveState |= MOVESTATE_FACING_LEFT;
             } else {
                 // _08029770
-                if (p->speedGroundX <= -Q_24_8(2.0)) {
+                if (p->speedGroundX <= -Q(2.0)) {
                     if ((p->unk64 == 7) || (p->unk64 == 8)) {
                         r6 = p->unk64;
                     } else {
@@ -6136,7 +6131,7 @@ NONMATCH("asm/non_matching/game/playercb__sub_802966C.inc", void sub_802966C(Pla
         // _0802980C
         s32 grndSpeed = p->speedGroundX;
         if (grndSpeed > 0) {
-            s16 val = grndSpeed - Q_24_8(8.0 / 256.0);
+            s16 val = grndSpeed - Q(8.0 / 256.0);
             if (val <= 0) {
                 r6 = 0;
                 val = 0;
@@ -6146,7 +6141,7 @@ NONMATCH("asm/non_matching/game/playercb__sub_802966C.inc", void sub_802966C(Pla
             p->speedGroundX = val;
         } else if (grndSpeed < 0) {
             // _08029820
-            s16 val = grndSpeed + Q_24_8(8.0 / 256.0);
+            s16 val = grndSpeed + Q(8.0 / 256.0);
             if (val >= 0) {
                 r6 = 0;
                 val = 0;
@@ -6202,7 +6197,7 @@ void sub_80298DC(Player *p)
         if (!(p->moveState & MOVESTATE_IN_AIR)) {
             p->unk58 = gUnknown_080D6916[p->unk52];
 
-            if (ABS(p->speedGroundX) < Q_24_8(4.5)) {
+            if (ABS(p->speedGroundX) < Q(4.5)) {
                 p->unk5A = FALSE;
                 p->unk58 = 0;
             }
@@ -6228,15 +6223,15 @@ void sub_8029990(Player *p)
 {
     s32 absSpeed = ABS(p->speedGroundX);
 
-    if (absSpeed <= Q_24_8(1.25)) {
+    if (absSpeed <= Q(1.25)) {
         p->unk54 = 0;
-    } else if (absSpeed <= Q_24_8(2.5)) {
+    } else if (absSpeed <= Q(2.5)) {
         p->unk54 = 1;
-    } else if (absSpeed <= Q_24_8(4.0)) {
+    } else if (absSpeed <= Q(4.0)) {
         p->unk54 = 2;
-    } else if (absSpeed <= Q_24_8(9.0)) {
+    } else if (absSpeed <= Q(9.0)) {
         p->unk54 = 3;
-    } else if (absSpeed <= Q_24_8(10.0)) {
+    } else if (absSpeed <= Q(10.0)) {
         p->unk54 = 4;
     } else {
         p->unk54 = 5;
@@ -6429,8 +6424,8 @@ s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
     if (out == NULL)
         out = &dummyInt;
 
-    playerY2 = Q_24_8_TO_INT(p->y) + p->unk17;
-    playerX2 = Q_24_8_TO_INT(p->x) - (2 + p->unk16);
+    playerY2 = I(p->y) + p->unk17;
+    playerX2 = I(p->x) - (2 + p->unk16);
 
     mask = p->unk38;
     if (p->speedAirY < 0) {
@@ -6439,8 +6434,8 @@ s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
 
     r5 = sub_801E4E4(playerY2, playerX2, mask, 8, &anotherByte, sub_801EE64);
 
-    playerY = Q_24_8_TO_INT(p->y) + p->unk17;
-    playerX = Q_24_8_TO_INT(p->x) + (2 + p->unk16);
+    playerY = I(p->y) + p->unk17;
+    playerX = I(p->x) + (2 + p->unk16);
 
     mask = p->unk38;
     if (p->speedAirY < 0) {
@@ -6464,7 +6459,7 @@ s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
 
 void sub_8029C84(Player *p)
 {
-    s32 rot = p->rotation + Q_24_8(0.25);
+    s32 rot = p->rotation + Q(0.25);
 
     if ((rot & UINT8_MAX) > INT8_MAX)
         p->speedGroundX = 0;
@@ -6473,7 +6468,7 @@ void sub_8029C84(Player *p)
 void sub_8029CA0(Player *p)
 {
     s32 rot = p->rotation;
-    if (((rot + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+    if (((rot + Q(0.375)) & 0xFF) < 0xC0) {
         rot = GET_ROTATED_ACCEL(rot);
 
         if (p->speedGroundX != 0) {
@@ -6485,7 +6480,7 @@ void sub_8029CA0(Player *p)
 void sub_8029CE0(Player *p)
 {
     s32 rot = p->rotation;
-    if (((rot + Q_24_8(0.375)) & 0xFF) < 0xC0) {
+    if (((rot + Q(0.375)) & 0xFF) < 0xC0) {
         s32 other = GET_ROTATED_ACCEL_2(rot);
 
         p->speedGroundX += other;
@@ -6500,8 +6495,8 @@ void sub_8029D14(Player *p)
     s32 grndSpeed = p->speedGroundX;
 #endif
 
-    if ((((p->rotation + Q_24_8(0.375)) & 0xFF) < 0xC0) && grndSpeed != 0) {
-        s32 accelInt = Q_24_8_TO_INT(GET_ROTATED_ACCEL_3(p->rotation));
+    if ((((p->rotation + Q(0.375)) & 0xFF) < 0xC0) && grndSpeed != 0) {
+        s32 accelInt = I(GET_ROTATED_ACCEL_3(p->rotation));
 
         if (grndSpeed > 0) {
             if (accelInt <= 0) {
@@ -6528,10 +6523,10 @@ bool32 sub_8029DE8(Player *p)
 
     if (!(p->moveState & MOVESTATE_80000000)) {
         if (GRAVITY_IS_INVERTED) {
-            if (playerY <= Q_24_8(cam->minY))
+            if (playerY <= Q(cam->minY))
                 return TRUE;
         } else {
-            if (playerY >= Q_24_8(cam->maxY) - 1)
+            if (playerY >= Q(cam->maxY) - 1)
                 return TRUE;
         }
     }
@@ -6546,10 +6541,10 @@ bool32 sub_8029E24(Player *p)
 
     if (!(p->moveState & MOVESTATE_80000000)) {
         if (GRAVITY_IS_INVERTED) {
-            if (playerY <= Q_24_8(cam->y - (DISPLAY_HEIGHT / 2)))
+            if (playerY <= Q(cam->y - (DISPLAY_HEIGHT / 2)))
                 return TRUE;
         } else {
-            if (playerY >= Q_24_8(cam->y) + Q_24_8(DISPLAY_HEIGHT + 80) - 1)
+            if (playerY >= Q(cam->y) + Q(DISPLAY_HEIGHT + 80) - 1)
                 return TRUE;
         }
     }
@@ -6563,12 +6558,12 @@ bool32 sub_8029E6C(Player *p)
 
     if (p->unk5E & gPlayerControls.jump) {
         if (GRAVITY_IS_INVERTED) {
-            rot += Q_24_8(0.25);
+            rot += Q(0.25);
             rot = -rot;
-            rot -= Q_24_8(0.25);
+            rot -= Q(0.25);
         }
 
-        if (sub_8022F58(rot + Q_24_8(0.5), p) > 3) {
+        if (sub_8022F58(rot + Q(0.5), p) > 3) {
             PLAYERFN_SET(PlayerCB_Jump);
             return TRUE;
         }
@@ -6606,7 +6601,7 @@ void sub_8029FA4(Player *p)
             u17 = -u17;
         }
 
-        CreateBrakingDustEffect(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y) + u17);
+        CreateBrakingDustEffect(I(p->x), I(p->y) + u17);
     }
 }
 
@@ -6667,11 +6662,11 @@ bool32 sub_802A0C8(Player *p)
 bool32 sub_802A0FC(Player *p)
 {
     if ((p->unk5C & DPAD_ANY) == DPAD_DOWN) {
-        if ((p->speedGroundX == 0) && (((p->rotation + Q_24_8(0.125)) & 0xC0) == 0)
+        if ((p->speedGroundX == 0) && (((p->rotation + Q(0.125)) & 0xC0) == 0)
             && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
             PLAYERFN_SET(PlayerCB_802A228);
             return TRUE;
-        } else if (((u16)(p->speedGroundX + (Q_24_8(0.5) - 1)) > Q_24_8(1.0) - 2)
+        } else if (((u16)(p->speedGroundX + (Q(0.5) - 1)) > Q(1.0) - 2)
                    && !(p->moveState
                         & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
             PLAYERFN_SET(PlayerCB_8025A0C);
@@ -6699,14 +6694,14 @@ void sub_802A1C8(Player *p)
 {
     u32 unk52 = p->unk52;
     if (p->unk5A) {
-        p->unk44 = Q_24_8(12.0);
-        p->unk40 = Q_24_8(15.0);
+        p->unk44 = Q(12.0);
+        p->unk40 = Q(15.0);
     } else if (p->moveState & MOVESTATE_4) {
-        p->unk44 = Q_24_8(6.0);
-        p->unk40 = Q_24_8(15.0);
+        p->unk44 = Q(6.0);
+        p->unk40 = Q(15.0);
     } else {
-        p->unk44 = Q_24_8(6.0);
-        p->unk40 = Q_24_8(9.0);
+        p->unk44 = Q(6.0);
+        p->unk40 = Q(9.0);
     }
 
     p->unk48 = gUnknown_080D6902[unk52][0];
@@ -6742,7 +6737,7 @@ bool32 sub_802A2A8(Player *p)
 {
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
         || (p->moveState & (MOVESTATE_8000 | MOVESTATE_400))
-        || ((p->rotation + Q_24_8(0.25)) << 24 <= 0)) {
+        || ((p->rotation + Q(0.25)) << 24 <= 0)) {
         return FALSE;
     } else if (p->unk5E & gPlayerControls.attack) {
         PLAYERFN_SET(PlayerCB_802A714);
@@ -6909,21 +6904,21 @@ void sub_802A660(Player *p)
                 s32 grnd = p->speedGroundX;
                 if (grnd <= 0) {
                     p->moveState |= MOVESTATE_FACING_LEFT;
-                } else if ((grnd - Q_24_8(0.09375)) < 0) {
-                    s32 val = Q_24_8(0.375);
+                } else if ((grnd - Q(0.09375)) < 0) {
+                    s32 val = Q(0.375);
                     p->speedGroundX = -val;
                 } else {
-                    p->speedGroundX = (grnd - Q_24_8(0.09375));
+                    p->speedGroundX = (grnd - Q(0.09375));
                 }
             }
         } else {
             s32 grnd = p->speedGroundX;
             if (grnd >= 0) {
                 p->moveState &= ~MOVESTATE_FACING_LEFT;
-            } else if ((grnd + Q_24_8(0.09375)) > 0) {
-                p->speedGroundX = +Q_24_8(0.375);
+            } else if ((grnd + Q(0.09375)) > 0) {
+                p->speedGroundX = +Q(0.375);
             } else {
-                p->speedGroundX = (grnd + Q_24_8(0.09375));
+                p->speedGroundX = (grnd + Q(0.09375));
             }
         }
     }

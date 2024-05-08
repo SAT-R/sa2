@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "sprite.h"
+#include "packed.h"
 
 #define AnimCommandSizeInWords(_structType) ((sizeof(_structType)) / sizeof(s32))
 

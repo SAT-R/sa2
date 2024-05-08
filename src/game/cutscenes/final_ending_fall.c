@@ -195,8 +195,8 @@ void CreateFinalEndingFallCutScene(void)
     fade = &scene->unk350;
     fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
     fade->window = SCREEN_FADE_USE_WINDOW_1;
-    fade->brightness = Q_24_8(0);
-    fade->speed = Q_24_8(5. / 16.);
+    fade->brightness = Q(0);
+    fade->speed = Q(5. / 16.);
     fade->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
     fade->bldAlpha = 0;
 
@@ -474,7 +474,7 @@ void sub_8091E60(void)
     struct FinalEndingFallCutScene *scene = TASK_DATA(gCurTask);
     ScreenFade *fade = &scene->unk350;
 
-    fade->speed = Q_24_8(5. / 16.);
+    fade->speed = Q(5. / 16.);
     fade->flags = 1;
 
     sub_8091F68(scene);
@@ -773,7 +773,7 @@ void sub_8092690(void)
     sub_80923AC(scene);
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         if (scene->unk35C == 0) {
             gCurTask->main = sub_8092780;
         } else {
@@ -797,7 +797,7 @@ void sub_8092714(void)
     sub_80923AC(scene);
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         gCurTask->main = sub_8091CB0;
     }
 }
@@ -824,7 +824,7 @@ void CreateFinalEndingLandingCutScene(void);
 
 void sub_80927E8(void)
 {
-    struct Task *t = gCurTask;
+    struct Task UNUSED *t = gCurTask;
     CreateFinalEndingLandingCutScene();
     TaskDestroy(gCurTask);
 }

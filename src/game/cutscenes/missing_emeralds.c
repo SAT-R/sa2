@@ -127,8 +127,8 @@ void CreateMissingChaosEmaraldsCutScene(void)
     }
     fade = &scene->unkB0;
     fade->window = SCREEN_FADE_USE_WINDOW_1;
-    fade->brightness = Q_24_8(0);
-    fade->speed = Q_24_8(0.5);
+    fade->brightness = Q(0);
+    fade->speed = Q(0.5);
     fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
     fade->bldAlpha = 0;
 

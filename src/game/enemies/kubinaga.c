@@ -117,14 +117,11 @@ static void sub_80524D0(void)
                && gPlayer.y > k->spawnY - 0x6400 && gPlayer.y < k->spawnY + 0x6400) {
         k->unkBE = 0;
         if (k->unkC0 == 0) {
-            k->unkBA = sub_8004418((Q_24_8_TO_INT(gPlayer.y) - pos.y) + 10,
-                                   Q_24_8_TO_INT(gPlayer.x) - pos.x);
+            k->unkBA = sub_8004418((I(gPlayer.y) - pos.y) + 10, I(gPlayer.x) - pos.x);
         } else if ((k->unkC0 & 1)) {
-            k->unkBA = sub_8004418((Q_24_8_TO_INT(gPlayer.y) - pos.y),
-                                   (Q_24_8_TO_INT(gPlayer.x) - pos.x) + 10);
+            k->unkBA = sub_8004418((I(gPlayer.y) - pos.y), (I(gPlayer.x) - pos.x) + 10);
         } else {
-            k->unkBA = sub_8004418((Q_24_8_TO_INT(gPlayer.y) - pos.y),
-                                   (Q_24_8_TO_INT(gPlayer.x) - pos.x) - 10);
+            k->unkBA = sub_8004418((I(gPlayer.y) - pos.y), (I(gPlayer.x) - pos.x) - 10);
         }
 
         k->headX = k->spawnX;
@@ -152,10 +149,10 @@ static void sub_80526C8(void)
     Vec2_32 pos;
     Vec2_32 pos2;
 
-    pos.x = Q_24_8_TO_INT(k->spawnX);
-    pos.y = Q_24_8_TO_INT(k->spawnY);
-    pos2.x = Q_24_8_TO_INT(k->headX);
-    pos2.y = Q_24_8_TO_INT(k->headY);
+    pos.x = I(k->spawnX);
+    pos.y = I(k->spawnY);
+    pos2.x = I(k->headX);
+    pos2.y = I(k->headY);
 
     sBase->x = pos.x - gCamera.x;
     sBase->y = pos.y - gCamera.y;
@@ -201,10 +198,10 @@ static void sub_80528AC(void)
     Vec2_32 pos;
     Vec2_32 pos2;
 
-    pos.x = Q_24_8_TO_INT(k->spawnX);
-    pos.y = Q_24_8_TO_INT(k->spawnY);
-    pos2.x = Q_24_8_TO_INT(k->headX);
-    pos2.y = Q_24_8_TO_INT(k->headY);
+    pos.x = I(k->spawnX);
+    pos.y = I(k->spawnY);
+    pos2.x = I(k->headX);
+    pos2.y = I(k->headY);
 
     sBase->x = pos.x - gCamera.x;
     sBase->y = pos.y - gCamera.y;
@@ -268,10 +265,10 @@ static void sub_8052AEC(void)
     Vec2_32 pos;
     Vec2_32 pos2;
 
-    pos.x = Q_24_8_TO_INT(k->spawnX);
-    pos.y = Q_24_8_TO_INT(k->spawnY);
-    pos2.x = Q_24_8_TO_INT(k->headX);
-    pos2.y = Q_24_8_TO_INT(k->headY);
+    pos.x = I(k->spawnX);
+    pos.y = I(k->spawnY);
+    pos2.x = I(k->headX);
+    pos2.y = I(k->headY);
 
     sBase->x = pos.x - gCamera.x;
     sBase->y = pos.y - gCamera.y;
@@ -321,8 +318,8 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
 
     for (i = 0; i < val; i++) {
 
-        pos.x = Q_24_8_TO_INT((i + 1) * cos + k->spawnX);
-        pos.y = Q_24_8_TO_INT((i + 1) * sin + k->spawnY);
+        pos.x = I((i + 1) * cos + k->spawnX);
+        pos.y = I((i + 1) * sin + k->spawnY);
         sNeck->x = pos.x - gCamera.x;
         if (k->unkC0 == 0) {
             sNeck->y = (pos.y - gCamera.y) - 10;
@@ -338,26 +335,26 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
     k->headX = ((COS(k->unkBA) * Q_8_8_TO_INT(k->unkBE)) >> 6) + k->spawnX;
     k->headY = ((SIN(k->unkBA) * Q_8_8_TO_INT(k->unkBE)) >> 6) + k->spawnY;
 
-    pos.x = Q_24_8_TO_INT(k->headX);
-    pos.y = Q_24_8_TO_INT(k->headY);
+    pos.x = I(k->headX);
+    pos.y = I(k->headY);
 
     sHead->x = pos.x - gCamera.x;
 
     if (k->unkC0 == 0) {
         sHead->y = (pos.y - gCamera.y) - 10;
-        transform->rotation = sub_8004418(Q_24_8_TO_INT(gPlayer.y) - pos.y + 10,
-                                          Q_24_8_TO_INT(gPlayer.x) - pos.x);
+        transform->rotation
+            = sub_8004418(I(gPlayer.y) - pos.y + 10, I(gPlayer.x) - pos.x);
     } else {
         if (k->unkC0 & 1) {
 
             sHead->x = sHead->x + 10;
-            transform->rotation = sub_8004418(Q_24_8_TO_INT(gPlayer.y) - pos.y,
-                                              (Q_24_8_TO_INT(gPlayer.x) - pos.x) + 10);
+            transform->rotation
+                = sub_8004418(I(gPlayer.y) - pos.y, (I(gPlayer.x) - pos.x) + 10);
         } else {
 
             sHead->x = sHead->x - 10;
-            transform->rotation = sub_8004418(Q_24_8_TO_INT(gPlayer.y) - pos.y,
-                                              (Q_24_8_TO_INT(gPlayer.x) - pos.x) - 10);
+            transform->rotation
+                = sub_8004418(I(gPlayer.y) - pos.y, (I(gPlayer.x) - pos.x) - 10);
         }
         sHead->y = (pos.y - gCamera.y);
     }

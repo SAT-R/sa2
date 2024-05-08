@@ -90,7 +90,7 @@ void sub_806160C(void)
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)
         && (sub_800C204(s, screenX, screenY, 0, &gPlayer, 0) == 1)
-        && (gPlayer.speedAirY > 0) && (Q_24_8_TO_INT(gPlayer.y) + 4) < screenY) {
+        && (gPlayer.speedAirY > 0) && (I(gPlayer.y) + 4) < screenY) {
         gPlayer.unk64 = 0x32;
         gPlayer.transition = PLTRANS_PT5;
 
@@ -102,9 +102,8 @@ void sub_806160C(void)
         bar->unk3D = (bar->unk3C * 5) + 10;
         bar->unk3E = gUnknown_080D94E8[bar->unk3C];
 
-        bar->unk40 = screenX - Q_24_8_TO_INT(gPlayer.x) >= 0
-            ? screenX - Q_24_8_TO_INT(gPlayer.x)
-            : Q_24_8_TO_INT(gPlayer.x) - screenX;
+        bar->unk40 = screenX - I(gPlayer.x) >= 0 ? screenX - I(gPlayer.x)
+                                                 : I(gPlayer.x) - screenX;
 
         gCurTask->main = sub_80617A4;
         gPlayer.moveState |= MOVESTATE_400000;

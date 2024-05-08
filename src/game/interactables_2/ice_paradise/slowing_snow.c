@@ -8,7 +8,7 @@
 #include "game/entity.h"
 #include "sprite.h"
 
-typedef struct {
+PACKED(Interactable_SlowingSnow, {
     /* 0x00 */ u8 x;
     /* 0x01 */ u8 y;
     /* 0x02 */ u8 index;
@@ -17,7 +17,7 @@ typedef struct {
     /* 0x04 */ s8 offsetY;
     /* 0x05 */ u8 width;
     /* 0x06 */ u8 height;
-} Interactable_SlowingSnow PACKED;
+});
 
 typedef struct {
     /* 0x00 */ s16 left;
@@ -62,8 +62,8 @@ static bool32 PlayerIsTouchingSnow(Sprite_SlowingSnow *snow)
         if (!(gPlayer.moveState & MOVESTATE_IN_AIR)) {
             s16 snowScreenX = snow->posX - gCamera.x;
             s16 snowScreenY = snow->posY - gCamera.y;
-            s16 playerScreenX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-            s16 playerScreenY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+            s16 playerScreenX = I(gPlayer.x) - gCamera.x;
+            s16 playerScreenY = I(gPlayer.y) - gCamera.y;
 
             if (((snowScreenX + snow->left) <= playerScreenX)
                 && ((snowScreenX + snow->left) + (snow->right - snow->left)

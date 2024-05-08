@@ -201,6 +201,30 @@ extern u8 gUnknown_030055D8;
         }                                                                               \
     }
 
+// if-else only matches like this in some cases
+#define INCREMENT_SCORE_B(incVal)                                                       \
+    {                                                                                   \
+        s32 divResA, divResB;                                                           \
+        s32 oldScore = gLevelScore;                                                     \
+        gLevelScore += incVal;                                                          \
+                                                                                        \
+        divResA = Div(gLevelScore, 50000);                                              \
+        divResB = Div(oldScore, 50000);                                                 \
+                                                                                        \
+        if ((divResA != divResB) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {           \
+            u16 lives = divResA - divResB;                                              \
+            lives += gNumLives;                                                         \
+                                                                                        \
+            if (lives > 255) {                                                          \
+                gNumLives = 255;                                                        \
+            } else {                                                                    \
+                gNumLives = lives;                                                      \
+            }                                                                           \
+                                                                                        \
+            gUnknown_030054A8.unk3 = 16;                                                \
+        }                                                                               \
+    }
+
 #define INCREMENT_SCORE(incVal)                                                         \
     {                                                                                   \
         s32 divResA, divResB;                                                           \

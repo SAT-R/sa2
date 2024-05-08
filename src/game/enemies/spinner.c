@@ -34,8 +34,8 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     spinner->base.spriteX = me->x;
     spinner->base.spriteY = spriteY;
 
-    spinner->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-    spinner->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
+    spinner->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
+    spinner->spawnY = Q(TO_WORLD_POS(me->y, spriteRegionY));
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -73,13 +73,13 @@ void Task_EnemySpinner(void)
         if ((s2->hitboxes[0].index != -1) && s->hitboxes[1].index != -1) {
             s32 x1, x2;
             x1 = pos.x + s->hitboxes[1].left;
-            x2 = Q_24_8_TO_INT(p->x) + s2->hitboxes[0].left;
+            x2 = I(p->x) + s2->hitboxes[0].left;
             if ((x1 <= x2 && x1 + (s->hitboxes[1].right - s->hitboxes[1].left) >= x2)
                 || (x1 >= x2
                     && x2 + (s2->hitboxes[0].right - s2->hitboxes[0].left) >= x1)) {
                 s32 y1, y2;
                 y1 = pos.y + s->hitboxes[1].top;
-                y2 = Q_24_8_TO_INT(p->y) + s2->hitboxes[0].top;
+                y2 = I(p->y) + s2->hitboxes[0].top;
                 if ((y1 <= y2 && y1 + (s->hitboxes[1].bottom - s->hitboxes[1].top) >= y2)
                     || (y1 >= y2
                         && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {

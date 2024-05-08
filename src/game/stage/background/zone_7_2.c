@@ -20,7 +20,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone7Acts12.inc",
 {
     // NOTE: GCC-Hack
     // u32 act = (gCurrentLevel - LEVEL_INDEX(ZONE_7, ACT_1)) % 2
-    u32 act = !!(gCurrentLevel ^ (LEVEL_INDEX(ZONE_7, ACT_1)));
+    u32 act = (gCurrentLevel ^ (LEVEL_INDEX(ZONE_7, ACT_1))) ? ACT_2 : ACT_1;
     u32 bgId = 0;
     u8 regionId = 0;
 

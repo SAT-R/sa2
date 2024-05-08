@@ -222,7 +222,11 @@ NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc"
     Platform_D1C *platform = TASK_DATA(t);
 
     // Hack for better match
+#ifndef NON_MATCHING
     register s32 r6 asm("r6");
+#else
+    s32 r6;
+#endif
 
     {
         Sprite *s = &platform->unk0;
@@ -336,7 +340,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s = &platform->unk0;
     transform = &platform->unkC0;
 
-    transform->y += Q_24_8_TO_INT(platform->unkF2);
+    transform->y += I(platform->unkF2);
 
     x = transform->x;
     y = transform->y;
@@ -366,7 +370,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s = &platform->unk30;
     transform = &platform->unkCC;
 
-    transform->y += Q_24_8_TO_INT(platform->unkF2);
+    transform->y += I(platform->unkF2);
 
     x = transform->x;
     y = transform->y;
@@ -392,7 +396,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s = &platform->unk60;
     transform = &platform->unkD8;
 
-    transform->y += Q_24_8_TO_INT(platform->unkF2);
+    transform->y += I(platform->unkF2);
 
     x = transform->x;
     y = transform->y;
@@ -417,7 +421,7 @@ static void Task_PlatformBreakParticlesMain(void)
     s = &platform->unk90;
     transform = &platform->unkE4;
 
-    transform->y += Q_24_8_TO_INT(platform->unkF2);
+    transform->y += I(platform->unkF2);
 
     x = transform->x;
     y = transform->y;

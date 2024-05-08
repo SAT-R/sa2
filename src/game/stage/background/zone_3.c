@@ -138,7 +138,7 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
     Vec2_16 *cursorStack;
     u8 *cursor;
     s32 pFlags;
-#ifdef NON_MATCHING
+#ifndef NON_MATCHING
     register s16 sl asm("sl") = 0;
     register u16 *bgBuffer asm("r5") = gBgOffsetsHBlank;
     register s16 r3 asm("r3") = (Div(b, 60) << 16) >> 16;
@@ -158,7 +158,7 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
             if (unk->unk408 == 0) {
                 unk->unk408 = a;
             }
-            unk->unk408 += Q_24_8_TO_INT(gPlayer.speedGroundX);
+            unk->unk408 += I(gPlayer.speedGroundX);
             a = unk->unk408;
         } else {
             Unk3000408 *unk = IWRAM_PTR(NULL);

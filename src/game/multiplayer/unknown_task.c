@@ -40,7 +40,7 @@ void Task_80188FC(void)
         } else {
             recv = &gMultiSioRecv[i].pat0;
             if (0x5000 == recv->unk0
-                && something == 0 != (!(recv->unk8[0] & (0x1000 << id)))) {
+                && (something == 0) != (!(recv->unk8[0] & (0x1000 << id)))) {
                 return;
             }
         }
@@ -131,8 +131,8 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk60 = 30;
                         gPlayer.timerInvulnerability = 120;
-                        gCamera.x = (Q_24_8_TO_INT(gPlayer.x) + gCamera.shiftX) - 0x78;
-                        gCamera.y = (Q_24_8_TO_INT(gPlayer.y) + gCamera.shiftY) - 0x50;
+                        gCamera.x = (I(gPlayer.x) + gCamera.shiftX) - 0x78;
+                        gCamera.y = (I(gPlayer.y) + gCamera.shiftY) - 0x50;
                         m4aSongNumStart(SE_218);
                     }
                 }

@@ -99,7 +99,6 @@ static void Task_WindmillMain(void)
     MapEntity *me = windmill->base.me;
 
     s32 screenX, screenY;
-    s32 baseX, baseY;
 
     screenX = TO_WORLD_POS(windmill->base.spriteX, windmill->base.regionX);
     screenY = TO_WORLD_POS(me->y, windmill->base.regionY);
@@ -118,15 +117,17 @@ static void Task_WindmillMain(void)
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 4; j++) {
-            u32 temp, mask, r0;
+            u32 sinPeriod;
 
             s = &windmill->blades[i * 4 + j].s;
             transform = &windmill->blades[i * 4 + j].transform;
-            temp = (gStageTime * 2 + (i * 256));
+            sinPeriod = (gStageTime * 2 + (i * 256));
 
-            s->x = screenX + ((COS(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
-            s->y = screenY + ((SIN(CLAMP_SIN_PERIOD(temp)) * ((j + 1) * 16 - 8)) >> 14);
-            transform->rotation = CLAMP_SIN_PERIOD(temp);
+            s->x = screenX
+                + ((COS(CLAMP_SIN_PERIOD(sinPeriod)) * ((j + 1) * 16 - 8)) >> 14);
+            s->y = screenY
+                + ((SIN(CLAMP_SIN_PERIOD(sinPeriod)) * ((j + 1) * 16 - 8)) >> 14);
+            transform->rotation = CLAMP_SIN_PERIOD(sinPeriod);
             transform->width = 256;
             transform->height = 256;
             transform->x = s->x;

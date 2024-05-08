@@ -86,7 +86,7 @@ void CreateCreditsSlidesCutScene(u8 creditsVariant, u8 b, u8 c)
 
     fade = &scene->unk40;
     fade->window = SCREEN_FADE_USE_WINDOW_1;
-    fade->brightness = Q_24_8(0);
+    fade->brightness = Q(0);
     fade->bldAlpha = 0;
     fade->speed = 0x200;
     fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
@@ -120,7 +120,7 @@ void sub_808EF38(void)
 
     fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         scene->unk50++;
 
         if (scene->unk50 < scene->unk51) {
@@ -163,7 +163,7 @@ void sub_808F004(void)
     }
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         gCurTask->main = sub_808F068;
     }
 }
@@ -192,7 +192,7 @@ void sub_808F0BC(void)
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         CreateCreditsEndCutScene(scene->creditsVariant);
         TaskDestroy(gCurTask);
     }

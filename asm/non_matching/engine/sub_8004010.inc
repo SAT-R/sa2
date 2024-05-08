@@ -131,7 +131,7 @@ _08004106:
 	ldr r2, _08004160 @ =0x040000D4
 	ldr r1, _08004164 @ =gUnknown_03002280 + 2
 	add r1, sl
-	mov r8, r1
+	mov r8, r1      @ r8 = &gUnknown_03002280[bgIndex][2]
 	ldr r6, [sp, #0xc]
 	str r6, [sp, #0x14]
 _08004118:
@@ -232,10 +232,10 @@ _080041D0: .4byte 0x040000D4
 _080041D4: .4byte gUnknown_03002280 + 3
 _080041D8:
 	ldr r0, _08004260 @ =gUnknown_03002280 + 3
-	add r0, sl
+	add r0, sl          @ r0 = &gUnknown_03002280[bgIndex][3]
 	add r2, sp, #4
 	mov sb, r2          @ sb = dmaTarget
-	mov r7, r8
+	mov r7, r8          @ r7 = 
 	adds r7, #1
 	ldrb r6, [r0]
 	cmp r4, r6
@@ -243,7 +243,7 @@ _080041D8:
 	ldr r2, _08004264 @ =gUnknown_03004D80
 	add r8, r2
 	ldr r2, _08004268 @ =0x040000D4
-	mov ip, r1        @ r1 = &gUnknown_03002280[bgIndex][2] 
+	mov ip, r1        @ ip = r1 = &gUnknown_03002280[bgIndex][2] 
 	str r0, [sp, #0x14]
 	lsls r3, r3, #1
 _080041F6:
@@ -257,7 +257,7 @@ _080041F6:
 	mov r1, sp
 	str r1, [r2]
 	str r0, [r2, #4]
-	mov r6, ip
+	mov r6, ip          @ r6 = ip = &gUnknown_03002280[bgIndex][2] 
 	ldrb r0, [r6]
 	ldr r1, [sp, #8]
 	subs r0, r0, r1
@@ -281,7 +281,7 @@ _0800422C:
 	ldr r2, _08004268 @ r2 = 0x040000D4
 	str r1, [r2]
 	ldr r0, _0800426C @ =gUnknown_03002280
-	add r0, sl
+	add r0, sl          @ r0 = &gUnknown_03002280[bgIndex][0]
 	str r0, [r2, #4]
 	ldr r0, _08004270 @ =0x85000001
 	str r0, [r2, #8]

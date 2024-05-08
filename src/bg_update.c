@@ -65,7 +65,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
         Background *bg;
 
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK))
-            return 0;
+            return FALSE;
 
         // _08002B64
         REG_VCOUNT;
@@ -167,7 +167,6 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                         while (r5-- != 0) {
                             u16 i;
-                            void *r2;
                             sb = sp00 * sp08;
 
                             for (i = 0; i < bg->targetTilesX; i++) {
@@ -261,9 +260,15 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     for (j = 0; j < bg->targetTilesY;) {
                         void *dmaSrc, *dmaDest;
                         s32 r5;
+#ifndef NON_MATCHING
                         register const u16 *r1Ptr asm("r1");
                         register void *r2Ptr asm("r2");
                         register void *r0Ptr asm("r0");
+#else
+                        const u16 *r1Ptr;
+                        void *r2Ptr;
+                        void *r0Ptr;
+#endif
                         s32 temp2;
                         u32 v;
                         s32 r4 = sp14 + j;
@@ -474,8 +479,8 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                                     for (i = 0; i < bg->targetTilesX; i++) {
                                         r7Ptr[i] = *(r4Ptr - i) ^ TileMask_FlipX;
                                     }
-                                    ((u8 *)r7Ptr) += sp0C;
-                                    ((u8 *)r4Ptr) += sp00 * sp08;
+                                    r7Ptr = CastPointer(r7Ptr, sp0C);
+                                    r4Ptr = CastPointer(r4Ptr, sp00 * sp08);
                                 }
                             }
                         } else {

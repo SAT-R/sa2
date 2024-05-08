@@ -74,8 +74,8 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     flyingHandle->height = flyingHandle->offsetY + me->d.uData[3] * 8;
 
     flyingHandle->unk44
-        = Q_24_8(((flyingHandle->offsetX + flyingHandle->width) >> 1) + flyingHandle->x);
-    flyingHandle->unk48 = Q_24_8(flyingHandle->y + flyingHandle->height);
+        = Q(((flyingHandle->offsetX + flyingHandle->width) >> 1) + flyingHandle->x);
+    flyingHandle->unk48 = Q(flyingHandle->y + flyingHandle->height);
     flyingHandle->unk4C = 0;
     flyingHandle->unk50 = 0;
 
@@ -181,7 +181,7 @@ static void sub_807F484(Sprite_FlyingHandle *flyingHandle)
 static void sub_807F4F0(Sprite_FlyingHandle *flyingHandle)
 {
     if (flyingHandle->unk60 != 0) {
-        if (flyingHandle->unk48 <= Q_24_8(flyingHandle->y + flyingHandle->offsetY)
+        if (flyingHandle->unk48 <= Q(flyingHandle->y + flyingHandle->offsetY)
             && flyingHandle->unk5E > -1) {
             flyingHandle->unk50 = SIN_24_8(flyingHandle->unk68 * 4) * 8;
             flyingHandle->unk68 += 4;
@@ -190,14 +190,14 @@ static void sub_807F4F0(Sprite_FlyingHandle *flyingHandle)
             flyingHandle->unk5E += 16;
             flyingHandle->unk5E = MIN(flyingHandle->unk5E, 0x300);
             flyingHandle->unk48 -= flyingHandle->unk5E;
-            if (flyingHandle->unk48 <= Q_24_8(flyingHandle->y + flyingHandle->offsetY)) {
+            if (flyingHandle->unk48 <= Q(flyingHandle->y + flyingHandle->offsetY)) {
                 flyingHandle->unk5E = 0;
-                flyingHandle->unk48 = Q_24_8(flyingHandle->y + flyingHandle->offsetY);
+                flyingHandle->unk48 = Q(flyingHandle->y + flyingHandle->offsetY);
                 flyingHandle->unk68 = -128;
             }
         }
     } else {
-        flyingHandle->unk48 = Q_24_8(flyingHandle->y + flyingHandle->height);
+        flyingHandle->unk48 = Q(flyingHandle->y + flyingHandle->height);
         flyingHandle->unk50 = SIN_24_8(flyingHandle->unk68 * 4) * 8;
         flyingHandle->unk68 += 4;
     }
@@ -207,11 +207,11 @@ static void sub_807F5C0(Sprite_FlyingHandle *flyingHandle)
 {
     Sprite *s = &flyingHandle->s;
     if (IS_MULTI_PLAYER) {
-        s->x = Q_24_8_TO_INT(flyingHandle->unk6C[1][0]) - gCamera.x;
-        s->y = Q_24_8_TO_INT(flyingHandle->unk6C[1][1]) - gCamera.y;
+        s->x = I(flyingHandle->unk6C[1][0]) - gCamera.x;
+        s->y = I(flyingHandle->unk6C[1][1]) - gCamera.y;
     } else {
-        s->x = Q_24_8_TO_INT(flyingHandle->unk44 + flyingHandle->unk4C) - gCamera.x;
-        s->y = Q_24_8_TO_INT(flyingHandle->unk48 + flyingHandle->unk50) - gCamera.y;
+        s->x = I(flyingHandle->unk44 + flyingHandle->unk4C) - gCamera.x;
+        s->y = I(flyingHandle->unk48 + flyingHandle->unk50) - gCamera.y;
     }
 
     UpdateSpriteAnimation(s);
@@ -223,10 +223,10 @@ static bool32 IsPlayerTouching(Sprite_FlyingHandle *flyingHandle)
     if (!PLAYER_IS_ALIVE) {
         return FALSE;
     } else {
-        s16 x = Q_24_8_TO_INT(flyingHandle->unk44 + flyingHandle->unk4C) - gCamera.x;
-        s16 y = Q_24_8_TO_INT(flyingHandle->unk48 + flyingHandle->unk50) - gCamera.y;
-        s16 playerX = (Q_24_8_TO_INT(gPlayer.x) - gCamera.x);
-        s16 playerY = (Q_24_8_TO_INT(gPlayer.y) - gCamera.y);
+        s16 x = I(flyingHandle->unk44 + flyingHandle->unk4C) - gCamera.x;
+        s16 y = I(flyingHandle->unk48 + flyingHandle->unk50) - gCamera.y;
+        s16 playerX = (I(gPlayer.x) - gCamera.x);
+        s16 playerY = (I(gPlayer.y) - gCamera.y);
         s16 dX = x - playerX;
         s16 dY = y - playerY;
         if (dX * dX + dY * dY <= (16 * 16)) {
@@ -310,11 +310,11 @@ static void sub_807F7D0(Sprite_FlyingHandle *flyingHandle)
     u32 r1 = player->moveState & MOVESTATE_FACING_LEFT;
 #endif
     if (r1) {
-        player->x = (flyingHandle->unk44 + flyingHandle->unk4C) + Q_24_8(4.0);
-        player->y = (flyingHandle->unk48 + flyingHandle->unk50) + Q_24_8(20.0);
+        player->x = (flyingHandle->unk44 + flyingHandle->unk4C) + Q(4.0);
+        player->y = (flyingHandle->unk48 + flyingHandle->unk50) + Q(20.0);
     } else {
-        player->x = (flyingHandle->unk44 + flyingHandle->unk4C) - Q_24_8(4.0);
-        player->y = (flyingHandle->unk48 + flyingHandle->unk50) + Q_24_8(20.0);
+        player->x = (flyingHandle->unk44 + flyingHandle->unk4C) - Q(4.0);
+        player->y = (flyingHandle->unk48 + flyingHandle->unk50) + Q(20.0);
     }
 }
 

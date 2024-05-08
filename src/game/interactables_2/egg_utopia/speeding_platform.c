@@ -68,8 +68,8 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
     platform->x = TO_WORLD_POS(me->x, spriteRegionX);
     platform->y = TO_WORLD_POS(me->y, spriteRegionY);
 
-    platform->unk44 = Q_24_8(32);
-    platform->unk48 = Q_24_8(18);
+    platform->unk44 = Q(32);
+    platform->unk48 = Q(18);
 
     platform->base.regionX = spriteRegionX;
     platform->base.regionY = spriteRegionY;
@@ -108,9 +108,8 @@ static void sub_807F9F0(void)
 
     sub_807FB1C(platform);
     if (platform->unk4C && platform->unk5A > -1) {
-        s32 res = sub_801F100(platform->y + Q_24_8_TO_INT(platform->unk48),
-                              platform->x + Q_24_8_TO_INT(platform->unk44), 1, 8,
-                              sub_801EC3C);
+        s32 res = sub_801F100(platform->y + I(platform->unk48),
+                              platform->x + I(platform->unk44), 1, 8, sub_801EC3C);
         if (res < 0) {
             platform->unk4C = FALSE;
             gPlayer.transition = PLTRANS_PT3;
@@ -128,13 +127,13 @@ static void sub_807F9F0(void)
 
 static void sub_807FA98(Sprite_SpeedingPlatform *platform)
 {
-    platform->unk44 = Q_24_8(814);
-    platform->unk48 = Q_24_8(576);
+    platform->unk44 = Q(814);
+    platform->unk48 = Q(576);
 
     platform->unk5E = 224;
-    platform->unk5C = Q_24_8(8);
+    platform->unk5C = Q(8);
     platform->unk58 = COS_24_8(platform->unk5E * 4) * 8;
-    platform->unk5A = Q_24_8_TO_INT(platform->unk5C * SIN_24_8(platform->unk5E * 4));
+    platform->unk5A = I(platform->unk5C * SIN_24_8(platform->unk5E * 4));
     platform->unk54 = 1;
     m4aSongNumStop(SE_288);
     gCurTask->main = sub_807F9F0;
@@ -143,21 +142,21 @@ static void sub_807FA98(Sprite_SpeedingPlatform *platform)
 static void sub_807FB1C(Sprite_SpeedingPlatform *platform)
 {
     if (platform->unk54 == 0) {
-        platform->unk5C = platform->unk5C > Q_24_8(15) ? Q_24_8(15) : platform->unk5C;
-        platform->unk58 = Q_24_8_TO_INT(platform->unk5C * COS_24_8(platform->unk5E * 4));
-        platform->unk5A = Q_24_8_TO_INT(platform->unk5C * SIN_24_8(platform->unk5E * 4));
+        platform->unk5C = platform->unk5C > Q(15) ? Q(15) : platform->unk5C;
+        platform->unk58 = I(platform->unk5C * COS_24_8(platform->unk5E * 4));
+        platform->unk5A = I(platform->unk5C * SIN_24_8(platform->unk5E * 4));
     } else {
-        platform->unk5A += Q_24_8(0.1640625);
-        platform->unk5A = platform->unk5A > Q_24_8(8) ? Q_24_8(8) : platform->unk5A;
+        platform->unk5A += Q(0.1640625);
+        platform->unk5A = platform->unk5A > Q(8) ? Q(8) : platform->unk5A;
     }
 
     platform->unk44 += platform->unk58;
     platform->unk48 += platform->unk5A;
 
     if (PLAYER_IS_ALIVE && platform->unk4C) {
-        gPlayer.x = platform->unk50 + (Q_24_8(platform->x) + platform->unk44);
-        gPlayer.y = platform->unk52 + (Q_24_8(platform->y) + platform->unk48)
-            - Q_24_8(gPlayer.unk17);
+        gPlayer.x = platform->unk50 + (Q(platform->x) + platform->unk44);
+        gPlayer.y
+            = platform->unk52 + (Q(platform->y) + platform->unk48) - Q(gPlayer.unk17);
         platform->unk50 += gPlayer.speedAirX;
         platform->unk52 += gPlayer.speedAirY;
     }
@@ -169,11 +168,11 @@ static void RenderPlatform(Sprite_SpeedingPlatform *platform)
 {
     Sprite *s = &platform->s;
     if (IS_MULTI_PLAYER) {
-        s->x = platform->x + Q_24_8_TO_INT(platform->unk60[1][0]) - gCamera.x;
-        s->y = platform->y + Q_24_8_TO_INT(platform->unk60[1][1]) - gCamera.y;
+        s->x = platform->x + I(platform->unk60[1][0]) - gCamera.x;
+        s->y = platform->y + I(platform->unk60[1][1]) - gCamera.y;
     } else {
-        s->x = platform->x + Q_24_8_TO_INT(platform->unk44) - gCamera.x;
-        s->y = platform->y + Q_24_8_TO_INT(platform->unk48) - gCamera.y;
+        s->x = platform->x + I(platform->unk44) - gCamera.x;
+        s->y = platform->y + I(platform->unk48) - gCamera.y;
     }
 
     s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
@@ -196,8 +195,8 @@ static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)
     }
 
     if (sub_807FD0C(platform) != 2) {
-        s16 x = platform->x + Q_24_8_TO_INT(platform->unk44) - gCamera.x - 27;
-        s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+        s16 x = platform->x + I(platform->unk44) - gCamera.x - 27;
+        s16 playerX = I(gPlayer.x) - gCamera.x;
 
         if (x <= playerX && (x + 54) >= playerX) {
             return TRUE;
@@ -212,9 +211,8 @@ static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)
 static u32 sub_807FD0C(Sprite_SpeedingPlatform *platform)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp
-            = sub_800CCB8(&platform->s, platform->x + Q_24_8_TO_INT(platform->unk44),
-                          platform->y + Q_24_8_TO_INT(platform->unk48), &gPlayer);
+        u32 temp = sub_800CCB8(&platform->s, platform->x + I(platform->unk44),
+                               platform->y + I(platform->unk48), &gPlayer);
 
         if (temp != 0) {
             if (temp & 0x10000) {
@@ -276,9 +274,8 @@ static void TaskDestructor_Interactable097(struct Task *t)
 
 static void sub_807FE34(Sprite_SpeedingPlatform *platform)
 {
-    platform->unk50 = gPlayer.x - (Q_24_8(platform->x) + platform->unk44);
-    platform->unk52
-        = gPlayer.y - (Q_24_8(platform->y) + platform->unk48) + Q_24_8(gPlayer.unk17);
+    platform->unk50 = gPlayer.x - (Q(platform->x) + platform->unk44);
+    platform->unk52 = gPlayer.y - (Q(platform->y) + platform->unk48) + Q(gPlayer.unk17);
     platform->unk4C = TRUE;
     m4aSongNumStart(SE_288);
     gCurTask->main = sub_807FF20;
@@ -286,8 +283,8 @@ static void sub_807FE34(Sprite_SpeedingPlatform *platform)
 
 static bool32 sub_807FE90(Sprite_SpeedingPlatform *platform)
 {
-    s16 x = platform->x + Q_24_8_TO_INT(platform->unk44) - gCamera.x;
-    s16 y = platform->y + Q_24_8_TO_INT(platform->unk48) - gCamera.y;
+    s16 x = platform->x + I(platform->unk44) - gCamera.x;
+    s16 y = platform->y + I(platform->unk48) - gCamera.y;
 
     if ((u16)(x + 192) > 624 || y + 32 < -128 || y - 32 >= 289) {
         return TRUE;
@@ -322,10 +319,10 @@ static void sub_807FF20(void)
         sub_807FF04(platform);
     }
 
-    platform->unk5C += Q_24_8(0.125);
+    platform->unk5C += Q(0.125);
     sub_807FB1C(platform);
 
-    if (platform->unk44 >= Q_24_8(590)) {
+    if (platform->unk44 >= Q(590)) {
         sub_807FF88(platform);
     }
 
@@ -338,8 +335,8 @@ static void sub_807FF20(void)
 
 static void sub_807FF88(Sprite_SpeedingPlatform *platform)
 {
-    platform->unk44 = Q_24_8(590);
-    platform->unk48 = Q_24_8(576);
+    platform->unk44 = Q(590);
+    platform->unk48 = Q(576);
     platform->unk5E = 0;
     gCurTask->main = sub_807FFB0;
 }
@@ -354,7 +351,7 @@ static void sub_807FFB0(void)
 
     sub_807FB1C(platform);
 
-    if (platform->unk44 >= Q_24_8(814)) {
+    if (platform->unk44 >= Q(814)) {
         sub_807FA98(platform);
     }
 
