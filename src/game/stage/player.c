@@ -900,7 +900,7 @@ void sub_8021BE0(Player *p)
 
 void sub_8021C4C(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
@@ -996,7 +996,7 @@ void sub_8021C4C(Player *p)
 
 void sub_8021DB8(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
@@ -1073,7 +1073,7 @@ void sub_8021DB8(Player *p)
 
 void sub_8021EE4(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
@@ -1148,7 +1148,7 @@ void sub_8021EE4(Player *p)
 
 void sub_802203C(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
@@ -1366,13 +1366,12 @@ void sub_8022318(Player *p)
 
 void sub_80223BC(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
     s32 playerX2, playerY2;
     s32 *ptr;
-    u16 gravity;
 
     u32 mask;
     u32 mask2 = p->unk38;
@@ -1432,13 +1431,12 @@ void sub_80223BC(Player *p)
 // Similar to sub_80223BC
 void sub_80224DC(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
     s32 playerX2, playerY2;
     s32 *ptr;
-    u16 gravity;
 
     u32 mask;
     u32 mask2 = p->unk38;
@@ -1495,11 +1493,10 @@ void sub_80224DC(Player *p)
 
 void sub_80225E8(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
-    s32 playerX2, playerY2;
     s32 *ptr;
     u16 gravity;
 
@@ -1564,11 +1561,10 @@ void sub_80225E8(Player *p)
 // Similar to sub_80225E8
 void sub_8022710(Player *p)
 {
-    u8 rotation, anotherByte2;
+    u8 rotation;
     s32 fnOut;
     s32 result;
     s32 playerX, playerY;
-    s32 playerX2, playerY2;
     s32 *ptr;
     u16 gravity;
 
@@ -1764,7 +1760,7 @@ void sub_80228C0(Player *p)
             r0 <<= 24;
             r0 = -r0;
             r1 = r0 >> 24;
-            asm("" ::"r"(r0, r1));
+            asm("" :: "r"(r0), "r"(r1));
             r0 = r1;
             r0 -= 0x40;
 
@@ -1877,7 +1873,7 @@ void sub_80229EC(Player *p)
             r0 <<= 24;
             r0 = -r0;
             r1 = r0 >> 24;
-            asm("" ::"r"(r0, r1));
+            asm("" ::"r"(r0), "r"(r1));
             r0 = r1;
             r0 -= 0x40;
 
@@ -1990,7 +1986,7 @@ void sub_8022B18(Player *p)
             r0 <<= 24;
             r0 = -r0;
             r1 = r0 >> 24;
-            asm("" ::"r"(r0, r1));
+            asm("" ::"r"(r0), "r"(r1));
             r0 = r1;
             r0 -= 0x40;
 
@@ -2101,7 +2097,7 @@ void sub_8022C44(Player *p)
             r0 <<= 24;
             r0 = -r0;
             r1 = r0 >> 24;
-            asm("" ::"r"(r0, r1));
+            asm("" ::"r"(r0), "r"(r1));
             r0 = r1;
             r0 -= 0x40;
 
@@ -2346,9 +2342,7 @@ NONMATCH("asm/non_matching/game/player__sub_802302C.inc",
          s32 sub_802302C(u8 param0, Player *p))
 {
     s32 r3;
-    u32 r0;
     s32 result;
-    u32 temp;
 
     s32 px = I(p->x);
     s32 py = I(p->y);
@@ -2523,7 +2517,6 @@ void sub_80231C0(Player *p)
 void sub_8023260(Player *p)
 {
     s32 r4 = p->unk40;
-    s32 temp;
 
     if (p->speedGroundX > (s16)r4) {
         p->speedGroundX = +r4;
@@ -2777,7 +2770,6 @@ void sub_80236C8(Player *p)
 {
     s16 airX;
     s16 airX2;
-    s16 diff;
 
     if ((u16)p->speedAirY < (u16)Q(189))
         return;
@@ -2806,7 +2798,6 @@ void sub_8023708(Player *p)
 {
     s16 airX;
     s16 airX2;
-    s16 diff;
 
     if ((u16)p->speedAirY < (u16)Q(189))
         return;
@@ -3800,7 +3791,6 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
 void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
 {
     struct MultiSioData_0_4 *recv;
-    MultiplayerPlayer *mpp;
 
     Sprite *s = &inPsi->s;
     PlayerSpriteInfo *psi = inPsi;
@@ -4072,7 +4062,6 @@ void PlayerCB_8025854(Player *p)
 
 void PlayerCB_8025A0C(Player *p)
 {
-    u32 mask;
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         if ((p->moveState & MOVESTATE_IN_AIR)) {
             PlayerCB_8025F84(p);
