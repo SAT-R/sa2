@@ -308,7 +308,6 @@ static const s8 gUnknown_080D5A98[NUM_LEVEL_IDS][4] = {
 
 void InitCamera(u32 level)
 {
-    s32 x;
     u32 temp;
 
     struct Backgrounds *bgs;
@@ -587,10 +586,10 @@ void UpdateCamera(void)
         if ((player->moveState & MOVESTATE_IN_AIR)
             && (player->character != CHARACTER_KNUCKLES || player->unk61 != 9)) {
             camera->unk48 += 4;
-            camera->unk48 = camera->unk48 > 24 ? 24 : camera->unk48;
+            camera->unk48 = MIN(camera->unk48, 24);
         } else {
             camera->unk48 -= 4;
-            camera->unk48 = camera->unk48 < 0 ? 0 : camera->unk48;
+            camera->unk48 = MAX(camera->unk48, 0);
         }
 
         if ((camera->unk14 - newY) > camera->unk48) {

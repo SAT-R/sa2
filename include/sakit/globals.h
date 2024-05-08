@@ -220,6 +220,7 @@ extern u8 gUnknown_030055D8;
             } else {                                                                    \
                 gNumLives = lives;                                                      \
             }                                                                           \
+                                                                                        \
             gUnknown_030054A8.unk3 = 16;                                                \
         }                                                                               \
     }
