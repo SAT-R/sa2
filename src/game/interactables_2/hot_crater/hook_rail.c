@@ -119,7 +119,7 @@ static void sub_8072BB8(void)
         gPlayer.speedGroundX = ClampRailSpeed(gPlayer.speedGroundX);
 
         x = hookRail->x - gCamera.x;
-        playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
+        playerX = I(gPlayer.x) - gCamera.x;
 
         if (hookRail->triggerType == 0) {
             if (playerX < x + hookRail->width) {
@@ -192,21 +192,21 @@ static void sub_8072DCC(Sprite_HookRail *hookRail)
     gPlayer.unk16 = 6;
     gPlayer.unk17 = 14;
     gPlayer.moveState &= ~MOVESTATE_4;
-    gPlayer.y = Q_24_8(hookRail->y + HOOK_HEIGHT);
+    gPlayer.y = Q(hookRail->y + HOOK_HEIGHT);
     hookRail->grindDistance = 0;
     if (hookRail->triggerType == 0) {
         gPlayer.moveState |= MOVESTATE_FACING_LEFT;
         gPlayer.speedGroundX = gPlayer.speedAirX;
 
-        if (gPlayer.speedGroundX > -Q_24_8(1)) {
-            gPlayer.speedGroundX = -Q_24_8(1);
+        if (gPlayer.speedGroundX > -Q(1)) {
+            gPlayer.speedGroundX = -Q(1);
         }
         gPlayer.rotation = 128;
     } else {
         gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
         gPlayer.speedGroundX = gPlayer.speedAirX;
-        if (gPlayer.speedGroundX < Q_24_8(1)) {
-            gPlayer.speedGroundX = Q_24_8(1);
+        if (gPlayer.speedGroundX < Q(1)) {
+            gPlayer.speedGroundX = Q(1);
         }
 
         gPlayer.rotation = 0;
@@ -225,8 +225,8 @@ static u32 IsPlayerTouching(Sprite_HookRail *hookRail)
 
     x = hookRail->x - gCamera.x;
     y = hookRail->y - gCamera.y;
-    playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-    playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    playerX = I(gPlayer.x) - gCamera.x;
+    playerY = I(gPlayer.y) - gCamera.y;
 
     if (x + hookRail->width <= playerX
         && (x + hookRail->width) + (hookRail->offsetX - hookRail->width) >= playerX) {
@@ -286,12 +286,12 @@ static void sub_8072FD4(struct Task *unused)
 static void sub_8072FD8(Sprite_HookRail *hookRail)
 {
     if (hookRail->triggerType == 0) {
-        gPlayer.x = Q_24_8(hookRail->x + hookRail->width);
+        gPlayer.x = Q(hookRail->x + hookRail->width);
         hookRail->joinedX = gPlayer.x;
         hookRail->joinedY = gPlayer.y;
         gPlayer.rotation = 109;
     } else {
-        gPlayer.x = Q_24_8(hookRail->x + hookRail->offsetX);
+        gPlayer.x = Q(hookRail->x + hookRail->offsetX);
         hookRail->joinedX = gPlayer.x;
         hookRail->joinedY = gPlayer.y;
         gPlayer.rotation = 19;
@@ -325,7 +325,7 @@ static void sub_8073088(UNUSED Sprite_HookRail *hookRail)
 
 static void sub_80730BC(Sprite_HookRail *hookRail)
 {
-    gPlayer.y = Q_24_8(hookRail->y + HOOK_HEIGHT);
+    gPlayer.y = Q(hookRail->y + HOOK_HEIGHT);
     if (gPlayer.rotation == 109) {
         gPlayer.rotation = 128;
     } else {
@@ -385,10 +385,8 @@ static s16 ClampRailSpeed(s16 groundSpeedX)
 
 static void sub_80731D4(void)
 {
-    gPlayer.speedAirX
-        = Q_24_8_TO_INT(gPlayer.speedGroundX * COS_24_8(gPlayer.rotation * 4));
-    gPlayer.speedAirY
-        = Q_24_8_TO_INT(gPlayer.speedGroundX * SIN_24_8(gPlayer.rotation * 4));
+    gPlayer.speedAirX = I(gPlayer.speedGroundX * COS_24_8(gPlayer.rotation * 4));
+    gPlayer.speedAirY = I(gPlayer.speedGroundX * SIN_24_8(gPlayer.rotation * 4));
 }
 
 static void sub_807321C(void)

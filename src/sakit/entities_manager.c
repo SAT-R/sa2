@@ -507,11 +507,11 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
         h_regionCount = (u16)*interactables++;
         v_regionCount = (u16)*interactables++;
 
-        range.xLow = gCamera.x - Q_24_8(0.5);
-        range.xHigh = gCamera.x + Q_24_8(1.4375);
+        range.xLow = gCamera.x - Q(0.5);
+        range.xHigh = gCamera.x + Q(1.4375);
 
-        range.yLow = gCamera.y - Q_24_8(0.5);
-        range.yHigh = gCamera.y + Q_24_8(1.125);
+        range.yLow = gCamera.y - Q(0.5);
+        range.yHigh = gCamera.y + Q(1.125);
 
         if (range.xLow < 0) {
             range.xLow = 0;
@@ -526,26 +526,26 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
             range.yHigh = 0;
         }
 
-        if ((u32)range.xLow >= Q_24_8(h_regionCount)) {
-            range.xLow = Q_24_8(h_regionCount) - 1;
+        if ((u32)range.xLow >= Q(h_regionCount)) {
+            range.xLow = Q(h_regionCount) - 1;
         }
-        if ((u32)range.yLow >= Q_24_8(v_regionCount)) {
-            range.yLow = Q_24_8(v_regionCount) - 1;
-        }
-
-        if ((u32)range.xHigh >= Q_24_8(h_regionCount)) {
-            range.xHigh = Q_24_8(h_regionCount) - 1;
+        if ((u32)range.yLow >= Q(v_regionCount)) {
+            range.yLow = Q(v_regionCount) - 1;
         }
 
-        if ((u32)range.yHigh >= Q_24_8(v_regionCount)) {
-            range.yHigh = Q_24_8(v_regionCount) - 1;
+        if ((u32)range.xHigh >= Q(h_regionCount)) {
+            range.xHigh = Q(h_regionCount) - 1;
         }
 
-        regionY = Q_24_8_TO_INT(range.yLow);
-        while (Q_24_8(regionY) < (u32)range.yHigh && regionY < v_regionCount) {
+        if ((u32)range.yHigh >= Q(v_regionCount)) {
+            range.yHigh = Q(v_regionCount) - 1;
+        }
 
-            regionX = Q_24_8_TO_INT(range.xLow);
-            while (Q_24_8(regionX) < (u32)range.xHigh && regionX < h_regionCount) {
+        regionY = I(range.yLow);
+        while (Q(regionY) < (u32)range.yHigh && regionY < v_regionCount) {
+
+            regionX = I(range.xLow);
+            while (Q(regionX) < (u32)range.xHigh && regionX < h_regionCount) {
                 u32 posY;
                 u32 i;
 #ifndef NON_MATCHING
@@ -746,13 +746,13 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
             }
 
             temp2 = range1.xLow;
-            temp = Q_24_8(h_regionCount);
+            temp = Q(h_regionCount);
             if (temp2 >= temp) {
                 range1.xLow = temp - 1;
             }
 
             temp3 = range1.yLow;
-            temp4 = Q_24_8(v_regionCount);
+            temp4 = Q(v_regionCount);
 
             if (temp3 >= temp4) {
                 range1.yLow = temp4 - 1;
@@ -800,11 +800,11 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
 
             if (gCamera.x != em->prevCamX && range1.xLow != range1.xHigh
                 && range1.yLow != range1.yHigh) {
-                regionY = Q_24_8_TO_INT(range1.yLow);
+                regionY = I(range1.yLow);
 
-                while (Q_24_8(regionY) < range1.yHigh && regionY < v_regionCount) {
-                    regionX = Q_24_8_TO_INT((s32)range1.xLow);
-                    while (Q_24_8(regionX) < range1.xHigh && regionX < h_regionCount) {
+                while (Q(regionY) < range1.yHigh && regionY < v_regionCount) {
+                    regionX = I((s32)range1.xLow);
+                    while (Q(regionX) < range1.xHigh && regionX < h_regionCount) {
                         u32 r6;
                         u32 i;
                         MapEntity *me;
@@ -903,11 +903,11 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
             }
             if (((gCamera.y != em->prevCamY) && (range2.yLow != range2.yHigh))
                 && (range2.xLow != range2.xHigh)) {
-                regionY = Q_24_8_TO_INT((s32)range2.yLow);
+                regionY = I((s32)range2.yLow);
 
-                while (Q_24_8(regionY) < range2.yHigh && regionY < v_regionCount) {
-                    regionX = Q_24_8_TO_INT((s32)range2.xLow);
-                    while (Q_24_8(regionX) < range2.xHigh && regionX < h_regionCount) {
+                while (Q(regionY) < range2.yHigh && regionY < v_regionCount) {
+                    regionX = I((s32)range2.xLow);
+                    while (Q(regionX) < range2.xHigh && regionX < h_regionCount) {
                         u32 r6;
                         u32 offset;
                         u32 i;

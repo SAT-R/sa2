@@ -290,13 +290,13 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
         affine[0] = Q_8_8_TO_INT(((big.unk0[4] << 16) >> 16) * res);
 
         res = Div(0x10000, big.unk0[6]);
-        affine[4] = Q_24_8_TO_INT(big.unk0[5] * res);
+        affine[4] = I(big.unk0[5] * res);
 
         res = Div(0x10000, big.unk0[7]);
-        affine[8] = Q_24_8_TO_INT(-big.unk0[4] * res);
+        affine[8] = I(-big.unk0[4] * res);
 
         res = Div(0x10000, big.unk0[7]);
-        affine[12] = Q_24_8_TO_INT(big.unk0[5] * res);
+        affine[12] = I(big.unk0[5] * res);
 #endif
 
         if (transform->height < 0)
@@ -306,10 +306,10 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
             big.unk0[7] = -transform->width;
 
         // _0800497A
-        big.unk0[0] = Q_24_8_TO_INT(big.unk0[4] * big.unk0[6]);
-        big.unk0[1] = Q_24_8_TO_INT(-big.unk0[5] * big.unk0[6]);
-        big.unk0[2] = Q_24_8_TO_INT(big.unk0[5] * big.unk0[7]);
-        big.unk0[3] = Q_24_8_TO_INT(big.unk0[6] * big.unk0[7]);
+        big.unk0[0] = I(big.unk0[4] * big.unk0[6]);
+        big.unk0[1] = I(-big.unk0[5] * big.unk0[6]);
+        big.unk0[2] = I(big.unk0[5] * big.unk0[7]);
+        big.unk0[3] = I(big.unk0[6] * big.unk0[7]);
 
         big.unk18[0][0] = 0x100;
         big.unk18[0][1] = 0;
@@ -364,7 +364,7 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
             r0 = big.unk0[7];
             r0 *= r3;
             r1 += r0;
-            r1 += Q_24_8(r5);
+            r1 += Q(r5);
             r1 >>= 8;
 
             big.posY -= r1;

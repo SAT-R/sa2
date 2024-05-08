@@ -97,8 +97,8 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
      || gDifficultyLevel != DIFFICULTY_EASY)
 
 #define ENEMY_SET_SPAWN_POS_STATIC(_enemy, _mapEntity)                                  \
-    _enemy->spawnX = Q_24_8(TO_WORLD_POS(_mapEntity->x, spriteRegionX));                \
-    _enemy->spawnY = Q_24_8(TO_WORLD_POS(_mapEntity->y, spriteRegionY));
+    _enemy->spawnX = Q(TO_WORLD_POS(_mapEntity->x, spriteRegionX));                     \
+    _enemy->spawnY = Q(TO_WORLD_POS(_mapEntity->y, spriteRegionY));
 
 #define ENEMY_SET_SPAWN_POS_FLYING(_enemy, _mapEntity)                                  \
     ENEMY_SET_SPAWN_POS_STATIC(_enemy, _mapEntity);                                     \
@@ -108,9 +108,8 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
 #define ENEMY_SET_SPAWN_POS_GROUND(_enemy, _mapEntity)                                  \
     ENEMY_SET_SPAWN_POS_STATIC(_enemy, _mapEntity);                                     \
     _enemy->offsetX = 0;                                                                \
-    _enemy->offsetY = Q_24_8(sub_801F07C(Q_24_8_TO_INT(_enemy->spawnY),                 \
-                                         Q_24_8_TO_INT(_enemy->spawnX),                 \
-                                         _enemy->clampParam, 8, NULL, sub_801EE64));
+    _enemy->offsetY = Q(sub_801F07C(I(_enemy->spawnY), I(_enemy->spawnX),               \
+                                    _enemy->clampParam, 8, NULL, sub_801EE64));
 
 #define ENEMY_UPDATE_EX_RAW(_s, _posX, _posY, code_insert)                              \
     Player_UpdateHomingPosition(_posX, _posY);                                          \
@@ -124,8 +123,8 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
 #define ENEMY_UPDATE(_s, _posX, _posY) ENEMY_UPDATE_EX(_s, _posX, _posY, {});
 
 #define ENEMY_UPDATE_POSITION_RAW(_enemy, _sprite, _posX, _posY, _offsetX, _offsetY)    \
-    _posX = Q_24_8_TO_INT(_enemy->spawnX + _offsetX);                                   \
-    _posY = Q_24_8_TO_INT(_enemy->spawnY + _offsetY);                                   \
+    _posX = I(_enemy->spawnX + _offsetX);                                               \
+    _posY = I(_enemy->spawnY + _offsetY);                                               \
     _sprite->x = _posX - gCamera.x;                                                     \
     _sprite->y = _posY - gCamera.y;
 
@@ -151,48 +150,46 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
     }
 
 #define ENEMY_CROSSED_LEFT_BORDER(_enemy, _mapEntity)                                   \
-    ((Q_24_8_TO_INT(_enemy->offsetX) <= _mapEntity->d.sData[0] * TILE_WIDTH))
+    ((I(_enemy->offsetX) <= _mapEntity->d.sData[0] * TILE_WIDTH))
 
 #define ENEMY_CROSSED_RIGHT_BORDER(_enemy, _mapEntity)                                  \
-    ((Q_24_8_TO_INT(_enemy->offsetX)                                                    \
+    ((I(_enemy->offsetX)                                                                \
       >= (_mapEntity->d.sData[0] * TILE_WIDTH + _mapEntity->d.uData[2] * TILE_WIDTH)))
 
 #define ENEMY_CROSSED_TOP_BORDER_RAW(_enemy, _mapEntity, _offsetY)                      \
     ((_offsetY <= _mapEntity->d.sData[1] * TILE_WIDTH))
 
 #define ENEMY_CROSSED_TOP_BORDER(_enemy, _mapEntity)                                    \
-    ENEMY_CROSSED_TOP_BORDER_RAW(_enemy, _mapEntity, Q_24_8_TO_INT(_enemy->offsetY))
+    ENEMY_CROSSED_TOP_BORDER_RAW(_enemy, _mapEntity, I(_enemy->offsetY))
 
 #define ENEMY_CROSSED_BOTTOM_BORDER_RAW(_enemy, _mapEntity, _offsetY)                   \
     ((_offsetY                                                                          \
       >= (_mapEntity->d.sData[1] * TILE_WIDTH + _mapEntity->d.uData[3] * TILE_WIDTH)))
 
 #define ENEMY_CROSSED_BOTTOM_BORDER(_enemy, _mapEntity)                                 \
-    ENEMY_CROSSED_BOTTOM_BORDER_RAW(_enemy, _mapEntity, Q_24_8_TO_INT(_enemy->offsetY))
+    ENEMY_CROSSED_BOTTOM_BORDER_RAW(_enemy, _mapEntity, I(_enemy->offsetY))
 
 #define ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, _task)                        \
-    sub_801F100(Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY),                        \
-                Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX), _unknownBool, 8,       \
-                _task);
+    sub_801F100(I(_enemy->spawnY + _enemy->offsetY),                                    \
+                I(_enemy->spawnX + _enemy->offsetX), _unknownBool, 8, _task);
 
 #define ENEMY_CLAMP_TO_GROUND_INNER_X_FIRST(_enemy, _unknownBool)                       \
-    sub_801F100(Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX),                        \
-                Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY), _unknownBool, 8,       \
-                sub_801EC3C);
+    sub_801F100(I(_enemy->spawnX + _enemy->offsetX),                                    \
+                I(_enemy->spawnY + _enemy->offsetY), _unknownBool, 8, sub_801EC3C);
 
 #define ENEMY_CLAMP_TO_GROUND_RAW(_enemy, _unknownBool, _p)                             \
     {                                                                                   \
-        s32 delta = sub_801F07C(Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY),        \
-                                Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX),        \
-                                _unknownBool, 8, _p, sub_801EE64);                      \
+        s32 delta = sub_801F07C(I(_enemy->spawnY + _enemy->offsetY),                    \
+                                I(_enemy->spawnX + _enemy->offsetX), _unknownBool, 8,   \
+                                _p, sub_801EE64);                                       \
                                                                                         \
         if (delta < 0) {                                                                \
-            _enemy->offsetY += Q_24_8(delta);                                           \
+            _enemy->offsetY += Q(delta);                                                \
             delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, sub_801EC3C);     \
         }                                                                               \
                                                                                         \
         if (delta > 0) {                                                                \
-            _enemy->offsetY += Q_24_8(delta);                                           \
+            _enemy->offsetY += Q(delta);                                                \
         }                                                                               \
     }
 
@@ -201,17 +198,17 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
 
 #define ENEMY_CLAMP_TO_GROUND_2(_enemy, _unknownBool)                                   \
     {                                                                                   \
-        s32 delta = sub_801F07C(Q_24_8_TO_INT(_enemy->spawnY + _enemy->offsetY),        \
-                                Q_24_8_TO_INT(_enemy->spawnX + _enemy->offsetX),        \
-                                _unknownBool, -8, NULL, sub_801EE64);                   \
+        s32 delta = sub_801F07C(I(_enemy->spawnY + _enemy->offsetY),                    \
+                                I(_enemy->spawnX + _enemy->offsetX), _unknownBool, -8,  \
+                                NULL, sub_801EE64);                                     \
                                                                                         \
         if (delta < 0) {                                                                \
-            _enemy->offsetY -= Q_24_8(delta);                                           \
+            _enemy->offsetY -= Q(delta);                                                \
             delta = ENEMY_CLAMP_TO_GROUND_INNER(_enemy, _unknownBool, sub_801EC3C);     \
         }                                                                               \
                                                                                         \
         if (delta > 0) {                                                                \
-            _enemy->offsetY -= Q_24_8(delta);                                           \
+            _enemy->offsetY -= Q(delta);                                                \
         }                                                                               \
     }
 
@@ -240,8 +237,7 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
     }
 
 #define ENEMY_DESTROY_IF_OFFSCREEN(_enemy, _mapEntity, _sprite)                         \
-    ENEMY_DESTROY_IF_OFFSCREEN_RAW(_enemy, _mapEntity, _sprite,                         \
-                                   Q_24_8_TO_INT(_enemy->spawnX),                       \
-                                   Q_24_8_TO_INT(_enemy->spawnY))
+    ENEMY_DESTROY_IF_OFFSCREEN_RAW(_enemy, _mapEntity, _sprite, I(_enemy->spawnX),      \
+                                   I(_enemy->spawnY))
 
 #endif // GUARD_INTERACTABLE_H

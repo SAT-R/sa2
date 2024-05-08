@@ -132,7 +132,7 @@ static void sub_808EBC4(void)
     }
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         gCurTask->main = sub_808EC64;
     }
 }
@@ -144,7 +144,7 @@ static void sub_808EC28(void)
     fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         gCurTask->main = sub_808ED04;
     }
 }
@@ -172,7 +172,7 @@ static void sub_808ECB4(void)
     m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, 24);
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         CreateCreditsEndCutScene(scene->variant);
         TaskDestroy(gCurTask);
     }

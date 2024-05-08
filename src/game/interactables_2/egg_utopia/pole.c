@@ -78,9 +78,9 @@ static void Task_807EA8C(void)
     }
 
     if (GRAVITY_IS_INVERTED) {
-        gPlayer.y -= Q_24_8(1);
+        gPlayer.y -= Q(1);
     } else {
-        gPlayer.y += Q_24_8(1);
+        gPlayer.y += Q(1);
     }
 
     if (gPlayer.unk5E & gPlayerControls.jump) {
@@ -114,9 +114,9 @@ static void Pole_PlayerJumpsOff(Sprite_Pole *pole)
         gPlayer.transition = PLTRANS_PT5;
 
         if (pole->facingLeft) {
-            gPlayer.speedAirX = -Q_24_8(5);
+            gPlayer.speedAirX = -Q(5);
         } else {
-            gPlayer.speedAirX = +Q_24_8(5);
+            gPlayer.speedAirX = +Q(5);
         }
         m4aSongNumStop(SE_POLE_SLIDING);
     }
@@ -133,8 +133,8 @@ static bool32 PlayerTouchesPole(Sprite_Pole *pole)
 
     poleScreenX = (pole->worldX + pole->left) - gCamera.x;
     poleScreenY = (pole->worldY + pole->top) - gCamera.y;
-    playerScreenX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-    playerScreenY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    playerScreenX = I(gPlayer.x) - gCamera.x;
+    playerScreenY = I(gPlayer.y) - gCamera.y;
 
     if (poleScreenX <= playerScreenX && poleScreenX + pole->width >= playerScreenX) {
         if (poleScreenY <= playerScreenY
@@ -187,7 +187,7 @@ static void Pole_TransitionPlayerSliding(Sprite_Pole *pole)
 {
     gPlayer.moveState |= MOVESTATE_400000;
     gPlayer.unk64 = 66;
-    gPlayer.x = Q_24_8(pole->middleX);
+    gPlayer.x = Q(pole->middleX);
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
@@ -202,7 +202,7 @@ static void sub_807ED00(Sprite_Pole *pole)
         gPlayer.moveState &= ~MOVESTATE_400000;
         gPlayer.unk64 = 14;
         gPlayer.transition = PLTRANS_PT5;
-        gPlayer.speedAirY = Q_24_8(1);
+        gPlayer.speedAirY = Q(1);
         m4aSongNumStop(SE_POLE_SLIDING);
     }
     gCurTask->main = Task_Pole_NotTouching;

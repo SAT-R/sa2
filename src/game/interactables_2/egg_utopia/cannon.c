@@ -267,7 +267,6 @@ NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
     s16 x, y;
     s32 biggerX, biggerY, temp2, temp3;
     s32 r4;
-    s32 r3;
     s16 playerX, playerY;
     if (PLAYER_IS_ALIVE) {
         // Maybe log
@@ -417,7 +416,6 @@ static bool16 sub_807E954(Sprite_Cannon *cannon)
     bool16 ret = FALSE;
     u16 r3;
     s16 temp2, temp3;
-    s32 mask;
 
     r3 = cannon->unk68 == 0 ? 0x200 : 0;
     temp2 = sub_808558C(cannon->unk6A, r3, 10);

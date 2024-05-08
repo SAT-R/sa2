@@ -215,11 +215,11 @@ void sub_8003914(Sprite *s)
 
             posX = dims->offsetX - s->x;
             affineX = Mod(posX, 16);
-            gBgAffineRegs[bgId - 2].x = Q_24_8(affineX);
+            gBgAffineRegs[bgId - 2].x = Q(affineX);
 
             posY = dims->offsetY - s->y;
             affineY = Mod(posY, 8);
-            gBgAffineRegs[bgId - 2].y = Q_24_8(affineY);
+            gBgAffineRegs[bgId - 2].y = Q(affineY);
         } else {
             // _080039A4
             s32 scrollX, scrollY;

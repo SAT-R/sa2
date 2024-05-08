@@ -222,8 +222,8 @@ void CreateExtraEndingFallCutScene(void)
 
     fade = &scene->unk370;
     fade->window = SCREEN_FADE_USE_WINDOW_1;
-    fade->brightness = Q_24_8(0);
-    fade->speed = Q_24_8(0.5);
+    fade->brightness = Q(0);
+    fade->speed = Q(0.5);
     fade->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
     fade->bldAlpha = 0;
 
@@ -486,7 +486,7 @@ void sub_8090480(void)
     sub_8090F6C(scene);
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         gCurTask->main = sub_80913DC;
     }
 }
@@ -521,7 +521,7 @@ void sub_8090520(void)
     sub_8091044(scene);
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         gCurTask->main = sub_8091468;
     }
 }
@@ -899,7 +899,7 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
                 max = 1;
             }
 
-            // TODO: Might be able to use Q_24_8_TO_INT() here
+            // TODO: Might be able to use I() here
             s->x = (scene->unk3A0[i][0] >> 8) - (max * 100);
             s->y = scene->unk3A0[i][1] >> 8;
 

@@ -55,12 +55,11 @@ void CreateEntity_Gohla(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
             gohla->unk8C = FALSE;
         }
 
-        gohla->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-        gohla->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
+        gohla->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
+        gohla->spawnY = Q(TO_WORLD_POS(me->y, spriteRegionY));
         gohla->offsetX = 0;
-        gohla->offsetY = Q_24_8(sub_801F07C(Q_24_8_TO_INT(gohla->spawnY),
-                                            Q_24_8_TO_INT(gohla->spawnX), gohla->unk8C,
-                                            8, NULL, sub_801EE64));
+        gohla->offsetY = Q(sub_801F07C(I(gohla->spawnY), I(gohla->spawnX), gohla->unk8C,
+                                       8, NULL, sub_801EE64));
         gohla->projX = 0;
         gohla->projY = 0;
         gohla->projZ = 0;
@@ -125,12 +124,12 @@ static void sub_8051AF0(void)
     s32 delta = ENEMY_CLAMP_TO_GROUND_INNER(gohla, gohla->unk8C, sub_801EC3C);
 
     if (delta < 0) {
-        gohla->offsetY += Q_24_8(delta);
+        gohla->offsetY += Q(delta);
         delta = ENEMY_CLAMP_TO_GROUND_INNER(gohla, gohla->unk8C, sub_801EC3C);
     }
 
     if (delta > 0) {
-        gohla->offsetY += Q_24_8(delta);
+        gohla->offsetY += Q(delta);
     }
 
     ENEMY_UPDATE_POSITION(gohla, s, pos.x, pos.y);

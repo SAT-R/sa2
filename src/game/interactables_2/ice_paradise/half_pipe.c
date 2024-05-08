@@ -46,8 +46,8 @@ static void CreateEntity_HalfPipe(MapEntity *me, u16 spriteRegionX, u16 spriteRe
                                 0x2010, 0, TaskDestructor_HalfPipe);
     Sprite_IceParadiseHalfPipe *halfPipe = TASK_DATA(t);
     halfPipe->direction = direction;
-    halfPipe->x = Q_24_8(spriteRegionX) + me->x * TILE_WIDTH;
-    halfPipe->y = Q_24_8(spriteRegionY) + me->y * TILE_WIDTH;
+    halfPipe->x = Q(spriteRegionX) + me->x * TILE_WIDTH;
+    halfPipe->y = Q(spriteRegionY) + me->y * TILE_WIDTH;
     halfPipe->offsetX = me->d.sData[0] * TILE_WIDTH;
     halfPipe->offsetY = me->d.sData[1] * TILE_WIDTH;
     halfPipe->width = me->d.uData[2] * TILE_WIDTH + halfPipe->offsetX;
@@ -77,8 +77,8 @@ static void Task_HalfPipeSequenceMain(void)
         u16 posWithinHalfPipe;
         gPlayer.moveState |= MOVESTATE_8000;
         posWithinHalfPipe = halfPipe->direction == HALF_PIPE_DIRECTION_FORWARD
-            ? Q_24_8_TO_INT(gPlayer.x) - (halfPipe->x + halfPipe->offsetX)
-            : (halfPipe->x + halfPipe->width) - Q_24_8_TO_INT(gPlayer.x);
+            ? I(gPlayer.x) - (halfPipe->x + halfPipe->offsetX)
+            : (halfPipe->x + halfPipe->width) - I(gPlayer.x);
         UpdatePlayerPosOnHalfPipe(halfPipe, posWithinHalfPipe);
     }
 }
@@ -99,19 +99,19 @@ static void UpdatePlayerPosOnHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe, u16 
 #endif
         temp = temp << 0x10 >> 0x10;
         airSpeed = temp;
-        if (temp > Q_24_8(10)) {
-            airSpeed = Q_24_8(10);
+        if (temp > Q(10)) {
+            airSpeed = Q(10);
         }
     }
 
-    temp2 = (airSpeed << 8) / Q_24_8(10);
+    temp2 = (airSpeed << 8) / Q(10);
     height = halfPipe->height;
     height -= halfPipe->offsetY;
     r3 = (height - 16) >> 1;
 
     sin = (r3 * SIN_24_8(temp4));
-    sin += Q_24_8(r3);
-    sin = Q_24_8_TO_INT(sin * temp2);
+    sin += Q(r3);
+    sin = I(sin * temp2);
 
     gPlayer.y = halfPipe->basePlayerY - sin;
     gPlayer.speedAirY = 0;
@@ -136,8 +136,8 @@ static bool32 PlayerWithinHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
 {
     s16 posX = halfPipe->x - gCamera.x;
     s16 posY = halfPipe->y - gCamera.y;
-    s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-    s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    s16 playerX = I(gPlayer.x) - gCamera.x;
+    s16 playerY = I(gPlayer.y) - gCamera.y;
 
     if ((posX + halfPipe->offsetX) <= playerX
         && (posX + halfPipe->offsetX) + (halfPipe->width - halfPipe->offsetX)
@@ -183,7 +183,7 @@ static void EndHalfPipeSequence(Sprite_IceParadiseHalfPipe *halfPipe)
 
 static bool32 sub_80789AC(Sprite_IceParadiseHalfPipe *halfPipe)
 {
-    if (gPlayer.speedAirX <= -Q_24_8(2) || gPlayer.speedAirX >= Q_24_8(2.25)) {
+    if (gPlayer.speedAirX <= -Q(2) || gPlayer.speedAirX >= Q(2.25)) {
         if (gPlayer.unk5E & gPlayerControls.jump) {
             gPlayer.transition = PLTRANS_PT3;
         } else {
@@ -221,12 +221,12 @@ static bool32 ShouldTriggerHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
 
     switch (halfPipe->direction) {
         case HALF_PIPE_DIRECTION_FORWARD:
-            if (gPlayer.speedAirX < Q_24_8(2.25)) {
+            if (gPlayer.speedAirX < Q(2.25)) {
                 return FALSE;
             }
             break;
         case HALF_PIPE_DIRECTION_REVERSE:
-            if (gPlayer.speedAirX > -Q_24_8(2.25)) {
+            if (gPlayer.speedAirX > -Q(2.25)) {
                 return FALSE;
             }
             break;

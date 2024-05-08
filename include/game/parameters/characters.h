@@ -19,7 +19,7 @@
 #define PLAYER_AIR_SPEED_MAX 15.0
 
 /*** Tricks ***/
-#define TRICK__STOP_N_SLAM__DROP_SPEED Q_24_8(0.21875)
+#define TRICK__STOP_N_SLAM__DROP_SPEED Q(0.21875)
 
 /*** Cream ***/
 #define CREAM_FLYING_DURATION ZONE_TIME_TO_INT(0, 4)

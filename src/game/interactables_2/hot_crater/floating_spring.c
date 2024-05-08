@@ -128,9 +128,9 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
 
     floatingSpring->unk3C
         = TO_WORLD_POS(floatingSpring->base.spriteX, floatingSpring->base.regionX)
-        + Q_24_8_TO_INT(floatingSpring->unk44);
-    floatingSpring->unk40 = TO_WORLD_POS(me->y, floatingSpring->base.regionY)
-        + Q_24_8_TO_INT(floatingSpring->unk48);
+        + I(floatingSpring->unk44);
+    floatingSpring->unk40
+        = TO_WORLD_POS(me->y, floatingSpring->base.regionY) + I(floatingSpring->unk48);
 }
 
 static u32 sub_8074EF4(Sprite_FloatingSpring *floatingSpring)
@@ -139,8 +139,8 @@ static u32 sub_8074EF4(Sprite_FloatingSpring *floatingSpring)
         u32 temp = sub_800CDBC(&floatingSpring->s, floatingSpring->unk3C,
                                floatingSpring->unk40, &gPlayer);
         if (temp != 0) {
-            if (Q_24_8_TO_INT(gPlayer.y) < floatingSpring->unk40) {
-                gPlayer.y += Q_24_8(floatingSpring->s.hitboxes[0].top);
+            if (I(gPlayer.y) < floatingSpring->unk40) {
+                gPlayer.y += Q(floatingSpring->s.hitboxes[0].top);
                 if (gPlayer.speedAirY > 0) {
                     gPlayer.speedAirY = 0;
                 }

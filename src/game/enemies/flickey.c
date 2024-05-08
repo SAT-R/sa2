@@ -59,16 +59,16 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
         ENEMY_SET_SPAWN_POS_FLYING(flickey, me);
 
-        flickey->unk9C = -Q_24_8(1.5);
-        flickey->unk9E = -Q_24_8(4.0);
+        flickey->unk9C = -Q(1.5);
+        flickey->unk9E = -Q(4.0);
         flickey->unk2A4 = 0;
 
-        x = Q_24_8(flickey->spawnX);
-        y = Q_24_8(flickey->spawnY);
+        x = Q(flickey->spawnX);
+        y = Q(flickey->spawnY);
 
         for (i = 0; i < ARRAY_COUNT(flickey->positions); i++) {
-            flickey->positions[i].x = Q_24_8_TO_INT(x >> 8);
-            flickey->positions[i].y = Q_24_8_TO_INT(y >> 8);
+            flickey->positions[i].x = I(x >> 8);
+            flickey->positions[i].y = I(y >> 8);
         }
 
         s->x = 0;
@@ -99,8 +99,8 @@ static void Task_FlickeyMain(void)
     flickey->offsetX += flickey->unk9C;
     flickey->offsetY += flickey->unk9E;
 
-    pos.x = Q_24_8_TO_INT(flickey->spawnX + flickey->offsetX);
-    pos.y = Q_24_8_TO_INT(flickey->spawnY + flickey->offsetY);
+    pos.x = I(flickey->spawnX + flickey->offsetX);
+    pos.y = I(flickey->spawnY + flickey->offsetY);
     someVal = sub_801F07C(pos.y, pos.x, 1, 8, 0, sub_801EE64);
     s->x = pos.x - gCamera.x;
     s->y = pos.y - gCamera.y;
@@ -151,7 +151,7 @@ static void Task_FlickeyMain(void)
 
     if (someVal < 0) {
         s->y += someVal;
-        flickey->offsetY += Q_24_8(someVal);
+        flickey->offsetY += Q(someVal);
 
         flickey->unk9E = -0x400;
         s->graphics.anim = SA2_ANIM_FLICKEY;
@@ -281,9 +281,8 @@ static void sub_80591FC(void)
         flickey->positions[i + 3].y += 0x30;
         flickey->positions[i].x += flickey->positions[i + 3].x;
         flickey->positions[i].y += flickey->positions[i + 3].y;
-        someVal
-            = sub_801F07C(Q_24_8_TO_INT(flickey->positions[i].y),
-                          Q_24_8_TO_INT(flickey->positions[i].x), 1, 8, 0, sub_801EE64);
+        someVal = sub_801F07C(I(flickey->positions[i].y), I(flickey->positions[i].x), 1,
+                              8, 0, sub_801EE64);
 
         if (someVal < 0) {
             flickey->positions[i].y += Q_24_8_NEW(someVal);
@@ -291,8 +290,8 @@ static void sub_80591FC(void)
         }
 
         if (flickey->unkA0 > 0x2D || (gStageTime & 2 && flickey->unkA0 < 0x2D)) {
-            s->x = Q_24_8_TO_INT(flickey->positions[i].x) - gCamera.x;
-            s->y = Q_24_8_TO_INT(flickey->positions[i].y) - gCamera.y;
+            s->x = I(flickey->positions[i].x) - gCamera.x;
+            s->y = I(flickey->positions[i].y) - gCamera.y;
 
             DisplaySprite(s);
             s->unk10 ^= 0x400;

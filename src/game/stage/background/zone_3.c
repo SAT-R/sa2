@@ -158,7 +158,7 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
             if (unk->unk408 == 0) {
                 unk->unk408 = a;
             }
-            unk->unk408 += Q_24_8_TO_INT(gPlayer.speedGroundX);
+            unk->unk408 += I(gPlayer.speedGroundX);
             a = unk->unk408;
         } else {
             Unk3000408 *unk = IWRAM_PTR(NULL);

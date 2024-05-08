@@ -34,9 +34,9 @@ void CreateGameOverScreen(LostLifeCause lostLifeCause)
 
     ScreenFade *fade = &screen->unk0;
     fade->window = SCREEN_FADE_USE_WINDOW_1;
-    fade->brightness = Q_24_8(0);
+    fade->brightness = Q(0);
     fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
-    fade->speed = Q_24_8(1. / 4.);
+    fade->speed = Q(1. / 4.);
     fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
     fade->bldAlpha = 0;
 
@@ -162,9 +162,9 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
 
     fade = &screen->unk0;
     fade->window = SCREEN_FADE_USE_WINDOW_1;
-    fade->brightness = Q_24_8(0);
+    fade->brightness = Q(0);
     fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-    fade->speed = Q_24_8(2.0);
+    fade->speed = Q(2.0);
     fade->bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_OBJ);
     fade->bldAlpha = 0;
 }
@@ -182,9 +182,9 @@ void Task_GameOverScreenMain(void)
 
     if (screen->framesUntilDone == 60) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
-        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
-        screen->unk0.speed = Q_24_8(4.0);
+        screen->unk0.speed = Q(4.0);
         screen->unk0.bldCnt
             = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
         screen->unk0.bldAlpha = 0;
@@ -192,9 +192,9 @@ void Task_GameOverScreenMain(void)
 
     if (screen->framesUntilDone == 50) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
-        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.brightness = Q(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-        screen->unk0.speed = Q_24_8(4.0);
+        screen->unk0.speed = Q(4.0);
         screen->unk0.bldCnt
             = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
         screen->unk0.bldAlpha = 0;
@@ -213,9 +213,9 @@ void Task_GameOverScreenMain(void)
 
     if (--screen->framesUntilDone == 0) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
-        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
-        screen->unk0.speed = Q_24_8(1. / 4.);
+        screen->unk0.speed = Q(1. / 4.);
         screen->unk0.bldCnt
             = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_BD | BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1
                | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3 | BLDCNT_TGT2_ALL);
@@ -237,9 +237,9 @@ void sub_80369D8(void)
 
     if (--screen->framesUntilDone == 0) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
-        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.brightness = Q(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_LIGHTEN);
-        screen->unk0.speed = Q_24_8(1.0);
+        screen->unk0.speed = Q(1.0);
         screen->unk0.bldCnt
             = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
         screen->unk0.bldAlpha = 0;
@@ -263,9 +263,9 @@ void Task_TimeOverScreenMain(void)
 
     if (screen->framesUntilDone == 150) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
-        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
-        screen->unk0.speed = Q_24_8(4.0);
+        screen->unk0.speed = Q(4.0);
         screen->unk0.bldCnt
             = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
         screen->unk0.bldAlpha = 0;
@@ -273,9 +273,9 @@ void Task_TimeOverScreenMain(void)
 
     if (screen->framesUntilDone == 140) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
-        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.brightness = Q(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-        screen->unk0.speed = Q_24_8(2.0);
+        screen->unk0.speed = Q(2.0);
         screen->unk0.bldCnt
             = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
         screen->unk0.bldAlpha = 0;
@@ -283,9 +283,9 @@ void Task_TimeOverScreenMain(void)
 
     if (screen->framesUntilDone == 30) {
         screen->unk0.window = SCREEN_FADE_USE_WINDOW_1;
-        screen->unk0.brightness = Q_24_8(0);
+        screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
-        screen->unk0.speed = Q_24_8(2.0);
+        screen->unk0.speed = Q(2.0);
         screen->unk0.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_OBJ);
         screen->unk0.bldAlpha = 0;
     }

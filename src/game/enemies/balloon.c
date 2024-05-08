@@ -42,8 +42,8 @@ void CreateEntity_Balloon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
         ENEMY_SET_SPAWN_POS_FLYING(balloon, me);
 
-        balloon->unk54 = Q_24_8(0.5);
-        balloon->unk58 = Q_24_8(0.0);
+        balloon->unk54 = Q(0.5);
+        balloon->unk58 = Q(0.0);
         balloon->unk5E = 120;
         balloon->unk5C = me->d.uData[2] * 4;
         balloon->unk5D = me->d.uData[3] * 4;

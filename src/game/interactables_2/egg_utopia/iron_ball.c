@@ -111,9 +111,8 @@ static void sub_807EFC4(Sprite_IA95 *ia95)
             >> 0xF;
     }
 
-    ia95->unk3C = TO_WORLD_POS(ia95->base.spriteX, ia95->base.regionX)
-        + Q_24_8_TO_INT(ia95->unk44);
-    ia95->unk40 = TO_WORLD_POS(me->y, ia95->base.regionY) + Q_24_8_TO_INT(ia95->unk48);
+    ia95->unk3C = TO_WORLD_POS(ia95->base.spriteX, ia95->base.regionX) + I(ia95->unk44);
+    ia95->unk40 = TO_WORLD_POS(me->y, ia95->base.regionY) + I(ia95->unk48);
 }
 
 static void Task_Interactable095Main(void)

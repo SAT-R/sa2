@@ -45,7 +45,7 @@ void CreateEntity_BulletBuzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
 
     ENEMY_SET_SPAWN_POS_FLYING(bbuzzer, me);
 
-    bbuzzer->unk54 = Q_24_8(0.0);
+    bbuzzer->unk54 = Q(0.0);
     bbuzzer->unk5A = me->d.uData[2] * 4;
     bbuzzer->unk5B = me->d.uData[3] * 4;
     bbuzzer->unk5C = 0;
@@ -108,8 +108,7 @@ void Task_BulletBuzzerMain(void)
     }
 
     ENEMY_DESTROY_IF_OFFSCREEN(bbuzzer, me, s);
-    value = sub_8004418(Q_24_8_TO_INT(gPlayer.y) - pos.y,
-                        Q_24_8_TO_INT(gPlayer.x) - pos.x);
+    value = sub_8004418(I(gPlayer.y) - pos.y, I(gPlayer.x) - pos.x);
 
     if (bbuzzer->unk5E == 0) {
         if (((u16)(value - 86) < 84 && s->unk10 & SPRITE_FLAG_MASK_X_FLIP)
@@ -123,7 +122,7 @@ void Task_BulletBuzzerMain(void)
         }
     }
 
-    Player_UpdateHomingPosition(Q_24_8(pos.x), Q_24_8(pos.y));
+    Player_UpdateHomingPosition(Q(pos.x), Q(pos.y));
     if (UpdateSpriteAnimation(s) == 0) {
         ENEMY_TURN_AROUND(s);
         s->graphics.anim = SA2_ANIM_BULLETBUZZER;
@@ -158,7 +157,7 @@ void sub_8059B04(void)
 
         init.y = Q_24_8_NEW(pos.y + 14);
         init.rot = bbuzzer->unk58 - 16;
-        init.speed = Q_24_8(2);
+        init.speed = Q(2);
         CreateSeveralProjectiles(&init, 3, 16);
     }
 

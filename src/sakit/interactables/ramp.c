@@ -127,7 +127,7 @@ static void Task_Ramp(void)
                         player->moveState |= MOVESTATE_IN_AIR;
                     } else {
                         s32 temp4 = I(player->y) + player->unk17 - screenY;
-                        s32 temp6 = I(s->hitboxes[0].top * (Q_24_8(temp9) / temp2));
+                        s32 temp6 = I(s->hitboxes[0].top * (Q(temp9) / temp2));
 
                         if (temp4 >= temp6) {
                             if (!(player->moveState & MOVESTATE_IN_AIR)
@@ -141,7 +141,7 @@ static void Task_Ramp(void)
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 2;
                                 }
                             } else {
-                                player->y += Q_24_8(temp6 - temp4);
+                                player->y += Q(temp6 - temp4);
                                 player->rotation = 0;
 
                                 player->moveState |= MOVESTATE_8;

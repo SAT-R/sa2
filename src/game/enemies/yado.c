@@ -29,12 +29,12 @@ void Task_8055084(void);
 void Task_8055378(void);
 void TaskDestructor_Yado(struct Task *);
 
-#define YADO_PLAYER_ACCEL  -Q_24_8(9.0)
+#define YADO_PLAYER_ACCEL  -Q(9.0)
 #define YADO_PROJ_COOLDOWN (2 * GBA_FRAMES_PER_SECOND)
 
 #define IS_YADO_FACING_PLAYER(_yado, _yadoX, _player)                                   \
-    (((Q_24_8_TO_INT(gPlayer.x) < _yadoX) && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP))      \
-     || ((Q_24_8_TO_INT(gPlayer.x) > _yadoX) && (~s->unk10 & SPRITE_FLAG_MASK_X_FLIP)))
+    (((I(gPlayer.x) < _yadoX) && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP))                  \
+     || ((I(gPlayer.x) > _yadoX) && (~s->unk10 & SPRITE_FLAG_MASK_X_FLIP)))
 
 void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -152,14 +152,14 @@ void Task_8055084(void)
             if ((a4->s.hitboxes[1].index != -1)) {
                 s32 x1, x2;
                 x1 = x + s->hitboxes[0].left;
-                x2 = Q_24_8_TO_INT(a4->posX) + a4->s.hitboxes[1].left;
+                x2 = I(a4->posX) + a4->s.hitboxes[1].left;
                 if ((x1 <= x2 && x1 + (s->hitboxes[0].right - s->hitboxes[0].left) >= x2)
                     || (x1 >= x2
                         && x2 + (a4->s.hitboxes[1].right - a4->s.hitboxes[1].left)
                             >= x1)) {
                     s32 y1, y2;
                     y1 = y + s->hitboxes[0].top;
-                    y2 = Q_24_8_TO_INT(a4->posY) + a4->s.hitboxes[1].top;
+                    y2 = I(a4->posY) + a4->s.hitboxes[1].top;
                     if ((y1 <= y2
                          && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
                         || (y1 >= y2
@@ -214,10 +214,10 @@ void Task_8055084(void)
             pinit.rot = 0;
         } else {
             pinit.x = Q_24_8_NEW(pos.x - 5);
-            pinit.rot = Q_24_8(2.0);
+            pinit.rot = Q(2.0);
         }
         pinit.y = Q_24_8_NEW(pos.y - 6);
-        pinit.speed = Q_24_8(1.5);
+        pinit.speed = Q(1.5);
 
         CreateProjectile(&pinit);
     } else if (yado->unk4C == 6) {

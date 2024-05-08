@@ -236,7 +236,7 @@ void CreateStageResultsCutscene(u8 mode)
     fade->window = 0;
     fade->flags = SCREEN_FADE_FLAG_FF00;
     fade->brightness = Q_8_8(1);
-    fade->speed = Q_24_8(0);
+    fade->speed = Q(0);
     fade->bldCnt = 0;
 }
 
@@ -258,14 +258,14 @@ static void sub_808DD9C(void)
         scene->unk76 = (scene->unk76 * 0x43) >> 6;
     }
 
-    if (scene->unk70 < (player->x - Q_24_8(gCamera.x) - Q_24_8(20.0))) {
-        scene->unk70 = (player->x - Q_24_8(gCamera.x) - Q_24_8(20.0));
+    if (scene->unk70 < (player->x - Q(gCamera.x) - Q(20.0))) {
+        scene->unk70 = (player->x - Q(gCamera.x) - Q(20.0));
     }
 
     if (scene->unk72 > (player->y - (gCamera.y * 0x100) - 0xA00)) {
         // Required for match
         scene->unk72 = scene->unk72 = player->y - (gCamera.y * 0x100) - 0xA00;
-        scene->unk70 = player->x - Q_24_8(gCamera.x) - Q_24_8(20.0);
+        scene->unk70 = player->x - Q(gCamera.x) - Q(20.0);
 
         if (scene->unk7A == 0) {
             player->unk64 = 0x52;
@@ -327,13 +327,13 @@ static void sub_808DF88(void)
         scene->unk76 = (scene->unk76 * 0x7F) >> 7;
     }
 
-    if (scene->unk70 < (player->x - Q_24_8(gCamera.x) - 0x1C00)) {
-        scene->unk70 = player->x - Q_24_8(gCamera.x) - 0x1C00;
+    if (scene->unk70 < (player->x - Q(gCamera.x) - 0x1C00)) {
+        scene->unk70 = player->x - Q(gCamera.x) - 0x1C00;
     }
 
     if (scene->unk72 > (player->y - (gCamera.y * 0x100) - 0x1400)) {
         scene->unk72 = player->y - (gCamera.y * 0x100) - 0x1400;
-        scene->unk70 = player->x - Q_24_8(gCamera.x) - 0x1C00;
+        scene->unk70 = player->x - Q(gCamera.x) - 0x1C00;
 
         if (scene->unk7A == 0) {
             VramFree(scene->unk4.graphics.dest);

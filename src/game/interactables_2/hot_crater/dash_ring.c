@@ -180,8 +180,8 @@ static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
     gPlayer.transition = PLTRANS_PT24;
 
     // NOTE: This doesn't take the sprite offset, is it a bug?
-    gPlayer.x = Q_24_8(ring->posX);
-    gPlayer.y = Q_24_8(ring->posY);
+    gPlayer.x = Q(ring->posX);
+    gPlayer.y = Q(ring->posY);
     gPlayer.unk72 = 0x10;
 
     switch (ring->orientation) {
@@ -259,8 +259,8 @@ static bool32 DashRing_PlayerIsColliding(Sprite_DashRing *ring)
     ringScreenY = ring->posY;
     ringScreenY -= gCamera.y;
 
-    playerScreenX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-    playerScreenY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    playerScreenX = I(gPlayer.x) - gCamera.x;
+    playerScreenY = I(gPlayer.y) - gCamera.y;
 
     for (i = 0; i < ARRAY_COUNT(ring->positions); i++) {
         ringScreenX2 = ringScreenX;

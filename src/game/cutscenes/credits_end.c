@@ -133,15 +133,15 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
 
     for (i = 0; i < 2; i++) {
         scene->unk170[0][i] = 0;
-        scene->unk170[1][i] = Q_24_8(180);
+        scene->unk170[1][i] = Q(180);
 
         // NOTE: set but never used
-        scene->unk170[2][i] = Q_24_8(200);
+        scene->unk170[2][i] = Q(200);
     }
 
     fade = &scene->fade;
     fade->window = 1;
-    fade->brightness = Q_24_8(0);
+    fade->brightness = Q(0);
     fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
     fade->bldAlpha = 0;
     fade->speed = 0x100;
@@ -297,7 +297,7 @@ static void Task_FadeOut(void)
     RenderExtraEndingElements(scene);
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
 
         if (scene->sequence == SEQUENCE_FADE_TO_COPYRIGHT_SCREEN) {
             gCurTask->main = Task_CreateCopyrightScreen;
@@ -575,7 +575,7 @@ static void Task_FadeIn(void)
     RenderExtraEndingElements(scene);
 
     if (UpdateScreenFade(fade) == SCREEN_FADE_COMPLETE) {
-        fade->brightness = Q_24_8(0);
+        fade->brightness = Q(0);
         gCurTask->main = Task_SequenceMain;
     }
 }
@@ -605,15 +605,15 @@ static void TaskDestroy_CreditsEndCutScene(UNUSED struct Task *t)
 static void UpdateCongratsMessagePos(struct CreditsEndCutScene *scene)
 {
     scene->unk170[0][0] = 120;
-    scene->unk170[0][1] = Q_24_8(10);
+    scene->unk170[0][1] = Q(10);
 }
 
 static void UpdateMessageLine1Pos(struct CreditsEndCutScene *scene)
 {
     if (scene->sonicAnimFrame == 11) {
         scene->unk170[1][0] = 120;
-        if (scene->unk170[1][1] > Q_24_8(130)) {
-            scene->unk170[1][1] -= Q_24_8(3);
+        if (scene->unk170[1][1] > Q(130)) {
+            scene->unk170[1][1] -= Q(3);
         }
     }
 }
@@ -622,8 +622,8 @@ static void UpdateMessageLine2Pos(struct CreditsEndCutScene *scene)
 {
     if (scene->sonicAnimFrame == 11) {
         scene->unk170[2][0] = 120;
-        if (scene->unk170[2][1] > Q_24_8(148)) {
-            scene->unk170[2][1] -= Q_24_8(3);
+        if (scene->unk170[2][1] > Q(148)) {
+            scene->unk170[2][1] -= Q(3);
         }
     }
 }

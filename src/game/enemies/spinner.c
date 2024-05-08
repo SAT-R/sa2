@@ -34,8 +34,8 @@ void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     spinner->base.spriteX = me->x;
     spinner->base.spriteY = spriteY;
 
-    spinner->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-    spinner->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
+    spinner->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
+    spinner->spawnY = Q(TO_WORLD_POS(me->y, spriteRegionY));
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);

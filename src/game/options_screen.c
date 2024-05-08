@@ -4027,8 +4027,8 @@ static void TimeRecordsScreenCreateChoiceViewBackgroundsUI(
     ScreenFade *fade = &timeRecordsScreen->fade;
     fade->window = SCREEN_FADE_USE_WINDOW_0;
     fade->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
-    fade->brightness = Q_24_8(0);
-    fade->speed = Q_24_8(1.0);
+    fade->brightness = Q(0);
+    fade->speed = Q(1.0);
     fade->bldAlpha = 0;
     fade->bldCnt = (BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN);
 

@@ -150,10 +150,10 @@ static bool32 sub_8081164(Sprite_SpecialRing *ring)
 {
     s32 screenPosX, screenPosY;
     u16 posX, posY;
-    screenPosX = (ring->worldX + 128);
+    screenPosX = (ring->worldX + (CAM_REGION_WIDTH / 2));
     screenPosX -= gCamera.x;
 
-    screenPosY = (ring->worldY + 128);
+    screenPosY = (ring->worldY + (CAM_REGION_WIDTH / 2));
     screenPosY -= gCamera.y;
 
     posY = screenPosY;

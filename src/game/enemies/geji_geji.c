@@ -51,8 +51,8 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     gg->base.spriteX = me->x;
     gg->base.spriteY = spriteY;
 
-    gg->spawnX = Q_24_8(TO_WORLD_POS(me->x, spriteRegionX));
-    gg->spawnY = Q_24_8(TO_WORLD_POS(me->y, spriteRegionY));
+    gg->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
+    gg->spawnY = Q(TO_WORLD_POS(me->y, spriteRegionY));
     gg->offsetX = 0;
     gg->offsetY = 0;
 
@@ -66,8 +66,8 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     gg->unk27E = 0;
 
     for (i = 0; i < 64; i++) {
-        gg->positions[0][i] = Q_24_8_TO_INT(gg->spawnX);
-        gg->positions[1][i] = Q_24_8_TO_INT(gg->spawnY);
+        gg->positions[0][i] = I(gg->spawnX);
+        gg->positions[1][i] = I(gg->spawnY);
     }
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -173,8 +173,8 @@ static void sub_8058264(void)
 
     Vec2_32 pos;
 
-    pos.x = Q_24_8_TO_INT(gg->spawnX + gg->offsetX);
-    pos.y = Q_24_8_TO_INT(gg->spawnY + gg->offsetY);
+    pos.x = I(gg->spawnX + gg->offsetX);
+    pos.y = I(gg->spawnY + gg->offsetY);
     s->x = gg->positions[0][gg->unk27E] - gCamera.x;
     s->y = gg->positions[1][gg->unk27E] - gCamera.y;
 

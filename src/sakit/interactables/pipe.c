@@ -49,10 +49,9 @@ static void Task_Pipe_Start(void)
     screenX = TO_WORLD_POS(spriteX, regionX);
     screenY = TO_WORLD_POS(me->y, regionY);
 
-    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.x))
-        && ((screenX + 24) >= Q_24_8_TO_INT(gPlayer.x))
-        && (screenY <= Q_24_8_TO_INT(gPlayer.y))
-        && ((screenY + 24) >= Q_24_8_TO_INT(gPlayer.y))
+    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.x))
+        && ((screenX + 24) >= I(gPlayer.x)) && (screenY <= I(gPlayer.y))
+        && ((screenY + 24) >= I(gPlayer.y))
         && (!(gPlayer.moveState & MOVESTATE_80000))) {
         u8 flag;
 
@@ -62,8 +61,8 @@ static void Task_Pipe_Start(void)
         flag |= me->unk4 & 0x0F;
         gPlayer.unk6E = flag;
 
-        gPlayer.x = Q_24_8(screenX + 12);
-        gPlayer.y = Q_24_8(screenY + 12);
+        gPlayer.x = Q(screenX + 12);
+        gPlayer.y = Q(screenY + 12);
 
         Player_SetMovestate_IsInScriptedSequence();
 
@@ -96,11 +95,9 @@ static void Task_Pipe_End(void)
     screenX = TO_WORLD_POS(spriteX, regionX);
     screenY = TO_WORLD_POS(me->y, regionY);
 
-    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= Q_24_8_TO_INT(gPlayer.x))
-        && ((screenX + 24) >= Q_24_8_TO_INT(gPlayer.x))
-        && (screenY <= Q_24_8_TO_INT(gPlayer.y))
-        && ((screenY + 24) >= Q_24_8_TO_INT(gPlayer.y))
-        && (gPlayer.moveState & MOVESTATE_80000)) {
+    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.x))
+        && ((screenX + 24) >= I(gPlayer.x)) && (screenY <= I(gPlayer.y))
+        && ((screenY + 24) >= I(gPlayer.y)) && (gPlayer.moveState & MOVESTATE_80000)) {
         gPlayer.moveState &= ~(MOVESTATE_80000 | MOVESTATE_200 | MOVESTATE_IN_AIR);
 
         gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY; // priority bits

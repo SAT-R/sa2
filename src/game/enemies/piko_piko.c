@@ -25,7 +25,7 @@ typedef struct {
 static void Task_PikoPiko(void);
 static void TaskDestructor_PikoPiko(struct Task *);
 
-#define ENEMY_SPEED_PIKOPIKO Q_24_8(1.0)
+#define ENEMY_SPEED_PIKOPIKO Q(1.0)
 
 void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                            u8 spriteY)

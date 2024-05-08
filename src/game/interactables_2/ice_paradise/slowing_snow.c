@@ -62,8 +62,8 @@ static bool32 PlayerIsTouchingSnow(Sprite_SlowingSnow *snow)
         if (!(gPlayer.moveState & MOVESTATE_IN_AIR)) {
             s16 snowScreenX = snow->posX - gCamera.x;
             s16 snowScreenY = snow->posY - gCamera.y;
-            s16 playerScreenX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-            s16 playerScreenY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+            s16 playerScreenX = I(gPlayer.x) - gCamera.x;
+            s16 playerScreenY = I(gPlayer.y) - gCamera.y;
 
             if (((snowScreenX + snow->left) <= playerScreenX)
                 && ((snowScreenX + snow->left) + (snow->right - snow->left)

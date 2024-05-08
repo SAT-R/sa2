@@ -351,8 +351,8 @@ static void PlayerStatePhysics_SlowToStop(void)
     }
 
     {
-        s32 temp2 = Q_24_8_TO_INT(sin * speed) >> 2;
-        s32 temp3 = Q_24_8_TO_INT(cos * speed) >> 2;
+        s32 temp2 = I(sin * speed) >> 2;
+        s32 temp3 = I(cos * speed) >> 2;
         player->x -= temp2;
         player->y -= temp3;
     }

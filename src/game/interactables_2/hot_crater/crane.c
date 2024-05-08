@@ -82,7 +82,6 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     Sprite_HCCrane *crane = TASK_DATA(t);
     CraneStruct *cs;
     u16 i;
-    u16 j;
 
     crane->unk1B8.unk0 = 0;
     crane->posX = TO_WORLD_POS(me->x, spriteRegionX);
@@ -124,7 +123,6 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
             cs->unkC = 0x2C00;
             cs->unk10 = 0;
         } else {
-            // _08073998
             cs->s = &crane->unk188;
             cs->unk8 = 0;
             cs->unkC = 0;
@@ -148,11 +146,9 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
                 UpdateSpriteAnimation(cs->s);
             }
         }
-        // _08073A00
     }
-    // Hook
 
-    {
+    { // Hook
         cs = &crane->cs[7];
         cs->s = &crane->unk158;
 
@@ -395,65 +391,52 @@ static void Task_8073E20(void)
             }
 
             crane->cs[7].unk8 = ((temp2 - temp) >> 4) + 256;
-        } else {
-            // _08073E9C
-            if (crane->unk1B8.unk8 == 0) {
-                if (crane->unk1B8.unkA > 0) {
-                    if (crane->unk1B8.unkA > 32) {
-                        r2 = -32;
-                    } else {
-                        r2 = -crane->unk1B8.unkA;
-                    }
+        } else if (crane->unk1B8.unk8 == 0) {
+            if (crane->unk1B8.unkA > 0) {
+                if (crane->unk1B8.unkA > 32) {
+                    r2 = -32;
                 } else {
-                    if (crane->unk1B8.unkA < -32) {
-                        r2 = 32;
-                    } else {
-                        r2 = -crane->unk1B8.unkA;
-                    }
-                }
-            } else if (crane->unk1B8.unk8 > 0) {
-                // __08073ED0
-                s16 temp;
-                s32 temp0, temp1;
-                if (crane->unk1B8.unkA > 0) {
-                    r2 = (crane->unk1B8.unk8 - crane->unk1B8.unkA) >> 4;
-                    if (r2 < 32)
-                        r2 = 32;
-                } else {
-                    // _08073EEC
-                    s32 tempa = crane->unk1B8.accelY;
-                    s32 tempb = crane->unk1B8.unkA;
-                    r2 = ((tempb - tempa)) >> 4;
-                    if (r2 < 32)
-                        r2 = 32;
+                    r2 = -crane->unk1B8.unkA;
                 }
             } else {
-                // _08073F0C
-                s32 temp0;
-                s16 temp;
-                if (crane->unk1B8.unkA > 0) {
-                    r2 = (crane->unk1B8.unkA - crane->unk1B8.accelY) >> 4;
-                    // TODO: fix
-                    if (r2 > -32) {
-                        r2 = -32;
-                    }
-
+                if (crane->unk1B8.unkA < -32) {
+                    r2 = 32;
                 } else {
-                    s32 tempa = crane->unk1B8.unkA;
-                    s32 tempb = crane->unk1B8.unk8;
-                    r2 = (tempb - tempa) >> 4;
-                    if (r2 > -32)
-                        r2 = -32;
+                    r2 = -crane->unk1B8.unkA;
                 }
             }
+        } else if (crane->unk1B8.unk8 > 0) {
+            if (crane->unk1B8.unkA > 0) {
+                r2 = (crane->unk1B8.unk8 - crane->unk1B8.unkA) >> 4;
+                if (r2 < 32)
+                    r2 = 32;
+            } else {
+                s32 tempa = crane->unk1B8.accelY;
+                s32 tempb = crane->unk1B8.unkA;
+                r2 = ((tempb - tempa)) >> 4;
+                if (r2 < 32)
+                    r2 = 32;
+            }
+        } else if (crane->unk1B8.unkA > 0) {
+            r2 = (crane->unk1B8.unkA - crane->unk1B8.accelY) >> 4;
+
+            if (r2 > -32) {
+                r2 = -32;
+            }
+        } else {
+            s32 tempa = crane->unk1B8.unkA;
+            s32 tempb = crane->unk1B8.unk8;
+            r2 = (tempb - tempa) >> 4;
+
+            if (r2 > -32)
+                r2 = -32;
         }
-        // _08073F56
+
         crane->unk1B8.unkA += r2;
 
         if (((crane->unk1B8.unk8 > 0) && (crane->unk1B8.unk8 <= crane->unk1B8.unkA))
             || ((crane->unk1B8.unk8 < 0)
                 && (crane->unk1B8.unk8 >= crane->unk1B8.unkA))) {
-            // _08073F88
             u16 unk8 = crane->unk1B8.unk8;
             crane->unk1B8.unkA = unk8;
             crane->unk1B8.accelY = unk8;
@@ -467,16 +450,14 @@ static void Task_8073E20(void)
             } else {
                 crane->unk1B8.unkA = 0;
             }
-            // _08073FCE
             crane->unk1B8.unk6++;
         }
-        // _08073FDA
+
         crane->cs[1].unk8 += ((crane->unk1B8.unkA >> 5));
         crane->cs[1].unk8 = CLAMP_SIN_PERIOD(crane->cs[1].unk8);
     }
 
     if (crane->unk1B8.unk8 == 0 && crane->unk1B8.unkA == 0) {
-        // _08073FFC
         gCurTask->main = Task_8073AA8;
     }
 
@@ -497,7 +478,7 @@ static void Task_8073E20(void)
                 return;
             }
         }
-        // _08074064
+
         sub_80741B4(crane);
         if (sub_80745B4(crane)) {
             sub_8074604(crane);
@@ -509,7 +490,6 @@ static void Task_8073E20(void)
 
 static void sub_8074088(Sprite_HCCrane *crane)
 {
-    s32 speedY;
     s16 v;
 
     sub_80218E4(&gPlayer);
@@ -547,7 +527,7 @@ static void sub_8074138(Sprite_HCCrane *crane)
         gPlayer.speedAirY = -crane->unk1B8.accelY;
         crane->unk1B8.unk0 = 0;
     }
-    // _08074178
+
     crane->unk1B8.unk6 = -crane->unk1B8.accelY;
     crane->unk1B8.unk8 = 0;
 
@@ -560,15 +540,15 @@ static void sub_80741B4(Sprite_HCCrane *crane)
     u8 i;
     u32 sinIndex = 0;
 
-    screenX = Q_24_8(crane->posX - gCamera.x);
-    screenY = Q_24_8(crane->posY - gCamera.y);
+    screenX = Q(crane->posX - gCamera.x);
+    screenY = Q(crane->posY - gCamera.y);
 
     for (i = 0; i < ARRAY_COUNT(crane->cs); i++) {
         CraneStruct *cs = &crane->cs[i];
         s16 cos = Q_2_14_TO_Q_24_8(COS(sinIndex));
-        s32 cosV2 = Q_24_8_TO_INT((signed)cs->unkC * cos);
+        s32 cosV2 = I((signed)cs->unkC * cos);
         s16 sin = Q_2_14_TO_Q_24_8(SIN(sinIndex));
-        s32 sinV2 = Q_24_8_TO_INT(cs->unk10 * sin);
+        s32 sinV2 = I(cs->unk10 * sin);
         s32 diff, temp;
 #ifndef NON_MATCHING
         register u32 mask asm("r1");
@@ -579,9 +559,9 @@ static void sub_80741B4(Sprite_HCCrane *crane)
         diff = cosV2 - sinV2;
         screenX += diff;
 
-        temp = Q_24_8_TO_INT(cs->unkC * sin);
+        temp = I(cs->unkC * sin);
 
-        screenY += temp + Q_24_8_TO_INT(cs->unk10 * cos);
+        screenY += temp + I(cs->unk10 * cos);
         sinIndex += cs->unk8;
         mask = ONE_CYCLE;
         sinIndex &= ONE_CYCLE;
@@ -623,11 +603,10 @@ static void sub_80742A8(Sprite_HCCrane *crane)
         CraneStruct *cs = &crane->cs[i];
 
         if (!(cs->unk4 & 0x2)) {
-            cs->s->x = Q_24_8_TO_INT(cs->screenX);
-            cs->s->y = Q_24_8_TO_INT(cs->screenY);
+            cs->s->x = I(cs->screenX);
+            cs->s->y = I(cs->screenY);
 
             if (cs->unk4 & 0x1) {
-                u8 v;
                 transform.rotation = cs->unk14;
                 transform.width = 0x100;
                 transform.height = 0x100;
@@ -648,10 +627,10 @@ static bool32 sub_807432C(Sprite_HCCrane *crane)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         if ((gPlayer.moveState & MOVESTATE_IN_AIR) && (gPlayer.speedAirY > 0)) {
-            s16 screenX = Q_24_8_TO_INT(crane->cs[7].screenX);
-            s16 screenY = Q_24_8_TO_INT(crane->cs[7].screenY);
-            s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-            s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+            s16 screenX = I(crane->cs[7].screenX);
+            s16 screenY = I(crane->cs[7].screenY);
+            s16 playerX = I(gPlayer.x) - gCamera.x;
+            s16 playerY = I(gPlayer.y) - gCamera.y;
 
             if (((screenX - 24) <= playerX) && ((screenX + 24) >= playerX)
                 && ((screenY - 24) <= playerY) && ((screenY + 24) >= playerY)) {
@@ -759,12 +738,12 @@ static bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
 static void sub_8074550(Sprite_HCCrane *crane)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (crane->unk1B8.unk0 != 0)) {
-        gPlayer.y = crane->cs[8].screenY + Q_24_8(gCamera.y + 24);
+        gPlayer.y = crane->cs[8].screenY + Q(gCamera.y + 24);
 
         if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-            gPlayer.x = crane->cs[8].screenX + Q_24_8(gCamera.x + 6);
+            gPlayer.x = crane->cs[8].screenX + Q(gCamera.x + 6);
         } else {
-            gPlayer.x = crane->cs[8].screenX + Q_24_8(gCamera.x - 6);
+            gPlayer.x = crane->cs[8].screenX + Q(gCamera.x - 6);
         }
     }
 }

@@ -111,8 +111,8 @@ bool32 sub_808017C(Sprite_GravityToggle *toggle)
         posX = (toggle->x + toggle->left) - gCamera.x;
         posY = (toggle->y + toggle->top) - gCamera.y;
 
-        playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.x) - gCamera.x;
+        playerY = I(gPlayer.y) - gCamera.y;
 
         if ((posX <= playerX) && ((posX + toggle->width) >= playerX) && (posY <= playerY)
             && ((posY + toggle->height) >= playerY)) {
