@@ -1,3 +1,9 @@
+#
+# NOTE: Overrideable default flags are set in config.mk
+#
+include config.mk
+
+ifeq ($(PLATFORM),gba)
 TOOLCHAIN := $(DEVKITARM)
 COMPARE ?= 0
 
@@ -14,13 +20,21 @@ endif
 
 ifneq (,$(TOOLCHAIN))
 ifneq ($(wildcard $(TOOLCHAIN)/bin),)
-export PATH := $(TOOLCHAIN)/bin:$(PATH)
+	export PATH := $(TOOLCHAIN)/bin:$(PATH)
 endif
 endif
 
 PREFIX := arm-none-eabi-
+else
+ifeq ($(CPU_ARCH), x86)
+	TOOLCHAIN := /usr/i686-w64-mingw32/
 
-include config.mk
+	PREFIX := i686-w64-mingw32-
+else
+	$(error Unknown CPU architecture '$(CPU_ARCH)')
+endif
+endif # (PLATFORM == gba)
+
 
 ifeq ($(OS),Windows_NT)
 EXE := .exe
@@ -32,8 +46,13 @@ endif
 SHELL     := /bin/bash -o pipefail
 SHA1 	  := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
 
+ifeq ($(PLATFORM),gba)
 CC1       := tools/agbcc/bin/agbcc$(EXE)
 CC1_OLD   := tools/agbcc/bin/old_agbcc$(EXE)
+else
+CC1       := $(PREFIX)gcc$(EXE)
+CC1_OLD   := $(CC1)
+endif
 
 CPP       := $(PREFIX)cpp
 LD        := $(PREFIX)ld
@@ -55,9 +74,34 @@ TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils,$(wildcard to
 TOOLBASE = $(TOOLDIRS:tools/%=%)
 TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 
-CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
-CPPFLAGS := -I tools/agbcc/include -iquote include -nostdinc -D $(GAME_REGION)
-ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork -I asminclude --defsym $(GAME_REGION)=1
+ASFLAGS  := --defsym $(GAME_REGION)=1
+CPPFLAGS ?= -I tools/agbcc/include -iquote include -nostdinc -D $(GAME_REGION)
+CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
+
+ifeq ($(CPU_ARCH),arm)
+	ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
+	CC1FLAGS += -fhex-asm -mthumb-interwork
+ifeq ($(THUMB_SUPPORT),1)
+	ASFLAGS  += -mthumb-interwork
+	CC1FLAGS += -mthumb-interwork
+endif
+else
+# Allow file input through stdin on modern GCC
+	CC1FLAGS += -x c -S
+endif
+
+ifeq ($(DEBUG),1)
+	CC1FLAGS += -g -O0
+else
+	CC1FLAGS += -O2
+endif
+
+#ifeq ($(PORTABLE),1)
+#    CPPFLAGS += -D PORTABLE=1    
+#endif
+ifeq ($(NON_MATCHING),1)
+    CPPFLAGS += -D NON_MATCHING=1
+endif
 
 
 # Clear the default suffixes
@@ -85,11 +129,10 @@ NODEP ?= 1
 endif
 
 #### Files ####
-OBJ_DIR:= build/sa2
+OBJ_DIR  := build/$(PLATFORM)/$(BUILD_NAME)
 ROM      := $(BUILD_NAME).gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
-LDSCRIPT := ldscript.txt
 
 C_SUBDIR = src
 ASM_SUBDIR = asm
@@ -138,8 +181,10 @@ OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 $(C_BUILDDIR)/lib/m4a.o: CC1 := $(CC1_OLD)
 
 # Use `-O1` for agb_flash libs, as these were also prebuilt
+ifeq ($(PLATFORM),gba)
 $(C_BUILDDIR)/lib/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 $(C_BUILDDIR)/lib/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+endif
 
 ifeq ($(DINFO),1)
 override CC1FLAGS += -g
@@ -256,7 +301,7 @@ $(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@echo "$(CC1) <flags> -o $@ $<"
 	@$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
 	@$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
-	@$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s
+	@$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
 	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
 	@$(AS) $(ASFLAGS) -o $@ $(OBJ_DIR)/$*.s
 

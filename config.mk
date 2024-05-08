@@ -1,6 +1,37 @@
 ### Build Configuration ###
 
-# Default variables
+# Default platform variables
+PLATFORM      ?= gba
+CPU_ARCH      ?= arm
+THUMB_SUPPORT ?= 1   # Supports ARM's Thumb instruction set
+
+
+ifeq ($(CPU_ARCH),arm)
+  ifneq ($(PLATFORM),gba)
+    THUMB_SUPPORT ?= 0
+  endif
+else
+  THUMB_SUPPORT ?= 0
+endif
+
+LDSCRIPT := ldscript
+
+NON_MATCHING ?= 0
+ifeq ($(PLATFORM),gba)
+ifeq ($(DEBUG),1)
+    NON_MATCHING := 1
+    LDSCRIPT := $(LDSCRIPT)_modern.txt
+else
+    NON_MATCHING := 0
+    LDSCRIPT := $(LDSCRIPT).txt
+endif
+else
+    PORTABLE     := 1
+    NON_MATCHING := 1
+    LDSCRIPT := $(LDSCRIPT)_modern.txt
+endif
+
+# Default game variables
 GAME_REVISION ?= 0
 GAME_REGION   ?= USA
 DEBUG         ?= 0
