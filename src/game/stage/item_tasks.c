@@ -327,9 +327,6 @@ void Task_Item_Confusion(void)
     s8 param = ITEMTASK_GET_PLAYER_NUM();
     ItemTask *item = TASK_DATA(gCurTask);
     Sprite *s = &item->s;
-
-    s16 x, y;
-    u32 priority;
     u32 b;
 
     struct Camera *cam = &gCamera;

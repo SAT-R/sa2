@@ -360,7 +360,6 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
     u8 i;
     u8 *id;
     u8 id2;
-    Vec2_32 *idk;
 
     if (!(sonic->flags & SUPER_FLAG__10)) {
         sonic->worldX += Q_24_8(5);
