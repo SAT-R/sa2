@@ -27,6 +27,7 @@
 extern FILE* g_inputFile;
 extern FILE* g_outputFile;
 
+extern std::string g_commentStyle;
 extern std::string g_asmLabel;
 extern int g_masterVolume;
 extern int g_voiceGroup;
