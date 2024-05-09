@@ -102,6 +102,10 @@ ifeq ($(THUMB_SUPPORT),1)
 endif
 else
 # Allow file input through stdin on modern GCC and set it to "compile only"
+ifeq ($(CPU_ARCH),i386)
+    # Use the more legible Intel dialect for x86
+    CC1FLAGS += -masm=intel
+endif
 	CC1FLAGS += -x c -S
 endif
 

@@ -384,8 +384,10 @@ SECTIONS
         src/lib/agb_flash_512k.o(.text);
         src/lib/agb_flash_le_512k.o(.text);
         src/lib/agb_flash_mx_512k.o(.text);
-#if (CPU_ARCH_ARM == 1)
+#if (PLATFORM_GBA == 1)
         asm/libagbsyscall.o(.text);
+#else
+        src/lib/libagbsyscall.o(.text);
 #endif
         *libgcc.a:_ashrdi3.o(.text);
         *libgcc.a:_call_via_rX.o(.text);
