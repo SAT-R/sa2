@@ -416,4 +416,4 @@ collect_rings: tools
 	@$(MAKE) -C multi_boot/collect_rings
 
 libagbsyscall:
-	@$(MAKE) -C libagbsyscall MODERN=$(MODERN)
+	@$(MAKE) -C libagbsyscall MODERN=0

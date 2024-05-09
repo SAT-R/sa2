@@ -3,6 +3,9 @@
 
 	.text
 
+    .syntax unified
+    .arm
+
 	.set SOFT_RESET_DIRECT_BUF, 0x03007FFA
 	.set RESET_EX_WRAM_FLAG,           0x1
 
@@ -106,7 +109,7 @@ SoundDriverVSyncOn:
 	thumb_func_start Mod
 Mod:
 	svc #6
-	mov r0, r1
+	adds r0, r1, #0
 	bx lr
 	thumb_func_end Mod
 	.endif
@@ -145,7 +148,7 @@ HuffUnComp:
 	.endif
 
 	.ifdef L_SoftResetExram
-	arm_func_start SoftResetExram
+	thumb_func_start SoftResetExram
 SoftResetExram:
 	ldr r3, =REG_IME
 	movs r2, #0
@@ -160,7 +163,7 @@ SoftResetExram:
 	svc #1
 	svc #0
 	.pool
-	arm_func_end SoftResetExram
+	thumb_func_end SoftResetExram
 	.endif
 
 	.ifdef L_MusicPlayerFadeOut
@@ -231,7 +234,7 @@ DivArm:
 	thumb_func_start ModArm
 ModArm:
 	svc #7
-	mov r0, r1
+	movs r0, r1
 	bx lr
 	thumb_func_end ModArm
 	.endif
@@ -271,7 +274,7 @@ Diff8bitUnFilterWram:
 	.ifdef L_MultiBoot
 	thumb_func_start MultiBoot
 MultiBoot:
-	mov r1, #1
+	movs r1, #1
 	svc #37
 	bx lr
 	thumb_func_end MultiBoot
@@ -326,7 +329,7 @@ SoftResetRom:
 	ldr r3, =SOFT_RESET_DIRECT_BUF
 	movs r2, #0
 	strb r2, [r3, #0]
-	sub r3, #SOFT_RESET_DIRECT_BUF - 0x3007f00
+	subs r3, #SOFT_RESET_DIRECT_BUF - 0x3007f00
 	mov sp, r3
 	svc #1
 	svc #0
