@@ -156,7 +156,7 @@ include songs.mk
 %.bin: %.aif ; $(AIF) $< $@
 
 $(LDSCRIPT):
-	@$(CPP) $(CPPFLAGS) ldscript.txt -o $(LDSCRIPT)
+	@$(CPP) $(CPPFLAGS) -P ldscript.txt -o $(LDSCRIPT)
 
 $(ELF): $(OBJS) $(LDSCRIPT)
 	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
