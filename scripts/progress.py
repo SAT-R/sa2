@@ -47,7 +47,7 @@ def parse_map(non_matching_funcs):
                 # build/gba/sa2/../
                 #               ^
                 #   0    1   2  3
-                console.out(filepath)
+                print(filepath)
                 dir = filepath.split('/')[3]
 
                 if section == '.text':
