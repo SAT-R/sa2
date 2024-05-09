@@ -4,6 +4,7 @@
 PLATFORM      ?= gba
 CPU_ARCH      ?= arm
 THUMB_SUPPORT ?= 1   # Supports ARM's Thumb instruction set
+COMPARE       ?= 1
 
 
 ifeq ($(CPU_ARCH),arm)
@@ -21,23 +22,25 @@ ifeq ($(PLATFORM),gba)
 ifeq ($(DEBUG),1)
     PORTABLE     := 0
     NON_MATCHING := 1
+    COMPARE      ?= 0
     LDSCRIPT := $(LDSCRIPT).txt
 else
     PORTABLE     := 0
     NON_MATCHING := 0
+    COMPARE      ?= 1
     LDSCRIPT := $(LDSCRIPT).txt
 endif
 else
     PORTABLE     := 1
     NON_MATCHING := 1
-    LDSCRIPT := $(LDSCRIPT)_modern.txt
+    COMPARE      ?= 0
+    LDSCRIPT := $(LDSCRIPT).txt
 endif
 
 # Default game variables
 GAME_REVISION ?= 0
 GAME_REGION   ?= USA
 DEBUG         ?= 0
-COMPARE       ?= 1
 
 # For gbafix
 MAKER_CODE := 78
@@ -78,6 +81,5 @@ endif
 
 # Debug
 ifeq ($(DEBUG), 1)
-  COMPARE := 0
   BUILD_NAME := $(BUILD_NAME)_debug
 endif
