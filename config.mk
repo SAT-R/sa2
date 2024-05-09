@@ -21,7 +21,7 @@ ifeq ($(PLATFORM),gba)
 ifeq ($(DEBUG),1)
     PORTABLE     := 0
     NON_MATCHING := 1
-    LDSCRIPT := $(LDSCRIPT)_modern.txt
+    LDSCRIPT := $(LDSCRIPT).txt
 else
     PORTABLE     := 0
     NON_MATCHING := 0

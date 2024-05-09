@@ -315,10 +315,10 @@ endif
 # Build c sources, and ensure alignment
 $(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@echo "$(CC1) <flags> -o $@ $<"
-	$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
-	$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
-	$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
-	printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
+	@$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
+	@$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
+	@$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
+	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
 	$(ASM_PSEUDO_OP_CONV) $(OBJ_DIR)/$*.s | $(AS) $(ASFLAGS) -o $@ -
 
 ifeq ($(NODEP),1)
