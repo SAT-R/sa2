@@ -44,11 +44,8 @@ def parse_map(non_matching_funcs):
                 section = arr[0]
                 size = int(arr[2], 16)
                 filepath = arr[3]
-                # build/gba/sa2/../
-                #               ^
-                #   0    1   2  3
-                print(filepath)
-                dir = filepath.split('/')[3]
+
+                dir = filepath
 
                 if section == '.text':
                     if dir == 'src':
