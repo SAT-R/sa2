@@ -27,14 +27,12 @@ endif
 endif
 
 PREFIX := arm-none-eabi-
-else
-ifeq ($(CPU_ARCH), x86)
+else ifeq ($(CPU_ARCH),i386)
 	TOOLCHAIN := /usr/i686-w64-mingw32/
 
 	PREFIX := i686-w64-mingw32-
 else
 	$(error Unknown CPU architecture '$(CPU_ARCH)')
-endif
 endif # (PLATFORM == gba)
 
 
@@ -77,8 +75,23 @@ TOOLBASE = $(TOOLDIRS:tools/%=%)
 TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 
 ASFLAGS  := --defsym $(GAME_REGION)=1
-CPPFLAGS ?= -I tools/agbcc/include -iquote include -nostdinc -D $(GAME_REGION)
+
+# -P disables line markers
+# -I sets an include path
+# -D defines a symbol
+CPPFLAGS ?= -I tools/agbcc/include -iquote include -nostdinc -D $(GAME_REGION) -P
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
+
+# These have to(?) be defined this way, because
+# the C-preprocessor cannot resolve stuff like:
+# #if (PLATFORM == gba), where PLATFORM is defined via -D.
+ifeq ($(PLATFORM),gba)
+    CPPFLAGS += -D PLATFORM_GBA=1 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
+else ifeq ($(CPU_ARCH),arm)
+    CPPFLAGS += -D PLATFORM_GBA=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
+else
+    CPPFLAGS += -D PLATFORM_GBA=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0
+endif
 
 ifeq ($(CPU_ARCH),arm)
 	ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
@@ -157,7 +170,7 @@ endif
 #
 # sed expression script by Kurausukun
 
-ASM_PSEUDO_OP_CONV := $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
 endif
 
 C_SUBDIR = src
@@ -309,15 +322,17 @@ data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 
 %.bin: %.aif ; $(AIF) $< $@
 
-PROCESSED_LDSCRIPT=$(OBJ_DIR)/$(LDSCRIPT)
+PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
 
 # TODO: any pre-processing needed for ldscript
-$(PROCESSED_LDSCRIPT):
-	cp $(LDSCRIPT) $(PROCESSED_LDSCRIPT)
+$(PROCESSED_LDSCRIPT): $(LDSCRIPT)
+	$(CPP) $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
 
 $(ELF): $(OBJS) $(PROCESSED_LDSCRIPT)
 	@echo "$(LD) -T $(LDSCRIPT) -Map $(MAP) <objects> <lib>"
-	@cd $(OBJ_DIR) && $(LD) -T $(LDSCRIPT) -Map "$(ROOT_DIR)/$(MAP)" $(OBJS_REL) "$(ROOT_DIR)/tools/agbcc/lib/libgcc.a" "$(ROOT_DIR)/tools/agbcc/lib/libc.a" -o $(ROOT_DIR)/$@
+    # NOTE: It is important to pass the CPU arch through -A
+    # because the identifier for x86 (being i386) gets converted to a 1 by the preprocessor because it starts with an i...
+	cd $(OBJ_DIR) && $(LD) -A CPU_ARCH -T $(LDSCRIPT) -Map "$(ROOT_DIR)/$(MAP)" $(OBJS_REL) "$(ROOT_DIR)/tools/agbcc/lib/libgcc.a" "$(ROOT_DIR)/tools/agbcc/lib/libc.a" -o $(ROOT_DIR)/$@
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@

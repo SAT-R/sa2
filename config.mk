@@ -3,6 +3,7 @@
 # Default platform variables
 PLATFORM      ?= gba
 CPU_ARCH      ?= arm
+MIDI_COMMENTS := "arm"
 THUMB_SUPPORT ?= 1   # Supports ARM's Thumb instruction set
 COMPARE       ?= 1
 
@@ -11,8 +12,17 @@ ifeq ($(CPU_ARCH),arm)
   ifneq ($(PLATFORM),gba)
     THUMB_SUPPORT ?= 0
   endif
+
+  MIDI_COMMENTS := "arm"
+else ifeq ($(CPU_ARCH),x86)
+    CPU_ARCH := i386
+    THUMB_SUPPORT ?= 0
+    MIDI_COMMENTS := "x86"
+else ifeq ($(CPU_ARCH),i386)
+    THUMB_SUPPORT ?= 0
+    MIDI_COMMENTS := "x86"
 else
-  THUMB_SUPPORT ?= 0
+    $(error unknown arch: $(CPU_ARCH))
 endif
 
 LDSCRIPT := ldscript
