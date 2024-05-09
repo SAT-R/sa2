@@ -22,7 +22,7 @@ gMPlayTrack_SE3:
 
 	.align 2
 	.global gMPlayTable
-gMPlayTable:	@ 0x08AD4F1C
+gMPlayTable:
 	music_player gMPlayInfo_BGM, gMPlayTrack_BGM, NUM_TRACKS_BGM, 0
 	music_player gMPlayInfo_SE1, gMPlayTrack_SE1, NUM_TRACKS_SE1, 0
 	music_player gMPlayInfo_SE2, gMPlayTrack_SE2, NUM_TRACKS_SE2, 0
