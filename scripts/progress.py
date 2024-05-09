@@ -45,7 +45,10 @@ def parse_map(non_matching_funcs):
                 size = int(arr[2], 16)
                 filepath = arr[3]
 
-                dir = filepath
+                # (asm|data|sound|src|...)/*/
+                #  ^
+                #  0                       1
+                dir = filepath.split('/')[0]
 
                 if section == '.text':
                     if dir == 'src':
