@@ -96,9 +96,9 @@ else
 	CC1FLAGS += -O2
 endif
 
-#ifeq ($(PORTABLE),1)
-#    CPPFLAGS += -D PORTABLE=1    
-#endif
+ifeq ($(PORTABLE),1)
+    CPPFLAGS += -D PORTABLE=1    
+endif
 ifeq ($(NON_MATCHING),1)
     CPPFLAGS += -D NON_MATCHING=1
 endif
@@ -134,24 +134,40 @@ ROM      := $(BUILD_NAME).gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
 
-C_SUBDIR = src
+ifeq ($(CPU_ARCH),arm)
 ASM_SUBDIR = asm
+ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
+
+# Convert .2byte -> .short and .4byte -> .int
+#  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
+#  but on 64bit targets it would be .8byte / .quad
+#
+# sed expression script by Kurausukun
+ASM_PSEUDO_OP_CONV := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+else
+ASM_PSEUDO_OP_CONV :=
+endif
+
+C_SUBDIR = src
+C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
+
 DATA_ASM_SUBDIR = data
+DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
 
 SONG_SUBDIR = sound/songs
+SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
+
 SOUND_ASM_SUBDIR = sound
+SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
+
 MID_SUBDIR = sound/songs/midi
+MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
+
 SAMPLE_SUBDIR = sound/direct_sound_samples
 
 OBJ_TILES_4BPP_SUBDIR = graphics/obj_tiles/4bpp
 TILESETS_SUBDIR = graphics/tilesets/
 
-C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
-ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
-DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
-SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
-SOUND_ASM_BUILDDIR = $(OBJ_DIR)/$(SOUND_ASM_SUBDIR)
-MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
 
 $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR))
 
@@ -299,11 +315,11 @@ endif
 # Build c sources, and ensure alignment
 $(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@echo "$(CC1) <flags> -o $@ $<"
-	@$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
-	@$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
-	@$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
-	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
-	@$(AS) $(ASFLAGS) -o $@ $(OBJ_DIR)/$*.s
+	$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
+	$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
+	$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
+	printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
+	$(ASM_PSEUDO_OP_CONV) $(OBJ_DIR)/$*.s | $(AS) $(ASFLAGS) -o $@ -
 
 ifeq ($(NODEP),1)
 $(ASM_BUILDDIR)/%.o: asm_dep :=
@@ -313,7 +329,7 @@ endif
 
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(AS) $(ASFLAGS) -o $@ $<
+	$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
 
 
 ifeq ($(NODEP),1)
@@ -324,11 +340,11 @@ endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
+	$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) - | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -I sound -o $@ $<"
-	@$(AS) $(ASFLAGS) -I sound -o $@ $<
+	@$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -I sound -o $@ -
 
 
 japan: ; @$(MAKE) GAME_REGION=JAPAN

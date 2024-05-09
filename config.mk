@@ -19,9 +19,11 @@ LDSCRIPT := ldscript
 NON_MATCHING ?= 0
 ifeq ($(PLATFORM),gba)
 ifeq ($(DEBUG),1)
+    PORTABLE     := 0
     NON_MATCHING := 1
     LDSCRIPT := $(LDSCRIPT)_modern.txt
 else
+    PORTABLE     := 0
     NON_MATCHING := 0
     LDSCRIPT := $(LDSCRIPT).txt
 endif
