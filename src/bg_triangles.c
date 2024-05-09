@@ -562,7 +562,6 @@ void sub_8007AC0(u8 affineBg, int_vcount minY, int_vcount maxY)
 
 #ifdef NON_MATCHING
     // assert(affineBg < NUM_AFFINE_BACKGROUNDS);
-    assert(affineBg < 2);
 #endif
 
     affine = gBgAffineRegs[affineBg].pa;

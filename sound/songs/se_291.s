@@ -2,11 +2,9 @@
 
 	.section .rodata
 
-	@********************** Track  1 **********************@
-
 	.align 2
 	.global song0291_1
-song0291_1:	@ 0x08C846D4
+song0291_1:
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 48
 	.byte	VOICE	, 91
@@ -83,12 +81,12 @@ song0291_1:	@ 0x08C846D4
 
 	.align 2
 	.global se_291
-se_291:	@ 0x08C8472C
-	.byte	1		@ trackCount
-	.byte	0		@ blockCount
-	.byte	20		@ priority
-	.byte	128		@ reverb
+se_291:
+	.byte	1
+	.byte	0
+	.byte	20
+	.byte	128
 
-	.word	voicegroup005		@ voicegroup/tone
+	.word	voicegroup005
 
-	.word	song0291_1		@ track
+	.word	song0291_1

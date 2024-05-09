@@ -33,6 +33,7 @@
 FILE* g_inputFile = nullptr;
 FILE* g_outputFile = nullptr;
 
+std::string g_commentStyle = "arm";
 std::string g_asmLabel;
 int g_masterVolume = 127;
 int g_voiceGroup = 0;
@@ -50,7 +51,8 @@ bool g_compressionEnabled = true;
         "    input_file  filename(.mid) of MIDI file\n"
         "   output_file  filename(.s) for AGB file (default:input_file)\n"
         "\n"
-        "options  -L???  label for assembler (default:output_file)\n"
+        "options  -C???  comment style (default:arm)\n"
+        "         -L???  label for assembler (default:output_file)\n"
         "         -V???  master volume (default:127)\n"
         "         -G???  voice group number (default:0)\n"
         "         -P???  priority (default:0)\n"
@@ -142,6 +144,12 @@ int main(int argc, char** argv)
 
             switch (std::toupper(option[1]))
             {
+            case 'C':
+                arg = GetArgument(argc, argv, i);
+                if(arg == nullptr)
+                    PrintUsage();
+                g_commentStyle = arg;
+                break;
             case 'E':
                 g_exactGateTime = true;
                 break;
@@ -210,6 +218,10 @@ int main(int argc, char** argv)
 
     if (g_asmLabel.empty())
         g_asmLabel = BaseName(outputFilename);
+
+    if((g_commentStyle != "arm") && (g_commentStyle != "x86"))
+        RaiseError("comment style '%s' is not supported.\n"
+                   "Supported comment styles are: 'arm', 'x86'\n", g_commentStyle);
 
     g_inputFile = std::fopen(inputFilename.c_str(), "rb");
 

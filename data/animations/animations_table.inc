@@ -1134,4 +1134,3 @@ gAnimations:
 	.4byte anim_countdown_start
 	.4byte anim_1131
 	.4byte anim_1132
-.size gAnimations,.-gAnimations

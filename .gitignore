@@ -67,6 +67,7 @@ tools/agbcc
 /ctx.c
 reports
 .vscode/*.log
+.vs/
 *.gbapal
 *.lz
 *.rl
