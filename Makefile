@@ -101,11 +101,11 @@ ifeq ($(THUMB_SUPPORT),1)
 	CC1FLAGS += -mthumb-interwork
 endif
 else
-# Allow file input through stdin on modern GCC and set it to "compile only"
 ifeq ($(CPU_ARCH),i386)
     # Use the more legible Intel dialect for x86
     CC1FLAGS += -masm=intel
 endif
+    # Allow file input through stdin on modern GCC and set it to "compile only"
 	CC1FLAGS += -x c -S
 endif
 
@@ -149,9 +149,15 @@ endif
 
 #### Files ####
 OBJ_DIR  := build/$(PLATFORM)/$(BUILD_NAME)
+ifeq ($(PLATFORM),gba)
 ROM      := $(BUILD_NAME).gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
+else
+ROM      := $(BUILD_NAME).$(PLATFORM).exe
+ELF      := $(ROM:.exe=.elf)
+MAP      := $(ROM:.exe=.map)
+endif
 
 ifeq ($(CPU_ARCH),arm)
 ASM_SUBDIR = asm
@@ -387,6 +393,8 @@ $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 japan: ; @$(MAKE) GAME_REGION=JAPAN
 
 europe: ; @$(MAKE) GAME_REGION=EUROPE
+
+x86: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 chao_garden/mb_chao_garden.gba: 
 	@$(MAKE) -C chao_garden
