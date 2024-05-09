@@ -143,12 +143,21 @@ ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 # no-op
 ASM_PSEUDO_OP_CONV := sed -n 'p'
 else
+
+# MacOS sed command is different to Linux
+SEDFLAGS :=
+UNAME := $(shell uname)
+ifeq ($(UNAME),Dariwn)
+	SEDFLAGS += -i ''
+endif
+
 # Convert .2byte -> .short and .4byte -> .int
 #  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
 #  but on 64bit targets it would be .8byte / .quad
 #
 # sed expression script by Kurausukun
-ASM_PSEUDO_OP_CONV := sed -i'' -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+
+ASM_PSEUDO_OP_CONV := $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
 endif
 
 C_SUBDIR = src
