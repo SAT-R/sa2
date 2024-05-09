@@ -138,14 +138,14 @@ ifeq ($(CPU_ARCH),arm)
 ASM_SUBDIR = asm
 ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 
+ASM_PSEUDO_OP_CONV :=
+else
 # Convert .2byte -> .short and .4byte -> .int
 #  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
 #  but on 64bit targets it would be .8byte / .quad
 #
 # sed expression script by Kurausukun
 ASM_PSEUDO_OP_CONV := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
-else
-ASM_PSEUDO_OP_CONV :=
 endif
 
 C_SUBDIR = src
