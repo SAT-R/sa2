@@ -3,6 +3,8 @@
 #
 include config.mk
 
+ROOT_DIR := $(realpath $(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
+
 ifeq ($(PLATFORM),gba)
 TOOLCHAIN := $(DEVKITARM)
 COMPARE ?= 0
@@ -138,14 +140,15 @@ ifeq ($(CPU_ARCH),arm)
 ASM_SUBDIR = asm
 ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 
-ASM_PSEUDO_OP_CONV :=
+# no-op
+ASM_PSEUDO_OP_CONV := sed -n 'p'
 else
 # Convert .2byte -> .short and .4byte -> .int
 #  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
 #  but on 64bit targets it would be .8byte / .quad
 #
 # sed expression script by Kurausukun
-ASM_PSEUDO_OP_CONV := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+ASM_PSEUDO_OP_CONV := sed -i'' -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
 endif
 
 C_SUBDIR = src
@@ -297,9 +300,15 @@ data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 
 %.bin: %.aif ; $(AIF) $< $@
 
-$(ELF): $(OBJS) $(LDSCRIPT)
-	@echo "$(LD) -T $(LD_SCRIPT) -Map $(MAP) <objects> <lib>"
-	@$(LD) -T $(LDSCRIPT) -Map $(MAP) $(OBJS) tools/agbcc/lib/libgcc.a tools/agbcc/lib/libc.a -o $@
+PROCESSED_LDSCRIPT=$(OBJ_DIR)/$(LDSCRIPT)
+
+# TODO: any pre-processing needed for ldscript
+$(PROCESSED_LDSCRIPT):
+	cp $(LDSCRIPT) $(PROCESSED_LDSCRIPT)
+
+$(ELF): $(OBJS) $(PROCESSED_LDSCRIPT)
+	@echo "$(LD) -T $(LDSCRIPT) -Map $(MAP) <objects> <lib>"
+	@cd $(OBJ_DIR) && $(LD) -T $(LDSCRIPT) -Map "$(ROOT_DIR)/$(MAP)" $(OBJS_REL) "$(ROOT_DIR)/tools/agbcc/lib/libgcc.a" "$(ROOT_DIR)/tools/agbcc/lib/libc.a" -o $(ROOT_DIR)/$@
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
@@ -319,7 +328,7 @@ $(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
 	@$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
 	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
-	$(ASM_PSEUDO_OP_CONV) $(OBJ_DIR)/$*.s | $(AS) $(ASFLAGS) -o $@ -
+	@$(ASM_PSEUDO_OP_CONV) $(OBJ_DIR)/$*.s | $(AS) $(ASFLAGS) -o $@ -
 
 ifeq ($(NODEP),1)
 $(ASM_BUILDDIR)/%.o: asm_dep :=
@@ -340,7 +349,7 @@ endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) - | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
+	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -I sound -o $@ $<"
