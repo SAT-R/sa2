@@ -3,8 +3,8 @@
 
 	.text
 
-    .syntax unified
-    .arm
+	.syntax unified
+	.arm
 
 	.set SOFT_RESET_DIRECT_BUF, 0x03007FFA
 	.set RESET_EX_WRAM_FLAG,           0x1
