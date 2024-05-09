@@ -385,7 +385,18 @@ SECTIONS
         src/lib/agb_flash_le_512k.o(.text);
         src/lib/agb_flash_mx_512k.o(.text);
 #if (PLATFORM_GBA == 1)
-        asm/libagbsyscall.o(.text);
+        *libagbsyscall.a:ArcTan2.o(.text);
+        *libagbsyscall.a:CpuFastSet.o(.text);
+        *libagbsyscall.a:CpuSet.o(.text);
+        *libagbsyscall.a:Div.o(.text);
+        *libagbsyscall.a:Mod.o(.text);
+        *libagbsyscall.a:LZ77UnCompWram.o(.text);
+        *libagbsyscall.a:MultiBoot.o(.text);
+        *libagbsyscall.a:RLUnCompWram.o(.text);
+        *libagbsyscall.a:SoftReset.o(.text);
+        *libagbsyscall.a:Sqrt.o(.text);
+        *libagbsyscall.a:VBlankIntrWait.o(.text);
+        *libagbsyscall.a:SoftResetExram.o(.text);
 #else
         src/lib/libagbsyscall.o(.text);
 #endif
