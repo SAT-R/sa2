@@ -160,9 +160,6 @@ MAP      := $(ROM:.exe=.map)
 endif
 
 ifeq ($(CPU_ARCH),arm)
-ASM_SUBDIR = asm
-ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
-
 # no-op
 ASM_PSEUDO_OP_CONV := sed -n 'p'
 else
@@ -182,6 +179,9 @@ endif
 
 ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
 endif
+
+ASM_SUBDIR = asm
+ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 
 C_SUBDIR = src
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
@@ -209,6 +209,11 @@ $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
+ifeq ($(CPU_ARCH),arm)
+C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
+C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
+endif
+
 ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
 ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 
@@ -224,7 +229,7 @@ MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
 SOUND_ASM_SRCS := $(wildcard $(SOUND_ASM_SUBDIR)/*.s)
 SOUND_ASM_OBJS := $(patsubst $(SOUND_ASM_SUBDIR)/%.s,$(SOUND_ASM_BUILDDIR)/%.o,$(SOUND_ASM_SRCS))
 
-OBJS := $(C_OBJS) $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
+OBJS := $(C_OBJS) $(ASM_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 # Use the old compiler for m4a, as it was prebuilt and statically linked
@@ -335,7 +340,6 @@ data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 
 PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
 
-# TODO: any pre-processing needed for ldscript
 $(PROCESSED_LDSCRIPT): $(LDSCRIPT)
 	$(CPP) $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
 
@@ -365,16 +369,24 @@ $(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
 	@$(ASM_PSEUDO_OP_CONV) $(OBJ_DIR)/$*.s | $(AS) $(ASFLAGS) -o $@ -
 
+# Build arm asm sources
+ifeq ($(CPU_ARCH),arm)
 ifeq ($(NODEP),1)
 $(ASM_BUILDDIR)/%.o: asm_dep :=
 else
 $(ASM_BUILDDIR)/%.o: asm_dep = $(shell $(SCANINC) $(ASM_SUBDIR)/$*.s)
 endif
 
-$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
+# rule for sources from the src dir (parts of libraries)
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
 
+# rule for rest of asm directory
+$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
+	@echo "$(AS) <flags> -o $@ $<"
+	@$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
+endif
 
 ifeq ($(NODEP),1)
 $(DATA_ASM_BUILDDIR)/%.o: data_dep :=

@@ -8,3 +8,6 @@ gUnknown_08CD0728:
     .global gMultiBootProgram_SubgameLoader
 gMultiBootProgram_SubgameLoader:
     .incbin "multi_boot/subgame_bootstrap/subgame_bootstrap.gba"
+
+    .global gMultiBootProgram_SubgameLoaderEnd
+gMultiBootProgram_SubgameLoaderEnd:

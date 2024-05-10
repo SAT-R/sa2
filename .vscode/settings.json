@@ -330,7 +330,11 @@
     "communication_outcome.h": "c",
     "tilemap.h": "c",
     "tilemap_data.h": "c",
-    "game_7.h": "c"
+    "game_7.h": "c",
+    "__threading_support": "cpp",
+    "__verbose_abort": "cpp",
+    "execution": "cpp",
+    "iomanip": "cpp"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

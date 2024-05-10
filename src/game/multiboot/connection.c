@@ -103,12 +103,12 @@ static const u16 gUnknown_080E01B6[7][3] = {
 
 static void *const gUnknown_080E01E0[7][2] = {
     { NULL, NULL },
-    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
-    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
-    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
-    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
-    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
-    { (void *)&gMultiBootProgram_SubgameLoader, &rom_footer },
+    { (void *)&gMultiBootProgram_SubgameLoader, &gMultiBootProgram_SubgameLoaderEnd },
+    { (void *)&gMultiBootProgram_SubgameLoader, &gMultiBootProgram_SubgameLoaderEnd },
+    { (void *)&gMultiBootProgram_SubgameLoader, &gMultiBootProgram_SubgameLoaderEnd },
+    { (void *)&gMultiBootProgram_SubgameLoader, &gMultiBootProgram_SubgameLoaderEnd },
+    { (void *)&gMultiBootProgram_SubgameLoader, &gMultiBootProgram_SubgameLoaderEnd },
+    { (void *)&gMultiBootProgram_SubgameLoader, &gMultiBootProgram_SubgameLoaderEnd },
 };
 
 static const u32 gUnknown_080E0218[7] = {
