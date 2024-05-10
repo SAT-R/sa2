@@ -118,7 +118,10 @@ endif
 ifeq ($(PORTABLE),1)
     CPPFLAGS += -D PORTABLE=1    
 endif
-ifeq ($(NON_MATCHING),1)
+ifeq ($(NON_MATCHING),0)
+    ASFLAGS += --defsym NON_MATCHING=0
+else
+    ASFLAGS += --defsym NON_MATCHING=1
     CPPFLAGS += -D NON_MATCHING=1
 endif
 
@@ -366,7 +369,7 @@ endif
 
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
+	@$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
 
 
 ifeq ($(NODEP),1)
