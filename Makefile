@@ -101,11 +101,11 @@ ifeq ($(THUMB_SUPPORT),1)
 	CC1FLAGS += -mthumb-interwork
 endif
 else
-# Allow file input through stdin on modern GCC and set it to "compile only"
 ifeq ($(CPU_ARCH),i386)
     # Use the more legible Intel dialect for x86
     CC1FLAGS += -masm=intel
 endif
+    # Allow file input through stdin on modern GCC and set it to "compile only"
 	CC1FLAGS += -x c -S
 endif
 
@@ -134,13 +134,13 @@ endif
 .SECONDEXPANSION:
 
 # these commands will run regardless of deps being completed
-.PHONY: clean tools clean-tools $(TOOLDIRS)
+.PHONY: clean tools clean-tools $(TOOLDIRS) libagbsyscall
 
 infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
 
 # Build tools when building the rom
 # Disable dependency scanning for clean/tidy/tools
-ifeq (,$(filter-out all rom compare,$(MAKECMDGOALS)))
+ifeq (,$(filter-out all rom compare libagbsyscall,$(MAKECMDGOALS)))
 # if we are doing any of these things, build tools first
 $(call infoshell, $(MAKE) tools -j$(nproc))
 else
@@ -149,9 +149,15 @@ endif
 
 #### Files ####
 OBJ_DIR  := build/$(PLATFORM)/$(BUILD_NAME)
+ifeq ($(PLATFORM),gba)
 ROM      := $(BUILD_NAME).gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
+else
+ROM      := $(BUILD_NAME).$(PLATFORM).exe
+ELF      := $(ROM:.exe=.elf)
+MAP      := $(ROM:.exe=.map)
+endif
 
 ifeq ($(CPU_ARCH),arm)
 ASM_SUBDIR = asm
@@ -270,6 +276,7 @@ clean: tidy clean-tools
 	@$(MAKE) clean -C multi_boot/subgame_bootstrap
 	@$(MAKE) clean -C multi_boot/programs/subgame_loader
 	@$(MAKE) clean -C multi_boot/collect_rings
+	@$(MAKE) clean -C libagbsyscall
 
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iwholename './data/maps/*/*/entities/*.bin' -o -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
@@ -332,11 +339,11 @@ PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
 $(PROCESSED_LDSCRIPT): $(LDSCRIPT)
 	$(CPP) $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
 
-$(ELF): $(OBJS) $(PROCESSED_LDSCRIPT)
+$(ELF): $(OBJS) $(PROCESSED_LDSCRIPT) libagbsyscall
 	@echo "$(LD) -T $(LDSCRIPT) -Map $(MAP) <objects> <lib>"
     # NOTE: It is important to pass the CPU arch through -A
     # because the identifier for x86 (being i386) gets converted to a 1 by the preprocessor because it starts with an i...
-	@cd $(OBJ_DIR) && $(LD) -A CPU_ARCH -T $(LDSCRIPT) -Map "$(ROOT_DIR)/$(MAP)" $(OBJS_REL) "$(ROOT_DIR)/tools/agbcc/lib/libgcc.a" "$(ROOT_DIR)/tools/agbcc/lib/libc.a" -o $(ROOT_DIR)/$@
+	@cd $(OBJ_DIR) && $(LD) -A CPU_ARCH -T $(LDSCRIPT) -Map "$(ROOT_DIR)/$(MAP)" $(OBJS_REL) "$(ROOT_DIR)/tools/agbcc/lib/libgcc.a" "$(ROOT_DIR)/tools/agbcc/lib/libc.a" -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -o $(ROOT_DIR)/$@
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
@@ -388,6 +395,8 @@ japan: ; @$(MAKE) GAME_REGION=JAPAN
 
 europe: ; @$(MAKE) GAME_REGION=EUROPE
 
+x86: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
+
 chao_garden/mb_chao_garden.gba: 
 	@$(MAKE) -C chao_garden
 
@@ -413,3 +422,6 @@ subgame_loader: tools
 
 collect_rings: tools
 	@$(MAKE) -C multi_boot/collect_rings
+
+libagbsyscall:
+	@$(MAKE) -C libagbsyscall MODERN=0
