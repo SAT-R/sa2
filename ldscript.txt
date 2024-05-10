@@ -90,6 +90,10 @@ SECTIONS
         src/sio32_multi_load.o(.text);
         src/core.o(.text);
         src/main.o(.text);
+#if (NON_MATCHING == 1)
+        src/game/decomp_credits.o(.text);
+        src/game/decomp_credits.o(.rodata);
+#endif
         src/task.o(.text);
         src/bg_update.o(.text);
         src/animation_commands_bg.o(.text);

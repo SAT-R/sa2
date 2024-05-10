@@ -71525,6 +71525,30 @@ static const SpriteOffset spriteDim_814D1B8[1] = {
     },
 };
 
+#ifdef NON_MATCHING
+// 1133 - Logos
+static const SpriteOffset spriteDim_1133[2] = {
+    { // JaceCear
+        .flip = 0x00,
+        .oamIndex = 0,
+        .numSubframes = 1,
+        .width = 64,
+        .height = 64,
+        .offsetX = 32,
+        .offsetY = 32,
+    },
+    { // freshollie
+        .flip = 0x00,
+        .oamIndex = 1,
+        .numSubframes = 1,
+        .width = 64,
+        .height = 64,
+        .offsetX = 32,
+        .offsetY = 32,
+    },
+};
+#endif
+
 const SpriteOffset *const gSpriteDimensions[NUM_SPRITE_ANIMATIONS] = {
     spriteDim_8137078,
     spriteDim_8137114,
@@ -72659,4 +72683,7 @@ const SpriteOffset *const gSpriteDimensions[NUM_SPRITE_ANIMATIONS] = {
     spriteDim_814D194,
     spriteDim_814D1AC,
     spriteDim_814D1B8,
+#ifdef NON_MATCHING
+    spriteDim_1133,
+#endif
 };
