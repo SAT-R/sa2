@@ -73,7 +73,7 @@ std::string Comment(std::string str)
     } else if(g_commentStyle == "x86") {
         return ("/* " + str + " */");
     } else {
-        RaiseError("g_commentStyle '%s' unsupported.\n", g_commentStyle);
+        RaiseError("g_commentStyle '%s' unsupported.\n", g_commentStyle.c_str());
         return "";
     }
 }
@@ -472,7 +472,7 @@ void PrintAgbTrack(std::vector<Event>& events)
         }
 
         if (event.type == EventType::WholeNoteMark || event.type == EventType::Pattern) {
-            std::sprintf(buffer, "%03d   ----------------------------------------\n", wholeNoteCount++);
+            std::snprintf(buffer,sizeof(buffer), "%03d   ----------------------------------------\n", wholeNoteCount++);
             std::fprintf(g_outputFile, "%s", Comment(buffer).c_str());
         }
 

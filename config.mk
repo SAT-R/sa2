@@ -14,10 +14,7 @@ ifeq ($(CPU_ARCH),arm)
   endif
 
   MIDI_COMMENTS := "arm"
-else ifeq ($(CPU_ARCH),x86)
-    CPU_ARCH := i386
-    THUMB_SUPPORT ?= 0
-    MIDI_COMMENTS := "x86"
+# This is 'i386' because that's the arch's name in GNU Linker scripts
 else ifeq ($(CPU_ARCH),i386)
     THUMB_SUPPORT ?= 0
     MIDI_COMMENTS := "x86"

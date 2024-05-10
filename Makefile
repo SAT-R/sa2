@@ -101,11 +101,11 @@ ifeq ($(THUMB_SUPPORT),1)
 	CC1FLAGS += -mthumb-interwork
 endif
 else
-# Allow file input through stdin on modern GCC and set it to "compile only"
 ifeq ($(CPU_ARCH),i386)
     # Use the more legible Intel dialect for x86
     CC1FLAGS += -masm=intel
 endif
+    # Allow file input through stdin on modern GCC and set it to "compile only"
 	CC1FLAGS += -x c -S
 endif
 
@@ -137,13 +137,13 @@ endif
 .SECONDEXPANSION:
 
 # these commands will run regardless of deps being completed
-.PHONY: clean tools clean-tools $(TOOLDIRS)
+.PHONY: clean tools clean-tools $(TOOLDIRS) libagbsyscall
 
 infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
 
 # Build tools when building the rom
 # Disable dependency scanning for clean/tidy/tools
-ifeq (,$(filter-out all rom compare,$(MAKECMDGOALS)))
+ifeq (,$(filter-out all rom compare libagbsyscall,$(MAKECMDGOALS)))
 # if we are doing any of these things, build tools first
 $(call infoshell, $(MAKE) tools -j$(nproc))
 else
@@ -152,14 +152,17 @@ endif
 
 #### Files ####
 OBJ_DIR  := build/$(PLATFORM)/$(BUILD_NAME)
+ifeq ($(PLATFORM),gba)
 ROM      := $(BUILD_NAME).gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
+else
+ROM      := $(BUILD_NAME).$(PLATFORM).exe
+ELF      := $(ROM:.exe=.elf)
+MAP      := $(ROM:.exe=.map)
+endif
 
 ifeq ($(CPU_ARCH),arm)
-ASM_SUBDIR = asm
-ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
-
 # no-op
 ASM_PSEUDO_OP_CONV := sed -n 'p'
 else
@@ -179,6 +182,9 @@ endif
 
 ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
 endif
+
+ASM_SUBDIR = asm
+ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 
 C_SUBDIR = src
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
@@ -206,6 +212,11 @@ $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
+ifeq ($(CPU_ARCH),arm)
+C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
+C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
+endif
+
 ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
 ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 
@@ -221,7 +232,7 @@ MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
 SOUND_ASM_SRCS := $(wildcard $(SOUND_ASM_SUBDIR)/*.s)
 SOUND_ASM_OBJS := $(patsubst $(SOUND_ASM_SUBDIR)/%.s,$(SOUND_ASM_BUILDDIR)/%.o,$(SOUND_ASM_SRCS))
 
-OBJS := $(C_OBJS) $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
+OBJS := $(C_OBJS) $(ASM_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 # Use the old compiler for m4a, as it was prebuilt and statically linked
@@ -273,6 +284,7 @@ clean: tidy clean-tools
 	@$(MAKE) clean -C multi_boot/subgame_bootstrap
 	@$(MAKE) clean -C multi_boot/programs/subgame_loader
 	@$(MAKE) clean -C multi_boot/collect_rings
+	@$(MAKE) clean -C libagbsyscall
 
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iwholename './data/maps/*/*/entities/*.bin' -o -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
@@ -331,15 +343,14 @@ data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 
 PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
 
-# TODO: any pre-processing needed for ldscript
 $(PROCESSED_LDSCRIPT): $(LDSCRIPT)
 	$(CPP) $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
 
-$(ELF): $(OBJS) $(PROCESSED_LDSCRIPT)
+$(ELF): $(OBJS) $(PROCESSED_LDSCRIPT) libagbsyscall
 	@echo "$(LD) -T $(LDSCRIPT) -Map $(MAP) <objects> <lib>"
     # NOTE: It is important to pass the CPU arch through -A
     # because the identifier for x86 (being i386) gets converted to a 1 by the preprocessor because it starts with an i...
-	@cd $(OBJ_DIR) && $(LD) -A CPU_ARCH -T $(LDSCRIPT) -Map "$(ROOT_DIR)/$(MAP)" $(OBJS_REL) "$(ROOT_DIR)/tools/agbcc/lib/libgcc.a" "$(ROOT_DIR)/tools/agbcc/lib/libc.a" -o $(ROOT_DIR)/$@
+	@cd $(OBJ_DIR) && $(LD) -A CPU_ARCH -T $(LDSCRIPT) -Map "$(ROOT_DIR)/$(MAP)" $(OBJS_REL) "$(ROOT_DIR)/tools/agbcc/lib/libgcc.a" "$(ROOT_DIR)/tools/agbcc/lib/libc.a" -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -o $(ROOT_DIR)/$@
 
 $(ROM): $(ELF)
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
@@ -361,16 +372,24 @@ $(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
 	@$(ASM_PSEUDO_OP_CONV) $(OBJ_DIR)/$*.s | $(AS) $(ASFLAGS) -o $@ -
 
+# Build arm asm sources
+ifeq ($(CPU_ARCH),arm)
 ifeq ($(NODEP),1)
 $(ASM_BUILDDIR)/%.o: asm_dep :=
 else
 $(ASM_BUILDDIR)/%.o: asm_dep = $(shell $(SCANINC) $(ASM_SUBDIR)/$*.s)
 endif
 
-$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
+# rule for sources from the src dir (parts of libraries)
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
 	@$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
 
+# rule for rest of asm directory
+$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
+	@echo "$(AS) <flags> -o $@ $<"
+	@$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
+endif
 
 ifeq ($(NODEP),1)
 $(DATA_ASM_BUILDDIR)/%.o: data_dep :=
@@ -390,6 +409,8 @@ $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 japan: ; @$(MAKE) GAME_REGION=JAPAN
 
 europe: ; @$(MAKE) GAME_REGION=EUROPE
+
+x86: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 chao_garden/mb_chao_garden.gba: 
 	@$(MAKE) -C chao_garden
@@ -416,3 +437,6 @@ subgame_loader: tools
 
 collect_rings: tools
 	@$(MAKE) -C multi_boot/collect_rings
+
+libagbsyscall:
+	@$(MAKE) -C libagbsyscall MODERN=0

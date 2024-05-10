@@ -77,13 +77,13 @@ SECTIONS
 	{
         /* bootstrap */
 #if (PLATFORM_GBA == 1)
-        asm/rom_header.o(.text);
-        asm/crt0.o(.text);
+        src/rom_header.o(.text);
+        src/crt0.o(.text);
 #endif
 
         /* engine */
 #if (CPU_ARCH_ARM == 1)
-        asm/multi_sio_asm.o(.text);
+        src/multi_sio_asm.o(.text);
 #endif
         src/multi_sio.o(.text);
         src/multi_boot.o(.text);
@@ -381,7 +381,7 @@ SECTIONS
 
         /* libs */
 #if (CPU_ARCH_ARM == 1)
-        asm/m4a0.o(.text);
+        src/lib/m4a0.o(.text);
 #endif
         src/lib/m4a.o(.text);
         src/lib/agb_flash.o(.text);
@@ -389,7 +389,18 @@ SECTIONS
         src/lib/agb_flash_le_512k.o(.text);
         src/lib/agb_flash_mx_512k.o(.text);
 #if (PLATFORM_GBA == 1)
-        asm/libagbsyscall.o(.text);
+        *libagbsyscall.a:ArcTan2.o(.text);
+        *libagbsyscall.a:CpuFastSet.o(.text);
+        *libagbsyscall.a:CpuSet.o(.text);
+        *libagbsyscall.a:Div.o(.text);
+        *libagbsyscall.a:Mod.o(.text);
+        *libagbsyscall.a:LZ77UnCompWram.o(.text);
+        *libagbsyscall.a:MultiBoot.o(.text);
+        *libagbsyscall.a:RLUnCompWram.o(.text);
+        *libagbsyscall.a:SoftReset.o(.text);
+        *libagbsyscall.a:Sqrt.o(.text);
+        *libagbsyscall.a:VBlankIntrWait.o(.text);
+        *libagbsyscall.a:SoftResetExram.o(.text);
 #else
         src/lib/libagbsyscall.o(.text);
 #endif
@@ -842,7 +853,7 @@ SECTIONS
         data/multiboot_subgame_loader.o(.rodata);
         
 #if (CPU_ARCH_ARM == 1)
-        asm/rom_footer.o(.rodata);
+        data/build_info.o(.rodata);
 #endif
 	} = 0
 
