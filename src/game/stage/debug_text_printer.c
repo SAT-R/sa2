@@ -139,4 +139,13 @@ void TaskDestructor_802D4B8(struct Task *t)
     Sprite *s = &printer->chars[0];
 
     VramFree(s->graphics.dest);
+
+#ifdef BUG_FIX
+    // Prevent use-after-free
+    sDebugUITask = NULL;
+#endif // BUG_FIX
 }
+
+#ifdef NON_MATCHING
+void Debug_TextPrinterDestroy() { TaskDestroy(sDebugUITask); }
+#endif

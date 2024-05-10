@@ -7,8 +7,6 @@
 #include "task.h"
 #include "trig.h"
 
-#define NUM_PROJECTILES_MAX 4
-
 typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ s32 x;
