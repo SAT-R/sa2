@@ -77,7 +77,7 @@ void CreateDecompCreditsScreen(bool32 hasProfile)
     cred->qSpeedTails = -Q(0.5);
 
     s = &cred->sprSonic;
-    s->x = -500;
+    s->x = -508;
     s->y = (DISPLAY_HEIGHT / 2) - 16;
     SPRITE_INIT_FLAGS(s, 64, SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SONIC), 4, 18,
                       2, SPRITE_FLAG_MASK_X_FLIP);
