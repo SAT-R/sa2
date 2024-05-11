@@ -993,6 +993,6 @@
 .include "data/animations/anims/anim_1131.inc"
 .include "data/animations/anims/anim_1132.inc"
 
-.if NON_MATCHING
+.if ENABLE_DECOMP_CREDITS
 .include "data/animations/anims/anim_logos.inc"
 .endif

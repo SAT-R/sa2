@@ -146,6 +146,6 @@ void TaskDestructor_802D4B8(struct Task *t)
 #endif // BUG_FIX
 }
 
-#ifdef NON_MATCHING
+#if (defined(NON_MATCHING) || ENABLE_DECOMP_CREDITS)
 void Debug_TextPrinterDestroy() { TaskDestroy(sDebugUITask); }
 #endif

@@ -14,7 +14,7 @@
 #include "constants/characters.h"
 #include "constants/songs.h"
 
-#if 1 // def NON_MATCHING
+#if ENABLE_DECOMP_CREDITS
 typedef struct {
     Sprite sprSonic;
     Sprite sprTails;
@@ -23,9 +23,11 @@ typedef struct {
     bool8 hasProfile;
 
     u16 frames;
+    s32 qSonicScreenX;
     s32 qTailsScreenX;
     s32 qLogoJaceScreenX;
-    s16 qSpeed;
+    s16 qSpeedSonic;
+    s16 qSpeedTails;
 
     IntrFunc prevHBlank;
 } DCCredits;
@@ -52,12 +54,16 @@ void CreateDecompCreditsScreen(bool32 hasProfile)
 
     cred->hasProfile = hasProfile;
     cred->frames = 0;
-    cred->qSpeed = Q(0.5);
+    cred->qSpeedSonic = Q(5);
+    cred->qSpeedTails = Q(0.5);
 
     s = &cred->sprSonic;
-    s->x = DISPLAY_WIDTH + LOGO_WIDTH + TAILS_WIDTH;
-    s->y = (DISPLAY_HEIGHT * 1) / 4;
-    SPRITE_INIT(s, 32, SA2_ANIM_CHAR(SA2_CHAR_ANIM_34, CHARACTER_SONIC), 0, 18, 2);
+    s->x = -400;
+    s->y = (DISPLAY_HEIGHT / 2) - 16;
+    SPRITE_INIT_FLAGS(s, 64, SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SONIC), 4, 18,
+                      2, SPRITE_FLAG_MASK_X_FLIP);
+    s->animSpeed = SPRITE_ANIM_SPEED(4);
+    cred->qSonicScreenX = Q(s->x);
 
     s = &cred->sprTails;
     s->x = DISPLAY_WIDTH + LOGO_WIDTH + TAILS_WIDTH;
@@ -69,7 +75,7 @@ void CreateDecompCreditsScreen(bool32 hasProfile)
 
     s = &cred->sprLogoOllie;
     s->x = (DISPLAY_WIDTH * 3) / 4 - 32;
-    s->y = (DISPLAY_HEIGHT * 1) / 4;
+    s->y = (DISPLAY_HEIGHT / 2) - 32;
     SPRITE_INIT(s, 64, 1133, 1, 18, 2);
     s->palId = 2;
 
@@ -102,11 +108,13 @@ void Task_DecompCreditsFirst()
     s = &cred->sprSonic;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
+    cred->qSonicScreenX += cred->qSpeedSonic;
+    s->x = I(cred->qSonicScreenX);
 
     s = &cred->sprTails;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
-    cred->qTailsScreenX -= cred->qSpeed;
+    cred->qTailsScreenX -= cred->qSpeedTails;
     s->x = I(cred->qTailsScreenX);
 
     s = &cred->sprLogoOllie;
@@ -117,13 +125,13 @@ void Task_DecompCreditsFirst()
     s = &cred->sprLogoJace;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
-    cred->qLogoJaceScreenX -= cred->qSpeed;
+    cred->qLogoJaceScreenX -= cred->qSpeedTails;
     s->x = I(cred->qLogoJaceScreenX);
     Debug_PrintTextAt("@JaceCear", 16, cred->sprTails.y);
 
     if (cred->sprLogoJace.x <= ((DISPLAY_WIDTH / 2) + 24)) {
         Debug_PrintTextAt("Press START to continue", 8, DISPLAY_HEIGHT);
-        cred->qSpeed = 0;
+        cred->qSpeedTails = 0;
 
         cred->sprTails.graphics.anim = SA2_ANIM_CHAR(33, CHARACTER_TAILS);
         cred->sprTails.animSpeed = SPRITE_ANIM_SPEED(1.0);
@@ -174,7 +182,6 @@ void TaskDestructor_DecompCredits(struct Task *t)
 
     CreateTitleScreen();
 }
-#endif
 
 // Colors the screen behind the "Press START ..." text white
 void customHBlank(void)
@@ -188,3 +195,4 @@ void customHBlank(void)
         ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[2 * 16];
     }
 }
+#endif

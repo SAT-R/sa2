@@ -118,11 +118,20 @@ endif
 ifeq ($(PORTABLE),1)
     CPPFLAGS += -D PORTABLE=1    
 endif
+
 ifeq ($(NON_MATCHING),0)
     ASFLAGS += --defsym NON_MATCHING=0
 else
     ASFLAGS += --defsym NON_MATCHING=1
     CPPFLAGS += -D NON_MATCHING=1
+endif
+
+ifeq ($(ENABLE_DECOMP_CREDITS),0)
+    ASFLAGS += --defsym ENABLE_DECOMP_CREDITS=0
+    CPPFLAGS += -D ENABLE_DECOMP_CREDITS=0
+else
+    ASFLAGS += --defsym ENABLE_DECOMP_CREDITS=1
+    CPPFLAGS += -D ENABLE_DECOMP_CREDITS=1
 endif
 
 

@@ -80,7 +80,9 @@ void GameStart(void)
         return;
     }
 
-#ifndef NON_MATCHING
+#if ENABLE_DECOMP_CREDITS
+    CreateDecompCreditsScreen(hasProfile);
+#else
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
         CreateTitleScreen();
         LoadCompletedSaveGame();
@@ -102,7 +104,5 @@ void GameStart(void)
     }
 
     CreateTitleScreen();
-#else
-    CreateDecompCreditsScreen(hasProfile);
 #endif
 }

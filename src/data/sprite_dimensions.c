@@ -71525,7 +71525,7 @@ static const SpriteOffset spriteDim_814D1B8[1] = {
     },
 };
 
-#ifdef NON_MATCHING
+#if ENABLE_DECOMP_CREDITS
 // 1133 - Logos
 static const SpriteOffset spriteDim_1133[2] = {
     { // JaceCear
@@ -72683,7 +72683,7 @@ const SpriteOffset *const gSpriteDimensions[NUM_SPRITE_ANIMATIONS] = {
     spriteDim_814D194,
     spriteDim_814D1AC,
     spriteDim_814D1B8,
-#ifdef NON_MATCHING
+#if ENABLE_DECOMP_CREDITS
     spriteDim_1133,
 #endif
 };
