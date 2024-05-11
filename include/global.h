@@ -110,7 +110,11 @@ typedef void (*VoidFn)(void);
 // Converts a Q2.12 fixed-point format number to a Q24.8 fixed point number
 #define Q_2_14_TO_Q_24_8(n) ((int)((n) >> 6))
 
-#define Q_24_8_MULTIPLY(intVal, floatVal) Q_24_8_TO_INT((intVal)*Q_24_8(floatVal))
+// Multiplies two Q values
+#define Q_MUL(qValA, qValB)         ((qValA * qValB) >> 8)
+#define Q_DIV(qValA, qValB)         Div((qValA << 8), qValB)
+#define Q_DIV2(qValA, qValB)        ((qValA << 8) / qValB)
+#define Q_MUL_Q_F32(qVal, floatVal) Q_MUL(qVal, Q(floatVal))
 
 /*
  * Aliases for common macros

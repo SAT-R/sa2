@@ -83,7 +83,7 @@ void Task_SlowingSnow(void)
     Sprite_SlowingSnow *snow = TASK_DATA(gCurTask);
 
     if (PlayerIsTouchingSnow(snow)) {
-        gPlayer.speedGroundX = Q_24_8_MULTIPLY(gPlayer.speedGroundX, 0.95);
+        gPlayer.speedGroundX = Q_MUL_Q_F32(gPlayer.speedGroundX, 0.95);
     }
 
     // NOTE: Technically this can be turned into an else-if, because
