@@ -14,7 +14,7 @@
 #include "constants/characters.h"
 #include "constants/songs.h"
 
-#if 1 // ENABLE_DECOMP_CREDITS
+#if ENABLE_DECOMP_CREDITS
 typedef struct {
     Sprite sprSonic;
     Sprite sprTails;

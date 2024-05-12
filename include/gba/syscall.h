@@ -17,49 +17,55 @@ typedef struct {
     u32 dstWidth : 8; // in bits
 } BitUnPackData;
 
-extern void SoftReset(u32 resetFlags);
-extern void SoftResetExram(u32 resetFlags);
+void SoftReset(u32 resetFlags);
+void SoftResetExram(u32 resetFlags);
 
-extern void RegisterRamReset(u32 resetFlags);
+void RegisterRamReset(u32 resetFlags);
 
-extern void VBlankIntrWait(void);
+void VBlankIntrWait(void);
 
-extern u16 Sqrt(u32 num);
+u16 Sqrt(u32 num);
 
-extern u16 ArcTan2(s16 x, s16 y);
+u16 ArcTan2(s16 x, s16 y);
 
 #define CPU_SET_SRC_FIXED 0x01000000
 #define CPU_SET_16BIT     0x00000000
 #define CPU_SET_32BIT     0x04000000
 
-extern void CpuSet(const void *src, void *dest, u32 control);
+void CpuSet(const void *src, void *dest, u32 control);
 
 #define CPU_FAST_SET_SRC_FIXED 0x01000000
 
-extern void CpuFastSet(const void *src, void *dest, u32 control);
+void CpuFastSet(const void *src, void *dest, u32 control);
 
-extern void BgAffineSet(struct BgAffineSrcData *src, struct BgAffineDstData *dest, s32 count);
+void BgAffineSet(struct BgAffineSrcData *src, struct BgAffineDstData *dest, s32 count);
 
-extern void ObjAffineSet(struct ObjAffineSrcData *src, void *dest, s32 count, s32 offset);
+void ObjAffineSet(struct ObjAffineSrcData *src, void *dest, s32 count, s32 offset);
 
-extern void LZ77UnCompWram(const void *src, void *dest);
+void LZ77UnCompWram(const void *src, void *dest);
 
-extern void LZ77UnCompVram(const void *src, void *dest);
+void LZ77UnCompVram(const void *src, void *dest);
 
-extern void RLUnCompWram(const void *src, void *dest);
+void RLUnCompWram(const void *src, void *dest);
 
-extern void RLUnCompVram(const void *src, void *dest);
+void RLUnCompVram(const void *src, void *dest);
 
-extern int MultiBoot(struct MultiBootParam *mp);
+int MultiBoot(struct MultiBootParam *mp);
 
-extern s32 Div(s32 num, s32 denom);
-extern s32 DivArm(s32 denom, s32 num);
+s32 Div(s32 num, s32 denom);
+s32 DivArm(s32 denom, s32 num);
 
-extern s32 Mod(s32 num, s32 denom);
-extern s32 ModArm(s32 denom, s32 num);
 
-extern void SoundBiasReset(void);
+#if (!defined(PLATFORM_GBA) || (PLATFORM_GBA == 0))
+// TODO: Weird hack to get around this:
+//       >> Error: invalid use of operator "Mod"
+#define Mod(a, b) _Mod(a, b)
+#endif
+s32 Mod(s32 num, s32 denom);
+s32 ModArm(s32 denom, s32 num);
 
-extern void SoundBiasSet(void);
+void SoundBiasReset(void);
+
+void SoundBiasSet(void);
 
 #endif // GUARD_GBA_SYSCALL_H

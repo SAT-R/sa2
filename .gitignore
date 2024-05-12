@@ -75,7 +75,7 @@ reports
 ./maps
 *.4bpp
 *.8bpp
-
+libagbsyscall/*.s
 
 !data/maps/*/*/tilemaps/*/*.bin
 *.exe
