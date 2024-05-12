@@ -402,7 +402,7 @@ SECTIONS
         *libagbsyscall.a:VBlankIntrWait.o(.text);
         *libagbsyscall.a:SoftResetExram.o(.text);
 #else
-        src/lib/libagbsyscall.o(.text);
+        *libagbsyscall.a(.text);
 #endif
         *libgcc.a:_ashrdi3.o(.text);
         *libgcc.a:_call_via_rX.o(.text);

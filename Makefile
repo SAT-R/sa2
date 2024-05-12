@@ -102,8 +102,8 @@ ifeq ($(THUMB_SUPPORT),1)
 endif
 else
 ifeq ($(CPU_ARCH),i386)
-    # Use the more legible Intel dialect for x86
-    CC1FLAGS += -masm=intel
+    # Use the more legible Intel dialect for x86, without underscores
+    CC1FLAGS += -masm=intel -fno-leading-underscore
 endif
     # Allow file input through stdin on modern GCC and set it to "compile only"
 	CC1FLAGS += -x c -S
@@ -193,7 +193,12 @@ ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
 endif
 
 ASM_SUBDIR = asm
+
+ifeq ($(CPU_ARCH),arm)
 ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
+else
+ASM_BUILDDIR =
+endif
 
 C_SUBDIR = src
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
@@ -224,9 +229,12 @@ C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 ifeq ($(CPU_ARCH),arm)
 C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
 C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
+ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
+else
+# Don't include asm sources on non-ARM platforms
+ASM_SRCS :=
 endif
 
-ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
 ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 
 DATA_ASM_SRCS := $(wildcard $(DATA_ASM_SUBDIR)/*.s)
@@ -293,7 +301,7 @@ clean: tidy clean-tools
 	@$(MAKE) clean -C multi_boot/subgame_bootstrap
 	@$(MAKE) clean -C multi_boot/programs/subgame_loader
 	@$(MAKE) clean -C multi_boot/collect_rings
-	@$(MAKE) clean -C libagbsyscall
+	@$(MAKE) clean -C libagbsyscall PLATFORM=$(PLATFORM) CPU_ARCH=$(CPU_ARCH)
 
 	$(RM) $(SAMPLE_SUBDIR)/*.bin $(MID_SUBDIR)/*.s
 	find . \( -iwholename './data/maps/*/*/entities/*.bin' -o -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec $(RM) {} +
@@ -448,4 +456,4 @@ collect_rings: tools
 	@$(MAKE) -C multi_boot/collect_rings
 
 libagbsyscall:
-	@$(MAKE) -C libagbsyscall MODERN=0
+	@$(MAKE) -C libagbsyscall MODERN=0 PLATFORM=$(PLATFORM) CPU_ARCH=$(CPU_ARCH)
