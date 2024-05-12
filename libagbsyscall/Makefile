@@ -1,5 +1,14 @@
+
+# If no other platform is specified, assume gba
+#PLATFORM ?= gba
+
+ifeq ($(PLATFORM),gba)
 TOOLCHAIN := $(DEVKITARM)
 COMPARE ?= 0
+
+ifeq (compare,$(MAKECMDGOALS))
+  COMPARE := 1
+endif
 
 # don't use dkP's base_tools anymore
 # because the redefinition of $(CC) conflicts
@@ -10,24 +19,23 @@ COMPARE ?= 0
 
 ifneq (,$(TOOLCHAIN))
 ifneq ($(wildcard $(TOOLCHAIN)/bin),)
-export PATH := $(TOOLCHAIN)/bin:$(PATH)
+	export PATH := $(TOOLCHAIN)/bin:$(PATH)
 endif
 endif
 
 PREFIX := arm-none-eabi-
-OBJCOPY := $(PREFIX)objcopy
-AS := $(PREFIX)as
-LD := $(PREFIX)ld
-AR := $(PREFIX)ar
+else ifeq ($(CPU_ARCH),i386)
+	TOOLCHAIN := /usr/i686-w64-mingw32/
 
-# note: the makefile must be set up so MODERNCC is never called
-# if MODERN=0
-MODERNCC := $(PREFIX)gcc
+	PREFIX := i686-w64-mingw32-
+else
+	$(error Unknown CPU architecture $(CPU_ARCH))
+endif # (PLATFORM == gba)
 
 ifeq ($(OS),Windows_NT)
-EXE := .exe
+    EXE := .exe
 else
-EXE :=
+    EXE :=
 endif
 
 # use arm-none-eabi-cpp for macOS
@@ -43,11 +51,25 @@ ifneq ($(MODERN),1)
   else
     CPP := $(CC) -E
   endif
-else
-  CPP := $(PREFIX)cpp
 endif
 
-ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
+AS := $(PREFIX)as
+ifneq ($(PLATFORM),gba)
+    CPP       := $(PREFIX)cpp
+    CPPFLAGS  := -I ../include
+    CC1       := $(PREFIX)gcc
+    CC1FLAGS  := -Wall -O2 -x c -S
+    LD        := $(PREFIX)ld
+
+    ifeq ($(CPU_ARCH),i386)
+        # Use the more legible Intel dialect for x86, without underscores
+        CC1FLAGS += -masm=intel -fno-leading-underscore
+    endif
+endif # PLATFORM != gba
+
+ifeq ($(CPU_ARCH),arm)
+    ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
+endif
 ARFLAGS := rc
 
 SYSCALLS := IntrWait \
@@ -94,8 +116,14 @@ SYSCALLS := IntrWait \
             SoftReset \
             RLUnCompVram
 
-ASM_SRCS := libagbsyscall.s
-ASM_OBJS := $(foreach syscall, $(SYSCALLS), $(syscall).o)
+ifeq ($(PLATFORM),gba)
+SRCS := libagbsyscall.s
+else
+SRCS := libagbsyscall.c
+endif
+
+ASMS := $(foreach syscall, $(SYSCALLS), $(syscall).s) # $(syscall).s should only exist after compiling non-GBA
+OBJS := $(foreach syscall, $(SYSCALLS), $(syscall).o)
 
 LIB := libagbsyscall.a
 
@@ -105,10 +133,15 @@ all: $(LIB)
 	@:
 
 clean:
-	rm -f $(LIB) $(ASM_OBJS)
+	rm -f $(LIB) $(OBJS) $(ASMS)
 
-$(LIB): $(ASM_OBJS)
+$(LIB): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
 
-$(ASM_OBJS): libagbsyscall.s
+ifeq ($(PLATFORM),gba)
+$(OBJS): $(SRCS)
 	$(AS) $(ASFLAGS) --defsym L_$(*F)=1 -o $@ $<
+else
+$(OBJS): $(SRCS)
+	$(CPP) $(CPPFLAGS) -D L_$(*F)=1 $< | $(CC1) $(CC1FLAGS) -o $*.s - && $(AS) $(ASFLAGS) -o $@ $*.s
+endif
