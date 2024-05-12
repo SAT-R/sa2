@@ -11,6 +11,12 @@
 #define RESET_REGS       0x80
 #define RESET_ALL        0xFF
 
+typedef struct {
+    u32 srcLength : 16; // in bytes
+    u32 srcWidth : 8; // in bits
+    u32 dstWidth : 8; // in bits
+} BitUnPackData;
+
 void SoftReset(u32 resetFlags);
 void SoftResetExram(u32 resetFlags);
 
@@ -47,8 +53,16 @@ void RLUnCompVram(const void *src, void *dest);
 int MultiBoot(struct MultiBootParam *mp);
 
 s32 Div(s32 num, s32 denom);
+s32 DivArm(s32 denom, s32 num);
 
+
+#if (!defined(PLATFORM_GBA) || (PLATFORM_GBA == 0))
+// TODO: Weird hack to get around this:
+//       >> Error: invalid use of operator "Mod"
+#define Mod(a, b) _Mod(a, b)
+#endif
 s32 Mod(s32 num, s32 denom);
+s32 ModArm(s32 denom, s32 num);
 
 void SoundBiasReset(void);
 

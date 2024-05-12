@@ -22,6 +22,7 @@
 #define SA2_CHAR_ANIM_CROUCH             2
 #define SA2_CHAR_ANIM_SPIN_DASH          3
 #define SA2_CHAR_ANIM_SPIN_ATTACK        4
+#define SA2_CHAR_ANIM_BRAKE              8
 #define SA2_CHAR_ANIM_WALK               9
 #define SA2_CHAR_ANIM_JUMP_1             10
 #define SA2_CHAR_ANIM_JUMP_2             11

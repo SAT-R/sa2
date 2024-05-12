@@ -7440,3 +7440,8 @@
 .incbin "graphics/obj_tiles/4bpp/anim_1130/f001.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1131/f000.4bpp"
 .incbin "graphics/obj_tiles/4bpp/anim_1132/f000.4bpp"
+
+.if ENABLE_DECOMP_CREDITS
+.incbin "graphics/obj_tiles/4bpp/anim_logos/f000.4bpp"
+.incbin "graphics/obj_tiles/4bpp/anim_logos/f001.4bpp"
+.endif

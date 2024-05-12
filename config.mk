@@ -27,20 +27,26 @@ LDSCRIPT := ldscript
 NON_MATCHING ?= 0
 ifeq ($(PLATFORM),gba)
 ifeq ($(DEBUG),1)
-    PORTABLE     := 0
-    NON_MATCHING := 1
-    COMPARE      ?= 0
+  # Debug
+    PORTABLE              := 0
+    NON_MATCHING          := 1
+    ENABLE_DECOMP_CREDITS := 1
+    COMPARE  ?= 0
     LDSCRIPT := $(LDSCRIPT).txt
 else
-    PORTABLE     := 0
-    NON_MATCHING := 0
-    COMPARE      ?= 1
+  # Original
+    PORTABLE              := 0
+    NON_MATCHING          := 0
+    ENABLE_DECOMP_CREDITS := 0
+    COMPARE  ?= 1
     LDSCRIPT := $(LDSCRIPT).txt
 endif
 else
-    PORTABLE     := 1
-    NON_MATCHING := 1
-    COMPARE      ?= 0
+  # Other
+    PORTABLE              := 1
+    NON_MATCHING          := 1
+    ENABLE_DECOMP_CREDITS := 1
+    COMPARE  ?= 0
     LDSCRIPT := $(LDSCRIPT).txt
 endif
 

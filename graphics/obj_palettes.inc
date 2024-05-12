@@ -735,3 +735,8 @@
 .incbin "graphics/obj_palettes/pal_732.gbapal"
 .incbin "graphics/obj_palettes/pal_733.gbapal"
 .incbin "graphics/obj_palettes/pal_734.gbapal"
+
+.if ENABLE_DECOMP_CREDITS
+.incbin "graphics/obj_palettes/pal_logos_jace.gbapal"
+.incbin "graphics/obj_palettes/pal_logos_ollie.gbapal"
+.endif

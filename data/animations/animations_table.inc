@@ -1134,3 +1134,7 @@ gAnimations:
 	.4byte anim_countdown_start
 	.4byte anim_1131
 	.4byte anim_1132
+
+.if ENABLE_DECOMP_CREDITS
+	.4byte anim_logos
+.endif

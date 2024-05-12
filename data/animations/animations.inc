@@ -992,3 +992,7 @@
 .include "data/animations/anims/anim_countdown_start.inc"
 .include "data/animations/anims/anim_1131.inc"
 .include "data/animations/anims/anim_1132.inc"
+
+.if ENABLE_DECOMP_CREDITS
+.include "data/animations/anims/anim_logos.inc"
+.endif

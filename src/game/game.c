@@ -12,6 +12,7 @@
 
 #include "sakit/entities_manager.h"
 
+#include "game/decomp_credits.h"
 #include "game/stage/tilemap_table.h"
 #include "game/stage/stage.h"
 #include "game/stage/player.h"
@@ -79,6 +80,9 @@ void GameStart(void)
         return;
     }
 
+#if ENABLE_DECOMP_CREDITS
+    CreateDecompCreditsScreen(hasProfile);
+#else
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
         CreateTitleScreen();
         LoadCompletedSaveGame();
@@ -100,4 +104,5 @@ void GameStart(void)
     }
 
     CreateTitleScreen();
+#endif
 }

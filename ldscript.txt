@@ -90,6 +90,10 @@ SECTIONS
         src/sio32_multi_load.o(.text);
         src/core.o(.text);
         src/main.o(.text);
+#if (ENABLE_DECOMP_CREDITS == 1)
+        src/game/decomp_credits.o(.text);
+        src/game/decomp_credits.o(.rodata);
+#endif
         src/task.o(.text);
         src/bg_update.o(.text);
         src/animation_commands_bg.o(.text);
@@ -398,7 +402,7 @@ SECTIONS
         *libagbsyscall.a:VBlankIntrWait.o(.text);
         *libagbsyscall.a:SoftResetExram.o(.text);
 #else
-        src/lib/libagbsyscall.o(.text);
+        *libagbsyscall.a(.text);
 #endif
         *libgcc.a:_ashrdi3.o(.text);
         *libgcc.a:_call_via_rX.o(.text);

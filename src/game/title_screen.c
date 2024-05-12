@@ -343,7 +343,7 @@ void CreateTitleScreen(void)
 
     InitTitleScreenBackgrounds(titleScreen);
     m4aSongNumStart(MUS_INTRO);
-    gFlags |= 0x8000;
+    gFlags |= FLAGS_8000;
 
     UpdateScreenFade(fade);
 }
@@ -437,7 +437,7 @@ static void CreateTitleScreenWithoutIntro(TitleScreen *titleScreen)
     gBgCntRegs[2] &= ~BGCNT_WRAP;
 
     gBldRegs.bldCnt = BLDCNT_EFFECT_NONE;
-    gFlags &= ~0x8000;
+    gFlags &= ~FLAGS_8000;
 
     config40 = &titleScreen->unk40;
     config40->graphics.dest = (void *)BG_SCREEN_ADDR(16);
@@ -668,7 +668,7 @@ static void Task_IntroFadeOutSegaLogoAnim(void)
         gDispCnt &= ~DISPCNT_BG0_ON;
         gBldRegs.bldAlpha = FadeOutBlend(16);
         titleScreen->animFrame = 0;
-        gFlags &= ~0x8000;
+        gFlags &= ~FLAGS_8000;
         gCurTask->main = Task_IntroStartSonicTeamLogoAnim;
     }
 
@@ -1394,7 +1394,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     gBgScrollRegs[1][1] = 0;
     gBgCntRegs[2] &= ~0x2000;
     gBldRegs.bldCnt = 0;
-    gFlags &= ~0x8000;
+    gFlags &= ~FLAGS_8000;
 
     UpdateScreenFade(&titleScreen->unk270);
     m4aSongNumStart(MUS_TITLE_FANFARE);
@@ -1463,7 +1463,7 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     }
 
     gUnknown_03001870[gUnknown_03004D50++] = sub_808D874;
-    gFlags |= 0x10;
+    gFlags |= FLAGS_10;
 
     titleScreen->unk27C.unk34 = (titleScreen->wavesTopOffset - 2);
 
@@ -1779,7 +1779,7 @@ static void LoadTinyChaoGarden(void)
             break;
     }
 
-    gFlags |= 0x8000;
+    gFlags |= FLAGS_8000;
     m4aMPlayAllStop();
     m4aSoundVSyncOff();
     LZ77UnCompWram(gMultiBootProgram_TinyChaoGarden, (void *)EWRAM_START);
@@ -1823,7 +1823,7 @@ void CreateTitleScreenAtSinglePlayerMenu(void)
 static void SkipIntro(TitleScreen *titleScreen)
 {
     ScreenFade *fade = &titleScreen->unk270;
-    gFlags &= ~0x4;
+    gFlags &= ~FLAGS_4;
 
     fade->window = 1;
     fade->brightness = 0;
@@ -1901,7 +1901,7 @@ static void Task_IntroWaitUntilTitleScreenFanfare(void)
     // Wait for the fanfare to start on the intro music
     // before playing annoucement
     if (titleScreen->animFrame > FRAME_TIME_SECONDS(1)) {
-        gFlags &= ~0x4;
+        gFlags &= ~FLAGS_4;
         titleScreen->animFrame = 0;
         m4aSongNumStart(VOICE__ANNOUNCER__SONIC_ADVANCE_2);
         gCurTask->main = Task_PressStartMenuMain;
