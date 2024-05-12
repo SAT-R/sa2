@@ -108,7 +108,7 @@ s32 DivArm(s32 denom, s32 num)
 // NOTE: Apparently GCC doesn't like it when calling a function Mod, leading to this
 // error:
 //       >> Error: invalid use of operator "Mod"
-// So until we find a find for that, this is called _Mod() instead of Mod().
+// So until we find a fix for that, this is called _Mod() instead of Mod().
 s32 _Mod(s32 num, s32 denom)
 {
     if (denom != 0) {
