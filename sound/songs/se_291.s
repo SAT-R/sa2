@@ -87,6 +87,6 @@ se_291:
 	.byte	20
 	.byte	128
 
-	.word	voicegroup005
+	.4byte	voicegroup005
 
-	.word	song0291_1
+	.4byte  song0291_1
