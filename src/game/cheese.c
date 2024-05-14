@@ -1088,7 +1088,7 @@ bool8 sub_8015118(Cheese *cheese)
                 unk54->unk64 = 0;
             }
 
-            if (gUnknown_03005424 & 0x80) {
+            if (gStageFlags & 0x80) {
                 cheese->unkC |= 8;
             } else {
                 cheese->unkC &= ~8;

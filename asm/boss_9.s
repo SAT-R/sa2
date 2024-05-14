@@ -157,11 +157,11 @@ CreateTrueArea53Boss: @ 0x0804CEC4
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0xc8
-	ldr r2, _0804D2A8 @ =gUnknown_03005424
+	ldr r2, _0804D2A8 @ =gStageFlags
 	ldrh r0, [r2]
 	movs r1, #0x20
 	orrs r0, r1
-	strh r0, [r2]		@ gUnknown_03005424 |= EXTRA_STATE__DISABLE_PAUSE_MENU
+	strh r0, [r2]		@ gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU
 	ldr r4, _0804D2AC @ =gActiveBossTask
 	ldr r0, [r4]
 	cmp r0, #0
@@ -653,7 +653,7 @@ _0804D25C:
 	str r7, [r1, #8]
 	b _0804D340
 	.align 2, 0
-_0804D2A8: .4byte gUnknown_03005424
+_0804D2A8: .4byte gStageFlags
 _0804D2AC: .4byte gActiveBossTask
 _0804D2B0: .4byte Task_TrueArea53BossMain
 _0804D2B4: .4byte TaskDestructor_TrueArea53BossGfx
@@ -1254,7 +1254,7 @@ Task_TrueArea53BossMain: @ 0x0804D7A0
 	add r6, r8
 	ldr r0, _0804D864 @ =IWRAM_START + 0x98
 	add r0, r8
-	ldr r3, _0804D868 @ =gUnknown_03005424
+	ldr r3, _0804D868 @ =gStageFlags
 	ldrh r1, [r3]
 	movs r2, #0x20
 	orrs r1, r2
@@ -1327,7 +1327,7 @@ _0804D858: .4byte gCurTask
 _0804D85C: .4byte IWRAM_START + 0x1C
 _0804D860: .4byte IWRAM_START + 0x48
 _0804D864: .4byte IWRAM_START + 0x98
-_0804D868: .4byte gUnknown_03005424
+_0804D868: .4byte gStageFlags
 _0804D86C: .4byte gDispCnt
 _0804D870: .4byte 0x00009FFF
 _0804D874: .4byte sub_804D9DC
@@ -1576,7 +1576,7 @@ sub_804D9DC: @ 0x0804D9DC
 	bl MPlayStop
 	ldr r0, _0804DACC @ =gMPlayInfo_SE3
 	bl MPlayStop
-	ldr r2, _0804DAD0 @ =gUnknown_03005424
+	ldr r2, _0804DAD0 @ =gStageFlags
 	ldrh r0, [r2]
 	movs r1, #0x23
 	orrs r0, r1
@@ -1612,7 +1612,7 @@ _0804DAC0: .4byte 0x000003FF
 _0804DAC4: .4byte gMPlayInfo_SE1
 _0804DAC8: .4byte gMPlayInfo_SE2
 _0804DACC: .4byte gMPlayInfo_SE3
-_0804DAD0: .4byte gUnknown_03005424
+_0804DAD0: .4byte gStageFlags
 _0804DAD4: .4byte sub_8050DC4
 _0804DAD8: .4byte sub_8050DF8
 _0804DADC: .4byte sub_804DB34
@@ -1815,7 +1815,7 @@ Task_804DC60: @ 0x0804DC60
 	ldr r0, _0804DCDC @ =gVramGraphicsCopyQueueIndex
 	ldrb r0, [r0]
 	strb r0, [r1]
-	ldr r2, _0804DCE0 @ =gUnknown_03005424
+	ldr r2, _0804DCE0 @ =gStageFlags
 	ldrh r0, [r2]
 	movs r3, #0x80
 	lsls r3, r3, #3
@@ -1844,7 +1844,7 @@ _0804DCD0: .4byte gUnknown_0300287C
 _0804DCD4: .4byte gUnknown_03005390
 _0804DCD8: .4byte gVramGraphicsCopyCursor
 _0804DCDC: .4byte gVramGraphicsCopyQueueIndex
-_0804DCE0: .4byte gUnknown_03005424
+_0804DCE0: .4byte gStageFlags
 _0804DCE4: .4byte gCourseTime
 _0804DCE8: .4byte gRingCount
 _0804DCEC: .4byte gSpecialRingCount
@@ -6584,7 +6584,7 @@ sub_80501D4: @ 0x080501D4
 	ldrb r0, [r0]
 	cmp r0, #0
 	bne _08050298
-	ldr r2, _08050248 @ =gUnknown_03005424
+	ldr r2, _08050248 @ =gStageFlags
 	ldrh r1, [r2]
 	movs r0, #0x20
 	orrs r1, r0
@@ -6625,7 +6625,7 @@ sub_80501D4: @ 0x080501D4
 	strb r0, [r4, #0xf]
 	b _0805027A
 	.align 2, 0
-_08050248: .4byte gUnknown_03005424
+_08050248: .4byte gStageFlags
 _0805024C: .4byte 0x000007B4
 _08050250: .4byte 0x00000317
 _08050254: .4byte 0x000007D4
@@ -6649,14 +6649,14 @@ _0805027A:
 	ands r0, r1
 	mov r1, r8
 	strh r0, [r1, #0x10]
-	ldr r3, _08050294 @ =gUnknown_03005424
+	ldr r3, _08050294 @ =gStageFlags
 	b _080502A4
 	.align 2, 0
 _0805028C: .4byte 0x0000FFDF
 _08050290: .4byte 0x0000FFFE
-_08050294: .4byte gUnknown_03005424
+_08050294: .4byte gStageFlags
 _08050298:
-	ldr r0, _080502BC @ =gUnknown_03005424
+	ldr r0, _080502BC @ =gStageFlags
 	ldrh r1, [r0]
 	movs r2, #0x20
 	orrs r1, r2
@@ -6676,7 +6676,7 @@ _080502A4:
 	strh r0, [r2]
 	b _080502D6
 	.align 2, 0
-_080502BC: .4byte gUnknown_03005424
+_080502BC: .4byte gStageFlags
 _080502C0: .4byte gDispCnt
 _080502C4: .4byte 0x0000FBFF
 _080502C8:

@@ -254,8 +254,8 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
 
     mpp->unk5C |= 1;
 
-    if (count2 == 0 && !(gUnknown_03005424 & 1)) {
-        gUnknown_03005424 |= 4;
+    if (count2 == 0 && !(gStageFlags & 1)) {
+        gStageFlags |= 4;
         gCourseTime = 3600; // max?
     };
 

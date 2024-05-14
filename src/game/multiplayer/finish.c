@@ -172,7 +172,7 @@ void sub_8019F08(void)
     gLoadedSaveGame->score += (s16)gRingCount;
 
     if (gCourseTime <= MAX_COURSE_TIME) {
-        if (!(gUnknown_03005424 & EXTRA_STATE__4) || (gCourseTime != 0)) {
+        if (!(gStageFlags & EXTRA_STATE__4) || (gCourseTime != 0)) {
             return;
         }
     }

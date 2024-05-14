@@ -72,7 +72,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     gWinRegs[2] = 0;
     gWinRegs[1] = 0;
     gWinRegs[3] = 0;
-    gUnknown_03005424 = 0;
+    gStageFlags = 0;
     gMultiSioEnabled = TRUE;
     gFlags &= ~0x4000;
     m4aSoundVSyncOn();

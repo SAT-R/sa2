@@ -744,7 +744,7 @@ _080167FE:
 	movs r1, #7
 	strb r1, [r0]
 _0801680C:
-	ldr r0, _080168AC @ =gUnknown_03005424
+	ldr r0, _080168AC @ =gStageFlags
 	ldrh r1, [r0]
 	movs r2, #1
 	adds r0, r2, #0
@@ -819,7 +819,7 @@ _0801689C: .4byte 0x04000128
 _080168A0: .4byte gMultiplayerPlayerTasks
 _080168A4: .4byte gMultiplayerConnections
 _080168A8: .4byte IWRAM_START + 0x54
-_080168AC: .4byte gUnknown_03005424
+_080168AC: .4byte gStageFlags
 _080168B0: .4byte gPlayer
 _080168B4: .4byte 0x80000004
 _080168B8: .4byte 0x00400080

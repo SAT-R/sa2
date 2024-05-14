@@ -37,7 +37,7 @@ void GameStart(void)
     gUnknown_03004D54 = gBgOffsetsBuffer[0];
     gUnknown_030022C0 = gBgOffsetsBuffer[1];
 
-    gUnknown_03005424 = gUnknown_0300544C = EXTRA_STATE__CLEAR;
+    gStageFlags = gUnknown_0300544C = EXTRA_STATE__CLEAR;
 
     gRingsScatterTask = NULL;
     gDummyTask = NULL;

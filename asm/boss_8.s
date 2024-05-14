@@ -371,7 +371,7 @@ _0804A8C0:
 	ldr r1, _0804A9D0 @ =gUnknown_030054A8
 	movs r0, #0xc8
 	strh r0, [r1, #6]
-	ldr r2, _0804A9D4 @ =gUnknown_03005424
+	ldr r2, _0804A9D4 @ =gStageFlags
 	ldrh r0, [r2]
 	movs r1, #0x20
 	orrs r0, r1
@@ -391,7 +391,7 @@ _0804A9C4: .4byte 0x0600C000
 _0804A9C8: .4byte 0x0600A000
 _0804A9CC: .4byte 0x000002C1
 _0804A9D0: .4byte gUnknown_030054A8
-_0804A9D4: .4byte gUnknown_03005424
+_0804A9D4: .4byte gStageFlags
 
 	thumb_func_start sub_804A9D8
 sub_804A9D8: @ 0x0804A9D8
@@ -482,7 +482,7 @@ _0804AA68:
 	str r4, [r5, #0x14]
 	cmp r4, #0
 	bne _0804AADC
-	ldr r2, _0804AAF8 @ =gUnknown_03005424
+	ldr r2, _0804AAF8 @ =gStageFlags
 	ldrh r1, [r2]
 	ldr r0, _0804AAFC @ =0x0000FFDF
 	ands r0, r1
@@ -534,7 +534,7 @@ _0804AAE8: .4byte 0xFFFFFF00
 _0804AAEC: .4byte gStageTime
 _0804AAF0: .4byte gPlayer
 _0804AAF4: .4byte 0x0000FFFF
-_0804AAF8: .4byte gUnknown_03005424
+_0804AAF8: .4byte gStageFlags
 _0804AAFC: .4byte 0x0000FFDF
 _0804AB00: .4byte 0xFF9FFFFF
 _0804AB04: .4byte gUnknown_030054A8
@@ -850,7 +850,7 @@ sub_804AD68: @ 0x0804AD68
 	ldr r0, _0804ADD0 @ =0x00005431
 	ldr r1, _0804ADD4 @ =0x00005434
 	bl TasksDestroyInPriorityRange
-	ldr r2, _0804ADD8 @ =gUnknown_03005424
+	ldr r2, _0804ADD8 @ =gStageFlags
 	ldrh r0, [r2]
 	movs r3, #0x80
 	lsls r3, r3, #3
@@ -877,7 +877,7 @@ _0804ADC8: .4byte 0x00005010
 _0804ADCC: .4byte 0x00005011
 _0804ADD0: .4byte 0x00005431
 _0804ADD4: .4byte 0x00005434
-_0804ADD8: .4byte gUnknown_03005424
+_0804ADD8: .4byte gStageFlags
 _0804ADDC: .4byte gPlayer
 _0804ADE0: .4byte sub_804CC30
 _0804ADE4:

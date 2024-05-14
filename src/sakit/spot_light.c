@@ -63,7 +63,7 @@ void Task_SpotLightMain(void)
     StageUnkTask *ut;
     s32 unkC;
 
-    if (!(gUnknown_03005424 & EXTRA_STATE__100)) {
+    if (!(gStageFlags & EXTRA_STATE__100)) {
         ut = TASK_DATA(spotLight->t0);
 
         if (((gStageTime & 0x7) == 0) && (ut->unkB != 0)

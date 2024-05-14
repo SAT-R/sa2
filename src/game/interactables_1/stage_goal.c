@@ -143,7 +143,7 @@ static void Task_StageGoalToggleMain(void)
         }
     } else if (x <= I(gPlayer.x) && !(gPlayer.moveState & MOVESTATE_8000000)) {
         gPlayer.transition = PLTRANS_PT10;
-        gUnknown_03005424 |= 0x21;
+        gStageFlags |= 0x21;
         gStageGoalX = x;
 
         if (gGameMode == GAME_MODE_SINGLE_PLAYER
@@ -199,7 +199,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
         player->unk5C |= 1;
 
         if (count == 0) {
-            gUnknown_03005424 |= 4;
+            gStageFlags |= 4;
             gCourseTime = 3600;
         }
 
@@ -248,7 +248,7 @@ static UNUSED void sub_8062BD0(void)
         }
     }
 
-    gUnknown_03005424 |= 4;
+    gStageFlags |= 4;
     gCourseTime = 3600;
     unk5510 = sub_8019224();
     unk5510->unk0 = 7;

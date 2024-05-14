@@ -24,7 +24,7 @@ my $data = 0;
 my @pairs = ();
 while (my $line = <$file>)
 {
-    if ($line =~ /^ \.(\w+)\s+0x[0-9a-f]+\s+(0x[0-9a-f]+) build\/sa2\/(\w+)\/.+\.o/)
+    if ($line =~ /^ \.(\w+)\s+0x[0-9a-f]+\s+(0x[0-9a-f]+) (\w+)\/.+\.o/)
     {
         my $section = $1;
         my $size = hex($2);

@@ -35,7 +35,7 @@
 
 #define MAX_PLAYER_NAME_LENGTH 6
 
-#define GRAVITY_IS_INVERTED (gUnknown_03005424 & EXTRA_STATE__GRAVITY_INVERTED)
+#define GRAVITY_IS_INVERTED (gStageFlags & EXTRA_STATE__GRAVITY_INVERTED)
 
 typedef struct {
     u8 unk0;
@@ -107,7 +107,7 @@ extern u8 gUnknown_03005420;
 
 // "Extra State" (see above #defines for states)
 // TODO: Find better name. Put somewhere else?
-extern u16 gUnknown_03005424;
+extern u16 gStageFlags;
 extern u16 gUnknown_0300544C;
 
 extern u8 gDifficultyLevel;

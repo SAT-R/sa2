@@ -347,7 +347,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         }
     }
 
-    if (!(gUnknown_03005424 & 1) && !(mpp->unk54 & 0x80000004)) {
+    if (!(gStageFlags & 1) && !(mpp->unk54 & 0x80000004)) {
         if (!(gPlayer.itemEffect & 0x80)) {
             if (!(mpp->unk5C & 1) && (gPlayer.timerInvulnerability == 0)
                 && !(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {

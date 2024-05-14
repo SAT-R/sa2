@@ -409,7 +409,7 @@ bool32 sub_800CBA4(Player *p)
             }
 
             gRingCount -= rings;
-        } else if (!(gUnknown_03005424 & EXTRA_STATE__DEMO_RUNNING)) {
+        } else if (!(gStageFlags & EXTRA_STATE__DEMO_RUNNING)) {
             p->moveState |= MOVESTATE_DEAD;
         }
     } else {

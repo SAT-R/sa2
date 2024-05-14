@@ -43,7 +43,7 @@ const u32 gTileInfoBossScrews[][3] = {
 void CreateZoneBoss(u8 boss)
 {
     if (boss < ARRAY_COUNT(sBossCreationFuncs)) {
-        gUnknown_03005424 &= ~(EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__ACT_START);
+        gStageFlags &= ~(EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__ACT_START);
         sBossCreationFuncs[boss]();
     }
 }

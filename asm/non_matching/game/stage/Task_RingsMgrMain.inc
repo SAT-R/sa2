@@ -27,7 +27,7 @@
 	mov r0, sp
 	movs r2, #4
 	bl memcpy
-	ldr r0, _0800828C @ =gUnknown_03005424
+	ldr r0, _0800828C @ =gStageFlags
 	ldrh r1, [r0]
 	movs r0, #2
 	ands r0, r1
@@ -463,7 +463,7 @@ _08008258:
 	b _080082D0
 	.align 2, 0
 _08008288: .4byte gPlayer
-_0800828C: .4byte gUnknown_03005424
+_0800828C: .4byte gStageFlags
 _08008290: .4byte gCurTask
 _08008294: .4byte IWRAM_START + 0x30
 _08008298: .4byte gCurrentLevel

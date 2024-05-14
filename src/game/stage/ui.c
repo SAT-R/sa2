@@ -249,7 +249,7 @@ struct Task *CreateStageUI(void)
 
 void Task_CreateStageUIMain(void)
 {
-    if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_HUD)) {
+    if (!(gStageFlags & EXTRA_STATE__TURN_OFF_HUD)) {
         u32 time;
         s32 score;
         u32 sl;
@@ -397,7 +397,7 @@ void Task_CreateStageUIMain(void)
         time = gCourseTime;
         time = (time <= MAX_COURSE_TIME - 1) ? gCourseTime : MAX_COURSE_TIME - 1;
 
-        if (!(gUnknown_03005424 & EXTRA_STATE__TURN_OFF_TIMER)) {
+        if (!(gStageFlags & EXTRA_STATE__TURN_OFF_TIMER)) {
             // _0802CFF8
 
             u32 r1, r5;

@@ -13,7 +13,7 @@
 	adds r0, r3, #0
 	adds r0, #0x24
 	ldrb r2, [r0]
-	ldr r0, _08023BA0 @ =gUnknown_03005424
+	ldr r0, _08023BA0 @ =gStageFlags
 	ldrh r1, [r0]
 	movs r0, #0x80
 	ands r0, r1
@@ -38,7 +38,7 @@ _08023B8E:
 	subs r0, #1
 	b _08023BAC
 	.align 2, 0
-_08023BA0: .4byte gUnknown_03005424
+_08023BA0: .4byte gStageFlags
 _08023BA4:
 	movs r2, #0x20
 	b _08023BB4

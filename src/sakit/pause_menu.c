@@ -55,7 +55,7 @@ void CreatePauseMenu(void)
     if (lang < LANG_DEFAULT)
         lang = LANG_JAPANESE - 1;
 
-    if (!(gUnknown_03005424 & EXTRA_STATE__DISABLE_PAUSE_MENU)) {
+    if (!(gStageFlags & EXTRA_STATE__DISABLE_PAUSE_MENU)) {
         void *vramTiles = VramMalloc(sAnimInfoPauseMenu[lang].size);
 
         if (vramTiles != ewram_end) {
