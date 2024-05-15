@@ -255,7 +255,7 @@ void MPlayExtender(struct CgbChannel *cgbChans)
     soundInfo->ident = ident;
 }
 
-#ifndef PORTABLE
+#if PLATFORM_GBA
 void MusicPlayerJumpTableCopy(void) { asm("swi 0x2A"); }
 #else
 // TODO: Implement

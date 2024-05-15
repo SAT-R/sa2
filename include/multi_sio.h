@@ -279,3 +279,6 @@ extern u32 MultiSioRecvDataCheck(void *recvp);
 //    void *recvp  User Receive Buffer Pointer
 
 #endif // GUARD_MULTI_SIO_H
+
+
+extern u32 MultiSioRecvBufChange(void);
