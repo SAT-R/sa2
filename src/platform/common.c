@@ -1,6 +1,5 @@
-#include "global.h"
-#include "core.h"
 #include <windows.h>
+#include "core.h"
 
 u8 REG_BASE[IO_SIZE] = {0};
 u16 INTR_CHECK = 0;
@@ -21,11 +20,11 @@ StartGameThread(void *pThreadParam) {
 }
 
 int WINAPI
-_WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine, int nShowCmd)
+WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     DWORD threadId;
     
-    CreateThread(NULL, 0, NULL, NULL, 0, &threadId);
+    CreateThread(NULL, 0, StartGameThread, NULL, 0, &threadId);
 }
 
 void IntrMain(void) {
