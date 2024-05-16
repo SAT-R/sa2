@@ -374,7 +374,7 @@ extern const struct ToneData voicegroup_pokemon_cry;
 extern char gNumMusicPlayers[];
 extern char gMaxLines[];
 
-#ifndef NON_MATCHING
+#if PLATFORM_GBA
 #define NUM_MUSIC_PLAYERS ((u16)(uintptr_t)gNumMusicPlayers)
 #else
 #define NUM_MUSIC_PLAYERS 4
