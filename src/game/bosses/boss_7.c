@@ -6,6 +6,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/stage/boss_results_transition.h"
+#include "game/stage/collision.h"
 
 #include "game/bosses/boss_7.h"
 #include "game/bosses/common.h"
@@ -56,7 +57,10 @@ typedef struct {
     u8 unk0[6];
     u8 unk6;
     u8 unk7;
-    u8 filler0[10];
+    u8 filler8[6];
+    u8 unkE;
+    u8 unkF;
+    u8 filler0[2];
     u8 unk12;
     u8 unk13;
     u8 filler1[6];
@@ -397,7 +401,7 @@ void sub_8048408(EggFrog *boss)
             sub_804928C(boss);
         }
 
-        Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+        Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
         if (boss->unk16 == 0
             && IsColliding_Cheese(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
@@ -468,5 +472,129 @@ void sub_80484C8(EggFrog *boss)
                 boss->unk19 = gUnknown_080D8710.unk2F;
             }
         }
+    }
+}
+
+extern const s8 gUnknown_080D814A[];
+extern const s8 gUnknown_080D8148[];
+
+void sub_8048654(EggFrog *boss)
+{
+    s32 result;
+    s32 x, y;
+    s16 temp2;
+    u8 i;
+    boss->speedY += gUnknown_080D814A[0];
+    if (boss->speedY > 0x2C0) {
+        boss->speedY = 0x2C0;
+    }
+
+    boss->x += boss->speedX;
+    boss->y += boss->speedY;
+
+    result = sub_801E4E4(I(boss->y) + 0x1E, I(boss->x), 1, 8, 0, sub_801EE64);
+    if (result < 0) {
+        boss->y += Q(result);
+        boss->speedY = Div(-(boss->speedY * 9), 10);
+        boss->speedX = Div((boss->speedX * 9), 10);
+    }
+
+    x = I(boss->x);
+    y = I(boss->y);
+    temp2 = 9;
+
+    for (i = 0; i < 2; i++) {
+        y = I(boss->y);
+        y += ((SIN(boss->unk1C[i][0]) * 0x17) >> 0xE);
+        y += SIN(boss->unk1C[i][1]) >> temp2;
+
+        result = sub_801E4E4(y + 6, x, 1, 8, 0, sub_801EE64);
+        if (result >= 1) {
+            if (boss->unk1C[i][1] >= 0x100 && boss->unk1C[i][1] <= 0x300) {
+                boss->unk1C[i][1] -= 2;
+            } else {
+                boss->unk1C[i][1] += 2;
+            }
+        } else {
+            if (boss->unk1C[i][1] < 0x100 || boss->unk1C[i][1] > 0x300) {
+                boss->unk1C[i][1] += 2;
+            } else {
+                boss->unk1C[i][1] -= 2;
+            }
+        }
+
+        boss->unk1C[i][1] = boss->unk1C[i][1] & (SIN_PERIOD - 1);
+        y += gUnknown_080D8148[0];
+        y += ((SIN(boss->unk1C[i][2]) * 0x32) >> 0xE);
+        result = sub_801E4E4(y, x, 1, 8, 0, sub_801EE64);
+
+        if (result >= 1) {
+            if (boss->unk1C[i][2] >= 0x100 && boss->unk1C[i][2] <= 0x300) {
+                boss->unk1C[i][2] -= 2;
+            } else {
+                boss->unk1C[i][2] += 2;
+            }
+        } else {
+            if (boss->unk1C[i][2] < 0x100 || boss->unk1C[i][2] > 0x300) {
+                boss->unk1C[i][2] -= 2;
+            } else {
+                boss->unk1C[i][2] += 2;
+            }
+        }
+
+        boss->unk1C[i][2] = (boss->unk1C[i][2] & (SIN_PERIOD - 1));
+    }
+}
+
+void sub_8048858(EggFrog *boss)
+{
+    u8 i;
+    s32 x = I(boss->x);
+    s32 someVal;
+    s32 result;
+    s16 temp;
+
+    if (boss->unk18 == 0) {
+        someVal = 8;
+    } else {
+        someVal = -8;
+    }
+
+    temp = 9;
+    for (i = 0; i < 2; i++) {
+        s32 y = I(boss->y);
+        y += gUnknown_080D8148[boss->unk18];
+        y += (SIN(boss->unk1C[i][0]) * 0x17) >> 0xE;
+        y += (SIN(boss->unk1C[i][1]) >> temp);
+        y += (SIN(boss->unk1C[i][2]) * 0x32) >> 0xE;
+        result = sub_801E4E4(y, x, 1, someVal, 0, sub_801EE64);
+
+        if (result < 0) {
+            boss->y += boss->unk18 != 0 ? -Q(result) : Q(result);
+        }
+    }
+}
+
+void sub_8048C7C(EggFrog *);
+void sub_80493F8(EggFrog *, s32 x, s32 y, u8);
+
+void sub_804893C(EggFrog *boss)
+{
+    sub_8048C7C(boss);
+    if (boss->unk5C > 0x23FF) {
+        boss->unk66 = 0;
+        boss->unk1B = 3;
+        boss->unk5C &= 0xFFF;
+        boss->unk60 = gUnknown_080D86D4[3];
+        boss->unk18 = gUnknown_080D8710.unkE;
+        boss->unk19 = gUnknown_080D8710.unkF;
+    }
+
+    if (boss->unk5C > 0x1FFF) {
+        if (boss->unk17 != 0) {
+            sub_80493F8(boss, boss->x, boss->y, 0);
+            boss->unk17 = 0;
+        }
+        boss->speedY = -Q(3.5);
     }
 }
