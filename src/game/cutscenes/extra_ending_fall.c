@@ -563,25 +563,25 @@ void sub_80905C0(void)
 void sub_809066C(struct ExtraEndingCutScene *scene)
 {
     if (scene->unk37C < 0xD) {
-        scene->unk3E0[0] = scene->unk460 << 8;
-        scene->unk3E0[1] = 0x5000;
+        scene->unk3E0[0] = Q(scene->unk460);
+        scene->unk3E0[1] = Q(80);
     } else if (scene->unk37C == 0xD) {
-        if (scene->unk3E0[1] > -0x3200) {
-            scene->unk3E0[1] -= 0x100;
+        if (scene->unk3E0[1] > -Q(50)) {
+            scene->unk3E0[1] -= Q(1);
 
-            if (scene->unk3E0[0] < 0xAA00) {
-                if (scene->unk38E < 0x400) {
+            if (scene->unk3E0[0] < Q(170)) {
+                if (scene->unk38E < Q(4)) {
                     scene->unk38E++;
                 }
                 scene->unk3E0[0] += SIN(scene->unk38E);
             }
         } else {
-            scene->unk3E0[0] = 0x7800;
+            scene->unk3E0[0] = Q(120);
             scene->unk37C++;
         }
     } else if (scene->unk37C == 0xF) {
-        if (scene->unk3E0[1] <= 0x54FF) {
-            scene->unk3E0[1] += 0x50;
+        if (scene->unk3E0[1] < Q(85)) {
+            scene->unk3E0[1] += Q(0.3125);
         } else {
             scene->unk37C++;
             scene->unk394 = 0x3C;
@@ -601,12 +601,11 @@ void sub_809066C(struct ExtraEndingCutScene *scene)
             scene->unk37C++;
         }
     } else {
-        if ((scene->unk3E0[1] > (scene->unk470[1] - 0x3C00))
-            && (scene->unk37C == 0x11)) {
+        if ((scene->unk3E0[1] > (scene->unk470[1] - Q(60))) && (scene->unk37C == 0x11)) {
             scene->unk37C++;
         }
-        if (scene->unk3E0[1] < (scene->unk470[1] - 0x2800)) {
-            scene->unk3E0[1] += 0x100;
+        if (scene->unk3E0[1] < (scene->unk470[1] - Q(40))) {
+            scene->unk3E0[1] += Q(1);
         }
     }
 
@@ -618,27 +617,27 @@ void sub_809066C(struct ExtraEndingCutScene *scene)
 void sub_8090800(struct ExtraEndingCutScene *scene)
 {
     if (scene->unk37C < 0xD) {
-        scene->unk470[0] = 0x7800;
-        scene->unk470[1] = 0x4600;
-    } else if (scene->unk37C == 0xD && scene->unk470[1] < 0x8C00) {
-        scene->unk470[1] += 0x80;
+        scene->unk470[0] = Q(120);
+        scene->unk470[1] = Q(70);
+    } else if (scene->unk37C == 0xD && scene->unk470[1] < Q(140)) {
+        scene->unk470[1] += Q(0.5);
     } else if (scene->unk37C == 0xE) {
-        if (scene->unk470[1] >= 0x5501) {
-            scene->unk470[1] -= 0x40;
+        if (scene->unk470[1] > Q(85)) {
+            scene->unk470[1] -= Q(0.25);
         } else {
             scene->unk37C++;
         }
     } else if (scene->unk37C < 0x11) {
-        if (scene->unk470[1] < 0x8700) {
-            scene->unk470[1] += 0x40;
+        if (scene->unk470[1] < Q(135)) {
+            scene->unk470[1] += Q(0.25);
         }
     } else {
         scene->unk470[1] -= 8;
     }
 
     if (scene->unk37C > 0xD) {
-        if (scene->unk396 < 0x400) {
-            scene->unk396 += 0x20;
+        if (scene->unk396 < Q(4)) {
+            scene->unk396 += Q(0.125);
         } else {
             scene->unk396 = 0;
         }
@@ -653,14 +652,14 @@ void sub_8090904(struct ExtraEndingCutScene *scene)
 
     if (scene->unk37C == 0xE || scene->unk37C == 0xD) {
         for (i = 0; i < 6; i++) {
-            if ((scene->unk47C[i][0] > -0xA00 && scene->unk47C[i][0] < 0xFA00)
-                || (scene->unk47C[i][1] > -0xA00 && scene->unk47C[i][1] < 0xAA00)) {
+            if ((scene->unk47C[i][0] > -Q(10) && scene->unk47C[i][0] < Q(250))
+                || (scene->unk47C[i][1] > -Q(10) && scene->unk47C[i][1] < Q(170))) {
                 if (i < 3) {
-                    scene->unk47C[i][0] -= scene->unk47C[i][2] * 0x100;
+                    scene->unk47C[i][0] -= Q(scene->unk47C[i][2]);
                 } else {
-                    scene->unk47C[i][0] += scene->unk47C[i][2] * 0x100;
+                    scene->unk47C[i][0] += Q(scene->unk47C[i][2]);
                 }
-                scene->unk47C[i][1] -= scene->unk47C[i][2] * 0x100;
+                scene->unk47C[i][1] -= Q(scene->unk47C[i][2]);
             }
         }
     }
@@ -669,15 +668,15 @@ void sub_8090904(struct ExtraEndingCutScene *scene)
         for (i = 0; i < 6; i++) {
             if (scene->unk381[i] < 0x11) {
                 if (i < 3) {
-                    if (scene->unk47C[i][0] < (scene->unk470[0] + 0x3C00)) {
-                        scene->unk47C[i][0] += scene->unk47C[i][2] * 0x80;
+                    if (scene->unk47C[i][0] < (scene->unk470[0] + Q(60))) {
+                        scene->unk47C[i][0] += scene->unk47C[i][2] * Q(0.5);
                     } else {
                         scene->unk381[i] |= 0x10;
                     }
 
                     if ((scene->unk381[i] & 1) == 0) {
-                        if (scene->unk47C[i][1] < (scene->unk470[1] - 0x1E00)) {
-                            scene->unk47C[i][1] += scene->unk47C[i][2] * 0x80;
+                        if (scene->unk47C[i][1] < (scene->unk470[1] - Q(30))) {
+                            scene->unk47C[i][1] += scene->unk47C[i][2] * Q(0.5);
                         } else {
                             scene->unk381[i] |= 1;
                         }
@@ -686,15 +685,15 @@ void sub_8090904(struct ExtraEndingCutScene *scene)
                         scene->unk387[i] = 2;
                     }
                 } else {
-                    if (scene->unk47C[i][0] > (scene->unk470[0] - 0x3C00)) {
-                        scene->unk47C[i][0] -= scene->unk47C[i][2] * 0x80;
+                    if (scene->unk47C[i][0] > (scene->unk470[0] - Q(60))) {
+                        scene->unk47C[i][0] -= scene->unk47C[i][2] * Q(0.5);
                     } else {
                         scene->unk381[i] |= 0x10;
                     }
 
                     if ((scene->unk381[i] & 1) == 0) {
-                        if (scene->unk47C[i][1] < (scene->unk470[1] - 0x1E00)) {
-                            scene->unk47C[i][1] += scene->unk47C[i][2] * 0x80;
+                        if (scene->unk47C[i][1] < (scene->unk470[1] - Q(30))) {
+                            scene->unk47C[i][1] += scene->unk47C[i][2] * Q(0.5);
                         } else {
                             scene->unk381[i] |= 1;
                         }
@@ -706,7 +705,7 @@ void sub_8090904(struct ExtraEndingCutScene *scene)
             if (scene->unk381[i] > 0xF) {
                 scene->unk47C[i][3] += scene->unk47C[i][2] * 2;
 
-                if (scene->unk47C[i][3] > 0x3FF00) {
+                if (scene->unk47C[i][3] > Q(1023)) {
                     scene->unk47C[i][3] = 0;
                 }
 
@@ -722,11 +721,11 @@ void sub_8090904(struct ExtraEndingCutScene *scene)
             if ((scene->unk381[i] & 1) != 0) {
                 scene->unk47C[i][4] += scene->unk47C[i][2] * 2;
 
-                if (scene->unk47C[i][4] > 0x3FF00) {
+                if (scene->unk47C[i][4] > Q(1023)) {
                     scene->unk47C[i][4] = 0;
                 }
 
-                scene->unk47C[i][1] = scene->unk470[1] - 0x1E00
+                scene->unk47C[i][1] = scene->unk470[1] - Q(30)
                     + ((SIN((scene->unk47C[i][4] & 0xFF) * 4) >> 6) * 8);
             }
 #ifndef NON_MATCHING
@@ -759,11 +758,10 @@ void sub_8090C24(struct ExtraEndingCutScene *scene)
 void sub_8090CA0(struct ExtraEndingCutScene *scene)
 {
     u8 i;
-    if (scene->unk37C > 0xC) {
+    if (scene->unk37C > 12) {
         for (i = 0; i < 6; i++) {
-            if ((scene->unk584[i][0] > -0xA00 && scene->unk584[i][0] < 0xFA00)
-                || (scene->unk584[i][1] > -0xA00 && scene->unk584[i][1] < 0xAA00)) {
-
+            if ((scene->unk584[i][0] > -Q(10) && scene->unk584[i][0] < Q(250))
+                || (scene->unk584[i][1] > -Q(10) && scene->unk584[i][1] < Q(170))) {
                 if (i < 3) {
                     scene->unk584[i][0] -= scene->unk584[i][2] >> 6;
                 } else {

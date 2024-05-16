@@ -335,7 +335,8 @@
     "__verbose_abort": "cpp",
     "execution": "cpp",
     "iomanip": "cpp",
-    "packed.h": "c"
+    "packed.h": "c",
+    "endings.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
