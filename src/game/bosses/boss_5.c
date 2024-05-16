@@ -850,7 +850,7 @@ void HandleCollision(EggSaucer *boss)
         }
     }
 
-    Player_UpdateHomingPosition(Q_24_8_NEW(x), Q_24_8_NEW(y));
+    Player_UpdateHomingPosition(QS(x), QS(y));
 
     if (boss->unk13 == 0 && IsColliding_Cheese(s, x, y, 0, &gPlayer) == TRUE) {
         sub_8045368(boss);
@@ -888,7 +888,7 @@ void HandleCollision(EggSaucer *boss)
             }
         }
 
-        Player_UpdateHomingPosition(Q_24_8_NEW(x), Q_24_8_NEW(y));
+        Player_UpdateHomingPosition(QS(x), QS(y));
 
         if (boss->unk1F == 0) {
             if (IsColliding_Cheese(s, x, y, 0, &gPlayer) == 1) {
@@ -907,8 +907,8 @@ void HandleCollision(EggSaucer *boss)
                 }
             }
         }
-        boss->unk28 = Q_24_8_NEW(x - 5);
-        boss->unk2C = Q_24_8_NEW(y + 1);
+        boss->unk28 = QS(x - 5);
+        boss->unk2C = QS(y + 1);
     }
 
     s = &boss->armBase;
@@ -1005,7 +1005,7 @@ void sub_8044540(EggSaucer *boss)
     bottomY = I(boss->cabinY);
     res = sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64);
     if (res < 0) {
-        boss->cabinY += Q_24_8_NEW(res);
+        boss->cabinY += QS(res);
         boss->unkD6 = Div(-0x46 * boss->unkD6, 100);
         boss->unkD4 -= 24;
     }
@@ -1018,7 +1018,7 @@ void sub_8044540(EggSaucer *boss)
     bottomY = I(boss->armBaseY);
     res = sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64);
     if (res < 0) {
-        boss->armBaseY += Q_24_8_NEW(res);
+        boss->armBaseY += QS(res);
         boss->unkDA = Div(-0x41 * boss->unkDA, 100);
         boss->unkD8 -= 34;
     }
@@ -1032,7 +1032,7 @@ void sub_8044540(EggSaucer *boss)
         bottomY = I(boss->unkDC[i][1]);
         res = sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64);
         if (res < 0) {
-            boss->unkDC[i][1] += Q_24_8_NEW(res);
+            boss->unkDC[i][1] += QS(res);
             boss->unk10C[i][1] = Div(boss->unk10C[i][1] * (i - 0x41), 100);
             boss->unk10C[i][0] += (i - 0x33);
         }
@@ -1046,7 +1046,7 @@ void sub_8044540(EggSaucer *boss)
     bottomY = I(boss->handY);
     res = sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64);
     if (res < 0) {
-        boss->handY += Q_24_8_NEW(res);
+        boss->handY += QS(res);
         boss->unk12E = Div(-60 * boss->unk12E, 100);
         boss->unk12C -= 52;
     }

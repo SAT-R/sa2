@@ -174,8 +174,8 @@ void sub_801412C(Cheese *cheese)
         s->hitboxes[1].index = -1;
     }
 
-    s->x = Q_24_8_TO_INT(cheese->posX) - gCamera.x;
-    s->y = Q_24_8_TO_INT(cheese->posY) - gCamera.y;
+    s->x = I(cheese->posX) - gCamera.x;
+    s->y = I(cheese->posY) - gCamera.y;
 
     temp = 0x400;
     if (cheese->unkC & 1) {
@@ -428,17 +428,17 @@ void sub_801464C(void)
     }
 
     // TODO: lots of NON_MATCHING hacks here
-    if (t->unk16 - Q_24_8_TO_INT(cheese->posX) >= 0) {
-        if (t->unk16 - Q_24_8_TO_INT(cheese->posX) < temp2) {
+    if (t->unk16 - I(cheese->posX) >= 0) {
+        if (t->unk16 - I(cheese->posX) < temp2) {
             goto lab2;
         }
-    } else if (Q_24_8_TO_INT(cheese->posX) - t->unk16 < temp2) {
+    } else if (I(cheese->posX) - t->unk16 < temp2) {
         s32 temp;
     lab2:
-        temp = t->unk18 - ({ Q_24_8_TO_INT(cheese->posY) + 4; });
+        temp = t->unk18 - ({ I(cheese->posY) + 4; });
 
         if (temp < 0) {
-            r0 = ({ Q_24_8_TO_INT(cheese->posY) + 4; }) - t->unk18;
+            r0 = ({ I(cheese->posY) + 4; }) - t->unk18;
         } else {
             if (temp < temp2) {
                 goto lab;
@@ -456,18 +456,17 @@ void sub_801464C(void)
     }
 end:
 
-    temp5 = Q_24_8_NEW(t->unk16) - cheese->posX > -1
-        ? Q_24_8(t->unk16) - cheese->posX
-        : cheese->posX - Q_24_8_NEW(t->unk16);
+    temp5 = QS(t->unk16) - cheese->posX > -1 ? Q(t->unk16) - cheese->posX
+                                             : cheese->posX - QS(t->unk16);
 
-    if (Q_24_8_NEW(t->unk16) > cheese->posX) {
+    if (QS(t->unk16) > cheese->posX) {
         temp3 = temp5 >> temp1;
         if (temp3 == 0 && temp5 != 0) {
             temp3 = 0x200;
         }
 
     } else {
-        if (Q_24_8_NEW(t->unk16) < cheese->posX) {
+        if (QS(t->unk16) < cheese->posX) {
             temp3 = -(temp5 >> temp1);
             if (temp3 == 0 && temp5 != 0) {
                 temp3 = -512;
@@ -475,17 +474,16 @@ end:
         }
     }
 
-    temp5 = Q_24_8_NEW(t->unk18 - 4) - cheese->posY > -1
-        ? Q_24_8_NEW(t->unk18 - 4) - cheese->posY
-        : cheese->posY - Q_24_8_NEW(t->unk18 - 4);
+    temp5 = QS(t->unk18 - 4) - cheese->posY > -1 ? QS(t->unk18 - 4) - cheese->posY
+                                                 : cheese->posY - QS(t->unk18 - 4);
 
-    if (Q_24_8_NEW(t->unk18 - 4) > cheese->posY) {
+    if (QS(t->unk18 - 4) > cheese->posY) {
         temp4 = temp5 >> temp1;
         if (temp4 == 0 && temp5 != 0) {
             temp4 = 0x200;
         }
     } else {
-        if (Q_24_8(t->unk18 - 4) < cheese->posY) {
+        if (Q(t->unk18 - 4) < cheese->posY) {
             temp4 = -(temp5 >> temp1);
             if (temp4 == 0 && temp5 != 0) {
                 temp4 = -512;
@@ -722,8 +720,8 @@ void sub_8014BB0(Cheese *cheese)
     unk4BB0->s.variant = 0;
     unk4BB0->s.graphics.size = 0;
     unk4BB0->s.prevVariant = -1;
-    unk4BB0->s.x = Q_24_8_TO_INT(unk4BB0->unk34) - gCamera.x;
-    unk4BB0->s.y = Q_24_8_TO_INT(unk4BB0->unk38) - gCamera.y;
+    unk4BB0->s.x = I(unk4BB0->unk34) - gCamera.x;
+    unk4BB0->s.y = I(unk4BB0->unk38) - gCamera.y;
     unk4BB0->s.unk1A = SPRITE_OAM_ORDER(8);
     unk4BB0->s.unk10 = SPRITE_FLAG(PRIORITY, 2);
     unk4BB0->s.timeUntilNextFrame = 0;
@@ -743,8 +741,8 @@ void sub_8014C60(void)
 
     unk4BB0->unk34 += unk4BB0->unk30;
     unk4BB0->unk38 += 0x100;
-    s->x = Q_24_8_TO_INT(unk4BB0->unk34) - gCamera.x;
-    s->y = Q_24_8_TO_INT(unk4BB0->unk38) - gCamera.y;
+    s->x = I(unk4BB0->unk34) - gCamera.x;
+    s->y = I(unk4BB0->unk38) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 }
@@ -1019,16 +1017,16 @@ bool8 sub_8015118(Cheese *cheese)
         s32 temp, temp2;
         s16 x, y;
 
-        if (ABS(cheese->unk6C->unk50 - Q_24_8_TO_INT(unk54->unk54)) > 0x1E) {
+        if (ABS(cheese->unk6C->unk50 - I(unk54->unk54)) > 0x1E) {
             r7 = 1;
         }
 
-        if (ABS(cheese->unk6C->unk52 - Q_24_8_TO_INT(unk54->unk58)) > 0x1E) {
+        if (ABS(cheese->unk6C->unk52 - I(unk54->unk58)) > 0x1E) {
             r7 = 1;
         }
 
-        unk54->unk54 = Q_24_8_NEW(cheese->unk6C->unk50);
-        unk54->unk58 = Q_24_8_NEW(cheese->unk6C->unk52);
+        unk54->unk54 = QS(cheese->unk6C->unk50);
+        unk54->unk58 = QS(cheese->unk6C->unk52);
 
         x = cheese->unk6C->unk50 - gCamera.x;
         if ((u16)(x + 32) > 304) {
@@ -1088,7 +1086,7 @@ bool8 sub_8015118(Cheese *cheese)
                 unk54->unk64 = 0;
             }
 
-            if (gUnknown_03005424 & 0x80) {
+            if (gStageFlags & 0x80) {
                 cheese->unkC |= 8;
             } else {
                 cheese->unkC &= ~8;

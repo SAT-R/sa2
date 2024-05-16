@@ -114,11 +114,11 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
     u16 temp3, temp4;
 
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
-        temp1 = Q_24_8_TO_INT(gPlayer.x);
+        temp1 = I(gPlayer.x);
         temp1 += 24;
         temp1 -= noteBlock->unk3C;
 
-        temp2 = Q_24_8_TO_INT(gPlayer.y);
+        temp2 = I(gPlayer.y);
         temp2 += 16;
         temp2 -= noteBlock->unk40;
 
@@ -211,8 +211,8 @@ static void sub_8079D00(Sprite_TecBaseNoteBlock *noteBlock)
 {
     Sprite *s = &noteBlock->s;
 
-    s->x = noteBlock->unk3C - gCamera.x + Q_24_8_TO_INT(noteBlock->unk44);
-    s->y = noteBlock->unk40 - gCamera.y + Q_24_8_TO_INT(noteBlock->unk48);
+    s->x = noteBlock->unk3C - gCamera.x + I(noteBlock->unk44);
+    s->y = noteBlock->unk40 - gCamera.y + I(noteBlock->unk48);
 }
 
 static void sub_8079D30(Sprite_TecBaseNoteBlock *noteBlock)

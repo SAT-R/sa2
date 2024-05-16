@@ -8,7 +8,7 @@
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x34
-	ldr r2, _0802F200 @ =gUnknown_03005424
+	ldr r2, _0802F200 @ =gStageFlags
 	ldrh r0, [r2]
 	movs r1, #1
 	orrs r0, r1
@@ -169,7 +169,7 @@
 	adds r1, r1, r2
 	b _0802F2BE
 	.align 2, 0
-_0802F200: .4byte gUnknown_03005424
+_0802F200: .4byte gStageFlags
 _0802F204: .4byte gPlayer
 _0802F208: .4byte gActiveBossTask
 _0802F20C: .4byte Task_802F75C

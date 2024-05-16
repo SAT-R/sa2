@@ -54,7 +54,7 @@ void Task_SpindashDustEffect(void)
         DustEffect *sde = TASK_DATA(gCurTask);
         Sprite *s = &sde->s;
 
-        if (p->spindashAccel > Q_24_8(2.0)) {
+        if (p->spindashAccel > Q(2.0)) {
             s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT_BIG;
             s->variant = 0;
             s->prevVariant = -1;
@@ -74,8 +74,8 @@ void Task_SpindashDustEffect(void)
             s->x = (mpp->unk50 - cam->x);
             s->y = ((mpp->unk52 + offY) - cam->y);
         } else {
-            s->x = Q_24_8_TO_INT(p->x) - cam->x;
-            s->y = (Q_24_8_TO_INT(p->y) + offY) - cam->y;
+            s->x = I(p->x) - cam->x;
+            s->y = (I(p->y) + offY) - cam->y;
         }
 
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
@@ -109,7 +109,7 @@ void Task_SpindashDustEffectBig(void)
         DustEffect *sde = TASK_DATA(gCurTask);
         Sprite *s = &sde->s;
 
-        if (p->spindashAccel <= Q_24_8(2.0)) {
+        if (p->spindashAccel <= Q(2.0)) {
             s->graphics.anim = SA2_ANIM_SPINDASH_DUST_EFFECT;
             s->variant = 0;
             s->prevVariant = -1;
@@ -129,8 +129,8 @@ void Task_SpindashDustEffectBig(void)
             s->x = (mpp->unk50 - cam->x);
             s->y = ((mpp->unk52 + offY) - cam->y);
         } else {
-            s->x = Q_24_8_TO_INT(p->x) - cam->x;
-            s->y = (Q_24_8_TO_INT(p->y) + offY) - cam->y;
+            s->x = I(p->x) - cam->x;
+            s->y = (I(p->y) + offY) - cam->y;
         }
 
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {

@@ -74,11 +74,11 @@ static bool32 sub_807B190(Sprite_LightGlobe *globe)
 
     temp3 = globe->unk3C;
     temp3 -= gCamera.x;
-    temp3 += Q_24_8_TO_INT(globe->unk44);
+    temp3 += I(globe->unk44);
 
     temp4 = globe->unk40;
     temp4 -= gCamera.y;
-    temp4 += Q_24_8_TO_INT(globe->unk46);
+    temp4 += I(globe->unk46);
 
     temp5 = temp3;
     temp6 = temp4;
@@ -99,15 +99,15 @@ static bool32 sub_807B1F0(Sprite_LightGlobe *globe)
 
     r3 = globe->unk3C;
     r3 -= gCamera.x;
-    r3 += Q_24_8_TO_INT(globe->unk44);
+    r3 += I(globe->unk44);
 
     r2 = globe->unk40;
     r2 -= gCamera.y;
-    r2 += Q_24_8_TO_INT(globe->unk46);
+    r2 += I(globe->unk46);
 
-    r0 = Q_24_8_TO_INT(gPlayer.x);
+    r0 = I(gPlayer.x);
     r0 -= gCamera.x;
-    r1 = Q_24_8_TO_INT(gPlayer.y);
+    r1 = I(gPlayer.y);
     r1 -= gCamera.y;
 
     r3_16 = r3;
@@ -164,8 +164,8 @@ static void sub_807B318(Sprite_LightGlobe *globe)
 static void sub_807B350(Sprite_LightGlobe *globe)
 {
     Sprite *s = &globe->s;
-    s->x = globe->unk3C - gCamera.x + Q_24_8_TO_INT(globe->unk44);
-    s->y = globe->unk40 - gCamera.y + Q_24_8_TO_INT(globe->unk46);
+    s->x = globe->unk3C - gCamera.x + I(globe->unk44);
+    s->y = globe->unk40 - gCamera.y + I(globe->unk46);
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 }

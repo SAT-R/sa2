@@ -257,8 +257,8 @@ static void Task_StageWaterTask(void)
     u8 unk2_2;
 #endif
 
-    if ((gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1))
-        && (Q_24_8_TO_INT(gPlayer.x) > 6665) && (Q_24_8_TO_INT(gPlayer.x) <= 10650)) {
+    if ((gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1)) && (I(gPlayer.x) > 6665)
+        && (I(gPlayer.x) <= 10650)) {
         water->isActive = TRUE;
     } else {
         water->isActive = FALSE;
@@ -358,7 +358,7 @@ static void Task_RunOnWaterEffect(void)
         return;
     }
 
-    effect->x = Q_24_8_TO_INT(p->x);
+    effect->x = I(p->x);
     effect->y = gWater.currentWaterLevel;
 
     s->x = effect->x - gCamera.x;

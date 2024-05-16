@@ -61,7 +61,7 @@ void StageBgUpdate_Zone4Acts12(s32 a, s32 b)
         unkDF0->unk40A = 0;
     }
 
-    if (IS_SINGLE_PLAYER && !(gUnknown_03005424 & 0x100)) {
+    if (IS_SINGLE_PLAYER && !(gStageFlags & 0x100)) {
         gWinRegs[WINREG_WINOUT] = 0x3e;
         gWinRegs[WINREG_WININ] = 0x3f3f;
         gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_WIDTH);

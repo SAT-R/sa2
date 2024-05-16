@@ -152,18 +152,18 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
 
     if (ABS(opponentX2) < 2) {
         // _08019622+4
-        r4 = opponentY2 > 0 ? Q_24_8(1.0) : Q_24_8(3.0);
+        r4 = opponentY2 > 0 ? Q(1.0) : Q(3.0);
 
     } else if (ABS(opponentY2) < 2) {
         // _08019636
-        r4 = Q_24_8(2.0);
+        r4 = Q(2.0);
         if (opponentY2 > 0) {
-            r4 = Q_24_8(0);
+            r4 = Q(0);
         }
     } else {
         r4 = sub_8004418(opponentX2, opponentY2);
     }
-    transform->rotation = (r4 + Q_24_8(1.0)) & ONE_CYCLE;
+    transform->rotation = (r4 + Q(1.0)) & ONE_CYCLE;
     // __0801966E
     opponentDistSq = SQUARE(opponentX2) + SQUARE(opponentY2);
 

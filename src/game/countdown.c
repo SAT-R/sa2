@@ -51,7 +51,7 @@ void CreateCourseStartCountdown(bool8 playerSkippedIntro)
     struct CourseStartCountdown *countdown;
     Sprite *s;
 
-    gUnknown_03005424 |= EXTRA_STATE__100;
+    gStageFlags |= EXTRA_STATE__100;
     t = TaskCreate(sub_8036168, 0x6C, 0x3000, 0, sub_8036638);
     countdown = TASK_DATA(t);
 
@@ -117,8 +117,8 @@ void sub_8036168(void)
 
     if (--countdown->unk68 == 0) {
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
-        gUnknown_03005424 &= ~EXTRA_STATE__ACT_START;
-        gUnknown_03005424 &= ~EXTRA_STATE__100;
+        gStageFlags &= ~EXTRA_STATE__ACT_START;
+        gStageFlags &= ~EXTRA_STATE__100;
         gPlayer.unk64 = 9;
         if (countdown->unk6A != 0) {
             gPlayer.speedGroundX = Q_8_8(9);
@@ -128,8 +128,8 @@ void sub_8036168(void)
 
         sub_8018818();
         CreateRaceStartMessage();
-        countdown->unk60 = Q_24_8_TO_INT(gPlayer.x);
-        countdown->unk64 = Q_24_8_TO_INT(gPlayer.y);
+        countdown->unk60 = I(gPlayer.x);
+        countdown->unk64 = I(gPlayer.y);
         m4aSongNumStart(VOICE__ANNOUNCER__GO);
         gCurTask->main = sub_8036398;
     } else {
@@ -145,8 +145,8 @@ void sub_8036168(void)
     }
 
     s = &countdown->sprMachine;
-    s->x = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-    s->y = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    s->x = I(gPlayer.x) - gCamera.x;
+    s->y = I(gPlayer.y) - gCamera.y;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
@@ -155,8 +155,8 @@ void sub_8036168(void)
         s->variant = SA2_ANIM_VARIANT_COUNTDOWN_1
             - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         s->prevVariant = -1;
-        s->x = (Q_24_8_TO_INT(gPlayer.x) - gCamera.x) + 0x18;
-        s->y = (Q_24_8_TO_INT(gPlayer.y) - gCamera.y) - 0x18;
+        s->x = (I(gPlayer.x) - gCamera.x) + 0x18;
+        s->y = (I(gPlayer.y) - gCamera.y) - 0x18;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }

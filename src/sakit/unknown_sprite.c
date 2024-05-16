@@ -62,8 +62,8 @@ void sub_800A5F8(void)
     su->x += su->speedX;
     su->y += su->speedY;
 
-    su->s.x = Q_24_8_TO_INT(su->x) - gCamera.x;
-    su->s.y = Q_24_8_TO_INT(su->y) - gCamera.y;
+    su->s.x = I(su->x) - gCamera.x;
+    su->s.y = I(su->y) - gCamera.y;
 
     if (su->unk40 != 0) {
         su->unk40--;

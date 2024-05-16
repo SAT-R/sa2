@@ -202,7 +202,7 @@ void PlayerCB_802A714(Player *);
     {                                                                                   \
         player->x += player->speedAirX;                                                 \
                                                                                         \
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {  \
+        if ((gStageFlags ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {        \
             player->speedAirY = -player->speedAirY;                                     \
         }                                                                               \
                                                                                         \
@@ -3023,7 +3023,7 @@ void Task_8023D08(void)
             TaskDestroy(gCurTask);
             if ((!gLoadedSaveGame->timeLimitDisabled
                  && (gCourseTime > 36000
-                     || (gUnknown_03005424 & EXTRA_STATE__4 && gCourseTime == 0)))
+                     || (gStageFlags & EXTRA_STATE__4 && gCourseTime == 0)))
                 || ((gGameMode == GAME_MODE_TIME_ATTACK
                      || gGameMode == GAME_MODE_BOSS_TIME_ATTACK)
                     && gCourseTime > 36000)) {
@@ -3048,7 +3048,7 @@ void Task_8023D08(void)
         gCamera.y = I(gPlayer.y) + gCamera.shiftY - 0x50;
         m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
         gPlayer.moveState = 0;
-        gUnknown_03005424 &= ~EXTRA_STATE__GRAVITY_INVERTED;
+        gStageFlags &= ~EXTRA_STATE__GRAVITY_INVERTED;
 
         gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
         gPlayer.unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
@@ -3181,7 +3181,7 @@ void Task_8023FC0(void)
         cam->unk50 |= 3;
 
         if (IS_SINGLE_PLAYER) {
-            gUnknown_03005424 |= EXTRA_STATE__ACT_START;
+            gStageFlags |= EXTRA_STATE__ACT_START;
         }
 
         p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
@@ -3252,7 +3252,7 @@ void CallPlayerTransition(Player *p)
             } break;
             case PLTRANS_PT10 - 1: {
                 if (gGameMode == GAME_MODE_TIME_ATTACK) {
-                    gUnknown_03005424 |= EXTRA_STATE__TURN_OFF_TIMER;
+                    gStageFlags |= EXTRA_STATE__TURN_OFF_TIMER;
                 }
 
                 if (p->moveState
@@ -4467,7 +4467,7 @@ void PlayerCB_Spindash(Player *player)
 
         player->x += player->speedAirX;
 
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+        if ((gStageFlags ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
             player->speedAirY = -player->speedAirY;
         }
 
@@ -4521,7 +4521,7 @@ void PlayerCB_Spindash(Player *player)
 
         player->x += player->speedAirX;
 
-        if ((gUnknown_03005424 ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
+        if ((gStageFlags ^ gUnknown_0300544C) & EXTRA_STATE__GRAVITY_INVERTED) {
             player->speedAirY = -player->speedAirY;
         }
 
@@ -6618,21 +6618,21 @@ void Player_ClearMovestate_IsInScriptedSequence(void)
 void Player_DisableInputAndBossTimer(void)
 {
     gPlayer.transition = PLTRANS_PT10;
-    gUnknown_03005424
+    gStageFlags
         |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__2 | EXTRA_STATE__ACT_START);
 
     if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
-        gUnknown_03005424 |= EXTRA_STATE__TURN_OFF_TIMER;
+        gStageFlags |= EXTRA_STATE__TURN_OFF_TIMER;
     }
 }
 
 void Player_DisableInputAndBossTimer_FinalBoss(void)
 {
-    gUnknown_03005424
+    gStageFlags
         |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__2 | EXTRA_STATE__ACT_START);
 
     if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
-        gUnknown_03005424 |= EXTRA_STATE__TURN_OFF_TIMER;
+        gStageFlags |= EXTRA_STATE__TURN_OFF_TIMER;
     }
 }
 

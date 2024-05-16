@@ -74,8 +74,8 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     ia69->unk158 = TO_WORLD_POS(me->x, spriteRegionX);
     ia69->unk15C = TO_WORLD_POS(me->y, spriteRegionY);
 
-    temp = Q_24_8(ia69->unk1B2 - ia69->unk1AE);
-    ia69->unk160 = (temp / Q_24_8(6)) + 0x78;
+    temp = Q(ia69->unk1B2 - ia69->unk1AE);
+    ia69->unk160 = (temp / Q(6)) + 0x78;
     ia69->unk164 = 0;
     ia69->unk168 = 0;
     ia69->unk16C = -1;
@@ -335,50 +335,49 @@ void sub_80792AC(Sprite_IA69 *ia69)
         temp = ia69->unk1B2 - ia69->unk1AE;
 
         for (i = 0; i < 1; i++, unk178++) {
-            s32 temp2 = Q_24_8_TO_INT(ia69->unk168 + unk178->unk2);
+            s32 temp2 = I(ia69->unk168 + unk178->unk2);
             if (temp2 < temp) {
-                ia69->unk0.x = ia69->unk158 - gCamera.x
-                    + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
+                ia69->unk0.x = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
                 ia69->unk0.y = ia69->unk15C - gCamera.y + temp2;
                 DisplaySprite(&ia69->unk0);
             }
         }
 
         for (i = 0; i < 2; i++, unk178++) {
-            s32 temp2 = Q_24_8_TO_INT(ia69->unk168 + unk178->unk2);
+            s32 temp2 = I(ia69->unk168 + unk178->unk2);
             if (temp2 < temp) {
-                ia69->unk30.x = ia69->unk158 - gCamera.x
-                    + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
+                ia69->unk30.x
+                    = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
                 ia69->unk30.y = ia69->unk15C - gCamera.y + temp2;
                 DisplaySprite(&ia69->unk30);
             }
         }
 
         for (i = 0; i < 2; i++, unk178++) {
-            s32 temp2 = Q_24_8_TO_INT(ia69->unk168 + unk178->unk2);
+            s32 temp2 = I(ia69->unk168 + unk178->unk2);
             if (temp2 < temp) {
-                ia69->unk60.x = ia69->unk158 - gCamera.x
-                    + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
+                ia69->unk60.x
+                    = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
                 ia69->unk60.y = ia69->unk15C - gCamera.y + temp2;
                 DisplaySprite(&ia69->unk60);
             }
         }
 
         for (i = 0; i < 4; i++, unk178++) {
-            s32 temp2 = Q_24_8_TO_INT(ia69->unk168 + unk178->unk2);
+            s32 temp2 = I(ia69->unk168 + unk178->unk2);
             if (temp2 < temp) {
-                ia69->unk90.x = ia69->unk158 - gCamera.x
-                    + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
+                ia69->unk90.x
+                    = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
                 ia69->unk90.y = ia69->unk15C - gCamera.y + temp2;
                 DisplaySprite(&ia69->unk90);
             }
         }
 
         for (i = 0; i < 4; i++, unk178++) {
-            s32 temp2 = Q_24_8_TO_INT(ia69->unk168 + unk178->unk2);
+            s32 temp2 = I(ia69->unk168 + unk178->unk2);
             if (temp2 < temp) {
-                ia69->unkC0.x = ia69->unk158 - gCamera.x
-                    + Q_24_8_TO_INT(ia69->unk164 + unk178->unk0);
+                ia69->unkC0.x
+                    = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
                 ia69->unkC0.y = ia69->unk15C - gCamera.y + temp2;
                 DisplaySprite(&ia69->unkC0);
             }
@@ -417,12 +416,12 @@ void sub_8079560(Sprite_IA69 *ia69)
     for (i = 0; i < 13; i++, unkF0++) {
         if (unkF0->unk6 < 1 || unkF0->unk2 < 1) {
             if (i & 1) {
-                ia69->unk90.x = (unk158 - gCamera.x) + Q_24_8_TO_INT(unkF0->unk0);
-                ia69->unk90.y = (temp - gCamera.y) + Q_24_8_TO_INT(unkF0->unk2);
+                ia69->unk90.x = (unk158 - gCamera.x) + I(unkF0->unk0);
+                ia69->unk90.y = (temp - gCamera.y) + I(unkF0->unk2);
                 DisplaySprite(&ia69->unk90);
             } else {
-                ia69->unkC0.x = (unk158 - gCamera.x) + Q_24_8_TO_INT(unkF0->unk0);
-                ia69->unkC0.y = (temp - gCamera.y) + Q_24_8_TO_INT(unkF0->unk2);
+                ia69->unkC0.x = (unk158 - gCamera.x) + I(unkF0->unk0);
+                ia69->unkC0.y = (temp - gCamera.y) + I(unkF0->unk2);
                 DisplaySprite(&ia69->unkC0);
             }
         }
@@ -451,13 +450,13 @@ bool32 sub_8079624(Sprite_IA69 *ia69)
 bool32 sub_80796A8(Sprite_IA69 *ia69)
 {
 
-    if (!PLAYER_IS_ALIVE || ia69->unk1B2 - Q_24_8_TO_INT(ia69->unk168) <= 0x3F) {
+    if (!PLAYER_IS_ALIVE || ia69->unk1B2 - I(ia69->unk168) <= 0x3F) {
         return FALSE;
     } else {
-        s16 posX = ia69->unk158 + Q_24_8_TO_INT(ia69->unk164) - gCamera.x;
-        s16 posY = ia69->unk15C + Q_24_8_TO_INT(ia69->unk168) - gCamera.y;
-        s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        s16 posX = ia69->unk158 + I(ia69->unk164) - gCamera.x;
+        s16 posY = ia69->unk15C + I(ia69->unk168) - gCamera.y;
+        s16 playerX = I(gPlayer.x) - gCamera.x;
+        s16 playerY = I(gPlayer.y) - gCamera.y;
 
         if ((posX - 0x20) <= playerX && (posX + 0x20) >= playerX) {
             if ((posY - 0x20) <= playerY && posY >= playerY) {

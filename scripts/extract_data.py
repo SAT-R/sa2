@@ -31,7 +31,7 @@ def format_hex(val):
 with open('baserom.gba', 'rb') as rom:
     rom.seek(address)
     # for i in range(length // 4):
-    #     print(f"Q_24_8({read_s32(rom) / 256}), ")
+    #     print(f"Q({read_s32(rom) / 256}), ")
     # for i in range(length):
     #     print(f"{read_u8(rom)}, ")
     for i in range(length // 2):

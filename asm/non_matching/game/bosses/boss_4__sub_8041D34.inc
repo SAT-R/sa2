@@ -45,10 +45,10 @@ _08041D62:
 	adds r2, r2, r4         @ r2 = rand
 	mov r3, sl              @ r3 = sub
 	ldr r1, [r3, #4]
-	asrs r1, r1, #8         @ r1 = Q_24_8_TO_INT(sub->cockpit.x)
+	asrs r1, r1, #8         @ r1 = I(sub->cockpit.x)
 	ldr r3, _08042008 @ =gCamera
 	ldr r0, [r3]
-	subs r1, r1, r0         @ r1 = bossX = Q_24_8_TO_INT(sub->cockpit.x) - gCamera.x;
+	subs r1, r1, r0         @ r1 = bossX = I(sub->cockpit.x) - gCamera.x;
 	movs r0, #0x1f
 	ands r0, r2
 	adds r1, r1, r0
@@ -160,7 +160,7 @@ _08041DFA:
 	str r0, [sp, #0x18]
 	mov r1, sp
 	movs r0, #0x40
-	strh r0, [r1, #0x1c]    @ sp1C = partsInfo.velocity = Q_24_8(0.25);
+	strh r0, [r1, #0x1c]    @ sp1C = partsInfo.velocity = Q(0.25);
 	mov r3, sp
 	mov r1, r8
 	muls r1, r2, r1
@@ -238,11 +238,11 @@ _08041F02:
 	adds r0, #0x18
 	adds r0, r0, r2
 	ldr r0, [r0]
-	asrs r0, r0, #8             @ r0 = Q_24_8_To_INT(sub->tail[i].x))
+	asrs r0, r0, #8             @ r0 = I(sub->tail[i].x))
 	mov r3, sb                  @ r3 = sb = gCamera
 	ldr r1, [r3]
 	subs r0, r0, r1
-	str r0, [sp, #0x14]         @ sub->spawnX = Q_24_8_To_INT(sub->tail[i].x) - gCamera.x
+	str r0, [sp, #0x14]         @ sub->spawnX = I(sub->tail[i].x) - gCamera.x
 	mov r0, sl                  @ r0 = sl = sub
 	adds r0, #0x1c
 	adds r0, r0, r2
@@ -250,7 +250,7 @@ _08041F02:
 	asrs r0, r0, #8
 	ldr r1, [r3, #4]
 	subs r0, r0, r1
-	str r0, [sp, #0x18]         @ sub->spawnY = Q_24_8_To_INT(sub->tail[i].y) - gCamera.y
+	str r0, [sp, #0x18]         @ sub->spawnY = I(sub->tail[i].y) - gCamera.y
 	strh r4, [r5, #0x1c]        @ sub->velocity = 0
 	mov r1, r8
 	ldr r0, [r1]

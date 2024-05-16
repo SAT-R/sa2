@@ -22,8 +22,8 @@ u8 gUnknown_03005B7C = 0;
 
 void Task_UnknownEffect(void)
 {
-    s16 a = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-    s16 b = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    s16 a = I(gPlayer.x) - gCamera.x;
+    s16 b = I(gPlayer.y) - gCamera.y;
     struct UnknownEffect87028 *effect = TASK_DATA(gCurTask);
 
     sub_80871C4(a, b, DISPLAY_HEIGHT - effect->unk0);
@@ -36,8 +36,8 @@ void Task_UnknownEffect(void)
 
 void sub_8087088(void)
 {
-    s16 a = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-    s16 b = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    s16 a = I(gPlayer.x) - gCamera.x;
+    s16 b = I(gPlayer.y) - gCamera.y;
     struct UnknownEffect87028 *effect = TASK_DATA(gCurTask);
 
     sub_80871C4(a, b, 0x6E);
@@ -56,8 +56,8 @@ static const ALIGNED(4) s8 gUnknown_080E02DC[8][2] = {
 
 void sub_80870E8(void)
 {
-    s16 a = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-    s16 b = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+    s16 a = I(gPlayer.x) - gCamera.x;
+    s16 b = I(gPlayer.y) - gCamera.y;
     struct UnknownEffect87028 *effect = TASK_DATA(gCurTask);
 
     sub_80871C4(a + gUnknown_080E02DC[effect->unk0 & 7][0],

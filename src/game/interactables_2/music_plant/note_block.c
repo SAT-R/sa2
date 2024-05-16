@@ -207,8 +207,8 @@ void NoteBlock_UpdatePosition(Sprite_NoteBlock *block)
 {
     Sprite *s = &block->s;
 
-    s->x = block->posX - gCamera.x + Q_24_8_TO_INT(block->unk44);
-    s->y = block->posY - gCamera.y + Q_24_8_TO_INT(block->unk46);
+    s->x = block->posX - gCamera.x + I(block->unk44);
+    s->y = block->posY - gCamera.y + I(block->unk46);
 }
 
 void sub_8075D28(Sprite_NoteBlock *block)
@@ -265,9 +265,9 @@ bool32 sub_8075D98(Sprite_NoteBlock *block)
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && (block->unk4B != 0)) {
         s32 posX, posY;
         u16 otherX, otherY;
-        posX = Q_24_8_TO_INT(gPlayer.x) + 16;
+        posX = I(gPlayer.x) + 16;
         posX -= block->posX;
-        posY = Q_24_8_TO_INT(gPlayer.y) + 24;
+        posY = I(gPlayer.y) + 24;
         posY -= block->posY;
 
         otherY = posY;

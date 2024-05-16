@@ -463,5 +463,5 @@ void sub_8089BB0(struct Task *t)
         VramFree(resultsCutScene->unk178[i].graphics.dest);
     }
 
-    gUnknown_03005424 &= ~0x200;
+    gStageFlags &= ~0x200;
 }

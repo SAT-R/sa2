@@ -25,9 +25,9 @@ typedef struct {
 void Task_RingsMgrMain(void);
 void TaskDestructor_8007F1C(struct Task *);
 
-#define RM_PLAYER_LEFT   (Q_24_8_TO_INT(gPlayer.x) + sp00[0])
+#define RM_PLAYER_LEFT   (I(gPlayer.x) + sp00[0])
 #define RM_PLAYER_RIGHT  (RM_PLAYER_LEFT + (sp00[2] - sp00[0]))
-#define RM_PLAYER_TOP    (Q_24_8_TO_INT(gPlayer.y) + sp00[1])
+#define RM_PLAYER_TOP    (I(gPlayer.y) + sp00[1])
 #define RM_PLAYER_BOTTOM (RM_PLAYER_TOP + (sp00[3] - sp00[1]))
 
 const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS] = {
@@ -140,7 +140,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
     *pSp04 = +gPlayer.unk17;
     memcpy(sp00, sp04, sizeof(sp00));
 
-    if (!(gUnknown_03005424 & EXTRA_STATE__2)) {
+    if (!(gStageFlags & EXTRA_STATE__2)) {
         // _08007F60
         RingsManager *rm = TASK_DATA(gCurTask);
         void *rings = rm->rings; // sp14
@@ -189,15 +189,13 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
         regions_y = *rings_header++;
         rings = rings_header;
 
-        sl = (Q_24_8_TO_INT(gPlayer.y) + sp00[1]) >> 8;
-        while (((sl <= (((sp00[3] + Q_24_8_TO_INT(gPlayer.y)) + 8)) >> 8))
-               && (sl < regions_y)) {
+        sl = (I(gPlayer.y) + sp00[1]) >> 8;
+        while (((sl <= (((sp00[3] + I(gPlayer.y)) + 8)) >> 8)) && (sl < regions_y)) {
             // _08008064
             s32 r0x;
-            sb = ((Q_24_8_TO_INT(gPlayer.x) + sp00[0] - 8) >> 8);
+            sb = ((I(gPlayer.x) + sp00[0] - 8) >> 8);
 
-            while ((sb <= ((Q_24_8_TO_INT(gPlayer.x) + sp00[2] + 16) >> 8))
-                   && sb < regions_x) {
+            while ((sb <= ((I(gPlayer.x) + sp00[2] + 16) >> 8)) && sb < regions_x) {
                 // _080080A0
                 s32 yPos = sl * regions_x;
                 s32 xPos = sb * 4;
@@ -294,8 +292,8 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                     MultiplayerPlayer *mpPlayer = TASK_DATA(gMultiplayerPlayerTasks[i]);
                     s16 px, py = mpPlayer->unk52;
                     s32 hbBottom, hbLeft, hbRight;
-                    sl = Q_24_8(py + s->hitboxes[0].top);
-                    hbBottom = Q_24_8(py + s->hitboxes[0].bottom);
+                    sl = Q(py + s->hitboxes[0].top);
+                    hbBottom = Q(py + s->hitboxes[0].bottom);
 
                     while ((sl <= ((hbBottom + 8) >> 8)) && ((unsigned)sl < regions_y)) {
                         // _080082E2
@@ -303,10 +301,10 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                         // sp2C = mpPlayer->s.hitboxes[0].left;
                         // sp48 = mpPlayer->s.hitboxes[0].right;
                         px = mpPlayer->unk50;
-                        sb = Q_24_8(px + mpPlayer->s.hitboxes[0].left - 8);
+                        sb = Q(px + mpPlayer->s.hitboxes[0].left - 8);
 
-                        hbRight = Q_24_8((px + mpPlayer->s.hitboxes[0].right) + 16);
-                        // hbLeft = Q_24_8((px + mpPlayer->s.hitboxes[0].left) + 16);
+                        hbRight = Q((px + mpPlayer->s.hitboxes[0].right) + 16);
+                        // hbLeft = Q((px + mpPlayer->s.hitboxes[0].left) + 16);
 
                         while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH))
                                && (sb < regions_x)) {
@@ -364,14 +362,14 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
         }
         // _0800847E
         {
-            sl = Q_24_8(gCamera.y) >> 16;
+            sl = Q(gCamera.y) >> 16;
 
             if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC)
                 && (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)) {
 
                 while (((sl << 8) < gCamera.y + DISPLAY_HEIGHT) && (sl < regions_y)) {
                     // _080086CC
-                    sb = Q_24_8(gCamera.x) >> 16;
+                    sb = Q(gCamera.x) >> 16;
 
                     while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH))
                            && (sb < regions_x)) {
@@ -399,11 +397,10 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                         && (((ry - gCamera.y) - 2 * TILE_WIDTH)
                                             > DISPLAY_HEIGHT)) {
                                         meRing++;
-                                    } else if (((rx - 64) <= Q_24_8_TO_INT(gPlayer.x))
-                                               && ((rx + 64) >= Q_24_8_TO_INT(gPlayer.x))
-                                               && ((ry - 72) <= Q_24_8_TO_INT(gPlayer.y))
-                                               && ((ry + 56
-                                                    >= Q_24_8_TO_INT(gPlayer.y)))) {
+                                    } else if (((rx - 64) <= I(gPlayer.x))
+                                               && ((rx + 64) >= I(gPlayer.x))
+                                               && ((ry - 72) <= I(gPlayer.y))
+                                               && ((ry + 56 >= I(gPlayer.y)))) {
                                         CreateMagneticRing(rx, ry);
                                         meRing->x = (u8)MAP_ENTITY_STATE_INITIALIZED;
                                         meRing++;
@@ -457,10 +454,10 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
             } else {
                 // _080086B4
 
-                sl = Q_24_8(gCamera.y) >> 16;
+                sl = Q(gCamera.y) >> 16;
                 while (((sl << 8) < gCamera.y + DISPLAY_HEIGHT) && (sl < regions_y)) {
                     // _080086CC
-                    sb = Q_24_8(gCamera.x) >> 16;
+                    sb = Q(gCamera.x) >> 16;
 
                     while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH))
                            && (sb < regions_x)) {

@@ -50,8 +50,8 @@ NONMATCH("asm/non_matching/game/stage/Task_MagneticRing.inc",
 {
     StageRing *ring = TASK_DATA(gCurTask);
     Player *p = &gPlayer;
-    s32 ringToPlayerX = Q_24_8_TO_INT(p->x) - (u16)ring->s.x;
-    s32 ringToPlayerY = Q_24_8_TO_INT(p->y) - (u16)ring->s.y;
+    s32 ringToPlayerX = I(p->x) - (u16)ring->s.x;
+    s32 ringToPlayerY = I(p->y) - (u16)ring->s.y;
 
     s16 sinVal = sub_8004418(ringToPlayerY, ringToPlayerX);
     s16 ringX;
@@ -68,18 +68,17 @@ NONMATCH("asm/non_matching/game/stage/Task_MagneticRing.inc",
     ringX = ring->s.x;
 
     lvalue = ring->s.x - 8;
-    rvalue = Q_24_8_TO_INT(p->x) + gUnknown_03005AF0.s.hitboxes[0].left;
+    rvalue = I(p->x) + gUnknown_03005AF0.s.hitboxes[0].left;
 
     if (((lvalue <= rvalue) && (ring->s.x + 8 < rvalue))
-        || ((ringY - 16
-             > Q_24_8_TO_INT(gPlayer.y) + gUnknown_03005AF0.s.hitboxes[0].top))
-        || ((Q_24_8_TO_INT(p->y) >= gUnknown_03005AF0.s.hitboxes[0].top)
+        || ((ringY - 16 > I(gPlayer.y) + gUnknown_03005AF0.s.hitboxes[0].top))
+        || ((I(p->y) >= gUnknown_03005AF0.s.hitboxes[0].top)
             || ringY - 16 < gUnknown_03005AF0.s.hitboxes[0].top)) {
 
     }
 
     else if (gUnknown_03005AF0.s.hitboxes[0].bottom - gUnknown_03005AF0.s.hitboxes[0].top
-             >= Q_24_8_TO_INT(gPlayer.y) + ringY) {
+             >= I(gPlayer.y) + ringY) {
         // _0800BC36
         if (PLAYER_IS_ALIVE) {
             u16 oldRings = gRingCount;

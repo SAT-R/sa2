@@ -68,8 +68,8 @@ void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     ENEMY_SET_SPAWN_POS_STATIC(koura, me);
     koura->offsetX = 0;
     if (koura->unk54 < 2) {
-        koura->offsetY = Q_24_8_NEW(sub_801F07C(I(koura->spawnY), I(koura->spawnX),
-                                                koura->unk54, 8, NULL, sub_801EE64));
+        koura->offsetY = QS(sub_801F07C(I(koura->spawnY), I(koura->spawnX), koura->unk54,
+                                        8, NULL, sub_801EE64));
     } else {
         koura->offsetY = 0;
     }
@@ -151,8 +151,8 @@ static void sub_8054224(void)
             koura->unk58 = NEGATE(koura->unk58);
         }
 
-        if ((SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.x < Q_24_8_NEW(pos.x))
-            || (!SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.x > Q_24_8_NEW(pos.x))) {
+        if ((SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.x < QS(pos.x))
+            || (!SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.x > QS(pos.x))) {
             gCurTask->main = sub_805462C;
             s->graphics.anim = gUnknown_080D8F38[5][0];
             s->variant = gUnknown_080D8F38[5][1];
@@ -206,7 +206,7 @@ static void sub_805462C(void)
 
     ENEMY_DESTROY_IF_OFFSCREEN(koura, me, s);
 
-    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
         ENEMY_TURN_AROUND(s);
@@ -238,7 +238,7 @@ static void sub_8054904(void)
     ENEMY_UPDATE_POSITION(koura, s, pos.x, pos.y);
     ENEMY_DESTROY_IF_OFFSCREEN(koura, me, s);
 
-    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
         s->graphics.anim = gUnknown_080D8F38[koura->unk54 & 2][0];

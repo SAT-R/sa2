@@ -484,7 +484,7 @@ static inline MapEntity *ReadMe(void *data, u32 r6)
 // (98.55%) https://decomp.me/scratch/Co5bs
 NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntities())
 {
-    if (!(gUnknown_03005424 & 2)) {
+    if (!(gStageFlags & 2)) {
         u32 pos;
 
         u32 regionY, regionX;
@@ -659,7 +659,7 @@ END_NONMATCH
 // (88.58%) https://decomp.me/scratch/pOpmU
 NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void))
 {
-    if (!(gUnknown_03005424 & 2)) {
+    if (!(gStageFlags & 2)) {
         u32 pos;
 
         u16 regionX, regionY;

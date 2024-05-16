@@ -11,7 +11,7 @@
 	sub sp, #0x10
 	ldr r0, _0800FE64 @ =gPlayer
 	mov ip, r0
-	ldr r2, _0800FE68 @ =gUnknown_03005424
+	ldr r2, _0800FE68 @ =gStageFlags
 	ldrh r1, [r2]
 	movs r0, #0x80
 	ands r0, r1
@@ -27,7 +27,7 @@
 	b _0800FE78
 	.align 2, 0
 _0800FE64: .4byte gPlayer
-_0800FE68: .4byte gUnknown_03005424
+_0800FE68: .4byte gStageFlags
 _0800FE6C:
 	mov r2, ip
 	ldr r0, [r2, #0xc]
@@ -130,7 +130,7 @@ _0800FF1A:
 	b _080100C4
 _0800FF28:
 	movs r6, #0
-	ldr r0, _0800FF48 @ =gUnknown_03005424
+	ldr r0, _0800FF48 @ =gStageFlags
 	ldrh r1, [r0]
 	movs r0, #0x80
 	ands r0, r1
@@ -143,7 +143,7 @@ _0800FF28:
 _0800FF3C: .4byte gCurTask
 _0800FF40: .4byte IWRAM_START + 0x8
 _0800FF44: .4byte IWRAM_START+4
-_0800FF48: .4byte gUnknown_03005424
+_0800FF48: .4byte gStageFlags
 _0800FF4C:
 	cmp r7, r2
 	bgt _0800FF52
@@ -241,7 +241,7 @@ _0800FFF0:
 	ands r0, r6
 	cmp r0, #0
 	bne _080100B0
-	asrs r2, r3, #8     @ r2 = Q_24_8_TO_INT(player->x)
+	asrs r2, r3, #8     @ r2 = I(player->x)
 	ldr r1, [sp]
 	lsls r0, r1, #0x10
 	asrs r0, r0, #0x10

@@ -2,7 +2,20 @@
 #define GUARD_GBA_TYPES_H
 
 #include <stdint.h>
-#include "packed.h"
+
+#if defined(_MSC_VER)
+#define PACKED(name, struct_body)                                                       \
+    __pragma(pack(push, 1)) typedef struct struct_body name;                            \
+    __pragma(pack(pop))
+#else
+// NOTE: Please make sure NOT to add a ; to the end
+//       of the structs you enclose with this macro.
+//       PACKED(struct test { char a; int b; }); - good
+//       PACKED(struct test { char a; int b; };); - bad
+#define PACKED(name, struct_body)                                                       \
+    typedef struct __attribute__((packed)) struct_body name;
+#endif
+
 
 typedef uint8_t   u8;
 typedef uint16_t u16;

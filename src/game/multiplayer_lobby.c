@@ -215,7 +215,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     lobbyScreen->fade.window = 1;
     lobbyScreen->fade.brightness = 0;
     lobbyScreen->fade.flags = 2;
-    lobbyScreen->fade.speed = Q_24_8(2.0);
+    lobbyScreen->fade.speed = Q(2.0);
     lobbyScreen->fade.bldCnt = 0x3FFF;
     lobbyScreen->fade.bldAlpha = 0;
 }
@@ -473,7 +473,7 @@ static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *lobbyScreen)
     lobbyScreen->fade.brightness = 0;
     lobbyScreen->fade.flags = 1;
     lobbyScreen->fade.bldAlpha = 0;
-    lobbyScreen->fade.speed = Q_24_8(1.0);
+    lobbyScreen->fade.speed = Q(1.0);
     lobbyScreen->idleFrame = CHAO_EXIT_WAVE_ANIM_LENGTH;
     m4aSongNumStop(MUS_VS_LOBBY);
     m4aSongNumStart(MUS_VS_EXIT);
@@ -553,7 +553,7 @@ static void ExitToCharacterSelect(struct MultiplayerLobbyScreen *lobbyScreen)
     lobbyScreen->idleFrame = 0;
     lobbyScreen->fade.brightness = 0;
     lobbyScreen->fade.flags = 1;
-    lobbyScreen->fade.speed = Q_24_8(2.0);
+    lobbyScreen->fade.speed = Q(2.0);
     lobbyScreen->fade.bldAlpha = 0;
     gCurTask->main = Task_FadeInOrHandleExit;
 }

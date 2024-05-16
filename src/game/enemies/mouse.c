@@ -120,11 +120,11 @@ static void sub_8057348(void)
     ENEMY_DESTROY_IF_OFFSCREEN(mouse, me, s);
 
     if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-        if (gPlayer.x > Q_24_8_NEW(pos.x) && gPlayer.x < Q_24_8_NEW(pos.x + 100)) {
+        if (gPlayer.x > QS(pos.x) && gPlayer.x < QS(pos.x + 100)) {
             mouse->unk52 = 1;
         }
     } else {
-        if (gPlayer.x < Q_24_8_NEW(pos.x) && gPlayer.x > Q_24_8_NEW(pos.x - 100)) {
+        if (gPlayer.x < QS(pos.x) && gPlayer.x > QS(pos.x - 100)) {
             mouse->unk52 = 1;
         }
     }
@@ -143,7 +143,7 @@ static void sub_8057348(void)
         s->prevVariant = -1;
     }
 
-    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
@@ -174,7 +174,7 @@ static void sub_8057618(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(mouse, me, s);
 
-    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
         mouse->unk52 = 0;

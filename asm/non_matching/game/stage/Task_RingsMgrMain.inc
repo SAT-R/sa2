@@ -27,7 +27,7 @@
 	mov r0, sp
 	movs r2, #4
 	bl memcpy
-	ldr r0, _0800828C @ =gUnknown_03005424
+	ldr r0, _0800828C @ =gStageFlags
 	ldrh r1, [r0]
 	movs r0, #2
 	ands r0, r1
@@ -179,7 +179,7 @@ _08008064:
 	subs r0, #8
 	lsls r0, r0, #8
 	lsrs r0, r0, #0x10
-	mov sb, r0      @ ((Q_24_8_TO_INT(gPlayer.x) - sp00[0] - 8) >> 8);
+	mov sb, r0      @ ((I(gPlayer.x) - sp00[0] - 8) >> 8);
 	mov r0, sp
 	ldrb r0, [r0, #2]
 	lsls r0, r0, #0x18
@@ -463,7 +463,7 @@ _08008258:
 	b _080082D0
 	.align 2, 0
 _08008288: .4byte gPlayer
-_0800828C: .4byte gUnknown_03005424
+_0800828C: .4byte gStageFlags
 _08008290: .4byte gCurTask
 _08008294: .4byte IWRAM_START + 0x30
 _08008298: .4byte gCurrentLevel
@@ -512,7 +512,7 @@ _080082F4:
 	subs r1, #8
 	lsls r1, r1, #8
 	lsrs r1, r1, #0x10
-	mov sb, r1          @ sb = Q_24_8(px + mpPlayer->s.hitboxes[0].left - 8);
+	mov sb, r1          @ sb = Q(px + mpPlayer->s.hitboxes[0].left - 8);
 	ldr r3, [sp, #0x48]
 	movs r1, #0
 	ldrsb r1, [r3, r1]

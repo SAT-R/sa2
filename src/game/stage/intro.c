@@ -287,8 +287,8 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     Sprite *s;
     u8 i; // r7
 
-    gUnknown_03005424 |= EXTRA_STATE__ACT_START;
-    gUnknown_03005424 |= EXTRA_STATE__100;
+    gStageFlags |= EXTRA_STATE__ACT_START;
+    gStageFlags |= EXTRA_STATE__100;
 
     gPlayer.unk90->s.unk10 |= SPRITE_FLAG_MASK_18;
     gPlayer.unk94->s.unk10 |= SPRITE_FLAG_MASK_18;
@@ -629,7 +629,7 @@ static void Task_802F75C(void)
 
     /*    Call all initializations necessary for current stage and destroy this Task */
     if (frameCounter > 200) {
-        gUnknown_03005424 &= ~EXTRA_STATE__100;
+        gStageFlags &= ~EXTRA_STATE__100;
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
             if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
@@ -645,13 +645,13 @@ static void Task_802F75C(void)
             }
 
             gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
-            gUnknown_03005424 &= ~EXTRA_STATE__ACT_START;
+            gStageFlags &= ~EXTRA_STATE__ACT_START;
         } else {
             if (gUnknown_030055B0 == 0) {
                 CreateCourseStartCountdown(sit_a->skippedIntro);
             } else {
                 gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
-                gUnknown_03005424 &= ~EXTRA_STATE__ACT_START;
+                gStageFlags &= ~EXTRA_STATE__ACT_START;
             }
         }
         if (IS_MULTI_PLAYER) {
@@ -924,16 +924,16 @@ static void StageIntroUpdateIcons(void)
     transform = &sit_d->transform;
     sineVal = SIN_24_8((counter * 24) & ONE_CYCLE);
 
-    if (sineVal == Q_24_8(1.0)) {
-        sineVal = Q_24_8(1.0) - 1;
+    if (sineVal == Q(1.0)) {
+        sineVal = Q(1.0) - 1;
     }
-    if (sineVal == Q_24_8(0.0)) {
-        sineVal = Q_24_8(0.0) + 4;
+    if (sineVal == Q(0.0)) {
+        sineVal = Q(0.0) + 4;
     }
 
     transform->rotation = 0;
     transform->width = sineVal;
-    transform->height = Q_24_8(1.0);
+    transform->height = Q(1.0);
     transform->x = s->x;
     transform->y = s->y;
 
@@ -1188,7 +1188,7 @@ static void TaskDestructor_StageIntroParent(struct Task *t)
     }
 
     if (IS_SINGLE_PLAYER) {
-        gUnknown_03005424 &= ~EXTRA_STATE__DISABLE_PAUSE_MENU;
+        gStageFlags &= ~EXTRA_STATE__DISABLE_PAUSE_MENU;
     }
 }
 

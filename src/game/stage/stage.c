@@ -139,13 +139,13 @@ void ApplyGameStageSettings(void)
 
     if ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK
          || gGameMode == GAME_MODE_MULTI_PLAYER || gGameMode == GAME_MODE_TEAM_PLAY)
-        || (gUnknown_03005424 & EXTRA_STATE__DEMO_RUNNING)) {
+        || (gStageFlags & EXTRA_STATE__DEMO_RUNNING)) {
         gDifficultyLevel = 0;
     } else {
         gDifficultyLevel = gLoadedSaveGame->difficultyLevel;
     }
 
-    if ((gUnknown_03005424 & EXTRA_STATE__DEMO_RUNNING)) {
+    if ((gStageFlags & EXTRA_STATE__DEMO_RUNNING)) {
         SetPlayerControls(A_BUTTON, B_BUTTON, R_BUTTON);
     } else {
         SetPlayerControls(gLoadedSaveGame->buttonConfig.jump,
@@ -167,7 +167,7 @@ void GameStageStart(void)
     }
 
     gStageTime = 0;
-    gUnknown_03005424 &= ~0x80;
+    gStageFlags &= ~0x80;
 
     if (IS_MULTI_PLAYER) {
         sMPStageStartFrameCount = gFrameCount;
@@ -192,8 +192,8 @@ void CreateGameStage(void)
     gSpecialRingCount = 0;
     gUnknown_030054B0 = 0;
 
-    gUnknown_03005424 |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__ACT_START);
-    gUnknown_03005424 &= ~EXTRA_STATE__GRAVITY_INVERTED;
+    gStageFlags |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__ACT_START);
+    gStageFlags &= ~EXTRA_STATE__GRAVITY_INVERTED;
 
     gBossRingsShallRespawn = FALSE;
     gBossRingsRespawnCount = BOSS_RINGS_DEFAULT_RESPAWN_COUNT;
@@ -231,18 +231,18 @@ void CreateGameStage(void)
         sub_801BF90();
         CreateCollectRingsTimeDisplay();
         gPlayer.moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
-        gUnknown_03005424 &= ~EXTRA_STATE__ACT_START;
+        gStageFlags &= ~EXTRA_STATE__ACT_START;
     }
 
     if (gCurrentLevel != LEVEL_INDEX(ZONE_1, ACT_1)) {
         CreateStageWaterTask(-1, 0, 0);
     }
 
-    gUnknown_03005424 &= ~EXTRA_STATE__2;
-    gUnknown_03005424 &= ~EXTRA_STATE__4;
+    gStageFlags &= ~EXTRA_STATE__2;
+    gStageFlags &= ~EXTRA_STATE__4;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gUnknown_03005424 |= EXTRA_STATE__4;
+        gStageFlags |= EXTRA_STATE__4;
     }
 
     CreateStageRingsManager();
@@ -307,9 +307,9 @@ void Task_GameStageMain(void)
     u32 timeStep;
 
     if (IS_SINGLE_PLAYER) {
-        if (!(gUnknown_03005424 & EXTRA_STATE__DISABLE_PAUSE_MENU)
+        if (!(gStageFlags & EXTRA_STATE__DISABLE_PAUSE_MENU)
             && (gPressedKeys & START_BUTTON)
-            && !(gUnknown_03005424 & EXTRA_STATE__DEMO_RUNNING)) {
+            && !(gStageFlags & EXTRA_STATE__DEMO_RUNNING)) {
             CreatePauseMenu();
         }
         gStageTime++;
@@ -376,22 +376,22 @@ void Task_GameStageMain(void)
         }
     }
 
-    gUnknown_0300544C = gUnknown_03005424;
+    gUnknown_0300544C = gStageFlags;
 
-    if (gUnknown_03005424 & EXTRA_STATE__ACT_START) {
+    if (gStageFlags & EXTRA_STATE__ACT_START) {
         return;
     }
 
     gCheckpointTime += timeStep;
 
-    if (gUnknown_03005424 & EXTRA_STATE__4) {
+    if (gStageFlags & EXTRA_STATE__4) {
         gCourseTime -= timeStep;
         if ((s32)gCourseTime > 0) {
             return;
         }
 
         if (IS_SINGLE_PLAYER) {
-            gUnknown_03005424 |= EXTRA_STATE__ACT_START;
+            gStageFlags |= EXTRA_STATE__ACT_START;
 
             if (gLoadedSaveGame->timeLimitDisabled) {
                 return;
@@ -400,9 +400,9 @@ void Task_GameStageMain(void)
             gPlayer.itemEffect = 0;
 
             if (gPlayer.moveState & MOVESTATE_40) {
-                gPlayer.speedAirY = -Q_24_8(2.625);
+                gPlayer.speedAirY = -Q(2.625);
             } else {
-                gPlayer.speedAirY = -Q_24_8(4.875);
+                gPlayer.speedAirY = -Q(4.875);
             }
 
             if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_BOSS)) {
@@ -411,7 +411,7 @@ void Task_GameStageMain(void)
             gPlayer.moveState |= MOVESTATE_DEAD;
             m4aSongNumStart(SE_TIME_UP);
         } else {
-            gUnknown_03005424 |= EXTRA_STATE__ACT_START;
+            gStageFlags |= EXTRA_STATE__ACT_START;
             sub_8019F08();
         }
     } else {
@@ -421,7 +421,7 @@ void Task_GameStageMain(void)
         }
 
         if (IS_SINGLE_PLAYER) {
-            gUnknown_03005424 |= EXTRA_STATE__ACT_START;
+            gStageFlags |= EXTRA_STATE__ACT_START;
 
             if (gLoadedSaveGame->timeLimitDisabled
                 && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
@@ -431,14 +431,14 @@ void Task_GameStageMain(void)
             gPlayer.itemEffect = 0;
 
             if (gPlayer.moveState & MOVESTATE_40) {
-                gPlayer.speedAirY = -Q_24_8(2.625);
+                gPlayer.speedAirY = -Q(2.625);
             } else {
-                gPlayer.speedAirY = -Q_24_8(4.875);
+                gPlayer.speedAirY = -Q(4.875);
             }
             gPlayer.moveState |= MOVESTATE_DEAD;
             m4aSongNumStart(SE_TIME_UP);
         } else {
-            gUnknown_03005424 |= EXTRA_STATE__ACT_START;
+            gStageFlags |= EXTRA_STATE__ACT_START;
             sub_8019F08();
         }
     }
@@ -447,7 +447,7 @@ void Task_GameStageMain(void)
 // HandleDeath
 void sub_801AE48(void)
 {
-    gUnknown_03005424 |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+    gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -459,7 +459,7 @@ void sub_801AE48(void)
     }
 
     if (--gNumLives == 0) {
-        gUnknown_03005424 |= EXTRA_STATE__ACT_START;
+        gStageFlags |= EXTRA_STATE__ACT_START;
         CreateGameOverScreen(OVER_CAUSE_ZERO_LIVES);
     } else {
         TasksDestroyAll();
@@ -729,7 +729,7 @@ void sub_801B68C(void)
 
 void sub_801B6B4(void)
 {
-    gUnknown_03005424 |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+    gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;

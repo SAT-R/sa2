@@ -260,8 +260,8 @@ void Task_80159C8(void)
             s->unk10 |= SPRITE_FLAG(18, 1);
 
             GetPreviousPlayerPos(&actions->pos, r8);
-            s->x = Q_24_8_TO_INT(actions->pos.x) - gCamera.x;
-            s->y = Q_24_8_TO_INT(actions->pos.y) - gCamera.y;
+            s->x = I(actions->pos.x) - gCamera.x;
+            s->y = I(actions->pos.y) - gCamera.y;
 
             transform->x = s->x;
             transform->y = s->y;

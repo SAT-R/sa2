@@ -88,7 +88,7 @@ sub_800D0A0: @ 0x0800D0A0
 	str r3, [sp, #0x30]
 	movs r4, #0
 	str r4, [sp, #0x34]
-	ldr r0, _0800D1DC @ =gUnknown_03005424
+	ldr r0, _0800D1DC @ =gStageFlags
 	ldrh r1, [r0]
 	movs r0, #0x80
 	ands r0, r1
@@ -170,7 +170,7 @@ _0800D1D2:
 	bl _0800DA38
 	.align 2, 0
 _0800D1D8: .4byte gPlayer
-_0800D1DC: .4byte gUnknown_03005424
+_0800D1DC: .4byte gStageFlags
 _0800D1E0: .4byte gCurTask
 _0800D1E4: .4byte IWRAM_START + 0x58
 _0800D1E8:

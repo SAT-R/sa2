@@ -11,12 +11,12 @@
 #define EWRAM_DATA __attribute__((section("ewram_data")))
 
 // TODO: Move these elsewhere?
-#ifdef __GNUC__
+// #ifdef __GNUC__
 #define NAKED __attribute__((naked))
 #define UNUSED __attribute__((unused))
 //#define PACKED __attribute__((packed))
 #define ALIGNED(n) __attribute__((aligned(n)))
-#endif
+// #endif
 
 #if PORTABLE
 // NOTE(Jace): For this to work either "gba/types.h" needs to be

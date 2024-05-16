@@ -150,18 +150,18 @@ void sub_8059B04(void)
         init.anim = SA2_ANIM_BUZZER_PROJ;
         init.variant = 0;
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            init.x = Q_24_8_NEW(pos.x + 10);
+            init.x = QS(pos.x + 10);
         } else {
-            init.x = Q_24_8_NEW(pos.x - 10);
+            init.x = QS(pos.x - 10);
         }
 
-        init.y = Q_24_8_NEW(pos.y + 14);
+        init.y = QS(pos.y + 14);
         init.rot = bbuzzer->unk58 - 16;
         init.speed = Q(2);
         CreateSeveralProjectiles(&init, 3, 16);
     }
 
-    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
         DisplaySprite(s);

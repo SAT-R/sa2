@@ -50,9 +50,9 @@ _0801FEC0:
 	ldr r0, [r5, #4]
 	adds r0, r0, r2
 	str r0, [r5, #4]
-	asrs r7, r1, #8             @ r7 = ringIntX = Q_24_8_TO_INT(ring->x)
+	asrs r7, r1, #8             @ r7 = ringIntX = I(ring->x)
 	asrs r0, r0, #8
-	mov r8, r0                  @ r8 = ringIntY = Q_24_8_TO_INT(ring->y)
+	mov r8, r0                  @ r8 = ringIntY = I(ring->y)
 	ldr r1, _0801FFEC @ =gCamera
 	ldr r0, [r1]
 	subs r0, r7, r0
@@ -93,7 +93,7 @@ _0801FF12:
 	adds r2, r7, #0
 	subs r2, #8         @ r2 = (ringIntX - TILE_WIDTH)
 	ldr r0, [r4, #8]
-	asrs r0, r0, #8     @ r0 = Q_24_8_TO_INT(p->x)
+	asrs r0, r0, #8     @ r0 = I(p->x)
 	movs r3, #0
 	ldrsb r3, [r6, r3]  @ r3 = unk90->s.hitboxes[0].left
 	adds r1, r0, r3     @ r1 = (r0 + r3)

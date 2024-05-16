@@ -77,7 +77,7 @@ _0802E2C6:
 	lsls r0, r0, #8
 	adds r1, r3, #0
 	bl Div
-	adds r4, r0, #0     @ r4 = Div(Q_24_8(xVal - sp[i+1][0]), yVal);
+	adds r4, r0, #0     @ r4 = Div(Q(xVal - sp[i+1][0]), yVal);
 	b _0802E320
 	.align 2, 0
 _0802E310: .4byte gBgOffsetsHBlank
@@ -87,7 +87,7 @@ _0802E314:
 	movs r4, #0
 	ldrsh r0, [r0, r4]
 	subs r0, r2, r0
-	lsls r4, r0, #8     @ r4 = Q_24_8(xVal - sp[i+1][0]);
+	lsls r4, r0, #8     @ r4 = Q(xVal - sp[i+1][0]);
 _0802E320:
 	mov r7, r8          @ r7 = r8 = i << 16
 	asrs r0, r7, #0x10  @ r0 = i

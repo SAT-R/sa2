@@ -6,7 +6,7 @@
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x40
-	ldr r0, _08008CBC @ =gUnknown_03005424
+	ldr r0, _08008CBC @ =gStageFlags
 	ldrh r1, [r0]
 	movs r0, #2
 	ands r0, r1
@@ -400,7 +400,7 @@ _08008CA4:
 	bne _08008C50
 	b _08008D70
 	.align 2, 0
-_08008CBC: .4byte gUnknown_03005424
+_08008CBC: .4byte gStageFlags
 _08008CC0: .4byte gCurTask
 _08008CC4: .4byte gGameMode
 _08008CC8: .4byte gCamera

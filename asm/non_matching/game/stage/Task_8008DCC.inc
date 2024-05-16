@@ -6,7 +6,7 @@
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x48
-	ldr r0, _08008E14 @ =gUnknown_03005424
+	ldr r0, _08008E14 @ =gStageFlags
 	ldrh r1, [r0]
 	movs r0, #2
 	ands r0, r1
@@ -37,7 +37,7 @@ _08008DE6:
 	bgt _08008E9E
 	b _08008E26
 	.align 2, 0
-_08008E14: .4byte gUnknown_03005424
+_08008E14: .4byte gStageFlags
 _08008E18: .4byte gCurTask
 _08008E1C: .4byte gCamera
 _08008E20:

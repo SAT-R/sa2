@@ -312,7 +312,7 @@ void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
     fade->window = 0;
     fade->flags = 2;
     fade->brightness = 0;
-    fade->speed = Q_24_8(1.0);
+    fade->speed = Q(1.0);
     fade->bldAlpha = 0;
     fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
 
@@ -554,7 +554,7 @@ static void Task_SoundTestScreenMain(void)
             fade->window = 0;
             fade->flags = 1;
             fade->brightness = 0;
-            fade->speed = Q_24_8(1.0);
+            fade->speed = Q(1.0);
             fade->bldAlpha = 0;
             fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
 

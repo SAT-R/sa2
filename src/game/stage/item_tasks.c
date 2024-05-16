@@ -156,10 +156,10 @@ void Task_Item_Shield_Normal(void)
         bool32 b;
         s32 screenX, screenY;
 
-        screenX = Q_24_8_TO_INT(gPlayer.x) - cam->x;
+        screenX = I(gPlayer.x) - cam->x;
         item->s.x = screenX + gPlayer.unk7C;
 
-        screenY = Q_24_8_TO_INT(gPlayer.y) - cam->y;
+        screenY = I(gPlayer.y) - cam->y;
         item->s.y = screenY;
 
         item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
@@ -207,10 +207,10 @@ void Task_Item_Shield_Magnetic(void)
         if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
             s32 screenX, screenY;
 
-            screenX = Q_24_8_TO_INT(gPlayer.x) - cam->x;
+            screenX = I(gPlayer.x) - cam->x;
             item->s.x = screenX + gPlayer.unk7C;
 
-            screenY = Q_24_8_TO_INT(gPlayer.y) - cam->y;
+            screenY = I(gPlayer.y) - cam->y;
             item->s.y = screenY;
 
             item->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
@@ -250,9 +250,9 @@ void Task_802ABC8(void)
         u32 r2 = 0;
 
         if (IS_SINGLE_PLAYER) {
-            screenX = Q_24_8_TO_INT(gPlayer.x) + gPlayer.unk7C;
+            screenX = I(gPlayer.x) + gPlayer.unk7C;
 
-            screenY = Q_24_8_TO_INT(gPlayer.y);
+            screenY = I(gPlayer.y);
 
             r2 = gPlayer.unk90->s.unk10 & SPRITE_FLAG_MASK_PRIORITY;
         }
@@ -295,8 +295,8 @@ void Task_Item_Invincibility(void)
         return;
     } else {
         // _0802ACE4
-        x = Q_24_8_TO_INT(gPlayer.x) + gPlayer.unk7C;
-        y = Q_24_8_TO_INT(gPlayer.y);
+        x = I(gPlayer.x) + gPlayer.unk7C;
+        y = I(gPlayer.y);
         priority = gPlayer.unk90->s.unk10;
     }
     // _0802AD02

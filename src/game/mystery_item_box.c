@@ -77,7 +77,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
 
     itemBox = TASK_DATA(t);
     itemBox->unk82 = gUnknown_080E029A[gMultiplayerPseudoRandom & 7];
-    itemBox->iconOffsetY = Q_24_8(0.0);
+    itemBox->iconOffsetY = Q(0.0);
     itemBox->x = TO_WORLD_POS(me->x, spriteRegionX);
     itemBox->y = TO_WORLD_POS(me->y, spriteRegionY);
     itemBox->base.regionX = spriteRegionX;
@@ -189,7 +189,7 @@ static void sub_808623C(void)
         itemBox->box.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         itemBox->identifier.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         transform->height = 0x100;
-        itemBox->iconOffsetY = Q_24_8(0.0);
+        itemBox->iconOffsetY = Q(0.0);
         gCurTask->main = sub_80865E4;
 
         sub_80865E4_inline();
@@ -356,7 +356,7 @@ static void sub_808665C(void)
     if (itemBox->framesSinceOpened++ >= ITEM_ICON_DISPLAY_TIME) {
         sub_8086504(itemBox);
     } else {
-        itemBox->iconOffsetY -= Q_24_8(1.0);
+        itemBox->iconOffsetY -= Q(1.0);
     }
 
     sub_80868A8(itemBox, 1);
@@ -369,7 +369,7 @@ static void sub_80866AC(void)
     if (itemBox->framesSinceOpened++ >= ITEM_ICON_DISPLAY_TIME) {
         sub_8086890(itemBox);
     } else {
-        itemBox->iconOffsetY -= Q_24_8(1.0);
+        itemBox->iconOffsetY -= Q(1.0);
     }
 
     sub_80868A8(itemBox, 1);
@@ -473,7 +473,7 @@ static void sub_80868A8(Sprite_MysteryItemBox *itemBox, u32 p2)
     itemBox->box.x = itemBox->x - gCamera.x;
     itemBox->box.y = itemBox->y - gCamera.y;
     itemBox->identifier.x = itemBox->box.x;
-    itemBox->identifier.y = itemBox->box.y + Q_24_8_TO_INT(itemBox->iconOffsetY);
+    itemBox->identifier.y = itemBox->box.y + I(itemBox->iconOffsetY);
 
     if (p2 == 0) {
         DisplaySprite(&itemBox->box);

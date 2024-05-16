@@ -71,7 +71,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc",
         if (gBgScrollRegs[3][0] == 0)
             gBgScrollRegs[3][0] = x;
 
-        gBgScrollRegs[3][0] += Q_24_8_TO_INT(gPlayer.speedGroundX);
+        gBgScrollRegs[3][0] += I(gPlayer.speedGroundX);
 
         x = gBgScrollRegs[3][0];
     }
@@ -273,14 +273,14 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Outside.inc",
 
     for (i = 0; i < ARRAY_COUNT(sp); i++) {
         sp[i] = 0xFF
-            & (Q_24_8_TO_INT(gUnknown_080D5C62[(i & 0x7)][0] * gStageTime)
+            & (I(gUnknown_080D5C62[(i & 0x7)][0] * gStageTime)
                + gUnknown_080D5C62[(i & 0x7)][1]);
     }
 
     {
         u16 sinVal, value;
         u32 cosVal;
-        u32 scrollSpeed = (Q_24_8(80.5) - 1);
+        u32 scrollSpeed = (Q(80.5) - 1);
 
         for (i = 0; i < DISPLAY_HEIGHT / 2; i++) {
             sinVal = SIN_24_8(((gStageTime * 4) + i * 2) & ONE_CYCLE) >> 3;

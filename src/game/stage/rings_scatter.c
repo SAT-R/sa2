@@ -133,20 +133,20 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
 
     m4aSongNumStart(SE_RINGS_LOST);
 
-    r3 = Q_24_8(4.53125); // 0x488
+    r3 = Q(4.53125); // 0x488
 
     for (i = 0, ip = 0; i < (signed)ARRAY_COUNT(rs->rings); ring++, i++) {
 
         if (ring->unkC == 0) {
             ring->unkC = 180;
             ring->unkE = p->unk38;
-            ring->x = Q_24_8(x);
-            ring->y = Q_24_8(y);
+            ring->x = Q(x);
+            ring->y = Q(y);
 
             if (r3 >= 0) {
                 s32 r0;
 
-                r2 = Q_24_8_TO_INT(r3);
+                r2 = I(r3);
 
                 if (r2 > 5) {
                     r0 = -r2;
@@ -203,12 +203,12 @@ typedef struct {
 } HitboxRect;
 
 // TODO: Use improved version of these globally!
-#define HB_LEFT(p, hb)   (Q_24_8_TO_INT((p)->x) + (hb)->left)
+#define HB_LEFT(p, hb)   (I((p)->x) + (hb)->left)
 #define HB_WIDTH(hb)     ((hb)->right - (hb)->left)
-#define HB_RIGHT(p, hb)  (Q_24_8_TO_INT((p)->x) + HB_WIDTH(hb))
-#define HB_TOP(p, hb)    (Q_24_8_TO_INT((p)->y) + (hb)->top)
+#define HB_RIGHT(p, hb)  (I((p)->x) + HB_WIDTH(hb))
+#define HB_TOP(p, hb)    (I((p)->y) + (hb)->top)
 #define HB_HEIGHT(hb)    ((hb)->bottom - (hb)->top)
-#define HB_BOTTOM(p, hb) (Q_24_8_TO_INT((p)->y) + HB_HEIGHT(hb))
+#define HB_BOTTOM(p, hb) (I((p)->y) + HB_HEIGHT(hb))
 
 // (90.40%) https://decomp.me/scratch/jdAe4
 // (92.98%) https://decomp.me/scratch/TxbaC
@@ -246,8 +246,8 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Fli
         ring->x += ring->velX;
         ring->y += ring->velY;
 
-        ringIntX = Q_24_8_TO_INT(ring->x);
-        ringIntY = Q_24_8_TO_INT(ring->y);
+        ringIntX = I(ring->x);
+        ringIntY = I(ring->y);
         screenX = ringIntX - gCamera.x;
         screenY = ringIntY - gCamera.y;
 
@@ -291,7 +291,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Fli
                 s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
                                       sub_801EC3C);
                 if (res <= 0) {
-                    ring->y -= Q_24_8(res);
+                    ring->y -= Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
                 }
             }
@@ -299,7 +299,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Fli
             if ((rs->unk2B6 & 0x1) && (ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
                 s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, 8, sub_801EC3C);
                 if (res <= 0) {
-                    ring->y += Q_24_8(res);
+                    ring->y += Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
                 }
             }
@@ -386,8 +386,8 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Nor
         ring->x += ring->velX + gUnknown_030054FC;
         ring->y += ring->velY + gUnknown_030054E0;
 
-        ringIntX = Q_24_8_TO_INT(ring->x);
-        ringIntY = Q_24_8_TO_INT(ring->y);
+        ringIntX = I(ring->x);
+        ringIntY = I(ring->y);
         screenX = ringIntX - gCamera.x;
         screenY = ringIntY - gCamera.y;
 
@@ -427,7 +427,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Nor
             if ((ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
                 s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, +8, sub_801EC3C);
                 if (res <= 0) {
-                    ring->y -= Q_24_8(res);
+                    ring->y -= Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
                 }
             }
@@ -436,7 +436,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Nor
                 s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
                                       sub_801EC3C);
                 if (res <= 0) {
-                    ring->y += Q_24_8(res);
+                    ring->y += Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
                 }
             }
@@ -523,8 +523,8 @@ NONMATCH(
         ring->x += ring->velX;
         ring->y += ring->velY;
 
-        ringIntX = Q_24_8_TO_INT(ring->x);
-        ringIntY = Q_24_8_TO_INT(ring->y);
+        ringIntX = I(ring->x);
+        ringIntY = I(ring->y);
         screenX = ringIntX - gCamera.x;
         screenY = ringIntY - gCamera.y;
 
@@ -564,7 +564,7 @@ NONMATCH(
                 s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
                                       sub_801EC3C);
                 if (res <= 0) {
-                    ring->y -= Q_24_8(res);
+                    ring->y -= Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
                 }
             }
@@ -572,7 +572,7 @@ NONMATCH(
             if ((rs->unk2B6 & 0x1) && (ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
                 s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, 8, sub_801EC3C);
                 if (res <= 0) {
-                    ring->y += Q_24_8(res);
+                    ring->y += Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
                 }
             }
@@ -658,8 +658,8 @@ NONMATCH(
         ring->x += ring->velX + gUnknown_030054FC;
         ring->y += ring->velY + gUnknown_030054E0;
 
-        ringIntX = Q_24_8_TO_INT(ring->x);
-        ringIntY = Q_24_8_TO_INT(ring->y);
+        ringIntX = I(ring->x);
+        ringIntY = I(ring->y);
         screenX = ringIntX - gCamera.x;
         screenY = ringIntY - gCamera.y;
 
@@ -699,7 +699,7 @@ NONMATCH(
             if ((ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
                 s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, +8, sub_801EC3C);
                 if (res <= 0) {
-                    ring->y -= Q_24_8(res);
+                    ring->y -= Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
                 }
             }
@@ -708,7 +708,7 @@ NONMATCH(
                 s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
                                       sub_801EC3C);
                 if (res <= 0) {
-                    ring->y += Q_24_8(res);
+                    ring->y += Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
                 }
             }
@@ -795,8 +795,8 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.in
         ring->x += ring->velX + gUnknown_030054FC;
         ring->y += ring->velY + gUnknown_030054E0;
 
-        ringIntX = Q_24_8_TO_INT(ring->x);
-        ringIntY = Q_24_8_TO_INT(ring->y);
+        ringIntX = I(ring->x);
+        ringIntY = I(ring->y);
         screenX = ringIntX - gCamera.x;
         screenY = ringIntY - gCamera.y;
 
@@ -836,7 +836,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.in
             if ((ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
                 s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, +8, sub_801EC3C);
                 if (res <= 0) {
-                    ring->y -= Q_24_8(res);
+                    ring->y -= Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
                 }
             }
@@ -845,7 +845,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.in
                 s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
                                       sub_801EC3C);
                 if (res <= 0) {
-                    ring->y += Q_24_8(res);
+                    ring->y += Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
                 }
             }

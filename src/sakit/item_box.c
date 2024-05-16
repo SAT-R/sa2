@@ -138,7 +138,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 void sub_800B1AC(Entity_ItemBox *itembox)
 {
     if (itembox->unk78 != TRUE || gPlayer.moveState & MOVESTATE_IN_AIR) {
-        gPlayer.speedAirY = -Q_24_8(3.0);
+        gPlayer.speedAirY = -Q(3.0);
         gPlayer.unk64 = 38;
         gPlayer.unk66 = -1;
         gPlayer.transition = PLTRANS_PT5;
@@ -292,8 +292,8 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
                     continue;
 
                 mpp = TASK_DATA(gMultiplayerPlayerTasks[playerId]);
-                boxToPlayerX = SQUARE(Q_24_8_TO_INT(gPlayer.x) - mpp->unk50);
-                boxToPlayerY = SQUARE(Q_24_8_TO_INT(gPlayer.y) - mpp->unk52);
+                boxToPlayerX = SQUARE(I(gPlayer.x) - mpp->unk50);
+                boxToPlayerY = SQUARE(I(gPlayer.y) - mpp->unk52);
 
                 boxToPlayerMagnitude = boxToPlayerX + boxToPlayerY;
                 if (smallestMagnitude < boxToPlayerMagnitude) {
@@ -428,7 +428,7 @@ void Task_800B780(void)
     if (itembox->frames++ >= 60)
         ApplyItemboxEffect(itembox);
     else {
-        itembox->unk74 += -Q_24_8(1.0);
+        itembox->unk74 += -Q(1.0);
     }
 
     sub_800B860(itembox, TRUE);
@@ -469,7 +469,7 @@ void sub_800B860(Entity_ItemBox *itembox, bool32 p1)
     itembox->s.y = itembox->y - gCamera.y;
 
     itembox->item.x = itembox->x - gCamera.x;
-    itembox->item.y = (Q_24_8_TO_INT(itembox->unk74) + itembox->s.y);
+    itembox->item.y = (I(itembox->unk74) + itembox->s.y);
 
     if (!p1)
         DisplaySprite(&itembox->s);
@@ -522,7 +522,7 @@ void Task_800B950(void)
     if (itembox->frames++ >= 60) {
         sub_800B9A0(itembox);
     } else {
-        itembox->unk74 += -Q_24_8(1.0);
+        itembox->unk74 += -Q(1.0);
     }
 
     sub_800B860(itembox, TRUE);
