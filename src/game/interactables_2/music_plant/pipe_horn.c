@@ -13,17 +13,17 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
-void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *, const Pipe_Data[]);
-void Handler_MusicPlant_Pipe_1(Sprite_Pipe_Horn *, const Pipe_Data[]);
-void Handler_MusicPlant_Pipe_2(Sprite_Pipe_Horn *, const Pipe_Data[]);
-void Handler_MusicPlant_Pipe_3(Sprite_Pipe_Horn *, const Pipe_Data[]);
-void Handler_MusicPlant_Pipe_4(Sprite_Pipe_Horn *, const Pipe_Data[]);
-void Handler_MusicPlant_Pipe_5(Sprite_Pipe_Horn *, const Pipe_Data[]);
-void Handler_MusicPlant_Pipe_6(Sprite_Pipe_Horn *, const Pipe_Data[]);
-void Handler_MusicPlant_Pipe_7(Sprite_Pipe_Horn *, const Pipe_Data[]);
-void Handler_MusicPlant_Pipe_8(Sprite_Pipe_Horn *, const Pipe_Data[]);
-void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *, const Pipe_Data[]);
-void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *, const Pipe_Data[]);
+void Handler_MusicPlant_Pipe_0(Sprite_Pipe_Horn *, const Pipe_Data *);
+void Handler_MusicPlant_Pipe_1(Sprite_Pipe_Horn *, const Pipe_Data *);
+void Handler_MusicPlant_Pipe_2(Sprite_Pipe_Horn *, const Pipe_Data *);
+void Handler_MusicPlant_Pipe_3(Sprite_Pipe_Horn *, const Pipe_Data *);
+void Handler_MusicPlant_Pipe_4(Sprite_Pipe_Horn *, const Pipe_Data *);
+void Handler_MusicPlant_Pipe_5(Sprite_Pipe_Horn *, const Pipe_Data *);
+void Handler_MusicPlant_Pipe_6(Sprite_Pipe_Horn *, const Pipe_Data *);
+void Handler_MusicPlant_Pipe_7(Sprite_Pipe_Horn *, const Pipe_Data *);
+void Handler_MusicPlant_Pipe_8(Sprite_Pipe_Horn *, const Pipe_Data *);
+void Handler_MusicPlant_Pipe_9(Sprite_Pipe_Horn *, const Pipe_Data *);
+void Handler_MusicPlant_Pipe_10(Sprite_Pipe_Horn *, const Pipe_Data *);
 void sub_80778AC(void);
 void sub_80778E4(Sprite_Pipe_Horn *pipe);
 bool32 sub_807794C(Sprite_Pipe_Horn *);
@@ -39,7 +39,7 @@ void Task_FrenchHorn_8077C04(void);
 void FrenchHorn_Despawn(Sprite_Pipe_Horn *);
 void TaskDestructor_FrenchHorn(struct Task *);
 
-typedef void (*PipeHandler)(Sprite_Pipe_Horn *, const Pipe_Data[]);
+typedef void (*PipeHandler)(Sprite_Pipe_Horn *, const Pipe_Data *);
 
 // These functions control the character when they enter
 // one of the horns or pipes in Music Plant.
@@ -895,7 +895,7 @@ void sub_8077774(Sprite_Pipe_Horn *pipe, s32 x, s32 y)
     pipe->unk1A = 0;
 }
 
-bool32 sub_8077788(Sprite_Pipe_Horn *pipe, const Pipe_Data data[])
+bool32 sub_8077788(Sprite_Pipe_Horn *pipe, const Pipe_Data *data)
 {
     u32 result;
     if (pipe->unk18 == (u16)-1) {
@@ -1038,7 +1038,7 @@ void sub_8077A3C(void)
         gPlayer.speedAirX = 1;
         gPlayer.speedAirY = 0;
 
-        if (sub_8077788(pipe, *gUnknown_08C8793C[pipe->kind]) == 0) {
+        if (sub_8077788(pipe, gUnknown_08C8793C[pipe->kind]) == 0) {
             sub_80777C8(pipe);
         }
 
@@ -1068,7 +1068,7 @@ void sub_8077ABC(void)
         gPlayer.speedAirX = 1;
         gPlayer.speedAirY = 1;
 
-        if (sub_8077788(horn, *gUnknown_08C87960[horn->kind]) == 0) {
+        if (sub_8077788(horn, gUnknown_08C87960[horn->kind]) == 0) {
             sub_8077B28(horn);
         }
 

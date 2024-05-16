@@ -847,7 +847,7 @@ SECTIONS
         /* Asset data */
         src/sakit/input_buffer.o(.data);
         data/special_stage_levels.o(.rodata);
-        data/handlers_ia_pipe_horn_sequences.o(.rodata);
+        src/data/handlers_ia_pipe_horn_sequences.o(.data);
         src/data/palettes.o(.rodata);
         src/data/recordings.o(.rodata);
         data/multiboot_collect_rings.o(.rodata);
