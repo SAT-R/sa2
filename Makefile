@@ -79,14 +79,14 @@ ASFLAGS  := --defsym $(GAME_REGION)=1
 # -P disables line markers
 # -I sets an include path
 # -D defines a symbol
-CPPFLAGS ?= -I tools/agbcc/include -iquote include -D $(GAME_REGION) -P
+CPPFLAGS ?= -iquote include -D $(GAME_REGION) -P
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
 # These have to(?) be defined this way, because
 # the C-preprocessor cannot resolve stuff like:
 # #if (PLATFORM == gba), where PLATFORM is defined via -D.
 ifeq ($(PLATFORM),gba)
-    CPPFLAGS += -D PLATFORM_GBA=1 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc 
+    CPPFLAGS += -D PLATFORM_GBA=1 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I tools/agbcc/include
     CC1FLAGS += -fhex-asm
 else ifeq ($(CPU_ARCH),arm)
     CPPFLAGS += -D PLATFORM_GBA=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
