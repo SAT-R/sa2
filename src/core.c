@@ -332,9 +332,10 @@ void GameInit(void)
 
     // Setup interrupt vector
 #if !PORTABLE
-    // On GBA the function gets pushed into IWRAM because executing it there is very, very fast
+    // On GBA the function gets pushed into IWRAM because executing it there is very,
+    // very fast
     DmaCopy32(3, IntrMain, gIntrMainBuf, sizeof(gIntrMainBuf));
-    INTR_VECTOR = (void*)gIntrMainBuf;
+    INTR_VECTOR = (void *)gIntrMainBuf;
 #else
     // On platforms where the whole program is in main RAM anyway, that is not necessary
     INTR_VECTOR = IntrMain;

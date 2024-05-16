@@ -280,5 +280,4 @@ extern u32 MultiSioRecvDataCheck(void *recvp);
 
 #endif // GUARD_MULTI_SIO_H
 
-
 extern u32 MultiSioRecvBufChange(void);

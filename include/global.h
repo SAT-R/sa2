@@ -24,7 +24,6 @@ typedef void (*VoidFn)(void);
 #endif
 #endif
 
-
 #ifdef NON_MATCHING
 #define ASM_FUNC(path, decl)
 #else
