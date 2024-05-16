@@ -63,7 +63,7 @@ ifneq ($(PLATFORM),gba)
 
     ifeq ($(CPU_ARCH),i386)
         # Use the more legible Intel dialect for x86, without underscores
-        CC1FLAGS += -masm=intel -fno-leading-underscore
+        CC1FLAGS += -masm=intel
     endif
 endif # PLATFORM != gba
 
