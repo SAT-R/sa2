@@ -1,31 +1,20 @@
-#include <windows.h>
 #include "core.h"
 
 u8 REG_BASE[IO_SIZE] = { 0 };
 u16 INTR_CHECK = 0;
 IntrFunc INTR_VECTOR = IntrMain;
 
-#define CHECK_INTR(res, input, flags)                                                   \
-    res = input & flags;                                                                \
-    if (res) {                                                                          \
-        goto found_instr;                                                               \
-    }                                                                                   \
-    index++;
-
-extern void AgbMain(void);
-
-DWORD WINAPI StartGameThread(void *pThreadParam) { AgbMain(); }
-
-int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine,
-                   int nShowCmd)
-{
-    DWORD threadId;
-
-    CreateThread(NULL, 0, StartGameThread, NULL, 0, &threadId);
-}
-
 void IntrMain(void)
 {
+#define CHECK_INTR(res, input, flags)                                                   \
+    {                                                                                   \
+        res = input & flags;                                                            \
+        if (res) {                                                                      \
+            goto found_instr;                                                           \
+        }                                                                               \
+        index++;                                                                        \
+    }
+
     u16 flags = REG_IE & REG_IF;
     u16 flag;
 
@@ -48,4 +37,6 @@ found_instr:
     REG_IF = flag;
 
     gIntrTable[index]();
+
+#undef CHECK_INTR
 }
