@@ -106,12 +106,12 @@ static void sub_807E384(Sprite_Cannon *cannon)
     m4aSongNumStart(SE_SPIN_ATTACK);
 
     if (cannon->unk68 == 0) {
-        gPlayer.x = Q_24_8(cannon->x + 0x28);
-        gPlayer.y = Q_24_8(cannon->y);
+        gPlayer.x = Q(cannon->x + 0x28);
+        gPlayer.y = Q(cannon->y);
         gPlayer.moveState |= MOVESTATE_FACING_LEFT;
     } else {
-        gPlayer.x = Q_24_8(cannon->x - 0x28);
-        gPlayer.y = Q_24_8(cannon->y);
+        gPlayer.x = Q(cannon->x - 0x28);
+        gPlayer.y = Q(cannon->y);
         gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
@@ -150,16 +150,16 @@ static void sub_807E408(Sprite_Cannon *cannon)
 static bool32 sub_807E4E4(Sprite_Cannon *cannon)
 {
     u8 temp = 0;
-    s32 val = Q_24_8(cannon->x);
+    s32 val = Q(cannon->x);
 
     if (gPlayer.x > val) {
-        gPlayer.x -= Q_24_8(1);
+        gPlayer.x -= Q(1);
 
         if (gPlayer.x < val) {
             gPlayer.x = val;
         }
     } else if (gPlayer.x < val) {
-        gPlayer.x += Q_24_8(1);
+        gPlayer.x += Q(1);
 
         if (gPlayer.x > val) {
             gPlayer.x = val;
@@ -169,16 +169,16 @@ static bool32 sub_807E4E4(Sprite_Cannon *cannon)
         temp++;
     }
 
-    val = Q_24_8(cannon->y);
+    val = Q(cannon->y);
 
     if (gPlayer.y > val) {
-        gPlayer.y -= Q_24_8(1);
+        gPlayer.y -= Q(1);
 
         if (gPlayer.y < val) {
             gPlayer.y = val;
         }
     } else if (gPlayer.y < val) {
-        gPlayer.y += Q_24_8(1);
+        gPlayer.y += Q(1);
 
         if (gPlayer.y > val) {
             gPlayer.y = val;
@@ -279,8 +279,8 @@ NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
 
         x = cannon->x - gCamera.x;
         y = cannon->y - gCamera.y;
-        playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.x) - gCamera.x;
+        playerY = I(gPlayer.y) - gCamera.y;
 
         biggerX = x;
         r4 = s->hitboxes[0].left;

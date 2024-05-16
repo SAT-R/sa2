@@ -210,13 +210,13 @@ void Task_8055084(void)
         pinit.variant = 0;
 
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            pinit.x = Q_24_8_NEW(pos.x + 6);
+            pinit.x = QS(pos.x + 6);
             pinit.rot = 0;
         } else {
-            pinit.x = Q_24_8_NEW(pos.x - 5);
+            pinit.x = QS(pos.x - 5);
             pinit.rot = Q(2.0);
         }
-        pinit.y = Q_24_8_NEW(pos.y - 6);
+        pinit.y = QS(pos.y - 6);
         pinit.speed = Q(1.5);
 
         CreateProjectile(&pinit);

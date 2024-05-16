@@ -96,7 +96,7 @@ _080420C2:
 	lsls r1, r1, #0x10
 	lsrs r1, r1, #0x10      @ r1 = period = SIN_24_8(((i << 7) + (12 * gStageTime)) & ONE_CYCLE) >> 3;
 	ldr r4, [r7, #4]
-	asrs r4, r4, #8         @ r4 = bossX = Q_24_8_TO_INT(boss->main.worldX);
+	asrs r4, r4, #8         @ r4 = bossX = I(boss->main.worldX);
 	movs r0, #0xfa
 	lsls r0, r0, #1
 	adds r1, r1, r0

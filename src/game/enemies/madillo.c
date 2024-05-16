@@ -89,7 +89,7 @@ static void Task_MadilloMain(void)
 
     if (Q(pos.y - 50) < gPlayer.y) {
         if (Q(pos.y + 50) > gPlayer.y) {
-            if (((Q_24_8_NEW(pos.x)) > gPlayer.x) && (Q(pos.x - 120) < (gPlayer.x))) {
+            if (((QS(pos.x)) > gPlayer.x) && (Q(pos.x - 120) < (gPlayer.x))) {
                 if (I(madillo->offsetX) > me->d.sData[0] * TILE_WIDTH) {
                     gCurTask->main = Task_8056230;
                     s->graphics.anim = SA2_ANIM_MADILLO;
@@ -113,7 +113,7 @@ static void Task_MadilloMain(void)
         }
     }
 
-    ENEMY_UPDATE_EX_RAW(s, (Q_24_8_NEW(pos.x)), Q_24_8_NEW(pos.y), {});
+    ENEMY_UPDATE_EX_RAW(s, (QS(pos.x)), QS(pos.y), {});
 }
 static void Task_8056230(void)
 {
@@ -169,7 +169,7 @@ static void Task_8056230(void)
         madillo->unk51 = 120;
     }
 
-    ENEMY_UPDATE_EX_RAW(s, Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y), {});
+    ENEMY_UPDATE_EX_RAW(s, QS(pos.x), QS(pos.y), {});
 }
 
 static void Task_80564BC(void)
@@ -198,7 +198,7 @@ static void Task_80564BC(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(madillo, me, s);
 
-    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
     if (--madillo->unk51 == 0) {
         madillo->unk4C = -384;

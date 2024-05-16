@@ -140,9 +140,9 @@ static void sub_807C4A0(Sprite_IA85 *ia85)
 {
     gPlayer.transition = PLTRANS_PT26;
     if (ia85->unk48 & 1)
-        gPlayer.speedAirY = -Q_24_8(5.5);
+        gPlayer.speedAirY = -Q(5.5);
     else
-        gPlayer.speedAirY = -Q_24_8(5.5);
+        gPlayer.speedAirY = -Q(5.5);
     ia85->unk49 = 0;
     ia85->unk48 = 0;
     m4aSongNumStart(SE_284);
@@ -177,8 +177,8 @@ static Sprite *sub_807C5F8(void);
 static void sub_807C558(Sprite_IA85 *ia85)
 {
     Sprite *sprite = sub_807C5F8();
-    sprite->x = ia85->unk3C - gCamera.x + Q_24_8_TO_INT(ia85->unk44);
-    sprite->y = ia85->unk40 - gCamera.y + Q_24_8_TO_INT(ia85->unk46);
+    sprite->x = ia85->unk3C - gCamera.x + I(ia85->unk44);
+    sprite->y = ia85->unk40 - gCamera.y + I(ia85->unk46);
 
     DisplaySprite(sprite);
 }

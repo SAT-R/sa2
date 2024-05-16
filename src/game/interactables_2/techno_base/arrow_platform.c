@@ -71,16 +71,16 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
     switch (ia75->unk94) {
         case 0:
-            ia75->unk74 = Q_24_8(ia75->offsetX);
-            ia75->unk78 = Q_24_8(ia75->height);
+            ia75->unk74 = Q(ia75->offsetX);
+            ia75->unk78 = Q(ia75->height);
             break;
         case 1:
-            ia75->unk74 = Q_24_8(ia75->width);
-            ia75->unk78 = Q_24_8(ia75->height);
+            ia75->unk74 = Q(ia75->width);
+            ia75->unk78 = Q(ia75->height);
             break;
         case 2:
-            ia75->unk74 = Q_24_8(ia75->width);
-            ia75->unk78 = Q_24_8(ia75->offsetY);
+            ia75->unk74 = Q(ia75->width);
+            ia75->unk78 = Q(ia75->offsetY);
             break;
     }
 
@@ -139,22 +139,22 @@ static void sub_807A560(void)
     switch (ia75->unk94) {
         case 0:
             ia75->unk74 -= Q_8_8(7.5);
-            if (Q_24_8_TO_INT(ia75->unk74) <= ia75->width) {
-                ia75->unk74 = Q_24_8(ia75->width);
+            if (I(ia75->unk74) <= ia75->width) {
+                ia75->unk74 = Q(ia75->width);
                 someBool = TRUE;
             }
             break;
         case 1:
             ia75->unk74 += Q_8_8(7.5);
-            if (Q_24_8_TO_INT(ia75->unk74) >= ia75->offsetX) {
-                ia75->unk74 = Q_24_8(ia75->offsetX);
+            if (I(ia75->unk74) >= ia75->offsetX) {
+                ia75->unk74 = Q(ia75->offsetX);
                 someBool = TRUE;
             }
             break;
         case 2:
             ia75->unk78 -= Q_8_8(7.5);
-            if (Q_24_8_TO_INT(ia75->unk78) <= ia75->height) {
-                ia75->unk78 = Q_24_8(ia75->height);
+            if (I(ia75->unk78) <= ia75->height) {
+                ia75->unk78 = Q(ia75->height);
                 someBool = TRUE;
             }
 
@@ -181,8 +181,8 @@ static void sub_807A560(void)
 static void sub_807A688(Sprite_IA75 *ia75)
 {
     Sprite *s;
-    ia75->unk7C = gPlayer.x - (Q_24_8(ia75->x) + ia75->unk74);
-    ia75->unk80 = gPlayer.y - (Q_24_8(ia75->y) + ia75->unk78);
+    ia75->unk7C = gPlayer.x - (Q(ia75->x) + ia75->unk74);
+    ia75->unk80 = gPlayer.y - (Q(ia75->y) + ia75->unk78);
 
     gPlayer.transition = PLTRANS_PT1;
     gPlayer.unk64 = 0;
@@ -250,11 +250,11 @@ static void sub_807A7F4(Sprite_IA75 *ia75)
 {
     Sprite *s = &ia75->s1;
     if (IS_MULTI_PLAYER) {
-        s->x = ia75->x + Q_24_8_TO_INT(ia75->unk98[1][0]) - gCamera.x;
-        s->y = ia75->y + Q_24_8_TO_INT(ia75->unk98[1][1]) - gCamera.y;
+        s->x = ia75->x + I(ia75->unk98[1][0]) - gCamera.x;
+        s->y = ia75->y + I(ia75->unk98[1][1]) - gCamera.y;
     } else {
-        s->x = ia75->x + Q_24_8_TO_INT(ia75->unk74) - gCamera.x;
-        s->y = ia75->y + Q_24_8_TO_INT(ia75->unk78) - gCamera.y;
+        s->x = ia75->x + I(ia75->unk74) - gCamera.x;
+        s->y = ia75->y + I(ia75->unk78) - gCamera.y;
     }
 
     if (ia75->unk8C != 0) {
@@ -306,8 +306,8 @@ static bool32 sub_807A920(Sprite_IA75 *ia75)
 static u32 sub_807A99C(Sprite_IA75 *ia75)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp = sub_800CCB8(&ia75->s2, ia75->x + Q_24_8_TO_INT(ia75->unk74),
-                               ia75->y + Q_24_8_TO_INT(ia75->unk78), &gPlayer);
+        u32 temp = sub_800CCB8(&ia75->s2, ia75->x + I(ia75->unk74),
+                               ia75->y + I(ia75->unk78), &gPlayer);
         if (temp != 0) {
             if (temp & 0x10000) {
                 gPlayer.y += Q_8_8(temp);
@@ -384,8 +384,8 @@ static void sub_807AB04(struct Task *t)
 static void sub_807AB18(Sprite_IA75 *ia75)
 {
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.x = ia75->unk7C + Q_24_8(ia75->x) + ia75->unk74;
-    gPlayer.y = ia75->unk80 + Q_24_8(ia75->y) + ia75->unk78;
+    gPlayer.x = ia75->unk7C + Q(ia75->x) + ia75->unk74;
+    gPlayer.y = ia75->unk80 + Q(ia75->y) + ia75->unk78;
     sub_807A99C(ia75);
 }
 

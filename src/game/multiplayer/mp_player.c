@@ -1069,29 +1069,29 @@ void sub_8017670(void)
                 s32 playerUnk17 = gPlayer.unk17;
                 bool32 gravityInverted = GRAVITY_IS_INVERTED;
                 // mpp->unk5C |= 4;
-                x = Q_24_8_NEW(mpp->unk50);
+                x = QS(mpp->unk50);
 
                 // TODO: potential macro
                 if (!(gravityInverted)) {
-                    y = Q_24_8_NEW((mpp->unk52 + (s->hitboxes[0].top)) - rect[3]);
+                    y = QS((mpp->unk52 + (s->hitboxes[0].top)) - rect[3]);
                     result = sub_801F100((mpp->unk52 + (s->hitboxes[0].top) - rect[3])
                                              - playerUnk17,
                                          I(x), gPlayer.unk38, -8, sub_801EC3C);
 
                     if (result < 0) {
-                        y -= Q_24_8_NEW(result);
+                        y -= QS(result);
                         gPlayer.moveState &= ~MOVESTATE_400000;
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk5C &= ~4;
                     }
                 } else {
-                    y = Q_24_8_NEW(mpp->unk52 + (s->hitboxes[0].bottom) + rect[3]);
+                    y = QS(mpp->unk52 + (s->hitboxes[0].bottom) + rect[3]);
                     result = sub_801F100(
                         ((mpp->unk52 + (s->hitboxes[0].bottom) + rect[3]) + playerUnk17),
                         I(x), gPlayer.unk38, 8, sub_801EC3C);
 
                     if (result < 0) {
-                        y += Q_24_8_NEW(result);
+                        y += QS(result);
                         gPlayer.moveState &= ~MOVESTATE_400000;
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk5C &= ~4;

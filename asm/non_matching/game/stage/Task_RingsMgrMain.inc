@@ -179,7 +179,7 @@ _08008064:
 	subs r0, #8
 	lsls r0, r0, #8
 	lsrs r0, r0, #0x10
-	mov sb, r0      @ ((Q_24_8_TO_INT(gPlayer.x) - sp00[0] - 8) >> 8);
+	mov sb, r0      @ ((I(gPlayer.x) - sp00[0] - 8) >> 8);
 	mov r0, sp
 	ldrb r0, [r0, #2]
 	lsls r0, r0, #0x18
@@ -512,7 +512,7 @@ _080082F4:
 	subs r1, #8
 	lsls r1, r1, #8
 	lsrs r1, r1, #0x10
-	mov sb, r1          @ sb = Q_24_8(px + mpPlayer->s.hitboxes[0].left - 8);
+	mov sb, r1          @ sb = Q(px + mpPlayer->s.hitboxes[0].left - 8);
 	ldr r3, [sp, #0x48]
 	movs r1, #0
 	ldrsb r1, [r3, r1]

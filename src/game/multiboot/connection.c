@@ -189,7 +189,7 @@ void StartSinglePakConnect(void)
     fade->window = SCREEN_FADE_USE_WINDOW_1;
     fade->brightness = Q_8_8(0);
     fade->flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
-    fade->speed = Q_24_8(1.0);
+    fade->speed = Q(1.0);
     fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
     fade->bldAlpha = 0;
     UpdateScreenFade(fade);

@@ -87,7 +87,7 @@ void Task_802EE78(void)
     UpdateScreenFade(ts);
 
     if (++sri->unk10 > 8) {
-        ts->brightness = Q_24_8(0);
+        ts->brightness = Q(0);
         ts->flags = 2;
         ts->speed = 0;
         ts->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
@@ -101,12 +101,12 @@ void Task_802EE78(void)
             u32 x, y;
 
             x = gUnknown_080D6DE4[sri->unk11][0];
-            x -= Q_24_8_TO_INT(gPlayer.x);
+            x -= I(gPlayer.x);
             y = gUnknown_080D6DE4[sri->unk11][1];
-            y -= Q_24_8_TO_INT(gPlayer.y);
+            y -= I(gPlayer.y);
 
-            gPlayer.x += Q_24_8(x);
-            gPlayer.y += Q_24_8(y);
+            gPlayer.x += Q(x);
+            gPlayer.y += Q(y);
 
             gCamera.x += x;
             gCamera.y += y;
@@ -116,8 +116,8 @@ void Task_802EE78(void)
             gCamera.unk14 += y;
 
             if (gCheese != NULL) {
-                gCheese->posX += Q_24_8(x);
-                gCheese->posY += Q_24_8(y);
+                gCheese->posX += Q(x);
+                gCheese->posY += Q(y);
             }
 
             gUnknown_030055B0++;
@@ -139,9 +139,9 @@ void sub_802EF68(s16 p0, s16 p1, u8 p2)
     sri->unk11 = p2;
 
     ts->window = 0;
-    ts->brightness = Q_24_8(8.0);
+    ts->brightness = Q(8.0);
     ts->flags = 1;
-    ts->speed = Q_24_8(3. / 4.);
+    ts->speed = Q(3. / 4.);
     ts->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
     ts->bldAlpha = 0;
 

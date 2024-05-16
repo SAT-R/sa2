@@ -161,11 +161,11 @@ void sub_807C9C0(Sprite_IA86 *ia086)
     gPlayer.unk64 = 44;
 
     ia086->unk182 = 64;
-    ia086->unk184 = Q_24_8(0.5);
+    ia086->unk184 = Q(0.5);
     ia086->unk186 = gPlayer.speedAirY;
     ia086->unk180 = 0;
-    ia086->unk188 = Q_24_8(ia086->unk228.centerX) - gPlayer.x;
-    ia086->unk18C = Q_24_8(ia086->unk228.centerY) - gPlayer.y;
+    ia086->unk188 = Q(ia086->unk228.centerX) - gPlayer.x;
+    ia086->unk18C = Q(ia086->unk228.centerY) - gPlayer.y;
     ia086->unk190 = 0;
     ia086->unk194 = 0;
 
@@ -186,7 +186,7 @@ void sub_807C9C0(Sprite_IA86 *ia086)
 
     // Must be some debug stuff happening here
     r0 = 0x23C;
-    r0 = Q_24_8(*(s32 *)((void *)ia086 + r0));
+    r0 = Q(*(s32 *)((void *)ia086 + r0));
     asm("" ::"r"(r0));
     r1 = p1->x;
     asm("" ::"r"(r1));
@@ -197,15 +197,15 @@ void sub_807C9C0(Sprite_IA86 *ia086)
 
     p184 = &ia086->unk184;
     zero = 0;
-    *p184 = Q_24_8(0.5);
+    *p184 = Q(0.5);
 
     ia086->unk186 = p->speedAirY;
 
     r0 = 0x180;
     (*(s16 *)((void *)ia086 + r0)) = zero;
 
-    ia086->unk188 = p->x - Q_24_8(ia086->unk228.centerX);
-    ia086->unk18C = p->y - Q_24_8(ia086->unk228.centerY);
+    ia086->unk188 = p->x - Q(ia086->unk228.centerX);
+    ia086->unk18C = p->y - Q(ia086->unk228.centerY);
     ia086->unk190 = zero;
     ia086->unk194 = zero;
 
@@ -217,24 +217,24 @@ bool32 sub_807CA64(Sprite_IA86 *ia086)
 {
     u8 returnState = 0;
 
-    s32 someY = Q_24_8(ia086->unk228.centerY - 2 * TILE_WIDTH);
+    s32 someY = Q(ia086->unk228.centerY - 2 * TILE_WIDTH);
 
     if (ia086->unk186 <= 0) {
         returnState = 1;
 
         ia086->unk186 -= 64;
 
-        ia086->unk186 = MAX(ia086->unk186, -Q_24_8(3.0));
+        ia086->unk186 = MAX(ia086->unk186, -Q(3.0));
     } else {
-        ia086->unk186 = MIN(ia086->unk186, +Q_24_8(6.0));
-        ia086->unk186 += MIN((-ia086->unk186 >> 4), -Q_24_8(0.25));
+        ia086->unk186 = MIN(ia086->unk186, +Q(6.0));
+        ia086->unk186 += MIN((-ia086->unk186 >> 4), -Q(0.25));
     }
 
     gPlayer.y += ia086->unk186;
     gPlayer.y = MIN(gPlayer.y, someY);
 
-    ia086->unk184 += Q_24_8(0.25);
-    ia086->unk184 = MIN(ia086->unk184, +Q_24_8(3.0));
+    ia086->unk184 += Q(0.25);
+    ia086->unk184 = MIN(ia086->unk184, +Q(3.0));
 
     if (ia086->unk188 > 0) {
         ia086->unk188 -= ia086->unk184;
@@ -251,7 +251,7 @@ bool32 sub_807CA64(Sprite_IA86 *ia086)
         sub_807CC28(ia086);
     }
 
-    gPlayer.x = Q_24_8(ia086->unk228.centerX) + ia086->unk188 + ia086->unk190;
+    gPlayer.x = Q(ia086->unk228.centerX) + ia086->unk188 + ia086->unk190;
 
     return (returnState == 2);
 }
@@ -260,10 +260,10 @@ bool32 sub_807CB78(Sprite_IA86 *ia086)
 {
     bool32 result = FALSE;
 
-    if (gPlayer.y > Q_24_8(ia086->unk228.posY + ia086->unk228.top)) {
+    if (gPlayer.y > Q(ia086->unk228.posY + ia086->unk228.top)) {
         ia086->unk186 -= 0x10;
 
-        ia086->unk186 = MAX(ia086->unk186, -Q_24_8(3.0));
+        ia086->unk186 = MAX(ia086->unk186, -Q(3.0));
         ia086->unk18C += ia086->unk186;
 
         sub_807CC28(ia086);
@@ -275,12 +275,12 @@ bool32 sub_807CB78(Sprite_IA86 *ia086)
         Player *p = &gPlayer;
         s32 x, y;
 
-        x = Q_24_8(ia086->unk228.centerX);
+        x = Q(ia086->unk228.centerX);
         x += ia086->unk188;
         x += ia086->unk190;
         p->x = x;
 
-        y = Q_24_8(ia086->unk228.centerY);
+        y = Q(ia086->unk228.centerY);
         y += ia086->unk18C;
         y += ia086->unk194;
         p->y = y;
@@ -302,10 +302,10 @@ void sub_807CC28(Sprite_IA86 *ia086)
     u32 unk180;
     s32 cosVal = (procRes * COS_24_8(ia086->unk182 * 4));
 
-    *target = Q_24_8_TO_INT(cosVal * 192);
+    *target = I(cosVal * 192);
 
     unk180 = ia086->unk180;
-    unk180 += Q_24_8(0.5);
+    unk180 += Q(0.5);
     ia086->unk180 = unk180;
     {
 #ifdef NON_MATCHING
@@ -316,8 +316,8 @@ void sub_807CC28(Sprite_IA86 *ia086)
 
         unk180 <<= 16;
         unk180 >>= 16;
-        if (unk180 > Q_24_8(6.0))
-            r2 = Q_24_8(6.0);
+        if (unk180 > Q(6.0))
+            r2 = Q(6.0);
         ia086->unk180 = r2;
 
         {
@@ -361,9 +361,9 @@ void sub_807CCBC(Sprite_IA86 *ia086)
             unk086->unk8 = 0;
 
             if (ia086->unk228.kind != 0) {
-                unkC = Q_24_8(-(Random() & 0x7));
+                unkC = Q(-(Random() & 0x7));
             } else {
-                unkC = Q_24_8(UNKNOWN_WHIRLWIND_THIRYTWO);
+                unkC = Q(UNKNOWN_WHIRLWIND_THIRYTWO);
             }
             unk086->unkC = unkC;
 
@@ -401,8 +401,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
                 s32 addend;
                 unk086->unk10 = newR1 * COS_24_8(unk086->unk4 * 4);
 
-                r2 = (u16)((UNKNOWN_WHIRLWIND_THIRYTWO - Q_24_8_TO_INT(unk086->unkC))
-                           >> 2);
+                r2 = (u16)((UNKNOWN_WHIRLWIND_THIRYTWO - I(unk086->unkC)) >> 2);
 
                 if ((s16)r2 >= (2)) {
                     r1 = r2;
@@ -417,7 +416,7 @@ void sub_807CCBC(Sprite_IA86 *ia086)
         } else {
             // _0807CE12
 
-            if (-Q_24_8_TO_INT(unk086->unkC) < ia086->unk228.height) {
+            if (-I(unk086->unkC) < ia086->unk228.height) {
                 s32 r4, r5;
                 s32 divRes;
                 s16 divRes2;
@@ -450,13 +449,13 @@ void sub_807CE94(Sprite_IA86 *ia086)
             s32 someX, someY;
             Sprite *s2;
             someX = ia086->unk228.centerX;
-            someX += Q_24_8_TO_INT(unk086->unk8 + unk086->unk10);
+            someX += I(unk086->unk8 + unk086->unk10);
             someX -= gCamera.x;
             unk086->s->x = someX;
 
             s2 = unk086->s;
             someY = ia086->unk228.centerY;
-            someY += Q_24_8_TO_INT(unk086->unkC + unk086->unk14);
+            someY += I(unk086->unkC + unk086->unk14);
             someY -= gCamera.y;
             s2->y = someY;
 
@@ -466,7 +465,7 @@ void sub_807CE94(Sprite_IA86 *ia086)
                 unk086->s->unk1A = 0x480;
             }
 
-            if (unk086->unkC > -Q_24_8(16))
+            if (unk086->unkC > -Q(16))
                 unk086->s->unk10 = SPRITE_FLAG(PRIORITY, 3);
             else
                 unk086->s->unk10 = SPRITE_FLAG(PRIORITY, 2);
@@ -497,8 +496,8 @@ bool32 sub_807CFB4(Sprite_IA86 *ia086)
     if (PLAYER_IS_ALIVE) {
         s16 x = ia086->unk228.centerX - gCamera.x;
         s16 y = ia086->unk228.centerY - gCamera.y;
-        s16 px = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        s16 py = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        s16 px = I(gPlayer.x) - gCamera.x;
+        s16 py = I(gPlayer.y) - gCamera.y;
         s32 r5, r4;
         u16 r3;
         s32 r2 = (y - ia086->unk228.height);
@@ -508,7 +507,7 @@ bool32 sub_807CFB4(Sprite_IA86 *ia086)
             r5 = ia086->unk228.quarterWidth;
             r4 = ia086->unk228.width;
 
-            r3 = sub_80855C0(r5, r4, (Q_24_8(y - py) / ia086->unk228.height), 8);
+            r3 = sub_80855C0(r5, r4, (Q(y - py) / ia086->unk228.height), 8);
 
             tempX = (x - (r3 >> 1));
             if ((tempX <= px) && ((tempX + r3) >= px)) {
@@ -562,7 +561,7 @@ void TaskDestructor_Interactable086(struct Task *t)
 void sub_807D130(Sprite_IA86 *ia086)
 {
     ia086->unk188 = 0;
-    ia086->unk18C = gPlayer.y - Q_24_8(ia086->unk228.centerY);
+    ia086->unk18C = gPlayer.y - Q(ia086->unk228.centerY);
 
     gCurTask->main = Task_807D268;
 }
@@ -593,7 +592,7 @@ void sub_807D1BC(Sprite_IA86 *ia086)
         unk->s = &ia086->sprites[spriteIndex];
         unk->unk4 = Random();
         unk->unk8 = 0;
-        unk->unkC = -Q_24_8(Random() & 0x3F);
+        unk->unkC = -Q(Random() & 0x3F);
         unk->unk10 = 0;
         unk->unk14 = 0;
     }
@@ -632,7 +631,7 @@ void sub_807D2BC(Sprite_IA86 *unused)
     gPlayer.moveState &= ~MOVESTATE_400000;
     gPlayer.transition = PLTRANS_PT7;
     gPlayer.speedAirX = 0;
-    gPlayer.speedAirY = -Q_24_8(8.0);
+    gPlayer.speedAirY = -Q(8.0);
 
     gCurTask->main = Task_807D06C;
 }

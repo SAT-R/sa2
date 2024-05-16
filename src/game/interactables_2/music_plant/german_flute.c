@@ -72,19 +72,19 @@ static void sub_8076928(void)
         sub_8076D08(flute);
     } else {
         s32 posX, posY;
-        posX = Q_24_8(flute->posX);
-        posY = Q_24_8(flute->posY) + Q_24_8(24);
+        posX = Q(flute->posX);
+        posY = Q(flute->posY) + Q(24);
 
         if (gPlayer.x != posX) {
             if (gPlayer.x > posX) {
-                gPlayer.x -= Q_24_8(0.5);
+                gPlayer.x -= Q(0.5);
 
                 if (gPlayer.x < posX) {
                     gPlayer.x = posX;
                 }
 
             } else {
-                gPlayer.x += Q_24_8(0.5);
+                gPlayer.x += Q(0.5);
 
                 if (gPlayer.x > posX) {
                     gPlayer.x = posX;
@@ -92,9 +92,9 @@ static void sub_8076928(void)
             }
         }
 
-        if (ABS(gPlayer.x - posX) <= Q_24_8(8)) {
+        if (ABS(gPlayer.x - posX) <= Q(8)) {
             if (gPlayer.y != posY) {
-                gPlayer.speedAirY += Q_24_8(1. / 6.);
+                gPlayer.speedAirY += Q(1. / 6.);
                 gPlayer.y += gPlayer.speedAirY;
 
                 if (gPlayer.y > posY) {
@@ -124,14 +124,14 @@ static void sub_80769E0(void)
     }
 
     gPlayer.y += gPlayer.speedAirY;
-    gPlayer.speedAirY += Q_24_8(1. / 6.);
+    gPlayer.speedAirY += Q(1. / 6.);
 
     // NOTE/BUG(?): Are the first 2 parameters swapped?
-    res = sub_801F100(Q_24_8_TO_INT(gPlayer.y) - gPlayer.unk17, Q_24_8_TO_INT(gPlayer.x),
-                      gPlayer.unk38, -8, sub_801EC3C);
+    res = sub_801F100(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, -8,
+                      sub_801EC3C);
 
     if (res < 0) {
-        gPlayer.y -= Q_24_8(res);
+        gPlayer.y -= Q(res);
     }
 
     if (gPlayer.speedAirY >= 0) {
@@ -162,26 +162,25 @@ static void Task_8076A6C(void)
     gPlayer.y += flute->unkA;
 
     // NOTE/BUG(?): Are the first 2 parameters swapped?
-    res = sub_801F100(Q_24_8_TO_INT(gPlayer.y) - gPlayer.unk17, Q_24_8_TO_INT(r1),
-                      gPlayer.unk38, -8, sub_801EC3C);
+    res = sub_801F100(I(gPlayer.y) - gPlayer.unk17, I(r1), gPlayer.unk38, -8,
+                      sub_801EC3C);
     if (res < 0) {
-        gPlayer.y -= Q_24_8(res);
+        gPlayer.y -= Q(res);
     }
 
     flute->timer++;
 
     if (gPlayer.unk5C & 0x10) {
-        gPlayer.x += Q_24_8(0.5);
+        gPlayer.x += Q(0.5);
         gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
     if (gPlayer.unk5C & 0x20) {
-        gPlayer.x -= Q_24_8(0.5);
+        gPlayer.x -= Q(0.5);
         gPlayer.moveState |= MOVESTATE_FACING_LEFT;
     }
 
-    if ((Q_24_8(flute->posX) - Q_24_8(16) > gPlayer.x)
-        || (Q_24_8(flute->posX) + Q_24_8(16) < gPlayer.x)) {
+    if ((Q(flute->posX) - Q(16) > gPlayer.x) || (Q(flute->posX) + Q(16) < gPlayer.x)) {
         sub_8076C88(flute);
     }
 
@@ -205,7 +204,7 @@ static void sub_8076B84(Sprite_GermanFlute *flute)
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
 
-    gPlayer.y = Q_24_8(flute->posY - 8);
+    gPlayer.y = Q(flute->posY - 8);
     gCurTask->main = sub_8076928;
 }
 
@@ -225,8 +224,8 @@ static bool32 sub_8076BE4(Sprite_GermanFlute *flute)
         pos2Y = (gCamera.y + 16);
         screenY = posY - pos2Y;
 
-        playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.x) - gCamera.x;
+        playerY = I(gPlayer.y) - gCamera.y;
         if ((screenX <= playerX) && (playerX < (screenX + 40))) {
 
             if ((screenY <= playerY) && (playerY < screenY + 32)) {

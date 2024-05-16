@@ -90,12 +90,12 @@ bool32 sub_800DD54(Player *p)
     p->timerInvulnerability = PLAYER_INVULNERABLE_DURATION;
 
     if (p->moveState & MOVESTATE_FACING_LEFT) {
-        p->speedAirX = +Q_24_8(1.5);
+        p->speedAirX = +Q(1.5);
     } else {
-        p->speedAirX = -Q_24_8(1.5);
+        p->speedAirX = -Q(1.5);
     }
 
-    p->speedAirY = -Q_24_8(3.0);
+    p->speedAirY = -Q(3.0);
 
     if (p->moveState & MOVESTATE_40) {
         HALVE(p->speedAirY);
@@ -130,7 +130,7 @@ bool32 sub_800DD54(Player *p)
             rings = 10;
         }
 
-        InitScatteringRings(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), rings);
+        InitScatteringRings(I(p->x), I(p->y), rings);
         gRingCount -= rings;
 
         unk = sub_8019224();
@@ -152,12 +152,12 @@ bool32 sub_800DE44(Player *p)
     p->timerInvulnerability = PLAYER_INVULNERABLE_DURATION;
 
     if (p->moveState & MOVESTATE_FACING_LEFT) {
-        p->speedAirX = -Q_24_8(1.5);
+        p->speedAirX = -Q(1.5);
     } else {
-        p->speedAirX = +Q_24_8(1.5);
+        p->speedAirX = +Q(1.5);
     }
 
-    p->speedAirY = -Q_24_8(3.0);
+    p->speedAirY = -Q(3.0);
 
     if (p->moveState & MOVESTATE_40) {
         HALVE(p->speedAirY);
@@ -192,7 +192,7 @@ bool32 sub_800DE44(Player *p)
             rings = 5;
         }
 
-        InitScatteringRings(Q_24_8_TO_INT(p->x), Q_24_8_TO_INT(p->y), rings);
+        InitScatteringRings(I(p->x), I(p->y), rings);
         gRingCount -= rings;
 
         unk = sub_8019224();

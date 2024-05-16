@@ -55,10 +55,10 @@ typedef struct {
 
 #define ANIMAL_VARIANTS_PER_ZONE 3
 
-#define ANIMAL_GRAVITY            Q_24_8(0.1875)
-#define ANIMAL_BOUNCE_SPEED       Q_24_8(4)
-#define ANIMAL_BOUNCE_MOVE_SPEED  Q_24_8(2)
-#define ANIMAL_INITIAL_MOVE_SPEED Q_24_8(0.00390625)
+#define ANIMAL_GRAVITY            Q(0.1875)
+#define ANIMAL_BOUNCE_SPEED       Q(4)
+#define ANIMAL_BOUNCE_MOVE_SPEED  Q(2)
+#define ANIMAL_INITIAL_MOVE_SPEED Q(0.00390625)
 
 #define ANIMAL_TYPE_STATIC   0
 #define ANIMAL_TYPE_FLYING   1
@@ -126,8 +126,8 @@ static void CreateFlyingAnimal(SpawnOptions *init)
         = TaskCreate(Task_FlyingAnimal, sizeof(FlyingAnimal), 0x2000, 0, NULL);
     FlyingAnimal *animal = TASK_DATA(t);
     Sprite *s;
-    animal->x = Q_24_8(init->x);
-    animal->y = Q_24_8(init->y);
+    animal->x = Q(init->x);
+    animal->y = Q(init->y);
     animal->unk38 = 576;
     animal->flyingUp = TRUE;
 
@@ -174,8 +174,8 @@ static void Task_FlyingAnimal(void)
     animal->x = x;
     animal->y = y;
 
-    s->x = Q_24_8_TO_INT(x) - gCamera.x;
-    s->y = Q_24_8_TO_INT(y) - gCamera.y;
+    s->x = I(x) - gCamera.x;
+    s->y = I(y) - gCamera.y;
 
     if (IS_ANIMAL_OUT_OF_CAM_RANGE(s->x, s->y)) {
         TaskDestroy(gCurTask);
@@ -192,8 +192,8 @@ static void CreateBouncingAnimal(SpawnOptions *init)
         = TaskCreate(Task_BouncingAnimal, sizeof(BouncingAnimal), 0x2000, 0, NULL);
     BouncingAnimal *animal = TASK_DATA(t);
     Sprite *s;
-    animal->x = Q_24_8(init->x);
-    animal->y = Q_24_8(init->y);
+    animal->x = Q(init->x);
+    animal->y = Q(init->y);
     animal->moveSpeed = ANIMAL_INITIAL_MOVE_SPEED;
     animal->fallSpeed = -ANIMAL_BOUNCE_SPEED;
     animal->bouncing = FALSE;
@@ -229,9 +229,8 @@ static void Task_BouncingAnimal(void)
     if (animal->inAirTimer > 0) {
         animal->inAirTimer--;
     } else {
-        s32 clampedY = y
-            + Q_24_8(sub_801F07C(Q_24_8_TO_INT(animal->y), Q_24_8_TO_INT(animal->x), 1,
-                                 8, NULL, sub_801EE64));
+        s32 clampedY
+            = y + Q(sub_801F07C(I(animal->y), I(animal->x), 1, 8, NULL, sub_801EE64));
 
         // if hit floor
         if (clampedY <= animal->y) {
@@ -244,8 +243,8 @@ static void Task_BouncingAnimal(void)
         }
     }
 
-    s->x = Q_24_8_TO_INT(animal->x) - gCamera.x;
-    s->y = Q_24_8_TO_INT(animal->y) - gCamera.y;
+    s->x = I(animal->x) - gCamera.x;
+    s->y = I(animal->y) - gCamera.y;
 
     if (IS_ANIMAL_OUT_OF_CAM_RANGE(s->x, s->y)) {
         TaskDestroy(gCurTask);
@@ -262,8 +261,8 @@ static void CreateStaticAnimal(SpawnOptions *init)
         = TaskCreate(Task_StaticAnimalMain, sizeof(StaticAnimal), 0x2000, 0, NULL);
     StaticAnimal *animal = TASK_DATA(t);
     Sprite *s;
-    animal->x = Q_24_8(init->x);
-    animal->y = Q_24_8(init->y);
+    animal->x = Q(init->x);
+    animal->y = Q(init->y);
     // lol
     animal->moveSpeed = 0;
 
@@ -300,9 +299,8 @@ static void Task_StaticAnimalMain(void)
     if (animal->inAirTimer > 0) {
         animal->inAirTimer--;
     } else {
-        s32 clampedY = y
-            + Q_24_8(sub_801F07C(Q_24_8_TO_INT(animal->y), Q_24_8_TO_INT(animal->x), 1,
-                                 8, NULL, sub_801EE64));
+        s32 clampedY
+            = y + Q(sub_801F07C(I(animal->y), I(animal->x), 1, 8, NULL, sub_801EE64));
 
         // if collided with floor
         if (clampedY <= animal->y) {
@@ -311,8 +309,8 @@ static void Task_StaticAnimalMain(void)
         }
     }
 
-    s->x = Q_24_8_TO_INT(animal->x) - gCamera.x;
-    s->y = Q_24_8_TO_INT(animal->y) - gCamera.y;
+    s->x = I(animal->x) - gCamera.x;
+    s->y = I(animal->y) - gCamera.y;
 
     if (IS_ANIMAL_OUT_OF_CAM_RANGE(s->x, s->y)) {
         TaskDestroy(gCurTask);

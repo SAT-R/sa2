@@ -246,9 +246,9 @@ void Task_TransitionToResultsScreen(void)
     u32 i; // r7
 
     Finish2 *f2 = TASK_DATA(gCurTask);
-    f2->unk0 += Q_24_8(0.25);
+    f2->unk0 += Q(0.25);
 
-    gBldRegs.bldY = Q_24_8_TO_INT(f2->unk0);
+    gBldRegs.bldY = I(f2->unk0);
 
     if (f2->unk0 >= 0x1000) {
         // _0801A110

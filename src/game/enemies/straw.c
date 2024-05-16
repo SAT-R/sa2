@@ -106,13 +106,13 @@ void Task_StrawMain(void)
 
     ENEMY_UPDATE_POSITION(straw, s, pos.x, pos.y);
 
-    if (gPlayer.x < Q_24_8_NEW(pos.x)) {
+    if (gPlayer.x < QS(pos.x)) {
         straw->unk4C -= 0x10;
     } else {
         straw->unk4C += 0xB;
     }
 
-    if (gPlayer.y < Q_24_8_NEW(pos.y)) {
+    if (gPlayer.y < QS(pos.y)) {
         straw->unk50 -= 0x10;
     } else {
         straw->unk50 += 0xB;

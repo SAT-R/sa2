@@ -41,8 +41,8 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
 {
     Player *player = &gPlayer;
 
-    s32 r7 = GRAVITY_IS_INVERTED ? Q_24_8_TO_INT(player->y) - player->unk17
-                                 : Q_24_8_TO_INT(player->y) + player->unk17;
+    s32 r7 = GRAVITY_IS_INVERTED ? I(player->y) - player->unk17
+                                 : I(player->y) + player->unk17;
 
     // _0800FE78
     Sprite_GrindRail *rail = TASK_DATA(gCurTask);
@@ -61,8 +61,8 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
     if (!(player->moveState & MOVESTATE_DEAD)) {
         void *newRail; // for matching
         s32 left = posX + me->d.sData[0] * TILE_WIDTH;
-        if ((left <= Q_24_8_TO_INT(player->x))
-            && (left + me->d.uData[2] * TILE_WIDTH >= Q_24_8_TO_INT(player->x))
+        if ((left <= I(player->x))
+            && (left + me->d.uData[2] * TILE_WIDTH >= I(player->x))
             && ((posY + me->d.sData[1] * TILE_WIDTH) <= r7)
             && (((posY + me->d.sData[1] * TILE_WIDTH) + me->d.uData[3] * TILE_WIDTH)
                 >= r7)) {
@@ -81,7 +81,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
                 if (player->moveState & MOVESTATE_1000000) {
                     if (!(railKind & RAIL_KIND_1)) {
                         if (player->moveState & MOVESTATE_FACING_LEFT) {
-                            s32 newPlayerX = Q_24_8_TO_INT(player->x);
+                            s32 newPlayerX = I(player->x);
                             s32 left = me->d.sData[0] * TILE_WIDTH;
                             s32 middle = left + me->d.uData[2] * 4;
                             if (newPlayerX >= middle) {
@@ -110,7 +110,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
                     }
                     // _0800FFF0
                     if (!(player->moveState & MOVESTATE_FACING_LEFT)) {
-                        s32 playerX = Q_24_8_TO_INT(player->x);
+                        s32 playerX = I(player->x);
                         s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
                         middle += me->d.uData[2] * 4;
                         if (playerX <= middle) {
@@ -135,7 +135,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
                 } else {
                     // _08010060
                     if (railKind & RAIL_KIND_1) {
-                        s32 playerX = Q_24_8_TO_INT(player->x);
+                        s32 playerX = I(player->x);
                         s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
                         middle += me->d.uData[2] * 4;
                         if (playerX < middle)
@@ -144,7 +144,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
                             goto _080100B0;
                     } else {
                         // _08010080
-                        s32 playerX = Q_24_8_TO_INT(player->x);
+                        s32 playerX = I(player->x);
                         s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
                         middle += me->d.uData[2] * 4;
                         if (playerX <= middle)
@@ -226,16 +226,16 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
         right = left + (me->d.uData[0] * TILE_WIDTH);
 #endif
 
-        if (right <= Q_24_8_TO_INT(player->x)) {
+        if (right <= I(player->x)) {
             someWidth = me->d.uData[2] * TILE_WIDTH;
-            if ((right + someWidth) >= Q_24_8_TO_INT(player->x)) {
+            if ((right + someWidth) >= I(player->x)) {
 
                 someY = top + me->d.sData[1] * TILE_WIDTH;
 
-                if (someY <= Q_24_8_TO_INT(player->y)) {
+                if (someY <= I(player->y)) {
 
                     otherY = someY + me->d.uData[3] * TILE_WIDTH;
-                    if (otherY >= Q_24_8_TO_INT(player->y)) {
+                    if (otherY >= I(player->y)) {
 
                         // __080101FC
                         if ((player->moveState & MOVESTATE_1000000)) {
@@ -256,7 +256,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
                             }
                             if (!(kind & 1)) {
                                 if (!(player->moveState & MOVESTATE_FACING_LEFT)) {
-                                    s32 playerX = Q_24_8_TO_INT(player->x);
+                                    s32 playerX = I(player->x);
                                     s32 newLeft = left;
                                     newLeft += me->d.uData[0] * 8;
                                     newLeft += me->d.uData[2] * 4;

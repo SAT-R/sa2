@@ -148,8 +148,8 @@ static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
     u8 angle;
     u16 r6;
     s16 vecPlayerToNoteX, vecPlayerToNoteY;
-    vecPlayerToNoteX = Q_24_8_TO_INT(gPlayer.x) - note->posX;
-    vecPlayerToNoteY = Q_24_8_TO_INT(gPlayer.y) - note->posY;
+    vecPlayerToNoteX = I(gPlayer.x) - note->posX;
+    vecPlayerToNoteY = I(gPlayer.y) - note->posY;
 
     r6 = sub_8085530(vecPlayerToNoteX, vecPlayerToNoteY);
 
@@ -175,10 +175,10 @@ static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
 
         r4 = (u8)(newAngle + (sub_808558C(newAngle, angle, 8) << 1));
 
-        gPlayer.speedAirX = Q_24_8_TO_INT(sNoteSphereVelocities[note->kind]
-                                          * Q_2_14_TO_Q_24_8(COS(r4 * 4)));
-        gPlayer.speedAirY = Q_24_8_TO_INT(sNoteSphereVelocities[note->kind]
-                                          * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
+        gPlayer.speedAirX
+            = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(COS(r4 * 4)));
+        gPlayer.speedAirY
+            = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
     }
 
     gPlayer.transition = PLTRANS_PT5;
@@ -191,8 +191,8 @@ static bool32 NoteSphere_IsPlayerColliding(Sprite_NoteSphere *note)
     if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
         s16 distanceX, distanceY;
 
-        distanceX = ABS(note->posX - Q_24_8_TO_INT(gPlayer.x));
-        distanceY = ABS(note->posY - Q_24_8_TO_INT(gPlayer.y));
+        distanceX = ABS(note->posX - I(gPlayer.x));
+        distanceY = ABS(note->posY - I(gPlayer.y));
 
         if (MAX(distanceX, distanceY) < 25) {
             if ((distanceX * distanceX + distanceY * distanceY) <= (24 * 24)) {

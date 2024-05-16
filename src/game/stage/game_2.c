@@ -84,8 +84,8 @@ void Task_801F214(void)
                             ts->x = mpp->unk50;
                             ts->y = mpp->unk52;
                         } else {
-                            ts->x = Q_24_8_TO_INT(gPlayer.x);
-                            ts->y = Q_24_8_TO_INT(gPlayer.y);
+                            ts->x = I(gPlayer.x);
+                            ts->y = I(gPlayer.y);
                         }
                     } break;
 
@@ -194,11 +194,11 @@ void sub_801F488(void)
             yInverted = -yInverted;
         }
 
-        x = Q_24_8_TO_INT(yInverted * SIN_24_8(p->rotation * 4));
-        y = Q_24_8_TO_INT(yInverted * COS_24_8(p->rotation * 4));
+        x = I(yInverted * SIN_24_8(p->rotation * 4));
+        y = I(yInverted * COS_24_8(p->rotation * 4));
 
-        x2 = Q_24_8_TO_INT(p->x);
-        y2 = Q_24_8_TO_INT(p->y);
+        x2 = I(p->x);
+        y2 = I(p->y);
 
         x2 -= x;
         y2 += y;

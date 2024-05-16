@@ -100,8 +100,8 @@ static void Task_BuzzerMain(void)
         s->variant = 1;
         s->prevVariant = -1;
         buzzer->unk5C = gPlayer.y;
-        buzzer->unk64 = Div(gPlayer.x - Q_24_8_NEW(pos.x), 0x20);
-        buzzer->unk66 = Div(gPlayer.y - Q_24_8_NEW(pos.y), 0x20);
+        buzzer->unk64 = Div(gPlayer.x - QS(pos.x), 0x20);
+        buzzer->unk66 = Div(gPlayer.y - QS(pos.y), 0x20);
     } else if (buzzer->unk68 == 0 && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP)
                && I(gPlayer.x) > pos.x && I(gPlayer.x) < (pos.x + 0x3C)
                && I(gPlayer.y) > pos.y && I(gPlayer.y) < (pos.y + 0x50)) {
@@ -112,10 +112,10 @@ static void Task_BuzzerMain(void)
         buzzer->unk5C = gPlayer.y;
 
         // Wtf
-        buzzer->unk64 = Div(Q_24_8_NEW(pos.x) - gPlayer.x, 0x20);
-        buzzer->unk64 = Div(gPlayer.x - Q_24_8_NEW(pos.x), 0x20);
+        buzzer->unk64 = Div(QS(pos.x) - gPlayer.x, 0x20);
+        buzzer->unk64 = Div(gPlayer.x - QS(pos.x), 0x20);
 
-        buzzer->unk66 = Div(gPlayer.y - Q_24_8_NEW(pos.y), 0x20);
+        buzzer->unk66 = Div(gPlayer.y - QS(pos.y), 0x20);
     } else {
 #ifndef NON_MATCHING
     lab:
@@ -150,7 +150,7 @@ static void sub_80533B4(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(buzzer, me, s);
 
-    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
     if (UpdateSpriteAnimation(s) == 0) {
         ENEMY_TURN_AROUND(s);
@@ -180,7 +180,7 @@ static void sub_80534F0(void)
     ENEMY_DESTROY_IF_OFFSCREEN(buzzer, me, s);
 
     ENEMY_UPDATE_EX(s, pos.x, pos.y, {
-        if (Q_24_8_NEW(pos.y) > buzzer->unk5C) {
+        if (QS(pos.y) > buzzer->unk5C) {
             gCurTask->main = sub_8053620;
         }
     });

@@ -148,8 +148,8 @@ void SuperSonicInit()
 
     gPlayer.moveState = 0;
     gPlayer.checkpointTime = 0;
-    gPlayer.speedAirX = Q_24_8(2.0);
-    gPlayer.speedGroundX = Q_24_8(2.0);
+    gPlayer.speedAirX = Q(2.0);
+    gPlayer.speedGroundX = Q(2.0);
 
     gCourseTime = 0;
 
@@ -158,8 +158,8 @@ void SuperSonicInit()
     sonic = TASK_DATA(t);
 
     sonic->flags = SUPER_FLAG__20;
-    sonic->worldX = Q_24_8(600);
-    sonic->worldY = Q_24_8(288);
+    sonic->worldX = Q(600);
+    sonic->worldY = Q(288);
     sonic->unk10 = 0;
     sonic->unk14 = 0;
     sonic->unk1A = 0;
@@ -232,7 +232,7 @@ static s32 sub_802B8A8(struct SuperSonic *sonic)
                     sonic->func24 = sub_802C8EC;
                     sonic->unkC = 60;
                     sonic->unk1A = 0;
-                    sonic->rotation = Q_24_8(1.0);
+                    sonic->rotation = Q(1.0);
                     sonic->flags = flags;
 
                     SUPER_SWITCH_ANIM(sonic, 21);
@@ -362,7 +362,7 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
     u8 id2;
 
     if (!(sonic->flags & SUPER_FLAG__10)) {
-        sonic->worldX += Q_24_8(5);
+        sonic->worldX += Q(5);
     }
 
     ssx = sonic->worldX;
@@ -371,7 +371,7 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
     }
     // _0802BD0E
 
-    ssx2 = Q_24_8(gUnknown_080D650C[gCurrentLevel].x);
+    ssx2 = Q(gUnknown_080D650C[gCurrentLevel].x);
     id = &sonic->unk128;
 
     if (ssx >= ssx2) {
@@ -379,12 +379,12 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
         someX = (gUnknown_080D661C[gCurrentLevel].x);
         someY = (gUnknown_080D661C[gCurrentLevel].y);
 
-        ssx += Q_24_8(someX);
-        sub_804D594(Q_24_8(someX), Q_24_8(someY));
+        ssx += Q(someX);
+        sub_804D594(Q(someX), Q(someY));
 
         for (i = 0; i < ARRAY_COUNT(sonic->unk28); i++) {
-            sonic->unk28[i].x += Q_24_8(someX);
-            sonic->unk28[i].y += Q_24_8(someY);
+            sonic->unk28[i].x += Q(someX);
+            sonic->unk28[i].y += Q(someY);
         }
 
         gBossRingsShallRespawn = TRUE;
@@ -398,10 +398,10 @@ NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
     // _0802BDAA
 
     if (sonic->func24 != sub_802C8A0) {
-        if (ssx < (Q_24_8(gCamera.unk10) + Q_24_8(8))) {
-            ssx = Q_24_8(gCamera.unk10) + Q_24_8(8);
-        } else if (ssx > (Q_24_8(gCamera.unk10) + Q_24_8(312))) {
-            ssx = Q_24_8(gCamera.unk10) + Q_24_8(312);
+        if (ssx < (Q(gCamera.unk10) + Q(8))) {
+            ssx = Q(gCamera.unk10) + Q(8);
+        } else if (ssx > (Q(gCamera.unk10) + Q(312))) {
+            ssx = Q(gCamera.unk10) + Q(312);
         }
     }
     sonic->worldX = ssx;
@@ -436,8 +436,8 @@ static void sub_802BE1C(struct SuperSonic *sonic)
     spr = &sonic->spr;
     transform = &sonic->transform;
 
-    spr->x = Q_24_8_TO_INT(sonic->worldX) - gCamera.x + Q_24_8_TO_INT(sonic->unk10);
-    spr->y = Q_24_8_TO_INT(sonic->worldY) - gCamera.y + Q_24_8_TO_INT(sonic->unk14);
+    spr->x = I(sonic->worldX) - gCamera.x + I(sonic->unk10);
+    spr->y = I(sonic->worldY) - gCamera.y + I(sonic->unk14);
 
     prio = (sonic->flags & SUPER_FLAG__200) ? 3 : 0;
 
@@ -451,8 +451,8 @@ static void sub_802BE1C(struct SuperSonic *sonic)
 
     if (sonic->flags & SUPER_FLAG__4) {
         transform->rotation = (COS((sonic->unkC * 20) & ONE_CYCLE) >> 4) & ONE_CYCLE;
-        transform->width = Q_24_8(1.0);
-        transform->height = Q_24_8(1.0);
+        transform->width = Q(1.0);
+        transform->height = Q(1.0);
         transform->x = spr->x;
         transform->y = spr->y;
         sub_8004860(spr, transform);
@@ -475,8 +475,8 @@ static void sub_802BE1C(struct SuperSonic *sonic)
                 s32 ii = (i + 1) * 3;
 
                 u32 r2 = (*unk128 - ii) % 32u;
-                spr->x = Q_24_8_TO_INT(sonic->unk28[r2].x) - gCamera.x;
-                spr->y = Q_24_8_TO_INT(sonic->unk28[r2].y) - gCamera.y;
+                spr->x = I(sonic->unk28[r2].x) - gCamera.x;
+                spr->y = I(sonic->unk28[r2].y) - gCamera.y;
                 DisplaySprite(spr);
             }
         }
@@ -490,33 +490,33 @@ static u8 SuperSonicHandleDirectionalInput(struct SuperSonic *sonic)
 
     if (sonic->rawKeys & DPAD_LEFT) {
         if (sonic->rawKeys & DPAD_UP) {
-            sonic->rotation = Q_24_8(2.5);
+            sonic->rotation = Q(2.5);
             return 16;
         } else if (sonic->rawKeys & DPAD_DOWN) {
-            sonic->rotation = Q_24_8(1.5);
+            sonic->rotation = Q(1.5);
             return 12;
         } else {
-            sonic->rotation = Q_24_8(2.0);
+            sonic->rotation = Q(2.0);
             return 6;
         }
     } else if (sonic->rawKeys & DPAD_RIGHT) {
         if (sonic->rawKeys & DPAD_UP) {
-            sonic->rotation = Q_24_8(3.5);
+            sonic->rotation = Q(3.5);
             return 18;
         } else if (sonic->rawKeys & DPAD_DOWN) {
-            sonic->rotation = Q_24_8(0.5);
+            sonic->rotation = Q(0.5);
             return 14;
         } else {
-            sonic->rotation = Q_24_8(0.0);
+            sonic->rotation = Q(0.0);
             return 4;
         }
     } else if (sonic->rawKeys & DPAD_UP) {
-        sonic->rotation = Q_24_8(3.0);
+        sonic->rotation = Q(3.0);
         return 8;
     } else if (!(sonic->rawKeys & DPAD_DOWN)) {
         return 0;
     } else {
-        sonic->rotation = Q_24_8(1.0);
+        sonic->rotation = Q(1.0);
         return 10;
     }
 }
@@ -532,8 +532,8 @@ static void sub_802C058(struct SuperSonic *sonic)
         sonic->unk1A = ABS(sonic->unk1A);
         sonic->unk1A += 0x40;
 
-        if (sonic->unk1A > Q_24_8(2.5)) {
-            sonic->unk1A = Q_24_8(2.5);
+        if (sonic->unk1A > Q(2.5)) {
+            sonic->unk1A = Q(2.5);
         }
 
         if (sonic->rawKeys & DPAD_UP) {
@@ -567,7 +567,7 @@ static void sub_802C058(struct SuperSonic *sonic)
         if (sonic->spr.variant != 2) {
             SUPER_SWITCH_ANIM(sonic, 0);
         }
-        sonic->worldX -= Q_24_8(0.5);
+        sonic->worldX -= Q(0.5);
     }
 
     if (sonic->pressedKeys & (A_BUTTON | B_BUTTON)) {
@@ -795,8 +795,8 @@ static void sub_802C828(struct SuperSonic *sonic)
             sonic->flags |= SUPER_FLAG__1;
         }
 
-        x = Q_24_8(gCamera.x + 80);
-        y = Q_24_8(gCamera.y + 90);
+        x = Q(gCamera.x + 80);
+        y = Q(gCamera.y + 90);
 
         sonic->worldX += Div(((x - sonic->worldX) * 3), 100);
         sonic->worldY += Div(((y - sonic->worldY) * 3), 100);
@@ -809,8 +809,8 @@ static void sub_802C8A0(struct SuperSonic *sonic)
 
     sonic->flags &= ~SUPER_FLAG__4;
 
-    x = Q_24_8(gCamera.x + (DISPLAY_WIDTH + 76));
-    y = Q_24_8(gCamera.y + (DISPLAY_HEIGHT / 2));
+    x = Q(gCamera.x + (DISPLAY_WIDTH + 76));
+    y = Q(gCamera.y + (DISPLAY_HEIGHT / 2));
 
     sonic->worldX += Div((x - sonic->worldX), 100);
     sonic->worldY += Div((y - sonic->worldY), 100);
@@ -821,10 +821,10 @@ static void sub_802C8EC(struct SuperSonic *sonic)
     Sprite *spr = &sonic->spr;
     spr->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-    sonic->unk1A += Q_24_8(0.125);
+    sonic->unk1A += Q(0.125);
     sonic->worldY += sonic->unk1A;
 
-    if ((Q_24_8_TO_INT(sonic->worldY) - gCamera.y) > DISPLAY_HEIGHT) {
+    if ((I(sonic->worldY) - gCamera.y) > DISPLAY_HEIGHT) {
         sonic->shouldDestroy = TRUE;
     }
 }
@@ -837,9 +837,9 @@ static void sub_802C92C(struct SuperSonic *sonic)
         sonic->unkC = 100;
     }
 
-    sonic->unk1A = Q_24_8(1.0);
-    sonic->worldX += Q_24_8_TO_INT(COS(sonic->rotation) * 4);
-    sonic->worldY += Q_24_8_TO_INT(SIN(sonic->rotation) * 4);
+    sonic->unk1A = Q(1.0);
+    sonic->worldX += I(COS(sonic->rotation) * 4);
+    sonic->worldY += I(SIN(sonic->rotation) * 4);
 }
 
 static void sub_802C988(struct SuperSonic *sonic)
@@ -855,9 +855,9 @@ static void sub_802C9B0(struct SuperSonic *sonic)
 {
     if (!(sonic->flags & (SUPER_FLAG__20 | SUPER_FLAG__10))) {
 #ifndef NON_MATCHING
-        CLAMP_INLINE_NO_ELSE(sonic->worldY, Q_24_8(50), Q_24_8(254));
+        CLAMP_INLINE_NO_ELSE(sonic->worldY, Q(50), Q(254));
 #else
-        CLAMP_INLINE(sonic->worldY, Q_24_8(50), Q_24_8(254));
+        CLAMP_INLINE(sonic->worldY, Q(50), Q(254));
 #endif
     }
 }

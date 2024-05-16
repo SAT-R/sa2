@@ -172,7 +172,7 @@ void Task_IntroScreenMain(void)
         fade->window = 0;
         fade->flags = 2;
         fade->brightness = Q_8_8(0);
-        fade->speed = Q_24_8(1.0);
+        fade->speed = Q(1.0);
         fade->bldAlpha = 0;
         fade->bldCnt = 0xBF;
         stage->animFrame = 0;

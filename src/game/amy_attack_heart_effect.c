@@ -184,8 +184,8 @@ void Task_8015CE4(void)
 #else
                     s = &hearts->sprHearts[i];
 #endif
-                    x = Q_24_8(hearts->params[i].x);
-                    y = Q_24_8(hearts->params[i].y);
+                    x = Q(hearts->params[i].x);
+                    y = Q(hearts->params[i].y);
 
                     camX = gCamera.x;
                     s->x = (x >> 16) - camX;

@@ -43,12 +43,12 @@ typedef struct {
 #define PERIODIC_PROP_FULL_DURATION (PERIOD_END__DECEL) /* 7s */
 
 // Used to clamp the player's max speed
-#define PROP_PLAYER_CLAMP_SPEED       Q_24_8(9.0)
-#define PROP_PLAYER_CLAMP_SPEED_BOOST Q_24_8(15.0)
+#define PROP_PLAYER_CLAMP_SPEED       Q(9.0)
+#define PROP_PLAYER_CLAMP_SPEED_BOOST Q(15.0)
 
 // The min/max fan prop->fanSpeed values.
-#define PROP_SPEED_MIN Q_24_8(0.0)
-#define PROP_SPEED_MAX Q_24_8(1.0)
+#define PROP_SPEED_MIN Q(0.0)
+#define PROP_SPEED_MAX Q(1.0)
 
 #define FAN_DIR_LEFT                     0
 #define FAN_DIR_RIGHT                    1
@@ -86,7 +86,7 @@ static void CreateEntity_Fan(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     Sprite *s;
 
     prop->kind = kind;
-    prop->fanSpeed = Q_24_8(1.0);
+    prop->fanSpeed = Q(1.0);
     prop->posX = TO_WORLD_POS(me->x, spriteRegionX);
     prop->posY = TO_WORLD_POS(me->y, spriteRegionY);
     prop->left = me->d.sData[0] * TILE_WIDTH;
@@ -128,32 +128,32 @@ static void sub_807D468(Sprite_Fan *prop)
     s32 temp;
     s32 r3;
     if (IS_PROPELLER_DIR_LEFT(prop->kind)) {
-        r3 = Q_24_8(prop->posX + prop->right) - gPlayer.x;
+        r3 = Q(prop->posX + prop->right) - gPlayer.x;
     } else {
-        r3 = gPlayer.x - Q_24_8(prop->posX + prop->left);
+        r3 = gPlayer.x - Q(prop->posX + prop->left);
     }
 
-    r3 = (Q_24_8(prop->width) - r3) / prop->width;
+    r3 = (Q(prop->width) - r3) / prop->width;
 
     if (r3 >= 0) {
         temp = r3;
-        if (r3 > Q_24_8(1.0))
-            temp = Q_24_8(1.0);
+        if (r3 > Q(1.0))
+            temp = Q(1.0);
     } else {
-        temp = Q_24_8(0.0);
+        temp = Q(0.0);
     }
     prop->playerDeltaX = temp << 4;
-    prop->playerDeltaX = Q_24_8_TO_INT(prop->playerDeltaX * prop->fanSpeed);
+    prop->playerDeltaX = I(prop->playerDeltaX * prop->fanSpeed);
 
     if (IS_PROPELLER_DIR_LEFT(prop->kind)) {
         if (gPlayer.speedAirX < 0) {
-            gPlayer.speedGroundX = ClampPlayerSpeed(gPlayer.speedGroundX - Q_24_8(0.25));
-            gPlayer.speedAirX = ClampPlayerSpeed(gPlayer.speedAirX - Q_24_8(0.25));
+            gPlayer.speedGroundX = ClampPlayerSpeed(gPlayer.speedGroundX - Q(0.25));
+            gPlayer.speedAirX = ClampPlayerSpeed(gPlayer.speedAirX - Q(0.25));
         } else {
             s32 newPlayerX = gPlayer.x - prop->playerDeltaX;
             gPlayer.x = newPlayerX;
 
-            r3 = Q_24_8(prop->posX + prop->right) - Q_24_8(48);
+            r3 = Q(prop->posX + prop->right) - Q(48);
 
             if ((prop->kind != SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE)) && newPlayerX > r3) {
                 gPlayer.x = r3;
@@ -166,13 +166,13 @@ static void sub_807D468(Sprite_Fan *prop)
         }
     } else {
         if (gPlayer.speedAirX > 0) {
-            gPlayer.speedGroundX = ClampPlayerSpeed(gPlayer.speedGroundX + Q_24_8(0.25));
-            gPlayer.speedAirX = ClampPlayerSpeed(gPlayer.speedAirX + Q_24_8(0.25));
+            gPlayer.speedGroundX = ClampPlayerSpeed(gPlayer.speedGroundX + Q(0.25));
+            gPlayer.speedAirX = ClampPlayerSpeed(gPlayer.speedAirX + Q(0.25));
         } else {
             s32 newPlayerX = gPlayer.x + prop->playerDeltaX;
             gPlayer.x = newPlayerX;
 
-            r3 = Q_24_8(prop->posX + prop->left) + Q_24_8(48);
+            r3 = Q(prop->posX + prop->left) + Q(48);
 
             if ((prop->kind != SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE))
                 && newPlayerX < r3) {
@@ -269,8 +269,8 @@ static bool32 IsPlayerInFanRegion(Sprite_Fan *prop)
         s16 propX = prop->posX - gCamera.x;
         s16 propY = prop->posY - gCamera.y;
 
-        s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        s16 playerX = I(gPlayer.x) - gCamera.x;
+        s16 playerY = I(gPlayer.y) - gCamera.y;
 
         u16 width = prop->right - prop->left;
         u16 height = prop->bottom - prop->top;

@@ -241,7 +241,7 @@ _0800FFF0:
 	ands r0, r6
 	cmp r0, #0
 	bne _080100B0
-	asrs r2, r3, #8     @ r2 = Q_24_8_TO_INT(player->x)
+	asrs r2, r3, #8     @ r2 = I(player->x)
 	ldr r1, [sp]
 	lsls r0, r1, #0x10
 	asrs r0, r0, #0x10

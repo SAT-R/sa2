@@ -34,8 +34,8 @@ static void Task_DrowningCountdown(void)
 
     s32 r2;
 
-    transform->x = Q_24_8_TO_INT(ts->x);
-    transform->y = Q_24_8_TO_INT(ts->y);
+    transform->x = I(ts->x);
+    transform->y = I(ts->y);
 
     r2 = ((ts->unk10 + 1) << 3);
     r2 = MIN(r2, 0x100);
@@ -78,8 +78,8 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
     SpriteTransform *transform;
     s32 temp;
 
-    ts->x = p->x - Q_24_8(cam->x);
-    ts->y = p->y - Q_24_8(cam->y);
+    ts->x = p->x - Q(cam->x);
+    ts->y = p->y - Q(cam->y);
     ts->unk8 = 0;
     ts->unkA = 0x120;
     ts->unk10 = 0;
@@ -195,8 +195,8 @@ static void Task_SpawnAirBubbles(void)
     r1 += SIN((unk10 & 0xFF) * 4) >> 4;
     {
         struct Camera *cam = &gCamera;
-        transform->x = Q_24_8_TO_INT(r1) - cam->x;
-        transform->y = Q_24_8_TO_INT(r4) - cam->y;
+        transform->x = I(r1) - cam->x;
+        transform->y = I(r4) - cam->y;
     }
 
     r2 = ((unk10 + 1) << 4);
@@ -214,7 +214,7 @@ static void Task_SpawnAirBubbles(void)
     if ((transform->x < -32 || transform->x > DISPLAY_WIDTH + 32)
         || (transform->y < -32 || transform->y > DISPLAY_HEIGHT + 32)
         || (gWater.isActive != TRUE) || (gWater.currentWaterLevel < 0)
-        || (Q_24_8_TO_INT(r4) - 3 < gWater.currentWaterLevel) || (ts->unk10 > 0x1E0)) {
+        || (I(r4) - 3 < gWater.currentWaterLevel) || (ts->unk10 > 0x1E0)) {
         TaskDestroy(gCurTask);
         return;
     } else {

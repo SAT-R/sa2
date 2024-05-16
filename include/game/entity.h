@@ -118,7 +118,7 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
     DisplaySprite(_s);
 
 #define ENEMY_UPDATE_EX(_s, _posX, _posY, code_insert)                                  \
-    ENEMY_UPDATE_EX_RAW(_s, Q_24_8_NEW(_posX), Q_24_8_NEW(_posY), code_insert);
+    ENEMY_UPDATE_EX_RAW(_s, QS(_posX), QS(_posY), code_insert);
 
 #define ENEMY_UPDATE(_s, _posX, _posY) ENEMY_UPDATE_EX(_s, _posX, _posY, {});
 

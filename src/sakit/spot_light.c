@@ -88,10 +88,10 @@ void Task_SpotLightMain(void)
             }
         }
         // _0800A800
-        unkC = spotLight->unkC - Q_24_8(2.0);
+        unkC = spotLight->unkC - Q(2.0);
         spotLight->unkC = unkC - SIN_24_8(gStageTime & (ONE_CYCLE - 512));
 
-        gBgScrollRegs[0][0] = Q_24_8_TO_INT(spotLight->unkC) & 0xFF;
+        gBgScrollRegs[0][0] = I(spotLight->unkC) & 0xFF;
         gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xFF;
 
         gDispCnt |= (DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
@@ -140,10 +140,10 @@ void Task_800A8E0(void)
             boolR5 = TRUE;
     }
 
-    unkC = spotLight->unkC - Q_24_8(2.0);
+    unkC = spotLight->unkC - Q(2.0);
     spotLight->unkC = unkC - SIN_24_8(gStageTime & (ONE_CYCLE - 512));
 
-    gBgScrollRegs[0][0] = Q_24_8_TO_INT(spotLight->unkC) & 0xFF;
+    gBgScrollRegs[0][0] = I(spotLight->unkC) & 0xFF;
     gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xFF;
 
     if (boolR5) {

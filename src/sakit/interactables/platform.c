@@ -203,22 +203,22 @@ void Task_800E89C(void)
     posX = TO_WORLD_POS(platform->base.spriteX, platform->base.regionX);
     posY = TO_WORLD_POS(me->y, platform->base.regionY);
 
-    s->x = posX - gCamera.x + Q_24_8_TO_INT(platform->unk40);
-    s->y = posY - gCamera.y + Q_24_8_TO_INT(platform->unk44);
+    s->x = posX - gCamera.x + I(platform->unk40);
+    s->y = posY - gCamera.y + I(platform->unk44);
 
     if ((p->moveState & MOVESTATE_8) && (p->unk3C == s)) {
         p->x += deltaX;
 
         if (!GRAVITY_IS_INVERTED) {
-            p->y += deltaY + Q_24_8(1.0);
+            p->y += deltaY + Q(1.0);
         } else {
-            p->y += deltaY - Q_24_8(2.0);
+            p->y += deltaY - Q(2.0);
         }
     }
 
     if (!(p->moveState & MOVESTATE_400000)) {
-        s32 x = (posX + Q_24_8_TO_INT(platform->unk40));
-        s32 y = (posY + Q_24_8_TO_INT(platform->unk44));
+        s32 x = (posX + I(platform->unk40));
+        s32 y = (posY + I(platform->unk44));
 
         result = sub_800CCB8(s, x, y, p);
 
@@ -460,9 +460,9 @@ void Task_800EFD0(void)
     s->x = posX - gCamera.x;
 
     if (IS_MULTI_PLAYER) {
-        s->y = (posY - gCamera.y) + Q_24_8_TO_INT(platform->unk50[1]);
+        s->y = (posY - gCamera.y) + I(platform->unk50[1]);
     } else {
-        s->y = (posY - gCamera.y) + Q_24_8_TO_INT(platform->unk44);
+        s->y = (posY - gCamera.y) + I(platform->unk44);
     }
 
     platform->unk3C++;
@@ -475,13 +475,13 @@ void Task_800EFD0(void)
                 gPlayer.speedAirY = platform->unk4A;
             } else {
                 gPlayer.x += platform->unk48;
-                gPlayer.y += Q_24_8(1.0) + platform->unk4A;
+                gPlayer.y += Q(1.0) + platform->unk4A;
             }
         }
     }
 
     if (platform->unk3C < 32) {
-        result = sub_800CCB8(s, posX, posY + Q_24_8_TO_INT(platform->unk44), &gPlayer);
+        result = sub_800CCB8(s, posX, posY + I(platform->unk44), &gPlayer);
         if (result & 0x10000) {
             gPlayer.y += Q_8_8(result);
         }

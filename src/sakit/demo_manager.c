@@ -180,11 +180,11 @@ void Task_DemoManagerEndFadeout(void)
 void Task_DemoManagerFadeout(void)
 {
     DemoManager *dm = TASK_DATA(gCurTask);
-    dm->fadeBlendFactor += Q_24_8(0.25);
+    dm->fadeBlendFactor += Q(0.25);
 
     gBldRegs.bldY = dm->fadeBlendFactor >> 8;
 
-    if (dm->fadeBlendFactor >= Q_24_8(16.0)) {
+    if (dm->fadeBlendFactor >= Q(16.0)) {
         gCurTask->main = Task_DemoManagerEndFadeout;
     }
 }

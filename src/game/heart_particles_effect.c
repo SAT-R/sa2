@@ -122,8 +122,8 @@ static void sub_8086B38(HeartParticles *unk998)
     for (i = 0; i < NUM_HEARTS; i++) {
         if (unk998->unkC0 & j) {
             s = &unk998->sprites[i];
-            s->x = Q_24_8_TO_INT(unk998->unkC4[i]) - gCamera.x;
-            s->y = Q_24_8_TO_INT(unk998->unkD4[i]) - gCamera.y;
+            s->x = I(unk998->unkC4[i]) - gCamera.x;
+            s->y = I(unk998->unkD4[i]) - gCamera.y;
 
             if (UpdateSpriteAnimation(s) == 0) {
                 unk998->unkC0 &= ~(1 << i);
@@ -153,8 +153,8 @@ static void sub_8086BE8(u8 i)
 
     s = &unk998->sprites[i];
     s->prevVariant = -1;
-    s->x = Q_24_8_TO_INT(unk998->unkC4[i]) - gCamera.x;
-    s->y = Q_24_8_TO_INT(unk998->unkD4[i]) - gCamera.y;
+    s->x = I(unk998->unkC4[i]) - gCamera.x;
+    s->y = I(unk998->unkD4[i]) - gCamera.y;
 
     if (GRAVITY_IS_INVERTED) {
         s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;

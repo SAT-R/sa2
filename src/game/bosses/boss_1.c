@@ -387,7 +387,7 @@ static void sub_803A8E4(EggHammerTankII *boss)
         s->y = pos.y - gCamera.y;
 
         sub_800CA20(s, pos.x, pos.y, 1, &gPlayer);
-        Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+        Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
         if (boss->unkB1 == 0
             || ((gPlayer.speedAirY > 0 || !(gPlayer.moveState & 2))
@@ -452,8 +452,8 @@ static void sub_803AA40(void)
             x = gUnknown_080D6DE4[0][0] - I(gPlayer.x);
             y = gUnknown_080D6DE4[0][1] - I(gPlayer.y);
 
-            gPlayer.x += Q_24_8_NEW(x);
-            gPlayer.y += Q_24_8_NEW(y);
+            gPlayer.x += QS(x);
+            gPlayer.y += QS(y);
 
             gCamera.x += x;
             gCamera.y += y;
@@ -466,8 +466,8 @@ static void sub_803AA40(void)
 
             thing = gCheese;
             if (thing != NULL) {
-                thing->posX += Q_24_8_NEW(x);
-                thing->posY += Q_24_8_NEW(y);
+                thing->posX += QS(x);
+                thing->posY += QS(y);
             }
 
             gUnknown_030055B0++;
@@ -1035,7 +1035,7 @@ static void sub_803B84C(EggHammerTankII *boss)
             unkB4->unkCC = 0;
         }
 
-        unkB4->unkC4 += Q_24_8_NEW(result);
+        unkB4->unkC4 += QS(result);
     }
 
     for (i = 0; i < 8; i++) {
@@ -1054,7 +1054,7 @@ static void sub_803B84C(EggHammerTankII *boss)
                 unkB4->unkF8[i][4]--;
             }
             unkB4->unkF8[i][2] -= Q(0.125);
-            unkB4->unkF8[i][1] += Q_24_8_NEW(result);
+            unkB4->unkF8[i][1] += QS(result);
             unkB4->unkF8[i][3] = I(unkB4->unkF8[i][3] * ((i * 4) - Q(0.25)));
         }
 
@@ -1079,7 +1079,7 @@ static void sub_803B84C(EggHammerTankII *boss)
                 unkB4->unk1B8[i][4]--;
             }
             unkB4->unk1B8[i][2] -= 32;
-            unkB4->unk1B8[i][1] += Q_24_8_NEW(result);
+            unkB4->unk1B8[i][1] += QS(result);
             unkB4->unk1B8[i][3] = I(unkB4->unk1B8[i][3] * -((i * 4) + 64));
         }
 
@@ -1143,7 +1143,7 @@ static void sub_803B84C(EggHammerTankII *boss)
             unkB4->unkD8 = 0;
         }
 
-        unkB4->unkD4 += Q_24_8_NEW(result);
+        unkB4->unkD4 += QS(result);
         unkB4->unkDC = I(-(unkB4->unkDC * 192));
     }
 

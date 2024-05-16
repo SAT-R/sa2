@@ -120,14 +120,14 @@ void sub_805879C(void)
         proj.numTiles = 3;
         proj.anim = SA2_ANIM_BALLOON_PROJ;
         proj.variant = 0;
-        proj.x = Q_24_8_NEW(pos.x + 1);
-        proj.y = Q_24_8_NEW(pos.y + 20);
+        proj.x = QS(pos.x + 1);
+        proj.y = QS(pos.y + 20);
         proj.rot = (u8)-1;
         proj.speed = 512;
         CreateProjectile(&proj);
     }
 
-    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
     if (UpdateSpriteAnimation(s) == 0) {
         balloon->unk5E = 120;
         s->graphics.anim = SA2_ANIM_BALLOON;

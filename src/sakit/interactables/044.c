@@ -37,11 +37,11 @@ void Task_Interactable_044(void)
     screenY = TO_WORLD_POS(me->y, regionY);
 
     left = sLeft;
-    playerX = Q_24_8_TO_INT(gPlayer.x);
+    playerX = I(gPlayer.x);
 
     if ((left <= playerX) && sRight >= playerX) {
         top = sTop;
-        playerY = Q_24_8_TO_INT(gPlayer.y);
+        playerY = I(gPlayer.y);
 
         if ((top <= playerY) && sBottom >= playerY) {
             u32 moveState = gPlayer.moveState;

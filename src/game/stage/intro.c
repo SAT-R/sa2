@@ -924,16 +924,16 @@ static void StageIntroUpdateIcons(void)
     transform = &sit_d->transform;
     sineVal = SIN_24_8((counter * 24) & ONE_CYCLE);
 
-    if (sineVal == Q_24_8(1.0)) {
-        sineVal = Q_24_8(1.0) - 1;
+    if (sineVal == Q(1.0)) {
+        sineVal = Q(1.0) - 1;
     }
-    if (sineVal == Q_24_8(0.0)) {
-        sineVal = Q_24_8(0.0) + 4;
+    if (sineVal == Q(0.0)) {
+        sineVal = Q(0.0) + 4;
     }
 
     transform->rotation = 0;
     transform->width = sineVal;
-    transform->height = Q_24_8(1.0);
+    transform->height = Q(1.0);
     transform->x = s->x;
     transform->y = s->y;
 

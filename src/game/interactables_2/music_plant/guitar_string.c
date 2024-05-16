@@ -227,12 +227,12 @@ void sub_8076114(Sprite_GuitarString *gs)
 
         r2 = gs->posX;
         r2 += 4;
-        r2 += (s16)Q_24_8_TO_INT(elem[0] + (s16)elY);
+        r2 += (s16)I(elem[0] + (s16)elY);
         r2 -= gCamera.x;
         s->x = r2;
 
         r1 = gs->posY;
-        r1 += (s8)Q_24_8_TO_INT((u16)elem[1]);
+        r1 += (s8)I((u16)elem[1]);
         r1 -= gCamera.y;
         s->y = r1;
 
@@ -245,8 +245,8 @@ bool32 sub_807618C(Sprite_GuitarString *gs)
     if (PLAYER_IS_ALIVE && gPlayer.speedAirY > 0) {
         s16 screenX = gs->posX - gCamera.x;
         s16 screenY = gs->posY - gCamera.y;
-        s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        s16 playerX = I(gPlayer.x) - gCamera.x;
+        s16 playerY = I(gPlayer.y) - gCamera.y;
 
         if ((screenX <= playerX) && ((screenX + GUITARSTR_WIDTH_PX) >= playerX)
             && ((screenY - 9) <= playerY) && ((screenY + 9) >= playerY)) {
@@ -301,19 +301,19 @@ void sub_80762BC(Sprite_GuitarString *gs)
 }
 
 // Because assigning it to a variable doesn't match...
-#define LOCAL_GUITARSTR_MARGIN (Q_24_8(gs->posX + (GUITARSTR_WIDTH_PX / 2)))
+#define LOCAL_GUITARSTR_MARGIN (Q(gs->posX + (GUITARSTR_WIDTH_PX / 2)))
 
 void sub_80762E0(Sprite_GuitarString *gs)
 {
     if (PLAYER_IS_ALIVE) {
         if (gPlayer.x != LOCAL_GUITARSTR_MARGIN) {
             if (gPlayer.x > LOCAL_GUITARSTR_MARGIN) {
-                gPlayer.x -= Q_24_8(0.5);
+                gPlayer.x -= Q(0.5);
 
                 if (gPlayer.x < LOCAL_GUITARSTR_MARGIN)
                     gPlayer.x = LOCAL_GUITARSTR_MARGIN;
             } else {
-                gPlayer.x += Q_24_8(0.5);
+                gPlayer.x += Q(0.5);
 
                 if (gPlayer.x > LOCAL_GUITARSTR_MARGIN)
                     gPlayer.x = LOCAL_GUITARSTR_MARGIN;

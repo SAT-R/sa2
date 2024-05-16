@@ -231,10 +231,8 @@ static void sub_8076448(Sprite_Keyboard *kb)
     }
 
     if (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_6) {
-        sub_8080C78(Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), 5, 30, r7, r5,
-                    0);
-        sub_8080C78(Q_24_8_TO_INT(gPlayer.x), Q_24_8_TO_INT(gPlayer.y), 5, 30, r8, r6,
-                    1);
+        sub_8080C78(I(gPlayer.x), I(gPlayer.y), 5, 30, r7, r5, 0);
+        sub_8080C78(I(gPlayer.x), I(gPlayer.y), 5, 30, r8, r6, 1);
     }
 }
 
@@ -244,8 +242,8 @@ static bool32 sub_8076780(Sprite_Keyboard *kb)
         if (kb->unk1 == 0) {
             s16 screenX = kb->posX - gCamera.x;
             s16 screenY = kb->posY - gCamera.y;
-            s16 playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-            s16 playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+            s16 playerX = I(gPlayer.x) - gCamera.x;
+            s16 playerY = I(gPlayer.y) - gCamera.y;
 
             if (((screenX + kb->unkC) <= playerX)
                 && (((screenX + kb->unkC) + (kb->unk10 - kb->unkC)) >= playerX)

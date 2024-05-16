@@ -398,8 +398,7 @@ static void BreakWheels(EggBomberTank *boss)
 
         for (j = 0; j < 3; j++) {
             u8 idx = j + (i * 3);
-            boss->wheelPositions[idx][0]
-                = boss->x + Q_24_8_NEW(sBodyWheelPositionsX[j] + temp);
+            boss->wheelPositions[idx][0] = boss->x + QS(sBodyWheelPositionsX[j] + temp);
             boss->wheelPositions[idx][1] = boss->wheelPositions[j][1] + 0x400;
             boss->unk3C[idx][0] = gUnknown_080D7B4E[idx][0];
             boss->unk3C[idx][1] = gUnknown_080D7B4E[idx][1];
@@ -530,7 +529,7 @@ static void UpdatePosition(EggBomberTank *boss)
     ground = sub_801E4E4(I(boss->y), I(boss->x), 1, 8, NULL, sub_801EE64);
 
     if (ground < 0) {
-        boss->y += Q_24_8_NEW(ground);
+        boss->y += QS(ground);
         boss->speedX -= 0x10;
         if (boss->speedX < 0) {
             boss->speedX = 0;
@@ -548,7 +547,7 @@ static void UpdatePosition(EggBomberTank *boss)
             ground = sub_801E4E4(I(boss->wheelPositions[idx][1]) - 8,
                                  I(boss->wheelPositions[idx][0]), 1, 8, 0, sub_801EE64);
             if (ground < 0) {
-                boss->wheelPositions[idx][1] += Q_24_8_NEW(ground);
+                boss->wheelPositions[idx][1] += QS(ground);
                 boss->unk3C[idx][0] -= 0x20;
                 boss->unk3C[idx][1] = Div(boss->unk3C[idx][1] * -0x50, 100);
             }
@@ -724,8 +723,8 @@ static void HandleCannonBombTrigger(EggBomberTank *boss)
     Sprite *s = &boss->cannon;
 
     if (HandleCannonCollision(boss) != 0) {
-        boss->unk54 = Q_24_8_NEW(Div(boss->x, 256) - 8);
-        boss->unk58 = Q_24_8_NEW(Div(boss->y, 256) - 22);
+        boss->unk54 = QS(Div(boss->x, 256) - 8);
+        boss->unk58 = QS(Div(boss->y, 256) - 22);
         boss->unk54 += ((COS(boss->cannonAngle) * 0xF) >> 5);
         boss->unk58 += ((SIN(boss->cannonAngle) * 0xF) >> 5);
 
@@ -751,8 +750,8 @@ static void HandleCannonBombTrigger(EggBomberTank *boss)
         }
     } else {
         if (boss->timer == 0) {
-            x = Q_24_8_NEW(Div(boss->x, 256) - 8);
-            y = Q_24_8_NEW(Div(boss->y, 256) - 22);
+            x = QS(Div(boss->x, 256) - 8);
+            y = QS(Div(boss->y, 256) - 22);
             x += (COS(boss->cannonAngle) * 0x32) >> 6;
             y += (SIN(boss->cannonAngle) * 50) >> 6;
             s = &boss->cannon;
@@ -780,13 +779,13 @@ static u8 HandleCannonCollision(EggBomberTank *boss)
     s32 distance;
     u8 ret;
 
-    dX = Q_24_8_NEW(Div(boss->x, 256) - 8);
+    dX = QS(Div(boss->x, 256) - 8);
     x = dX + ((COS(boss->cannonAngle) * 5) >> 3);
 
     dX = x - gPlayer.x;
     dX = I(dX);
 
-    dY = Q_24_8_NEW(Div(boss->y, 256) - 22);
+    dY = QS(Div(boss->y, 256) - 22);
     y = dY + ((SIN(boss->cannonAngle) * 5) >> 3);
 
     dY = y - gPlayer.y;
@@ -1066,10 +1065,10 @@ static void UpdateWheelPositions(EggBomberTank *boss)
         s32 y = I(boss->wheelPositions[i][1]) + 0x12;
         val += y;
 
-        boss->wheelPositions[i][1] += Q_24_8_NEW(sub_801F100(y, x, 1, 8, sub_801EC3C));
+        boss->wheelPositions[i][1] += QS(sub_801F100(y, x, 1, 8, sub_801EC3C));
     }
 
-    boss->y = Q_24_8_NEW(Div(val, 3)) - 0x1200;
+    boss->y = QS(Div(val, 3)) - 0x1200;
 }
 
 static void UpdateCannonAngle(EggBomberTank *boss)
@@ -1123,8 +1122,8 @@ static void CreateBomberTankBomb(EggBomberTank *boss, s32 x, s32 y, u16 angle, u
                                 sizeof(EggBomberTankBomb), 0x6100, 0, NULL);
     Sprite *s;
     EggBomberTankBomb *bomb = TASK_DATA(t);
-    bomb->x = x - Q_24_8_NEW(gCamera.x);
-    bomb->y = y - Q_24_8_NEW(gCamera.y);
+    bomb->x = x - QS(gCamera.x);
+    bomb->y = y - QS(gCamera.y);
 
     bomb->speedX = ((p5)*COS(angle)) >> 14;
     bomb->speedY = ((p5)*SIN(angle)) >> 13;
@@ -1160,14 +1159,14 @@ static void Task_EggBomberTankBombExplosion(void)
         bomb->x += bomb->speedX;
         bomb->y += bomb->speedY;
     } else {
-        bomb->x -= bomb->speedX - Q_24_8_NEW(gCamera.unk38);
-        bomb->y += bomb->speedY + Q_24_8_NEW(gCamera.unk3C);
+        bomb->x -= bomb->speedX - QS(gCamera.unk38);
+        bomb->y += bomb->speedY + QS(gCamera.unk3C);
     }
 
     ground = sub_801E4E4(I(bomb->y) + 0xC + gCamera.y, I(bomb->x) + gCamera.x, 1, 8,
                          &unusedByte, sub_801EE64);
     if (ground < 0) {
-        bomb->y += Q_24_8_NEW(ground);
+        bomb->y += QS(ground);
         bomb->speedY = Div(-(bomb->speedY * 8), 10);
     }
 

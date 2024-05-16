@@ -236,8 +236,8 @@ static bool32 IsPlayerWithinRange(Sprite_LightBridge *lightBridge)
         cameraY = gCamera.y;
         posY -= cameraY;
 
-        playerX = Q_24_8_TO_INT(gPlayer.x) - gCamera.x;
-        playerY = Q_24_8_TO_INT(gPlayer.y) - gCamera.y;
+        playerX = I(gPlayer.x) - gCamera.x;
+        playerY = I(gPlayer.y) - gCamera.y;
 
         a = ({
             s32 temp1 = (u16)sWithinRangeDimensions[lightBridge->type].minX;

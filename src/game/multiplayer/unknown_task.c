@@ -116,8 +116,8 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                            | MOVESTATE_400000);
                     if (!(prevMoveState)) {
                         InitializePlayer(&gPlayer);
-                        gPlayer.x = Q_24_8_NEW(mpp->unk50);
-                        gPlayer.y = Q_24_8_NEW(mpp->unk52 - (s8)mpp->unk58[0]);
+                        gPlayer.x = QS(mpp->unk50);
+                        gPlayer.y = QS(mpp->unk52 - (s8)mpp->unk58[0]);
                         m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
                         gPlayer.moveState = prevMoveState;
                         gPlayer.unk90->s.unk10 &= ~0x3000;

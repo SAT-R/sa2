@@ -138,11 +138,11 @@ static void Task_FlickeyMain(void)
 
         for (i = 0; i < 3; i++) {
             u32 temp;
-            flickey->positions[i].x = Q_24_8_NEW(positions[i][0]);
-            flickey->positions[i].y = Q_24_8_NEW(positions[i][1]);
+            flickey->positions[i].x = QS(positions[i][0]);
+            flickey->positions[i].y = QS(positions[i][1]);
             temp = Div(flickey->unk9C, i + 1);
             flickey->positions[i + 3].x = temp;
-            flickey->positions[i + 3].y = Q_24_8_NEW(positions[i][2]);
+            flickey->positions[i + 3].y = QS(positions[i][2]);
         }
 
         gCurTask->main = sub_80591FC;
@@ -232,17 +232,17 @@ static void sub_8058EDC(void)
 
         for (i = 0; i < 3; i++) {
             u32 temp;
-            flickey->positions[i].x = Q_24_8_NEW(positions[i][0]);
-            flickey->positions[i].y = Q_24_8_NEW(positions[i][1]);
+            flickey->positions[i].x = QS(positions[i][0]);
+            flickey->positions[i].y = QS(positions[i][1]);
             temp = Div(flickey->unk9C, i + 1);
             flickey->positions[i + 3].x = temp;
-            flickey->positions[i + 3].y = Q_24_8_NEW(positions[i][2]);
+            flickey->positions[i + 3].y = QS(positions[i][2]);
         }
         return;
     }
 
     ENEMY_DESTROY_IF_OFFSCREEN(flickey, me, s);
-    Player_UpdateHomingPosition(Q_24_8_NEW(pos.x), Q_24_8_NEW(pos.y));
+    Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
     if (UpdateSpriteAnimation(s) == 0) {
         if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
             SPRITE_FLAG_CLEAR(s, X_FLIP);
@@ -285,7 +285,7 @@ static void sub_80591FC(void)
                               8, 0, sub_801EE64);
 
         if (someVal < 0) {
-            flickey->positions[i].y += Q_24_8_NEW(someVal);
+            flickey->positions[i].y += QS(someVal);
             flickey->positions[i + 3].y = -flickey->positions[i + 3].y;
         }
 

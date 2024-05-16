@@ -104,14 +104,14 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     outro->fade.window = zero;
     outro->fade.flags = 1;
-    outro->fade.speed = Q_24_8(1.0);
+    outro->fade.speed = Q(1.0);
     outro->fade.brightness = zero;
     outro->fade.bldCnt = 0x3FFF;
     outro->fade.bldAlpha = zero;
 
     if ((gPlayer.moveState & MOVESTATE_8000000)
         && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
-        outro->fade.speed = Q_24_8(0.25);
+        outro->fade.speed = Q(0.25);
         outro->fade.bldCnt = 0x3FBF;
     } else if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
         outro->fade.bldCnt = 0x3FAF;
