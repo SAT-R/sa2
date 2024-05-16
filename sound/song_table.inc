@@ -1,6 +1,8 @@
+.include "asm/macros/c_decl.inc"
+
 	.align 2
-	.global gSongTable
-gSongTable:	@ 0x08AD4F4C
+	.global C_DECL(gSongTable)
+C_DECL(gSongTable):	@ 0x08AD4F4C
 	song dummy_song_header, 0, 0
 	song mus_intro, 0, 0
 	song mus_title_fanfare, 0, 0
