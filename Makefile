@@ -299,7 +299,9 @@ tool_libs:
 	@$(MAKE) -C tools/_shared
 
 compare: rom
+ifeq ($(PLATFORM),gba)
 	$(SHA1) $(BUILD_NAME).sha1
+endif
 
 clean: tidy clean-tools
 	@$(MAKE) clean -C chao_garden
@@ -431,7 +433,7 @@ $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
-	@echo "$(PREPROC) $< | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) <flags> -o $@ $<"
+	@echo "$(AS) <flags> -o $@ $<"
 	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 
