@@ -32,9 +32,11 @@ void IntrWait(bool32 discard, u16 flags, u32 dsiFlags)
     //       written)? Maybe this shouldn't be implemented here, but in each platform
     //       layer? As-is this implementation doesn't work in a single-threaded
     //       environment.
+#if 0
     while (!(REG_IE & flags)) {
         ;
     }
+#endif
 }
 #endif
 

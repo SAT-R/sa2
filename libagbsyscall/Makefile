@@ -56,7 +56,7 @@ endif
 AS := $(PREFIX)as
 ifneq ($(PLATFORM),gba)
     CPP       := $(PREFIX)cpp
-    CPPFLAGS  := -I ../include
+    CPPFLAGS  := -I ../include -D PORTABLE=1
     CC1       := $(PREFIX)gcc
     CC1FLAGS  := -Wall -O2 -x c -S
     LD        := $(PREFIX)ld

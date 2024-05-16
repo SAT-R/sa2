@@ -71,7 +71,8 @@ typedef IwramNodePtr IwramNodePtr32;
 struct IwramNode {
     IwramNodePtr next;
     s16 state;
-    u8 space[0];
+
+    u8 ALIGNED(sizeof(void *)) space[0];
 };
 
 #define TASK_DATA(taskp)   (void *)TASK_PTR((taskp)->data)

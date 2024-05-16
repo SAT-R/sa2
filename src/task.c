@@ -246,10 +246,9 @@ static void IwramFree(void *p)
 #else
     struct IwramNode *slow;
 #endif
-    node--;
+    node = (struct IwramNode *)(((u8 *)node) - offsetof(struct IwramNode, space));
     slow = (struct IwramNode *)&gIwramHeap[0];
     fast = slow;
-
     if (node != slow) {
         do {
             slow = fast;
@@ -260,8 +259,8 @@ static void IwramFree(void *p)
         node->state = -node->state;
     }
     if ((struct IwramNode *)(slow->state + (u8 *)slow) == node) {
-        u16 state = slow->state; // not actual code. only for handling side effect of
-                                 // inline asm
+        u16 state = slow->state; // only for handling side effect of inline asm above
+
         if (slow->state > 0) {
             slow->next = fast->next;
             slow->state = state + node->state;
