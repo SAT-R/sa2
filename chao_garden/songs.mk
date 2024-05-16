@@ -1,8 +1,8 @@
 STD_REVERB = 0
 
 $(MID_BUILDDIR)/%.o: $(MID_SUBDIR)/%.s
-	@echo "$(AS) <flags> -I sound -o $@ $<"
-	@$(AS) $(ASFLAGS) -I sound -o $@ $<
+	@echo "$(PREPROC) $< | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) <flags> -I sound -o $@ $<"
+	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
 
 $(MID_SUBDIR)/mus_garden.s: %.s: %.mid
 	$(MID2AGB) $< $@ -E -R$(STD_REVERB) -G0  -V100

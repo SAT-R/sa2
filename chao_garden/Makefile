@@ -52,6 +52,17 @@ CC1FLAGS := -mthumb-interwork -Wimplicit -Wparentheses -O2 -fhex-asm -Werror
 CPPFLAGS := -I ../tools/agbcc/include -iquote include -nostdinc -D $(GAME_REGION)
 ASFLAGS  := -mcpu=arm7tdmi -mthumb-interwork --defsym $(GAME_REGION)=1
 
+ifeq ($(CPU_ARCH),arm)
+# no-op
+ASM_PSEUDO_OP_CONV := sed -n 'p'
+else
+# Convert .2byte -> .short and .4byte -> .int
+#  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
+#  but on 64bit targets it would be .8byte / .quad
+#
+# sed expression script by Kurausukun
+ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+endif
 
 # Clear the default suffixes
 .SUFFIXES:
