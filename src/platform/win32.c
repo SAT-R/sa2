@@ -8,7 +8,7 @@ extern void GameInit(void);
 extern void GameStart(void);
 extern void GameLoop(void);
 
-DWORD WINAPI StartGameThread(void *pThreadParam) { GameLoop(); }
+DWORD WINAPI GameThread(void *pThreadParam) { GameLoop(); }
 
 int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine,
                    int nShowCmd)
@@ -19,6 +19,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine,
     AllocConsole();
     AttachConsole(GetCurrentProcessId());
     freopen("CON", "w", stdout);
+    printf("Console initialized.\n");
 
     // If this isn't set, gFlags gets set to FLAGS_200, leading to the MP menu being
     // loaded instead of the main loop
@@ -27,8 +28,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine,
     GameStart();
 
     DWORD threadId;
-    HANDLE GameLoopThreadHandle
-        = CreateThread(NULL, 0, StartGameThread, NULL, 0, &threadId);
+    HANDLE GameThreadHandle = CreateThread(NULL, 0, GameThread, NULL, 0, &threadId);
 
-    WaitForSingleObject(GameLoopThreadHandle, INFINITE);
+    WaitForSingleObject(GameThreadHandle, INFINITE);
 }

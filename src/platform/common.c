@@ -1,5 +1,11 @@
 #include "core.h"
 
+uint8_t EWRAM_START[EWRAM_SIZE];
+uint8_t IWRAM_START[IWRAM_SIZE];
+uint16_t PLTT[PLTT_SIZE / 2];
+uint8_t OAM[OAM_SIZE];
+uint8_t VRAM[VRAM_SIZE];
+
 u8 REG_BASE[IO_SIZE] = { 0 };
 u16 INTR_CHECK = 0;
 IntrFunc INTR_VECTOR = IntrMain;
