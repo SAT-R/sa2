@@ -69,6 +69,9 @@ SCANINC   := tools/scaninc/scaninc$(EXE)
 PREPROC	  := tools/preproc/preproc$(EXE)
 RAMSCRGEN := tools/ramscrgen/ramscrgen$(EXE)
 FIX 	  := tools/gbafix/gbafix$(EXE)
+ifeq ($(CREATE_PDB),1)
+CV2PDB    := ./cv2pdb.exe
+endif
 
 TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils,$(wildcard tools/*))
 TOOLBASE = $(TOOLDIRS:tools/%=%)
@@ -377,6 +380,8 @@ ifeq ($(PLATFORM),gba)
 	@echo "$(LD) -T $(LDSCRIPT) -Map $(MAP) <objects> <lib>"
 	@cd $(OBJ_DIR) && $(LD) -A CPU_ARCH -T $(LDSCRIPT) -Map "$(ROOT_DIR)/$(MAP)" $(OBJS_REL) "$(ROOT_DIR)/tools/agbcc/lib/libgcc.a" "$(ROOT_DIR)/tools/agbcc/lib/libc.a" -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -o $(ROOT_DIR)/$@
 else
+	@echo Outputting $(ROOT_DIR)/$@
+	@touch $(ROOT_DIR)/$(MAP)
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 endif
 
@@ -386,6 +391,9 @@ ifeq ($(PLATFORM),gba)
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 else
 	$(OBJCOPY) -O pei-i386 $< $@
+ifeq ($(CREATE_PDB),1)
+	$(CV2PDB) $@
+endif
 endif
 
 ifeq ($(NODEP),1)
