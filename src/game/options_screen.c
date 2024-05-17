@@ -5114,9 +5114,8 @@ static void MultiplayerRecordsScreenCreateTableRowUI(s16 rowIndex)
 
     struct UNK_806B908 nameCharTile;
 
-    struct MultiplayerRecordRow *row
-        = &((struct MultiplayerRecordsScreen *)(IWRAM_START + gCurTask->data))
-               ->table->rows[rowIndex];
+    struct MultiplayerRecordsScreen *screen = TASK_DATA(gCurTask);
+    struct MultiplayerRecordRow *row = &screen->table->rows[rowIndex];
     const struct UNK_080D95E8 *digitTile, *digitTiles = sMultiplayerScoreDigitTiles;
 
     if (!row->slotFilled) {
