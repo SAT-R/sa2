@@ -76,10 +76,10 @@ TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 
 ASFLAGS  := --defsym $(GAME_REGION)=1
 
-# -P disables line markers
+# -P disables line markers (don't EVER use this, if you want proper debug info!)
 # -I sets an include path
 # -D defines a symbol
-CPPFLAGS ?= -iquote include -D $(GAME_REGION) -P
+CPPFLAGS ?= -iquote include -D $(GAME_REGION)
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
 # These have to(?) be defined this way, because
@@ -112,7 +112,7 @@ endif
 endif
 
 ifeq ($(DEBUG),1)
-	CC1FLAGS += -g -O0
+	CC1FLAGS += -g -g3 -O0
 else
 	CC1FLAGS += -O2
 endif
@@ -367,8 +367,9 @@ data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 
 PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
 
+# -P disables line markers
 $(PROCESSED_LDSCRIPT): $(LDSCRIPT)
-	$(CPP) $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
+	$(CPP) -P $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
 
 
 $(ELF): $(OBJS) $(PROCESSED_LDSCRIPT) libagbsyscall
@@ -444,30 +445,30 @@ europe: ; @$(MAKE) GAME_REGION=EUROPE
 x86: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 chao_garden/mb_chao_garden.gba: 
-	@$(MAKE) -C chao_garden
+	@$(MAKE) -C chao_garden DEBUG=0
 
 chao_garden: tools
-	@$(MAKE) -C chao_garden
+	@$(MAKE) -C chao_garden DEBUG=0
 
 # Dependency here is already explicit, but we sometimes get a race condition if this
 # is not specified
 multi_boot/subgame_bootstrap/subgame_bootstrap.gba: multi_boot/programs/subgame_loader/subgame_loader.bin
-	@$(MAKE) -C multi_boot/subgame_bootstrap
+	@$(MAKE) -C multi_boot/subgame_bootstrap DEBUG=0
 
 multi_boot/programs/subgame_loader/subgame_loader.bin:
-	@$(MAKE) -C multi_boot/programs/subgame_loader
+	@$(MAKE) -C multi_boot/programs/subgame_loader DEBUG=0
 
 multi_boot/collect_rings/mb_signed_collect_rings.gba:
-	@$(MAKE) -C multi_boot/collect_rings
+	@$(MAKE) -C multi_boot/collect_rings DEBUG=0
 
 subgame_bootstrap: tools
-	@$(MAKE) -C multi_boot/subgame_bootstrap
+	@$(MAKE) -C multi_boot/subgame_bootstrap DEBUG=0
 
 subgame_loader: tools
-	@$(MAKE) -C multi_boot/programs/subgame_loader
+	@$(MAKE) -C multi_boot/programs/subgame_loader DEBUG=0
 
 collect_rings: tools
-	@$(MAKE) -C multi_boot/collect_rings
+	@$(MAKE) -C multi_boot/collect_rings DEBUG=0
 
 libagbsyscall:
 	@$(MAKE) -C libagbsyscall MODERN=0 PLATFORM=$(PLATFORM) CPU_ARCH=$(CPU_ARCH)
