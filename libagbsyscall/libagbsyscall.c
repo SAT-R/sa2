@@ -1,7 +1,11 @@
+#include <assert.h>
 #include <math.h> // sqrt
 #include <string.h> // memset
 #include "global.h"
 #include "gba/syscall.h"
+#if CPU_ARCH_X86
+#include <immintrin.h>
+#endif
 
 #if (!(defined PLATFORM_GBA) || (PLATFORM_GBA == 0))
 
@@ -9,11 +13,82 @@
 // Documentation source used: https://problemkaputt.de/gbatek.htm
 
 #if L_CpuSet
-void CpuSet(const void *src, void *dest, u32 control) { }
+void CpuSet(const void *inSrc, void *inDest, u32 control)
+{
+    u32 word_count = control & 0x1FFFFF;
+
+    if (control & CPU_SET_32BIT) {
+        u32 *src = (u32 *)inSrc;
+        u32 *dest = (u32 *)inDest;
+
+        u32 *target = &dest[word_count];
+
+        if (control & CPU_SET_SRC_FIXED) {
+            while (dest < target) {
+                *dest++ = *src;
+            }
+        } else {
+            while (dest < target) {
+                *dest++ = *src++;
+            }
+        }
+    } else {
+        u16 *src = (u16 *)inSrc;
+        u16 *dest = (u16 *)inDest;
+
+        u16 *target = &dest[word_count];
+
+        if (control & CPU_SET_SRC_FIXED) {
+            while (dest < target) {
+                *dest++ = *src;
+            }
+        } else {
+            while (dest < target) {
+                *dest++ = *src++;
+            }
+        }
+    }
+}
 #endif
 
 #if L_CpuFastSet
-void CpuFastSet(const void *src, void *dest, u32 control) { }
+void CpuFastSet(const void *inSrc, void *inDest, u32 control)
+{
+    const u32 *src = inSrc;
+    const u32 *dest = inDest;
+    assert(((uintptr_t)src & 0x3) == 0); // should be aligned by 4
+    u32 word_count = control & 0x1FFFFF;
+
+    // Align by 8
+    word_count = ((word_count + 7) & ~0x7);
+
+    u32 *target = &dest[word_count];
+
+#if CPU_ARCH_X86
+    if (control & CPU_FAST_SET_SRC_FIXED) {
+        __m128i v = _mm_set_epi32(*src, *src, *src, *src);
+
+        // Store 4-byte source value, 32 bytes at a time.
+        while (dest < target) {
+            _mm_store_si128((__m128i *)dest, v);
+            dest += 4;
+            _mm_store_si128((__m128i *)dest, v);
+            dest += 4;
+        }
+    } else
+        while (dest < target) {
+            // Copy source to dest, 32bytes at a time.
+            _mm_store_si128((__m128i *)dest, _mm_load_si128((__m128i *)src));
+            dest += 4;
+            src += 4;
+            _mm_store_si128((__m128i *)dest, _mm_load_si128((__m128i *)src));
+            dest += 4;
+            src += 4;
+        }
+#else
+#error "Arch not implemented"
+#endif
+}
 #endif
 
 #if L_IntrWait
@@ -191,18 +266,34 @@ void HuffUnComp(void) { }
 #endif
 
 #if L_LZ77UnCompWram
+#define DO_UNSAFE_CONVERT
+#include "../tools/gbagfx/global.h"
+#include "../tools/gbagfx/lz.h"
+
 void LZ77UnCompWram(const void *src, void *dest) { }
 #endif
 
 #if L_LZ77UnCompVram
+#define DO_UNSAFE_CONVERT
+#include "../tools/gbagfx/global.h"
+#include "../tools/gbagfx/lz.h"
+
 void LZ77UnCompVram(const void *src, void *dest) { }
 #endif
 
 #if L_RLUnCompWram
+#define DO_UNSAFE_CONVERT
+#include "../tools/gbagfx/global.h"
+#include "../tools/gbagfx/rl.h"
+
 void RLUnCompWram(const void *src, void *dest) { }
 #endif
 
 #if L_RLUnCompVram
+#define DO_UNSAFE_CONVERT
+#include "../tools/gbagfx/global.h"
+#include "../tools/gbagfx/rl.h"
+
 void RLUnCompVram(const void *src, void *dest) { }
 #endif
 
