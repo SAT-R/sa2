@@ -336,7 +336,8 @@
     "execution": "cpp",
     "iomanip": "cpp",
     "packed.h": "c",
-    "endings.h": "c"
+    "endings.h": "c",
+    "team_play.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
