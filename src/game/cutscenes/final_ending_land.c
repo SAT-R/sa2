@@ -57,7 +57,7 @@ struct FinalEndingLandCutScene {
     s32 unk5E0[7][2];
 
     // vramPtr
-    vu32 unk618;
+    void *unk618;
 };
 
 void sub_8093EDC(void);

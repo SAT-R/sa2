@@ -47,7 +47,7 @@ struct ExtraEndingCutScene {
     u16 unk396;
 
     // vramPtr
-    vu32 unk398;
+    void *unk398;
 
     s32 unk39C;
 

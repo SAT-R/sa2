@@ -65,7 +65,7 @@ struct FinalEndingFallCutScene {
     u32 unk47C[6];
 
     // vramPtr
-    vu32 unk494;
+    void *unk494;
 
     u8 unk498;
 }; /* 0x49C */
@@ -204,7 +204,7 @@ void CreateFinalEndingFallCutScene(void)
     {
         Sprite *s;
         s = &scene->unk80;
-        s->graphics.dest = (void *)OBJ_VRAM0;
+        s->graphics.dest = OBJ_VRAM0;
         scene->unk494 += gUnknown_080E1650[0].numTiles * 0x20;
         s->graphics.anim = gUnknown_080E1650[0].anim;
         s->variant = gUnknown_080E1650[0].variant;

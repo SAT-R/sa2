@@ -27,7 +27,7 @@ struct MissingChaosEmaraldsCutScene {
     s8 unkBF;
 
     u32 unkC0;
-    vu32 unkC4;
+    void *unkC4;
 };
 
 static const u16 sTilemapsPlayerNotifs[34] = {
@@ -137,7 +137,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
     {
         Sprite *s;
         s = &scene->unk80;
-        s->graphics.dest = (void *)OBJ_VRAM0;
+        s->graphics.dest = OBJ_VRAM0;
         if (scene->unkBD < 4) {
             scene->unkC4 += gUnknown_080E1CA0[0].numTiles * TILE_SIZE_4BPP;
             s->graphics.anim = gUnknown_080E1CA0[0].anim;

@@ -34,7 +34,7 @@ struct CreditsEndCutScene {
     u32 delayFrames;
     s16 congratsAnimFrame;
     // vram
-    vu32 unk16C;
+    void *unk16C;
     s32 unk170[3][2];
 }; /* size: 0x188 */
 
@@ -176,7 +176,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         {
             Sprite *s;
             s = &scene->unkC0;
-            s->graphics.dest = (void *)scene->unk16C;
+            s->graphics.dest = scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[0].numTiles * TILE_SIZE_4BPP);
             s->graphics.anim = gUnknown_080E12D0[0].anim;
             s->variant = gUnknown_080E12D0[0].variant;
@@ -197,7 +197,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         {
             Sprite *s;
             s = &scene->unkF0;
-            s->graphics.dest = (void *)scene->unk16C;
+            s->graphics.dest = scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[1].numTiles * TILE_SIZE_4BPP);
             s->graphics.anim = gUnknown_080E12D0[1].anim;
             s->variant = gUnknown_080E12D0[1].variant;
@@ -218,7 +218,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
         {
             Sprite *s;
             s = &scene->unk120;
-            s->graphics.dest = (void *)scene->unk16C;
+            s->graphics.dest = scene->unk16C;
             scene->unk16C += (gUnknown_080E12D0[2].numTiles * TILE_SIZE_4BPP);
             s->graphics.anim = gUnknown_080E12D0[2].anim;
             s->variant = gUnknown_080E12D0[2].variant;
