@@ -274,7 +274,7 @@ extern u16 gUnknown_03001944;
 extern u8 gUnknown_03001948;
 extern u16 gUnknown_0300194C;
 
-struct MapHeader **gTilemapsRef; // TODO: make this an array and add size
+extern struct MapHeader **gTilemapsRef; // TODO: make this an array and add size
 extern u8 gUnknown_03002280[4][4];
 extern u8 gUnknown_03004D80[16]; // TODO: Is this 4 (# backgrounds), instead of 16?
 
