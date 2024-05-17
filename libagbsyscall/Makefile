@@ -56,14 +56,14 @@ endif
 AS := $(PREFIX)as
 ifneq ($(PLATFORM),gba)
     CPP       := $(PREFIX)cpp
-    CPPFLAGS  := -I ../include
+    CPPFLAGS  := -I ../include -D PORTABLE=1
     CC1       := $(PREFIX)gcc
     CC1FLAGS  := -Wall -O2 -x c -S
     LD        := $(PREFIX)ld
 
     ifeq ($(CPU_ARCH),i386)
         # Use the more legible Intel dialect for x86, without underscores
-        CC1FLAGS += -masm=intel -fno-leading-underscore
+        CC1FLAGS += -masm=intel
     endif
 endif # PLATFORM != gba
 

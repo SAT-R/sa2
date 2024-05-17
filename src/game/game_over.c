@@ -243,7 +243,7 @@ void sub_80369D8(void)
         screen->unk0.bldCnt
             = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
         screen->unk0.bldAlpha = 0;
-        memset(gBgPalette, RGB(31, 7, 0), sizeof(gBgPalette));
+        memset(gBgPalette, RGB16(31, 7, 0), sizeof(gBgPalette));
         gFlags |= 0x1;
         gCurTask->main = sub_8036B30;
     }

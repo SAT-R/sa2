@@ -1,6 +1,8 @@
-	.align 2, 0
-	.global gAnimations
-gAnimations:
+.include "asm/macros/c_decl.inc"
+
+    .align 2, 0
+	.global C_DECL(gAnimations)
+C_DECL(gAnimations):
 	.4byte anim_sonic_idle
 	.4byte anim_0001
 	.4byte anim_0002

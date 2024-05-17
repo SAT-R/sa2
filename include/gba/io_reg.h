@@ -2,7 +2,7 @@
 #define GUARD_GBA_IO_REG_H
 
 #define IO_SIZE 0x400
-#ifndef PORTABLE
+#if !PORTABLE
 #define REG_BASE 0x4000000 // I/O register base address
 #else
 extern unsigned char REG_BASE[IO_SIZE];

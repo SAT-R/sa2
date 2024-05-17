@@ -15,13 +15,13 @@ typedef void (*VoidFn)(void);
 
 // helper macros
 
-#if ((defined PORTABLE) || (defined NON_MATCHING))
+#if (PORTABLE)
 #define BUG_FIX
 #define UB_FIX
-#endif
 
-#if ((defined PORTABLE) && !(defined NON_MATCHING))
+#if !(defined NON_MATCHING)
 #define NON_MATCHING 1
+#endif
 #endif
 
 #ifdef NON_MATCHING

@@ -45,7 +45,8 @@ static int s_memaccParam2;
 
 void PrintAgbHeader()
 {
-    std::fprintf(g_outputFile, "\t.include \"MPlayDef.s\"\n\n");
+    std::fprintf(g_outputFile, "\t.include \"asm/macros/c_decl.inc\"\n");
+    std::fprintf(g_outputFile, "\t.include \"sound/MPlayDef.s\"\n\n");
     std::fprintf(g_outputFile, "\t.equ\t%s_grp, voicegroup%03u\n", g_asmLabel.c_str(), g_voiceGroup);
     std::fprintf(g_outputFile, "\t.equ\t%s_pri, %u\n", g_asmLabel.c_str(), g_priority);
 
@@ -61,7 +62,7 @@ void PrintAgbHeader()
     std::fprintf(g_outputFile, "\t.equ\t%s_cmp, %u\n", g_asmLabel.c_str(), g_compressionEnabled);
 
     std::fprintf(g_outputFile, "\n\t.section .rodata\n");
-    std::fprintf(g_outputFile, "\t.global\t%s\n", g_asmLabel.c_str());
+    std::fprintf(g_outputFile, "\t.global\tC_DECL(%s)\n", g_asmLabel.c_str());
 
     std::fprintf(g_outputFile, "\t.align\t2\n");
 }
@@ -149,7 +150,7 @@ void PrintWord(const char *format, ...)
 {
     std::va_list args;
     va_start(args, format);
-    std::fprintf(g_outputFile, "\t .word\t");
+    std::fprintf(g_outputFile, "\t .4byte\t");
     std::vfprintf(g_outputFile, format, args);
     std::fprintf(g_outputFile, "\n");
     va_end(args);
@@ -548,18 +549,18 @@ void PrintAgbFooter()
 
     std::fprintf(g_outputFile, "\n%s\n", Comment("******************************************************").c_str());
     std::fprintf(g_outputFile, "\t.align\t2\n");
-    std::fprintf(g_outputFile, "\n%s:\n", g_asmLabel.c_str());
+    std::fprintf(g_outputFile, "\nC_DECL(%s):\n", g_asmLabel.c_str());
     std::fprintf(g_outputFile, "\t.byte\t%u\t%s\n", trackCount, Comment("NumTrks").c_str());
     std::fprintf(g_outputFile, "\t.byte\t%u\t%s\n", 0, Comment("NumBlks").c_str());
     std::fprintf(g_outputFile, "\t.byte\t%s_pri\t%s\n", g_asmLabel.c_str(), Comment("Priority").c_str());
     std::fprintf(g_outputFile, "\t.byte\t%s_rev\t%s\n", g_asmLabel.c_str(), Comment("Reverb").c_str());
     std::fprintf(g_outputFile, "\n");
-    std::fprintf(g_outputFile, "\t.word\t%s_grp\n", g_asmLabel.c_str());
+    std::fprintf(g_outputFile, "\t.4byte\t%s_grp\n", g_asmLabel.c_str());
     std::fprintf(g_outputFile, "\n");
 
     // track pointers
     for (int i = 1; i <= trackCount; i++)
-        std::fprintf(g_outputFile, "\t.word\t%s_%u\n", g_asmLabel.c_str(), i);
+        std::fprintf(g_outputFile, "\t.4byte\t%s_%u\n", g_asmLabel.c_str(), i);
 
     std::fprintf(g_outputFile, "\n\t.end\n");
 }

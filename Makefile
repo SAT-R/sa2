@@ -79,31 +79,33 @@ ASFLAGS  := --defsym $(GAME_REGION)=1
 # -P disables line markers
 # -I sets an include path
 # -D defines a symbol
-CPPFLAGS ?= -I tools/agbcc/include -iquote include -nostdinc -D $(GAME_REGION) -P
+CPPFLAGS ?= -iquote include -D $(GAME_REGION) -P
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
 # These have to(?) be defined this way, because
 # the C-preprocessor cannot resolve stuff like:
 # #if (PLATFORM == gba), where PLATFORM is defined via -D.
 ifeq ($(PLATFORM),gba)
-    CPPFLAGS += -D PLATFORM_GBA=1 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
+    CPPFLAGS += -D PLATFORM_GBA=1 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I tools/agbcc/include
+    CC1FLAGS += -fhex-asm
 else ifeq ($(CPU_ARCH),arm)
     CPPFLAGS += -D PLATFORM_GBA=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
 else
-    CPPFLAGS += -D PLATFORM_GBA=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0
+    CPPFLAGS += -D PLATFORM_GBA=0 -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
 endif
 
 ifeq ($(CPU_ARCH),arm)
 	ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
-	CC1FLAGS += -fhex-asm -mthumb-interwork
+	CC1FLAGS += -mthumb-interwork
 ifeq ($(THUMB_SUPPORT),1)
 	ASFLAGS  += -mthumb-interwork
 	CC1FLAGS += -mthumb-interwork
 endif
+
 else
 ifeq ($(CPU_ARCH),i386)
     # Use the more legible Intel dialect for x86, without underscores
-    CC1FLAGS += -masm=intel -fno-leading-underscore
+    CC1FLAGS += -masm=intel
 endif
     # Allow file input through stdin on modern GCC and set it to "compile only"
 	CC1FLAGS += -x c -S
@@ -116,14 +118,18 @@ else
 endif
 
 ifeq ($(PORTABLE),1)
-    CPPFLAGS += -D PORTABLE=1    
+    CPPFLAGS += -D PORTABLE=1
+else
+    CPPFLAGS += -D PORTABLE=0
 endif
 
 ifeq ($(NON_MATCHING),0)
     ASFLAGS += --defsym NON_MATCHING=0
 else
     ASFLAGS += --defsym NON_MATCHING=1
-    CPPFLAGS += -D NON_MATCHING=1
+
+# TODO: We use "#if(n)def NON_MATCHING a lot, maybe we should switch to "#if (!)NON_MATCHING"
+#    CPPFLAGS += -D NON_MATCHING=1
 endif
 
 ifeq ($(ENABLE_DECOMP_CREDITS),0)
@@ -179,7 +185,7 @@ else
 # MacOS sed command is different to Linux
 SEDFLAGS :=
 UNAME := $(shell uname)
-ifeq ($(UNAME),Dariwn)
+ifeq ($(UNAME),Darwin)
 	SEDFLAGS += -i ''
 endif
 
@@ -188,7 +194,6 @@ endif
 #  but on 64bit targets it would be .8byte / .quad
 #
 # sed expression script by Kurausukun
-
 ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
 endif
 
@@ -223,7 +228,11 @@ TILESETS_SUBDIR = graphics/tilesets/
 
 $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_BUILDDIR) $(SONG_BUILDDIR) $(MID_BUILDDIR))
 
+ifeq ($(PLATFORM),gba)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
+else
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
+endif
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
 ifeq ($(CPU_ARCH),arm)
@@ -262,10 +271,6 @@ $(C_BUILDDIR)/lib/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 $(C_BUILDDIR)/lib/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 endif
 
-ifeq ($(DINFO),1)
-override CC1FLAGS += -g
-endif
-
 #### Main Targets ####
 
 MAKEFLAGS += --no-print-directory
@@ -294,7 +299,9 @@ tool_libs:
 	@$(MAKE) -C tools/_shared
 
 compare: rom
+ifeq ($(PLATFORM),gba)
 	$(SHA1) $(BUILD_NAME).sha1
+endif
 
 clean: tidy clean-tools
 	@$(MAKE) clean -C chao_garden
@@ -363,15 +370,22 @@ PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
 $(PROCESSED_LDSCRIPT): $(LDSCRIPT)
 	$(CPP) $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
 
+
 $(ELF): $(OBJS) $(PROCESSED_LDSCRIPT) libagbsyscall
+ifeq ($(PLATFORM),gba)
 	@echo "$(LD) -T $(LDSCRIPT) -Map $(MAP) <objects> <lib>"
-    # NOTE: It is important to pass the CPU arch through -A
-    # because the identifier for x86 (being i386) gets converted to a 1 by the preprocessor because it starts with an i...
 	@cd $(OBJ_DIR) && $(LD) -A CPU_ARCH -T $(LDSCRIPT) -Map "$(ROOT_DIR)/$(MAP)" $(OBJS_REL) "$(ROOT_DIR)/tools/agbcc/lib/libgcc.a" "$(ROOT_DIR)/tools/agbcc/lib/libc.a" -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -o $(ROOT_DIR)/$@
+else
+	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
+endif
 
 $(ROM): $(ELF)
+ifeq ($(PLATFORM),gba)
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
+else
+	$(OBJCOPY) -O pei-i386 $< $@
+endif
 
 ifeq ($(NODEP),1)
 $(OBJ_DIR)/src/%.o: c_dep :=
@@ -419,8 +433,8 @@ $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
-	@echo "$(AS) <flags> -I sound -o $@ $<"
-	@$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -I sound -o $@ -
+	@echo "$(AS) <flags> -o $@ $<"
+	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 
 japan: ; @$(MAKE) GAME_REGION=JAPAN

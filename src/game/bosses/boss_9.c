@@ -3,12 +3,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "game/bosses/common.h"
-
-typedef struct {
-    void *func;
-    void *ref;
-    u16 unk4;
-} TA53_Data0;
+#include "game/bosses/boss_9.h"
 
 typedef struct {
     u8 filler0[0x4];

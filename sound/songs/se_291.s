@@ -1,4 +1,5 @@
-	.include "MPlayDef.s"
+    .include "asm/macros/c_decl.inc"
+	.include "sound/MPlayDef.s"
 
 	.section .rodata
 
@@ -80,13 +81,13 @@ song0291_1:
 	.byte	FINE
 
 	.align 2
-	.global se_291
-se_291:
+	.global C_DECL(se_291)
+C_DECL(se_291):
 	.byte	1
 	.byte	0
 	.byte	20
 	.byte	128
 
-	.word	voicegroup005
+	.4byte	voicegroup005
 
-	.word	song0291_1
+	.4byte  song0291_1

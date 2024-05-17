@@ -179,7 +179,7 @@ static const u8 sGettingReadyAnimationDuration[NUM_CHARACTERS]
         [CHARACTER_KNUCKLES] = 40,
         [CHARACTER_AMY] = 40 };
 
-// Each byte represents one RGB channel(0-31)
+// Each byte represents one RGB channel (0-31)
 static const u8 gUnknown_080D6FF5[][3] = {
     { 0x00, 0x17, 0x06 }, { 0x16, 0x16, 0x16 }, { 0x00, 0x04, 0x13 },
     { 0x00, 0x08, 0x1D }, { 0x00, 0x00, 0x0C }, { 0x00, 0x13, 0x00 },
@@ -216,9 +216,9 @@ static const u8 gUnknown_080D6FF5[][3] = {
 };
 
 const u16 sZoneLoadingCharacterColors[NUM_CHARACTERS] = {
-    [CHARACTER_SONIC] = RGB(0, 0, 31),  [CHARACTER_CREAM] = RGB(31, 18, 0),
-    [CHARACTER_TAILS] = RGB(31, 27, 0), [CHARACTER_KNUCKLES] = RGB(31, 3, 0),
-    [CHARACTER_AMY] = RGB(31, 17, 21),
+    [CHARACTER_SONIC] = RGB16(0, 0, 31),  [CHARACTER_CREAM] = RGB16(31, 18, 0),
+    [CHARACTER_TAILS] = RGB16(31, 27, 0), [CHARACTER_KNUCKLES] = RGB16(31, 3, 0),
+    [CHARACTER_AMY] = RGB16(31, 17, 21),
 };
 
 const u16 sScreenPositions_ZoneLoadingActLetters[4][2] = {
@@ -698,14 +698,14 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
                 u8 g = ((gUnknown_080D6FF5[index][1] * frameCounter) / 16u);
                 u8 b = ((gUnknown_080D6FF5[index][2] * frameCounter) / 16u);
 
-                gObjPalette[i] = RGB(r, g, b);
+                gObjPalette[i] = RGB16(r, g, b);
 
                 if (gCheese != NULL) {
                     r = (gUnknown_080D6FF5[index + 80][0] * frameCounter) / 16u;
                     g = ((gUnknown_080D6FF5[index + 80][1] * frameCounter) / 16u);
                     b = ((gUnknown_080D6FF5[index + 80][2] * frameCounter) / 16u);
 
-                    gObjPalette[i + 0xE0] = RGB(r, g, b);
+                    gObjPalette[i + 0xE0] = RGB16(r, g, b);
                 }
             }
         } else {
@@ -719,7 +719,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
                         u8 g = ((gUnknown_080D6FF5[index][1] * frameCounter) / 16u);
                         u8 b = ((gUnknown_080D6FF5[index][2] * frameCounter) / 16u);
 
-                        gObjPalette[i] = RGB(r, g, b);
+                        gObjPalette[i] = RGB16(r, g, b);
                     }
                 }
             }
@@ -736,7 +736,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
                     g = ((gUnknown_080D6FF5[index + 80][1] * frameCounter) / 16u);
                     b = ((gUnknown_080D6FF5[index + 80][2] * frameCounter) / 16u);
 
-                    gObjPalette[i + 0xE0] = RGB(r, g, b);
+                    gObjPalette[i + 0xE0] = RGB16(r, g, b);
                 }
             }
         }

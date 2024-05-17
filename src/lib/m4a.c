@@ -255,7 +255,7 @@ void MPlayExtender(struct CgbChannel *cgbChans)
     soundInfo->ident = ident;
 }
 
-#ifndef PORTABLE
+#if PLATFORM_GBA
 void MusicPlayerJumpTableCopy(void) { asm("swi 0x2A"); }
 #else
 // TODO: Implement
@@ -271,7 +271,10 @@ void ClearChain(void *x)
 void Clear64byte(void *x)
 {
     void (*func)(void *) = *(&gMPlayJumpTable[35]);
-    func(x);
+#if PORTABLE
+    if (func != NULL)
+#endif
+        func(x);
 }
 
 void SoundInit(struct SoundInfo *soundInfo)
@@ -331,10 +334,14 @@ void SampleFreqSet(u32 freq)
     // cycles per LCD fresh 280896
     REG_TM0CNT_L = -(280896 / soundInfo->pcmSamplesPerVBlank);
     m4aSoundVSyncOn();
+#if !PORTABLE
     while (*(vu8 *)REG_ADDR_VCOUNT == 159)
         ;
     while (*(vu8 *)REG_ADDR_VCOUNT != 159)
         ;
+#else
+    REG_VCOUNT = DISPLAY_HEIGHT;
+#endif
     REG_TM0CNT_H = TIMER_ENABLE | TIMER_1CLK;
 }
 

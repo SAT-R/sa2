@@ -18,14 +18,14 @@
 #define ALIGNED(n) __attribute__((aligned(n)))
 // #endif
 
-#ifdef PORTABLE
+#if PORTABLE
 // NOTE(Jace): For this to work either "gba/types.h" needs to be
 //             included here, or this has to go into a different file.
 //             Including types.h here, has the sideeffect of not generating
 //             a non-matching ROM, and increasing the GBA ROM size by ~24 kilobytes
 extern struct SoundInfo *SOUND_INFO_PTR;
 extern uint16_t INTR_CHECK;
-extern void *INTR_VECTOR;
+extern void (*INTR_VECTOR)(void);
 #else
 // NOTE(Jace): I tried replacing these altogether,
 //             but that resulted in a nonmatching ROM
@@ -82,16 +82,16 @@ extern void *INTR_VECTOR;
 
 #define TOTAL_OBJ_TILE_COUNT 1024
 
-#define RGB(r, g, b) ((r) | ((g) << 5) | ((b) << 10))
+#define RGB16(r, g, b) ((r) | ((g) << 5) | ((b) << 10))
 
-#define RGB_BLACK RGB(0, 0, 0)
-#define RGB_WHITE RGB(31, 31, 31)
-#define RGB_RED RGB(31, 0, 0)
-#define RGB_GREEN RGB(0, 31, 0)
-#define RGB_BLUE RGB(0, 0, 31)
-#define RGB_YELLOW RGB(31, 31, 0)
-#define RGB_MAGENTA RGB(31, 0, 31)
-#define RGB_CYAN RGB(0, 31, 31)
+#define RGB_BLACK RGB16(0, 0, 0)
+#define RGB_WHITE RGB16(31, 31, 31)
+#define RGB_RED RGB16(31, 0, 0)
+#define RGB_GREEN RGB16(0, 31, 0)
+#define RGB_BLUE RGB16(0, 0, 31)
+#define RGB_YELLOW RGB16(31, 31, 0)
+#define RGB_MAGENTA RGB16(31, 0, 31)
+#define RGB_CYAN RGB16(0, 31, 31)
 #define RGB_WHITEALPHA (RGB_WHITE | 0x8000)
 
 #define WIN_RANGE(a, b) (((a) << 8) | (b))
