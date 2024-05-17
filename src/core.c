@@ -36,7 +36,7 @@ struct BlendRegs gBldRegs ALIGNED(8) = {};
 u8 gOamFreeIndex = 0;
 struct Task gEmptyTask ALIGNED(16) = {};
 BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(8) = {};
-u32 gVramHeapStartAddr = 0;
+void *gVramHeapStartAddr = NULL;
 u16 gUnknown_03001944 ALIGNED(4) = 0;
 u8 gUnknown_03001948 ALIGNED(4) = 0;
 u16 gUnknown_0300194C ALIGNED(4) = 0;
@@ -356,7 +356,10 @@ void GameInit(void)
 
 void GameLoop(void)
 {
-    while (TRUE) {
+#if !PORTABLE
+    while (TRUE)
+#endif
+    {
         gExecSoundMain = FALSE;
         if (!(gFlags & FLAGS_4000)) {
             m4aSoundMain();

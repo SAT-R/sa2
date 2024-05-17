@@ -147,7 +147,7 @@ void sub_8038E20(void);
 
 #define NEXT_SEQUENCE_ANIM(actor, s)                                                    \
     ({                                                                                  \
-        const TileInfo *animSet, *tileInfo;                                             \
+        const TileInfoPtr *animSet, *tileInfo;                                          \
         (actor)->animFrame                                                              \
             = gUnknown_080D7704[(actor)->character][++(actor)->sequence];               \
                                                                                         \
@@ -189,14 +189,14 @@ void sub_8038E20(void);
         }                                                                               \
     })
 
-static const TileInfo gUnknown_080D7540[] = {
+static const TileInfoPtr gUnknown_080D7540[] = {
     { OBJ_VRAM0 + 0x4000, 839, 0 },
     { OBJ_VRAM0 + 0x4000, 839, 1 },
     { OBJ_VRAM0 + 0x3800, 838, 0 },
     { OBJ_VRAM0 + 0x3C00, 838, 1 },
 };
 
-static const TileInfo gUnknown_080D7560[] = {
+static const TileInfoPtr gUnknown_080D7560[] = {
     { OBJ_VRAM0, 844, 0 },
     { OBJ_VRAM0 + 0x800, SA2_ANIM_ANIMAL_ROBIN, 0 },
     { OBJ_VRAM0 + 0x920, SA2_ANIM_ANIMAL_PEACOCK, 0 },
@@ -204,54 +204,54 @@ static const TileInfo gUnknown_080D7560[] = {
     { OBJ_VRAM0, 844, 1 },
 };
 
-static const TileInfo gUnknown_080D7588[] = {
-    { OBJ_VRAM0, 9, 2 }, { 0x0, 9, 1 },   { 0x0, 835, 0 }, { 0x0, 835, 1 },
-    { 0x0, 835, 2 },     { 0x0, 835, 3 }, { 0x0, 835, 5 }, { 0x0, 835, 5 },
-    { 0x0, 836, 0 },     { 0x0, 836, 1 }, { 0x0, 836, 2 }, { 0x0, 836, 3 },
+static const TileInfoPtr gUnknown_080D7588[] = {
+    { OBJ_VRAM0, 9, 2 }, { NULL, 9, 1 },   { NULL, 835, 0 }, { NULL, 835, 1 },
+    { NULL, 835, 2 },    { NULL, 835, 3 }, { NULL, 835, 5 }, { NULL, 835, 5 },
+    { NULL, 836, 0 },    { NULL, 836, 1 }, { NULL, 836, 2 }, { NULL, 836, 3 },
 };
-static const TileInfo gUnknown_080D75E8[] = {
+static const TileInfoPtr gUnknown_080D75E8[] = {
     { OBJ_VRAM0 + 0x1000, 191, 2 },
-    { 0x0, 191, 1 },
-    { 0x0, 842, 0 },
-    { 0x0, 842, 1 },
-    { 0x0, 842, 2 },
-    { 0x0, 842, 3 },
-    { 0x0, 842, 4 },
-    { 0x0, 842, 4 },
+    { NULL, 191, 1 },
+    { NULL, 842, 0 },
+    { NULL, 842, 1 },
+    { NULL, 842, 2 },
+    { NULL, 842, 3 },
+    { NULL, 842, 4 },
+    { NULL, 842, 4 },
 };
-static const TileInfo gUnknown_080D7628[] = {
+static const TileInfoPtr gUnknown_080D7628[] = {
     { OBJ_VRAM0 + 0x1800, 282, 2 },
-    { 0x0, 282, 1 },
-    { 0x0, 834, 0 },
-    { 0x0, 834, 1 },
-    { 0x0, 834, 2 },
-    { 0x0, 834, 3 },
-    { 0x0, 834, 4 },
-    { 0x0, 834, 4 },
+    { NULL, 282, 1 },
+    { NULL, 834, 0 },
+    { NULL, 834, 1 },
+    { NULL, 834, 2 },
+    { NULL, 834, 3 },
+    { NULL, 834, 4 },
+    { NULL, 834, 4 },
 };
-static const TileInfo gUnknown_080D7668[] = {
+static const TileInfoPtr gUnknown_080D7668[] = {
     { OBJ_VRAM0 + 0x800, 840, 2 },
-    { 0x0, 840, 1 },
-    { 0x0, 840, 0 },
-    { 0x0, 841, 0 },
-    { 0x0, 841, 1 },
-    { 0x0, 841, 2 },
-    { 0x0, 841, 3 },
-    { 0x0, 841, 4 },
-    { 0x0, 841, 4 },
+    { NULL, 840, 1 },
+    { NULL, 840, 0 },
+    { NULL, 841, 0 },
+    { NULL, 841, 1 },
+    { NULL, 841, 2 },
+    { NULL, 841, 3 },
+    { NULL, 841, 4 },
+    { NULL, 841, 4 },
 };
-static const TileInfo gUnknown_080D76B0[] = {
+static const TileInfoPtr gUnknown_080D76B0[] = {
     { OBJ_VRAM0 + 0x2800, SA2_ANIM_CHEESE_SIDEWAYS, 0 },
-    { 0x0, SA2_ANIM_CHEESE_SIDEWAYS, 0 },
-    { 0x0, 843, 0 },
-    { 0x0, SA2_ANIM_CHEESE_SHOCKED, 0 },
-    { 0x0, SA2_ANIM_CHEESE_SHOCKED, 1 },
-    { 0x0, 843, 1 },
-    { 0x0, 843, 2 },
-    { 0x0, 843, 2 },
+    { NULL, SA2_ANIM_CHEESE_SIDEWAYS, 0 },
+    { NULL, 843, 0 },
+    { NULL, SA2_ANIM_CHEESE_SHOCKED, 0 },
+    { NULL, SA2_ANIM_CHEESE_SHOCKED, 1 },
+    { NULL, 843, 1 },
+    { NULL, 843, 2 },
+    { NULL, 843, 2 },
 };
 
-static const TileInfo *const gUnknown_080D76F0[] = {
+static const TileInfoPtr *const gUnknown_080D76F0[] = {
     gUnknown_080D7588, gUnknown_080D7668, gUnknown_080D75E8,
     gUnknown_080D7628, gUnknown_080D76B0,
 };
@@ -326,7 +326,7 @@ void CreateTrueArea53Intro(void)
     s = &intro->vanillaSprite;
     s->x = 0;
     s->y = 0;
-    s->graphics.dest = (void *)gUnknown_080D7560[0].numTiles;
+    s->graphics.dest = gUnknown_080D7560[0].tiles;
     s->graphics.anim = gUnknown_080D7560[4].anim;
     s->variant = gUnknown_080D7560[4].variant;
     s->unk1A = SPRITE_OAM_ORDER(4);
@@ -342,7 +342,7 @@ void CreateTrueArea53Intro(void)
         s = &intro->birdSprites[i];
         s->x = 0;
         s->y = 0;
-        s->graphics.dest = (void *)gUnknown_080D7560[i + 1].numTiles;
+        s->graphics.dest = gUnknown_080D7560[i + 1].tiles;
         s->graphics.anim = gUnknown_080D7560[i + 1].anim;
         s->variant = gUnknown_080D7560[i + 1].variant;
         s->unk1A = SPRITE_OAM_ORDER(4);
@@ -394,7 +394,7 @@ void CreateOrbitingEmeraldsSequence(void)
         emerald = &sequence->emerald[i];
         emerald->x = 0;
         emerald->y = 0;
-        emerald->graphics.dest = (void *)OBJ_VRAM0 + 0x3000 + (i * 0x200);
+        emerald->graphics.dest = OBJ_VRAM0 + 0x3000 + (i * 0x200);
         emerald->graphics.anim = 0x345;
         emerald->variant = i;
         emerald->prevVariant = -1;
@@ -579,7 +579,7 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     s = &spark->s;
     s->x = 0;
     s->y = 0;
-    s->graphics.dest = (void *)gUnknown_080D7540[type].numTiles;
+    s->graphics.dest = gUnknown_080D7540[type].tiles;
     s->graphics.anim = gUnknown_080D7540[type].anim;
     s->variant = gUnknown_080D7540[type].variant;
     s->prevVariant = -1;
@@ -611,7 +611,7 @@ void Task_SuperSonicSpark(void)
 void CreateActor(u8 character)
 {
     Sprite *s;
-    const TileInfo *tileInfo;
+    const TileInfoPtr *tileInfo;
     struct Task *t
         = TaskCreate(gUnknown_080D7970[character], sizeof(IntroActor), 0x7000, 0, NULL);
     IntroActor *actor = TASK_DATA(t);
@@ -632,7 +632,7 @@ void CreateActor(u8 character)
     s->x = Q(gUnknown_080D77D0[actor->character][0]);
     s->y = Q(gUnknown_080D77D0[actor->character][1]);
 
-    s->graphics.dest = (void *)tileInfo->numTiles;
+    s->graphics.dest = tileInfo->tiles;
     s->graphics.anim = tileInfo->anim;
     s->variant = tileInfo->variant;
     s->prevVariant = -1;
@@ -654,7 +654,7 @@ void CreateActor(u8 character)
         s->x = 0;
         s->y = 0;
 
-        s->graphics.dest = (void *)gUnknown_080D7540[character].numTiles;
+        s->graphics.dest = gUnknown_080D7540[character].tiles;
         s->graphics.anim = gUnknown_080D7540[character].anim;
         s->variant = gUnknown_080D7540[character].variant;
         s->prevVariant = -1;
@@ -884,7 +884,7 @@ void sub_8037E08(void)
         gBldRegs.bldY = 0;
         NEXT_SEQUENCE_ANIM(actor, s);
 
-        sprite2->graphics.dest = (void *)gUnknown_080D7540[1].numTiles;
+        sprite2->graphics.dest = gUnknown_080D7540[1].tiles;
         sprite2->graphics.anim = gUnknown_080D7540[1].anim;
         sprite2->variant = gUnknown_080D7540[1].variant;
         sprite2->prevVariant = -1;
@@ -1369,7 +1369,7 @@ void Task_IntroPanIn(void)
             gCurTask->main = sub_80393A4;
 
             s = &intro->vanillaSprite;
-            s->graphics.dest = (void *)gUnknown_080D7560[0].numTiles;
+            s->graphics.dest = gUnknown_080D7560[0].tiles;
             s->graphics.anim = gUnknown_080D7560[0].anim;
             s->variant = gUnknown_080D7560[0].variant;
             s->unk10 = 0;
