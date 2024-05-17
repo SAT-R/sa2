@@ -54,7 +54,11 @@ void TaskDestructor_EggFrogMain(struct Task *);
 extern const u16 *const gUnknown_080D859C[];
 extern const TileInfo gUnknown_080D8108[];
 typedef struct {
-    u8 unk0[6];
+    u8 unk0[2];
+    u8 unk2;
+    u8 unk3;
+    u8 unk4;
+    u8 unk5;
     u8 unk6;
     u8 unk7;
     u8 filler8[6];
@@ -63,16 +67,33 @@ typedef struct {
     u8 filler0[2];
     u8 unk12;
     u8 unk13;
-    u8 filler1[6];
+    u8 unk14;
+    u8 unk15;
+    u8 unk16;
+    u8 unk17;
+    u8 filler1[2];
+
     u8 unk1A;
     u8 unk1B;
-    u8 filler2[6];
+    u8 unk1C;
+    u8 unk1D;
+    u8 unk1E;
+    u8 unk1F;
+    u8 filler2[2];
     u8 unk22;
     u8 unk23;
-    u8 filler3[10];
+    u8 filler3[6];
+    u8 unk2A;
+    u8 unk2B;
+    u8 unk2C;
+    u8 unk2D;
     u8 unk2E;
     u8 unk2F;
-    u8 unk[6];
+    u8 unk[2];
+    u8 unk32;
+    u8 unk33;
+    u8 unk34;
+    u8 unk35;
     u8 unk36;
     u8 unk37;
     u16 unk38;
@@ -575,7 +596,7 @@ void sub_8048858(EggFrog *boss)
     }
 }
 
-void sub_8048C7C(EggFrog *);
+u8 sub_8048C7C(EggFrog *);
 void sub_80493F8(EggFrog *, s32 x, s32 y, u8);
 
 void sub_804893C(EggFrog *boss)
@@ -596,5 +617,127 @@ void sub_804893C(EggFrog *boss)
             boss->unk17 = 0;
         }
         boss->speedY = -Q(3.5);
+    }
+}
+
+void sub_80489B0(EggFrog *boss)
+{
+    sub_8048C7C(boss);
+    if (boss->unk66 == 0 && boss->unk5C > 0x35AC) {
+        m4aSongNumStart(SE_257);
+        boss->unk66 = 1;
+    }
+
+    if (boss->unk5C > 0x43FF) {
+        m4aSongNumStart(SE_257);
+        if (boss->unk1A == 0) {
+            boss->unk1B = 7;
+            boss->unk5C &= 0xFFF;
+            boss->unk60 = gUnknown_080D86D4[7];
+            boss->unk18 = gUnknown_080D8710.unk1E;
+            boss->unk19 = gUnknown_080D8710.unk1F;
+        } else {
+            boss->unk1B = 5;
+            boss->unk5C &= 0xFFF;
+            boss->unk60 = gUnknown_080D86D4[5];
+            boss->unk18 = gUnknown_080D8710.unk16;
+            boss->unk19 = gUnknown_080D8710.unk17;
+        }
+    }
+}
+
+void sub_8048A4C(EggFrog *boss)
+{
+    if (sub_8048C7C(boss) != 0) {
+        if (gCourseTime & 3) {
+            boss->unk17 = 0;
+            boss->unk1B = 1;
+            boss->unk5C &= 0xFFF;
+            boss->unk60 = gUnknown_080D86D4[1];
+            boss->unk18 = gUnknown_080D8710.unk6;
+            boss->unk19 = gUnknown_080D8710.unk7;
+        } else {
+            boss->unk1B = 12;
+            boss->unk5C &= 0xFFF;
+            boss->unk60 = gUnknown_080D86D4[12];
+            boss->unk18 = gUnknown_080D8710.unk32;
+            boss->unk19 = gUnknown_080D8710.unk33;
+        }
+        boss->speedX = 0x500;
+
+    } else {
+        boss->speedX -= 0xC;
+    }
+}
+
+void sub_8048AD8(EggFrog *boss)
+{
+    sub_8048C7C(boss);
+
+    if (boss->unk5C > 0x23FF) {
+        boss->unk66 = 0;
+        boss->unk1B = 10;
+        boss->unk5C &= 0xFFF;
+        boss->unk60 = gUnknown_080D86D4[10];
+        boss->unk18 = gUnknown_080D8710.unk2A;
+        boss->unk19 = gUnknown_080D8710.unk2B;
+    }
+
+    if (boss->unk5C > 0x1FFF) {
+        if (boss->unk17 != 0) {
+            sub_80493F8(boss, boss->x, boss->y, 1);
+            boss->unk17 = 0;
+        }
+        boss->speedY = 0x380;
+    }
+}
+
+void sub_8048B50(EggFrog *boss)
+{
+    sub_8048C7C(boss);
+    if (boss->unk66 == 0 && boss->unk5C > 0x35AC) {
+        m4aSongNumStart(SE_257);
+        boss->unk66 = 1;
+    }
+
+    if (boss->unk5C > 0x43FF) {
+        m4aSongNumStart(SE_257);
+        if (boss->unk1A == 0) {
+            boss->unk1B = 0;
+            boss->unk5C &= 0xFFF;
+            boss->unk60 = gUnknown_080D86D4[0];
+            boss->unk18 = gUnknown_080D8710.unk2;
+            boss->unk19 = gUnknown_080D8710.unk3;
+        } else {
+            boss->unk1B = 12;
+            boss->unk5C &= 0xFFF;
+            boss->unk60 = gUnknown_080D86D4[12];
+            boss->unk18 = gUnknown_080D8710.unk32;
+            boss->unk19 = gUnknown_080D8710.unk33;
+        }
+    }
+}
+
+void sub_8048BF0(EggFrog *boss)
+{
+    if (sub_8048C7C(boss) != 0) {
+        if (gCourseTime & 3) {
+            boss->unk17 = 0;
+            boss->unk1B = 8;
+            boss->unk5C &= 0xFFF;
+            boss->unk60 = gUnknown_080D86D4[8];
+            boss->unk18 = gUnknown_080D8710.unk22;
+            boss->unk19 = gUnknown_080D8710.unk23;
+        } else {
+            boss->unk1B = 5;
+            boss->unk5C &= 0xFFF;
+            boss->unk60 = gUnknown_080D86D4[5];
+            boss->unk18 = gUnknown_080D8710.unk16;
+            boss->unk19 = gUnknown_080D8710.unk17;
+        }
+        boss->speedX = 0x500;
+
+    } else {
+        boss->speedX -= 0xC;
     }
 }
