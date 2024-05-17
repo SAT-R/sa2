@@ -323,11 +323,7 @@ void GameInit(void)
 
     VramResetHeapState();
 
-#if !PORTABLE
     errorIdentifying = IdentifyFlash();
-#else
-    errorIdentifying = TRUE;
-#endif
     if (errorIdentifying) {
         gFlags |= FLAGS_NO_FLASH_MEMORY;
     } else {

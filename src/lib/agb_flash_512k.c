@@ -11,10 +11,14 @@ const struct FlashSetupInfo *const gSetup512KInfos[] = {
 
 u16 IdentifyFlash(void)
 {
+
     u16 result;
     u16 flashId;
     const struct FlashSetupInfo *const *setupInfo;
 
+#if PORTABLE
+    result = 1;
+#else
     REG_WAITCNT = (REG_WAITCNT & ~WAITCNT_SRAM_MASK) | WAITCNT_SRAM_8;
 
     flashId = ReadFlashId();
@@ -40,6 +44,7 @@ u16 IdentifyFlash(void)
     WaitForFlashWrite = (*setupInfo)->WaitForFlashWrite;
     gFlashMaxTime = (*setupInfo)->maxTime;
     gFlash = &(*setupInfo)->type;
+#endif
 
     return result;
 }
