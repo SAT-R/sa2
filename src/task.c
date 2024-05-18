@@ -9,7 +9,7 @@ static void TaskMainDummy2(void);
 static void TaskMainDummy3(void);
 static void IwramFree(void *);
 static struct Task *TaskGetNextSlot(void);
-
+#undef TaskCreate
 u32 TasksInit(void)
 {
     struct Task *cur;
@@ -40,6 +40,9 @@ u32 TasksInit(void)
     cur->parent = (TaskPtr32)NULL;
     cur->prev = (TaskPtr32)NULL;
     cur->next = (TaskPtr32)TaskGetNextSlot();
+#if PORTABLE
+    cur->name = "TaskMainDummy1";
+#endif
 
     if (TASK_IS_NULL((void *)TASK_PTR(cur->next))) {
         return 0;
@@ -52,10 +55,16 @@ u32 TasksInit(void)
     cur->flags = 0;
     cur->parent = 0;
     cur->next = 0;
+#if PORTABLE
+    cur->name = "TaskMainDummy2";
+#endif
     gEmptyTask.parent = 0;
     gEmptyTask.prev = 0;
     gEmptyTask.next = 0;
     gEmptyTask.data = (IwramData)(uintptr_t)iwram_end;
+#if PORTABLE
+    gEmptyTask.name = NULL;
+#endif
     // initialize IWRAM heap -- a huge node
     heapRoot = (struct IwramNode *)&gIwramHeap[0];
     heapRoot->next = 0;
@@ -63,8 +72,13 @@ u32 TasksInit(void)
     return 1;
 }
 
+#if PORTABLE
+struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
+                        TaskDestructor taskDestructor, const char *name)
+#else
 struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
                         TaskDestructor taskDestructor)
+#endif
 {
     struct Task *slow;
     struct Task *task;
@@ -97,6 +111,9 @@ struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
     task->unk18 = 0;
     task->data = (IwramData)(uintptr_t)IwramMalloc(structSize);
     task->parent = (TaskPtr32)gCurTask;
+#if PORTABLE
+    task->name = name;
+#endif
 
     // insert the task
     slow = gTaskPtrs[0];
@@ -119,6 +136,9 @@ void TaskDestroy(struct Task *task)
 {
     TaskPtr32 next, prev;
     if (!(task->flags & TASK_DESTROY_DISABLED)) {
+#if PORTABLE
+        printf("Destroying Task '%s'\n", task->name);
+#endif
         prev = TASK_PTR(task->prev);
         next = TASK_PTR(task->next);
 
@@ -193,8 +213,22 @@ void TasksExec(void)
     gNextTask = NULL;
 }
 
+// TEMP: IwramMalloc/Free crash currently.
+//       (Might be because of missing DMAs?)
+#include <malloc.h>
+#include <assert.h>
+
 void *IwramMalloc(u16 req)
 {
+#if PORTABLE
+    if (req == 0) {
+        return NULL;
+    }
+
+    void *result = malloc(req);
+    assert(result != NULL);
+    return result;
+#else
     struct IwramNode *cur, *next;
     u16 size = req;
 
@@ -205,14 +239,14 @@ void *IwramMalloc(u16 req)
         return 0;
     }
 
-    size = (size << 2) + sizeof(struct IwramNode);
+    size = (size << 2) + offsetof(struct IwramNode, space);
     cur = (struct IwramNode *)&gIwramHeap[0];
 
     while (1) {
         s16 sizeSigned = size;
         if (sizeSigned <= cur->state) {
             if (sizeSigned != cur->state) {
-                s16 offset = size + sizeof(struct IwramNode);
+                s16 offset = size + offsetof(struct IwramNode, space);
                 if (offset > cur->state) {
                     if (TASK_IS_NULL((void *)IWRAM_PTR(cur->next))) {
                         return NULL;
@@ -236,10 +270,14 @@ void *IwramMalloc(u16 req)
         }
         cur = (struct IwramNode *)TASK_PTR(cur->next);
     };
+#endif
 }
 
 static void IwramFree(void *p)
 {
+#if PORTABLE
+    // if(p) free(p);
+#else
     struct IwramNode *node = p, *fast;
 #ifndef NON_MATCHING
     register struct IwramNode *slow asm("r1");
@@ -274,6 +312,7 @@ static void IwramFree(void *p)
             node->next = fast->next;
         }
     }
+#endif
 }
 
 /* The function is probably for cleaning up the IWRAM nodes, but it's not working. */
