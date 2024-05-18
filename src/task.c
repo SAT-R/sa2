@@ -276,7 +276,7 @@ void *IwramMalloc(u16 req)
 static void IwramFree(void *p)
 {
 #if PORTABLE
-    // if(p) free(p);
+    if(p) free(p);
 #else
     struct IwramNode *node = p, *fast;
 #ifndef NON_MATCHING

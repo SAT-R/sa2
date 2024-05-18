@@ -10,8 +10,14 @@ void EwramInitHeap(void)
     root->state = sizeof(gEwramHeap);
 }
 
+// TEMP: EwramMalloc/Free can crash right now
+//       (Maybe because of DMAs?)
+#include <malloc.h>
 void *EwramMalloc(u32 req)
 {
+#if PORTABLE
+    return malloc(req);
+#else
     struct EwramNode *node;
     s32 requestedSpace = req;
 
@@ -58,10 +64,14 @@ void *EwramMalloc(u32 req)
         }
     }
     return ewram_end;
+#endif
 }
 
 void EwramFree(void *p)
 {
+#if PORTABLE
+    free(p);
+#else
     struct EwramNode *node, *slow, *fast, *tmp;
 
     if (p && ewram_end != p) {
@@ -96,4 +106,5 @@ void EwramFree(void *p)
             node->next = tmp->next;
         }
     }
+#endif
 }
