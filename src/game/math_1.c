@@ -26,36 +26,34 @@ typedef struct {
     u32 unk1C;
 } UNK_8085D14;
 
-// // p1 is unknown
-// void sub_80859F4(void *p1, u16 p2)
-// {
-//     UNK_8085D14 *thing = (p1 + ((p2 >> 0xC) * 2));
+extern const u16 gUnknown_080E0290[];
 
-//     u16 unclamped = (p2 & 0xFFF);
-//     u16 clamped = 0xFFF - unclamped;
+u16 sub_80859F4(s16 *unk28, u16 unk5C)
+{
+    s32 r7, r3, r5;
+    u32 r0;
 
-//     s32 val1_old = SQUARE(clamped) >> 0xC;
-//     s32 val1 = (unclamped * val1_old) >> 0xC;
+    s16 *r4 = &unk28[unk5C / 4096];
+    u16 r1 = unk5C % 4096;
+    r7 = (4095 - r1);
 
-//     s32 temp = SQUARE(clamped) >> 0xC;
-//     s32 temp2 = (clamped * temp) >> 0xC;
-//     s32 temp3 = (temp2 * thing->unk0 * 0xAB) >> 10;
+    r7 = (r7 * (SQUARE(r7) >> 12)) >> 12; // (r7 * ((r7 * r7) / 4096)) / 4096
+    r0 = (r7 * r4[0] * 171) >> 10; // / 1024
 
-//     s32 temp4 = (unclamped * val1_old) >> 0xD;
-//     s32 temp5 = (temp4 - val1_old) + 0xAAA;
+    r3 = SQUARE(r1) >> 12; // (r1 * r1) / 1024
+    r7 = (r3 * r1) >> 12; // (r3 * r1) / 1024
 
-//     // part 1
-//     s32 temp6 = (temp3 + temp5) * thing->unk2;
+    r0 += (r4[1] * (((((r3 * r1) >> 13) - r3) + gUnknown_080E0290[0])));
 
-//     s32 temp7 = (unclamped + val1_old);
-//     s32 temp8 = (temp8 - val1) >> 1;
-//     s32 temp9 = thing->unk4 * (temp8 + 0x2AA);
-//     s32 temp10 = (val1 * thing->unk6 * 0xAB) >> 10;
+    r4 += 2;
 
-//     s32 temp11 = (temp6 + temp9 + temp10) * 0x400;
+    r0 += (r4[0] * (((((r1 + r3)) - r7) >> 1) + gUnknown_080E0290[1]));
+    r0 += ((r7 * r4[1] * 171) >> 10);
 
-//     return temp11 >> 0x16;
-// }
+    r0 *= 1024;
+    r0 /= 1024;
+    return r0 / 4096;
+}
 
 void sub_8085A88(UNK_8085D14 *p1)
 {

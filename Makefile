@@ -76,10 +76,9 @@ TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 
 ASFLAGS  := --defsym $(GAME_REGION)=1
 
-# -P disables line markers
 # -I sets an include path
 # -D defines a symbol
-CPPFLAGS ?= -iquote include -D $(GAME_REGION) -P
+CPPFLAGS ?= -iquote include -D $(GAME_REGION)
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
 # These have to(?) be defined this way, because
@@ -368,7 +367,8 @@ data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
 PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
 
 $(PROCESSED_LDSCRIPT): $(LDSCRIPT)
-	$(CPP) $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
+    # -P disables line markers
+	$(CPP) $(CPPFLAGS) -P $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
 
 
 $(ELF): $(OBJS) $(PROCESSED_LDSCRIPT) libagbsyscall
