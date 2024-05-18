@@ -5,6 +5,7 @@
 #if !PORTABLE
 #define REG_BASE 0x4000000 // I/O register base address
 #else
+// TODO: Needs to be u8 because of the address macros
 extern unsigned char REG_BASE[IO_SIZE];
 #endif
 
