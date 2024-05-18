@@ -21,8 +21,6 @@ typedef u32 TaskPtr32;
 
 typedef u16 IwramData;
 #else
-
-#define ENABLE_TASK_LOGGING TRUE
 typedef struct Task *TaskPtr;
 typedef TaskPtr TaskPtr32;
 
@@ -30,6 +28,8 @@ typedef TaskPtr TaskPtr32;
 #define TASK_IS_NULL(task) ((task) == NULL)
 
 typedef void *IwramData;
+
+#define ENABLE_TASK_LOGGING TRUE
 #endif
 
 #define TASK_IS_NOT_NULL(taskp) !TASK_IS_NULL(taskp)
