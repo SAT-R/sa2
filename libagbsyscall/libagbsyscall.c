@@ -182,11 +182,10 @@ s32 DivArm(s32 denom, s32 num)
 #endif
 
 #if L_Mod
-// NOTE: Apparently GCC doesn't like it when calling a function Mod, leading to this
-// error:
+// NOTE: With -fno-leading-underscores set in GCC, calling a function Mod, leads to this
+// error, but we don't do that anymore:
 //       >> Error: invalid use of operator "Mod"
-// So until we find a fix for that, this is called _Mod() instead of Mod().
-s32 _Mod(s32 num, s32 denom)
+s32 Mod(s32 num, s32 denom)
 {
     if (denom != 0) {
         return num % denom;
@@ -254,11 +253,11 @@ u16 Sqrt(u32 num) { return (u16)sqrt((double)num); }
 #endif
 
 #if L_ArcTan
-u16 ArcTan(s16 x) { return atanf((float)x); }
+u16 ArcTan(s16 x) { return (u16)atanf((float)x); }
 #endif
 
 #if L_ArcTan2
-u16 ArcTan2(s16 x, s16 y) { return atan2f((float)x, (float)y); }
+u16 ArcTan2(s16 x, s16 y) { return (u16)atan2f((float)x, (float)y); }
 #endif
 
 #if L_HuffUnComp
@@ -267,34 +266,29 @@ void HuffUnComp(void) { }
 
 #if L_LZ77UnCompWram
 #define DO_UNSAFE_CONVERT
-#include "../tools/gbagfx/global.h"
-#include "../tools/gbagfx/lz.h"
+#include "platform.h"
 
-void LZ77UnCompWram(const void *src, void *dest) { }
+void LZ77UnCompWram(const void *src, void *dest) { Platform_LZDecompress(src, dest); }
 #endif
 
 #if L_LZ77UnCompVram
 #define DO_UNSAFE_CONVERT
-#include "../tools/gbagfx/global.h"
-#include "../tools/gbagfx/lz.h"
+#include "platform.h"
 
-void LZ77UnCompVram(const void *src, void *dest) { }
+void LZ77UnCompVram(const void *src, void *dest) { Platform_LZDecompress(src, dest); }
 #endif
 
 #if L_RLUnCompWram
 #define DO_UNSAFE_CONVERT
-#include "../tools/gbagfx/global.h"
-#include "../tools/gbagfx/rl.h"
+#include "platform.h"
 
-void RLUnCompWram(const void *src, void *dest) { }
+void RLUnCompWram(const void *src, void *dest) { Platform_RLDecompress(src, dest); }
 #endif
 
 #if L_RLUnCompVram
-#define DO_UNSAFE_CONVERT
-#include "../tools/gbagfx/global.h"
-#include "../tools/gbagfx/rl.h"
+#include "platform.h"
 
-void RLUnCompVram(const void *src, void *dest) { }
+void RLUnCompVram(const void *src, void *dest) { Platform_RLDecompress(src, dest); }
 #endif
 
 #if L_BgAffineSet

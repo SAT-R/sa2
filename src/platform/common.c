@@ -1,12 +1,15 @@
 #include "core.h"
+#include "gba/flash_internal.h"
 
-uint8_t EWRAM_START[EWRAM_SIZE];
-uint8_t IWRAM_START[IWRAM_SIZE];
-uint16_t PLTT[PLTT_SIZE / 2];
-uint8_t OAM[OAM_SIZE];
-uint8_t VRAM[VRAM_SIZE];
+ALIGNED(256) uint8_t EWRAM_START[EWRAM_SIZE] = { 0 };
+ALIGNED(256) uint8_t IWRAM_START[IWRAM_SIZE] = { 0 };
+// TODO: REG_BASE needs to be u8, because of the address macro definitions
+ALIGNED(256) uint8_t REG_BASE[IO_SIZE] = { 0 };
+ALIGNED(256) uint16_t PLTT[PLTT_SIZE / sizeof(uint16_t)] = { 0 };
+ALIGNED(256) uint8_t VRAM[VRAM_SIZE] = { 0 };
+ALIGNED(256) uint8_t OAM[OAM_SIZE] = { 0 };
+ALIGNED(256) uint8_t FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK] = { 0 };
 
-u8 REG_BASE[IO_SIZE] = { 0 };
 u16 INTR_CHECK = 0;
 IntrFunc INTR_VECTOR = IntrMain;
 
@@ -45,4 +48,21 @@ found_instr:
     gIntrTable[index]();
 
 #undef CHECK_INTR
+}
+
+#define DO_UNSAFE_CONVERT
+#include "../tools/gbagfx/global.h"
+#include "../tools/gbagfx/lz.c"
+#include "../tools/gbagfx/rl.c"
+
+void Platform_LZDecompress(unsigned char *src, unsigned char *dest)
+{
+    int uncompressedSize = 0;
+    LZDecompress(src, dest, &uncompressedSize);
+}
+
+void Platform_RLDecompress(unsigned char *src, unsigned char *dest)
+{
+    int uncompressedSize = 0;
+    RLDecompress(src, dest, &uncompressedSize);
 }
