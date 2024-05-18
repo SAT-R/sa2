@@ -56,7 +56,7 @@ typedef struct {
 // Letting go of a button does not trigger the index increase.
 // (This might be used for timing in multiplayer?)
 //
-// (89.58%) https://decomp.me/scratch/zFRhq
+// (91%) https://decomp.me/scratch/zFRhq
 NONMATCH("asm/non_matching/sakit/input_buf__sub_800DF8C.inc",
          void sub_800DF8C(Player *p))
 {
@@ -91,7 +91,9 @@ NONMATCH("asm/non_matching/sakit/input_buf__sub_800DF8C.inc",
 
             // _0800E002
             while (p->unk71 != r8) {
-                u8 cid = gNewInputCountersIndex;
+                u8 cid;
+                sp00.unk8 = &p->unk71;
+                cid = gNewInputCountersIndex;
 
                 // _0800E012
                 while (r6 != 0) {

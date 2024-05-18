@@ -101,7 +101,7 @@ u8 gOamFirstPausedIndex ALIGNED(4) = 0;
 u8 gUnknown_03002AE4 ALIGNED(4) = 0;
 HBlankFunc gHBlankIntrs[4] ALIGNED(16) = {};
 
-u8 gIwramHeap[] = {};
+u8 gIwramHeap[0x2204] = {};
 EWRAM_DATA u8 gEwramHeap[] = {};
 
 Sprite *gUnknown_03004D10[] ALIGNED(16) = {};
@@ -453,7 +453,12 @@ static void UpdateScreenDma(void)
     }
 
     for (i = 0; i < gUnknown_03001948; i++) {
-        gUnknown_030053A0[i]();
+#ifdef BUG_FIX
+        if (gUnknown_030053A0[i] != NULL)
+#endif
+        {
+            gUnknown_030053A0[i]();
+        }
     }
 
     if (gFlags & FLAGS_10) {
