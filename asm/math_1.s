@@ -3,11 +3,6 @@
 
 .section .rodata
 
-    .global gUnknown_080E0290
-gUnknown_080E0290:
-    .2byte 0x0AAA, 0x02AA
-
-
 .text
 .syntax unified
 .arm

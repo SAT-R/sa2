@@ -107,15 +107,15 @@ endif
 
 else
 ifeq ($(CPU_ARCH),i386)
-    # Use the more legible Intel dialect for x86, without underscores
-    CC1FLAGS += -masm=intel
+	# Use the more legible Intel dialect for x86, without underscores
+	CC1FLAGS += -masm=intel
 endif
-    # Allow file input through stdin on modern GCC and set it to "compile only"
+	# Allow file input through stdin on modern GCC and set it to "compile only"
 	CC1FLAGS += -x c -S
 endif
 
 ifeq ($(DEBUG),1)
-	CC1FLAGS += -g -g3 -O0
+	CC1FLAGS += -g3 -O0
 else
 	CC1FLAGS += -O2
 endif
