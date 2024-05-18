@@ -40,7 +40,7 @@ u32 TasksInit(void)
     cur->parent = (TaskPtr32)NULL;
     cur->prev = (TaskPtr32)NULL;
     cur->next = (TaskPtr32)TaskGetNextSlot();
-#if PORTABLE
+#if ENABLE_TASK_LOGGING
     cur->name = "TaskMainDummy1";
 #endif
 
@@ -55,14 +55,14 @@ u32 TasksInit(void)
     cur->flags = 0;
     cur->parent = 0;
     cur->next = 0;
-#if PORTABLE
+#if ENABLE_TASK_LOGGING
     cur->name = "TaskMainDummy2";
 #endif
     gEmptyTask.parent = 0;
     gEmptyTask.prev = 0;
     gEmptyTask.next = 0;
     gEmptyTask.data = (IwramData)(uintptr_t)iwram_end;
-#if PORTABLE
+#if ENABLE_TASK_LOGGING
     gEmptyTask.name = NULL;
 #endif
     // initialize IWRAM heap -- a huge node
@@ -72,7 +72,7 @@ u32 TasksInit(void)
     return 1;
 }
 
-#if PORTABLE
+#if ENABLE_TASK_LOGGING
 struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
                         TaskDestructor taskDestructor, const char *name)
 #else
@@ -111,7 +111,7 @@ struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
     task->unk18 = 0;
     task->data = (IwramData)(uintptr_t)IwramMalloc(structSize);
     task->parent = (TaskPtr32)gCurTask;
-#if PORTABLE
+#if ENABLE_TASK_LOGGING
     task->name = name;
 #endif
 
@@ -136,7 +136,7 @@ void TaskDestroy(struct Task *task)
 {
     TaskPtr32 next, prev;
     if (!(task->flags & TASK_DESTROY_DISABLED)) {
-#if PORTABLE
+#if ENABLE_TASK_LOGGING
         printf("Destroying Task '%s'\n", task->name);
 #endif
         prev = TASK_PTR(task->prev);

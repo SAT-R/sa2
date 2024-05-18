@@ -21,6 +21,8 @@ typedef u32 TaskPtr32;
 
 typedef u16 IwramData;
 #else
+
+#define ENABLE_TASK_LOGGING TRUE
 typedef struct Task *TaskPtr;
 typedef TaskPtr TaskPtr32;
 
@@ -54,7 +56,7 @@ struct Task {
     /* 0x15 */ u8 unk15;
     /* 0x16 */ u16 unk16;
     /* 0x18 */ u16 unk18;
-#if PORTABLE
+#if ENABLE_TASK_LOGGING
     const char *name;
 #endif
 };
@@ -94,7 +96,7 @@ extern u8 gIwramHeap[0x2204];
 u32 TasksInit(void);
 void TasksExec(void);
 
-#if PORTABLE
+#if ENABLE_TASK_LOGGING
 #include <stdio.h>
 
 struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
