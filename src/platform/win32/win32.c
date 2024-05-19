@@ -47,3 +47,8 @@ DWORD WINAPI GameThread(void *pThreadParam)
         REG_KEYINPUT |= (DPAD_RIGHT);
     }
 }
+
+void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
+{
+    printf("DMA(TODO): S0x%p  0x%p -> 0x%p\n", src, dest, dest + (control & 0x1FFFFF));
+}
