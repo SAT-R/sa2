@@ -39,9 +39,9 @@ extern void (*INTR_VECTOR)(void);
 
 extern uint8_t EWRAM_START[EWRAM_SIZE];
 extern uint8_t IWRAM_START[IWRAM_SIZE];
-extern uint16_t PLTT[PLTT_SIZE/2];
-#define BG_PLTT &PLTT[0]
-#define OBJ_PLTT &PLTT[BG_PLTT_SIZE/2]
+extern uint16_t PLTT[PLTT_SIZE/sizeof(uint16_t)];
+#define BG_PLTT (u8*)&PLTT[0]
+#define OBJ_PLTT (u8*)&PLTT[BG_PLTT_SIZE/sizeof(uint16_t)]
 extern uint8_t OAM[OAM_SIZE];
 extern uint8_t VRAM[VRAM_SIZE];
 

@@ -5,6 +5,11 @@
 void sub_802DBC0(u8 p0, u16 p1)
 {
     u8 *bgOffsets = gBgOffsetsHBlank;
+#ifdef BUG_FIX
+    if (bgOffsets == NULL) {
+        return;
+    }
+#endif
     s32 r5 = 0;
     u16 r6 = ((unsigned)p1 << 22) >> 22;
 

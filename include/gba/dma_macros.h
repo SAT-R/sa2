@@ -1,6 +1,7 @@
 #ifndef GUARD_GBA_DMA_MACROS_H
 #define GUARD_GBA_DMA_MACROS_H
 
+#if PLATFORM_GBA
 #define DmaSet(dmaNum, src, dest, control)        \
 {                                                 \
     vu32 *dmaRegs = (vu32 *)REG_ADDR_DMA##dmaNum; \
@@ -9,7 +10,11 @@
     dmaRegs[2] = (vu32)(control);                 \
     dmaRegs[2];                                   \
 }
+#else
+extern void DmaSet(int dmaNum, const void *src, void *dest, u32 control);
+#endif // PLATFORM_GBA
 
+#if PLATFORM_GBA
 #define DMA_FILL(dmaNum, value, dest, size, bit)                                              \
 {                                                                                             \
     vu##bit tmp = (vu##bit)(value);                                                           \
@@ -19,6 +24,17 @@
            (DMA_ENABLE | DMA_START_NOW | DMA_##bit##BIT | DMA_SRC_FIXED | DMA_DEST_INC) << 16 \
          | ((size)/(bit/8)));                                                                 \
 }
+#else
+#define DMA_FILL(dmaNum, value, dest, size, bit)                                              \
+{                                                                                             \
+    u##bit tmp = (u##bit)(value);                                                           \
+    DmaSet(dmaNum,                                                                            \
+           &tmp,                                                                              \
+           dest,                                                                              \
+           (DMA_ENABLE | DMA_START_NOW | DMA_##bit##BIT | DMA_SRC_FIXED | DMA_DEST_INC) << 16 \
+         | ((size)/(bit/8)));                                                                 \
+}
+#endif
 
 #define DmaFill16(dmaNum, value, dest, size) DMA_FILL(dmaNum, value, dest, size, 16)
 #define DmaFill32(dmaNum, value, dest, size) DMA_FILL(dmaNum, value, dest, size, 32)

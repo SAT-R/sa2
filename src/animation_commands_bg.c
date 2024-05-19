@@ -489,8 +489,11 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                     p1p = &gUnknown_03002280[bgIndex][tileSize];
                     sp00[0] = r1;
 
+#if 0
+                    // TODO: This crashes the game after selecting a stage right now.
                     DmaFill16(3, sp00[0], &gUnknown_03002280[bgIndex][tileSize],
                               gUnknown_03002280[bgIndex][3] - r4);
+#endif
                 } else {
                     // _080041D8
                     for (; r4 <= gUnknown_03002280[bgIndex][3]; r4++) {
