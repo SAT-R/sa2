@@ -29,19 +29,15 @@ unsigned char *Platform_RLDecompress(unsigned char *src, int srcSize)
     return dest;
 }
 
-void Platform_LZFree(unsigned char *dest) {
-    free(dest);
-}
+void Platform_LZFree(unsigned char *dest) { free(dest); }
 
-void Platform_RLFree(unsigned char *dest) {
-    free(dest);
-}
+void Platform_RLFree(unsigned char *dest) { free(dest); }
 
 /* NOTE:
  * "Unsafe" versions included for compatibility.
  * This is just here so it doesn't fail if someone accidentally calls
  * LZUnCompWram, LZUnCompVram, RLUnCompWram or RLUnCompVram.
- * 
+ *
  * Please do NOT call them directly if you know the size of the compressed data!
  * (Use Platform_LZDecompress and Platform_RLDecompress instead!)
  */
