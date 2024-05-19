@@ -356,16 +356,17 @@ void GameInit(void)
 
 void GameLoop(void)
 {
-#if !PORTABLE
-    while (TRUE)
-#endif
-    {
+    while (TRUE) {
         gExecSoundMain = FALSE;
         if (!(gFlags & FLAGS_4000)) {
             m4aSoundMain();
         }
 
-        if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
+#if !PORTABLE
+        // TEMP: remove #if when all sVblankFuncs match
+        if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE)
+#endif
+        {
             GetInput();
 
             if (gMultiSioEnabled) {
@@ -398,10 +399,8 @@ void GameLoop(void)
         }
 
         // Wait for vblank to finish
-#if !PORTABLE
         while (REG_DISPSTAT & DISPSTAT_VBLANK)
             ;
-#endif
     };
 }
 
@@ -441,10 +440,15 @@ static void UpdateScreenDma(void)
     }
 
     if (gFlags & FLAGS_4) {
+
         DmaCopy16(3, gBgOffsetsHBlank, gUnknown_03002878, gUnknown_03002A80);
     }
 
-    if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
+#if !PORTABLE
+    // TEMP: remove #if when all sVblankFuncs match
+    if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE)
+#endif
+    {
         CopyOamBufferToOam();
         DmaCopy16(3, gOamBuffer + 0x00, (void *)OAM + 0x000, 0x100);
         DmaCopy16(3, gOamBuffer + 0x20, (void *)OAM + 0x100, 0x100);
@@ -478,6 +482,13 @@ static void UpdateScreenDma(void)
     }
 
     sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
+
+#if PORTABLE
+    // TEMP/HACK: Always call all funcs
+    //            Remove #if when all sVblankFuncs match
+    j = 0;
+#endif
+
     for (; j < ARRAY_COUNT(sVblankFuncs); j++) {
         if (sVblankFuncs[j]() == 0) {
             sLastCalledVblankFuncId = j;
@@ -494,9 +505,12 @@ static void ClearOamBufferDma(void)
     if (!(gFlags & FLAGS_20)) {
         if (gBgOffsetsHBlank == gUnknown_03004D54) {
             gBgOffsetsHBlank = gUnknown_030022C0;
+
             gUnknown_030022AC = gUnknown_03004D54;
         } else {
+
             gBgOffsetsHBlank = gUnknown_03004D54;
+
             gUnknown_030022AC = gUnknown_030022C0;
         }
     }
@@ -544,7 +558,10 @@ static void UpdateScreenCpuSet(void)
         gNumHBlankIntrs = 0;
     }
 
-    if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
+#if 01
+    if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE)
+#endif
+    {
         CopyOamBufferToOam();
         CpuFastCopy(gOamBuffer, (void *)OAM, OAM_SIZE);
     }
@@ -588,10 +605,12 @@ static void VBlankIntr(void)
     if (gFlagsPreVBlank & FLAGS_4) {
         REG_IE |= INTR_FLAG_HBLANK;
         DmaWait(0);
+
         DmaCopy16(0, gBgOffsetsHBlank, gUnknown_03002878, gUnknown_03002A80);
         DmaSet(0, gBgOffsetsHBlank + gUnknown_03002A80, gUnknown_03002878,
                ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD) << 16)
                    | (gUnknown_03002A80 >> 1));
+
     } else if (gUnknown_03002878) {
         REG_IE &= ~INTR_FLAG_HBLANK;
         gUnknown_03002878 = NULL;
@@ -654,12 +673,23 @@ static bool32 ProcessVramGraphicsCopyQueue(void)
         if (graphics->remainingBytes != 0) {
             for (offset = 0; graphics->remainingBytes > 0; offset += COPY_CHUNK_SIZE) {
                 if (graphics->remainingBytes > COPY_CHUNK_SIZE) {
-                    DmaCopy16(3, graphics->src + offset, graphics->dest + offset,
-                              COPY_CHUNK_SIZE);
+#ifdef BUG_FIX
+                    if ((graphics->src != 0) && (graphics->dest != 0))
+#endif
+                    {
+                        DmaCopy16(3, (void *)(graphics->src + offset),
+                                  (void *)(graphics->dest + offset), COPY_CHUNK_SIZE);
+                    }
                     graphics->remainingBytes -= COPY_CHUNK_SIZE;
                 } else {
-                    DmaCopy16(3, graphics->src + offset, graphics->dest + offset,
-                              graphics->remainingBytes);
+#ifdef BUG_FIX
+                    if ((graphics->src != 0) && (graphics->dest != 0))
+#endif
+                    {
+                        DmaCopy16(3, (void *)(graphics->src + offset),
+                                  (void *)(graphics->dest + offset),
+                                  graphics->remainingBytes);
+                    }
                     graphics->remainingBytes = 0;
                 }
             }
@@ -768,6 +798,7 @@ static void ClearOamBufferCpuSet(void)
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
     if (!(gFlags & 0x20)) {
+
         if (gBgOffsetsHBlank == gUnknown_03004D54) {
             gBgOffsetsHBlank = gUnknown_030022C0;
             gUnknown_030022AC = gUnknown_03004D54;
