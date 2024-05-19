@@ -1,3 +1,8 @@
+#if PORTABLE
+// TEMP
+#include <assert.h>
+#include <malloc.h>
+#endif
 #include "global.h"
 #include "core.h"
 #include "task.h"
@@ -9,7 +14,7 @@ static void TaskMainDummy2(void);
 static void TaskMainDummy3(void);
 static void IwramFree(void *);
 static struct Task *TaskGetNextSlot(void);
-#undef TaskCreate
+
 u32 TasksInit(void)
 {
     struct Task *cur;
@@ -71,6 +76,10 @@ u32 TasksInit(void)
     heapRoot->state = sizeof(gIwramHeap);
     return 1;
 }
+
+#ifdef TaskCreate
+#undef TaskCreate
+#endif
 
 #if ENABLE_TASK_LOGGING
 struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
@@ -137,7 +146,7 @@ void TaskDestroy(struct Task *task)
     TaskPtr32 next, prev;
     if (!(task->flags & TASK_DESTROY_DISABLED)) {
 #if ENABLE_TASK_LOGGING
-        printf("Destroying Task '%s'\n", task->name);
+        printf("Destroying '%s'\n", task->name);
 #endif
         prev = TASK_PTR(task->prev);
         next = TASK_PTR(task->next);
@@ -215,9 +224,6 @@ void TasksExec(void)
 
 // TEMP: IwramMalloc/Free crash currently.
 //       (Might be because of missing DMAs?)
-#include <malloc.h>
-#include <assert.h>
-
 void *IwramMalloc(u16 req)
 {
 #if PORTABLE
@@ -277,6 +283,9 @@ static void IwramFree(void *p)
 {
 #if PORTABLE
     if (p) {
+#if ENABLE_TASK_LOGGING
+        printf("IwramFree: %p\n", p);
+#endif
         free(p);
     }
 #else
