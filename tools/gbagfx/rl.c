@@ -2,26 +2,17 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
-#ifndef DO_UNSAFE_CONVERT
 #include "global.h"
 #include "rl.h"
-#endif
 
-#ifdef DO_UNSAFE_CONVERT
-void RLDecompress(unsigned char *src, unsigned char *dest, int *uncompressedSize)
-#else
 unsigned char *RLDecompress(unsigned char *src, int srcSize, int *uncompressedSize)
-#endif
 {
-#ifndef DO_UNSAFE_CONVERT
-	if (srcSize < 4)
-		goto fail;
+    if (srcSize < 4)
+        goto fail;
 
-	int destSize = (src[3] << 16) | (src[2] << 8) | src[1];
-	unsigned char *dest = malloc(destSize);
-#else
-	int destSize = (src[3] << 16) | (src[2] << 8) | src[1];
-#endif
+    int destSize = (src[3] << 16) | (src[2] << 8) | src[1];
+
+    unsigned char *dest = malloc(destSize);
 
     if (dest == NULL)
         goto fail;
@@ -29,11 +20,11 @@ unsigned char *RLDecompress(unsigned char *src, int srcSize, int *uncompressedSi
     int srcPos = 4;
     int destPos = 0;
 
-    for (;;) {
-#ifndef DO_UNSAFE_CONVERT
-		if (srcPos >= srcSize)
-			goto fail;
-#endif
+    for (;;)
+    {
+        if (srcPos >= srcSize)
+            goto fail;
+
         unsigned char flags = src[srcPos++];
         bool compressed = ((flags & 0x80) != 0);
 
@@ -62,11 +53,7 @@ unsigned char *RLDecompress(unsigned char *src, int srcSize, int *uncompressedSi
         if (destPos == destSize)
         {
             *uncompressedSize = destSize;
-#ifndef DO_UNSAFE_CONVERT
             return dest;
-#else
-            return;
-#endif
         }
     }
 
@@ -74,7 +61,6 @@ fail:
     FATAL_ERROR("Fatal error while decompressing RL file.\n");
 }
 
-#ifndef DO_UNSAFE_CONVERT
 unsigned char *RLCompress(unsigned char *src, int srcSize, int *compressedSize)
 {
     if (srcSize <= 0)
@@ -161,4 +147,3 @@ unsigned char *RLCompress(unsigned char *src, int srcSize, int *compressedSize)
 fail:
     FATAL_ERROR("Fatal error while compressing RL file.\n");
 }
-#endif

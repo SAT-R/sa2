@@ -2,26 +2,17 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
-#ifndef DO_UNSAFE_CONVERT
 #include "global.h"
 #include "lz.h"
-#endif
 
-#ifdef DO_UNSAFE_CONVERT
-void LZDecompress(unsigned char *src, unsigned char *dest, int *uncompressedSize)
-#else
 unsigned char *LZDecompress(unsigned char *src, int srcSize, int *uncompressedSize)
-#endif
 {
-#ifndef DO_UNSAFE_CONVERT
 	if (srcSize < 4)
 		goto fail;
 
 	int destSize = (src[3] << 16) | (src[2] << 8) | src[1];
+
 	unsigned char *dest = malloc(destSize);
-#else
-	int destSize = (src[3] << 16) | (src[2] << 8) | src[1];
-#endif
 
 	if (dest == NULL)
 		goto fail;
@@ -30,19 +21,15 @@ unsigned char *LZDecompress(unsigned char *src, int srcSize, int *uncompressedSi
 	int destPos = 0;
 
 	for (;;) {
-#ifndef DO_UNSAFE_CONVERT
 		if (srcPos >= srcSize)
 			goto fail;
-#endif
 
 		unsigned char flags = src[srcPos++];
 
 		for (int i = 0; i < 8; i++) {
 			if (flags & 0x80) {
-#ifndef DO_UNSAFE_CONVERT
 				if (srcPos + 1 >= srcSize)
 					goto fail;
-#endif
 
 				int blockSize = (src[srcPos] >> 4) + 3;
 				int blockDistance = (((src[srcPos] & 0xF) << 8) | src[srcPos + 1]) + 1;
@@ -63,25 +50,15 @@ unsigned char *LZDecompress(unsigned char *src, int srcSize, int *uncompressedSi
 				for (int j = 0; j < blockSize; j++)
 					dest[destPos++] = dest[blockPos + j];
 			} else {
-#ifndef DO_UNSAFE_CONVERT
 				if (srcPos >= srcSize || destPos >= destSize)
-#else
-                if (destPos >= destSize)
-#endif
-                {
 					goto fail;
-                }
 
 				dest[destPos++] = src[srcPos++];
 			}
 
 			if (destPos == destSize) {
 				*uncompressedSize = destSize;
-#ifndef DO_UNSAFE_CONVERT
 				return dest;
-#else
-				return;
-#endif
 			}
 
 			flags <<= 1;
@@ -92,7 +69,6 @@ fail:
 	FATAL_ERROR("Fatal error while decompressing LZ file.\n");
 }
 
-#ifndef DO_UNSAFE_CONVERT
 unsigned char *LZCompress(unsigned char *src, int srcSize, int *compressedSize, const int minDistance)
 {
 	if (srcSize <= 0)
@@ -175,4 +151,3 @@ unsigned char *LZCompress(unsigned char *src, int srcSize, int *compressedSize, 
 fail:
 	FATAL_ERROR("Fatal error while compressing LZ file.\n");
 }
-#endif
