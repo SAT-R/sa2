@@ -1,3 +1,4 @@
+#include <malloc.h>
 #include "core.h"
 #include "gba/flash_internal.h"
 
@@ -48,21 +49,4 @@ found_instr:
     gIntrTable[index]();
 
 #undef CHECK_INTR
-}
-
-#define DO_UNSAFE_CONVERT
-#include "../tools/gbagfx/global.h"
-#include "../tools/gbagfx/lz.c"
-#include "../tools/gbagfx/rl.c"
-
-void Platform_LZDecompress(unsigned char *src, unsigned char *dest)
-{
-    int uncompressedSize = 0;
-    LZDecompress(src, dest, &uncompressedSize);
-}
-
-void Platform_RLDecompress(unsigned char *src, unsigned char *dest)
-{
-    int uncompressedSize = 0;
-    RLDecompress(src, dest, &uncompressedSize);
 }

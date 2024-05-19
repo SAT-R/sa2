@@ -1,11 +1,11 @@
 #include <assert.h>
 #include <math.h> // sqrt
 #include <string.h> // memset
-#include "global.h"
-#include "gba/syscall.h"
 #if CPU_ARCH_X86
 #include <immintrin.h>
 #endif
+#include "global.h"
+#include "gba/syscall.h"
 
 #if (!(defined PLATFORM_GBA) || (PLATFORM_GBA == 0))
 
@@ -265,30 +265,27 @@ void HuffUnComp(void) { }
 #endif
 
 #if L_LZ77UnCompWram
-#define DO_UNSAFE_CONVERT
-#include "platform.h"
+#include "platform/platform.h"
 
-void LZ77UnCompWram(const void *src, void *dest) { Platform_LZDecompress(src, dest); }
+void LZ77UnCompWram(const void *src, void *dest) { Platform_LZDecompressUnsafe(src, dest); }
 #endif
 
 #if L_LZ77UnCompVram
-#define DO_UNSAFE_CONVERT
-#include "platform.h"
+#include "platform/platform.h"
 
-void LZ77UnCompVram(const void *src, void *dest) { Platform_LZDecompress(src, dest); }
+void LZ77UnCompVram(const void *src, void *dest) { Platform_LZDecompressUnsafe(src, dest); }
 #endif
 
 #if L_RLUnCompWram
-#define DO_UNSAFE_CONVERT
-#include "platform.h"
+#include "platform/platform.h"
 
-void RLUnCompWram(const void *src, void *dest) { Platform_RLDecompress(src, dest); }
+void RLUnCompWram(const void *src, void *dest) { Platform_RLDecompressUnsafe(src, dest); }
 #endif
 
 #if L_RLUnCompVram
-#include "platform.h"
+#include "platform/platform.h"
 
-void RLUnCompVram(const void *src, void *dest) { Platform_RLDecompress(src, dest); }
+void RLUnCompVram(const void *src, void *dest) { Platform_RLDecompressUnsafe(src, dest); }
 #endif
 
 #if L_BgAffineSet
