@@ -96,7 +96,8 @@ void CreateMultiplayerTeamPlayScreen(void)
     struct MultiplayerTeamPlayScreen *teamPlayScreen;
     Sprite *s;
     Background *background;
-    u32 lang, vram;
+    u32 lang;
+    void *vram;
     u8 i;
 
     lang = gLoadedSaveGame->language;

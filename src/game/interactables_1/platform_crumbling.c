@@ -244,8 +244,7 @@ void Task_805E480(void)
 
             pointer->all.attr2
                 = (((oam[2] + s->palId) & ~0xFFF) | ((s->unk10 & 0x3000) >> 2)
-                   | (u16)(((u32)(s->graphics.dest - OBJ_VRAM0) >> 5)
-                           + r6)); // (>> 5) = offset -> tilecount?
+                   | (u16)(GET_TILE_NUM(s->graphics.dest) + r6));
         }
     }
 }
@@ -317,8 +316,7 @@ void Task_805E6A4(void)
 
             pointer->all.attr2
                 = (((oam[2] + s->palId) & ~0xFFF) | ((s->unk10 & 0x3000) >> 2)
-                   | (u16)(((u32)(s->graphics.dest - OBJ_VRAM0) >> 5)
-                           + r6)); // (>> 5) = offset -> tilecount?
+                   | (u16)(GET_TILE_NUM(s->graphics.dest) + r6));
         }
     }
 }

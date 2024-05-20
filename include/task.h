@@ -28,6 +28,8 @@ typedef TaskPtr TaskPtr32;
 #define TASK_IS_NULL(task) ((task) == NULL)
 
 typedef void *IwramData;
+
+#define ENABLE_TASK_LOGGING TRUE
 #endif
 
 #define TASK_IS_NOT_NULL(taskp) !TASK_IS_NULL(taskp)
@@ -54,6 +56,9 @@ struct Task {
     /* 0x15 */ u8 unk15;
     /* 0x16 */ u16 unk16;
     /* 0x18 */ u16 unk18;
+#if ENABLE_TASK_LOGGING
+    const char *name;
+#endif
 };
 
 #if PLATFORM_GBA
@@ -90,8 +95,24 @@ extern u8 gIwramHeap[0x2204];
 
 u32 TasksInit(void);
 void TasksExec(void);
+
+#if ENABLE_TASK_LOGGING
+#include <stdio.h>
+
+struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
+                        TaskDestructor taskDestructor, const char *name);
+
+#define TaskCreate(taskMain, structSize, priority, flags, taskDestructor)               \
+    ({                                                                                  \
+        printf("New '%s'(0x%X): 0x%08X (in %s,%d)\n", #taskMain, structSize, taskMain,  \
+               __FILE__, __LINE__);                                                     \
+        TaskCreate(taskMain, structSize, priority, flags, taskDestructor, #taskMain);   \
+    })
+#else
 struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
                         TaskDestructor taskDestructor);
+#endif
+
 void TaskDestroy(struct Task *);
 void *IwramMalloc(u16);
 void TasksDestroyInPriorityRange(u16, u16);

@@ -1,5 +1,9 @@
+#include <assert.h>
 #include <math.h> // sqrt
 #include <string.h> // memset
+#if CPU_ARCH_X86
+#include <immintrin.h>
+#endif
 #include "global.h"
 #include "gba/syscall.h"
 
@@ -9,11 +13,82 @@
 // Documentation source used: https://problemkaputt.de/gbatek.htm
 
 #if L_CpuSet
-void CpuSet(const void *src, void *dest, u32 control) { }
+void CpuSet(const void *inSrc, void *inDest, u32 control)
+{
+    u32 word_count = control & 0x1FFFFF;
+
+    if (control & CPU_SET_32BIT) {
+        u32 *src = (u32 *)inSrc;
+        u32 *dest = (u32 *)inDest;
+
+        u32 *target = &dest[word_count];
+
+        if (control & CPU_SET_SRC_FIXED) {
+            while (dest < target) {
+                *dest++ = *src;
+            }
+        } else {
+            while (dest < target) {
+                *dest++ = *src++;
+            }
+        }
+    } else {
+        u16 *src = (u16 *)inSrc;
+        u16 *dest = (u16 *)inDest;
+
+        u16 *target = &dest[word_count];
+
+        if (control & CPU_SET_SRC_FIXED) {
+            while (dest < target) {
+                *dest++ = *src;
+            }
+        } else {
+            while (dest < target) {
+                *dest++ = *src++;
+            }
+        }
+    }
+}
 #endif
 
 #if L_CpuFastSet
-void CpuFastSet(const void *src, void *dest, u32 control) { }
+void CpuFastSet(const void *inSrc, void *inDest, u32 control)
+{
+    const u32 *src = inSrc;
+    const u32 *dest = inDest;
+    assert(((uintptr_t)src & 0x3) == 0); // should be aligned by 4
+    u32 word_count = control & 0x1FFFFF;
+
+    // Align by 8
+    word_count = ((word_count + 7) & ~0x7);
+
+    u32 *target = &dest[word_count];
+
+#if CPU_ARCH_X86
+    if (control & CPU_FAST_SET_SRC_FIXED) {
+        __m128i v = _mm_set_epi32(*src, *src, *src, *src);
+
+        // Store 4-byte source value, 32 bytes at a time.
+        while (dest < target) {
+            _mm_store_si128((__m128i *)dest, v);
+            dest += 4;
+            _mm_store_si128((__m128i *)dest, v);
+            dest += 4;
+        }
+    } else
+        while (dest < target) {
+            // Copy source to dest, 32bytes at a time.
+            _mm_store_si128((__m128i *)dest, _mm_load_si128((__m128i *)src));
+            dest += 4;
+            src += 4;
+            _mm_store_si128((__m128i *)dest, _mm_load_si128((__m128i *)src));
+            dest += 4;
+            src += 4;
+        }
+#else
+#error "Arch not implemented"
+#endif
+}
 #endif
 
 #if L_IntrWait
@@ -107,11 +182,10 @@ s32 DivArm(s32 denom, s32 num)
 #endif
 
 #if L_Mod
-// NOTE: Apparently GCC doesn't like it when calling a function Mod, leading to this
-// error:
+// NOTE: With -fno-leading-underscores set in GCC, calling a function Mod, leads to this
+// error, but we don't do that anymore:
 //       >> Error: invalid use of operator "Mod"
-// So until we find a fix for that, this is called _Mod() instead of Mod().
-s32 _Mod(s32 num, s32 denom)
+s32 Mod(s32 num, s32 denom)
 {
     if (denom != 0) {
         return num % denom;
@@ -179,11 +253,11 @@ u16 Sqrt(u32 num) { return (u16)sqrt((double)num); }
 #endif
 
 #if L_ArcTan
-u16 ArcTan(s16 x) { return atanf((float)x); }
+u16 ArcTan(s16 x) { return (u16)atanf((float)x); }
 #endif
 
 #if L_ArcTan2
-u16 ArcTan2(s16 x, s16 y) { return atan2f((float)x, (float)y); }
+u16 ArcTan2(s16 x, s16 y) { return (u16)atan2f((float)x, (float)y); }
 #endif
 
 #if L_HuffUnComp
@@ -191,19 +265,39 @@ void HuffUnComp(void) { }
 #endif
 
 #if L_LZ77UnCompWram
-void LZ77UnCompWram(const void *src, void *dest) { }
+#include "platform/platform.h"
+
+void LZ77UnCompWram(const void *src, void *dest)
+{
+    Platform_LZDecompressUnsafe(src, dest);
+}
 #endif
 
 #if L_LZ77UnCompVram
-void LZ77UnCompVram(const void *src, void *dest) { }
+#include "platform/platform.h"
+
+void LZ77UnCompVram(const void *src, void *dest)
+{
+    Platform_LZDecompressUnsafe(src, dest);
+}
 #endif
 
 #if L_RLUnCompWram
-void RLUnCompWram(const void *src, void *dest) { }
+#include "platform/platform.h"
+
+void RLUnCompWram(const void *src, void *dest)
+{
+    Platform_RLDecompressUnsafe(src, dest);
+}
 #endif
 
 #if L_RLUnCompVram
-void RLUnCompVram(const void *src, void *dest) { }
+#include "platform/platform.h"
+
+void RLUnCompVram(const void *src, void *dest)
+{
+    Platform_RLDecompressUnsafe(src, dest);
+}
 #endif
 
 #if L_BgAffineSet

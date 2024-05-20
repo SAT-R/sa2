@@ -1543,7 +1543,7 @@ UNUSED static void sub_808CDB0(TitleScreen *titleScreen, s8 index)
 
 static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
 {
-    struct Task *t = TaskCreate(Task_BirdAnim, 0x40, 0x2000, 0, 0);
+    struct Task *t = TaskCreate(Task_BirdAnim, sizeof(BirdAnimation), 0x2000, 0, 0);
     BirdAnimation *animation = TASK_DATA(t);
     Sprite *s = &animation->s;
 

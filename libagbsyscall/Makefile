@@ -58,12 +58,21 @@ ifneq ($(PLATFORM),gba)
     CPP       := $(PREFIX)cpp
     CPPFLAGS  := -I ../include -D PORTABLE=1
     CC1       := $(PREFIX)gcc
-    CC1FLAGS  := -Wall -O2 -x c -S
+    CC1FLAGS  := -Wall -x c -S
     LD        := $(PREFIX)ld
+
+    ifeq ($(DEBUG),1)
+        CC1FLAGS += -g -O0
+    else
+        CC1FLAGS += -O2
+    endif
 
     ifeq ($(CPU_ARCH),i386)
         # Use the more legible Intel dialect for x86, without underscores
-        CC1FLAGS += -masm=intel
+        CC1FLAGS += -masm=intel -msse2
+        CPPFLAGS += -D CPU_ARCH_X86=1
+    else
+        CPPFLAGS += -D CPU_ARCH_X86=0
     endif
 endif # PLATFORM != gba
 

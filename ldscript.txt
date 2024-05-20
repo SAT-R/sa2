@@ -542,9 +542,7 @@ SECTIONS
         src/game/interactables_2/note_particle.o(.rodata);
         src/game/multiboot/connection.o(.rodata);
         src/game/multiboot/collect_rings/time_display.o(.rodata);
-#if (CPU_ARCH_ARM == 1)
-        asm/math_1.o(.rodata);
-#endif
+        src/game/math_1.o(.rodata);
         src/game/mystery_item_box.o(.rodata);
         src/game/race_progress.o(.rodata);
         src/game/unknown_effect.o(.rodata);

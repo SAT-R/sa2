@@ -156,7 +156,7 @@ void StartSinglePakConnect(void)
     Sprite *s;
     Background *background;
     struct MultiBootParam *mbParams;
-    u32 ram;
+    void *ram;
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
@@ -209,7 +209,7 @@ void StartSinglePakConnect(void)
     s->graphics.anim = gUnknown_080E018C[connectScreen->unkFA][0];
     s->variant = gUnknown_080E018C[connectScreen->unkFA][1];
     s->prevVariant = -1;
-    s->graphics.dest = (void *)ram;
+    s->graphics.dest = ram;
     ram += gUnknown_080E018C[connectScreen->unkFA][2] * 0x20;
     UpdateSpriteAnimation(s);
 
@@ -227,7 +227,7 @@ void StartSinglePakConnect(void)
     s->graphics.anim = gUnknown_080E01B6[connectScreen->unkFA][0];
     s->variant = gUnknown_080E01B6[connectScreen->unkFA][1];
     s->prevVariant = -1;
-    s->graphics.dest = (void *)ram;
+    s->graphics.dest = ram;
     ram += gUnknown_080E01B6[connectScreen->unkFA][2] * 0x20;
 
     s = &connectScreen->unk6C;
@@ -244,7 +244,7 @@ void StartSinglePakConnect(void)
     s->graphics.anim = SA2_ANIM_MP_MSG;
     s->variant = SA2_ANIM_VARIANT_MP_MSG_2;
     s->prevVariant = -1;
-    s->graphics.dest = (void *)ram;
+    s->graphics.dest = ram;
 
     background = &connectScreen->unk9C;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);

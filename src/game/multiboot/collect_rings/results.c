@@ -576,7 +576,7 @@ struct MultiplayerSinglePakResultsScreen *sub_8082B1C(s16 mode)
     return resultsScreen;
 }
 
-void sub_8082CEC(Sprite *, u32, u16, u8, s16, s16, u16, u8, u32);
+void sub_8082CEC(Sprite *, void *, u16, u8, s16, s16, u16, u8, u32);
 
 void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {
@@ -615,12 +615,12 @@ void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *resultsScreen)
                 SPRITE_OAM_ORDER(4), 0, 0x1000);
 }
 
-void sub_8082CEC(Sprite *s, u32 vramAddr, u16 animId, u8 variant, s16 x, s16 y,
+void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y,
                  u16 unk1A, u8 unk25, u32 unk10)
 {
     s->x = x;
     s->y = y;
-    s->graphics.dest = (void *)vramAddr;
+    s->graphics.dest = vramAddr;
     s->unk1A = unk1A;
     s->graphics.size = 0;
     s->graphics.anim = animId;

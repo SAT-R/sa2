@@ -26,7 +26,7 @@ typedef struct {
     u32 unk1C;
 } UNK_8085D14;
 
-extern const u16 gUnknown_080E0290[];
+const u16 gUnknown_080E0290[] = { 0x0AAA, 0x02AA };
 
 u16 sub_80859F4(s16 *unk28, u16 unk5C)
 {

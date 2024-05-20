@@ -18,7 +18,7 @@ u16 (*EraseFlashSector)(u16 sectorNum) = NULL;
 const u16 *gFlashMaxTime = NULL;
 
 #if PORTABLE
-u8 FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK];
+extern u8 FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK];
 #endif
 
 void SetReadFlash1(u16 *dest);

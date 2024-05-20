@@ -269,9 +269,14 @@ void Task_CreateStageUIMain(void)
 
                 for (i = 0; i < gSpecialRingCount; i++) {
                     oam = OamMalloc(3);
-                    oam->all.attr0 = 31;
-                    oam->all.attr1 = i * 8 + 4;
-                    oam->all.attr2 = ui->unk2D8[UI_ASCII_SP_RING];
+#ifdef BUG_FIX
+                    if (oam != (OamData *)iwram_end)
+#endif
+                    {
+                        oam->all.attr0 = 31;
+                        oam->all.attr1 = i * 8 + 4;
+                        oam->all.attr2 = ui->unk2D8[UI_ASCII_SP_RING];
+                    }
                 }
             }
             // _0802CD74
@@ -293,18 +298,29 @@ void Task_CreateStageUIMain(void)
                 digit = Div(score, m);
                 oam = OamMalloc(3);
 
-                oam->all.attr0 = 0x800E;
-                oam->all.attr1 = i * 8 + 28;
-                oam->all.attr2 = ui->unk2D8[digit];
+#ifdef BUG_FIX
+                if (oam != (OamData *)iwram_end)
+#endif
+                {
+                    oam->all.attr0 = 0x800E;
+                    oam->all.attr1 = i * 8 + 28;
+                    oam->all.attr2 = ui->unk2D8[digit];
+                }
 
                 score -= digit * m;
             }
 
             /* Player-Icon */
             oam = OamMalloc(3);
-            oam->all.attr0 = DISPLAY_HEIGHT - 18;
-            oam->all.attr1 = (0x4000 | 6);
-            oam->all.attr2 = ui->unk2D4;
+
+#ifdef BUG_FIX
+            if (oam != (OamData *)iwram_end)
+#endif
+            {
+                oam->all.attr0 = DISPLAY_HEIGHT - 18;
+                oam->all.attr1 = (0x4000 | 6);
+                oam->all.attr2 = ui->unk2D4;
+            }
 
             if (gNumLives > 0)
                 i = gNumLives - 1;
@@ -316,17 +332,29 @@ void Task_CreateStageUIMain(void)
 
             /* Lives Counter */
             oam = OamMalloc(3);
-            oam->all.attr0 = (0x8000 | (DISPLAY_HEIGHT - 20));
-            oam->all.attr1 = 30;
-            oam->all.attr2 = ui->unk2D8[i];
+
+#ifdef BUG_FIX
+            if (oam != (OamData *)iwram_end)
+#endif
+            {
+                oam->all.attr0 = (0x8000 | (DISPLAY_HEIGHT - 20));
+                oam->all.attr1 = 30;
+                oam->all.attr2 = ui->unk2D8[i];
+            }
         }
         // _0802CE6A
 
         /* Ring-Container */
         oam = OamMalloc(4);
-        oam->all.attr0 = (0x4000 | 0);
-        oam->all.attr1 = (0xC000 | 509);
-        oam->all.attr2 = ui->unk2D6;
+
+#ifdef BUG_FIX
+        if (oam != (OamData *)iwram_end)
+#endif
+        {
+            oam->all.attr0 = (0x4000 | 0);
+            oam->all.attr1 = (0xC000 | 509);
+            oam->all.attr2 = ui->unk2D6;
+        }
 
         /* Ring */
         ui->unk2D0 += ((gPlayer.speedAirX >> 3) + Q(0.25));
@@ -337,9 +365,14 @@ void Task_CreateStageUIMain(void)
 
         /* Ring-Count */
         oam = OamMalloc(3);
-        oam->all.attr0 = 8;
-        oam->all.attr1 = (0x4000 | 7);
-        oam->all.attr2 = ui->unk2D2;
+#ifdef BUG_FIX
+        if (oam != (OamData *)iwram_end)
+#endif
+        {
+            oam->all.attr0 = 8;
+            oam->all.attr1 = (0x4000 | 7);
+            oam->all.attr2 = ui->unk2D2;
+        }
 
         if (gRingCount > 999) {
             sd = &digits[9];
@@ -365,10 +398,14 @@ void Task_CreateStageUIMain(void)
                 hundreds = Div(gRingCount, 100);
 
                 oam = OamMalloc(3);
-                oam->all.attr0 = (0x8000 | 0);
-                oam->all.attr1 = (28 + 0 * 8);
-                oam->all.attr2 = (ui->unk2D8[hundreds] | sl);
-
+#ifdef BUG_FIX
+                if (oam != (OamData *)iwram_end)
+#endif
+                {
+                    oam->all.attr0 = (0x8000 | 0);
+                    oam->all.attr1 = (28 + 0 * 8);
+                    oam->all.attr2 = (ui->unk2D8[hundreds] | sl);
+                }
                 processed = hundreds * 100;
             }
 
@@ -376,9 +413,15 @@ void Task_CreateStageUIMain(void)
                 u16 tens = Div(gRingCount - processed, 10);
 
                 oam = OamMalloc(3);
-                oam->all.attr0 = (0x8000 | 0);
-                oam->all.attr1 = (28 + 1 * 8);
-                oam->all.attr2 = (ui->unk2D8[tens] | sl);
+
+#ifdef BUG_FIX
+                if (oam != (OamData *)iwram_end)
+#endif
+                {
+                    oam->all.attr0 = (0x8000 | 0);
+                    oam->all.attr1 = (28 + 1 * 8);
+                    oam->all.attr2 = (ui->unk2D8[tens] | sl);
+                }
 
                 processed2 = processed + tens * 10;
             }
@@ -387,9 +430,15 @@ void Task_CreateStageUIMain(void)
                 u16 ones = gRingCount - processed2;
 
                 oam = OamMalloc(3);
-                oam->all.attr0 = (0x8000 | 0);
-                oam->all.attr1 = (28 + 2 * 8);
-                oam->all.attr2 = (ui->unk2D8[ones] | sl);
+
+#ifdef BUG_FIX
+                if (oam != (OamData *)iwram_end)
+#endif
+                {
+                    oam->all.attr0 = (0x8000 | 0);
+                    oam->all.attr1 = (28 + 2 * 8);
+                    oam->all.attr2 = (ui->unk2D8[ones] | sl);
+                }
             }
         }
         // _0802CFDC
@@ -406,14 +455,26 @@ void Task_CreateStageUIMain(void)
             sl = 0x6000;
 
             oam = OamMalloc(3);
-            oam->all.attr0 = (0x8000 | 0);
-            oam->all.attr1 = (DISPLAY_WIDTH / 2) - 21;
-            oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
+
+#ifdef BUG_FIX
+            if (oam != (OamData *)iwram_end)
+#endif
+            {
+                oam->all.attr0 = (0x8000 | 0);
+                oam->all.attr1 = (DISPLAY_WIDTH / 2) - 21;
+                oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
+            }
 
             oam = OamMalloc(3);
-            oam->all.attr0 = (0x8000 | 0);
-            oam->all.attr1 = (DISPLAY_WIDTH / 2) + 3;
-            oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
+
+#ifdef BUG_FIX
+            if (oam != (OamData *)iwram_end)
+#endif
+            {
+                oam->all.attr0 = (0x8000 | 0);
+                oam->all.attr1 = (DISPLAY_WIDTH / 2) + 3;
+                oam->all.attr2 = (ui->unk2D8[UI_ASCII_COLON] | sl);
+            }
 
             seconds = Div(time, GBA_FRAMES_PER_SECOND);
             minutes = Div(seconds, 60);

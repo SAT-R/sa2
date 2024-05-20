@@ -835,7 +835,7 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
     pMeta += i;
     result = *(u16 *)pMeta;
 #else
-    mtIndex = mtIndex * 288 + i;
+    mtIndex = mtIndex * 288 + ((r5 * 12) + r7) * 2;
     result = coll->metatiles[mtIndex];
 #endif
 

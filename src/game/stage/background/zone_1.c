@@ -101,14 +101,20 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
 
         camY = gCamera.y >> 8;
         initial2 = 0;
-        for (i = 71; i >= 0; i--) {
-            *cursor++ = initial1;
-            *cursor++ = initial2;
-        }
 
-        for (i = 86; i >= 0; i--) {
-            *cursor++ = bgScroll;
-            *cursor++ = camY;
+#ifdef BUG_FIX
+        if (cursor != NULL)
+#endif
+        {
+            for (i = 71; i >= 0; i--) {
+                *cursor++ = initial1;
+                *cursor++ = initial2;
+            }
+
+            for (i = 86; i >= 0; i--) {
+                *cursor++ = bgScroll;
+                *cursor++ = camY;
+            }
         }
     }
 }

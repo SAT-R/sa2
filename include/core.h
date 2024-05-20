@@ -224,7 +224,7 @@ extern u8 gNumHBlankIntrs;
 extern u8 gIwramHeap[0x2204];
 extern u8 gEwramHeap[0x20080];
 
-extern u32 gVramHeapStartAddr;
+extern void *gVramHeapStartAddr;
 extern u16 gVramHeapMaxTileSlots;
 extern u16 gVramHeapState[256];
 
