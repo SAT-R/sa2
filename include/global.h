@@ -60,6 +60,10 @@ typedef void (*VoidFn)(void);
 #define INCBIN_S32 INCBIN
 #endif // IDE support
 
+// Use STR(<macro>) to turn the macro's *content* into a string
+#define STR_(x) #x
+#define STR(x)  STR_(x)
+
 // NOTE: This has to be kept as-is.
 //       If casted it to be signed,
 //          dataIndex = (dataIndex + 1) % ARRAY_COUNT(data)
