@@ -284,10 +284,11 @@ void TaskDestructor_DecompCredits(struct Task *t)
 // Colors the screen behind the "Press START ..." text white
 void customHBlank(void)
 {
-    if ((REG_VCOUNT >= DISPLAY_HEIGHT - 16 - 1) && (REG_VCOUNT < DISPLAY_HEIGHT - 1)) {
+    u16 vcount = REG_VCOUNT;
+    if ((vcount >= DISPLAY_HEIGHT - 16 - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
         ((u16 *)BG_PLTT)[0] = RGB_WHITE;
-    } else if ((REG_VCOUNT >= DISPLAY_HEIGHT - 64 - 16 - 1)
-               && (REG_VCOUNT < DISPLAY_HEIGHT - 1)) {
+    } else if ((vcount >= DISPLAY_HEIGHT - 64 - 16 - 1)
+               && (vcount < DISPLAY_HEIGHT - 1)) {
         ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[3 * 16];
     } else {
         ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[2 * 16];

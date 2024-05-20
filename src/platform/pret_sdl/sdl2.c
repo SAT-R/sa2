@@ -1843,9 +1843,9 @@ static void DrawFrame(uint16_t *pixels)
                 backdropColor = alphaBrightnessDecrease(backdropColor);
                 break;
         }
-    }
 
-    memsetu16((void *)scanlines, backdropColor, DISPLAY_WIDTH * DISPLAY_HEIGHT);
+        *(uint16_t *)PLTT = backdropColor;
+    }
 
     for (i = 0; i < DISPLAY_HEIGHT; i++) {
         REG_VCOUNT = i;
@@ -1855,6 +1855,9 @@ static void DrawFrame(uint16_t *pixels)
                 gIntrTable[INTR_INDEX_VCOUNT]();
         }
 
+        // Render the backdrop color before the each individual scanline.
+        // HBlank interrupt code could have changed it inbetween lines.
+        memsetu16(scanlines[i], *(uint16_t *)PLTT, DISPLAY_WIDTH);
         DrawScanline(scanlines[i], i);
 
         REG_DISPSTAT |= INTR_FLAG_HBLANK;
