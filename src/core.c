@@ -490,10 +490,15 @@ static void UpdateScreenDma(void)
 #endif
 
     for (; j < ARRAY_COUNT(sVblankFuncs); j++) {
+#if PORTABLE
+        // TEMP/HACK
+        sVblankFuncs[j]();
+#else
         if (sVblankFuncs[j]() == 0) {
             sLastCalledVblankFuncId = j;
             break;
         }
+#endif
     }
 }
 
