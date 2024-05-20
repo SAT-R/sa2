@@ -1,14 +1,16 @@
-
 # If no other platform is specified, assume gba
-#PLATFORM ?= gba
+PLATFORM ?= gba
+CPU_ARCH ?= arm
+
+SHELL := /bin/bash -o pipefail
 
 ifeq ($(PLATFORM),gba)
-TOOLCHAIN := $(DEVKITARM)
-COMPARE ?= 0
+  TOOLCHAIN := $(DEVKITARM)
+  COMPARE ?= 0
 
-ifeq (compare,$(MAKECMDGOALS))
-  COMPARE := 1
-endif
+  ifeq (compare,$(MAKECMDGOALS))
+    COMPARE := 1
+  endif
 
 # don't use dkP's base_tools anymore
 # because the redefinition of $(CC) conflicts
@@ -17,19 +19,18 @@ endif
 # files, or use arm-none-eabi binaries on the system
 # if dkP is not installed on this system
 
-ifneq (,$(TOOLCHAIN))
-ifneq ($(wildcard $(TOOLCHAIN)/bin),)
-	export PATH := $(TOOLCHAIN)/bin:$(PATH)
-endif
-endif
+  ifneq (,$(TOOLCHAIN))
+    ifneq ($(wildcard $(TOOLCHAIN)/bin),)
+	    export PATH := $(TOOLCHAIN)/bin:$(PATH)
+    endif
+  endif
 
-PREFIX := arm-none-eabi-
+  PREFIX := arm-none-eabi-
 else ifeq ($(CPU_ARCH),i386)
-	TOOLCHAIN := /usr/i686-w64-mingw32/
-
-	PREFIX := i686-w64-mingw32-
+  TOOLCHAIN := /usr/i686-w64-mingw32/
+  PREFIX := i686-w64-mingw32-
 else
-	$(error Unknown CPU architecture $(CPU_ARCH))
+  $(error Unknown CPU architecture $(CPU_ARCH))
 endif # (PLATFORM == gba)
 
 ifeq ($(OS),Windows_NT)
@@ -54,6 +55,8 @@ ifneq ($(MODERN),1)
 endif
 
 AS := $(PREFIX)as
+AR := $(PREFIX)ar
+
 ifneq ($(PLATFORM),gba)
     CPP       := $(PREFIX)cpp
     CPPFLAGS  := -I ../include -D PORTABLE=1
@@ -79,7 +82,7 @@ endif # PLATFORM != gba
 ifeq ($(CPU_ARCH),arm)
     ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
 endif
-ARFLAGS := rc
+ARFLAGS := rc 
 
 SYSCALLS := IntrWait \
             RegisterRamReset \
