@@ -75,8 +75,7 @@ endif
 
 ifeq ($(PLATFORM),sdl)
 # the dir containing /bin, /include, /lib
-#SDL_DIR := $(error Add SDL directory)
-SDL_DIR := /mnt/c/Code/Libraries/SDL2_Root/_32
+SDL_DIR := $(error Please add the directory path to SDL2)
 endif
 
 TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils,$(wildcard tools/*))
