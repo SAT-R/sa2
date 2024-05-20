@@ -73,6 +73,11 @@ ifeq ($(CREATE_PDB),1)
 CV2PDB    := ./cv2pdb.exe
 endif
 
+ifeq ($(PLATFORM),sdl)
+# the dir containing /bin, /include, /lib
+SDL_DIR := $(error Please add the directory path to SDL2)
+endif
+
 TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils,$(wildcard tools/*))
 TOOLBASE = $(TOOLDIRS:tools/%=%)
 TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
@@ -89,12 +94,20 @@ CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 # the C-preprocessor cannot resolve stuff like:
 # #if (PLATFORM == gba), where PLATFORM is defined via -D.
 ifeq ($(PLATFORM),gba)
-    CPPFLAGS += -D PLATFORM_GBA=1 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I tools/agbcc/include
-    CC1FLAGS += -fhex-asm
-else ifeq ($(CPU_ARCH),arm)
-    CPPFLAGS += -D PLATFORM_GBA=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
-else
-    CPPFLAGS += -D PLATFORM_GBA=0 -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
+	CPPFLAGS += -D PLATFORM_GBA=1 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=0 -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1 -nostdinc -I tools/agbcc/include
+	CC1FLAGS += -fhex-asm
+else 
+	ifeq ($(PLATFORM),sdl)
+		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -I$(SDL_DIR)/include
+	else
+		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=1
+	endif
+
+	ifeq (%(CPU_ARCH),arm)
+		CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
+	else
+		CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
+	endif
 endif
 
 ifeq ($(CPU_ARCH),arm)
@@ -233,6 +246,10 @@ $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_
 
 ifeq ($(PLATFORM),gba)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
+else ifeq ($(PLATFORM),sdl)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
+else ifeq ($(PLATFORM),win32)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/pret_sdl/*")
 else
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 endif
@@ -382,7 +399,11 @@ ifeq ($(PLATFORM),gba)
 else
 	@echo Outputting $(ROOT_DIR)/$@
 	@touch $(ROOT_DIR)/$(MAP)
+ifeq ($(PLATFORM),sdl)
+	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(SDL_DIR)/lib -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
+else
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
+endif
 endif
 
 $(ROM): $(ELF)
@@ -451,6 +472,8 @@ japan: ; @$(MAKE) GAME_REGION=JAPAN
 europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 x86: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
+
+sdl: ; @$(MAKE) PLATFORM=sdl CPU_ARCH=i386
 
 chao_garden/mb_chao_garden.gba: 
 	@$(MAKE) -C chao_garden DEBUG=0

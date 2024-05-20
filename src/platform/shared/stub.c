@@ -60,12 +60,9 @@ const u32 gUnknown_080D86D4[15];
 const TileInfo gUnknown_080D8108[8] = { 0 };
 const UNK_80D8710 gUnknown_080D8710 = { 0 };
 const u8 gUnknown_080D8788[][7] = { { 0, 0, 0, 0, 0, 0, 0 } };
-void Task_EggFrogMain(void) {};
-void sub_8048F44(void) {};
 void TaskDestructor_EggFrogMain(struct Task *t) { }
-void sub_8048C7C(void *boss) { } // actually: (EggFrog *boss);
-void sub_8048D78(void *boss) { } // actually: (EggFrog *boss);
-void sub_8048E64(void *boss) { } // actually: (EggFrog *boss);
+extern void sub_8048C7C(void *boss);
+void sub_804920C(void *boss) { } // actually: (EggFrog *boss);
 void sub_804928C(void *boss) { } // actually: (EggFrog *boss);
 void sub_80492B8(void *boss) { } // actually: (EggFrog *boss);
 void sub_804931C(void *boss) { } // actually: (EggFrog *boss);
@@ -104,7 +101,6 @@ void sub_8083B88(struct UNK_8085F1C_1 *p0, struct UNK_8085F1C_1 *p1,
 void sub_8084B54(struct UNK_8085F1C_1 *p0, u16 p1, u16 p2, u16 p3) { }
 
 // TEMP
-void sub_8048EB4(s32 a, s32 b) { }
 void CreateSuperEggRoboZ(void) { }
 void RealClearChain(void) { }
 void SoundMainBTM(void) { }

@@ -64,8 +64,11 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
     while (gUnknown_0300287C != gUnknown_03002AE4) {
         Background *bg;
 
+#if !PORTABLE
+        // TODO: This #if should not be required.
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK))
             return FALSE;
+#endif
 
         // _08002B64
         REG_VCOUNT;
