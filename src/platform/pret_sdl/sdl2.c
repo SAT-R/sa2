@@ -1844,6 +1844,7 @@ static void DrawFrame(uint16_t *pixels)
                 break;
         }
 
+        // Make sure to push the backdrop color back to PLTT mem.
         *(uint16_t *)PLTT = backdropColor;
     }
 
