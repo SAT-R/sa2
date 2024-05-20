@@ -526,20 +526,21 @@ u32 sub_8004010(void)
     u16 sp00; // 4 : num backgrounds
     u8 sp08;
 
-    for(bg = 0; bg < 4; bg++) {
-        if( (gUnknown_03002280[bg][1] != gUnknown_03002280[bg][3])
-         || (gUnknown_03002280[bg][0] != gUnknown_03002280[bg][2]) ) {
+    for (bg = 0; bg < 4; bg++) {
+        if ((gUnknown_03002280[bg][1] != gUnknown_03002280[bg][3])
+            || (gUnknown_03002280[bg][0] != gUnknown_03002280[bg][2])) {
             // _08004056
-            void *vramBase = ((void*)BG_VRAM + ((gBgCntRegs[bg] & BGCNT_SCREENBASE_MASK) << 3));
+            void *vramBase
+                = ((void *)BG_VRAM + ((gBgCntRegs[bg] & BGCNT_SCREENBASE_MASK) << 3));
             sp08 = gUnknown_03002280[bg][0];
 
             // Potential bug?
             // gDispCnt could be set to bitmap mode (0x5), which
             // would still trigger this condition but is not intended.
-            if(bg > 1 || (gDispCnt & 0x3)) {
+            if (bg > 1 || (gDispCnt & 0x3)) {
                 // __0800408E
                 u16 affineSize;
-                
+
                 vramBase = (vramBase + sp08);
 
                 // affineSize = internal "screen size"
@@ -549,20 +550,22 @@ u32 sub_8004010(void)
                 // 3 = 1024x1024
                 affineSize = 16 << (gBgCntRegs[bg] >> 14);
 
-                if(gUnknown_03002280[bg][3] == 0xFF) {
+                if (gUnknown_03002280[bg][3] == 0xFF) {
                     // __080040A2
                     u16 cb = combine(gUnknown_03004D80[bg]);
                     void *vram = (vramBase + (gUnknown_03002280[bg][1] * affineSize));
-                    s32 size =  affineSize * (gUnknown_03002280[bg][3] - gUnknown_03002280[bg][1]);
+                    s32 size = affineSize
+                        * (gUnknown_03002280[bg][3] - gUnknown_03002280[bg][1]);
 
                     DmaFill16(3, cb, vram, ABS(size));
                 } else {
                     // _080040F8
                     u8 r4 = gUnknown_03002280[bg][1];
 
-                    for(; r4 <= gUnknown_03002280[bg][3]; r4++) {
+                    for (; r4 <= gUnknown_03002280[bg][3]; r4++) {
                         u16 cb = combine(gUnknown_03004D80[bg]);
-                        void *vram = (vramBase + (gUnknown_03002280[bg][1] * affineSize));
+                        void *vram
+                            = (vramBase + (gUnknown_03002280[bg][1] * affineSize));
                         s32 size = (gUnknown_03002280[bg][2] - sp08) + 1;
 
                         DmaFill16(3, cb, vram, ABS(size));
@@ -583,24 +586,26 @@ u32 sub_8004010(void)
                 // 3 = 1024x1024   (-2, -> 1)
                 affineSize = (gBgCntRegs[bg] >> 14) - 2;
 
-                if(affineSize < 2) {
+                if (affineSize < 2) {
                     // 512x512 or 1024x1024
                     tileSize = 64;
                 }
                 // _08004182
 
-                if(gUnknown_03002280[bg][2] == 0xFF) {
+                if (gUnknown_03002280[bg][2] == 0xFF) {
                     // __0800418C
                     void *vram = (vramBase + (gUnknown_03002280[bg][1] * tileSize));
-                    s32 size = tileSize * (gUnknown_03002280[bg][3] - gUnknown_03002280[bg][1]);
+                    s32 size = tileSize
+                        * (gUnknown_03002280[bg][3] - gUnknown_03002280[bg][1]);
 
-                    DmaFill16(3, gUnknown_03004D80[bg], vram, size*2);
+                    DmaFill16(3, gUnknown_03004D80[bg], vram, size * 2);
                 } else {
                     // _080041D8
                     u8 r4 = gUnknown_03002280[bg][1];
 
-                    for(; r4 < gUnknown_03002280[bg][3]; r4++) {
-                        void *vram = (vramBase + (gUnknown_03002280[bg][1] * (tileSize * 2)));
+                    for (; r4 < gUnknown_03002280[bg][3]; r4++) {
+                        void *vram
+                            = (vramBase + (gUnknown_03002280[bg][1] * (tileSize * 2)));
                         s32 size = tileSize * (gUnknown_03002280[bg][2] - sp08) + 1;
                         DmaFill16(3, gUnknown_03004D80[bg], vram, size * 2);
                     }

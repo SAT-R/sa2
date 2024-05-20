@@ -270,7 +270,7 @@ _080041F6:
 	mov r6, ip          @ r6 = ip = &gUnknown_03002280[bg][2] 
 	ldrb r0, [r6]
 	ldr r1, [sp, #8]
-	subs r0, r0, r1
+	subs r0, r0, r1     @ r0 = (gUnknown_03002280[bg][2] - gUnknown_03002280[bg][0])
 	adds r0, #1
 	movs r6, #0x81
 	lsls r6, r6, #0x18
