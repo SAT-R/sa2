@@ -422,6 +422,7 @@ void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
 // (57.61%) https://decomp.me/scratch/6Xm6S
 // (58.36%) https://decomp.me/scratch/ClyxP
 // (48.23%) https://decomp.me/scratch/bDTEe
+#if 01
 NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
 {
     u8 bgIndex = 0;
@@ -513,6 +514,107 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
     return 1;
 }
 END_NONMATCH
+
+#else
+#define combine(v) ((v) << 8 | (v))
+
+u32 sub_8004010(void)
+{
+    // Stack size: 0x18 bytes
+
+    u8 bg; // bg index
+    u16 sp00; // 4 : num backgrounds
+    u8 sp08;
+
+    for(bg = 0; bg < 4; bg++) {
+        if( (gUnknown_03002280[bg][1] != gUnknown_03002280[bg][3])
+         || (gUnknown_03002280[bg][0] != gUnknown_03002280[bg][2]) ) {
+            // _08004056
+            void *vramBase = ((void*)BG_VRAM + ((gBgCntRegs[bg] & BGCNT_SCREENBASE_MASK) << 3));
+            sp08 = gUnknown_03002280[bg][0];
+
+            // Potential bug?
+            // gDispCnt could be set to bitmap mode (0x5), which
+            // would still trigger this condition but is not intended.
+            if(bg > 1 || (gDispCnt & 0x3)) {
+                // __0800408E
+                u16 affineSize;
+                
+                vramBase = (vramBase + sp08);
+
+                // affineSize = internal "screen size"
+                // 0 = 128x128
+                // 1 = 256x256
+                // 2 = 512x512
+                // 3 = 1024x1024
+                affineSize = 16 << (gBgCntRegs[bg] >> 14);
+
+                if(gUnknown_03002280[bg][3] == 0xFF) {
+                    // __080040A2
+                    u16 cb = combine(gUnknown_03004D80[bg]);
+                    void *vram = (vramBase + (gUnknown_03002280[bg][1] * affineSize));
+                    s32 size =  affineSize * (gUnknown_03002280[bg][3] - gUnknown_03002280[bg][1]);
+
+                    DmaFill16(3, cb, vram, ABS(size));
+                } else {
+                    // _080040F8
+                    u8 r4 = gUnknown_03002280[bg][1];
+
+                    for(; r4 <= gUnknown_03002280[bg][3]; r4++) {
+                        u16 cb = combine(gUnknown_03004D80[bg]);
+                        void *vram = (vramBase + (gUnknown_03002280[bg][1] * affineSize));
+                        s32 size = (gUnknown_03002280[bg][2] - sp08) + 1;
+
+                        DmaFill16(3, cb, vram, ABS(size));
+                    }
+                }
+            } else {
+                // _08004168
+                int tileSize;
+                u8 affineSize;
+                vramBase = (vramBase + sp08 * 2);
+
+                tileSize = 32;
+
+                // affineSize = internal "screen size"
+                // 0 = 128x128     (-2, -> 254)
+                // 1 = 256x256     (-2, -> 255)
+                // 2 = 512x512     (-2, -> 0)
+                // 3 = 1024x1024   (-2, -> 1)
+                affineSize = (gBgCntRegs[bg] >> 14) - 2;
+
+                if(affineSize < 2) {
+                    // 512x512 or 1024x1024
+                    tileSize = 64;
+                }
+                // _08004182
+
+                if(gUnknown_03002280[bg][2] == 0xFF) {
+                    // __0800418C
+                    void *vram = (vramBase + (gUnknown_03002280[bg][1] * tileSize));
+                    s32 size = tileSize * (gUnknown_03002280[bg][3] - gUnknown_03002280[bg][1]);
+
+                    DmaFill16(3, gUnknown_03004D80[bg], vram, size*2);
+                } else {
+                    // _080041D8
+                    u8 r4 = gUnknown_03002280[bg][1];
+
+                    for(; r4 < gUnknown_03002280[bg][3]; r4++) {
+                        void *vram = (vramBase + (gUnknown_03002280[bg][1] * (tileSize * 2)));
+                        s32 size = tileSize * (gUnknown_03002280[bg][2] - sp08) + 1;
+                        DmaFill16(3, gUnknown_03004D80[bg], vram, size * 2);
+                    }
+                }
+            }
+
+            // _0800422C
+            DmaFill32(3, 0, &gUnknown_03002280[bg], ARRAY_COUNT(gUnknown_03002280[bg]));
+        }
+    }
+
+    return 1;
+}
+#endif
 
 // Copies the given tileOffsets of the given tilesSrc into the
 // given dest.
