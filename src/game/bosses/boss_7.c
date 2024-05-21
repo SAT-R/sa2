@@ -851,3 +851,185 @@ void sub_8048F7C(EggFrog *boss)
         sub_80484C8(boss);
     }
 }
+
+void sub_8048FA4(EggFrog *boss)
+{
+    sub_8048C7C(boss);
+
+    if (boss->unk5C > 0x43FF) {
+        boss->unk58 = 0x77;
+        m4aSongNumStart(SE_256);
+        boss->unk1B = 2;
+        boss->unk5C &= 0xFFF;
+        boss->unk60 = gUnknown_080D86D4[2];
+        boss->unk18 = gUnknown_080D8710[2].unk2;
+        boss->unk19 = gUnknown_080D8710[2].unk3;
+    }
+}
+
+void sub_8048FF4(EggFrog *boss)
+{
+    if (sub_8048C7C(boss) != 0 || boss->x > boss->unk10) {
+        boss->unk1B = 7;
+        boss->unk5C &= 0xFFF;
+        boss->unk60 = gUnknown_080D86D4[7];
+        boss->unk18 = gUnknown_080D8710[7].unk2;
+        boss->unk19 = gUnknown_080D8710[7].unk3;
+        boss->speedX = 0x500;
+        boss->x = boss->unk10;
+    } else {
+        boss->speedX += 0xF;
+    }
+}
+
+void sub_804904C(EggFrog *boss)
+{
+    sub_8048C7C(boss);
+
+    if (boss->unk5C > 0x23FF) {
+        sub_80493F8(boss, boss->x, boss->y, 1);
+        boss->unk1B = 0;
+        boss->unk5C &= 0xFFF;
+        boss->unk60 = gUnknown_080D86D4[0];
+        boss->unk18 = gUnknown_080D8710[0].unk2;
+        boss->unk19 = gUnknown_080D8710[0].unk3;
+    }
+}
+
+void sub_804909C(EggFrog *boss)
+{
+    boss->unk19 = 0;
+    sub_8048C7C(boss);
+    if (boss->unk5C > 0x1FFF) {
+        sub_80484C8(boss);
+    }
+}
+
+void sub_80490C4(EggFrog *boss)
+{
+    sub_8048C7C(boss);
+
+    if (boss->unk5C > 0x43FF) {
+        boss->unk58 = 0x77;
+        m4aSongNumStart(SE_256);
+        boss->unk1B = 9;
+        boss->unk5C &= 0xFFF;
+        boss->unk60 = gUnknown_080D86D4[9];
+        boss->unk18 = gUnknown_080D8710[9].unk2;
+        boss->unk19 = gUnknown_080D8710[9].unk3;
+    }
+}
+
+void sub_804911C(EggFrog *boss)
+{
+    if (sub_8048C7C(boss) != 0 || boss->x > boss->unk10) {
+        boss->unk1B = 0;
+        boss->unk5C &= 0xFFF;
+        boss->unk60 = gUnknown_080D86D4[0];
+        boss->unk18 = gUnknown_080D8710[0].unk2;
+        boss->unk19 = gUnknown_080D8710[0].unk3;
+        boss->speedX = 0x500;
+        boss->x = boss->unk10;
+    } else {
+        boss->speedX += 0xF;
+    }
+}
+
+void sub_8049174(EggFrog *boss)
+{
+    sub_8048C7C(boss);
+
+    if (boss->unk5C > 0x23FF) {
+        sub_80493F8(boss, boss->x, boss->y, 0);
+        boss->unk1B = 7;
+        boss->unk5C &= 0xFFF;
+        boss->unk60 = gUnknown_080D86D4[7];
+        boss->unk18 = gUnknown_080D8710[7].unk2;
+        boss->unk19 = gUnknown_080D8710[7].unk3;
+    }
+}
+
+void sub_80491C4(EggFrog *boss)
+{
+    boss->x += 0x300;
+    if (sub_8048C7C(boss) != 0) {
+        boss->unk1B = 0;
+        boss->unk5C &= 0xFFF;
+        boss->unk60 = gUnknown_080D86D4[0];
+        boss->unk18 = gUnknown_080D8710[0].unk2;
+        boss->unk19 = gUnknown_080D8710[0].unk3;
+    }
+}
+
+void sub_804920C(EggFrog *boss)
+{
+    s32 x = I(boss->x);
+    s32 y = I(boss->y);
+
+    s32 result;
+
+    s32 temp = 9;
+    y += gUnknown_080D8148[0];
+    y += (SIN(boss->unk1C[1][0]) * 0x17) >> 0xE;
+    y += SIN(boss->unk1C[1][1]) >> temp;
+    y += (SIN(boss->unk1C[1][2]) * 0x32) >> 0xE;
+
+    result = sub_801E4E4(y, x, 1, 8, 0, sub_801EE64);
+
+    if (result < 0) {
+        boss->y += Q(result);
+    }
+}
+
+void sub_804928C(EggFrog *boss)
+{
+    Sprite *s = &boss->unk68;
+    if (boss->unk16 == 0) {
+        boss->unk15 = 0x1E;
+        s->graphics.anim = SA2_ANIM_EGG_FROG_CABIN;
+        s->variant = 1;
+        s->prevVariant = -1;
+    }
+}
+
+void sub_80492B8(EggFrog *boss)
+{
+    boss->speedY += gUnknown_080D814A[boss->unk18];
+
+    if (boss->unk18 == 0 && boss->speedY > 704) {
+        boss->speedY = 704;
+    } else if (boss->unk18 != 0 && boss->speedY < -704) {
+        boss->speedY = -704;
+    }
+    boss->x += boss->speedX;
+    boss->y += boss->speedY;
+    boss->unk10 += 0x500;
+}
+
+extern const u16 gUnknown_080D8796[][16];
+
+void sub_804931C(EggFrog *boss)
+{
+    if (boss->unk16 != 0) {
+        u8 i;
+
+        for (i = 0; i < 16; i++) {
+            gBgPalette[i + 0xB0] = gUnknown_080D8796[(boss->unk16 & 2) >> 1][i];
+        }
+    }
+
+    gFlags |= 1;
+}
+
+void TaskDestructor_EggFrogMain(struct Task *t)
+{
+    EggFrog *boss = TASK_DATA(t);
+    VramFree(boss->unk1E8);
+    VramFree(boss->unk98[0].graphics.dest);
+    VramFree(boss->unk98[1].graphics.dest);
+    VramFree(boss->unk98[2].graphics.dest);
+    VramFree(boss->unk98[3].graphics.dest);
+    VramFree(boss->unk98[4].graphics.dest);
+    VramFree(boss->unk188[0].graphics.dest);
+    gActiveBossTask = NULL;
+}
