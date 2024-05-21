@@ -59,13 +59,10 @@ const s8 gUnknown_080D814A[0x452];
 const u32 gUnknown_080D86D4[15];
 const TileInfo gUnknown_080D8108[8] = { 0 };
 const UNK_80D8710 gUnknown_080D8710 = { 0 };
+const u16 gUnknown_080D8796[][16]
+    = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 const u8 gUnknown_080D8788[][7] = { { 0, 0, 0, 0, 0, 0, 0 } };
-void TaskDestructor_EggFrogMain(struct Task *t) { }
 extern void sub_8048C7C(void *boss);
-void sub_804920C(void *boss) { } // actually: (EggFrog *boss);
-void sub_804928C(void *boss) { } // actually: (EggFrog *boss);
-void sub_80492B8(void *boss) { } // actually: (EggFrog *boss);
-void sub_804931C(void *boss) { } // actually: (EggFrog *boss);
 void sub_80493F8(void *boss, s32 x, s32 y, u8 param3) {
 } // actually: (EggFrog *boss, s32 x, s32 y, u8 );
 void sub_80498CC(u8 param0) { }
