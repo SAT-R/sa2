@@ -73,11 +73,6 @@ ifeq ($(CREATE_PDB),1)
 CV2PDB    := ./cv2pdb.exe
 endif
 
-ifeq ($(PLATFORM),sdl)
-# the dir containing /bin, /include, /lib
-SDL_DIR := $(error Please add the directory path to SDL2)
-endif
-
 TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils,$(wildcard tools/*))
 TOOLBASE = $(TOOLDIRS:tools/%=%)
 TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
@@ -98,7 +93,7 @@ ifeq ($(PLATFORM),gba)
 	CC1FLAGS += -fhex-asm
 else 
 	ifeq ($(PLATFORM),sdl)
-		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -I$(SDL_DIR)/include
+		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell pkg-config --cflags sdl2)
 	else
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=1
 	endif
@@ -195,22 +190,25 @@ endif
 
 ifeq ($(CPU_ARCH),arm)
 # no-op
-ASM_PSEUDO_OP_CONV := sed -n 'p'
+  ASM_PSEUDO_OP_CONV := sed -n 'p'
+  ASM_PSEUDO_OP_CONV_PIPE := $(ASM_PSEUDO_OP_CONV)
 else
 
-# MacOS sed command is different to Linux
-SEDFLAGS :=
-UNAME := $(shell uname)
-ifeq ($(UNAME),Darwin)
-	SEDFLAGS += -i ''
-endif
+  # MacOS sed command is different to Linux
+  SEDFLAGS :=
+  UNAME := $(shell uname)
+  ifeq ($(UNAME),Darwin)
+  	SEDFLAGS += -i ''
+  endif
 
-# Convert .2byte -> .short and .4byte -> .int
-#  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
-#  but on 64bit targets it would be .8byte / .quad
-#
-# sed expression script by Kurausukun
-ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+  # Convert .2byte -> .short and .4byte -> .int
+  #  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
+  #  but on 64bit targets it would be .8byte / .quad
+  #
+  # sed expression script by Kurausukun
+  # only apply the SEDFLAGS (for MacOS) to the commands where we read the file
+  ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+  ASM_PSEUDO_OP_CONV_PIPE := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
 endif
 
 ASM_SUBDIR = asm
@@ -400,7 +398,7 @@ else
 	@echo Outputting $(ROOT_DIR)/$@
 	@touch $(ROOT_DIR)/$(MAP)
 ifeq ($(PLATFORM),sdl)
-	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(SDL_DIR)/lib -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
+	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 $(shell pkg-config --cflags --libs sdl2) -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 else
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 endif
@@ -460,11 +458,11 @@ endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
+	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV_PIPE) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
+	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV_PIPE) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 
 japan: ; @$(MAKE) GAME_REGION=JAPAN
