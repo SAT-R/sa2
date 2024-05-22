@@ -578,7 +578,7 @@ s32 Mod(s32 num, s32 denom)
     }
 }
 
-int MultiBoot(struct MultiBootParam *mp) { }
+int MultiBoot(struct MultiBootParam *mp) { return 0; }
 
 #ifdef DmaSet
 #undef DmaSet
@@ -1112,6 +1112,8 @@ static inline uint32_t getBgX(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3X;
     }
+
+    return 0;
 }
 
 static inline uint32_t getBgY(int bgNumber)
@@ -1121,6 +1123,8 @@ static inline uint32_t getBgY(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3Y;
     }
+
+    return 0;
 }
 
 static inline uint16_t getBgPA(int bgNumber)
@@ -1130,6 +1134,7 @@ static inline uint16_t getBgPA(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3PA;
     }
+    return 0;
 }
 
 static inline uint16_t getBgPB(int bgNumber)
@@ -1139,6 +1144,8 @@ static inline uint16_t getBgPB(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3PB;
     }
+
+    return 0;
 }
 
 static inline uint16_t getBgPC(int bgNumber)
@@ -1148,6 +1155,8 @@ static inline uint16_t getBgPC(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3PC;
     }
+
+    return 0;
 }
 
 static inline uint16_t getBgPD(int bgNumber)
@@ -1157,6 +1166,8 @@ static inline uint16_t getBgPD(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3PD;
     }
+
+    return 0;
 }
 
 static void RenderRotScaleBGScanline(int bgNum, uint16_t control, uint16_t x, uint16_t y,
@@ -1823,6 +1834,8 @@ uint16_t *memsetu16(uint16_t *dst, uint16_t fill, size_t count)
     for (int i = 0; i < count; i++) {
         *dst++ = fill;
     }
+
+    return 0;
 }
 
 static void DrawFrame(uint16_t *pixels)
@@ -1889,7 +1902,11 @@ void VDraw(SDL_Texture *texture)
     REG_VCOUNT = 161; // prep for being in VBlank period
 }
 
-int DoMain(void *data) { AgbMain(); }
+int DoMain(void *data)
+{
+    AgbMain();
+    return 0;
+}
 
 void VBlankIntrWait(void)
 {

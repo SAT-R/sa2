@@ -1,4 +1,4 @@
-	.section .rodata
+	SECTION_RODATA
 
 .incbin "graphics/obj_palettes/pal_000.gbapal"
 .incbin "graphics/obj_palettes/pal_001.gbapal"

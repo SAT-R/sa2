@@ -44,11 +44,14 @@ static const struct UNK_80DF670 gUnknown_080DF880[] = {
 };
 
 static const struct UNK_80DF670 sChaosEmeraldUnlockedSprites[] = {
-    { 895, 0, 9, 0, 0 }, { 895, 1, 9, 0, 0 }, { 895, 2, 9, 0, 0 }, { 895, 3, 9, 0, 0 },
-    { 895, 4, 9, 0, 0 }, { 895, 5, 9, 0, 0 }, { 895, 6, 9, 0, 0 },
-};
-
-static const struct UNK_80DF670 sChaosEmeraldMissingSprites[2] = {
+    { 895, 0, 9, 0, 0 },
+    { 895, 1, 9, 0, 0 },
+    { 895, 2, 9, 0, 0 },
+    { 895, 3, 9, 0, 0 },
+    { 895, 4, 9, 0, 0 },
+    { 895, 5, 9, 0, 0 },
+    { 895, 6, 9, 0, 0 },
+    // missing
     { 895, 7, 9, 0, 0 },
     { 895, 8, 9, 0, 0 },
 };
@@ -377,7 +380,7 @@ SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *resultsScree
         if (chaosEmeralds & CHAOS_EMERALD(i)) {
             sprite = &sChaosEmeraldUnlockedSprites[i];
         } else {
-            sprite = &sChaosEmeraldMissingSprites[0];
+            sprite = &sChaosEmeraldUnlockedSprites[7];
         }
 
         sub_806CA88(&resultsScreen->chaosEmerald[i], 1, 9, sprite->anim, 0, i * 24 + 292,

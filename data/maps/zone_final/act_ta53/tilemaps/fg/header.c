@@ -5,7 +5,7 @@ const u16 Palette_zone_final_act_ta53_fg[]
     = INCBIN_U16("data/maps/zone_final/act_ta53/tilemaps/fg/palette.gbapal");
 const u8 Tileset_zone_final_act_ta53_fg[]
     = INCBIN_U8("data/maps/zone_final/act_ta53/tilemaps/fg/tileset.4bpp");
-const u8 CollHeightMap_zone_final_act_ta53_fg[]
+const s8 CollHeightMap_zone_final_act_ta53_fg[]
     = INCBIN_U8("data/maps/zone_final/act_ta53/tilemaps/fg/height_map.coll");
 const u8 CollTileRot_zone_final_act_ta53_fg[]
     = INCBIN_U8("data/maps/zone_final/act_ta53/tilemaps/fg/tile_rot.coll");

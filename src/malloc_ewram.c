@@ -1,5 +1,5 @@
 #if PORTABLE
-#include <malloc.h>
+#include <stdlib.h>
 #endif
 #include "global.h"
 #include "core.h"

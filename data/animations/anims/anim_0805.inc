@@ -1,8 +1,8 @@
 
 
 anim_data__0805_0:
-	mGetPalette 0xCF 16 0x0
-	mGetTiles 0x21609 192
+	mGetPalette 0xCF, 16, 0x0
+	mGetTiles 0x21609, 192
 	.4byte	1, 0
 
 	mAnimCmd4 

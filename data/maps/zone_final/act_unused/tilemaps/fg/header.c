@@ -4,7 +4,7 @@
 const u16 Palette_zone_final_act_unused_fg[]
     = INCBIN_U16("data/maps/zone_final/act_unused/tilemaps/fg/palette.gbapal");
 const u8 Tileset_zone_final_act_unused_fg[] = { 0xFF, 0xFF, 0xFF, 0xFF };
-const u8 CollHeightMap_zone_final_act_unused_fg[]
+const s8 CollHeightMap_zone_final_act_unused_fg[]
     = INCBIN_U8("data/maps/zone_final/act_unused/tilemaps/fg/height_map.coll");
 const u8 CollTileRot_zone_final_act_unused_fg[]
     = INCBIN_U8("data/maps/zone_final/act_unused/tilemaps/fg/tile_rot.coll");

@@ -28,7 +28,8 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
 
 #define POS__RES_IF(i)                                                                  \
     if (res > 0) {                                                                      \
-        res = (--res) - (p0 % 8u);                                                      \
+        res--;                                                                          \
+        res -= (p0 % 8u);                                                               \
         return res + ((i)*TILE_WIDTH);                                                  \
     } else {                                                                            \
         return res + (p0 % 8u) + ((i)*TILE_WIDTH);                                      \

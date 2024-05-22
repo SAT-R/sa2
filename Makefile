@@ -6,31 +6,32 @@ include config.mk
 ROOT_DIR := $(realpath $(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
 
 ifeq ($(PLATFORM),gba)
-TOOLCHAIN := $(DEVKITARM)
-COMPARE ?= 0
+  TOOLCHAIN := $(DEVKITARM)
+  COMPARE ?= 0
 
-ifeq (compare,$(MAKECMDGOALS))
-  COMPARE := 1
-endif
+  ifeq (compare,$(MAKECMDGOALS))
+    COMPARE := 1
+  endif
 
-# don't use dkP's base_tools anymore
-# because the redefinition of $(CC) conflicts
-# with when we want to use $(CC) to preprocess files
-# thus, manually create the variables for the bin
-# files, or use arm-none-eabi binaries on the system
-# if dkP is not installed on this system
+  # don't use dkP's base_tools anymore
+  # because the redefinition of $(CC) conflicts
+  # with when we want to use $(CC) to preprocess files
+  # thus, manually create the variables for the bin
+  # files, or use arm-none-eabi binaries on the system
+  # if dkP is not installed on this system
 
-ifneq (,$(TOOLCHAIN))
-ifneq ($(wildcard $(TOOLCHAIN)/bin),)
-	export PATH := $(TOOLCHAIN)/bin:$(PATH)
-endif
-endif
+  ifneq (,$(TOOLCHAIN))
+    ifneq ($(wildcard $(TOOLCHAIN)/bin),)
+	  export PATH := $(TOOLCHAIN)/bin:$(PATH)
+    endif
+  endif
 
-PREFIX := arm-none-eabi-
+  PREFIX := arm-none-eabi-
 else ifeq ($(CPU_ARCH),i386)
-	TOOLCHAIN := /usr/i686-w64-mingw32/
-
-	PREFIX := i686-w64-mingw32-
+  ifeq ($(PLATFORM),sdl_win32)
+    TOOLCHAIN := /usr/i686-w64-mingw32/
+    PREFIX := i686-w64-mingw32-
+  endif
 else
 	$(error Unknown CPU architecture '$(CPU_ARCH)')
 endif # (PLATFORM == gba)
@@ -77,13 +78,11 @@ TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils,$(wildcard to
 TOOLBASE = $(TOOLDIRS:tools/%=%)
 TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 
-ASFLAGS  := --defsym $(GAME_REGION)=1
-
 # -P disables line markers (don't EVER use this, if you want proper debug info!)
 # -I sets an include path
 # -D defines a symbol
 CPPFLAGS ?= -iquote include -D $(GAME_REGION)
-CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
+CC1FLAGS ?= -Wimplicit -Wparentheses -Werror -Wno-parentheses-equality
 
 # These have to(?) be defined this way, because
 # the C-preprocessor cannot resolve stuff like:
@@ -101,54 +100,59 @@ else
 	ifeq (%(CPU_ARCH),arm)
 		CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
 	else
-		CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
+	    ifeq ($(PLATFORM),sdl)
+            CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0
+		else
+            CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
+		endif
 	endif
 endif
 
 ifeq ($(CPU_ARCH),arm)
-	ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
-	CC1FLAGS += -mthumb-interwork
-ifeq ($(THUMB_SUPPORT),1)
-	ASFLAGS  += -mthumb-interwork
-	CC1FLAGS += -mthumb-interwork
-endif
-
+  ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
+  CC1FLAGS += -mthumb-interwork
+  ifeq ($(THUMB_SUPPORT),1)
+    ASFLAGS  += -mthumb-interwork
+    CC1FLAGS += -mthumb-interwork
+  endif
 else
-ifeq ($(CPU_ARCH),i386)
-	# Use the more legible Intel dialect for x86, without underscores
-	CC1FLAGS += -masm=intel
-endif
-	# Allow file input through stdin on modern GCC and set it to "compile only"
-	CC1FLAGS += -x c -S
+  ifeq ($(CPU_ARCH),i386)
+    ifeq ($(PLATFORM), sdl_win32)
+      # Use the more legible Intel dialect for x86, without underscores
+      CC1FLAGS += -masm=intel
+	endif
+
+	ifeq ($(PLATFORM), sdl)
+    #   CC1FLAGS += -m32
+    #   CPPFLAGS += -m32
+      CPP := $(CC1) -E
+	endif
+  endif
+  # Allow file input through stdin on modern GCC and set it to "compile only"
+  CC1FLAGS += -x c -S
 endif
 
 ifeq ($(DEBUG),1)
-	CC1FLAGS += -g3 -O0
+  CC1FLAGS += -g3 -O0
 else
-	CC1FLAGS += -O2
+  CC1FLAGS += -O2
 endif
 
 ifeq ($(PORTABLE),1)
-    CPPFLAGS += -D PORTABLE=1
+  CPPFLAGS += -D PORTABLE=1
 else
-    CPPFLAGS += -D PORTABLE=0
+  CPPFLAGS += -D PORTABLE=0
 endif
 
-ifeq ($(NON_MATCHING),0)
-    ASFLAGS += --defsym NON_MATCHING=0
-else
-    ASFLAGS += --defsym NON_MATCHING=1
-
+ifeq ($(NON_MATCHING),1)
 # TODO: We use "#if(n)def NON_MATCHING a lot, maybe we should switch to "#if (!)NON_MATCHING"
 #    CPPFLAGS += -D NON_MATCHING=1
 endif
 
 ifeq ($(ENABLE_DECOMP_CREDITS),0)
-    ASFLAGS += --defsym ENABLE_DECOMP_CREDITS=0
-    CPPFLAGS += -D ENABLE_DECOMP_CREDITS=0
+  CPPFLAGS += -D ENABLE_DECOMP_CREDITS=0
 else
-    ASFLAGS += --defsym ENABLE_DECOMP_CREDITS=1
-    CPPFLAGS += -D ENABLE_DECOMP_CREDITS=1
+  CPPFLAGS += -D ENABLE_DECOMP_CREDITS=1
 endif
 
 
@@ -209,6 +213,7 @@ else
   # only apply the SEDFLAGS (for MacOS) to the commands where we read the file
   ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
   ASM_PSEUDO_OP_CONV_PIPE := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+  # TODO: switch to quad for 64bit
 endif
 
 ASM_SUBDIR = asm
@@ -398,9 +403,13 @@ else
 	@echo Outputting $(ROOT_DIR)/$@
 	@touch $(ROOT_DIR)/$(MAP)
 ifeq ($(PLATFORM),sdl)
+	cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) $(shell pkg-config --cflags --libs sdl2) -o $(ROOT_DIR)/$@
+else
+ifeq ($(PLATFORM),sdl_win32)
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 $(shell pkg-config --cflags --libs sdl2) -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 else
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
+endif
 endif
 endif
 
@@ -458,7 +467,7 @@ endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV_PIPE) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
+	$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV_PIPE) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"

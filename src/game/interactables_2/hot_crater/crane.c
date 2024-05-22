@@ -365,7 +365,7 @@ static void Task_8073D48(void)
     sub_80741B4(crane);
     crane->unk1B8.unk6 += 42;
 
-    if ((result_744D0 == FALSE))
+    if (result_744D0 == FALSE)
         sub_8074400(crane);
 
     sub_80742A8(crane);

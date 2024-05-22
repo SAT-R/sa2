@@ -1,4 +1,3 @@
-#include <malloc.h>
 #include "core.h"
 #include "gba/flash_internal.h"
 

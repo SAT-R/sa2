@@ -1,8 +1,8 @@
 
 
 anim_data__0707_0:
-	mGetTiles 0x1D5EC 32
-	mGetPalette 0x9A 16 0x80
+	mGetTiles 0x1D5EC, 32
+	mGetPalette 0x9A, 16, 0x80
 	.4byte	2, 0
 
 	.4byte	2, 1

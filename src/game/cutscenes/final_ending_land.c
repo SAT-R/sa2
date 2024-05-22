@@ -863,8 +863,8 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s = &scene->unk1D0;
         s->graphics.anim = gUnknown_080E17A4[40].anim;
         s->variant = gUnknown_080E17A4[40].variant;
-        s->x = scene->unk5E0[0][4];
-        s->y = scene->unk5E0[0][5] >> 8;
+        s->x = scene->unk5E0[2][0];
+        s->y = scene->unk5E0[2][1] >> 8;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
         scene->unk34A--;
@@ -881,16 +881,16 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s = &scene->unk200;
         s->graphics.anim = gUnknown_080E17A4[41].anim;
         s->variant = gUnknown_080E17A4[41].variant;
-        s->x = scene->unk5E0[0][6];
-        s->y = scene->unk5E0[0][7] >> 8;
+        s->x = scene->unk5E0[3][0];
+        s->y = scene->unk5E0[3][1] >> 8;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
 
         s = &scene->unk230;
         s->graphics.anim = gUnknown_080E17A4[42].anim;
         s->variant = gUnknown_080E17A4[42].variant;
-        s->x = scene->unk5E0[0][8];
-        s->y = scene->unk5E0[0][9] >> 8;
+        s->x = scene->unk5E0[4][0];
+        s->y = scene->unk5E0[4][1] >> 8;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
@@ -899,8 +899,8 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s = &scene->unk110;
         s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].anim;
         s->variant = gUnknown_080E17A4[gUnknown_080E1C55[scene->unk33A]].variant;
-        s->x = scene->unk5E0[0][2];
-        s->y = scene->unk5E0[0][3] >> 8;
+        s->x = scene->unk5E0[1][0];
+        s->y = scene->unk5E0[1][1] >> 8;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
 

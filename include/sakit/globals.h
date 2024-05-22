@@ -254,7 +254,7 @@ extern u8 gUnknown_030055D8;
         s32 oldRings = gRingCount;                                                      \
         gRingCount += incVal;                                                           \
                                                                                         \
-        if (!IS_EXTRA_STAGE(gCurrentLevel)) {                                           \
+        if (!(IS_EXTRA_STAGE(gCurrentLevel))) {                                         \
             newLives = Div(gRingCount, 100);                                            \
             prevLives = Div(oldRings, 100);                                             \
                                                                                         \

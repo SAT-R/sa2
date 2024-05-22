@@ -5,7 +5,7 @@ const u16 Palette_zone_2_act_boss_fg[]
     = INCBIN_U16("data/maps/zone_2/act_boss/tilemaps/fg/palette.gbapal");
 const u8 Tileset_zone_2_act_boss_fg[]
     = INCBIN_U8("data/maps/zone_2/act_boss/tilemaps/fg/tileset.4bpp");
-const u8 CollHeightMap_zone_2_act_boss_fg[]
+const s8 CollHeightMap_zone_2_act_boss_fg[]
     = INCBIN_U8("data/maps/zone_2/act_boss/tilemaps/fg/height_map.coll");
 const u8 CollTileRot_zone_2_act_boss_fg[]
     = INCBIN_U8("data/maps/zone_2/act_boss/tilemaps/fg/tile_rot.coll");

@@ -386,7 +386,7 @@ void sub_806C158(void)
         if (stage->targetReached) {
             m4aSongNumStart(MUS_CHAOS_EMERALD);
             stage->unk5C7 = 1;
-            stage->unk5C8 = 150;
+            stage->unk5C8 = -106;
         } else {
             m4aSongNumStart(MUS_SPECIAL_STAGE_RESULT);
             stage->unk5C7 = 0;

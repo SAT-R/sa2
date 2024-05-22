@@ -209,7 +209,7 @@ static void GenerateNewSaveGame(struct SaveGame *gameState)
 
     record = (void *)gameState->timeRecords.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
-        *record = MAX_COURSE_TIME;
+        *record = (s16)MAX_COURSE_TIME;
     }
 
     gameState->multiplayerWins = 0;
@@ -258,9 +258,9 @@ static void InitSaveGameSectorData(struct SaveSectorData *save)
     save->multiplayerLoses = 0;
     save->multiplayerDraws = 0;
 
-    record = (u16 *)save->timeRecords.table;
+    record = (s16 *)save->timeRecords.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
-        *record = MAX_COURSE_TIME;
+        *record = (s16)MAX_COURSE_TIME;
     }
 
     p2 = save->multiplayerScores;

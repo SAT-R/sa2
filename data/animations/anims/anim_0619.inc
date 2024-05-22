@@ -1,8 +1,8 @@
 
 
 anim_data__0619_0:
-	mGetTiles 0x1BAE0 80
-	mGetPalette 0x4B 16 0xA0
+	mGetTiles 0x1BAE0, 80
+	mGetPalette 0x4B, 16, 0xA0
 	.4byte	4, 0
 
 	.4byte	4, 1

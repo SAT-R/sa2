@@ -1,7 +1,6 @@
-.include "asm/macros.inc"
-.include "constants/constants.inc"
+.include "asm/macros/portable.inc"
 
-.section .rodata
+SECTION_RODATA
 
 RomBuildInfo:
     .ascii "0.94 Thu Oct 25 00:00:00  2002\r\n"

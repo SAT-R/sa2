@@ -126,11 +126,6 @@ u16 ProgramFlashSector_LE(u16 sectorNum, void *src)
     if (sectorNum > 15)
         return 0x80FF;
 
-    if (gFlash->sector.count == FLASH_ROM_SIZE_1M) {
-        SwitchFlashBank(sectorNum / SECTORS_PER_BANK);
-        sectorNum %= SECTORS_PER_BANK;
-    }
-
     dest = FLASH_BASE + (sectorNum << gFlash->sector.shift);
     funcSrc = (u16 *)((s32)VerifyEraseSector_Core ^ 1);
     funcDest = VerifyEraseSector_Core_Buffer;

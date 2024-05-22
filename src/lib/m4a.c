@@ -2,7 +2,11 @@
 
 #include "global.h"
 
+#if !PORTABLE
 __attribute__((section(".bss.code"))) char SoundMainRAM_Buffer[0x400] = {};
+#else
+char SoundMainRAM_Buffer[0x400] = {};
+#endif
 
 EWRAM_DATA struct SoundInfo gSoundInfo = {};
 EWRAM_DATA MPlayFunc gMPlayJumpTable[36] = {};

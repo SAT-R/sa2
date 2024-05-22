@@ -46,6 +46,7 @@ static int s_memaccParam2;
 void PrintAgbHeader()
 {
     std::fprintf(g_outputFile, "\t.include \"asm/macros/c_decl.inc\"\n");
+    std::fprintf(g_outputFile, "\t.include \"asm/macros/portable.inc\"\n");
     std::fprintf(g_outputFile, "\t.include \"sound/MPlayDef.s\"\n\n");
     std::fprintf(g_outputFile, "\t.equ\t%s_grp, voicegroup%03u\n", g_asmLabel.c_str(), g_voiceGroup);
     std::fprintf(g_outputFile, "\t.equ\t%s_pri, %u\n", g_asmLabel.c_str(), g_priority);
@@ -61,7 +62,7 @@ void PrintAgbHeader()
     std::fprintf(g_outputFile, "\t.equ\t%s_exg, %u\n", g_asmLabel.c_str(), g_exactGateTime);
     std::fprintf(g_outputFile, "\t.equ\t%s_cmp, %u\n", g_asmLabel.c_str(), g_compressionEnabled);
 
-    std::fprintf(g_outputFile, "\n\t.section .rodata\n");
+    std::fprintf(g_outputFile, "\n\tSECTION_RODATA\n");
     std::fprintf(g_outputFile, "\t.global\tC_DECL(%s)\n", g_asmLabel.c_str());
 
     std::fprintf(g_outputFile, "\t.align\t2\n");

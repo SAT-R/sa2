@@ -1,7 +1,7 @@
 #if PORTABLE
 // TEMP
 #include <assert.h>
-#include <malloc.h>
+#include <stdlib.h>
 #endif
 #include "global.h"
 #include "core.h"

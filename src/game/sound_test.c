@@ -349,7 +349,7 @@ static void SoundTestScreenCreateUI(struct Task *t)
 
     // jiang: "the language stuff is definitely fake but I don't want to waste my time
     // experimenting expression elimination tricks"
-    s8 *language = &soundTestScreen->language;
+    s8 *language = (s8 *)&soundTestScreen->language;
     const u32 *r6 = sTitleText;
     s32 langOffset = LangOffset(*language);
 
@@ -920,7 +920,7 @@ static void SoundTestScreenSetNameDisplayPos(u8 unused_, s16 x, s16 y)
     u32 i;
 
     for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
-        u16 *pos = &soundTestScreen->nameDisplay[i].x;
+        u16 *pos = (u16 *)&soundTestScreen->nameDisplay[i].x;
         *pos = x + i * 10;
         pos++;
         *pos = y;
