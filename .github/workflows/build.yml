@@ -126,6 +126,7 @@ jobs:
       - name: Install tools
         run: |
           sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi xorg-dev libsdl2-dev gcc-mingw-w64
+          pkg-config --cflags sdl2
       
       - name: Checkout agbcc
         uses: actions/checkout@master
