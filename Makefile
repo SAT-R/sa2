@@ -33,7 +33,9 @@ else ifeq ($(CPU_ARCH),i386)
     PREFIX := i686-w64-mingw32-
   endif
 else
-	$(error Unknown CPU architecture '$(CPU_ARCH)')
+  ifneq ($(PLATFORM),sdl)
+    $(error Unsupported CPU arch for platform '$(CPU_ARCH)', '$(PLATFORM)')
+  endif
 endif # (PLATFORM == gba)
 
 
@@ -93,18 +95,18 @@ ifeq ($(PLATFORM),gba)
 else 
 	ifeq ($(PLATFORM),sdl)
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell pkg-config --cflags sdl2)
+	else ifeq ($(PLATFORM),sdl_win32)
+		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell pkg-config --cflags sdl2)
 	else
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=1
 	endif
 
 	ifeq (%(CPU_ARCH),arm)
 		CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
-	else
-	    ifeq ($(PLATFORM),sdl)
-            CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0
-		else
-            CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
-		endif
+	else ifeq ($(PLATFORM),sdl)
+    	CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0
+	else ifeq ($(PLATFORM),sdl_win32)
+    	CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
 	endif
 endif
 
@@ -116,17 +118,15 @@ ifeq ($(CPU_ARCH),arm)
     CC1FLAGS += -mthumb-interwork
   endif
 else
-  ifeq ($(CPU_ARCH),i386)
-    ifeq ($(PLATFORM), sdl_win32)
+  ifeq ($(PLATFORM), sdl_win32)
       # Use the more legible Intel dialect for x86, without underscores
-      CC1FLAGS += -masm=intel
-	endif
-
-	ifeq ($(PLATFORM), sdl)
+    CC1FLAGS += -masm=intel
+  else ifeq ($(PLATFORM), sdl)
     #   CC1FLAGS += -m32
     #   CPPFLAGS += -m32
-      CPP := $(CC1) -E
-	endif
+    # for SDL we are using a modern compiler
+    # so instead of CPP we can use gcc -E to "preprocess only"
+    CPP := $(CC1) -E
   endif
   # Allow file input through stdin on modern GCC and set it to "compile only"
   CC1FLAGS += -x c -S
@@ -250,6 +250,8 @@ $(shell mkdir -p $(C_BUILDDIR) $(ASM_BUILDDIR) $(DATA_ASM_BUILDDIR) $(SOUND_ASM_
 ifeq ($(PLATFORM),gba)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
 else ifeq ($(PLATFORM),sdl)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
+else ifeq ($(PLATFORM),sdl_win32)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
 else ifeq ($(PLATFORM),win32)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/pret_sdl/*")
@@ -404,12 +406,10 @@ else
 	@touch $(ROOT_DIR)/$(MAP)
 ifeq ($(PLATFORM),sdl)
 	cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) $(shell pkg-config --cflags --libs sdl2) -o $(ROOT_DIR)/$@
-else
-ifeq ($(PLATFORM),sdl_win32)
+else ifeq ($(PLATFORM),sdl_win32)
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 $(shell pkg-config --cflags --libs sdl2) -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 else
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
-endif
 endif
 endif
 
@@ -480,7 +480,9 @@ europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 x86: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
-sdl: ; @$(MAKE) PLATFORM=sdl CPU_ARCH=i386
+sdl: ; @$(MAKE) PLATFORM=sdl
+
+sdl_win32: ; @$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
 
 chao_garden/mb_chao_garden.gba: 
 	@$(MAKE) -C chao_garden DEBUG=0

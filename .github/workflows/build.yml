@@ -138,13 +138,8 @@ jobs:
           ./build.sh
           ./install.sh ../
         working-directory: agbcc
-      
-      - name: x86
-        run: |
-          make clean
-          make -j${nproc} x86
   
-      - name: sdl
+      - name: sdl win32
         run: |
           make clean
-          make -j${nproc} sdl
+          make -j${nproc} sdl_win32

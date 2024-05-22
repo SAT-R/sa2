@@ -3,7 +3,7 @@
 
 SECTION_RODATA
 
-C_DECL(gUnknown_08C871E8):
+gUnknown_08C871E8:
     .4byte C_DECL(gUnknown_080DA270) + (0 * 8)
     .4byte C_DECL(gUnknown_080DA270) + (1 * 8)
     .4byte C_DECL(gUnknown_080DA270) + (2 * 8)
@@ -461,7 +461,7 @@ gUnknown_08C877E8:
 
     .global C_DECL(gUnknown_08C878E8)
 C_DECL(gUnknown_08C878E8):
-    .4byte C_DECL(gUnknown_08C871E8)
+    .4byte gUnknown_08C871E8
     .4byte gUnknown_08C872E8
     .4byte gUnknown_08C873E8
     .4byte gUnknown_08C874E8

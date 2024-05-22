@@ -63,7 +63,7 @@ ifneq ($(PLATFORM),gba)
     CPP       := $(PREFIX)cpp
     CPPFLAGS  := -I ../include -D PORTABLE=1
     CC1       := $(PREFIX)gcc
-    CC1FLAGS  := -Wall -S
+    CC1FLAGS  := -Wall -x c -S
     LD        := $(PREFIX)ld
 
     ifeq ($(DEBUG),1)
@@ -77,10 +77,12 @@ ifneq ($(PLATFORM),gba)
           # Use the more legible Intel dialect for x86, without underscores
           CC1FLAGS += -masm=intel -msse2
           CPPFLAGS += -D CPU_ARCH_X86=1
-      else
-        CC1FLAGS += -x c -m32
-        CPPFLAGS += -m32
+      else ifeq ($(PLATFORM), sdl)
+        # CC1FLAGS += -m32
+        # CPPFLAGS += -m32
         CPP      := $(CC1) -E
+      else
+        $(error Unknown platforn $(PLATFORM))
       endif
     else
       CPPFLAGS += -D CPU_ARCH_X86=0
