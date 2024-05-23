@@ -554,12 +554,12 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                 u32 r6;
 #endif
                 MapEntity *me;
-                u32 sp28;
+                intptr_t sp28;
 
                 sp28 = ({
-                    u32 r0 = h_regionCount * regionY;
+                    intptr_t r0 = h_regionCount * regionY;
                     r0 *= 4;
-                    r0 += (u32)interactables;
+                    r0 += (intptr_t)interactables;
                     r0;
                 });
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -579,10 +579,10 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                         }
                     }
 
-                    r6 = *(u32 *)({
-                        u32 r0 = h_regionCount * regionY;
+                    r6 = *(intptr_t *)({
+                        intptr_t r0 = h_regionCount * regionY;
                         r0 *= sizeof(u32);
-                        r0 += (u32)itemBoxPositions;
+                        r0 += (intptr_t)itemBoxPositions;
                         r0 += (regionX * sizeof(u32));
                         r0;
                     });
@@ -604,9 +604,9 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                     }
 
                     sp28 = ({
-                        u32 r0 = h_regionCount * regionY;
+                        intptr_t r0 = h_regionCount * regionY;
                         r0 *= 4;
-                        r0 += (u32)enemyPositions;
+                        r0 += (intptr_t)enemyPositions;
                         r0 += (regionX * 4);
                         r0;
                     });

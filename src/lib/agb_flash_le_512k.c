@@ -127,10 +127,10 @@ u16 ProgramFlashSector_LE(u16 sectorNum, void *src)
         return 0x80FF;
 
     dest = FLASH_BASE + (sectorNum << gFlash->sector.shift);
-    funcSrc = (u16 *)((s32)VerifyEraseSector_Core ^ 1);
+    funcSrc = (u16 *)((intptr_t)VerifyEraseSector_Core ^ 1);
     funcDest = VerifyEraseSector_Core_Buffer;
 
-    i = ((s32)VerifyEraseSector - (s32)VerifyEraseSector_Core);
+    i = ((intptr_t)VerifyEraseSector - (intptr_t)VerifyEraseSector_Core);
 
     while (i != 0) {
         *funcDest++ = *funcSrc++;
@@ -140,7 +140,7 @@ u16 ProgramFlashSector_LE(u16 sectorNum, void *src)
     tryNum = 0;
     while ((result = EraseFlashSector_LE(sectorNum))
            || (result = VerifyEraseSector(
-                   dest, (u8 *)((s32)&VerifyEraseSector_Core_Buffer + 1)))) {
+                   dest, (u8 *)((intptr_t)&VerifyEraseSector_Core_Buffer + 1)))) {
         tryNum++;
         if (tryNum == 0x51) {
             return result;
@@ -187,7 +187,7 @@ static u16 VerifyEraseSector(u8 *dest, u8 *src)
 {
     u32 result;
     // call VerifyEraseSector_Core
-    result = ((u32(*)(u8 *))((s32)src))(dest);
+    result = ((u32(*)(u8 *))((intptr_t)src))(dest);
 
     if (result != 0) {
         return 0x8004;

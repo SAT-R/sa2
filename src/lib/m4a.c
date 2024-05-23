@@ -64,7 +64,7 @@ void m4aSoundInit(void)
 {
     s32 i;
 
-    CpuCopy32((void *)((s32)SoundMainRAM & ~1), SoundMainRAM_Buffer,
+    CpuCopy32((void *)((intptr_t)SoundMainRAM & ~1), SoundMainRAM_Buffer,
               sizeof(SoundMainRAM_Buffer));
     SoundInit(&gSoundInfo);
     MPlayExtender(gCgbChans);
@@ -302,21 +302,30 @@ void SoundInit(struct SoundInfo *soundInfo)
         | SOUND_A_FIFO_RESET | SOUND_A_TIMER_0 | SOUND_A_RIGHT_OUTPUT
         | SOUND_ALL_MIX_FULL;
     REG_SOUNDBIAS_H = (REG_SOUNDBIAS_H & 0x3F) | 0x40;
-    REG_DMA1SAD = (s32)soundInfo->pcmBuffer;
-    REG_DMA1DAD = (s32)&REG_FIFO_A;
-    REG_DMA2SAD = (s32)soundInfo->pcmBuffer + PCM_DMA_BUF_SIZE;
-    REG_DMA2DAD = (s32)&REG_FIFO_B;
+    REG_DMA1SAD = *(s32 *)&soundInfo->pcmBuffer;
+#if PLATFORM_GBA
+    REG_DMA1DAD = (s32)REG_FIFO_A;
+#else
+    REG_DMA1DAD = *(s32 *)&(REG_FIFO_A);
+#endif
+    REG_DMA2SAD = *(s32 *)&soundInfo->pcmBuffer + PCM_DMA_BUF_SIZE;
+#if PLATFORM_GBA
+    REG_DMA1DAD = (s32)REG_FIFO_B;
+#else
+    REG_DMA1DAD = *(s32 *)&(REG_FIFO_B);
+#endif
     SOUND_INFO_PTR = soundInfo;
     CpuFill32(0, soundInfo, sizeof(struct SoundInfo));
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 15;
-    soundInfo->plynote = (u32)ply_note;
+    // TODO (x64): update all these hacks to (void*)
+    soundInfo->plynote = *(u32 *)&ply_note;
     soundInfo->CgbSound = DummyCallback;
     soundInfo->CgbOscOff = (void (*)(u8))DummyCallback;
     soundInfo->MidiKeyToCgbFreq = (u32(*)(u8, u8, u8))DummyCallback;
-    soundInfo->ExtVolPit = (u32)DummyCallback;
+    soundInfo->ExtVolPit = *(u32 *)&DummyCallback;
     MPlayJumpTableCopy(gMPlayJumpTable);
-    soundInfo->MPlayJumpTable = (u32)gMPlayJumpTable;
+    soundInfo->MPlayJumpTable = *(u32 *)&gMPlayJumpTable;
     SampleFreqSet(SOUND_MODE_FREQ_13379); // ???
     soundInfo->ident = ID_NUMBER;
 }
@@ -403,7 +412,7 @@ void SoundClear(void)
     while (i > 0) {
         ((struct SoundChannel *)chan)->status = 0;
         --i;
-        chan = (void *)((s32)chan + sizeof(struct SoundChannel));
+        chan = (void *)((uintptr_t)chan + sizeof(struct SoundChannel));
     }
     chan = soundInfo->cgbChans;
     if (chan) {
@@ -412,7 +421,7 @@ void SoundClear(void)
             soundInfo->CgbOscOff(i);
             ((struct CgbChannel *)chan)->sf = 0;
             ++i;
-            chan = (void *)((s32)chan + sizeof(struct CgbChannel));
+            chan = (void *)((uintptr_t)chan + sizeof(struct CgbChannel));
         }
     }
     soundInfo->ident = ID_NUMBER;
@@ -480,8 +489,8 @@ void MPlayOpen(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track
         mplayInfo->intp = soundInfo->intp;
         soundInfo->func = 0;
     }
-    soundInfo->intp = (u32)mplayInfo;
-    soundInfo->func = (u32)MPlayMain;
+    soundInfo->intp = (uintptr_t)mplayInfo;
+    soundInfo->func = (uintptr_t)MPlayMain;
     soundInfo->ident = ID_NUMBER;
     mplayInfo->ident = ID_NUMBER;
 }
@@ -803,16 +812,16 @@ void CgbSound(void)
                         *nrx0ptr = channels->sw;
                         // fallthrough
                     case 2:
-                        *nrx1ptr = ((u32)channels->wp << 6) + channels->le;
+                        *nrx1ptr = ((uintptr_t)channels->wp << 6) + channels->le;
                         goto loc_82E0E30;
                     case 3:
-                        if ((u32)channels->wp != channels->cp) {
+                        if ((uintptr_t)channels->wp != channels->cp) {
                             *nrx0ptr = 0x40;
                             REG_WAVE_RAM0 = channels->wp[0];
                             REG_WAVE_RAM1 = channels->wp[1];
                             REG_WAVE_RAM2 = channels->wp[2];
                             REG_WAVE_RAM3 = channels->wp[3];
-                            channels->cp = (u32)channels->wp;
+                            channels->cp = (uintptr_t)channels->wp;
                         }
                         *nrx0ptr = 0;
                         *nrx1ptr = channels->le;
@@ -823,7 +832,7 @@ void CgbSound(void)
                         break;
                     default:
                         *nrx1ptr = channels->le;
-                        *nrx3ptr = (u32)channels->wp << 3;
+                        *nrx3ptr = (uintptr_t)channels->wp << 3;
                     loc_82E0E30:
                         evAdd = channels->at + 8;
                         if (channels->le)
@@ -1246,7 +1255,7 @@ void ply_xxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 
 void ply_xwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
-    u32 wav;
+    uintptr_t wav;
 
     READ_XCMD_BYTE(wav, 0) // UB: uninitialized variable
     READ_XCMD_BYTE(wav, 1)

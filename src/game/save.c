@@ -71,8 +71,8 @@ static bool16 StringEquals(u16 *string1, u16 *string2, s16 length);
 #define CalcChecksum(save)                                                              \
     ({                                                                                  \
         u32 j, checksum = 0;                                                            \
-        for (j = 0; j < SECTOR_CHECKSUM_OFFSET; j += sizeof(u32)) {                     \
-            checksum += *(u32 *)((u32)(save) + j);                                      \
+        for (j = 0; j < SECTOR_CHECKSUM_OFFSET; j += sizeof(uintptr_t)) {               \
+            checksum += *(uintptr_t *)((void *)(save) + j);                             \
         }                                                                               \
         checksum;                                                                       \
     })

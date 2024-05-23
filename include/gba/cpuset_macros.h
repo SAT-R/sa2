@@ -19,7 +19,7 @@
 
 #define CpuFastFill(value, dest, size)                               \
 {                                                                    \
-    vu32 tmp = (vu32)(value);                                        \
+    volatile uintptr_t tmp = (volatile uintptr_t)(value);            \
     CpuFastSet((void *)&tmp,                                         \
                dest,                                                 \
                CPU_FAST_SET_SRC_FIXED | ((size)/(32/8) & 0x1FFFFF)); \

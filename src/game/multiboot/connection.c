@@ -177,8 +177,8 @@ void StartSinglePakConnect(void)
     }
 
     connectScreen->mbProgStart = gUnknown_080E01E0[connectScreen->unkFA][0];
-    connectScreen->mbProgLength = (u32)gUnknown_080E01E0[connectScreen->unkFA][1]
-        - (u32)gUnknown_080E01E0[connectScreen->unkFA][0];
+    connectScreen->mbProgLength = (uintptr_t)gUnknown_080E01E0[connectScreen->unkFA][1]
+        - (uintptr_t)gUnknown_080E01E0[connectScreen->unkFA][0];
     connectScreen->unkF0 = 0;
     connectScreen->unkF9 = 0;
     connectScreen->unkE4 = 0;

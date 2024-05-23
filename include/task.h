@@ -104,8 +104,8 @@ struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
 
 #define TaskCreate(taskMain, structSize, priority, flags, taskDestructor)               \
     ({                                                                                  \
-        printf("New '%s'(0x%X): 0x%08X (in %s,%d)\n", #taskMain, (s32)structSize,       \
-               (s32)taskMain, __FILE__, __LINE__);                                      \
+        printf("New '%s'(0x%X): %p (in %s,%d)\n", #taskMain, (u32)structSize, taskMain, \
+               __FILE__, __LINE__);                                                     \
         TaskCreate(taskMain, structSize, priority, flags, taskDestructor, #taskMain);   \
     })
 #else

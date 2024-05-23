@@ -33,7 +33,7 @@ void DisplaySprite(Sprite *sprite)
     u32 r5, r7;
     const u16 *oamData;
 
-    if ((u32)sprite->dimensions != -1) {
+    if (sprite->dimensions != (void *)-1) {
         const SpriteOffset *sprDims = sprite->dimensions;
 
         sprite->numSubFrames = sprDims->numSubframes;
@@ -147,7 +147,7 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
     u8 sp18, i;
     u32 x1, y1, sp24, sp28;
 
-    if ((u32)sprite->dimensions != -1) {
+    if (sprite->dimensions != (void *)-1) {
         const SpriteOffset *sprDims = sprite->dimensions;
 
         sprite->numSubFrames = sprDims->numSubframes;

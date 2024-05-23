@@ -86,6 +86,12 @@ TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 CPPFLAGS ?= -iquote include -D $(GAME_REGION)
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror -Wno-parentheses-equality
 
+SDL_MINGW_PKG          := $(ROOT_DIR)/ext/sdl-mingw/SDL2-2.30.3/i686-w64-mingw32
+SDL_MINGW_INCLUDE      := $(SDL_MINGW_PKG)/include/SDL2
+SDL_MINGW_LIB          := $(SDL_MINGW_PKG)/lib
+SDL_MINGW_LINKER_FLAGS := -L$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll
+SDL_MINGW_FLAGS        := -I$(SDL_MINGW_INCLUDE) -D_THREAD_SAFE
+
 # These have to(?) be defined this way, because
 # the C-preprocessor cannot resolve stuff like:
 # #if (PLATFORM == gba), where PLATFORM is defined via -D.
@@ -94,37 +100,33 @@ ifeq ($(PLATFORM),gba)
 	CC1FLAGS += -fhex-asm
 else 
 	ifeq ($(PLATFORM),sdl)
-		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell pkg-config --cflags sdl2)
+		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell sdl2-config --cflags)
 	else ifeq ($(PLATFORM),sdl_win32)
-		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell pkg-config --cflags sdl2)
+		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(SDL_MINGW_FLAGS)
 	else
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=1
 	endif
 
-	ifeq (%(CPU_ARCH),arm)
-		CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
-	else ifeq ($(PLATFORM),sdl)
-    	CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0
-	else ifeq ($(PLATFORM),sdl_win32)
-    	CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
+	ifeq ($(CPU_ARCH),i386)
+        CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
+	else 
+        CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0
 	endif
 endif
 
-ifeq ($(CPU_ARCH),arm)
+ifeq ($(PLATFORM),gba)
   ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
   CC1FLAGS += -mthumb-interwork
   ifeq ($(THUMB_SUPPORT),1)
     ASFLAGS  += -mthumb-interwork
     CC1FLAGS += -mthumb-interwork
   endif
-else
+else 
   ifeq ($(PLATFORM), sdl_win32)
-      # Use the more legible Intel dialect for x86, without underscores
+    # Use the more legible Intel dialect for x86, without underscores
     CC1FLAGS += -masm=intel
   else ifeq ($(PLATFORM), sdl)
-    #   CC1FLAGS += -m32
-    #   CPPFLAGS += -m32
-    # for SDL we are using a modern compiler
+    # for modern we are using a modern compiler
     # so instead of CPP we can use gcc -E to "preprocess only"
     CPP := $(CC1) -E
   endif
@@ -211,7 +213,7 @@ else
   #
   # sed expression script by Kurausukun
   # only apply the SEDFLAGS (for MacOS) to the commands where we read the file
-  ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+  ASM_PSEUDO_OP_CONV := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
   ASM_PSEUDO_OP_CONV_PIPE := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
   # TODO: switch to quad for 64bit
 endif
@@ -260,12 +262,12 @@ C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 endif
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
-ifeq ($(CPU_ARCH),arm)
+ifeq ($(PLATFORM),gba)
 C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
 C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
 ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
 else
-# Don't include asm sources on non-ARM platforms
+# Don't include asm sources on non-gba platforms
 ASM_SRCS :=
 endif
 
@@ -294,6 +296,15 @@ $(C_BUILDDIR)/lib/m4a.o: CC1 := $(CC1_OLD)
 ifeq ($(PLATFORM),gba)
 $(C_BUILDDIR)/lib/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 $(C_BUILDDIR)/lib/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+endif
+
+#### win32 deps ####
+
+ifeq ($(PLATFORM),sdl_win32)
+
+# $(SDL_MINGW_LIB):
+# 	@mkdir -p ext
+# 	cd ext && wget -qO- https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-devel-2.30.3-mingw.zip | bsdtar -xvf-
 endif
 
 #### Main Targets ####
@@ -405,9 +416,9 @@ else
 	@echo Outputting $(ROOT_DIR)/$@
 	@touch $(ROOT_DIR)/$(MAP)
 ifeq ($(PLATFORM),sdl)
-	cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) $(shell pkg-config --cflags --libs sdl2) -o $(ROOT_DIR)/$@
+	cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) $(shell sdl2-config --cflags --libs) -o $(ROOT_DIR)/$@
 else ifeq ($(PLATFORM),sdl_win32)
-	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 $(shell pkg-config --cflags --libs sdl2) -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
+	cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 else
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 endif
@@ -435,10 +446,10 @@ endif
 $(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@echo "$(CC1) <flags> -o $@ $<"
 	@$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
-	@$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
-	@$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
-	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
-	@$(ASM_PSEUDO_OP_CONV) $(OBJ_DIR)/$*.s | $(AS) $(ASFLAGS) -o $@ -
+	$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
+	$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
+	printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
+	$(ASM_PSEUDO_OP_CONV) $(OBJ_DIR)/$*.s | $(AS) $(ASFLAGS) -o $@ -
 
 # Build arm asm sources
 ifeq ($(CPU_ARCH),arm)

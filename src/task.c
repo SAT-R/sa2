@@ -344,8 +344,13 @@ static void UNUSED sub_80028DC(void)
                 cur->state += ((struct IwramNode *)IWRAM_PTR(cur->next))->state;
                 cur->next = ((struct IwramNode *)IWRAM_PTR(cur->next))->next;
             } else {
-                nextNodeSpace = (u32)cur->next
-                    + (u8 *)IWRAM_PTR(offsetof(struct IwramNode, space));
+#if PLATFORM_GBA
+                nextNodeSpace
+                    = (void *)(cur->next + IWRAM_PTR(offsetof(struct IwramNode, space)));
+#else
+                nextNodeSpace
+                    = (void *)cur->next + IWRAM_PTR(offsetof(struct IwramNode, space));
+#endif
                 space = cur->space;
                 curStateBackup = cur->state;
                 cur->state = ((struct IwramNode *)IWRAM_PTR(cur->next))->state;

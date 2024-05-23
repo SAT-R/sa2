@@ -31,8 +31,8 @@ else ifeq ($(CPU_ARCH),i386)
     TOOLCHAIN := /usr/i686-w64-mingw32/
     PREFIX := i686-w64-mingw32-
   endif
-else
-  $(error Unknown CPU architecture $(CPU_ARCH))
+else ifneq ($(PLATFORM),sdl)
+   $(error Unknown CPU architecture $(CPU_ARCH))
 endif # (PLATFORM == gba)
 
 ifeq ($(OS),Windows_NT)
@@ -77,24 +77,27 @@ ifneq ($(PLATFORM),gba)
           # Use the more legible Intel dialect for x86, without underscores
           CC1FLAGS += -masm=intel -msse2
           CPPFLAGS += -D CPU_ARCH_X86=1
-      else ifeq ($(PLATFORM), sdl)
-        # CC1FLAGS += -m32
-        # CPPFLAGS += -m32
-        CPP      := $(CC1) -E
       else
         $(error Unknown platforn $(PLATFORM))
       endif
-    else
+    else 
+      ifeq ($(PLATFORM), sdl)
+        CC1FLAGS += -m32
+        CPPFLAGS += -m32
+        CPP      := $(CC1) -E
+      endif
       CPPFLAGS += -D CPU_ARCH_X86=0
     endif
 endif # PLATFORM != gba
 
+ifeq ($(PLATFORM),gba)
 ifeq ($(CPU_ARCH),arm)
     ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
 endif
+endif
 
 ifeq ($(PLATFORM), sdl)
-  ASFLAGS += -m32
+  # ASFLAGS += -m32
 endif
 ARFLAGS := rc 
 
