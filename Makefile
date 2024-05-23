@@ -199,7 +199,6 @@ endif
 ifeq ($(CPU_ARCH),arm)
 # no-op
   ASM_PSEUDO_OP_CONV := sed -n 'p'
-  ASM_PSEUDO_OP_CONV_PIPE := $(ASM_PSEUDO_OP_CONV)
 else
 
   # MacOS sed command is different to Linux
@@ -216,7 +215,6 @@ else
   # sed expression script by Kurausukun
   # only apply the SEDFLAGS (for MacOS) to the commands where we read the file
   ASM_PSEUDO_OP_CONV := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
-  ASM_PSEUDO_OP_CONV_PIPE := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
   # TODO: switch to quad for 64bit
 endif
 
@@ -480,11 +478,11 @@ endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV_PIPE) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
+	$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV_PIPE) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
+	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 
 japan: ; @$(MAKE) GAME_REGION=JAPAN

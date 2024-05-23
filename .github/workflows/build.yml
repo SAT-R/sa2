@@ -139,7 +139,7 @@ jobs:
           ./install.sh ../
         working-directory: agbcc
   
-      - name: sdl win32
+      - name: sdl_win32
         run: |
           make clean
           make -j${nproc} sdl_win32
