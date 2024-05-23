@@ -302,30 +302,21 @@ void SoundInit(struct SoundInfo *soundInfo)
         | SOUND_A_FIFO_RESET | SOUND_A_TIMER_0 | SOUND_A_RIGHT_OUTPUT
         | SOUND_ALL_MIX_FULL;
     REG_SOUNDBIAS_H = (REG_SOUNDBIAS_H & 0x3F) | 0x40;
-    REG_DMA1SAD = *(s32 *)&soundInfo->pcmBuffer;
-#if PLATFORM_GBA
-    REG_DMA1DAD = (s32)REG_FIFO_A;
-#else
-    REG_DMA1DAD = *(s32 *)&(REG_FIFO_A);
-#endif
-    REG_DMA2SAD = *(s32 *)&soundInfo->pcmBuffer + PCM_DMA_BUF_SIZE;
-#if PLATFORM_GBA
-    REG_DMA1DAD = (s32)REG_FIFO_B;
-#else
-    REG_DMA1DAD = *(s32 *)&(REG_FIFO_B);
-#endif
+    REG_DMA1SAD = (s32)soundInfo->pcmBuffer;
+    REG_DMA1DAD = (s32)&REG_FIFO_A;
+    REG_DMA2SAD = (s32)soundInfo->pcmBuffer + PCM_DMA_BUF_SIZE;
+    REG_DMA2DAD = (s32)&REG_FIFO_B;
     SOUND_INFO_PTR = soundInfo;
     CpuFill32(0, soundInfo, sizeof(struct SoundInfo));
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 15;
-    // TODO (x64): update all these hacks to (void*)
-    soundInfo->plynote = *(u32 *)&ply_note;
+    soundInfo->plynote = (u32)ply_note;
     soundInfo->CgbSound = DummyCallback;
     soundInfo->CgbOscOff = (void (*)(u8))DummyCallback;
     soundInfo->MidiKeyToCgbFreq = (u32(*)(u8, u8, u8))DummyCallback;
-    soundInfo->ExtVolPit = *(u32 *)&DummyCallback;
+    soundInfo->ExtVolPit = (u32)DummyCallback;
     MPlayJumpTableCopy(gMPlayJumpTable);
-    soundInfo->MPlayJumpTable = *(u32 *)&gMPlayJumpTable;
+    soundInfo->MPlayJumpTable = (uintptr_t)gMPlayJumpTable;
     SampleFreqSet(SOUND_MODE_FREQ_13379); // ???
     soundInfo->ident = ID_NUMBER;
 }
