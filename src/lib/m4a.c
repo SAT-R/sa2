@@ -302,19 +302,19 @@ void SoundInit(struct SoundInfo *soundInfo)
         | SOUND_A_FIFO_RESET | SOUND_A_TIMER_0 | SOUND_A_RIGHT_OUTPUT
         | SOUND_ALL_MIX_FULL;
     REG_SOUNDBIAS_H = (REG_SOUNDBIAS_H & 0x3F) | 0x40;
-    REG_DMA1SAD = (s32)soundInfo->pcmBuffer;
-    REG_DMA1DAD = (s32)&REG_FIFO_A;
-    REG_DMA2SAD = (s32)soundInfo->pcmBuffer + PCM_DMA_BUF_SIZE;
-    REG_DMA2DAD = (s32)&REG_FIFO_B;
+    REG_DMA1SAD = (intptr_t)soundInfo->pcmBuffer;
+    REG_DMA1DAD = (intptr_t)&REG_FIFO_A;
+    REG_DMA2SAD = (intptr_t)soundInfo->pcmBuffer + PCM_DMA_BUF_SIZE;
+    REG_DMA2DAD = (intptr_t)&REG_FIFO_B;
     SOUND_INFO_PTR = soundInfo;
     CpuFill32(0, soundInfo, sizeof(struct SoundInfo));
     soundInfo->maxChans = 8;
     soundInfo->masterVolume = 15;
-    soundInfo->plynote = (u32)ply_note;
+    soundInfo->plynote = (uintptr_t)ply_note;
     soundInfo->CgbSound = DummyCallback;
     soundInfo->CgbOscOff = (void (*)(u8))DummyCallback;
     soundInfo->MidiKeyToCgbFreq = (u32(*)(u8, u8, u8))DummyCallback;
-    soundInfo->ExtVolPit = (u32)DummyCallback;
+    soundInfo->ExtVolPit = (uintptr_t)DummyCallback;
     MPlayJumpTableCopy(gMPlayJumpTable);
     soundInfo->MPlayJumpTable = (uintptr_t)gMPlayJumpTable;
     SampleFreqSet(SOUND_MODE_FREQ_13379); // ???

@@ -105,17 +105,17 @@ void SoundMainBTM(void) { }
 double sqrt(double v) { return 0; }
 float atan2f(float a, float b) { return 0; }
 
-#ifdef WIN32
-void *memset(void *_dst, int value, unsigned int size)
-{
-    u8 *dst = (u8 *)_dst;
-    u8 *end = dst + size;
+// #ifdef WIN32
+// void *memset(void *_dst, int value, unsigned int size)
+// {
+//     u8 *dst = (u8 *)_dst;
+//     u8 *end = dst + size;
 
-    while (dst < end) {
-        *dst = value;
-        dst++;
-    }
+//     while (dst < end) {
+//         *dst = value;
+//         dst++;
+//     }
 
-    return dst;
-}
-#endif
+//     return dst;
+// }
+// #endif

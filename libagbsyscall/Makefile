@@ -82,9 +82,7 @@ ifneq ($(PLATFORM),gba)
       endif
     else 
       ifeq ($(PLATFORM), sdl)
-        CC1FLAGS += -m32
-        CPPFLAGS += -m32
-        CPP      := $(CC1) -E
+        CPP := $(CC1) -E
       endif
       CPPFLAGS += -D CPU_ARCH_X86=0
     endif
