@@ -27,7 +27,7 @@ anim_data__0629_1:
 	mGetTiles 0x1BBD0, 8
 	.4byte	6, 2
 
-	mSetIdAndVariant 629 0
+	mSetIdAndVariant 629, 0
 
 anim_data__0629_2:
 	mGetPalette 0x86, 16, 0xC0
@@ -49,7 +49,7 @@ anim_data__0629_2:
 	mGetTiles 0x1BBE0, 8
 	.4byte	4, 4
 
-	mSetIdAndVariant 629 0
+	mSetIdAndVariant 629, 0
 
 anim_data__0629_3:
 	mGetPalette 0x86, 16, 0xC0
