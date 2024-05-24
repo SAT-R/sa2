@@ -6,8 +6,6 @@
 
 #if !PORTABLE
 .section ewram_data
-#else
-	SECTION_RODATA
 #endif
 
 C_DECL(gMPlayTrack_BGM):

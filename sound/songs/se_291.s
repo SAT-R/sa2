@@ -5,8 +5,8 @@
 	SECTION_RODATA
 
 	.align 2
-	.global C_DECL(song0291_1)
-C_DECL(song0291_1):
+	.global song0291_1
+song0291_1:
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 48
 	.byte	VOICE	, 91
@@ -91,4 +91,4 @@ C_DECL(se_291):
 
 	.4byte	voicegroup005
 
-	.4byte  C_DECL(song0291_1)
+	.4byte  song0291_1

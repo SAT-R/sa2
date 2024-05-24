@@ -141,7 +141,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc",
 #ifndef NON_MATCHING
     p1 = (p1 * 2) + HALVE(p1);
 #else
-    p1 *= 2.5;
+    p1 = (p1 * 2) + (p1 >> 2);
 #endif
 
     r6 = (DISPLAY_HEIGHT - 1) - p1;

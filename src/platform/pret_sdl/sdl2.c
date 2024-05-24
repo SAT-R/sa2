@@ -551,7 +551,7 @@ static void RunDMAs(u32 type)
             if (dma->control & DMA_REPEAT) {
                 dma->size = ((&REG_DMA0CNT)[dmaNum * 3] & 0x1FFFF);
                 if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_RELOAD) {
-                    dma->dst = *(void **)&((&REG_DMA0DAD)[dmaNum * 3]);
+                    dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 3];
                 }
             } else {
                 dma->control &= ~DMA_ENABLE;
@@ -593,9 +593,9 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
         return;
     }
 
-    (&REG_DMA0SAD)[dmaNum * 3] = *(vu32 *)&src;
-    (&REG_DMA0DAD)[dmaNum * 3] = *(vu32 *)&dest;
-    (&REG_DMA0CNT)[dmaNum * 3] = *(vu32 *)&control;
+    (&REG_DMA0SAD)[dmaNum * 3] = (uintptr_t)src;
+    (&REG_DMA0DAD)[dmaNum * 3] = (uintptr_t)dest;
+    (&REG_DMA0CNT)[dmaNum * 3] = (uintptr_t)control;
 
     struct DMATransfer *dma = &DMAList[dmaNum];
     dma->src = src;

@@ -88,15 +88,13 @@ ifneq ($(PLATFORM),gba)
     endif
 endif # PLATFORM != gba
 
-ifeq ($(PLATFORM),gba)
+
 ifeq ($(CPU_ARCH),arm)
+ifeq ($(PLATFORM),gba)
     ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
 endif
 endif
 
-ifeq ($(PLATFORM), sdl)
-  # ASFLAGS += -m32
-endif
 ARFLAGS := rc 
 
 SYSCALLS := IntrWait \

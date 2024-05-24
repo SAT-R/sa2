@@ -148,12 +148,11 @@ void RegisterRamReset(u32 flags)
     }
 
     if (flags & RESET_SIO_REGS) {
-        memset((void *)(int)REG_SIOCNT, 0, (int)((REG_SIOMULTI3 + 1) - REG_SIOCNT));
+        memset((void *)REG_SIOCNT, 0, (int)((REG_SIOMULTI3 + 1) - REG_SIOCNT));
     }
 
     if (flags & RESET_SOUND_REGS) {
-        memset((void *)(int)REG_SOUND1CNT_L, 0,
-               (int)((REG_FIFO_B + 1) - REG_SOUND1CNT_L));
+        memset((void *)REG_SOUND1CNT_L, 0, (int)((REG_FIFO_B + 1) - REG_SOUND1CNT_L));
     }
 
     if (flags & RESET_REGS)
