@@ -62,7 +62,7 @@ void CpuFastSet(const void *inSrc, void *inDest, u32 control)
     // Align by 8
     word_count = ((word_count + 7) & ~0x7);
 
-    u32 *target = &dest[word_count];
+    const u32 *target = &dest[word_count];
 
 #if CPU_ARCH_X86
     if (control & CPU_FAST_SET_SRC_FIXED) {
@@ -86,7 +86,7 @@ void CpuFastSet(const void *inSrc, void *inDest, u32 control)
             src += 4;
         }
 #else
-#error "Arch not implemented"
+    assert(FALSE); // Arch not implemented
 #endif
 }
 #endif
@@ -116,6 +116,8 @@ void IntrWait(bool32 discard, u16 flags, u32 dsiFlags)
 #endif
 
 #if L_VBlankIntrWait
+extern void IntrWait(bool32 discard, u16 flags, u32 dsiFlags);
+
 void VBlankIntrWait(void) { IntrWait(TRUE, INTR_FLAG_VBLANK, 0); }
 #endif
 
@@ -146,11 +148,11 @@ void RegisterRamReset(u32 flags)
     }
 
     if (flags & RESET_SIO_REGS) {
-        memset(REG_SIOCNT, 0, ((REG_SIOMULTI3 + 1) - REG_SIOCNT));
+        memset((void *)REG_SIOCNT, 0, (int)((REG_SIOMULTI3 + 1) - REG_SIOCNT));
     }
 
     if (flags & RESET_SOUND_REGS) {
-        memset(REG_SOUND1CNT_L, 0, ((REG_FIFO_B + 1) - REG_SOUND1CNT_L));
+        memset((void *)REG_SOUND1CNT_L, 0, (int)((REG_FIFO_B + 1) - REG_SOUND1CNT_L));
     }
 
     if (flags & RESET_REGS)

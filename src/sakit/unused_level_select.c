@@ -68,7 +68,7 @@ static void Task_Poll(void)
 {
     LevelSelect *levelSelect = TASK_DATA(gCurTask);
 
-    char digits[5];
+    u8 digits[5];
 
     if (gPressedKeys & (START_BUTTON | A_BUTTON)) {
         m4aSongNumStart(SE_SELECT);
@@ -107,7 +107,7 @@ static void Task_8009854(void)
     gFlags |= 0x1;
 
     levelSelect->vram += sub_8004274(levelSelect->vram, Tileset_Language, 0x6, 0xE, 0,
-                                     gUnknown_080D5128, 0);
+                                     (const u8 *)gUnknown_080D5128, 0);
 
     gCurTask->main = Task_Poll;
     gCurTask->main();

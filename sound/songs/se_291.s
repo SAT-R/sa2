@@ -1,7 +1,8 @@
     .include "asm/macros/c_decl.inc"
+	.include "asm/macros/portable.inc"
 	.include "sound/MPlayDef.s"
 
-	.section .rodata
+	SECTION_RODATA
 
 	.align 2
 	.global song0291_1

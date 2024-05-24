@@ -379,7 +379,7 @@ extern char gMaxLines[];
 #else
 #define NUM_MUSIC_PLAYERS 4
 #endif
-#define MAX_LINES ((u32)gMaxLines)
+#define MAX_LINES ((uintptr_t)gMaxLines)
 
 u32 umul3232H32(u32 multiplier, u32 multiplicand);
 void SoundMain(void);

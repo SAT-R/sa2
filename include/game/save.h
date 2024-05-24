@@ -28,6 +28,7 @@ struct MultiplayerScore {
 };
 
 struct TimeRecords {
+    // TODO: s16?
     u16 table[NUM_CHARACTERS][NUM_COURSE_ZONES][ACTS_PER_ZONE][TIME_RECORDS_PER_COURSE];
 };
 

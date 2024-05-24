@@ -3752,7 +3752,7 @@ static bool16 ProfileNameScreenHandleDpadInput(void)
                     gBgScrollRegs[1][1] += NAME_CHAR_MATRIX_BACKGROUND_ROW_HEIGHT;
                     profileNameScreen->matrixPageIndex += NAME_CHAR_MATRIX_NUM_COLS;
                 } else {
-                    gBgScrollRegs[1][1] = 65497;
+                    gBgScrollRegs[1][1] = -39;
                     profileNameScreen->cursorRow = 0;
                     profileNameScreen->matrixPageIndex = 0;
                 }

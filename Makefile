@@ -6,33 +6,36 @@ include config.mk
 ROOT_DIR := $(realpath $(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
 
 ifeq ($(PLATFORM),gba)
-TOOLCHAIN := $(DEVKITARM)
-COMPARE ?= 0
+  TOOLCHAIN := $(DEVKITARM)
+  COMPARE ?= 0
 
-ifeq (compare,$(MAKECMDGOALS))
-  COMPARE := 1
-endif
+  ifeq (compare,$(MAKECMDGOALS))
+    COMPARE := 1
+  endif
 
-# don't use dkP's base_tools anymore
-# because the redefinition of $(CC) conflicts
-# with when we want to use $(CC) to preprocess files
-# thus, manually create the variables for the bin
-# files, or use arm-none-eabi binaries on the system
-# if dkP is not installed on this system
+  # don't use dkP's base_tools anymore
+  # because the redefinition of $(CC) conflicts
+  # with when we want to use $(CC) to preprocess files
+  # thus, manually create the variables for the bin
+  # files, or use arm-none-eabi binaries on the system
+  # if dkP is not installed on this system
 
-ifneq (,$(TOOLCHAIN))
-ifneq ($(wildcard $(TOOLCHAIN)/bin),)
-	export PATH := $(TOOLCHAIN)/bin:$(PATH)
-endif
-endif
+  ifneq (,$(TOOLCHAIN))
+    ifneq ($(wildcard $(TOOLCHAIN)/bin),)
+	  export PATH := $(TOOLCHAIN)/bin:$(PATH)
+    endif
+  endif
 
-PREFIX := arm-none-eabi-
+  PREFIX := arm-none-eabi-
 else ifeq ($(CPU_ARCH),i386)
-	TOOLCHAIN := /usr/i686-w64-mingw32/
-
-	PREFIX := i686-w64-mingw32-
+  ifeq ($(PLATFORM),sdl_win32)
+    TOOLCHAIN := /usr/i686-w64-mingw32/
+    PREFIX := i686-w64-mingw32-
+  endif
 else
-	$(error Unknown CPU architecture '$(CPU_ARCH)')
+  ifneq ($(PLATFORM),sdl)
+    $(error Unsupported CPU arch for platform '$(CPU_ARCH)', '$(PLATFORM)')
+  endif
 endif # (PLATFORM == gba)
 
 
@@ -73,22 +76,23 @@ ifeq ($(CREATE_PDB),1)
 CV2PDB    := ./cv2pdb.exe
 endif
 
-ifeq ($(PLATFORM),sdl)
-# the dir containing /bin, /include, /lib
-SDL_DIR := $(error Please add the directory path to SDL2)
-endif
-
 TOOLDIRS := $(filter-out tools/Makefile tools/agbcc tools/binutils,$(wildcard tools/*))
 TOOLBASE = $(TOOLDIRS:tools/%=%)
 TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
-
-ASFLAGS  := --defsym $(GAME_REGION)=1
 
 # -P disables line markers (don't EVER use this, if you want proper debug info!)
 # -I sets an include path
 # -D defines a symbol
 CPPFLAGS ?= -iquote include -D $(GAME_REGION)
-CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
+CC1FLAGS ?= -Wimplicit -Wparentheses -Werror -Wno-parentheses-equality
+
+SDL_MINGW_PKG          :=  ext/SDL2-2.30.3/i686-w64-mingw32
+SDL_MINGW_INCLUDE      := $(SDL_MINGW_PKG)/include/SDL2
+SDL_MINGW_BIN          := $(SDL_MINGW_PKG)/bin
+SDL_MINGW_SDL_DLL      := $(SDL_MINGW_PKG)/bin/SDL2.dll
+SDL_MINGW_LIB          := $(SDL_MINGW_PKG)/lib
+SDL_MINGW_LINKER_FLAGS := -L$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll
+SDL_MINGW_FLAGS        := -I$(SDL_MINGW_INCLUDE) -D_THREAD_SAFE
 
 # These have to(?) be defined this way, because
 # the C-preprocessor cannot resolve stuff like:
@@ -98,62 +102,61 @@ ifeq ($(PLATFORM),gba)
 	CC1FLAGS += -fhex-asm
 else 
 	ifeq ($(PLATFORM),sdl)
-		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -I$(SDL_DIR)/include
+		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell sdl2-config --cflags)
+	else ifeq ($(PLATFORM),sdl_win32)
+		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(SDL_MINGW_FLAGS)
 	else
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=1
 	endif
 
-	ifeq (%(CPU_ARCH),arm)
-		CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=1
-	else
-		CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
+	ifeq ($(CPU_ARCH),i386)
+        CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
+	else 
+        CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0
 	endif
 endif
 
-ifeq ($(CPU_ARCH),arm)
-	ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
-	CC1FLAGS += -mthumb-interwork
-ifeq ($(THUMB_SUPPORT),1)
-	ASFLAGS  += -mthumb-interwork
-	CC1FLAGS += -mthumb-interwork
-endif
-
-else
-ifeq ($(CPU_ARCH),i386)
-	# Use the more legible Intel dialect for x86, without underscores
-	CC1FLAGS += -masm=intel
-endif
-	# Allow file input through stdin on modern GCC and set it to "compile only"
-	CC1FLAGS += -x c -S
+ifeq ($(PLATFORM),gba)
+  ASFLAGS  += -mcpu=arm7tdmi -mthumb-interwork
+  CC1FLAGS += -mthumb-interwork
+  ifeq ($(THUMB_SUPPORT),1)
+    ASFLAGS  += -mthumb-interwork
+    CC1FLAGS += -mthumb-interwork
+  endif
+else 
+  ifeq ($(PLATFORM), sdl_win32)
+    # Use the more legible Intel dialect for x86, without underscores
+    CC1FLAGS += -masm=intel
+  else ifeq ($(PLATFORM), sdl)
+    # for modern we are using a modern compiler
+    # so instead of CPP we can use gcc -E to "preprocess only"
+    CPP := $(CC1) -E
+  endif
+  # Allow file input through stdin on modern GCC and set it to "compile only"
+  CC1FLAGS += -x c -S
 endif
 
 ifeq ($(DEBUG),1)
-	CC1FLAGS += -g3 -O0
+  CC1FLAGS += -g3 -O0
 else
-	CC1FLAGS += -O2
+  CC1FLAGS += -O2
 endif
 
 ifeq ($(PORTABLE),1)
-    CPPFLAGS += -D PORTABLE=1
+  CPPFLAGS += -D PORTABLE=1
 else
-    CPPFLAGS += -D PORTABLE=0
+  CPPFLAGS += -D PORTABLE=0
 endif
 
-ifeq ($(NON_MATCHING),0)
-    ASFLAGS += --defsym NON_MATCHING=0
-else
-    ASFLAGS += --defsym NON_MATCHING=1
-
+ifeq ($(NON_MATCHING),1)
 # TODO: We use "#if(n)def NON_MATCHING a lot, maybe we should switch to "#if (!)NON_MATCHING"
 #    CPPFLAGS += -D NON_MATCHING=1
 endif
 
 ifeq ($(ENABLE_DECOMP_CREDITS),0)
-    ASFLAGS += --defsym ENABLE_DECOMP_CREDITS=0
-    CPPFLAGS += -D ENABLE_DECOMP_CREDITS=0
+  CPPFLAGS += -D ENABLE_DECOMP_CREDITS=0
 else
-    ASFLAGS += --defsym ENABLE_DECOMP_CREDITS=1
-    CPPFLAGS += -D ENABLE_DECOMP_CREDITS=1
+  CPPFLAGS += -D ENABLE_DECOMP_CREDITS=1
 endif
 
 
@@ -195,22 +198,24 @@ endif
 
 ifeq ($(CPU_ARCH),arm)
 # no-op
-ASM_PSEUDO_OP_CONV := sed -n 'p'
+  ASM_PSEUDO_OP_CONV := sed -n 'p'
 else
 
-# MacOS sed command is different to Linux
-SEDFLAGS :=
-UNAME := $(shell uname)
-ifeq ($(UNAME),Darwin)
-	SEDFLAGS += -i ''
-endif
+  # MacOS sed command is different to Linux
+  SEDFLAGS :=
+  UNAME := $(shell uname)
+  ifeq ($(UNAME),Darwin)
+  	SEDFLAGS += -i ''
+  endif
 
-# Convert .2byte -> .short and .4byte -> .int
-#  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
-#  but on 64bit targets it would be .8byte / .quad
-#
-# sed expression script by Kurausukun
-ASM_PSEUDO_OP_CONV := sed $(SEDFLAGS) -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+  # Convert .2byte -> .short and .4byte -> .int
+  #  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
+  #  but on 64bit targets it would be .8byte / .quad
+  #
+  # sed expression script by Kurausukun
+  # only apply the SEDFLAGS (for MacOS) to the commands where we read the file
+  ASM_PSEUDO_OP_CONV := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
+  # TODO: switch to quad for 64bit
 endif
 
 ASM_SUBDIR = asm
@@ -248,6 +253,8 @@ ifeq ($(PLATFORM),gba)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
 else ifeq ($(PLATFORM),sdl)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
+else ifeq ($(PLATFORM),sdl_win32)
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*")
 else ifeq ($(PLATFORM),win32)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/pret_sdl/*")
 else
@@ -255,12 +262,12 @@ C_SRCS := $(shell find $(C_SUBDIR) -name "*.c")
 endif
 C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
-ifeq ($(CPU_ARCH),arm)
+ifeq ($(PLATFORM),gba)
 C_ASM_SRCS := $(shell find $(C_SUBDIR) -name "*.s")
 C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
 ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
 else
-# Don't include asm sources on non-ARM platforms
+# Don't include asm sources on non-gba platforms
 ASM_SRCS :=
 endif
 
@@ -291,11 +298,20 @@ $(C_BUILDDIR)/lib/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 $(C_BUILDDIR)/lib/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 endif
 
-#### Main Targets ####
-
 MAKEFLAGS += --no-print-directory
 
 all: compare
+
+#### win32 deps ####
+
+$(SDL_MINGW_LIB):
+	@mkdir -p ext
+	cd ext && wget -qO- https://github.com/libsdl-org/SDL/releases/download/release-2.30.3/SDL2-devel-2.30.3-mingw.zip | bsdtar -xvf-
+
+SDL2.dll: $(SDL_MINGW_LIB)
+	cp $(SDL_MINGW_SDL_DLL) SDL2.dll
+
+#### Main Targets ####
 
 rom: $(ROM)
 
@@ -337,10 +353,11 @@ clean-tools:
 	@$(foreach tooldir,$(TOOLDIRS),$(MAKE) clean -C $(tooldir);)
 
 tidy:
-	$(RM) -f $(ROM) $(ELF) $(MAP)
-	$(RM) -f $(BUILD_NAME)_europe.gba $(BUILD_NAME)_europe.elf $(BUILD_NAME)_europe.map
-	$(RM) -f $(BUILD_NAME)_japan.gba $(BUILD_NAME)_japan.elf $(BUILD_NAME)_japan.map
+	$(RM) $(ROM) $(ELF) $(MAP)
+	$(RM) $(BUILD_NAME)_europe.gba $(BUILD_NAME)_europe.elf $(BUILD_NAME)_europe.map
+	$(RM) $(BUILD_NAME)_japan.gba $(BUILD_NAME)_japan.elf $(BUILD_NAME)_japan.map
 	$(RM) -r build/*
+	$(RM) SDL2.dll
 
 #### Recipes ####
 
@@ -391,7 +408,6 @@ PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
 $(PROCESSED_LDSCRIPT): $(LDSCRIPT)
 	$(CPP) -P $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
 
-
 $(ELF): $(OBJS) $(PROCESSED_LDSCRIPT) libagbsyscall
 ifeq ($(PLATFORM),gba)
 	@echo "$(LD) -T $(LDSCRIPT) -Map $(MAP) <objects> <lib>"
@@ -400,7 +416,9 @@ else
 	@echo Outputting $(ROOT_DIR)/$@
 	@touch $(ROOT_DIR)/$(MAP)
 ifeq ($(PLATFORM),sdl)
-	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(SDL_DIR)/lib -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
+	cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) $(shell sdl2-config --cflags --libs) -o $(ROOT_DIR)/$@
+else ifeq ($(PLATFORM),sdl_win32)
+	cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(ROOT_DIR)/$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 else
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 endif
@@ -460,7 +478,7 @@ endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@
+	$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
@@ -473,7 +491,10 @@ europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 x86: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
-sdl: ; @$(MAKE) PLATFORM=sdl CPU_ARCH=i386
+sdl: ; @$(MAKE) PLATFORM=sdl
+
+sdl_win32: SDL2.dll $(SDL_MINGW_LIB)
+	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
 
 chao_garden/mb_chao_garden.gba: 
 	@$(MAKE) -C chao_garden DEBUG=0

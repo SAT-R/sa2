@@ -1,7 +1,6 @@
 #if ENABLE_RL_LZ_LOGGING
 #include <stdio.h>
 #endif
-#include <malloc.h>
 #include "platform/platform.h"
 #include "platform/ext/gbagfx/global.h"
 #include "platform/ext/gbagfx/lz.h"

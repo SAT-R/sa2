@@ -1,15 +1,15 @@
 
 
 anim_data__0848_0:
-	mGetTiles 0x22F5D 32
-	mGetPalette 0x17 16 0x40
+	mGetTiles 0x22F5D, 32
+	mGetPalette 0x17, 16, 0x40
 	.4byte	2, 0
 
 	.4byte	2, 1
 
 	.4byte	2, 2
 
-	mAnimCmd6 0x0 0x27412741
+	mAnimCmd6 0x0, 0x27412741
 	.4byte	2, 3
 
 	.4byte	2, 4

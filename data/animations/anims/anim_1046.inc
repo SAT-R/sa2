@@ -1,8 +1,8 @@
 
 
 anim_data__1046_0:
-	mGetPalette 0xD8 16 0xF0
-	mGetTiles 0x2735D 90
+	mGetPalette 0xD8, 16, 0xF0
+	mGetTiles 0x2735D, 90
 	.4byte	1, 0
 
 	mAnimCmd4 

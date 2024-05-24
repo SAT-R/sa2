@@ -138,8 +138,11 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc",
     stageTime = (gStageTime & 0x3FF);
     stageTime2 = ((gStageTime >> 1) & 0x3FF);
 
-    // p1 *= 2.5
+#ifndef NON_MATCHING
     p1 = (p1 * 2) + HALVE(p1);
+#else
+    p1 = (p1 * 2) + (p1 >> 2);
+#endif
 
     r6 = (DISPLAY_HEIGHT - 1) - p1;
 
@@ -260,7 +263,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
             u32 r0 = (r2 << 24);
             r0 += (0xFF << 24);
             r2 = r0 >> 24;
-            r3 == r2 << 24;
+            r3 = r2 << 24;
             r0 = r3 >> 24;
             if (((signed)r0 >= 0) || (r6 > gUnknown_080D5BF0[r0])) {
                 break;

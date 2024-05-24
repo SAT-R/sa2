@@ -121,7 +121,7 @@ const VoidFn sStageInitProcs[NUM_LEVEL_IDS] = { StageInit_Zone1Act1,
                                                 StageInit_32,
                                                 StageInit_33 };
 
-extern const u8 CollHeightMap_zone_1_act_1_fg[];
+extern const s8 CollHeightMap_zone_1_act_1_fg[];
 extern const u8 CollTileRot_zone_1_act_1_fg[];
 extern const u8 CollFlags_zone_1_act_1_fg[];
 
@@ -323,7 +323,7 @@ void Task_GameStageMain(void)
             if ((framesSinceStageStart & ~(0x1FF))
                 != ((framesSinceStageStart - timeStep) & ~(0x1FF))) {
                 u32 mask, rand;
-                MultiplayerPseudoRandom32();
+                u32 temp = MultiplayerPseudoRandom32();
 
                 if ((framesSinceStageStart & ~(0xFFF))
                     != ((framesSinceStageStart - timeStep) & ~(0xFFF))) {
@@ -337,7 +337,7 @@ void Task_GameStageMain(void)
 
         } else if ((framesSinceStageStart & ~(0x3F))
                    != ((framesSinceStageStart - timeStep) & ~(0x3F))) {
-            MultiplayerPseudoRandom32();
+            u32 temp = MultiplayerPseudoRandom32();
         }
 
         if (gCamera.unk50 & CAM_MODE_SPECTATOR) {

@@ -71,8 +71,8 @@ static bool16 StringEquals(u16 *string1, u16 *string2, s16 length);
 #define CalcChecksum(save)                                                              \
     ({                                                                                  \
         u32 j, checksum = 0;                                                            \
-        for (j = 0; j < SECTOR_CHECKSUM_OFFSET; j += sizeof(u32)) {                     \
-            checksum += *(u32 *)((u32)(save) + j);                                      \
+        for (j = 0; j < SECTOR_CHECKSUM_OFFSET; j += sizeof(uintptr_t)) {               \
+            checksum += *(uintptr_t *)((void *)(save) + j);                             \
         }                                                                               \
         checksum;                                                                       \
     })
@@ -209,7 +209,7 @@ static void GenerateNewSaveGame(struct SaveGame *gameState)
 
     record = (void *)gameState->timeRecords.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
-        *record = MAX_COURSE_TIME;
+        *record = (s16)MAX_COURSE_TIME;
     }
 
     gameState->multiplayerWins = 0;
@@ -258,9 +258,9 @@ static void InitSaveGameSectorData(struct SaveSectorData *save)
     save->multiplayerLoses = 0;
     save->multiplayerDraws = 0;
 
-    record = (u16 *)save->timeRecords.table;
+    record = (s16 *)save->timeRecords.table;
     for (i = 0; i < NUM_TIME_RECORD_ROWS; i++, record++) {
-        *record = MAX_COURSE_TIME;
+        *record = (s16)MAX_COURSE_TIME;
     }
 
     p2 = save->multiplayerScores;

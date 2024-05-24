@@ -27,10 +27,12 @@ ifeq ($(PLATFORM),gba)
 
   PREFIX := arm-none-eabi-
 else ifeq ($(CPU_ARCH),i386)
-  TOOLCHAIN := /usr/i686-w64-mingw32/
-  PREFIX := i686-w64-mingw32-
-else
-  $(error Unknown CPU architecture $(CPU_ARCH))
+  ifeq ($(PLATFORM),sdl_win32)
+    TOOLCHAIN := /usr/i686-w64-mingw32/
+    PREFIX := i686-w64-mingw32-
+  endif
+else ifneq ($(PLATFORM),sdl)
+   $(error Unknown CPU architecture $(CPU_ARCH))
 endif # (PLATFORM == gba)
 
 ifeq ($(OS),Windows_NT)
@@ -71,17 +73,28 @@ ifneq ($(PLATFORM),gba)
     endif
 
     ifeq ($(CPU_ARCH),i386)
-        # Use the more legible Intel dialect for x86, without underscores
-        CC1FLAGS += -masm=intel -msse2
-        CPPFLAGS += -D CPU_ARCH_X86=1
-    else
-        CPPFLAGS += -D CPU_ARCH_X86=0
+      ifeq ($(PLATFORM), sdl_win32)
+          # Use the more legible Intel dialect for x86, without underscores
+          CC1FLAGS += -masm=intel -msse2
+          CPPFLAGS += -D CPU_ARCH_X86=1
+      else
+        $(error Unknown platforn $(PLATFORM))
+      endif
+    else 
+      ifeq ($(PLATFORM), sdl)
+        CPP := $(CC1) -E
+      endif
+      CPPFLAGS += -D CPU_ARCH_X86=0
     endif
 endif # PLATFORM != gba
 
+
 ifeq ($(CPU_ARCH),arm)
+ifeq ($(PLATFORM),gba)
     ASFLAGS := -mcpu=arm7tdmi -mthumb-interwork
 endif
+endif
+
 ARFLAGS := rc 
 
 SYSCALLS := IntrWait \

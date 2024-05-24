@@ -1,8 +1,8 @@
 
 
 anim_data__0714_0:
-	mGetTiles 0x1D7A6 32
-	mGetPalette 0x9D 16 0x80
+	mGetTiles 0x1D7A6, 32
+	mGetPalette 0x9D, 16, 0x80
 	.4byte	2, 0
 
 	.4byte	2, 1

@@ -1,6 +1,7 @@
 .include "asm/macros/c_decl.inc"
+.include "asm/macros/portable.inc"
 
-.section .rodata
+SECTION_RODATA
 
 gUnknown_08C871E8:
     .4byte C_DECL(gUnknown_080DA270) + (0 * 8)

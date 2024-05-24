@@ -10,7 +10,7 @@
 
 #define ENABLE_AUDIO 0
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "global.h"
 #include "core.h"
@@ -551,7 +551,7 @@ static void RunDMAs(u32 type)
             if (dma->control & DMA_REPEAT) {
                 dma->size = ((&REG_DMA0CNT)[dmaNum * 3] & 0x1FFFF);
                 if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_RELOAD) {
-                    dma->dst = (void *)((&REG_DMA0DAD)[dmaNum * 3]);
+                    dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 3];
                 }
             } else {
                 dma->control &= ~DMA_ENABLE;
@@ -578,7 +578,7 @@ s32 Mod(s32 num, s32 denom)
     }
 }
 
-int MultiBoot(struct MultiBootParam *mp) { }
+int MultiBoot(struct MultiBootParam *mp) { return 0; }
 
 #ifdef DmaSet
 #undef DmaSet
@@ -593,9 +593,9 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
         return;
     }
 
-    (&REG_DMA0SAD)[dmaNum * 3] = (vu32)src;
-    (&REG_DMA0DAD)[dmaNum * 3] = (vu32)dest;
-    (&REG_DMA0CNT)[dmaNum * 3] = (vu32)control;
+    (&REG_DMA0SAD)[dmaNum * 3] = (uintptr_t)src;
+    (&REG_DMA0DAD)[dmaNum * 3] = (uintptr_t)dest;
+    (&REG_DMA0CNT)[dmaNum * 3] = (uintptr_t)control;
 
     struct DMATransfer *dma = &DMAList[dmaNum];
     dma->src = src;
@@ -867,9 +867,9 @@ void RLUnCompVram(const void *src, void *dest)
             src++;
             while (blockHeader-- && remaining) {
                 remaining--;
-                if ((u32)dest & 1) {
+                if ((uintptr_t)dest & 1) {
                     halfWord |= block << 8;
-                    CPUWriteHalfWord((void *)((u32)dest ^ 1), halfWord);
+                    CPUWriteHalfWord((void *)((uintptr_t)dest ^ 1), halfWord);
                 } else
                     halfWord = block;
                 dest++;
@@ -881,16 +881,16 @@ void RLUnCompVram(const void *src, void *dest)
                 remaining--;
                 u8 byte = CPUReadByte(src);
                 src++;
-                if ((u32)dest & 1) {
+                if ((uintptr_t)dest & 1) {
                     halfWord |= byte << 8;
-                    CPUWriteHalfWord((void *)((u32)dest ^ 1), halfWord);
+                    CPUWriteHalfWord((void *)((uintptr_t)dest ^ 1), halfWord);
                 } else
                     halfWord = byte;
                 dest++;
             }
         }
     }
-    if ((u32)dest & 1) {
+    if ((uintptr_t)dest & 1) {
         padding--;
         dest++;
     }
@@ -1112,6 +1112,8 @@ static inline uint32_t getBgX(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3X;
     }
+
+    return 0;
 }
 
 static inline uint32_t getBgY(int bgNumber)
@@ -1121,6 +1123,8 @@ static inline uint32_t getBgY(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3Y;
     }
+
+    return 0;
 }
 
 static inline uint16_t getBgPA(int bgNumber)
@@ -1130,6 +1134,7 @@ static inline uint16_t getBgPA(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3PA;
     }
+    return 0;
 }
 
 static inline uint16_t getBgPB(int bgNumber)
@@ -1139,6 +1144,8 @@ static inline uint16_t getBgPB(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3PB;
     }
+
+    return 0;
 }
 
 static inline uint16_t getBgPC(int bgNumber)
@@ -1148,6 +1155,8 @@ static inline uint16_t getBgPC(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3PC;
     }
+
+    return 0;
 }
 
 static inline uint16_t getBgPD(int bgNumber)
@@ -1157,6 +1166,8 @@ static inline uint16_t getBgPD(int bgNumber)
     } else if (bgNumber == 3) {
         return REG_BG3PD;
     }
+
+    return 0;
 }
 
 static void RenderRotScaleBGScanline(int bgNum, uint16_t control, uint16_t x, uint16_t y,
@@ -1823,6 +1834,8 @@ uint16_t *memsetu16(uint16_t *dst, uint16_t fill, size_t count)
     for (int i = 0; i < count; i++) {
         *dst++ = fill;
     }
+
+    return 0;
 }
 
 static void DrawFrame(uint16_t *pixels)
@@ -1889,7 +1902,11 @@ void VDraw(SDL_Texture *texture)
     REG_VCOUNT = 161; // prep for being in VBlank period
 }
 
-int DoMain(void *data) { AgbMain(); }
+int DoMain(void *data)
+{
+    AgbMain();
+    return 0;
+}
 
 void VBlankIntrWait(void)
 {

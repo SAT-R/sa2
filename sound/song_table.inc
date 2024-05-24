@@ -1,5 +1,3 @@
-.include "asm/macros/c_decl.inc"
-
 	.align 2
 	.global C_DECL(gSongTable)
 C_DECL(gSongTable):	@ 0x08AD4F4C

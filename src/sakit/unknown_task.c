@@ -100,7 +100,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc",
                     r1 = sinIndex + sp10.unk0;
                 }
 
-                (SIN_24_8(r1 & ONE_CYCLE));
+                // (SIN_24_8(r1 & ONE_CYCLE));
             } else {
                 // _08009ADE
                 sp10.unk2 = 0;
@@ -193,7 +193,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc",
                 // __08009D44
                 if (sp14[1] < DISPLAY_HEIGHT) {
                     if (ut->unkA & 0x1) {
-                        gWinRegs[6] = WIN_RANGE(sp08.unk1, DISPLAY_HEIGHT);
+                        gWinRegs[3] = WIN_RANGE(sp08.unk1, DISPLAY_HEIGHT);
                     } else {
                         // _08009D70
                         gWinRegs[4] = WIN_RANGE(sp08.unk1, DISPLAY_HEIGHT);

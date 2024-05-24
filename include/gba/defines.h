@@ -7,8 +7,13 @@
 #define TRUE  1
 #define FALSE 0
 
+#if !PORTABLE
 #define IWRAM_DATA __attribute__((section("iwram_data")))
 #define EWRAM_DATA __attribute__((section("ewram_data")))
+#else
+#define IWRAM_DATA 
+#define EWRAM_DATA
+#endif
 
 // TODO: Move these elsewhere?
 // #ifdef __GNUC__

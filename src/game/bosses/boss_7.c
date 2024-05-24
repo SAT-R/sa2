@@ -71,7 +71,7 @@ void CreateEggFrog(void)
     u8 i, j;
     EggFrog *boss;
     void *vram;
-    u16 *unk28;
+    s16 *unk28;
     gDispCnt |= 0x100;
     gBgCntRegs[0] = 0x5A0D;
     gBgScrollRegs[0][0] = 0;
@@ -710,7 +710,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_7__sub_8048C7C.inc",
     const u16 **unk60 = boss->unk60;
     s16 *unk28 = boss->unk28;
     s16 *unk28_2;
-    s16 *unk1C = boss->unk1C[0];
+    s16 *unk1C = (s16 *)boss->unk1C[0];
     u32 r8;
 
     u16 val = gUnknown_080D8710[boss->unk1B].unk0;

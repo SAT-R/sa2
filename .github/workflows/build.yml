@@ -53,7 +53,7 @@ jobs:
         uses: actions/checkout@master
         with:
           path: agbcc
-          repository: pret/agbcc
+          repository: SAT-R/agbcc
 
       - name: Install tools
         run: |
@@ -109,22 +109,37 @@ jobs:
           add: "reports maps"
           message: ${{ env.REPORTS_COMMIT_MSG }}
 
-      # - name: Modern
-      #   env:
-      #     MODERN: 1
-      #     COMPARE: 0
-      #   run: make -j${nproc} all
+  platforms:
+    if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout PR
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
-      # - name: Move symfiles
-      #   if: ${{ github.event_name == 'push' }}
-      #   run: |
-      #     cp -v *.sym symbols/
-      #     echo "SYMBOLS_COMMIT_MSG=$( git log --format=%s ${GITHUB_SHA} )" >> $GITHUB_ENV
-      # - name: Update symfiles
-      #   if: ${{ github.event_name == 'push' }}
-      #   uses: EndBug/add-and-commit@v7
-      #   with:
-      #     branch: symbols
-      #     cwd: "./symbols"
-      #     add: "*.sym"
-      #     message: ${{ env.SYMBOLS_COMMIT_MSG }}
+      - name: Checkout
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/checkout@master
+
+      - name: Install tools
+        run: |
+          sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
+      
+      - name: Checkout agbcc
+        uses: actions/checkout@master
+        with:
+          path: agbcc
+          repository: SAT-R/agbcc
+      
+      - name: Install agbcc
+        run: |
+          ./build.sh
+          ./install.sh ../
+        working-directory: agbcc
+  
+      - name: sdl_win32
+        run: |
+          make clean
+          make -j${nproc} sdl_win32

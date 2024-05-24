@@ -50,7 +50,7 @@ If you use `vscode` then consider using the provided [Dev Container](https://cod
  
 On Linux systems
 ```
-sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev
+sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev libarchive-tools
 ```
 
 On MacOS and Windows install [**devkitARM**](http://devkitpro.org/wiki/Getting_Started/devkitARM)

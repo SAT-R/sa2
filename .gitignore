@@ -79,3 +79,7 @@ libagbsyscall/*.s
 
 !data/maps/*/*/tilemaps/*/*.bin
 *.exe
+*.dll
+
+# third party deps
+/ext

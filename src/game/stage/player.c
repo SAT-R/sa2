@@ -5310,7 +5310,7 @@ void PlayerCB_8027D3C(Player *p)
     s8 *someSio = gUnknown_030054B4;
     s32 sioDat = ((REG_SIOCNT_32 << 26) >> 30);
     u16 r8 = someSio[sioDat];
-    u32 *pCmpX = &gStageGoalX;
+    s32 *pCmpX = &gStageGoalX;
     u32 cmpX;
     s32 index = (0x40 + (r8 * 32));
 

@@ -1,7 +1,7 @@
 
 
 anim_data__0557_0:
-	mGetPalette 0x60 16 0x0
+	mGetPalette 0x60, 16, 0x0
 	.4byte	1, -1
 
 	mAnimCmd4 
