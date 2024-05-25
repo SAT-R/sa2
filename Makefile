@@ -358,6 +358,12 @@ tidy:
 	$(RM) $(BUILD_NAME)_japan.gba $(BUILD_NAME)_japan.elf $(BUILD_NAME)_japan.map
 	$(RM) -r build/*
 	$(RM) SDL2.dll
+ifeq ($(PLATFORM), GBA)
+	$(MAKE) tidy PLATFORM=win32 CPU_ARCH=i386
+	$(MAKE) tidy PLATFORM=sdl_win32 CPU_ARCH=i386
+	$(MAKE) tidy PLATFORM=sdl
+endif
+
 
 #### Recipes ####
 

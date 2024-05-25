@@ -14,6 +14,8 @@
 
 #include "game/player_callbacks.h"
 
+#include "game/cheese.h"
+
 #include "game/math.h"
 
 #include "lib/m4a.h"
@@ -1169,21 +1171,73 @@ void sub_80496FC(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
 {
     Sprite *s;
     struct Task *t = TaskCreate(Task_80497E0, 0x44, 0x6100, 0, NULL);
-    EggFrogBomb *bombScatter = TASK_DATA(t);
-    bombScatter->x = x - Q(gCamera.x);
-    bombScatter->y = y - Q(gCamera.y);
-    bombScatter->speedX = 0;
-    bombScatter->speedY = 0;
-    bombScatter->unkD = 46;
-    bombScatter->boss = boss;
+    EggFrogBomb *bombFlame = TASK_DATA(t);
+    bombFlame->x = x - Q(gCamera.x);
+    bombFlame->y = y - Q(gCamera.y);
+    bombFlame->speedX = 0;
+    bombFlame->speedY = 0;
+    bombFlame->unkD = 46;
+    bombFlame->boss = boss;
 
-    s = &bombScatter->s;
-    s->x = I(bombScatter->x);
-    s->y = I(bombScatter->y);
+    s = &bombFlame->s;
+    s->x = I(bombFlame->x);
+    s->y = I(bombFlame->y);
     s->graphics.dest = boss->unk1E8 + (6 * TILE_SIZE_4BPP);
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_FROG_BOMB_FLAME, 0, 28, 2, 0);
 
     if (gravityInverted) {
         SPRITE_FLAG_SET(s, Y_FLIP);
     }
+}
+
+void Task_80497E0(void)
+{
+    EggFrogBomb *bombFlame = TASK_DATA(gCurTask);
+    Sprite *s = &bombFlame->s;
+#ifndef NON_MATCHING
+    u8 r6;
+#endif
+
+    if (!PLAYER_IS_ALIVE) {
+        bombFlame->x += bombFlame->speedX;
+        bombFlame->y += bombFlame->speedY;
+    } else {
+        bombFlame->x += bombFlame->speedX + Q(gCamera.unk38);
+        bombFlame->y += bombFlame->speedY + Q(gCamera.unk3C);
+    }
+
+    bombFlame->unkD--;
+
+#ifndef NON_MATCHING
+    r6 = -1;
+    asm("" ::"r"(r6));
+#endif
+
+    if (bombFlame->unkD == 0) {
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    s->x = I(bombFlame->x);
+    s->y = I(bombFlame->y);
+    if (bombFlame->boss->unk14) {
+        s32 result = sub_800CA20(s, I(bombFlame->x) + gCamera.x,
+                                 I(bombFlame->y) + gCamera.y, 0, &gPlayer);
+        if (result == 1 && bombFlame->boss->unk16 == 0) {
+            Sprite *unk68 = &bombFlame->boss->unk68;
+            bombFlame->boss->unk15 = 30;
+            unk68->graphics.anim = SA2_ANIM_EGG_FROG_CABIN;
+            unk68->variant = 1;
+#ifndef NON_MATCHING
+            {
+                u8 r0 = unk68->prevVariant;
+            };
+            unk68->prevVariant |= r6;
+#else
+            unk68->prevVariant = -1;
+#endif
+        }
+    }
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
 }

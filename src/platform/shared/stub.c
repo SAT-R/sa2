@@ -26,9 +26,6 @@ u32 sub_800D0A0(Sprite *s, s16 x, s16 y, s16 param3, s16 param4, u8 param5, u32 
 // boss_5
 void sub_802E784(u16 p0, u16 p1, u16 p2, s16 x, s16 y, s16 p5) { }
 
-// boss_7
-typedef void (*EggFrogCallback)(void *);
-
 typedef struct {
     u8 unk0[6];
     u8 unk6;
@@ -64,13 +61,16 @@ const u16 gUnknown_080D8796[][16]
     = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 const u8 gUnknown_080D8788[][7] = { { 0, 0, 0, 0, 0, 0, 0 } };
 extern void sub_8048C7C(void *boss);
-void sub_80493F8(void *boss, s32 x, s32 y, u8 param3) {
-} // actually: (EggFrog *boss, s32 x, s32 y, u8 );
-void sub_80498CC(u8 param0) { }
+
 const void *const gUnknown_080D874C[15]
     = { sub_8048C7C, sub_8048C7C, sub_8048C7C, sub_8048C7C, sub_8048C7C,
         sub_8048C7C, sub_8048C7C, sub_8048C7C, sub_8048C7C, sub_8048C7C,
         sub_8048C7C, sub_8048C7C, sub_8048C7C, sub_8048C7C };
+
+// boss run
+const u16 gUnknown_080D87E6[][2] = { { 0, 0 } };
+void sub_80499D8(void) {};
+void sub_8049D1C(void) {};
 
 // boss_9
 const u16 *const gUnknown_080D859C[39] = {};
