@@ -28,6 +28,10 @@ def search_directories(*patterns):
 for filename in search_directories('./src/**/*.h', './include/**/*.h'):
     with open(filename) as header:
         header_name = "/".join(filename.split('/')[2:])
+        
+        # not needed for decomp work
+        if header_name.startswith("platform"):
+            continue
 
         if not header_name in depends_on:            
             depends_on[header_name] = set()
@@ -54,6 +58,7 @@ ts = TopologicalSorter(depends_on)
 print_order = tuple(ts.static_order())
 
 with open('ctx.c', 'w') as context:
+    context.write("#define PLATFORM_GBA 1\n")
     for header in print_order:
         exclude = False
         for e in excluded:

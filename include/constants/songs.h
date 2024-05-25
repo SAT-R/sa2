@@ -114,7 +114,7 @@
 #define SE_STAGE_RESULT_COUNTER_DONE 141
 #define SE_PAUSE_SCREEN              142
 #define SE_143                       143
-#define SE_144                       144
+#define SE_144                       144 // explosion?
 #define SE_145                       145
 #define SE_146                       146
 #define SE_SPIN                      147

@@ -1033,3 +1033,157 @@ void TaskDestructor_EggFrogMain(struct Task *t)
     VramFree(boss->unk188[0].graphics.dest);
     gActiveBossTask = NULL;
 }
+
+void sub_80494EC(void);
+
+typedef struct {
+    s32 x;
+    s32 y;
+    s16 speedX;
+    s16 speedY;
+    u8 gravityInverted;
+    u8 unkD;
+    EggFrog *boss;
+    Sprite s;
+} EggFrogBomb; /* size: 0x44 */
+
+void sub_80493F8(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
+{
+    Sprite *s;
+    struct Task *t = TaskCreate(sub_80494EC, 0x44, 0x6100, 0, NULL);
+    EggFrogBomb *bomb = TASK_DATA(t);
+
+    bomb->x = x - Q(gCamera.x) + 0x500;
+    bomb->y = y - Q(gCamera.y);
+    bomb->speedX = 0x500;
+    bomb->speedY = 0;
+    bomb->gravityInverted = gravityInverted;
+    bomb->boss = boss;
+
+    s = &bomb->s;
+    s->x = I(x);
+    s->y = I(y);
+    s->graphics.dest = boss->unk1E8;
+
+    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_FROG_BOMB, 0, 28, 3, 0);
+    if (bomb->gravityInverted) {
+        SPRITE_FLAG_SET(s, Y_FLIP);
+    }
+}
+
+void sub_8049658(void);
+
+void sub_80494EC(void)
+{
+    EggFrogBomb *bomb = TASK_DATA(gCurTask);
+    Sprite *s = &bomb->s;
+    s32 temp;
+    s32 result;
+    s32 x, y;
+    u8 gravityInverted = bomb->gravityInverted;
+
+    if (!gravityInverted) {
+        bomb->speedY += Q(0.125);
+    } else {
+        bomb->speedY -= Q(0.125);
+    }
+
+    if (!PLAYER_IS_ALIVE) {
+        bomb->x += bomb->speedX;
+        bomb->y += bomb->speedY;
+    } else {
+        bomb->x += bomb->speedX + Q(gCamera.unk38);
+        bomb->y += bomb->speedY + Q(gCamera.unk3C);
+    }
+
+    temp = -8;
+    if (!gravityInverted) {
+        temp = 8;
+    }
+
+    x = I(bomb->x) + gCamera.x;
+    y = I(bomb->y) + gCamera.y;
+    result = sub_801E4E4(y, x, 1, temp, 0, sub_801EE64);
+
+    // hit floor
+    if (result < 0) {
+        bomb->x += bomb->speedX * 2;
+        bomb->speedY = 0;
+        bomb->y += !gravityInverted ? Q(result) : -Q(result);
+        bomb->unkD = 61;
+        gCurTask->main = sub_8049658;
+        return;
+    }
+
+    s->x = I(bomb->x);
+    s->y = I(bomb->y);
+    if (bomb->boss->unk14) {
+        s32 result = sub_800CA20(s, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, 0,
+                                 &gPlayer);
+        if (result == 1 && bomb->boss->unk16 == 0) {
+            Sprite *unk68 = &bomb->boss->unk68;
+            bomb->boss->unk15 = 0x1E;
+            unk68->graphics.anim = SA2_ANIM_EGG_FROG_CABIN;
+            unk68->variant = 1;
+            unk68->prevVariant = -1;
+        }
+    }
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+}
+
+void sub_80496FC(EggFrog *, s32, s32, u8);
+
+void sub_8049658(void)
+{
+    EggFrogBomb *bomb = TASK_DATA(gCurTask);
+    u32 val;
+
+    if (!PLAYER_IS_ALIVE) {
+        bomb->x += bomb->speedX;
+        bomb->y += bomb->speedY;
+    } else {
+        bomb->x += bomb->speedX + Q(gCamera.unk38);
+        bomb->y += bomb->speedY + Q(gCamera.unk3C);
+    }
+
+    val = bomb->unkD;
+    bomb->unkD = val - 1;
+    if (bomb->unkD == 0) {
+        TaskDestroy(gCurTask);
+        return;
+    }
+
+    if (!((val - 1) % 4)) {
+        s32 x, y;
+        m4aSongNumStart(SE_144);
+        x = bomb->x + Q(gCamera.x);
+        y = bomb->y + Q(gCamera.y);
+        sub_80496FC(bomb->boss, x, y, bomb->gravityInverted);
+    }
+}
+
+void Task_80497E0(void);
+
+void sub_80496FC(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
+{
+    Sprite *s;
+    struct Task *t = TaskCreate(Task_80497E0, 0x44, 0x6100, 0, NULL);
+    EggFrogBomb *bombScatter = TASK_DATA(t);
+    bombScatter->x = x - Q(gCamera.x);
+    bombScatter->y = y - Q(gCamera.y);
+    bombScatter->speedX = 0;
+    bombScatter->speedY = 0;
+    bombScatter->unkD = 46;
+    bombScatter->boss = boss;
+
+    s = &bombScatter->s;
+    s->x = I(bombScatter->x);
+    s->y = I(bombScatter->y);
+    s->graphics.dest = boss->unk1E8 + (6 * TILE_SIZE_4BPP);
+    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_FROG_BOMB_FLAME, 0, 28, 2, 0);
+
+    if (gravityInverted) {
+        SPRITE_FLAG_SET(s, Y_FLIP);
+    }
+}
