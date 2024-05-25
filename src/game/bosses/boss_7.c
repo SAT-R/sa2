@@ -42,7 +42,7 @@ typedef struct {
     s16 unk28[6 * 4];
     u16 unk58;
     u32 unk5C;
-    const u16 **unk60; // gUnknown_080D859C
+    const u16 *const *unk60; // gUnknown_080D859C
     u8 unk64;
     u8 unk65;
     u8 unk66;
@@ -52,19 +52,189 @@ typedef struct {
     void *unk1E8;
 } EggFrog; /* 0x1EC */
 
-void Task_EggFrogMain(void);
-void TaskDestructor_EggFrogMain(struct Task *);
-
-extern const u16 *const gUnknown_080D859C[];
-extern const TileInfo gUnknown_080D8108[];
+typedef struct {
+    s32 x;
+    s32 y;
+    s16 speedX;
+    s16 speedY;
+    u8 gravityInverted;
+    u8 unkD;
+    EggFrog *boss;
+    Sprite s;
+} EggFrogBomb; /* size: 0x44 */
 
 typedef struct {
     u16 unk0;
     u8 unk2;
     u8 unk3;
 } UNK_80D8710;
-extern const UNK_80D8710 gUnknown_080D8710[15];
-extern const u16 **gUnknown_080D86D4[15];
+
+static void Task_EggFrogMain(void);
+static void TaskDestructor_EggFrogMain(struct Task *);
+
+typedef void (*EggFrogCallback)(EggFrog *);
+
+static void sub_8048408(EggFrog *);
+static void sub_80492B8(EggFrog *);
+static void sub_8048858(EggFrog *);
+static void sub_8048E64(EggFrog *);
+static void sub_80480E8(EggFrog *);
+static void sub_804931C(EggFrog *);
+
+static void sub_8047F0C(void);
+
+static void sub_8048654(EggFrog *);
+static void sub_8048F44(void);
+static void sub_8048D78(EggFrog *);
+static void sub_804928C(EggFrog *);
+static bool8 sub_8048C7C(EggFrog *);
+static void sub_80493F8(EggFrog *, s32 x, s32 y, u8);
+static void sub_804920C(EggFrog *);
+static void sub_80494EC(void);
+
+static void sub_8049658(void);
+static void sub_80496FC(EggFrog *, s32, s32, u8);
+static void Task_80497E0(void);
+
+static void sub_8048F7C(EggFrog *);
+static void sub_8048FA4(EggFrog *);
+static void sub_804893C(EggFrog *);
+static void sub_80489B0(EggFrog *);
+static void sub_8048A4C(EggFrog *);
+static void sub_8048FF4(EggFrog *);
+static void sub_804904C(EggFrog *);
+static void sub_804909C(EggFrog *);
+static void sub_80490C4(EggFrog *);
+static void sub_8048AD8(EggFrog *);
+static void sub_8048B50(EggFrog *);
+static void sub_8048BF0(EggFrog *);
+static void sub_804911C(EggFrog *);
+static void sub_8049174(EggFrog *);
+static void sub_80491C4(EggFrog *);
+
+static const TileInfo gUnknown_080D8108[] = {
+    { 12, SA2_ANIM_EGG_FROG_WHEELS, 0 },     { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 0 },
+    { 12, SA2_ANIM_EGG_FROG_WHEELS, 0 },     { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 0 },
+    { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 1 }, { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 2 },
+    { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 3 }, { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 4 },
+};
+
+static const s8 gUnknown_080D8148[] = { 13, 243 };
+
+const s8 gUnknown_080D814A[] = { 32, -32 };
+
+const u16 gUnknown_080D814C[][12] = {
+    { 1029, 1029, 1029, 1029, 1029, 1029, 1029, 1029, 1029, 1029, 1029, 0 },
+    { 960, 864, 960, 864, 960, 864, 960, 864, 960, 864, 960, 0 },
+    { 1056, 1400, 1056, 1400, 1056, 1400, 1056, 1400, 1056, 1400, 1056, 0 },
+    { 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 512, 0 },
+    { 576, 676, 576, 676, 576, 676, 576, 676, 576, 676, 576, 0 },
+    { 480, 136, 480, 136, 480, 136, 480, 136, 480, 136, 480, 0 },
+    { 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 0 },
+    { 1116, 1116, 1116, 1116, 1116, 1116, 1116, 1116, 1116, 1116, 1116, 0 },
+    { 576, 576, 576, 576, 576, 576, 576, 576, 576, 576, 576, 0 },
+    { 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 420, 0 },
+    { 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 0 },
+    { 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 1280, 0 },
+    { 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 0 },
+    { 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 0 },
+    { 896, 896, 896, 896, 896, 896, 896, 896, 896, 896, 896, 0 },
+    { 1333, 1333, 1333, 1333, 1333, 1333, 1333, 1333, 1333, 1333, 1333, 0 },
+    { 640, 640, 640, 640, 640, 640, 640, 640, 640, 640, 640, 0 },
+    { 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 0 },
+    { 896, 896, 896, 896, 896, 896, 896, 896, 896, 896, 896, 0 },
+    { 1333, 1333, 1333, 1333, 1333, 1333, 1333, 1333, 1333, 1333, 1333, 0 },
+    { 640, 640, 640, 640, 640, 640, 640, 640, 640, 640, 640, 0 },
+    { 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 205, 0 },
+    { 1088, 1184, 1088, 1184, 1088, 1184, 1088, 1184, 1088, 1184, 1088, 0 },
+    { 992, 648, 992, 648, 992, 648, 992, 648, 992, 648, 992, 0 },
+    { 448, 348, 448, 348, 448, 348, 448, 348, 448, 348, 448, 0 },
+    { 544, 888, 544, 888, 544, 888, 544, 888, 544, 888, 544, 0 },
+    { 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 0 },
+    { 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 0 },
+    { 1152, 1152, 1152, 1152, 1152, 1152, 1152, 1152, 1152, 1152, 1152, 0 },
+    { 715, 715, 715, 715, 715, 715, 715, 715, 715, 715, 715, 0 },
+    { 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 0 },
+    { 819, 819, 819, 819, 819, 819, 819, 819, 819, 819, 819, 0 },
+    { 1088, 1088, 1088, 1088, 1088, 1088, 1088, 1088, 1088, 1088, 1088, 0 },
+    { 992, 992, 992, 992, 992, 992, 992, 992, 992, 992, 992, 0 },
+    { 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 448, 0 },
+    { 544, 544, 544, 544, 544, 544, 544, 544, 544, 544, 544, 0 },
+    { 1152, 1152, 1152, 1152, 1152, 1152, 1152, 1152, 1152, 1152, 1152, 0 },
+    { 715, 715, 715, 715, 715, 715, 715, 715, 715, 715, 715, 0 },
+    { 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 384, 0 },
+    { 819, 819, 819, 819, 819, 819, 819, 819, 819, 819, 819, 0 },
+    { 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 0 },
+    { 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 0 },
+    { 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 768, 0 },
+    { 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 0 },
+    { 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 0 },
+    { 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 0 },
+};
+
+const u16 *const gUnknown_080D859C[][6] = {
+    { gUnknown_080D814C[40], gUnknown_080D814C[41], gUnknown_080D814C[42],
+      gUnknown_080D814C[43], gUnknown_080D814C[44], gUnknown_080D814C[45] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[1], gUnknown_080D814C[2],
+      gUnknown_080D814C[3], gUnknown_080D814C[4], gUnknown_080D814C[5] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[14], gUnknown_080D814C[15],
+      gUnknown_080D814C[3], gUnknown_080D814C[16], gUnknown_080D814C[17] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[18], gUnknown_080D814C[19],
+      gUnknown_080D814C[3], gUnknown_080D814C[20], gUnknown_080D814C[21] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[10], gUnknown_080D814C[11],
+      gUnknown_080D814C[3], gUnknown_080D814C[12], gUnknown_080D814C[13] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[22], gUnknown_080D814C[23],
+      gUnknown_080D814C[3], gUnknown_080D814C[24], gUnknown_080D814C[25] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[6], gUnknown_080D814C[7],
+      gUnknown_080D814C[3], gUnknown_080D814C[8], gUnknown_080D814C[9] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[22], gUnknown_080D814C[23],
+      gUnknown_080D814C[3], gUnknown_080D814C[24], gUnknown_080D814C[25] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[28], gUnknown_080D814C[29],
+      gUnknown_080D814C[3], gUnknown_080D814C[30], gUnknown_080D814C[31] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[26], gUnknown_080D814C[26],
+      gUnknown_080D814C[3], gUnknown_080D814C[27], gUnknown_080D814C[27] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[1], gUnknown_080D814C[2],
+      gUnknown_080D814C[3], gUnknown_080D814C[4], gUnknown_080D814C[5] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[32], gUnknown_080D814C[33],
+      gUnknown_080D814C[3], gUnknown_080D814C[34], gUnknown_080D814C[35] },
+
+    { gUnknown_080D814C[0], gUnknown_080D814C[36], gUnknown_080D814C[37],
+      gUnknown_080D814C[3], gUnknown_080D814C[38], gUnknown_080D814C[39] },
+};
+
+const u16 *const *const gUnknown_080D86D4[] = {
+    gUnknown_080D859C[1], gUnknown_080D859C[2],  gUnknown_080D859C[4],
+    gUnknown_080D859C[5], gUnknown_080D859C[6],  gUnknown_080D859C[7],
+    gUnknown_080D859C[3], gUnknown_080D859C[7],  gUnknown_080D859C[8],
+    gUnknown_080D859C[9], gUnknown_080D859C[10], gUnknown_080D859C[11],
+    gUnknown_080D859C[1], gUnknown_080D859C[12], gUnknown_080D859C[0],
+};
+
+const UNK_80D8710 gUnknown_080D8710[] = {
+    { 64, 0, 0 },  { 128, 0, 1 }, { 512, 0, 1 }, { 256, 1, 1 }, { 256, 0, 1 },
+    { 256, 1, 1 }, { 128, 0, 1 }, { 64, 1, 0 },  { 128, 1, 1 }, { 512, 1, 1 },
+    { 256, 0, 1 }, { 256, 1, 1 }, { 256, 0, 1 }, { 128, 1, 1 }, { 256, 0, 0 },
+};
+
+const EggFrogCallback gUnknown_080D874C[] = {
+    sub_8048F7C, sub_8048FA4, sub_804893C, sub_80489B0, sub_8048A4C,
+    sub_8048FF4, sub_804904C, sub_804909C, sub_80490C4, sub_8048AD8,
+    sub_8048B50, sub_8048BF0, sub_804911C, sub_8049174, sub_80491C4,
+};
+
+extern const u8 gUnknown_080D8788[][7];
+extern const u16 gUnknown_080D8796[][16];
 
 void CreateEggFrog(void)
 {
@@ -134,7 +304,7 @@ void CreateEggFrog(void)
 
     unk28 = boss->unk28;
     for (i = 0; i < 6; i++) {
-        const u16 *thing = gUnknown_080D859C[i];
+        const u16 *thing = gUnknown_080D859C[0][i];
         thing++;
         for (j = 0; j < 4; j++) {
             *unk28 = *thing;
@@ -190,20 +360,7 @@ void CreateEggFrog(void)
     UpdateSpriteAnimation(s);
 }
 
-typedef void (*EggFrogCallback)(EggFrog *);
-
-extern const EggFrogCallback gUnknown_080D874C[];
-
-void sub_8048408(EggFrog *);
-void sub_80492B8(EggFrog *);
-void sub_8048858(EggFrog *);
-void sub_8048E64(EggFrog *);
-void sub_80480E8(EggFrog *);
-void sub_804931C(EggFrog *);
-
-void sub_8047F0C(void);
-
-void sub_8047E28(void)
+static void sub_8047E28(void)
 {
     EggFrog *boss = TASK_DATA(gCurTask);
     gUnknown_080D874C[boss->unk1B](boss);
@@ -235,10 +392,7 @@ void sub_8047E28(void)
     }
 }
 
-void sub_8048654(EggFrog *);
-void sub_8048F44(void);
-
-void sub_8047F0C(void)
+static void sub_8047F0C(void)
 {
     EggFrog *boss = TASK_DATA(gCurTask);
     gStageFlags &= ~EXTRA_STATE__GRAVITY_INVERTED;
@@ -286,9 +440,7 @@ void sub_8047F0C(void)
     }
 }
 
-extern const u8 gUnknown_080D8788[][7];
-
-void sub_80480E8(EggFrog *boss)
+static void sub_80480E8(EggFrog *boss)
 {
 
     s32 sin, cos;
@@ -364,10 +516,7 @@ void sub_80480E8(EggFrog *boss)
     }
 }
 
-void sub_8048D78(EggFrog *);
-void sub_804928C(EggFrog *);
-
-void sub_8048408(EggFrog *boss)
+static void sub_8048408(EggFrog *boss)
 {
     Sprite *s = &boss->unk68;
     Vec2_32 pos;
@@ -394,7 +543,7 @@ void sub_8048408(EggFrog *boss)
     }
 }
 
-void sub_80484C8(EggFrog *boss)
+static void sub_80484C8(EggFrog *boss)
 {
     if (boss->unk19 == 0) {
         u32 r1;
@@ -458,10 +607,7 @@ void sub_80484C8(EggFrog *boss)
     }
 }
 
-extern const s8 gUnknown_080D814A[];
-extern const s8 gUnknown_080D8148[];
-
-void sub_8048654(EggFrog *boss)
+static void sub_8048654(EggFrog *boss)
 {
     s32 result;
     s32 x, y;
@@ -529,7 +675,7 @@ void sub_8048654(EggFrog *boss)
     }
 }
 
-void sub_8048858(EggFrog *boss)
+static void sub_8048858(EggFrog *boss)
 {
     u8 i;
     s32 x = I(boss->x);
@@ -558,10 +704,7 @@ void sub_8048858(EggFrog *boss)
     }
 }
 
-u8 sub_8048C7C(EggFrog *);
-void sub_80493F8(EggFrog *, s32 x, s32 y, u8);
-
-void sub_804893C(EggFrog *boss)
+static void sub_804893C(EggFrog *boss)
 {
     sub_8048C7C(boss);
     if (boss->unk5C > 0x23FF) {
@@ -582,7 +725,7 @@ void sub_804893C(EggFrog *boss)
     }
 }
 
-void sub_80489B0(EggFrog *boss)
+static void sub_80489B0(EggFrog *boss)
 {
     sub_8048C7C(boss);
     if (boss->unk66 == 0 && boss->unk5C > 0x35AC) {
@@ -608,7 +751,7 @@ void sub_80489B0(EggFrog *boss)
     }
 }
 
-void sub_8048A4C(EggFrog *boss)
+static void sub_8048A4C(EggFrog *boss)
 {
     if (sub_8048C7C(boss) != 0) {
         if (gCourseTime & 3) {
@@ -632,7 +775,7 @@ void sub_8048A4C(EggFrog *boss)
     }
 }
 
-void sub_8048AD8(EggFrog *boss)
+static void sub_8048AD8(EggFrog *boss)
 {
     sub_8048C7C(boss);
 
@@ -654,7 +797,7 @@ void sub_8048AD8(EggFrog *boss)
     }
 }
 
-void sub_8048B50(EggFrog *boss)
+static void sub_8048B50(EggFrog *boss)
 {
     sub_8048C7C(boss);
     if (boss->unk66 == 0 && boss->unk5C > 0x35AC) {
@@ -680,7 +823,7 @@ void sub_8048B50(EggFrog *boss)
     }
 }
 
-void sub_8048BF0(EggFrog *boss)
+static void sub_8048BF0(EggFrog *boss)
 {
     if (sub_8048C7C(boss) != 0) {
         if (gCourseTime & 3) {
@@ -707,9 +850,9 @@ void sub_8048BF0(EggFrog *boss)
 // https://decomp.me/scratch/aDy46
 // 81% though looks functionally matching
 NONMATCH("asm/non_matching/game/bosses/boss_7__sub_8048C7C.inc",
-         u8 sub_8048C7C(EggFrog *boss))
+         static bool8 sub_8048C7C(EggFrog *boss))
 {
-    const u16 **unk60 = boss->unk60;
+    const u16 *const *unk60 = boss->unk60;
     s16 *unk28 = boss->unk28;
     s16 *unk28_2;
     s16 *unk1C = (s16 *)boss->unk1C[0];
@@ -729,7 +872,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_7__sub_8048C7C.inc",
     temp &= 7;
     unk5C = boss->unk5C & 0xFFF;
     if (((boss->unk5C >> 0xC) & r8) != (((boss->unk5C - boss->unk58) >> 0xC) & r8)) {
-
         for (i = 0; i < 6; i++) {
             unk28[0] = unk28[1];
             unk28++;
@@ -756,7 +898,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_7__sub_8048C7C.inc",
 }
 END_NONMATCH
 
-void sub_8048D78(EggFrog *boss)
+static void sub_8048D78(EggFrog *boss)
 {
     Sprite *s = &boss->unk68;
     boss->unk14--;
@@ -786,7 +928,7 @@ void sub_8048D78(EggFrog *boss)
     }
 }
 
-void sub_8048E64(EggFrog *boss)
+static void sub_8048E64(EggFrog *boss)
 {
     u8 result = FALSE;
 
@@ -815,9 +957,7 @@ void sub_8048EB4(s32 dX, s32 dY)
     boss->unk10 += dX;
 }
 
-void sub_804920C(EggFrog *);
-
-void Task_EggFrogMain(void)
+static void Task_EggFrogMain(void)
 {
     EggFrog *boss = TASK_DATA(gCurTask);
     gUnknown_080D874C[boss->unk1B](boss);
@@ -837,7 +977,7 @@ void Task_EggFrogMain(void)
     }
 }
 
-void sub_8048F44(void)
+static void sub_8048F44(void)
 {
     struct Task *t = gCurTask;
     gDispCnt &= ~DISPCNT_BG0_ON;
@@ -845,7 +985,7 @@ void sub_8048F44(void)
     TaskDestroy(t);
 }
 
-void sub_8048F7C(EggFrog *boss)
+static void sub_8048F7C(EggFrog *boss)
 {
     boss->unk19 = 0;
     sub_8048C7C(boss);
@@ -854,7 +994,7 @@ void sub_8048F7C(EggFrog *boss)
     }
 }
 
-void sub_8048FA4(EggFrog *boss)
+static void sub_8048FA4(EggFrog *boss)
 {
     sub_8048C7C(boss);
 
@@ -869,7 +1009,7 @@ void sub_8048FA4(EggFrog *boss)
     }
 }
 
-void sub_8048FF4(EggFrog *boss)
+static void sub_8048FF4(EggFrog *boss)
 {
     if (sub_8048C7C(boss) != 0 || boss->x > boss->unk10) {
         boss->unk1B = 7;
@@ -884,7 +1024,7 @@ void sub_8048FF4(EggFrog *boss)
     }
 }
 
-void sub_804904C(EggFrog *boss)
+static void sub_804904C(EggFrog *boss)
 {
     sub_8048C7C(boss);
 
@@ -898,7 +1038,7 @@ void sub_804904C(EggFrog *boss)
     }
 }
 
-void sub_804909C(EggFrog *boss)
+static void sub_804909C(EggFrog *boss)
 {
     boss->unk19 = 0;
     sub_8048C7C(boss);
@@ -907,7 +1047,7 @@ void sub_804909C(EggFrog *boss)
     }
 }
 
-void sub_80490C4(EggFrog *boss)
+static void sub_80490C4(EggFrog *boss)
 {
     sub_8048C7C(boss);
 
@@ -922,7 +1062,7 @@ void sub_80490C4(EggFrog *boss)
     }
 }
 
-void sub_804911C(EggFrog *boss)
+static void sub_804911C(EggFrog *boss)
 {
     if (sub_8048C7C(boss) != 0 || boss->x > boss->unk10) {
         boss->unk1B = 0;
@@ -937,7 +1077,7 @@ void sub_804911C(EggFrog *boss)
     }
 }
 
-void sub_8049174(EggFrog *boss)
+static void sub_8049174(EggFrog *boss)
 {
     sub_8048C7C(boss);
 
@@ -951,7 +1091,7 @@ void sub_8049174(EggFrog *boss)
     }
 }
 
-void sub_80491C4(EggFrog *boss)
+static void sub_80491C4(EggFrog *boss)
 {
     boss->x += 0x300;
     if (sub_8048C7C(boss) != 0) {
@@ -963,7 +1103,7 @@ void sub_80491C4(EggFrog *boss)
     }
 }
 
-void sub_804920C(EggFrog *boss)
+static void sub_804920C(EggFrog *boss)
 {
     s32 x = I(boss->x);
     s32 y = I(boss->y);
@@ -983,7 +1123,7 @@ void sub_804920C(EggFrog *boss)
     }
 }
 
-void sub_804928C(EggFrog *boss)
+static void sub_804928C(EggFrog *boss)
 {
     Sprite *s = &boss->unk68;
     if (boss->unk16 == 0) {
@@ -994,7 +1134,7 @@ void sub_804928C(EggFrog *boss)
     }
 }
 
-void sub_80492B8(EggFrog *boss)
+static void sub_80492B8(EggFrog *boss)
 {
     boss->speedY += gUnknown_080D814A[boss->unk18];
 
@@ -1008,9 +1148,7 @@ void sub_80492B8(EggFrog *boss)
     boss->unk10 += 0x500;
 }
 
-extern const u16 gUnknown_080D8796[][16];
-
-void sub_804931C(EggFrog *boss)
+static void sub_804931C(EggFrog *boss)
 {
     if (boss->unk16 != 0) {
         u8 i;
@@ -1023,7 +1161,7 @@ void sub_804931C(EggFrog *boss)
     gFlags |= 1;
 }
 
-void TaskDestructor_EggFrogMain(struct Task *t)
+static void TaskDestructor_EggFrogMain(struct Task *t)
 {
     EggFrog *boss = TASK_DATA(t);
     VramFree(boss->unk1E8);
@@ -1036,20 +1174,7 @@ void TaskDestructor_EggFrogMain(struct Task *t)
     gActiveBossTask = NULL;
 }
 
-void sub_80494EC(void);
-
-typedef struct {
-    s32 x;
-    s32 y;
-    s16 speedX;
-    s16 speedY;
-    u8 gravityInverted;
-    u8 unkD;
-    EggFrog *boss;
-    Sprite s;
-} EggFrogBomb; /* size: 0x44 */
-
-void sub_80493F8(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
+static void sub_80493F8(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
 {
     Sprite *s;
     struct Task *t = TaskCreate(sub_80494EC, 0x44, 0x6100, 0, NULL);
@@ -1073,9 +1198,7 @@ void sub_80493F8(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
     }
 }
 
-void sub_8049658(void);
-
-void sub_80494EC(void)
+static void sub_80494EC(void)
 {
     EggFrogBomb *bomb = TASK_DATA(gCurTask);
     Sprite *s = &bomb->s;
@@ -1134,9 +1257,7 @@ void sub_80494EC(void)
     DisplaySprite(s);
 }
 
-void sub_80496FC(EggFrog *, s32, s32, u8);
-
-void sub_8049658(void)
+static void sub_8049658(void)
 {
     EggFrogBomb *bomb = TASK_DATA(gCurTask);
     u32 val;
@@ -1165,9 +1286,7 @@ void sub_8049658(void)
     }
 }
 
-void Task_80497E0(void);
-
-void sub_80496FC(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
+static void sub_80496FC(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
 {
     Sprite *s;
     struct Task *t = TaskCreate(Task_80497E0, 0x44, 0x6100, 0, NULL);
@@ -1190,7 +1309,7 @@ void sub_80496FC(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
     }
 }
 
-void Task_80497E0(void)
+static void Task_80497E0(void)
 {
     EggFrogBomb *bombFlame = TASK_DATA(gCurTask);
     Sprite *s = &bombFlame->s;

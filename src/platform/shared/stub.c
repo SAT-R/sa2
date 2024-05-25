@@ -52,20 +52,11 @@ typedef struct {
     u8 unk3A;
     u8 unk3B;
 } UNK_80D8710;
-const s8 gUnknown_080D8148[2];
-const s8 gUnknown_080D814A[0x452];
-const u32 gUnknown_080D86D4[15];
-const TileInfo gUnknown_080D8108[8] = { 0 };
-const UNK_80D8710 gUnknown_080D8710 = { 0 };
+
 const u16 gUnknown_080D8796[][16]
     = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
 const u8 gUnknown_080D8788[][7] = { { 0, 0, 0, 0, 0, 0, 0 } };
 extern void sub_8048C7C(void *boss);
-
-const void *const gUnknown_080D874C[15]
-    = { sub_8048C7C, sub_8048C7C, sub_8048C7C, sub_8048C7C, sub_8048C7C,
-        sub_8048C7C, sub_8048C7C, sub_8048C7C, sub_8048C7C, sub_8048C7C,
-        sub_8048C7C, sub_8048C7C, sub_8048C7C, sub_8048C7C };
 
 // boss run
 const u16 gUnknown_080D87E6[][2] = { { 0, 0 } };
@@ -73,7 +64,6 @@ void sub_80499D8(void) {};
 void sub_8049D1C(void) {};
 
 // boss_9
-const u16 *const gUnknown_080D859C[39] = {};
 const s16 gUnknown_080D8A94[4] = { 0 };
 const s16 gUnknown_080D8AAC[4] = { 0 };
 const s16 gUnknown_080D8AC4[4] = { 0 };
