@@ -16,6 +16,10 @@ typedef struct {
     u8 unk6;
 } UNK_80498CC;
 
+// const u16 gUnknown_080D87D8[] = {
+//     6400, 13888, 18016, 23104, 29152, 38080, 43091,
+// };
+
 extern const u16 gUnknown_080D87E6[][2];
 
 void sub_80498CC(u8 bossNum)

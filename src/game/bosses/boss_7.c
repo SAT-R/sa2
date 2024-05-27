@@ -233,8 +233,15 @@ const EggFrogCallback gUnknown_080D874C[] = {
     sub_8048B50, sub_8048BF0, sub_804911C, sub_8049174, sub_80491C4,
 };
 
-extern const u8 gUnknown_080D8788[][7];
-extern const u16 gUnknown_080D8796[][16];
+const u8 gUnknown_080D8788[][7] = {
+    { 4, 3, 3, 0, 0, 0, 0 },
+    { 4, 3, 2, 1, 1, 0, 0 },
+};
+
+const u16 gUnknown_080D8796[][16] = {
+    INCBIN_U16("graphics/80D8796.gbapal"),
+    INCBIN_U16("graphics/80D87B6.gbapal"),
+};
 
 void CreateEggFrog(void)
 {

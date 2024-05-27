@@ -53,9 +53,6 @@ typedef struct {
     u8 unk3B;
 } UNK_80D8710;
 
-const u16 gUnknown_080D8796[][16]
-    = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
-const u8 gUnknown_080D8788[][7] = { { 0, 0, 0, 0, 0, 0, 0 } };
 extern void sub_8048C7C(void *boss);
 
 // boss run

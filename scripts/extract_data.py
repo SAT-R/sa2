@@ -32,15 +32,15 @@ with open('baserom.gba', 'rb') as rom:
     rom.seek(address)
     # for i in range(length // 4):
     #     print(f"Q({read_s32(rom) / 256}), ")
-    # for i in range(length):
-    #     print(f"{read_s8(rom)}, ")
     # for i in range(length // 2):
     #     print(f"{read_s16(rom)}, ")
-    # for i in range(length // 20):
-    #     print("{ ", end="")
-    #     for j in range(10):
-    #         print(f"{(read_u16(rom))}" + ", ", end="")
-    #     print("},")
+    # for i in range(length // 8):
+    #     print(f"{read_u8(rom)}, ")
+    for i in range(length // 32):
+        print("{ ", end="")
+        for j in range(16):
+            print(f"{(read_u16(rom))}" + ", ", end="")
+        print("},")
     # for i in range(length // 8):
     #     print("{ ", end="")
     #     for j in range(2):
