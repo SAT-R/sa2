@@ -66,12 +66,9 @@ void UpdateBgAnimationTiles(Background *bg)
                 bg->graphics.src = ts;
             }
             {
-                u32 queueIndex;
                 bg->graphics.size = animTileSize;
                 gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &bg->graphics;
-                queueIndex = gVramGraphicsCopyQueueIndex + 1;
-                queueIndex %= ARRAY_COUNT(gVramGraphicsCopyQueue);
-                gVramGraphicsCopyQueueIndex = queueIndex;
+                gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
             }
         }
     }
