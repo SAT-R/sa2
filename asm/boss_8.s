@@ -5,15 +5,12 @@
 
 	.global gUnknown_080D8888
 gUnknown_080D8888:
-    .incbin "baserom.gba", 0x000D8888, 0x2
-
-    .global gUnknown_080D888A
-gUnknown_080D888A:
-    .incbin "baserom.gba", 0x000D888A, 0x6
+    .incbin "baserom.gba", 0x000D8888, 0x8
 
     .global gUnknown_080D8890
 gUnknown_080D8890:
-    .incbin "baserom.gba", 0x000D8890, 0x20
+    .4byte sub_804B43C, sub_804B594, sub_804B734, sub_804B984
+    .4byte sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240
 
     .global gUnknown_080D88B0
 gUnknown_080D88B0:
@@ -88,10 +85,10 @@ CreateSuperEggRoboZ: @ 0x0804A6C8
 	ldrh r1, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r7, r1, r0
+	adds r7, r1, r0     @ r7 = boss
 	adds r0, #0x48
 	adds r0, r0, r1
-	mov sb, r0
+	mov sb, r0          @ sb = boss->fade
 	ldr r0, _0804A7A0 @ =gDifficultyLevel
 	ldrb r0, [r0]
 	cmp r0, #0
@@ -147,45 +144,45 @@ _0804A7AA:
 	movs r4, #0
 	adds r1, r7, #0
 	adds r1, #0x28
-	str r1, [sp, #0x24]
+	str r1, [sp, #0x24]     @ sp24 = &boss->unk28
 	adds r2, r7, #0
 	adds r2, #0x2c
-	str r2, [sp, #0x28]
+	str r2, [sp, #0x28]     @ sp28 = &boss->unk2C
 	adds r6, r7, #0
 	adds r6, #0x18
-	str r6, [sp, #0x18]
+	str r6, [sp, #0x18]     @ sp18 = &boss->unk18
 	adds r0, r7, #0
 	adds r0, #0x1c
-	str r0, [sp, #0x1c]
+	str r0, [sp, #0x1c]     @ sp1C = &boss->unk1C
 	adds r1, #0x14
-	str r1, [sp, #0x38]
+	str r1, [sp, #0x38]     @ sp38 = &boss->unk3C
 	adds r2, #4
-	str r2, [sp, #0x2c]
+	str r2, [sp, #0x2c]     @ sp2C = &boss->unk30
 	adds r6, #0x26
-	str r6, [sp, #0x3c]
+	str r6, [sp, #0x3c]     @ sp3C = &boss->unk3E
 	adds r0, #0x24
-	str r0, [sp, #0x40]
+	str r0, [sp, #0x40]     @ sp40 = &boss->unk40
 	adds r1, #6
-	str r1, [sp, #0x44]
+	str r1, [sp, #0x44]     @ sp44 = &boss->unk42
 	adds r2, #4
-	str r2, [sp, #0x30]
+	str r2, [sp, #0x30]     @ sp30 = &boss->unk34
 	subs r6, #8
-	str r6, [sp, #0x34]
+	str r6, [sp, #0x34]     @ sp34 = &boss->unk36
 	movs r0, #0x99
 	lsls r0, r0, #1
 	adds r0, r7, r0
-	str r0, [sp, #0x20]
+	str r0, [sp, #0x20]     @ sp20 = &boss->unk132
 	adds r1, #0x12
-	str r1, [sp, #0x48]
+	str r1, [sp, #0x48]     @ sp48 = &boss->unk54
 	adds r2, #0x40
-	str r2, [sp, #8]
+	str r2, [sp, #8]        @ sp08 = &boss->unk74
 	adds r6, #0x3f
-	str r6, [sp, #0xc]
+	str r6, [sp, #0xc]      @ sp0C = &boss->unk75
 	adds r0, r7, #0
 	adds r0, #0x76
-	str r0, [sp, #0x10]
+	str r0, [sp, #0x10]     @ sp10 = &boss->unk76
 	adds r1, #0x25
-	str r1, [sp, #0x14]
+	str r1, [sp, #0x14]     @ sp14 = &boss->unk79
 	movs r3, #0
 	movs r5, #0
 _0804A832:
@@ -3842,7 +3839,7 @@ _0804C4DE:
 	ldr r1, [sp, #0x10]
 	adds r2, r1, r2
 	ldr r1, [r2]
-	ldr r2, _0804C5B4 @ =gUnknown_080D888A
+	ldr r2, _0804C5B4 @ =gUnknown_080D8888+2
 	adds r3, r3, r2
 	adds r0, r0, r1
 	ldrh r3, [r3]
@@ -3909,7 +3906,7 @@ _0804C5A4: .4byte gCamera
 _0804C5A8: .4byte gUnknown_030054B8
 _0804C5AC: .4byte 0x00003060
 _0804C5B0: .4byte gUnknown_080D8888
-_0804C5B4: .4byte gUnknown_080D888A
+_0804C5B4: .4byte gUnknown_080D8888+2
 
 	thumb_func_start sub_804C5B8
 sub_804C5B8: @ 0x0804C5B8
@@ -4149,7 +4146,7 @@ _0804C754:
 	adds r0, #0x1c
 	adds r0, r0, r4
 	ldr r0, [r0]
-	ldr r3, _0804C828 @ =gUnknown_080D888A
+	ldr r3, _0804C828 @ =gUnknown_080D8888+2
 	adds r2, r2, r3
 	adds r1, r1, r0
 	ldrh r2, [r2]
@@ -4215,7 +4212,7 @@ _0804C802:
 _0804C81C: .4byte gUnknown_030054B8
 _0804C820: .4byte 0x00003060
 _0804C824: .4byte gUnknown_080D8888
-_0804C828: .4byte gUnknown_080D888A
+_0804C828: .4byte gUnknown_080D8888+2
 _0804C82C: .4byte gCamera
 
 	thumb_func_start sub_804C830
