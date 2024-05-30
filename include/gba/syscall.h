@@ -55,12 +55,6 @@ int MultiBoot(struct MultiBootParam *mp);
 s32 Div(s32 num, s32 denom);
 s32 DivArm(s32 denom, s32 num);
 
-
-#if (!defined(PLATFORM_GBA) || (PLATFORM_GBA == 0))
-// TODO: Weird hack to get around this:
-//       >> Error: invalid use of operator "Mod"
-#define Mod(a, b) _Mod(a, b)
-#endif
 s32 Mod(s32 num, s32 denom);
 s32 ModArm(s32 denom, s32 num);
 
