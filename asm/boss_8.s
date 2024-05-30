@@ -3,15 +3,6 @@
 
 .section .rodata
 
-	.global gUnknown_080D8888
-gUnknown_080D8888:
-    .incbin "baserom.gba", 0x000D8888, 0x8
-
-    .global gUnknown_080D8890
-gUnknown_080D8890:
-    .4byte sub_804B43C, sub_804B594, sub_804B734, sub_804B984
-    .4byte sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240
-
     .global gUnknown_080D88B0
 gUnknown_080D88B0:
     .incbin "baserom.gba", 0x000D88B0, 0x40
@@ -21,163 +12,8 @@ gUnknown_080D88B0:
 .arm
 
 .if 0
-.endif
-
-	thumb_func_start sub_804A9D8
-sub_804A9D8: @ 0x0804A9D8
-	push {r4, r5, r6, lr}
-	sub sp, #4
-	ldr r0, _0804AAE4 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r5, r1, r0
-	ldr r0, [r5, #0x14]
-	cmp r0, #0x3c
-	bls _0804AA68
-	ldr r0, [r5, #4]
-	ldr r1, _0804AAE8 @ =0xFFFFFF00
-	adds r0, r0, r1
-	str r0, [r5, #4]
-	ldr r4, _0804AAEC @ =gStageTime
-	ldr r0, [r4]
-	movs r1, #0x1f
-	ands r0, r1
-	cmp r0, #0
-	bne _0804AA0A
-	movs r0, #0x82
-	lsls r0, r0, #1
-	bl m4aSongNumStart
-_0804AA0A:
-	ldr r0, [r4]
-	movs r1, #7
-	ands r0, r1
-	cmp r0, #0
-	bne _0804AA26
-	movs r0, #0x80
-	lsls r0, r0, #1
-	movs r1, #0x83
-	str r1, [sp]
-	movs r1, #0x10
-	movs r2, #0x80
-	movs r3, #0x14
-	bl CreateScreenShake
-_0804AA26:
-	ldr r0, [r5, #0x14]
-	movs r1, #0x1e
-	bl Mod
-	cmp r0, #0
-	bne _0804AA68
-	ldr r4, _0804AAF0 @ =gPlayer
-	str r0, [r4, #0x20]
-	ldr r0, [r5, #0x14]
-	subs r0, #0x3c
-	movs r1, #0x1e
-	bl __udivsi3
-	subs r0, #2
-	lsls r0, r0, #0x18
-	lsrs r1, r0, #0x18
-	asrs r0, r0, #0x18
-	cmp r0, #3
-	ble _0804AA4E
-	movs r1, #3
-_0804AA4E:
-	lsls r1, r1, #0x18
-	lsrs r0, r1, #0x18
-	cmp r0, #3
-	bhi _0804AA68
-	asrs r1, r1, #0x18
-	movs r0, #0x46
-	subs r0, r0, r1
-	adds r1, r4, #0
-	adds r1, #0x64
-	strh r0, [r1]
-	adds r1, #2
-	ldr r0, _0804AAF4 @ =0x0000FFFF
-	strh r0, [r1]
-_0804AA68:
-	movs r0, #1
-	strb r0, [r5, #0xb]
-	adds r0, r5, #0
-	bl sub_804C3AC
-	ldr r6, _0804AAF0 @ =gPlayer
-	ldr r0, [r6, #0x20]
-	movs r1, #0xc0
-	lsls r1, r1, #0xf
-	orrs r0, r1
-	str r0, [r6, #0x20]
-	ldr r0, [r5, #0x14]
-	subs r4, r0, #1
-	str r4, [r5, #0x14]
-	cmp r4, #0
-	bne _0804AADC
-	ldr r2, _0804AAF8 @ =gStageFlags
-	ldrh r1, [r2]
-	ldr r0, _0804AAFC @ =0x0000FFDF
-	ands r0, r1
-	strh r0, [r2]
-	ldr r0, [r6, #0x20]
-	ldr r1, _0804AB00 @ =0xFF9FFFFF
-	ands r0, r1
-	str r0, [r6, #0x20]
-	movs r0, #0x82
-	lsls r0, r0, #1
-	bl m4aSongNumStart
-	ldr r1, _0804AB04 @ =gUnknown_030054A8
-	strb r4, [r1]
-	movs r0, #0x12
-	strb r0, [r1, #1]
-	ldr r1, _0804AB08 @ =gCamera
-	ldr r0, _0804AB0C @ =0x0000A744
-	str r0, [r1, #0x30]
-	strb r4, [r5, #0xb]
-	ldr r0, [r6, #0x20]
-	ldr r1, _0804AB10 @ =0xFFDFFFFF
-	ands r0, r1
-	str r0, [r6, #0x20]
-	ldr r1, _0804AB14 @ =gUnknown_03005AF0
-	ldr r0, [r1, #0x1c]
-	ldr r3, _0804AB18 @ =0xFFFFCFFF
-	ands r0, r3
-	movs r2, #0x80
-	lsls r2, r2, #5
-	orrs r0, r2
-	str r0, [r1, #0x1c]
-	ldr r1, _0804AB1C @ =gUnknown_03005AA0
-	ldr r0, [r1, #0x1c]
-	ands r0, r3
-	orrs r0, r2
-	str r0, [r1, #0x1c]
-	ldr r0, _0804AAE4 @ =gCurTask
-	ldr r1, [r0]
-	ldr r0, _0804AB20 @ =sub_804AB24
-	str r0, [r1, #8]
-_0804AADC:
-	add sp, #4
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0804AAE4: .4byte gCurTask
-_0804AAE8: .4byte 0xFFFFFF00
-_0804AAEC: .4byte gStageTime
-_0804AAF0: .4byte gPlayer
-_0804AAF4: .4byte 0x0000FFFF
-_0804AAF8: .4byte gStageFlags
-_0804AAFC: .4byte 0x0000FFDF
-_0804AB00: .4byte 0xFF9FFFFF
-_0804AB04: .4byte gUnknown_030054A8
-_0804AB08: .4byte gCamera
-_0804AB0C: .4byte 0x0000A744
-_0804AB10: .4byte 0xFFDFFFFF
-_0804AB14: .4byte gUnknown_03005AF0
-_0804AB18: .4byte 0xFFFFCFFF
-_0804AB1C: .4byte gUnknown_03005AA0
-_0804AB20: .4byte sub_804AB24
-
-	thumb_func_start sub_804AB24
-sub_804AB24: @ 0x0804AB24
+	thumb_func_start Task_804AB24
+Task_804AB24: @ 0x0804AB24
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -189,7 +25,7 @@ sub_804AB24: @ 0x0804AB24
 	ldrh r4, [r0, #6]
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
-	adds r7, r4, r0
+	adds r7, r4, r0         @ r7 = boss
 	adds r0, #0x48
 	adds r6, r4, r0
 	adds r0, r7, #0
@@ -284,7 +120,7 @@ _0804ABF2:
 	str r0, [r2]
 	ldr r0, _0804AC44 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0804AC64 @ =sub_804AD68
+	ldr r0, _0804AC64 @ =Task_804AD68
 	str r0, [r1, #8]
 	movs r0, #0xff
 	str r0, [r7, #0x14]
@@ -325,7 +161,7 @@ _0804AC54: .4byte gPlayer
 _0804AC58: .4byte 0x0000A819
 _0804AC5C: .4byte 0x0000A84F
 _0804AC60: .4byte gFlags
-_0804AC64: .4byte sub_804AD68
+_0804AC64: .4byte Task_804AD68
 _0804AC68:
 	strh r0, [r2, #0x14]
 	strh r0, [r2, #0x10]
@@ -341,37 +177,37 @@ _0804AC6E:
 	ldr r0, _0804AD2C @ =0x00003FBF
 	strh r0, [r6, #8]
 	strh r1, [r6, #0xa]
-	movs r6, #0
-	adds r0, r7, #0
+	movs r6, #0         @ r6 = i = 0
+	adds r0, r7, #0     @ r0 = r7 = boss
 	adds r0, #0x18
-	str r0, [sp]
+	str r0, [sp]        @ sp00 = &boss->qUnk18[0][0]
 	adds r1, r7, #0
 	adds r1, #0x28
-	str r1, [sp, #8]
+	str r1, [sp, #8]    @ sp08 = &boss->qUnk28[0]
 	adds r2, r7, #0
 	adds r2, #0x1c
-	str r2, [sp, #4]
+	str r2, [sp, #4]    @ sp04 = &boss->qUnk18[0][1]
 	adds r0, #0x1c
-	str r0, [sp, #0xc]
+	str r0, [sp, #0xc]  @ sp08 = &boss->qUnk34[0][0]
 	adds r1, #0xe
-	str r1, [sp, #0x10]
+	str r1, [sp, #0x10] @ sp08 = &boss->qUnk34[0][1]
 	movs r2, #0x3c
 	adds r2, r2, r7
-	mov sl, r2
+	mov sl, r2          @ sl = &boss->unk3C[0]
 	movs r0, #0x30
 	adds r0, r0, r7
-	mov sb, r0
+	mov sb, r0          @ sb = &boss->qUnk30[0]
 	ldr r1, _0804AD30 @ =gSineTable
-	mov r8, r1
+	mov r8, r1          @ r8 = r1 = gSineTable
 	movs r2, #2
-	mov ip, r2
+	mov ip, r2          @ ip = r2 = 2
 _0804ACB2:
-	lsls r2, r6, #3
+	lsls r2, r6, #3     @ r2 = i * 8
 	ldr r0, [sp]
-	adds r3, r0, r2
-	lsls r5, r6, #1
+	adds r3, r0, r2     @ r3 = &boss->qUnk18[i][0]
+	lsls r5, r6, #1     @ r5 = i * 2
 	ldr r1, [sp, #8]
-	adds r4, r1, r5
+	adds r4, r1, r5     @ r4 = &boss->qUnk28[i]
 	ldrh r0, [r4]
 	movs r1, #0x80
 	lsls r1, r1, #1
@@ -399,17 +235,17 @@ _0804ACB2:
 	ldr r0, [r2]
 	adds r0, r0, r1
 	str r0, [r2]
-	lsls r1, r6, #2
+	lsls r1, r6, #2     @ r1 = i * 4
 	ldr r2, [sp, #0xc]
 	adds r0, r2, r1
 	ldr r2, _0804AD34 @ =0xFFFFFE80
-	strh r2, [r0]
+	strh r2, [r0]       @ boss->qUnk34[i][0] = -Q(1.5);
 	ldr r0, [sp, #0x10]
 	adds r1, r0, r1
 	movs r0, #0xfd
 	lsls r0, r0, #8
-	strh r0, [r1]
-	mov r2, sl
+	strh r0, [r1]       @ boss->qUnk34[i][1] = -Q(3);
+	mov r2, sl          @ r2 = sl = &boss->unk3C[0]
 	adds r1, r2, r6
 	movs r0, #7
 	strb r0, [r1]
@@ -457,9 +293,10 @@ _0804AD54:
 	bx r0
 	.align 2, 0
 _0804AD64: .4byte 0x000002BF
+.endif
 
-	thumb_func_start sub_804AD68
-sub_804AD68: @ 0x0804AD68
+	thumb_func_start Task_804AD68
+Task_804AD68: @ 0x0804AD68
 	push {r4, r5, r6, lr}
 	ldr r4, _0804ADC0 @ =gCurTask
 	ldr r0, [r4]

@@ -1,18 +1,29 @@
 #include "global.h"
 #include "core.h"
+#include "flags.h"
 #include "task.h"
+#include "trig.h"
 #include "malloc_vram.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
+#include "lib/m4a.h"
 #include "sakit/globals.h"
+#include "sakit/camera.h"
+#include "sakit/collision.h"
 #include "sakit/player.h"
 #include "game/bosses/common.h"
+#include "game/stage/player.h"
 #include "game/stage/screen_fade.h"
+#include "game/stage/screen_shake.h"
 
 #include "constants/animations.h"
 #include "constants/move_states.h"
+#include "constants/player_transitions.h"
+#include "constants/songs.h"
 #include "constants/tilemaps.h"
 
+#define BOSS_8_ARM_LEFT  0
+#define BOSS_8_ARM_RIGHT 1
 #define BOSS_8_ARM_COUNT 2
 
 typedef struct {
@@ -32,14 +43,14 @@ typedef struct {
     /*  0x10 */ u16 unk10;
     /*  0x14 */ u32 unk14;
     /*  0x28 */ s32 qUnk18[BOSS_8_ARM_COUNT][2];
-    /*  0x28 */ s16 qUnk28[BOSS_8_ARM_COUNT];
+    /*  0x28 */ u16 unk28[BOSS_8_ARM_COUNT];
     /*  0x2C */ s16 qUnk2C[BOSS_8_ARM_COUNT];
-    /*  0x30 */ s16 qUnk30[BOSS_8_ARM_COUNT];
-    /*  0x34 */ u16 qUnk34[BOSS_8_ARM_COUNT][2];
-    /*  0x3C */ u8 qUnk3C[BOSS_8_ARM_COUNT];
-    /*  0x3E */ u8 qUnk3E[BOSS_8_ARM_COUNT];
-    /*  0x40 */ u8 qUnk40[BOSS_8_ARM_COUNT];
-    /*  0x40 */ u8 qUnk42[BOSS_8_ARM_COUNT];
+    /*  0x30 */ s16 unk30[BOSS_8_ARM_COUNT];
+    /*  0x34 */ s16 qUnk34[BOSS_8_ARM_COUNT][2];
+    /*  0x3C */ u8 unk3C[BOSS_8_ARM_COUNT];
+    /*  0x3E */ u8 unk3E[BOSS_8_ARM_COUNT];
+    /*  0x40 */ u8 unk40[BOSS_8_ARM_COUNT];
+    /*  0x40 */ u8 unk42[BOSS_8_ARM_COUNT];
     /*  0x44 */ void *tilesUnk44;
     /*  0x48 */ ScreenFade fade;
     /*  0x54 */ BossSprite bsHead;
@@ -47,12 +58,36 @@ typedef struct {
     /* 0x108 */ Background body;
 } SuperEggRoboZ; /* size: 0x148 */
 
+typedef void (*EggRoboFn)(SuperEggRoboZ *, u8);
+
 void Task_SuperEggRoboZMain(void);
 void TaskDestructor_SuperEggRoboZMain(struct Task *);
 
 // TODO: Remove once boss_run.h has its own prototype for this function.
 //       (or once it is integrated into this module, if it makes sense)
 extern void sub_8049D20(void *vramTiles, SuperEggRoboZ *boss);
+void Task_804AB24(void);
+void Task_804AD68(void);
+void sub_804B43C(SuperEggRoboZ *boss, u8 p1);
+void sub_804B594(SuperEggRoboZ *boss, u8 p1);
+void sub_804B734(SuperEggRoboZ *boss, u8 p1);
+void sub_804B984(SuperEggRoboZ *boss, u8 p1);
+void sub_804BAC0(SuperEggRoboZ *boss, u8 p1);
+void sub_804BC44(SuperEggRoboZ *boss, u8 p1);
+void sub_804BE6C(SuperEggRoboZ *boss, u8 p1);
+void sub_804C240(SuperEggRoboZ *boss, u8 p1);
+void sub_804C3AC(SuperEggRoboZ *boss);
+void sub_804C5B8(SuperEggRoboZ *boss);
+void sub_804C830(SuperEggRoboZ *boss);
+void sub_804CA08(SuperEggRoboZ *boss);
+void sub_804CA70(SuperEggRoboZ *boss);
+void sub_804CC98(SuperEggRoboZ *boss);
+void sub_804AE40(SuperEggRoboZ *boss);
+
+const s16 gUnknown_080D8888[2][2] = { { Q(188), Q(110) }, { Q(162), Q(110) } };
+const EggRoboFn gUnknown_080D8890[8]
+    = { sub_804B43C, sub_804B594, sub_804B734, sub_804B984,
+        sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240 };
 
 void CreateSuperEggRoboZ(void)
 {
@@ -114,11 +149,11 @@ void CreateSuperEggRoboZ(void)
         boss->qUnk2C[r4] = Q(2.0);
         boss->qUnk18[r4][0] = Q(0.0);
         boss->qUnk18[r4][1] = Q(0.0);
-        boss->qUnk3C[r4] = Q(0.0);
-        boss->qUnk30[r4] = r4 * 360 + 360;
-        boss->qUnk3E[r4] = Q(0.0);
-        boss->qUnk40[r4] = Q(0.0);
-        boss->qUnk42[r4] = Q(0.0);
+        boss->unk3C[r4] = 0;
+        boss->unk30[r4] = r4 * 360 + 360;
+        boss->unk3E[r4] = Q(0.0);
+        boss->unk40[r4] = Q(0.0);
+        boss->unk42[r4] = Q(0.0);
         boss->qUnk34[r4][0] = Q(0.0);
         boss->qUnk34[r4][1] = Q(0.0);
 
@@ -190,3 +225,170 @@ void CreateSuperEggRoboZ(void)
     gUnknown_030054A8.unk6 = 200;
     gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
 }
+
+void sub_804A9D8(void)
+{
+    SuperEggRoboZ *boss = TASK_DATA(gCurTask);
+
+    if (boss->unk14 > 60) {
+        boss->qUnk4 -= Q(1.0);
+
+        if ((gStageTime % 32u) == 0) {
+            m4aSongNumStart(SE_260);
+        }
+
+        if ((gStageTime % 8u) == 0) {
+            CreateScreenShake(0x100, 0x10, 0x80, 0x14, (SCREENSHAKE_VERTICAL | 0x3));
+        }
+
+        if (Mod(boss->unk14, 30) == 0) {
+            s8 v;
+            gPlayer.moveState = 0;
+            v = ((boss->unk14 - 60) / 30) - 2;
+
+            if (v > 3) {
+                v = 3;
+            }
+
+            if (v >= 0 && v <= 3) {
+                gPlayer.unk64 = 70 - v;
+                gPlayer.unk66 = -1;
+            }
+        }
+    }
+    // _0804AA68
+
+    boss->unkB = 1;
+    sub_804C3AC(boss);
+
+    gPlayer.moveState |= (MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
+
+    if (--boss->unk14 == 0) {
+        gStageFlags &= ~EXTRA_STATE__DISABLE_PAUSE_MENU;
+        gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
+
+        m4aSongNumStart(SE_260);
+
+        gUnknown_030054A8.unk0 = 0;
+        gUnknown_030054A8.unk1 = 18;
+        gCamera.minX = 42820;
+        boss->unkB = 0;
+        gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT);
+
+        gUnknown_03005AF0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+        gUnknown_03005AF0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+        gUnknown_03005AA0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
+        gUnknown_03005AA0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+        gCurTask->main = Task_804AB24;
+    }
+}
+
+#if 01
+void Task_804AB24(void)
+{
+    s32 speed;
+    SuperEggRoboZ *boss = TASK_DATA(gCurTask);
+    ScreenFade *fade = &boss->fade;
+
+    sub_804CC98(boss);
+    sub_804CA08(boss);
+    sub_804AE40(boss);
+
+    gUnknown_080D8890[boss->unk3C[BOSS_8_ARM_LEFT]](boss, BOSS_8_ARM_LEFT);
+    gUnknown_080D8890[boss->unk3C[BOSS_8_ARM_RIGHT]](boss, BOSS_8_ARM_RIGHT);
+
+    sub_804C5B8(boss);
+    sub_804C830(boss);
+    sub_804CA70(boss);
+
+    if ((I(gPlayer.y) > 184) && (I(gPlayer.x) >= 43034)) {
+        sub_800CBA4(&gPlayer);
+
+        speed = gPlayer.speedAirX;
+        if (speed > 0) {
+            gPlayer.speedAirX = -speed;
+        }
+
+        speed = gPlayer.speedGroundX;
+        if (speed > 0) {
+            gPlayer.speedGroundX = -speed;
+        }
+    }
+    // _0804ABC0
+
+    if (I(gPlayer.x) >= 43088) {
+        sub_800CBA4(&gPlayer);
+
+        speed = gPlayer.speedAirX;
+        if (speed > 0) {
+            gPlayer.speedAirX = -speed;
+        }
+
+        speed = gPlayer.speedGroundX;
+        if (speed > 0) {
+            gPlayer.speedGroundX = -speed;
+        }
+    }
+    // _0804ABF2
+
+    if (boss->livesCockpit == 0) {
+        u8 i;
+        // _0804ABF2
+
+        gFlags &= ~FLAGS_4;
+        gCurTask->main = Task_804AD68;
+        boss->unk14 = 0xFF;
+
+        Player_DisableInputAndBossTimer_FinalBoss();
+
+        gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
+        gPlayer.unk5C = 0;
+        gPlayer.unk5E = 0;
+
+        if (gPlayer.moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) {
+            gPlayer.unk64 = 50;
+            gPlayer.speedAirX = -Q(2);
+            gPlayer.speedAirY = -Q(0);
+            gPlayer.transition = PLTRANS_PT5;
+        } else {
+            // _0804AC68
+            gPlayer.speedGroundX = Q(0);
+            gPlayer.speedAirX = Q(0);
+            gPlayer.speedAirY = Q(0);
+        }
+        // _0804AC6E
+
+        fade->window = 0;
+        fade->brightness = 0;
+        fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
+        fade->speed = 16;
+        fade->bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+        fade->bldAlpha = 0;
+
+        for (i = 0; i < BOSS_8_ARM_COUNT; i++) {
+            Sprite *sprArm;
+            u16 anim;
+            // _0804ACB2
+            boss->qUnk18[i][0] += (COS(boss->unk28[i]) * 15) >> 6;
+            boss->qUnk18[i][1] += (SIN(boss->unk28[i]) * 15) >> 6;
+
+            boss->qUnk34[i][0] = -Q(1.5);
+            boss->qUnk34[i][1] = -Q(3);
+
+            boss->unk3C[i] = 7;
+            boss->unk30[i] = 60;
+
+            sprArm = &boss->bsArms[i].s;
+
+            if (i != 0) {
+                sprArm->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;
+                sprArm->variant = 2;
+            } else {
+                sprArm->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_LEFT;
+                sprArm->variant = 2;
+            }
+            sprArm->prevVariant = -1;
+        }
+    }
+}
+#endif

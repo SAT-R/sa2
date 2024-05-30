@@ -11,7 +11,7 @@ typedef struct {
     /*0x00 */ SpriteTransform transform;
     /*0x0C */ Sprite s;
     /*0x3C */ Hitbox reserved;
-} PlayerSpriteInfo; /* 0x30 */
+} PlayerSpriteInfo; /* size: 0x44 */
 
 extern PlayerSpriteInfo gUnknown_03005AA0;
 extern PlayerSpriteInfo gUnknown_03005AF0;
