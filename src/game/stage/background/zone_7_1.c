@@ -35,7 +35,8 @@ void CreateStageBg_Zone7(void)
     gDispCnt = DISPCNT_OBJ_ON | DISPCNT_BG2_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_1D_MAP
         | DISPCNT_MODE_0;
 
-    gBgCntRegs[0] = 0x160F;
+    gBgCntRegs[0]
+        = (BGCNT_TXT256x256 | BGCNT_SCREENBASE(22) | BGCNT_16COLOR | BGCNT_PRIORITY(15));
 
     src = gStageCameraBgTemplates;
     memcpy(bg, &src[3], sizeof(Background));
