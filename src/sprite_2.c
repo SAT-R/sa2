@@ -197,7 +197,8 @@ AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s)
         }
 
         gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &s->graphics;
-        gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
+        gVramGraphicsCopyQueueIndex
+            = (gVramGraphicsCopyQueueIndex + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
     }
 
     return 1;

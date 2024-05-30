@@ -20,7 +20,8 @@ void DrawBackground(Background *background)
 
     if (!(background->flags & BACKGROUND_UPDATE_GRAPHICS)) {
         gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &background->graphics;
-        gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
+        gVramGraphicsCopyQueueIndex
+            = (gVramGraphicsCopyQueueIndex + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
         background->flags ^= BACKGROUND_UPDATE_GRAPHICS;
     }
 
