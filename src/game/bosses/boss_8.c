@@ -283,8 +283,9 @@ void sub_804A9D8(void)
     }
 }
 
-#if 01
-void Task_804AB24(void)
+// (99.89%) https://decomp.me/scratch/kiah8
+NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc",
+         void Task_804AB24(void))
 {
     s32 speed;
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
@@ -391,4 +392,4 @@ void Task_804AB24(void)
         }
     }
 }
-#endif
+END_NONMATCH
