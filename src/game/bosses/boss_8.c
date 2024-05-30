@@ -145,7 +145,7 @@ void CreateSuperEggRoboZ(void)
 
     for (r4 = 0; r4 < BOSS_8_ARM_COUNT; r4++) {
         // _0804A832
-        boss->qUnk28[r4] = Q(2.0);
+        boss->unk28[r4] = Q(2.0);
         boss->qUnk2C[r4] = Q(2.0);
         boss->qUnk18[r4][0] = Q(0.0);
         boss->qUnk18[r4][1] = Q(0.0);
