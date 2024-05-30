@@ -14,97 +14,6 @@ gUnknown_080D88B0:
 .if 0
 .endif
 
-	thumb_func_start Task_804AD68
-Task_804AD68: @ 0x0804AD68
-	push {r4, r5, r6, lr}
-	ldr r4, _0804ADC0 @ =gCurTask
-	ldr r0, [r4]
-	ldrh r6, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r5, r6, r0
-	ldr r1, _0804ADC4 @ =IWRAM_START + 0x48
-	adds r0, r6, r1
-	bl UpdateScreenFade
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	cmp r0, #1
-	bne _0804ADE4
-	ldr r0, _0804ADC8 @ =0x00005010
-	ldr r1, _0804ADCC @ =0x00005011
-	bl TasksDestroyInPriorityRange
-	ldr r0, _0804ADD0 @ =0x00005431
-	ldr r1, _0804ADD4 @ =0x00005434
-	bl TasksDestroyInPriorityRange
-	ldr r2, _0804ADD8 @ =gStageFlags
-	ldrh r0, [r2]
-	movs r3, #0x80
-	lsls r3, r3, #3
-	adds r1, r3, #0
-	orrs r0, r1
-	strh r0, [r2]
-	ldr r2, _0804ADDC @ =gPlayer
-	ldr r0, [r2, #0x20]
-	movs r1, #0x80
-	lsls r1, r1, #0xd
-	orrs r0, r1
-	movs r1, #0x80
-	lsls r1, r1, #0xf
-	orrs r0, r1
-	str r0, [r2, #0x20]
-	ldr r1, [r4]
-	ldr r0, _0804ADE0 @ =sub_804CC30
-	str r0, [r1, #8]
-	b _0804AE2C
-	.align 2, 0
-_0804ADC0: .4byte gCurTask
-_0804ADC4: .4byte IWRAM_START + 0x48
-_0804ADC8: .4byte 0x00005010
-_0804ADCC: .4byte 0x00005011
-_0804ADD0: .4byte 0x00005431
-_0804ADD4: .4byte 0x00005434
-_0804ADD8: .4byte gStageFlags
-_0804ADDC: .4byte gPlayer
-_0804ADE0: .4byte sub_804CC30
-_0804ADE4:
-	adds r0, r5, #0
-	bl sub_804CC98
-	adds r0, r5, #0
-	bl sub_804CA08
-	ldr r4, _0804AE34 @ =gUnknown_080D8890
-	ldr r1, _0804AE38 @ =IWRAM_START + 0x3C
-	adds r0, r6, r1
-	ldrb r0, [r0]
-	lsls r0, r0, #2
-	adds r0, r0, r4
-	ldr r2, [r0]
-	adds r0, r5, #0
-	movs r1, #0
-	bl _call_via_r2
-	ldr r3, _0804AE3C @ =IWRAM_START + 0x3D
-	adds r0, r6, r3
-	ldrb r0, [r0]
-	lsls r0, r0, #2
-	adds r0, r0, r4
-	ldr r2, [r0]
-	adds r0, r5, #0
-	movs r1, #1
-	bl _call_via_r2
-	adds r0, r5, #0
-	bl sub_804C5B8
-	adds r0, r5, #0
-	bl sub_804CA70
-	adds r0, r5, #0
-	bl sub_804C080
-_0804AE2C:
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0804AE34: .4byte gUnknown_080D8890
-_0804AE38: .4byte IWRAM_START + 0x3C
-_0804AE3C: .4byte IWRAM_START + 0x3D
-
 	thumb_func_start sub_804AE40
 sub_804AE40: @ 0x0804AE40
 	push {r4, r5, r6, r7, lr}
@@ -3934,8 +3843,8 @@ _0804CC24: .4byte gCurTask
 _0804CC28: .4byte gPlayer
 _0804CC2C: .4byte sub_804A9D8
 
-	thumb_func_start sub_804CC30
-sub_804CC30: @ 0x0804CC30
+	thumb_func_start Task_804CC30
+Task_804CC30: @ 0x0804CC30
 	push {r4, lr}
 	ldr r4, _0804CC78 @ =gCurTask
 	ldr r0, [r4]

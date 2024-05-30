@@ -75,12 +75,14 @@ void sub_804B984(SuperEggRoboZ *boss, u8 p1);
 void sub_804BAC0(SuperEggRoboZ *boss, u8 p1);
 void sub_804BC44(SuperEggRoboZ *boss, u8 p1);
 void sub_804BE6C(SuperEggRoboZ *boss, u8 p1);
+void sub_804C080(SuperEggRoboZ *boss);
 void sub_804C240(SuperEggRoboZ *boss, u8 p1);
 void sub_804C3AC(SuperEggRoboZ *boss);
 void sub_804C5B8(SuperEggRoboZ *boss);
 void sub_804C830(SuperEggRoboZ *boss);
 void sub_804CA08(SuperEggRoboZ *boss);
 void sub_804CA70(SuperEggRoboZ *boss);
+void Task_804CC30(void);
 void sub_804CC98(SuperEggRoboZ *boss);
 void sub_804AE40(SuperEggRoboZ *boss);
 
@@ -393,3 +395,29 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc",
     }
 }
 END_NONMATCH
+
+void Task_804AD68(void)
+{
+    SuperEggRoboZ *boss = TASK_DATA(gCurTask);
+
+    if (UpdateScreenFade(&boss->fade) == SCREEN_FADE_COMPLETE) {
+        TasksDestroyInPriorityRange(0x5010, 0x5011);
+        TasksDestroyInPriorityRange(0x5431, 0x5434);
+
+        gStageFlags |= EXTRA_STATE__TURN_OFF_HUD;
+
+        gPlayer.moveState |= MOVESTATE_100000;
+        gPlayer.moveState |= MOVESTATE_400000;
+        gCurTask->main = Task_804CC30;
+    } else {
+        sub_804CC98(boss);
+        sub_804CA08(boss);
+
+        gUnknown_080D8890[boss->unk3C[BOSS_8_ARM_LEFT]](boss, BOSS_8_ARM_LEFT);
+        gUnknown_080D8890[boss->unk3C[BOSS_8_ARM_RIGHT]](boss, BOSS_8_ARM_RIGHT);
+
+        sub_804C5B8(boss);
+        sub_804CA70(boss);
+        sub_804C080(boss);
+    }
+}
