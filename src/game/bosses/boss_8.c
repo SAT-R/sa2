@@ -13,6 +13,8 @@
 #include "sakit/collision.h"
 #include "sakit/player.h"
 #include "game/bosses/common.h"
+#include "game/player_callbacks.h" // UpdateHomingPosition
+#include "game/cheese.h"
 #include "game/stage/player.h"
 #include "game/stage/boss_results_transition.h"
 #include "game/stage/game_7.h"
@@ -46,7 +48,7 @@ typedef struct {
     /*  0x10 */ u16 unk10;
     /*  0x12 */ u8 unk12;
     /*  0x14 */ u32 unk14;
-    /*  0x28 */ s32 qUnk18[BOSS_8_ARM_COUNT][2];
+    /*  0x18 */ s32 qUnk18[BOSS_8_ARM_COUNT][2];
     /*  0x28 */ u16 unk28[BOSS_8_ARM_COUNT];
     /*  0x2C */ s16 qUnk2C[BOSS_8_ARM_COUNT];
     /*  0x30 */ s16 unk30[BOSS_8_ARM_COUNT];
@@ -90,8 +92,9 @@ void Task_804CC30(void);
 void sub_804CC98(SuperEggRoboZ *boss);
 void sub_804AE40(SuperEggRoboZ *boss);
 void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1);
+u8 sub_804C9B4(SuperEggRoboZ *boss, u8 param1);
 
-const s16 gUnknown_080D8888[2][2] = { { Q(188), Q(110) }, { Q(162), Q(110) } };
+const u16 gUnknown_080D8888[2][2] = { { Q(188), Q(110) }, { Q(162), Q(110) } };
 const EggRoboFn gUnknown_080D8890[8]
     = { sub_804B43C, sub_804B594, sub_804B734, sub_804B984,
         sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240 };
@@ -544,3 +547,187 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
 }
 END_NONMATCH
 #endif
+
+u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
+{
+    u8 result = 0;
+    s32 sp04, ip;
+    s32 r3;
+    s32 r4;
+    s32 r5;
+    s32 r6;
+    s32 r7;
+
+#if !NON_MATCHING
+    register s32 sl asm("sl");
+#else
+    s32 sl;
+#endif
+
+    if (boss->unk3E[arm] != 0) {
+        return result;
+    }
+
+    sp04 = boss->qUnk0 + boss->qUnk18[arm][0];
+    sl = gUnknown_080D8888[arm][0];
+    r5 = sp04 + sl;
+
+    ip = boss->qUnk4 + boss->qUnk18[arm][1];
+    r7 = gUnknown_080D8888[arm][1];
+    r4 = ip + r7;
+
+    r6 = COS(boss->unk28[arm]);
+    r5 += (r6 * 190) >> 9;
+
+    r3 = SIN(boss->unk28[arm]);
+    r4 += (r3 * 190) >> 9;
+
+    r5 = (gPlayer.x - r5) >> 8;
+    r4 = (gPlayer.y - r4) >> 8;
+
+    r5 = SQUARE(r5);
+    r4 = SQUARE(r4);
+
+    if ((r5 + r4) < 200) {
+        sub_800CBA4(&gPlayer);
+
+        boss->unk40[arm] = 1;
+
+        if (boss->unk3C[arm] == 3) {
+            m4aSongNumStart(SE_263);
+        }
+
+        return result;
+    } else {
+        // _0804B1DC
+        s32 r0, r1;
+        Sprite *s = &gPlayer.unk90->s;
+
+        r5 = sp04 + sl;
+        r4 = ip + r7;
+
+        r1 = ((r6 * 95) >> 9);
+        r0 = ((r3 * 95) >> 9);
+        r6 = r5 + r1;
+        r7 = r4 + r0;
+
+        if (gSelectedCharacter != CHARACTER_SONIC) {
+            Player_UpdateHomingPosition(r6, r7);
+        }
+        // _0804B21E
+
+        if (PLAYER_IS_ALIVE && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
+            r5 = I(gPlayer.x - r6);
+            r4 = I(gPlayer.y - r7);
+
+            r5 = SQUARE(r5);
+            r4 = SQUARE(r4);
+            if ((r5 + r4) < 376) {
+                s32 speed;
+                result = sub_804C9B4(boss, arm);
+
+                speed = -gPlayer.speedAirX;
+                gPlayer.speedAirX = speed;
+
+                speed = -gPlayer.speedAirY;
+                gPlayer.speedAirY = speed;
+
+                speed = -gPlayer.speedGroundX;
+                gPlayer.speedGroundX = speed;
+
+                return result;
+            }
+        }
+        // _0804B288
+
+        if ((gCheese != NULL) && HITBOX_IS_ACTIVE(gCheese->reserved)) {
+            r6 -= gCheese->posX;
+            r6 = (r6) >> 8;
+            r7 -= gCheese->posY;
+            r7 = (r7) >> 8;
+
+            if ((SQUARE(r6) + SQUARE(r7)) < 376) {
+                result = sub_804C9B4(boss, arm);
+
+                gUnknown_03005498.t->unk15 = 0;
+            }
+        }
+    }
+
+    return result;
+}
+
+// (93.51%) https://decomp.me/scratch/ecqNB
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
+         u8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
+{
+    u8 result = 0;
+    s32 sp04, ip;
+    s32 r3;
+    s32 r4;
+    s32 r5;
+    s32 r6;
+    s32 r7;
+    s32 sl;
+
+    if (boss->unk3E[arm] != 0) {
+        return result;
+    }
+    // _0804B314
+
+    {
+        s32 r0, r1;
+#if 1
+        Sprite *s = &gPlayer.unk90->s;
+
+        r6 = boss->qUnk0 + boss->qUnk18[arm][0];
+        r4 = r6 + gUnknown_080D8888[arm][0];
+
+        r5 = boss->qUnk4 + boss->qUnk18[arm][1];
+        r5 = r5 + gUnknown_080D8888[arm][1];
+#endif
+
+        if (gSelectedCharacter != CHARACTER_SONIC) {
+            Player_UpdateHomingPosition(r4, r5);
+        }
+
+        if (PLAYER_IS_ALIVE && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
+            r5 = I(gPlayer.x - r6);
+            r4 = I(gPlayer.y - r7);
+
+            r5 = SQUARE(r5);
+            r4 = SQUARE(r4);
+            if ((r5 + r4) < 376) {
+                s32 speed;
+                result = sub_804C9B4(boss, arm);
+
+                speed = -gPlayer.speedAirX;
+                gPlayer.speedAirX = speed;
+
+                speed = -gPlayer.speedAirY;
+                gPlayer.speedAirY = speed;
+
+                speed = -gPlayer.speedGroundX;
+                gPlayer.speedGroundX = speed;
+
+                return result;
+            }
+        }
+
+        if ((gCheese != NULL) && HITBOX_IS_ACTIVE(gCheese->reserved)) {
+            r6 -= gCheese->posX;
+            r6 = (r6) >> 8;
+            r7 -= gCheese->posY;
+            r7 = (r7) >> 8;
+
+            if ((SQUARE(r6) + SQUARE(r7)) < 376) {
+                result = sub_804C9B4(boss, arm);
+
+                gUnknown_03005498.t->unk15 = 0;
+            }
+        }
+    }
+
+    return result;
+}
+END_NONMATCH
