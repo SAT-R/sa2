@@ -12,8 +12,6 @@ gUnknown_080D88B0:
 .arm
 
 .if 0
-.endif
-
 	thumb_func_start sub_804AE40
 sub_804AE40: @ 0x0804AE40
 	push {r4, r5, r6, r7, lr}
@@ -22,7 +20,7 @@ sub_804AE40: @ 0x0804AE40
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #8
-	adds r5, r0, #0
+	adds r5, r0, #0         @ r5 = boss
 	ldr r0, _0804AE94 @ =gPlayer
 	ldr r0, [r0, #0x20]
 	movs r1, #0x80
@@ -96,7 +94,7 @@ _0804AED4:
 	subs r4, r0, #1
 	strb r4, [r5, #0x12]
 	movs r0, #0xff
-	mov sb, r0
+	mov sb, r0          @ sb = r0 = 0xFF
 	lsls r0, r4, #0x18
 	cmp r0, #0
 	bne _0804AF34
@@ -147,7 +145,7 @@ _0804AF34:
 	asrs r0, r0, #8
 	mov r8, r0
 	ldr r0, _0804AFF4 @ =gSineTable
-	mov sl, r0
+	mov sl, r0              @ sl = gSineTable
 	ldrh r1, [r5, #0x10]
 	movs r2, #0x80
 	lsls r2, r2, #1
@@ -155,7 +153,7 @@ _0804AF34:
 	lsls r0, r0, #1
 	add r0, sl
 	movs r6, #0
-	ldrsh r0, [r0, r6]
+	ldrsh r0, [r0, r6]      @ r0 = COS(boss->unk10)
 	movs r3, #0xb
 	muls r0, r3, r0
 	asrs r0, r0, #0xe
@@ -164,7 +162,7 @@ _0804AF34:
 	ldr r0, [r2]
 	mov r7, r8
 	subs r7, r7, r0
-	mov r8, r7
+	mov r8, r7              @ r8 -= gCamera.x;
 	ldr r0, [r5, #4]
 	movs r6, #0xa0
 	lsls r6, r6, #6
@@ -185,7 +183,7 @@ _0804AF34:
 	bls _0804B008
 	movs r0, #0
 	bl InitHBlankBgOffsets
-	mov r0, r8
+	mov r0, r8              @ r0 = r8
 	lsls r3, r0, #0x10
 	asrs r3, r3, #0x10
 	lsls r0, r6, #0x10
@@ -267,12 +265,12 @@ _0804B02A:
 	muls r0, r1, r0
 	ldr r1, _0804B070 @ =0x3C6EF35F
 	adds r0, r0, r1
-	str r0, [r2]
+	str r0, [r2]        @ PseudoRandom32()
 	lsrs r2, r3, #0x19
 	movs r1, #7
 	ands r0, r1
 	adds r0, #8
-	adds r4, r2, r0
+	adds r4, r2, r0     @ r4 = ((PseudoRandom32() % 8u) + 8) + (boss->unk12 / 2);
 	cmp r7, #0x3c
 	bls _0804B096
 	adds r1, r4, #0
@@ -345,6 +343,7 @@ _0804B0CE:
 _0804B0E0: .4byte gPseudoRandom
 _0804B0E4: .4byte 0x00196225
 _0804B0E8: .4byte 0x3C6EF35F
+.endif
 
 	thumb_func_start sub_804B0EC
 sub_804B0EC: @ 0x0804B0EC

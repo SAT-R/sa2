@@ -3,6 +3,7 @@
 #include "flags.h"
 #include "task.h"
 #include "trig.h"
+#include "bg_triangles.h"
 #include "malloc_vram.h"
 #include "gba/defines.h"
 #include "gba/io_reg.h"
@@ -13,6 +14,8 @@
 #include "sakit/player.h"
 #include "game/bosses/common.h"
 #include "game/stage/player.h"
+#include "game/stage/boss_results_transition.h"
+#include "game/stage/game_7.h"
 #include "game/stage/screen_fade.h"
 #include "game/stage/screen_shake.h"
 
@@ -41,6 +44,7 @@ typedef struct {
     /*  0x0C */ u8 unkC;
     /*  0x0E */ u16 unkE;
     /*  0x10 */ u16 unk10;
+    /*  0x12 */ u8 unk12;
     /*  0x14 */ u32 unk14;
     /*  0x28 */ s32 qUnk18[BOSS_8_ARM_COUNT][2];
     /*  0x28 */ u16 unk28[BOSS_8_ARM_COUNT];
@@ -85,6 +89,7 @@ void sub_804CA70(SuperEggRoboZ *boss);
 void Task_804CC30(void);
 void sub_804CC98(SuperEggRoboZ *boss);
 void sub_804AE40(SuperEggRoboZ *boss);
+void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1);
 
 const s16 gUnknown_080D8888[2][2] = { { Q(188), Q(110) }, { Q(162), Q(110) } };
 const EggRoboFn gUnknown_080D8890[8]
@@ -146,7 +151,6 @@ void CreateSuperEggRoboZ(void)
     sub_8049D20(boss->tilesUnk44, boss);
 
     for (r4 = 0; r4 < BOSS_8_ARM_COUNT; r4++) {
-        // _0804A832
         boss->unk28[r4] = Q(2.0);
         boss->qUnk2C[r4] = Q(2.0);
         boss->qUnk18[r4][0] = Q(0.0);
@@ -258,7 +262,6 @@ void sub_804A9D8(void)
             }
         }
     }
-    // _0804AA68
 
     boss->unkB = 1;
     sub_804C3AC(boss);
@@ -421,3 +424,121 @@ void Task_804AD68(void)
         sub_804C080(boss);
     }
 }
+
+#if 01
+// (95.06%) https://decomp.me/scratch/of4k0
+void sub_804AE40(SuperEggRoboZ *boss)
+{
+    int v;
+    Sprite *s;
+
+    if (gPlayer.moveState & MOVESTATE_DEAD) {
+        if (boss->unkE == 0) {
+            gBldRegs.bldY = 0;
+            boss->fade.brightness = 0;
+            gFlags &= ~FLAGS_4;
+        }
+        boss->unkE = 2;
+    }
+
+    if (boss->unkE > 0) {
+        if (--boss->unkE == 0) {
+            boss->unk12 = 120;
+        }
+    } else {
+        // _0804AEA0
+
+        if (boss->unkB > 0) {
+            if (boss->unk12 > 0) {
+                boss->unk12 = 120;
+
+                boss->fade.brightness = Q(32);
+                UpdateScreenFade(&boss->fade);
+            }
+            // _0804AEC2
+
+            gFlags &= ~FLAGS_4;
+        } else {
+            // _0804AED4
+            if (--boss->unk12 == 0) {
+                u32 livesCockpit;
+                gFlags &= ~FLAGS_4;
+
+                boss->fade.brightness = Q(32);
+                UpdateScreenFade(&boss->fade);
+
+                livesCockpit = boss->livesCockpit;
+                v = 360;
+                if (livesCockpit <= 4) {
+                    v = 140;
+                }
+                boss->unkE = v;
+
+                s = &boss->bsHead.s;
+                s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_HEAD;
+                s->variant = 0;
+                s->prevVariant = -1;
+            } else {
+                // _0804AF34
+                s32 r6;
+                s32 r8;
+
+                r8 = I(boss->qUnk0 + Q(190));
+                r8 += ((COS(boss->unk10) * 11) >> 14);
+                r8 -= gCamera.x;
+
+                r6 = I(boss->qUnk4 + Q(40));
+                r6 += ((SIN(boss->unk10) * 11) >> 14);
+                r6 -= gCamera.y;
+
+                if (boss->unk12 > 90) {
+                    s32 val;
+                    s32 rand;
+                    s16 x, y;
+                    InitHBlankBgOffsets(0);
+                    x = r8;
+                    y = r6;
+
+                    rand = PseudoRandom32();
+                    sub_80075D0(0, 0, 160, x, y,
+                                I(SIN(((boss->unk12 - 90) * 8) % 256u)) + (rand % 8u));
+
+                    boss->fade.brightness = (boss->unk12 - 90) * 273;
+                    UpdateScreenFade(&boss->fade);
+                } else {
+                    s16 r4;
+
+                    if (boss->unk12 == 90) {
+                        // _0804B008+4
+                        s = &boss->bsHead.s;
+                        s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_HEAD;
+                        s->variant = 1;
+                        s->prevVariant = -1;
+                        m4aSongNumStart(SE_261);
+                    }
+                    // _0804B02A
+
+                    if (boss->unk12 < 70) {
+                        s32 rand = (PseudoRandom32());
+                        r4 = (boss->unk12 >> 1) + ((rand % 8u) + 8);
+
+                        if (boss->unk12 > 60) {
+                            sub_804CCD0(boss, Q(r4 - 10));
+                        }
+                    } else {
+                        // _0804B074
+                        s32 rand = PseudoRandom32();
+                        r4 = ((116 - boss->unk12) >> 2) + ((rand % 8u) + 30);
+                    }
+                    // _0804B096
+
+                    sub_802E784(boss->unk10, r4, 6, r8, r6 + 1, 32);
+
+                    boss->fade.brightness = Q(32) - (boss->unk12 * 91);
+                    UpdateScreenFade(&boss->fade);
+                }
+            }
+        }
+    }
+}
+#endif

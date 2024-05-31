@@ -319,6 +319,7 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc",
 }
 END_NONMATCH
 
+// TODO: param2 might be horizontal
 void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, u16 param4, u16 param5)
 {
     int_vcount *cursor;
