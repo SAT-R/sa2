@@ -427,7 +427,8 @@ void Task_804AD68(void)
 
 #if 01
 // (95.06%) https://decomp.me/scratch/of4k0
-void sub_804AE40(SuperEggRoboZ *boss)
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
+         void sub_804AE40(SuperEggRoboZ *boss))
 {
     int v;
     Sprite *s;
@@ -541,4 +542,5 @@ void sub_804AE40(SuperEggRoboZ *boss)
         }
     }
 }
+END_NONMATCH
 #endif
