@@ -51,8 +51,7 @@ typedef struct {
 } BossSprite;
 
 typedef struct {
-    /*  0x00 */ s32 qUnk0;
-    /*  0x04 */ s32 qUnk4;
+    /*  0x00 */ Vec2_32 pos;
     /*  0x08 */ u8 livesCockpit;
     /*  0x09 */ u8 livesArmLeft;
     /*  0x0A */ u8 livesArmRight;
@@ -62,8 +61,8 @@ typedef struct {
     /*  0x10 */ u16 unk10;
     /*  0x12 */ u8 unk12;
     /*  0x14 */ u32 unk14;
-    /*  0x18 */ s32 qUnk18[BOSS_8_ARM_COUNT][2];
-    /*  0x28 */ u16 unk28[BOSS_8_ARM_COUNT];
+    /*  0x18 */ Vec2_32 qUnk18[BOSS_8_ARM_COUNT];
+    /*  0x28 */ u16 rotation[BOSS_8_ARM_COUNT];
     /*  0x2C */ s16 qUnk2C[BOSS_8_ARM_COUNT];
     /*  0x30 */ u16 unk30[BOSS_8_ARM_COUNT];
     /*  0x34 */ s16 qUnk34[BOSS_8_ARM_COUNT][2];
@@ -71,7 +70,7 @@ typedef struct {
     /*  0x3E */ u8 unk3E[BOSS_8_ARM_COUNT];
     /*  0x40 */ u8 unk40[BOSS_8_ARM_COUNT];
     /*  0x42 */ u8 unk42[BOSS_8_ARM_COUNT];
-    /*  0x44 */ void *tilesUnk44;
+    /*  0x44 */ void *tilesCloud;
     /*  0x48 */ ScreenFade fade;
     /*  0x54 */ BossSprite bsHead;
     /*  0x90 */ BossSprite bsArms[BOSS_8_ARM_COUNT];
@@ -121,7 +120,7 @@ void CreateSuperEggRoboZ(void)
     ScreenFade *fade;
     Sprite *s;
     Background *body;
-    u8 r4;
+    u8 arm;
 
     gBgCntRegs[0] = (BGCNT_TXT512x512 | BGCNT_SCREENBASE(20) | BGCNT_CHARBASE(3)
                      | BGCNT_PRIORITY(2));
@@ -158,34 +157,34 @@ void CreateSuperEggRoboZ(void)
         boss->livesArmRight = 6;
     }
 
-    boss->qUnk0 = Q(42876);
-    boss->qUnk4 = Q(370);
+    boss->pos.x = Q(42876);
+    boss->pos.y = Q(370);
     boss->unkE = 360;
     boss->unk10 = 512;
     boss->unkB = 0;
     boss->unkC = 0;
     boss->unk14 = 30;
-    boss->tilesUnk44 = VramMalloc(32);
-    sub_8049D20(boss->tilesUnk44, boss);
+    boss->tilesCloud = VramMalloc(32);
+    sub_8049D20(boss->tilesCloud, boss);
 
-    for (r4 = 0; r4 < BOSS_8_ARM_COUNT; r4++) {
-        boss->unk28[r4] = Q(2.0);
-        boss->qUnk2C[r4] = Q(2.0);
-        boss->qUnk18[r4][0] = Q(0.0);
-        boss->qUnk18[r4][1] = Q(0.0);
-        boss->unk3C[r4] = 0;
-        boss->unk30[r4] = r4 * 360 + 360;
-        boss->unk3E[r4] = Q(0.0);
-        boss->unk40[r4] = Q(0.0);
-        boss->unk42[r4] = Q(0.0);
-        boss->qUnk34[r4][0] = Q(0.0);
-        boss->qUnk34[r4][1] = Q(0.0);
+    for (arm = 0; arm < BOSS_8_ARM_COUNT; arm++) {
+        boss->rotation[arm] = (SIN_PERIOD / 2);
+        boss->qUnk2C[arm] = Q(2.0);
+        boss->qUnk18[arm].x = Q(0.0);
+        boss->qUnk18[arm].y = Q(0.0);
+        boss->unk3C[arm] = 0;
+        boss->unk30[arm] = arm * 360 + 360;
+        boss->unk3E[arm] = Q(0.0);
+        boss->unk40[arm] = Q(0.0);
+        boss->unk42[arm] = Q(0.0);
+        boss->qUnk34[arm][0] = Q(0.0);
+        boss->qUnk34[arm][1] = Q(0.0);
 
-        s = &boss->bsArms[r4].s;
+        s = &boss->bsArms[arm].s;
         s->x = 0;
         s->y = 0;
 
-        if (r4 != 0) {
+        if (arm != 0) {
             s->graphics.dest = VramMalloc(8 * 8);
             s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;
             s->variant = 0;
@@ -195,7 +194,7 @@ void CreateSuperEggRoboZ(void)
             s->variant = 0;
         }
 
-        s->unk1A = SPRITE_OAM_ORDER(27 + (r4 * 4));
+        s->unk1A = SPRITE_OAM_ORDER(27 + (arm * 4));
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -255,7 +254,7 @@ void sub_804A9D8(void)
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
 
     if (boss->unk14 > 60) {
-        boss->qUnk4 -= Q(1.0);
+        boss->pos.y -= Q(1.0);
 
         if ((gStageTime % 32u) == 0) {
             m4aSongNumStart(SE_260);
@@ -356,7 +355,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc",
     // _0804ABF2
 
     if (boss->livesCockpit == 0) {
-        u8 i;
+        u8 arm;
         // _0804ABF2
 
         gFlags &= ~FLAGS_4;
@@ -389,20 +388,20 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc",
         fade->bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
         fade->bldAlpha = 0;
 
-        for (i = 0; i < BOSS_8_ARM_COUNT; i++) {
+        for (arm = 0; arm < BOSS_8_ARM_COUNT; arm++) {
             Sprite *sprArm;
             u16 anim;
             // _0804ACB2
-            boss->qUnk18[i][0] += (COS(boss->unk28[i]) * 15) >> 6;
-            boss->qUnk18[i][1] += (SIN(boss->unk28[i]) * 15) >> 6;
+            boss->qUnk18[arm].x += (COS(boss->rotation[arm]) * 15) >> 6;
+            boss->qUnk18[arm].y += (SIN(boss->rotation[arm]) * 15) >> 6;
 
-            boss->qUnk34[i][0] = -Q(1.5);
-            boss->qUnk34[i][1] = -Q(3);
+            boss->qUnk34[arm][0] = -Q(1.5);
+            boss->qUnk34[arm][1] = -Q(3);
 
-            boss->unk3C[i] = 7;
-            boss->unk30[i] = 60;
+            boss->unk3C[arm] = 7;
+            boss->unk30[arm] = 60;
 
-            SWITCH_ARM_VARIANT(boss, i, 2);
+            SWITCH_ARM_VARIANT(boss, arm, 2);
         }
     }
 }
@@ -493,11 +492,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
                 s32 r6;
                 s32 r8;
 
-                r8 = I(boss->qUnk0 + Q(190));
+                r8 = I(boss->pos.x + Q(190));
                 r8 += ((COS(boss->unk10) * 11) >> 14);
                 r8 -= gCamera.x;
 
-                r6 = I(boss->qUnk4 + Q(40));
+                r6 = I(boss->pos.y + Q(40));
                 r6 += ((SIN(boss->unk10) * 11) >> 14);
                 r6 -= gCamera.y;
 
@@ -574,18 +573,18 @@ u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
         return result;
     }
 
-    sp04 = boss->qUnk0 + boss->qUnk18[arm][0];
+    sp04 = boss->pos.x + boss->qUnk18[arm].x;
     sl = gUnknown_080D8888[arm][0];
     r5 = sp04 + sl;
 
-    ip = boss->qUnk4 + boss->qUnk18[arm][1];
+    ip = boss->pos.y + boss->qUnk18[arm].y;
     r7 = gUnknown_080D8888[arm][1];
     r4 = ip + r7;
 
-    r6 = COS(boss->unk28[arm]);
+    r6 = COS(boss->rotation[arm]);
     r5 += (r6 * 190) >> 9;
 
-    r3 = SIN(boss->unk28[arm]);
+    r3 = SIN(boss->rotation[arm]);
     r4 += (r3 * 190) >> 9;
 
     r5 = (gPlayer.x - r5) >> 8;
@@ -690,10 +689,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
 #if 1
         Sprite *s = &gPlayer.unk90->s;
 
-        r6 = boss->qUnk0 + boss->qUnk18[arm][0];
+        r6 = boss->pos.x + boss->qUnk18[arm].x;
         r4 = r6 + gUnknown_080D8888[arm][0];
 
-        r5 = boss->qUnk4 + boss->qUnk18[arm][1];
+        r5 = boss->pos.y + boss->qUnk18[arm].y;
         r5 = r5 + gUnknown_080D8888[arm][1];
 #endif
 
@@ -744,8 +743,8 @@ END_NONMATCH
 
 void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
 {
-    boss->qUnk18[arm][0] = 0;
-    boss->qUnk18[arm][1] = 0;
+    boss->qUnk18[arm].x = 0;
+    boss->qUnk18[arm].y = 0;
 
     if (boss->unk30[arm] == 300) {
         SWITCH_ARM_VARIANT(boss, arm, 0);
@@ -758,12 +757,11 @@ void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
     }
 
     if (sub_804B0EC(boss, arm) != 0) {
-        boss->qUnk18[arm][0] += ((COS(boss->unk28[arm]) * 15) >> 6);
-        boss->qUnk18[arm][1] += ((SIN(boss->unk28[arm]) * 15) >> 6);
+        boss->qUnk18[arm].x += ((COS(boss->rotation[arm]) * 15) >> 6);
+        boss->qUnk18[arm].y += ((SIN(boss->rotation[arm]) * 15) >> 6);
 
         boss->qUnk34[arm][0] = -Q(1.5);
         boss->qUnk34[arm][1] = -Q(3.0);
-        boss->unk3C[arm] = 0x7;
         boss->unk3C[arm] = 7;
         boss->unk30[arm] = 60;
 
@@ -782,31 +780,31 @@ void sub_804B594(SuperEggRoboZ *boss, u8 arm)
     register s32 r6 asm("r6");
 #endif
 
-    boss->qUnk18[arm][0] = 0;
-    boss->qUnk18[arm][1] = 0;
+    boss->qUnk18[arm].x = 0;
+    boss->qUnk18[arm].y = 0;
 
     // TODO: Seems like these were set through a macro?
     //       boss->qUnk18[arm][n] were just set to 0 after all
 #ifndef NON_MATCHING
-    r2 = boss->qUnk0;
-    r4 = boss->qUnk18[arm][0];
+    r2 = boss->pos.x;
+    r4 = boss->qUnk18[arm].x;
     r5 = r2 + r4 + gUnknown_080D8888[arm][0];
-    r4 = boss->qUnk4;
-    r2 = boss->qUnk18[arm][1] + r4;
+    r4 = boss->pos.y;
+    r2 = boss->qUnk18[arm].y + r4;
     r0 = gUnknown_080D8888[arm][1];
     r6 = r2 + r0;
 #else
-    r5 = boss->qUnk0 + boss->qUnk18[arm][0] + gUnknown_080D8888[arm][0];
-    r6 = boss->qUnk4 + boss->qUnk18[arm][1] + gUnknown_080D8888[arm][1];
+    r5 = boss->pos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
+    r6 = boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 #endif
 
     r3 = sub_8004418(I(gPlayer.y - r6), I(gPlayer.x - r5));
 
-    if (r3 != boss->unk28[arm]) {
-        if (r3 < boss->unk28[arm]) {
-            boss->unk28[arm]--;
+    if (r3 != boss->rotation[arm]) {
+        if (r3 < boss->rotation[arm]) {
+            boss->rotation[arm]--;
         } else {
-            boss->unk28[arm]++;
+            boss->rotation[arm]++;
         }
     }
 
@@ -817,12 +815,12 @@ void sub_804B594(SuperEggRoboZ *boss, u8 arm)
     }
 
     if (sub_804B0EC(boss, arm) != 0) {
-        boss->qUnk18[arm][0] += ((COS(boss->unk28[arm]) * 15) >> 6);
-        boss->qUnk18[arm][1] += ((SIN(boss->unk28[arm]) * 15) >> 6);
+        boss->qUnk18[arm].x += ((COS(boss->rotation[arm]) * 15) >> 6);
+        boss->qUnk18[arm].y += ((SIN(boss->rotation[arm]) * 15) >> 6);
 
         boss->qUnk34[arm][0] = -Q(1.5);
         boss->qUnk34[arm][1] = -Q(3.0);
-        boss->unk3C[arm] = 0x7;
+        boss->unk3C[arm] = 7;
         boss->unk30[arm] = 60;
 
         SWITCH_ARM_VARIANT(boss, arm, 2);
@@ -836,22 +834,24 @@ void sub_804B734(SuperEggRoboZ *boss, u8 arm)
     s32 x, y;
     u8 i, j;
 
-    boss->qUnk18[arm][0] = 0;
-    boss->qUnk18[arm][1] = 0;
+    boss->qUnk18[arm].x = 0;
+    boss->qUnk18[arm].y = 0;
 
     if (--boss->unk30[arm] == 0) {
-        // _0804B772
-        x = boss->qUnk0 + boss->qUnk18[arm][0] + gUnknown_080D8888[arm][0];
-        y = boss->qUnk4 + boss->qUnk18[arm][1] + gUnknown_080D8888[arm][1];
+        x = boss->pos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
+        y = boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 
         for (i = 0; i < 3; i++) {
             for (j = 0; j < 3; j++) {
-                info.spawnX = I(x)
-                    - ((COS((boss->unk28[arm] - Q(1)) & ONE_CYCLE) * (i - 1)) >> 11);
-                info.spawnY = I(y)
-                    - ((SIN((boss->unk28[arm] - Q(1)) & ONE_CYCLE) * (i - 1)) >> 11);
+                s32 index;
+
+                index = (boss->rotation[arm] - (SIN_PERIOD / 4));
+                info.spawnX = I(x) - ((COS(index & ONE_CYCLE) * (i - 1)) >> 11);
+                index = (boss->rotation[arm] - (SIN_PERIOD / 4));
+                info.spawnY = I(y) - ((SIN(index & ONE_CYCLE) * (i - 1)) >> 11);
+
                 info.velocity = 0;
-                info.rotation = (boss->unk28[arm] + Q(2)) & ONE_CYCLE;
+                info.rotation = (boss->rotation[arm] + (SIN_PERIOD / 2)) & ONE_CYCLE;
                 speed0 = (Q(2) + (j * Q(0.5)));
 
                 if ((1 - i) >= 0) {
@@ -862,7 +862,7 @@ void sub_804B734(SuperEggRoboZ *boss, u8 arm)
                     info.speed = speed0 - (speedI * Q(0.125));
                 }
 
-                info.vram = boss->tilesUnk44;
+                info.vram = boss->tilesCloud;
                 info.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_CLOUD;
                 info.variant = 0;
                 info.unk4 = 0;
@@ -877,12 +877,12 @@ void sub_804B734(SuperEggRoboZ *boss, u8 arm)
     }
 
     if (sub_804B0EC(boss, arm) != 0) {
-        boss->qUnk18[arm][0] += ((COS(boss->unk28[arm]) * 15) >> 6);
-        boss->qUnk18[arm][1] += ((SIN(boss->unk28[arm]) * 15) >> 6);
+        boss->qUnk18[arm].x += ((COS(boss->rotation[arm]) * 15) >> 6);
+        boss->qUnk18[arm].y += ((SIN(boss->rotation[arm]) * 15) >> 6);
 
         boss->qUnk34[arm][0] = -Q(1.5);
         boss->qUnk34[arm][1] = -Q(3.0);
-        boss->unk3C[arm] = 0x7;
+        boss->unk3C[arm] = 7;
         boss->unk30[arm] = 60;
 
         SWITCH_ARM_VARIANT(boss, arm, 2);
