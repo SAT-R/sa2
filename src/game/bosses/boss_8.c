@@ -31,6 +31,20 @@
 #define BOSS_8_ARM_RIGHT 1
 #define BOSS_8_ARM_COUNT 2
 
+#define SWITCH_ARM_VARIANT(boss, arm, vNum)                                             \
+    {                                                                                   \
+        Sprite *s = &boss->bsArms[arm].s;                                               \
+                                                                                        \
+        if (arm != BOSS_8_ARM_LEFT) {                                                   \
+            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;                     \
+            s->variant = vNum;                                                          \
+        } else {                                                                        \
+            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_LEFT;                      \
+            s->variant = vNum;                                                          \
+        }                                                                               \
+        s->prevVariant = -1;                                                            \
+    }
+
 typedef struct {
     /* 0x00 */ Sprite s;
     /* 0x30 */ u8 filler30[0xC];
@@ -387,16 +401,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc",
             boss->unk3C[i] = 7;
             boss->unk30[i] = 60;
 
-            sprArm = &boss->bsArms[i].s;
-
-            if (i != 0) {
-                sprArm->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;
-                sprArm->variant = 2;
-            } else {
-                sprArm->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_LEFT;
-                sprArm->variant = 2;
-            }
-            sprArm->prevVariant = -1;
+            SWITCH_ARM_VARIANT(boss, i, 2);
         }
     }
 }
@@ -738,34 +743,20 @@ END_NONMATCH
 
 void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
 {
-    Sprite *s;
-
     boss->qUnk18[arm][0] = 0;
     boss->qUnk18[arm][1] = 0;
 
     if (boss->unk30[arm] == 300) {
-        s = &boss->bsArms[arm].s;
-
-        if (arm != BOSS_8_ARM_LEFT) {
-            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;
-            s->variant = 0;
-        } else {
-            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_LEFT;
-            s->variant = 0;
-        }
-        s->prevVariant = -1;
+        SWITCH_ARM_VARIANT(boss, arm, 0);
     }
-    // _0804B498
 
     if (--boss->unk30[arm] == 0) {
         boss->unk3C[arm] = 1;
         boss->unk30[arm] = 180;
         boss->unk40[arm] = 0;
     }
-    // _0804B4CE
 
     if (sub_804B0EC(boss, arm) != 0) {
-        // __0804B4DC
         boss->qUnk18[arm][0] += ((COS(boss->unk28[arm]) * 15) >> 6);
         boss->qUnk18[arm][1] += ((SIN(boss->unk28[arm]) * 15) >> 6);
 
@@ -775,15 +766,6 @@ void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
         boss->unk3C[arm] = 7;
         boss->unk30[arm] = 60;
 
-        s = &boss->bsArms[arm].s;
-
-        if (arm != BOSS_8_ARM_LEFT) {
-            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;
-            s->variant = 2;
-        } else {
-            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_LEFT;
-            s->variant = 2;
-        }
-        s->prevVariant = -1;
+        SWITCH_ARM_VARIANT(boss, arm, 2);
     }
 }

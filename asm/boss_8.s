@@ -11,9 +11,7 @@ gUnknown_080D88B0:
 .syntax unified
 .arm
 
-.if 0
-.endif
-
+.if 01
 	thumb_func_start sub_804B594
 sub_804B594: @ 0x0804B594
 	push {r4, r5, r6, r7, lr}
@@ -227,6 +225,7 @@ _0804B724:
 	bx r0
 	.align 2, 0
 _0804B730: .4byte 0x000002BF
+.endif
 
 	thumb_func_start sub_804B734
 sub_804B734: @ 0x0804B734
