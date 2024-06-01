@@ -88,6 +88,7 @@ void TaskDestructor_SuperEggRoboZMain(struct Task *);
 extern void sub_8049D20(void *vramTiles, SuperEggRoboZ *boss);
 void Task_804AB24(void);
 void Task_804AD68(void);
+u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm);
 void sub_804B43C(SuperEggRoboZ *boss, u8 p1);
 void sub_804B594(SuperEggRoboZ *boss, u8 p1);
 void sub_804B734(SuperEggRoboZ *boss, u8 p1);
@@ -754,6 +755,65 @@ void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
         boss->unk3C[arm] = 1;
         boss->unk30[arm] = 180;
         boss->unk40[arm] = 0;
+    }
+
+    if (sub_804B0EC(boss, arm) != 0) {
+        boss->qUnk18[arm][0] += ((COS(boss->unk28[arm]) * 15) >> 6);
+        boss->qUnk18[arm][1] += ((SIN(boss->unk28[arm]) * 15) >> 6);
+
+        boss->qUnk34[arm][0] = -Q(1.5);
+        boss->qUnk34[arm][1] = -Q(3.0);
+        boss->unk3C[arm] = 0x7;
+        boss->unk3C[arm] = 7;
+        boss->unk30[arm] = 60;
+
+        SWITCH_ARM_VARIANT(boss, arm, 2);
+    }
+}
+
+void sub_804B594(SuperEggRoboZ *boss, u8 arm)
+{
+    u16 r3;
+#ifndef NON_MATCHING
+    register s32 r0 asm("r0");
+    register s32 r2 asm("r2");
+    register s32 r4 asm("r4");
+    register s32 r5 asm("r5");
+    register s32 r6 asm("r6");
+#endif
+
+    boss->qUnk18[arm][0] = 0;
+    boss->qUnk18[arm][1] = 0;
+
+    // TODO: Seems like these were set through a macro?
+    //       boss->qUnk18[arm][n] were just set to 0 after all
+#ifndef NON_MATCHING
+    r2 = boss->qUnk0;
+    r4 = boss->qUnk18[arm][0];
+    r5 = r2 + r4 + gUnknown_080D8888[arm][0];
+    r4 = boss->qUnk4;
+    r2 = boss->qUnk18[arm][1] + r4;
+    r0 = gUnknown_080D8888[arm][1];
+    r6 = r2 + r0;
+#else
+    r5 = boss->qUnk0 + boss->qUnk18[arm][0] + gUnknown_080D8888[arm][0];
+    r6 = boss->qUnk4 + boss->qUnk18[arm][1] + gUnknown_080D8888[arm][1];
+#endif
+
+    r3 = sub_8004418(I(gPlayer.y - r6), I(gPlayer.x - r5));
+
+    if (r3 != boss->unk28[arm]) {
+        if (r3 < boss->unk28[arm]) {
+            boss->unk28[arm]--;
+        } else {
+            boss->unk28[arm]++;
+        }
+    }
+
+    if (--boss->unk30[arm] == 0) {
+        SWITCH_ARM_VARIANT(boss, arm, 1);
+        boss->unk3C[arm] = 2;
+        boss->unk30[arm] = 30;
     }
 
     if (sub_804B0EC(boss, arm) != 0) {
