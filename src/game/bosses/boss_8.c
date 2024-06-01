@@ -51,7 +51,7 @@ typedef struct {
     /*  0x18 */ s32 qUnk18[BOSS_8_ARM_COUNT][2];
     /*  0x28 */ u16 unk28[BOSS_8_ARM_COUNT];
     /*  0x2C */ s16 qUnk2C[BOSS_8_ARM_COUNT];
-    /*  0x30 */ s16 unk30[BOSS_8_ARM_COUNT];
+    /*  0x30 */ u16 unk30[BOSS_8_ARM_COUNT];
     /*  0x34 */ s16 qUnk34[BOSS_8_ARM_COUNT][2];
     /*  0x3C */ u8 unk3C[BOSS_8_ARM_COUNT];
     /*  0x3E */ u8 unk3E[BOSS_8_ARM_COUNT];
@@ -64,7 +64,7 @@ typedef struct {
     /* 0x108 */ Background body;
 } SuperEggRoboZ; /* size: 0x148 */
 
-typedef void (*EggRoboFn)(SuperEggRoboZ *, u8);
+typedef void (*EggRoboFn)(SuperEggRoboZ *boss, u8 arm);
 
 void Task_SuperEggRoboZMain(void);
 void TaskDestructor_SuperEggRoboZMain(struct Task *);
@@ -657,6 +657,10 @@ u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
     return result;
 }
 
+// Copy-paste of sub_804B0EC() aside from code above:
+// if (gSelectedCharacter != CHARACTER_SONIC) {
+//     ...
+// }
 // (93.51%) https://decomp.me/scratch/ecqNB
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
          u8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
@@ -731,3 +735,55 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
     return result;
 }
 END_NONMATCH
+
+void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
+{
+    Sprite *s;
+
+    boss->qUnk18[arm][0] = 0;
+    boss->qUnk18[arm][1] = 0;
+
+    if (boss->unk30[arm] == 300) {
+        s = &boss->bsArms[arm].s;
+
+        if (arm != BOSS_8_ARM_LEFT) {
+            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;
+            s->variant = 0;
+        } else {
+            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_LEFT;
+            s->variant = 0;
+        }
+        s->prevVariant = -1;
+    }
+    // _0804B498
+
+    if (--boss->unk30[arm] == 0) {
+        boss->unk3C[arm] = 1;
+        boss->unk30[arm] = 180;
+        boss->unk40[arm] = 0;
+    }
+    // _0804B4CE
+
+    if (sub_804B0EC(boss, arm) != 0) {
+        // __0804B4DC
+        boss->qUnk18[arm][0] += ((COS(boss->unk28[arm]) * 15) >> 6);
+        boss->qUnk18[arm][1] += ((SIN(boss->unk28[arm]) * 15) >> 6);
+
+        boss->qUnk34[arm][0] = -Q(1.5);
+        boss->qUnk34[arm][1] = -Q(3.0);
+        boss->unk3C[arm] = 0x7;
+        boss->unk3C[arm] = 7;
+        boss->unk30[arm] = 60;
+
+        s = &boss->bsArms[arm].s;
+
+        if (arm != BOSS_8_ARM_LEFT) {
+            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;
+            s->variant = 2;
+        } else {
+            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_LEFT;
+            s->variant = 2;
+        }
+        s->prevVariant = -1;
+    }
+}
