@@ -70,7 +70,7 @@ typedef struct {
     /*  0x3C */ u8 unk3C[BOSS_8_ARM_COUNT];
     /*  0x3E */ u8 unk3E[BOSS_8_ARM_COUNT];
     /*  0x40 */ u8 unk40[BOSS_8_ARM_COUNT];
-    /*  0x40 */ u8 unk42[BOSS_8_ARM_COUNT];
+    /*  0x42 */ u8 unk42[BOSS_8_ARM_COUNT];
     /*  0x44 */ void *tilesUnk44;
     /*  0x48 */ ScreenFade fade;
     /*  0x54 */ BossSprite bsHead;
@@ -823,7 +823,66 @@ void sub_804B594(SuperEggRoboZ *boss, u8 arm)
         boss->qUnk34[arm][0] = -Q(1.5);
         boss->qUnk34[arm][1] = -Q(3.0);
         boss->unk3C[arm] = 0x7;
-        boss->unk3C[arm] = 7;
+        boss->unk30[arm] = 60;
+
+        SWITCH_ARM_VARIANT(boss, arm, 2);
+    }
+}
+
+void sub_804B734(SuperEggRoboZ *boss, u8 arm)
+{
+    ExplosionPartsInfo info;
+    s32 speed0;
+    s32 x, y;
+    u8 i, j;
+
+    boss->qUnk18[arm][0] = 0;
+    boss->qUnk18[arm][1] = 0;
+
+    if (--boss->unk30[arm] == 0) {
+        // _0804B772
+        x = boss->qUnk0 + boss->qUnk18[arm][0] + gUnknown_080D8888[arm][0];
+        y = boss->qUnk4 + boss->qUnk18[arm][1] + gUnknown_080D8888[arm][1];
+
+        for (i = 0; i < 3; i++) {
+            for (j = 0; j < 3; j++) {
+                info.spawnX = I(x)
+                    - ((COS((boss->unk28[arm] - Q(1)) & ONE_CYCLE) * (i - 1)) >> 11);
+                info.spawnY = I(y)
+                    - ((SIN((boss->unk28[arm] - Q(1)) & ONE_CYCLE) * (i - 1)) >> 11);
+                info.velocity = 0;
+                info.rotation = (boss->unk28[arm] + Q(2)) & ONE_CYCLE;
+                speed0 = (Q(2) + (j * Q(0.5)));
+
+                if ((1 - i) >= 0) {
+                    s32 speedI = ((1 - i) * 3);
+                    info.speed = speed0 - (speedI * Q(0.125));
+                } else {
+                    s32 speedI = ((i - 1) * 3);
+                    info.speed = speed0 - (speedI * Q(0.125));
+                }
+
+                info.vram = boss->tilesUnk44;
+                info.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_CLOUD;
+                info.variant = 0;
+                info.unk4 = 0;
+
+                CreateBossParticleStatic(&info, &boss->unkC);
+            }
+        }
+
+        boss->unk3C[arm] = 3;
+        boss->unk30[arm] = 10;
+        m4aSongNumStart(SE_262);
+    }
+
+    if (sub_804B0EC(boss, arm) != 0) {
+        boss->qUnk18[arm][0] += ((COS(boss->unk28[arm]) * 15) >> 6);
+        boss->qUnk18[arm][1] += ((SIN(boss->unk28[arm]) * 15) >> 6);
+
+        boss->qUnk34[arm][0] = -Q(1.5);
+        boss->qUnk34[arm][1] = -Q(3.0);
+        boss->unk3C[arm] = 0x7;
         boss->unk30[arm] = 60;
 
         SWITCH_ARM_VARIANT(boss, arm, 2);
