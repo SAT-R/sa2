@@ -911,3 +911,34 @@ void sub_804B984(SuperEggRoboZ *boss, u8 arm)
         SWITCH_ARM_VARIANT(boss, arm, 2);
     }
 }
+
+void sub_804BAC0(SuperEggRoboZ *boss, u8 arm)
+{
+    if (--boss->unk30[arm] == 0) {
+        boss->qUnk18[arm].x += ((COS(boss->rotation[arm]) * 15) >> 6);
+        boss->qUnk18[arm].y += ((SIN(boss->rotation[arm]) * 15) >> 6);
+
+        if (boss->unk40[arm] != 0) {
+            boss->qUnk2C[arm] = boss->rotation[arm];
+            boss->unk3C[arm] = 4;
+            boss->unk30[arm] = 50;
+        } else {
+            boss->unk3C[arm] = 5;
+            boss->unk30[arm] = 160;
+        }
+
+        SWITCH_ARM_VARIANT(boss, arm, 2);
+    } else {
+        if (sub_804B0EC(boss, arm) != 0) {
+            boss->qUnk18[arm].x += ((COS(boss->rotation[arm]) * 15) >> 6);
+            boss->qUnk18[arm].y += ((SIN(boss->rotation[arm]) * 15) >> 6);
+
+            boss->qUnk34[arm][0] = -Q(1.5);
+            boss->qUnk34[arm][1] = -Q(3.0);
+            boss->unk3C[arm] = 7;
+            boss->unk30[arm] = 60;
+
+            SWITCH_ARM_VARIANT(boss, arm, 2);
+        }
+    }
+}
