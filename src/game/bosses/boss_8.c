@@ -58,7 +58,7 @@ typedef struct {
     /*  0x0B */ u8 unkB;
     /*  0x0C */ u8 unkC;
     /*  0x0E */ u16 unkE;
-    /*  0x10 */ u16 unk10;
+    /*  0x10 */ u16 unk10; // rotationHead ?
     /*  0x12 */ u8 unk12;
     /*  0x14 */ u32 unk14;
     /*  0x18 */ Vec2_32 qUnk18[BOSS_8_ARM_COUNT];
