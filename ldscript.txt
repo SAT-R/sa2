@@ -236,6 +236,7 @@ SECTIONS
         asm/boss_run.o(.text);
         src/game/bosses/boss_8.o(.text);
         asm/boss_8.o(.text);
+        src/game/bosses/boss_8_2.o(.text);
 #endif
         src/game/bosses/boss_9.o(.text);
 #if (CPU_ARCH_ARM == 1)

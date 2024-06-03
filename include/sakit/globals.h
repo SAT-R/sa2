@@ -202,7 +202,7 @@ extern u8 gUnknown_030055D8;
     }
 
 // if-else only matches like this in some cases
-#define INCREMENT_SCORE_B(incVal)                                                       \
+#define INCREMENT_SCORE_B_BASE(incVal, _unk3)                                           \
     {                                                                                   \
         s32 divResA, divResB;                                                           \
         s32 oldScore = gLevelScore;                                                     \
@@ -221,9 +221,15 @@ extern u8 gUnknown_030055D8;
                 gNumLives = lives;                                                      \
             }                                                                           \
                                                                                         \
-            gUnknown_030054A8.unk3 = 16;                                                \
+            gUnknown_030054A8.unk3 = _unk3;                                             \
         }                                                                               \
     }
+
+#define INCREMENT_SCORE_B(incVal) INCREMENT_SCORE_B_BASE(incVal, 16)
+
+#define INCREMENT_SCORE_C(incVal)                                                       \
+    INCREMENT_SCORE_A(incVal)                                                           \
+    gUnknown_030054A8.unk1 = 48;
 
 #define INCREMENT_SCORE(incVal)                                                         \
     {                                                                                   \
