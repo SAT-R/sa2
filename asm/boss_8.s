@@ -771,6 +771,7 @@ _0804C234: .4byte 0x0000FFFF
 _0804C238: .4byte gTileInfoBossScrews
 _0804C23C: .4byte 0x06010000
 
+.if 01
 	thumb_func_start sub_804C240
 sub_804C240: @ 0x0804C240
 	push {r4, r5, r6, r7, lr}
@@ -782,7 +783,7 @@ sub_804C240: @ 0x0804C240
 	adds r4, r0, #0
 	lsls r1, r1, #0x18
 	lsrs r2, r1, #0x18
-	mov ip, r2
+	mov ip, r2              @ ip = arm
 	adds r0, #0x42
 	adds r3, r0, r2
 	ldrb r0, [r3]
@@ -790,20 +791,20 @@ sub_804C240: @ 0x0804C240
 	beq _0804C260
 	b _0804C37C
 _0804C260:
-	lsls r7, r2, #3
+	lsls r7, r2, #3         @ r7 = arm * 8
 	adds r0, r4, #0
 	adds r0, #0x1c
-	adds r6, r0, r7
+	adds r6, r0, r7         @ r6 = boss->qUnk18[arm].y
 	ldr r1, [r4, #4]
 	ldr r0, [r6]
-	adds r1, r1, r0
+	adds r1, r1, r0         @ r1 = boss->pos.y + boss->qUnk18[arm].y
 	ldr r0, _0804C290 @ =gUnknown_080D8888
-	mov sb, r0
-	lsls r5, r2, #2
+	mov sb, r0              @ sb = gUnknown_080D8888
+	lsls r5, r2, #2         @ r5 = arm * 4
 	adds r0, #2
 	adds r0, r5, r0
-	ldrh r0, [r0]
-	mov r8, r0
+	ldrh r0, [r0]           @ r0 = gUnknown_080D8888[arm][1]
+	mov r8, r0              @ r8 = r0
 	add r1, r8
 	asrs r1, r1, #8
 	movs r0, #0x96
@@ -816,11 +817,11 @@ _0804C260:
 	.align 2, 0
 _0804C290: .4byte gUnknown_080D8888
 _0804C294:
-	mov r1, ip
+	mov r1, ip              @ r1 = ip = arm
 	lsls r0, r1, #1
 	adds r2, r4, #0
 	adds r2, #0x28
-	adds r2, r2, r0
+	adds r2, r2, r0         @ r2 = &boss->rotation[arm]
 	movs r3, #0xc8
 	lsls r3, r3, #2
 	adds r0, r3, #0
@@ -838,7 +839,7 @@ _0804C294:
 	strh r0, [r3]
 	adds r0, r4, #0
 	adds r0, #0x18
-	adds r2, r0, r7
+	adds r2, r0, r7         @ r2 = &boss->qUnk18[arm]
 	adds r0, #0x1c
 	adds r0, r0, r5
 	mov ip, r0
@@ -851,24 +852,24 @@ _0804C294:
 	ldrsh r1, [r3, r0]
 	ldr r0, [r6]
 	adds r0, r0, r1
-	str r0, [sp, #0x20]
+	str r0, [sp, #0x20]     @ r0 = boss->qUnk18[arm].y
 	str r0, [r6]
 	ldr r1, _0804C38C @ =gStageTime
-	mov sl, r1
+	mov sl, r1              @ sl = gStageTime
 	ldr r6, [r1]
 	movs r0, #3
 	ands r6, r0
 	cmp r6, #0
 	bne _0804C37C
-	ldr r1, [r4]
-	ldr r0, [r2]
-	mov r7, sb
-	adds r2, r5, r7
-	adds r1, r1, r0
+	ldr r1, [r4]            @ r1 = *r4 = boss->pos.x
+	ldr r0, [r2]            @ r0 = *r2 = boss->qUnk18[arm]
+	mov r7, sb              @ r7 = sb = gUnknown_080D8888
+	adds r2, r5, r7         @ r2 = gUnknown_080D8888[arm][0]
+	adds r1, r1, r0         @ r1 += boss->qUnk18[arm]
 	ldrh r2, [r2]
-	adds r1, r1, r2
-	ldr r0, [r4, #4]
-	ldr r2, [sp, #0x20]
+	adds r1, r1, r2         @ r1 = boss->pos.x + boss->qUnk18[arm] + gUnknown_080D8888[arm][0]
+	ldr r0, [r4, #4]        @ r0 = boss->pos.y
+	ldr r2, [sp, #0x20]     @ r2 = boss->qUnk18[arm].y
 	adds r0, r0, r2
 	add r0, r8
 	asrs r1, r1, #8
@@ -907,7 +908,7 @@ _0804C294:
 	ands r0, r1
 	strh r0, [r3, #0xc]
 	ldr r2, _0804C3A0 @ =gSineTable
-	mov r7, sl
+	mov r7, sl              @ r7 = sl = &gStageTime
 	ldr r0, [r7]
 	lsls r0, r0, #4
 	ands r0, r1
@@ -948,255 +949,4 @@ _0804C39C: .4byte 0x000003FF
 _0804C3A0: .4byte gSineTable
 _0804C3A4: .4byte 0x06012980
 _0804C3A8: .4byte 0x0000026B
-
-	thumb_func_start sub_804C3AC
-sub_804C3AC: @ 0x0804C3AC
-	push {r4, r5, r6, r7, lr}
-	mov r7, sl
-	mov r6, sb
-	mov r5, r8
-	push {r5, r6, r7}
-	sub sp, #0x14
-	mov sl, r0
-	ldr r5, _0804C42C @ =gPseudoRandom
-	ldr r0, [r5]
-	ldr r4, _0804C430 @ =0x00196225
-	adds r1, r0, #0
-	muls r1, r4, r1
-	ldr r2, _0804C434 @ =0x3C6EF35F
-	adds r1, r1, r2
-	movs r3, #7
-	adds r0, r1, #0
-	ands r0, r3
-	subs r0, #3
-	lsls r0, r0, #8
-	str r0, [sp]
-	adds r0, r1, #0
-	muls r0, r4, r0
-	adds r0, r0, r2
-	str r0, [r5]
-	ands r0, r3
-	subs r0, #3
-	lsls r0, r0, #8
-	str r0, [sp, #4]
-	ldr r3, _0804C438 @ =gBgScrollRegs
-	ldr r1, _0804C43C @ =gCamera
-	ldr r4, [r1]
-	mov r0, sl
-	ldr r2, [r0]
-	ldr r5, [sp]
-	adds r0, r2, r5
-	asrs r0, r0, #8
-	subs r0, r4, r0
-	strh r0, [r3]
-	ldr r1, [r1, #4]
-	mov r5, sl
-	ldr r0, [r5, #4]
-	ldr r5, [sp, #4]
-	adds r0, r0, r5
-	asrs r0, r0, #8
-	subs r1, r1, r0
-	strh r1, [r3, #2]
-	movs r0, #0xbe
-	lsls r0, r0, #8
-	adds r2, r2, r0
-	asrs r2, r2, #8
-	subs r6, r2, r4
-	adds r1, r6, #0
-	adds r1, #0x32
-	movs r0, #0xa5
-	lsls r0, r0, #1
-	cmp r1, r0
-	bls _0804C448
-	ldr r2, _0804C440 @ =gDispCnt
-	ldrh r1, [r2]
-	ldr r0, _0804C444 @ =0x0000FEFF
-	ands r0, r1
-	strh r0, [r2]
-	b _0804C456
-	.align 2, 0
-_0804C42C: .4byte gPseudoRandom
-_0804C430: .4byte 0x00196225
-_0804C434: .4byte 0x3C6EF35F
-_0804C438: .4byte gBgScrollRegs
-_0804C43C: .4byte gCamera
-_0804C440: .4byte gDispCnt
-_0804C444: .4byte 0x0000FEFF
-_0804C448:
-	ldr r0, _0804C5A0 @ =gDispCnt
-	ldrh r1, [r0]
-	movs r3, #0x80
-	lsls r3, r3, #1
-	adds r2, r3, #0
-	orrs r1, r2
-	strh r1, [r0]
-_0804C456:
-	mov r5, sl
-	adds r5, #0x54
-	movs r4, #0x84
-	add r4, sl
-	mov r8, r4
-	mov r1, sl
-	ldr r0, [r1]
-	ldr r2, [sp]
-	adds r0, r0, r2
-	movs r3, #0xbe
-	lsls r3, r3, #8
-	adds r6, r0, r3
-	ldr r0, [r1, #4]
-	ldr r4, [sp, #4]
-	adds r0, r0, r4
-	movs r1, #0xa0
-	lsls r1, r1, #6
-	adds r7, r0, r1
-	asrs r0, r6, #8
-	ldr r2, _0804C5A4 @ =gCamera
-	ldr r1, [r2]
-	subs r0, r0, r1
-	strh r0, [r5, #0x16]
-	asrs r0, r7, #8
-	ldr r1, [r2, #4]
-	subs r0, r0, r1
-	strh r0, [r5, #0x18]
-	ldr r2, _0804C5A8 @ =gUnknown_030054B8
-	ldrb r0, [r2]
-	adds r1, r0, #1
-	strb r1, [r2]
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	ldr r1, _0804C5AC @ =0x00003060
-	orrs r0, r1
-	str r0, [r5, #0x10]
-	mov r2, sl
-	ldrh r0, [r2, #0x10]
-	mov r3, r8
-	strh r0, [r3]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	strh r0, [r3, #2]
-	strh r0, [r3, #4]
-	ldrh r0, [r5, #0x16]
-	strh r0, [r3, #6]
-	ldrh r0, [r5, #0x18]
-	strh r0, [r3, #8]
-	adds r0, r5, #0
-	bl UpdateSpriteAnimation
-	adds r0, r5, #0
-	mov r1, r8
-	bl sub_8004860
-	adds r0, r5, #0
-	bl DisplaySprite
-	movs r4, #0
-	mov sb, r4
-	subs r5, #0x3c
-	str r5, [sp, #0xc]
-	mov r0, sl
-	adds r0, #0x1c
-	str r0, [sp, #0x10]
-	mov r1, sl
-	adds r1, #0x28
-	str r1, [sp, #8]
-_0804C4DE:
-	mov r2, sb
-	lsls r0, r2, #4
-	subs r0, r0, r2
-	lsls r0, r0, #2
-	adds r0, #0x90
-	mov r3, sl
-	adds r5, r3, r0
-	movs r4, #0x30
-	adds r4, r4, r5
-	mov r8, r4
-	ldr r1, [r3]
-	ldr r0, [sp]
-	adds r1, r1, r0
-	lsls r2, r2, #3
-	ldr r3, [sp, #0xc]
-	adds r0, r3, r2
-	ldr r0, [r0]
-	mov ip, r0
-	mov r4, sb
-	lsls r3, r4, #2
-	ldr r4, _0804C5B0 @ =gUnknown_080D8888
-	adds r0, r3, r4
-	add r1, ip
-	ldrh r0, [r0]
-	adds r6, r1, r0
-	mov r1, sl
-	ldr r0, [r1, #4]
-	ldr r4, [sp, #4]
-	adds r0, r0, r4
-	ldr r1, [sp, #0x10]
-	adds r2, r1, r2
-	ldr r1, [r2]
-	ldr r2, _0804C5B4 @ =gUnknown_080D8888+2
-	adds r3, r3, r2
-	adds r0, r0, r1
-	ldrh r3, [r3]
-	adds r7, r0, r3
-	asrs r1, r6, #8
-	ldr r2, _0804C5A4 @ =gCamera
-	ldr r0, [r2]
-	subs r1, r1, r0
-	strh r1, [r5, #0x16]
-	asrs r0, r7, #8
-	ldr r1, [r2, #4]
-	subs r0, r0, r1
-	strh r0, [r5, #0x18]
-	ldr r2, _0804C5A8 @ =gUnknown_030054B8
-	ldrb r0, [r2]
-	adds r1, r0, #1
-	strb r1, [r2]
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	movs r1, #0x83
-	lsls r1, r1, #5
-	orrs r0, r1
-	str r0, [r5, #0x10]
-	mov r3, sb
-	lsls r0, r3, #1
-	ldr r4, [sp, #8]
-	adds r0, r4, r0
-	ldrh r0, [r0]
-	strh r0, [r5, #0x30]
-	movs r0, #0x80
-	lsls r0, r0, #1
-	mov r1, r8
-	strh r0, [r1, #2]
-	strh r0, [r1, #4]
-	ldrh r0, [r5, #0x16]
-	strh r0, [r1, #6]
-	ldrh r0, [r5, #0x18]
-	strh r0, [r1, #8]
-	adds r0, r5, #0
-	bl UpdateSpriteAnimation
-	adds r0, r5, #0
-	mov r1, r8
-	bl sub_8004860
-	adds r0, r5, #0
-	bl DisplaySprite
-	mov r0, sb
-	adds r0, #1
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	mov sb, r0
-	cmp r0, #1
-	bls _0804C4DE
-	add sp, #0x14
-	pop {r3, r4, r5}
-	mov r8, r3
-	mov sb, r4
-	mov sl, r5
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0804C5A0: .4byte gDispCnt
-_0804C5A4: .4byte gCamera
-_0804C5A8: .4byte gUnknown_030054B8
-_0804C5AC: .4byte 0x00003060
-_0804C5B0: .4byte gUnknown_080D8888
-_0804C5B4: .4byte gUnknown_080D8888+2
-
-.if 0
 .endif

@@ -120,33 +120,69 @@ extern const EggRoboFn gUnknown_080D8890[8];
 extern const u16 sArmPalettes[2][16];
 // TODO: Remove!
 
-#if 01
+#if 0
+// (87.37%) https://decomp.me/scratch/98Mjg
+void sub_804C240(SuperEggRoboZ *boss, u8 arm)
+{
+    ExplosionPartsInfo info;
+    s32 x, y;
+    s32 index;
+
+    if (boss->unk42[arm] != 0) {
+        return;
+    }
+
+    y = I(boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1]);
+
+    if (y > 300) {
+        boss->unk42[arm] = 1;
+        return;
+    }
+
+    boss->rotation[arm] = (boss->rotation[arm] + 800);
+    boss->rotation[arm] &= ONE_CYCLE;
+    boss->qUnk34[arm][1] += Q(0.125);
+    boss->qUnk18[arm].x += boss->qUnk34[arm][0];
+    boss->qUnk18[arm].y += boss->qUnk34[arm][1];
+
+    if ((gStageTime & 0x3) == 0) {
+        s32 rand;
+        x = boss->pos.x;
+        x += gUnknown_080D8888[arm][0];
+        x += boss->qUnk18[arm].x;
+        y = boss->pos.y;
+        y += boss->qUnk18[arm].y;
+        y += gUnknown_080D8888[arm][1];
+        info.spawnX = I(x);
+        info.spawnY = I(y);
+        info.velocity = 0;
+        info.rotation
+            = sub_8004418(-(boss->qUnk34[arm][1] >> 3), -(boss->qUnk34[arm][0] >> 3));
+
+        rand = PseudoRandom32();
+        index = (info.rotation + (rand & 0x1F));
+        info.rotation = (index - 0x10) & ONE_CYCLE;
+        info.speed = SIN_24_8((gStageTime * 16) & ONE_CYCLE) + Q(3);
+        info.vram = (OBJ_VRAM0 + 0x12980);
+        info.anim = SA2_ANIM_EXPLOSION;
+        info.variant = 0;
+        info.unk4 = 0;
+        CreateBossParticleStatic(&info, &boss->unkC);
+    }
+}
 #endif
 
-void sub_804C5B8(SuperEggRoboZ *boss)
+void sub_804C3AC(SuperEggRoboZ *boss)
 {
-    // TODO: Maybe use PseudoRandBetween() instead?
     Sprite *s;
     SpriteTransform *tf;
-    u8 r3;
     u8 i;
 
     Vec2_32 sp00;
     Vec2_32 sp08;
 
-    if (boss->unkB > 0) {
-        if (boss->unkB < 32) {
-            sp08.x = Q((PseudoRandom32() & 0x7) - 3);
-            sp08.y = Q((PseudoRandom32() & 0x7) - 3);
-        } else {
-            sp08.x = Q((PseudoRandom32() & 0xF) - 7);
-            sp08.y = Q((PseudoRandom32() & 0xF) - 7);
-        }
-    } else {
-        sp08.x = 0;
-        sp08.y = 0;
-    }
-    // _0804C644+0x2
+    sp08.x = Q(PseudoRandBetween(-3, 4));
+    sp08.y = Q(PseudoRandBetween(-3, 4));
 
     gBgScrollRegs[0][0] = gCamera.x - I(boss->pos.x + sp08.x);
     gBgScrollRegs[0][1] = gCamera.y - I(boss->pos.y + sp08.y);
@@ -158,7 +194,89 @@ void sub_804C5B8(SuperEggRoboZ *boss)
     } else {
         gDispCnt |= DISPCNT_BG0_ON;
     }
-    // _0804C6B2
+
+    s = &boss->bsHead.s;
+    tf = &boss->bsHead.transform;
+
+    sp00.x = boss->pos.x + sp08.x + Q(190);
+    sp00.y = boss->pos.y + sp08.y + Q(40);
+
+    s->x = I(sp00.x) - gCamera.x;
+    s->y = I(sp00.y) - gCamera.y;
+
+    s->unk10 = (gUnknown_030054B8++
+                | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                   | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+
+    tf->rotation = boss->unk10;
+    tf->width = Q(1);
+    tf->height = Q(1);
+    tf->x = s->x;
+    tf->y = s->y;
+
+    UpdateSpriteAnimation(s);
+    sub_8004860(s, tf);
+    DisplaySprite(s);
+
+    for (i = 0; i < BOSS_8_ARM_COUNT; i++) {
+        s = &boss->bsArms[i].s;
+        tf = &boss->bsArms[i].transform;
+
+        sp00.x = boss->pos.x + sp08.x + boss->qUnk18[i].x + gUnknown_080D8888[i][0];
+        sp00.y = boss->pos.y + sp08.y + boss->qUnk18[i].y + gUnknown_080D8888[i][1];
+
+        s->x = I(sp00.x) - gCamera.x;
+        s->y = I(sp00.y) - gCamera.y;
+
+        s->unk10 = (gUnknown_030054B8++
+                    | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                       | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+
+        tf->rotation = boss->rotation[i];
+        tf->width = Q(1);
+        tf->height = Q(1);
+        tf->x = s->x;
+        tf->y = s->y;
+
+        UpdateSpriteAnimation(s);
+        sub_8004860(s, tf);
+        DisplaySprite(s);
+    }
+}
+
+void sub_804C5B8(SuperEggRoboZ *boss)
+{
+    Sprite *s;
+    SpriteTransform *tf;
+    u8 r3;
+    u8 i;
+
+    Vec2_32 sp00;
+    Vec2_32 sp08;
+
+    if (boss->unkB > 0) {
+        if (boss->unkB < 32) {
+            sp08.x = Q(PseudoRandBetween(-3, 4));
+            sp08.y = Q(PseudoRandBetween(-3, 4));
+        } else {
+            sp08.x = Q(PseudoRandBetween(-7, 8));
+            sp08.y = Q(PseudoRandBetween(-7, 8));
+        }
+    } else {
+        sp08.x = 0;
+        sp08.y = 0;
+    }
+
+    gBgScrollRegs[0][0] = gCamera.x - I(boss->pos.x + sp08.x);
+    gBgScrollRegs[0][1] = gCamera.y - I(boss->pos.y + sp08.y);
+
+    sp00.x = I(boss->pos.x + Q(190)) - gCamera.x;
+
+    if ((sp00.x + 50) > 330u) {
+        gDispCnt &= ~DISPCNT_BG0_ON;
+    } else {
+        gDispCnt |= DISPCNT_BG0_ON;
+    }
 
     s = &boss->bsHead.s;
     tf = &boss->bsHead.transform;
@@ -168,15 +286,12 @@ void sub_804C5B8(SuperEggRoboZ *boss)
     } else {
         r3 = (64 - boss->unkB) >> 3;
     }
-    // _0804C6DE
 
     sp00.x = boss->pos.x + sp08.x + Q(190);
     sp00.y = boss->pos.y + sp08.y + Q(40);
 
     s->x = I(sp00.x) - gCamera.x;
     s->y = I(sp00.y) - gCamera.y + r3;
-
-    // __continue
 
     s->unk10 = (gUnknown_030054B8++
                 | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
