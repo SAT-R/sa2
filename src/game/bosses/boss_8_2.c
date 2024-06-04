@@ -120,6 +120,55 @@ extern const EggRoboFn gUnknown_080D8890[8];
 extern const u16 sArmPalettes[2][16];
 // TODO: Remove!
 
+void sub_804C080(SuperEggRoboZ *boss)
+{
+    ExplosionPartsInfo info;
+
+    if ((gStageTime & 0x7) == 0) {
+        s32 rand = PseudoRandom32();
+        info.spawnX = gCamera.x + (rand & 0xFF);
+        info.spawnY = gCamera.y + (PseudoRandom32() & 0xFF);
+        info.velocity = Q(18. / 256.);
+        info.rotation = (PseudoRandBetween(0, SIN_PERIOD - 1));
+        // '= rand =' needed for matching
+        info.speed = rand = (PseudoRandBetween(Q(2), Q(4) - 1));
+        info.vram = (OBJ_VRAM0 + 0x2980);
+        info.anim = SA2_ANIM_EXPLOSION;
+        info.variant = 0;
+        info.unk4 = 0;
+
+        CreateBossParticleStatic(&info, &boss->unkC);
+        m4aSongNumStart(SE_144);
+        m4aMPlayImmInit(&gMPlayInfo_SE3);
+    }
+
+    m4aMPlayVolumeControl(&gMPlayInfo_SE3, 0xFFFF, boss->unk14);
+
+    if ((boss->unk14 > 0) && (gStageTime & 0x1)) {
+        --boss->unk14;
+    }
+
+    if (((gStageTime + 3) & 0x7) == 0) {
+        s32 rand;
+        u8 r4 = PseudoRandom32();
+        r4 &= 0xF;
+        r4 -= Div(r4, 6) * 6;
+
+        rand = PseudoRandom32();
+        info.spawnX = gCamera.x + (rand & 0xFF);
+        info.spawnY = gCamera.y + (PseudoRandom32() & 0xFF);
+        info.velocity = Q(0.125);
+        info.rotation = (PseudoRandom32() & ONE_CYCLE);
+        info.speed = Q(2);
+
+        info.vram = (OBJ_VRAM0 + (gTileInfoBossScrews[r4][0] * TILE_SIZE_4BPP));
+        info.anim = gTileInfoBossScrews[r4][1];
+        info.variant = gTileInfoBossScrews[r4][2];
+        info.unk4 = 0;
+        CreateBossParticleStatic(&info, &boss->unkC);
+    }
+}
+
 // (87.37%) https://decomp.me/scratch/98Mjg
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc",
          void sub_804C240(SuperEggRoboZ *boss, u8 arm))
