@@ -503,8 +503,9 @@ SECTIONS
         src/game/bosses/boss_7.o(.rodata);
 #if (CPU_ARCH_ARM == 1)
         asm/boss_run.o(.rodata);
+#endif
         src/game/bosses/boss_8.o(.rodata);
-        asm/boss_8.o(.rodata);
+#if (CPU_ARCH_ARM == 1)
         asm/boss_9.o(.rodata);
 #endif
         src/game/enemies/kubinaga.o(.rodata);
