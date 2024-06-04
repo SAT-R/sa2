@@ -675,7 +675,7 @@ u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
 // }
 // (93.51%) https://decomp.me/scratch/ecqNB
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
-         u8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
+         bool8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
 {
     u8 result = 0;
     s32 sp04, ip;
