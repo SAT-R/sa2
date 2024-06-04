@@ -783,7 +783,7 @@ void sub_804B594(SuperEggRoboZ *boss, u8 arm)
 
     boss->qUnk18[arm].x = 0;
     boss->qUnk18[arm].y = 0;
-    
+
     // TODO: Seems like these were set through a macro?
     //       boss->qUnk18[arm][n] were just set to 0 after all
     pos.x = boss->pos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
