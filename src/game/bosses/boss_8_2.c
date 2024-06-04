@@ -120,9 +120,9 @@ extern const EggRoboFn gUnknown_080D8890[8];
 extern const u16 sArmPalettes[2][16];
 // TODO: Remove!
 
-#if 0
 // (87.37%) https://decomp.me/scratch/98Mjg
-void sub_804C240(SuperEggRoboZ *boss, u8 arm)
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc",
+         void sub_804C240(SuperEggRoboZ *boss, u8 arm))
 {
     ExplosionPartsInfo info;
     s32 x, y;
@@ -170,7 +170,7 @@ void sub_804C240(SuperEggRoboZ *boss, u8 arm)
         CreateBossParticleStatic(&info, &boss->unkC);
     }
 }
-#endif
+END_NONMATCH
 
 void sub_804C3AC(SuperEggRoboZ *boss)
 {
