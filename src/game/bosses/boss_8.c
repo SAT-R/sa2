@@ -778,40 +778,21 @@ void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
 
 void sub_804B594(SuperEggRoboZ *boss, u8 arm)
 {
-    u16 r3;
-#ifndef NON_MATCHING
-    register s32 r0 asm("r0");
-    register s32 r2 asm("r2");
-    register s32 r4 asm("r4");
-    register s32 r5 asm("r5");
-    register s32 r6 asm("r6");
-#else
-    s32 r5;
-    s32 r6;
-#endif
+    u16 angle;
+    Vec2_32 pos;
 
     boss->qUnk18[arm].x = 0;
     boss->qUnk18[arm].y = 0;
-
+    
     // TODO: Seems like these were set through a macro?
     //       boss->qUnk18[arm][n] were just set to 0 after all
-#ifndef NON_MATCHING
-    r2 = boss->pos.x;
-    r4 = boss->qUnk18[arm].x;
-    r5 = r2 + r4 + gUnknown_080D8888[arm][0];
-    r4 = boss->pos.y;
-    r2 = boss->qUnk18[arm].y + r4;
-    r0 = gUnknown_080D8888[arm][1];
-    r6 = r2 + r0;
-#else
-    r5 = boss->pos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
-    r6 = boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
-#endif
+    pos.x = boss->pos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
+    pos.y = boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 
-    r3 = sub_8004418(I(gPlayer.y - r6), I(gPlayer.x - r5));
+    angle = sub_8004418(I(gPlayer.y - pos.y), I(gPlayer.x - pos.x));
 
-    if (r3 != boss->rotation[arm]) {
-        if (r3 < boss->rotation[arm]) {
+    if (angle != boss->rotation[arm]) {
+        if (angle < boss->rotation[arm]) {
             boss->rotation[arm]--;
         } else {
             boss->rotation[arm]++;
