@@ -131,7 +131,6 @@ void sub_804BE6C(SuperEggRoboZ *boss, u8 arm)
     boss->qUnk18[arm].y -= ((SIN(boss->rotation[arm]) * 5) >> 9);
 
     if (--boss->unk30[arm] == 0) {
-        // _0804BEE0
         qX = boss->pos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
         qY = boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 
@@ -139,7 +138,6 @@ void sub_804BE6C(SuperEggRoboZ *boss, u8 arm)
         qY -= ((SIN(boss->rotation[arm]) * 15) >> 6);
 
         for (i = 0; i < 3; i++) {
-            // _0804BF50
             for (j = 0; j < 3; j++) {
                 s32 index;
                 index = COS((boss->rotation[arm] - (SIN_PERIOD / 4)) & ONE_CYCLE);
@@ -156,7 +154,6 @@ void sub_804BE6C(SuperEggRoboZ *boss, u8 arm)
                     info.speed = ((1 - i) >= 0) ? speed - ((1 - i) * Q(0.125))
                                                 : speed - ((i - 1) * Q(0.125));
                 }
-                // _0804BFE2 + 0x4
 
                 info.vram = boss->tilesCloud;
                 info.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_CLOUD;
@@ -169,14 +166,11 @@ void sub_804BE6C(SuperEggRoboZ *boss, u8 arm)
 
         boss->unk3C[arm] = 0;
         boss->unk30[arm] = 300;
-    } else {
-        // _0804C034
-        if (sub_804B2EC(boss, arm)) {
-            boss->qUnk34[arm][0] = -Q(1.5);
-            boss->qUnk34[arm][1] = -Q(3.0);
-            boss->unk3C[arm] = 7;
-            boss->unk30[arm] = 60;
-        }
+    } else if (sub_804B2EC(boss, arm)) {
+        boss->qUnk34[arm][0] = -Q(1.5);
+        boss->qUnk34[arm][1] = -Q(3.0);
+        boss->unk3C[arm] = 7;
+        boss->unk30[arm] = 60;
     }
 }
 
