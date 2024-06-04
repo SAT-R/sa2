@@ -785,6 +785,9 @@ void sub_804B594(SuperEggRoboZ *boss, u8 arm)
     register s32 r4 asm("r4");
     register s32 r5 asm("r5");
     register s32 r6 asm("r6");
+#else
+    s32 r5;
+    s32 r6;
 #endif
 
     boss->qUnk18[arm].x = 0;
