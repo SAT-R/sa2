@@ -87,7 +87,6 @@ void sub_8083B88(struct UNK_8085F1C_1 *p0, struct UNK_8085F1C_1 *p1,
 void sub_8084B54(struct UNK_8085F1C_1 *p0, u16 p1, u16 p2, u16 p3) { }
 
 // TEMP
-void CreateSuperEggRoboZ(void) { }
 void RealClearChain(void) { }
 void SoundMainBTM(void) { }
 double sqrt(double v) { return 0; }
