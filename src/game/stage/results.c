@@ -548,9 +548,7 @@ void sub_80310F0(void)
     }
 }
 
-// (90.87%) https://decomp.me/scratch/ju0GI
-// (91.10%) https://decomp.me/scratch/Gdwj7
-NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u16 p0))
+void sub_8031138(u16 p0)
 {
     // u16 p0 = p0;
     StageResults *outro = TASK_DATA(gCurTask);
@@ -608,8 +606,12 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
         s->x = r4 - p0;
         DisplaySprite(s);
 
-        StageUI_PrintIntegerAt(outro->timeBonusScore, (r4 - (p0 + 144)),
-                               OUTRO_TIME_BONUS_Y_POS, 0);
+        {
+            s16 r4_2 = r4;
+            s16 pp = p0;
+            StageUI_PrintIntegerAt(outro->timeBonusScore, r4_2 + 144 - pp,
+                                   OUTRO_TIME_BONUS_Y_POS, 0);
+        }
     }
     // _0803124C
 
@@ -625,8 +627,12 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
         s->x = r4 - p0;
         DisplaySprite(s);
 
-        StageUI_PrintIntegerAt(outro->ringBonusScore, (r4 - (p0 + 144)),
-                               OUTRO_RING_BONUS_Y_POS, 0);
+        {
+            s16 r4_2 = r4;
+            s16 pp = p0;
+            StageUI_PrintIntegerAt(outro->ringBonusScore, r4_2 + 144 - pp,
+                                   OUTRO_RING_BONUS_Y_POS, 0);
+        }
     }
     // _0803129C
 
@@ -645,11 +651,14 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
         s->x = r4 - p0;
         DisplaySprite(s);
 
-        StageUI_PrintIntegerAt(outro->spRingBonusScore, (r4 - (p0 + 144)),
-                               OUTRO_SP_RING_BONUS_Y_POS, 0);
+        {
+            s16 r4_2 = r4;
+            s16 pp = p0;
+            StageUI_PrintIntegerAt(outro->spRingBonusScore, r4_2 + 144 - pp,
+                                   OUTRO_SP_RING_BONUS_Y_POS, 0);
+        }
     }
 }
-END_NONMATCH
 
 void sub_8031314(void)
 {
