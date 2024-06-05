@@ -550,12 +550,10 @@ void sub_80310F0(void)
 
 void sub_8031138(u16 p0)
 {
-    // u16 p0 = p0;
     StageResults *outro = TASK_DATA(gCurTask);
     u32 counter = outro->counter;
     u32 i;
     Sprite *s;
-    s32 xPos;
     s32 r4;
 
     if (counter < 24) {
@@ -572,7 +570,6 @@ void sub_8031138(u16 p0)
             DisplaySprite(s);
         }
     } else {
-        // _08031198
         s = &outro->s7;
 
         for (i = 0; i < 8; i++) {
@@ -580,7 +577,6 @@ void sub_8031138(u16 p0)
             DisplaySprite(s);
         }
     }
-    // _080311B2
 
     if (counter > 28) {
         u32 numDisplayedBonuses = (ACT_INDEX(gCurrentLevel) == ACT_BOSS) ? 2 : 3;
@@ -591,7 +587,6 @@ void sub_8031138(u16 p0)
             DisplaySprite(s);
         }
     }
-    // _080311F4
 
     if (counter >= 39) {
 
@@ -613,7 +608,6 @@ void sub_8031138(u16 p0)
                                    OUTRO_TIME_BONUS_Y_POS, 0);
         }
     }
-    // _0803124C
 
     if (counter >= 49) {
         s = &outro->sprScores[1];
@@ -634,7 +628,6 @@ void sub_8031138(u16 p0)
                                    OUTRO_RING_BONUS_Y_POS, 0);
         }
     }
-    // _0803129C
 
     if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS)
         && (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
