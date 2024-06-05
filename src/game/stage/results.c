@@ -253,7 +253,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = 0;
