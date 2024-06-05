@@ -26,33 +26,6 @@ u32 sub_800D0A0(Sprite *s, s16 x, s16 y, s16 param3, s16 param4, u8 param5, u32 
 // boss_5
 void sub_802E784(u16 p0, u16 p1, u16 p2, s16 x, s16 y, s16 p5) { }
 
-typedef struct {
-    u8 unk0[6];
-    u8 unk6;
-    u8 unk7;
-    u8 filler8[6];
-    u8 unkE;
-    u8 unkF;
-    u8 filler0[2];
-    u8 unk12;
-    u8 unk13;
-    u8 filler1[6];
-    u8 unk1A;
-    u8 unk1B;
-    u8 filler2[6];
-    u8 unk22;
-    u8 unk23;
-    u8 filler3[10];
-    u8 unk2E;
-    u8 unk2F;
-    u8 unk[6];
-    u8 unk36;
-    u8 unk37;
-    u16 unk38;
-    u8 unk3A;
-    u8 unk3B;
-} UNK_80D8710;
-
 extern void sub_8048C7C(void *boss);
 
 // boss run

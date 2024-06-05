@@ -942,7 +942,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc",
     s32 speed0;
     s32 x, y;
     u8 i, j;
+#ifndef NON_MATCHING
     register u16 *r3 asm("r3");
+#else
+    u16 *r3;
+#endif
 
     boss->qUnk18[arm].x -= ((COS(boss->rotation2[arm]) * 31) >> 10);
     boss->qUnk18[arm].y -= ((SIN(boss->rotation2[arm]) * 31) >> 10);
