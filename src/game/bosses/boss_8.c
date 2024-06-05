@@ -611,7 +611,6 @@ u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
 
         return result;
     } else {
-        // _0804B1DC
         s32 r0, r1;
         Sprite *s = &gPlayer.unk90->s;
 
@@ -626,7 +625,6 @@ u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
         if (gSelectedCharacter != CHARACTER_SONIC) {
             Player_UpdateHomingPosition(r6, r7);
         }
-        // _0804B21E
 
         if (PLAYER_IS_ALIVE && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
             r5 = I(gPlayer.x - r6);
@@ -650,7 +648,6 @@ u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
                 return result;
             }
         }
-        // _0804B288
 
         if ((gCheese != NULL) && HITBOX_IS_ACTIVE(gCheese->reserved)) {
             r6 -= gCheese->posX;
@@ -1357,7 +1354,6 @@ void sub_804C830(SuperEggRoboZ *boss)
             }
         }
     }
-    // _0804C8CC
 
     if (gSelectedCharacter != CHARACTER_SONIC) {
         Player_UpdateHomingPosition(Q(headPos.x), Q(headPos.y));
@@ -1417,7 +1413,6 @@ void sub_804CA08(SuperEggRoboZ *boss)
         }
         s->prevVariant = -1;
     }
-    // _0804CA4C
 
     if (boss->unk3E[0] > 0) {
         boss->unk3E[0]--;
@@ -1430,27 +1425,24 @@ void sub_804CA08(SuperEggRoboZ *boss)
 
 void sub_804CA70(SuperEggRoboZ *boss)
 {
-    s32 r6 = (gStageTime & 0x2) >> 1;
+    s32 pal = (gStageTime & 0x2) >> 1;
     u8 i;
 
     if (boss->unkB != 0) {
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
-            gObjPalette[8 * 16 + i] = sArmPalettes[r6][i];
+            gObjPalette[8 * 16 + i] = sArmPalettes[pal][i];
         }
     } else {
-        // _0804CACC
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
             gObjPalette[8 * 16 + i] = sArmPalettes[0][i];
         }
     }
-    // _0804CAFA
 
     if (boss->unk3E[0] > 0) {
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
-            gObjPalette[9 * 16 + i] = sArmPalettes[r6][i];
+            gObjPalette[9 * 16 + i] = sArmPalettes[pal][i];
         }
     } else {
-        // _0804CB34
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
             gObjPalette[9 * 16 + i] = sArmPalettes[0][i];
         }
@@ -1458,10 +1450,9 @@ void sub_804CA70(SuperEggRoboZ *boss)
 
     if (boss->unk3E[1] > 0) {
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
-            gObjPalette[12 * 16 + i] = sArmPalettes[r6][i];
+            gObjPalette[12 * 16 + i] = sArmPalettes[pal][i];
         }
     } else {
-        // _0804CB34
         for (i = 0; i < ARRAY_COUNT(sArmPalettes[0]); i++) {
             gObjPalette[12 * 16 + i] = sArmPalettes[0][i];
         }
