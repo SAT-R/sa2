@@ -3054,11 +3054,11 @@ void Task_8023D08(void)
         if (IS_SINGLE_PLAYER) {
             TaskDestroy(gCurTask);
             if ((!gLoadedSaveGame->timeLimitDisabled
-                 && (gCourseTime > 36000
+                 && (gCourseTime > MAX_COURSE_TIME
                      || (gStageFlags & EXTRA_STATE__4 && gCourseTime == 0)))
                 || ((gGameMode == GAME_MODE_TIME_ATTACK
                      || gGameMode == GAME_MODE_BOSS_TIME_ATTACK)
-                    && gCourseTime > 36000)) {
+                    && gCourseTime > MAX_COURSE_TIME)) {
                 sub_801B6B4();
             } else {
                 gRingCount = 0;
