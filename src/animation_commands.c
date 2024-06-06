@@ -7,30 +7,6 @@
 
 #include "animation_commands.h"
 
-extern AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s);
-static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s);
-static AnimCmdResult animCmd_JumpBack(void *cursor, Sprite *s);
-static AnimCmdResult animCmd_End(void *cursor, Sprite *s);
-static AnimCmdResult animCmd_PlaySoundEffect(void *cursor, Sprite *s);
-extern AnimCmdResult animCmd_AddHitbox(void *cursor, Sprite *s);
-static AnimCmdResult animCmd_TranslateSprite(void *cursor, Sprite *s);
-static AnimCmdResult animCmd_8(void *cursor, Sprite *s);
-static AnimCmdResult animCmd_SetIdAndVariant(void *cursor, Sprite *s);
-extern AnimCmdResult animCmd_10(void *cursor, Sprite *s);
-static AnimCmdResult animCmd_SetSpritePriority(void *cursor, Sprite *s);
-static AnimCmdResult animCmd_SetOamOrder(void *cursor, Sprite *s);
-
-// make static
-const AnimationCommandFunc animCmdTable[] = {
-    // 0x080984AC
-    animCmd_GetTiles,          animCmd_GetPalette,
-    animCmd_JumpBack,          animCmd_End,
-    animCmd_PlaySoundEffect,   animCmd_AddHitbox,
-    animCmd_TranslateSprite,   animCmd_8,
-    animCmd_SetIdAndVariant,   animCmd_10,
-    animCmd_SetSpritePriority, animCmd_SetOamOrder,
-};
-
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
 
 // (-2)

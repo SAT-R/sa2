@@ -1,12 +1,6 @@
-.include "asm/macros.inc"
-.include "constants/constants.inc"
-
 .syntax unified
-.arm
-
+.text
 @ VERY similar to sub_8004860 and sub_8004E14
-	thumb_func_start sub_8004ABC
-sub_8004ABC: @ 0x08004ABC
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb
@@ -431,6 +425,6 @@ _08004E04:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
-    
-.if 0
-.endif
+	.align 2, 0
+
+.syntax divided
