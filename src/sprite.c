@@ -412,6 +412,7 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
 }
 END_NONMATCH
 
+// (0.00%)
 NONMATCH("asm/non_matching/engine/unused_transform.inc",
          void UnusedTransform(Sprite *sprite, SpriteTransform *transform))
 {

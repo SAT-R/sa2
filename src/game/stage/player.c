@@ -2951,21 +2951,53 @@ void sub_8023878(Player *p)
     }
 }
 
-// TODO: incomplete
-NONMATCH("asm/non_matching/sub_8023B5C.inc",
-         void sub_8023B5C(Player *p, s8 spriteOffsetY))
+void sub_8023B5C(Player *p, s32 spriteOffsetY)
 {
-    s8 rot;
+    u8 rot;
     if (p->unk17 == spriteOffsetY) {
         return;
     }
 
     rot = p->rotation;
     if (GRAVITY_IS_INVERTED) {
-        rot -= 0x40;
+        rot += Q(1. / 4.);
+        rot = -rot;
+        rot -= Q(1. / 4.);
+    }
+
+    if ((s32)(rot + Q(1. / 8.)) > 0) {
+        if (rot != 0) {
+            rot = (rot + Q(1. / 8.)) - 1;
+            ;
+        } else {
+            rot = Q(1. / 8.);
+        }
+    } else {
+        if (rot != 0) {
+            rot = (rot + Q(1. / 8.));
+        } else {
+            rot = Q(1. / 8.) - 1;
+        }
+    }
+
+    switch ((rot >> 6)) {
+        case 0: {
+            p->y -= Q(spriteOffsetY - p->unk17);
+        } break;
+
+        case 2: {
+            p->y += Q(spriteOffsetY - p->unk17);
+        } break;
+
+        case 1: {
+            p->x += Q(spriteOffsetY - p->unk17);
+        } break;
+
+        case 3: {
+            p->x -= Q(spriteOffsetY - p->unk17);
+        } break;
     }
 }
-END_NONMATCH
 
 void sub_8023C10(Player *p)
 {
