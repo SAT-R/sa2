@@ -15,8 +15,6 @@ void *iwram_end = 0;
 char gNumMusicPlayers = 4;
 int gMaxLines = 0;
 
-void sub_8004E14(Sprite *s, SpriteTransform *transform) { }
-
 // collision
 u32 sub_800D0A0(Sprite *s, s16 x, s16 y, s16 param3, s16 param4, u8 param5, u32 param6)
 {
@@ -64,18 +62,3 @@ void RealClearChain(void) { }
 void SoundMainBTM(void) { }
 double sqrt(double v) { return 0; }
 float atan2f(float a, float b) { return 0; }
-
-// #ifdef WIN32
-// void *memset(void *_dst, int value, unsigned int size)
-// {
-//     u8 *dst = (u8 *)_dst;
-//     u8 *end = dst + size;
-
-//     while (dst < end) {
-//         *dst = value;
-//         dst++;
-//     }
-
-//     return dst;
-// }
-// #endif
