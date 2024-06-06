@@ -247,20 +247,6 @@ void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
     affine[12] = I(COS_24_8(angle) * res);
 }
 
-typedef struct {
-    /* 0x00 */ u16 unk0[8];
-    /* 0x08 */ s16 unk8;
-    /* 0x0A */ s16 unkA;
-
-    /* 0x0C */ s16 unkC[2];
-
-    /* 0x10 */ s32 posX;
-    /* 0x14 */ s32 posY;
-
-    /* 0x18 */ s16 unk18[2][2];
-    u16 affineIndex;
-} UnkStruct;
-
 // Similar to sub_8004ABC and sub_8004E14
 // (53.42%) https://decomp.me/scratch/llwGy
 // (56.74%) https://decomp.me/scratch/rXgtp
@@ -268,7 +254,7 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
          void sub_8004860(Sprite *s, SpriteTransform *transform))
 {
     // sp24 = s
-    UnkStruct big;
+    UnkSpriteStruct big;
     const SpriteOffset *dimensions = s->dimensions;
 
     if (dimensions != (SpriteOffset *)-1) {
@@ -281,36 +267,36 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
         sub_80047A0(transform->rotation & ONE_CYCLE, transform->width, transform->height,
                     big.affineIndex);
 #else
-        big.unk0[4] = COS_24_8(transform->rotation & ONE_CYCLE);
-        big.unk0[5] = SIN_24_8(transform->rotation & ONE_CYCLE);
+        big.qDirX = COS_24_8(transform->rotation & ONE_CYCLE);
+        big.qDirY = SIN_24_8(transform->rotation & ONE_CYCLE);
 
-        big.unk0[6] = transform->width;
-        big.unk0[7] = transform->height;
+        big.unkC[0] = transform->width;
+        big.unkC[1] = transform->height;
 
-        res = Div(0x10000, big.unk0[6]);
-        affine[0] = Q_8_8_TO_INT(((big.unk0[4] << 16) >> 16) * res);
+        res = Div(0x10000, big.unkC[0]);
+        affine[0] = Q_8_8_TO_INT(((big.qDirX << 16) >> 16) * res);
 
-        res = Div(0x10000, big.unk0[6]);
-        affine[4] = I(big.unk0[5] * res);
+        res = Div(0x10000, big.unkC[0]);
+        affine[4] = I(big.qDirY * res);
 
-        res = Div(0x10000, big.unk0[7]);
-        affine[8] = I(-big.unk0[4] * res);
+        res = Div(0x10000, big.unkC[1]);
+        affine[8] = I(-big.qDirX * res);
 
-        res = Div(0x10000, big.unk0[7]);
-        affine[12] = I(big.unk0[5] * res);
+        res = Div(0x10000, big.unkC[1]);
+        affine[12] = I(big.qDirY * res);
 #endif
 
         if (transform->height < 0)
-            big.unk0[6] = -transform->height;
+            big.unkC[0] = -transform->height;
 
         if (transform->width < 0)
-            big.unk0[7] = -transform->width;
+            big.unkC[1] = -transform->width;
 
         // _0800497A
-        big.unk0[0] = I(big.unk0[4] * big.unk0[6]);
-        big.unk0[1] = I(-big.unk0[5] * big.unk0[6]);
-        big.unk0[2] = I(big.unk0[5] * big.unk0[7]);
-        big.unk0[3] = I(big.unk0[6] * big.unk0[7]);
+        big.unk0[0] = I(big.qDirX * big.unkC[0]);
+        big.unk0[1] = I(-big.qDirY * big.unkC[0]);
+        big.unk0[2] = I(big.qDirY * big.unkC[1]);
+        big.unk0[3] = I(big.unkC[0] * big.unkC[1]);
 
         big.unk18[0][0] = 0x100;
         big.unk18[0][1] = 0;
@@ -362,7 +348,7 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
             // __080004A7E
             r1 = big.unk0[2];
             r1 *= r4;
-            r0 = big.unk0[7];
+            r0 = big.unkC[0];
             r0 *= r3;
             r1 += r0;
             r1 += Q(r5);

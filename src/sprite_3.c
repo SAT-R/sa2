@@ -1,6 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "sprite.h"
+#include "trig.h"
 #include "flags.h"
 
 #include "data/sprite_data.h"
@@ -24,6 +25,107 @@ const u8 gOamShapesSizes[12][2] = {
     { 16, 32 },
     { 32, 64 },
 };
+
+// VERY similar to sub_8004860 and sub_8004ABC
+// (41.14%) https://decomp.me/scratch/n3NXz
+NONMATCH("asm/non_matching/engine/sub_8004E14.inc",
+         void sub_8004E14(Sprite *sprite, SpriteTransform *transform))
+{
+    UnkSpriteStruct us;
+    if (sprite->dimensions != (void *)-1) {
+        const SpriteOffset *sprDims = sprite->dimensions;
+        u16 *affine;
+
+        us.affineIndex = sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE;
+        affine = (u16 *)&gOamBuffer[us.affineIndex * 4 + 3];
+
+        us.qDirX = COS_24_8((transform->rotation + gUnknown_03001944) & ONE_CYCLE);
+        us.qDirY = SIN_24_8((transform->rotation + gUnknown_03001944) & ONE_CYCLE);
+        us.unkC[0] = I(transform->width * gUnknown_030017F0);
+        us.unkC[1] = I(transform->height * gUnknown_03005394);
+
+        affine[0] = I(Div(Q(256), us.unkC[0]) * us.qDirX);
+        affine[4] = I(Div(Q(256), us.unkC[0]) * us.qDirY);
+        affine[8] = I(Div(Q(256), us.unkC[1]) * -us.qDirY);
+        affine[12] = I(Div(Q(256), us.unkC[1]) * us.qDirX);
+
+        if (transform->width < 0) {
+            us.unkC[0] = I(-transform->width * gUnknown_030017F0);
+        }
+        // _08004F48
+
+        if (transform->height < 0) {
+            us.unkC[1] = I(-transform->height * gUnknown_03005394);
+        }
+        // _08004F6A
+
+        us.unk0[0] = I(+us.qDirX * us.unkC[0]);
+        us.unk0[1] = I(-us.qDirY * us.unkC[0]);
+        us.unk0[2] = I(+us.qDirY * us.unkC[1]);
+        us.unk0[3] = I(+us.qDirX * us.unkC[1]);
+
+        // 2D Rotation matrix:
+        // { +cos(a), -sin(a) }
+        // { +sin(a), +cos(a) }
+        us.unk18[0][0] = I((Q(+COS_24_8(gUnknown_03001944) * gUnknown_030017F0) >> 16)
+                           * (Q(us.unkC[0] * gUnknown_03005398) >> 16));
+        us.unk18[0][1] = I((Q(-SIN_24_8(gUnknown_03001944) * gUnknown_030017F0) >> 16)
+                           * (Q(us.unkC[0] * gUnknown_03005398) >> 16));
+        us.unk18[1][0] = I((Q(+SIN_24_8(gUnknown_03001944) * gUnknown_03005394) >> 16)
+                           * (Q(us.unkC[1] * gUnknown_03005398) >> 16));
+        us.unk18[1][1] = I((Q(+COS_24_8(gUnknown_03001944) * gUnknown_03005394) >> 16)
+                           * (Q(us.unkC[1] * gUnknown_03005398) >> 16));
+
+        us.posX = I(transform->x * us.unk18[0][0] + transform->y * us.unk18[0][1]
+                    + Q(gUnknown_0300194C));
+        us.posY = I(transform->x * us.unk18[1][0] + transform->y * us.unk18[1][1]
+                    + Q(gUnknown_03002820));
+
+        {
+            u16 width, height;
+            u16 halfWidth, halfHeight;
+            s16 offsetX, offsetY;
+            s32 x, y;
+
+            if (transform->width > 0) {
+                offsetX = sprDims->offsetX;
+                width = sprDims->width;
+            } else {
+                offsetX = sprDims->width - sprDims->offsetX;
+                width = sprDims->width;
+            }
+            // _0800515A
+
+            if (transform->height > 0) {
+                offsetY = sprDims->offsetY;
+                height = sprDims->height;
+            } else {
+                offsetY = sprDims->height - sprDims->offsetY;
+                height = sprDims->height;
+            }
+            // _0800517A
+
+            halfWidth = width / 2;
+            offsetX -= halfWidth;
+            x = offsetX * us.unk0[0];
+
+            halfHeight = height / 2;
+            offsetY -= halfHeight;
+            x += offsetY * us.unk0[1];
+            x = (x + Q(halfWidth));
+            us.posX -= I(x);
+
+            y = offsetX * us.unk0[2];
+            y += offsetY * us.unk0[3];
+            y = (y + Q(halfHeight));
+            us.posY -= I(y);
+
+            sprite->x = us.posX;
+            sprite->y = us.posY;
+        }
+    }
+}
+END_NONMATCH
 
 void DisplaySprite(Sprite *sprite)
 {
