@@ -142,15 +142,14 @@ s32 sub_80036E0(Sprite *s)
 
 // (-1)
 // No differences to animCmd_GetTiles
-AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
 {
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
     if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
-            s->graphics.src
-                = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
+            s->graphics.src = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
             s->graphics.src
@@ -169,7 +168,7 @@ AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
 // Differences to animCmd_AddHitbox:
 // - uses XOR_SWAP macro instead of SWAP_AND_NEGATE
 // TODO: rename animCmd_AddHitbox_BG
-AnimCmdResult animCmd_AddHitbox_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_AddHitbox_BG(void *cursor, Sprite *s)
 {
     ACmd_Hitbox *cmd = (ACmd_Hitbox *)cursor;
     s32 index = cmd->hitbox.index & 0xF;
@@ -667,7 +666,7 @@ s32 sub_8004274(void *dest, const void *tilesSrc, u16 param2, u16 param3, u8 bgC
 // - gBgPalette is used instead of gObjPalette
 // - gFlags ->  FLAGS_UPDATE_BACKGROUND_PALETTES
 //   instead of FLAGS_UPDATE_SPRITE_PALETTES
-AnimCmdResult animCmd_GetPalette_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_GetPalette_BG(void *cursor, Sprite *s)
 {
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
@@ -685,7 +684,7 @@ AnimCmdResult animCmd_GetPalette_BG(void *cursor, Sprite *s)
 }
 
 // (-3)
-AnimCmdResult animCmd_JumpBack_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_JumpBack_BG(void *cursor, Sprite *s)
 {
     ACmd_JumpBack *cmd = cursor;
     s->animCursor -= cmd->offset;
@@ -694,7 +693,7 @@ AnimCmdResult animCmd_JumpBack_BG(void *cursor, Sprite *s)
 }
 
 // (-4)
-AnimCmdResult animCmd_End_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_End_BG(void *cursor, Sprite *s)
 {
     SPRITE_FLAG_SET(s, ANIM_OVER);
 
@@ -702,7 +701,7 @@ AnimCmdResult animCmd_End_BG(void *cursor, Sprite *s)
 }
 
 // (-5)
-AnimCmdResult animCmd_PlaySoundEffect_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_PlaySoundEffect_BG(void *cursor, Sprite *s)
 {
     ACmd_PlaySoundEffect *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
@@ -713,7 +712,7 @@ AnimCmdResult animCmd_PlaySoundEffect_BG(void *cursor, Sprite *s)
 }
 
 // (-7)
-AnimCmdResult animCmd_TranslateSprite_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_TranslateSprite_BG(void *cursor, Sprite *s)
 {
     ACmd_TranslateSprite *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
@@ -725,7 +724,7 @@ AnimCmdResult animCmd_TranslateSprite_BG(void *cursor, Sprite *s)
 }
 
 // (-8)
-AnimCmdResult animCmd_8_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_8_BG(void *cursor, Sprite *s)
 {
     ACmd_8 *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
@@ -733,7 +732,7 @@ AnimCmdResult animCmd_8_BG(void *cursor, Sprite *s)
     return 1;
 }
 
-AnimCmdResult animCmd_SetIdAndVariant_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_SetIdAndVariant_BG(void *cursor, Sprite *s)
 {
     ACmd_SetIdAndVariant *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
@@ -745,7 +744,7 @@ AnimCmdResult animCmd_SetIdAndVariant_BG(void *cursor, Sprite *s)
     return -1;
 }
 
-AnimCmdResult animCmd_10_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_10_BG(void *cursor, Sprite *s)
 {
     ACmd_10 *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
@@ -758,7 +757,7 @@ AnimCmdResult animCmd_10_BG(void *cursor, Sprite *s)
 }
 
 // This is not a NOP-instruction in the regular version
-AnimCmdResult animCmd_SetSpritePriority_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_SetSpritePriority_BG(void *cursor, Sprite *s)
 {
     ACmd_SetSpritePriority *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
@@ -766,7 +765,7 @@ AnimCmdResult animCmd_SetSpritePriority_BG(void *cursor, Sprite *s)
 }
 
 // This is not a NOP-instruction in the regular version
-AnimCmdResult animCmd_SetOamOrder_BG(void *cursor, Sprite *s)
+static AnimCmdResult animCmd_SetOamOrder_BG(void *cursor, Sprite *s)
 {
     ACmd_SetOamOrder *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
