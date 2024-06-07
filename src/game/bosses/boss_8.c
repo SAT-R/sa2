@@ -484,7 +484,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
                 UpdateScreenFade(&boss->fade);
 
                 livesCockpit = boss->livesCockpit;
-                boss->unkE = livesCockpit <= 4 ? 140 : 360;
+                boss->unkE = (livesCockpit <= 4) ? 140 : 360;
 
                 s = &boss->bsHead.s;
                 s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_HEAD;
