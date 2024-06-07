@@ -52,7 +52,7 @@ typedef struct {
 } BossSprite;
 
 typedef struct {
-    /*  0x00 */ Vec2_32 pos;
+    /*  0x00 */ Vec2_32 qPos;
     /*  0x08 */ u8 livesCockpit;
     /*  0x09 */ u8 livesArms[BOSS_8_ARM_COUNT];
     /*  0x0B */ u8 unkB;
@@ -164,8 +164,8 @@ void CreateSuperEggRoboZ(void)
         boss->livesArms[BOSS_8_ARM_RIGHT] = 6;
     }
 
-    boss->pos.x = Q(42876);
-    boss->pos.y = Q(370);
+    boss->qPos.x = Q(42876);
+    boss->qPos.y = Q(370);
     boss->unkE = 360;
     boss->unk10 = 512;
     boss->unkB = 0;
@@ -261,7 +261,7 @@ void Task_804A9D8(void)
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
 
     if (boss->unk14 > 60) {
-        boss->pos.y -= Q(1.0);
+        boss->qPos.y -= Q(1.0);
 
         if ((gStageTime % 32u) == 0) {
             m4aSongNumStart(SE_260);
@@ -496,11 +496,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
                 s32 r6;
                 s32 r8;
 
-                r8 = I(boss->qUnk0 + Q(190));
+                r8 = I(boss->qPos.x + Q(190));
                 r8 += ((COS(boss->unk10) * 11) >> 14);
                 r8 -= gCamera.x;
 
-                r6 = I(boss->qUnk4 + Q(40));
+                r6 = I(boss->qPos.y + Q(40));
                 r6 += ((SIN(boss->unk10) * 11) >> 14);
                 r6 -= gCamera.y;
 
@@ -512,7 +512,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
                     sub_80075D0(0, 0, 160, r8, r6, ({
                                     rand = PseudoRandom32();
                                     I(SIN(((boss->unk12 - 90) * 8) % 256u))
-                                        + (rand % 8u);
+                                    +(rand % 8u);
                                 }));
 
                     boss->fade.brightness = (boss->unk12 - 90) * 273;
@@ -576,11 +576,11 @@ u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
         return result;
     }
 
-    sp04 = boss->pos.x + boss->qUnk18[arm].x;
+    sp04 = boss->qPos.x + boss->qUnk18[arm].x;
     sl = gUnknown_080D8888[arm][0];
     r5 = sp04 + sl;
 
-    ip = boss->pos.y + boss->qUnk18[arm].y;
+    ip = boss->qPos.y + boss->qUnk18[arm].y;
     r7 = gUnknown_080D8888[arm][1];
     r4 = ip + r7;
 
@@ -688,10 +688,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
         s32 r0, r1;
         Sprite *s = &gPlayer.unk90->s;
 
-        r6 = boss->pos.x + boss->qUnk18[arm].x;
+        r6 = boss->qPos.x + boss->qUnk18[arm].x;
         r4 = r6 + gUnknown_080D8888[arm][0];
 
-        r5 = boss->pos.y + boss->qUnk18[arm].y;
+        r5 = boss->qPos.y + boss->qUnk18[arm].y;
         r5 = r5 + gUnknown_080D8888[arm][1];
 
         if (gSelectedCharacter != CHARACTER_SONIC) {
@@ -777,8 +777,8 @@ void sub_804B594(SuperEggRoboZ *boss, u8 arm)
 
     // TODO: Seems like these were set through a macro?
     //       boss->qUnk18[arm][n] were just set to 0 after all
-    pos.x = boss->pos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
-    pos.y = boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
+    pos.x = boss->qPos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
+    pos.y = boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 
     angle = sub_8004418(I(gPlayer.y - pos.y), I(gPlayer.x - pos.x));
 
@@ -820,8 +820,8 @@ void sub_804B734(SuperEggRoboZ *boss, u8 arm)
     boss->qUnk18[arm].y = 0;
 
     if (--boss->unk30[arm] == 0) {
-        x = boss->pos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
-        y = boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
+        x = boss->qPos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
+        y = boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 
         for (i = 0; i < 3; i++) {
             for (j = 0; j < 3; j++) {
@@ -947,8 +947,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc",
 
     if (--boss->rotation2[arm] == 0) {
         // _0804BCD6
-        x = boss->pos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
-        y = boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
+        x = boss->qPos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
+        y = boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 
         x -= ((COS(boss->rotation2[arm]) * 15) >> 6);
         y -= ((SIN(boss->rotation2[arm]) * 15) >> 6);
@@ -1001,8 +1001,8 @@ void sub_804BE6C(SuperEggRoboZ *boss, u8 arm)
     boss->qUnk18[arm].y -= ((SIN(boss->rotation[arm]) * 5) >> 9);
 
     if (--boss->unk30[arm] == 0) {
-        qX = boss->pos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
-        qY = boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
+        qX = boss->qPos.x + boss->qUnk18[arm].x + gUnknown_080D8888[arm][0];
+        qY = boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1];
 
         qX -= ((COS(boss->rotation[arm]) * 15) >> 6);
         qY -= ((SIN(boss->rotation[arm]) * 15) >> 6);
@@ -1105,7 +1105,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc",
         return;
     }
 
-    y = I(boss->pos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1]);
+    y = I(boss->qPos.y + boss->qUnk18[arm].y + gUnknown_080D8888[arm][1]);
 
     if (y > 300) {
         boss->unk42[arm] = 1;
@@ -1120,10 +1120,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc",
 
     if ((gStageTime & 0x3) == 0) {
         s32 rand;
-        x = boss->pos.x;
+        x = boss->qPos.x;
         x += gUnknown_080D8888[arm][0];
         x += boss->qUnk18[arm].x;
-        y = boss->pos.y;
+        y = boss->qPos.y;
         y += boss->qUnk18[arm].y;
         y += gUnknown_080D8888[arm][1];
         info.spawnX = I(x);
@@ -1157,10 +1157,10 @@ void sub_804C3AC(SuperEggRoboZ *boss)
     sp08.x = Q(PseudoRandBetween(-3, 4));
     sp08.y = Q(PseudoRandBetween(-3, 4));
 
-    gBgScrollRegs[0][0] = gCamera.x - I(boss->pos.x + sp08.x);
-    gBgScrollRegs[0][1] = gCamera.y - I(boss->pos.y + sp08.y);
+    gBgScrollRegs[0][0] = gCamera.x - I(boss->qPos.x + sp08.x);
+    gBgScrollRegs[0][1] = gCamera.y - I(boss->qPos.y + sp08.y);
 
-    sp00.x = I(boss->pos.x + Q(190)) - gCamera.x;
+    sp00.x = I(boss->qPos.x + Q(190)) - gCamera.x;
 
     if ((sp00.x + 50) > 330u) {
         gDispCnt &= ~DISPCNT_BG0_ON;
@@ -1171,8 +1171,8 @@ void sub_804C3AC(SuperEggRoboZ *boss)
     s = &boss->bsHead.s;
     tf = &boss->bsHead.transform;
 
-    sp00.x = boss->pos.x + sp08.x + Q(190);
-    sp00.y = boss->pos.y + sp08.y + Q(40);
+    sp00.x = boss->qPos.x + sp08.x + Q(190);
+    sp00.y = boss->qPos.y + sp08.y + Q(40);
 
     s->x = I(sp00.x) - gCamera.x;
     s->y = I(sp00.y) - gCamera.y;
@@ -1195,8 +1195,8 @@ void sub_804C3AC(SuperEggRoboZ *boss)
         s = &boss->bsArms[i].s;
         tf = &boss->bsArms[i].transform;
 
-        sp00.x = boss->pos.x + sp08.x + boss->qUnk18[i].x + gUnknown_080D8888[i][0];
-        sp00.y = boss->pos.y + sp08.y + boss->qUnk18[i].y + gUnknown_080D8888[i][1];
+        sp00.x = boss->qPos.x + sp08.x + boss->qUnk18[i].x + gUnknown_080D8888[i][0];
+        sp00.y = boss->qPos.y + sp08.y + boss->qUnk18[i].y + gUnknown_080D8888[i][1];
 
         s->x = I(sp00.x) - gCamera.x;
         s->y = I(sp00.y) - gCamera.y;
@@ -1240,10 +1240,10 @@ void sub_804C5B8(SuperEggRoboZ *boss)
         sp08.y = 0;
     }
 
-    gBgScrollRegs[0][0] = gCamera.x - I(boss->pos.x + sp08.x);
-    gBgScrollRegs[0][1] = gCamera.y - I(boss->pos.y + sp08.y);
+    gBgScrollRegs[0][0] = gCamera.x - I(boss->qPos.x + sp08.x);
+    gBgScrollRegs[0][1] = gCamera.y - I(boss->qPos.y + sp08.y);
 
-    sp00.x = I(boss->pos.x + Q(190)) - gCamera.x;
+    sp00.x = I(boss->qPos.x + Q(190)) - gCamera.x;
 
     if ((sp00.x + 50) > 330u) {
         gDispCnt &= ~DISPCNT_BG0_ON;
@@ -1260,8 +1260,8 @@ void sub_804C5B8(SuperEggRoboZ *boss)
         r3 = (64 - boss->unkB) >> 3;
     }
 
-    sp00.x = boss->pos.x + sp08.x + Q(190);
-    sp00.y = boss->pos.y + sp08.y + Q(40);
+    sp00.x = boss->qPos.x + sp08.x + Q(190);
+    sp00.y = boss->qPos.y + sp08.y + Q(40);
 
     s->x = I(sp00.x) - gCamera.x;
     s->y = I(sp00.y) - gCamera.y + r3;
@@ -1288,8 +1288,8 @@ void sub_804C5B8(SuperEggRoboZ *boss)
         s = &boss->bsArms[i].s;
         tf = &boss->bsArms[i].transform;
 
-        sp00.x = boss->pos.x + sp08.x + boss->qUnk18[i].x + gUnknown_080D8888[i][0];
-        sp00.y = boss->pos.y + sp08.y + boss->qUnk18[i].y + gUnknown_080D8888[i][1];
+        sp00.x = boss->qPos.x + sp08.x + boss->qUnk18[i].x + gUnknown_080D8888[i][0];
+        sp00.y = boss->qPos.y + sp08.y + boss->qUnk18[i].y + gUnknown_080D8888[i][1];
 
         s->x = I(sp00.x) - gCamera.x;
         s->y = I(sp00.y) - gCamera.y;
@@ -1318,13 +1318,13 @@ void sub_804C830(SuperEggRoboZ *boss)
 #ifdef BUG_FIX
     // Define headPos before the if, so that
     // Player_UpdateHomingPosition doesn't receive garbage values.
-    headPos.x = I(boss->pos.x + Q(190));
-    headPos.y = I(boss->pos.y + Q(40));
+    headPos.x = I(boss->qPos.x + Q(190));
+    headPos.y = I(boss->qPos.y + Q(40));
     if (boss->unkB == 0) {
 #else
     if (boss->unkB == 0) {
-        headPos.x = I(boss->pos.x + Q(190));
-        headPos.y = I(boss->pos.y + Q(40));
+        headPos.x = I(boss->qPos.x + Q(190));
+        headPos.y = I(boss->qPos.y + Q(40));
 #endif
 
         s = &boss->bsHead.s;
@@ -1498,7 +1498,7 @@ void sub_804CC98(SuperEggRoboZ *boss)
 
 void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1)
 {
-    Vec2_32 pos = { boss->pos.x + Q(190), boss->pos.y + Q(40) };
+    Vec2_32 pos = { boss->qPos.x + Q(190), boss->qPos.y + Q(40) };
 
     if ((I(gPlayer.y) < pos.x) && (gPlayer.y >= (pos.y - qP1))
         && (gPlayer.y <= (qP1 + pos.y))) {
