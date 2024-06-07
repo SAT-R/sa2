@@ -440,7 +440,6 @@ void Task_804AD68(void)
     }
 }
 
-#if 01
 // (95.06%) https://decomp.me/scratch/of4k0
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
          void sub_804AE40(SuperEggRoboZ *boss))
@@ -558,7 +557,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
     }
 }
 END_NONMATCH
-#endif
 
 u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
 {
@@ -690,7 +688,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
 
     {
         s32 r0, r1;
-#if 1
         Sprite *s = &gPlayer.unk90->s;
 
         r6 = boss->pos.x + boss->qUnk18[arm].x;
@@ -698,7 +695,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
 
         r5 = boss->pos.y + boss->qUnk18[arm].y;
         r5 = r5 + gUnknown_080D8888[arm][1];
-#endif
 
         if (gSelectedCharacter != CHARACTER_SONIC) {
             Player_UpdateHomingPosition(r4, r5);

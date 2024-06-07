@@ -824,7 +824,7 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
     // ((r5 << 3) + (r5 << 2)) == r5 * TILES_PER_METATILE_AXIS
     r1 = ((r5 << 3) + (r5 << 2) + r7);
 
-#if !PORTABLE
+#ifndef NON_MATCHING
     asm("" ::"r"(r5));
 #endif
 
