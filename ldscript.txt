@@ -95,7 +95,7 @@ SECTIONS
         src/game/decomp_credits.o(.rodata);
 #endif
         src/task.o(.text);
-        src/bg_update.o(.text);
+        src/background.o(.text);
         src/animation_commands_bg.o(.text);
         src/sprite.o(.text);
 #if (CPU_ARCH_ARM == 1)
@@ -419,7 +419,7 @@ SECTIONS
         src/multi_sio.o(.rodata);
         src/sio32_multi_load.o(.rodata);
         src/core.o(.rodata);
-        src/animation_commands_bg.o(.rodata);
+        src/background.o(.rodata);
         src/trig.o(.rodata);
         src/sprite.o(.rodata);
         src/bg_triangles.o(.rodata);
