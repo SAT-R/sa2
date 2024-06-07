@@ -94,7 +94,7 @@ s32 sub_80036E0(Sprite *s)
         const ACmd **variants;
 
         // Handle all the "regular" Animation commands with an ID < 0
-        variants = gUnknown_03002794->animations[s->graphics.anim];
+        variants = gRefSpriteTables->animations[s->graphics.anim];
         script = variants[s->variant];
         cmd = ReadInstruction(script, s->animCursor);
         while (cmd->id < 0) {
@@ -111,7 +111,7 @@ s32 sub_80036E0(Sprite *s)
                 }
 
                 // animation has changed
-                variants = gUnknown_03002794->animations[s->graphics.anim];
+                variants = gRefSpriteTables->animations[s->graphics.anim];
                 newScript = (ACmd *)variants[s->variant];
                 // reset cursor
                 s->animCursor = 0;
@@ -127,7 +127,7 @@ s32 sub_80036E0(Sprite *s)
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {
-                const struct SpriteTables *sprTables = gUnknown_03002794;
+                const struct SpriteTables *sprTables = gRefSpriteTables;
 
                 s->dimensions = &sprTables->dimensions[s->graphics.anim][frame];
             } else {
@@ -149,11 +149,12 @@ static AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
 
     if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
-            s->graphics.src = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
+            s->graphics.src
+                = &gRefSpriteTables->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
             s->graphics.src
-                = &gUnknown_03002794->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
+                = &gRefSpriteTables->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
         }
 
@@ -292,7 +293,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
                     void *r7;
                     u16 affine = (gBgCntRegs[bgId] & BGCNT_AFF1024x1024) >> 14;
                     sp10 = ((1024 * 1024) << affine) >> 16;
-                    oamSub = gUnknown_03002794->oamData;
+                    oamSub = gRefSpriteTables->oamData;
 
                     // OAM entry for this sub-frame
                     sp1C = (OamDataShort *)oamSub[s->graphics.anim];
@@ -332,7 +333,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
                         sp10 = 0x40;
                     }
                     // _08003C46
-                    sp1C = (OamDataShort *)gUnknown_03002794->oamData[s->graphics.anim];
+                    sp1C = (OamDataShort *)gRefSpriteTables->oamData[s->graphics.anim];
                     sp1C = (OamDataShort *)&sp1C[dims->oamIndex];
 
                     // _08003C78
@@ -674,7 +675,7 @@ static AnimCmdResult animCmd_GetPalette_BG(void *cursor, Sprite *s)
     if (!(s->unk10 & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
-        DmaCopy32(3, &gUnknown_03002794->palettes[paletteIndex * 16],
+        DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16],
                   &gBgPalette[s->palId * 16 + cmd->insertOffset], cmd->numColors * 2);
 
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;

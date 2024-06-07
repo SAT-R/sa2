@@ -177,7 +177,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
         const ACmd **variants;
 
         // Handle all the "regular" Animation commands with an ID < 0
-        variants = gUnknown_03002794->animations[s->graphics.anim];
+        variants = gRefSpriteTables->animations[s->graphics.anim];
         script = variants[s->variant];
         cmd = ReadInstruction(script, s->animCursor);
         while (cmd->id < 0) {
@@ -194,7 +194,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
                 }
 
                 // animation has changed
-                variants = gUnknown_03002794->animations[s->graphics.anim];
+                variants = gRefSpriteTables->animations[s->graphics.anim];
                 newScript = variants[s->variant];
 
                 // reset cursor
@@ -212,7 +212,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {
-                const struct SpriteTables *sprTables = gUnknown_03002794;
+                const struct SpriteTables *sprTables = gRefSpriteTables;
 
                 s->dimensions = &sprTables->dimensions[s->graphics.anim][frame];
             } else {
@@ -234,11 +234,11 @@ static AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s)
     if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
             s->graphics.src
-                = &gUnknown_03002794->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
+                = &gRefSpriteTables->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
             s->graphics.src
-                = &gUnknown_03002794->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
+                = &gRefSpriteTables->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
         }
 
@@ -566,7 +566,7 @@ void DisplaySprite(Sprite *sprite)
             u8 unk6D0 = gMosaicReg >> 8;
 
             for (i = 0; i < sprDims->numSubframes; i++) {
-                oamData = gUnknown_03002794->oamData[sprite->graphics.anim];
+                oamData = gRefSpriteTables->oamData[sprite->graphics.anim];
 
                 // oam gets zero-initialized(?)
                 oam = OamMalloc(GET_SPRITE_OAM_ORDER(sprite));
@@ -679,7 +679,7 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
         sp28 = y - sprite->y;
         if (x + sprWidth >= 0 && x <= 240 && y + sprHeight >= 0 && y <= 160) {
             for (sp18 = 0; sp18 < sprDims->numSubframes; ++sp18) {
-                const u16 *oamData = gUnknown_03002794->oamData[sprite->graphics.anim];
+                const u16 *oamData = gRefSpriteTables->oamData[sprite->graphics.anim];
                 OamData *oam = OamMalloc(GET_SPRITE_OAM_ORDER(sprite));
 
                 if (iwram_end == oam) {
@@ -867,7 +867,7 @@ static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
     if (!(s->unk10 & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
-        DmaCopy32(3, &gUnknown_03002794->palettes[paletteIndex * 16],
+        DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16],
                   &gObjPalette[s->palId * 16 + cmd->insertOffset], cmd->numColors * 2);
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;

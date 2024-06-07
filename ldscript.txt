@@ -98,7 +98,6 @@ SECTIONS
         src/bg_update.o(.text);
         src/animation_commands_bg.o(.text);
         src/sprite.o(.text);
-        src/animation_commands.o(.text);
 #if (CPU_ARCH_ARM == 1)
         asm/bg_triangles_unused_0.o(.text);
 #endif
@@ -422,7 +421,6 @@ SECTIONS
         src/core.o(.rodata);
         src/animation_commands_bg.o(.rodata);
         src/trig.o(.rodata);
-        src/animation_commands.o(.rodata);
         src/sprite.o(.rodata);
         src/bg_triangles.o(.rodata);
         src/malloc_ewram.o(.rodata);

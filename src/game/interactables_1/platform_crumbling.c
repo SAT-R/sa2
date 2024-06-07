@@ -27,7 +27,7 @@ static const u16 sInt019_AnimationIds[]
     = { [LEVEL_INDEX(ZONE_1, ACT_1)] = SA2_ANIM_PLATFORM_LF_WIDE,
         [LEVEL_INDEX(ZONE_1, ACT_2)] = SA2_ANIM_PLATFORM_LF_WIDE };
 
-extern const struct SpriteTables *gUnknown_03002794;
+extern const struct SpriteTables *gRefSpriteTables;
 
 extern u32 sub_800C060(Sprite *, s32, s32, Player *);
 
@@ -195,7 +195,7 @@ void Task_805E480(void)
         }
     }
     // _0805E52C
-    oam_ptr = gUnknown_03002794->oamData[s->graphics.anim];
+    oam_ptr = gRefSpriteTables->oamData[s->graphics.anim];
     oam = &oam_ptr[s->dimensions->oamIndex * 3];
 
     // _0805E54C
@@ -280,7 +280,7 @@ void Task_805E6A4(void)
         }
     }
 
-    oam_ptr = gUnknown_03002794->oamData[s->graphics.anim];
+    oam_ptr = gRefSpriteTables->oamData[s->graphics.anim];
     oam = &oam_ptr[s->dimensions->oamIndex * 3];
 
     r6 = 0;

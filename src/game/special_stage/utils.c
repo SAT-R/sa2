@@ -155,7 +155,7 @@ void sub_806CD68(Sprite *s)
     numSubframes = sprDims->numSubframes;
     for (i = 0; i < numSubframes; i++) {
         u32 attr1_2;
-        reference = gUnknown_03002794->oamData[s->graphics.anim];
+        reference = gRefSpriteTables->oamData[s->graphics.anim];
         oam = OamMalloc((s->unk1A & 0x7C0) >> 6);
         if (oam == iwram_end) {
             return;

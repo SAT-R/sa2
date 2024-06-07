@@ -95,7 +95,7 @@ _08003A84:
 	lsls r0, r1
 	lsrs r0, r0, #0x10
 	str r0, [sp, #0x10]     @ sp10 = bg_affine_pixelcount
-	ldr r0, _08003BB4 @ =gUnknown_03002794
+	ldr r0, _08003BB4 @ =gRefSpriteTables
 	ldr r1, [r0]
 	ldr r2, [sp, #0xc]
 	ldrh r0, [r2, #0xa]
@@ -242,7 +242,7 @@ _08003BA4: .4byte gUnknown_03005390
 _08003BA8: .4byte gUnknown_03004D10
 _08003BAC: .4byte gBgCntRegs
 _08003BB0: .4byte gDispCnt
-_08003BB4: .4byte gUnknown_03002794
+_08003BB4: .4byte gRefSpriteTables
 _08003BB8: .4byte 0x040000D4
 _08003BBC: .4byte 0x80000003
 _08003BC0: .4byte gOamShapesSizes
@@ -316,15 +316,15 @@ _08003C2C:
 	movs r7, #0x40
 	str r7, [sp, #0x10]
 _08003C46:
-	ldr r0, _08003D14 @ =gUnknown_03002794
+	ldr r0, _08003D14 @ =gRefSpriteTables
 	ldr r1, [r0]
 	ldr r2, [sp, #0xc]
 	ldrh r0, [r2, #0xa]
-	ldr r1, [r1, #8]    @ r1 = gUnknown_03002794->oamData
+	ldr r1, [r1, #8]    @ r1 = gRefSpriteTables->oamData
 	lsls r0, r0, #2
 	adds r0, r0, r1
 	ldr r0, [r0]
-	str r0, [sp, #0x1c] @ sp1C = gUnknown_03002794->oamData[s->graphics.anim];
+	str r0, [sp, #0x1c] @ sp1C = gRefSpriteTables->oamData[s->graphics.anim];
 	mov r3, sl          @ r3 = dims
 	ldrb r1, [r3, #1]   @ r1 = dims->oamIndex
 	lsls r0, r1, #1
@@ -424,7 +424,7 @@ __08003D04:
 	ldrsh r1, [r7, r2]
 	b _08003D3C
 	.align 2, 0
-_08003D14: .4byte gUnknown_03002794
+_08003D14: .4byte gRefSpriteTables
 _08003D18: .4byte 0x040000D4
 _08003D1C: .4byte 0x80000003
 _08003D20: .4byte gOamShapesSizes
