@@ -750,7 +750,7 @@ static AnimCmdResult animCmd_10_BG(void *cursor, Sprite *s)
     ACmd_10 *cmd = cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
-#ifdef UB_FIX
+#ifdef BUG_FIX
     return 1; // I think this should be the correct behavior?
 #else
     return (s32)cursor;

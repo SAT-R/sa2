@@ -281,7 +281,7 @@ void GameInit(void)
     gInputPlaybackData = NULL;
     gFrameCount = 0;
 
-#ifdef UB_FIX
+#ifdef BUG_FIX
     for (i = 0; i < ARRAY_COUNT(gIntrTableTemplate); i++)
 #else
     for (i = 0; i < 15; i++)

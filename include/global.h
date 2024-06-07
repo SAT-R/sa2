@@ -17,7 +17,6 @@ typedef void (*VoidFn)(void);
 
 #if (PORTABLE)
 #define BUG_FIX
-#define UB_FIX
 
 #if !(defined NON_MATCHING)
 #define NON_MATCHING 1
