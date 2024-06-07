@@ -442,10 +442,10 @@ void Task_804AD68(void)
 
 // (95.06%) https://decomp.me/scratch/of4k0
 // (98.77%) https://decomp.me/scratch/Kzx1m
+// (99.59%)
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
          void sub_804AE40(SuperEggRoboZ *boss))
 {
-    int v;
     Sprite *s;
 
     if (gPlayer.moveState & MOVESTATE_DEAD) {
@@ -482,10 +482,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
 
                 boss->fade.brightness = Q(32);
                 UpdateScreenFade(&boss->fade);
-
+                
                 livesCockpit = boss->livesCockpit;
-                v = livesCockpit <= 4 ? 140 : 360;
-                boss->unkE = v;
+                boss->unkE = livesCockpit <= 4 ? 140 : 360;
 
                 s = &boss->bsHead.s;
                 s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_HEAD;
