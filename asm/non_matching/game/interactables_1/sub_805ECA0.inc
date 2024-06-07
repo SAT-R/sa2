@@ -94,7 +94,7 @@ _0805ED4E:
 	ldr r3, [sp]
 	strb r0, [r3]
 	adds r0, r5, #0
-	bl sub_80218E4
+	bl Player_TransitionCancelFlyingAndBoost
 	adds r0, r5, #0
 	movs r1, #9
 	bl sub_8023B5C

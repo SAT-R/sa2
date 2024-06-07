@@ -191,7 +191,7 @@ static void Task_8076A6C(void)
 
 static void sub_8076B84(Sprite_GermanFlute *flute)
 {
-    sub_80218E4(&gPlayer);
+    Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
 
     gPlayer.unk16 = 6;

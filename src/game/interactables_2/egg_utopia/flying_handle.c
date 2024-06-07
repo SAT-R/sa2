@@ -163,7 +163,7 @@ static void ActivatePlayerGrab(Sprite_FlyingHandle *flyingHandle)
 static void sub_807F484(Sprite_FlyingHandle *flyingHandle)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    sub_80218E4(&gPlayer);
+    Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
 
     gPlayer.unk16 = 6;

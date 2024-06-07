@@ -120,7 +120,7 @@ static void Task_Interactable_BouncySpring()
 
             gPlayer.unk36 = 3;
 
-            sub_80218E4(&gPlayer);
+            Player_TransitionCancelFlyingAndBoost(&gPlayer);
             sub_8023B5C(&gPlayer, 14);
 
             gPlayer.unk16 = 6;

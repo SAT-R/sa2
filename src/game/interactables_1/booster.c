@@ -117,7 +117,7 @@ void Task_Interactable_Booster(void)
 
     if (!(gPlayer.moveState & (MOVESTATE_DEAD | MOVESTATE_IN_AIR))
         && (sub_800C204(s, screenX, screenY, 0, &gPlayer, 0) == 1)) {
-        sub_80218E4(&gPlayer);
+        Player_TransitionCancelFlyingAndBoost(&gPlayer);
 
         if (gPlayer.moveState & MOVESTATE_4) {
             sub_8023B5C(&gPlayer, 9);

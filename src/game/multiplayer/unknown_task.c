@@ -226,7 +226,7 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     == (gMultiplayerConnections & (0x10 << (i))) >> (i + 4)) {
                 sub_8019CCC(j, count2);
                 if (j == SIO_MULTI_CNT->id) {
-                    sub_80218E4(&gPlayer);
+                    Player_TransitionCancelFlyingAndBoost(&gPlayer);
                     gPlayer.moveState &= ~MOVESTATE_8;
                     gPlayer.moveState &= ~MOVESTATE_20;
                     gPlayer.moveState &= ~MOVESTATE_4;

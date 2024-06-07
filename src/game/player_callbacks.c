@@ -168,7 +168,7 @@ struct Task *sub_8011C98(s32 x, s32 y)
 
 void sub_8011D48(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -272,7 +272,7 @@ void PlayerCB_8011E88(Player *p)
 // for Sonic (Bound) & Amy (Mid-Air Hammer Swirl)
 void PlayerCB_8011F1C(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
     p->moveState |= MOVESTATE_20000000;
@@ -315,7 +315,7 @@ void PlayerCB_8011F94(Player *p)
         bounceSpeed = I(bounceImpactAccel * (COS_24_8((rot))));
         p->speedAirY = -ABS(bounceSpeed);
 
-        p->speedAirX = p->speedAirX >> 1;
+        p->speedAirX = HALVE(p->speedAirX);
 
         PLAYERFN_SET(PlayerCB_8012460);
 
@@ -363,7 +363,7 @@ void sub_80120C0(Player *p)
             p->moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
     p->moveState |= MOVESTATE_IN_AIR;
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20 | MOVESTATE_4);
 
@@ -396,7 +396,7 @@ void sub_8012194(Player *p)
     s32 six = Q(6.0);
     s32 cosVal, sinVal;
 
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
     p->moveState |= (MOVESTATE_20000000 | MOVESTATE_BOOST_EFFECT_ON | MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
 
@@ -424,7 +424,7 @@ void sub_8012194(Player *p)
 
 void PlayerCB_801225C(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
     p->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_20000000 | MOVESTATE_1000000 | MOVESTATE_20);
 
@@ -578,7 +578,7 @@ bool32 sub_801251C(Player *p)
 
 void sub_8012548(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -621,7 +621,7 @@ void sub_80125BC(Player *p)
 
 void sub_8012644(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     if (p->moveState & MOVESTATE_4) {
         p->moveState &= ~MOVESTATE_4;
@@ -715,7 +715,7 @@ void PlayerCB_80127F0(Player *p)
 
 void sub_8012830(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -730,7 +730,7 @@ void sub_8012830(Player *p)
 
 void sub_8012888(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -745,7 +745,7 @@ void sub_8012888(Player *p)
 
 void sub_80128E0(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -838,7 +838,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
 
 void sub_8012AD0(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -881,7 +881,7 @@ void sub_8012B44(Player *p)
 
 void sub_8012BC0(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     if (p->moveState & MOVESTATE_4) {
         p->moveState &= ~MOVESTATE_4;
@@ -958,7 +958,7 @@ void PlayerCB_8012D1C(Player *p)
 
 void sub_8012D3C(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -1035,7 +1035,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
 
 void sub_8012EEC(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -1123,7 +1123,7 @@ void PlayerCB_8013010(Player *p)
 
 void sub_8013070(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -1923,7 +1923,7 @@ void PlayerCB_8013DA8(Player *p);
 
 void PlayerCB_8013D18(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -2048,7 +2048,7 @@ void PlayerCB_8013F60(Player *p);
 
 void sub_8013F04(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 

@@ -225,7 +225,7 @@ static void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
 
-    sub_80218E4(&gPlayer);
+    Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
 
     gPlayer.unk16 = 6;

@@ -492,7 +492,7 @@ static void sub_8074088(Sprite_HCCrane *crane)
 {
     s16 v;
 
-    sub_80218E4(&gPlayer);
+    Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 9);
 
     gPlayer.unk16 = 6;
