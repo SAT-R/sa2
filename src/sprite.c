@@ -141,7 +141,11 @@ void numToTileIndices(u8 *digits, u16 number)
     digits[i] = 0;
 }
 
-u32 sub_8004518(u16 num)
+// This function takes a 16bit decimal number
+// and returns a 32bit number which, viewed as hex,
+// will contain the input number's digits in the lower 5 nibbles.
+// Base10DigitsToHexNibbles(12345) -> 0x00012345
+u32 Base10DigitsToHexNibbles(u16 num)
 {
     u8 i;
     u16 result;
