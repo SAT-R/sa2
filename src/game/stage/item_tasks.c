@@ -283,8 +283,8 @@ void Task_Item_Invincibility(void)
         MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[(s8)param]);
 
         if (mpp->unk57 & 0x2) {
-            x = mpp->unk50;
-            y = mpp->unk52;
+            x = mpp->pos.x;
+            y = mpp->pos.y;
             priority = mpp->s.unk10;
         } else {
             TaskDestroy(gCurTask);
@@ -339,8 +339,8 @@ void Task_Item_Confusion(void)
             return;
         }
 
-        s->x = mpp->unk50 - cam->x;
-        s->y = mpp->unk52 - cam->y;
+        s->x = mpp->pos.x - cam->x;
+        s->y = mpp->pos.y - cam->y;
         s->unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
         s->unk10 |= mpp->s.unk10 & SPRITE_FLAG_MASK_PRIORITY;
 

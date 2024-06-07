@@ -550,14 +550,12 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
         s->graphics.dest = VramMalloc(16);
         s->graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_ATTACK, CHARACTER_CREAM);
         extraSprite->s.variant = 1;
-    } else {
-        if (character != CHARACTER_TAILS) {
-            return;
-        }
-
+    } else if (character == CHARACTER_TAILS) {
         s->graphics.dest = VramMalloc(16);
         s->graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_ATTACK, CHARACTER_TAILS);
         extraSprite->s.variant = 1;
+    } else {
+        return;
     }
 
     s->graphics.size = 0;
@@ -593,7 +591,6 @@ void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
         p->checkPointX = gSpawnPositions[level][0];
         p->checkPointY = gSpawnPositions[level][1];
     } else {
-        // _08021640
         p->checkPointX = 360 - (SIO_MULTI_CNT->id * 20);
         p->checkPointY = 177;
         p->x = -1;

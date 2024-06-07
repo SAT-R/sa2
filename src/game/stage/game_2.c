@@ -81,8 +81,8 @@ void Task_801F214(void)
                             s8 id = SIO_MULTI_CNT->id;
                             struct Task *tmpp = gMultiplayerPlayerTasks[id];
                             MultiplayerPlayer *mpp = TASK_DATA(tmpp);
-                            ts->x = mpp->unk50;
-                            ts->y = mpp->unk52;
+                            ts->x = mpp->pos.x;
+                            ts->y = mpp->pos.y;
                         } else {
                             ts->x = I(gPlayer.x);
                             ts->y = I(gPlayer.y);

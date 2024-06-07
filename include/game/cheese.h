@@ -35,7 +35,7 @@ typedef struct {
     /* 0x1C */ Sprite s;
     /* 0x4C */ Hitbox reserved;
     /* 0x54 */ Cheese_UNK54 unk54;
-    /* 0x6C */ MultiplayerPlayer *unk6C;
+    /* 0x6C */ MultiplayerPlayer *mpp;
 } Cheese; /* size: 0x70 */
 
 extern Cheese *gCheese;

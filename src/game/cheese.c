@@ -121,7 +121,7 @@ void CreateCheese(Player *player)
                 mpp = TASK_DATA(gMultiplayerPlayerTasks[j]);
                 t = TaskCreate(sub_801420C, 0x70, 0x5010, 0, sub_8015360);
                 cheese = TASK_DATA(t);
-                cheese->unk6C = mpp;
+                cheese->mpp = mpp;
                 break;
             }
         }
@@ -1017,37 +1017,37 @@ bool8 sub_8015118(Cheese *cheese)
         s32 temp, temp2;
         s16 x, y;
 
-        if (ABS(cheese->unk6C->unk50 - I(unk54->unk54)) > 0x1E) {
+        if (ABS(cheese->mpp->pos.x - I(unk54->unk54)) > 0x1E) {
             r7 = 1;
         }
 
-        if (ABS(cheese->unk6C->unk52 - I(unk54->unk58)) > 0x1E) {
+        if (ABS(cheese->mpp->pos.y - I(unk54->unk58)) > 0x1E) {
             r7 = 1;
         }
 
-        unk54->unk54 = QS(cheese->unk6C->unk50);
-        unk54->unk58 = QS(cheese->unk6C->unk52);
+        unk54->unk54 = QS(cheese->mpp->pos.x);
+        unk54->unk58 = QS(cheese->mpp->pos.y);
 
-        x = cheese->unk6C->unk50 - gCamera.x;
+        x = cheese->mpp->pos.x - gCamera.x;
         if ((u16)(x + 32) > 304) {
             return TRUE;
         }
 
-        y = cheese->unk6C->unk52 - gCamera.y;
+        y = cheese->mpp->pos.y - gCamera.y;
         if ((u16)(y + 32) > 224) {
             return TRUE;
         }
 
         unk54->unk5C = 1;
         unk54->unk5E = 1;
-        unk54->unk68 = &cheese->unk6C->s;
+        unk54->unk68 = &cheese->mpp->s;
         unk54->unk60 = 0;
 
-        if (!(cheese->unk6C->unk54 & 2)) {
+        if (!(cheese->mpp->unk54 & 2)) {
             unk54->unk60 = 1;
         }
 
-        if (cheese->unk6C->unk54 & 0x40) {
+        if (cheese->mpp->unk54 & 0x40) {
             unk54->unk60 |= 0x100000;
         }
 
@@ -1057,9 +1057,9 @@ bool8 sub_8015118(Cheese *cheese)
         }
 
         if (!thing) {
-            unk54->unk64 = cheese->unk6C->transform.rotation >> 2;
+            unk54->unk64 = cheese->mpp->transform.rotation >> 2;
 
-            if (cheese->unk6C->unk54 & 8) {
+            if (cheese->mpp->unk54 & 8) {
                 if (unk54->unk64) {
                     unk54->unk64 = ~(unk54->unk64 + 0x80U);
                 }

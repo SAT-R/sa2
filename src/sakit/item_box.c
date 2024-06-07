@@ -292,8 +292,8 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
                     continue;
 
                 mpp = TASK_DATA(gMultiplayerPlayerTasks[playerId]);
-                boxToPlayerX = SQUARE(I(gPlayer.x) - mpp->unk50);
-                boxToPlayerY = SQUARE(I(gPlayer.y) - mpp->unk52);
+                boxToPlayerX = SQUARE(I(gPlayer.x) - mpp->pos.x);
+                boxToPlayerY = SQUARE(I(gPlayer.y) - mpp->pos.y);
 
                 boxToPlayerMagnitude = boxToPlayerX + boxToPlayerY;
                 if (smallestMagnitude < boxToPlayerMagnitude) {
