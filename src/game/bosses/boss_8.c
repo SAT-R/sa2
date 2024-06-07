@@ -441,6 +441,7 @@ void Task_804AD68(void)
 }
 
 // (95.06%) https://decomp.me/scratch/of4k0
+// (98.77%) https://decomp.me/scratch/Kzx1m
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
          void sub_804AE40(SuperEggRoboZ *boss))
 {
@@ -483,10 +484,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
                 UpdateScreenFade(&boss->fade);
 
                 livesCockpit = boss->livesCockpit;
-                v = 360;
-                if (livesCockpit <= 4) {
-                    v = 140;
-                }
+                v = livesCockpit <= 4 ? 140 : 360;
                 boss->unkE = v;
 
                 s = &boss->bsHead.s;
@@ -498,25 +496,24 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
                 s32 r6;
                 s32 r8;
 
-                r8 = I(boss->pos.x + Q(190));
+                r8 = I(boss->qUnk0 + Q(190));
                 r8 += ((COS(boss->unk10) * 11) >> 14);
                 r8 -= gCamera.x;
 
-                r6 = I(boss->pos.y + Q(40));
+                r6 = I(boss->qUnk4 + Q(40));
                 r6 += ((SIN(boss->unk10) * 11) >> 14);
                 r6 -= gCamera.y;
 
                 if (boss->unk12 > 90) {
                     s32 val;
                     s32 rand;
-                    s16 x, y;
                     InitHBlankBgOffsets(0);
-                    x = r8;
-                    y = r6;
 
-                    rand = PseudoRandom32();
-                    sub_80075D0(0, 0, 160, x, y,
-                                I(SIN(((boss->unk12 - 90) * 8) % 256u)) + (rand % 8u));
+                    sub_80075D0(0, 0, 160, r8, r6, ({
+                                    rand = PseudoRandom32();
+                                    I(SIN(((boss->unk12 - 90) * 8) % 256u))
+                                        + (rand % 8u);
+                                }));
 
                     boss->fade.brightness = (boss->unk12 - 90) * 273;
                     UpdateScreenFade(&boss->fade);
@@ -556,6 +553,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
         }
     }
 }
+
 END_NONMATCH
 
 u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
