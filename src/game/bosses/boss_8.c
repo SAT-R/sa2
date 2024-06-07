@@ -482,7 +482,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
 
                 boss->fade.brightness = Q(32);
                 UpdateScreenFade(&boss->fade);
-                
+
                 livesCockpit = boss->livesCockpit;
                 boss->unkE = livesCockpit <= 4 ? 140 : 360;
 
