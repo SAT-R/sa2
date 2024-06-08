@@ -90,10 +90,6 @@ SECTIONS
         src/sio32_multi_load.o(.text);
         src/core.o(.text);
         src/main.o(.text);
-#if (ENABLE_DECOMP_CREDITS == 1)
-        src/game/decomp_credits.o(.text);
-        src/game/decomp_credits.o(.rodata);
-#endif
         src/task.o(.text);
         src/background.o(.text);
         src/sprite.o(.text);
@@ -374,6 +370,11 @@ SECTIONS
         src/game/cutscenes/final_ending_fall.o(.text);
         src/game/cutscenes/final_ending_land.o(.text);
         src/game/cutscenes/missing_emeralds.o(.text);
+        
+#if (ENABLE_DECOMP_CREDITS == 1)
+        src/game/decomp_credits.o(.text);
+        src/game/decomp_credits.o(.rodata);
+#endif
 
         /* libs */
 #if (CPU_ARCH_ARM == 1)
