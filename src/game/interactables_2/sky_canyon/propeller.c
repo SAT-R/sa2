@@ -253,7 +253,7 @@ static void StartPlayerFloatingTask(Sprite_Propeller *propeller)
 static void sub_807B8FC(Sprite_Propeller *propeller)
 {
 
-    sub_80218E4(&gPlayer);
+    Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
     gPlayer.unk16 = 6;
     gPlayer.unk17 = 14;

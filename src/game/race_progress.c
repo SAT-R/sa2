@@ -145,15 +145,14 @@ static void Task_UpdateAvatarPositions(void)
 {
     u8 i;
     Sprite *avatar;
-    MultiplayerPlayer *player;
+    MultiplayerPlayer *mpp;
     struct RaceProgressIndicator *progressIndicator = TASK_DATA(gCurTask);
 
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         avatar = &progressIndicator->avatars[i];
-        player = TASK_DATA(gMultiplayerPlayerTasks[i]);
+        mpp = TASK_DATA(gMultiplayerPlayerTasks[i]);
         avatar->x
-            = ((player->unk50 * sCourseStepSizes[progressIndicator->course]) >> 0x10)
-            + 6;
+            = ((mpp->pos.x * sCourseStepSizes[progressIndicator->course]) >> 0x10) + 6;
     }
 
     RenderUI(progressIndicator);

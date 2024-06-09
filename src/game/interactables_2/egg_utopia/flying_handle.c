@@ -96,7 +96,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
@@ -163,7 +163,7 @@ static void ActivatePlayerGrab(Sprite_FlyingHandle *flyingHandle)
 static void sub_807F484(Sprite_FlyingHandle *flyingHandle)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    sub_80218E4(&gPlayer);
+    Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
 
     gPlayer.unk16 = 6;

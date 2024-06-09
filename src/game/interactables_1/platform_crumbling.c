@@ -27,7 +27,7 @@ static const u16 sInt019_AnimationIds[]
     = { [LEVEL_INDEX(ZONE_1, ACT_1)] = SA2_ANIM_PLATFORM_LF_WIDE,
         [LEVEL_INDEX(ZONE_1, ACT_2)] = SA2_ANIM_PLATFORM_LF_WIDE };
 
-extern const struct SpriteTables *gUnknown_03002794;
+extern const struct SpriteTables *gRefSpriteTables;
 
 extern u32 sub_800C060(Sprite *, s32, s32, Player *);
 
@@ -65,7 +65,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     s->graphics.dest = VramMalloc(IA_019_NUM_TILES);
 
-#ifdef UB_FIX
+#ifdef BUG_FIX
     // Prevent overflow
     s->graphics.anim
         = sInt019_AnimationIds[gCurrentLevel % ARRAY_COUNT(sInt019_AnimationIds)];
@@ -194,11 +194,10 @@ void Task_805E480(void)
             return;
         }
     }
-    // _0805E52C
-    oam_ptr = gUnknown_03002794->oamData[s->graphics.anim];
+
+    oam_ptr = gRefSpriteTables->oamData[s->graphics.anim];
     oam = &oam_ptr[s->dimensions->oamIndex * 3];
 
-    // _0805E54C
     r6 = 0;
     for (y = 0; y < 4; y++) {
         for (x = 0; x < 8; r6++, x++) {
@@ -216,7 +215,7 @@ void Task_805E480(void)
 
                     gCurTask->main = Task_805E6A4;
                 }
-                // _0805E590
+
                 r4 = (((((s16)value * 42) * (s16)value) << 8) >> 16);
 
                 if (r4 > otherPos) {
@@ -225,10 +224,9 @@ void Task_805E480(void)
                     return;
                 }
             } else {
-                // _0805E5CC
                 r4 = 0;
             }
-            // _0805E5CE
+
             pointer = OamMalloc(GET_SPRITE_OAM_ORDER(s));
             if (iwram_end == pointer)
                 return;
@@ -238,12 +236,11 @@ void Task_805E480(void)
             if (s->unk10 & 0x400) {
                 pointer->all.attr1 = ((s->x - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
             } else {
-                // _0805E62C
                 pointer->all.attr1 = (s->x + x * TILE_WIDTH) & 0x1FF;
             }
 
             pointer->all.attr2
-                = (((oam[2] + s->palId) & ~0xFFF) | ((s->unk10 & 0x3000) >> 2)
+                = (((oam[2] + s->palId) & ~0xFFF) | (SPRITE_FLAG_GET(s, PRIORITY) << 10)
                    | (u16)(GET_TILE_NUM(s->graphics.dest) + r6));
         }
     }
@@ -280,7 +277,7 @@ void Task_805E6A4(void)
         }
     }
 
-    oam_ptr = gUnknown_03002794->oamData[s->graphics.anim];
+    oam_ptr = gRefSpriteTables->oamData[s->graphics.anim];
     oam = &oam_ptr[s->dimensions->oamIndex * 3];
 
     r6 = 0;
@@ -301,7 +298,7 @@ void Task_805E6A4(void)
                 return;
             }
 
-            pointer = OamMalloc((s->unk1A & 0x7C0) >> 6);
+            pointer = OamMalloc(GET_SPRITE_OAM_ORDER(s));
             if (iwram_end == pointer) {
                 return;
             }

@@ -289,22 +289,22 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
 
                 if ((i == playerId) && (gMultiplayerPlayerTasks[i] != NULL)) {
                     // _08008258
-                    MultiplayerPlayer *mpPlayer = TASK_DATA(gMultiplayerPlayerTasks[i]);
-                    s16 px, py = mpPlayer->unk52;
+                    MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[i]);
+                    s16 px, py = mpp->pos.y;
                     s32 hbBottom, hbLeft, hbRight;
                     sl = Q(py + s->hitboxes[0].top);
                     hbBottom = Q(py + s->hitboxes[0].bottom);
 
                     while ((sl <= ((hbBottom + 8) >> 8)) && ((unsigned)sl < regions_y)) {
                         // _080082E2
-                        // sp28 = mpPlayer->unk50;
-                        // sp2C = mpPlayer->s.hitboxes[0].left;
-                        // sp48 = mpPlayer->s.hitboxes[0].right;
-                        px = mpPlayer->unk50;
-                        sb = Q(px + mpPlayer->s.hitboxes[0].left - 8);
+                        // sp28 = mpp->pos.x;
+                        // sp2C = mpp->s.hitboxes[0].left;
+                        // sp48 = mpp->s.hitboxes[0].right;
+                        px = mpp->pos.x;
+                        sb = Q(px + mpp->s.hitboxes[0].left - 8);
 
-                        hbRight = Q((px + mpPlayer->s.hitboxes[0].right) + 16);
-                        // hbLeft = Q((px + mpPlayer->s.hitboxes[0].left) + 16);
+                        hbRight = Q((px + mpp->s.hitboxes[0].right) + 16);
+                        // hbLeft = Q((px + mpp->s.hitboxes[0].left) + 16);
 
                         while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH))
                                && (sb < regions_x)) {
@@ -326,22 +326,18 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                         s32 ry = TO_WORLD_POS(meRing->y, sl);
 
                                         if ((((rx - 8)
-                                              <= (mpPlayer->unk50
-                                                  + mpPlayer->s.hitboxes[0].left))
-                                             && ((rx + 8)
-                                                 > mpPlayer->s.hitboxes[0].right))
-                                            && (((ry - 8)
-                                                 >= (mpPlayer->unk52
-                                                     + mpPlayer->s.hitboxes[0].top))
-                                                && ((rx + 8) <= mpPlayer->s.hitboxes[0]
-                                                                    .bottom))) {
+                                              <= (mpp->pos.x + mpp->s.hitboxes[0].left))
+                                             && ((rx + 8) > mpp->s.hitboxes[0].right))
+                                            && (((ry - 8) >= (mpp->pos.y
+                                                              + mpp->s.hitboxes[0].top))
+                                                && ((rx + 8)
+                                                    <= mpp->s.hitboxes[0].bottom))) {
                                             u8 anim = rm->s.graphics.anim
                                                 - gPlayerCharacterIdleAnims
-                                                    [gMultiplayerCharacters
-                                                         [mpPlayer->unk56]];
+                                                    [gMultiplayerCharacters[mpp->unk56]];
                                             if ((anim != SA2_CHAR_ANIM_28
                                                  && anim != SA2_CHAR_ANIM_29)
-                                                || !(mpPlayer->unk54 & 0x4)) {
+                                                || !(mpp->unk54 & 0x4)) {
                                                 CreateCollectRingEffect(rx, ry);
                                                 meRing->x
                                                     = (u8)MAP_ENTITY_STATE_INITIALIZED;

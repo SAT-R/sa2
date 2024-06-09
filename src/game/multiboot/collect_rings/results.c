@@ -490,7 +490,7 @@ void sub_8082788(void)
                 DisplaySprite(s);
 
                 // TODO: Fix type
-                temp = sub_8004518(gMultiplayerCharRings[i]);
+                temp = Base10DigitsToHexNibbles(gMultiplayerCharRings[i]);
                 s = &resultsScreen->unk160[((temp) >> 8) & 0xF];
 
                 if (s != &resultsScreen->unk160[0]) {
@@ -522,7 +522,7 @@ void sub_8082788(void)
                 if (gUnknown_03005428[i] > 99) {
                     temp = 99;
                 } else {
-                    temp = sub_8004518(gUnknown_03005428[i]);
+                    temp = Base10DigitsToHexNibbles(gUnknown_03005428[i]);
                 }
 
                 s = &resultsScreen->unk160[((temp) >> 4)];

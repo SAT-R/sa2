@@ -115,10 +115,10 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     spr = &pi->spr;
     transform = &pi->transform;
 
-    opponentX = mpp->unk50 - gCamera.x;
+    opponentX = mpp->pos.x - gCamera.x;
 
     if ((opponentX >= 0) && (opponentX <= DISPLAY_WIDTH)) {
-        opponentY = mpp->unk52 - gCamera.y;
+        opponentY = mpp->pos.y - gCamera.y;
 
         if ((opponentY >= 0) && (opponentY <= DISPLAY_HEIGHT)) {
             return;
@@ -126,8 +126,8 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     }
     // _08019576
 
-    opponentX2 = mpp->unk50 - (DISPLAY_WIDTH / 2);
-    opponentY2 = mpp->unk52 - (DISPLAY_HEIGHT / 2);
+    opponentX2 = mpp->pos.x - (DISPLAY_WIDTH / 2);
+    opponentY2 = mpp->pos.y - (DISPLAY_HEIGHT / 2);
 
     opponentX2 -= gCamera.x;
     opponentY2 -= gCamera.y;

@@ -14,9 +14,7 @@ typedef struct {
     s32 unk44;
     s32 unk48;
     u32 unk4C;
-    // x
-    s16 unk50;
-    s16 unk52;
+    Vec2_16 pos;
     u16 unk54;
     u8 unk56;
     u8 unk57;

@@ -41,7 +41,6 @@ static void TaskDestructor_8063214(struct Task *);
 static void Task_8063228(struct Task *);
 
 extern u32 gCheckpointTime;
-extern const struct SpriteTables *gUnknown_03002794;
 
 #define CHECKPOINT_BALL_TILE_COUNT 4
 
@@ -214,7 +213,7 @@ void Task_8063228(struct Task *unused)
         offset = numColors >> 16;
         numColors %= 256;
 
-        DmaCopy32(3, &gUnknown_03002794->palettes[palId * 16], &gBgPalette[offset],
+        DmaCopy32(3, &gRefSpriteTables->palettes[palId * 16], &gBgPalette[offset],
                   numColors * sizeof(u16));
 
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;

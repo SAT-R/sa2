@@ -62,6 +62,8 @@ PlayerSpriteInfo ALIGNED(16) gUnknown_03005AF0 = {};
 // sakit
 extern void InitNewInputCounters(void);
 
+void sub_8022218(Player *);
+void sub_8022284(Player *);
 void Task_8023FC0(void);
 void AllocateCharacterStageGfx(Player *, PlayerSpriteInfo *);
 void AllocateCharacterMidAirGfx(Player *, PlayerSpriteInfo *);
@@ -69,6 +71,7 @@ void TaskDestructor_802A07C(struct Task *);
 void sub_802486C(Player *p, PlayerSpriteInfo *p2);
 void sub_8024B10(Player *p, PlayerSpriteInfo *s);
 void sub_8024F74(Player *p, PlayerSpriteInfo *s);
+void PlayerCB_8026BCC(Player *);
 
 s32 sub_8029BB8(Player *p, u8 *p1, s32 *out);
 
@@ -120,14 +123,14 @@ bool32 sub_802A0FC(Player *);
 bool32 sub_802A184(Player *);
 bool32 sub_802A2A8(Player *);
 void PlayerCB_802A228(Player *);
-void sub_802A360(Player *);
+void Player_InitIceSlide(Player *);
 void PlayerCB_802A3B8(Player *);
 void PlayerCB_802A3C4(Player *);
-void PlayerCB_802A3F0(Player *);
+void PlayerCB_CameraShift(Player *);
 void sub_802A40C(Player *);
 void sub_802A468(Player *);
 void sub_802A4B8(Player *);
-void PlayerCB_802A4FC(Player *);
+void PlayerCB_Nop(Player *);
 void PlayerCB_802A5C4(Player *);
 void PlayerCB_802A620(Player *);
 void PlayerCB_802A714(Player *);
@@ -406,6 +409,40 @@ static const s16 sSpringAccelX[4] = {
 
 static const u8 gUnknown_080D69C2[4] = { 4, 3, 2, 2 };
 
+// TODO: Find a compiler-flag or another way to inline without defining functions twice.
+
+static inline void Player_InitIceSlide_inline(Player *p)
+{
+    Player_TransitionCancelFlyingAndBoost(p);
+    p->moveState &= ~MOVESTATE_4;
+
+    PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
+
+    p->unk64 = 62;
+    p->moveState &= ~(MOVESTATE_FACING_LEFT);
+
+    m4aSongNumStart(SE_ICE_PARADISE_SLIDE);
+
+    PLAYERFN_SET_AND_CALL(PlayerCB_8026BCC, p);
+}
+
+static inline void sub_802A500_inline(Player *p)
+{
+    if (p->speedAirY >= 0) {
+        sub_8022218(p);
+        sub_8022284(p);
+    } else {
+        sub_8022284(p);
+        sub_8022218(p);
+    }
+}
+
+static inline void PlayerCB_CameraShift_inline(Player *p)
+{
+    if (gCamera.shiftY > -56)
+        gCamera.shiftY--;
+}
+
 void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 {
 #ifndef NON_MATCHING
@@ -513,14 +550,12 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
         s->graphics.dest = VramMalloc(16);
         s->graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_ATTACK, CHARACTER_CREAM);
         extraSprite->s.variant = 1;
-    } else {
-        if (character != CHARACTER_TAILS) {
-            return;
-        }
-
+    } else if (character == CHARACTER_TAILS) {
         s->graphics.dest = VramMalloc(16);
         s->graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_ATTACK, CHARACTER_TAILS);
         extraSprite->s.variant = 1;
+    } else {
+        return;
     }
 
     s->graphics.size = 0;
@@ -556,7 +591,6 @@ void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
         p->checkPointX = gSpawnPositions[level][0];
         p->checkPointY = gSpawnPositions[level][1];
     } else {
-        // _08021640
         p->checkPointX = 360 - (SIO_MULTI_CNT->id * 20);
         p->checkPointY = 177;
         p->x = -1;
@@ -697,8 +731,10 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
 }
 END_NONMATCH
 
-// PlayerCancelMidAir? (Not only used for transitioning to ground)
-void sub_80218E4(Player *p)
+// Called anytime the player actively jumps, "autojumps" through touching an IA,
+// touches a Boost Pad or a Rotating Handle, touches the ground, etc.
+// TODO: Find a better name.
+void Player_TransitionCancelFlyingAndBoost(Player *p)
 {
     if (p->moveState & MOVESTATE_20000) {
         m4aSongNumStop(SE_281);
@@ -2951,21 +2987,53 @@ void sub_8023878(Player *p)
     }
 }
 
-// TODO: incomplete
-NONMATCH("asm/non_matching/sub_8023B5C.inc",
-         void sub_8023B5C(Player *p, s8 spriteOffsetY))
+void sub_8023B5C(Player *p, s32 spriteOffsetY)
 {
-    s8 rot;
+    u8 rot;
     if (p->unk17 == spriteOffsetY) {
         return;
     }
 
     rot = p->rotation;
     if (GRAVITY_IS_INVERTED) {
-        rot -= 0x40;
+        rot += Q(1. / 4.);
+        rot = -rot;
+        rot -= Q(1. / 4.);
+    }
+
+    if ((s32)(rot + Q(1. / 8.)) > 0) {
+        if (rot != 0) {
+            rot = (rot + Q(1. / 8.)) - 1;
+            ;
+        } else {
+            rot = Q(1. / 8.);
+        }
+    } else {
+        if (rot != 0) {
+            rot = (rot + Q(1. / 8.));
+        } else {
+            rot = Q(1. / 8.) - 1;
+        }
+    }
+
+    switch ((rot >> 6)) {
+        case 0: {
+            p->y -= Q(spriteOffsetY - p->unk17);
+        } break;
+
+        case 2: {
+            p->y += Q(spriteOffsetY - p->unk17);
+        } break;
+
+        case 1: {
+            p->x += Q(spriteOffsetY - p->unk17);
+        } break;
+
+        case 3: {
+            p->x -= Q(spriteOffsetY - p->unk17);
+        } break;
     }
 }
-END_NONMATCH
 
 void sub_8023C10(Player *p)
 {
@@ -3022,11 +3090,11 @@ void Task_8023D08(void)
         if (IS_SINGLE_PLAYER) {
             TaskDestroy(gCurTask);
             if ((!gLoadedSaveGame->timeLimitDisabled
-                 && (gCourseTime > 36000
+                 && (gCourseTime > MAX_COURSE_TIME
                      || (gStageFlags & EXTRA_STATE__4 && gCourseTime == 0)))
                 || ((gGameMode == GAME_MODE_TIME_ATTACK
                      || gGameMode == GAME_MODE_BOSS_TIME_ATTACK)
-                    && gCourseTime > 36000)) {
+                    && gCourseTime > MAX_COURSE_TIME)) {
                 sub_801B6B4();
             } else {
                 gRingCount = 0;
@@ -3888,9 +3956,9 @@ void PlayerCB_8025318(Player *p)
 
     mask = (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR);
     if ((p->moveState & mask) == MOVESTATE_800) {
-        sub_802A360(p);
+        Player_InitIceSlide(p);
     } else {
-        sub_80218E4(p);
+        Player_TransitionCancelFlyingAndBoost(p);
 
         p->moveState &= ~(MOVESTATE_4 | MOVESTATE_IN_AIR);
 
@@ -3914,7 +3982,7 @@ void PlayerCB_Idle(Player *p)
         PlayerCB_80273D0(p);
     } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR))
                == MOVESTATE_800) {
-        sub_802A360(p);
+        Player_InitIceSlide(p);
     } else if (!sub_802A0C8(p) && !sub_802A0FC(p) && !sub_8029E6C(p)
                && !sub_802A2A8(p)) {
         sub_802966C(p);
@@ -4071,7 +4139,7 @@ void PlayerCB_8025A0C(Player *p)
 
     if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR))
         == MOVESTATE_800) {
-        sub_802A360(p);
+        Player_InitIceSlide(p);
     } else {
         p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
         p->unk64 = 4;
@@ -4091,7 +4159,7 @@ void PlayerCB_8025AB8(Player *p)
         PlayerCB_80273D0(p);
     } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR))
                == MOVESTATE_800) {
-        sub_802A360(p);
+        Player_InitIceSlide(p);
     } else {
         if (p->unk99[0] != 0) {
             p->unk99[0]--;
@@ -4189,7 +4257,7 @@ void PlayerCB_Jump(Player *p)
     s32 jumpHeight;
     s32 accelX, accelY;
 
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
@@ -4266,7 +4334,7 @@ void PlayerCB_Jumping(Player *p)
 
 void PlayerCB_8025F84(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
@@ -4298,7 +4366,7 @@ void PlayerCB_8025F84(Player *p)
 
 void PlayerCB_8026060(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState |= (MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
@@ -4326,7 +4394,7 @@ void PlayerCB_8026060(Player *p)
 
 void PlayerCB_802611C(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState |= (MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
@@ -4574,7 +4642,7 @@ void sub_802669C(Player *p)
 
 void PlayerCB_8026764(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState &= ~MOVESTATE_4;
     p->moveState |= MOVESTATE_1000000;
@@ -4655,7 +4723,7 @@ void PlayerCB_8026810(Player *p)
 
 void PlayerCB_80269C0(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState &= ~MOVESTATE_4;
     p->moveState &= ~(MOVESTATE_100 | MOVESTATE_IN_AIR);
@@ -4677,7 +4745,7 @@ void PlayerCB_80269C0(Player *p)
 
 void PlayerCB_8026A4C(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState &= ~MOVESTATE_4;
     p->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
@@ -4783,20 +4851,14 @@ void PlayerCB_8026D2C(Player *p)
     PLAYERFN_UPDATE_POSITION(p);
     PLAYERFN_UPDATE_ROTATION(p);
 
-    if (p->speedAirY >= 0) {
-        sub_8022218(p);
-        sub_8022284(p);
-    } else {
-        sub_8022284(p);
-        sub_8022218(p);
-    }
+    sub_802A500_inline(p);
 
     PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(p);
 }
 
 void PlayerCB_8026E24(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState |= (MOVESTATE_80000 | MOVESTATE_200 | MOVESTATE_4);
 
@@ -4851,17 +4913,7 @@ void PlayerCB_8026F10(Player *p)
 {
     if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR))
         == MOVESTATE_800) {
-        sub_80218E4(p);
-        p->moveState &= ~MOVESTATE_4;
-
-        PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
-
-        p->unk64 = 62;
-
-        p->moveState &= ~MOVESTATE_FACING_LEFT;
-        m4aSongNumStart(SE_ICE_PARADISE_SLIDE);
-
-        PLAYERFN_SET_AND_CALL(PlayerCB_8026BCC, p);
+        Player_InitIceSlide_inline(p);
     } else {
         //_08026F74
         p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
@@ -4879,7 +4931,7 @@ void PlayerCB_8026F10(Player *p)
 
 void PlayerCB_8026FC8(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState &= ~MOVESTATE_4;
 
@@ -4917,7 +4969,7 @@ void PlayerCB_8027040(Player *p)
 
 void PlayerCB_8027114(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     if ((!(p->moveState & MOVESTATE_4) || (p->unk64 != 4))) {
         p->unk64 = 47;
@@ -5009,7 +5061,7 @@ void PlayerCB_8027250(Player *p)
         p->speedAirX >>= 1;
     }
 
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState |= MOVESTATE_IN_AIR;
     p->moveState &= ~(MOVESTATE_200 | MOVESTATE_8 | MOVESTATE_4);
@@ -5042,7 +5094,7 @@ void PlayerCB_80273D0(Player *p)
             && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             sub_802A40C(p);
         } else {
-            sub_80218E4(p);
+            Player_TransitionCancelFlyingAndBoost(p);
 
             p->moveState &= ~(MOVESTATE_4 | MOVESTATE_FACING_LEFT);
 
@@ -5093,8 +5145,7 @@ void PlayerCB_GoalSlowdown(Player *p)
         if (p->speedGroundX <= 0) {
             sub_802785C(p);
         } else {
-            if (gCamera.shiftY > -56)
-                gCamera.shiftY--;
+            PlayerCB_CameraShift_inline(p);
 
             sub_80232D0(p);
             sub_8023260(p);
@@ -5112,8 +5163,7 @@ void PlayerCB_GoalBrake(Player *p)
 {
     u16 cAnim = GET_CHARACTER_ANIM(p);
 
-    if (gCamera.shiftY > -56)
-        gCamera.shiftY--;
+    PlayerCB_CameraShift_inline(p);
 
     if (cAnim == SA2_CHAR_ANIM_31) {
         if ((p->variant == 0) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
@@ -5167,8 +5217,7 @@ void PlayerCB_GoalBrake(Player *p)
 
 void sub_802785C(Player *p)
 {
-    if (gCamera.shiftY > -56)
-        gCamera.shiftY--;
+    PlayerCB_CameraShift_inline(p);
 
     p->unk72 = 90;
 
@@ -5195,8 +5244,7 @@ void sub_802785C(Player *p)
 
 void PlayerCB_80278D4(Player *p)
 {
-    if (gCamera.shiftY > -56)
-        gCamera.shiftY--;
+    PlayerCB_CameraShift_inline(p);
 
     if (--p->unk72 == 0) {
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
@@ -5204,7 +5252,7 @@ void PlayerCB_80278D4(Player *p)
         } else {
             CreateStageResults(gCourseTime, gRingCount, gSpecialRingCount);
         }
-        PLAYERFN_SET(PlayerCB_802A3F0);
+        PLAYERFN_SET(PlayerCB_CameraShift);
     }
 
     sub_80232D0(p);
@@ -5251,8 +5299,7 @@ void PlayerCB_80279F8(Player *p)
 
     PLAYERFN_UPDATE_UNK2A(p);
 
-    if (gCamera.shiftY > -56)
-        gCamera.shiftY--;
+    PlayerCB_CameraShift_inline(p);
 
     if (p->moveState & MOVESTATE_4000000) {
         p->unk5A = 1;
@@ -5305,6 +5352,7 @@ void PlayerCB_8027C5C(Player *p)
     PLAYERFN_UPDATE_UNK2A(p);
 }
 
+// Multiplayer-only
 void PlayerCB_8027D3C(Player *p)
 {
     s8 *someSio = gUnknown_030054B4;
@@ -5361,7 +5409,7 @@ void PlayerCB_8027D3C(Player *p)
         p->unk72 = 0;
         p->unk5C = 0;
 
-        PLAYERFN_SET(PlayerCB_802A4FC);
+        PLAYERFN_SET(PlayerCB_Nop);
     }
 }
 
@@ -5514,7 +5562,7 @@ void PlayerCB_80286F0(Player *p)
     u16 character = p->character;
     u8 mask = sTrickMasks[dir][character];
 
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState |= (MOVESTATE_2000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
@@ -5672,7 +5720,7 @@ void DoTrickIfButtonPressed(Player *p)
 
 void PlayerCB_8028D74(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     p->moveState |= (MOVESTATE_100 | MOVESTATE_IN_AIR);
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
@@ -5700,7 +5748,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
     u8 r5 = (u6E >> 4);
     u8 r6 = u6E % 4;
 
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
 
     if (((r5 == 2) || (r5 == 3)) && !(p->moveState & MOVESTATE_IN_AIR)) {
         p->moveState &= ~(MOVESTATE_100 | MOVESTATE_IN_AIR);
@@ -5818,7 +5866,7 @@ void PlayerCB_8029074(Player *p)
 
 void PlayerCB_8029158(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
     p->moveState |= MOVESTATE_IN_AIR;
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20 | MOVESTATE_8);
 
@@ -6749,7 +6797,7 @@ bool32 sub_802A2A8(Player *p)
 
 void PlayerCB_802A300(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
     p->moveState |= MOVESTATE_IN_AIR;
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20 | MOVESTATE_8);
 
@@ -6764,20 +6812,7 @@ void PlayerCB_802A300(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_802940C, p);
 }
 
-void sub_802A360(Player *p)
-{
-    sub_80218E4(p);
-    p->moveState &= ~MOVESTATE_4;
-
-    PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
-
-    p->unk64 = 62;
-    p->moveState &= ~(MOVESTATE_FACING_LEFT);
-
-    m4aSongNumStart(SE_ICE_PARADISE_SLIDE);
-
-    PLAYERFN_SET_AND_CALL(PlayerCB_8026BCC, p);
-}
+void Player_InitIceSlide(Player *p) { Player_InitIceSlide_inline(p); }
 
 void PlayerCB_802A3B8(Player *p) { sub_802808C(p); }
 
@@ -6789,15 +6824,11 @@ void PlayerCB_802A3C4(Player *p)
         PLAYERFN_SET(PlayerCB_8025A0C);
 }
 
-void PlayerCB_802A3F0(Player *p)
-{
-    if (gCamera.shiftY > -56)
-        gCamera.shiftY--;
-}
+void PlayerCB_CameraShift(Player *p) { PlayerCB_CameraShift_inline(p); }
 
 void sub_802A40C(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
     p->moveState &= ~MOVESTATE_4;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
@@ -6810,9 +6841,10 @@ void sub_802A40C(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_80279F8, p);
 }
 
+// Boss-Stage-only
 void sub_802A468(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
     p->moveState &= ~MOVESTATE_4;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
@@ -6823,9 +6855,10 @@ void sub_802A468(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_8027C5C, p);
 }
 
+// Multiplayer-only
 void sub_802A4B8(Player *p)
 {
-    sub_80218E4(p);
+    Player_TransitionCancelFlyingAndBoost(p);
     p->moveState &= ~MOVESTATE_4;
     p->moveState |= MOVESTATE_IGNORE_INPUT;
 
@@ -6834,18 +6867,9 @@ void sub_802A4B8(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_8027D3C, p);
 }
 
-void PlayerCB_802A4FC(Player *p) { }
+void PlayerCB_Nop(Player *p) { }
 
-void sub_802A500(Player *p)
-{
-    if (p->speedAirY >= 0) {
-        sub_8022218(p);
-        sub_8022284(p);
-    } else {
-        sub_8022284(p);
-        sub_8022218(p);
-    }
-}
+void sub_802A500(Player *p) { sub_802A500_inline(p); }
 
 void sub_802A52C(Player *p) { PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(p); }
 

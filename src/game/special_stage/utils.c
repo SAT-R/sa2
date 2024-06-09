@@ -11,7 +11,7 @@ void *gUnknown_03005B58 = NULL;
 void *gUnknown_03005B5C = NULL;
 
 void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos,
-                 s16 yPos, u16 g, u8 variant, u8 palId)
+                 s16 yPos, u16 oamOrder, u8 variant, u8 palId)
 {
     Sprite newObj;
     Sprite *s;
@@ -35,12 +35,12 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
     s->unk10 = unk10;
     s->x = xPos;
     s->y = yPos;
-    s->unk1A = g << 6;
+    s->unk1A = SPRITE_OAM_ORDER(oamOrder);
     s->timeUntilNextFrame = 0;
-    s->prevAnim = 0xffff;
+    s->prevAnim = -1;
     s->variant = variant;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = palId;
     s->hitboxes[0].index = -1;
 
@@ -70,12 +70,12 @@ bool16 sub_806CB84(struct UNK_806CB84 *a,
 
     {
         u16 deg = -stage->cameraBearing & 0x3FF;
-        s32 r2 = (gSineTable[deg] * 4);
-        s32 r5 = gSineTable[(deg) + 0x100];
+        s32 r2 = SIN(deg) * 4;
+        s32 r5 = COS(deg) * 4;
         s32 temp_r4 = (-unk874->unk0 + stage->cameraX);
         s32 r3 = (-unk874->unk4 + stage->cameraY);
-        r9 = (((r2 >> 8) * (r3 >> 8)) + ((r5 >> 6) * (temp_r4 >> 8))) >> 2;
-        r4 = (((-r2 >> 8) * (temp_r4 >> 8)) + ((r5 >> 6) * (r3 >> 8))) >> 1;
+        r9 = ((I(r2) * I(r3)) + (I(r5) * I(temp_r4))) >> 2;
+        r4 = ((I(-r2) * I(temp_r4)) + (I(r5) * I(r3))) >> 1;
     }
 
     {
@@ -91,7 +91,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a,
     val = stage->unk5D3;
 
     while (val2 != 0) {
-        if (val >= 0xA0) {
+        if (val >= 160) {
             val -= val2 >> 1;
         } else if (val < stage->unk5D1) {
             val += val2 >> 1;
@@ -108,7 +108,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a,
 
     {
         s32 r2 = (-(stage->unk94[val][0] >> 1) * 9) >> 3;
-        s32 r8 = ((stage->unk94[val][0] >> 1) * 9) >> 3;
+        s32 r8 = (+(stage->unk94[val][0] >> 1) * 9) >> 3;
 
         if (r9 <= r2 || r9 >= r8) {
             return FALSE;
@@ -119,7 +119,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a,
         a->unk8 = (0x78 - ((r9 * 0x87) / r8));
         a->screenX = a->unk8 - unk874->unkC;
         if (unk874->unk8 != 0) {
-            a->unk6 = (((unk874->unk8 << 3) / world->unkC[val]) * 9) >> 2;
+            a->unk6 = (((unk874->unk8 * 8) / world->unkC[val]) * 9) >> 2;
         } else {
             a->unk6 = 0;
         }
@@ -155,8 +155,9 @@ void sub_806CD68(Sprite *s)
     numSubframes = sprDims->numSubframes;
     for (i = 0; i < numSubframes; i++) {
         u32 attr1_2;
-        reference = gUnknown_03002794->oamData[s->graphics.anim];
-        oam = OamMalloc((s->unk1A & 0x7C0) >> 6);
+        reference = gRefSpriteTables->oamData[s->graphics.anim];
+
+        oam = OamMalloc(GET_SPRITE_OAM_ORDER(s));
         if (oam == iwram_end) {
             return;
         }
@@ -172,7 +173,7 @@ void sub_806CD68(Sprite *s)
         oam->all.attr1 &= 0xfe00;
         oam->all.attr1 |= ((s->unk10 & 0x1f) << 9);
         oam->all.attr1 |= ((unk16 + attr1_2) & 0x1ff);
-        oam->all.attr2 += s->palId * 0x1000;
+        oam->all.attr2 += s->palId << 12;
         oam->all.attr2 |= ((s->unk10 & 0x3000) >> 2);
         oam->all.attr2 += GET_TILE_NUM(s->graphics.dest);
     }

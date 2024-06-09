@@ -90,19 +90,9 @@ SECTIONS
         src/sio32_multi_load.o(.text);
         src/core.o(.text);
         src/main.o(.text);
-#if (ENABLE_DECOMP_CREDITS == 1)
-        src/game/decomp_credits.o(.text);
-        src/game/decomp_credits.o(.rodata);
-#endif
         src/task.o(.text);
-        src/bg_update.o(.text);
-        src/animation_commands_bg.o(.text);
-        src/sprite_2.o(.text);
-#if (CPU_ARCH_ARM == 1)
-        asm/sprite_2.o(.text);
-#endif
-        src/sprite_3.o(.text);
-        src/animation_commands.o(.text);
+        src/background.o(.text);
+        src/sprite.o(.text);
 #if (CPU_ARCH_ARM == 1)
         asm/bg_triangles_unused_0.o(.text);
 #endif
@@ -234,8 +224,8 @@ SECTIONS
         src/game/bosses/boss_run.o(.text);
 #if (CPU_ARCH_ARM == 1)
         asm/boss_run.o(.text);
-        asm/boss_8.o(.text);
 #endif
+        src/game/bosses/boss_8.o(.text);
         src/game/bosses/boss_9.o(.text);
 #if (CPU_ARCH_ARM == 1)
         asm/boss_9.o(.text);
@@ -380,6 +370,11 @@ SECTIONS
         src/game/cutscenes/final_ending_fall.o(.text);
         src/game/cutscenes/final_ending_land.o(.text);
         src/game/cutscenes/missing_emeralds.o(.text);
+        
+#if (ENABLE_DECOMP_CREDITS == 1)
+        src/game/decomp_credits.o(.text);
+        src/game/decomp_credits.o(.rodata);
+#endif
 
         /* libs */
 #if (CPU_ARCH_ARM == 1)
@@ -424,11 +419,9 @@ SECTIONS
         src/multi_sio.o(.rodata);
         src/sio32_multi_load.o(.rodata);
         src/core.o(.rodata);
-        src/animation_commands_bg.o(.rodata);
+        src/background.o(.rodata);
         src/trig.o(.rodata);
-        src/sprite_2.o(.rodata);
-        src/animation_commands.o(.rodata);
-        src/sprite_3.o(.rodata);
+        src/sprite.o(.rodata);
         src/bg_triangles.o(.rodata);
         src/malloc_ewram.o(.rodata);
         src/malloc_vram.o(.rodata);
@@ -503,7 +496,9 @@ SECTIONS
         src/game/bosses/boss_7.o(.rodata);
 #if (CPU_ARCH_ARM == 1)
         asm/boss_run.o(.rodata);
-        asm/boss_8.o(.rodata);
+#endif
+        src/game/bosses/boss_8.o(.rodata);
+#if (CPU_ARCH_ARM == 1)
         asm/boss_9.o(.rodata);
 #endif
         src/game/enemies/kubinaga.o(.rodata);

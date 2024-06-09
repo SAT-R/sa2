@@ -110,11 +110,11 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     index = temp / 0x10000;
     temp2 *= 0x10000;
     temp2 /= 0x10000;
-    temp6 = sub_8004518(index);
+    temp6 = Base10DigitsToHexNibbles(index);
 
     temp3 = Div(temp2, 60);
     index = temp2 - (temp3 * 60);
-    temp4 = sub_8004518(index);
+    temp4 = Base10DigitsToHexNibbles(index);
 
     temp5 = 0;
     if (gCourseTime < 3600) {
@@ -187,7 +187,7 @@ void sub_8083040(TimeDisplay *timeDisplay)
         s->palId = i;
         DisplaySprite(s);
 
-        j = sub_8004518(gMultiplayerCharRings[i]);
+        j = Base10DigitsToHexNibbles(gMultiplayerCharRings[i]);
         x = s->x + 0x17;
         y = s->y + 0x13;
         do {
@@ -232,11 +232,11 @@ void sub_8083104(TimeDisplay *timeDisplay)
     index = temp / 0x10000;
     temp2 *= 0x10000;
     temp2 /= 0x10000;
-    temp6 = sub_8004518(index);
+    temp6 = Base10DigitsToHexNibbles(index);
 
     temp3 = Div(temp2, 60);
     index = temp2 - (temp3 * 60);
-    temp4 = sub_8004518(index);
+    temp4 = Base10DigitsToHexNibbles(index);
 
     x = 8;
     y = 54;

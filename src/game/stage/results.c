@@ -253,7 +253,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->unk10 = 0;
@@ -548,16 +548,13 @@ void sub_80310F0(void)
     }
 }
 
-// (90.87%) https://decomp.me/scratch/ju0GI
-NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u16 p0))
+void sub_8031138(u16 p0)
 {
     StageResults *outro = TASK_DATA(gCurTask);
     u32 counter = outro->counter;
     u32 i;
     Sprite *s;
-    s32 bonusVal;
-    s16 xPos;
-    s16 r4;
+    s32 r4;
 
     if (counter < 24) {
         s32 x;
@@ -568,14 +565,11 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
             x = (16 - counter) * 24;
         }
 
-        x = x - p0;
-
         for (i = 0; i < 8; i++) {
-            s->x = x + i * 32;
+            s->x = (x - p0) + i * 32;
             DisplaySprite(s);
         }
     } else {
-        // _08031198
         s = &outro->s7;
 
         for (i = 0; i < 8; i++) {
@@ -583,7 +577,6 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
             DisplaySprite(s);
         }
     }
-    // _080311B2
 
     if (counter > 28) {
         u32 numDisplayedBonuses = (ACT_INDEX(gCurrentLevel) == ACT_BOSS) ? 2 : 3;
@@ -594,14 +587,13 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
             DisplaySprite(s);
         }
     }
-    // _080311F4
 
     if (counter >= 39) {
-        // Time Score
+
         s = &outro->sprScores[0];
 
         if (counter < 56) {
-            s32 innerX = DISPLAY_WIDTH - ((counter - 39) * 12);
+            u16 innerX = DISPLAY_WIDTH - ((counter - 39) * 12);
             r4 = innerX;
         } else {
             r4 = 48;
@@ -609,31 +601,33 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
         s->x = r4 - p0;
         DisplaySprite(s);
 
-        bonusVal = outro->timeBonusScore;
-        xPos = p0;
-        xPos -= 144;
-        StageUI_PrintIntegerAt(bonusVal, (r4 - xPos), OUTRO_TIME_BONUS_Y_POS, 0);
+        {
+            s16 r4_2 = r4;
+            s16 pp = p0;
+            StageUI_PrintIntegerAt(outro->timeBonusScore, r4_2 + 144 - pp,
+                                   OUTRO_TIME_BONUS_Y_POS, 0);
+        }
     }
-    // _0803124C
 
     if (counter >= 49) {
-        // Ring Score
         s = &outro->sprScores[1];
 
         if (counter <= 65) {
-            r4 = DISPLAY_WIDTH - ((counter - 49) * 12);
+            u16 innerX = DISPLAY_WIDTH - ((counter - 49) * 12);
+            r4 = innerX;
         } else {
             r4 = 48;
         }
         s->x = r4 - p0;
         DisplaySprite(s);
 
-        bonusVal = outro->ringBonusScore;
-        xPos = p0;
-        xPos -= 144;
-        StageUI_PrintIntegerAt(bonusVal, (r4 - xPos), OUTRO_RING_BONUS_Y_POS, 0);
+        {
+            s16 r4_2 = r4;
+            s16 pp = p0;
+            StageUI_PrintIntegerAt(outro->ringBonusScore, r4_2 + 144 - pp,
+                                   OUTRO_RING_BONUS_Y_POS, 0);
+        }
     }
-    // _0803129C
 
     if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS)
         && (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
@@ -641,7 +635,7 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
         s = &outro->sprScores[2];
 
         if (counter <= 75) {
-            s32 innerX = DISPLAY_WIDTH - ((counter - 59) * 12);
+            u16 innerX = DISPLAY_WIDTH - ((counter - 59) * 12);
             r4 = innerX;
         } else {
             r4 = 48;
@@ -650,13 +644,14 @@ NONMATCH("asm/non_matching/game/stage/outro/sub_8031138.inc", void sub_8031138(u
         s->x = r4 - p0;
         DisplaySprite(s);
 
-        bonusVal = outro->spRingBonusScore;
-        xPos = p0;
-        xPos -= 144;
-        StageUI_PrintIntegerAt(bonusVal, (r4 - xPos), OUTRO_SP_RING_BONUS_Y_POS, 0);
+        {
+            s16 r4_2 = r4;
+            s16 pp = p0;
+            StageUI_PrintIntegerAt(outro->spRingBonusScore, r4_2 + 144 - pp,
+                                   OUTRO_SP_RING_BONUS_Y_POS, 0);
+        }
     }
 }
-END_NONMATCH
 
 void sub_8031314(void)
 {

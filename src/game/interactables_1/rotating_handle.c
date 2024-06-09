@@ -87,7 +87,7 @@ static void sub_805EA94(void)
 #else
         s32 temp1, temp2;
 #endif
-        sub_80218E4(&gPlayer);
+        Player_TransitionCancelFlyingAndBoost(&gPlayer);
         rotatingHandle->unk3C = 0;
 
         temp1 = abs(gPlayer.speedAirX);
@@ -183,7 +183,7 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
 #endif
         gPlayer.transition = PLTRANS_PT5;
         me->x = rotatingHandle->base.spriteX;
-        sub_80218E4(&gPlayer);
+        Player_TransitionCancelFlyingAndBoost(&gPlayer);
         sub_8023B5C(&gPlayer, 9);
         gPlayer.unk16 = 6;
         gPlayer.unk17 = 9;

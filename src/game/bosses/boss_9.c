@@ -1,9 +1,11 @@
 #include "global.h"
-#include "gba/io_reg.h"
+#include "flags.h"
 #include "sprite.h"
 #include "task.h"
+#include "gba/io_reg.h"
 #include "game/bosses/common.h"
 #include "game/bosses/boss_9.h"
+#include "sakit/globals.h"
 
 typedef struct {
     u8 filler0[0x4];
@@ -51,14 +53,34 @@ typedef struct {
     TA53_unkA8 unkA8[3];
 } TA53_unk98; /* size: 0x190 */
 
+typedef struct TA53_unk558 {
+    /* 0x00 */ void (*func)(struct TA53_unk558 *); // void func (TA53_unk558 *)
+    /* 0x04 */ u8 unk4[0x4];
+    /* 0x08 */ s32 unk8;
+    /* 0x0C */ Sprite s;
+} TA53_unk558; /* size: ??? */
+
 typedef struct {
-    /* 0x000 */ u8 filler0[0x12];
+    /* 0x000 */ u16 unk0;
+    /* 0x002 */ u16 unk2;
+    /* 0x004 */ u16 unk4;
+    /* 0x006 */ u16 unk6;
+    /* 0x008 */ u16 unk8;
+    /* 0x00A */ u16 unkA;
+    /* 0x00C */ u8 unkC;
+    /* 0x00D */ u8 unkD;
+    /* 0x00E */ u8 unkE;
+    /* 0x00F */ u8 unkF;
+    /* 0x010 */ u16 unk10;
     /* 0x012 */ u16 unk12;
-    /* 0x014 */ u8 filler14[0x8];
+    /* 0x014 */ s32 unk14;
+    /* 0x018 */ s32 unk18;
     /* 0x01C */ TA53_unk1C unk1C;
     /* 0x048 */ TA53_unk48 unk48;
     /* 0x098 */ TA53_unk98 unk98;
-    /* 0x548 */ u8 filler548[0x26C];
+    /* 0x548 */ u8 filler548[0x10];
+    /* 0x558 */ TA53_unk558 unk558;
+    /* 0x548 */ u8 filler594[0x220];
     /* 0x7B4 */ Sprite spr7B4;
     /* 0x7E4 */ u8 filler7E4[0x15C];
 } TA53Boss; /* size: 0x940 */
@@ -76,6 +98,9 @@ extern TA53_Data0 gUnknown_080D8DCC[8];
 extern void CreateTrueArea53Boss(void);
 extern void Task_EggmanKidnapsVanilla(void);
 extern void TaskDestructor_TrueArea53BossGfx(struct Task *);
+void Task_TrueArea53BossMain(void);
+void sub_8050DC8(struct TA53_unk558 *);
+void TaskDestructor_TrueArea53BossGfx(struct Task *);
 
 // Used when Vanilla gets captured
 void SetupEggmanKidnapsVanillaTask(void)
@@ -128,3 +153,39 @@ void SetupEggmanKidnapsVanillaTask(void)
     gDispCnt = (DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP
                 | DISPCNT_MODE_1);
 }
+
+#if 0
+void CreateTrueArea53Boss(void)
+{
+    TA53Boss *boss;
+    TA53_unk558 *unk558;
+
+    gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+
+    if(gActiveBossTask == NULL) {
+        gActiveBossTask = TaskCreate(Task_TrueArea53BossMain, sizeof(TA53Boss), 0x400, 0, TaskDestructor_TrueArea53BossGfx);
+    }
+
+    boss = TASK_DATA(gActiveBossTask);
+
+    boss->unkC = 12;
+    boss->unkD = 0;
+    boss->unk10 = 1;
+    boss->unk12 = 80;
+    boss->unkE = 0;
+    boss->unkF = 0;
+    boss->unk14 = 0;
+    boss->unk18 = 0;
+    boss->unk0 = 0;
+    boss->unk4 = 0;
+    boss->unk2 = 1;
+    boss->unk6 = 20;
+    boss->unk8 = 0xBF;
+    boss->unkA = 1;
+
+    unk558 = &boss->unk558;
+    unk558->func = sub_8050DC8;
+
+
+}
+#endif

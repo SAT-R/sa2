@@ -21,7 +21,7 @@
 u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3,
                 UNUSED s32 param4, u8 layer)
 {
-    MultiplayerPlayer *mpPlayer;
+    MultiplayerPlayer *mpp;
     Sprite *mpPlayerSprite;
     u32 res2;
     u32 result = COLL_NONE;
@@ -35,8 +35,8 @@ u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3,
         return COLL_NONE;
     }
 
-    mpPlayer = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
-    mpPlayerSprite = &mpPlayer->s;
+    mpp = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
+    mpPlayerSprite = &mpp->s;
 
     if (layer != p->unk38) {
         return COLL_NONE;
@@ -45,8 +45,8 @@ u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3,
 
     if ((p->speedAirX == 0 && p->speedAirY == 0)
         && HITBOX_IS_ACTIVE(opponent->hitboxes[1])) {
-        if (HB_COLLISION(oppX, oppY, opponent->hitboxes[1], mpPlayer->unk50,
-                         mpPlayer->unk52, mpPlayerSprite->hitboxes[0])) {
+        if (HB_COLLISION(oppX, oppY, opponent->hitboxes[1], mpp->pos.x, mpp->pos.y,
+                         mpPlayerSprite->hitboxes[0])) {
             // _0800DB68
             result |= COLL_FLAG_2;
         }
@@ -54,17 +54,17 @@ u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3,
     // _0800DB70
     if (HITBOX_IS_ACTIVE(mpPlayerSprite->hitboxes[1])
         && HITBOX_IS_ACTIVE(opponent->hitboxes[0])
-        && HB_COLLISION(oppX, oppY, opponent->hitboxes[0], mpPlayer->unk50,
-                        mpPlayer->unk52, mpPlayerSprite->hitboxes[1])) {
+        && HB_COLLISION(oppX, oppY, opponent->hitboxes[0], mpp->pos.x, mpp->pos.y,
+                        mpPlayerSprite->hitboxes[1])) {
         // _0800DC34
-        if (mpPlayer->unk50 > oppX) {
+        if (mpp->pos.x > oppX) {
             result |= COLL_FLAG_40000;
         } else {
             result |= COLL_FLAG_20000;
         }
         // _0800DC66
 
-        if (mpPlayer->unk52 > oppY) {
+        if (mpp->pos.y > oppY) {
             result |= COLL_FLAG_10000;
         } else {
             result |= COLL_FLAG_100000;
@@ -73,8 +73,8 @@ u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3,
         result |= COLL_FLAG_1;
     } else if (HITBOX_IS_ACTIVE(mpPlayerSprite->hitboxes[0])
                && HITBOX_IS_ACTIVE(opponent->hitboxes[1])
-               && HB_COLLISION(oppX, oppY, opponent->hitboxes[1], mpPlayer->unk50,
-                               mpPlayer->unk52, mpPlayerSprite->hitboxes[0])) {
+               && HB_COLLISION(oppX, oppY, opponent->hitboxes[1], mpp->pos.x, mpp->pos.y,
+                               mpPlayerSprite->hitboxes[0])) {
         result |= COLL_FLAG_2;
     }
 

@@ -673,7 +673,7 @@ void MultiPakCommunicationError(void)
 
     // TODO: Fix cast!
     gTilemapsRef = (struct MapHeader **)gTilemaps;
-    gUnknown_03002794 = &gSpriteTables;
+    gRefSpriteTables = &gSpriteTables;
     gMultiplayerMissingHeartbeats[0] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;

@@ -116,8 +116,8 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                            | MOVESTATE_400000);
                     if (!(prevMoveState)) {
                         InitializePlayer(&gPlayer);
-                        gPlayer.x = QS(mpp->unk50);
-                        gPlayer.y = QS(mpp->unk52 - (s8)mpp->unk58[0]);
+                        gPlayer.x = QS(mpp->pos.x);
+                        gPlayer.y = QS(mpp->pos.y - (s8)mpp->unk58[0]);
                         m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
                         gPlayer.moveState = prevMoveState;
                         gPlayer.unk90->s.unk10 &= ~0x3000;
@@ -226,7 +226,7 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     == (gMultiplayerConnections & (0x10 << (i))) >> (i + 4)) {
                 sub_8019CCC(j, count2);
                 if (j == SIO_MULTI_CNT->id) {
-                    sub_80218E4(&gPlayer);
+                    Player_TransitionCancelFlyingAndBoost(&gPlayer);
                     gPlayer.moveState &= ~MOVESTATE_8;
                     gPlayer.moveState &= ~MOVESTATE_20;
                     gPlayer.moveState &= ~MOVESTATE_4;

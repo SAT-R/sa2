@@ -72,7 +72,7 @@ u8 gKeysFirstRepeatIntervals[10] ALIGNED(16) = {};
 u16 gReleasedKeys ALIGNED(4) = 0;
 u8 gUnknown_03002710[] ALIGNED(16) = {};
 u32 gFlagsPreVBlank = 0;
-/* 0x03002794 */ const struct SpriteTables *gUnknown_03002794 = NULL;
+/* 0x03002794 */ const struct SpriteTables *gRefSpriteTables = NULL;
 struct GraphicsData *gVramGraphicsCopyQueue[] ALIGNED(16) = {};
 u16 gUnknown_03002820 = 0;
 s16 gBgScrollRegs[][2] ALIGNED(16) = {};
@@ -281,7 +281,7 @@ void GameInit(void)
     gInputPlaybackData = NULL;
     gFrameCount = 0;
 
-#ifdef UB_FIX
+#ifdef BUG_FIX
     for (i = 0; i < ARRAY_COUNT(gIntrTableTemplate); i++)
 #else
     for (i = 0; i < 15; i++)

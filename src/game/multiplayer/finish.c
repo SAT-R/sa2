@@ -124,12 +124,12 @@ void Task_8019E70(void)
     Sprite *s = &finish->s;
     MultiplayerPlayer *mpp = TASK_DATA(gMultiplayerPlayerTasks[finish->unk30]);
 
-    s->x = mpp->unk50 - gCamera.x;
+    s->x = mpp->pos.x - gCamera.x;
 
     if (!GRAVITY_IS_INVERTED) {
-        s->y = (mpp->unk52 - gCamera.y) - 32;
+        s->y = (mpp->pos.y - gCamera.y) - 32;
     } else {
-        s->y = (mpp->unk52 - gCamera.y) + 32;
+        s->y = (mpp->pos.y - gCamera.y) + 32;
     }
 
     DisplaySprite(s);

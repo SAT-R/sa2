@@ -71,8 +71,8 @@ void Task_SpindashDustEffect(void)
         if (IS_MULTI_PLAYER) {
             struct Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
             MultiplayerPlayer *mpp = TASK_DATA(t);
-            s->x = (mpp->unk50 - cam->x);
-            s->y = ((mpp->unk52 + offY) - cam->y);
+            s->x = (mpp->pos.x - cam->x);
+            s->y = ((mpp->pos.y + offY) - cam->y);
         } else {
             s->x = I(p->x) - cam->x;
             s->y = (I(p->y) + offY) - cam->y;
@@ -126,8 +126,8 @@ void Task_SpindashDustEffectBig(void)
         if (IS_MULTI_PLAYER) {
             struct Task *t = gMultiplayerPlayerTasks[SIO_MULTI_CNT->id];
             MultiplayerPlayer *mpp = TASK_DATA(t);
-            s->x = (mpp->unk50 - cam->x);
-            s->y = ((mpp->unk52 + offY) - cam->y);
+            s->x = (mpp->pos.x - cam->x);
+            s->y = ((mpp->pos.y + offY) - cam->y);
         } else {
             s->x = I(p->x) - cam->x;
             s->y = (I(p->y) + offY) - cam->y;

@@ -821,11 +821,12 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
     coll = gRefCollision;
     mtIndex = ((u16 *)coll->map[layer])[(r3 * coll->levelX) + r8];
 
-#ifndef NON_MATCHING
     // ((r5 << 3) + (r5 << 2)) == r5 * TILES_PER_METATILE_AXIS
     r1 = ((r5 << 3) + (r5 << 2) + r7);
 
+#ifndef NON_MATCHING
     asm("" ::"r"(r5));
+#endif
 
     r3 = mtIndex * 256;
     mtIndex *= 32;
@@ -835,10 +836,6 @@ s32 sub_801EF94(s32 p0, s32 p1, s32 layer)
     pMeta += mtIndex;
     pMeta += i;
     result = *(u16 *)pMeta;
-#else
-    mtIndex = mtIndex * 288 + ((r5 * 12) + r7) * 2;
-    result = coll->metatiles[mtIndex];
-#endif
 
     return result;
 }

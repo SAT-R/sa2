@@ -308,7 +308,7 @@ extern s32 gPseudoRandom;
 extern u8 gUnknown_03002710[128];
 extern struct MultiBootParam gMultiBootParam;
 
-extern const struct SpriteTables *gUnknown_03002794;
+extern const struct SpriteTables *gRefSpriteTables;
 
 void GameInit(void);
 void GameLoop(void);
