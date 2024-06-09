@@ -146,9 +146,7 @@ gUnknown_080D8F10:
 .syntax unified
 .arm
 
-.if 0
-.endif
-
+.if 01
 	thumb_func_start CreateTrueArea53Boss
 CreateTrueArea53Boss: @ 0x0804CEC4
 	push {r4, r5, r6, r7, lr}
@@ -182,7 +180,7 @@ _0804CEF8:
 	movs r0, #0xc0
 	lsls r0, r0, #0x12
 	adds r0, r4, r0
-	str r0, [sp, #4]
+	str r0, [sp, #4]        @ sp04 = boss
 	ldr r0, _0804D2B8 @ =IWRAM_START + 0x1C
 	adds r2, r4, r0			@ r2 = &boss->unk1C
 	ldr r1, _0804D2BC @ =IWRAM_START + 0x48
@@ -200,12 +198,12 @@ _0804CEF8:
 	str r1, [sp, #0xc]
 	movs r3, #0
 	movs r0, #0xc
-	ldr r5, [sp, #4]
+	ldr r5, [sp, #4]        @ r5 = boss
 	strb r0, [r5, #0xc]
 	strb r3, [r5, #0xd]
 	movs r1, #0
 	movs r0, #1
-	mov sb, r0
+	mov sb, r0              @ sb = 1
 	mov r0, sb
 	strh r0, [r5, #0x10]
 	movs r0, #0x50
@@ -981,6 +979,7 @@ _0804D584: .4byte 0x000002CE
 _0804D588: .4byte 0x00000467
 _0804D58C: .4byte 0x000002CD
 _0804D590: .4byte 0x000002CF
+.endif
 
 	thumb_func_start sub_804D594
 sub_804D594: @ 0x0804D594
