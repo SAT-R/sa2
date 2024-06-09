@@ -80,7 +80,7 @@ typedef struct {
     /* 0x098 */ TA53_unk98 unk98;
     /* 0x548 */ u8 filler548[0x10];
     /* 0x558 */ TA53_unk558 unk558;
-    /* 0x548 */ u8 filler55C[0x258];
+    /* 0x548 */ u8 filler594[0x220];
     /* 0x7B4 */ Sprite spr7B4;
     /* 0x7E4 */ u8 filler7E4[0x15C];
 } TA53Boss; /* size: 0x940 */
