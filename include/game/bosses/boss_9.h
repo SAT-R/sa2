@@ -9,7 +9,7 @@ extern void sub_804D594(s32, s32);
 typedef struct {
     void *func;
     void *ref;
-    u16 unk4;
+    u16 unk8;
 } TA53_Data0;
 
 typedef struct {
