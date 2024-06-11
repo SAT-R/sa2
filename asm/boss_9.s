@@ -3,152 +3,8 @@
 
 .section .rodata
 
- 	.global gUnknown_080D88F0
-gUnknown_080D88F0:
-    .incbin "baserom.gba", 0x000D88F0, 0x28
-
-    .global gUnknown_080D8918
-gUnknown_080D8918:
-    .incbin "baserom.gba", 0x000D8918, 0x8D
-
-    .global gUnknown_080D89A5
-gUnknown_080D89A5:
-    .incbin "baserom.gba", 0x000D89A5, 0x7
-
-    .global gUnknown_080D89AC
-gUnknown_080D89AC:
-    .incbin "baserom.gba", 0x000D89AC, 0x1C
-
-    .global gUnknown_080D89C8
-gUnknown_080D89C8:
-    .incbin "baserom.gba", 0x000D89C8, 0x54
-
-    .global gUnknown_080D8A1C
-gUnknown_080D8A1C:
-    .incbin "baserom.gba", 0x000D8A1C, 0x18
-
-    .global gUnknown_080D8A34
-gUnknown_080D8A34:
-    .incbin "baserom.gba", 0x000D8A34, 0x18
-
-    .global gUnknown_080D8A4C
-gUnknown_080D8A4C:
-    .incbin "baserom.gba", 0x000D8A4C, 0x18
-
-    .global gUnknown_080D8A64
-gUnknown_080D8A64:
-    .incbin "baserom.gba", 0x000D8A64, 0x18
-
-    .global gUnknown_080D8A7C
-gUnknown_080D8A7C:
-    .incbin "baserom.gba", 0x000D8A7C, 0x18
-
-    .global gUnknown_080D8A94
-gUnknown_080D8A94:
-    .incbin "baserom.gba", 0x000D8A94, 0x18
-
-    .global gUnknown_080D8AAC
-gUnknown_080D8AAC:
-    .incbin "baserom.gba", 0x000D8AAC, 0x18
-
-    .global gUnknown_080D8AC4
-gUnknown_080D8AC4:
-    .incbin "baserom.gba", 0x000D8AC4, 0x18
-
-    .global gUnknown_080D8ADC
-gUnknown_080D8ADC:
-    .incbin "baserom.gba", 0x000D8ADC, 0x18
-
-    .global gUnknown_080D8AF4
-gUnknown_080D8AF4:
-    .incbin "baserom.gba", 0x000D8AF4, 0x108
-	
-    .global gUnknown_080D8BFC
-gUnknown_080D8BFC:
-    .incbin "baserom.gba", 0x000D8BFC, 0x14
-
-    .global gUnknown_080D8C10
-gUnknown_080D8C10:
-    .incbin "baserom.gba", 0x000D8C10, 0x14
-
-    .global gUnknown_080D8C24
-gUnknown_080D8C24:
-    .incbin "baserom.gba", 0x000D8C24, 0x14
-
-    .global gUnknown_080D8C38
-gUnknown_080D8C38:
-    .incbin "baserom.gba", 0x000D8C38, 0x14
-	
-    .global gUnknown_080D8C4C
-gUnknown_080D8C4C:
-    .incbin "baserom.gba", 0x000D8C4C, 0x8
-    
-    .global gUnknown_080D8C54
-gUnknown_080D8C54:
-    .incbin "baserom.gba", 0x000D8C54, 0x8
-    
-    .global gUnknown_080D8C5C
-gUnknown_080D8C5C:
-    .incbin "baserom.gba", 0x000D8C5C, 0x8
-
-    .global gUnknown_080D8C64
-gUnknown_080D8C64:
-    .incbin "baserom.gba", 0x000D8C64, 0x18
-
-    .global gUnknown_080D8C7C
-gUnknown_080D8C7C:
-    .incbin "baserom.gba", 0x000D8C7C, 0x18
-
-    .global gUnknown_080D8C94
-gUnknown_080D8C94:
-    .incbin "baserom.gba", 0x000D8C94, 0xD8
-
-    .global gUnknown_080D8D6C
-gUnknown_080D8D6C:
-	.4byte sub_804E078, gUnknown_080D8BFC
-	.2byte 40, 0
-	.4byte sub_804E4CC, gUnknown_080D8BFC
-	.2byte 40, 0
-	.4byte sub_8050BFC, gUnknown_080D8C24
-	.2byte 126, 0
-	.4byte sub_8050C50, gUnknown_080D8C24
-	.2byte 512, 0
-	.4byte sub_804E15C, gUnknown_080D8C38
-	.2byte 160, 0
-	.4byte sub_8050CBC, gUnknown_080D8C10
-	.2byte 80, 0
-	.4byte sub_8050D24, gUnknown_080D8C10
-	.2byte 80, 0
-	.4byte sub_8050D9C, gUnknown_080D8C10
-	.2byte 80, 0
-
-    .global gUnknown_080D8DCC
-gUnknown_080D8DCC:
-    .incbin "baserom.gba", 0x000D8DCC, 0x48
-
-    .global gUnknown_080D8E14
-gUnknown_080D8E14:
-    .incbin "baserom.gba", 0x000D8E14, 0xC
-
-    .global gUnknown_080D8E20
-gUnknown_080D8E20:
-    .incbin "baserom.gba", 0x000D8E20, 0x2
-
-    .global gUnknown_080D8E22
-gUnknown_080D8E22:
-    .incbin "baserom.gba", 0x000D8E22, 0xBE
-
-    .global gUnknown_080D8EE0
-gUnknown_080D8EE0:
-    .incbin "baserom.gba", 0x000D8EE0, 0x10
-
-    .global gUnknown_080D8EF0
-gUnknown_080D8EF0:
-    .incbin "baserom.gba", 0x000D8EF0, 0x20
-
-    .global gUnknown_080D8F10
-gUnknown_080D8F10:
-    .incbin "baserom.gba", 0x000D8F10, 0x20
+.if 0
+.endif
 
 .text
 .syntax unified
@@ -2892,7 +2748,7 @@ _0804E50C:
 	movs r5, #0
 	adds r4, #0x4c
 	mov r8, r4
-	ldr r0, _0804E5A0 @ =gUnknown_080D8E20
+	ldr r0, _0804E5A0 @ =sRGB_080D8E20
 	mov ip, r0
 	movs r7, #0x1f
 	movs r1, #0x92
@@ -2954,7 +2810,7 @@ _0804E532:
 	.align 2, 0
 _0804E598: .4byte gDispCnt
 _0804E59C: .4byte 0x0000FDFF
-_0804E5A0: .4byte gUnknown_080D8E20
+_0804E5A0: .4byte sRGB_080D8E20
 _0804E5A4: .4byte gObjPalette
 _0804E5A8: .4byte gBgPalette
 _0804E5AC: .4byte gFlags
@@ -2976,7 +2832,7 @@ _0804E5B0:
 	lsls r0, r0, #0x10
 	lsrs r6, r0, #0x10
 	movs r2, #0
-	ldr r0, _0804E65C @ =gUnknown_080D8E20
+	ldr r0, _0804E65C @ =sRGB_080D8E20
 	mov r8, r0
 	movs r4, #0x1f
 	ldr r1, _0804E660 @ =gBgPalette
@@ -3009,7 +2865,7 @@ _0804E5F0:
 	muls r2, r6, r2
 	asrs r2, r2, #9
 	ands r2, r4
-	ldr r0, _0804E664 @ =gUnknown_080D8E22
+	ldr r0, _0804E664 @ =sRGB_080D8E20+0x2
 	adds r1, r1, r0
 	ldrb r0, [r1]
 	muls r0, r6, r0
@@ -3048,9 +2904,9 @@ _0804E64A:
 	bx r0
 	.align 2, 0
 _0804E658: .4byte gDispCnt
-_0804E65C: .4byte gUnknown_080D8E20
+_0804E65C: .4byte sRGB_080D8E20
 _0804E660: .4byte gBgPalette
-_0804E664: .4byte gUnknown_080D8E22
+_0804E664: .4byte sRGB_080D8E20+0x2
 _0804E668: .4byte gFlags
 
 	thumb_func_start sub_804E66C
@@ -7510,7 +7366,7 @@ sub_8050958: @ 0x08050958
 	ldr r0, _080509A0 @ =gFlags
 	mov sl, r0
 	ldr r6, _080509A4 @ =gObjPalette
-	ldr r4, _080509A8 @ =gUnknown_080D8F10
+	ldr r4, _080509A8 @ =gUnknown_080D8EF0+0x20
 	ldr r3, _080509AC @ =gBgPalette
 _08050980:
 	adds r1, r5, #0
@@ -7532,7 +7388,7 @@ _08050980:
 	.align 2, 0
 _080509A0: .4byte gFlags
 _080509A4: .4byte gObjPalette
-_080509A8: .4byte gUnknown_080D8F10
+_080509A8: .4byte gUnknown_080D8EF0+0x20
 _080509AC: .4byte gBgPalette
 _080509B0:
 	ldr r0, _080509F8 @ =gStageTime

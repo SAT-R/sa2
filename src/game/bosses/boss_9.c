@@ -7,6 +7,8 @@
 #include "game/bosses/boss_9.h"
 #include "sakit/globals.h"
 
+#include "constants/animations.h"
+
 typedef struct {
     /* 0x00 */ TA53_Data0 *unk0;
     /* 0x04 */ s16 unk4[4];
@@ -121,22 +123,14 @@ typedef struct {
     /* 0x7E4 */ u8 filler7E4[0x15C];
 } TA53Boss; /* size: 0x940 */
 
-extern s16 gUnknown_080D8A1C[4];
-extern s16 gUnknown_080D8A34[4];
-extern s16 gUnknown_080D8A4C[4];
-extern s16 gUnknown_080D8A64[4];
-extern s16 gUnknown_080D8A7C[4];
-extern s16 gUnknown_080D8A94[4];
-extern s16 gUnknown_080D8AAC[4];
-extern s16 gUnknown_080D8AC4[4];
-extern s16 gUnknown_080D8ADC[4];
-extern s16 gUnknown_080D8AF4[4];
-extern s16 gUnknown_080D8C4C[4];
-extern s16 gUnknown_080D8C54[4];
-extern s16 gUnknown_080D8C7C[4];
-extern s16 gUnknown_080D8C94[4];
-extern TA53_Data0 gUnknown_080D8D6C[8];
-extern TA53_Data0 gUnknown_080D8DCC[8];
+typedef struct {
+    /* 0x00 */ s32 unk0;
+    /* 0x04 */ u16 anim;
+    /* 0x06 */ u8 unk6;
+    /* 0x07 */ u8 unk7;
+    /* 0x08 */ u8 unk8;
+    /* 0x0A */ u16 unkA;
+} TA53_80D89C8;
 
 extern void CreateTrueArea53Boss(void);
 extern void Task_EggmanKidnapsVanilla(void);
@@ -144,6 +138,322 @@ extern void TaskDestructor_TrueArea53BossGfx(struct Task *);
 void Task_TrueArea53BossMain(void);
 void sub_8050DC8(struct TA53_unk558 *);
 void TaskDestructor_TrueArea53BossGfx(struct Task *);
+
+const TileInfo gUnknown_080D88F0[5] = {
+    { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_0, 0 },
+    { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_1, 0 },
+    { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_2, 0 },
+    { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_CANNON, 0 },
+    { 10 * 9, SA2_ANIM_TRUE_AREA_53_BOSS_COCKPIT, 0 },
+};
+
+const TileInfo gUnknown_080D8918[17] = {
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 12 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 11 },
+    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 10 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 9 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 8 },
+    { 12, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 7 },
+    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 6 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 5 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 4 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 3 },
+    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 2 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 1 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 0 },
+    { 12, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 15 },
+    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 14 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 13 },
+    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_EXPLOSION, 0 },
+};
+
+const s8 gUnknown_080D89A0[5] = { 0, -4, -8, -12, -16 };
+const s8 gUnknown_080D89A5[6] = { 0, 20, 24, 20, 18, 30 };
+
+// TODO: Parameter types
+typedef void (*TA53SubFunc)(u32, u32, u32, u32);
+void sub_804F6AC(u32, u32, u32, u32);
+void sub_804F768(u32, u32, u32, u32);
+void sub_804F850(u32, u32, u32, u32);
+void sub_804F9BC(u32, u32, u32, u32);
+void sub_804FAA4(u32, u32, u32, u32);
+void sub_804FC10(u32, u32, u32, u32);
+void sub_804FD58(u32, u32, u32, u32);
+const TA53SubFunc gUnknown_080D89AC[7]
+    = { sub_804F6AC, sub_804F768, sub_804F850, sub_804F9BC,
+        sub_804FAA4, sub_804FC10, sub_804FD58 };
+
+const TA53_80D89C8 gUnknown_080D89C8[]
+    = { { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 },
+        { 0, SA2_ANIM_EGG_GO_ROUND_PROJECTILE, 0, 0, 1, 0 },
+        { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 },
+        { 0, SA2_ANIM_EGG_GO_ROUND_PROJECTILE, 0, 0, 1, 0 },
+        { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 },
+        { 0, SA2_ANIM_EGG_GO_ROUND_PROJECTILE, 0, 0, 1, 0 },
+        { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 } };
+
+const s16 gUnknown_080D8A1C[3][4] = {
+    { 0x7EC, 0x82C, 0x7EC, 0x82C },
+    { 0x7EC, 0x82C, 0x7EC, 0x82C },
+    { 0x7EC, 0x82C, 0x7EC, 0x82C },
+};
+
+const s16 gUnknown_080D8A34[3][4] = {
+    { 0x000, 0x03C, 0x000, 0x03C },
+    { 0x000, 0x03C, 0x000, 0x03C },
+    { 0x000, 0x03C, 0x000, 0x03C },
+};
+
+const s16 gUnknown_080D8A4C[3][4] = {
+    { 0x000, 0x040, 0x000, 0x040 },
+    { 0x000, 0x040, 0x000, 0x040 },
+    { 0x000, 0x040, 0x000, 0x040 },
+};
+
+const s16 gUnknown_080D8A64[3][4] = {
+    { 0x000, 0x03C, 0x000, 0x03C },
+    { 0x000, 0x03C, 0x000, 0x03C },
+    { 0x000, 0x03C, 0x000, 0x03C },
+};
+
+const s16 gUnknown_080D8A7C[3][4] = {
+    { 0x000, 0x040, 0x000, 0x040 },
+    { 0x000, 0x040, 0x000, 0x040 },
+    { 0x000, 0x040, 0x000, 0x040 },
+};
+
+const s16 gUnknown_080D8A94[3][4] = {
+    { 0x7EC, 0x82C, 0x7EC, 0x82C },
+    { 0x7EC, 0x82C, 0x7EC, 0x82C },
+    { 0x7EC, 0x82C, 0x7EC, 0x82C },
+};
+
+const s16 gUnknown_080D8AAC[3][4] = {
+    { 0x000, 0x03C, 0x000, 0x03C },
+    { 0x000, 0x03C, 0x000, 0x03C },
+    { 0x000, 0x03C, 0x000, 0x03C },
+};
+
+const s16 gUnknown_080D8AC4[3][4] = {
+    { 0x000, 0x040, 0x000, 0x040 },
+    { 0x000, 0x040, 0x000, 0x040 },
+    { 0x000, 0x040, 0x000, 0x040 },
+};
+
+const s16 gUnknown_080D8ADC[3][4] = {
+    { 0x000, 0x03C, 0x000, 0x03C },
+    { 0x000, 0x03C, 0x000, 0x03C },
+    { 0x000, 0x03C, 0x000, 0x03C },
+};
+
+const s16 gUnknown_080D8AF4[3][4] = {
+    { 0x000, 0x040, 0x000, 0x040 },
+    { 0x000, 0x040, 0x000, 0x040 },
+    { 0x000, 0x040, 0x000, 0x040 },
+};
+
+const s16 gUnknown_080D8B0C[3][4] = {
+    { 0x800, 0x800, 0x800, 0x800 },
+    { 0x800, 0x800, 0x800, 0x800 },
+    { 0x800, 0x800, 0x800, 0x800 },
+};
+
+const s16 gUnknown_080D8B24[3][4] = {
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+};
+
+const s16 gUnknown_080D8B3C[3][4] = {
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+};
+
+const s16 gUnknown_080D8B54[3][4] = {
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+};
+
+const s16 gUnknown_080D8B6C[3][4] = {
+    { 0x0A2, 0x0A2, 0x0A2, 0x0A2 },
+    { 0x0A2, 0x0A2, 0x0A2, 0x0A2 },
+    { 0x0A2, 0x0A2, 0x0A2, 0x0A2 },
+};
+
+const s16 gUnknown_080D8B84[3][4] = {
+    { 0x800, 0x800, 0x800, 0x800 },
+    { 0x800, 0x800, 0x800, 0x800 },
+    { 0x800, 0x800, 0x800, 0x800 },
+};
+
+const s16 gUnknown_080D8B9C[3][4] = {
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+};
+
+const s16 gUnknown_080D8BB4[3][4] = {
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+};
+
+const s16 gUnknown_080D8BCC[3][4] = {
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+};
+
+const s16 gUnknown_080D8BE4[3][4] = {
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+    { 0x066, 0x066, 0x066, 0x066 },
+};
+
+const void *const gUnknown_080D8BFC[5] = {
+    &gUnknown_080D8A1C, &gUnknown_080D8A34, &gUnknown_080D8A4C,
+    &gUnknown_080D8A64, &gUnknown_080D8A7C,
+};
+
+const void *const gUnknown_080D8C10[5] = {
+    &gUnknown_080D8A94, &gUnknown_080D8AAC, &gUnknown_080D8AC4,
+    &gUnknown_080D8ADC, &gUnknown_080D8AF4,
+};
+
+const void *const gUnknown_080D8C24[5] = {
+    &gUnknown_080D8B0C, &gUnknown_080D8B24, &gUnknown_080D8B3C,
+    &gUnknown_080D8B54, &gUnknown_080D8B6C,
+};
+
+const void *const gUnknown_080D8C38[5] = {
+    &gUnknown_080D8B84, &gUnknown_080D8B9C, &gUnknown_080D8BB4,
+    &gUnknown_080D8BCC, &gUnknown_080D8BE4,
+};
+
+const s16 gUnknown_080D8C4C[4] = { +10, -10, +10, -10 };
+const s16 gUnknown_080D8C54[4] = { +10, -10, +10, -10 };
+const s16 gUnknown_080D8C5C[4] = { +10, -10, +10, -10 };
+
+const s16 gUnknown_080D8C64[4] = { +10, -10, -10, +10 };
+const s16 gUnknown_080D8C6C[4] = { +10, -10, -10, +10 };
+const s16 gUnknown_080D8C74[4] = { +10, -10, -10, +10 };
+
+const s16 gUnknown_080D8C7C[4] = { +10, -10, +10, -10 };
+const s16 gUnknown_080D8C84[4] = { +10, -10, +10, -10 };
+const s16 gUnknown_080D8C8C[4] = { +10, -10, +10, -10 };
+
+const s16 gUnknown_080D8C94[4] = { +10, -10, -10, +10 };
+const s16 gUnknown_080D8C9C[4] = { +10, -10, -10, +10 };
+const s16 gUnknown_080D8CA4[4] = { +10, -10, -10, +10 };
+
+const s16 gUnknown_080D8CAC[4] = { 0, -20, -40, -60 };
+const s16 gUnknown_080D8CB4[4] = { -80, -100, -120, -140 };
+const s16 gUnknown_080D8CBC[4] = { -160, -180, -200, -220 };
+
+const s16 gUnknown_080D8CC4[4] = { 10, 30, 30, -90 };
+const s16 gUnknown_080D8CCC[4] = { -120, -150, -180, -210 };
+const s16 gUnknown_080D8CD4[4] = { -240, -270, -300, -330 };
+
+const s16 gUnknown_080D8CDC[4] = { 10, -40, -90, -140 };
+const s16 gUnknown_080D8CE4[4] = { -190, -190, -140, -90 };
+const s16 gUnknown_080D8CEC[4] = { -40, 10, 10, -10 };
+
+const s16 gUnknown_080D8CF4[4] = { +10, -10, +10, -10 };
+const s16 gUnknown_080D8CFC[4] = { -20, -30, -20, -10 };
+const s16 gUnknown_080D8D04[4] = { +10, -10, -10, +10 };
+
+const s16 gUnknown_080D8D0C[4] = { +10, 40, 60, 80 };
+const s16 gUnknown_080D8D14[4] = { 100, 100, 80, 60 };
+const s16 gUnknown_080D8D1C[4] = { 40, 20, 10, 10 };
+
+const s16 gUnknown_080D8D24[4] = { 10, 20, 30, 40 };
+const s16 gUnknown_080D8D2C[4] = { 50, 50, 40, 30 };
+const s16 gUnknown_080D8D34[4] = { 20, 10, -10, 10 };
+
+const void *const gUnknown_080D8D3C[] = {
+    &gUnknown_080D8C4C,
+    &gUnknown_080D8C64,
+};
+const void *const gUnknown_080D8D44[] = {
+    &gUnknown_080D8C7C,
+    &gUnknown_080D8C94,
+};
+const void *const gUnknown_080D8D4C[] = {
+    &gUnknown_080D8CAC,
+    &gUnknown_080D8CC4,
+};
+const void *const gUnknown_080D8D54[] = {
+    &gUnknown_080D8CDC,
+    &gUnknown_080D8CF4,
+};
+const void *const gUnknown_080D8D5C[] = {
+    &gUnknown_080D8CDC,
+    &gUnknown_080D8D0C,
+};
+const void *const gUnknown_080D8D64[] = {
+    &gUnknown_080D8CDC,
+    &gUnknown_080D8D24,
+};
+
+// TODO: Parameter type
+void sub_804E078(TA53Boss *boss);
+void sub_804E15C(TA53Boss *boss);
+void sub_804E4CC(TA53Boss *boss);
+void sub_8050BD8(TA53Boss *boss);
+void sub_8050BE4(TA53Boss *boss);
+void sub_8050BF0(TA53Boss *boss);
+void sub_8050BFC(TA53Boss *boss);
+void sub_8050C50(TA53Boss *boss);
+void sub_8050CBC(TA53Boss *boss);
+void sub_8050D24(TA53Boss *boss);
+void sub_8050D9C(TA53Boss *boss);
+
+const TA53_Data0 gUnknown_080D8D6C[] = {
+    { sub_804E078, &gUnknown_080D8BFC, 40 },  { sub_804E4CC, &gUnknown_080D8BFC, 40 },
+    { sub_8050BFC, &gUnknown_080D8C24, 126 }, { sub_8050C50, &gUnknown_080D8C24, 512 },
+    { sub_804E15C, &gUnknown_080D8C38, 160 }, { sub_8050CBC, &gUnknown_080D8C10, 80 },
+    { sub_8050D24, &gUnknown_080D8C10, 80 },  { sub_8050D9C, &gUnknown_080D8C10, 80 },
+};
+
+const TA53_Data0 gUnknown_080D8DCC[] = {
+    { sub_8050BD8, &gUnknown_080D8D3C, 40 },  { sub_8050BE4, &gUnknown_080D8D54, 100 },
+    { sub_8050BE4, &gUnknown_080D8D5C, 100 }, { sub_8050BE4, &gUnknown_080D8D5C, 100 },
+    { sub_8050BF0, &gUnknown_080D8D44, 20 },  { sub_8050BF0, &gUnknown_080D8D4C, 100 },
+};
+
+// TODO: Parameter type
+void sub_804E974(TA53Boss *boss);
+void sub_804EB6C(TA53Boss *boss);
+void sub_804EC6C(TA53Boss *boss);
+
+const void *const gUnknown_080D8E14[] = { sub_804E974, sub_804EB6C, sub_804EC6C };
+const u8 sRGB_080D8E20[]
+    = { 0,    0,    0, //
+        2,    2,    28, //
+        0x06, 0x03, 0x1E, 0x0D, 0x06, 0x1F, 0x0D, 0x09, 0x1F, 0x0E, 0x0D, 0x1F, 0x11,
+        0x0E, 0x1F, 0x0C, 0x13, 0x1F, 0x0C, 0x16, 0x1F, 0x0E, 0x19, 0x1F, 0x10, 0x1B,
+        0x1F, 0x13, 0x1C, 0x1F, 0x17, 0x1C, 0x1F, 0x1A, 0x1C, 0x1F, 0x1B, 0x1D, 0x1F,
+        0x1D, 0x1E, 0x1F, 0x00, 0x00, 0x00, 0x02, 0x02, 0x1C, 0x09, 0x03, 0x1D, 0x0C,
+        0x06, 0x1F, 0x11, 0x06, 0x1F, 0x12, 0x0A, 0x1F, 0x12, 0x0D, 0x1F, 0x0E, 0x18,
+        0x1F, 0x12, 0x19, 0x1F, 0x16, 0x1A, 0x1F, 0x19, 0x1B, 0x1F, 0x1A, 0x1C, 0x1F,
+        0x1B, 0x1C, 0x1F, 0x1C, 0x1D, 0x1F, 0x1C, 0x1E, 0x1F, 0x1D, 0x1E, 0x1F, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x05, 0x04, 0x0C, 0x06, 0x01, 0x15, 0x09, 0x03,
+        0x1D, 0x0D, 0x09, 0x1F, 0x0C, 0x13, 0x1F, 0x0C, 0x17, 0x1F, 0x0D, 0x1A, 0x1F,
+        0x10, 0x1C, 0x1F, 0x13, 0x1C, 0x1F, 0x18, 0x1C, 0x1F, 0x1A, 0x1C, 0x1F, 0x1B,
+        0x1D, 0x1F, 0x1D, 0x1E, 0x1F, 0x1E, 0x1E, 0x1F, 0x00, 0x0C, 0x0E, 0x1F, 0x1F,
+        0x1F, 0x1F, 0x16, 0x07, 0x0F, 0x07, 0x1F, 0x0B, 0x02, 0x16, 0x04, 0x02, 0x02,
+        0x19, 0x1D, 0x1F, 0x14, 0x17, 0x19, 0x0C, 0x0E, 0x13, 0x06, 0x09, 0x0C, 0x08,
+        0x00, 0x0F, 0x1F, 0x0E, 0x04, 0x1B, 0x08, 0x00, 0x17, 0x04, 0x00, 0x10, 0x04,
+        0x00, 0x0A, 0x04, 0x00 };
+
+const u8 gUnknown_080D8EE0[] = { 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3 };
+
+const u16 gUnknown_080D8EF0[2][16] = {
+    INCBIN_U16("graphics/boss_9_a.gbapal"),
+    INCBIN_U16("graphics/boss_9_b.gbapal"),
+};
 
 // Used when Vanilla gets captured
 void SetupEggmanKidnapsVanillaTask(void)
@@ -186,11 +496,11 @@ void SetupEggmanKidnapsVanillaTask(void)
 
     // __0804CE02
     for (i = 0; i < 4; i++) {
-        unk48->unk4[i] = gUnknown_080D8A94[i];
-        unk48->unkC[i] = gUnknown_080D8AAC[i];
-        unk48->unk14[i] = gUnknown_080D8AC4[i];
-        unk48->unk1C[i] = gUnknown_080D8ADC[i];
-        unk48->unk24[i] = gUnknown_080D8AF4[i];
+        unk48->unk4[i] = gUnknown_080D8A94[0][i];
+        unk48->unkC[i] = gUnknown_080D8AAC[0][i];
+        unk48->unk14[i] = gUnknown_080D8AC4[0][i];
+        unk48->unk1C[i] = gUnknown_080D8ADC[0][i];
+        unk48->unk24[i] = gUnknown_080D8AF4[0][i];
     }
 
     gDispCnt = (DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP
@@ -267,11 +577,11 @@ void CreateTrueArea53Boss(void)
     unk48->unk4;
 
     for(i = 0; i < 4; i++) {
-        unk48->unk4[i] = gUnknown_080D8A1C[i];
-        unk48->unkC[i] = gUnknown_080D8A34[i];
-        unk48->unk14[i] = gUnknown_080D8A4C[i];
-        unk48->unk1C[i] = gUnknown_080D8A64[i];
-        unk48->unk24[i] = gUnknown_080D8A7C[i];
+        unk48->unk4[i] = gUnknown_080D8A1C[3][i];
+        unk48->unkC[i] = gUnknown_080D8A34[3][i];
+        unk48->unk14[i] = gUnknown_080D8A4C[3][i];
+        unk48->unk1C[i] = gUnknown_080D8A64[3][i];
+        unk48->unk24[i] = gUnknown_080D8A7C[3][i];
     }
 
     for(i = 0; i < 10; i++) {
@@ -282,6 +592,7 @@ void CreateTrueArea53Boss(void)
         boss->unk594.unk40[i].x = 0;
         boss->unk594.unk40[i].y = 0;
     }
+
 
 }
 #endif
