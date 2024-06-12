@@ -2,136 +2,13 @@
 #include "flags.h"
 #include "sprite.h"
 #include "task.h"
+#include "trig.h"
 #include "gba/io_reg.h"
 #include "game/bosses/common.h"
 #include "game/bosses/boss_9.h"
 #include "sakit/globals.h"
 
 #include "constants/animations.h"
-
-typedef struct {
-    /* 0x00 */ TA53_Data0 *unk0;
-    /* 0x04 */ s16 unk4[4];
-    /* 0x0C */ s16 unkC[4];
-    /* 0x14 */ u16 unk14;
-    /* 0x16 */ u16 unk16;
-    /* 0x18 */ s32 unk18;
-    /* 0x1C */ void *unk1C;
-    /* 0x20 */ u16 unk20;
-    /* 0x22 */ u16 unk22;
-    /* 0x24 */ Vec2_32 pos;
-} TA53_unk1C; /* size: 0x2C */
-
-typedef struct {
-    void *unk0; // func
-    s16 unk4[4];
-    s16 unkC[4];
-    u16 unk14[4];
-    u16 unk1C[4];
-    u16 unk24[4];
-    u16 unk2C;
-    u16 unk2E;
-    s32 unk30;
-    void *unk34; // ref
-    u16 unk38;
-    u8 filler3A[0xA];
-    u32 unk44;
-    u32 unk48;
-    u8 unk4C;
-} TA53_unk48; /* size: 0x4D ? */
-
-// TODO: Name ("TA53_Rocket"?)
-typedef struct {
-    u8 filler0[0x4];
-    u8 unk4;
-    u16 unk6;
-    u8 filler8[0x2];
-    u16 unkA;
-    u16 unkC;
-    u16 unkE;
-    u16 unk10;
-    u8 filler12[0x2];
-    Vec2_32 pos14;
-    u8 filler1C[0x4];
-    Sprite spr20;
-    u8 filler50[8];
-    void *unk58; // function ptr
-    u8 unk5C[5];
-    u16 unk62[5][2];
-    u8 filler76[0x2];
-    Vec2_32 pos78[5];
-    Sprite sprA0[5];
-} TA53_unkA8; /* size: 0x190 */
-
-typedef struct {
-    /* 0x00 */ void *unk0; // function pointer
-    /* 0x04 */ u16 unk4; // some counter
-    /* 0x06 */ u16 unk6;
-    /* 0x08 */ s32 qUnk8;
-    /* 0x0C */ s32 qUnkC;
-    /* 0x10 */ TA53_unkA8 unk10[3];
-} TA53_unk98; /* size: 0x4C0 */
-
-typedef struct TA53_unk558 {
-    /* 0x00 */ void (*func)(struct TA53_unk558 *); // void func (TA53_unk558 *)
-    /* 0x04 */ u8 unk4[0x4];
-    /* 0x08 */ s32 unk8;
-    /* 0x0C */ Sprite s;
-} TA53_unk558; /* size: 0x3C */
-
-typedef struct TA53_unk594 {
-    u8 filler[4];
-    u8 unk4[10];
-    u8 unkE[10];
-    Vec2_16 unk18[10];
-    Vec2_32 unk40[10];
-    Sprite spr90;
-} TA53_unk594; /* size: 0xC0 */
-
-typedef struct TA53_unk654 {
-    /* 0x00 */ void *func0;
-    /* 0x04 */ void *func4;
-    /* 0x08 */ u16 unk8;
-    /* 0x0A */ u16 unkA;
-    /* 0x0C */ u8 fillerC[0x2];
-    /* 0x0E */ u8 unkE[16];
-    /* 0x1E */ u8 unk1E[16];
-    /* 0x2E */ Vec2_16 unk2E[16];
-
-    /* 0x70 */ Vec2_32 unk70[16];
-
-    /* 0xF0 */ Sprite sprF0;
-    /* 0x120 */ Hitbox hbSprF0;
-
-    /* 0x128 */ Sprite spr128;
-    /* 0x158 */ Hitbox hbSpr128;
-} TA53_unk654; /* size: 0x160 */
-
-typedef struct {
-    /* 0x000 */ u16 unk0;
-    /* 0x002 */ u16 unk2;
-    /* 0x004 */ u16 unk4;
-    /* 0x006 */ u16 unk6;
-    /* 0x008 */ u16 unk8;
-    /* 0x00A */ u16 unkA;
-    /* 0x00C */ u8 unkC;
-    /* 0x00D */ u8 unkD;
-    /* 0x00E */ u8 unkE;
-    /* 0x00F */ u8 unkF;
-    /* 0x010 */ u16 unk10;
-    /* 0x012 */ u16 unk12;
-    /* 0x014 */ Vec2_32 pos14;
-    /* 0x01C */ TA53_unk1C unk1C;
-    /* 0x048 */ TA53_unk48 unk48;
-    /* 0x098 */ TA53_unk98 unk98;
-    /* 0x558 */ TA53_unk558 unk558;
-    /* 0x594 */ TA53_unk594 unk594;
-    /* 0x654 */ TA53_unk654 unk654;
-    /* 0x7B4 */ Sprite spr7B4;
-    /* 0x7E4 */ u8 filler7E4[0xC];
-    /* 0x7F0 */ Sprite spr7F0;
-    /* 0x7E4 */ u8 filler820[0x120];
-} TA53Boss; /* size: 0x940 */
 
 typedef struct {
     /* 0x00 */ s32 unk0;
@@ -143,6 +20,7 @@ typedef struct {
 } TA53_80D89C8;
 
 extern void CreateTrueArea53Boss(void);
+extern void sub_80505B8(struct TA53Boss *);
 extern void Task_EggmanKidnapsVanilla(void);
 extern void TaskDestructor_TrueArea53BossGfx(struct Task *);
 void Task_TrueArea53BossMain(void);
@@ -412,17 +290,17 @@ const void *const gUnknown_080D8D64[] = {
 };
 
 // TODO: Parameter type
-void sub_804E078(TA53Boss *boss);
-void sub_804E15C(TA53Boss *boss);
-void sub_804E4CC(TA53Boss *boss);
-void sub_8050BD8(TA53Boss *boss);
-void sub_8050BE4(TA53Boss *boss);
-void sub_8050BF0(TA53Boss *boss);
-void sub_8050BFC(TA53Boss *boss);
-void sub_8050C50(TA53Boss *boss);
-void sub_8050CBC(TA53Boss *boss);
-void sub_8050D24(TA53Boss *boss);
-void sub_8050D9C(TA53Boss *boss);
+void sub_804E078(void *);
+void sub_804E15C(void *);
+void sub_804E4CC(void *);
+void sub_8050BD8(void *);
+void sub_8050BE4(void *);
+void sub_8050BF0(void *);
+void sub_8050BFC(void *);
+void sub_8050C50(void *);
+void sub_8050CBC(void *);
+void sub_8050D24(void *);
+void sub_8050D9C(void *);
 
 const TA53_Data0 gUnknown_080D8D6C[] = {
     { sub_804E078, &gUnknown_080D8BFC, 40 },  { sub_804E4CC, &gUnknown_080D8BFC, 40 },
@@ -540,7 +418,7 @@ void SetupEggmanKidnapsVanillaTask(void)
     boss->unk12 = 0x230;
 
     unk48->unk30 &= 0xFFF;
-    unk48->unk0 = gUnknown_080D8D6C[4].func;
+    unk48->callback = (void *)gUnknown_080D8D6C[4].func;
     unk48->unk34 = gUnknown_080D8D6C[4].ref;
     unk48->unk2E = gUnknown_080D8D6C[4].unk8;
 
@@ -555,7 +433,7 @@ void SetupEggmanKidnapsVanillaTask(void)
 
     // TODO(Jace): why is this set above only to be rewritten?
     unk48->unk30 &= 0xFFF;
-    unk48->unk0 = gUnknown_080D8D6C[5].func;
+    unk48->callback = (void *)gUnknown_080D8D6C[5].func;
     unk48->unk34 = gUnknown_080D8D6C[5].ref;
     unk48->unk2E = gUnknown_080D8D6C[5].unk8;
     unk48->unk2C = unk48->unk2E;
@@ -620,7 +498,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     unk1C->unk4[0] = 0;
     unk1C->unk18 &= 0xFFF;
 
-    unk1C->unk0 = gUnknown_080D8DCC->func;
+    unk1C->callback = (void *)gUnknown_080D8DCC->func;
     unk1C->unk1C = gUnknown_080D8DCC->ref;
     unk1C->unk16 = gUnknown_080D8DCC->unk8;
 
@@ -637,7 +515,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     }
 
     unk48->unk30 &= 0xFFF;
-    unk48->unk0 = gUnknown_080D8D6C[1].func;
+    unk48->callback = (void *)gUnknown_080D8D6C[1].func;
     unk48->unk34 = gUnknown_080D8D6C[1].ref;
     unk48->unk2E = gUnknown_080D8D6C[1].unk8;
     unk48->unk4C = 1;
@@ -870,3 +748,41 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc",
     // _0804D684
 }
 END_NONMATCH
+
+void Task_EggmanKidnapsVanilla(void)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk1C *unk1C = &boss->unk1C;
+    TA53_unk48 *unk48 = &boss->unk48;
+    TA53_unk558 *unk558 = &boss->unk558;
+    u16 *offset;
+    u8 i;
+
+    gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
+
+    if (--boss->unk12 == 0) {
+        gFlags &= ~FLAGS_4;
+        TaskDestroy(gCurTask);
+        return;
+    }
+    // _0804D704
+
+    unk558->func(&boss->unk558);
+    unk1C->callback(unk1C);
+    unk48->callback(unk48);
+    sub_80505B8(boss);
+
+    gWinRegs[WINREG_WINOUT]
+        = (WINOUT_WINOBJ_CLR | WINOUT_WINOBJ_BG0 | WINOUT_WINOBJ_BG1 | WINOUT_WINOBJ_BG2
+           | WINOUT_WIN01_CLR | WINOUT_WIN01_OBJ | WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2);
+
+    gFlags |= FLAGS_4;
+
+    gUnknown_03002878 = (void *)&REG_BG1VOFS;
+    gUnknown_03002A80 = 2;
+
+    offset = gBgOffsetsHBlank;
+    for (i = 0; i < DISPLAY_HEIGHT - 1; offset++, i++) {
+        *offset = (((u16)SIN(((i + gStageTime) * 40) & ONE_CYCLE) << 16) >> 28) + 0x2C;
+    }
+}
