@@ -107,7 +107,7 @@ typedef struct TA53_unk654 {
 
     /* 0x128 */ Sprite spr128;
     /* 0x158 */ Hitbox hbSpr128;
-} TA53_unk654; /* size: ??? */
+} TA53_unk654; /* size: 0x160 */
 
 typedef struct {
     /* 0x000 */ u16 unk0;
@@ -131,7 +131,9 @@ typedef struct {
     /* 0x594 */ TA53_unk594 unk594;
     /* 0x654 */ TA53_unk654 unk654;
     /* 0x7B4 */ Sprite spr7B4;
-    /* 0x7E4 */ u8 filler7E4[0x15C];
+    /* 0x7E4 */ u8 filler7E4[0xC];
+    /* 0x7F0 */ Sprite spr7F0;
+    /* 0x7E4 */ u8 filler820[0x120];
 } TA53Boss; /* size: 0x940 */
 
 typedef struct {
@@ -574,8 +576,9 @@ void SetupEggmanKidnapsVanillaTask(void)
                 | DISPCNT_MODE_1);
 }
 
-#if 01
-void CreateTrueArea53Boss(void)
+// (36.97%) https://decomp.me/scratch/KnEGg
+NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
+         void CreateTrueArea53Boss(void))
 {
     void *vram;
     TA53Boss *boss;
@@ -628,7 +631,8 @@ void CreateTrueArea53Boss(void)
     unk1C->qUnk28 = Q(112);
     unk1C->unk20 = 0;
     unk1C->unk22 = 0;
-    unk1C->unk14 = gUnknown_080D8DCC->unk8;
+    unk1C->unk14 = unk1C->unk16;
+    unk1C->unk18 = 0;
 
     for (i = 0; i < 4; i++) {
         boss->unk1C.unk4[i] = gUnknown_080D8C4C[i];
@@ -686,6 +690,7 @@ void CreateTrueArea53Boss(void)
     unk98->qUnk8 = 0;
     unk98->qUnkC = 0;
 
+    // Rocket Exhaust Cloud Tiles
     vram = VramMalloc(32);
 
     // Rockets
@@ -721,28 +726,26 @@ void CreateTrueArea53Boss(void)
         // Rocket Exhaust Clouds
         for (j = 0; j < 5; j++) {
             // _0804D25C
-            Sprite *s2 = &unkA8->sprA0[i];
-
             unkA8->unk5C[j] = 0;
             unkA8->unk62[j][0] = 0;
             unkA8->unk62[j][1] = 0;
             unkA8->pos78[j].x = 0;
             unkA8->pos78[j].y = 0;
 
-            s2->x = 0;
-            s2->y = 0;
-            s2->graphics.dest = NULL;
-            s2->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_CLOUD;
-            s2->variant = 0;
-            s2->prevVariant = -1;
-            s2->unk1A = SPRITE_OAM_ORDER(16);
-            s2->graphics.size = 0;
-            s2->animCursor = 0;
-            s2->timeUntilNextFrame = 0;
-            s2->animSpeed = SPRITE_ANIM_SPEED(1.0);
-            s2->palId = 6;
-            s2->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-            s2->unk10 = SPRITE_FLAG(PRIORITY, 2);
+            unkA8->sprA0[j].x = 0;
+            unkA8->sprA0[j].y = 0;
+            unkA8->sprA0[j].graphics.dest = vram;
+            unkA8->sprA0[j].graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_CLOUD;
+            unkA8->sprA0[j].variant = 0;
+            unkA8->sprA0[j].prevVariant = -1;
+            unkA8->sprA0[j].unk1A = SPRITE_OAM_ORDER(16);
+            unkA8->sprA0[j].graphics.size = 0;
+            unkA8->sprA0[j].animCursor = 0;
+            unkA8->sprA0[j].timeUntilNextFrame = 0;
+            unkA8->sprA0[j].animSpeed = SPRITE_ANIM_SPEED(1.0);
+            unkA8->sprA0[j].hitboxes[0].index = HITBOX_STATE_INACTIVE;
+            unkA8->sprA0[j].palId = 6;
+            unkA8->sprA0[j].unk10 = SPRITE_FLAG(PRIORITY, 2);
         }
     }
     // _0804D39A
@@ -765,7 +768,7 @@ void CreateTrueArea53Boss(void)
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     // Rings the get "sucked out" by the Boss?
-    s = &boss->unk594.spr90;
+    s = &boss->spr7F0;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = VramMalloc(4);
@@ -815,4 +818,4 @@ void CreateTrueArea53Boss(void)
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 }
-#endif
+END_NONMATCH
