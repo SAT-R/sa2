@@ -756,7 +756,7 @@ void Task_EggmanKidnapsVanilla(void)
     TA53_unk48 *unk48 = &boss->unk48;
     TA53_unk558 *unk558 = &boss->unk558;
     u16 *offset;
-    u8 i;
+    int_vcount y;
 
     gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
 
@@ -765,7 +765,6 @@ void Task_EggmanKidnapsVanilla(void)
         TaskDestroy(gCurTask);
         return;
     }
-    // _0804D704
 
     unk558->func(&boss->unk558);
     unk1C->callback(unk1C);
@@ -777,12 +776,12 @@ void Task_EggmanKidnapsVanilla(void)
            | WINOUT_WIN01_CLR | WINOUT_WIN01_OBJ | WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2);
 
     gFlags |= FLAGS_4;
-
     gUnknown_03002878 = (void *)&REG_BG1VOFS;
     gUnknown_03002A80 = 2;
 
     offset = gBgOffsetsHBlank;
-    for (i = 0; i < DISPLAY_HEIGHT - 1; offset++, i++) {
-        *offset = (((u16)SIN(((i + gStageTime) * 40) & ONE_CYCLE) << 16) >> 28) + 0x2C;
+    for (y = 0; y < DISPLAY_HEIGHT - 1; y++) {
+        s16 val = (SIN(((y + gStageTime) * 40) & ONE_CYCLE) >> 12) + 0x2C;
+        *offset++ = val;
     }
 }

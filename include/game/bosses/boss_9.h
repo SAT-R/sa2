@@ -140,7 +140,8 @@ typedef struct TA53Boss {
     /* 0x7B4 */ Sprite spr7B4;
     /* 0x7E4 */ u8 filler7E4[0xC];
     /* 0x7F0 */ Sprite spr7F0;
-    /* 0x7E4 */ u8 filler820[0x120];
+    /* 0x7E4 */ u8 filler820[0xE0];
+    /* 0x900 */ Background bg900;
 } TA53Boss; /* size: 0x940 */
 
 #endif // GUARD_GAME_BOSS_9_H
