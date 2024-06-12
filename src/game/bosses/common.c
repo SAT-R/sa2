@@ -29,9 +29,11 @@ const VoidFn sBossCreationFuncs[] = {
     CreateEggFrog,         CreateSuperEggRoboZ, CreateTrueArea53Boss,
 };
 
+// NOTE:
+// "Super Egg Robo Z" does not having a 'Move' function, because it's static.
 const TranslateBossFunction MoveBossPositionFuncs[] = {
     EggHammerTankIIMove, EggBomberTankMove, EggTotemMove, AeroEggMove,
-    EggSaucerMove,       sub_8047224,       sub_8048EB4,  sub_804D594,
+    EggSaucerMove,       EggGoRoundMove,    EggFrogMove,  TrueArea53BossMove,
 };
 
 // Anims for screws etc.

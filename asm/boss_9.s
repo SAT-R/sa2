@@ -13,8 +13,8 @@
 .if 0
 .endif
 
-	thumb_func_start sub_804D594
-sub_804D594: @ 0x0804D594
+	thumb_func_start TrueArea53BossMove
+TrueArea53BossMove: @ 0x0804D594
 	push {r4, r5, r6, r7, lr}
 	mov r7, sl
 	mov r6, sb

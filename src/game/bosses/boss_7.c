@@ -956,7 +956,7 @@ static void sub_8048E64(EggFrog *boss)
     }
 }
 
-void sub_8048EB4(s32 dX, s32 dY)
+void EggFrogMove(s32 dX, s32 dY)
 {
     EggFrog *boss = TASK_DATA(gActiveBossTask);
     boss->x += dX;

@@ -3,7 +3,7 @@
 
 extern void CreateTrueArea53Boss(void);
 extern bool32 ExtraBossIsDead(void);
-extern void sub_804D594(s32, s32);
+extern void TrueArea53BossMove(s32, s32);
 
 // TODO: Move back into boss_9.c once decompiled.
 typedef struct {

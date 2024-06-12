@@ -1047,7 +1047,7 @@ static void sub_8047138(EggGoRound *boss)
     }
 }
 
-void sub_8047224(s32 dX, s32 dY)
+void EggGoRoundMove(s32 dX, s32 dY)
 {
     DestructionProps *destruction;
     EggGoRound *boss;
