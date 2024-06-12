@@ -19,8 +19,7 @@ typedef struct {
     /* 0x1C */ void *unk1C;
     /* 0x20 */ u16 unk20;
     /* 0x22 */ u16 unk22;
-    /* 0x24 */ s32 qUnk24;
-    /* 0x28 */ s32 qUnk28;
+    /* 0x24 */ Vec2_32 pos;
 } TA53_unk1C; /* size: 0x2C */
 
 typedef struct {
@@ -52,8 +51,7 @@ typedef struct {
     u16 unkE;
     u16 unk10;
     u8 filler12[0x2];
-    s32 qUnk14; // worldX?
-    s32 qUnk18; // worldY?
+    Vec2_32 pos14;
     u8 filler1C[0x4];
     Sprite spr20;
     u8 filler50[8];
@@ -122,8 +120,7 @@ typedef struct {
     /* 0x00F */ u8 unkF;
     /* 0x010 */ u16 unk10;
     /* 0x012 */ u16 unk12;
-    /* 0x014 */ s32 unk14;
-    /* 0x018 */ s32 unk18;
+    /* 0x014 */ Vec2_32 pos14;
     /* 0x01C */ TA53_unk1C unk1C;
     /* 0x048 */ TA53_unk48 unk48;
     /* 0x098 */ TA53_unk98 unk98;
@@ -547,8 +544,8 @@ void SetupEggmanKidnapsVanillaTask(void)
     unk48->unk34 = gUnknown_080D8D6C[4].ref;
     unk48->unk2E = gUnknown_080D8D6C[4].unk8;
 
-    unk1C->qUnk24 = Q(330);
-    unk1C->qUnk28 = Q(90);
+    unk1C->pos.x = Q(330);
+    unk1C->pos.y = Q(90);
     unk1C->unk14 = gUnknown_080D8DCC[4].unk8;
 
     for (i = 0; i < 4; i++) {
@@ -607,8 +604,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     boss->unk12 = 80;
     boss->unkE = 0;
     boss->unkF = 0;
-    boss->unk14 = 0;
-    boss->unk18 = 0;
+    boss->pos14.x = 0;
+    boss->pos14.y = 0;
     boss->unk0 = 0;
     boss->unk4 = 0;
     boss->unk2 = 1;
@@ -627,8 +624,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     unk1C->unk1C = gUnknown_080D8DCC->ref;
     unk1C->unk16 = gUnknown_080D8DCC->unk8;
 
-    unk1C->qUnk24 = Q(1267);
-    unk1C->qUnk28 = Q(112);
+    unk1C->pos.x = Q(1267);
+    unk1C->pos.y = Q(112);
     unk1C->unk20 = 0;
     unk1C->unk22 = 0;
     unk1C->unk14 = unk1C->unk16;
@@ -703,8 +700,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
         unkA8->unkA = 0;
         unkA8->unkE = 0;
         unkA8->unk10 = 0;
-        unkA8->qUnk14 = 0;
-        unkA8->qUnk18 = 0;
+        unkA8->pos14.x = 0;
+        unkA8->pos14.y = 0;
         s->x = 0;
         s->y = 0;
         s->graphics.dest = VramMalloc(16);
@@ -767,7 +764,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-    // Rings the get "sucked out" by the Boss?
+    // Rings that get "sucked out" by the Boss?
     s = &boss->spr7F0;
     s->x = 0;
     s->y = 0;
@@ -817,5 +814,59 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+}
+END_NONMATCH
+
+// (95.99%) https://decomp.me/scratch/05cvE
+NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc",
+         void TrueArea53BossMove(s32 dX, s32 dY))
+{
+    u8 i, j;
+    TA53Boss *boss;
+    TA53_unk1C *unk1C;
+    TA53_unk98 *unk98;
+    TA53_unkA8 *unkA8;
+    TA53_unk594 *unk594;
+    TA53_unk654 *unk654;
+
+    if (gActiveBossTask == NULL)
+        return;
+
+    boss = TASK_DATA(gActiveBossTask);
+    unk1C = &boss->unk1C;
+    unk98 = &boss->unk98;
+
+    unk1C->pos.x += dX;
+    unk1C->pos.y += dY;
+    boss->pos14.x += dX;
+    boss->pos14.y += dY;
+
+    for (i = 0; i < 3; i++) {
+        unkA8 = &unk98->unk10[i];
+        unkA8->pos14.x += dX;
+        unkA8->pos14.y += dY;
+
+        for (j = 0; j < ARRAY_COUNT(unkA8->sprA0); j++) {
+            // _0804D620
+            // @TODO/BUG: This should be [j]
+            unkA8->pos78[i].x += I(dX);
+            unkA8->pos78[i].y += I(dY);
+        }
+    }
+    // _0804D646 - 0x6
+
+    for (i = 0; i < 10; i++) {
+        unk594 = &boss->unk594;
+        unk594->unk40[i].x += dX;
+        unk594->unk40[i].y += dY;
+    }
+    // _0804D668 - 0x6
+
+    for (i = 0; i < 16; i++) {
+        unk654 = &boss->unk654;
+        unk654->unk70[i].x += dX;
+        unk654->unk70[i].y += dY;
+    }
+    // _0804D684
 }
 END_NONMATCH
