@@ -10,7 +10,7 @@
 .syntax unified
 .arm
 
-.if 01
+.if 0
 	thumb_func_start CreateTrueArea53Boss
 CreateTrueArea53Boss: @ 0x0804CEC4
 	push {r4, r5, r6, r7, lr}
@@ -51,7 +51,7 @@ _0804CEF8:
 	adds r6, r4, r1			@ r6 = &boss->unk48
 	ldr r5, _0804D2C0 @ =IWRAM_START + 0x98
 	adds r5, r4, r5			@ r5 = &boss->unk98
-	str r5, [sp, #8]		@ sp08 = &boss->unk98
+	str r5, [sp, #8]		@ sp08 = unk98 = &boss->unk98
 	ldr r7, _0804D2C4 @ =IWRAM_START + 0x558
 	adds r7, r7, r4
 	mov r8, r7				@ r8 = r7 = boss->unk558
@@ -187,7 +187,7 @@ _0804CF96:
 	str r1, [sp, #0x44]     @ sp44 = &boss->unk654->unk1E
 	ldr r2, [sp, #0xc]
 	adds r2, #0x2e
-	str r2, [sp, #0x54]     @ sp54 = &boss->unk654->unk1E
+	str r2, [sp, #0x54]     @ sp54 = &boss->unk654->unk2E
 	ldr r6, [sp, #0xc]
 	adds r6, #0x30
 	str r6, [sp, #0x5c]     @ sp5C = &boss->unk654->unk30
@@ -209,7 +209,7 @@ _0804CF96:
 	str r1, [sp, #0x88]     @ sp88 = &boss->spr7B4.animSpeed
 	ldr r6, _0804D2FC @ =0x000007D9
 	adds r6, r2, r6
-	str r6, [sp, #0x8c]     @ sp8C = &boss->spr7B4.animSpeed
+	str r6, [sp, #0x8c]     @ sp8C = &boss->spr7B4.palId
 	mov r0, r8              @ r0 = r8 = &boss->unk558
 	adds r0, #0xc           @ r0 = &boss->unk558->s @ Sprite ?
 	str r0, [sp, #0x2c]     @ sp2C = &boss->unk558->s
@@ -339,7 +339,7 @@ _0804D118:
 	bls _0804D118
 	ldr r2, _0804D328 @ =sub_804FF9C
 	ldr r5, [sp, #0xc]
-	str r2, [r5]
+	str r2, [r5]            @ boss->unk654 = sub_804FF9C
 	ldr r6, _0804D32C @ =sub_804F768
 	str r6, [r5, #4]
 	movs r0, #0x96
@@ -348,11 +348,11 @@ _0804D118:
 	adds r0, #0xd4
 	strh r0, [r5, #0xa]
 	movs r7, #0
-	mov sb, r7
-	ldr r5, [sp, #0x38]
+	mov sb, r7              @ sb = r7 = i = 0
+	ldr r5, [sp, #0x38]     @ r5 = &boss->unk654->unkE
 	movs r2, #0
-	ldr r4, [sp, #0x44]
-	ldr r3, [sp, #0x54]
+	ldr r4, [sp, #0x44]     @ r4 = &boss->unk654->unk1E
+	ldr r3, [sp, #0x54]     @ r3 = &boss->unk654->unk2E
 _0804D166:
 	mov r1, sb
 	adds r0, r5, r1
@@ -361,14 +361,14 @@ _0804D166:
 	strb r2, [r0]
 	lsls r0, r1, #2
 	strh r2, [r3]
-	ldr r6, [sp, #0x5c]
+	ldr r6, [sp, #0x5c]     @ r6 = &boss->unk654->unk30
 	adds r0, r6, r0
 	strh r2, [r0]
 	lsls r1, r1, #3
-	ldr r7, [sp, #0x74]
+	ldr r7, [sp, #0x74]     @ r7 = &boss->unk654->unk70[0].x
 	adds r0, r7, r1
 	str r2, [r0]
-	ldr r0, [sp, #0x78]
+	ldr r0, [sp, #0x78]     @ r0 = &boss->unk654->unk70[0].y
 	adds r1, r0, r1
 	str r2, [r1]
 	adds r3, #4
@@ -377,63 +377,64 @@ _0804D166:
 	mov r6, sb
 	cmp r6, #0xf
 	bls _0804D166
+__0804D194:
 	ldr r7, _0804D330 @ =sub_804E66C
 	ldr r0, [sp, #8]
-	str r7, [r0]
+	str r7, [r0]            @ unk98->unk0 = sub_804E66C
 	movs r0, #0
 	movs r1, #0x96
 	lsls r1, r1, #1
-	ldr r2, [sp, #8]
-	strh r1, [r2, #4]
+	ldr r2, [sp, #8]        @ r2 = &boss->unk98
+	strh r1, [r2, #4]       @ unk98->unk4 = 300
 	adds r1, #0xd4
-	strh r1, [r2, #6]
-	str r0, [r2, #8]
-	str r0, [r2, #0xc]
+	strh r1, [r2, #6]       @ unk98->unk6 = 512
+	str r0, [r2, #8]        @ unk98->unk8 = 0
+	str r0, [r2, #0xc]      @ unk98->unkC = 0
 	movs r0, #0x20
 	bl VramMalloc
-	str r0, [sp, #0x10]
+	str r0, [sp, #0x10]     @ sp10 = vram
 	movs r5, #0
-	mov sb, r5
+	mov sb, r5              @ sb = r5 = 0
 	movs r4, #0
-	ldr r6, [sp, #8]
+	ldr r6, [sp, #8]        @ r6 = unk98
 	adds r6, #0x8c
-	str r6, [sp, #0xa4]
+	str r6, [sp, #0xa4]     @ spA4 = unk98->unk8C
 	ldr r7, [sp, #8]
 	adds r7, #0x88
-	str r7, [sp, #0xa8]
+	str r7, [sp, #0xa8]     @ spA8 = unkA8 + 0x98
 	ldr r0, [sp, #8]
 	adds r0, #0x74
 	str r0, [sp, #0xac]
 	ldr r1, [sp, #8]
 	adds r1, #0x72
 	str r1, [sp, #0xb0]
-	ldr r2, [sp, #8]
+	ldr r2, [sp, #8]        @ r2 = unk98
 	adds r2, #0x6c
-	str r2, [sp, #0xb4]
+	str r2, [sp, #0xb4]     @ spB4 = unkA8->unk5C
 	ldr r5, [sp, #8]
-	adds r5, #0x68
-	str r5, [sp, #0xb8]
+	adds r5, #0x68          @ r5 = &unkA8->unk58
+	str r5, [sp, #0xb8]     @ spB8 = &unkA8->unk58
 	ldr r6, [sp, #8]
 	adds r6, #0x51
 	mov sl, r6
-	ldr r7, [sp, #8]
+	ldr r7, [sp, #8]        @ r7 = unk98
 	adds r7, #0x14
-	mov r8, r7
+	mov r8, r7              @ r8 = unk98->unk10[i].unk4
 	ldr r0, [sp, #8]
 	adds r0, #0x10
-	str r0, [sp, #0xbc]
+	str r0, [sp, #0xbc]     @ spBC = unkA8 = unk98->unk10[i];
 _0804D1F0:
 	ldr r7, [sp, #0xbc]
-	adds r7, #0x20
-	mov r1, r8
-	strb r4, [r1]
-	strh r4, [r1, #6]
-	strh r4, [r1, #0xa]
-	strh r4, [r1, #0xc]
-	str r4, [r1, #0x10]
-	str r4, [r1, #0x14]
-	strh r4, [r7, #0x16]
-	strh r4, [r7, #0x18]
+	adds r7, #0x20          @ r7 = s = &unkA8->spr20
+	mov r1, r8              @ r1 = r8 = &unk98->unk10.unk4
+	strb r4, [r1]           @ unk98->unk10.unk4 = 0
+	strh r4, [r1, #6]       @ unk98->unk10.unkA = 0
+	strh r4, [r1, #0xa]     @ unk98->unk10.unkE = 0
+	strh r4, [r1, #0xc]     @ unk98->unk10.unk10 = 0
+	str r4, [r1, #0x10]     @ unk98->unk10.qUnk14 = 0
+	str r4, [r1, #0x14]     @ unk98->unk10.qUnk18 = 0
+	strh r4, [r7, #0x16]    @ s->x = 0
+	strh r4, [r7, #0x18]    @ s->y = 0
 	movs r0, #0x10
 	bl VramMalloc
 	str r0, [r7, #4]
@@ -463,31 +464,31 @@ _0804D1F0:
 	lsls r0, r0, #6
 	str r0, [r7, #0x10]
 	ldr r0, _0804D338 @ =sub_804DD9C
-	mov r5, r8
-	str r0, [r5, #0x54]
+	mov r5, r8              @ r5 = r8 = &unkA8->unk4
+	str r0, [r5, #0x54]     @ unkA8->unk58
 	movs r6, #0
-	mov ip, r6
-	ldr r1, [sp, #0xb8]
-	adds r1, #0x50
+	mov ip, r6              @ ip = r6 = 0
+	ldr r1, [sp, #0xb8]     @ r1 = &unkA8->unk58
+	adds r1, #0x50          @ r1 = &unkA8->sprA0[0] + 0x8
 	ldr r7, [sp, #0xb8]
 	adds r7, #0x48
-	str r7, [sp, #0xc4]
-	ldr r6, [sp, #0xa4]
-	ldr r5, [sp, #0xa8]
+	str r7, [sp, #0xc4]     @ r7 = s = &unkA8->sprA0[0]
+	ldr r6, [sp, #0xa4]     @ r6 = &unk98->unk8C
+	ldr r5, [sp, #0xa8]     @ r5 = unkA8 + 0x98
 	ldr r3, [sp, #0xac]
-	ldr r2, [sp, #0xb0]
+	ldr r2, [sp, #0xb0]     @ r2 = unkA8->unk62
 _0804D25C:
-	ldr r0, [sp, #0xb4]
+	ldr r0, [sp, #0xb4]     @ r0 = +0x104
 	add r0, ip
-	strb r4, [r0]
-	strh r4, [r2]
-	strh r4, [r3]
-	str r4, [r5]
-	str r4, [r6]
+	strb r4, [r0]           @ r0 = (boss+0x104+i) = 0
+	strh r4, [r2]           @ r2 = (boss+0x10A) = 0
+	strh r4, [r3]           @ r3 = (boss+0x10C) = 0
+	str r4, [r5]            @ r5 = (boss+0x120) = 0
+	str r4, [r6]            @ r6 = (boss+0x124) = 0
 	strh r4, [r1, #0xe]
 	strh r4, [r1, #0x10]
-	ldr r0, [sp, #0x10]
-	ldr r7, [sp, #0xc4]
+	ldr r0, [sp, #0x10]     @ r0 = vram
+	ldr r7, [sp, #0xc4]     @ r7 = (boss+0x148) = 0
 	str r0, [r7, #4]
 	ldr r0, _0804D33C @ =0x000002CA
 	strh r0, [r1, #2]
@@ -495,7 +496,7 @@ _0804D25C:
 	movs r0, #1
 	rsbs r0, r0, #0
 	mov r7, sp
-	strb r0, [r7, #0x14]
+	strb r0, [r7, #0x14]    @ sp14 = -1
 	movs r0, #0xff
 	strb r0, [r1, #0x19]
 	movs r0, #0x80
@@ -601,9 +602,9 @@ _0804D35C:
 	bhi _0804D39A
 	b _0804D1F0
 _0804D39A:
-	ldr r0, [sp, #4]
+	ldr r0, [sp, #4]        @ r0 = sp04 = boss
 	ldr r1, _0804D57C @ =0x000007B4
-	adds r7, r0, r1
+	adds r7, r0, r1         @ r7 = s = boss->spr7B4
 	movs r6, #0
 	movs r5, #0
 	strh r5, [r7, #0x16]
@@ -616,7 +617,7 @@ _0804D39A:
 	strh r0, [r7, #0xa]
 	adds r4, #0x26
 	ldrb r0, [r4]
-	ldr r2, [sp, #0x7c]
+	ldr r2, [sp, #0x7c]     @ sp7C = &boss->spr7B4.variant
 	strb r0, [r2]
 	ldr r1, [sp, #0x80]
 	ldrb r0, [r1]
@@ -731,7 +732,7 @@ _0804D402:
 	movs r0, #0x80
 	lsls r0, r0, #6
 	str r0, [r7, #0x10]
-	ldr r7, [sp, #0x84]
+	ldr r7, [sp, #0x84]         @ r7 = sp84 = &boss->unk594->spr90
 	strh r4, [r7, #0x16]
 	strh r4, [r7, #0x18]
 	movs r0, #4
@@ -764,8 +765,8 @@ _0804D402:
 	movs r6, #0x80
 	lsls r6, r6, #5
 	str r6, [r7, #0x10]
-	ldr r7, [sp, #0xa0]
-	strh r4, [r7, #0x16]
+	ldr r7, [sp, #0xa0]         @ r7 = spA0 = &boss->unk654->sprF0
+	strh r4, [r7, #0x16]        @ Yellow Projectile
 	strh r4, [r7, #0x18]
 	movs r0, #9
 	bl VramMalloc
@@ -796,7 +797,7 @@ _0804D402:
 	mov r2, sl
 	str r2, [r7, #0x28]
 	str r6, [r7, #0x10]
-	ldr r0, [sp, #0xc]
+	ldr r0, [sp, #0xc]          @ r0 = boss->unk654
 	movs r1, #0x94
 	lsls r1, r1, #1
 	adds r7, r0, r1
