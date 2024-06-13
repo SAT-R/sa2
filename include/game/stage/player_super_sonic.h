@@ -65,6 +65,7 @@ extern u32 SuperSonicGetFlags(void);
 extern void SuperSonicGetPos(s32 *outX, s32 *outY);
 extern void SuperSonicSetPos(s32 x, s32 y);
 extern u32 SuperSonicGetFlags();
+extern void sub_802B81C(void);
 extern bool32 sub_802BA8C(void);
 
 #endif // GUARD_PLAYER_SUPER_SONIC_H

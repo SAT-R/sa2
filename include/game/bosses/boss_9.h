@@ -26,7 +26,7 @@ typedef struct TA53_unk1C {
     /* 0x1C */ void *unk1C;
     /* 0x20 */ s16 unk20;
     /* 0x22 */ s16 unk22;
-    /* 0x24 */ Vec2_32 pos;
+    /* 0x24 */ Vec2_32 qPos;
 } TA53_unk1C; /* size: 0x2C */
 
 typedef struct TA53_unk48 {
@@ -59,12 +59,15 @@ typedef struct {
     u16 unk8;
 } TA53_Data1;
 
+struct TA53_unkA8;
+typedef void (*TA53_Rocket_Callback)(struct TA53_unkA8 *);
+
 // TODO: Name ("TA53_Rocket"?)
-typedef struct {
-    u8 filler0[0x4];
+typedef struct TA53_unkA8 {
+    TA53_Rocket_Callback callback;
     u8 unk4;
     u16 unk6;
-    u8 filler8[0x2];
+    u16 unk8;
     u16 unkA;
     u16 unkC;
     u16 unkE;
@@ -99,7 +102,7 @@ typedef struct TA53_unk558 {
 } TA53_unk558; /* size: 0x3C */
 
 typedef struct TA53_unk594 {
-    u8 filler[4];
+    void (*callback)(struct TA53_unk594 *);
     u8 unk4[10];
     u8 unkE[10];
     Vec2_16 unk18[10];
@@ -108,7 +111,7 @@ typedef struct TA53_unk594 {
 } TA53_unk594; /* size: 0xC0 */
 
 typedef struct TA53_unk654 {
-    /* 0x00 */ void *func0;
+    /* 0x00 */ void (*callback)(struct TA53_unk654 *);
     /* 0x04 */ void *func4;
     /* 0x08 */ u16 unk8;
     /* 0x0A */ u16 unkA;

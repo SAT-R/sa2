@@ -4,6 +4,7 @@
 #include "task.h"
 #include "trig.h"
 #include "gba/io_reg.h"
+#include "lib/m4a.h"
 #include "game/bosses/common.h"
 #include "game/bosses/boss_9.h"
 #include "game/stage/player_super_sonic.h"
@@ -22,6 +23,7 @@ typedef struct {
 } TA53_80D89C8;
 
 extern void Task_804D9DC(void);
+extern void Task_804DB34(void);
 extern void CreateTrueArea53Boss(void);
 extern void sub_80505B8(struct TA53Boss *);
 extern void Task_EggmanKidnapsVanilla(void);
@@ -76,7 +78,7 @@ const TA53SubFunc gUnknown_080D89AC[7]
 
 void sub_804DD9C(void *);
 void sub_804E66C(struct TA53_unk98 *);
-void sub_804FF9C(void *);
+void sub_804FF9C(struct TA53_unk654 *);
 
 const TA53_80D89C8 gUnknown_080D89C8[]
     = { { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 },
@@ -296,6 +298,7 @@ const void *const gUnknown_080D8D64[] = {
 void sub_804E078(struct TA53_unk48 *);
 void sub_804E15C(struct TA53_unk48 *);
 void sub_804E4CC(struct TA53_unk48 *);
+void sub_804ECC4(TA53Boss *);
 void sub_80501D4(TA53Boss *);
 void sub_8050958(TA53Boss *);
 void sub_8050BD8(struct TA53_unk1C *);
@@ -306,6 +309,8 @@ void sub_8050C50(struct TA53_unk48 *);
 void sub_8050CBC(struct TA53_unk48 *);
 void sub_8050D24(struct TA53_unk48 *);
 void sub_8050D9C(struct TA53_unk48 *);
+void sub_8050DC4(struct TA53_unk98 *);
+void sub_8050DF8(struct TA53_unk654 *);
 
 const TA53_Data0 gUnknown_080D8D6C[] = {
     { sub_804E078, &gUnknown_080D8BFC, 40 },  { sub_804E4CC, &gUnknown_080D8BFC, 40 },
@@ -550,7 +555,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
         boss->unk594.unk40[i].y = 0;
     }
 
-    boss->unk654.func0 = sub_804FF9C;
+    boss->unk654.callback = sub_804FF9C;
     boss->unk654.func4 = sub_804F768;
     boss->unk654.unk8 = 300;
     boss->unk654.unkA = 512;
@@ -874,7 +879,7 @@ void sub_804D8E0(TA53Boss *boss)
 
     unk98->callback = sub_804E66C;
 
-    unk654->func0 = sub_804FF9C;
+    unk654->callback = sub_804FF9C;
     unk654->unk8 = 300;
 
     unk558->callback = sub_8050DC8;
@@ -884,4 +889,54 @@ void sub_804D8E0(TA53Boss *boss)
 
     boss->pos14.x = unk1C->qPos.x + Q(unk1C->unk20);
     boss->pos14.y = unk1C->qPos.y + Q(unk1C->unk22);
+}
+
+void Task_804D9DC(void)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk1C *unk1C = &boss->unk1C;
+    TA53_unk48 *unk48 = &boss->unk48;
+    TA53_unk98 *unk98 = &boss->unk98;
+    TA53_unk558 *unk558 = &boss->unk558;
+    TA53_unk594 *unk594 = &boss->unk594;
+    TA53_unk654 *unk654 = &boss->unk654;
+
+    gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
+    unk1C->qPos.x += Q(5);
+    unk98->unk6 = unk48->unk3A;
+    unk98->unk6 = ((unk98->unk6 + I(unk48->qPos44.x) + 860) & ONE_CYCLE);
+
+    unk98->qUnk8 = unk1C->qPos.x + Q(unk1C->unk20);
+    unk98->qUnkC = unk1C->qPos.y + Q(unk1C->unk22);
+
+    if (boss->unkC == 0) {
+        MPlayStop(&gMPlayInfo_SE1);
+        MPlayStop(&gMPlayInfo_SE2);
+        MPlayStop(&gMPlayInfo_SE3);
+
+        gStageFlags |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__2
+                        | EXTRA_STATE__ACT_START);
+        sub_802B81C();
+        sub_804D8E0(boss);
+        sub_80501D4(boss);
+        sub_8050958(boss);
+
+        unk98->callback = sub_8050DC4;
+        unk654->callback = sub_8050DF8;
+
+        boss->unk12 = 120;
+        gCurTask->main = Task_804DB34;
+    } else {
+        // _0804DAE0
+        unk98->callback(unk98);
+        unk558->callback(unk558);
+        unk594->callback(unk594);
+        unk654->callback(unk654);
+        unk1C->callback(unk1C);
+        unk48->callback(unk48);
+
+        sub_804ECC4(boss);
+        sub_80501D4(boss);
+        sub_8050958(boss);
+    }
 }
