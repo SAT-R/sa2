@@ -108,6 +108,7 @@ extern uint8_t VRAM[VRAM_SIZE];
 #define TOTAL_OBJ_TILE_COUNT 1024
 
 #define RGB16(r, g, b) ((r) | ((g) << 5) | ((b) << 10))
+#define RGB16_REV(r, g, b) (((b) << 10) | ((g) << 5) | (r))
 
 #define RGB_BLACK RGB16(0, 0, 0)
 #define RGB_WHITE RGB16(31, 31, 31)
