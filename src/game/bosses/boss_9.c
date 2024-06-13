@@ -8,10 +8,13 @@
 #include "game/bosses/common.h"
 #include "game/bosses/boss_9.h"
 #include "game/stage/player_super_sonic.h"
+#include "game/stage/results.h"
+#include "game/stage/ui.h"
 #include "sakit/globals.h"
 #include "sakit/camera.h"
 
 #include "constants/animations.h"
+#include "constants/songs.h"
 #include "constants/tilemaps.h"
 
 typedef struct {
@@ -78,7 +81,7 @@ const TA53SubFunc gUnknown_080D89AC[7]
     = { sub_804F6AC, sub_804F768, sub_804F850, sub_804F9BC,
         sub_804FAA4, sub_804FC10, sub_804FD58 };
 
-void sub_804DD9C(void *);
+void sub_804DD9C(struct TA53_RocketExhaust *);
 void sub_804E66C(struct TA53_unk98 *);
 void sub_804FF9C(struct TA53_unk654 *);
 
@@ -297,7 +300,7 @@ const void *const gUnknown_080D8D64[] = {
 };
 
 // TODO: Parameter type
-void sub_804DCF8(TA53Boss *);
+static void UpdateExplosion(TA53Boss *);
 void sub_804E078(struct TA53_unk48 *);
 void sub_804E15C(struct TA53_unk48 *);
 void sub_804E4CC(struct TA53_unk48 *);
@@ -552,8 +555,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
         // _0804D118
         boss->unk594.unk4[i] = 0;
         boss->unk594.unkE[i] = 0;
-        boss->unk594.unk18[i].x = 0;
-        boss->unk594.unk18[i].y = 0;
+        boss->unk594.unk18[i][0] = 0;
+        boss->unk594.unk18[i][1] = 0;
         boss->unk594.unk40[i].x = 0;
         boss->unk594.unk40[i].y = 0;
     }
@@ -586,6 +589,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     for (i = 0; i < 3; i++) {
         // _0804D1F0
         TA53_unkA8 *unkA8 = &unk98->unk10[i];
+        TA53_RocketExhaust *exhaust;
         s = &unkA8->spr20;
 
         unkA8->unk4 = 0;
@@ -610,31 +614,32 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-        unkA8->unk58 = sub_804DD9C;
+        exhaust = &unkA8->exhaust;
+        exhaust->callback = sub_804DD9C;
 
         // Rocket Exhaust Clouds
         for (j = 0; j < 5; j++) {
             // _0804D25C
-            unkA8->unk5C[j] = 0;
-            unkA8->unk62[j][0] = 0;
-            unkA8->unk62[j][1] = 0;
-            unkA8->pos78[j].x = 0;
-            unkA8->pos78[j].y = 0;
+            exhaust->unk4[j] = 0;
+            exhaust->unkA[j][0] = 0;
+            exhaust->unkA[j][1] = 0;
+            exhaust->pos[j].x = 0;
+            exhaust->pos[j].y = 0;
 
-            unkA8->sprA0[j].x = 0;
-            unkA8->sprA0[j].y = 0;
-            unkA8->sprA0[j].graphics.dest = vram;
-            unkA8->sprA0[j].graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_CLOUD;
-            unkA8->sprA0[j].variant = 0;
-            unkA8->sprA0[j].prevVariant = -1;
-            unkA8->sprA0[j].unk1A = SPRITE_OAM_ORDER(16);
-            unkA8->sprA0[j].graphics.size = 0;
-            unkA8->sprA0[j].animCursor = 0;
-            unkA8->sprA0[j].timeUntilNextFrame = 0;
-            unkA8->sprA0[j].animSpeed = SPRITE_ANIM_SPEED(1.0);
-            unkA8->sprA0[j].hitboxes[0].index = HITBOX_STATE_INACTIVE;
-            unkA8->sprA0[j].palId = 6;
-            unkA8->sprA0[j].unk10 = SPRITE_FLAG(PRIORITY, 2);
+            exhaust->s[j].x = 0;
+            exhaust->s[j].y = 0;
+            exhaust->s[j].graphics.dest = vram;
+            exhaust->s[j].graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_CLOUD;
+            exhaust->s[j].variant = 0;
+            exhaust->s[j].prevVariant = -1;
+            exhaust->s[j].unk1A = SPRITE_OAM_ORDER(16);
+            exhaust->s[j].graphics.size = 0;
+            exhaust->s[j].animCursor = 0;
+            exhaust->s[j].timeUntilNextFrame = 0;
+            exhaust->s[j].animSpeed = SPRITE_ANIM_SPEED(1.0);
+            exhaust->s[j].hitboxes[0].index = HITBOX_STATE_INACTIVE;
+            exhaust->s[j].palId = 6;
+            exhaust->s[j].unk10 = SPRITE_FLAG(PRIORITY, 2);
         }
     }
     // _0804D39A
@@ -738,11 +743,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc",
         unkA8->pos14.x += dX;
         unkA8->pos14.y += dY;
 
-        for (j = 0; j < ARRAY_COUNT(unkA8->sprA0); j++) {
+        for (j = 0; j < ARRAY_COUNT(unkA8->exhaust.pos); j++) {
             // _0804D620
             // @TODO/BUG: This should be [j]
-            unkA8->pos78[i].x += I(dX);
-            unkA8->pos78[i].y += I(dY);
+            unkA8->exhaust.pos[i].x += I(dX);
+            unkA8->exhaust.pos[i].y += I(dY);
         }
     }
     // _0804D646 - 0x6
@@ -963,7 +968,7 @@ void Task_804DB34(void)
 
     sub_80501D4(boss);
     sub_8050958(boss);
-    sub_804DCF8(boss);
+    UpdateExplosion(boss);
 
     s = &boss->spr7B4;
 
@@ -984,6 +989,146 @@ void Task_804DB34(void)
             boss->unk12 = 2;
             gBldRegs.bldY = 16;
             gCurTask->main = Task_804DC60;
+        }
+    }
+}
+
+void Task_804DC60(void)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+
+    if (--boss->unk12 == 0) {
+        TasksDestroyAll();
+
+        gUnknown_03002AE4 = gUnknown_0300287C;
+        gUnknown_03005390 = 0;
+
+        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+
+        gStageFlags |= EXTRA_STATE__TURN_OFF_HUD;
+
+        CreateStageUI();
+        CreateStageResults(gCourseTime, gRingCount, gSpecialRingCount);
+
+        gBldRegs.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+    }
+}
+
+static void UpdateExplosion(TA53Boss *boss)
+{
+    ExplosionPartsInfo info;
+
+    if (Mod(gStageTime, 13) == 0) {
+        m4aSongNumStart(SE_144);
+    }
+
+    if ((gStageTime % 4u) == 0) {
+        info.spawnX = PseudoRandBetween(64, (64 + 128) - 1);
+        info.spawnY = PseudoRandBetween(16, (16 + 128) - 1);
+        info.velocity = 0;
+        info.rotation = PseudoRandom32() & ONE_CYCLE;
+        info.speed = Q(2);
+        info.vram = (OBJ_VRAM0 + 0x2980);
+        info.anim = SA2_ANIM_EXPLOSION;
+        info.variant = 0;
+        info.unk4 = 1;
+        CreateBossParticleWithExplosionUpdate(&info, &boss->unkE);
+    }
+}
+
+void sub_804DD9C(struct TA53_RocketExhaust *exhaust)
+{
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(exhaust->pos); i++) {
+        if (exhaust->unk4[i] != 0) {
+            Sprite *s = &exhaust->s[i];
+
+            exhaust->unk4[i]--;
+
+            exhaust->pos[i].x += Q(5);
+
+            exhaust->pos[i].x += exhaust->unkA[i][0];
+            exhaust->pos[i].y += exhaust->unkA[i][1];
+
+            exhaust->unkA[i][0] -= (exhaust->unkA[i][0] >> 4);
+            exhaust->unkA[i][1] -= (exhaust->unkA[i][1] >> 4);
+
+            s->x = I(exhaust->pos[i].x) - gCamera.x;
+            s->y = I(exhaust->pos[i].y) - gCamera.y;
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
+        }
+    }
+}
+
+void sub_804DE5C(s32 qX, s32 qY, TA53_RocketExhaust *exhaust, u16 param3)
+{
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(exhaust->pos); i++) {
+        if (exhaust->unk4[i] == 0) {
+            exhaust->unkA[i][0] = -(COS(param3) >> 5);
+            exhaust->unkA[i][1] = -(SIN(param3) >> 5);
+
+            exhaust->pos[i].x = qX;
+            exhaust->pos[i].y = qY;
+
+            exhaust->unk4[i] = 16;
+
+            exhaust->s[i].prevVariant = -1;
+            break;
+        }
+    }
+}
+
+void sub_804DEEC(s32 qX, s32 qY)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk594 *unk594 = &boss->unk594;
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(unk594->unk4); i++) {
+        if (unk594->unk4[i] == 0) {
+            unk594->unk4[i] = 1;
+            unk594->unkE[i] = 60;
+            unk594->unk18[i][0] = (PseudoRandom32() & 0xFF) - Q(2);
+            unk594->unk18[i][1] = (PseudoRandom32() & 0xFF) - Q(2);
+
+            unk594->unk40[i].x = qX;
+            unk594->unk40[i].y = qY;
+
+            break;
+        }
+    }
+}
+
+void sub_804DFB0(TA53_unk594 *unk594)
+{
+    Sprite *s = &unk594->spr90;
+    u8 i = 0;
+    bool32 animUpdated = FALSE;
+
+    for (; i < ARRAY_COUNT(unk594->unk4); i++) {
+        if (unk594->unk4[i] != 0) {
+            if (--unk594->unkE[i] == 0) {
+                unk594->unk4[i] = 0;
+            }
+
+            unk594->unk18[i][1] += Q(0.125);
+
+            unk594->unk40[i].x += Q(5) + unk594->unk18[i][0];
+            unk594->unk40[i].y += Q(0) + unk594->unk18[i][1];
+
+            s->x = I(unk594->unk40[i].x) - gCamera.x;
+            s->y = I(unk594->unk40[i].y) - gCamera.y;
+
+            if (!animUpdated) {
+                UpdateSpriteAnimation(s);
+                animUpdated = TRUE;
+            }
+
+            DisplaySprite(s);
         }
     }
 }

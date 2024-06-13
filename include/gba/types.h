@@ -13,7 +13,7 @@
 //       PACKED(struct test { char a; int b; }); - good
 //       PACKED(struct test { char a; int b; };); - bad
 #define PACKED(name, struct_body)                                                       \
-    typedef struct __attribute__((packed)) struct_body name;
+    typedef struct __attribute__((packed)) name struct_body name;
 #endif
 
 

@@ -63,27 +63,30 @@ typedef struct {
 struct TA53_unkA8;
 typedef void (*TA53_Rocket_Callback)(struct TA53_unkA8 *);
 
+typedef struct TA53_RocketExhaust {
+    /* 0x58 */ void (*callback)(struct TA53_RocketExhaust *);
+    /* 0x5C */ u8 unk4[5];
+    /* 0x62 */ s16 unkA[5][2]; // NOTE: Would be Vec2_16, but alignment doesn't work
+    /* 0x78 */ Vec2_32 pos[5];
+    /* 0xA0 */ Sprite s[5];
+} TA53_RocketExhaust;
+
 // TODO: Name ("TA53_Rocket"?)
 typedef struct TA53_unkA8 {
-    TA53_Rocket_Callback callback;
-    u8 unk4;
-    u16 unk6;
-    u16 unk8;
-    u16 unkA;
-    u16 unkC;
-    u16 unkE;
-    u16 unk10;
-    u8 filler12[0x2];
-    Vec2_32 pos14;
-    u8 filler1C[0x4];
-    Sprite spr20;
-    u8 filler50[8];
-    void *unk58; // function ptr
-    u8 unk5C[5];
-    u16 unk62[5][2];
-    u8 filler76[0x2];
-    Vec2_32 pos78[5];
-    Sprite sprA0[5];
+    /* 0x00 */ TA53_Rocket_Callback callback;
+    /* 0x04 */ u8 unk4;
+    /* 0x06 */ u16 unk6;
+    /* 0x08 */ u16 unk8;
+    /* 0x0A */ u16 unkA;
+    /* 0x0C */ u16 unkC;
+    /* 0x0E */ u16 unkE;
+    /* 0x10 */ u16 unk10;
+    /* 0x12 */ u8 filler12[0x2];
+    /* 0x14 */ Vec2_32 pos14;
+    /* 0x1C */ u8 filler1C[0x4];
+    /* 0x20 */ Sprite spr20;
+    /* 0x50 */ u8 filler50[8];
+    /* 0x58 */ TA53_RocketExhaust exhaust;
 } TA53_unkA8; /* size: 0x190 */
 
 typedef struct TA53_unk98 {
@@ -106,7 +109,7 @@ typedef struct TA53_unk594 {
     void (*callback)(struct TA53_unk594 *);
     u8 unk4[10];
     u8 unkE[10];
-    Vec2_16 unk18[10];
+    s16 unk18[10][2];
     Vec2_32 unk40[10];
     Sprite spr90;
 } TA53_unk594; /* size: 0xC0 */
