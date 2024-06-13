@@ -11,6 +11,7 @@
 #include "game/stage/player_super_sonic.h"
 #include "game/stage/results.h"
 #include "game/stage/ui.h"
+#include "game/stage/game_7.h"
 #include "sakit/globals.h"
 #include "sakit/camera.h"
 
@@ -35,6 +36,7 @@ extern void sub_80505B8(struct TA53Boss *);
 extern void Task_EggmanKidnapsVanilla(void);
 extern void TaskDestructor_TrueArea53BossGfx(struct Task *);
 void Task_TrueArea53BossMain(void);
+void sub_804F1EC(struct TA53_unk558 *);
 void sub_8050DC8(struct TA53_unk558 *);
 void TaskDestructor_TrueArea53BossGfx(struct Task *);
 
@@ -67,7 +69,7 @@ const TileInfo gUnknown_080D8918[17] = {
 };
 
 const s8 gUnknown_080D89A0[5] = { 0, -4, -8, -12, -16 };
-const s8 gUnknown_080D89A5[6] = { 0, 20, 24, 20, 18, 30 };
+const u8 gUnknown_080D89A5[6] = { 0, 20, 24, 20, 18, 30 };
 
 // TODO: Parameter types
 typedef void (*TA53SubFunc)(u32, u32, u32, u32);
@@ -818,7 +820,7 @@ void Task_TrueArea53BossMain(void)
 
     gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
     unk1C->qPos.x += Q(5);
-    unk98->unk6 = unk48->unk3A;
+    unk98->unk6 = unk48->unk3A[0];
     unk98->unk6 = ((unk98->unk6 + I(unk48->qPos44.x) + 860) & ONE_CYCLE);
 
     unk98->qUnk8 = unk1C->qPos.x + Q(unk1C->unk20);
@@ -912,7 +914,7 @@ void Task_804D9DC(void)
 
     gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
     unk1C->qPos.x += Q(5);
-    unk98->unk6 = unk48->unk3A;
+    unk98->unk6 = unk48->unk3A[0];
     unk98->unk6 = ((unk98->unk6 + I(unk48->qPos44.x) + 860) & ONE_CYCLE);
 
     unk98->qUnk8 = unk1C->qPos.x + Q(unk1C->unk20);
@@ -1175,5 +1177,139 @@ void sub_804E078(struct TA53_unk48 *unk48)
     unk48->unk38 &= ONE_CYCLE;
 }
 
-#if 01
-#endif
+// (94.10%) https://decomp.me/scratch/rjfvR
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc",
+         void sub_804E15C(struct TA53_unk48 *unk48))
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk558 *unk558 = &boss->unk558;
+    TA53_unk1C *unk1C = &boss->unk1C;
+    s32 sonicX, sonicY;
+    u8 i;
+
+    if (sub_8050030(unk48) != 0) {
+        unk48->unk30 &= 0xFFF;
+        unk48->callback = gUnknown_080D8D6C[0].callback;
+        unk48->unk34 = gUnknown_080D8D6C[0].ref;
+        unk48->unk2E = gUnknown_080D8D6C[0].unk8;
+
+        gDispCnt &= ~(DISPCNT_WIN0_ON);
+        gWinRegs[WINREG_WININ] = 0;
+        gWinRegs[WINREG_WINOUT] = 0;
+
+        gBldRegs.bldCnt = 0;
+        gBldRegs.bldAlpha = 0;
+        gBldRegs.bldY = 0;
+    } else {
+        u8 sp14 = (unk48->unk30 >> 12);
+
+        if (sp14 > 2) {
+            // _0804E1EC
+            s32 index;
+            s32 sb = unk1C->qPos.x + Q(unk1C->unk20);
+            s32 r8 = unk1C->qPos.y + Q(unk1C->unk22);
+            s32 r5 = (I(unk48->qPos44.x) + unk48->unk3A[0]) & ONE_CYCLE;
+            s32 r6;
+
+            sb += ((COS(r5) * gUnknown_080D89A5[0]) >> 6);
+            r8 += ((SIN(r5) * gUnknown_080D89A5[0]) >> 6);
+
+            r5 += 0x8C;
+
+            index = (r5 - Q(1)) & ONE_CYCLE;
+            sb += (COS(index) >> 2);
+            r8 += (SIN(index) >> 2);
+
+            for (i = 0; i < 3; i++) {
+                // _0804E278
+                r5 = (r5 + unk48->unk3A[i + 1]) & ONE_CYCLE;
+
+                sb += ((COS(r5) * gUnknown_080D89A5[i + 1]) >> 6);
+                r8 += ((SIN(r5) * gUnknown_080D89A5[i + 1]) >> 6);
+            }
+
+            sb += ((COS(r5) * gUnknown_080D89A5[4]) >> 6);
+            r8 += ((SIN(r5) * gUnknown_080D89A5[4]) >> 6);
+
+            r5 = (r5 + unk48->unk42) & ONE_CYCLE;
+
+            if (sp14 > 5) {
+                // _0804E2EE
+
+                // TODO: Type
+                u16 result;
+                s32 r4;
+                u16 r1;
+                s32 x, y;
+
+                if ((gMPlayTable[2].info->songHeader != gSongTable[SE_269].header)
+                    && (sp14 == 6)) {
+                    m4aSongNumStart(SE_269);
+                }
+                // _0804E30A
+
+                SuperSonicGetPos(&sonicX, &sonicY);
+
+                r6 = (r5 + unk48->unk38) & ONE_CYCLE;
+
+                result = sub_8004418(I(sonicY - r8), I(sonicX - sb));
+
+                if ((r6 < (result + 0x10)) && (r6 > (result - 0x10))) {
+                    sub_802BB54();
+                    unk558->callback = sub_804F1EC;
+                }
+                // _0804E350
+
+                gDispCnt |= DISPCNT_WIN0_ON;
+                gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_HEIGHT);
+                gWinRegs[WINREG_WIN0V] = WIN_RANGE(0, DISPLAY_WIDTH);
+                gWinRegs[WINREG_WININ] = WININ_WIN0_ALL;
+                gWinRegs[WINREG_WINOUT]
+                    = (WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2 | WINOUT_WIN01_OBJ);
+                gBldRegs.bldCnt
+                    = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+                gBldRegs.bldAlpha = BLDALPHA_BLEND(8, 0);
+                gBldRegs.bldY = 8;
+
+                // NOTE: Why would you call Mod() for % 8? *sigh*
+                r4 = (s8)Mod(PseudoRandom32(), 8);
+                if (r4 < 0) {
+                    r4 = -r4;
+                }
+                // _0804E39A
+
+                sb += ((COS(r6) * gUnknown_080D89A5[5]) >> 6);
+                r8 += ((SIN(r6) * gUnknown_080D89A5[5]) >> 6);
+
+                r1 = (26 - (s8)r4);
+
+                sub_802E784(r6, r1, 16, (I(sb) - gCamera.x), (I(r8) - gCamera.y), r5);
+            } else {
+                u16 result;
+                u32 p0;
+                // _0804E43C
+                sub_802C704(8, &sonicX, &sonicY);
+
+                result = sub_8004418(I(sonicY - r8), I(sonicX - sb));
+                if (sub_808558C((r5 + unk48->unk38) & ONE_CYCLE, result, 10) < 0) {
+                    if (unk48->unk38 > 512) {
+                        if (unk48->unk38 > 0x380)
+                            unk48->unk38 -= 4;
+                    } else {
+                        unk48->unk38 -= 4;
+                    }
+                } else {
+                    if (unk48->unk38 < 512) {
+                        if (unk48->unk38 < 128)
+                            unk48->unk38 += 4;
+                    } else {
+                        unk48->unk38 += 4;
+                    }
+                }
+
+                unk48->unk38 &= ONE_CYCLE;
+            }
+        }
+    }
+}
+END_NONMATCH

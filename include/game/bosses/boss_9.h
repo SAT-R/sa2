@@ -39,11 +39,11 @@ typedef struct TA53_unk48 {
     u16 unk24[4];
     u16 unk2C;
     u16 unk2E;
-    s32 unk30;
+    u32 unk30;
     void *unk34; // ref
     u16 unk38;
-    u16 unk3A;
-    u8 filler3C[0x8];
+    u16 unk3A[4];
+    u16 unk42; // related to unk3A[]? Maybe 5th element?
     Vec2_32 qPos44;
     u8 unk4C;
 } TA53_unk48; /* size: 0x4D ? */
