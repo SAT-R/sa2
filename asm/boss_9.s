@@ -8,119 +8,6 @@
 .arm
 
 .if 01
-	thumb_func_start sub_804E078
-sub_804E078: @ 0x0804E078
-	push {r4, r5, r6, lr}
-	adds r5, r0, #0
-	ldr r0, _0804E0B8 @ =gCurTask
-	ldr r0, [r0]
-	ldrh r1, [r0, #6]
-	movs r0, #0xc0
-	lsls r0, r0, #0x12
-	adds r4, r1, r0
-	adds r0, #0x1c
-	adds r6, r1, r0
-	adds r0, r5, #0
-	bl sub_8050030
-	lsls r0, r0, #0x18
-	cmp r0, #0
-	beq _0804E112
-	ldrb r0, [r4, #0xc]
-	cmp r0, #4
-	bls _0804E0C4
-	ldr r0, [r5, #0x30]
-	ldr r1, _0804E0BC @ =0x00000FFF
-	ands r0, r1
-	str r0, [r5, #0x30]
-	ldr r1, _0804E0C0 @ =gUnknown_080D8D6C
-	ldr r0, [r1, #0x30]
-	str r0, [r5]
-	ldr r0, [r1, #0x34]
-	str r0, [r5, #0x34]
-	ldrh r0, [r1, #0x38]
-	strh r0, [r5, #0x2e]
-	b _0804E112
-	.align 2, 0
-_0804E0B8: .4byte gCurTask
-_0804E0BC: .4byte 0x00000FFF
-_0804E0C0: .4byte gUnknown_080D8D6C
-_0804E0C4:
-	ldr r0, _0804E134 @ =gStageTime
-	ldr r0, [r0]
-	movs r1, #3
-	bl Mod
-	adds r0, #1
-	lsls r0, r0, #0x18
-	lsrs r0, r0, #0x18
-	ldr r1, [r5, #0x30]
-	ldr r2, _0804E138 @ =0x00000FFF
-	ands r1, r2
-	str r1, [r5, #0x30]
-	ldr r3, _0804E13C @ =gUnknown_080D8D6C
-	ldr r1, [r3, #0x18]
-	str r1, [r5]
-	ldr r1, [r3, #0x1c]
-	str r1, [r5, #0x34]
-	ldrh r1, [r3, #0x20]
-	strh r1, [r5, #0x2e]
-	ldr r1, [r6, #0x18]
-	ands r1, r2
-	str r1, [r6, #0x18]
-	ldr r2, _0804E140 @ =gUnknown_080D8DCC
-	lsls r1, r0, #1
-	adds r1, r1, r0
-	lsls r1, r1, #2
-	adds r4, r1, r2
-	ldr r0, [r4]
-	str r0, [r6]
-	adds r0, r2, #4
-	adds r1, r1, r0
-	ldr r0, [r1]
-	str r0, [r6, #0x1c]
-	ldrh r0, [r4, #8]
-	strh r0, [r6, #0x16]
-	ldrh r0, [r3, #8]
-	strh r0, [r5, #0x2c]
-	ldrh r0, [r2, #8]
-	strh r0, [r6, #0x14]
-_0804E112:
-	movs r0, #0
-	str r0, [r5, #0x44]
-	str r0, [r5, #0x48]
-	ldrh r0, [r5, #0x38]
-	cmp r0, #0
-	beq _0804E14A
-	movs r1, #0
-	movs r2, #0xa
-	bl sub_808558C
-	lsls r0, r0, #0x10
-	cmp r0, #0
-	bge _0804E144
-	ldrh r0, [r5, #0x38]
-	subs r0, #1
-	b _0804E148
-	.align 2, 0
-_0804E134: .4byte gStageTime
-_0804E138: .4byte 0x00000FFF
-_0804E13C: .4byte gUnknown_080D8D6C
-_0804E140: .4byte gUnknown_080D8DCC
-_0804E144:
-	ldrh r0, [r5, #0x38]
-	adds r0, #1
-_0804E148:
-	strh r0, [r5, #0x38]
-_0804E14A:
-	ldrh r1, [r5, #0x38]
-	ldr r0, _0804E158 @ =0x000003FF
-	ands r0, r1
-	strh r0, [r5, #0x38]
-	pop {r4, r5, r6}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0804E158: .4byte 0x000003FF
-.endif
-
 	thumb_func_start sub_804E15C
 sub_804E15C: @ 0x0804E15C
 	push {r4, r5, r6, r7, lr}
@@ -541,6 +428,7 @@ _0804E4B2:
 	.align 2, 0
 _0804E4C4: .4byte 0x000001FF
 _0804E4C8: .4byte 0x000003FF
+.endif
 
 	thumb_func_start sub_804E4CC
 sub_804E4CC: @ 0x0804E4CC

@@ -5,6 +5,7 @@
 #include "trig.h"
 #include "gba/io_reg.h"
 #include "lib/m4a.h"
+#include "game/math.h"
 #include "game/bosses/common.h"
 #include "game/bosses/boss_9.h"
 #include "game/stage/player_super_sonic.h"
@@ -305,6 +306,7 @@ void sub_804E078(struct TA53_unk48 *);
 void sub_804E15C(struct TA53_unk48 *);
 void sub_804E4CC(struct TA53_unk48 *);
 void sub_804ECC4(TA53Boss *);
+u8 sub_8050030(struct TA53_unk48 *);
 void sub_80501D4(TA53Boss *);
 void sub_8050958(TA53Boss *);
 void sub_8050BD8(struct TA53_unk1C *);
@@ -1131,6 +1133,46 @@ void sub_804DFB0(TA53_unk594 *unk594)
             DisplaySprite(s);
         }
     }
+}
+
+void sub_804E078(struct TA53_unk48 *unk48)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk1C *unk1C = &boss->unk1C;
+
+    if (sub_8050030(unk48) != 0) {
+        if (boss->unkC > 4) {
+            unk48->unk30 &= 0xFFF;
+            unk48->callback = gUnknown_080D8D6C[4].callback;
+            unk48->unk34 = gUnknown_080D8D6C[4].ref;
+            unk48->unk2E = gUnknown_080D8D6C[4].unk8;
+        } else {
+            u8 index = Mod(gStageTime, 3) + 1;
+            unk48->unk30 &= 0xFFF;
+            unk48->callback = gUnknown_080D8D6C[2].callback;
+            unk48->unk34 = gUnknown_080D8D6C[2].ref;
+            unk48->unk2E = gUnknown_080D8D6C[2].unk8;
+            unk1C->unk18 &= 0xFFF;
+
+            unk1C->callback = gUnknown_080D8DCC[index].callback;
+            unk1C->unk1C = gUnknown_080D8DCC[index].ref;
+            unk1C->unk16 = gUnknown_080D8DCC[index].unk8;
+            unk48->unk2C = gUnknown_080D8D6C[0].unk8;
+            unk1C->unk14 = gUnknown_080D8DCC[0].unk8;
+        }
+    }
+
+    unk48->qPos44.x = 0;
+    unk48->qPos44.y = 0;
+
+    if (unk48->unk38 != 0) {
+        if (sub_808558C(unk48->unk38, 0, 10) < 0) {
+            unk48->unk38--;
+        } else {
+            unk48->unk38++;
+        }
+    }
+    unk48->unk38 &= ONE_CYCLE;
 }
 
 #if 01
