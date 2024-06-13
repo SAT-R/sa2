@@ -1023,10 +1023,10 @@ static void UpdateExplosion(TA53Boss *boss)
     }
 
     if ((gStageTime % 4u) == 0) {
-        info.spawnX = PseudoRandBetween(64, (64 + 128) - 1);
-        info.spawnY = PseudoRandBetween(16, (16 + 128) - 1);
+        info.spawnX = PseudoRandBetween(64, (64 + 128));
+        info.spawnY = PseudoRandBetween(16, (16 + 128));
         info.velocity = 0;
-        info.rotation = PseudoRandom32() & ONE_CYCLE;
+        info.rotation = PseudoRandBetween(0, SIN_PERIOD);
         info.speed = Q(2);
         info.vram = (OBJ_VRAM0 + 0x2980);
         info.anim = SA2_ANIM_EXPLOSION;

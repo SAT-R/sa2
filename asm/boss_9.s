@@ -7,7 +7,7 @@
 .syntax unified
 .arm
 
-.if 0
+.if 01
 	thumb_func_start sub_804E078
 sub_804E078: @ 0x0804E078
 	push {r4, r5, r6, lr}

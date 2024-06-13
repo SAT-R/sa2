@@ -1052,9 +1052,9 @@ void sub_804C080(SuperEggRoboZ *boss)
         info.spawnX = gCamera.x + (rand & 0xFF);
         info.spawnY = gCamera.y + (PseudoRandom32() & 0xFF);
         info.velocity = Q(18. / 256.);
-        info.rotation = (PseudoRandBetween(0, SIN_PERIOD - 1));
+        info.rotation = (PseudoRandBetween(0, SIN_PERIOD));
         // '= rand =' needed for matching
-        info.speed = rand = (PseudoRandBetween(Q(2), Q(4) - 1));
+        info.speed = rand = (PseudoRandBetween(Q(2), Q(4)));
         info.vram = (OBJ_VRAM0 + 0x2980);
         info.anim = SA2_ANIM_EXPLOSION;
         info.variant = 0;
@@ -1153,8 +1153,8 @@ void sub_804C3AC(SuperEggRoboZ *boss)
     Vec2_32 sp00;
     Vec2_32 sp08;
 
-    sp08.x = Q(PseudoRandBetween(-3, 4));
-    sp08.y = Q(PseudoRandBetween(-3, 4));
+    sp08.x = Q(PseudoRandBetween(-3, 5));
+    sp08.y = Q(PseudoRandBetween(-3, 5));
 
     gBgScrollRegs[0][0] = gCamera.x - I(boss->qPos.x + sp08.x);
     gBgScrollRegs[0][1] = gCamera.y - I(boss->qPos.y + sp08.y);
@@ -1228,11 +1228,11 @@ void sub_804C5B8(SuperEggRoboZ *boss)
 
     if (boss->unkB > 0) {
         if (boss->unkB < 32) {
-            sp08.x = Q(PseudoRandBetween(-3, 4));
-            sp08.y = Q(PseudoRandBetween(-3, 4));
+            sp08.x = Q(PseudoRandBetween(-3, 5));
+            sp08.y = Q(PseudoRandBetween(-3, 5));
         } else {
-            sp08.x = Q(PseudoRandBetween(-7, 8));
-            sp08.y = Q(PseudoRandBetween(-7, 8));
+            sp08.x = Q(PseudoRandBetween(-7, 9));
+            sp08.y = Q(PseudoRandBetween(-7, 9));
         }
     } else {
         sp08.x = 0;
