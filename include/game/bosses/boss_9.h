@@ -3,6 +3,7 @@
 
 #include "global.h" // for Vec2_16/32
 #include "sprite.h" // Sprite
+#include "game/stage/screen_fade.h"
 
 // NOTE:
 // struct TA53Boss and all the structs referenced in it have to be declared in the .h
@@ -130,19 +131,14 @@ typedef struct TA53_unk654 {
 } TA53_unk654; /* size: 0x160 */
 
 typedef struct TA53Boss {
-    /* 0x000 */ u16 unk0;
-    /* 0x002 */ u16 unk2;
-    /* 0x004 */ u16 unk4;
-    /* 0x006 */ u16 unk6;
-    /* 0x008 */ u16 unk8;
-    /* 0x00A */ u16 unkA;
+    /* 0x000 */ ScreenFade fade;
     /* 0x00C */ u8 unkC;
     /* 0x00D */ u8 unkD;
     /* 0x00E */ u8 unkE;
     /* 0x00F */ u8 unkF;
     /* 0x010 */ u16 unk10;
     /* 0x012 */ u16 unk12;
-    /* 0x014 */ Vec2_32 pos14;
+    /* 0x014 */ Vec2_32 qPos;
     /* 0x01C */ TA53_unk1C unk1C;
     /* 0x048 */ TA53_unk48 unk48;
     /* 0x098 */ TA53_unk98 unk98;

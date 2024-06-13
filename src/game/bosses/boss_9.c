@@ -9,6 +9,7 @@
 #include "game/bosses/boss_9.h"
 #include "game/stage/player_super_sonic.h"
 #include "sakit/globals.h"
+#include "sakit/camera.h"
 
 #include "constants/animations.h"
 #include "constants/tilemaps.h"
@@ -24,6 +25,7 @@ typedef struct {
 
 extern void Task_804D9DC(void);
 extern void Task_804DB34(void);
+extern void Task_804DC60(void);
 extern void CreateTrueArea53Boss(void);
 extern void sub_80505B8(struct TA53Boss *);
 extern void Task_EggmanKidnapsVanilla(void);
@@ -295,6 +297,7 @@ const void *const gUnknown_080D8D64[] = {
 };
 
 // TODO: Parameter type
+void sub_804DCF8(TA53Boss *);
 void sub_804E078(struct TA53_unk48 *);
 void sub_804E15C(struct TA53_unk48 *);
 void sub_804E4CC(struct TA53_unk48 *);
@@ -493,14 +496,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     boss->unk12 = 80;
     boss->unkE = 0;
     boss->unkF = 0;
-    boss->pos14.x = 0;
-    boss->pos14.y = 0;
-    boss->unk0 = 0;
-    boss->unk4 = 0;
-    boss->unk2 = 1;
-    boss->unk6 = 20;
-    boss->unk8 = 0xBF;
-    boss->unkA = 1;
+    boss->qPos.x = 0;
+    boss->qPos.y = 0;
+    boss->fade.window = 0;
+    boss->fade.brightness = Q(0);
+    boss->fade.flags = SCREEN_FADE_FLAG_LIGHTEN;
+    boss->fade.speed = 20;
+    boss->fade.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+    boss->fade.bldAlpha = 1;
 
     unk558 = &boss->unk558;
     unk558->callback = sub_8050DC8;
@@ -727,8 +730,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc",
 
     unk1C->qPos.x += dX;
     unk1C->qPos.y += dY;
-    boss->pos14.x += dX;
-    boss->pos14.y += dY;
+    boss->qPos.x += dX;
+    boss->qPos.y += dY;
 
     for (i = 0; i < 3; i++) {
         unkA8 = &unk98->unk10[i];
@@ -860,7 +863,6 @@ void sub_804D8E0(TA53Boss *boss)
     if (SuperSonicGetFlags() & SUPER_FLAG__200) {
         sub_802BA8C();
     }
-    // _0804D91A
 
     for (i = 0; i < ARRAY_COUNT(unk98->unk10); i++) {
         TA53_unkA8 *unkA8 = &unk98->unk10[i];
@@ -887,8 +889,8 @@ void sub_804D8E0(TA53Boss *boss)
     unk48->unk2C = 0;
     unk1C->unk14 = 0;
 
-    boss->pos14.x = unk1C->qPos.x + Q(unk1C->unk20);
-    boss->pos14.y = unk1C->qPos.y + Q(unk1C->unk22);
+    boss->qPos.x = unk1C->qPos.x + Q(unk1C->unk20);
+    boss->qPos.y = unk1C->qPos.y + Q(unk1C->unk22);
 }
 
 void Task_804D9DC(void)
@@ -927,7 +929,6 @@ void Task_804D9DC(void)
         boss->unk12 = 120;
         gCurTask->main = Task_804DB34;
     } else {
-        // _0804DAE0
         unk98->callback(unk98);
         unk558->callback(unk558);
         unk594->callback(unk594);
@@ -940,3 +941,52 @@ void Task_804D9DC(void)
         sub_8050958(boss);
     }
 }
+
+void Task_804DB34(void)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk1C *unk1C = &boss->unk1C;
+    TA53_unk98 *unk98 = &boss->unk98;
+    TA53_unk594 *unk594 = &boss->unk594;
+    TA53_unk654 *unk654 = &boss->unk654;
+    Sprite *s;
+    s32 x, y;
+
+    gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
+
+    unk1C->qPos.x += Q(4.75);
+    unk1C->qPos.y += Q(0.25);
+
+    unk98->callback(unk98);
+    unk594->callback(unk594);
+    unk654->callback(unk654);
+
+    sub_80501D4(boss);
+    sub_8050958(boss);
+    sub_804DCF8(boss);
+
+    s = &boss->spr7B4;
+
+    x = Q(gCamera.x + 536);
+    y = Q(gCamera.y + 60);
+    boss->qPos.x += Div((x - boss->qPos.x) * 2, 100);
+    boss->qPos.y += Div((y - boss->qPos.y) * 2, 100);
+
+    s->x = I(boss->qPos.x) - gCamera.x;
+    s->y = I(boss->qPos.y) - gCamera.y;
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+
+    if (boss->unk12 > 0) {
+        boss->unk12--;
+    } else {
+        if (UpdateScreenFade(&boss->fade) == SCREEN_FADE_COMPLETE) {
+            boss->unk12 = 2;
+            gBldRegs.bldY = 16;
+            gCurTask->main = Task_804DC60;
+        }
+    }
+}
+
+#if 01
+#endif
