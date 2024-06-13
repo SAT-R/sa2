@@ -79,6 +79,7 @@ extern uint8_t VRAM[VRAM_SIZE];
 
 #define BG_VRAM           VRAM
 #define BG_CHAR_ADDR(n)   (BG_VRAM + (0x4000 * (n)))
+// TODO: Maybe rename BG_SCREEN_ADDR
 #define BG_SCREEN_ADDR(n) (BG_VRAM + (0x800 * (n)))
 #define BG_TILE_ADDR(n)   (BG_VRAM + (0x80 * (n)))
 

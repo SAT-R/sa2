@@ -4,20 +4,17 @@
 #include "global.h" // for Vec2_16/32
 #include "sprite.h" // Sprite
 
-extern void CreateTrueArea53Boss(void);
-extern bool32 ExtraBossIsDead(void);
-extern void TrueArea53BossMove(s32, s32);
-
 // NOTE:
 // struct TA53Boss and all the structs referenced in it have to be declared in the .h
 // file because the stage background function of the TA53 references it, mainly becaue
 // the boss's cockpit is rendered in a background layer.
 
-typedef struct {
-    void (*func)(void *);
-    void *ref;
-    u16 unk8;
-} TA53_Data0;
+#define TA53_BOSS_BACKGROUND_ID 1
+#define TA53_BOSS_SCREENBASE    28
+
+extern void CreateTrueArea53Boss(void);
+extern bool32 ExtraBossIsDead(void);
+extern void TrueArea53BossMove(s32, s32);
 
 typedef struct TA53_unk1C {
     /* 0x00 */ void (*callback)(struct TA53_unk1C *);
@@ -27,8 +24,8 @@ typedef struct TA53_unk1C {
     /* 0x16 */ u16 unk16;
     /* 0x18 */ s32 unk18;
     /* 0x1C */ void *unk1C;
-    /* 0x20 */ u16 unk20;
-    /* 0x22 */ u16 unk22;
+    /* 0x20 */ s16 unk20;
+    /* 0x22 */ s16 unk22;
     /* 0x24 */ Vec2_32 pos;
 } TA53_unk1C; /* size: 0x2C */
 
@@ -44,11 +41,23 @@ typedef struct TA53_unk48 {
     s32 unk30;
     void *unk34; // ref
     u16 unk38;
-    u8 filler3A[0xA];
-    u32 unk44;
-    u32 unk48;
+    u16 unk3A;
+    u8 filler3C[0x8];
+    Vec2_32 qPos44;
     u8 unk4C;
 } TA53_unk48; /* size: 0x4D ? */
+
+typedef struct {
+    void (*callback)(struct TA53_unk48 *);
+    void *ref;
+    u16 unk8;
+} TA53_Data0;
+
+typedef struct {
+    void (*callback)(struct TA53_unk1C *);
+    void *ref;
+    u16 unk8;
+} TA53_Data1;
 
 // TODO: Name ("TA53_Rocket"?)
 typedef struct {
@@ -73,8 +82,8 @@ typedef struct {
     Sprite sprA0[5];
 } TA53_unkA8; /* size: 0x190 */
 
-typedef struct {
-    /* 0x00 */ void *unk0; // function pointer
+typedef struct TA53_unk98 {
+    /* 0x00 */ void (*callback)(struct TA53_unk98 *);
     /* 0x04 */ u16 unk4; // some counter
     /* 0x06 */ u16 unk6;
     /* 0x08 */ s32 qUnk8;
@@ -83,7 +92,7 @@ typedef struct {
 } TA53_unk98; /* size: 0x4C0 */
 
 typedef struct TA53_unk558 {
-    /* 0x00 */ void (*func)(struct TA53_unk558 *); // void func (TA53_unk558 *)
+    /* 0x00 */ void (*callback)(struct TA53_unk558 *); // void func (TA53_unk558 *)
     /* 0x04 */ u8 unk4[0x4];
     /* 0x08 */ s32 unk8;
     /* 0x0C */ Sprite s;

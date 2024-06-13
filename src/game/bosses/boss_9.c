@@ -9,6 +9,7 @@
 #include "sakit/globals.h"
 
 #include "constants/animations.h"
+#include "constants/tilemaps.h"
 
 typedef struct {
     /* 0x00 */ s32 unk0;
@@ -19,6 +20,7 @@ typedef struct {
     /* 0x0A */ u16 unkA;
 } TA53_80D89C8;
 
+extern void Task_804D9DC(void);
 extern void CreateTrueArea53Boss(void);
 extern void sub_80505B8(struct TA53Boss *);
 extern void Task_EggmanKidnapsVanilla(void);
@@ -72,7 +74,7 @@ const TA53SubFunc gUnknown_080D89AC[7]
         sub_804FAA4, sub_804FC10, sub_804FD58 };
 
 void sub_804DD9C(void *);
-void sub_804E66C(void *);
+void sub_804E66C(struct TA53_unk98 *);
 void sub_804FF9C(void *);
 
 const TA53_80D89C8 gUnknown_080D89C8[]
@@ -290,17 +292,19 @@ const void *const gUnknown_080D8D64[] = {
 };
 
 // TODO: Parameter type
-void sub_804E078(void *);
-void sub_804E15C(void *);
-void sub_804E4CC(void *);
-void sub_8050BD8(void *);
-void sub_8050BE4(void *);
-void sub_8050BF0(void *);
-void sub_8050BFC(void *);
-void sub_8050C50(void *);
-void sub_8050CBC(void *);
-void sub_8050D24(void *);
-void sub_8050D9C(void *);
+void sub_804E078(struct TA53_unk48 *);
+void sub_804E15C(struct TA53_unk48 *);
+void sub_804E4CC(struct TA53_unk48 *);
+void sub_80501D4(TA53Boss *);
+void sub_8050958(TA53Boss *);
+void sub_8050BD8(struct TA53_unk1C *);
+void sub_8050BE4(struct TA53_unk1C *);
+void sub_8050BF0(struct TA53_unk1C *);
+void sub_8050BFC(struct TA53_unk48 *);
+void sub_8050C50(struct TA53_unk48 *);
+void sub_8050CBC(struct TA53_unk48 *);
+void sub_8050D24(struct TA53_unk48 *);
+void sub_8050D9C(struct TA53_unk48 *);
 
 const TA53_Data0 gUnknown_080D8D6C[] = {
     { sub_804E078, &gUnknown_080D8BFC, 40 },  { sub_804E4CC, &gUnknown_080D8BFC, 40 },
@@ -309,7 +313,7 @@ const TA53_Data0 gUnknown_080D8D6C[] = {
     { sub_8050D24, &gUnknown_080D8C10, 80 },  { sub_8050D9C, &gUnknown_080D8C10, 80 },
 };
 
-const TA53_Data0 gUnknown_080D8DCC[] = {
+const TA53_Data1 gUnknown_080D8DCC[] = {
     { sub_8050BD8, &gUnknown_080D8D3C, 40 },  { sub_8050BE4, &gUnknown_080D8D54, 100 },
     { sub_8050BE4, &gUnknown_080D8D5C, 100 }, { sub_8050BE4, &gUnknown_080D8D5C, 100 },
     { sub_8050BF0, &gUnknown_080D8D44, 20 },  { sub_8050BF0, &gUnknown_080D8D4C, 100 },
@@ -418,7 +422,7 @@ void SetupEggmanKidnapsVanillaTask(void)
     boss->unk12 = 0x230;
 
     unk48->unk30 &= 0xFFF;
-    unk48->callback = (void *)gUnknown_080D8D6C[4].func;
+    unk48->callback = gUnknown_080D8D6C[4].callback;
     unk48->unk34 = gUnknown_080D8D6C[4].ref;
     unk48->unk2E = gUnknown_080D8D6C[4].unk8;
 
@@ -433,7 +437,7 @@ void SetupEggmanKidnapsVanillaTask(void)
 
     // TODO(Jace): why is this set above only to be rewritten?
     unk48->unk30 &= 0xFFF;
-    unk48->callback = (void *)gUnknown_080D8D6C[5].func;
+    unk48->callback = gUnknown_080D8D6C[5].callback;
     unk48->unk34 = gUnknown_080D8D6C[5].ref;
     unk48->unk2E = gUnknown_080D8D6C[5].unk8;
     unk48->unk2C = unk48->unk2E;
@@ -492,13 +496,13 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     boss->unkA = 1;
 
     unk558 = &boss->unk558;
-    unk558->func = sub_8050DC8;
+    unk558->callback = sub_8050DC8;
 
     unk1C->unk4[1] = 200;
     unk1C->unk4[0] = 0;
     unk1C->unk18 &= 0xFFF;
 
-    unk1C->callback = (void *)gUnknown_080D8DCC->func;
+    unk1C->callback = gUnknown_080D8DCC->callback;
     unk1C->unk1C = gUnknown_080D8DCC->ref;
     unk1C->unk16 = gUnknown_080D8DCC->unk8;
 
@@ -515,13 +519,13 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     }
 
     unk48->unk30 &= 0xFFF;
-    unk48->callback = (void *)gUnknown_080D8D6C[1].func;
+    unk48->callback = gUnknown_080D8D6C[1].callback;
     unk48->unk34 = gUnknown_080D8D6C[1].ref;
     unk48->unk2E = gUnknown_080D8D6C[1].unk8;
     unk48->unk4C = 1;
     unk48->unk38 = 0;
-    unk48->unk44 = 0;
-    unk48->unk48 = 0;
+    unk48->qPos44.x = 0;
+    unk48->qPos44.y = 0;
     unk48->unk2C = gUnknown_080D8D6C[0].unk8;
     unk48->unk30 = 0;
     unk48->unk4;
@@ -559,7 +563,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     }
     // __0804D194
 
-    unk98->unk0 = sub_804E66C;
+    unk98->callback = sub_804E66C;
     unk98->unk4 = 300;
     unk98->unk6 = 512;
     unk98->qUnk8 = 0;
@@ -766,7 +770,7 @@ void Task_EggmanKidnapsVanilla(void)
         return;
     }
 
-    unk558->func(&boss->unk558);
+    unk558->callback(unk558);
     unk1C->callback(unk1C);
     unk48->callback(unk48);
     sub_80505B8(boss);
@@ -783,5 +787,55 @@ void Task_EggmanKidnapsVanilla(void)
     for (y = 0; y < DISPLAY_HEIGHT - 1; y++) {
         s16 val = (SIN(((y + gStageTime) * 40) & ONE_CYCLE) >> 12) + 0x2C;
         *offset++ = val;
+    }
+}
+
+void Task_TrueArea53BossMain(void)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk1C *unk1C = &boss->unk1C;
+    TA53_unk48 *unk48 = &boss->unk48;
+    TA53_unk98 *unk98 = &boss->unk98;
+
+    gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+
+    gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
+    unk1C->pos.x += Q(5);
+    unk98->unk6 = unk48->unk3A;
+    unk98->unk6 = ((unk98->unk6 + I(unk48->qPos44.x) + 860) & ONE_CYCLE);
+
+    unk98->qUnk8 = unk1C->pos.x + Q(unk1C->unk20);
+    unk98->qUnkC = unk1C->pos.y + Q(unk1C->unk22);
+
+    unk98->callback(unk98);
+    unk1C->callback(unk1C);
+    unk48->callback(unk48);
+    sub_80501D4(boss);
+    sub_8050958(boss);
+
+    unk1C->pos.x += Q(1);
+
+    if (--boss->unk12 == 0) {
+        gCurTask->main = Task_804D9DC;
+    } else if (boss->unk12 == (80 - 1)) {
+        Background *cockpit = &boss->bg900;
+
+        cockpit->graphics.dest = (void *)BG_VRAM;
+        cockpit->graphics.anim = 0;
+        cockpit->layoutVram = (void *)BG_SCREEN_ADDR(TA53_BOSS_SCREENBASE);
+        cockpit->unk18 = 0;
+        cockpit->unk1A = 0;
+        cockpit->tilemapId = TM_EXTRA_BOSS_BACKGROUND_COPY;
+        cockpit->unk1E = 0;
+        cockpit->unk20 = 0;
+        cockpit->unk22 = 0;
+        cockpit->unk24 = 0;
+        cockpit->targetTilesX = 32;
+        cockpit->targetTilesY = 20;
+        cockpit->paletteOffset = 0;
+        cockpit->flags = BACKGROUND_FLAGS_BG_ID(TA53_BOSS_BACKGROUND_ID);
+        DrawBackground(cockpit);
+
+        gBgCntRegs[1] = (BGCNT_SCREENBASE(TA53_BOSS_SCREENBASE) | BGCNT_PRIORITY(2));
     }
 }
