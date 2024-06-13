@@ -6,6 +6,7 @@
 #include "gba/io_reg.h"
 #include "game/bosses/common.h"
 #include "game/bosses/boss_9.h"
+#include "game/stage/player_super_sonic.h"
 #include "sakit/globals.h"
 
 #include "constants/animations.h"
@@ -320,11 +321,12 @@ const TA53_Data1 gUnknown_080D8DCC[] = {
 };
 
 // TODO: Parameter type
-void sub_804E974(TA53Boss *boss);
-void sub_804EB6C(TA53Boss *boss);
-void sub_804EC6C(TA53Boss *boss);
+void sub_804E974(struct TA53_unkA8 *rocket);
+void sub_804EB6C(struct TA53_unkA8 *rocket);
+void sub_804EC6C(struct TA53_unkA8 *rocket);
 
-const void *const gUnknown_080D8E14[] = { sub_804E974, sub_804EB6C, sub_804EC6C };
+const TA53_Rocket_Callback gUnknown_080D8E14[]
+    = { sub_804E974, sub_804EB6C, sub_804EC6C };
 const u8 sRGB_080D8E20[] = {
     //
     0, 0, 0, //
@@ -426,8 +428,8 @@ void SetupEggmanKidnapsVanillaTask(void)
     unk48->unk34 = gUnknown_080D8D6C[4].ref;
     unk48->unk2E = gUnknown_080D8D6C[4].unk8;
 
-    unk1C->pos.x = Q(330);
-    unk1C->pos.y = Q(90);
+    unk1C->qPos.x = Q(330);
+    unk1C->qPos.y = Q(90);
     unk1C->unk14 = gUnknown_080D8DCC[4].unk8;
 
     for (i = 0; i < 4; i++) {
@@ -506,8 +508,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     unk1C->unk1C = gUnknown_080D8DCC->ref;
     unk1C->unk16 = gUnknown_080D8DCC->unk8;
 
-    unk1C->pos.x = Q(1267);
-    unk1C->pos.y = Q(112);
+    unk1C->qPos.x = Q(1267);
+    unk1C->qPos.y = Q(112);
     unk1C->unk20 = 0;
     unk1C->unk22 = 0;
     unk1C->unk14 = unk1C->unk16;
@@ -718,8 +720,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc",
     unk1C = &boss->unk1C;
     unk98 = &boss->unk98;
 
-    unk1C->pos.x += dX;
-    unk1C->pos.y += dY;
+    unk1C->qPos.x += dX;
+    unk1C->qPos.y += dY;
     boss->pos14.x += dX;
     boss->pos14.y += dY;
 
@@ -800,12 +802,12 @@ void Task_TrueArea53BossMain(void)
     gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
 
     gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
-    unk1C->pos.x += Q(5);
+    unk1C->qPos.x += Q(5);
     unk98->unk6 = unk48->unk3A;
     unk98->unk6 = ((unk98->unk6 + I(unk48->qPos44.x) + 860) & ONE_CYCLE);
 
-    unk98->qUnk8 = unk1C->pos.x + Q(unk1C->unk20);
-    unk98->qUnkC = unk1C->pos.y + Q(unk1C->unk22);
+    unk98->qUnk8 = unk1C->qPos.x + Q(unk1C->unk20);
+    unk98->qUnkC = unk1C->qPos.y + Q(unk1C->unk22);
 
     unk98->callback(unk98);
     unk1C->callback(unk1C);
@@ -813,7 +815,7 @@ void Task_TrueArea53BossMain(void)
     sub_80501D4(boss);
     sub_8050958(boss);
 
-    unk1C->pos.x += Q(1);
+    unk1C->qPos.x += Q(1);
 
     if (--boss->unk12 == 0) {
         gCurTask->main = Task_804D9DC;
@@ -838,4 +840,48 @@ void Task_TrueArea53BossMain(void)
 
         gBgCntRegs[1] = (BGCNT_SCREENBASE(TA53_BOSS_SCREENBASE) | BGCNT_PRIORITY(2));
     }
+}
+
+void sub_804D8E0(TA53Boss *boss)
+{
+    TA53_unk1C *unk1C = &boss->unk1C;
+    TA53_unk48 *unk48 = &boss->unk48;
+    TA53_unk98 *unk98 = &boss->unk98;
+    TA53_unk558 *unk558 = &boss->unk558;
+    TA53_unk654 *unk654 = &boss->unk654;
+    Sprite *s;
+    u8 i;
+
+    if (SuperSonicGetFlags() & SUPER_FLAG__200) {
+        sub_802BA8C();
+    }
+    // _0804D91A
+
+    for (i = 0; i < ARRAY_COUNT(unk98->unk10); i++) {
+        TA53_unkA8 *unkA8 = &unk98->unk10[i];
+        s = &unkA8->spr20;
+
+        unkA8->unk4 |= 0x4;
+
+        if (unkA8->callback != gUnknown_080D8E14[2]) {
+            s->graphics.anim = gUnknown_080D8918[16].anim;
+            s->variant = gUnknown_080D8918[16].variant;
+            s->prevVariant = -1;
+            s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+            unkA8->unk8 = 0x10;
+        }
+    }
+
+    unk98->callback = sub_804E66C;
+
+    unk654->func0 = sub_804FF9C;
+    unk654->unk8 = 300;
+
+    unk558->callback = sub_8050DC8;
+
+    unk48->unk2C = 0;
+    unk1C->unk14 = 0;
+
+    boss->pos14.x = unk1C->qPos.x + Q(unk1C->unk20);
+    boss->pos14.y = unk1C->qPos.y + Q(unk1C->unk22);
 }
