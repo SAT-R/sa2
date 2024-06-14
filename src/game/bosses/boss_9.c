@@ -323,16 +323,23 @@ void sub_8050DC4(struct TA53_unk98 *);
 void sub_8050DF8(struct TA53_unk654 *);
 
 const TA53_Data0 gUnknown_080D8D6C[] = {
-    { sub_804E078, &gUnknown_080D8BFC, 40 },  { sub_804E4CC, &gUnknown_080D8BFC, 40 },
-    { sub_8050BFC, &gUnknown_080D8C24, 126 }, { sub_8050C50, &gUnknown_080D8C24, 512 },
-    { sub_804E15C, &gUnknown_080D8C38, 160 }, { sub_8050CBC, &gUnknown_080D8C10, 80 },
-    { sub_8050D24, &gUnknown_080D8C10, 80 },  { sub_8050D9C, &gUnknown_080D8C10, 80 },
+    { sub_804E078, (void *)&gUnknown_080D8BFC, 40 },
+    { sub_804E4CC, (void *)&gUnknown_080D8BFC, 40 },
+    { sub_8050BFC, (void *)&gUnknown_080D8C24, 126 },
+    { sub_8050C50, (void *)&gUnknown_080D8C24, 512 },
+    { sub_804E15C, (void *)&gUnknown_080D8C38, 160 },
+    { sub_8050CBC, (void *)&gUnknown_080D8C10, 80 },
+    { sub_8050D24, (void *)&gUnknown_080D8C10, 80 },
+    { sub_8050D9C, (void *)&gUnknown_080D8C10, 80 },
 };
 
 const TA53_Data1 gUnknown_080D8DCC[] = {
-    { sub_8050BD8, &gUnknown_080D8D3C, 40 },  { sub_8050BE4, &gUnknown_080D8D54, 100 },
-    { sub_8050BE4, &gUnknown_080D8D5C, 100 }, { sub_8050BE4, &gUnknown_080D8D5C, 100 },
-    { sub_8050BF0, &gUnknown_080D8D44, 20 },  { sub_8050BF0, &gUnknown_080D8D4C, 100 },
+    { sub_8050BD8, (void *)&gUnknown_080D8D3C, 40 },
+    { sub_8050BE4, (void *)&gUnknown_080D8D54, 100 },
+    { sub_8050BE4, (void *)&gUnknown_080D8D5C, 100 },
+    { sub_8050BE4, (void *)&gUnknown_080D8D5C, 100 },
+    { sub_8050BF0, (void *)&gUnknown_080D8D44, 20 },
+    { sub_8050BF0, (void *)&gUnknown_080D8D4C, 100 },
 };
 
 // TODO: Parameter type
@@ -1319,7 +1326,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc",
 END_NONMATCH
 
 // (89.56%) https://decomp.me/scratch/sGKWf
-void sub_804E4CC(struct TA53_unk48 *unk48)
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E4CC.inc",
+         void sub_804E4CC(struct TA53_unk48 *unk48))
 {
     u16 r2;
 
@@ -1366,10 +1374,11 @@ void sub_804E4CC(struct TA53_unk48 *unk48)
                 s32 g = ((sRGB_080D8E20[i][c][1] * r6) >> 9) & 0x1F;
                 s32 b = ((sRGB_080D8E20[i][c][2] * r6) >> 9) & 0x1F;
 
-                gBgPalette[(i * 16 + 4) * 16 + c] = RGB16_REV(r, g, b);
+                gBgPalette[((7 + i) * 16) + c] = RGB16_REV(r, g, b);
             }
         }
 
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
 }
+END_NONMATCH
