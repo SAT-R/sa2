@@ -1418,3 +1418,78 @@ void sub_804E66C(struct TA53_unk98 *unk98)
 
     sub_804E8E8(unk98);
 }
+
+void sub_804E74C(struct TA53_unk98 *unk98)
+{
+    bool32 sb;
+    TA53_unkA8 *unkA8;
+    TA53_RocketExhaust *exhaust;
+    u16 unk4 = --unk98->unk4;
+    u8 i = 3;
+
+    if (unk4 == 0) {
+        unk98->callback = sub_804E66C;
+        unk98->unk4 = 600;
+    } else if (unk4 == 270) {
+        i = 0;
+    } else if (unk4 == 210) {
+        i = 1;
+    } else if (unk4 == 150) {
+        i = 2;
+    }
+
+    if (i < 3) {
+        Sprite *s;
+        s32 unk8, unkC;
+        unkA8 = &unk98->unk10[i];
+        unkA8->callback = gUnknown_080D8E14[0];
+        unkA8->unk4 = 3;
+        i = 0;
+
+        unkA8->unk8 = 600;
+        unkA8->unkA = (unk98->unk6 & ONE_CYCLE);
+
+        unkA8->unkE = COS(unk98->unk6) >> 5;
+        unkA8->unk10 = SIN(unk98->unk6) >> 5;
+
+        unk8 = unk98->qUnk8;
+        unkA8->pos14.x = unk98->qUnk8;
+
+        unkC = unk98->qUnkC;
+        unkA8->pos14.x = unk8 + unkA8->unkE * 13;
+        unkA8->pos14.y = unkC + unkA8->unk10 * 13;
+
+        unkA8->unk1C = 0x80;
+        unkA8->unk6 = i;
+        unkA8->unk5 = 5;
+
+        s = &unkA8->spr20;
+        s->graphics.anim = gUnknown_080D8918[0].anim;
+        s->variant = gUnknown_080D8918[0].variant;
+        s->prevVariant = -1;
+        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->palId = 6;
+        m4aSongNumStart(SE_266);
+    }
+
+    sb = (Mod(gStageTime, 4) == 0) ? 1 : 0;
+
+    for (i = 0; i < 3; i++) {
+        unkA8 = &unk98->unk10[i];
+        exhaust = &unkA8->exhaust;
+
+        exhaust->callback(exhaust);
+
+        if (unkA8->unk4 & 0x1) {
+            if (sb) {
+                s32 qX = (unkA8->pos14.x - ((COS(unkA8->unkA) * 5) >> 5));
+                s32 qY = (unkA8->pos14.y - ((SIN(unkA8->unkA) * 5) >> 5));
+                sub_804DE5C(qX, qY, exhaust, unkA8->unkA);
+            }
+
+            unkA8->callback(unkA8);
+        }
+    }
+
+    sub_804E8E8(unk98);
+}

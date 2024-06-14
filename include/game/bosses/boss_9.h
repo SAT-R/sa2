@@ -75,15 +75,17 @@ typedef struct TA53_RocketExhaust {
 typedef struct TA53_unkA8 {
     /* 0x00 */ TA53_Rocket_Callback callback;
     /* 0x04 */ u8 unk4;
-    /* 0x06 */ u16 unk6;
+    /* 0x05 */ u8 unk5;
+    /* 0x06 */ u8 unk6;
+    /* 0x07 */ u8 unk7;
     /* 0x08 */ u16 unk8;
     /* 0x0A */ u16 unkA;
     /* 0x0C */ u16 unkC;
-    /* 0x0E */ u16 unkE;
-    /* 0x10 */ u16 unk10;
+    /* 0x0E */ s16 unkE;
+    /* 0x10 */ s16 unk10;
     /* 0x12 */ u8 filler12[0x2];
     /* 0x14 */ Vec2_32 pos14;
-    /* 0x1C */ u8 filler1C[0x4];
+    /* 0x1C */ s32 unk1C;
     /* 0x20 */ Sprite spr20;
     /* 0x50 */ u8 filler50[8];
     /* 0x58 */ TA53_RocketExhaust exhaust;
