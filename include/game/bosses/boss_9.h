@@ -100,9 +100,12 @@ typedef struct TA53_unk98 {
     /* 0x10 */ TA53_unkA8 unk10[3];
 } TA53_unk98; /* size: 0x4C0 */
 
+// TA53_Mouth ?
 typedef struct TA53_unk558 {
     /* 0x00 */ void (*callback)(struct TA53_unk558 *); // void func (TA53_unk558 *)
-    /* 0x04 */ u8 unk4[0x4];
+    /* 0x04 */ u8 unk4;
+    /* 0x05 */ u8 unk5;
+    /* 0x06 */ u16 unk6;
     /* 0x08 */ s32 unk8;
     /* 0x0C */ Sprite s;
 } TA53_unk558; /* size: 0x3C */

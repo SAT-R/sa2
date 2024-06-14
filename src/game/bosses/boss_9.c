@@ -39,6 +39,7 @@ extern void Task_EggmanKidnapsVanilla(void);
 extern void TaskDestructor_TrueArea53BossGfx(struct Task *);
 void Task_TrueArea53BossMain(void);
 void sub_804F1EC(struct TA53_unk558 *);
+void sub_804F47C(struct TA53_unk558 *);
 void sub_8050DC8(struct TA53_unk558 *);
 void TaskDestructor_TrueArea53BossGfx(struct Task *);
 
@@ -1809,3 +1810,144 @@ bool32 sub_804F010(Sprite *s, s32 x, s32 y, u8 hbIndex)
         return FALSE;
     }
 }
+
+// "suck" FX animation, but only in the cutscene, not the boss fight
+void sub_804F108(TA53_unk558 *unk558)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk1C *unk1C = &boss->unk1C;
+    TA53_unk48 *unk48 = &boss->unk48;
+    Sprite *s = &unk558->s;
+    s32 qX, qY;
+    s32 sonicX, sonicY;
+    u16 index;
+
+    if (boss->unkC > 0) {
+        qX = unk1C->qPos.x + Q(unk1C->unk20);
+        qY = unk1C->qPos.y + Q(unk1C->unk22);
+
+        index = (I(unk48->qPos44.x) + unk48->unk3A[0] + Q(3)) & ONE_CYCLE;
+        qX += ((COS(index) * 9) >> 6);
+        qY += ((SIN(index) * 9) >> 6);
+
+        index = (index + Q(3)) & ONE_CYCLE;
+        qX += ((COS(index) * 38) >> 6);
+        qY += ((SIN(index) * 38) >> 6);
+
+        s->x = I(qX) - gCamera.x - 6;
+        s->y = I(qY) - gCamera.y + 5;
+
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+}
+
+// (81.57%) https://decomp.me/scratch/iqeu1
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc",
+         void sub_804F1EC(struct TA53_unk558 *unk558))
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk1C *unk1C = &boss->unk1C;
+    TA53_unk48 *unk48 = &boss->unk48;
+    TA53_unk98 *unk98 = &boss->unk98;
+    TA53_unkA8 *unkA8;
+    Sprite *s = &unk558->s;
+    s32 qX, qY;
+    s32 sonicX, sonicY;
+    u16 index;
+    u8 i;
+    u32 hitbox;
+    register s32 r7 asm("r7");
+
+    if (boss->unkC > 0) {
+        // _0804F222
+
+        if (--unk558->unk6 == 0) {
+            unk558->callback = sub_8050DC8;
+            m4aSongNumStop(SE_SUCTION);
+        }
+        // _0804F23C
+
+        r7 = unk558->unk8 + 2;
+        if (r7 > 464) {
+            r7 = 464;
+        }
+        unk558->unk8 = r7;
+
+        qX = unk1C->qPos.x + Q(unk1C->unk20);
+        qY = unk1C->qPos.y + Q(unk1C->unk22);
+
+        index = (I(unk48->qPos44.x) + unk48->unk3A[0] + Q(3)) & ONE_CYCLE;
+        qX += ((COS(index) * 9) >> 6);
+        qY += ((SIN(index) * 9) >> 6);
+
+        index = (index + Q(3)) & ONE_CYCLE;
+        qX += ((COS(index) * 38) >> 6);
+        qY += ((SIN(index) * 38) >> 6);
+
+        SuperSonicGetPos(&sonicX, &sonicY);
+
+        sonicX = sub_8085698(sonicX, qX + Q(10), r7, 10, 2);
+        sonicY = sub_8085698(sonicY, qY, r7 + Q(1), 10, 2);
+
+        SuperSonicSetPos(sonicX, sonicY);
+
+        if (sub_804F010(s, I(qX), I(qY), 0) == TRUE) {
+            sub_802C798();
+
+            unk558->callback = sub_804F47C;
+            unk558->unk6 = 120;
+            unk558->unk4 = 10;
+
+            s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_MOUTH;
+            s->variant = 0;
+            s->prevVariant = -1;
+            s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        } else {
+            // _0804F36C
+            m4aSongNumStartOrContinue(SE_SUCTION);
+
+            s->x = I(qX) - gCamera.x;
+            s->y = I(qY) - gCamera.y;
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
+
+            for (i = 0; i < 3; i++) {
+                hitbox = 2;
+                unkA8 = &unk98->unk10[i];
+
+                if (unkA8->unk4 & 0x1) {
+                    // TODO: This is a range-comparison, remove '<< 16'!
+                    s32 res
+                        = (sub_8004418(I(unkA8->pos14.y - qY), I(unkA8->pos14.x - qX))
+                           - 301)
+                        << 16;
+                    if (((unsigned)res <= 422 << 16) || (unkA8->unk6 > 0)) {
+                        s32 unk1C = unkA8->unk1C + 0xA;
+                        unkA8->unk6 = 1;
+                        unkA8->unk1C = unk1C;
+
+                        unkA8->pos14.x = sub_8085698(unkA8->pos14.x, qY + Q(22),
+                                                     (unk1C + 0x0A), 10, hitbox);
+                        unkA8->pos14.y = sub_8085698(unkA8->pos14.y, qY, (unk1C + 0xA0),
+                                                     10, hitbox);
+
+                        unkA8->unkE = Div(unkA8->unkE * 90, 100);
+                        unkA8->unk10 = Div(unkA8->unk10 * 90, 100);
+                    }
+                    // _0804F430
+
+                    if (sub_804EF68(&unkA8->spr20, I(unkA8->pos14.x), I(unkA8->pos14.y),
+                                    s, I(qX) + 16, I(qY))
+                        == TRUE) {
+                        unkA8->unk4 = 0;
+                    }
+                }
+            }
+        }
+    }
+}
+END_NONMATCH
+
+#if 01
+#endif

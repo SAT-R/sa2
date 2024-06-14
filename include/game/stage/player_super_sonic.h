@@ -70,5 +70,6 @@ extern void sub_802B81C(void);
 extern bool32 sub_802BA8C(void);
 extern void sub_802BB54(void);
 extern void sub_802C704(u8 index, s32 *outX, s32 *outY);
+extern void sub_802C798(void);
 
 #endif // GUARD_PLAYER_SUPER_SONIC_H
