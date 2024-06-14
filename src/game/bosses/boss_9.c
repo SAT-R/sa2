@@ -344,10 +344,11 @@ const TA53_Data1 gUnknown_080D8DCC[] = {
     { sub_8050BF0, (void *)&gUnknown_080D8D4C, 100 },
 };
 
-// TODO: Parameter type
 void sub_804E974(struct TA53_unkA8 *rocket);
 void sub_804EB6C(struct TA53_unkA8 *rocket);
 void sub_804EC6C(struct TA53_unkA8 *rocket);
+bool32 sub_804EE84(Sprite *s, s32 x, s32 y);
+bool32 sub_804F010(Sprite *s, s32 x, s32 y, s32 param3);
 
 const TA53_Rocket_Callback gUnknown_080D8E14[]
     = { sub_804E974, sub_804EB6C, sub_804EC6C };
@@ -1492,4 +1493,109 @@ void sub_804E74C(struct TA53_unk98 *unk98)
     }
 
     sub_804E8E8(unk98);
+}
+
+void sub_804E8E8(TA53_unk98 *unk98)
+{
+    TA53_unkA8 *unkA8;
+    Sprite *s;
+    u16 index;
+    u8 i;
+
+    for (i = 0; i < 3; i++) {
+        unkA8 = &unk98->unk10[i];
+
+        if (unkA8->unk4 & 0x1) {
+            s = &unkA8->spr20;
+
+            index = ((unkA8->unkC + Q(0.125)) & ONE_CYCLE) >> 6;
+
+            if (s->graphics.anim == gUnknown_080D8918[0].anim) {
+                s->variant = gUnknown_080D8918[index].variant;
+            }
+
+            s->x = I(unkA8->pos14.x) - gCamera.x;
+            s->y = I(unkA8->pos14.y) - gCamera.y;
+            UpdateSpriteAnimation(s);
+            DisplaySprite(s);
+        }
+    }
+}
+
+void sub_804E974(struct TA53_unkA8 *unkA8)
+{
+    s32 sonicX, sonicY;
+    Sprite *s = &unkA8->spr20;
+    bool32 r8 = FALSE;
+    u16 sinVal;
+
+    SuperSonicGetPos(&sonicX, &sonicY);
+
+    sonicX += Q(16);
+    sonicY += Q(0);
+
+    if (--unkA8->unk8 == 0) {
+        r8 = TRUE;
+    } else if (unkA8->unk8 < 170) {
+        unkA8->unk4 &= ~0x2;
+    }
+
+    sinVal = sub_8004418(I(sonicY - unkA8->pos14.y), I(sonicX - unkA8->pos14.x));
+    ;
+    unkA8->unkC = sinVal;
+
+    if (unkA8->unk5 > 0) {
+        --unkA8->unk5;
+    } else {
+        if (sub_808558C(unkA8->unkA, sinVal, 10) < 0) {
+            unkA8->unkA -= 5;
+        } else {
+            unkA8->unkA += 5;
+        }
+    }
+    // _0804EA00
+
+    unkA8->unkA &= ONE_CYCLE;
+    unkA8->unkE -= Div(unkA8->unkE, 40);
+    unkA8->unk10 -= Div(unkA8->unk10, 40);
+
+    unkA8->unkE += Div(COS(unkA8->unkA), 850);
+    unkA8->unk10 += Div(SIN(unkA8->unkA), 850);
+    unkA8->pos14.x += Q(5) + unkA8->unkE;
+    unkA8->pos14.y += Q(0) + unkA8->unk10;
+
+    if (!(SuperSonicGetFlags() & (SUPER_FLAG__200 | SUPER_FLAG__8))) {
+        if (sub_804EE84(s, I(unkA8->pos14.x), I(unkA8->pos14.y)) == TRUE) {
+            u16 rot;
+
+            unkA8->callback = gUnknown_080D8E14[1];
+            rot = SuperSonicGetRotation();
+
+            unkA8->unkE = COS(rot) >> 4;
+            unkA8->unk10 = SIN(rot) >> 4;
+
+            s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+
+            r8 = FALSE;
+            m4aSongNumStart(SE_268);
+        } else if (sub_804F010(s, I(unkA8->pos14.x), I(unkA8->pos14.y), 1) == TRUE) {
+            if (sub_802BA8C() == TRUE) {
+                r8 = TRUE;
+            }
+        }
+        // _0804EB08
+
+        if (r8) {
+            unkA8->unk4 |= 0x4;
+            unkA8->callback = gUnknown_080D8E14[2];
+            unkA8->unk8 = 0x10;
+
+            s->graphics.anim = gUnknown_080D8918[16].anim;
+            s->variant = gUnknown_080D8918[16].variant;
+            s->prevVariant = -1;
+            s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+            s->palId = 0;
+            m4aSongNumStart(SE_267);
+        }
+    }
 }
