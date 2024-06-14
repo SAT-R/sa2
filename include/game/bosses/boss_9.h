@@ -87,7 +87,7 @@ typedef struct TA53_unkA8 {
     /* 0x14 */ Vec2_32 pos14;
     /* 0x1C */ s32 unk1C;
     /* 0x20 */ Sprite spr20;
-    /* 0x50 */ u8 filler50[8];
+    /* 0x50 */ Hitbox reserved;
     /* 0x58 */ TA53_RocketExhaust exhaust;
 } TA53_unkA8; /* size: 0x190 */
 

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "flags.h"
+#include "rect.h"
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
@@ -14,6 +15,7 @@
 #include "game/stage/game_7.h"
 #include "sakit/globals.h"
 #include "sakit/camera.h"
+#include "sakit/player.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -349,7 +351,7 @@ void sub_804EB6C(struct TA53_unkA8 *rocket);
 bool32 sub_804ED98(s32, s32);
 void sub_804EC6C(struct TA53_unkA8 *rocket);
 bool32 sub_804EE84(Sprite *s, s32 x, s32 y);
-bool32 sub_804F010(Sprite *s, s32 x, s32 y, s32 param3);
+bool32 sub_804F010(Sprite *s, s32 x, s32 y, u8 param3);
 
 const TA53_Rocket_Callback gUnknown_080D8E14[3]
     = { sub_804E974, sub_804EB6C, sub_804EC6C };
@@ -1742,4 +1744,68 @@ bool32 sub_804ED98(s32 _x, s32 _y)
     }
 
     return result;
+}
+
+bool32 sub_804EE84(Sprite *sprIn, s32 x, s32 y)
+{
+    s32 sonicX = 0, sonicY = 0;
+    Sprite *sprSonic = SuperSonicGetSprite();
+
+    SuperSonicGetPos(&sonicX, &sonicY);
+
+    if (SuperSonicGetFlags() & (SUPER_FLAG__200 | SUPER_FLAG__8)) {
+        return FALSE;
+    }
+
+    if (!PLAYER_IS_ALIVE || !HITBOX_IS_ACTIVE(sprIn->hitboxes[1])
+        || !HITBOX_IS_ACTIVE(sprSonic->hitboxes[1])) {
+        return FALSE;
+    }
+
+    if (RECT_COLLISION(x, y, &sprIn->hitboxes[1], I(sonicX), I(sonicY),
+                       &sprSonic->hitboxes[1])) {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
+bool32 sub_804EF68(Sprite *sprRocket, s32 rocketX, s32 rocketY, Sprite *sprMouth,
+                   s32 mouthX, s32 mouthY)
+{
+    if ((!HITBOX_IS_ACTIVE(sprRocket->hitboxes[1]))
+        || (!HITBOX_IS_ACTIVE(sprMouth->hitboxes[0]))) {
+        return FALSE;
+    }
+
+    if (RECT_COLLISION(rocketX, rocketY, &sprRocket->hitboxes[1], mouthX, mouthY,
+                       &sprMouth->hitboxes[0])) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
+bool32 sub_804F010(Sprite *s, s32 x, s32 y, u8 hbIndex)
+{
+    s32 sonicX = 0, sonicY = 0;
+    Sprite *sprSonic = SuperSonicGetSprite();
+
+    SuperSonicGetPos(&sonicX, &sonicY);
+#ifndef NON_MATCHING
+    // Effectively this func call is a no-op as the flags aren't used
+    SuperSonicGetFlags();
+#endif
+
+    if (!PLAYER_IS_ALIVE || !HITBOX_IS_ACTIVE(s->hitboxes[hbIndex])
+        || !HITBOX_IS_ACTIVE(sprSonic->hitboxes[0])) {
+        return FALSE;
+    }
+
+    if (HB_COLLISION(x, y, s->hitboxes[hbIndex], I(sonicX), I(sonicY),
+                     sprSonic->hitboxes[0])) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
