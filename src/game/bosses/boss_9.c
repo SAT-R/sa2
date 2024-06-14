@@ -591,10 +591,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     for (i = 0; i < 16; i++) {
         boss->unk654.unkE[i] = 0;
         boss->unk654.unk1E[i] = 0;
-        boss->unk654.unk2E[i].x = 0;
-        boss->unk654.unk2E[i].y = 0;
-        boss->unk654.unk70[i].x = 0;
-        boss->unk654.unk70[i].y = 0;
+        boss->unk654.unk2E[i][0] = 0;
+        boss->unk654.unk2E[i][1] = 0;
+        boss->unk654.qPos70[i].x = 0;
+        boss->unk654.qPos70[i].y = 0;
     }
     // __0804D194
 
@@ -783,8 +783,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc",
 
     for (i = 0; i < 16; i++) {
         unk654 = &boss->unk654;
-        unk654->unk70[i].x += dX;
-        unk654->unk70[i].y += dY;
+        unk654->qPos70[i].x += dX;
+        unk654->qPos70[i].y += dY;
     }
     // _0804D684
 }
@@ -1995,6 +1995,45 @@ void sub_804F47C(struct TA53_unk558 *unk558)
 
                         sub_804DEEC(qX - Q(8), qY);
                     }
+                }
+            }
+        }
+    }
+}
+
+void sub_804F5BC(struct TA53_unk654 *unk654)
+{
+    Sprite *s = &unk654->spr128;
+    s32 qX;
+    u8 i = 0;
+    bool32 animWasUpdated = FALSE;
+
+    for (; i < ARRAY_COUNT(unk654->unk2E); i++) {
+        if (unk654->unkE[i] > 0) {
+            if (--unk654->unk1E[i] == 0) {
+                unk654->unkE[i] = 0;
+            }
+
+            s->x = I(unk654->qPos70[i].x) - gCamera.x;
+            s->y = I(unk654->qPos70[i].y) - gCamera.y;
+
+            if (!animWasUpdated) {
+                animWasUpdated = TRUE;
+                UpdateSpriteAnimation(s);
+            }
+
+            DisplaySprite(s);
+
+            qX = unk654->qPos70[i].x + Q(5);
+            unk654->qPos70[i].x = qX;
+
+            unk654->qPos70[i].x = qX + unk654->unk2E[i][0];
+            unk654->qPos70[i].y += unk654->unk2E[i][1];
+
+            if (!(SuperSonicGetFlags() & (SUPER_FLAG__200 | SUPER_FLAG__8))) {
+                if (sub_804F010(s, I(unk654->qPos70[i].x), I(unk654->qPos70[i].y), 0)
+                    == TRUE) {
+                    sub_802BA8C();
                 }
             }
         }

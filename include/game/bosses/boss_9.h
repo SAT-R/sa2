@@ -127,9 +127,9 @@ typedef struct TA53_unk654 {
     /* 0x0C */ u8 fillerC[0x2];
     /* 0x0E */ u8 unkE[16];
     /* 0x1E */ u8 unk1E[16];
-    /* 0x2E */ Vec2_16 unk2E[16];
+    /* 0x2E */ s16 unk2E[16][2];
 
-    /* 0x70 */ Vec2_32 unk70[16];
+    /* 0x70 */ Vec2_32 qPos70[16];
 
     /* 0xF0 */ Sprite sprF0;
     /* 0x120 */ Hitbox hbSprF0;
