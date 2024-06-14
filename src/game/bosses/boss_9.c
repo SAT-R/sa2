@@ -346,11 +346,12 @@ const TA53_Data1 gUnknown_080D8DCC[] = {
 
 void sub_804E974(struct TA53_unkA8 *rocket);
 void sub_804EB6C(struct TA53_unkA8 *rocket);
+bool32 sub_804ED98(s32, s32);
 void sub_804EC6C(struct TA53_unkA8 *rocket);
 bool32 sub_804EE84(Sprite *s, s32 x, s32 y);
 bool32 sub_804F010(Sprite *s, s32 x, s32 y, s32 param3);
 
-const TA53_Rocket_Callback gUnknown_080D8E14[]
+const TA53_Rocket_Callback gUnknown_080D8E14[3]
     = { sub_804E974, sub_804EB6C, sub_804EC6C };
 const u8 sRGB_080D8E20[4][16][3] = {
     {
@@ -898,7 +899,7 @@ void sub_804D8E0(TA53Boss *boss)
             s->variant = gUnknown_080D8918[16].variant;
             s->prevVariant = -1;
             s->unk10 = SPRITE_FLAG(PRIORITY, 1);
-            unkA8->unk8 = 0x10;
+            unkA8->unk8 = 16;
         }
     }
 
@@ -1198,7 +1199,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc",
     TA53Boss *boss = TASK_DATA(gCurTask);
     TA53_unk558 *unk558 = &boss->unk558;
     TA53_unk1C *unk1C = &boss->unk1C;
-    s32 sonicX, sonicY;
+    Vec2_32 qSonicPos;
     u8 i;
 
     if (sub_8050030(unk48) != 0) {
@@ -1262,11 +1263,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc",
                 }
                 // _0804E30A
 
-                SuperSonicGetPos(&sonicX, &sonicY);
+                SuperSonicGetPos(&qSonicPos.x, &qSonicPos.y);
 
                 r6 = (r5 + unk48->unk38) & ONE_CYCLE;
 
-                result = sub_8004418(I(sonicY - r8), I(sonicX - sb));
+                result = sub_8004418(I(qSonicPos.y - r8), I(qSonicPos.x - sb));
 
                 if ((r6 < (result + 0x10)) && (r6 > (result - 0x10))) {
                     sub_802BB54();
@@ -1302,9 +1303,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc",
                 u16 result;
                 u32 p0;
                 // _0804E43C
-                sub_802C704(8, &sonicX, &sonicY);
+                sub_802C704(8, &qSonicPos.x, &qSonicPos.y);
 
-                result = sub_8004418(I(sonicY - r8), I(sonicX - sb));
+                result = sub_8004418(I(qSonicPos.y - r8), I(qSonicPos.x - sb));
                 if (sub_808558C((r5 + unk48->unk38) & ONE_CYCLE, result, 10) < 0) {
                     if (unk48->unk38 > 512) {
                         if (unk48->unk38 > 0x380)
@@ -1524,15 +1525,15 @@ void sub_804E8E8(TA53_unk98 *unk98)
 
 void sub_804E974(struct TA53_unkA8 *unkA8)
 {
-    s32 sonicX, sonicY;
+    Vec2_32 qSonicPos;
     Sprite *s = &unkA8->spr20;
     bool32 r8 = FALSE;
     u16 sinVal;
 
-    SuperSonicGetPos(&sonicX, &sonicY);
+    SuperSonicGetPos(&qSonicPos.x, &qSonicPos.y);
 
-    sonicX += Q(16);
-    sonicY += Q(0);
+    qSonicPos.x += Q(16);
+    qSonicPos.y += Q(0);
 
     if (--unkA8->unk8 == 0) {
         r8 = TRUE;
@@ -1540,7 +1541,8 @@ void sub_804E974(struct TA53_unkA8 *unkA8)
         unkA8->unk4 &= ~0x2;
     }
 
-    sinVal = sub_8004418(I(sonicY - unkA8->pos14.y), I(sonicX - unkA8->pos14.x));
+    sinVal
+        = sub_8004418(I(qSonicPos.y - unkA8->pos14.y), I(qSonicPos.x - unkA8->pos14.x));
     ;
     unkA8->unkC = sinVal;
 
@@ -1553,7 +1555,6 @@ void sub_804E974(struct TA53_unkA8 *unkA8)
             unkA8->unkA += 5;
         }
     }
-    // _0804EA00
 
     unkA8->unkA &= ONE_CYCLE;
     unkA8->unkE -= Div(unkA8->unkE, 40);
@@ -1583,12 +1584,11 @@ void sub_804E974(struct TA53_unkA8 *unkA8)
                 r8 = TRUE;
             }
         }
-        // _0804EB08
 
         if (r8) {
             unkA8->unk4 |= 0x4;
             unkA8->callback = gUnknown_080D8E14[2];
-            unkA8->unk8 = 0x10;
+            unkA8->unk8 = 16;
 
             s->graphics.anim = gUnknown_080D8918[16].anim;
             s->variant = gUnknown_080D8918[16].variant;
@@ -1598,4 +1598,148 @@ void sub_804E974(struct TA53_unkA8 *unkA8)
             m4aSongNumStart(SE_267);
         }
     }
+}
+
+void sub_804EB6C(struct TA53_unkA8 *unkA8)
+{
+    Sprite *s = &unkA8->spr20;
+
+    TA53Boss *boss = TASK_DATA(gCurTask);
+
+    if (--unkA8->unk8 == 0) {
+        s->graphics.anim = gUnknown_080D8918[16].anim;
+        s->variant = gUnknown_080D8918[16].variant;
+        s->prevVariant = -1;
+        s->palId = 0;
+        unkA8->callback = gUnknown_080D8E14[2];
+        unkA8->unk8 = 16;
+    } else {
+        u32 index = (unkA8->unkA + 0x8C) & ONE_CYCLE;
+        unkA8->unkA = index;
+        unkA8->unkC = index;
+
+        unkA8->pos14.x += Q(5) + unkA8->unkE;
+        unkA8->pos14.y += Q(0) + unkA8->unk10;
+
+        if (boss->unkD == 0) {
+            if ((unkA8->unk6 == 0)
+                && sub_804ED98(I(unkA8->pos14.x), I(unkA8->pos14.y))) {
+                if (boss->unkC & 0x1) {
+                    m4aSongNumStart(SE_143);
+                } else {
+                    m4aSongNumStart(SE_235);
+                }
+
+                s->graphics.anim = gUnknown_080D8918[16].anim;
+                s->variant = gUnknown_080D8918[16].variant;
+                s->prevVariant = -1;
+                s->palId = 0;
+                unkA8->callback = gUnknown_080D8E14[2];
+                unkA8->unk8 = 16;
+
+                boss->unkD = 48;
+
+                if (boss->unkC > 0) {
+                    boss->unkC--;
+                }
+            }
+        }
+    }
+}
+
+void sub_804EC6C(struct TA53_unkA8 *unkA8)
+{
+    if (--unkA8->unk8 == 0) {
+        unkA8->unk4 = 0;
+    } else {
+        unkA8->unkE -= Div(unkA8->unkE, 40);
+        unkA8->unk10 -= Div(unkA8->unk10, 40);
+
+        unkA8->pos14.x += unkA8->unkE;
+        unkA8->pos14.y += unkA8->unk10;
+
+        unkA8->pos14.x += Q(5);
+        unkA8->pos14.y += Q(0);
+    }
+}
+
+void sub_804ECC4(TA53Boss *boss)
+{
+    Vec2_32 qSonicPos;
+    s32 x, y, xSq, ySq;
+    u16 r1;
+    s32 distSonicSq;
+    TA53_unk1C *unk1C;
+    TA53_unk48 *unk48;
+
+    SuperSonicGetPos(&qSonicPos.x, &qSonicPos.y);
+
+    unk1C = &boss->unk1C;
+    unk48 = &boss->unk48;
+
+    x = unk1C->qPos.x + Q(unk1C->unk20);
+    y = unk1C->qPos.y + Q(unk1C->unk22);
+
+    r1 = (I(unk48->qPos44.x) + unk48->unk3A[0] + Q(3)) & ONE_CYCLE;
+
+    x += ((COS(r1) * 5) >> 4);
+    y += ((SIN(r1) * 5) >> 4);
+
+    r1 = (r1 + Q(3)) & ONE_CYCLE;
+    x += ((COS(r1) * 5) >> 5);
+    y += ((SIN(r1) * 5) >> 5);
+
+    x -= qSonicPos.x;
+    y -= qSonicPos.y;
+
+    xSq = I(x);
+    ySq = I(y);
+    xSq = xSq * xSq;
+    ySq = ySq * ySq;
+    distSonicSq = xSq + ySq;
+
+    if (distSonicSq < SQUARE(40)) {
+        sub_802BA8C();
+    }
+}
+
+bool32 sub_804ED98(s32 _x, s32 _y)
+{
+    bool32 result = FALSE;
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    s32 x, y, xSq, ySq;
+    u16 r1;
+    s32 distSonicSq;
+    TA53_unk1C *unk1C;
+    TA53_unk48 *unk48;
+
+    unk1C = &boss->unk1C;
+    unk48 = &boss->unk48;
+
+    x = unk1C->qPos.x + Q(unk1C->unk20);
+    y = unk1C->qPos.y + Q(unk1C->unk22);
+
+    r1 = (I(unk48->qPos44.x) + unk48->unk3A[0] + Q(3)) & ONE_CYCLE;
+
+    x += ((COS(r1) * 5) >> 4);
+    y += ((SIN(r1) * 5) >> 4);
+
+    r1 = (r1 + Q(3)) & ONE_CYCLE;
+    x += ((COS(r1) * 5) >> 5);
+    y += ((SIN(r1) * 5) >> 5);
+
+    xSq = I(x);
+    ySq = I(y);
+    xSq -= _x;
+    ySq -= _y;
+
+    xSq = xSq * xSq;
+    ySq = ySq * ySq;
+    distSonicSq = xSq + ySq;
+
+    if (distSonicSq < SQUARE(40)) {
+        result = TRUE;
+    }
+
+    return result;
 }
