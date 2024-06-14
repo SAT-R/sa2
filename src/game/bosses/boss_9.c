@@ -1857,7 +1857,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc",
     u16 index;
     u8 i;
     u32 hitbox;
-    register s32 r7 asm("r7");
+    s32 r7;
 
     if (boss->unkC > 0) {
         // _0804F222
@@ -1913,7 +1913,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc",
             DisplaySprite(s);
 
             for (i = 0; i < 3; i++) {
-                hitbox = 2;
                 unkA8 = &unk98->unk10[i];
 
                 if (unkA8->unk4 & 0x1) {
@@ -1927,10 +1926,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc",
                         unkA8->unk6 = 1;
                         unkA8->unk1C = unk1C;
 
-                        unkA8->pos14.x = sub_8085698(unkA8->pos14.x, qY + Q(22),
-                                                     (unk1C + 0x0A), 10, hitbox);
-                        unkA8->pos14.y = sub_8085698(unkA8->pos14.y, qY, (unk1C + 0xA0),
-                                                     10, hitbox);
+                        unkA8->pos14.x
+                            = sub_8085698(unkA8->pos14.x, +Q(22) + qX, (unk1C), 10, 2);
+                        unkA8->pos14.y
+                            = sub_8085698(unkA8->pos14.y, qY, (unk1C + 0xA0), 10, 2);
 
                         unkA8->unkE = Div(unkA8->unkE * 90, 100);
                         unkA8->unk10 = Div(unkA8->unk10 * 90, 100);
@@ -1948,6 +1947,59 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc",
     }
 }
 END_NONMATCH
+
+void sub_804F47C(struct TA53_unk558 *unk558)
+{
+    TA53Boss *boss;
+    TA53_unk1C *unk1C;
+    TA53_unk48 *unk48;
+    Sprite *s;
+    s32 qX, qY;
+    u16 index;
+
+    if (--unk558->unk6 == 0) {
+        unk558->callback = sub_8050DC8;
+    }
+
+    boss = TASK_DATA(gCurTask);
+    unk1C = &boss->unk1C;
+    unk48 = &boss->unk48;
+    s = &unk558->s;
+
+    if (boss->unkC != 0) {
+        qX = unk1C->qPos.x + Q(unk1C->unk20);
+        qY = unk1C->qPos.y + Q(unk1C->unk22);
+
+        index = (I(unk48->qPos44.x) + unk48->unk3A[0] + Q(3)) & ONE_CYCLE;
+        qX += ((COS(index) * 9) >> 6);
+        qY += ((SIN(index) * 9) >> 6);
+
+        index = (index + Q(3)) & ONE_CYCLE;
+        qX += ((COS(index) * 38) >> 6);
+        qY += ((SIN(index) * 38) >> 6);
+
+        s->x = I(qX) - gCamera.x;
+        s->y = I(qY) - gCamera.y;
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+
+        if (Mod(unk558->unk6, 10) == 0) {
+            if (unk558->unk6 <= 100) {
+                if (unk558->unk4 > 0) {
+                    unk558->unk4--;
+
+                    m4aSongNumStart(SE_271);
+
+                    if (gRingCount > 0) {
+                        gRingCount--;
+
+                        sub_804DEEC(qX - Q(8), qY);
+                    }
+                }
+            }
+        }
+    }
+}
 
 #if 01
 #endif
