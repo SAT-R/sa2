@@ -86,6 +86,8 @@ const TA53SubFunc gUnknown_080D89AC[7]
 
 void sub_804DD9C(struct TA53_RocketExhaust *);
 void sub_804E66C(struct TA53_unk98 *);
+void sub_804E74C(struct TA53_unk98 *);
+void sub_804E8E8(struct TA53_unk98 *);
 void sub_804FF9C(struct TA53_unk654 *);
 
 const TA53_80D89C8 gUnknown_080D89C8[]
@@ -1382,3 +1384,37 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E4CC.inc",
     }
 }
 END_NONMATCH
+
+void sub_804E66C(struct TA53_unk98 *unk98)
+{
+    bool32 sb;
+    u8 i;
+
+    if (--unk98->unk4 == 0) {
+        unk98->callback = sub_804E74C;
+        unk98->unk4 = 300;
+    }
+
+    // They call Mod() with a power-of-2 again...
+    sb = (Mod(gStageTime, 4) == 0) ? 1 : 0;
+
+    for (i = 0; i < 3; i++) {
+        TA53_unkA8 *unkA8 = &unk98->unk10[i];
+        TA53_RocketExhaust *exhaust = &unkA8->exhaust;
+
+        exhaust->callback(exhaust);
+
+        if (unkA8->unk4 & 0x1) {
+            if (sb && unkA8->callback != sub_804EC6C) {
+                u16 index = (unkA8->unkC + Q(0.125)) & ONE_CYCLE;
+                s32 qX = (unkA8->pos14.x - ((COS(index) * 5) >> 5));
+                s32 qY = (unkA8->pos14.y - ((SIN(index) * 5) >> 5));
+                sub_804DE5C(qX, qY, exhaust, index);
+            }
+
+            unkA8->callback(unkA8);
+        }
+    }
+
+    sub_804E8E8(unk98);
+}

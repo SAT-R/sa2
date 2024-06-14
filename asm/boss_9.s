@@ -7,120 +7,7 @@
 .syntax unified
 .arm
 
-.if 0
-.endif
-
-	thumb_func_start sub_804E66C
-sub_804E66C: @ 0x0804E66C
-	push {r4, r5, r6, r7, lr}
-	mov r7, sb
-	mov r6, r8
-	push {r6, r7}
-	adds r7, r0, #0
-	ldrh r0, [r7, #4]
-	subs r0, #1
-	strh r0, [r7, #4]
-	lsls r0, r0, #0x10
-	cmp r0, #0
-	bne _0804E68C
-	ldr r0, _0804E738 @ =sub_804E74C
-	str r0, [r7]
-	movs r0, #0x96
-	lsls r0, r0, #1
-	strh r0, [r7, #4]
-_0804E68C:
-	ldr r0, _0804E73C @ =gStageTime
-	ldr r0, [r0]
-	movs r1, #4
-	bl Mod
-	movs r1, #0
-	mov sb, r1
-	cmp r0, #0
-	bne _0804E6A2
-	movs r2, #1
-	mov sb, r2
-_0804E6A2:
-	movs r5, #0
-	ldr r0, _0804E740 @ =gSineTable
-	mov r8, r0
-_0804E6A8:
-	lsls r0, r5, #1
-	adds r0, r0, r5
-	lsls r0, r0, #3
-	adds r0, r0, r5
-	lsls r0, r0, #4
-	adds r0, #0x10
-	adds r4, r7, r0         @ r4 = unkA8 = unk98->unk10
-	adds r6, r4, #0
-	adds r6, #0x58          @ r6 = unkA8->exhaust
-	ldr r1, [r4, #0x58]
-	adds r0, r6, #0
-	bl _call_via_r1
-	ldrb r1, [r4, #4]
-	movs r0, #1
-	ands r0, r1
-	cmp r0, #0
-	beq _0804E71C
-	mov r1, sb
-	cmp r1, #0
-	beq _0804E714
-	ldr r1, [r4]
-	ldr r0, _0804E744 @ =sub_804EC6C
-	cmp r1, r0
-	beq _0804E714
-	ldrh r3, [r4, #0xc]
-	adds r3, #0x20
-	ldr r2, _0804E748 @ =0x000003FF
-	adds r0, r2, #0
-	ands r3, r0
-	movs r1, #0x80
-	lsls r1, r1, #1
-	adds r0, r3, r1
-	lsls r0, r0, #1
-	add r0, r8
-	movs r2, #0
-	ldrsh r0, [r0, r2]
-	lsls r1, r0, #2
-	adds r1, r1, r0
-	asrs r1, r1, #5
-	ldr r0, [r4, #0x14]
-	subs r0, r0, r1
-	lsls r1, r3, #1
-	add r1, r8
-	movs r2, #0
-	ldrsh r1, [r1, r2]
-	lsls r2, r1, #2
-	adds r2, r2, r1
-	asrs r2, r2, #5
-	ldr r1, [r4, #0x18]
-	subs r1, r1, r2
-	adds r2, r6, #0
-	bl sub_804DE5C
-_0804E714:
-	ldr r1, [r4]
-	adds r0, r4, #0
-	bl _call_via_r1
-_0804E71C:
-	adds r0, r5, #1
-	lsls r0, r0, #0x18
-	lsrs r5, r0, #0x18
-	cmp r5, #2
-	bls _0804E6A8
-	adds r0, r7, #0
-	bl sub_804E8E8
-	pop {r3, r4}
-	mov r8, r3
-	mov sb, r4
-	pop {r4, r5, r6, r7}
-	pop {r0}
-	bx r0
-	.align 2, 0
-_0804E738: .4byte sub_804E74C
-_0804E73C: .4byte gStageTime
-_0804E740: .4byte gSineTable
-_0804E744: .4byte sub_804EC6C
-_0804E748: .4byte 0x000003FF
-
+.if 01
 @ Input:
     @ R0 = TA53_unk98*
 	thumb_func_start sub_804E74C
@@ -329,6 +216,7 @@ _0804E8D8: .4byte 0x000003FF
 _0804E8DC: .4byte gSineTable
 _0804E8E0: .4byte gUnknown_080D8918
 _0804E8E4: .4byte gStageTime
+.endif
 
 @ Input:
     @ R0 = TA53_unk98*
