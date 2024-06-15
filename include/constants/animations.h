@@ -465,6 +465,8 @@
 
 #define SA2_ANIM_ZONEX_NAME 762
 
+#define SA2_ANIM_EXTRA_CUTSCENE_CAPSULE 791
+
 // NOTE: Reused from SA1's character selection screen
 #define SA2_ANIM_AMY_UNLOCKED 810
 

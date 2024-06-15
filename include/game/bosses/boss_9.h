@@ -169,7 +169,8 @@ typedef struct TA53Boss {
     /* 0x558 */ TA53_unk558 unk558;
     /* 0x594 */ TA53_unk594 unk594;
     /* 0x654 */ TA53_unk654 unk654;
-    /* 0x7B4 */ Sprite spr7B4;
+    /* 0x7B4 */ Sprite
+        spr7B4; // Used for the capsule Sonic rescues in the Extra cutscene
     /* 0x7E4 */ u8 filler7E4[0xC];
     /* 0x7F0 */ Sprite spr7F0;
     /* 0x7E4 */ u8 filler820[0xE0];

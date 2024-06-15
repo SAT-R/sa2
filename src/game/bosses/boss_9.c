@@ -2482,3 +2482,67 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc",
     return result;
 }
 END_NONMATCH
+
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80501D4.inc",
+         void sub_80501D4(TA53Boss *boss))
+{
+    TA53_unk1C *unk1C = &boss->unk1C;
+    TA53_unk48 *unk48 = &boss->unk48;
+    Sprite *s;
+    s32 qX, qY;
+
+    if (unk48->unk4C == 0) {
+        gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+
+        if (boss->unkF == 0) {
+            s = &boss->spr7B4;
+            VramFree(s->graphics.dest);
+
+            s->graphics.dest = VramMalloc(42);
+            s->graphics.anim = SA2_ANIM_EXTRA_CUTSCENE_CAPSULE;
+            s->variant = 0;
+            s->prevVariant = -1;
+
+            gDispCnt &= ~DISPCNT_OBJWIN_ON;
+
+            gWinRegs[WINREG_WINOUT] = 0;
+
+            gBldRegs.bldCnt = 0;
+            gBldRegs.bldAlpha = 0;
+
+            boss->unkF = 1;
+        } else if (boss->unkC != 0) {
+            // _0805026C
+            gStageFlags &= EXTRA_STATE__DISABLE_PAUSE_MENU;
+        }
+        // _0805027A
+        boss->unk10 &= ~0x1;
+    } else {
+        gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+    }
+    // _080502A4
+
+    if (boss->unk10 & 0x1) {
+        gDispCnt &= ~DISPCNT_BG2_ON;
+    } else {
+        gDispCnt |= DISPCNT_BG2_ON;
+    }
+    // _080502D6
+
+    if (gStageFlags & EXTRA_STATE__100) {
+        return;
+    }
+    // _080502EA
+
+    qX = unk1C->qPos.x + Q(unk1C->unk20);
+    qY = unk1C->qPos.y + Q(unk1C->unk22);
+
+    // ... TBC ...
+}
+END_NONMATCH
+
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80505B8.inc",
+         void sub_80505B8(TA53Boss *boss))
+{
+}
+END_NONMATCH
