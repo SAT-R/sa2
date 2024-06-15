@@ -37,7 +37,7 @@ typedef struct TA53_unk1C {
     /* 0x14 */ u16 unk14;
     /* 0x16 */ u16 unk16;
     /* 0x18 */ s32 unk18;
-    /* 0x1C */ void *unk1C;
+    /* 0x1C */ s16 **unk1C;
 
     // Maybe a direction vector?
     /* 0x20 */ s16 unk20;
@@ -56,7 +56,7 @@ typedef struct TA53_unk48 {
     u16 unk2C;
     u16 unk2E;
     u32 unk30;
-    void *unk34; // ref
+    s16 **unk34;
     u16 unk38;
     u16 unk3A[4];
     u16 unk42; // related to unk3A[]? Maybe 5th element?
