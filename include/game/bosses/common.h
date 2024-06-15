@@ -49,6 +49,7 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts);
 void Task_DestroyBossParts(void);
 void sub_8039ED4(void);
 void sub_8039F14(s32 p0, s32 p1);
+void sub_8039F50(s32 p0, u8 p1);
 
 extern const u32 gTileInfoBossScrews[][3];
 

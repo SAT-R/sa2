@@ -28,8 +28,9 @@ extern void sub_8048C7C(void *boss);
 
 // boss run
 const u16 gUnknown_080D87E6[][2] = { { 0, 0 } };
-void sub_80499D8(void) {};
-void sub_8049D1C(void) {};
+const u16 gUnknown_080D87D8[] = { 0 };
+const u32 gUnknown_080D8808[][2] = { { 0, 0 } };
+
 void sub_8049D20(void *vramTiles, void *boss) { }
 
 // math
