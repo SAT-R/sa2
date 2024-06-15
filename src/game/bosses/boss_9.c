@@ -24,9 +24,9 @@
 typedef struct {
     /* 0x00 */ s32 unk0;
     /* 0x04 */ u16 anim;
-    /* 0x06 */ u8 unk6;
+    /* 0x06 */ u8 variant;
     /* 0x07 */ u8 unk7;
-    /* 0x08 */ u8 unk8;
+    /* 0x08 */ u8 palId;
     /* 0x0A */ u16 unkA;
 } TA53_80D89C8;
 
@@ -74,18 +74,6 @@ const TileInfo gUnknown_080D8918[17] = {
 const s8 gUnknown_080D89A0[5] = { 0, -4, -8, -12, -16 };
 const u8 gUnknown_080D89A5[6] = { 0, 20, 24, 20, 18, 30 };
 
-// TODO: Parameter types
-//       On the initial run sub_804F6AC only matched usign u32 as last param,
-//       but for other functions it seems like it should be u16.
-//       sub_804FD58 might have the solution? (index % 1024)
-typedef void (*TA53SubFunc)(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
-void sub_804F6AC(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
-void sub_804F768(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
-void sub_804F850(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
-void sub_804F9BC(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
-void sub_804FAA4(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
-void sub_804FC10(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
-void sub_804FD58(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
 const TA53SubFunc gUnknown_080D89AC[7]
     = { sub_804F6AC, sub_804F768, sub_804F850, sub_804F9BC,
         sub_804FAA4, sub_804FC10, sub_804FD58 };
@@ -94,9 +82,10 @@ void sub_804DD9C(struct TA53_RocketExhaust *);
 void sub_804E66C(struct TA53_unk98 *);
 void sub_804E74C(struct TA53_unk98 *);
 void sub_804E8E8(struct TA53_unk98 *);
+void sub_804FEFC(struct TA53_unk654 *);
 void sub_804FF9C(struct TA53_unk654 *);
 
-const TA53_80D89C8 gUnknown_080D89C8[]
+const TA53_80D89C8 gUnknown_080D89C8[7]
     = { { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 },
         { 0, SA2_ANIM_EGG_GO_ROUND_PROJECTILE, 0, 0, 1, 0 },
         { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 },
@@ -1752,10 +1741,10 @@ bool32 sub_804ED98(s32 _x, s32 _y)
 
 bool32 sub_804EE84(Sprite *sprIn, s32 x, s32 y)
 {
-    s32 sonicX = 0, sonicY = 0;
+    s32 qSonicX = 0, qSonicY = 0;
     Sprite *sprSonic = SuperSonicGetSprite();
 
-    SuperSonicGetPos(&sonicX, &sonicY);
+    SuperSonicGetPos(&qSonicX, &qSonicY);
 
     if (SuperSonicGetFlags() & (SUPER_FLAG__200 | SUPER_FLAG__8)) {
         return FALSE;
@@ -1766,7 +1755,7 @@ bool32 sub_804EE84(Sprite *sprIn, s32 x, s32 y)
         return FALSE;
     }
 
-    if (RECT_COLLISION(x, y, &sprIn->hitboxes[1], I(sonicX), I(sonicY),
+    if (RECT_COLLISION(x, y, &sprIn->hitboxes[1], I(qSonicX), I(qSonicY),
                        &sprSonic->hitboxes[1])) {
         return TRUE;
     }
@@ -1792,10 +1781,10 @@ bool32 sub_804EF68(Sprite *sprRocket, s32 rocketX, s32 rocketY, Sprite *sprMouth
 
 bool32 sub_804F010(Sprite *s, s32 x, s32 y, u8 hbIndex)
 {
-    s32 sonicX = 0, sonicY = 0;
+    s32 qSonicX = 0, qSonicY = 0;
     Sprite *sprSonic = SuperSonicGetSprite();
 
-    SuperSonicGetPos(&sonicX, &sonicY);
+    SuperSonicGetPos(&qSonicX, &qSonicY);
 #ifndef NON_MATCHING
     // Effectively this func call is a no-op as the flags aren't used
     SuperSonicGetFlags();
@@ -1806,7 +1795,7 @@ bool32 sub_804F010(Sprite *s, s32 x, s32 y, u8 hbIndex)
         return FALSE;
     }
 
-    if (HB_COLLISION(x, y, s->hitboxes[hbIndex], I(sonicX), I(sonicY),
+    if (HB_COLLISION(x, y, s->hitboxes[hbIndex], I(qSonicX), I(qSonicY),
                      sprSonic->hitboxes[0])) {
         return TRUE;
     } else {
@@ -1822,7 +1811,7 @@ void sub_804F108(TA53_unk558 *unk558)
     TA53_unk48 *unk48 = &boss->unk48;
     Sprite *s = &unk558->s;
     s32 qX, qY;
-    s32 sonicX, sonicY;
+    s32 qSonicX, qSonicY;
     u16 index;
 
     if (boss->unkC > 0) {
@@ -1856,7 +1845,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc",
     TA53_unkA8 *unkA8;
     Sprite *s = &unk558->s;
     s32 qX, qY;
-    s32 sonicX, sonicY;
+    s32 qSonicX, qSonicY;
     u16 index;
     u8 i;
     u32 hitbox;
@@ -1888,12 +1877,12 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc",
         qX += ((COS(index) * 38) >> 6);
         qY += ((SIN(index) * 38) >> 6);
 
-        SuperSonicGetPos(&sonicX, &sonicY);
+        SuperSonicGetPos(&qSonicX, &qSonicY);
 
-        sonicX = sub_8085698(sonicX, qX + Q(10), r7, 10, 2);
-        sonicY = sub_8085698(sonicY, qY, r7 + Q(1), 10, 2);
+        qSonicX = sub_8085698(qSonicX, qX + Q(10), r7, 10, 2);
+        qSonicY = sub_8085698(qSonicY, qY, r7 + Q(1), 10, 2);
 
-        SuperSonicSetPos(sonicX, sonicY);
+        SuperSonicSetPos(qSonicX, qSonicY);
 
         if (sub_804F010(s, I(qX), I(qY), 0) == TRUE) {
             sub_802C798();
@@ -2294,5 +2283,90 @@ void sub_804FD58(u32 qX, u32 qY, UNUSED s16 param2, UNUSED u32 sinIndex_)
         }
     }
 }
+
+void sub_804FE24(struct TA53_unk654 *unk654)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk1C *unk1C = &boss->unk1C;
+    Sprite *s;
+    u8 funcId;
+
+    if (--unk654->unk8 == 0) {
+        unk654->callback = sub_804FEFC;
+        unk654->unk8 = 101;
+
+        funcId = Mod((u8)PseudoRandom32(), ARRAY_COUNT(gUnknown_080D89AC));
+        unk654->func4 = gUnknown_080D89AC[funcId];
+
+        s = &unk654->spr128;
+        s->graphics.anim = gUnknown_080D89C8[funcId].anim;
+        s->variant = gUnknown_080D89C8[funcId].variant;
+        s->palId = gUnknown_080D89C8[funcId].palId;
+        s->prevVariant = -1;
+    }
+
+    s = &unk654->sprF0;
+    s->x = (I(unk1C->qPos.x) + unk1C->unk20) - gCamera.x;
+    s->y = (I(unk1C->qPos.y) + unk1C->unk22) - gCamera.y;
+
+    UpdateSpriteAnimation(s);
+    DisplaySprite(s);
+    sub_804F5BC(unk654);
+}
+
+void sub_804FEFC(struct TA53_unk654 *unk654)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk1C *unk1C = &boss->unk1C;
+    s32 qSonicX, qSonicY;
+    s32 qX, qY;
+
+    if (--unk654->unk8 == 0) {
+        unk654->callback = sub_804FF9C;
+        unk654->unk8 = 280;
+    }
+
+    if (Mod(unk654->unk8, 6) == 0) {
+        SuperSonicGetPos(&qSonicX, &qSonicY);
+
+        qX = unk1C->qPos.x + Q(unk1C->unk20);
+        qY = unk1C->qPos.y + Q(unk1C->unk22);
+
+        unk654->unkA = sub_8004418(I(qSonicY - qY), I(qSonicX - qX));
+
+        unk654->func4(qX, qY, Q(5) - (unk654->unk8 * 10), unk654->unkA);
+    }
+
+    sub_804F5BC(unk654);
+}
+
+void sub_804FF9C(struct TA53_unk654 *unk654)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk1C *unk1C = &boss->unk1C;
+    s32 qSonicX, qSonicY;
+    s32 qX, qY;
+    Sprite *s;
+
+    if (--unk654->unk8 == 0) {
+        s = &unk654->sprF0;
+        s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_YELLOW;
+        s->variant = 0;
+        s->prevVariant = -1;
+
+        SuperSonicGetPos(&qSonicX, &qSonicY);
+
+        qX = unk1C->qPos.x + Q(unk1C->unk20);
+        qY = unk1C->qPos.y + Q(unk1C->unk22);
+
+        unk654->unkC = sub_8004418(I(qSonicY - qY), I(qSonicX - qX));
+
+        unk654->callback = sub_804FE24;
+        unk654->unk8 = 16;
+    }
+
+    sub_804F5BC(unk654);
+}
+
 #if 01
 #endif

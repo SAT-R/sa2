@@ -17,6 +17,19 @@ extern void CreateTrueArea53Boss(void);
 extern bool32 ExtraBossIsDead(void);
 extern void TrueArea53BossMove(s32, s32);
 
+// TODO: Parameter types
+//       On the initial run sub_804F6AC only matched usign u32 as last param,
+//       but for other functions it seems like it should be u16.
+//       sub_804FD58 might have the solution? (index % 1024)
+typedef void (*TA53SubFunc)(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804F6AC(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804F768(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804F850(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804F9BC(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804FAA4(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804FC10(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804FD58(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+
 typedef struct TA53_unk1C {
     /* 0x00 */ void (*callback)(struct TA53_unk1C *);
     /* 0x04 */ s16 unk4[4];
@@ -25,8 +38,11 @@ typedef struct TA53_unk1C {
     /* 0x16 */ u16 unk16;
     /* 0x18 */ s32 unk18;
     /* 0x1C */ void *unk1C;
+
+    // Maybe a direction vector?
     /* 0x20 */ s16 unk20;
     /* 0x22 */ s16 unk22;
+
     /* 0x24 */ Vec2_32 qPos;
 } TA53_unk1C; /* size: 0x2C */
 
@@ -121,7 +137,7 @@ typedef struct TA53_unk594 {
 
 typedef struct TA53_unk654 {
     /* 0x00 */ void (*callback)(struct TA53_unk654 *);
-    /* 0x04 */ void *func4;
+    /* 0x04 */ TA53SubFunc func4;
     /* 0x08 */ u16 unk8;
     /* 0x0A */ u16 unkA;
     /* 0x0C */ u16 unkC;

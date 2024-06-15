@@ -673,13 +673,13 @@ static void sub_802C55C(struct SuperSonic *sonic)
     }
 }
 
-void SuperSonicGetPos(s32 *outX, s32 *outY)
+void SuperSonicGetPos(s32 *qOutX, s32 *qOutY)
 {
     if (sSuperSonicTask) {
         struct SuperSonic *sonic = TASK_DATA(sSuperSonicTask);
 
-        *outX = sonic->worldX;
-        *outY = sonic->worldY;
+        *qOutX = sonic->worldX;
+        *qOutY = sonic->worldY;
 
         if (!(sonic->flags & SUPER_FLAG__10)) {
             gPlayer.moveState = 0;
@@ -687,8 +687,8 @@ void SuperSonicGetPos(s32 *outX, s32 *outY)
             gPlayer.moveState = MOVESTATE_DEAD;
         }
     } else {
-        *outX = 0;
-        *outY = 0;
+        *qOutX = 0;
+        *qOutY = 0;
 
         gPlayer.moveState = MOVESTATE_DEAD;
     }
