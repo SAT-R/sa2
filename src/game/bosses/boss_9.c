@@ -75,14 +75,14 @@ const s8 gUnknown_080D89A0[5] = { 0, -4, -8, -12, -16 };
 const u8 gUnknown_080D89A5[6] = { 0, 20, 24, 20, 18, 30 };
 
 // TODO: Parameter types
-typedef void (*TA53SubFunc)(u32, u32, u32, u32);
-void sub_804F6AC(u32, u32, u32, u32);
-void sub_804F768(u32, u32, u32, u32);
-void sub_804F850(u32, u32, u32, u32);
-void sub_804F9BC(u32, u32, u32, u32);
-void sub_804FAA4(u32, u32, u32, u32);
-void sub_804FC10(u32, u32, u32, u32);
-void sub_804FD58(u32, u32, u32, u32);
+typedef void (*TA53SubFunc)(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804F6AC(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804F768(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804F850(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804F9BC(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804FAA4(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804FC10(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
+void sub_804FD58(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
 const TA53SubFunc gUnknown_080D89AC[7]
     = { sub_804F6AC, sub_804F768, sub_804F850, sub_804F9BC,
         sub_804FAA4, sub_804FC10, sub_804FD58 };
@@ -2006,7 +2006,7 @@ void sub_804F5BC(struct TA53_unk654 *unk654)
     Sprite *s = &unk654->spr128;
     s32 qX;
     u8 i = 0;
-    bool32 animWasUpdated = FALSE;
+    bool32 animUpdated = FALSE;
 
     for (; i < ARRAY_COUNT(unk654->unk2E); i++) {
         if (unk654->unkE[i] > 0) {
@@ -2017,8 +2017,8 @@ void sub_804F5BC(struct TA53_unk654 *unk654)
             s->x = I(unk654->qPos70[i].x) - gCamera.x;
             s->y = I(unk654->qPos70[i].y) - gCamera.y;
 
-            if (!animWasUpdated) {
-                animWasUpdated = TRUE;
+            if (!animUpdated) {
+                animUpdated = TRUE;
                 UpdateSpriteAnimation(s);
             }
 
@@ -2040,5 +2040,70 @@ void sub_804F5BC(struct TA53_unk654 *unk654)
     }
 }
 
-#if 01
+void sub_804F6AC(u32 qX, u32 qY, s16 param2, u32 sinIndex_)
+{
+    struct TA53Boss *s = TASK_DATA(gCurTask);
+    struct TA53_unk654 *unk654 = &s->unk654;
+    u8 i;
+
+    u16 sinIndex = ((sinIndex_ << 22) >> 22);
+    for (i = 0; i < ARRAY_COUNT(unk654->unkE); i++) {
+        if (unk654->unkE[i] == 0) {
+            unk654->unkE[i] = 1;
+            unk654->unk1E[i] = -1;
+            unk654->unk2E[i][0] = ((COS(sinIndex) * param2) >> 14);
+            unk654->unk2E[i][1] = ((SIN(sinIndex) * param2) >> 14);
+            unk654->qPos70[i].x = qX;
+            unk654->qPos70[i].y = qY;
+
+            m4aSongNumStart(SE_297);
+            break;
+        }
+    }
+}
+
+void sub_804F768(u32 qX, u32 qY, s16 param2, u32 sinIndex_)
+{
+    struct TA53Boss *s = TASK_DATA(gCurTask);
+    struct TA53_unk654 *unk654 = &s->unk654;
+    u8 i;
+
+    u16 sinIndex;
+    for (i = 0; i < ARRAY_COUNT(unk654->unkE); i++) {
+        if (unk654->unkE[i] == 0) {
+            if (i & 0x1) {
+                sinIndex = unk654->unkC + (i * 10);
+            } else {
+                sinIndex = unk654->unkC - (i * 10);
+            }
+            sinIndex &= ONE_CYCLE;
+
+            unk654->unkE[i] = 1;
+            unk654->unk1E[i] = -1;
+            unk654->unk2E[i][0] = ((COS(sinIndex) * param2) >> 14);
+            unk654->unk2E[i][1] = ((SIN(sinIndex) * param2) >> 14);
+            unk654->qPos70[i].x = qX;
+            unk654->qPos70[i].y = qY;
+
+            m4aSongNumStart(SE_243);
+            break;
+        }
+    }
+}
+
+#if 0
+void sub_804F850(u32 qX, u32 qY, s16 param2, u32 sinIndex_)
+{
+    u16 sinIndex = sinIndex_;
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk654 *unk654 = &boss->unk654;
+    u8 i;
+
+
+    // _0804F8D4
+    for(i = 0; i < 8; i++) {
+        // _0804F91A
+
+    }
+}
 #endif

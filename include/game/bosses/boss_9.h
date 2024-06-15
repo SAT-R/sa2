@@ -124,7 +124,7 @@ typedef struct TA53_unk654 {
     /* 0x04 */ void *func4;
     /* 0x08 */ u16 unk8;
     /* 0x0A */ u16 unkA;
-    /* 0x0C */ u8 fillerC[0x2];
+    /* 0x0C */ u16 unkC;
     /* 0x0E */ u8 unkE[16];
     /* 0x1E */ u8 unk1E[16];
     /* 0x2E */ s16 unk2E[16][2];
