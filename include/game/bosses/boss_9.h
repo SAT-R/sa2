@@ -60,19 +60,19 @@ typedef struct TA53_unk48 {
     u16 unk38;
     u16 unk3A[4];
     u16 unk42; // related to unk3A[]? Maybe 5th element?
-    Vec2_32 qPos44;
+    Vec2_32 qPos44; // maybe this is not a Vec2_32 ?
     u8 unk4C;
 } TA53_unk48; /* size: 0x4D ? */
 
 typedef struct {
     void (*callback)(struct TA53_unk48 *);
-    void *ref;
+    void *data;
     u16 unk8;
 } TA53_Data0;
 
 typedef struct {
     void (*callback)(struct TA53_unk1C *);
-    void *ref;
+    void *data;
     u16 unk8;
 } TA53_Data1;
 
@@ -161,7 +161,7 @@ typedef struct {
 
 typedef struct TA53Boss {
     /* 0x000 */ ScreenFade fade;
-    /* 0x00C */ u8 unkC;
+    /* 0x00C */ u8 lives;
     /* 0x00D */ u8 unkD;
     /* 0x00E */ u8 unkE;
     /* 0x00F */ u8 unkF;
