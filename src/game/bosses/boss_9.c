@@ -77,6 +77,7 @@ const u8 gUnknown_080D89A5[6] = { 0, 20, 24, 20, 18, 30 };
 // TODO: Parameter types
 //       On the initial run sub_804F6AC only matched usign u32 as last param,
 //       but for other functions it seems like it should be u16.
+//       sub_804FD58 might have the solution? (index % 1024)
 typedef void (*TA53SubFunc)(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
 void sub_804F6AC(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
 void sub_804F768(u32 qX, u32 qY, s16 param2, u32 sinIndex_);
@@ -433,7 +434,7 @@ const u8 sRGB_080D8E20[4][16][3] = {
     },
 };
 
-const u8 gUnknown_080D8EE0[] = { 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3 };
+const u8 gUnknown_080D8EE0[16] = { 0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 2, 1, 0, 1, 2, 3 };
 
 const u16 gUnknown_080D8EF0[2][16] = {
     INCBIN_U16("graphics/boss_9_a.gbapal"),
@@ -2093,7 +2094,6 @@ void sub_804F768(u32 qX, u32 qY, s16 param2, u32 sinIndex_)
     }
 }
 
-#if 01
 // (98.75%) https://decomp.me/scratch/h8qQS
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F850.inc",
          void sub_804F850(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
@@ -2115,14 +2115,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F850.inc",
 
             r3++;
 
-            if (r3 == 8) {
+            if (r3 == ARRAY_COUNT(array)) {
                 break;
             }
         }
     }
     // _0804F8AA
 
-    if (r3 == 8) {
+    if (r3 == ARRAY_COUNT(array)) {
         r5 = TRUE;
     }
 
@@ -2157,4 +2157,142 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F850.inc",
     m4aSongNumStart(SE_258);
 }
 END_NONMATCH
+
+void sub_804F9BC(u32 qX, u32 qY, UNUSED s16 param2, UNUSED u32 sinIndex_)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk654 *unk654 = &boss->unk654;
+    u16 sinIndex;
+    u8 i;
+
+    for (i = 0; i < ARRAY_COUNT(unk654->unkE); i++) {
+        if (unk654->unkE[i] == 0) {
+            if (i & 0x1) {
+                sinIndex = unk654->unkC + (i * 6);
+            } else {
+                sinIndex = unk654->unkC - (i * 6);
+            }
+            // _0804FA18
+            sinIndex &= ONE_CYCLE;
+
+            unk654->unkE[i] = 1;
+            unk654->unk1E[i] = 255;
+            unk654->unk2E[i][0] = (COS(sinIndex) * 9) >> 7;
+            unk654->unk2E[i][1] = (SIN(sinIndex) * 9) >> 7;
+
+            unk654->qPos70[i].x = qX;
+            unk654->qPos70[i].y = qY;
+            m4aSongNumStart(SE_DASH_RING);
+            break;
+        }
+    }
+}
+
+// NOTE/TODO: The logic of this does not match the game.
+//            The lowest loop is incorrect.
+// (61.23%) https://decomp.me/scratch/kecMc
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FAA4.inc",
+         void sub_804FAA4(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
+{
+    u8 array[0x8];
+    u8 i;
+
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk654 *unk654 = &boss->unk654;
+    u16 sinIndex = ((sinIndex_ << 22) >> 22);
+    u8 *pArray = array;
+    bool32 r5 = FALSE;
+    u8 r3 = 0;
+    u8 r2;
+
+    for (r2 = 0; r2 < 16; r2++) {
+        if (unk654->unkE[r2] == 0) {
+            *pArray++ = r2;
+
+            r3++;
+
+            if (r3 == ARRAY_COUNT(array)) {
+                break;
+            }
+        }
+    }
+    // _0804FB00
+
+    if (r3 == ARRAY_COUNT(array)) {
+        r5 = TRUE;
+    }
+
+    // _0804FB06
+    if (!r5) {
+        return;
+    }
+
+    if (array[ARRAY_COUNT(array) - 1] < 8) {
+        sinIndex += 0x46;
+    } else {
+        sinIndex -= 0x46;
+    }
+    sinIndex &= ONE_CYCLE;
+
+    // _0804FB28
+    for (i = 0; i < 8; i++) {
+        // _0804FB5E
+        u16 arrIndex = array[i];
+        u16 newSinIndex;
+        unk654->unkE[arrIndex] = 1;
+        unk654->unk1E[arrIndex] = 255;
+
+        if (i < 4) {
+            newSinIndex = sinIndex + i * 16;
+        } else {
+            newSinIndex = sinIndex - i * 16;
+        }
+
+        unk654->unk2E[arrIndex][0] = (COS(newSinIndex) * 3) >> 6;
+        unk654->unk2E[arrIndex][1] = (SIN(newSinIndex) * 3) >> 6;
+
+        unk654->unk2E[arrIndex][0] += (COS(i * 128) * 3) >> 8;
+        unk654->unk2E[arrIndex][1] += (SIN(i * 128) * 3) >> 8;
+
+        unk654->qPos70[arrIndex].x = qX;
+        unk654->qPos70[arrIndex].y = qY;
+    }
+
+    m4aSongNumStart(SE_258);
+}
+END_NONMATCH
+
+// Code resembles sub_804F850 and sub_804FAA4
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FC10.inc",
+         void sub_804FC10(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
+{
+}
+END_NONMATCH
+
+void sub_804FD58(u32 qX, u32 qY, UNUSED s16 param2, UNUSED u32 sinIndex_)
+{
+    TA53Boss *boss = TASK_DATA(gCurTask);
+    TA53_unk654 *unk654 = &boss->unk654;
+    u8 i;
+
+    for (i = 0; i < 16; i++) {
+        if (unk654->unkE[i] == 0) {
+            u16 index = ((gUnknown_080D8EE0[i] * 32) - 0x40) + unk654->unkC;
+            index %= SIN_PERIOD;
+
+            unk654->unkE[i] = 1;
+            unk654->unk1E[i] = 255;
+
+            unk654->unk2E[i][0] = ((COS(index) * 3) >> 6);
+            unk654->unk2E[i][1] = ((SIN(index) * 3) >> 6);
+
+            unk654->qPos70[i].x = qX;
+            unk654->qPos70[i].y = qY;
+
+            m4aSongNumStart(SE_287);
+            break;
+        }
+    }
+}
+#if 01
 #endif
