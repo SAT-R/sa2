@@ -676,7 +676,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
     // Rings that get "sucked out" by the Boss?
-    s = &boss->spr7F0;
+    s = &boss->capsule->s;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = VramMalloc(4);
@@ -2547,5 +2547,86 @@ END_NONMATCH
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80505B8.inc",
          void sub_80505B8(TA53Boss *boss))
 {
+}
+END_NONMATCH
+
+void sub_80508C4(TA53Boss *boss, u16 blend, bool8 param2)
+{
+    u32 bldTarget1, bldTarget2;
+    u8 i;
+    Sprite *s;
+
+    if (param2) {
+        gDispCnt |= DISPCNT_OBJWIN_ON;
+        gWinRegs[WINREG_WINOUT]
+            = ((WINOUT_WINOBJ_ALL & ~WINOUT_WINOBJ_BG3)
+               | (WINOUT_WIN01_ALL & ~(WINOUT_WIN01_BG1 | WINOUT_WIN01_BG3)));
+        gBldRegs.bldCnt = ((BLDCNT_TGT2_BG0 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_OBJ)
+                           | BLDCNT_EFFECT_BLEND | (BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2));
+
+        bldTarget2 = (((blend * 3) >> 8) + 10) % 16u;
+        bldTarget1 = (((blend * 5) >> 8) + 8) % 16u;
+        gBldRegs.bldAlpha = BLDALPHA_BLEND(bldTarget1, bldTarget2);
+        gBldRegs.bldY = BLDALPHA_BLEND(bldTarget1, bldTarget2);
+
+        s = &boss->spr7B4;
+        s->unk10 |= 0x100;
+
+        for (i = 0; i < ARRAY_COUNT(boss->capsule); i++) {
+            s = &boss->capsule[i].s;
+            s->unk10 |= SPRITE_FLAG(OBJ_MODE, 2);
+        }
+    }
+}
+
+// (99.85%) https://decomp.me/scratch/kkvhe
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050958.inc",
+         void sub_8050958(TA53Boss *boss))
+{
+    u8 i;
+
+    if (boss->unkD > 0) {
+        if (--boss->unkD == 0) {
+            for (i = 0; i < 16; i++) {
+                const u16 *srcPal = gUnknown_080D8EF0[1];
+
+                gObjPalette[i + 8 * 16] = srcPal[i];
+                gBgPalette[i + 0 * 16] = gObjPalette[i + 8 * 16];
+            }
+        } else {
+            // _080509B0
+            u16 r6 = (gStageTime >> 1) % 16u;
+
+            if (boss->unkC < 4) {
+                for (i = 0; i < 16; i++) {
+                    gObjPalette[8 * 16 + ((i + r6) % 16u)]
+                        = gUnknown_080D8EF0[0][i] >> 5;
+                    gBgPalette[0 * 16 + ((i + r6) % 16u)]
+                        = gObjPalette[8 * 16 + ((i + r6) % 16u)];
+                }
+            } else {
+                for (i = 0; i < 16; i++) {
+                    u32 r0;
+                    u32 r2;
+                    u32 colId;
+                    u16 *objPalTgt = &gObjPalette[0];
+                    u32 objPalId;
+
+                    colId = ((i + r6) % 16u);
+                    objPalId = 8 * 16 + colId;
+                    objPalTgt[objPalId] = ((gUnknown_080D8EF0[0][i] << 5)
+                                           | (gUnknown_080D8EF0[0][i] >> 5))
+                        | gUnknown_080D8EF0[0][i];
+                    gBgPalette[0 * 16 + colId] = ((gUnknown_080D8EF0[0][i] << 5)
+                                                  | (gUnknown_080D8EF0[0][i] >> 5))
+                        | gUnknown_080D8EF0[0][i];
+                }
+            }
+        }
+        // _08050A4C
+
+        gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
+        gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
+    }
 }
 END_NONMATCH

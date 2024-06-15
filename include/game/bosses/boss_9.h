@@ -154,6 +154,11 @@ typedef struct TA53_unk654 {
     /* 0x158 */ Hitbox hbSpr128;
 } TA53_unk654; /* size: 0x160 */
 
+typedef struct {
+    /* 0x00 */ Sprite s;
+    /* 0x30 */ u8 filler30[0x14];
+} CapsuleParts;
+
 typedef struct TA53Boss {
     /* 0x000 */ ScreenFade fade;
     /* 0x00C */ u8 unkC;
@@ -169,11 +174,10 @@ typedef struct TA53Boss {
     /* 0x558 */ TA53_unk558 unk558;
     /* 0x594 */ TA53_unk594 unk594;
     /* 0x654 */ TA53_unk654 unk654;
-    /* 0x7B4 */ Sprite
-        spr7B4; // Used for the capsule Sonic rescues in the Extra cutscene
+    // Sprite used for the capsule Sonic rescues in the Extra cutscene
+    /* 0x7B4 */ Sprite spr7B4;
     /* 0x7E4 */ u8 filler7E4[0xC];
-    /* 0x7F0 */ Sprite spr7F0;
-    /* 0x7E4 */ u8 filler820[0xE0];
+    /* 0x7F0 */ CapsuleParts capsule[4];
     /* 0x900 */ Background bg900;
 } TA53Boss; /* size: 0x940 */
 
