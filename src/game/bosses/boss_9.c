@@ -2251,6 +2251,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FAA4.inc",
 }
 END_NONMATCH
 
+// TODO: Implement
 // Code resembles sub_804F850 and sub_804FAA4
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FC10.inc",
          void sub_804FC10(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
@@ -2483,6 +2484,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc",
 }
 END_NONMATCH
 
+// TODO: Implement
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80501D4.inc",
          void sub_80501D4(TA53Boss *boss))
 {
@@ -2541,6 +2543,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80501D4.inc",
 }
 END_NONMATCH
 
+// TODO: Implement
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80505B8.inc",
          void sub_80505B8(TA53Boss *boss))
 {
