@@ -30,8 +30,12 @@ extern void sub_8048C7C(void *boss);
 const u16 gUnknown_080D87E6[][2] = { { 0, 0 } };
 const u16 gUnknown_080D87D8[] = { 0 };
 const u32 gUnknown_080D8808[][2] = { { 0, 0 } };
+const u8 gUnknown_080D8858[][2] = { { 0, 0 } };
+const u32 gUnknown_080D8874[] = { 0 };
+const TileInfo gUnknown_080D8864[] = { { 0, 0, 0 } };
+const s32 gUnknown_080D8840[][2] = { { 0, 0 } };
 
-void sub_8049D20(void *vramTiles, void *boss) { }
+void sub_804A6B4(struct Task *) {};
 
 // boss_9
 const s16 gUnknown_080D8A94[4] = { 0 };
