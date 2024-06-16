@@ -2490,8 +2490,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc",
 }
 END_NONMATCH
 
-// TODO: Implement
-// https://decomp.me/scratch/BzbRT
+// (97.25%) https://decomp.me/scratch/BzbRT
 #if 01
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80501D4.inc",
          void sub_80501D4(TA53Boss *boss))
@@ -2508,7 +2507,7 @@ void sub_80501D4(TA53Boss *boss)
     s32 screenX, screenY;
     s16 blend;
     u16 r7;
-    u16 sinIndex;
+    u32 sinIndex;
     u8 i;
 
     if (unk48->unk4C == 0) {
@@ -2586,10 +2585,10 @@ void sub_80501D4(TA53Boss *boss)
     }
     // _080503FA
 
-    r7 += (r7 + 0x8C);
-    sinIndex = (r7 - Q(1)) & ONE_CYCLE;
-    qX += COS(sinIndex) >> 2;
-    qY += SIN(sinIndex) >> 2;
+    r7 += 0x8C;
+    sinIndex = (r7 - Q(1));
+    qX += COS(sinIndex & ONE_CYCLE) >> 2;
+    qY += SIN(sinIndex & ONE_CYCLE) >> 2;
 
     // _0805042A
     for (i = 0; i < 3; i++) {
@@ -2600,7 +2599,7 @@ void sub_80501D4(TA53Boss *boss)
         r7 = (r7 + unk48->unk3A[i + 1]) & ONE_CYCLE;
 
         qX += (COS(r7) * gUnknown_080D89A5[i + 1]) >> 6;
-        qY += (SIN(r7 * 2) * gUnknown_080D89A5[i + 1]) >> 6;
+        qY += (SIN(r7) * gUnknown_080D89A5[i + 1]) >> 6;
 
         s->x = I(qX) - gCamera.x;
         s->y = I(qY) - gCamera.y;
@@ -2619,11 +2618,12 @@ void sub_80501D4(TA53Boss *boss)
     }
     // __post_loop
 
+    qX += (COS(r7) * gUnknown_080D89A5[4]) >> 6;
+    qY += (SIN(r7) * gUnknown_080D89A5[4]) >> 6;
+
     s = &boss->capsule[3].s;
     transform = &boss->capsule[3].transform;
-    sinIndex = ((unk48->unk42 + r7 * 2) * gUnknown_080D89A5[4]) & ONE_CYCLE;
-    qX += (COS(sinIndex)) >> 6;
-    qY += (SIN(sinIndex)) >> 6;
+    sinIndex = ((unk48->unk42 + r7 + unk48->unk38) & ONE_CYCLE);
 
     s->x = I(qX) - gCamera.x;
     s->y = I(qY) - gCamera.y;
@@ -2631,7 +2631,7 @@ void sub_80501D4(TA53Boss *boss)
     s->unk10 |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
                  | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
 
-    transform->rotation = r7;
+    transform->rotation = sinIndex;
     transform->width = 0x100;
     transform->height = 0x100;
     transform->x = s->x;
@@ -2640,7 +2640,8 @@ void sub_80501D4(TA53Boss *boss)
     sub_8004860(s, transform);
     DisplaySprite(s);
 }
-END_NONMATCH
+
+// END_NONMATCH
 
 // TODO: Implement
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80505B8.inc",
