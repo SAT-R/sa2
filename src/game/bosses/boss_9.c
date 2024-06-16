@@ -506,6 +506,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     boss = TASK_DATA(gActiveBossTask);
     unk1C = &boss->unk1C;
     unk48 = &boss->unk48;
+    unk558 = &boss->unk558;
+    unk654 = &boss->unk654;
 
     boss->lives = 12;
     boss->unkD = 0;

@@ -603,7 +603,7 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
     dma->size = control & 0x1ffff;
     dma->control = control >> 16;
 
-    // printf("\nDMA%d: S:%p %p -> %p\n", dmaNum, src, dest, dest + dma->size);
+    printf("\nDMA%d: S:%p %p -> %p\n", dmaNum, src, dest, dest + dma->size);
 
     RunDMAs(DMA_NOW);
 }

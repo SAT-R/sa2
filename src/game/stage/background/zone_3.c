@@ -118,10 +118,7 @@ void CreateStageBg_Zone3(void)
     gBgScrollRegs[3][1] = 0;
 }
 
-typedef struct {
-    u8 filler[0x408];
-    s16 unk408;
-} Unk3000408;
+static s16 sUnknown_03000408 = 0;
 
 // (85.02%) https://decomp.me/scratch/Esyzr
 #if 01
@@ -154,15 +151,13 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
     if (IS_SINGLE_PLAYER) {
         if ((gPlayer.moveState & MOVESTATE_8000000)
             && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
-            Unk3000408 *unk = IWRAM_PTR(NULL);
-            if (unk->unk408 == 0) {
-                unk->unk408 = a;
+            if (sUnknown_03000408 == 0) {
+                sUnknown_03000408 = a;
             }
-            unk->unk408 += I(gPlayer.speedGroundX);
-            a = unk->unk408;
+            sUnknown_03000408 += I(gPlayer.speedGroundX);
+            a = sUnknown_03000408;
         } else {
-            Unk3000408 *unk = IWRAM_PTR(NULL);
-            unk->unk408 = 0;
+            sUnknown_03000408 = 0;
         }
         // _0801CC72
         i = 0;
