@@ -2640,8 +2640,7 @@ void sub_80501D4(TA53Boss *boss)
     sub_8004860(s, transform);
     DisplaySprite(s);
 }
-
-// END_NONMATCH
+END_NONMATCH
 
 // TODO: Implement
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80505B8.inc",
