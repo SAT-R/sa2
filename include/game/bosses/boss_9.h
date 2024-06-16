@@ -156,8 +156,9 @@ typedef struct TA53_unk654 {
 
 typedef struct {
     /* 0x00 */ Sprite s;
-    /* 0x30 */ u8 filler30[0x14];
-} CapsuleParts;
+    /* 0x30 */ Hitbox reserved;
+    /* 0x38 */ SpriteTransform transform;
+} CapsuleParts; /* size: 0x44 */
 
 typedef struct TA53Boss {
     /* 0x000 */ ScreenFade fade;

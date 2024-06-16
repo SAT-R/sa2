@@ -123,7 +123,7 @@ _080502C8:
 _080502D6:
 	ldrh r1, [r3]
 	movs r4, #0x80
-	lsls r4, r4, #1
+	lsls r4, r4, #1         @ r4 = 0x100
 	adds r0, r4, #0
 	ands r0, r1
 	lsls r0, r0, #0x10
@@ -144,44 +144,44 @@ _080502EA:
 	ldr r1, [r6, #0x28]
 	adds r1, r1, r0
 	mov sl, r1              @ sl = qY = unk1C->qPos.y + Q(unk1C->unk22);
-	ldr r2, [sp, #0x10]
+	ldr r2, [sp, #0x10]     @ r2 = boss->unk48
 	ldr r0, [r2, #0x44]
-	asrs r0, r0, #8
+	asrs r0, r0, #8         @ r0 = unk48->unk44
 	ldrh r3, [r2, #0x3a]
 	adds r7, r0, r3
 	ldr r1, _08050580 @ =0x000003FF
 	adds r0, r1, #0
-	ands r7, r0
+	ands r7, r0             @ r7 = (I(unk48->qPos44) - unk48->unk3A) & ONE_CYCLE;
 	ldr r3, _08050584 @ =gSineTable
 	adds r0, r7, r4
 	lsls r0, r0, #1
 	adds r0, r0, r3
 	movs r2, #0
-	ldrsh r1, [r0, r2]
+	ldrsh r1, [r0, r2]      @ r1 = COS(r7)
 	ldr r0, _08050588 @ =gUnknown_080D89A5
 	ldrb r2, [r0]
 	adds r0, r1, #0
-	muls r0, r2, r0
+	muls r0, r2, r0         @ r0 = COS(r7) * gUnknown_080D89A5
 	asrs r0, r0, #6
-	add sb, r0
+	add sb, r0              @ qX += ((COS(r7) * gUnknown_080D89A5) >> 6);
 	lsls r0, r7, #1
 	adds r0, r0, r3
 	movs r3, #0
 	ldrsh r0, [r0, r3]
 	muls r0, r2, r0
 	asrs r0, r0, #6
-	add sl, r0
+	add sl, r0              @ qY += ((SIN(r7) * gUnknown_080D89A5) >> 6);
 	mov r0, sb
 	asrs r1, r0, #8
 	ldr r2, _0805058C @ =gCamera
 	ldr r0, [r2]
 	subs r1, r1, r0
-	str r1, [sp, #0x14]
+	str r1, [sp, #0x14]     @ sp14 = screenX = I(qX) - gCamera.x;
 	mov r3, sl
 	asrs r1, r3, #8
 	ldr r0, [r2, #4]
 	subs r1, r1, r0
-	str r1, [sp, #0x18]
+	str r1, [sp, #0x18]     @ sp18 = screenY = I(qY) - gCamera.y;
 	movs r0, #0x33
 	str r0, [sp]
 	ldr r1, [sp, #0x14]
@@ -204,16 +204,16 @@ _080502EA:
 	str r5, [r0]
 	movs r4, #0
 	ldr r3, [sp, #0x10]
-	adds r3, #0x4c
+	adds r3, #0x4c          @ r3 = &unk48->unk4C
 	ldr r0, [sp, #0x10]
 	adds r0, #0x3a
-	str r0, [sp, #0x20]
+	str r0, [sp, #0x20]     @ sp20 = &unk48->unk3A[0]
 	ldr r1, [sp, #0x10]
 	adds r1, #0x42
-	str r1, [sp, #0x24]
+	str r1, [sp, #0x24]     @ sp24 = &unk48->unk42
 	movs r1, #0x80
 	lsls r1, r1, #4
-	add r1, r8
+	add r1, r8              @ boss->capsule[0].unk10
 	movs r2, #0
 _08050392:
 	lsls r0, r4, #4
@@ -242,7 +242,7 @@ _08050392:
 	ldrb r2, [r3]
 	mov r0, r8
 	bl sub_80508C4
-	mov r2, r8
+	mov r2, r8              @ r2 = r8
 	ldrh r1, [r2, #0x10]
 	movs r0, #1
 	ands r0, r1
@@ -252,7 +252,7 @@ _08050392:
 	add r5, r8
 	mov r3, sp
 	ldrh r3, [r3, #0x14]
-	strh r3, [r5, #0x16]
+	strh r3, [r5, #0x16]    @ s->x = screenX;
 	mov r4, sp
 	ldrh r4, [r4, #0x18]
 	strh r4, [r5, #0x18]
@@ -267,28 +267,28 @@ _08050392:
 	bl DisplaySprite
 _080503FA:
 	adds r0, r7, #0
-	adds r0, #0x8c
+	adds r0, #0x8c          @ r0 = r7 + 0x8C
 	lsls r0, r0, #0x10
 	lsrs r7, r0, #0x10
 	ldr r0, _080505A4 @ =0xFFFFFF00
-	adds r1, r7, r0
+	adds r1, r7, r0         @ r1 = (r7 + 0x8C) - Q(1)
 	ldr r0, _08050580 @ =0x000003FF
-	ands r1, r0
+	ands r1, r0             @ r1 = sinIndex = ((r7 + 0x8C) - Q(1)) & ONE_CYCLE
 	movs r2, #0x80
-	lsls r2, r2, #1
+	lsls r2, r2, #1         @ r2 = 0x100
 	adds r0, r1, r2
 	lsls r0, r0, #1
 	adds r0, r0, r6
 	movs r3, #0
 	ldrsh r0, [r0, r3]
 	asrs r0, r0, #2
-	add sb, r0
+	add sb, r0              @ qX += COS(sinIndex) >> 2;
 	lsls r1, r1, #1
 	adds r1, r1, r6
 	movs r4, #0
 	ldrsh r0, [r1, r4]
 	asrs r0, r0, #2
-	add sl, r0
+	add sl, r0              @ qY += SIN(sinIndex) >> 2;
 	movs r4, #0
 _0805042A:
 	lsls r0, r4, #4
@@ -298,17 +298,17 @@ _0805042A:
 	lsls r1, r1, #3
 	adds r0, r0, r1
 	mov r2, r8
-	adds r5, r2, r0
+	adds r5, r2, r0         @ r5 = capsule = boss->capsule[i];
 	adds r6, r5, #0
-	adds r6, #0x38
+	adds r6, #0x38          @ r6 = transform = capsule->transform
 	adds r4, #1
 	lsls r0, r4, #1
-	ldr r3, [sp, #0x20]
+	ldr r3, [sp, #0x20]     @ r3 = sp20 = &unk48->unk3A[0]
 	adds r0, r3, r0
-	ldrh r0, [r0]
+	ldrh r0, [r0]           @ r0 = &unk48->unk3A[i]
 	adds r7, r7, r0
 	ldr r0, _08050580 @ =0x000003FF
-	ands r7, r0
+	ands r7, r0             @ r7 = (r7 + unk48->unk3A[i]) & ONE_CYCLE;
 	movs r1, #0x80
 	lsls r1, r1, #1
 	adds r0, r7, r1
@@ -323,7 +323,7 @@ _0805042A:
 	adds r0, r1, #0
 	muls r0, r2, r0
 	asrs r0, r0, #6
-	add sb, r0
+	add sb, r0              @ qX += (COS(r7) * gUnknown_080D89A5[i]) >> 6;
 	lsls r3, r7, #1
 	str r3, [sp, #0x1c]
 	ldr r1, _08050584 @ =gSineTable
@@ -332,18 +332,18 @@ _0805042A:
 	ldrsh r0, [r0, r3]
 	muls r0, r2, r0
 	asrs r0, r0, #6
-	add sl, r0
+	add sl, r0              @ qY += (SIN(r7) * gUnknown_080D89A5[i]) >> 6;
 	mov r0, sb
 	asrs r1, r0, #8
 	ldr r2, _0805058C @ =gCamera
 	ldr r0, [r2]
 	subs r1, r1, r0
-	strh r1, [r5, #0x16]
+	strh r1, [r5, #0x16]    @ s->x = I(qX) - gCamera.x
 	mov r3, sl
 	asrs r0, r3, #8
 	ldr r1, [r2, #4]
 	subs r0, r0, r1
-	strh r0, [r5, #0x18]
+	strh r0, [r5, #0x18]    @ s->y = I(qY) - gCamera.y
 	ldr r2, [r5, #0x10]
 	ldr r0, _080505A8 @ =0x00002060
 	orrs r2, r0
@@ -377,6 +377,7 @@ _0805042A:
 	lsrs r4, r4, #0x18
 	cmp r4, #2
 	bls _0805042A
+__post_loop:
 	ldr r1, _08050584 @ =gSineTable
 	movs r4, #0x80
 	lsls r4, r4, #1
@@ -384,19 +385,19 @@ _0805042A:
 	lsls r0, r0, #1
 	adds r0, r0, r1
 	movs r2, #0
-	ldrsh r0, [r0, r2]
+	ldrsh r0, [r0, r2]  @ r0 = COS(r7)
 	ldr r3, _08050588 @ =gUnknown_080D89A5
 	ldrb r2, [r3, #4]
 	muls r0, r2, r0
 	asrs r0, r0, #6
-	add sb, r0
+	add sb, r0          @ qX += (COS(r7) * gUnknown_080D89A5[4]) >> 6
 	ldr r0, [sp, #0x1c]
 	adds r1, r0, r1
 	movs r3, #0
 	ldrsh r0, [r1, r3]
 	muls r0, r2, r0
 	asrs r0, r0, #6
-	add sl, r0
+	add sl, r0          @ qY += (SIN(r7) * gUnknown_080D89A5[4]) >> 6
 	ldr r5, _080505B0 @ =0x000008BC
 	add r5, r8
 	ldr r6, _080505B4 @ =0x000008F4

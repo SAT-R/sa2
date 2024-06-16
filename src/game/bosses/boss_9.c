@@ -42,6 +42,7 @@ void sub_804F1EC(struct TA53_unk558 *);
 void sub_804F47C(struct TA53_unk558 *);
 void sub_8050DC8(struct TA53_unk558 *);
 void TaskDestructor_TrueArea53BossGfx(struct Task *);
+void sub_80508C4(TA53Boss *boss, u16 blend, bool8 param2);
 
 const TileInfo gUnknown_080D88F0[5] = {
     { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_0, 0 },
@@ -482,7 +483,7 @@ void SetupEggmanKidnapsVanillaTask(void)
                 | DISPCNT_MODE_1);
 }
 
-// (36.97%) https://decomp.me/scratch/KnEGg
+// (39.42%) https://decomp.me/scratch/CKySX
 NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
          void CreateTrueArea53Boss(void))
 {
@@ -2490,13 +2491,25 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc",
 END_NONMATCH
 
 // TODO: Implement
+// https://decomp.me/scratch/BzbRT
+#if 01
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80501D4.inc",
          void sub_80501D4(TA53Boss *boss))
+#else
+void sub_80501D4(TA53Boss *boss)
+#endif
 {
     TA53_unk1C *unk1C = &boss->unk1C;
     TA53_unk48 *unk48 = &boss->unk48;
     Sprite *s;
+    SpriteTransform *transform;
+    CapsuleParts *capsule;
     s32 qX, qY;
+    s32 screenX, screenY;
+    s16 blend;
+    u16 r7;
+    u16 sinIndex;
+    u8 i;
 
     if (unk48->unk4C == 0) {
         gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
@@ -2520,7 +2533,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80501D4.inc",
             boss->unkF = 1;
         } else if (boss->lives != 0) {
             // _0805026C
-            gStageFlags &= EXTRA_STATE__DISABLE_PAUSE_MENU;
+            gStageFlags &= ~EXTRA_STATE__DISABLE_PAUSE_MENU;
         }
         // _0805027A
         boss->unk10 &= ~0x1;
@@ -2544,7 +2557,88 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80501D4.inc",
     qX = unk1C->qPos.x + Q(unk1C->unk20);
     qY = unk1C->qPos.y + Q(unk1C->unk22);
 
-    // ... TBC ...
+    r7 = (I(unk48->qPos44.x) + unk48->unk3A[0]) & ONE_CYCLE;
+
+    qX += ((COS(r7) * gUnknown_080D89A5[0]) >> 6);
+    qY += ((SIN(r7) * gUnknown_080D89A5[0]) >> 6);
+
+    screenX = I(qX) - gCamera.x;
+    screenY = I(qY) - gCamera.y;
+
+    sub_8003EE4(r7, 0x0100, 0x0100, 0x0030, 0x0033, screenX, screenY, &gBgAffineRegs[0]);
+
+    boss->spr7B4.unk10 = 0;
+
+    for (i = 0; i < ARRAY_COUNT(boss->capsule); i++) {
+        boss->capsule[i].s.unk10 = 0;
+    }
+
+    blend = (SIN((gStageTime * 2) & 0x1FF) >> 6);
+    sub_80508C4(boss, blend, unk48->unk4C);
+
+    if (boss->unk10 & 0x1) {
+        s = &boss->spr7B4;
+        s->x = screenX;
+        s->y = screenY;
+        s->unk10 |= SPRITE_FLAG(PRIORITY, 2);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+    // _080503FA
+
+    r7 += (r7 + 0x8C);
+    sinIndex = (r7 - Q(1)) & ONE_CYCLE;
+    qX += COS(sinIndex) >> 2;
+    qY += SIN(sinIndex) >> 2;
+
+    // _0805042A
+    for (i = 0; i < 3; i++) {
+        capsule = &boss->capsule[i];
+        s = &capsule->s;
+        transform = &capsule->transform;
+
+        r7 = (r7 + unk48->unk3A[i + 1]) & ONE_CYCLE;
+
+        qX += (COS(r7) * gUnknown_080D89A5[i + 1]) >> 6;
+        qY += (SIN(r7 * 2) * gUnknown_080D89A5[i + 1]) >> 6;
+
+        s->x = I(qX) - gCamera.x;
+        s->y = I(qY) - gCamera.y;
+
+        s->unk10 |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                     | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+
+        transform->rotation = r7;
+        transform->width = 0x100;
+        transform->height = 0x100;
+        transform->x = s->x;
+        transform->y = s->y;
+        UpdateSpriteAnimation(s);
+        sub_8004860(s, transform);
+        DisplaySprite(s);
+    }
+    // __post_loop
+
+    s = &boss->capsule[3].s;
+    transform = &boss->capsule[3].transform;
+    sinIndex = ((unk48->unk42 + r7 * 2) * gUnknown_080D89A5[4]) & ONE_CYCLE;
+    qX += (COS(sinIndex)) >> 6;
+    qY += (SIN(sinIndex)) >> 6;
+
+    s->x = I(qX) - gCamera.x;
+    s->y = I(qY) - gCamera.y;
+
+    s->unk10 |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                 | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+
+    transform->rotation = r7;
+    transform->width = 0x100;
+    transform->height = 0x100;
+    transform->x = s->x;
+    transform->y = s->y;
+    UpdateSpriteAnimation(s);
+    sub_8004860(s, transform);
+    DisplaySprite(s);
 }
 END_NONMATCH
 
