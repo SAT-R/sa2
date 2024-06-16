@@ -319,7 +319,7 @@ void sub_8050D9C(struct TA53_unk48 *);
 void sub_8050DC4(struct TA53_unk98 *);
 void sub_8050DF8(struct TA53_unk654 *);
 
-const TA53_Data0 gUnknown_080D8D6C[] = {
+const TA53_Data0 gUnknown_080D8D6C[8] = {
     { sub_804E078, (void *)&gUnknown_080D8BFC, 40 },
     { sub_804E4CC, (void *)&gUnknown_080D8BFC, 40 },
     { sub_8050BFC, (void *)&gUnknown_080D8C24, 126 },
@@ -330,7 +330,7 @@ const TA53_Data0 gUnknown_080D8D6C[] = {
     { sub_8050D9C, (void *)&gUnknown_080D8C10, 80 },
 };
 
-const TA53_Data1 gUnknown_080D8DCC[] = {
+const TA53_Data1 gUnknown_080D8DCC[6] = {
     { sub_8050BD8, (void *)&gUnknown_080D8D3C, 40 },
     { sub_8050BE4, (void *)&gUnknown_080D8D54, 100 },
     { sub_8050BE4, (void *)&gUnknown_080D8D5C, 100 },
@@ -492,6 +492,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     TA53_unk48 *unk48;
     TA53_unk98 *unk98;
     TA53_unk558 *unk558;
+    TA53_unk594 *unk594;
     TA53_unk654 *unk654;
     Sprite *s;
     u32 i, j;
@@ -506,7 +507,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     boss = TASK_DATA(gActiveBossTask);
     unk1C = &boss->unk1C;
     unk48 = &boss->unk48;
+    unk98 = &boss->unk98;
     unk558 = &boss->unk558;
+    unk594 = &boss->unk594;
     unk654 = &boss->unk654;
 
     boss->lives = 12;
