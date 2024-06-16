@@ -2491,6 +2491,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc",
 END_NONMATCH
 
 // (97.25%) https://decomp.me/scratch/BzbRT
+// Closely resembles sub_80505B8
 #if 01
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80501D4.inc",
          void sub_80501D4(TA53Boss *boss))
@@ -2585,10 +2586,10 @@ void sub_80501D4(TA53Boss *boss)
     }
     // _080503FA
 
+    // TODO: Once this matches, fix it in sub_80505B4!
     r7 += 0x8C;
-    sinIndex = (r7 - Q(1));
-    qX += COS(sinIndex & ONE_CYCLE) >> 2;
-    qY += SIN(sinIndex & ONE_CYCLE) >> 2;
+    qX += COS((r7 - Q(1)) & ONE_CYCLE) >> 2;
+    qY += SIN((r7 - Q(1)) & ONE_CYCLE) >> 2;
 
     // _0805042A
     for (i = 0; i < 3; i++) {
@@ -2642,10 +2643,121 @@ void sub_80501D4(TA53Boss *boss)
 }
 END_NONMATCH
 
-// TODO: Implement
+// (96.57%) https://decomp.me/scratch/H54SA
+// Closely resembles sub_80501D4
 NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80505B8.inc",
          void sub_80505B8(TA53Boss *boss))
 {
+    TA53_unk1C *unk1C = &boss->unk1C;
+    TA53_unk48 *unk48 = &boss->unk48;
+    Sprite *s;
+    SpriteTransform *transform;
+    CapsuleParts *capsule;
+    s32 qX, qY;
+    s32 screenX, screenY;
+    s16 blend;
+    u16 r7;
+    u32 sinIndex;
+    u8 i;
+
+    if (unk48->unk4C == 0) {
+        if (boss->spr7B4.graphics.dest != NULL) {
+            VramFree(boss->spr7B4.graphics.dest);
+            boss->spr7B4.graphics.dest = NULL;
+
+            gDispCnt &= ~DISPCNT_OBJWIN_ON;
+
+            gWinRegs[WINREG_WINOUT] = 0;
+
+            gBldRegs.bldCnt = 0;
+            gBldRegs.bldAlpha = 0;
+        }
+
+        boss->unk10 &= ~0x1;
+    }
+
+    qX = unk1C->qPos.x + Q(unk1C->unk20);
+    qY = unk1C->qPos.y + Q(unk1C->unk22);
+
+    r7 = (I(unk48->qPos44.x) + unk48->unk3A[0]) & ONE_CYCLE;
+
+    qX += ((COS(r7) * gUnknown_080D89A5[0]) >> 6);
+    qY += ((SIN(r7) * gUnknown_080D89A5[0]) >> 6);
+
+    screenX = I(qX) - gCamera.x;
+    screenY = I(qY) - gCamera.y;
+
+    sub_8003EE4(r7, 0x0100, 0x0100, 0x0030, 0x0033, screenX, screenY, &gBgAffineRegs[0]);
+
+    boss->spr7B4.unk10 = 0;
+
+    for (i = 0; i < ARRAY_COUNT(boss->capsule); i++) {
+        boss->capsule[i].s.unk10 = 0;
+    }
+
+    sub_80508C4(boss, 255, unk48->unk4C);
+
+    if (boss->unk10 & 0x1) {
+        s = &boss->spr7B4;
+        s->x = screenX;
+        s->y = screenY;
+        s->unk10 |= SPRITE_FLAG(PRIORITY, 2);
+        UpdateSpriteAnimation(s);
+        DisplaySprite(s);
+    }
+
+    // TODO: Once this matches, fix it in sub_80501D4!
+    r7 += 0x8C;
+    qX += COS((r7 - Q(1)) & ONE_CYCLE) >> 2;
+    qY += SIN((r7 - Q(1)) & ONE_CYCLE) >> 2;
+
+    for (i = 0; i < 3; i++) {
+        capsule = &boss->capsule[i];
+        s = &capsule->s;
+        transform = &capsule->transform;
+
+        r7 = (r7 + unk48->unk3A[i + 1]) & ONE_CYCLE;
+
+        qX += (COS(r7) * gUnknown_080D89A5[i + 1]) >> 6;
+        qY += (SIN(r7) * gUnknown_080D89A5[i + 1]) >> 6;
+
+        s->x = I(qX) - gCamera.x;
+        s->y = I(qY) - gCamera.y;
+
+        s->unk10 |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                     | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+
+        transform->rotation = r7;
+        transform->width = 0x100;
+        transform->height = 0x100;
+        transform->x = s->x;
+        transform->y = s->y;
+        UpdateSpriteAnimation(s);
+        sub_8004860(s, transform);
+        DisplaySprite(s);
+    }
+
+    qX += (COS(r7) * gUnknown_080D89A5[4]) >> 6;
+    qY += (SIN(r7) * gUnknown_080D89A5[4]) >> 6;
+
+    s = &boss->capsule[3].s;
+    transform = &boss->capsule[3].transform;
+    sinIndex = ((unk48->unk42 + r7 + unk48->unk38) & ONE_CYCLE);
+
+    s->x = I(qX) - gCamera.x;
+    s->y = I(qY) - gCamera.y;
+
+    s->unk10 |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                 | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+
+    transform->rotation = sinIndex;
+    transform->width = 0x100;
+    transform->height = 0x100;
+    transform->x = s->x;
+    transform->y = s->y;
+    UpdateSpriteAnimation(s);
+    sub_8004860(s, transform);
+    DisplaySprite(s);
 }
 END_NONMATCH
 

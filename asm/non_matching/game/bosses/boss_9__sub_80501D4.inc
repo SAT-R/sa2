@@ -380,8 +380,8 @@ _0805042A:
 __post_loop:
 	ldr r1, _08050584 @ =gSineTable
 	movs r4, #0x80
-	lsls r4, r4, #1
-	adds r0, r7, r4
+	lsls r4, r4, #1     @ r4 = 0x100
+	adds r0, r7, r4     @ r0 = (r7 + 0x100)
 	lsls r0, r0, #1
 	adds r0, r0, r1
 	movs r2, #0

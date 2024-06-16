@@ -8,9 +8,9 @@
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x24
-	mov r8, r0
+	mov r8, r0          @ r8 = boss
 	mov r6, r8
-	adds r6, #0x1c
+	adds r6, #0x1c      @ r6 = boss->unk1C
 	adds r0, #0x48
 	str r0, [sp, #0x10]
 	adds r0, #0x4c
