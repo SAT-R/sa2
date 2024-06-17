@@ -371,7 +371,7 @@ extern const Tilemap storyframe_tails_unlock_2_dlg_es;
 extern const Tilemap storyframe_tails_unlock_3_dlg_es;
 extern const Tilemap storyframe_tails_unlocked_es;
 extern const Tilemap regular_final_boss;
-extern const Tilemap unknown_stars;
+extern const Tilemap music_plant_moving_stars;
 extern const Tilemap sky_canyon_clouds_foreground;
 extern const Tilemap spotlight_snow;
 extern const Tilemap extra_boss_background;

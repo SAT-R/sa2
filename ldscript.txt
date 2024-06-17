@@ -22,6 +22,7 @@ SECTIONS
         src/multi_boot.o(.bss);
         
         . = 0x00000408;
+        src/game/stage/background/zone_3.o(.data);
         src/game/stage/background/zone_3.o(.bss);
 
         . = 0x00000410;

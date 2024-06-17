@@ -8,6 +8,8 @@
 #include "game/stage/background/callbacks.h"
 #include "game/stage/player.h"
 
+#include "constants/tilemaps.h"
+
 extern const Background gStageCameraBgTemplates[4];
 
 // TODO: make this static!
@@ -97,6 +99,8 @@ const u8 gUnknown_080D5B50[DISPLAY_HEIGHT] = {
     0
 };
 
+static s16 sUnknown_03000408 = 0;
+
 void CreateStageBg_Zone3(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
@@ -105,7 +109,7 @@ void CreateStageBg_Zone3(void)
 
     *background = gStageCameraBgTemplates[3];
 
-    background->tilemapId = 0x171;
+    background->tilemapId = TM_MUSIC_PLANT_MOVING_STARS;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->layoutVram = (void *)BG_SCREEN_ADDR(27);
     background->targetTilesX = 0x20;
@@ -117,8 +121,6 @@ void CreateStageBg_Zone3(void)
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
 }
-
-static s16 sUnknown_03000408 = 0;
 
 // (85.02%) https://decomp.me/scratch/Esyzr
 #if 01

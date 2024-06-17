@@ -2525,27 +2525,22 @@ void sub_80501D4(TA53Boss *boss)
 
             boss->unkF = 1;
         } else if (boss->lives != 0) {
-            // _0805026C
             gStageFlags &= ~EXTRA_STATE__DISABLE_PAUSE_MENU;
         }
-        // _0805027A
         boss->unk10 &= ~0x1;
     } else {
         gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
     }
-    // _080502A4
 
     if (boss->unk10 & 0x1) {
         gDispCnt &= ~DISPCNT_BG2_ON;
     } else {
         gDispCnt |= DISPCNT_BG2_ON;
     }
-    // _080502D6
 
     if (gStageFlags & EXTRA_STATE__100) {
         return;
     }
-    // _080502EA
 
     qX = unk1C->qPos.x + Q(unk1C->unk20);
     qY = unk1C->qPos.y + Q(unk1C->unk22);
@@ -2577,7 +2572,6 @@ void sub_80501D4(TA53Boss *boss)
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
-    // _080503FA
 
     r7 += 0x8C;
     qX += ({
@@ -2589,7 +2583,6 @@ void sub_80501D4(TA53Boss *boss)
         val >> 2;
     });
 
-    // _0805042A
     for (i = 0; i < 3; i++) {
         capsule = &boss->capsule[i];
         s = &capsule->s;
@@ -2618,7 +2611,6 @@ void sub_80501D4(TA53Boss *boss)
         sub_8004860(s, transform);
         DisplaySprite(s);
     }
-    // __post_loop
 
     qX += (COS(r7) * gUnknown_080D89A5[4]) >> 6;
     qY += (SIN(r7) * gUnknown_080D89A5[4]) >> 6;
