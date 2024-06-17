@@ -2490,14 +2490,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc",
 }
 END_NONMATCH
 
-// (97.25%) https://decomp.me/scratch/BzbRT
-// Closely resembles sub_80505B8
-#if 01
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80501D4.inc",
-         void sub_80501D4(TA53Boss *boss))
-#else
 void sub_80501D4(TA53Boss *boss)
-#endif
 {
     TA53_unk1C *unk1C = &boss->unk1C;
     TA53_unk48 *unk48 = &boss->unk48;
@@ -2586,10 +2579,15 @@ void sub_80501D4(TA53Boss *boss)
     }
     // _080503FA
 
-    // TODO: Once this matches, fix it in sub_80505B4!
     r7 += 0x8C;
-    qX += COS((r7 - Q(1)) & ONE_CYCLE) >> 2;
-    qY += SIN((r7 - Q(1)) & ONE_CYCLE) >> 2;
+    qX += ({
+        s32 val = COS((r7 - Q(1)) & ONE_CYCLE);
+        val >> 2;
+    });
+    qY += ({
+        s32 val = SIN((r7 - Q(1)) & ONE_CYCLE);
+        val >> 2;
+    });
 
     // _0805042A
     for (i = 0; i < 3; i++) {
@@ -2597,7 +2595,10 @@ void sub_80501D4(TA53Boss *boss)
         s = &capsule->s;
         transform = &capsule->transform;
 
-        r7 = (r7 + unk48->unk3A[i + 1]) & ONE_CYCLE;
+        r7 = ({
+            s32 val = (r7 + unk48->unk3A[i + 1]);
+            val &ONE_CYCLE;
+        });
 
         qX += (COS(r7) * gUnknown_080D89A5[i + 1]) >> 6;
         qY += (SIN(r7) * gUnknown_080D89A5[i + 1]) >> 6;
@@ -2641,12 +2642,8 @@ void sub_80501D4(TA53Boss *boss)
     sub_8004860(s, transform);
     DisplaySprite(s);
 }
-END_NONMATCH
 
-// (96.57%) https://decomp.me/scratch/H54SA
-// Closely resembles sub_80501D4
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80505B8.inc",
-         void sub_80505B8(TA53Boss *boss))
+void sub_80505B8(TA53Boss *boss)
 {
     TA53_unk1C *unk1C = &boss->unk1C;
     TA53_unk48 *unk48 = &boss->unk48;
@@ -2706,17 +2703,25 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80505B8.inc",
         DisplaySprite(s);
     }
 
-    // TODO: Once this matches, fix it in sub_80501D4!
     r7 += 0x8C;
-    qX += COS((r7 - Q(1)) & ONE_CYCLE) >> 2;
-    qY += SIN((r7 - Q(1)) & ONE_CYCLE) >> 2;
+    qX += ({
+        s32 val = COS((r7 - Q(1)) & ONE_CYCLE);
+        val >> 2;
+    });
+    qY += ({
+        s32 val = SIN((r7 - Q(1)) & ONE_CYCLE);
+        val >> 2;
+    });
 
     for (i = 0; i < 3; i++) {
         capsule = &boss->capsule[i];
         s = &capsule->s;
         transform = &capsule->transform;
 
-        r7 = (r7 + unk48->unk3A[i + 1]) & ONE_CYCLE;
+        r7 = ({
+            s32 val = (r7 + unk48->unk3A[i + 1]);
+            val &ONE_CYCLE;
+        });
 
         qX += (COS(r7) * gUnknown_080D89A5[i + 1]) >> 6;
         qY += (SIN(r7) * gUnknown_080D89A5[i + 1]) >> 6;
@@ -2759,7 +2764,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_80505B8.inc",
     sub_8004860(s, transform);
     DisplaySprite(s);
 }
-END_NONMATCH
 
 void sub_80508C4(TA53Boss *boss, u16 blend, bool8 param2)
 {
