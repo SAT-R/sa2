@@ -691,7 +691,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
         s->graphics.anim = gUnknown_080D88F0[i].anim;
         s->variant = gUnknown_080D88F0[i].variant;
         s->prevVariant = -1;
-        s->unk1A = SPRITE_OAM_ORDER(19);
+        s->unk1A = SPRITE_OAM_ORDER(i + 20);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -704,9 +704,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s = &unk558->s;
     s->x = 0;
     s->y = 0;
-    s->graphics.dest = VramMalloc(4);
+    s->graphics.dest = VramMalloc(16);
     s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_SUCK_FX;
-    s->variant = 8;
+    s->variant = 0;
     s->prevVariant = -1;
     s->unk1A = SPRITE_OAM_ORDER(21);
     s->graphics.size = 0;
