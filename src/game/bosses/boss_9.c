@@ -44,6 +44,40 @@ void sub_8050DC8(struct TA53_unk558 *);
 void TaskDestructor_TrueArea53BossGfx(struct Task *);
 void sub_80508C4(TA53Boss *boss, u16 blend, bool8 param2);
 
+void sub_804DD9C(struct TA53_RocketExhaust *);
+void sub_804DFB0(TA53_unk594 *unk594);
+void sub_804E66C(struct TA53_unk98 *);
+void sub_804E74C(struct TA53_unk98 *);
+void sub_804E8E8(struct TA53_unk98 *);
+void sub_804FEFC(struct TA53_unk654 *);
+void sub_804FF9C(struct TA53_unk654 *);
+
+static void UpdateExplosion(TA53Boss *);
+void sub_804E078(struct TA53_unk48 *);
+void sub_804E15C(struct TA53_unk48 *);
+void sub_804E4CC(struct TA53_unk48 *);
+void sub_804ECC4(TA53Boss *);
+bool8 sub_8050030(struct TA53_unk48 *);
+void sub_80501D4(TA53Boss *);
+void sub_8050958(TA53Boss *);
+void sub_8050BD8(struct TA53_unk1C *);
+void sub_8050BE4(struct TA53_unk1C *);
+void sub_8050BF0(struct TA53_unk1C *);
+void sub_8050BFC(struct TA53_unk48 *);
+void sub_8050C50(struct TA53_unk48 *);
+void sub_8050CBC(struct TA53_unk48 *);
+void sub_8050D24(struct TA53_unk48 *);
+void sub_8050D9C(struct TA53_unk48 *);
+void sub_8050DC4(struct TA53_unk98 *);
+void sub_8050DF8(struct TA53_unk654 *);
+
+void sub_804E974(struct TA53_unkA8 *rocket);
+void sub_804EB6C(struct TA53_unkA8 *rocket);
+bool32 sub_804ED98(s32, s32);
+void sub_804EC6C(struct TA53_unkA8 *rocket);
+bool32 sub_804EE84(Sprite *s, s32 x, s32 y);
+bool32 sub_804F010(Sprite *s, s32 x, s32 y, u8 param3);
+
 const TileInfo gUnknown_080D88F0[5] = {
     { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_0, 0 },
     { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_1, 0 },
@@ -78,13 +112,6 @@ const u8 gUnknown_080D89A5[6] = { 0, 20, 24, 20, 18, 30 };
 const TA53SubFunc gUnknown_080D89AC[7]
     = { sub_804F6AC, sub_804F768, sub_804F850, sub_804F9BC,
         sub_804FAA4, sub_804FC10, sub_804FD58 };
-
-void sub_804DD9C(struct TA53_RocketExhaust *);
-void sub_804E66C(struct TA53_unk98 *);
-void sub_804E74C(struct TA53_unk98 *);
-void sub_804E8E8(struct TA53_unk98 *);
-void sub_804FEFC(struct TA53_unk654 *);
-void sub_804FF9C(struct TA53_unk654 *);
 
 const TA53_80D89C8 gUnknown_080D89C8[7]
     = { { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 },
@@ -300,26 +327,6 @@ const void *const gUnknown_080D8D64[] = {
     &gUnknown_080D8D24,
 };
 
-// TODO: Parameter type
-static void UpdateExplosion(TA53Boss *);
-void sub_804E078(struct TA53_unk48 *);
-void sub_804E15C(struct TA53_unk48 *);
-void sub_804E4CC(struct TA53_unk48 *);
-void sub_804ECC4(TA53Boss *);
-bool8 sub_8050030(struct TA53_unk48 *);
-void sub_80501D4(TA53Boss *);
-void sub_8050958(TA53Boss *);
-void sub_8050BD8(struct TA53_unk1C *);
-void sub_8050BE4(struct TA53_unk1C *);
-void sub_8050BF0(struct TA53_unk1C *);
-void sub_8050BFC(struct TA53_unk48 *);
-void sub_8050C50(struct TA53_unk48 *);
-void sub_8050CBC(struct TA53_unk48 *);
-void sub_8050D24(struct TA53_unk48 *);
-void sub_8050D9C(struct TA53_unk48 *);
-void sub_8050DC4(struct TA53_unk98 *);
-void sub_8050DF8(struct TA53_unk654 *);
-
 const TA53_Data0 gUnknown_080D8D6C[8] = {
     { sub_804E078, (void *)&gUnknown_080D8BFC, 40 },
     { sub_804E4CC, (void *)&gUnknown_080D8BFC, 40 },
@@ -339,13 +346,6 @@ const TA53_Data1 gUnknown_080D8DCC[6] = {
     { sub_8050BF0, (void *)&gUnknown_080D8D44, 20 },
     { sub_8050BF0, (void *)&gUnknown_080D8D4C, 100 },
 };
-
-void sub_804E974(struct TA53_unkA8 *rocket);
-void sub_804EB6C(struct TA53_unkA8 *rocket);
-bool32 sub_804ED98(s32, s32);
-void sub_804EC6C(struct TA53_unkA8 *rocket);
-bool32 sub_804EE84(Sprite *s, s32 x, s32 y);
-bool32 sub_804F010(Sprite *s, s32 x, s32 y, u8 param3);
 
 const TA53_Rocket_Callback gUnknown_080D8E14[3]
     = { sub_804E974, sub_804EB6C, sub_804EC6C };
@@ -484,6 +484,7 @@ void SetupEggmanKidnapsVanillaTask(void)
 }
 
 // (39.42%) https://decomp.me/scratch/CKySX
+// (77.90%) https://decomp.me/scratch/cSWIn
 NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
          void CreateTrueArea53Boss(void))
 {
@@ -501,8 +502,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
 
     if (gActiveBossTask == NULL) {
-        gActiveBossTask = TaskCreate(Task_TrueArea53BossMain, sizeof(TA53Boss), 0x400, 0,
-                                     TaskDestructor_TrueArea53BossGfx);
+        gActiveBossTask = TaskCreate(Task_TrueArea53BossMain, sizeof(TA53Boss), 0x4000,
+                                     0, TaskDestructor_TrueArea53BossGfx);
     }
 
     boss = TASK_DATA(gActiveBossTask);
@@ -530,11 +531,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
 
     unk558 = &boss->unk558;
     unk558->callback = sub_8050DC8;
+    unk558->unk6 = 200;
+    unk558->unk4 = 0;
 
-    unk1C->unk4[1] = 200;
-    unk1C->unk4[0] = 0;
     unk1C->unk18 &= 0xFFF;
-
     unk1C->callback = gUnknown_080D8DCC->callback;
     unk1C->unk1C = gUnknown_080D8DCC->data;
     unk1C->unk16 = gUnknown_080D8DCC->unk8;
@@ -547,8 +547,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     unk1C->unk18 = 0;
 
     for (i = 0; i < 4; i++) {
-        boss->unk1C.unk4[i] = gUnknown_080D8C4C[i];
-        boss->unk1C.unkC[i] = gUnknown_080D8C54[i];
+        unk1C->unk4[i] = gUnknown_080D8C4C[i];
+        unk1C->unkC[i] = gUnknown_080D8C54[i];
     }
 
     unk48->unk30 &= 0xFFF;
@@ -571,28 +571,30 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
         unk48->unk24[i] = gUnknown_080D8A7C[0][i];
     }
 
+    unk594->callback = sub_804DFB0;
+
     for (i = 0; i < 10; i++) {
         // _0804D118
-        boss->unk594.unk4[i] = 0;
-        boss->unk594.unkE[i] = 0;
-        boss->unk594.unk18[i][0] = 0;
-        boss->unk594.unk18[i][1] = 0;
-        boss->unk594.unk40[i].x = 0;
-        boss->unk594.unk40[i].y = 0;
+        unk594->unk4[i] = 0;
+        unk594->unkE[i] = 0;
+        unk594->unk18[i][0] = 0;
+        unk594->unk18[i][1] = 0;
+        unk594->unk40[i].x = 0;
+        unk594->unk40[i].y = 0;
     }
 
-    boss->unk654.callback = sub_804FF9C;
-    boss->unk654.func4 = sub_804F768;
-    boss->unk654.unk8 = 300;
-    boss->unk654.unkA = 512;
+    unk654->callback = sub_804FF9C;
+    unk654->func4 = sub_804F768;
+    unk654->unk8 = 300;
+    unk654->unkA = 512;
 
     for (i = 0; i < 16; i++) {
-        boss->unk654.unkE[i] = 0;
-        boss->unk654.unk1E[i] = 0;
-        boss->unk654.unk2E[i][0] = 0;
-        boss->unk654.unk2E[i][1] = 0;
-        boss->unk654.qPos70[i].x = 0;
-        boss->unk654.qPos70[i].y = 0;
+        unk654->unkE[i] = 0;
+        unk654->unk1E[i] = 0;
+        unk654->unk2E[i][0] = 0;
+        unk654->unk2E[i][1] = 0;
+        unk654->qPos70[i].x = 0;
+        unk654->qPos70[i].y = 0;
     }
     // __0804D194
 
@@ -608,16 +610,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     // Rockets
     for (i = 0; i < 3; i++) {
         // _0804D1F0
-        TA53_unkA8 *unkA8 = &unk98->unk10[i];
-        TA53_RocketExhaust *exhaust;
-        s = &unkA8->spr20;
+        s = &unk98->unk10[i].spr20;
 
-        unkA8->unk4 = 0;
-        unkA8->unkA = 0;
-        unkA8->unkE = 0;
-        unkA8->unk10 = 0;
-        unkA8->pos14.x = 0;
-        unkA8->pos14.y = 0;
+        unk98->unk10[i].unk4 = 0;
+        unk98->unk10[i].unkA = 0;
+        unk98->unk10[i].unkE = 0;
+        unk98->unk10[i].unk10 = 0;
+        unk98->unk10[i].pos14.x = 0;
+        unk98->unk10[i].pos14.y = 0;
         s->x = 0;
         s->y = 0;
         s->graphics.dest = VramMalloc(16);
@@ -634,32 +634,33 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
         s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-        exhaust = &unkA8->exhaust;
-        exhaust->callback = sub_804DD9C;
+        unk98->unk10[i].exhaust.callback = sub_804DD9C;
 
         // Rocket Exhaust Clouds
         for (j = 0; j < 5; j++) {
             // _0804D25C
+            TA53_RocketExhaust *exhaust = &unk98->unk10[i].exhaust;
             exhaust->unk4[j] = 0;
             exhaust->unkA[j][0] = 0;
             exhaust->unkA[j][1] = 0;
             exhaust->pos[j].x = 0;
             exhaust->pos[j].y = 0;
 
-            exhaust->s[j].x = 0;
-            exhaust->s[j].y = 0;
-            exhaust->s[j].graphics.dest = vram;
-            exhaust->s[j].graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_CLOUD;
-            exhaust->s[j].variant = 0;
-            exhaust->s[j].prevVariant = -1;
-            exhaust->s[j].unk1A = SPRITE_OAM_ORDER(16);
-            exhaust->s[j].graphics.size = 0;
-            exhaust->s[j].animCursor = 0;
-            exhaust->s[j].timeUntilNextFrame = 0;
-            exhaust->s[j].animSpeed = SPRITE_ANIM_SPEED(1.0);
-            exhaust->s[j].hitboxes[0].index = HITBOX_STATE_INACTIVE;
-            exhaust->s[j].palId = 6;
-            exhaust->s[j].unk10 = SPRITE_FLAG(PRIORITY, 2);
+            s = &unk98->unk10[i].exhaust.s[j];
+            s->x = 0;
+            s->y = 0;
+            s->graphics.dest = vram;
+            s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_CLOUD;
+            s->variant = 0;
+            s->prevVariant = -1;
+            s->unk1A = SPRITE_OAM_ORDER(16);
+            s->graphics.size = 0;
+            s->animCursor = 0;
+            s->timeUntilNextFrame = 0;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+            s->palId = 6;
+            s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
+            s->unk10 = SPRITE_FLAG(PRIORITY, 2);
         }
     }
     // _0804D39A
@@ -681,12 +682,47 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
     s->unk10 = SPRITE_FLAG(PRIORITY, 2);
 
-    // Rings that get "sucked out" by the Boss?
-    s = &boss->capsule->s;
+    // Not the correct sprite in this place, but matches with higher %
+    for (i = 0; i < 4; i++) {
+        s = &boss->capsule[i].s;
+        s->x = 0;
+        s->y = 0;
+        s->graphics.dest = VramMalloc(gUnknown_080D88F0[i].numTiles);
+        s->graphics.anim = gUnknown_080D88F0[i].anim;
+        s->variant = gUnknown_080D88F0[i].variant;
+        s->prevVariant = -1;
+        s->unk1A = SPRITE_OAM_ORDER(19);
+        s->graphics.size = 0;
+        s->animCursor = 0;
+        s->timeUntilNextFrame = 0;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+        s->palId = 0;
+        s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
+        s->unk10 = SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(OBJ_MODE, 2);
+    }
+
+    s = &unk558->s;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = VramMalloc(4);
-    s->graphics.anim = SA2_ANIM_UI_RING; // huh?
+    s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_SUCK_FX;
+    s->variant = 8;
+    s->prevVariant = -1;
+    s->unk1A = SPRITE_OAM_ORDER(21);
+    s->graphics.size = 0;
+    s->animCursor = 0;
+    s->timeUntilNextFrame = 0;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->palId = 0;
+    s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
+    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+
+    // Rings that get "sucked out" by the Boss?
+    s = &unk594->spr90;
+    s->x = 0;
+    s->y = 0;
+    s->graphics.dest = VramMalloc(4);
+    s->graphics.anim = SA2_ANIM_UI_RING;
     s->variant = 8;
     s->prevVariant = -1;
     s->unk1A = SPRITE_OAM_ORDER(6);
@@ -696,10 +732,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->unk10 = SPRITE_FLAG(PRIORITY, 1);
 
     // Yellow Projectile
-    s = &boss->unk654.sprF0;
+    s = &unk654->sprF0;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = VramMalloc(9);
@@ -713,10 +749,10 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->unk10 = SPRITE_FLAG(PRIORITY, 1);
 
     // Red Projectile
-    s = &boss->unk654.spr128;
+    s = &unk654->spr128;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = VramMalloc(4);
@@ -730,7 +766,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->unk10 = SPRITE_FLAG(PRIORITY, 1);
 }
 END_NONMATCH
 
@@ -2821,12 +2857,12 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050958.inc",
 
                     colId = ((i + r6) % 16u);
                     objPalId = 8 * 16 + colId;
-                    objPalTgt[objPalId] = ((gUnknown_080D8EF0[0][i] << 5)
-                                           | (gUnknown_080D8EF0[0][i] >> 5))
-                        | gUnknown_080D8EF0[0][i];
-                    gBgPalette[0 * 16 + colId] = ((gUnknown_080D8EF0[0][i] << 5)
-                                                  | (gUnknown_080D8EF0[0][i] >> 5))
-                        | gUnknown_080D8EF0[0][i];
+                    objPalTgt[objPalId] = (((gUnknown_080D8EF0[0][i] << 5)
+                                            | (gUnknown_080D8EF0[0][i] >> 5))
+                                           | gUnknown_080D8EF0[0][i]);
+                    gBgPalette[0 * 16 + colId] = (((gUnknown_080D8EF0[0][i] << 5)
+                                                   | (gUnknown_080D8EF0[0][i] >> 5))
+                                                  | gUnknown_080D8EF0[0][i]);
                 }
             }
         }

@@ -154,38 +154,38 @@ _0804CF96:
 	adds r4, r6, #0
 	adds r4, #0x24          @ r4 = &unk48->unk24[0]
 	adds r2, r7, #4
-	str r2, [sp, #0x1c]     @ sp1C = &boss->unk594->unk4[0]
+	str r2, [sp, #0x1c]     @ sp1C = &unk594->unk4[0]
 	adds r6, r7, #0
 	adds r6, #0xe
-	str r6, [sp, #0x34]     @ sp34 = &boss->unk594->unkE[0]
+	str r6, [sp, #0x34]     @ sp34 = &unk594->unkE[0]
 	adds r0, r7, #0
 	adds r0, #0x18
-	str r0, [sp, #0x3c]     @ sp3C = &boss->unk594->unk18[0]
+	str r0, [sp, #0x3c]     @ sp3C = &unk594->unk18[0]
 	adds r1, r7, #0
 	adds r1, #0x1a
-	str r1, [sp, #0x40]     @ sp40 = &boss->unk594->unk1A
+	str r1, [sp, #0x40]     @ sp40 = &unk594->unk1A
 	adds r2, #0x3c
-	str r2, [sp, #0x60]     @ sp60 = &boss->unk594->unk40
+	str r2, [sp, #0x60]     @ sp60 = &unk594->unk40
 	adds r6, #0x36
-	str r6, [sp, #0xc0]     @ spC0 = &boss->unk594->unk44
+	str r6, [sp, #0xc0]     @ spC0 = &unk594->unk44
 	ldr r0, [sp, #0xc]      @ r0 = &boss->unk654
 	adds r0, #0xe
-	str r0, [sp, #0x38]     @ sp38 = &boss->unk654->unkE
+	str r0, [sp, #0x38]     @ sp38 = &unk654->unkE
 	ldr r1, [sp, #0xc]
 	adds r1, #0x1e
-	str r1, [sp, #0x44]     @ sp44 = &boss->unk654->unk1E
+	str r1, [sp, #0x44]     @ sp44 = &unk654->unk1E
 	ldr r2, [sp, #0xc]
 	adds r2, #0x2e
-	str r2, [sp, #0x54]     @ sp54 = &boss->unk654->unk2E
+	str r2, [sp, #0x54]     @ sp54 = &unk654->unk2E
 	ldr r6, [sp, #0xc]
 	adds r6, #0x30
-	str r6, [sp, #0x5c]     @ sp5C = &boss->unk654->unk30
+	str r6, [sp, #0x5c]     @ sp5C = &unk654->unk30
 	ldr r0, [sp, #0xc]
 	adds r0, #0x70
-	str r0, [sp, #0x74]     @ sp74 = &boss->unk654->unk70 @ someX?
+	str r0, [sp, #0x74]     @ sp74 = &unk654->unk70 @ someX?
 	ldr r1, [sp, #0xc]
 	adds r1, #0x74
-	str r1, [sp, #0x78]     @ sp78 = &boss->unk654->unk74 @ someY?
+	str r1, [sp, #0x78]     @ sp78 = &unk654->unk74 @ someY?
 	ldr r6, _0804D2F0 @ =0x000007D4
 	ldr r2, [sp, #4]
 	adds r6, r2, r6
@@ -215,50 +215,50 @@ _0804CF96:
 	str r0, [sp, #0x58]     @ sp58 = &boss->unk558->s.palId
 	adds r1, r7, #0
 	adds r1, #0x90
-	str r1, [sp, #0x84]     @ sp84 = &boss->unk594->spr90
+	str r1, [sp, #0x84]     @ sp84 = &unk594->spr90
 	adds r2, r7, #0
 	adds r2, #0xb0
-	str r2, [sp, #0x90]     @ sp90 = &boss->unk594->spr90.variant
+	str r2, [sp, #0x90]     @ sp90 = &unk594->spr90.variant
 	adds r6, r7, #0
 	adds r6, #0xb1
-	str r6, [sp, #0x94]     @ sp90 = &boss->unk594->spr90.prevVariant
+	str r6, [sp, #0x94]     @ sp90 = &unk594->spr90.prevVariant
 	adds r0, r7, #0
 	adds r0, #0xb2
-	str r0, [sp, #0x98]     @ sp90 = &boss->unk594->spr90.animSpeed
+	str r0, [sp, #0x98]     @ sp90 = &unk594->spr90.animSpeed
 	adds r1, #0x25
-	str r1, [sp, #0x9c]     @ sp90 = &boss->unk594->spr90.animId
+	str r1, [sp, #0x9c]     @ sp90 = &unk594->spr90.animId
 	ldr r2, [sp, #0xc]
 	adds r2, #0xf0
-	str r2, [sp, #0xa0]     @ spA0 = &boss->unk654->sprF0
+	str r2, [sp, #0xa0]     @ spA0 = &unk654->sprF0
 	movs r0, #0x88
 	lsls r0, r0, #1
 	ldr r6, [sp, #0xc]      @ r6 = sp0C = &boss->unk654
 	adds r0, r6, r0
-	str r0, [sp, #0x20]     @ sp20 = &boss->unk654->sprF0.variant
+	str r0, [sp, #0x20]     @ sp20 = &unk654->sprF0.variant
 	ldr r1, _0804D300 @ =0x00000111
 	adds r1, r6, r1
-	str r1, [sp, #0x24]     @ sp24 = &boss->unk654->sprF0.prevVariant
+	str r1, [sp, #0x24]     @ sp24 = &unk654->sprF0.prevVariant
 	movs r2, #0x89
 	lsls r2, r2, #1
 	adds r2, r6, r2
-	str r2, [sp, #0x28]     @ sp28 = &boss->unk654->sprF0.animSpeed
+	str r2, [sp, #0x28]     @ sp28 = &unk654->sprF0.animSpeed
 	ldr r0, _0804D304 @ =0x00000115
 	adds r0, r6, r0
-	str r0, [sp, #0x30]     @ sp30 = &boss->unk654->sprF0.palId
+	str r0, [sp, #0x30]     @ sp30 = &unk654->sprF0.palId
 	movs r1, #0xa4
 	lsls r1, r1, #1
 	adds r1, r6, r1
-	str r1, [sp, #0x64]     @ sp64 = &boss->unk654->sprF0.palId
+	str r1, [sp, #0x64]     @ sp64 = &unk654->sprF0.palId
 	ldr r2, _0804D308 @ =0x00000149
 	adds r2, r6, r2
-	str r2, [sp, #0x68]     @ sp68 = &boss->unk654->sprF0.palId
+	str r2, [sp, #0x68]     @ sp68 = &unk654->sprF0.palId
 	movs r0, #0xa5
 	lsls r0, r0, #1
 	adds r0, r6, r0
-	str r0, [sp, #0x6c]     @ sp6C = &boss->unk654->sprF0.palId
+	str r0, [sp, #0x6c]     @ sp6C = &unk654->sprF0.palId
 	ldr r1, _0804D30C @ =0x0000014D
 	adds r1, r6, r1
-	str r1, [sp, #0x70]     @ sp70 = &boss->unk654->sprF0.palId
+	str r1, [sp, #0x70]     @ sp70 = &unk654->sprF0.palId
 _0804D0C4:
 	mov r2, ip              @ r2 = ip = i = 0
 	lsls r1, r2, #1
@@ -305,21 +305,21 @@ _0804D0C4:
 _0804D118:
 	mov r7, sb
 	adds r0, r5, r7
-	strb r2, [r0]           @ boss->unk594.unk4[i] = 0;
+	strb r2, [r0]           @ unk594->unk4[i] = 0;
 	adds r0, r4, r7
-	strb r2, [r0]           @ boss->unk594.unkE[i] = 0;
+	strb r2, [r0]           @ unk594->unkE[i] = 0;
 	lsls r0, r7, #2
-	strh r2, [r3]           @ boss->unk594->unk18[i][0] = 0;
+	strh r2, [r3]           @ unk594->unk18[i][0] = 0;
 	ldr r1, [sp, #0x40]
 	adds r0, r1, r0
-	strh r2, [r0]           @ boss->unk594->unk18[i][1] = 0;
+	strh r2, [r0]           @ unk594->unk18[i][1] = 0;
 	lsls r1, r7, #3
 	ldr r6, [sp, #0x60]
 	adds r0, r6, r1
-	str r2, [r0]            @ boss->unk594->unk40[i].x = 0
+	str r2, [r0]            @ unk594->unk40[i].x = 0
 	ldr r7, [sp, #0xc0]
 	adds r1, r7, r1
-	str r2, [r1]            @ boss->unk594->unk40[i].y = 0
+	str r2, [r1]            @ unk594->unk40[i].y = 0
 	adds r3, #4
 	movs r0, #1
 	add sb, r0
@@ -338,10 +338,10 @@ _0804D118:
 	strh r0, [r5, #0xa]
 	movs r7, #0
 	mov sb, r7              @ sb = r7 = i = 0
-	ldr r5, [sp, #0x38]     @ r5 = &boss->unk654->unkE
+	ldr r5, [sp, #0x38]     @ r5 = &unk654->unkE
 	movs r2, #0
-	ldr r4, [sp, #0x44]     @ r4 = &boss->unk654->unk1E
-	ldr r3, [sp, #0x54]     @ r3 = &boss->unk654->unk2E
+	ldr r4, [sp, #0x44]     @ r4 = &unk654->unk1E
+	ldr r3, [sp, #0x54]     @ r3 = &unk654->unk2E
 _0804D166:
 	mov r1, sb
 	adds r0, r5, r1
@@ -350,14 +350,14 @@ _0804D166:
 	strb r2, [r0]
 	lsls r0, r1, #2
 	strh r2, [r3]
-	ldr r6, [sp, #0x5c]     @ r6 = &boss->unk654->unk30
+	ldr r6, [sp, #0x5c]     @ r6 = &unk654->unk30
 	adds r0, r6, r0
 	strh r2, [r0]
 	lsls r1, r1, #3
-	ldr r7, [sp, #0x74]     @ r7 = &boss->unk654->unk70[0].x
+	ldr r7, [sp, #0x74]     @ r7 = &unk654->unk70[0].x
 	adds r0, r7, r1
 	str r2, [r0]
-	ldr r0, [sp, #0x78]     @ r0 = &boss->unk654->unk70[0].y
+	ldr r0, [sp, #0x78]     @ r0 = &unk654->unk70[0].y
 	adds r1, r0, r1
 	str r2, [r1]
 	adds r3, #4
@@ -721,7 +721,7 @@ _0804D402:
 	movs r0, #0x80
 	lsls r0, r0, #6
 	str r0, [r7, #0x10]
-	ldr r7, [sp, #0x84]         @ r7 = sp84 = &boss->unk594->spr90
+	ldr r7, [sp, #0x84]         @ r7 = sp84 = &unk594->spr90
 	strh r4, [r7, #0x16]
 	strh r4, [r7, #0x18]
 	movs r0, #4
@@ -754,7 +754,7 @@ _0804D402:
 	movs r6, #0x80
 	lsls r6, r6, #5
 	str r6, [r7, #0x10]
-	ldr r7, [sp, #0xa0]         @ r7 = spA0 = &boss->unk654->sprF0
+	ldr r7, [sp, #0xa0]         @ r7 = spA0 = &unk654->sprF0
 	strh r4, [r7, #0x16]        @ Yellow Projectile
 	strh r4, [r7, #0x18]
 	movs r0, #9
