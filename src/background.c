@@ -93,7 +93,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
     while (gUnknown_0300287C != gUnknown_03002AE4) {
         Background *bg;
 
-#if !PORTABLE
+#if 1 && !PORTABLE
         // TODO: This #if should not be required.
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK))
             return FALSE;
@@ -638,7 +638,7 @@ END_NONMATCH
 void UpdateBgAnimationTiles(Background *bg)
 {
     struct MapHeader *header = gTilemapsRef[bg->tilemapId];
-    if (header->h.animFrameCount) {
+    if (header->h.animFrameCount > 0) {
         if (header->h.animDelay <= ++bg->animDelayCounter) {
             u32 animTileSize;
 
