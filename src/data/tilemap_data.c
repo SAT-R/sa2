@@ -45,7 +45,7 @@
 // zone_3_act_2_bg shares the pointer with zone_3_act_1_bg.
 // zone_3_act_boss_bg shares the pointer with zone_3_act_2_bg.
 // zone_1_act_dummy_bg shares the pointer with zone_3_act_boss_bg.
-#include "../data/tilemaps/unknown_stars/header.c"
+#include "../data/tilemaps/music_plant_moving_stars/header.c"
 #include "../data/maps/zone_4/act_1/tilemaps/bg/header.c"
 // zone_4_act_2_bg shares the pointer with zone_4_act_1_bg.
 // zone_4_act_boss_bg shares the pointer with zone_4_act_2_bg.

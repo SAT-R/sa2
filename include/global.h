@@ -21,6 +21,8 @@ typedef void (*VoidFn)(void);
 #if !(defined NON_MATCHING)
 #define NON_MATCHING 1
 #endif
+#elif defined(DEBUG)
+#define NON_MATCHING 1
 #endif
 
 #ifdef NON_MATCHING

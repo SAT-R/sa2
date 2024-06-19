@@ -567,12 +567,12 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     Sprite *s;
     struct Task *t
         = TaskCreate(Task_SuperSonicSpark, sizeof(SuperSonicSpark), 0x7000, 0, NULL);
-    u32 type = PseudoRandBetween(2, 3);
+    u32 type = PseudoRandBetween(2, 4);
     SuperSonicSpark *spark = TASK_DATA(t);
     spark->animFrame = 40;
 
-    spark->x = x + (s16)Q(PseudoRandBetween(-16, 15));
-    spark->y = y + (s16)Q(PseudoRandBetween(-16, 15));
+    spark->x = x + (s16)Q(PseudoRandBetween(-16, 16));
+    spark->y = y + (s16)Q(PseudoRandBetween(-16, 16));
     spark->speedX = 0;
     spark->speedY = 0;
 

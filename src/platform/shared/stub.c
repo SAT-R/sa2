@@ -37,23 +37,6 @@ const s32 gUnknown_080D8840[][2] = { { 0, 0 } };
 
 void sub_804A6B4(struct Task *t) {};
 
-// boss_9
-const s16 gUnknown_080D8A94[4] = { 0 };
-const s16 gUnknown_080D8AAC[4] = { 0 };
-const s16 gUnknown_080D8AC4[4] = { 0 };
-const s16 gUnknown_080D8ADC[4] = { 0 };
-const s16 gUnknown_080D8AF4[4] = { 0 };
-const s16 gUnknown_080D8C7C[4] = { 0 };
-const s16 gUnknown_080D8C94[4] = { 0 };
-const TA53_Data0 gUnknown_080D8D6C[8] = { 0 };
-const TA53_Data0 gUnknown_080D8DCC[8] = { 0 };
-void CreateTrueArea53Boss(void) {};
-void Task_EggmanKidnapsVanilla(void) { TaskDestroy(gCurTask); }
-void sub_804D594(s32 qx, s32 qy) { }
-void TaskDestructor_TrueArea53BossGfx(struct Task *t) { }
-void sub_8050B2C(s32 *a, s32 *b) { }
-bool32 ExtraBossIsDead(void) { return TRUE; }
-
 // math
 void sub_80835E0(struct UNK_8085F1C *p0, s32 *p1) { }
 void sub_8083B88(struct UNK_8085F1C_1 *p0, struct UNK_8085F1C_1 *p1,

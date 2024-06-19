@@ -166,7 +166,7 @@ struct SpriteTables {
         gMultiplayerPseudoRandom = (gMultiplayerPseudoRandom * 0x196225) + 0x3C6EF35F;  \
         gMultiplayerPseudoRandom;                                                       \
     })
-#define PseudoRandBetween(min, max) ((PseudoRandom32() & ((-min) + (max))) + (min))
+#define PseudoRandBetween(min, max) ((PseudoRandom32() & ((-min) + (max - 1))) + (min))
 
 extern u32 gFlags;
 extern u32 gFlagsPreVBlank;

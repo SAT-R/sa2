@@ -64,7 +64,12 @@ extern void SuperSonicInit(void);
 extern u32 SuperSonicGetFlags(void);
 extern void SuperSonicGetPos(s32 *outX, s32 *outY);
 extern void SuperSonicSetPos(s32 x, s32 y);
-extern u32 SuperSonicGetFlags();
+extern Sprite *SuperSonicGetSprite(void);
+extern u16 SuperSonicGetRotation(void);
+extern void sub_802B81C(void);
 extern bool32 sub_802BA8C(void);
+extern void sub_802BB54(void);
+extern void sub_802C704(u8 index, s32 *outX, s32 *outY);
+extern void sub_802C798(void);
 
 #endif // GUARD_PLAYER_SUPER_SONIC_H

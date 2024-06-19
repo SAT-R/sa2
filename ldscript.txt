@@ -21,7 +21,11 @@ SECTIONS
         src/lib/m4a.o(.bss.code);
         src/multi_boot.o(.bss);
         
-        . = 0x00000410; 
+        . = 0x00000408;
+        src/game/stage/background/zone_3.o(.data);
+        src/game/stage/background/zone_3.o(.bss);
+
+        . = 0x00000410;
         src/game/stage/collision.o(.bss);
 
         src/lib/agb_flash.o(.bss);
@@ -227,9 +231,6 @@ SECTIONS
 #endif
         src/game/bosses/boss_8.o(.text);
         src/game/bosses/boss_9.o(.text);
-#if (CPU_ARCH_ARM == 1)
-        asm/boss_9.o(.text);
-#endif
         src/game/enemies/projectiles.o(.text);
         src/game/enemies/mon.o(.text);
         src/game/enemies/gohla.o(.text);
@@ -498,9 +499,7 @@ SECTIONS
         asm/boss_run.o(.rodata);
 #endif
         src/game/bosses/boss_8.o(.rodata);
-#if (CPU_ARCH_ARM == 1)
-        asm/boss_9.o(.rodata);
-#endif
+        src/game/bosses/boss_9.o(.rodata);
         src/game/enemies/kubinaga.o(.rodata);
         src/game/enemies/koura.o(.rodata);
         src/game/enemies/geji_geji.o(.rodata);

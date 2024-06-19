@@ -231,7 +231,7 @@ void *IwramMalloc(u16 req)
         return NULL;
     }
 
-    void *result = malloc(req);
+    void *result = calloc(req, 1);
     assert(result != NULL);
     return result;
 #else

@@ -292,7 +292,7 @@
 #define TM_STORYFRAME_TAILS_UNLOCK_3_DLG_ES           366
 #define TM_STORYFRAME_TAILS_UNLOCKED_ES               367
 #define TM_REGULAR_FINAL_BOSS                         368
-#define TM_UNKNOWN_STARS                              369
+#define TM_MUSIC_PLANT_MOVING_STARS                   369
 #define TM_SKY_CANYON_CLOUDS_FOREGROUND               370
 #define TM_SPOTLIGHT_SNOW                             371
 #define TM_EXTRA_BOSS_BACKGROUND                      372

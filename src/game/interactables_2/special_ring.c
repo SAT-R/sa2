@@ -77,21 +77,26 @@ static bool32 sub_8081010(Sprite_SpecialRing *ring)
         if (flags & 0xF0000) {
             return TRUE;
         } else {
-            s32 somePosX, somePosY;
-            u16 posX, posY;
-            somePosX = I(cheese->posX) + 16;
-            somePosX -= ring->worldX;
+#ifdef BUG_FIX
+            if (cheese != NULL)
+#endif
+            {
+                s32 somePosX, somePosY;
+                u16 posX, posY;
+                somePosX = I(cheese->posX) + 16;
+                somePosX -= ring->worldX;
 
-            somePosY = I(cheese->posY) + 32;
-            somePosY -= ring->worldY;
+                somePosY = I(cheese->posY) + 32;
+                somePosY -= ring->worldY;
 
-            posY = somePosY;
-            posX = somePosX;
+                posY = somePosY;
+                posX = somePosX;
 
-            if ((posX <= 32) && (posY <= 32)) {
-                gCurTask->unk15 = 0;
+                if ((posX <= 32) && (posY <= 32)) {
+                    gCurTask->unk15 = 0;
 
-                return TRUE;
+                    return TRUE;
+                }
             }
         }
     }

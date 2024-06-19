@@ -16,20 +16,20 @@ void StageBgUpdate_ZoneFinalActTA53(void)
     int_vcount y;
 
     if (gActiveBossTask != NULL) {
-        Sprite_TrueArea53Boss *boss = TASK_DATA(gActiveBossTask);
+        TA53Boss *boss = TASK_DATA(gActiveBossTask);
         aBool = boss->unk10 & 0x1;
     }
 
     if (aBool) {
-        u16 *ptr;
+        u16 *offset;
         gFlags |= FLAGS_4;
         gUnknown_03002878 = (void *)&REG_BG1HOFS;
         gUnknown_03002A80 = 2;
 
-        ptr = (u16 *)gBgOffsetsHBlank;
+        offset = (u16 *)gBgOffsetsHBlank;
         for (y = 0; y < DISPLAY_HEIGHT - 1; y++) {
             s16 val = SIN(((y + gStageTime) * 40) & ONE_CYCLE) >> 12;
-            *ptr++ = val;
+            *offset++ = val;
         }
     }
 }

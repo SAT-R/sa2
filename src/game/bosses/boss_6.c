@@ -770,8 +770,8 @@ static void sub_804683C(EggGoRound *boss)
         }
     } else {
         boss->state
-            = sStateChoices[Mod(PseudoRandBetween(0, 255), ARRAY_COUNT(sStateChoices))];
-        boss->unk26 = Mod(PseudoRandBetween(0, 255), 10);
+            = sStateChoices[Mod(PseudoRandBetween(0, 256), ARRAY_COUNT(sStateChoices))];
+        boss->unk26 = Mod(PseudoRandBetween(0, 256), 10);
 
         boss->unk1E = gUnknown_080D804E[boss->health < 5 ? 1 : 0][boss->unk26];
         boss->unk24 = 30;
@@ -1047,7 +1047,7 @@ static void sub_8047138(EggGoRound *boss)
     }
 }
 
-void sub_8047224(s32 dX, s32 dY)
+void EggGoRoundMove(s32 dX, s32 dY)
 {
     DestructionProps *destruction;
     EggGoRound *boss;

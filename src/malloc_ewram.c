@@ -22,7 +22,7 @@ void *EwramMalloc(u32 req)
         return NULL;
     }
 
-    return malloc(req);
+    return calloc(req, 1);
 #else
     struct EwramNode *node;
     s32 requestedSpace = req;

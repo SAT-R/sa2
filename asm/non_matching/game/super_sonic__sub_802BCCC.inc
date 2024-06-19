@@ -73,7 +73,7 @@ _0802BD0E:
 	lsls r5, r0, #8
 	adds r0, r4, #0
 	adds r1, r5, #0
-	bl sub_804D594
+	bl TrueArea53BossMove
 	movs r3, #0
 	ldr r0, [sp, #4]
 	mov sl, r0
