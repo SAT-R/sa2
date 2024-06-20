@@ -653,7 +653,7 @@ u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
             if ((SQUARE(r6) + SQUARE(r7)) < 376) {
                 result = sub_804C9B4(boss, arm);
 
-                gUnknown_03005498.t->unk15 = 0;
+                gCheeseTarget.task->unk15 = 0;
             }
         }
     }
@@ -729,7 +729,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
             if ((SQUARE(r6) + SQUARE(r7)) < 376) {
                 result = sub_804C9B4(boss, arm);
 
-                gUnknown_03005498.t->unk15 = 0;
+                gCheeseTarget.task->unk15 = 0;
             }
         }
     }

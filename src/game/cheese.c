@@ -374,10 +374,10 @@ void sub_80145D8(void)
     sub_8015118(cheese);
     cheese->unk10 = 0;
 
-    if (gUnknown_03005498.someDistanceSquared < 40000) {
-        cheese->unk18 = gUnknown_03005498.t;
+    if (gCheeseTarget.squarePlayerDistance < CHEESE_DISTANCE_MAX) {
+        cheese->unk18 = gCheeseTarget.task;
 
-        gUnknown_03005498.t->unk15 = 1;
+        gCheeseTarget.task->unk15 = 1;
         cheese->unkA = 0;
         m4aSongNumStart(SE_CREAM_CHEESE_ATTACK);
         gCurTask->main = sub_801464C;
@@ -1107,7 +1107,7 @@ void sub_80152EC(void)
             == 4) {
         cheese->unkA = 0;
         cheese->unkE = 0;
-        gUnknown_03005498.t->unk15 = 0;
+        gCheeseTarget.task->unk15 = 0;
         cheese->unkC &= ~0x10;
         m4aSongNumStart(SE_228);
         gCurTask->main = sub_8014A68;

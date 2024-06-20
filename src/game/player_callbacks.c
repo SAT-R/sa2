@@ -110,7 +110,6 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
 
         case 1:
         case 2: {
-            // _08011BFC
             ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
             ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
 
@@ -176,7 +175,7 @@ void sub_8011D48(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    if (p->unk5A == FALSE) {
+    if (!p->unk5A) {
         if (p->moveState & MOVESTATE_FACING_LEFT) {
             p->speedGroundX = -Q(3.0);
         } else {
@@ -392,7 +391,7 @@ void sub_80120C0(Player *p)
 
 void sub_8012194(Player *p)
 {
-    s16 unk30054C0 = gUnknown_030054C0.unk4;
+    s16 unk30054C0 = gHomingTarget.angle;
     s32 six = Q(6.0);
     s32 cosVal, sinVal;
 
@@ -445,48 +444,50 @@ void PlayerCB_801225C(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_80261D8, p);
 }
 
-void Player_UpdateHomingPosition(s32 x, s32 y)
+void Player_UpdateHomingPosition(s32 qX, s32 qY)
 {
-    s32 playerX, playerY, sqPlayerX, sqPlayerY, sqDistance;
+    s32 vecTargetX, vecTargetY;
+    s32 sqTargetX, sqTargetY, sqDistance;
 
-    playerX = I(gPlayer.x - x);
-    playerY = I(gPlayer.y - y);
-    sqPlayerX = playerX * playerX;
-    sqPlayerY = playerY * playerY;
-    sqDistance = sqPlayerX + sqPlayerY; // c^2 = a^2 + b^2
+    vecTargetX = I(gPlayer.x - qX);
+    vecTargetY = I(gPlayer.y - qY);
+    sqTargetX = vecTargetX * vecTargetX;
+    sqTargetY = vecTargetY * vecTargetY;
+    sqDistance = sqTargetX + sqTargetY; // c^2 = a^2 + b^2
 
     if (gPlayer.character == CHARACTER_SONIC) {
-        if (sqDistance < gUnknown_030054C0.unk0) {
+        if (sqDistance < gHomingTarget.squarePlayerDistance) {
             if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-                u32 value = CLAMP_SIN_PERIOD(sub_8004418(playerX, playerY) - Q(1.0));
+                u16 angle = CLAMP_SIN_PERIOD(sub_8004418(vecTargetX, vecTargetY)
+                                             - (SIN_PERIOD / 4));
+                if (angle <= DEG_TO_SIN(110)) {
+                    angle = CLAMP_SIN_PERIOD((SIN_PERIOD / 2) - angle);
 
-                if (value < 313) {
-                    u32 r0 = CLAMP_SIN_PERIOD(Q(2.0) - value);
-
-                    gUnknown_030054C0.unk0 = sqDistance;
-                    gUnknown_030054C0.unk4 = r0;
+                    gHomingTarget.squarePlayerDistance = sqDistance;
+                    gHomingTarget.angle = angle;
                 }
             } else {
-                u16 value = sub_8004418(-playerY, -playerX);
-                if (value <= 312) {
-                    gUnknown_030054C0.unk0 = sqDistance;
-                    gUnknown_030054C0.unk4 = value;
+                u16 angle = sub_8004418(-vecTargetY, -vecTargetX);
+                if (angle <= DEG_TO_SIN(110)) {
+                    gHomingTarget.squarePlayerDistance = sqDistance;
+                    gHomingTarget.angle = angle;
                 }
             }
         }
     } else if (gPlayer.character == CHARACTER_CREAM) {
         struct Task *t = gCurTask;
 
-        if (sqDistance < gUnknown_03005498.someDistanceSquared) {
-            if (((gPlayer.moveState & MOVESTATE_FACING_LEFT) && (playerX >= 0))
-                || ((!(gPlayer.moveState & MOVESTATE_FACING_LEFT)) && (playerX <= 0))) {
-                gUnknown_03005498.someDistanceSquared = sqDistance;
-                gUnknown_03005498.t = t;
+        if (sqDistance < gCheeseTarget.squarePlayerDistance) {
+            if (((gPlayer.moveState & MOVESTATE_FACING_LEFT) && (vecTargetX >= 0))
+                || ((!(gPlayer.moveState & MOVESTATE_FACING_LEFT))
+                    && (vecTargetX <= 0))) {
+                gCheeseTarget.squarePlayerDistance = sqDistance;
+                gCheeseTarget.task = t;
             }
 
             if (t->unk15) {
-                t->unk16 = I(x);
-                t->unk18 = I(y);
+                t->unk16 = I(qX);
+                t->unk18 = I(qY);
             }
         }
     }

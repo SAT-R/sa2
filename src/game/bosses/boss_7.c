@@ -545,7 +545,7 @@ static void sub_8048408(EggFrog *boss)
         if (boss->unk16 == 0
             && IsColliding_Cheese(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
             sub_8048D78(boss);
-            gUnknown_03005498.t->unk15 = 0;
+            gCheeseTarget.task->unk15 = 0;
         }
     }
 }

@@ -48,9 +48,9 @@ typedef struct {
 } UNK_30054A8; /* size: 8 */
 
 typedef struct {
-    s32 unk0;
-    u16 unk4;
-} Struct_30054C0;
+    s32 squarePlayerDistance;
+    u16 angle;
+} HomingTarget;
 
 // Some Multiplayer struct
 struct UNK_3005510 {
@@ -63,10 +63,12 @@ struct UNK_3005510 {
     u8 unk6;
     u8 unk7;
 }; /* 0x8 */
+
+#define CHEESE_DISTANCE_MAX (200 * 200)
 typedef struct {
-    /* 0x00 */ s32 someDistanceSquared;
-    /* 0x04 */ struct Task *t;
-} SomeStruct_3005498; /* size: unknown (but >= 0x8) */
+    /* 0x00 */ s32 squarePlayerDistance;
+    /* 0x04 */ struct Task *task;
+} CheeseTarget; /* size: unknown (but >= 0x8?) */
 
 // Incomplete
 extern u8 gDemoPlayCounter;
@@ -149,7 +151,7 @@ extern s32 gLevelScore;
 extern u8 gNumLives;
 extern u8 gUnknown_030054B0;
 
-extern Struct_30054C0 gUnknown_030054C0;
+extern HomingTarget gHomingTarget;
 
 extern u8 gMultiplayerConnections;
 
@@ -161,7 +163,7 @@ extern u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX];
 
 extern struct UNK_3005510 gUnknown_03005510[16];
 
-extern SomeStruct_3005498 gUnknown_03005498;
+extern CheeseTarget gCheeseTarget;
 
 extern u8 gUnknown_030055D0[4];
 
