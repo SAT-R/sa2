@@ -1,16 +1,8 @@
 .include "asm/macros.inc"
 .include "constants/constants.inc"
 
-.section .rodata
-
-.text
 .syntax unified
-.arm
-
-@; NOTE: This procedure is referenced by boss_9,
-@;       all other procedures are not referenced at all.
-	thumb_func_start sub_8085968
-sub_8085968: @ 0x08085968
+.text
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -80,3 +72,6 @@ sub_8085968: @ 0x08085968
 	.align 2, 0
 _080859EC: .4byte 0x00000FFF
 _080859F0: .4byte gUnknown_080E0290
+
+	
+.syntax divided
