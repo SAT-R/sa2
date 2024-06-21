@@ -36,7 +36,8 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                             u8 spriteY)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(sub_806160C, 0x44, 0x2010, 0, TaskDestructor_80095E8);
+    struct Task *t
+        = TaskCreate(sub_806160C, sizeof(BouncyBar), 0x2010, 0, TaskDestructor_80095E8);
     BouncyBar *bar = TASK_DATA(t);
 
     s = &bar->s;

@@ -36,8 +36,8 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
                                  u8 spriteY)
 {
     if (me->d.sData[0] >= 0) {
-        struct Task *t
-            = TaskCreate(sub_805EA94, 0x44, 0x2010, 0, TaskDestructor_80095E8);
+        struct Task *t = TaskCreate(sub_805EA94, sizeof(Sprite_RotatingHandle), 0x2010,
+                                    0, TaskDestructor_80095E8);
         Sprite_RotatingHandle *rotatingHandle = TASK_DATA(t);
         Sprite *s = &rotatingHandle->s;
         rotatingHandle->base.regionX = spriteRegionX;

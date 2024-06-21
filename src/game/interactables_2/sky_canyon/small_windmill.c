@@ -43,7 +43,7 @@ void CreateEntity_SmallWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
                                 u8 spriteY)
 {
     struct Task *t
-        = TaskCreate(Task_SmallSpinnyWindmill, 0x48, 0x2010, 0,
+        = TaskCreate(Task_SmallSpinnyWindmill, sizeof(Sprite_SmallWindmill), 0x2010, 0,
                      TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill);
     Sprite_SmallWindmill *windmill = TASK_DATA(t);
     Sprite *s;

@@ -30,7 +30,8 @@ void CreateCollectRingsTimeDisplay(void)
     u32 i;
     TimeDisplay *timeDisplay;
     Sprite *s;
-    struct Task *t = TaskCreate(sub_808328C, 0x240, 0x2102, 0, sub_80832E0);
+    struct Task *t
+        = TaskCreate(sub_808328C, sizeof(TimeDisplay), 0x2102, 0, sub_80832E0);
     gUnknown_03005B6C = 0;
     timeDisplay = TASK_DATA(t);
 

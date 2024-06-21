@@ -52,7 +52,8 @@ void CreateCourseStartCountdown(bool8 playerSkippedIntro)
     Sprite *s;
 
     gStageFlags |= EXTRA_STATE__100;
-    t = TaskCreate(sub_8036168, 0x6C, 0x3000, 0, sub_8036638);
+    t = TaskCreate(sub_8036168, sizeof(struct CourseStartCountdown), 0x3000, 0,
+                   sub_8036638);
     countdown = TASK_DATA(t);
 
     countdown->unk6A = 0;
@@ -207,7 +208,8 @@ struct RaceStartMessage {
 
 void CreateRaceStartMessage(void)
 {
-    struct Task *t = TaskCreate(sub_8036524, 0x7C, 0x3000, 0, sub_8036654);
+    struct Task *t = TaskCreate(sub_8036524, sizeof(struct RaceStartMessage), 0x3000, 0,
+                                sub_8036654);
     struct RaceStartMessage *startMessage = TASK_DATA(t);
     Sprite *s;
 

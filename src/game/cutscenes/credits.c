@@ -68,7 +68,8 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     gUnknown_03002280[0][2] = 0xff;
     gUnknown_03002280[0][3] = 0x20;
 
-    t = TaskCreate(sub_808EBC4, 0x58, 0x3100, 0, TaskDestroy_CreditsCutScene);
+    t = TaskCreate(sub_808EBC4, sizeof(struct CreditsCutScene), 0x3100, 0,
+                   TaskDestroy_CreditsCutScene);
 
     // BUG: assigning to null pointer
     scene->unk52 = 0;

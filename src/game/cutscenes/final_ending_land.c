@@ -161,7 +161,8 @@ void CreateFinalEndingLandingCutScene(void)
     gUnknown_03002280[1][2] = 0xff;
     gUnknown_03002280[1][3] = 0x20;
 
-    t = TaskCreate(sub_8093EDC, 0x61C, 0x3100, 0, sub_8093F9C);
+    t = TaskCreate(sub_8093EDC, sizeof(struct FinalEndingLandCutScene), 0x3100, 0,
+                   sub_8093F9C);
     scene = TASK_DATA(t);
     // TODO: chaos emeralds are probabyl wrong
     if (gLoadedSaveGame->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALD(ZONE_FINAL)) {

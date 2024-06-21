@@ -141,7 +141,8 @@ void CreateFinalEndingFallCutScene(void)
     m4aMPlayAllStop();
     m4aSongNumStart(MUS_FINAL_ENDING);
 
-    t = TaskCreate(sub_8092690, 0x49C, 0x3100, 0, sub_8092800);
+    t = TaskCreate(sub_8092690, sizeof(struct FinalEndingFallCutScene), 0x3100, 0,
+                   sub_8092800);
     scene = TASK_DATA(t);
 
     scene->unk35C = 0;

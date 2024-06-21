@@ -29,7 +29,8 @@ extern const s32 gUnknown_080D8808[][2];
 
 void sub_80498CC(u8 bossNum)
 {
-    struct Task *t = TaskCreate(sub_80499D8, 8, 0x4000, 0, sub_8049D1C);
+    struct Task *t
+        = TaskCreate(sub_80499D8, sizeof(UNK_80498CC), 0x4000, 0, sub_8049D1C);
     UNK_80498CC *unk8CC = TASK_DATA(t);
     unk8CC->unk4 = bossNum;
     unk8CC->unk5 = 0;
@@ -234,7 +235,8 @@ void sub_8049D20(s32 p1, SuperEggRoboZ *boss)
 {
     u8 i, j;
     void *vrams[2];
-    struct Task *t = TaskCreate(sub_8049E90, 0x164, 0x4080, 0, sub_804A6B4);
+    struct Task *t
+        = TaskCreate(sub_8049E90, sizeof(UNK_8049D20), 0x4080, 0, sub_804A6B4);
     UNK_8049D20 *unkD20 = TASK_DATA(t);
     Sprite *s;
 

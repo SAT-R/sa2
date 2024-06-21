@@ -50,7 +50,8 @@ static void Task_8080318(void);
 static void CreateEntity_Toggle_Gravity(MapEntity *in_ia, u16 spriteRegionX,
                                         u16 spriteRegionY, u8 spriteY, u8 toggleKind)
 {
-    struct Task *t = TaskCreate(Task_80801F8, 0x2C, 0x2010, 0, TaskDestructor_8080230);
+    struct Task *t = TaskCreate(Task_80801F8, sizeof(Sprite_GravityToggle), 0x2010, 0,
+                                TaskDestructor_8080230);
     Sprite_GravityToggle *toggle = TASK_DATA(t);
     Interactable_GravityToggle *me = (Interactable_GravityToggle *)in_ia;
 

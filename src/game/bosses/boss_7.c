@@ -265,8 +265,8 @@ void CreateEggFrog(void)
     gPseudoRandom = gStageTime;
     gUnknown_03005AF0.s.unk10 &= ~0x3000;
     gUnknown_03005AF0.s.unk10 |= 0x1000;
-    gActiveBossTask
-        = TaskCreate(Task_EggFrogMain, 0x1EC, 0x4000, 0, TaskDestructor_EggFrogMain);
+    gActiveBossTask = TaskCreate(Task_EggFrogMain, sizeof(EggFrog), 0x4000, 0,
+                                 TaskDestructor_EggFrogMain);
 
     boss = TASK_DATA(gActiveBossTask);
 
@@ -1184,7 +1184,7 @@ static void TaskDestructor_EggFrogMain(struct Task *t)
 static void sub_80493F8(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(sub_80494EC, 0x44, 0x6100, 0, NULL);
+    struct Task *t = TaskCreate(sub_80494EC, sizeof(EggFrogBomb), 0x6100, 0, NULL);
     EggFrogBomb *bomb = TASK_DATA(t);
 
     bomb->x = x - Q(gCamera.x) + 0x500;
@@ -1296,7 +1296,7 @@ static void sub_8049658(void)
 static void sub_80496FC(EggFrog *boss, s32 x, s32 y, u8 gravityInverted)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(Task_80497E0, 0x44, 0x6100, 0, NULL);
+    struct Task *t = TaskCreate(Task_80497E0, sizeof(EggFrogBomb), 0x6100, 0, NULL);
     EggFrogBomb *bombFlame = TASK_DATA(t);
     bombFlame->x = x - Q(gCamera.x);
     bombFlame->y = y - Q(gCamera.y);

@@ -168,7 +168,7 @@ void StartSinglePakConnect(void)
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    t = TaskCreate(sub_8081604, 0xFC, 0x2000, 0, NULL);
+    t = TaskCreate(sub_8081604, sizeof(struct SinglePakConnectScreen), 0x2000, 0, NULL);
     connectScreen = TASK_DATA(t);
     connectScreen->unkFA = gLoadedSaveGame->language;
 

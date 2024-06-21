@@ -68,13 +68,13 @@ void CreateEntity_HookRail(u32 triggerType, MapEntity *me, u16 spriteRegionX,
     Sprite_HookRail *hookRail;
     switch (triggerType) {
         case 0:
-            t = TaskCreate(sub_8072F38, 0x28, 0x2010, 0, sub_8072FD4);
+            t = TaskCreate(sub_8072F38, sizeof(Sprite_HookRail), 0x2010, 0, sub_8072FD4);
             break;
         case 1:
-            t = TaskCreate(sub_8072F38, 0x28, 0x2010, 0, sub_8072FD4);
+            t = TaskCreate(sub_8072F38, sizeof(Sprite_HookRail), 0x2010, 0, sub_8072FD4);
             break;
         case 2:
-            t = TaskCreate(sub_8072F8C, 0x28, 0x2010, 0, sub_8072FD4);
+            t = TaskCreate(sub_8072F8C, sizeof(Sprite_HookRail), 0x2010, 0, sub_8072FD4);
             break;
         default:
             SET_MAP_ENTITY_INITIALIZED(me);

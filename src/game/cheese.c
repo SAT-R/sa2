@@ -98,7 +98,7 @@ void CreateCheese(Player *player)
             return;
         }
 
-        t = TaskCreate(sub_801420C, 0x70, 0x5010, 0, sub_8015360);
+        t = TaskCreate(sub_801420C, sizeof(Cheese), 0x5010, 0, sub_8015360);
         cheese = TASK_DATA(t);
         s = &cheese->s;
         gCheese = cheese;
@@ -119,7 +119,7 @@ void CreateCheese(Player *player)
             if (gMultiplayerCharacters[j] == CHARACTER_CREAM) {
                 struct Task *t;
                 mpp = TASK_DATA(gMultiplayerPlayerTasks[j]);
-                t = TaskCreate(sub_801420C, 0x70, 0x5010, 0, sub_8015360);
+                t = TaskCreate(sub_801420C, sizeof(Cheese), 0x5010, 0, sub_8015360);
                 cheese = TASK_DATA(t);
                 cheese->mpp = mpp;
                 break;

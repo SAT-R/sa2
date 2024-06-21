@@ -97,7 +97,8 @@ struct Task *CreateSpecialStageWorld(struct SpecialStage *stage)
     memcpy(unkF768, gUnknown_080DF768, sizeof(gUnknown_080DF768));
     memcpy(unkF776, gUnknown_080DF776, sizeof(gUnknown_080DF776));
 
-    t = TaskCreate(sub_806EA04, 0x2A0, 0x8000, 0, sub_806EBF4);
+    t = TaskCreate(sub_806EA04, sizeof(struct SpecialStageWorld), 0x8000, 0,
+                   sub_806EBF4);
     world = TASK_DATA(t);
     world->stage = stage;
 

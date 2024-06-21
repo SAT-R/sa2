@@ -56,7 +56,7 @@ void TaskDestructor_Interactable069(struct Task *);
 void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                               u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable069, 0x1C0, 0x2010, 0,
+    struct Task *t = TaskCreate(Task_Interactable069, sizeof(Sprite_IA69), 0x2010, 0,
                                 TaskDestructor_Interactable069);
     Sprite *s;
     Sprite_IA69 *ia69 = TASK_DATA(t);
