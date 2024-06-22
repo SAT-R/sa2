@@ -76,12 +76,12 @@ void sub_80800D4(Sprite_GravityToggle *toggle)
     switch (toggle->unk14) {
         case 0: {
             // Regular gravity
-            gStageFlags &= ~EXTRA_STATE__GRAVITY_INVERTED;
+            gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
         } break;
 
         case 1: {
             // Upside-down
-            gStageFlags |= EXTRA_STATE__GRAVITY_INVERTED;
+            gStageFlags |= STAGE_FLAG__GRAVITY_INVERTED;
         } break;
 
         case 2: {
@@ -90,7 +90,7 @@ void sub_80800D4(Sprite_GravityToggle *toggle)
                 || ((toggle->unk18 < 0) && (gPlayer.speedAirX < 0))
                 || ((toggle->unk1A > 0) && (gPlayer.speedAirY > 0))
                 || ((toggle->unk1A < 0) && (gPlayer.speedAirY < 0))) {
-                gStageFlags ^= EXTRA_STATE__GRAVITY_INVERTED;
+                gStageFlags ^= STAGE_FLAG__GRAVITY_INVERTED;
             }
 
         } break;

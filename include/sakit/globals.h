@@ -18,24 +18,24 @@
 
 #define IS_MULTI_PLAYER (!(IS_SINGLE_PLAYER))
 
-#define EXTRA_STATE__CLEAR              0x0000
-#define EXTRA_STATE__ACT_START          0x0001 // Turns timer off, likely other effects?
-#define EXTRA_STATE__2                  0x0002
-#define EXTRA_STATE__4                  0x0004
-#define EXTRA_STATE__10                 0x0010
-#define EXTRA_STATE__DISABLE_PAUSE_MENU 0x0020
-#define EXTRA_STATE__DEMO_RUNNING       0x0040 // TODO: Check accuracy of name
-#define EXTRA_STATE__GRAVITY_INVERTED   0x0080
-#define EXTRA_STATE__100                0x0100 // Set during stage's "loading screen"
-#define EXTRA_STATE__TURN_OFF_TIMER     0x0200
-#define EXTRA_STATE__TURN_OFF_HUD       0x0400
+#define STAGE_FLAG__CLEAR              0x0000
+#define STAGE_FLAG__ACT_START          0x0001 // Turns timer off, likely other effects?
+#define STAGE_FLAG__2                  0x0002
+#define STAGE_FLAG__4                  0x0004
+#define STAGE_FLAG__10                 0x0010
+#define STAGE_FLAG__DISABLE_PAUSE_MENU 0x0020
+#define STAGE_FLAG__DEMO_RUNNING       0x0040 // TODO: Check accuracy of name
+#define STAGE_FLAG__GRAVITY_INVERTED   0x0080
+#define STAGE_FLAG__100                0x0100 // Set during stage's "loading screen"
+#define STAGE_FLAG__TURN_OFF_TIMER     0x0200
+#define STAGE_FLAG__TURN_OFF_HUD       0x0400
 
 #define DIFFICULTY_NORMAL 0
 #define DIFFICULTY_EASY   1
 
 #define MAX_PLAYER_NAME_LENGTH 6
 
-#define GRAVITY_IS_INVERTED (gStageFlags & EXTRA_STATE__GRAVITY_INVERTED)
+#define GRAVITY_IS_INVERTED (gStageFlags & STAGE_FLAG__GRAVITY_INVERTED)
 
 typedef struct {
     u8 unk0;

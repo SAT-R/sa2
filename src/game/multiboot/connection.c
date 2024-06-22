@@ -141,7 +141,7 @@ void sub_8081200(void)
     };
 
     ApplyGameStageSettings();
-    gStageFlags &= ~EXTRA_STATE__ACT_START;
+    gStageFlags &= ~STAGE_FLAG__ACT_START;
     gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
     gPlayer.unk5C |= gPlayerControls.jump | gPlayerControls.attack;
 }

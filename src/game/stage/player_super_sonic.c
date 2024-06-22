@@ -210,7 +210,7 @@ static s32 sub_802B8A8(struct SuperSonic *sonic)
 {
     s32 zero = 0;
 
-    if (!(sonic->flags & SUPER_FLAG__10) && !(gStageFlags & EXTRA_STATE__100)) {
+    if (!(sonic->flags & SUPER_FLAG__10) && !(gStageFlags & STAGE_FLAG__100)) {
         if (gCourseTime >= MAX_COURSE_TIME && !gLoadedSaveGame->timeLimitDisabled) {
             gPlayer.moveState = MOVESTATE_DEAD;
 
@@ -244,7 +244,7 @@ static s32 sub_802B8A8(struct SuperSonic *sonic)
             }
         } else {
             if (ExtraBossIsDead() == TRUE) {
-                gStageFlags |= (EXTRA_STATE__ACT_START | EXTRA_STATE__2);
+                gStageFlags |= (STAGE_FLAG__ACT_START | STAGE_FLAG__2);
                 sonic->func24 = sub_802C8A0;
 
                 SUPER_SWITCH_ANIM(sonic, 2);
@@ -788,7 +788,7 @@ static void sub_802C828(struct SuperSonic *sonic)
 {
     s32 x, y;
 
-    if (!(gStageFlags & EXTRA_STATE__100)) {
+    if (!(gStageFlags & STAGE_FLAG__100)) {
         if (--sonic->unkC == 0) {
             sonic->func24 = sub_802C058;
             sonic->flags &= ~SUPER_FLAG__20;

@@ -287,8 +287,8 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     Sprite *s;
     u8 i; // r7
 
-    gStageFlags |= EXTRA_STATE__ACT_START;
-    gStageFlags |= EXTRA_STATE__100;
+    gStageFlags |= STAGE_FLAG__ACT_START;
+    gStageFlags |= STAGE_FLAG__100;
 
     gPlayer.unk90->s.unk10 |= SPRITE_FLAG_MASK_18;
     gPlayer.unk94->s.unk10 |= SPRITE_FLAG_MASK_18;
@@ -629,7 +629,7 @@ static void Task_802F75C(void)
 
     /*    Call all initializations necessary for current stage and destroy this Task */
     if (frameCounter > 200) {
-        gStageFlags &= ~EXTRA_STATE__100;
+        gStageFlags &= ~STAGE_FLAG__100;
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
             if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
@@ -645,13 +645,13 @@ static void Task_802F75C(void)
             }
 
             gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
-            gStageFlags &= ~EXTRA_STATE__ACT_START;
+            gStageFlags &= ~STAGE_FLAG__ACT_START;
         } else {
             if (gUnknown_030055B0 == 0) {
                 CreateCourseStartCountdown(sit_a->skippedIntro);
             } else {
                 gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
-                gStageFlags &= ~EXTRA_STATE__ACT_START;
+                gStageFlags &= ~STAGE_FLAG__ACT_START;
             }
         }
         if (IS_MULTI_PLAYER) {
@@ -1188,7 +1188,7 @@ static void TaskDestructor_StageIntroParent(struct Task *t)
     }
 
     if (IS_SINGLE_PLAYER) {
-        gStageFlags &= ~EXTRA_STATE__DISABLE_PAUSE_MENU;
+        gStageFlags &= ~STAGE_FLAG__DISABLE_PAUSE_MENU;
     }
 }
 

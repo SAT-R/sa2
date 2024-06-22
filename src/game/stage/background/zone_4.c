@@ -56,7 +56,7 @@ void StageBgUpdate_Zone4Acts12(s32 camX, s32 camY)
         sCameraShiftX = 0;
     }
 
-    if (IS_SINGLE_PLAYER && !(gStageFlags & EXTRA_STATE__100)) {
+    if (IS_SINGLE_PLAYER && !(gStageFlags & STAGE_FLAG__100)) {
         gWinRegs[WINREG_WINOUT] = 0x3e;
         gWinRegs[WINREG_WININ] = 0x3f3f;
         gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_WIDTH);

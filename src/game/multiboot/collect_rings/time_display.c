@@ -298,10 +298,10 @@ void sub_8083104(TimeDisplay *timeDisplay)
 
 void sub_808328C(void)
 {
-    if (!(gStageFlags & EXTRA_STATE__TURN_OFF_HUD)) {
+    if (!(gStageFlags & STAGE_FLAG__TURN_OFF_HUD)) {
         TimeDisplay *timeDisplay = TASK_DATA(gCurTask);
         Sprite *s = &timeDisplay->unk0;
-        if (!(gStageFlags & EXTRA_STATE__TURN_OFF_TIMER)) {
+        if (!(gStageFlags & STAGE_FLAG__TURN_OFF_TIMER)) {
             sub_8082E9C(timeDisplay);
 
             if (gUnknown_03005B6C != 0) {

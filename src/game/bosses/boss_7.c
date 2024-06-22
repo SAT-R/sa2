@@ -387,22 +387,22 @@ static void sub_8047E28(void)
         boss->speedX = Q(5);
         boss->unk18 = 0;
         boss->unk64 = 0;
-        gStageFlags &= ~EXTRA_STATE__GRAVITY_INVERTED;
+        gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
         gCurTask->main = sub_8047F0C;
         return;
     }
 
     if ((gPlayer.unk5C & 0x40)) {
-        gStageFlags |= EXTRA_STATE__GRAVITY_INVERTED;
+        gStageFlags |= STAGE_FLAG__GRAVITY_INVERTED;
     } else if (gPlayer.unk5C & 0x80) {
-        gStageFlags &= ~EXTRA_STATE__GRAVITY_INVERTED;
+        gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
     }
 }
 
 static void sub_8047F0C(void)
 {
     EggFrog *boss = TASK_DATA(gCurTask);
-    gStageFlags &= ~EXTRA_STATE__GRAVITY_INVERTED;
+    gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
     sub_8048654(boss);
     sub_8048E64(boss);
     sub_80480E8(boss);
@@ -988,7 +988,7 @@ static void sub_8048F44(void)
 {
     struct Task *t = gCurTask;
     gDispCnt &= ~DISPCNT_BG0_ON;
-    gStageFlags &= ~EXTRA_STATE__GRAVITY_INVERTED;
+    gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
     TaskDestroy(t);
 }
 

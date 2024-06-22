@@ -51,7 +51,7 @@ void CreateCourseStartCountdown(bool8 playerSkippedIntro)
     struct CourseStartCountdown *countdown;
     Sprite *s;
 
-    gStageFlags |= EXTRA_STATE__100;
+    gStageFlags |= STAGE_FLAG__100;
     t = TaskCreate(sub_8036168, sizeof(struct CourseStartCountdown), 0x3000, 0,
                    sub_8036638);
     countdown = TASK_DATA(t);
@@ -118,8 +118,8 @@ void sub_8036168(void)
 
     if (--countdown->unk68 == 0) {
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
-        gStageFlags &= ~EXTRA_STATE__ACT_START;
-        gStageFlags &= ~EXTRA_STATE__100;
+        gStageFlags &= ~STAGE_FLAG__ACT_START;
+        gStageFlags &= ~STAGE_FLAG__100;
         gPlayer.unk64 = 9;
         if (countdown->unk6A != 0) {
             gPlayer.speedGroundX = Q_8_8(9);

@@ -1263,7 +1263,7 @@ static void Task_HandleTitleScreenExit(void)
     u8 i;
 
     if (UpdateScreenFade(&titleScreen->unk270) == SCREEN_FADE_COMPLETE) {
-        gStageFlags = EXTRA_STATE__CLEAR;
+        gStageFlags = STAGE_FLAG__CLEAR;
         gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
         gSelectedCharacter = CHARACTER_SONIC;
 

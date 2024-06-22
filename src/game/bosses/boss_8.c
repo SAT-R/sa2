@@ -253,7 +253,7 @@ void CreateSuperEggRoboZ(void)
     s->hitboxes[0].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 3);
     gUnknown_030054A8.unk6 = 200;
-    gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+    gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 }
 
 void Task_804A9D8(void)
@@ -293,7 +293,7 @@ void Task_804A9D8(void)
     gPlayer.moveState |= (MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
 
     if (--boss->unk14 == 0) {
-        gStageFlags &= ~EXTRA_STATE__DISABLE_PAUSE_MENU;
+        gStageFlags &= ~STAGE_FLAG__DISABLE_PAUSE_MENU;
         gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
 
         m4aSongNumStart(SE_260);
@@ -422,7 +422,7 @@ void Task_804AD68(void)
         TasksDestroyInPriorityRange(0x5010, 0x5011);
         TasksDestroyInPriorityRange(0x5431, 0x5434);
 
-        gStageFlags |= EXTRA_STATE__TURN_OFF_HUD;
+        gStageFlags |= STAGE_FLAG__TURN_OFF_HUD;
 
         gPlayer.moveState |= MOVESTATE_100000;
         gPlayer.moveState |= MOVESTATE_400000;
