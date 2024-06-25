@@ -204,9 +204,8 @@ static void sub_807E56C(Sprite_Cannon *cannon)
 #endif
     s32 r1;
 
-    r3 = cannon->unk68 == 0  ? cannon->unk6E == 0 ? 0x280 : 0x180
-        : cannon->unk6E == 0 ? 0x80
-                             : 0x380;
+    r3 = (cannon->unk68 == 0) ? ((cannon->unk6E == 0) ? 0x280 : 0x180)
+                              : ((cannon->unk6E == 0) ? 0x80 : 0x380);
     temp2 = sub_808558C(cannon->unk6A, r3, 10);
     temp3 = temp2;
 
