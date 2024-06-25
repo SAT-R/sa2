@@ -303,7 +303,7 @@ static bool32 sub_807B9F0(Sprite_Propeller *propeller)
         s16 playerY = I(gPlayer.y) - gCamera.y;
 
         // TODO: A Metatile/Chunk is 96 pixels wide (12 * TILE_WIDTH)
-        //       Is that the intended values here?
+        //       Is that the intended value here?
         if (y - 96 <= playerY && y + (PROPELLER_HITBOX_HEIGHT / 2) >= playerY) {
             return TRUE;
         }
