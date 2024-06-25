@@ -23,73 +23,74 @@ typedef struct {
     /* 0x0E */ u16 bottom;
     /* 0x10 */ s16 width;
     /* 0x12 */ s16 height;
-    /* 0x14 */ u16 unk14;
+    /* 0x14 */ u16 kind;
     /* 0x16 */ u8 filler16[2];
-    /* 0x18 */ s16 unk18;
-    /* 0x1A */ s16 unk1A;
+    /* 0x18 */ s16 playerAirX;
+    /* 0x1A */ s16 playerAirY;
     /* 0x1C */ u8 filler1C[8];
     /* 0x24 */ Interactable_GravityToggle *me;
 
     // Tile-Pos inside spriteRegion
     /* 0x28 */ u8 spriteX;
-    /* 0x29 */ u8 spriteY;
+    /* 0x29 */ u8 id;
 } Sprite_GravityToggle;
 
 static void CreateEntity_Toggle_Gravity(MapEntity *, u16, u16, u8, u8);
-static void Task_80801F8(void);
+static void Task_GravityToggleNoAliveCheck(void);
 static void TaskDestructor_8080230(struct Task *);
-static void sub_8080234(Sprite_GravityToggle *);
-static bool32 sub_8080254(Sprite_GravityToggle *);
-static void sub_808029C(Sprite_GravityToggle *);
-static void Task_8080318(void);
+static void UpdateTogglePlayerSpeed(Sprite_GravityToggle *);
+static bool32 ToggleIsOffscreen(Sprite_GravityToggle *);
+static void DestroyGravityToggle(Sprite_GravityToggle *);
+static void Task_GravityToggle(void);
 
-#define GRAVITY_TOGGLE__DOWN   0
-#define GRAVITY_TOGGLE__UP     1
-#define GRAVITY_TOGGLE__TOGGLE 2
+#define GRAVITY_KIND__DOWN   0
+#define GRAVITY_KIND__UP     1
+#define GRAVITY_KIND__TOGGLE 2
 
 static void CreateEntity_Toggle_Gravity(MapEntity *in_ia, u16 spriteRegionX,
-                                        u16 spriteRegionY, u8 spriteY, u8 toggleKind)
+                                        u16 spriteRegionY, u8 id, u8 toggleKind)
 {
-    struct Task *t = TaskCreate(Task_80801F8, sizeof(Sprite_GravityToggle), 0x2010, 0,
-                                TaskDestructor_8080230);
+    struct Task *t
+        = TaskCreate(Task_GravityToggleNoAliveCheck, sizeof(Sprite_GravityToggle),
+                     0x2010, 0, TaskDestructor_8080230);
     Sprite_GravityToggle *toggle = TASK_DATA(t);
     Interactable_GravityToggle *me = (Interactable_GravityToggle *)in_ia;
 
-    toggle->unk14 = toggleKind;
+    toggle->kind = toggleKind;
     toggle->x = TO_WORLD_POS(me->x, spriteRegionX);
     toggle->y = TO_WORLD_POS(me->y, spriteRegionY);
-    toggle->left = (me->offsetX * 8);
-    toggle->top = (me->offsetY * 8);
-    toggle->right = toggle->left + (me->width * 8);
-    toggle->bottom = toggle->top + (me->height * 8);
+    toggle->left = (me->offsetX * TILE_WIDTH);
+    toggle->top = (me->offsetY * TILE_WIDTH);
+    toggle->right = toggle->left + (me->width * TILE_WIDTH);
+    toggle->bottom = toggle->top + (me->height * TILE_WIDTH);
 
     toggle->width = toggle->right - toggle->left;
     toggle->height = toggle->bottom - toggle->top;
     toggle->me = me;
     toggle->spriteX = me->x;
-    toggle->spriteY = spriteY;
+    toggle->id = id;
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void sub_80800D4(Sprite_GravityToggle *toggle)
+void ChangeGravityByKind(Sprite_GravityToggle *toggle)
 {
-    switch (toggle->unk14) {
-        case 0: {
+    switch (toggle->kind) {
+        case GRAVITY_KIND__DOWN: {
             // Regular gravity
             gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
         } break;
 
-        case 1: {
+        case GRAVITY_KIND__UP: {
             // Upside-down
             gStageFlags |= STAGE_FLAG__GRAVITY_INVERTED;
         } break;
 
-        case 2: {
+        case GRAVITY_KIND__TOGGLE: {
             // Maybe collision on enter/exit?
-            if (((toggle->unk18 > 0) && (gPlayer.speedAirX > 0))
-                || ((toggle->unk18 < 0) && (gPlayer.speedAirX < 0))
-                || ((toggle->unk1A > 0) && (gPlayer.speedAirY > 0))
-                || ((toggle->unk1A < 0) && (gPlayer.speedAirY < 0))) {
+            if (((toggle->playerAirX > 0) && (gPlayer.speedAirX > 0))
+                || ((toggle->playerAirX < 0) && (gPlayer.speedAirX < 0))
+                || ((toggle->playerAirY > 0) && (gPlayer.speedAirY > 0))
+                || ((toggle->playerAirY < 0) && (gPlayer.speedAirY < 0))) {
                 gStageFlags ^= STAGE_FLAG__GRAVITY_INVERTED;
             }
 
@@ -100,23 +101,23 @@ void sub_80800D4(Sprite_GravityToggle *toggle)
         } break;
     }
 
-    gCurTask->main = Task_80801F8;
+    gCurTask->main = Task_GravityToggleNoAliveCheck;
 }
 
-bool32 sub_808017C(Sprite_GravityToggle *toggle)
+static bool32 AlivePlayerIsInToggle(Sprite_GravityToggle *toggle)
 {
-    if (!(gPlayer.moveState & MOVESTATE_DEAD)) {
-        s16 posX, posY;
+    if (PLAYER_IS_ALIVE) {
+        s16 screenLeft, screenTop;
         s16 playerX, playerY;
 
-        posX = (toggle->x + toggle->left) - gCamera.x;
-        posY = (toggle->y + toggle->top) - gCamera.y;
+        screenLeft = (toggle->x + toggle->left) - gCamera.x;
+        screenTop = (toggle->y + toggle->top) - gCamera.y;
 
         playerX = I(gPlayer.x) - gCamera.x;
         playerY = I(gPlayer.y) - gCamera.y;
 
-        if ((posX <= playerX) && ((posX + toggle->width) >= playerX) && (posY <= playerY)
-            && ((posY + toggle->height) >= playerY)) {
+        if ((screenLeft <= playerX) && ((screenLeft + toggle->width) >= playerX)
+            && (screenTop <= playerY) && ((screenTop + toggle->height) >= playerY)) {
             return TRUE;
         }
     }
@@ -124,29 +125,29 @@ bool32 sub_808017C(Sprite_GravityToggle *toggle)
     return FALSE;
 }
 
-void Task_80801F8(void)
+void Task_GravityToggleNoAliveCheck(void)
 {
     Sprite_GravityToggle *toggle = TASK_DATA(gCurTask);
 
-    if (sub_808017C(toggle)) {
-        sub_8080234(toggle);
+    if (AlivePlayerIsInToggle(toggle)) {
+        UpdateTogglePlayerSpeed(toggle);
     }
 
-    if (sub_8080254(toggle)) {
-        sub_808029C(toggle);
+    if (ToggleIsOffscreen(toggle)) {
+        DestroyGravityToggle(toggle);
     }
 }
 
 void TaskDestructor_8080230(UNUSED struct Task *t) { }
 
-void sub_8080234(Sprite_GravityToggle *toggle)
+void UpdateTogglePlayerSpeed(Sprite_GravityToggle *toggle)
 {
-    toggle->unk18 = gPlayer.speedAirX;
-    toggle->unk1A = gPlayer.speedAirY;
-    gCurTask->main = Task_8080318;
+    toggle->playerAirX = gPlayer.speedAirX;
+    toggle->playerAirY = gPlayer.speedAirY;
+    gCurTask->main = Task_GravityToggle;
 }
 
-bool32 sub_8080254(Sprite_GravityToggle *toggle)
+bool32 ToggleIsOffscreen(Sprite_GravityToggle *toggle)
 {
     s16 screenX, screenY;
     screenX = toggle->x - gCamera.x;
@@ -159,46 +160,45 @@ bool32 sub_8080254(Sprite_GravityToggle *toggle)
     return FALSE;
 }
 
-void sub_808029C(Sprite_GravityToggle *toggle)
+void DestroyGravityToggle(Sprite_GravityToggle *toggle)
 {
     toggle->me->x = toggle->spriteX;
     TaskDestroy(gCurTask);
 }
 
 void CreateEntity_Toggle_Gravity__Down(MapEntity *me, u16 spriteRegionX,
-                                       u16 spriteRegionY, u8 spriteY)
+                                       u16 spriteRegionY, u8 id)
 {
-    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, spriteY,
-                                GRAVITY_TOGGLE__DOWN);
+    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, id,
+                                GRAVITY_KIND__DOWN);
 }
 
 void CreateEntity_Toggle_Gravity__Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+                                     u8 id)
 {
-    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, spriteY,
-                                GRAVITY_TOGGLE__UP);
+    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, id, GRAVITY_KIND__UP);
 }
 
 void CreateEntity_Toggle_Gravity__Toggle(MapEntity *me, u16 spriteRegionX,
-                                         u16 spriteRegionY, u8 spriteY)
+                                         u16 spriteRegionY, u8 id)
 {
-    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, spriteY,
-                                GRAVITY_TOGGLE__TOGGLE);
+    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, id,
+                                GRAVITY_KIND__TOGGLE);
 }
 
-void Task_8080318(void)
+void Task_GravityToggle(void)
 {
     Sprite_GravityToggle *toggle = TASK_DATA(gCurTask);
 
-    if (gPlayer.moveState & MOVESTATE_DEAD) {
-        sub_80800D4(toggle);
+    if (!PLAYER_IS_ALIVE) {
+        ChangeGravityByKind(toggle);
     }
 
-    if (sub_808017C(toggle) == FALSE) {
-        sub_80800D4(toggle);
+    if (!AlivePlayerIsInToggle(toggle)) {
+        ChangeGravityByKind(toggle);
     }
 
-    if (sub_8080254(toggle)) {
-        sub_808029C(toggle);
+    if (ToggleIsOffscreen(toggle)) {
+        DestroyGravityToggle(toggle);
     }
 }
