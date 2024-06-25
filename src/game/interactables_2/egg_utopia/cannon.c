@@ -255,14 +255,10 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
 }
 
 // (68.07%) https://decomp.me/scratch/TDVLh
+// (72.09%) https://decomp.me/scratch/sgt5z
 NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
          static bool32 sub_807E66C(Sprite_Cannon *cannon))
 {
-#ifndef NON_MATCHING
-    register Sprite *s asm("r6") = &cannon->sprite2;
-#else
-    Sprite *s = &cannon->sprite2;
-#endif
     s16 x, y;
     s32 biggerX, biggerY, temp2, temp3;
     s32 r4;
@@ -281,24 +277,9 @@ NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
         playerX = I(gPlayer.x) - gCamera.x;
         playerY = I(gPlayer.y) - gCamera.y;
 
-        biggerX = x;
-        r4 = s->hitboxes[0].left;
-        biggerX += r4;
-        temp2 = playerX + gUnknown_03005AF0.s.hitboxes[0].left;
-        if (((biggerX > temp2 || biggerX + (s->hitboxes[0].right - r4) >= temp2))
-            && biggerX >= temp2
-                    + (gUnknown_03005AF0.s.hitboxes[0].right
-                       - gUnknown_03005AF0.s.hitboxes[0].left)) {
-            biggerY = y;
-            r4 = s->hitboxes[0].top;
-            biggerY += r4;
-            temp3 = playerY + gUnknown_03005AF0.s.hitboxes[0].top;
-            if (((biggerY > temp3 || (biggerY) + (s->hitboxes[0].bottom - r4) >= temp3))
-                && biggerY >= temp3
-                        + (gUnknown_03005AF0.s.hitboxes[0].bottom
-                           - gUnknown_03005AF0.s.hitboxes[0].top)) {
-                return 1;
-            }
+        if (HB_COLLISION(playerX, playerY, cannon->sprite2.hitboxes[0], x, y,
+                         gUnknown_03005AF0.s.hitboxes[0])) {
+            return 1;
         }
     }
 
