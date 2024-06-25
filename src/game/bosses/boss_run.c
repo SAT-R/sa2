@@ -1,3 +1,5 @@
+#include "trig.h"
+
 #include "sakit/globals.h"
 
 #include "game/stage/player.h"
@@ -7,6 +9,11 @@
 #include "game/bosses/common.h"
 
 #include "game/cheese.h"
+
+#include "lib/m4a.h"
+
+#include "constants/songs.h"
+#include "constants/player_transitions.h"
 
 void sub_8049D1C(struct Task *);
 void sub_80499D8(void);
@@ -23,9 +30,6 @@ extern const u16 gUnknown_080D87D8[];
 extern const u16 gUnknown_080D87E6[][2];
 
 extern const s32 gUnknown_080D8808[][2];
-// const u16 gUnknown_080D87D8[] = {
-//     6400, 13888, 18016, 23104, 29152, 38080, 43091,
-// };
 
 void sub_80498CC(u8 bossNum)
 {
@@ -203,143 +207,3 @@ void sub_80499D8(void)
 }
 
 void sub_8049D1C(struct Task *t) { }
-
-typedef struct {
-    /*  0x00 */ Vec2_32 qPos;
-    /*  0x08 */ u8 livesCockpit;
-} SuperEggRoboZ;
-typedef struct {
-    Sprite unk0[3][2];
-    s32 unk120;
-    s32 unk124[3][2];
-    s32 unk13C[3][2];
-    s16 unk154[3];
-    u8 unk15A[3];
-    u8 unk15D;
-    u8 unk15E;
-    u8 unk15F;
-    SuperEggRoboZ *unk160;
-} UNK_8049D20; /* 0x164 */
-
-void sub_8049E90(void);
-void sub_804A6B4(struct Task *);
-
-typedef void (*UNK_8049D20Callback)(UNK_8049D20 *, u8);
-
-extern const UNK_8049D20Callback gUnknown_080D8874[];
-extern const s32 gUnknown_080D8840[][2];
-extern const TileInfo gUnknown_080D8864[];
-
-void sub_8049D20(s32 p1, SuperEggRoboZ *boss)
-{
-    u8 i, j;
-    void *vrams[2];
-    struct Task *t = TaskCreate(sub_8049E90, 0x164, 0x4080, 0, sub_804A6B4);
-    UNK_8049D20 *unkD20 = TASK_DATA(t);
-    Sprite *s;
-
-    unkD20->unk15D = 0;
-    unkD20->unk120 = p1;
-    unkD20->unk160 = boss;
-    unkD20->unk15E = 0;
-    unkD20->unk15F = 0;
-    vrams[0] = VramMalloc(47);
-    vrams[1] = vrams[0] + 0x1E0;
-
-    for (i = 0; i < 3; i++) {
-        unkD20->unk124[i][0] = Q(gUnknown_080D8840[i][0]);
-        unkD20->unk124[i][1] = Q(gUnknown_080D8840[i][1]);
-        unkD20->unk13C[i][0] = 0;
-        unkD20->unk13C[i][1] = 0;
-        unkD20->unk154[i] = (i + 2) * 300;
-        unkD20->unk15A[i] = 0;
-        for (j = 0; j < 2; j++) {
-            s = &unkD20->unk0[i][j];
-            s->x = 80;
-            s->y = 80;
-            s->graphics.dest = vrams[j];
-            SPRITE_INIT_WITHOUT_VRAM(s, gUnknown_080D8864[j].anim,
-                                     gUnknown_080D8864[j].variant, 28, 1, 0);
-            UpdateSpriteAnimation(s);
-        }
-    }
-}
-
-void sub_8049E90(void)
-{
-    u8 i;
-    UNK_8049D20 *unkD20 = TASK_DATA(gCurTask);
-    if (gActiveBossTask == NULL) {
-        TaskDestroy(gCurTask);
-        return;
-    }
-
-    for (i = 0; i < 3; i++) {
-        gUnknown_080D8874[unkD20->unk15A[i]](unkD20, i);
-    }
-
-    if (I(gPlayer.y) < 133) {
-        sub_800CBA4(&gPlayer);
-    }
-
-    if (unkD20->unk15F == 0 && unkD20->unk160->livesCockpit == 0) {
-        unkD20->unk15F = 1;
-    }
-}
-
-extern const u8 gUnknown_080D8858[][2];
-void sub_8049F1C(UNK_8049D20 *unkD20, u8 i)
-{
-    Sprite *s = &unkD20->unk0[i][0];
-    Sprite *s2 = &unkD20->unk0[i][1];
-
-    s32 preY = -unkD20->unk13C[i][1];
-
-    Vec2_32 pos;
-#ifndef NON_MATCHING
-    register u8 *unk15F asm("r6") = &unkD20->unk15F;
-#else
-    u8 *unk15F = &unkD20->unk15F;
-#endif
-    if (*unk15F == 0) {
-        unkD20->unk13C[i][1] = 0;
-    }
-
-    preY += unkD20->unk13C[i][1];
-
-    pos.x = I(unkD20->unk124[i][0] + unkD20->unk13C[i][0]);
-    pos.y = I(unkD20->unk124[i][1] + unkD20->unk13C[i][1]);
-
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
-
-    if (*unk15F == 0) {
-
-        if (--unkD20->unk154[i] == 0) {
-            unkD20->unk154[i] = gUnknown_080D8858[unkD20->unk15A[i]][1];
-            unkD20->unk15A[i] = gUnknown_080D8858[unkD20->unk15A[i]][0];
-        }
-    }
-
-    if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
-        gPlayer.y += Q(1);
-        gPlayer.y += preY;
-        if (unkD20->unk15E == 1) {
-            gPlayer.x += Q(1);
-        }
-    }
-
-    if (!(gPlayer.moveState & MOVESTATE_400000)) {
-        u32 result = sub_800CCB8(s, pos.x, pos.y, &gPlayer);
-
-        if (result & 0x10000) {
-            gPlayer.y += Q(result << 0x10) >> 0x10;
-        }
-    }
-
-    DisplaySprite(s);
-    s2->x = s->x;
-    s2->y = s->y + 0x40;
-
-    DisplaySprite(s2);
-}

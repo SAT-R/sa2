@@ -495,6 +495,7 @@ SECTIONS
         src/game/bosses/boss_5.o(.rodata);
         src/game/bosses/boss_6.o(.rodata);
         src/game/bosses/boss_7.o(.rodata);
+        src/game/bosses/boss_run.o(.rodata);
 #if (CPU_ARCH_ARM == 1)
         asm/boss_run.o(.rodata);
 #endif
