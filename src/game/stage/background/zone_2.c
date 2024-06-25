@@ -53,14 +53,14 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         cursor = gBgOffsetsHBlank;
         unk5590_1 = gStageTime * 0x18;
 
-        for (i = 0; i < 159; i++) {
+        for (i = 0; i < (DISPLAY_HEIGHT - 1); i++) {
             s16 temp4;
             s32 sin;
             s32 temp3 = temp + i;
             if ((u32)(temp3 - 0x6F) < 10) {
                 temp4 = (((temp3 - 0x6E) * a) >> 5) & 0xFF;
             } else {
-                if (temp3 > 0x78) {
+                if (temp3 > 120) {
                     temp4 = ((a * 10) >> 5) & 0xFF;
                 } else {
                     temp4 = temp2 << 3;
@@ -75,13 +75,13 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
             }
         }
         something = (a >> 3);
-        for (j = 0; i < 159; i++, j++) {
+        for (j = 0; i < (DISPLAY_HEIGHT - 1); i++, j++) {
             x = (x + 8);
             x &= ONE_CYCLE;
-            *cursor++ = something + (SIN(x) >> 0xD)
-                + (COS(((gStageTime * 2) + x) & ONE_CYCLE) >> 0xB)
-                + (SIN((unk5590_1 + (i * 0x40)) & ONE_CYCLE) >> 0xD);
-            *cursor++ = (j / 2) + temp + (SIN(x) >> 0xC)
+            *cursor++ = something + (SIN(x) >> 13)
+                + (COS(((gStageTime * 2) + x) & ONE_CYCLE) >> 11)
+                + (SIN((unk5590_1 + (i * 0x40)) & ONE_CYCLE) >> 13);
+            *cursor++ = (j / 2) + temp + (SIN(x) >> 12)
                 + (COS((gStageTime + (i * 8)) & ONE_CYCLE) >> 10);
         };
     }
