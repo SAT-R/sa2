@@ -87,14 +87,13 @@ extern struct Camera gCamera;
 #define IS_OUT_OF_CAM_RANGE_TYPED(castType, _x, _y)                                     \
     IS_OUT_OF_RANGE(castType, _x, _y, CAM_REGION_WIDTH)
 
+// TODO: Remove macro and replace calls of it with 'IS_OUT_OF_RANGE' once rewritten.
+#define IS_OUT_OF_CAM_RANGE_2(x, y) IS_OUT_OF_RANGE_(u16, x, y, (CAM_REGION_WIDTH / 2))
+
 #define IS_OUT_OF_DISPLAY_RANGE(_x, _y)                                                 \
     ((_x) > gCamera.x + (DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2))                        \
      || (_x) < gCamera.x - (CAM_REGION_WIDTH / 2) || (_y) > gCamera.y + CAM_BOUND_Y     \
      || (_y) < gCamera.y - (CAM_REGION_WIDTH / 2))
-
-// TODO: Remove macro and replace calls of it with 'IS_OUT_OF_RANGE' once rewritten.
-#define IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)                                              \
-    IS_OUT_OF_RANGE_(u16, x, y, (CAM_REGION_WIDTH / 2))
 
 #define IS_OUT_OF_LOOP_TRIGGER_RANGE(x, y)                                              \
     IS_OUT_OF_RANGE_3(x, y, (CAM_REGION_WIDTH / 2), (CAM_REGION_WIDTH / 2))

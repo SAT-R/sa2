@@ -378,7 +378,7 @@ static bool32 sub_807E898(Sprite_Cannon *cannon)
     s16 x = cannon->x - gCamera.x;
     s16 y = cannon->y - gCamera.y;
 
-    if (IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)) {
+    if (IS_OUT_OF_CAM_RANGE_2(x, y)) {
         return TRUE;
     }
 

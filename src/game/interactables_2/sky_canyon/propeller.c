@@ -274,7 +274,7 @@ static bool32 ShouldDespawn(Sprite_Propeller *propeller)
     s16 x = propeller->x - gCamera.x;
     s16 y = propeller->y - gCamera.y;
 
-    if (IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)) {
+    if (IS_OUT_OF_CAM_RANGE_2(x, y)) {
         return TRUE;
     }
 

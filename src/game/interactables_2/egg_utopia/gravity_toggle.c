@@ -153,7 +153,7 @@ bool32 ToggleIsOffscreen(Sprite_GravityToggle *toggle)
     screenX = toggle->x - gCamera.x;
     screenY = toggle->y - gCamera.y;
 
-    if (IS_OUT_OF_GRAV_TRIGGER_RANGE(screenX, screenY)) {
+    if (IS_OUT_OF_CAM_RANGE_2(screenX, screenY)) {
         return TRUE;
     }
 
