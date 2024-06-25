@@ -299,7 +299,7 @@ void sub_804A070(UNK_8049D20 *unkD20, u8 i)
 
 // 99%, stack issues
 // https://decomp.me/scratch/TLO9Z
-NONMATCH("asm/non_matching/game/bosses/boss_run__sub_804A1C0.inc",
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804A1C0.inc",
          void sub_804A1C0(UNK_8049D20 *unkD20, u8 i))
 {
     u8 j;

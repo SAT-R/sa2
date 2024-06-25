@@ -31,6 +31,10 @@ extern const u16 gUnknown_080D87E6[][2];
 
 extern const s32 gUnknown_080D8808[][2];
 
+// const u16 gUnknown_080D87D8[] = {
+//     6400, 13888, 18016, 23104, 29152, 38080, 43091,
+// };
+
 void sub_80498CC(u8 bossNum)
 {
     struct Task *t = TaskCreate(sub_80499D8, 8, 0x4000, 0, sub_8049D1C);

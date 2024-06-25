@@ -5,8 +5,6 @@
 #include "task.h"
 #include "sakit/collision.h" // sub_800D0A0
 #include "game/bosses/boss_5.h" // sub_802E784
-#include "game/bosses/boss_7.h" // sub_80498CC
-#include "game/bosses/boss_9.h" // sub_804D594
 #include "game/math.h" // sub_8084B54
 #include "game/stage/game_7.h"
 
@@ -34,8 +32,6 @@ const u8 gUnknown_080D8858[][2] = { { 0, 0 } };
 const u32 gUnknown_080D8874[] = { 0 };
 const TileInfo gUnknown_080D8864[] = { { 0, 0, 0 } };
 const s32 gUnknown_080D8840[][2] = { { 0, 0 } };
-
-void sub_804A6B4(struct Task *t) {};
 
 // math
 void sub_80835E0(struct UNK_8085F1C *p0, s32 *p1) { }
