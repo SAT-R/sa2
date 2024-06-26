@@ -296,17 +296,14 @@ void sub_804A070(UNK_8049D20 *unkD20, u8 i)
 
     DisplaySprite(s2);
 }
-
-// 99%, stack issues
-// https://decomp.me/scratch/TLO9Z
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804A1C0.inc",
-         void sub_804A1C0(UNK_8049D20 *unkD20, u8 i))
+void sub_804A1C0(UNK_8049D20 *unkD20, u8 i)
 {
     u8 j;
     Sprite *s = &unkD20->unk0[i][0];
     Sprite *s2 = &unkD20->unk0[i][1];
 
     s32 preY = -unkD20->unk13C[i][1];
+    s32 yOffset;
 
     ExplosionPartsInfo info;
 
@@ -317,6 +314,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804A1C0.inc",
 
     preY += unkD20->unk13C[i][1];
 
+    yOffset = 16;
     pos.x = I(unkD20->unk124[i][0] + unkD20->unk13C[i][0]);
     pos.y = I(unkD20->unk124[i][1] + unkD20->unk13C[i][1]);
 
@@ -326,14 +324,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804A1C0.inc",
     if (unkD20->unk15F == 0) {
         if (unkD20->unk154[i] == 60 || unkD20->unk154[i] == 0x32) {
             for (j = 0; j < 8; j++) {
-#ifndef NON_MATCHING
-                register u32 index asm("r0") = j * 32;
-#else
-                u32 index = j * 32;
-#endif
-                info.spawnX = ((SIN(index) * 5) >> 0xB) + pos.x - 20;
+                s16 sin = j * 32;
+                sin = SIN(sin);
+                info.spawnX = ((sin * 5) >> 0xB) + pos.x - 20;
                 info.rotation = 768;
-                info.spawnY = pos.y - 16;
+                info.spawnY = pos.y - yOffset;
                 info.velocity = Q(0.1875);
 
                 info.speed = Q(1);
@@ -374,7 +369,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804A1C0.inc",
 
     DisplaySprite(s2);
 }
-END_NONMATCH
 
 void sub_804A398(UNK_8049D20 *unkD20, u8 i)
 {
