@@ -8,7 +8,7 @@
 #include "game/stage/player.h"
 
 // (88.05%) https://decomp.me/scratch/ekyaq
-// (89.19%) https://decomp.me/scratch/vapLV
+// (91.40%) https://decomp.me/scratch/vapLV
 NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
          void StageBgUpdate_Zone2Acts12(s32 cameraX, s32 cameraY))
 {
@@ -63,7 +63,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
             }
             *cursor++ = camFracX;
             *cursor++ = camFracY;
-            if ((camFracY + i) + (SIN(CLAMP_SIN_PERIOD((i * 8) + (camFracY << 3))) >> 12)
+            if ((camFracY + i) + (SIN(((i * 8) + (camFracY << 3)) & ONE_CYCLE) >> 12)
                 >= 178) {
                 break;
             }
@@ -77,7 +77,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
                 + (COS(CLAMP_SIN_PERIOD((gStageTime * 2) + x0)) >> 11)
                 + (SIN(CLAMP_SIN_PERIOD(unk5590_1 + (i * 0x40))) >> 13);
             *cursor++ = (j / 2) + camFracY + (SIN(x0) >> 12)
-                + (COS(CLAMP_SIN_PERIOD(gStageTime + (i * 8))) >> 10);
+                + (COS((gStageTime + (i * 8)) & ONE_CYCLE) >> 10);
         };
     }
 }
