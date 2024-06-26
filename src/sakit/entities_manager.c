@@ -471,7 +471,7 @@ void CreateStageEntitiesManager(void)
     gEntitiesManagerTask = t;
 }
 
-static inline MapEntity *ReadMe(void *data, u32 r6)
+static inline MapEntity *ReadMapEntity(void *data, u32 r6)
 {
 #ifndef NON_MATCHING
     register u32 offset asm("r0") = r6 - 8;
@@ -565,7 +565,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                     r6 = *(u32 *)(sp28 + (regionX * 4));
                     if (r6 != 0) {
-                        me = ReadMe(interactables, r6);
+                        me = ReadMapEntity(interactables, r6);
                         for (i = 0; (s8)me->x != -1; me++, i++) {
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
@@ -589,7 +589,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
 
                     if (r6 != 0) {
                         MapEntity_Itembox *me
-                            = (MapEntity_Itembox *)ReadMe(itemBoxPositions, r6);
+                            = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions, r6);
                         for (i = 0; (s8)me->x != -1; me++, i++) {
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
@@ -612,7 +612,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                     });
                     r6 = *(u32 *)sp28;
                     if (r6 != 0) {
-                        me = ReadMe(enemyPositions, r6);
+                        me = ReadMapEntity(enemyPositions, r6);
                         for (i = 0; (s8)me->x != -1; me++, i++) {
 
                             if ((s8)me->x >= -2) {
@@ -630,7 +630,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                 } else {
                     r6 = *(u32 *)(sp28 + (regionX * 4));
                     if (r6 != 0) {
-                        me = ReadMe(interactables, r6);
+                        me = ReadMapEntity(interactables, r6);
                         for (i = 0; (s8)me->x != -1; me++, i++) {
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
@@ -815,7 +815,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(interactables, r6);
+                                me = ReadMapEntity(interactables, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -837,7 +837,8 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
 
                             if (r6 != 0) {
                                 MapEntity_Itembox *me;
-                                me = (MapEntity_Itembox *)ReadMe(itemBoxPositions, r6);
+                                me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions,
+                                                                        r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -858,7 +859,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(enemyPositions, r6);
+                                me = ReadMapEntity(enemyPositions, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -880,7 +881,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(interactables, r6);
+                                me = ReadMapEntity(interactables, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -919,7 +920,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(interactables, r6);
+                                me = ReadMapEntity(interactables, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -941,7 +942,8 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
 
                             if (r6 != 0) {
                                 MapEntity_Itembox *me;
-                                me = (MapEntity_Itembox *)ReadMe(itemBoxPositions, r6);
+                                me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions,
+                                                                        r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -962,7 +964,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(enemyPositions, r6);
+                                me = ReadMapEntity(enemyPositions, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -984,7 +986,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(interactables, r6);
+                                me = ReadMapEntity(interactables, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
