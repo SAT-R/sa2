@@ -379,8 +379,8 @@ const MapEntityInit gSpriteInits_Enemies[] = {
     CreateEntity_Star,     CreateEntity_BulletBuzzer,
 };
 
-#define NUN_ENEMY_DEFEAT_SCORES 5
-const u16 enemyDefeatScores[NUN_ENEMY_DEFEAT_SCORES] = {
+#define NUM_ENEMY_DEFEAT_SCORES 5
+const u16 enemyDefeatScores[NUM_ENEMY_DEFEAT_SCORES] = {
     100, 200, 400, 800, 1000,
 };
 
@@ -1028,7 +1028,7 @@ void CreateEnemyDefeatScoreAndManageLives(s16 x, s16 y)
     // NOTE: This should be (ARRAY_COUNT(enemyDefeatScores) - 1)
     //       But padding makes it (6-1) instead of (5-1),
     //       hence the macro.
-    if (gPlayer.defeatScoreIndex < (NUN_ENEMY_DEFEAT_SCORES - 1)) {
+    if (gPlayer.defeatScoreIndex < (NUM_ENEMY_DEFEAT_SCORES - 1)) {
         gPlayer.defeatScoreIndex++;
     }
 }
