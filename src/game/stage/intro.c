@@ -269,19 +269,17 @@ static void TaskDestructor_nop_8030458(struct Task *);
 static void TaskDestructor_803045C(struct Task *);
 static void TaskDestructor_8030474(struct Task *);
 
-// (99.66%) https://decomp.me/scratch/zGPtO
-NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
-         struct Task *SetupStageIntro(void))
+struct Task *SetupStageIntro(void)
 {
     struct Task *t; // sp04
     SITaskA *sit_a; // sp08
     struct Task *t2;
+    ScreenFade *fade;
     SITaskB *sit_b;
     // SITaskC *sit_c;
     SITaskD *sit_d; // r8
     SITaskE *sit_e;
     // SITaskF *sit_f;
-    ScreenFade *fade;
     Vec2_16 *vec;
     void *tilesCursor;
     Sprite *s;
@@ -335,42 +333,25 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
     sit_d = TASK_DATA(t2);
     sit_d->parent = sit_a;
 
-    { // Allocate VRAM for all icon's tiles
-#ifndef NON_MATCHING
-        register u32 tilesToAlloc asm("r0");
-#else
-        u32 tilesToAlloc;
-#endif
-        u32 loadingIconsTiles;
+    if (IS_SINGLE_PLAYER) {
+        tilesCursor = VramMalloc(
+            zoneLoadingCharacterLogos[gSelectedCharacter][0]
+            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0]
+            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0]
+            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0]
+            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0]
+            + ({ zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24; })
+            + (sZoneUnlockedIcons[0][0] * NUM_ZONE_UNLOCKED_ICONS));
+    } else {
+        // _0802F260
 
-        if (IS_SINGLE_PLAYER) {
-            tilesToAlloc = zoneLoadingCharacterLogos[gSelectedCharacter][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0];
-            loadingIconsTiles = zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24;
-            tilesToAlloc += loadingIconsTiles;
-            tilesToAlloc += sZoneUnlockedIcons[0][0] * NUM_ZONE_UNLOCKED_ICONS;
-        } else {
-            // _0802F260
-            tilesToAlloc = zoneLoadingCharacterLogos[gSelectedCharacter][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0];
-            tilesToAlloc
-                += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0];
-            loadingIconsTiles = zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24;
-            tilesToAlloc += loadingIconsTiles;
-        }
-        tilesCursor = VramMalloc(tilesToAlloc);
+        tilesCursor = VramMalloc(
+            zoneLoadingCharacterLogos[gSelectedCharacter][0]
+            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0]
+            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0]
+            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0]
+            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0]
+            + ({ zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24; }));
     }
     // __0802F2C4
 
@@ -580,7 +561,6 @@ NONMATCH("asm/non_matching/game/stage/intro/SetupStageIntro.inc",
 
     return t;
 }
-END_NONMATCH
 
 static void Task_802F75C(void)
 {
@@ -1120,15 +1100,12 @@ static inline void sub_8030488_inline()
     }
 }
 
-// (98.66%) https://decomp.me/scratch/gykfQ
-NONMATCH("asm/non_matching/game/stage/intro/Task_IntroActLettersAnimations.inc",
-         void Task_IntroActLettersAnimations(void))
+void Task_IntroActLettersAnimations(void)
 {
     SITaskE *sit_e = TASK_DATA(gCurTask);
     u32 counter = sit_e->parent->counter;
     Sprite *s;
     u32 i;
-    s32 index;
     s32 y;
 
     if ((counter - 151) >= 40) {
@@ -1144,28 +1121,27 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroActLettersAnimations.inc",
             for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
                 s = &sit_e->sprZoneNames[i];
 
-                index = counter - i * 3;
-                if (index >= 4)
-                    index = 4;
+                y = counter - i * 3;
+                if (y >= 4)
+                    y = 4;
 
-                index *= 8;
+                y *= 8;
 
                 s->x = sScreenPositions_ZoneLoadingActLetters[i][0];
 
-                y = (index - 32);
+                y = (y - 32);
                 s->y = y + sScreenPositions_ZoneLoadingActLetters[i][1];
             }
         } else if (counter < 18) {
             // _0803031C+4
-            s32 shift;
             counter -= 13;
 
-            shift = gUnknown_080D7130[counter];
+            y = gUnknown_080D7130[counter];
 
             for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
                 s = &sit_e->sprZoneNames[i];
                 s->x = sScreenPositions_ZoneLoadingActLetters[i][0];
-                s->y = sScreenPositions_ZoneLoadingActLetters[i][1] + shift;
+                s->y = sScreenPositions_ZoneLoadingActLetters[i][1] + y;
             }
         } else {
             // _0803035C
@@ -1179,7 +1155,6 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroActLettersAnimations.inc",
         sub_8030488_inline();
     }
 }
-END_NONMATCH
 
 static void TaskDestructor_StageIntroParent(struct Task *t)
 {
