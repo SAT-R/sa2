@@ -433,6 +433,8 @@
 #define SA2_ANIM_VARIANT_SCORE_1000 4
 #define TILE_COUNT__ANIM_SCORE      2 // TODO: Automate
 
+#define SA2_ANIM_MULTIPLAYER_UI_RING 729
+
 #define SA2_ANIM_SPECIAL_RING             730
 #define SA2_ANIM_VARIANT_SP_RING__IDLE    0
 #define SA2_ANIM_VARIANT_SP_RING__COLLECT 1
@@ -719,6 +721,8 @@
 #define SA2_ANIM_ASCII            1119
 #define SA2_ANIM_ASCII_FIRST_CHAR '!'
 #define SA2_ANIM_ASCII_YEN        '\\'
+#define SA2_ANIM_ASCII_0          15
+#define SA2_ANIM_ASCII_1          16
 #define SA2_ANIM_NUM_ASCII_CHARS  94
 
 // Used in Time Attack and stage results screen (/ stage outro)

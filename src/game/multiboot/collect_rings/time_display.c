@@ -1,10 +1,11 @@
 #include "core.h"
+#include "malloc_vram.h"
+#include "flags.h"
 
 #include "sakit/globals.h"
 #include "game/multiboot/collect_rings/time_display.h"
 
-#include "malloc_vram.h"
-#include "animation_commands.h"
+#include "constants/animations.h"
 
 typedef struct {
     Sprite unk0;
@@ -47,7 +48,7 @@ void CreateCollectRingsTimeDisplay(void)
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         s->graphics.dest = VramMalloc(9);
-        s->graphics.anim = 729;
+        s->graphics.anim = SA2_ANIM_MULTIPLAYER_UI_RING;
         s->variant = 0;
     }
 
@@ -59,12 +60,12 @@ void CreateCollectRingsTimeDisplay(void)
         s->y = 0;
         s->unk1A = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
-        s->graphics.anim = 1119;
-        s->variant = i + 16;
+        s->graphics.anim = SA2_ANIM_ASCII;
+        s->variant = i + SA2_ANIM_ASCII_1;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->unk10 = 0;
 
@@ -81,7 +82,7 @@ void CreateCollectRingsTimeDisplay(void)
         gObjPalette[i + 0x70] = gUnknown_080E0270[i];
     }
 
-    gFlags |= 0x2;
+    gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
 }
 
 void sub_8082E9C(TimeDisplay *timeDisplay)
@@ -90,7 +91,7 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     u16 temp4;
     u32 temp;
     Sprite *s;
-    u8 temp5;
+    u8 palId;
     u16 index;
     u8 digit1;
     u32 temp2;
@@ -117,9 +118,9 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     index = temp2 - (temp3 * 60);
     temp4 = Base10DigitsToHexNibbles(index);
 
-    temp5 = 0;
+    palId = 0;
     if (gCourseTime < 3600) {
-        temp5 = (-(gStageTime & 0x10)) >> 0x1F;
+        palId = (-(gStageTime & 0x10)) >> 0x1F;
     }
 
     x = 8;
@@ -127,7 +128,7 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     s = &timeDisplay->unk30[temp4 % 16];
     s->x = x;
     s->y = y;
-    s->palId = temp5;
+    s->palId = palId;
     DisplaySprite(s);
 
     x += 8;
@@ -141,14 +142,14 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     s = &timeDisplay->unk30[(temp6 / 16) % 16];
     s->x = x;
     s->y = y;
-    s->palId = temp5;
+    s->palId = palId;
     DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[temp6 % 16];
     s->x = x;
     s->y = y;
-    s->palId = temp5;
+    s->palId = palId;
     DisplaySprite(s);
 
     x += 8;
@@ -162,14 +163,14 @@ void sub_8082E9C(TimeDisplay *timeDisplay)
     s = &timeDisplay->unk30[(digit1 / 16) % 16];
     s->x = x;
     s->y = y;
-    s->palId = temp5;
+    s->palId = palId;
     DisplaySprite(s);
 
     x += 8;
     s = &timeDisplay->unk30[digit1 % 16];
     s->x = x;
     s->y = y;
-    s->palId = temp5;
+    s->palId = palId;
     DisplaySprite(s);
 }
 
