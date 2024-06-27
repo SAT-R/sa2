@@ -114,10 +114,6 @@ extern const s32 gUnknown_080D8840[][2];
 extern const TileInfo gUnknown_080D8864[];
 extern const u8 gUnknown_080D8858[][2];
 
-// const u16 gUnknown_080D87D8[] = {
-//     6400, 13888, 18016, 23104, 29152, 38080, 43091,
-// };
-
 const u16 gUnknown_080D8888[2][2] = { { Q(188), Q(110) }, { Q(162), Q(110) } };
 const EggRoboFn gUnknown_080D8890[8]
     = { sub_804B43C, sub_804B594, sub_804B734, sub_804B984,

@@ -25,8 +25,6 @@ void sub_802E784(u16 p0, u16 p1, u16 p2, s16 x, s16 y, s16 p5) { }
 extern void sub_8048C7C(void *boss);
 
 // boss run
-const u16 gUnknown_080D87E6[][2] = { { 0, 0 } };
-const u16 gUnknown_080D87D8[] = { 0 };
 const u32 gUnknown_080D8808[][2] = { { 0, 0 } };
 const u8 gUnknown_080D8858[][2] = { { 0, 0 } };
 const u32 gUnknown_080D8874[] = { 0 };
