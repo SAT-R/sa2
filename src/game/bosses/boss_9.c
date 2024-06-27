@@ -2822,18 +2822,14 @@ void sub_80508C4(TA53Boss *boss, u16 blend, bool8 param2)
     }
 }
 
-// (99.85%) https://decomp.me/scratch/kkvhe
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050958.inc",
-         void sub_8050958(TA53Boss *boss))
+void sub_8050958(TA53Boss *boss)
 {
     u8 i;
 
     if (boss->unkD > 0) {
         if (--boss->unkD == 0) {
             for (i = 0; i < 16; i++) {
-                const u16 *srcPal = gUnknown_080D8EF0[1];
-
-                gObjPalette[i + 8 * 16] = srcPal[i];
+                gObjPalette[i + 8 * 16] = gUnknown_080D8EF0[1][i];
                 gBgPalette[i + 0 * 16] = gObjPalette[i + 8 * 16];
             }
         } else {
@@ -2857,12 +2853,12 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050958.inc",
 
                     colId = ((i + r6) % 16u);
                     objPalId = 8 * 16 + colId;
-                    objPalTgt[objPalId] = (((gUnknown_080D8EF0[0][i] << 5)
-                                            | (gUnknown_080D8EF0[0][i] >> 5))
-                                           | gUnknown_080D8EF0[0][i]);
-                    gBgPalette[0 * 16 + colId] = (((gUnknown_080D8EF0[0][i] << 5)
-                                                   | (gUnknown_080D8EF0[0][i] >> 5))
-                                                  | gUnknown_080D8EF0[0][i]);
+                    objPalTgt[objPalId] = ((gUnknown_080D8EF0[0][i] << 5)
+                                           | (gUnknown_080D8EF0[0][i] >> 5))
+                        | gUnknown_080D8EF0[0][i];
+                    gBgPalette[0 * 16 + colId] = ((gUnknown_080D8EF0[0][i] << 5)
+                                                  | (gUnknown_080D8EF0[0][i] >> 5))
+                        | gUnknown_080D8EF0[0][i];
                 }
             }
         }
@@ -2872,7 +2868,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050958.inc",
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }
 }
-END_NONMATCH
 
 void TaskDestructor_TrueArea53BossGfx(struct Task *t)
 {

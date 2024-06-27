@@ -1136,17 +1136,18 @@ static void sub_803B84C(EggHammerTankII *boss)
     }
 }
 
-// Basically 100% matched, a silly side effect of optimising means that the stack is
-// wrong for 2 instructions https://decomp.me/scratch/yZ3Hw :(
-NONMATCH("asm/non_matching/game/bosses/boss_1__sub_803BDB8.inc",
-         static void sub_803BDB8(void))
+static void sub_803BDB8(void)
 {
     s8 i;
+    EggHammerTankII *boss;
+    EggHammerTankII_UNKB4 *unkB4 = &boss->unkB4;
     s32 x, y;
     SpriteTransform *transform;
-    EggHammerTankII *boss = TASK_DATA(gCurTask);
-    EggHammerTankII_UNKB4 *unkB4 = &boss->unkB4;
     Sprite *s;
+
+    boss = TASK_DATA(gCurTask);
+
+    unkB4 = &boss->unkB4;
 
     boss->unkA8 = 0;
     unkB4->unk2DC = 5;
@@ -1226,7 +1227,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_1__sub_803BDB8.inc",
     unkB4->unkE0 = 1;
     unkB4->unkE4 = 0;
 }
-END_NONMATCH
 
 static void sub_803C198(EggHammerTankII *boss)
 {
