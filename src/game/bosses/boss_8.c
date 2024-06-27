@@ -804,7 +804,7 @@ void Task_804AD68(void)
 
 // (95.06%) https://decomp.me/scratch/of4k0
 // (98.77%) https://decomp.me/scratch/Kzx1m
-// (99.59%)
+// (99.59%) https://decomp.me/scratch/IzRyM
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
          void sub_804AE40(SuperEggRoboZ *boss))
 {

@@ -26,13 +26,22 @@ typedef struct {
     u8 unk6;
 } UNK_80498CC;
 
-extern const u16 gUnknown_080D87D8[];
-extern const u16 gUnknown_080D87E6[][2];
+static const u16 unused = 0;
 
-extern const s32 gUnknown_080D8808[][2];
+const u16 gUnknown_080D87D8[] = {
+    6400, 13888, 18016, 23104, 29152, 38080, 43091,
+};
 
-// const u16 gUnknown_080D87D8[] = {
-//     6400, 13888, 18016, 23104, 29152, 38080, 43091,
+const u16 gUnknown_080D87E6[][2] = {
+    { 5804, 177 },  { 13292, 177 }, { 17420, 177 }, { 22508, 177 },
+    { 28585, 177 }, { 37484, 201 }, { 41600, 225 }, { 41600, 225 },
+};
+
+static const u16 unused2 = 0;
+
+// const s32 gUnknown_080D8808[][2] = {
+//     { 5376, -4512 },  { 12864, -5952 }, { 17088, -2688 }, { 22080, -3552 },
+//     { 28128, -4512 }, { 37058, -7394 }, { 42240, -3648 },
 // };
 
 void sub_80498CC(u8 bossNum)

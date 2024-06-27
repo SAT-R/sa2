@@ -3,15 +3,6 @@
 
 .section .rodata
 
-.align 2, 0
-
-    .global gUnknown_080D87D8
-gUnknown_080D87D8:
-    .incbin "baserom.gba", 0x000D87D8, 0xE
-
-    .global gUnknown_080D87E6
-gUnknown_080D87E6:
-    .incbin "baserom.gba", 0x000D87E6, 0x22
 
     .global gUnknown_080D8808
 gUnknown_080D8808:
