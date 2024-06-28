@@ -379,8 +379,8 @@ const MapEntityInit gSpriteInits_Enemies[] = {
     CreateEntity_Star,     CreateEntity_BulletBuzzer,
 };
 
-#define NUN_ENEMY_DEFEAT_SCORES 5
-const u16 enemyDefeatScores[NUN_ENEMY_DEFEAT_SCORES] = {
+#define NUM_ENEMY_DEFEAT_SCORES 5
+const u16 enemyDefeatScores[NUM_ENEMY_DEFEAT_SCORES] = {
     100, 200, 400, 800, 1000,
 };
 
@@ -471,7 +471,7 @@ void CreateStageEntitiesManager(void)
     gEntitiesManagerTask = t;
 }
 
-static inline MapEntity *ReadMe(void *data, u32 r6)
+static inline MapEntity *ReadMapEntity(void *data, u32 r6)
 {
 #ifndef NON_MATCHING
     register u32 offset asm("r0") = r6 - 8;
@@ -565,7 +565,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                     r6 = *(u32 *)(sp28 + (regionX * 4));
                     if (r6 != 0) {
-                        me = ReadMe(interactables, r6);
+                        me = ReadMapEntity(interactables, r6);
                         for (i = 0; (s8)me->x != -1; me++, i++) {
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
@@ -589,7 +589,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
 
                     if (r6 != 0) {
                         MapEntity_Itembox *me
-                            = (MapEntity_Itembox *)ReadMe(itemBoxPositions, r6);
+                            = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions, r6);
                         for (i = 0; (s8)me->x != -1; me++, i++) {
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
@@ -612,7 +612,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                     });
                     r6 = *(u32 *)sp28;
                     if (r6 != 0) {
-                        me = ReadMe(enemyPositions, r6);
+                        me = ReadMapEntity(enemyPositions, r6);
                         for (i = 0; (s8)me->x != -1; me++, i++) {
 
                             if ((s8)me->x >= -2) {
@@ -630,7 +630,7 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                 } else {
                     r6 = *(u32 *)(sp28 + (regionX * 4));
                     if (r6 != 0) {
-                        me = ReadMe(interactables, r6);
+                        me = ReadMapEntity(interactables, r6);
                         for (i = 0; (s8)me->x != -1; me++, i++) {
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
@@ -815,7 +815,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(interactables, r6);
+                                me = ReadMapEntity(interactables, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -837,7 +837,8 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
 
                             if (r6 != 0) {
                                 MapEntity_Itembox *me;
-                                me = (MapEntity_Itembox *)ReadMe(itemBoxPositions, r6);
+                                me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions,
+                                                                        r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -858,7 +859,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(enemyPositions, r6);
+                                me = ReadMapEntity(enemyPositions, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -880,7 +881,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(interactables, r6);
+                                me = ReadMapEntity(interactables, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -919,7 +920,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(interactables, r6);
+                                me = ReadMapEntity(interactables, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -941,7 +942,8 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
 
                             if (r6 != 0) {
                                 MapEntity_Itembox *me;
-                                me = (MapEntity_Itembox *)ReadMe(itemBoxPositions, r6);
+                                me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions,
+                                                                        r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -962,7 +964,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(enemyPositions, r6);
+                                me = ReadMapEntity(enemyPositions, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -984,7 +986,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                           + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
-                                me = ReadMe(interactables, r6);
+                                me = ReadMapEntity(interactables, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
@@ -1018,27 +1020,15 @@ void CreateEnemyDefeatScoreAndManageLives(s16 x, s16 y)
     u32 temp1;
     u32 temp2;
     m4aSongNumStart(SE_ITEM_BOX);
-    old = gLevelScore;
-    gLevelScore += enemyDefeatScores[gPlayer.defeatScoreIndex];
-    temp1 = Div(gLevelScore, 50000);
-    temp2 = Div(old, 50000);
-    if (temp1 != temp2 && gGameMode == GAME_MODE_SINGLE_PLAYER) {
-        u16 numLives = (temp1 - temp2);
-        numLives += gNumLives;
-        if (numLives > 255) {
-            gNumLives = 255;
-        } else {
-            gNumLives = numLives;
-        }
-        gUnknown_030054A8.unk3 = 0x10;
-    }
+
+    INCREMENT_SCORE(enemyDefeatScores[gPlayer.defeatScoreIndex]);
 
     CreateEnemyDefeatScore(x, y);
 
     // NOTE: This should be (ARRAY_COUNT(enemyDefeatScores) - 1)
     //       But padding makes it (6-1) instead of (5-1),
     //       hence the macro.
-    if (gPlayer.defeatScoreIndex < (NUN_ENEMY_DEFEAT_SCORES - 1)) {
+    if (gPlayer.defeatScoreIndex < (NUM_ENEMY_DEFEAT_SCORES - 1)) {
         gPlayer.defeatScoreIndex++;
     }
 }

@@ -846,7 +846,7 @@ static u8 HandleCannonCollision(EggBomberTank *boss)
             if (boss->cannonHealth == 0) {
                 ret = 1;
             }
-            gUnknown_03005498.t->unk15 = 0;
+            gCheeseTarget.task->unk15 = 0;
             boss->cannonHitTimer = 30;
         }
     }

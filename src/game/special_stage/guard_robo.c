@@ -267,8 +267,8 @@ void sub_8071380(Sprite *s, void *vram, s16 x, s16 y, u8 b, const struct UNK_80D
 
 struct Task *CreateSpecialStageGuardRobo(struct SpecialStage *stage)
 {
-    struct Task *t = TaskCreate(Task_GuardRoboMain, 0x58, 0xA000, 0,
-                                SpecialStageGuardRoboOnDestroy);
+    struct Task *t = TaskCreate(Task_GuardRoboMain, sizeof(struct SpecialStageGuardRobo),
+                                0xA000, 0, SpecialStageGuardRoboOnDestroy);
     struct SpecialStageGuardRobo *guardRobo = TASK_DATA(t);
     guardRobo->stage = stage;
     GuardRoboInit(guardRobo);

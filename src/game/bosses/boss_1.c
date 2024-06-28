@@ -441,8 +441,8 @@ static void sub_803AA40(void)
         }
 
         if (!IS_FINAL_STAGE(gCurrentLevel)) {
-            gWinRegs[4] = 0x3F;
-            gWinRegs[5] = 0x1F;
+            gWinRegs[WINREG_WININ] = WININ_WIN0_ALL;
+            gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ);
             return;
         }
 
@@ -492,8 +492,8 @@ static void sub_803AA40(void)
         }
     }
 
-    gWinRegs[4] = 0x3F;
-    gWinRegs[5] = 0x1F;
+    gWinRegs[WINREG_WININ] = WININ_WIN0_ALL;
+    gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ);
 }
 
 static void sub_803AC2C(EggHammerTankII *boss)
@@ -538,7 +538,7 @@ static void sub_803AC2C(EggHammerTankII *boss)
     DisplaySprite(s);
 
     s = &boss->armSegment;
-    s->unk1A = 0x480;
+    s->unk1A = SPRITE_OAM_ORDER(18);
     x = I(boss->x) - gCamera.x;
     y = I(boss->y) - gCamera.y;
 
@@ -582,7 +582,7 @@ static void sub_803AC2C(EggHammerTankII *boss)
     }
 
     s = &boss->armSegment;
-    s->unk1A = 0x640;
+    s->unk1A = SPRITE_OAM_ORDER(25);
 
     for (i = 0; i < 6; i++) {
         s->x = x - 8
@@ -685,7 +685,7 @@ static void sub_803B17C(EggHammerTankII *boss)
     }
     boss->unk54[1][0] = boss->unk94;
 
-    for (i = 1; i < 8; i++) {
+    for (i = 1; i < ARRAY_COUNT(boss->unk54[0]); i++) {
         boss->unk54[1][i]
             += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i + 8]);
     }
@@ -696,7 +696,7 @@ static void sub_803B17C(EggHammerTankII *boss)
         boss->timer = 10;
         boss->unkA0 = 1;
 
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < ARRAY_COUNT(boss->unk54[0]); i++) {
             boss->unk54[1][i] = 768;
             boss->unk54[0][i] = gUnknown_080D7A58[i];
         }
@@ -728,9 +728,7 @@ static void sub_803B264(EggHammerTankII *boss)
         boss->unk54[0][j] += acc;
     }
 
-    boss->timer--;
-
-    if (boss->timer == 0) {
+    if (--boss->timer == 0) {
         boss->timer = 15;
         boss->unkA0 = 2;
     }
@@ -917,11 +915,10 @@ static void sub_803B6AC(EggHammerTankII *boss)
 static void sub_803B7B0(EggHammerTankII *boss)
 {
     Sprite *s = &boss->pilot;
-    if (boss->unkB1 != 0) {
+    if (boss->unkB1 > 0) {
         boss->unkB2 = 0;
-        boss->unkB1--;
 
-        if (boss->unkB1 != 0) {
+        if (--boss->unkB1 > 0) {
             return;
         }
 
@@ -934,30 +931,17 @@ static void sub_803B7B0(EggHammerTankII *boss)
         }
         s->prevVariant = -1;
     } else {
-#ifndef NON_MATCHING
-        register u32 r2 asm("r2");
-#endif
         if (boss->unkB2 == 0) {
             return;
         }
 
-        boss->unkB2--;
-#ifndef NON_MATCHING
-        r2 = 0xFF;
-#endif
-
-        if (boss->unkB2 != 0) {
+        if (--boss->unkB2 != 0) {
             return;
         }
 
         s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
         s->variant = 0;
-
-#ifndef NON_MATCHING
-        s->prevVariant |= r2;
-#else
         s->prevVariant = -1;
-#endif
     }
 }
 
@@ -1025,10 +1009,8 @@ static void sub_803B84C(EggHammerTankII *boss)
         } else {
             s32 r0;
             unkB4->unkC8 -= 32;
-            r0 = unkB4->unkCC * 7;
-            r0 = (r0 * 4) - unkB4->unkCC;
-            r0 *= 8;
-            unkB4->unkCC = I(-r0);
+            r0 = (unkB4->unkCC * 27);
+            unkB4->unkCC = I(-(r0 * 8));
         }
 
         if (unkB4->unkCC > -160) {
@@ -1598,7 +1580,7 @@ static void sub_803CB18(EggHammerTankII *boss)
     boss->unk50 = SIN(boss->unk4C) >> 8;
     boss->unkC[1][0] = boss->unk50;
 
-    for (i = 1; i < 8; i++) {
+    for (i = 1; i < ARRAY_COUNT(boss->unkC[0]); i++) {
         boss->unkC[1][i] += I(
             (boss->unkC[1][i - 1] - boss->unkC[1][i]) * gUnknown_080D7A28[i] - Q(12));
     }
@@ -1606,9 +1588,7 @@ static void sub_803CB18(EggHammerTankII *boss)
 
 static void sub_803CB84(EggHammerTankII *boss)
 {
-    boss->timer--;
-
-    if (boss->timer == 0) {
+    if (--boss->timer == 0) {
         boss->timer = 60;
         boss->unkA0 = 3;
     }
@@ -1616,9 +1596,8 @@ static void sub_803CB84(EggHammerTankII *boss)
 
 static void sub_803CBA4(EggHammerTankII *boss)
 {
-    boss->timer--;
-    if (boss->timer == 0) {
-        if (PseudoRandom32() & 3) {
+    if (--boss->timer == 0) {
+        if (PseudoRandBetween(0, 4) != 0) {
             boss->timer = 68;
             boss->unkA0 = 5;
         } else {
@@ -1642,12 +1621,13 @@ static void sub_803CBFC(EggHammerTankII *boss)
 
 static void sub_803CC3C(EggHammerTankII *boss)
 {
-    if (boss->unkB1 != 0) {
+    if (boss->unkB1 > 0) {
         u8 i;
 
         for (i = 0; i < 16; i++) {
-            gObjPalette[i + 128] = gUnknown_080D7AD0[(boss->unkB1 & 4) >> 2][i];
+            gObjPalette[8 * 16 + i] = gUnknown_080D7AD0[(boss->unkB1 & 4) >> 2][i];
         }
+
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }
 }

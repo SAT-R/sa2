@@ -577,7 +577,8 @@ struct Task *CreateSpecialStageCollectables(struct SpecialStage *stage)
     struct SpecialStageCollectables *collectables;
     memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
 
-    t = TaskCreate(Task_InitObjects, 0xA5C, 0xB000, 0, NULL);
+    t = TaskCreate(Task_InitObjects, sizeof(struct SpecialStageCollectables), 0xB000, 0,
+                   NULL);
     collectables = TASK_DATA(t);
     collectables->stage = stage;
     collectables->unkA58 = unkF6CC[stage->zone];

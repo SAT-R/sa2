@@ -28,6 +28,27 @@ typedef struct {
 
 const u16 gUnknown_080E0290[] = { 0x0AAA, 0x02AA };
 
+s16 sub_8085968(s16 *unk28, u16 param1)
+{
+    s32 r7, r3, r5;
+    u32 r0;
+    r7 = (4095 - param1);
+
+    r7 = (r7 * (SQUARE(r7) >> 12)) >> 12; // (r7 * ((r7 * r7) / 4096)) / 4096
+    r0 = (r7 * unk28[0] * 171) >> 10; // / 1024
+    unk28++;
+
+    r3 = SQUARE(param1) >> 12; // (r1 * r1) / 1024
+    r7 = (r3 * param1) >> 12; // (r3 * r1) / 1024
+    r0 += (unk28[0] * (((((r3 * param1) >> 13) - r3) + gUnknown_080E0290[0])));
+    unk28++;
+
+    r0 += (unk28[0] * (((((param1 + r3)) - r7) >> 1) + gUnknown_080E0290[1]));
+    r0 += ((r7 * unk28[1] * 171) >> 10);
+
+    return r0 / 4096;
+}
+
 u16 sub_80859F4(s16 *unk28, u16 unk5C)
 {
     s32 r7, r3, r5;

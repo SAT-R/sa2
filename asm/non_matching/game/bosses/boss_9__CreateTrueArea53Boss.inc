@@ -12,7 +12,7 @@
 	ldrh r0, [r2]
 	movs r1, #0x20
 	orrs r0, r1
-	strh r0, [r2]		@ gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU
+	strh r0, [r2]		@ gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU
 	ldr r4, _0804D2AC @ =gActiveBossTask
 	ldr r0, [r4]
 	cmp r0, #0

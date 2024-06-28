@@ -140,7 +140,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
     *pSp04 = +gPlayer.unk17;
     memcpy(sp00, sp04, sizeof(sp00));
 
-    if (!(gStageFlags & EXTRA_STATE__2)) {
+    if (!(gStageFlags & STAGE_FLAG__2)) {
         // _08007F60
         RingsManager *rm = TASK_DATA(gCurTask);
         void *rings = rm->rings; // sp14

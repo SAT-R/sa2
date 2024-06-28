@@ -38,7 +38,8 @@ static void sub_8072AC0(Sprite_WindUpStick *);
 void CreateEntity_WindUpStick(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                               u8 spriteY)
 {
-    struct Task *t = TaskCreate(sub_8072998, 0x1C, 0x2010, 0, sub_80729D4);
+    struct Task *t
+        = TaskCreate(sub_8072998, sizeof(Sprite_WindUpStick), 0x2010, 0, sub_80729D4);
     Sprite_WindUpStick *windUpStick = TASK_DATA(t);
     windUpStick->unk11 = 0;
     windUpStick->unk0 = TO_WORLD_POS(me->x, spriteRegionX);

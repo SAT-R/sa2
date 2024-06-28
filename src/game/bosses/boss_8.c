@@ -142,7 +142,8 @@ void sub_8049D20(void *vram, SuperEggRoboZ *boss)
 {
     u8 i, j;
     void *vrams[2];
-    struct Task *t = TaskCreate(sub_8049E90, 0x164, 0x4080, 0, sub_804A6B4);
+    struct Task *t
+        = TaskCreate(sub_8049E90, sizeof(UNK_8049D20), 0x4080, 0, sub_804A6B4);
     UNK_8049D20 *unkD20 = TASK_DATA(t);
     Sprite *s;
 
@@ -611,7 +612,7 @@ void CreateSuperEggRoboZ(void)
     s->hitboxes[0].index = -1;
     s->unk10 = SPRITE_FLAG(PRIORITY, 3);
     gUnknown_030054A8.unk6 = 200;
-    gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+    gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 }
 
 void Task_804A9D8(void)
@@ -651,7 +652,7 @@ void Task_804A9D8(void)
     gPlayer.moveState |= (MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
 
     if (--boss->unk14 == 0) {
-        gStageFlags &= ~EXTRA_STATE__DISABLE_PAUSE_MENU;
+        gStageFlags &= ~STAGE_FLAG__DISABLE_PAUSE_MENU;
         gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
 
         m4aSongNumStart(SE_260);
@@ -780,7 +781,7 @@ void Task_804AD68(void)
         TasksDestroyInPriorityRange(0x5010, 0x5011);
         TasksDestroyInPriorityRange(0x5431, 0x5434);
 
-        gStageFlags |= EXTRA_STATE__TURN_OFF_HUD;
+        gStageFlags |= STAGE_FLAG__TURN_OFF_HUD;
 
         gPlayer.moveState |= MOVESTATE_100000;
         gPlayer.moveState |= MOVESTATE_400000;
@@ -1011,7 +1012,7 @@ u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
             if ((SQUARE(r6) + SQUARE(r7)) < 376) {
                 result = sub_804C9B4(boss, arm);
 
-                gUnknown_03005498.t->unk15 = 0;
+                gCheeseTarget.task->unk15 = 0;
             }
         }
     }
@@ -1087,7 +1088,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
             if ((SQUARE(r6) + SQUARE(r7)) < 376) {
                 result = sub_804C9B4(boss, arm);
 
-                gUnknown_03005498.t->unk15 = 0;
+                gCheeseTarget.task->unk15 = 0;
             }
         }
     }

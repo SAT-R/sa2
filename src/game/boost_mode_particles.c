@@ -28,7 +28,8 @@ void sub_808A234(struct Task *);
 void CreateBoostModeParticles(void)
 {
     s32 i;
-    struct Task *t = TaskCreate(sub_8089E54, 0xE8, 0x5050, 0, sub_808A234);
+    struct Task *t = TaskCreate(sub_8089E54, sizeof(struct BoostModeParticles), 0x5050,
+                                0, sub_808A234);
     struct BoostModeParticles *particles = TASK_DATA(t);
     Sprite *s = &particles->unk0;
 

@@ -629,7 +629,8 @@ void sub_808E6B0(void)
 
 void CreateCharacterUnlockCutScene(u8 zone)
 {
-    struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
+    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene),
+                                0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = zone * 4;
     scene->unk10E = zone * 5;
@@ -640,7 +641,8 @@ void CreateCharacterUnlockCutScene(u8 zone)
 
 void CreateCreamUnlockCutScene(void)
 {
-    struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
+    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene),
+                                0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 0;
     scene->unk10E = 0;
@@ -650,7 +652,8 @@ void CreateCreamUnlockCutScene(void)
 
 void CreateTailsUnlockCutScene(void)
 {
-    struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
+    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene),
+                                0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 8;
     scene->unk10E = 10;
@@ -660,7 +663,8 @@ void CreateTailsUnlockCutScene(void)
 
 void CreateKnucklesUnlockCutScene(void)
 {
-    struct Task *t = TaskCreate(sub_808E424, 0x114, 0x1000, 0, NULL);
+    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene),
+                                0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 4;
     scene->unk10E = 5;

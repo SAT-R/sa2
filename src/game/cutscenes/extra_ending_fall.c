@@ -154,7 +154,8 @@ void CreateExtraEndingFallCutScene(void)
     m4aMPlayAllStop();
     m4aSongNumStart(MUS_EXTRA_ENDING);
 
-    t = TaskCreate(sub_8090480, 0x5CC, 0x3100, 0, sub_8091480);
+    t = TaskCreate(sub_8090480, sizeof(struct ExtraEndingCutScene), 0x3100, 0,
+                   sub_8091480);
     scene = TASK_DATA(t);
     scene->unk37C = 0;
     scene->unk390 = gUnknown_080E1514[0];

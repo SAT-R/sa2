@@ -41,9 +41,9 @@ void TaskDestructor_8011B3C(struct Task *);
 
 static void inline sub_8011B54_inline(u32 *dst, u32 *src, s32 size, s32 shift)
 {
-    s32 r2 = size >> shift;
+    u32 r2 = size >> shift;
 
-    while (r2-- != 0) {
+    while (r2-- > 0) {
         *dst++ = *src++;
         *dst++ = *src++;
         *dst++ = *src++;
@@ -71,7 +71,7 @@ static void inline copyMask(u32 *dst, u32 *src, u32 waterMask)
 // (98.73%) https://decomp.me/scratch/M6i4c
 NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
 {
-    s32 k;
+    u32 k;
     u16 animId;
     const ACmd **animation;
     s32 pal;
@@ -136,7 +136,7 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
     waterMask &= maskB;
 
     /* Mask sixteen 16-color palettes - Start */
-    while (k-- != 0) {
+    while (k-- > 0) {
         // TODO: Find a way to inline these!
         maskColors0 = *src++;
         maskColors1 = maskColors0;
@@ -390,9 +390,7 @@ struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
 }
 
 // TODO: Inlining this might match sub_8011328?
-// (92.07%) https://decomp.me/scratch/84Q33
-NONMATCH("asm/non_matching/game/MaskPaletteWithUnderwaterColor.inc",
-         void MaskPaletteWithUnderwaterColor(u32 *dst, u32 *src, u32 mask, s32 size))
+void MaskPaletteWithUnderwaterColor(u32 *dst, u32 *src, u32 mask, s32 size)
 {
     u32 maskColors0, maskColors1;
     u32 maskA, maskB;
@@ -401,7 +399,7 @@ NONMATCH("asm/non_matching/game/MaskPaletteWithUnderwaterColor.inc",
     k = (size >> 4);
 
     /* Mask sixteen 16-color palettes - Start */
-    while (k-- != 0) {
+    while (k-- > 0) {
         maskA = WATER_MASK_A;
         maskB = WATER_MASK_B;
 
@@ -465,7 +463,6 @@ NONMATCH("asm/non_matching/game/MaskPaletteWithUnderwaterColor.inc",
         *dst++ = maskColors1;
     }
 }
-END_NONMATCH
 
 void TaskDestructor_WaterSurface(struct Task *t)
 {

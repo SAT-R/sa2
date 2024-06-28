@@ -61,16 +61,16 @@ static void Task_PlayerFloating(void)
             sub_807B74C(propeller);
         }
 
-        if (gPlayer.unk5C & 0x10) {
+        if (gPlayer.unk5C & DPAD_RIGHT) {
             gPlayer.x += Q(0.5);
         }
 
-        if (gPlayer.unk5C & 0x20) {
+        if (gPlayer.unk5C & DPAD_LEFT) {
             gPlayer.x -= Q(0.5);
         }
 
         temp = sub_801F100(({ I(gPlayer.x) + 2; }) + gPlayer.unk16, I(gPlayer.y),
-                           gPlayer.unk38, 8, sub_801EB44);
+                           gPlayer.unk38, +8, sub_801EB44);
         if (temp < 0) {
             gPlayer.x += Q(temp);
         }
@@ -274,7 +274,7 @@ static bool32 ShouldDespawn(Sprite_Propeller *propeller)
     s16 x = propeller->x - gCamera.x;
     s16 y = propeller->y - gCamera.y;
 
-    if (IS_OUT_OF_GRAV_TRIGGER_RANGE(x, y)) {
+    if (IS_OUT_OF_CAM_RANGE_2(x, y)) {
         return TRUE;
     }
 
@@ -302,6 +302,8 @@ static bool32 sub_807B9F0(Sprite_Propeller *propeller)
         s16 y = propeller->y - gCamera.y;
         s16 playerY = I(gPlayer.y) - gCamera.y;
 
+        // TODO: A Metatile/Chunk is 96 pixels wide (12 * TILE_WIDTH)
+        //       Is that the intended value here?
         if (y - 96 <= playerY && y + (PROPELLER_HITBOX_HEIGHT / 2) >= playerY) {
             return TRUE;
         }

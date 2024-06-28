@@ -854,7 +854,7 @@ void HandleCollision(EggSaucer *boss)
 
     if (boss->unk13 == 0 && IsColliding_Cheese(s, x, y, 0, &gPlayer) == TRUE) {
         sub_8045368(boss);
-        gUnknown_03005498.t->unk15 = 0;
+        gCheeseTarget.task->unk15 = 0;
     }
 
     if (boss->unk11 != 0 && boss->unk1F == 0) {
@@ -901,7 +901,7 @@ void HandleCollision(EggSaucer *boss)
                     m4aSongNumStart(SE_235);
                 }
 
-                gUnknown_03005498.t->unk15 = 0;
+                gCheeseTarget.task->unk15 = 0;
                 if (boss->unk11 == 0) {
                     INCREMENT_SCORE(500);
                 }

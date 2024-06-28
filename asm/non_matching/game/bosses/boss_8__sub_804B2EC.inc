@@ -146,7 +146,7 @@ _0804B3D8:
 	lsls r0, r0, #0x18
 	lsrs r0, r0, #0x18
 	str r0, [sp]
-	ldr r0, _0804B438 @ =gUnknown_03005498
+	ldr r0, _0804B438 @ =gCheeseTarget
 	ldr r1, [r0, #4]
 	movs r0, #0
 	strb r0, [r1, #0x15]
@@ -164,6 +164,6 @@ _0804B41E:
 	.align 2, 0
 _0804B430: .4byte gCheese
 _0804B434: .4byte 0x00000177
-_0804B438: .4byte gUnknown_03005498
+_0804B438: .4byte gCheeseTarget
 
 .syntax divided

@@ -39,7 +39,8 @@ static const u16 gUnknown_080D8F38[][2] = {
 void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
 
-    struct Task *t = TaskCreate(sub_8054224, 0x5C, 0x40B0, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(sub_8054224, sizeof(Sprite_Koura), 0x40B0, 0,
+                                TaskDestructor_80095E8);
     Sprite_Koura *koura = TASK_DATA(t);
     Sprite *s = &koura->s;
     koura->base.regionX = spriteRegionX;

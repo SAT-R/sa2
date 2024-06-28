@@ -225,7 +225,7 @@ static void sub_807C614(void)
 void CreateEntity_PropellerSpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                                   u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable085, 0x4C, 0x2010, 0,
+    struct Task *t = TaskCreate(Task_Interactable085, sizeof(Sprite_IA85), 0x2010, 0,
                                 TaskDestructor_Interactable085);
     Sprite_IA85 *ia85 = TASK_DATA(t);
     ia85->unk3C = TO_WORLD_POS(me->x, spriteRegionX);

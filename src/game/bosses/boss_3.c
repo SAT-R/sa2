@@ -1492,7 +1492,7 @@ bool32 sub_8040B30(EggTotem *totem, u8 i)
             m4aSongNumStart(SE_144);
 
             Collision_AdjustPlayerSpeed(&gPlayer);
-            gUnknown_03005498.t->unk15 = 0;
+            gCheeseTarget.task->unk15 = 0;
         } else {
             m4aSongNumStart(SE_143);
         }

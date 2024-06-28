@@ -654,7 +654,8 @@ static void CreateDisplays(struct SpecialStageUI *);
 
 struct Task *CreateSpecialStageUI(struct SpecialStage *stage)
 {
-    struct Task *t = TaskCreate(sub_806FB04, 0x2B8, 0xD000, 0, sub_8070BEC);
+    struct Task *t
+        = TaskCreate(sub_806FB04, sizeof(struct SpecialStageUI), 0xD000, 0, sub_8070BEC);
     struct SpecialStageUI *ui = TASK_DATA(t);
     ui->stage = stage;
     ui->unk2A4 = NULL;
@@ -675,7 +676,8 @@ void SpecialStageResultsScreenOnDestroy(struct Task *);
 
 struct Task *CreateSpecialStageResultsScreen(struct SpecialStage *stage)
 {
-    struct Task *t = TaskCreate(Task_ResultsScreenSequencePart1, 0x520, 0xD000, 0,
+    struct Task *t = TaskCreate(Task_ResultsScreenSequencePart1,
+                                sizeof(struct SpecialStageResultsScreen), 0xD000, 0,
                                 SpecialStageResultsScreenOnDestroy);
     struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(t);
     resultsScreen->stage = stage;

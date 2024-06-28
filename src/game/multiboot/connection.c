@@ -141,7 +141,7 @@ void sub_8081200(void)
     };
 
     ApplyGameStageSettings();
-    gStageFlags &= ~EXTRA_STATE__ACT_START;
+    gStageFlags &= ~STAGE_FLAG__ACT_START;
     gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
     gPlayer.unk5C |= gPlayerControls.jump | gPlayerControls.attack;
 }
@@ -168,7 +168,7 @@ void StartSinglePakConnect(void)
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    t = TaskCreate(sub_8081604, 0xFC, 0x2000, 0, NULL);
+    t = TaskCreate(sub_8081604, sizeof(struct SinglePakConnectScreen), 0x2000, 0, NULL);
     connectScreen = TASK_DATA(t);
     connectScreen->unkFA = gLoadedSaveGame->language;
 

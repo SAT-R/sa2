@@ -36,14 +36,14 @@ s32 gLevelScore = 0;
 u16 ALIGNED(16) gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH] = {};
 u32 gCourseTime = 0;
 
-SomeStruct_3005498 ALIGNED(8) gUnknown_03005498 = {};
+CheeseTarget ALIGNED(8) gCheeseTarget = {};
 u32 sMPStageStartFrameCount = 0;
 UNK_30054A8 ALIGNED(8) gUnknown_030054A8 = {};
 u8 gUnknown_030054B0 = 0;
 s8 ALIGNED(4) gUnknown_030054B4[MULTI_SIO_PLAYERS_MAX] = {};
 u8 gUnknown_030054B8 = 0;
 u16 ALIGNED(4) gUnknown_030054BC = 0;
-Struct_30054C0 gUnknown_030054C0 = {};
+HomingTarget gHomingTarget = {};
 
 u8 gDemoPlayCounter = 0;
 u8 ALIGNED(4) gGameMode = 0;

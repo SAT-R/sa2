@@ -50,7 +50,7 @@ void CreateDemoManager(void)
     dm->playerPressedStart = FALSE;
     dm->timeLimitDisabled = gLoadedSaveGame->timeLimitDisabled;
 
-    gStageFlags |= EXTRA_STATE__DEMO_RUNNING;
+    gStageFlags |= STAGE_FLAG__DEMO_RUNNING;
 
     s = &dm->textPressStart;
     s->x = (DISPLAY_WIDTH / 2);
@@ -128,7 +128,7 @@ void Task_DemoManagerMain(void)
         CreateMusicFadeoutTask(64);
     }
 
-    if (!(gStageFlags & EXTRA_STATE__100)) {
+    if (!(gStageFlags & STAGE_FLAG__100)) {
         Sprite *s = &dm->textPressStart;
 
         if (gStageTime & 0x20) {
@@ -196,7 +196,7 @@ void TaskDestructor_DemoManagerMain(struct Task *t)
     VramFree(dm->textDemoPlay.graphics.dest);
 
     gUnknown_030054E4 = 0;
-    gStageFlags &= ~EXTRA_STATE__DEMO_RUNNING;
+    gStageFlags &= ~STAGE_FLAG__DEMO_RUNNING;
 }
 
 void CreateMusicFadeoutTask(u16 factor)

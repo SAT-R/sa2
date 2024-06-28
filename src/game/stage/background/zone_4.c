@@ -13,6 +13,8 @@
 
 extern const Background gStageCameraBgTemplates[4];
 
+static s16 sCameraShiftX = 0;
+
 void CreateStageBg_Zone4(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
@@ -24,8 +26,8 @@ void CreateStageBg_Zone4(void)
     background->tilemapId = TM_SPOTLIGHT_SNOW;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->layoutVram = (void *)BG_SCREEN_ADDR(27);
-    background->targetTilesX = 0x20;
-    background->targetTilesY = 0x20;
+    background->targetTilesX = 32;
+    background->targetTilesY = 32;
     background->flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3);
     DrawBackground(background);
 
@@ -39,29 +41,22 @@ void CreateStageBg_Zone4(void)
     }
 }
 
-struct UNK_801CDF0 {
-    u8 unk0[0x40A];
-    s16 unk40A;
-};
-
-void StageBgUpdate_Zone4Acts12(s32 a, s32 b)
+void StageBgUpdate_Zone4Acts12(s32 camX, s32 camY)
 {
     Player *player = &gPlayer;
 
     if ((player->moveState & MOVESTATE_8000000)
         && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
-        struct UNK_801CDF0 *unkDF0 = (void *)IWRAM_START;
-        if (unkDF0->unk40A == 0) {
-            unkDF0->unk40A = a;
+        if (sCameraShiftX == 0) {
+            sCameraShiftX = camX;
         }
-        unkDF0->unk40A += player->speedGroundX >> 8;
-        a = unkDF0->unk40A;
+        sCameraShiftX += I(player->speedGroundX);
+        camX = sCameraShiftX;
     } else {
-        struct UNK_801CDF0 *unkDF0 = (void *)IWRAM_START;
-        unkDF0->unk40A = 0;
+        sCameraShiftX = 0;
     }
 
-    if (IS_SINGLE_PLAYER && !(gStageFlags & 0x100)) {
+    if (IS_SINGLE_PLAYER && !(gStageFlags & STAGE_FLAG__100)) {
         gWinRegs[WINREG_WINOUT] = 0x3e;
         gWinRegs[WINREG_WININ] = 0x3f3f;
         gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_WIDTH);
@@ -76,10 +71,10 @@ void StageBgUpdate_Zone4Acts12(s32 a, s32 b)
     DrawBackground(&gStageBackgroundsRam.unk0);
     UpdateBgAnimationTiles(&gStageBackgroundsRam.unk0);
 
-    if (!(gStageTime & 0xF)) {
+    if ((gStageTime % 16u) == 0) {
         gBgScrollRegs[0][0] = (gBgScrollRegs[0][0] - 1) & 0xff;
         gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xff;
     }
-    gBgScrollRegs[3][0] = a >> 4;
-    gBgScrollRegs[3][1] = b >> 6;
+    gBgScrollRegs[3][0] = camX >> 4;
+    gBgScrollRegs[3][1] = camY >> 6;
 }

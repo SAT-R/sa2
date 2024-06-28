@@ -46,7 +46,8 @@ static const u16 unused2 = 0;
 
 void sub_80498CC(u8 bossNum)
 {
-    struct Task *t = TaskCreate(sub_80499D8, 8, 0x4000, 0, sub_8049D1C);
+    struct Task *t
+        = TaskCreate(sub_80499D8, sizeof(UNK_80498CC), 0x4000, 0, sub_8049D1C);
     UNK_80498CC *unk8CC = TASK_DATA(t);
     unk8CC->unk4 = bossNum;
     unk8CC->unk5 = 0;
@@ -128,7 +129,7 @@ void sub_80499D8(void)
                 if (gActiveBossTask == NULL && !(gStageFlags & 0x100)) {
                     gPlayer.checkpointTime = gCourseTime;
                     CreateZoneBoss(7);
-                    gStageFlags &= ~EXTRA_STATE__2;
+                    gStageFlags &= ~STAGE_FLAG__2;
                 }
             } else {
                 r5 = gPlayer.x;
@@ -166,7 +167,7 @@ void sub_80499D8(void)
                 gBossRingsRespawnCount = 10;
                 gPlayer.checkpointTime = gCourseTime;
                 CreateZoneBoss(++unk8CC->unk4);
-                gStageFlags &= ~EXTRA_STATE__2;
+                gStageFlags &= ~STAGE_FLAG__2;
             }
 
             if (gUnknown_080D8808[unk8CC->unk4][0] >= 0 && gActiveBossTask != NULL

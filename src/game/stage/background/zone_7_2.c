@@ -18,8 +18,6 @@ const u16 sZone7BgTransitionRegions[2][NUM_ZONE7_BG_TRANSITION_POSITIONS] = {
 NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone7Acts12.inc",
          void StageBgUpdate_Zone7Acts12(s32 x, s32 y))
 {
-    // NOTE: GCC-Hack
-    // u32 act = (gCurrentLevel - LEVEL_INDEX(ZONE_7, ACT_1)) % 2
     u32 act = (gCurrentLevel ^ (LEVEL_INDEX(ZONE_7, ACT_1))) ? ACT_2 : ACT_1;
     u32 bgId = 0;
     u8 regionId = 0;

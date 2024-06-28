@@ -18,24 +18,24 @@
 
 #define IS_MULTI_PLAYER (!(IS_SINGLE_PLAYER))
 
-#define EXTRA_STATE__CLEAR              0x0000
-#define EXTRA_STATE__ACT_START          0x0001 // Turns timer off, likely other effects?
-#define EXTRA_STATE__2                  0x0002
-#define EXTRA_STATE__4                  0x0004
-#define EXTRA_STATE__10                 0x0010
-#define EXTRA_STATE__DISABLE_PAUSE_MENU 0x0020
-#define EXTRA_STATE__DEMO_RUNNING       0x0040 // TODO: Check accuracy of name
-#define EXTRA_STATE__GRAVITY_INVERTED   0x0080
-#define EXTRA_STATE__100                0x0100 // Set during stage's "loading screen"
-#define EXTRA_STATE__TURN_OFF_TIMER     0x0200
-#define EXTRA_STATE__TURN_OFF_HUD       0x0400
+#define STAGE_FLAG__CLEAR              0x0000
+#define STAGE_FLAG__ACT_START          0x0001 // Turns timer off, likely other effects?
+#define STAGE_FLAG__2                  0x0002
+#define STAGE_FLAG__4                  0x0004
+#define STAGE_FLAG__10                 0x0010
+#define STAGE_FLAG__DISABLE_PAUSE_MENU 0x0020
+#define STAGE_FLAG__DEMO_RUNNING       0x0040 // TODO: Check accuracy of name
+#define STAGE_FLAG__GRAVITY_INVERTED   0x0080
+#define STAGE_FLAG__100                0x0100 // Set during stage's "loading screen"
+#define STAGE_FLAG__TURN_OFF_TIMER     0x0200
+#define STAGE_FLAG__TURN_OFF_HUD       0x0400
 
 #define DIFFICULTY_NORMAL 0
 #define DIFFICULTY_EASY   1
 
 #define MAX_PLAYER_NAME_LENGTH 6
 
-#define GRAVITY_IS_INVERTED (gStageFlags & EXTRA_STATE__GRAVITY_INVERTED)
+#define GRAVITY_IS_INVERTED (gStageFlags & STAGE_FLAG__GRAVITY_INVERTED)
 
 typedef struct {
     u8 unk0;
@@ -48,9 +48,9 @@ typedef struct {
 } UNK_30054A8; /* size: 8 */
 
 typedef struct {
-    s32 unk0;
-    u16 unk4;
-} Struct_30054C0;
+    s32 squarePlayerDistance;
+    u16 angle;
+} HomingTarget;
 
 // Some Multiplayer struct
 struct UNK_3005510 {
@@ -63,10 +63,12 @@ struct UNK_3005510 {
     u8 unk6;
     u8 unk7;
 }; /* 0x8 */
+
+#define CHEESE_DISTANCE_MAX (200 * 200)
 typedef struct {
-    /* 0x00 */ s32 someDistanceSquared;
-    /* 0x04 */ struct Task *t;
-} SomeStruct_3005498; /* size: unknown (but >= 0x8) */
+    /* 0x00 */ s32 squarePlayerDistance;
+    /* 0x04 */ struct Task *task;
+} CheeseTarget; /* size: unknown (but >= 0x8?) */
 
 // Incomplete
 extern u8 gDemoPlayCounter;
@@ -149,7 +151,7 @@ extern s32 gLevelScore;
 extern u8 gNumLives;
 extern u8 gUnknown_030054B0;
 
-extern Struct_30054C0 gUnknown_030054C0;
+extern HomingTarget gHomingTarget;
 
 extern u8 gMultiplayerConnections;
 
@@ -161,7 +163,7 @@ extern u8 gMultiplayerCharRings[MULTI_SIO_PLAYERS_MAX];
 
 extern struct UNK_3005510 gUnknown_03005510[16];
 
-extern SomeStruct_3005498 gUnknown_03005498;
+extern CheeseTarget gCheeseTarget;
 
 extern u8 gUnknown_030055D0[4];
 

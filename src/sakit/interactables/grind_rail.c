@@ -339,8 +339,7 @@ void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
                                 u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
-    struct Task *t
-        = TaskCreate(Task_GrindRail_Air, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_GrindRail_Air, 10, 0x2010, 0, NULL);
     Sprite_GrindRail *rail = TASK_DATA(t);
     rail->kind = railType;
     rail->regionX = spriteRegionX;

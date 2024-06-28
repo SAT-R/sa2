@@ -499,7 +499,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     Sprite *s;
     u32 i, j;
 
-    gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+    gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 
     if (gActiveBossTask == NULL) {
         gActiveBossTask = TaskCreate(Task_TrueArea53BossMain, sizeof(TA53Boss), 0x4000,
@@ -868,7 +868,7 @@ void Task_TrueArea53BossMain(void)
     TA53_unk48 *unk48 = &boss->unk48;
     TA53_unk98 *unk98 = &boss->unk98;
 
-    gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+    gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 
     gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON);
     unk1C->qPos.x += Q(5);
@@ -977,8 +977,8 @@ void Task_804D9DC(void)
         MPlayStop(&gMPlayInfo_SE2);
         MPlayStop(&gMPlayInfo_SE3);
 
-        gStageFlags |= (EXTRA_STATE__DISABLE_PAUSE_MENU | EXTRA_STATE__2
-                        | EXTRA_STATE__ACT_START);
+        gStageFlags
+            |= (STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__2 | STAGE_FLAG__ACT_START);
         sub_802B81C();
         sub_804D8E0(boss);
         sub_80501D4(boss);
@@ -1061,7 +1061,7 @@ void Task_804DC60(void)
 
         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
 
-        gStageFlags |= EXTRA_STATE__TURN_OFF_HUD;
+        gStageFlags |= STAGE_FLAG__TURN_OFF_HUD;
 
         CreateStageUI();
         CreateStageResults(gCourseTime, gRingCount, gSpecialRingCount);
@@ -2541,7 +2541,7 @@ void sub_80501D4(TA53Boss *boss)
     u8 i;
 
     if (unk48->unk4C == 0) {
-        gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+        gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 
         if (boss->unkF == 0) {
             s = &boss->spr7B4;
@@ -2561,11 +2561,11 @@ void sub_80501D4(TA53Boss *boss)
 
             boss->unkF = 1;
         } else if (boss->lives != 0) {
-            gStageFlags &= ~EXTRA_STATE__DISABLE_PAUSE_MENU;
+            gStageFlags &= ~STAGE_FLAG__DISABLE_PAUSE_MENU;
         }
         boss->unk10 &= ~0x1;
     } else {
-        gStageFlags |= EXTRA_STATE__DISABLE_PAUSE_MENU;
+        gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
     }
 
     if (boss->unk10 & 0x1) {
@@ -2574,7 +2574,7 @@ void sub_80501D4(TA53Boss *boss)
         gDispCnt |= DISPCNT_BG2_ON;
     }
 
-    if (gStageFlags & EXTRA_STATE__100) {
+    if (gStageFlags & STAGE_FLAG__100) {
         return;
     }
 

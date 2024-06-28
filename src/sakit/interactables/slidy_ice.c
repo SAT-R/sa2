@@ -61,7 +61,7 @@ void Task_SlidyIce(void)
 void CreateEntity_SlidyIce(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
                            u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_SlidyIce, 0xC, 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_SlidyIce, sizeof(Sprite_SlidyIce), 0x2010, 0, NULL);
 
     Sprite_SlidyIce *ice = TASK_DATA(t);
     ice->base.regionX = spriteRegionX;

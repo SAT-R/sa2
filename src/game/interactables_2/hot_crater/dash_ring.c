@@ -111,8 +111,8 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 {
     u32 ringType = DASH_RING__TYPE_REGULAR;
 
-    struct Task *t = TaskCreate(Task_Interactable_DashRing, 0x80, 0x2010, 0,
-                                TaskDestructor_Interactable_DashRing);
+    struct Task *t = TaskCreate(Task_Interactable_DashRing, sizeof(Sprite_DashRing),
+                                0x2010, 0, TaskDestructor_Interactable_DashRing);
 
     Sprite_DashRing *ring = TASK_DATA(t);
     ring->orientation = me->d.sData[0];
