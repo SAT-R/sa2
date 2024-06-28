@@ -35,9 +35,9 @@ struct Task *gGameStageTask = NULL;
 
 extern u32 sMPStageStartFrameCount;
 
-void Task_GameStageMain(void);
+void Task_GameStage(void);
 
-void sub_801B7A8(struct Task *);
+void TaskDestructor_GameStage(struct Task *);
 void sub_801F044(void);
 
 void sub_80213C0(u32, u32, Player *);
@@ -188,7 +188,7 @@ void GameStageStart(void)
 void CreateGameStage(void)
 {
     u8 i;
-    gGameStageTask = TaskCreate(Task_GameStageMain, 0, 0xff00, 0, sub_801B7A8);
+    gGameStageTask = TaskCreate(Task_GameStage, 0, 0xff00, 0, TaskDestructor_GameStage);
     gActiveCollectRingEffectCount = 0;
     gSpecialRingCount = 0;
     gUnknown_030054B0 = 0;
@@ -302,7 +302,7 @@ void CreateGameStage(void)
     }
 }
 
-void Task_GameStageMain(void)
+void Task_GameStage(void)
 {
     u16 sioId = SIO_MULTI_CNT->id;
     u32 timeStep;
@@ -407,7 +407,9 @@ void Task_GameStageMain(void)
             }
 
             if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_BOSS)) {
-                CreateScreenShake(0x800, 8, 16, -1, 208);
+                CreateScreenShake(0x800, 8, 16, -1,
+                                  (SCREENSHAKE_VERTICAL | SCREENSHAKE_HORIZONTAL
+                                   | SCREENSHAKE_RANDOM_VALUE));
             }
             gPlayer.moveState |= MOVESTATE_DEAD;
             m4aSongNumStart(SE_TIME_UP);
@@ -656,7 +658,7 @@ void GoToNextLevel(void)
     }
 }
 
-void sub_801B7A8(struct Task *t)
+void TaskDestructor_GameStage(struct Task *t)
 {
     gGameStageTask = NULL;
     m4aMPlayAllStop();

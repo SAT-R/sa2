@@ -311,11 +311,11 @@ static void Task_StageWaterTask(void)
 
     unk2_0 = (water->unk2);
     if ((unk2_2 = unk2_0 - 1) < DISPLAY_HEIGHT - 1) {
-        gIntrTable[3] = VCountIntr_8011ACC;
+        gIntrTable[INTR_INDEX_VCOUNT] = VCountIntr_8011ACC;
         gUnknown_03002874 = unk2_2;
         gFlags |= FLAGS_40;
     } else {
-        gIntrTable[3] = gIntrTableTemplate[3];
+        gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
         gFlags &= ~FLAGS_40;
     }
 }
@@ -469,7 +469,7 @@ void TaskDestructor_WaterSurface(struct Task *t)
     Water *water = &gWater;
 
     gFlags &= ~FLAGS_40;
-    gIntrTable[3] = gIntrTableTemplate[3];
+    gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
     water->t = NULL;
 }
 
