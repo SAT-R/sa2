@@ -230,7 +230,7 @@ void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)
         s->graphics.anim = SA2_ANIM_WATER_SURFACE;
         s->variant = 0;
         s->prevVariant |= -1;
-        s->oamFlags = 0;
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;

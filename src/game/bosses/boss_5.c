@@ -630,7 +630,7 @@ void sub_80438C4(EggSaucer *boss)
         y2 += (boss->unk36[1][idx]);
         s->x = x + (x2 >> 3);
         s->y = y + (y2 >> 3);
-        s->oamFlags = (19 - i) * 0x40;
+        s->oamFlags = SPRITE_OAM_ORDER(19 - i);
         DisplaySprite(s);
     }
 
@@ -700,7 +700,7 @@ void sub_8043BEC(EggSaucer *boss)
     for (i = 0; i < 6; i++) {
         s->x = I(boss->unkDC[i][0]) - gCamera.x;
         s->y = I(boss->unkDC[i][1]) - gCamera.y;
-        s->oamFlags = (19 - i) * 0x40;
+        s->oamFlags = SPRITE_OAM_ORDER(19 - i);
         DisplaySprite(s);
     }
 

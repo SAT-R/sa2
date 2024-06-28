@@ -22,7 +22,7 @@ struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant,
     s->x = 0;
     s->y = 0;
     s->graphics.dest = NULL;
-    s->oamFlags = 0;
+    s->oamFlags = SPRITE_OAM_ORDER(0);
     s->graphics.size = 0;
     s->graphics.anim = anim;
     s->variant = variant;

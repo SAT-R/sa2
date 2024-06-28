@@ -44,7 +44,7 @@ struct Task *sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main,
     s->graphics.anim = 0;
     s->variant = 0;
     s->prevVariant = -1;
-    s->oamFlags = 0;
+    s->oamFlags = SPRITE_OAM_ORDER(0);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;

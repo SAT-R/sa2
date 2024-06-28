@@ -115,7 +115,7 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
         s->frameFlags = 0x107E;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = (DISPLAY_HEIGHT / 2);
-        s->oamFlags = 0;
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->timeUntilNextFrame = 0;
         s->prevAnim = -1;
 
@@ -317,7 +317,7 @@ void sub_806D548(Sprite *s, void *vram, s16 a, u8 b, const struct UNK_80DF670 *c
     s->frameFlags = unk10;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = a;
-    s->oamFlags = b << 6;
+    s->oamFlags = SPRITE_OAM_ORDER(b);
     s->timeUntilNextFrame = 0;
     s->prevAnim = 0xffff;
     s->variant = c4->variant;

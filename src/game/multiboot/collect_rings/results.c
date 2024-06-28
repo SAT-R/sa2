@@ -616,12 +616,12 @@ void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 }
 
 void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y,
-                 u16 unk1A, u8 unk25, u32 unk10)
+                 u16 oamFlags, u8 unk25, u32 unk10)
 {
     s->x = x;
     s->y = y;
     s->graphics.dest = vramAddr;
-    s->oamFlags = unk1A;
+    s->oamFlags = oamFlags;
     s->graphics.size = 0;
     s->graphics.anim = animId;
     s->variant = variant;

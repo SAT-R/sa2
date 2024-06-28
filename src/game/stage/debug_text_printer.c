@@ -40,7 +40,7 @@ struct Task *Debug_CreateAsciiTask(s16 x, s16 y)
                 = (printer->chars[0].graphics.dest + (i * DBG_UI_CHAR_SIZE));
         }
 
-        s->oamFlags = 0;
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->graphics.anim = SA2_ANIM_ASCII;
 
