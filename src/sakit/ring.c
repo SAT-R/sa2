@@ -41,7 +41,8 @@ void CreateMagneticRing(s16 x, s16 y)
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->frameFlags = (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2));
+    s->frameFlags
+        = (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2));
 }
 
 // (88.87%) https://decomp.me/scratch/EmhmV

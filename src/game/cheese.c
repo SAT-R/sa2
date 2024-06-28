@@ -190,7 +190,9 @@ void sub_801412C(Cheese *cheese)
         temp ^= 0x800;
     }
 
-    s->frameFlags = (temp | (s->frameFlags & ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP))) & ~SPRITE_FLAG_MASK_PRIORITY;
+    s->frameFlags
+        = (temp | (s->frameFlags & ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP)))
+        & ~SPRITE_FLAG_MASK_PRIORITY;
     s->frameFlags |= (unk54->unk68->frameFlags) & SPRITE_FLAG_MASK_PRIORITY;
     UpdateSpriteAnimation(s);
     if (!(cheese->unkC & 2)) {
