@@ -227,7 +227,6 @@ SECTIONS
         src/game/bosses/boss_5.o(.text);
         src/game/bosses/boss_6.o(.text);
         src/game/bosses/boss_7.o(.text);
-        src/game/bosses/boss_run.o(.text);
         src/game/bosses/boss_8.o(.text);
         src/game/bosses/boss_9.o(.text);
         src/game/enemies/projectiles.o(.text);
@@ -494,10 +493,6 @@ SECTIONS
         src/game/bosses/boss_5.o(.rodata);
         src/game/bosses/boss_6.o(.rodata);
         src/game/bosses/boss_7.o(.rodata);
-        src/game/bosses/boss_run.o(.rodata);
-#if (CPU_ARCH_ARM == 1)
-        asm/boss_run.o(.rodata);
-#endif
         src/game/bosses/boss_8.o(.rodata);
         src/game/bosses/boss_9.o(.rodata);
         src/game/enemies/kubinaga.o(.rodata);
