@@ -29,9 +29,9 @@
 #include "constants/songs.h"
 #include "constants/tilemaps.h"
 
-#define BOSS_8_ARM_LEFT  0
-#define BOSS_8_ARM_RIGHT 1
-#define BOSS_8_ARM_COUNT 2
+#define ARM_LEFT  0
+#define ARM_RIGHT 1
+#define ARM_COUNT 2
 
 typedef struct {
     /* 0x00 */ Sprite s;
@@ -41,26 +41,26 @@ typedef struct {
 typedef struct {
     /*  0x00 */ Vec2_32 qPos;
     /*  0x08 */ u8 livesCockpit;
-    /*  0x09 */ u8 livesArms[BOSS_8_ARM_COUNT];
+    /*  0x09 */ u8 livesArms[ARM_COUNT];
     /*  0x0B */ u8 unkB;
     /*  0x0C */ u8 unkC;
     /*  0x0E */ u16 unkE;
     /*  0x10 */ u16 unk10; // rotationHead ?
     /*  0x12 */ u8 unk12;
     /*  0x14 */ u32 unk14;
-    /*  0x18 */ Vec2_32 qUnk18[BOSS_8_ARM_COUNT];
-    /*  0x28 */ u16 rotation[BOSS_8_ARM_COUNT];
-    /*  0x2C */ u16 rotation2[BOSS_8_ARM_COUNT];
-    /*  0x30 */ u16 unk30[BOSS_8_ARM_COUNT];
-    /*  0x34 */ s16 qUnk34[BOSS_8_ARM_COUNT][2];
-    /*  0x3C */ u8 unk3C[BOSS_8_ARM_COUNT];
-    /*  0x3E */ u8 unk3E[BOSS_8_ARM_COUNT];
-    /*  0x40 */ u8 unk40[BOSS_8_ARM_COUNT];
-    /*  0x42 */ u8 unk42[BOSS_8_ARM_COUNT];
+    /*  0x18 */ Vec2_32 qUnk18[ARM_COUNT];
+    /*  0x28 */ u16 rotation[ARM_COUNT];
+    /*  0x2C */ u16 rotation2[ARM_COUNT];
+    /*  0x30 */ u16 unk30[ARM_COUNT];
+    /*  0x34 */ s16 qUnk34[ARM_COUNT][2];
+    /*  0x3C */ u8 unk3C[ARM_COUNT];
+    /*  0x3E */ u8 unk3E[ARM_COUNT];
+    /*  0x40 */ u8 unk40[ARM_COUNT];
+    /*  0x42 */ u8 unk42[ARM_COUNT];
     /*  0x44 */ void *tilesCloud;
     /*  0x48 */ ScreenFade fade;
     /*  0x54 */ BossSprite bsHead;
-    /*  0x90 */ BossSprite bsArms[BOSS_8_ARM_COUNT];
+    /*  0x90 */ BossSprite bsArms[ARM_COUNT];
     /* 0x108 */ Background body;
 } SuperEggRoboZ; /* size: 0x148 */
 
@@ -73,7 +73,7 @@ typedef struct {
 } UNK_80498CC;
 
 typedef struct {
-    Sprite unk0[3][2];
+    Sprite unk0[3][ARM_COUNT];
     s32 unk120;
     s32 unk124[3][2];
     s32 unk13C[3][2];
@@ -159,7 +159,7 @@ const UNK_8049D20Callback gUnknown_080D8874[] = {
 };
 
 const u16 gUnknown_080D8888[2][2] = { { Q(188), Q(110) }, { Q(162), Q(110) } };
-const EggRoboFn gUnknown_080D8890[8]
+static const EggRoboFn sArmFuncs[8]
     = { sub_804B43C, sub_804B594, sub_804B734, sub_804B984,
         sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240 };
 
@@ -172,7 +172,7 @@ const u16 sArmPalettes[2][16] = {
     {                                                                                   \
         Sprite *s = &boss->bsArms[arm].s;                                               \
                                                                                         \
-        if (arm != BOSS_8_ARM_LEFT) {                                                   \
+        if (arm != ARM_LEFT) {                                                          \
             s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;                     \
             s->variant = vNum;                                                          \
         } else {                                                                        \
@@ -361,10 +361,10 @@ void TaskDestructor_8049D1C(struct Task *t) { }
 void sub_8049D20(void *vram, SuperEggRoboZ *boss)
 {
     u8 i, j;
-    void *vrams[2];
     struct Task *t
         = TaskCreate(sub_8049E90, sizeof(UNK_8049D20), 0x4080, 0, sub_804A6B4);
     UNK_8049D20 *unkD20 = TASK_DATA(t);
+    void *vrams[ARM_COUNT];
     Sprite *s;
 
     unkD20->unk15D = 0;
@@ -382,7 +382,8 @@ void sub_8049D20(void *vram, SuperEggRoboZ *boss)
         unkD20->unk13C[i][1] = 0;
         unkD20->unk154[i] = (i + 2) * 300;
         unkD20->unk15A[i] = 0;
-        for (j = 0; j < 2; j++) {
+
+        for (j = 0; j < ARRAY_COUNT(vrams); j++) {
             s = &unkD20->unk0[i][j];
             s->x = 80;
             s->y = 80;
@@ -735,12 +736,12 @@ void CreateSuperEggRoboZ(void)
 
     if (gDifficultyLevel != DIFFICULTY_NORMAL) {
         boss->livesCockpit = 6;
-        boss->livesArms[BOSS_8_ARM_LEFT] = 4;
-        boss->livesArms[BOSS_8_ARM_RIGHT] = 4;
+        boss->livesArms[ARM_LEFT] = 4;
+        boss->livesArms[ARM_RIGHT] = 4;
     } else {
         boss->livesCockpit = 8;
-        boss->livesArms[BOSS_8_ARM_LEFT] = 6;
-        boss->livesArms[BOSS_8_ARM_RIGHT] = 6;
+        boss->livesArms[ARM_LEFT] = 6;
+        boss->livesArms[ARM_RIGHT] = 6;
     }
 
     boss->qPos.x = Q(42876);
@@ -753,7 +754,7 @@ void CreateSuperEggRoboZ(void)
     boss->tilesCloud = VramMalloc(32);
     sub_8049D20(boss->tilesCloud, boss);
 
-    for (arm = 0; arm < BOSS_8_ARM_COUNT; arm++) {
+    for (arm = 0; arm < ARM_COUNT; arm++) {
         boss->rotation[arm] = (SIN_PERIOD / 2);
         boss->rotation2[arm] = (SIN_PERIOD / 2);
         boss->qUnk18[arm].x = Q(0.0);
@@ -903,8 +904,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc",
     sub_804CA08(boss);
     sub_804AE40(boss);
 
-    gUnknown_080D8890[boss->unk3C[BOSS_8_ARM_LEFT]](boss, BOSS_8_ARM_LEFT);
-    gUnknown_080D8890[boss->unk3C[BOSS_8_ARM_RIGHT]](boss, BOSS_8_ARM_RIGHT);
+    sArmFuncs[boss->unk3C[ARM_LEFT]](boss, ARM_LEFT);
+    sArmFuncs[boss->unk3C[ARM_RIGHT]](boss, ARM_RIGHT);
 
     sub_804C5B8(boss);
     sub_804C830(boss);
@@ -974,7 +975,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc",
         fade->bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
         fade->bldAlpha = 0;
 
-        for (arm = 0; arm < BOSS_8_ARM_COUNT; arm++) {
+        for (arm = 0; arm < ARM_COUNT; arm++) {
             Sprite *sprArm;
             u16 anim;
             // _0804ACB2
@@ -1010,8 +1011,8 @@ void Task_804AD68(void)
         sub_804CC98(boss);
         sub_804CA08(boss);
 
-        gUnknown_080D8890[boss->unk3C[BOSS_8_ARM_LEFT]](boss, BOSS_8_ARM_LEFT);
-        gUnknown_080D8890[boss->unk3C[BOSS_8_ARM_RIGHT]](boss, BOSS_8_ARM_RIGHT);
+        sArmFuncs[boss->unk3C[ARM_LEFT]](boss, ARM_LEFT);
+        sArmFuncs[boss->unk3C[ARM_RIGHT]](boss, ARM_RIGHT);
 
         sub_804C5B8(boss);
         sub_804CA70(boss);
@@ -1769,7 +1770,7 @@ void sub_804C3AC(SuperEggRoboZ *boss)
     sub_8004860(s, tf);
     DisplaySprite(s);
 
-    for (i = 0; i < BOSS_8_ARM_COUNT; i++) {
+    for (i = 0; i < ARM_COUNT; i++) {
         s = &boss->bsArms[i].s;
         tf = &boss->bsArms[i].transform;
 
@@ -1858,7 +1859,7 @@ void sub_804C5B8(SuperEggRoboZ *boss)
     sub_8004860(s, tf);
     DisplaySprite(s);
 
-    for (i = 0; i < BOSS_8_ARM_COUNT; i++) {
+    for (i = 0; i < ARM_COUNT; i++) {
         if (boss->unk42[i] != 0) {
             continue;
         }
