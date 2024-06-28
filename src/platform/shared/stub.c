@@ -22,15 +22,6 @@ u32 sub_800D0A0(Sprite *s, s16 x, s16 y, s16 param3, s16 param4, u8 param5, u32 
 // boss_5
 void sub_802E784(u16 p0, u16 p1, u16 p2, s16 x, s16 y, s16 p5) { }
 
-extern void sub_8048C7C(void *boss);
-
-// boss run
-const u32 gUnknown_080D8808[][2] = { { 0, 0 } };
-const u8 gUnknown_080D8858[][2] = { { 0, 0 } };
-const u32 gUnknown_080D8874[] = { 0 };
-const TileInfo gUnknown_080D8864[] = { { 0, 0, 0 } };
-const s32 gUnknown_080D8840[][2] = { { 0, 0 } };
-
 // math
 void sub_80835E0(struct UNK_8085F1C *p0, s32 *p1) { }
 void sub_8083B88(struct UNK_8085F1C_1 *p0, struct UNK_8085F1C_1 *p1,
