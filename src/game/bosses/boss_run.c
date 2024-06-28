@@ -12,6 +12,7 @@
 
 #include "lib/m4a.h"
 
+#include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/player_transitions.h"
 
@@ -26,8 +27,6 @@ typedef struct {
     u8 unk6;
 } UNK_80498CC;
 
-static const u16 unused = 0;
-
 const u16 gUnknown_080D87D8[] = {
     6400, 13888, 18016, 23104, 29152, 38080, 43091,
 };
@@ -37,12 +36,50 @@ const u16 gUnknown_080D87E6[][2] = {
     { 28585, 177 }, { 37484, 201 }, { 41600, 225 }, { 41600, 225 },
 };
 
-static const u16 unused2 = 0;
+const s32 gUnknown_080D8808[][2] = {
+    { 5376, -4512 },  { 12864, -5952 }, { 17088, -2688 }, { 22080, -3552 },
+    { 28128, -4512 }, { 37058, -7394 }, { 42240, -3648 },
+};
 
-// const s32 gUnknown_080D8808[][2] = {
-//     { 5376, -4512 },  { 12864, -5952 }, { 17088, -2688 }, { 22080, -3552 },
-//     { 28128, -4512 }, { 37058, -7394 }, { 42240, -3648 },
-// };
+const s32 gUnknown_080D8840[][2] = {
+    { 42869, 287 },
+    { 42943, 287 },
+    { 43017, 287 },
+};
+
+const u8 gUnknown_080D8858[][2] = { 1, 1, 2, 60, 3, 120, 4, 129, 0, 180, 0, 0 };
+
+const TileInfo gUnknown_080D8864[] = {
+    { 0, SA2_ANIM_SUPER_EGG_ROBO_Z_PLATFORM, 0 },
+    { 0, SA2_ANIM_SUPER_EGG_ROBO_Z_PLATFORM_PROP, 0 },
+};
+
+// TODO: These types are from boss_8.c
+//       Remove once moved over!
+typedef struct {
+} SuperEggRoboZ;
+typedef struct {
+    Sprite unk0[3][2];
+    s32 unk120;
+    s32 unk124[3][2];
+    s32 unk13C[3][2];
+    u16 unk154[3];
+    u8 unk15A[3];
+    u8 unk15D;
+    u8 unk15E;
+    u8 unk15F;
+    SuperEggRoboZ *unk160;
+} UNK_8049D20; /* 0x164 */
+typedef void (*UNK_8049D20Callback)(UNK_8049D20 *, u8);
+extern void sub_8049F1C(UNK_8049D20 *unkD20, u8 i);
+extern void sub_804A070(UNK_8049D20 *unkD20, u8 i);
+extern void sub_804A1C0(UNK_8049D20 *unkD20, u8 i);
+extern void sub_804A398(UNK_8049D20 *unkD20, u8 i);
+extern void sub_804A53C(UNK_8049D20 *unkD20, u8 i);
+
+const UNK_8049D20Callback gUnknown_080D8874[] = {
+    sub_8049F1C, sub_804A070, sub_804A1C0, sub_804A398, sub_804A53C,
+};
 
 void sub_80498CC(u8 bossNum)
 {
@@ -87,8 +124,6 @@ void sub_80498CC(u8 bossNum)
         unk8CC->unk4--;
     }
 }
-
-extern const s32 gUnknown_080D8808[][2];
 
 void sub_80499D8(void)
 {

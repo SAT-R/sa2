@@ -217,7 +217,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
         s32 someWidth;
         s32 someY;
         s32 otherY;
-#if 1
+#if 0
         // This path somehow gets a higher percentage, while less instructions match
         // Also right_ being s8 is WRONG, it's 16bits!!!
         s8 right_ = left;
