@@ -251,7 +251,7 @@ void sub_8071380(Sprite *s, void *vram, s16 x, s16 y, u8 b, const struct UNK_80D
     s->prevAnim = 0xffff;
     s->variant = c4->variant;
     s->prevVariant = 0xff;
-    s->animSpeed = c4->unk6;
+    s->animSpeed = c4->animSpeed;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     UpdateSpriteAnimation(s);
@@ -345,6 +345,6 @@ static void RenderGuardRobo(Sprite *s, s16 x, s16 y, u8 b,
     s->y = y;
     s->oamFlags = SPRITE_OAM_ORDER(b);
     s->variant = spriteConfig->variant;
-    s->animSpeed = spriteConfig->unk6;
+    s->animSpeed = spriteConfig->animSpeed;
     UpdateSpriteAnimation(s);
 }

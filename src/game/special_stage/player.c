@@ -39,7 +39,7 @@ static const struct UNK_80DF670 gUnknown_080DF668 = {
     .anim = SA2_ANIM_SP_STAGE_HOLE,
     .variant = 0,
     .unk4 = 2,
-    .unk6 = 16,
+    .animSpeed = SPRITE_ANIM_SPEED(1.0),
     .unk7 = 0,
 };
 
@@ -319,10 +319,10 @@ void sub_806D548(Sprite *s, void *vram, s16 a, u8 b, const struct UNK_80DF670 *c
     s->y = a;
     s->oamFlags = SPRITE_OAM_ORDER(b);
     s->timeUntilNextFrame = 0;
-    s->prevAnim = 0xffff;
+    s->prevAnim = -1;
     s->variant = c4->variant;
     s->prevVariant = -1;
-    s->animSpeed = c4->unk6;
+    s->animSpeed = c4->animSpeed;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     UpdateSpriteAnimation(s);
