@@ -118,7 +118,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->x = (DISPLAY_WIDTH / 2);
     s3->y = DISPLAY_HEIGHT - 20;
     s3->graphics.dest = (void *)OBJ_VRAM0;
-    s3->unk1A = 0x3C0;
+    s3->oamFlags = 0x3C0;
     s3->graphics.size = 0;
     s3->graphics.anim = SA2_ANIM_MP_MSG;
     s3->variant = outcome + SA2_ANIM_VARIANT_MP_MSG_OK;
@@ -133,7 +133,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->x = (DISPLAY_WIDTH / 2);
     s3->y = 36;
     s3->graphics.dest = (void *)OBJ_VRAM0 + 0x2000;
-    s3->unk1A = 0x3C0;
+    s3->oamFlags = 0x3C0;
     s3->graphics.size = 0;
     s3->graphics.anim = sCheeseSittingAnims[outcome];
     s3->variant = sCheeseSittingVariants[outcome];
@@ -148,7 +148,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->x = (DISPLAY_WIDTH / 2);
     s3->y = DISPLAY_HEIGHT - 40;
     s3->graphics.dest = (void *)OBJ_VRAM0 + 0x4000;
-    s3->unk1A = 0x3C0;
+    s3->oamFlags = 0x3C0;
     s3->graphics.size = 0;
     s3->graphics.anim = sCheeseSittingAnims[outcome];
     s3->variant = sCheeseSittingVariants[outcome];

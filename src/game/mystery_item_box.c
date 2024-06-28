@@ -94,7 +94,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
     s->palId = 0;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->hitboxes[0].index = -1;
     s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     s->graphics.dest = VramMalloc(16);
@@ -109,7 +109,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
     s->palId = 0;
-    s->unk1A = SPRITE_OAM_ORDER(19);
+    s->oamFlags = SPRITE_OAM_ORDER(19);
     s->hitboxes[0].index = -1;
     s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     s->graphics.dest = VramMalloc(4);

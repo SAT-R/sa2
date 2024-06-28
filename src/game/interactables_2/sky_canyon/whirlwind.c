@@ -460,9 +460,9 @@ void sub_807CE94(Sprite_IA86 *ia086)
             s2->y = someY;
 
             if (unk086->unk4 < 124) {
-                unk086->s->unk1A = 0x180;
+                unk086->s->oamFlags = 0x180;
             } else {
-                unk086->s->unk1A = 0x480;
+                unk086->s->oamFlags = 0x480;
             }
 
             if (unk086->unkC > -Q(16))

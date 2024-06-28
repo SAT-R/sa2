@@ -102,7 +102,7 @@ static void CreateEntity_Fan(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     prop->base.spriteY = spriteY;
 
     s = &prop->s;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

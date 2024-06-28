@@ -97,7 +97,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     cs->unk8 = 0x200;
     cs->unkC = 0;
     cs->unk10 = 0;
-    cs->s->unk1A = 0x480;
+    cs->s->oamFlags = 0x480;
 
     cs->s->graphics.size = 0;
     cs->s->animCursor = 0;
@@ -130,7 +130,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
             if (i == 1) {
                 cs->unk4 = 4;
-                cs->s->unk1A = 0x480;
+                cs->s->oamFlags = 0x480;
 
                 cs->s->graphics.size = 0;
                 cs->s->animCursor = 0;
@@ -157,7 +157,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         cs->unkC = 0;
 
         cs->unk10 = 0xC00;
-        cs->s->unk1A = 0x480;
+        cs->s->oamFlags = 0x480;
         cs->s->graphics.size = 0;
         cs->s->animCursor = 0;
         cs->s->timeUntilNextFrame = 0;

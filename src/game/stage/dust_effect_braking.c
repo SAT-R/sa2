@@ -67,7 +67,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
 
         s->graphics.size = 0;
         s->prevVariant = -1;
-        s->unk1A = SPRITE_OAM_ORDER(8);
+        s->oamFlags = SPRITE_OAM_ORDER(8);
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;

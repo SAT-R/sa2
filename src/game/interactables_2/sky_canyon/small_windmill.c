@@ -59,7 +59,7 @@ void CreateEntity_SmallWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     windmill->base.spriteY = spriteY;
 
     s = &windmill->s;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

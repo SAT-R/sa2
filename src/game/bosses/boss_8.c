@@ -781,7 +781,7 @@ void CreateSuperEggRoboZ(void)
             s->variant = 0;
         }
 
-        s->unk1A = SPRITE_OAM_ORDER(27 + (arm * 4));
+        s->oamFlags = SPRITE_OAM_ORDER(27 + (arm * 4));
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -823,7 +823,7 @@ void CreateSuperEggRoboZ(void)
     s->graphics.dest = VramMalloc(8 * 8);
     s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_HEAD;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(31);
+    s->oamFlags = SPRITE_OAM_ORDER(31);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

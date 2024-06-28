@@ -511,7 +511,7 @@ void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
     s->prevVariant = -1;
     s->x = I(p->x);
     s->y = I(p->y);
-    s->unk1A = SPRITE_OAM_ORDER(16 + unk60);
+    s->oamFlags = SPRITE_OAM_ORDER(16 + unk60);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
 
@@ -562,7 +562,7 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
     s->prevVariant = -1;
     s->x = I(p->x);
     s->y = I(p->y);
-    s->unk1A = SPRITE_OAM_ORDER(17);
+    s->oamFlags = SPRITE_OAM_ORDER(17);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
 
@@ -5521,7 +5521,7 @@ struct Task *sub_8028640(s32 x, s32 y, s32 p2)
     s->graphics.dest = VramMalloc(gUnknown_080D69A6[p2_][0]);
     s->graphics.anim = gUnknown_080D69A6[p2_][1];
     s->variant = gUnknown_080D69A6[p2_][2];
-    s->unk1A = SPRITE_OAM_ORDER(7);
+    s->oamFlags = SPRITE_OAM_ORDER(7);
     s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     return t;

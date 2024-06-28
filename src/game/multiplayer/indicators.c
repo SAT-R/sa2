@@ -48,7 +48,7 @@ void CreateOpponentPositionIndicator(u8 sid)
     spr = &pi->spr;
     transform = &pi->transform;
     spr->graphics.dest = RESERVED_INDICATOR_TILES_VRAM;
-    spr->unk1A = 0x40;
+    spr->oamFlags = SPRITE_OAM_ORDER(1);
     spr->graphics.size = 0;
     spr->animCursor = 0;
     spr->timeUntilNextFrame = 0;
@@ -78,7 +78,7 @@ void CreateSelfPositionIndicator(void)
 
     spr = &pi->spr;
     spr->graphics.dest = RESERVED_INDICATOR_TILES_VRAM;
-    spr->unk1A = 0x40;
+    spr->oamFlags = SPRITE_OAM_ORDER(1);
     spr->graphics.size = 0;
     spr->animCursor = 0;
     spr->timeUntilNextFrame = 0;

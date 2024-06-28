@@ -5402,7 +5402,7 @@ void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
     s->frameFlags = assetId;
     s->x = xPos;
     s->y = yPos;
-    s->unk1A = SPRITE_OAM_ORDER(oamOrder);
+    s->oamFlags = SPRITE_OAM_ORDER(oamOrder);
     s->timeUntilNextFrame = 0;
     s->prevAnim = -1;
     s->variant = variant;

@@ -104,7 +104,7 @@ void CreateMultiplayerPlayer(u8 id)
     }
 
     s = &mpp->s;
-    s->unk1A = SPRITE_OAM_ORDER(16);
+    s->oamFlags = SPRITE_OAM_ORDER(16);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -446,9 +446,9 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         && ((gStageTime & 2 || mpp->unk57 & 0x20 || mpp->unk5C & 1
              || gUnknown_030054B4[mpp->unk56] != -1)
             || (mpp->unk60 == 0 && !(mpp->unk54 & 4) && !(mpp->unk5C & 2)))) {
-        s->unk1A = 0x400;
+        s->oamFlags = 0x400;
         if (mpp->unk54 & 0x80) {
-            s->unk1A |= 0x40;
+            s->oamFlags |= 0x40;
         }
 
         s->frameFlags &= ~(0x100 | 0x80);

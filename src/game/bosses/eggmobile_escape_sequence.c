@@ -41,7 +41,7 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
     s->graphics.dest = VramMalloc(8);
     s->graphics.anim = SA2_ANIM_EGGMAN_HEAD;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(25);
+    s->oamFlags = SPRITE_OAM_ORDER(25);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -58,7 +58,7 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
     s->graphics.dest = VramMalloc(36);
     s->graphics.anim = SA2_ANIM_EGGMOBILE;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(24);
+    s->oamFlags = SPRITE_OAM_ORDER(24);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

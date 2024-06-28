@@ -180,7 +180,7 @@ void sub_808207C(void)
 
                 s->x = 0;
                 s->y = 0;
-                s->unk1A = SPRITE_OAM_ORDER(4);
+                s->oamFlags = SPRITE_OAM_ORDER(4);
                 s->graphics.size = 0;
 #ifndef NON_MATCHING
                 var = 0x44c;
@@ -226,7 +226,7 @@ void sub_808207C(void)
             } else {
                 s->graphics.dest = resultsScreen->unk340.graphics.dest + 0x180;
             }
-            s->unk1A = SPRITE_OAM_ORDER(0);
+            s->oamFlags = SPRITE_OAM_ORDER(0);
             s->graphics.size = 0;
 
             switch (gMultiplayerLanguage) {
@@ -621,7 +621,7 @@ void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y
     s->x = x;
     s->y = y;
     s->graphics.dest = vramAddr;
-    s->unk1A = unk1A;
+    s->oamFlags = unk1A;
     s->graphics.size = 0;
     s->graphics.anim = animId;
     s->variant = variant;

@@ -66,7 +66,7 @@ void CreateDemoManager(void)
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk1A = SPRITE_OAM_ORDER(1);
+    s->oamFlags = SPRITE_OAM_ORDER(1);
     s->frameFlags = 0;
 
     if (blendCtrl != BLDCNT_EFFECT_BLEND) {
@@ -88,7 +88,7 @@ void CreateDemoManager(void)
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk1A = SPRITE_OAM_ORDER(1);
+    s->oamFlags = SPRITE_OAM_ORDER(1);
     s->frameFlags = 0;
 
     if (blendCtrl != BLDCNT_EFFECT_BLEND) {

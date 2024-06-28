@@ -230,7 +230,7 @@ void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)
         s->graphics.anim = SA2_ANIM_WATER_SURFACE;
         s->variant = 0;
         s->prevVariant |= -1;
-        s->unk1A = 0;
+        s->oamFlags = 0;
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
@@ -339,7 +339,7 @@ void CreateRunOnWaterEffect(void)
     s->graphics.anim = SA2_ANIM_WATER_RUNNING_PARTICLES;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(7);
+    s->oamFlags = SPRITE_OAM_ORDER(7);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -383,7 +383,7 @@ struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
     s->graphics.dest = VramMalloc(12);
     s->graphics.anim = SA2_ANIM_WATER_FALL_HIT_SURFACE;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(7);
+    s->oamFlags = SPRITE_OAM_ORDER(7);
     s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     return t;

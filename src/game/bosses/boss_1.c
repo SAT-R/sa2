@@ -538,7 +538,7 @@ static void sub_803AC2C(EggHammerTankII *boss)
     DisplaySprite(s);
 
     s = &boss->armSegment;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     x = I(boss->x) - gCamera.x;
     y = I(boss->y) - gCamera.y;
 
@@ -582,7 +582,7 @@ static void sub_803AC2C(EggHammerTankII *boss)
     }
 
     s = &boss->armSegment;
-    s->unk1A = SPRITE_OAM_ORDER(25);
+    s->oamFlags = SPRITE_OAM_ORDER(25);
 
     for (i = 0; i < 6; i++) {
         s->x = x - 8
@@ -1414,7 +1414,7 @@ static void sub_803C198(EggHammerTankII *boss)
     }
 
     s = &boss->armSegment;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
 
     for (i = 6; i > -1; i--) {
         s->x = I(unkB4->unkF8[i][0]) - gCamera.x;
@@ -1425,7 +1425,7 @@ static void sub_803C198(EggHammerTankII *boss)
     }
 
     s = &boss->armSegment;
-    s->unk1A = SPRITE_OAM_ORDER(25);
+    s->oamFlags = SPRITE_OAM_ORDER(25);
     for (i = 0; i < 6; i++) {
         s->x = I(unkB4->unk1B8[i][0]) - gCamera.x;
         s->y = I(unkB4->unk1B8[i][1]) - gCamera.y;

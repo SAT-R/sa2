@@ -37,7 +37,7 @@ void CreateCollectRingsTimeDisplay(void)
     timeDisplay = TASK_DATA(t);
 
     s = &timeDisplay->unk0;
-    s->unk1A = SPRITE_OAM_ORDER(5);
+    s->oamFlags = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -58,7 +58,7 @@ void CreateCollectRingsTimeDisplay(void)
         s = &timeDisplay->unk30[i];
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = SA2_ANIM_ASCII;
         s->variant = i + SA2_ANIM_ASCII_1;

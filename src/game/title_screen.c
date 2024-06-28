@@ -562,7 +562,7 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->x = 0;
     s->y = DISPLAY_HEIGHT - 30; // set to the screen's bottom
     s->graphics.size = 0;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -581,7 +581,7 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 2) + 30;
     s->graphics.size = 0;
-    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->oamFlags = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -615,7 +615,7 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
         }
 
         s->graphics.size = 0;
-        s->unk1A = SPRITE_OAM_ORDER(3);
+        s->oamFlags = SPRITE_OAM_ORDER(3);
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
@@ -631,7 +631,7 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 2);
     s->graphics.size = 0;
-    s->unk1A = SPRITE_OAM_ORDER(30);
+    s->oamFlags = SPRITE_OAM_ORDER(30);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -1554,7 +1554,7 @@ static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
     s->x = x;
     s->y = y;
     s->graphics.size = 0;
-    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->oamFlags = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -1688,7 +1688,7 @@ static void CreateLensFlareAnimation(void)
         lensFlare->posSequenceY[i] = sLensFlareStartPositions[i][1];
 
         s->graphics.size = 0;
-        s->unk1A = SPRITE_OAM_ORDER(8 - i);
+        s->oamFlags = SPRITE_OAM_ORDER(8 - i);
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;

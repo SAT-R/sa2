@@ -212,7 +212,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -231,7 +231,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = (DISPLAY_HEIGHT / 2);
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -250,7 +250,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0x78;
         s->y = 0x50;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -270,7 +270,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(2);
+        s->oamFlags = SPRITE_OAM_ORDER(2);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -289,7 +289,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(1);
+        s->oamFlags = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -308,7 +308,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -328,7 +328,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -349,7 +349,7 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

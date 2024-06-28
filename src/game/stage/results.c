@@ -169,7 +169,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(5);
+    s->oamFlags = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -186,7 +186,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -215,7 +215,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
             s->variant = sStageResultsHeadlineTexts[0][2];
         }
 
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -248,7 +248,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
             s->variant = sAnimsGotThroughZoneAndActNames[10][2];
         }
 
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -267,7 +267,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s->graphics.dest = VramMalloc(sStageScoreBonusesTexts[i][0]);
         s->graphics.anim = sStageScoreBonusesTexts[i][1];
         s->variant = sStageScoreBonusesTexts[i][2];
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

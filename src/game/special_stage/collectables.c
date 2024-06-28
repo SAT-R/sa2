@@ -409,7 +409,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
         element1->frameFlags = index | 0x1060 | 0xC0000;
         element1->x = unkDEA4->unk2;
         element1->y = unkDEA4->unk4 - unkDEA4->unk6;
-        element1->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
+        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
     } else {
         s16 x, y;
         Sprite *reference;
@@ -422,7 +422,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
             element2->frameFlags = index | 0x1060 | 0xC0000;
             element2->x = unkDEA4->unk2;
             element2->y = ((0xD - ((0x78 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
-            element2->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x380 : 0x1C0;
+            element2->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x380 : 0x1C0;
             sub_806CD68(element2);
 
             reference = unkDEA4->unk0 == 1 ? &collectables->unk34 : &collectables->unkC4;
@@ -433,7 +433,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
         element1->frameFlags = index | 0x1060 | 0xC0000;
         element1->x = x;
         element1->y = y;
-        element1->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
+        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
     }
 
     sub_806CD68(element1);
@@ -556,7 +556,7 @@ void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874 *unk874)
         unk7B4->frameFlags = (index + 0x10) | 0x1060 | 0xC0000;
         unk7B4->x = screenX;
         unk7B4->y = screenY;
-        unk7B4->unk1A = (new_unkCB84.screenY < (stage->unk5CC - 15)) ? 0x340 : 0x180;
+        unk7B4->oamFlags = (new_unkCB84.screenY < (stage->unk5CC - 15)) ? 0x340 : 0x180;
         sub_806CD68(unk7B4);
 
         affine = &gOamBuffer[(index + 0x10) * 4].all.affineParam;

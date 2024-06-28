@@ -38,7 +38,7 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
     su->s.x = 0;
     su->s.y = 0;
     su->s.graphics.dest = vramTiles;
-    su->s.unk1A = 0;
+    su->s.oamFlags = 0;
     su->s.graphics.size = 0;
     su->s.graphics.anim = anim;
     su->s.variant = variant;

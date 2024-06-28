@@ -198,7 +198,7 @@ void sub_801583C(void)
 
             s = &actions->s;
             s->graphics.dest = VramMalloc(64);
-            s->unk1A = SPRITE_OAM_ORDER(16);
+            s->oamFlags = SPRITE_OAM_ORDER(16);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;

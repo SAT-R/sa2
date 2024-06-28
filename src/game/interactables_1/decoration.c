@@ -56,7 +56,7 @@ void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY
         s->graphics.anim = sDecoTileAnimInfo[me->decoId].anim;
         s->variant = sDecoTileAnimInfo[me->decoId].variant;
 
-        s->unk1A = SPRITE_OAM_ORDER(28);
+        s->oamFlags = SPRITE_OAM_ORDER(28);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

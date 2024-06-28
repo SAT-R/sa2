@@ -127,7 +127,7 @@ typedef struct {
 
 #define SPRITE_ANIM_SPEED(speed) ((int)((float)(speed)*0x10))
 #define SPRITE_OAM_ORDER(index)  ((index) << 6)
-#define GET_SPRITE_OAM_ORDER(s)  ((((s)->unk1A) & 0x7C0) >> 6)
+#define GET_SPRITE_OAM_ORDER(s)  ((((s)->oamFlags) & 0x7C0) >> 6)
 
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
@@ -157,7 +157,7 @@ typedef struct {
     /* 0x16 */ s16 x;
     /* 0x18 */ s16 y;
 
-    /* 0x1A */ u16 unk1A; // bit 6-10: OAM order index
+    /* 0x1A */ u16 oamFlags; // bit 6-10: OAM order index
 
     /* 0x1C */ s16 timeUntilNextFrame; // Q_8_8, in frames
     /* 0x1E */ u16 prevAnim;
@@ -285,7 +285,7 @@ s16 sub_8004418(s16 x, s16 y);
 #define SPRITE_INIT_ANIM(_sprite, _anim, _variant, _order)                              \
     _sprite->graphics.anim = _anim;                                                     \
     _sprite->variant = _variant;                                                        \
-    _sprite->unk1A = SPRITE_OAM_ORDER(_order);                                          \
+    _sprite->oamFlags = SPRITE_OAM_ORDER(_order);                                          \
     _sprite->graphics.size = 0;
 
 #define SPRITE_INIT_SCRIPT(_sprite, _speed)                                             \
@@ -313,7 +313,7 @@ s16 sub_8004418(s16 x, s16 y);
     _sprite->frameFlags = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(_sprite, _order, _priority, _flags)            \
-    _sprite->unk1A = SPRITE_OAM_ORDER(_order);                                          \
+    _sprite->oamFlags = SPRITE_OAM_ORDER(_order);                                          \
     _sprite->graphics.size = 0;                                                         \
     SPRITE_INIT_SCRIPT(_sprite, 1.0);                                                   \
     _sprite->frameFlags = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));

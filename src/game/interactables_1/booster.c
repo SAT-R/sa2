@@ -83,7 +83,7 @@ void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(sBoosterAnimationData[value][me->d.sData[0]].numTiles);
     s->graphics.anim = sBoosterAnimationData[value][me->d.sData[0]].anim;
     s->variant = sBoosterAnimationData[value][me->d.sData[0]].variant;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

@@ -29,7 +29,7 @@ void CreateEnemyDefeatScore(s16 x, s16 y)
     score->s.y = y;
 
     s->graphics.dest = VramMalloc(TILE_COUNT__ANIM_SCORE);
-    s->unk1A = 0;
+    s->oamFlags = 0;
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_SCORE;
     s->variant = gPlayer.defeatScoreIndex;

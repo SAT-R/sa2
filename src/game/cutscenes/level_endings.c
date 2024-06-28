@@ -196,7 +196,7 @@ void CreateStageResultsCutscene(u8 mode)
     s->x = 0;
     s->y = 0;
     s->graphics.size = 0;
-    s->unk1A = SPRITE_OAM_ORDER(10);
+    s->oamFlags = SPRITE_OAM_ORDER(10);
     s->timeUntilNextFrame = 0;
 
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
@@ -222,7 +222,7 @@ void CreateStageResultsCutscene(u8 mode)
         s->x = 0;
         s->y = 0;
         s->graphics.size = 0;
-        s->unk1A = SPRITE_OAM_ORDER(9);
+        s->oamFlags = SPRITE_OAM_ORDER(9);
         s->timeUntilNextFrame = 0;
 
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);

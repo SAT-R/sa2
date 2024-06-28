@@ -266,7 +266,7 @@ void CreateEggGoRound(void)
     s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(19);
+    s->oamFlags = SPRITE_OAM_ORDER(19);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -291,7 +291,7 @@ void CreateEggGoRound(void)
         s->graphics.anim = sPlatformAnimations[i].anim;
         s->variant = sPlatformAnimations[i].variant;
 
-        s->unk1A = SPRITE_OAM_ORDER(21);
+        s->oamFlags = SPRITE_OAM_ORDER(21);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -311,7 +311,7 @@ void CreateEggGoRound(void)
         s->graphics.anim = sPlatformAnimations[i % NUM_PLATFORM_TYPES].anim;
         s->variant = sPlatformAnimations[i % NUM_PLATFORM_TYPES].variant;
 
-        s->unk1A = SPRITE_OAM_ORDER(21);
+        s->oamFlags = SPRITE_OAM_ORDER(21);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

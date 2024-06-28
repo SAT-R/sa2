@@ -978,7 +978,7 @@ static AnimCmdResult animCmd_SetOamOrder(void *cursor, Sprite *s)
     ACmd_SetOamOrder *cmd = cursor;
 
     s->animCursor += AnimCommandSizeInWords(*cmd);
-    s->unk1A = SPRITE_OAM_ORDER(cmd->orderIndex);
+    s->oamFlags = SPRITE_OAM_ORDER(cmd->orderIndex);
 
     return ACMD_RESULT__RUNNING;
 }

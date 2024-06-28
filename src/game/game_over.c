@@ -137,7 +137,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     s->prevVariant = -1;
     s->x = 0;
     s->y = DISPLAY_HEIGHT / 2;
-    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->oamFlags = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
@@ -153,7 +153,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     s->x = 0;
     s->y = DISPLAY_HEIGHT / 2;
     s->graphics.size = 0;
-    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->oamFlags = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;

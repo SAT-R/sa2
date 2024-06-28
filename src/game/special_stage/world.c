@@ -188,7 +188,7 @@ void sub_806E94C(struct SpecialStageWorld *world)
         s->frameFlags = 0x80000;
         s->x = 0;
         s->y = 0;
-        s->unk1A = 0;
+        s->oamFlags = 0;
         s->timeUntilNextFrame = 0;
         s->prevAnim = 0xffff;
         s->variant = assets[i].variant;

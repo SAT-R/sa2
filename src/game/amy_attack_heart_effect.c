@@ -233,7 +233,7 @@ void sub_8015E28(u16 p0)
         hearts->params[i].unkA = 0;
 
         s->graphics.dest = VramMalloc(4);
-        s->unk1A = 0x400;
+        s->oamFlags = 0x400;
         s->graphics.size = 0;
         s->graphics.anim = SA2_ANIM_HEART;
         s->variant = 0;

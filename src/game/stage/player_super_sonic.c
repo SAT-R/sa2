@@ -177,7 +177,7 @@ void SuperSonicInit()
     spr->graphics.dest = RESERVED_SUPER_SONIC_TILES_VRAM;
     spr->graphics.anim = gAnims_SuperSonic_080D69C8[0].anim;
     spr->variant = gAnims_SuperSonic_080D69C8[0].variant;
-    spr->unk1A = SPRITE_OAM_ORDER(8);
+    spr->oamFlags = SPRITE_OAM_ORDER(8);
     spr->graphics.size = 0;
     spr->x = 0;
     spr->y = 0;

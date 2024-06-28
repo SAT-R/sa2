@@ -146,7 +146,7 @@ void CreateCheese(Player *player)
     s->variant = gUnknown_080D5548[cheese->unk10][1];
     s->graphics.size = 0;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(17);
+    s->oamFlags = SPRITE_OAM_ORDER(17);
     s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     s->timeUntilNextFrame = 0;
 
@@ -722,7 +722,7 @@ void sub_8014BB0(Cheese *cheese)
     unk4BB0->s.prevVariant = -1;
     unk4BB0->s.x = I(unk4BB0->unk34) - gCamera.x;
     unk4BB0->s.y = I(unk4BB0->unk38) - gCamera.y;
-    unk4BB0->s.unk1A = SPRITE_OAM_ORDER(8);
+    unk4BB0->s.oamFlags = SPRITE_OAM_ORDER(8);
     unk4BB0->s.frameFlags = SPRITE_FLAG(PRIORITY, 2);
     unk4BB0->s.timeUntilNextFrame = 0;
 

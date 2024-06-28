@@ -93,7 +93,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     ia75->y = TO_WORLD_POS(me->y, spriteRegionY);
 
     s = &ia75->s1;
-    s->unk1A = SPRITE_OAM_ORDER(19);
+    s->oamFlags = SPRITE_OAM_ORDER(19);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -108,7 +108,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     UpdateSpriteAnimation(s);
 
     s = &ia75->s2;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;

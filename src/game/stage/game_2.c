@@ -44,7 +44,7 @@ struct Task *sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main,
     s->graphics.anim = 0;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = 0;
+    s->oamFlags = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -172,7 +172,7 @@ struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
         s->graphics.dest = VramMalloc(sAnimData_StageGoalScoreBonus[score][0]);
         s->graphics.anim = sAnimData_StageGoalScoreBonus[score][1];
         s->variant = sAnimData_StageGoalScoreBonus[score][2];
-        s->unk1A = SPRITE_OAM_ORDER(8);
+        s->oamFlags = SPRITE_OAM_ORDER(8);
         s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
         return t;
     }
@@ -210,7 +210,7 @@ void sub_801F488(void)
         s->graphics.dest = VramMalloc(20);
         s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
         s->variant = 0;
-        s->unk1A = SPRITE_OAM_ORDER(8);
+        s->oamFlags = SPRITE_OAM_ORDER(8);
         s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
     }
 }
@@ -232,7 +232,7 @@ struct Task *sub_801F568(s16 x, s16 y)
     s->graphics.dest = VramMalloc(20);
     s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(8);
+    s->oamFlags = SPRITE_OAM_ORDER(8);
     s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
 
     return t;

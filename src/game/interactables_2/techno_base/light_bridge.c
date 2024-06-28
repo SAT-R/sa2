@@ -103,7 +103,7 @@ void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
     for (i = 0; i < NUM_BRIDGE_SPRITES; i++) {
         s = &lightBridge->sprites[i];
-        s->unk1A = SPRITE_OAM_ORDER(18);
+        s->oamFlags = SPRITE_OAM_ORDER(18);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;

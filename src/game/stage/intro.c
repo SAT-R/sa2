@@ -364,7 +364,7 @@ struct Task *SetupStageIntro(void)
     // Advance cursor to next collection of tiles
     tilesCursor += zoneLoadingCharacterLogos[gSelectedCharacter][0] * TILE_SIZE_4BPP;
 
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->graphics.anim = zoneLoadingCharacterLogos[gSelectedCharacter][1];
     s->variant = zoneLoadingCharacterLogos[gSelectedCharacter][2];
@@ -416,7 +416,7 @@ struct Task *SetupStageIntro(void)
             s->variant = zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + i][2];
         }
         // _0802F47E
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -434,7 +434,7 @@ struct Task *SetupStageIntro(void)
     s->graphics.dest = tilesCursor;
     tilesCursor += 36 * TILE_SIZE_4BPP;
 
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_STAGE_INTRO_LOADING_WHEEL;
     s->variant = 0;
@@ -462,7 +462,7 @@ struct Task *SetupStageIntro(void)
         s->variant = zoneLoadingIcons[INTRO_ICON_TRUE_AREA_53][2];
     }
 
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -504,7 +504,7 @@ struct Task *SetupStageIntro(void)
                 s->variant = sZoneUnlockedIcons[i][2];
             }
 
-            s->unk1A = SPRITE_OAM_ORDER(4);
+            s->oamFlags = SPRITE_OAM_ORDER(4);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
@@ -542,7 +542,7 @@ struct Task *SetupStageIntro(void)
         s->graphics.dest = tilesCursor;
         tilesCursor += sZoneLoadingActLetters[0][0] * TILE_SIZE_4BPP;
 
-        s->unk1A = SPRITE_OAM_ORDER(2);
+        s->oamFlags = SPRITE_OAM_ORDER(2);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
