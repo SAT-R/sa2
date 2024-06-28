@@ -238,7 +238,8 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    t = TaskCreate(Task_FadeInAndStartRollInAnim, 0x3E0, 0x4100, 0,
+    t = TaskCreate(Task_FadeInAndStartRollInAnim,
+                   sizeof(struct CharacterSelectionScreen), 0x4100, 0,
                    CharacterSelectScreenOnDestroy);
     characterScreen = TASK_DATA(t);
 
@@ -464,10 +465,10 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     UpdateSpriteAnimation(s);
 
     s = &characterScreen->scrollDownArrow;
-    s->x = 0x11;
-    s->y = 0x8E;
+    s->x = 17;
+    s->y = 142;
     s->graphics.dest = VramMalloc(0x18);
-    s->graphics.anim = 0x2e2;
+    s->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
     s->variant = 0;
     s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
@@ -484,8 +485,9 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->x = 0;
     s->y = 0;
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x400);
-    s->graphics.anim = 0x2e0;
-    s->variant = 10;
+    s->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
+    s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
+        SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
     s->unk1A = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
@@ -501,9 +503,9 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->x = 0;
     s->y = 0;
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2580);
-    s->graphics.anim = 0x2e6;
+    s->graphics.anim = SA2_ANIM_CHAR_SELECT_RED_CROSS_BOX;
     s->variant = 0;
-    s->unk1A = 0x40;
+    s->unk1A = SPRITE_OAM_ORDER(1);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
