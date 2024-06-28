@@ -247,7 +247,7 @@ void CreateExtraEndingFallCutScene(void)
             s->unk1A = SPRITE_OAM_ORDER(i + 10);
         }
 
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -273,7 +273,7 @@ void CreateExtraEndingFallCutScene(void)
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -292,9 +292,9 @@ void CreateExtraEndingFallCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -314,9 +314,9 @@ void CreateExtraEndingFallCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -335,9 +335,9 @@ void CreateExtraEndingFallCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -356,9 +356,9 @@ void CreateExtraEndingFallCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -377,9 +377,9 @@ void CreateExtraEndingFallCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -398,9 +398,9 @@ void CreateExtraEndingFallCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -419,9 +419,9 @@ void CreateExtraEndingFallCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -979,16 +979,16 @@ void sub_8091044(struct ExtraEndingCutScene *scene)
 
             if (scene->unk37C >= 0xF) {
                 if (scene->unk387[i] == 1) {
-                    s->unk10 &= ~0x400;
+                    s->frameFlags &= ~0x400;
                 } else if (scene->unk387[i] == 2) {
-                    s->unk10 |= 0x400;
+                    s->frameFlags |= 0x400;
                 }
             } else {
                 if (i < 3) {
-                    s->unk10 &= ~0x400;
+                    s->frameFlags &= ~0x400;
 
                 } else {
-                    s->unk10 |= 0x400;
+                    s->frameFlags |= 0x400;
                 }
             }
 

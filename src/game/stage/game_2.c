@@ -46,9 +46,9 @@ struct Task *sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main,
     s->prevVariant = -1;
     s->unk1A = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0;
+    s->frameFlags = 0;
 
     return t;
 }
@@ -68,7 +68,7 @@ void Task_801F214(void)
         TaskDestroy(gCurTask);
         return;
     } else {
-        if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
             TaskDestroy(gCurTask);
             return;
         }
@@ -115,17 +115,17 @@ void Task_801F214(void)
 
         if (ts->unk14 & 0x40) {
             if (!(gPlayer.moveState & MOVESTATE_FACING_LEFT)) {
-                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
             } else {
-                s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+                s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
             }
         }
 
         if (ts->unk14 & 0x80) {
             if (GRAVITY_IS_INVERTED) {
-                s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+                s->frameFlags |= SPRITE_FLAG_MASK_Y_FLIP;
             } else {
-                s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
+                s->frameFlags &= ~SPRITE_FLAG_MASK_Y_FLIP;
             }
         }
 
@@ -173,7 +173,7 @@ struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
         s->graphics.anim = sAnimData_StageGoalScoreBonus[score][1];
         s->variant = sAnimData_StageGoalScoreBonus[score][2];
         s->unk1A = SPRITE_OAM_ORDER(8);
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
         return t;
     }
 }
@@ -211,7 +211,7 @@ void sub_801F488(void)
         s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
         s->variant = 0;
         s->unk1A = SPRITE_OAM_ORDER(8);
-        s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
     }
 }
 
@@ -233,7 +233,7 @@ struct Task *sub_801F568(s16 x, s16 y)
     s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
     s->variant = 0;
     s->unk1A = SPRITE_OAM_ORDER(8);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
 
     return t;
 }

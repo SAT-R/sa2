@@ -90,10 +90,10 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     gBgCntRegs[0] = 0x803;
     gBgScrollRegs[0][0] = 0x100;
     gBgScrollRegs[0][1] = 0;
-    gWinRegs[0] = 0xF0;
-    gWinRegs[2] = 0xA0;
-    gWinRegs[4] = 0x31;
-    gWinRegs[5] = 0x31;
+    gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_WIDTH);
+    gWinRegs[WINREG_WIN0V] = WIN_RANGE(0, DISPLAY_HEIGHT);
+    gWinRegs[WINREG_WININ] = 0x31;
+    gWinRegs[WINREG_WINOUT] = 0x31;
 
     gBldRegs.bldCnt = 0xBF;
     gBldRegs.bldY = 0x10;
@@ -125,9 +125,9 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->animCursor = 0;
     s3->timeUntilNextFrame = 0;
     s3->prevVariant = -1;
-    s3->animSpeed = 0x10;
+    s3->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s3->palId = 0;
-    s3->unk10 = 0x2000;
+    s3->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     s3 = &outcomeScreen->unkD0;
     s3->x = (DISPLAY_WIDTH / 2);
@@ -140,9 +140,9 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->animCursor = 0;
     s3->timeUntilNextFrame = 0;
     s3->prevVariant = -1;
-    s3->animSpeed = 0x10;
+    s3->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s3->palId = 0;
-    s3->unk10 = 0x2000;
+    s3->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     s3 = &outcomeScreen->unkA0;
     s3->x = (DISPLAY_WIDTH / 2);
@@ -155,9 +155,9 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     s3->animCursor = 0;
     s3->timeUntilNextFrame = 0;
     s3->prevVariant = -1;
-    s3->animSpeed = 0x10;
+    s3->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s3->palId = 0;
-    s3->unk10 = 0x2000;
+    s3->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     background = &outcomeScreen->unk0;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);

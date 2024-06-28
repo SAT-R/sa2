@@ -115,7 +115,7 @@ void CreateStageRingsManager(void)
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk10
+    s->frameFlags
         = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
 }
 

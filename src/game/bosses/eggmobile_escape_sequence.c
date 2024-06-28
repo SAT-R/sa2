@@ -46,10 +46,10 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = spriteFlags;
+    s->frameFlags = spriteFlags;
     UpdateSpriteAnimation(s);
 
     s = &em->s;
@@ -63,10 +63,10 @@ void CreateEggmobileEscapeSequence(s16 x, s16 y, u32 spriteFlags)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = spriteFlags;
+    s->frameFlags = spriteFlags;
     UpdateSpriteAnimation(s);
 
     if (spriteFlags & SPRITE_FLAG_MASK_X_FLIP) {
@@ -104,8 +104,8 @@ static void Task_EggmobileSwitchMovement(void)
     if (--em->frames == 0) {
         // Make Eggman look to the right
         if (em->direction == EGGMOBILE_DIR_LEFT) {
-            em->s.unk10 |= SPRITE_FLAG_MASK_X_FLIP;
-            em->s2.unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+            em->s.frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
+            em->s2.frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
         }
 
         gCurTask->main = Task_EggmobileMoveRight;

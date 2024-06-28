@@ -275,7 +275,7 @@ void CreateEggHammerTankII(void)
     SPRITE_INIT_ANIM(s, SA2_ANIM_HAMMERTANK_HAMMER, 0, 24);
     SPRITE_INIT_SCRIPT(s, 1.0);
 
-    s->unk10 = (gUnknown_030054B8++) | 0x2060;
+    s->frameFlags = (gUnknown_030054B8++) | 0x2060;
 
     if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC
         && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel) {
@@ -598,7 +598,7 @@ static void sub_803AC2C(EggHammerTankII *boss)
     s->x = x - 8
         + ((COS((boss->unk54[1][5]) & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 23);
     s->y = y + ((SIN((boss->unk54[1][5]) & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 23);
-    s->unk10 = gUnknown_030054B8++ | 0x2060;
+    s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
     transform->rotation
         = (boss->unk54[1][5] - (boss->unk94) + boss->unk54[1][5]) & (SIN_PERIOD - 1);
@@ -1439,7 +1439,7 @@ static void sub_803C198(EggHammerTankII *boss)
 
     s->x = I(unkB4->unkD0) - gCamera.x;
     s->y = I(unkB4->unkD4) - gCamera.y;
-    s->unk10 = gUnknown_030054B8++ | 0x2060;
+    s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
     if (unkB4->unkE4 != 0) {
         unkB4->unkE4 = 2;

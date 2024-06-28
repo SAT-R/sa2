@@ -60,8 +60,8 @@ static void Task_DrowningCountdown(void)
 
     ts->unk10 += 1;
 
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
-    s->unk10 |= (gUnknown_030054B8++ | 0x20);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags |= (gUnknown_030054B8++ | 0x20);
 
     UpdateSpriteAnimation(s);
     sub_8004860(s, transform);
@@ -91,7 +91,7 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
     s->variant = 5 - countdown;
 
     s->unk1A = SPRITE_OAM_ORDER(9);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     transform = &ts->transform;
     transform->rotation = 0;
@@ -223,9 +223,9 @@ static void Task_SpawnAirBubbles(void)
 
         ts->unk8 -= (ts->unk8 >> 3);
         ts->unk10 += 1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
-        s->unk10 |= (gUnknown_030054B8++ | 0x20);
+        s->frameFlags |= (gUnknown_030054B8++ | 0x20);
 
         UpdateSpriteAnimation(s);
         sub_8004860(s, transform);

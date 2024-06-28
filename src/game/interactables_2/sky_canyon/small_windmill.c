@@ -67,7 +67,7 @@ void CreateEntity_SmallWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     s->animSpeed = 16;
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
     s->graphics.dest = VramMalloc(WINDMILL_NUM_TILES);
     s->graphics.anim = SA2_ANIM_SMALL_WINDMILL;
     s->variant = 2;
@@ -280,8 +280,8 @@ static void Task_RotateSequence(void)
         HandleRotationComplete(windmill);
     }
 
-    if (s->unk10 & 0x4000) {
-        s->unk10 &= ~0x4000;
+    if (s->frameFlags & 0x4000) {
+        s->frameFlags &= ~0x4000;
         s->prevAnim = -1;
         s->prevVariant = -1;
     }
@@ -293,8 +293,8 @@ static void SlowWindmillToStop(void)
     Sprite_SmallWindmill *windmill = TASK_DATA(gCurTask);
     Sprite *s = &windmill->s;
 
-    if (s->unk10 & 0x4000) {
-        s->unk10 &= ~0x4000;
+    if (s->frameFlags & 0x4000) {
+        s->frameFlags &= ~0x4000;
         s->prevAnim = -1;
         s->prevVariant = -1;
 
@@ -328,9 +328,9 @@ static void RenderWindmill(Sprite_SmallWindmill *windmill)
     UpdateSpriteAnimation(s);
     s->x = windmill->x - gCamera.x;
     s->y = windmill->y - gCamera.y;
-    s->unk10 &= ~0xC00;
+    s->frameFlags &= ~0xC00;
     DisplaySprite(s);
-    s->unk10 |= 0xC00;
+    s->frameFlags |= 0xC00;
     DisplaySprite(s);
 }
 

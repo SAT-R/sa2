@@ -61,7 +61,7 @@ void sub_801561C(void)
     u32 oldPlayerMovestate = gPlayer.moveState;
     PlayerSpriteInfo *unk5A70 = gPlayer.unk90;
     u32 oldPlayerAnimSpeed = unk5A70->s.animSpeed;
-    u32 oldPlayerUnk10 = unk5A70->s.unk10;
+    u32 oldPlayerUnk10 = unk5A70->s.frameFlags;
     u16 r6 = unk5A70->transform.rotation;
 
     oldPlayerMovestate &= ~MOVESTATE_80000000;
@@ -101,7 +101,7 @@ void sub_80156D0(void)
     sPlayerStateBuffer[i].variant = p->variant;
     sPlayerStateBuffer[i].moveState = oldMovestate;
     sPlayerStateBuffer[i].animSpeed = p->unk90->s.animSpeed;
-    sPlayerStateBuffer[i].flags = p->unk90->s.unk10;
+    sPlayerStateBuffer[i].flags = p->unk90->s.frameFlags;
     sPlayerStateBuffer[i].unkC = p->unk90->transform.rotation;
 }
 
@@ -205,7 +205,7 @@ void sub_801583C(void)
             s->prevVariant = -1;
             s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->hitboxes[0].index = -1;
-            s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
             s->palId = 1;
             s->graphics.anim = 0;
             s->variant = 0;
@@ -254,10 +254,10 @@ void Task_80159C8(void)
             s->graphics.anim = actions->plState.anim;
             s->variant = actions->plState.variant;
             s->animSpeed = actions->plState.animSpeed;
-            s->unk10 = actions->plState.flags;
+            s->frameFlags = actions->plState.flags;
 
             transform->rotation = actions->plState.unkC;
-            s->unk10 |= SPRITE_FLAG(18, 1);
+            s->frameFlags |= SPRITE_FLAG(18, 1);
 
             GetPreviousPlayerPos(&actions->pos, r8);
             s->x = I(actions->pos.x) - gCamera.x;
@@ -271,7 +271,8 @@ void Task_80159C8(void)
                 u32 moveState;
 
                 SPRITE_FLAG_CLEAR(s, ROT_SCALE);
-                s->unk10 |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+                s->frameFlags
+                    |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 if (actions->plState.moveState & MOVESTATE_FACING_LEFT) {
                     transform->width = 0x100;

@@ -564,9 +564,9 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->graphics.size = 0;
     s->unk1A = SPRITE_OAM_ORDER(4);
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &titleScreen->unkF0;
@@ -583,9 +583,9 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->graphics.size = 0;
     s->unk1A = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     for (menuItemId = 0; menuItemId < ARRAY_COUNT(titleScreen->menuItems);
@@ -617,9 +617,9 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
         s->graphics.size = 0;
         s->unk1A = SPRITE_OAM_ORDER(3);
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         UpdateSpriteAnimation(s);
     };
 
@@ -633,9 +633,9 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->graphics.size = 0;
     s->unk1A = SPRITE_OAM_ORDER(30);
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0x3000;
+    s->frameFlags = 0x3000;
     UpdateSpriteAnimation(s);
 }
 
@@ -1556,9 +1556,9 @@ static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
     s->graphics.size = 0;
     s->unk1A = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(&animation->s);
 
     animation->unk30 = gBgScrollRegs[1][0];
@@ -1636,7 +1636,7 @@ static void Task_MenuItemTransitionOutAnim(void)
     if (++miTransition->animFrame > 8) {
         s->x = miTransition->unk12;
 
-        s->unk10 &= ~0x80;
+        s->frameFlags &= ~0x80;
         TaskDestroy(gCurTask);
     }
 }
@@ -1660,7 +1660,7 @@ static void Task_MenuItemTransitionInAnim(void)
     if (++miTransition->animFrame > 8) {
         s->x = miTransition->unk12;
 
-        s->unk10 &= ~0x80;
+        s->frameFlags &= ~0x80;
         TaskDestroy(gCurTask);
     }
 }
@@ -1692,7 +1692,7 @@ static void CreateLensFlareAnimation(void)
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = i
+        s->frameFlags = i
             | (SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
                | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
 
@@ -1963,7 +1963,7 @@ static void CreateMenuItemTransition(Sprite *s, u8 type)
     }
     miTransition = TASK_DATA(t);
 
-    s->unk10 |= 0x80;
+    s->frameFlags |= 0x80;
     miTransition->s = s;
     miTransition->unk12 = s->x;
     miTransition->animFrame = 0;

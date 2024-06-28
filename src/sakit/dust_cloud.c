@@ -25,7 +25,7 @@ void CreateDustCloud(s16 x, s16 y)
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 }
 
 static void Task_CreateDustCloud(void)

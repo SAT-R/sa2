@@ -582,8 +582,8 @@ static void SoundTestScreenRenderUI(void)
     Sprite *backCountrolName = &soundTestScreen->backControlName;
     Sprite *numberDisplayDigit = soundTestScreen->numberDisplay;
 
-    Sprite *unk2DC = &soundTestScreen->danceStage;
-    Sprite *unk2D8 = soundTestScreen->activeCream;
+    Sprite *sprStage = &soundTestScreen->danceStage;
+    Sprite *sprCream = soundTestScreen->activeCream;
 
     Sprite *scrollArrows = &soundTestScreen->scrollArrows;
     Sprite *speakerConeElement = soundTestScreen->speakerCone;
@@ -626,10 +626,10 @@ static void SoundTestScreenRenderUI(void)
 
     DisplaySprite(backCountrolName);
     DisplaySprite(unkC8);
-    DisplaySprite(unk2DC);
-    unk2DC->unk10 |= 0x400;
-    DisplaySprite(unk2DC);
-    unk2DC->unk10 &= ~0x400;
+    DisplaySprite(sprStage);
+    sprStage->frameFlags |= 0x400;
+    DisplaySprite(sprStage);
+    sprStage->frameFlags &= ~0x400;
 
     if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING) {
         u8 numChangeElements = 0;
@@ -707,7 +707,7 @@ static void SoundTestScreenRenderUI(void)
     }
 
     for (i = 0; i < 4; i++) {
-        if (unk2D8->graphics.anim != SA2_ANIM_SOUNDTEST_CREAM_BOW) {
+        if (sprCream->graphics.anim != SA2_ANIM_SOUNDTEST_CREAM_BOW) {
             speakerConeEffects[i].rotation = DEG_TO_SIN(90) * i;
             speakerConeEffects[i].height = speakerConeEffects[i].width
                 = soundTestScreen->speakerSize + 0x100;
@@ -731,7 +731,7 @@ static void SoundTestScreenRenderUI(void)
         DisplaySprite(&speakerConeElement[i]);
     }
 
-    DisplaySprite(unk2D8);
+    DisplaySprite(sprCream);
 
     scrollArrows->x
         = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7)
@@ -739,9 +739,9 @@ static void SoundTestScreenRenderUI(void)
     DisplaySprite(scrollArrows);
     scrollArrows->x = 58
         - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
-    scrollArrows->unk10 |= 0x400;
+    scrollArrows->frameFlags |= 0x400;
     DisplaySprite(scrollArrows);
-    scrollArrows->unk10 &= ~0x400;
+    scrollArrows->frameFlags &= ~0x400;
 
     soundTestScreen->scrollArrowAnimFrame++;
 }
@@ -802,21 +802,21 @@ static void SoundTestScreenSetCreamAnim(u8 anim)
         case CREAM_ANIM_DANCE_RIGHT:
             soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
             animatedCream = soundTestScreen->activeCream;
-            animatedCream->unk10 &= ~0x400;
+            animatedCream->frameFlags &= ~0x400;
             animatedCream->variant = SA2_ANIM_VARIANT_SOUNDTEST_CREAM_CLAP_UP_ACTIVE;
             animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
             break;
         case CREAM_ANIM_DANCE_MIDDLE:
             soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
             animatedCream = soundTestScreen->activeCream;
-            animatedCream->unk10 &= ~0x400;
+            animatedCream->frameFlags &= ~0x400;
             animatedCream->variant = SA2_ANIM_VARIANT_SOUNDTEST_CREAM_CLAP_UP_HOLDING;
             animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
             break;
         case CREAM_ANIM_DANCE_LEFT:
             soundTestScreen->activeCream = &soundTestScreen->creams[DANCING_CREAM];
             animatedCream = soundTestScreen->activeCream;
-            animatedCream->unk10 |= 0x400;
+            animatedCream->frameFlags |= 0x400;
             animatedCream->variant = SA2_ANIM_VARIANT_SOUNDTEST_CREAM_CLAP_UP_ACTIVE;
             animatedCream->graphics.anim = SA2_ANIM_SOUNDTEST_CREAM_CLAP_UP;
             break;

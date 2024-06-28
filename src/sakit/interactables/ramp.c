@@ -65,10 +65,10 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2200;
+    s->frameFlags = 0x2200;
 
     if (temp & 2) {
-        s->unk10 |= 0x400;
+        s->frameFlags |= 0x400;
     }
     UpdateSpriteAnimation(s);
 }

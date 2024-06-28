@@ -70,7 +70,7 @@ static void Task_BuzzerMain(void)
     MapEntity *me = buzzer->base.me;
     Vec2_32 pos;
 
-    if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+    if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
         buzzer->offsetX += 0xC0;
     } else {
         buzzer->offsetX -= 0xC0;
@@ -92,7 +92,7 @@ static void Task_BuzzerMain(void)
          --buzzer->unk68 == 0
 #endif
          )
-        && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP) && I(gPlayer.x) > (pos.x - 0x3C)
+        && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) && I(gPlayer.x) > (pos.x - 0x3C)
         && I(gPlayer.x) < pos.x && I(gPlayer.y) > pos.y
         && I(gPlayer.y) < (pos.y + 0x50)) {
         gCurTask->main = sub_80534F0;
@@ -102,7 +102,7 @@ static void Task_BuzzerMain(void)
         buzzer->unk5C = gPlayer.y;
         buzzer->unk64 = Div(gPlayer.x - QS(pos.x), 0x20);
         buzzer->unk66 = Div(gPlayer.y - QS(pos.y), 0x20);
-    } else if (buzzer->unk68 == 0 && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP)
+    } else if (buzzer->unk68 == 0 && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)
                && I(gPlayer.x) > pos.x && I(gPlayer.x) < (pos.x + 0x3C)
                && I(gPlayer.y) > pos.y && I(gPlayer.y) < (pos.y + 0x50)) {
         gCurTask->main = sub_80534F0;
@@ -121,13 +121,13 @@ static void Task_BuzzerMain(void)
     lab:
 #endif
         if (ENEMY_CROSSED_LEFT_BORDER(buzzer, me)
-            && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+            && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
             gCurTask->main = sub_80533B4;
             s->graphics.anim = SA2_ANIM_BUZZER;
             s->variant = 2;
             s->prevVariant = -1;
         } else if (ENEMY_CROSSED_RIGHT_BORDER(buzzer, me)
-                   && s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+                   && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             gCurTask->main = sub_80533B4;
             s->graphics.anim = SA2_ANIM_BUZZER;
             s->variant = 2;

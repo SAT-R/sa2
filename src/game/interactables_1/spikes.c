@@ -80,10 +80,10 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2200;
+    s->frameFlags = 0x2200;
     UpdateSpriteAnimation(s);
 }
 
@@ -116,10 +116,10 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2A00;
+    s->frameFlags = 0x2A00;
     UpdateSpriteAnimation(s);
 }
 
@@ -240,23 +240,23 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2200;
+    s->frameFlags = 0x2200;
 
     switch (gGameMode) {
         case GAME_MODE_MULTI_PLAYER_COLLECT_RINGS: {
             if (me->index == IA__SPIKES__NORMAL_LEFT) {
                 // X-Flip
-                s->unk10 |= 0x400;
+                s->frameFlags |= 0x400;
             }
         } break;
 
         default: {
             if (me->index == IA__SPIKES__NORMAL_LEFT) {
                 // X-Flip
-                s->unk10 |= 0x400;
+                s->frameFlags |= 0x400;
             }
         } break;
     }
@@ -421,10 +421,10 @@ void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2200;
+    s->frameFlags = 0x2200;
 }
 
 static void Task_805FF68(void)
@@ -489,10 +489,10 @@ void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 sprite
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2A00;
+    s->frameFlags = 0x2A00;
 }
 
 static void Task_806012C(void)

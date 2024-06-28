@@ -152,16 +152,16 @@ static void sub_8078170(Sprite_FunnelSphere *funnelSphere)
         case CHARACTER_CREAM:
         case CHARACTER_TAILS:
             funnelSphere->unk14
-                = (gPlayer.unk94->s.unk10 & SPRITE_FLAG_MASK_PRIORITY) >> 12;
-            gPlayer.unk94->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-            gPlayer.unk94->s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+                = (gPlayer.unk94->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> 12;
+            gPlayer.unk94->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            gPlayer.unk94->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
         case CHARACTER_SONIC:
         case CHARACTER_KNUCKLES:
         case CHARACTER_AMY:
             funnelSphere->unk12
-                = (gPlayer.unk90->s.unk10 & SPRITE_FLAG_MASK_PRIORITY) >> 12;
-            gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-            gPlayer.unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+                = (gPlayer.unk90->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> 12;
+            gPlayer.unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            gPlayer.unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
     }
 
     if (gPlayer.speedAirX < Q_8_8(9)) {
@@ -182,13 +182,13 @@ static void sub_8078254(Sprite_FunnelSphere *funnelSphere)
     switch (gPlayer.character) {
         case CHARACTER_CREAM:
         case CHARACTER_TAILS:
-            gPlayer.unk94->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-            gPlayer.unk94->s.unk10 |= SPRITE_FLAG(PRIORITY, funnelSphere->unk14);
+            gPlayer.unk94->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            gPlayer.unk94->s.frameFlags |= SPRITE_FLAG(PRIORITY, funnelSphere->unk14);
         case CHARACTER_SONIC:
         case CHARACTER_KNUCKLES:
         case CHARACTER_AMY:
-            gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-            gPlayer.unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, funnelSphere->unk12);
+            gPlayer.unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            gPlayer.unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, funnelSphere->unk12);
     }
 
     gCurTask->main = sub_8078414;
@@ -201,13 +201,13 @@ static void sub_80782FC(Sprite_FunnelSphere *funnelSphere)
     switch (gPlayer.character) {
         case CHARACTER_CREAM:
         case CHARACTER_TAILS:
-            gPlayer.unk94->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-            gPlayer.unk94->s.unk10 |= SPRITE_FLAG(PRIORITY, funnelSphere->unk14);
+            gPlayer.unk94->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            gPlayer.unk94->s.frameFlags |= SPRITE_FLAG(PRIORITY, funnelSphere->unk14);
         case CHARACTER_SONIC:
         case CHARACTER_KNUCKLES:
         case CHARACTER_AMY:
-            gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-            gPlayer.unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, funnelSphere->unk12);
+            gPlayer.unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            gPlayer.unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, funnelSphere->unk12);
     }
     gCamera.unk50 &= ~1;
     gCurTask->main = sub_8078414;

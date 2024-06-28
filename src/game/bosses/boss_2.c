@@ -259,7 +259,7 @@ void CreateEggBomberTank(void)
     s->graphics.dest = vram;
     vram += 64 * TILE_SIZE_4BPP;
     SPRITE_INIT_ANIM_AND_SCRIPT(s, SA2_ANIM_EGG_BOMBER_TANK_CANNON, 0, 25);
-    s->unk10 = (gUnknown_030054B8++) | 0x2060;
+    s->frameFlags = (gUnknown_030054B8++) | 0x2060;
 
     s = &boss->pilot;
     s->x = 0;
@@ -460,7 +460,7 @@ static u8 RenderEggBomberTank(EggBomberTank *boss)
             s->x -= Div(COS(boss->cannonAngle) * boss->timer, 25000);
             s->y -= Div(SIN(boss->cannonAngle) * boss->timer, 25000);
         }
-        s->unk10 = gUnknown_030054B8++ | 0x2060;
+        s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
         transform->rotation = boss->cannonAngle;
         transform->width = 0x100;
@@ -703,7 +703,7 @@ static u8 RenderCannon(EggBomberTank *boss)
 
     s->x = (I(boss->unk54) - gCamera.x);
     s->y = (I(boss->unk58) - gCamera.y);
-    s->unk10 = gUnknown_030054B8++ | 0x2060;
+    s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
     transform->rotation = boss->cannonAngle;
     transform->width = 0x100;

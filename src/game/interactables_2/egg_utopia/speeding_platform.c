@@ -88,10 +88,10 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     s->graphics.dest = VramMalloc(0x10);
     s->graphics.anim = SA2_ANIM_SPEEDING_PLATFORM;
     s->variant = 0;
@@ -175,9 +175,9 @@ static void RenderPlatform(Sprite_SpeedingPlatform *platform)
         s->y = platform->y + I(platform->unk48) - gCamera.y;
     }
 
-    s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
     DisplaySprite(s);
-    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
     DisplaySprite(s);
 }
 

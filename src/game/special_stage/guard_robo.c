@@ -243,7 +243,7 @@ void sub_8071380(Sprite *s, void *vram, s16 x, s16 y, u8 b, const struct UNK_80D
     s->graphics.dest = vram;
     s->graphics.size = 0;
     s->graphics.anim = c4->anim;
-    s->unk10 = unk10;
+    s->frameFlags = unk10;
     s->x = x;
     s->y = y;
     s->unk1A = b << 6;
@@ -340,7 +340,7 @@ static void RenderGuardRobo(Sprite *s, s16 x, s16 y, u8 b,
     }
 
     s->graphics.anim = spriteConfig->anim;
-    s->unk10 = flags;
+    s->frameFlags = flags;
     s->x = x;
     s->y = y;
     s->unk1A = b << 6;

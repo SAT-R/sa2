@@ -120,11 +120,11 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                         gPlayer.y = QS(mpp->pos.y - (s8)mpp->unk58[0]);
                         m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
                         gPlayer.moveState = prevMoveState;
-                        gPlayer.unk90->s.unk10 &= ~0x3000;
-                        gPlayer.unk90->s.unk10 |= 0x2000;
+                        gPlayer.unk90->s.frameFlags &= ~0x3000;
+                        gPlayer.unk90->s.frameFlags |= 0x2000;
 
-                        gPlayer.unk94->s.unk10 &= ~0x3000;
-                        gPlayer.unk94->s.unk10 |= 0x2000;
+                        gPlayer.unk94->s.frameFlags &= ~0x3000;
+                        gPlayer.unk94->s.frameFlags |= 0x2000;
 
                         gCamera.unk50 &= ~3;
                         gPlayer.unk38 = (mpp->unk54 >> 7) & 1;

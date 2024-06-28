@@ -143,7 +143,7 @@ u32 sub_800DF38(Sprite *, s32, s32, Player *);
     }
 
 #define ENEMY_TURN_AROUND(_s)                                                           \
-    if (_s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {                                          \
+    if (_s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {                                     \
         SPRITE_FLAG_CLEAR(_s, X_FLIP);                                                  \
     } else {                                                                            \
         SPRITE_FLAG_SET(_s, X_FLIP);                                                    \

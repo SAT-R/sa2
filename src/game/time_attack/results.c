@@ -104,10 +104,10 @@ u32 CreateTimeAttackResults(u32 finishTime)
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
     }
 
     resultsCutScene->unk178[0].variant += resultsCutScene->unk171;
@@ -135,10 +135,10 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unkC[0];
@@ -152,10 +152,10 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     isBossLevel = ACT_INDEX(gCurrentLevel) >> 1;
@@ -171,10 +171,10 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     if (isBossLevel) {
@@ -194,10 +194,10 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unk9C[0];
@@ -211,10 +211,10 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unk9C[1];
@@ -232,10 +232,10 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = gUnknown_030054B8++ | 0x20;
+    s->frameFlags = gUnknown_030054B8++ | 0x20;
     UpdateSpriteAnimation(s);
 
     resultsCutScene->transform.width = 0;
@@ -255,10 +255,10 @@ u32 CreateTimeAttackResults(u32 finishTime)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     gUnknown_030054A8.unk0 = 0xFF;

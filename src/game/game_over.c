@@ -140,9 +140,9 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     s->unk1A = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &screen->sprOver;
@@ -155,9 +155,9 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     s->graphics.size = 0;
     s->unk1A = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     fade = &screen->unk0;

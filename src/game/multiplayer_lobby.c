@@ -188,9 +188,9 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0x1000;
+    s->frameFlags = 0x1000;
     UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(lobbyScreen->uiElements); i++) {
@@ -206,9 +206,9 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         UpdateSpriteAnimation(s);
     }
 

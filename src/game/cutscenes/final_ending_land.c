@@ -236,9 +236,9 @@ void CreateFinalEndingLandingCutScene(void)
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 1;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             s->hitboxes[0].index = -1;
             UpdateSpriteAnimation(s);
         }
@@ -255,9 +255,9 @@ void CreateFinalEndingLandingCutScene(void)
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             s->hitboxes[0].index = -1;
         }
 
@@ -275,9 +275,9 @@ void CreateFinalEndingLandingCutScene(void)
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 2;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             s->hitboxes[0].index = -1;
             UpdateSpriteAnimation(s);
         }
@@ -297,9 +297,9 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -320,9 +320,9 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0x60;
+        s->frameFlags = 0x60;
         s->hitboxes[0].index = -1;
 
         transform->rotation = 0;
@@ -348,9 +348,9 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -369,9 +369,9 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -390,9 +390,9 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -411,9 +411,9 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -432,9 +432,9 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -453,9 +453,9 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -474,9 +474,9 @@ void CreateFinalEndingLandingCutScene(void)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -807,12 +807,12 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s = &scene->unk1A0;
         s->graphics.anim = gUnknown_080E17A4[35].anim;
         s->variant = gUnknown_080E17A4[35].variant;
-        s->unk10 |= 0x400;
+        s->frameFlags |= 0x400;
         s->x = scene->unk80.x;
         s->y = scene->unk80.y + 0x19;
         DisplaySprite(s);
 
-        s->unk10 &= ~0x400;
+        s->frameFlags &= ~0x400;
         s->x = scene->unk80.x;
         s->y = scene->unk80.y + 0x19;
 
@@ -829,9 +829,9 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->variant = gUnknown_080E17A4[(i & 1) + 0x24].variant;
 
         if (scene->unk34C[i][4] != 0) {
-            s->unk10 |= 0x400;
+            s->frameFlags |= 0x400;
         } else {
-            s->unk10 &= ~0x400;
+            s->frameFlags &= ~0x400;
         }
 
         s->x = gUnknown_080E1964[i][3] + (scene->unk34C[i][0] >> 8);
@@ -848,9 +848,9 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         s->variant = gUnknown_080E17A4[(i & 1) + 0x26].variant;
 
         if (scene->unk4DC[i][4] > 0) {
-            s->unk10 |= 0x400;
+            s->frameFlags |= 0x400;
         } else {
-            s->unk10 &= ~0x400;
+            s->frameFlags &= ~0x400;
         }
 
         s->x = scene->unk4DC[i][0] >> 8;
@@ -909,14 +909,14 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
             s = &scene->unk140;
             s->graphics.anim = gUnknown_080E17A4[0x2B + scene->unk338].anim;
             s->variant = gUnknown_080E17A4[0x2B + scene->unk338].variant;
-            s->unk10 |= 0x400;
+            s->frameFlags |= 0x400;
             s->x = ((scene->unk5E0[0][0] >> 8) - 0x14);
             s->y = (scene->unk5E0[0][1] >> 8) - 0x14;
         } else {
             s = &scene->unk170;
             s->graphics.anim = gUnknown_080E17A4[49].anim;
             s->variant = gUnknown_080E17A4[49].variant;
-            s->unk10 &= ~0x400;
+            s->frameFlags &= ~0x400;
             s->x = scene->unk5E0[0][0] >> 8;
             s->y = scene->unk5E0[0][1] >> 8;
         }

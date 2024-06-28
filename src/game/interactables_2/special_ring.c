@@ -56,10 +56,10 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0x2000;
+        s->frameFlags = 0x2000;
 
         s->graphics.dest = VramMalloc(9);
         s->graphics.anim = SA2_ANIM_SPECIAL_RING;
@@ -183,7 +183,7 @@ static void Task_80811BC(void)
     Sprite_SpecialRing *ring = TASK_DATA(gCurTask);
     Sprite *s = &ring->displayed;
 
-    if ((s->unk10 & 0x4000) || sub_8081164(ring)) {
+    if ((s->frameFlags & 0x4000) || sub_8081164(ring)) {
         sub_80811A0(ring, 0);
     } else {
         sub_8081134(ring);

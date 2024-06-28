@@ -185,7 +185,7 @@ void sub_806E94C(struct SpecialStageWorld *world)
         s->graphics.dest = gUnknown_03005B5C;
         s->graphics.size = 0;
         s->graphics.anim = assets[i].anim;
-        s->unk10 = 0x80000;
+        s->frameFlags = 0x80000;
         s->x = 0;
         s->y = 0;
         s->unk1A = 0;

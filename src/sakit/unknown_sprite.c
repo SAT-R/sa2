@@ -48,7 +48,7 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
     su->s.animSpeed = 0x10;
     su->s.palId = 0;
     su->s.hitboxes[0].index = -1;
-    su->s.unk10 = 0;
+    su->s.frameFlags = 0;
 
     return t;
 }

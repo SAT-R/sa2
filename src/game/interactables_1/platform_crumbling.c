@@ -79,12 +79,12 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
     s->timeUntilNextFrame = 0;
 
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = FALSE;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
 
     if (me->d.sData[0] != 0) {
-        s->unk10 |= 0x400;
+        s->frameFlags |= 0x400;
     }
 
     UpdateSpriteAnimation(s);
@@ -233,7 +233,7 @@ void Task_805E480(void)
 
             pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + s->y))) & 0xFF;
 
-            if (s->unk10 & 0x400) {
+            if (s->frameFlags & 0x400) {
                 pointer->all.attr1 = ((s->x - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
             } else {
                 pointer->all.attr1 = (s->x + x * TILE_WIDTH) & 0x1FF;
@@ -305,14 +305,14 @@ void Task_805E6A4(void)
 
             pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + s->y))) & 0xFF;
 
-            if (s->unk10 & 0x400) {
+            if (s->frameFlags & 0x400) {
                 pointer->all.attr1 = ((s->x - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
             } else {
                 pointer->all.attr1 = (s->x + x * TILE_WIDTH) & 0x1FF;
             }
 
             pointer->all.attr2
-                = (((oam[2] + s->palId) & ~0xFFF) | ((s->unk10 & 0x3000) >> 2)
+                = (((oam[2] + s->palId) & ~0xFFF) | ((s->frameFlags & 0x3000) >> 2)
                    | (u16)(GET_TILE_NUM(s->graphics.dest) + r6));
         }
     }

@@ -723,10 +723,10 @@ void CreateSuperEggRoboZ(void)
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     sub_8039ED4();
     gPseudoRandom = gStageTime;
-    gUnknown_03005AF0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AF0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
-    gUnknown_03005AA0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AA0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+    gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+    gUnknown_03005AA0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gUnknown_03005AA0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
 
     t = TaskCreate(Task_SuperEggRoboZMain, sizeof(SuperEggRoboZ), 0x4000, 0,
                    TaskDestructor_SuperEggRoboZMain);
@@ -789,7 +789,7 @@ void CreateSuperEggRoboZ(void)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
     }
 
     fade->window = 0;
@@ -831,7 +831,7 @@ void CreateSuperEggRoboZ(void)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 3);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 3);
     gUnknown_030054A8.unk6 = 200;
     gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 }
@@ -884,10 +884,10 @@ void Task_804A9D8(void)
         boss->unkB = 0;
         gPlayer.moveState &= ~(MOVESTATE_IGNORE_INPUT);
 
-        gUnknown_03005AF0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-        gUnknown_03005AF0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
-        gUnknown_03005AA0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-        gUnknown_03005AA0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+        gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
+        gUnknown_03005AA0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        gUnknown_03005AA0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
         gCurTask->main = Task_804AB24;
     }
 }
@@ -1756,9 +1756,9 @@ void sub_804C3AC(SuperEggRoboZ *boss)
     s->x = I(sp00.x) - gCamera.x;
     s->y = I(sp00.y) - gCamera.y;
 
-    s->unk10 = (gUnknown_030054B8++
-                | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                   | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+    s->frameFlags = (gUnknown_030054B8++
+                     | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                        | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
     tf->rotation = boss->unk10;
     tf->width = Q(1);
@@ -1780,9 +1780,9 @@ void sub_804C3AC(SuperEggRoboZ *boss)
         s->x = I(sp00.x) - gCamera.x;
         s->y = I(sp00.y) - gCamera.y;
 
-        s->unk10 = (gUnknown_030054B8++
-                    | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                       | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+        s->frameFlags = (gUnknown_030054B8++
+                         | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                            | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
         tf->rotation = boss->rotation[i];
         tf->width = Q(1);
@@ -1845,9 +1845,9 @@ void sub_804C5B8(SuperEggRoboZ *boss)
     s->x = I(sp00.x) - gCamera.x;
     s->y = I(sp00.y) - gCamera.y + r3;
 
-    s->unk10 = (gUnknown_030054B8++
-                | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                   | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+    s->frameFlags = (gUnknown_030054B8++
+                     | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                        | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
     tf->rotation = boss->unk10;
     tf->width = Q(1);
@@ -1873,9 +1873,9 @@ void sub_804C5B8(SuperEggRoboZ *boss)
         s->x = I(sp00.x) - gCamera.x;
         s->y = I(sp00.y) - gCamera.y;
 
-        s->unk10 = (gUnknown_030054B8++
-                    | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                       | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+        s->frameFlags = (gUnknown_030054B8++
+                         | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                            | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
         tf->rotation = boss->rotation[i];
         tf->width = Q(1);

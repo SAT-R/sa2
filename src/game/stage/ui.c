@@ -161,10 +161,10 @@ struct Task *CreateStageUI(void)
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(18, 1);
+        s->frameFlags = SPRITE_FLAG(18, 1);
 
         if (i != (ARRAY_COUNT(sAnimsAsciiDigits) - 1)) {
             UpdateSpriteAnimation(s);
@@ -186,10 +186,10 @@ struct Task *CreateStageUI(void)
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
 
         // This can never be reached
         if (IS_MULTI_PLAYER) {
@@ -213,10 +213,10 @@ struct Task *CreateStageUI(void)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &ui->ring;
@@ -232,11 +232,11 @@ struct Task *CreateStageUI(void)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     ui->unk2D0 = 0;
 
     for (i = 0; i < 16; i++) {
@@ -572,7 +572,7 @@ void StageUI_PrintIntegerAt(u32 value, s16 x, s16 y, u8 palId)
 
         digit->palId = palId;
 
-        digit->unk10 |= SPRITE_FLAG_MASK_ANIM_OVER;
+        digit->frameFlags |= SPRITE_FLAG_MASK_ANIM_OVER;
 
         DisplaySprite(digit);
 

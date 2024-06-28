@@ -199,13 +199,13 @@ void CreateStageResultsCutscene(u8 mode)
     s->unk1A = SPRITE_OAM_ORDER(10);
     s->timeUntilNextFrame = 0;
 
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = unk122C[mode];
 
     if (mode != 2) {
-        s->unk10 = 0x400;
+        s->frameFlags = 0x400;
     } else {
-        s->unk10 = 0;
+        s->frameFlags = 0;
     }
 
     UpdateSpriteAnimation(s);
@@ -225,9 +225,9 @@ void CreateStageResultsCutscene(u8 mode)
         s->unk1A = SPRITE_OAM_ORDER(9);
         s->timeUntilNextFrame = 0;
 
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0x400;
+        s->frameFlags = 0x400;
         UpdateSpriteAnimation(s);
         m4aSongNumStart(SE_236);
     }

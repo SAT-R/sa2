@@ -58,10 +58,10 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x3700);
     s->graphics.anim = SA2_ANIM_NOTE_BLOCK;
     s->variant = SA2_ANIM_VARIANT_NOTE_BLOCK_GUITAR;

@@ -97,7 +97,7 @@ void InitPlayerHitRingsScatter(void)
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(2.0);
     s->palId = 0;
-    s->unk10
+    s->frameFlags
         = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_18 | SPRITE_FLAG_MASK_MOSAIC);
     rs->unk2B6 = 0;
     rs->unk2B4 = 0x94;

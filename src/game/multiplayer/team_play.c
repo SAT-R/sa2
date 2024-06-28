@@ -159,10 +159,10 @@ void CreateMultiplayerTeamPlayScreen(void)
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0x1000;
+        s->frameFlags = 0x1000;
         UpdateSpriteAnimation(s);
     }
 
@@ -180,10 +180,10 @@ void CreateMultiplayerTeamPlayScreen(void)
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         UpdateSpriteAnimation(s);
     }
     s = &teamPlayScreen->unk1B0;
@@ -197,10 +197,10 @@ void CreateMultiplayerTeamPlayScreen(void)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
 
     background = &teamPlayScreen->unk210;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(0);
@@ -557,10 +557,10 @@ static void sub_805D1F8(void)
                 s->x = gUnknown_080D92BA[packet->pat0.unk2];
 
                 if (packet->pat0.unk2 == 0) {
-                    s->unk10 &= ~0x400;
+                    s->frameFlags &= ~0x400;
                     gMultiplayerConnections &= ~(0x10 << (i));
                 } else {
-                    s->unk10 |= 0x400;
+                    s->frameFlags |= 0x400;
                     gMultiplayerConnections |= (0x10 << (i));
                 }
                 DisplaySprite(s);

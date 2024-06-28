@@ -143,7 +143,7 @@ void Task_8015CE4(void)
                 Sprite *s = &hearts->sprHearts[i];
 #endif
 
-                if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
                     hearts->params[i].count = 0;
                     VramFree(s->graphics.dest);
                 }
@@ -242,7 +242,7 @@ void sub_8015E28(u16 p0)
         s->prevVariant = -1;
         s->animSpeed = gPlayer.unk90->s.animSpeed;
         s->palId = 0;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
         if (GRAVITY_IS_INVERTED) {
             SPRITE_FLAG_SET(s, Y_FLIP);

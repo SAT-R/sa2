@@ -68,7 +68,7 @@ void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s->graphics.anim = SA2_ANIM_KIKI;
     s->variant = 0;
     SPRITE_INIT_SCRIPT(s, 1.0);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     UpdateSpriteAnimation(s);
 }
 
@@ -159,7 +159,7 @@ static void sub_8053A38(void)
     Player_UpdateHomingPosition(QS(x), QS(y));
 
     if (kiki->unk3F == 0x12) {
-        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             CreateKikiProjectile(x - 4, y + 2);
         } else {
             CreateKikiProjectile(x + 9, y + 2);
@@ -205,7 +205,7 @@ static void CreateKikiProjectile(s16 x, s16 y)
     s->graphics.anim = SA2_ANIM_KIKI_PROJ;
     s->variant = 0;
     SPRITE_INIT_SCRIPT(s, 1.0);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     UpdateSpriteAnimation(s);
 }
@@ -307,7 +307,7 @@ static void CreateKikiProjectilePiece(s16 x, s16 y)
     s->graphics.anim = SA2_ANIM_KIKI_PROJ_EXPLOSION;
     s->variant = 0;
     SPRITE_INIT_SCRIPT(s, 1.0);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     UpdateSpriteAnimation(s);
 }
 

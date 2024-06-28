@@ -165,7 +165,7 @@ void sub_806FCF8(void)
         s = &ui->timeHundreds;
         s->graphics.anim = unkF7E8->anim;
         s->variant = unkF7E8->variant;
-        s->unk10 |= 0x40000;
+        s->frameFlags |= 0x40000;
         s->palId = temp;
         UpdateSpriteAnimation(s);
     }
@@ -175,7 +175,7 @@ void sub_806FCF8(void)
         s = &ui->timeTens;
         s->graphics.anim = unkF7E8->anim;
         s->variant = unkF7E8->variant;
-        s->unk10 |= 0x40000;
+        s->frameFlags |= 0x40000;
         s->palId = temp;
         UpdateSpriteAnimation(s);
     }
@@ -184,7 +184,7 @@ void sub_806FCF8(void)
     s = &ui->timeUnits;
     s->graphics.anim = unkF7E8->anim;
     s->variant = unkF7E8->variant;
-    s->unk10 |= 0x40000;
+    s->frameFlags |= 0x40000;
     s->palId = temp;
     UpdateSpriteAnimation(s);
 }

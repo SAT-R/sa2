@@ -42,9 +42,9 @@ void CreateCollectRingsTimeDisplay(void)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0x40000;
+    s->frameFlags = 0x40000;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         s->graphics.dest = VramMalloc(9);
@@ -67,7 +67,7 @@ void CreateCollectRingsTimeDisplay(void)
         s->prevVariant = -1;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
 
         if (i == 0) {
             s->graphics.dest = VramMalloc(22);

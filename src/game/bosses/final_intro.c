@@ -334,9 +334,9 @@ void CreateTrueArea53Intro(void)
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 5;
-    s->unk10 = 0x400;
+    s->frameFlags = 0x400;
 
     for (i = 0; i < 3; i++) {
         s = &intro->birdSprites[i];
@@ -350,10 +350,10 @@ void CreateTrueArea53Intro(void)
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = i + 1;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
     }
 
     CreateBackgrounds();
@@ -402,9 +402,9 @@ void CreateOrbitingEmeraldsSequence(void)
         emerald->graphics.size = 0;
         emerald->animCursor = 0;
         emerald->timeUntilNextFrame = 0;
-        emerald->animSpeed = 0x10;
+        emerald->animSpeed = SPRITE_ANIM_SPEED(1.0);
         emerald->palId = 0;
-        emerald->unk10 = 0;
+        emerald->frameFlags = 0;
     }
 }
 
@@ -589,7 +589,7 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x20;
     s->palId = 0;
-    s->unk10 = 0x1000;
+    s->frameFlags = 0x1000;
 }
 
 void Task_SuperSonicSpark(void)
@@ -647,7 +647,7 @@ void CreateActor(u8 character)
         s->palId = 0;
     }
 
-    s->unk10 = 0x1400;
+    s->frameFlags = 0x1400;
 
     if (character < ACTOR_CHEESE) {
         s = &actor->ssGroundEffectSprite;
@@ -662,9 +662,9 @@ void CreateActor(u8 character)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0x1000;
+        s->frameFlags = 0x1000;
     }
 }
 
@@ -678,7 +678,7 @@ void Task_ActorSonicRunIn(void)
 
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, s);
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         gCurTask->main = Task_ActorSonicSlowDownTilStop;
     }
 
@@ -696,7 +696,7 @@ void Task_ActorSonicSlowDownTilStop(void)
 
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, s);
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         gCurTask->main = sub_8037744;
     }
 
@@ -716,7 +716,7 @@ void sub_8037744(void)
     if (--actor->animFrame == 0) {
         actor->speedX = 0;
         NEXT_SEQUENCE_ANIM(actor, s);
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         gCurTask->main = sub_8037818;
     }
 
@@ -772,7 +772,7 @@ void sub_803796C(void)
 
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, s);
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         gCurTask->main = sub_8037A38;
     }
     OBJ_RENDER_SPRITE(actor, s);
@@ -791,7 +791,7 @@ void sub_8037A38(void)
 
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, s);
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         m4aSongNumStart(SE_GRINDING);
         gCurTask->main = sub_8037B04;
     }
@@ -830,11 +830,11 @@ void sub_8037BD0(void)
     s = &actor->ssGroundEffectSprite;
     s->x = I(actor->x);
     s->y = 178 - gCamera.y;
-    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
     DisplaySprite(s);
 
     if (!(actor->animFrame & 3)) {
@@ -859,11 +859,11 @@ void sub_8037CEC(void)
     s = &actor->ssGroundEffectSprite;
     s->x = I(actor->x);
     s->y = 178 - gCamera.y;
-    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
     DisplaySprite(s);
 
     if (!(actor->animFrame & 3)) {
@@ -899,11 +899,11 @@ void sub_8037E08(void)
     s = &actor->ssGroundEffectSprite;
     s->x = I(actor->x);
     s->y = 178 - gCamera.y;
-    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+    s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
     DisplaySprite(s);
 
     if (!(actor->animFrame & 3)) {
@@ -952,11 +952,11 @@ void sub_8037F68(void)
         s = &actor->ssGroundEffectSprite;
         s->x = I(actor->x);
         s->y = 178 - gCamera.y;
-        s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+        s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
 
-        s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+        s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
         DisplaySprite(s);
     }
 
@@ -991,7 +991,7 @@ void sub_8038168(void)
 
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, s);
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         gCurTask->main = sub_8038238;
     }
 
@@ -1078,7 +1078,7 @@ void sub_80385A4(void)
 
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, s);
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         gCurTask->main = sub_8038664;
     }
 
@@ -1166,7 +1166,7 @@ void sub_80389E0(void)
 
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, s);
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         gCurTask->main = sub_8038AA0;
     }
 
@@ -1251,7 +1251,7 @@ void sub_8038E20(void)
     IntroActor *actor = TASK_DATA(gCurTask);
     Sprite *s = &actor->s;
 
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
 
     OBJ_UPDATE_POS(actor);
 
@@ -1305,7 +1305,7 @@ void sub_8039084(void)
     if (actor->x < 0xB800) {
         actor->x += 0x80;
     } else {
-        s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+        s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
     }
 
     if (--actor->animFrame == 0) {
@@ -1327,7 +1327,7 @@ void sub_8039144(void)
 
     if (--actor->animFrame == 0) {
         NEXT_SEQUENCE_ANIM(actor, s);
-        s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+        s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
         gCurTask->main = sub_8039208;
     }
 
@@ -1372,7 +1372,7 @@ void Task_IntroPanIn(void)
             s->graphics.dest = gUnknown_080D7560[0].tiles;
             s->graphics.anim = gUnknown_080D7560[0].anim;
             s->variant = gUnknown_080D7560[0].variant;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             s->prevVariant = -1;
         }
 
@@ -1495,7 +1495,7 @@ void IntroRenderSprites(u8 flockMode)
 
                 s->x = intro->birdPositions[i][0] >> 8;
                 s->y = (intro->birdPositions[i][1] >> 8) - intro->cameraY;
-                s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+                s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
                 DisplaySprite(s);
             }
         }
@@ -1519,9 +1519,9 @@ void IntroRenderSprites(u8 flockMode)
             s->y = I(intro->birdPositions[i][1]) - intro->cameraY;
 
             if (intro->birdSpeeds[i][0] < 0) {
-                s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+                s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
             } else {
-                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
             }
 
             DisplaySprite(s);

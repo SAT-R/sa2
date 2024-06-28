@@ -288,8 +288,8 @@ struct Task *SetupStageIntro(void)
     gStageFlags |= STAGE_FLAG__ACT_START;
     gStageFlags |= STAGE_FLAG__100;
 
-    gPlayer.unk90->s.unk10 |= SPRITE_FLAG_MASK_18;
-    gPlayer.unk94->s.unk10 |= SPRITE_FLAG_MASK_18;
+    gPlayer.unk90->s.frameFlags |= SPRITE_FLAG_MASK_18;
+    gPlayer.unk94->s.frameFlags |= SPRITE_FLAG_MASK_18;
 
     gActiveBossTask = NULL;
 
@@ -379,7 +379,7 @@ struct Task *SetupStageIntro(void)
     }
     // _0802F34C
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     for (i = 0; i < NUM_ZONE_NAME_PARTS; i++) {
@@ -424,7 +424,7 @@ struct Task *SetupStageIntro(void)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
     }
 
     /*    Loading Wheel in upper-left corner    */
@@ -444,7 +444,7 @@ struct Task *SetupStageIntro(void)
     s->animSpeed = SPRITE_ANIM_SPEED(2.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
     UpdateSpriteAnimation(s);
 
     /*    Icon inside the loading wheel    */
@@ -470,7 +470,7 @@ struct Task *SetupStageIntro(void)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
+    s->frameFlags = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
     UpdateSpriteAnimation(s);
 
     /*    The icons of all unlocked zones in the upper-right    */
@@ -512,7 +512,7 @@ struct Task *SetupStageIntro(void)
             s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
             s->hitboxes[0].index = -1;
-            s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
             UpdateSpriteAnimation(s);
         }
     }
@@ -550,7 +550,7 @@ struct Task *SetupStageIntro(void)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
     }
 
@@ -579,7 +579,7 @@ static void Task_802F75C(void)
     }
     sit_a->counter = frameCounter;
 
-    gUnknown_03005AF0.s.unk10 &= ~(SPRITE_FLAG_MASK_OBJ_MODE);
+    gUnknown_03005AF0.s.frameFlags &= ~(SPRITE_FLAG_MASK_OBJ_MODE);
 
     if (frameCounter < 150) {
         gPlayer.moveState |= MOVESTATE_100000;
@@ -597,8 +597,8 @@ static void Task_802F75C(void)
         p->anim = characterAnimsGettingReady[gSelectedCharacter].anim;
         p->variant = characterAnimsGettingReady[gSelectedCharacter].variant;
         p->unk6C = 1;
-        p->unk90->s.unk10 |= MOVESTATE_40000;
-        p->unk94->s.unk10 |= MOVESTATE_40000;
+        p->unk90->s.frameFlags |= MOVESTATE_40000;
+        p->unk94->s.frameFlags |= MOVESTATE_40000;
 
         if (IS_MULTI_PLAYER) {
             p->unk90->s.palId = SIO_MULTI_CNT->id;
@@ -637,7 +637,7 @@ static void Task_802F75C(void)
         if (IS_MULTI_PLAYER) {
             sub_8018818();
         } else {
-            gUnknown_03005AF0.s.unk10 &= ~SPRITE_FLAG_MASK_18;
+            gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_18;
         }
         CreateStageUI();
         TaskDestroy(gCurTask);
@@ -947,7 +947,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
                 s->prevVariant = -1;
                 s->x = DISPLAY_WIDTH;
                 s->y = DISPLAY_HEIGHT;
-                s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+                s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
             } else if (counter >= 190) {
                 s->x += 4;
                 s->y += 4;
@@ -1065,7 +1065,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
         /* Loading Wheel Icon */
         s = &sit_d->sprLoadingWheelIcon;
 
-        s->unk10 = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
+        s->frameFlags = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
         s->x = 35;
 
         if (counter <= 16) {

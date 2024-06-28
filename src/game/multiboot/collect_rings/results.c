@@ -209,9 +209,9 @@ void sub_808207C(void)
                 s->animCursor = 0;
                 s->timeUntilNextFrame = 0;
                 s->prevVariant = -1;
-                s->animSpeed = 0x10;
+                s->animSpeed = SPRITE_ANIM_SPEED(1.0);
                 s->palId = 0;
-                s->unk10 = 0x1000;
+                s->frameFlags = 0x1000;
                 UpdateSpriteAnimation(s);
             }
         }
@@ -251,9 +251,9 @@ void sub_808207C(void)
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
             s->prevVariant = -1;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             UpdateSpriteAnimation(s);
         }
         resultsScreen->unk430 = 0;
@@ -628,8 +628,8 @@ void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = unk25;
-    s->unk10 = unk10;
+    s->frameFlags = unk10;
     UpdateSpriteAnimation(s);
 }

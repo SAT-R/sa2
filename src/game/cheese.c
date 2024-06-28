@@ -147,7 +147,7 @@ void CreateCheese(Player *player)
     s->graphics.size = 0;
     s->prevVariant = -1;
     s->unk1A = SPRITE_OAM_ORDER(17);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     s->timeUntilNextFrame = 0;
 
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
@@ -190,8 +190,8 @@ void sub_801412C(Cheese *cheese)
         temp ^= 0x800;
     }
 
-    s->unk10 = (temp | (s->unk10 & ~0xC00)) & ~0x3000;
-    s->unk10 |= (unk54->unk68->unk10) & 0x3000;
+    s->frameFlags = (temp | (s->frameFlags & ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP))) & ~SPRITE_FLAG_MASK_PRIORITY;
+    s->frameFlags |= (unk54->unk68->frameFlags) & SPRITE_FLAG_MASK_PRIORITY;
     UpdateSpriteAnimation(s);
     if (!(cheese->unkC & 2)) {
         DisplaySprite(s);
@@ -723,7 +723,7 @@ void sub_8014BB0(Cheese *cheese)
     unk4BB0->s.x = I(unk4BB0->unk34) - gCamera.x;
     unk4BB0->s.y = I(unk4BB0->unk38) - gCamera.y;
     unk4BB0->s.unk1A = SPRITE_OAM_ORDER(8);
-    unk4BB0->s.unk10 = SPRITE_FLAG(PRIORITY, 2);
+    unk4BB0->s.frameFlags = SPRITE_FLAG(PRIORITY, 2);
     unk4BB0->s.timeUntilNextFrame = 0;
 
     unk4BB0->s.animSpeed = SPRITE_ANIM_SPEED(1.0);

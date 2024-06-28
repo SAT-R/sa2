@@ -187,9 +187,9 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             s->hitboxes[0].index = -1;
             UpdateSpriteAnimation(s);
         }
@@ -208,9 +208,9 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             s->hitboxes[0].index = -1;
             UpdateSpriteAnimation(s);
         }
@@ -229,9 +229,9 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             s->hitboxes[0].index = -1;
             UpdateSpriteAnimation(s);
         }

@@ -65,7 +65,7 @@ static void Task_PenMove(void)
     Vec2_32 pos;
     s32 posX_24_8;
 
-    if ((s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+    if ((s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
         if (pen->boosting) {
             pen->offsetX += PEN_BOOST_SPEED;
         } else {
@@ -86,7 +86,7 @@ static void Task_PenMove(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(pen, me, s);
 
-    if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+    if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
         s32 playerX = gPlayer.x;
         // Feels like a fake match, oh well
         posX_24_8 = Q(pos.x);
@@ -112,13 +112,14 @@ static void Task_PenMove(void)
     }
 
     // Turn when end of range reached
-    if (ENEMY_CROSSED_LEFT_BORDER(pen, me) && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+    if (ENEMY_CROSSED_LEFT_BORDER(pen, me)
+        && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = Task_PenTurn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
         s->prevVariant = -1;
     } else if (ENEMY_CROSSED_RIGHT_BORDER(pen, me)
-               && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+               && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = Task_PenTurn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
@@ -146,10 +147,10 @@ static void Task_PenTurn(void)
     Player_UpdateHomingPosition(Q(pos.x), Q(pos.y));
     if (UpdateSpriteAnimation(s) == 0) {
         pen->boosting = FALSE;
-        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-            s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
+            s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
         } else {
-            s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+            s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
         }
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_MOVE;

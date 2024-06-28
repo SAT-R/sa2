@@ -103,10 +103,10 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     cs->s->animCursor = 0;
     cs->s->timeUntilNextFrame = 0;
     cs->s->prevVariant = -1;
-    cs->s->animSpeed = 0x10;
+    cs->s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     cs->s->palId = 0;
     cs->s->hitboxes[0].index = -1;
-    cs->s->unk10 = 0x2000;
+    cs->s->frameFlags = 0x2000;
     cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2BC0);
     cs->s->graphics.anim = SA2_ANIM_CRANE;
     cs->s->variant = 0;
@@ -136,10 +136,10 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
                 cs->s->animCursor = 0;
                 cs->s->timeUntilNextFrame = 0;
                 cs->s->prevVariant = -1;
-                cs->s->animSpeed = 0x10;
+                cs->s->animSpeed = SPRITE_ANIM_SPEED(1.0);
                 cs->s->palId = 0;
                 cs->s->hitboxes[0].index = -1;
-                cs->s->unk10 = 0x2000;
+                cs->s->frameFlags = 0x2000;
                 cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B80);
                 cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
                 cs->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_ROPE_GREY;
@@ -162,10 +162,10 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         cs->s->animCursor = 0;
         cs->s->timeUntilNextFrame = 0;
         cs->s->prevVariant = -1;
-        cs->s->animSpeed = 0x10;
+        cs->s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         cs->s->palId = 0;
         cs->s->hitboxes[0].index = -1;
-        cs->s->unk10 = 0x2000;
+        cs->s->frameFlags = 0x2000;
         cs->s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
         cs->s->graphics.anim = SA2_ANIM_CRANE_PARTS;
         cs->s->variant = SA2_ANIM_VARIANT_CRANE_PARTS_HOOK;
@@ -614,7 +614,7 @@ static void sub_80742A8(Sprite_HCCrane *crane)
                 transform.x = cs->s->x;
                 transform.y = cs->s->y;
 
-                cs->s->unk10 = gUnknown_030054B8++ | 0x00002060;
+                cs->s->frameFlags = gUnknown_030054B8++ | 0x00002060;
 
                 sub_8004860(cs->s, &transform);
             }

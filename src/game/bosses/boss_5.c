@@ -220,11 +220,11 @@ void CreateEggSaucer(void)
 
     m4aSongNumStart(SE_253);
 
-    gUnknown_03005AF0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AF0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+    gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
 
-    gUnknown_03005AA0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AA0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+    gUnknown_03005AA0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gUnknown_03005AA0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
 
     gActiveBossTask = TaskCreate(Task_EggSaucerIntro, sizeof(EggSaucer), 0x4000, 0,
                                  TaskDestructor_EggSaucerMain);
@@ -355,7 +355,7 @@ void CreateEggSaucer(void)
     // Seems a lot of tiles for this
     vram += 64 * TILE_SIZE_4BPP;
     SPRITE_INIT_ANIM_AND_SCRIPT(s, SA2_ANIM_EGG_SAUCER_GUN, 0, 23);
-    s->unk10 = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 1)
+    s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 1)
         | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 
     s = &boss->gunCharge;
@@ -387,7 +387,7 @@ void CreateEggSaucer(void)
     s->graphics.dest = vram;
     SPRITE_INIT_ANIM_AND_SCRIPT(s, SA2_ANIM_EGG_SAUCER_HAND, 0, 12);
     s->hitboxes[1].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
 
     for (i = 0; i < 8; i++) {
         s = &boss->smackParticles[i];
@@ -590,7 +590,7 @@ void sub_80438C4(EggSaucer *boss)
         transform = &boss->transform;
         s->x = x + ((COS(boss->gunDiskAngle) * 5) >> 11) - 2;
         s->y = y + ((SIN(boss->gunDiskAngle) * 5) >> 11) - 19;
-        s->unk10 = gUnknown_030054B8++ | 0x1060;
+        s->frameFlags = gUnknown_030054B8++ | 0x1060;
 
         transform->rotation = boss->unk1A;
         transform->width = 0x100;
@@ -765,7 +765,7 @@ void sub_8043E2C(EggSaucer *boss)
         transform = &boss->transform;
         s->x = (I(x) - gCamera.x) - 2;
         s->y = (I(y) - gCamera.y) - 19;
-        s->unk10 = gUnknown_030054B8++ | 0x1060;
+        s->frameFlags = gUnknown_030054B8++ | 0x1060;
 
         transform->rotation = boss->unk1A;
         transform->width = 256;

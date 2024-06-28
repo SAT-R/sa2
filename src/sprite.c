@@ -168,7 +168,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
 {
     SPRITE_MAYBE_SWITCH_ANIM(s);
 
-    if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
+    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
     if (s->timeUntilNextFrame > 0)
@@ -235,7 +235,7 @@ static AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s)
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
     s->animCursor += AnimCommandSizeInWords(ACmd_GetTiles);
 
-    if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
+    if ((s->frameFlags & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
             s->graphics.src
                 = &gRefSpriteTables->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
@@ -267,11 +267,11 @@ static AnimCmdResult animCmd_AddHitbox(void *cursor, Sprite *s)
         && (cmd->hitbox.bottom == 0)) {
         s->hitboxes[hitboxId].index = -1;
     } else {
-        if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
             SWAP_AND_NEGATE(s->hitboxes[hitboxId].top, s->hitboxes[hitboxId].bottom);
         }
 
-        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             SWAP_AND_NEGATE(s->hitboxes[hitboxId].left, s->hitboxes[hitboxId].right);
         }
     }
@@ -310,7 +310,7 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
     if (dimensions != (SpriteOffset *)-1) {
         s16 res;
         u16 *affine;
-        big.affineIndex = s->unk10 % 32u;
+        big.affineIndex = s->frameFlags % 32u;
         affine = &gOamBuffer[big.affineIndex * 4].all.affineParam;
 
 #if 01
@@ -431,7 +431,7 @@ NONMATCH("asm/non_matching/engine/sub_8004E14.inc",
         const SpriteOffset *sprDims = sprite->dimensions;
         u16 *affine;
 
-        us.affineIndex = sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE;
+        us.affineIndex = sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE;
         affine = (u16 *)&gOamBuffer[us.affineIndex * 4 + 3];
 
         us.qDirX = COS_24_8((transform->rotation + gUnknown_03001944) & ONE_CYCLE);
@@ -537,28 +537,28 @@ void DisplaySprite(Sprite *sprite)
         x = sprite->x;
         y = sprite->y;
 
-        if (sprite->unk10 & SPRITE_FLAG_MASK_17) {
+        if (sprite->frameFlags & SPRITE_FLAG_MASK_17) {
             x -= gUnknown_030017F4[0];
             y -= gUnknown_030017F4[1];
         }
 
         sprWidth = sprDims->width;
         sprHeight = sprDims->height;
-        if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
-            if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
+        if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
+            if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
                 x -= sprDims->width / 2;
                 y -= sprDims->height / 2;
                 sprWidth *= 2;
                 sprHeight *= 2;
             }
         } else {
-            if (sprite->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+            if (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
                 y -= sprHeight - sprDims->offsetY;
             } else {
                 y -= sprDims->offsetY;
             }
 
-            if (sprite->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+            if (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
                 x -= sprWidth - sprDims->offsetX;
             } else {
                 x -= sprDims->offsetX;
@@ -590,19 +590,20 @@ void DisplaySprite(Sprite *sprite)
                 oam->all.attr0 &= 0xFE00;
 
                 oam->all.attr2 += sprite->palId << 12;
-                if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
+                if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
                     oam->all.attr0 |= 0x100;
-                    if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
+                    if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
                         oam->all.attr0 |= 0x200;
                     }
-                    oam->all.attr1 |= (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE) << 9;
+                    oam->all.attr1 |= (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE)
+                        << 9;
                 } else {
                     u32 shapeAndSize = ((oam->all.attr0 & 0xC000) >> 12);
                     u32 flipY;
                     u32 r6;
 
                     shapeAndSize |= ((oam->all.attr1 & 0xC000) >> 14);
-                    flipY = sprite->unk10 >> SPRITE_FLAG_SHIFT_Y_FLIP;
+                    flipY = sprite->frameFlags >> SPRITE_FLAG_SHIFT_Y_FLIP;
                     r6 = 1;
 
                     // y-flip
@@ -612,19 +613,19 @@ void DisplaySprite(Sprite *sprite)
                     }
 
                     // x-flip
-                    if (((sprite->unk10 >> SPRITE_FLAG_SHIFT_X_FLIP) & r6)
+                    if (((sprite->frameFlags >> SPRITE_FLAG_SHIFT_X_FLIP) & r6)
                         != (sprDims->flip & 1)) {
                         oam->all.attr1 ^= 0x1000;
                         r7 = sprWidth - gOamShapesSizes[shapeAndSize][0] - r7;
                     }
                 }
 
-                if (unk6D0 != 0 && (sprite->unk10 & SPRITE_FLAG_MASK_MOSAIC) != 0) {
+                if (unk6D0 != 0 && (sprite->frameFlags & SPRITE_FLAG_MASK_MOSAIC) != 0) {
                     oam->all.attr0 |= 0x1000;
                 }
 
-                oam->all.attr0 |= (sprite->unk10 & SPRITE_FLAG_MASK_OBJ_MODE) * 8;
-                oam->all.attr2 |= (sprite->unk10 & SPRITE_FLAG_MASK_PRIORITY) >> 2;
+                oam->all.attr0 |= (sprite->frameFlags & SPRITE_FLAG_MASK_OBJ_MODE) * 8;
+                oam->all.attr2 |= (sprite->frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> 2;
                 oam->all.attr0 += ((y + r5) & 0xFF);
                 oam->all.attr1 += ((x + r7) & 0x1FF);
 
@@ -651,28 +652,28 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
         x = sprite->x;
         y = sprite->y;
 
-        if (sprite->unk10 & SPRITE_FLAG_MASK_17) {
+        if (sprite->frameFlags & SPRITE_FLAG_MASK_17) {
             x -= gUnknown_030017F4[0];
             y -= gUnknown_030017F4[1];
         }
 
         sprWidth = sprDims->width;
         sprHeight = sprDims->height;
-        if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
-            if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
+        if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
+            if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
                 x -= sprDims->width / 2;
                 y -= sprDims->height / 2;
                 sprWidth *= 2;
                 sprHeight *= 2;
             }
         } else {
-            if (sprite->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+            if (sprite->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
                 y -= sprHeight - sprDims->offsetY;
             } else {
                 y -= sprDims->offsetY;
             }
 
-            if (sprite->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+            if (sprite->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
                 x -= sprWidth - sprDims->offsetX;
             } else {
                 x -= sprDims->offsetX;
@@ -697,19 +698,20 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
                 oam->all.attr1 &= 0xFE00;
                 oam->all.attr0 &= 0xFE00;
                 oam->all.attr2 += sprite->palId << 12;
-                if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
+                if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
                     oam->all.attr0 |= 0x100;
-                    if (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
+                    if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
                         oam->all.attr0 |= 0x200;
                     }
-                    oam->all.attr1 |= (sprite->unk10 & SPRITE_FLAG_MASK_ROT_SCALE) << 9;
+                    oam->all.attr1 |= (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE)
+                        << 9;
                 } else {
                     u32 shapeAndSize = ((oam->all.attr0 & 0xC000) >> 12);
                     u32 flipY;
                     u32 r6;
 
                     shapeAndSize |= ((oam->all.attr1 & 0xC000) >> 14);
-                    flipY = sprite->unk10 >> 11;
+                    flipY = sprite->frameFlags >> 11;
                     r6 = 1;
 
                     // y-flip
@@ -719,14 +721,14 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
                     }
 
                     // x-flip
-                    if (((sprite->unk10 >> 10) & r6) != (sprDims->flip & 1)) {
+                    if (((sprite->frameFlags >> 10) & r6) != (sprDims->flip & 1)) {
                         oam->all.attr1 ^= 0x1000;
                         x1 = sprWidth - gOamShapesSizes[shapeAndSize][0] - x1;
                     }
                 }
 
-                oam->all.attr0 |= (sprite->unk10 & SPRITE_FLAG_MASK_OBJ_MODE) * 8;
-                oam->all.attr2 |= (sprite->unk10 & SPRITE_FLAG_MASK_PRIORITY) >> 2;
+                oam->all.attr0 |= (sprite->frameFlags & SPRITE_FLAG_MASK_OBJ_MODE) * 8;
+                oam->all.attr2 |= (sprite->frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> 2;
                 oam->all.attr0 += ((y + y1) & 0xFF);
                 oam->all.attr1 += ((x + x1) & 0x1FF);
 
@@ -868,7 +870,7 @@ static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
-    if (!(s->unk10 & SPRITE_FLAG_MASK_18)) {
+    if (!(s->frameFlags & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
         DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16],

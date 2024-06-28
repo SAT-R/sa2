@@ -188,7 +188,7 @@ void SuperSonicInit()
     spr->palId = 0;
     spr->hitboxes[0].index = -1;
     spr->hitboxes[1].index = -1;
-    spr->unk10 = (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_X_FLIP);
+    spr->frameFlags = (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_X_FLIP);
 }
 
 void sub_802B81C(void)
@@ -442,10 +442,10 @@ static void sub_802BE1C(struct SuperSonic *sonic)
     prio = (sonic->flags & SUPER_FLAG__200) ? 3 : 0;
 
     if (sonic->flags & 0x4) {
-        spr->unk10 = SPRITE_FLAG(PRIORITY, prio) | gUnknown_030054B8++
+        spr->frameFlags = SPRITE_FLAG(PRIORITY, prio) | gUnknown_030054B8++
             | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     } else {
-        spr->unk10 = SPRITE_FLAG(PRIORITY, prio) | SPRITE_FLAG_MASK_X_FLIP;
+        spr->frameFlags = SPRITE_FLAG(PRIORITY, prio) | SPRITE_FLAG_MASK_X_FLIP;
     }
     UpdateSpriteAnimation(spr);
 
@@ -819,7 +819,7 @@ static void sub_802C8A0(struct SuperSonic *sonic)
 static void sub_802C8EC(struct SuperSonic *sonic)
 {
     Sprite *spr = &sonic->spr;
-    spr->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    spr->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     sonic->unk1A += Q(0.125);
     sonic->worldY += sonic->unk1A;

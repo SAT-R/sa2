@@ -87,7 +87,7 @@ void CreatePauseMenu(void)
             s->x = (DISPLAY_WIDTH / 2);
             s->y = (DISPLAY_HEIGHT / 2);
 
-            s->unk10 = 0;
+            s->frameFlags = 0;
 
             UpdateSpriteAnimation(s);
         }
@@ -135,8 +135,8 @@ void Task_PauseMenuUpdate(void)
     }
 
     if (gBldRegs.bldY == 0) {
-        pm->s2.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
-        pm->s.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+        pm->s2.frameFlags &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+        pm->s.frameFlags &= ~SPRITE_FLAG_MASK_OBJ_MODE;
     }
 
     /* Move the cursor */

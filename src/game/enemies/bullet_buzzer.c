@@ -111,8 +111,8 @@ void Task_BulletBuzzerMain(void)
     value = sub_8004418(I(gPlayer.y) - pos.y, I(gPlayer.x) - pos.x);
 
     if (bbuzzer->unk5E == 0) {
-        if (((u16)(value - 86) < 84 && s->unk10 & SPRITE_FLAG_MASK_X_FLIP)
-            || ((u16)(value - 342) < 84 && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP))) {
+        if (((u16)(value - 86) < 84 && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)
+            || ((u16)(value - 342) < 84 && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP))) {
             bbuzzer->unk58 = value;
             bbuzzer->unk5D = 0;
             s->graphics.anim = SA2_ANIM_BULLETBUZZER;
@@ -149,7 +149,7 @@ void sub_8059B04(void)
         init.numTiles = 4;
         init.anim = SA2_ANIM_BUZZER_PROJ;
         init.variant = 0;
-        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             init.x = QS(pos.x + 10);
         } else {
             init.x = QS(pos.x - 10);

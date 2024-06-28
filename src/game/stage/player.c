@@ -521,13 +521,13 @@ void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
         s->palId = 0;
     }
 
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     if (IS_MULTI_PLAYER) {
-        s->unk10 |= (SPRITE_FLAG_MASK_18 | SPRITE_FLAG_MASK_19);
+        s->frameFlags |= (SPRITE_FLAG_MASK_18 | SPRITE_FLAG_MASK_19);
     }
     SPRITE_FLAG_SET(s, ROT_SCALE_ENABLE);
-    s->unk10 |= unk60;
+    s->frameFlags |= unk60;
 
     s->hitboxes[0].index = -1;
     s->hitboxes[1].index = -1;
@@ -572,8 +572,8 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
         s->palId = 0;
     }
 
-    s->unk10 = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2)
-                | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG(ROT_SCALE, 4));
+    s->frameFlags = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2)
+                     | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG(ROT_SCALE, 4));
 
     extraSprite->transform.rotation = 0;
     extraSprite->transform.width = 0x100;
@@ -3106,10 +3106,10 @@ void Task_8023D08(void)
         gPlayer.moveState = 0;
         gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
 
-        gPlayer.unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-        gPlayer.unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
-        gPlayer.unk94->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-        gPlayer.unk94->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+        gPlayer.unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        gPlayer.unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+        gPlayer.unk94->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        gPlayer.unk94->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
 
         gCamera.unk50 &= ~0x3;
         if (gPlayer.character == CHARACTER_CREAM && gCheese != NULL) {
@@ -3240,8 +3240,8 @@ void Task_8023FC0(void)
             gStageFlags |= STAGE_FLAG__ACT_START;
         }
 
-        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-        p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
         p->unk80 = 0x100;
         p->unk82 = 0x100;
 
@@ -3460,7 +3460,7 @@ void sub_802460C(Player *p)
 
 void sub_80246DC(Player *p)
 {
-    Sprite *s90 = &p->unk90->s;
+    Sprite *s = &p->unk90->s;
     u16 charAnim = p->unk64;
     u32 r3 = p->anim;
     u32 variant = p->variant;
@@ -3470,7 +3470,7 @@ void sub_80246DC(Player *p)
     r3 = (u16)(r3 - baseAnim);
 
     if ((charAnim == 10) || (charAnim == 11)) {
-        if (variant == 0 && (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
+        if (variant == 0 && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
             && (((u16)r3 - 10) == 0 || ((u16)r3 - 10) == 1)) {
             p->variant = 1;
             p->moveState |= MOVESTATE_4;
@@ -3497,7 +3497,7 @@ void sub_80246DC(Player *p)
                         p->variant = 1;
                     }
                 } else if (variant == 1) {
-                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
                         p->variant = 2;
                     }
                 }
@@ -3505,7 +3505,7 @@ void sub_80246DC(Player *p)
         } else if (charAnim == SA2_CHAR_ANIM_39) {
             if (r3 == SA2_CHAR_ANIM_53) {
                 if (variant == 0) {
-                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
                         p->anim = (gPlayerCharacterIdleAnims[p->character]
                                    + SA2_CHAR_ANIM_52);
                         p->variant = 2;
@@ -3519,7 +3519,7 @@ void sub_80246DC(Player *p)
                         p->variant = 1;
                     }
                 } else if (variant == 1) {
-                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
                         p->variant = 2;
                     }
                 }
@@ -3531,7 +3531,7 @@ void sub_80246DC(Player *p)
                         p->variant = 1;
                     }
                 } else if (sl == 1) {
-                    if (s90->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+                    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
                         p->variant = 2;
                     }
                 }
@@ -3699,9 +3699,9 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
         || p->unk64 == SA2_CHAR_ANIM_62 || p->unk64 == 63
         || (p->unk64 == SA2_CHAR_ANIM_87 && p->character == CHARACTER_CREAM)) {
         psi->transform.rotation = p->rotation << 2;
-        s->unk10 &= ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP);
-        s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-        s->unk10 |= p->unk60 | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+        s->frameFlags &= ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP);
+        s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+        s->frameFlags |= p->unk60 | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
         MACRO_8024B10_PSI_UPDATE(p, psi);
         if (IS_SINGLE_PLAYER) {
@@ -3709,21 +3709,22 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
         }
     } else {
         psi->transform.rotation = 0;
-        s->unk10 &= ~(SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE);
+        s->frameFlags
+            &= ~(SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE);
 
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
-            s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+            s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
         } else {
-            s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
-            s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-            s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+            s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
+            s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+            s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
             s->x++;
         }
 
         if (GRAVITY_IS_INVERTED) {
-            s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+            s->frameFlags |= SPRITE_FLAG_MASK_Y_FLIP;
         } else {
-            s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
+            s->frameFlags &= ~SPRITE_FLAG_MASK_Y_FLIP;
         }
         UpdateSpriteAnimation(s);
     }
@@ -3754,7 +3755,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     send->unkC = s->animSpeed;
     send->unkD = psi->transform.rotation >> 2;
 
-    if (s->unk10 & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
+    if (s->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_ENABLE) {
         send->unk8 |= 1;
     } else {
         send->unk8 &= ~1;
@@ -3792,7 +3793,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     }
 
     send->unk8 &= ~0x30;
-    send->unk8 |= ((gPlayer.unk90->s.unk10 & 0x3000) >> 8);
+    send->unk8 |= ((gPlayer.unk90->s.frameFlags & 0x3000) >> 8);
     if (p->unk38 != 0) {
         send->unk8 |= 0x80;
     } else {
@@ -3854,7 +3855,7 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
         psi->transform.y = I(p->y) - camY;
     }
 
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     if (p->moveState & MOVESTATE_40) {
         s->animSpeed = 8;
     }
@@ -3873,8 +3874,8 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
                 u8 rotation = p->rotation;
                 p->w.cf.unkB0 = rotation;
                 psi->transform.rotation = rotation << 2;
-                s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-                s->unk10 |= gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+                s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+                s->frameFlags |= gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 MACRO_8024B10_PSI_UPDATE(p, psi);
                 sub_8004860(s, &psi->transform);
@@ -3904,8 +3905,8 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
                 p->w.tf.shift = shift;
 
                 psi->transform.rotation = shift << 2;
-                s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-                s->unk10 |= gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+                s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+                s->frameFlags |= gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 MACRO_8024B10_PSI_UPDATE(p, psi);
                 sub_8004860(s, &psi->transform);
@@ -3993,7 +3994,7 @@ void PlayerCB_8025548(Player *p)
 {
     if (!sub_802A0FC(p) && !sub_8029E6C(p)
         && ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || !sub_802A2A8(p))) {
-        if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+        if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
@@ -4029,14 +4030,14 @@ void PlayerCB_802569C(Player *p)
         if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 0)) {
                 p->variant = 1;
-                p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+                p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             }
         } else if (dpad != DPAD_UP) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
         if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 1)
-            && (s->unk10 & 0x4000)) {
+            && (s->frameFlags & 0x4000)) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
@@ -4072,14 +4073,14 @@ void PlayerCB_8025854(Player *p)
         if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->variant == 0)) {
                 p->variant = 1;
-                p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+                p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             }
         } else if (dpad != DPAD_DOWN) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
         if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->variant == 1)
-            && (s->unk10 & 0x4000)) {
+            && (s->frameFlags & 0x4000)) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
@@ -4118,7 +4119,7 @@ void PlayerCB_8025A0C(Player *p)
         == MOVESTATE_800) {
         Player_InitIceSlide(p);
     } else {
-        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
         p->unk64 = 4;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
@@ -4268,7 +4269,7 @@ void PlayerCB_Jump(Player *p)
         }
     }
 
-    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     m4aSongNumStart(SE_JUMP);
 
@@ -4335,7 +4336,7 @@ void PlayerCB_8025F84(Player *p)
 
     p->unk70 = 1;
 
-    p->unk90->s.unk10 &= ~MOVESTATE_4000;
+    p->unk90->s.frameFlags &= ~MOVESTATE_4000;
     m4aSongNumStart(SE_JUMP);
 
     PLAYERFN_SET_AND_CALL(PlayerCB_Jumping, p);
@@ -4362,7 +4363,7 @@ void PlayerCB_8026060(Player *p)
     p->unk70 = 1;
     p->unk6E = 1;
 
-    p->unk90->s.unk10 &= ~MOVESTATE_4000;
+    p->unk90->s.frameFlags &= ~MOVESTATE_4000;
 
     p->rotation = 0;
 
@@ -4390,7 +4391,7 @@ void PlayerCB_802611C(Player *p)
     p->unk70 = 1;
     p->unk6E = 0;
 
-    p->unk90->s.unk10 &= ~MOVESTATE_4000;
+    p->unk90->s.frameFlags &= ~MOVESTATE_4000;
 
     p->rotation = 0;
 
@@ -4493,7 +4494,7 @@ void PlayerCB_Spindash(Player *p)
         p->spindashAccel = pitch;
 
         if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (p->variant == 1)
-            && (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
+            && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
             p->variant = 0;
         }
     }
@@ -4591,8 +4592,8 @@ void sub_802669C(Player *p)
     p->unk38 = 0;
     p->rotation = 0;
 
-    p->unk90->s.unk10 &= ~(MOVESTATE_2000 | MOVESTATE_1000);
-    p->unk90->s.unk10 |= MOVESTATE_1000;
+    p->unk90->s.frameFlags &= ~(MOVESTATE_2000 | MOVESTATE_1000);
+    p->unk90->s.frameFlags |= MOVESTATE_1000;
 
     p->itemEffect |= PLAYER_ITEM_EFFECT__80;
 
@@ -4643,8 +4644,8 @@ void PlayerCB_8026764(Player *p)
 void PlayerCB_8026810(Player *p)
 {
     if (sub_8029E6C(p)) {
-        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-        p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
         p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
         p->unk38 = 1;
 
@@ -4676,8 +4677,8 @@ void PlayerCB_8026810(Player *p)
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->unk64 = 14;
 
-            p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-            p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+            p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
             p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
             p->unk38 = 1;
 
@@ -4703,8 +4704,8 @@ void PlayerCB_80269C0(Player *p)
 
     p->unk64 = 9;
 
-    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
     p->unk38 = 1;
 
@@ -4736,8 +4737,8 @@ void PlayerCB_8026A4C(Player *p)
     if (p->moveState & MOVESTATE_40)
         p->speedAirY /= 2;
 
-    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
     p->unk38 = 1;
 
@@ -4871,8 +4872,8 @@ void PlayerCB_8026E24(Player *p)
         } break;
     }
 
-    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
     p->unk38 = 0;
 
     m4aSongNumStart(SE_SPIN);
@@ -4887,7 +4888,7 @@ void PlayerCB_8026F10(Player *p)
         Player_InitIceSlide_inline(p);
     } else {
         //_08026F74
-        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
         p->unk64 = 4;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
@@ -5076,7 +5077,7 @@ void PlayerCB_80273D0(Player *p)
             } else {
                 p->unk64 = 9;
 
-                p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+                p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
                 p->moveState &= ~MOVESTATE_IGNORE_INPUT;
 
@@ -5096,7 +5097,7 @@ void PlayerCB_GoalSlowdown(Player *p)
     if (((p->speedGroundX >= Q(2.0)) && (p->unk5E & DPAD_LEFT)) || (playerX2 > 0x579)) {
         p->unk64 = 25;
 
-        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
         m4aSongNumStart(SE_LONG_BRAKE);
         PLAYERFN_SET_AND_CALL(PlayerCB_GoalBrake, p);
@@ -5137,7 +5138,7 @@ void PlayerCB_GoalBrake(Player *p)
     PlayerCB_CameraShift_inline(p);
 
     if (cAnim == SA2_CHAR_ANIM_31) {
-        if ((p->variant == 0) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
+        if ((p->variant == 0) && (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
             p->unk64 = 26;
         }
 
@@ -5165,7 +5166,7 @@ void PlayerCB_GoalBrake(Player *p)
             }
         }
 
-        if ((p->variant == 2) && (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
+        if ((p->variant == 2) && (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
             sub_802785C(p);
             return;
         }
@@ -5521,7 +5522,7 @@ struct Task *sub_8028640(s32 x, s32 y, s32 p2)
     s->graphics.anim = gUnknown_080D69A6[p2_][1];
     s->variant = gUnknown_080D69A6[p2_][2];
     s->unk1A = SPRITE_OAM_ORDER(7);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     return t;
 }
@@ -5549,7 +5550,7 @@ void PlayerCB_80286F0(Player *p)
     p->speedAirY = 0;
 
     p->unk64 = gUnknown_080D698A[dir];
-    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     m4aSongNumStart(SE_JUMP);
     m4aSongNumStart(SE_230);
@@ -5559,7 +5560,7 @@ void PlayerCB_80286F0(Player *p)
 
 void PlayerCB_80287AC(Player *p)
 {
-    if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         u32 dir = p->unk5B;
         u16 character = p->character;
         p->variant++;
@@ -5707,7 +5708,7 @@ void PlayerCB_8028D74(Player *p)
         }
     }
 
-    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_ANIM_OVER;
+    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
     p->rotation = 0;
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8029074, p);
@@ -6789,7 +6790,7 @@ void PlayerCB_802A3C4(Player *p)
 {
     sub_8027EF0(p);
 
-    if (p->unk90->s.unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
+    if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         PLAYERFN_SET(PlayerCB_8025A0C);
 }
 
@@ -6868,7 +6869,7 @@ void PlayerCB_802A5C4(Player *p)
         p->unk64 = 5;
     }
 
-    p->unk90->s.unk10 &= ~(MOVESTATE_4000);
+    p->unk90->s.frameFlags &= ~(MOVESTATE_4000);
 
     p->speedGroundX = 0;
     p->moveState ^= MOVESTATE_FACING_LEFT;
@@ -6880,7 +6881,7 @@ void PlayerCB_802A620(Player *p)
 {
     p->moveState &= ~MOVESTATE_20;
 
-    p->unk90->s.unk10 &= ~(MOVESTATE_4000);
+    p->unk90->s.frameFlags &= ~(MOVESTATE_4000);
 
     p->unk64 = 1;
 
@@ -6919,8 +6920,8 @@ void sub_802A660(Player *p)
 
 void sub_802A6C0(Player *p)
 {
-    p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+    p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
     p->unk38 = 0x1;
 

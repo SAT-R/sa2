@@ -371,8 +371,8 @@ bool32 sub_800CBA4(Player *p)
         p->moveState &= ~MOVESTATE_1000000;
         p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
 
-        p->unk90->s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-        p->unk90->s.unk10 |= SPRITE_FLAG(PRIORITY, 2);
+        p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+        p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     }
 
     if (!(p->moveState & MOVESTATE_1000000)) {

@@ -62,9 +62,9 @@ static void sub_8086A0C(HeartParticles *unk998)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0x2000;
+        s->frameFlags = 0x2000;
     }
 }
 
@@ -157,9 +157,9 @@ static void sub_8086BE8(u8 i)
     s->y = I(unk998->unkD4[i]) - gCamera.y;
 
     if (GRAVITY_IS_INVERTED) {
-        s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+        s->frameFlags |= SPRITE_FLAG_MASK_Y_FLIP;
     } else {
-        s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
+        s->frameFlags &= ~SPRITE_FLAG_MASK_Y_FLIP;
     }
 
     UpdateSpriteAnimation(s);

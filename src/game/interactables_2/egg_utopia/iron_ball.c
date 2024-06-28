@@ -56,10 +56,10 @@ void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
     s->graphics.dest = VramMalloc(0x12);
     s->graphics.anim = SA2_ANIM_IRON_BALL;
     s->variant = 0;
@@ -142,9 +142,9 @@ static void sub_807F0D8(Sprite_IA95 *ia95)
 {
     ia95->s.x = ia95->unk3C - gCamera.x;
     ia95->s.y = ia95->unk40 - gCamera.y;
-    ia95->s.unk10 &= ~0x400;
+    ia95->s.frameFlags &= ~0x400;
     DisplaySprite(&ia95->s);
-    ia95->s.unk10 |= 0x400;
+    ia95->s.frameFlags |= 0x400;
     DisplaySprite(&ia95->s);
 }
 

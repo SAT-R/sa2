@@ -88,10 +88,10 @@ void CreateEntity_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->timeUntilNextFrame = 0;
 
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
 
     {
         u16 tileId = gUnknown_080DFC40[block->unk48][2];
@@ -215,10 +215,10 @@ void sub_8075D28(Sprite_NoteBlock *block)
 {
     Sprite *s = &block->s;
 
-    s->unk10 |= 0x400;
+    s->frameFlags |= 0x400;
     DisplaySprite(s);
 
-    s->unk10 &= ~0x400;
+    s->frameFlags &= ~0x400;
     DisplaySprite(s);
 }
 

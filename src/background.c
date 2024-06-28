@@ -680,7 +680,7 @@ void UpdateBgAnimationTiles(Background *bg)
 // - Uses animCmdTable_BG instead of animCmdTable
 s32 sub_80036E0(Sprite *s)
 {
-    if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
+    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
     SPRITE_MAYBE_SWITCH_ANIM(s);
@@ -747,7 +747,7 @@ static AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
-    if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
+    if ((s->frameFlags & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
             s->graphics.src
                 = &gRefSpriteTables->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
@@ -781,11 +781,11 @@ static AnimCmdResult animCmd_AddHitbox_BG(void *cursor, Sprite *s)
         && (cmd->hitbox.bottom == 0)) {
         s->hitboxes[index].index = -1;
     } else {
-        if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
             XOR_SWAP(s->hitboxes[index].top, s->hitboxes[index].bottom);
         }
 
-        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             XOR_SWAP(s->hitboxes[index].left, s->hitboxes[index].right);
         }
     }
@@ -952,7 +952,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
                         oam.paletteNum += s->palId;
                         // __08003CD8
 
-                        yFlip = s->unk10 >> SPRITE_FLAG_SHIFT_Y_FLIP;
+                        yFlip = s->frameFlags >> SPRITE_FLAG_SHIFT_Y_FLIP;
                         yFlip ^= (dims->flip >> 1);
 
                         if (yFlip & 1) {
@@ -1272,7 +1272,7 @@ static AnimCmdResult animCmd_GetPalette_BG(void *cursor, Sprite *s)
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
-    if (!(s->unk10 & SPRITE_FLAG_MASK_18)) {
+    if (!(s->frameFlags & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
         DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16],

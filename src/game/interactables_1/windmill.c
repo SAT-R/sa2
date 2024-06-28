@@ -57,10 +57,10 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
     UpdateSpriteAnimation(s);
 
     for (i = 0; i < 4; i++) {
@@ -81,10 +81,10 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
             s->prevVariant = -1;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
             s->hitboxes[0].index = -1;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             UpdateSpriteAnimation(s);
         }
     }
@@ -133,7 +133,7 @@ static void Task_WindmillMain(void)
             transform->x = s->x;
             transform->y = s->y;
 
-            s->unk10 = (gUnknown_030054B8++ | 0x1060);
+            s->frameFlags = (gUnknown_030054B8++ | 0x1060);
             sub_8004860(s, transform);
             DisplaySprite(s);
         }

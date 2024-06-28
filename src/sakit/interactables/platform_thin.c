@@ -111,7 +111,7 @@ void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
 
     UpdateSpriteAnimation(s);
 }
@@ -249,7 +249,7 @@ NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc"
         s->prevVariant = -1;
         s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk10 = 0x70;
+        s->frameFlags = 0x70;
 
         // Init transform
         transform->rotation = 0;
@@ -268,7 +268,7 @@ NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc"
         DmaCopy16(3, &platform->unkC0, &platform->unkCC, 0xC);
 
         // Set the new params
-        s->unk10 = 0x71;
+        s->frameFlags = 0x71;
 
         transform = &platform->unkCC;
         transform->y = y - 0x10;
@@ -294,7 +294,7 @@ NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc"
         s->prevVariant = -1;
         s->animSpeed = 0x10;
         s->palId = 0;
-        s->unk10 = 0x72;
+        s->frameFlags = 0x72;
 
         transform = &platform->unkD8;
         // Set the transform props
@@ -311,7 +311,7 @@ NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc"
         transform = &platform->unkE4;
 
         // Update props
-        s->unk10 = 0x73;
+        s->frameFlags = 0x73;
 
         // used to help match atm
         r6 = y - 0x10;
@@ -358,8 +358,8 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->height = width;
     transform->rotation -= 0x2A;
 
-    s->unk10 &= ~0x1F;
-    s->unk10 |= gUnknown_030054B8++;
+    s->frameFlags &= ~0x1F;
+    s->frameFlags |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
     DisplaySprite(s);
 
@@ -384,8 +384,8 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->height = width;
     transform->rotation += 0x2A;
 
-    s->unk10 &= ~0x1F;
-    s->unk10 |= gUnknown_030054B8++;
+    s->frameFlags &= ~0x1F;
+    s->frameFlags |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
     DisplaySprite(s);
 
@@ -409,8 +409,8 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->height = width;
     transform->rotation += 0xE;
 
-    s->unk10 &= ~0x1F;
-    s->unk10 |= gUnknown_030054B8++;
+    s->frameFlags &= ~0x1F;
+    s->frameFlags |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
     DisplaySprite(s);
 
@@ -434,8 +434,8 @@ static void Task_PlatformBreakParticlesMain(void)
     transform->height = width;
     transform->rotation -= 0xE;
 
-    s->unk10 &= ~0x1F;
-    s->unk10 |= gUnknown_030054B8++;
+    s->frameFlags &= ~0x1F;
+    s->frameFlags |= gUnknown_030054B8++;
     sub_8004E14(s, transform);
     DisplaySprite(s);
 

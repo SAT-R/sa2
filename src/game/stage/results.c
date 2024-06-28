@@ -177,7 +177,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
     UpdateSpriteAnimation(s);
 
     s = &outro->s1[0];
@@ -194,7 +194,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
     UpdateSpriteAnimation(s);
 
     {
@@ -223,7 +223,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
 
         if (isBossAct) {
@@ -256,7 +256,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         UpdateSpriteAnimation(s);
     }
 
@@ -275,7 +275,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
     }
 

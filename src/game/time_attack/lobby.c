@@ -126,10 +126,10 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
             s->hitboxes[0].index = -1;
-            s->unk10 = 0x1000;
+            s->frameFlags = 0x1000;
             UpdateSpriteAnimation(s);
         }
     }
@@ -145,10 +145,10 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x1000;
+    s->frameFlags = 0x1000;
     UpdateSpriteAnimation(s);
 
     s = &lobbyScreen->unk80;
@@ -162,10 +162,10 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x1400;
+    s->frameFlags = 0x1400;
     UpdateSpriteAnimation(s);
 
     lobbyScreen->unkB0[0].graphics.dest = 0;
@@ -183,10 +183,10 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0x1400;
+        s->frameFlags = 0x1400;
         UpdateSpriteAnimation(s);
     }
 
@@ -378,7 +378,7 @@ void sub_8088EB4(void)
             s->prevVariant = -1;
             s->animSpeed = 0x40;
             if (lobbyScreen->unk1AD == 1) {
-                s->unk10 &= ~0x400;
+                s->frameFlags &= ~0x400;
             }
             UpdateSpriteAnimation(s);
 
@@ -392,7 +392,7 @@ void sub_8088EB4(void)
                 s->prevVariant = -1;
                 s->animSpeed = 0x40;
                 if (lobbyScreen->unk1AD == 1) {
-                    s->unk10 &= ~0x400;
+                    s->frameFlags &= ~0x400;
                 }
                 UpdateSpriteAnimation(s);
             }

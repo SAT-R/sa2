@@ -406,7 +406,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
         s16 idx = unkDEA4->unk0 - 3;
         memcpy(element1, &collectables->unkF4[idx >> 2], sizeof(Sprite));
 
-        element1->unk10 = index | 0x1060 | 0xC0000;
+        element1->frameFlags = index | 0x1060 | 0xC0000;
         element1->x = unkDEA4->unk2;
         element1->y = unkDEA4->unk4 - unkDEA4->unk6;
         element1->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
@@ -419,7 +419,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
             y = unkDEA4->unk4;
         } else {
             memcpy(element2, &collectables->unk64, sizeof(Sprite));
-            element2->unk10 = index | 0x1060 | 0xC0000;
+            element2->frameFlags = index | 0x1060 | 0xC0000;
             element2->x = unkDEA4->unk2;
             element2->y = ((0xD - ((0x78 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
             element2->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x380 : 0x1C0;
@@ -430,7 +430,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
             y = unkDEA4->unk4 - unkDEA4->unk6;
         }
         memcpy(element1, reference, sizeof(Sprite));
-        element1->unk10 = index | 0x1060 | 0xC0000;
+        element1->frameFlags = index | 0x1060 | 0xC0000;
         element1->x = x;
         element1->y = y;
         element1->unk1A = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? 0x340 : 0x180;
@@ -553,7 +553,7 @@ void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874 *unk874)
 
         *unk7B4 = collectables->unk34;
 
-        unk7B4->unk10 = (index + 0x10) | 0x1060 | 0xC0000;
+        unk7B4->frameFlags = (index + 0x10) | 0x1060 | 0xC0000;
         unk7B4->x = screenX;
         unk7B4->y = screenY;
         unk7B4->unk1A = (new_unkCB84.screenY < (stage->unk5CC - 15)) ? 0x340 : 0x180;

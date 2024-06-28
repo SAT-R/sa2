@@ -244,7 +244,7 @@ static void sub_8058EDC(void)
     ENEMY_DESTROY_IF_OFFSCREEN(flickey, me, s);
     Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
     if (UpdateSpriteAnimation(s) == 0) {
-        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             SPRITE_FLAG_CLEAR(s, X_FLIP);
             flickey->unk9C = -0x180;
         } else {
@@ -294,7 +294,7 @@ static void sub_80591FC(void)
             s->y = I(flickey->positions[i].y) - gCamera.y;
 
             DisplaySprite(s);
-            s->unk10 ^= 0x400;
+            s->frameFlags ^= 0x400;
             DisplaySprite(s);
         }
     }

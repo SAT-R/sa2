@@ -49,10 +49,10 @@ void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
     s->graphics.dest = VramMalloc(0xC);
 
     s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
@@ -150,7 +150,7 @@ static void sub_8073600(void)
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    if (s->unk10 & 0x4000) {
+    if (s->frameFlags & 0x4000) {
         sub_80736E0(turnAroundBar);
     }
 }
@@ -178,7 +178,7 @@ static void sub_8073670(Sprite_TurnAroundBar *turnAroundBar)
     s->variant = 1;
 
     if (gPlayer.moveState & 1) {
-        s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+        s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
     }
     UpdateSpriteAnimation(s);
     gCurTask->main = sub_8073818;
@@ -189,7 +189,7 @@ static void sub_80736E0(Sprite_TurnAroundBar *turnAroundBar)
     Sprite *s = &turnAroundBar->s;
     s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     s->variant = 0;
-    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
     gCurTask->main = Task_TurnAroundBarMain;
 }
@@ -200,7 +200,7 @@ static void sub_807371C(Sprite_TurnAroundBar *turnAroundBar)
     Player_ClearMovestate_IsInScriptedSequence();
     s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     s->variant = 0;
-    s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+    s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
     UpdateSpriteAnimation(s);
     gCurTask->main = Task_TurnAroundBarMain;
 }
@@ -264,7 +264,7 @@ static void sub_8073818(void)
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    if (s->unk10 & 0x4000) {
+    if (s->frameFlags & 0x4000) {
         sub_8073474(turnAroundBar);
     }
 }

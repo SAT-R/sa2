@@ -375,7 +375,7 @@ void CreateEggTotem(void)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
 #else
         SPRITE_INIT(s, sTileInfoBulletLauncher[i].numTiles,
@@ -400,7 +400,7 @@ void CreateEggTotem(void)
     s->animSpeed = temp;
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 #else
     SPRITE_INIT(s, 12, SA2_ANIM_HAMMERTANK_PILOT, 0, 22, 2);
 #endif
@@ -425,7 +425,7 @@ void CreateEggTotem(void)
         s->animSpeed = temp;
         s->palId = 0;
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 #else
         SPRITE_INIT(s, 5 * 6, SA2_ANIM_TAILS_CAPTURED, 0, 20, 2);
 #endif
@@ -446,7 +446,7 @@ void CreateEggTotem(void)
         s->animSpeed = temp;
         s->palId = 0;
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 #else
         SPRITE_INIT(s, 4 * 5, SA2_ANIM_EGG_TOTEM_HOOK, 0, 21, 2);
 #endif
@@ -1757,7 +1757,7 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 }
 
 void Task_EggTotemBullet(void)

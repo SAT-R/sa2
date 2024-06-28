@@ -134,23 +134,23 @@ typedef struct {
     /* 0x0C */ const SpriteOffset *dimensions;
 
     // Bitfield description from KATAM decomp
-    /* 0x10 */ u32 unk10; // bit 0-4: affine-index / rotscale param selection
-                          // bit 5: rotscale enable
-                          // bit 6: rotscale double-size
-                          // bit 7-8: obj mode
-                          // bit 9
-                          // bit 10 X-Flip
-                          // bit 11 Y-Flip
-                          // bit 12-13: priority
-                          // bit 14
-                          // bit 15-16: Background ID
-                          // bit 17
-                          // bit 18
-                          // bit 19-25(?)
-                          // bit 26
-                          // bit 27-29(?)
-                          // bit 30
-                          // bit 31
+    /* 0x10 */ u32 frameFlags; // bit 0-4: affine-index / rotscale param selection
+                               // bit 5: rotscale enable
+                               // bit 6: rotscale double-size
+                               // bit 7-8: obj mode
+                               // bit 9
+                               // bit 10 X-Flip
+                               // bit 11 Y-Flip
+                               // bit 12-13: priority
+                               // bit 14
+                               // bit 15-16: Background ID
+                               // bit 17
+                               // bit 18
+                               // bit 19-25(?)
+                               // bit 26
+                               // bit 27-29(?)
+                               // bit 30
+                               // bit 31
 
     /* 0x14 */ u16 animCursor;
 
@@ -306,17 +306,17 @@ s16 sub_8004418(s16 x, s16 y);
     _sprite->x = 0;                                                                     \
     _sprite->y = 0;                                                                     \
     SPRITE_INIT_SCRIPT(_sprite, 1.0)                                                    \
-    _sprite->unk10 = SPRITE_FLAG(PRIORITY, _priority);
+    _sprite->frameFlags = SPRITE_FLAG(PRIORITY, _priority);
 
 #define SPRITE_INIT_WITHOUT_VRAM(_sprite, _anim, _variant, _order, _priority, _flags)   \
     SPRITE_INIT_ANIM_AND_SCRIPT(_sprite, _anim, _variant, _order);                      \
-    _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
+    _sprite->frameFlags = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT_WITHOUT_ANIM_OR_VRAM(_sprite, _order, _priority, _flags)            \
     _sprite->unk1A = SPRITE_OAM_ORDER(_order);                                          \
     _sprite->graphics.size = 0;                                                         \
     SPRITE_INIT_SCRIPT(_sprite, 1.0);                                                   \
-    _sprite->unk10 = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
+    _sprite->frameFlags = (SPRITE_FLAG(PRIORITY, _priority) | (_flags));
 
 #define SPRITE_INIT_FLAGS(_sprite, _numTiles, _anim, _variant, _order, _priority,       \
                           _flags)                                                       \
@@ -331,19 +331,19 @@ s16 sub_8004418(s16 x, s16 y);
 #define SPRITE_FLAG(flagName, value) ((value) << SF_SHIFT(flagName))
 
 #define SPRITE_FLAG_GET(sprite, flagName)                                               \
-    (((sprite)->unk10 & (SPRITE_FLAG_MASK_##flagName)) >> (SF_SHIFT(flagName)))
+    (((sprite)->frameFlags & (SPRITE_FLAG_MASK_##flagName)) >> (SF_SHIFT(flagName)))
 
 #define SPRITE_FLAG_CLEAR(sprite, flagName)                                             \
-    (sprite)->unk10 &= ~(SPRITE_FLAG_MASK_##flagName)
+    (sprite)->frameFlags &= ~(SPRITE_FLAG_MASK_##flagName)
 
 #define SPRITE_FLAG_SET(sprite, flagName)                                               \
-    (sprite)->unk10 |= (SPRITE_FLAG_MASK_##flagName)
+    (sprite)->frameFlags |= (SPRITE_FLAG_MASK_##flagName)
 
 #define SPRITE_FLAG_FLIP(sprite, flagName)                                              \
-    (sprite)->unk10 ^= (SPRITE_FLAG_MASK_##flagName)
+    (sprite)->frameFlags ^= (SPRITE_FLAG_MASK_##flagName)
 
 #define SPRITE_FLAG_SET_VALUE(sprite, flagName, value)                                  \
-    (sprite)->unk10 |= SPRITE_FLAG(flagName, value)
+    (sprite)->frameFlags |= SPRITE_FLAG(flagName, value)
 
 #define SPRITE_FLAG_SHIFT_ROT_SCALE             0
 #define SPRITE_FLAG_SHIFT_ROT_SCALE_ENABLE      5
