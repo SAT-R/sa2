@@ -3083,11 +3083,11 @@ void Task_8023D08(void)
                 || ((gGameMode == GAME_MODE_TIME_ATTACK
                      || gGameMode == GAME_MODE_BOSS_TIME_ATTACK)
                     && gCourseTime > MAX_COURSE_TIME)) {
-                sub_801B6B4();
+                HandleDeath();
             } else {
                 gRingCount = 0;
                 gSpecialRingCount = 0;
-                sub_801AE48();
+                HandleLifeLost();
             }
             return;
         }

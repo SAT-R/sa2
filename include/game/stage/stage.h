@@ -9,9 +9,8 @@ void ApplyGameStageSettings(void);
 void GameStageStart(void);
 void CreateGameStage(void);
 
-// Both death related
-void sub_801B6B4(void);
-void sub_801AE48(void);
+void HandleLifeLost(void);
+void HandleDeath(void);
 
 extern struct Task *gGameStageTask;
 

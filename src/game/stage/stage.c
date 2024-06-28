@@ -445,10 +445,10 @@ void Task_GameStageMain(void)
     }
 }
 
-// HandleDeath
-void sub_801AE48(void)
+void HandleLifeLost(void)
 {
     gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
+
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -471,6 +471,10 @@ void sub_801AE48(void)
     }
 }
 
+// NOTE: It's kind of redundant to check whether we are in Zone 5's boss stage
+//       on every single stage init. (for changing music to Knuckles' fight BGM)
+//
+//       But maybe it doesn't matter as it's only called once per stage start.
 static inline void StageInit_SetMusic_inline(u16 level)
 {
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -613,9 +617,10 @@ void sub_801B68C(void)
     DestroyCameraMovementTask();
 }
 
-void sub_801B6B4(void)
+void HandleDeath(void)
 {
     gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
+
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
@@ -633,7 +638,10 @@ void sub_801B6B4(void)
     }
 }
 
-void sub_801B744(void)
+// TODO:
+// Unused.
+// Might be a leftover from the first game?
+void GoToNextLevel(void)
 {
     TasksDestroyAll();
     gUnknown_03002AE4 = gUnknown_0300287C;
@@ -642,8 +650,7 @@ void sub_801B744(void)
     WriteSaveGame();
 
     if (gGameMode == 0) {
-        gCurrentLevel++;
-        if (gCurrentLevel < 34) {
+        if (++gCurrentLevel < NUM_LEVEL_IDS) {
             GameStageStart();
         }
     }
