@@ -4443,31 +4443,31 @@ void PlayerCB_802631C(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_Spindash, p);
 }
 
-void PlayerCB_Spindash(Player *player)
+void PlayerCB_Spindash(Player *p)
 {
-    Sprite *s = &player->unk90->s;
-    u16 cAnim = GET_CHARACTER_ANIM(player);
+    Sprite *s = &p->unk90->s;
+    u16 cAnim = GET_CHARACTER_ANIM(p);
 
-    if (!(player->unk5C & DPAD_DOWN)) {
+    if (!(p->unk5C & DPAD_DOWN)) {
         s16 index;
         s32 speed;
-        player->moveState &= ~MOVESTATE_400;
+        p->moveState &= ~MOVESTATE_400;
 
-        index = I(player->spindashAccel);
+        index = I(p->spindashAccel);
         if (index > 8)
             index = 8;
 
         speed = sSpinDashSpeeds[index];
-        if (player->moveState & MOVESTATE_FACING_LEFT)
+        if (p->moveState & MOVESTATE_FACING_LEFT)
             speed = -sSpinDashSpeeds[index];
 
-        player->speedGroundX = speed;
+        p->speedGroundX = speed;
 
         gPlayer.callback = PlayerCB_8025A0C;
 
         m4aSongNumStart(SE_SPIN_DASH_RELEASE);
     } else {
-        s16 pitch = player->spindashAccel;
+        s16 pitch = p->spindashAccel;
 
         s16 pitch2 = pitch;
         if (pitch2 != 0) {
@@ -4476,7 +4476,7 @@ void PlayerCB_Spindash(Player *player)
                 pitch = 0;
         }
 
-        if (player->unk5E & gPlayerControls.jump) {
+        if (p->unk5E & gPlayerControls.jump) {
             struct MusicPlayerInfo *mPlayerInfo;
             m4aSongNumStart(SE_SPIN_ATTACK);
 
@@ -4487,60 +4487,59 @@ void PlayerCB_Spindash(Player *player)
             pitch += Q(2.0);
             pitch = MAX(pitch, Q(8.0));
 
-            player->variant = 1;
-            player->unk6C = 1;
+            p->variant = 1;
+            p->unk6C = 1;
         }
-        player->spindashAccel = pitch;
+        p->spindashAccel = pitch;
 
-        if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (player->variant == 1)
+        if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (p->variant == 1)
             && (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
-            player->variant = 0;
+            p->variant = 0;
         }
     }
 
-    if (player->moveState & MOVESTATE_IN_AIR) {
-        sub_80236C8(player);
-        sub_80232D0(player);
+    if (p->moveState & MOVESTATE_IN_AIR) {
+        sub_80236C8(p);
+        sub_80232D0(p);
 
-        if (player->moveState & MOVESTATE_40) {
-            player->speedAirY += Q(PLAYER_GRAVITY_UNDER_WATER);
+        if (p->moveState & MOVESTATE_40) {
+            p->speedAirY += Q(PLAYER_GRAVITY_UNDER_WATER);
         } else {
-            player->speedAirY += Q(PLAYER_GRAVITY);
+            p->speedAirY += Q(PLAYER_GRAVITY);
         }
 
-        player->x += player->speedAirX;
+        p->x += p->speedAirX;
 
         if ((gStageFlags ^ gUnknown_0300544C) & STAGE_FLAG__GRAVITY_INVERTED) {
-            player->speedAirY = -player->speedAirY;
+            p->speedAirY = -p->speedAirY;
         }
 
-        player->speedAirY = MIN(player->speedAirY, Q(PLAYER_AIR_SPEED_MAX));
+        p->speedAirY = MIN(p->speedAirY, Q(PLAYER_AIR_SPEED_MAX));
 
-        player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY
-                                        : player->y + player->speedAirY;
+        p->y = GRAVITY_IS_INVERTED ? p->y - p->speedAirY : p->y + p->speedAirY;
 
         {
-            s32 rot = (s8)player->rotation;
+            s32 rot = (s8)p->rotation;
             if (rot < 0) {
                 rot = MIN((rot + 2), 0);
             } else if (rot > 0) {
                 rot = MAX((rot - 2), 0);
             }
-            player->rotation = rot;
+            p->rotation = rot;
         }
 
-        sub_8022190(player);
+        sub_8022190(p);
 
-        if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
+        if ((p->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
             gPlayer.callback = PlayerCB_8025318;
-            player->speedGroundX = player->speedAirX;
-            player->rotation = 0;
+            p->speedGroundX = p->speedAirX;
+            p->rotation = 0;
         }
     } else {
-        s32 groundSpeed = player->speedGroundX;
+        s32 groundSpeed = p->speedGroundX;
 
-        if ((((player->rotation + Q(0.375)) & 0xFF) < 0xC0) && (groundSpeed != 0)) {
-            u32 sinVal = SIN_24_8((player->rotation) * 4) * 60;
+        if ((((p->rotation + Q(0.375)) & 0xFF) < 0xC0) && (groundSpeed != 0)) {
+            u32 sinVal = SIN_24_8((p->rotation) * 4) * 60;
             s32 sinInt = (s32)(I((s32)sinVal));
 
             if (groundSpeed > 0) {
@@ -4553,35 +4552,34 @@ void PlayerCB_Spindash(Player *player)
 
             groundSpeed += sinInt;
 
-            player->speedGroundX = groundSpeed;
+            p->speedGroundX = groundSpeed;
         }
 
-        sub_80232D0(player);
-        sub_8023260(player);
-        sub_8023128(player);
+        sub_80232D0(p);
+        sub_8023260(p);
+        sub_8023128(p);
 
-        player->x += player->speedAirX;
+        p->x += p->speedAirX;
 
         if ((gStageFlags ^ gUnknown_0300544C) & STAGE_FLAG__GRAVITY_INVERTED) {
-            player->speedAirY = -player->speedAirY;
+            p->speedAirY = -p->speedAirY;
         }
 
-        player->speedAirY = MIN(player->speedAirY, Q(PLAYER_AIR_SPEED_MAX));
+        p->speedAirY = MIN(p->speedAirY, Q(PLAYER_AIR_SPEED_MAX));
 
-        player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY
-                                        : player->y + player->speedAirY;
+        p->y = GRAVITY_IS_INVERTED ? p->y - p->speedAirY : p->y + p->speedAirY;
 
-        sub_8022D6C(player);
+        sub_8022D6C(p);
 
-        if (player->unk2A) {
-            player->unk2A -= 1;
-        } else if ((player->rotation + 32) & 0xC0) {
-            s32 absGroundSpeed = ABS(player->speedGroundX);
+        if (p->unk2A) {
+            p->unk2A -= 1;
+        } else if ((p->rotation + 32) & 0xC0) {
+            s32 absGroundSpeed = ABS(p->speedGroundX);
             if (absGroundSpeed < Q(1.875)) {
-                player->speedGroundX = 0;
+                p->speedGroundX = 0;
 
-                player->moveState |= MOVESTATE_IN_AIR;
-                player->unk2A = GBA_FRAMES_PER_SECOND / 2;
+                p->moveState |= MOVESTATE_IN_AIR;
+                p->unk2A = GBA_FRAMES_PER_SECOND / 2;
             }
         }
     }
@@ -6052,15 +6050,14 @@ bool32 sub_80294F4(Player *p)
     return FALSE;
 }
 
-// (85.13%) https://decomp.me/scratch/HZn3x
-NONMATCH("asm/non_matching/game/playercb__sub_802966C.inc", void sub_802966C(Player *p))
+// (100.00%) https://decomp.me/scratch/ZcC17
+void sub_802966C(Player *p)
 {
-    u8 r6 = -1;
+    s8 r6 = -1;
     s32 u48 = p->unk48;
     s32 u4C = p->unk4C;
 
     if ((p->unk2A == 0) && p->unk5C & (DPAD_LEFT | DPAD_RIGHT)) {
-        // _08029690
         if (p->speedGroundX > 0) {
             if (p->unk5C & DPAD_RIGHT) {
                 if (p->speedGroundX < p->unk44) {
@@ -6073,66 +6070,70 @@ NONMATCH("asm/non_matching/game/playercb__sub_802966C.inc", void sub_802966C(Pla
                     p->unk58 += u48;
                 }
                 p->moveState &= ~MOVESTATE_FACING_LEFT;
-            } else if (p->speedGroundX >= Q(2.0)) {
-            // _080296D2
-            argh:
+            } else if (p->speedGroundX >= Q_24_8(2.0)) {
                 if ((p->unk64 == 7) || (p->unk64 == 8)) {
                     r6 = p->unk64;
                 } else {
-                    r6 = (p->unk54 > 3) ? 8 : 7;
+                    u16 u54 = p->unk54;
+                    r6 = 7;
+                    if (u54 > 3) {
+                        r6 = 8;
+                    }
                 }
                 p->speedGroundX -= u4C;
-            }
+                sub_8029FA4(p);
+                m4aSongNumStart(SE_BRAKE);
+            } else {
+                p->speedGroundX -= u4C;
 
-            // _080297A2
-            sub_8029FA4(p);
-            m4aSongNumStart(SE_BRAKE);
-        } else if (p->speedGroundX < 0) {
-            // _08029734
-            if (p->moveState & MOVESTATE_20) {
-                if ((p->unk64 == 7) || (p->unk64 == 8)) {
-                    r6 = p->unk64;
+                if ((p->speedGroundX > 0) && !(p->moveState & MOVESTATE_FACING_LEFT)) {
+                    if ((p->unk64 == 7) || (p->unk64 == 8)) {
+                        r6 = 7;
+                    }
+                    gPlayer.callback = PlayerCB_802A5C4;
                 }
-
+            }
+        } else if (p->speedGroundX < 0) {
+            if (p->unk5C & DPAD_LEFT) {
                 if (p->speedGroundX > -p->unk44) {
                     p->speedGroundX -= u48;
 
-                    if (p->speedGroundX < -p->speedGroundX) {
-                        p->speedGroundX = -p->speedGroundX;
+                    if (p->speedGroundX < -p->unk44) {
+                        p->speedGroundX = -p->unk44;
                     }
                 } else {
-                    // _0802975C
                     p->unk58 += u48;
                 }
                 p->moveState |= MOVESTATE_FACING_LEFT;
             } else {
-                // _08029770
-                if (p->speedGroundX <= -Q(2.0)) {
+                if (p->speedGroundX <= -Q_24_8(2.0)) {
                     if ((p->unk64 == 7) || (p->unk64 == 8)) {
                         r6 = p->unk64;
                     } else {
-                        r6 = (p->unk54 > 3) ? 8 : 7;
+                        u16 u54 = p->unk54;
+                        r6 = 7;
+                        if (u54 > 3) {
+                            r6 = 8;
+                        }
                     }
 
                     p->speedGroundX += u4C;
 
-                    // _080297A2
                     sub_8029FA4(p);
                     m4aSongNumStart(SE_BRAKE);
                 } else {
-                    // _080297B2
                     p->speedGroundX += u4C;
 
                     if ((p->speedGroundX < 0)
-                        && !(p->moveState & MOVESTATE_FACING_LEFT)) {
-                        goto skip_block;
-                    } else {
-                        goto argh;
+                        && (p->moveState & MOVESTATE_FACING_LEFT)) {
+                        if ((p->unk64 == 7) || (p->unk64 == 8)) {
+                            r6 = 7;
+                        }
+                        gPlayer.callback = PlayerCB_802A5C4;
                     }
                 }
             }
         } else {
-            // _080297C8
             if ((p->moveState & MOVESTATE_FACING_LEFT)
                 != ((p->unk5C & DPAD_RIGHT) >> 4)) {
                 if (p->moveState & MOVESTATE_FACING_LEFT) {
@@ -6142,57 +6143,53 @@ NONMATCH("asm/non_matching/game/playercb__sub_802966C.inc", void sub_802966C(Pla
                 }
 
                 r6 = 9;
-                PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
+                sub_8023B5C(p, 14);
+                p->unk16 = 6;
+                p->unk17 = 14;
             } else {
-                PLAYERFN_SET(PlayerCB_802A5C4);
+                gPlayer.callback = PlayerCB_802A5C4;
             }
         }
     } else {
-        // _0802980C
         s32 grndSpeed = p->speedGroundX;
         if (grndSpeed > 0) {
-            s16 val = grndSpeed - Q(8.0 / 256.0);
+            s16 val = grndSpeed - Q_24_8(8.0 / 256.0);
             if (val <= 0) {
-                r6 = 0;
                 val = 0;
+                r6 = 0;
             } else {
                 r6 = 9;
             }
+
             p->speedGroundX = val;
         } else if (grndSpeed < 0) {
-            // _08029820
-            s16 val = grndSpeed + Q(8.0 / 256.0);
+            s16 val = grndSpeed + Q_24_8(8.0 / 256.0);
             if (val >= 0) {
-                r6 = 0;
                 val = 0;
+                r6 = 0;
             } else {
                 r6 = 9;
             }
-            p->speedGroundX = val;
 
+            p->speedGroundX = val;
         } else {
-            // _0802983A
             r6 = 0;
         }
     }
-    // _0802983C
-skip_block:
+
     if (p->moveState & MOVESTATE_8000) {
-        s8 r6s = r6;
-        if ((r6s == 7) || (r6s == 8)) {
-            p->unk64 = r6s;
+        if ((r6 == 7) || (r6 == 8)) {
+            p->unk64 = r6;
         }
-    } else if ((s8)r6 != -1) {
-        //_08029860
-        if (p->unk64 != (s8)r6)
-            p->unk64 = (s8)r6;
+    } else if (r6 != -1) {
+        if (p->unk64 != r6)
+            p->unk64 = r6;
     } else if ((p->unk64 == 7) || (p->unk64 == 8)) {
         p->unk64 = 9;
     }
 
     sub_8023128(p);
 }
-END_NONMATCH
 
 void sub_802989C(Player *p)
 {
