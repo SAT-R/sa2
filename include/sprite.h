@@ -199,7 +199,6 @@ typedef struct {
     /* 0x08 */ s16 y;
 } SpriteTransform; /* size 0xA */
 
-// TODO: Move back into sprite_2.c!
 typedef struct {
     /* 0x00 */ u16 unk0[4];
     /* 0x08 */ s16 qDirX;
@@ -253,7 +252,7 @@ OamData *OamMalloc(u8 order);
 
 // TransformSprite
 void sub_8004860(Sprite *, SpriteTransform *);
-void sub_8004ABC(Sprite *, SpriteTransform *);
+void UnusedTransform(Sprite *, SpriteTransform *);
 void sub_8004E14(Sprite *, SpriteTransform *);
 
 void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,

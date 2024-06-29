@@ -27,8 +27,8 @@ _08003A08:
 	bne _08003A12
 	b sub_80039E4_return_1
 _08003A12:
-	movs r5, #0
-	cmp r5, r1
+	movs r5, #0         @ r5 = r5 = 0
+	cmp r5, r1          @ for(; r5 < gUnknown_03005390; r5++)
 	blo _08003A1A
 	b _08003EC2
 _08003A1A:
@@ -47,7 +47,7 @@ _08003A1A:
 	b _08003EB2
 _08003A34:
 	mov sl, r1          @ sl = dims
-	ldr r3, [sp, #0xc]
+	ldr r3, [sp, #0xc]  @ r3 = sp0C = s
 	ldr r0, [r3, #0x10]
 	movs r1, #0xc0
 	lsls r1, r1, #9
@@ -97,7 +97,7 @@ _08003A84:
 	str r0, [sp, #0x10]     @ sp10 = bg_affine_pixelcount
 	ldr r0, _08003BB4 @ =gRefSpriteTables
 	ldr r1, [r0]
-	ldr r2, [sp, #0xc]
+	ldr r2, [sp, #0xc]  @ r2 = sp0C = s
 	ldrh r0, [r2, #0xa]
 	ldr r1, [r1, #8]
 	lsls r0, r0, #2
@@ -160,7 +160,7 @@ _08003AC8:
 	lsrs r0, r0, #3
 	mov ip, r0
 	mov r4, ip              @ r4 = ip = tilesY
-	ldr r7, [sp, #0xc]      @ r7 = s
+	ldr r7, [sp, #0xc]      @ r7 = sp0C = s
 	movs r0, #0x18
 	ldrsh r1, [r7, r0]
 	mov r2, sl              @ r2 = sl = dims
@@ -185,7 +185,7 @@ _08003AC8:
 	muls r0, r2, r0
 	ldr r3, [sp, #0x18]     @ r3 = sp18 = bgBase
 	adds r7, r3, r0         @ r7 = r3
-	ldr r5, [sp, #0xc]      @ r5 = s
+	ldr r5, [sp, #0xc]      @ r5 = sp0C = s
 	ldr r1, [r5, #4]
 	ldr r6, [sp, #0x14]
 	subs r1, r1, r6
@@ -318,7 +318,7 @@ _08003C2C:
 _08003C46:
 	ldr r0, _08003D14 @ =gRefSpriteTables
 	ldr r1, [r0]
-	ldr r2, [sp, #0xc]
+	ldr r2, [sp, #0xc]  @ r2 = sp0C = s
 	ldrh r0, [r2, #0xa]
 	ldr r1, [r1, #8]    @ r1 = gRefSpriteTables->oamData
 	lsls r0, r0, #2
@@ -382,7 +382,7 @@ _08003C7A:
 	ands r4, r3
 	movs r6, #0xff
 	ands r6, r2         @ r6 = oamX
-	ldr r0, [sp, #0xc]
+	ldr r0, [sp, #0xc]  @ r0 = sp0C = s
 	adds r0, #0x25
 	ldrb r0, [r0]       @ r0 = s->palId
 	lsls r0, r0, #0xc
@@ -392,7 +392,7 @@ _08003C7A:
 	mov r1, sb
 	strh r0, [r1, #4]
 __08003CD8:
-	ldr r2, [sp, #0xc]
+	ldr r2, [sp, #0xc]  @ r2 = sp0C = s
 	ldr r1, [r2, #0x10]
 	lsrs r1, r1, #0xb
 	mov r5, sl
@@ -416,7 +416,7 @@ ___08003CEE:
 	cmp r0, #0
 	beq _08003D2C
 __08003D04:
-	ldr r3, [sp, #0xc]
+	ldr r3, [sp, #0xc]  @ r3 = sp0C = s
 	movs r5, #0x18
 	ldrsh r0, [r3, r5]
 	mov r7, sl      @ r7 = sl = dims
@@ -431,7 +431,7 @@ _08003D20: .4byte gOamShapesSizes
 _08003D24: .4byte gOamShapesSizes+1
 _08003D28: .4byte 0x000001FF
 _08003D2C:
-	ldr r3, [sp, #0xc]
+	ldr r3, [sp, #0xc]  @ r3 = sp0C = s
 	movs r5, #0x18
 	ldrsh r0, [r3, r5]
 	mov r7, sl      @ r7 = sl = dims
@@ -448,7 +448,7 @@ _08003D3C:
 	lsrs r6, r0, #0x10
 	b _08003D58
 _08003D4A:
-	ldr r5, [sp, #0xc]
+	ldr r5, [sp, #0xc]  @ r5 = sp0C = s
 	movs r7, #0x18
 	ldrsh r1, [r5, r7]
 	mov r2, sl          @ r2 = sl = dims
@@ -456,7 +456,7 @@ _08003D4A:
 	ldrsh r0, [r2, r3]
 	subs r5, r1, r0     @ r5 = someOffsetY
 _08003D58:
-	ldr r7, [sp, #0xc]
+	ldr r7, [sp, #0xc]  @ r7 = sp0C = s
 	ldr r0, [r7, #0x10]
 	lsrs r0, r0, #0xa
 	movs r3, #1
@@ -475,13 +475,13 @@ __08003D6E:
 	adds r1, r7, #0
 	eors r0, r1
 	strh r0, [r2, #2]
-	mov r0, sl
+	mov r0, sl          @ r0 = sl = dims
 	ldrb r1, [r0]
 	adds r0, r3, #0
 	ands r0, r1
 	cmp r0, #0
 	beq _08003D96
-	ldr r1, [sp, #0xc]
+	ldr r1, [sp, #0xc]  @ r1 = sp0C = s
 	movs r2, #0x16
 	ldrsh r0, [r1, r2]
 	mov r3, sl
@@ -489,10 +489,10 @@ __08003D6E:
 	ldrsh r1, [r3, r7]
 	b _08003DA6
 _08003D96:
-	ldr r1, [sp, #0xc]
+	ldr r1, [sp, #0xc]  @ r1 = sp0C = s
 	movs r2, #0x16
 	ldrsh r0, [r1, r2]
-	mov r3, sl
+	mov r3, sl          @ r3 = sl = dims
 	ldrh r1, [r3, #4]
 	movs r7, #8
 	ldrsh r2, [r3, r7]
@@ -506,10 +506,10 @@ _08003DA6:
 	lsrs r4, r0, #0x10
 	b _08003DC4
 _08003DB4:
-	ldr r0, [sp, #0xc]
+	ldr r0, [sp, #0xc]  @ r0 = sp0C = s
 	movs r2, #0x16
 	ldrsh r1, [r0, r2]
-	mov r3, sl
+	mov r3, sl          @ r3 = sl = dims
 	movs r7, #8
 	ldrsh r0, [r3, r7]
 	subs r1, r1, r0
@@ -557,7 +557,7 @@ _08003DFE:
 	muls r0, r3, r0
 	ldr r5, [sp, #0x18]
 	adds r7, r5, r0
-	ldr r6, [sp, #0xc]
+	ldr r6, [sp, #0xc]  @ r6 = sp0C = s
 	ldr r1, [r6, #4]
 	ldr r0, [sp, #0x14]
 	subs r1, r1, r0
@@ -636,7 +636,7 @@ _08003EA0:
 	lsls r0, r2, #0x18
 	lsrs r0, r0, #0x18
 	str r0, [sp, #8]
-	mov r3, sl
+	mov r3, sl          @ r3 = sl = dims
 	ldrh r3, [r3, #2]
 	cmp r0, r3
 	bhs _08003EB2

@@ -309,11 +309,12 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
 
     if (dimensions != (SpriteOffset *)-1) {
         s16 res;
-        u16 *affine;
-        big.affineIndex = s->frameFlags % 32u;
+        s16 x16, y16;
+        s16 *affine;
+        big.affineIndex = s->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE;
         affine = &gOamBuffer[big.affineIndex * 4].all.affineParam;
 
-#if 01
+#if 0
         sub_80047A0(transform->rotation & ONE_CYCLE, transform->width, transform->height,
                     big.affineIndex);
 #else
@@ -322,31 +323,44 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
 
         big.unkC[0] = transform->width;
         big.unkC[1] = transform->height;
+        // __set_UnkC
 
         res = Div(0x10000, big.unkC[0]);
-        affine[0] = Q_8_8_TO_INT(((big.qDirX << 16) >> 16) * res);
+        x16 = big.qDirX;
+        affine[0] = (x16 * res) >> 8;
 
         res = Div(0x10000, big.unkC[0]);
-        affine[4] = I(big.qDirY * res);
+        y16 = big.qDirY;
+        affine[4] = (y16 * res) >> 8;
 
         res = Div(0x10000, big.unkC[1]);
-        affine[8] = I(-big.qDirX * res);
+        y16 = big.qDirY;
+        affine[8] = (-y16 * res) >> 8;
 
         res = Div(0x10000, big.unkC[1]);
-        affine[12] = I(big.qDirY * res);
+        x16 = big.qDirX;
+        affine[12] = (x16 * res) >> 8;
 #endif
-
-        if (transform->height < 0)
-            big.unkC[0] = -transform->height;
+        // __post_Divs
 
         if (transform->width < 0)
-            big.unkC[1] = -transform->width;
+            big.unkC[0] = -transform->width;
+
+        if (transform->height < 0)
+            big.unkC[1] = -transform->height;
 
         // _0800497A
-        big.unk0[0] = I(big.qDirX * big.unkC[0]);
-        big.unk0[1] = I(-big.qDirY * big.unkC[0]);
-        big.unk0[2] = I(big.qDirY * big.unkC[1]);
-        big.unk0[3] = I(big.unkC[0] * big.unkC[1]);
+        x16 = big.qDirX;
+        big.unk0[0] = (x16 * big.unkC[0]) >> 8;
+        // __08004990
+        y16 = big.qDirY;
+        big.unk0[1] = (-y16 * big.unkC[0]) >> 8;
+        // __080049AA
+        y16 = big.qDirY;
+        big.unk0[2] = (y16 * big.unkC[1]) >> 8;
+        // __080049C2
+        x16 = big.qDirX;
+        big.unk0[3] = (x16 * big.unkC[1]) >> 8;
 
         big.unk18[0][0] = 0x100;
         big.unk18[0][1] = 0;
@@ -361,15 +375,19 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
             s32 r0;
             s16 r1_16;
             s32 r1;
-            s32 r2;
-            s16 r4;
             s16 r3;
             u32 r5;
+            // NOTE: Apparently r2 and r4 have to be unisgned for this logic to work
+            u16 r2;
+            u16 r4;
 
+            // __08004A04
             if (transform->width > 0) {
+                // __08004A08
                 r4 = (u16)dimensions->offsetX;
                 r2 = dimensions->width;
             } else {
+                // _08004A20
                 s32 w = dimensions->width;
                 r4 = w - (u16)dimensions->offsetX;
                 r2 = w;
@@ -389,8 +407,8 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
             }
 
             // _08004A4C
-            r1_16 = big.unk0[0] * (r4 - dimensions->width / 2);
-            r0 = big.unk0[1] * (r3 - dimensions->height / 2);
+            r1_16 = big.unk0[0] * (r4 - (dimensions->width / 2));
+            r0 = big.unk0[1] * (r3 - (dimensions->height / 2));
             r1_16 += r0;
             r1_16 = r1_16 + (r2 << 8);
             big.posX -= (r1_16 >> 8);
