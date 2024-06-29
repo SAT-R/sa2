@@ -249,7 +249,7 @@ _08004A20:
 	lsrs r4, r0, #0x10
 	adds r2, r1, #0
 _08004A2E:
-	mov r3, ip
+	mov r3, ip      @ r3 = ip = 
 	lsls r0, r3, #0x10
 	cmp r0, #0
 	ble _08004A3E
@@ -266,23 +266,23 @@ _08004A3E:
 	lsrs r3, r0, #0x10
 	adds r5, r1, #0
 _08004A4C:
-	mov r0, sp      @ r0 = sp00
+	mov r0, sp          @ r0 = big.unk0[0]
 	ldrh r0, [r0]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
 	lsls r4, r4, #0x10
 	asrs r4, r4, #0x10
 	lsrs r2, r2, #1
-	subs r4, r4, r2
+	subs r4, r4, r2     @ r4 = (r4 - (r2 / 2))
 	adds r1, r0, #0
-	muls r1, r4, r1
-	ldrh r0, [r6] @ r0 = *r6 = big.unk0[1]
+	muls r1, r4, r1     @ r1 = big.unk0[0] * r4;
+	ldrh r0, [r6]       @ r0 = *r6 = big.unk0[1]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
 	lsls r3, r3, #0x10
 	asrs r3, r3, #0x10
 	lsrs r5, r5, #1
-	subs r3, r3, r5
+	subs r3, r3, r5     @ r3 = r3 - (r5 / 2)
 	muls r0, r3, r0
 	adds r1, r1, r0
 	lsls r2, r2, #8
@@ -293,12 +293,12 @@ _08004A4C:
 	str r0, [sp, #0x10]
 
 __080004A7E:
-	ldrh r0, [r7]
+	ldrh r0, [r7]       @ r0 = big.unk0[2]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10
 	adds r1, r0, #0
 	muls r1, r4, r1
-	mov r7, sb
+	mov r7, sb          @ r7 = sb = &big.unk0[3]
 	ldrh r0, [r7]
 	lsls r0, r0, #0x10
 	asrs r0, r0, #0x10

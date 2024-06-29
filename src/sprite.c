@@ -370,33 +370,26 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
         big.posX = transform->x;
         big.posY = transform->y;
 
-        // _08004A20
+        // _08004A04
         {
             s32 r0;
-            s16 r1_16;
             s32 r1;
-            s16 r3;
+            s32 r3;
             u32 r5;
-            // NOTE: Apparently r2 and r4 have to be unisgned for this logic to work
-            u16 r2;
-            u16 r4;
+            s32 r2;
+            s32 r4;
 
             // __08004A04
             if (transform->width > 0) {
                 // __08004A08
                 r4 = (u16)dimensions->offsetX;
-                r2 = dimensions->width;
             } else {
                 // _08004A20
-                s32 w = dimensions->width;
-                r4 = w - (u16)dimensions->offsetX;
-                r2 = w;
+                r4 = dimensions->width - (u16)dimensions->offsetX;
             }
 
             // _08004A2E
-            r3 = transform->height;
-
-            if (r3 > 0) {
+            if (transform->height > 0) {
                 r3 = (u16)dimensions->offsetY;
                 r5 = dimensions->height;
             } else {
@@ -407,22 +400,20 @@ NONMATCH("asm/non_matching/engine/sub_8004860.inc",
             }
 
             // _08004A4C
-            r1_16 = big.unk0[0] * (r4 - (dimensions->width / 2));
-            r0 = big.unk0[1] * (r3 - (dimensions->height / 2));
-            r1_16 += r0;
-            r1_16 = r1_16 + (r2 << 8);
-            big.posX -= (r1_16 >> 8);
+            r4 = (r4 - (dimensions->width / 2));
+            r1 = big.unk0[0] * r4;
+            r3 = (r3 - (dimensions->height / 2));
+            r0 = big.unk0[1] * r3;
+            r1 += r0;
+            r1 = r1 + ((dimensions->width / 2) << 8);
+            big.posX -= (r1 >> 8);
 
             // __080004A7E
-            r1 = big.unk0[2];
-            r1 *= r4;
-            r0 = big.unkC[0];
-            r0 *= r3;
+            r1 = big.unk0[2] * r4;
+            r0 = big.unk0[3] * r3;
             r1 += r0;
-            r1 += Q(r5);
-            r1 >>= 8;
-
-            big.posY -= r1;
+            r1 += ((dimensions->height / 2) << 8);
+            big.posY -= r1 >> 8;
 
             s->x = big.posX;
             s->y = big.posY;
