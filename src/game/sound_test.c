@@ -713,7 +713,7 @@ static void SoundTestScreenRenderUI(void)
                 = soundTestScreen->speakerSize + 0x100;
         }
 
-        sub_8004860(&speakerConeElement[i], &speakerConeEffects[i]);
+        TransformSprite(&speakerConeElement[i], &speakerConeEffects[i]);
     }
 
     soundTestScreen->speakerSize

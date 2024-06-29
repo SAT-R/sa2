@@ -1047,7 +1047,7 @@ _08016A68:
 _08016A7C:
 	adds r0, r6, #0
 	ldr r1, [sp]
-	bl sub_8004860
+	bl TransformSprite
 	b _08016ACC
 _08016A86:
 	ldr r2, [r6, #0x10]
@@ -1351,7 +1351,7 @@ _08016CB0:
 	beq _08016CE2
 	adds r0, r6, #0
 	ldr r1, [sp]
-	bl sub_8004860
+	bl TransformSprite
 _08016CE2:
 	adds r0, r6, #0
 	bl DisplaySprite

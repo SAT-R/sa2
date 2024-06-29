@@ -472,7 +472,7 @@ static u8 RenderEggBomberTank(EggBomberTank *boss)
             ret = 1;
         }
 
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
 
@@ -711,7 +711,7 @@ static u8 RenderCannon(EggBomberTank *boss)
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transform);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 
     return ret;

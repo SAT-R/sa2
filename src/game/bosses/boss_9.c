@@ -2645,7 +2645,7 @@ void sub_80501D4(TA53Boss *boss)
         transform->x = s->x;
         transform->y = s->y;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
 
@@ -2669,7 +2669,7 @@ void sub_80501D4(TA53Boss *boss)
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transform);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 }
 
@@ -2769,7 +2769,7 @@ void sub_80505B8(TA53Boss *boss)
         transform->x = s->x;
         transform->y = s->y;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
 
@@ -2793,7 +2793,7 @@ void sub_80505B8(TA53Boss *boss)
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transform);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 }
 

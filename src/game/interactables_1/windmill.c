@@ -134,7 +134,7 @@ static void Task_WindmillMain(void)
             transform->y = s->y;
 
             s->frameFlags = (gUnknown_030054B8++ | 0x1060);
-            sub_8004860(s, transform);
+            TransformSprite(s, transform);
             DisplaySprite(s);
         }
     }

@@ -611,7 +611,7 @@ static void sub_803AC2C(EggHammerTankII *boss)
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transform);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 }
 
@@ -1449,7 +1449,7 @@ static void sub_803C198(EggHammerTankII *boss)
         transform->height = 256;
         transform->x = s->x;
         transform->y = s->y;
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
 }

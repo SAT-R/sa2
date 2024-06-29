@@ -532,7 +532,7 @@ _08019C5A:
 	bl UpdateSpriteAnimation
 	ldr r0, [sp]
 	mov r1, sl
-	bl sub_8004860
+	bl TransformSprite
 	ldr r0, [sp]
 	bl DisplaySprite
 _08019C96:

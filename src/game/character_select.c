@@ -1234,7 +1234,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
 
     s->frameFlags = gUnknown_030054B8++ | 0x60;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transformOptions);
+    TransformSprite(s, transformOptions);
     DisplaySprite(s);
 
     if (characterScreen->animFrame < 8) {
@@ -1319,7 +1319,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
 
     s->frameFlags = gUnknown_030054B8++ | 0x20;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transformOptions);
+    TransformSprite(s, transformOptions);
     DisplaySprite(s);
 
     s = &characterScreen->characterTitleTextRight;
@@ -1336,7 +1336,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
 
     s->frameFlags = gUnknown_030054B8++ | 0x20;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transformOptions);
+    TransformSprite(s, transformOptions);
     DisplaySprite(s);
 
     s = &characterScreen->scrollUpArrow;
@@ -1505,7 +1505,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
         s->frameFlags = gUnknown_030054B8++ | 0x60;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transformOptions);
+        TransformSprite(s, transformOptions);
         DisplaySprite(s);
     }
 
@@ -1594,7 +1594,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
         s->frameFlags = gUnknown_030054B8++ | 0x20;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transformOptions);
+        TransformSprite(s, transformOptions);
     } else {
         s->frameFlags = 0;
     }
@@ -1615,7 +1615,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
         s->frameFlags = gUnknown_030054B8++ | 0x20;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transformOptions);
+        TransformSprite(s, transformOptions);
     } else {
         s->frameFlags = 0;
     }
@@ -1700,7 +1700,7 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
 
         s->frameFlags = gUnknown_030054B8++ | 0x60;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transformOptions);
+        TransformSprite(s, transformOptions);
         DisplaySprite(s);
     }
     UpdateSpriteAnimation(&characterScreen->characterSprite);

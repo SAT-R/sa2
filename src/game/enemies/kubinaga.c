@@ -383,7 +383,7 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
         | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE;
 
     UpdateSpriteAnimation(sHead);
-    sub_8004860(sHead, transform);
+    TransformSprite(sHead, transform);
     DisplaySprite(sHead);
 }
 

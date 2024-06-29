@@ -424,7 +424,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         if (mpp->unk54 & 8) {
             transform->width = -transform->width;
         }
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
     } else {
         s->frameFlags &= ~0x30;
         if (mpp->unk54 & 2) {
@@ -480,7 +480,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
             if ((u16)(s->x + 0x3F) < 0x16F && (s->y > -0x40 && s->y < 0xE0)) {
                 if (mpp->unk54 & 1) {
-                    sub_8004860(s, transform);
+                    TransformSprite(s, transform);
                 }
                 DisplaySprite(s);
             }

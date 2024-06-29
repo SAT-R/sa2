@@ -1767,7 +1767,7 @@ void sub_804C3AC(SuperEggRoboZ *boss)
     tf->y = s->y;
 
     UpdateSpriteAnimation(s);
-    sub_8004860(s, tf);
+    TransformSprite(s, tf);
     DisplaySprite(s);
 
     for (i = 0; i < ARM_COUNT; i++) {
@@ -1791,7 +1791,7 @@ void sub_804C3AC(SuperEggRoboZ *boss)
         tf->y = s->y;
 
         UpdateSpriteAnimation(s);
-        sub_8004860(s, tf);
+        TransformSprite(s, tf);
         DisplaySprite(s);
     }
 }
@@ -1856,7 +1856,7 @@ void sub_804C5B8(SuperEggRoboZ *boss)
     tf->y = s->y;
 
     UpdateSpriteAnimation(s);
-    sub_8004860(s, tf);
+    TransformSprite(s, tf);
     DisplaySprite(s);
 
     for (i = 0; i < ARM_COUNT; i++) {
@@ -1884,7 +1884,7 @@ void sub_804C5B8(SuperEggRoboZ *boss)
         tf->y = s->y;
 
         UpdateSpriteAnimation(s);
-        sub_8004860(s, tf);
+        TransformSprite(s, tf);
         DisplaySprite(s);
     }
 }

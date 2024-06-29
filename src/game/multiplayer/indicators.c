@@ -275,7 +275,7 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     spr->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
     spr->frameFlags |= gUnknown_030054B8++;
     UpdateSpriteAnimation(spr);
-    sub_8004860(spr, transform);
+    TransformSprite(spr, transform);
     DisplaySprite(spr);
 }
 END_NONMATCH

@@ -777,7 +777,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         transform->height = scene->unk340;
         transform->x = s->x;
         transform->y = s->y;
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
     }
 
     UpdateSpriteAnimation(s);

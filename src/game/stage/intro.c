@@ -917,7 +917,7 @@ static void StageIntroUpdateIcons(void)
     transform->x = s->x;
     transform->y = s->y;
 
-    sub_8004860(s, transform);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 }
 

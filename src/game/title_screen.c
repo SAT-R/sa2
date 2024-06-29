@@ -1740,7 +1740,7 @@ static void Task_LensFlareAnim(void)
                                        -0x14 + lensFlare->unk202 - gBgScrollRegs[1][1],
                                        lensFlare->animFrame * 16, 8, 0);
 
-            sub_8004860(s, transform);
+            TransformSprite(s, transform);
             DisplaySprite(s);
         }
     }

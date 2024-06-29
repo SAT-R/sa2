@@ -455,7 +455,7 @@ static void sub_802BE1C(struct SuperSonic *sonic)
         transform->height = Q(1.0);
         transform->x = spr->x;
         transform->y = spr->y;
-        sub_8004860(spr, transform);
+        TransformSprite(spr, transform);
         DisplaySprite(spr);
     } else {
         DisplaySprite(spr);

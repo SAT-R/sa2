@@ -598,7 +598,7 @@ void sub_80438C4(EggSaucer *boss)
         transform->x = s->x;
         transform->y = s->y;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
 
         if (PLAYER_IS_ALIVE && (boss->unk1C > 0 && boss->unk1C < 12)) {
@@ -772,7 +772,7 @@ void sub_8043E2C(EggSaucer *boss)
         transform->height = 256;
         transform->x = s->x;
         transform->y = s->y;
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
 
         if (Mod(gStageTime, 3) == 0) {

@@ -616,7 +616,7 @@ static void sub_80742A8(Sprite_HCCrane *crane)
 
                 cs->s->frameFlags = gUnknown_030054B8++ | 0x00002060;
 
-                sub_8004860(cs->s, &transform);
+                TransformSprite(cs->s, &transform);
             }
             DisplaySprite(cs->s);
         }

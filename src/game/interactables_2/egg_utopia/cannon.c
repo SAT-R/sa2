@@ -250,7 +250,7 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
         s->frameFlags |= 0x400;
     }
 
-    sub_8004860(s, &transform);
+    TransformSprite(s, &transform);
     DisplaySprite(s);
 }
 

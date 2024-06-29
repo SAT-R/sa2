@@ -287,7 +287,7 @@ void Task_80159C8(void)
                     transform->width = -transform->width;
                 }
 
-                sub_8004860(s, transform);
+                TransformSprite(s, transform);
             } else {
                 SPRITE_FLAG_CLEAR(s, ROT_SCALE_ENABLE);
             }

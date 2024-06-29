@@ -3705,7 +3705,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
 
         MACRO_8024B10_PSI_UPDATE(p, psi);
         if (IS_SINGLE_PLAYER) {
-            sub_8004860(s, &psi->transform);
+            TransformSprite(s, &psi->transform);
         }
     } else {
         psi->transform.rotation = 0;
@@ -3878,7 +3878,7 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
                 s->frameFlags |= gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 MACRO_8024B10_PSI_UPDATE(p, psi);
-                sub_8004860(s, &psi->transform);
+                TransformSprite(s, &psi->transform);
 
                 if (p->moveState & MOVESTATE_DEAD
                     || (!(p->moveState & MOVESTATE_100000)
@@ -3909,7 +3909,7 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
                 s->frameFlags |= gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 MACRO_8024B10_PSI_UPDATE(p, psi);
-                sub_8004860(s, &psi->transform);
+                TransformSprite(s, &psi->transform);
 
                 if (p->moveState & MOVESTATE_DEAD
                     || (!(p->moveState & MOVESTATE_100000)

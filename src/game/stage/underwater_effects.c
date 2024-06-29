@@ -64,7 +64,7 @@ static void Task_DrowningCountdown(void)
     s->frameFlags |= (gUnknown_030054B8++ | 0x20);
 
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transform);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 }
 
@@ -228,7 +228,7 @@ static void Task_SpawnAirBubbles(void)
         s->frameFlags |= (gUnknown_030054B8++ | 0x20);
 
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
 }

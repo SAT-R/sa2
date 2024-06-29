@@ -447,7 +447,7 @@ _0801984A:
 	bl UpdateSpriteAnimation
 	ldr r0, [sp]
 	mov r1, sl
-	bl sub_8004860
+	bl TransformSprite
 	ldr r0, [sp]
 	bl DisplaySprite
 Task_801951C_return:

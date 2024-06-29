@@ -250,8 +250,7 @@ bool32 sub_8004010(void);
 void CopyOamBufferToOam(void);
 OamData *OamMalloc(u8 order);
 
-// TransformSprite
-void sub_8004860(Sprite *, SpriteTransform *);
+void TransformSprite(Sprite *, SpriteTransform *);
 void UnusedTransform(Sprite *, SpriteTransform *);
 void sub_8004E14(Sprite *, SpriteTransform *);
 

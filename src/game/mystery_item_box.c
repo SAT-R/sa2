@@ -202,8 +202,8 @@ static void sub_808623C(void)
     itemBox->identifier.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
     itemBox->identifier.frameFlags |= gUnknown_030054B8++;
 
-    sub_8004860(&itemBox->box, transform);
-    sub_8004860(&itemBox->identifier, transform);
+    TransformSprite(&itemBox->box, transform);
+    TransformSprite(&itemBox->identifier, transform);
     DisplaySprite(&itemBox->box);
     DisplaySprite(&itemBox->identifier);
 }
@@ -255,8 +255,8 @@ static void sub_808636C(void)
     itemBox->identifier.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
     itemBox->identifier.frameFlags |= gUnknown_030054B8++;
 
-    sub_8004860(&itemBox->box, transform);
-    sub_8004860(&itemBox->identifier, transform);
+    TransformSprite(&itemBox->box, transform);
+    TransformSprite(&itemBox->identifier, transform);
     DisplaySprite(&itemBox->box);
     DisplaySprite(&itemBox->identifier);
 }

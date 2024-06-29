@@ -300,8 +300,8 @@ void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
 // Similar to sub_8004ABC and sub_8004E14
 // (53.42%) https://decomp.me/scratch/llwGy
 // (56.74%) https://decomp.me/scratch/rXgtp
-NONMATCH("asm/non_matching/engine/sub_8004860.inc",
-         void sub_8004860(Sprite *s, SpriteTransform *transform))
+NONMATCH("asm/non_matching/engine/TransformSprite.inc",
+         void TransformSprite(Sprite *s, SpriteTransform *transform))
 {
     // sp24 = s
     UnkSpriteStruct big;
@@ -430,7 +430,7 @@ NONMATCH("asm/non_matching/engine/unused_transform.inc",
 }
 END_NONMATCH
 
-// VERY similar to sub_8004860 and sub_8004ABC
+// VERY similar to TransformSprite and sub_8004ABC
 // (41.14%) https://decomp.me/scratch/n3NXz
 NONMATCH("asm/non_matching/engine/sub_8004E14.inc",
          void sub_8004E14(Sprite *sprite, SpriteTransform *transform))

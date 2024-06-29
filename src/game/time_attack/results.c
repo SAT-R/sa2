@@ -350,7 +350,7 @@ void sub_80897E8(void)
                 if (resultsCutScene->transform.width == 0) {
                     resultsCutScene->transform.width = 0x10;
                 }
-                sub_8004860(s, &resultsCutScene->transform);
+                TransformSprite(s, &resultsCutScene->transform);
                 DisplaySprite(s);
             }
 

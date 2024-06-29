@@ -275,7 +275,7 @@ void sub_8036524(void)
     transformConfig->x = s->x;
     transformConfig->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transformConfig);
+    TransformSprite(s, transformConfig);
     DisplaySprite(s);
 
     s = &startMessage->unk3C;
@@ -297,7 +297,7 @@ void sub_8036524(void)
     transformConfig->x = s->x;
     transformConfig->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transformConfig);
+    TransformSprite(s, transformConfig);
     DisplaySprite(s);
 }
 
