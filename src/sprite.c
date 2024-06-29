@@ -1,4 +1,4 @@
-#include <string.h>
+#include <string.h> // memcpy
 #include "global.h"
 #include "core.h"
 #include "flags.h"
@@ -374,10 +374,9 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc",
         {
             s32 r0;
             s32 r1;
-            s32 r3;
-            u32 r5;
             s32 r2;
-            s32 r4;
+            u32 r3;
+            u32 r4;
 
             // __08004A04
             if (transform->width > 0) {
@@ -391,12 +390,9 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc",
             // _08004A2E
             if (transform->height > 0) {
                 r3 = (u16)dimensions->offsetY;
-                r5 = dimensions->height;
             } else {
                 // _08004A3E
-                s32 h = dimensions->height;
-                r3 = h - (u16)dimensions->offsetY;
-                r5 = h;
+                r3 = dimensions->height - (u16)dimensions->offsetY;
             }
 
             // _08004A4C
