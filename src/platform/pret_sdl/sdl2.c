@@ -377,44 +377,45 @@ void ProcessEvents(void)
                     if (fullScreenFlags & SDL_WINDOW_FULLSCREEN_DESKTOP) {
                         SDL_GetWindowDisplayMode(sdlWindow, &sdlDispMode);
                         preFullscreenVideoScale = videoScale;
-                    }
-                    else {
+                    } else {
                         SDL_SetWindowDisplayMode(sdlWindow, &sdlDispMode);
                         videoScale = preFullscreenVideoScale;
                     }
                     SDL_SetWindowFullscreen(sdlWindow, fullScreenFlags);
 
-                    SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
+                    SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale,
+                                      DISPLAY_HEIGHT * videoScale);
                     videoScaleChanged = FALSE;
-                } else switch (event.key.keysym.sym) {
-                    HANDLE_KEYDOWN(A_BUTTON)
-                    HANDLE_KEYDOWN(B_BUTTON)
-                    HANDLE_KEYDOWN(START_BUTTON)
-                    HANDLE_KEYDOWN(SELECT_BUTTON)
-                    HANDLE_KEYDOWN(L_BUTTON)
-                    HANDLE_KEYDOWN(R_BUTTON)
-                    HANDLE_KEYDOWN(DPAD_UP)
-                    HANDLE_KEYDOWN(DPAD_DOWN)
-                    HANDLE_KEYDOWN(DPAD_LEFT)
-                    HANDLE_KEYDOWN(DPAD_RIGHT)
-                    case SDLK_r:
-                        if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
-                            DoSoftReset();
-                        }
-                        break;
-                    case SDLK_p:
-                        if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
-                            paused = !paused;
-                        }
-                        break;
-                    case SDLK_SPACE:
-                        if (!speedUp) {
-                            speedUp = true;
-                            timeScale = 5.0;
-                            SDL_PauseAudio(1);
-                        }
-                        break;
-                }
+                } else
+                    switch (event.key.keysym.sym) {
+                        HANDLE_KEYDOWN(A_BUTTON)
+                        HANDLE_KEYDOWN(B_BUTTON)
+                        HANDLE_KEYDOWN(START_BUTTON)
+                        HANDLE_KEYDOWN(SELECT_BUTTON)
+                        HANDLE_KEYDOWN(L_BUTTON)
+                        HANDLE_KEYDOWN(R_BUTTON)
+                        HANDLE_KEYDOWN(DPAD_UP)
+                        HANDLE_KEYDOWN(DPAD_DOWN)
+                        HANDLE_KEYDOWN(DPAD_LEFT)
+                        HANDLE_KEYDOWN(DPAD_RIGHT)
+                        case SDLK_r:
+                            if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
+                                DoSoftReset();
+                            }
+                            break;
+                        case SDLK_p:
+                            if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
+                                paused = !paused;
+                            }
+                            break;
+                        case SDLK_SPACE:
+                            if (!speedUp) {
+                                speedUp = true;
+                                timeScale = 5.0;
+                                SDL_PauseAudio(1);
+                            }
+                            break;
+                    }
                 break;
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
@@ -647,7 +648,8 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
 
 void DmaStop(int dmaNum)
 {
-    (&REG_DMA0CNT_H)[dmaNum] &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
+    (&REG_DMA0CNT_H)[dmaNum]
+        &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
 
     struct DMATransfer *dma = &DMAList[dmaNum];
     dma->control &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
