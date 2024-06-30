@@ -237,8 +237,12 @@ static AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s)
 
     if ((s->frameFlags & SPRITE_FLAG_MASK_19) == 0) {
         if (cmd->tileIndex < 0) {
+            s32 tileIndex = cmd->tileIndex;
+#ifdef BUG_FIX
+            tileIndex &= ~0x80000000;
+#endif
             s->graphics.src
-                = &gRefSpriteTables->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
+                = &gRefSpriteTables->tiles_8bpp[tileIndex * TILE_SIZE_8BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
             s->graphics.src
