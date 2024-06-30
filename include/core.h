@@ -245,8 +245,6 @@ extern u16 gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgPalette[BG_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgCntRegs[4];
 
-extern s16 gUnknown_03000408;
-
 // TODO: Turn this into a struct-array:
 //       [4]{s16 x, s16 y}
 //       Should we introduce a

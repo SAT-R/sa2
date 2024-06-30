@@ -676,14 +676,14 @@ void UpdateBgAnimationTiles(Background *bg)
 }
 
 // Differences to UpdateSpriteAnimation:
-// - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
+// - SPRITE_INIT_ANIM_IF_CHANGED gets executed *after* the if.
 // - Uses animCmdTable_BG instead of animCmdTable
 s32 sub_80036E0(Sprite *s)
 {
     if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
-    SPRITE_MAYBE_SWITCH_ANIM(s);
+    SPRITE_INIT_ANIM_IF_CHANGED(s);
 
     if (s->timeUntilNextFrame > 0)
         s->timeUntilNextFrame -= s->animSpeed * 16;
@@ -753,8 +753,7 @@ static AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
 #ifdef BUG_FIX
             tileIndex &= ~0x80000000;
 #endif
-            s->graphics.src
-                = &gRefSpriteTables->tiles_8bpp[tileIndex * TILE_SIZE_8BPP];
+            s->graphics.src = &gRefSpriteTables->tiles_8bpp[tileIndex * TILE_SIZE_8BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
             s->graphics.src

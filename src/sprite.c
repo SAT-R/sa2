@@ -166,7 +166,7 @@ u32 Base10DigitsToHexNibbles(u16 num)
 
 AnimCmdResult UpdateSpriteAnimation(Sprite *s)
 {
-    SPRITE_MAYBE_SWITCH_ANIM(s);
+    SPRITE_INIT_ANIM_IF_CHANGED(s);
 
     if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
@@ -241,8 +241,7 @@ static AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s)
 #ifdef BUG_FIX
             tileIndex &= ~0x80000000;
 #endif
-            s->graphics.src
-                = &gRefSpriteTables->tiles_8bpp[tileIndex * TILE_SIZE_8BPP];
+            s->graphics.src = &gRefSpriteTables->tiles_8bpp[tileIndex * TILE_SIZE_8BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
             s->graphics.src
