@@ -90,7 +90,9 @@ SDL_Texture *sdlTexture;
 SDL_sem *vBlankSemaphore;
 SDL_atomic_t isFrameAvailable;
 bool speedUp = false;
-unsigned int videoScale = 1;
+#define INITIAL_VIDEO_SCALE 1
+unsigned int videoScale = INITIAL_VIDEO_SCALE;
+unsigned int preFullscreenVideoScale = INITIAL_VIDEO_SCALE;
 bool videoScaleChanged = false;
 bool isRunning = true;
 bool paused = false;
@@ -332,11 +334,17 @@ static void CloseSaveFile()
 
 static u16 keys;
 
+u32 fullScreenFlags = 0;
+static SDL_DisplayMode sdlDispMode = { 0 };
+
 void ProcessEvents(void)
 {
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {
+        SDL_Keycode keyCode = event.key.keysym.sym;
+        Uint16 keyMod = event.key.keysym.mod;
+
         switch (event.type) {
             case SDL_QUIT:
                 isRunning = false;
@@ -364,7 +372,21 @@ void ProcessEvents(void)
                 }
                 break;
             case SDL_KEYDOWN:
-                switch (event.key.keysym.sym) {
+                if (keyCode == SDLK_RETURN && (keyMod & KMOD_ALT)) {
+                    fullScreenFlags ^= SDL_WINDOW_FULLSCREEN_DESKTOP;
+                    if (fullScreenFlags & SDL_WINDOW_FULLSCREEN_DESKTOP) {
+                        SDL_GetWindowDisplayMode(sdlWindow, &sdlDispMode);
+                        preFullscreenVideoScale = videoScale;
+                    }
+                    else {
+                        SDL_SetWindowDisplayMode(sdlWindow, &sdlDispMode);
+                        videoScale = preFullscreenVideoScale;
+                    }
+                    SDL_SetWindowFullscreen(sdlWindow, fullScreenFlags);
+
+                    SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
+                    videoScaleChanged = FALSE;
+                } else switch (event.key.keysym.sym) {
                     HANDLE_KEYDOWN(A_BUTTON)
                     HANDLE_KEYDOWN(B_BUTTON)
                     HANDLE_KEYDOWN(START_BUTTON)
