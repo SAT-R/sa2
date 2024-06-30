@@ -501,7 +501,13 @@ static void RunDMAs(u32 type)
 {
     for (int dmaNum = 0; dmaNum < DMA_COUNT; dmaNum++) {
         struct DMATransfer *dma = &DMAList[dmaNum];
+#if PLATFORM_GBA
+        // Regular GBA order
         u32 dmaCntReg = (&REG_DMA0CNT)[dmaNum * 3];
+#else
+        // "64 bit" order
+        u32 dmaCntReg = (&REG_DMA0CNT)[dmaNum];
+#endif
         if (!((dmaCntReg >> 16) & DMA_ENABLE)) {
             dma->control &= ~DMA_ENABLE;
         }
@@ -594,9 +600,17 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
         return;
     }
 
+#if PLATFORM_GBA
+    // Regular GBA order
     (&REG_DMA0SAD)[dmaNum * 3] = (uintptr_t)src;
     (&REG_DMA0DAD)[dmaNum * 3] = (uintptr_t)dest;
-    (&REG_DMA0CNT)[dmaNum * 3] = (uintptr_t)control;
+    (&REG_DMA0CNT)[dmaNum * 3] = (size_t)control;
+#else
+    // "64 bit" order
+    (&REG_DMA0SAD)[dmaNum * 2] = (uintptr_t)src;
+    (&REG_DMA0DAD)[dmaNum * 2] = (uintptr_t)dest;
+    (&REG_DMA0CNT)[dmaNum] = (size_t)control;
+#endif
 
     struct DMATransfer *dma = &DMAList[dmaNum];
     dma->src = src;
@@ -607,6 +621,14 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
     // printf("\nDMA%d: S:%p %p -> %p\n", dmaNum, src, dest, dest + dma->size);
 
     RunDMAs(DMA_NOW);
+}
+
+void DmaStop(int dmaNum)
+{
+    (&REG_DMA0CNT_H)[dmaNum] &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
+
+    struct DMATransfer *dma = &DMAList[dmaNum];
+    dma->control &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
 }
 
 void CpuSet(const void *src, void *dst, u32 cnt)
