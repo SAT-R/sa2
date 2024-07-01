@@ -74,7 +74,7 @@ typedef struct {
 
 typedef struct {
     Sprite unk0[3][ARM_COUNT];
-    s32 unk120;
+    void *unk120;
     s32 unk124[3][2];
     s32 unk13C[3][2];
     u16 unk154[3];
@@ -368,7 +368,7 @@ void sub_8049D20(void *vram, SuperEggRoboZ *boss)
     Sprite *s;
 
     unkD20->unk15D = 0;
-    unkD20->unk120 = (s32)vram;
+    unkD20->unk120 = vram;
     unkD20->unk160 = boss;
     unkD20->unk15E = 0;
     unkD20->unk15F = 0;
@@ -551,8 +551,8 @@ void sub_804A1C0(UNK_8049D20 *unkD20, u8 i)
 
                 info.speed = Q(1);
 
-                info.vram = (void *)unkD20->unk120;
-                info.anim = 707;
+                info.vram = unkD20->unk120;
+                info.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_CLOUD;
                 info.variant = 0;
                 info.unk4 = 0;
                 CreateBossParticleStatic(&info, &unkD20->unk15D);
