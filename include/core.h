@@ -276,6 +276,14 @@ extern struct MapHeader **gTilemapsRef; // TODO: make this an array and add size
 extern u8 gUnknown_03002280[4][4];
 extern u8 gUnknown_03004D80[16]; // TODO: Is this 4 (# backgrounds), instead of 16?
 
+#define LOG_GRAPHICS_QUEUE TRUE
+#if (!PLATFORM_GBA && LOG_GRAPHICS_QUEUE)
+#define GFX_QUEUE_LOG_ADD(gfx)                                                          \
+    printf("GFX %d: src 0x%p, dst 0x%p, size 0x%04X\n", gVramGraphicsCopyQueueIndex,    \
+           (gfx)->src, (gfx)->dest, (gfx)->size);
+#else
+#define GFX_QUEUE_LOG_ADD(gfx)
+#endif
 extern struct GraphicsData *gVramGraphicsCopyQueue[32];
 extern u8 gVramGraphicsCopyQueueIndex;
 // Because the graphics in the queue only get copied if
@@ -288,6 +296,8 @@ extern u8 gVramGraphicsCopyQueueIndex;
 
 #define ADD_TO_GRAPHICS_QUEUE(gfx)                                                      \
     gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = gfx;                          \
+    /* Log has to happen before gVramGraphicsCopyQueueIndex increment */                \
+    GFX_QUEUE_LOG_ADD(gfx)                                                              \
     INC_GRAPHICS_QUEUE_CURSOR(gVramGraphicsCopyQueueIndex);
 
 extern u16 *gUnknown_030022AC;
