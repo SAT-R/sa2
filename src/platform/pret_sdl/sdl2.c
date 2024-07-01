@@ -594,6 +594,7 @@ static void RunDMAs(u32 type)
     }
 }
 
+#if PLATFORM_GBA
 s32 Div(s32 num, s32 denom)
 {
     if (denom != 0) {
@@ -611,6 +612,7 @@ s32 Mod(s32 num, s32 denom)
         return 0;
     }
 }
+#endif
 
 int MultiBoot(struct MultiBootParam *mp) { return 0; }
 
