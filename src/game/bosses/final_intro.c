@@ -932,7 +932,7 @@ void sub_8037F68(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             gGameMode = GAME_MODE_SINGLE_PLAYER;
             gSelectedCharacter = CHARACTER_SONIC;
             gCurrentLevel = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
@@ -1643,7 +1643,7 @@ void Task_SkipHandlerMain(void)
         TasksDestroyInPriorityRange(0, priorityMax);
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         TaskCreate(sub_8039AD4, 0, priority, 0, NULL);
     }
 }

@@ -372,7 +372,7 @@ void Task_UpdateStageResults(void)
                 { // TODO: This is a macro!
                     gUnknown_03002AE4 = gUnknown_0300287C;
                     gUnknown_03005390 = 0;
-                    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                    PAUSE_GRAPHICS_QUEUE();
                 }
 
                 StartEndingCutscenes();
@@ -388,7 +388,7 @@ void Task_UpdateStageResults(void)
                 { // TODO: This is a macro!
                     gUnknown_03002AE4 = gUnknown_0300287C;
                     gUnknown_03005390 = 0;
-                    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                    PAUSE_GRAPHICS_QUEUE();
                 }
 
                 StartEndingCutscenes();
@@ -407,7 +407,7 @@ void Task_UpdateStageResults(void)
                     { // TODO: This is a macro!
                         gUnknown_03002AE4 = gUnknown_0300287C;
                         gUnknown_03005390 = 0;
-                        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                        PAUSE_GRAPHICS_QUEUE();
                     }
 
                     gCurrentLevel++;
@@ -472,7 +472,7 @@ void Task_UpdateStageResults(void)
                         { // TODO: This is a macro!
                             gUnknown_03002AE4 = gUnknown_0300287C;
                             gUnknown_03005390 = 0;
-                            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                            PAUSE_GRAPHICS_QUEUE();
                         }
 
                         CreateSpecialStage(-1, -1);
@@ -497,7 +497,7 @@ void Task_UpdateStageResults(void)
                     { // TODO: This is a macro!
                         gUnknown_03002AE4 = gUnknown_0300287C;
                         gUnknown_03005390 = 0;
-                        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                        PAUSE_GRAPHICS_QUEUE();
                     }
 
                     GameStageStart();

@@ -1092,7 +1092,7 @@ static void Task_FadeOutAndExitToPrevious(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         if (gGameMode != GAME_MODE_SINGLE_PLAYER) {
             CreateTimeAttackModeSelectionScreen();
         } else {

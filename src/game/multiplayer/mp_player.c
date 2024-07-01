@@ -280,7 +280,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             //     TasksDestroyAll();
             //     gUnknown_03002AE4 = gUnknown_0300287C;
             //     gUnknown_03005390 = 0;
-            //     gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            //     PAUSE_GRAPHICS_QUEUE();
             //     MultiPakCommunicationError();
             //     return;
             // }
@@ -295,7 +295,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
             return;
         }

@@ -118,7 +118,7 @@ void Task_PauseMenuUpdate(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
         return;
     } else if ((gGameMode == GAME_MODE_SINGLE_PLAYER)
@@ -129,7 +129,7 @@ void Task_PauseMenuUpdate(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         CreateTitleScreenAndSkipIntro();
         return;
     }

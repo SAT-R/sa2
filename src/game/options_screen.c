@@ -3861,7 +3861,7 @@ static void ProfileNameScreenFadeOutAndExit(void)
     TasksDestroyAll();
     gUnknown_03002AE4 = gUnknown_0300287C;
     gUnknown_03005390 = 0;
-    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+    PAUSE_GRAPHICS_QUEUE();
 
     if (onCompleteAction == NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER) {
         CreateMultiplayerModeSelectScreen();
@@ -4853,7 +4853,7 @@ static void Task_TimeRecordsScreenFadeToPrevious(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             CreateCharacterSelectionScreen(timeRecordsScreen->character,
                                            allCharactersUnlocked);
             break;
@@ -5825,7 +5825,7 @@ static void Task_OptionsScreenFadeOutAndExit(void)
     TasksDestroyAll();
     gUnknown_03002AE4 = gUnknown_0300287C;
     gUnknown_03005390 = 0;
-    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+    PAUSE_GRAPHICS_QUEUE();
     CreateTitleScreenAtSinglePlayerMenu();
 }
 

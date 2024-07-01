@@ -700,8 +700,7 @@ static bool32 ProcessVramGraphicsCopyQueue(void)
             }
         }
 
-        gVramGraphicsCopyCursor++;
-        gVramGraphicsCopyCursor &= ARRAY_COUNT(gVramGraphicsCopyQueue) - 1;
+        INC_GRAPHICS_QUEUE_CURSOR(gVramGraphicsCopyCursor);
 
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK)) {
             return FALSE;

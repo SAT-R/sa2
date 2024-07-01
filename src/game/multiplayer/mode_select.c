@@ -426,7 +426,7 @@ static void Task_ExitAndInitSelectedPakMode(void)
 
     gUnknown_03002AE4 = gUnknown_0300287C;
     gUnknown_03005390 = 0;
-    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+    PAUSE_GRAPHICS_QUEUE();
 
     if (pakMode == PAK_MODE_MULTI) {
         StartMultiPakConnect();

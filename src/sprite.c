@@ -236,22 +236,22 @@ static AnimCmdResult animCmd_GetTiles(void *cursor, Sprite *s)
     s->animCursor += AnimCommandSizeInWords(ACmd_GetTiles);
 
     if ((s->frameFlags & SPRITE_FLAG_MASK_19) == 0) {
-        if (cmd->tileIndex < 0) {
-            s32 tileIndex = cmd->tileIndex;
+        s32 tileIndex = cmd->tileIndex;
+
+        if (tileIndex < 0) {
 #ifdef BUG_FIX
+            // Compilers *should* optimize the multiplication with a '<< 6', clearing the
+            // high-bit. But if they don't, it could underflow.
             tileIndex &= ~0x80000000;
 #endif
             s->graphics.src = &gRefSpriteTables->tiles_8bpp[tileIndex * TILE_SIZE_8BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
-            s->graphics.src
-                = &gRefSpriteTables->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
+            s->graphics.src = &gRefSpriteTables->tiles_4bpp[tileIndex * TILE_SIZE_4BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
         }
 
-        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &s->graphics;
-        gVramGraphicsCopyQueueIndex
-            = (gVramGraphicsCopyQueueIndex + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
+        ADD_TO_GRAPHICS_QUEUE(&s->graphics)
     }
 
     return 1;

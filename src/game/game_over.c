@@ -66,7 +66,7 @@ void Task_FadeoutToOverScreen(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         InitOverScreen(lostLifeCause);
 
         if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
@@ -296,7 +296,7 @@ void Task_TimeOverScreenMain(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         gRingCount = 0;
 
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
@@ -333,7 +333,7 @@ void sub_8036B70(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         CreateTitleScreen();
     } else {
         DisplayOverScreenTextSprites(screen);

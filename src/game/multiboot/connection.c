@@ -275,7 +275,7 @@ void StartSinglePakConnect(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         MultiPakCommunicationError();
     }
 }
@@ -300,7 +300,7 @@ void sub_8081604(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         MultiPakCommunicationError();
     }
 
@@ -345,7 +345,7 @@ void sub_8081604(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         gFlags &= ~FLAGS_4000;
         gFlags &= ~FLAGS_8000;
         m4aSoundVSyncOn();
@@ -421,7 +421,7 @@ void sub_80818B8(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             gFlags &= ~FLAGS_4000;
             gFlags &= ~FLAGS_8000;
             m4aSoundVSyncOn();

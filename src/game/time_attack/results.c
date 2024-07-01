@@ -435,7 +435,7 @@ void sub_8089B40(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
         return;
     }

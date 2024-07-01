@@ -221,7 +221,7 @@ static void sub_805ADAC(void)
                 TasksDestroyAll();
                 gUnknown_03002AE4 = gUnknown_0300287C;
                 gUnknown_03005390 = 0;
-                gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                PAUSE_GRAPHICS_QUEUE();
                 MultiPakCommunicationError();
                 return;
             }
@@ -241,7 +241,7 @@ static void sub_805ADAC(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
             return;
         }
@@ -306,7 +306,7 @@ static void sub_805ADAC(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
             return;
         }
@@ -366,7 +366,7 @@ static void sub_805ADAC(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         MultiPakCommunicationError();
         return;
     }
@@ -501,7 +501,7 @@ static void sub_805B4C0(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
             return;
         }
@@ -562,7 +562,7 @@ static void sub_805B4C0(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         MultiPakCommunicationError();
         return;
     } else {
@@ -570,7 +570,7 @@ static void sub_805B4C0(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
             return;
         }

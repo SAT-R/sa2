@@ -314,7 +314,7 @@ void Task_TransitionToResultsScreen(void)
                 { // TODO: This is a macro!
                     gUnknown_03002AE4 = gUnknown_0300287C;
                     gUnknown_03005390 = 0;
-                    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                    PAUSE_GRAPHICS_QUEUE();
                 }
 
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -372,7 +372,7 @@ void Task_TransitionToResultsScreen(void)
         { // TODO: This is a macro!
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
         }
 
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {

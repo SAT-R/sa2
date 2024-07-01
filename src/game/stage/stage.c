@@ -455,7 +455,7 @@ void HandleLifeLost(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
         gNumLives = 2;
         return;
@@ -468,7 +468,7 @@ void HandleLifeLost(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         CreateGameStage();
     }
 }
@@ -627,7 +627,7 @@ void HandleDeath(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
         gNumLives = 2;
         return;
@@ -648,7 +648,7 @@ void GoToNextLevel(void)
     TasksDestroyAll();
     gUnknown_03002AE4 = gUnknown_0300287C;
     gUnknown_03005390 = 0;
-    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+    PAUSE_GRAPHICS_QUEUE();
     WriteSaveGame();
 
     if (gGameMode == 0) {

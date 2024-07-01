@@ -336,7 +336,7 @@ static void Task_802BC10(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
 
         if ((gNumLives != 0) && (--gNumLives != 0)) {
             if (gCourseTime >= MAX_COURSE_TIME) {
