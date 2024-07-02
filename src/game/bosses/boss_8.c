@@ -566,10 +566,10 @@ void sub_804A1C0(UNK_8049D20 *unkD20, u8 i)
     }
 
     if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
-        gPlayer.y += preY + 0x100;
+        gPlayer.y += preY + Q(1);
 
         if (unkD20->unk15E == 1) {
-            gPlayer.x += 0x100;
+            gPlayer.x += Q(1);
         }
     }
 

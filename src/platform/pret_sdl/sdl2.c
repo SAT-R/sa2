@@ -1488,7 +1488,7 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount,
         puts("2-D OBJ Character mapping not supported.");
     }
 
-    for (i = 127; i >= 0; i--) {
+    for (i = OAM_ENTRY_COUNT - 1; i >= 0; i--) {
         OamData *oam = &((OamData *)OAM)[i];
         unsigned int width;
         unsigned int height;
