@@ -1159,8 +1159,8 @@ static void Task_EggBomberTankBombExplosion(void)
         bomb->x += bomb->speedX;
         bomb->y += bomb->speedY;
     } else {
-        bomb->x -= bomb->speedX - QS(gCamera.unk38);
-        bomb->y += bomb->speedY + QS(gCamera.unk3C);
+        bomb->x -= bomb->speedX - QS(gCamera.dx);
+        bomb->y += bomb->speedY + QS(gCamera.dy);
     }
 
     ground = sub_801E4E4(I(bomb->y) + 0xC + gCamera.y, I(bomb->x) + gCamera.x, 1, 8,
@@ -1249,8 +1249,8 @@ static void Task_BombExplosionMain(void)
     EggBomberTankBomb *explosion = TASK_DATA(gCurTask);
     Sprite *s = &explosion->s;
     if (PLAYER_IS_ALIVE) {
-        explosion->x += gCamera.unk38;
-        explosion->y += gCamera.unk3C;
+        explosion->x += gCamera.dx;
+        explosion->y += gCamera.dy;
     }
 
     s->x = explosion->x;

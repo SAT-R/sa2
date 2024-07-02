@@ -1771,8 +1771,8 @@ void Task_EggTotemBullet(void)
         bullet->qScreenX -= BOSS_VELOCITY_X;
         bullet->qScreenY += bullet->qDY;
     } else {
-        bullet->qScreenX += (bullet->qDX + Q(gCamera.unk38));
-        bullet->qScreenY += (bullet->qDY + Q(gCamera.unk3C));
+        bullet->qScreenX += (bullet->qDX + Q(gCamera.dx));
+        bullet->qScreenY += (bullet->qDY + Q(gCamera.dy));
     }
 
     s->x = I(bullet->qScreenX);

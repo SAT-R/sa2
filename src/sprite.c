@@ -690,7 +690,8 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
 
         sp24 = x - sprite->x;
         sp28 = y - sprite->y;
-        if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && y + sprHeight >= 0 && y <= DISPLAY_HEIGHT) {
+        if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && y + sprHeight >= 0
+            && y <= DISPLAY_HEIGHT) {
             for (sp18 = 0; sp18 < sprDims->numSubframes; ++sp18) {
                 const u16 *oamData = gRefSpriteTables->oamData[sprite->graphics.anim];
                 OamData *oam = OamMalloc(GET_SPRITE_OAM_ORDER(sprite));

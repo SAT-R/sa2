@@ -344,7 +344,7 @@ void Collision_AdjustPlayerSpeed(Player *p)
     } else if (IS_BOSS_STAGE(gCurrentLevel)) {
         s32 speedX = -(p->speedAirX >> 1);
         p->speedAirY = -p->speedAirY;
-        p->speedAirX = speedX - Q(gCamera.unk38);
+        p->speedAirX = speedX - Q(gCamera.dx);
     } else if (p->speedAirY > 0) {
         // Bounce off of enemies
         p->speedAirY = -p->speedAirY;
@@ -462,7 +462,7 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
             p->unk3C = NULL;
 
             if (IS_BOSS_STAGE(gCurrentLevel)) {
-                p->speedGroundX -= Q(gCamera.unk38);
+                p->speedGroundX -= Q(gCamera.dx);
             }
         }
     }
@@ -501,7 +501,7 @@ u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
         p->unk3C = NULL;
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
-            p->speedGroundX -= Q(gCamera.unk38);
+            p->speedGroundX -= Q(gCamera.dx);
         }
     }
 

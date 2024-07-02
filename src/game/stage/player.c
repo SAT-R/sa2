@@ -4265,7 +4265,7 @@ void PlayerCB_Jump(Player *p)
 
     if (p->moveState & MOVESTATE_8) {
         if (IS_BOSS_STAGE(gCurrentLevel)) {
-            p->speedAirX -= Q(gCamera.unk38);
+            p->speedAirX -= Q(gCamera.dx);
         }
     }
 

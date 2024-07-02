@@ -1224,8 +1224,8 @@ static void sub_80494EC(void)
         bomb->x += bomb->speedX;
         bomb->y += bomb->speedY;
     } else {
-        bomb->x += bomb->speedX + Q(gCamera.unk38);
-        bomb->y += bomb->speedY + Q(gCamera.unk3C);
+        bomb->x += bomb->speedX + Q(gCamera.dx);
+        bomb->y += bomb->speedY + Q(gCamera.dy);
     }
 
     temp = -8;
@@ -1273,8 +1273,8 @@ static void sub_8049658(void)
         bomb->x += bomb->speedX;
         bomb->y += bomb->speedY;
     } else {
-        bomb->x += bomb->speedX + Q(gCamera.unk38);
-        bomb->y += bomb->speedY + Q(gCamera.unk3C);
+        bomb->x += bomb->speedX + Q(gCamera.dx);
+        bomb->y += bomb->speedY + Q(gCamera.dy);
     }
 
     val = bomb->unkD;
@@ -1328,8 +1328,8 @@ static void Task_80497E0(void)
         bombFlame->x += bombFlame->speedX;
         bombFlame->y += bombFlame->speedY;
     } else {
-        bombFlame->x += bombFlame->speedX + Q(gCamera.unk38);
-        bombFlame->y += bombFlame->speedY + Q(gCamera.unk3C);
+        bombFlame->x += bombFlame->speedX + Q(gCamera.dx);
+        bombFlame->y += bombFlame->speedY + Q(gCamera.dy);
     }
 
     bombFlame->unkD--;
