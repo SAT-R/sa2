@@ -231,13 +231,29 @@ void Task_805E480(void)
             if (iwram_end == pointer)
                 return;
 
+#if !EXTENDED_OAM
             pointer->all.attr0 = ((s16)(r4 + ((y * TILE_WIDTH) + s->y))) & 0xFF;
 
-            if (s->frameFlags & 0x400) {
+            if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
                 pointer->all.attr1 = ((s->x - x * TILE_WIDTH - 8) & 0x1FF) | 0x1000;
             } else {
                 pointer->all.attr1 = (s->x + x * TILE_WIDTH) & 0x1FF;
             }
+#else
+            pointer->split.y = (r4 + ((y * TILE_WIDTH) + s->y));
+            pointer->split.affineMode = 0;
+            pointer->split.objMode = 0;
+            pointer->split.mosaic = 0;
+            pointer->split.bpp = 0;
+            pointer->split.shape = 0;
+
+            if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
+                pointer->split.x = (s->x - x * TILE_WIDTH - 8);
+                pointer->split.matrixNum = 0x8; // x-flip, actually
+            } else {
+                pointer->split.x = (s->x + x * TILE_WIDTH);
+            }
+#endif
 
             pointer->all.attr2
                 = (((oam[2] + s->palId) & ~0xFFF) | (SPRITE_FLAG_GET(s, PRIORITY) << 10)

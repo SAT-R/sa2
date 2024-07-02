@@ -79,6 +79,9 @@ struct PlttData
 //       That's what this variation of 'OamData' is for,
 //       as well using this to determine the size for some DMAs to gOamBuffer.
 // TODO: Somehow this does not work by #include-ing main.h and using PACKED();
+// TODO: EXTENDED_OAM is not yet functional
+#define EXTENDED_OAM FALSE
+#if !EXTENDED_OAM
 PACKED(OamDataShort, {
     /*0x00*/
     u32 y : 8;
@@ -100,7 +103,32 @@ PACKED(OamDataShort, {
     u16 priority : 2; // 0x400, 0x800 -> 0xC00
     u16 paletteNum : 4;
 }); /* size: 0x6 (important to not be 0x8, see comment above struct!) */
+#else
+PACKED(OamDataShort, {
+    /* 0x00 */ s16 x;
+    /* 0x02 */ s16 y;
 
+    /* 0x04 */ u32 affineMode:2;  // 0x1, 0x2 -> 0x4
+             u32 objMode:2;     // 0x4, 0x8 -> 0xC
+             u32 mosaic:1;      // 0x10
+             u32 bpp:1;         // 0x20
+             u32 shape:2;       // 0x40, 0x80 -> 0xC0
+
+    /* 0x06 */ u32 padding:9;
+             u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
+             u32 size:2;        // 0x4000, 0x8000 -> 0xC000
+
+    /* 0x08 */ u16 tileNum:10;    // 0x3FF
+             u16 priority:2;    // 0x400, 0x800 -> 0xC00
+             u16 paletteNum:4;
+
+    /* 0x0A */ u16 fractional:8;
+             u16 integer:7;
+             u16 sign:1;
+}); /* size: 0x6 (important to not be 0x8, see comment above struct!) */
+#endif
+
+#if !EXTENDED_OAM
 typedef union {
     struct {
     /*0x00*/ u32 y:8;
@@ -132,6 +160,43 @@ typedef union {
 
     u16 raw[4];
 } OamData;
+#else
+typedef union {
+    struct {
+    /* 0x00 */ s16 x;
+    /* 0x02 */ s16 y;
+
+    /* 0x04 */ u32 affineMode:2;  // 0x1, 0x2 -> 0x4
+             u32 objMode:2;     // 0x4, 0x8 -> 0xC
+             u32 mosaic:1;      // 0x10
+             u32 bpp:1;         // 0x20
+             u32 shape:2;       // 0x40, 0x80 -> 0xC0
+
+    /* 0x06 */ u32 padding:9;
+             u32 matrixNum:5;   // bits 3/4 are h-flip/v-flip if not in affine mode
+             u32 size:2;        // 0x4000, 0x8000 -> 0xC000
+
+    /* 0x08 */ u16 tileNum:10;    // 0x3FF
+             u16 priority:2;    // 0x400, 0x800 -> 0xC00
+             u16 paletteNum:4;
+
+    /* 0x0A */ u16 fractional:8;
+             u16 integer:7;
+             u16 sign:1;
+    } split;
+
+    struct {
+        s16 x;
+        s16 y;
+        u16 attr0;
+        u16 attr1;
+        u16 attr2;
+        u16 affineParam;
+    } all;
+
+    u16 raw[4];
+} OamData;
+#endif
 
 #define ST_OAM_HFLIP     0x08
 #define ST_OAM_VFLIP     0x10
