@@ -37,11 +37,6 @@ Join us on [discord](https://discord.gg/vZTvVH3gA9) to get started in helping ou
 
 ### Setting up the repository
 
-**Provide assets**
-
-You must have a copy of the Sonic Advance 2 (USA) ROM named `baserom.gba` in the repository root directory.
-
-
 **Dev container**
 
 If you use `vscode` then consider using the provided [Dev Container](https://code.visualstudio.com/docs/remote/containers) which skips the requirement for any setup. This requires docker is installed on your system. Once running, skip to *Build the rom*

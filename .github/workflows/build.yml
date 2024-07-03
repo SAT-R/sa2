@@ -68,9 +68,6 @@ jobs:
           ./build.sh
           ./install.sh ../
         working-directory: agbcc
-      
-      - name: Fetch assets
-        run: curl -o baserom.gba -u ${{ secrets.STORAGE_USERNAME }}:${{ secrets.STORAGE_PASSWORD }} ${{ secrets.STORAGE_URL }}/baserom.gba
 
       - name: Compare
         run: make -j${nproc}
