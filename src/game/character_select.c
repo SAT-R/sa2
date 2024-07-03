@@ -196,9 +196,7 @@ static const u8 sCharacterSilhouettes[] = {
         }                                                                               \
     })
 
-// (98.75%) https://decomp.me/scratch/yY8Sy
-NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
-         void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked))
+void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
 {
     struct Task *t;
 
@@ -349,7 +347,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+        s->animSpeed = 0x10;
         s->palId = 0;
         s->hitboxes[0].index = -1;
         s->frameFlags = 0;
@@ -367,10 +365,8 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->animSpeed = 0x10;
     s->palId = 0;
-    // permuter solution
-    // if ((t->structOffset && t->structOffset) && t->structOffset) {}
     s->hitboxes[0].index = -1;
     s->frameFlags = 0;
     UpdateSpriteAnimation(s);
@@ -388,7 +384,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = 0;
@@ -406,7 +402,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = 0;
@@ -424,7 +420,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = 0;
@@ -441,7 +437,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = 0;
@@ -458,7 +454,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = 0;
@@ -475,7 +471,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = 0x800;
@@ -493,7 +489,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = 0;
@@ -510,8 +506,10 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    s->animSpeed = 0x10;
+#ifndef NON_MATCHING
     gLoadedSaveGame->language += 0;
+#endif
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = 0;
@@ -527,8 +525,12 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
+#ifndef NON_MATCHING
+    (&characterScreen->characterSprite)->prevVariant = -1;
+#else
     s->prevVariant = -1;
-    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+#endif
+    s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     s->frameFlags = 0;
@@ -540,7 +542,6 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
 
     gFlags |= 0x2;
 }
-END_NONMATCH
 
 static void Task_FadeInAndStartRollInAnim(void)
 {
