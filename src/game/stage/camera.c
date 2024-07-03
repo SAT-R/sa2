@@ -35,7 +35,7 @@ UNUSED u32 unused_3005950[3] = {};
 struct Camera ALIGNED(8) gCamera = {};
 const Collision *gRefCollision = NULL;
 
-static void sub_801C708(s32, s32);
+static void RenderMetatileLayers(s32, s32);
 
 // camera_destroy.h
 void Task_CallUpdateCamera(void);
@@ -382,10 +382,7 @@ void InitCamera(u32 level)
     camera->minX = 0;
     camera->maxX = gRefCollision->pxWidth;
 
-    if (((gCurrentLevel & ACTS_PER_ZONE) == ACT_BOSS)
-        || ((gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
-            && (gUnknown_030054B0 == 0))
-        || (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
+    if (IS_BOSS_STAGE(gCurrentLevel)) {
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             SuperSonicGetPos(&player->x, &player->y);
             gUnknown_03005440 = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][0];
@@ -403,8 +400,8 @@ void InitCamera(u32 level)
             camera->unk64 = player->unk17 - 4;
         }
     } else {
-        camera->x = I(player->x) - 0x78;
-        camera->y = I(player->y) - 0x54;
+        camera->x = I(player->x) - (DISPLAY_WIDTH / 2);
+        camera->y = I(player->y) - ((DISPLAY_HEIGHT / 2) + 4);
 
         if (camera->x < 0) {
             camera->x = 0;
@@ -453,8 +450,8 @@ void UpdateCamera(void)
     s32 newX, newY;
     newX = camera->x;
     newY = camera->y;
-    camera->unk38 = newX;
-    camera->unk3C = newY;
+    camera->dx = camera->x;
+    camera->dy = camera->y;
 
     newX = CLAMP(newX, camera->minX, camera->maxX - (DISPLAY_WIDTH + 1));
     newY = CLAMP(newY, camera->minY, camera->maxY - (DISPLAY_HEIGHT + 1));
@@ -614,17 +611,17 @@ void UpdateCamera(void)
     camera->x = newX;
     camera->y = newY;
 
-    camera->unk38 -= newX;
-    camera->unk3C -= newY;
+    camera->dx -= newX;
+    camera->dy -= newY;
 
-    sub_801C708(newX, newY);
+    RenderMetatileLayers(newX, newY);
 
     if (camera->fnBgUpdate != NULL) {
         camera->fnBgUpdate(newX, newY);
     }
 }
 
-static void sub_801C708(s32 x, s32 y)
+static void RenderMetatileLayers(s32 x, s32 y)
 {
     if (!IS_EXTRA_STAGE(gCurrentLevel)) {
         Background *layer = &gStageBackgroundsRam.unk40;

@@ -38,7 +38,7 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
     su->s.x = 0;
     su->s.y = 0;
     su->s.graphics.dest = vramTiles;
-    su->s.unk1A = 0;
+    su->s.oamFlags = SPRITE_OAM_ORDER(0);
     su->s.graphics.size = 0;
     su->s.graphics.anim = anim;
     su->s.variant = variant;
@@ -48,7 +48,7 @@ struct Task *sub_800A544(u16 taskPrio, void *vramTiles, AnimId anim, u8 variant,
     su->s.animSpeed = 0x10;
     su->s.palId = 0;
     su->s.hitboxes[0].index = -1;
-    su->s.unk10 = 0;
+    su->s.frameFlags = 0;
 
     return t;
 }

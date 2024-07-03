@@ -160,55 +160,6 @@ void RegisterRamReset(u32 flags)
 }
 #endif
 
-#if L_Div
-s32 Div(s32 num, s32 denom)
-{
-    if (denom != 0) {
-        return num / denom;
-    } else {
-        return 0;
-    }
-}
-#endif
-
-#if L_DivArm
-// Div but with flipped params
-s32 DivArm(s32 denom, s32 num)
-{
-    if (denom != 0) {
-        return num / denom;
-    } else {
-        return 0;
-    }
-}
-#endif
-
-#if L_Mod
-// NOTE: With -fno-leading-underscores set in GCC, calling a function Mod, leads to this
-// error, but we don't do that anymore:
-//       >> Error: invalid use of operator "Mod"
-s32 Mod(s32 num, s32 denom)
-{
-    if (denom != 0) {
-        return num % denom;
-    } else {
-        return 0;
-    }
-}
-#endif
-
-#if L_ModArm
-// Mod but with flipped params
-s32 ModArm(s32 denom, s32 num)
-{
-    if (denom != 0) {
-        return num % denom;
-    } else {
-        return 0;
-    }
-}
-#endif
-
 #if L_SoftReset
 extern void AgbMain(void);
 

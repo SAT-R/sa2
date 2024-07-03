@@ -1,6 +1,8 @@
 #ifndef GUARD_GBA_IO_REG_H
 #define GUARD_GBA_IO_REG_H
 
+#include <stdint.h>
+
 #define IO_SIZE 0x400
 #if !PORTABLE
 #define REG_BASE 0x4000000 // I/O register base address
@@ -101,46 +103,61 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_OFFSET_FIFO_A      0xa0
 #define REG_OFFSET_FIFO_B      0xa4
 
-#define REG_OFFSET_DMA0        0xb0
+#define REG_OFFSET_DMA         0xb0
+#if PLATFORM_GBA
+#define REG_OFFSET_DMA0        REG_OFFSET_DMA
 #define REG_OFFSET_DMA0SAD     0xb0
-#define REG_OFFSET_DMA0SAD_L   0xb0
-#define REG_OFFSET_DMA0SAD_H   0xb2
 #define REG_OFFSET_DMA0DAD     0xb4
-#define REG_OFFSET_DMA0DAD_L   0xb4
-#define REG_OFFSET_DMA0DAD_H   0xb6
 #define REG_OFFSET_DMA0CNT     0xb8
 #define REG_OFFSET_DMA0CNT_L   0xb8
 #define REG_OFFSET_DMA0CNT_H   0xba
 #define REG_OFFSET_DMA1        0xbc
 #define REG_OFFSET_DMA1SAD     0xbc
-#define REG_OFFSET_DMA1SAD_L   0xbc
-#define REG_OFFSET_DMA1SAD_H   0xbe
 #define REG_OFFSET_DMA1DAD     0xc0
-#define REG_OFFSET_DMA1DAD_L   0xc0
-#define REG_OFFSET_DMA1DAD_H   0xc2
 #define REG_OFFSET_DMA1CNT     0xc4
 #define REG_OFFSET_DMA1CNT_L   0xc4
 #define REG_OFFSET_DMA1CNT_H   0xc6
 #define REG_OFFSET_DMA2        0xc8
 #define REG_OFFSET_DMA2SAD     0xc8
-#define REG_OFFSET_DMA2SAD_L   0xc8
-#define REG_OFFSET_DMA2SAD_H   0xca
 #define REG_OFFSET_DMA2DAD     0xcc
-#define REG_OFFSET_DMA2DAD_L   0xcc
-#define REG_OFFSET_DMA2DAD_H   0xce
 #define REG_OFFSET_DMA2CNT     0xd0
 #define REG_OFFSET_DMA2CNT_L   0xd0
 #define REG_OFFSET_DMA2CNT_H   0xd2
 #define REG_OFFSET_DMA3        0xd4
 #define REG_OFFSET_DMA3SAD     0xd4
-#define REG_OFFSET_DMA3SAD_L   0xd4
-#define REG_OFFSET_DMA3SAD_H   0xd6
 #define REG_OFFSET_DMA3DAD     0xd8
-#define REG_OFFSET_DMA3DAD_L   0xd8
-#define REG_OFFSET_DMA3DAD_H   0xda
 #define REG_OFFSET_DMA3CNT     0xdc
 #define REG_OFFSET_DMA3CNT_L   0xdc
 #define REG_OFFSET_DMA3CNT_H   0xde
+#else
+// To fit this into the same memory footprint on 64bit,
+// We need to put the control registers behind the pointers to avoid padding.
+#define REG_OFFSET_DMA0        REG_OFFSET_DMA
+#define REG_OFFSET_DMA0SAD     REG_OFFSET_DMA0
+#define REG_OFFSET_DMA0DAD     (REG_OFFSET_DMA0SAD + sizeof(void*))
+#define REG_OFFSET_DMA1        (REG_OFFSET_DMA0DAD + sizeof(void*))
+#define REG_OFFSET_DMA1SAD     REG_OFFSET_DMA1
+#define REG_OFFSET_DMA1DAD     (REG_OFFSET_DMA1SAD + sizeof(void*))
+#define REG_OFFSET_DMA2        (REG_OFFSET_DMA1DAD + sizeof(void*))
+#define REG_OFFSET_DMA2SAD     REG_OFFSET_DMA2
+#define REG_OFFSET_DMA2DAD     (REG_OFFSET_DMA2SAD + sizeof(void*))
+#define REG_OFFSET_DMA3        (REG_OFFSET_DMA2DAD + sizeof(void*))
+#define REG_OFFSET_DMA3SAD     REG_OFFSET_DMA3
+#define REG_OFFSET_DMA3DAD     (REG_OFFSET_DMA3SAD + sizeof(void*))
+
+#define REG_OFFSET_DMA0CNT     (REG_OFFSET_DMA3DAD + sizeof(void*))
+#define REG_OFFSET_DMA0CNT_L   (REG_OFFSET_DMA0CNT + 0)
+#define REG_OFFSET_DMA0CNT_H   (REG_OFFSET_DMA0CNT_L + sizeof(uint16_t))
+#define REG_OFFSET_DMA1CNT     (REG_OFFSET_DMA0CNT_H + sizeof(uint16_t))
+#define REG_OFFSET_DMA1CNT_L   (REG_OFFSET_DMA1CNT + 0)
+#define REG_OFFSET_DMA1CNT_H   (REG_OFFSET_DMA1CNT_L + sizeof(uint16_t))
+#define REG_OFFSET_DMA2CNT     (REG_OFFSET_DMA1CNT_H + sizeof(uint16_t))
+#define REG_OFFSET_DMA2CNT_L   (REG_OFFSET_DMA2CNT + 0)
+#define REG_OFFSET_DMA2CNT_H   (REG_OFFSET_DMA2CNT_L + sizeof(uint16_t))
+#define REG_OFFSET_DMA3CNT     (REG_OFFSET_DMA2CNT_H + sizeof(uint16_t))
+#define REG_OFFSET_DMA3CNT_L   (REG_OFFSET_DMA3CNT + 0)
+#define REG_OFFSET_DMA3CNT_H   (REG_OFFSET_DMA3CNT_L + sizeof(uint16_t))
+#endif
 
 #define REG_OFFSET_TMCNT       0x100
 #define REG_OFFSET_TMCNT_L     0x100

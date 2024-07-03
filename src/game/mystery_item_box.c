@@ -88,30 +88,30 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s = &itemBox->box;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
     s->palId = 0;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     s->graphics.dest = VramMalloc(16);
     s->graphics.anim = SA2_ANIM_ITEMBOX;
     s->variant = 0;
     UpdateSpriteAnimation(s);
 
     s = &itemBox->identifier;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
     s->palId = 0;
-    s->unk1A = SPRITE_OAM_ORDER(19);
+    s->oamFlags = SPRITE_OAM_ORDER(19);
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
     s->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
@@ -132,8 +132,8 @@ static void sub_808616C(void)
     identifier->variant = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][1];
     UpdateSpriteAnimation(identifier);
 
-    itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
-    itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+    itemBox->box.frameFlags |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+    itemBox->identifier.frameFlags |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
     transform = &itemBox->transform;
     transform->rotation = 0;
@@ -186,8 +186,8 @@ static void sub_808623C(void)
     if (transform->height >= 0x100) {
         MapEntity *me;
         Sprite_MysteryItemBox *itemBox2;
-        itemBox->box.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
-        itemBox->identifier.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+        itemBox->box.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+        itemBox->identifier.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         transform->height = 0x100;
         itemBox->iconOffsetY = Q(0.0);
         gCurTask->main = sub_80865E4;
@@ -196,14 +196,14 @@ static void sub_808623C(void)
         return;
     }
 
-    itemBox->box.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+    itemBox->box.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
 
-    itemBox->box.unk10 |= gUnknown_030054B8;
-    itemBox->identifier.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-    itemBox->identifier.unk10 |= gUnknown_030054B8++;
+    itemBox->box.frameFlags |= gUnknown_030054B8;
+    itemBox->identifier.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+    itemBox->identifier.frameFlags |= gUnknown_030054B8++;
 
-    sub_8004860(&itemBox->box, transform);
-    sub_8004860(&itemBox->identifier, transform);
+    TransformSprite(&itemBox->box, transform);
+    TransformSprite(&itemBox->identifier, transform);
     DisplaySprite(&itemBox->box);
     DisplaySprite(&itemBox->identifier);
 }
@@ -240,8 +240,8 @@ static void sub_808636C(void)
     if (transform->height < 1) {
         MapEntity *me;
         Sprite_MysteryItemBox *itemBox2;
-        itemBox->box.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
-        itemBox->identifier.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+        itemBox->box.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+        itemBox->identifier.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
         transform->height = 0x100;
         gCurTask->main = sub_808673C;
 
@@ -249,14 +249,14 @@ static void sub_808636C(void)
         return;
     }
 
-    itemBox->box.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+    itemBox->box.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
 
-    itemBox->box.unk10 |= gUnknown_030054B8;
-    itemBox->identifier.unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-    itemBox->identifier.unk10 |= gUnknown_030054B8++;
+    itemBox->box.frameFlags |= gUnknown_030054B8;
+    itemBox->identifier.frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+    itemBox->identifier.frameFlags |= gUnknown_030054B8++;
 
-    sub_8004860(&itemBox->box, transform);
-    sub_8004860(&itemBox->identifier, transform);
+    TransformSprite(&itemBox->box, transform);
+    TransformSprite(&itemBox->identifier, transform);
     DisplaySprite(&itemBox->box);
     DisplaySprite(&itemBox->identifier);
 }
@@ -410,8 +410,8 @@ static inline void sub_808679C_inline(void)
 {
     SpriteTransform *transform;
     Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
-    itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
-    itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+    itemBox->box.frameFlags |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+    itemBox->identifier.frameFlags |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
     transform = &itemBox->transform;
     transform->rotation = 0;
@@ -427,8 +427,8 @@ static void sub_808679C(void)
 {
     SpriteTransform *transform;
     Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
-    itemBox->box.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
-    itemBox->identifier.unk10 |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+    itemBox->box.frameFlags |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+    itemBox->identifier.frameFlags |= SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
     transform = &itemBox->transform;
     transform->rotation = 0;

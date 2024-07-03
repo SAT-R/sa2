@@ -64,6 +64,7 @@ extern void DmaSet(int dmaNum, const void *src, void *dest, u32 control);
 #define DmaCopy16(dmaNum, src, dest, size) DMA_COPY(dmaNum, src, dest, size, 16)
 #define DmaCopy32(dmaNum, src, dest, size) DMA_COPY(dmaNum, src, dest, size, 32)
 
+#if PLATFORM_GBA
 #define DmaStop(dmaNum)                                         \
 {                                                               \
     vu16 *dmaRegs = (vu16 *)REG_ADDR_DMA##dmaNum;               \
@@ -71,6 +72,9 @@ extern void DmaSet(int dmaNum, const void *src, void *dest, u32 control);
     dmaRegs[5] &= ~DMA_ENABLE;                                  \
     dmaRegs[5];                                                 \
 }
+#else
+extern void DmaStop(int dmaNum);
+#endif
 
 #define DmaCopyLarge(dmaNum, src, dest, size, block, bit) \
 {                                                         \

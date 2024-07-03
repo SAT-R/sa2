@@ -3861,7 +3861,7 @@ static void ProfileNameScreenFadeOutAndExit(void)
     TasksDestroyAll();
     gUnknown_03002AE4 = gUnknown_0300287C;
     gUnknown_03005390 = 0;
-    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+    PAUSE_GRAPHICS_QUEUE();
 
     if (onCompleteAction == NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER) {
         CreateMultiplayerModeSelectScreen();
@@ -4853,7 +4853,7 @@ static void Task_TimeRecordsScreenFadeToPrevious(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             CreateCharacterSelectionScreen(timeRecordsScreen->character,
                                            allCharactersUnlocked);
             break;
@@ -5399,15 +5399,15 @@ void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
 
     s->graphics.size = 0;
     s->graphics.anim = c;
-    s->unk10 = assetId;
+    s->frameFlags = assetId;
     s->x = xPos;
     s->y = yPos;
-    s->unk1A = SPRITE_OAM_ORDER(oamOrder);
+    s->oamFlags = SPRITE_OAM_ORDER(oamOrder);
     s->timeUntilNextFrame = 0;
     s->prevAnim = -1;
     s->variant = variant;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = palId;
     s->hitboxes[0].index = -1;
 
@@ -5825,7 +5825,7 @@ static void Task_OptionsScreenFadeOutAndExit(void)
     TasksDestroyAll();
     gUnknown_03002AE4 = gUnknown_0300287C;
     gUnknown_03005390 = 0;
-    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+    PAUSE_GRAPHICS_QUEUE();
     CreateTitleScreenAtSinglePlayerMenu();
 }
 

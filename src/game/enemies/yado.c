@@ -33,8 +33,8 @@ void TaskDestructor_Yado(struct Task *);
 #define YADO_PROJ_COOLDOWN (2 * GBA_FRAMES_PER_SECOND)
 
 #define IS_YADO_FACING_PLAYER(_yado, _yadoX, _player)                                   \
-    (((I(gPlayer.x) < _yadoX) && (s->unk10 & SPRITE_FLAG_MASK_X_FLIP))                  \
-     || ((I(gPlayer.x) > _yadoX) && (~s->unk10 & SPRITE_FLAG_MASK_X_FLIP)))
+    (((I(gPlayer.x) < _yadoX) && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP))             \
+     || ((I(gPlayer.x) > _yadoX) && (~s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)))
 
 void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
@@ -209,7 +209,7 @@ void Task_8055084(void)
         pinit.anim = SA2_ANIM_YADO_PROJ;
         pinit.variant = 0;
 
-        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             pinit.x = QS(pos.x + 6);
             pinit.rot = 0;
         } else {

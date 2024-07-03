@@ -122,14 +122,14 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
             if (i > 2) {
                 s->y -= 16;
             }
-            s->unk1A = SPRITE_OAM_ORDER(4);
+            s->oamFlags = SPRITE_OAM_ORDER(4);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
             s->hitboxes[0].index = -1;
-            s->unk10 = 0x1000;
+            s->frameFlags = 0x1000;
             UpdateSpriteAnimation(s);
         }
     }
@@ -141,14 +141,14 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     s->prevVariant = -1;
     s->x = 0;
     s->y = 0;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x1000;
+    s->frameFlags = 0x1000;
     UpdateSpriteAnimation(s);
 
     s = &lobbyScreen->unk80;
@@ -158,14 +158,14 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
     s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT * (13. / 16.));
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x1400;
+    s->frameFlags = 0x1400;
     UpdateSpriteAnimation(s);
 
     lobbyScreen->unkB0[0].graphics.dest = 0;
@@ -179,14 +179,14 @@ void sub_8088944(struct TimeAttackLobbyScreen *lobbyScreen)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH * (5. / 12.));
         s->y = (DISPLAY_HEIGHT * (11. / 16.));
-        s->unk1A = SPRITE_OAM_ORDER(5);
+        s->oamFlags = SPRITE_OAM_ORDER(5);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0x1400;
+        s->frameFlags = 0x1400;
         UpdateSpriteAnimation(s);
     }
 
@@ -378,7 +378,7 @@ void sub_8088EB4(void)
             s->prevVariant = -1;
             s->animSpeed = 0x40;
             if (lobbyScreen->unk1AD == 1) {
-                s->unk10 &= ~0x400;
+                s->frameFlags &= ~0x400;
             }
             UpdateSpriteAnimation(s);
 
@@ -392,7 +392,7 @@ void sub_8088EB4(void)
                 s->prevVariant = -1;
                 s->animSpeed = 0x40;
                 if (lobbyScreen->unk1AD == 1) {
-                    s->unk10 &= ~0x400;
+                    s->frameFlags &= ~0x400;
                 }
                 UpdateSpriteAnimation(s);
             }

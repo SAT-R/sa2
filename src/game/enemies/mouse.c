@@ -89,7 +89,7 @@ static void sub_8057348(void)
 
     Vec2_32 pos;
 
-    if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+    if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
         if (mouse->unk52) {
             mouse->offsetX += 0x200;
         } else {
@@ -119,7 +119,7 @@ static void sub_8057348(void)
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(mouse, me, s);
 
-    if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+    if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
         if (gPlayer.x > QS(pos.x) && gPlayer.x < QS(pos.x + 100)) {
             mouse->unk52 = 1;
         }
@@ -130,13 +130,13 @@ static void sub_8057348(void)
     }
 
     if (I(mouse->offsetX) <= (me->d.sData[0] * TILE_WIDTH)
-        && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+        && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = sub_8057618;
         s->graphics.anim = SA2_ANIM_MOUSE;
         s->variant = 1;
         s->prevVariant = -1;
     } else if ((I(mouse->offsetX) >= ((me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)
-                && s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+                && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = sub_8057618;
         s->graphics.anim = SA2_ANIM_MOUSE;
         s->variant = 1;

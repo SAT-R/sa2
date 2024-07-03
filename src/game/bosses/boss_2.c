@@ -259,7 +259,7 @@ void CreateEggBomberTank(void)
     s->graphics.dest = vram;
     vram += 64 * TILE_SIZE_4BPP;
     SPRITE_INIT_ANIM_AND_SCRIPT(s, SA2_ANIM_EGG_BOMBER_TANK_CANNON, 0, 25);
-    s->unk10 = (gUnknown_030054B8++) | 0x2060;
+    s->frameFlags = (gUnknown_030054B8++) | 0x2060;
 
     s = &boss->pilot;
     s->x = 0;
@@ -460,7 +460,7 @@ static u8 RenderEggBomberTank(EggBomberTank *boss)
             s->x -= Div(COS(boss->cannonAngle) * boss->timer, 25000);
             s->y -= Div(SIN(boss->cannonAngle) * boss->timer, 25000);
         }
-        s->unk10 = gUnknown_030054B8++ | 0x2060;
+        s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
         transform->rotation = boss->cannonAngle;
         transform->width = 0x100;
@@ -472,7 +472,7 @@ static u8 RenderEggBomberTank(EggBomberTank *boss)
             ret = 1;
         }
 
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
 
@@ -703,7 +703,7 @@ static u8 RenderCannon(EggBomberTank *boss)
 
     s->x = (I(boss->unk54) - gCamera.x);
     s->y = (I(boss->unk58) - gCamera.y);
-    s->unk10 = gUnknown_030054B8++ | 0x2060;
+    s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
     transform->rotation = boss->cannonAngle;
     transform->width = 0x100;
@@ -711,7 +711,7 @@ static u8 RenderCannon(EggBomberTank *boss)
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transform);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 
     return ret;
@@ -1159,8 +1159,8 @@ static void Task_EggBomberTankBombExplosion(void)
         bomb->x += bomb->speedX;
         bomb->y += bomb->speedY;
     } else {
-        bomb->x -= bomb->speedX - QS(gCamera.unk38);
-        bomb->y += bomb->speedY + QS(gCamera.unk3C);
+        bomb->x -= bomb->speedX - QS(gCamera.dx);
+        bomb->y += bomb->speedY + QS(gCamera.dy);
     }
 
     ground = sub_801E4E4(I(bomb->y) + 0xC + gCamera.y, I(bomb->x) + gCamera.x, 1, 8,
@@ -1249,8 +1249,8 @@ static void Task_BombExplosionMain(void)
     EggBomberTankBomb *explosion = TASK_DATA(gCurTask);
     Sprite *s = &explosion->s;
     if (PLAYER_IS_ALIVE) {
-        explosion->x += gCamera.unk38;
-        explosion->y += gCamera.unk3C;
+        explosion->x += gCamera.dx;
+        explosion->y += gCamera.dy;
     }
 
     s->x = explosion->x;

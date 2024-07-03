@@ -127,39 +127,39 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
     {
         Sprite *s = &ring->s1;
-        s->unk1A = SPRITE_OAM_ORDER(6);
+        s->oamFlags = SPRITE_OAM_ORDER(6);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
 
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0x2000;
+        s->frameFlags = 0x2000;
         s->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][0][0];
         s->variant = sAnimInfoDashRing[ringType][ring->orientation][0][1];
         s->graphics.dest
             = VramMalloc(sAnimInfoDashRing[ringType][ring->orientation][0][2]);
-        s->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][0][3];
+        s->frameFlags |= sAnimInfoDashRing[ringType][ring->orientation][0][3];
     }
     {
         Sprite *s = &ring->s2;
-        s->unk1A = SPRITE_OAM_ORDER(18);
+        s->oamFlags = SPRITE_OAM_ORDER(18);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
 
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0x2000;
+        s->frameFlags = 0x2000;
         s->graphics.anim = sAnimInfoDashRing[ringType][ring->orientation][1][0];
         s->variant = sAnimInfoDashRing[ringType][ring->orientation][1][1];
         s->graphics.dest
             = VramMalloc(sAnimInfoDashRing[ringType][ring->orientation][1][2]);
-        s->unk10 |= sAnimInfoDashRing[ringType][ring->orientation][1][3];
+        s->frameFlags |= sAnimInfoDashRing[ringType][ring->orientation][1][3];
     }
     DashRing_UpdateScreenPos(ring);
     UpdateSpriteAnimation(&ring->s1);

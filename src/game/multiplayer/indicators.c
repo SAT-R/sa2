@@ -48,7 +48,7 @@ void CreateOpponentPositionIndicator(u8 sid)
     spr = &pi->spr;
     transform = &pi->transform;
     spr->graphics.dest = RESERVED_INDICATOR_TILES_VRAM;
-    spr->unk1A = 0x40;
+    spr->oamFlags = SPRITE_OAM_ORDER(1);
     spr->graphics.size = 0;
     spr->animCursor = 0;
     spr->timeUntilNextFrame = 0;
@@ -56,7 +56,7 @@ void CreateOpponentPositionIndicator(u8 sid)
     spr->animSpeed = SPRITE_ANIM_SPEED(1.0);
     spr->palId = sid;
     spr->hitboxes[0].index = -1;
-    spr->unk10 = SPRITE_FLAG(19, 1) | SPRITE_FLAG(18, 1)
+    spr->frameFlags = SPRITE_FLAG(19, 1) | SPRITE_FLAG(18, 1)
         | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE;
 
     spr->graphics.anim = SA2_ANIM_INDICATOR_SONIC;
@@ -78,7 +78,7 @@ void CreateSelfPositionIndicator(void)
 
     spr = &pi->spr;
     spr->graphics.dest = RESERVED_INDICATOR_TILES_VRAM;
-    spr->unk1A = 0x40;
+    spr->oamFlags = SPRITE_OAM_ORDER(1);
     spr->graphics.size = 0;
     spr->animCursor = 0;
     spr->timeUntilNextFrame = 0;
@@ -86,7 +86,7 @@ void CreateSelfPositionIndicator(void)
     spr->animSpeed = SPRITE_ANIM_SPEED(1.0);
     spr->palId = 0;
     spr->hitboxes[0].index = -1;
-    spr->unk10 = SPRITE_FLAG(18, 1);
+    spr->frameFlags = SPRITE_FLAG(18, 1);
 
     spr->graphics.anim = SA2_ANIM_INDICATOR_SONIC;
     spr->variant = 0;
@@ -272,10 +272,10 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     transform->y = tfy;
 
     // _0801984A+6
-    spr->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-    spr->unk10 |= gUnknown_030054B8++;
+    spr->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+    spr->frameFlags |= gUnknown_030054B8++;
     UpdateSpriteAnimation(spr);
-    sub_8004860(spr, transform);
+    TransformSprite(spr, transform);
     DisplaySprite(spr);
 }
 END_NONMATCH

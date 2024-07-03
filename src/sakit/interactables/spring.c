@@ -114,7 +114,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = springKind;
     s->animCursor = springKind;
     s->timeUntilNextFrame = springKind;
@@ -123,7 +123,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2200;
+    s->frameFlags = 0x2200;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3)
         springKind = SPRING_KIND_MUSIC_PLANT;
@@ -141,7 +141,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     s->graphics.anim = sSpringAnimationData[springKind][springType][0];
     s->variant = sSpringAnimationData[springKind][springType][1];
 
-    s->unk10 |= sSpringAnimationData[springKind][springType][3];
+    s->frameFlags |= sSpringAnimationData[springKind][springType][3];
     spring->unk3D = springType;
     spring->unk3E = me->d.sData[0] & 0x3;
     UpdateSpriteAnimation(s);

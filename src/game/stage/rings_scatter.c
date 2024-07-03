@@ -88,7 +88,7 @@ void InitPlayerHitRingsScatter(void)
     s->x = 0;
     s->y = 0;
     s->graphics.dest = RESERVED_RING_TILES_VRAM;
-    s->unk1A = SPRITE_OAM_ORDER(20);
+    s->oamFlags = SPRITE_OAM_ORDER(20);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_RING;
     s->variant = 0;
@@ -97,7 +97,7 @@ void InitPlayerHitRingsScatter(void)
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(2.0);
     s->palId = 0;
-    s->unk10
+    s->frameFlags
         = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_18 | SPRITE_FLAG_MASK_MOSAIC);
     rs->unk2B6 = 0;
     rs->unk2B4 = 0x94;

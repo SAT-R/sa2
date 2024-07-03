@@ -66,7 +66,7 @@ void Task_FadeoutToOverScreen(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         InitOverScreen(lostLifeCause);
 
         if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
@@ -137,12 +137,12 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     s->prevVariant = -1;
     s->x = 0;
     s->y = DISPLAY_HEIGHT / 2;
-    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->oamFlags = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &screen->sprOver;
@@ -153,11 +153,11 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     s->x = 0;
     s->y = DISPLAY_HEIGHT / 2;
     s->graphics.size = 0;
-    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->oamFlags = SPRITE_OAM_ORDER(3);
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     fade = &screen->unk0;
@@ -296,7 +296,7 @@ void Task_TimeOverScreenMain(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         gRingCount = 0;
 
         if (gGameMode == GAME_MODE_TIME_ATTACK) {
@@ -333,7 +333,7 @@ void sub_8036B70(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         CreateTitleScreen();
     } else {
         DisplayOverScreenTextSprites(screen);

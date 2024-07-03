@@ -49,17 +49,17 @@ void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCrea
         s->x = 0;
         s->y = 0;
         s->graphics.dest = info->vram;
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
     }
 }
 
@@ -118,17 +118,17 @@ void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
         s->x = 0;
         s->y = 0;
         s->graphics.dest = info->vram;
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->graphics.anim = info->anim;
         s->variant = info->variant;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
     }
 }
 

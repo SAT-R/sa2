@@ -115,14 +115,14 @@ void StartMultiPakConnect(void)
     s->prevVariant = -1;
     s->x = 8;
     s->y = 24;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x1000;
+    s->frameFlags = 0x1000;
     UpdateSpriteAnimation(s);
 
     s = &connectScreen->s2;
@@ -133,14 +133,14 @@ void StartMultiPakConnect(void)
     s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = 122;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x1000;
+    s->frameFlags = 0x1000;
 
     s = &connectScreen->unk6C;
     s->graphics.dest = vramAddr;
@@ -149,14 +149,14 @@ void StartMultiPakConnect(void)
     s->prevVariant = -1;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT * (7. / 8.));
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x1000;
+    s->frameFlags = 0x1000;
 
     // TODO: make macro
     background = &connectScreen->unk9C;
@@ -221,7 +221,7 @@ static void sub_805ADAC(void)
                 TasksDestroyAll();
                 gUnknown_03002AE4 = gUnknown_0300287C;
                 gUnknown_03005390 = 0;
-                gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                PAUSE_GRAPHICS_QUEUE();
                 MultiPakCommunicationError();
                 return;
             }
@@ -241,7 +241,7 @@ static void sub_805ADAC(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
             return;
         }
@@ -306,7 +306,7 @@ static void sub_805ADAC(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
             return;
         }
@@ -366,7 +366,7 @@ static void sub_805ADAC(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         MultiPakCommunicationError();
         return;
     }
@@ -501,7 +501,7 @@ static void sub_805B4C0(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
             return;
         }
@@ -562,7 +562,7 @@ static void sub_805B4C0(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         MultiPakCommunicationError();
         return;
     } else {
@@ -570,7 +570,7 @@ static void sub_805B4C0(void)
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
             return;
         }

@@ -51,15 +51,15 @@ void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     globe->base.spriteY = spriteY;
 
     s = &globe->s;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
     s->graphics.dest = VramMalloc(9);
     s->graphics.anim = SA2_ANIM_LIGHT_GLOBE;
     s->variant = 0;
@@ -180,7 +180,7 @@ static void sub_807B3B0(void)
 {
     Sprite_LightGlobe *globe = TASK_DATA(gCurTask);
 
-    if (globe->s.unk10 & 0x4000) {
+    if (globe->s.frameFlags & 0x4000) {
         sub_807B398(globe);
     } else {
         sub_807B350(globe);

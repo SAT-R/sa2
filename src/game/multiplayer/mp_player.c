@@ -104,7 +104,7 @@ void CreateMultiplayerPlayer(u8 id)
     }
 
     s = &mpp->s;
-    s->unk1A = SPRITE_OAM_ORDER(16);
+    s->oamFlags = SPRITE_OAM_ORDER(16);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -112,7 +112,7 @@ void CreateMultiplayerPlayer(u8 id)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = mpp->unk56;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     s->graphics.anim = 0;
     s->variant = 0;
@@ -124,7 +124,7 @@ void CreateMultiplayerPlayer(u8 id)
 
     if (mpp->unk56 != SIO_MULTI_CNT->id) {
         s->graphics.dest = VramMalloc(64);
-        s->unk10 |= SPRITE_FLAG_MASK_MOSAIC;
+        s->frameFlags |= SPRITE_FLAG_MASK_MOSAIC;
     } else {
         s->graphics.dest = (void *)OBJ_VRAM0;
     }
@@ -280,7 +280,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             //     TasksDestroyAll();
             //     gUnknown_03002AE4 = gUnknown_0300287C;
             //     gUnknown_03005390 = 0;
-            //     gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            //     PAUSE_GRAPHICS_QUEUE();
             //     MultiPakCommunicationError();
             //     return;
             // }
@@ -295,7 +295,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
             return;
         }
@@ -413,8 +413,8 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
     }
 
     if (mpp->unk54 & 1) {
-        s->unk10 &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-        s->unk10 = gUnknown_030054B8++ | 0x20;
+        s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
+        s->frameFlags = gUnknown_030054B8++ | 0x20;
         if (mpp->unk54 & 2) {
             transform->width = -256;
         } else {
@@ -424,34 +424,34 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         if (mpp->unk54 & 8) {
             transform->width = -transform->width;
         }
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
     } else {
-        s->unk10 &= ~0x30;
+        s->frameFlags &= ~0x30;
         if (mpp->unk54 & 2) {
-            s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+            s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
         } else {
-            s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+            s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
         }
         if (mpp->unk54 & 8) {
-            s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+            s->frameFlags |= SPRITE_FLAG_MASK_Y_FLIP;
         } else {
-            s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
+            s->frameFlags &= ~SPRITE_FLAG_MASK_Y_FLIP;
         }
     }
 
-    s->unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    s->unk10 |= (mpp->unk54 & 0x30) << 8;
+    s->frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    s->frameFlags |= (mpp->unk54 & 0x30) << 8;
 
     if (!(mpp->unk54 & 0x40)
         && ((gStageTime & 2 || mpp->unk57 & 0x20 || mpp->unk5C & 1
              || gUnknown_030054B4[mpp->unk56] != -1)
             || (mpp->unk60 == 0 && !(mpp->unk54 & 4) && !(mpp->unk5C & 2)))) {
-        s->unk1A = 0x400;
+        s->oamFlags = SPRITE_OAM_ORDER(16);
         if (mpp->unk54 & 0x80) {
-            s->unk1A |= 0x40;
+            s->oamFlags |= 0x40;
         }
 
-        s->unk10 &= ~(0x100 | 0x80);
+        s->frameFlags &= ~(0x100 | 0x80);
         if (mpp->unk57 & 0x20
             && (gGameMode != GAME_MODE_TEAM_PLAY
                 || ((gMultiplayerConnections & (0x10 << (mpp->unk56)))
@@ -459,7 +459,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                     != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
                         >> (SIO_MULTI_CNT->id + 4)))
             && mpp->unk60 == 0 && mpp->unk56 != SIO_MULTI_CNT->id) {
-            s->unk10 |= 0x100;
+            s->frameFlags |= 0x100;
             gDispCnt |= 0x8000;
             gWinRegs[5] = 0x83F;
         }
@@ -480,7 +480,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
             if ((u16)(s->x + 0x3F) < 0x16F && (s->y > -0x40 && s->y < 0xE0)) {
                 if (mpp->unk54 & 1) {
-                    sub_8004860(s, transform);
+                    TransformSprite(s, transform);
                 }
                 DisplaySprite(s);
             }
@@ -501,7 +501,7 @@ END_NONMATCH
 
 void sub_8016D20(void)
 {
-    Sprite *playerS = &gPlayer.unk90->s;
+    Sprite *sprPlayer = &gPlayer.unk90->s;
     MultiplayerPlayer *mpp = TASK_DATA(gCurTask);
     Sprite *s = &mpp->s;
     SpriteTransform *transform = &mpp->transform;
@@ -556,7 +556,7 @@ void sub_8016D20(void)
             } else if (GRAVITY_IS_INVERTED && I(gPlayer.y) < mpp->pos.y) {
                 mpp->unk60 = 30;
                 return;
-            } else if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+            } else if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                 gPlayer.moveState &= ~MOVESTATE_20;
                 gPlayer.speedGroundX = Q_8_8(12);
@@ -569,7 +569,7 @@ void sub_8016D20(void)
             }
             mpp->unk60 = 30;
         } else {
-            if (HITBOX_IS_ACTIVE(playerS->hitboxes[1])
+            if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1])
                 && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
                 return;
             }
@@ -617,7 +617,7 @@ void sub_8016D20(void)
             } else if (GRAVITY_IS_INVERTED && I(gPlayer.y) < mpp->pos.y) {
                 mpp->unk60 = 30;
                 return;
-            } else if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+            } else if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                 gPlayer.moveState &= ~MOVESTATE_20;
                 gPlayer.speedGroundX = Q(12);
@@ -1014,7 +1014,7 @@ void sub_8017670(void)
                         gPlayer.unk64 = SA2_CHAR_ANIM_IDLE;
                         gPlayer.unk61 = 0;
                         gPlayer.unk62 = 0;
-                        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+                        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
                             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                         } else {
                             gPlayer.moveState |= MOVESTATE_FACING_LEFT;
@@ -1109,7 +1109,7 @@ void sub_8017670(void)
                 gPlayer.unk3C = s;
                 gPlayer.speedAirY = 0;
 
-                if ((s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+                if ((s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
                     gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                 } else {
                     gPlayer.moveState |= MOVESTATE_FACING_LEFT;
@@ -1370,13 +1370,13 @@ void sub_8018120(void)
 
 bool32 sub_80181E0(void)
 {
-    Sprite *playerS = &gPlayer.unk90->s;
+    Sprite *sprPlayer = &gPlayer.unk90->s;
     MultiplayerPlayer *mpp = TASK_DATA(gCurTask);
     Sprite *s = &mpp->s;
 
     u32 val;
 
-    if (HITBOX_IS_ACTIVE(playerS->hitboxes[1]) && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
+    if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1]) && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
         val = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
                           (mpp->unk54 >> 7) & 1);
 
@@ -1411,10 +1411,10 @@ bool32 sub_80181E0(void)
 bool32 sub_8018300(void)
 {
     MultiplayerPlayer *mpp;
-    Sprite *s, *playerS;
+    Sprite *s, *sprPlayer;
     u32 val;
 
-    playerS = &gPlayer.unk90->s;
+    sprPlayer = &gPlayer.unk90->s;
     mpp = TASK_DATA(gCurTask);
     s = &mpp->s;
 
@@ -1474,7 +1474,7 @@ bool32 sub_8018300(void)
             return TRUE;
         }
 
-        if (!HITBOX_IS_ACTIVE(playerS->hitboxes[1])
+        if (!HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1])
             && !HITBOX_IS_ACTIVE(s->hitboxes[1])) {
             u32 existingMoveState = gPlayer.moveState;
             Sprite *existingS = gPlayer.unk3C;
@@ -1554,9 +1554,9 @@ bool32 sub_8018300(void)
 void Task_HandleLaunchPlayer(void)
 {
     PlayerSpriteInfo *psi = gPlayer.unk90;
-    Sprite *playerS = &psi->s;
+    Sprite *sprPlayer = &psi->s;
 
-    if (playerS->unk10 & SPRITE_FLAG_MASK_ANIM_OVER) {
+    if (sprPlayer->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         s16 *airSpeed = TASK_DATA(gCurTask);
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         gPlayer.moveState &= ~MOVESTATE_800000;
@@ -1564,7 +1564,7 @@ void Task_HandleLaunchPlayer(void)
         gPlayer.moveState |= MOVESTATE_IN_AIR;
         gPlayer.moveState &= ~MOVESTATE_100;
         gPlayer.unk64 = SA2_CHAR_ANIM_38;
-        playerS->prevVariant = -1;
+        sprPlayer->prevVariant = -1;
         sub_8023B5C(&gPlayer, 14);
         gPlayer.unk16 = 6;
         gPlayer.unk17 = 14;

@@ -169,7 +169,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     s->graphics.dest = VramMalloc(4);
     s->graphics.anim = SA2_ANIM_TA_WHITE_BAR;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(5);
+    s->oamFlags = SPRITE_OAM_ORDER(5);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -177,7 +177,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
     UpdateSpriteAnimation(s);
 
     s = &outro->s1[0];
@@ -186,7 +186,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -194,7 +194,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
     UpdateSpriteAnimation(s);
 
     {
@@ -215,7 +215,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
             s->variant = sStageResultsHeadlineTexts[0][2];
         }
 
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -223,7 +223,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
 
         if (isBossAct) {
@@ -248,7 +248,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
             s->variant = sAnimsGotThroughZoneAndActNames[10][2];
         }
 
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -256,7 +256,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         UpdateSpriteAnimation(s);
     }
 
@@ -267,7 +267,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s->graphics.dest = VramMalloc(sStageScoreBonusesTexts[i][0]);
         s->graphics.anim = sStageScoreBonusesTexts[i][1];
         s->variant = sStageScoreBonusesTexts[i][2];
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -275,7 +275,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
     }
 
@@ -372,7 +372,7 @@ void Task_UpdateStageResults(void)
                 { // TODO: This is a macro!
                     gUnknown_03002AE4 = gUnknown_0300287C;
                     gUnknown_03005390 = 0;
-                    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                    PAUSE_GRAPHICS_QUEUE();
                 }
 
                 StartEndingCutscenes();
@@ -388,7 +388,7 @@ void Task_UpdateStageResults(void)
                 { // TODO: This is a macro!
                     gUnknown_03002AE4 = gUnknown_0300287C;
                     gUnknown_03005390 = 0;
-                    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                    PAUSE_GRAPHICS_QUEUE();
                 }
 
                 StartEndingCutscenes();
@@ -407,7 +407,7 @@ void Task_UpdateStageResults(void)
                     { // TODO: This is a macro!
                         gUnknown_03002AE4 = gUnknown_0300287C;
                         gUnknown_03005390 = 0;
-                        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                        PAUSE_GRAPHICS_QUEUE();
                     }
 
                     gCurrentLevel++;
@@ -472,7 +472,7 @@ void Task_UpdateStageResults(void)
                         { // TODO: This is a macro!
                             gUnknown_03002AE4 = gUnknown_0300287C;
                             gUnknown_03005390 = 0;
-                            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                            PAUSE_GRAPHICS_QUEUE();
                         }
 
                         CreateSpecialStage(-1, -1);
@@ -497,7 +497,7 @@ void Task_UpdateStageResults(void)
                     { // TODO: This is a macro!
                         gUnknown_03002AE4 = gUnknown_0300287C;
                         gUnknown_03005390 = 0;
-                        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                        PAUSE_GRAPHICS_QUEUE();
                     }
 
                     GameStageStart();

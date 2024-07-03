@@ -39,7 +39,7 @@ static const struct UNK_80DF670 gUnknown_080DF668 = {
     .anim = SA2_ANIM_SP_STAGE_HOLE,
     .variant = 0,
     .unk4 = 2,
-    .unk6 = 16,
+    .animSpeed = SPRITE_ANIM_SPEED(1.0),
     .unk7 = 0,
 };
 
@@ -112,16 +112,16 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
         s->graphics.dest = player->unkA0;
         s->graphics.size = 0;
         s->graphics.anim = SA2_ANIM_SP_STAGE_ARROW;
-        s->unk10 = 0x107E;
+        s->frameFlags = 0x107E;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = (DISPLAY_HEIGHT / 2);
-        s->unk1A = 0;
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->timeUntilNextFrame = 0;
         s->prevAnim = -1;
 
         s->variant = variant;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
 
@@ -314,15 +314,15 @@ void sub_806D548(Sprite *s, void *vram, s16 a, u8 b, const struct UNK_80DF670 *c
     s->graphics.dest = vram;
     s->graphics.size = 0;
     s->graphics.anim = c4->anim;
-    s->unk10 = unk10;
+    s->frameFlags = unk10;
     s->x = (DISPLAY_WIDTH / 2);
     s->y = a;
-    s->unk1A = b << 6;
+    s->oamFlags = SPRITE_OAM_ORDER(b);
     s->timeUntilNextFrame = 0;
-    s->prevAnim = 0xffff;
+    s->prevAnim = -1;
     s->variant = c4->variant;
     s->prevVariant = -1;
-    s->animSpeed = c4->unk6;
+    s->animSpeed = c4->animSpeed;
     s->palId = 0;
     s->hitboxes[0].index = -1;
     UpdateSpriteAnimation(s);
@@ -409,7 +409,7 @@ void sub_806D7D0(Sprite *s, s16 animSpeed, s16 spriteY, const struct UNK_80DF670
         unk10 |= 0x800;
     }
     s->graphics.anim = anim->anim;
-    s->unk10 = unk10;
+    s->frameFlags = unk10;
     s->y = spriteY;
     s->variant = anim->variant;
 
@@ -429,7 +429,7 @@ void sub_806D830(Sprite *s, s16 a, s16 spriteY, const struct UNK_80DF670 *anim)
         unk10 |= 0x800;
     }
     s->graphics.anim = anim->anim;
-    s->unk10 = unk10;
+    s->frameFlags = unk10;
     s->y = spriteY;
     s->variant = anim->variant;
 

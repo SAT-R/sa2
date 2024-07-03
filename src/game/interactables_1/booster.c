@@ -83,22 +83,22 @@ void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(sBoosterAnimationData[value][me->d.sData[0]].numTiles);
     s->graphics.anim = sBoosterAnimationData[value][me->d.sData[0]].anim;
     s->variant = sBoosterAnimationData[value][me->d.sData[0]].variant;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
 
     if (me->d.uData[2] != 0) {
-        s->unk10 |= 0x800;
+        s->frameFlags |= 0x800;
     }
 
     if (me->d.sData[1] != 0) {
-        s->unk10 |= 0x400;
+        s->frameFlags |= 0x400;
     }
 }
 
@@ -135,28 +135,28 @@ void Task_Interactable_Booster(void)
         gPlayer.unk5A = 1;
 
         if (GRAVITY_IS_INVERTED) {
-            if ((s->unk10 & 0x800) == 0) {
-                if ((s->unk10 & 0x400) == 0) {
+            if ((s->frameFlags & 0x800) == 0) {
+                if ((s->frameFlags & 0x400) == 0) {
                     BOOSTER_ACCEL_LEFT(gPlayer);
                 } else {
                     BOOSTER_ACCEL_RIGHT(gPlayer);
                 }
             } else {
-                if ((s->unk10 & 0x400) != 0) {
+                if ((s->frameFlags & 0x400) != 0) {
                     BOOSTER_ACCEL_LEFT(gPlayer);
                 } else {
                     BOOSTER_ACCEL_RIGHT(gPlayer);
                 }
             }
         } else {
-            if ((s->unk10 & 0x800) != 0) {
-                if ((s->unk10 & 0x400) == 0) {
+            if ((s->frameFlags & 0x800) != 0) {
+                if ((s->frameFlags & 0x400) == 0) {
                     BOOSTER_ACCEL_LEFT(gPlayer);
                 } else {
                     BOOSTER_ACCEL_RIGHT(gPlayer);
                 }
             } else {
-                if ((s->unk10 & 0x400) != 0) {
+                if ((s->frameFlags & 0x400) != 0) {
                     BOOSTER_ACCEL_LEFT(gPlayer);
                 } else {
                     BOOSTER_ACCEL_RIGHT(gPlayer);

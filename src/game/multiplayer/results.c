@@ -208,7 +208,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             s->x = 200;
             s->y = 0x33 + (0x20 * i);
             s->graphics.dest = (void *)(OBJ_VRAM0 + (i * 0x800));
-            s->unk1A = SPRITE_OAM_ORDER(16);
+            s->oamFlags = SPRITE_OAM_ORDER(16);
             s->graphics.size = 0;
             temp = gUnknown_030054B4[i];
             if (temp == 5) {
@@ -227,25 +227,25 @@ void CreateMultiplayerResultsScreen(u8 mode)
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
             s->prevVariant = -1;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
-            s->unk10 = 0x1000;
+            s->frameFlags = 0x1000;
             UpdateSpriteAnimation(s);
 
             s = &resultsScreen->characterRows[i];
             s->x = 0;
             s->y = 0x1F + (0x20 * i);
             s->graphics.dest = (void *)(OBJ_VRAM0 + temp2);
-            s->unk1A = SPRITE_OAM_ORDER(16);
+            s->oamFlags = SPRITE_OAM_ORDER(16);
             s->graphics.size = 0;
             s->graphics.anim = sResultsScreenPlayerCursor[i].anim;
             s->variant = sResultsScreenPlayerCursor[i].variant;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
             s->prevVariant = -1;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
-            s->unk10 = 0x1000;
+            s->frameFlags = 0x1000;
             UpdateSpriteAnimation(s);
         }
     }
@@ -353,7 +353,7 @@ static void sub_805C3D0(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         if (resultsScreen->mode == MULTIPLAYER_RESULTS_MODE_COURSE_COMPLETE) {
             CreateMultiplayerLobbyScreen();
         } else {

@@ -139,17 +139,17 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 #else
             Sprite *s = &launcher->s;
 #endif
-            s->unk1A = SPRITE_OAM_ORDER(6);
+            s->oamFlags = SPRITE_OAM_ORDER(6);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
 
             launcher->s.prevVariant = -1;
-            launcher->s.animSpeed = 0x10;
+            launcher->s.animSpeed = SPRITE_ANIM_SPEED(1.0);
             launcher->s.palId = 0;
 
             s->hitboxes[0].index = -1;
-            s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
             s->graphics.dest = VramMalloc(EGG_UTO_LAUNCHER_TILE_COUNT);
             s->graphics.anim = SA2_ANIM_LAUNCHER;
             launcher->s.variant = 0;
@@ -157,24 +157,24 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 #ifndef NON_MATCHING
             // This is completely redundant because of the switch below.
             if (kind == LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN)) {
-                s->unk10 |= (SPRITE_FLAG(X_FLIP, 1) | SPRITE_FLAG(Y_FLIP, 0));
+                s->frameFlags |= (SPRITE_FLAG(X_FLIP, 1) | SPRITE_FLAG(Y_FLIP, 0));
             }
 #endif
             switch (launcher->kind) {
                 case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN): {
-                    s->unk10 |= (SPRITE_FLAG(X_FLIP, 1) | SPRITE_FLAG(Y_FLIP, 0));
+                    s->frameFlags |= (SPRITE_FLAG(X_FLIP, 1) | SPRITE_FLAG(Y_FLIP, 0));
                 } break;
 
                 case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_DOWN): {
-                    s->unk10 |= (SPRITE_FLAG(X_FLIP, 0) | SPRITE_FLAG(Y_FLIP, 0));
+                    s->frameFlags |= (SPRITE_FLAG(X_FLIP, 0) | SPRITE_FLAG(Y_FLIP, 0));
                 } break;
 
                 case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_UP): {
-                    s->unk10 |= (SPRITE_FLAG(X_FLIP, 1) | SPRITE_FLAG(Y_FLIP, 1));
+                    s->frameFlags |= (SPRITE_FLAG(X_FLIP, 1) | SPRITE_FLAG(Y_FLIP, 1));
                 } break;
 
                 case LAUNCHER_KIND(LAUN_DIR_RIGHT, LAUN_GRAVITY_UP): {
-                    s->unk10 |= (SPRITE_FLAG(X_FLIP, 0) | SPRITE_FLAG(Y_FLIP, 1));
+                    s->frameFlags |= (SPRITE_FLAG(X_FLIP, 0) | SPRITE_FLAG(Y_FLIP, 1));
                 } break;
             }
 

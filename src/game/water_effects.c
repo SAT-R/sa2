@@ -230,11 +230,11 @@ void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)
         s->graphics.anim = SA2_ANIM_WATER_SURFACE;
         s->variant = 0;
         s->prevVariant |= -1;
-        s->unk1A = 0;
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
 
         gWater.t = TaskCreate(Task_StageWaterTask, PLTT_SIZE, 0xFFFE, 0,
@@ -294,7 +294,7 @@ static void Task_StageWaterTask(void)
         s = &water->s;
         s->x = -((cam->x + ((gStageTime + 1) >> 2)) & 0xF);
         s->y = water->unk2 + 1;
-        s->unk10 |= (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18);
+        s->frameFlags |= (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18);
         UpdateSpriteAnimation(s);
 
         if (gStageTime & 0x2) {
@@ -311,11 +311,11 @@ static void Task_StageWaterTask(void)
 
     unk2_0 = (water->unk2);
     if ((unk2_2 = unk2_0 - 1) < DISPLAY_HEIGHT - 1) {
-        gIntrTable[3] = VCountIntr_8011ACC;
+        gIntrTable[INTR_INDEX_VCOUNT] = VCountIntr_8011ACC;
         gUnknown_03002874 = unk2_2;
         gFlags |= FLAGS_40;
     } else {
-        gIntrTable[3] = gIntrTableTemplate[3];
+        gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
         gFlags &= ~FLAGS_40;
     }
 }
@@ -339,11 +339,11 @@ void CreateRunOnWaterEffect(void)
     s->graphics.anim = SA2_ANIM_WATER_RUNNING_PARTICLES;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(7);
+    s->oamFlags = SPRITE_OAM_ORDER(7);
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 }
 
 static void Task_RunOnWaterEffect(void)
@@ -365,9 +365,9 @@ static void Task_RunOnWaterEffect(void)
     s->y = effect->y - gCamera.y;
 
     if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
-        s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+        s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
     } else {
-        s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+        s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
     }
 
     UpdateSpriteAnimation(s);
@@ -383,8 +383,8 @@ struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
     s->graphics.dest = VramMalloc(12);
     s->graphics.anim = SA2_ANIM_WATER_FALL_HIT_SURFACE;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(7);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->oamFlags = SPRITE_OAM_ORDER(7);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     return t;
 }
@@ -469,7 +469,7 @@ void TaskDestructor_WaterSurface(struct Task *t)
     Water *water = &gWater;
 
     gFlags &= ~FLAGS_40;
-    gIntrTable[3] = gIntrTableTemplate[3];
+    gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
     water->t = NULL;
 }
 

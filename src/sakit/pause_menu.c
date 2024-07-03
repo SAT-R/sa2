@@ -74,7 +74,7 @@ void CreatePauseMenu(void)
             }
 
             s->graphics.dest = vramTiles;
-            s->unk1A = SPRITE_OAM_ORDER(1);
+            s->oamFlags = SPRITE_OAM_ORDER(1);
             s->graphics.size = 0;
             s->graphics.anim = sAnimInfoPauseMenu[lang].anim;
             s->variant = sAnimInfoPauseMenu[lang].variant;
@@ -87,7 +87,7 @@ void CreatePauseMenu(void)
             s->x = (DISPLAY_WIDTH / 2);
             s->y = (DISPLAY_HEIGHT / 2);
 
-            s->unk10 = 0;
+            s->frameFlags = 0;
 
             UpdateSpriteAnimation(s);
         }
@@ -118,7 +118,7 @@ void Task_PauseMenuUpdate(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
         return;
     } else if ((gGameMode == GAME_MODE_SINGLE_PLAYER)
@@ -129,14 +129,14 @@ void Task_PauseMenuUpdate(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         CreateTitleScreenAndSkipIntro();
         return;
     }
 
     if (gBldRegs.bldY == 0) {
-        pm->s2.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
-        pm->s.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+        pm->s2.frameFlags &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+        pm->s.frameFlags &= ~SPRITE_FLAG_MASK_OBJ_MODE;
     }
 
     /* Move the cursor */

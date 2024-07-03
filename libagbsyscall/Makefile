@@ -73,18 +73,16 @@ ifneq ($(PLATFORM),gba)
     endif
 
     ifeq ($(CPU_ARCH),i386)
-      ifeq ($(PLATFORM), sdl_win32)
-          # Use the more legible Intel dialect for x86, without underscores
-          CC1FLAGS += -masm=intel -msse2
-          CPPFLAGS += -D CPU_ARCH_X86=1
-      else
-        $(error Unknown platforn $(PLATFORM))
-      endif
-    else 
-      ifeq ($(PLATFORM), sdl)
+      # Use the more legible Intel dialect for x86
+      CC1FLAGS += -masm=intel -msse2
+      CPPFLAGS += -D CPU_ARCH_X86=1
+    else
+        CPPFLAGS += -D CPU_ARCH_X86=0
+    endif
+
+    ifeq ($(shell uname -s),Darwin)
+        # -E: Pre-process only (needed for MacOS?)
         CPP := $(CC1) -E
-      endif
-      CPPFLAGS += -D CPU_ARCH_X86=0
     endif
 endif # PLATFORM != gba
 

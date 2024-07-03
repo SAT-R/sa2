@@ -21,7 +21,7 @@
 	bl sub_804CA08
 	adds r0, r7, #0
 	bl sub_804AE40
-	ldr r5, _0804AC48 @ =gUnknown_080D8890
+	ldr r5, _0804AC48 @ =sArmFuncs
 	ldr r1, _0804AC4C @ =IWRAM_START + 0x3C
 	adds r0, r4, r1
 	ldrb r0, [r0]
@@ -141,7 +141,7 @@ _0804ABF2:
 	b _0804AC6E
 	.align 2, 0
 _0804AC44: .4byte gCurTask
-_0804AC48: .4byte gUnknown_080D8890
+_0804AC48: .4byte sArmFuncs
 _0804AC4C: .4byte IWRAM_START + 0x3C
 _0804AC50: .4byte IWRAM_START + 0x3D
 _0804AC54: .4byte gPlayer

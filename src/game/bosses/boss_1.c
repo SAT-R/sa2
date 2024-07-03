@@ -275,7 +275,7 @@ void CreateEggHammerTankII(void)
     SPRITE_INIT_ANIM(s, SA2_ANIM_HAMMERTANK_HAMMER, 0, 24);
     SPRITE_INIT_SCRIPT(s, 1.0);
 
-    s->unk10 = (gUnknown_030054B8++) | 0x2060;
+    s->frameFlags = (gUnknown_030054B8++) | 0x2060;
 
     if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC
         && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel) {
@@ -538,7 +538,7 @@ static void sub_803AC2C(EggHammerTankII *boss)
     DisplaySprite(s);
 
     s = &boss->armSegment;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     x = I(boss->x) - gCamera.x;
     y = I(boss->y) - gCamera.y;
 
@@ -582,7 +582,7 @@ static void sub_803AC2C(EggHammerTankII *boss)
     }
 
     s = &boss->armSegment;
-    s->unk1A = SPRITE_OAM_ORDER(25);
+    s->oamFlags = SPRITE_OAM_ORDER(25);
 
     for (i = 0; i < 6; i++) {
         s->x = x - 8
@@ -598,7 +598,7 @@ static void sub_803AC2C(EggHammerTankII *boss)
     s->x = x - 8
         + ((COS((boss->unk54[1][5]) & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 23);
     s->y = y + ((SIN((boss->unk54[1][5]) & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 23);
-    s->unk10 = gUnknown_030054B8++ | 0x2060;
+    s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
     transform->rotation
         = (boss->unk54[1][5] - (boss->unk94) + boss->unk54[1][5]) & (SIN_PERIOD - 1);
@@ -611,7 +611,7 @@ static void sub_803AC2C(EggHammerTankII *boss)
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transform);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 }
 
@@ -1414,7 +1414,7 @@ static void sub_803C198(EggHammerTankII *boss)
     }
 
     s = &boss->armSegment;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
 
     for (i = 6; i > -1; i--) {
         s->x = I(unkB4->unkF8[i][0]) - gCamera.x;
@@ -1425,7 +1425,7 @@ static void sub_803C198(EggHammerTankII *boss)
     }
 
     s = &boss->armSegment;
-    s->unk1A = SPRITE_OAM_ORDER(25);
+    s->oamFlags = SPRITE_OAM_ORDER(25);
     for (i = 0; i < 6; i++) {
         s->x = I(unkB4->unk1B8[i][0]) - gCamera.x;
         s->y = I(unkB4->unk1B8[i][1]) - gCamera.y;
@@ -1439,7 +1439,7 @@ static void sub_803C198(EggHammerTankII *boss)
 
     s->x = I(unkB4->unkD0) - gCamera.x;
     s->y = I(unkB4->unkD4) - gCamera.y;
-    s->unk10 = gUnknown_030054B8++ | 0x2060;
+    s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
     if (unkB4->unkE4 != 0) {
         unkB4->unkE4 = 2;
@@ -1449,7 +1449,7 @@ static void sub_803C198(EggHammerTankII *boss)
         transform->height = 256;
         transform->x = s->x;
         transform->y = s->y;
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
 }

@@ -75,15 +75,15 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     note->base.me = me;
     note->base.spriteX = me->x;
     note->base.spriteY = spriteY;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2000;
+    s->frameFlags = 0x2000;
 
     s->graphics.dest
         = &((u8 *)OBJ_VRAM0)[sNoteSphereAnimInfo[note->kind][2] * TILE_SIZE_4BPP];
@@ -234,10 +234,10 @@ static void NoteSphere_80758B8(Sprite_NoteSphere *note)
 {
     Sprite *s = &note->disp;
 
-    s->unk10 |= 0x400;
+    s->frameFlags |= 0x400;
     DisplaySprite(s);
 
-    s->unk10 &= ~0x400;
+    s->frameFlags &= ~0x400;
     DisplaySprite(s);
 }
 

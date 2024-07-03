@@ -24,56 +24,56 @@
 #include "constants/tilemaps.h"
 
 struct CharacterSelectionScreen {
-    ScreenFade fade;
-    Background unkC;
-    Background unk4C;
-    Background unk8C;
-    Sprite screenTitleText;
-    Sprite characterSprite;
-    Sprite characterNameSubText;
+    /* 0x00 */ ScreenFade fade;
+    /* 0x0C */ Background unkC;
+    /* 0x4C */ Background unk4C;
+    /* 0x8C */ Background unk8C;
+    /* 0xCC */ Sprite screenTitleText;
+    /* 0xFC */ Sprite characterSprite;
+    /* 0x12C */ Sprite characterNameSubText;
 
-    Sprite characterTitleTextLeft;
-    SpriteTransform characterTitleLeftTransform;
+    /* 0x15C */ Sprite characterTitleTextLeft;
+    /* 0x18C */ SpriteTransform characterTitleLeftTransform;
 
-    Sprite characterTitleTextRight;
-    SpriteTransform characterTitleRightTransform;
+    /* 0x198 */ Sprite characterTitleTextRight;
+    /* 0x1C8 */ SpriteTransform characterTitleRightTransform;
 
-    Sprite carouselBlobs[NUM_CHARACTERS];
-    Sprite selectedCarouselBlob;
-    SpriteTransform selectedBlobTransform;
+    /* 0x1D4 */ Sprite carouselBlobs[NUM_CHARACTERS];
+    /* 0x2C4 */ Sprite selectedCarouselBlob;
+    /* 0x2F4 */ SpriteTransform selectedBlobTransform;
 
-    Sprite scrollUpArrow;
-    Sprite scrollDownArrow;
+    /* 0x300 */ Sprite scrollUpArrow;
+    /* 0x330 */ Sprite scrollDownArrow;
 
-    Sprite characterSecondarySprite;
-    Sprite characterUnavailableIndicator;
-    u8 initialSelection;
-    u8 selectedCharacter;
-    u8 previousSelection;
+    /* 0x360 */ Sprite characterSecondarySprite;
+    /* 0x390 */ Sprite characterUnavailableIndicator;
+    /* 0x3C0 */ u8 initialSelection;
+    /* 0x3C1 */ u8 selectedCharacter;
+    /* 0x3C2 */ u8 previousSelection;
 
-    bool8 amyUnlocked;
+    /* 0x3C3 */ bool8 amyUnlocked;
 
-    u8 unk3C4;
+    /* 0x3C4 */ u8 unk3C4;
 
-    u8 cursorAnimFrame;
+    /* 0x3C5 */ u8 cursorAnimFrame;
 
-    u8 upArrowActviteFrames;
-    u8 downArrowActiveFrames;
+    /* 0x3C6 */ u8 upArrowActviteFrames;
+    /* 0x3C7 */ u8 downArrowActiveFrames;
 
-    bool8 selectionComplete;
-    bool8 exiting;
-    u8 availableCharacters;
+    /* 0x3C8 */ bool8 selectionComplete;
+    /* 0x3C9 */ bool8 exiting;
+    /* 0x3CA */ u8 availableCharacters;
 
-    bool8 scrollingDown;
+    /* 0x3CB */ bool8 scrollingDown;
 
-    u8 confirmationHandshakeAttempts;
+    /* 0x3CC */ u8 confirmationHandshakeAttempts;
 
-    u16 characterBaseXPos;
-    u16 characterSubTextBaseXPos;
+    /* 0x3CE */ u16 characterBaseXPos;
+    /* 0x3D0 */ u16 characterSubTextBaseXPos;
 
-    u32 animFrame;
-    u32 carouselPosition;
-    u32 multiplayerSelections;
+    /* 0x3D4 */ u32 animFrame;
+    /* 0x3D8 */ u32 carouselPosition;
+    /* 0x3DC */ u32 multiplayerSelections;
 }; /* size 0x3E0 */
 
 static void CharacterSelectScreenOnDestroy(struct Task *);
@@ -196,20 +196,19 @@ static const u8 sCharacterSilhouettes[] = {
         }                                                                               \
     })
 
-// (96.84%) https://decomp.me/scratch/A2o3b
+// (98.75%) https://decomp.me/scratch/yY8Sy
 NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
          void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked))
 {
     struct Task *t;
-    struct CharacterSelectionScreen *characterScreen;
-    ScreenFade *fade;
-    Background *background;
-    Sprite *s;
-    u32 a;
 
-    u8 i = 0;
+    Sprite *s = NULL;
+    ScreenFade *fade = NULL;
+    Background *background = NULL;
+    struct CharacterSelectionScreen *characterScreen;
+
     s8 something;
-    u32 selection = initialSelection;
+    u8 i;
     s8 lang;
     lang = gLoadedSaveGame->language - 1;
     if (lang < 0) {
@@ -223,7 +222,7 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     }
 
     DmaFill32(3, 0, &gMultiSioSend, sizeof(gMultiSioSend));
-    DmaFill32(3, 0, gMultiSioRecv, sizeof(gMultiSioRecv));
+    DmaFill32(3, 0, &gMultiSioRecv, sizeof(gMultiSioRecv));
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
@@ -345,15 +344,15 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
         s->graphics.dest = VramMalloc(0x10);
         s->graphics.anim = SA2_ANIM_CHAR_SELECT_CIRCLE;
         s->variant = SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_INACTIVE + i;
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         UpdateSpriteAnimation(s);
     }
 
@@ -363,15 +362,17 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = VramMalloc(0x40);
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_CIRCLE;
     s->variant = SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
-    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->oamFlags = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
+    // permuter solution
+    // if ((t->structOffset && t->structOffset) && t->structOffset) {}
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &characterScreen->characterNameSubText;
@@ -382,15 +383,15 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
                                                    + (something * 6)][0];
     s->variant = sCharacterNameSubTextAssets[characterScreen->initialSelection
                                              + (something * 6)][1];
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &characterScreen->characterTitleTextLeft;
@@ -400,15 +401,15 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->graphics.anim
         = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][0];
     s->variant = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][1];
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &characterScreen->characterTitleTextRight;
@@ -418,15 +419,15 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->graphics.anim
         = sCharacteTitleRightSideAssets[characterScreen->initialSelection][0];
     s->variant = sCharacteTitleRightSideAssets[characterScreen->initialSelection][1];
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &characterScreen->screenTitleText;
@@ -435,15 +436,15 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = VramMalloc(0x36);
     s->graphics.anim = sScreenTitleTextAssets[lang][0];
     s->variant = sScreenTitleTextAssets[lang][1];
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &characterScreen->scrollUpArrow;
@@ -452,15 +453,15 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = VramMalloc(0x18);
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &characterScreen->scrollDownArrow;
@@ -469,15 +470,15 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = VramMalloc(0x18);
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_ARROW;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x800;
+    s->frameFlags = 0x800;
     UpdateSpriteAnimation(s);
 
     s = &characterScreen->characterSecondarySprite;
@@ -487,15 +488,15 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
     s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
         SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &characterScreen->characterUnavailableIndicator;
@@ -504,15 +505,16 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2580);
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_RED_CROSS_BOX;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(1);
+    s->oamFlags = SPRITE_OAM_ORDER(1);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
+    gLoadedSaveGame->language += 0;
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &characterScreen->characterSprite;
@@ -521,15 +523,15 @@ NONMATCH("asm/non_matching/game/CreateCharacterSelectionScreen.inc",
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x1000);
     s->graphics.anim = sCharacterSpriteAssets[characterScreen->initialSelection][0];
     s->variant = sCharacterSpriteAssets[characterScreen->initialSelection][1];
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     for (i = 0; i < 16; i++) {
@@ -1090,7 +1092,7 @@ static void Task_FadeOutAndExitToPrevious(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
         if (gGameMode != GAME_MODE_SINGLE_PLAYER) {
             CreateTimeAttackModeSelectionScreen();
         } else {
@@ -1230,9 +1232,9 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     transformOptions->x = s->x;
     transformOptions->y = s->y;
 
-    s->unk10 = gUnknown_030054B8++ | 0x60;
+    s->frameFlags = gUnknown_030054B8++ | 0x60;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transformOptions);
+    TransformSprite(s, transformOptions);
     DisplaySprite(s);
 
     if (characterScreen->animFrame < 8) {
@@ -1265,10 +1267,10 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     if (!(characterScreen->availableCharacters
           & CHARACTER_BIT(characterScreen->selectedCharacter))
         && IS_SINGLE_PLAYER) {
-        s->unk10 |= 0x40000;
+        s->frameFlags |= 0x40000;
         s->palId = sCharacterSilhouettes[characterScreen->selectedCharacter];
     } else {
-        s->unk10 &= ~0x40000;
+        s->frameFlags &= ~0x40000;
         s->palId = 0;
     }
     DisplaySprite(s);
@@ -1282,10 +1284,10 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
               & CHARACTER_BIT(characterScreen->selectedCharacter))
             && IS_SINGLE_PLAYER) {
             // make shadow mode
-            s->unk10 |= 0x40000;
+            s->frameFlags |= 0x40000;
             s->palId = sCharacterSilhouettes[CHEESE_SILHOUETTE];
         } else {
-            s->unk10 &= ~0x40000;
+            s->frameFlags &= ~0x40000;
             s->palId = 0;
         }
         DisplaySprite(s);
@@ -1315,9 +1317,9 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     transformOptions->x = s->x;
     transformOptions->y = s->y;
 
-    s->unk10 = gUnknown_030054B8++ | 0x20;
+    s->frameFlags = gUnknown_030054B8++ | 0x20;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transformOptions);
+    TransformSprite(s, transformOptions);
     DisplaySprite(s);
 
     s = &characterScreen->characterTitleTextRight;
@@ -1332,9 +1334,9 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     transformOptions->x = s->x;
     transformOptions->y = s->y;
 
-    s->unk10 = gUnknown_030054B8++ | 0x20;
+    s->frameFlags = gUnknown_030054B8++ | 0x20;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transformOptions);
+    TransformSprite(s, transformOptions);
     DisplaySprite(s);
 
     s = &characterScreen->scrollUpArrow;
@@ -1391,10 +1393,10 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         if (!(characterScreen->availableCharacters
               & CHARACTER_BIT(characterScreen->selectedCharacter))
             && IS_SINGLE_PLAYER) {
-            s->unk10 |= 0x40000;
+            s->frameFlags |= 0x40000;
             s->palId = sCharacterSilhouettes[characterScreen->selectedCharacter];
         } else {
-            s->unk10 &= ~0x40000;
+            s->frameFlags &= ~0x40000;
             s->palId = 0;
         }
 
@@ -1501,9 +1503,9 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         transformOptions->x = s->x;
         transformOptions->y = s->y;
 
-        s->unk10 = gUnknown_030054B8++ | 0x60;
+        s->frameFlags = gUnknown_030054B8++ | 0x60;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transformOptions);
+        TransformSprite(s, transformOptions);
         DisplaySprite(s);
     }
 
@@ -1525,10 +1527,10 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     if (!(characterScreen->availableCharacters
           & CHARACTER_BIT(characterScreen->selectedCharacter))
         && IS_SINGLE_PLAYER) {
-        s->unk10 |= 0x40000;
+        s->frameFlags |= 0x40000;
         s->palId = sCharacterSilhouettes[characterScreen->selectedCharacter];
     } else {
-        s->unk10 &= ~0x40000;
+        s->frameFlags &= ~0x40000;
         s->palId = 0;
     }
     DisplaySprite(s);
@@ -1541,10 +1543,10 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         if (!(characterScreen->availableCharacters
               & CHARACTER_BIT(characterScreen->selectedCharacter))
             && IS_SINGLE_PLAYER) {
-            s->unk10 |= 0x40000;
+            s->frameFlags |= 0x40000;
             s->palId = sCharacterSilhouettes[CHEESE_SILHOUETTE];
         } else {
-            s->unk10 &= ~0x40000;
+            s->frameFlags &= ~0x40000;
             s->palId = 0;
         }
 
@@ -1590,11 +1592,11 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         transformOptions->x = s->x;
         transformOptions->y = s->y;
 
-        s->unk10 = gUnknown_030054B8++ | 0x20;
+        s->frameFlags = gUnknown_030054B8++ | 0x20;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transformOptions);
+        TransformSprite(s, transformOptions);
     } else {
-        s->unk10 = 0;
+        s->frameFlags = 0;
     }
 
     DisplaySprite(s);
@@ -1611,11 +1613,11 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         transformOptions->x = s->x;
         transformOptions->y = s->y;
 
-        s->unk10 = gUnknown_030054B8++ | 0x20;
+        s->frameFlags = gUnknown_030054B8++ | 0x20;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transformOptions);
+        TransformSprite(s, transformOptions);
     } else {
-        s->unk10 = 0;
+        s->frameFlags = 0;
     }
 
     DisplaySprite(s);
@@ -1696,9 +1698,9 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
         transformOptions->x = s->x;
         transformOptions->y = s->y;
 
-        s->unk10 = gUnknown_030054B8++ | 0x60;
+        s->frameFlags = gUnknown_030054B8++ | 0x60;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transformOptions);
+        TransformSprite(s, transformOptions);
         DisplaySprite(s);
     }
     UpdateSpriteAnimation(&characterScreen->characterSprite);

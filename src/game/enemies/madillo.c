@@ -126,7 +126,7 @@ static void Task_8056230(void)
     Player *p;
     u8 sp0[4];
 
-    if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+    if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
         madillo->offsetX -= madillo->unk4C;
     } else {
         madillo->offsetX += madillo->unk4C;
@@ -159,9 +159,10 @@ static void Task_8056230(void)
 
     ENEMY_DESTROY_IF_OFFSCREEN(madillo, me, s);
 
-    if ((s->unk10 & 0x400
+    if ((s->frameFlags & 0x400
          && I(madillo->offsetX) > (me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)
-        || (!(s->unk10 & 0x400) && I(madillo->offsetX) < me->d.sData[0] * TILE_WIDTH)) {
+        || (!(s->frameFlags & 0x400)
+            && I(madillo->offsetX) < me->d.sData[0] * TILE_WIDTH)) {
         gCurTask->main = Task_80564BC;
         s->graphics.anim = SA2_ANIM_MADILLO;
         s->variant = 0;
@@ -181,7 +182,7 @@ static void Task_80564BC(void)
     Vec2_32 pos;
     u8 sp0[4];
 
-    if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+    if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
         madillo->offsetX -= madillo->unk4C;
     } else {
         madillo->offsetX += madillo->unk4C;

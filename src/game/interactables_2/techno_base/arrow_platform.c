@@ -93,30 +93,30 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     ia75->y = TO_WORLD_POS(me->y, spriteRegionY);
 
     s = &ia75->s1;
-    s->unk1A = SPRITE_OAM_ORDER(19);
+    s->oamFlags = SPRITE_OAM_ORDER(19);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     s->graphics.dest = VramMalloc(8);
     s->graphics.anim = SA2_ANIM_ARROW_SCREEN;
     s->variant = 2;
     UpdateSpriteAnimation(s);
 
     s = &ia75->s2;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     s->graphics.dest = (void *)BORDER_VRAM_ADDR;
     s->graphics.anim = SA2_ANIM_ARROW_SCREEN_BORDER;
     s->variant = 0;
@@ -260,29 +260,29 @@ static void sub_807A7F4(Sprite_IA75 *ia75)
     if (ia75->unk8C != 0) {
         switch (ia75->unk94) {
             case 0:
-                s->unk10 &= ~(0x800 | 0x400);
+                s->frameFlags &= ~(0x800 | 0x400);
                 DisplaySprite(&ia75->s1);
-                s->unk10 |= 0x800;
+                s->frameFlags |= 0x800;
                 DisplaySprite(&ia75->s1);
                 break;
             case 1:
-                s->unk10 &= ~0x800;
-                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                s->frameFlags &= ~0x800;
+                s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
                 DisplaySprite(&ia75->s1);
-                s->unk10 |= 0x800;
+                s->frameFlags |= 0x800;
                 DisplaySprite(&ia75->s1);
                 break;
             case 2:
-                s->unk10 &= ~(0x800 | 0x400);
+                s->frameFlags &= ~(0x800 | 0x400);
                 DisplaySprite(&ia75->s1);
-                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
                 DisplaySprite(&ia75->s1);
                 break;
         }
     } else {
-        s->unk10 &= ~(0x800 | 0x400);
+        s->frameFlags &= ~(0x800 | 0x400);
         DisplaySprite(&ia75->s1);
-        s->unk10 |= 0x800;
+        s->frameFlags |= 0x800;
         DisplaySprite(&ia75->s1);
     }
 

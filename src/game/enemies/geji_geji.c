@@ -99,13 +99,13 @@ static void sub_8057F80(void)
     me = gg->base.me;
 
     if (gg->unk27C) {
-        if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
             gg->offsetY += 0x180;
         } else {
             gg->offsetY -= 0x180;
         }
     } else {
-        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             gg->offsetX += 0x180;
         } else {
             gg->offsetX -= 0x180;
@@ -126,20 +126,22 @@ static void sub_8057F80(void)
     ENEMY_DESTROY_IF_OFFSCREEN(gg, me, s);
 
     if (gg->unk27C) {
-        if (ENEMY_CROSSED_TOP_BORDER(gg, me) && !(s->unk10 & SPRITE_FLAG_MASK_Y_FLIP)) {
+        if (ENEMY_CROSSED_TOP_BORDER(gg, me)
+            && !(s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP)) {
             gg->unk27D = 0x3C;
             gCurTask->main = sub_8058264;
         } else if (ENEMY_CROSSED_BOTTOM_BORDER(gg, me)
-                   && (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP)) {
+                   && (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP)) {
             gg->unk27D = 0x3C;
             gCurTask->main = sub_8058264;
         }
     } else {
-        if (ENEMY_CROSSED_LEFT_BORDER(gg, me) && !(s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+        if (ENEMY_CROSSED_LEFT_BORDER(gg, me)
+            && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
             gg->unk27D = 0x3C;
             gCurTask->main = sub_8058264;
         } else if ((ENEMY_CROSSED_RIGHT_BORDER(gg, me)
-                    && s->unk10 & SPRITE_FLAG_MASK_X_FLIP)) {
+                    && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
             gg->unk27D = 0x3C;
             gCurTask->main = sub_8058264;
         }
@@ -185,19 +187,19 @@ static void sub_8058264(void)
 
     if (--gg->unk27D == 0) {
         if (gg->unk27C) {
-            if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
-                s->unk10 &= ~SPRITE_FLAG_MASK_Y_FLIP;
+            if (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
+                s->frameFlags &= ~SPRITE_FLAG_MASK_Y_FLIP;
                 gCurTask->main = sub_8057F80;
             } else {
-                s->unk10 |= SPRITE_FLAG_MASK_Y_FLIP;
+                s->frameFlags |= SPRITE_FLAG_MASK_Y_FLIP;
                 gCurTask->main = sub_8057F80;
             }
         } else {
-            if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
-                s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+            if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
+                s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
                 gCurTask->main = sub_8057F80;
             } else {
-                s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+                s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
                 gCurTask->main = sub_8057F80;
             }
         }

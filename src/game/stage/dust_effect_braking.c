@@ -53,23 +53,23 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
             s->graphics.dest = VramMalloc(15);
             s->graphics.anim = SA2_ANIM_BRAKING_DUST_EFFECT;
             s->variant = 0;
-            s->unk10 = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(X_FLIP, 1));
+            s->frameFlags = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(X_FLIP, 1));
         } else {
             // _0801F668
             s->graphics.dest = ((void *)OBJ_VRAM0 + 0x2300);
             s->graphics.anim = SA2_ANIM_SMALL_DUST_PARTICLE;
             s->variant = 0;
-            s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
-            s->unk10 |= ((u32)PseudoRandom32()
-                         & (SPRITE_FLAG_MASK_Y_FLIP | SPRITE_FLAG_MASK_X_FLIP));
+            s->frameFlags |= ((u32)PseudoRandom32()
+                              & (SPRITE_FLAG_MASK_Y_FLIP | SPRITE_FLAG_MASK_X_FLIP));
         }
 
         s->graphics.size = 0;
         s->prevVariant = -1;
-        s->unk1A = SPRITE_OAM_ORDER(8);
+        s->oamFlags = SPRITE_OAM_ORDER(8);
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
 
         return t;
@@ -82,7 +82,7 @@ void Task_801F6E0(void)
     BrakeDustEffect *bde = TASK_DATA(gCurTask);
     Sprite *s = &bde->s;
 
-    if (unk->t == 0 || (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)) {
+    if (unk->t == 0 || (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
         unk->unk0++;
         TaskDestroy(gCurTask);
         return;

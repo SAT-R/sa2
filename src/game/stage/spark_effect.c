@@ -27,11 +27,11 @@ struct Task *CreateSparkEffect()
     s->graphics.anim = SA2_ANIM_SPARK_EFFECT;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(8);
+    s->oamFlags = SPRITE_OAM_ORDER(8);
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     return t;
 }
@@ -51,9 +51,9 @@ void Task_SparkEffect(void)
         s->y = (I(p->y) + p->unk17) - cam->y;
 
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
-            s->unk10 |= SPRITE_FLAG_MASK_X_FLIP;
+            s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
         } else {
-            s->unk10 &= ~SPRITE_FLAG_MASK_X_FLIP;
+            s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
         }
 
         UpdateSpriteAnimation(s);

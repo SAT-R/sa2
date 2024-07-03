@@ -90,7 +90,9 @@ SDL_Texture *sdlTexture;
 SDL_sem *vBlankSemaphore;
 SDL_atomic_t isFrameAvailable;
 bool speedUp = false;
-unsigned int videoScale = 1;
+#define INITIAL_VIDEO_SCALE 1
+unsigned int videoScale = INITIAL_VIDEO_SCALE;
+unsigned int preFullscreenVideoScale = INITIAL_VIDEO_SCALE;
 bool videoScaleChanged = false;
 bool isRunning = true;
 bool paused = false;
@@ -332,11 +334,17 @@ static void CloseSaveFile()
 
 static u16 keys;
 
+u32 fullScreenFlags = 0;
+static SDL_DisplayMode sdlDispMode = { 0 };
+
 void ProcessEvents(void)
 {
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {
+        SDL_Keycode keyCode = event.key.keysym.sym;
+        Uint16 keyMod = event.key.keysym.mod;
+
         switch (event.type) {
             case SDL_QUIT:
                 isRunning = false;
@@ -364,35 +372,50 @@ void ProcessEvents(void)
                 }
                 break;
             case SDL_KEYDOWN:
-                switch (event.key.keysym.sym) {
-                    HANDLE_KEYDOWN(A_BUTTON)
-                    HANDLE_KEYDOWN(B_BUTTON)
-                    HANDLE_KEYDOWN(START_BUTTON)
-                    HANDLE_KEYDOWN(SELECT_BUTTON)
-                    HANDLE_KEYDOWN(L_BUTTON)
-                    HANDLE_KEYDOWN(R_BUTTON)
-                    HANDLE_KEYDOWN(DPAD_UP)
-                    HANDLE_KEYDOWN(DPAD_DOWN)
-                    HANDLE_KEYDOWN(DPAD_LEFT)
-                    HANDLE_KEYDOWN(DPAD_RIGHT)
-                    case SDLK_r:
-                        if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
-                            DoSoftReset();
-                        }
-                        break;
-                    case SDLK_p:
-                        if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
-                            paused = !paused;
-                        }
-                        break;
-                    case SDLK_SPACE:
-                        if (!speedUp) {
-                            speedUp = true;
-                            timeScale = 5.0;
-                            SDL_PauseAudio(1);
-                        }
-                        break;
-                }
+                if (keyCode == SDLK_RETURN && (keyMod & KMOD_ALT)) {
+                    fullScreenFlags ^= SDL_WINDOW_FULLSCREEN_DESKTOP;
+                    if (fullScreenFlags & SDL_WINDOW_FULLSCREEN_DESKTOP) {
+                        SDL_GetWindowDisplayMode(sdlWindow, &sdlDispMode);
+                        preFullscreenVideoScale = videoScale;
+                    } else {
+                        SDL_SetWindowDisplayMode(sdlWindow, &sdlDispMode);
+                        videoScale = preFullscreenVideoScale;
+                    }
+                    SDL_SetWindowFullscreen(sdlWindow, fullScreenFlags);
+
+                    SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale,
+                                      DISPLAY_HEIGHT * videoScale);
+                    videoScaleChanged = FALSE;
+                } else
+                    switch (event.key.keysym.sym) {
+                        HANDLE_KEYDOWN(A_BUTTON)
+                        HANDLE_KEYDOWN(B_BUTTON)
+                        HANDLE_KEYDOWN(START_BUTTON)
+                        HANDLE_KEYDOWN(SELECT_BUTTON)
+                        HANDLE_KEYDOWN(L_BUTTON)
+                        HANDLE_KEYDOWN(R_BUTTON)
+                        HANDLE_KEYDOWN(DPAD_UP)
+                        HANDLE_KEYDOWN(DPAD_DOWN)
+                        HANDLE_KEYDOWN(DPAD_LEFT)
+                        HANDLE_KEYDOWN(DPAD_RIGHT)
+                        case SDLK_r:
+                            if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
+                                DoSoftReset();
+                            }
+                            break;
+                        case SDLK_p:
+                            if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
+                                paused = !paused;
+                            }
+                            break;
+                        case SDLK_SPACE:
+                            if (!speedUp) {
+                                speedUp = true;
+                                timeScale = 5.0;
+                                SDL_PauseAudio(1);
+                            }
+                            break;
+                    }
                 break;
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
@@ -501,7 +524,13 @@ static void RunDMAs(u32 type)
 {
     for (int dmaNum = 0; dmaNum < DMA_COUNT; dmaNum++) {
         struct DMATransfer *dma = &DMAList[dmaNum];
+#if PLATFORM_GBA
+        // Regular GBA order
         u32 dmaCntReg = (&REG_DMA0CNT)[dmaNum * 3];
+#else
+        // "64 bit" order
+        u32 dmaCntReg = (&REG_DMA0CNT)[dmaNum];
+#endif
         if (!((dmaCntReg >> 16) & DMA_ENABLE)) {
             dma->control &= ~DMA_ENABLE;
         }
@@ -552,7 +581,11 @@ static void RunDMAs(u32 type)
             if (dma->control & DMA_REPEAT) {
                 dma->size = ((&REG_DMA0CNT)[dmaNum * 3] & 0x1FFFF);
                 if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_RELOAD) {
+#if PLATFORM_GBA
                     dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 3];
+#else
+                    dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 2];
+#endif
                 }
             } else {
                 dma->control &= ~DMA_ENABLE;
@@ -561,6 +594,7 @@ static void RunDMAs(u32 type)
     }
 }
 
+#if PLATFORM_GBA
 s32 Div(s32 num, s32 denom)
 {
     if (denom != 0) {
@@ -578,6 +612,7 @@ s32 Mod(s32 num, s32 denom)
         return 0;
     }
 }
+#endif
 
 int MultiBoot(struct MultiBootParam *mp) { return 0; }
 
@@ -594,9 +629,17 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
         return;
     }
 
+#if PLATFORM_GBA
+    // Regular GBA order
     (&REG_DMA0SAD)[dmaNum * 3] = (uintptr_t)src;
     (&REG_DMA0DAD)[dmaNum * 3] = (uintptr_t)dest;
-    (&REG_DMA0CNT)[dmaNum * 3] = (uintptr_t)control;
+    (&REG_DMA0CNT)[dmaNum * 3] = (size_t)control;
+#else
+    // "64 bit" order
+    (&REG_DMA0SAD)[dmaNum * 2] = (uintptr_t)src;
+    (&REG_DMA0DAD)[dmaNum * 2] = (uintptr_t)dest;
+    (&REG_DMA0CNT)[dmaNum] = (size_t)control;
+#endif
 
     struct DMATransfer *dma = &DMAList[dmaNum];
     dma->src = src;
@@ -607,6 +650,15 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
     // printf("\nDMA%d: S:%p %p -> %p\n", dmaNum, src, dest, dest + dma->size);
 
     RunDMAs(DMA_NOW);
+}
+
+void DmaStop(int dmaNum)
+{
+    (&REG_DMA0CNT)[dmaNum]
+        &= ~((DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT) << 16);
+
+    struct DMATransfer *dma = &DMAList[dmaNum];
+    dma->control &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
 }
 
 void CpuSet(const void *src, void *dst, u32 cnt)
@@ -1436,7 +1488,7 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount,
         puts("2-D OBJ Character mapping not supported.");
     }
 
-    for (i = 127; i >= 0; i--) {
+    for (i = OAM_ENTRY_COUNT - 1; i >= 0; i--) {
         OamData *oam = &((OamData *)OAM)[i];
         unsigned int width;
         unsigned int height;

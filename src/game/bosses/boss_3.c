@@ -367,7 +367,7 @@ void CreateEggTotem(void)
         s->graphics.anim = sTileInfoBulletLauncher[i].anim;
         temp = SPRITE_ANIM_SPEED(1.0);
         s->variant = sTileInfoBulletLauncher[i].variant;
-        s->unk1A = SPRITE_OAM_ORDER(21);
+        s->oamFlags = SPRITE_OAM_ORDER(21);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -375,7 +375,7 @@ void CreateEggTotem(void)
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
 #else
         SPRITE_INIT(s, sTileInfoBulletLauncher[i].numTiles,
@@ -392,7 +392,7 @@ void CreateEggTotem(void)
     s->graphics.dest = VramMalloc(12);
     s->graphics.anim = SA2_ANIM_HAMMERTANK_PILOT;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(22);
+    s->oamFlags = SPRITE_OAM_ORDER(22);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -400,7 +400,7 @@ void CreateEggTotem(void)
     s->animSpeed = temp;
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 #else
     SPRITE_INIT(s, 12, SA2_ANIM_HAMMERTANK_PILOT, 0, 22, 2);
 #endif
@@ -417,7 +417,7 @@ void CreateEggTotem(void)
         s->graphics.dest = VramMalloc(5 * 6);
         s->graphics.anim = SA2_ANIM_TAILS_CAPTURED;
         s->variant = 0;
-        s->unk1A = SPRITE_OAM_ORDER(20);
+        s->oamFlags = SPRITE_OAM_ORDER(20);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -425,7 +425,7 @@ void CreateEggTotem(void)
         s->animSpeed = temp;
         s->palId = 0;
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 #else
         SPRITE_INIT(s, 5 * 6, SA2_ANIM_TAILS_CAPTURED, 0, 20, 2);
 #endif
@@ -438,7 +438,7 @@ void CreateEggTotem(void)
         s->graphics.dest = VramMalloc(4 * 5);
         s->graphics.anim = SA2_ANIM_EGG_TOTEM_HOOK;
         s->variant = 0;
-        s->unk1A = SPRITE_OAM_ORDER(21);
+        s->oamFlags = SPRITE_OAM_ORDER(21);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -446,7 +446,7 @@ void CreateEggTotem(void)
         s->animSpeed = temp;
         s->palId = 0;
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 #else
         SPRITE_INIT(s, 4 * 5, SA2_ANIM_EGG_TOTEM_HOOK, 0, 21, 2);
 #endif
@@ -1749,7 +1749,7 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
     s->graphics.dest = totem->tilesBullet;
     s->graphics.anim = SA2_ANIM_EGG_TOTEM_BULLET;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(16);
+    s->oamFlags = SPRITE_OAM_ORDER(16);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
@@ -1757,7 +1757,7 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 }
 
 void Task_EggTotemBullet(void)
@@ -1771,8 +1771,8 @@ void Task_EggTotemBullet(void)
         bullet->qScreenX -= BOSS_VELOCITY_X;
         bullet->qScreenY += bullet->qDY;
     } else {
-        bullet->qScreenX += (bullet->qDX + Q(gCamera.unk38));
-        bullet->qScreenY += (bullet->qDY + Q(gCamera.unk3C));
+        bullet->qScreenX += (bullet->qDX + Q(gCamera.dx));
+        bullet->qScreenY += (bullet->qDY + Q(gCamera.dy));
     }
 
     s->x = I(bullet->qScreenX);

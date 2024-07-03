@@ -47,9 +47,7 @@ void DrawBackground(Background *background)
     background->graphics.size = gfxSize;
 
     if (!(background->flags & BACKGROUND_UPDATE_GRAPHICS)) {
-        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &background->graphics;
-        gVramGraphicsCopyQueueIndex
-            = (gVramGraphicsCopyQueueIndex + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
+        ADD_TO_GRAPHICS_QUEUE(&background->graphics);
         background->flags ^= BACKGROUND_UPDATE_GRAPHICS;
     }
 
@@ -667,23 +665,21 @@ void UpdateBgAnimationTiles(Background *bg)
             }
             {
                 bg->graphics.size = animTileSize;
-                gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &bg->graphics;
-                gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1)
-                    % ARRAY_COUNT(gVramGraphicsCopyQueue);
+                ADD_TO_GRAPHICS_QUEUE(&bg->graphics)
             }
         }
     }
 }
 
 // Differences to UpdateSpriteAnimation:
-// - SPRITE_MAYBE_SWITCH_ANIM gets executed *after* the if.
+// - SPRITE_INIT_ANIM_IF_CHANGED gets executed *after* the if.
 // - Uses animCmdTable_BG instead of animCmdTable
 s32 sub_80036E0(Sprite *s)
 {
-    if (s->unk10 & SPRITE_FLAG_MASK_ANIM_OVER)
+    if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
-    SPRITE_MAYBE_SWITCH_ANIM(s);
+    SPRITE_INIT_ANIM_IF_CHANGED(s);
 
     if (s->timeUntilNextFrame > 0)
         s->timeUntilNextFrame -= s->animSpeed * 16;
@@ -747,19 +743,23 @@ static AnimCmdResult animCmd_GetTiles_BG(void *cursor, Sprite *s)
     ACmd_GetTiles *cmd = (ACmd_GetTiles *)cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
-    if ((s->unk10 & SPRITE_FLAG_MASK_19) == 0) {
-        if (cmd->tileIndex < 0) {
-            s->graphics.src
-                = &gRefSpriteTables->tiles_8bpp[cmd->tileIndex * TILE_SIZE_8BPP];
+    if ((s->frameFlags & SPRITE_FLAG_MASK_19) == 0) {
+        s32 tileIndex = cmd->tileIndex;
+
+        if (tileIndex < 0) {
+#ifdef BUG_FIX
+            // Compilers *should* optimize the multiplication with a '<< 6', clearing the
+            // high-bit. But if they don't, it could underflow.
+            tileIndex &= ~0x80000000;
+#endif
+            s->graphics.src = &gRefSpriteTables->tiles_8bpp[tileIndex * TILE_SIZE_8BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_8BPP;
         } else {
-            s->graphics.src
-                = &gRefSpriteTables->tiles_4bpp[cmd->tileIndex * TILE_SIZE_4BPP];
+            s->graphics.src = &gRefSpriteTables->tiles_4bpp[tileIndex * TILE_SIZE_4BPP];
             s->graphics.size = cmd->numTilesToCopy * TILE_SIZE_4BPP;
         }
 
-        gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &s->graphics;
-        gVramGraphicsCopyQueueIndex = (gVramGraphicsCopyQueueIndex + 1) & 0x1F;
+        ADD_TO_GRAPHICS_QUEUE(&s->graphics)
     }
 
     return 1;
@@ -781,11 +781,11 @@ static AnimCmdResult animCmd_AddHitbox_BG(void *cursor, Sprite *s)
         && (cmd->hitbox.bottom == 0)) {
         s->hitboxes[index].index = -1;
     } else {
-        if (s->unk10 & SPRITE_FLAG_MASK_Y_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
             XOR_SWAP(s->hitboxes[index].top, s->hitboxes[index].bottom);
         }
 
-        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             XOR_SWAP(s->hitboxes[index].left, s->hitboxes[index].right);
         }
     }
@@ -952,7 +952,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
                         oam.paletteNum += s->palId;
                         // __08003CD8
 
-                        yFlip = s->unk10 >> SPRITE_FLAG_SHIFT_Y_FLIP;
+                        yFlip = s->frameFlags >> SPRITE_FLAG_SHIFT_Y_FLIP;
                         yFlip ^= (dims->flip >> 1);
 
                         if (yFlip & 1) {
@@ -1272,7 +1272,7 @@ static AnimCmdResult animCmd_GetPalette_BG(void *cursor, Sprite *s)
     ACmd_GetPalette *cmd = (ACmd_GetPalette *)cursor;
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
-    if (!(s->unk10 & SPRITE_FLAG_MASK_18)) {
+    if (!(s->frameFlags & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
         DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16],

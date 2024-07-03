@@ -111,6 +111,9 @@ else
 
 	ifeq ($(CPU_ARCH),i386)
         CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
+
+        # Use the more legible Intel dialect for x86, without underscores
+        CC1FLAGS += -masm=intel
 	else 
         CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0
 	endif
@@ -123,11 +126,8 @@ ifeq ($(PLATFORM),gba)
     ASFLAGS  += -mthumb-interwork
     CC1FLAGS += -mthumb-interwork
   endif
-else 
-  ifeq ($(PLATFORM), sdl_win32)
-    # Use the more legible Intel dialect for x86, without underscores
-    CC1FLAGS += -masm=intel
-  else ifeq ($(PLATFORM), sdl)
+else
+  ifeq ($(PLATFORM), sdl)
     # for modern we are using a modern compiler
     # so instead of CPP we can use gcc -E to "preprocess only"
     CPP := $(CC1) -E

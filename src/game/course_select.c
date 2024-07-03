@@ -402,15 +402,15 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     } else {
         s->variant = gMultiplayerCharacters[0];
     }
-    s->unk1A = SPRITE_OAM_ORDER(3);
+    s->oamFlags = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->mapPaths); i++) {
@@ -426,15 +426,15 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
             s->graphics.anim = sZoneMapPathAssets[i][1];
             s->variant = sZoneMapPathAssets[i][2];
         }
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
     }
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->zoneActUnits); i++) {
@@ -444,15 +444,15 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->graphics.dest = VramMalloc(4);
         s->graphics.anim = 0x2F6;
         s->variant = 0;
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         UpdateSpriteAnimation(s);
     }
 
@@ -462,15 +462,15 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->graphics.dest = VramMalloc(0x1A);
     s->graphics.anim = 0x2F5;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &coursesScreen->zoneName;
@@ -479,15 +479,15 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->graphics.dest = VramMalloc(0x26);
     s->graphics.anim = 0x2F9;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     s = &coursesScreen->screenTitle;
@@ -518,15 +518,15 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
             s->variant = gMultiplayerCharacters[0];
         }
     }
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->chaosEmeralds); i++) {
@@ -536,15 +536,15 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->graphics.dest = (void *)OBJ_VRAM0 + (i * 0x120);
         s->graphics.anim = sChaoEmeraldAssets[i][0];
         s->variant = sChaoEmeraldAssets[i][1];
-        s->unk1A = SPRITE_OAM_ORDER(4);
+        s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = 0;
+        s->frameFlags = 0;
     }
 }
 

@@ -245,8 +245,6 @@ extern u16 gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgPalette[BG_PLTT_SIZE / sizeof(u16)];
 extern u16 gBgCntRegs[4];
 
-extern s16 gUnknown_03000408;
-
 // TODO: Turn this into a struct-array:
 //       [4]{s16 x, s16 y}
 //       Should we introduce a
@@ -278,17 +276,39 @@ extern struct MapHeader **gTilemapsRef; // TODO: make this an array and add size
 extern u8 gUnknown_03002280[4][4];
 extern u8 gUnknown_03004D80[16]; // TODO: Is this 4 (# backgrounds), instead of 16?
 
+#define LOG_GRAPHICS_QUEUE TRUE
+#if (!PLATFORM_GBA && LOG_GRAPHICS_QUEUE)
+#define GFX_QUEUE_LOG_ADD(gfx)                                                          \
+    printf("GFX %d: src 0x%p, dst 0x%p, size 0x%04X\n", gVramGraphicsCopyQueueIndex,    \
+           (gfx)->src, (gfx)->dest, (gfx)->size);
+#else
+#define GFX_QUEUE_LOG_ADD(gfx)
+#endif
+extern struct GraphicsData *gVramGraphicsCopyQueue[32];
+extern u8 gVramGraphicsCopyQueueIndex;
+// Because the graphics in the queue only get copied if
+// (gVramGraphicsCopyCursor != gVramGraphicsCopyQueueIndex),
+// just making them equal will pause the queue.
+#define PAUSE_GRAPHICS_QUEUE() gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+
+#define INC_GRAPHICS_QUEUE_CURSOR(cursor)                                               \
+    cursor = (cursor + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
+
+#define ADD_TO_GRAPHICS_QUEUE(gfx)                                                      \
+    gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = gfx;                          \
+    /* Log has to happen before gVramGraphicsCopyQueueIndex increment */                \
+    GFX_QUEUE_LOG_ADD(gfx)                                                              \
+    INC_GRAPHICS_QUEUE_CURSOR(gVramGraphicsCopyQueueIndex);
+
 extern u16 *gUnknown_030022AC;
 extern void *gUnknown_030022C0;
 extern s16 gMosaicReg;
 extern u8 gUnknown_030026F4;
-extern struct GraphicsData *gVramGraphicsCopyQueue[32];
 extern u16 gUnknown_03002820;
 extern u8 gUnknown_03002874;
 extern void *gUnknown_03002878;
 extern u8 gUnknown_0300287C;
 extern u8 gUnknown_03002A80;
-extern u8 gVramGraphicsCopyQueueIndex;
 extern u16 gUnknown_03002A8C;
 // When paused, the previously-active OAM elements get moved to the end
 // of the OAM. This is the index of the first currently-inactive element

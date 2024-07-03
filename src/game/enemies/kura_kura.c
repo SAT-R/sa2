@@ -78,7 +78,7 @@ void Task_8052024(void)
     Vec2_32 pos;
     ENEMY_UPDATE_POSITION_STATIC(kk, s, pos.x, pos.y);
 
-    s->unk10 &= ~0x400;
+    s->frameFlags &= ~0x400;
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN_RAW(kk, me, s, pos.x, pos.y);

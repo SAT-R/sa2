@@ -212,13 +212,13 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -231,13 +231,13 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = (DISPLAY_WIDTH / 2);
         s->y = (DISPLAY_HEIGHT / 2);
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
     }
 
@@ -250,13 +250,13 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0x78;
         s->y = 0x50;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
     }
 
@@ -270,13 +270,13 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(2);
+        s->oamFlags = SPRITE_OAM_ORDER(2);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 2;
-        s->unk10 = 0x2000;
+        s->frameFlags = 0x2000;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -289,13 +289,13 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(1);
+        s->oamFlags = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 2;
-        s->unk10 = 0x2000;
+        s->frameFlags = 0x2000;
         s->hitboxes[0].index = -1;
     }
 
@@ -308,13 +308,13 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 2;
-        s->unk10 = 0x2000;
+        s->frameFlags = 0x2000;
         s->hitboxes[0].index = -1;
     }
 
@@ -328,13 +328,13 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 2;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -349,13 +349,13 @@ void CreateFinalEndingFallCutScene(void)
         s->prevVariant = -1;
         s->x = 0;
         s->y = 0;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = 0;
+        s->frameFlags = 0;
         s->hitboxes[0].index = -1;
         UpdateSpriteAnimation(s);
     }
@@ -709,7 +709,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
                 if (UpdateSpriteAnimation(s) != 1) {
                     s->animCursor = 0;
                     s->timeUntilNextFrame = 0;
-                    s->unk10 &= ~0x4000;
+                    s->frameFlags &= ~0x4000;
                 }
                 DisplaySprite(s);
             }

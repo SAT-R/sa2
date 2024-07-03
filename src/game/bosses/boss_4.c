@@ -938,8 +938,8 @@ static void Task_CreateAeroEggBombMain(void)
             eb->screenX += eb->dx;
             eb->screenY += eb->dy;
         } else {
-            eb->screenX += eb->dx + Q(gCamera.unk38);
-            eb->screenY += eb->dy + Q(gCamera.unk3C);
+            eb->screenX += eb->dx + Q(gCamera.dx);
+            eb->screenY += eb->dy + Q(gCamera.dy);
         }
 
         s->x = I(eb->screenX);
@@ -990,8 +990,8 @@ static void Task_AeroEggBombHitGround(void)
     if (!PLAYER_IS_ALIVE) {
         eb->screenX += eb->dx;
     } else {
-        eb->screenX += eb->dx + Q(gCamera.unk38);
-        eb->screenY += Q(gCamera.unk3C);
+        eb->screenX += eb->dx + Q(gCamera.dx);
+        eb->screenY += Q(gCamera.dy);
     }
 
     s->x = I(eb->screenX);
@@ -1064,8 +1064,8 @@ static void Task_AeroEggBombDebris(void)
         deb->screenX += deb->dx;
         deb->screenY += deb->dy;
     } else {
-        deb->screenX += deb->dx + Q(gCamera.unk38);
-        deb->screenY += deb->dy + Q(gCamera.unk3C);
+        deb->screenX += deb->dx + Q(gCamera.dx);
+        deb->screenY += deb->dy + Q(gCamera.dy);
     }
 
     s->x = I(deb->screenX);

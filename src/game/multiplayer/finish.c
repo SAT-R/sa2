@@ -109,11 +109,11 @@ void sub_8019CCC(u8 sioId, u8 count)
         }
 
         s->prevVariant = -1;
-        s->unk1A = SPRITE_OAM_ORDER(0);
+        s->oamFlags = SPRITE_OAM_ORDER(0);
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 0);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
     }
 }
@@ -314,7 +314,7 @@ void Task_TransitionToResultsScreen(void)
                 { // TODO: This is a macro!
                     gUnknown_03002AE4 = gUnknown_0300287C;
                     gUnknown_03005390 = 0;
-                    gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+                    PAUSE_GRAPHICS_QUEUE();
                 }
 
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
@@ -372,7 +372,7 @@ void Task_TransitionToResultsScreen(void)
         { // TODO: This is a macro!
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
-            gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+            PAUSE_GRAPHICS_QUEUE();
         }
 
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {

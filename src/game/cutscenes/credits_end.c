@@ -183,13 +183,13 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->prevVariant = -1;
             s->x = (DISPLAY_WIDTH / 2);
             s->y = -20;
-            s->unk1A = 0;
+            s->oamFlags = SPRITE_OAM_ORDER(0);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             s->hitboxes[0].index = -1;
             UpdateSpriteAnimation(s);
         }
@@ -204,13 +204,13 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->prevVariant = -1;
             s->x = (DISPLAY_WIDTH / 2);
             s->y = DISPLAY_HEIGHT + 96; // Note: 96 is the width of metatiles
-            s->unk1A = 0;
+            s->oamFlags = SPRITE_OAM_ORDER(0);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             s->hitboxes[0].index = -1;
             UpdateSpriteAnimation(s);
         }
@@ -225,13 +225,13 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
             s->prevVariant = -1;
             s->x = (DISPLAY_WIDTH / 2);
             s->y = DISPLAY_HEIGHT + 96;
-            s->unk1A = 0;
+            s->oamFlags = SPRITE_OAM_ORDER(0);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
-            s->animSpeed = 0x10;
+            s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
-            s->unk10 = 0;
+            s->frameFlags = 0;
             s->hitboxes[0].index = -1;
             UpdateSpriteAnimation(s);
         }

@@ -32,7 +32,7 @@ void CreateMagneticRing(s16 x, s16 y)
     s->y = y;
 
     s->graphics.dest = RESERVED_RING_TILES_VRAM;
-    s->unk1A = SPRITE_OAM_ORDER(15);
+    s->oamFlags = SPRITE_OAM_ORDER(15);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_RING;
     s->variant = 0;
@@ -41,7 +41,8 @@ void CreateMagneticRing(s16 x, s16 y)
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk10 = (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2));
+    s->frameFlags
+        = (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2));
 }
 
 // (88.87%) https://decomp.me/scratch/EmhmV

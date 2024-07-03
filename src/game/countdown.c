@@ -70,28 +70,28 @@ void CreateCourseStartCountdown(bool8 playerSkippedIntro)
     s->graphics.anim = SA2_ANIM_COUNTDOWN;
     s->variant = SA2_ANIM_VARIANT_COUNTDOWN_3;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0;
+    s->frameFlags = 0;
 
     s = &countdown->sprMachine;
     s->graphics.dest = VramMalloc(0xE);
     s->graphics.anim = SA2_ANIM_LEVEL_START_MACHINE;
     s->variant = 0;
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->prevVariant = -1;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = 0x2400;
+    s->frameFlags = 0x2400;
 }
 
 void CreateRaceStartMessage(void);
@@ -219,28 +219,28 @@ void CreateRaceStartMessage(void)
     s->graphics.anim = SA2_ANIM_COUNTDOWN_START;
     s->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_L;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = gUnknown_030054B8++ | 0x60;
+    s->frameFlags = gUnknown_030054B8++ | 0x60;
 
     s = &startMessage->unk3C;
     s->graphics.dest = VramMalloc(0x40);
     s->graphics.anim = SA2_ANIM_COUNTDOWN_START;
     s->variant = SA2_ANIM_VARIANT_COUNTDOWN_START_R;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(4);
+    s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = gUnknown_030054B8++ | 0x60;
+    s->frameFlags = gUnknown_030054B8++ | 0x60;
 }
 
 void sub_8036524(void)
@@ -261,7 +261,7 @@ void sub_8036524(void)
 
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 4);
-    s->unk10 = gUnknown_030054B8++ | 0x60;
+    s->frameFlags = gUnknown_030054B8++ | 0x60;
     transformConfig->rotation = 0;
     unk78 = startMessage->unk78;
     if (unk78 < 0x10) {
@@ -275,7 +275,7 @@ void sub_8036524(void)
     transformConfig->x = s->x;
     transformConfig->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transformConfig);
+    TransformSprite(s, transformConfig);
     DisplaySprite(s);
 
     s = &startMessage->unk3C;
@@ -283,7 +283,7 @@ void sub_8036524(void)
 
     s->x = (DISPLAY_WIDTH / 2);
     s->y = (DISPLAY_HEIGHT / 4);
-    s->unk10 = gUnknown_030054B8++ | 0x60;
+    s->frameFlags = gUnknown_030054B8++ | 0x60;
     transformConfig->rotation = 0;
     unk78 = startMessage->unk78;
     if (unk78 < 0x10) {
@@ -297,7 +297,7 @@ void sub_8036524(void)
     transformConfig->x = s->x;
     transformConfig->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transformConfig);
+    TransformSprite(s, transformConfig);
     DisplaySprite(s);
 }
 

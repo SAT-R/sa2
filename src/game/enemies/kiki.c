@@ -63,12 +63,12 @@ void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(0x14);
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_KIKI;
     s->variant = 0;
     SPRITE_INIT_SCRIPT(s, 1.0);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     UpdateSpriteAnimation(s);
 }
 
@@ -159,7 +159,7 @@ static void sub_8053A38(void)
     Player_UpdateHomingPosition(QS(x), QS(y));
 
     if (kiki->unk3F == 0x12) {
-        if (s->unk10 & SPRITE_FLAG_MASK_X_FLIP) {
+        if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             CreateKikiProjectile(x - 4, y + 2);
         } else {
             CreateKikiProjectile(x + 9, y + 2);
@@ -200,12 +200,12 @@ static void CreateKikiProjectile(s16 x, s16 y)
     s->y = y;
 
     s->graphics.dest = VramMalloc(4);
-    s->unk1A = SPRITE_OAM_ORDER(17);
+    s->oamFlags = SPRITE_OAM_ORDER(17);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_KIKI_PROJ;
     s->variant = 0;
     SPRITE_INIT_SCRIPT(s, 1.0);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     UpdateSpriteAnimation(s);
 }
@@ -302,12 +302,12 @@ static void CreateKikiProjectilePiece(s16 x, s16 y)
     s->x = x;
     s->y = y;
     s->graphics.dest = VramMalloc(16);
-    s->unk1A = SPRITE_OAM_ORDER(18);
+    s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_KIKI_PROJ_EXPLOSION;
     s->variant = 0;
     SPRITE_INIT_SCRIPT(s, 1.0);
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
     UpdateSpriteAnimation(s);
 }
 

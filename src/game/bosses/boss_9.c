@@ -624,7 +624,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
         s->graphics.anim = gUnknown_080D8918[0].anim;
         s->variant = gUnknown_080D8918[0].variant;
         s->prevVariant = -1;
-        s->unk1A = SPRITE_OAM_ORDER(17);
+        s->oamFlags = SPRITE_OAM_ORDER(17);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
@@ -632,7 +632,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 6;
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
         unk98->unk10[i].exhaust.callback = sub_804DD9C;
 
@@ -653,14 +653,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
             s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_CLOUD;
             s->variant = 0;
             s->prevVariant = -1;
-            s->unk1A = SPRITE_OAM_ORDER(16);
+            s->oamFlags = SPRITE_OAM_ORDER(16);
             s->graphics.size = 0;
             s->animCursor = 0;
             s->timeUntilNextFrame = 0;
             s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 6;
             s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-            s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
         }
     }
     // _0804D39A
@@ -673,14 +673,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->graphics.anim = gUnknown_080D88F0[4].anim;
     s->variant = gUnknown_080D88F0[4].variant;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(19);
+    s->oamFlags = SPRITE_OAM_ORDER(19);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     // Not the correct sprite in this place, but matches with higher %
     for (i = 0; i < 4; i++) {
@@ -691,14 +691,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
         s->graphics.anim = gUnknown_080D88F0[i].anim;
         s->variant = gUnknown_080D88F0[i].variant;
         s->prevVariant = -1;
-        s->unk1A = SPRITE_OAM_ORDER(i + 20);
+        s->oamFlags = SPRITE_OAM_ORDER(i + 20);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(OBJ_MODE, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(OBJ_MODE, 2);
     }
 
     s = &unk558->s;
@@ -708,14 +708,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_SUCK_FX;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(21);
+    s->oamFlags = SPRITE_OAM_ORDER(21);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     // Rings that get "sucked out" by the Boss?
     s = &unk594->spr90;
@@ -725,14 +725,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->graphics.anim = SA2_ANIM_UI_RING;
     s->variant = 8;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(6);
+    s->oamFlags = SPRITE_OAM_ORDER(6);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
 
     // Yellow Projectile
     s = &unk654->sprF0;
@@ -742,14 +742,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_YELLOW;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(7);
+    s->oamFlags = SPRITE_OAM_ORDER(7);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
 
     // Red Projectile
     s = &unk654->spr128;
@@ -759,14 +759,14 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(7);
+    s->oamFlags = SPRITE_OAM_ORDER(7);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = HITBOX_STATE_INACTIVE;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
 }
 END_NONMATCH
 
@@ -935,7 +935,7 @@ void sub_804D8E0(TA53Boss *boss)
             s->graphics.anim = gUnknown_080D8918[16].anim;
             s->variant = gUnknown_080D8918[16].variant;
             s->prevVariant = -1;
-            s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
             unkA8->unk8 = 16;
         }
     }
@@ -1059,7 +1059,7 @@ void Task_804DC60(void)
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
 
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
 
         gStageFlags |= STAGE_FLAG__TURN_OFF_HUD;
 
@@ -1506,7 +1506,7 @@ void sub_804E74C(struct TA53_unk98 *unk98)
         s->graphics.anim = gUnknown_080D8918[0].anim;
         s->variant = gUnknown_080D8918[0].variant;
         s->prevVariant = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
         s->palId = 6;
         m4aSongNumStart(SE_266);
     }
@@ -1612,7 +1612,7 @@ void sub_804E974(struct TA53_unkA8 *unkA8)
             unkA8->unkE = COS(rot) >> 4;
             unkA8->unk10 = SIN(rot) >> 4;
 
-            s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
 
             r8 = FALSE;
             m4aSongNumStart(SE_268);
@@ -1630,7 +1630,7 @@ void sub_804E974(struct TA53_unkA8 *unkA8)
             s->graphics.anim = gUnknown_080D8918[16].anim;
             s->variant = gUnknown_080D8918[16].variant;
             s->prevVariant = -1;
-            s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
             s->palId = 0;
             m4aSongNumStart(SE_267);
         }
@@ -1936,7 +1936,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc",
             s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_MOUTH;
             s->variant = 0;
             s->prevVariant = -1;
-            s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
         } else {
             // _0804F36C
             m4aSongNumStartOrContinue(SE_SUCTION);
@@ -2591,10 +2591,10 @@ void sub_80501D4(TA53Boss *boss)
 
     sub_8003EE4(r7, 0x0100, 0x0100, 0x0030, 0x0033, screenX, screenY, &gBgAffineRegs[0]);
 
-    boss->spr7B4.unk10 = 0;
+    boss->spr7B4.frameFlags = 0;
 
     for (i = 0; i < ARRAY_COUNT(boss->capsule); i++) {
-        boss->capsule[i].s.unk10 = 0;
+        boss->capsule[i].s.frameFlags = 0;
     }
 
     blend = (SIN((gStageTime * 2) & 0x1FF) >> 6);
@@ -2604,7 +2604,7 @@ void sub_80501D4(TA53Boss *boss)
         s = &boss->spr7B4;
         s->x = screenX;
         s->y = screenY;
-        s->unk10 |= SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags |= SPRITE_FLAG(PRIORITY, 2);
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
@@ -2635,8 +2635,9 @@ void sub_80501D4(TA53Boss *boss)
         s->x = I(qX) - gCamera.x;
         s->y = I(qY) - gCamera.y;
 
-        s->unk10 |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                     | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+        s->frameFlags
+            |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
 
         transform->rotation = r7;
         transform->width = 0x100;
@@ -2644,7 +2645,7 @@ void sub_80501D4(TA53Boss *boss)
         transform->x = s->x;
         transform->y = s->y;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
 
@@ -2658,8 +2659,9 @@ void sub_80501D4(TA53Boss *boss)
     s->x = I(qX) - gCamera.x;
     s->y = I(qY) - gCamera.y;
 
-    s->unk10 |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                 | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+    s->frameFlags
+        |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+            | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
 
     transform->rotation = sinIndex;
     transform->width = 0x100;
@@ -2667,7 +2669,7 @@ void sub_80501D4(TA53Boss *boss)
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transform);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 }
 
@@ -2714,10 +2716,10 @@ void sub_80505B8(TA53Boss *boss)
 
     sub_8003EE4(r7, 0x0100, 0x0100, 0x0030, 0x0033, screenX, screenY, &gBgAffineRegs[0]);
 
-    boss->spr7B4.unk10 = 0;
+    boss->spr7B4.frameFlags = 0;
 
     for (i = 0; i < ARRAY_COUNT(boss->capsule); i++) {
-        boss->capsule[i].s.unk10 = 0;
+        boss->capsule[i].s.frameFlags = 0;
     }
 
     sub_80508C4(boss, 255, unk48->unk4C);
@@ -2726,7 +2728,7 @@ void sub_80505B8(TA53Boss *boss)
         s = &boss->spr7B4;
         s->x = screenX;
         s->y = screenY;
-        s->unk10 |= SPRITE_FLAG(PRIORITY, 2);
+        s->frameFlags |= SPRITE_FLAG(PRIORITY, 2);
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
@@ -2757,8 +2759,9 @@ void sub_80505B8(TA53Boss *boss)
         s->x = I(qX) - gCamera.x;
         s->y = I(qY) - gCamera.y;
 
-        s->unk10 |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                     | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+        s->frameFlags
+            |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+                | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
 
         transform->rotation = r7;
         transform->width = 0x100;
@@ -2766,7 +2769,7 @@ void sub_80505B8(TA53Boss *boss)
         transform->x = s->x;
         transform->y = s->y;
         UpdateSpriteAnimation(s);
-        sub_8004860(s, transform);
+        TransformSprite(s, transform);
         DisplaySprite(s);
     }
 
@@ -2780,8 +2783,9 @@ void sub_80505B8(TA53Boss *boss)
     s->x = I(qX) - gCamera.x;
     s->y = I(qY) - gCamera.y;
 
-    s->unk10 |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                 | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+    s->frameFlags
+        |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
+            | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
 
     transform->rotation = sinIndex;
     transform->width = 0x100;
@@ -2789,7 +2793,7 @@ void sub_80505B8(TA53Boss *boss)
     transform->x = s->x;
     transform->y = s->y;
     UpdateSpriteAnimation(s);
-    sub_8004860(s, transform);
+    TransformSprite(s, transform);
     DisplaySprite(s);
 }
 
@@ -2813,11 +2817,11 @@ void sub_80508C4(TA53Boss *boss, u16 blend, bool8 param2)
         gBldRegs.bldY = BLDALPHA_BLEND(bldTarget1, bldTarget2);
 
         s = &boss->spr7B4;
-        s->unk10 |= 0x100;
+        s->frameFlags |= 0x100;
 
         for (i = 0; i < ARRAY_COUNT(boss->capsule); i++) {
             s = &boss->capsule[i].s;
-            s->unk10 |= SPRITE_FLAG(OBJ_MODE, 2);
+            s->frameFlags |= SPRITE_FLAG(OBJ_MODE, 2);
         }
     }
 }
@@ -3059,7 +3063,7 @@ void sub_8050DC8(struct TA53_unk558 *unk558)
     s->graphics.anim = SA2_ANIM_TRUE_AREA_53_BOSS_SUCK_FX;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
 }
 
 void sub_8050DF8(struct TA53_unk654 *unk654) { sub_804F5BC(unk654); }

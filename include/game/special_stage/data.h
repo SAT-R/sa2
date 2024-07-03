@@ -34,7 +34,7 @@ struct UNK_80DF670 {
     /* 0x00 */ AnimId anim;
     /* 0x02 */ u16 variant;
     u16 unk4;
-    u8 unk6;
+    u8 animSpeed;
     u8 unk7;
 } /* size 0x8 */;
 

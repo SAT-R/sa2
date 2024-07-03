@@ -183,11 +183,11 @@ void CreateEggGoRound(void)
     sub_8039ED4();
     gPseudoRandom = gStageTime;
 
-    gUnknown_03005AF0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AF0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+    gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
 
-    gUnknown_03005AA0.s.unk10 &= ~SPRITE_FLAG_MASK_PRIORITY;
-    gUnknown_03005AA0.s.unk10 |= SPRITE_FLAG(PRIORITY, 1);
+    gUnknown_03005AA0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+    gUnknown_03005AA0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
 
     gPlayer.unk3C = NULL;
     gPlayer.moveState &= ~MOVESTATE_8;
@@ -266,14 +266,14 @@ void CreateEggGoRound(void)
     s->graphics.anim = SA2_ANIM_EGG_GO_ROUND_PILOT;
     s->variant = 0;
     s->prevVariant = -1;
-    s->unk1A = SPRITE_OAM_ORDER(19);
+    s->oamFlags = SPRITE_OAM_ORDER(19);
     s->graphics.size = 0;
     s->animCursor = 0;
     s->timeUntilNextFrame = 0;
-    s->animSpeed = 0x10;
+    s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
 
     s = &boss->link;
     s->x = 0;
@@ -291,15 +291,15 @@ void CreateEggGoRound(void)
         s->graphics.anim = sPlatformAnimations[i].anim;
         s->variant = sPlatformAnimations[i].variant;
 
-        s->unk1A = SPRITE_OAM_ORDER(21);
+        s->oamFlags = SPRITE_OAM_ORDER(21);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
         UpdateSpriteAnimation(s);
     }
 
@@ -311,15 +311,15 @@ void CreateEggGoRound(void)
         s->graphics.anim = sPlatformAnimations[i % NUM_PLATFORM_TYPES].anim;
         s->variant = sPlatformAnimations[i % NUM_PLATFORM_TYPES].variant;
 
-        s->unk1A = SPRITE_OAM_ORDER(21);
+        s->oamFlags = SPRITE_OAM_ORDER(21);
         s->graphics.size = 0;
         s->animCursor = 0;
         s->timeUntilNextFrame = 0;
         s->prevVariant = -1;
-        s->animSpeed = 0x10;
+        s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->hitboxes[0].index = -1;
-        s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+        s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
         UpdateSpriteAnimation(s);
     }
 }
@@ -510,7 +510,7 @@ static void Task_DestructionCutScene3(void)
 
     if (boss->destructionProps.unk1C1 == 0
         && (I(destruction->cabin.x) - gCamera.x) < 50) {
-        u32 flags = boss->pilot.unk10;
+        u32 flags = boss->pilot.frameFlags;
         flags &= SPRITE_FLAG_MASK_X_FLIP;
         flags |= SPRITE_FLAG(PRIORITY, 1);
         boss->destructionProps.unk1C1 = 1;
@@ -583,10 +583,10 @@ static void Render(EggGoRound *boss)
             transform->x = s->x;
             transform->y = s->y;
 
-            s->unk10 = gUnknown_030054B8++ | 0x1020;
-            sub_8004860(s, transform);
+            s->frameFlags = gUnknown_030054B8++ | 0x1020;
+            TransformSprite(s, transform);
         } else {
-            s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
         }
         DisplaySprite(s);
     }
@@ -667,10 +667,10 @@ static void sub_804655C(EggGoRound *boss, u8 val)
             transform->x = s->x;
             transform->y = s->y;
 
-            s->unk10 = gUnknown_030054B8++ | 0x1020;
-            sub_8004860(s, transform);
+            s->frameFlags = gUnknown_030054B8++ | 0x1020;
+            TransformSprite(s, transform);
         } else {
-            s->unk10 = SPRITE_FLAG(PRIORITY, 1);
+            s->frameFlags = SPRITE_FLAG(PRIORITY, 1);
         }
         DisplaySprite(s);
     }

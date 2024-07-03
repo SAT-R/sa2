@@ -32,10 +32,10 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
 
     s->graphics.size = 0;
     s->graphics.anim = anim;
-    s->unk10 = unk10;
+    s->frameFlags = unk10;
     s->x = xPos;
     s->y = yPos;
-    s->unk1A = SPRITE_OAM_ORDER(oamOrder);
+    s->oamFlags = SPRITE_OAM_ORDER(oamOrder);
     s->timeUntilNextFrame = 0;
     s->prevAnim = -1;
     s->variant = variant;
@@ -171,10 +171,10 @@ void sub_806CD68(Sprite *s)
         oam->all.attr0 = (unk18 + (oam->all.attr0 & 0xff)) & 0xff;
         oam->all.attr0 |= 0x300;
         oam->all.attr1 &= 0xfe00;
-        oam->all.attr1 |= ((s->unk10 & 0x1f) << 9);
+        oam->all.attr1 |= ((s->frameFlags & 0x1f) << 9);
         oam->all.attr1 |= ((unk16 + attr1_2) & 0x1ff);
         oam->all.attr2 += s->palId << 12;
-        oam->all.attr2 |= ((s->unk10 & 0x3000) >> 2);
+        oam->all.attr2 |= ((s->frameFlags & 0x3000) >> 2);
         oam->all.attr2 += GET_TILE_NUM(s->graphics.dest);
     }
 }

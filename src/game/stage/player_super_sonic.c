@@ -177,7 +177,7 @@ void SuperSonicInit()
     spr->graphics.dest = RESERVED_SUPER_SONIC_TILES_VRAM;
     spr->graphics.anim = gAnims_SuperSonic_080D69C8[0].anim;
     spr->variant = gAnims_SuperSonic_080D69C8[0].variant;
-    spr->unk1A = SPRITE_OAM_ORDER(8);
+    spr->oamFlags = SPRITE_OAM_ORDER(8);
     spr->graphics.size = 0;
     spr->x = 0;
     spr->y = 0;
@@ -188,7 +188,7 @@ void SuperSonicInit()
     spr->palId = 0;
     spr->hitboxes[0].index = -1;
     spr->hitboxes[1].index = -1;
-    spr->unk10 = (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_X_FLIP);
+    spr->frameFlags = (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_X_FLIP);
 }
 
 void sub_802B81C(void)
@@ -336,7 +336,7 @@ static void Task_802BC10(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
 
         if ((gNumLives != 0) && (--gNumLives != 0)) {
             if (gCourseTime >= MAX_COURSE_TIME) {
@@ -442,10 +442,10 @@ static void sub_802BE1C(struct SuperSonic *sonic)
     prio = (sonic->flags & SUPER_FLAG__200) ? 3 : 0;
 
     if (sonic->flags & 0x4) {
-        spr->unk10 = SPRITE_FLAG(PRIORITY, prio) | gUnknown_030054B8++
+        spr->frameFlags = SPRITE_FLAG(PRIORITY, prio) | gUnknown_030054B8++
             | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     } else {
-        spr->unk10 = SPRITE_FLAG(PRIORITY, prio) | SPRITE_FLAG_MASK_X_FLIP;
+        spr->frameFlags = SPRITE_FLAG(PRIORITY, prio) | SPRITE_FLAG_MASK_X_FLIP;
     }
     UpdateSpriteAnimation(spr);
 
@@ -455,7 +455,7 @@ static void sub_802BE1C(struct SuperSonic *sonic)
         transform->height = Q(1.0);
         transform->x = spr->x;
         transform->y = spr->y;
-        sub_8004860(spr, transform);
+        TransformSprite(spr, transform);
         DisplaySprite(spr);
     } else {
         DisplaySprite(spr);
@@ -819,7 +819,7 @@ static void sub_802C8A0(struct SuperSonic *sonic)
 static void sub_802C8EC(struct SuperSonic *sonic)
 {
     Sprite *spr = &sonic->spr;
-    spr->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    spr->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     sonic->unk1A += Q(0.125);
     sonic->worldY += sonic->unk1A;

@@ -103,9 +103,9 @@ static void Task_PhysicsMain(void)
         player->roboArrow.y = screenY;
 
         if (arrowAngle > 256 && arrowAngle < 768) {
-            player->roboArrow.unk1A = 0;
+            player->roboArrow.oamFlags = SPRITE_OAM_ORDER(0);
         } else {
-            player->roboArrow.unk1A = 0x280;
+            player->roboArrow.oamFlags = SPRITE_OAM_ORDER(10);
         }
 
         sub_80047A0(arrowAngle, 256, 256, 30);

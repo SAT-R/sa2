@@ -415,22 +415,22 @@ sub_802E784: @ 0x0802E784
 	mov r5, r8
 	push {r5, r6, r7}
 	sub sp, #0x38
-	ldr r4, [sp, #0x58]
-	ldr r5, [sp, #0x5c]
+	ldr r4, [sp, #0x58]         @ r4 = y
+	ldr r5, [sp, #0x5c]         @ r5 = p5
 	lsls r0, r0, #0x10
 	lsrs r0, r0, #0x10
-	str r0, [sp, #0x20]
+	str r0, [sp, #0x20]         @ sp20 = p0
 	lsls r1, r1, #0x10
-	lsrs r7, r1, #0x10
+	lsrs r7, r1, #0x10          @ r7 = p1
 	lsls r2, r2, #0x10
 	lsrs r2, r2, #0x10
-	str r2, [sp, #0x24]
+	str r2, [sp, #0x24]         @ sp24 = p2
 	lsls r3, r3, #0x10
 	lsls r4, r4, #0x10
 	lsrs r4, r4, #0x10
 	lsls r5, r5, #0x18
 	lsrs r5, r5, #0x18
-	str r5, [sp, #0x28]
+	str r5, [sp, #0x28]         @ sp28 = (u8)p5
 	movs r0, #0
 	mov sl, r0
 	ldr r1, _0802E80C @ =gUnknown_03002A80
@@ -445,8 +445,8 @@ sub_802E784: @ 0x0802E784
 	orrs r0, r1
 	str r0, [r2]
 	lsrs r1, r3, #0x10
-	mov ip, r1
-	asrs r2, r3, #0x10
+	mov ip, r1                  @ ip = (u16)x
+	asrs r2, r3, #0x10          @ r2 = x
 	ldr r5, _0802E81C @ =0xFFFF0000
 	adds r3, r3, r5
 	lsrs r3, r3, #0x10

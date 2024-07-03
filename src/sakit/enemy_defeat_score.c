@@ -29,7 +29,7 @@ void CreateEnemyDefeatScore(s16 x, s16 y)
     score->s.y = y;
 
     s->graphics.dest = VramMalloc(TILE_COUNT__ANIM_SCORE);
-    s->unk1A = 0;
+    s->oamFlags = SPRITE_OAM_ORDER(0);
     s->graphics.size = 0;
     s->graphics.anim = SA2_ANIM_SCORE;
     s->variant = gPlayer.defeatScoreIndex;
@@ -38,7 +38,7 @@ void CreateEnemyDefeatScore(s16 x, s16 y)
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk10 = SPRITE_FLAG(PRIORITY, 2);
+    s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
     UpdateSpriteAnimation(s);
 }

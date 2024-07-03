@@ -66,11 +66,11 @@ void CreateDemoManager(void)
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk1A = SPRITE_OAM_ORDER(1);
-    s->unk10 = 0;
+    s->oamFlags = SPRITE_OAM_ORDER(1);
+    s->frameFlags = 0;
 
     if (blendCtrl != BLDCNT_EFFECT_BLEND) {
-        s->unk10 = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
+        s->frameFlags = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
     }
     UpdateSpriteAnimation(s);
 
@@ -88,11 +88,11 @@ void CreateDemoManager(void)
     s->timeUntilNextFrame = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->unk1A = SPRITE_OAM_ORDER(1);
-    s->unk10 = 0;
+    s->oamFlags = SPRITE_OAM_ORDER(1);
+    s->frameFlags = 0;
 
     if (blendCtrl != BLDCNT_EFFECT_BLEND) {
-        s->unk10 = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
+        s->frameFlags = SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
     }
     UpdateSpriteAnimation(s);
 }
@@ -133,9 +133,9 @@ void Task_DemoManagerMain(void)
 
         if (gStageTime & 0x20) {
             if (gBldRegs.bldY != 0) {
-                s->unk10 |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
+                s->frameFlags |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
             } else {
-                s->unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+                s->frameFlags &= ~SPRITE_FLAG_MASK_OBJ_MODE;
             }
 
             UpdateSpriteAnimation(s);
@@ -143,9 +143,9 @@ void Task_DemoManagerMain(void)
         }
 
         if (gBldRegs.bldY != 0) {
-            dm->textDemoPlay.unk10 |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
+            dm->textDemoPlay.frameFlags |= SPRITE_FLAG(OBJ_MODE, ST_OAM_OBJ_BLEND);
         } else {
-            dm->textDemoPlay.unk10 &= ~SPRITE_FLAG_MASK_OBJ_MODE;
+            dm->textDemoPlay.frameFlags &= ~SPRITE_FLAG_MASK_OBJ_MODE;
         }
 
         DisplaySprite(&dm->textDemoPlay);
@@ -167,7 +167,7 @@ void Task_DemoManagerEndFadeout(void)
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
-        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
+        PAUSE_GRAPHICS_QUEUE();
 
         if (!dm->playerPressedStart) {
             CreateTitleScreen();

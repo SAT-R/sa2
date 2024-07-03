@@ -111,7 +111,7 @@ static void sub_8051928(void)
         s->prevVariant = -1;
     }
     ENEMY_UPDATE(s, pos.x, pos.y);
-    RenderProjectiles(gohla, s->x, s->y - 4, s->unk10);
+    RenderProjectiles(gohla, s->x, s->y - 4, s->frameFlags);
 }
 
 static void sub_8051AF0(void)
@@ -151,7 +151,7 @@ static void sub_8051AF0(void)
     }
 
     DisplaySprite(s);
-    RenderProjectiles(gohla, s->x, s->y - 4, s->unk10);
+    RenderProjectiles(gohla, s->x, s->y - 4, s->frameFlags);
 }
 
 static void RenderProjectiles(Sprite_Gohla *gohla, s16 x, s16 y, u32 flags)
@@ -179,9 +179,9 @@ static void RenderProjectiles(Sprite_Gohla *gohla, s16 x, s16 y, u32 flags)
         proj->y = y + (SIN(pos[1]) >> 13);
 
         if (pos[0] >= 0x200) {
-            proj->unk1A = SPRITE_OAM_ORDER(17);
+            proj->oamFlags = SPRITE_OAM_ORDER(17);
         } else {
-            proj->unk1A = SPRITE_OAM_ORDER(19);
+            proj->oamFlags = SPRITE_OAM_ORDER(19);
         }
         DisplaySprite(proj);
     }

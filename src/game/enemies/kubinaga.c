@@ -1,5 +1,7 @@
 #include "global.h"
 #include "malloc_vram.h"
+#include "sprite.h"
+#include "trig.h"
 #include "lib/m4a.h"
 
 #include "sakit/entities_manager.h"
@@ -10,7 +12,6 @@
 #include "game/enemies/projectiles.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "trig.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"
@@ -94,7 +95,7 @@ void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->graphics.dest = VramMalloc(0x10);
     SPRITE_INIT_ANIM(s, SA2_ANIM_KUBINAGA, 1, 19);
     SPRITE_INIT_SCRIPT(s, 1.0)
-    s->unk10 = gUnknown_030054B8++ | 0x2060;
+    s->frameFlags = gUnknown_030054B8++ | 0x2060;
     UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
@@ -132,10 +133,10 @@ static void sub_80524D0(void)
     DisplaySprite(s);
 
     if (s->variant == 0) {
-        s->unk10 ^= SPRITE_FLAG_MASK_X_FLIP;
+        s->frameFlags ^= SPRITE_FLAG_MASK_X_FLIP;
         DisplaySprite(s);
     } else {
-        s->unk10 ^= SPRITE_FLAG_MASK_Y_FLIP;
+        s->frameFlags ^= SPRITE_FLAG_MASK_Y_FLIP;
         DisplaySprite(s);
     }
 }
@@ -179,10 +180,10 @@ static void sub_80526C8(void)
     DisplaySprite(sBase);
 
     if (sBase->variant == 0) {
-        sBase->unk10 ^= SPRITE_FLAG_MASK_X_FLIP;
+        sBase->frameFlags ^= SPRITE_FLAG_MASK_X_FLIP;
         DisplaySprite(sBase);
     } else {
-        sBase->unk10 ^= SPRITE_FLAG_MASK_Y_FLIP;
+        sBase->frameFlags ^= SPRITE_FLAG_MASK_Y_FLIP;
         DisplaySprite(sBase);
     }
 
@@ -246,10 +247,10 @@ static void sub_80528AC(void)
     DisplaySprite(sBase);
 
     if (sBase->variant == 0) {
-        sBase->unk10 ^= SPRITE_FLAG_MASK_X_FLIP;
+        sBase->frameFlags ^= SPRITE_FLAG_MASK_X_FLIP;
         DisplaySprite(sBase);
     } else {
-        sBase->unk10 ^= SPRITE_FLAG_MASK_Y_FLIP;
+        sBase->frameFlags ^= SPRITE_FLAG_MASK_Y_FLIP;
         DisplaySprite(sBase);
     }
 
@@ -294,10 +295,10 @@ static void sub_8052AEC(void)
     DisplaySprite(sBase);
 
     if (sBase->variant == 0) {
-        sBase->unk10 ^= SPRITE_FLAG_MASK_X_FLIP;
+        sBase->frameFlags ^= SPRITE_FLAG_MASK_X_FLIP;
         DisplaySprite(sBase);
     } else {
-        sBase->unk10 ^= SPRITE_FLAG_MASK_Y_FLIP;
+        sBase->frameFlags ^= SPRITE_FLAG_MASK_Y_FLIP;
         DisplaySprite(sBase);
     }
 
@@ -378,10 +379,11 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
         sHead->prevVariant = -1;
     }
 
-    sHead->unk10 = gUnknown_030054B8++ | 0x2060;
+    sHead->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 2)
+        | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE;
 
     UpdateSpriteAnimation(sHead);
-    sub_8004860(sHead, transform);
+    TransformSprite(sHead, transform);
     DisplaySprite(sHead);
 }
 
