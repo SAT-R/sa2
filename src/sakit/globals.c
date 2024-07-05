@@ -77,7 +77,7 @@ struct Task *ALIGNED(16) gMultiplayerPlayerTasks[MULTI_SIO_PLAYERS_MAX] = {};
 struct Task *ALIGNED(4) gMultiplayerPlayerTasks[MULTI_SIO_PLAYERS_MAX] = {};
 #endif
 
-u8 gUnknown_030055B0 = 0;
+u8 gBossIndex = 0;
 
 s8 ALIGNED(4) gCurrentLevel = 0;
 u8 ALIGNED(4) gMultiplayerConnections = 0;

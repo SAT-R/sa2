@@ -29,9 +29,10 @@
 #include "constants/songs.h"
 #include "constants/tilemaps.h"
 
-#define ARM_LEFT  0
-#define ARM_RIGHT 1
-#define ARM_COUNT 2
+#define ARM_LEFT   0
+#define ARM_RIGHT  1
+#define ARM_COUNT  2
+#define NUM_TOWERS 3
 
 typedef struct {
     /* 0x00 */ Sprite s;
@@ -67,68 +68,74 @@ typedef struct {
 typedef struct {
     u16 unk0;
     u16 unk2;
-    u8 unk4;
+    u8 bossIndex;
     u8 unk5;
     u8 unk6;
-} UNK_80498CC;
+} BossRunManager;
 
 typedef struct {
-    Sprite unk0[3][ARM_COUNT];
-    void *unk120;
-    s32 unk124[3][2];
-    s32 unk13C[3][2];
-    u16 unk154[3];
-    u8 unk15A[3];
+    Sprite sprites[NUM_TOWERS][2];
+    void *vram;
+    Vec2_32 positions[NUM_TOWERS];
+    Vec2_32 offsets[NUM_TOWERS];
+    u16 unk154[NUM_TOWERS];
+    u8 unk15A[NUM_TOWERS];
     u8 unk15D;
     u8 unk15E;
     u8 unk15F;
-    SuperEggRoboZ *unk160;
-} UNK_8049D20; /* 0x164 */
+    SuperEggRoboZ *boss;
+} SuperEggRoboZTowers; /* 0x164 */
 
 typedef void (*EggRoboFn)(SuperEggRoboZ *boss, u8 arm);
-typedef void (*UNK_8049D20Callback)(UNK_8049D20 *, u8);
+typedef void (*SuperEggRoboZTowersCallback)(SuperEggRoboZTowers *, u8);
 
-extern void sub_8049F1C(UNK_8049D20 *unkD20, u8 i);
-extern void sub_804A070(UNK_8049D20 *unkD20, u8 i);
-extern void sub_804A1C0(UNK_8049D20 *unkD20, u8 i);
-extern void sub_804A398(UNK_8049D20 *unkD20, u8 i);
-extern void sub_804A53C(UNK_8049D20 *unkD20, u8 i);
+static void sub_8049F1C(SuperEggRoboZTowers *towers, u8 i);
+static void sub_804A070(SuperEggRoboZTowers *towers, u8 i);
+static void sub_804A1C0(SuperEggRoboZTowers *towers, u8 i);
+static void sub_804A398(SuperEggRoboZTowers *towers, u8 i);
+static void sub_804A53C(SuperEggRoboZTowers *towers, u8 i);
+static void Task_SuperEggRoboZTowersMain(void);
+static void TaskDestructor_SuperEggRoboZTowers(struct Task *);
 
-void Task_SuperEggRoboZMain(void);
-void TaskDestructor_SuperEggRoboZMain(struct Task *);
+static void Task_SuperEggRoboZMain(void);
+static void TaskDestructor_SuperEggRoboZMain(struct Task *);
 
-void Task_80499D8(void);
-void TaskDestructor_8049D1C(struct Task *);
+static void Task_BossRunManagerMain(void);
+static void TaskDestructor_BossRunManager(struct Task *);
 
-void Task_804AB24(void);
-void Task_804AD68(void);
-u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm);
-void sub_804B43C(SuperEggRoboZ *boss, u8 p1);
-void sub_804B594(SuperEggRoboZ *boss, u8 p1);
-void sub_804B734(SuperEggRoboZ *boss, u8 p1);
-void sub_804B984(SuperEggRoboZ *boss, u8 p1);
-void sub_804BAC0(SuperEggRoboZ *boss, u8 p1);
-void sub_804BC44(SuperEggRoboZ *boss, u8 p1);
-void sub_804BE6C(SuperEggRoboZ *boss, u8 p1);
-void sub_804C080(SuperEggRoboZ *boss);
-void sub_804C240(SuperEggRoboZ *boss, u8 p1);
-void sub_804C3AC(SuperEggRoboZ *boss);
-void sub_804C5B8(SuperEggRoboZ *boss);
-void sub_804C830(SuperEggRoboZ *boss);
-void sub_804CA08(SuperEggRoboZ *boss);
-void sub_804CA70(SuperEggRoboZ *boss);
-void Task_ShowResultsAndDelete(void);
-void sub_804CC98(SuperEggRoboZ *boss);
-void sub_804AE40(SuperEggRoboZ *boss);
-void Boss8_HitCockpit(SuperEggRoboZ *boss);
-void sub_804C8F4(SuperEggRoboZ *boss);
-void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1);
-bool8 sub_804C9B4(SuperEggRoboZ *boss, u8 param1);
-void sub_8049E90(void);
-void sub_804A6B4(struct Task *);
+static void Task_804AB24(void);
+static void Task_804AD68(void);
+static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm);
+static void sub_804B43C(SuperEggRoboZ *boss, u8 p1);
+static void sub_804B594(SuperEggRoboZ *boss, u8 p1);
+static void sub_804B734(SuperEggRoboZ *boss, u8 p1);
+static void sub_804B984(SuperEggRoboZ *boss, u8 p1);
+static void sub_804BAC0(SuperEggRoboZ *boss, u8 p1);
+static void sub_804BC44(SuperEggRoboZ *boss, u8 p1);
+static void sub_804BE6C(SuperEggRoboZ *boss, u8 p1);
+static void sub_804C080(SuperEggRoboZ *boss);
+static void sub_804C240(SuperEggRoboZ *boss, u8 p1);
+static void sub_804C3AC(SuperEggRoboZ *boss);
+static void sub_804C5B8(SuperEggRoboZ *boss);
+static void sub_804C830(SuperEggRoboZ *boss);
+static void sub_804CA08(SuperEggRoboZ *boss);
+static void sub_804CA70(SuperEggRoboZ *boss);
+static void Task_ShowResultsAndDelete(void);
+static void sub_804CC98(SuperEggRoboZ *boss);
+static void sub_804AE40(SuperEggRoboZ *boss);
+static void Boss8_HitCockpit(SuperEggRoboZ *boss);
+static void sub_804C8F4(SuperEggRoboZ *boss);
+static void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1);
+static bool8 sub_804C9B4(SuperEggRoboZ *boss, u8 param1);
 
-const u16 gUnknown_080D87D8[] = {
-    6400, 13888, 18016, 23104, 29152, 38080, 43091,
+const u16 sBossRunCameraYTriggers[] = {
+    6400, // boss 2
+    13888, // boss 3
+    18016, // boss 4
+    23104, // boss 5
+    29152, // boss 6
+    38080, // boss 7
+    43091, // boss 8
 };
 
 const u16 gUnknown_080D87E6[][2] = {
@@ -147,18 +154,21 @@ const s32 gUnknown_080D8840[][2] = {
     { 43017, 287 },
 };
 
-const u8 gUnknown_080D8858[][2] = { 1, 1, 2, 60, 3, 120, 4, 129, 0, 180, 0, 0 };
+const u8 gUnknown_080D8858[][2] = {
+    { 1, 1 }, { 2, 60 }, { 3, 120 }, { 4, 129 }, { 0, 180 }, { 0, 0 },
+};
 
-const TileInfo gUnknown_080D8864[] = {
+const TileInfo sTowerPiecesTileInfo[] = {
     { 0, SA2_ANIM_SUPER_EGG_ROBO_Z_PLATFORM, 0 },
     { 0, SA2_ANIM_SUPER_EGG_ROBO_Z_PLATFORM_PROP, 0 },
 };
 
-const UNK_8049D20Callback gUnknown_080D8874[] = {
+const SuperEggRoboZTowersCallback sTowerStateCallbacks[] = {
     sub_8049F1C, sub_804A070, sub_804A1C0, sub_804A398, sub_804A53C,
 };
 
 const u16 gUnknown_080D8888[2][2] = { { Q(188), Q(110) }, { Q(162), Q(110) } };
+
 static const EggRoboFn sArmFuncs[8]
     = { sub_804B43C, sub_804B594, sub_804B734, sub_804B984,
         sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240 };
@@ -182,53 +192,53 @@ const u16 sArmPalettes[2][16] = {
         s->prevVariant = -1;                                                            \
     }
 
-void sub_80498CC(u8 bossNum)
+void CreateBossRunManager(u8 bossIndex)
 {
-    struct Task *t = TaskCreate(Task_80499D8, sizeof(UNK_80498CC), 0x4000, 0,
-                                TaskDestructor_8049D1C);
-    UNK_80498CC *unk8CC = TASK_DATA(t);
-    unk8CC->unk4 = bossNum;
-    unk8CC->unk5 = 0;
-    unk8CC->unk6 = 0;
-    unk8CC->unk0 = gUnknown_080D5964[unk8CC->unk4][0];
-    unk8CC->unk2 = gUnknown_080D5964[unk8CC->unk4][1];
+    struct Task *t = TaskCreate(Task_BossRunManagerMain, sizeof(BossRunManager), 0x4000,
+                                0, TaskDestructor_BossRunManager);
+    BossRunManager *manager = TASK_DATA(t);
+    manager->bossIndex = bossIndex;
+    manager->unk5 = 0;
+    manager->unk6 = 0;
+    manager->unk0 = gUnknown_080D5964[manager->bossIndex][0];
+    manager->unk2 = gUnknown_080D5964[manager->bossIndex][1];
 
-    gUnknown_03005440 = gUnknown_080D5964[unk8CC->unk4][0];
-    gUnknown_030054BC = gUnknown_080D5964[unk8CC->unk4][1];
+    gUnknown_03005440 = gUnknown_080D5964[manager->bossIndex][0];
+    gUnknown_030054BC = gUnknown_080D5964[manager->bossIndex][1];
 
-    if (bossNum != 0) {
+    if (bossIndex != 0) {
         s32 x, y;
         Cheese *cheese;
         Player_DisableInputAndBossTimer();
 
-        gPlayer.speedGroundX = 0x500;
+        gPlayer.speedGroundX = Q(5);
 
         // ???
-        x = gUnknown_080D87E6[bossNum - 1][0] - I(gPlayer.x);
-        y = gUnknown_080D87E6[bossNum][1] - I(gPlayer.y);
+        x = gUnknown_080D87E6[bossIndex - 1][0] - I(gPlayer.x);
+        y = gUnknown_080D87E6[bossIndex][1] - I(gPlayer.y);
         gPlayer.x += Q(x);
         gPlayer.y += Q(y);
 
-        gCamera.x += x - 0x78;
-        gCamera.y += y - 0x78;
+        gCamera.x += x - 120;
+        gCamera.y += y - 120;
 
-        gCamera.unk20 += x - 0x78;
-        gCamera.unk24 += y - 0x78;
-        gCamera.unk10 += x - 0x78;
-        gCamera.unk14 += y - 0x78;
+        gCamera.unk20 += x - 120;
+        gCamera.unk24 += y - 120;
+        gCamera.unk10 += x - 120;
+        gCamera.unk14 += y - 120;
 
         cheese = gCheese;
         if (cheese != NULL) {
             cheese->posX += Q(x);
             cheese->posY += Q(y);
         }
-        unk8CC->unk4--;
+        manager->bossIndex--;
     }
 }
 
-void Task_80499D8(void)
+static void Task_BossRunManagerMain(void)
 {
-    UNK_80498CC *unk8CC = TASK_DATA(gCurTask);
+    BossRunManager *manager = TASK_DATA(gCurTask);
 #ifndef NON_MATCHING
     register s32 r5 asm("r5");
     register s32 r1 asm("r1");
@@ -239,18 +249,18 @@ void Task_80499D8(void)
 #endif
     s32 r4;
 
-    if (unk8CC->unk4 <= 6) {
-        if (unk8CC->unk4 == 6) {
+    if (manager->bossIndex <= 6) {
+        if (manager->bossIndex == 6) {
             gUnknown_03005440 = gUnknown_080D5964[7][0];
             gUnknown_030054BC = gUnknown_080D5964[7][1];
-            if (gPlayer.x < Q(42960) && gPlayer.x > Q(gUnknown_080D8808[6][0] + 0x1E)) {
+            if (gPlayer.x < Q(42960) && gPlayer.x > Q(gUnknown_080D8808[6][0] + 30)) {
                 gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-                gPlayer.speedGroundX = 0x500;
+                gPlayer.speedGroundX = Q(5);
                 gPlayer.unk5E = 0;
                 gPlayer.unk5C = 0;
                 gPlayer.rotation = 0;
-                if (I(gPlayer.x) - 0x78 != gCamera.x) {
-                    if (I(gPlayer.x) - 0x78 > gCamera.x) {
+                if (I(gPlayer.x) - 120 != gCamera.x) {
+                    if (I(gPlayer.x) - 120 > gCamera.x) {
                         gCamera.unk20++;
                         gCamera.x++;
                         gCamera.unk10++;
@@ -261,8 +271,8 @@ void Task_80499D8(void)
                     }
                 }
             } else if (gPlayer.x < Q(42700)
-                       && gPlayer.x > Q(gUnknown_080D8808[6][0] + 0x14)) {
-                if (gActiveBossTask == NULL && !(gStageFlags & 0x100)) {
+                       && gPlayer.x > Q(gUnknown_080D8808[6][0] + 20)) {
+                if (gActiveBossTask == NULL && !(gStageFlags & STAGE_FLAG__100)) {
                     gPlayer.checkpointTime = gCourseTime;
                     CreateZoneBoss(7);
                     gStageFlags &= ~STAGE_FLAG__2;
@@ -273,19 +283,19 @@ void Task_80499D8(void)
                     gPlayer.moveState &= ~MOVESTATE_8000000;
                     gPlayer.speedGroundX = 0;
                     gPlayer.transition = 1;
-                    unk8CC->unk4++;
-                    unk8CC->unk6 = 1;
+                    manager->bossIndex++;
+                    manager->unk6 = 1;
                 } else if (gActiveBossTask != NULL && r5 < Q(42300)) {
-                    r1 = gUnknown_080D8808[unk8CC->unk4][0];
+                    r1 = gUnknown_080D8808[manager->bossIndex][0];
                     if (r1 >= 0) {
                         r0 = Q(r1);
                         if (r5 >= r0) {
-                            r4 = gUnknown_080D8808[unk8CC->unk4][1];
+                            r4 = gUnknown_080D8808[manager->bossIndex][1];
                             r6 = Q(r4);
                             r0 = r5 + r6;
                             gPlayer.x = r0;
                             gUnknown_030054FC = r6;
-                            sub_8039F50(r6, unk8CC->unk4);
+                            sub_8039F50(r6, manager->bossIndex);
                             gBossRingsShallRespawn = 1;
                             gCamera.x += r4;
                             gCamera.unk20 += r4;
@@ -297,22 +307,22 @@ void Task_80499D8(void)
                     }
                 }
             }
-        } else if (unk8CC->unk4 <= 5) {
-            if (gCamera.unk10 > gUnknown_080D87D8[unk8CC->unk4]) {
+        } else if (manager->bossIndex <= 5) {
+            if (gCamera.unk10 > sBossRunCameraYTriggers[manager->bossIndex]) {
                 gBossRingsShallRespawn = 1;
                 gBossRingsRespawnCount = 10;
                 gPlayer.checkpointTime = gCourseTime;
-                CreateZoneBoss(++unk8CC->unk4);
+                CreateZoneBoss(++manager->bossIndex);
                 gStageFlags &= ~STAGE_FLAG__2;
             }
 
-            if (gUnknown_080D8808[unk8CC->unk4][0] >= 0 && gActiveBossTask != NULL
-                && gPlayer.x >= Q(gUnknown_080D8808[unk8CC->unk4][0])) {
-                r4 = gUnknown_080D8808[unk8CC->unk4][1];
+            if (gUnknown_080D8808[manager->bossIndex][0] >= 0 && gActiveBossTask != NULL
+                && gPlayer.x >= Q(gUnknown_080D8808[manager->bossIndex][0])) {
+                r4 = gUnknown_080D8808[manager->bossIndex][1];
                 r5 = Q(r4);
                 gPlayer.x += r5;
                 gUnknown_030054FC = r5;
-                sub_8039F50(r5, unk8CC->unk4);
+                sub_8039F50(r5, manager->bossIndex);
                 gBossRingsShallRespawn = 1;
                 gCamera.x += r4;
                 gCamera.unk20 += r4;
@@ -324,168 +334,172 @@ void Task_80499D8(void)
         }
     }
 
-    if (unk8CC->unk5 < 7 && gCamera.unk10 > gUnknown_080D87D8[unk8CC->unk5] - 600) {
-        if (unk8CC->unk5 == 6) {
-            if (unk8CC->unk6 == 0) {
+    if (manager->unk5 < 7
+        && gCamera.unk10 > sBossRunCameraYTriggers[manager->unk5] - 600) {
+        if (manager->unk5 == 6) {
+            if (manager->unk6 == 0) {
                 gCamera.unkC = 1;
-                gCamera.unk8 = 0x500;
+                gCamera.unk8 = 1280;
             }
             gUnknown_030054B0 = 1;
         } else {
-            unk8CC->unk5++;
+            manager->unk5++;
         }
     }
 
-    if (unk8CC->unk0 != gUnknown_080D5964[unk8CC->unk5][0]) {
-        if (unk8CC->unk0 < gUnknown_080D5964[unk8CC->unk5][0]) {
-            unk8CC->unk0++;
+    if (manager->unk0 != gUnknown_080D5964[manager->unk5][0]) {
+        if (manager->unk0 < gUnknown_080D5964[manager->unk5][0]) {
+            manager->unk0++;
         } else {
-            unk8CC->unk0--;
+            manager->unk0--;
         }
     }
 
-    if (unk8CC->unk2 != gUnknown_080D5964[unk8CC->unk5][1]) {
-        if (unk8CC->unk2 < gUnknown_080D5964[unk8CC->unk5][1]) {
-            unk8CC->unk2++;
+    if (manager->unk2 != gUnknown_080D5964[manager->unk5][1]) {
+        if (manager->unk2 < gUnknown_080D5964[manager->unk5][1]) {
+            manager->unk2++;
         } else {
-            unk8CC->unk2--;
+            manager->unk2--;
         }
     }
 
-    gUnknown_03005440 = unk8CC->unk0;
-    gUnknown_030054BC = unk8CC->unk2;
+    gUnknown_03005440 = manager->unk0;
+    gUnknown_030054BC = manager->unk2;
 }
 
-void TaskDestructor_8049D1C(struct Task *t) { }
+static void TaskDestructor_BossRunManager(struct Task *t) { }
 
-void sub_8049D20(void *vram, SuperEggRoboZ *boss)
+static void CreateSuperEggRoboZTowers(void *vram, SuperEggRoboZ *boss)
 {
     u8 i, j;
     struct Task *t
-        = TaskCreate(sub_8049E90, sizeof(UNK_8049D20), 0x4080, 0, sub_804A6B4);
-    UNK_8049D20 *unkD20 = TASK_DATA(t);
-    void *vrams[ARM_COUNT];
+        = TaskCreate(Task_SuperEggRoboZTowersMain, sizeof(SuperEggRoboZTowers), 0x4080,
+                     0, TaskDestructor_SuperEggRoboZTowers);
+    SuperEggRoboZTowers *towers = TASK_DATA(t);
+    void *vrams[2];
     Sprite *s;
 
-    unkD20->unk15D = 0;
-    unkD20->unk120 = vram;
-    unkD20->unk160 = boss;
-    unkD20->unk15E = 0;
-    unkD20->unk15F = 0;
+    towers->unk15D = 0;
+    towers->vram = vram;
+    towers->boss = boss;
+    towers->unk15E = 0;
+    towers->unk15F = 0;
     vrams[0] = VramMalloc(47);
-    vrams[1] = vrams[0] + 0x1E0;
+    vrams[1] = vrams[0] + (15 * TILE_SIZE_4BPP);
 
-    for (i = 0; i < 3; i++) {
-        unkD20->unk124[i][0] = Q(gUnknown_080D8840[i][0]);
-        unkD20->unk124[i][1] = Q(gUnknown_080D8840[i][1]);
-        unkD20->unk13C[i][0] = 0;
-        unkD20->unk13C[i][1] = 0;
-        unkD20->unk154[i] = (i + 2) * 300;
-        unkD20->unk15A[i] = 0;
+    for (i = 0; i < NUM_TOWERS; i++) {
+        towers->positions[i].x = Q(gUnknown_080D8840[i][0]);
+        towers->positions[i].y = Q(gUnknown_080D8840[i][1]);
+        towers->offsets[i].x = 0;
+        towers->offsets[i].y = 0;
+        towers->unk154[i] = (i + 2) * 300;
+        towers->unk15A[i] = 0;
 
-        for (j = 0; j < ARRAY_COUNT(vrams); j++) {
-            s = &unkD20->unk0[i][j];
+        for (j = 0; j < 2; j++) {
+            s = &towers->sprites[i][j];
             s->x = 80;
             s->y = 80;
             s->graphics.dest = vrams[j];
-            SPRITE_INIT_WITHOUT_VRAM(s, gUnknown_080D8864[j].anim,
-                                     gUnknown_080D8864[j].variant, 28, 1, 0);
+            SPRITE_INIT_WITHOUT_VRAM(s, sTowerPiecesTileInfo[j].anim,
+                                     sTowerPiecesTileInfo[j].variant, 28, 1, 0);
             UpdateSpriteAnimation(s);
         }
     }
 }
 
-void sub_8049E90(void)
+static void Task_SuperEggRoboZTowersMain(void)
 {
     u8 i;
-    UNK_8049D20 *unkD20 = TASK_DATA(gCurTask);
+    SuperEggRoboZTowers *towers = TASK_DATA(gCurTask);
     if (gActiveBossTask == NULL) {
         TaskDestroy(gCurTask);
         return;
     }
 
-    for (i = 0; i < 3; i++) {
-        gUnknown_080D8874[unkD20->unk15A[i]](unkD20, i);
+    for (i = 0; i < NUM_TOWERS; i++) {
+        sTowerStateCallbacks[towers->unk15A[i]](towers, i);
     }
 
     if (I(gPlayer.y) < 133) {
         sub_800CBA4(&gPlayer);
     }
 
-    if (unkD20->unk15F == 0 && unkD20->unk160->livesCockpit == 0) {
-        unkD20->unk15F = 1;
+    if (towers->unk15F == 0 && towers->boss->livesCockpit == 0) {
+        towers->unk15F = 1;
     }
 }
 
-void sub_8049F1C(UNK_8049D20 *unkD20, u8 i)
+static void sub_8049F1C(SuperEggRoboZTowers *towers, u8 towerIndex)
 {
-    Sprite *s = &unkD20->unk0[i][0];
-    Sprite *s2 = &unkD20->unk0[i][1];
+    Sprite *prop = &towers->sprites[towerIndex][0];
+    Sprite *platform = &towers->sprites[towerIndex][1];
 
-    s32 preY = -unkD20->unk13C[i][1];
+    s32 preY = -towers->offsets[towerIndex].y;
 
     Vec2_32 pos;
 #ifndef NON_MATCHING
-    register u8 *unk15F asm("r6") = &unkD20->unk15F;
+    register u8 *unk15F asm("r6") = &towers->unk15F;
 #else
-    u8 *unk15F = &unkD20->unk15F;
+    u8 *unk15F = &towers->unk15F;
 #endif
     if (*unk15F == 0) {
-        unkD20->unk13C[i][1] = 0;
+        towers->offsets[towerIndex].y = 0;
     }
 
-    preY += unkD20->unk13C[i][1];
+    preY += towers->offsets[towerIndex].y;
 
-    pos.x = I(unkD20->unk124[i][0] + unkD20->unk13C[i][0]);
-    pos.y = I(unkD20->unk124[i][1] + unkD20->unk13C[i][1]);
+    pos.x = I(towers->positions[towerIndex].x + towers->offsets[towerIndex].x);
+    pos.y = I(towers->positions[towerIndex].y + towers->offsets[towerIndex].y);
 
-    s->x = pos.x - gCamera.x;
-    s->y = pos.y - gCamera.y;
+    prop->x = pos.x - gCamera.x;
+    prop->y = pos.y - gCamera.y;
 
     if (*unk15F == 0) {
 
-        if (--unkD20->unk154[i] == 0) {
-            unkD20->unk154[i] = gUnknown_080D8858[unkD20->unk15A[i]][1];
-            unkD20->unk15A[i] = gUnknown_080D8858[unkD20->unk15A[i]][0];
+        if (--towers->unk154[towerIndex] == 0) {
+            towers->unk154[towerIndex]
+                = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
+            towers->unk15A[towerIndex]
+                = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
         }
     }
 
-    if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
+    if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == prop) {
         gPlayer.y += Q(1);
         gPlayer.y += preY;
-        if (unkD20->unk15E == 1) {
+        if (towers->unk15E == 1) {
             gPlayer.x += Q(1);
         }
     }
 
     if (!(gPlayer.moveState & MOVESTATE_400000)) {
-        u32 result = sub_800CCB8(s, pos.x, pos.y, &gPlayer);
+        u32 result = sub_800CCB8(prop, pos.x, pos.y, &gPlayer);
 
         if (result & 0x10000) {
             gPlayer.y += Q(result << 0x10) >> 0x10;
         }
     }
 
-    DisplaySprite(s);
-    s2->x = s->x;
-    s2->y = s->y + 0x40;
+    DisplaySprite(prop);
+    platform->x = prop->x;
+    platform->y = prop->y + 64;
 
-    DisplaySprite(s2);
+    DisplaySprite(platform);
 }
 
-void sub_804A070(UNK_8049D20 *unkD20, u8 i)
+static void sub_804A070(SuperEggRoboZTowers *towers, u8 towerIndex)
 {
-    Sprite *s = &unkD20->unk0[i][0];
-    Sprite *s2 = &unkD20->unk0[i][1];
+    Sprite *s = &towers->sprites[towerIndex][0];
+    Sprite *s2 = &towers->sprites[towerIndex][1];
 
     Vec2_32 pos;
 
-    if (unkD20->unk15F == 0) {
-        unkD20->unk13C[i][1] = -2048;
+    if (towers->unk15F == 0) {
+        towers->offsets[towerIndex].y = -Q(8);
     }
 
-    pos.x = I(unkD20->unk124[i][0] + unkD20->unk13C[i][0]);
-    pos.y = I(unkD20->unk124[i][1] + unkD20->unk13C[i][1]);
+    pos.x = I(towers->positions[towerIndex].x + towers->offsets[towerIndex].x);
+    pos.y = I(towers->positions[towerIndex].y + towers->offsets[towerIndex].y);
 
     s->x = pos.x - gCamera.x;
     s->y = pos.y - gCamera.y;
@@ -493,54 +507,56 @@ void sub_804A070(UNK_8049D20 *unkD20, u8 i)
     if (!(gPlayer.moveState & MOVESTATE_400000)) {
         s32 result = sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0);
         if (result != 0) {
-            gPlayer.y -= 0x800;
-            gPlayer.speedAirY = -896;
-            gPlayer.unk64 = 0x14;
+            gPlayer.y -= Q(8);
+            gPlayer.speedAirY = -Q(3.5);
+            gPlayer.unk64 = 20;
             gPlayer.transition = PLTRANS_PT6;
         }
     }
 
-    if (unkD20->unk15F == 0) {
+    if (towers->unk15F == 0) {
         m4aSongNumStart(SE_264);
-        if (--unkD20->unk154[i] == 0) {
-            unkD20->unk154[i] = gUnknown_080D8858[unkD20->unk15A[i]][1];
-            unkD20->unk15A[i] = gUnknown_080D8858[unkD20->unk15A[i]][0];
+        if (--towers->unk154[towerIndex] == 0) {
+            towers->unk154[towerIndex]
+                = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
+            towers->unk15A[towerIndex]
+                = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
         }
     }
 
     DisplaySprite(s);
     s2->x = s->x;
-    s2->y = s->y + 0x40;
+    s2->y = s->y + 64;
 
     DisplaySprite(s2);
 }
-void sub_804A1C0(UNK_8049D20 *unkD20, u8 i)
+static void sub_804A1C0(SuperEggRoboZTowers *towers, u8 towerIndex)
 {
     u8 j;
-    Sprite *s = &unkD20->unk0[i][0];
-    Sprite *s2 = &unkD20->unk0[i][1];
+    Sprite *s = &towers->sprites[towerIndex][0];
+    Sprite *s2 = &towers->sprites[towerIndex][1];
 
-    s32 preY = -unkD20->unk13C[i][1];
+    s32 preY = -towers->offsets[towerIndex].y;
     s32 yOffset;
 
     ExplosionPartsInfo info;
 
     Vec2_32 pos;
-    if (unkD20->unk15F == 0) {
-        unkD20->unk13C[i][1] = -2048;
+    if (towers->unk15F == 0) {
+        towers->offsets[towerIndex].y = -Q(8);
     }
 
-    preY += unkD20->unk13C[i][1];
+    preY += towers->offsets[towerIndex].y;
 
     yOffset = 16;
-    pos.x = I(unkD20->unk124[i][0] + unkD20->unk13C[i][0]);
-    pos.y = I(unkD20->unk124[i][1] + unkD20->unk13C[i][1]);
+    pos.x = I(towers->positions[towerIndex].x + towers->offsets[towerIndex].x);
+    pos.y = I(towers->positions[towerIndex].y + towers->offsets[towerIndex].y);
 
     s->x = pos.x - gCamera.x;
     s->y = pos.y - gCamera.y;
 
-    if (unkD20->unk15F == 0) {
-        if (unkD20->unk154[i] == 60 || unkD20->unk154[i] == 0x32) {
+    if (towers->unk15F == 0) {
+        if (towers->unk154[towerIndex] == 60 || towers->unk154[towerIndex] == 50) {
             for (j = 0; j < 8; j++) {
                 s16 sin = j * 32;
                 sin = SIN(sin);
@@ -551,24 +567,26 @@ void sub_804A1C0(UNK_8049D20 *unkD20, u8 i)
 
                 info.speed = Q(1);
 
-                info.vram = unkD20->unk120;
+                info.vram = towers->vram;
                 info.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_CLOUD;
                 info.variant = 0;
                 info.unk4 = 0;
-                CreateBossParticleStatic(&info, &unkD20->unk15D);
+                CreateBossParticleStatic(&info, &towers->unk15D);
             }
         }
 
-        if (--unkD20->unk154[i] == 0) {
-            unkD20->unk154[i] = gUnknown_080D8858[unkD20->unk15A[i]][1];
-            unkD20->unk15A[i] = gUnknown_080D8858[unkD20->unk15A[i]][0];
+        if (--towers->unk154[towerIndex] == 0) {
+            towers->unk154[towerIndex]
+                = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
+            towers->unk15A[towerIndex]
+                = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
         }
     }
 
     if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
         gPlayer.y += preY + Q(1);
 
-        if (unkD20->unk15E == 1) {
+        if (towers->unk15E == 1) {
             gPlayer.x += Q(1);
         }
     }
@@ -583,43 +601,46 @@ void sub_804A1C0(UNK_8049D20 *unkD20, u8 i)
 
     DisplaySprite(s);
     s2->x = s->x;
-    s2->y = s->y + 0x40;
+    s2->y = s->y + 64;
 
     DisplaySprite(s2);
 }
 
-void sub_804A398(UNK_8049D20 *unkD20, u8 i)
+static void sub_804A398(SuperEggRoboZTowers *towers, u8 towerIndex)
 {
-    Sprite *s = &unkD20->unk0[i][0];
-    Sprite *s2 = &unkD20->unk0[i][1];
+    Sprite *s = &towers->sprites[towerIndex][0];
+    Sprite *s2 = &towers->sprites[towerIndex][1];
 
     Vec2_32 pos;
 
-    s32 preY = -unkD20->unk13C[i][1];
+    s32 preY = -towers->offsets[towerIndex].y;
 
-    if (unkD20->unk15F == 0) {
-        unkD20->unk13C[i][1] -= ((COS(unkD20->unk154[i] * 2) * 3) >> 7);
+    if (towers->unk15F == 0) {
+        towers->offsets[towerIndex].y
+            -= ((COS(towers->unk154[towerIndex] * 2) * 3) >> 7);
     }
-    preY += unkD20->unk13C[i][1];
+    preY += towers->offsets[towerIndex].y;
 
-    pos.x = I(unkD20->unk124[i][0] + unkD20->unk13C[i][0]);
-    pos.y = I(unkD20->unk124[i][1] + unkD20->unk13C[i][1]);
+    pos.x = I(towers->positions[towerIndex].x + towers->offsets[towerIndex].x);
+    pos.y = I(towers->positions[towerIndex].y + towers->offsets[towerIndex].y);
 
     s->x = pos.x - gCamera.x;
     s->y = pos.y - gCamera.y;
 
-    if (unkD20->unk15F == 0) {
-        if (--unkD20->unk154[i] == 0) {
-            unkD20->unk154[i] = gUnknown_080D8858[unkD20->unk15A[i]][1];
-            unkD20->unk15A[i] = gUnknown_080D8858[unkD20->unk15A[i]][0];
+    if (towers->unk15F == 0) {
+        if (--towers->unk154[towerIndex] == 0) {
+            towers->unk154[towerIndex]
+                = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
+            towers->unk15A[towerIndex]
+                = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
         }
     }
 
     if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
-        gPlayer.y += preY + 0x100;
+        gPlayer.y += preY + Q(1);
 
-        if (unkD20->unk15E == 1) {
-            gPlayer.x += 0x100;
+        if (towers->unk15E == 1) {
+            gPlayer.x += Q(1);
         }
     }
 
@@ -633,46 +654,48 @@ void sub_804A398(UNK_8049D20 *unkD20, u8 i)
 
     DisplaySprite(s);
     s2->x = s->x;
-    s2->y = s->y + 0x40;
+    s2->y = s->y + 64;
     DisplaySprite(s2);
-    s2->y = s->y + 0x80;
+    s2->y = s->y + 128;
     DisplaySprite(s2);
-    s2->y = s->y + 0xC0;
+    s2->y = s->y + 192;
     DisplaySprite(s2);
 }
 
-void sub_804A53C(UNK_8049D20 *unkD20, u8 i)
+static void sub_804A53C(SuperEggRoboZTowers *towers, u8 towerIndex)
 {
-    Sprite *s = &unkD20->unk0[i][0];
-    Sprite *s2 = &unkD20->unk0[i][1];
+    Sprite *s = &towers->sprites[towerIndex][0];
+    Sprite *s2 = &towers->sprites[towerIndex][1];
 
     Vec2_32 pos;
 
-    s32 preY = -unkD20->unk13C[i][1];
+    s32 preY = -towers->offsets[towerIndex].y;
 
-    if (unkD20->unk15F == 0) {
-        unkD20->unk13C[i][1] += 0x100;
+    if (towers->unk15F == 0) {
+        towers->offsets[towerIndex].y += Q(1);
     }
-    preY += unkD20->unk13C[i][1];
+    preY += towers->offsets[towerIndex].y;
 
-    pos.x = I(unkD20->unk124[i][0] + unkD20->unk13C[i][0]);
-    pos.y = I(unkD20->unk124[i][1] + unkD20->unk13C[i][1]);
+    pos.x = I(towers->positions[towerIndex].x + towers->offsets[towerIndex].x);
+    pos.y = I(towers->positions[towerIndex].y + towers->offsets[towerIndex].y);
 
     s->x = pos.x - gCamera.x;
     s->y = pos.y - gCamera.y;
 
-    if (unkD20->unk15F == 0) {
-        if (--unkD20->unk154[i] == 0) {
-            unkD20->unk154[i] = gUnknown_080D8858[unkD20->unk15A[i]][1];
-            unkD20->unk15A[i] = gUnknown_080D8858[unkD20->unk15A[i]][0];
+    if (towers->unk15F == 0) {
+        if (--towers->unk154[towerIndex] == 0) {
+            towers->unk154[towerIndex]
+                = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
+            towers->unk15A[towerIndex]
+                = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
         }
     }
 
     if (gPlayer.moveState & MOVESTATE_8 && gPlayer.unk3C == s) {
-        gPlayer.y += preY + 0x200;
+        gPlayer.y += preY + Q(2);
 
-        if (unkD20->unk15E == 1) {
-            gPlayer.x += 0x100;
+        if (towers->unk15E == 1) {
+            gPlayer.x += Q(1);
         }
     }
 
@@ -686,18 +709,18 @@ void sub_804A53C(UNK_8049D20 *unkD20, u8 i)
 
     DisplaySprite(s);
     s2->x = s->x;
-    s2->y = s->y + 0x40;
+    s2->y = s->y + 64;
     DisplaySprite(s2);
-    s2->y = s->y + 0x80;
+    s2->y = s->y + 128;
     DisplaySprite(s2);
-    s2->y = s->y + 0xC0;
+    s2->y = s->y + 192;
     DisplaySprite(s2);
 }
 
-void sub_804A6B4(struct Task *t)
+static void TaskDestructor_SuperEggRoboZTowers(struct Task *t)
 {
-    UNK_8049D20 *unkD20 = TASK_DATA(t);
-    VramFree(unkD20->unk0[0]->graphics.dest);
+    SuperEggRoboZTowers *towers = TASK_DATA(t);
+    VramFree(towers->sprites[0]->graphics.dest);
 }
 
 void CreateSuperEggRoboZ(void)
@@ -752,7 +775,7 @@ void CreateSuperEggRoboZ(void)
     boss->unkC = 0;
     boss->unk14 = 30;
     boss->tilesCloud = VramMalloc(32);
-    sub_8049D20(boss->tilesCloud, boss);
+    CreateSuperEggRoboZTowers(boss->tilesCloud, boss);
 
     for (arm = 0; arm < ARM_COUNT; arm++) {
         boss->rotation[arm] = (SIN_PERIOD / 2);
@@ -836,7 +859,7 @@ void CreateSuperEggRoboZ(void)
     gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 }
 
-void Task_804A9D8(void)
+static void Task_804A9D8(void)
 {
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
 
@@ -894,7 +917,7 @@ void Task_804A9D8(void)
 
 // (99.89%) https://decomp.me/scratch/kiah8
 NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc",
-         void Task_804AB24(void))
+         static void Task_804AB24(void))
 {
     s32 speed;
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
@@ -994,7 +1017,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc",
 }
 END_NONMATCH
 
-void Task_804AD68(void)
+static void Task_804AD68(void)
 {
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
 
@@ -1024,7 +1047,7 @@ void Task_804AD68(void)
 // (98.77%) https://decomp.me/scratch/Kzx1m
 // (99.59%) https://decomp.me/scratch/IzRyM
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
-         void sub_804AE40(SuperEggRoboZ *boss))
+         static void sub_804AE40(SuperEggRoboZ *boss))
 {
     Sprite *s;
 
@@ -1135,7 +1158,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
 
 END_NONMATCH
 
-u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
+static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
 {
     u8 result = 0;
     s32 sp04, ip;
@@ -1247,7 +1270,7 @@ u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
 // }
 // (93.51%) https://decomp.me/scratch/ecqNB
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
-         bool8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
+         static bool8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
 {
     u8 result = 0;
     s32 sp04, ip;
@@ -1318,7 +1341,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
 }
 END_NONMATCH
 
-void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
+static void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
 {
     boss->qUnk18[arm].x = 0;
     boss->qUnk18[arm].y = 0;
@@ -1346,7 +1369,7 @@ void sub_804B43C(SuperEggRoboZ *boss, u8 arm)
     }
 }
 
-void sub_804B594(SuperEggRoboZ *boss, u8 arm)
+static void sub_804B594(SuperEggRoboZ *boss, u8 arm)
 {
     u16 angle;
     Vec2_32 pos;
@@ -1388,7 +1411,7 @@ void sub_804B594(SuperEggRoboZ *boss, u8 arm)
     }
 }
 
-void sub_804B734(SuperEggRoboZ *boss, u8 arm)
+static void sub_804B734(SuperEggRoboZ *boss, u8 arm)
 {
     ExplosionPartsInfo info;
     s32 speed0;
@@ -1450,7 +1473,7 @@ void sub_804B734(SuperEggRoboZ *boss, u8 arm)
     }
 }
 
-void sub_804B984(SuperEggRoboZ *boss, u8 arm)
+static void sub_804B984(SuperEggRoboZ *boss, u8 arm)
 {
     boss->qUnk18[arm].x += ((COS(boss->rotation[arm]) * 5) >> 5);
     boss->qUnk18[arm].y += ((SIN(boss->rotation[arm]) * 5) >> 5);
@@ -1473,7 +1496,7 @@ void sub_804B984(SuperEggRoboZ *boss, u8 arm)
     }
 }
 
-void sub_804BAC0(SuperEggRoboZ *boss, u8 arm)
+static void sub_804BAC0(SuperEggRoboZ *boss, u8 arm)
 {
     if (--boss->unk30[arm] == 0) {
         boss->qUnk18[arm].x += ((COS(boss->rotation[arm]) * 15) >> 6);
@@ -1506,7 +1529,7 @@ void sub_804BAC0(SuperEggRoboZ *boss, u8 arm)
 
 // (81.31%) https://decomp.me/scratch/432q4
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc",
-         void sub_804BC44(SuperEggRoboZ *boss, u8 arm))
+         static void sub_804BC44(SuperEggRoboZ *boss, u8 arm))
 {
     ExplosionPartsInfo info;
     s32 speed0;
@@ -1570,7 +1593,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc",
 }
 END_NONMATCH
 
-void sub_804BE6C(SuperEggRoboZ *boss, u8 arm)
+static void sub_804BE6C(SuperEggRoboZ *boss, u8 arm)
 {
     ExplosionPartsInfo info;
     s32 qX, qY;
@@ -1623,7 +1646,7 @@ void sub_804BE6C(SuperEggRoboZ *boss, u8 arm)
     }
 }
 
-void sub_804C080(SuperEggRoboZ *boss)
+static void sub_804C080(SuperEggRoboZ *boss)
 {
     ExplosionPartsInfo info;
 
@@ -1674,7 +1697,7 @@ void sub_804C080(SuperEggRoboZ *boss)
 
 // (87.37%) https://decomp.me/scratch/98Mjg
 NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc",
-         void sub_804C240(SuperEggRoboZ *boss, u8 arm))
+         static void sub_804C240(SuperEggRoboZ *boss, u8 arm))
 {
     ExplosionPartsInfo info;
     s32 x, y;
@@ -1724,7 +1747,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc",
 }
 END_NONMATCH
 
-void sub_804C3AC(SuperEggRoboZ *boss)
+static void sub_804C3AC(SuperEggRoboZ *boss)
 {
     Sprite *s;
     SpriteTransform *tf;
@@ -1796,7 +1819,7 @@ void sub_804C3AC(SuperEggRoboZ *boss)
     }
 }
 
-void sub_804C5B8(SuperEggRoboZ *boss)
+static void sub_804C5B8(SuperEggRoboZ *boss)
 {
     Sprite *s;
     SpriteTransform *tf;
@@ -1889,7 +1912,7 @@ void sub_804C5B8(SuperEggRoboZ *boss)
     }
 }
 
-void sub_804C830(SuperEggRoboZ *boss)
+static void sub_804C830(SuperEggRoboZ *boss)
 {
     Sprite *s;
     Player *p;
@@ -1933,7 +1956,7 @@ void sub_804C830(SuperEggRoboZ *boss)
     }
 }
 
-void Boss8_HitCockpit(SuperEggRoboZ *boss)
+static void Boss8_HitCockpit(SuperEggRoboZ *boss)
 {
     Sprite *s = &boss->bsHead.s;
 
@@ -1958,7 +1981,7 @@ void Boss8_HitCockpit(SuperEggRoboZ *boss)
     s->prevVariant = -1;
 }
 
-bool8 sub_804C9B4(SuperEggRoboZ *boss, u8 arm)
+static bool8 sub_804C9B4(SuperEggRoboZ *boss, u8 arm)
 {
     if (boss->livesArms[arm] > 0) {
         if ((--boss->livesArms[arm] & 0xFF) & 0x1) {
@@ -1973,7 +1996,7 @@ bool8 sub_804C9B4(SuperEggRoboZ *boss, u8 arm)
     return (boss->livesArms[arm] == 0) ? 1 : 0;
 }
 
-void sub_804CA08(SuperEggRoboZ *boss)
+static void sub_804CA08(SuperEggRoboZ *boss)
 {
     if ((boss->unkB != 0) && (--boss->unkB == 0)) {
         Sprite *s = &boss->bsHead.s;
@@ -1996,7 +2019,7 @@ void sub_804CA08(SuperEggRoboZ *boss)
     }
 }
 
-void sub_804CA70(SuperEggRoboZ *boss)
+static void sub_804CA70(SuperEggRoboZ *boss)
 {
     s32 pal = (gStageTime & 0x2) >> 1;
     u8 i;
@@ -2034,7 +2057,7 @@ void sub_804CA70(SuperEggRoboZ *boss)
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
 }
 
-void Task_SuperEggRoboZMain(void)
+static void Task_SuperEggRoboZMain(void)
 {
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
     sub_804C5B8(boss);
@@ -2050,7 +2073,7 @@ void Task_SuperEggRoboZMain(void)
     }
 }
 
-void Task_ShowResultsAndDelete(void)
+static void Task_ShowResultsAndDelete(void)
 {
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
     boss->fade.brightness = Q(32);
@@ -2062,7 +2085,7 @@ void Task_ShowResultsAndDelete(void)
     TaskDestroy(gCurTask);
 }
 
-void sub_804CC98(SuperEggRoboZ *boss)
+static void sub_804CC98(SuperEggRoboZ *boss)
 {
     u32 unkB = boss->unkB;
 
@@ -2075,7 +2098,7 @@ void sub_804CC98(SuperEggRoboZ *boss)
     }
 }
 
-void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1)
+static void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1)
 {
     Vec2_32 pos = { boss->qPos.x + Q(190), boss->qPos.y + Q(40) };
 
@@ -2085,7 +2108,7 @@ void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1)
     }
 }
 
-void TaskDestructor_SuperEggRoboZMain(struct Task *t)
+static void TaskDestructor_SuperEggRoboZMain(struct Task *t)
 {
     SuperEggRoboZ *boss = TASK_DATA(t);
     VramFree(boss->tilesCloud);

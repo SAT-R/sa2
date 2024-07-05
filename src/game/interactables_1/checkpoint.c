@@ -64,7 +64,7 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     u8 zone;
     u16 anim;
     u8 variant;
-    if (gUnknown_030055B0 == 0) {
+    if (gBossIndex == 0) {
         t = TaskCreate(Task_8062FD8, sizeof(Sprite_Checkpoint), 0x2010, 0,
                        TaskDestructor_8063214);
     } else {
@@ -128,8 +128,8 @@ void Task_8062FD8(void)
             gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
             gPlayer.checkpointTime = gCheckpointTime;
 
-            if (gUnknown_030055B0 == 0)
-                gUnknown_030055B0++;
+            if (gBossIndex == 0)
+                gBossIndex++;
 
             s->graphics.anim = SA2_ANIM_CHECKPOINT;
             s->variant = SA2_ANIM_VARIANT_CHECKPOINT_HIT;
@@ -242,12 +242,12 @@ static void Task_Interactable_Toggle_Checkpoint(void)
         gPlayer.checkPointY = gUnknown_080D63FC[gCurrentLevel][1];
         gPlayer.checkpointTime = gCheckpointTime;
 
-        if (gUnknown_030055B0 == 0)
-            gUnknown_030055B0++;
+        if (gBossIndex == 0)
+            gBossIndex++;
 
         TaskDestroy(gCurTask);
     } else {
-        if (gUnknown_030055B0 != 0)
+        if (gBossIndex != 0)
             TaskDestroy(gCurTask);
     }
 }
@@ -255,7 +255,7 @@ static void Task_Interactable_Toggle_Checkpoint(void)
 void CreateEntity_Toggle_Checkpoint(MapEntity *in_ia, u16 spriteRegionX,
                                     u16 spriteRegionY, u8 spriteY)
 {
-    if (gUnknown_030055B0 == 0) {
+    if (gBossIndex == 0) {
         struct Task *t = TaskCreate(Task_Interactable_Toggle_Checkpoint,
                                     sizeof(Sprite_Toggle_Checkpoint), 0x2010, 0, NULL);
 

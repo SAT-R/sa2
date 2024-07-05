@@ -470,7 +470,7 @@ static void sub_803AA40(void)
                 thing->posY += QS(y);
             }
 
-            gUnknown_030055B0++;
+            gBossIndex++;
         }
     } else {
         ts->speed = 0x28;

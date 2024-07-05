@@ -592,7 +592,7 @@ static void Task_802F75C(void)
 
     /*    Set player animation to "Getting Ready" and delay until it is finished    */
     if ((frameCounter == (200 - sGettingReadyAnimationDuration[gSelectedCharacter]))
-        && (gUnknown_030055B0 == 0) && (ACT_INDEX(gCurrentLevel) != ACT_BOSS)) {
+        && (gBossIndex == 0) && (ACT_INDEX(gCurrentLevel) != ACT_BOSS)) {
         Player *p = &gPlayer;
         p->anim = characterAnimsGettingReady[gSelectedCharacter].anim;
         p->variant = characterAnimsGettingReady[gSelectedCharacter].variant;
@@ -614,7 +614,7 @@ static void Task_802F75C(void)
         if (IS_BOSS_STAGE(gCurrentLevel)) {
             if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
                 // Create the 1st boss (for Boss Rush)
-                if (gUnknown_030055B0 == 0) {
+                if (gBossIndex == 0) {
                     CreateZoneBoss(BOSS_EGG_HAMMER_TANK_II);
                 }
             } else if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
@@ -627,7 +627,7 @@ static void Task_802F75C(void)
             gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
             gStageFlags &= ~STAGE_FLAG__ACT_START;
         } else {
-            if (gUnknown_030055B0 == 0) {
+            if (gBossIndex == 0) {
                 CreateCourseStartCountdown(sit_a->skippedIntro);
             } else {
                 gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;

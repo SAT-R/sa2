@@ -120,7 +120,7 @@ void Task_802EE78(void)
                 gCheese->posY += Q(y);
             }
 
-            gUnknown_030055B0++;
+            gBossIndex++;
         }
 
         gCurTask->main = Task_802F06C;

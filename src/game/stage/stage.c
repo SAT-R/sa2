@@ -41,7 +41,7 @@ void TaskDestructor_GameStage(struct Task *);
 void sub_801F044(void);
 
 void sub_80213C0(u32, u32, Player *);
-void sub_80498CC(u8);
+void CreateBossRunManager(u8);
 void InitCamera(u32);
 void StageInit_CollectRings(void);
 
@@ -158,7 +158,7 @@ void ApplyGameStageSettings(void)
 void GameStageStart(void)
 {
     gTrappedAnimalVariant = 0;
-    gUnknown_030055B0 = 0;
+    gBossIndex = 0;
     gRingCount = 0;
     gUnknown_030054F8 = 1;
 
@@ -212,7 +212,7 @@ void CreateGameStage(void)
         gUnknown_030054BC = gUnknown_080D5964[LEVEL_TO_ZONE(gCurrentLevel)][1];
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
-            sub_80498CC(gUnknown_030055B0);
+            CreateBossRunManager(gBossIndex);
         }
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
