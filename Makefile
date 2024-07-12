@@ -84,7 +84,7 @@ TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 # -I sets an include path
 # -D defines a symbol
 CPPFLAGS ?= -iquote include -D $(GAME_REGION)
-CC1FLAGS ?= -Wimplicit -Wparentheses -Werror -Wno-parentheses-equality
+CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
 SDL_MINGW_PKG          :=  ext/SDL2-2.30.3/i686-w64-mingw32
 SDL_MINGW_INCLUDE      := $(SDL_MINGW_PKG)/include/SDL2
