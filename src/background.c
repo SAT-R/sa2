@@ -1228,7 +1228,7 @@ s32 RenderText(void *dest, const void *font, u16 x, u16 y, u8 bg, const char *te
     u16 *vramTiles = (void *)BG_CHAR_ADDR_FROM_BGCNT(bg);
 
     u16 layoutBase = (gBgCntRegs[bg] & BGCNT_SCREENBASE_MASK) << 3;
-    u16 *vramLayout = ({ (u16 *)(VRAM + (layoutBase)); }) + y * TILE_SIZE_4BPP + x;
+    u16 *vramLayout = ({ (u16 *)(VRAM + (layoutBase)); }) + y * 32 + x;
 
     for (; text[i] != 0; i++) {
         u16 *copyDest = dest + (i * TILE_SIZE_4BPP);
