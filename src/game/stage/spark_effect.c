@@ -17,8 +17,7 @@ void TaskDestructor_SparkEffect(struct Task *);
 // NOTE: This effect appears to be unused
 struct Task *CreateSparkEffect()
 {
-    struct Task *t = TaskCreate(Task_SparkEffect, sizeof(SparkEffect), 0x2001, 0,
-                                TaskDestructor_SparkEffect);
+    struct Task *t = TaskCreate(Task_SparkEffect, sizeof(SparkEffect), 0x2001, 0, TaskDestructor_SparkEffect);
 
     SparkEffect *spark = TASK_DATA(t);
     Sprite *s = &spark->s;

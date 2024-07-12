@@ -48,8 +48,7 @@ static const u16 gUnknown_080E1244[] = {
     TM_STORYFRAME_CREAM_CHEESE_VANILLA_HAPPY,
 };
 
-UNUSED static const u16 gUnknown_080E124E[]
-    = { 56, 0, 828, 0, 78, 0, 828, 1, 60, 0, 828, 2, 96, 0, 828, 3 };
+UNUSED static const u16 gUnknown_080E124E[] = { 56, 0, 828, 0, 78, 0, 828, 1, 60, 0, 828, 2, 96, 0, 828, 3 };
 
 void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
 {
@@ -68,8 +67,7 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
     gUnknown_03002280[0][2] = 0xff;
     gUnknown_03002280[0][3] = 0x20;
 
-    t = TaskCreate(sub_808EBC4, sizeof(struct CreditsCutScene), 0x3100, 0,
-                   TaskDestroy_CreditsCutScene);
+    t = TaskCreate(sub_808EBC4, sizeof(struct CreditsCutScene), 0x3100, 0, TaskDestroy_CreditsCutScene);
 
     // BUG: assigning to null pointer
     scene->unk52 = 0;
@@ -86,11 +84,9 @@ void CreateCreditsCutScene(u8 creditsVariant, u8 b, u8 c)
         scene->unk50 = 0;
     }
 
-    if ((scene->variant == CREDITS_VARIANT_FINAL_ENDING
-         && gLoadedSaveGame->completedCharacters[CHARACTER_AMY])) {
+    if ((scene->variant == CREDITS_VARIANT_FINAL_ENDING && gLoadedSaveGame->completedCharacters[CHARACTER_AMY])) {
         scene->unk4D = 1;
-    } else if (scene->variant == CREDITS_VARIANT_EXTRA_ENDING
-               && gLoadedSaveGame->extraEndingCreditsPlayed) {
+    } else if (scene->variant == CREDITS_VARIANT_EXTRA_ENDING && gLoadedSaveGame->extraEndingCreditsPlayed) {
         scene->unk4D = 2;
     } else {
         scene->unk4D = 0;

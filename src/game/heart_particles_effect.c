@@ -30,8 +30,7 @@ static void sub_8086BE8(u8);
 void CreateHeartParticles(void)
 {
     u8 i;
-    struct Task *t
-        = TaskCreate(sub_8086A88, sizeof(HeartParticles), 0x4000, 0, sub_8086CBC);
+    struct Task *t = TaskCreate(sub_8086A88, sizeof(HeartParticles), 0x4000, 0, sub_8086CBC);
     HeartParticles *unk998 = TASK_DATA(t);
     unk998->unkC2 = 0;
     unk998->unkE4 = 0;

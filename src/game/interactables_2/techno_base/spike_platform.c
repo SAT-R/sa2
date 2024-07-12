@@ -30,28 +30,22 @@ static void sub_807B004(Sprite_IA78 *);
 static void sub_807B070(Sprite_IA78 *);
 
 static const u16 gUnknown_080E00B4[][2] = {
-    { SA2_ANIM_SPIKE_PLATFORM, 2 }, { SA2_ANIM_SPIKE_PLATFORM, 3 },
-    { SA2_ANIM_SPIKE_PLATFORM, 4 }, { SA2_ANIM_SPIKE_PLATFORM, 5 },
-    { SA2_ANIM_SPIKE_PLATFORM, 6 }, { SA2_ANIM_SPIKE_PLATFORM, 7 },
-    { SA2_ANIM_SPIKE_PLATFORM, 8 }, { SA2_ANIM_SPIKE_PLATFORM, 9 },
+    { SA2_ANIM_SPIKE_PLATFORM, 2 }, { SA2_ANIM_SPIKE_PLATFORM, 3 }, { SA2_ANIM_SPIKE_PLATFORM, 4 }, { SA2_ANIM_SPIKE_PLATFORM, 5 },
+    { SA2_ANIM_SPIKE_PLATFORM, 6 }, { SA2_ANIM_SPIKE_PLATFORM, 7 }, { SA2_ANIM_SPIKE_PLATFORM, 8 }, { SA2_ANIM_SPIKE_PLATFORM, 9 },
 };
 
 static const u16 gUnknown_080E00D4[][2] = {
-    { 0, 0 },  { 2, 2 },  { 4, 4 },  { 6, 6 },  { 12, 0 },
-    { 18, 6 }, { 21, 0 }, { 27, 6 }, { 33, 4 }, { 35, 0 },
+    { 0, 0 }, { 2, 2 }, { 4, 4 }, { 6, 6 }, { 12, 0 }, { 18, 6 }, { 21, 0 }, { 27, 6 }, { 33, 4 }, { 35, 0 },
 };
 
 static const u16 gUnknown_080E00FC[][2] = {
-    { 0, 0 },  { 6, 4 },  { 8, 6 },  { 38, 0 }, { 44, 6 },
-    { 47, 0 }, { 53, 6 }, { 59, 4 }, { 51, 2 }, { 53, 0 },
+    { 0, 0 }, { 6, 4 }, { 8, 6 }, { 38, 0 }, { 44, 6 }, { 47, 0 }, { 53, 6 }, { 59, 4 }, { 51, 2 }, { 53, 0 },
 };
 
-void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(Task_Interactable078, sizeof(Sprite_IA78), 0x2010, 0,
-                                TaskDestructor_Interactable078);
+    struct Task *t = TaskCreate(Task_Interactable078, sizeof(Sprite_IA78), 0x2010, 0, TaskDestructor_Interactable078);
     Sprite_IA78 *ia78 = TASK_DATA(t);
 
     ia78->base.me = me;

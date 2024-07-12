@@ -12,11 +12,11 @@
 #include "constants/animations.h"
 #include "constants/songs.h"
 
-#define MACRO_F7C(a, b, c)                                                              \
-    ({                                                                                  \
-        s32 temp = ((a) - (b));                                                         \
-        temp += (c);                                                                    \
-        temp;                                                                           \
+#define MACRO_F7C(a, b, c)                                                                                                                 \
+    ({                                                                                                                                     \
+        s32 temp = ((a) - (b));                                                                                                            \
+        temp += (c);                                                                                                                       \
+        temp;                                                                                                                              \
     })
 
 typedef struct {
@@ -73,19 +73,16 @@ static const u16 sSoundDurations[][2] = {
 
 // x, y,
 static const s16 sCurvedBridgePositions[][3] = {
-    { 0, 0, 1 },    { 11, -2, 1 },  { 23, -5, 1 },  { 35, -9, 1 },
-    { 48, -15, 1 }, { 58, -23, 1 }, { 68, -34, 0 }, { 76, -44, 0 },
-    { 83, -58, 0 }, { 88, -69, 0 }, { 91, -81, 0 }, { 92, -92, 0 },
+    { 0, 0, 1 },    { 11, -2, 1 },  { 23, -5, 1 },  { 35, -9, 1 },  { 48, -15, 1 }, { 58, -23, 1 },
+    { 68, -34, 0 }, { 76, -44, 0 }, { 83, -58, 0 }, { 88, -69, 0 }, { 91, -81, 0 }, { 92, -92, 0 },
 };
 
-void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_LightBridge(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     void *vram;
     u8 i;
     struct Task *t
-        = TaskCreate(Task_LightBridgeInactive, sizeof(Sprite_LightBridge), 0x2010, 0,
-                     TaskDestructor_InteractableTecBaseLightBridge);
+        = TaskCreate(Task_LightBridgeInactive, sizeof(Sprite_LightBridge), 0x2010, 0, TaskDestructor_InteractableTecBaseLightBridge);
     Sprite_LightBridge *lightBridge = TASK_DATA(t);
     Sprite *s;
     lightBridge->type = me->d.uData[0];
@@ -158,8 +155,7 @@ static void RenderStraightBridge(Sprite_LightBridge *lightBridge)
     s16 y = MACRO_F7C(lightBridge->posY, gCamera.y, 0);
 
     u8 i;
-    for (i = (gStageTime >> 1) & 1;
-         x <= maxX && x <= 246; // x <= (BRIDGE_SEGMENT_WIDTH * 20.5)
+    for (i = (gStageTime >> 1) & 1; x <= maxX && x <= 246; // x <= (BRIDGE_SEGMENT_WIDTH * 20.5)
          x += BRIDGE_SEGMENT_WIDTH, i++) {
         if ((i & 1) && x > 5) {
             s->x = x;
@@ -249,10 +245,8 @@ static bool32 IsPlayerWithinRange(Sprite_LightBridge *lightBridge)
             s16 temp2 = posY;
             temp2 + temp1;
         });
-        c = sWithinRangeDimensions[lightBridge->type].maxX
-            - sWithinRangeDimensions[lightBridge->type].minX;
-        d = sWithinRangeDimensions[lightBridge->type].maxY
-            - sWithinRangeDimensions[lightBridge->type].minY;
+        c = sWithinRangeDimensions[lightBridge->type].maxX - sWithinRangeDimensions[lightBridge->type].minX;
+        d = sWithinRangeDimensions[lightBridge->type].maxY - sWithinRangeDimensions[lightBridge->type].minY;
 
         if (a <= playerX && (a + c >= playerX)) {
             if (b <= playerY && (b + d >= playerY)) {
@@ -303,9 +297,7 @@ static void DeactivateBridge(Sprite_LightBridge *lightBridge)
 
 static void sub_807A25C(Sprite_LightBridge *lightBridge)
 {
-    u16 val = (gStageTime + lightBridge->unk6C)
-        % (sSoundDurations[lightBridge->type][0]
-           + sSoundDurations[lightBridge->type][1]);
+    u16 val = (gStageTime + lightBridge->unk6C) % (sSoundDurations[lightBridge->type][0] + sSoundDurations[lightBridge->type][1]);
 
     if (val < sSoundDurations[lightBridge->type][0]) {
         lightBridge->active = TRUE;

@@ -8,15 +8,15 @@ static void MultiBootWaitSendDone(void);
 
 static u16 gMultiBootRequiredData[MULTIBOOT_NCHILD];
 
-#define MULTIBOOT_INIT(mp)                                                              \
-    (mp)->client_bit = 0;                                                               \
-    (mp)->probe_count = 0;                                                              \
-    (mp)->response_bit = 0;                                                             \
-    (mp)->check_wait = MULTIBOOT_CONNECTION_CHECK_WAIT;                                 \
-    (mp)->sendflag = 0;                                                                 \
-    (mp)->handshake_timeout = 0;                                                        \
-    REG_RCNT = 0;                                                                       \
-    REG_SIOCNT = SIO_MULTI_MODE | SIO_115200_BPS;                                       \
+#define MULTIBOOT_INIT(mp)                                                                                                                 \
+    (mp)->client_bit = 0;                                                                                                                  \
+    (mp)->probe_count = 0;                                                                                                                 \
+    (mp)->response_bit = 0;                                                                                                                \
+    (mp)->check_wait = MULTIBOOT_CONNECTION_CHECK_WAIT;                                                                                    \
+    (mp)->sendflag = 0;                                                                                                                    \
+    (mp)->handshake_timeout = 0;                                                                                                           \
+    REG_RCNT = 0;                                                                                                                          \
+    REG_SIOCNT = SIO_MULTI_MODE | SIO_115200_BPS;                                                                                          \
     REG_SIODATA8 = 0;
 
 /*------------------------------------------------------------------*/
@@ -46,8 +46,7 @@ output_burst:
          * When the connection ID is not 00 or there is a problem with the SD or
          * SI terminals an error occurs.
          */
-        i = REG_SIOCNT
-            & (SIO_MULTI_BUSY | SIO_ERROR | SIO_ID | SIO_MULTI_SD | SIO_MULTI_SI);
+        i = REG_SIOCNT & (SIO_MULTI_BUSY | SIO_ERROR | SIO_ID | SIO_MULTI_SD | SIO_MULTI_SI);
         if (i != SIO_MULTI_SD) {
             MULTIBOOT_INIT(mp);
             return i ^ SIO_MULTI_SD;
@@ -62,8 +61,7 @@ output_burst:
          * call If High speed recognition mode, handshake also high speed
          * communication.
          */
-        if (mp->server_type == MULTIBOOT_SERVER_TYPE_QUICK && mp->probe_count > 0xe1
-            && MultiBootCheckComplete(mp) == 0) {
+        if (mp->server_type == MULTIBOOT_SERVER_TYPE_QUICK && mp->probe_count > 0xe1 && MultiBootCheckComplete(mp) == 0) {
             MultiBootWaitSendDone();
             goto output_burst;
         }
@@ -86,9 +84,8 @@ output_burst:
              */
             k = 0x0e;
             for (i = MULTIBOOT_NCHILD; i != 0; --i) {
-                if (*(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2)
-                    != 0xffff) { // braces are required to match on my machine,
-                                 // but works fine on SBird's CE :/
+                if (*(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2) != 0xffff) { // braces are required to match on my machine,
+                                                                       // but works fine on SBird's CE :/
                     break;
                 }
                 k >>= 1;
@@ -145,8 +142,7 @@ output_burst:
                      * If 2P, 0x02
                      * If not so, invalid.
                      */
-                    gMultiBootRequiredData[i - 1]
-                        = j; /* During processing next time must be same value */
+                    gMultiBootRequiredData[i - 1] = j; /* During processing next time must be same value */
                     j &= 0xff;
                     if (j == (1 << i))
                         mp->probe_target_bit |= j; /* recognized */
@@ -160,8 +156,7 @@ output_burst:
              * If not possible that 000 or ccc, not recognized by master.
              */
             mp->probe_count = 2;
-            return MultiBootSend(
-                mp, (MULTIBOOT_MASTER_START_PROBE << 8) | mp->probe_target_bit);
+            return MultiBootSend(mp, (MULTIBOOT_MASTER_START_PROBE << 8) | mp->probe_target_bit);
         case 2:
             /* Must be CLIENT_INFO 000 0 ccc 0.
              * Output header +0, +1 bytes.
@@ -190,8 +185,7 @@ output_burst:
                  */
                 mp->client_data[i - 1] = j;
                 if (mp->probe_target_bit & (1 << i)) {
-                    if ((j >> 8) != MULTIBOOT_CLIENT_INFO
-                        && (j >> 8) != MULTIBOOT_CLIENT_DLREADY) {
+                    if ((j >> 8) != MULTIBOOT_CLIENT_INFO && (j >> 8) != MULTIBOOT_CLIENT_DLREADY) {
                         MULTIBOOT_INIT(mp);
                         return MULTIBOOT_ERROR_NO_DLREADY; /* No response saying
                                                               ready to do
@@ -209,8 +203,7 @@ output_burst:
                 /* Not start download yet.
                  * Send request for download preparation
                  */
-                return MultiBootSend(
-                    mp, (MULTIBOOT_MASTER_REQUEST_DLREADY << 8) | mp->palette_data);
+                return MultiBootSend(mp, (MULTIBOOT_MASTER_REQUEST_DLREADY << 8) | mp->palette_data);
             /* All machines ready to download */
             mp->probe_count = 0xd1;
             k = 0x11;
@@ -269,10 +262,7 @@ output_burst:
             for (i = MULTIBOOT_NCHILD; i != 0; --i) {
                 if (mp->probe_target_bit & (1 << i)) {
                     j = *(vu16 *)(REG_ADDR_SIOMULTI0 + i * 2);
-                    if ((j >> 8)
-                            != (MULTIBOOT_MASTER_START_PROBE + 1
-                                - (mp->probe_count >> 1))
-                        || ((j & 0xff) != (1 << i)))
+                    if ((j >> 8) != (MULTIBOOT_MASTER_START_PROBE + 1 - (mp->probe_count >> 1)) || ((j & 0xff) != (1 << i)))
                         /* Problem with client recognition */
                         mp->probe_target_bit ^= 1 << i;
                 }
@@ -298,9 +288,7 @@ output_burst:
                  * If do not problem with timing.
                  */
                 goto output_master_info;
-            i = MultiBootSend(mp,
-                              (mp->masterp[mp->probe_count - 4 + 1] << 8)
-                                  | mp->masterp[mp->probe_count - 4]);
+            i = MultiBootSend(mp, (mp->masterp[mp->probe_count - 4 + 1] << 8) | mp->masterp[mp->probe_count - 4]);
             if (i)
                 return i;
             /* If Low speed recognition mode, for each frame of call, 2 bytes of
@@ -366,8 +354,7 @@ void MultiBootStartProbe(struct MultiBootParam *mp)
 /*                   Start send from master server                  */
 /*------------------------------------------------------------------*/
 
-void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, s32 length,
-                          u8 palette_color, s8 palette_speed)
+void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, s32 length, u8 palette_color, s8 palette_speed)
 {
     s32 i;
 

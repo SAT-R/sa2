@@ -63,39 +63,33 @@ struct Camera {
 extern struct Camera gCamera;
 
 // TODO: Merge all these into one!
-#define IS_OUT_OF_RANGE_2(x, y, radiusX, radiusY)                                       \
-    ((x < -(radiusX)) || (x > DISPLAY_WIDTH + (radiusX)) || (y < -(radiusY))            \
-     || (y > DISPLAY_HEIGHT + (radiusY)))
+#define IS_OUT_OF_RANGE_2(x, y, radiusX, radiusY)                                                                                          \
+    ((x < -(radiusX)) || (x > DISPLAY_WIDTH + (radiusX)) || (y < -(radiusY)) || (y > DISPLAY_HEIGHT + (radiusY)))
 
 // No idea on this one
-#define IS_OUT_OF_RANGE_3(x, y, radiusX, radiusY)                                       \
-    ((x < -(radiusX)) || (x > DISPLAY_WIDTH + (radiusX)) || ((y) + (radiusY) < 0)       \
-     || (y > DISPLAY_HEIGHT + (radiusY)))
+#define IS_OUT_OF_RANGE_3(x, y, radiusX, radiusY)                                                                                          \
+    ((x < -(radiusX)) || (x > DISPLAY_WIDTH + (radiusX)) || ((y) + (radiusY) < 0) || (y > DISPLAY_HEIGHT + (radiusY)))
 
 // TODO: Merge all these into one!
 #define IS_OUT_OF_RANGE_(UNUSED, x, y, radius) IS_OUT_OF_RANGE_2(x, y, radius, radius)
 
-#define IS_OUT_OF_RANGE_OLD(castType, x, y, dim)                                        \
-    (((castType)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0)           \
-     || (y > DISPLAY_HEIGHT + (dim / 2)))
+#define IS_OUT_OF_RANGE_OLD(castType, x, y, dim)                                                                                           \
+    (((castType)(x + (dim / 2)) > DISPLAY_WIDTH + dim) || (y + (dim / 2) < 0) || (y > DISPLAY_HEIGHT + (dim / 2)))
 
 #define IS_OUT_OF_RANGE IS_OUT_OF_RANGE_OLD
 
 // @NOTE/INVESTIGATE: Some places match with u16, some with u32,
 // but u16 is more common, so it's the default.
-#define IS_OUT_OF_CAM_RANGE(_x, _y) IS_OUT_OF_RANGE(u16, _x, _y, CAM_REGION_WIDTH)
-#define IS_OUT_OF_CAM_RANGE_TYPED(castType, _x, _y)                                     \
-    IS_OUT_OF_RANGE(castType, _x, _y, CAM_REGION_WIDTH)
+#define IS_OUT_OF_CAM_RANGE(_x, _y)                 IS_OUT_OF_RANGE(u16, _x, _y, CAM_REGION_WIDTH)
+#define IS_OUT_OF_CAM_RANGE_TYPED(castType, _x, _y) IS_OUT_OF_RANGE(castType, _x, _y, CAM_REGION_WIDTH)
 
 // TODO: Remove macro and replace calls of it with 'IS_OUT_OF_RANGE' once rewritten.
 #define IS_OUT_OF_CAM_RANGE_2(x, y) IS_OUT_OF_RANGE_(u16, x, y, (CAM_REGION_WIDTH / 2))
 
-#define IS_OUT_OF_DISPLAY_RANGE(_x, _y)                                                 \
-    ((_x) > gCamera.x + (DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2))                        \
-     || (_x) < gCamera.x - (CAM_REGION_WIDTH / 2) || (_y) > gCamera.y + CAM_BOUND_Y     \
-     || (_y) < gCamera.y - (CAM_REGION_WIDTH / 2))
+#define IS_OUT_OF_DISPLAY_RANGE(_x, _y)                                                                                                    \
+    ((_x) > gCamera.x + (DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)) || (_x) < gCamera.x - (CAM_REGION_WIDTH / 2)                              \
+     || (_y) > gCamera.y + CAM_BOUND_Y || (_y) < gCamera.y - (CAM_REGION_WIDTH / 2))
 
-#define IS_OUT_OF_LOOP_TRIGGER_RANGE(x, y)                                              \
-    IS_OUT_OF_RANGE_3(x, y, (CAM_REGION_WIDTH / 2), (CAM_REGION_WIDTH / 2))
+#define IS_OUT_OF_LOOP_TRIGGER_RANGE(x, y) IS_OUT_OF_RANGE_3(x, y, (CAM_REGION_WIDTH / 2), (CAM_REGION_WIDTH / 2))
 
 #endif // GUARD_SAKIT_CAMERA_H

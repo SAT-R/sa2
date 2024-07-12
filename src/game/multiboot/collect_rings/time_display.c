@@ -18,10 +18,9 @@ void sub_808328C(void);
 u32 gUnknown_03005B6C = 0;
 
 const u8 gUnknown_080E0234[] = {
-    0,   2,   3,   5,   7,   8,   16,  18,  19,  21,  23,  24,  32,  34,  35,
-    37,  39,  40,  48,  50,  51,  53,  55,  56,  64,  66,  67,  69,  71,  72,
-    80,  82,  83,  85,  87,  88,  96,  98,  99,  101, 103, 104, 112, 114, 115,
-    117, 119, 120, 128, 130, 131, 133, 135, 136, 144, 146, 147, 149, 151, 152,
+    0,   2,   3,   5,   7,   8,   16,  18,  19,  21,  23,  24,  32,  34,  35,  37,  39,  40,  48,  50,
+    51,  53,  55,  56,  64,  66,  67,  69,  71,  72,  80,  82,  83,  85,  87,  88,  96,  98,  99,  101,
+    103, 104, 112, 114, 115, 117, 119, 120, 128, 130, 131, 133, 135, 136, 144, 146, 147, 149, 151, 152,
 };
 
 const u16 gUnknown_080E0270[] = INCBIN_U16("graphics/80E0270.gbapal");
@@ -31,8 +30,7 @@ void CreateCollectRingsTimeDisplay(void)
     u32 i;
     TimeDisplay *timeDisplay;
     Sprite *s;
-    struct Task *t
-        = TaskCreate(sub_808328C, sizeof(TimeDisplay), 0x2102, 0, sub_80832E0);
+    struct Task *t = TaskCreate(sub_808328C, sizeof(TimeDisplay), 0x2102, 0, sub_80832E0);
     gUnknown_03005B6C = 0;
     timeDisplay = TASK_DATA(t);
 

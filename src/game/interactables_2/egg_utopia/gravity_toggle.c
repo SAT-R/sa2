@@ -47,12 +47,9 @@ static void Task_GravityToggle(void);
 #define GRAVITY_KIND__UP     1
 #define GRAVITY_KIND__TOGGLE 2
 
-static void CreateEntity_Toggle_Gravity(MapEntity *in_ia, u16 spriteRegionX,
-                                        u16 spriteRegionY, u8 id, u8 toggleKind)
+static void CreateEntity_Toggle_Gravity(MapEntity *in_ia, u16 spriteRegionX, u16 spriteRegionY, u8 id, u8 toggleKind)
 {
-    struct Task *t
-        = TaskCreate(Task_GravityToggleNoAliveCheck, sizeof(Sprite_GravityToggle),
-                     0x2010, 0, TaskDestructor_8080230);
+    struct Task *t = TaskCreate(Task_GravityToggleNoAliveCheck, sizeof(Sprite_GravityToggle), 0x2010, 0, TaskDestructor_8080230);
     Sprite_GravityToggle *toggle = TASK_DATA(t);
     Interactable_GravityToggle *me = (Interactable_GravityToggle *)in_ia;
 
@@ -87,10 +84,8 @@ void ChangeGravityByKind(Sprite_GravityToggle *toggle)
 
         case GRAVITY_KIND__TOGGLE: {
             // Maybe collision on enter/exit?
-            if (((toggle->playerAirX > 0) && (gPlayer.speedAirX > 0))
-                || ((toggle->playerAirX < 0) && (gPlayer.speedAirX < 0))
-                || ((toggle->playerAirY > 0) && (gPlayer.speedAirY > 0))
-                || ((toggle->playerAirY < 0) && (gPlayer.speedAirY < 0))) {
+            if (((toggle->playerAirX > 0) && (gPlayer.speedAirX > 0)) || ((toggle->playerAirX < 0) && (gPlayer.speedAirX < 0))
+                || ((toggle->playerAirY > 0) && (gPlayer.speedAirY > 0)) || ((toggle->playerAirY < 0) && (gPlayer.speedAirY < 0))) {
                 gStageFlags ^= STAGE_FLAG__GRAVITY_INVERTED;
             }
 
@@ -116,8 +111,8 @@ static bool32 AlivePlayerIsInToggle(Sprite_GravityToggle *toggle)
         playerX = I(gPlayer.x) - gCamera.x;
         playerY = I(gPlayer.y) - gCamera.y;
 
-        if ((screenLeft <= playerX) && ((screenLeft + toggle->width) >= playerX)
-            && (screenTop <= playerY) && ((screenTop + toggle->height) >= playerY)) {
+        if ((screenLeft <= playerX) && ((screenLeft + toggle->width) >= playerX) && (screenTop <= playerY)
+            && ((screenTop + toggle->height) >= playerY)) {
             return TRUE;
         }
     }
@@ -166,24 +161,19 @@ void DestroyGravityToggle(Sprite_GravityToggle *toggle)
     TaskDestroy(gCurTask);
 }
 
-void CreateEntity_Toggle_Gravity__Down(MapEntity *me, u16 spriteRegionX,
-                                       u16 spriteRegionY, u8 id)
+void CreateEntity_Toggle_Gravity__Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 id)
 {
-    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, id,
-                                GRAVITY_KIND__DOWN);
+    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, id, GRAVITY_KIND__DOWN);
 }
 
-void CreateEntity_Toggle_Gravity__Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 id)
+void CreateEntity_Toggle_Gravity__Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 id)
 {
     CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, id, GRAVITY_KIND__UP);
 }
 
-void CreateEntity_Toggle_Gravity__Toggle(MapEntity *me, u16 spriteRegionX,
-                                         u16 spriteRegionY, u8 id)
+void CreateEntity_Toggle_Gravity__Toggle(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 id)
 {
-    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, id,
-                                GRAVITY_KIND__TOGGLE);
+    CreateEntity_Toggle_Gravity(me, spriteRegionX, spriteRegionY, id, GRAVITY_KIND__TOGGLE);
 }
 
 void Task_GravityToggle(void)

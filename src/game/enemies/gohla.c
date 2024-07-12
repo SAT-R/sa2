@@ -39,8 +39,7 @@ static void TaskDestructor_Gohla(struct Task *);
 void CreateEntity_Gohla(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (gGameMode == GAME_MODE_TIME_ATTACK || gDifficultyLevel != 1) {
-        struct Task *t = TaskCreate(sub_8051928, sizeof(Sprite_Gohla), 0x4040, 0,
-                                    TaskDestructor_Gohla);
+        struct Task *t = TaskCreate(sub_8051928, sizeof(Sprite_Gohla), 0x4040, 0, TaskDestructor_Gohla);
         Sprite_Gohla *gohla = TASK_DATA(t);
         Sprite *s = &gohla->s;
         gohla->base.regionX = spriteRegionX;
@@ -58,8 +57,7 @@ void CreateEntity_Gohla(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         gohla->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
         gohla->spawnY = Q(TO_WORLD_POS(me->y, spriteRegionY));
         gohla->offsetX = 0;
-        gohla->offsetY = Q(sub_801F07C(I(gohla->spawnY), I(gohla->spawnX), gohla->unk8C,
-                                       8, NULL, sub_801EE64));
+        gohla->offsetY = Q(sub_801F07C(I(gohla->spawnY), I(gohla->spawnX), gohla->unk8C, 8, NULL, sub_801EE64));
         gohla->projX = 0;
         gohla->projY = 0;
         gohla->projZ = 0;

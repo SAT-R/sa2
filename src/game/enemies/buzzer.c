@@ -35,8 +35,7 @@ static void sub_8053620(void);
 void CreateEntity_Buzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (DIFFICULTY_LEVEL_IS_NOT_EASY_AND_ZONE_IS_NOT_1) {
-        struct Task *t = TaskCreate(Task_BuzzerMain, sizeof(Sprite_Buzzer), 0x4030, 0,
-                                    TaskDestructor_Buzzer);
+        struct Task *t = TaskCreate(Task_BuzzerMain, sizeof(Sprite_Buzzer), 0x4030, 0, TaskDestructor_Buzzer);
         Sprite_Buzzer *buzzer = TASK_DATA(t);
         Sprite *s = &buzzer->s;
         buzzer->base.regionX = spriteRegionX;
@@ -92,8 +91,7 @@ static void Task_BuzzerMain(void)
          --buzzer->unk68 == 0
 #endif
          )
-        && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) && I(gPlayer.x) > (pos.x - 0x3C)
-        && I(gPlayer.x) < pos.x && I(gPlayer.y) > pos.y
+        && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) && I(gPlayer.x) > (pos.x - 0x3C) && I(gPlayer.x) < pos.x && I(gPlayer.y) > pos.y
         && I(gPlayer.y) < (pos.y + 0x50)) {
         gCurTask->main = sub_80534F0;
         s->graphics.anim = SA2_ANIM_BUZZER;
@@ -102,8 +100,7 @@ static void Task_BuzzerMain(void)
         buzzer->unk5C = gPlayer.y;
         buzzer->unk64 = Div(gPlayer.x - QS(pos.x), 0x20);
         buzzer->unk66 = Div(gPlayer.y - QS(pos.y), 0x20);
-    } else if (buzzer->unk68 == 0 && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)
-               && I(gPlayer.x) > pos.x && I(gPlayer.x) < (pos.x + 0x3C)
+    } else if (buzzer->unk68 == 0 && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) && I(gPlayer.x) > pos.x && I(gPlayer.x) < (pos.x + 0x3C)
                && I(gPlayer.y) > pos.y && I(gPlayer.y) < (pos.y + 0x50)) {
         gCurTask->main = sub_80534F0;
         s->graphics.anim = SA2_ANIM_BUZZER;
@@ -120,14 +117,12 @@ static void Task_BuzzerMain(void)
 #ifndef NON_MATCHING
     lab:
 #endif
-        if (ENEMY_CROSSED_LEFT_BORDER(buzzer, me)
-            && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
+        if (ENEMY_CROSSED_LEFT_BORDER(buzzer, me) && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
             gCurTask->main = sub_80533B4;
             s->graphics.anim = SA2_ANIM_BUZZER;
             s->variant = 2;
             s->prevVariant = -1;
-        } else if (ENEMY_CROSSED_RIGHT_BORDER(buzzer, me)
-                   && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
+        } else if (ENEMY_CROSSED_RIGHT_BORDER(buzzer, me) && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
             gCurTask->main = sub_80533B4;
             s->graphics.anim = SA2_ANIM_BUZZER;
             s->variant = 2;
@@ -173,8 +168,7 @@ static void sub_80534F0(void)
     buzzer->unk54 += buzzer->unk64;
     buzzer->unk58 += buzzer->unk66;
 
-    ENEMY_UPDATE_POSITION_RAW(buzzer, s, pos.x, pos.y, buzzer->offsetX + buzzer->unk54,
-                              buzzer->unk58);
+    ENEMY_UPDATE_POSITION_RAW(buzzer, s, pos.x, pos.y, buzzer->offsetX + buzzer->unk54, buzzer->unk58);
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(buzzer, me, s);
@@ -196,8 +190,7 @@ static void sub_8053620(void)
     buzzer->unk54 -= buzzer->unk64;
     buzzer->unk58 -= buzzer->unk66;
 
-    ENEMY_UPDATE_POSITION_RAW(buzzer, s, pos.x, pos.y, buzzer->offsetX + buzzer->unk54,
-                              buzzer->unk58);
+    ENEMY_UPDATE_POSITION_RAW(buzzer, s, pos.x, pos.y, buzzer->offsetX + buzzer->unk54, buzzer->unk58);
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos);
     ENEMY_DESTROY_IF_OFFSCREEN(buzzer, me, s);

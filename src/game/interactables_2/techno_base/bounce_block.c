@@ -46,11 +46,9 @@ static const u16 sTecBasBlockSfx[] = {
     SE_TECHNO_BASE_COMMON,
 };
 
-void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY)
+void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_NoteBlock, sizeof(Sprite_TecBaseNoteBlock), 0x2010,
-                                0, TaskDestructor_NoteBlock);
+    struct Task *t = TaskCreate(Task_NoteBlock, sizeof(Sprite_TecBaseNoteBlock), 0x2010, 0, TaskDestructor_NoteBlock);
     Sprite_TecBaseNoteBlock *noteBlock = TASK_DATA(t);
     Sprite *s = &noteBlock->s;
     noteBlock->unk44 = 0;
@@ -128,8 +126,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
         if (temp3 < 49 && temp4 < 33) {
             s16 speedGround = gPlayer.speedGroundX;
 
-            temp = sub_800CDBC(&noteBlock->s, noteBlock->unk3C, noteBlock->unk40,
-                               &gPlayer);
+            temp = sub_800CDBC(&noteBlock->s, noteBlock->unk3C, noteBlock->unk40, &gPlayer);
             if (temp == 0) {
                 return 0;
             }

@@ -220,42 +220,29 @@ void HuffUnComp(void) { }
 #if L_LZ77UnCompWram
 #include "platform/platform.h"
 
-void LZ77UnCompWram(const void *src, void *dest)
-{
-    Platform_LZDecompressUnsafe(src, dest);
-}
+void LZ77UnCompWram(const void *src, void *dest) { Platform_LZDecompressUnsafe(src, dest); }
 #endif
 
 #if L_LZ77UnCompVram
 #include "platform/platform.h"
 
-void LZ77UnCompVram(const void *src, void *dest)
-{
-    Platform_LZDecompressUnsafe(src, dest);
-}
+void LZ77UnCompVram(const void *src, void *dest) { Platform_LZDecompressUnsafe(src, dest); }
 #endif
 
 #if L_RLUnCompWram
 #include "platform/platform.h"
 
-void RLUnCompWram(const void *src, void *dest)
-{
-    Platform_RLDecompressUnsafe(src, dest);
-}
+void RLUnCompWram(const void *src, void *dest) { Platform_RLDecompressUnsafe(src, dest); }
 #endif
 
 #if L_RLUnCompVram
 #include "platform/platform.h"
 
-void RLUnCompVram(const void *src, void *dest)
-{
-    Platform_RLDecompressUnsafe(src, dest);
-}
+void RLUnCompVram(const void *src, void *dest) { Platform_RLDecompressUnsafe(src, dest); }
 #endif
 
 #if L_BgAffineSet
-void BgAffineSet(struct BgAffineSrcData *src, struct BgAffineDstData *dest, s32 count) {
-}
+void BgAffineSet(struct BgAffineSrcData *src, struct BgAffineDstData *dest, s32 count) { }
 #endif
 
 #if L_ObjAffineSet

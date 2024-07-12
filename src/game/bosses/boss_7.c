@@ -113,9 +113,8 @@ static void sub_8049174(EggFrog *);
 static void sub_80491C4(EggFrog *);
 
 static const TileInfo gUnknown_080D8108[] = {
-    { 12, SA2_ANIM_EGG_FROG_WHEELS, 0 },     { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 0 },
-    { 12, SA2_ANIM_EGG_FROG_WHEELS, 0 },     { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 0 },
-    { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 1 }, { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 2 },
+    { 12, SA2_ANIM_EGG_FROG_WHEELS, 0 },     { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 0 }, { 12, SA2_ANIM_EGG_FROG_WHEELS, 0 },
+    { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 0 }, { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 1 }, { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 2 },
     { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 3 }, { 4, SA2_ANIM_EGG_FROG_ARM_SEGMENT, 4 },
 };
 
@@ -173,64 +172,57 @@ const u16 gUnknown_080D814C[][12] = {
 };
 
 const u16 *const gUnknown_080D859C[][6] = {
-    { gUnknown_080D814C[40], gUnknown_080D814C[41], gUnknown_080D814C[42],
-      gUnknown_080D814C[43], gUnknown_080D814C[44], gUnknown_080D814C[45] },
+    { gUnknown_080D814C[40], gUnknown_080D814C[41], gUnknown_080D814C[42], gUnknown_080D814C[43], gUnknown_080D814C[44],
+      gUnknown_080D814C[45] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[1], gUnknown_080D814C[2],
-      gUnknown_080D814C[3], gUnknown_080D814C[4], gUnknown_080D814C[5] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[1], gUnknown_080D814C[2], gUnknown_080D814C[3], gUnknown_080D814C[4], gUnknown_080D814C[5] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[14], gUnknown_080D814C[15],
-      gUnknown_080D814C[3], gUnknown_080D814C[16], gUnknown_080D814C[17] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[14], gUnknown_080D814C[15], gUnknown_080D814C[3], gUnknown_080D814C[16],
+      gUnknown_080D814C[17] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[18], gUnknown_080D814C[19],
-      gUnknown_080D814C[3], gUnknown_080D814C[20], gUnknown_080D814C[21] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[18], gUnknown_080D814C[19], gUnknown_080D814C[3], gUnknown_080D814C[20],
+      gUnknown_080D814C[21] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[10], gUnknown_080D814C[11],
-      gUnknown_080D814C[3], gUnknown_080D814C[12], gUnknown_080D814C[13] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[10], gUnknown_080D814C[11], gUnknown_080D814C[3], gUnknown_080D814C[12],
+      gUnknown_080D814C[13] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[22], gUnknown_080D814C[23],
-      gUnknown_080D814C[3], gUnknown_080D814C[24], gUnknown_080D814C[25] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[22], gUnknown_080D814C[23], gUnknown_080D814C[3], gUnknown_080D814C[24],
+      gUnknown_080D814C[25] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[6], gUnknown_080D814C[7],
-      gUnknown_080D814C[3], gUnknown_080D814C[8], gUnknown_080D814C[9] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[6], gUnknown_080D814C[7], gUnknown_080D814C[3], gUnknown_080D814C[8], gUnknown_080D814C[9] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[22], gUnknown_080D814C[23],
-      gUnknown_080D814C[3], gUnknown_080D814C[24], gUnknown_080D814C[25] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[22], gUnknown_080D814C[23], gUnknown_080D814C[3], gUnknown_080D814C[24],
+      gUnknown_080D814C[25] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[28], gUnknown_080D814C[29],
-      gUnknown_080D814C[3], gUnknown_080D814C[30], gUnknown_080D814C[31] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[28], gUnknown_080D814C[29], gUnknown_080D814C[3], gUnknown_080D814C[30],
+      gUnknown_080D814C[31] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[26], gUnknown_080D814C[26],
-      gUnknown_080D814C[3], gUnknown_080D814C[27], gUnknown_080D814C[27] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[26], gUnknown_080D814C[26], gUnknown_080D814C[3], gUnknown_080D814C[27],
+      gUnknown_080D814C[27] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[1], gUnknown_080D814C[2],
-      gUnknown_080D814C[3], gUnknown_080D814C[4], gUnknown_080D814C[5] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[1], gUnknown_080D814C[2], gUnknown_080D814C[3], gUnknown_080D814C[4], gUnknown_080D814C[5] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[32], gUnknown_080D814C[33],
-      gUnknown_080D814C[3], gUnknown_080D814C[34], gUnknown_080D814C[35] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[32], gUnknown_080D814C[33], gUnknown_080D814C[3], gUnknown_080D814C[34],
+      gUnknown_080D814C[35] },
 
-    { gUnknown_080D814C[0], gUnknown_080D814C[36], gUnknown_080D814C[37],
-      gUnknown_080D814C[3], gUnknown_080D814C[38], gUnknown_080D814C[39] },
+    { gUnknown_080D814C[0], gUnknown_080D814C[36], gUnknown_080D814C[37], gUnknown_080D814C[3], gUnknown_080D814C[38],
+      gUnknown_080D814C[39] },
 };
 
 const u16 *const *const gUnknown_080D86D4[] = {
-    gUnknown_080D859C[1], gUnknown_080D859C[2],  gUnknown_080D859C[4],
-    gUnknown_080D859C[5], gUnknown_080D859C[6],  gUnknown_080D859C[7],
-    gUnknown_080D859C[3], gUnknown_080D859C[7],  gUnknown_080D859C[8],
-    gUnknown_080D859C[9], gUnknown_080D859C[10], gUnknown_080D859C[11],
-    gUnknown_080D859C[1], gUnknown_080D859C[12], gUnknown_080D859C[0],
+    gUnknown_080D859C[1],  gUnknown_080D859C[2],  gUnknown_080D859C[4], gUnknown_080D859C[5],  gUnknown_080D859C[6],
+    gUnknown_080D859C[7],  gUnknown_080D859C[3],  gUnknown_080D859C[7], gUnknown_080D859C[8],  gUnknown_080D859C[9],
+    gUnknown_080D859C[10], gUnknown_080D859C[11], gUnknown_080D859C[1], gUnknown_080D859C[12], gUnknown_080D859C[0],
 };
 
 const UNK_80D8710 gUnknown_080D8710[] = {
-    { 64, 0, 0 },  { 128, 0, 1 }, { 512, 0, 1 }, { 256, 1, 1 }, { 256, 0, 1 },
-    { 256, 1, 1 }, { 128, 0, 1 }, { 64, 1, 0 },  { 128, 1, 1 }, { 512, 1, 1 },
-    { 256, 0, 1 }, { 256, 1, 1 }, { 256, 0, 1 }, { 128, 1, 1 }, { 256, 0, 0 },
+    { 64, 0, 0 },  { 128, 0, 1 }, { 512, 0, 1 }, { 256, 1, 1 }, { 256, 0, 1 }, { 256, 1, 1 }, { 128, 0, 1 }, { 64, 1, 0 },
+    { 128, 1, 1 }, { 512, 1, 1 }, { 256, 0, 1 }, { 256, 1, 1 }, { 256, 0, 1 }, { 128, 1, 1 }, { 256, 0, 0 },
 };
 
 const EggFrogCallback gUnknown_080D874C[] = {
-    sub_8048F7C, sub_8048FA4, sub_804893C, sub_80489B0, sub_8048A4C,
-    sub_8048FF4, sub_804904C, sub_804909C, sub_80490C4, sub_8048AD8,
-    sub_8048B50, sub_8048BF0, sub_804911C, sub_8049174, sub_80491C4,
+    sub_8048F7C, sub_8048FA4, sub_804893C, sub_80489B0, sub_8048A4C, sub_8048FF4, sub_804904C, sub_804909C,
+    sub_80490C4, sub_8048AD8, sub_8048B50, sub_8048BF0, sub_804911C, sub_8049174, sub_80491C4,
 };
 
 const u8 gUnknown_080D8788[][7] = {
@@ -265,8 +257,7 @@ void CreateEggFrog(void)
     gPseudoRandom = gStageTime;
     gUnknown_03005AF0.s.frameFlags &= ~0x3000;
     gUnknown_03005AF0.s.frameFlags |= 0x1000;
-    gActiveBossTask = TaskCreate(Task_EggFrogMain, sizeof(EggFrog), 0x4000, 0,
-                                 TaskDestructor_EggFrogMain);
+    gActiveBossTask = TaskCreate(Task_EggFrogMain, sizeof(EggFrog), 0x4000, 0, TaskDestructor_EggFrogMain);
 
     boss = TASK_DATA(gActiveBossTask);
 
@@ -343,8 +334,7 @@ void CreateEggFrog(void)
 
         a = 3 + i;
 
-        SPRITE_INIT(s, gUnknown_080D8108[a].numTiles, gUnknown_080D8108[a].anim,
-                    gUnknown_080D8108[a].variant, i + 27, 2);
+        SPRITE_INIT(s, gUnknown_080D8108[a].numTiles, gUnknown_080D8108[a].anim, gUnknown_080D8108[a].variant, i + 27, 2);
 
         UpdateSpriteAnimation(s);
     }
@@ -354,16 +344,14 @@ void CreateEggFrog(void)
     s->y = 0;
     vram = VramMalloc(gUnknown_080D8108[2].numTiles);
     s->graphics.dest = vram;
-    SPRITE_INIT_WITHOUT_VRAM(s, gUnknown_080D8108[2].anim, gUnknown_080D8108[2].variant,
-                             25, 2, 0);
+    SPRITE_INIT_WITHOUT_VRAM(s, gUnknown_080D8108[2].anim, gUnknown_080D8108[2].variant, 25, 2, 0);
     UpdateSpriteAnimation(s);
 
     s = &boss->unk188[1];
     s->x = 0;
     s->y = 0;
     s->graphics.dest = vram;
-    SPRITE_INIT_WITHOUT_VRAM(s, gUnknown_080D8108[2].anim, gUnknown_080D8108[2].variant,
-                             25, 2, 0);
+    SPRITE_INIT_WITHOUT_VRAM(s, gUnknown_080D8108[2].anim, gUnknown_080D8108[2].variant, 25, 2, 0);
     UpdateSpriteAnimation(s);
 }
 
@@ -436,8 +424,7 @@ static void sub_8047F0C(void)
         s->variant = 4;
         s->prevVariant = -1;
         boss->unk65 = 1;
-        CreateEggmobileEscapeSequence(I(boss->x) - gCamera.x,
-                                      I(boss->y) - gCamera.y - 15,
+        CreateEggmobileEscapeSequence(I(boss->x) - gCamera.x, I(boss->y) - gCamera.y - 15,
                                       SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(X_FLIP, 1));
     }
 
@@ -542,8 +529,7 @@ static void sub_8048408(EggFrog *boss)
 
         Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
-        if (boss->unk16 == 0
-            && IsColliding_Cheese(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
+        if (boss->unk16 == 0 && IsColliding_Cheese(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
             sub_8048D78(boss);
             gCheeseTarget.task->unk15 = 0;
         }
@@ -856,8 +842,7 @@ static void sub_8048BF0(EggFrog *boss)
 
 // https://decomp.me/scratch/aDy46
 // 81% though looks functionally matching
-NONMATCH("asm/non_matching/game/bosses/boss_7__sub_8048C7C.inc",
-         static bool8 sub_8048C7C(EggFrog *boss))
+NONMATCH("asm/non_matching/game/bosses/boss_7__sub_8048C7C.inc", static bool8 sub_8048C7C(EggFrog *boss))
 {
     const u16 *const *unk60 = boss->unk60;
     s16 *unk28 = boss->unk28;
@@ -1250,8 +1235,7 @@ static void sub_80494EC(void)
     s->x = I(bomb->x);
     s->y = I(bomb->y);
     if (bomb->boss->unk14) {
-        s32 result = sub_800CA20(s, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, 0,
-                                 &gPlayer);
+        s32 result = sub_800CA20(s, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, 0, &gPlayer);
         if (result == 1 && bomb->boss->unk16 == 0) {
             Sprite *unk68 = &bomb->boss->unk68;
             bomb->boss->unk15 = 0x1E;
@@ -1347,8 +1331,7 @@ static void Task_80497E0(void)
     s->x = I(bombFlame->x);
     s->y = I(bombFlame->y);
     if (bombFlame->boss->unk14) {
-        s32 result = sub_800CA20(s, I(bombFlame->x) + gCamera.x,
-                                 I(bombFlame->y) + gCamera.y, 0, &gPlayer);
+        s32 result = sub_800CA20(s, I(bombFlame->x) + gCamera.x, I(bombFlame->y) + gCamera.y, 0, &gPlayer);
         if (result == 1 && bombFlame->boss->unk16 == 0) {
             Sprite *unk68 = &bombFlame->boss->unk68;
             bombFlame->boss->unk15 = 30;

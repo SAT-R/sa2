@@ -124,8 +124,7 @@ void CreateStageBg_Zone3(void)
 
 // (85.02%) https://decomp.me/scratch/Esyzr
 #if 01
-NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone3Acts12.inc",
-         void StageBgUpdate_Zone3Acts12(s32 a, s32 b))
+NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone3Acts12.inc", void StageBgUpdate_Zone3Acts12(s32 a, s32 b))
 #else
 void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
 #endif
@@ -151,8 +150,7 @@ void StageBgUpdate_Zone3Acts12(s32 a, s32 b)
     gBgScrollRegs[3][1] = r3;
 
     if (IS_SINGLE_PLAYER) {
-        if ((gPlayer.moveState & MOVESTATE_8000000)
-            && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+        if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             if (sUnknown_03000408 == 0) {
                 sUnknown_03000408 = a;
             }

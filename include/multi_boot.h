@@ -70,8 +70,7 @@ extern void MultiBootStartProbe(struct MultiBootParam *mp);
 /*                   Starts Transfer from Master Server             */
 /*------------------------------------------------------------------*/
 
-extern void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, s32 length,
-                                 u8 palette_color, s8 palette_speed);
+extern void MultiBootStartMaster(struct MultiBootParam *mp, const u8 *srcp, s32 length, u8 palette_color, s8 palette_speed);
 
 //* Among the units connected by multi-play communication cable, only
 // those units with game pak inserted

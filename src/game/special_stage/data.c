@@ -9,9 +9,9 @@
  * TODO: use incbin here to the compiled data
  **/
 
-#define ARRAY_END                                                                       \
-    {                                                                                   \
-        -1, 0, 0, 0, -1,                                                                \
+#define ARRAY_END                                                                                                                          \
+    {                                                                                                                                      \
+        -1, 0, 0, 0, -1,                                                                                                                   \
     }
 
 const struct UNK_8C878E8 gUnknown_080DA270[] = {

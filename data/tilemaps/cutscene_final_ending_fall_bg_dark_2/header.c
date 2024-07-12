@@ -1,10 +1,8 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_cutscene_final_ending_fall_bg_dark_2[]
-    = INCBIN_U16("data/tilemaps/cutscene_final_ending_fall_bg_dark_2/palette.gbapal");
-const u8 Tiles_cutscene_final_ending_fall_bg_dark_2[]
-    = INCBIN_U8("data/tilemaps/cutscene_final_ending_fall_bg_dark_2/tiles.4bpp");
+const u16 Palette_cutscene_final_ending_fall_bg_dark_2[] = INCBIN_U16("data/tilemaps/cutscene_final_ending_fall_bg_dark_2/palette.gbapal");
+const u8 Tiles_cutscene_final_ending_fall_bg_dark_2[] = INCBIN_U8("data/tilemaps/cutscene_final_ending_fall_bg_dark_2/tiles.4bpp");
 const u16 Tilemap_cutscene_final_ending_fall_bg_dark_2[]
     = INCBIN_U16("data/tilemaps/cutscene_final_ending_fall_bg_dark_2/tilemap.tilemap2");
 

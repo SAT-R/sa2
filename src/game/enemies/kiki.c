@@ -42,8 +42,7 @@ static void TaskDestructor_KikiProj(struct Task *);
 
 void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_KikiMain, sizeof(Sprite_Kiki), 0x4020, 0,
-                                TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_KikiMain, sizeof(Sprite_Kiki), 0x4020, 0, TaskDestructor_80095E8);
     Sprite_Kiki *kiki = TASK_DATA(t);
     Sprite *s = &kiki->s;
 
@@ -174,8 +173,7 @@ static void sub_8053A38(void)
 
 static void CreateKikiProjectile(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(Task_KikiProjMain, sizeof(Kiki_Proj), 0x4028, 0,
-                                TaskDestructor_KikiProj);
+    struct Task *t = TaskCreate(Task_KikiProjMain, sizeof(Kiki_Proj), 0x4028, 0, TaskDestructor_KikiProj);
     Kiki_Proj *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
 
@@ -285,8 +283,7 @@ static void Task_KikiProjSplit(void)
 
 static void CreateKikiProjectilePiece(s16 x, s16 y)
 {
-    struct Task *t = TaskCreate(Task_ProjPieceMain, sizeof(Kiki_Proj), 0x2000, 0,
-                                TaskDestructor_KikiProj);
+    struct Task *t = TaskCreate(Task_ProjPieceMain, sizeof(Kiki_Proj), 0x2000, 0, TaskDestructor_KikiProj);
     Kiki_Proj *proj = TASK_DATA(t);
     Sprite *s = &proj->s;
 
@@ -330,8 +327,7 @@ static void Task_ProjPieceMain(void)
             y1 = y + s->hitboxes[0].top;
             y2 = I(gPlayer.y) + s2->hitboxes[0].top;
             if ((y1 <= y2 && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
-                || (y1 >= y2
-                    && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {
+                || (y1 >= y2 && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {
                 sub_800CBA4(&gPlayer);
             }
         }

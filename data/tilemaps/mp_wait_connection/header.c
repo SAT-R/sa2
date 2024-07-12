@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_mp_wait_connection[]
-    = INCBIN_U16("data/tilemaps/mp_wait_connection/palette.gbapal");
-const u8 Tiles_mp_wait_connection[]
-    = INCBIN_U8("data/tilemaps/mp_wait_connection/tiles.4bpp");
-const u16 Tilemap_mp_wait_connection[]
-    = INCBIN_U16("data/tilemaps/mp_wait_connection/tilemap.tilemap2");
+const u16 Palette_mp_wait_connection[] = INCBIN_U16("data/tilemaps/mp_wait_connection/palette.gbapal");
+const u8 Tiles_mp_wait_connection[] = INCBIN_U8("data/tilemaps/mp_wait_connection/tiles.4bpp");
+const u16 Tilemap_mp_wait_connection[] = INCBIN_U16("data/tilemaps/mp_wait_connection/tilemap.tilemap2");
 
 const Tilemap mp_wait_connection = {
     .xTiles = 30,

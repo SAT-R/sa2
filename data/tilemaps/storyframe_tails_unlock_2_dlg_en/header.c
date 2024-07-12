@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_storyframe_tails_unlock_2_dlg_en[]
-    = INCBIN_U16("data/tilemaps/storyframe_tails_unlock_2_dlg_en/palette.gbapal");
-const u8 Tiles_storyframe_tails_unlock_2_dlg_en[]
-    = INCBIN_U8("data/tilemaps/storyframe_tails_unlock_2_dlg_en/tiles.4bpp");
-const u16 Tilemap_storyframe_tails_unlock_2_dlg_en[]
-    = INCBIN_U16("data/tilemaps/storyframe_tails_unlock_2_dlg_en/tilemap.tilemap2");
+const u16 Palette_storyframe_tails_unlock_2_dlg_en[] = INCBIN_U16("data/tilemaps/storyframe_tails_unlock_2_dlg_en/palette.gbapal");
+const u8 Tiles_storyframe_tails_unlock_2_dlg_en[] = INCBIN_U8("data/tilemaps/storyframe_tails_unlock_2_dlg_en/tiles.4bpp");
+const u16 Tilemap_storyframe_tails_unlock_2_dlg_en[] = INCBIN_U16("data/tilemaps/storyframe_tails_unlock_2_dlg_en/tilemap.tilemap2");
 
 const Tilemap storyframe_tails_unlock_2_dlg_en = {
     .xTiles = 30,

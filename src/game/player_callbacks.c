@@ -79,8 +79,7 @@ const ALIGNED(4) u16 gUnknown_080D5518[3][3] = {
     { 16, SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_SONIC), 3 },
 };
 
-const ALIGNED(4) s16 gUnknown_080D552C[6]
-    = { Q(2.0), Q(4.0), Q(6.0), Q(8.0), Q(10.0), 0 };
+const ALIGNED(4) s16 gUnknown_080D552C[6] = { Q(2.0), Q(4.0), Q(6.0), Q(8.0), Q(10.0), 0 };
 
 static const s8 gUnknown_080D5538[4] = { 96, 97, 98, 99 };
 
@@ -137,8 +136,7 @@ struct Task *sub_8011C98(s32 x, s32 y)
     if (IS_MULTI_PLAYER) {
         return NULL;
     } else {
-        struct Task *t = TaskCreate(Task_8012034, sizeof(TaskStrc_8011C98), 0x4001, 0,
-                                    TaskDestructor_80124B8);
+        struct Task *t = TaskCreate(Task_8012034, sizeof(TaskStrc_8011C98), 0x4001, 0, TaskDestructor_80124B8);
 
         TaskStrc_8011C98 *strc = TASK_DATA(t);
         Sprite *s = &strc->s;
@@ -334,8 +332,7 @@ void Task_8012034(void)
     Sprite *s = &strc->s;
     Vec2_32 pos;
 
-    if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.speedAirY < Q(2.0))
-        || (gPlayer.unk64 != 36)) {
+    if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.speedAirY < Q(2.0)) || (gPlayer.unk64 != 36)) {
         TaskDestroy(gCurTask);
     } else {
         UpdateSpriteAnimation(s);
@@ -458,8 +455,7 @@ void Player_UpdateHomingPosition(s32 qX, s32 qY)
     if (gPlayer.character == CHARACTER_SONIC) {
         if (sqDistance < gHomingTarget.squarePlayerDistance) {
             if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
-                u16 angle = CLAMP_SIN_PERIOD(sub_8004418(vecTargetX, vecTargetY)
-                                             - (SIN_PERIOD / 4));
+                u16 angle = CLAMP_SIN_PERIOD(sub_8004418(vecTargetX, vecTargetY) - (SIN_PERIOD / 4));
                 if (angle <= DEG_TO_SIN(110)) {
                     angle = CLAMP_SIN_PERIOD((SIN_PERIOD / 2) - angle);
 
@@ -479,8 +475,7 @@ void Player_UpdateHomingPosition(s32 qX, s32 qY)
 
         if (sqDistance < gCheeseTarget.squarePlayerDistance) {
             if (((gPlayer.moveState & MOVESTATE_FACING_LEFT) && (vecTargetX >= 0))
-                || ((!(gPlayer.moveState & MOVESTATE_FACING_LEFT))
-                    && (vecTargetX <= 0))) {
+                || ((!(gPlayer.moveState & MOVESTATE_FACING_LEFT)) && (vecTargetX <= 0))) {
                 gCheeseTarget.squarePlayerDistance = sqDistance;
                 gCheeseTarget.task = t;
             }
@@ -663,8 +658,7 @@ void PlayerCB_80126B0(Player *p)
             p->unk61 = 1;
         }
     } else {
-        if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75))
-            && (p->w.cf.flyingDuration != 0)) {
+        if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75)) && (p->w.cf.flyingDuration != 0)) {
             p->unk61 = 2;
         }
 
@@ -776,8 +770,7 @@ void PlayerCB_8012938(Player *p)
 void PlayerCB_8012978(Player *p)
 {
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
-        if ((p->anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_CREAM))
-            && p->variant == 0) {
+        if ((p->anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_CREAM)) && p->variant == 0) {
             p->variant++;
         }
     }
@@ -918,8 +911,7 @@ void PlayerCB_8012C2C(Player *p)
             p->unk61 = 1;
         }
     } else {
-        if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75))
-            && (p->w.tf.flyingDuration != 0)) {
+        if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75)) && (p->w.tf.flyingDuration != 0)) {
             p->unk61 = 2;
         }
 
@@ -1258,9 +1250,7 @@ void sub_80131B4(Player *p)
                             playerBottomX -= 1;
                             playerBottomX -= p->unk16;
 
-                            if (sub_801E4E4(playerBottomY, playerBottomX, p->unk38, -8,
-                                            NULL, sub_801EE64)
-                                < 0) {
+                            if (sub_801E4E4(playerBottomY, playerBottomX, p->unk38, -8, NULL, sub_801EE64) < 0) {
                                 PLAYERFN_SET(PlayerCB_8013BD4);
                                 p->unk64 = 93;
                                 p->unk16 = 6;
@@ -1278,9 +1268,7 @@ void sub_80131B4(Player *p)
                             playerBottomX -= 1;
                             playerBottomX -= p->unk16;
 
-                            if (sub_801E4E4(playerBottomY, playerBottomX, p->unk38, +8,
-                                            NULL, sub_801EE64)
-                                < 0) {
+                            if (sub_801E4E4(playerBottomY, playerBottomX, p->unk38, +8, NULL, sub_801EE64) < 0) {
 
                                 PLAYERFN_SET(PlayerCB_8013BD4);
                                 p->unk64 = 93;
@@ -1316,8 +1304,7 @@ void sub_80131B4(Player *p)
                             playerBottomX += p->unk16;
 
                             if (sub_801E4E4(playerBottomY, // fmt
-                                            playerBottomX, p->unk38, +8, NULL,
-                                            sub_801EE64)
+                                            playerBottomX, p->unk38, +8, NULL, sub_801EE64)
                                 < 0) {
                                 PLAYERFN_SET(PlayerCB_8013BD4);
                                 p->unk64 = 93;

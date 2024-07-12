@@ -12,27 +12,25 @@ void StartMultiPakConnect(void);
 void MultiPakCommunicationError(void);
 
 // TOOD: MultiSioHeartBeat
-#define MultiPakHeartbeat()                                                             \
-    ({                                                                                  \
-        if (IS_MULTI_PLAYER) {                                                          \
-            u32 i;                                                                      \
-            for (i = 0;                                                                 \
-                 i < MULTI_SIO_PLAYERS_MAX && GetBit(gMultiplayerConnections, i);       \
-                 i++) {                                                                 \
-                if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {                   \
-                    if (gMultiplayerMissingHeartbeats[i]++ > 0xB4) {                    \
-                        TasksDestroyAll();                                              \
-                        gUnknown_03002AE4 = gUnknown_0300287C;                          \
-                        gUnknown_03005390 = 0;                                          \
-                        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;          \
-                        MultiPakCommunicationError();                                   \
-                        return;                                                         \
-                    }                                                                   \
-                } else {                                                                \
-                    gMultiplayerMissingHeartbeats[i] = 0;                               \
-                }                                                                       \
-            }                                                                           \
-        }                                                                               \
+#define MultiPakHeartbeat()                                                                                                                \
+    ({                                                                                                                                     \
+        if (IS_MULTI_PLAYER) {                                                                                                             \
+            u32 i;                                                                                                                         \
+            for (i = 0; i < MULTI_SIO_PLAYERS_MAX && GetBit(gMultiplayerConnections, i); i++) {                                            \
+                if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {                                                                      \
+                    if (gMultiplayerMissingHeartbeats[i]++ > 0xB4) {                                                                       \
+                        TasksDestroyAll();                                                                                                 \
+                        gUnknown_03002AE4 = gUnknown_0300287C;                                                                             \
+                        gUnknown_03005390 = 0;                                                                                             \
+                        gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;                                                             \
+                        MultiPakCommunicationError();                                                                                      \
+                        return;                                                                                                            \
+                    }                                                                                                                      \
+                } else {                                                                                                                   \
+                    gMultiplayerMissingHeartbeats[i] = 0;                                                                                  \
+                }                                                                                                                          \
+            }                                                                                                                              \
+        }                                                                                                                                  \
     })
 
 #endif // GUARD_MULTIPLAYER_MULTIPAK_CONNECTION_H

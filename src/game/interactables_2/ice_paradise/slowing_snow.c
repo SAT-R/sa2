@@ -35,11 +35,9 @@ static void Task_SlowingSnow(void);
 static void TaskDestructor_SlowingSnow(struct Task *t);
 static bool32 ShouldDespawn(Sprite_SlowingSnow *);
 
-void CreateEntity_SlowingSnow(MapEntity *in_ia, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_SlowingSnow(MapEntity *in_ia, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_SlowingSnow, sizeof(Sprite_SlowingSnow), 0x2010, 0,
-                                TaskDestructor_SlowingSnow);
+    struct Task *t = TaskCreate(Task_SlowingSnow, sizeof(Sprite_SlowingSnow), 0x2010, 0, TaskDestructor_SlowingSnow);
 
     Sprite_SlowingSnow *snow = TASK_DATA(t);
     Interactable_SlowingSnow *me = (Interactable_SlowingSnow *)in_ia;
@@ -65,12 +63,9 @@ static bool32 PlayerIsTouchingSnow(Sprite_SlowingSnow *snow)
             s16 playerScreenX = I(gPlayer.x) - gCamera.x;
             s16 playerScreenY = I(gPlayer.y) - gCamera.y;
 
-            if (((snowScreenX + snow->left) <= playerScreenX)
-                && ((snowScreenX + snow->left) + (snow->right - snow->left)
-                    >= playerScreenX)
+            if (((snowScreenX + snow->left) <= playerScreenX) && ((snowScreenX + snow->left) + (snow->right - snow->left) >= playerScreenX)
                 && ((snowScreenY + snow->top) <= playerScreenY)
-                && ((snowScreenY + snow->top) + (snow->bottom - snow->top)
-                    >= playerScreenY)) {
+                && ((snowScreenY + snow->top) + (snow->bottom - snow->top) >= playerScreenY)) {
                 return TRUE;
             }
         }
@@ -102,10 +97,8 @@ static bool32 ShouldDespawn(Sprite_SlowingSnow *snow)
     screenX = snow->posX - gCamera.x;
     screenY = snow->posY - gCamera.y;
 
-    if ((screenX + snow->right < -(CAM_REGION_WIDTH / 2))
-        || (screenX + snow->left > DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2))
-        || (screenY + snow->bottom < -(CAM_REGION_WIDTH / 2))
-        || (screenY + snow->top > CAM_BOUND_Y))
+    if ((screenX + snow->right < -(CAM_REGION_WIDTH / 2)) || (screenX + snow->left > DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2))
+        || (screenY + snow->bottom < -(CAM_REGION_WIDTH / 2)) || (screenY + snow->top > CAM_BOUND_Y))
         return TRUE;
 
     return FALSE;

@@ -40,8 +40,7 @@ void CreateDemoManager(void)
 {
     u8 blendCtrl = gBldRegs.bldCnt & 0xC0;
     s8 lang = gLoadedSaveGame->language;
-    struct Task *t = TaskCreate(Task_DemoManagerMain, sizeof(DemoManager), 1, 0,
-                                TaskDestructor_DemoManagerMain);
+    struct Task *t = TaskCreate(Task_DemoManagerMain, sizeof(DemoManager), 1, 0, TaskDestructor_DemoManagerMain);
     DemoManager *dm = TASK_DATA(t);
     Sprite *s;
 
@@ -201,8 +200,7 @@ void TaskDestructor_DemoManagerMain(struct Task *t)
 
 void CreateMusicFadeoutTask(u16 factor)
 {
-    struct Task *t = TaskCreate(Task_DemoManagerMusicFadeout, sizeof(DemoMusicFadeout),
-                                0xFFFE, 0, NULL);
+    struct Task *t = TaskCreate(Task_DemoManagerMusicFadeout, sizeof(DemoMusicFadeout), 0xFFFE, 0, NULL);
     DemoMusicFadeout *mf = TASK_DATA(t);
     mf->volume = 0x100;
     mf->unk2 = (s32)mf->volume / factor;

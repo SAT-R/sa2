@@ -50,8 +50,7 @@ static void sub_807E7B0(void);
 void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(Task_Interactable093, sizeof(Sprite_Cannon), 0x2010, 0,
-                                TaskDestructor_Interactable093);
+    struct Task *t = TaskCreate(Task_Interactable093, sizeof(Sprite_Cannon), 0x2010, 0, TaskDestructor_Interactable093);
     Sprite_Cannon *cannon = TASK_DATA(t);
     cannon->unk68 = me->d.sData[0];
     cannon->x = TO_WORLD_POS(me->x, spriteRegionX);
@@ -88,8 +87,7 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
 static void sub_807E314(void)
 {
     Sprite_Cannon *cannon = TASK_DATA(gCurTask);
-    if (!PLAYER_IS_ALIVE || --cannon->unk6C == 0xFFFF
-        || gPlayer.unk5E & (gPlayerControls.jump | gPlayerControls.attack)) {
+    if (!PLAYER_IS_ALIVE || --cannon->unk6C == 0xFFFF || gPlayer.unk5E & (gPlayerControls.jump | gPlayerControls.attack)) {
         sub_807E408(cannon);
     } else {
         sub_807E56C(cannon);
@@ -204,8 +202,7 @@ static void sub_807E56C(Sprite_Cannon *cannon)
 #endif
     s32 r1;
 
-    r3 = (cannon->unk68 == 0) ? ((cannon->unk6E == 0) ? 0x280 : 0x180)
-                              : ((cannon->unk6E == 0) ? 0x80 : 0x380);
+    r3 = (cannon->unk68 == 0) ? ((cannon->unk6E == 0) ? 0x280 : 0x180) : ((cannon->unk6E == 0) ? 0x80 : 0x380);
     temp2 = sub_808558C(cannon->unk6A, r3, 10);
     temp3 = temp2;
 
@@ -256,8 +253,7 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
 
 // (68.07%) https://decomp.me/scratch/TDVLh
 // (72.09%) https://decomp.me/scratch/sgt5z
-NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
-         static bool32 sub_807E66C(Sprite_Cannon *cannon))
+NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc", static bool32 sub_807E66C(Sprite_Cannon *cannon))
 {
     s16 x, y;
     s32 biggerX, biggerY, temp2, temp3;
@@ -277,8 +273,7 @@ NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc",
         playerX = I(gPlayer.x) - gCamera.x;
         playerY = I(gPlayer.y) - gCamera.y;
 
-        if (HB_COLLISION(playerX, playerY, cannon->sprite2.hitboxes[0], x, y,
-                         gUnknown_03005AF0.s.hitboxes[0])) {
+        if (HB_COLLISION(playerX, playerY, cannon->sprite2.hitboxes[0], x, y, gUnknown_03005AF0.s.hitboxes[0])) {
             return 1;
         }
     }
@@ -386,10 +381,7 @@ static void sub_807E8FC(void)
     }
 }
 
-static void sub_807E940(UNUSED Sprite_Cannon *cannon)
-{
-    gCurTask->main = Task_Interactable093;
-}
+static void sub_807E940(UNUSED Sprite_Cannon *cannon) { gCurTask->main = Task_Interactable093; }
 
 static bool16 sub_807E954(Sprite_Cannon *cannon)
 {

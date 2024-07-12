@@ -40,15 +40,13 @@ static void sub_8058EDC(void);
 static void Flickey_RenderIronBalls(Sprite_Flickey *flickey);
 static void TaskDestructor_Flickey(struct Task *);
 
-void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                          u8 spriteY)
+void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u8 i;
     s32 x, y;
 
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
-        struct Task *t = TaskCreate(Task_FlickeyMain, sizeof(Sprite_Flickey), 0x4040, 0,
-                                    TaskDestructor_Flickey);
+        struct Task *t = TaskCreate(Task_FlickeyMain, sizeof(Sprite_Flickey), 0x4040, 0, TaskDestructor_Flickey);
         Sprite_Flickey *flickey = TASK_DATA(t);
         Sprite *s = &flickey->s;
         flickey->base.regionX = spriteRegionX;
@@ -130,8 +128,7 @@ static void Task_FlickeyMain(void)
 
             positions[i][0] = flickey->positions[index].x;
             positions[i][1] = flickey->positions[index].y;
-            positions[i][2]
-                = flickey->positions[index].y - flickey->positions[(index - 1) & 0x3F].y;
+            positions[i][2] = flickey->positions[index].y - flickey->positions[(index - 1) & 0x3F].y;
 
             DisplaySprite(s);
         }
@@ -224,8 +221,7 @@ static void sub_8058EDC(void)
 
             positions[i][0] = flickey->positions[index].x;
             positions[i][1] = flickey->positions[index].y;
-            positions[i][2]
-                = flickey->positions[index].y - flickey->positions[(index - 1) & 0x3F].y;
+            positions[i][2] = flickey->positions[index].y - flickey->positions[(index - 1) & 0x3F].y;
 
             DisplaySprite(s);
         }
@@ -281,8 +277,7 @@ static void sub_80591FC(void)
         flickey->positions[i + 3].y += 0x30;
         flickey->positions[i].x += flickey->positions[i + 3].x;
         flickey->positions[i].y += flickey->positions[i + 3].y;
-        someVal = sub_801F07C(I(flickey->positions[i].y), I(flickey->positions[i].x), 1,
-                              8, 0, sub_801EE64);
+        someVal = sub_801F07C(I(flickey->positions[i].y), I(flickey->positions[i].x), 1, 8, 0, sub_801EE64);
 
         if (someVal < 0) {
             flickey->positions[i].y += QS(someVal);

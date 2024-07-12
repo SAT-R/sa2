@@ -16,8 +16,7 @@ static void Task_80808DC(void);
 
 struct Task *sub_80807CC(void)
 {
-    struct Task *t
-        = TaskCreate(Task_80808DC, sizeof(Sprite_OnInit_SkyCanyon), 0x2001, 0, NULL);
+    struct Task *t = TaskCreate(Task_80808DC, sizeof(Sprite_OnInit_SkyCanyon), 0x2001, 0, NULL);
     Sprite_OnInit_SkyCanyon *init = TASK_DATA(t);
     Sprite *spring, *propellor;
 

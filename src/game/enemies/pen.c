@@ -29,8 +29,7 @@ static void Task_PenTurn(void);
 
 void CreateEntity_Pen(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_PenMove, sizeof(Sprite_Pen), 0x4040, 0,
-                                TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_PenMove, sizeof(Sprite_Pen), 0x4040, 0, TaskDestructor_80095E8);
     Sprite_Pen *pen = TASK_DATA(t);
     Sprite *s = &pen->s;
     pen->base.regionX = spriteRegionX;
@@ -112,14 +111,12 @@ static void Task_PenMove(void)
     }
 
     // Turn when end of range reached
-    if (ENEMY_CROSSED_LEFT_BORDER(pen, me)
-        && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
+    if (ENEMY_CROSSED_LEFT_BORDER(pen, me) && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = Task_PenTurn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;
         s->prevVariant = -1;
-    } else if (ENEMY_CROSSED_RIGHT_BORDER(pen, me)
-               && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
+    } else if (ENEMY_CROSSED_RIGHT_BORDER(pen, me) && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = Task_PenTurn;
         s->graphics.anim = SA2_ANIM_PEN;
         s->variant = SA2_ANIM_PEN_VARIANT_TURN;

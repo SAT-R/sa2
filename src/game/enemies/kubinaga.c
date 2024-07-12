@@ -45,11 +45,9 @@ static const u16 gUnknown_080D8F30[][2] = {
     { SA2_ANIM_KUBINAGA_BASE, 1 },
 };
 
-void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY)
+void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(sub_80524D0, sizeof(Sprite_Kubinaga), 0x4060, 0, sub_8052F70);
+    struct Task *t = TaskCreate(sub_80524D0, sizeof(Sprite_Kubinaga), 0x4060, 0, sub_8052F70);
     Sprite_Kubinaga *k = TASK_DATA(t);
     Sprite *s = &k->sBase;
 
@@ -70,8 +68,7 @@ void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
 
-    SPRITE_INIT(s, 6, gUnknown_080D8F30[me->d.uData[0] & 1][0],
-                gUnknown_080D8F30[me->d.uData[0] & 1][1], 18, 2);
+    SPRITE_INIT(s, 6, gUnknown_080D8F30[me->d.uData[0] & 1][0], gUnknown_080D8F30[me->d.uData[0] & 1][1], 18, 2);
 
     if (me->d.uData[0] & 1) {
         if (me->d.sData[1]) {
@@ -114,8 +111,8 @@ static void sub_80524D0(void)
     Player_UpdateHomingPosition(k->spawnX, k->spawnY);
     if (k->unkB8 != 0) {
         k->unkB8--;
-    } else if (gPlayer.x > k->spawnX - 0x7800 && gPlayer.x < k->spawnX + 0x7800
-               && gPlayer.y > k->spawnY - 0x6400 && gPlayer.y < k->spawnY + 0x6400) {
+    } else if (gPlayer.x > k->spawnX - 0x7800 && gPlayer.x < k->spawnX + 0x7800 && gPlayer.y > k->spawnY - 0x6400
+               && gPlayer.y < k->spawnY + 0x6400) {
         k->unkBE = 0;
         if (k->unkC0 == 0) {
             k->unkBA = sub_8004418((I(gPlayer.y) - pos.y) + 10, I(gPlayer.x) - pos.x);
@@ -343,19 +340,16 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
 
     if (k->unkC0 == 0) {
         sHead->y = (pos.y - gCamera.y) - 10;
-        transform->rotation
-            = sub_8004418(I(gPlayer.y) - pos.y + 10, I(gPlayer.x) - pos.x);
+        transform->rotation = sub_8004418(I(gPlayer.y) - pos.y + 10, I(gPlayer.x) - pos.x);
     } else {
         if (k->unkC0 & 1) {
 
             sHead->x = sHead->x + 10;
-            transform->rotation
-                = sub_8004418(I(gPlayer.y) - pos.y, (I(gPlayer.x) - pos.x) + 10);
+            transform->rotation = sub_8004418(I(gPlayer.y) - pos.y, (I(gPlayer.x) - pos.x) + 10);
         } else {
 
             sHead->x = sHead->x - 10;
-            transform->rotation
-                = sub_8004418(I(gPlayer.y) - pos.y, (I(gPlayer.x) - pos.x) - 10);
+            transform->rotation = sub_8004418(I(gPlayer.y) - pos.y, (I(gPlayer.x) - pos.x) - 10);
         }
         sHead->y = (pos.y - gCamera.y);
     }
@@ -379,8 +373,8 @@ static void sub_8052CC8(Sprite_Kubinaga *k)
         sHead->prevVariant = -1;
     }
 
-    sHead->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 2)
-        | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE;
+    sHead->frameFlags
+        = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE;
 
     UpdateSpriteAnimation(sHead);
     TransformSprite(sHead, transform);

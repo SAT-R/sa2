@@ -56,14 +56,11 @@ static void Task_SequenceEnd(void);
 static void Task_FadeIn(void);
 
 static const u16 sTilemapsCreditsEndSlides[] = {
-    [0] = TM_CREDITS_SA2_LOGO_JP,         [1] = TM_CREDITS_SA2_LOGO_EN,
-    [2] = TM_STORYFRAME_SONIC_LEAVES_0,   [3] = TM_STORYFRAME_SONIC_LEAVES_1,
-    [4] = TM_STORYFRAME_SONIC_LEAVES_2,   [5] = TM_STORYFRAME_SONIC_LEAVES_3,
-    [6] = TM_STORYFRAME_SONIC_LEAVES_4,   [7] = TM_STORYFRAME_SONIC_LEAVES_5,
-    [8] = TM_STORYFRAME_SONIC_LEAVES_6,   [9] = TM_STORYFRAME_SONIC_LEAVES_7,
-    [10] = TM_STORYFRAME_SONIC_LEAVES_8,  [11] = TM_STORYFRAME_SONIC_LEAVES_9,
-    [12] = TM_STORYFRAME_SONIC_LEAVES_10, [13] = TM_CREDITS_PRESENTED_BY_SEGA,
-    [14] = TM_CREDITS_COPYRIGHT,
+    [0] = TM_CREDITS_SA2_LOGO_JP,         [1] = TM_CREDITS_SA2_LOGO_EN,        [2] = TM_STORYFRAME_SONIC_LEAVES_0,
+    [3] = TM_STORYFRAME_SONIC_LEAVES_1,   [4] = TM_STORYFRAME_SONIC_LEAVES_2,  [5] = TM_STORYFRAME_SONIC_LEAVES_3,
+    [6] = TM_STORYFRAME_SONIC_LEAVES_4,   [7] = TM_STORYFRAME_SONIC_LEAVES_5,  [8] = TM_STORYFRAME_SONIC_LEAVES_6,
+    [9] = TM_STORYFRAME_SONIC_LEAVES_7,   [10] = TM_STORYFRAME_SONIC_LEAVES_8, [11] = TM_STORYFRAME_SONIC_LEAVES_9,
+    [12] = TM_STORYFRAME_SONIC_LEAVES_10, [13] = TM_CREDITS_PRESENTED_BY_SEGA, [14] = TM_CREDITS_COPYRIGHT,
 };
 
 static const TileInfo gUnknown_080E12D0[4] = {
@@ -115,8 +112,7 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
     gUnknown_03002280[1][2] = 0xff;
     gUnknown_03002280[1][3] = 0x20;
 
-    t = TaskCreate(Task_FadeIn, sizeof(struct CreditsEndCutScene), 0x3100, 0,
-                   TaskDestroy_CreditsEndCutScene);
+    t = TaskCreate(Task_FadeIn, sizeof(struct CreditsEndCutScene), 0x3100, 0, TaskDestroy_CreditsEndCutScene);
     scene = TASK_DATA(t);
     scene->delayFrames = 270;
     scene->creditsVariant = creditsVariant;
@@ -386,8 +382,7 @@ static void Task_SequenceMain(void)
                 gBgScrollRegs[0][0] = 0;
                 gBgScrollRegs[0][1] = 0;
 
-                background->tilemapId
-                    = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
+                background->tilemapId = sTilemapsCreditsEndSlides[scene->sonicAnimFrame + 2];
                 background->targetTilesX = 0x1E;
                 background->targetTilesY = 0x14;
                 background->flags = BACKGROUND_FLAGS_BG_ID(0);
@@ -437,24 +432,21 @@ static void Task_HandleGameCompletion(void)
         }
 
         for (i = 0; i < NUM_CHARACTERS; i++) {
-            if (gLoadedSaveGame->unlockedLevels[i]
-                > LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
+            if (gLoadedSaveGame->unlockedLevels[i] > LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
                 zonesCompleteCharacters |= CHARACTER_BIT(i);
             }
         }
 
         // sonic, cream, tails, knuckles, all completed, and all chaos emeralds
         // unlock true area 53.
-        if (zonesCompleteCharacters >= MAIN_CHARACTERS
-            && (gLoadedSaveGame->chaosEmeralds[0] & CHAOS_EMERALDS_COMPLETED)
+        if (zonesCompleteCharacters >= MAIN_CHARACTERS && (gLoadedSaveGame->chaosEmeralds[0] & CHAOS_EMERALDS_COMPLETED)
             && gLoadedSaveGame->extraZoneStatus == 0) {
             gLoadedSaveGame->extraZoneStatus |= 1;
             WriteSaveGame();
         }
 
         if (gSelectedCharacter != CHARACTER_AMY) {
-            if ((gLoadedSaveGame->chaosEmeralds[gSelectedCharacter]
-                 & CHAOS_EMERALDS_COMPLETED)) {
+            if ((gLoadedSaveGame->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALDS_COMPLETED)) {
                 gLoadedSaveGame->completedCharacters[gSelectedCharacter] = TRUE;
 
                 for (i = 0; i < 4; i++) {
@@ -465,10 +457,8 @@ static void Task_HandleGameCompletion(void)
 
                 if ((charactersCompleted == 1 && gLoadedSaveGame->chaoGardenUnlocked)
                     || (charactersCompleted == 2 && gLoadedSaveGame->soundTestUnlocked)
-                    || (charactersCompleted == 3
-                        && gLoadedSaveGame->bossTimeAttackUnlocked)
-                    || (charactersCompleted >= 4
-                        && gLoadedSaveGame->unlockedCharacters > MAIN_CHARACTERS)) {
+                    || (charactersCompleted == 3 && gLoadedSaveGame->bossTimeAttackUnlocked)
+                    || (charactersCompleted >= 4 && gLoadedSaveGame->unlockedCharacters > MAIN_CHARACTERS)) {
                     scene->hasAllEmeralds = TRUE;
                     scene->delayFrames = 180;
                 } else {
@@ -479,19 +469,16 @@ static void Task_HandleGameCompletion(void)
                     } else if (charactersCompleted == 3) {
                         gLoadedSaveGame->bossTimeAttackUnlocked = TRUE;
                     } else if (charactersCompleted == 4) {
-                        gLoadedSaveGame->unlockedCharacters
-                            |= CHARACTER_BIT(CHARACTER_AMY);
+                        gLoadedSaveGame->unlockedCharacters |= CHARACTER_BIT(CHARACTER_AMY);
                     }
                     WriteSaveGame();
                     scene->hasAllEmeralds = FALSE;
                     scene->delayFrames = 105;
-                    scene->fade.bldCnt
-                        = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+                    scene->fade.bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
                 }
             } else {
                 scene->hasAllEmeralds = FALSE;
-                scene->fade.bldCnt
-                    = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+                scene->fade.bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
                 scene->delayFrames = 105;
             }
         } else {

@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_extra_boss_cockpit[]
-    = INCBIN_U16("data/tilemaps/extra_boss_cockpit/palette.gbapal");
-const u8 Tiles_extra_boss_cockpit[]
-    = INCBIN_U8("data/tilemaps/extra_boss_cockpit/tiles.4bpp");
-const u8 Tilemap_extra_boss_cockpit[]
-    = INCBIN_U8("data/tilemaps/extra_boss_cockpit/tilemap.tilemap2");
+const u16 Palette_extra_boss_cockpit[] = INCBIN_U16("data/tilemaps/extra_boss_cockpit/palette.gbapal");
+const u8 Tiles_extra_boss_cockpit[] = INCBIN_U8("data/tilemaps/extra_boss_cockpit/tiles.4bpp");
+const u8 Tilemap_extra_boss_cockpit[] = INCBIN_U8("data/tilemaps/extra_boss_cockpit/tilemap.tilemap2");
 
 const Tilemap extra_boss_cockpit = {
     .xTiles = 10,

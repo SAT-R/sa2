@@ -129,51 +129,49 @@ void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY);
 static void AeroEgg_UpdatePos(AeroEgg *boss);
 static void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss);
 static void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss);
-static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
-                                    u16 param4);
+static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3, u16 param4);
 
-#define AE_DEFEATED_COLL_BODY(_sub, _part)                                              \
-    {                                                                                   \
-        if (_sub->unk6B != 0) {                                                         \
-            if (--_sub->unk6B == 0) {                                                   \
-                _part.dy = 0;                                                           \
-                _part.status = 1;                                                       \
-            }                                                                           \
-                                                                                        \
-            CreateScreenShake(0x400, 0x20, 0x80, 0x14, SCREENSHAKE_VERTICAL | 0x3);     \
-        }                                                                               \
+#define AE_DEFEATED_COLL_BODY(_sub, _part)                                                                                                 \
+    {                                                                                                                                      \
+        if (_sub->unk6B != 0) {                                                                                                            \
+            if (--_sub->unk6B == 0) {                                                                                                      \
+                _part.dy = 0;                                                                                                              \
+                _part.status = 1;                                                                                                          \
+            }                                                                                                                              \
+                                                                                                                                           \
+            CreateScreenShake(0x400, 0x20, 0x80, 0x14, SCREENSHAKE_VERTICAL | 0x3);                                                        \
+        }                                                                                                                                  \
     }
 
-#define AE_DEFEATED_COLL_PART(_part)                                                    \
-    {                                                                                   \
-        if (_part.dy > -48) {                                                           \
-            _part.dy = 0;                                                               \
-            _part.status = 1;                                                           \
-        }                                                                               \
+#define AE_DEFEATED_COLL_PART(_part)                                                                                                       \
+    {                                                                                                                                      \
+        if (_part.dy > -48) {                                                                                                              \
+            _part.dy = 0;                                                                                                                  \
+            _part.status = 1;                                                                                                              \
+        }                                                                                                                                  \
     }
 
-#define AE_UPDATE_PART_DEFEATED(_sub, _part, _halfHeight, _dyNum, _dyDenom,             \
-                                CODE_ON_COLL)                                           \
-    if ((_sub->unk00 > 10) && (_part.status == 0)) {                                    \
-        _part.dy += 0x10;                                                               \
-    }                                                                                   \
-    _part.x += _part.dx;                                                                \
-    _part.y += _part.dy;                                                                \
-                                                                                        \
-    res = sub_801E4E4(I(_part.y) + _halfHeight, I(_part.x), 1, 8, NULL, &sub_801EE64);  \
-                                                                                        \
-    if ((res <= 0) && (_part.dy >= 0)) {                                                \
-        _part.y += Q(res);                                                              \
-        _part.dy = Div((_part.dy * (_dyNum)), (_dyDenom));                              \
-                                                                                        \
-        CODE_ON_COLL;                                                                   \
-                                                                                        \
-        _part.dx -= 8;                                                                  \
-        if (_part.dx < 0) {                                                             \
-            _part.dx = 0;                                                               \
-        }                                                                               \
-    } else if (_part.status != 0) {                                                     \
-        _part.y += Q(res);                                                              \
+#define AE_UPDATE_PART_DEFEATED(_sub, _part, _halfHeight, _dyNum, _dyDenom, CODE_ON_COLL)                                                  \
+    if ((_sub->unk00 > 10) && (_part.status == 0)) {                                                                                       \
+        _part.dy += 0x10;                                                                                                                  \
+    }                                                                                                                                      \
+    _part.x += _part.dx;                                                                                                                   \
+    _part.y += _part.dy;                                                                                                                   \
+                                                                                                                                           \
+    res = sub_801E4E4(I(_part.y) + _halfHeight, I(_part.x), 1, 8, NULL, &sub_801EE64);                                                     \
+                                                                                                                                           \
+    if ((res <= 0) && (_part.dy >= 0)) {                                                                                                   \
+        _part.y += Q(res);                                                                                                                 \
+        _part.dy = Div((_part.dy * (_dyNum)), (_dyDenom));                                                                                 \
+                                                                                                                                           \
+        CODE_ON_COLL;                                                                                                                      \
+                                                                                                                                           \
+        _part.dx -= 8;                                                                                                                     \
+        if (_part.dx < 0) {                                                                                                                \
+            _part.dx = 0;                                                                                                                  \
+        }                                                                                                                                  \
+    } else if (_part.status != 0) {                                                                                                        \
+        _part.y += Q(res);                                                                                                                 \
     }
 
 void CreateAeroEgg(void)
@@ -184,8 +182,7 @@ void CreateAeroEgg(void)
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     sub_8039ED4();
     gPseudoRandom = gStageTime;
-    gActiveBossTask = TaskCreate(Task_AeroEggMain, sizeof(AeroEgg), 0x4000, 0,
-                                 TaskDestructor_AeroEggMain);
+    gActiveBossTask = TaskCreate(Task_AeroEggMain, sizeof(AeroEgg), 0x4000, 0, TaskDestructor_AeroEggMain);
     boss = TASK_DATA(gActiveBossTask);
 
     if (DIFFICULTY_BOSS_IS_NOT_NORMAL) {
@@ -220,14 +217,12 @@ void CreateAeroEgg(void)
     s = &boss->sub.sprBody;
     s->x = 0;
     s->y = 0;
-    SPRITE_INIT_FLAGS(s, 8 * 8, SA2_ANIM_AERO_EGG_BODY, 0, 20, 2,
-                      SPRITE_FLAG_MASK_X_FLIP);
+    SPRITE_INIT_FLAGS(s, 8 * 8, SA2_ANIM_AERO_EGG_BODY, 0, 20, 2, SPRITE_FLAG_MASK_X_FLIP);
 
     s = &boss->sub.sprPilot;
     s->x = 0;
     s->y = 0;
-    SPRITE_INIT_FLAGS(s, 4 * 3, SA2_ANIM_HAMMERTANK_PILOT, 0, 21, 2,
-                      SPRITE_FLAG_MASK_X_FLIP);
+    SPRITE_INIT_FLAGS(s, 4 * 3, SA2_ANIM_HAMMERTANK_PILOT, 0, 21, 2, SPRITE_FLAG_MASK_X_FLIP);
 
     s = &boss->sub.sprTail;
     s->x = 0;
@@ -260,9 +255,7 @@ static void Task_AeroEggExploding(void)
         if ((I(sub->body.x) - gCamera.x < 50) && (sub->unk68 != 0)) {
             sub->unk6C = 1;
 
-            CreateEggmobileEscapeSequence(I(sub->body.x) - gCamera.x,
-                                          I(sub->body.y) - gCamera.y - 15,
-                                          SPRITE_FLAG(PRIORITY, 2));
+            CreateEggmobileEscapeSequence(I(sub->body.x) - gCamera.x, I(sub->body.y) - gCamera.y - 15, SPRITE_FLAG(PRIORITY, 2));
         }
     }
 
@@ -350,10 +343,8 @@ static void sub_8041A08(AeroEgg *boss)
 
     tVal = (u16)(SIN_24_8((gStageTime * 12 + 0x200) & ONE_CYCLE) >> 3);
     s = &boss->sub.sprTailTip;
-    worldX = AEROEGG_TAILTIP_OFFSET_X + I(boss->main.qWorldX)
-        + ((COS((tVal + 500) & ONE_CYCLE) * 15) >> 12);
-    worldY = AEROEGG_TAILTIP_OFFSET_Y + I(boss->main.qWorldY)
-        + ((SIN((tVal + 500) & ONE_CYCLE) * 15) >> 12);
+    worldX = AEROEGG_TAILTIP_OFFSET_X + I(boss->main.qWorldX) + ((COS((tVal + 500) & ONE_CYCLE) * 15) >> 12);
+    worldY = AEROEGG_TAILTIP_OFFSET_Y + I(boss->main.qWorldY) + ((SIN((tVal + 500) & ONE_CYCLE) * 15) >> 12);
 
     if (boss->main.unk17 == 0) {
         Player *p = &gPlayer;
@@ -493,8 +484,7 @@ static void AeroEgg_UpdateBossSpritesOnDefeat(AeroEgg *boss)
 }
 
 // (93.54%) https://decomp.me/scratch/PPILk
-NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
-         static void sub_8041D34(AeroEgg *boss))
+NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc", static void sub_8041D34(AeroEgg *boss))
 {
     ExplosionPartsInfo partsInfo;
     s32 res;
@@ -564,8 +554,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
         partsInfo.rotation = (PseudoRandom32() & 0x3FF);
         partsInfo.speed = 1792 - (PseudoRandom32() % 512u);
 
-        partsInfo.vram
-            = (void *)(OBJ_VRAM0 + (gTileInfoBossScrews[r7][0] * TILE_SIZE_4BPP));
+        partsInfo.vram = (void *)(OBJ_VRAM0 + (gTileInfoBossScrews[r7][0] * TILE_SIZE_4BPP));
         partsInfo.anim = gTileInfoBossScrews[r7][1];
         partsInfo.variant = gTileInfoBossScrews[r7][2];
         partsInfo.unk4 = 1;
@@ -629,8 +618,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_4__sub_8041D34.inc",
 END_NONMATCH
 
 // (99.64%) https://decomp.me/scratch/WJcpn
-NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc",
-         static void AeroEgg_InitPartsDefeated(AeroEgg *boss))
+NONMATCH("asm/non_matching/game/bosses/AeroEgg_InitPartsDefeated.inc", static void AeroEgg_InitPartsDefeated(AeroEgg *boss))
 {
     Sprite *s;
     AeroEggSub *sub = &boss->sub;
@@ -697,16 +685,13 @@ static void AeroEgg_UpdatePartsAfterBossDefeated(AeroEgg *boss)
     sub->unk68 = 1;
     sub->unk00++;
 
-    AE_UPDATE_PART_DEFEATED(sub, sub->body, 13, -70, 100,
-                            AE_DEFEATED_COLL_BODY(sub, sub->body));
+    AE_UPDATE_PART_DEFEATED(sub, sub->body, 13, -70, 100, AE_DEFEATED_COLL_BODY(sub, sub->body));
 
     for (i = 0; i < ARRAY_COUNT(sub->tail); i++) {
-        AE_UPDATE_PART_DEFEATED(sub, sub->tail[i], 7, -6, 10,
-                                AE_DEFEATED_COLL_PART(sub->tail[i]));
+        AE_UPDATE_PART_DEFEATED(sub, sub->tail[i], 7, -6, 10, AE_DEFEATED_COLL_PART(sub->tail[i]));
     }
 
-    AE_UPDATE_PART_DEFEATED(sub, sub->tailTip, 9, -6, 10,
-                            AE_DEFEATED_COLL_PART(sub->tailTip));
+    AE_UPDATE_PART_DEFEATED(sub, sub->tailTip, 9, -6, 10, AE_DEFEATED_COLL_PART(sub->tailTip));
 }
 
 static bool32 sub_80423EC(AeroEgg *boss)
@@ -894,8 +879,7 @@ static void TaskDestructor_AeroEggMain(struct Task *t)
 
 void CreateAeroEggBomb(AeroEgg *boss, s32 spawnX, s32 spawnY)
 {
-    struct Task *t
-        = TaskCreate(Task_CreateAeroEggBombMain, sizeof(AeroEggBomb), 0x6100, 0, NULL);
+    struct Task *t = TaskCreate(Task_CreateAeroEggBombMain, sizeof(AeroEggBomb), 0x6100, 0, NULL);
     AeroEggBomb *eb = TASK_DATA(t);
     Sprite *s;
 
@@ -946,9 +930,7 @@ static void Task_CreateAeroEggBombMain(void)
         s->y = I(eb->screenY);
     }
 
-    if (sub_801E4E4(I(eb->screenY) + gCamera.y, I(eb->screenX) + gCamera.x, 1, 8, NULL,
-                    sub_801EE64)
-        < 0) {
+    if (sub_801E4E4(I(eb->screenY) + gCamera.y, I(eb->screenX) + gCamera.x, 1, 8, NULL, sub_801EE64) < 0) {
         m4aSongNumStart(SE_PROJECTILE_IMPACT);
 
         eb->dx = 0;
@@ -965,9 +947,7 @@ static void Task_CreateAeroEggBombMain(void)
     }
 
     if (eb->boss->main.lives > 0) {
-        if (sub_800CA20(s, I(eb->screenX) + gCamera.x, I(eb->screenY) + gCamera.y, 0,
-                        &gPlayer)
-            == TRUE) {
+        if (sub_800CA20(s, I(eb->screenX) + gCamera.x, I(eb->screenY) + gCamera.y, 0, &gPlayer) == TRUE) {
             if (eb->boss->main.unk16 == 0) {
                 Sprite *s2 = &eb->boss->sub.sprPilot;
                 eb->boss->main.unk15 = 30;
@@ -998,9 +978,7 @@ static void Task_AeroEggBombHitGround(void)
     s->y = I(eb->screenY);
 
     if (eb->boss->main.lives > 0) {
-        if (sub_800CA20(s, I(eb->screenX) + gCamera.x, I(eb->screenY) + gCamera.y, 0,
-                        &gPlayer)
-            == TRUE) {
+        if (sub_800CA20(s, I(eb->screenX) + gCamera.x, I(eb->screenY) + gCamera.y, 0, &gPlayer) == TRUE) {
             if (eb->boss->main.unk16 == 0) {
                 Sprite *s2 = &eb->boss->sub.sprPilot;
                 eb->boss->main.unk15 = 30;
@@ -1018,11 +996,9 @@ static void Task_AeroEggBombHitGround(void)
     DisplaySprite(s);
 }
 
-static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3,
-                                    u16 param4)
+static void CreateAeroEggBombDebris(AeroEgg *boss, s32 screenX, s32 screenY, s16 param3, u16 param4)
 {
-    struct Task *t
-        = TaskCreate(Task_AeroEggBombDebris, sizeof(AeroEggDebris), 0x6100, 0, NULL);
+    struct Task *t = TaskCreate(Task_AeroEggBombDebris, sizeof(AeroEggDebris), 0x6100, 0, NULL);
     AeroEggDebris *deb = TASK_DATA(t);
     Sprite *s;
 
@@ -1071,9 +1047,7 @@ static void Task_AeroEggBombDebris(void)
     s->x = I(deb->screenX);
     s->y = I(deb->screenY);
 
-    if (sub_801E4E4(I(deb->screenY) + gCamera.y, I(deb->screenX) + gCamera.x, 1, 8, NULL,
-                    sub_801EE64)
-        < 0) {
+    if (sub_801E4E4(I(deb->screenY) + gCamera.y, I(deb->screenX) + gCamera.x, 1, 8, NULL, sub_801EE64) < 0) {
         if (deb->dy > 0) {
             TaskDestroy(gCurTask);
             return;
@@ -1081,9 +1055,7 @@ static void Task_AeroEggBombDebris(void)
     }
 
     if (deb->boss->main.lives > 0) {
-        if (sub_800CA20(s, I(deb->screenX) + gCamera.x, I(deb->screenY) + gCamera.y, 0,
-                        &gPlayer)
-            == TRUE) {
+        if (sub_800CA20(s, I(deb->screenX) + gCamera.x, I(deb->screenY) + gCamera.y, 0, &gPlayer) == TRUE) {
             if (deb->boss->main.unk16 == 0) {
                 Sprite *s2 = &deb->boss->sub.sprPilot;
                 deb->boss->main.unk15 = 30;

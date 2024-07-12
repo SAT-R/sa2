@@ -10,49 +10,49 @@ static ALIGNED(8) u32 gUnknown_3000420[3];
 
 s32 sub_801EF94(s32 p0, s32 p1, s32 layer);
 
-#define POS__NOT_MOD(i)                                                                 \
-    if (p3 > 0) {                                                                       \
-        return ~(p0 % 8u) + ((i)*TILE_WIDTH);                                           \
-    } else {                                                                            \
-        return (p0 % 8u) + ((i - 1) * TILE_WIDTH);                                      \
+#define POS__NOT_MOD(i)                                                                                                                    \
+    if (p3 > 0) {                                                                                                                          \
+        return ~(p0 % 8u) + ((i)*TILE_WIDTH);                                                                                              \
+    } else {                                                                                                                               \
+        return (p0 % 8u) + ((i - 1) * TILE_WIDTH);                                                                                         \
     }
 
 #define NEG__NOT_MOD(i) POS__NOT_MOD(-i)
 
-#define NEG__INV_NOT_MOD(i)                                                             \
-    if (p3 > 0) {                                                                       \
-        return ~(p0 % 8u) - ((i)*TILE_WIDTH);                                           \
-    } else {                                                                            \
-        return (p0 % 8u) - ((i + 1) * TILE_WIDTH);                                      \
+#define NEG__INV_NOT_MOD(i)                                                                                                                \
+    if (p3 > 0) {                                                                                                                          \
+        return ~(p0 % 8u) - ((i)*TILE_WIDTH);                                                                                              \
+    } else {                                                                                                                               \
+        return (p0 % 8u) - ((i + 1) * TILE_WIDTH);                                                                                         \
     }
 
-#define POS__RES_IF(i)                                                                  \
-    if (res > 0) {                                                                      \
-        res--;                                                                          \
-        res -= (p0 % 8u);                                                               \
-        return res + ((i)*TILE_WIDTH);                                                  \
-    } else {                                                                            \
-        return res + (p0 % 8u) + ((i)*TILE_WIDTH);                                      \
+#define POS__RES_IF(i)                                                                                                                     \
+    if (res > 0) {                                                                                                                         \
+        res--;                                                                                                                             \
+        res -= (p0 % 8u);                                                                                                                  \
+        return res + ((i)*TILE_WIDTH);                                                                                                     \
+    } else {                                                                                                                               \
+        return res + (p0 % 8u) + ((i)*TILE_WIDTH);                                                                                         \
     }
 
 #define NEG__RES_IF(i) POS__RES_IF(-i)
 
-#define POS__P3_IF(i)                                                                   \
-    if (p3 > 0) {                                                                       \
-        s32 v = (p0 % 8u);                                                              \
-        res = (((i) + 1) * TILE_WIDTH);                                                 \
-        return res - v;                                                                 \
-    } else {                                                                            \
-        return (p0 % 8u) + ((i)*TILE_WIDTH + 1);                                        \
+#define POS__P3_IF(i)                                                                                                                      \
+    if (p3 > 0) {                                                                                                                          \
+        s32 v = (p0 % 8u);                                                                                                                 \
+        res = (((i) + 1) * TILE_WIDTH);                                                                                                    \
+        return res - v;                                                                                                                    \
+    } else {                                                                                                                               \
+        return (p0 % 8u) + ((i)*TILE_WIDTH + 1);                                                                                           \
     }
 
-#define NEG__P3_IF(i)                                                                   \
-    if (p3 > 0) {                                                                       \
-        s32 v = (p0 % 8u);                                                              \
-        res = -(((i)-1) * TILE_WIDTH + 1);                                              \
-        return res - v;                                                                 \
-    } else {                                                                            \
-        return (p0 % 8u) - ((i)*TILE_WIDTH);                                            \
+#define NEG__P3_IF(i)                                                                                                                      \
+    if (p3 > 0) {                                                                                                                          \
+        s32 v = (p0 % 8u);                                                                                                                 \
+        res = -(((i)-1) * TILE_WIDTH + 1);                                                                                                 \
+        return res - v;                                                                                                                    \
+    } else {                                                                                                                               \
+        return (p0 % 8u) - ((i)*TILE_WIDTH);                                                                                               \
     }
 
 extern const Collision CollHeader_zone_1_act_1_fg;
@@ -82,21 +82,16 @@ extern const Collision CollHeader_zone_final_act_ta53_fg;
 extern const Collision CollHeader_zone_final_act_unused_fg;
 
 const Collision *const gCollisionTable[] = {
-    &CollHeader_zone_1_act_1_fg,          &CollHeader_zone_1_act_2_fg,
-    &CollHeader_zone_1_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
-    &CollHeader_zone_2_act_1_fg,          &CollHeader_zone_2_act_2_fg,
-    &CollHeader_zone_2_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
-    &CollHeader_zone_3_act_1_fg,          &CollHeader_zone_3_act_2_fg,
-    &CollHeader_zone_3_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
-    &CollHeader_zone_4_act_1_fg,          &CollHeader_zone_4_act_2_fg,
-    &CollHeader_zone_4_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
-    &CollHeader_zone_5_act_1_fg,          &CollHeader_zone_5_act_2_fg,
-    &CollHeader_zone_5_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
-    &CollHeader_zone_6_act_1_fg,          &CollHeader_zone_6_act_2_fg,
-    &CollHeader_zone_6_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
-    &CollHeader_zone_7_act_1_fg,          &CollHeader_zone_7_act_2_fg,
-    &CollHeader_zone_7_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,
-    &CollHeader_zone_final_act_xx_fg,     &CollHeader_zone_final_act_ta53_fg,
+    &CollHeader_zone_1_act_1_fg,          &CollHeader_zone_1_act_2_fg,      &CollHeader_zone_1_act_boss_fg,
+    &CollHeader_zone_1_act_dummy_fg,      &CollHeader_zone_2_act_1_fg,      &CollHeader_zone_2_act_2_fg,
+    &CollHeader_zone_2_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,  &CollHeader_zone_3_act_1_fg,
+    &CollHeader_zone_3_act_2_fg,          &CollHeader_zone_3_act_boss_fg,   &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_4_act_1_fg,          &CollHeader_zone_4_act_2_fg,      &CollHeader_zone_4_act_boss_fg,
+    &CollHeader_zone_1_act_dummy_fg,      &CollHeader_zone_5_act_1_fg,      &CollHeader_zone_5_act_2_fg,
+    &CollHeader_zone_5_act_boss_fg,       &CollHeader_zone_1_act_dummy_fg,  &CollHeader_zone_6_act_1_fg,
+    &CollHeader_zone_6_act_2_fg,          &CollHeader_zone_6_act_boss_fg,   &CollHeader_zone_1_act_dummy_fg,
+    &CollHeader_zone_7_act_1_fg,          &CollHeader_zone_7_act_2_fg,      &CollHeader_zone_7_act_boss_fg,
+    &CollHeader_zone_1_act_dummy_fg,      &CollHeader_zone_final_act_xx_fg, &CollHeader_zone_final_act_ta53_fg,
     &CollHeader_zone_final_act_unused_fg,
 };
 

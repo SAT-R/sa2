@@ -28,8 +28,7 @@ void Task_FadeoutToOverScreen(void);
 
 void CreateGameOverScreen(LostLifeCause lostLifeCause)
 {
-    struct Task *t = TaskCreate(Task_FadeoutToOverScreen, sizeof(GameOverScreenFade),
-                                0x2220, 0, NULL);
+    struct Task *t = TaskCreate(Task_FadeoutToOverScreen, sizeof(GameOverScreenFade), 0x2220, 0, NULL);
     GameOverScreenFade *screen = TASK_DATA(t);
 
     ScreenFade *fade = &screen->unk0;
@@ -110,11 +109,9 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
     if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {
-        t = TaskCreate(Task_GameOverScreenMain, sizeof(GameOverScreen), 0x1000, 0,
-                       TaskDestructor_GameOverTimeOverScreen);
+        t = TaskCreate(Task_GameOverScreenMain, sizeof(GameOverScreen), 0x1000, 0, TaskDestructor_GameOverTimeOverScreen);
     } else {
-        t = TaskCreate(Task_TimeOverScreenMain, sizeof(GameOverScreen), 0x1000, 0,
-                       TaskDestructor_GameOverTimeOverScreen);
+        t = TaskCreate(Task_TimeOverScreenMain, sizeof(GameOverScreen), 0x1000, 0, TaskDestructor_GameOverTimeOverScreen);
     }
 
     screen = TASK_DATA(t);
@@ -185,8 +182,7 @@ void Task_GameOverScreenMain(void)
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
         screen->unk0.speed = Q(4.0);
-        screen->unk0.bldCnt
-            = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
+        screen->unk0.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
         screen->unk0.bldAlpha = 0;
     }
 
@@ -195,8 +191,7 @@ void Task_GameOverScreenMain(void)
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
         screen->unk0.speed = Q(4.0);
-        screen->unk0.bldCnt
-            = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
+        screen->unk0.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
         screen->unk0.bldAlpha = 0;
     }
 
@@ -216,9 +211,8 @@ void Task_GameOverScreenMain(void)
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
         screen->unk0.speed = Q(1. / 4.);
-        screen->unk0.bldCnt
-            = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_BD | BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1
-               | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3 | BLDCNT_TGT2_ALL);
+        screen->unk0.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_BD | BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2
+                               | BLDCNT_TGT1_BG3 | BLDCNT_TGT2_ALL);
         screen->unk0.bldAlpha = 0;
 
         screen->framesUntilDone = 120;
@@ -240,8 +234,7 @@ void sub_80369D8(void)
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_LIGHTEN);
         screen->unk0.speed = Q(1.0);
-        screen->unk0.bldCnt
-            = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
+        screen->unk0.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
         screen->unk0.bldAlpha = 0;
         memset(gBgPalette, RGB16(31, 7, 0), sizeof(gBgPalette));
         gFlags |= 0x1;
@@ -266,8 +259,7 @@ void Task_TimeOverScreenMain(void)
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = SCREEN_FADE_FLAG_LIGHTEN;
         screen->unk0.speed = Q(4.0);
-        screen->unk0.bldCnt
-            = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
+        screen->unk0.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
         screen->unk0.bldAlpha = 0;
     }
 
@@ -276,8 +268,7 @@ void Task_TimeOverScreenMain(void)
         screen->unk0.brightness = Q(0);
         screen->unk0.flags = (SCREEN_FADE_FLAG_2 | SCREEN_FADE_FLAG_DARKEN);
         screen->unk0.speed = Q(2.0);
-        screen->unk0.bldCnt
-            = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
+        screen->unk0.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_OBJ);
         screen->unk0.bldAlpha = 0;
     }
 

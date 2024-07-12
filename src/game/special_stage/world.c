@@ -24,8 +24,7 @@ void sub_806EB74(void);
 // No idea why this has to be specified as, should be by default
 ALIGNED(4)
 static const s16 gUnknown_080DF6DC[8] = {
-    [ZONE_1] = 1, [ZONE_2] = 7, [ZONE_3] = 5, [ZONE_4] = 1,
-    [ZONE_5] = 7, [ZONE_6] = 5, [ZONE_7] = 5,
+    [ZONE_1] = 1, [ZONE_2] = 7, [ZONE_3] = 5, [ZONE_4] = 1, [ZONE_5] = 7, [ZONE_6] = 5, [ZONE_7] = 5,
 };
 
 // used in gUnknown_08C87920, maybe incbinned?
@@ -97,8 +96,7 @@ struct Task *CreateSpecialStageWorld(struct SpecialStage *stage)
     memcpy(unkF768, gUnknown_080DF768, sizeof(gUnknown_080DF768));
     memcpy(unkF776, gUnknown_080DF776, sizeof(gUnknown_080DF776));
 
-    t = TaskCreate(sub_806EA04, sizeof(struct SpecialStageWorld), 0x8000, 0,
-                   sub_806EBF4);
+    t = TaskCreate(sub_806EA04, sizeof(struct SpecialStageWorld), 0x8000, 0, sub_806EBF4);
     world = TASK_DATA(t);
     world->stage = stage;
 
@@ -238,10 +236,8 @@ void sub_806EA04(void)
         *unk1884++ = (Q_16_16_TO_INT(temp) * -sin1) >> 0x10;
         *unk1884++ = (Q_16_16_TO_INT(temp) * sin2) >> 0x10;
 
-        temp6 = (Q_16_16_TO_INT(temp5) * sin1) + (Q_16_16_TO_INT(temp4) * sin2)
-            + stage->cameraX;
-        temp7 = (Q_16_16_TO_INT(temp4) * -sin1) + (Q_16_16_TO_INT(temp5) * sin2)
-            + stage->cameraY;
+        temp6 = (Q_16_16_TO_INT(temp5) * sin1) + (Q_16_16_TO_INT(temp4) * sin2) + stage->cameraX;
+        temp7 = (Q_16_16_TO_INT(temp4) * -sin1) + (Q_16_16_TO_INT(temp5) * sin2) + stage->cameraY;
 
         footer = (s32 *)unk1884;
         *footer++ = temp6 >> 8;

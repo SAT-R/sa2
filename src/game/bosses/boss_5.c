@@ -127,8 +127,7 @@ typedef struct {
 } EggSaucer; /* 0x4B0 */
 
 // Attack speeds?
-const u16 gUnknown_080D7F94[2]
-    = { 4 * GBA_FRAMES_PER_SECOND, 8 * GBA_FRAMES_PER_SECOND };
+const u16 gUnknown_080D7F94[2] = { 4 * GBA_FRAMES_PER_SECOND, 8 * GBA_FRAMES_PER_SECOND };
 
 typedef void (*EggSaucerCallback)(EggSaucer *);
 
@@ -144,14 +143,10 @@ static const EggSaucerCallback gArmFunctions[] = {
 };
 
 static const TileInfo gUnknown_080D7FB0[] = {
-    { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_RIGHT, 0 },
-    { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_DOWN_RIGHT, 0 },
-    { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_DOWN, 0 },
-    { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_DOWN_LEFT, 0 },
-    { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_LEFT, 0 },
-    { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP_LEFT, 0 },
-    { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP, 0 },
-    { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP_RIGHT, 0 },
+    { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_RIGHT, 0 }, { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_DOWN_RIGHT, 0 },
+    { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_DOWN, 0 },  { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_DOWN_LEFT, 0 },
+    { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_LEFT, 0 },  { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP_LEFT, 0 },
+    { 2, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP, 0 },    { 4, SA2_ANIM_EGG_SAUCER_SMACK_PARTICLE_UP_RIGHT, 0 },
 };
 
 static const u16 gUnknown_080D7FF0[][16] = {
@@ -226,8 +221,7 @@ void CreateEggSaucer(void)
     gUnknown_03005AA0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     gUnknown_03005AA0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
 
-    gActiveBossTask = TaskCreate(Task_EggSaucerIntro, sizeof(EggSaucer), 0x4000, 0,
-                                 TaskDestructor_EggSaucerMain);
+    gActiveBossTask = TaskCreate(Task_EggSaucerIntro, sizeof(EggSaucer), 0x4000, 0, TaskDestructor_EggSaucerMain);
     boss = TASK_DATA(gActiveBossTask);
 
     fade = &boss->screenTransition;
@@ -235,9 +229,8 @@ void CreateEggSaucer(void)
     fade->brightness = 0;
     fade->flags = 2;
     fade->speed = 0;
-    fade->bldCnt
-        = (BLDCNT_TGT2_BD | BLDCNT_TGT2_OBJ | BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_BD
-           | BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3);
+    fade->bldCnt = (BLDCNT_TGT2_BD | BLDCNT_TGT2_OBJ | BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_BD | BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1
+                    | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3);
     fade->bldAlpha = 0;
 
     if (gDifficultyLevel != 0 && gGameMode != GAME_MODE_BOSS_TIME_ATTACK) {
@@ -321,8 +314,7 @@ void CreateEggSaucer(void)
     s->graphics.dest = vram;
     vram += PILOT_TILES * TILE_SIZE_4BPP;
 
-    if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
-         && gSelectedCharacter == CHARACTER_SONIC)
+    if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && gSelectedCharacter == CHARACTER_SONIC)
         && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
         s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES;
         s->variant = 0;
@@ -355,8 +347,8 @@ void CreateEggSaucer(void)
     // Seems a lot of tiles for this
     vram += 64 * TILE_SIZE_4BPP;
     SPRITE_INIT_ANIM_AND_SCRIPT(s, SA2_ANIM_EGG_SAUCER_GUN, 0, 23);
-    s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 1)
-        | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
+    s->frameFlags
+        = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1);
 
     s = &boss->gunCharge;
     s->x = 0;
@@ -396,8 +388,7 @@ void CreateEggSaucer(void)
         s->graphics.dest = vramBase;
         vramBase += gUnknown_080D7FB0[i].numTiles * TILE_SIZE_4BPP;
 
-        SPRITE_INIT_WITHOUT_VRAM(s, gUnknown_080D7FB0[i].anim,
-                                 gUnknown_080D7FB0[i].variant, 11, 1, 0);
+        SPRITE_INIT_WITHOUT_VRAM(s, gUnknown_080D7FB0[i].anim, gUnknown_080D7FB0[i].variant, 11, 1, 0);
     }
 }
 
@@ -465,8 +456,7 @@ void sub_80435BC(void)
         m4aSongNumStart(SE_144);
     }
 
-    if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
-         && gSelectedCharacter == CHARACTER_SONIC)
+    if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && gSelectedCharacter == CHARACTER_SONIC)
         && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
         if (boss->unk15 == 0 && I(boss->cabinX) - gCamera.x < 50) {
             boss->unk15 = 1;
@@ -474,9 +464,7 @@ void sub_80435BC(void)
     } else {
         if (boss->unk15 == 0 && I(boss->cabinX) - gCamera.x < 50) {
             boss->unk15 = 1;
-            CreateEggmobileEscapeSequence(I(boss->cabinX) - gCamera.x,
-                                          I(boss->cabinY) - gCamera.y,
-                                          SPRITE_FLAG(PRIORITY, 2));
+            CreateEggmobileEscapeSequence(I(boss->cabinX) - gCamera.x, I(boss->cabinY) - gCamera.y, SPRITE_FLAG(PRIORITY, 2));
         }
     }
     sub_8045898(boss);
@@ -681,8 +669,7 @@ void sub_8043BEC(EggSaucer *boss)
     DisplaySprite(s);
 
     if (boss->unk15 == 0
-        || (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
-            && gSelectedCharacter == CHARACTER_SONIC
+        || (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && gSelectedCharacter == CHARACTER_SONIC
             && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel)) {
         s = &boss->pilot;
         s->x = I(boss->cabinX) - gCamera.x;
@@ -969,15 +956,9 @@ static void SaucerUpdatePosAndRotate(EggSaucer *boss)
 
     boss->y += Q(sub_801E4E4(bottomY, bottomX, 1, 8, 0, sub_801EE64));
 
-    boss->cabinDiskAngle = ({
-        (boss->cabinDiskAngle + DEG_TO_SIN(BOSS_ROTATE_SPEED_DEG)) & (SIN_PERIOD - 1);
-    });
-    boss->gunDiskAngle = ({
-        (boss->gunDiskAngle + DEG_TO_SIN(BOSS_ROTATE_SPEED_DEG)) & (SIN_PERIOD - 1);
-    });
-    boss->armDiskAngle = ({
-        (boss->armDiskAngle + DEG_TO_SIN(BOSS_ROTATE_SPEED_DEG)) & (SIN_PERIOD - 1);
-    });
+    boss->cabinDiskAngle = ({ (boss->cabinDiskAngle + DEG_TO_SIN(BOSS_ROTATE_SPEED_DEG)) & (SIN_PERIOD - 1); });
+    boss->gunDiskAngle = ({ (boss->gunDiskAngle + DEG_TO_SIN(BOSS_ROTATE_SPEED_DEG)) & (SIN_PERIOD - 1); });
+    boss->armDiskAngle = ({ (boss->armDiskAngle + DEG_TO_SIN(BOSS_ROTATE_SPEED_DEG)) & (SIN_PERIOD - 1); });
 }
 
 void sub_8044540(EggSaucer *boss)
@@ -1574,8 +1555,7 @@ void sub_80452F8(EggSaucer *boss)
 
     if (boss->unk13 == 0) {
         boss->unk12 = 0x1E;
-        if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
-             && gSelectedCharacter == CHARACTER_SONIC)
+        if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && gSelectedCharacter == CHARACTER_SONIC)
             && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES;
             s->variant = 1;
@@ -1601,8 +1581,7 @@ void sub_8045368(EggSaucer *boss)
 
     boss->unk13 = 30;
     boss->unk12 = 0;
-    if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
-         && gSelectedCharacter == CHARACTER_SONIC)
+    if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && gSelectedCharacter == CHARACTER_SONIC)
         && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
         if (!boss->unk10) {
             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES;
@@ -1624,8 +1603,7 @@ void sub_8045368(EggSaucer *boss)
     }
     s->prevVariant = -1;
 
-    if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
-        && boss->unk10 == 4) {
+    if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && boss->unk10 == 4) {
         gUnknown_030054A8.unk1 = 0x11;
     }
 }
@@ -1646,8 +1624,7 @@ void sub_80454A4(EggSaucer *boss)
 
     s = &boss->pilot;
 
-    if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)
-         && gSelectedCharacter == CHARACTER_SONIC)
+    if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && gSelectedCharacter == CHARACTER_SONIC)
         && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
         if (!boss->unk10) {
             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES;
@@ -1669,8 +1646,7 @@ void sub_80454A4(EggSaucer *boss)
 }
 
 // (86.11%) https://decomp.me/scratch/wnQsf
-NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc",
-         void sub_8045564(EggSaucer *boss))
+NONMATCH("asm/non_matching/game/bosses/boss_5__sub_8045564.inc", void sub_8045564(EggSaucer *boss))
 {
     s32 index;
     u8 val2;
@@ -1783,8 +1759,7 @@ void sub_804598C(void) { TaskDestroy(gCurTask); }
 
 void sub_80459A0(EggSaucer *boss)
 {
-    if (boss->unk11 == 0
-        && boss->armDiskAngle != ((boss->cabinDiskAngle + 0x200) & (SIN_PERIOD - 1))) {
+    if (boss->unk11 == 0 && boss->armDiskAngle != ((boss->cabinDiskAngle + 0x200) & (SIN_PERIOD - 1))) {
         boss->armDiskAngle = CLAMP_SIN_PERIOD(boss->armDiskAngle + 1);
     }
 }

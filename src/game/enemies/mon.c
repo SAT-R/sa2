@@ -31,8 +31,7 @@ typedef struct {
 void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u32 r2;
-    struct Task *t = TaskCreate(Task_MonMain, sizeof(Sprite_Mon), 0x4010, 0,
-                                TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_MonMain, sizeof(Sprite_Mon), 0x4010, 0, TaskDestructor_80095E8);
     Sprite_Mon *mon = TASK_DATA(t);
     Sprite *s = &mon->s;
     mon->base.regionX = spriteRegionX;
@@ -85,9 +84,8 @@ static void Task_MonMain(void)
         SET_MAP_ENTITY_NOT_INITIALIZED(me, mon->base.spriteX);
         TaskDestroy(gCurTask);
     } else {
-        if ((gPlayer.x > mon->x - Q(DISPLAY_WIDTH / 2))
-            && (gPlayer.x < mon->x + Q(DISPLAY_WIDTH / 2))
-            && (gPlayer.y > mon->y - Q(50)) && (gPlayer.y < mon->y + Q(50))) {
+        if ((gPlayer.x > mon->x - Q(DISPLAY_WIDTH / 2)) && (gPlayer.x < mon->x + Q(DISPLAY_WIDTH / 2)) && (gPlayer.y > mon->y - Q(50))
+            && (gPlayer.y < mon->y + Q(50))) {
             gCurTask->main = Task_Mon_2;
             s->graphics.anim = SA2_ANIM_MON;
             s->variant = 2;
@@ -177,9 +175,8 @@ static void Task_Mon_4(void)
         Player_UpdateHomingPosition(mon->x, mon->y);
 
         if (UpdateSpriteAnimation(s) == 0) {
-            if ((gPlayer.x > mon->x - Q(DISPLAY_WIDTH / 2))
-                && (gPlayer.x < mon->x + Q(DISPLAY_WIDTH / 2))
-                && (gPlayer.y > mon->y - Q(50)) && (gPlayer.y < mon->y + Q(50))) {
+            if ((gPlayer.x > mon->x - Q(DISPLAY_WIDTH / 2)) && (gPlayer.x < mon->x + Q(DISPLAY_WIDTH / 2)) && (gPlayer.y > mon->y - Q(50))
+                && (gPlayer.y < mon->y + Q(50))) {
 
                 ENEMY_TURN_TO_PLAYER(mon->x, s);
 

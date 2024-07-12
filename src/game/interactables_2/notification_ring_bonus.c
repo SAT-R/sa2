@@ -46,11 +46,9 @@ static void Task_8080750(void);
 static void TaskDestructor_8080790(struct Task *t);
 static void Task_80807A4(void);
 
-void CreateEntity_MultiplayerTeleport(MapEntity *me, u16 spriteRegionX,
-                                      u16 spriteRegionY, UNUSED u8 spriteY)
+void CreateEntity_MultiplayerTeleport(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, UNUSED u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_80806F4, sizeof(Sprite_MultiplayerTeleport), 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_80806F4, sizeof(Sprite_MultiplayerTeleport), 0x2010, 0, NULL);
     Sprite_MultiplayerTeleport *sprite = TASK_DATA(t);
 
     sprite->timer = 0;
@@ -74,8 +72,7 @@ void CreateEntity_MultiplayerTeleport(MapEntity *me, u16 spriteRegionX,
 
 void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
 {
-    if ((sprite->someX < Q(sprite->posX + sprite->unk8))
-        && (gPlayer.x > Q(sprite->posX + sprite->unkC))) {
+    if ((sprite->someX < Q(sprite->posX + sprite->unk8)) && (gPlayer.x > Q(sprite->posX + sprite->unkC))) {
         if (sprite->unk1C != 0) {
             u16 timeDiff;
             u16 prevRingCount;
@@ -101,8 +98,7 @@ void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
                 ringBonus += gRingCount;
                 gRingCount = ringBonus;
 
-                if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))
-                    && (Div(gRingCount, 100) != Div(prevRingCount, 100))
+                if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) && (Div(gRingCount, 100) != Div(prevRingCount, 100))
                     && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
                     u32 lives = gNumLives + 1;
                     if (lives > 255)
@@ -130,8 +126,7 @@ void sub_80803FC(Sprite_MultiplayerTeleport *sprite)
             sprite->timer = gCheckpointTime;
         }
         sprite->someX = gPlayer.x;
-    } else if ((sprite->someX > Q(sprite->posX + sprite->unkC))
-               && (gPlayer.x < Q(sprite->posX + sprite->unk8))) {
+    } else if ((sprite->someX > Q(sprite->posX + sprite->unkC)) && (gPlayer.x < Q(sprite->posX + sprite->unk8))) {
         if (sprite->unk1C != 0) {
             sprite->unk18--;
         }
@@ -152,8 +147,8 @@ bool32 sub_808055C(Sprite_MultiplayerTeleport *sprite)
     playerX = I(gPlayer.x) - gCamera.x;
     playerY = I(gPlayer.y) - gCamera.y;
 
-    if ((spriteX + sprite->unk8 <= playerX) && (playerX <= spriteX + sprite->unkC)
-        && (spriteY + sprite->unkA <= playerY) && (playerY <= spriteY + sprite->unkE)) {
+    if ((spriteX + sprite->unk8 <= playerX) && (playerX <= spriteX + sprite->unkC) && (spriteY + sprite->unkA <= playerY)
+        && (playerY <= spriteY + sprite->unkE)) {
         return TRUE;
     } else {
         return FALSE;
@@ -192,8 +187,7 @@ void sub_80805D0(Sprite_MultiplayerTeleport *sprite)
 
 void CreateSprite_Notif_RingBonus(void)
 {
-    struct Task *t = TaskCreate(Task_8080750, sizeof(Sprite_Notif_RingBonus), 0x2010, 0,
-                                TaskDestructor_8080790);
+    struct Task *t = TaskCreate(Task_8080750, sizeof(Sprite_Notif_RingBonus), 0x2010, 0, TaskDestructor_8080790);
     Sprite_Notif_RingBonus *notif = TASK_DATA(t);
     Sprite *s = &notif->s;
 

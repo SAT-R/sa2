@@ -3,8 +3,7 @@
 
 const u16 Palette_options_bg0[] = INCBIN_U16("data/tilemaps/options_bg0/palette.gbapal");
 const u8 Tiles_options_bg0[] = INCBIN_U8("data/tilemaps/options_bg0/tiles.4bpp");
-const u16 Tilemap_options_bg0[]
-    = INCBIN_U16("data/tilemaps/options_bg0/tilemap.tilemap2");
+const u16 Tilemap_options_bg0[] = INCBIN_U16("data/tilemaps/options_bg0/tilemap.tilemap2");
 
 const Tilemap options_bg0 = {
     .xTiles = 30,

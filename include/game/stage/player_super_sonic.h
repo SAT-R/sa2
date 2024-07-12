@@ -46,18 +46,18 @@ struct SuperSonic {
 
 #define SUPER_SONIC_AFTERIMAGE_COUNT 3
 
-#define SUPER_SWITCH_ANIM(_sonic, _tileInfoIndex)                                       \
-    {                                                                                   \
-        _sonic->tileInfoId = _tileInfoIndex;                                            \
-        _sonic->spr.graphics.anim = gAnims_SuperSonic_080D69C8[_tileInfoIndex].anim;    \
-        _sonic->spr.variant = gAnims_SuperSonic_080D69C8[_tileInfoIndex].variant;       \
-        _sonic->spr.prevVariant = -1;                                                   \
-        _sonic->spr.graphics.size = 0;                                                  \
-        _sonic->spr.animCursor = 0;                                                     \
-        _sonic->spr.timeUntilNextFrame = 0;                                             \
-        _sonic->unk10 = 0;                                                              \
-        _sonic->unk14 = 0;                                                              \
-        _sonic->unk22 = 0;                                                              \
+#define SUPER_SWITCH_ANIM(_sonic, _tileInfoIndex)                                                                                          \
+    {                                                                                                                                      \
+        _sonic->tileInfoId = _tileInfoIndex;                                                                                               \
+        _sonic->spr.graphics.anim = gAnims_SuperSonic_080D69C8[_tileInfoIndex].anim;                                                       \
+        _sonic->spr.variant = gAnims_SuperSonic_080D69C8[_tileInfoIndex].variant;                                                          \
+        _sonic->spr.prevVariant = -1;                                                                                                      \
+        _sonic->spr.graphics.size = 0;                                                                                                     \
+        _sonic->spr.animCursor = 0;                                                                                                        \
+        _sonic->spr.timeUntilNextFrame = 0;                                                                                                \
+        _sonic->unk10 = 0;                                                                                                                 \
+        _sonic->unk14 = 0;                                                                                                                 \
+        _sonic->unk22 = 0;                                                                                                                 \
     }
 
 extern void SuperSonicInit(void);

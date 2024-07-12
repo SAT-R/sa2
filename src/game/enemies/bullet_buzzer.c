@@ -30,11 +30,9 @@ typedef struct {
 
 void Task_BulletBuzzerMain(void);
 
-void CreateEntity_BulletBuzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 spriteY)
+void CreateEntity_BulletBuzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_BulletBuzzerMain, sizeof(Sprite_BulletBuzzer),
-                                0x4040, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_BulletBuzzerMain, sizeof(Sprite_BulletBuzzer), 0x4040, 0, TaskDestructor_80095E8);
     Sprite_BulletBuzzer *bbuzzer = TASK_DATA(t);
     Sprite *s = &bbuzzer->s;
     bbuzzer->base.regionX = spriteRegionX;
@@ -56,8 +54,7 @@ void CreateEntity_BulletBuzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s->graphics.dest = VramMalloc(24);
-    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_BULLETBUZZER, 0, 18, 2,
-                             SPRITE_FLAG_MASK_X_FLIP);
+    SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_BULLETBUZZER, 0, 18, 2, SPRITE_FLAG_MASK_X_FLIP);
 }
 
 void sub_8059B04(void);

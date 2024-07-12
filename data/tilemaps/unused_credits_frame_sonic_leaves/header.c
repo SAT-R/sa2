@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_unused_credits_frame_sonic_leaves[]
-    = INCBIN_U16("data/tilemaps/unused_credits_frame_sonic_leaves/palette.gbapal");
-const u8 Tiles_unused_credits_frame_sonic_leaves[]
-    = INCBIN_U8("data/tilemaps/unused_credits_frame_sonic_leaves/tiles.4bpp");
-const u16 Tilemap_unused_credits_frame_sonic_leaves[]
-    = INCBIN_U16("data/tilemaps/unused_credits_frame_sonic_leaves/tilemap.tilemap2");
+const u16 Palette_unused_credits_frame_sonic_leaves[] = INCBIN_U16("data/tilemaps/unused_credits_frame_sonic_leaves/palette.gbapal");
+const u8 Tiles_unused_credits_frame_sonic_leaves[] = INCBIN_U8("data/tilemaps/unused_credits_frame_sonic_leaves/tiles.4bpp");
+const u16 Tilemap_unused_credits_frame_sonic_leaves[] = INCBIN_U16("data/tilemaps/unused_credits_frame_sonic_leaves/tilemap.tilemap2");
 
 const Tilemap unused_credits_frame_sonic_leaves = {
     .xTiles = 30,

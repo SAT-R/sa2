@@ -80,12 +80,10 @@ static const u16 gUnknown_080E1648[4] = {
     TM_CUTSCENE_FINAL_ENDING_FALL_BG_DARK_2,
 };
 static const TileInfo gUnknown_080E1650[29] = {
-    { 15, 823, 0 }, { 30, 815, 0 }, { 9, 817, 0 },   { 4, 816, 0 },   { 4, 816, 1 },
-    { 0, 907, 0 },  { 0, 908, 0 },  { 104, 785, 0 }, { 104, 785, 2 }, { 80, 786, 0 },
-    { 80, 786, 2 }, { 99, 787, 0 }, { 99, 787, 2 },  { 72, 788, 0 },  { 72, 788, 2 },
-    { 56, 789, 0 }, { 56, 789, 2 }, { 48, 785, 1 },  { 48, 785, 3 },  { 80, 786, 1 },
-    { 80, 786, 3 }, { 80, 787, 1 }, { 80, 787, 3 },  { 64, 788, 1 },  { 64, 788, 3 },
-    { 42, 789, 1 }, { 42, 789, 3 }, { 30, 790, 0 },  { 30, 790, 1 },
+    { 15, 823, 0 },  { 30, 815, 0 }, { 9, 817, 0 },  { 4, 816, 0 },  { 4, 816, 1 },  { 0, 907, 0 },  { 0, 908, 0 },  { 104, 785, 0 },
+    { 104, 785, 2 }, { 80, 786, 0 }, { 80, 786, 2 }, { 99, 787, 0 }, { 99, 787, 2 }, { 72, 788, 0 }, { 72, 788, 2 }, { 56, 789, 0 },
+    { 56, 789, 2 },  { 48, 785, 1 }, { 48, 785, 3 }, { 80, 786, 1 }, { 80, 786, 3 }, { 80, 787, 1 }, { 80, 787, 3 }, { 64, 788, 1 },
+    { 64, 788, 3 },  { 42, 789, 1 }, { 42, 789, 3 }, { 30, 790, 0 }, { 30, 790, 1 },
 };
 
 static const u8 gUnknown_080E1738[] = {
@@ -100,8 +98,7 @@ static const u8 gUnknown_080E1752[0x10] = {
 };
 
 static const s16 gUnknown_080E1762[][2] = {
-    { 15, 20 }, { 10, 5 },   { 50, 20 },  { 80, 10 },
-    { 100, 5 }, { 130, 10 }, { 200, 15 }, { 230, 8 },
+    { 15, 20 }, { 10, 5 }, { 50, 20 }, { 80, 10 }, { 100, 5 }, { 130, 10 }, { 200, 15 }, { 230, 8 },
 };
 
 static const s16 gUnknown_080E1782[][2] = {
@@ -141,8 +138,7 @@ void CreateFinalEndingFallCutScene(void)
     m4aMPlayAllStop();
     m4aSongNumStart(MUS_FINAL_ENDING);
 
-    t = TaskCreate(sub_8092690, sizeof(struct FinalEndingFallCutScene), 0x3100, 0,
-                   sub_8092800);
+    t = TaskCreate(sub_8092690, sizeof(struct FinalEndingFallCutScene), 0x3100, 0, sub_8092800);
     scene = TASK_DATA(t);
 
     scene->unk35C = 0;
@@ -528,8 +524,7 @@ void sub_8091F68(struct FinalEndingFallCutScene *scene)
     }
 
     if (gBgScrollRegs[0][1] < 0x88 && scene->unk35C < 10) {
-        if (scene->unk474 > 0 && (gBgScrollRegs[1][1] & 7) == 0
-            && (scene->unk474 >> 8) > gBgScrollRegs[1][1]) {
+        if (scene->unk474 > 0 && (gBgScrollRegs[1][1] & 7) == 0 && (scene->unk474 >> 8) > gBgScrollRegs[1][1]) {
             scene->unk364++;
         }
 

@@ -6,10 +6,7 @@
 struct SoundInfo sSoundInfo = { 0 };
 struct SoundInfo *SOUND_INFO_PTR = &sSoundInfo;
 
-u32 umul3232H32(u32 multiplier, u32 multiplicand)
-{
-    return ((u64)multiplier * (u64)multiplicand) >> 32;
-}
+u32 umul3232H32(u32 multiplier, u32 multiplicand) { return ((u64)multiplier * (u64)multiplicand) >> 32; }
 
 void TrackStop(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track) { }
 void SoundMain(void) { }

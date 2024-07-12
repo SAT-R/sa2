@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_special_stage_2_bg[]
-    = INCBIN_U16("data/tilemaps/special_stage_2_bg/palette.gbapal");
-const u8 Tiles_special_stage_2_bg[]
-    = INCBIN_U8("data/tilemaps/special_stage_2_bg/tiles.4bpp");
-const u16 Tilemap_special_stage_2_bg[]
-    = INCBIN_U16("data/tilemaps/special_stage_2_bg/tilemap.tilemap2");
+const u16 Palette_special_stage_2_bg[] = INCBIN_U16("data/tilemaps/special_stage_2_bg/palette.gbapal");
+const u8 Tiles_special_stage_2_bg[] = INCBIN_U8("data/tilemaps/special_stage_2_bg/tiles.4bpp");
+const u16 Tilemap_special_stage_2_bg[] = INCBIN_U16("data/tilemaps/special_stage_2_bg/tilemap.tilemap2");
 
 const Tilemap special_stage_2_bg = {
     .xTiles = 32,

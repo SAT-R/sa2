@@ -36,8 +36,7 @@ static void Task_Interactable_Toggle_PlayerLayer(void)
     screenX = TO_WORLD_POS(spriteX, regionX);
     screenY = TO_WORLD_POS(me->y, regionY);
 
-    if ((screenX <= I(gPlayer.x)) && (screenX + (me->width * TILE_WIDTH) >= I(gPlayer.x))
-        && (screenY <= I(gPlayer.y))
+    if ((screenX <= I(gPlayer.x)) && (screenX + (me->width * TILE_WIDTH) >= I(gPlayer.x)) && (screenY <= I(gPlayer.y))
         && (screenY + (me->height * TILE_WIDTH) >= I(gPlayer.y))) {
 
         // The interactable-index determines, whether the layer we switch to
@@ -60,11 +59,9 @@ static void Task_Interactable_Toggle_PlayerLayer(void)
     }
 }
 
-void CreateEntity_Toggle_PlayerLayer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     UNUSED u8 spriteY)
+void CreateEntity_Toggle_PlayerLayer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, UNUSED u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_Toggle_PlayerLayer,
-                                sizeof(Sprite_ChangePlayerLayer), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_Interactable_Toggle_PlayerLayer, sizeof(Sprite_ChangePlayerLayer), 0x2000, 0, NULL);
     Sprite_ChangePlayerLayer *layerChanger = TASK_DATA(t);
     SpriteBase *base = &layerChanger->base;
 

@@ -24,8 +24,7 @@ void CreateStageBg_ZoneFinal_0(void)
     gUnknown_03002280[2][3] = 0x20;
 
     bgDst = &gStageBackgroundsRam.unk80;
-    gBgCntRegs[2]
-        = BGCNT_SCREENBASE(26) | BGCNT_256COLOR | BGCNT_CHARBASE(2) | BGCNT_PRIORITY(1);
+    gBgCntRegs[2] = BGCNT_SCREENBASE(26) | BGCNT_256COLOR | BGCNT_CHARBASE(2) | BGCNT_PRIORITY(1);
     bgSrc = gStageCameraBgTemplates;
     memcpy(bgDst, &bgSrc[2], sizeof(Background));
 
@@ -40,8 +39,7 @@ void CreateStageBg_ZoneFinal_0(void)
     DrawBackground(bgDst);
 
     bgDst = &gStageBackgroundsRam.unk0;
-    gBgCntRegs[0]
-        = BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(1) | BGCNT_PRIORITY(3);
+    gBgCntRegs[0] = BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(1) | BGCNT_PRIORITY(3);
 
     memcpy(bgDst, &bgSrc[3], sizeof(Background));
 

@@ -139,13 +139,11 @@ const u16 sBossRunCameraYTriggers[] = {
 };
 
 const u16 gUnknown_080D87E6[][2] = {
-    { 5804, 177 },  { 13292, 177 }, { 17420, 177 }, { 22508, 177 },
-    { 28585, 177 }, { 37484, 201 }, { 41600, 225 }, { 41600, 225 },
+    { 5804, 177 }, { 13292, 177 }, { 17420, 177 }, { 22508, 177 }, { 28585, 177 }, { 37484, 201 }, { 41600, 225 }, { 41600, 225 },
 };
 
 const s32 gUnknown_080D8808[][2] = {
-    { 5376, -4512 },  { 12864, -5952 }, { 17088, -2688 }, { 22080, -3552 },
-    { 28128, -4512 }, { 37058, -7394 }, { 42240, -3648 },
+    { 5376, -4512 }, { 12864, -5952 }, { 17088, -2688 }, { 22080, -3552 }, { 28128, -4512 }, { 37058, -7394 }, { 42240, -3648 },
 };
 
 const s32 gUnknown_080D8840[][2] = {
@@ -170,32 +168,30 @@ const SuperEggRoboZTowersCallback sTowerStateCallbacks[] = {
 const u16 gUnknown_080D8888[2][2] = { { Q(188), Q(110) }, { Q(162), Q(110) } };
 
 static const EggRoboFn sArmFuncs[8]
-    = { sub_804B43C, sub_804B594, sub_804B734, sub_804B984,
-        sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240 };
+    = { sub_804B43C, sub_804B594, sub_804B734, sub_804B984, sub_804BC44, sub_804BE6C, sub_804BAC0, sub_804C240 };
 
 const u16 sArmPalettes[2][16] = {
     INCBIN_U16("graphics/boss_8_a.gbapal"),
     INCBIN_U16("graphics/boss_8_b.gbapal"),
 };
 
-#define SWITCH_ARM_VARIANT(boss, arm, vNum)                                             \
-    {                                                                                   \
-        Sprite *s = &boss->bsArms[arm].s;                                               \
-                                                                                        \
-        if (arm != ARM_LEFT) {                                                          \
-            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;                     \
-            s->variant = vNum;                                                          \
-        } else {                                                                        \
-            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_LEFT;                      \
-            s->variant = vNum;                                                          \
-        }                                                                               \
-        s->prevVariant = -1;                                                            \
+#define SWITCH_ARM_VARIANT(boss, arm, vNum)                                                                                                \
+    {                                                                                                                                      \
+        Sprite *s = &boss->bsArms[arm].s;                                                                                                  \
+                                                                                                                                           \
+        if (arm != ARM_LEFT) {                                                                                                             \
+            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_RIGHT;                                                                        \
+            s->variant = vNum;                                                                                                             \
+        } else {                                                                                                                           \
+            s->graphics.anim = SA2_ANIM_SUPER_EGG_ROBO_Z_ARM_LEFT;                                                                         \
+            s->variant = vNum;                                                                                                             \
+        }                                                                                                                                  \
+        s->prevVariant = -1;                                                                                                               \
     }
 
 void CreateBossRunManager(u8 bossIndex)
 {
-    struct Task *t = TaskCreate(Task_BossRunManagerMain, sizeof(BossRunManager), 0x4000,
-                                0, TaskDestructor_BossRunManager);
+    struct Task *t = TaskCreate(Task_BossRunManagerMain, sizeof(BossRunManager), 0x4000, 0, TaskDestructor_BossRunManager);
     BossRunManager *manager = TASK_DATA(t);
     manager->bossIndex = bossIndex;
     manager->unk5 = 0;
@@ -270,8 +266,7 @@ static void Task_BossRunManagerMain(void)
                         gCamera.unk10--;
                     }
                 }
-            } else if (gPlayer.x < Q(42700)
-                       && gPlayer.x > Q(gUnknown_080D8808[6][0] + 20)) {
+            } else if (gPlayer.x < Q(42700) && gPlayer.x > Q(gUnknown_080D8808[6][0] + 20)) {
                 if (gActiveBossTask == NULL && !(gStageFlags & STAGE_FLAG__100)) {
                     gPlayer.checkpointTime = gCourseTime;
                     CreateZoneBoss(7);
@@ -334,8 +329,7 @@ static void Task_BossRunManagerMain(void)
         }
     }
 
-    if (manager->unk5 < 7
-        && gCamera.unk10 > sBossRunCameraYTriggers[manager->unk5] - 600) {
+    if (manager->unk5 < 7 && gCamera.unk10 > sBossRunCameraYTriggers[manager->unk5] - 600) {
         if (manager->unk5 == 6) {
             if (manager->unk6 == 0) {
                 gCamera.unkC = 1;
@@ -372,9 +366,7 @@ static void TaskDestructor_BossRunManager(struct Task *t) { }
 static void CreateSuperEggRoboZTowers(void *vram, SuperEggRoboZ *boss)
 {
     u8 i, j;
-    struct Task *t
-        = TaskCreate(Task_SuperEggRoboZTowersMain, sizeof(SuperEggRoboZTowers), 0x4080,
-                     0, TaskDestructor_SuperEggRoboZTowers);
+    struct Task *t = TaskCreate(Task_SuperEggRoboZTowersMain, sizeof(SuperEggRoboZTowers), 0x4080, 0, TaskDestructor_SuperEggRoboZTowers);
     SuperEggRoboZTowers *towers = TASK_DATA(t);
     void *vrams[2];
     Sprite *s;
@@ -400,8 +392,7 @@ static void CreateSuperEggRoboZTowers(void *vram, SuperEggRoboZ *boss)
             s->x = 80;
             s->y = 80;
             s->graphics.dest = vrams[j];
-            SPRITE_INIT_WITHOUT_VRAM(s, sTowerPiecesTileInfo[j].anim,
-                                     sTowerPiecesTileInfo[j].variant, 28, 1, 0);
+            SPRITE_INIT_WITHOUT_VRAM(s, sTowerPiecesTileInfo[j].anim, sTowerPiecesTileInfo[j].variant, 28, 1, 0);
             UpdateSpriteAnimation(s);
         }
     }
@@ -457,10 +448,8 @@ static void sub_8049F1C(SuperEggRoboZTowers *towers, u8 towerIndex)
     if (*unk15F == 0) {
 
         if (--towers->unk154[towerIndex] == 0) {
-            towers->unk154[towerIndex]
-                = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
-            towers->unk15A[towerIndex]
-                = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
+            towers->unk154[towerIndex] = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
+            towers->unk15A[towerIndex] = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
         }
     }
 
@@ -517,10 +506,8 @@ static void sub_804A070(SuperEggRoboZTowers *towers, u8 towerIndex)
     if (towers->unk15F == 0) {
         m4aSongNumStart(SE_264);
         if (--towers->unk154[towerIndex] == 0) {
-            towers->unk154[towerIndex]
-                = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
-            towers->unk15A[towerIndex]
-                = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
+            towers->unk154[towerIndex] = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
+            towers->unk15A[towerIndex] = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
         }
     }
 
@@ -576,10 +563,8 @@ static void sub_804A1C0(SuperEggRoboZTowers *towers, u8 towerIndex)
         }
 
         if (--towers->unk154[towerIndex] == 0) {
-            towers->unk154[towerIndex]
-                = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
-            towers->unk15A[towerIndex]
-                = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
+            towers->unk154[towerIndex] = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
+            towers->unk15A[towerIndex] = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
         }
     }
 
@@ -616,8 +601,7 @@ static void sub_804A398(SuperEggRoboZTowers *towers, u8 towerIndex)
     s32 preY = -towers->offsets[towerIndex].y;
 
     if (towers->unk15F == 0) {
-        towers->offsets[towerIndex].y
-            -= ((COS(towers->unk154[towerIndex] * 2) * 3) >> 7);
+        towers->offsets[towerIndex].y -= ((COS(towers->unk154[towerIndex] * 2) * 3) >> 7);
     }
     preY += towers->offsets[towerIndex].y;
 
@@ -629,10 +613,8 @@ static void sub_804A398(SuperEggRoboZTowers *towers, u8 towerIndex)
 
     if (towers->unk15F == 0) {
         if (--towers->unk154[towerIndex] == 0) {
-            towers->unk154[towerIndex]
-                = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
-            towers->unk15A[towerIndex]
-                = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
+            towers->unk154[towerIndex] = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
+            towers->unk15A[towerIndex] = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
         }
     }
 
@@ -684,10 +666,8 @@ static void sub_804A53C(SuperEggRoboZTowers *towers, u8 towerIndex)
 
     if (towers->unk15F == 0) {
         if (--towers->unk154[towerIndex] == 0) {
-            towers->unk154[towerIndex]
-                = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
-            towers->unk15A[towerIndex]
-                = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
+            towers->unk154[towerIndex] = gUnknown_080D8858[towers->unk15A[towerIndex]][1];
+            towers->unk15A[towerIndex] = gUnknown_080D8858[towers->unk15A[towerIndex]][0];
         }
     }
 
@@ -732,10 +712,8 @@ void CreateSuperEggRoboZ(void)
     Background *body;
     u8 arm;
 
-    gBgCntRegs[0] = (BGCNT_TXT512x512 | BGCNT_SCREENBASE(20) | BGCNT_CHARBASE(3)
-                     | BGCNT_PRIORITY(2));
-    gBgCntRegs[2] = (BGCNT_TXT256x256 | BGCNT_SCREENBASE(31) | BGCNT_CHARBASE(0)
-                     | BGCNT_PRIORITY(1));
+    gBgCntRegs[0] = (BGCNT_TXT512x512 | BGCNT_SCREENBASE(20) | BGCNT_CHARBASE(3) | BGCNT_PRIORITY(2));
+    gBgCntRegs[2] = (BGCNT_TXT256x256 | BGCNT_SCREENBASE(31) | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
     gUnknown_03004D80[0] = 0;
@@ -751,8 +729,7 @@ void CreateSuperEggRoboZ(void)
     gUnknown_03005AA0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     gUnknown_03005AA0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
 
-    t = TaskCreate(Task_SuperEggRoboZMain, sizeof(SuperEggRoboZ), 0x4000, 0,
-                   TaskDestructor_SuperEggRoboZMain);
+    t = TaskCreate(Task_SuperEggRoboZMain, sizeof(SuperEggRoboZ), 0x4000, 0, TaskDestructor_SuperEggRoboZMain);
     gActiveBossTask = t;
     boss = TASK_DATA(t);
     fade = &boss->fade;
@@ -819,8 +796,7 @@ void CreateSuperEggRoboZ(void)
     fade->brightness = 0;
     fade->flags = SCREEN_FADE_FLAG_2;
     fade->speed = 0;
-    fade->bldCnt = ((BLDCNT_TGT2_ALL & ~BLDCNT_TGT2_BG3) | BLDCNT_EFFECT_LIGHTEN
-                    | BLDCNT_TGT1_ALL);
+    fade->bldCnt = ((BLDCNT_TGT2_ALL & ~BLDCNT_TGT2_BG3) | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
     fade->bldAlpha = 0;
 
     body = &boss->body;
@@ -916,8 +892,7 @@ static void Task_804A9D8(void)
 }
 
 // (99.89%) https://decomp.me/scratch/kiah8
-NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc",
-         static void Task_804AB24(void))
+NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", static void Task_804AB24(void))
 {
     s32 speed;
     SuperEggRoboZ *boss = TASK_DATA(gCurTask);
@@ -1046,8 +1021,7 @@ static void Task_804AD68(void)
 // (95.06%) https://decomp.me/scratch/of4k0
 // (98.77%) https://decomp.me/scratch/Kzx1m
 // (99.59%) https://decomp.me/scratch/IzRyM
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc",
-         static void sub_804AE40(SuperEggRoboZ *boss))
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804AE40.inc", static void sub_804AE40(SuperEggRoboZ *boss))
 {
     Sprite *s;
 
@@ -1269,8 +1243,7 @@ static u8 sub_804B0EC(SuperEggRoboZ *boss, u8 arm)
 //     ...
 // }
 // (93.51%) https://decomp.me/scratch/ecqNB
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc",
-         static bool8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804B2EC.inc", static bool8 sub_804B2EC(SuperEggRoboZ *boss, u8 arm))
 {
     u8 result = 0;
     s32 sp04, ip;
@@ -1528,8 +1501,7 @@ static void sub_804BAC0(SuperEggRoboZ *boss, u8 arm)
 }
 
 // (81.31%) https://decomp.me/scratch/432q4
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc",
-         static void sub_804BC44(SuperEggRoboZ *boss, u8 arm))
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc", static void sub_804BC44(SuperEggRoboZ *boss, u8 arm))
 {
     ExplosionPartsInfo info;
     s32 speed0;
@@ -1565,8 +1537,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804BC44.inc",
                 info.spawnY = I(y) - ((SIN(index & ONE_CYCLE) * (i - 1)) >> 11);
 
                 info.velocity = 0;
-                info.rotation
-                    = (boss->rotation[arm] + 576 - boss->rotation2[arm]) & ONE_CYCLE;
+                info.rotation = (boss->rotation[arm] + 576 - boss->rotation2[arm]) & ONE_CYCLE;
                 speed0 = (Q(2) + (j * Q(0.5)));
 
                 if ((1 - i) >= 0) {
@@ -1623,8 +1594,7 @@ static void sub_804BE6C(SuperEggRoboZ *boss, u8 arm)
                 {
                     s32 speed;
                     speed = ((j * Q(0.375)) + Q(0.5));
-                    info.speed = ((1 - i) >= 0) ? speed - ((1 - i) * Q(0.125))
-                                                : speed - ((i - 1) * Q(0.125));
+                    info.speed = ((1 - i) >= 0) ? speed - ((1 - i) * Q(0.125)) : speed - ((i - 1) * Q(0.125));
                 }
 
                 info.vram = boss->tilesCloud;
@@ -1696,8 +1666,7 @@ static void sub_804C080(SuperEggRoboZ *boss)
 }
 
 // (87.37%) https://decomp.me/scratch/98Mjg
-NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc",
-         static void sub_804C240(SuperEggRoboZ *boss, u8 arm))
+NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc", static void sub_804C240(SuperEggRoboZ *boss, u8 arm))
 {
     ExplosionPartsInfo info;
     s32 x, y;
@@ -1731,8 +1700,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__sub_804C240.inc",
         info.spawnX = I(x);
         info.spawnY = I(y);
         info.velocity = 0;
-        info.rotation
-            = sub_8004418(-(boss->qUnk34[arm][1] >> 3), -(boss->qUnk34[arm][0] >> 3));
+        info.rotation = sub_8004418(-(boss->qUnk34[arm][1] >> 3), -(boss->qUnk34[arm][0] >> 3));
 
         rand = PseudoRandom32();
         index = (info.rotation + (rand & 0x1F));
@@ -1779,9 +1747,8 @@ static void sub_804C3AC(SuperEggRoboZ *boss)
     s->x = I(sp00.x) - gCamera.x;
     s->y = I(sp00.y) - gCamera.y;
 
-    s->frameFlags = (gUnknown_030054B8++
-                     | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                        | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+    s->frameFlags
+        = (gUnknown_030054B8++ | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
     tf->rotation = boss->unk10;
     tf->width = Q(1);
@@ -1804,8 +1771,7 @@ static void sub_804C3AC(SuperEggRoboZ *boss)
         s->y = I(sp00.y) - gCamera.y;
 
         s->frameFlags = (gUnknown_030054B8++
-                         | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                            | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+                         | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
         tf->rotation = boss->rotation[i];
         tf->width = Q(1);
@@ -1868,9 +1834,8 @@ static void sub_804C5B8(SuperEggRoboZ *boss)
     s->x = I(sp00.x) - gCamera.x;
     s->y = I(sp00.y) - gCamera.y + r3;
 
-    s->frameFlags = (gUnknown_030054B8++
-                     | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                        | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+    s->frameFlags
+        = (gUnknown_030054B8++ | (SPRITE_FLAG(PRIORITY, 3) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
     tf->rotation = boss->unk10;
     tf->width = Q(1);
@@ -1897,8 +1862,7 @@ static void sub_804C5B8(SuperEggRoboZ *boss)
         s->y = I(sp00.y) - gCamera.y;
 
         s->frameFlags = (gUnknown_030054B8++
-                         | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                            | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
+                         | (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE));
 
         tf->rotation = boss->rotation[i];
         tf->width = Q(1);
@@ -2102,8 +2066,7 @@ static void sub_804CCD0(SuperEggRoboZ *boss, s32 qP1)
 {
     Vec2_32 pos = { boss->qPos.x + Q(190), boss->qPos.y + Q(40) };
 
-    if ((I(gPlayer.y) < pos.x) && (gPlayer.y >= (pos.y - qP1))
-        && (gPlayer.y <= (qP1 + pos.y))) {
+    if ((I(gPlayer.y) < pos.x) && (gPlayer.y >= (pos.y - qP1)) && (gPlayer.y <= (qP1 + pos.y))) {
         sub_800CBA4(&gPlayer);
     }
 }

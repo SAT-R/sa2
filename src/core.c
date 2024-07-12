@@ -45,8 +45,7 @@ u32 gMultiSioStatusFlags = 0;
 bool8 gMultiSioEnabled = FALSE;
 
 struct Task *gTaskPtrs[] ALIGNED(16) = {};
-u32 gBgOffsetsBuffer[2][DISPLAY_HEIGHT]
-    = {}; /* TODO: Find out how this is different from gBgOffsetsHBlank */
+u32 gBgOffsetsBuffer[2][DISPLAY_HEIGHT] = {}; /* TODO: Find out how this is different from gBgOffsetsHBlank */
 u16 gObjPalette[] = {};
 struct MapHeader **gTilemapsRef = NULL;
 u32 gFrameCount = 0;
@@ -430,8 +429,7 @@ static void UpdateScreenDma(void)
         REG_IE |= INTR_FLAG_HBLANK;
         DmaFill32(3, 0, gHBlankIntrs, sizeof(gHBlankIntrs));
         if (gNumHBlankCallbacks != 0) {
-            DmaCopy32(3, gHBlankCallbacks, gHBlankIntrs,
-                      gNumHBlankCallbacks * sizeof(HBlankFunc));
+            DmaCopy32(3, gHBlankCallbacks, gHBlankIntrs, gNumHBlankCallbacks * sizeof(HBlankFunc));
         }
         gNumHBlankIntrs = gNumHBlankCallbacks;
     } else {
@@ -468,8 +466,7 @@ static void UpdateScreenDma(void)
     if (gFlags & FLAGS_10) {
         DmaFill32(3, 0, gUnknown_030053A0, sizeof(gUnknown_030053A0));
         if (gUnknown_03004D50 != 0) {
-            DmaCopy32(3, gUnknown_03001870, gUnknown_030053A0,
-                      gUnknown_03004D50 * sizeof(FuncType_030053A0));
+            DmaCopy32(3, gUnknown_03001870, gUnknown_030053A0, gUnknown_03004D50 * sizeof(FuncType_030053A0));
         }
         gUnknown_03001948 = gUnknown_03004D50;
     } else {
@@ -613,8 +610,7 @@ static void VBlankIntr(void)
 
         DmaCopy16(0, gBgOffsetsHBlank, gUnknown_03002878, gUnknown_03002A80);
         DmaSet(0, gBgOffsetsHBlank + gUnknown_03002A80, gUnknown_03002878,
-               ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD) << 16)
-                   | (gUnknown_03002A80 >> 1));
+               ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD) << 16) | (gUnknown_03002A80 >> 1));
 
     } else if (gUnknown_03002878) {
         REG_IE &= ~INTR_FLAG_HBLANK;
@@ -672,8 +668,7 @@ static bool32 ProcessVramGraphicsCopyQueue(void)
     struct GraphicsData_Hack *graphics;
 
     while (gVramGraphicsCopyCursor != gVramGraphicsCopyQueueIndex) {
-        graphics = (struct GraphicsData_Hack *)
-            gVramGraphicsCopyQueue[gVramGraphicsCopyCursor];
+        graphics = (struct GraphicsData_Hack *)gVramGraphicsCopyQueue[gVramGraphicsCopyCursor];
 
         if (graphics->remainingBytes != 0) {
             for (offset = 0; graphics->remainingBytes > 0; offset += COPY_CHUNK_SIZE) {
@@ -682,8 +677,7 @@ static bool32 ProcessVramGraphicsCopyQueue(void)
                     if ((graphics->src != 0) && (graphics->dest != 0))
 #endif
                     {
-                        DmaCopy16(3, (void *)(graphics->src + offset),
-                                  (void *)(graphics->dest + offset), COPY_CHUNK_SIZE);
+                        DmaCopy16(3, (void *)(graphics->src + offset), (void *)(graphics->dest + offset), COPY_CHUNK_SIZE);
                     }
                     graphics->remainingBytes -= COPY_CHUNK_SIZE;
                 } else {
@@ -691,9 +685,7 @@ static bool32 ProcessVramGraphicsCopyQueue(void)
                     if ((graphics->src != 0) && (graphics->dest != 0))
 #endif
                     {
-                        DmaCopy16(3, (void *)(graphics->src + offset),
-                                  (void *)(graphics->dest + offset),
-                                  graphics->remainingBytes);
+                        DmaCopy16(3, (void *)(graphics->src + offset), (void *)(graphics->dest + offset), graphics->remainingBytes);
                     }
                     graphics->remainingBytes = 0;
                 }
@@ -713,8 +705,7 @@ static bool32 ProcessVramGraphicsCopyQueue(void)
 static void GetInput(void)
 {
     s8 i;
-    u8 *repeatKeyCounters = gRepeatedKeysTestCounter,
-       *firstIntervals = gKeysFirstRepeatIntervals,
+    u8 *repeatKeyCounters = gRepeatedKeysTestCounter, *firstIntervals = gKeysFirstRepeatIntervals,
        *continuedHoldIntervals = gKeysContinuedRepeatIntervals;
 
     gInput = (~REG_KEYINPUT & KEYS_MASK);

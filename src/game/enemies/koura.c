@@ -39,8 +39,7 @@ static const u16 gUnknown_080D8F38[][2] = {
 void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
 
-    struct Task *t = TaskCreate(sub_8054224, sizeof(Sprite_Koura), 0x40B0, 0,
-                                TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(sub_8054224, sizeof(Sprite_Koura), 0x40B0, 0, TaskDestructor_80095E8);
     Sprite_Koura *koura = TASK_DATA(t);
     Sprite *s = &koura->s;
     koura->base.regionX = spriteRegionX;
@@ -69,8 +68,7 @@ void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     ENEMY_SET_SPAWN_POS_STATIC(koura, me);
     koura->offsetX = 0;
     if (koura->unk54 < 2) {
-        koura->offsetY = QS(sub_801F07C(I(koura->spawnY), I(koura->spawnX), koura->unk54,
-                                        8, NULL, sub_801EE64));
+        koura->offsetY = QS(sub_801F07C(I(koura->spawnY), I(koura->spawnX), koura->unk54, 8, NULL, sub_801EE64));
     } else {
         koura->offsetY = 0;
     }
@@ -78,8 +76,7 @@ void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
-    SPRITE_INIT(s, 30, gUnknown_080D8F38[koura->unk54 & 2][0],
-                gUnknown_080D8F38[koura->unk54 & 2][1], 18, 2);
+    SPRITE_INIT(s, 30, gUnknown_080D8F38[koura->unk54 & 2][0], gUnknown_080D8F38[koura->unk54 & 2][1], 18, 2);
 }
 
 static void sub_8054224(void)
@@ -152,8 +149,7 @@ static void sub_8054224(void)
             koura->unk58 = NEGATE(koura->unk58);
         }
 
-        if ((SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.x < QS(pos.x))
-            || (!SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.x > QS(pos.x))) {
+        if ((SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.x < QS(pos.x)) || (!SPRITE_FLAG_GET(s, X_FLIP) && gPlayer.x > QS(pos.x))) {
             gCurTask->main = sub_805462C;
             s->graphics.anim = gUnknown_080D8F38[5][0];
             s->variant = gUnknown_080D8F38[5][1];

@@ -27,8 +27,7 @@ void Task_DestroyExplosionParts(void);
 void CreateBossParticleWithExplosionUpdate(ExplosionPartsInfo *info, u8 *numCreatedParts)
 {
     if (!(info->unk4 & 1) || *numCreatedParts < 16) {
-        struct Task *t = TaskCreate(Task_BossParticleWithExplosionUpdate,
-                                    sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
+        struct Task *t = TaskCreate(Task_BossParticleWithExplosionUpdate, sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
         Sprite_ExplosionParts *parts = TASK_DATA(t);
         Sprite *s = &parts->s;
         s32 cos, sin;
@@ -79,8 +78,7 @@ void Task_BossParticleWithExplosionUpdate(void)
     s->x = I(parts->posX);
     s->y = I(parts->posY);
 
-    if (((s->x < -BOSS_PARTS_DIMENSION) && (parts->accelX < 0))
-        || ((s->x > (DISPLAY_WIDTH + BOSS_PARTS_DIMENSION)) && (parts->accelX > 0))
+    if (((s->x < -BOSS_PARTS_DIMENSION) && (parts->accelX < 0)) || ((s->x > (DISPLAY_WIDTH + BOSS_PARTS_DIMENSION)) && (parts->accelX > 0))
         || ((s->y < -BOSS_PARTS_DIMENSION) && (parts->accelY < 0))
         || ((s->y > (DISPLAY_HEIGHT + BOSS_PARTS_DIMENSION)) && (parts->accelY > 0))) {
         gCurTask->main = Task_DestroyBossParts;
@@ -96,8 +94,7 @@ void Task_BossParticleWithExplosionUpdate(void)
 void CreateBossParticleStatic(ExplosionPartsInfo *info, u8 *numCreatedParts)
 {
     if (!(info->unk4 & 1) || *numCreatedParts < 16) {
-        struct Task *t = TaskCreate(Task_BossParticleStatic,
-                                    sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
+        struct Task *t = TaskCreate(Task_BossParticleStatic, sizeof(Sprite_ExplosionParts), 0x5432, 0, NULL);
         Sprite_ExplosionParts *parts = TASK_DATA(t);
         Sprite *s = &parts->s;
         s32 cos, sin;
@@ -144,8 +141,7 @@ void Task_BossParticleStatic(void)
     s->x = I(parts->posX) - gCamera.x;
     s->y = I(parts->posY) - gCamera.y;
 
-    if (((s->x < -BOSS_PARTS_DIMENSION) && (parts->accelX < 0))
-        || ((s->x > (DISPLAY_WIDTH + BOSS_PARTS_DIMENSION)) && (parts->accelX > 0))
+    if (((s->x < -BOSS_PARTS_DIMENSION) && (parts->accelX < 0)) || ((s->x > (DISPLAY_WIDTH + BOSS_PARTS_DIMENSION)) && (parts->accelX > 0))
         || ((s->y < -BOSS_PARTS_DIMENSION) && (parts->accelY < 0))
         || ((s->y > (DISPLAY_HEIGHT + BOSS_PARTS_DIMENSION)) && (parts->accelY > 0))) {
         gCurTask->main = Task_DestroyBossParts;

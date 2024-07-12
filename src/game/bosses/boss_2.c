@@ -117,10 +117,8 @@ static void Task_BombExplosionMain(void);
 
 static const s8 sBodyWheelPositionsX[] = { -28, 2, 32 };
 
-static const u8 sExplosionTimes[]
-    = { 90, 60, 30, 90, 60, 90, 60, 30, 30, 60, 90, 30, 60, 30, 90, 30,
-        0,  0,  1,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  1,  0,  0,
-        0,  1,  0,  0,  1,  0,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0 };
+static const u8 sExplosionTimes[] = { 90, 60, 30, 90, 60, 90, 60, 30, 30, 60, 90, 30, 60, 30, 90, 30, 0, 0, 1, 0, 0, 0, 0, 0,
+                                      1,  0,  0,  0,  0,  1,  0,  0,  0,  1,  0,  0,  1,  0,  1,  1,  0, 0, 0, 0, 0, 0, 0, 0 };
 
 static const s8 sExplositionPositions[][2] = {
     { 0, 0 }, { -16, 16 }, { -16, -16 }, { 16, 16 }, { 16, -16 },
@@ -153,8 +151,7 @@ static const u16 gUnknown_080D7B4E[][2] = {
     },
 };
 
-static const BossFunction sBossModeTasks[]
-    = { HandleCannonBombTrigger, HandleCannonlessBombTrigger };
+static const BossFunction sBossModeTasks[] = { HandleCannonBombTrigger, HandleCannonlessBombTrigger };
 
 static const u16 gUnknown_080D7B70[][16] = {
     INCBIN_U16("graphics/80D7B70.gbapal"),
@@ -172,8 +169,7 @@ void CreateEggBomberTank(void)
 
     sub_8039ED4();
     gPseudoRandom = gStageTime;
-    t = TaskCreate(Task_EggBomberTankIntro, sizeof(EggBomberTank), 0x4000, 0,
-                   TaskDestructor_EggBomberTankMain);
+    t = TaskCreate(Task_EggBomberTankIntro, sizeof(EggBomberTank), 0x4000, 0, TaskDestructor_EggBomberTankMain);
     boss = TASK_DATA(t);
 
     if (gDifficultyLevel != 0 && gGameMode != GAME_MODE_BOSS_TIME_ATTACK) {
@@ -378,8 +374,7 @@ static void Task_TransitionToEscapeSequence(void)
     }
 
     if (x < 50) {
-        CreateEggmobileEscapeSequence(I(boss->x) - gCamera.x - 4,
-                                      I(boss->y) - gCamera.y - 0x21, 0x2000);
+        CreateEggmobileEscapeSequence(I(boss->x) - gCamera.x - 4, I(boss->y) - gCamera.y - 0x21, 0x2000);
         gCurTask->main = Task_WaitForBossOffScreen;
     }
 }
@@ -544,8 +539,7 @@ static void UpdatePosition(EggBomberTank *boss)
             boss->wheelPositions[idx][0] += boss->unk3C[idx][0];
             boss->wheelPositions[idx][1] += boss->unk3C[idx][1];
 
-            ground = sub_801E4E4(I(boss->wheelPositions[idx][1]) - 8,
-                                 I(boss->wheelPositions[idx][0]), 1, 8, 0, sub_801EE64);
+            ground = sub_801E4E4(I(boss->wheelPositions[idx][1]) - 8, I(boss->wheelPositions[idx][0]), 1, 8, 0, sub_801EE64);
             if (ground < 0) {
                 boss->wheelPositions[idx][1] += QS(ground);
                 boss->unk3C[idx][0] -= 0x20;
@@ -681,10 +675,8 @@ static u8 RenderCannon(EggBomberTank *boss)
         explosion.unk4 = 0;
 
         for (i = 0; i < 5; i++) {
-            explosion.spawnX
-                = (I(boss->unk54) - gCamera.x) + sExplositionPositions[i][0];
-            explosion.spawnY
-                = (I(boss->unk58) - gCamera.y) + sExplositionPositions[i][1];
+            explosion.spawnX = (I(boss->unk54) - gCamera.x) + sExplositionPositions[i][0];
+            explosion.spawnY = (I(boss->unk58) - gCamera.y) + sExplositionPositions[i][1];
             CreateBossParticleWithExplosionUpdate(&explosion, &boss->unk76);
         }
         ret = 1;
@@ -762,8 +754,7 @@ static void HandleCannonBombTrigger(EggBomberTank *boss)
             boss->timer = 12;
             gCurTask->main = Task_BomberTankCannonReload;
             m4aSongNumStart(SE_241);
-            CreateBomberTankBomb(boss, x, y, boss->cannonAngle, 64,
-                                 sExplosionTimes[PseudoRandom32() & 0xF]);
+            CreateBomberTankBomb(boss, x, y, boss->cannonAngle, 64, sExplosionTimes[PseudoRandom32() & 0xF]);
 
         } else {
             boss->timer--;
@@ -895,8 +886,7 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
     Player_UpdateHomingPosition(boss->x, boss->y);
 
     if (boss->bossHitTimer == 0) {
-        if (IsColliding_Cheese(s, I(boss->x), I(boss->y), 0, player) == 1
-            && boss->cannonHealth == 0) {
+        if (IsColliding_Cheese(s, I(boss->x), I(boss->y), 0, player) == 1 && boss->cannonHealth == 0) {
             ret = HandleBossHit(boss);
         }
     }
@@ -942,8 +932,7 @@ static void CreateDestructionExplosions(EggBomberTank *boss)
 
             init.rotation = PseudoRandom32() & (SIN_PERIOD - 1);
             init.speed = 0x600;
-            init.vram = (void *)OBJ_VRAM0
-                + (gTileInfoBossScrews[boss->unk75][0] * TILE_SIZE_4BPP);
+            init.vram = (void *)OBJ_VRAM0 + (gTileInfoBossScrews[boss->unk75][0] * TILE_SIZE_4BPP);
             init.anim = gTileInfoBossScrews[boss->unk75][1];
             init.variant = gTileInfoBossScrews[boss->unk75][2];
             init.unk4 = 1;
@@ -1085,8 +1074,7 @@ static void HandleCannonlessBombTrigger(EggBomberTank *boss)
 {
     RenderCannon(boss);
     if (boss->timer == 0) {
-        CreateBomberTankBomb(boss, boss->x - 0x800, boss->y - 0x1600, 0x200, 8,
-                             sExplosionTimes[PseudoRandom32() & 0xF]);
+        CreateBomberTankBomb(boss, boss->x - 0x800, boss->y - 0x1600, 0x200, 8, sExplosionTimes[PseudoRandom32() & 0xF]);
         boss->timer = 113;
     } else {
         if (boss->timer > 150) {
@@ -1115,11 +1103,9 @@ UNUSED static void sub_803E798(EggBomberTank *boss)
     }
 }
 
-static void CreateBomberTankBomb(EggBomberTank *boss, s32 x, s32 y, u16 angle, u16 p5,
-                                 u8 explosionTime)
+static void CreateBomberTankBomb(EggBomberTank *boss, s32 x, s32 y, u16 angle, u16 p5, u8 explosionTime)
 {
-    struct Task *t = TaskCreate(Task_EggBomberTankBombExplosion,
-                                sizeof(EggBomberTankBomb), 0x6100, 0, NULL);
+    struct Task *t = TaskCreate(Task_EggBomberTankBombExplosion, sizeof(EggBomberTankBomb), 0x6100, 0, NULL);
     Sprite *s;
     EggBomberTankBomb *bomb = TASK_DATA(t);
     bomb->x = x - QS(gCamera.x);
@@ -1163,8 +1149,7 @@ static void Task_EggBomberTankBombExplosion(void)
         bomb->y += bomb->speedY + QS(gCamera.dy);
     }
 
-    ground = sub_801E4E4(I(bomb->y) + 0xC + gCamera.y, I(bomb->x) + gCamera.x, 1, 8,
-                         &unusedByte, sub_801EE64);
+    ground = sub_801E4E4(I(bomb->y) + 0xC + gCamera.y, I(bomb->x) + gCamera.x, 1, 8, &unusedByte, sub_801EE64);
     if (ground < 0) {
         bomb->y += QS(ground);
         bomb->speedY = Div(-(bomb->speedY * 8), 10);
@@ -1175,8 +1160,7 @@ static void Task_EggBomberTankBombExplosion(void)
 
     if (bomb->boss->unk70) {
         // If hit player
-        if (sub_800CA20(s, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, 0, &gPlayer)
-            == 1) {
+        if (sub_800CA20(s, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, 0, &gPlayer) == 1) {
             if (bomb->boss->bossHitTimer == 0) {
                 Sprite *s = &bomb->boss->pilot;
                 bomb->boss->unk73 = 30;
@@ -1201,16 +1185,14 @@ static void Task_EggBomberTankBombExplosion(void)
             graphics.anim = SA2_ANIM_EXPLOSION_1;
             graphics.variant = 0;
 
-            CreateBombExplosion(bomb->boss, I(bomb->x) + gCamera.x,
-                                I(bomb->y) + gCamera.y, graphics);
+            CreateBombExplosion(bomb->boss, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, graphics);
         } else {
             m4aSongNumStart(SE_243);
             graphics.vram = s->graphics.dest + 0x740;
             graphics.anim = SA2_ANIM_EXPLOSION_2;
             graphics.variant = 0;
 
-            CreateBombExplosion(bomb->boss, I(bomb->x) + gCamera.x,
-                                I(bomb->y) + 0xF + ground + gCamera.y, graphics);
+            CreateBombExplosion(bomb->boss, I(bomb->x) + gCamera.x, I(bomb->y) + 0xF + ground + gCamera.y, graphics);
         }
 
         gCurTask->main = Task_EggBomberTankBombDestroy;
@@ -1220,8 +1202,7 @@ static void Task_EggBomberTankBombExplosion(void)
     }
 }
 
-static void CreateBombExplosion(EggBomberTank *boss, s32 x, s32 y,
-                                ExplosionGraphics graphics)
+static void CreateBombExplosion(EggBomberTank *boss, s32 x, s32 y, ExplosionGraphics graphics)
 {
     struct Task *t;
     Sprite *s;
@@ -1257,9 +1238,7 @@ static void Task_BombExplosionMain(void)
     s->y = explosion->y;
 
     if (explosion->boss->unk70 != 0) {
-        if (sub_800CA20(s, explosion->x + gCamera.x, explosion->y + gCamera.y, 0,
-                        &gPlayer)
-            == 1) {
+        if (sub_800CA20(s, explosion->x + gCamera.x, explosion->y + gCamera.y, 0, &gPlayer) == 1) {
             if (explosion->boss->bossHitTimer == 0) {
                 Sprite *s = &explosion->boss->pilot;
                 explosion->boss->unk73 = 30;

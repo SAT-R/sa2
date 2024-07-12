@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_mp_unknown_orange_zigzag[]
-    = INCBIN_U16("data/tilemaps/mp_unknown_orange_zigzag/palette.gbapal");
-const u8 Tiles_mp_unknown_orange_zigzag[]
-    = INCBIN_U8("data/tilemaps/mp_unknown_orange_zigzag/tiles.4bpp");
-const u16 Tilemap_mp_unknown_orange_zigzag[]
-    = INCBIN_U16("data/tilemaps/mp_unknown_orange_zigzag/tilemap.tilemap2");
+const u16 Palette_mp_unknown_orange_zigzag[] = INCBIN_U16("data/tilemaps/mp_unknown_orange_zigzag/palette.gbapal");
+const u8 Tiles_mp_unknown_orange_zigzag[] = INCBIN_U8("data/tilemaps/mp_unknown_orange_zigzag/tiles.4bpp");
+const u16 Tilemap_mp_unknown_orange_zigzag[] = INCBIN_U16("data/tilemaps/mp_unknown_orange_zigzag/tilemap.tilemap2");
 
 const Tilemap mp_unknown_orange_zigzag = {
     .xTiles = 30,

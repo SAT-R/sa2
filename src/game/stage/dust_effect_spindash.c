@@ -21,8 +21,7 @@ void TaskDestructor_SpindashDustEffect(struct Task *);
 
 struct Task *CreateSpindashDustEffect()
 {
-    struct Task *t = TaskCreate(Task_SpindashDustEffect, sizeof(DustEffect), 0x4001, 0,
-                                TaskDestructor_SpindashDustEffect);
+    struct Task *t = TaskCreate(Task_SpindashDustEffect, sizeof(DustEffect), 0x4001, 0, TaskDestructor_SpindashDustEffect);
 
     DustEffect *sde = TASK_DATA(t);
     Sprite *s = &sde->s;
@@ -46,8 +45,7 @@ void Task_SpindashDustEffect(void)
     Player *p = &gPlayer;
     s32 offY;
 
-    if (p->spriteTask == NULL
-        || (p->moveState & (MOVESTATE_400 | MOVESTATE_DEAD)) != MOVESTATE_400) {
+    if (p->spriteTask == NULL || (p->moveState & (MOVESTATE_400 | MOVESTATE_DEAD)) != MOVESTATE_400) {
         TaskDestroy(gCurTask);
         return;
     } else {
@@ -101,8 +99,7 @@ void Task_SpindashDustEffectBig(void)
     Player *p = &gPlayer;
     s32 offY;
 
-    if (p->spriteTask == NULL
-        || (p->moveState & (MOVESTATE_400 | MOVESTATE_DEAD)) != MOVESTATE_400) {
+    if (p->spriteTask == NULL || (p->moveState & (MOVESTATE_400 | MOVESTATE_DEAD)) != MOVESTATE_400) {
         TaskDestroy(gCurTask);
         return;
     } else {

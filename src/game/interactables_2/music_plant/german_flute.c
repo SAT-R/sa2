@@ -127,8 +127,7 @@ static void sub_80769E0(void)
     gPlayer.speedAirY += Q(1. / 6.);
 
     // NOTE/BUG(?): Are the first 2 parameters swapped?
-    res = sub_801F100(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, -8,
-                      sub_801EC3C);
+    res = sub_801F100(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, -8, sub_801EC3C);
 
     if (res < 0) {
         gPlayer.y -= Q(res);
@@ -162,8 +161,7 @@ static void Task_8076A6C(void)
     gPlayer.y += flute->unkA;
 
     // NOTE/BUG(?): Are the first 2 parameters swapped?
-    res = sub_801F100(I(gPlayer.y) - gPlayer.unk17, I(r1), gPlayer.unk38, -8,
-                      sub_801EC3C);
+    res = sub_801F100(I(gPlayer.y) - gPlayer.unk17, I(r1), gPlayer.unk38, -8, sub_801EC3C);
     if (res < 0) {
         gPlayer.y -= Q(res);
     }
@@ -273,10 +271,7 @@ static void sub_8076CC0(Sprite_GermanFlute UNUSED *flute)
     gCurTask->main = Task_GermanFlute;
 }
 
-static void sub_8076CF4(Sprite_GermanFlute UNUSED *flute)
-{
-    gCurTask->main = Task_GermanFlute;
-}
+static void sub_8076CF4(Sprite_GermanFlute UNUSED *flute) { gCurTask->main = Task_GermanFlute; }
 
 static void sub_8076D08(Sprite_GermanFlute UNUSED *flute)
 {
@@ -284,11 +279,9 @@ static void sub_8076D08(Sprite_GermanFlute UNUSED *flute)
     gCurTask->main = Task_GermanFlute;
 }
 
-void CreateEntity_GermanFlute(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_GermanFlute(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GermanFlute, sizeof(Sprite_GermanFlute), 0x2010, 0,
-                                TaskDestructor_GermanFlute);
+    struct Task *t = TaskCreate(Task_GermanFlute, sizeof(Sprite_GermanFlute), 0x2010, 0, TaskDestructor_GermanFlute);
     Sprite_GermanFlute *flute = TASK_DATA(t);
     s32 posX, posY;
 
@@ -355,10 +348,8 @@ static bool32 sub_8076EAC(Sprite_GermanFlute *flute)
     screenX = flute->posX - gCamera.x;
     screenY = flute->posY - gCamera.y;
 
-    if ((screenX < -((CAM_REGION_WIDTH + 8) / 2))
-        || (screenX > DISPLAY_WIDTH + ((CAM_REGION_WIDTH + 8) / 2))
-        || (screenY < -(CAM_REGION_WIDTH / 2))
-        || (screenY > DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))) {
+    if ((screenX < -((CAM_REGION_WIDTH + 8) / 2)) || (screenX > DISPLAY_WIDTH + ((CAM_REGION_WIDTH + 8) / 2))
+        || (screenY < -(CAM_REGION_WIDTH / 2)) || (screenY > DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))) {
         return TRUE;
     }
 

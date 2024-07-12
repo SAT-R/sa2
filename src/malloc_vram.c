@@ -6,8 +6,7 @@ void *VramMalloc(u32 numTiles)
 {
     u16 i, j;
     u32 count = numTiles;
-    count = (count + (VRAM_TILE_SLOTS_PER_SEGMENT - 1))
-        / VRAM_TILE_SLOTS_PER_SEGMENT; // round up
+    count = (count + (VRAM_TILE_SLOTS_PER_SEGMENT - 1)) / VRAM_TILE_SLOTS_PER_SEGMENT; // round up
 
     for (i = 0; i < gVramHeapMaxTileSlots / VRAM_TILE_SLOTS_PER_SEGMENT; i++) {
         if (gVramHeapState[i] == 0) {
@@ -31,10 +30,7 @@ void *VramMalloc(u32 numTiles)
     return ewram_end;
 }
 
-void VramResetHeapState(void)
-{
-    DmaFill16(3, 0, gVramHeapState, sizeof(gVramHeapState));
-}
+void VramResetHeapState(void) { DmaFill16(3, 0, gVramHeapState, sizeof(gVramHeapState)); }
 
 void VramFree(void *addr)
 {

@@ -15,8 +15,7 @@ void TaskDestructor_CreateStageUnknownTask(struct Task *);
 
 struct Task *CreateStageUnknownTask(void)
 {
-    struct Task *t = TaskCreate(Task_CreateStageUnknownTask, sizeof(StageUnkTask),
-                                0x2000, 0, TaskDestructor_CreateStageUnknownTask);
+    struct Task *t = TaskCreate(Task_CreateStageUnknownTask, sizeof(StageUnkTask), 0x2000, 0, TaskDestructor_CreateStageUnknownTask);
     StageUnkTask *ut = TASK_DATA(t);
 
     ut->unk6 = 120;
@@ -39,8 +38,7 @@ typedef struct {
 
 // (68.53%) https://decomp.me/scratch/NchTb
 // (66.79%) https://decomp.me/scratch/PmbTP
-NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc",
-         void Task_CreateStageUnknownTask(void))
+NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc", void Task_CreateStageUnknownTask(void))
 {
     u32 sinIndex;
     s32 someCos;
@@ -113,8 +111,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc",
 
             // __08009AF4
 
-            divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8),
-                         COS_24_8(sinIndex & ONE_CYCLE));
+            divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8), COS_24_8(sinIndex & ONE_CYCLE));
             sp08[2] = Q_24_8((ut->unk8 * divRes) - DISPLAY_HEIGHT);
             sp08[3] = DISPLAY_HEIGHT;
 
@@ -133,8 +130,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc",
                     sinIndex = 256 - r5;
                 }
 
-                divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8),
-                             COS_24_8(sinIndex & ONE_CYCLE));
+                divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8), COS_24_8(sinIndex & ONE_CYCLE));
                 sp14[1] = ut->unk8 - ((ut->unk6 * divRes) >> 8);
             } else if (sp14[0] >= DISPLAY_WIDTH) {
                 // _08009BD8
@@ -147,8 +143,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc",
                     sinIndex = 256 - r5;
                 }
                 // _08009BF6
-                divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8),
-                             COS_24_8(sinIndex & ONE_CYCLE));
+                divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8), COS_24_8(sinIndex & ONE_CYCLE));
                 sp14[1] = ut->unk8 - (((sb - ut->unk6) * divRes) >> 8);
 
             } else {

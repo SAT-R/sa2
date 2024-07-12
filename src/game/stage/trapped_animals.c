@@ -122,8 +122,7 @@ static TrappedAnimalsFunc const sTrappedAnimalSpawnFunctions[] = {
 
 static void CreateFlyingAnimal(SpawnOptions *init)
 {
-    struct Task *t
-        = TaskCreate(Task_FlyingAnimal, sizeof(FlyingAnimal), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_FlyingAnimal, sizeof(FlyingAnimal), 0x2000, 0, NULL);
     FlyingAnimal *animal = TASK_DATA(t);
     Sprite *s;
     animal->x = Q(init->x);
@@ -188,8 +187,7 @@ static void Task_FlyingAnimal(void)
 
 static void CreateBouncingAnimal(SpawnOptions *init)
 {
-    struct Task *t
-        = TaskCreate(Task_BouncingAnimal, sizeof(BouncingAnimal), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_BouncingAnimal, sizeof(BouncingAnimal), 0x2000, 0, NULL);
     BouncingAnimal *animal = TASK_DATA(t);
     Sprite *s;
     animal->x = Q(init->x);
@@ -229,8 +227,7 @@ static void Task_BouncingAnimal(void)
     if (animal->inAirTimer > 0) {
         animal->inAirTimer--;
     } else {
-        s32 clampedY
-            = y + Q(sub_801F07C(I(animal->y), I(animal->x), 1, 8, NULL, sub_801EE64));
+        s32 clampedY = y + Q(sub_801F07C(I(animal->y), I(animal->x), 1, 8, NULL, sub_801EE64));
 
         // if hit floor
         if (clampedY <= animal->y) {
@@ -257,8 +254,7 @@ static void Task_BouncingAnimal(void)
 
 static void CreateStaticAnimal(SpawnOptions *init)
 {
-    struct Task *t
-        = TaskCreate(Task_StaticAnimalMain, sizeof(StaticAnimal), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_StaticAnimalMain, sizeof(StaticAnimal), 0x2000, 0, NULL);
     StaticAnimal *animal = TASK_DATA(t);
     Sprite *s;
     animal->x = Q(init->x);
@@ -299,8 +295,7 @@ static void Task_StaticAnimalMain(void)
     if (animal->inAirTimer > 0) {
         animal->inAirTimer--;
     } else {
-        s32 clampedY
-            = y + Q(sub_801F07C(I(animal->y), I(animal->x), 1, 8, NULL, sub_801EE64));
+        s32 clampedY = y + Q(sub_801F07C(I(animal->y), I(animal->x), 1, 8, NULL, sub_801EE64));
 
         // if collided with floor
         if (clampedY <= animal->y) {

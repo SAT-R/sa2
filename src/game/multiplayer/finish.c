@@ -24,42 +24,39 @@ typedef struct {
 void Task_8019E70(void);
 void TaskDestructor_8019EF4(struct Task *);
 
-const TileInfo gUnknown_080D5768[2][7]
-    = { {
-            // Japanese
-            { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_WIN },
-            { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_LOSE },
-            { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_DRAW },
-            { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_1ST },
-            { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_2ND },
-            { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_3RD },
-            { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_4TH },
-        },
-        {
-            // English
-            { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_WIN },
-            { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_LOSE },
-            { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_DRAW },
-            { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_1ST },
-            { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_2ND },
-            { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_3RD },
-            { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_4TH },
-        } };
+const TileInfo gUnknown_080D5768[2][7] = { {
+                                               // Japanese
+                                               { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_WIN },
+                                               { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_LOSE },
+                                               { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_DRAW },
+                                               { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_1ST },
+                                               { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_2ND },
+                                               { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_3RD },
+                                               { 0, SA2_ANIM_MP_RESULT_JP, SA2_ANIM_MP_RESULT_4TH },
+                                           },
+                                           {
+                                               // English
+                                               { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_WIN },
+                                               { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_LOSE },
+                                               { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_DRAW },
+                                               { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_1ST },
+                                               { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_2ND },
+                                               { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_3RD },
+                                               { 0, SA2_ANIM_MP_RESULT, SA2_ANIM_MP_RESULT_4TH },
+                                           } };
 
-#define GET_MP_FINISH_RESULT_TILE_INFO(_id)                                             \
-    ({                                                                                  \
-        const TileInfo *source;                                                         \
-        u8 *info = (u8 *)gUnknown_080D5768;                                             \
-                                                                                        \
-        s32 index;                                                                      \
-                                                                                        \
-        index = ((gLoadedSaveGame->language == LANG_DEFAULT)                            \
-                 || (gLoadedSaveGame->language == LANG_JAPANESE))                       \
-            ? 0                                                                         \
-            : (7 * sizeof(TileInfo));                                                   \
-        source = (TileInfo *)(info + index);                                            \
-                                                                                        \
-        (source + (_id));                                                               \
+#define GET_MP_FINISH_RESULT_TILE_INFO(_id)                                                                                                \
+    ({                                                                                                                                     \
+        const TileInfo *source;                                                                                                            \
+        u8 *info = (u8 *)gUnknown_080D5768;                                                                                                \
+                                                                                                                                           \
+        s32 index;                                                                                                                         \
+                                                                                                                                           \
+        index                                                                                                                              \
+            = ((gLoadedSaveGame->language == LANG_DEFAULT) || (gLoadedSaveGame->language == LANG_JAPANESE)) ? 0 : (7 * sizeof(TileInfo));  \
+        source = (TileInfo *)(info + index);                                                                                               \
+                                                                                                                                           \
+        (source + (_id));                                                                                                                  \
     })
 
 void sub_8019CCC(u8 sioId, u8 count)
@@ -67,8 +64,7 @@ void sub_8019CCC(u8 sioId, u8 count)
     u32 i = 0;
 
     if (gUnknown_030054B4[sioId] == -1) {
-        struct Task *t = TaskCreate(Task_8019E70, sizeof(MpFinish1), 0x2010, 0,
-                                    TaskDestructor_8019EF4);
+        struct Task *t = TaskCreate(Task_8019E70, sizeof(MpFinish1), 0x2010, 0, TaskDestructor_8019EF4);
         MpFinish1 *finish = TASK_DATA(t);
         struct Task **mpt = &gMultiplayerPlayerTasks[0];
         Sprite *s;
@@ -345,8 +341,7 @@ void Task_TransitionToResultsScreen(void)
 
                 if (gUnknown_030054B4[SIO_MULTI_CNT->id] < gUnknown_030054B4[pid]) {
                     foeResult = 0;
-                } else if (gUnknown_030054B4[SIO_MULTI_CNT->id]
-                           > gUnknown_030054B4[pid]) {
+                } else if (gUnknown_030054B4[SIO_MULTI_CNT->id] > gUnknown_030054B4[pid]) {
                     foeResult = 1;
                     ownResult = 1;
                 } else {
@@ -357,8 +352,7 @@ void Task_TransitionToResultsScreen(void)
                     }
                 }
                 // _0801A2A8
-                RecordMultiplayerResult(gMultiplayerIds[pid], &gMultiplayerNames[pid][0],
-                                        foeResult);
+                RecordMultiplayerResult(gMultiplayerIds[pid], &gMultiplayerNames[pid][0], foeResult);
             }
 
             RecordOwnMultiplayerResult(ownResult);

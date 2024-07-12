@@ -71,17 +71,13 @@ static const u16 gUnknown_080E179C[4] = {
 };
 
 static const TileInfo gUnknown_080E17A4[52] = {
-    { 42, 765, 0 },  { 24, 766, 0 },  { 28, 767, 0 },  { 35, 768, 0 },  { 24, 769, 0 },
-    { 16, 765, 1 },  { 16, 766, 1 },  { 24, 767, 1 },  { 16, 768, 1 },  { 16, 769, 1 },
-    { 20, 0, 0 },    { 16, 91, 0 },   { 30, 182, 0 },  { 20, 273, 0 },  { 20, 364, 0 },
-    { 30, 771, 0 },  { 20, 772, 0 },  { 30, 773, 0 },  { 24, 774, 0 },  { 24, 775, 0 },
-    { 64, 776, 0 },  { 64, 777, 0 },  { 64, 778, 0 },  { 64, 779, 0 },  { 64, 780, 0 },
-    { 168, 804, 0 }, { 140, 808, 0 }, { 210, 806, 0 }, { 192, 805, 0 }, { 176, 807, 0 },
-    { 20, 782, 0 },  { 20, 782, 1 },  { 20, 783, 0 },  { 24, 784, 0 },  { 24, 784, 1 },
-    { 16, 770, 0 },  { 4, 526, 0 },   { 4, 517, 0 },   { 4, 516, 0 },   { 4, 524, 0 },
-    { 48, 781, 0 },  { 26, 781, 1 },  { 32, 781, 2 },  { 9, 457, 0 },   { 9, 455, 0 },
-    { 9, 460, 0 },   { 9, 465, 0 },   { 9, 462, 0 },   { 9, 459, 0 },   { 30, 809, 0 },
-    { 24, 783, 1 },  { 24, 784, 2 },
+    { 42, 765, 0 }, { 24, 766, 0 },  { 28, 767, 0 },  { 35, 768, 0 },  { 24, 769, 0 },  { 16, 765, 1 },  { 16, 766, 1 }, { 24, 767, 1 },
+    { 16, 768, 1 }, { 16, 769, 1 },  { 20, 0, 0 },    { 16, 91, 0 },   { 30, 182, 0 },  { 20, 273, 0 },  { 20, 364, 0 }, { 30, 771, 0 },
+    { 20, 772, 0 }, { 30, 773, 0 },  { 24, 774, 0 },  { 24, 775, 0 },  { 64, 776, 0 },  { 64, 777, 0 },  { 64, 778, 0 }, { 64, 779, 0 },
+    { 64, 780, 0 }, { 168, 804, 0 }, { 140, 808, 0 }, { 210, 806, 0 }, { 192, 805, 0 }, { 176, 807, 0 }, { 20, 782, 0 }, { 20, 782, 1 },
+    { 20, 783, 0 }, { 24, 784, 0 },  { 24, 784, 1 },  { 16, 770, 0 },  { 4, 526, 0 },   { 4, 517, 0 },   { 4, 516, 0 },  { 4, 524, 0 },
+    { 48, 781, 0 }, { 26, 781, 1 },  { 32, 781, 2 },  { 9, 457, 0 },   { 9, 455, 0 },   { 9, 460, 0 },   { 9, 465, 0 },  { 9, 462, 0 },
+    { 9, 459, 0 },  { 30, 809, 0 },  { 24, 783, 1 },  { 24, 784, 2 },
 };
 
 static const u16 gUnknown_080E1944[][8] = {
@@ -90,18 +86,14 @@ static const u16 gUnknown_080E1944[][8] = {
 };
 
 static const u32 gUnknown_080E1964[20][5] = {
-    { 298, 96, 1, 50, 170 },   { 384, 32, 2, 180, 130 }, { 480, 64, 0, 60, 115 },
-    { 608, 32, 3, 130, 140 },  { 576, 64, 1, 190, 120 }, { 224, 64, 0, 50, 155 },
-    { 256, 128, 0, 180, 140 }, { 416, 96, 1, 80, 120 },  { 224, 32, 2, 70, 150 },
-    { 544, 96, 1, 70, 140 },   { 352, 32, 2, 50, 160 },  { 320, 96, 1, 170, 128 },
-    { 224, 32, 2, 100, 130 },  { 416, 96, 1, 160, 170 }, { 256, 32, 2, 180, 150 },
-    { 416, 96, 1, 70, 140 },   { 352, 32, 2, 50, 160 },  { 256, 96, 1, 170, 128 },
-    { 224, 32, 2, 100, 130 },  { 544, 96, 1, 160, 170 },
+    { 298, 96, 1, 50, 170 }, { 384, 32, 2, 180, 130 },  { 480, 64, 0, 60, 115 },  { 608, 32, 3, 130, 140 }, { 576, 64, 1, 190, 120 },
+    { 224, 64, 0, 50, 155 }, { 256, 128, 0, 180, 140 }, { 416, 96, 1, 80, 120 },  { 224, 32, 2, 70, 150 },  { 544, 96, 1, 70, 140 },
+    { 352, 32, 2, 50, 160 }, { 320, 96, 1, 170, 128 },  { 224, 32, 2, 100, 130 }, { 416, 96, 1, 160, 170 }, { 256, 32, 2, 180, 150 },
+    { 416, 96, 1, 70, 140 }, { 352, 32, 2, 50, 160 },   { 256, 96, 1, 170, 128 }, { 224, 32, 2, 100, 130 }, { 544, 96, 1, 160, 170 },
 };
 
 static const u16 gUnknown_080E1AF4[0x10] = {
-    992,   32400, 1022, 32494, 9081,  14133, 17136, 21128,
-    23104, 0,     0,    20478, 17328, 22327, 25329, 28298,
+    992, 32400, 1022, 32494, 9081, 14133, 17136, 21128, 23104, 0, 0, 20478, 17328, 22327, 25329, 28298,
 };
 
 static const u16 gUnknown_080E1B14[][7] = {
@@ -110,15 +102,11 @@ static const u16 gUnknown_080E1B14[][7] = {
 };
 
 static const s32 gUnknown_080E1B30[35][2] = {
-    { -2086, -3844 },  { -2086, -5244 },  { -4298, -6129 },  { -5976, -9111 },
-    { -5976, -10536 }, { -7056, -12505 }, { -7524, -13461 }, { -7524, -14975 },
-    { -7415, -16825 }, { -7415, -18194 }, { -6806, -19801 }, { -6806, -20929 },
-    { -5806, -22206 }, { -5806, -23029 }, { -4548, -23921 }, { -4548, -24399 },
-    { -3171, -24898 }, { -3171, -25025 }, { -1815, -25159 }, { -1183, -25045 },
-    { -600, -24788 },  { -77, -24406 },   { 375, -23921 },   { 752, -23355 },
-    { 1048, -22731 },  { 1260, -22073 },  { 1260, -21817 },  { 1389, -21087 },
-    { 1389, -20767 },  { 1409, -19499 },  { 1409, -18859 },  { 1152, -17816 },
-    { 1152, -16536 },  { 693, -14573 },   { 0, -12013 },
+    { -2086, -3844 },  { -2086, -5244 },  { -4298, -6129 },  { -5976, -9111 },  { -5976, -10536 }, { -7056, -12505 }, { -7524, -13461 },
+    { -7524, -14975 }, { -7415, -16825 }, { -7415, -18194 }, { -6806, -19801 }, { -6806, -20929 }, { -5806, -22206 }, { -5806, -23029 },
+    { -4548, -23921 }, { -4548, -24399 }, { -3171, -24898 }, { -3171, -25025 }, { -1815, -25159 }, { -1183, -25045 }, { -600, -24788 },
+    { -77, -24406 },   { 375, -23921 },   { 752, -23355 },   { 1048, -22731 },  { 1260, -22073 },  { 1260, -21817 },  { 1389, -21087 },
+    { 1389, -20767 },  { 1409, -19499 },  { 1409, -18859 },  { 1152, -17816 },  { 1152, -16536 },  { 693, -14573 },   { 0, -12013 },
 };
 
 static const u8 gUnknown_080E1C48[6] = {
@@ -161,8 +149,7 @@ void CreateFinalEndingLandingCutScene(void)
     gUnknown_03002280[1][2] = 0xff;
     gUnknown_03002280[1][3] = 0x20;
 
-    t = TaskCreate(sub_8093EDC, sizeof(struct FinalEndingLandCutScene), 0x3100, 0,
-                   sub_8093F9C);
+    t = TaskCreate(sub_8093EDC, sizeof(struct FinalEndingLandCutScene), 0x3100, 0, sub_8093F9C);
     scene = TASK_DATA(t);
     // TODO: chaos emeralds are probabyl wrong
     if (gLoadedSaveGame->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALD(ZONE_FINAL)) {
@@ -525,8 +512,7 @@ void CreateFinalEndingLandingCutScene(void)
         DrawBackground(background);
     }
 
-    if (!(gLoadedSaveGame->chaosEmeralds[gSelectedCharacter]
-          & CHAOS_EMERALDS_COMPLETED)) {
+    if (!(gLoadedSaveGame->chaosEmeralds[gSelectedCharacter] & CHAOS_EMERALDS_COMPLETED)) {
         memcpy(unk1AF4, gUnknown_080E1AF4, 0x20);
         DmaCopy32(3, unk1AF4, &gBgPalette[0x20], 0x20);
     }
@@ -583,13 +569,10 @@ void sub_809334C(void)
     sub_80940BC(scene);
     sub_8093868(scene);
 
-    if ((scene->unk5E0[0][1]
-             == ((gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1])
-                 * 0x100)
+    if ((scene->unk5E0[0][1] == ((gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1]) * 0x100)
          || (scene->unk33B == 0 && scene->unk338 > 3))
         || (scene->unk33B == 1 && scene->unk338 > 4)) {
-        if ((scene->unk33B == 0 && scene->unk338 < 6)
-            || (scene->unk33B == 1 && scene->unk338 < 7)) {
+        if ((scene->unk33B == 0 && scene->unk338 < 6) || (scene->unk33B == 1 && scene->unk338 < 7)) {
             if (scene->unk342 != 0) {
                 scene->unk342--;
             } else {
@@ -613,25 +596,17 @@ void sub_809334C(void)
 
 void sub_80934B8(struct FinalEndingLandCutScene *scene)
 {
-    if (scene->unk5E0[0][1]
-            < ((gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1])
-               * 0x100)
-        && scene->unk338 == 0) {
+    if (scene->unk5E0[0][1] < ((gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1]) * 0x100) && scene->unk338 == 0) {
         scene->unk5E0[0][1] += 0x320;
         scene->unk5E0[0][0] = 0x7800;
     } else if (scene->unk338 == 0) {
-        scene->unk5E0[0][1]
-            = ((gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1])
-               * 0x100);
+        scene->unk5E0[0][1] = ((gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1]) * 0x100);
         scene->unk5E0[0][0] = 0x7800;
     } else if (scene->unk338 == 1) {
-        scene->unk5E0[0][1]
-            = (gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1])
-            * 0x100;
+        scene->unk5E0[0][1] = (gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1]) * 0x100;
         scene->unk5E0[0][0] = 0x7800;
     } else {
-        if ((gSelectedCharacter == 1 && scene->unk338 == 5)
-            || (gSelectedCharacter != 1 && scene->unk338 == 4)) {
+        if ((gSelectedCharacter == 1 && scene->unk338 == 5) || (gSelectedCharacter != 1 && scene->unk338 == 4)) {
             if (scene->unk342 & 1) {
                 if (scene->unk33E < 0x23) {
                     scene->unk33E++;
@@ -654,9 +629,7 @@ void sub_80934B8(struct FinalEndingLandCutScene *scene)
             }
             return;
         }
-        scene->unk5E0[0][1]
-            = (gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1])
-            * 0x100;
+        scene->unk5E0[0][1] = (gUnknown_080E1944[scene->unk33B][scene->unk338] - gBgScrollRegs[1][1]) * 0x100;
         scene->unk5E0[0][0] = 0x7800;
     }
 }
@@ -732,42 +705,28 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
 
     transform = &scene->transform;
 
-    if ((gSelectedCharacter == 1 && scene->unk338 < 5)
-        || (gSelectedCharacter != 1 && scene->unk338 < 4)) {
+    if ((gSelectedCharacter == 1 && scene->unk338 < 5) || (gSelectedCharacter != 1 && scene->unk338 < 4)) {
         s = &scene->unk80;
 
         if (scene->unk338 < 3) {
-            s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
-                                                 + gSelectedCharacter]
-                                   .anim;
-            s->variant = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
-                                           + gSelectedCharacter]
-                             .variant;
+            s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338] + gSelectedCharacter].anim;
+            s->variant = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338] + gSelectedCharacter].variant;
         } else if (gSelectedCharacter == 1 && scene->unk338 < 5) {
             s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].anim;
             s->variant = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]].variant;
 
         } else if (gSelectedCharacter == 1) {
-            s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
-                                                 + gSelectedCharacter]
-                                   .anim;
-            s->variant = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338]
-                                           + gSelectedCharacter]
-                             .variant;
+            s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338] + gSelectedCharacter].anim;
+            s->variant = gUnknown_080E17A4[gUnknown_080E1C4E[scene->unk338] + gSelectedCharacter].variant;
         } else {
-            s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
-                                                 + gSelectedCharacter]
-                                   .anim;
-            s->variant = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338]
-                                           + gSelectedCharacter]
-                             .variant;
+            s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338] + gSelectedCharacter].anim;
+            s->variant = gUnknown_080E17A4[gUnknown_080E1C48[scene->unk338] + gSelectedCharacter].variant;
         }
         s->x = scene->unk5E0[0][0] >> 8;
         s->y = scene->unk5E0[0][1] >> 8;
     }
 
-    if ((gSelectedCharacter != 1 && scene->unk338 == 4)
-        || (gSelectedCharacter == 1 && scene->unk338 == 5)) {
+    if ((gSelectedCharacter != 1 && scene->unk338 == 4) || (gSelectedCharacter == 1 && scene->unk338 == 5)) {
         s = &scene->unkB0;
 
         s->x = scene->unk5E0[0][0] >> 8;
@@ -783,19 +742,14 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    if ((gSelectedCharacter != 1 && scene->unk338 > 4)
-        || (gSelectedCharacter == 1 && scene->unk338 > 5)) {
+    if ((gSelectedCharacter != 1 && scene->unk338 > 4) || (gSelectedCharacter == 1 && scene->unk338 > 5)) {
         s = &scene->unkE0;
         if (gSelectedCharacter != 1) {
-            s->graphics.anim
-                = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].anim;
-            s->variant
-                = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].variant;
+            s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].anim;
+            s->variant = gUnknown_080E17A4[gUnknown_080E1C48[5] + gSelectedCharacter].variant;
         } else {
-            s->graphics.anim
-                = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].anim;
-            s->variant
-                = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].variant;
+            s->graphics.anim = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].anim;
+            s->variant = gUnknown_080E17A4[gUnknown_080E1C4E[6] + gSelectedCharacter].variant;
         }
         s->x = scene->unk5E0[0][0] >> 8;
         s->y = scene->unk5E0[0][1] >> 8;
@@ -835,8 +789,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         }
 
         s->x = gUnknown_080E1964[i][3] + (scene->unk34C[i][0] >> 8);
-        s->y = (gUnknown_080E1964[i][4] - gBgScrollRegs[1][1])
-            + (scene->unk34C[i][1] >> 8);
+        s->y = (gUnknown_080E1964[i][4] - gBgScrollRegs[1][1]) + (scene->unk34C[i][1] >> 8);
 
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
@@ -877,8 +830,7 @@ void sub_8093868(struct FinalEndingLandCutScene *scene)
         }
     }
 
-    if ((gSelectedCharacter == 1 && scene->unk338 > 5)
-        || (gSelectedCharacter != 1 && scene->unk338 > 4)) {
+    if ((gSelectedCharacter == 1 && scene->unk338 > 5) || (gSelectedCharacter != 1 && scene->unk338 > 4)) {
         s = &scene->unk200;
         s->graphics.anim = gUnknown_080E17A4[41].anim;
         s->variant = gUnknown_080E17A4[41].variant;
@@ -1000,8 +952,7 @@ void sub_8094044(struct FinalEndingLandCutScene *scene)
 
 void sub_8094060(struct FinalEndingLandCutScene *scene)
 {
-    if ((gSelectedCharacter != 1 && scene->unk338 == 5)
-        || (gSelectedCharacter == 1 && scene->unk338 == 6)) {
+    if ((gSelectedCharacter != 1 && scene->unk338 == 5) || (gSelectedCharacter == 1 && scene->unk338 == 6)) {
         scene->unk5E0[3][0] = 0x78;
         if (scene->unk5E0[3][1] > 0x8200) {
             scene->unk5E0[3][1] -= 0x300;
@@ -1011,8 +962,7 @@ void sub_8094060(struct FinalEndingLandCutScene *scene)
 
 void sub_80940BC(struct FinalEndingLandCutScene *scene)
 {
-    if ((gSelectedCharacter != 1 && scene->unk338 == 5)
-        || (gSelectedCharacter == 1 && scene->unk338 == 6)) {
+    if ((gSelectedCharacter != 1 && scene->unk338 == 5) || (gSelectedCharacter == 1 && scene->unk338 == 6)) {
         scene->unk5E0[4][0] = 0x78;
         if (scene->unk5E0[4][1] > 0x9600) {
             scene->unk5E0[4][1] -= 0x300;

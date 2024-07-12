@@ -42,28 +42,17 @@ static void sub_802C988(struct SuperSonic *sonic);
 struct Task *sSuperSonicTask = NULL;
 
 const TileInfo gAnims_SuperSonic_080D69C8[23] = {
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 2 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 1 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 3 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 0 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 4 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 5 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 12 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 13 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 16 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 17 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 8 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 9 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 10 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 11 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 6 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 7 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 14 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 15 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 18 },
-    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 19 },
-    { 0, SA2_ANIM_SUPER_SONIC_FROZEN, 0 },
-    { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_29, CHARACTER_SONIC), 0 },
+    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 2 },  { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 1 },
+    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 3 },  { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 0 },
+    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 4 },  { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 5 },
+    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 12 }, { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 13 },
+    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 16 }, { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 17 },
+    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 8 },  { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 9 },
+    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 10 }, { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 11 },
+    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 6 },  { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 7 },
+    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 14 }, { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 15 },
+    { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 18 }, { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 19 },
+    { 0, SA2_ANIM_SUPER_SONIC_FROZEN, 0 },           { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_29, CHARACTER_SONIC), 0 },
     { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 2 },
 };
 
@@ -353,8 +342,7 @@ static void Task_802BC10(void)
 }
 
 // (99.25%) https://decomp.me/scratch/2dbbE
-NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc",
-         static void sub_802BCCC(struct SuperSonic *sonic))
+NONMATCH("asm/non_matching/game/super_sonic__sub_802BCCC.inc", static void sub_802BCCC(struct SuperSonic *sonic))
 {
     s32 ssx, ssx2;
     u8 i;
@@ -425,8 +413,7 @@ static void sub_802BE1C(struct SuperSonic *sonic)
         return;
     }
 
-    if (((sonic->flags & (SUPER_FLAG__80 | SUPER_FLAG__2)) == SUPER_FLAG__80)
-        && (gStageTime & 0x4)) {
+    if (((sonic->flags & (SUPER_FLAG__80 | SUPER_FLAG__2)) == SUPER_FLAG__80) && (gStageTime & 0x4)) {
         return;
     }
     if ((sonic->flags & SUPER_FLAG__4) && ((gStageTime & 0x4) != 0)) {
@@ -442,8 +429,8 @@ static void sub_802BE1C(struct SuperSonic *sonic)
     prio = (sonic->flags & SUPER_FLAG__200) ? 3 : 0;
 
     if (sonic->flags & 0x4) {
-        spr->frameFlags = SPRITE_FLAG(PRIORITY, prio) | gUnknown_030054B8++
-            | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+        spr->frameFlags = SPRITE_FLAG(PRIORITY, prio) | gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
+            | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
     } else {
         spr->frameFlags = SPRITE_FLAG(PRIORITY, prio) | SPRITE_FLAG_MASK_X_FLIP;
     }
@@ -605,8 +592,7 @@ static void sub_802C358(struct SuperSonic *sonic)
     }
 
     if (sonic->unkC == 8) {
-        sonic->spr.graphics.anim
-            = gAnims_SuperSonic_080D69C8[sonic->tileInfoId + 1].anim;
+        sonic->spr.graphics.anim = gAnims_SuperSonic_080D69C8[sonic->tileInfoId + 1].anim;
         sonic->spr.variant = gAnims_SuperSonic_080D69C8[sonic->tileInfoId + 1].variant;
         sonic->spr.prevVariant = -1;
         sonic->flags &= ~SUPER_FLAG__80;

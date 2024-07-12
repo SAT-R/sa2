@@ -39,11 +39,9 @@ static void DestroyHalfPipe(Sprite_IceParadiseHalfPipe *);
 #define HALF_PIPE_DIRECTION_FORWARD 0
 #define HALF_PIPE_DIRECTION_REVERSE 1
 
-static void CreateEntity_HalfPipe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY, s32 direction)
+static void CreateEntity_HalfPipe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, s32 direction)
 {
-    struct Task *t = TaskCreate(Task_HalfPipeMain, sizeof(Sprite_IceParadiseHalfPipe),
-                                0x2010, 0, TaskDestructor_HalfPipe);
+    struct Task *t = TaskCreate(Task_HalfPipeMain, sizeof(Sprite_IceParadiseHalfPipe), 0x2010, 0, TaskDestructor_HalfPipe);
     Sprite_IceParadiseHalfPipe *halfPipe = TASK_DATA(t);
     halfPipe->direction = direction;
     halfPipe->x = Q(spriteRegionX) + me->x * TILE_WIDTH;
@@ -76,9 +74,8 @@ static void Task_HalfPipeSequenceMain(void)
     } else {
         u16 posWithinHalfPipe;
         gPlayer.moveState |= MOVESTATE_8000;
-        posWithinHalfPipe = halfPipe->direction == HALF_PIPE_DIRECTION_FORWARD
-            ? I(gPlayer.x) - (halfPipe->x + halfPipe->offsetX)
-            : (halfPipe->x + halfPipe->width) - I(gPlayer.x);
+        posWithinHalfPipe = halfPipe->direction == HALF_PIPE_DIRECTION_FORWARD ? I(gPlayer.x) - (halfPipe->x + halfPipe->offsetX)
+                                                                               : (halfPipe->x + halfPipe->width) - I(gPlayer.x);
         UpdatePlayerPosOnHalfPipe(halfPipe, posWithinHalfPipe);
     }
 }
@@ -139,12 +136,8 @@ static bool32 PlayerWithinHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
     s16 playerX = I(gPlayer.x) - gCamera.x;
     s16 playerY = I(gPlayer.y) - gCamera.y;
 
-    if ((posX + halfPipe->offsetX) <= playerX
-        && (posX + halfPipe->offsetX) + (halfPipe->width - halfPipe->offsetX)
-            >= playerX) {
-        if (posY + halfPipe->offsetY <= playerY
-            && (posY + halfPipe->offsetY) + (halfPipe->height - halfPipe->offsetY)
-                >= playerY) {
+    if ((posX + halfPipe->offsetX) <= playerX && (posX + halfPipe->offsetX) + (halfPipe->width - halfPipe->offsetX) >= playerX) {
+        if (posY + halfPipe->offsetY <= playerY && (posY + halfPipe->offsetY) + (halfPipe->height - halfPipe->offsetY) >= playerY) {
             return TRUE;
         }
     }
@@ -176,10 +169,7 @@ static void StartHalfPipeSequence(Sprite_IceParadiseHalfPipe *halfPipe)
     gCurTask->main = Task_HalfPipeSequenceMain;
 }
 
-static void EndHalfPipeSequence(Sprite_IceParadiseHalfPipe *halfPipe)
-{
-    gCurTask->main = Task_HalfPipeMain;
-}
+static void EndHalfPipeSequence(Sprite_IceParadiseHalfPipe *halfPipe) { gCurTask->main = Task_HalfPipeMain; }
 
 static bool32 sub_80789AC(Sprite_IceParadiseHalfPipe *halfPipe)
 {
@@ -198,8 +188,7 @@ static bool32 ShouldDespawn(Sprite_IceParadiseHalfPipe *halfPipe)
     s16 x = halfPipe->x - gCamera.x;
     s16 y = halfPipe->y - gCamera.y;
 
-    if (x + halfPipe->width < -128 || x + halfPipe->offsetX > 368
-        || y + halfPipe->height < -128 || y + halfPipe->offsetY > 288) {
+    if (x + halfPipe->width < -128 || x + halfPipe->offsetX > 368 || y + halfPipe->height < -128 || y + halfPipe->offsetY > 288) {
         return TRUE;
     }
     return FALSE;
@@ -241,16 +230,12 @@ static void DestroyHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
     TaskDestroy(gCurTask);
 }
 
-void CreateEntity_HalfPipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 spriteY)
+void CreateEntity_HalfPipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    CreateEntity_HalfPipe(me, spriteRegionX, spriteRegionY, spriteY,
-                          HALF_PIPE_DIRECTION_REVERSE);
+    CreateEntity_HalfPipe(me, spriteRegionX, spriteRegionY, spriteY, HALF_PIPE_DIRECTION_REVERSE);
 }
 
-void CreateEntity_HalfPipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                 u8 spriteY)
+void CreateEntity_HalfPipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    CreateEntity_HalfPipe(me, spriteRegionX, spriteRegionY, spriteY,
-                          HALF_PIPE_DIRECTION_FORWARD);
+    CreateEntity_HalfPipe(me, spriteRegionX, spriteRegionY, spriteY, HALF_PIPE_DIRECTION_FORWARD);
 }

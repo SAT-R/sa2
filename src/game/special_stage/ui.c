@@ -23,9 +23,8 @@ static void HandleUnpaused(struct SpecialStageUI *);
 static void RenderPauseMenu(struct SpecialStageUI *);
 
 static const struct UNK_80DF670 sDigitSprites[] = {
-    { 1119, 16, 2, 0, 0 }, { 1119, 17, 2, 0, 0 }, { 1119, 18, 2, 0, 0 },
-    { 1119, 19, 2, 0, 0 }, { 1119, 20, 2, 0, 0 }, { 1119, 21, 2, 0, 0 },
-    { 1119, 22, 2, 0, 0 }, { 1119, 23, 2, 0, 0 }, { 1119, 24, 2, 0, 0 },
+    { 1119, 16, 2, 0, 0 }, { 1119, 17, 2, 0, 0 }, { 1119, 18, 2, 0, 0 }, { 1119, 19, 2, 0, 0 }, { 1119, 20, 2, 0, 0 },
+    { 1119, 21, 2, 0, 0 }, { 1119, 22, 2, 0, 0 }, { 1119, 23, 2, 0, 0 }, { 1119, 24, 2, 0, 0 },
 };
 
 static const struct UNK_80DF670 gUnknown_080DF830[] = {
@@ -39,8 +38,7 @@ static const struct UNK_80DF670 gUnknown_080DF840[] = {
 };
 
 static const struct UNK_80DF670 gUnknown_080DF880[] = {
-    { 1121, 0, 24, 0, 0 }, { 1121, 4, 27, 0, 0 }, { 1121, 1, 24, 0, 0 },
-    { 1121, 2, 27, 0, 0 }, { 1121, 3, 18, 0, 0 },
+    { 1121, 0, 24, 0, 0 }, { 1121, 4, 27, 0, 0 }, { 1121, 1, 24, 0, 0 }, { 1121, 2, 27, 0, 0 }, { 1121, 3, 18, 0, 0 },
 };
 
 static const struct UNK_80DF670 sChaosEmeraldUnlockedSprites[] = {
@@ -57,8 +55,7 @@ static const struct UNK_80DF670 sChaosEmeraldUnlockedSprites[] = {
 };
 
 static const u16 sPauseMenuVariants[][3] = {
-    { 40, 1066, 0 }, { 40, 1067, 0 }, { 40, 1068, 0 },
-    { 40, 1069, 0 }, { 40, 1070, 0 }, { 40, 1071, 0 },
+    { 40, 1066, 0 }, { 40, 1067, 0 }, { 40, 1068, 0 }, { 40, 1069, 0 }, { 40, 1070, 0 }, { 40, 1071, 0 },
 };
 
 void sub_806FB04(void)
@@ -111,20 +108,16 @@ static void CreateStageTime(struct SpecialStageUI *ui)
     s16 timeTens = stage->timeTens;
     s16 timeUnits = stage->timeUnits;
 
-    sub_806CA88(&ui->timeSymbol, RENDER_TARGET_SCREEN, 1, 0x377, 0x1000, 0xC0, 0xE, 1, 0,
-                0);
+    sub_806CA88(&ui->timeSymbol, RENDER_TARGET_SCREEN, 1, 0x377, 0x1000, 0xC0, 0xE, 1, 0, 0);
 
     unkF7E8 = &sDigitSprites[timeHundreds];
-    sub_806CA88(&ui->timeHundreds, RENDER_TARGET_SCREEN, unkF7E8->unk4, unkF7E8->anim,
-                0x1000, 0xCC, 0x12, 1, unkF7E8->variant, 0);
+    sub_806CA88(&ui->timeHundreds, RENDER_TARGET_SCREEN, unkF7E8->unk4, unkF7E8->anim, 0x1000, 0xCC, 0x12, 1, unkF7E8->variant, 0);
 
     unkF7E8 = &sDigitSprites[timeTens];
-    sub_806CA88(&ui->timeTens, RENDER_TARGET_SCREEN, unkF7E8->unk4, unkF7E8->anim,
-                0x1000, 0xD4, 0x12, 1, unkF7E8->variant, 0);
+    sub_806CA88(&ui->timeTens, RENDER_TARGET_SCREEN, unkF7E8->unk4, unkF7E8->anim, 0x1000, 0xD4, 0x12, 1, unkF7E8->variant, 0);
 
     unkF7E8 = &sDigitSprites[timeUnits];
-    sub_806CA88(&ui->timeUnits, RENDER_TARGET_SCREEN, unkF7E8->unk4, unkF7E8->anim,
-                0x1000, 0xDC, 0x12, 1, unkF7E8->variant, 0);
+    sub_806CA88(&ui->timeUnits, RENDER_TARGET_SCREEN, unkF7E8->unk4, unkF7E8->anim, 0x1000, 0xDC, 0x12, 1, unkF7E8->variant, 0);
 
     sub_806CA88(&newElement, RENDER_TARGET_SCREEN, 0, 0x379, 0, 0, 0, 0, 0, 0);
 }
@@ -197,30 +190,24 @@ static void CreateRingCounter(struct SpecialStageUI *ui)
     const struct UNK_80DF670 *sprite;
 
     sprite = &sDigitSprites[stage->ringsHundreds];
-    sub_806CA88(&ui->ringsHundredsDigit, RENDER_TARGET_SCREEN, sprite->unk4,
-                sprite->anim, 0x1000, 100, 0x10, 1, sprite->variant, 0);
+    sub_806CA88(&ui->ringsHundredsDigit, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim, 0x1000, 100, 0x10, 1, sprite->variant, 0);
 
     sprite = &sDigitSprites[stage->ringsTens];
-    sub_806CA88(&ui->ringsTENS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim,
-                0x1000, 0x6C, 0x10, 1, sprite->variant, 0);
+    sub_806CA88(&ui->ringsTENS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim, 0x1000, 0x6C, 0x10, 1, sprite->variant, 0);
 
     sprite = &sDigitSprites[stage->ringsUnits];
-    sub_806CA88(&ui->ringsUNITS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim,
-                0x1000, 0x74, 0x10, 1, sprite->variant, 0);
+    sub_806CA88(&ui->ringsUNITS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim, 0x1000, 0x74, 0x10, 1, sprite->variant, 0);
 
     sub_806CA88(&ui->unk154, RENDER_TARGET_SCREEN, 8, 0x378, 0x1000, 0x78, 0xE, 2, 0, 0);
 
     sprite = &sDigitSprites[stage->ringsTargetHundreds];
-    sub_806CA88(&ui->ringsTargetHundredsDigit, RENDER_TARGET_SCREEN, sprite->unk4,
-                sprite->anim, 0x1000, 0x7C, 0x18, 1, sprite->variant, 0);
+    sub_806CA88(&ui->ringsTargetHundredsDigit, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim, 0x1000, 0x7C, 0x18, 1, sprite->variant, 0);
 
     sprite = &sDigitSprites[stage->ringsTargetTens];
-    sub_806CA88(&ui->ringsTargetTENS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4,
-                sprite->anim, 0x1000, 0x84, 0x18, 1, sprite->variant, 0);
+    sub_806CA88(&ui->ringsTargetTENS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim, 0x1000, 0x84, 0x18, 1, sprite->variant, 0);
 
     sprite = &sDigitSprites[stage->ringsTargetUnits];
-    sub_806CA88(&ui->ringsTargetUNITS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4,
-                sprite->anim, 0x1000, 0x8C, 0x18, 1, sprite->variant, 0);
+    sub_806CA88(&ui->ringsTargetUNITS_DIGIT, RENDER_TARGET_SCREEN, sprite->unk4, sprite->anim, 0x1000, 0x8C, 0x18, 1, sprite->variant, 0);
 }
 
 void sub_8070078(void);
@@ -318,8 +305,7 @@ static void HandlePaused(struct SpecialStageUI *ui)
     const u16 pauseMenuSprites[6][3];
     memcpy((void *)&pauseMenuSprites, sPauseMenuVariants, 0x24);
 
-    sub_806CA88(s, 1, pauseMenuSprites[lang][0], pauseMenuSprites[lang][1], 0x1000, 0x78,
-                0x50, 0, pauseMenuSprites[lang][2], 0);
+    sub_806CA88(s, 1, pauseMenuSprites[lang][0], pauseMenuSprites[lang][1], 0x1000, 0x78, 0x50, 0, pauseMenuSprites[lang][2], 0);
 
     DmaCopy16(3, &gObjPalette[249], ui->pauseMenuPalette1, 6);
     DmaCopy16(3, &gObjPalette[252], ui->pauseMenuPalette2, 6);
@@ -330,8 +316,7 @@ static void HandlePaused(struct SpecialStageUI *ui)
 
 #define SomeMacro807028C(i) ({ ((i)*8) + 0x100; })
 
-static void
-SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *resultsScreen)
+static void SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *resultsScreen)
 {
     const struct UNK_80DF670 *sprite;
     struct SpecialStage *stage = resultsScreen->stage;
@@ -347,8 +332,7 @@ SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *resultsScree
 
     if (stage->targetReached) {
         sub_806CA88(&resultsScreen->unk4, 1, 0x28, 0x37d, 0, 0x100 + a, 0x20, 0, 1, 0);
-        sub_806CA88(&resultsScreen->unk34, 1, gUnknown_080DF880[character].unk4,
-                    gUnknown_080DF880[character].anim, 0, 0x100 + a, 0x18, 0,
+        sub_806CA88(&resultsScreen->unk34, 1, gUnknown_080DF880[character].unk4, gUnknown_080DF880[character].anim, 0, 0x100 + a, 0x18, 0,
                     gUnknown_080DF880[character].variant, 0);
     } else {
         sub_806CA88(&resultsScreen->unk4, 1, 0x20, 0x37d, 0, 0x100 + a, 0x20, 0, 0, 0);
@@ -359,20 +343,17 @@ SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *resultsScree
     sub_806CA88(&resultsScreen->unk214, 1, 0x16, 0x37E, 0, 0x100 + c, 0x70, 0, 2, 0);
 
     for (i = 0; i < 5; i++) {
-        sub_806CA88(&resultsScreen->unk244[i], 1, sDigitSprites[0].unk4,
-                    sDigitSprites[0].anim, 0, d + SomeMacro807028C(i), 0x58, 0,
+        sub_806CA88(&resultsScreen->unk244[i], 1, sDigitSprites[0].unk4, sDigitSprites[0].anim, 0, d + SomeMacro807028C(i), 0x58, 0,
                     sDigitSprites[0].variant, 0);
     }
 
     for (i = 0; i < 5; i++) {
-        sub_806CA88(&resultsScreen->unk334[i], 1, sDigitSprites[0].unk4,
-                    sDigitSprites[0].anim, 0, e + SomeMacro807028C(i), 0x6C, 0,
+        sub_806CA88(&resultsScreen->unk334[i], 1, sDigitSprites[0].unk4, sDigitSprites[0].anim, 0, e + SomeMacro807028C(i), 0x6C, 0,
                     sDigitSprites[0].variant, 0);
     }
 
     for (i = 0; i < 5; i++) {
-        sub_806CA88(&resultsScreen->unk424[i], 1, sDigitSprites[0].unk4,
-                    sDigitSprites[0].anim, 0, f + SomeMacro807028C(i), 0x80, 0,
+        sub_806CA88(&resultsScreen->unk424[i], 1, sDigitSprites[0].unk4, sDigitSprites[0].anim, 0, f + SomeMacro807028C(i), 0x80, 0,
                     sDigitSprites[0].variant, 0);
     }
 
@@ -383,8 +364,7 @@ SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *resultsScree
             sprite = &sChaosEmeraldUnlockedSprites[7];
         }
 
-        sub_806CA88(&resultsScreen->chaosEmerald[i], 1, 9, sprite->anim, 0, i * 24 + 292,
-                    0x34, 0, sprite->variant, 0);
+        sub_806CA88(&resultsScreen->chaosEmerald[i], 1, 9, sprite->anim, 0, i * 24 + 292, 0x34, 0, sprite->variant, 0);
     }
 
     resultsScreen->animFrame = 0;
@@ -654,8 +634,7 @@ static void CreateDisplays(struct SpecialStageUI *);
 
 struct Task *CreateSpecialStageUI(struct SpecialStage *stage)
 {
-    struct Task *t
-        = TaskCreate(sub_806FB04, sizeof(struct SpecialStageUI), 0xD000, 0, sub_8070BEC);
+    struct Task *t = TaskCreate(sub_806FB04, sizeof(struct SpecialStageUI), 0xD000, 0, sub_8070BEC);
     struct SpecialStageUI *ui = TASK_DATA(t);
     ui->stage = stage;
     ui->unk2A4 = NULL;
@@ -676,8 +655,7 @@ void SpecialStageResultsScreenOnDestroy(struct Task *);
 
 struct Task *CreateSpecialStageResultsScreen(struct SpecialStage *stage)
 {
-    struct Task *t = TaskCreate(Task_ResultsScreenSequencePart1,
-                                sizeof(struct SpecialStageResultsScreen), 0xD000, 0,
+    struct Task *t = TaskCreate(Task_ResultsScreenSequencePart1, sizeof(struct SpecialStageResultsScreen), 0xD000, 0,
                                 SpecialStageResultsScreenOnDestroy);
     struct SpecialStageResultsScreen *resultsScreen = TASK_DATA(t);
     resultsScreen->stage = stage;
@@ -732,8 +710,7 @@ void sub_8070C58(void)
 static void CreateMultiplierValue(struct SpecialStageUI *ui)
 {
     const struct UNK_80DF670 *unkF840 = &gUnknown_080DF840[0];
-    sub_806CA88(&ui->multiplier, 0, unkF840->unk4, unkF840->anim, 0x1000, 0x70, 100, 2,
-                unkF840->variant, 0);
+    sub_806CA88(&ui->multiplier, 0, unkF840->unk4, unkF840->anim, 0x1000, 0x70, 100, 2, unkF840->variant, 0);
 }
 
 void sub_8070D14(void)

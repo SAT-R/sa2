@@ -17,15 +17,11 @@
 #include "constants/animations.h"
 
 const u16 sAnimData_StageGoalScoreBonus[][3] = {
-    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 1 },
-    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 2 },
-    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 3 },
-    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 4 },
-    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 5 },
+    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 1 }, { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 2 }, { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 3 },
+    { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 4 }, { 36, SA2_ANIM_STAGE_GOAL_SCORE_BONUS, 5 },
 };
 
-struct Task *sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main,
-                         TaskDestructor dtor)
+struct Task *sub_801F15C(s16 x, s16 y, u8 param2, s8 param3, TaskMain main, TaskDestructor dtor)
 {
     struct Task *t = TaskCreate(main, sizeof(TaskStrc_801F15C), 0x4001, 0, dtor);
 
@@ -62,9 +58,7 @@ void Task_801F214(void)
         TaskDestroy(gCurTask);
         return;
     }
-    if ((ts->unk14 & 0x8)
-        && ((ts->playerAnim != gPlayer.anim)
-            || (ts->playerVariant != gPlayer.variant))) {
+    if ((ts->unk14 & 0x8) && ((ts->playerAnim != gPlayer.anim) || (ts->playerVariant != gPlayer.variant))) {
         TaskDestroy(gCurTask);
         return;
     } else {
@@ -136,8 +130,7 @@ void Task_801F214(void)
 
 struct Task *CreateStageGoalBonusPointsAnim(s32 x, s32 y, u16 score)
 {
-    if ((score != 100) && (score != 200) && (score != 300) && (score != 500)
-        && (score != 800)) {
+    if ((score != 100) && (score != 200) && (score != 300) && (score != 500) && (score != 800)) {
         return NULL;
     } else {
         struct Task *t;

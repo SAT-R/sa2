@@ -72,8 +72,7 @@ void Task_ScreenShake(void)
 
 struct Task *CreateScreenShake(u32 p0, u32 p1, u32 p2, u32 p3, u32 flags)
 {
-    struct Task *t = TaskCreate(Task_ScreenShake, sizeof(ScreenShake), 0xEFF, 0,
-                                TaskDestructor_ScreenShake);
+    struct Task *t = TaskCreate(Task_ScreenShake, sizeof(ScreenShake), 0xEFF, 0, TaskDestructor_ScreenShake);
 
     ScreenShake *shake = TASK_DATA(t);
     shake->p0 = p0;

@@ -73,8 +73,7 @@ typedef struct {
 // This function filters out all non-lit parts to display them normally.
 // TODO: validate type of param1!
 // (80.10%) https://decomp.me/scratch/8wQzE
-NONMATCH("asm/non_matching/engine/sub_800724C.inc",
-         void sub_800724C(u8 bg, TriParam1 *param1))
+NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriParam1 *param1))
 {
     Unknown *u;
     Unknown sp00[5];
@@ -396,8 +395,8 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, u16 param4, u16 param5
     }
 }
 
-void sub_8007738(u8 bg, int_vcount minY, int_vcount maxY, u16 param3, u8 param4,
-                 u8 param5, u16 param6, u8 param7, u8 param8, s16 param9, s16 param10)
+void sub_8007738(u8 bg, int_vcount minY, int_vcount maxY, u16 param3, u8 param4, u8 param5, u16 param6, u8 param7, u8 param8, s16 param9,
+                 s16 param10)
 {
     u16 *cursor;
 
@@ -461,8 +460,7 @@ void sub_80078D4(u8 bg, int_vcount minY, int_vcount maxY, u16 offsetEven, u16 of
     }
 }
 
-void sub_8007958(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4,
-                 u16 param5, u16 param6)
+void sub_8007958(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4, u16 param5, u16 param6)
 {
     u16 *cursor;
 

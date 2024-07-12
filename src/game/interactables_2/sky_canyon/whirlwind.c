@@ -91,11 +91,9 @@ static const u8 gUnknown_080E0136[8] = { 0, 0, 0, 0, 1, 1, 1, 2 };
 
 #define UNKNOWN_WHIRLWIND_THIRYTWO 32
 
-void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY, u32 kind)
+void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u32 kind)
 {
-    struct Task *t = TaskCreate(Task_807D06C, sizeof(Sprite_IA86), 0x2010, 0,
-                                TaskDestructor_Interactable086);
+    struct Task *t = TaskCreate(Task_807D06C, sizeof(Sprite_IA86), 0x2010, 0, TaskDestructor_Interactable086);
     Sprite_IA86 *ia086 = TASK_DATA(t);
     s32 someX, someY;
     s32 value;
@@ -108,8 +106,7 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     ia086->unk228.right = ia086->unk228.left + me->d.uData[2] * TILE_WIDTH;
     ia086->unk228.bottom = ia086->unk228.top + me->d.uData[3] * TILE_WIDTH;
 
-    ia086->unk228.centerX
-        = ia086->unk228.posX + ((ia086->unk228.right + ia086->unk228.left) >> 1);
+    ia086->unk228.centerX = ia086->unk228.posX + ((ia086->unk228.right + ia086->unk228.left) >> 1);
 
     ia086->unk228.centerY = ia086->unk228.posY + (ia086->unk228.bottom);
 
@@ -480,9 +477,7 @@ bool32 sub_807CF2C(Sprite_IA86 *ia086)
     s16 screenX = ia086->unk228.posX - gCamera.x;
     s16 screenY = ia086->unk228.posY - gCamera.y;
 
-    if (((screenX + ia086->unk228.right) < -128)
-        || ((screenX + ia086->unk228.left) > 368)
-        || ((screenY + ia086->unk228.bottom) < -128)
+    if (((screenX + ia086->unk228.right) < -128) || ((screenX + ia086->unk228.left) > 368) || ((screenY + ia086->unk228.bottom) < -128)
         || ((screenY + ia086->unk228.top) > 288)) {
 
         return TRUE;
@@ -600,14 +595,12 @@ void sub_807D1BC(Sprite_IA86 *ia086)
     sub_807CCBC(ia086);
 }
 
-void CreateEntity_Whirlwind_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_Whirlwind_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     CreateEntity_Whirlwind(me, spriteRegionX, spriteRegionY, spriteY, 0);
 }
 
-void CreateEntity_Whirlwind_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_Whirlwind_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     CreateEntity_Whirlwind(me, spriteRegionX, spriteRegionY, spriteY, 1);
 }

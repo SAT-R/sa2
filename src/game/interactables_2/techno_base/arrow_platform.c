@@ -47,13 +47,11 @@ static void sub_807A73C(Sprite_IA75 *);
 static void sub_807A7F4(Sprite_IA75 *);
 static void sub_807AABC(void);
 
-static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY,
-                        u8 param)
+static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 param)
 {
     s32 i;
     Sprite *s;
-    struct Task *t
-        = TaskCreate(sub_807AA68, sizeof(Sprite_IA75), 0x2010, 0, sub_807AB04);
+    struct Task *t = TaskCreate(sub_807AA68, sizeof(Sprite_IA75), 0x2010, 0, sub_807AB04);
     Sprite_IA75 *ia75 = TASK_DATA(t);
     ia75->unk94 = param;
     ia75->unk8C = 0;
@@ -296,8 +294,8 @@ static bool32 sub_807A920(Sprite_IA75 *ia75)
     s16 x = ia75->x - gCamera.x;
     s16 y = ia75->y - gCamera.y;
 
-    if ((x + ia75->offsetX + 24) < -128 || (x + ia75->width - 24) > 368
-        || (y + ia75->offsetY + 24) < -128 || (y + ia75->height - 24) > 288) {
+    if ((x + ia75->offsetX + 24) < -128 || (x + ia75->width - 24) > 368 || (y + ia75->offsetY + 24) < -128
+        || (y + ia75->height - 24) > 288) {
         return TRUE;
     }
     return FALSE;
@@ -306,8 +304,7 @@ static bool32 sub_807A920(Sprite_IA75 *ia75)
 static u32 sub_807A99C(Sprite_IA75 *ia75)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp = sub_800CCB8(&ia75->s2, ia75->x + I(ia75->unk74),
-                               ia75->y + I(ia75->unk78), &gPlayer);
+        u32 temp = sub_800CCB8(&ia75->s2, ia75->x + I(ia75->unk74), ia75->y + I(ia75->unk78), &gPlayer);
         if (temp != 0) {
             if (temp & 0x10000) {
                 gPlayer.y += Q_8_8(temp);
@@ -407,20 +404,17 @@ static void sub_807AB6C(Sprite_IA75 *ia75)
     ia75->unk98[0][1] = ia75->unk78;
 }
 
-void CreateEntity_ArrowPlatform_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void CreateEntity_ArrowPlatform_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 0);
 }
 
-void CreateEntity_ArrowPlatform_Right(MapEntity *me, u16 spriteRegionX,
-                                      u16 spriteRegionY, u8 spriteY)
+void CreateEntity_ArrowPlatform_Right(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 1);
 }
 
-void CreateEntity_ArrowPlatform_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                   u8 spriteY)
+void CreateEntity_ArrowPlatform_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     sub_807A33C(me, spriteRegionX, spriteRegionY, spriteY, 2);
 }

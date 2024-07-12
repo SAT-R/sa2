@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_mp_unknown_green[]
-    = INCBIN_U16("data/tilemaps/mp_unknown_green/palette.gbapal");
-const u8 Tiles_mp_unknown_green[]
-    = INCBIN_U8("data/tilemaps/mp_unknown_green/tiles.4bpp");
-const u16 Tilemap_mp_unknown_green[]
-    = INCBIN_U16("data/tilemaps/mp_unknown_green/tilemap.tilemap2");
+const u16 Palette_mp_unknown_green[] = INCBIN_U16("data/tilemaps/mp_unknown_green/palette.gbapal");
+const u8 Tiles_mp_unknown_green[] = INCBIN_U8("data/tilemaps/mp_unknown_green/tiles.4bpp");
+const u16 Tilemap_mp_unknown_green[] = INCBIN_U16("data/tilemaps/mp_unknown_green/tilemap.tilemap2");
 
 const Tilemap mp_unknown_green = {
     .xTiles = 30,

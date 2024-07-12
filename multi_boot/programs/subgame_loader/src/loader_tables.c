@@ -5,8 +5,7 @@
 void *const gSegmentLoadBuffers[] = {
     PROGRAM_WORK_BUFFER + (SIO32ML_BLOCK_SIZE * 0),
     PROGRAM_WORK_BUFFER + (SIO32ML_BLOCK_SIZE * 1),
-    PROGRAM_WORK_BUFFER
-        + (SIO32ML_BLOCK_SIZE * 2), // combined and uncompressed into ewram (code)
+    PROGRAM_WORK_BUFFER + (SIO32ML_BLOCK_SIZE * 2), // combined and uncompressed into ewram (code)
 
     PROGRAM_WORK_BUFFER, // bg tileset for map
 

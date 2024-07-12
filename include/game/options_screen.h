@@ -79,24 +79,20 @@ extern const u16 gUnknown_080D95C8[5];
 extern const u16 gUnknown_080D95D2[2];
 extern const u16 gUnknown_080D95D6[4][2];
 
-#define ResetProfileScreensVram()                                                       \
-    ({                                                                                  \
-        gProfileScreenNextVramAddress = (void *)OBJ_VRAM0;                              \
-        gProfileScreenSubMenuNextVramAddress = NULL;                                    \
+#define ResetProfileScreensVram()                                                                                                          \
+    ({                                                                                                                                     \
+        gProfileScreenNextVramAddress = (void *)OBJ_VRAM0;                                                                                 \
+        gProfileScreenSubMenuNextVramAddress = NULL;                                                                                       \
     })
 
-#define ResetProfileScreensSubMenuVram()                                                \
-    ({ gProfileScreenSubMenuNextVramAddress = NULL; })
+#define ResetProfileScreensSubMenuVram() ({ gProfileScreenSubMenuNextVramAddress = NULL; })
 
 void CreateOptionsScreen(u16);
-void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter,
-                                       s8 currentLevel);
+void CreateTimeAttackLevelSelectScreen(bool16 isBossView, s16 selectedCharacter, s8 currentLevel);
 void CreateNewProfileScreen(void);
 void CreateNewProfileNameScreen(s16 mode);
 
-void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos,
-                 s16 yPos, u16 oamOrder, u8 variant, u8 palId);
-void OptionsInitBackground(Background *unk2400, u32 a, u32 b, u8 tilemapId, u16 d, u16 e,
-                           u16 f, u8 g, u16 scrollX, u16 scrollY);
+void sub_806A568(Sprite *obj, s8 target, u32 size, u16 c, u32 assetId, s16 xPos, s16 yPos, u16 oamOrder, u8 variant, u8 palId);
+void OptionsInitBackground(Background *unk2400, u32 a, u32 b, u8 tilemapId, u16 d, u16 e, u16 f, u8 g, u16 scrollX, u16 scrollY);
 
 #endif // GUARD_OPTION_SCREEN_H

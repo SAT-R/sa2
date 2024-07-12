@@ -176,9 +176,8 @@ static void BirdAnimEnd(void);
 #define MenuTextIdx(language, menuItemId) menuItemId + language *NUM_LANGUAGES
 
 const TileInfo gPressStartTiles[] = {
-    [LANG_DEFAULT] = { 0x2E, 0x364, 0 }, [LANG_JAPANESE] = { 0x2E, 0x364, 0 },
-    [LANG_ENGLISH] = { 0x26, 0x36A, 0 }, [LANG_GERMAN] = { 0x26, 0x36B, 0 },
-    [LANG_FRENCH] = { 0x2E, 0x36C, 0 },  [LANG_SPANISH] = { 0x1E, 0x36D, 0 },
+    [LANG_DEFAULT] = { 0x2E, 0x364, 0 }, [LANG_JAPANESE] = { 0x2E, 0x364, 0 }, [LANG_ENGLISH] = { 0x26, 0x36A, 0 },
+    [LANG_GERMAN] = { 0x26, 0x36B, 0 },  [LANG_FRENCH] = { 0x2E, 0x36C, 0 },   [LANG_SPANISH] = { 0x1E, 0x36D, 0 },
     [LANG_ITALIAN] = { 0x1E, 0x36E, 0 },
 };
 
@@ -247,11 +246,9 @@ static const u8 sWavesVerticalBrightnessGradiant[] = {
 static const u8 sPanUpNextVelocityChangeFrame[] = { 60, 19, 10, 10, 255 };
 
 static const u8 sMenuItemTransitionKeyFrames[] = {
-    1, 2, 3, 4, 5, 6, 8, 10, 11, 13, 14, 16, 16, 16, 16, 16, 16, 16, 16, 4, 4, 4, 4,
-    4, 4, 4, 4, 4, 4, 3, 3,  3,  3,  3,  3,  3,  2,  2,  2,  2,  2,  1,  1, 1, 1, 1,
-    0, 1, 0, 1, 0, 0, 1, 0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0,
+    1, 2, 3, 4, 5, 6, 8, 10, 11, 13, 14, 16, 16, 16, 16, 16, 16, 16, 16, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 2, 2,
+    2, 2, 2, 1, 1, 1, 1, 1,  0,  1,  0,  1,  0,  0,  1,  0,  0,  1,  0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
 static const u8 sBirdAnimModeSequence[] = {
@@ -278,8 +275,7 @@ static const u16 sLensFlareSizes[] = {
 };
 
 static const u16 sLensFlareStartPositions[][2] = {
-    { 20, 10 }, { 36, 26 },   { 52, 42 },   { 68, 58 },
-    { 92, 82 }, { 124, 114 }, { 148, 138 }, { 180, 170 },
+    { 20, 10 }, { 36, 26 }, { 52, 42 }, { 68, 58 }, { 92, 82 }, { 124, 114 }, { 148, 138 }, { 180, 170 },
 };
 
 void CreateTitleScreen(void)
@@ -379,15 +375,11 @@ static void CreateTitleScreenWithoutIntro(TitleScreen *titleScreen)
 
     // Possibly a macro, why would this be set to 0 first
     gDispCnt = 0;
-    gDispCnt |= DISPCNT_MODE_1 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG1_ON | DISPCNT_BG2_ON
-        | DISPCNT_OBJ_ON;
+    gDispCnt |= DISPCNT_MODE_1 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_ON;
 
-    gBgCntRegs[0]
-        = BGCNT_PRIORITY(0) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(31) | BGCNT_16COLOR;
-    gBgCntRegs[1] = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(2) | BGCNT_SCREENBASE(29)
-        | BGCNT_AFF512x512 | BGCNT_16COLOR;
-    gBgCntRegs[2] = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(26)
-        | BGCNT_AFF256x256 | BGCNT_256COLOR;
+    gBgCntRegs[0] = BGCNT_PRIORITY(0) | BGCNT_CHARBASE(1) | BGCNT_SCREENBASE(31) | BGCNT_16COLOR;
+    gBgCntRegs[1] = BGCNT_PRIORITY(2) | BGCNT_CHARBASE(2) | BGCNT_SCREENBASE(29) | BGCNT_AFF512x512 | BGCNT_16COLOR;
+    gBgCntRegs[2] = BGCNT_PRIORITY(1) | BGCNT_CHARBASE(0) | BGCNT_SCREENBASE(26) | BGCNT_AFF256x256 | BGCNT_256COLOR;
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
     gUnknown_03004D80[0] = 0;
@@ -588,13 +580,11 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->frameFlags = 0;
     UpdateSpriteAnimation(s);
 
-    for (menuItemId = 0; menuItemId < ARRAY_COUNT(titleScreen->menuItems);
-         menuItemId++) {
+    for (menuItemId = 0; menuItemId < ARRAY_COUNT(titleScreen->menuItems); menuItemId++) {
         s = &titleScreen->menuItems[menuItemId];
 
         s->graphics.dest = objAddr;
-        objAddr
-            += (sMenuTiles[MenuTextIdx(language, menuItemId)].numTiles * TILE_SIZE_4BPP);
+        objAddr += (sMenuTiles[MenuTextIdx(language, menuItemId)].numTiles * TILE_SIZE_4BPP);
 
         s->graphics.anim = sMenuTiles[MenuTextIdx(language, menuItemId)].anim;
         s->variant = sMenuTiles[MenuTextIdx(language, menuItemId)].variant;
@@ -821,8 +811,7 @@ static void Task_IntroPanSkyAnim(void)
 
     // Increase the pan up velocity once the correct
     // frame is reached
-    if (titleScreen->animFrame
-        == sPanUpNextVelocityChangeFrame[titleScreen->introTransitionStep]) {
+    if (titleScreen->animFrame == sPanUpNextVelocityChangeFrame[titleScreen->introTransitionStep]) {
         titleScreen->animFrame = 0;
         titleScreen->introPanUpVelocity++;
         titleScreen->introTransitionStep++;
@@ -898,8 +887,7 @@ static void Task_IntroSkyAnim(void)
     }
 
     // transition step is always > 2 to be here
-    if (titleScreen->introTransitionStep > 2
-        && (u16)(titleScreen->animFrame - 20) < 119) {
+    if (titleScreen->introTransitionStep > 2 && (u16)(titleScreen->animFrame - 20) < 119) {
         gDispCnt &= 0xFEFF;
         gDispCnt |= 0x4000;
 
@@ -1046,12 +1034,8 @@ static void Task_StartPressedTransitionAnim(void)
 
     // Start showing the next menu items after 1/6 of a second (10 frames)
     if (titleScreen->animFrame == 10) {
-        CreateMenuItemTransition(
-            &titleScreen->menuItems[PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)],
-            TRANSITION_IN);
-        CreateMenuItemTransition(
-            &titleScreen->menuItems[PlayModeMenuIndex(MENU_ITEM_MULTI_PLAYER)],
-            TRANSITION_IN);
+        CreateMenuItemTransition(&titleScreen->menuItems[PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)], TRANSITION_IN);
+        CreateMenuItemTransition(&titleScreen->menuItems[PlayModeMenuIndex(MENU_ITEM_MULTI_PLAYER)], TRANSITION_IN);
     }
 
     if (titleScreen->animFrame > 16) {
@@ -1102,16 +1086,14 @@ static void Task_PlayModeMenuMain(void)
 
         if (titleScreen->menuCursor == PlayModeMenuIndex(MENU_ITEM_SINGLE_PLAYER)) {
             titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER].x = (DISPLAY_WIDTH / 2);
-            CreateMenuItemTransition(&titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER],
-                                     TRANSITION_OUT);
+            CreateMenuItemTransition(&titleScreen->menuItems[MENU_ITEM_MULTI_PLAYER], TRANSITION_OUT);
 
             titleScreen->animFrame = SinglePlayerMenuIndex(MENU_ITEM_GAME_START);
 
             gCurTask->main = Task_SinglePlayerSelectedTransitionAnim;
         } else {
             fade = &titleScreen->unk270;
-            CreateMenuItemTransition(&titleScreen->menuItems[MENU_ITEM_SINGLE_PLAYER],
-                                     TRANSITION_OUT);
+            CreateMenuItemTransition(&titleScreen->menuItems[MENU_ITEM_SINGLE_PLAYER], TRANSITION_OUT);
 
             fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
             fade->brightness = 0;
@@ -1160,8 +1142,7 @@ static void Task_SinglePlayerSelectedTransitionAnim(void)
         CreateMenuItemTransition(&menuItems[MENU_ITEM_OPTIONS], TRANSITION_IN);
 
         if (gLoadedSaveGame->chaoGardenUnlocked) {
-            CreateMenuItemTransition(&menuItems[MENU_ITEM_TINY_CHAO_GARDEN],
-                                     TRANSITION_IN);
+            CreateMenuItemTransition(&menuItems[MENU_ITEM_TINY_CHAO_GARDEN], TRANSITION_IN);
         }
     }
 
@@ -1175,8 +1156,7 @@ static void Task_SinglePlayerSelectedTransitionAnim(void)
     ShowGameLogo(titleScreen);
 }
 
-static inline void SinglePlayerMenuHighlightFocused(TitleScreen *titleScreen,
-                                                    u8 numMenuItems)
+static inline void SinglePlayerMenuHighlightFocused(TitleScreen *titleScreen, u8 numMenuItems)
 {
     Sprite *menuItem;
     u8 menuIndex;
@@ -1235,8 +1215,7 @@ static void Task_SinglePlayerMenuMain(void)
     if (gPressedKeys & A_BUTTON) {
         fade = &titleScreen->unk270;
         fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
-        if (titleScreen->menuCursor
-            == SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN)) {
+        if (titleScreen->menuCursor == SinglePlayerMenuIndex(MENU_ITEM_TINY_CHAO_GARDEN)) {
             fade->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
         }
         fade->speed = 0x100;
@@ -1245,9 +1224,7 @@ static void Task_SinglePlayerMenuMain(void)
 
         for (menuIndex = 0; menuIndex < numMenuItems; menuIndex++) {
             if (menuIndex != titleScreen->menuCursor) {
-                CreateMenuItemTransition(
-                    &titleScreen->menuItems[SinglePlayerMenuItem(menuIndex)],
-                    TRANSITION_OUT);
+                CreateMenuItemTransition(&titleScreen->menuItems[SinglePlayerMenuItem(menuIndex)], TRANSITION_OUT);
             }
         }
 
@@ -1320,8 +1297,7 @@ static void Task_HandleTitleScreenExit(void)
             }
             DisplaySprite(&titleScreen->unkC0);
         } else {
-            menuItem
-                = &titleScreen->menuItems[SinglePlayerMenuItem(titleScreen->menuCursor)];
+            menuItem = &titleScreen->menuItems[SinglePlayerMenuItem(titleScreen->menuCursor)];
             menuItem->palId = 1;
             if ((++titleScreen->animFrame & 7) > 3) {
                 DisplaySprite(menuItem);
@@ -1451,8 +1427,7 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     REG_SIOCNT &= ~SIO_INTR_ENABLE;
     gDispCnt |= 0x4000;
     gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
-    gWinRegs[WINREG_WIN1V]
-        = WIN_RANGE((titleScreen->wavesTopOffset - 2), DISPLAY_HEIGHT);
+    gWinRegs[WINREG_WIN1V] = WIN_RANGE((titleScreen->wavesTopOffset - 2), DISPLAY_HEIGHT);
     gWinRegs[WINREG_WININ] |= 0x3F00;
     gWinRegs[WINREG_WINOUT] &= 0x13;
 
@@ -1485,9 +1460,7 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
             *pointer++ = 0;
 
             // * DISPLAY_WIDTH
-            temp = (titleScreen->wavesTranslationY[i - titleScreen->wavesTopOffset]
-                    * 0xF000)
-                >> 8;
+            temp = (titleScreen->wavesTranslationY[i - titleScreen->wavesTopOffset] * 0xF000) >> 8;
             temp = (0xF000 - (temp)) >> 1;
             temp = ((temp)*r3) >> 8;
 
@@ -1692,9 +1665,7 @@ static void CreateLensFlareAnimation(void)
         s->timeUntilNextFrame = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
-        s->frameFlags = i
-            | (SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
-               | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
+        s->frameFlags = i | (SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
 
         transform->rotation = 0;
         transform->height = transform->width = posX * 2 + 0xB0;
@@ -1720,9 +1691,8 @@ static void Task_LensFlareAnim(void)
     lensFlare->unk202 += 3;
     gBgScrollRegs[0][1] -= 3;
 
-    gBldRegs.bldCnt = BLDCNT_TGT2_BD | BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3
-        | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0 | BLDCNT_EFFECT_BLEND
-        | BLDCNT_TGT1_OBJ;
+    gBldRegs.bldCnt = BLDCNT_TGT2_BD | BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0
+        | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_OBJ;
     gBldRegs.bldAlpha = BLDALPHA_BLEND(7, 31);
 
     // Show the flares every other frame
@@ -1732,13 +1702,10 @@ static void Task_LensFlareAnim(void)
             transform = &lensFlare->transforms[i];
 
             // Potentially a macro
-            transform->x = sub_8085654(lensFlare->posSequenceX[i], -0x14,
-                                       lensFlare->animFrame * 16, 8, 0);
+            transform->x = sub_8085654(lensFlare->posSequenceX[i], -0x14, lensFlare->animFrame * 16, 8, 0);
 
-            transform->y = sub_8085654(lensFlare->posSequenceY[i] + lensFlare->unk202
-                                           - gBgScrollRegs[1][1],
-                                       -0x14 + lensFlare->unk202 - gBgScrollRegs[1][1],
-                                       lensFlare->animFrame * 16, 8, 0);
+            transform->y = sub_8085654(lensFlare->posSequenceY[i] + lensFlare->unk202 - gBgScrollRegs[1][1],
+                                       -0x14 + lensFlare->unk202 - gBgScrollRegs[1][1], lensFlare->animFrame * 16, 8, 0);
 
             TransformSprite(s, transform);
             DisplaySprite(s);
@@ -1953,11 +1920,9 @@ static void CreateMenuItemTransition(Sprite *s, u8 type)
     MenuItemTransition *miTransition;
 
     if (type == TRANSITION_OUT) {
-        t = TaskCreate(Task_MenuItemTransitionOutAnim, sizeof(MenuItemTransition),
-                       0x2000, 0, 0);
+        t = TaskCreate(Task_MenuItemTransitionOutAnim, sizeof(MenuItemTransition), 0x2000, 0, 0);
     } else if (type == TRANSITION_IN) {
-        t = TaskCreate(Task_MenuItemTransitionInAnim, sizeof(MenuItemTransition), 0x2000,
-                       0, 0);
+        t = TaskCreate(Task_MenuItemTransitionInAnim, sizeof(MenuItemTransition), 0x2000, 0, 0);
     } else {
         return;
     }

@@ -1,11 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_lens_flare_bg[]
-    = INCBIN_U16("data/tilemaps/lens_flare_bg/palette.gbapal");
+const u16 Palette_lens_flare_bg[] = INCBIN_U16("data/tilemaps/lens_flare_bg/palette.gbapal");
 const u8 Tiles_lens_flare_bg[] = INCBIN_U8("data/tilemaps/lens_flare_bg/tiles.4bpp");
-const u16 Tilemap_lens_flare_bg[]
-    = INCBIN_U16("data/tilemaps/lens_flare_bg/tilemap.tilemap2");
+const u16 Tilemap_lens_flare_bg[] = INCBIN_U16("data/tilemaps/lens_flare_bg/tilemap.tilemap2");
 
 const Tilemap lens_flare_bg = {
     .xTiles = 7,

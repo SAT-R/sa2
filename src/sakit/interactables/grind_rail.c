@@ -24,25 +24,20 @@ typedef struct {
 #define RAIL_KIND_2  0x2
 #define RAIL_KIND_80 0x80
 
-#define INITIALIZE_RAIL(type)                                                           \
-    CreateEntity_GrindRail(me, spriteRegionX, spriteRegionY, spriteY, type)
-#define INITIALIZE_RAIL_AIR(type)                                                       \
-    CreateEntity_GrindRail_Air(me, spriteRegionX, spriteRegionY, spriteY, type)
+#define INITIALIZE_RAIL(type)     CreateEntity_GrindRail(me, spriteRegionX, spriteRegionY, spriteY, type)
+#define INITIALIZE_RAIL_AIR(type) CreateEntity_GrindRail_Air(me, spriteRegionX, spriteRegionY, spriteY, type)
 
-static void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                   u8 spriteY, u8 railType);
+static void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType);
 
 void Task_GrindRail(void);
 void sub_8010464(void);
 
 // (79.90%) https://decomp.me/scratch/ncgh4
-NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
-         void Task_GrindRail(void))
+NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc", void Task_GrindRail(void))
 {
     Player *player = &gPlayer;
 
-    s32 r7 = GRAVITY_IS_INVERTED ? I(player->y) - player->unk17
-                                 : I(player->y) + player->unk17;
+    s32 r7 = GRAVITY_IS_INVERTED ? I(player->y) - player->unk17 : I(player->y) + player->unk17;
 
     // _0800FE78
     Sprite_GrindRail *rail = TASK_DATA(gCurTask);
@@ -61,11 +56,8 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
     if (!(player->moveState & MOVESTATE_DEAD)) {
         void *newRail; // for matching
         s32 left = posX + me->d.sData[0] * TILE_WIDTH;
-        if ((left <= I(player->x))
-            && (left + me->d.uData[2] * TILE_WIDTH >= I(player->x))
-            && ((posY + me->d.sData[1] * TILE_WIDTH) <= r7)
-            && (((posY + me->d.sData[1] * TILE_WIDTH) + me->d.uData[3] * TILE_WIDTH)
-                >= r7)) {
+        if ((left <= I(player->x)) && (left + me->d.uData[2] * TILE_WIDTH >= I(player->x)) && ((posY + me->d.sData[1] * TILE_WIDTH) <= r7)
+            && (((posY + me->d.sData[1] * TILE_WIDTH) + me->d.uData[3] * TILE_WIDTH) >= r7)) {
             bool32 r6 = FALSE;
 
             if (GRAVITY_IS_INVERTED) {
@@ -85,9 +77,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
                             s32 left = me->d.sData[0] * TILE_WIDTH;
                             s32 middle = left + me->d.uData[2] * 4;
                             if (newPlayerX >= middle) {
-                                if ((!(player->unk5C & gPlayerControls.jump)
-                                     || !(railKind & RAIL_KIND_2))
-                                    && !(railKind & RAIL_KIND_1))
+                                if ((!(player->unk5C & gPlayerControls.jump) || !(railKind & RAIL_KIND_2)) && !(railKind & RAIL_KIND_1))
                                     goto _080100B0;
                             }
                             // _0800FFB8
@@ -114,8 +104,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
                         s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
                         middle += me->d.uData[2] * 4;
                         if (playerX <= middle) {
-                            if ((!(player->unk5C & gPlayerControls.jump))
-                                || !(railKind & RAIL_KIND_2))
+                            if ((!(player->unk5C & gPlayerControls.jump)) || !(railKind & RAIL_KIND_2))
                                 goto _080100B0;
                         }
                         // _08010028
@@ -187,8 +176,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc",
 END_NONMATCH
 
 // (94.19%) https://decomp.me/scratch/mrRim
-NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
-         void Task_GrindRail_Air(void))
+NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc", void Task_GrindRail_Air(void))
 {
     Player *player = &gPlayer;
     Sprite_GrindRail *rail = TASK_DATA(gCurTask);
@@ -243,8 +231,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
                             if (kind & RAIL_KIND_1) {
                                 if ((gPlayer.moveState & 1)) {
                                     if (left < ((someWidth >> 1) + right)
-                                        || ((player->unk5C & gPlayerControls.jump)
-                                            && (kind & RAIL_KIND_2))) {
+                                        || ((player->unk5C & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
                                         if ((kind & RAIL_KIND_2)) {
                                             player->transition = 13;
                                             goto set13;
@@ -261,9 +248,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
                                     newLeft += me->d.uData[0] * 8;
                                     newLeft += me->d.uData[2] * 4;
 
-                                    if (playerX > newLeft
-                                        || ((player->unk5C & gPlayerControls.jump)
-                                            && (kind & RAIL_KIND_2))) {
+                                    if (playerX > newLeft || ((player->unk5C & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
                                         if ((kind & RAIL_KIND_2)) {
                                             player->transition = 13;
                                         set13:;
@@ -290,12 +275,10 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc",
 }
 END_NONMATCH
 
-void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY, u8 railType)
+void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
-    struct Task *t
-        = TaskCreate(Task_GrindRail, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_GrindRail, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
     Sprite_GrindRail *rail = TASK_DATA(t);
     rail->kind = railType;
     rail->regionX = spriteRegionX;
@@ -335,8 +318,7 @@ void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY, u8 railType)
+void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
     struct Task *t = TaskCreate(Task_GrindRail_Air, 10, 0x2010, 0, NULL);
@@ -397,51 +379,19 @@ void sub_8010464(void)
 }
 
 // Enables not only from air, but when running on water aswell
-void CreateEntity_GrindRail_StartAir(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
-{
-    INITIALIZE_RAIL(2);
-}
+void CreateEntity_GrindRail_StartAir(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY) { INITIALIZE_RAIL(2); }
 
-void CreateEntity_GrindRail_End_ForcedJump(MapEntity *me, u16 spriteRegionX,
-                                           u16 spriteRegionY, u8 spriteY)
-{
-    INITIALIZE_RAIL(3);
-}
+void CreateEntity_GrindRail_End_ForcedJump(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY) { INITIALIZE_RAIL(3); }
 
-void CreateEntity_GrindRail_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
-{
-    INITIALIZE_RAIL(0);
-}
+void CreateEntity_GrindRail_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY) { INITIALIZE_RAIL(0); }
 
-void CreateEntity_GrindRail_EndGround(MapEntity *me, u16 spriteRegionX,
-                                      u16 spriteRegionY, u8 spriteY)
-{
-    INITIALIZE_RAIL(1);
-}
+void CreateEntity_GrindRail_EndGround(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY) { INITIALIZE_RAIL(1); }
 
-void CreateEntity_GrindRail_EndAir(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                   u8 spriteY)
-{
-    INITIALIZE_RAIL_AIR(2);
-}
+void CreateEntity_GrindRail_EndAir(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY) { INITIALIZE_RAIL_AIR(2); }
 
-void CreateEntity_GrindRail_EndAir_Left(MapEntity *me, u16 spriteRegionX,
-                                        u16 spriteRegionY, u8 spriteY)
-{
-    INITIALIZE_RAIL_AIR(3);
-}
+void CreateEntity_GrindRail_EndAir_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY) { INITIALIZE_RAIL_AIR(3); }
 
 // Might be called "CreateEntity_GrindRail_StartAir" instead?
-void CreateEntity_GrindRail_EndAlternate(MapEntity *me, u16 spriteRegionX,
-                                         u16 spriteRegionY, u8 spriteY)
-{
-    INITIALIZE_RAIL_AIR(0);
-}
+void CreateEntity_GrindRail_EndAlternate(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY) { INITIALIZE_RAIL_AIR(0); }
 
-void CreateEntity_GrindRail_EndGround_Left(MapEntity *me, u16 spriteRegionX,
-                                           u16 spriteRegionY, u8 spriteY)
-{
-    INITIALIZE_RAIL_AIR(1);
-}
+void CreateEntity_GrindRail_EndGround_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY) { INITIALIZE_RAIL_AIR(1); }

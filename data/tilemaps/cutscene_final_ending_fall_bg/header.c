@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_cutscene_final_ending_fall_bg[]
-    = INCBIN_U16("data/tilemaps/cutscene_final_ending_fall_bg/palette.gbapal");
-const u8 Tiles_cutscene_final_ending_fall_bg[]
-    = INCBIN_U8("data/tilemaps/cutscene_final_ending_fall_bg/tiles.4bpp");
-const u16 Tilemap_cutscene_final_ending_fall_bg[]
-    = INCBIN_U16("data/tilemaps/cutscene_final_ending_fall_bg/tilemap.tilemap2");
+const u16 Palette_cutscene_final_ending_fall_bg[] = INCBIN_U16("data/tilemaps/cutscene_final_ending_fall_bg/palette.gbapal");
+const u8 Tiles_cutscene_final_ending_fall_bg[] = INCBIN_U8("data/tilemaps/cutscene_final_ending_fall_bg/tiles.4bpp");
+const u16 Tilemap_cutscene_final_ending_fall_bg[] = INCBIN_U16("data/tilemaps/cutscene_final_ending_fall_bg/tilemap.tilemap2");
 
 const Tilemap cutscene_final_ending_fall_bg = {
     .xTiles = 32,

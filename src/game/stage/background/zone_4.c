@@ -45,8 +45,7 @@ void StageBgUpdate_Zone4Acts12(s32 camX, s32 camY)
 {
     Player *player = &gPlayer;
 
-    if ((player->moveState & MOVESTATE_8000000)
-        && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
+    if ((player->moveState & MOVESTATE_8000000) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
         if (sCameraShiftX == 0) {
             sCameraShiftX = camX;
         }

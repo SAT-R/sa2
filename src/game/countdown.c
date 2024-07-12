@@ -26,20 +26,15 @@ struct CourseStartCountdown {
 };
 
 const TileInfo gUnknown_080D7518[NUM_CHARACTERS] = {
-    TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0,
-                    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_SONIC)),
+    TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_SONIC)),
 
-    TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0,
-                    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_CREAM)),
+    TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_CREAM)),
 
-    TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0,
-                    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_TAILS)),
+    TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_TAILS)),
 
-    TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0,
-                    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_KNUCKLES)),
+    TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_KNUCKLES)),
 
-    TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0,
-                    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_AMY)),
+    TextElementAlt4(SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF, 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_AMY)),
 };
 
 void sub_8036168(void);
@@ -52,8 +47,7 @@ void CreateCourseStartCountdown(bool8 playerSkippedIntro)
     Sprite *s;
 
     gStageFlags |= STAGE_FLAG__100;
-    t = TaskCreate(sub_8036168, sizeof(struct CourseStartCountdown), 0x3000, 0,
-                   sub_8036638);
+    t = TaskCreate(sub_8036168, sizeof(struct CourseStartCountdown), 0x3000, 0, sub_8036638);
     countdown = TASK_DATA(t);
 
     countdown->unk6A = 0;
@@ -103,8 +97,7 @@ void sub_8036168(void)
     Sprite *s;
 
     // Skip intro
-    if (IS_SINGLE_PLAYER && countdown->unk68 > (GBA_FRAMES_PER_SECOND * 3)
-        && gPressedKeys & (A_BUTTON | B_BUTTON)) {
+    if (IS_SINGLE_PLAYER && countdown->unk68 > (GBA_FRAMES_PER_SECOND * 3) && gPressedKeys & (A_BUTTON | B_BUTTON)) {
         countdown->unk68 = GBA_FRAMES_PER_SECOND * 3;
     }
 
@@ -153,8 +146,7 @@ void sub_8036168(void)
 
     if (countdown->unk68 < (GBA_FRAMES_PER_SECOND * 3)) {
         s = &countdown->sprCountdownDigits;
-        s->variant = SA2_ANIM_VARIANT_COUNTDOWN_1
-            - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
+        s->variant = SA2_ANIM_VARIANT_COUNTDOWN_1 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         s->prevVariant = -1;
         s->x = (I(gPlayer.x) - gCamera.x) + 0x18;
         s->y = (I(gPlayer.y) - gCamera.y) - 0x18;
@@ -162,8 +154,7 @@ void sub_8036168(void)
         DisplaySprite(s);
     }
 
-    if (countdown->unk68 >= (int)((1 + 1. / 6.) * GBA_FRAMES_PER_SECOND)
-        && countdown->unk68 < 3 * GBA_FRAMES_PER_SECOND) {
+    if (countdown->unk68 >= (int)((1 + 1. / 6.) * GBA_FRAMES_PER_SECOND) && countdown->unk68 < 3 * GBA_FRAMES_PER_SECOND) {
         gPlayer.anim = gUnknown_080D7518[gSelectedCharacter].anim;
         gPlayer.variant = gUnknown_080D7518[gSelectedCharacter].variant;
         gPlayer.unk6C = 1;
@@ -208,8 +199,7 @@ struct RaceStartMessage {
 
 void CreateRaceStartMessage(void)
 {
-    struct Task *t = TaskCreate(sub_8036524, sizeof(struct RaceStartMessage), 0x3000, 0,
-                                sub_8036654);
+    struct Task *t = TaskCreate(sub_8036524, sizeof(struct RaceStartMessage), 0x3000, 0, sub_8036654);
     struct RaceStartMessage *startMessage = TASK_DATA(t);
     Sprite *s;
 

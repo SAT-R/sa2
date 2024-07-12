@@ -78,8 +78,7 @@ void CreateStageRingsManager(void)
     u32 dataSize;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        t = TaskCreate(Task_RingsMgrMain, sizeof(RingsManager), 0x2000, 0,
-                       TaskDestructor_8007F1C);
+        t = TaskCreate(Task_RingsMgrMain, sizeof(RingsManager), 0x2000, 0, TaskDestructor_8007F1C);
 
         compressedRingPosData = gSpritePosData_rings[gCurrentLevel];
         dataSize = (*(u32 *)compressedRingPosData) >> 8;
@@ -115,15 +114,13 @@ void CreateStageRingsManager(void)
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
-    s->frameFlags
-        = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
+    s->frameFlags = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_MOSAIC);
 }
 
 // TODO: Create GET_OFFSET macro!
 //
 // (76.80%) https://decomp.me/scratch/pbchb
-NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
-         void Task_RingsMgrMain(void))
+NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgrMain(void))
 {
     // oam sub-frame ID?
     u8 sp1C = 0;
@@ -160,8 +157,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
         // _08007FBE
         sp08 = FALSE;
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            u32 res = SuperSonicGetFlags()
-                & (SUPER_FLAG__200 | SUPER_FLAG__10 | SUPER_FLAG__8 | SUPER_FLAG__4);
+            u32 res = SuperSonicGetFlags() & (SUPER_FLAG__200 | SUPER_FLAG__10 | SUPER_FLAG__8 | SUPER_FLAG__4);
             sp08 = TRUE;
 
             if (res) {
@@ -215,38 +211,26 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                             s32 rx = TO_WORLD_POS(meRing->x, sb);
                             s32 ry = TO_WORLD_POS(meRing->y, sl);
 
-                            if ((sp08 != FALSE)
-                                || (gCurrentLevel
-                                        != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)
-                                    && PLAYER_IS_ALIVE)) {
+                            if ((sp08 != FALSE) || (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) && PLAYER_IS_ALIVE)) {
                                 // _0800810A
                                 s32 ringLeft = rx - 8;
 
                                 // Player touches ring(?)
-                                if (((ringLeft <= RM_PLAYER_LEFT)
-                                     && ((rx + 8) >= RM_PLAYER_LEFT))
-                                    || ((RM_PLAYER_RIGHT >= ringLeft))) {
+                                if (((ringLeft <= RM_PLAYER_LEFT) && ((rx + 8) >= RM_PLAYER_LEFT)) || ((RM_PLAYER_RIGHT >= ringLeft))) {
                                     // _0800813A
                                     s32 ringTop = ry - 16;
 
-                                    if (((ringTop <= RM_PLAYER_TOP)
-                                         && (RM_PLAYER_TOP >= ringTop))
-                                        || (ry >= RM_PLAYER_TOP)
-                                        || (((ringTop >= RM_PLAYER_TOP)
-                                             && (((ry + 16) <= RM_PLAYER_BOTTOM))))) {
+                                    if (((ringTop <= RM_PLAYER_TOP) && (RM_PLAYER_TOP >= ringTop)) || (ry >= RM_PLAYER_TOP)
+                                        || (((ringTop >= RM_PLAYER_TOP) && (((ry + 16) <= RM_PLAYER_BOTTOM))))) {
                                         // _08008166
                                         u16 prevRingCount = gRingCount;
                                         gRingCount++;
 
-                                        if (gCurrentLevel
-                                            != LEVEL_INDEX(ZONE_FINAL,
-                                                           ACT_TRUE_AREA_53)) {
+                                        if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
                                             s32 lives = Div(gRingCount, 100);
                                             s32 prevLives = Div(prevRingCount, 100);
 
-                                            if ((lives != prevLives)
-                                                && (gGameMode
-                                                    == GAME_MODE_SINGLE_PLAYER)) {
+                                            if ((lives != prevLives) && (gGameMode == GAME_MODE_SINGLE_PLAYER)) {
                                                 if ((gNumLives + 1) > 255u)
                                                     gNumLives = 255;
                                                 else
@@ -257,8 +241,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                         }
                                         // _080081AC
 
-                                        if (gGameMode
-                                            == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                                        if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                                             if (gRingCount > 0xFF)
                                                 gRingCount = 0xFF;
                                         }
@@ -306,8 +289,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                         hbRight = Q((px + mpp->s.hitboxes[0].right) + 16);
                         // hbLeft = Q((px + mpp->s.hitboxes[0].left) + 16);
 
-                        while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH))
-                               && (sb < regions_x)) {
+                        while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
                             // _080086E8
                             s32 yPos = sl * regions_x;
                             s32 xPos = sb * 4;
@@ -325,22 +307,13 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                         s32 rx = TO_WORLD_POS(meRing->x, sb);
                                         s32 ry = TO_WORLD_POS(meRing->y, sl);
 
-                                        if ((((rx - 8)
-                                              <= (mpp->pos.x + mpp->s.hitboxes[0].left))
-                                             && ((rx + 8) > mpp->s.hitboxes[0].right))
-                                            && (((ry - 8) >= (mpp->pos.y
-                                                              + mpp->s.hitboxes[0].top))
-                                                && ((rx + 8)
-                                                    <= mpp->s.hitboxes[0].bottom))) {
-                                            u8 anim = rm->s.graphics.anim
-                                                - gPlayerCharacterIdleAnims
-                                                    [gMultiplayerCharacters[mpp->unk56]];
-                                            if ((anim != SA2_CHAR_ANIM_28
-                                                 && anim != SA2_CHAR_ANIM_29)
-                                                || !(mpp->unk54 & 0x4)) {
+                                        if ((((rx - 8) <= (mpp->pos.x + mpp->s.hitboxes[0].left)) && ((rx + 8) > mpp->s.hitboxes[0].right))
+                                            && (((ry - 8) >= (mpp->pos.y + mpp->s.hitboxes[0].top))
+                                                && ((rx + 8) <= mpp->s.hitboxes[0].bottom))) {
+                                            u8 anim = rm->s.graphics.anim - gPlayerCharacterIdleAnims[gMultiplayerCharacters[mpp->unk56]];
+                                            if ((anim != SA2_CHAR_ANIM_28 && anim != SA2_CHAR_ANIM_29) || !(mpp->unk54 & 0x4)) {
                                                 CreateCollectRingEffect(rx, ry);
-                                                meRing->x
-                                                    = (u8)MAP_ENTITY_STATE_INITIALIZED;
+                                                meRing->x = (u8)MAP_ENTITY_STATE_INITIALIZED;
                                             }
                                         }
                                     }
@@ -360,15 +333,13 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
         {
             sl = Q(gCamera.y) >> 16;
 
-            if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC)
-                && (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)) {
+            if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC) && (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)) {
 
                 while (((sl << 8) < gCamera.y + DISPLAY_HEIGHT) && (sl < regions_y)) {
                     // _080086CC
                     sb = Q(gCamera.x) >> 16;
 
-                    while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH))
-                           && (sb < regions_x)) {
+                    while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
                         // _080086E8
                         s32 yPos = sl * regions_x;
                         s32 xPos = sb * 4;
@@ -387,15 +358,10 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                     s32 rx = TO_WORLD_POS(meRing->x, sb);
                                     s32 ry = TO_WORLD_POS(meRing->y, sl);
 
-                                    if (((u32)(rx - gCamera.x) + TILE_WIDTH)
-                                            <= (DISPLAY_WIDTH + 2 * TILE_WIDTH)
-                                        && (((ry - gCamera.y)) >= 0)
-                                        && (((ry - gCamera.y) - 2 * TILE_WIDTH)
-                                            > DISPLAY_HEIGHT)) {
+                                    if (((u32)(rx - gCamera.x) + TILE_WIDTH) <= (DISPLAY_WIDTH + 2 * TILE_WIDTH)
+                                        && (((ry - gCamera.y)) >= 0) && (((ry - gCamera.y) - 2 * TILE_WIDTH) > DISPLAY_HEIGHT)) {
                                         meRing++;
-                                    } else if (((rx - 64) <= I(gPlayer.x))
-                                               && ((rx + 64) >= I(gPlayer.x))
-                                               && ((ry - 72) <= I(gPlayer.y))
+                                    } else if (((rx - 64) <= I(gPlayer.x)) && ((rx + 64) >= I(gPlayer.x)) && ((ry - 72) <= I(gPlayer.y))
                                                && ((ry + 56 >= I(gPlayer.y)))) {
                                         CreateMagneticRing(rx, ry);
                                         meRing->x = (u8)MAP_ENTITY_STATE_INITIALIZED;
@@ -413,28 +379,19 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                             DisplaySprite(s);
                                         } else {
                                             // _08008788
-                                            OamData *oamDat
-                                                = &gOamBuffer2[s->oamBaseIndex];
-                                            OamData *oamAllocated
-                                                = OamMalloc(GET_SPRITE_OAM_ORDER(s));
+                                            OamData *oamDat = &gOamBuffer2[s->oamBaseIndex];
+                                            OamData *oamAllocated = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
                                             if (iwram_end == oamAllocated)
                                                 return;
 
-                                            DmaCopy16(3, oamDat, oamAllocated,
-                                                      sizeof(OamDataShort));
+                                            DmaCopy16(3, oamDat, oamAllocated, sizeof(OamDataShort));
 
                                             // TODO: Can these be done more explicitly?
                                             oamAllocated->all.attr1 &= 0xFE00;
                                             oamAllocated->all.attr0 &= 0xFF00;
-                                            oamAllocated->all.attr0
-                                                += ((ry - gCamera.y)
-                                                    - dimensions->offsetY)
-                                                & 0xFF;
-                                            oamAllocated->all.attr1
-                                                += ((rx - gCamera.x)
-                                                    - dimensions->offsetX)
-                                                & 0x1FF;
+                                            oamAllocated->all.attr0 += ((ry - gCamera.y) - dimensions->offsetY) & 0xFF;
+                                            oamAllocated->all.attr1 += ((rx - gCamera.x) - dimensions->offsetX) & 0x1FF;
                                         }
                                         sp1C++;
                                     }
@@ -455,8 +412,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                     // _080086CC
                     sb = Q(gCamera.x) >> 16;
 
-                    while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH))
-                           && (sb < regions_x)) {
+                    while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
                         // _080086E8
                         s32 yPos = sl * regions_x;
                         s32 xPos = sb * 4;
@@ -477,11 +433,8 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                     s32 rx = TO_WORLD_POS(meRing->x, sb);
                                     s32 ry = TO_WORLD_POS(meRing->y, sl);
 
-                                    if ((unsigned)((rx - gCamera.x) + TILE_WIDTH)
-                                            <= (DISPLAY_WIDTH + 2 * TILE_WIDTH)
-                                        && (((ry - gCamera.y)) >= 0)
-                                        && (((ry - gCamera.y) - 2 * TILE_WIDTH)
-                                            > DISPLAY_HEIGHT)) {
+                                    if ((unsigned)((rx - gCamera.x) + TILE_WIDTH) <= (DISPLAY_WIDTH + 2 * TILE_WIDTH)
+                                        && (((ry - gCamera.y)) >= 0) && (((ry - gCamera.y) - 2 * TILE_WIDTH) > DISPLAY_HEIGHT)) {
                                         meRing++;
                                     } else {
                                         meRing++;
@@ -495,28 +448,19 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc",
                                             DisplaySprite(s);
                                         } else {
                                             // _08008788
-                                            OamData *oamDat
-                                                = &gOamBuffer2[s->oamBaseIndex];
-                                            OamData *oamAllocated
-                                                = OamMalloc(GET_SPRITE_OAM_ORDER(s));
+                                            OamData *oamDat = &gOamBuffer2[s->oamBaseIndex];
+                                            OamData *oamAllocated = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
                                             if (iwram_end == oamAllocated)
                                                 return;
 
-                                            DmaCopy16(3, oamDat, oamAllocated,
-                                                      sizeof(OamDataShort));
+                                            DmaCopy16(3, oamDat, oamAllocated, sizeof(OamDataShort));
 
                                             // TODO: Can these be done more explicitly?
                                             oamAllocated->all.attr1 &= 0xFE00;
                                             oamAllocated->all.attr0 &= 0xFF00;
-                                            oamAllocated->all.attr0
-                                                += ((ry - gCamera.y)
-                                                    - dimensions->offsetY)
-                                                & 0xFF;
-                                            oamAllocated->all.attr1
-                                                += ((rx - gCamera.x)
-                                                    - dimensions->offsetX)
-                                                & 0x1FF;
+                                            oamAllocated->all.attr0 += ((ry - gCamera.y) - dimensions->offsetY) & 0xFF;
+                                            oamAllocated->all.attr1 += ((rx - gCamera.x) - dimensions->offsetX) & 0x1FF;
                                         }
                                         sp1C++;
                                     }

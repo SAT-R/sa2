@@ -34,9 +34,8 @@ typedef struct {
 } AnimInfoPauseMenu;
 
 const AnimInfoPauseMenu sAnimInfoPauseMenu[] = {
-    { 40, SA2_ANIM_PAUSE_MENU_JP, 0 }, { 40, SA2_ANIM_PAUSE_MENU_EN, 0 },
-    { 40, SA2_ANIM_PAUSE_MENU_DE, 0 }, { 40, SA2_ANIM_PAUSE_MENU_FR, 0 },
-    { 40, SA2_ANIM_PAUSE_MENU_ES, 0 }, { 40, SA2_ANIM_PAUSE_MENU_IT, 0 },
+    { 40, SA2_ANIM_PAUSE_MENU_JP, 0 }, { 40, SA2_ANIM_PAUSE_MENU_EN, 0 }, { 40, SA2_ANIM_PAUSE_MENU_DE, 0 },
+    { 40, SA2_ANIM_PAUSE_MENU_FR, 0 }, { 40, SA2_ANIM_PAUSE_MENU_ES, 0 }, { 40, SA2_ANIM_PAUSE_MENU_IT, 0 },
 };
 
 #define PMCURSOR_CONTINUE 0
@@ -59,8 +58,7 @@ void CreatePauseMenu(void)
         void *vramTiles = VramMalloc(sAnimInfoPauseMenu[lang].size);
 
         if (vramTiles != ewram_end) {
-            struct Task *t = TaskCreate(Task_PauseMenuInit, sizeof(PauseMenu), 0xFFFE, 4,
-                                        TaskDestructor_PauseMenu);
+            struct Task *t = TaskCreate(Task_PauseMenuInit, sizeof(PauseMenu), 0xFFFE, 4, TaskDestructor_PauseMenu);
             PauseMenu *pm = TASK_DATA(t);
             Sprite *s = &pm->s;
 
@@ -99,13 +97,10 @@ void Task_PauseMenuUpdate(void)
     PauseMenu *pm = TASK_DATA(gCurTask);
 
     /* Handle A-/B-Button */
-    if ((gReleasedKeys & A_BUTTON)
-        && (pm->unk63 & PMFLAG_HOLDING_A_BUTTON_SINCE_CREATION)) {
+    if ((gReleasedKeys & A_BUTTON) && (pm->unk63 & PMFLAG_HOLDING_A_BUTTON_SINCE_CREATION)) {
         pm->unk63 = PMFLAG_A_BUTTON_RELEASED;
-    } else if ((gPressedKeys & START_BUTTON)
-               || ((pm->cursor == PMCURSOR_CONTINUE) && (gReleasedKeys & A_BUTTON))
-               || ((gGameMode != GAME_MODE_SINGLE_PLAYER)
-                   && (gPressedKeys & B_BUTTON))) {
+    } else if ((gPressedKeys & START_BUTTON) || ((pm->cursor == PMCURSOR_CONTINUE) && (gReleasedKeys & A_BUTTON))
+               || ((gGameMode != GAME_MODE_SINGLE_PLAYER) && (gPressedKeys & B_BUTTON))) {
         // Close the Pause Menu
         gFlags &= ~FLAGS_PAUSE_GAME;
         m4aMPlayContinue(gMPlayTable[0].info);
@@ -121,8 +116,7 @@ void Task_PauseMenuUpdate(void)
         PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
         return;
-    } else if ((gGameMode == GAME_MODE_SINGLE_PLAYER)
-               && (pm->cursor != PMCURSOR_CONTINUE) && (gReleasedKeys & A_BUTTON)) {
+    } else if ((gGameMode == GAME_MODE_SINGLE_PLAYER) && (pm->cursor != PMCURSOR_CONTINUE) && (gReleasedKeys & A_BUTTON)) {
         gFlags &= ~FLAGS_PAUSE_GAME;
         m4aSongNumStart(SE_SELECT);
 
@@ -205,8 +199,7 @@ extern u8 Tileset_zone_1_act_1_fg[];
 
 void sub_800AE58(void)
 {
-    DmaCopy16(3, &Tileset_zone_1_act_1_fg[(4 * 16 * TILE_SIZE_4BPP) / sizeof(u16)],
-              (void *)(OBJ_VRAM1 + 0x3EC0), 0x140);
+    DmaCopy16(3, &Tileset_zone_1_act_1_fg[(4 * 16 * TILE_SIZE_4BPP) / sizeof(u16)], (void *)(OBJ_VRAM1 + 0x3EC0), 0x140);
 
     gObjPalette[1] = RGB_WHITE;
     gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;

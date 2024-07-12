@@ -9,10 +9,7 @@ struct Task *gDummyTask = NULL;
 static void Task_DummyFunc(void);
 static void DummyTaskOnDestroy(struct Task *);
 
-UNUSED void CreateDummyTask(void)
-{
-    gDummyTask = TaskCreate(Task_DummyFunc, 0, 0x100, 0, DummyTaskOnDestroy);
-}
+UNUSED void CreateDummyTask(void) { gDummyTask = TaskCreate(Task_DummyFunc, 0, 0x100, 0, DummyTaskOnDestroy); }
 
 UNUSED static void DestroyDummyTask(void)
 {

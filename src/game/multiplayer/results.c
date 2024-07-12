@@ -113,12 +113,9 @@ static const TileInfo sResultsScreenPlayerCursor[MULTI_SIO_PLAYERS_MAX] = {
 };
 
 static const u16 sResultsScreenBgSelectedCharacters[] = {
-    [LANG_DEFAULT] = TM_MP_CHARACTERS_SELECTED_JP,
-    [LANG_JAPANESE] = TM_MP_CHARACTERS_SELECTED_JP,
-    [LANG_ENGLISH] = TM_MP_CHARACTERS_SELECTED_EN,
-    [LANG_GERMAN] = TM_MP_CHARACTERS_SELECTED_DE,
-    [LANG_FRENCH] = TM_MP_CHARACTERS_SELECTED_FR,
-    [LANG_SPANISH] = TM_MP_CHARACTERS_SELECTED_ES,
+    [LANG_DEFAULT] = TM_MP_CHARACTERS_SELECTED_JP, [LANG_JAPANESE] = TM_MP_CHARACTERS_SELECTED_JP,
+    [LANG_ENGLISH] = TM_MP_CHARACTERS_SELECTED_EN, [LANG_GERMAN] = TM_MP_CHARACTERS_SELECTED_DE,
+    [LANG_FRENCH] = TM_MP_CHARACTERS_SELECTED_FR,  [LANG_SPANISH] = TM_MP_CHARACTERS_SELECTED_ES,
     [LANG_ITALIAN] = TM_MP_CHARACTERS_SELECTED_IT,
 };
 
@@ -156,8 +153,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
     gUnknown_03002280[3][3] = 0x40;
 
     DmaFill32(3, 0, (void *)VRAM + 0x9fe0, 0x40);
-    t = TaskCreate(sub_805C0F0, sizeof(struct MultiplayerResultsScreen), 0x2000, 0,
-                   NULL);
+    t = TaskCreate(sub_805C0F0, sizeof(struct MultiplayerResultsScreen), 0x2000, 0, NULL);
     resultsScreen = TASK_DATA(t);
 
     resultsScreen->animStep = 0;
@@ -369,11 +365,9 @@ static void sub_805C3D0(void)
 #ifdef TEAMPLAY_AVAILABLE
                 CreateMultiplayerResultsScreen();
 #else
-                CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels,
-                                            COURSE_SELECT_CUT_SCENE_NONE);
+                CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels, COURSE_SELECT_CUT_SCENE_NONE);
 #endif
-            } else if (gGameMode == GAME_MODE_SINGLE_PLAYER
-                       && gLoadedSaveGame->unlockedLevels[gSelectedCharacter] == 0) {
+            } else if (gGameMode == GAME_MODE_SINGLE_PLAYER && gLoadedSaveGame->unlockedLevels[gSelectedCharacter] == 0) {
                 gCurrentLevel = 0;
                 GameStageStart();
                 return;
@@ -381,9 +375,7 @@ static void sub_805C3D0(void)
 #ifdef TEAMPLAY_AVAILABLE
                 CreateMultiplayerResultsScreen();
 #else
-                CreateCourseSelectionScreen(
-                    0, gLoadedSaveGame->unlockedLevels[gSelectedCharacter],
-                    COURSE_SELECT_CUT_SCENE_NONE);
+                CreateCourseSelectionScreen(0, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], COURSE_SELECT_CUT_SCENE_NONE);
 #endif
             }
         }

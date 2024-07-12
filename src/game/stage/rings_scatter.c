@@ -97,8 +97,7 @@ void InitPlayerHitRingsScatter(void)
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(2.0);
     s->palId = 0;
-    s->frameFlags
-        = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_18 | SPRITE_FLAG_MASK_MOSAIC);
+    s->frameFlags = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_18 | SPRITE_FLAG_MASK_MOSAIC);
     rs->unk2B6 = 0;
     rs->unk2B4 = 0x94;
     rs->unk2B0 = 0x12;
@@ -258,16 +257,11 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Fli
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C)
-            && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0))
-            && (IS_ALIVE(p))
-            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
-                 && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
+        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
+            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
-                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb))
-                    && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
-            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY < HB_TOP(p, hb)))
-                && ((ringIntY - 16) >= HB_TOP(p, hb)))
+                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
+            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY < HB_TOP(p, hb))) && ((ringIntY - 16) >= HB_TOP(p, hb)))
             && (HB_BOTTOM(p, hb) >= (ringIntY - 16))) {
             s32 oldRingCount;
             // _0801FF70
@@ -288,8 +282,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Fli
             // _08020008
 
             if ((ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
-                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
-                                      sub_801EC3C);
+                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8, sub_801EC3C);
                 if (res <= 0) {
                     ring->y -= Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
@@ -306,8 +299,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Fli
 
             ring->velY -= sp08;
 
-            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8)
-                && (screenY < (DISPLAY_HEIGHT + 8))) {
+            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8) && (screenY < (DISPLAY_HEIGHT + 8))) {
                 if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
                     // _080200C0
                     if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
@@ -398,16 +390,11 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Nor
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C)
-            && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0))
-            && (IS_ALIVE(p))
-            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
-                 && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
+        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
+            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
-                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb))
-                    && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
-            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY >= HB_TOP(p, hb)))
-                && ((ringIntY - 16) >= HB_TOP(p, hb)))
+                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
+            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY >= HB_TOP(p, hb))) && ((ringIntY - 16) >= HB_TOP(p, hb)))
             && (HB_BOTTOM(p, hb) >= (ringIntY - 16))) {
             s32 oldRingCount;
 
@@ -433,8 +420,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Nor
             }
 
             if ((rs->unk2B6 & 0x1) && (ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
-                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
-                                      sub_801EC3C);
+                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8, sub_801EC3C);
                 if (res <= 0) {
                     ring->y += Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
@@ -443,8 +429,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Nor
 
             ring->velY -= sp08;
 
-            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8)
-                && (screenY < (DISPLAY_HEIGHT + 8))) {
+            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8) && (screenY < (DISPLAY_HEIGHT + 8))) {
                 if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
                     if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
                         s->oamBaseIndex = 0xFF;
@@ -491,9 +476,8 @@ END_NONMATCH
 //       A ton of code is missing here.
 //       (Basically a copy-paste of RingsScatterSingleplayer_FlippedGravity)
 // (66.09%) https://decomp.me/scratch/qHlN9
-NONMATCH(
-    "asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_FlippedGravity.inc",
-    void RingsScatterMultipak_FlippedGravity(void))
+NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_FlippedGravity.inc",
+         void RingsScatterMultipak_FlippedGravity(void))
 {
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
@@ -535,16 +519,11 @@ NONMATCH(
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C)
-            && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0))
-            && (IS_ALIVE(p))
-            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
-                 && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
+        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
+            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
-                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb))
-                    && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
-            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY < HB_TOP(p, hb)))
-                && ((ringIntY - 16) >= HB_TOP(p, hb)))
+                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
+            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY < HB_TOP(p, hb))) && ((ringIntY - 16) >= HB_TOP(p, hb)))
             && (HB_BOTTOM(p, hb) >= (ringIntY - 16))) {
             s32 oldRingCount;
 
@@ -561,8 +540,7 @@ NONMATCH(
             ring->unkC = 0;
         } else {
             if ((ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
-                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
-                                      sub_801EC3C);
+                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8, sub_801EC3C);
                 if (res <= 0) {
                     ring->y -= Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
@@ -579,8 +557,7 @@ NONMATCH(
 
             ring->velY -= sp08;
 
-            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8)
-                && (screenY < (DISPLAY_HEIGHT + 8))) {
+            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8) && (screenY < (DISPLAY_HEIGHT + 8))) {
                 if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
                     if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
                         s->oamBaseIndex = 0xFF;
@@ -626,9 +603,7 @@ END_NONMATCH
 //       A ton of code is missing here.
 //       (Basically a copy-paste of RingsScatterSingleplayer_NormalGravity)
 // (64.03%) https://decomp.me/scratch/KBtBo
-NONMATCH(
-    "asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_NormalGravity.inc",
-    void RingsScatterMultipak_NormalGravity(void))
+NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_NormalGravity.inc", void RingsScatterMultipak_NormalGravity(void))
 {
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
@@ -670,16 +645,11 @@ NONMATCH(
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C)
-            && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0))
-            && (IS_ALIVE(p))
-            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
-                 && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
+        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
+            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
-                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb))
-                    && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
-            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY >= HB_TOP(p, hb)))
-                && ((ringIntY - 16) >= HB_TOP(p, hb)))
+                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
+            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY >= HB_TOP(p, hb))) && ((ringIntY - 16) >= HB_TOP(p, hb)))
             && (HB_BOTTOM(p, hb) >= (ringIntY - 16))) {
             s32 oldRingCount;
 
@@ -705,8 +675,7 @@ NONMATCH(
             }
 
             if ((rs->unk2B6 & 0x1) && (ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
-                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
-                                      sub_801EC3C);
+                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8, sub_801EC3C);
                 if (res <= 0) {
                     ring->y += Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
@@ -715,8 +684,7 @@ NONMATCH(
 
             ring->velY -= sp08;
 
-            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8)
-                && (screenY < (DISPLAY_HEIGHT + 8))) {
+            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8) && (screenY < (DISPLAY_HEIGHT + 8))) {
                 if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
                     if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
                         s->oamBaseIndex = 0xFF;
@@ -764,8 +732,7 @@ END_NONMATCH
 //       A ton of code is missing here.
 //       (Basically a copy-paste of RingsScatterSingleplayer_NormalGravity)
 // (54.61%) https://decomp.me/scratch/v9rXO
-NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.inc",
-         void RingsScatterSinglepakMain(void))
+NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.inc", void RingsScatterSinglepakMain(void))
 {
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
@@ -807,16 +774,11 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.in
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C)
-            && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0))
-            && (IS_ALIVE(p))
-            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb))
-                 && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
+        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
+            && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
-                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb))
-                    && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
-            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY >= HB_TOP(p, hb)))
-                && ((ringIntY - 16) >= HB_TOP(p, hb)))
+                || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
+            && ((((ringIntY - 16) > HB_TOP(p, hb)) || (ringIntY >= HB_TOP(p, hb))) && ((ringIntY - 16) >= HB_TOP(p, hb)))
             && (HB_BOTTOM(p, hb) >= (ringIntY - 16))) {
             s32 oldRingCount;
 
@@ -842,8 +804,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.in
             }
 
             if ((rs->unk2B6 & 0x1) && (ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
-                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8,
-                                      sub_801EC3C);
+                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8, sub_801EC3C);
                 if (res <= 0) {
                     ring->y += Q(res);
                     ring->velY = (ring->velY >> 2) - ring->velY;
@@ -852,8 +813,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.in
 
             ring->velY -= sp08;
 
-            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8)
-                && (screenY < (DISPLAY_HEIGHT + 8))) {
+            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8) && (screenY < (DISPLAY_HEIGHT + 8))) {
                 if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
                     if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
                         s->oamBaseIndex = 0xFF;

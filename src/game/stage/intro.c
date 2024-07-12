@@ -48,67 +48,63 @@
 
 // The colored logo next to the stage name
 static const u16 zoneLoadingCharacterLogos[NUM_CHARACTERS][3] = {
-    [CHARACTER_SONIC] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 0 },
-    [CHARACTER_CREAM] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 3 },
-    [CHARACTER_TAILS] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 1 },
-    [CHARACTER_KNUCKLES] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 2 },
+    [CHARACTER_SONIC] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 0 }, [CHARACTER_CREAM] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 3 },
+    [CHARACTER_TAILS] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 1 }, [CHARACTER_KNUCKLES] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 2 },
     [CHARACTER_AMY] = { 9, SA2_ANIM_STAGE_INTRO_CHARACTER_LOGO, 4 },
 };
 
-static const u16
-    zoneLoadingZoneNames[NUM_INTRO_UNLOCKED_STAGES_ICONS * NUM_ZONE_NAME_PARTS][3]
-    = {
-          // LEAF FOREST
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 0 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 1 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 2 },
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 3 },
-          // HOT CRATER
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 4 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 5 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 6 },
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 7 },
-          // MUSIC PLANT
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 8 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 9 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 10 },
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 11 },
-          // ICE PARADISE
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 12 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 13 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 14 },
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 15 },
-          // SKY CANYON
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 16 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 17 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 18 },
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 19 },
-          // TECHNO BASE
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 20 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 21 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 22 },
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 23 },
-          // EGG UTOPIA
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 24 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 25 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 26 },
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 27 },
-          // XX
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 28 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 29 }, // (empty image)
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 30 }, // (empty image)
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 31 }, // (empty image)
-                                                       // TRUE AREA 53
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 32 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 33 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 34 },
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 35 },
-          // BOSS ATTACK!
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 36 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 37 },
-          { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 38 },
-          { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 39 },
-      };
+static const u16 zoneLoadingZoneNames[NUM_INTRO_UNLOCKED_STAGES_ICONS * NUM_ZONE_NAME_PARTS][3] = {
+    // LEAF FOREST
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 0 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 1 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 2 },
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 3 },
+    // HOT CRATER
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 4 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 5 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 6 },
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 7 },
+    // MUSIC PLANT
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 8 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 9 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 10 },
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 11 },
+    // ICE PARADISE
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 12 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 13 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 14 },
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 15 },
+    // SKY CANYON
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 16 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 17 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 18 },
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 19 },
+    // TECHNO BASE
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 20 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 21 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 22 },
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 23 },
+    // EGG UTOPIA
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 24 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 25 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 26 },
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 27 },
+    // XX
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 28 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 29 }, // (empty image)
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 30 }, // (empty image)
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 31 }, // (empty image)
+    // TRUE AREA 53
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 32 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 33 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 34 },
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 35 },
+    // BOSS ATTACK!
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 36 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 37 },
+    { 20, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 38 },
+    { 35, SA2_ANIM_STAGE_INTRO_ZONE_NAMES, 39 },
+};
 
 // Big icon showing the current zone during the stage loading screen.
 // It is positioned inside the rotating wheel displayed in the upper left screen corner.
@@ -150,75 +146,47 @@ static const u16 sZoneLoadingActLetters[5][3] = {
 };
 
 static const TileInfo characterAnimsGettingReady[NUM_CHARACTERS] = {
-    [CHARACTER_SONIC]
-    = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_SONIC), 0 },
-    [CHARACTER_CREAM]
-    = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_CREAM), 0 },
-    [CHARACTER_TAILS]
-    = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_TAILS), 0 },
-    [CHARACTER_KNUCKLES]
-    = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_KNUCKLES), 0 },
-    [CHARACTER_AMY]
-    = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_AMY), 0 },
+    [CHARACTER_SONIC] = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_SONIC), 0 },
+    [CHARACTER_CREAM] = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_CREAM), 0 },
+    [CHARACTER_TAILS] = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_TAILS), 0 },
+    [CHARACTER_KNUCKLES] = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_KNUCKLES), 0 },
+    [CHARACTER_AMY] = { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_BEFORE_COUNTDOWN, CHARACTER_AMY), 0 },
 };
 
 // TODO: static
 // Colored triangles used for each character (bottom-right)
 const TileInfo sColoredTriangle[NUM_CHARACTERS] = {
-    [CHARACTER_SONIC] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 0 },
-    [CHARACTER_CREAM] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 4 },
-    [CHARACTER_TAILS] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 1 },
-    [CHARACTER_KNUCKLES] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 2 },
+    [CHARACTER_SONIC] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 0 }, [CHARACTER_CREAM] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 4 },
+    [CHARACTER_TAILS] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 1 }, [CHARACTER_KNUCKLES] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 2 },
     [CHARACTER_AMY] = { 0x54, SA2_ANIM_STAGE_INTRO_TRIANGLES, 3 },
 };
 
 static const u8 sGettingReadyAnimationDuration[NUM_CHARACTERS]
-    = { [CHARACTER_SONIC] = 40,
-        [CHARACTER_CREAM] = 55,
-        [CHARACTER_TAILS] = 52,
-        [CHARACTER_KNUCKLES] = 40,
-        [CHARACTER_AMY] = 40 };
+    = { [CHARACTER_SONIC] = 40, [CHARACTER_CREAM] = 55, [CHARACTER_TAILS] = 52, [CHARACTER_KNUCKLES] = 40, [CHARACTER_AMY] = 40 };
 
 // Each byte represents one RGB channel (0-31)
 static const u8 gUnknown_080D6FF5[][3] = {
-    { 0x00, 0x17, 0x06 }, { 0x16, 0x16, 0x16 }, { 0x00, 0x04, 0x13 },
-    { 0x00, 0x08, 0x1D }, { 0x00, 0x00, 0x0C }, { 0x00, 0x13, 0x00 },
-    { 0x1F, 0x1F, 0x13 }, { 0x1F, 0x1B, 0x00 }, { 0x13, 0x0A, 0x02 },
-    { 0x1F, 0x15, 0x0A }, { 0x15, 0x00, 0x00 }, { 0x1F, 0x04, 0x04 },
-    { 0x04, 0x04, 0x04 }, { 0x1F, 0x1F, 0x1F }, { 0x0E, 0x0E, 0x0E },
-    { 0x00, 0x13, 0x1F }, { 0x00, 0x19, 0x14 }, { 0x19, 0x19, 0x19 },
-    { 0x1F, 0x0B, 0x00 }, { 0x1F, 0x12, 0x00 }, { 0x19, 0x05, 0x00 },
-    { 0x1C, 0x0B, 0x00 }, { 0x13, 0x00, 0x00 }, { 0x1F, 0x1C, 0x17 },
-    { 0x1D, 0x18, 0x10 }, { 0x13, 0x0F, 0x08 }, { 0x1F, 0x1E, 0x00 },
-    { 0x08, 0x11, 0x1F }, { 0x02, 0x02, 0x02 }, { 0x1F, 0x1F, 0x1F },
-    { 0x0E, 0x0E, 0x0E }, { 0x1F, 0x00, 0x1F }, { 0x00, 0x17, 0x06 },
-    { 0x1F, 0x00, 0x1F }, { 0x1D, 0x11, 0x04 }, { 0x1F, 0x17, 0x04 },
-    { 0x17, 0x0A, 0x02 }, { 0x15, 0x19, 0x1B }, { 0x00, 0x13, 0x1F },
-    { 0x04, 0x08, 0x1F }, { 0x13, 0x13, 0x13 }, { 0x0E, 0x0E, 0x0E },
-    { 0x15, 0x00, 0x00 }, { 0x1F, 0x04, 0x04 }, { 0x02, 0x02, 0x02 },
-    { 0x1F, 0x1F, 0x1F }, { 0x1F, 0x00, 0x1F }, { 0x1F, 0x00, 0x1F },
-    { 0x00, 0x16, 0x14 }, { 0x16, 0x16, 0x16 }, { 0x17, 0x00, 0x00 },
-    { 0x1F, 0x04, 0x00 }, { 0x0E, 0x00, 0x00 }, { 0x04, 0x08, 0x1F },
-    { 0x1F, 0x1F, 0x13 }, { 0x1F, 0x1B, 0x00 }, { 0x13, 0x0A, 0x00 },
-    { 0x1F, 0x15, 0x0A }, { 0x00, 0x15, 0x02 }, { 0x0E, 0x1F, 0x00 },
-    { 0x04, 0x04, 0x04 }, { 0x1F, 0x1F, 0x1F }, { 0x0E, 0x0E, 0x0E },
-    { 0x1F, 0x13, 0x00 }, { 0x00, 0x17, 0x06 }, { 0x15, 0x19, 0x1B },
-    { 0x1D, 0x08, 0x13 }, { 0x1F, 0x13, 0x17 }, { 0x17, 0x04, 0x0A },
-    { 0x00, 0x15, 0x00 }, { 0x0E, 0x0E, 0x0E }, { 0x13, 0x13, 0x13 },
-    { 0x13, 0x0A, 0x00 }, { 0x1F, 0x15, 0x0A }, { 0x15, 0x00, 0x00 },
-    { 0x1F, 0x00, 0x00 }, { 0x00, 0x00, 0x00 }, { 0x1F, 0x1F, 0x1F },
-    { 0x1F, 0x1F, 0x13 }, { 0x1F, 0x1F, 0x00 }, { 0x00, 0x12, 0x0B },
-    { 0x04, 0x06, 0x0A }, { 0x00, 0x1F, 0x00 }, { 0x1F, 0x1F, 0x1F },
-    { 0x14, 0x1F, 0x1F }, { 0x10, 0x1C, 0x1E }, { 0x0C, 0x18, 0x19 },
-    { 0x09, 0x14, 0x15 }, { 0x00, 0x0E, 0x10 }, { 0x00, 0x1F, 0x00 },
-    { 0x1F, 0x16, 0x18 }, { 0x1F, 0x0A, 0x10 }, { 0x1F, 0x1E, 0x00 },
-    { 0x19, 0x18, 0x00 }, { 0x13, 0x0A, 0x00 }, { 0x1F, 0x00, 0x00 },
+    { 0x00, 0x17, 0x06 }, { 0x16, 0x16, 0x16 }, { 0x00, 0x04, 0x13 }, { 0x00, 0x08, 0x1D }, { 0x00, 0x00, 0x0C }, { 0x00, 0x13, 0x00 },
+    { 0x1F, 0x1F, 0x13 }, { 0x1F, 0x1B, 0x00 }, { 0x13, 0x0A, 0x02 }, { 0x1F, 0x15, 0x0A }, { 0x15, 0x00, 0x00 }, { 0x1F, 0x04, 0x04 },
+    { 0x04, 0x04, 0x04 }, { 0x1F, 0x1F, 0x1F }, { 0x0E, 0x0E, 0x0E }, { 0x00, 0x13, 0x1F }, { 0x00, 0x19, 0x14 }, { 0x19, 0x19, 0x19 },
+    { 0x1F, 0x0B, 0x00 }, { 0x1F, 0x12, 0x00 }, { 0x19, 0x05, 0x00 }, { 0x1C, 0x0B, 0x00 }, { 0x13, 0x00, 0x00 }, { 0x1F, 0x1C, 0x17 },
+    { 0x1D, 0x18, 0x10 }, { 0x13, 0x0F, 0x08 }, { 0x1F, 0x1E, 0x00 }, { 0x08, 0x11, 0x1F }, { 0x02, 0x02, 0x02 }, { 0x1F, 0x1F, 0x1F },
+    { 0x0E, 0x0E, 0x0E }, { 0x1F, 0x00, 0x1F }, { 0x00, 0x17, 0x06 }, { 0x1F, 0x00, 0x1F }, { 0x1D, 0x11, 0x04 }, { 0x1F, 0x17, 0x04 },
+    { 0x17, 0x0A, 0x02 }, { 0x15, 0x19, 0x1B }, { 0x00, 0x13, 0x1F }, { 0x04, 0x08, 0x1F }, { 0x13, 0x13, 0x13 }, { 0x0E, 0x0E, 0x0E },
+    { 0x15, 0x00, 0x00 }, { 0x1F, 0x04, 0x04 }, { 0x02, 0x02, 0x02 }, { 0x1F, 0x1F, 0x1F }, { 0x1F, 0x00, 0x1F }, { 0x1F, 0x00, 0x1F },
+    { 0x00, 0x16, 0x14 }, { 0x16, 0x16, 0x16 }, { 0x17, 0x00, 0x00 }, { 0x1F, 0x04, 0x00 }, { 0x0E, 0x00, 0x00 }, { 0x04, 0x08, 0x1F },
+    { 0x1F, 0x1F, 0x13 }, { 0x1F, 0x1B, 0x00 }, { 0x13, 0x0A, 0x00 }, { 0x1F, 0x15, 0x0A }, { 0x00, 0x15, 0x02 }, { 0x0E, 0x1F, 0x00 },
+    { 0x04, 0x04, 0x04 }, { 0x1F, 0x1F, 0x1F }, { 0x0E, 0x0E, 0x0E }, { 0x1F, 0x13, 0x00 }, { 0x00, 0x17, 0x06 }, { 0x15, 0x19, 0x1B },
+    { 0x1D, 0x08, 0x13 }, { 0x1F, 0x13, 0x17 }, { 0x17, 0x04, 0x0A }, { 0x00, 0x15, 0x00 }, { 0x0E, 0x0E, 0x0E }, { 0x13, 0x13, 0x13 },
+    { 0x13, 0x0A, 0x00 }, { 0x1F, 0x15, 0x0A }, { 0x15, 0x00, 0x00 }, { 0x1F, 0x00, 0x00 }, { 0x00, 0x00, 0x00 }, { 0x1F, 0x1F, 0x1F },
+    { 0x1F, 0x1F, 0x13 }, { 0x1F, 0x1F, 0x00 }, { 0x00, 0x12, 0x0B }, { 0x04, 0x06, 0x0A }, { 0x00, 0x1F, 0x00 }, { 0x1F, 0x1F, 0x1F },
+    { 0x14, 0x1F, 0x1F }, { 0x10, 0x1C, 0x1E }, { 0x0C, 0x18, 0x19 }, { 0x09, 0x14, 0x15 }, { 0x00, 0x0E, 0x10 }, { 0x00, 0x1F, 0x00 },
+    { 0x1F, 0x16, 0x18 }, { 0x1F, 0x0A, 0x10 }, { 0x1F, 0x1E, 0x00 }, { 0x19, 0x18, 0x00 }, { 0x13, 0x0A, 0x00 }, { 0x1F, 0x00, 0x00 },
 };
 
 const u16 sZoneLoadingCharacterColors[NUM_CHARACTERS] = {
-    [CHARACTER_SONIC] = RGB16(0, 0, 31),  [CHARACTER_CREAM] = RGB16(31, 18, 0),
-    [CHARACTER_TAILS] = RGB16(31, 27, 0), [CHARACTER_KNUCKLES] = RGB16(31, 3, 0),
-    [CHARACTER_AMY] = RGB16(31, 17, 21),
+    [CHARACTER_SONIC] = RGB16(0, 0, 31),    [CHARACTER_CREAM] = RGB16(31, 18, 0), [CHARACTER_TAILS] = RGB16(31, 27, 0),
+    [CHARACTER_KNUCKLES] = RGB16(31, 3, 0), [CHARACTER_AMY] = RGB16(31, 17, 21),
 };
 
 const u16 sScreenPositions_ZoneLoadingActLetters[4][2] = {
@@ -293,16 +261,14 @@ struct Task *SetupStageIntro(void)
 
     gActiveBossTask = NULL;
 
-    t = TaskCreate(Task_802F75C, sizeof(SITaskA), 0x2200, 0,
-                   TaskDestructor_StageIntroParent);
+    t = TaskCreate(Task_802F75C, sizeof(SITaskA), 0x2200, 0, TaskDestructor_StageIntroParent);
     sit_a = TASK_DATA(t);
     sit_a->counter = 2;
     sit_a->skippedIntro = FALSE;
 
     gPlayer.moveState |= MOVESTATE_100000;
 
-    t2 = TaskCreate(Task_802F9F8, sizeof(SITaskB), 0x2210, 0,
-                    TaskDestructor_nop_8030458);
+    t2 = TaskCreate(Task_802F9F8, sizeof(SITaskB), 0x2210, 0, TaskDestructor_nop_8030458);
     sit_b = TASK_DATA(t2);
     sit_b->parent = sit_a;
 
@@ -315,8 +281,7 @@ struct Task *SetupStageIntro(void)
     fade->bldAlpha = 0;
     UpdateScreenFade(fade);
 
-    t2 = TaskCreate(Task_IntroColorAnimation, sizeof(SITaskB), 0x2220, 0,
-                    TaskDestructor_nop_8030458);
+    t2 = TaskCreate(Task_IntroColorAnimation, sizeof(SITaskB), 0x2220, 0, TaskDestructor_nop_8030458);
     sit_b = TASK_DATA(t2);
     sit_b->parent = sit_a;
 
@@ -328,28 +293,22 @@ struct Task *SetupStageIntro(void)
     vec->x = 0;
     vec->y = 0;
 
-    t2 = TaskCreate(Task_IntroZoneNameAndIconAnimations, sizeof(SITaskD), 0x2230, 0,
-                    TaskDestructor_803045C);
+    t2 = TaskCreate(Task_IntroZoneNameAndIconAnimations, sizeof(SITaskD), 0x2230, 0, TaskDestructor_803045C);
     sit_d = TASK_DATA(t2);
     sit_d->parent = sit_a;
 
     if (IS_SINGLE_PLAYER) {
         tilesCursor = VramMalloc(
-            zoneLoadingCharacterLogos[gSelectedCharacter][0]
-            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0]
-            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0]
-            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0]
+            zoneLoadingCharacterLogos[gSelectedCharacter][0] + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0]
+            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0] + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0]
             + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0]
-            + ({ zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24; })
-            + (sZoneUnlockedIcons[0][0] * NUM_ZONE_UNLOCKED_ICONS));
+            + ({ zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24; }) + (sZoneUnlockedIcons[0][0] * NUM_ZONE_UNLOCKED_ICONS));
     } else {
         // _0802F260
 
         tilesCursor = VramMalloc(
-            zoneLoadingCharacterLogos[gSelectedCharacter][0]
-            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0]
-            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0]
-            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0]
+            zoneLoadingCharacterLogos[gSelectedCharacter][0] + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0]
+            + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0] + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0]
             + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0]
             + ({ zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24; }));
     }
@@ -409,10 +368,8 @@ struct Task *SetupStageIntro(void)
             // _0802F446
             s->graphics.dest = tilesCursor;
 
-            tilesCursor += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + i][0]
-                * TILE_SIZE_4BPP;
-            s->graphics.anim
-                = zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + i][1];
+            tilesCursor += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + i][0] * TILE_SIZE_4BPP;
+            s->graphics.anim = zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + i][1];
             s->variant = zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + i][2];
         }
         // _0802F47E
@@ -519,8 +476,7 @@ struct Task *SetupStageIntro(void)
     // _0802F652
 
     /*    Act Names    */
-    t2 = TaskCreate(Task_IntroActLettersAnimations, sizeof(SITaskE), 0x2240, 0,
-                    TaskDestructor_8030474);
+    t2 = TaskCreate(Task_IntroActLettersAnimations, sizeof(SITaskE), 0x2240, 0, TaskDestructor_8030474);
     sit_e = TASK_DATA(t2);
     sit_e->parent = sit_a;
     tilesCursor = VramMalloc(sZoneLoadingActLetters[0][0] * 4);
@@ -554,8 +510,7 @@ struct Task *SetupStageIntro(void)
         UpdateSpriteAnimation(s);
     }
 
-    t2 = TaskCreate(Task_UpdateStageLoadingScreen, sizeof(SITaskB), 0x22F0, 0,
-                    TaskDestructor_nop_8030458);
+    t2 = TaskCreate(Task_UpdateStageLoadingScreen, sizeof(SITaskB), 0x22F0, 0, TaskDestructor_nop_8030458);
     sit_b = TASK_DATA(t2);
     sit_b->parent = sit_a;
 
@@ -591,8 +546,8 @@ static void Task_802F75C(void)
     }
 
     /*    Set player animation to "Getting Ready" and delay until it is finished    */
-    if ((frameCounter == (200 - sGettingReadyAnimationDuration[gSelectedCharacter]))
-        && (gBossIndex == 0) && (ACT_INDEX(gCurrentLevel) != ACT_BOSS)) {
+    if ((frameCounter == (200 - sGettingReadyAnimationDuration[gSelectedCharacter])) && (gBossIndex == 0)
+        && (ACT_INDEX(gCurrentLevel) != ACT_BOSS)) {
         Player *p = &gPlayer;
         p->anim = characterAnimsGettingReady[gSelectedCharacter].anim;
         p->variant = characterAnimsGettingReady[gSelectedCharacter].variant;
@@ -760,16 +715,12 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
             gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_OBJWIN_ON);
         } else {
             // Level: True Area 53
-            gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_BG1_ON
-                          | DISPCNT_BG2_ON);
-            gWinRegs[WINREG_WINOUT]
-                = (WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR | WINOUT_WINOBJ_BG0
-                   | WINOUT_WINOBJ_BG1 | WINOUT_WINOBJ_BG2 | WINOUT_WIN01_OBJ
-                   | WINOUT_WIN01_CLR | WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2);
+            gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON);
+            gWinRegs[WINREG_WINOUT] = (WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR | WINOUT_WINOBJ_BG0 | WINOUT_WINOBJ_BG1 | WINOUT_WINOBJ_BG2
+                                       | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR | WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2);
 
             gBldRegs.bldCnt
-                = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG0 | BLDCNT_TGT2_BG1
-                   | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2);
+                = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG0 | BLDCNT_TGT2_BG1 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2);
             gBldRegs.bldAlpha = 0x404;
             gBldRegs.bldY = 0x404;
         }
@@ -922,8 +873,7 @@ static void StageIntroUpdateIcons(void)
 }
 
 // (88.38%) https://decomp.me/scratch/la7O4
-NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.inc",
-         void Task_IntroZoneNameAndIconAnimations(void))
+NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.inc", void Task_IntroZoneNameAndIconAnimations(void))
 {
     SITaskD *sit_d = TASK_DATA(gCurTask);
     u32 counter = sit_d->parent->counter;
@@ -1086,8 +1036,7 @@ END_NONMATCH
 
 static inline void sub_8030488_inline()
 {
-    if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS)
-        && (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_FINAL)) {
+    if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS) && (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_FINAL)) {
         SITaskE *sit_e = TASK_DATA(gCurTask);
         u8 i;
 
@@ -1201,8 +1150,7 @@ static void TaskDestructor_8030474(struct Task *t)
 //       defined above for some reason...
 static void sub_8030488(void)
 {
-    if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS)
-        && (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_FINAL)) {
+    if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS) && (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_FINAL)) {
         SITaskE *sit_e = TASK_DATA(gCurTask);
         u8 i;
 

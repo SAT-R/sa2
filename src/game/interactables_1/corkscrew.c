@@ -35,11 +35,9 @@ void Task_8060D34(void)
 
     if (PLAYER_IS_ALIVE) {
         if ((x + (me->d.sData[0] * TILE_WIDTH) <= I(gPlayer.x)
-             && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH)
-                 >= I(gPlayer.x)))
+             && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH) >= I(gPlayer.x)))
             && (y + (me->d.sData[1] * TILE_WIDTH) <= I(gPlayer.y)
-                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH)
-                    >= I(gPlayer.y))) {
+                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH) >= I(gPlayer.y))) {
             if (x < I(gPlayer.x) && (corkscrew->base.spriteY & 1)) {
                 s32 idx;
                 s32 y24_8;
@@ -52,8 +50,7 @@ void Task_8060D34(void)
 
                 gPlayer.speedAirY = 0;
                 gCurTask->main = sub_8060ED0;
-            } else if ((x >= I(gPlayer.x)) && gPlayer.speedGroundX > Q_8_8(4)
-                       && !(gPlayer.moveState & MOVESTATE_IN_AIR)
+            } else if ((x >= I(gPlayer.x)) && gPlayer.speedGroundX > Q_8_8(4) && !(gPlayer.moveState & MOVESTATE_IN_AIR)
                        && !(gPlayer.unk5E & gPlayerControls.jump)) {
                 corkscrew->base.spriteY |= 1;
             } else {
@@ -148,11 +145,9 @@ void sub_8061088(void)
 
     if (PLAYER_IS_ALIVE) {
         if ((x + (me->d.sData[0] * TILE_WIDTH) <= I(gPlayer.x)
-             && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH)
-                 >= I(gPlayer.x)))
+             && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH) >= I(gPlayer.x)))
             && (y + (me->d.sData[1] * TILE_WIDTH) <= I(gPlayer.y)
-                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH)
-                    >= I(gPlayer.y))) {
+                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH) >= I(gPlayer.y))) {
             if (x > I(gPlayer.x) && (corkscrew->base.spriteY & 1)) {
                 s32 idx;
                 s32 y24_8;
@@ -165,8 +160,7 @@ void sub_8061088(void)
 
                 gPlayer.speedAirY = 0;
                 gCurTask->main = sub_8061228;
-            } else if ((x <= I(gPlayer.x)) && gPlayer.speedGroundX < -Q_8_8(4)
-                       && !(gPlayer.moveState & MOVESTATE_IN_AIR)
+            } else if ((x <= I(gPlayer.x)) && gPlayer.speedGroundX < -Q_8_8(4) && !(gPlayer.moveState & MOVESTATE_IN_AIR)
                        && !(gPlayer.unk5E & gPlayerControls.jump)) {
                 corkscrew->base.spriteY |= 1;
             } else {
@@ -247,8 +241,7 @@ void sub_8061228(void)
     }
 }
 
-void CreateEntity_Corkscrew_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void CreateEntity_Corkscrew_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(Task_8060D34, sizeof(Sprite_Corkscrew), 0x2000, 0, NULL);
     Sprite_Corkscrew *corkscrew = TASK_DATA(t);
@@ -263,8 +256,7 @@ void CreateEntity_Corkscrew_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     corkscrew->unk10 = Q(4);
 }
 
-void CreateEntity_Corkscrew_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_Corkscrew_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t = TaskCreate(sub_8061088, sizeof(Sprite_Corkscrew), 0x2000, 0, NULL);
     Sprite_Corkscrew *corkscrew = TASK_DATA(t);

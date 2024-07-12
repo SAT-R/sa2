@@ -53,8 +53,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     u8 level;
     gLoadedSaveGame->score += (s16)gRingCount;
 
-    t = TaskCreate(sub_8089AEC, sizeof(struct TimeAttackResultsCutScene), 0xC100, 0,
-                   sub_8089BB0);
+    t = TaskCreate(sub_8089AEC, sizeof(struct TimeAttackResultsCutScene), 0xC100, 0, sub_8089BB0);
     resultsCutScene = TASK_DATA(t);
     fade = &resultsCutScene->unk0;
 
@@ -277,8 +276,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 }
 
 const s8 gUnknown_080E05C4[] = {
-    3, 2, 1, 0, 0, -1, -2, -3, -4, -4, -3, -2, 1, 2, 3, 0,
-    0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0, 0, 0, 0,
+    3, 2, 1, 0, 0, -1, -2, -3, -4, -4, -3, -2, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
 void sub_80897E8(void)
@@ -335,8 +333,7 @@ void sub_80897E8(void)
         if (temp > 16) {
             if (resultsCutScene->unk2D8) {
                 s = &resultsCutScene->unk9C[1];
-                resultsCutScene->transform.width
-                    = gSineTable[(((u16)resultsCutScene->unk2D6 >> 8) * 4) + 0x100] >> 6;
+                resultsCutScene->transform.width = gSineTable[(((u16)resultsCutScene->unk2D6 >> 8) * 4) + 0x100] >> 6;
                 resultsCutScene->unk2D6 += resultsCutScene->unk2D4;
 
                 if (resultsCutScene->unk2D6 == 0) {
@@ -401,8 +398,7 @@ u8 sub_80899B8(u32 finishTime)
     }
 
     for (; i < 3; i++) {
-        gLoadedSaveGame->timeRecords.table[character][zone][act][i]
-            = existingRecords[i - 1];
+        gLoadedSaveGame->timeRecords.table[character][zone][act][i] = existingRecords[i - 1];
     }
 
     return rank;
@@ -421,8 +417,7 @@ void sub_8089AEC(void)
     sub_8031314();
     sub_80897E8();
 
-    if (((unk168 > 160) && (gPressedKeys & (A_BUTTON | START_BUTTON)))
-        || (unk168 > 600)) {
+    if (((unk168 > 160) && (gPressedKeys & (A_BUTTON | START_BUTTON))) || (unk168 > 600)) {
         gCurTask->main = sub_8089B40;
     }
 }

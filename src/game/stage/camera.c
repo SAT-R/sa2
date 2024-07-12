@@ -175,8 +175,7 @@ const Background gStageCameraBgTemplates[4] = {
 };
 
 const u16 gUnknown_080D5964[][2]
-    = { { 32, 216 }, { 32, 204 }, { 32, 216 }, { 32, 208 }, { 32, 208 },
-        { 32, 232 }, { 32, 264 }, { 32, 264 }, { 32, 264 } };
+    = { { 32, 216 }, { 32, 204 }, { 32, 216 }, { 32, 208 }, { 32, 208 }, { 32, 232 }, { 32, 264 }, { 32, 264 }, { 32, 264 } };
 
 static const VoidFn sStageBgInitProcedures[] = {
     [LEVEL_INDEX(ZONE_1, ACT_1)] = CreateStageBg_Zone1,
@@ -315,23 +314,19 @@ void InitCamera(u32 level)
     struct Camera *camera = &gCamera;
     const s8 *unkA98 = gUnknown_080D5A98[level];
 
-    gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON
-                | DISPCNT_BG3_ON | DISPCNT_OBJ_1D_MAP);
+    gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_1D_MAP);
     if (level == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG0_ON | DISPCNT_BG1_ON
-                    | DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
+        gDispCnt
+            = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
     }
 
-    gBgCntRegs[1]
-        = (BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
-    gBgCntRegs[2]
-        = (BGCNT_SCREENBASE(31) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(2));
+    gBgCntRegs[1] = (BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
+    gBgCntRegs[2] = (BGCNT_SCREENBASE(31) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(2));
     temp = ((unkA98[0] + 0x1F) >> 6 | ((unkA98[1] + 0x1F) >> 6) << 1) << 0xE;
     gBgCntRegs[3] = temp | 3 | (unkA98[3] << 8) | (unkA98[2] << 2);
 
     if (level == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-        gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON
-                    | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
+        gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
     }
 
     bgs = &gStageBackgroundsRam;
@@ -433,8 +428,7 @@ void InitCamera(u32 level)
     camera->unk60 = 0;
     camera->unk62 = 0;
 
-    camera->movementTask
-        = TaskCreate(Task_CallUpdateCamera, 0, 0xF00, 0, TaskDestructor_801E040);
+    camera->movementTask = TaskCreate(Task_CallUpdateCamera, 0, 0xF00, 0, TaskDestructor_801E040);
 
     camera->fnBgUpdate = sStageBgUpdateFuncs[level];
 
@@ -552,8 +546,7 @@ void UpdateCamera(void)
                     camera->unk64 = unk64;
                 }
 
-                camera->unk14 = I(player->y) + camera->shiftY - (DISPLAY_HEIGHT / 2)
-                    + camera->unk4C + unk64;
+                camera->unk14 = I(player->y) + camera->shiftY - (DISPLAY_HEIGHT / 2) + camera->unk4C + unk64;
             }
         }
 
@@ -580,8 +573,7 @@ void UpdateCamera(void)
             camera->unk8 += Q(0.125);
         }
 
-        if ((player->moveState & MOVESTATE_IN_AIR)
-            && (player->character != CHARACTER_KNUCKLES || player->unk61 != 9)) {
+        if ((player->moveState & MOVESTATE_IN_AIR) && (player->character != CHARACTER_KNUCKLES || player->unk61 != 9)) {
             camera->unk48 += 4;
             camera->unk48 = MIN(camera->unk48, 24);
         } else {
@@ -590,13 +582,9 @@ void UpdateCamera(void)
         }
 
         if ((camera->unk14 - newY) > camera->unk48) {
-            newY += (camera->unkC > ((camera->unk14 - newY) - camera->unk48))
-                ? ((camera->unk14 - newY) - camera->unk48)
-                : camera->unkC;
+            newY += (camera->unkC > ((camera->unk14 - newY) - camera->unk48)) ? ((camera->unk14 - newY) - camera->unk48) : camera->unkC;
         } else if ((camera->unk14 - newY) < -(camera->unk48)) {
-            newY += (-camera->unkC < (camera->unk14 - newY) + camera->unk48)
-                ? (camera->unk14 - newY) + camera->unk48
-                : -camera->unkC;
+            newY += (-camera->unkC < (camera->unk14 - newY) + camera->unk48) ? (camera->unk14 - newY) + camera->unk48 : -camera->unkC;
         }
 
         newY = CLAMP(newY, camera->minY, camera->maxY - DISPLAY_HEIGHT);

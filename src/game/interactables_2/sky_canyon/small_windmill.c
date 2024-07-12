@@ -39,12 +39,10 @@ static void RenderWindmill(Sprite_SmallWindmill *);
 static void Despawn(Sprite_SmallWindmill *);
 static void ResetWindmill(Sprite_SmallWindmill *);
 
-void CreateEntity_SmallWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_SmallWindmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_SmallSpinnyWindmill, sizeof(Sprite_SmallWindmill), 0x2010, 0,
-                     TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill);
+    struct Task *t = TaskCreate(Task_SmallSpinnyWindmill, sizeof(Sprite_SmallWindmill), 0x2010, 0,
+                                TaskDestructor_Interactable_SkyCanyon_SmallSpinnyWindmill);
     Sprite_SmallWindmill *windmill = TASK_DATA(t);
     Sprite *s;
     windmill->type = me->d.uData[0];
@@ -104,10 +102,8 @@ static void StartSpinSequence(Sprite_SmallWindmill *windmill)
     }
 
     windmill->rotation = windmill->rotationTarget;
-    gPlayer.x
-        = COS_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->x);
-    gPlayer.y
-        = SIN_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->y);
+    gPlayer.x = COS_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->x);
+    gPlayer.y = SIN_24_8(windmill->rotationTarget * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->y);
 
     switch (windmill->initialTouchAngle) {
         case 1:
@@ -190,10 +186,8 @@ static bool32 RotateWindmill(Sprite_SmallWindmill *windmill)
     }
 
     if (PLAYER_IS_ALIVE) {
-        gPlayer.x
-            = COS_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->x);
-        gPlayer.y
-            = SIN_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->y);
+        gPlayer.x = COS_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->x);
+        gPlayer.y = SIN_24_8(windmill->rotation * 4) * PLAYER_SPIN_DIAMETER + Q(windmill->y);
     }
 
     return windmill->rotation == windmill->rotationTarget;

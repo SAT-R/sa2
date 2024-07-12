@@ -79,47 +79,32 @@ bool32 sub_804EE84(Sprite *s, s32 x, s32 y);
 bool32 sub_804F010(Sprite *s, s32 x, s32 y, u8 param3);
 
 const TileInfo gUnknown_080D88F0[5] = {
-    { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_0, 0 },
-    { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_1, 0 },
-    { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_2, 0 },
-    { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_CANNON, 0 },
+    { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_0, 0 }, { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_1, 0 },
+    { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_SEGMENT_2, 0 }, { 8 * 8, SA2_ANIM_TRUE_AREA_53_BOSS_CANNON, 0 },
     { 10 * 9, SA2_ANIM_TRUE_AREA_53_BOSS_COCKPIT, 0 },
 };
 
 const TileInfo gUnknown_080D8918[17] = {
-    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 12 },
-    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 11 },
-    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 10 },
-    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 9 },
-    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 8 },
-    { 12, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 7 },
-    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 6 },
-    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 5 },
-    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 4 },
-    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 3 },
-    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 2 },
-    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 1 },
-    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 0 },
-    { 12, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 15 },
-    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 14 },
-    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 13 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 12 },    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 11 },
+    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 10 },   { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 9 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 8 },     { 12, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 7 },
+    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 6 },    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 5 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 4 },     { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 3 },
+    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 2 },    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 1 },
+    { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 0 },     { 12, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 15 },
+    { 16, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 14 },   { 8, SA2_ANIM_TRUE_AREA_53_BOSS_ROCKET, 13 },
     { 16, SA2_ANIM_TRUE_AREA_53_BOSS_EXPLOSION, 0 },
 };
 
 const s8 gUnknown_080D89A0[5] = { 0, -4, -8, -12, -16 };
 const u8 gUnknown_080D89A5[6] = { 0, 20, 24, 20, 18, 30 };
 
-const TA53SubFunc gUnknown_080D89AC[7]
-    = { sub_804F6AC, sub_804F768, sub_804F850, sub_804F9BC,
-        sub_804FAA4, sub_804FC10, sub_804FD58 };
+const TA53SubFunc gUnknown_080D89AC[7] = { sub_804F6AC, sub_804F768, sub_804F850, sub_804F9BC, sub_804FAA4, sub_804FC10, sub_804FD58 };
 
 const TA53_80D89C8 gUnknown_080D89C8[7]
-    = { { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 },
-        { 0, SA2_ANIM_EGG_GO_ROUND_PROJECTILE, 0, 0, 1, 0 },
-        { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 },
-        { 0, SA2_ANIM_EGG_GO_ROUND_PROJECTILE, 0, 0, 1, 0 },
-        { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 },
-        { 0, SA2_ANIM_EGG_GO_ROUND_PROJECTILE, 0, 0, 1, 0 },
+    = { { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 }, { 0, SA2_ANIM_EGG_GO_ROUND_PROJECTILE, 0, 0, 1, 0 },
+        { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 }, { 0, SA2_ANIM_EGG_GO_ROUND_PROJECTILE, 0, 0, 1, 0 },
+        { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 }, { 0, SA2_ANIM_EGG_GO_ROUND_PROJECTILE, 0, 0, 1, 0 },
         { 0, SA2_ANIM_TRUE_AREA_53_BOSS_PROJ_RED, 0, 0, 1, 0 } };
 
 const s16 gUnknown_080D8A1C[3][4] = {
@@ -243,23 +228,19 @@ const s16 gUnknown_080D8BE4[3][4] = {
 };
 
 const void *const gUnknown_080D8BFC[5] = {
-    &gUnknown_080D8A1C, &gUnknown_080D8A34, &gUnknown_080D8A4C,
-    &gUnknown_080D8A64, &gUnknown_080D8A7C,
+    &gUnknown_080D8A1C, &gUnknown_080D8A34, &gUnknown_080D8A4C, &gUnknown_080D8A64, &gUnknown_080D8A7C,
 };
 
 const void *const gUnknown_080D8C10[5] = {
-    &gUnknown_080D8A94, &gUnknown_080D8AAC, &gUnknown_080D8AC4,
-    &gUnknown_080D8ADC, &gUnknown_080D8AF4,
+    &gUnknown_080D8A94, &gUnknown_080D8AAC, &gUnknown_080D8AC4, &gUnknown_080D8ADC, &gUnknown_080D8AF4,
 };
 
 const void *const gUnknown_080D8C24[5] = {
-    &gUnknown_080D8B0C, &gUnknown_080D8B24, &gUnknown_080D8B3C,
-    &gUnknown_080D8B54, &gUnknown_080D8B6C,
+    &gUnknown_080D8B0C, &gUnknown_080D8B24, &gUnknown_080D8B3C, &gUnknown_080D8B54, &gUnknown_080D8B6C,
 };
 
 const void *const gUnknown_080D8C38[5] = {
-    &gUnknown_080D8B84, &gUnknown_080D8B9C, &gUnknown_080D8BB4,
-    &gUnknown_080D8BCC, &gUnknown_080D8BE4,
+    &gUnknown_080D8B84, &gUnknown_080D8B9C, &gUnknown_080D8BB4, &gUnknown_080D8BCC, &gUnknown_080D8BE4,
 };
 
 const s16 gUnknown_080D8C4C[4] = { +10, -10, +10, -10 };
@@ -328,27 +309,19 @@ const void *const gUnknown_080D8D64[] = {
 };
 
 const TA53_Data0 gUnknown_080D8D6C[8] = {
-    { sub_804E078, (void *)&gUnknown_080D8BFC, 40 },
-    { sub_804E4CC, (void *)&gUnknown_080D8BFC, 40 },
-    { sub_8050BFC, (void *)&gUnknown_080D8C24, 126 },
-    { sub_8050C50, (void *)&gUnknown_080D8C24, 512 },
-    { sub_804E15C, (void *)&gUnknown_080D8C38, 160 },
-    { sub_8050CBC, (void *)&gUnknown_080D8C10, 80 },
-    { sub_8050D24, (void *)&gUnknown_080D8C10, 80 },
-    { sub_8050D9C, (void *)&gUnknown_080D8C10, 80 },
+    { sub_804E078, (void *)&gUnknown_080D8BFC, 40 },  { sub_804E4CC, (void *)&gUnknown_080D8BFC, 40 },
+    { sub_8050BFC, (void *)&gUnknown_080D8C24, 126 }, { sub_8050C50, (void *)&gUnknown_080D8C24, 512 },
+    { sub_804E15C, (void *)&gUnknown_080D8C38, 160 }, { sub_8050CBC, (void *)&gUnknown_080D8C10, 80 },
+    { sub_8050D24, (void *)&gUnknown_080D8C10, 80 },  { sub_8050D9C, (void *)&gUnknown_080D8C10, 80 },
 };
 
 const TA53_Data1 gUnknown_080D8DCC[6] = {
-    { sub_8050BD8, (void *)&gUnknown_080D8D3C, 40 },
-    { sub_8050BE4, (void *)&gUnknown_080D8D54, 100 },
-    { sub_8050BE4, (void *)&gUnknown_080D8D5C, 100 },
-    { sub_8050BE4, (void *)&gUnknown_080D8D5C, 100 },
-    { sub_8050BF0, (void *)&gUnknown_080D8D44, 20 },
-    { sub_8050BF0, (void *)&gUnknown_080D8D4C, 100 },
+    { sub_8050BD8, (void *)&gUnknown_080D8D3C, 40 },  { sub_8050BE4, (void *)&gUnknown_080D8D54, 100 },
+    { sub_8050BE4, (void *)&gUnknown_080D8D5C, 100 }, { sub_8050BE4, (void *)&gUnknown_080D8D5C, 100 },
+    { sub_8050BF0, (void *)&gUnknown_080D8D44, 20 },  { sub_8050BF0, (void *)&gUnknown_080D8D4C, 100 },
 };
 
-const TA53_Rocket_Callback gUnknown_080D8E14[3]
-    = { sub_804E974, sub_804EB6C, sub_804EC6C };
+const TA53_Rocket_Callback gUnknown_080D8E14[3] = { sub_804E974, sub_804EB6C, sub_804EC6C };
 const u8 sRGB_080D8E20[4][16][3] = {
     {
         { 0, 0, 0 },
@@ -439,8 +412,7 @@ void SetupEggmanKidnapsVanillaTask(void)
     TA53_unk48 *unk48;
     u8 i;
 
-    gActiveBossTask = TaskCreate(Task_EggmanKidnapsVanilla, sizeof(TA53Boss), 0x4000, 0,
-                                 TaskDestructor_TrueArea53BossGfx);
+    gActiveBossTask = TaskCreate(Task_EggmanKidnapsVanilla, sizeof(TA53Boss), 0x4000, 0, TaskDestructor_TrueArea53BossGfx);
 
     CreateTrueArea53Boss();
 
@@ -479,14 +451,12 @@ void SetupEggmanKidnapsVanillaTask(void)
         unk48->unk24[i] = gUnknown_080D8AF4[0][i];
     }
 
-    gDispCnt = (DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP
-                | DISPCNT_MODE_1);
+    gDispCnt = (DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
 }
 
 // (39.42%) https://decomp.me/scratch/CKySX
 // (77.90%) https://decomp.me/scratch/cSWIn
-NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
-         void CreateTrueArea53Boss(void))
+NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc", void CreateTrueArea53Boss(void))
 {
     void *vram;
     TA53Boss *boss;
@@ -502,8 +472,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
     gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU;
 
     if (gActiveBossTask == NULL) {
-        gActiveBossTask = TaskCreate(Task_TrueArea53BossMain, sizeof(TA53Boss), 0x4000,
-                                     0, TaskDestructor_TrueArea53BossGfx);
+        gActiveBossTask = TaskCreate(Task_TrueArea53BossMain, sizeof(TA53Boss), 0x4000, 0, TaskDestructor_TrueArea53BossGfx);
     }
 
     boss = TASK_DATA(gActiveBossTask);
@@ -771,8 +740,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc",
 END_NONMATCH
 
 // (95.99%) https://decomp.me/scratch/05cvE
-NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc",
-         void TrueArea53BossMove(s32 dX, s32 dY))
+NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc", void TrueArea53BossMove(s32 dX, s32 dY))
 {
     u8 i, j;
     TA53Boss *boss;
@@ -846,9 +814,8 @@ void Task_EggmanKidnapsVanilla(void)
     unk48->callback(unk48);
     sub_80505B8(boss);
 
-    gWinRegs[WINREG_WINOUT]
-        = (WINOUT_WINOBJ_CLR | WINOUT_WINOBJ_BG0 | WINOUT_WINOBJ_BG1 | WINOUT_WINOBJ_BG2
-           | WINOUT_WIN01_CLR | WINOUT_WIN01_OBJ | WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2);
+    gWinRegs[WINREG_WINOUT] = (WINOUT_WINOBJ_CLR | WINOUT_WINOBJ_BG0 | WINOUT_WINOBJ_BG1 | WINOUT_WINOBJ_BG2 | WINOUT_WIN01_CLR
+                               | WINOUT_WIN01_OBJ | WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2);
 
     gFlags |= FLAGS_4;
     gUnknown_03002878 = (void *)&REG_BG1VOFS;
@@ -977,8 +944,7 @@ void Task_804D9DC(void)
         MPlayStop(&gMPlayInfo_SE2);
         MPlayStop(&gMPlayInfo_SE3);
 
-        gStageFlags
-            |= (STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__2 | STAGE_FLAG__ACT_START);
+        gStageFlags |= (STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__2 | STAGE_FLAG__ACT_START);
         sub_802B81C();
         sub_804D8E0(boss);
         sub_80501D4(boss);
@@ -1230,8 +1196,7 @@ void sub_804E078(struct TA53_unk48 *unk48)
 }
 
 // (94.10%) https://decomp.me/scratch/rjfvR
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc",
-         void sub_804E15C(struct TA53_unk48 *unk48))
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc", void sub_804E15C(struct TA53_unk48 *unk48))
 {
     TA53Boss *boss = TASK_DATA(gCurTask);
     TA53_unk558 *unk558 = &boss->unk558;
@@ -1294,8 +1259,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc",
                 u16 r1;
                 s32 x, y;
 
-                if ((gMPlayTable[2].info->songHeader != gSongTable[SE_269].header)
-                    && (sp14 == 6)) {
+                if ((gMPlayTable[2].info->songHeader != gSongTable[SE_269].header) && (sp14 == 6)) {
                     m4aSongNumStart(SE_269);
                 }
                 // _0804E30A
@@ -1316,10 +1280,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc",
                 gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_HEIGHT);
                 gWinRegs[WINREG_WIN0V] = WIN_RANGE(0, DISPLAY_WIDTH);
                 gWinRegs[WINREG_WININ] = WININ_WIN0_ALL;
-                gWinRegs[WINREG_WINOUT]
-                    = (WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2 | WINOUT_WIN01_OBJ);
-                gBldRegs.bldCnt
-                    = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
+                gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2 | WINOUT_WIN01_OBJ);
+                gBldRegs.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL);
                 gBldRegs.bldAlpha = BLDALPHA_BLEND(8, 0);
                 gBldRegs.bldY = 8;
 
@@ -1367,8 +1329,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E15C.inc",
 END_NONMATCH
 
 // (89.56%) https://decomp.me/scratch/sGKWf
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E4CC.inc",
-         void sub_804E4CC(struct TA53_unk48 *unk48))
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804E4CC.inc", void sub_804E4CC(struct TA53_unk48 *unk48))
 {
     u16 r2;
 
@@ -1578,8 +1539,7 @@ void sub_804E974(struct TA53_unkA8 *unkA8)
         unkA8->unk4 &= ~0x2;
     }
 
-    sinVal
-        = sub_8004418(I(qSonicPos.y - unkA8->pos14.y), I(qSonicPos.x - unkA8->pos14.x));
+    sinVal = sub_8004418(I(qSonicPos.y - unkA8->pos14.y), I(qSonicPos.x - unkA8->pos14.x));
     ;
     unkA8->unkC = sinVal;
 
@@ -1659,8 +1619,7 @@ void sub_804EB6C(struct TA53_unkA8 *unkA8)
         unkA8->pos14.y += Q(0) + unkA8->unk10;
 
         if (boss->unkD == 0) {
-            if ((unkA8->unk6 == 0)
-                && sub_804ED98(I(unkA8->pos14.x), I(unkA8->pos14.y))) {
+            if ((unkA8->unk6 == 0) && sub_804ED98(I(unkA8->pos14.x), I(unkA8->pos14.y))) {
                 if (boss->lives & 0x1) {
                     m4aSongNumStart(SE_143);
                 } else {
@@ -1792,29 +1751,24 @@ bool32 sub_804EE84(Sprite *sprIn, s32 x, s32 y)
         return FALSE;
     }
 
-    if (!PLAYER_IS_ALIVE || !HITBOX_IS_ACTIVE(sprIn->hitboxes[1])
-        || !HITBOX_IS_ACTIVE(sprSonic->hitboxes[1])) {
+    if (!PLAYER_IS_ALIVE || !HITBOX_IS_ACTIVE(sprIn->hitboxes[1]) || !HITBOX_IS_ACTIVE(sprSonic->hitboxes[1])) {
         return FALSE;
     }
 
-    if (RECT_COLLISION(x, y, &sprIn->hitboxes[1], I(qSonicX), I(qSonicY),
-                       &sprSonic->hitboxes[1])) {
+    if (RECT_COLLISION(x, y, &sprIn->hitboxes[1], I(qSonicX), I(qSonicY), &sprSonic->hitboxes[1])) {
         return TRUE;
     }
 
     return FALSE;
 }
 
-bool32 sub_804EF68(Sprite *sprRocket, s32 rocketX, s32 rocketY, Sprite *sprMouth,
-                   s32 mouthX, s32 mouthY)
+bool32 sub_804EF68(Sprite *sprRocket, s32 rocketX, s32 rocketY, Sprite *sprMouth, s32 mouthX, s32 mouthY)
 {
-    if ((!HITBOX_IS_ACTIVE(sprRocket->hitboxes[1]))
-        || (!HITBOX_IS_ACTIVE(sprMouth->hitboxes[0]))) {
+    if ((!HITBOX_IS_ACTIVE(sprRocket->hitboxes[1])) || (!HITBOX_IS_ACTIVE(sprMouth->hitboxes[0]))) {
         return FALSE;
     }
 
-    if (RECT_COLLISION(rocketX, rocketY, &sprRocket->hitboxes[1], mouthX, mouthY,
-                       &sprMouth->hitboxes[0])) {
+    if (RECT_COLLISION(rocketX, rocketY, &sprRocket->hitboxes[1], mouthX, mouthY, &sprMouth->hitboxes[0])) {
         return TRUE;
     } else {
         return FALSE;
@@ -1832,13 +1786,11 @@ bool32 sub_804F010(Sprite *s, s32 x, s32 y, u8 hbIndex)
     SuperSonicGetFlags();
 #endif
 
-    if (!PLAYER_IS_ALIVE || !HITBOX_IS_ACTIVE(s->hitboxes[hbIndex])
-        || !HITBOX_IS_ACTIVE(sprSonic->hitboxes[0])) {
+    if (!PLAYER_IS_ALIVE || !HITBOX_IS_ACTIVE(s->hitboxes[hbIndex]) || !HITBOX_IS_ACTIVE(sprSonic->hitboxes[0])) {
         return FALSE;
     }
 
-    if (HB_COLLISION(x, y, s->hitboxes[hbIndex], I(qSonicX), I(qSonicY),
-                     sprSonic->hitboxes[0])) {
+    if (HB_COLLISION(x, y, s->hitboxes[hbIndex], I(qSonicX), I(qSonicY), sprSonic->hitboxes[0])) {
         return TRUE;
     } else {
         return FALSE;
@@ -1877,8 +1829,7 @@ void sub_804F108(TA53_unk558 *unk558)
 }
 
 // (81.57%) https://decomp.me/scratch/iqeu1
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc",
-         void sub_804F1EC(struct TA53_unk558 *unk558))
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc", void sub_804F1EC(struct TA53_unk558 *unk558))
 {
     TA53Boss *boss = TASK_DATA(gCurTask);
     TA53_unk1C *unk1C = &boss->unk1C;
@@ -1951,28 +1902,21 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F1EC.inc",
 
                 if (unkA8->unk4 & 0x1) {
                     // TODO: This is a range-comparison, remove '<< 16'!
-                    s32 res
-                        = (sub_8004418(I(unkA8->pos14.y - qY), I(unkA8->pos14.x - qX))
-                           - 301)
-                        << 16;
+                    s32 res = (sub_8004418(I(unkA8->pos14.y - qY), I(unkA8->pos14.x - qX)) - 301) << 16;
                     if (((unsigned)res <= 422 << 16) || (unkA8->unk6 > 0)) {
                         s32 unk1C = unkA8->unk1C + 0xA;
                         unkA8->unk6 = 1;
                         unkA8->unk1C = unk1C;
 
-                        unkA8->pos14.x
-                            = sub_8085698(unkA8->pos14.x, +Q(22) + qX, (unk1C), 10, 2);
-                        unkA8->pos14.y
-                            = sub_8085698(unkA8->pos14.y, qY, (unk1C + 0xA0), 10, 2);
+                        unkA8->pos14.x = sub_8085698(unkA8->pos14.x, +Q(22) + qX, (unk1C), 10, 2);
+                        unkA8->pos14.y = sub_8085698(unkA8->pos14.y, qY, (unk1C + 0xA0), 10, 2);
 
                         unkA8->unkE = Div(unkA8->unkE * 90, 100);
                         unkA8->unk10 = Div(unkA8->unk10 * 90, 100);
                     }
                     // _0804F430
 
-                    if (sub_804EF68(&unkA8->spr20, I(unkA8->pos14.x), I(unkA8->pos14.y),
-                                    s, I(qX) + 16, I(qY))
-                        == TRUE) {
+                    if (sub_804EF68(&unkA8->spr20, I(unkA8->pos14.x), I(unkA8->pos14.y), s, I(qX) + 16, I(qY)) == TRUE) {
                         unkA8->unk4 = 0;
                     }
                 }
@@ -2065,8 +2009,7 @@ void sub_804F5BC(struct TA53_unk654 *unk654)
             unk654->qPos70[i].y += unk654->unk2E[i][1];
 
             if (!(SuperSonicGetFlags() & (SUPER_FLAG__200 | SUPER_FLAG__8))) {
-                if (sub_804F010(s, I(unk654->qPos70[i].x), I(unk654->qPos70[i].y), 0)
-                    == TRUE) {
+                if (sub_804F010(s, I(unk654->qPos70[i].x), I(unk654->qPos70[i].y), 0) == TRUE) {
                     sub_802BA8C();
                 }
             }
@@ -2126,8 +2069,7 @@ void sub_804F768(u32 qX, u32 qY, s16 param2, u32 sinIndex_)
 }
 
 // (98.75%) https://decomp.me/scratch/h8qQS
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F850.inc",
-         void sub_804F850(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F850.inc", void sub_804F850(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
 {
     u8 array[0x8];
     u8 i;
@@ -2222,8 +2164,7 @@ void sub_804F9BC(u32 qX, u32 qY, UNUSED s16 param2, UNUSED u32 sinIndex_)
 // NOTE/TODO: The logic of this does not match the game.
 //            The lowest loop is incorrect.
 // (61.23%) https://decomp.me/scratch/kecMc
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FAA4.inc",
-         void sub_804FAA4(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FAA4.inc", void sub_804FAA4(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
 {
     u8 array[0x8];
     u8 i;
@@ -2295,10 +2236,7 @@ END_NONMATCH
 
 // TODO: Implement
 // Code resembles sub_804F850 and sub_804FAA4
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FC10.inc",
-         void sub_804FC10(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
-{
-}
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804FC10.inc", void sub_804FC10(u32 qX, u32 qY, s16 param2, u32 sinIndex_)) { }
 END_NONMATCH
 
 void sub_804FD58(u32 qX, u32 qY, UNUSED s16 param2, UNUSED u32 sinIndex_)
@@ -2413,8 +2351,7 @@ void sub_804FF9C(struct TA53_unk654 *unk654)
 
 #if 01
 // (97.04%) https://decomp.me/scratch/dsxMM
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050030.inc",
-         bool8 sub_8050030(struct TA53_unk48 *unk48))
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050030.inc", bool8 sub_8050030(struct TA53_unk48 *unk48))
 {
     u8 r3, i;
     u32 r2;
@@ -2471,8 +2408,7 @@ END_NONMATCH
 #endif
 
 // (97.13%) https://decomp.me/scratch/ymnVO
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc",
-         bool8 sub_8050104(struct TA53_unk1C *unk1C))
+NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc", bool8 sub_8050104(struct TA53_unk1C *unk1C))
 {
     u8 r3, i;
     u32 r2;
@@ -2635,9 +2571,8 @@ void sub_80501D4(TA53Boss *boss)
         s->x = I(qX) - gCamera.x;
         s->y = I(qY) - gCamera.y;
 
-        s->frameFlags
-            |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+        s->frameFlags |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
+                          | (u8)gUnknown_030054B8++);
 
         transform->rotation = r7;
         transform->width = 0x100;
@@ -2659,9 +2594,8 @@ void sub_80501D4(TA53Boss *boss)
     s->x = I(qX) - gCamera.x;
     s->y = I(qY) - gCamera.y;
 
-    s->frameFlags
-        |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-            | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+    s->frameFlags |= (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
+                      | (u8)gUnknown_030054B8++);
 
     transform->rotation = sinIndex;
     transform->width = 0x100;
@@ -2759,9 +2693,8 @@ void sub_80505B8(TA53Boss *boss)
         s->x = I(qX) - gCamera.x;
         s->y = I(qY) - gCamera.y;
 
-        s->frameFlags
-            |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-                | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+        s->frameFlags |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
+                          | (u8)gUnknown_030054B8++);
 
         transform->rotation = r7;
         transform->width = 0x100;
@@ -2783,9 +2716,8 @@ void sub_80505B8(TA53Boss *boss)
     s->x = I(qX) - gCamera.x;
     s->y = I(qY) - gCamera.y;
 
-    s->frameFlags
-        |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE
-            | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | (u8)gUnknown_030054B8++);
+    s->frameFlags |= (SPRITE_FLAG(PRIORITY, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE
+                      | (u8)gUnknown_030054B8++);
 
     transform->rotation = sinIndex;
     transform->width = 0x100;
@@ -2805,11 +2737,9 @@ void sub_80508C4(TA53Boss *boss, u16 blend, bool8 param2)
 
     if (param2) {
         gDispCnt |= DISPCNT_OBJWIN_ON;
-        gWinRegs[WINREG_WINOUT]
-            = ((WINOUT_WINOBJ_ALL & ~WINOUT_WINOBJ_BG3)
-               | (WINOUT_WIN01_ALL & ~(WINOUT_WIN01_BG1 | WINOUT_WIN01_BG3)));
-        gBldRegs.bldCnt = ((BLDCNT_TGT2_BG0 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_OBJ)
-                           | BLDCNT_EFFECT_BLEND | (BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2));
+        gWinRegs[WINREG_WINOUT] = ((WINOUT_WINOBJ_ALL & ~WINOUT_WINOBJ_BG3) | (WINOUT_WIN01_ALL & ~(WINOUT_WIN01_BG1 | WINOUT_WIN01_BG3)));
+        gBldRegs.bldCnt
+            = ((BLDCNT_TGT2_BG0 | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_OBJ) | BLDCNT_EFFECT_BLEND | (BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2));
 
         bldTarget2 = (((blend * 3) >> 8) + 10) % 16u;
         bldTarget1 = (((blend * 5) >> 8) + 8) % 16u;
@@ -2842,10 +2772,8 @@ void sub_8050958(TA53Boss *boss)
 
             if (boss->lives < 4) {
                 for (i = 0; i < 16; i++) {
-                    gObjPalette[8 * 16 + ((i + r6) % 16u)]
-                        = gUnknown_080D8EF0[0][i] >> 5;
-                    gBgPalette[0 * 16 + ((i + r6) % 16u)]
-                        = gObjPalette[8 * 16 + ((i + r6) % 16u)];
+                    gObjPalette[8 * 16 + ((i + r6) % 16u)] = gUnknown_080D8EF0[0][i] >> 5;
+                    gBgPalette[0 * 16 + ((i + r6) % 16u)] = gObjPalette[8 * 16 + ((i + r6) % 16u)];
                 }
             } else {
                 for (i = 0; i < 16; i++) {
@@ -2857,12 +2785,9 @@ void sub_8050958(TA53Boss *boss)
 
                     colId = ((i + r6) % 16u);
                     objPalId = 8 * 16 + colId;
-                    objPalTgt[objPalId] = ((gUnknown_080D8EF0[0][i] << 5)
-                                           | (gUnknown_080D8EF0[0][i] >> 5))
-                        | gUnknown_080D8EF0[0][i];
-                    gBgPalette[0 * 16 + colId] = ((gUnknown_080D8EF0[0][i] << 5)
-                                                  | (gUnknown_080D8EF0[0][i] >> 5))
-                        | gUnknown_080D8EF0[0][i];
+                    objPalTgt[objPalId] = ((gUnknown_080D8EF0[0][i] << 5) | (gUnknown_080D8EF0[0][i] >> 5)) | gUnknown_080D8EF0[0][i];
+                    gBgPalette[0 * 16 + colId]
+                        = ((gUnknown_080D8EF0[0][i] << 5) | (gUnknown_080D8EF0[0][i] >> 5)) | gUnknown_080D8EF0[0][i];
                 }
             }
         }

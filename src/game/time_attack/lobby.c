@@ -30,10 +30,8 @@ struct TimeAttackLobbyScreen {
 };
 
 const TileInfo gUnknown_080E0474[] = {
-    TextElementAlt4(0, 20, 0),   TextElementAlt4(0, 16, 91),
-    TextElementAlt4(0, 30, 182), TextElementAlt4(0, 20, 273),
-    TextElementAlt4(0, 20, 364), TextElementAlt4(3, 64, 9),
-    TextElementAlt4(3, 64, 100), TextElementAlt4(3, 64, 191),
+    TextElementAlt4(0, 20, 0),   TextElementAlt4(0, 16, 91),  TextElementAlt4(0, 30, 182), TextElementAlt4(0, 20, 273),
+    TextElementAlt4(0, 20, 364), TextElementAlt4(3, 64, 9),   TextElementAlt4(3, 64, 100), TextElementAlt4(3, 64, 191),
     TextElementAlt4(3, 64, 282), TextElementAlt4(3, 64, 373),
 };
 
@@ -43,20 +41,13 @@ const TileInfo gUnknown_080E04C4[] = {
 };
 
 const TileInfo gUnknown_080E04D4[] = {
-    TextElementAlt4(0, 22, 1051), TextElementAlt4(1, 32, 1051),
-    TextElementAlt4(2, 22, 1051), TextElementAlt4(3, 22, 1051),
-    TextElementAlt4(4, 10, 1051), TextElementAlt4(0, 24, 1052),
-    TextElementAlt4(1, 42, 1052), TextElementAlt4(2, 36, 1052),
-    TextElementAlt4(3, 30, 1052), TextElementAlt4(4, 8, 1052),
-    TextElementAlt4(0, 24, 1053), TextElementAlt4(1, 36, 1053),
-    TextElementAlt4(2, 42, 1053), TextElementAlt4(3, 36, 1053),
-    TextElementAlt4(4, 20, 1053), TextElementAlt4(0, 24, 1054),
-    TextElementAlt4(1, 48, 1054), TextElementAlt4(2, 36, 1054),
-    TextElementAlt4(3, 32, 1054), TextElementAlt4(4, 8, 1054),
-    TextElementAlt4(0, 44, 1055), TextElementAlt4(1, 44, 1055),
-    TextElementAlt4(2, 38, 1055), TextElementAlt4(3, 32, 1055),
-    TextElementAlt4(4, 8, 1055),  TextElementAlt4(0, 20, 1056),
-    TextElementAlt4(1, 44, 1056), TextElementAlt4(2, 40, 1056),
+    TextElementAlt4(0, 22, 1051), TextElementAlt4(1, 32, 1051), TextElementAlt4(2, 22, 1051), TextElementAlt4(3, 22, 1051),
+    TextElementAlt4(4, 10, 1051), TextElementAlt4(0, 24, 1052), TextElementAlt4(1, 42, 1052), TextElementAlt4(2, 36, 1052),
+    TextElementAlt4(3, 30, 1052), TextElementAlt4(4, 8, 1052),  TextElementAlt4(0, 24, 1053), TextElementAlt4(1, 36, 1053),
+    TextElementAlt4(2, 42, 1053), TextElementAlt4(3, 36, 1053), TextElementAlt4(4, 20, 1053), TextElementAlt4(0, 24, 1054),
+    TextElementAlt4(1, 48, 1054), TextElementAlt4(2, 36, 1054), TextElementAlt4(3, 32, 1054), TextElementAlt4(4, 8, 1054),
+    TextElementAlt4(0, 44, 1055), TextElementAlt4(1, 44, 1055), TextElementAlt4(2, 38, 1055), TextElementAlt4(3, 32, 1055),
+    TextElementAlt4(4, 8, 1055),  TextElementAlt4(0, 20, 1056), TextElementAlt4(1, 44, 1056), TextElementAlt4(2, 40, 1056),
     TextElementAlt4(3, 28, 1056), TextElementAlt4(4, 12, 1056),
 };
 
@@ -280,14 +271,11 @@ void sub_8088D60(void)
                 GameStageStart();
                 break;
             case 1:
-                CreateCharacterSelectionScreen(gSelectedCharacter,
-                                               gLoadedSaveGame->unlockedCharacters
-                                                   & CHARACTER_BIT(CHARACTER_AMY));
+                CreateCharacterSelectionScreen(gSelectedCharacter, gLoadedSaveGame->unlockedCharacters & CHARACTER_BIT(CHARACTER_AMY));
                 gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
                 break;
             case 2:
-                CreateTimeAttackLevelSelectScreen(IsBossTimeAttack(), gSelectedCharacter,
-                                                  gCurrentLevel);
+                CreateTimeAttackLevelSelectScreen(IsBossTimeAttack(), gSelectedCharacter, gCurrentLevel);
                 break;
             case 3:
                 CreateTitleScreenAndSkipIntro();
@@ -371,8 +359,7 @@ void sub_8088EB4(void)
         if (lobbyScreen->unk1AD != 3) {
             s = &lobbyScreen->unk80;
             VramFree(s->graphics.dest);
-            s->graphics.dest
-                = VramMalloc(gUnknown_080E0474[gSelectedCharacter + 5].numTiles);
+            s->graphics.dest = VramMalloc(gUnknown_080E0474[gSelectedCharacter + 5].numTiles);
             s->graphics.anim = gUnknown_080E0474[gSelectedCharacter + 5].anim;
             s->variant = gUnknown_080E0474[gSelectedCharacter + 5].variant;
             s->prevVariant = -1;
@@ -411,8 +398,7 @@ void sub_8089104(struct Task *);
 
 void CreateTimeAttackLobbyScreen()
 {
-    struct Task *t = TaskCreate(sub_8088CC4, sizeof(struct TimeAttackLobbyScreen),
-                                0x1000, 0, sub_8089104);
+    struct Task *t = TaskCreate(sub_8088CC4, sizeof(struct TimeAttackLobbyScreen), 0x1000, 0, sub_8089104);
     struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(t);
 
     lobbyScreen->unk1AD = 0;

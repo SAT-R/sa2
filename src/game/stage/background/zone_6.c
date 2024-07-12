@@ -16,8 +16,7 @@ extern const Background gStageCameraBgTemplates[4];
 void CreateStageBg_Zone6_Boss(void);
 
 const s16 gUnknown_080D5BF0[] = {
-    Q_8_8(0.00),  Q_8_8(0.25),  Q_8_8(2.25), Q_8_8(2.50), Q_8_8(3.50),
-    Q_8_8(3.625), Q_8_8(5.625), Q_8_8(5.75), Q_8_8(6.75),
+    Q_8_8(0.00), Q_8_8(0.25), Q_8_8(2.25), Q_8_8(2.50), Q_8_8(3.50), Q_8_8(3.625), Q_8_8(5.625), Q_8_8(5.75), Q_8_8(6.75),
 };
 
 // TODO: Make static and Rename to sBlendColors
@@ -112,8 +111,7 @@ void CreateStageBg_Zone6_Boss(void)
 }
 
 // (82.58%) https://decomp.me/scratch/tB3Bs
-NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc",
-         void sub_801D24C(u8 p0, s32 p1, u8 p2))
+NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D24C(u8 p0, s32 p1, u8 p2))
 {
     s16 r6;
     u16 *hOffsets;
@@ -241,8 +239,7 @@ END_NONMATCH
 
 // (84.63%) https://decomp.me/scratch/W9B0j
 // (82.95%) https://decomp.me/scratch/ZEtCx (newer)
-NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
-         void StageBgUpdate_Zone6Acts12(s32 x, s32 UNUSED y))
+NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc", void StageBgUpdate_Zone6Acts12(s32 x, s32 UNUSED y))
 {
     u16 r6;
     u8 r5;
@@ -345,8 +342,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
             s32 v;
 
             if (r6 == 897) {
-                memcpy(&gStageBackgroundsRam.unk0, &gStageCameraBgTemplates[3],
-                       sizeof(Background));
+                memcpy(&gStageBackgroundsRam.unk0, &gStageCameraBgTemplates[3], sizeof(Background));
                 gStageBackgroundsRam.unk0.tilemapId = TM_TECHNO_BASE_BG_CIRCUIT_MASK;
                 bg->graphics.dest = (void *)BG_CHAR_ADDR(3);
                 bg->layoutVram = (void *)BG_SCREEN_ADDR(26);

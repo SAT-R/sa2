@@ -32,12 +32,10 @@ static void sub_805EF90(void);
 static void sub_805EA94(void);
 static void sub_805ECA0(void);
 
-void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                 u8 spriteY)
+void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (me->d.sData[0] >= 0) {
-        struct Task *t = TaskCreate(sub_805EA94, sizeof(Sprite_RotatingHandle), 0x2010,
-                                    0, TaskDestructor_80095E8);
+        struct Task *t = TaskCreate(sub_805EA94, sizeof(Sprite_RotatingHandle), 0x2010, 0, TaskDestructor_80095E8);
         Sprite_RotatingHandle *rotatingHandle = TASK_DATA(t);
         Sprite *s = &rotatingHandle->s;
         rotatingHandle->base.regionX = spriteRegionX;
@@ -80,8 +78,7 @@ static void sub_805EA94(void)
     s->x = x - gCamera.x;
     s->y = y - gCamera.y;
 
-    if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))
-        && sub_800C204(s, x, y, 0, &gPlayer, 0) == 1) {
+    if (!(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD)) && sub_800C204(s, x, y, 0, &gPlayer, 0) == 1) {
 #ifndef NON_MATCHING
         register s32 temp1 asm("r0"), temp2;
 #else
@@ -146,8 +143,7 @@ static void sub_805EA94(void)
 }
 
 // (95.57%) https://decomp.me/scratch/RaPDV
-NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc",
-         static void sub_805ECA0())
+NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc", static void sub_805ECA0())
 {
     Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
     Sprite *s = &rotatingHandle->s;

@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_music_plant_moving_stars[]
-    = INCBIN_U16("data/tilemaps/music_plant_moving_stars/palette.gbapal");
-const u8 Tiles_music_plant_moving_stars[]
-    = INCBIN_U8("data/tilemaps/music_plant_moving_stars/tiles.4bpp");
-const u16 Tilemap_music_plant_moving_stars[]
-    = INCBIN_U16("data/tilemaps/music_plant_moving_stars/tilemap.tilemap2");
+const u16 Palette_music_plant_moving_stars[] = INCBIN_U16("data/tilemaps/music_plant_moving_stars/palette.gbapal");
+const u8 Tiles_music_plant_moving_stars[] = INCBIN_U8("data/tilemaps/music_plant_moving_stars/tiles.4bpp");
+const u16 Tilemap_music_plant_moving_stars[] = INCBIN_U16("data/tilemaps/music_plant_moving_stars/tilemap.tilemap2");
 
 const Tilemap music_plant_moving_stars = {
     .xTiles = 32,

@@ -27,9 +27,8 @@
 Water gWater = {};
 
 static const u16 gUnknown_080D550C[NUM_CHARACTERS] = {
-    SA2_ANIM_UNDERWATER_1UP_SONIC, SA2_ANIM_UNDERWATER_1UP_CREAM,
-    SA2_ANIM_UNDERWATER_1UP_TAILS, SA2_ANIM_UNDERWATER_1UP_KNUCKLES,
-    SA2_ANIM_UNDERWATER_1UP_AMY,
+    SA2_ANIM_UNDERWATER_1UP_SONIC,    SA2_ANIM_UNDERWATER_1UP_CREAM, SA2_ANIM_UNDERWATER_1UP_TAILS,
+    SA2_ANIM_UNDERWATER_1UP_KNUCKLES, SA2_ANIM_UNDERWATER_1UP_AMY,
 };
 
 static void Task_StageWaterTask(void);
@@ -108,8 +107,7 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
         animId = gUnknown_080D550C[playerChar];
         animation = gAnimations[animId];
         pal = animation[0]->pal.palId;
-        sub_8011B54_inline((u32 *)&wd->pal[0 * 16], (u32 *)&gSpritePalettes[pal * 16], 1,
-                           0);
+        sub_8011B54_inline((u32 *)&wd->pal[0 * 16], (u32 *)&gSpritePalettes[pal * 16], 1, 0);
 
         playerChar = gPlayer.character;
         animId = sCharacterPalettesBoostEffect[playerChar];
@@ -237,8 +235,7 @@ void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)
         s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
 
-        gWater.t = TaskCreate(Task_StageWaterTask, PLTT_SIZE, 0xFFFE, 0,
-                              TaskDestructor_WaterSurface);
+        gWater.t = TaskCreate(Task_StageWaterTask, PLTT_SIZE, 0xFFFE, 0, TaskDestructor_WaterSurface);
     }
 }
 
@@ -257,8 +254,7 @@ static void Task_StageWaterTask(void)
     u8 unk2_2;
 #endif
 
-    if ((gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1)) && (I(gPlayer.x) > 6665)
-        && (I(gPlayer.x) <= 10650)) {
+    if ((gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1)) && (I(gPlayer.x) > 6665) && (I(gPlayer.x) <= 10650)) {
         water->isActive = TRUE;
     } else {
         water->isActive = FALSE;
@@ -330,8 +326,7 @@ typedef struct {
 
 void CreateRunOnWaterEffect(void)
 {
-    struct Task *t = TaskCreate(Task_RunOnWaterEffect, sizeof(RunOnWaterEffect), 0x4001,
-                                0, TaskDestructor_8011B3C);
+    struct Task *t = TaskCreate(Task_RunOnWaterEffect, sizeof(RunOnWaterEffect), 0x4001, 0, TaskDestructor_8011B3C);
     RunOnWaterEffect *effect = TASK_DATA(t);
     Sprite *s = &effect->s;
     s->graphics.dest = VramMalloc(12);
@@ -406,50 +401,43 @@ void MaskPaletteWithUnderwaterColor(u32 *dst, u32 *src, u32 mask, s32 size)
         // TODO: Find a way to inline these!
         maskColors0 = *src++;
         maskColors1 = maskColors0;
-        maskColors1
-            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
         maskColors1 >>= 1;
         *dst++ = maskColors1;
 
         maskColors0 = *src++;
         maskColors1 = maskColors0;
-        maskColors1
-            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
         maskColors1 >>= 1;
         *dst++ = maskColors1;
 
         maskColors0 = *src++;
         maskColors1 = maskColors0;
-        maskColors1
-            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
         maskColors1 >>= 1;
         *dst++ = maskColors1;
 
         maskColors0 = *src++;
         maskColors1 = maskColors0;
-        maskColors1
-            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
         maskColors1 >>= 1;
         *dst++ = maskColors1;
 
         maskColors0 = *src++;
         maskColors1 = maskColors0;
-        maskColors1
-            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
         maskColors1 >>= 1;
         *dst++ = maskColors1;
 
         maskColors0 = *src++;
         maskColors1 = maskColors0;
-        maskColors1
-            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
         maskColors1 >>= 1;
         *dst++ = maskColors1;
 
         maskColors0 = *src++;
         maskColors1 = maskColors0;
-        maskColors1
-            = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
+        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
         maskColors1 >>= 1;
         *dst++ = maskColors1;
 
@@ -513,7 +501,4 @@ void TaskDestructor_8011B3C(struct Task *t)
     VramFree(s->graphics.dest);
 }
 
-static void sub_8011B54(u32 *dst, u32 *src, s32 size)
-{
-    sub_8011B54_inline(dst, src, size, 4);
-}
+static void sub_8011B54(u32 *dst, u32 *src, s32 size) { sub_8011B54_inline(dst, src, size, 4); }

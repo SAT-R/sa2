@@ -26,12 +26,10 @@ typedef struct {
 
 void Task_BalloonMain(void);
 
-void CreateEntity_Balloon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                          u8 spriteY)
+void CreateEntity_Balloon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
-        struct Task *t = TaskCreate(Task_BalloonMain, sizeof(Sprite_Balloon), 0x4040, 0,
-                                    TaskDestructor_80095E8);
+        struct Task *t = TaskCreate(Task_BalloonMain, sizeof(Sprite_Balloon), 0x4040, 0, TaskDestructor_80095E8);
         Sprite_Balloon *balloon = TASK_DATA(t);
         Sprite *s = &balloon->s;
         balloon->base.regionX = spriteRegionX;

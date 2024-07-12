@@ -54,13 +54,9 @@ typedef struct {
 #define FAN_DIR_RIGHT                    1
 #define FAN_MASK_PERIODIC                2
 #define SKYCAN_FAN_KIND(dir, isPeriodic) (((isPeriodic) << 1) | (dir))
-#define IS_PROPELLER_DIR_LEFT(kind)                                                     \
-    (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, FALSE))                                   \
-     || ((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE)))
+#define IS_PROPELLER_DIR_LEFT(kind)      (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, FALSE)) || ((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE)))
 
-#define IS_FAN_PERIODIC(kind)                                                           \
-    (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE))                                    \
-     || ((kind) == SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE)))
+#define IS_FAN_PERIODIC(kind) (((kind) == SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE)) || ((kind) == SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE)))
 
 static void Task_IA_Fan_UpdateRegular(void);
 static void TaskDestructor_IA_Fan_UpdateRegular(struct Task *);
@@ -77,11 +73,9 @@ void Task_IA_SmallPropeller_UpdateInFanRegion(void);
 void SetTaskMain_UpdateRegular(Sprite_Fan *unused);
 void DestroyTask_Interactable087(Sprite_Fan *);
 
-static void CreateEntity_Fan(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                             u8 spriteY, u32 kind)
+static void CreateEntity_Fan(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u32 kind)
 {
-    struct Task *t = TaskCreate(Task_IA_Fan_UpdateRegular, sizeof(Sprite_Fan), 0x2010, 0,
-                                TaskDestructor_IA_Fan_UpdateRegular);
+    struct Task *t = TaskCreate(Task_IA_Fan_UpdateRegular, sizeof(Sprite_Fan), 0x2010, 0, TaskDestructor_IA_Fan_UpdateRegular);
     Sprite_Fan *prop = TASK_DATA(t);
     Sprite *s;
 
@@ -174,8 +168,7 @@ static void sub_807D468(Sprite_Fan *prop)
 
             r3 = Q(prop->posX + prop->left) + Q(48);
 
-            if ((prop->kind != SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE))
-                && newPlayerX < r3) {
+            if ((prop->kind != SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE)) && newPlayerX < r3) {
                 gPlayer.x = r3;
             }
 
@@ -275,9 +268,7 @@ static bool32 IsPlayerInFanRegion(Sprite_Fan *prop)
         u16 width = prop->right - prop->left;
         u16 height = prop->bottom - prop->top;
 
-        if (((propX + prop->left) <= playerX)
-            && ((propX + prop->left + width) >= playerX)
-            && ((propY + prop->top) <= playerY)
+        if (((propX + prop->left) <= playerX) && ((propX + prop->left + width) >= playerX) && ((propY + prop->top) <= playerY)
             && ((propY + prop->top + height) >= playerY))
             return TRUE;
     }
@@ -307,16 +298,12 @@ static void TaskDestructor_IA_Fan_UpdateRegular(struct Task *t)
     VramFree(prop->s.graphics.dest);
 }
 
-static void SetTaskMain_807D978(Sprite_Fan *unused)
-{
-    gCurTask->main = Task_IA_SmallPropeller_UpdateInFanRegion;
-}
+static void SetTaskMain_807D978(Sprite_Fan *unused) { gCurTask->main = Task_IA_SmallPropeller_UpdateInFanRegion; }
 
 static s16 ClampPlayerSpeed(s16 speed)
 {
     if (gPlayer.unk5A) {
-        CLAMP_INLINE2(speed, -PROP_PLAYER_CLAMP_SPEED_BOOST,
-                      PROP_PLAYER_CLAMP_SPEED_BOOST);
+        CLAMP_INLINE2(speed, -PROP_PLAYER_CLAMP_SPEED_BOOST, PROP_PLAYER_CLAMP_SPEED_BOOST);
     } else {
         // @BUG: Seems like a copy-paste error?
 #ifdef BUGFIX
@@ -336,8 +323,8 @@ static bool32 IsPropellerOffScreen(Sprite_Fan *prop)
     posX = prop->posX - gCamera.x;
     posY = prop->posY - gCamera.y;
 
-    if (((posX + prop->right) < -128) || ((posX + prop->left) > DISPLAY_WIDTH + 128)
-        || ((posY + prop->bottom) < -128) || ((posY + prop->top) > DISPLAY_HEIGHT + 128))
+    if (((posX + prop->right) < -128) || ((posX + prop->left) > DISPLAY_WIDTH + 128) || ((posY + prop->bottom) < -128)
+        || ((posY + prop->top) > DISPLAY_HEIGHT + 128))
         return TRUE;
 
     return FALSE;
@@ -349,32 +336,24 @@ void DestroyTask_Interactable087(Sprite_Fan *prop)
     TaskDestroy(gCurTask);
 }
 
-void CreateEntity_Fan_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY)
+void CreateEntity_Fan_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
-                     SKYCAN_FAN_KIND(FAN_DIR_LEFT, FALSE));
+    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY, SKYCAN_FAN_KIND(FAN_DIR_LEFT, FALSE));
 }
 
-void CreateEntity_Fan_Right(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY)
+void CreateEntity_Fan_Right(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
-                     SKYCAN_FAN_KIND(FAN_DIR_RIGHT, FALSE));
+    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY, SKYCAN_FAN_KIND(FAN_DIR_RIGHT, FALSE));
 }
 
-void CreateEntity_Fan_Left_Periodic(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                    u8 spriteY)
+void CreateEntity_Fan_Left_Periodic(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
-                     SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE));
+    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY, SKYCAN_FAN_KIND(FAN_DIR_LEFT, TRUE));
 }
 
-void CreateEntity_Fan_Right_Periodic(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                     u8 spriteY)
+void CreateEntity_Fan_Right_Periodic(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY,
-                     SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE));
+    CreateEntity_Fan(me, spriteRegionX, spriteRegionY, spriteY, SKYCAN_FAN_KIND(FAN_DIR_RIGHT, TRUE));
 }
 
 void Task_IA_SmallPropeller_UpdateInFanRegion(void)
@@ -391,7 +370,4 @@ void Task_IA_SmallPropeller_UpdateInFanRegion(void)
     UpdateFanSpritePosition(prop);
 }
 
-void SetTaskMain_UpdateRegular(Sprite_Fan *unused)
-{
-    gCurTask->main = Task_IA_Fan_UpdateRegular;
-}
+void SetTaskMain_UpdateRegular(Sprite_Fan *unused) { gCurTask->main = Task_IA_Fan_UpdateRegular; }

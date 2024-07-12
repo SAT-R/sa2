@@ -32,12 +32,10 @@ const s8 gUnknown_080D94EE[] = { -16, -18, -20 };
 
 const s16 gUnknown_080D94F2[] = { -384, -384, -384 };
 
-void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY)
+void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *s;
-    struct Task *t
-        = TaskCreate(sub_806160C, sizeof(BouncyBar), 0x2010, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(sub_806160C, sizeof(BouncyBar), 0x2010, 0, TaskDestructor_80095E8);
     BouncyBar *bar = TASK_DATA(t);
 
     s = &bar->s;
@@ -89,9 +87,8 @@ void sub_806160C(void)
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (!(gPlayer.moveState & MOVESTATE_DEAD)
-        && (sub_800C204(s, screenX, screenY, 0, &gPlayer, 0) == 1)
-        && (gPlayer.speedAirY > 0) && (I(gPlayer.y) + 4) < screenY) {
+    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (sub_800C204(s, screenX, screenY, 0, &gPlayer, 0) == 1) && (gPlayer.speedAirY > 0)
+        && (I(gPlayer.y) + 4) < screenY) {
         gPlayer.unk64 = 0x32;
         gPlayer.transition = PLTRANS_PT5;
 
@@ -103,8 +100,7 @@ void sub_806160C(void)
         bar->unk3D = (bar->unk3C * 5) + 10;
         bar->unk3E = gUnknown_080D94E8[bar->unk3C];
 
-        bar->unk40 = screenX - I(gPlayer.x) >= 0 ? screenX - I(gPlayer.x)
-                                                 : I(gPlayer.x) - screenX;
+        bar->unk40 = screenX - I(gPlayer.x) >= 0 ? screenX - I(gPlayer.x) : I(gPlayer.x) - screenX;
 
         gCurTask->main = sub_80617A4;
         gPlayer.moveState |= MOVESTATE_400000;
@@ -152,8 +148,7 @@ void sub_80617A4(void)
             }
 
             gPlayer.speedAirY = gUnknown_080D94F2[bar->unk3C];
-            gPlayer.speedAirY
-                += ((temp * bar->unk3E) * gUnknown_080D94EE[bar->unk3C]) >> 1;
+            gPlayer.speedAirY += ((temp * bar->unk3E) * gUnknown_080D94EE[bar->unk3C]) >> 1;
             gPlayer.moveState &= ~MOVESTATE_400000;
             gPlayer.moveState &= ~MOVESTATE_100;
         }

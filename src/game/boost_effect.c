@@ -27,11 +27,9 @@ typedef struct {
 
 #define BE_BUFFER_SIZE 16
 
-#define BE_RING_INDEX(_bufferName, _num)                                                \
-    ((_bufferName##Index + (_num)) % (unsigned)ARRAY_COUNT(_bufferName))
+#define BE_RING_INDEX(_bufferName, _num) ((_bufferName##Index + (_num)) % (unsigned)ARRAY_COUNT(_bufferName))
 
-#define ADD_BE_INDEX(_bufferName, _num)                                                 \
-    _bufferName##Index = BE_RING_INDEX(_bufferName, (_num))
+#define ADD_BE_INDEX(_bufferName, _num) _bufferName##Index = BE_RING_INDEX(_bufferName, (_num))
 
 #define INC_BE_INDEX(_bufferName) ADD_BE_INDEX(_bufferName, 1)
 
@@ -46,10 +44,8 @@ static u8 ALIGNED(4) sPlayerPosBufferIndex = 0;
 const u8 gUnknown_080D5674[4] = { 2, 4, 6, 0 };
 
 const AnimId sCharacterPalettesBoostEffect[NUM_CHARACTERS] = {
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_SONIC),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_CREAM),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_TAILS),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_KNUCKLES),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_SONIC), SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_CREAM),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_TAILS), SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_KNUCKLES),
     SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_AMY),
 };
 
@@ -173,8 +169,7 @@ static inline void sub_8015B64_inline(AnimId anim, u16 palId)
         insertOffset += palId;
         numColors = *pAnim % 256u;
 
-        DmaCopy32(3, &gRefSpriteTables->palettes[animPalId * 16],
-                  &gObjPalette[insertOffset], numColors * sizeof(u16));
+        DmaCopy32(3, &gRefSpriteTables->palettes[animPalId * 16], &gObjPalette[insertOffset], numColors * sizeof(u16));
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }
@@ -189,8 +184,7 @@ void sub_801583C(void)
         gUnknown_030055BC = TRUE;
 
         for (i = 0; i < 3; i++) {
-            struct Task *t = TaskCreate(Task_80159C8, sizeof(PlayerActions), 0x4000, 0,
-                                        TaskDestructor_8015B50);
+            struct Task *t = TaskCreate(Task_80159C8, sizeof(PlayerActions), 0x4000, 0, TaskDestructor_8015B50);
             PlayerActions *actions = TASK_DATA(t);
 
             actions->unk5C = i;
@@ -216,8 +210,7 @@ void sub_801583C(void)
         }
 
         if (s->palId != 0) {
-            sub_8015B64_inline(sCharacterPalettesBoostEffect[gPlayer.character],
-                               s->palId);
+            sub_8015B64_inline(sCharacterPalettesBoostEffect[gPlayer.character], s->palId);
         }
     }
 }
@@ -271,8 +264,7 @@ void Task_80159C8(void)
                 u32 moveState;
 
                 SPRITE_FLAG_CLEAR(s, ROT_SCALE);
-                s->frameFlags
-                    |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
+                s->frameFlags |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 if (actions->plState.moveState & MOVESTATE_FACING_LEFT) {
                     transform->width = 0x100;

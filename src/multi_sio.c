@@ -13,8 +13,7 @@ struct MultiSioArea gMultiSioArea = {};
 UNUSED u32 gUnusedMultiSioSpace[2] = {};
 
 #ifdef MULTI_SIO_DI_FUNC_FAST
-u32 gMultiSioRecvFuncBuf[0x40 / 4]
-    = {}; // Receive Data/Check Buffer Change Routine RAM Execution Buffer
+u32 gMultiSioRecvFuncBuf[0x40 / 4] = {}; // Receive Data/Check Buffer Change Routine RAM Execution Buffer
 #endif
 
 /*------------------------------------------------------------------*/
@@ -41,8 +40,7 @@ void MultiSioInit(u32 connectedFlags)
 #endif
     gMultiSioArea.connectedFlags = connectedFlags;
     gMultiSioArea.sendBufCounter = 13;
-    gMultiSioArea.nextSendBufp
-        = (u16 *)&gMultiSioArea.sendBuf[0]; // Set Send Buffer Pointer
+    gMultiSioArea.nextSendBufp = (u16 *)&gMultiSioArea.sendBuf[0]; // Set Send Buffer Pointer
     gMultiSioArea.currentSendBufp = (u16 *)&gMultiSioArea.sendBuf[1];
     for (i = 0; i < 4; ++i) { // Set Receive Buffer Pointer
         gMultiSioArea.currentRecvBufp[i] = (u16 *)&gMultiSioArea.recvBuf[i][0];
@@ -74,8 +72,7 @@ u32 MultiSioMain(void *sendp, void *recvp, u32 loadRequest)
                     REG_IE &= ~INTR_FLAG_SERIAL; // Disable SIO Interrupt
                     REG_IE |= MULTI_SIO_TIMER_INTR_FLAG; // Enable Timer Interrupt
                     REG_IME = 1;
-                    ((struct SioMultiCnt *)REG_ADDR_SIOCNT)->ifEnable
-                        = 0; // Reset SIO-IFE
+                    ((struct SioMultiCnt *)REG_ADDR_SIOCNT)->ifEnable = 0; // Reset SIO-IFE
                     REG_IF = INTR_FLAG_SERIAL | MULTI_SIO_TIMER_INTR_FLAG;
                     REG_MULTI_SIO_TIMER = MULTI_SIO_TIMER_COUNT; // Timer Initialization
                     gMultiSioArea.type = SIO_MULTI_PARENT;
@@ -90,11 +87,9 @@ u32 MultiSioMain(void *sendp, void *recvp, u32 loadRequest)
             break;
     }
     ++gMultiSioArea.sendFrameCounter;
-    return gMultiSioArea.recvSuccessFlags | gMultiSioArea.loadEnable << 4
-        | gMultiSioArea.loadRequest << 5 | gMultiSioArea.loadSuccessFlag << 6
-        | (gMultiSioArea.type == SIO_MULTI_PARENT) << 7
-        | gMultiSioArea.connectedFlags << 8 | (gMultiSioArea.hardError != 0) << 12
-        | (sioCntBak.id >= MULTI_SIO_PLAYERS_MAX) << 13;
+    return gMultiSioArea.recvSuccessFlags | gMultiSioArea.loadEnable << 4 | gMultiSioArea.loadRequest << 5
+        | gMultiSioArea.loadSuccessFlag << 6 | (gMultiSioArea.type == SIO_MULTI_PARENT) << 7 | gMultiSioArea.connectedFlags << 8
+        | (gMultiSioArea.hardError != 0) << 12 | (sioCntBak.id >= MULTI_SIO_PLAYERS_MAX) << 13;
 }
 
 /*------------------------------------------------------------------*/
@@ -107,27 +102,21 @@ void MultiSioSendDataSet(void *sendp, u32 loadRequest)
     s32 i;
 
     ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->loadRequest = loadRequest;
-    ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->downloadSuccessFlag
-        = gSio32MultiLoadArea.downloadSuccessFlag;
-    ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->loadSuccessFlag
-        = gMultiSioArea.loadSuccessFlag;
-    ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->frameCounter
-        = (u8)gMultiSioArea.sendFrameCounter;
-    ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->recvErrorFlags
-        = gMultiSioArea.connectedFlags ^ gMultiSioArea.recvSuccessFlags;
+    ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->downloadSuccessFlag = gSio32MultiLoadArea.downloadSuccessFlag;
+    ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->loadSuccessFlag = gMultiSioArea.loadSuccessFlag;
+    ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->frameCounter = (u8)gMultiSioArea.sendFrameCounter;
+    ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->recvErrorFlags = gMultiSioArea.connectedFlags ^ gMultiSioArea.recvSuccessFlags;
     ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->checkSum = 0;
     CpuCopy32(sendp, &gMultiSioArea.nextSendBufp[2],
               MULTI_SIO_BLOCK_SIZE); // Set Send Data
-    for (i = 0; i < sizeof(struct MultiSioPacket) / 2 - 2;
-         ++i) // Calculate Checksum Send Data
+    for (i = 0; i < sizeof(struct MultiSioPacket) / 2 - 2; ++i) // Calculate Checksum Send Data
         checkSum += gMultiSioArea.nextSendBufp[i];
     ((struct MultiSioPacket *)gMultiSioArea.nextSendBufp)->checkSum = ~checkSum;
     if (gMultiSioArea.type)
         REG_MULTI_SIO_TIMER_H = 0; // Stop Timer
     gMultiSioArea.sendBufCounter = -1;
     if (gMultiSioArea.type && gMultiSioArea.startFlag)
-        REG_MULTI_SIO_TIMER_H
-            = TIMER_1CLK | TIMER_INTR_ENABLE | TIMER_ENABLE; // Start Timer
+        REG_MULTI_SIO_TIMER_H = TIMER_1CLK | TIMER_INTR_ENABLE | TIMER_ENABLE; // Start Timer
 }
 
 /*------------------------------------------------------------------*/
@@ -147,8 +136,7 @@ u32 MultiSioRecvDataCheck(void *recvp)
 #else
     REG_IME = 0; // Disable Interrupt (Approx. 80 Clocks)
     for (i = 0; i < 4; ++i) {
-        u16 *bufpTmp
-            = gMultiSioArea.recvCheckBufp[i]; // Update Receive Data/Check Buffer
+        u16 *bufpTmp = gMultiSioArea.recvCheckBufp[i]; // Update Receive Data/Check Buffer
         gMultiSioArea.recvCheckBufp[i] = gMultiSioArea.lastRecvBufp[i];
         gMultiSioArea.lastRecvBufp[i] = bufpTmp;
     }
@@ -162,34 +150,23 @@ u32 MultiSioRecvDataCheck(void *recvp)
         if (syncRecvFlagBak[i]) // Receive Success Confirmation
             if ((s16)checkSum == -1) {
                 gMultiSioArea.recvSuccessFlags |= 1 << i;
-                gMultiSioArea.downloadSuccessFlags
-                    |= ((struct MultiSioPacket *)gMultiSioArea.recvCheckBufp[i])
-                           ->downloadSuccessFlag
-                    << i;
-                CpuCopy32(&((u8 *)gMultiSioArea.recvCheckBufp[i])[4],
-                          &((u8 *)recvp)[i * MULTI_SIO_BLOCK_SIZE],
-                          MULTI_SIO_BLOCK_SIZE);
+                gMultiSioArea.downloadSuccessFlags |= ((struct MultiSioPacket *)gMultiSioArea.recvCheckBufp[i])->downloadSuccessFlag << i;
+                CpuCopy32(&((u8 *)gMultiSioArea.recvCheckBufp[i])[4], &((u8 *)recvp)[i * MULTI_SIO_BLOCK_SIZE], MULTI_SIO_BLOCK_SIZE);
             }
         CpuFill32(0, &((u8 *)gMultiSioArea.recvCheckBufp[i])[4], MULTI_SIO_BLOCK_SIZE);
     }
-    gMultiSioArea.connectedFlags
-        |= gMultiSioArea.recvSuccessFlags; // Set Connect Complete Flag
+    gMultiSioArea.connectedFlags |= gMultiSioArea.recvSuccessFlags; // Set Connect Complete Flag
     if (gMultiSioArea.recvSuccessFlags & 1) {
 
         if (gMultiSioArea.type == SIO_MULTI_PARENT) {
             if (gMultiSioArea.recvSuccessFlags & 0x3) // Enable Load
                 if (gMultiSioArea.recvSuccessFlags == gMultiSioArea.connectedFlags)
                     gMultiSioArea.loadEnable = 1;
-            if ((gMultiSioArea.downloadSuccessFlags & 0xe)
-                == (gMultiSioArea.connectedFlags & 0xe)) // Check Load
+            if ((gMultiSioArea.downloadSuccessFlags & 0xe) == (gMultiSioArea.connectedFlags & 0xe)) // Check Load
                 gMultiSioArea.loadSuccessFlag = 1;
         } else
-            gMultiSioArea.loadSuccessFlag
-                |= ((struct MultiSioPacket *)gMultiSioArea.recvCheckBufp[0])
-                       ->loadSuccessFlag;
-        gMultiSioArea.loadRequest
-            |= ((struct MultiSioPacket *)gMultiSioArea.recvCheckBufp[0])
-                   ->loadRequest; // Request Load
+            gMultiSioArea.loadSuccessFlag |= ((struct MultiSioPacket *)gMultiSioArea.recvCheckBufp[0])->loadSuccessFlag;
+        gMultiSioArea.loadRequest |= ((struct MultiSioPacket *)gMultiSioArea.recvCheckBufp[0])->loadRequest; // Request Load
     }
     return gMultiSioArea.recvSuccessFlags;
 }
@@ -211,8 +188,7 @@ void MultiSioStart(void)
 void MultiSioStop(void)
 {
     REG_IME = 0;
-    REG_IE &= ~(INTR_FLAG_SERIAL
-                | MULTI_SIO_TIMER_INTR_FLAG); // Disable SIO & Timer Interrupt
+    REG_IE &= ~(INTR_FLAG_SERIAL | MULTI_SIO_TIMER_INTR_FLAG); // Disable SIO & Timer Interrupt
     REG_IME = 1;
     REG_SIOCNT = SIO_MULTI_MODE | MULTI_SIO_BAUD_RATE_NO; // Stop SIO
     REG_MULTI_SIO_TIMER = MULTI_SIO_TIMER_COUNT; // Stop Timer
@@ -243,39 +219,32 @@ void MultiSioIntr(void)
         gMultiSioArea.currentSendBufp = gMultiSioArea.nextSendBufp;
         gMultiSioArea.nextSendBufp = bufpTmp;
     } else if (gMultiSioArea.sendBufCounter >= 0) { // Set Send Data
-        ((struct SioMultiCnt *)REG_ADDR_SIOCNT)->data
-            = gMultiSioArea.currentSendBufp[gMultiSioArea.sendBufCounter];
+        ((struct SioMultiCnt *)REG_ADDR_SIOCNT)->data = gMultiSioArea.currentSendBufp[gMultiSioArea.sendBufCounter];
     }
     if (gMultiSioArea.sendBufCounter < (s32)(sizeof(struct MultiSioPacket) / 2 - 1))
         ++gMultiSioArea.sendBufCounter;
     // Receive Data Processing (Max. Approx. 350 Clocks/Included in wait period)
     for (i = 0; i < 4; ++i) {
-        if (recvTmp[i] == MULTI_SIO_SYNC_DATA
-            && gMultiSioArea.recvBufCounter[i]
-                > (s32)(sizeof(struct MultiSioPacket) / 2 - 3)) {
+        if (recvTmp[i] == MULTI_SIO_SYNC_DATA && gMultiSioArea.recvBufCounter[i] > (s32)(sizeof(struct MultiSioPacket) / 2 - 3)) {
             gMultiSioArea.recvBufCounter[i] = -1;
         } else {
-            gMultiSioArea.currentRecvBufp[i][gMultiSioArea.recvBufCounter[i]]
-                = recvTmp[i];
+            gMultiSioArea.currentRecvBufp[i][gMultiSioArea.recvBufCounter[i]] = recvTmp[i];
             // Store Receive Data
-            if (gMultiSioArea.recvBufCounter[i]
-                == (s32)(sizeof(struct MultiSioPacket) / 2 - 3)) {
+            if (gMultiSioArea.recvBufCounter[i] == (s32)(sizeof(struct MultiSioPacket) / 2 - 3)) {
                 bufpTmp = gMultiSioArea.lastRecvBufp[i]; // Change Receive Buffer
                 gMultiSioArea.lastRecvBufp[i] = gMultiSioArea.currentRecvBufp[i];
                 gMultiSioArea.currentRecvBufp[i] = bufpTmp;
                 gMultiSioArea.syncRecvFlag[i] = 1; // Receive Complete Flag
             }
         }
-        if (gMultiSioArea.recvBufCounter[i]
-            < (s32)(sizeof(struct MultiSioPacket) / 2 - 1))
+        if (gMultiSioArea.recvBufCounter[i] < (s32)(sizeof(struct MultiSioPacket) / 2 - 1))
             ++gMultiSioArea.recvBufCounter[i];
     }
     // Start Master Send
     if (gMultiSioArea.type == SIO_MULTI_PARENT) {
         REG_MULTI_SIO_TIMER_H = 0; // Stop Timer
         REG_SIOCNT |= SIO_ENABLE; // Restart Send
-        REG_MULTI_SIO_TIMER_H
-            = TIMER_1CLK | TIMER_INTR_ENABLE | TIMER_ENABLE; // Restart Timer
+        REG_MULTI_SIO_TIMER_H = TIMER_1CLK | TIMER_INTR_ENABLE | TIMER_ENABLE; // Restart Timer
     }
 }
 #endif

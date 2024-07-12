@@ -10,8 +10,7 @@
 void *gUnknown_03005B58 = NULL;
 void *gUnknown_03005B5C = NULL;
 
-void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos,
-                 s16 yPos, u16 oamOrder, u8 variant, u8 palId)
+void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos, s16 yPos, u16 oamOrder, u8 variant, u8 palId)
 {
     Sprite newObj;
     Sprite *s;
@@ -59,9 +58,7 @@ void sub_806CA88(Sprite *obj, s8 target, u32 size, u16 anim, u32 unk10, s16 xPos
 }
 
 // TODO: SpecialStageCollectables_UNK874 is probably it's own type
-bool16 sub_806CB84(struct UNK_806CB84 *a,
-                   struct SpecialStageCollectables_UNK874_2 *unk874,
-                   struct SpecialStage *stage)
+bool16 sub_806CB84(struct UNK_806CB84 *a, struct SpecialStageCollectables_UNK874_2 *unk874, struct SpecialStage *stage)
 {
     struct SpecialStageWorld *world = TASK_DATA(stage->worldTask);
     s32 r9;
@@ -114,8 +111,7 @@ bool16 sub_806CB84(struct UNK_806CB84 *a,
             return FALSE;
         }
         a->unkA = val;
-        a->screenY
-            = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / world->unkC[val]);
+        a->screenY = (a->unkA - unk874->unkE) - (Q_16_16(unk874->unk12) / world->unkC[val]);
         a->unk8 = (0x78 - ((r9 * 0x87) / r8));
         a->screenX = a->unk8 - unk874->unkC;
         if (unk874->unk8 != 0) {
@@ -185,8 +181,7 @@ void InitSpecialStageScreenVram(void)
     gUnknown_03005B58 = NULL;
 }
 
-void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e,
-                 u16 palOffset, u8 bg_id, u16 scrollX, u16 scrollY)
+void sub_806CEC4(Background *background, u32 a, u32 b, u8 assetId, u16 d, u16 e, u16 palOffset, u8 bg_id, u16 scrollX, u16 scrollY)
 {
     background->graphics.dest = (void *)BG_CHAR_ADDR(a);
     background->graphics.anim = 0;

@@ -28,8 +28,7 @@ void TaskDestructor_Circus(struct Task *);
 
 void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_CircusMain, sizeof(Sprite_Circus), 0x4090, 0,
-                                TaskDestructor_Circus);
+    struct Task *t = TaskCreate(Task_CircusMain, sizeof(Sprite_Circus), 0x4090, 0, TaskDestructor_Circus);
     Sprite_Circus *circus = TASK_DATA(t);
     Sprite *s = &circus->s;
     circus->base.regionX = spriteRegionX;
