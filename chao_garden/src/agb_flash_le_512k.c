@@ -2,10 +2,8 @@
 #include "gba/flash_internal.h"
 
 const u16 le512kMaxTime[] = {
-    10,  65469, TIMER_ENABLE | TIMER_INTR_ENABLE | TIMER_256CLK,
-    10,  65469, TIMER_ENABLE | TIMER_INTR_ENABLE | TIMER_256CLK,
-    40,  65469, TIMER_ENABLE | TIMER_INTR_ENABLE | TIMER_256CLK,
-    200, 65469, TIMER_ENABLE | TIMER_INTR_ENABLE | TIMER_256CLK,
+    10, 65469, TIMER_ENABLE | TIMER_INTR_ENABLE | TIMER_256CLK, 10,  65469, TIMER_ENABLE | TIMER_INTR_ENABLE | TIMER_256CLK,
+    40, 65469, TIMER_ENABLE | TIMER_INTR_ENABLE | TIMER_256CLK, 200, 65469, TIMER_ENABLE | TIMER_INTR_ENABLE | TIMER_256CLK,
 };
 
 const struct FlashSetupInfo DefaultFlash512K = {
@@ -144,8 +142,7 @@ u16 ProgramFlashSector_LE(u16 sectorNum, void *src)
 
     tryNum = 0;
     while ((result = EraseFlashSector_LE(sectorNum))
-           || (result = VerifyEraseSector(
-                   dest, (u8 *)((s32)&VerifyEraseSector_Core_Buffer + 1)))) {
+           || (result = VerifyEraseSector(dest, (u8 *)((s32)&VerifyEraseSector_Core_Buffer + 1)))) {
         tryNum++;
         if (tryNum == 0x51) {
             return result;

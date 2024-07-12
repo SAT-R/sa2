@@ -53,41 +53,18 @@ static const TileInfo gUnknown_080D92BC[] = {
 };
 
 static const TileInfo gUnknown_080D92DC[] = {
-    TextElement(5, LANG_DEFAULT, 0, 46, 1076),
-    TextElement(5, LANG_DEFAULT, 1, 42, 1076),
-    TextElement(5, LANG_DEFAULT, 2, 12, 1076),
-    TextElement(5, LANG_DEFAULT, 3, 18, 1076),
-    TextElement(5, LANG_DEFAULT, 4, 6, 1076),
-    TextElement(5, LANG_JAPANESE, 0, 46, 1076),
-    TextElement(5, LANG_JAPANESE, 1, 42, 1076),
-    TextElement(5, LANG_JAPANESE, 2, 12, 1076),
-    TextElement(5, LANG_JAPANESE, 3, 18, 1076),
-    TextElement(5, LANG_JAPANESE, 4, 6, 1076),
-    TextElement(5, LANG_ENGLISH, 0, 38, 1084),
-    TextElement(5, LANG_ENGLISH, 1, 46, 1084),
-    TextElement(5, LANG_ENGLISH, 2, 14, 1084),
-    TextElement(5, LANG_ENGLISH, 3, 10, 1084),
-    TextElement(5, LANG_ENGLISH, 4, 6, 1076),
-    TextElement(5, LANG_GERMAN, 0, 57, 1085),
-    TextElement(5, LANG_GERMAN, 1, 46, 1085),
-    TextElement(5, LANG_GERMAN, 2, 10, 1085),
-    TextElement(5, LANG_GERMAN, 3, 14, 1085),
-    TextElement(5, LANG_GERMAN, 4, 6, 1076),
-    TextElement(5, LANG_FRENCH, 0, 51, 1086),
-    TextElement(5, LANG_FRENCH, 1, 72, 1086),
-    TextElement(5, LANG_FRENCH, 2, 10, 1086),
-    TextElement(5, LANG_FRENCH, 3, 14, 1086),
-    TextElement(5, LANG_FRENCH, 4, 6, 1076),
-    TextElement(5, LANG_SPANISH, 0, 75, 1087),
-    TextElement(5, LANG_SPANISH, 1, 69, 1087),
-    TextElement(5, LANG_SPANISH, 2, 9, 1087),
-    TextElement(5, LANG_SPANISH, 3, 15, 1087),
-    TextElement(5, LANG_SPANISH, 4, 6, 1076),
-    TextElement(5, LANG_ITALIAN, 0, 72, 1088),
-    TextElement(5, LANG_ITALIAN, 1, 75, 1088),
-    TextElement(5, LANG_ITALIAN, 2, 6, 1088),
-    TextElement(5, LANG_ITALIAN, 3, 10, 1088),
-    TextElement(5, LANG_ITALIAN, 4, 6, 1076),
+    TextElement(5, LANG_DEFAULT, 0, 46, 1076),  TextElement(5, LANG_DEFAULT, 1, 42, 1076),  TextElement(5, LANG_DEFAULT, 2, 12, 1076),
+    TextElement(5, LANG_DEFAULT, 3, 18, 1076),  TextElement(5, LANG_DEFAULT, 4, 6, 1076),   TextElement(5, LANG_JAPANESE, 0, 46, 1076),
+    TextElement(5, LANG_JAPANESE, 1, 42, 1076), TextElement(5, LANG_JAPANESE, 2, 12, 1076), TextElement(5, LANG_JAPANESE, 3, 18, 1076),
+    TextElement(5, LANG_JAPANESE, 4, 6, 1076),  TextElement(5, LANG_ENGLISH, 0, 38, 1084),  TextElement(5, LANG_ENGLISH, 1, 46, 1084),
+    TextElement(5, LANG_ENGLISH, 2, 14, 1084),  TextElement(5, LANG_ENGLISH, 3, 10, 1084),  TextElement(5, LANG_ENGLISH, 4, 6, 1076),
+    TextElement(5, LANG_GERMAN, 0, 57, 1085),   TextElement(5, LANG_GERMAN, 1, 46, 1085),   TextElement(5, LANG_GERMAN, 2, 10, 1085),
+    TextElement(5, LANG_GERMAN, 3, 14, 1085),   TextElement(5, LANG_GERMAN, 4, 6, 1076),    TextElement(5, LANG_FRENCH, 0, 51, 1086),
+    TextElement(5, LANG_FRENCH, 1, 72, 1086),   TextElement(5, LANG_FRENCH, 2, 10, 1086),   TextElement(5, LANG_FRENCH, 3, 14, 1086),
+    TextElement(5, LANG_FRENCH, 4, 6, 1076),    TextElement(5, LANG_SPANISH, 0, 75, 1087),  TextElement(5, LANG_SPANISH, 1, 69, 1087),
+    TextElement(5, LANG_SPANISH, 2, 9, 1087),   TextElement(5, LANG_SPANISH, 3, 15, 1087),  TextElement(5, LANG_SPANISH, 4, 6, 1076),
+    TextElement(5, LANG_ITALIAN, 0, 72, 1088),  TextElement(5, LANG_ITALIAN, 1, 75, 1088),  TextElement(5, LANG_ITALIAN, 2, 6, 1088),
+    TextElement(5, LANG_ITALIAN, 3, 10, 1088),  TextElement(5, LANG_ITALIAN, 4, 6, 1076),
 };
 
 void CreateMultiplayerTeamPlayScreen(void)
@@ -137,8 +114,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     gUnknown_03002280[2][2] = 0xff;
     gUnknown_03002280[2][3] = 32;
 
-    t = TaskCreate(sub_805CB34, sizeof(struct MultiplayerTeamPlayScreen), 0x3000, 0,
-                   NULL);
+    t = TaskCreate(sub_805CB34, sizeof(struct MultiplayerTeamPlayScreen), 0x3000, 0, NULL);
     teamPlayScreen = TASK_DATA(t);
     teamPlayScreen->unk310 = 0;
     teamPlayScreen->unk312 = 0;
@@ -171,8 +147,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         s->x = 0;
         s->y = 0;
         s->graphics.dest = (void *)vram;
-        vram += gUnknown_080D92DC[TextElementOffset(lang, 5, i)].numTiles
-            * TILE_SIZE_4BPP;
+        vram += gUnknown_080D92DC[TextElementOffset(lang, 5, i)].numTiles * TILE_SIZE_4BPP;
         s->oamFlags = SPRITE_OAM_ORDER(3);
         s->graphics.size = 0;
         s->graphics.anim = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].anim;
@@ -386,8 +361,7 @@ static void sub_805CC34(void)
                     TaskDestroy(gCurTask);
                     gFlags &= ~0x4;
                     gGameMode = GAME_MODE_MULTI_PLAYER;
-                    CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels,
-                                                COURSE_SELECT_CUT_SCENE_NONE);
+                    CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels, COURSE_SELECT_CUT_SCENE_NONE);
                     gMultiSioSend.pat0.unk0 = 0x4035;
                     return;
                 }
@@ -432,8 +406,7 @@ static void sub_805CC34(void)
                 TaskDestroy(gCurTask);
                 gFlags &= ~0x4;
                 gGameMode = GAME_MODE_MULTI_PLAYER;
-                CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels,
-                                            COURSE_SELECT_CUT_SCENE_NONE);
+                CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels, COURSE_SELECT_CUT_SCENE_NONE);
                 return;
             }
         }
@@ -500,8 +473,7 @@ static void sub_805D118(struct MultiplayerTeamPlayScreen *teamPlayScreen)
 
     for (i = 0; i < 160; i++) {
         *unk1884++ = (gSineTable[(gFrameCount + i * 4) & 1023] >> 0xB) + unk310;
-        *unk1884++
-            = (gSineTable[((gFrameCount + i * 2) & 1023) + 0x100] >> 0xB) + unk312;
+        *unk1884++ = (gSineTable[((gFrameCount + i * 2) & 1023) + 0x100] >> 0xB) + unk312;
     }
 }
 
@@ -600,8 +572,7 @@ static void sub_805D1F8(void)
     }
 
     if (((!(gInput & (DPAD_LEFT | DPAD_RIGHT)) && (gPressedKeys & A_BUTTON))
-         && ((teamPlayScreen->unk31E == 0 && (count - 1) != pos[0])
-             || (teamPlayScreen->unk31E == 1 && (count - 1) != pos[1])))
+         && ((teamPlayScreen->unk31E == 0 && (count - 1) != pos[0]) || (teamPlayScreen->unk31E == 1 && (count - 1) != pos[1])))
         || teamPlayScreen->unk31F != 0) {
         if (teamPlayScreen->unk31F == 0) {
             m4aSongNumStart(SE_SELECT);
@@ -644,8 +615,7 @@ static void sub_805D610(void)
 {
     TaskDestroy(gCurTask);
     gFlags &= ~0x4;
-    CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels,
-                                COURSE_SELECT_CUT_SCENE_NONE);
+    CreateCourseSelectionScreen(0, gMultiplayerUnlockedLevels, COURSE_SELECT_CUT_SCENE_NONE);
 }
 
 static void sub_805D644(struct MultiplayerTeamPlayScreen *teamPlayScreen)

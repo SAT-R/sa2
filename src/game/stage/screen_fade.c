@@ -47,7 +47,4 @@ u8 UpdateScreenFade(ScreenFade *fade)
     }
 }
 
-static void ScreenFadeUpdateValues(ScreenFade *fade)
-{
-    ScreenFadeUpdateValues_inline(fade);
-}
+static void ScreenFadeUpdateValues(ScreenFade *fade) { ScreenFadeUpdateValues_inline(fade); }

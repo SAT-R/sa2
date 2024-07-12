@@ -3,8 +3,7 @@
 
 const u16 Palette_green_caret[] = INCBIN_U16("data/tilemaps/green_caret/palette.gbapal");
 const u8 Tiles_green_caret[] = INCBIN_U8("data/tilemaps/green_caret/tiles.4bpp");
-const u16 Tilemap_green_caret[]
-    = INCBIN_U16("data/tilemaps/green_caret/tilemap.tilemap2");
+const u16 Tilemap_green_caret[] = INCBIN_U16("data/tilemaps/green_caret/tilemap.tilemap2");
 
 const Tilemap green_caret = {
     .xTiles = 30,

@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_mp_character_selected_knuckles[]
-    = INCBIN_U16("data/tilemaps/mp_character_selected_knuckles/palette.gbapal");
-const u8 Tiles_mp_character_selected_knuckles[]
-    = INCBIN_U8("data/tilemaps/mp_character_selected_knuckles/tiles.4bpp");
-const u16 Tilemap_mp_character_selected_knuckles[]
-    = INCBIN_U16("data/tilemaps/mp_character_selected_knuckles/tilemap.tilemap2");
+const u16 Palette_mp_character_selected_knuckles[] = INCBIN_U16("data/tilemaps/mp_character_selected_knuckles/palette.gbapal");
+const u8 Tiles_mp_character_selected_knuckles[] = INCBIN_U8("data/tilemaps/mp_character_selected_knuckles/tiles.4bpp");
+const u16 Tilemap_mp_character_selected_knuckles[] = INCBIN_U16("data/tilemaps/mp_character_selected_knuckles/tilemap.tilemap2");
 
 const Tilemap mp_character_selected_knuckles = {
     .xTiles = 10,

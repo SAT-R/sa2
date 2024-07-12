@@ -37,8 +37,7 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *, struct UNK_806DEA4 *);
 void sub_806E1AC(s16, struct UNK_806DEA4 *);
 
 const s16 gUnknown_080DF6CC[NUM_COURSE_ZONES] = {
-    [ZONE_1] = 0x130, [ZONE_2] = 0x128, [ZONE_3] = 0x110, [ZONE_4] = 0x128,
-    [ZONE_5] = 0x143, [ZONE_6] = 0x11C, [ZONE_7] = 0x10B,
+    [ZONE_1] = 0x130, [ZONE_2] = 0x128, [ZONE_3] = 0x110, [ZONE_4] = 0x128, [ZONE_5] = 0x143, [ZONE_6] = 0x11C, [ZONE_7] = 0x10B,
 };
 
 void SpecialStageHandleCollectRings(struct SpecialStage *stage, s16 num)
@@ -119,24 +118,15 @@ void Task_InitObjects(void)
 
     collectables->animFrame = 0;
 
-    sub_806CA88(&collectables->unk4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14,
-                0xe, 1, 0);
-    sub_806CA88(&collectables->unk34, RENDER_TARGET_SCREEN, 0x10, 0x372, 0x3000, 0x14,
-                0x14, 0xe, 0, 0);
-    sub_806CA88(&collectables->unk64, RENDER_TARGET_SCREEN, 4, 0x374, 0x3000, 0x14, 0x1e,
-                0xf, 1, 0);
-    sub_806CA88(&collectables->unk94, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14,
-                0xe, 6, 0);
-    sub_806CA88(&collectables->unkC4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14,
-                0xe, 5, 0);
-    sub_806CA88(&collectables->unkF4[0], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14,
-                0x14, 0xe, 0, 0);
-    sub_806CA88(&collectables->unkF4[1], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14,
-                0x14, 0xe, 1, 0);
-    sub_806CA88(&collectables->unkF4[2], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14,
-                0x14, 0xe, 2, 0);
-    sub_806CA88(&collectables->unkF4[3], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14,
-                0x14, 0xe, 3, 0);
+    sub_806CA88(&collectables->unk4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14, 0xe, 1, 0);
+    sub_806CA88(&collectables->unk34, RENDER_TARGET_SCREEN, 0x10, 0x372, 0x3000, 0x14, 0x14, 0xe, 0, 0);
+    sub_806CA88(&collectables->unk64, RENDER_TARGET_SCREEN, 4, 0x374, 0x3000, 0x14, 0x1e, 0xf, 1, 0);
+    sub_806CA88(&collectables->unk94, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14, 0xe, 6, 0);
+    sub_806CA88(&collectables->unkC4, RENDER_TARGET_SCREEN, 4, 0x372, 0x3000, 0x14, 0x14, 0xe, 5, 0);
+    sub_806CA88(&collectables->unkF4[0], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14, 0x14, 0xe, 0, 0);
+    sub_806CA88(&collectables->unkF4[1], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14, 0x14, 0xe, 1, 0);
+    sub_806CA88(&collectables->unkF4[2], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14, 0x14, 0xe, 2, 0);
+    sub_806CA88(&collectables->unkF4[3], RENDER_TARGET_SCREEN, 4, 0x37b, 0x3000, 0x14, 0x14, 0xe, 3, 0);
 
     gCurTask->main = sub_806DB48;
 }
@@ -187,8 +177,7 @@ void sub_806DC98(void)
     s32 playerX = Q_16_16_TO_INT(player->x);
     s32 playerY = Q_16_16_TO_INT(player->y);
     s32 val3 = player->unkB0 >> 4;
-    u32 cell = ((Q_16_16_TO_INT(player->x) >> 7) * SPECIAL_STAGE_ZONE_SIZE)
-        + (Q_16_16_TO_INT(player->y) >> 7);
+    u32 cell = ((Q_16_16_TO_INT(player->x) >> 7) * SPECIAL_STAGE_ZONE_SIZE) + (Q_16_16_TO_INT(player->y) >> 7);
     const struct UNK_8C878E8 *object = unk78E8_vals[cell];
 
     while (object->id != -1) {
@@ -196,8 +185,8 @@ void sub_806DC98(void)
             s16 temp2 = object->y;
             s16 temp = object->unk6 << 4;
             s16 temp3 = object->x;
-            if (temp3 > (playerX - 5) && temp3 < (playerX + 5) && temp2 > (playerY - 5)
-                && temp2 < (playerY + 5) && temp >= (val3 - 12) && temp <= (val3 + 20)) {
+            if (temp3 > (playerX - 5) && temp3 < (playerX + 5) && temp2 > (playerY - 5) && temp2 < (playerY + 5) && temp >= (val3 - 12)
+                && temp <= (val3 + 20)) {
                 s16 prevMultiplier = player->multiplier;
                 if (object->unk7 == 0) {
                     SpecialStageHandleCollectRings(stage, player->multiplier);
@@ -331,8 +320,7 @@ void sub_806DEA4(void)
     }
 }
 
-s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *unk78E8,
-                struct UNK_806DEA4 *unkDEA4Arr)
+s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *unk78E8, struct UNK_806DEA4 *unkDEA4Arr)
 {
     s16 i, result;
 
@@ -368,8 +356,7 @@ s16 sub_806E038(s16 acc, const struct UNK_8C878E8 *unk78E8,
                     s16 min;
                     struct UNK_806DEA4 *unkDEA4;
 
-                    for (i = 0, unkDEA4 = unkDEA4Arr, min = 0x7FFF; i < 0x10;
-                         i++, unkDEA4++) {
+                    for (i = 0, unkDEA4 = unkDEA4Arr, min = 0x7FFF; i < 0x10; i++, unkDEA4++) {
                         if (unkDEA4->unk4 < min) {
                             min = unkDEA4->unk4;
                             found = unkDEA4;
@@ -409,9 +396,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
         element1->frameFlags = index | 0x1060 | 0xC0000;
         element1->x = unkDEA4->unk2;
         element1->y = unkDEA4->unk4 - unkDEA4->unk6;
-        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF))
-            ? SPRITE_OAM_ORDER(13)
-            : SPRITE_OAM_ORDER(6);
+        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
     } else {
         s16 x, y;
         Sprite *reference;
@@ -424,9 +409,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
             element2->frameFlags = index | 0x1060 | 0xC0000;
             element2->x = unkDEA4->unk2;
             element2->y = ((0xD - ((0x78 - unkDEA4->unk4) >> 5)) >> 1) + unkDEA4->unk4;
-            element2->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF))
-                ? SPRITE_OAM_ORDER(14)
-                : SPRITE_OAM_ORDER(7);
+            element2->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? SPRITE_OAM_ORDER(14) : SPRITE_OAM_ORDER(7);
             sub_806CD68(element2);
 
             reference = unkDEA4->unk0 == 1 ? &collectables->unk34 : &collectables->unkC4;
@@ -437,9 +420,7 @@ void sub_806E1AC(s16 index, struct UNK_806DEA4 *unkDEA4)
         element1->frameFlags = index | 0x1060 | 0xC0000;
         element1->x = x;
         element1->y = y;
-        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF))
-            ? SPRITE_OAM_ORDER(13)
-            : SPRITE_OAM_ORDER(6);
+        element1->oamFlags = (unkDEA4->unk4 < (stage->unk5CC - 0xF)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
     }
 
     sub_806CD68(element1);
@@ -562,9 +543,7 @@ void sub_806E584(s16 index, struct SpecialStageCollectables_UNK874 *unk874)
         unk7B4->frameFlags = (index + 0x10) | 0x1060 | 0xC0000;
         unk7B4->x = screenX;
         unk7B4->y = screenY;
-        unk7B4->oamFlags = (new_unkCB84.screenY < (stage->unk5CC - 15))
-            ? SPRITE_OAM_ORDER(13)
-            : SPRITE_OAM_ORDER(6);
+        unk7B4->oamFlags = (new_unkCB84.screenY < (stage->unk5CC - 15)) ? SPRITE_OAM_ORDER(13) : SPRITE_OAM_ORDER(6);
         sub_806CD68(unk7B4);
 
         affine = &gOamBuffer[(index + 0x10) * 4].all.affineParam;
@@ -585,8 +564,7 @@ struct Task *CreateSpecialStageCollectables(struct SpecialStage *stage)
     struct SpecialStageCollectables *collectables;
     memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
 
-    t = TaskCreate(Task_InitObjects, sizeof(struct SpecialStageCollectables), 0xB000, 0,
-                   NULL);
+    t = TaskCreate(Task_InitObjects, sizeof(struct SpecialStageCollectables), 0xB000, 0, NULL);
     collectables = TASK_DATA(t);
     collectables->stage = stage;
     collectables->unkA58 = unkF6CC[stage->zone];

@@ -31,8 +31,7 @@ void TaskDestructor_8051200(struct Task *);
 
 void CreateProjectile(ProjInit *init)
 {
-    struct Task *t = TaskCreate(Task_805102C, sizeof(ProjectileA), 0x4000, 0,
-                                TaskDestructor_80511EC);
+    struct Task *t = TaskCreate(Task_805102C, sizeof(ProjectileA), 0x4000, 0, TaskDestructor_80511EC);
     ProjectileA *proj = TASK_DATA(t);
     Sprite *s;
     s32 velocityX, velocityY;
@@ -52,8 +51,7 @@ void CreateProjectile(ProjInit *init)
 
 void CreateSeveralProjectiles(ProjInit *init, u8 count, s8 spreadAngle)
 {
-    struct Task *t = TaskCreate(Task_80510B0, sizeof(ProjectileB), 0x4000, 0,
-                                TaskDestructor_8051200);
+    struct Task *t = TaskCreate(Task_80510B0, sizeof(ProjectileB), 0x4000, 0, TaskDestructor_8051200);
     ProjectileB *proj = TASK_DATA(t);
     Sprite *s;
     u8 i;

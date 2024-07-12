@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_collect_all_chaos_emeralds_it[]
-    = INCBIN_U16("data/tilemaps/collect_all_chaos_emeralds_it/palette.gbapal");
-const u8 Tiles_collect_all_chaos_emeralds_it[]
-    = INCBIN_U8("data/tilemaps/collect_all_chaos_emeralds_it/tiles.4bpp");
-const u16 Tilemap_collect_all_chaos_emeralds_it[]
-    = INCBIN_U16("data/tilemaps/collect_all_chaos_emeralds_it/tilemap.tilemap2");
+const u16 Palette_collect_all_chaos_emeralds_it[] = INCBIN_U16("data/tilemaps/collect_all_chaos_emeralds_it/palette.gbapal");
+const u8 Tiles_collect_all_chaos_emeralds_it[] = INCBIN_U8("data/tilemaps/collect_all_chaos_emeralds_it/tiles.4bpp");
+const u16 Tilemap_collect_all_chaos_emeralds_it[] = INCBIN_U16("data/tilemaps/collect_all_chaos_emeralds_it/tilemap.tilemap2");
 
 const Tilemap collect_all_chaos_emeralds_it = {
     .xTiles = 30,

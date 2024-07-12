@@ -18,8 +18,7 @@
 #include "constants/songs.h"
 
 // TODO: Maybe wrap sub_800DD54 and sub_800DE44 in a macro(?)
-u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3,
-                UNUSED s32 param4, u8 layer)
+u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3, UNUSED s32 param4, u8 layer)
 {
     MultiplayerPlayer *mpp;
     Sprite *mpPlayerSprite;
@@ -43,19 +42,15 @@ u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3,
     }
     // _0800DABC
 
-    if ((p->speedAirX == 0 && p->speedAirY == 0)
-        && HITBOX_IS_ACTIVE(opponent->hitboxes[1])) {
-        if (HB_COLLISION(oppX, oppY, opponent->hitboxes[1], mpp->pos.x, mpp->pos.y,
-                         mpPlayerSprite->hitboxes[0])) {
+    if ((p->speedAirX == 0 && p->speedAirY == 0) && HITBOX_IS_ACTIVE(opponent->hitboxes[1])) {
+        if (HB_COLLISION(oppX, oppY, opponent->hitboxes[1], mpp->pos.x, mpp->pos.y, mpPlayerSprite->hitboxes[0])) {
             // _0800DB68
             result |= COLL_FLAG_2;
         }
     }
     // _0800DB70
-    if (HITBOX_IS_ACTIVE(mpPlayerSprite->hitboxes[1])
-        && HITBOX_IS_ACTIVE(opponent->hitboxes[0])
-        && HB_COLLISION(oppX, oppY, opponent->hitboxes[0], mpp->pos.x, mpp->pos.y,
-                        mpPlayerSprite->hitboxes[1])) {
+    if (HITBOX_IS_ACTIVE(mpPlayerSprite->hitboxes[1]) && HITBOX_IS_ACTIVE(opponent->hitboxes[0])
+        && HB_COLLISION(oppX, oppY, opponent->hitboxes[0], mpp->pos.x, mpp->pos.y, mpPlayerSprite->hitboxes[1])) {
         // _0800DC34
         if (mpp->pos.x > oppX) {
             result |= COLL_FLAG_40000;
@@ -71,10 +66,8 @@ u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3,
         }
 
         result |= COLL_FLAG_1;
-    } else if (HITBOX_IS_ACTIVE(mpPlayerSprite->hitboxes[0])
-               && HITBOX_IS_ACTIVE(opponent->hitboxes[1])
-               && HB_COLLISION(oppX, oppY, opponent->hitboxes[1], mpp->pos.x, mpp->pos.y,
-                               mpPlayerSprite->hitboxes[0])) {
+    } else if (HITBOX_IS_ACTIVE(mpPlayerSprite->hitboxes[0]) && HITBOX_IS_ACTIVE(opponent->hitboxes[1])
+               && HB_COLLISION(oppX, oppY, opponent->hitboxes[1], mpp->pos.x, mpp->pos.y, mpPlayerSprite->hitboxes[0])) {
         result |= COLL_FLAG_2;
     }
 

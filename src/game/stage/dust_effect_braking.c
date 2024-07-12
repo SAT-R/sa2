@@ -37,8 +37,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
 
         gUnknown_030059D0.unk0--;
 
-        t = TaskCreate(Task_801F6E0, sizeof(BrakeDustEffect), 0x4001, 0,
-                       TaskDestructor_801F7B8);
+        t = TaskCreate(Task_801F6E0, sizeof(BrakeDustEffect), 0x4001, 0, TaskDestructor_801F7B8);
 
         bde = TASK_DATA(t);
         bde->x = x;
@@ -61,8 +60,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
             s->variant = 0;
             s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
-            s->frameFlags |= ((u32)PseudoRandom32()
-                              & (SPRITE_FLAG_MASK_Y_FLIP | SPRITE_FLAG_MASK_X_FLIP));
+            s->frameFlags |= ((u32)PseudoRandom32() & (SPRITE_FLAG_MASK_Y_FLIP | SPRITE_FLAG_MASK_X_FLIP));
         }
 
         s->graphics.size = 0;

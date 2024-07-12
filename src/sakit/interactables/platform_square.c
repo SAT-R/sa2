@@ -35,22 +35,14 @@ static void Platform_Square_KillPlayer(void);
 static void sub_800F990(Sprite_PlatformSquare *);
 
 static const u16 sAnimsPlatformSquare[9][3] = {
-    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
-    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
-    { 36, SA2_ANIM_PLATFORM_SQUARE_MUS_PLA, 1 },
-    { 36, SA2_ANIM_PLATFORM_ICE_PAR, 2 },
-    { 36, SA2_ANIM_PLATFORM_SQUARE_SKY_CAN, 0 },
-    { 36, SA2_ANIM_PLATFORM_TEC_BAS, 2 },
-    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
-    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
-    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
+    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 }, { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },  { 36, SA2_ANIM_PLATFORM_SQUARE_MUS_PLA, 1 },
+    { 36, SA2_ANIM_PLATFORM_ICE_PAR, 2 },       { 36, SA2_ANIM_PLATFORM_SQUARE_SKY_CAN, 0 }, { 36, SA2_ANIM_PLATFORM_TEC_BAS, 2 },
+    { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 }, { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },  { 36, SA2_ANIM_PLATFORM_SQUARE_COMMON, 0 },
 };
 
-void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Platform_Square, sizeof(Sprite_PlatformSquare),
-                                0x2010, 0, TaskDestructor_Platform_Square);
+    struct Task *t = TaskCreate(Task_Platform_Square, sizeof(Sprite_PlatformSquare), 0x2010, 0, TaskDestructor_Platform_Square);
     Sprite_PlatformSquare *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
@@ -141,11 +133,7 @@ static void Task_Platform_Square(void)
         s32 oldUnk40 = platform->unk40;
         s32 meUdata2 = (me->d.uData[2] << 11);
 
-        platform->unk40
-            = (SIN((platform->unk48 * ((gStageTime + platform->unk3C) & 0xFF))
-                   & ONE_CYCLE)
-               * meUdata2)
-            >> 14;
+        platform->unk40 = (SIN((platform->unk48 * ((gStageTime + platform->unk3C) & 0xFF)) & ONE_CYCLE) * meUdata2) >> 14;
         deltaX = platform->unk40 - oldUnk40;
     }
 
@@ -156,11 +144,7 @@ static void Task_Platform_Square(void)
         register s32 r5 asm("r5") = platform->unk44;
 #endif
         s32 meUdata3 = (me->d.uData[3] << 11);
-        platform->unk44
-            = (SIN(((platform->unk4A * ((gStageTime + platform->unk3C) & 0xFF)))
-                   & ONE_CYCLE)
-               * meUdata3)
-            >> 14;
+        platform->unk44 = (SIN(((platform->unk4A * ((gStageTime + platform->unk3C) & 0xFF))) & ONE_CYCLE) * meUdata3) >> 14;
         r5 = platform->unk44 - r5;
 #ifndef NON_MATCHING
         asm("" ::"r"(r5));
@@ -189,8 +173,7 @@ static void Task_Platform_Square(void)
             p->y += deltaY - Q(2.0);
         }
 
-        res = sub_801F100(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x) + gPlayer.unk16,
-                          gPlayer.unk38, +8, sub_801EC3C);
+        res = sub_801F100(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x) + gPlayer.unk16, gPlayer.unk38, +8, sub_801EC3C);
         if (res < 0) {
             gPlayer.y += Q(res);
 
@@ -213,8 +196,7 @@ static void Task_Platform_Square(void)
             p->x -= Q(res);
         }
 
-        res = sub_801F100(I(p->y) + p->unk17, I(p->x) - p->unk16, p->unk38, +8,
-                          sub_801EC3C);
+        res = sub_801F100(I(p->y) + p->unk17, I(p->x) - p->unk16, p->unk38, +8, sub_801EC3C);
 
         if (res < 0) {
             p->y += Q(res);
@@ -237,8 +219,7 @@ static void Task_Platform_Square(void)
         result = sub_800CCB8(s, x, y, p);
 
         if (result & 0x30000) {
-            if (gPlayer.character == CHARACTER_KNUCKLES && gPlayer.unk64 > 99
-                && gPlayer.unk64 <= 105) {
+            if (gPlayer.character == CHARACTER_KNUCKLES && gPlayer.unk64 > 99 && gPlayer.unk64 <= 105) {
                 p->transition = PLTRANS_PT4;
             }
 
@@ -268,8 +249,7 @@ static void Task_Platform_Square(void)
                     s->hitboxes[0].left += 16;
                     s->hitboxes[0].right -= 16;
 
-                    otherRes = sub_800CCB8(s, posX + I(platform->unk40),
-                                           posY + I(platform->unk44), p);
+                    otherRes = sub_800CCB8(s, posX + I(platform->unk40), posY + I(platform->unk44), p);
 
                     s->hitboxes[0].left -= 16;
                     s->hitboxes[0].right += 16;
@@ -293,8 +273,7 @@ static void Task_Platform_Square(void)
                     }
 
                     if (otherRes & 0x10000) {
-                        s32 newRes = sub_801F100(I(p->y) - p->unk17, I(p->x), p->unk38,
-                                                 -8, sub_801EC3C);
+                        s32 newRes = sub_801F100(I(p->y) - p->unk17, I(p->x), p->unk38, -8, sub_801EC3C);
 
                         if (newRes < 0) {
                             if (deltaY < 0) {
@@ -315,8 +294,7 @@ static void Task_Platform_Square(void)
                 } else {
                     s32 newRes;
                     p->speedAirY = 0;
-                    newRes = sub_801F100(I(p->y) - p->unk17, I(p->x), p->unk38, -8,
-                                         sub_801EC3C);
+                    newRes = sub_801F100(I(p->y) - p->unk17, I(p->x), p->unk38, -8, sub_801EC3C);
 
                     if ((newRes < 0) && (deltaY < 0)) {
                         Platform_Square_KillPlayer();
@@ -334,16 +312,14 @@ static void Task_Platform_Square(void)
 
             if (result & 0x40000) {
                 s32 tempXVal = I(p->x) + 2;
-                if (sub_801F100(tempXVal + p->unk16, I(p->y), p->unk38, -8, sub_801EB44)
-                    < 0) {
+                if (sub_801F100(tempXVal + p->unk16, I(p->y), p->unk38, -8, sub_801EB44) < 0) {
                     Platform_Square_KillPlayer();
                 }
             }
 
             if (result & 0x80000) {
                 s32 tempXVal = I(p->x) - 2;
-                if (sub_801F100(tempXVal - p->unk16, I(p->y), p->unk38, +8, sub_801EB44)
-                    < 0) {
+                if (sub_801F100(tempXVal - p->unk16, I(p->y), p->unk38, +8, sub_801EB44) < 0) {
                     Platform_Square_KillPlayer();
                 }
             }

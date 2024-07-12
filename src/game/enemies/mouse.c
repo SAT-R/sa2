@@ -31,8 +31,7 @@ static void sub_8057618(void);
 void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (gGameMode == GAME_MODE_TIME_ATTACK || gDifficultyLevel != 1) {
-        struct Task *t = TaskCreate(sub_8057348, sizeof(Sprite_Mouse), 0x4040, 0,
-                                    TaskDestructor_80095E8);
+        struct Task *t = TaskCreate(sub_8057348, sizeof(Sprite_Mouse), 0x4040, 0, TaskDestructor_80095E8);
         Sprite_Mouse *mouse = TASK_DATA(t);
         Sprite *s = &mouse->s;
         mouse->base.regionX = spriteRegionX;
@@ -59,11 +58,9 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         }
 
         if (mouse->unk51) {
-            mouse->offsetY = Q(sub_801F07C(I(mouse->spawnY), I(mouse->spawnX),
-                                           mouse->unk50, 8, 0, sub_801EE64));
+            mouse->offsetY = Q(sub_801F07C(I(mouse->spawnY), I(mouse->spawnX), mouse->unk50, 8, 0, sub_801EE64));
         } else {
-            mouse->offsetY = Q(sub_801F07C(I(mouse->spawnY), I(mouse->spawnX),
-                                           mouse->unk50, 8, 0, sub_801EE64));
+            mouse->offsetY = Q(sub_801F07C(I(mouse->spawnY), I(mouse->spawnX), mouse->unk50, 8, 0, sub_801EE64));
         }
         mouse->unk4C = 0;
         mouse->unk52 = 0;
@@ -129,14 +126,12 @@ static void sub_8057348(void)
         }
     }
 
-    if (I(mouse->offsetX) <= (me->d.sData[0] * TILE_WIDTH)
-        && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
+    if (I(mouse->offsetX) <= (me->d.sData[0] * TILE_WIDTH) && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = sub_8057618;
         s->graphics.anim = SA2_ANIM_MOUSE;
         s->variant = 1;
         s->prevVariant = -1;
-    } else if ((I(mouse->offsetX) >= ((me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)
-                && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
+    } else if ((I(mouse->offsetX) >= ((me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH) && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
         gCurTask->main = sub_8057618;
         s->graphics.anim = SA2_ANIM_MOUSE;
         s->variant = 1;

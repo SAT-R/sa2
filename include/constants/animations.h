@@ -13,8 +13,7 @@
 #define SA2_ANIM_CHAR_ID_CHEESE 5
 
 #define SA2_NUM_PLAYER_CHAR_ANIMATIONS (91) // TODO: Don't use constant here
-#define SA2_ANIM_CHAR(anim, character)                                                  \
-    ((anim) + character * SA2_NUM_PLAYER_CHAR_ANIMATIONS)
+#define SA2_ANIM_CHAR(anim, character) ((anim) + character * SA2_NUM_PLAYER_CHAR_ANIMATIONS)
 
 // TODO: If possible, make player animations macros, so there's no redundancy
 #define SA2_CHAR_ANIM_IDLE               0
@@ -118,7 +117,7 @@
 #define SA2_ANIM_CHEESE_BACKFLIP                       457
 #define SA2_ANIM_CHEESE_NERVOUS                        458
 #define SA2_ANIM_CHEESE_PIROUETTE                      459
-#define SA2_ANIM_CHEESE_SHOCKED                                                         \
+#define SA2_ANIM_CHEESE_SHOCKED                                                                                                            \
     460 // Not sure about this one. They put their hand to their mouth, but it doesn't
         // have an eating animation
 #define SA2_ANIM_CHEESE_LIFTING              461
@@ -446,18 +445,16 @@
 #define SA2_ANIM_VARIANT_GAME_OVER_NUE   3
 #define SA2_ANIM_VARIANT_GAME_OVER_TIME  4
 
-#define SA2_ANIM_NOTIFICATION_RING_BONUS                735
-#define SA2_ANIM_CHAR_SELECT_CHARACTER                  736
-#define SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC   0
-#define SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED 1
-#define SA2_CHAR_SELECT_NUM_CHARACTER_ANIMATIONS        2
-#define SA2_ANIM_VARIANT_SELECT_CHARACTER(character, type)                              \
-    ((character)*SA2_CHAR_SELECT_NUM_CHARACTER_ANIMATIONS + type)
+#define SA2_ANIM_NOTIFICATION_RING_BONUS                   735
+#define SA2_ANIM_CHAR_SELECT_CHARACTER                     736
+#define SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC      0
+#define SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED    1
+#define SA2_CHAR_SELECT_NUM_CHARACTER_ANIMATIONS           2
+#define SA2_ANIM_VARIANT_SELECT_CHARACTER(character, type) ((character)*SA2_CHAR_SELECT_NUM_CHARACTER_ANIMATIONS + type)
 
 #define SA2_ANIM_CHAR_SELECT_CIRCLE                  737
 #define SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_INACTIVE 0
-#define SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE                                      \
-    (SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_INACTIVE + NUM_CHARACTERS)
+#define SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE   (SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_INACTIVE + NUM_CHARACTERS)
 
 #define SA2_ANIM_CHAR_SELECT_ARROW                   738
 #define SA2_ANIM_VARIANT_CHAR_SELECT_ARROW_STATIC    0

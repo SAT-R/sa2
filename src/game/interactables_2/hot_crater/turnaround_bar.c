@@ -30,11 +30,9 @@ static void sub_8073600(void);
 static void sub_80736E0(Sprite_TurnAroundBar *);
 static void sub_807371C(Sprite_TurnAroundBar *);
 
-void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                u8 spriteY)
+void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_TurnAroundBarMain, sizeof(Sprite_TurnAroundBar),
-                                0x2010, 0, TaskDestructor_InteractableTurnAroundBar);
+    struct Task *t = TaskCreate(Task_TurnAroundBarMain, sizeof(Sprite_TurnAroundBar), 0x2010, 0, TaskDestructor_InteractableTurnAroundBar);
     Sprite_TurnAroundBar *turnAroundBar = TASK_DATA(t);
     Sprite *s = &turnAroundBar->s;
 

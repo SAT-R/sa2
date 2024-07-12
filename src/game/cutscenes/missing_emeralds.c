@@ -100,8 +100,7 @@ void CreateMissingChaosEmaraldsCutScene(void)
 
     DmaFill32(3, 0, (void *)BG_VRAM, BG_VRAM_SIZE);
 
-    t = TaskCreate(Task_8094360, sizeof(struct MissingChaosEmaraldsCutScene), 0x3100, 0,
-                   TaskDestructor_80945A0);
+    t = TaskCreate(Task_8094360, sizeof(struct MissingChaosEmaraldsCutScene), 0x3100, 0, TaskDestructor_80945A0);
     scene = TASK_DATA(t);
 
     scene->unkBC = 0;

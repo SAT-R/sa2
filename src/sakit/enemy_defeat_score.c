@@ -19,8 +19,7 @@ typedef struct {
 void CreateEnemyDefeatScore(s16 x, s16 y)
 {
     struct Task *t
-        = TaskCreate(Task_CreateEnemyDefeatScore_MoveUp, sizeof(EnemyDefeatScore),
-                     0x2000, 0, TaskDestructor_CreateEnemyDefeatScore);
+        = TaskCreate(Task_CreateEnemyDefeatScore_MoveUp, sizeof(EnemyDefeatScore), 0x2000, 0, TaskDestructor_CreateEnemyDefeatScore);
     EnemyDefeatScore *score = TASK_DATA(t);
     Sprite *s = &score->s;
 

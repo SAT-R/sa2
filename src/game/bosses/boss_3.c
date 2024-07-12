@@ -146,59 +146,41 @@ const s16 gUnknown_080D7BDC[3] = { Q(22), Q(13), -Q(16) };
 const s16 sTotemDiscYs[3] = { -Q(32), -Q(48), -Q(64) };
 
 const EggTotemDataA gUnknown_080D7BE8[] = {
-    { 0x1, 0x200, 0x200, 0 }, { 0x20, 0, 0, 0 },        { 0x40, 0, 0x100, 0 },
-    { 0x3c, 0, 0, 0 },        { 0x1, 0x200, 0x100, 0 }, { 0x3f, 0, 0x100, 0 },
-    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x280, 0 },
-    { 0x20, 0, 0, 0 },        { 0x60, 0, 0x140, 0 },    { 0x3c, 0, 0, 0 },
-    { 0x1, 0x200, 0x140, 0 }, { 0x5f, 0, 0x140, 0 },    { 0x20, 0, 0, 0 },
-    { 0, 0, 0, 0 },           { 0x1, 0x200, 0x280, 0 }, { 0x20, 0, 0, 0 },
-    { 0x80, 0, 0x140, 0 },    { 0x3c, 0, 0, 0 },        { 0x1, 0x200, 0x140, 0 },
-    { 0x7f, 0, 0x140, 0 },    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },
-    { 0x1, 0x200, 0x200, 0 }, { 0x20, 0, 0, 0 },        { 0x80, 0, 0x100, 0 },
-    { 0x3c, 0, 0, 0 },        { 0x1, 0x200, 0x100, 0 }, { 0x7f, 0, 0x100, 0 },
-    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 },
-    { 0x20, 0, 0, 0 },        { 0x80, 0, 0x90, 0 },     { 0x40, 0x8, 0xc8, 0 },
-    { 0x80, 0, 0x90, 0 },     { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },
-    { 0x1, 0x200, 0x190, 0 }, { 0x20, 0, 0, 0 },        { 0x80, 0, 0x120, 0 },
-    { 0x40, 0x3f8, 0xca, 0 }, { 0x80, 0, 0x120, 0 },    { 0x20, 0, 0, 0 },
-    { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 }, { 0x20, 0, 0, 0 },
-    { 0x40, 0, 0xb8, 0 },     { 0x80, 0, 0, 0 },        { 0x1, 0x100, 0, 0 },
-    { 0x14, 0, 0xc8, 0 },     { 0x80, 0, 0, 0 },        { 0x1, 0x100, 0, 0 },
-    { 0x40, 0, 0xb8, 0 },     { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },
-    { 0x1, 0x200, 0x190, 0 }, { 0x20, 0, 0, 0 },        { 0xc0, 0, 0xb8, 0 },
-    { 0x1, 0x300, 0, 0 },     { 0x14, 0, 0xd0, 0 },     { 0x1, 0x300, 0, 0 },
-    { 0xc0, 0, 0xb8, 0 },     { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },
-    { 0x1, 0x200, 0x1b0, 0 }, { 0x20, 0, 0, 0 },        { 0xc0, 0, 0xd8, 0 },
-    { 0x1, 0x200, 0xd8, 0 },  { 0x96, 0, 0, 0 },        { 0xbf, 0, 0xd8, 0 },
-    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 },
-    { 0x20, 0, 0, 0 },        { 0xc0, 0, 0x80, 0 },     { 0x1, 0x200, 0x80, 0 },
-    { 0x96, 0, 0, 0 },        { 0xbf, 0, 0x80, 0 },     { 0x20, 0, 0, 0 },
-    { 0, 0, 0, 0 },
+    { 0x1, 0x200, 0x200, 0 }, { 0x20, 0, 0, 0 },        { 0x40, 0, 0x100, 0 },    { 0x3c, 0, 0, 0 },        { 0x1, 0x200, 0x100, 0 },
+    { 0x3f, 0, 0x100, 0 },    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x280, 0 }, { 0x20, 0, 0, 0 },
+    { 0x60, 0, 0x140, 0 },    { 0x3c, 0, 0, 0 },        { 0x1, 0x200, 0x140, 0 }, { 0x5f, 0, 0x140, 0 },    { 0x20, 0, 0, 0 },
+    { 0, 0, 0, 0 },           { 0x1, 0x200, 0x280, 0 }, { 0x20, 0, 0, 0 },        { 0x80, 0, 0x140, 0 },    { 0x3c, 0, 0, 0 },
+    { 0x1, 0x200, 0x140, 0 }, { 0x7f, 0, 0x140, 0 },    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x200, 0 },
+    { 0x20, 0, 0, 0 },        { 0x80, 0, 0x100, 0 },    { 0x3c, 0, 0, 0 },        { 0x1, 0x200, 0x100, 0 }, { 0x7f, 0, 0x100, 0 },
+    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 }, { 0x20, 0, 0, 0 },        { 0x80, 0, 0x90, 0 },
+    { 0x40, 0x8, 0xc8, 0 },   { 0x80, 0, 0x90, 0 },     { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 },
+    { 0x20, 0, 0, 0 },        { 0x80, 0, 0x120, 0 },    { 0x40, 0x3f8, 0xca, 0 }, { 0x80, 0, 0x120, 0 },    { 0x20, 0, 0, 0 },
+    { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 }, { 0x20, 0, 0, 0 },        { 0x40, 0, 0xb8, 0 },     { 0x80, 0, 0, 0 },
+    { 0x1, 0x100, 0, 0 },     { 0x14, 0, 0xc8, 0 },     { 0x80, 0, 0, 0 },        { 0x1, 0x100, 0, 0 },     { 0x40, 0, 0xb8, 0 },
+    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 }, { 0x20, 0, 0, 0 },        { 0xc0, 0, 0xb8, 0 },
+    { 0x1, 0x300, 0, 0 },     { 0x14, 0, 0xd0, 0 },     { 0x1, 0x300, 0, 0 },     { 0xc0, 0, 0xb8, 0 },     { 0x20, 0, 0, 0 },
+    { 0, 0, 0, 0 },           { 0x1, 0x200, 0x1b0, 0 }, { 0x20, 0, 0, 0 },        { 0xc0, 0, 0xd8, 0 },     { 0x1, 0x200, 0xd8, 0 },
+    { 0x96, 0, 0, 0 },        { 0xbf, 0, 0xd8, 0 },     { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },           { 0x1, 0x200, 0x190, 0 },
+    { 0x20, 0, 0, 0 },        { 0xc0, 0, 0x80, 0 },     { 0x1, 0x200, 0x80, 0 },  { 0x96, 0, 0, 0 },        { 0xbf, 0, 0x80, 0 },
+    { 0x20, 0, 0, 0 },        { 0, 0, 0, 0 },
 };
 
 const EggTotemDataA *const gUnknown_080D7E78[10] = {
-    &gUnknown_080D7BE8[0 * 8],     &gUnknown_080D7BE8[1 * 8],
-    &gUnknown_080D7BE8[2 * 8],     &gUnknown_080D7BE8[3 * 8],
-    &gUnknown_080D7BE8[4 * 8],     &gUnknown_080D7BE8[5 * 8 - 1],
-    &gUnknown_080D7BE8[6 * 8 - 2], &gUnknown_080D7BE8[7 * 8 + 1],
+    &gUnknown_080D7BE8[0 * 8],     &gUnknown_080D7BE8[1 * 8],     &gUnknown_080D7BE8[2 * 8],     &gUnknown_080D7BE8[3 * 8],
+    &gUnknown_080D7BE8[4 * 8],     &gUnknown_080D7BE8[5 * 8 - 1], &gUnknown_080D7BE8[6 * 8 - 2], &gUnknown_080D7BE8[7 * 8 + 1],
     &gUnknown_080D7BE8[8 * 8 + 2], &gUnknown_080D7BE8[9 * 8 + 2],
 };
 
 const u8 gUnknown_080D7EA0[0x34]
-    = { 0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x01, 0x02, 0x00, 0x01, 0x00, 0x01, 0x01,
-        0x01, 0x01, 0x01, 0x02, 0x01, 0x01, 0x00, 0x02, 0x01, 0x01, 0x02, 0x01, 0x02,
-        0x02, 0x01, 0x00, 0x03, 0x01, 0x01, 0x03, 0x01, 0x02, 0x03, 0x02, 0x00, 0x04,
-        0x02, 0x05, 0x02, 0x01, 0x06, 0x02, 0x07, 0x02, 0x00, 0x08, 0x01, 0x09, 0x00 };
+    = { 0x01, 0x00, 0x00, 0x01, 0x01, 0x00, 0x01, 0x02, 0x00, 0x01, 0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x02, 0x01,
+        0x01, 0x00, 0x02, 0x01, 0x01, 0x02, 0x01, 0x02, 0x02, 0x01, 0x00, 0x03, 0x01, 0x01, 0x03, 0x01, 0x02, 0x03,
+        0x02, 0x00, 0x04, 0x02, 0x05, 0x02, 0x01, 0x06, 0x02, 0x07, 0x02, 0x00, 0x08, 0x01, 0x09, 0x00 };
 
 const u8 *const gUnknown_080D7ED4[] = {
-    &gUnknown_080D7EA0[0 * 3],        &gUnknown_080D7EA0[1 * 3],
-    &gUnknown_080D7EA0[2 * 3],        &gUnknown_080D7EA0[3 * 3],
-    &gUnknown_080D7EA0[4 * 3],        &gUnknown_080D7EA0[5 * 3],
-    &gUnknown_080D7EA0[6 * 3],        &gUnknown_080D7EA0[7 * 3],
-    &gUnknown_080D7EA0[8 * 3],        &gUnknown_080D7EA0[9 * 3],
-    &gUnknown_080D7EA0[10 * 3],       &gUnknown_080D7EA0[11 * 3],
-    &gUnknown_080D7EA0[12 * 3],       &gUnknown_080D7EA0[13 * 3 + 0x2],
-    &gUnknown_080D7EA0[14 * 3 + 0x4],
+    &gUnknown_080D7EA0[0 * 3],  &gUnknown_080D7EA0[1 * 3],        &gUnknown_080D7EA0[2 * 3],        &gUnknown_080D7EA0[3 * 3],
+    &gUnknown_080D7EA0[4 * 3],  &gUnknown_080D7EA0[5 * 3],        &gUnknown_080D7EA0[6 * 3],        &gUnknown_080D7EA0[7 * 3],
+    &gUnknown_080D7EA0[8 * 3],  &gUnknown_080D7EA0[9 * 3],        &gUnknown_080D7EA0[10 * 3],       &gUnknown_080D7EA0[11 * 3],
+    &gUnknown_080D7EA0[12 * 3], &gUnknown_080D7EA0[13 * 3 + 0x2], &gUnknown_080D7EA0[14 * 3 + 0x4],
 };
 
 const u8 gUnknown_080D7F10[EGGTOTEM_NUM_PLATFORMS] = { 14, 14, 8 };
@@ -227,8 +209,7 @@ void CreateEggTotem(void)
 
     gPseudoRandom = gStageTime;
 
-    t = TaskCreate(Task_EggTotemMain, sizeof(EggTotem), 0x4000, 0,
-                   TaskDestructor_EggTotemMain);
+    t = TaskCreate(Task_EggTotemMain, sizeof(EggTotem), 0x4000, 0, TaskDestructor_EggTotemMain);
     totem = TASK_DATA(t);
 
     if (DIFFICULTY_BOSS_IS_NOT_NORMAL) {
@@ -344,8 +325,7 @@ void CreateEggTotem(void)
         s = &totem->sprWheels[i];
         s->x = 0;
         s->y = 0;
-        SPRITE_INIT(s, sTileInfoWheels[i].numTiles, sTileInfoWheels[i].anim,
-                    sTileInfoWheels[i].variant, sWheelsOamOrderIds[i], 2);
+        SPRITE_INIT(s, sTileInfoWheels[i].numTiles, sTileInfoWheels[i].anim, sTileInfoWheels[i].variant, sWheelsOamOrderIds[i], 2);
     }
 
     // _0803F1A8
@@ -378,9 +358,7 @@ void CreateEggTotem(void)
         s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
 
 #else
-        SPRITE_INIT(s, sTileInfoBulletLauncher[i].numTiles,
-                    sTileInfoBulletLauncher[i].anim, sTileInfoBulletLauncher[i].variant,
-                    21, 2);
+        SPRITE_INIT(s, sTileInfoBulletLauncher[i].numTiles, sTileInfoBulletLauncher[i].anim, sTileInfoBulletLauncher[i].variant, 21, 2);
 #endif
     }
 
@@ -623,8 +601,7 @@ void sub_803F698(EggTotem *totem)
 
         if (t3c->unk17 != 0) {
             s8 r3;
-            s = (t3c->unk14 != 0) ? &totem->sprBulletLauncher[0]
-                                  : &totem->sprBulletLauncher[1];
+            s = (t3c->unk14 != 0) ? &totem->sprBulletLauncher[0] : &totem->sprBulletLauncher[1];
 
             if (t3c->unk17 > 0) {
                 r3 = 0;
@@ -708,8 +685,7 @@ bool32 sub_803F878(EggTotem *totem)
         s->y = I(totem->qUnk94) - gCamera.y - 81;
 
         if (s->x < 50) {
-            CreateEggmobileEscapeSequence(I(totem->qUnk90) - gCamera.x - 4,
-                                          I(totem->qUnk94) - gCamera.y - 79, 0x2000);
+            CreateEggmobileEscapeSequence(I(totem->qUnk90) - gCamera.x - 4, I(totem->qUnk94) - gCamera.y - 79, 0x2000);
 
             totem->unk3A = TRUE;
         }
@@ -789,8 +765,7 @@ void sub_803FB88(EggTotem *totem)
         res = totem->qWheelPos[i].y;
         discY += res;
 
-        totem->qWheelPos[i].y += Q(
-            sub_801F100(I(res) - 1, I(totem->qWheelPos[i].x), 1, +8, sub_801EC3C) + 1);
+        totem->qWheelPos[i].y += Q(sub_801F100(I(res) - 1, I(totem->qWheelPos[i].x), 1, +8, sub_801EC3C) + 1);
     }
 
     res = Div(discY, 3) - Q(2.0);
@@ -799,8 +774,7 @@ void sub_803FB88(EggTotem *totem)
 }
 
 // (91.19%) https://decomp.me/scratch/29ZCq
-NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc",
-         void sub_803FC14(EggTotem *totem))
+NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc", void sub_803FC14(EggTotem *totem))
 {
     u8 i;
     ExplosionPartsInfo info;
@@ -909,8 +883,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FC14.inc",
 END_NONMATCH
 
 // (81.46%) https://decomp.me/scratch/gT3he
-NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc",
-         void sub_803FF44(EggTotem *totem))
+NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF44(EggTotem *totem))
 {
     u8 i, j;
     s32 res;
@@ -1172,11 +1145,9 @@ void sub_804063C(EggTotem *totem)
         if ((PseudoRandom32() % 2u) != 0) {
             if ((v == 0) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 1].unk13 == 0)) {
                 r2 = 12;
-            } else if ((v == 1)
-                       && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 1].unk13 == 0)) {
+            } else if ((v == 1) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 1].unk13 == 0)) {
                 r2 = 13;
-            } else if ((v == 0)
-                       && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 2].unk13 == 0)) {
+            } else if ((v == 0) && (totem->unk3C[EGGTOTEM_NUM_PLATFORMS - 2].unk13 == 0)) {
                 r2 = 14;
             }
         }
@@ -1294,8 +1265,7 @@ void sub_80408C4(EggTotem *totem)
                     }
                 }
 
-                if ((t3c->unk17 != 0) && (totem->unk36 == 0)
-                    && (sub_8040B30(totem, i) << 24 != 0)) {
+                if ((t3c->unk17 != 0) && (totem->unk36 == 0) && (sub_8040B30(totem, i) << 24 != 0)) {
                     t3c->unk16 &= ~0x80;
                     totem->unk36 = 30;
                 }
@@ -1728,8 +1698,7 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
     Sprite *s;
     u16 sinIndex;
 
-    struct Task *t
-        = TaskCreate(Task_EggTotemBullet, sizeof(EggTotemBullet), 0x6100, 0, NULL);
+    struct Task *t = TaskCreate(Task_EggTotemBullet, sizeof(EggTotemBullet), 0x6100, 0, NULL);
 
     EggTotemBullet *bullet = TASK_DATA(t);
 
@@ -1781,11 +1750,8 @@ void Task_EggTotemBullet(void)
     // TODO: Make stage values global and make this a #define:
     // NOTE: 752 in the last condition =
     //       (Boss 3 Stage width in pixels [8 * 96 = 768]) - (bullet GFX width [16])
-    if ((s->x < -32 && bullet->qDX < 0)
-        || ((s->x > (DISPLAY_WIDTH + 32)) && bullet->qDX > 0)
-        || (s->y < -32 && bullet->qDY < 0)
-        || ((s->y > (DISPLAY_HEIGHT + 32)) && bullet->qDY > 0) || (s->x < -Q(2))
-        || s->x > 752) {
+    if ((s->x < -32 && bullet->qDX < 0) || ((s->x > (DISPLAY_WIDTH + 32)) && bullet->qDX > 0) || (s->y < -32 && bullet->qDY < 0)
+        || ((s->y > (DISPLAY_HEIGHT + 32)) && bullet->qDY > 0) || (s->x < -Q(2)) || s->x > 752) {
         TaskDestroy(gCurTask);
         return;
     }
@@ -1793,8 +1759,7 @@ void Task_EggTotemBullet(void)
     if (bullet->totem->lives != 0) {
         bool32 res;
 
-        res = sub_800CA20(s, I(bullet->qScreenX) + gCamera.x,
-                          I(bullet->qScreenY) + gCamera.y, 0, &gPlayer);
+        res = sub_800CA20(s, I(bullet->qScreenX) + gCamera.x, I(bullet->qScreenY) + gCamera.y, 0, &gPlayer);
 
         if (res == TRUE && bullet->totem->unk35 == 0) {
             Sprite *s2;

@@ -46,8 +46,7 @@ void CreateMultiplayerPlayer(u8 id)
 {
     u16 *p;
     Sprite *s;
-    struct Task *t = TaskCreate(Task_CreateMultiplayerPlayer, sizeof(MultiplayerPlayer),
-                                0x2000, 0, TaskDestructor_MultiplayerPlayer);
+    struct Task *t = TaskCreate(Task_CreateMultiplayerPlayer, sizeof(MultiplayerPlayer), 0x2000, 0, TaskDestructor_MultiplayerPlayer);
     MultiplayerPlayer *mpp = TASK_DATA(t);
     mpp->unk56 = id;
     mpp->unk54 = 0x40;
@@ -134,8 +133,7 @@ void CreateMultiplayerPlayer(u8 id)
 }
 
 // around 70%: https://decomp.me/scratch/KNjEN
-NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPlayer.inc",
-         void Task_CreateMultiplayerPlayer())
+NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPlayer.inc", void Task_CreateMultiplayerPlayer())
 {
     MultiplayerPlayer *mpp = TASK_DATA(gCurTask);
     Sprite *s = &mpp->s;
@@ -207,8 +205,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                 mpp->unk64 = ((recv->pat4.unk8) & 0x600) >> 9;
             } else {
                 if (SIO_MULTI_CNT->id != mpp->unk64) {
-                    MultiplayerPlayer *mpp2
-                        = TASK_DATA(gMultiplayerPlayerTasks[mpp->unk64]);
+                    MultiplayerPlayer *mpp2 = TASK_DATA(gMultiplayerPlayerTasks[mpp->unk64]);
                     if (SIO_MULTI_CNT->id == mpp2->unk64) {
                         mpp2->unk64 = SIO_MULTI_CNT->id;
                         gPlayer.moveState &= ~MOVESTATE_8;
@@ -332,8 +329,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             {
                 MultiplayerPlayer *mpp2 = TASK_DATA(gMultiplayerPlayerTasks[i]);
                 if ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
-                        != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
-                            >> (SIO_MULTI_CNT->id + 4)
+                        != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)
                     && !(mpp2->unk54 & 0x100)) {
 
                     someBool = FALSE;
@@ -349,8 +345,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
     if (!(gStageFlags & 1) && !(mpp->unk54 & 0x80000004)) {
         if (!(gPlayer.itemEffect & 0x80)) {
-            if (!(mpp->unk5C & 1) && (gPlayer.timerInvulnerability == 0)
-                && !(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
+            if (!(mpp->unk5C & 1) && (gPlayer.timerInvulnerability == 0) && !(gPlayer.moveState & (MOVESTATE_400000 | MOVESTATE_DEAD))) {
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                     if (mpp->unk56 != SIO_MULTI_CNT->id) {
                         switch (gMultiplayerCharacters[mpp->unk56]) {
@@ -378,14 +373,11 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             }
         }
     } else {
-        if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__80) || (mpp->unk57 & 0x80)
-            || gPlayer.timerInvincibility == 0 || !PLAYER_IS_ALIVE
+        if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__80) || (mpp->unk57 & 0x80) || gPlayer.timerInvincibility == 0 || !PLAYER_IS_ALIVE
             || gUnknown_030054B4[mpp->unk56] != -1) {
             if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                if (mpp->unk56 == SIO_MULTI_CNT->id
-                    && gMultiplayerCharacters[mpp->unk56] == CHARACTER_TAILS
-                    && gMultiplayerCharacters[mpp->unk56] == CHARACTER_KNUCKLES
-                    && mpp->unk5C & 4) {
+                if (mpp->unk56 == SIO_MULTI_CNT->id && gMultiplayerCharacters[mpp->unk56] == CHARACTER_TAILS
+                    && gMultiplayerCharacters[mpp->unk56] == CHARACTER_KNUCKLES && mpp->unk5C & 4) {
                     mpp->unk5C &= ~0x6;
                     if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__80)) {
                         gPlayer.moveState &= ~MOVESTATE_400000;
@@ -443,8 +435,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
     s->frameFlags |= (mpp->unk54 & 0x30) << 8;
 
     if (!(mpp->unk54 & 0x40)
-        && ((gStageTime & 2 || mpp->unk57 & 0x20 || mpp->unk5C & 1
-             || gUnknown_030054B4[mpp->unk56] != -1)
+        && ((gStageTime & 2 || mpp->unk57 & 0x20 || mpp->unk5C & 1 || gUnknown_030054B4[mpp->unk56] != -1)
             || (mpp->unk60 == 0 && !(mpp->unk54 & 4) && !(mpp->unk5C & 2)))) {
         s->oamFlags = SPRITE_OAM_ORDER(16);
         if (mpp->unk54 & 0x80) {
@@ -454,10 +445,8 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         s->frameFlags &= ~(0x100 | 0x80);
         if (mpp->unk57 & 0x20
             && (gGameMode != GAME_MODE_TEAM_PLAY
-                || ((gMultiplayerConnections & (0x10 << (mpp->unk56)))
-                        >> ((mpp->unk56 + 4))
-                    != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
-                        >> (SIO_MULTI_CNT->id + 4)))
+                || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
+                    != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
             && mpp->unk60 == 0 && mpp->unk56 != SIO_MULTI_CNT->id) {
             s->frameFlags |= 0x100;
             gDispCnt |= 0x8000;
@@ -513,8 +502,7 @@ void sub_8016D20(void)
 
     if (gGameMode != GAME_MODE_TEAM_PLAY
         || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
-                >> (SIO_MULTI_CNT->id + 4))) {
+            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
         if (!sub_8018300()) {
             return;
         }
@@ -535,8 +523,7 @@ void sub_8016D20(void)
                 mpp->unk4C = 0;
             }
 
-            if (s->graphics.anim
-                != SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SONIC)) {
+            if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SONIC)) {
                 return;
             }
 
@@ -569,19 +556,15 @@ void sub_8016D20(void)
             }
             mpp->unk60 = 30;
         } else {
-            if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1])
-                && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
+            if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1]) && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
                 return;
             }
 
-            if (gPlayer.unk61 != 0
-                && (gPlayer.character == CHARACTER_TAILS
-                    || gPlayer.character == CHARACTER_KNUCKLES)) {
+            if (gPlayer.unk61 != 0 && (gPlayer.character == CHARACTER_TAILS || gPlayer.character == CHARACTER_KNUCKLES)) {
                 return;
             }
 
-            val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                              mpp->unk54 >> 7 & 1, 1);
+            val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 1);
 
             if (mpp->unk4C & MOVESTATE_20 && !(val & MOVESTATE_20)) {
                 gPlayer.moveState &= ~MOVESTATE_20;
@@ -597,8 +580,7 @@ void sub_8016D20(void)
                 return;
             }
 
-            if (s->graphics.anim
-                != SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SONIC)) {
+            if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SONIC)) {
                 return;
             }
             gPlayer.unk64 = SA2_CHAR_ANIM_WALK;
@@ -641,8 +623,7 @@ void sub_8016D20(void)
             return;
         }
 
-        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                          mpp->unk54 >> 7 & 1, 0);
+        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
 
         if ((mpp->unk4C & MOVESTATE_20) && !(val & MOVESTATE_20)) {
             gPlayer.moveState &= ~MOVESTATE_20;
@@ -653,9 +634,7 @@ void sub_8016D20(void)
     }
 }
 
-#define SOME_INVERTED_GRAVITY_MACRO                                                     \
-    (!GRAVITY_IS_INVERTED != !(mpp->unk54 & 8)                                          \
-     || !(mpp->unk5C & 0x100) != !GRAVITY_IS_INVERTED)
+#define SOME_INVERTED_GRAVITY_MACRO (!GRAVITY_IS_INVERTED != !(mpp->unk54 & 8) || !(mpp->unk5C & 0x100) != !GRAVITY_IS_INVERTED)
 
 void sub_801707C(void)
 {
@@ -681,8 +660,7 @@ void sub_801707C(void)
 
     if (gGameMode != GAME_MODE_TEAM_PLAY
         || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
-                >> (SIO_MULTI_CNT->id + 4))) {
+            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
         if (sub_8018300() == 0) {
             return;
         }
@@ -721,15 +699,13 @@ void sub_801707C(void)
 
         if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_22, CHARACTER_TAILS)
             && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_TAILS)
-            && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS)
-            && HITBOX_IS_ACTIVE(playerSprite->hitboxes[1])
+            && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS) && HITBOX_IS_ACTIVE(playerSprite->hitboxes[1])
             && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
             return;
         }
 
         someOtherBool = (gPlayer.moveState >> 1) & 1;
-        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                          mpp->unk54 >> 7 & 1, 1);
+        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 1);
 
         if ((mpp->unk4C & 0x20) && !(val & 0x20)) {
             gPlayer.moveState &= ~MOVESTATE_20;
@@ -744,22 +720,17 @@ void sub_801707C(void)
         if (!(mpp->unk5C & 4)) {
             if ((someOtherBool || someBool)
                 && (val & 0x10028
-                    && (s->graphics.anim
-                            == SA2_ANIM_CHAR(SA2_CHAR_ANIM_22, CHARACTER_TAILS)
-                        || s->graphics.anim
-                            == SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_TAILS)
-                        || s->graphics.anim
-                            == SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS))
+                    && (s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_22, CHARACTER_TAILS)
+                        || s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_TAILS)
+                        || s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS))
                     && (!!GRAVITY_IS_INVERTED != !(mpp->unk54 & 8)))) {
 
                 s32 y;
                 if (!GRAVITY_IS_INVERTED) {
-                    result = sub_801E4E4(MAX(I(gPlayer.y), mpp->pos.y) + gPlayer.unk17,
-                                         I(gPlayer.x), gPlayer.unk38, 8, &unusedByte,
+                    result = sub_801E4E4(MAX(I(gPlayer.y), mpp->pos.y) + gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, 8, &unusedByte,
                                          sub_801EE64);
                 } else {
-                    result = sub_801E4E4(MIN(I(gPlayer.y), mpp->pos.y) - gPlayer.unk17,
-                                         I(gPlayer.x), gPlayer.unk38, -8, &unusedByte,
+                    result = sub_801E4E4(MIN(I(gPlayer.y), mpp->pos.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, -8, &unusedByte,
                                          sub_801EE64);
                 }
 
@@ -807,8 +778,7 @@ void sub_801707C(void)
             if ((s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_22, CHARACTER_TAILS)
                  && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_TAILS)
                  && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_TAILS))
-                || I(gPlayer.x) <= gCamera.minX || I(gPlayer.x) >= gCamera.maxX
-                || SOME_INVERTED_GRAVITY_MACRO || moveStateVal != 0) {
+                || I(gPlayer.x) <= gCamera.minX || I(gPlayer.x) >= gCamera.maxX || SOME_INVERTED_GRAVITY_MACRO || moveStateVal != 0) {
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 mpp->unk5C &= ~4;
                 gPlayer.unk64 = SA2_CHAR_ANIM_IDLE;
@@ -829,8 +799,7 @@ void sub_801707C(void)
                     // TODO: potential macro
                     if (!invertedGravity) {
                         y = Q(mpp->pos.y + (s->hitboxes[0].bottom) + 17);
-                        result = sub_801E4E4(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x),
-                                             gPlayer.unk38, 8, &unusedByte, sub_801EE64);
+                        result = sub_801E4E4(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, 8, &unusedByte, sub_801EE64);
 
                         if (result < 0) {
                             y += Q(result);
@@ -841,9 +810,7 @@ void sub_801707C(void)
 
                     } else {
                         y = Q(mpp->pos.y + (s->hitboxes[0].top) - 17);
-                        result
-                            = sub_801E4E4(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x),
-                                          gPlayer.unk38, -8, &unusedByte, sub_801EE64);
+                        result = sub_801E4E4(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, -8, &unusedByte, sub_801EE64);
 
                         if (result < 0) {
                             y -= Q(result);
@@ -901,8 +868,7 @@ void sub_801707C(void)
             return;
         }
 
-        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                          mpp->unk54 >> 7 & 1, 0);
+        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
 
         if ((mpp->unk4C & MOVESTATE_20) && !(val & MOVESTATE_20)) {
             gPlayer.moveState &= ~MOVESTATE_20;
@@ -932,8 +898,7 @@ void sub_8017670(void)
 
     if (gGameMode != GAME_MODE_TEAM_PLAY
         || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
-                >> (SIO_MULTI_CNT->id + 4))) {
+            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
         if (!sub_8018300()) {
             return;
         }
@@ -966,21 +931,16 @@ void sub_8017670(void)
             }
 
             if ((s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_19, CHARACTER_KNUCKLES)
-                 && s->graphics.anim
-                     != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_KNUCKLES)
-                 && s->graphics.anim
-                     != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_KNUCKLES))
-                && HITBOX_IS_ACTIVE(playerSprite->hitboxes[1])
-                && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
+                 && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_KNUCKLES)
+                 && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_KNUCKLES))
+                && HITBOX_IS_ACTIVE(playerSprite->hitboxes[1]) && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
                 return;
             }
         }
 
         {
-            s8 rect[4]
-                = { -gPlayer.unk16, -gPlayer.unk17, gPlayer.unk16, gPlayer.unk17 };
-            val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                              mpp->unk54 >> 7 & 1, 1);
+            s8 rect[4] = { -gPlayer.unk16, -gPlayer.unk17, gPlayer.unk16, gPlayer.unk17 };
+            val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 1);
 
             if (mpp->unk4C & 0x20 && !(val & 0x20)) {
                 gPlayer.moveState &= ~MOVESTATE_20;
@@ -992,19 +952,14 @@ void sub_8017670(void)
                 mpp->unk60 = 30;
             }
 
-            if (CheckRectCollision_SpritePlayer(s, mpp->pos.x, mpp->pos.y, &gPlayer,
-                                                (struct Rect8 *)rect)) {
+            if (CheckRectCollision_SpritePlayer(s, mpp->pos.x, mpp->pos.y, &gPlayer, (struct Rect8 *)rect)) {
                 u8 temp = ((mpp->unk54 >> 7) & 1);
                 if ((temp == gPlayer.unk38)
-                    && (s->graphics.anim
-                            == SA2_ANIM_CHAR(SA2_CHAR_ANIM_19, CHARACTER_KNUCKLES)
-                        || s->graphics.anim
-                            == SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_KNUCKLES)
-                        || s->graphics.anim
-                            == SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_KNUCKLES))
+                    && (s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_19, CHARACTER_KNUCKLES)
+                        || s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_KNUCKLES)
+                        || s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_KNUCKLES))
                     && !GRAVITY_IS_INVERTED == !(mpp->unk54 & 8)) {
-                    if ((!GRAVITY_IS_INVERTED && I(gPlayer.y) > mpp->pos.y)
-                        || (GRAVITY_IS_INVERTED && I(gPlayer.y) < mpp->pos.y)) {
+                    if ((!GRAVITY_IS_INVERTED && I(gPlayer.y) > mpp->pos.y) || (GRAVITY_IS_INVERTED && I(gPlayer.y) < mpp->pos.y)) {
                         gPlayer.moveState |= MOVESTATE_400000;
                         sub_8023B5C(&gPlayer, 14);
                         gPlayer.unk16 = 6;
@@ -1049,12 +1004,9 @@ void sub_8017670(void)
             }
 
             if ((s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_19, CHARACTER_KNUCKLES)
-                 && s->graphics.anim
-                     != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_KNUCKLES)
-                 && s->graphics.anim
-                     != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_KNUCKLES))
-                || I(gPlayer.x) <= gCamera.minX || I(gPlayer.x) >= gCamera.maxX
-                || SOME_INVERTED_GRAVITY_MACRO || moveStateVal != 0) {
+                 && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_KNUCKLES)
+                 && s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_21, CHARACTER_KNUCKLES))
+                || I(gPlayer.x) <= gCamera.minX || I(gPlayer.x) >= gCamera.maxX || SOME_INVERTED_GRAVITY_MACRO || moveStateVal != 0) {
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 mpp->unk5C &= ~4;
                 gPlayer.unk64 = SA2_CHAR_ANIM_IDLE;
@@ -1074,9 +1026,7 @@ void sub_8017670(void)
                 // TODO: potential macro
                 if (!(gravityInverted)) {
                     y = QS((mpp->pos.y + (s->hitboxes[0].top)) - rect[3]);
-                    result = sub_801F100((mpp->pos.y + (s->hitboxes[0].top) - rect[3])
-                                             - playerUnk17,
-                                         I(x), gPlayer.unk38, -8, sub_801EC3C);
+                    result = sub_801F100((mpp->pos.y + (s->hitboxes[0].top) - rect[3]) - playerUnk17, I(x), gPlayer.unk38, -8, sub_801EC3C);
 
                     if (result < 0) {
                         y -= QS(result);
@@ -1086,9 +1036,8 @@ void sub_8017670(void)
                     }
                 } else {
                     y = QS(mpp->pos.y + (s->hitboxes[0].bottom) + rect[3]);
-                    result = sub_801F100(
-                        ((mpp->pos.y + (s->hitboxes[0].bottom) + rect[3]) + playerUnk17),
-                        I(x), gPlayer.unk38, 8, sub_801EC3C);
+                    result = sub_801F100(((mpp->pos.y + (s->hitboxes[0].bottom) + rect[3]) + playerUnk17), I(x), gPlayer.unk38, 8,
+                                         sub_801EC3C);
 
                     if (result < 0) {
                         y += QS(result);
@@ -1140,8 +1089,7 @@ void sub_8017670(void)
             return;
         }
 
-        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                          mpp->unk54 >> 7 & 1, 0);
+        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
 
         if ((mpp->unk4C & MOVESTATE_20) && !(val & MOVESTATE_20)) {
             gPlayer.moveState &= ~MOVESTATE_20;
@@ -1163,8 +1111,7 @@ void sub_8017C28(void)
 
     if (gGameMode != GAME_MODE_TEAM_PLAY
         || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
-            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
-                >> (SIO_MULTI_CNT->id + 4))) {
+            != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
         if (!sub_8018300()) {
             return;
         }
@@ -1180,14 +1127,11 @@ void sub_8017C28(void)
 
     if (mpp->unk60 == 0) {
         if (!HITBOX_IS_ACTIVE(s->hitboxes[1])) {
-            if (gPlayer.unk61 != 0
-                && (gPlayer.character == CHARACTER_TAILS
-                    || gPlayer.character == CHARACTER_KNUCKLES)) {
+            if (gPlayer.unk61 != 0 && (gPlayer.character == CHARACTER_TAILS || gPlayer.character == CHARACTER_KNUCKLES)) {
                 return;
             }
 
-            val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                              mpp->unk54 >> 7 & 1, 1);
+            val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 1);
 
             if (mpp->unk4C & 0x20 && !(val & 0x20)) {
                 gPlayer.moveState &= ~MOVESTATE_20;
@@ -1195,15 +1139,11 @@ void sub_8017C28(void)
             mpp->unk4C = val;
             return;
         } else {
-            if (gPlayer.unk61 != 0
-                && (gPlayer.character == CHARACTER_TAILS
-                    || gPlayer.character == CHARACTER_KNUCKLES)) {
+            if (gPlayer.unk61 != 0 && (gPlayer.character == CHARACTER_TAILS || gPlayer.character == CHARACTER_KNUCKLES)) {
                 return;
             }
-            val = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                              (mpp->unk54 >> 7) & 1);
-            if ((val & 2) && !(gPlayer.moveState & MOVESTATE_IN_AIR)
-                && gPlayer.rotation == 0) {
+            val = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
+            if ((val & 2) && !(gPlayer.moveState & MOVESTATE_IN_AIR) && gPlayer.rotation == 0) {
                 if (s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_14, CHARACTER_AMY)) {
                     LaunchPlayer(-Q_8_8(7.5));
 #ifndef NON_MATCHING
@@ -1247,8 +1187,7 @@ void sub_8017C28(void)
                 mpp->unk60 = 30;
                 return;
             } else {
-                val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                                  mpp->unk54 >> 7 & 1, 1);
+                val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 1);
 
                 if (mpp->unk4C & 0x20 && !(val & 0x20)) {
                     gPlayer.moveState &= ~MOVESTATE_20;
@@ -1270,8 +1209,7 @@ void sub_8017C28(void)
             return;
         }
 
-        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                          mpp->unk54 >> 7 & 1, 0);
+        val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
 
         if (mpp->unk4C & 0x20 && !(val & 0x20)) {
             gPlayer.moveState &= ~MOVESTATE_20;
@@ -1309,8 +1247,7 @@ void sub_8017F34(void)
     }
 
     if (mpp->unk48 < 0) {
-        result = sub_801F100(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38,
-                             -8, sub_801EC3C);
+        result = sub_801F100(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, -8, sub_801EC3C);
         if (result < 0) {
             gPlayer.y -= Q(result);
             gPlayer.moveState &= ~MOVESTATE_8;
@@ -1318,8 +1255,7 @@ void sub_8017F34(void)
             mpp->unk60 = 30;
         }
     } else if (mpp->unk48 > 0) {
-        result = sub_801F100(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x), gPlayer.unk38,
-                             8, sub_801EC3C);
+        result = sub_801F100(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, 8, sub_801EC3C);
         if (result < 0) {
             gPlayer.y += Q(result);
             gPlayer.moveState &= ~MOVESTATE_8;
@@ -1329,15 +1265,13 @@ void sub_8017F34(void)
     }
 
     if (mpp->unk44 < 0) {
-        result = sub_801F100(I(gPlayer.x) - gPlayer.unk16, I(gPlayer.y), gPlayer.unk38,
-                             -8, sub_801EB44);
+        result = sub_801F100(I(gPlayer.x) - gPlayer.unk16, I(gPlayer.y), gPlayer.unk38, -8, sub_801EB44);
         if (result < 0) {
             gPlayer.x -= Q(result);
         }
         return;
     } else if (mpp->unk44 > 0) {
-        result = sub_801F100(I(gPlayer.x) + gPlayer.unk16, I(gPlayer.y), gPlayer.unk38,
-                             8, sub_801EB44);
+        result = sub_801F100(I(gPlayer.x) + gPlayer.unk16, I(gPlayer.y), gPlayer.unk38, 8, sub_801EB44);
         if (result < 0) {
             gPlayer.x += Q(result);
         }
@@ -1377,8 +1311,7 @@ bool32 sub_80181E0(void)
     u32 val;
 
     if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1]) && HITBOX_IS_ACTIVE(s->hitboxes[1])) {
-        val = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                          (mpp->unk54 >> 7) & 1);
+        val = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
 
         if ((val & 1)) {
             if (gPlayer.unk61 == 0 && (val & 0x20000)) {
@@ -1419,15 +1352,12 @@ bool32 sub_8018300(void)
     s = &mpp->s;
 
     if (mpp->unk60 == 0) {
-        u32 val2 = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                               (mpp->unk54 >> 7) & 1);
+        u32 val2 = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS && !(val2 & 3)) {
             if (mpp->pos.x > 960) {
-                val2 = sub_800DA4C(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66,
-                                   mpp->unk68, (mpp->unk54 >> 7) & 1);
+                val2 = sub_800DA4C(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
             } else {
-                val2 = sub_800DA4C(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66,
-                                   mpp->unk68, (mpp->unk54 >> 7) & 1);
+                val2 = sub_800DA4C(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
             }
         }
 
@@ -1474,25 +1404,21 @@ bool32 sub_8018300(void)
             return TRUE;
         }
 
-        if (!HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1])
-            && !HITBOX_IS_ACTIVE(s->hitboxes[1])) {
+        if (!HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1]) && !HITBOX_IS_ACTIVE(s->hitboxes[1])) {
             u32 existingMoveState = gPlayer.moveState;
             Sprite *existingS = gPlayer.unk3C;
             s16 x, y;
 
-            val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                              (mpp->unk54 >> 7) & 1, val2 & 2);
+            val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val2 & 2);
 
             if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS && val == 0) {
                 gPlayer.moveState = existingMoveState;
                 gPlayer.unk3C = existingS;
 
                 if (mpp->pos.x > 960) {
-                    val = sub_800D0A0(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66,
-                                      mpp->unk68, (mpp->unk54 >> 7) & 1, val);
+                    val = sub_800D0A0(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val);
                 } else {
-                    val = sub_800D0A0(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66,
-                                      mpp->unk68, (mpp->unk54 >> 7) & 1, val);
+                    val = sub_800D0A0(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val);
                 }
             }
 
@@ -1526,16 +1452,13 @@ bool32 sub_8018300(void)
         return FALSE;
     }
 
-    val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68,
-                      mpp->unk54 >> 7 & 1, 0);
+    val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 0);
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS && val == 0) {
         if (mpp->pos.x > 960) {
-            val = sub_800D0A0(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66,
-                              mpp->unk68, (mpp->unk54 >> 7) & 1, val);
+            val = sub_800D0A0(s, mpp->pos.x - 1440, mpp->pos.y - 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val);
         } else {
-            val = sub_800D0A0(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66,
-                              mpp->unk68, (mpp->unk54 >> 7) & 1, val);
+            val = sub_800D0A0(s, mpp->pos.x + 1440, mpp->pos.y + 864, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1, val);
         }
     }
 

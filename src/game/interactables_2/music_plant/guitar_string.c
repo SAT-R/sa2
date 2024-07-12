@@ -38,11 +38,9 @@ extern void sub_80762BC(Sprite_GuitarString *);
 extern void sub_80762E0(Sprite_GuitarString *);
 extern bool32 sub_8076320(Sprite_GuitarString *);
 
-void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 spriteY)
+void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GuitarString, sizeof(Sprite_GuitarString), 0x2010,
-                                0, TaskDestructor_GuitarString);
+    struct Task *t = TaskCreate(Task_GuitarString, sizeof(Sprite_GuitarString), 0x2010, 0, TaskDestructor_GuitarString);
     Sprite_GuitarString *gs = TASK_DATA(t);
     Sprite *s = &gs->s1;
     u16 i;
@@ -248,8 +246,8 @@ bool32 sub_807618C(Sprite_GuitarString *gs)
         s16 playerX = I(gPlayer.x) - gCamera.x;
         s16 playerY = I(gPlayer.y) - gCamera.y;
 
-        if ((screenX <= playerX) && ((screenX + GUITARSTR_WIDTH_PX) >= playerX)
-            && ((screenY - 9) <= playerY) && ((screenY + 9) >= playerY)) {
+        if ((screenX <= playerX) && ((screenX + GUITARSTR_WIDTH_PX) >= playerX) && ((screenY - 9) <= playerY)
+            && ((screenY + 9) >= playerY)) {
             return TRUE;
         }
     }
@@ -338,9 +336,7 @@ bool32 sub_8076320(Sprite_GuitarString *gs)
     otherY = screenY;
     otherX = screenX;
 
-    if (IS_OUT_OF_RANGE_2(otherX, otherY,
-                          (CAM_REGION_WIDTH + (GUITARSTR_WIDTH_PX / 2)) / 2,
-                          CAM_REGION_WIDTH / 2)) {
+    if (IS_OUT_OF_RANGE_2(otherX, otherY, (CAM_REGION_WIDTH + (GUITARSTR_WIDTH_PX / 2)) / 2, CAM_REGION_WIDTH / 2)) {
         return TRUE;
     }
 

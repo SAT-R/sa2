@@ -11,11 +11,9 @@ static void Task_StagePaletteLoader(void);
  * but only ever called with animations which load a palette
  */
 
-struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant,
-                                     TaskDestructor dtor)
+struct Task *CreatePaletteLoaderTask(u16 priority, AnimId anim, u8 variant, TaskDestructor dtor)
 {
-    struct Task *t
-        = TaskCreate(Task_StagePaletteLoader, sizeof(Sprite), priority, 0, dtor);
+    struct Task *t = TaskCreate(Task_StagePaletteLoader, sizeof(Sprite), priority, 0, dtor);
 
     Sprite *s = TASK_DATA(t);
 

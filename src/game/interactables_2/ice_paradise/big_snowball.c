@@ -53,11 +53,9 @@ typedef struct {
 void Task_Interactable069(void);
 void TaskDestructor_Interactable069(struct Task *);
 
-void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable069, sizeof(Sprite_IA69), 0x2010, 0,
-                                TaskDestructor_Interactable069);
+    struct Task *t = TaskCreate(Task_Interactable069, sizeof(Sprite_IA69), 0x2010, 0, TaskDestructor_Interactable069);
     Sprite *s;
     Sprite_IA69 *ia69 = TASK_DATA(t);
     void *vramBase;
@@ -346,8 +344,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
         for (i = 0; i < 2; i++, unk178++) {
             s32 temp2 = I(ia69->unk168 + unk178->unk2);
             if (temp2 < temp) {
-                ia69->unk30.x
-                    = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
+                ia69->unk30.x = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
                 ia69->unk30.y = ia69->unk15C - gCamera.y + temp2;
                 DisplaySprite(&ia69->unk30);
             }
@@ -356,8 +353,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
         for (i = 0; i < 2; i++, unk178++) {
             s32 temp2 = I(ia69->unk168 + unk178->unk2);
             if (temp2 < temp) {
-                ia69->unk60.x
-                    = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
+                ia69->unk60.x = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
                 ia69->unk60.y = ia69->unk15C - gCamera.y + temp2;
                 DisplaySprite(&ia69->unk60);
             }
@@ -366,8 +362,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
         for (i = 0; i < 4; i++, unk178++) {
             s32 temp2 = I(ia69->unk168 + unk178->unk2);
             if (temp2 < temp) {
-                ia69->unk90.x
-                    = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
+                ia69->unk90.x = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
                 ia69->unk90.y = ia69->unk15C - gCamera.y + temp2;
                 DisplaySprite(&ia69->unk90);
             }
@@ -376,8 +371,7 @@ void sub_80792AC(Sprite_IA69 *ia69)
         for (i = 0; i < 4; i++, unk178++) {
             s32 temp2 = I(ia69->unk168 + unk178->unk2);
             if (temp2 < temp) {
-                ia69->unkC0.x
-                    = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
+                ia69->unkC0.x = ia69->unk158 - gCamera.x + I(ia69->unk164 + unk178->unk0);
                 ia69->unkC0.y = ia69->unk15C - gCamera.y + temp2;
                 DisplaySprite(&ia69->unkC0);
             }
@@ -439,8 +433,7 @@ bool32 sub_8079624(Sprite_IA69 *ia69)
 
     temp2 = temp1;
     temp3 = temp;
-    if ((temp2 + ia69->unk1B0) < -128 || (temp2 + ia69->unk1AC) > 368
-        || (temp3 + ia69->unk1B2) < -128 || (temp3 + ia69->unk1AE) >= 289) {
+    if ((temp2 + ia69->unk1B0) < -128 || (temp2 + ia69->unk1AC) > 368 || (temp3 + ia69->unk1B2) < -128 || (temp3 + ia69->unk1AE) >= 289) {
         return TRUE;
     }
 

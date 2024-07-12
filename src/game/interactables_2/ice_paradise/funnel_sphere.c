@@ -151,15 +151,13 @@ static void sub_8078170(Sprite_FunnelSphere *funnelSphere)
     switch (gPlayer.character) {
         case CHARACTER_CREAM:
         case CHARACTER_TAILS:
-            funnelSphere->unk14
-                = (gPlayer.unk94->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> 12;
+            funnelSphere->unk14 = (gPlayer.unk94->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> 12;
             gPlayer.unk94->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
             gPlayer.unk94->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
         case CHARACTER_SONIC:
         case CHARACTER_KNUCKLES:
         case CHARACTER_AMY:
-            funnelSphere->unk12
-                = (gPlayer.unk90->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> 12;
+            funnelSphere->unk12 = (gPlayer.unk90->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> 12;
             gPlayer.unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
             gPlayer.unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
     }
@@ -306,11 +304,9 @@ static void sub_8078594(Sprite_FunnelSphere *funnelSphere)
     TaskDestroy(gCurTask);
 }
 
-void CreateEntity_FunnelSphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 spriteY)
+void CreateEntity_FunnelSphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(sub_8078414, sizeof(Sprite_FunnelSphere), 0x2010, 0, sub_8078688);
+    struct Task *t = TaskCreate(sub_8078414, sizeof(Sprite_FunnelSphere), 0x2010, 0, sub_8078688);
     Sprite_FunnelSphere *funnelSphere = TASK_DATA(t);
     funnelSphere->me = me;
     funnelSphere->spriteX = me->x;

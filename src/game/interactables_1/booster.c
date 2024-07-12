@@ -44,22 +44,20 @@ const TileInfo sBoosterAnimationData[2][6] = {
 #define BOOSTER_SPEED 3072
 
 // Look left and accelerate
-#define BOOSTER_ACCEL_LEFT(player)                                                      \
-    (player).moveState |= MOVESTATE_FACING_LEFT;                                        \
-    if (gPlayer.speedGroundX > -BOOSTER_SPEED)                                          \
+#define BOOSTER_ACCEL_LEFT(player)                                                                                                         \
+    (player).moveState |= MOVESTATE_FACING_LEFT;                                                                                           \
+    if (gPlayer.speedGroundX > -BOOSTER_SPEED)                                                                                             \
         gPlayer.speedGroundX = -BOOSTER_SPEED;
 
 // Look right and accelerate
-#define BOOSTER_ACCEL_RIGHT(player)                                                     \
-    (player).moveState &= ~MOVESTATE_FACING_LEFT;                                       \
-    if (gPlayer.speedGroundX < BOOSTER_SPEED)                                           \
+#define BOOSTER_ACCEL_RIGHT(player)                                                                                                        \
+    (player).moveState &= ~MOVESTATE_FACING_LEFT;                                                                                          \
+    if (gPlayer.speedGroundX < BOOSTER_SPEED)                                                                                              \
         gPlayer.speedGroundX = BOOSTER_SPEED;
 
-void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                          u8 spriteY)
+void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_Booster, sizeof(Sprite_Booster),
-                                0x2000, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_Interactable_Booster, sizeof(Sprite_Booster), 0x2000, 0, TaskDestructor_80095E8);
     Sprite_Booster *booster = TASK_DATA(t);
     Sprite *s = &booster->s;
     u32 value;
@@ -115,8 +113,7 @@ void Task_Interactable_Booster(void)
     s->x = screenX - gCamera.x;
     s->y = screenY - gCamera.y;
 
-    if (!(gPlayer.moveState & (MOVESTATE_DEAD | MOVESTATE_IN_AIR))
-        && (sub_800C204(s, screenX, screenY, 0, &gPlayer, 0) == 1)) {
+    if (!(gPlayer.moveState & (MOVESTATE_DEAD | MOVESTATE_IN_AIR)) && (sub_800C204(s, screenX, screenY, 0, &gPlayer, 0) == 1)) {
         Player_TransitionCancelFlyingAndBoost(&gPlayer);
 
         if (gPlayer.moveState & MOVESTATE_4) {

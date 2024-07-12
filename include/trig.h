@@ -7,10 +7,10 @@ extern const s16 gSineTable[1280];
 
 #define SIN_PERIOD 1024
 
-#define CLAMP_SIN_PERIOD(val)                                                           \
-    ({                                                                                  \
-        s16 clamped = (val) & (SIN_PERIOD - 1);                                         \
-        clamped;                                                                        \
+#define CLAMP_SIN_PERIOD(val)                                                                                                              \
+    ({                                                                                                                                     \
+        s16 clamped = (val) & (SIN_PERIOD - 1);                                                                                            \
+        clamped;                                                                                                                           \
     })
 
 #define ONE_CYCLE (SIN_PERIOD - 1)

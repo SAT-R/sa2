@@ -369,14 +369,11 @@ const MapEntityInit gSpriteInits_Interactables[] = {
 };
 
 const MapEntityInit gSpriteInits_Enemies[] = {
-    CreateEntity_Mon,      CreateEntity_Kiki,         CreateEntity_Buzzer,
-    CreateEntity_Gohla,    CreateEntity_KuraKura,     CreateEntity_Kubinaga,
-    CreateEntity_PikoPiko, CreateEntity_Bell,         CreateEntity_Yado,
-    CreateEntity_Circus,   CreateEntity_Koura,        CreateEntity_Madillo,
-    CreateEntity_Straw,    CreateEntity_Hammerhead,   CreateEntity_Spinner,
-    CreateEntity_Mouse,    CreateEntity_Pen,          CreateEntity_GejiGeji,
-    CreateEntity_Balloon,  CreateEntity_Flickey,      CreateEntity_Kyura,
-    CreateEntity_Star,     CreateEntity_BulletBuzzer,
+    CreateEntity_Mon,      CreateEntity_Kiki,     CreateEntity_Buzzer,       CreateEntity_Gohla,      CreateEntity_KuraKura,
+    CreateEntity_Kubinaga, CreateEntity_PikoPiko, CreateEntity_Bell,         CreateEntity_Yado,       CreateEntity_Circus,
+    CreateEntity_Koura,    CreateEntity_Madillo,  CreateEntity_Straw,        CreateEntity_Hammerhead, CreateEntity_Spinner,
+    CreateEntity_Mouse,    CreateEntity_Pen,      CreateEntity_GejiGeji,     CreateEntity_Balloon,    CreateEntity_Flickey,
+    CreateEntity_Kyura,    CreateEntity_Star,     CreateEntity_BulletBuzzer,
 };
 
 #define NUM_ENEMY_DEFEAT_SCORES 5
@@ -570,10 +567,8 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
                                 s32 y = TO_WORLD_POS(me->y, regionY);
-                                if (x >= range.xLow && x <= range.xHigh
-                                    && y >= range.yLow && y <= range.yHigh) {
-                                    gSpriteInits_Interactables[me->index](me, regionX,
-                                                                          regionY, i);
+                                if (x >= range.xLow && x <= range.xHigh && y >= range.yLow && y <= range.yHigh) {
+                                    gSpriteInits_Interactables[me->index](me, regionX, regionY, i);
                                 }
                             }
                         }
@@ -588,16 +583,13 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                     });
 
                     if (r6 != 0) {
-                        MapEntity_Itembox *me
-                            = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions, r6);
+                        MapEntity_Itembox *me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions, r6);
                         for (i = 0; (s8)me->x != -1; me++, i++) {
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
                                 s32 y = TO_WORLD_POS(me->y, regionY);
-                                if (x >= range.xLow && x <= range.xHigh
-                                    && y >= range.yLow && y <= range.yHigh) {
-                                    CreateEntity_ItemBox((void *)me, regionX, regionY,
-                                                         i);
+                                if (x >= range.xLow && x <= range.xHigh && y >= range.yLow && y <= range.yHigh) {
+                                    CreateEntity_ItemBox((void *)me, regionX, regionY, i);
                                 }
                             }
                         }
@@ -618,10 +610,8 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
                                 s32 y = TO_WORLD_POS(me->y, regionY);
-                                if (x >= range.xLow && x <= range.xHigh
-                                    && y >= range.yLow && y <= range.yHigh) {
-                                    gSpriteInits_Enemies[me->index](me, regionX, regionY,
-                                                                    i);
+                                if (x >= range.xLow && x <= range.xHigh && y >= range.yLow && y <= range.yHigh) {
+                                    gSpriteInits_Enemies[me->index](me, regionX, regionY, i);
                                 }
                             }
                         }
@@ -635,10 +625,8 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
                             if ((s8)me->x >= -2) {
                                 s32 x = TO_WORLD_POS(me->x, regionX);
                                 s32 y = TO_WORLD_POS(me->y, regionY);
-                                if (x >= range.xLow && x <= range.xHigh
-                                    && y >= range.yLow && y <= range.yHigh) {
-                                    gSpriteInits_InteractablesMultiplayer[me->index](
-                                        me, regionX, regionY, i);
+                                if (x >= range.xLow && x <= range.xHigh && y >= range.yLow && y <= range.yHigh) {
+                                    gSpriteInits_InteractablesMultiplayer[me->index](me, regionX, regionY, i);
                                 }
                             }
                         }
@@ -677,15 +665,11 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
             SpawnMapEntities();
             return;
         }
-        if ((gCamera.x - em->prevCamX >= 0 ? gCamera.x - em->prevCamX
-                                           : em->prevCamX - gCamera.x)
-            > 248) {
+        if ((gCamera.x - em->prevCamX >= 0 ? gCamera.x - em->prevCamX : em->prevCamX - gCamera.x) > 248) {
             SpawnMapEntities();
             return;
         }
-        if ((gCamera.y - em->prevCamY >= 0 ? gCamera.y - em->prevCamY
-                                           : em->prevCamY - gCamera.y)
-            > 208) {
+        if ((gCamera.y - em->prevCamY >= 0 ? gCamera.y - em->prevCamY : em->prevCamY - gCamera.y) > 208) {
             SpawnMapEntities();
             return;
         }
@@ -798,8 +782,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                 range2.yHigh = temp4 - 1;
             }
 
-            if (gCamera.x != em->prevCamX && range1.xLow != range1.xHigh
-                && range1.yLow != range1.yHigh) {
+            if (gCamera.x != em->prevCamX && range1.xLow != range1.xHigh && range1.yLow != range1.yHigh) {
                 regionY = I(range1.yLow);
 
                 while (Q(regionY) < range1.yHigh && regionY < v_regionCount) {
@@ -810,9 +793,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                         MapEntity *me;
 
                         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                            r6 = *(u32 *)(((u8 *)interactables)
-                                          + ((h_regionCount * regionY) * sizeof(u32))
-                                          + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMapEntity(interactables, r6);
@@ -820,43 +801,32 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
                                         s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range1.xLow
-                                            && x <= (s32)range1.xHigh
-                                            && y >= (s32)range1.yLow
+                                        if (x >= (s32)range1.xLow && x <= (s32)range1.xHigh && y >= (s32)range1.yLow
                                             && y <= (s32)range1.yHigh) {
-                                            gSpriteInits_Interactables[me->index](
-                                                me, regionX, regionY, i);
+                                            gSpriteInits_Interactables[me->index](me, regionX, regionY, i);
                                         }
                                     }
                                 }
                             }
 
-                            r6 = *(u32 *)(((u8 *)itemBoxPositions)
-                                          + ((h_regionCount * regionY) * sizeof(u32))
-                                          + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)itemBoxPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
 
                             if (r6 != 0) {
                                 MapEntity_Itembox *me;
-                                me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions,
-                                                                        r6);
+                                me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
                                         s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range1.xLow
-                                            && x <= (s32)range1.xHigh
-                                            && y >= (s32)range1.yLow
+                                        if (x >= (s32)range1.xLow && x <= (s32)range1.xHigh && y >= (s32)range1.yLow
                                             && y <= (s32)range1.yHigh) {
-                                            CreateEntity_ItemBox((MapEntity *)me,
-                                                                 regionX, regionY, i);
+                                            CreateEntity_ItemBox((MapEntity *)me, regionX, regionY, i);
                                         }
                                     }
                                 }
                             }
 
-                            r6 = *(u32 *)(((u8 *)enemyPositions)
-                                          + ((h_regionCount * regionY) * sizeof(u32))
-                                          + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)enemyPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMapEntity(enemyPositions, r6);
@@ -864,21 +834,16 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
                                         s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range1.xLow
-                                            && x <= (s32)range1.xHigh
-                                            && y >= (s32)range1.yLow
+                                        if (x >= (s32)range1.xLow && x <= (s32)range1.xHigh && y >= (s32)range1.yLow
                                             && y <= (s32)range1.yHigh) {
-                                            gSpriteInits_Enemies[me->index](me, regionX,
-                                                                            regionY, i);
+                                            gSpriteInits_Enemies[me->index](me, regionX, regionY, i);
                                         }
                                     }
                                 }
                             }
 
                         } else {
-                            r6 = *(u32 *)(((u8 *)interactables)
-                                          + ((h_regionCount * regionY) * sizeof(u32))
-                                          + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMapEntity(interactables, r6);
@@ -886,12 +851,9 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
                                         s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range1.xLow
-                                            && x <= (s32)range1.xHigh
-                                            && y >= (s32)range1.yLow
+                                        if (x >= (s32)range1.xLow && x <= (s32)range1.xHigh && y >= (s32)range1.yLow
                                             && y <= (s32)range1.yHigh) {
-                                            gSpriteInits_InteractablesMultiplayer
-                                                [me->index](me, regionX, regionY, i);
+                                            gSpriteInits_InteractablesMultiplayer[me->index](me, regionX, regionY, i);
                                         }
                                     }
                                 }
@@ -902,8 +864,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                     regionY++;
                 }
             }
-            if (((gCamera.y != em->prevCamY) && (range2.yLow != range2.yHigh))
-                && (range2.xLow != range2.xHigh)) {
+            if (((gCamera.y != em->prevCamY) && (range2.yLow != range2.yHigh)) && (range2.xLow != range2.xHigh)) {
                 regionY = I((s32)range2.yLow);
 
                 while (Q(regionY) < range2.yHigh && regionY < v_regionCount) {
@@ -915,9 +876,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                         MapEntity *me;
 
                         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                            r6 = *(u32 *)(((u8 *)interactables)
-                                          + ((h_regionCount * regionY) * sizeof(u32))
-                                          + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMapEntity(interactables, r6);
@@ -925,43 +884,32 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
                                         s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range2.xLow
-                                            && x <= (s32)range2.xHigh
-                                            && y >= (s32)range2.yLow
+                                        if (x >= (s32)range2.xLow && x <= (s32)range2.xHigh && y >= (s32)range2.yLow
                                             && y <= (s32)range2.yHigh) {
-                                            gSpriteInits_Interactables[me->index](
-                                                me, regionX, regionY, i);
+                                            gSpriteInits_Interactables[me->index](me, regionX, regionY, i);
                                         }
                                     }
                                 }
                             }
 
-                            r6 = *(u32 *)(((u8 *)itemBoxPositions)
-                                          + ((h_regionCount * regionY) * sizeof(u32))
-                                          + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)itemBoxPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
 
                             if (r6 != 0) {
                                 MapEntity_Itembox *me;
-                                me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions,
-                                                                        r6);
+                                me = (MapEntity_Itembox *)ReadMapEntity(itemBoxPositions, r6);
                                 for (i = 0; (s8)me->x != -1; me++, i++) {
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
                                         s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range2.xLow
-                                            && x <= (s32)range2.xHigh
-                                            && y >= (s32)range2.yLow
+                                        if (x >= (s32)range2.xLow && x <= (s32)range2.xHigh && y >= (s32)range2.yLow
                                             && y <= (s32)range2.yHigh) {
-                                            CreateEntity_ItemBox((MapEntity *)me,
-                                                                 regionX, regionY, i);
+                                            CreateEntity_ItemBox((MapEntity *)me, regionX, regionY, i);
                                         }
                                     }
                                 }
                             }
 
-                            r6 = *(u32 *)(((u8 *)enemyPositions)
-                                          + ((h_regionCount * regionY) * sizeof(u32))
-                                          + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)enemyPositions) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMapEntity(enemyPositions, r6);
@@ -969,21 +917,16 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
                                         s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range2.xLow
-                                            && x <= (s32)range2.xHigh
-                                            && y >= (s32)range2.yLow
+                                        if (x >= (s32)range2.xLow && x <= (s32)range2.xHigh && y >= (s32)range2.yLow
                                             && y <= (s32)range2.yHigh) {
-                                            gSpriteInits_Enemies[me->index](me, regionX,
-                                                                            regionY, i);
+                                            gSpriteInits_Enemies[me->index](me, regionX, regionY, i);
                                         }
                                     }
                                 }
                             }
 
                         } else {
-                            r6 = *(u32 *)(((u8 *)interactables)
-                                          + ((h_regionCount * regionY) * sizeof(u32))
-                                          + (regionX * sizeof(u32)));
+                            r6 = *(u32 *)(((u8 *)interactables) + ((h_regionCount * regionY) * sizeof(u32)) + (regionX * sizeof(u32)));
                             if (r6 != 0) {
                                 MapEntity *me;
                                 me = ReadMapEntity(interactables, r6);
@@ -991,12 +934,9 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                                     if ((s8)me->x >= -2) {
                                         s32 x = TO_WORLD_POS(me->x, regionX);
                                         s32 y = TO_WORLD_POS(me->y, regionY);
-                                        if (x >= (s32)range2.xLow
-                                            && x <= (s32)range2.xHigh
-                                            && y >= (s32)range2.yLow
+                                        if (x >= (s32)range2.xLow && x <= (s32)range2.xHigh && y >= (s32)range2.yLow
                                             && y <= (s32)range2.yHigh) {
-                                            gSpriteInits_InteractablesMultiplayer
-                                                [me->index](me, regionX, regionY, i);
+                                            gSpriteInits_InteractablesMultiplayer[me->index](me, regionX, regionY, i);
                                         }
                                     }
                                 }

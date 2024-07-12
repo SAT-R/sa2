@@ -24,8 +24,7 @@ extern struct SongHeader se_ring_copy;
 void CreateCollectRingEffect(s16 x, s16 y)
 {
     if (gActiveCollectRingEffectCount < 8) {
-        struct Task *t
-            = TaskCreate(Task_CollectRingEffect, sizeof(RingEffect), 0x2000, 0, NULL);
+        struct Task *t = TaskCreate(Task_CollectRingEffect, sizeof(RingEffect), 0x2000, 0, NULL);
         RingEffect *re = TASK_DATA(t);
         Sprite *s = &re->s;
 

@@ -65,8 +65,7 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
 
     InitSpecialStageScreenVram();
 
-    t = TaskCreate(Task_ShowIntroScreen, sizeof(struct SpecialStage), 0x2000, 0,
-                   SpecialStageOnDestroy);
+    t = TaskCreate(Task_ShowIntroScreen, sizeof(struct SpecialStage), 0x2000, 0, SpecialStageOnDestroy);
     stage = TASK_DATA(t);
     stage->cameraX = Q_16_16(256);
     stage->cameraY = Q_16_16(256);
@@ -102,8 +101,7 @@ void CreateSpecialStage(s16 selectedCharacter, s16 level)
     stage->ringsUnits = 0;
 
     stage->ringsTargetHundreds = Div(stage->ringsTarget, 100);
-    stage->ringsTargetTens
-        = Div(stage->ringsTarget, 10) - (stage->ringsTargetHundreds * 10);
+    stage->ringsTargetTens = Div(stage->ringsTarget, 10) - (stage->ringsTargetHundreds * 10);
     stage->ringsTargetUnits = Mod(stage->ringsTarget, 10);
 
     stage->targetReached = 0;
@@ -278,8 +276,7 @@ void Task_SpecialStageMain(void)
                 }
             }
         } else {
-            if (stage->timeHundreds == 0 && stage->timeTens == 3 && stage->timeUnits == 0
-                && stage->timeTicks == 0) {
+            if (stage->timeHundreds == 0 && stage->timeTens == 3 && stage->timeUnits == 0 && stage->timeTicks == 0) {
                 m4aSongNumStart(MUS_SPECIAL_STAGE_PINCH);
             }
         }
@@ -556,10 +553,8 @@ void sub_806C560(void)
         stage->animFrame = 12;
     }
 
-    if ((gLoadedSaveGame->chaosEmeralds[character] & ALL_ZONE_CHAOS_EMERALDS)
-        == ALL_ZONE_CHAOS_EMERALDS) {
-        gLoadedSaveGame->chaosEmeralds[character]
-            = ALL_ZONE_CHAOS_EMERALDS | CHAOS_EMERALDS_COMPLETED;
+    if ((gLoadedSaveGame->chaosEmeralds[character] & ALL_ZONE_CHAOS_EMERALDS) == ALL_ZONE_CHAOS_EMERALDS) {
+        gLoadedSaveGame->chaosEmeralds[character] = ALL_ZONE_CHAOS_EMERALDS | CHAOS_EMERALDS_COMPLETED;
     }
 
     gCurTask->main = sub_806C638;
@@ -721,8 +716,7 @@ static void Task_ShowIntroScreen(void)
 {
     struct SpecialStage *stage = TASK_DATA(gCurTask);
     SetupIntroScreenRegisters();
-    sub_806CA88(&stage->introText, RENDER_TARGET_SCREEN, 0x28, 0x37C, 0, 0x78, 0x50, 0,
-                0, 0);
+    sub_806CA88(&stage->introText, RENDER_TARGET_SCREEN, 0x28, 0x37C, 0, 0x78, 0x50, 0, 0, 0);
 
     stage->state = 1;
     m4aSongNumStart(MUS_SPECIAL_STAGE_INTRO);

@@ -53,16 +53,11 @@ const u16 sStageResultsHeadlineTexts[5][3] = {
 };
 
 const u16 sAnimsGotThroughZoneAndActNames[11][3] = {
-    { 14, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ACT_1 },
-    { 14, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ACT_2 },
-    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_1) },
-    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_2) },
-    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_3) },
-    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_4) },
-    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_5) },
-    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_6) },
-    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_7) },
-    { 16, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_FINAL },
+    { 14, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ACT_1 },        { 14, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ACT_2 },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_1) }, { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_2) },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_3) }, { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_4) },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_5) }, { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_6) },
+    { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_7) }, { 16, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_FINAL },
     { 16, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_EXTRA },
 };
 
@@ -96,8 +91,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     gLoadedSaveGame->score += (s16)gRingCount;
 
-    t = TaskCreate(Task_UpdateStageResults, sizeof(StageResults), 0xC100, 0,
-                   TaskDestructor_StageResults);
+    t = TaskCreate(Task_UpdateStageResults, sizeof(StageResults), 0xC100, 0, TaskDestructor_StageResults);
     outro = TASK_DATA(t);
     outro->counter = zero;
     outro->isCountingDone = zero;
@@ -109,8 +103,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     outro->fade.bldCnt = 0x3FFF;
     outro->fade.bldAlpha = zero;
 
-    if ((gPlayer.moveState & MOVESTATE_8000000)
-        && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+    if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
         outro->fade.speed = Q(0.25);
         outro->fade.bldCnt = 0x3FBF;
     } else if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
@@ -310,9 +303,8 @@ void Task_UpdateStageResults(void)
     outro->counter = counter;
 
     if (IS_EXTRA_STAGE(gCurrentLevel)) {
-        gBldRegs.bldCnt
-            = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_BD | BLDCNT_TGT1_BG0
-               | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2 | BLDCNT_TGT1_BG3);
+        gBldRegs.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_BD | BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2
+                           | BLDCNT_TGT1_BG3);
     }
 
     if (counter >= 150) {
@@ -350,8 +342,7 @@ void Task_UpdateStageResults(void)
         }
 
         if ((gStageTime % 4u) == 0) {
-            if ((outro->ringBonusScore != 0) || (outro->spRingBonusScore != 0)
-                || (outro->timeBonusScore != 0)) {
+            if ((outro->ringBonusScore != 0) || (outro->spRingBonusScore != 0) || (outro->timeBonusScore != 0)) {
                 m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
             } else if (!outro->isCountingDone) {
                 outro->isCountingDone = TRUE;
@@ -363,8 +354,7 @@ void Task_UpdateStageResults(void)
     if (counter > outro->unk16C + 309) {
         if (IS_FINAL_STAGE(gCurrentLevel)) {
             if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
-                gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
-                    = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
+                gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
                 WriteSaveGame();
 
                 TasksDestroyAll();
@@ -412,61 +402,45 @@ void Task_UpdateStageResults(void)
 
                     gCurrentLevel++;
 
-                    if (gCurrentLevel
-                        > gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
-                        gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
-                            = gCurrentLevel;
+                    if (gCurrentLevel > gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
+                        gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
 
                         if (gSelectedCharacter == CHARACTER_SONIC) {
                             switch (LEVEL_TO_ZONE(gCurrentLevel - 1)) {
                                 case ZONE_1: {
-                                    gLoadedSaveGame->unlockedCharacters
-                                        |= CHARACTER_BIT(CHARACTER_CREAM);
+                                    gLoadedSaveGame->unlockedCharacters |= CHARACTER_BIT(CHARACTER_CREAM);
                                     CreateCharacterUnlockCutScene(0);
                                 } break;
 
                                 case ZONE_3: {
-                                    gLoadedSaveGame->unlockedCharacters
-                                        |= CHARACTER_BIT(CHARACTER_TAILS);
+                                    gLoadedSaveGame->unlockedCharacters |= CHARACTER_BIT(CHARACTER_TAILS);
                                     CreateCharacterUnlockCutScene(2);
                                 } break;
 
                                 case ZONE_5: {
-                                    gLoadedSaveGame->unlockedCharacters
-                                        |= CHARACTER_BIT(CHARACTER_KNUCKLES);
+                                    gLoadedSaveGame->unlockedCharacters |= CHARACTER_BIT(CHARACTER_KNUCKLES);
                                     CreateCharacterUnlockCutScene(1);
                                 } break;
 
                                 default: {
-                                    CreateCourseSelectionScreen(
-                                        gCurrentLevel,
-                                        gLoadedSaveGame
-                                            ->unlockedLevels[gSelectedCharacter],
-                                        1);
+                                    CreateCourseSelectionScreen(gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
                                 }
                             }
                         } else {
-                            CreateCourseSelectionScreen(
-                                gCurrentLevel,
-                                gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
+                            CreateCourseSelectionScreen(gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
                         }
                     } else {
-                        CreateCourseSelectionScreen(
-                            gCurrentLevel,
-                            gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 4);
+                        CreateCourseSelectionScreen(gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 4);
                     }
                     WriteSaveGame();
                     return;
                 } else {
                     gCurrentLevel++;
-                    if (gCurrentLevel
-                        > gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
-                        gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
-                            = gCurrentLevel;
+                    if (gCurrentLevel > gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
+                        gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
                     }
 
-                    if ((gPlayer.moveState & MOVESTATE_8000000)
-                        && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+                    if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
                         TasksDestroyAll();
 
                         { // TODO: This is a macro!
@@ -481,11 +455,9 @@ void Task_UpdateStageResults(void)
                         gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_WIDTH);
                         gWinRegs[WINREG_WIN0V] = WIN_RANGE(0, DISPLAY_HEIGHT);
                         gWinRegs[WINREG_WININ] |= WININ_WIN0_ALL;
-                        gWinRegs[WINREG_WINOUT]
-                            |= (WINOUT_WIN01_ALL & ~WINOUT_WIN01_CLR);
+                        gWinRegs[WINREG_WINOUT] |= (WINOUT_WIN01_ALL & ~WINOUT_WIN01_CLR);
 
-                        gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL
-                                           | BLDCNT_TGT2_ALL);
+                        gBldRegs.bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
                         gBldRegs.bldY = 0x10;
 
                         WriteSaveGame();
@@ -508,8 +480,7 @@ void Task_UpdateStageResults(void)
             }
         }
 
-        if ((gPlayer.moveState & MOVESTATE_8000000)
-            && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
+        if ((gPlayer.moveState & MOVESTATE_8000000) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
             DestroyStageResultsGfx();
             gPlayer.moveState |= MOVESTATE_4000000;
             return;
@@ -604,8 +575,7 @@ void sub_8031138(u16 p0)
         {
             s16 r4_2 = r4;
             s16 pp = p0;
-            StageUI_PrintIntegerAt(outro->timeBonusScore, r4_2 + 144 - pp,
-                                   OUTRO_TIME_BONUS_Y_POS, 0);
+            StageUI_PrintIntegerAt(outro->timeBonusScore, r4_2 + 144 - pp, OUTRO_TIME_BONUS_Y_POS, 0);
         }
     }
 
@@ -624,14 +594,11 @@ void sub_8031138(u16 p0)
         {
             s16 r4_2 = r4;
             s16 pp = p0;
-            StageUI_PrintIntegerAt(outro->ringBonusScore, r4_2 + 144 - pp,
-                                   OUTRO_RING_BONUS_Y_POS, 0);
+            StageUI_PrintIntegerAt(outro->ringBonusScore, r4_2 + 144 - pp, OUTRO_RING_BONUS_Y_POS, 0);
         }
     }
 
-    if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS)
-        && (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE))
-        && (counter >= 59)) {
+    if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS) && (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) && (counter >= 59)) {
         s = &outro->sprScores[2];
 
         if (counter <= 75) {
@@ -647,8 +614,7 @@ void sub_8031138(u16 p0)
         {
             s16 r4_2 = r4;
             s16 pp = p0;
-            StageUI_PrintIntegerAt(outro->spRingBonusScore, r4_2 + 144 - pp,
-                                   OUTRO_SP_RING_BONUS_Y_POS, 0);
+            StageUI_PrintIntegerAt(outro->spRingBonusScore, r4_2 + 144 - pp, OUTRO_SP_RING_BONUS_Y_POS, 0);
         }
     }
 }

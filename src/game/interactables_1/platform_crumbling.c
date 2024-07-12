@@ -24,8 +24,7 @@ typedef struct {
 // @NOTE/@BUG: This only has 2 entries, so using this MapEntity in
 // anything beyond Leaf Forest Act 2 will use a wrong AnimID.
 static const u16 sInt019_AnimationIds[]
-    = { [LEVEL_INDEX(ZONE_1, ACT_1)] = SA2_ANIM_PLATFORM_LF_WIDE,
-        [LEVEL_INDEX(ZONE_1, ACT_2)] = SA2_ANIM_PLATFORM_LF_WIDE };
+    = { [LEVEL_INDEX(ZONE_1, ACT_1)] = SA2_ANIM_PLATFORM_LF_WIDE, [LEVEL_INDEX(ZONE_1, ACT_2)] = SA2_ANIM_PLATFORM_LF_WIDE };
 
 extern const struct SpriteTables *gRefSpriteTables;
 
@@ -41,11 +40,9 @@ static void TaskDestructor_Interactable019(struct Task *);
 // @TODO: Replace with tile-count from the graphics data itself
 #define IA_019_NUM_TILES 32
 
-void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                    u8 spriteY)
+void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_019, sizeof(Sprite_019), 0x2000, 0,
-                                TaskDestructor_Interactable019);
+    struct Task *t = TaskCreate(Task_Interactable_019, sizeof(Sprite_019), 0x2000, 0, TaskDestructor_Interactable019);
     Sprite_019 *platform = TASK_DATA(t);
     SpriteBase *base = &platform->base;
     Sprite *s = &platform->s;
@@ -67,8 +64,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
 
 #ifdef BUG_FIX
     // Prevent overflow
-    s->graphics.anim
-        = sInt019_AnimationIds[gCurrentLevel % ARRAY_COUNT(sInt019_AnimationIds)];
+    s->graphics.anim = sInt019_AnimationIds[gCurrentLevel % ARRAY_COUNT(sInt019_AnimationIds)];
 #else
     s->graphics.anim = sInt019_AnimationIds[gCurrentLevel];
 #endif
@@ -116,10 +112,8 @@ void Task_Interactable_019(void)
 
     // _0805E2C2
 
-    if ((screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-         || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
-         || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
-         || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
+    if ((screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2) || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
+         || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2)) || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
         && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
         me->x = base->spriteX;
         TaskDestroy(gCurTask);
@@ -151,10 +145,8 @@ void Task_805E35C(void)
         gCurTask->main = Task_805E480;
     }
 
-    if ((screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-         || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
-         || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))
-         || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
+    if ((screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2) || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))
+         || (screenY > gCamera.y + DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2)) || (screenY < gCamera.y - (CAM_REGION_WIDTH / 2)))
         && (IS_OUT_OF_CAM_RANGE(s->x, s->y))) {
         me->x = platform->base.spriteX;
         TaskDestroy(gCurTask);
@@ -185,10 +177,8 @@ void Task_805E480(void)
 
     sub_800C060(s, screenX, screenY, &gPlayer);
 
-    if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-        || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
-        if ((u16)(s->x + (CAM_REGION_WIDTH / 2))
-            > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
+    if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2) || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
+        if ((u16)(s->x + (CAM_REGION_WIDTH / 2)) > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
             me->x = platform->base.spriteX;
             TaskDestroy(gCurTask);
             return;
@@ -209,8 +199,7 @@ void Task_805E480(void)
             if (value > 0) {
                 if (r6 == 0 && value == 1) {
                     if ((gPlayer.moveState & MOVESTATE_8) && gPlayer.unk3C == s) {
-                        gPlayer.moveState
-                            = ((gPlayer.moveState & (~MOVESTATE_8)) | MOVESTATE_IN_AIR);
+                        gPlayer.moveState = ((gPlayer.moveState & (~MOVESTATE_8)) | MOVESTATE_IN_AIR);
                     }
 
                     gCurTask->main = Task_805E6A4;
@@ -256,8 +245,7 @@ void Task_805E480(void)
 #endif
 
             pointer->all.attr2
-                = (((oam[2] + s->palId) & ~0xFFF) | (SPRITE_FLAG_GET(s, PRIORITY) << 10)
-                   | (u16)(GET_TILE_NUM(s->graphics.dest) + r6));
+                = (((oam[2] + s->palId) & ~0xFFF) | (SPRITE_FLAG_GET(s, PRIORITY) << 10) | (u16)(GET_TILE_NUM(s->graphics.dest) + r6));
         }
     }
 }
@@ -283,10 +271,8 @@ void Task_805E6A4(void)
     s->y = screenY - gCamera.y;
     platform->unk3C++;
 
-    if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
-        || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
-        if ((u16)(s->x + (CAM_REGION_WIDTH / 2))
-            > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
+    if (screenX > gCamera.x + DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2) || (screenX < gCamera.x - (CAM_REGION_WIDTH / 2))) {
+        if ((u16)(s->x + (CAM_REGION_WIDTH / 2)) > (u16)(DISPLAY_WIDTH + CAM_REGION_WIDTH)) {
             me->x = platform->base.spriteX;
             TaskDestroy(gCurTask);
             return;
@@ -328,8 +314,7 @@ void Task_805E6A4(void)
             }
 
             pointer->all.attr2
-                = (((oam[2] + s->palId) & ~0xFFF) | ((s->frameFlags & 0x3000) >> 2)
-                   | (u16)(GET_TILE_NUM(s->graphics.dest) + r6));
+                = (((oam[2] + s->palId) & ~0xFFF) | ((s->frameFlags & 0x3000) >> 2) | (u16)(GET_TILE_NUM(s->graphics.dest) + r6));
         }
     }
 }

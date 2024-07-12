@@ -39,12 +39,8 @@ static const u8 unkFractions[8] = {
 // TODO: Make static
 const AnimationCommandFunc animCmdTable[] = {
     // 0x080984AC
-    animCmd_GetTiles,          animCmd_GetPalette,
-    animCmd_JumpBack,          animCmd_End,
-    animCmd_PlaySoundEffect,   animCmd_AddHitbox,
-    animCmd_TranslateSprite,   animCmd_8,
-    animCmd_SetIdAndVariant,   animCmd_10,
-    animCmd_SetSpritePriority, animCmd_SetOamOrder,
+    animCmd_GetTiles,        animCmd_GetPalette, animCmd_JumpBack,        animCmd_End, animCmd_PlaySoundEffect,   animCmd_AddHitbox,
+    animCmd_TranslateSprite, animCmd_8,          animCmd_SetIdAndVariant, animCmd_10,  animCmd_SetSpritePriority, animCmd_SetOamOrder,
 };
 
 const u8 gOamShapesSizes[12][2] = {
@@ -266,8 +262,7 @@ static AnimCmdResult animCmd_AddHitbox(void *cursor, Sprite *s)
 
     DmaCopy32(3, &cmd->hitbox, &s->hitboxes[hitboxId].index, 8);
 
-    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0)
-        && (cmd->hitbox.bottom == 0)) {
+    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0) && (cmd->hitbox.bottom == 0)) {
         s->hitboxes[hitboxId].index = -1;
     } else {
         if (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
@@ -303,8 +298,7 @@ void sub_80047A0(u16 angle, s16 p1, s16 p2, u16 affineIndex)
 // Similar to sub_8004ABC and sub_8004E14
 // (53.42%) https://decomp.me/scratch/llwGy
 // (56.74%) https://decomp.me/scratch/rXgtp
-NONMATCH("asm/non_matching/engine/TransformSprite.inc",
-         void TransformSprite(Sprite *s, SpriteTransform *transform))
+NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Sprite *s, SpriteTransform *transform))
 {
     // sp24 = s
     UnkSpriteStruct big;
@@ -422,8 +416,7 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc",
 END_NONMATCH
 
 // (0.00%)
-NONMATCH("asm/non_matching/engine/unused_transform.inc",
-         void UnusedTransform(Sprite *sprite, SpriteTransform *transform))
+NONMATCH("asm/non_matching/engine/unused_transform.inc", void UnusedTransform(Sprite *sprite, SpriteTransform *transform))
 {
     // TODO
 }
@@ -431,8 +424,7 @@ END_NONMATCH
 
 // VERY similar to TransformSprite and sub_8004ABC
 // (41.14%) https://decomp.me/scratch/n3NXz
-NONMATCH("asm/non_matching/engine/sub_8004E14.inc",
-         void sub_8004E14(Sprite *sprite, SpriteTransform *transform))
+NONMATCH("asm/non_matching/engine/sub_8004E14.inc", void sub_8004E14(Sprite *sprite, SpriteTransform *transform))
 {
     UnkSpriteStruct us;
     if (sprite->dimensions != (void *)-1) {
@@ -470,19 +462,13 @@ NONMATCH("asm/non_matching/engine/sub_8004E14.inc",
         // 2D Rotation matrix:
         // { +cos(a), -sin(a) }
         // { +sin(a), +cos(a) }
-        us.unk18[0][0] = I((Q(+COS_24_8(gUnknown_03001944) * gUnknown_030017F0) >> 16)
-                           * (Q(us.unkC[0] * gUnknown_03005398) >> 16));
-        us.unk18[0][1] = I((Q(-SIN_24_8(gUnknown_03001944) * gUnknown_030017F0) >> 16)
-                           * (Q(us.unkC[0] * gUnknown_03005398) >> 16));
-        us.unk18[1][0] = I((Q(+SIN_24_8(gUnknown_03001944) * gUnknown_03005394) >> 16)
-                           * (Q(us.unkC[1] * gUnknown_03005398) >> 16));
-        us.unk18[1][1] = I((Q(+COS_24_8(gUnknown_03001944) * gUnknown_03005394) >> 16)
-                           * (Q(us.unkC[1] * gUnknown_03005398) >> 16));
+        us.unk18[0][0] = I((Q(+COS_24_8(gUnknown_03001944) * gUnknown_030017F0) >> 16) * (Q(us.unkC[0] * gUnknown_03005398) >> 16));
+        us.unk18[0][1] = I((Q(-SIN_24_8(gUnknown_03001944) * gUnknown_030017F0) >> 16) * (Q(us.unkC[0] * gUnknown_03005398) >> 16));
+        us.unk18[1][0] = I((Q(+SIN_24_8(gUnknown_03001944) * gUnknown_03005394) >> 16) * (Q(us.unkC[1] * gUnknown_03005398) >> 16));
+        us.unk18[1][1] = I((Q(+COS_24_8(gUnknown_03001944) * gUnknown_03005394) >> 16) * (Q(us.unkC[1] * gUnknown_03005398) >> 16));
 
-        us.posX = I(transform->x * us.unk18[0][0] + transform->y * us.unk18[0][1]
-                    + Q(gUnknown_0300194C));
-        us.posY = I(transform->x * us.unk18[1][0] + transform->y * us.unk18[1][1]
-                    + Q(gUnknown_03002820));
+        us.posX = I(transform->x * us.unk18[0][0] + transform->y * us.unk18[0][1] + Q(gUnknown_0300194C));
+        us.posY = I(transform->x * us.unk18[1][0] + transform->y * us.unk18[1][1] + Q(gUnknown_03002820));
 
         {
             u16 width, height;
@@ -603,8 +589,7 @@ void DisplaySprite(Sprite *sprite)
                     if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
                         oam->all.attr0 |= 0x200;
                     }
-                    oam->all.attr1 |= (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE)
-                        << 9;
+                    oam->all.attr1 |= (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE) << 9;
                 } else {
                     u32 shapeAndSize = ((oam->all.attr0 & 0xC000) >> 12);
                     u32 flipY;
@@ -621,8 +606,7 @@ void DisplaySprite(Sprite *sprite)
                     }
 
                     // x-flip
-                    if (((sprite->frameFlags >> SPRITE_FLAG_SHIFT_X_FLIP) & r6)
-                        != (sprDims->flip & 1)) {
+                    if (((sprite->frameFlags >> SPRITE_FLAG_SHIFT_X_FLIP) & r6) != (sprDims->flip & 1)) {
                         oam->all.attr1 ^= 0x1000;
                         r7 = sprWidth - gOamShapesSizes[shapeAndSize][0] - r7;
                     }
@@ -690,8 +674,7 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
 
         sp24 = x - sprite->x;
         sp28 = y - sprite->y;
-        if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && y + sprHeight >= 0
-            && y <= DISPLAY_HEIGHT) {
+        if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && y + sprHeight >= 0 && y <= DISPLAY_HEIGHT) {
             for (sp18 = 0; sp18 < sprDims->numSubframes; ++sp18) {
                 const u16 *oamData = gRefSpriteTables->oamData[sprite->graphics.anim];
                 OamData *oam = OamMalloc(GET_SPRITE_OAM_ORDER(sprite));
@@ -712,8 +695,7 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
                     if (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE) {
                         oam->all.attr0 |= 0x200;
                     }
-                    oam->all.attr1 |= (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE)
-                        << 9;
+                    oam->all.attr1 |= (sprite->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE) << 9;
                 } else {
                     u32 shapeAndSize = ((oam->all.attr0 & 0xC000) >> 12);
                     u32 flipY;
@@ -882,8 +864,7 @@ static AnimCmdResult animCmd_GetPalette(void *cursor, Sprite *s)
     if (!(s->frameFlags & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
-        DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16],
-                  &gObjPalette[s->palId * 16 + cmd->insertOffset], cmd->numColors * 2);
+        DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16], &gObjPalette[s->palId * 16 + cmd->insertOffset], cmd->numColors * 2);
 
         gFlags |= FLAGS_UPDATE_SPRITE_PALETTES;
     }

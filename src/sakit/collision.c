@@ -17,8 +17,7 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
-u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p,
-                                    struct Rect8 *rectPlayer)
+u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p, struct Rect8 *rectPlayer)
 {
     u32 result = 0;
 
@@ -51,8 +50,7 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
         ip = TRUE;
     }
 
-    if (RECT_COLLISION_2(sx, sy, &s->hitboxes[0], p->x, p->y, (struct Rect8 *)rectPlayer)
-        && (p->speedAirY >= 0)) {
+    if (RECT_COLLISION_2(sx, sy, &s->hitboxes[0], p->x, p->y, (struct Rect8 *)rectPlayer) && (p->speedAirY >= 0)) {
 
 #ifndef NON_MATCHING
         register s32 y asm("r1");
@@ -108,8 +106,7 @@ bool32 sub_800C204(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p, s16 hbInde
         return FALSE;
     }
 
-    if ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(p->x), I(p->y),
-                      sprPlayer->hitboxes[hbIndexPlayer]))) {
+    if ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(p->x), I(p->y), sprPlayer->hitboxes[hbIndexPlayer]))) {
         return TRUE;
     }
 
@@ -133,8 +130,7 @@ bool32 sub_800C320(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
         return FALSE;
     }
 
-    if ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(p->x), I(p->y),
-                      sprPlayer->hitboxes[1]))) {
+    if ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(p->x), I(p->y), sprPlayer->hitboxes[1]))) {
         Collision_AdjustPlayerSpeed(p);
         return TRUE;
     }
@@ -159,8 +155,7 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
             return FALSE;
         }
 
-        if ((HB_COLLISION(sx, sy, sprTarget->hitboxes[hbIndex], I(cheese->posX),
-                          I(cheese->posY), cheese->s.hitboxes[1]))) {
+        if ((HB_COLLISION(sx, sy, sprTarget->hitboxes[hbIndex], I(cheese->posX), I(cheese->posY), cheese->s.hitboxes[1]))) {
             return TRUE;
         }
     }
@@ -169,8 +164,7 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
 }
 
 // (92.68%) https://decomp.me/scratch/CcZm5
-NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
-         bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
+NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
 {
     PlayerSpriteInfo *psi = gPlayer.unk90;
     Sprite *sprPlayer = &psi->s;
@@ -185,8 +179,7 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
 
     movestate = gPlayer.moveState;
     if (PLAYER_IS_ALIVE) {
-        if (IS_MULTI_PLAYER
-            && ((s8)eb->base.me->x == (s8)MAP_ENTITY_STATE_MINUS_THREE)) {
+        if (IS_MULTI_PLAYER && ((s8)eb->base.me->x == (s8)MAP_ENTITY_STATE_MINUS_THREE)) {
             // _0800C550 + 0x1C
             CreateDustCloud(sx, sy);
             CreateTrappedAnimal(sx, sy);
@@ -197,8 +190,7 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
             if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1])) {
                 // _0800C5A4 + 0xC
 
-                if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(gPlayer.x),
-                                 I(gPlayer.y), sprPlayer->hitboxes[1])) {
+                if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(gPlayer.x), I(gPlayer.y), sprPlayer->hitboxes[1])) {
                     // _0800C648
                     if (IS_MULTI_PLAYER) {
                         struct UNK_3005510 *v = sub_8019224();
@@ -220,8 +212,7 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
             // _0800C674:
 
             if (HITBOX_IS_ACTIVE(sprPlayer->hitboxes[0])
-                && (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(gPlayer.x),
-                                 I(gPlayer.y), sprPlayer->hitboxes[0]))) {
+                && (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(gPlayer.x), I(gPlayer.y), sprPlayer->hitboxes[0]))) {
                 if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)) {
                     sub_800CBA4(&gPlayer);
                 } else {
@@ -245,8 +236,7 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc",
         if (gCheese != NULL) {
             Cheese *cheese = gCheese;
             if (cheese->s.hitboxes[1].index != -1
-                && ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(cheese->posX),
-                                  I(cheese->posY), cheese->s.hitboxes[1])))) {
+                && ((HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(cheese->posX), I(cheese->posY), cheese->s.hitboxes[1])))) {
                 if (IS_MULTI_PLAYER) {
                     struct UNK_3005510 *v = sub_8019224();
                     v->unk0 = 3;
@@ -286,8 +276,7 @@ bool32 sub_800C84C(Sprite *s, s32 sx, s32 sy)
             return result;
         }
 
-        if ((HB_COLLISION(sx, sy, s->hitboxes[0], I(p->x), I(p->y),
-                          sprPlayer->hitboxes[0]))) {
+        if ((HB_COLLISION(sx, sy, s->hitboxes[0], I(p->x), I(p->y), sprPlayer->hitboxes[0]))) {
             sub_800CBA4(p);
             result = TRUE;
         }
@@ -304,10 +293,8 @@ bool32 sub_800C944(Sprite *s, s32 sx, s32 sy)
     PlayerSpriteInfo *psi = p->unk90;
     Sprite *sprPlayer = &psi->s;
 
-    if (PLAYER_IS_ALIVE && HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1])
-        && (HITBOX_IS_ACTIVE(s->hitboxes[0]))) {
-        if (HB_COLLISION(sx, sy, s->hitboxes[0], I(p->x), I(p->y),
-                         sprPlayer->hitboxes[1])) {
+    if (PLAYER_IS_ALIVE && HITBOX_IS_ACTIVE(sprPlayer->hitboxes[1]) && (HITBOX_IS_ACTIVE(s->hitboxes[0]))) {
+        if (HB_COLLISION(sx, sy, s->hitboxes[0], I(p->x), I(p->y), sprPlayer->hitboxes[1])) {
             result = TRUE;
         }
     }
@@ -320,11 +307,8 @@ bool32 sub_800CA20(Sprite *s, s32 sx, s32 sy, s16 hbIndex, Player *p)
     PlayerSpriteInfo *psi = p->unk90;
     Sprite *sprPlayer = &psi->s;
 
-    if (IS_ALIVE(p)
-        && (HITBOX_IS_ACTIVE(s->hitboxes[hbIndex])
-            && HITBOX_IS_ACTIVE(sprPlayer->hitboxes[0]))) {
-        if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(p->x), I(p->y),
-                         sprPlayer->hitboxes[0])) {
+    if (IS_ALIVE(p) && (HITBOX_IS_ACTIVE(s->hitboxes[hbIndex]) && HITBOX_IS_ACTIVE(sprPlayer->hitboxes[0]))) {
+        if (HB_COLLISION(sx, sy, s->hitboxes[hbIndex], I(p->x), I(p->y), sprPlayer->hitboxes[0])) {
             sub_800CBA4(p);
             return TRUE;
         }
@@ -411,8 +395,7 @@ bool32 sub_800CBA4(Player *p)
         }
     } else {
         m4aSongNumStart(SE_LIFE_LOST);
-        p->itemEffect &= ~(PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC
-                           | PLAYER_ITEM_EFFECT__SHIELD_NORMAL);
+        p->itemEffect &= ~(PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC | PLAYER_ITEM_EFFECT__SHIELD_NORMAL);
     }
 
     return TRUE;

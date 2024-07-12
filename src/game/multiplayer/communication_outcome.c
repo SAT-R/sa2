@@ -38,43 +38,27 @@ struct CommunicationOutcomeScreen {
 
 static void sub_805BC40(void);
 
-static const u16 sCheeseSittingAnims[2]
-    = { SA2_ANIM_MULTIPLAYER_CHEESE_SITTING, SA2_ANIM_MULTIPLAYER_CHEESE_SITTING };
+static const u16 sCheeseSittingAnims[2] = { SA2_ANIM_MULTIPLAYER_CHEESE_SITTING, SA2_ANIM_MULTIPLAYER_CHEESE_SITTING };
 static const u8 sCheeseSittingVariants[2]
-    = { SA2_ANIM_VARIANT_MULTIPLAYER_CHEESE_SITTING_HAPPY,
-        SA2_ANIM_VARIANT_MULTIPLAYER_CHEESE_SITTING_SAD };
+    = { SA2_ANIM_VARIANT_MULTIPLAYER_CHEESE_SITTING_HAPPY, SA2_ANIM_VARIANT_MULTIPLAYER_CHEESE_SITTING_SAD };
 static const TileInfo sCommMessages[][7] = {
     {
-        TextElementAlt2(LANG_DEFAULT, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
-                        51, SA2_ANIM_MP_MSG),
-        TextElementAlt2(LANG_JAPANESE, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
-                        51, SA2_ANIM_MP_MSG),
-        TextElementAlt2(LANG_ENGLISH, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
-                        75, SA2_ANIM_MP_COMM_MSG_EN),
-        TextElementAlt2(LANG_GERMAN, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
-                        75, SA2_ANIM_MP_COMM_MSG_DE),
-        TextElementAlt2(LANG_FRENCH, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
-                        57, SA2_ANIM_MP_COMM_MSG_FR),
-        TextElementAlt2(LANG_SPANISH, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
-                        45, SA2_ANIM_MP_COMM_MSG_ES),
-        TextElementAlt2(LANG_ITALIAN, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR,
-                        51, SA2_ANIM_MP_COMM_MSG_IT),
+        TextElementAlt2(LANG_DEFAULT, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR, 51, SA2_ANIM_MP_MSG),
+        TextElementAlt2(LANG_JAPANESE, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR, 51, SA2_ANIM_MP_MSG),
+        TextElementAlt2(LANG_ENGLISH, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR, 75, SA2_ANIM_MP_COMM_MSG_EN),
+        TextElementAlt2(LANG_GERMAN, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR, 75, SA2_ANIM_MP_COMM_MSG_DE),
+        TextElementAlt2(LANG_FRENCH, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR, 57, SA2_ANIM_MP_COMM_MSG_FR),
+        TextElementAlt2(LANG_SPANISH, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR, 45, SA2_ANIM_MP_COMM_MSG_ES),
+        TextElementAlt2(LANG_ITALIAN, SA2_ANIM_VARIANT_MP_COMM_MSG_COMMUNICATION_ERROR, 51, SA2_ANIM_MP_COMM_MSG_IT),
     },
     {
-        TextElementAlt2(LANG_DEFAULT, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 66,
-                        SA2_ANIM_MP_MSG),
-        TextElementAlt2(LANG_JAPANESE, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P,
-                        66, SA2_ANIM_MP_MSG),
-        TextElementAlt2(LANG_ENGLISH, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 68,
-                        SA2_ANIM_MP_COMM_MSG_EN),
-        TextElementAlt2(LANG_GERMAN, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 88,
-                        SA2_ANIM_MP_COMM_MSG_DE),
-        TextElementAlt2(LANG_FRENCH, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 60,
-                        SA2_ANIM_MP_COMM_MSG_FR),
-        TextElementAlt2(LANG_SPANISH, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 68,
-                        SA2_ANIM_MP_COMM_MSG_ES),
-        TextElementAlt2(LANG_ITALIAN, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 60,
-                        SA2_ANIM_MP_COMM_MSG_IT),
+        TextElementAlt2(LANG_DEFAULT, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 66, SA2_ANIM_MP_MSG),
+        TextElementAlt2(LANG_JAPANESE, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 66, SA2_ANIM_MP_MSG),
+        TextElementAlt2(LANG_ENGLISH, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 68, SA2_ANIM_MP_COMM_MSG_EN),
+        TextElementAlt2(LANG_GERMAN, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 88, SA2_ANIM_MP_COMM_MSG_DE),
+        TextElementAlt2(LANG_FRENCH, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 60, SA2_ANIM_MP_COMM_MSG_FR),
+        TextElementAlt2(LANG_SPANISH, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 68, SA2_ANIM_MP_COMM_MSG_ES),
+        TextElementAlt2(LANG_ITALIAN, SA2_ANIM_VARIANT_MP_COMM_MSG_LETS_PLAY_WITH_2P, 60, SA2_ANIM_MP_COMM_MSG_IT),
     },
 };
 
@@ -98,8 +82,7 @@ void CreateMultipackOutcomeScreen(u8 outcome)
     gBldRegs.bldCnt = 0xBF;
     gBldRegs.bldY = 0x10;
 
-    t = TaskCreate(sub_805BC40, sizeof(struct CommunicationOutcomeScreen), 0x2000, 0,
-                   NULL);
+    t = TaskCreate(sub_805BC40, sizeof(struct CommunicationOutcomeScreen), 0x2000, 0, NULL);
     outcomeScreen = TASK_DATA(t);
 
     outcomeScreen->unk203 = outcome;
@@ -238,9 +221,7 @@ static void sub_805BC40(void)
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         if (outcome == OUTCOME_CONNECTION_SUCCESS) {
-            CreateCharacterSelectionScreen(gSelectedCharacter,
-                                           gMultiplayerUnlockedCharacters
-                                               & CHARACTER_BIT(CHARACTER_AMY));
+            CreateCharacterSelectionScreen(gSelectedCharacter, gMultiplayerUnlockedCharacters & CHARACTER_BIT(CHARACTER_AMY));
         } else {
             gMultiSioEnabled = FALSE;
             MultiSioStop();

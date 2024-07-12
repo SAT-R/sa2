@@ -32,11 +32,9 @@ void CreateStageBg_Zone7(void)
 {
     Background *bg = &gStageBackgroundsRam.unk0;
     const Background *src;
-    gDispCnt = DISPCNT_OBJ_ON | DISPCNT_BG2_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_1D_MAP
-        | DISPCNT_MODE_0;
+    gDispCnt = DISPCNT_OBJ_ON | DISPCNT_BG2_ON | DISPCNT_BG1_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_0;
 
-    gBgCntRegs[0]
-        = (BGCNT_TXT256x256 | BGCNT_SCREENBASE(22) | BGCNT_16COLOR | BGCNT_PRIORITY(15));
+    gBgCntRegs[0] = (BGCNT_TXT256x256 | BGCNT_SCREENBASE(22) | BGCNT_16COLOR | BGCNT_PRIORITY(15));
 
     src = gStageCameraBgTemplates;
     memcpy(bg, &src[3], sizeof(Background));
@@ -55,8 +53,7 @@ void CreateStageBg_Zone7(void)
 }
 
 // (98.52%) https://decomp.me/scratch/DUPkY
-NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc",
-         void Zone7BgUpdate_Inside(s32 x, s32 y))
+NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc", void Zone7BgUpdate_Inside(s32 x, s32 y))
 {
     u16 *dst;
     s32 someX;
@@ -67,8 +64,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc",
     u8 r2;
     u8 r5;
 
-    if ((gPlayer.moveState & MOVESTATE_8000000)
-        && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+    if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
         if (gBgScrollRegs[3][0] == 0)
             gBgScrollRegs[3][0] = x;
 
@@ -131,8 +127,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc",
             dst = gBgOffsetsHBlank;
             dst = ((void *)dst) + (r5 * 4);
 
-            for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 16));
-                 lineY++, r2++) {
+            for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 16)); lineY++, r2++) {
                 *dst++ = ip;
                 *dst++ = (240 - r5);
             }
@@ -187,15 +182,13 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Inside.inc",
             dst = gBgOffsetsHBlank;
             dst = ((void *)dst) + (r5 * 4);
 
-            for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 32));
-                 lineY++, r2++) {
+            for (lineY = r5, r2 = 0; ((lineY < DISPLAY_HEIGHT) && (r2 < 32)); lineY++, r2++) {
                 *dst++ = ip;
                 *dst++ = 208 - r5;
             }
 
             if (lineY < 80) {
-                for (r1 = (80 - lineY) >> 4, r2 = 0; ((lineY < 160) && (r2 < r1));
-                     lineY++, r2++) {
+                for (r1 = (80 - lineY) >> 4, r2 = 0; ((lineY < 160) && (r2 < r1)); lineY++, r2++) {
                     *dst++ = 0;
                     *dst++ = 168 - r5;
                 }
@@ -247,8 +240,7 @@ END_NONMATCH
 
 // (98.95%) https://decomp.me/scratch/7KDXI
 // (only register alloc issues, logic works as intended)
-NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Outside.inc",
-         void Zone7BgUpdate_Outside(s32 x, s32 y))
+NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Outside.inc", void Zone7BgUpdate_Outside(s32 x, s32 y))
 {
     u16 *lineShiftX;
     u8 frameCount;
@@ -273,9 +265,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Outside.inc",
 #endif
 
     for (i = 0; i < ARRAY_COUNT(sp); i++) {
-        sp[i] = 0xFF
-            & (I(gUnknown_080D5C62[(i & 0x7)][0] * gStageTime)
-               + gUnknown_080D5C62[(i & 0x7)][1]);
+        sp[i] = 0xFF & (I(gUnknown_080D5C62[(i & 0x7)][0] * gStageTime) + gUnknown_080D5C62[(i & 0x7)][1]);
     }
 
     {
@@ -292,8 +282,7 @@ NONMATCH("asm/non_matching/game/stage/background/Zone7BgUpdate_Outside.inc",
 
         for (; i < DISPLAY_HEIGHT - 1; i++) {
             sinVal = SIN_24_8(((gStageTime << 2) + i * 2) & ONE_CYCLE) >> 3;
-            cosVal = (COS_24_8((((DISPLAY_HEIGHT - i) * scrollSpeed) >> 5) & ONE_CYCLE)
-                      >> 4);
+            cosVal = (COS_24_8((((DISPLAY_HEIGHT - i) * scrollSpeed) >> 5) & ONE_CYCLE) >> 4);
             value = cosVal + sinVal;
             *lineShiftX++ = (value + sp[(i & 0x1F)]) & 0xFF;
         }

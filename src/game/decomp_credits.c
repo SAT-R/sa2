@@ -66,8 +66,7 @@ void CreateDecompCreditsScreen(bool32 hasProfile)
 
     Debug_CreateAsciiTask(0, 0);
 
-    t = TaskCreate(Task_DecompCreditsFirst, sizeof(DCCredits), 0, 0,
-                   TaskDestructor_DecompCredits);
+    t = TaskCreate(Task_DecompCreditsFirst, sizeof(DCCredits), 0, 0, TaskDestructor_DecompCredits);
     cred = TASK_DATA(t);
 
     cred->hasProfile = hasProfile;
@@ -79,8 +78,7 @@ void CreateDecompCreditsScreen(bool32 hasProfile)
     s = &cred->sprSonic;
     s->x = -508;
     s->y = (DISPLAY_HEIGHT / 2) - 16;
-    SPRITE_INIT_FLAGS(s, 64, SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SONIC), 4, 18,
-                      2, SPRITE_FLAG_MASK_X_FLIP);
+    SPRITE_INIT_FLAGS(s, 64, SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SONIC), 4, 18, 2, SPRITE_FLAG_MASK_X_FLIP);
     s->animSpeed = SPRITE_ANIM_SPEED(4);
     cred->qSonicScreenX = Q(s->x);
 
@@ -174,8 +172,7 @@ void Task_DecompCreditsFirst()
             cred->logoFrameT0 = cred->frames;
             SPRITE_FLAG_CLEAR(&cred->sprLogoOllie, X_FLIP);
             m4aSongNumStart(SE_LONG_BRAKE);
-            cred->sprSonic.graphics.anim
-                = SA2_ANIM_CHAR(SA2_CHAR_ANIM_BRAKE, CHARACTER_SONIC);
+            cred->sprSonic.graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_BRAKE, CHARACTER_SONIC);
             cred->sprSonic.variant = 0;
         }
 
@@ -185,8 +182,7 @@ void Task_DecompCreditsFirst()
         } else {
             m4aSongNumStop(SE_LONG_BRAKE);
 
-            cred->sprSonic.graphics.anim
-                = SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SONIC);
+            cred->sprSonic.graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SONIC);
             cred->sprSonic.variant = 2;
             cred->sprSonic.animSpeed = SPRITE_ANIM_SPEED(1.5);
             SPRITE_FLAG_CLEAR(&cred->sprSonic, X_FLIP);
@@ -224,8 +220,7 @@ void Task_SonicArrived(void)
     UpdateSprites(cred);
 
     if (cred->sonicArrivedT0 > 10 * GBA_FRAMES_PER_SECOND) {
-        cred->sprSonic.graphics.anim
-            = SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SONIC);
+        cred->sprSonic.graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SONIC);
         cred->sprSonic.variant = 0;
     }
 
@@ -287,8 +282,7 @@ void customHBlank(void)
     u16 vcount = REG_VCOUNT;
     if ((vcount >= DISPLAY_HEIGHT - 16 - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
         ((u16 *)BG_PLTT)[0] = RGB_WHITE;
-    } else if ((vcount >= DISPLAY_HEIGHT - 64 - 16 - 1)
-               && (vcount < DISPLAY_HEIGHT - 1)) {
+    } else if ((vcount >= DISPLAY_HEIGHT - 64 - 16 - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
         ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[3 * 16];
     } else {
         ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[2 * 16];

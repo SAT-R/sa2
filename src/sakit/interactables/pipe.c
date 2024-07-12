@@ -49,10 +49,8 @@ static void Task_Pipe_Start(void)
     screenX = TO_WORLD_POS(spriteX, regionX);
     screenY = TO_WORLD_POS(me->y, regionY);
 
-    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.x))
-        && ((screenX + 24) >= I(gPlayer.x)) && (screenY <= I(gPlayer.y))
-        && ((screenY + 24) >= I(gPlayer.y))
-        && (!(gPlayer.moveState & MOVESTATE_80000))) {
+    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.x)) && ((screenX + 24) >= I(gPlayer.x)) && (screenY <= I(gPlayer.y))
+        && ((screenY + 24) >= I(gPlayer.y)) && (!(gPlayer.moveState & MOVESTATE_80000))) {
         u8 flag;
 
         gPlayer.transition = PLTRANS_PT25;
@@ -95,8 +93,7 @@ static void Task_Pipe_End(void)
     screenX = TO_WORLD_POS(spriteX, regionX);
     screenY = TO_WORLD_POS(me->y, regionY);
 
-    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.x))
-        && ((screenX + 24) >= I(gPlayer.x)) && (screenY <= I(gPlayer.y))
+    if (!(gPlayer.moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.x)) && ((screenX + 24) >= I(gPlayer.x)) && (screenY <= I(gPlayer.y))
         && ((screenY + 24) >= I(gPlayer.y)) && (gPlayer.moveState & MOVESTATE_80000)) {
         gPlayer.moveState &= ~(MOVESTATE_80000 | MOVESTATE_200 | MOVESTATE_IN_AIR);
 
@@ -125,11 +122,9 @@ static void Task_Pipe_End(void)
     }
 }
 
-void CreateEntity_Pipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                             u8 spriteY)
+void CreateEntity_Pipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_Pipe_Start, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_Pipe_Start, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
 
     Sprite_ClearPipe *pipe = TASK_DATA(t);
     pipe->base.regionX = spriteRegionX;
@@ -139,11 +134,9 @@ void CreateEntity_Pipe_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void CreateEntity_Pipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY)
+void CreateEntity_Pipe_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_Pipe_End, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_Pipe_End, sizeof(Sprite_ClearPipe), 0x2010, 0, NULL);
 
     Sprite_ClearPipe *pipe = TASK_DATA(t);
     pipe->base.regionX = spriteRegionX;

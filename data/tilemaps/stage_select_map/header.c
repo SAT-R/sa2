@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_stage_select_map[]
-    = INCBIN_U16("data/tilemaps/stage_select_map/palette.gbapal");
-const u8 Tiles_stage_select_map[]
-    = INCBIN_U8("data/tilemaps/stage_select_map/tiles.4bpp");
-const u16 Tilemap_stage_select_map[]
-    = INCBIN_U16("data/tilemaps/stage_select_map/tilemap.tilemap2");
+const u16 Palette_stage_select_map[] = INCBIN_U16("data/tilemaps/stage_select_map/palette.gbapal");
+const u8 Tiles_stage_select_map[] = INCBIN_U8("data/tilemaps/stage_select_map/tiles.4bpp");
+const u16 Tilemap_stage_select_map[] = INCBIN_U16("data/tilemaps/stage_select_map/tilemap.tilemap2");
 
 const Tilemap stage_select_map = {
     .xTiles = 60,

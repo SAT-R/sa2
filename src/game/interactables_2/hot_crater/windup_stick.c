@@ -35,11 +35,9 @@ static void sub_80729D8(Sprite_WindUpStick *);
 static u32 sub_8072A5C(Sprite_WindUpStick *);
 static void sub_8072AC0(Sprite_WindUpStick *);
 
-void CreateEntity_WindUpStick(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_WindUpStick(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(sub_8072998, sizeof(Sprite_WindUpStick), 0x2010, 0, sub_80729D4);
+    struct Task *t = TaskCreate(sub_8072998, sizeof(Sprite_WindUpStick), 0x2010, 0, sub_80729D4);
     Sprite_WindUpStick *windUpStick = TASK_DATA(t);
     windUpStick->unk11 = 0;
     windUpStick->unk0 = TO_WORLD_POS(me->x, spriteRegionX);
@@ -90,8 +88,7 @@ static void sub_80726E8(Sprite_WindUpStick *windUpStick)
     gPlayer.unk17 = 14;
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_400000;
-    windUpStick->unk12 = (gUnknown_03005AF0.s.frameFlags & SPRITE_FLAG_MASK_PRIORITY)
-        >> SPRITE_FLAG_SHIFT_PRIORITY;
+    windUpStick->unk12 = (gUnknown_03005AF0.s.frameFlags & SPRITE_FLAG_MASK_PRIORITY) >> SPRITE_FLAG_SHIFT_PRIORITY;
     gUnknown_03005AF0.s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     gUnknown_03005AF0.s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
     gPlayer.y = Q(windUpStick->unk4 + 3);
@@ -186,12 +183,8 @@ static u8 sub_80728D4(Sprite_WindUpStick *windUpStick)
         s16 playerX = I(gPlayer.x) - gCamera.x;
         s16 playerY = I(gPlayer.y) - gCamera.y;
 
-        if ((posX + windUpStick->unk8) <= playerX
-            && (posX + windUpStick->unk8) + (windUpStick->unkC - windUpStick->unk8)
-                >= playerX) {
-            if (posY + windUpStick->unkA <= playerY
-                && (posY + windUpStick->unkA) + (windUpStick->unkE - windUpStick->unkA)
-                    >= playerY) {
+        if ((posX + windUpStick->unk8) <= playerX && (posX + windUpStick->unk8) + (windUpStick->unkC - windUpStick->unk8) >= playerX) {
+            if (posY + windUpStick->unkA <= playerY && (posY + windUpStick->unkA) + (windUpStick->unkE - windUpStick->unkA) >= playerY) {
                 if (gPlayer.moveState & MOVESTATE_IN_AIR) {
                     if (gPlayer.speedAirY < 0) {
                         return 1;
@@ -268,8 +261,7 @@ bool32 sub_8072A5C(Sprite_WindUpStick *windUpStick)
     s16 x = windUpStick->unk0 - gCamera.x;
     s16 y = windUpStick->unk4 - gCamera.y;
 
-    if (x + windUpStick->unkC < -128 || x + windUpStick->unk8 > 368
-        || y + windUpStick->unkE < -128 || y + windUpStick->unkA > 288) {
+    if (x + windUpStick->unkC < -128 || x + windUpStick->unk8 > 368 || y + windUpStick->unkE < -128 || y + windUpStick->unkA > 288) {
         return TRUE;
     }
     return FALSE;

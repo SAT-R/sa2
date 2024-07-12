@@ -54,12 +54,9 @@ static void sub_805B4C0(void);
 static void sub_805B454(void);
 
 static const TileInfo gUnknown_080D9050[] = {
-    TextElement(1, LANG_DEFAULT, 0, 90, SA2_ANIM_MP_MSG),
-    TextElement(1, LANG_JAPANESE, 0, 90, SA2_ANIM_MP_MSG),
-    TextElement(1, LANG_ENGLISH, 0, 84, SA2_ANIM_MP_COMM_MSG_EN),
-    TextElement(1, LANG_GERMAN, 0, 90, SA2_ANIM_MP_COMM_MSG_DE),
-    TextElement(1, LANG_FRENCH, 0, 90, SA2_ANIM_MP_COMM_MSG_FR),
-    TextElement(1, LANG_SPANISH, 0, 90, SA2_ANIM_MP_COMM_MSG_ES),
+    TextElement(1, LANG_DEFAULT, 0, 90, SA2_ANIM_MP_MSG),         TextElement(1, LANG_JAPANESE, 0, 90, SA2_ANIM_MP_MSG),
+    TextElement(1, LANG_ENGLISH, 0, 84, SA2_ANIM_MP_COMM_MSG_EN), TextElement(1, LANG_GERMAN, 0, 90, SA2_ANIM_MP_COMM_MSG_DE),
+    TextElement(1, LANG_FRENCH, 0, 90, SA2_ANIM_MP_COMM_MSG_FR),  TextElement(1, LANG_SPANISH, 0, 90, SA2_ANIM_MP_COMM_MSG_ES),
     TextElement(1, LANG_ITALIAN, 0, 45, SA2_ANIM_MP_COMM_MSG_IT),
 };
 
@@ -235,8 +232,7 @@ static void sub_805ADAC(void)
     }
 
     recv = &gMultiSioRecv[0].pat0;
-    if (gMultiSioStatusFlags & MULTI_SIO_HARD_ERROR
-        || (r4 && !(gMultiSioStatusFlags & MULTI_SIO_RECV_ID0) && recv->unk0 != 0)) {
+    if (gMultiSioStatusFlags & MULTI_SIO_HARD_ERROR || (r4 && !(gMultiSioStatusFlags & MULTI_SIO_RECV_ID0) && recv->unk0 != 0)) {
         if (++connectScreen->unkFD >= 9) {
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
@@ -253,8 +249,7 @@ static void sub_805ADAC(void)
         data = &gMultiSioRecv[i].pat0;
         connectScreen->unkEE[i] <<= 1;
         connectScreen->unkF2[i] <<= 1;
-        if (i == SIO_MULTI_CNT->id
-            || (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i) && data->unk0 > 0x400F)) {
+        if (i == SIO_MULTI_CNT->id || (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i) && data->unk0 > 0x400F)) {
             connectScreen->unkEE[i] |= 1;
             var1++;
             var3 |= MULTI_SIO_RECV_ID(i);
@@ -283,9 +278,7 @@ static void sub_805ADAC(void)
                     bool3 = FALSE;
                 }
             } else {
-                if (connectScreen->unkF2[i] != 0
-                    || (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i)
-                        && data->unk0 < 0x4010)) {
+                if (connectScreen->unkF2[i] != 0 || (gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i) && data->unk0 < 0x4010)) {
                     bool2 = TRUE;
                     bool3 = FALSE;
                 }
@@ -301,8 +294,7 @@ static void sub_805ADAC(void)
     }
 
     if (connectScreen->unkFA == 0) {
-        if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT)
-            && gMultiSioStatusFlags & MULTI_SIO_RECV_ID0 && recv->unk0 > 0x4010) {
+        if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && gMultiSioStatusFlags & MULTI_SIO_RECV_ID0 && recv->unk0 > 0x4010) {
             TasksDestroyAll();
             gUnknown_03002AE4 = gUnknown_0300287C;
             gUnknown_03005390 = 0;
@@ -415,8 +407,7 @@ static void sub_805ADAC(void)
     DisplaySprite(r4p);
 
     if (gMultiSioStatusFlags & MULTI_SIO_PARENT) {
-        if ((!bool2 && var1 > 1 && gPressedKeys & START_BUTTON)
-            || (connectScreen->unkF6 != 0 && !bool2 && var1 > 1)) {
+        if ((!bool2 && var1 > 1 && gPressedKeys & START_BUTTON) || (connectScreen->unkF6 != 0 && !bool2 && var1 > 1)) {
             send = &gMultiSioSend.pat0;
             send->unk0 = 0x4011;
             send->unk2 = var3;

@@ -34,8 +34,7 @@ static void Task_807EA8C(void);
 
 void CreateEntity_Pole(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Pole_NotTouching, sizeof(Sprite_Pole), 0x2010, 0,
-                                TaskDestructor_Interactable094);
+    struct Task *t = TaskCreate(Task_Pole_NotTouching, sizeof(Sprite_Pole), 0x2010, 0, TaskDestructor_Interactable094);
     Sprite_Pole *pole = TASK_DATA(t);
     pole->worldX = TO_WORLD_POS(me->x, spriteRegionX);
     pole->worldY = TO_WORLD_POS(me->y, spriteRegionY);
@@ -137,8 +136,7 @@ static bool32 PlayerTouchesPole(Sprite_Pole *pole)
     playerScreenY = I(gPlayer.y) - gCamera.y;
 
     if (poleScreenX <= playerScreenX && poleScreenX + pole->width >= playerScreenX) {
-        if (poleScreenY <= playerScreenY
-            && poleScreenY + pole->height >= playerScreenY) {
+        if (poleScreenY <= playerScreenY && poleScreenY + pole->height >= playerScreenY) {
             return TRUE;
         }
     }
@@ -233,10 +231,8 @@ static bool32 PoleIsOffScreen(Sprite_Pole *pole)
 
     screenX = pole->worldX - gCamera.x;
     screenY = pole->worldY - gCamera.y;
-    if (screenX + pole->right < -((CAM_REGION_WIDTH) / 2)
-        || screenX + pole->left > (DISPLAY_WIDTH + ((CAM_REGION_WIDTH) / 2))
-        || screenY + pole->bottom < -((CAM_REGION_WIDTH) / 2)
-        || screenY + pole->top > (DISPLAY_HEIGHT + ((CAM_REGION_WIDTH) / 2))) {
+    if (screenX + pole->right < -((CAM_REGION_WIDTH) / 2) || screenX + pole->left > (DISPLAY_WIDTH + ((CAM_REGION_WIDTH) / 2))
+        || screenY + pole->bottom < -((CAM_REGION_WIDTH) / 2) || screenY + pole->top > (DISPLAY_HEIGHT + ((CAM_REGION_WIDTH) / 2))) {
         return TRUE;
     }
 

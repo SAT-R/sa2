@@ -39,11 +39,9 @@ static void StageGoalToggle_HandleMultiplayerFinish(void);
 
 #define GOAL_LEVER_TILES 4
 
-void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                            u8 spriteY)
+void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0,
-                                TaskDestructor_8062E7C);
+    struct Task *t = TaskCreate(Task_StageGoalMain, sizeof(Sprite_StageGoal), 0x2010, 0, TaskDestructor_8062E7C);
     Sprite_StageGoal *stageGoal = TASK_DATA(t);
     Sprite *s = &stageGoal->s;
 
@@ -135,8 +133,7 @@ static void Task_StageGoalToggleMain(void)
     s32 y = TO_WORLD_POS(me->y, regionY);
 
     if (IS_MULTI_PLAYER) {
-        if (x <= I(gPlayer.x)
-            && !(gPlayer.moveState & (MOVESTATE_8000000 | MOVESTATE_8))) {
+        if (x <= I(gPlayer.x) && !(gPlayer.moveState & (MOVESTATE_8000000 | MOVESTATE_8))) {
             gPlayer.transition = PLTRANS_PT10;
             gStageGoalX = x;
             StageGoalToggle_HandleMultiplayerFinish();
@@ -146,9 +143,7 @@ static void Task_StageGoalToggleMain(void)
         gStageFlags |= 0x21;
         gStageGoalX = x;
 
-        if (gGameMode == GAME_MODE_SINGLE_PLAYER
-            && !(gPlayer.moveState & MOVESTATE_IN_AIR)
-            && gPlayer.speedGroundX > Q(2.5)) {
+        if (gGameMode == GAME_MODE_SINGLE_PLAYER && !(gPlayer.moveState & MOVESTATE_IN_AIR) && gPlayer.speedGroundX > Q(2.5)) {
             u32 extraScore;
             if (gPlayer.speedGroundX <= Q(4.0)) {
                 extraScore = 200;
@@ -186,9 +181,7 @@ static void StageGoalToggle_HandleMultiplayerFinish(void)
 
     if (!(player->unk5C & 1)) {
         u32 j;
-        for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks)
-             && gMultiplayerPlayerTasks[j] != NULL;
-             j++) {
+        for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && gMultiplayerPlayerTasks[j] != NULL; j++) {
             MultiplayerPlayer *otherPlayer = TASK_DATA(gMultiplayerPlayerTasks[j]);
             if (otherPlayer->unk5C & 1) {
                 count++;
@@ -226,21 +219,17 @@ static UNUSED void sub_8062BD0(void)
     for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && mpTasks[j] != NULL; j++) {
         // TODO: make this a macro? What does it even mean
         if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
-                != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
-                    >> (SIO_MULTI_CNT->id + 4)
+                != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)
             && gUnknown_030054B4[j] == 0) {
             thing = 1;
             break;
         }
     }
 
-    for (j = 0;
-         j < ARRAY_COUNT(gMultiplayerPlayerTasks) && gMultiplayerPlayerTasks[j] != NULL;
-         j++) {
+    for (j = 0; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && gMultiplayerPlayerTasks[j] != NULL; j++) {
         if (gUnknown_030054B4[j] == -1) {
             if ((gMultiplayerConnections & (0x10 << (j))) >> ((j + 4))
-                == (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id)))
-                    >> (SIO_MULTI_CNT->id + 4)) {
+                == (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)) {
                 sub_8019CCC(j, thing);
             } else {
                 sub_8019CCC(j, thing ^ 1);
@@ -265,8 +254,7 @@ static void sub_8062D44(void)
     if (gUnknown_030054B4[id] != -1) {
         u32 j;
         struct Task **tasks;
-        for (j = 0, tasks = gMultiplayerPlayerTasks;
-             j < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[j] != NULL; j++) {
+        for (j = 0, tasks = gMultiplayerPlayerTasks; j < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[j] != NULL; j++) {
             MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[j]);
             if (otherPlayer->unk54 & 0x100) {
                 count++;
@@ -278,8 +266,7 @@ static void sub_8062D44(void)
             u32 i;
             // Check seems redundant, required for match
             if (gMultiplayerPlayerTasks[0] != NULL) {
-                for (i = 0, tasks = gMultiplayerPlayerTasks;
-                     i < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[i] != NULL; i++) {
+                for (i = 0, tasks = gMultiplayerPlayerTasks; i < ARRAY_COUNT(gMultiplayerPlayerTasks) && tasks[i] != NULL; i++) {
                     MultiplayerPlayer *otherPlayer = TASK_DATA(tasks[i]);
                     if (!(otherPlayer->unk5C & 1) && gGameMode != GAME_MODE_TEAM_PLAY) {
                         otherPlayer->unk5C |= 1;
@@ -295,11 +282,9 @@ static void sub_8062D44(void)
     }
 }
 
-void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                   u8 spriteY)
+void CreateEntity_Toggle_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_StageGoalToggleMain, sizeof(Sprite_StageGoalToggle),
-                                0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_StageGoalToggleMain, sizeof(Sprite_StageGoalToggle), 0x2010, 0, NULL);
     Sprite_StageGoalToggle *stageGoalToggle = TASK_DATA(t);
 
     stageGoalToggle->base.regionX = spriteRegionX;

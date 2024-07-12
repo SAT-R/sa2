@@ -14,7 +14,7 @@
 
 #define SIO32ML_INTR_CLOCK_MAX 256 // Communication Interrupt Processing Maximum Clocks
 
-#define SIO32ML_SYNC_DATA                                                               \
+#define SIO32ML_SYNC_DATA                                                                                                                  \
     0xfefefefe // Synchronized Data (0x00000000and 0xffffffff
                // prohibited)
 
@@ -39,24 +39,19 @@
 
 // Timer count temporary value is calculated from communication data
 // block size.
-#define SIO32ML_TIMER_COUNT_TMP                                                         \
-    (SIO32ML_SYSTEM_CLOCK / SIO32ML_SHIFT_CLOCK * 32 + SIO32ML_INTR_DELAY_MAX           \
-     + SIO32ML_INTR_CLOCK_MAX)
+#define SIO32ML_TIMER_COUNT_TMP (SIO32ML_SYSTEM_CLOCK / SIO32ML_SHIFT_CLOCK * 32 + SIO32ML_INTR_DELAY_MAX + SIO32ML_INTR_CLOCK_MAX)
 // Timer Count Temporary Value
 #define SIO32ML_TIMER_COUNT_MAX 0x10000 // Timer Count Maximum Value
-#define SIO32ML_TIMER_COUNT                                                             \
-    ((SIO32ML_TIMER_COUNT_TMP > SIO32ML_TIMER_COUNT_MAX)                                \
-         ? SIO32ML_TIMER_COUNT_MAX - SIO32ML_TIMER_COUNT_MAX                            \
-         : SIO32ML_TIMER_COUNT_MAX - SIO32ML_TIMER_COUNT_TMP)
+#define SIO32ML_TIMER_COUNT                                                                                                                \
+    ((SIO32ML_TIMER_COUNT_TMP > SIO32ML_TIMER_COUNT_MAX) ? SIO32ML_TIMER_COUNT_MAX - SIO32ML_TIMER_COUNT_MAX                               \
+                                                         : SIO32ML_TIMER_COUNT_MAX - SIO32ML_TIMER_COUNT_TMP)
 // Timer Count
 
 // Load timeout frames is calculated from above values.
 #define SIO32ML_MODE_WAIT_FRAMES 6 // SIO Mode Switch Wait Frames
-#define SIO32ML_LD_TIMEOUT_FRAMES                                                       \
-    (((SIO32ML_TIMER_COUNT_MAX - SIO32ML_TIMER_COUNT + SIO32ML_INTR_DELAY_MAX           \
-       + SIO32ML_INTR_CLOCK_MAX)                                                        \
-      * (SIO32ML_BLOCK_SIZE / 4))                                                       \
-         / (SIO32ML_LINE_CLOCKS * 228)                                                  \
+#define SIO32ML_LD_TIMEOUT_FRAMES                                                                                                          \
+    (((SIO32ML_TIMER_COUNT_MAX - SIO32ML_TIMER_COUNT + SIO32ML_INTR_DELAY_MAX + SIO32ML_INTR_CLOCK_MAX) * (SIO32ML_BLOCK_SIZE / 4))        \
+         / (SIO32ML_LINE_CLOCKS * 228)                                                                                                     \
      + SIO32ML_MODE_WAIT_FRAMES + 2)
 // Load timeout frames
 

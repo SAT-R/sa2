@@ -61,8 +61,7 @@ static void sub_8072BB8(void);
 #define PLAYER_TOUCH_DIRECTION_FORWARDS 1
 #define PLAYER_TOUCH_DIRECTION_REVERSE  2
 
-void CreateEntity_HookRail(u32 triggerType, MapEntity *me, u16 spriteRegionX,
-                           u16 spriteRegionY, u8 spriteY)
+void CreateEntity_HookRail(u32 triggerType, MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     struct Task *t;
     Sprite_HookRail *hookRail;
@@ -228,11 +227,8 @@ static u32 IsPlayerTouching(Sprite_HookRail *hookRail)
     playerX = I(gPlayer.x) - gCamera.x;
     playerY = I(gPlayer.y) - gCamera.y;
 
-    if (x + hookRail->width <= playerX
-        && (x + hookRail->width) + (hookRail->offsetX - hookRail->width) >= playerX) {
-        if (y + hookRail->height <= playerY
-            && (y + hookRail->height) + (hookRail->offsetY - hookRail->height)
-                >= playerY) {
+    if (x + hookRail->width <= playerX && (x + hookRail->width) + (hookRail->offsetX - hookRail->width) >= playerX) {
+        if (y + hookRail->height <= playerY && (y + hookRail->height) + (hookRail->offsetY - hookRail->height) >= playerY) {
             s16 railEndX = x + ((hookRail->offsetX + hookRail->width) >> 1);
             if (playerX < railEndX) {
                 return PLAYER_TOUCH_DIRECTION_FORWARDS;
@@ -268,8 +264,7 @@ static void sub_8072F8C(void)
 {
     Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
-    if (IsPlayerTouching(hookRail) != PLAYER_TOUCH_DIRECTION_NONE
-        && gPlayer.unk64 == 55) {
+    if (IsPlayerTouching(hookRail) != PLAYER_TOUCH_DIRECTION_NONE && gPlayer.unk64 == 55) {
         sub_80730BC(hookRail);
     }
 
@@ -299,10 +294,7 @@ static void sub_8072FD8(Sprite_HookRail *hookRail)
     gCurTask->main = sub_8072C90;
 }
 
-static void sub_8073034(UNUSED Sprite_HookRail *hookRail)
-{
-    gCurTask->main = sub_8072F38;
-}
+static void sub_8073034(UNUSED Sprite_HookRail *hookRail) { gCurTask->main = sub_8072F38; }
 
 static void sub_8073048(UNUSED Sprite_HookRail *hookRail)
 {
@@ -413,20 +405,17 @@ static void sub_8073280(Sprite_HookRail *hookRail)
     TaskDestroy(gCurTask);
 }
 
-void CreateEntity_HookRail_Unused(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void CreateEntity_HookRail_Unused(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     CreateEntity_HookRail(0, me, spriteRegionX, spriteRegionY, spriteY);
 }
 
-void CreateEntity_HookRail_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                 u8 spriteY)
+void CreateEntity_HookRail_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     CreateEntity_HookRail(1, me, spriteRegionX, spriteRegionY, spriteY);
 }
 
-void CreateEntity_HookRail_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 spriteY)
+void CreateEntity_HookRail_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     CreateEntity_HookRail(2, me, spriteRegionX, spriteRegionY, spriteY);
 }

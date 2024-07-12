@@ -33,14 +33,10 @@ static void Task_GappedLoopForwardsMain(void)
         if (x <= I(gPlayer.x) && (x + me->d.uData[2] * 8) >= I(gPlayer.x)) {
             if (y <= I(gPlayer.y) && (y + me->d.uData[3] * 8) >= I(gPlayer.y)) {
                 if (y <= I(gPlayer.y) && (y + me->d.uData[3] * 8) >= I(gPlayer.y)) {
-                    if (gPlayer.speedGroundX > Q(3)
-                        && !(gPlayer.moveState
-                             & (MOVESTATE_FACING_LEFT | MOVESTATE_IN_AIR))) {
+                    if (gPlayer.speedGroundX > Q(3) && !(gPlayer.moveState & (MOVESTATE_FACING_LEFT | MOVESTATE_IN_AIR))) {
                         gCurTask->main = Task_JumpSequenceForwards;
                         gPlayer.moveState |= MOVESTATE_400000;
-                        gappedLoop->playerAngle
-                            = sub_8004418(I(gPlayer.y - gappedLoop->unk10),
-                                          I(gPlayer.x - gappedLoop->unkC));
+                        gappedLoop->playerAngle = sub_8004418(I(gPlayer.y - gappedLoop->unk10), I(gPlayer.x - gappedLoop->unkC));
                         gappedLoop->spinSpeed = -8;
                     }
                 }
@@ -73,13 +69,11 @@ static void Task_JumpSequenceForwards(void)
 
     x = TO_WORLD_POS(spriteX, regionX);
     y = TO_WORLD_POS(me->y, regionY);
-    gappedLoop->playerAngle
-        = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
+    gappedLoop->playerAngle = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
     gPlayer.rotation += gappedLoop->spinSpeed;
 
     r3 = ABS(Q(3) - gappedLoop->playerAngle) >> 4;
-    gPlayer.y = gappedLoop->unk10
-        + Q_2_14_TO_Q_24_8(SIN(gappedLoop->playerAngle) * (r3 + 135));
+    gPlayer.y = gappedLoop->unk10 + Q_2_14_TO_Q_24_8(SIN(gappedLoop->playerAngle) * (r3 + 135));
     gPlayer.x = gappedLoop->unkC + Q_2_14_TO_Q_24_8(COS(gappedLoop->playerAngle) * 135);
 
     x -= gCamera.x;
@@ -111,14 +105,11 @@ static void Task_GappedLoopReverseMain(void)
         if (base <= I(gPlayer.x) && (base + me->d.uData[2] * 8) >= I(gPlayer.x)) {
             if (y <= I(gPlayer.y) && (y + me->d.uData[3] * 8) >= I(gPlayer.y)) {
                 if (y <= I(gPlayer.y) && (y + me->d.uData[3] * 8) >= I(gPlayer.y)) {
-                    if (gPlayer.speedGroundX < -Q(3)
-                        && (gPlayer.moveState & MOVESTATE_FACING_LEFT)
+                    if (gPlayer.speedGroundX < -Q(3) && (gPlayer.moveState & MOVESTATE_FACING_LEFT)
                         && !(gPlayer.moveState & MOVESTATE_IN_AIR)) {
                         gCurTask->main = Task_JumpSequenceReverse;
                         gPlayer.moveState |= MOVESTATE_400000;
-                        gappedLoop->playerAngle
-                            = sub_8004418(I(gPlayer.y - gappedLoop->unk10),
-                                          I(gPlayer.x - gappedLoop->unkC));
+                        gappedLoop->playerAngle = sub_8004418(I(gPlayer.y - gappedLoop->unk10), I(gPlayer.x - gappedLoop->unkC));
                         gappedLoop->spinSpeed = 8;
                     }
                 }
@@ -151,13 +142,11 @@ static void Task_JumpSequenceReverse(void)
 
     x = TO_WORLD_POS(spriteX, regionX);
     y = TO_WORLD_POS(me->y, regionY);
-    gappedLoop->playerAngle
-        = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
+    gappedLoop->playerAngle = (gappedLoop->playerAngle + gappedLoop->spinSpeed) & ONE_CYCLE;
     gPlayer.rotation += gappedLoop->spinSpeed;
 
     r3 = ABS(Q(3) - gappedLoop->playerAngle) >> 4;
-    gPlayer.y = gappedLoop->unk10
-        + Q_2_14_TO_Q_24_8(SIN(gappedLoop->playerAngle) * (r3 + 135));
+    gPlayer.y = gappedLoop->unk10 + Q_2_14_TO_Q_24_8(SIN(gappedLoop->playerAngle) * (r3 + 135));
     gPlayer.x = gappedLoop->unkC + Q_2_14_TO_Q_24_8(COS(gappedLoop->playerAngle) * 135);
 
     x -= gCamera.x;
@@ -174,11 +163,9 @@ static void Task_JumpSequenceReverse(void)
     }
 }
 
-void CreateEntity_GappedLoop_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                   u8 spriteY)
+void CreateEntity_GappedLoop_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GappedLoopForwardsMain, sizeof(Sprite_GappedLoop),
-                                0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_GappedLoopForwardsMain, sizeof(Sprite_GappedLoop), 0x2000, 0, NULL);
     Sprite_GappedLoop *gappedLoop = TASK_DATA(t);
     gappedLoop->base.regionX = spriteRegionX;
     gappedLoop->base.regionY = spriteRegionY;
@@ -190,11 +177,9 @@ void CreateEntity_GappedLoop_Start(MapEntity *me, u16 spriteRegionX, u16 spriteR
     gappedLoop->unk10 = Q(TO_WORLD_POS(me->y, spriteRegionY) + 96);
 }
 
-void CreateEntity_GappedLoop_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                 u8 spriteY)
+void CreateEntity_GappedLoop_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_GappedLoopReverseMain, sizeof(Sprite_GappedLoop),
-                                0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_GappedLoopReverseMain, sizeof(Sprite_GappedLoop), 0x2000, 0, NULL);
     Sprite_GappedLoop *gappedLoop = TASK_DATA(t);
     gappedLoop->base.regionX = spriteRegionX;
     gappedLoop->base.regionY = spriteRegionY;

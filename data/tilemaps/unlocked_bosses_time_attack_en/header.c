@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_unlocked_bosses_time_attack_en[]
-    = INCBIN_U16("data/tilemaps/unlocked_bosses_time_attack_en/palette.gbapal");
-const u8 Tiles_unlocked_bosses_time_attack_en[]
-    = INCBIN_U8("data/tilemaps/unlocked_bosses_time_attack_en/tiles.4bpp");
-const u16 Tilemap_unlocked_bosses_time_attack_en[]
-    = INCBIN_U16("data/tilemaps/unlocked_bosses_time_attack_en/tilemap.tilemap2");
+const u16 Palette_unlocked_bosses_time_attack_en[] = INCBIN_U16("data/tilemaps/unlocked_bosses_time_attack_en/palette.gbapal");
+const u8 Tiles_unlocked_bosses_time_attack_en[] = INCBIN_U8("data/tilemaps/unlocked_bosses_time_attack_en/tiles.4bpp");
+const u16 Tilemap_unlocked_bosses_time_attack_en[] = INCBIN_U16("data/tilemaps/unlocked_bosses_time_attack_en/tilemap.tilemap2");
 
 const Tilemap unlocked_bosses_time_attack_en = {
     .xTiles = 30,

@@ -4,10 +4,8 @@
 #include "global.h"
 #include "game/entity.h"
 
-void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX,
-                                       u16 spriteRegionY, u8 spriteY);
-void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                   u8 spriteY);
+void CreateEntity_PipeInstrument_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY);
+void CreateEntity_FrenchHorn_Entry(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY);
 
 typedef struct {
     /* 0x00 */ s32 x0;

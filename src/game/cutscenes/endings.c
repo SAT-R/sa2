@@ -26,8 +26,7 @@ void sub_808E9F8(struct Task *);
 
 void StartEndingCutscenes(void)
 {
-    struct Task *t = TaskCreate(sub_808E9AC, sizeof(struct EndingCutSceneTransition),
-                                0x3100, 0, sub_808E9F8);
+    struct Task *t = TaskCreate(sub_808E9AC, sizeof(struct EndingCutSceneTransition), 0x3100, 0, sub_808E9F8);
     struct EndingCutSceneTransition *fade = TASK_DATA(t);
 
     fade->unk6C = 0;
@@ -87,8 +86,7 @@ void sub_808E9F8(UNUSED struct Task *t)
 UNUSED void sub_808E9FC(void)
 {
     struct EndingCutSceneTransition *fade = TASK_DATA(gCurTask);
-    if (gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
-        > (LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
+    if (gLoadedSaveGame->unlockedLevels[gSelectedCharacter] > (LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53))) {
         fade->unk6D = 2;
     } else {
         fade->unk6D = 1;

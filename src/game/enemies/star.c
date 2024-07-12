@@ -27,19 +27,18 @@ static void Task_StarOpen(void);
 #define SPIN_TIME       GBA_FRAMES_PER_SECOND * 2
 #define OPEN_CLOSE_TIME GBA_FRAMES_PER_SECOND / 3
 
-#define STAR_SWITCH_TASK_ON_TIMER_ZERO(_star, _sprite, _time, _anim, _variant, _task)   \
-    if (--_star->timer == 0) {                                                          \
-        _star->timer = _time;                                                           \
-        _sprite->graphics.anim = _anim;                                                 \
-        _sprite->variant = _variant;                                                    \
-        _sprite->prevVariant = -1;                                                      \
-        gCurTask->main = _task;                                                         \
+#define STAR_SWITCH_TASK_ON_TIMER_ZERO(_star, _sprite, _time, _anim, _variant, _task)                                                      \
+    if (--_star->timer == 0) {                                                                                                             \
+        _star->timer = _time;                                                                                                              \
+        _sprite->graphics.anim = _anim;                                                                                                    \
+        _sprite->variant = _variant;                                                                                                       \
+        _sprite->prevVariant = -1;                                                                                                         \
+        gCurTask->main = _task;                                                                                                            \
     }
 
 void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_StarIdle, sizeof(Sprite_Star), 0x4050, 0,
-                                TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_StarIdle, sizeof(Sprite_Star), 0x4050, 0, TaskDestructor_80095E8);
     Sprite_Star *star = TASK_DATA(t);
     Sprite *s = &star->s;
     star->base.regionX = spriteRegionX;
@@ -59,43 +58,36 @@ void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     SPRITE_INIT(s, 25, SA2_ANIM_STAR, 0, 18, 2);
 }
 
-#define STAR_TASK(_time, _anim, _variant, _nextTask, _code_insert)                      \
-    {                                                                                   \
-        Sprite_Star *star = TASK_DATA(gCurTask);                                        \
-        Sprite *s = &star->s;                                                           \
-        MapEntity *me = star->base.me;                                                  \
-                                                                                        \
-        Vec2_32 pos;                                                                    \
-        ENEMY_UPDATE_POSITION_STATIC(star, s, pos.x, pos.y);                            \
-                                                                                        \
-        { _code_insert };                                                               \
-        ENEMY_DESTROY_IF_OFFSCREEN_RAW(star, me, s, pos.x, pos.y);                      \
-                                                                                        \
-        STAR_SWITCH_TASK_ON_TIMER_ZERO(star, s, _time, _anim, _variant, _nextTask);     \
-                                                                                        \
-        ENEMY_UPDATE_EX_RAW(s, star->spawnX, star->spawnY, {});                         \
+#define STAR_TASK(_time, _anim, _variant, _nextTask, _code_insert)                                                                         \
+    {                                                                                                                                      \
+        Sprite_Star *star = TASK_DATA(gCurTask);                                                                                           \
+        Sprite *s = &star->s;                                                                                                              \
+        MapEntity *me = star->base.me;                                                                                                     \
+                                                                                                                                           \
+        Vec2_32 pos;                                                                                                                       \
+        ENEMY_UPDATE_POSITION_STATIC(star, s, pos.x, pos.y);                                                                               \
+                                                                                                                                           \
+        { _code_insert };                                                                                                                  \
+        ENEMY_DESTROY_IF_OFFSCREEN_RAW(star, me, s, pos.x, pos.y);                                                                         \
+                                                                                                                                           \
+        STAR_SWITCH_TASK_ON_TIMER_ZERO(star, s, _time, _anim, _variant, _nextTask);                                                        \
+                                                                                                                                           \
+        ENEMY_UPDATE_EX_RAW(s, star->spawnX, star->spawnY, {});                                                                            \
     }
 
-static void Task_StarIdle(void)
-{
-    STAR_TASK(OPEN_CLOSE_TIME, SA2_ANIM_STAR, 1, Task_StarClose,
-              { ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos) });
-}
+static void Task_StarIdle(void) { STAR_TASK(OPEN_CLOSE_TIME, SA2_ANIM_STAR, 1, Task_StarClose, { ENEMY_DESTROY_IF_PLAYER_HIT_2(s, pos) }); }
 
 static void Task_StarClose(void)
 {
-    STAR_TASK(SPIN_TIME, SA2_ANIM_STAR, 2, Task_StarSpin,
-              { sub_800C84C(s, pos.x, pos.y); });
+    STAR_TASK(SPIN_TIME, SA2_ANIM_STAR, 2, Task_StarSpin, { sub_800C84C(s, pos.x, pos.y); });
 }
 
 static void Task_StarSpin(void)
 {
-    STAR_TASK(OPEN_CLOSE_TIME, SA2_ANIM_STAR, 3, Task_StarOpen,
-              { sub_800C84C(s, pos.x, pos.y); });
+    STAR_TASK(OPEN_CLOSE_TIME, SA2_ANIM_STAR, 3, Task_StarOpen, { sub_800C84C(s, pos.x, pos.y); });
 }
 
 static void Task_StarOpen(void)
 {
-    STAR_TASK(IDLE_TIME, SA2_ANIM_STAR, 0, Task_StarIdle,
-              { sub_800C84C(s, pos.x, pos.y); });
+    STAR_TASK(IDLE_TIME, SA2_ANIM_STAR, 0, Task_StarIdle, { sub_800C84C(s, pos.x, pos.y); });
 }

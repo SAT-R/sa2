@@ -32,15 +32,14 @@ void TaskDestructor_Yado(struct Task *);
 #define YADO_PLAYER_ACCEL  -Q(9.0)
 #define YADO_PROJ_COOLDOWN (2 * GBA_FRAMES_PER_SECOND)
 
-#define IS_YADO_FACING_PLAYER(_yado, _yadoX, _player)                                   \
-    (((I(gPlayer.x) < _yadoX) && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP))             \
+#define IS_YADO_FACING_PLAYER(_yado, _yadoX, _player)                                                                                      \
+    (((I(gPlayer.x) < _yadoX) && (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP))                                                                \
      || ((I(gPlayer.x) > _yadoX) && (~s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)))
 
 void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     s32 regX, regY;
-    struct Task *t
-        = TaskCreate(Task_YadoMain, sizeof(Sprite_Yado), 0x4090, 0, TaskDestructor_Yado);
+    struct Task *t = TaskCreate(Task_YadoMain, sizeof(Sprite_Yado), 0x4090, 0, TaskDestructor_Yado);
     Sprite_Yado *yado = TASK_DATA(t);
     Sprite *s = &yado->s;
     yado->base.regionX = spriteRegionX;
@@ -154,17 +153,12 @@ void Task_8055084(void)
                 x1 = x + s->hitboxes[0].left;
                 x2 = I(a4->posX) + a4->s.hitboxes[1].left;
                 if ((x1 <= x2 && x1 + (s->hitboxes[0].right - s->hitboxes[0].left) >= x2)
-                    || (x1 >= x2
-                        && x2 + (a4->s.hitboxes[1].right - a4->s.hitboxes[1].left)
-                            >= x1)) {
+                    || (x1 >= x2 && x2 + (a4->s.hitboxes[1].right - a4->s.hitboxes[1].left) >= x1)) {
                     s32 y1, y2;
                     y1 = y + s->hitboxes[0].top;
                     y2 = I(a4->posY) + a4->s.hitboxes[1].top;
-                    if ((y1 <= y2
-                         && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
-                        || (y1 >= y2
-                            && y2 + (a4->s.hitboxes[1].bottom - a4->s.hitboxes[1].top)
-                                >= y1)) {
+                    if ((y1 <= y2 && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
+                        || (y1 >= y2 && y2 + (a4->s.hitboxes[1].bottom - a4->s.hitboxes[1].top) >= y1)) {
                         s16 x3, y3;
                         if (IS_MULTI_PLAYER) {
                             struct UNK_3005510 *unk = sub_8019224();

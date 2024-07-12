@@ -209,10 +209,7 @@ s32 sub_8085714(s32 a, s32 b, s32 c) { return ((a + b * 8) - c) >> 3; }
 
 s32 sub_8085720(s32 a, s32 b, s32 c) { return ((b * 8 - a) + c) >> 3; }
 
-s32 sub_808572C(s32 a, s32 b, s32 c, s32 d, u32 e, u8 f)
-{
-    return ((s64)(b - a) * (s64)((1 << f) - c)) >> f;
-}
+s32 sub_808572C(s32 a, s32 b, s32 c, s32 d, u32 e, u8 f) { return ((s64)(b - a) * (s64)((1 << f) - c)) >> f; }
 
 s32 sub_8085758(s32 a, s32 b) { return b - a; }
 

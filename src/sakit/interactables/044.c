@@ -45,15 +45,12 @@ void Task_Interactable_044(void)
 
         if ((top <= playerY) && sBottom >= playerY) {
             u32 moveState = gPlayer.moveState;
-            if (((moveState & (MOVESTATE_40000 | MOVESTATE_IN_AIR)) == MOVESTATE_IN_AIR)
-                && (gPlayer.speedAirY < 0)) {
+            if (((moveState & (MOVESTATE_40000 | MOVESTATE_IN_AIR)) == MOVESTATE_IN_AIR) && (gPlayer.speedAirY < 0)) {
                 if (moveState & MOVESTATE_10000000) {
                     object->spriteY = 1;
                 }
 
-                if ((!(moveState & MOVESTATE_10000000)
-                     || !(gPlayer.moveState & MOVESTATE_10000000))
-                    && object->spriteY == 0) {
+                if ((!(moveState & MOVESTATE_10000000) || !(gPlayer.moveState & MOVESTATE_10000000)) && object->spriteY == 0) {
                     gPlayer.transition = PLTRANS_PT23;
                     gPlayer.unk6E = 0;
 
@@ -85,8 +82,7 @@ void Task_Interactable_044(void)
 
 void CreateEntity_044(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_Interactable_044, sizeof(Sprite_IA044), 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(Task_Interactable_044, sizeof(Sprite_IA044), 0x2010, 0, NULL);
     Sprite_IA044 *ia044 = TASK_DATA(t);
 
     ia044->base.regionX = spriteRegionX;

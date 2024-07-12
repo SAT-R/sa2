@@ -59,8 +59,7 @@ void CreateRaceProgressIndicator(void)
 {
     u8 i;
     struct Task *t
-        = TaskCreate(Task_UpdateAvatarPositions, sizeof(struct RaceProgressIndicator),
-                     0x1000, 0, RaceProgressIndicatorOnDestroy);
+        = TaskCreate(Task_UpdateAvatarPositions, sizeof(struct RaceProgressIndicator), 0x1000, 0, RaceProgressIndicatorOnDestroy);
     struct RaceProgressIndicator *progressIndicator = TASK_DATA(t);
 
     progressIndicator->course = COURSE_LEVEL_TO_COURSE_INDEX(gCurrentLevel);
@@ -151,8 +150,7 @@ static void Task_UpdateAvatarPositions(void)
     for (i = 0; i < progressIndicator->numPlayers; i++) {
         avatar = &progressIndicator->avatars[i];
         mpp = TASK_DATA(gMultiplayerPlayerTasks[i]);
-        avatar->x
-            = ((mpp->pos.x * sCourseStepSizes[progressIndicator->course]) >> 0x10) + 6;
+        avatar->x = ((mpp->pos.x * sCourseStepSizes[progressIndicator->course]) >> 0x10) + 6;
     }
 
     RenderUI(progressIndicator);

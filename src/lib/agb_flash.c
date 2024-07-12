@@ -31,11 +31,11 @@ void SwitchFlashBank(u8 bankNum)
     FLASH_WRITE(0x0000, bankNum);
 }
 
-#define DELAY()                                                                         \
-    do {                                                                                \
-        vu16 i;                                                                         \
-        for (i = 20000; i != 0; i--)                                                    \
-            ;                                                                           \
+#define DELAY()                                                                                                                            \
+    do {                                                                                                                                   \
+        vu16 i;                                                                                                                            \
+        for (i = 20000; i != 0; i--)                                                                                                       \
+            ;                                                                                                                              \
     } while (0)
 
 u16 ReadFlashId(void)
@@ -206,8 +206,7 @@ u32 VerifyFlashSector(u16 sectorNum, u8 *src)
         i--;
     }
 
-    verifyFlashSector_Core
-        = (u32(*)(u8 *, u8 *, u32))((intptr_t)verifyFlashSector_Core_Buffer + 1);
+    verifyFlashSector_Core = (u32(*)(u8 *, u8 *, u32))((intptr_t)verifyFlashSector_Core_Buffer + 1);
 
     tgt = FLASH_BASE + (sectorNum << gFlash->sector.shift);
     size = gFlash->sector.size;
@@ -242,8 +241,7 @@ u32 VerifyFlashSectorNBytes(u16 sectorNum, u8 *src, u32 n)
         i--;
     }
 
-    verifyFlashSector_Core
-        = (u32(*)(u8 *, u8 *, u32))((intptr_t)verifyFlashSector_Core_Buffer + 1);
+    verifyFlashSector_Core = (u32(*)(u8 *, u8 *, u32))((intptr_t)verifyFlashSector_Core_Buffer + 1);
 
     tgt = FLASH_BASE + (sectorNum << gFlash->sector.shift);
 

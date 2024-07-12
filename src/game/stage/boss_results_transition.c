@@ -18,8 +18,7 @@
 
 // Seven unknown x/y positions
 const u16 gUnknown_080D6DE4[][2] = {
-    { 3800, 177 },  { 11864, 145 }, { 16088, 177 }, { 21080, 153 },
-    { 27000, 150 }, { 36058, 201 }, { 40000, 225 },
+    { 3800, 177 }, { 11864, 145 }, { 16088, 177 }, { 21080, 153 }, { 27000, 150 }, { 36058, 201 }, { 40000, 225 },
 };
 
 typedef struct {
@@ -49,8 +48,7 @@ void Task_802ED98(void)
             return;
         }
 
-        if ((gSelectedCharacter == CHARACTER_SONIC)
-            && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
+        if ((gSelectedCharacter == CHARACTER_SONIC) && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
             switch (LEVEL_TO_ZONE(gCurrentLevel)) {
                 case ZONE_1: {
                     // This case is never executed.

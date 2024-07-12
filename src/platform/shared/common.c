@@ -15,13 +15,13 @@ IntrFunc INTR_VECTOR = IntrMain;
 
 void IntrMain(void)
 {
-#define CHECK_INTR(res, input, flags)                                                   \
-    {                                                                                   \
-        res = input & flags;                                                            \
-        if (res) {                                                                      \
-            goto found_instr;                                                           \
-        }                                                                               \
-        index++;                                                                        \
+#define CHECK_INTR(res, input, flags)                                                                                                      \
+    {                                                                                                                                      \
+        res = input & flags;                                                                                                               \
+        if (res) {                                                                                                                         \
+            goto found_instr;                                                                                                              \
+        }                                                                                                                                  \
+        index++;                                                                                                                           \
     }
 
     u16 flags = REG_IE & REG_IF;

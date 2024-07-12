@@ -77,8 +77,7 @@ static void sub_8074604(Sprite_HCCrane *);
 
 void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_8073AA8, sizeof(Sprite_HCCrane), 0x2010, 0,
-                                TaskDestructor_80743B8);
+    struct Task *t = TaskCreate(Task_8073AA8, sizeof(Sprite_HCCrane), 0x2010, 0, TaskDestructor_80743B8);
     Sprite_HCCrane *crane = TASK_DATA(t);
     CraneStruct *cs;
     u16 i;
@@ -435,8 +434,7 @@ static void Task_8073E20(void)
         crane->unk1B8.unkA += r2;
 
         if (((crane->unk1B8.unk8 > 0) && (crane->unk1B8.unk8 <= crane->unk1B8.unkA))
-            || ((crane->unk1B8.unk8 < 0)
-                && (crane->unk1B8.unk8 >= crane->unk1B8.unkA))) {
+            || ((crane->unk1B8.unk8 < 0) && (crane->unk1B8.unk8 >= crane->unk1B8.unkA))) {
             u16 unk8 = crane->unk1B8.unk8;
             crane->unk1B8.unkA = unk8;
             crane->unk1B8.accelY = unk8;
@@ -632,8 +630,7 @@ static bool32 sub_807432C(Sprite_HCCrane *crane)
             s16 playerX = I(gPlayer.x) - gCamera.x;
             s16 playerY = I(gPlayer.y) - gCamera.y;
 
-            if (((screenX - 24) <= playerX) && ((screenX + 24) >= playerX)
-                && ((screenY - 24) <= playerY) && ((screenY + 24) >= playerY)) {
+            if (((screenX - 24) <= playerX) && ((screenX + 24) >= playerX) && ((screenY - 24) <= playerY) && ((screenY + 24) >= playerY)) {
                 return TRUE;
             }
         }
@@ -701,10 +698,7 @@ static void sub_8074490(Sprite_HCCrane *crane, s16 p1)
     }
 }
 
-static bool32 sub_80744D0(Sprite_HCCrane *crane, s16 p1)
-{
-    return sub_80744E0(crane, 7, p1);
-}
+static bool32 sub_80744D0(Sprite_HCCrane *crane, s16 p1) { return sub_80744E0(crane, 7, p1); }
 
 static bool32 sub_80744E0(Sprite_HCCrane *crane, u16 index, s16 p2)
 {
@@ -755,8 +749,7 @@ static bool32 sub_80745B4(Sprite_HCCrane *crane)
     screenY = crane->posY - gCamera.y;
 
     // TODO: Replace constants!
-    if (((u16)(screenX + 192) > 624) || ((screenY + 64) < -128)
-        || ((screenY - 64) > 288)) {
+    if (((u16)(screenX + 192) > 624) || ((screenY + 64) < -128) || ((screenY - 64) > 288)) {
         return TRUE;
     }
 

@@ -48,27 +48,22 @@ static const u8 sRingBonuses[] = { 1, 5, 10, 30, 50 };
 
 static const u16 gUnknown_080E029A[] = { 0, 1, 1, 0, 1, 1, 0, 1 };
 
-static const u16 gUnknown_080E02AA[][3]
-    = { { SA2_ANIM_ITEMBOX_TYPE, 9, 4 }, { SA2_ANIM_ITEMBOX_TYPE, 12, 4 } };
+static const u16 gUnknown_080E02AA[][3] = { { SA2_ANIM_ITEMBOX_TYPE, 9, 4 }, { SA2_ANIM_ITEMBOX_TYPE, 12, 4 } };
 
 static const u16 unused = 0;
 
 #define ITEM_ICON_DISPLAY_TIME  (1 * GBA_FRAMES_PER_SECOND)
 #define ITEM_ICON_DISPLAY_DELAY (int)(0.5 * GBA_FRAMES_PER_SECOND)
 
-void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                 u8 spriteY)
+void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *s;
     Sprite_MysteryItemBox *itemBox;
     struct Task *t;
-    if ((gRandomItemBox & 7) == me->d.sData[0]
-        && me->d.sData[1] <= (gRandomItemBox >> 4)) {
-        t = TaskCreate(sub_80865E4, sizeof(Sprite_MysteryItemBox), 0x2000, 0,
-                       sub_80867E8);
+    if ((gRandomItemBox & 7) == me->d.sData[0] && me->d.sData[1] <= (gRandomItemBox >> 4)) {
+        t = TaskCreate(sub_80865E4, sizeof(Sprite_MysteryItemBox), 0x2000, 0, sub_80867E8);
     } else {
-        t = TaskCreate(sub_808673C, sizeof(Sprite_MysteryItemBox), 0x2000, 0,
-                       sub_80867E8);
+        t = TaskCreate(sub_808673C, sizeof(Sprite_MysteryItemBox), 0x2000, 0, sub_80867E8);
     }
 
     if (me->d.sData[1] <= (gRandomItemBox >> 4)) {
@@ -124,8 +119,7 @@ static void sub_808616C(void)
     SpriteTransform *transform;
     Sprite *identifier;
 
-    itemBox->unk82
-        = gUnknown_080E029A[gMultiplayerPseudoRandom % ARRAY_COUNT(gUnknown_080E029A)];
+    itemBox->unk82 = gUnknown_080E029A[gMultiplayerPseudoRandom % ARRAY_COUNT(gUnknown_080E029A)];
 
     identifier = &itemBox->identifier;
     identifier->graphics.anim = gUnknown_080E02AA[gUnknown_080E029A[itemBox->unk82]][0];
@@ -213,8 +207,7 @@ static inline void sub_808673C_inline(void)
     Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
     MapEntity *me = itemBox->base.me;
 
-    if (me->d.sData[0] == (gRandomItemBox & 7)
-        && me->d.sData[1] <= (gRandomItemBox >> 4)) {
+    if (me->d.sData[0] == (gRandomItemBox & 7) && me->d.sData[1] <= (gRandomItemBox >> 4)) {
         me->d.sData[1] = gRandomItemBox >> 4;
         gCurTask->main = sub_808616C;
         return;
@@ -392,8 +385,7 @@ static void sub_808673C(void)
     Sprite_MysteryItemBox *itemBox = TASK_DATA(gCurTask);
     MapEntity *me = itemBox->base.me;
 
-    if (me->d.sData[0] == (gRandomItemBox & 7)
-        && me->d.sData[1] <= (gRandomItemBox >> 4)) {
+    if (me->d.sData[0] == (gRandomItemBox & 7) && me->d.sData[1] <= (gRandomItemBox >> 4)) {
         me->d.sData[1] = gRandomItemBox >> 4;
         gCurTask->main = sub_808616C;
         return;
@@ -500,8 +492,7 @@ static bool32 sub_808693C(Sprite_MysteryItemBox *itemBox)
         if (sub_800C944(&itemBox->box, itemBox->x, itemBox->y) != 0) {
             itemBox->unk84 = 1;
             return TRUE;
-        } else if (sub_800C204(&itemBox->box, itemBox->x, itemBox->y, 0, &gPlayer, 0)
-                   == 0) {
+        } else if (sub_800C204(&itemBox->box, itemBox->x, itemBox->y, 0, &gPlayer, 0) == 0) {
 #ifndef NON_MATCHING
         ret0:
 #endif

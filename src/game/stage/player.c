@@ -142,146 +142,133 @@ void PlayerCB_802A714(Player *);
 
 // TODO: Match this without ASM!
 #ifndef NON_MATCHING
-#define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                        \
-    {                                                                                   \
-        s16 speed = (player->moveState & MOVESTATE_40)                                  \
-            ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER)                                         \
-            : Q_8_8(PLAYER_GRAVITY);                                                    \
-                                                                                        \
-        if (player->speedAirY < 0) {                                                    \
-            asm("lsl r0, %0, #16\n"                                                     \
-                "\tasr r0, r0, #17\n"                                                   \
-                "\tlsl r0, r0, #16\n"                                                   \
-                "\tlsr %0, r0, #16\n"                                                   \
-                : "=r"(speed)                                                           \
-                : "r"(speed)                                                            \
-                : "r0");                                                                \
-        }                                                                               \
-                                                                                        \
-        player->speedAirY += speed;                                                     \
+#define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                                                                           \
+    {                                                                                                                                      \
+        s16 speed = (player->moveState & MOVESTATE_40) ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER) : Q_8_8(PLAYER_GRAVITY);                        \
+                                                                                                                                           \
+        if (player->speedAirY < 0) {                                                                                                       \
+            asm("lsl r0, %0, #16\n"                                                                                                        \
+                "\tasr r0, r0, #17\n"                                                                                                      \
+                "\tlsl r0, r0, #16\n"                                                                                                      \
+                "\tlsr %0, r0, #16\n"                                                                                                      \
+                : "=r"(speed)                                                                                                              \
+                : "r"(speed)                                                                                                               \
+                : "r0");                                                                                                                   \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        player->speedAirY += speed;                                                                                                        \
     }
 #else
-#define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                        \
-    {                                                                                   \
-        s16 speed = (player->moveState & MOVESTATE_40)                                  \
-            ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER)                                         \
-            : Q_8_8(PLAYER_GRAVITY);                                                    \
-                                                                                        \
-        if (player->speedAirY < 0) {                                                    \
-            speed /= 2;                                                                 \
-        }                                                                               \
-                                                                                        \
-        player->speedAirY += speed;                                                     \
+#define PLAYERFN_UPDATE_AIR_FALL_SPEED_B(player)                                                                                           \
+    {                                                                                                                                      \
+        s16 speed = (player->moveState & MOVESTATE_40) ? Q_8_8(PLAYER_GRAVITY_UNDER_WATER) : Q_8_8(PLAYER_GRAVITY);                        \
+                                                                                                                                           \
+        if (player->speedAirY < 0) {                                                                                                       \
+            speed /= 2;                                                                                                                    \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        player->speedAirY += speed;                                                                                                        \
     }
 #endif
 
-#define PLAYERFN_UPDATE_UNK2A(player)                                                   \
-    {                                                                                   \
-        if (player->unk2A) {                                                            \
-            player->unk2A -= 1;                                                         \
-        } else if ((player->rotation + 32) & 0xC0) {                                    \
-            s32 absGroundSpeed = ABS(player->speedGroundX);                             \
-            if (absGroundSpeed < Q(1.875)) {                                            \
-                player->speedGroundX = 0;                                               \
-                                                                                        \
-                player->moveState |= MOVESTATE_IN_AIR;                                  \
-                player->unk2A = GBA_FRAMES_PER_SECOND / 2;                              \
-            }                                                                           \
-        }                                                                               \
+#define PLAYERFN_UPDATE_UNK2A(player)                                                                                                      \
+    {                                                                                                                                      \
+        if (player->unk2A) {                                                                                                               \
+            player->unk2A -= 1;                                                                                                            \
+        } else if ((player->rotation + 32) & 0xC0) {                                                                                       \
+            s32 absGroundSpeed = ABS(player->speedGroundX);                                                                                \
+            if (absGroundSpeed < Q(1.875)) {                                                                                               \
+                player->speedGroundX = 0;                                                                                                  \
+                                                                                                                                           \
+                player->moveState |= MOVESTATE_IN_AIR;                                                                                     \
+                player->unk2A = GBA_FRAMES_PER_SECOND / 2;                                                                                 \
+            }                                                                                                                              \
+        }                                                                                                                                  \
     }
 
-#define PLAYERFN_UPDATE_ROTATION(player)                                                \
-    {                                                                                   \
-        s32 rot = (s8)player->rotation;                                                 \
-        if (rot < 0) {                                                                  \
-            rot = MIN((rot + 2), 0);                                                    \
-        } else if (rot > 0) {                                                           \
-            rot = MAX((rot - 2), 0);                                                    \
-        }                                                                               \
-        player->rotation = rot;                                                         \
+#define PLAYERFN_UPDATE_ROTATION(player)                                                                                                   \
+    {                                                                                                                                      \
+        s32 rot = (s8)player->rotation;                                                                                                    \
+        if (rot < 0) {                                                                                                                     \
+            rot = MIN((rot + 2), 0);                                                                                                       \
+        } else if (rot > 0) {                                                                                                              \
+            rot = MAX((rot - 2), 0);                                                                                                       \
+        }                                                                                                                                  \
+        player->rotation = rot;                                                                                                            \
     }
 
-#define PLAYERFN_UPDATE_POSITION(player)                                                \
-    {                                                                                   \
-        player->x += player->speedAirX;                                                 \
-                                                                                        \
-        if ((gStageFlags ^ gUnknown_0300544C) & STAGE_FLAG__GRAVITY_INVERTED) {         \
-            player->speedAirY = -player->speedAirY;                                     \
-        }                                                                               \
-                                                                                        \
-        player->speedAirY = MIN(player->speedAirY, Q(PLAYER_AIR_SPEED_MAX));            \
-                                                                                        \
-        player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY                 \
-                                        : player->y + player->speedAirY;                \
-    }
-
-// TODO(Jace): This name is speculative right now, check for accuracy!
-#define PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(player)                                \
-    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {        \
-        gPlayer.callback = PlayerCB_8025318;                                            \
-                                                                                        \
-        player->speedGroundX = player->speedAirX;                                       \
-        player->rotation = 0;                                                           \
+#define PLAYERFN_UPDATE_POSITION(player)                                                                                                   \
+    {                                                                                                                                      \
+        player->x += player->speedAirX;                                                                                                    \
+                                                                                                                                           \
+        if ((gStageFlags ^ gUnknown_0300544C) & STAGE_FLAG__GRAVITY_INVERTED) {                                                            \
+            player->speedAirY = -player->speedAirY;                                                                                        \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        player->speedAirY = MIN(player->speedAirY, Q(PLAYER_AIR_SPEED_MAX));                                                               \
+                                                                                                                                           \
+        player->y = GRAVITY_IS_INVERTED ? player->y - player->speedAirY : player->y + player->speedAirY;                                   \
     }
 
 // TODO(Jace): This name is speculative right now, check for accuracy!
-#define PLAYERFN_MAYBE_TRANSITION_TO_GROUND(player)                                     \
-    {                                                                                   \
-        sub_8022190(player);                                                            \
-        PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(player);                               \
+#define PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(player)                                                                                   \
+    if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {                                                           \
+        gPlayer.callback = PlayerCB_8025318;                                                                                               \
+                                                                                                                                           \
+        player->speedGroundX = player->speedAirX;                                                                                          \
+        player->rotation = 0;                                                                                                              \
     }
 
-#define PLAYERFN_UPDATE_AIR_FALL_SPEED(player)                                          \
-    if (player->moveState & MOVESTATE_40) {                                             \
-        player->speedAirY += Q(PLAYER_GRAVITY_UNDER_WATER);                             \
-    } else {                                                                            \
-        player->speedAirY += Q(PLAYER_GRAVITY);                                         \
+// TODO(Jace): This name is speculative right now, check for accuracy!
+#define PLAYERFN_MAYBE_TRANSITION_TO_GROUND(player)                                                                                        \
+    {                                                                                                                                      \
+        sub_8022190(player);                                                                                                               \
+        PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(player);                                                                                  \
     }
 
-#define PLAYERFN_SET_ANIM_SPEED(_p, _s)                                                 \
-    {                                                                                   \
-        s32 speed = _p->speedGroundX;                                                   \
-        speed = (speed >> 5) + (speed >> 6);                                            \
-                                                                                        \
-        /* TODO: Try ABS macro */                                                       \
-        speed = ABS(speed);                                                             \
-                                                                                        \
-        if (speed >= SPRITE_ANIM_SPEED(0.5)) {                                          \
-            if (speed > SPRITE_ANIM_SPEED(8.0)) {                                       \
-                speed = SPRITE_ANIM_SPEED(8.0);                                         \
-            }                                                                           \
-        } else {                                                                        \
-            speed = SPRITE_ANIM_SPEED(0.5);                                             \
-        }                                                                               \
-        _s->animSpeed = speed;                                                          \
+#define PLAYERFN_UPDATE_AIR_FALL_SPEED(player)                                                                                             \
+    if (player->moveState & MOVESTATE_40) {                                                                                                \
+        player->speedAirY += Q(PLAYER_GRAVITY_UNDER_WATER);                                                                                \
+    } else {                                                                                                                               \
+        player->speedAirY += Q(PLAYER_GRAVITY);                                                                                            \
+    }
+
+#define PLAYERFN_SET_ANIM_SPEED(_p, _s)                                                                                                    \
+    {                                                                                                                                      \
+        s32 speed = _p->speedGroundX;                                                                                                      \
+        speed = (speed >> 5) + (speed >> 6);                                                                                               \
+                                                                                                                                           \
+        /* TODO: Try ABS macro */                                                                                                          \
+        speed = ABS(speed);                                                                                                                \
+                                                                                                                                           \
+        if (speed >= SPRITE_ANIM_SPEED(0.5)) {                                                                                             \
+            if (speed > SPRITE_ANIM_SPEED(8.0)) {                                                                                          \
+                speed = SPRITE_ANIM_SPEED(8.0);                                                                                            \
+            }                                                                                                                              \
+        } else {                                                                                                                           \
+            speed = SPRITE_ANIM_SPEED(0.5);                                                                                                \
+        }                                                                                                                                  \
+        _s->animSpeed = speed;                                                                                                             \
     }
 
 const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS] = {
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_SONIC),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_CREAM),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_TAILS),
-    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_KNUCKLES),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_SONIC), SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_CREAM),
+    SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_TAILS), SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_KNUCKLES),
     SA2_ANIM_CHAR(SA2_CHAR_ANIM_IDLE, CHARACTER_AMY),
 };
 
 const u16 gUnknown_080D6736[][2] = {
-    { 0, 0 },   { 1, 0 },   { 2, 0 },   { 3, 0 },   { 4, 0 },   { 5, 0 },   { 6, 0 },
-    { 7, 0 },   { 8, 0 },   { 9, 0 },   { 10, 0 },  { 11, 0 },  { 12, 0 },  { 13, 0 },
-    { 13, 0 },  { 14, 0 },  { 15, 0 },  { 16, 0 },  { 17, 0 },  { 18, 0 },  { 28, 0 },
-    { 28, 1 },  { 29, 0 },  { 1, 0 },   { 1, 0 },   { 31, 0 },  { 31, 1 },  { 31, 2 },
-    { 32, 0 },  { 33, 0 },  { 34, 0 },  { 1, 0 },   { 35, 0 },  { 48, 0 },  { 49, 0 },
-    { 50, 0 },  { 51, 0 },  { 65, 0 },  { 52, 0 },  { 53, 0 },  { 54, 0 },  { 55, 0 },
-    { 56, 0 },  { 57, 0 },  { 58, 0 },  { 59, 0 },  { 60, 0 },  { 68, 0 },  { 69, 0 },
-    { 69, 1 },  { 70, 0 },  { 62, 0 },  { 62, 1 },  { 63, 0 },  { 63, 1 },  { 61, 0 },
-    { 64, 0 },  { 66, 0 },  { 67, 0 },  { 73, 0 },  { 73, 1 },  { 73, 2 },  { 75, 0 },
-    { 9, 2 },   { 71, 0 },  { 71, 1 },  { 72, 0 },  { 36, 0 },  { 36, 1 },  { 36, 2 },
-    { 36, 3 },  { 1, 0 },   { 1, 0 },   { 1, 0 },   { 1, 0 },   { 1, 0 },   { 1, 0 },
-    { 1, 0 },   { 1, 0 },   { 1, 0 },   { 19, 0 },  { 37, 0 },  { 37, 1 },  { 110, 0 },
-    { 110, 1 }, { 112, 0 }, { 111, 0 }, { 113, 0 }, { 202, 0 }, { 203, 0 }, { 204, 0 },
-    { 201, 0 }, { 292, 0 }, { 295, 0 }, { 295, 1 }, { 294, 0 }, { 293, 0 }, { 293, 1 },
-    { 293, 2 }, { 293, 3 }, { 296, 0 }, { 297, 2 }, { 297, 0 }, { 297, 1 }, { 297, 3 },
-    { 297, 4 }, { 324, 0 }, { 324, 1 }, { 324, 2 }, { 416, 0 }, { 1, 0 },   { 378, 0 },
-    { 383, 0 }, { 1, 0 },   { 382, 0 },
+    { 0, 0 },   { 1, 0 },   { 2, 0 },   { 3, 0 },   { 4, 0 },   { 5, 0 },   { 6, 0 },   { 7, 0 },   { 8, 0 },   { 9, 0 },   { 10, 0 },
+    { 11, 0 },  { 12, 0 },  { 13, 0 },  { 13, 0 },  { 14, 0 },  { 15, 0 },  { 16, 0 },  { 17, 0 },  { 18, 0 },  { 28, 0 },  { 28, 1 },
+    { 29, 0 },  { 1, 0 },   { 1, 0 },   { 31, 0 },  { 31, 1 },  { 31, 2 },  { 32, 0 },  { 33, 0 },  { 34, 0 },  { 1, 0 },   { 35, 0 },
+    { 48, 0 },  { 49, 0 },  { 50, 0 },  { 51, 0 },  { 65, 0 },  { 52, 0 },  { 53, 0 },  { 54, 0 },  { 55, 0 },  { 56, 0 },  { 57, 0 },
+    { 58, 0 },  { 59, 0 },  { 60, 0 },  { 68, 0 },  { 69, 0 },  { 69, 1 },  { 70, 0 },  { 62, 0 },  { 62, 1 },  { 63, 0 },  { 63, 1 },
+    { 61, 0 },  { 64, 0 },  { 66, 0 },  { 67, 0 },  { 73, 0 },  { 73, 1 },  { 73, 2 },  { 75, 0 },  { 9, 2 },   { 71, 0 },  { 71, 1 },
+    { 72, 0 },  { 36, 0 },  { 36, 1 },  { 36, 2 },  { 36, 3 },  { 1, 0 },   { 1, 0 },   { 1, 0 },   { 1, 0 },   { 1, 0 },   { 1, 0 },
+    { 1, 0 },   { 1, 0 },   { 1, 0 },   { 19, 0 },  { 37, 0 },  { 37, 1 },  { 110, 0 }, { 110, 1 }, { 112, 0 }, { 111, 0 }, { 113, 0 },
+    { 202, 0 }, { 203, 0 }, { 204, 0 }, { 201, 0 }, { 292, 0 }, { 295, 0 }, { 295, 1 }, { 294, 0 }, { 293, 0 }, { 293, 1 }, { 293, 2 },
+    { 293, 3 }, { 296, 0 }, { 297, 2 }, { 297, 0 }, { 297, 1 }, { 297, 3 }, { 297, 4 }, { 324, 0 }, { 324, 1 }, { 324, 2 }, { 416, 0 },
+    { 1, 0 },   { 378, 0 }, { 383, 0 }, { 1, 0 },   { 382, 0 },
 };
 
 static const s16 gUnknown_080D6902[5][2] = {
@@ -311,10 +298,8 @@ static const s16 sSpinDashSpeeds[9] = {
 // NOTE(Jace): It appears that they originally planned
 //             to give the player a different amount of score points
 //             depending on the direction of the trick.
-static const u16 sTrickPoints[NUM_TRICK_DIRS] = { [TRICK_DIR_UP] = 100,
-                                                  [TRICK_DIR_DOWN] = 100,
-                                                  [TRICK_DIR_FORWARD] = 100,
-                                                  [TRICK_DIR_BACKWARD] = 100 };
+static const u16 sTrickPoints[NUM_TRICK_DIRS]
+    = { [TRICK_DIR_UP] = 100, [TRICK_DIR_DOWN] = 100, [TRICK_DIR_FORWARD] = 100, [TRICK_DIR_BACKWARD] = 100 };
 
 static const s16 sTrickAccel[NUM_TRICK_DIRS][NUM_CHARACTERS][2] = {
     [TRICK_DIR_UP] = {
@@ -387,10 +372,8 @@ static const u8 sTrickMasks[NUM_TRICK_DIRS][NUM_CHARACTERS] = {
 };
 
 static const u16 gUnknown_080D69A6[2][3] = {
-    [0] = { 32, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_SIDE, CHARACTER_SONIC),
-            SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX },
-    [1] = { 24, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_UP, CHARACTER_KNUCKLES),
-            SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX },
+    [0] = { 32, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_SIDE, CHARACTER_SONIC), SA2_CHAR_ANIM_VARIANT_TRICK_SIDE_PARTICLE_FX },
+    [1] = { 24, SA2_ANIM_CHAR(SA2_CHAR_ANIM_TRICK_UP, CHARACTER_KNUCKLES), SA2_CHAR_ANIM_VARIANT_TRICK_UP_PARTICLE_FX },
 };
 
 static const s16 sSpringAccelY[4] = {
@@ -455,8 +438,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     struct Task *t;
     player_0_Task *gt;
 
-    t = TaskCreate(Task_8023FC0, sizeof(player_0_Task), 0x3000, 0,
-                   TaskDestructor_802A07C);
+    t = TaskCreate(Task_8023FC0, sizeof(player_0_Task), 0x3000, 0, TaskDestructor_802A07C);
     p->spriteTask = t;
     gt = TASK_DATA(t);
     gt->unk0 = unk60;
@@ -572,8 +554,7 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
         s->palId = 0;
     }
 
-    s->frameFlags = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2)
-                     | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG(ROT_SCALE, 4));
+    s->frameFlags = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG(ROT_SCALE, 4));
 
     extraSprite->transform.rotation = 0;
     extraSprite->transform.width = 0x100;
@@ -607,8 +588,7 @@ void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
 // (99.91%) https://decomp.me/scratch/UT9dt
 NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Player *p))
 {
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
-        && (((p->x & p->y) + 1) != 0)) {
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (((p->x & p->y) + 1) != 0)) {
         p->x = Q(460);
     } else {
         p->x = Q(p->checkPointX);
@@ -740,10 +720,9 @@ void Player_TransitionCancelFlyingAndBoost(Player *p)
         m4aSongNumStop(SE_281);
     }
 
-    p->moveState &= ~(MOVESTATE_20000000 | MOVESTATE_10000000 | MOVESTATE_1000000
-                      | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
-                      | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_400
-                      | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20 | MOVESTATE_10);
+    p->moveState &= ~(MOVESTATE_20000000 | MOVESTATE_10000000 | MOVESTATE_1000000 | MOVESTATE_80000 | MOVESTATE_40000 | MOVESTATE_20000
+                      | MOVESTATE_8000 | MOVESTATE_4000 | MOVESTATE_2000 | MOVESTATE_400 | MOVESTATE_200 | MOVESTATE_100 | MOVESTATE_20
+                      | MOVESTATE_10);
 
     p->unk61 = 0;
     p->unk62 = 0;
@@ -1717,8 +1696,7 @@ void sub_80228C0(Player *p)
     u32 mask = p->unk38;
     s32 py = I(playerY);
 
-    resultA = sub_801E4E4(py + p->unk17, (playerX = I(playerX)) - (2 + p->unk16), mask,
-                          8, &p->unk28, sub_801EE64);
+    resultA = sub_801E4E4(py + p->unk17, (playerX = I(playerX)) - (2 + p->unk16), mask, 8, &p->unk28, sub_801EE64);
 
     py = py + (p->unk17);
     playerX += 2;
@@ -1830,8 +1808,7 @@ void sub_80229EC(Player *p)
     mask = p->unk38;
     py = I(playerY);
 
-    resultA = sub_801E4E4(py - p->unk17, (playerX = I(playerX)) + (2 + p->unk16), mask,
-                          -8, &p->unk28, sub_801EE64);
+    resultA = sub_801E4E4(py - p->unk17, (playerX = I(playerX)) + (2 + p->unk16), mask, -8, &p->unk28, sub_801EE64);
 
     py = py - (p->unk17);
     playerX -= 2;
@@ -1943,8 +1920,7 @@ void sub_8022B18(Player *p)
     mask = p->unk38;
     py = I(playerX);
 
-    resultA = sub_801E4E4(py - p->unk17, (playerY = I(playerY)) - (2 + p->unk16), mask,
-                          -8, &p->unk28, sub_801ED24);
+    resultA = sub_801E4E4(py - p->unk17, (playerY = I(playerY)) - (2 + p->unk16), mask, -8, &p->unk28, sub_801ED24);
 
     py = py - (p->unk17);
     playerY += 2;
@@ -2055,8 +2031,7 @@ void sub_8022C44(Player *p)
     mask = p->unk38;
     py = I(playerX);
 
-    resultA = sub_801E4E4(py + p->unk17, (playerY = I(playerY)) + (2 + p->unk16), mask,
-                          +8, &p->unk28, sub_801ED24);
+    resultA = sub_801E4E4(py + p->unk17, (playerY = I(playerY)) + (2 + p->unk16), mask, +8, &p->unk28, sub_801ED24);
 
     py = py + (p->unk17);
     playerY -= 2;
@@ -2157,8 +2132,7 @@ void sub_8022D6C(Player *p)
         s16 r0 = (unk4 - offsetY) & mask;
         r5 &= mask;
 
-        if ((r5 == (r0)) && (p->speedAirY >= 0) && ((u8)(p->rotation + 0x18) <= 0x30)
-            && (!(p->moveState & MOVESTATE_IN_AIR))
+        if ((r5 == (r0)) && (p->speedAirY >= 0) && ((u8)(p->rotation + 0x18) <= 0x30) && (!(p->moveState & MOVESTATE_IN_AIR))
             && (ABS(p->speedGroundX) >= Q(6.0))) {
             sub_80228C0(p);
 
@@ -2364,8 +2338,7 @@ s32 sub_8022F58(u8 param0, Player *p)
 }
 
 // (98.07%) https://decomp.me/scratch/xgjsf
-NONMATCH("asm/non_matching/game/player__sub_802302C.inc",
-         s32 sub_802302C(u8 param0, Player *p))
+NONMATCH("asm/non_matching/game/player__sub_802302C.inc", s32 sub_802302C(u8 param0, Player *p))
 {
     s32 r3;
     s32 result;
@@ -2607,8 +2580,7 @@ void sub_80232D0(Player *p)
                     cam->unk14 += iy;
                 }
             }
-        } else if ((gPlayer.moveState & MOVESTATE_8000000)
-                   && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+        } else if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             ox = gUnknown_080D650C[gCurrentLevel].x;
             if ((ox >= 0) && (qPX >= Q(ox)) && (cam->unk8 != 0)) {
                 if (!(cam->unk50 & 0x1)) {
@@ -2862,8 +2834,7 @@ void sub_8023748(Player *p)
         p->itemEffect &= ~PLAYER_ITEM_EFFECT__10;
     }
 
-    if ((p->itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY)
-        && (--p->timerInvincibility == 0)) {
+    if ((p->itemEffect & PLAYER_ITEM_EFFECT__INVINCIBILITY) && (--p->timerInvincibility == 0)) {
         p->itemEffect &= ~PLAYER_ITEM_EFFECT__INVINCIBILITY;
 
         if (p->itemEffect & PLAYER_ITEM_EFFECT__SHIELD_NORMAL) {
@@ -2888,8 +2859,7 @@ void sub_8023748(Player *p)
 void sub_8023878(Player *p)
 {
     p->moveState &= ~MOVESTATE_1000;
-    if (gWater.isActive == 1 && gWater.currentWaterLevel > -1
-        && (I(p->y) - 4) >= gWater.currentWaterLevel) {
+    if (gWater.isActive == 1 && gWater.currentWaterLevel > -1 && (I(p->y) - 4) >= gWater.currentWaterLevel) {
         if (!(p->moveState & MOVESTATE_40)) {
             p->moveState |= MOVESTATE_40;
             p->moveState |= MOVESTATE_1000;
@@ -2955,8 +2925,7 @@ void sub_8023878(Player *p)
         p->unk87 = 60;
         p->unk86 = 30;
 
-        if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header
-            && p->unk60 == 0) {
+        if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header && p->unk60 == 0) {
             m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
         }
     }
@@ -3078,11 +3047,8 @@ void Task_8023D08(void)
         if (IS_SINGLE_PLAYER) {
             TaskDestroy(gCurTask);
             if ((!gLoadedSaveGame->timeLimitDisabled
-                 && (gCourseTime > MAX_COURSE_TIME
-                     || (gStageFlags & STAGE_FLAG__4 && gCourseTime == 0)))
-                || ((gGameMode == GAME_MODE_TIME_ATTACK
-                     || gGameMode == GAME_MODE_BOSS_TIME_ATTACK)
-                    && gCourseTime > MAX_COURSE_TIME)) {
+                 && (gCourseTime > MAX_COURSE_TIME || (gStageFlags & STAGE_FLAG__4 && gCourseTime == 0)))
+                || ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) && gCourseTime > MAX_COURSE_TIME)) {
                 HandleDeath();
             } else {
                 gRingCount = 0;
@@ -3311,9 +3277,7 @@ void CallPlayerTransition(Player *p)
                     gStageFlags |= STAGE_FLAG__TURN_OFF_TIMER;
                 }
 
-                if (p->moveState
-                    & (MOVESTATE_20000000 | MOVESTATE_10000000 | MOVESTATE_2000
-                       | MOVESTATE_8 | MOVESTATE_IN_AIR)) {
+                if (p->moveState & (MOVESTATE_20000000 | MOVESTATE_10000000 | MOVESTATE_2000 | MOVESTATE_8 | MOVESTATE_IN_AIR)) {
                     p->moveState |= (MOVESTATE_8000000 | MOVESTATE_IGNORE_INPUT);
                     p->unk5C = 0;
                     p->unk5E = 0;
@@ -3470,17 +3434,14 @@ void sub_80246DC(Player *p)
     r3 = (u16)(r3 - baseAnim);
 
     if ((charAnim == 10) || (charAnim == 11)) {
-        if (variant == 0 && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
-            && (((u16)r3 - 10) == 0 || ((u16)r3 - 10) == 1)) {
+        if (variant == 0 && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) && (((u16)r3 - 10) == 0 || ((u16)r3 - 10) == 1)) {
             p->variant = 1;
             p->moveState |= MOVESTATE_4;
 
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
         } else {
-            if ((p->speedAirY > 0) && (p->variant == 1)
-                && ((((u16)r3 - 10) == 0) || (((u16)r3 - 10) == 1))) {
-                s32 newY = sub_801E6D4(I(p->y) + p->unk17, I(p->x), p->unk38, 8, NULL,
-                                       sub_801EE64);
+            if ((p->speedAirY > 0) && (p->variant == 1) && ((((u16)r3 - 10) == 0) || (((u16)r3 - 10) == 1))) {
+                s32 newY = sub_801E6D4(I(p->y) + p->unk17, I(p->x), p->unk38, 8, NULL, sub_801EE64);
 
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                     if (newY <= 32) {
@@ -3506,8 +3467,7 @@ void sub_80246DC(Player *p)
             if (r3 == SA2_CHAR_ANIM_53) {
                 if (variant == 0) {
                     if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
-                        p->anim = (gPlayerCharacterIdleAnims[p->character]
-                                   + SA2_CHAR_ANIM_52);
+                        p->anim = (gPlayerCharacterIdleAnims[p->character] + SA2_CHAR_ANIM_52);
                         p->variant = 2;
                     }
                 }
@@ -3639,36 +3599,35 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
     p->unk66 = p->unk64;
 }
 
-#define MACRO_8024B10_PSI_UPDATE(p, psi)                                                \
-    ({                                                                                  \
-        s32 x, y;                                                                       \
-        if (!(p->moveState & MOVESTATE_FACING_LEFT)) {                                  \
-            psi->transform.width = -Q(1.0);                                             \
-        } else {                                                                        \
-            psi->transform.width = Q(1.0);                                              \
-        }                                                                               \
-        if (GRAVITY_IS_INVERTED) {                                                      \
-            psi->transform.width = -psi->transform.width;                               \
-        }                                                                               \
-                                                                                        \
-        if (psi->transform.width < 0) {                                                 \
-            psi->transform.x--;                                                         \
-        }                                                                               \
-                                                                                        \
-        if (GRAVITY_IS_INVERTED) {                                                      \
-            psi->transform.height = Q(1.0);                                             \
-            /* requires double clamp to match */                                        \
-            psi->transform.rotation = CLAMP_SIN_PERIOD(CLAMP_SIN_PERIOD(                \
-                -Q(1.0) - (psi->transform.rotation + psi->transform.height)));          \
-        } else {                                                                        \
-            psi->transform.height = Q(1.0);                                             \
-        }                                                                               \
-                                                                                        \
-        x = I(psi->transform.width * p->unk80);                                         \
-        y = I(psi->transform.height * p->unk82);                                        \
-        psi->transform.width = x;                                                       \
-        psi->transform.height = y;                                                      \
-        UpdateSpriteAnimation(s);                                                       \
+#define MACRO_8024B10_PSI_UPDATE(p, psi)                                                                                                   \
+    ({                                                                                                                                     \
+        s32 x, y;                                                                                                                          \
+        if (!(p->moveState & MOVESTATE_FACING_LEFT)) {                                                                                     \
+            psi->transform.width = -Q(1.0);                                                                                                \
+        } else {                                                                                                                           \
+            psi->transform.width = Q(1.0);                                                                                                 \
+        }                                                                                                                                  \
+        if (GRAVITY_IS_INVERTED) {                                                                                                         \
+            psi->transform.width = -psi->transform.width;                                                                                  \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        if (psi->transform.width < 0) {                                                                                                    \
+            psi->transform.x--;                                                                                                            \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        if (GRAVITY_IS_INVERTED) {                                                                                                         \
+            psi->transform.height = Q(1.0);                                                                                                \
+            /* requires double clamp to match */                                                                                           \
+            psi->transform.rotation = CLAMP_SIN_PERIOD(CLAMP_SIN_PERIOD(-Q(1.0) - (psi->transform.rotation + psi->transform.height)));     \
+        } else {                                                                                                                           \
+            psi->transform.height = Q(1.0);                                                                                                \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        x = I(psi->transform.width * p->unk80);                                                                                            \
+        y = I(psi->transform.height * p->unk82);                                                                                           \
+        psi->transform.width = x;                                                                                                          \
+        psi->transform.height = y;                                                                                                         \
+        UpdateSpriteAnimation(s);                                                                                                          \
     })
 
 void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
@@ -3695,8 +3654,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     psi->transform.x = I(p->x) - camX;
     psi->transform.y = I(p->y) - camY;
 
-    if (p->unk64 == SA2_CHAR_ANIM_WALK || p->unk64 == SA2_CHAR_ANIM_41
-        || p->unk64 == SA2_CHAR_ANIM_62 || p->unk64 == 63
+    if (p->unk64 == SA2_CHAR_ANIM_WALK || p->unk64 == SA2_CHAR_ANIM_41 || p->unk64 == SA2_CHAR_ANIM_62 || p->unk64 == 63
         || (p->unk64 == SA2_CHAR_ANIM_87 && p->character == CHARACTER_CREAM)) {
         psi->transform.rotation = p->rotation << 2;
         s->frameFlags &= ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP);
@@ -3709,8 +3667,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
         }
     } else {
         psi->transform.rotation = 0;
-        s->frameFlags
-            &= ~(SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE);
+        s->frameFlags &= ~(SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE);
 
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
             s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
@@ -3730,8 +3687,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     }
     if (IS_SINGLE_PLAYER) {
         if (p->moveState & MOVESTATE_DEAD
-            || (!(p->moveState & MOVESTATE_100000)
-                && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
+            || (!(p->moveState & MOVESTATE_100000) && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
             DisplaySprite(s);
         }
 
@@ -3773,8 +3729,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
         send->unk8 &= ~8;
     }
 
-    if (p->moveState & MOVESTATE_DEAD || mpp->unk5C & 1
-        || p->moveState & MOVESTATE_IN_SCRIPTED || p->timerInvulnerability != 0) {
+    if (p->moveState & MOVESTATE_DEAD || mpp->unk5C & 1 || p->moveState & MOVESTATE_IN_SCRIPTED || p->timerInvulnerability != 0) {
         send->unk8 |= 4;
     } else {
         send->unk8 &= ~4;
@@ -3829,10 +3784,9 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     send->unk8 |= (mpp->unk64 << 9);
 }
 
-#define MACRO_8024F74_ANIM_CHECK(anim, variant)                                         \
-    (((anim == SA2_CHAR_ANIM_JUMP_1 || anim == SA2_CHAR_ANIM_JUMP_2) && variant == 1)   \
-     || (anim == SA2_CHAR_ANIM_SPIN_ATTACK && variant == 0)                             \
-     || (anim == SA2_CHAR_ANIM_70 && variant == 0))
+#define MACRO_8024F74_ANIM_CHECK(anim, variant)                                                                                            \
+    (((anim == SA2_CHAR_ANIM_JUMP_1 || anim == SA2_CHAR_ANIM_JUMP_2) && variant == 1)                                                      \
+     || (anim == SA2_CHAR_ANIM_SPIN_ATTACK && variant == 0) || (anim == SA2_CHAR_ANIM_70 && variant == 0))
 
 void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
 {
@@ -3881,8 +3835,7 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
                 TransformSprite(s, &psi->transform);
 
                 if (p->moveState & MOVESTATE_DEAD
-                    || (!(p->moveState & MOVESTATE_100000)
-                        && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
+                    || (!(p->moveState & MOVESTATE_100000) && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
                     DisplaySprite(s);
                 }
             }
@@ -3912,8 +3865,7 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
                 TransformSprite(s, &psi->transform);
 
                 if (p->moveState & MOVESTATE_DEAD
-                    || (!(p->moveState & MOVESTATE_100000)
-                        && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
+                    || (!(p->moveState & MOVESTATE_100000) && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
                     DisplaySprite(s);
                 }
             }
@@ -3955,14 +3907,11 @@ void PlayerCB_8025318(Player *p)
 // TODO/NAME: Not only used for idling...
 void PlayerCB_Idle(Player *p)
 {
-    if ((p->moveState & (MOVESTATE_8000000 | MOVESTATE_8 | MOVESTATE_IN_AIR))
-        == MOVESTATE_8000000) {
+    if ((p->moveState & (MOVESTATE_8000000 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8000000) {
         PlayerCB_80273D0(p);
-    } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR))
-               == MOVESTATE_800) {
+    } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_800) {
         Player_InitIceSlide(p);
-    } else if (!sub_802A0C8(p) && !sub_802A0FC(p) && !sub_8029E6C(p)
-               && !sub_802A2A8(p)) {
+    } else if (!sub_802A0C8(p) && !sub_802A0FC(p) && !sub_8029E6C(p) && !sub_802A2A8(p)) {
         sub_802966C(p);
 
         if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
@@ -3992,8 +3941,7 @@ void PlayerCB_Idle(Player *p)
 
 void PlayerCB_8025548(Player *p)
 {
-    if (!sub_802A0FC(p) && !sub_8029E6C(p)
-        && ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || !sub_802A2A8(p))) {
+    if (!sub_802A0FC(p) && !sub_8029E6C(p) && ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || !sub_802A2A8(p))) {
         if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
@@ -4036,8 +3984,7 @@ void PlayerCB_802569C(Player *p)
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
-        if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 1)
-            && (s->frameFlags & 0x4000)) {
+        if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 1) && (s->frameFlags & 0x4000)) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
@@ -4079,8 +4026,7 @@ void PlayerCB_8025854(Player *p)
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
-        if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->variant == 1)
-            && (s->frameFlags & 0x4000)) {
+        if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->variant == 1) && (s->frameFlags & 0x4000)) {
             PLAYERFN_SET(PlayerCB_8025318);
         }
 
@@ -4115,8 +4061,7 @@ void PlayerCB_8025A0C(Player *p)
         }
     }
 
-    if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR))
-        == MOVESTATE_800) {
+    if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_800) {
         Player_InitIceSlide(p);
     } else {
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
@@ -4132,11 +4077,9 @@ void PlayerCB_8025A0C(Player *p)
 
 void PlayerCB_8025AB8(Player *p)
 {
-    if ((p->moveState & (MOVESTATE_8000000 | MOVESTATE_8 | MOVESTATE_IN_AIR))
-        == MOVESTATE_8000000) {
+    if ((p->moveState & (MOVESTATE_8000000 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8000000) {
         PlayerCB_80273D0(p);
-    } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR))
-               == MOVESTATE_800) {
+    } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_800) {
         Player_InitIceSlide(p);
     } else {
         if (p->unk99[0] != 0) {
@@ -4252,8 +4195,7 @@ void PlayerCB_Jump(Player *p)
 
     p->unk70 = 1;
 
-    jumpHeight = (p->moveState & MOVESTATE_40) ? Q(PLAYER_JUMP_HEIGHT_UNDER_WATER)
-                                               : Q(PLAYER_JUMP_HEIGHT);
+    jumpHeight = (p->moveState & MOVESTATE_40) ? Q(PLAYER_JUMP_HEIGHT_UNDER_WATER) : Q(PLAYER_JUMP_HEIGHT);
 
     rot = p->rotation - 64;
 
@@ -4320,8 +4262,8 @@ void PlayerCB_8025F84(Player *p)
     if ((p->unk16 < 6) || (p->unk17 < 9)) {
         u16 chAnim = GET_CHARACTER_ANIM(p);
 
-        if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)
-            || (chAnim == SA2_CHAR_ANIM_JUMP_2) || (chAnim == SA2_CHAR_ANIM_70)) {
+        if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1) || (chAnim == SA2_CHAR_ANIM_JUMP_2)
+            || (chAnim == SA2_CHAR_ANIM_70)) {
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
         } else {
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
@@ -4352,8 +4294,8 @@ void PlayerCB_8026060(Player *p)
     if ((p->unk16 < 6) || (p->unk17 < 9)) {
         u16 chAnim = GET_CHARACTER_ANIM(p);
 
-        if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)
-            || (chAnim == SA2_CHAR_ANIM_JUMP_2) || (chAnim == SA2_CHAR_ANIM_70)) {
+        if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1) || (chAnim == SA2_CHAR_ANIM_JUMP_2)
+            || (chAnim == SA2_CHAR_ANIM_70)) {
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
         } else {
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
@@ -4380,8 +4322,8 @@ void PlayerCB_802611C(Player *p)
     if ((p->unk16 < 6) || (p->unk17 < 9)) {
         u16 chAnim = GET_CHARACTER_ANIM(p);
 
-        if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1)
-            || (chAnim == SA2_CHAR_ANIM_JUMP_2) || (chAnim == SA2_CHAR_ANIM_70)) {
+        if ((chAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (chAnim == SA2_CHAR_ANIM_JUMP_1) || (chAnim == SA2_CHAR_ANIM_JUMP_2)
+            || (chAnim == SA2_CHAR_ANIM_70)) {
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
         } else {
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
@@ -4405,8 +4347,7 @@ void PlayerCB_80261D8(Player *p)
     if ((p->unk6E != 1) || (p->speedAirY > 0)) {
         sub_8023610(p);
 
-        if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
-            && (p->moveState & MOVESTATE_100)) {
+        if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->moveState & MOVESTATE_100)) {
             if (sub_801251C(p) || sub_80294F4(p))
                 return;
         }
@@ -4493,8 +4434,7 @@ void PlayerCB_Spindash(Player *p)
         }
         p->spindashAccel = pitch;
 
-        if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (p->variant == 1)
-            && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
+        if ((cAnim == SA2_CHAR_ANIM_SPIN_DASH) && (p->variant == 1) && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
             p->variant = 0;
         }
     }
@@ -4724,8 +4664,7 @@ void PlayerCB_8026A4C(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
-        && (p->unk5C & gPlayerControls.jump)
+    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->unk5C & gPlayerControls.jump)
         && (p->character == CHARACTER_SONIC || p->character == CHARACTER_AMY)) {
         p->unk64 = 42;
         p->speedAirY = -Q(7.5);
@@ -4883,8 +4822,7 @@ void PlayerCB_8026E24(Player *p)
 
 void PlayerCB_8026F10(Player *p)
 {
-    if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR))
-        == MOVESTATE_800) {
+    if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_800) {
         Player_InitIceSlide_inline(p);
     } else {
         //_08026F74
@@ -5062,8 +5000,7 @@ void PlayerCB_80273D0(Player *p)
         if (gGameMode == GAME_MODE_TIME_ATTACK)
             gSpecialRingCount = SPECIAL_STAGE_REQUIRED_SP_RING_COUNT;
 
-        if ((gPlayer.moveState & MOVESTATE_8000000)
-            && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+        if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             sub_802A40C(p);
         } else {
             Player_TransitionCancelFlyingAndBoost(p);
@@ -5634,8 +5571,7 @@ void PlayerCB_802890C(Player *p)
     PLAYERFN_UPDATE_ROTATION(p);
     PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 
-    if (!(p->moveState & MOVESTATE_IN_AIR) && (p->character == CHARACTER_KNUCKLES)
-        && (p->unk5B == 2)) {
+    if (!(p->moveState & MOVESTATE_IN_AIR) && (p->character == CHARACTER_KNUCKLES) && (p->unk5B == 2)) {
         p->variant++;
         PLAYERFN_SET(PlayerCB_802A3C4);
     }
@@ -5643,8 +5579,7 @@ void PlayerCB_802890C(Player *p)
 
 void DoTrickIfButtonPressed(Player *p)
 {
-    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->unk36 == 0)
-        && (p->unk5E & gPlayerControls.trick)) {
+    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->unk36 == 0) && (p->unk5E & gPlayerControls.trick)) {
 
         if (p->unk5C & DPAD_UP) {
             INCREMENT_SCORE(sTrickPoints[0]);
@@ -5675,8 +5610,7 @@ void DoTrickIfButtonPressed(Player *p)
                 } break;
             }
         } else if ((!(p->moveState & MOVESTATE_FACING_LEFT) && (p->unk5C & DPAD_RIGHT))
-                   || ((p->moveState & MOVESTATE_FACING_LEFT)
-                       && (p->unk5C & DPAD_LEFT))) {
+                   || ((p->moveState & MOVESTATE_FACING_LEFT) && (p->unk5C & DPAD_LEFT))) {
             INCREMENT_SCORE(sTrickPoints[2]);
             p->unk5B = TRICK_DIR_FORWARD;
 
@@ -5700,8 +5634,8 @@ void PlayerCB_8028D74(Player *p)
     if ((p->unk16 < 6) || (p->unk17 < 9)) {
         u16 cAnim = GET_CHARACTER_ANIM(p);
 
-        if ((cAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (cAnim == SA2_CHAR_ANIM_JUMP_1)
-            || (cAnim == SA2_CHAR_ANIM_JUMP_2) || (cAnim == SA2_CHAR_ANIM_70)) {
+        if ((cAnim == SA2_CHAR_ANIM_SPIN_ATTACK) || (cAnim == SA2_CHAR_ANIM_JUMP_1) || (cAnim == SA2_CHAR_ANIM_JUMP_2)
+            || (cAnim == SA2_CHAR_ANIM_70)) {
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
         } else {
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
@@ -5731,8 +5665,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
     p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    if ((gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1))
-        || (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_2))) {
+    if ((gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1)) || (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_2))) {
         p->unk64 = 37;
     } else if (ABS(p->speedAirX) < Q(2.5)) {
         p->unk64 = 38;
@@ -5790,8 +5723,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
 
     p->unk36 = gUnknown_080D69C2[r6];
 
-    if ((gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1))
-        || (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_2))) {
+    if ((gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1)) || (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_2))) {
         {
             s32 speed = (p->speedAirX * 5);
             if (speed < 0) {
@@ -6000,8 +5932,7 @@ bool32 sub_80294F4(Player *p)
         if (p->unk5E & gPlayerControls.jump) {
             switch (p->character) {
                 case CHARACTER_SONIC: {
-                    if (!IS_BOSS_STAGE(gCurrentLevel)
-                        && gHomingTarget.squarePlayerDistance < 0x4000) {
+                    if (!IS_BOSS_STAGE(gCurrentLevel) && gHomingTarget.squarePlayerDistance < 0x4000) {
                         sub_8012194(p);
                         return TRUE;
                     } else {
@@ -6125,8 +6056,7 @@ void sub_802966C(Player *p)
                 } else {
                     p->speedGroundX += u4C;
 
-                    if ((p->speedGroundX < 0)
-                        && (p->moveState & MOVESTATE_FACING_LEFT)) {
+                    if ((p->speedGroundX < 0) && (p->moveState & MOVESTATE_FACING_LEFT)) {
                         if ((p->unk64 == 7) || (p->unk64 == 8)) {
                             r6 = 7;
                         }
@@ -6135,8 +6065,7 @@ void sub_802966C(Player *p)
                 }
             }
         } else {
-            if ((p->moveState & MOVESTATE_FACING_LEFT)
-                != ((p->unk5C & DPAD_RIGHT) >> 4)) {
+            if ((p->moveState & MOVESTATE_FACING_LEFT) != ((p->unk5C & DPAD_RIGHT) >> 4)) {
                 if (p->moveState & MOVESTATE_FACING_LEFT) {
                     p->speedGroundX -= u48;
                 } else {
@@ -6221,8 +6150,7 @@ void sub_80298DC(Player *p)
             }
         }
     } else {
-        if ((!(p->moveState & MOVESTATE_IN_AIR))
-            && ((ABS(p->speedGroundX) >= p->unk44))) {
+        if ((!(p->moveState & MOVESTATE_IN_AIR)) && ((ABS(p->speedGroundX) >= p->unk44))) {
             if (p->unk58 >= gUnknown_080D6916[p->unk52]) {
                 p->unk5A = TRUE;
                 gCamera.unk8 = 0x400;
@@ -6256,10 +6184,7 @@ void sub_8029990(Player *p)
     }
 }
 
-void CallSetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
-{
-    SetStageSpawnPos(character, level, p2, p);
-}
+void CallSetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p) { SetStageSpawnPos(character, level, p2, p); }
 
 void sub_80299FC(Player *p)
 {
@@ -6623,21 +6548,14 @@ void sub_8029FA4(Player *p)
     }
 }
 
-void Player_SetMovestate_IsInScriptedSequence(void)
-{
-    gPlayer.moveState |= MOVESTATE_IN_SCRIPTED;
-}
+void Player_SetMovestate_IsInScriptedSequence(void) { gPlayer.moveState |= MOVESTATE_IN_SCRIPTED; }
 
-void Player_ClearMovestate_IsInScriptedSequence(void)
-{
-    gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
-}
+void Player_ClearMovestate_IsInScriptedSequence(void) { gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED; }
 
 void Player_DisableInputAndBossTimer(void)
 {
     gPlayer.transition = PLTRANS_PT10;
-    gStageFlags
-        |= (STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__2 | STAGE_FLAG__ACT_START);
+    gStageFlags |= (STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__2 | STAGE_FLAG__ACT_START);
 
     if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         gStageFlags |= STAGE_FLAG__TURN_OFF_TIMER;
@@ -6646,8 +6564,7 @@ void Player_DisableInputAndBossTimer(void)
 
 void Player_DisableInputAndBossTimer_FinalBoss(void)
 {
-    gStageFlags
-        |= (STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__2 | STAGE_FLAG__ACT_START);
+    gStageFlags |= (STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__2 | STAGE_FLAG__ACT_START);
 
     if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         gStageFlags |= STAGE_FLAG__TURN_OFF_TIMER;
@@ -6685,8 +6602,7 @@ bool32 sub_802A0FC(Player *p)
             PLAYERFN_SET(PlayerCB_802A228);
             return TRUE;
         } else if (((u16)(p->speedGroundX + (Q(0.5) - 1)) > Q(1.0) - 2)
-                   && !(p->moveState
-                        & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
+                   && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
             PLAYERFN_SET(PlayerCB_8025A0C);
             m4aSongNumStart(SE_SPIN_ATTACK);
             return TRUE;
@@ -6753,8 +6669,7 @@ void PlayerCB_802A258(Player *p)
 
 bool32 sub_802A2A8(Player *p)
 {
-    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
-        || (p->moveState & (MOVESTATE_8000 | MOVESTATE_400))
+    if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (p->moveState & (MOVESTATE_8000 | MOVESTATE_400))
         || ((p->rotation + Q(0.25)) << 24 <= 0)) {
         return FALSE;
     } else if (p->unk5E & gPlayerControls.attack) {

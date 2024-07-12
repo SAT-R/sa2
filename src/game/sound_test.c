@@ -102,35 +102,28 @@ static void SoundTestScreenSetNameDisplayPos(u8, s16, s16);
 #define CREAM_DANCE_STEP_LEFT          2
 #define CREAM_DANCE_STEP_SECOND_MIDDLE 3
 
-#define LangOffset(lang) ((lang)*3)
-#define TextOffset(langOffset, offset, segment, numSegments)                            \
-    (langOffset * numSegments + (segment * 3) + offset)
-#define Text(language, a, b, segment, numSegments)                                      \
-    [TextOffset(LangOffset(LanguageIndex(language)), 0, segment, numSegments)]          \
-        = a,                                                                            \
-        [TextOffset(LangOffset(LanguageIndex(language)), 1, segment, numSegments)]      \
-        = b,                                                                            \
-        [TextOffset(LangOffset(LanguageIndex(language)), 2, segment, numSegments)]      \
-        = segment
+#define LangOffset(lang)                                     ((lang)*3)
+#define TextOffset(langOffset, offset, segment, numSegments) (langOffset * numSegments + (segment * 3) + offset)
+#define Text(language, a, b, segment, numSegments)                                                                                         \
+    [TextOffset(LangOffset(LanguageIndex(language)), 0, segment, numSegments)]                                                             \
+        = a,                                                                                                                               \
+        [TextOffset(LangOffset(LanguageIndex(language)), 1, segment, numSegments)]                                                         \
+        = b,                                                                                                                               \
+        [TextOffset(LangOffset(LanguageIndex(language)), 2, segment, numSegments)] = segment
 
 static const char sSoundNames[68][MAX_SOUND_NAME_LENGTH] = {
-    "OPENING         ", "TITLE           ", "CHARACTER SELECT", "ZONE SELECT     ",
-    "ZONE SELECT 2   ", "ZONE SELECT 3   ", "TIMEATTACK 1    ", "OPTIONS         ",
-    "ZONE 1-1        ", "ZONE 1-2        ", "ZONE 2-1        ", "ZONE 2-2        ",
-    "ZONE 3-1        ", "ZONE 3-2        ", "ZONE 4-1        ", "ZONE 4-2        ",
-    "ZONE 5-1        ", "ZONE 5-2        ", "ZONE 6-1        ", "ZONE 6-2        ",
-    "ZONE 7-1        ", "ZONE 7-2        ", "FINAL ZONE      ", "EXTRA ZONE      ",
-    "UNRIVAL         ", "DROWN           ", "BOSS            ", "BOSS-PINCH      ",
-    "KNUCKLES BOSS   ", "7-BOSS          ", "7-BOSS-PINCH    ", "FINAL BOSS      ",
-    "FINAL BOSS-PINCH", "GAME OVER       ", "FINAL ENDING    ", "EXTRA ENDING    ",
-    "STAFF ROLL      ", "DEMO 1          ", "DEMO 2          ", "EXTRA DEMO 1    ",
-    "EXTRA DEMO 2    ", "IN SP STAGE     ", "SP STAGE        ", "SP STAGE-PINCH  ",
-    "ACHIEVEMENT     ", "SP CLEAR        ", "SP RESULT 1     ", "SP RESULT 2     ",
-    "SP RESULT 3     ", "VS 1            ", "VS 2            ", "VS 4            ",
-    "VS 3            ", "VS WAIT         ", "ACT CLEAR       ", "BOSS CLEAR      ",
-    "FINAL CLEAR     ", "EXTRA CLEAR     ", "TIMEATTACK 2    ", "TIMEATTACK 3    ",
-    "1_UP            ", "CHARACTER       ", "VS END          ", "VS WAIT         ",
-    "VS WAIT         ", "CAOS EMERALD 7  ", "MESSAGE         ", "FANFARE         ",
+    "OPENING         ", "TITLE           ", "CHARACTER SELECT", "ZONE SELECT     ", "ZONE SELECT 2   ", "ZONE SELECT 3   ",
+    "TIMEATTACK 1    ", "OPTIONS         ", "ZONE 1-1        ", "ZONE 1-2        ", "ZONE 2-1        ", "ZONE 2-2        ",
+    "ZONE 3-1        ", "ZONE 3-2        ", "ZONE 4-1        ", "ZONE 4-2        ", "ZONE 5-1        ", "ZONE 5-2        ",
+    "ZONE 6-1        ", "ZONE 6-2        ", "ZONE 7-1        ", "ZONE 7-2        ", "FINAL ZONE      ", "EXTRA ZONE      ",
+    "UNRIVAL         ", "DROWN           ", "BOSS            ", "BOSS-PINCH      ", "KNUCKLES BOSS   ", "7-BOSS          ",
+    "7-BOSS-PINCH    ", "FINAL BOSS      ", "FINAL BOSS-PINCH", "GAME OVER       ", "FINAL ENDING    ", "EXTRA ENDING    ",
+    "STAFF ROLL      ", "DEMO 1          ", "DEMO 2          ", "EXTRA DEMO 1    ", "EXTRA DEMO 2    ", "IN SP STAGE     ",
+    "SP STAGE        ", "SP STAGE-PINCH  ", "ACHIEVEMENT     ", "SP CLEAR        ", "SP RESULT 1     ", "SP RESULT 2     ",
+    "SP RESULT 3     ", "VS 1            ", "VS 2            ", "VS 4            ", "VS 3            ", "VS WAIT         ",
+    "ACT CLEAR       ", "BOSS CLEAR      ", "FINAL CLEAR     ", "EXTRA CLEAR     ", "TIMEATTACK 2    ", "TIMEATTACK 3    ",
+    "1_UP            ", "CHARACTER       ", "VS END          ", "VS WAIT         ", "VS WAIT         ", "CAOS EMERALD 7  ",
+    "MESSAGE         ", "FANFARE         ",
 };
 
 static const u16 sSoundNumberToSongMap[68] = {
@@ -205,41 +198,28 @@ static const u16 sSoundNumberToSongMap[68] = {
 };
 
 static const u32 sSoundTempos[67] = {
-    Q_20_12(17.5),           Q_20_12(17.5),           Q_20_12(16.0),
-    Q_20_12(16.0625),        Q_20_12(16.6875),        Q_20_12(16.25),
-    Q_20_12(15.25),          Q_20_12(15.0),           Q_20_12(20.75),
-    Q_20_12(20.75),          Q_20_12(21.0234375),     Q_20_12(20.4375),
-    Q_20_12(16.84228515625), Q_20_12(16.84228515625), Q_20_12(19.0),
-    Q_20_12(27.0),           Q_20_12(17.8125),        Q_20_12(20.0),
-    Q_20_12(20.5),           Q_20_12(21.5),           Q_20_12(20.125),
-    Q_20_12(21.5),           Q_20_12(20.75),          Q_20_12(21.5),
-    Q_20_12(16.8203125),     Q_20_12(19.25),          Q_20_12(21.25),
-    Q_20_12(20.0),           Q_20_12(20.5),           Q_20_12(22.5),
-    Q_20_12(23.6875),        Q_20_12(18.0),           Q_20_12(19.125),
-    Q_20_12(16.0),           Q_20_12(17.0),           Q_20_12(22.5),
-    Q_20_12(19.0),           Q_20_12(16.0),           Q_20_12(14.75),
-    Q_20_12(18.875),         Q_20_12(19.0625),        Q_20_12(16.0),
-    Q_20_12(21.0),           Q_20_12(22.0),           Q_20_12(21.0),
-    Q_20_12(20.0),           Q_20_12(26.3125),        Q_20_12(18.0),
-    Q_20_12(23.75),          Q_20_12(20.8125),        Q_20_12(20.0),
-    Q_20_12(21.0),           Q_20_12(16.875),         Q_20_12(20.0),
-    Q_20_12(18.0),           Q_20_12(19.0),           Q_20_12(21.0),
-    Q_20_12(18.0),           Q_20_12(18.0),           Q_20_12(21.0),
-    Q_20_12(16.0),           Q_20_12(16.0),           Q_20_12(16.0),
-    Q_20_12(16.0),           Q_20_12(18.0),           Q_20_12(16.0),
+    Q_20_12(17.5),           Q_20_12(17.5),           Q_20_12(16.0),   Q_20_12(16.0625), Q_20_12(16.6875),    Q_20_12(16.25),
+    Q_20_12(15.25),          Q_20_12(15.0),           Q_20_12(20.75),  Q_20_12(20.75),   Q_20_12(21.0234375), Q_20_12(20.4375),
+    Q_20_12(16.84228515625), Q_20_12(16.84228515625), Q_20_12(19.0),   Q_20_12(27.0),    Q_20_12(17.8125),    Q_20_12(20.0),
+    Q_20_12(20.5),           Q_20_12(21.5),           Q_20_12(20.125), Q_20_12(21.5),    Q_20_12(20.75),      Q_20_12(21.5),
+    Q_20_12(16.8203125),     Q_20_12(19.25),          Q_20_12(21.25),  Q_20_12(20.0),    Q_20_12(20.5),       Q_20_12(22.5),
+    Q_20_12(23.6875),        Q_20_12(18.0),           Q_20_12(19.125), Q_20_12(16.0),    Q_20_12(17.0),       Q_20_12(22.5),
+    Q_20_12(19.0),           Q_20_12(16.0),           Q_20_12(14.75),  Q_20_12(18.875),  Q_20_12(19.0625),    Q_20_12(16.0),
+    Q_20_12(21.0),           Q_20_12(22.0),           Q_20_12(21.0),   Q_20_12(20.0),    Q_20_12(26.3125),    Q_20_12(18.0),
+    Q_20_12(23.75),          Q_20_12(20.8125),        Q_20_12(20.0),   Q_20_12(21.0),    Q_20_12(16.875),     Q_20_12(20.0),
+    Q_20_12(18.0),           Q_20_12(19.0),           Q_20_12(21.0),   Q_20_12(18.0),    Q_20_12(18.0),       Q_20_12(21.0),
+    Q_20_12(16.0),           Q_20_12(16.0),           Q_20_12(16.0),   Q_20_12(16.0),    Q_20_12(18.0),       Q_20_12(16.0),
     Q_20_12(20.0),
 };
 
 static const u8 sCompletedGameSoundsOrder[63] = {
-    0,  1,  2,  3,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 26, 27,
-    28, 29, 30, 31, 32, 54, 55, 56, 33, 24, 25, 60, 37, 38, 4,  41, 42, 43, 44, 45, 46,
-    47, 48, 34, 36, 66, 6,  58, 59, 7,  53, 49, 50, 52, 51, 62, 5,  39, 40, 23, 57, 35,
+    0,  1,  2,  3, 8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 26, 27, 28, 29, 30, 31, 32, 54, 55, 56, 33, 24, 25,
+    60, 37, 38, 4, 41, 42, 43, 44, 45, 46, 47, 48, 34, 36, 66, 6,  58, 59, 7,  53, 49, 50, 52, 51, 62, 5,  39, 40, 23, 57, 35,
 };
 
 static const u8 sSoundsOrder[57] = {
-    0,  1,  2,  3,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-    26, 27, 28, 29, 30, 31, 32, 54, 55, 56, 33, 24, 25, 60, 37, 38, 4,  41, 42,
-    43, 44, 45, 46, 47, 48, 34, 36, 66, 6,  58, 59, 7,  53, 49, 50, 52, 51, 62,
+    0,  1,  2,  3,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 26, 27, 28, 29, 30, 31, 32, 54, 55, 56,
+    33, 24, 25, 60, 37, 38, 4,  41, 42, 43, 44, 45, 46, 47, 48, 34, 36, 66, 6,  58, 59, 7,  53, 49, 50, 52, 51, 62,
 };
 
 static const u8 sDigitTransitionAnim[8] = {
@@ -251,31 +231,26 @@ static const u8 gUnknown_080E0C38[12] = {
 };
 
 static const u32 sTitleText[NUM_LANGUAGES * 3] = {
-    Text(LANG_JAPANESE, 42, 967, 0, 1), Text(LANG_ENGLISH, 32, 1030, 0, 1),
-    Text(LANG_GERMAN, 32, 1030, 0, 1),  Text(LANG_FRENCH, 26, 1031, 0, 1),
-    Text(LANG_SPANISH, 48, 1032, 0, 1), Text(LANG_ITALIAN, 34, 1033, 0, 1),
+    Text(LANG_JAPANESE, 42, 967, 0, 1), Text(LANG_ENGLISH, 32, 1030, 0, 1), Text(LANG_GERMAN, 32, 1030, 0, 1),
+    Text(LANG_FRENCH, 26, 1031, 0, 1),  Text(LANG_SPANISH, 48, 1032, 0, 1), Text(LANG_ITALIAN, 34, 1033, 0, 1),
 };
 
 static const u32 sControlsText[NUM_LANGUAGES * 3] = {
-    Text(LANG_JAPANESE, 20, 966, 0, 1), Text(LANG_ENGLISH, 20, 1039, 0, 1),
-    Text(LANG_GERMAN, 20, 1040, 0, 1),  Text(LANG_FRENCH, 20, 1041, 0, 1),
-    Text(LANG_SPANISH, 20, 1042, 0, 1), Text(LANG_ITALIAN, 20, 1043, 0, 1),
+    Text(LANG_JAPANESE, 20, 966, 0, 1), Text(LANG_ENGLISH, 20, 1039, 0, 1), Text(LANG_GERMAN, 20, 1040, 0, 1),
+    Text(LANG_FRENCH, 20, 1041, 0, 1),  Text(LANG_SPANISH, 20, 1042, 0, 1), Text(LANG_ITALIAN, 20, 1043, 0, 1),
 };
 
 static const u32 sBackButtonText[NUM_LANGUAGES * 3 * 2] = {
-    Text(LANG_JAPANESE, 10, 965, 0, 2), Text(LANG_JAPANESE, 10, 965, 1, 2),
-    Text(LANG_ENGLISH, 8, 1034, 0, 2),  Text(LANG_ENGLISH, 8, 1034, 1, 2),
-    Text(LANG_GERMAN, 8, 1035, 0, 2),   Text(LANG_GERMAN, 12, 1035, 1, 2),
-    Text(LANG_FRENCH, 8, 1036, 0, 2),   Text(LANG_FRENCH, 12, 1036, 1, 2),
-    Text(LANG_SPANISH, 10, 1037, 0, 2), Text(LANG_SPANISH, 10, 1037, 1, 2),
-    Text(LANG_ITALIAN, 8, 1038, 0, 2),  Text(LANG_ITALIAN, 12, 1038, 1, 2),
+    Text(LANG_JAPANESE, 10, 965, 0, 2), Text(LANG_JAPANESE, 10, 965, 1, 2), Text(LANG_ENGLISH, 8, 1034, 0, 2),
+    Text(LANG_ENGLISH, 8, 1034, 1, 2),  Text(LANG_GERMAN, 8, 1035, 0, 2),   Text(LANG_GERMAN, 12, 1035, 1, 2),
+    Text(LANG_FRENCH, 8, 1036, 0, 2),   Text(LANG_FRENCH, 12, 1036, 1, 2),  Text(LANG_SPANISH, 10, 1037, 0, 2),
+    Text(LANG_SPANISH, 10, 1037, 1, 2), Text(LANG_ITALIAN, 8, 1038, 0, 2),  Text(LANG_ITALIAN, 12, 1038, 1, 2),
 };
 
 void CreateSoundTestScreen(struct OptionsScreen *optionsScreen)
 {
     struct Task *t
-        = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen),
-                     0x1800, TASK_x0004, SoundTestScreenOnDestroy);
+        = TaskCreate(Task_SoundTestScreenInOutTransition, sizeof(struct SoundTestScreen), 0x1800, TASK_x0004, SoundTestScreenOnDestroy);
     struct SoundTestScreen *soundTestScreen = TASK_DATA(t);
     ScreenFade *fade;
     struct UNK_3005B80_UNK4 *unk10;
@@ -353,41 +328,32 @@ static void SoundTestScreenCreateUI(struct Task *t)
     const u32 *r6 = sTitleText;
     s32 langOffset = LangOffset(*language);
 
-    sub_806A568(title, RENDER_TARGET_SCREEN, r6[TextOffset(langOffset, 0, 0, 1)],
-                sTitleText[TextOffset(langOffset, 1, 0, 1)], 0x1000, 10, 0x10, 5,
-                sTitleText[TextOffset(langOffset, 2, 0, 1)], 0);
+    sub_806A568(title, RENDER_TARGET_SCREEN, r6[TextOffset(langOffset, 0, 0, 1)], sTitleText[TextOffset(langOffset, 1, 0, 1)], 0x1000, 10,
+                0x10, 5, sTitleText[TextOffset(langOffset, 2, 0, 1)], 0);
     // Trim
-    sub_806A568(titleTrimAndControls, RENDER_TARGET_SCREEN, 0x60, 0x3C9, 0x1000, 0, 0, 6,
-                0, 0);
+    sub_806A568(titleTrimAndControls, RENDER_TARGET_SCREEN, 0x60, 0x3C9, 0x1000, 0, 0, 6, 0, 0);
 
     titleTrimAndControls++;
     // Controls (play and buttons)
-    sub_806A568(titleTrimAndControls, RENDER_TARGET_SCREEN,
-                sControlsText[TextOffset(langOffset, 0, 0, 1)],
-                sControlsText[TextOffset(langOffset, 1, 0, 1)], 0x1000, 10, 0x86, 5,
-                sControlsText[TextOffset(langOffset, 2, 0, 1)], 0);
+    sub_806A568(titleTrimAndControls, RENDER_TARGET_SCREEN, sControlsText[TextOffset(langOffset, 0, 0, 1)],
+                sControlsText[TextOffset(langOffset, 1, 0, 1)], 0x1000, 10, 0x86, 5, sControlsText[TextOffset(langOffset, 2, 0, 1)], 0);
 
     // back button name
-    sub_806A568(backControlName, RENDER_TARGET_SCREEN,
-                sBackButtonText[TextOffset(langOffset, 0, 1, 2)],
-                sBackButtonText[TextOffset(langOffset, 1, 1, 2)], 0x1000, 0x5A, 0x86, 5,
-                sBackButtonText[TextOffset(langOffset, 2, 1, 2)], 0);
-    sub_806A568(scrollArrows, RENDER_TARGET_SCREEN, 1, 0x3C5, 0x1000, 0x5A, 0x5A, 5, 2,
+    sub_806A568(backControlName, RENDER_TARGET_SCREEN, sBackButtonText[TextOffset(langOffset, 0, 1, 2)],
+                sBackButtonText[TextOffset(langOffset, 1, 1, 2)], 0x1000, 0x5A, 0x86, 5, sBackButtonText[TextOffset(langOffset, 2, 1, 2)],
                 0);
+    sub_806A568(scrollArrows, RENDER_TARGET_SCREEN, 1, 0x3C5, 0x1000, 0x5A, 0x5A, 5, 2, 0);
 
     for (i = 0, xPos = 80, yPos = 96; i < 3; i++, songNumDisplayElement++, xPos -= 8) {
         if (i == 0) {
-            sub_806A568(songNumDisplayElement, RENDER_TARGET_SCREEN, 2, 0x45f, 0x1000,
-                        xPos, yPos, 5, 0x11, 0);
+            sub_806A568(songNumDisplayElement, RENDER_TARGET_SCREEN, 2, 0x45f, 0x1000, xPos, yPos, 5, 0x11, 0);
         } else {
-            sub_806A568(songNumDisplayElement, RENDER_TARGET_SCREEN, 2, 0x45f, 0x1000,
-                        xPos, yPos, 5, 0x10, 0);
+            sub_806A568(songNumDisplayElement, RENDER_TARGET_SCREEN, 2, 0x45f, 0x1000, xPos, yPos, 5, 0x10, 0);
         }
     }
 
     for (i = 0; i < 4; i++) {
-        sub_806A568(&speakerCone[i], RENDER_TARGET_SCREEN, 0x40, 0x3ce, i | 0x1060, 0x4c,
-                    0x5a, 6, 0, 0);
+        sub_806A568(&speakerCone[i], RENDER_TARGET_SCREEN, 0x40, 0x3ce, i | 0x1060, 0x4c, 0x5a, 6, 0, 0);
     }
 
     // Transforms static circle
@@ -404,18 +370,14 @@ static void SoundTestScreenCreateUI(struct Task *t)
     transforms[2].x--;
     transforms[3].y--;
 
-    sub_806A568(danceStage, RENDER_TARGET_SCREEN, 0x14, 0x3CC, 0x1000, 0xB4, 0x8C, 6, 0,
-                4);
-    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x40, 0x3CA, 0x1000, 0xB4, 0x74, 5,
-                0, 0);
+    sub_806A568(danceStage, RENDER_TARGET_SCREEN, 0x14, 0x3CC, 0x1000, 0xB4, 0x8C, 6, 0, 4);
+    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x40, 0x3CA, 0x1000, 0xB4, 0x74, 5, 0, 0);
     animatedCream++;
-    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x48, 0x3C8, 0x1000, 0xB4, 0x74, 5,
-                0, 0);
+    sub_806A568(animatedCream, RENDER_TARGET_SCREEN, 0x48, 0x3C8, 0x1000, 0xB4, 0x74, 5, 0, 0);
 
     for (i = 0; i < MAX_SOUND_NAME_LENGTH; i++) {
-        sub_806A568(&soundTestScreen->nameDisplay[i], RENDER_TARGET_SCREEN, 2, 0x45F,
-                    0x1000, 0, 0, 5, sSoundNames[sCompletedGameSoundsOrder[0]][i] - 0x20,
-                    0);
+        sub_806A568(&soundTestScreen->nameDisplay[i], RENDER_TARGET_SCREEN, 2, 0x45F, 0x1000, 0, 0, 5,
+                    sSoundNames[sCompletedGameSoundsOrder[0]][i] - 0x20, 0);
     }
 }
 
@@ -484,8 +446,7 @@ static void Task_SoundTestScreenMain(void)
         // tens
         if ((soundTestScreen->soundNumber / 10) % 10 > (prevSongNumber / 10) % 10) {
             soundTestScreen->soundNumAnimSteps[1] = -7;
-        } else if ((soundTestScreen->soundNumber / 10) % 10
-                   < (prevSongNumber / 10) % 10) {
+        } else if ((soundTestScreen->soundNumber / 10) % 10 < (prevSongNumber / 10) % 10) {
             soundTestScreen->soundNumAnimSteps[1] = 7;
         }
 
@@ -502,8 +463,7 @@ static void Task_SoundTestScreenMain(void)
         }
     }
 
-    if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING
-        && gMPlayTable[0].info->status == MUSICPLAYER_STATUS_PAUSE) {
+    if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING && gMPlayTable[0].info->status == MUSICPLAYER_STATUS_PAUSE) {
         soundTestScreen->state = SOUND_TEST_SCREEN_STOPPED;
         backControlName->variant = 1;
         UpdateSpriteAnimation(backControlName);
@@ -515,16 +475,11 @@ static void Task_SoundTestScreenMain(void)
 
     if (gPressedKeys & A_BUTTON) {
         u32 songTempo;
-        soundTestScreen->songTempo = songTempo
-            = sSoundTempos[soundsList[soundTestScreen->soundNumber - 1]];
+        soundTestScreen->songTempo = songTempo = sSoundTempos[soundsList[soundTestScreen->soundNumber - 1]];
         soundTestScreen->creams[DANCING_CREAM].animSpeed = Q_20_12_TO_INT(songTempo);
         m4aMPlayAllStop();
 
-        MPlayStart(
-            &gMPlayInfo_BGM,
-            gSongTable
-                [sSoundNumberToSongMap[soundsList[soundTestScreen->soundNumber - 1]]]
-                    .header);
+        MPlayStart(&gMPlayInfo_BGM, gSongTable[sSoundNumberToSongMap[soundsList[soundTestScreen->soundNumber - 1]]].header);
 
         soundTestScreen->state = SOUND_TEST_SCREEN_PLAYING;
         backControlName->variant = 0;
@@ -569,8 +524,7 @@ static void Task_SoundTestScreenMain(void)
         soundTestScreen->nameTickerPos = 0;
     }
 
-    SoundTestScreenSetNameDisplayPos(soundsList[soundTestScreen->soundNumber - 1],
-                                     0x100 - soundTestScreen->nameTickerPos, 0x9E);
+    SoundTestScreenSetNameDisplayPos(soundsList[soundTestScreen->soundNumber - 1], 0x100 - soundTestScreen->nameTickerPos, 0x9E);
     SoundTestScreenRenderUI();
 }
 
@@ -605,14 +559,12 @@ static void SoundTestScreenRenderUI(void)
 
         if (soundTestScreen->soundNumAnimSteps[i] != 0) {
             if (soundTestScreen->soundNumAnimSteps[i] > 0) {
-                numberDisplayDigit->y
-                    = sDigitTransitionAnim[soundTestScreen->soundNumAnimSteps[i]] + 96;
+                numberDisplayDigit->y = sDigitTransitionAnim[soundTestScreen->soundNumAnimSteps[i]] + 96;
                 soundTestScreen->soundNumAnimSteps[i]--;
             }
 
             if (soundTestScreen->soundNumAnimSteps[i] < 0) {
-                numberDisplayDigit->y
-                    = 96 - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
+                numberDisplayDigit->y = 96 - sDigitTransitionAnim[-soundTestScreen->soundNumAnimSteps[i]];
                 soundTestScreen->soundNumAnimSteps[i]++;
             }
         }
@@ -635,9 +587,7 @@ static void SoundTestScreenRenderUI(void)
         u8 numChangeElements = 0;
         u16 amplification = 0;
         u32 testVal;
-        testVal = (u32)(*(s16 *)REG_ADDR_SOUND1CNT_H
-                        & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1
-                           | SOUND_B_FIFO_RESET))
+        testVal = (u32)(*(s16 *)REG_ADDR_SOUND1CNT_H & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1 | SOUND_B_FIFO_RESET))
             >> 0xC;
         if (soundTestScreen->measurementSound1H != testVal) {
             amplification += 32;
@@ -656,9 +606,7 @@ static void SoundTestScreenRenderUI(void)
             numChangeElements++;
         }
 
-        testVal = (u32)(*(s16 *)REG_ADDR_SOUND3CNT_H
-                        & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1
-                           | SOUND_B_FIFO_RESET))
+        testVal = (u32)(*(s16 *)REG_ADDR_SOUND3CNT_H & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1 | SOUND_B_FIFO_RESET))
             >> 0xC;
         if (soundTestScreen->measurementSound3H != testVal) {
             amplification += 32;
@@ -667,9 +615,7 @@ static void SoundTestScreenRenderUI(void)
             numChangeElements++;
         }
 
-        testVal = (u32)(*(s16 *)REG_ADDR_SOUND4CNT_L
-                        & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1
-                           | SOUND_B_FIFO_RESET))
+        testVal = (u32)(*(s16 *)REG_ADDR_SOUND4CNT_L & (SOUND_B_RIGHT_OUTPUT | SOUND_B_LEFT_OUTPUT | SOUND_B_TIMER_1 | SOUND_B_FIFO_RESET))
             >> 0xC;
         if (soundTestScreen->measurementSound3L != testVal) {
             amplification += 32;
@@ -709,15 +655,13 @@ static void SoundTestScreenRenderUI(void)
     for (i = 0; i < 4; i++) {
         if (sprCream->graphics.anim != SA2_ANIM_SOUNDTEST_CREAM_BOW) {
             speakerConeEffects[i].rotation = DEG_TO_SIN(90) * i;
-            speakerConeEffects[i].height = speakerConeEffects[i].width
-                = soundTestScreen->speakerSize + 0x100;
+            speakerConeEffects[i].height = speakerConeEffects[i].width = soundTestScreen->speakerSize + 0x100;
         }
 
         TransformSprite(&speakerConeElement[i], &speakerConeEffects[i]);
     }
 
-    soundTestScreen->speakerSize
-        -= SIN(0x100 - (soundTestScreen->speakerAnimFrame * 4)) >> 8;
+    soundTestScreen->speakerSize -= SIN(0x100 - (soundTestScreen->speakerAnimFrame * 4)) >> 8;
 
     if (soundTestScreen->speakerAnimFrame > 0) {
         soundTestScreen->speakerAnimFrame--;
@@ -733,12 +677,9 @@ static void SoundTestScreenRenderUI(void)
 
     DisplaySprite(sprCream);
 
-    scrollArrows->x
-        = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7)
-        + 94;
+    scrollArrows->x = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7) + 94;
     DisplaySprite(scrollArrows);
-    scrollArrows->x = 58
-        - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
+    scrollArrows->x = 58 - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
     scrollArrows->frameFlags |= 0x400;
     DisplaySprite(scrollArrows);
     scrollArrows->frameFlags &= ~0x400;
@@ -855,30 +796,24 @@ static void SoundTestScreenUpdateCreamAnim(void)
             soundTestScreen->animFrame = soundTestScreen->barBeat >> 16;
             UpdateSpriteAnimation(animatedCream);
 
-            if (soundTestScreen->animFrame >= 55
-                && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_RIGHT) {
+            if (soundTestScreen->animFrame >= 55 && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_RIGHT) {
                 soundTestScreen->creamDanceAnimStep = CREAM_DANCE_STEP_FIRST_MIDDLE;
                 SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_MIDDLE);
                 break;
             }
-            if (soundTestScreen->animFrame >= 60
-                && soundTestScreen->creamDanceAnimStep
-                    == CREAM_DANCE_STEP_FIRST_MIDDLE) {
+            if (soundTestScreen->animFrame >= 60 && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_FIRST_MIDDLE) {
                 soundTestScreen->creamDanceAnimStep = CREAM_DANCE_STEP_LEFT;
                 SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_LEFT);
                 break;
             }
 
-            if (soundTestScreen->animFrame >= 115
-                && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_LEFT) {
+            if (soundTestScreen->animFrame >= 115 && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_LEFT) {
                 soundTestScreen->creamDanceAnimStep = CREAM_DANCE_STEP_SECOND_MIDDLE;
                 SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_MIDDLE);
                 break;
             }
 
-            if (soundTestScreen->animFrame > 119
-                && soundTestScreen->creamDanceAnimStep
-                    == CREAM_DANCE_STEP_SECOND_MIDDLE) {
+            if (soundTestScreen->animFrame > 119 && soundTestScreen->creamDanceAnimStep == CREAM_DANCE_STEP_SECOND_MIDDLE) {
                 soundTestScreen->creamDanceAnimStep = 0;
                 SoundTestScreenSetCreamAnim(CREAM_ANIM_DANCE_RIGHT);
                 soundTestScreen->barBeat = 0;
@@ -910,8 +845,7 @@ static void SoundTestScreenInitRegistersAndBackground(struct Task *t)
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    OptionsInitBackground(soundTestScreen->background, 0, 7, TM_SOUND_TEST_BG, 0x20,
-                          0x20, 0, 0, 0, 0);
+    OptionsInitBackground(soundTestScreen->background, 0, 7, TM_SOUND_TEST_BG, 0x20, 0x20, 0, 0, 0, 0);
 }
 
 static void SoundTestScreenSetNameDisplayPos(u8 unused_, s16 x, s16 y)

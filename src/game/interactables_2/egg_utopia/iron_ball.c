@@ -34,11 +34,9 @@ static bool32 sub_807F120(Sprite_IA95 *);
 static void TaskDestructor_Interactable095(struct Task *);
 static void DestroyInteractable095(Sprite_IA95 *);
 
-void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY)
+void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IA95), 0x2010, 0,
-                                TaskDestructor_Interactable095);
+    struct Task *t = TaskCreate(Task_Interactable095Main, sizeof(Sprite_IA95), 0x2010, 0, TaskDestructor_Interactable095);
     Sprite_IA95 *ia95 = TASK_DATA(t);
     Sprite *s;
     ia95->unk44 = 0;
@@ -97,18 +95,12 @@ static void sub_807EFC4(Sprite_IA95 *ia95)
 
     if (ia95->unk4C != 0) {
         s32 temp = me->d.uData[2] * 0x800;
-        ia95->unk44
-            = (temp
-               * SIN((ia95->unk4C * ((gStageTime + ia95->unk50) & 0xFF)) & ONE_CYCLE))
-            >> 0xF;
+        ia95->unk44 = (temp * SIN((ia95->unk4C * ((gStageTime + ia95->unk50) & 0xFF)) & ONE_CYCLE)) >> 0xF;
     }
 
     if (ia95->unk4E != 0) {
         s32 temp = (me->d.uData[3] * 0x800);
-        ia95->unk48
-            = (temp
-               * SIN((ia95->unk4E * ((gStageTime + ia95->unk50) & 0xFF)) & ONE_CYCLE))
-            >> 0xF;
+        ia95->unk48 = (temp * SIN((ia95->unk4E * ((gStageTime + ia95->unk50) & 0xFF)) & ONE_CYCLE)) >> 0xF;
     }
 
     ia95->unk3C = TO_WORLD_POS(ia95->base.spriteX, ia95->base.regionX) + I(ia95->unk44);

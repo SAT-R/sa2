@@ -24,8 +24,7 @@ void TaskDestructor_SpotLightMain(struct Task *);
 
 bool32 CreateSpotLightBeams(void)
 {
-    struct Task *t = TaskCreate(Task_SpotLightMain, sizeof(StageSpotLight), 0x2000, 0,
-                                TaskDestructor_SpotLightMain);
+    struct Task *t = TaskCreate(Task_SpotLightMain, sizeof(StageSpotLight), 0x2000, 0, TaskDestructor_SpotLightMain);
     StageSpotLight *spotLight = TASK_DATA(t);
     StageUnkTask *ut;
 
@@ -66,8 +65,7 @@ void Task_SpotLightMain(void)
     if (!(gStageFlags & STAGE_FLAG__100)) {
         ut = TASK_DATA(spotLight->t0);
 
-        if (((gStageTime & 0x7) == 0) && (ut->unkB != 0)
-            && (gDispCnt & DISPCNT_BG0_ON)) {
+        if (((gStageTime & 0x7) == 0) && (ut->unkB != 0) && (gDispCnt & DISPCNT_BG0_ON)) {
 
             if (ut->unkB < 32)
                 ut->unkB++;
@@ -98,8 +96,7 @@ void Task_SpotLightMain(void)
 
         gWinRegs[WINREG_WININ] = (WININ_WIN0_ALL | WININ_WIN1_ALL);
 
-        gWinRegs[WINREG_WINOUT]
-            = (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ) & ~WINOUT_WIN01_BG0;
+        gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ) & ~WINOUT_WIN01_BG0;
 
         spotLight->unk8 -= 0x40;
         if (spotLight->unk8 < 0x600) {

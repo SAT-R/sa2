@@ -177,8 +177,8 @@ void StartSinglePakConnect(void)
     }
 
     connectScreen->mbProgStart = gUnknown_080E01E0[connectScreen->unkFA][0];
-    connectScreen->mbProgLength = (uintptr_t)gUnknown_080E01E0[connectScreen->unkFA][1]
-        - (uintptr_t)gUnknown_080E01E0[connectScreen->unkFA][0];
+    connectScreen->mbProgLength
+        = (uintptr_t)gUnknown_080E01E0[connectScreen->unkFA][1] - (uintptr_t)gUnknown_080E01E0[connectScreen->unkFA][0];
     connectScreen->unkF0 = 0;
     connectScreen->unkF9 = 0;
     connectScreen->unkE4 = 0;
@@ -318,8 +318,7 @@ void sub_8081604(void)
                 DmaStop(1);
                 DmaStop(2);
                 DmaStop(3);
-                MultiBootStartMaster(&gMultiBootParam, connectScreen->mbProgStart + 0xC0,
-                                     connectScreen->mbProgLength - 0xC0, 4, 1);
+                MultiBootStartMaster(&gMultiBootParam, connectScreen->mbProgStart + 0xC0, connectScreen->mbProgLength - 0xC0, 4, 1);
             }
         }
     } else {
@@ -338,10 +337,8 @@ void sub_8081604(void)
     }
 
     multiBootFlags = MultiBootMain(&gMultiBootParam);
-    if (multiBootFlags == MULTIBOOT_ERROR_NO_PROBE_TARGET
-        || multiBootFlags == MULTIBOOT_ERROR_NO_DLREADY
-        || multiBootFlags == MULTIBOOT_ERROR_BOOT_FAILURE
-        || multiBootFlags == MULTIBOOT_ERROR_HANDSHAKE_FAILURE) {
+    if (multiBootFlags == MULTIBOOT_ERROR_NO_PROBE_TARGET || multiBootFlags == MULTIBOOT_ERROR_NO_DLREADY
+        || multiBootFlags == MULTIBOOT_ERROR_BOOT_FAILURE || multiBootFlags == MULTIBOOT_ERROR_HANDSHAKE_FAILURE) {
         TasksDestroyAll();
         gUnknown_03002AE4 = gUnknown_0300287C;
         gUnknown_03005390 = 0;
@@ -393,8 +390,7 @@ void sub_80818B8(void)
     u16 i, j;
     u32 temp;
     struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
-    if (gMultiSioStatusFlags & MULTI_SIO_LD_REQUEST
-        && connectScreen->unkF9 < ARRAY_COUNT(gCollectRingsSegments)) {
+    if (gMultiSioStatusFlags & MULTI_SIO_LD_REQUEST && connectScreen->unkF9 < ARRAY_COUNT(gCollectRingsSegments)) {
         gCurTask->main = sub_8081D04;
     }
 
@@ -403,17 +399,14 @@ void sub_80818B8(void)
     }
 
     gMultiSioSend.pat2.unk0 = connectScreen->unkFA;
-    gMultiSioStatusFlags
-        = MultiSioMain(&gMultiSioSend, &gMultiSioRecv, connectScreen->unkF8);
+    gMultiSioStatusFlags = MultiSioMain(&gMultiSioSend, &gMultiSioRecv, connectScreen->unkF8);
 
     if (connectScreen->unkF4 == 0) {
         MultiSioStart();
         connectScreen->unkF4 = 1;
     }
 
-    temp = ((gMultiSioStatusFlags
-             & (MULTI_SIO_CONNECTED_ID0 | MULTI_SIO_CONNECTED_ID1
-                | MULTI_SIO_CONNECTED_ID2 | MULTI_SIO_CONNECTED_ID3))
+    temp = ((gMultiSioStatusFlags & (MULTI_SIO_CONNECTED_ID0 | MULTI_SIO_CONNECTED_ID1 | MULTI_SIO_CONNECTED_ID2 | MULTI_SIO_CONNECTED_ID3))
             >> 8);
 
     for (i = 1; i < 4; i++) {
@@ -582,8 +575,7 @@ void sub_8081D04(void)
     struct SinglePakConnectScreen *connectScreen = TASK_DATA(gCurTask);
     MultiSioStop();
     gIntrTable[0] = Sio32MultiLoadIntr;
-    Sio32MultiLoadInit(gMultiSioStatusFlags & MULTI_SIO_PARENT,
-                       gCollectRingsSegments[connectScreen->unkF9]);
+    Sio32MultiLoadInit(gMultiSioStatusFlags & MULTI_SIO_PARENT, gCollectRingsSegments[connectScreen->unkF9]);
     gCurTask->main = sub_8081A5C;
 }
 
@@ -599,8 +591,7 @@ s8 sub_8081D70(UNUSED struct SinglePakConnectScreen *connectScreen)
     s8 result;
 
     for (result = 1, i = 1; i < MULTI_SIO_PLAYERS_MAX; i++) {
-        if (GetBit(gMultiBootParam.response_bit, i)
-            && GetBit(gMultiBootParam.client_bit, i)) {
+        if (GetBit(gMultiBootParam.response_bit, i) && GetBit(gMultiBootParam.client_bit, i)) {
             result++;
         }
     }

@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_options_enter_name[]
-    = INCBIN_U16("data/tilemaps/options_enter_name/palette.gbapal");
-const u8 Tiles_options_enter_name[]
-    = INCBIN_U8("data/tilemaps/options_enter_name/tiles.4bpp");
-const u16 Tilemap_options_enter_name[]
-    = INCBIN_U16("data/tilemaps/options_enter_name/tilemap.tilemap2");
+const u16 Palette_options_enter_name[] = INCBIN_U16("data/tilemaps/options_enter_name/palette.gbapal");
+const u8 Tiles_options_enter_name[] = INCBIN_U8("data/tilemaps/options_enter_name/tiles.4bpp");
+const u16 Tilemap_options_enter_name[] = INCBIN_U16("data/tilemaps/options_enter_name/tilemap.tilemap2");
 
 const Tilemap options_enter_name = {
     .xTiles = 30,

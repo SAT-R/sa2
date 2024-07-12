@@ -60,43 +60,34 @@ static void sub_808E114(void);
 
 // slides
 static const u16 sTilemapsCharacterSlides[] = {
-    TM_STORYFRAME_CREAM_UNLOCK_0,    TM_STORYFRAME_CREAM_UNLOCK_1,
-    TM_STORYFRAME_CREAM_UNLOCK_2,    TM_STORYFRAME_CREAM_UNLOCK_3,
+    TM_STORYFRAME_CREAM_UNLOCK_0,    TM_STORYFRAME_CREAM_UNLOCK_1,    TM_STORYFRAME_CREAM_UNLOCK_2,    TM_STORYFRAME_CREAM_UNLOCK_3,
 
-    TM_STORYFRAME_KNUCKLES_UNLOCK_0, TM_STORYFRAME_KNUCKLES_UNLOCK_1,
-    TM_STORYFRAME_KNUCKLES_UNLOCK_2, TM_STORYFRAME_KNUCKLES_UNLOCK_3,
+    TM_STORYFRAME_KNUCKLES_UNLOCK_0, TM_STORYFRAME_KNUCKLES_UNLOCK_1, TM_STORYFRAME_KNUCKLES_UNLOCK_2, TM_STORYFRAME_KNUCKLES_UNLOCK_3,
 
-    TM_STORYFRAME_TAILS_UNLOCK_0,    TM_STORYFRAME_TAILS_UNLOCK_1,
-    TM_STORYFRAME_TAILS_UNLOCK_2,    TM_STORYFRAME_TAILS_UNLOCK_3,
+    TM_STORYFRAME_TAILS_UNLOCK_0,    TM_STORYFRAME_TAILS_UNLOCK_1,    TM_STORYFRAME_TAILS_UNLOCK_2,    TM_STORYFRAME_TAILS_UNLOCK_3,
 };
 
-#define SLIDES_GROUP(i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14)   \
+#define SLIDES_GROUP(i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14)                                                      \
     i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14
 
 static const u16 sTilemapsCharacterDialogue[] = {
     /* LANG_JAPANESE */
-    SLIDES_GROUP(270, 271, 272, 273, 274, 304, 305, 306, 307, 308, 338, 339, 340, 341,
-                 342),
+    SLIDES_GROUP(270, 271, 272, 273, 274, 304, 305, 306, 307, 308, 338, 339, 340, 341, 342),
 
     /* LANG_ENGLISH */
-    SLIDES_GROUP(275, 276, 277, 278, 279, 309, 310, 311, 312, 313, 343, 344, 345, 346,
-                 347),
+    SLIDES_GROUP(275, 276, 277, 278, 279, 309, 310, 311, 312, 313, 343, 344, 345, 346, 347),
 
     /* LANG_FRENCH */
-    SLIDES_GROUP(285, 286, 287, 288, 289, 319, 320, 321, 322, 323, 353, 354, 355, 356,
-                 357),
+    SLIDES_GROUP(285, 286, 287, 288, 289, 319, 320, 321, 322, 323, 353, 354, 355, 356, 357),
 
     /* LANG_GERMAN */
-    SLIDES_GROUP(280, 281, 282, 283, 284, 314, 315, 316, 317, 318, 348, 349, 350, 351,
-                 352),
+    SLIDES_GROUP(280, 281, 282, 283, 284, 314, 315, 316, 317, 318, 348, 349, 350, 351, 352),
 
     /* LANG_SPANISH */
-    SLIDES_GROUP(295, 296, 297, 298, 299, 329, 330, 331, 332, 333, 363, 364, 365, 366,
-                 367),
+    SLIDES_GROUP(295, 296, 297, 298, 299, 329, 330, 331, 332, 333, 363, 364, 365, 366, 367),
 
     /* LANG_ITALIAN */
-    SLIDES_GROUP(290, 291, 292, 293, 294, 324, 325, 326, 327, 328, 358, 359, 360, 361,
-                 362),
+    SLIDES_GROUP(290, 291, 292, 293, 294, 324, 325, 326, 327, 328, 358, 359, 360, 361, 362),
 };
 
 static const u32 sAnimsCharacterRescued[] = {
@@ -389,9 +380,7 @@ static void sub_808E114(void)
         scene->unk70 = player->x - (gCamera.x * 256) - 0x4000;
     }
 
-    result
-        = sub_801F100((scene->unk72 >> 8) + gCamera.y,
-                      (scene->unk70 >> 8) + gCamera.x + scene->unk7C, 1, 8, sub_801EC3C);
+    result = sub_801F100((scene->unk72 >> 8) + gCamera.y, (scene->unk70 >> 8) + gCamera.x + scene->unk7C, 1, 8, sub_801EC3C);
 
     if (result < 0) {
         scene->unk72 += result * 0x100;
@@ -562,8 +551,7 @@ void sub_808E4C8(void)
             background->layoutVram = (void *)BG_SCREEN_ADDR(28);
             background->unk18 = 0;
             background->unk1A = 0;
-            background->tilemapId
-                = sTilemapsCharacterDialogue[scene->unk10E + 1 + (lang * 15)];
+            background->tilemapId = sTilemapsCharacterDialogue[scene->unk10E + 1 + (lang * 15)];
             background->unk1E = 0;
             background->unk20 = 0;
             background->unk22 = 0;
@@ -617,11 +605,9 @@ void sub_808E6B0(void)
 
     if (UpdateScreenFade(&scene->unk100) == SCREEN_FADE_COMPLETE) {
         if (gCurrentLevel >= gLoadedSaveGame->unlockedLevels[gSelectedCharacter]) {
-            CreateCourseSelectionScreen(
-                gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
+            CreateCourseSelectionScreen(gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 1);
         } else {
-            CreateCourseSelectionScreen(
-                gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 4);
+            CreateCourseSelectionScreen(gCurrentLevel, gLoadedSaveGame->unlockedLevels[gSelectedCharacter], 4);
         }
         TaskDestroy(gCurTask);
     }
@@ -629,8 +615,7 @@ void sub_808E6B0(void)
 
 void CreateCharacterUnlockCutScene(u8 zone)
 {
-    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene),
-                                0x1000, 0, NULL);
+    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = zone * 4;
     scene->unk10E = zone * 5;
@@ -641,8 +626,7 @@ void CreateCharacterUnlockCutScene(u8 zone)
 
 void CreateCreamUnlockCutScene(void)
 {
-    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene),
-                                0x1000, 0, NULL);
+    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 0;
     scene->unk10E = 0;
@@ -652,8 +636,7 @@ void CreateCreamUnlockCutScene(void)
 
 void CreateTailsUnlockCutScene(void)
 {
-    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene),
-                                0x1000, 0, NULL);
+    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 8;
     scene->unk10E = 10;
@@ -663,8 +646,7 @@ void CreateTailsUnlockCutScene(void)
 
 void CreateKnucklesUnlockCutScene(void)
 {
-    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene),
-                                0x1000, 0, NULL);
+    struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = 4;
     scene->unk10E = 5;

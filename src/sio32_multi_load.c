@@ -19,14 +19,12 @@ u32 Sio32MultiLoadMain(u32 *progressCounterp)
 
     switch (gSio32MultiLoadArea.state) {
         case 0:
-            if (gSio32MultiLoadArea.type
-                || gSio32MultiLoadArea.frameCounter) // Slave SIO Mode switch delay wait
+            if (gSio32MultiLoadArea.type || gSio32MultiLoadArea.frameCounter) // Slave SIO Mode switch delay wait
                 gSio32MultiLoadArea.state = 1;
             break;
         case 1:
             if (gSio32MultiLoadArea.type == SIO_SCK_IN) {
-                if (gSio32MultiLoadArea.frameCounter
-                    < SIO32ML_MODE_WAIT_FRAMES) // Master wait
+                if (gSio32MultiLoadArea.frameCounter < SIO32ML_MODE_WAIT_FRAMES) // Master wait
                     break;
             } else // Slave
                 REG_SIOCNT = SIO_32BIT_MODE; // Switches to SIO mode
@@ -34,9 +32,7 @@ u32 Sio32MultiLoadMain(u32 *progressCounterp)
             REG_IF = INTR_FLAG_SERIAL | SIO32ML_TIMER_INTR_FLAG; // Resets IF
             if (gSio32MultiLoadArea.type == SIO_SCK_IN) { // Sets Master
                 REG_SIOCNT |= SIO_ENABLE; // Starts communication
-                REG_SIO32ML_TIMER = SIO32ML_TIMER_COUNT
-                    | ((TIMER_1CLK | TIMER_INTR_ENABLE | TIMER_ENABLE)
-                       << 16); // Starts timer
+                REG_SIO32ML_TIMER = SIO32ML_TIMER_COUNT | ((TIMER_1CLK | TIMER_INTR_ENABLE | TIMER_ENABLE) << 16); // Starts timer
                 REG_IME = 0;
                 REG_IE |= SIO32ML_TIMER_INTR_FLAG; // Enables timer interrupt
                 REG_IME = 1;
@@ -59,25 +55,19 @@ u32 Sio32MultiLoadMain(u32 *progressCounterp)
             if (progressCounterp)
                 *progressCounterp = dataCounter; // Set progress counter
             if (gSio32MultiLoadArea.type != SIO_SCK_IN) { // Slave
-                while (gSio32MultiLoadArea.checkSumCounter
-                       < dataCounter) // Receiving data sum check
-                    gSio32MultiLoadArea.checkSumTmp
-                        += ((s32 *)gSio32MultiLoadArea
-                                .datap)[gSio32MultiLoadArea.checkSumCounter++];
+                while (gSio32MultiLoadArea.checkSumCounter < dataCounter) // Receiving data sum check
+                    gSio32MultiLoadArea.checkSumTmp += ((s32 *)gSio32MultiLoadArea.datap)[gSio32MultiLoadArea.checkSumCounter++];
                 if (dataCounterBak > SIO32ML_BLOCK_SIZE / 4)
-                    if ((gSio32MultiLoadArea.checkSum += gSio32MultiLoadArea.checkSumTmp)
-                        == -1)
+                    if ((gSio32MultiLoadArea.checkSum += gSio32MultiLoadArea.checkSumTmp) == -1)
                         gSio32MultiLoadArea.downloadSuccessFlag = 1; // Succeeds download
             }
             if (dataCounterBak > SIO32ML_BLOCK_SIZE / 4 // Complete communication
-                || gSio32MultiLoadArea.frameCounter
-                    == 0x8C) // SIO32ML_LD_TIMEOUT_FRAMES in SDK doesn't match
+                || gSio32MultiLoadArea.frameCounter == 0x8C) // SIO32ML_LD_TIMEOUT_FRAMES in SDK doesn't match
                 gSio32MultiLoadArea.state = 3; // Load time out
             break;
         case 3:
             REG_IME = 0;
-            REG_IE &= ~(INTR_FLAG_SERIAL
-                        | SIO32ML_TIMER_INTR_FLAG); // Disables SIO and timer interrupt
+            REG_IE &= ~(INTR_FLAG_SERIAL | SIO32ML_TIMER_INTR_FLAG); // Disables SIO and timer interrupt
             REG_IME = 1;
             REG_SIOCNT = SIO_32BIT_MODE; // Stops SIO32
             *(vu32 *)REG_ADDR_SIOCNT = SIO_MULTI_MODE; // Switches to SIO mode
@@ -116,9 +106,8 @@ void Sio32MultiLoadIntr(void)
         // Process sending data
         if (gSio32MultiLoadArea.dataCounter < 0) // Sets synchronous data
             REG_SIODATA32 = SIO32ML_SYNC_DATA;
-        else if (gSio32MultiLoadArea.dataCounter
-                 < SIO32ML_BLOCK_SIZE / 4) // Sets sending
-                                           // data
+        else if (gSio32MultiLoadArea.dataCounter < SIO32ML_BLOCK_SIZE / 4) // Sets sending
+                                                                           // data
             REG_SIODATA32 = gSio32MultiLoadArea.datap[gSio32MultiLoadArea.dataCounter];
         else
             REG_SIODATA32 = gSio32MultiLoadArea.checkSum; // Sets check sum
@@ -139,8 +128,7 @@ void Sio32MultiLoadIntr(void)
         // Master starts to sending
         if (gSio32MultiLoadArea.type == SIO_SCK_IN) {
             REG_SIOCNT |= SIO_ENABLE; // Restarts sending
-            REG_SIO32ML_TIMER_H
-                = TIMER_1CLK | TIMER_INTR_ENABLE | TIMER_ENABLE; // Restarts timer
+            REG_SIO32ML_TIMER_H = TIMER_1CLK | TIMER_INTR_ENABLE | TIMER_ENABLE; // Restarts timer
         }
     }
 }
@@ -155,8 +143,7 @@ void Sio32MultiLoadInit(u32 type, void *datap)
     UNUSED s32 i; // declared in SDK
 
     REG_IME = 0;
-    REG_IE &= ~(INTR_FLAG_SERIAL
-                | SIO32ML_TIMER_INTR_FLAG); // Disables SIO and timer interrupt
+    REG_IE &= ~(INTR_FLAG_SERIAL | SIO32ML_TIMER_INTR_FLAG); // Disables SIO and timer interrupt
     REG_IME = 1;
     CpuFill32(0, &gSio32MultiLoadArea,
               sizeof(gSio32MultiLoadArea)); // Clears 32bit serial
@@ -164,8 +151,7 @@ void Sio32MultiLoadInit(u32 type, void *datap)
 #ifdef SIO32ML_DI_FUNC_FAST // Copies function
     CpuCopy32(Sio32MultiLoadIntr, gMultiSioIntrFuncBuf, sizeof(gMultiSioIntrFuncBuf));
 #endif
-    *(vu32 *)REG_ADDR_SIOCNT
-        = SIO_MULTI_MODE | MULTI_SIO_BAUD_RATE_NO; // Stops multi-play communication
+    *(vu32 *)REG_ADDR_SIOCNT = SIO_MULTI_MODE | MULTI_SIO_BAUD_RATE_NO; // Stops multi-play communication
     gSio32MultiLoadArea.datap = datap; // Sets data pointer
     gSio32MultiLoadArea.dataCounter = -1;
     if (type) { // Sets Master

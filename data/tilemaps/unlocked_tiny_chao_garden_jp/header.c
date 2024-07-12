@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_unlocked_tiny_chao_garden_jp[]
-    = INCBIN_U16("data/tilemaps/unlocked_tiny_chao_garden_jp/palette.gbapal");
-const u8 Tiles_unlocked_tiny_chao_garden_jp[]
-    = INCBIN_U8("data/tilemaps/unlocked_tiny_chao_garden_jp/tiles.4bpp");
-const u16 Tilemap_unlocked_tiny_chao_garden_jp[]
-    = INCBIN_U16("data/tilemaps/unlocked_tiny_chao_garden_jp/tilemap.tilemap2");
+const u16 Palette_unlocked_tiny_chao_garden_jp[] = INCBIN_U16("data/tilemaps/unlocked_tiny_chao_garden_jp/palette.gbapal");
+const u8 Tiles_unlocked_tiny_chao_garden_jp[] = INCBIN_U8("data/tilemaps/unlocked_tiny_chao_garden_jp/tiles.4bpp");
+const u16 Tilemap_unlocked_tiny_chao_garden_jp[] = INCBIN_U16("data/tilemaps/unlocked_tiny_chao_garden_jp/tilemap.tilemap2");
 
 const Tilemap unlocked_tiny_chao_garden_jp = {
     .xTiles = 30,

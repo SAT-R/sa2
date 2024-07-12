@@ -48,15 +48,9 @@ static const struct UNK_8C87920_SWAPPED gUnknown_080DF794[3] = {
 typedef void (*PlayerStatePhysicsHandler)(void);
 
 static PlayerStatePhysicsHandler const sPlayerStatePhysicsHandlers[18] = {
-    NULL,        sub_806F9CC,
-    sub_806F9CC, sub_806F9CC,
-    sub_806F9CC, sub_806EFB4,
-    sub_806F034, sub_806F3C4,
-    sub_806F36C, sub_806F9E4,
-    sub_806F0C4, sub_806F154,
-    sub_806F1E8, PlayerStatePhysics_SlowToStop,
-    sub_806FB00, sub_806F300,
-    sub_806F300, NULL,
+    NULL,        sub_806F9CC, sub_806F9CC, sub_806F9CC, sub_806F9CC, sub_806EFB4, sub_806F034,
+    sub_806F3C4, sub_806F36C, sub_806F9E4, sub_806F0C4, sub_806F154, sub_806F1E8, PlayerStatePhysics_SlowToStop,
+    sub_806FB00, sub_806F300, sub_806F300, NULL,
 };
 
 static void Task_PhysicsMain(void)
@@ -66,8 +60,7 @@ static void Task_PhysicsMain(void)
     struct SpecialStagePlayer *player = TASK_DATA(stage->playerTask);
 
     PlayerStatePhysicsHandler stateHandlers[18];
-    memcpy(stateHandlers, sPlayerStatePhysicsHandlers,
-           sizeof(sPlayerStatePhysicsHandlers));
+    memcpy(stateHandlers, sPlayerStatePhysicsHandlers, sizeof(sPlayerStatePhysicsHandlers));
 
     switch (stage->state) {
         case 4:
@@ -442,10 +435,8 @@ void sub_806F468(void)
     s16 playerY = Q_16_16_TO_INT(player->y);
 
     while (worldElements->type != -1) {
-        if (playerX >= worldElements->x
-            && playerX < (worldElements->x + worldElements->width)) {
-            if (playerY >= worldElements->y
-                && playerY < (worldElements->y + worldElements->length)) {
+        if (playerX >= worldElements->x && playerX < (worldElements->x + worldElements->width)) {
+            if (playerY >= worldElements->y && playerY < (worldElements->y + worldElements->length)) {
                 switch (worldElements->type) {
                     case 0:
                         player->speed = player->unkE8;
@@ -454,9 +445,7 @@ void sub_806F468(void)
                         m4aSongNumStart(SE_DASH_RING);
                         return;
                     case 1:
-                        player->speed = player->speed < MIN_BOUNCE_SPEED
-                            ? MIN_BOUNCE_SPEED
-                            : player->speed;
+                        player->speed = player->speed < MIN_BOUNCE_SPEED ? MIN_BOUNCE_SPEED : player->speed;
 
                         // BOUNCING
                         player->state = 9;
@@ -671,8 +660,7 @@ s16 sub_806F84C(s32 dX, s32 dY)
 
 struct Task *CreateSpecialStagePhysics(struct SpecialStage *stage)
 {
-    struct Task *t = TaskCreate(Task_PhysicsMain, sizeof(struct SpecialStagePhysics),
-                                0x4000, 0, NULL);
+    struct Task *t = TaskCreate(Task_PhysicsMain, sizeof(struct SpecialStagePhysics), 0x4000, 0, NULL);
     struct SpecialStagePhysics *physics = TASK_DATA(t);
 
     physics->stage = stage;

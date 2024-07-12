@@ -214,16 +214,14 @@ const Tilemap *const gTilemaps[] = {
     [TM_UNLOCKED_AMY_ES] = &unlocked_amy_es,
     [TM_CUTSCENE_FINAL_ENDING_LAND_FG] = &cutscene_final_ending_land_fg,
     [TM_CUTSCENE_FINAL_ENDING_LAND_BG] = &cutscene_final_ending_land_bg,
-    [TM_CUTSCENE_FINAL_ENDING_LAND_FLOWER_FIELD]
-    = &cutscene_final_ending_land_flower_field,
+    [TM_CUTSCENE_FINAL_ENDING_LAND_FLOWER_FIELD] = &cutscene_final_ending_land_flower_field,
     [TM_CUTSCENE_FINAL_ENDING_LAND_BG_ALT] = &cutscene_final_ending_land_bg_alt,
     [TM_UNK_SPACE_BG] = &unk_space_bg,
     [TM_STORYFRAME_SONIC_CATCHES_VANILLA] = &storyframe_sonic_catches_vanilla,
     [TM_STORYFRAME_SONIC_FINDS_FRIENDS] = &storyframe_sonic_finds_friends,
     [TM_STORYFRAME_SONIC_PATS_TAILS] = &storyframe_sonic_pats_tails,
     [TM_STORYFRAME_CREAM_HUGS_VANILLA] = &storyframe_cream_hugs_vanilla,
-    [TM_STORYFRAME_CREAM_TAILS_VANILLA_LOOK_AROUND]
-    = &storyframe_cream_tails_vanilla_look_around,
+    [TM_STORYFRAME_CREAM_TAILS_VANILLA_LOOK_AROUND] = &storyframe_cream_tails_vanilla_look_around,
     [TM_STORYFRAME_CREAM_CHEESE_VANILLA_HAPPY] = &storyframe_cream_cheese_vanilla_happy,
     [TM_STORYFRAME_SONIC_LEAVES_0] = &storyframe_sonic_leaves_0,
     [TM_STORYFRAME_SONIC_LEAVES_1] = &storyframe_sonic_leaves_1,
@@ -387,9 +385,7 @@ const Tilemap *const gTilemaps[] = {
     [TM_EXTRA_BOSS_COCKPIT] = &extra_boss_cockpit,
     [TM_EXTRA_BOSS_BACKGROUND_COPY] = &extra_boss_background_copy,
     [TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP] = &cutscene_vanilla_kidnapped_full_map,
-    [TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP_COPY]
-    = &cutscene_vanilla_kidnapped_full_map_copy,
-    [TM_CUTSCENE_VANILLA_KIDNAPPED_SUPER_SONIC_ART]
-    = &cutscene_vanilla_kidnapped_super_sonic_art,
+    [TM_CUTSCENE_VANILLA_KIDNAPPED_FULL_MAP_COPY] = &cutscene_vanilla_kidnapped_full_map_copy,
+    [TM_CUTSCENE_VANILLA_KIDNAPPED_SUPER_SONIC_ART] = &cutscene_vanilla_kidnapped_super_sonic_art,
     [TM_REGULAR_FINAL_BOSS_BUILDING_BG] = &zone_7_act_1_bg,
 };

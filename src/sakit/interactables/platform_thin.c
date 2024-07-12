@@ -77,11 +77,9 @@ static const u16 sPlatformBreakAnimations[][6] = {
 };
 static const u16 unused = 0;
 
-void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                               u8 spriteY)
+void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_PlatformThinMain, sizeof(Sprite_CommonThinPlatform),
-                                0x2010, 0, TaskDestructor_PlatformThin);
+    struct Task *t = TaskCreate(Task_PlatformThinMain, sizeof(Sprite_CommonThinPlatform), 0x2010, 0, TaskDestructor_PlatformThin);
     Sprite_CommonThinPlatform *platform = TASK_DATA(t);
     Sprite *s = &platform->s;
 
@@ -98,8 +96,7 @@ void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    s->graphics.dest
-        = VramMalloc(sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][0]);
+    s->graphics.dest = VramMalloc(sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][0]);
     s->graphics.anim = sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
     s->variant = sPlatformThinAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
 
@@ -177,8 +174,7 @@ static void Task_PlatformThinMain(void)
                 case CHARACTER_SONIC:
                 case CHARACTER_AMY: {
                     anim -= gPlayerCharacterIdleAnims[player->character];
-                    if (unk64 == 0x24 && anim == 0x33 && variant == 1
-                        && player->speedAirY > 0) {
+                    if (unk64 == 0x24 && anim == 0x33 && variant == 1 && player->speedAirY > 0) {
                         player->moveState &= ~MOVESTATE_8;
                         CreatePlatformBreakParticles(x, y);
                         something = TRUE;
@@ -214,11 +210,9 @@ static void Task_PlatformThinMain(void)
     return;
 }
 // (95.35%) https://decomp.me/scratch/8xD3v
-NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc",
-         static void CreatePlatformBreakParticles(s16 x, s16 y))
+NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc", static void CreatePlatformBreakParticles(s16 x, s16 y))
 {
-    struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(Platform_D1C),
-                                0x2011, 0, TaskDestructor_PlatformBreakParticles);
+    struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(Platform_D1C), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
     Platform_D1C *platform = TASK_DATA(t);
 
     // Hack for better match
@@ -237,8 +231,7 @@ NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc"
         y -= 50;
 
         // Init base 1
-        s->graphics.dest
-            = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][0]);
+        s->graphics.dest = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][0]);
         s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][1];
         s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][2];
 
@@ -283,8 +276,7 @@ NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc"
         // Copy the transform
         DmaCopy16(3, &platform->unkC0, &platform->unkD8, 0xC);
 
-        s->graphics.dest
-            = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][3]);
+        s->graphics.dest = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][3]);
         s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
         s->variant = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][5];
         s->oamFlags = SPRITE_OAM_ORDER(8);

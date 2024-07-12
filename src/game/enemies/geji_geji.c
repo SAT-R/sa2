@@ -36,12 +36,10 @@ static const TileInfo gUnknown_080D8F50[4] = {
     { .numTiles = 12, .anim = SA2_ANIM_GEJIGEJI, .variant = 0 },
 };
 
-void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY)
+void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u8 i;
-    struct Task *t
-        = TaskCreate(sub_8057F80, sizeof(Sprite_GejiGeji), 0x4040, 0, sub_8058480);
+    struct Task *t = TaskCreate(sub_8057F80, sizeof(Sprite_GejiGeji), 0x4040, 0, sub_8058480);
     Sprite_GejiGeji *gg = TASK_DATA(t);
 
     Sprite *s = &gg->s;
@@ -74,15 +72,13 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
     SET_MAP_ENTITY_INITIALIZED(me);
 
-    SPRITE_INIT(s, gUnknown_080D8F50[gg->unk27C].numTiles,
-                gUnknown_080D8F50[gg->unk27C].anim,
-                gUnknown_080D8F50[gg->unk27C].variant, 18, 2);
+    SPRITE_INIT(s, gUnknown_080D8F50[gg->unk27C].numTiles, gUnknown_080D8F50[gg->unk27C].anim, gUnknown_080D8F50[gg->unk27C].variant, 18,
+                2);
 
     s = &gg->s2;
     s->x = 0;
     s->y = 0;
-    SPRITE_INIT(s, gUnknown_080D8F50[gg->unk27C + 2].numTiles,
-                gUnknown_080D8F50[gg->unk27C + 2].anim,
+    SPRITE_INIT(s, gUnknown_080D8F50[gg->unk27C + 2].numTiles, gUnknown_080D8F50[gg->unk27C + 2].anim,
                 gUnknown_080D8F50[gg->unk27C + 2].variant, 20, 2);
 }
 
@@ -126,22 +122,18 @@ static void sub_8057F80(void)
     ENEMY_DESTROY_IF_OFFSCREEN(gg, me, s);
 
     if (gg->unk27C) {
-        if (ENEMY_CROSSED_TOP_BORDER(gg, me)
-            && !(s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP)) {
+        if (ENEMY_CROSSED_TOP_BORDER(gg, me) && !(s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP)) {
             gg->unk27D = 0x3C;
             gCurTask->main = sub_8058264;
-        } else if (ENEMY_CROSSED_BOTTOM_BORDER(gg, me)
-                   && (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP)) {
+        } else if (ENEMY_CROSSED_BOTTOM_BORDER(gg, me) && (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP)) {
             gg->unk27D = 0x3C;
             gCurTask->main = sub_8058264;
         }
     } else {
-        if (ENEMY_CROSSED_LEFT_BORDER(gg, me)
-            && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
+        if (ENEMY_CROSSED_LEFT_BORDER(gg, me) && !(s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
             gg->unk27D = 0x3C;
             gCurTask->main = sub_8058264;
-        } else if ((ENEMY_CROSSED_RIGHT_BORDER(gg, me)
-                    && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
+        } else if ((ENEMY_CROSSED_RIGHT_BORDER(gg, me) && s->frameFlags & SPRITE_FLAG_MASK_X_FLIP)) {
             gg->unk27D = 0x3C;
             gCurTask->main = sub_8058264;
         }

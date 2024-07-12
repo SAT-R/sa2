@@ -51,12 +51,10 @@ static void sub_807FF20(void);
 static void sub_807FF88(Sprite_SpeedingPlatform *);
 static void sub_807FFB0(void);
 
-void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                   u8 spriteY)
+void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u32 i;
-    struct Task *t = TaskCreate(Task_Interactable097, sizeof(Sprite_SpeedingPlatform),
-                                0x2010, 0, TaskDestructor_Interactable097);
+    struct Task *t = TaskCreate(Task_Interactable097, sizeof(Sprite_SpeedingPlatform), 0x2010, 0, TaskDestructor_Interactable097);
     Sprite_SpeedingPlatform *platform = TASK_DATA(t);
     Sprite *s;
     platform->unk54 = 0;
@@ -108,8 +106,7 @@ static void sub_807F9F0(void)
 
     sub_807FB1C(platform);
     if (platform->unk4C && platform->unk5A > -1) {
-        s32 res = sub_801F100(platform->y + I(platform->unk48),
-                              platform->x + I(platform->unk44), 1, 8, sub_801EC3C);
+        s32 res = sub_801F100(platform->y + I(platform->unk48), platform->x + I(platform->unk44), 1, 8, sub_801EC3C);
         if (res < 0) {
             platform->unk4C = FALSE;
             gPlayer.transition = PLTRANS_PT3;
@@ -155,8 +152,7 @@ static void sub_807FB1C(Sprite_SpeedingPlatform *platform)
 
     if (PLAYER_IS_ALIVE && platform->unk4C) {
         gPlayer.x = platform->unk50 + (Q(platform->x) + platform->unk44);
-        gPlayer.y
-            = platform->unk52 + (Q(platform->y) + platform->unk48) - Q(gPlayer.unk17);
+        gPlayer.y = platform->unk52 + (Q(platform->y) + platform->unk48) - Q(gPlayer.unk17);
         platform->unk50 += gPlayer.speedAirX;
         platform->unk52 += gPlayer.speedAirY;
     }
@@ -187,8 +183,7 @@ static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)
         return FALSE;
     }
 
-    if (gPlayer.moveState
-        & (MOVESTATE_1000000 | MOVESTATE_400000 | MOVESTATE_IN_AIR | MOVESTATE_DEAD)) {
+    if (gPlayer.moveState & (MOVESTATE_1000000 | MOVESTATE_400000 | MOVESTATE_IN_AIR | MOVESTATE_DEAD)) {
         gPlayer.moveState &= ~MOVESTATE_8;
         gPlayer.unk3C = NULL;
         return FALSE;
@@ -211,8 +206,7 @@ static bool32 sub_807FC9C(Sprite_SpeedingPlatform *platform)
 static u32 sub_807FD0C(Sprite_SpeedingPlatform *platform)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp = sub_800CCB8(&platform->s, platform->x + I(platform->unk44),
-                               platform->y + I(platform->unk48), &gPlayer);
+        u32 temp = sub_800CCB8(&platform->s, platform->x + I(platform->unk44), platform->y + I(platform->unk48), &gPlayer);
 
         if (temp != 0) {
             if (temp & 0x10000) {

@@ -21,11 +21,9 @@ typedef struct {
 
 void Task_EnemySpinner(void);
 
-void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                          u8 spriteY)
+void CreateEntity_Spinner(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_EnemySpinner, sizeof(Sprite_Spinner), 0x4040, 0,
-                                TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_EnemySpinner, sizeof(Sprite_Spinner), 0x4040, 0, TaskDestructor_80095E8);
     Sprite_Spinner *spinner = TASK_DATA(t);
     Sprite *s = &spinner->s;
     spinner->base.regionX = spriteRegionX;
@@ -75,14 +73,12 @@ void Task_EnemySpinner(void)
             x1 = pos.x + s->hitboxes[1].left;
             x2 = I(p->x) + s2->hitboxes[0].left;
             if ((x1 <= x2 && x1 + (s->hitboxes[1].right - s->hitboxes[1].left) >= x2)
-                || (x1 >= x2
-                    && x2 + (s2->hitboxes[0].right - s2->hitboxes[0].left) >= x1)) {
+                || (x1 >= x2 && x2 + (s2->hitboxes[0].right - s2->hitboxes[0].left) >= x1)) {
                 s32 y1, y2;
                 y1 = pos.y + s->hitboxes[1].top;
                 y2 = I(p->y) + s2->hitboxes[0].top;
                 if ((y1 <= y2 && y1 + (s->hitboxes[1].bottom - s->hitboxes[1].top) >= y2)
-                    || (y1 >= y2
-                        && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {
+                    || (y1 >= y2 && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {
                     if ((p->itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE) {
                         sub_800CBA4(p);
                     }

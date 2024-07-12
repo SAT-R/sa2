@@ -160,8 +160,7 @@ static const u8 gUnknown_080D7AA2[] = {
 static const TaskMain gUnknown_080D7AA8[] = { sub_803CAC8, sub_803B018 };
 
 static const HammertankFunc gUnknown_080D7AB0[] = {
-    sub_803B17C, sub_803B264, sub_803CB84, sub_803B2F8,
-    sub_803CBA4, sub_803B4A0, sub_803B57C, sub_803B62C,
+    sub_803B17C, sub_803B264, sub_803CB84, sub_803B2F8, sub_803CBA4, sub_803B4A0, sub_803B57C, sub_803B62C,
 };
 
 static const u16 gUnknown_080D7AD0[][16] = {
@@ -179,8 +178,7 @@ void CreateEggHammerTankII(void)
 
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     gPseudoRandom = gStageTime;
-    t = TaskCreate(Task_EggHammerTankIIMain, sizeof(EggHammerTankII), 0x4000, 0,
-                   TaskDestructor_EggHammerTankIIMain);
+    t = TaskCreate(Task_EggHammerTankIIMain, sizeof(EggHammerTankII), 0x4000, 0, TaskDestructor_EggHammerTankIIMain);
 
     boss = TASK_DATA(t);
     if (IS_FINAL_STAGE(gCurrentLevel)) {
@@ -190,8 +188,7 @@ void CreateEggHammerTankII(void)
         } else {
             boss->unkB0 = 4;
         }
-    } else if (gDifficultyLevel != DIFFICULTY_NORMAL
-               && gGameMode != GAME_MODE_BOSS_TIME_ATTACK) {
+    } else if (gDifficultyLevel != DIFFICULTY_NORMAL && gGameMode != GAME_MODE_BOSS_TIME_ATTACK) {
         boss->unkB0 = 6;
     } else {
         boss->unkB0 = 8;
@@ -277,8 +274,7 @@ void CreateEggHammerTankII(void)
 
     s->frameFlags = (gUnknown_030054B8++) | 0x2060;
 
-    if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC
-        && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel) {
+    if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC && gLoadedSaveGame->unlockedLevels[0] <= gCurrentLevel) {
 
         s = &boss->cream;
         s->x = 0;
@@ -361,14 +357,11 @@ static void sub_803A8E4(EggHammerTankII *boss)
 #endif
 
             r2 = I(boss->x);
-            r0 = (((boss->unk54[0][5] * COS(boss->unk54[1][5] & (SIN_PERIOD - 1)))
-                   >> 0x17)
-                  - 8);
+            r0 = (((boss->unk54[0][5] * COS(boss->unk54[1][5] & (SIN_PERIOD - 1))) >> 0x17) - 8);
             pos.x = r2 + r0;
 
             r2 = I(boss->y);
-            r0 = ((boss->unk54[0][5] * SIN(boss->unk54[1][5] & (SIN_PERIOD - 1))
-                   >> 0x17));
+            r0 = ((boss->unk54[0][5] * SIN(boss->unk54[1][5] & (SIN_PERIOD - 1)) >> 0x17));
             pos.y = r2 + r0;
 
             pos.x -= I(gPlayer.x);
@@ -389,17 +382,14 @@ static void sub_803A8E4(EggHammerTankII *boss)
         sub_800CA20(s, pos.x, pos.y, 1, &gPlayer);
         Player_UpdateHomingPosition(QS(pos.x), QS(pos.y));
 
-        if (boss->unkB1 == 0
-            || ((gPlayer.speedAirY > 0 || !(gPlayer.moveState & 2))
-                && (gPlayer.moveState & 2))) {
+        if (boss->unkB1 == 0 || ((gPlayer.speedAirY > 0 || !(gPlayer.moveState & 2)) && (gPlayer.moveState & 2))) {
             if (sub_800C320(s, pos.x, pos.y, 0, &gPlayer) == 1) {
                 sub_803B6AC(boss);
             } else {
                 sub_800CA20(s, pos.x, pos.y, 0, &gPlayer);
             }
 
-            if (boss->unkB1 == 0
-                && IsColliding_Cheese(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
+            if (boss->unkB1 == 0 && IsColliding_Cheese(s, pos.x, pos.y, 0, &gPlayer) == TRUE) {
                 sub_803B6AC(boss);
             }
         }
@@ -479,9 +469,7 @@ static void sub_803AA40(void)
             if (!IS_FINAL_STAGE(gCurrentLevel)) {
                 if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
                     CreateTimeAttackResults(gCourseTime);
-                } else if (gSelectedCharacter == CHARACTER_SONIC
-                           && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC]
-                               <= gCurrentLevel) {
+                } else if (gSelectedCharacter == CHARACTER_SONIC && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
                     CreateStageResultsCutscene(0);
                 } else {
                     CreateStageResults(gCourseTime, gRingCount, gSpecialRingCount);
@@ -543,12 +531,8 @@ static void sub_803AC2C(EggHammerTankII *boss)
     y = I(boss->y) - gCamera.y;
 
     for (i = 6; i >= 0; i--) {
-        s->x = x
-            + ((COS((boss->unkC[1][i] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][i])
-               >> 23);
-        s->y = y
-            + ((SIN((boss->unkC[1][i] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][i])
-               >> 23);
+        s->x = x + ((COS((boss->unkC[1][i] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][i]) >> 23);
+        s->y = y + ((SIN((boss->unkC[1][i] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][i]) >> 23);
         DisplaySprite(s);
 
         if (boss->unkB0 != 0) {
@@ -558,10 +542,8 @@ static void sub_803AC2C(EggHammerTankII *boss)
     }
 
     s = &boss->hand;
-    s->x = x
-        + ((COS((boss->unkC[1][7] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][7]) >> 23);
-    s->y = y
-        + ((SIN((boss->unkC[1][7] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][7]) >> 23);
+    s->x = x + ((COS((boss->unkC[1][7] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][7]) >> 23);
+    s->y = y + ((SIN((boss->unkC[1][7] + 80) & (SIN_PERIOD - 1)) * boss->unkC[0][7]) >> 23);
 
     x3 = s->x;
     y3 = s->y;
@@ -585,23 +567,19 @@ static void sub_803AC2C(EggHammerTankII *boss)
     s->oamFlags = SPRITE_OAM_ORDER(25);
 
     for (i = 0; i < 6; i++) {
-        s->x = x - 8
-            + ((COS((boss->unk54[1][i]) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 23);
-        s->y = y
-            + ((SIN((boss->unk54[1][i]) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 23);
+        s->x = x - 8 + ((COS((boss->unk54[1][i]) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 23);
+        s->y = y + ((SIN((boss->unk54[1][i]) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 23);
         DisplaySprite(s);
     }
 
     s = &boss->hammer;
     transform = &boss->transform;
 
-    s->x = x - 8
-        + ((COS((boss->unk54[1][5]) & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 23);
+    s->x = x - 8 + ((COS((boss->unk54[1][5]) & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 23);
     s->y = y + ((SIN((boss->unk54[1][5]) & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 23);
     s->frameFlags = gUnknown_030054B8++ | 0x2060;
 
-    transform->rotation
-        = (boss->unk54[1][5] - (boss->unk94) + boss->unk54[1][5]) & (SIN_PERIOD - 1);
+    transform->rotation = (boss->unk54[1][5] - (boss->unk94) + boss->unk54[1][5]) & (SIN_PERIOD - 1);
     if (transform->rotation != 768) {
         transform->rotation += 10;
     }
@@ -686,8 +664,7 @@ static void sub_803B17C(EggHammerTankII *boss)
     boss->unk54[1][0] = boss->unk94;
 
     for (i = 1; i < ARRAY_COUNT(boss->unk54[0]); i++) {
-        boss->unk54[1][i]
-            += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i + 8]);
+        boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i + 8]);
     }
 
     boss->timer -= 1;
@@ -753,16 +730,11 @@ static void sub_803B2F8(EggHammerTankII *boss)
     boss->unk54[1][0] = boss->unk94;
 
     for (i = 1; i < 8; i++) {
-        boss->unk54[1][i]
-            += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i]);
+        boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i]);
     }
 
-    x = I(boss->x)
-        + ((boss->unk54[0][7] * COS((boss->unk54[1][7] - val) & (SIN_PERIOD - 1)))
-           >> 0x17);
-    y = I(boss->y)
-        + ((boss->unk54[0][7] * SIN((boss->unk54[1][7] - val) & (SIN_PERIOD - 1)))
-           >> 0x17);
+    x = I(boss->x) + ((boss->unk54[0][7] * COS((boss->unk54[1][7] - val) & (SIN_PERIOD - 1))) >> 0x17);
+    y = I(boss->y) + ((boss->unk54[0][7] * SIN((boss->unk54[1][7] - val) & (SIN_PERIOD - 1))) >> 0x17);
 
     result = sub_801E6D4(y, x, 1, 8, NULL, sub_801EE64);
 
@@ -772,8 +744,7 @@ static void sub_803B2F8(EggHammerTankII *boss)
         boss->unkA0 = 4;
 
         result = sub_8004418(SIN((boss->unk54[1][7] + val) & (SIN_PERIOD - 1)) >> 6,
-                             (COS((boss->unk54[1][7] + val) & (SIN_PERIOD - 1)) >> 6)
-                                 + result);
+                             (COS((boss->unk54[1][7] + val) & (SIN_PERIOD - 1)) >> 6) + result);
 
         for (i = 0; i < 8; i++) {
             boss->unk54[1][i] = result;
@@ -798,8 +769,7 @@ static void sub_803B4A0(EggHammerTankII *boss)
     boss->unk54[1][0] = boss->unk94;
 
     for (i = 1; i < 8; i++) {
-        boss->unk54[1][i]
-            += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i + 8]);
+        boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i + 8]);
     }
 
     for (i = 0, val = 1; i < 5; i++) {
@@ -868,8 +838,7 @@ static void sub_803B62C(EggHammerTankII *boss)
 
     boss->unk54[1][0] = boss->unk94;
     for (i = 1; i < 8; i++) {
-        boss->unk54[1][i]
-            += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i]);
+        boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i]);
     }
 
     boss->timer--;
@@ -980,8 +949,7 @@ static void sub_803B84C(EggHammerTankII *boss)
             unkB4->unk278[i][0] += unkB4->unk278[i][2];
             unkB4->unk278[i][1] += unkB4->unk278[i][3];
 
-            result1 = sub_801F100(I(unkB4->unk278[i][1]), I(unkB4->unk278[i][0]), 1, 8,
-                                  sub_801EC3C);
+            result1 = sub_801F100(I(unkB4->unk278[i][1]), I(unkB4->unk278[i][0]), 1, 8, sub_801EC3C);
             if (result1 < 0) {
                 s32 r0;
                 if (unkB4->unk278[i][4] != 0) {
@@ -1028,8 +996,7 @@ static void sub_803B84C(EggHammerTankII *boss)
 
         unkB4->unkF8[i][1] += unkB4->unkF8[i][3];
 
-        result = sub_801F100(I(unkB4->unkF8[i][1]) + 5, I(unkB4->unkF8[i][0]), 1, 8,
-                             sub_801EC3C);
+        result = sub_801F100(I(unkB4->unkF8[i][1]) + 5, I(unkB4->unkF8[i][0]), 1, 8, sub_801EC3C);
 
         if (result < 0) {
             if (unkB4->unkF8[i][4] != 0) {
@@ -1053,8 +1020,7 @@ static void sub_803B84C(EggHammerTankII *boss)
 
         unkB4->unk1B8[i][1] += unkB4->unk1B8[i][3];
 
-        result = sub_801F100(I(unkB4->unk1B8[i][1]) + 5, I(unkB4->unk1B8[i][0]), 1, 8,
-                             sub_801EC3C);
+        result = sub_801F100(I(unkB4->unk1B8[i][1]) + 5, I(unkB4->unk1B8[i][0]), 1, 8, sub_801EC3C);
 
         if (result < 0) {
             if (unkB4->unk1B8[i][4] != 0) {
@@ -1189,11 +1155,9 @@ static void sub_803BDB8(void)
         unkB4->unkF8[i][0] = Q(unkB4->unkF8[i][0]);
         unkB4->unkF8[i][1] = Q(unkB4->unkF8[i][1]);
 
-        unkB4->unkF8[i][2] = boss->speedX
-            + ((COS(boss->unkC[1][i] & (SIN_PERIOD - 1)) * boss->unkC[0][i]) >> 18);
+        unkB4->unkF8[i][2] = boss->speedX + ((COS(boss->unkC[1][i] & (SIN_PERIOD - 1)) * boss->unkC[0][i]) >> 18);
 
-        unkB4->unkF8[i][3]
-            = (SIN(boss->unkC[1][i] & (SIN_PERIOD - 1)) * boss->unkC[0][i]) >> 18;
+        unkB4->unkF8[i][3] = (SIN(boss->unkC[1][i] & (SIN_PERIOD - 1)) * boss->unkC[0][i]) >> 18;
         unkB4->unkF8[i][4] = 3;
         unkB4->unkF8[i][5] = 30;
     }
@@ -1201,26 +1165,17 @@ static void sub_803BDB8(void)
     x = boss->x;
     y = boss->y;
     for (i = 0; i < 8; i++) {
-        unkB4->unk1B8[i][0] = x
-            + ((COS((boss->unk54[1][i] + 768) & (SIN_PERIOD - 1)) * boss->unk54[0][i])
-               >> 0xF);
-        unkB4->unk1B8[i][1] = y
-            + ((SIN((boss->unk54[1][i] + 768) & (SIN_PERIOD - 1)) * boss->unk54[0][i])
-               >> 0xf);
-        unkB4->unk1B8[i][2] = boss->speedX
-            + ((COS((boss->unk54[1][i]) & (SIN_PERIOD - 1)) * boss->unk54[0][i])
-               >> 0x12);
-        unkB4->unk1B8[i][3]
-            = (SIN(boss->unk54[1][i] & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 18;
+        unkB4->unk1B8[i][0] = x + ((COS((boss->unk54[1][i] + 768) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 0xF);
+        unkB4->unk1B8[i][1] = y + ((SIN((boss->unk54[1][i] + 768) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 0xf);
+        unkB4->unk1B8[i][2] = boss->speedX + ((COS((boss->unk54[1][i]) & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 0x12);
+        unkB4->unk1B8[i][3] = (SIN(boss->unk54[1][i] & (SIN_PERIOD - 1)) * boss->unk54[0][i]) >> 18;
         unkB4->unk1B8[i][4] = 3;
         unkB4->unk1B8[i][5] = 30;
     }
 
     transform = &boss->transform;
-    unkB4->unkD0
-        = x + ((COS(boss->unk54[1][5] & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 15);
-    unkB4->unkD4
-        = y + ((SIN(boss->unk54[1][5] & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 15);
+    unkB4->unkD0 = x + ((COS(boss->unk54[1][5] & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 15);
+    unkB4->unkD4 = y + ((SIN(boss->unk54[1][5] & (SIN_PERIOD - 1)) * boss->unk54[0][5]) >> 15);
     unkB4->unkD8 = boss->speedX;
     unkB4->unkDC = boss->speedY - 2048;
     unkB4->unk2D8 = transform->rotation;
@@ -1581,8 +1536,7 @@ static void sub_803CB18(EggHammerTankII *boss)
     boss->unkC[1][0] = boss->unk50;
 
     for (i = 1; i < ARRAY_COUNT(boss->unkC[0]); i++) {
-        boss->unkC[1][i] += I(
-            (boss->unkC[1][i - 1] - boss->unkC[1][i]) * gUnknown_080D7A28[i] - Q(12));
+        boss->unkC[1][i] += I((boss->unkC[1][i - 1] - boss->unkC[1][i]) * gUnknown_080D7A28[i] - Q(12));
     }
 }
 

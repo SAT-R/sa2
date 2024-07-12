@@ -50,36 +50,32 @@ static const TileInfo sUiText[] = {
     [TextElementOffset(LanguageIndex(LANG_JAPANESE), 3, ELEMENT_NO)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_MSG_JAPANESE_9, 18, SA2_ANIM_MP_MSG),
 
-    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_TITLE)] = TextElementAlt4(
-        SA2_ANIM_VARIANT_MP_COMM_MSG_PLAY_AGAIN, 48, SA2_ANIM_MP_COMM_MSG_EN),
+    [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_TITLE)]
+    = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_PLAY_AGAIN, 48, SA2_ANIM_MP_COMM_MSG_EN),
     [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_YES)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_YES, 10, SA2_ANIM_MP_COMM_MSG_EN),
     [TextElementOffset(LanguageIndex(LANG_ENGLISH), 3, ELEMENT_NO)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_NO, 10, SA2_ANIM_MP_COMM_MSG_EN),
 
-    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(2, 69, SA2_ANIM_MP_COMM_MSG_DE),
+    [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 69, SA2_ANIM_MP_COMM_MSG_DE),
     [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_YES)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_YES, 15, SA2_ANIM_MP_COMM_MSG_DE),
     [TextElementOffset(LanguageIndex(LANG_GERMAN), 3, ELEMENT_NO)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_NO, 21, SA2_ANIM_MP_COMM_MSG_DE),
 
-    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(2, 39, SA2_ANIM_MP_COMM_MSG_FR),
+    [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 39, SA2_ANIM_MP_COMM_MSG_FR),
     [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_YES)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_YES, 18, SA2_ANIM_MP_COMM_MSG_FR),
     [TextElementOffset(LanguageIndex(LANG_FRENCH), 3, ELEMENT_NO)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_NO, 18, SA2_ANIM_MP_COMM_MSG_FR),
 
-    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(2, 69, SA2_ANIM_MP_COMM_MSG_ES),
+    [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 69, SA2_ANIM_MP_COMM_MSG_ES),
     [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_YES)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_YES, 9, SA2_ANIM_MP_COMM_MSG_ES),
     [TextElementOffset(LanguageIndex(LANG_SPANISH), 3, ELEMENT_NO)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_NO, 15, SA2_ANIM_MP_COMM_MSG_ES),
 
-    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_TITLE)]
-    = TextElementAlt4(2, 69, SA2_ANIM_MP_COMM_MSG_IT),
+    [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_TITLE)] = TextElementAlt4(2, 69, SA2_ANIM_MP_COMM_MSG_IT),
     [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_YES)]
     = TextElementAlt4(SA2_ANIM_VARIANT_MP_COMM_MSG_YES, 9, SA2_ANIM_MP_COMM_MSG_IT),
     [TextElementOffset(LanguageIndex(LANG_ITALIAN), 3, ELEMENT_NO)]
@@ -102,9 +98,7 @@ static void StartMultiplayerExitAnim(struct MultiplayerLobbyScreen *);
 
 void CreateMultiplayerLobbyScreen(void)
 {
-    struct Task *t
-        = TaskCreate(Task_FadeInOrHandleExit, sizeof(struct MultiplayerLobbyScreen),
-                     0x1000, 0, MultiplayerLobbyScreenOnDestroy);
+    struct Task *t = TaskCreate(Task_FadeInOrHandleExit, sizeof(struct MultiplayerLobbyScreen), 0x1000, 0, MultiplayerLobbyScreenOnDestroy);
     struct MultiplayerLobbyScreen *lobbyScreen = TASK_DATA(t);
 
     lobbyScreen->fadeInComplete = FALSE;
@@ -195,8 +189,7 @@ static void CreateUI(struct MultiplayerLobbyScreen *lobbyScreen)
 
     for (i = 0; i < ARRAY_COUNT(lobbyScreen->uiElements); i++) {
         s = &lobbyScreen->uiElements[i];
-        s->graphics.dest
-            = VramMalloc(sUiText[TextElementOffsetAlt(lang, 3, i)].numTiles);
+        s->graphics.dest = VramMalloc(sUiText[TextElementOffsetAlt(lang, 3, i)].numTiles);
         s->graphics.anim = sUiText[TextElementOffsetAlt(lang, 3, i)].anim;
         s->variant = sUiText[TextElementOffsetAlt(lang, 3, i)].variant;
         s->prevVariant = -1;
@@ -259,9 +252,7 @@ static void Task_FadeInOrHandleExit(void)
                         gMultiplayerMissingHeartbeats[i] = 0;
                     }
                 } else {
-                    CreateCharacterSelectionScreen(0,
-                                                   gMultiplayerUnlockedCharacters
-                                                       & CHARACTER_BIT(CHARACTER_AMY));
+                    CreateCharacterSelectionScreen(0, gMultiplayerUnlockedCharacters & CHARACTER_BIT(CHARACTER_AMY));
                 }
                 return;
             } else {
@@ -301,8 +292,7 @@ static void ScreenMain(void)
     }
 
     if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT)
-        && (recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_POS
-            || recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_MOVE)) {
+        && (recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_POS || recv->pat0.unk0 == MSG_VS_LOBBY_CURSOR_MOVE)) {
         lobbyScreen->cursor = recv->pat0.unk2;
         // cursor moved
         if (recv->pat0.unk3 != 0) {
@@ -490,8 +480,7 @@ static void RenderUI(struct MultiplayerLobbyScreen *lobbyScreen)
     Sprite *s = &lobbyScreen->chao;
     // Chao anim finished
     if (!UpdateSpriteAnimation(s)) {
-        if (lobbyScreen->cursor != CURSOR_YES
-            && s->graphics.anim == SA2_ANIM_MP_CHEESE_WAVING) {
+        if (lobbyScreen->cursor != CURSOR_YES && s->graphics.anim == SA2_ANIM_MP_CHEESE_WAVING) {
             s->variant = 1;
         } else {
             if (s->variant == 6) {
@@ -560,8 +549,7 @@ static void ExitToCharacterSelect(struct MultiplayerLobbyScreen *lobbyScreen)
 
 static bool8 CatchInvalidPacket(union MultiSioData *packet)
 {
-    if (packet->pat0.unk0 <= MSG_VS_LOBBY_EXIT
-        && packet->pat0.unk0 >= MSG_VS_LOBBY_CURSOR_POS) {
+    if (packet->pat0.unk0 <= MSG_VS_LOBBY_EXIT && packet->pat0.unk0 >= MSG_VS_LOBBY_CURSOR_POS) {
         return FALSE;
     }
 

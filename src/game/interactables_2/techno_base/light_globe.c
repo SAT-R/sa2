@@ -31,11 +31,9 @@ static void sub_807B318(Sprite_LightGlobe *);
 static void sub_807B350(Sprite_LightGlobe *);
 static void sub_807B3B0(void);
 
-void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                             u8 spriteY)
+void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable080, sizeof(Sprite_LightGlobe), 0x2010,
-                                0, TaskDestructor_Interactable080);
+    struct Task *t = TaskCreate(Task_Interactable080, sizeof(Sprite_LightGlobe), 0x2010, 0, TaskDestructor_Interactable080);
     Sprite_LightGlobe *globe = TASK_DATA(t);
     Sprite *s;
 

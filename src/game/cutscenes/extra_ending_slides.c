@@ -37,8 +37,7 @@ void CreateExtraEndingSlidesCutScene(void)
     gUnknown_03002280[0][2] = 0xFF;
     gUnknown_03002280[0][3] = 0x20;
 
-    t = TaskCreate(sub_8091590, sizeof(struct ExtraEndingCutSceneSlides), 0x3100, 0,
-                   sub_8091680);
+    t = TaskCreate(sub_8091590, sizeof(struct ExtraEndingCutSceneSlides), 0x3100, 0, sub_8091680);
     scene = TASK_DATA(t);
 
     scene->unk4C = 0xF0;

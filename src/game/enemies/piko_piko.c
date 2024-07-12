@@ -27,12 +27,10 @@ static void TaskDestructor_PikoPiko(struct Task *);
 
 #define ENEMY_SPEED_PIKOPIKO Q(1.0)
 
-void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY)
+void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (DIFFICULTY_LEVEL_IS_NOT_EASY) {
-        struct Task *t = TaskCreate(Task_PikoPiko, sizeof(Sprite_PikoPiko), 0x4080, 0,
-                                    TaskDestructor_PikoPiko);
+        struct Task *t = TaskCreate(Task_PikoPiko, sizeof(Sprite_PikoPiko), 0x4080, 0, TaskDestructor_PikoPiko);
         Sprite_PikoPiko *piko = TASK_DATA(t);
         Sprite *s = &piko->s;
         piko->base.regionX = spriteRegionX;

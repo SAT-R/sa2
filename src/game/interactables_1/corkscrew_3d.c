@@ -41,11 +41,9 @@ void Task_8061914(void)
 
     if (PLAYER_IS_ALIVE) {
         if ((x + (me->d.sData[0] * TILE_WIDTH) <= I(gPlayer.x)
-             && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH)
-                 >= I(gPlayer.x)))
+             && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH) >= I(gPlayer.x)))
             && (y + (me->d.sData[1] * TILE_WIDTH) <= I(gPlayer.y)
-                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH)
-                    >= I(gPlayer.y))) {
+                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH) >= I(gPlayer.y))) {
             if (x < I(gPlayer.x) && (corkscrew->base.spriteY & 1)) {
                 s32 idx;
                 s32 y24_8;
@@ -58,8 +56,7 @@ void Task_8061914(void)
 
                 gPlayer.speedAirY = 0;
                 gCurTask->main = sub_8061AB0;
-            } else if ((x >= I(gPlayer.x)) && gPlayer.speedGroundX > Q_8_8(4)
-                       && !(gPlayer.moveState & MOVESTATE_IN_AIR)
+            } else if ((x >= I(gPlayer.x)) && gPlayer.speedGroundX > Q_8_8(4) && !(gPlayer.moveState & MOVESTATE_IN_AIR)
                        && !(gPlayer.unk5E & gPlayerControls.jump)) {
                 corkscrew->base.spriteY |= 1;
             } else {
@@ -133,8 +130,7 @@ void sub_8061AB0(void)
             player->moveState |= MOVESTATE_4;
             m4aSongNumStart(SE_SPIN_ATTACK);
         } else if (!(player->moveState & MOVESTATE_4)) {
-            player->anim
-                = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
+            player->anim = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
             player->variant = Div((idx - 282) & ONE_CYCLE, 94);
         }
     }
@@ -270,11 +266,9 @@ void Task_8061F60(void)
 
     if (PLAYER_IS_ALIVE) {
         if ((x + (me->d.sData[0] * TILE_WIDTH) <= I(gPlayer.x)
-             && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH)
-                 >= I(gPlayer.x)))
+             && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH) >= I(gPlayer.x)))
             && (y + (me->d.sData[1] * TILE_WIDTH) <= I(gPlayer.y)
-                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH)
-                    >= I(gPlayer.y))) {
+                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH) >= I(gPlayer.y))) {
             if (x > I(gPlayer.x) && (corkscrew->base.spriteY & 1)) {
                 s32 idx;
                 s32 y24_8;
@@ -287,8 +281,7 @@ void Task_8061F60(void)
 
                 gPlayer.speedAirY = 0;
                 gCurTask->main = Task_8062100;
-            } else if ((x <= I(gPlayer.x)) && gPlayer.speedGroundX < -Q_8_8(4)
-                       && !(gPlayer.moveState & MOVESTATE_IN_AIR)
+            } else if ((x <= I(gPlayer.x)) && gPlayer.speedGroundX < -Q_8_8(4) && !(gPlayer.moveState & MOVESTATE_IN_AIR)
                        && !(gPlayer.unk5E & gPlayerControls.jump)) {
                 corkscrew->base.spriteY |= 1;
             } else {
@@ -360,8 +353,7 @@ void Task_8062100(void)
             player->moveState |= MOVESTATE_4;
             m4aSongNumStart(SE_SPIN_ATTACK);
         } else if (!(player->moveState & MOVESTATE_4)) {
-            player->anim
-                = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
+            player->anim = gPlayerCharacterIdleAnims[player->character] + SA2_CHAR_ANIM_68;
             player->variant = Div((idx - 282) & ONE_CYCLE, 94);
         }
     }
@@ -482,11 +474,9 @@ void Task_8062414(void)
     }
 }
 
-void CreateEntity_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                    u8 spriteY)
+void CreateEntity_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_8061914, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_8061914, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
     Sprite_Corkscrew3D *corkscrew = TASK_DATA(t);
     corkscrew->base.regionX = spriteRegionX;
     corkscrew->base.regionY = spriteRegionY;
@@ -499,11 +489,9 @@ void CreateEntity_Corkscrew3D_Start(MapEntity *me, u16 spriteRegionX, u16 sprite
     corkscrew->unkC = +Q(4);
 }
 
-void CreateEntity_Corkscrew3D_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                  u8 spriteY)
+void CreateEntity_Corkscrew3D_End(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(Task_8061F60, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_8061F60, sizeof(Sprite_Corkscrew3D), 0x2000, 0, NULL);
     Sprite_Corkscrew3D *corkscrew = TASK_DATA(t);
     corkscrew->base.regionX = spriteRegionX;
     corkscrew->base.regionY = spriteRegionY;

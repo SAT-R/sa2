@@ -34,11 +34,9 @@ void CreateOpponentPositionIndicator(u8 sid)
     OpponentIndicator *pi;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        t = TaskCreate(Task_801951C, sizeof(OpponentIndicator), 0x2001, 0,
-                       TaskDestructor_8019CC8);
+        t = TaskCreate(Task_801951C, sizeof(OpponentIndicator), 0x2001, 0, TaskDestructor_8019CC8);
     } else {
-        t = TaskCreate(Task_8019898, sizeof(OpponentIndicator), 0x2001, 0,
-                       TaskDestructor_8019CC8);
+        t = TaskCreate(Task_8019898, sizeof(OpponentIndicator), 0x2001, 0, TaskDestructor_8019CC8);
     }
 
     pi = TASK_DATA(t);
@@ -56,8 +54,7 @@ void CreateOpponentPositionIndicator(u8 sid)
     spr->animSpeed = SPRITE_ANIM_SPEED(1.0);
     spr->palId = sid;
     spr->hitboxes[0].index = -1;
-    spr->frameFlags = SPRITE_FLAG(19, 1) | SPRITE_FLAG(18, 1)
-        | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE;
+    spr->frameFlags = SPRITE_FLAG(19, 1) | SPRITE_FLAG(18, 1) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE;
 
     spr->graphics.anim = SA2_ANIM_INDICATOR_SONIC;
     spr->variant = 0;
@@ -94,8 +91,7 @@ void CreateSelfPositionIndicator(void)
 }
 
 // (79.22%) https://decomp.me/scratch/SKNlg
-NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
-         void Task_801951C(void))
+NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc", void Task_801951C(void))
 {
     s32 opponentX, opponentY;
     s32 opponentDistSq;
@@ -168,8 +164,7 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
     opponentDistSq = SQUARE(opponentX2) + SQUARE(opponentY2);
 
     if (opponentDistSq < 0x10000) {
-        spr->animSpeed
-            = opponentDistSq < 0x10000 ? SPRITE_ANIM_SPEED(1.5) : SPRITE_ANIM_SPEED(1.0);
+        spr->animSpeed = opponentDistSq < 0x10000 ? SPRITE_ANIM_SPEED(1.5) : SPRITE_ANIM_SPEED(1.0);
     } else {
         spr->animSpeed = SPRITE_ANIM_SPEED(1.0);
     }
@@ -236,8 +231,7 @@ NONMATCH("asm/non_matching/game/multiplayer/indicators__Task_801951C.inc",
             // _08019818
         } else {
             // _0801977C
-            s16 divRes = Div((SIN_24_8((r4 - (SIN_PERIOD / 2)) & ONE_CYCLE)) * 0x100,
-                             (COS_24_8((r4 - (SIN_PERIOD / 2)) & ONE_CYCLE)));
+            s16 divRes = Div((SIN_24_8((r4 - (SIN_PERIOD / 2)) & ONE_CYCLE)) * 0x100, (COS_24_8((r4 - (SIN_PERIOD / 2)) & ONE_CYCLE)));
             tfy = (DISPLAY_HEIGHT / 2) - ((divRes * 15) >> 5);
 
             if (opponentY2 > 0) {

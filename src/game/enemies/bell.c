@@ -27,8 +27,7 @@ static void sub_8054D20(void);
 
 void CreateEntity_Bell(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_BellMain, sizeof(Sprite_Bell), 0x4080, 0,
-                                TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_BellMain, sizeof(Sprite_Bell), 0x4080, 0, TaskDestructor_80095E8);
     Sprite_Bell *bell = TASK_DATA(t);
     Sprite *s = &bell->s;
     bell->unk4C = 120;

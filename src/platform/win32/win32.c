@@ -12,8 +12,7 @@ extern void GameLoop(void);
 
 DWORD WINAPI GameThread(void *pThreadParam);
 
-int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine,
-                   int nShowCmd)
+int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
     // Allocate a console.
     // This is necessary for using print functions when using an application with the

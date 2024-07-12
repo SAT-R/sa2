@@ -27,8 +27,7 @@ void TaskDestructor_801E040(struct Task *unused)
         gBgScrollRegs[i][1] = 0;
     }
 
-    if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)
-        && (gFlags & FLAGS_40)) {
+    if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53) && (gFlags & FLAGS_40)) {
         gIntrTable[INTR_INDEX_VCOUNT] = gIntrTableTemplate[INTR_INDEX_VCOUNT];
         gFlags &= ~FLAGS_40;
     }

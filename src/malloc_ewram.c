@@ -55,8 +55,7 @@ void *EwramMalloc(u32 req)
                     addr->next = node->next;
                     ++node;
                     --node;
-                    addr->state = node->state
-                        - requestedSpace; // Surplus space belongs to the new node.
+                    addr->state = node->state - requestedSpace; // Surplus space belongs to the new node.
                     node->next = addr;
                     node->state = -requestedSpace; // busy
                     return node->space;
@@ -87,12 +86,10 @@ void EwramFree(void *p)
         node = p - offsetof(struct EwramNode, space);
 
         /* find parent of node */
-        for (fast = slow = (struct EwramNode *)gEwramHeap; node != fast;
-             fast = fast->next)
+        for (fast = slow = (struct EwramNode *)gEwramHeap; node != fast; fast = fast->next)
             slow = fast;
 
-        if (node->state
-            < 0) // It should always be true if the function is called properly.
+        if (node->state < 0) // It should always be true if the function is called properly.
             node->state = -node->state; // free
 
         /*

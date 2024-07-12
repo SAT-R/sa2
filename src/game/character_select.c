@@ -102,27 +102,23 @@ static void RenderUI(struct CharacterSelectionScreen *);
 #define CHARACTER_HIDDEN_LABEL 5
 
 static ALIGNED(4) const u16 sCharacterTitleLeftSideAssets[][2] = {
-    [CHARACTER_SONIC] = { 739, 0 }, [CHARACTER_CREAM] = { 739, 8 },
-    [CHARACTER_TAILS] = { 739, 2 }, [CHARACTER_KNUCKLES] = { 739, 4 },
-    [CHARACTER_AMY] = { 739, 6 },   [CHARACTER_HIDDEN_LABEL] = { 739, 10 },
+    [CHARACTER_SONIC] = { 739, 0 },    [CHARACTER_CREAM] = { 739, 8 }, [CHARACTER_TAILS] = { 739, 2 },
+    [CHARACTER_KNUCKLES] = { 739, 4 }, [CHARACTER_AMY] = { 739, 6 },   [CHARACTER_HIDDEN_LABEL] = { 739, 10 },
 };
 
 static const u16 sCharacteTitleRightSideAssets[][2] = {
-    [CHARACTER_SONIC] = { 739, 1 }, [CHARACTER_CREAM] = { 739, 9 },
-    [CHARACTER_TAILS] = { 739, 3 }, [CHARACTER_KNUCKLES] = { 739, 5 },
-    [CHARACTER_AMY] = { 739, 7 },   [CHARACTER_HIDDEN_LABEL] = { 739, 11 },
+    [CHARACTER_SONIC] = { 739, 1 },    [CHARACTER_CREAM] = { 739, 9 }, [CHARACTER_TAILS] = { 739, 3 },
+    [CHARACTER_KNUCKLES] = { 739, 5 }, [CHARACTER_AMY] = { 739, 7 },   [CHARACTER_HIDDEN_LABEL] = { 739, 11 },
 };
 
 static const u16 sCharacterSpriteAssets[][2] = {
-    [CHARACTER_SONIC] = { 736, 0 }, [CHARACTER_CREAM] = { 736, 2 },
-    [CHARACTER_TAILS] = { 736, 4 }, [CHARACTER_KNUCKLES] = { 736, 6 },
-    [CHARACTER_AMY] = { 736, 8 },
+    [CHARACTER_SONIC] = { 736, 0 },    [CHARACTER_CREAM] = { 736, 2 }, [CHARACTER_TAILS] = { 736, 4 },
+    [CHARACTER_KNUCKLES] = { 736, 6 }, [CHARACTER_AMY] = { 736, 8 },
 };
 
 static const u16 sCharacterSelectedSpriteAssets[][2] = {
-    [CHARACTER_SONIC] = { 736, 1 }, [CHARACTER_CREAM] = { 736, 3 },
-    [CHARACTER_TAILS] = { 736, 5 }, [CHARACTER_KNUCKLES] = { 736, 7 },
-    [CHARACTER_AMY] = { 736, 9 },
+    [CHARACTER_SONIC] = { 736, 1 },    [CHARACTER_CREAM] = { 736, 3 }, [CHARACTER_TAILS] = { 736, 5 },
+    [CHARACTER_KNUCKLES] = { 736, 7 }, [CHARACTER_AMY] = { 736, 9 },
 };
 
 static const u16 sCharacterNameSubTextAssets[][2] = {
@@ -131,20 +127,14 @@ static const u16 sCharacterNameSubTextAssets[][2] = {
 };
 
 static const u16 sScreenTitleTextAssets[][2] = {
-    [LanguageIndex(LANG_JAPANESE)] = { 740, 0 },
-    [LanguageIndex(LANG_ENGLISH)] = { 743, 0 },
-    [LanguageIndex(LANG_GERMAN)] = { 744, 0 },
-    [LanguageIndex(LANG_FRENCH)] = { 748, 0 },
-    [LanguageIndex(LANG_SPANISH)] = { 745, 0 },
-    [LanguageIndex(LANG_ITALIAN)] = { 746, 0 },
+    [LanguageIndex(LANG_JAPANESE)] = { 740, 0 }, [LanguageIndex(LANG_ENGLISH)] = { 743, 0 }, [LanguageIndex(LANG_GERMAN)] = { 744, 0 },
+    [LanguageIndex(LANG_FRENCH)] = { 748, 0 },   [LanguageIndex(LANG_SPANISH)] = { 745, 0 }, [LanguageIndex(LANG_ITALIAN)] = { 746, 0 },
 };
 
 static const u8 gUnknown_080D7274[] = { 8, 10, 10, 14 };
 static const u16 gCharacterAnnouncements[] = {
-    [CHARACTER_SONIC] = VOICE__ANNOUNCER__SONIC,
-    [CHARACTER_CREAM] = VOICE__ANNOUNCER__CREAM,
-    [CHARACTER_TAILS] = VOICE__ANNOUNCER__TAILS,
-    [CHARACTER_KNUCKLES] = VOICE__ANNOUNCER__KNUCKLES,
+    [CHARACTER_SONIC] = VOICE__ANNOUNCER__SONIC, [CHARACTER_CREAM] = VOICE__ANNOUNCER__CREAM,
+    [CHARACTER_TAILS] = VOICE__ANNOUNCER__TAILS, [CHARACTER_KNUCKLES] = VOICE__ANNOUNCER__KNUCKLES,
     [CHARACTER_AMY] = VOICE__ANNOUNCER__AMY,
 };
 
@@ -162,8 +152,7 @@ static const u16 sCourselScrollAnimVelocities[] = {
 };
 
 static const u8 sCharacterChosenAnimLengths[] = {
-    [CHARACTER_SONIC] = 30,    [CHARACTER_CREAM] = 30, [CHARACTER_TAILS] = 30,
-    [CHARACTER_KNUCKLES] = 30, [CHARACTER_AMY] = 30,
+    [CHARACTER_SONIC] = 30, [CHARACTER_CREAM] = 30, [CHARACTER_TAILS] = 30, [CHARACTER_KNUCKLES] = 30, [CHARACTER_AMY] = 30,
 };
 
 #define CHEESE_SILHOUETTE 5
@@ -173,27 +162,26 @@ static const u8 sCharacterSilhouettes[] = {
     [CHARACTER_KNUCKLES] = 6, [CHARACTER_AMY] = 5,   [CHEESE_SILHOUETTE] = 3,
 };
 
-#define BackgroundAnim()                                                                \
-    ({                                                                                  \
-        gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xFF;                         \
-        gBgScrollRegs[2][0] = (gBgScrollRegs[2][0] - 1) & 0xFF;                         \
-        gBgScrollRegs[2][1] = (gBgScrollRegs[2][1] + 1) & 0xFF;                         \
+#define BackgroundAnim()                                                                                                                   \
+    ({                                                                                                                                     \
+        gBgScrollRegs[0][1] = (gBgScrollRegs[0][1] - 1) & 0xFF;                                                                            \
+        gBgScrollRegs[2][0] = (gBgScrollRegs[2][0] - 1) & 0xFF;                                                                            \
+        gBgScrollRegs[2][1] = (gBgScrollRegs[2][1] + 1) & 0xFF;                                                                            \
     })
 
 // These values have to be passed in, as it seems some of the
 // functions don't use u8 i values, who knows what's going on here
-#define ReadMultiplayerSelections(characterScreen, i, packet)                           \
-    ({                                                                                  \
-        (characterScreen)->multiplayerSelections = 0;                                   \
-        for ((i) = 0; (i) < MULTI_SIO_PLAYERS_MAX; (i)++) {                             \
-            if ((i) != SIO_MULTI_CNT->id && GetBit(gMultiplayerConnections, (i))) {     \
-                (packet) = &gMultiSioRecv[(i)];                                         \
-                if ((packet)->pat0.unk0 > 0x4020) {                                     \
-                    (characterScreen)->multiplayerSelections                            \
-                        |= CHARACTER_BIT(packet->pat0.unk2);                            \
-                }                                                                       \
-            }                                                                           \
-        }                                                                               \
+#define ReadMultiplayerSelections(characterScreen, i, packet)                                                                              \
+    ({                                                                                                                                     \
+        (characterScreen)->multiplayerSelections = 0;                                                                                      \
+        for ((i) = 0; (i) < MULTI_SIO_PLAYERS_MAX; (i)++) {                                                                                \
+            if ((i) != SIO_MULTI_CNT->id && GetBit(gMultiplayerConnections, (i))) {                                                        \
+                (packet) = &gMultiSioRecv[(i)];                                                                                            \
+                if ((packet)->pat0.unk0 > 0x4020) {                                                                                        \
+                    (characterScreen)->multiplayerSelections |= CHARACTER_BIT(packet->pat0.unk2);                                          \
+                }                                                                                                                          \
+            }                                                                                                                              \
+        }                                                                                                                                  \
     })
 
 void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
@@ -236,9 +224,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     gBgScrollRegs[1][0] = 0;
     gBgScrollRegs[1][1] = 0;
 
-    t = TaskCreate(Task_FadeInAndStartRollInAnim,
-                   sizeof(struct CharacterSelectionScreen), 0x4100, 0,
-                   CharacterSelectScreenOnDestroy);
+    t = TaskCreate(Task_FadeInAndStartRollInAnim, sizeof(struct CharacterSelectionScreen), 0x4100, 0, CharacterSelectScreenOnDestroy);
     characterScreen = TASK_DATA(t);
 
     characterScreen->availableCharacters = gLoadedSaveGame->unlockedCharacters;
@@ -256,8 +242,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     characterScreen->scrollingDown = FALSE;
 
     if (allUnlocked) {
-        characterScreen->carouselPosition
-            = ((0x108 - (0x66 * initialSelection)) & 0x3FF) * 0x100 + 2;
+        characterScreen->carouselPosition = ((0x108 - (0x66 * initialSelection)) & 0x3FF) * 0x100 + 2;
         characterScreen->amyUnlocked = TRUE;
         characterScreen->initialSelection = initialSelection;
 
@@ -266,8 +251,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
         }
     } else {
 
-        characterScreen->carouselPosition
-            = ((0x16E - (initialSelection * 0x66)) & 0x3FF) * 0x100 + 4;
+        characterScreen->carouselPosition = ((0x16E - (initialSelection * 0x66)) & 0x3FF) * 0x100 + 4;
         characterScreen->amyUnlocked = FALSE;
         characterScreen->initialSelection = initialSelection;
         if (initialSelection > CHARACTER_KNUCKLES) {
@@ -375,10 +359,8 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->x = 0;
     s->y = 0;
     s->graphics.dest = VramMalloc(0x24);
-    s->graphics.anim = sCharacterNameSubTextAssets[characterScreen->initialSelection
-                                                   + (something * 6)][0];
-    s->variant = sCharacterNameSubTextAssets[characterScreen->initialSelection
-                                             + (something * 6)][1];
+    s->graphics.anim = sCharacterNameSubTextAssets[characterScreen->initialSelection + (something * 6)][0];
+    s->variant = sCharacterNameSubTextAssets[characterScreen->initialSelection + (something * 6)][1];
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
@@ -394,8 +376,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->x = 0;
     s->y = 0;
     s->graphics.dest = VramMalloc(0x40);
-    s->graphics.anim
-        = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][0];
+    s->graphics.anim = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][0];
     s->variant = sCharacterTitleLeftSideAssets[characterScreen->initialSelection][1];
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
@@ -412,8 +393,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->x = 0;
     s->y = 0;
     s->graphics.dest = VramMalloc(0x40);
-    s->graphics.anim
-        = sCharacteTitleRightSideAssets[characterScreen->initialSelection][0];
+    s->graphics.anim = sCharacteTitleRightSideAssets[characterScreen->initialSelection][0];
     s->variant = sCharacteTitleRightSideAssets[characterScreen->initialSelection][1];
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
@@ -482,8 +462,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->y = 0;
     s->graphics.dest = (void *)(OBJ_VRAM0 + 0x400);
     s->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
-    s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
-        SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
+    s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
@@ -582,11 +561,9 @@ static void Task_RollInAnim(void)
         RenderTransitionInUIAnim(characterScreen);
     } else {
 #ifndef NON_MATCHING
-        characterScreen->carouselPosition
-            -= Div(gSineTable[(((r0 = animFrame + 4) << 2) & 0x3FF) + 0x100], 3);
+        characterScreen->carouselPosition -= Div(gSineTable[(((r0 = animFrame + 4) << 2) & 0x3FF) + 0x100], 3);
 #else
-        characterScreen->carouselPosition
-            -= Div(gSineTable[(((animFrame + 4) << 2) & 0x3FF) + 0x100], 3);
+        characterScreen->carouselPosition -= Div(gSineTable[(((animFrame + 4) << 2) & 0x3FF) + 0x100], 3);
 #endif
         if (characterScreen->amyUnlocked) {
             characterScreen->carouselPosition += 6;
@@ -651,16 +628,13 @@ static void Task_CharacterSelectMain(void)
 
     if (characterScreen->selectionComplete) {
         s = &characterScreen->characterSprite;
-        s->graphics.anim
-            = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter][0];
-        s->variant
-            = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter][1];
+        s->graphics.anim = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter][0];
+        s->variant = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter][1];
         s->prevVariant = -1;
 
         s = &characterScreen->characterSecondarySprite;
         s->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
-        s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
-            SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED);
+        s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED);
         s->prevVariant = -1;
         gSelectedCharacter = characterScreen->selectedCharacter;
 
@@ -684,17 +658,14 @@ static void Task_CharacterSelectMain(void)
         RenderUI(characterScreen);
     } else {
         if (gInput & (DPAD_LEFT | DPAD_UP)) {
-            if (characterScreen->selectedCharacter == CHARACTER_SONIC
-                && !characterScreen->amyUnlocked) {
+            if (characterScreen->selectedCharacter == CHARACTER_SONIC && !characterScreen->amyUnlocked) {
                 characterScreen->carouselPosition = 0x26800;
             }
 
             characterScreen->cursorAnimFrame = 0;
             characterScreen->upArrowActviteFrames = 12;
             characterScreen->previousSelection = characterScreen->selectedCharacter;
-            characterScreen->selectedCharacter
-                = gUnknown_080D7282[characterScreen->amyUnlocked + 2]
-                                   [characterScreen->selectedCharacter];
+            characterScreen->selectedCharacter = gUnknown_080D7282[characterScreen->amyUnlocked + 2][characterScreen->selectedCharacter];
             characterScreen->animFrame = 0;
             characterScreen->unk3C4 = 0;
             characterScreen->scrollingDown = FALSE;
@@ -709,9 +680,7 @@ static void Task_CharacterSelectMain(void)
             characterScreen->cursorAnimFrame = 0;
             characterScreen->downArrowActiveFrames = 12;
             characterScreen->previousSelection = characterScreen->selectedCharacter;
-            characterScreen->selectedCharacter
-                = gUnknown_080D7282[characterScreen->amyUnlocked]
-                                   [characterScreen->selectedCharacter];
+            characterScreen->selectedCharacter = gUnknown_080D7282[characterScreen->amyUnlocked][characterScreen->selectedCharacter];
             characterScreen->animFrame = 0;
             characterScreen->unk3C4 = 0;
             characterScreen->scrollingDown = TRUE;
@@ -727,8 +696,7 @@ static void Task_CharacterSelectMain(void)
 #ifndef NON_MATCHING
             if (!(IS_SINGLE_PLAYER
                   && !((gPressedKeys & A_BUTTON)
-                       && (characterScreen->availableCharacters
-                           & CHARACTER_BIT(characterScreen->selectedCharacter))))) {
+                       && (characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter))))) {
                 goto code;
             }
             while (0)
@@ -738,29 +706,21 @@ static void Task_CharacterSelectMain(void)
 #else
             if (IS_SINGLE_PLAYER
                 && !((gPressedKeys & A_BUTTON)
-                     && (characterScreen->availableCharacters
-                         & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
+                     && (characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
                 RenderCarouselScrollAnim(characterScreen);
             } else
 #endif
             if (IS_SINGLE_PLAYER // completely optimized out
                 || (gPressedKeys & A_BUTTON
-                    && !(characterScreen->multiplayerSelections
-                         & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
+                    && !(characterScreen->multiplayerSelections & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
                 s = &characterScreen->characterSprite;
-                s->graphics.anim
-                    = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter]
-                                                    [0];
-                s->variant
-                    = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter]
-                                                    [1];
+                s->graphics.anim = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter][0];
+                s->variant = sCharacterSelectedSpriteAssets[characterScreen->selectedCharacter][1];
                 s->prevVariant = -1;
 
                 s = &characterScreen->characterSecondarySprite;
                 s->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
-                s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
-                    SA2_ANIM_CHAR_ID_CHEESE,
-                    SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED);
+                s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_SELECTED);
                 s->prevVariant = -1;
 
                 gSelectedCharacter = characterScreen->selectedCharacter;
@@ -773,8 +733,7 @@ static void Task_CharacterSelectMain(void)
                 fade->speed = 0x180;
                 fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
                 fade->bldAlpha = 0;
-                m4aSongNumStart(
-                    gCharacterAnnouncements[characterScreen->selectedCharacter]);
+                m4aSongNumStart(gCharacterAnnouncements[characterScreen->selectedCharacter]);
 
                 if (IS_MULTI_PLAYER) {
                     gCurTask->main = Task_MultiplayerWaitForSelections;
@@ -782,17 +741,13 @@ static void Task_CharacterSelectMain(void)
                     gCurTask->main = Task_SelectionCompleteFadeOutAndExit;
                 }
                 RenderUI(characterScreen);
-            } else if (IS_MULTI_PLAYER
-                       && characterScreen->multiplayerSelections
-                           & CHARACTER_BIT(characterScreen->selectedCharacter)) {
+            } else if (IS_MULTI_PLAYER && characterScreen->multiplayerSelections & CHARACTER_BIT(characterScreen->selectedCharacter)) {
                 if (characterScreen->scrollingDown) {
                     characterScreen->cursorAnimFrame = 0;
                     characterScreen->downArrowActiveFrames = 12;
-                    characterScreen->previousSelection
-                        = characterScreen->selectedCharacter;
+                    characterScreen->previousSelection = characterScreen->selectedCharacter;
                     characterScreen->selectedCharacter
-                        = gUnknown_080D7282[characterScreen->amyUnlocked]
-                                           [characterScreen->selectedCharacter];
+                        = gUnknown_080D7282[characterScreen->amyUnlocked][characterScreen->selectedCharacter];
 
                     characterScreen->animFrame = 0;
                     characterScreen->unk3C4 = 0;
@@ -803,18 +758,15 @@ static void Task_CharacterSelectMain(void)
                     m4aSongNumStart(SE_SHIFT);
                     gCurTask->main = Task_HandleCarouselScrollDown;
                 } else {
-                    if (characterScreen->selectedCharacter == CHARACTER_SONIC
-                        && !characterScreen->amyUnlocked) {
+                    if (characterScreen->selectedCharacter == CHARACTER_SONIC && !characterScreen->amyUnlocked) {
                         characterScreen->carouselPosition = 0x26800;
                     }
                     characterScreen->cursorAnimFrame = 0;
                     characterScreen->upArrowActviteFrames = 12;
-                    characterScreen->previousSelection
-                        = characterScreen->selectedCharacter;
+                    characterScreen->previousSelection = characterScreen->selectedCharacter;
 
                     characterScreen->selectedCharacter
-                        = gUnknown_080D7282[characterScreen->amyUnlocked + 2]
-                                           [characterScreen->selectedCharacter];
+                        = gUnknown_080D7282[characterScreen->amyUnlocked + 2][characterScreen->selectedCharacter];
                     characterScreen->animFrame = 0;
                     characterScreen->unk3C4 = 0;
                     characterScreen->scrollingDown = FALSE;
@@ -869,11 +821,9 @@ static void Task_HandleCarouselScrollUp(void)
     characterScreen->carouselPosition &= 0x3FFFF;
 
     if ((IS_SINGLE_PLAYER && (gPressedKeys & A_BUTTON)
-         && (characterScreen->availableCharacters
-             & CHARACTER_BIT(characterScreen->selectedCharacter)))
+         && (characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter)))
         || (IS_MULTI_PLAYER && (gPressedKeys & A_BUTTON)
-            && !(characterScreen->multiplayerSelections
-                 & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
+            && !(characterScreen->multiplayerSelections & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
         characterScreen->selectionComplete = TRUE;
     } else if (IS_SINGLE_PLAYER && (gPressedKeys & B_BUTTON)) {
         if (!characterScreen->exiting) {
@@ -927,11 +877,9 @@ static void Task_HandleCarouselScrollDown(void)
     characterScreen->carouselPosition &= 0x3FFFF;
 
     if ((IS_SINGLE_PLAYER && (gPressedKeys & A_BUTTON)
-         && (characterScreen->availableCharacters
-             & CHARACTER_BIT(characterScreen->selectedCharacter)))
+         && (characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter)))
         || (IS_MULTI_PLAYER && (gPressedKeys & A_BUTTON)
-            && !(characterScreen->multiplayerSelections
-                 & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
+            && !(characterScreen->multiplayerSelections & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
         characterScreen->selectionComplete = TRUE;
     } else if (IS_SINGLE_PLAYER && (gPressedKeys & B_BUTTON)) {
         if (!characterScreen->exiting) {
@@ -987,11 +935,9 @@ static void Task_CarouselScrollCompleteAnim(void)
     }
 
     if ((IS_SINGLE_PLAYER && (gPressedKeys & A_BUTTON)
-         && (characterScreen->availableCharacters
-             & CHARACTER_BIT(characterScreen->selectedCharacter)))
+         && (characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter)))
         || (IS_MULTI_PLAYER && (gPressedKeys & A_BUTTON)
-            && !(characterScreen->multiplayerSelections
-                 & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
+            && !(characterScreen->multiplayerSelections & CHARACTER_BIT(characterScreen->selectedCharacter)))) {
         characterScreen->selectionComplete = TRUE;
     }
 
@@ -1040,8 +986,7 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
         }
     }
 
-    if ((characterScreen->animFrame
-         >= sCharacterChosenAnimLengths[characterScreen->selectedCharacter])
+    if ((characterScreen->animFrame >= sCharacterChosenAnimLengths[characterScreen->selectedCharacter])
         && UpdateScreenFade(unk0) == SCREEN_FADE_COMPLETE) {
         TaskDestroy(gCurTask);
 
@@ -1051,31 +996,24 @@ static void Task_SelectionCompleteFadeOutAndExit(void)
         }
 
         if (gGameMode != GAME_MODE_SINGLE_PLAYER) {
-            CreateTimeAttackLevelSelectScreen(
-                (gGameMode & GAME_MODE_BOSS_TIME_ATTACK) ? 1 : 0, gSelectedCharacter,
-                gCurrentLevel);
+            CreateTimeAttackLevelSelectScreen((gGameMode & GAME_MODE_BOSS_TIME_ATTACK) ? 1 : 0, gSelectedCharacter, gCurrentLevel);
             return;
         }
 
         // Only 1 zone available
-        if (gLoadedSaveGame->unlockedLevels[gSelectedCharacter]
-            <= LEVEL_INDEX(ZONE_1, ACT_BOSS)) {
+        if (gLoadedSaveGame->unlockedLevels[gSelectedCharacter] <= LEVEL_INDEX(ZONE_1, ACT_BOSS)) {
             gCurrentLevel = LEVEL_INDEX(ZONE_1, ACT_1);
             GameStageStart();
             return;
         }
 
-        if (gLoadedSaveGame->extraZoneStatus == 1
-            && gSelectedCharacter == CHARACTER_SONIC) {
-            CreateCourseSelectionScreen(
-                LEVEL_INDEX(ZONE_1, ACT_1),
-                gLoadedSaveGame->unlockedLevels[gSelectedCharacter],
-                CUT_SCENE_UNLOCK_TRUE_AREA_53);
+        if (gLoadedSaveGame->extraZoneStatus == 1 && gSelectedCharacter == CHARACTER_SONIC) {
+            CreateCourseSelectionScreen(LEVEL_INDEX(ZONE_1, ACT_1), gLoadedSaveGame->unlockedLevels[gSelectedCharacter],
+                                        CUT_SCENE_UNLOCK_TRUE_AREA_53);
             return;
         }
 
-        CreateCourseSelectionScreen(LEVEL_INDEX(ZONE_1, ACT_1),
-                                    gLoadedSaveGame->unlockedLevels[gSelectedCharacter],
+        CreateCourseSelectionScreen(LEVEL_INDEX(ZONE_1, ACT_1), gLoadedSaveGame->unlockedLevels[gSelectedCharacter],
                                     COURSE_SELECT_CUT_SCENE_NONE);
         return;
     }
@@ -1112,23 +1050,13 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
 
     if (characterScreen->amyUnlocked) {
         for (i = 0; i < 10; i++) {
-            if ((characterScreen->animFrame
-                 > (i - characterScreen->initialSelection) * 5)
-                || (characterScreen->initialSelection == 4 && i < 2
-                    && (characterScreen->animFrame > 0x13))) {
+            if ((characterScreen->animFrame > (i - characterScreen->initialSelection) * 5)
+                || (characterScreen->initialSelection == 4 && i < 2 && (characterScreen->animFrame > 0x13))) {
                 u8 temp = i - Div(i, 5) * 5;
                 s = &characterScreen->carouselBlobs[temp];
 
-                s->x = Q_2_14_TO_INT(
-                           COS(((characterScreen->carouselPosition >> 8) + (i * 0x66))
-                               & 0x3FF)
-                           * 92)
-                    + 10;
-                s->y = Q_2_14_TO_INT(
-                           SIN((((characterScreen->carouselPosition >> 8) + (i * 0x66))
-                                & 0x3FF))
-                           * 92)
-                    + 80;
+                s->x = Q_2_14_TO_INT(COS(((characterScreen->carouselPosition >> 8) + (i * 0x66)) & 0x3FF) * 92) + 10;
+                s->y = Q_2_14_TO_INT(SIN((((characterScreen->carouselPosition >> 8) + (i * 0x66)) & 0x3FF)) * 92) + 80;
                 DisplaySprite(s);
             }
         }
@@ -1136,8 +1064,7 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
         u16 temp = ((characterScreen->carouselPosition >> 8) + 0x330) & 0x3FF;
 
         for (i = 0; i < 9; i++) {
-            if (characterScreen->animFrame
-                > (s8)(i - characterScreen->initialSelection)) {
+            if (characterScreen->animFrame > (s8)(i - characterScreen->initialSelection)) {
                 u32 temp2;
                 s = &characterScreen->carouselBlobs[(i + 2) & 3];
 
@@ -1148,9 +1075,7 @@ static void RenderCarouselRollInAnim(struct CharacterSelectionScreen *characterS
             }
         }
 
-        if (characterScreen->initialSelection > 0
-            && characterScreen->initialSelection < 4
-            && characterScreen->animFrame > 0x13) {
+        if (characterScreen->initialSelection > 0 && characterScreen->initialSelection < 4 && characterScreen->animFrame > 0x13) {
             for (; i < gUnknown_080D7274[characterScreen->initialSelection]; i++) {
                 u32 temp2;
                 s = &characterScreen->carouselBlobs[(i + 2) & 3];
@@ -1178,24 +1103,12 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     if (characterScreen->amyUnlocked) {
         for (i = 0; i < 10; i++) {
             u8 temp2 = i - Div(i, 5) * 5;
-            if (temp2 != characterScreen->selectedCharacter
-                || characterScreen->unk3C4 != 0x10) {
+            if (temp2 != characterScreen->selectedCharacter || characterScreen->unk3C4 != 0x10) {
 
                 s = &characterScreen->carouselBlobs[temp2];
 
-                s->x = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                      + (i * 0x66) + 2)
-                                     & 0x3FF)
-                                    + 0x100]
-                         * 0x5C)
-                        >> 0xE)
-                    + 10;
-                s->y = ((gSineTable[(
-                             ((characterScreen->carouselPosition >> 8) + (i * 0x66) + 2)
-                             & 0x3FF)]
-                         * 0x5C)
-                        >> 0xE)
-                    + 0x50;
+                s->x = ((gSineTable[(((characterScreen->carouselPosition >> 8) + (i * 0x66) + 2) & 0x3FF) + 0x100] * 0x5C) >> 0xE) + 10;
+                s->y = ((gSineTable[(((characterScreen->carouselPosition >> 8) + (i * 0x66) + 2) & 0x3FF)] * 0x5C) >> 0xE) + 0x50;
                 DisplaySprite(s);
             }
         }
@@ -1204,8 +1117,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
         for (i = 0; i < 8; i++) {
             u32 temp2;
             u32 temp3 = (i + 2) & 3;
-            if (temp3 != characterScreen->selectedCharacter
-                || characterScreen->unk3C4 < 0xD) {
+            if (temp3 != characterScreen->selectedCharacter || characterScreen->unk3C4 < 0xD) {
                 s = &characterScreen->carouselBlobs[temp3];
                 temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
                 s->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
@@ -1219,17 +1131,12 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
 
     s->x = 101;
     s->y = 79;
-    s->variant = characterScreen->selectedCharacter
-        + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
+    s->variant = characterScreen->selectedCharacter + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
     s->prevVariant = -1;
 
     transformOptions->rotation = 0;
-    transformOptions->width
-        = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8)
-        + 0xC0;
-    transformOptions->height
-        = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8)
-        + 0xC0;
+    transformOptions->width = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+    transformOptions->height = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
     transformOptions->x = s->x;
     transformOptions->y = s->y;
 
@@ -1256,8 +1163,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
 
     s = &characterScreen->characterSprite;
     if (i > 0) {
-        s->x = characterScreen->characterBaseXPos
-            + (0x80 - (gSineTable[i * 0x10 + 0x100] >> 7)) * 2;
+        s->x = characterScreen->characterBaseXPos + (0x80 - (gSineTable[i * 0x10 + 0x100] >> 7)) * 2;
     } else {
         s->x = characterScreen->characterBaseXPos;
     }
@@ -1265,9 +1171,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
     s->y = 0x82;
     x = s->x;
 
-    if (!(characterScreen->availableCharacters
-          & CHARACTER_BIT(characterScreen->selectedCharacter))
-        && IS_SINGLE_PLAYER) {
+    if (!(characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter)) && IS_SINGLE_PLAYER) {
         s->frameFlags |= 0x40000;
         s->palId = sCharacterSilhouettes[characterScreen->selectedCharacter];
     } else {
@@ -1281,9 +1185,7 @@ static void RenderTransitionInUIAnim(struct CharacterSelectionScreen *characterS
         s->x = x;
         s->y = 0x82;
 
-        if (!(characterScreen->availableCharacters
-              & CHARACTER_BIT(characterScreen->selectedCharacter))
-            && IS_SINGLE_PLAYER) {
+        if (!(characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter)) && IS_SINGLE_PLAYER) {
             // make shadow mode
             s->frameFlags |= 0x40000;
             s->palId = sCharacterSilhouettes[CHEESE_SILHOUETTE];
@@ -1391,9 +1293,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         s->variant = sCharacterSpriteAssets[selectedCharacter][1];
         s->prevVariant = -1;
 
-        if (!(characterScreen->availableCharacters
-              & CHARACTER_BIT(characterScreen->selectedCharacter))
-            && IS_SINGLE_PLAYER) {
+        if (!(characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter)) && IS_SINGLE_PLAYER) {
             s->frameFlags |= 0x40000;
             s->palId = sCharacterSilhouettes[characterScreen->selectedCharacter];
         } else {
@@ -1403,9 +1303,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
         UpdateSpriteAnimation(s);
 
-        if (!(characterScreen->availableCharacters
-              & CHARACTER_BIT(characterScreen->selectedCharacter))
-            && IS_SINGLE_PLAYER) {
+        if (!(characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter)) && IS_SINGLE_PLAYER) {
             s = &characterScreen->characterNameSubText;
             s->graphics.anim = sCharacterNameSubTextAssets[CHARACTER_HIDDEN_LABEL][0];
             s->variant = sCharacterNameSubTextAssets[CHARACTER_HIDDEN_LABEL][1];
@@ -1423,10 +1321,8 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
             s->prevVariant = -1;
         } else {
             s = &characterScreen->characterNameSubText;
-            s->graphics.anim
-                = sCharacterNameSubTextAssets[selectedCharacter + somethinga * 6][0];
-            s->variant
-                = sCharacterNameSubTextAssets[selectedCharacter + somethinga * 6][1];
+            s->graphics.anim = sCharacterNameSubTextAssets[selectedCharacter + somethinga * 6][0];
+            s->variant = sCharacterNameSubTextAssets[selectedCharacter + somethinga * 6][1];
             s->prevVariant = -1;
             UpdateSpriteAnimation(s);
 
@@ -1445,24 +1341,12 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     if (characterScreen->amyUnlocked) {
         for (i = 0; i < 10; i++) {
             u8 temp2 = i - Div(i, 5) * 5;
-            if (temp2 != characterScreen->selectedCharacter
-                || characterScreen->unk3C4 < 0xD) {
+            if (temp2 != characterScreen->selectedCharacter || characterScreen->unk3C4 < 0xD) {
 
                 s = &characterScreen->carouselBlobs[temp2];
 
-                s->x = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                      + (i * 0x66) + 2)
-                                     & 0x3FF)
-                                    + 0x100]
-                         * 0x5C)
-                        >> 0xE)
-                    + 10;
-                s->y = ((gSineTable[(
-                             ((characterScreen->carouselPosition >> 8) + (i * 0x66) + 2)
-                             & 0x3FF)]
-                         * 0x5C)
-                        >> 0xE)
-                    + 0x50;
+                s->x = ((gSineTable[(((characterScreen->carouselPosition >> 8) + (i * 0x66) + 2) & 0x3FF) + 0x100] * 0x5C) >> 0xE) + 10;
+                s->y = ((gSineTable[(((characterScreen->carouselPosition >> 8) + (i * 0x66) + 2) & 0x3FF)] * 0x5C) >> 0xE) + 0x50;
                 DisplaySprite(s);
             }
         }
@@ -1471,8 +1355,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         for (i = 0; i < 8; i++) {
             u32 temp2;
             u32 temp3 = (i + 2) & 3;
-            if (temp3 != characterScreen->selectedCharacter
-                || characterScreen->unk3C4 < 0xD) {
+            if (temp3 != characterScreen->selectedCharacter || characterScreen->unk3C4 < 0xD) {
                 s = &characterScreen->carouselBlobs[temp3];
                 temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
                 s->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
@@ -1488,19 +1371,12 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
 
         s->x = 0x65;
         s->y = 0x4F;
-        s->variant = characterScreen->selectedCharacter
-            + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
+        s->variant = characterScreen->selectedCharacter + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
         s->prevVariant = -1;
 
         transformOptions->rotation = 0;
-        transformOptions->width
-            = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
-               >> 8)
-            + 0xC0;
-        transformOptions->height
-            = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
-               >> 8)
-            + 0xC0;
+        transformOptions->width = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+        transformOptions->height = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
         transformOptions->x = s->x;
         transformOptions->y = s->y;
 
@@ -1513,8 +1389,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     s = &characterScreen->characterSprite;
 
     if (b > 0) {
-        s->x = characterScreen->characterBaseXPos
-            + (0x80 - (gSineTable[b * 0x10 + 0x100] >> 7)) * 2;
+        s->x = characterScreen->characterBaseXPos + (0x80 - (gSineTable[b * 0x10 + 0x100] >> 7)) * 2;
         f = s->x;
         e = characterScreen->characterBaseXPos + (b * 0x12);
 
@@ -1525,9 +1400,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
     }
     s->y = 0x82;
 
-    if (!(characterScreen->availableCharacters
-          & CHARACTER_BIT(characterScreen->selectedCharacter))
-        && IS_SINGLE_PLAYER) {
+    if (!(characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter)) && IS_SINGLE_PLAYER) {
         s->frameFlags |= 0x40000;
         s->palId = sCharacterSilhouettes[characterScreen->selectedCharacter];
     } else {
@@ -1541,9 +1414,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         s->x = e;
         s->y = 0x82;
 
-        if (!(characterScreen->availableCharacters
-              & CHARACTER_BIT(characterScreen->selectedCharacter))
-            && IS_SINGLE_PLAYER) {
+        if (!(characterScreen->availableCharacters & CHARACTER_BIT(characterScreen->selectedCharacter)) && IS_SINGLE_PLAYER) {
             s->frameFlags |= 0x40000;
             s->palId = sCharacterSilhouettes[CHEESE_SILHOUETTE];
         } else {
@@ -1554,9 +1425,7 @@ static void RenderCarouselScrollAnim(struct CharacterSelectionScreen *characterS
         DisplaySprite(s);
     }
 
-    if (IS_MULTI_PLAYER
-        && characterScreen->multiplayerSelections
-            & CHARACTER_BIT(characterScreen->selectedCharacter)) {
+    if (IS_MULTI_PLAYER && characterScreen->multiplayerSelections & CHARACTER_BIT(characterScreen->selectedCharacter)) {
         s = &characterScreen->characterUnavailableIndicator;
         s->x = f;
         s->y = 130;
@@ -1640,24 +1509,12 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
     if (characterScreen->amyUnlocked) {
         for (i = 0; i < NUM_CHARACTERS * 2; i++) {
             u8 temp2 = i - Div(i, 5) * 5;
-            if (temp2 != characterScreen->selectedCharacter
-                || characterScreen->unk3C4 < 0xD) {
+            if (temp2 != characterScreen->selectedCharacter || characterScreen->unk3C4 < 0xD) {
 
                 s = &characterScreen->carouselBlobs[temp2];
 
-                s->x = ((gSineTable[(((characterScreen->carouselPosition >> 8)
-                                      + (i * 0x66) + 2)
-                                     & 0x3FF)
-                                    + 0x100]
-                         * 0x5C)
-                        >> 0xE)
-                    + 10;
-                s->y = ((gSineTable[(
-                             ((characterScreen->carouselPosition >> 8) + (i * 0x66) + 2)
-                             & 0x3FF)]
-                         * 0x5C)
-                        >> 0xE)
-                    + 0x50;
+                s->x = ((gSineTable[(((characterScreen->carouselPosition >> 8) + (i * 0x66) + 2) & 0x3FF) + 0x100] * 0x5C) >> 0xE) + 10;
+                s->y = ((gSineTable[(((characterScreen->carouselPosition >> 8) + (i * 0x66) + 2) & 0x3FF)] * 0x5C) >> 0xE) + 0x50;
                 DisplaySprite(s);
             }
         }
@@ -1666,8 +1523,7 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
         for (i = 0; i < (NUM_CHARACTERS - 1) * 2; i++) {
             u32 temp2;
             u32 temp3 = (i + 2) & 3;
-            if (temp3 != characterScreen->selectedCharacter
-                || characterScreen->unk3C4 < 0xD) {
+            if (temp3 != characterScreen->selectedCharacter || characterScreen->unk3C4 < 0xD) {
                 s = &characterScreen->carouselBlobs[temp3];
                 temp2 = ((temp + i * 0x66) + 4) & 0x3FF;
                 s->x = (gSineTable[temp2 + 0x100] * 0x5C >> 0xE) + 10;
@@ -1683,19 +1539,12 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
 
         s->x = 101;
         s->y = 79;
-        s->variant = characterScreen->selectedCharacter
-            + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
+        s->variant = characterScreen->selectedCharacter + SA2_ANIM_VARIANT_CHAR_SELECT_CIRCLE_ACTIVE;
         s->prevVariant = -1;
 
         transformOptions->rotation = 0;
-        transformOptions->width
-            = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
-               >> 8)
-            + 0xC0;
-        transformOptions->height
-            = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF]
-               >> 8)
-            + 0xC0;
+        transformOptions->width = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
+        transformOptions->height = (gSineTable[(characterScreen->cursorAnimFrame * 0x10 + 0x100) & 0x3FF] >> 8) + 0xC0;
         transformOptions->x = s->x;
         transformOptions->y = s->y;
 
@@ -1712,9 +1561,7 @@ static void RenderUI(struct CharacterSelectionScreen *characterScreen)
         UpdateSpriteAnimation(element2);
         DisplaySprite(element2);
     }
-    if (IS_MULTI_PLAYER
-        && (characterScreen->multiplayerSelections
-            & CHARACTER_BIT(characterScreen->selectedCharacter))) {
+    if (IS_MULTI_PLAYER && (characterScreen->multiplayerSelections & CHARACTER_BIT(characterScreen->selectedCharacter))) {
         DisplaySprite(&characterScreen->characterUnavailableIndicator);
     }
     DisplaySprite(&characterScreen->characterNameSubText);
@@ -1771,8 +1618,7 @@ static void Task_MultiplayerWaitForSelections(void)
 
         s = &characterScreen->characterSecondarySprite;
         s->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
-        s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
-            SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
+        s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
         s->prevVariant = -1;
 
         RenderUI(characterScreen);
@@ -1809,26 +1655,20 @@ static void Task_MultiplayerWaitForSelections(void)
         if (GetBit(gMultiplayerConnections, i) && i != SIO_MULTI_CNT->id) {
             recv = &gMultiSioRecv[i];
             // Conflict
-            if (recv->pat0.unk0 == 0x4021
-                && recv->pat0.unk2 == characterScreen->selectedCharacter
-                && i < SIO_MULTI_CNT->id) {
+            if (recv->pat0.unk0 == 0x4021 && recv->pat0.unk2 == characterScreen->selectedCharacter && i < SIO_MULTI_CNT->id) {
                 gCurTask->main = Task_CharacterSelectMain;
                 m4aSongNumStart(SE_RETURN);
                 characterScreen->selectionComplete = FALSE;
 
                 s = &characterScreen->characterSprite;
-                s->graphics.anim
-                    = sCharacterSpriteAssets[characterScreen->selectedCharacter][0];
-                s->variant
-                    = sCharacterSpriteAssets[characterScreen->selectedCharacter][1];
+                s->graphics.anim = sCharacterSpriteAssets[characterScreen->selectedCharacter][0];
+                s->variant = sCharacterSpriteAssets[characterScreen->selectedCharacter][1];
                 s->prevVariant = -1;
                 UpdateSpriteAnimation(s);
 
                 s = &characterScreen->characterSecondarySprite;
                 s->graphics.anim = SA2_ANIM_CHAR_SELECT_CHARACTER;
-                s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(
-                    SA2_ANIM_CHAR_ID_CHEESE,
-                    SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
+                s->variant = SA2_ANIM_VARIANT_SELECT_CHARACTER(SA2_ANIM_CHAR_ID_CHEESE, SA2_ANIM_VARIANT_CHAR_SELECT_CHARACTER_STATIC);
                 s->prevVariant = -1;
                 UpdateSpriteAnimation(s);
 

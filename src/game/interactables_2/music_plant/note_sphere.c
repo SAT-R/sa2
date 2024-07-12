@@ -42,28 +42,23 @@ static void NoteSphere_Despawn(Sprite_NoteSphere *);
 
 /* animId, variant, tileId (OBJ VRAM) */
 static const u16 sNoteSphereAnimInfo[8][3] = {
-    { SA2_ANIM_NOTE_BLOCK, 7, 0x188 },  { SA2_ANIM_NOTE_BLOCK, 8, 0x18E },
-    { SA2_ANIM_NOTE_BLOCK, 9, 0x194 },  { SA2_ANIM_NOTE_BLOCK, 10, 0x19A },
-    { SA2_ANIM_NOTE_BLOCK, 11, 0x1A0 }, { SA2_ANIM_NOTE_BLOCK, 12, 0x1A6 },
+    { SA2_ANIM_NOTE_BLOCK, 7, 0x188 },  { SA2_ANIM_NOTE_BLOCK, 8, 0x18E },  { SA2_ANIM_NOTE_BLOCK, 9, 0x194 },
+    { SA2_ANIM_NOTE_BLOCK, 10, 0x19A }, { SA2_ANIM_NOTE_BLOCK, 11, 0x1A0 }, { SA2_ANIM_NOTE_BLOCK, 12, 0x1A6 },
     { SA2_ANIM_NOTE_BLOCK, 13, 0x1AC }, { SA2_ANIM_NOTE_BLOCK, 14, 0x1B2 },
 };
 
 static const s16 sNoteSphereVelocities[8] = {
-    Q_8_8(4.5), Q_8_8(5.0), Q_8_8(5.5), Q_8_8(6.0),
-    Q_8_8(6.5), Q_8_8(7.0), Q_8_8(7.5), Q_8_8(8.0),
+    Q_8_8(4.5), Q_8_8(5.0), Q_8_8(5.5), Q_8_8(6.0), Q_8_8(6.5), Q_8_8(7.0), Q_8_8(7.5), Q_8_8(8.0),
 };
 
 static const u16 sNoteSphereSfx[8] = {
-    SE_MUSIC_PLANT_NOTES_1, SE_MUSIC_PLANT_NOTES_2, SE_MUSIC_PLANT_NOTES_3,
-    SE_MUSIC_PLANT_NOTES_4, SE_MUSIC_PLANT_NOTES_5, SE_MUSIC_PLANT_NOTES_6,
-    SE_MUSIC_PLANT_NOTES_7, SE_MUSIC_PLANT_NOTES_8,
+    SE_MUSIC_PLANT_NOTES_1, SE_MUSIC_PLANT_NOTES_2, SE_MUSIC_PLANT_NOTES_3, SE_MUSIC_PLANT_NOTES_4,
+    SE_MUSIC_PLANT_NOTES_5, SE_MUSIC_PLANT_NOTES_6, SE_MUSIC_PLANT_NOTES_7, SE_MUSIC_PLANT_NOTES_8,
 };
 
-void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Note_Sphere, sizeof(Sprite_NoteSphere), 0x2010, 0,
-                                TaskDestructor_Interactable_MusicPlant_Note_Sphere);
+    struct Task *t = TaskCreate(Task_Note_Sphere, sizeof(Sprite_NoteSphere), 0x2010, 0, TaskDestructor_Interactable_MusicPlant_Note_Sphere);
     Sprite_NoteSphere *note = TASK_DATA(t);
     Sprite *s = &note->disp;
     note->unk44 = 0;
@@ -85,8 +80,7 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->hitboxes[0].index = -1;
     s->frameFlags = 0x2000;
 
-    s->graphics.dest
-        = &((u8 *)OBJ_VRAM0)[sNoteSphereAnimInfo[note->kind][2] * TILE_SIZE_4BPP];
+    s->graphics.dest = &((u8 *)OBJ_VRAM0)[sNoteSphereAnimInfo[note->kind][2] * TILE_SIZE_4BPP];
     s->graphics.anim = sNoteSphereAnimInfo[note->kind][0];
     s->variant = sNoteSphereAnimInfo[note->kind][1];
 
@@ -175,10 +169,8 @@ static u8 NoteSphere_BouncePlayer(Sprite_NoteSphere *note)
 
         r4 = (u8)(newAngle + (sub_808558C(newAngle, angle, 8) << 1));
 
-        gPlayer.speedAirX
-            = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(COS(r4 * 4)));
-        gPlayer.speedAirY
-            = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
+        gPlayer.speedAirX = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(COS(r4 * 4)));
+        gPlayer.speedAirY = I(sNoteSphereVelocities[note->kind] * Q_2_14_TO_Q_24_8(SIN(r4 * 4)));
     }
 
     gPlayer.transition = PLTRANS_PT5;
@@ -255,8 +247,7 @@ static bool32 NoteSphere_ShouldDespawn(Sprite_NoteSphere *note)
     posY = screenY;
     posX = screenX;
 
-    if ((posX > (DISPLAY_WIDTH + CAM_REGION_WIDTH))
-        || (posY > (DISPLAY_HEIGHT + CAM_REGION_WIDTH))) {
+    if ((posX > (DISPLAY_WIDTH + CAM_REGION_WIDTH)) || (posY > (DISPLAY_HEIGHT + CAM_REGION_WIDTH))) {
         return TRUE;
     }
 

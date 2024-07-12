@@ -31,13 +31,11 @@ static void sub_80811A0(Sprite_SpecialRing *, u32);
 static void sub_8081134(Sprite_SpecialRing *);
 static void Task_80811BC(void);
 
-void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 spriteY)
+void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (IS_SINGLE_PLAYER) {
         struct Task *t
-            = TaskCreate(Task_Interactable_SpecialRing, sizeof(Sprite_SpecialRing),
-                         0x4040, 0, TaskDestructor_Interactable_SpecialRing);
+            = TaskCreate(Task_Interactable_SpecialRing, sizeof(Sprite_SpecialRing), 0x4040, 0, TaskDestructor_Interactable_SpecialRing);
 
         Sprite_SpecialRing *ring = TASK_DATA(t);
         Sprite *s;

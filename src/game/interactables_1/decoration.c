@@ -36,8 +36,7 @@ void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY
     Sprite *s;
 
     if (me->decoId >= 0) {
-        t = TaskCreate(Task_Decoration, sizeof(Sprite_Decoration), 0x2010, 0,
-                       TaskDestructor_Decoration);
+        t = TaskCreate(Task_Decoration, sizeof(Sprite_Decoration), 0x2010, 0, TaskDestructor_Decoration);
         base = TASK_DATA(t);
         s = &base->displayed;
 

@@ -5,11 +5,10 @@
 #define MUS_INTRO               1
 #define MUS_TITLE_FANFARE       2
 #define MUS_CHARACTER_SELECTION 3
-#define MUS_TA_COURSE_SELECTION                                                         \
-    4 // plays both in Time Attack and (initially) the zone map
-#define MUS_COURSE_SELECTION_2 5
-#define MUS_COURSE_SELECTION_3 6
-#define MUS_TIME_ATTACK_MENU   7
+#define MUS_TA_COURSE_SELECTION 4 // plays both in Time Attack and (initially) the zone map
+#define MUS_COURSE_SELECTION_2  5
+#define MUS_COURSE_SELECTION_3  6
+#define MUS_TIME_ATTACK_MENU    7
 // 8
 #define MUS_OPTIONS 9
 // 10

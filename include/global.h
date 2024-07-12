@@ -28,7 +28,7 @@ typedef void (*VoidFn)(void);
 #ifdef NON_MATCHING
 #define ASM_FUNC(path, decl)
 #else
-#define ASM_FUNC(path, decl)                                                            \
+#define ASM_FUNC(path, decl)                                                                                                               \
     NAKED decl { asm(".include " #path); }
 #endif
 
@@ -36,10 +36,10 @@ typedef void (*VoidFn)(void);
 #define NONMATCH(path, decl) decl
 #define END_NONMATCH
 #else
-#define NONMATCH(path, decl)                                                            \
-    NAKED decl                                                                          \
-    {                                                                                   \
-        asm(".include " #path);                                                         \
+#define NONMATCH(path, decl)                                                                                                               \
+    NAKED decl                                                                                                                             \
+    {                                                                                                                                      \
+        asm(".include " #path);                                                                                                            \
         if (0)
 #define END_NONMATCH }
 #endif
@@ -49,9 +49,9 @@ typedef void (*VoidFn)(void);
 // We define these when using certain IDEs to fool preproc
 #define _(x)  (x)
 #define __(x) (x)
-#define INCBIN(...)                                                                     \
-    {                                                                                   \
-        0                                                                               \
+#define INCBIN(...)                                                                                                                        \
+    {                                                                                                                                      \
+        0                                                                                                                                  \
     }
 #define INCBIN_U8  INCBIN
 #define INCBIN_U16 INCBIN
@@ -141,58 +141,58 @@ typedef void (*VoidFn)(void);
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
-#define CLAMP(value, min, max)                                                          \
-    ({                                                                                  \
-        s32 clamped;                                                                    \
-        if ((value) < (min)) {                                                          \
-            clamped = (min);                                                            \
-        } else {                                                                        \
-            clamped = (value) > (max) ? (max) : (value);                                \
-        }                                                                               \
-        clamped;                                                                        \
+#define CLAMP(value, min, max)                                                                                                             \
+    ({                                                                                                                                     \
+        s32 clamped;                                                                                                                       \
+        if ((value) < (min)) {                                                                                                             \
+            clamped = (min);                                                                                                               \
+        } else {                                                                                                                           \
+            clamped = (value) > (max) ? (max) : (value);                                                                                   \
+        }                                                                                                                                  \
+        clamped;                                                                                                                           \
     })
 
-#define CLAMP_T(type, value, min, max)                                                  \
-    ({                                                                                  \
-        type clamped;                                                                   \
-        if ((value) >= (min)) {                                                         \
-            clamped = (value) > (max) ? (max) : (value);                                \
-        } else {                                                                        \
-            clamped = (min);                                                            \
-        }                                                                               \
-        clamped;                                                                        \
+#define CLAMP_T(type, value, min, max)                                                                                                     \
+    ({                                                                                                                                     \
+        type clamped;                                                                                                                      \
+        if ((value) >= (min)) {                                                                                                            \
+            clamped = (value) > (max) ? (max) : (value);                                                                                   \
+        } else {                                                                                                                           \
+            clamped = (min);                                                                                                               \
+        }                                                                                                                                  \
+        clamped;                                                                                                                           \
     })
 
 #define CLAMP_16(value, min, max) CLAMP_T(s16, value, min, max)
 #define CLAMP_32(value, min, max) CLAMP_T(s32, value, min, max)
 
-#define CLAMP_INLINE(var, min, max)                                                     \
-    ({                                                                                  \
-        if ((var) < (min)) {                                                            \
-            var = (min);                                                                \
-        } else if ((var) > (max)) {                                                     \
-            var = (max);                                                                \
-        }                                                                               \
+#define CLAMP_INLINE(var, min, max)                                                                                                        \
+    ({                                                                                                                                     \
+        if ((var) < (min)) {                                                                                                               \
+            var = (min);                                                                                                                   \
+        } else if ((var) > (max)) {                                                                                                        \
+            var = (max);                                                                                                                   \
+        }                                                                                                                                  \
     })
 
-#define CLAMP_INLINE_NO_ELSE(var, min, max)                                             \
-    ({                                                                                  \
-        if ((var) < (min)) {                                                            \
-            var = (min);                                                                \
-        }                                                                               \
-                                                                                        \
-        if ((var) > (max)) {                                                            \
-            var = (max);                                                                \
-        }                                                                               \
+#define CLAMP_INLINE_NO_ELSE(var, min, max)                                                                                                \
+    ({                                                                                                                                     \
+        if ((var) < (min)) {                                                                                                               \
+            var = (min);                                                                                                                   \
+        }                                                                                                                                  \
+                                                                                                                                           \
+        if ((var) > (max)) {                                                                                                               \
+            var = (max);                                                                                                                   \
+        }                                                                                                                                  \
     })
 
-#define CLAMP_INLINE2(var, min, max)                                                    \
-    ({                                                                                  \
-        if ((var) > (max)) {                                                            \
-            var = (max);                                                                \
-        } else if ((var) < (min)) {                                                     \
-            var = (min);                                                                \
-        }                                                                               \
+#define CLAMP_INLINE2(var, min, max)                                                                                                       \
+    ({                                                                                                                                     \
+        if ((var) > (max)) {                                                                                                               \
+            var = (max);                                                                                                                   \
+        } else if ((var) < (min)) {                                                                                                        \
+            var = (min);                                                                                                                   \
+        }                                                                                                                                  \
     })
 
 #define ABS(aValue) ((aValue) >= 0 ? (aValue) : -(aValue))
@@ -206,22 +206,22 @@ typedef void (*VoidFn)(void);
 #define GBA_FRAMES_PER_SECOND 60
 
 // TODO: fix casts here(?)
-#define XOR_SWAP(a, b)                                                                  \
-    a ^= (u8)b;                                                                         \
-    b ^= (u8)a;                                                                         \
+#define XOR_SWAP(a, b)                                                                                                                     \
+    a ^= (u8)b;                                                                                                                            \
+    b ^= (u8)a;                                                                                                                            \
     a = ((u8)b ^ (u8)a);
 
 // TODO: fix casts here
-#define SWAP_AND_NEGATE(a, b)                                                           \
-    a ^= (u8)b;                                                                         \
-    b ^= (u8)a;                                                                         \
-    a = ((u8)b ^ (u8)a) * -1;                                                           \
+#define SWAP_AND_NEGATE(a, b)                                                                                                              \
+    a ^= (u8)b;                                                                                                                            \
+    b ^= (u8)a;                                                                                                                            \
+    a = ((u8)b ^ (u8)a) * -1;                                                                                                              \
     b = (u8)b * -1;
 
-#define NEGATE(var)                                                                     \
-    ({                                                                                  \
-        s32 temp = var;                                                                 \
-        var = -temp;                                                                    \
+#define NEGATE(var)                                                                                                                        \
+    ({                                                                                                                                     \
+        s32 temp = var;                                                                                                                    \
+        var = -temp;                                                                                                                       \
     })
 #define DIRECT_NEGATE(var) (var = -var;)
 

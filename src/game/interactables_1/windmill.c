@@ -23,19 +23,16 @@ static void TaskDestructor_Windmill(struct Task *);
 static void Task_WindmillMain(void);
 
 static const TileInfo sWindmillParts[] = {
-    { 4, SA2_ANIM_WIND_MILL_PART, 3 }, { 4, SA2_ANIM_WIND_MILL_PART, 2 },
-    { 4, SA2_ANIM_WIND_MILL_PART, 1 }, { 4, SA2_ANIM_WIND_MILL_PART, 0 },
-    { 4, SA2_ANIM_WIND_MILL_PART, 6 },
+    { 4, SA2_ANIM_WIND_MILL_PART, 3 }, { 4, SA2_ANIM_WIND_MILL_PART, 2 }, { 4, SA2_ANIM_WIND_MILL_PART, 1 },
+    { 4, SA2_ANIM_WIND_MILL_PART, 0 }, { 4, SA2_ANIM_WIND_MILL_PART, 6 },
 };
 
-void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY)
+void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     u8 i, j;
     void *ramDests[4];
     Sprite *s;
-    struct Task *t = TaskCreate(Task_WindmillMain, sizeof(InteractableWindmill), 0x2010,
-                                0, TaskDestructor_Windmill);
+    struct Task *t = TaskCreate(Task_WindmillMain, sizeof(InteractableWindmill), 0x2010, 0, TaskDestructor_Windmill);
     InteractableWindmill *windmill = TASK_DATA(t);
 
     s = &windmill->center;
@@ -123,10 +120,8 @@ static void Task_WindmillMain(void)
             transform = &windmill->blades[i * 4 + j].transform;
             sinPeriod = (gStageTime * 2 + (i * 256));
 
-            s->x = screenX
-                + ((COS(CLAMP_SIN_PERIOD(sinPeriod)) * ((j + 1) * 16 - 8)) >> 14);
-            s->y = screenY
-                + ((SIN(CLAMP_SIN_PERIOD(sinPeriod)) * ((j + 1) * 16 - 8)) >> 14);
+            s->x = screenX + ((COS(CLAMP_SIN_PERIOD(sinPeriod)) * ((j + 1) * 16 - 8)) >> 14);
+            s->y = screenY + ((SIN(CLAMP_SIN_PERIOD(sinPeriod)) * ((j + 1) * 16 - 8)) >> 14);
             transform->rotation = CLAMP_SIN_PERIOD(sinPeriod);
             transform->width = 256;
             transform->height = 256;

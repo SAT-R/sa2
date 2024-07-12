@@ -28,11 +28,8 @@ static void Task_InclineRamp(void)
     screenY = TO_WORLD_POS(me->y, ramp->base.regionX);
 
     moveState = gPlayer.moveState;
-    if (!(moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.x))
-        && ((screenX + me->d.uData[2] * TILE_WIDTH) >= I(gPlayer.x))
-        && (screenY <= I(gPlayer.y))
-        && ((screenY + me->d.uData[3] * TILE_WIDTH) >= I(gPlayer.y))
-        && (!(moveState & MOVESTATE_IN_AIR))) {
+    if (!(moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.x)) && ((screenX + me->d.uData[2] * TILE_WIDTH) >= I(gPlayer.x))
+        && (screenY <= I(gPlayer.y)) && ((screenY + me->d.uData[3] * TILE_WIDTH) >= I(gPlayer.y)) && (!(moveState & MOVESTATE_IN_AIR))) {
         //  spriteY == me->d.uData[0]; (set in initSprite, below)
         if (((s8)ramp->base.spriteY) == 0) {
             if (gPlayer.speedAirX > Q(4)) {
@@ -98,11 +95,9 @@ static void Task_InclineRamp(void)
     }
 }
 
-void CreateEntity_InclineRamp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                              u8 param3)
+void CreateEntity_InclineRamp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
 {
-    struct Task *t
-        = TaskCreate(Task_InclineRamp, sizeof(Sprite_InclineRamp), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_InclineRamp, sizeof(Sprite_InclineRamp), 0x2000, 0, NULL);
     Sprite_InclineRamp *ramp = TASK_DATA(t);
 
     // @BUG? (regionY gets set to regionX and vice versa)

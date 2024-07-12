@@ -138,8 +138,8 @@ void ApplyGameStageSettings(void)
         gNumLives = 1;
     }
 
-    if ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK
-         || gGameMode == GAME_MODE_MULTI_PLAYER || gGameMode == GAME_MODE_TEAM_PLAY)
+    if ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK || gGameMode == GAME_MODE_MULTI_PLAYER
+         || gGameMode == GAME_MODE_TEAM_PLAY)
         || (gStageFlags & STAGE_FLAG__DEMO_RUNNING)) {
         gDifficultyLevel = 0;
     } else {
@@ -149,9 +149,7 @@ void ApplyGameStageSettings(void)
     if ((gStageFlags & STAGE_FLAG__DEMO_RUNNING)) {
         SetPlayerControls(A_BUTTON, B_BUTTON, R_BUTTON);
     } else {
-        SetPlayerControls(gLoadedSaveGame->buttonConfig.jump,
-                          gLoadedSaveGame->buttonConfig.attack,
-                          gLoadedSaveGame->buttonConfig.trick);
+        SetPlayerControls(gLoadedSaveGame->buttonConfig.jump, gLoadedSaveGame->buttonConfig.attack, gLoadedSaveGame->buttonConfig.trick);
     }
 }
 
@@ -308,9 +306,7 @@ void Task_GameStage(void)
     u32 timeStep;
 
     if (IS_SINGLE_PLAYER) {
-        if (!(gStageFlags & STAGE_FLAG__DISABLE_PAUSE_MENU)
-            && (gPressedKeys & START_BUTTON)
-            && !(gStageFlags & STAGE_FLAG__DEMO_RUNNING)) {
+        if (!(gStageFlags & STAGE_FLAG__DISABLE_PAUSE_MENU) && (gPressedKeys & START_BUTTON) && !(gStageFlags & STAGE_FLAG__DEMO_RUNNING)) {
             CreatePauseMenu();
         }
         gStageTime++;
@@ -321,13 +317,11 @@ void Task_GameStage(void)
         gStageTime = framesSinceStageStart;
 
         if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            if ((framesSinceStageStart & ~(0x1FF))
-                != ((framesSinceStageStart - timeStep) & ~(0x1FF))) {
+            if ((framesSinceStageStart & ~(0x1FF)) != ((framesSinceStageStart - timeStep) & ~(0x1FF))) {
                 u32 mask, rand;
                 u32 temp = MultiplayerPseudoRandom32();
 
-                if ((framesSinceStageStart & ~(0xFFF))
-                    != ((framesSinceStageStart - timeStep) & ~(0xFFF))) {
+                if ((framesSinceStageStart & ~(0xFFF)) != ((framesSinceStageStart - timeStep) & ~(0xFFF))) {
                     u32 value = (gRandomItemBox >> 4) + 1;
                     gRandomItemBox = ((gRandomItemBox & 0xF) | (value * 16));
                 }
@@ -336,8 +330,7 @@ void Task_GameStage(void)
                 gRandomItemBox = (gRandomItemBox & 0xF8) | (rand & mask);
             }
 
-        } else if ((framesSinceStageStart & ~(0x3F))
-                   != ((framesSinceStageStart - timeStep) & ~(0x3F))) {
+        } else if ((framesSinceStageStart & ~(0x3F)) != ((framesSinceStageStart - timeStep) & ~(0x3F))) {
             u32 temp = MultiplayerPseudoRandom32();
         }
 
@@ -407,9 +400,7 @@ void Task_GameStage(void)
             }
 
             if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_BOSS)) {
-                CreateScreenShake(0x800, 8, 16, -1,
-                                  (SCREENSHAKE_VERTICAL | SCREENSHAKE_HORIZONTAL
-                                   | SCREENSHAKE_RANDOM_VALUE));
+                CreateScreenShake(0x800, 8, 16, -1, (SCREENSHAKE_VERTICAL | SCREENSHAKE_HORIZONTAL | SCREENSHAKE_RANDOM_VALUE));
             }
             gPlayer.moveState |= MOVESTATE_DEAD;
             m4aSongNumStart(SE_TIME_UP);
@@ -426,8 +417,7 @@ void Task_GameStage(void)
         if (IS_SINGLE_PLAYER) {
             gStageFlags |= STAGE_FLAG__ACT_START;
 
-            if (gLoadedSaveGame->timeLimitDisabled
-                && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
+            if (gLoadedSaveGame->timeLimitDisabled && (gGameMode == GAME_MODE_SINGLE_PLAYER || IS_MULTI_PLAYER)) {
                 return;
             }
 
@@ -480,8 +470,7 @@ void HandleLifeLost(void)
 static inline void StageInit_SetMusic_inline(u16 level)
 {
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if (gSelectedCharacter == CHARACTER_SONIC
-            && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel
+        if (gSelectedCharacter == CHARACTER_SONIC && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel
             && gCurrentLevel == LEVEL_INDEX(ZONE_5, ACT_BOSS)) {
             gUnknown_030054A8.unk1 = 0x1E;
         } else {

@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_zone_final_act_unused_bg[]
-    = INCBIN_U16("data/maps/zone_final/act_unused/tilemaps/bg/palette.gbapal");
-const u8 Tiles_zone_final_act_unused_bg[]
-    = INCBIN_U8("data/maps/zone_final/act_unused/tilemaps/bg/tiles.4bpp");
-const u16 Tilemap_zone_final_act_unused_bg[]
-    = INCBIN_U16("data/maps/zone_final/act_unused/tilemaps/bg/tilemap.tilemap2");
+const u16 Palette_zone_final_act_unused_bg[] = INCBIN_U16("data/maps/zone_final/act_unused/tilemaps/bg/palette.gbapal");
+const u8 Tiles_zone_final_act_unused_bg[] = INCBIN_U8("data/maps/zone_final/act_unused/tilemaps/bg/tiles.4bpp");
+const u16 Tilemap_zone_final_act_unused_bg[] = INCBIN_U16("data/maps/zone_final/act_unused/tilemaps/bg/tilemap.tilemap2");
 
 const Tilemap zone_final_act_unused_bg = {
     .xTiles = 32,

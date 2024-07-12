@@ -143,9 +143,8 @@ int main(int argc, char **argv)
     const char *title = "SAT-R sa2";
 #endif
 
-    sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                 DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale,
-                                 SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * videoScale,
+                                 DISPLAY_HEIGHT * videoScale, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (sdlWindow == NULL) {
         fprintf(stderr, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -153,8 +152,7 @@ int main(int argc, char **argv)
 
     sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_PRESENTVSYNC);
     if (sdlRenderer == NULL) {
-        fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n",
-                SDL_GetError());
+        fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
 
@@ -163,9 +161,7 @@ int main(int argc, char **argv)
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
     SDL_RenderSetLogicalSize(sdlRenderer, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
-    sdlTexture
-        = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ABGR1555,
-                            SDL_TEXTUREACCESS_STREAMING, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+    sdlTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ABGR1555, SDL_TEXTUREACCESS_STREAMING, DISPLAY_WIDTH, DISPLAY_HEIGHT);
     if (sdlTexture == NULL) {
         fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -176,8 +172,7 @@ int main(int argc, char **argv)
     isFrameAvailable.value = 0;
     vBlankSemaphore = SDL_CreateSemaphore(0);
     if (vBlankSemaphore == NULL) {
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to create Semaphore:\n  %s",
-                     SDL_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to create Semaphore:\n  %s", SDL_GetError());
     }
 
 #if ENABLE_AUDIO
@@ -221,8 +216,7 @@ int main(int argc, char **argv)
             double dt = fixedTimestep / timeScale; // TODO: Fix speedup
 
             curGameTime = SDL_GetPerformanceCounter();
-            double deltaTime = (double)((curGameTime - lastGameTime)
-                                        / (double)SDL_GetPerformanceFrequency());
+            double deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
             if (deltaTime > (dt * 5))
                 deltaTime = dt;
             lastGameTime = curGameTime;
@@ -253,8 +247,7 @@ int main(int argc, char **argv)
         }
 
         if (videoScaleChanged) {
-            SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale,
-                              DISPLAY_HEIGHT * videoScale);
+            SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
             videoScaleChanged = false;
         }
 
@@ -322,14 +315,14 @@ static void CloseSaveFile()
 #define KEY_DPAD_LEFT     SDLK_LEFT
 #define KEY_DPAD_RIGHT    SDLK_RIGHT
 
-#define HANDLE_KEYUP(key)                                                               \
-    case KEY_##key:                                                                     \
-        keys &= ~key;                                                                   \
+#define HANDLE_KEYUP(key)                                                                                                                  \
+    case KEY_##key:                                                                                                                        \
+        keys &= ~key;                                                                                                                      \
         break;
 
-#define HANDLE_KEYDOWN(key)                                                             \
-    case KEY_##key:                                                                     \
-        keys |= key;                                                                    \
+#define HANDLE_KEYDOWN(key)                                                                                                                \
+    case KEY_##key:                                                                                                                        \
+        keys |= key;                                                                                                                       \
         break;
 
 static u16 keys;
@@ -383,8 +376,7 @@ void ProcessEvents(void)
                     }
                     SDL_SetWindowFullscreen(sdlWindow, fullScreenFlags);
 
-                    SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale,
-                                      DISPLAY_HEIGHT * videoScale);
+                    SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
                     videoScaleChanged = FALSE;
                 } else
                     switch (event.key.keysym.sym) {
@@ -452,17 +444,12 @@ u16 GetXInputKeys()
         /* B */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_X) >> 13;
         /* Start */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_START) >> 1;
         /* Select */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) >> 3;
-        /* L */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
-            << 1;
-        /* R */ xinputKeys
-            |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) >> 1;
+        /* L */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) << 1;
+        /* R */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) >> 1;
         /* Up */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP) << 6;
-        /* Down */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
-            << 6;
-        /* Left */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
-            << 3;
-        /* Right */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
-            << 1;
+        /* Down */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN) << 6;
+        /* Left */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT) << 3;
+        /* Right */ xinputKeys |= (state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT) << 1;
 
         /* Control Stick */
         float xAxis = (float)state.Gamepad.sThumbLX / (float)SHRT_MAX;
@@ -535,8 +522,7 @@ static void RunDMAs(u32 type)
             dma->control &= ~DMA_ENABLE;
         }
 
-        if ((dma->control & DMA_ENABLE)
-            && (((dma->control & DMA_START_MASK) >> 12) == type)) {
+        if ((dma->control & DMA_ENABLE) && (((dma->control & DMA_START_MASK) >> 12) == type)) {
             // printf("DMA%d src=%p, dest=%p, control=%d\n", dmaNum, dma->src, dma->dest,
             // dma->control);
             for (int i = 0; i < (dma->size); i++) {
@@ -622,10 +608,7 @@ int MultiBoot(struct MultiBootParam *mp) { return 0; }
 void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
 {
     if (dmaNum >= DMA_COUNT) {
-        fprintf(
-            stderr,
-            "DmaSet with invalid DMA number: dmaNum=%d, src=%p, dest=%p, control=%d\n",
-            dmaNum, src, dest, control);
+        fprintf(stderr, "DmaSet with invalid DMA number: dmaNum=%d, src=%p, dest=%p, control=%d\n", dmaNum, src, dest, control);
         return;
     }
 
@@ -654,8 +637,7 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
 
 void DmaStop(int dmaNum)
 {
-    (&REG_DMA0CNT)[dmaNum]
-        &= ~((DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT) << 16);
+    (&REG_DMA0CNT)[dmaNum] &= ~((DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT) << 16);
 
     struct DMATransfer *dma = &DMAList[dmaNum];
     dma->control &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
@@ -952,49 +934,32 @@ void RLUnCompVram(const void *src, void *dest)
 }
 
 const s16 sineTable[256]
-    = { (s16)0x0000, (s16)0x0192, (s16)0x0323, (s16)0x04B5, (s16)0x0645, (s16)0x07D5,
-        (s16)0x0964, (s16)0x0AF1, (s16)0x0C7C, (s16)0x0E05, (s16)0x0F8C, (s16)0x1111,
-        (s16)0x1294, (s16)0x1413, (s16)0x158F, (s16)0x1708, (s16)0x187D, (s16)0x19EF,
-        (s16)0x1B5D, (s16)0x1CC6, (s16)0x1E2B, (s16)0x1F8B, (s16)0x20E7, (s16)0x223D,
-        (s16)0x238E, (s16)0x24DA, (s16)0x261F, (s16)0x275F, (s16)0x2899, (s16)0x29CD,
-        (s16)0x2AFA, (s16)0x2C21, (s16)0x2D41, (s16)0x2E5A, (s16)0x2F6B, (s16)0x3076,
-        (s16)0x3179, (s16)0x3274, (s16)0x3367, (s16)0x3453, (s16)0x3536, (s16)0x3612,
-        (s16)0x36E5, (s16)0x37AF, (s16)0x3871, (s16)0x392A, (s16)0x39DA, (s16)0x3A82,
-        (s16)0x3B20, (s16)0x3BB6, (s16)0x3C42, (s16)0x3CC5, (s16)0x3D3E, (s16)0x3DAE,
-        (s16)0x3E14, (s16)0x3E71, (s16)0x3EC5, (s16)0x3F0E, (s16)0x3F4E, (s16)0x3F84,
-        (s16)0x3FB1, (s16)0x3FD3, (s16)0x3FEC, (s16)0x3FFB, (s16)0x4000, (s16)0x3FFB,
-        (s16)0x3FEC, (s16)0x3FD3, (s16)0x3FB1, (s16)0x3F84, (s16)0x3F4E, (s16)0x3F0E,
-        (s16)0x3EC5, (s16)0x3E71, (s16)0x3E14, (s16)0x3DAE, (s16)0x3D3E, (s16)0x3CC5,
-        (s16)0x3C42, (s16)0x3BB6, (s16)0x3B20, (s16)0x3A82, (s16)0x39DA, (s16)0x392A,
-        (s16)0x3871, (s16)0x37AF, (s16)0x36E5, (s16)0x3612, (s16)0x3536, (s16)0x3453,
-        (s16)0x3367, (s16)0x3274, (s16)0x3179, (s16)0x3076, (s16)0x2F6B, (s16)0x2E5A,
-        (s16)0x2D41, (s16)0x2C21, (s16)0x2AFA, (s16)0x29CD, (s16)0x2899, (s16)0x275F,
-        (s16)0x261F, (s16)0x24DA, (s16)0x238E, (s16)0x223D, (s16)0x20E7, (s16)0x1F8B,
-        (s16)0x1E2B, (s16)0x1CC6, (s16)0x1B5D, (s16)0x19EF, (s16)0x187D, (s16)0x1708,
-        (s16)0x158F, (s16)0x1413, (s16)0x1294, (s16)0x1111, (s16)0x0F8C, (s16)0x0E05,
-        (s16)0x0C7C, (s16)0x0AF1, (s16)0x0964, (s16)0x07D5, (s16)0x0645, (s16)0x04B5,
-        (s16)0x0323, (s16)0x0192, (s16)0x0000, (s16)0xFE6E, (s16)0xFCDD, (s16)0xFB4B,
-        (s16)0xF9BB, (s16)0xF82B, (s16)0xF69C, (s16)0xF50F, (s16)0xF384, (s16)0xF1FB,
-        (s16)0xF074, (s16)0xEEEF, (s16)0xED6C, (s16)0xEBED, (s16)0xEA71, (s16)0xE8F8,
-        (s16)0xE783, (s16)0xE611, (s16)0xE4A3, (s16)0xE33A, (s16)0xE1D5, (s16)0xE075,
-        (s16)0xDF19, (s16)0xDDC3, (s16)0xDC72, (s16)0xDB26, (s16)0xD9E1, (s16)0xD8A1,
-        (s16)0xD767, (s16)0xD633, (s16)0xD506, (s16)0xD3DF, (s16)0xD2BF, (s16)0xD1A6,
-        (s16)0xD095, (s16)0xCF8A, (s16)0xCE87, (s16)0xCD8C, (s16)0xCC99, (s16)0xCBAD,
-        (s16)0xCACA, (s16)0xC9EE, (s16)0xC91B, (s16)0xC851, (s16)0xC78F, (s16)0xC6D6,
-        (s16)0xC626, (s16)0xC57E, (s16)0xC4E0, (s16)0xC44A, (s16)0xC3BE, (s16)0xC33B,
-        (s16)0xC2C2, (s16)0xC252, (s16)0xC1EC, (s16)0xC18F, (s16)0xC13B, (s16)0xC0F2,
-        (s16)0xC0B2, (s16)0xC07C, (s16)0xC04F, (s16)0xC02D, (s16)0xC014, (s16)0xC005,
-        (s16)0xC000, (s16)0xC005, (s16)0xC014, (s16)0xC02D, (s16)0xC04F, (s16)0xC07C,
-        (s16)0xC0B2, (s16)0xC0F2, (s16)0xC13B, (s16)0xC18F, (s16)0xC1EC, (s16)0xC252,
-        (s16)0xC2C2, (s16)0xC33B, (s16)0xC3BE, (s16)0xC44A, (s16)0xC4E0, (s16)0xC57E,
-        (s16)0xC626, (s16)0xC6D6, (s16)0xC78F, (s16)0xC851, (s16)0xC91B, (s16)0xC9EE,
-        (s16)0xCACA, (s16)0xCBAD, (s16)0xCC99, (s16)0xCD8C, (s16)0xCE87, (s16)0xCF8A,
-        (s16)0xD095, (s16)0xD1A6, (s16)0xD2BF, (s16)0xD3DF, (s16)0xD506, (s16)0xD633,
-        (s16)0xD767, (s16)0xD8A1, (s16)0xD9E1, (s16)0xDB26, (s16)0xDC72, (s16)0xDDC3,
-        (s16)0xDF19, (s16)0xE075, (s16)0xE1D5, (s16)0xE33A, (s16)0xE4A3, (s16)0xE611,
-        (s16)0xE783, (s16)0xE8F8, (s16)0xEA71, (s16)0xEBED, (s16)0xED6C, (s16)0xEEEF,
-        (s16)0xF074, (s16)0xF1FB, (s16)0xF384, (s16)0xF50F, (s16)0xF69C, (s16)0xF82B,
-        (s16)0xF9BB, (s16)0xFB4B, (s16)0xFCDD, (s16)0xFE6E };
+    = { (s16)0x0000, (s16)0x0192, (s16)0x0323, (s16)0x04B5, (s16)0x0645, (s16)0x07D5, (s16)0x0964, (s16)0x0AF1, (s16)0x0C7C, (s16)0x0E05,
+        (s16)0x0F8C, (s16)0x1111, (s16)0x1294, (s16)0x1413, (s16)0x158F, (s16)0x1708, (s16)0x187D, (s16)0x19EF, (s16)0x1B5D, (s16)0x1CC6,
+        (s16)0x1E2B, (s16)0x1F8B, (s16)0x20E7, (s16)0x223D, (s16)0x238E, (s16)0x24DA, (s16)0x261F, (s16)0x275F, (s16)0x2899, (s16)0x29CD,
+        (s16)0x2AFA, (s16)0x2C21, (s16)0x2D41, (s16)0x2E5A, (s16)0x2F6B, (s16)0x3076, (s16)0x3179, (s16)0x3274, (s16)0x3367, (s16)0x3453,
+        (s16)0x3536, (s16)0x3612, (s16)0x36E5, (s16)0x37AF, (s16)0x3871, (s16)0x392A, (s16)0x39DA, (s16)0x3A82, (s16)0x3B20, (s16)0x3BB6,
+        (s16)0x3C42, (s16)0x3CC5, (s16)0x3D3E, (s16)0x3DAE, (s16)0x3E14, (s16)0x3E71, (s16)0x3EC5, (s16)0x3F0E, (s16)0x3F4E, (s16)0x3F84,
+        (s16)0x3FB1, (s16)0x3FD3, (s16)0x3FEC, (s16)0x3FFB, (s16)0x4000, (s16)0x3FFB, (s16)0x3FEC, (s16)0x3FD3, (s16)0x3FB1, (s16)0x3F84,
+        (s16)0x3F4E, (s16)0x3F0E, (s16)0x3EC5, (s16)0x3E71, (s16)0x3E14, (s16)0x3DAE, (s16)0x3D3E, (s16)0x3CC5, (s16)0x3C42, (s16)0x3BB6,
+        (s16)0x3B20, (s16)0x3A82, (s16)0x39DA, (s16)0x392A, (s16)0x3871, (s16)0x37AF, (s16)0x36E5, (s16)0x3612, (s16)0x3536, (s16)0x3453,
+        (s16)0x3367, (s16)0x3274, (s16)0x3179, (s16)0x3076, (s16)0x2F6B, (s16)0x2E5A, (s16)0x2D41, (s16)0x2C21, (s16)0x2AFA, (s16)0x29CD,
+        (s16)0x2899, (s16)0x275F, (s16)0x261F, (s16)0x24DA, (s16)0x238E, (s16)0x223D, (s16)0x20E7, (s16)0x1F8B, (s16)0x1E2B, (s16)0x1CC6,
+        (s16)0x1B5D, (s16)0x19EF, (s16)0x187D, (s16)0x1708, (s16)0x158F, (s16)0x1413, (s16)0x1294, (s16)0x1111, (s16)0x0F8C, (s16)0x0E05,
+        (s16)0x0C7C, (s16)0x0AF1, (s16)0x0964, (s16)0x07D5, (s16)0x0645, (s16)0x04B5, (s16)0x0323, (s16)0x0192, (s16)0x0000, (s16)0xFE6E,
+        (s16)0xFCDD, (s16)0xFB4B, (s16)0xF9BB, (s16)0xF82B, (s16)0xF69C, (s16)0xF50F, (s16)0xF384, (s16)0xF1FB, (s16)0xF074, (s16)0xEEEF,
+        (s16)0xED6C, (s16)0xEBED, (s16)0xEA71, (s16)0xE8F8, (s16)0xE783, (s16)0xE611, (s16)0xE4A3, (s16)0xE33A, (s16)0xE1D5, (s16)0xE075,
+        (s16)0xDF19, (s16)0xDDC3, (s16)0xDC72, (s16)0xDB26, (s16)0xD9E1, (s16)0xD8A1, (s16)0xD767, (s16)0xD633, (s16)0xD506, (s16)0xD3DF,
+        (s16)0xD2BF, (s16)0xD1A6, (s16)0xD095, (s16)0xCF8A, (s16)0xCE87, (s16)0xCD8C, (s16)0xCC99, (s16)0xCBAD, (s16)0xCACA, (s16)0xC9EE,
+        (s16)0xC91B, (s16)0xC851, (s16)0xC78F, (s16)0xC6D6, (s16)0xC626, (s16)0xC57E, (s16)0xC4E0, (s16)0xC44A, (s16)0xC3BE, (s16)0xC33B,
+        (s16)0xC2C2, (s16)0xC252, (s16)0xC1EC, (s16)0xC18F, (s16)0xC13B, (s16)0xC0F2, (s16)0xC0B2, (s16)0xC07C, (s16)0xC04F, (s16)0xC02D,
+        (s16)0xC014, (s16)0xC005, (s16)0xC000, (s16)0xC005, (s16)0xC014, (s16)0xC02D, (s16)0xC04F, (s16)0xC07C, (s16)0xC0B2, (s16)0xC0F2,
+        (s16)0xC13B, (s16)0xC18F, (s16)0xC1EC, (s16)0xC252, (s16)0xC2C2, (s16)0xC33B, (s16)0xC3BE, (s16)0xC44A, (s16)0xC4E0, (s16)0xC57E,
+        (s16)0xC626, (s16)0xC6D6, (s16)0xC78F, (s16)0xC851, (s16)0xC91B, (s16)0xC9EE, (s16)0xCACA, (s16)0xCBAD, (s16)0xCC99, (s16)0xCD8C,
+        (s16)0xCE87, (s16)0xCF8A, (s16)0xD095, (s16)0xD1A6, (s16)0xD2BF, (s16)0xD3DF, (s16)0xD506, (s16)0xD633, (s16)0xD767, (s16)0xD8A1,
+        (s16)0xD9E1, (s16)0xDB26, (s16)0xDC72, (s16)0xDDC3, (s16)0xDF19, (s16)0xE075, (s16)0xE1D5, (s16)0xE33A, (s16)0xE4A3, (s16)0xE611,
+        (s16)0xE783, (s16)0xE8F8, (s16)0xEA71, (s16)0xEBED, (s16)0xED6C, (s16)0xEEEF, (s16)0xF074, (s16)0xF1FB, (s16)0xF384, (s16)0xF50F,
+        (s16)0xF69C, (s16)0xF82B, (s16)0xF9BB, (s16)0xFB4B, (s16)0xFCDD, (s16)0xFE6E };
 
 void BgAffineSet(struct BgAffineSrcData *src, struct BgAffineDstData *dest, s32 count)
 {
@@ -1073,8 +1038,7 @@ static const uint16_t bgMapSizes[][2] = {
 #define applySpriteHorizontalMosaicEffect(x) (x - (x % (mosaicSpriteEffectX + 1)))
 #define applySpriteVerticalMosaicEffect(y)   (y - (y % (mosaicSpriteEffectY + 1)))
 
-static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16_t voffs,
-                             int lineNum, uint16_t *line)
+static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16_t voffs, int lineNum, uint16_t *line)
 {
     unsigned int charBaseBlock = (control >> 2) & 3;
     unsigned int screenBaseBlock = (control >> 8) & 0x1F;
@@ -1223,8 +1187,7 @@ static inline uint16_t getBgPD(int bgNumber)
     return 0;
 }
 
-static void RenderRotScaleBGScanline(int bgNum, uint16_t control, uint16_t x, uint16_t y,
-                                     int lineNum, uint16_t *line)
+static void RenderRotScaleBGScanline(int bgNum, uint16_t control, uint16_t x, uint16_t y, int lineNum, uint16_t *line)
 {
     vBgCnt *bgcnt = (vBgCnt *)&control;
     unsigned int charBaseBlock = bgcnt->charBaseBlock;
@@ -1360,12 +1323,9 @@ static uint16_t alphaBlendColor(uint16_t targetA, uint16_t targetB)
     unsigned int eva = REG_BLDALPHA & 0x1F;
     unsigned int evb = (REG_BLDALPHA >> 8) & 0x1F;
     // shift right by 4 = division by 16
-    unsigned int r
-        = ((getRedChannel(targetA) * eva) + (getRedChannel(targetB) * evb)) >> 4;
-    unsigned int g
-        = ((getGreenChannel(targetA) * eva) + (getGreenChannel(targetB) * evb)) >> 4;
-    unsigned int b
-        = ((getBlueChannel(targetA) * eva) + (getBlueChannel(targetB) * evb)) >> 4;
+    unsigned int r = ((getRedChannel(targetA) * eva) + (getRedChannel(targetB) * evb)) >> 4;
+    unsigned int g = ((getGreenChannel(targetA) * eva) + (getGreenChannel(targetB) * evb)) >> 4;
+    unsigned int b = ((getBlueChannel(targetA) * eva) + (getBlueChannel(targetB) * evb)) >> 4;
 
     if (r > 31)
         r = 31;
@@ -1381,8 +1341,7 @@ static uint16_t alphaBrightnessIncrease(uint16_t targetA)
 {
     unsigned int evy = (REG_BLDY & 0x1F);
     unsigned int r = getRedChannel(targetA) + (31 - getRedChannel(targetA)) * evy / 16;
-    unsigned int g
-        = getGreenChannel(targetA) + (31 - getGreenChannel(targetA)) * evy / 16;
+    unsigned int g = getGreenChannel(targetA) + (31 - getGreenChannel(targetA)) * evy / 16;
     unsigned int b = getBlueChannel(targetA) + (31 - getBlueChannel(targetA)) * evy / 16;
 
     if (r > 31)
@@ -1414,31 +1373,26 @@ static uint16_t alphaBrightnessDecrease(uint16_t targetA)
 
 // outputs the blended pixel in colorOutput, the prxxx are the bg priority and
 // subpriority, pixelpos is pixel offset in scanline
-static bool alphaBlendSelectTargetB(struct scanlineData *scanline, uint16_t *colorOutput,
-                                    char prnum, char prsub, int pixelpos,
+static bool alphaBlendSelectTargetB(struct scanlineData *scanline, uint16_t *colorOutput, char prnum, char prsub, int pixelpos,
                                     bool spriteBlendEnabled)
 {
     // iterate trough every possible bg to blend with, starting from specified priorities
     // from arguments
     for (unsigned int blndprnum = prnum; blndprnum <= 3; blndprnum++) {
         // check if sprite is available to blend with, if sprite blending is enabled
-        if (spriteBlendEnabled == true
-            && getAlphaBit(scanline->spriteLayers[blndprnum][pixelpos]) == 1) {
+        if (spriteBlendEnabled == true && getAlphaBit(scanline->spriteLayers[blndprnum][pixelpos]) == 1) {
             *colorOutput = scanline->spriteLayers[blndprnum][pixelpos];
             return true;
         }
 
-        for (unsigned int blndprsub = prsub;
-             blndprsub < scanline->prioritySortedBgsCount[blndprnum]; blndprsub++) {
+        for (unsigned int blndprsub = prsub; blndprsub < scanline->prioritySortedBgsCount[blndprnum]; blndprsub++) {
             char currLayer = scanline->prioritySortedBgs[blndprnum][blndprsub];
-            if (getAlphaBit(scanline->layers[currLayer][pixelpos]) == 1
-                && REG_BLDCNT & (1 << (8 + currLayer)) && isbgEnabled(currLayer)) {
+            if (getAlphaBit(scanline->layers[currLayer][pixelpos]) == 1 && REG_BLDCNT & (1 << (8 + currLayer)) && isbgEnabled(currLayer)) {
                 *colorOutput = scanline->layers[currLayer][pixelpos];
                 return true;
             }
             // if we hit a non target layer we should bail
-            if (getAlphaBit(scanline->layers[currLayer][pixelpos]) == 1
-                && isbgEnabled(currLayer) && prnum != blndprnum) {
+            if (getAlphaBit(scanline->layers[currLayer][pixelpos]) == 1 && isbgEnabled(currLayer) && prnum != blndprnum) {
                 return false;
             }
         }
@@ -1472,8 +1426,7 @@ static bool winCheckHorizontalBounds(u16 left, u16 right, u16 xpos)
 }
 
 // Parts of this code heavily borrowed from NanoboyAdvance.
-static void DrawSprites(struct scanlineData *scanline, uint16_t vcount,
-                        bool windowsEnabled)
+static void DrawSprites(struct scanlineData *scanline, uint16_t vcount, bool windowsEnabled)
 {
     int i;
     unsigned int x;
@@ -1569,9 +1522,7 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount,
 
         // Does this sprite actually draw on this scanline?
         if (vcount >= (y - half_height) && vcount < (y + half_height)) {
-            int local_y = (oam->split.mosaic == 1)
-                ? applySpriteVerticalMosaicEffect(vcount) - y
-                : vcount - y;
+            int local_y = (oam->split.mosaic == 1) ? applySpriteVerticalMosaicEffect(vcount) - y : vcount - y;
             int number = oam->split.tileNum;
             int palette = oam->split.paletteNum;
             bool flipX = !isAffine && ((oam->split.matrixNum >> 3) & 1);
@@ -1594,17 +1545,11 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount,
                     // mosaic effect has to be applied to global coordinates otherwise
                     // the mosaic will scroll
                     local_mosaicX = applySpriteHorizontalMosaicEffect(global_x) - x;
-                    tex_x
-                        = ((matrix[0][0] * local_mosaicX + matrix[0][1] * local_y) >> 8)
-                        + (width / 2);
-                    tex_y
-                        = ((matrix[1][0] * local_mosaicX + matrix[1][1] * local_y) >> 8)
-                        + (height / 2);
+                    tex_x = ((matrix[0][0] * local_mosaicX + matrix[0][1] * local_y) >> 8) + (width / 2);
+                    tex_y = ((matrix[1][0] * local_mosaicX + matrix[1][1] * local_y) >> 8) + (height / 2);
                 } else {
-                    tex_x = ((matrix[0][0] * local_x + matrix[0][1] * local_y) >> 8)
-                        + (width / 2);
-                    tex_y = ((matrix[1][0] * local_x + matrix[1][1] * local_y) >> 8)
-                        + (height / 2);
+                    tex_x = ((matrix[0][0] * local_x + matrix[0][1] * local_y) >> 8) + (width / 2);
+                    tex_y = ((matrix[1][0] * local_x + matrix[1][1] * local_y) >> 8) + (height / 2);
                 }
 
                 /* Check if transformed coordinates are inside bounds. */
@@ -1621,21 +1566,18 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount,
                 int tile_y = tex_y % 8;
                 int block_x = tex_x / 8;
                 int block_y = tex_y / 8;
-                int block_offset
-                    = ((block_y * (REG_DISPCNT & 0x40 ? (width / 8) : 16)) + block_x);
+                int block_offset = ((block_y * (REG_DISPCNT & 0x40 ? (width / 8) : 16)) + block_x);
                 uint16_t pixel = 0;
 
                 if (!is8BPP) {
-                    pixel = tiledata[(block_offset + oam->split.tileNum) * 32
-                                     + (tile_y * 4) + (tile_x / 2)];
+                    pixel = tiledata[(block_offset + oam->split.tileNum) * 32 + (tile_y * 4) + (tile_x / 2)];
                     if (tile_x & 1)
                         pixel >>= 4;
                     else
                         pixel &= 0xF;
                     palette += oam->split.paletteNum * 16;
                 } else {
-                    pixel = tiledata[(block_offset * 2 + oam->split.tileNum) * 32
-                                     + (tile_y * 8) + tile_x];
+                    pixel = tiledata[(block_offset * 2 + oam->split.tileNum) * 32 + (tile_y * 8) + tile_x];
                 }
 
                 if (pixel != 0) {
@@ -1651,20 +1593,14 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount,
                     // this code runs if pixel is to be drawn
                     if (global_x < DISPLAY_WIDTH && global_x >= 0) {
                         // check if its enabled in the window (if window is enabled)
-                        winShouldBlendPixel
-                            = (windowsEnabled == false
-                               || scanline->winMask[global_x] & WINMASK_CLR);
+                        winShouldBlendPixel = (windowsEnabled == false || scanline->winMask[global_x] & WINMASK_CLR);
 
                         // has to be separated from the blend mode switch statement
                         // because of OBJ semi transparancy feature
-                        if ((blendMode == 1 && REG_BLDCNT & BLDCNT_TGT1_OBJ
-                             && winShouldBlendPixel)
-                            || isSemiTransparent) {
+                        if ((blendMode == 1 && REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) || isSemiTransparent) {
                             uint16_t targetA = color;
                             uint16_t targetB = 0;
-                            if (alphaBlendSelectTargetB(scanline, &targetB,
-                                                        oam->split.priority, 0, global_x,
-                                                        false)) {
+                            if (alphaBlendSelectTargetB(scanline, &targetB, oam->split.priority, 0, global_x, false)) {
                                 color = alphaBlendColor(targetA, targetB);
                             }
                         } else if (REG_BLDCNT & BLDCNT_TGT1_OBJ && winShouldBlendPixel) {
@@ -1721,8 +1657,7 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
                     uint16_t bghoffs = *(uint16_t *)(REG_ADDR_BG0HOFS + bgnum * 4);
                     uint16_t bgvoffs = *(uint16_t *)(REG_ADDR_BG0VOFS + bgnum * 4);
 
-                    RenderBGScanline(bgnum, scanline.bgcnts[bgnum], bghoffs, bgvoffs,
-                                     vcount, scanline.layers[bgnum]);
+                    RenderBGScanline(bgnum, scanline.bgcnts[bgnum], bghoffs, bgvoffs, vcount, scanline.layers[bgnum]);
                 }
             }
 
@@ -1731,8 +1666,7 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
             // BG2 is affine
             bgnum = 2;
             if (isbgEnabled(bgnum)) {
-                RenderRotScaleBGScanline(bgnum, scanline.bgcnts[bgnum], REG_BG2X,
-                                         REG_BG2Y, vcount, scanline.layers[bgnum]);
+                RenderRotScaleBGScanline(bgnum, scanline.bgcnts[bgnum], REG_BG2X, REG_BG2Y, vcount, scanline.layers[bgnum]);
             }
             // BG0 and BG1 are text mode
             for (bgnum = 1; bgnum >= 0; bgnum--) {
@@ -1740,8 +1674,7 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
                     uint16_t bghoffs = *(uint16_t *)(REG_ADDR_BG0HOFS + bgnum * 4);
                     uint16_t bgvoffs = *(uint16_t *)(REG_ADDR_BG0VOFS + bgnum * 4);
 
-                    RenderBGScanline(bgnum, scanline.bgcnts[bgnum], bghoffs, bgvoffs,
-                                     vcount, scanline.layers[bgnum]);
+                    RenderBGScanline(bgnum, scanline.bgcnts[bgnum], bghoffs, bgvoffs, vcount, scanline.layers[bgnum]);
                 }
             }
             break;
@@ -1817,8 +1750,7 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
 
     // iterate trough every priority in order
     for (prnum = 3; prnum >= 0; prnum--) {
-        for (char prsub = scanline.prioritySortedBgsCount[prnum] - 1; prsub >= 0;
-             prsub--) {
+        for (char prsub = scanline.prioritySortedBgsCount[prnum] - 1; prsub >= 0; prsub--) {
             char bgnum = scanline.prioritySortedBgs[prnum][prsub];
             // if background is enabled then draw it
             if (isbgEnabled(bgnum)) {
@@ -1846,12 +1778,9 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
 
                         switch (blendMode) {
                             case 1:
-                                isSpriteBlendingEnabled
-                                    = REG_BLDCNT & BLDCNT_TGT2_OBJ ? 1 : 0;
+                                isSpriteBlendingEnabled = REG_BLDCNT & BLDCNT_TGT2_OBJ ? 1 : 0;
                                 // find targetB and blend it
-                                if (alphaBlendSelectTargetB(&scanline, &targetB, prnum,
-                                                            prsub + 1, xpos,
-                                                            isSpriteBlendingEnabled)) {
+                                if (alphaBlendSelectTargetB(&scanline, &targetB, prnum, prsub + 1, xpos, isSpriteBlendingEnabled)) {
                                     color = alphaBlendColor(targetA, targetB);
                                 }
                                 break;

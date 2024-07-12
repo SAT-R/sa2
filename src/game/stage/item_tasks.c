@@ -26,16 +26,15 @@ void Task_Item_Shield_Magnetic(void);
 void Task_Item_Confusion(void);
 void TaskDestructor_ItemTasks(struct Task *);
 
-#define ITEMTASK_GET_PLAYER_NUM()                                                       \
-    ({                                                                                  \
-        ItemTask *it = TASK_DATA(gCurTask);                                             \
-        it->unk30;                                                                      \
+#define ITEMTASK_GET_PLAYER_NUM()                                                                                                          \
+    ({                                                                                                                                     \
+        ItemTask *it = TASK_DATA(gCurTask);                                                                                                \
+        it->unk30;                                                                                                                         \
     })
 
 struct Task *CreateItemTask_Shield_Normal(s8 p0)
 {
-    struct Task *t = TaskCreate(Task_Item_Shield_Normal, sizeof(ItemTask), 0x4001, 0,
-                                TaskDestructor_ItemTasks);
+    struct Task *t = TaskCreate(Task_Item_Shield_Normal, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
     ItemTask *item = TASK_DATA(t);
     Sprite *s = &item->s;
 
@@ -59,8 +58,7 @@ struct Task *CreateItemTask_Shield_Normal(s8 p0)
 
 struct Task *CreateItemTask_Invincibility(s8 p0)
 {
-    struct Task *t = TaskCreate(Task_Item_Invincibility, sizeof(ItemTask), 0x4001, 0,
-                                TaskDestructor_ItemTasks);
+    struct Task *t = TaskCreate(Task_Item_Invincibility, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
     ItemTask *item = TASK_DATA(t);
     Sprite *s = &item->s;
 
@@ -82,8 +80,7 @@ struct Task *CreateItemTask_Invincibility(s8 p0)
 
 struct Task *CreateItemTask_Shield_Magnetic(s8 p0)
 {
-    struct Task *t = TaskCreate(Task_Item_Shield_Magnetic, sizeof(ItemTask), 0x4001, 0,
-                                TaskDestructor_ItemTasks);
+    struct Task *t = TaskCreate(Task_Item_Shield_Magnetic, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
     ItemTask *item = (ItemTask *)TASK_DATA(t);
 
     item->unk30 = p0;
@@ -111,8 +108,7 @@ struct Task *CreateItemTask_Shield_Magnetic(s8 p0)
 
 struct Task *CreateItemTask_Confusion(s8 p0)
 {
-    struct Task *t = TaskCreate(Task_Item_Confusion, sizeof(ItemTask), 0x4001, 0,
-                                TaskDestructor_ItemTasks);
+    struct Task *t = TaskCreate(Task_Item_Confusion, sizeof(ItemTask), 0x4001, 0, TaskDestructor_ItemTasks);
     ItemTask *item = TASK_DATA(t);
 
     item->unk30 = p0;
@@ -144,9 +140,7 @@ void Task_Item_Shield_Normal(void)
     ItemTask *item = TASK_DATA(gCurTask);
     struct Camera *cam = &gCamera;
 
-    u32 itemEffect
-        = (gPlayer.itemEffect
-           & (PLAYER_ITEM_EFFECT__INVINCIBILITY | PLAYER_ITEM_EFFECT__SHIELD_NORMAL));
+    u32 itemEffect = (gPlayer.itemEffect & (PLAYER_ITEM_EFFECT__INVINCIBILITY | PLAYER_ITEM_EFFECT__SHIELD_NORMAL));
     if (itemEffect != PLAYER_ITEM_EFFECT__SHIELD_NORMAL) {
         TaskDestroy(gCurTask);
         return;
@@ -178,8 +172,7 @@ void Task_Item_Shield_Normal(void)
 #else
         b = (param & 0x1);
 #endif
-        if (((gStageTime & 0x2) && (b != itemEffect))
-            || (!(gStageTime & 0x2) && (b != 0))) {
+        if (((gStageTime & 0x2) && (b != itemEffect)) || (!(gStageTime & 0x2) && (b != 0))) {
             DisplaySprite(&item->s);
         }
     }
@@ -195,9 +188,7 @@ void Task_Item_Shield_Magnetic(void)
     bool32 b;
 
     if (IS_SINGLE_PLAYER) {
-        u32 itemEffect = (gPlayer.itemEffect
-                          & (PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC
-                             | PLAYER_ITEM_EFFECT__INVINCIBILITY));
+        u32 itemEffect = (gPlayer.itemEffect & (PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC | PLAYER_ITEM_EFFECT__INVINCIBILITY));
 
         if (itemEffect != PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC) {
             TaskDestroy(gCurTask);
@@ -214,8 +205,7 @@ void Task_Item_Shield_Magnetic(void)
             item->s.y = screenY;
 
             item->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-            item->s.frameFlags
-                |= gPlayer.unk90->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY;
+            item->s.frameFlags |= gPlayer.unk90->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY;
         } else {
             return;
         }
@@ -361,8 +351,7 @@ void Task_Item_Confusion(void)
             u32 one = 1;
 #endif
             b &= one;
-            if (((gStageTime & 0x2) && (b != one))
-                || (!(gStageTime & 0x2) && (b != 0))) {
+            if (((gStageTime & 0x2) && (b != one)) || (!(gStageTime & 0x2) && (b != 0))) {
                 DisplaySprite(s);
             }
         }

@@ -21,12 +21,9 @@ static AnimCmdResult animCmd_SetSpritePriority_BG(void *, Sprite *);
 static AnimCmdResult animCmd_SetOamOrder_BG(void *, Sprite *);
 
 const AnimationCommandFunc animCmdTable_BG[12] = {
-    animCmd_GetTiles_BG,          animCmd_GetPalette_BG,
-    animCmd_JumpBack_BG,          animCmd_End_BG,
-    animCmd_PlaySoundEffect_BG,   animCmd_AddHitbox_BG,
-    animCmd_TranslateSprite_BG,   animCmd_8_BG,
-    animCmd_SetIdAndVariant_BG,   animCmd_10_BG,
-    animCmd_SetSpritePriority_BG, animCmd_SetOamOrder_BG,
+    animCmd_GetTiles_BG,        animCmd_GetPalette_BG, animCmd_JumpBack_BG,          animCmd_End_BG,
+    animCmd_PlaySoundEffect_BG, animCmd_AddHitbox_BG,  animCmd_TranslateSprite_BG,   animCmd_8_BG,
+    animCmd_SetIdAndVariant_BG, animCmd_10_BG,         animCmd_SetSpritePriority_BG, animCmd_SetOamOrder_BG,
 };
 
 #define ReadInstruction(script, cursor) ((void *)(script) + (cursor * sizeof(s32)))
@@ -56,8 +53,7 @@ void DrawBackground(Background *background)
     background->paletteOffset = mapHeader->h.palOffset;
 
     if (!(background->flags & BACKGROUND_UPDATE_PALETTE)) {
-        DmaCopy16(3, pal, gBgPalette + background->paletteOffset,
-                  palSize * sizeof(*pal));
+        DmaCopy16(3, pal, gBgPalette + background->paletteOffset, palSize * sizeof(*pal));
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
         background->flags ^= BACKGROUND_UPDATE_PALETTE;
     }
@@ -106,8 +102,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
             index = (index + 1) % ARRAY_COUNT(gUnknown_03001800);
             gUnknown_03002AE4 = index;
 
-            if ((bg->flags & BACKGROUND_FLAG_20) && (bg->scrollX == bg->prevScrollX)
-                && bg->scrollY == bg->prevScrollY)
+            if ((bg->flags & BACKGROUND_FLAG_20) && (bg->scrollX == bg->prevScrollX) && bg->scrollY == bg->prevScrollY)
                 continue;
         }
         // NOTE: register r4 = sp00
@@ -148,8 +143,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     if (bg->flags & BACKGROUND_FLAG_80) {
                         u32 r0Index = (((bg->unk20 + r5) - 1) * sp00) * sp08;
                         void *r2Ptr = CastPointer(bg->layout, r0Index);
-                        u16 *r4Ptr = CastPointer(
-                            r2Ptr, ((bg->unk1E + bg->targetTilesX) - 1) * sp08);
+                        u16 *r4Ptr = CastPointer(r2Ptr, ((bg->unk1E + bg->targetTilesX) - 1) * sp08);
 
                         // _08002C7C
                         while (r5-- != 0) {
@@ -209,8 +203,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         }
                     } else {
                         // _08002DD4
-                        if ((affine & 1) && (sp08 == 2) && ((0x20 - bg->unk22) > 0)
-                            && ((bg->targetTilesX + bg->unk22 - 0x20) > 0)) {
+                        if ((affine & 1) && (sp08 == 2) && ((0x20 - bg->unk22) > 0) && ((bg->targetTilesX + bg->unk22 - 0x20) > 0)) {
                             s32 vR2;
                             // __08002DF8
                             r4Ptr = (u16 *)(&bg->layout[bg->unk20 * sp00] + bg->unk1E);
@@ -221,8 +214,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                                 // _08002E1C
                                 // r7 <- sp08
                                 DmaCopy16(3, r4Ptr, r7, sb);
-                                DmaCopy16(3, CastPointer(r4Ptr, sb),
-                                          CastPointer(r7, sp04), vR2);
+                                DmaCopy16(3, CastPointer(r4Ptr, sb), CastPointer(r7, sp04), vR2);
 
                                 r7 = CastPointer(r7, sp0C);
                                 r4Ptr = CastPointer(r4Ptr, (sp00 * sp08));
@@ -231,8 +223,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         } else {
                             // __08002E74
                             u32 r0Index = bg->unk20 * sp00 * sp08;
-                            void *r1Ptr
-                                = CastPointer(bg->layout, bg->unk20 * sp00 * sp08);
+                            void *r1Ptr = CastPointer(bg->layout, bg->unk20 * sp00 * sp08);
                             void *r4Ptr = CastPointer(r1Ptr, bg->unk1E * sp08);
 
                             // r0 = r0Index
@@ -365,8 +356,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
             gBgScrollRegs[bgId][0] = bg->scrollX & 0x7;
             gBgScrollRegs[bgId][1] = bg->scrollY & 0x7;
 
-            if ((bg->prevScrollX >> 3 != bg->scrollX >> 3)
-                || (bg->prevScrollY >> 3 != bg->scrollY >> 3)) {
+            if ((bg->prevScrollX >> 3 != bg->scrollX >> 3) || (bg->prevScrollY >> 3 != bg->scrollY >> 3)) {
                 if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
                     // _08003072
                     // TODO: Something'S wrong with the types here (r2 should be s16?)
@@ -777,8 +767,7 @@ static AnimCmdResult animCmd_AddHitbox_BG(void *cursor, Sprite *s)
 
     DmaCopy32(3, &cmd->hitbox, &s->hitboxes[index].index, 8);
 
-    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0)
-        && (cmd->hitbox.bottom == 0)) {
+    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0) && (cmd->hitbox.bottom == 0)) {
         s->hitboxes[index].index = -1;
     } else {
         if (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
@@ -870,8 +859,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
 
             if (dims != (void *)-1) {
                 u32 bgId = SPRITE_FLAG_GET(s, BG_ID);
-                void *bgVram
-                    = (void *)BG_CHAR_ADDR((gBgCntRegs[bgId] & BGCNT_CHARBASE(3)) >> 2);
+                void *bgVram = (void *)BG_CHAR_ADDR((gBgCntRegs[bgId] & BGCNT_CHARBASE(3)) >> 2);
                 void *bgBase = bgVram + ((gBgCntRegs[bgId] & BGCNT_SCREENBASE(31)) * 8);
 
                 if (gBgCntRegs[bgId] & BGCNT_256COLOR) {
@@ -991,8 +979,7 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
 }
 END_NONMATCH
 
-void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6,
-                 BgAffineReg *affine)
+void sub_8003EE4(u16 p0, s16 p1, s16 p2, s16 p3, s16 p4, s16 p5, s16 p6, BgAffineReg *affine)
 {
     affine->pa = (COS_24_8(p0) * (s16)Div(0x10000, p1)) >> 8;
     affine->pb = (SIN_24_8(p0) * (s16)Div(0x10000, p1)) >> 8;
@@ -1047,8 +1034,7 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
 
             sp08 = gUnknown_03002280[bgIndex][0];
 
-            if ((bgIndex > 1)
-                && (gDispCnt & (DISPCNT_MODE_2 | DISPCNT_MODE_1 | DISPCNT_MODE_0))) {
+            if ((bgIndex > 1) && (gDispCnt & (DISPCNT_MODE_2 | DISPCNT_MODE_1 | DISPCNT_MODE_0))) {
                 // _0800408E
                 spVramPtr = (u8 *)&vramBgCtrl[sp08];
                 bgSize_TxtOrAff = (0x10 << (gBgCntRegs[bgIndex] >> 14));
@@ -1060,8 +1046,7 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                     v |= v << 8;
 
                     value = ((gUnknown_03002280[bgIndex][3] - r4) * bgSize_TxtOrAff);
-                    DmaFill16(3, v, (void *)&spVramPtr[bgSize_TxtOrAff],
-                              (((s32)(value + (value >> 31))) >> 1));
+                    DmaFill16(3, v, (void *)&spVramPtr[bgSize_TxtOrAff], (((s32)(value + (value >> 31))) >> 1));
                 } else {
                     // _080040F8
                     // u8 i2 = i + 1;
@@ -1069,9 +1054,7 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                         u16 v = gUnknown_03004D80[bgIndex];
                         v |= v << 8;
 
-                        DmaFill16(
-                            3, v, &spVramPtr[bgIndex * r4],
-                            (s32)(bgIndex * 4 - gUnknown_03002280[bgIndex][0] + 1));
+                        DmaFill16(3, v, &spVramPtr[bgIndex * r4], (s32)(bgIndex * 4 - gUnknown_03002280[bgIndex][0] + 1));
                     }
                 }
                 // then -> _0800422C
@@ -1097,15 +1080,12 @@ NONMATCH("asm/non_matching/engine/sub_8004010.inc", u32 sub_8004010(void))
                     // _080041D8
                     for (; r4 <= gUnknown_03002280[bgIndex][3]; r4++) {
                         // _080041F6
-                        DmaFill16(3, gUnknown_03004D80[bgIndex],
-                                  &gUnknown_03002280[bgIndex][tileSize],
-                                  ARRAY_COUNT(gUnknown_03002280[0]));
+                        DmaFill16(3, gUnknown_03004D80[bgIndex], &gUnknown_03002280[bgIndex][tileSize], ARRAY_COUNT(gUnknown_03002280[0]));
                     }
                 }
             }
             // _0800422C
-            DmaFill32(3, 0, &gUnknown_03002280[bgIndex],
-                      ARRAY_COUNT(gUnknown_03002280[bgIndex]));
+            DmaFill32(3, 0, &gUnknown_03002280[bgIndex], ARRAY_COUNT(gUnknown_03002280[bgIndex]));
         }
     }
 
@@ -1125,11 +1105,9 @@ u32 sub_8004010(void)
     u8 sp08;
 
     for (bg = 0; bg < 4; bg++) {
-        if ((gUnknown_03002280[bg][1] != gUnknown_03002280[bg][3])
-            || (gUnknown_03002280[bg][0] != gUnknown_03002280[bg][2])) {
+        if ((gUnknown_03002280[bg][1] != gUnknown_03002280[bg][3]) || (gUnknown_03002280[bg][0] != gUnknown_03002280[bg][2])) {
             // _08004056
-            void *vramBase
-                = ((void *)BG_VRAM + ((gBgCntRegs[bg] & BGCNT_SCREENBASE_MASK) << 3));
+            void *vramBase = ((void *)BG_VRAM + ((gBgCntRegs[bg] & BGCNT_SCREENBASE_MASK) << 3));
             sp08 = gUnknown_03002280[bg][0];
 
             // Potential bug?
@@ -1152,8 +1130,7 @@ u32 sub_8004010(void)
                     // __080040A2
                     u16 cb = combine(gUnknown_03004D80[bg]);
                     void *vram = (vramBase + (gUnknown_03002280[bg][1] * affineSize));
-                    s32 size = affineSize
-                        * (gUnknown_03002280[bg][3] - gUnknown_03002280[bg][1]);
+                    s32 size = affineSize * (gUnknown_03002280[bg][3] - gUnknown_03002280[bg][1]);
 
                     DmaFill16(3, cb, vram, ABS(size));
                 } else {
@@ -1162,8 +1139,7 @@ u32 sub_8004010(void)
 
                     for (; r4 <= gUnknown_03002280[bg][3]; r4++) {
                         u16 cb = combine(gUnknown_03004D80[bg]);
-                        void *vram
-                            = (vramBase + (gUnknown_03002280[bg][1] * affineSize));
+                        void *vram = (vramBase + (gUnknown_03002280[bg][1] * affineSize));
                         s32 size = (gUnknown_03002280[bg][2] - sp08) + 1;
 
                         DmaFill16(3, cb, vram, ABS(size));
@@ -1193,8 +1169,7 @@ u32 sub_8004010(void)
                 if (gUnknown_03002280[bg][2] == 0xFF) {
                     // __0800418C
                     void *vram = (vramBase + (gUnknown_03002280[bg][1] * tileSize));
-                    s32 size = tileSize
-                        * (gUnknown_03002280[bg][3] - gUnknown_03002280[bg][1]);
+                    s32 size = tileSize * (gUnknown_03002280[bg][3] - gUnknown_03002280[bg][1]);
 
                     DmaFill16(3, gUnknown_03004D80[bg], vram, size * 2);
                 } else {
@@ -1202,8 +1177,7 @@ u32 sub_8004010(void)
                     u8 r4 = gUnknown_03002280[bg][1];
 
                     for (; r4 < gUnknown_03002280[bg][3]; r4++) {
-                        void *vram
-                            = (vramBase + (gUnknown_03002280[bg][1] * (tileSize * 2)));
+                        void *vram = (vramBase + (gUnknown_03002280[bg][1] * (tileSize * 2)));
                         s32 size = tileSize * (gUnknown_03002280[bg][2] - sp08) + 1;
                         DmaFill16(3, gUnknown_03004D80[bg], vram, size * 2);
                     }
@@ -1220,8 +1194,7 @@ u32 sub_8004010(void)
 #endif
 
 // Copies the font to VRAM and displays the input text by using it as tileset.
-s32 RenderText(void *dest, const void *font, u16 x, u16 y, u8 bg, const char *text,
-               u8 palette)
+s32 RenderText(void *dest, const void *font, u16 x, u16 y, u8 bg, const char *text, u8 palette)
 {
     u8 i = 0;
 
@@ -1263,8 +1236,7 @@ static AnimCmdResult animCmd_GetPalette_BG(void *cursor, Sprite *s)
     if (!(s->frameFlags & SPRITE_FLAG_MASK_18)) {
         s32 paletteIndex = cmd->palId;
 
-        DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16],
-                  &gBgPalette[s->palId * 16 + cmd->insertOffset], cmd->numColors * 2);
+        DmaCopy32(3, &gRefSpriteTables->palettes[paletteIndex * 16], &gBgPalette[s->palId * 16 + cmd->insertOffset], cmd->numColors * 2);
 
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
     }

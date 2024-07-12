@@ -1,12 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-const u16 Palette_extra_boss_background_copy[]
-    = INCBIN_U16("data/tilemaps/extra_boss_background_copy/palette.gbapal");
-const u8 Tiles_extra_boss_background_copy[]
-    = INCBIN_U8("data/tilemaps/extra_boss_background_copy/tiles.4bpp");
-const u16 Tilemap_extra_boss_background_copy[]
-    = INCBIN_U16("data/tilemaps/extra_boss_background_copy/tilemap.tilemap2");
+const u16 Palette_extra_boss_background_copy[] = INCBIN_U16("data/tilemaps/extra_boss_background_copy/palette.gbapal");
+const u8 Tiles_extra_boss_background_copy[] = INCBIN_U8("data/tilemaps/extra_boss_background_copy/tiles.4bpp");
+const u16 Tilemap_extra_boss_background_copy[] = INCBIN_U16("data/tilemaps/extra_boss_background_copy/tilemap.tilemap2");
 
 const Tilemap extra_boss_background_copy = {
     .xTiles = 32,

@@ -28,9 +28,7 @@ void sub_8019240(union MultiSioData *msioData, u8 someId)
         ias++; // skip v_regionCount
         r2 = msioData->pat0.unkF;
 
-        offset = *(u32 *)(((u8 *)ias)
-                          + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
-                          + (r2 * sizeof(u32)));
+        offset = *(u32 *)(((u8 *)ias) + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32)) + (r2 * sizeof(u32)));
         if (offset != 0) {
             MapEntity *cursor;
 
@@ -39,9 +37,7 @@ void sub_8019240(union MultiSioData *msioData, u8 someId)
             cursor = (MapEntity *)((u8 *)ias + offset);
             cursor += msioData->pat4.unk11;
 
-            if ((msioData->pat4.unk12 == 0)
-                || ((msioData->pat4.unk12 == 1)
-                    && ((s8)cursor->x == MAP_ENTITY_STATE_INITIALIZED))) {
+            if ((msioData->pat4.unk12 == 0) || ((msioData->pat4.unk12 == 1) && ((s8)cursor->x == MAP_ENTITY_STATE_INITIALIZED))) {
                 *(s8 *)(&cursor->x) = MAP_ENTITY_STATE_MINUS_THREE;
             }
         }
@@ -67,9 +63,7 @@ void sub_80192A8(union MultiSioData *msioData, u8 UNUSED someId)
 #else
             register u32 offset asm("r1")
 #endif
-                = *(u32 *)(((u8 *)items)
-                           + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
-                           + (r2 * sizeof(u32)));
+                = *(u32 *)(((u8 *)items) + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32)) + (r2 * sizeof(u32)));
             if (offset != 0) {
                 MapEntity_Itembox *cursor;
 
@@ -103,9 +97,7 @@ void sub_80192FC(union MultiSioData *msioData, u8 UNUSED someId)
 #else
             register u32 offset asm("r1")
 #endif
-                = *(u32 *)(((u8 *)enemies)
-                           + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
-                           + (r2 * sizeof(u32)));
+                = *(u32 *)(((u8 *)enemies) + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32)) + (r2 * sizeof(u32)));
             if (offset != 0) {
                 MapEntity *cursor;
 
@@ -144,9 +136,7 @@ void sub_8019368(union MultiSioData *msioData, u8 UNUSED someId)
 #else
             register u32 offset asm("r1")
 #endif
-                = *(u32 *)(((u8 *)ias)
-                           + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32))
-                           + (r2 * sizeof(u32)));
+                = *(u32 *)(((u8 *)ias) + ((h_regionCount * msioData->pat4.unk10) * sizeof(u32)) + (r2 * sizeof(u32)));
             if (offset != 0) {
                 MapEntity *cursor;
 
@@ -162,7 +152,4 @@ void sub_8019368(union MultiSioData *msioData, u8 UNUSED someId)
 }
 
 // Type of this is determined by it being referenced in a C func-array
-void VoidReturnSIOControl32(union MultiSioData *msioData, u8 UNUSED someId)
-{
-    REG_SIOCNT_32;
-}
+void VoidReturnSIOControl32(union MultiSioData *msioData, u8 UNUSED someId) { REG_SIOCNT_32; }

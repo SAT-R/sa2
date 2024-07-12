@@ -38,11 +38,9 @@ static void Task_8080DB8(void);
 static void Task_8080E54(void);
 static void TaskDestructor_8080EF8(struct Task *);
 
-void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed,
-                 s16 velocity, u8 quarterAngle, u8 kind)
+void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed, s16 velocity, u8 quarterAngle, u8 kind)
 {
-    struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_NoteParticle), 0x2010, 0,
-                                TaskDestructor_8080EF8);
+    struct Task *t = TaskCreate(Task_8080DB8, sizeof(Sprite_NoteParticle), 0x2010, 0, TaskDestructor_8080EF8);
     Sprite_NoteParticle *np = TASK_DATA(t);
     Sprite *s = &np->s;
 
@@ -62,8 +60,7 @@ void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
     if (gUnknown_080E0140[kind][3] != 0) {
         s->graphics.dest = VramMalloc(gUnknown_080E0140[kind][2]);
     } else {
-        s->graphics.dest
-            = (void *)(OBJ_VRAM0 + gUnknown_080E0140[kind][2] * TILE_SIZE_4BPP);
+        s->graphics.dest = (void *)(OBJ_VRAM0 + gUnknown_080E0140[kind][2] * TILE_SIZE_4BPP);
     }
 
     s->graphics.anim = gUnknown_080E0140[kind][0];
@@ -71,11 +68,9 @@ void sub_8080AFC(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
     UpdateSpriteAnimation(s);
 }
 
-void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed,
-                 s16 accelX, s16 accelY, u8 kind)
+void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDestroyed, s16 accelX, s16 accelY, u8 kind)
 {
-    struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_NoteParticle), 0x2010, 0,
-                                TaskDestructor_8080EF8);
+    struct Task *t = TaskCreate(Task_8080E54, sizeof(Sprite_NoteParticle), 0x2010, 0, TaskDestructor_8080EF8);
     Sprite_NoteParticle *np = TASK_DATA(t);
     Sprite *s = &np->s;
 
@@ -95,8 +90,7 @@ void sub_8080C78(s32 posX, s32 posY, u16 framesUntilVisible, u16 framesUntilDest
     if (gUnknown_080E0140[kind][3] != 0) {
         s->graphics.dest = VramMalloc(gUnknown_080E0140[kind][2]);
     } else {
-        s->graphics.dest
-            = (void *)(OBJ_VRAM0 + gUnknown_080E0140[kind][2] * TILE_SIZE_4BPP);
+        s->graphics.dest = (void *)(OBJ_VRAM0 + gUnknown_080E0140[kind][2] * TILE_SIZE_4BPP);
     }
 
     s->graphics.anim = gUnknown_080E0140[kind][0];

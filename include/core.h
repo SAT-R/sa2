@@ -155,16 +155,16 @@ struct SpriteTables {
 // No idea why this exists when there is a
 // better random number generator in the math
 // module
-#define PseudoRandom32()                                                                \
-    ({                                                                                  \
-        gPseudoRandom = (gPseudoRandom * 0x196225) + 0x3C6EF35F;                        \
-        gPseudoRandom;                                                                  \
+#define PseudoRandom32()                                                                                                                   \
+    ({                                                                                                                                     \
+        gPseudoRandom = (gPseudoRandom * 0x196225) + 0x3C6EF35F;                                                                           \
+        gPseudoRandom;                                                                                                                     \
     })
 
-#define MultiplayerPseudoRandom32()                                                     \
-    ({                                                                                  \
-        gMultiplayerPseudoRandom = (gMultiplayerPseudoRandom * 0x196225) + 0x3C6EF35F;  \
-        gMultiplayerPseudoRandom;                                                       \
+#define MultiplayerPseudoRandom32()                                                                                                        \
+    ({                                                                                                                                     \
+        gMultiplayerPseudoRandom = (gMultiplayerPseudoRandom * 0x196225) + 0x3C6EF35F;                                                     \
+        gMultiplayerPseudoRandom;                                                                                                          \
     })
 #define PseudoRandBetween(min, max) ((PseudoRandom32() & ((-min) + (max - 1))) + (min))
 
@@ -278,9 +278,8 @@ extern u8 gUnknown_03004D80[16]; // TODO: Is this 4 (# backgrounds), instead of 
 
 #define LOG_GRAPHICS_QUEUE TRUE
 #if (!PLATFORM_GBA && LOG_GRAPHICS_QUEUE)
-#define GFX_QUEUE_LOG_ADD(gfx)                                                          \
-    printf("GFX %d: src 0x%p, dst 0x%p, size 0x%04X\n", gVramGraphicsCopyQueueIndex,    \
-           (gfx)->src, (gfx)->dest, (gfx)->size);
+#define GFX_QUEUE_LOG_ADD(gfx)                                                                                                             \
+    printf("GFX %d: src 0x%p, dst 0x%p, size 0x%04X\n", gVramGraphicsCopyQueueIndex, (gfx)->src, (gfx)->dest, (gfx)->size);
 #else
 #define GFX_QUEUE_LOG_ADD(gfx)
 #endif
@@ -291,13 +290,12 @@ extern u8 gVramGraphicsCopyQueueIndex;
 // just making them equal will pause the queue.
 #define PAUSE_GRAPHICS_QUEUE() gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;
 
-#define INC_GRAPHICS_QUEUE_CURSOR(cursor)                                               \
-    cursor = (cursor + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
+#define INC_GRAPHICS_QUEUE_CURSOR(cursor) cursor = (cursor + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
 
-#define ADD_TO_GRAPHICS_QUEUE(gfx)                                                      \
-    gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = gfx;                          \
-    /* Log has to happen before gVramGraphicsCopyQueueIndex increment */                \
-    GFX_QUEUE_LOG_ADD(gfx)                                                              \
+#define ADD_TO_GRAPHICS_QUEUE(gfx)                                                                                                         \
+    gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = gfx;                                                                             \
+    /* Log has to happen before gVramGraphicsCopyQueueIndex increment */                                                                   \
+    GFX_QUEUE_LOG_ADD(gfx)                                                                                                                 \
     INC_GRAPHICS_QUEUE_CURSOR(gVramGraphicsCopyQueueIndex);
 
 extern u16 *gUnknown_030022AC;

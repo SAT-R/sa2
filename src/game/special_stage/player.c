@@ -45,19 +45,15 @@ static const struct UNK_80DF670 gUnknown_080DF668 = {
 
 // character sprites
 static const struct UNK_80DF670 *const gUnknown_080DF670[5] = {
-    [CHARACTER_SONIC] = &gUnknown_080DF2F8[0],
-    [CHARACTER_CREAM] = &gUnknown_080DF2F8[22],
-    [CHARACTER_TAILS] = &gUnknown_080DF2F8[44],
-    [CHARACTER_KNUCKLES] = &gUnknown_080DF2F8[66],
-    [CHARACTER_AMY] = &gUnknown_080DF2F8[88],
+    [CHARACTER_SONIC] = &gUnknown_080DF2F8[0],     [CHARACTER_CREAM] = &gUnknown_080DF2F8[22], [CHARACTER_TAILS] = &gUnknown_080DF2F8[44],
+    [CHARACTER_KNUCKLES] = &gUnknown_080DF2F8[66], [CHARACTER_AMY] = &gUnknown_080DF2F8[88],
 };
 
 typedef void (*PlayerStateHandler)(void);
 
 static PlayerStateHandler const sPlayerStateHandlers[] = {
-    sub_806D5CC, sub_806D388, sub_806D424, sub_806D484, sub_806D4E4, sub_806D5D0,
-    sub_806D5D0, sub_806D634, sub_806D698, sub_806D388, sub_806D5D0, sub_806D5D0,
-    sub_806D5D0, sub_806D4E4, sub_806D388, sub_806D6DC, sub_806D5CC, sub_806D740,
+    sub_806D5CC, sub_806D388, sub_806D424, sub_806D484, sub_806D4E4, sub_806D5D0, sub_806D5D0, sub_806D634, sub_806D698,
+    sub_806D388, sub_806D5D0, sub_806D5D0, sub_806D5D0, sub_806D4E4, sub_806D388, sub_806D6DC, sub_806D5CC, sub_806D740,
 };
 
 struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
@@ -340,8 +336,7 @@ void sub_806D5D0(void)
     const struct UNK_80DF670 *unkC4 = &player->sprites[12];
     player->unkB0 += player->unkB8 >> 4;
 
-    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 0xF),
-                unkC4);
+    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 0xF), unkC4);
 }
 
 void sub_806D634(void)
@@ -352,8 +347,7 @@ void sub_806D634(void)
 
     player->unkB0 += player->unkB8 >> 4;
 
-    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 10),
-                unkC4);
+    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 10), unkC4);
 }
 
 void sub_806D698(void)
@@ -373,8 +367,7 @@ void sub_806D6DC(void)
 
     player->unkB0 += player->unkB8 >> 4;
 
-    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 10),
-                unkC4);
+    sub_806D7D0(&player->unk8, -1, stage->unk5CC - Macro_806D4E(player->unkB0, 10), unkC4);
 }
 
 void sub_806D740(void)

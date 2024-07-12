@@ -59,27 +59,21 @@ void sub_80149EC(void);
 void sub_80152EC(void);
 
 const u16 gUnknown_080D5548[][2] = {
-    { 0x1C7, 0 }, { 0x1C8, 0 }, { 0x1C9, 0 }, { 0x1C7, 0 }, { 0x1C8, 0 }, { 0x1C9, 0 },
-    { 0x1C9, 1 }, { 0x1CA, 0 }, { 0x1CB, 0 }, { 0x1CC, 0 }, { 0x1CC, 1 }, { 0x1CD, 0 },
-    { 0x1CE, 0 }, { 0x1CF, 0 }, { 0x1CF, 1 }, { 0x1D0, 0 }, { 0x1D1, 0 }, { 0x1D6, 0 },
+    { 0x1C7, 0 }, { 0x1C8, 0 }, { 0x1C9, 0 }, { 0x1C7, 0 }, { 0x1C8, 0 }, { 0x1C9, 0 }, { 0x1C9, 1 }, { 0x1CA, 0 }, { 0x1CB, 0 },
+    { 0x1CC, 0 }, { 0x1CC, 1 }, { 0x1CD, 0 }, { 0x1CE, 0 }, { 0x1CF, 0 }, { 0x1CF, 1 }, { 0x1D0, 0 }, { 0x1D1, 0 }, { 0x1D6, 0 },
 };
 
 const u8 gUnknown_080D5590[] = {
-    0,  9,  10, 10, 0, 0, 0, 0, 0,  0,  3,  3,  0, 0,  0, 0, 0, 0, 0, 0,  1, 1,
-    0,  0,  0,  0,  0, 0, 0, 0, 2,  2,  4,  4,  0, 4,  0, 2, 0, 0, 0, 11, 2, 16,
-    16, 16, 16, 15, 0, 0, 0, 0, 12, 12, 13, 14, 0, 17, 0, 0, 0, 0, 0, 0,  0, 0,
-    0,  0,  8,  8,  8, 8, 8, 5, 5,  5,  5,  5,  0, 0,  0, 0, 0, 0, 0, 0,  0, 0,
-    0,  0,  0,  0,  0, 0, 0, 0, 0,  0,  0,  0,  0, 0,  0, 0, 0, 0, 0, 0,  0, 0,
-    0,  0,  0,  0,  0, 0, 0, 0, 0,  0,  0,  0,  0, 0,  0, 8, 8, 8, 0, 0,  0, 0,
-    0,  0,  0,  0,  0, 0, 0, 0, 0,  0,  0,  0,  0, 0,  0, 0, 0, 0, 0, 0,
+    0, 9, 10, 10, 0, 0,  0,  0,  0,  0,  3, 3, 0, 0, 0,  0,  0,  0,  0, 0,  1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 4, 4, 0, 4, 0, 2,
+    0, 0, 0,  11, 2, 16, 16, 16, 16, 15, 0, 0, 0, 0, 12, 12, 13, 14, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 8, 5, 5, 5,
+    5, 5, 0,  0,  0, 0,  0,  0,  0,  0,  0, 0, 0, 0, 0,  0,  0,  0,  0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0,  0,  0, 0,  0,  0,  0,  0,  0, 8, 8, 8, 0,  0,  0,  0,  0, 0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
 const u8 gUnknown_080D5628[] = {
-    0,   1,   4,   6,   8,   10,  11,  12,  14,  16,  22,  25,  28,  29,  30,  30,
-    32,  35,  30,  38,  40,  41,  42,  0,   0,   0,   0,   0,   43,  46,  47,  49,
-    52,  54,  56,  57,  58,  0,   62,  64,  0,   0,   0,   66,  0,   0,   0,   0,
-    68,  71,  73,  76,  78,  81,  83,  85,  86,  0,   94,  95,  107, 119, 120, 122,
-    124, 125, 128, 131, 132, 141, 143, 144, 146, 147, 150, 151,
+    0,  1,  4,  6,  8,  10, 11, 12, 14,  16,  22,  25,  28,  29,  30,  30,  32,  35,  30,  38,  40,  41,  42,  0,   0,  0,
+    0,  0,  43, 46, 47, 49, 52, 54, 56,  57,  58,  0,   62,  64,  0,   0,   0,   66,  0,   0,   0,   0,   68,  71,  73, 76,
+    78, 81, 83, 85, 86, 0,  94, 95, 107, 119, 120, 122, 124, 125, 128, 131, 132, 141, 143, 144, 146, 147, 150, 151,
 };
 
 void CreateCheese(Player *player)
@@ -162,10 +156,7 @@ void sub_801412C(Cheese *cheese)
     Sprite *s = &cheese->s;
     Cheese_UNK54 *unk54 = &cheese->unk54;
     u32 temp;
-    if (cheese->unk10 != 18
-        && cheese->unk14
-            != gUnknown_080D5548[cheese->unk10][0]
-                + gUnknown_080D5548[cheese->unk10][1]) {
+    if (cheese->unk10 != 18 && cheese->unk14 != gUnknown_080D5548[cheese->unk10][0] + gUnknown_080D5548[cheese->unk10][1]) {
         s->graphics.anim = gUnknown_080D5548[cheese->unk10][0];
         s->variant = gUnknown_080D5548[cheese->unk10][1];
         cheese->unk14 = s->graphics.anim + s->variant;
@@ -190,9 +181,7 @@ void sub_801412C(Cheese *cheese)
         temp ^= 0x800;
     }
 
-    s->frameFlags
-        = (temp | (s->frameFlags & ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP)))
-        & ~SPRITE_FLAG_MASK_PRIORITY;
+    s->frameFlags = (temp | (s->frameFlags & ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP))) & ~SPRITE_FLAG_MASK_PRIORITY;
     s->frameFlags |= (unk54->unk68->frameFlags) & SPRITE_FLAG_MASK_PRIORITY;
     UpdateSpriteAnimation(s);
     if (!(cheese->unkC & 2)) {
@@ -268,9 +257,7 @@ void sub_8014350(void)
     sub_8014CC8(cheese);
 
     if (unk54->unk68->graphics.anim < 0xB6) {
-        cheese->unk10
-            = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
-                                + unk54->unk68->variant];
+        cheese->unk10 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b] + unk54->unk68->variant];
     }
 
     if (unk54->unk60 & 0x100000) {
@@ -360,8 +347,7 @@ void sub_80144CC(void)
 
     temp = 10;
     if (unk54->unk68->graphics.anim < 0xB6) {
-        temp = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5B]
-                                 + unk54->unk68->variant];
+        temp = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5B] + unk54->unk68->variant];
     }
 
     if (temp != 9) {
@@ -412,8 +398,8 @@ void sub_801464C(void)
         temp2 = 0x20;
     }
 
-    if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69
-        && unk54->unk68->graphics.anim != 0x6D && unk54->unk68->graphics.anim != 0x71) {
+    if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69 && unk54->unk68->graphics.anim != 0x6D
+        && unk54->unk68->graphics.anim != 0x71) {
         cheese->unkC &= ~0x10;
     }
 
@@ -458,8 +444,7 @@ void sub_801464C(void)
     }
 end:
 
-    temp5 = QS(t->unk16) - cheese->posX > -1 ? Q(t->unk16) - cheese->posX
-                                             : cheese->posX - QS(t->unk16);
+    temp5 = QS(t->unk16) - cheese->posX > -1 ? Q(t->unk16) - cheese->posX : cheese->posX - QS(t->unk16);
 
     if (QS(t->unk16) > cheese->posX) {
         temp3 = temp5 >> temp1;
@@ -476,8 +461,7 @@ end:
         }
     }
 
-    temp5 = QS(t->unk18 - 4) - cheese->posY > -1 ? QS(t->unk18 - 4) - cheese->posY
-                                                 : cheese->posY - QS(t->unk18 - 4);
+    temp5 = QS(t->unk18 - 4) - cheese->posY > -1 ? QS(t->unk18 - 4) - cheese->posY : cheese->posY - QS(t->unk18 - 4);
 
     if (QS(t->unk18 - 4) > cheese->posY) {
         temp4 = temp5 >> temp1;
@@ -530,8 +514,8 @@ void sub_8014834(void)
     Cheese *cheese = TASK_DATA(gCurTask);
     struct Task *t = cheese->unk18;
     Cheese_UNK54 *unk54 = &cheese->unk54;
-    if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69
-        && unk54->unk68->graphics.anim != 0x6D && unk54->unk68->graphics.anim != 0x71) {
+    if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69 && unk54->unk68->graphics.anim != 0x6D
+        && unk54->unk68->graphics.anim != 0x71) {
         cheese->unkC &= ~0x10;
     }
 
@@ -564,8 +548,8 @@ void sub_80148B8(void)
         temp1 = 1;
     }
 
-    if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69
-        && unk54->unk68->graphics.anim != 0x6D && unk54->unk68->graphics.anim != 0x71) {
+    if (cheese->unkC & 0x10 && unk54->unk68->graphics.anim != 0x69 && unk54->unk68->graphics.anim != 0x6D
+        && unk54->unk68->graphics.anim != 0x71) {
         cheese->unkC &= ~0x10;
     }
 
@@ -573,9 +557,7 @@ void sub_80148B8(void)
 
     if (sub_8014EFC(cheese, 0x20, 0x20, temp1) == 1) {
         if (unk54->unk68->graphics.anim < 0xB6) {
-            cheese->unk10
-                = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
-                                    + unk54->unk68->variant];
+            cheese->unk10 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b] + unk54->unk68->variant];
         }
 
         if (cheese->unkE > 0x3C && cheese->unk10 != 2) {
@@ -588,8 +570,7 @@ void sub_80148B8(void)
     cheese->unk10 = 0;
 
     if (unk54->unk68->graphics.anim < 0xB6) {
-        temp0 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
-                                  + unk54->unk68->variant];
+        temp0 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b] + unk54->unk68->variant];
     }
 
     if (!(cheese->unkC & 0x10)) {
@@ -621,9 +602,7 @@ void sub_80149EC(void)
     cheese->unk10 = 7;
     if (cheese->unkA++ > 0x3C) {
         if (unk54->unk68->graphics.anim < 0xB6) {
-            cheese->unk10
-                = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
-                                    + unk54->unk68->variant];
+            cheese->unk10 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b] + unk54->unk68->variant];
         }
         if (cheese->unk10 != 7) {
             gCurTask->main = sub_8014350;
@@ -651,9 +630,7 @@ void sub_8014A68(void)
     sub_8014EFC(cheese, cos, sin, 0);
 
     if (unk54->unk68->graphics.anim < 0xB6) {
-        cheese->unk10
-            = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
-                                + unk54->unk68->variant];
+        cheese->unk10 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b] + unk54->unk68->variant];
     }
 
     if (cheese->unk10 != 4) {
@@ -679,9 +656,7 @@ void sub_8014AFC(void)
     sub_8014EFC(cheese, cos, sin + 0x30, 0);
 
     if (unk54->unk68->graphics.anim < 0xB6) {
-        cheese->unk10
-            = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
-                                + unk54->unk68->variant];
+        cheese->unk10 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b] + unk54->unk68->variant];
     }
 
     if (cheese->unk10 != 0xC) {
@@ -702,8 +677,7 @@ void sub_8014AFC(void)
 
 void sub_8014BB0(Cheese *cheese)
 {
-    struct Task *t
-        = TaskCreate(sub_8014C60, sizeof(Cheese_UNK8014BB0), 0x5040, 0, sub_8015604);
+    struct Task *t = TaskCreate(sub_8014C60, sizeof(Cheese_UNK8014BB0), 0x5040, 0, sub_8015604);
     Cheese_UNK8014BB0 *unk4BB0 = TASK_DATA(t);
 
     unk4BB0->unk3C = 0;
@@ -804,8 +778,7 @@ u8 sub_8014CC8(Cheese *cheese)
     sin = ((SIN(temp * 4) >> 6) * 0x20) + unk54->unk58;
 
     if (cheese->unk8 != 2) {
-        temp2 = unk54->unk54 - cheese->posX > -1 ? unk54->unk54 - cheese->posX
-                                                 : cheese->posX - unk54->unk54;
+        temp2 = unk54->unk54 - cheese->posX > -1 ? unk54->unk54 - cheese->posX : cheese->posX - unk54->unk54;
         if (temp2 > 0x5000) {
             cheese->unk8 = 2;
         } else {
@@ -837,8 +810,7 @@ u8 sub_8014CC8(Cheese *cheese)
     }
 
     if (cheese->unk9 != 2) {
-        temp2 = unk54->unk58 - cheese->posY > -1 ? unk54->unk58 - cheese->posY
-                                                 : cheese->posY - unk54->unk58;
+        temp2 = unk54->unk58 - cheese->posY > -1 ? unk54->unk58 - cheese->posY : cheese->posY - unk54->unk58;
 
         if (temp2 > 0x5000) {
             cheese->unk9 = 2;
@@ -953,8 +925,7 @@ u8 sub_8014EFC(Cheese *cheese, s16 x, s16 y, u8 p4)
         return 1;
     }
     if ((cos - cheese->posX > -1 ? cos - cheese->posX : cheese->posX - cos) < 0x600) {
-        if ((sin - cheese->posY > -1 ? sin - cheese->posY : cheese->posY - sin)
-            < 0x600) {
+        if ((sin - cheese->posY > -1 ? sin - cheese->posY : cheese->posY - sin) < 0x600) {
             ret = 1;
         }
     }
@@ -1053,8 +1024,7 @@ bool8 sub_8015118(Cheese *cheese)
             unk54->unk60 |= 0x100000;
         }
 
-        if (gSelectedCharacter == CHARACTER_CREAM
-            && gPlayer.moveState & MOVESTATE_400000) {
+        if (gSelectedCharacter == CHARACTER_CREAM && gPlayer.moveState & MOVESTATE_400000) {
             thing = TRUE;
         }
 
@@ -1104,9 +1074,7 @@ void sub_80152EC(void)
     Cheese *cheese = TASK_DATA(gCurTask);
     Cheese_UNK54 *unk54 = &cheese->unk54;
     if (unk54->unk68->graphics.anim < SA2_ANIM_TAILS_IDLE
-        && gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
-                             + unk54->unk68->variant]
-            == 4) {
+        && gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b] + unk54->unk68->variant] == 4) {
         cheese->unkA = 0;
         cheese->unkE = 0;
         gCheeseTarget.task->unk15 = 0;
@@ -1133,9 +1101,7 @@ void sub_8015378(void)
     }
 
     if (unk54->unk68->graphics.anim < SA2_ANIM_TAILS_IDLE) {
-        cheese->unk10
-            = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
-                                + unk54->unk68->variant];
+        cheese->unk10 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b] + unk54->unk68->variant];
     }
 
     if (cheese->unk10 != 11) {
@@ -1153,9 +1119,7 @@ void sub_80153F8(void)
     sub_8014EFC(cheese, 8, 0xf, 0);
 
     if (unk54->unk68->graphics.anim < SA2_ANIM_TAILS_IDLE) {
-        cheese->unk10
-            = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
-                                + unk54->unk68->variant];
+        cheese->unk10 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b] + unk54->unk68->variant];
     }
 
     if (cheese->unk10 != 11) {
@@ -1215,9 +1179,7 @@ void sub_801555C(void)
     cheese->unk10 = 14;
 
     if (unk54->unk68->graphics.anim < SA2_ANIM_TAILS_IDLE) {
-        cheese->unk10
-            = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b]
-                                + unk54->unk68->variant];
+        cheese->unk10 = gUnknown_080D5590[gUnknown_080D5628[unk54->unk68->graphics.anim - 0x5b] + unk54->unk68->variant];
     }
 
     if (cheese->unk10 != 0xE) {

@@ -49,7 +49,6 @@ typedef struct {
     /* 0x7D */ u8 spriteY;
 } Sprite_DashRing; /* size: 0x80 */
 
-void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                           u8 spriteY);
+void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY);
 
 #endif // GUARD_IA_DASH_RING_H

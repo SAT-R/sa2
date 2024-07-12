@@ -151,8 +151,7 @@ static u16 sub_0203b2f0(u16 state, Loader *loader)
             case SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_2:
             case SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_3:
                 // Uncompress the sprite object tiles for our device, ignore the others
-                if (loader->sioId
-                    == loader->segment - (SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_1 - 1)) {
+                if (loader->sioId == loader->segment - (SEGMENT_COMPRESSED_SPRITE_OBJ_TILES_1 - 1)) {
                     LZ77UnCompWram(RECV_BUFFER, PROGRAM_WORK_BUFFER);
                 }
                 break;
@@ -184,8 +183,7 @@ static u16 sub_0203b3d8(u16 state, Loader *loader)
     if (loader->segment == 9) {
         REG_DISPCNT = 0;
 
-        if (*ROM_MAKER_CODE_ADDR == DIMPS_MAKER_CODE
-            && *ROM_GAME_CODE_ADDR == EXPECTED_GAME_CODE) {
+        if (*ROM_MAKER_CODE_ADDR == DIMPS_MAKER_CODE && *ROM_GAME_CODE_ADDR == EXPECTED_GAME_CODE) {
             u8 i;
             for (i = 0; i < ARRAY_COUNT(expectedTitle) - 1; i++) {
                 if (actualTitle[i] != expectedTitle[i]) {
@@ -242,8 +240,7 @@ void LoaderInit(Loader *loader)
     DmaFill32(3, 0xA0, OAM, OAM_SIZE);
 
     REG_IE = 1;
-    if (*ROM_MAKER_CODE_ADDR == DIMPS_MAKER_CODE
-        && *ROM_GAME_CODE_ADDR == EXPECTED_GAME_CODE) {
+    if (*ROM_MAKER_CODE_ADDR == DIMPS_MAKER_CODE && *ROM_GAME_CODE_ADDR == EXPECTED_GAME_CODE) {
         REG_IE |= 0x2000;
     }
 
@@ -321,8 +318,7 @@ static u16 sub_0203b7d0(u16 state, Loader *loader)
         state = 4;
     }
 
-    gMultiSioStatusFlags
-        = MultiSioMain(&gMultiSioSend, gMultiSioRecv, loader->loadRequest);
+    gMultiSioStatusFlags = MultiSioMain(&gMultiSioSend, gMultiSioRecv, loader->loadRequest);
     loader->unk13 = gMultiSioRecv[0].pat0.unk0;
     if (loader->segment != gMultiSioRecv[0].pat0.unk2) {
         loader->segment = gMultiSioRecv[0].pat0.unk2;

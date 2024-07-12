@@ -521,8 +521,7 @@ void sub_802E1EC(s32 p0, u16 p1)
 
 // (99.77%) https://decomp.me/scratch/BhinB
 // (addendum by Ollie https://decomp.me/scratch/qyFAO )
-NONMATCH("asm/non_matching/game/stage/sub_802E278.inc",
-         void sub_802E278(Vec2_16 *p0, u8 pairCount))
+NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(Vec2_16 *p0, u8 pairCount))
 {
     s16 i;
     s16 sp[STGINTRO_SP_SIZE][2];
@@ -581,8 +580,7 @@ END_NONMATCH
 
 // like sub_802E278
 // (99.78%) https://decomp.me/scratch/soFiq
-NONMATCH("asm/non_matching/game/stage/sub_802E384.inc",
-         void sub_802E384(Vec2_16 *p0, u16 pairCount))
+NONMATCH("asm/non_matching/game/stage/sub_802E384.inc", void sub_802E384(Vec2_16 *p0, u16 pairCount))
 {
     s16 i;
     s16 sp[STGINTRO_SP_SIZE][2];

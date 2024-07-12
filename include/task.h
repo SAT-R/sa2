@@ -99,21 +99,18 @@ void TasksExec(void);
 #if ENABLE_TASK_LOGGING
 #include <stdio.h>
 
-struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
-                        TaskDestructor taskDestructor, const char *name);
+struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags, TaskDestructor taskDestructor, const char *name);
 
 // The printout is split so we can still read the input, even if TaskCreate crashes.
-#define TaskCreate(taskMain, structSize, priority, flags, taskDestructor)               \
-    ({                                                                                  \
-        printf("New '%s' (0x%X, 0x%p) ", #taskMain, (u32)structSize, taskMain);         \
-        struct Task *tt = TaskCreate(taskMain, structSize, priority, flags,             \
-                                     taskDestructor, #taskMain);                        \
-        printf("at 0x%p\n", tt);                                                        \
-        tt;                                                                             \
+#define TaskCreate(taskMain, structSize, priority, flags, taskDestructor)                                                                  \
+    ({                                                                                                                                     \
+        printf("New '%s' (0x%X, 0x%p) ", #taskMain, (u32)structSize, taskMain);                                                            \
+        struct Task *tt = TaskCreate(taskMain, structSize, priority, flags, taskDestructor, #taskMain);                                    \
+        printf("at 0x%p\n", tt);                                                                                                           \
+        tt;                                                                                                                                \
     })
 #else
-struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags,
-                        TaskDestructor taskDestructor);
+struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 flags, TaskDestructor taskDestructor);
 #endif
 
 void TaskDestroy(struct Task *);

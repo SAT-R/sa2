@@ -43,11 +43,9 @@ static bool32 sub_80751CC(Sprite_FloatingSpring *);
 static void sub_80752D8(void);
 static void sub_8075334(Sprite_FloatingSpring *);
 
-void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
-                                    u8 spriteY)
+void CreateEntity_FloatingSpring_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
-    struct Task *t
-        = TaskCreate(sub_80750A8, sizeof(Sprite_FloatingSpring), 0x2010, 0, sub_8075140);
+    struct Task *t = TaskCreate(sub_80750A8, sizeof(Sprite_FloatingSpring), 0x2010, 0, sub_8075140);
     Sprite_FloatingSpring *floatingSpring = TASK_DATA(t);
     Sprite *s = &floatingSpring->s;
 
@@ -110,34 +108,22 @@ static void sub_8074E44(Sprite_FloatingSpring *floatingSpring)
 
     if (floatingSpring->unk52 != 0) {
         s32 temp = me->d.uData[2] * 2048;
-        floatingSpring->unk44
-            = (SIN((floatingSpring->unk52 * ((gStageTime + floatingSpring->unk56) & 255))
-                   & ONE_CYCLE)
-               * temp)
-            >> 15;
+        floatingSpring->unk44 = (SIN((floatingSpring->unk52 * ((gStageTime + floatingSpring->unk56) & 255)) & ONE_CYCLE) * temp) >> 15;
     }
 
     if (floatingSpring->unk54 != 0) {
         s32 temp = me->d.uData[3] * 2048;
-        floatingSpring->unk48
-            = (SIN((floatingSpring->unk54 * ((gStageTime + floatingSpring->unk56) & 255))
-                   & ONE_CYCLE)
-               * temp)
-            >> 15;
+        floatingSpring->unk48 = (SIN((floatingSpring->unk54 * ((gStageTime + floatingSpring->unk56) & 255)) & ONE_CYCLE) * temp) >> 15;
     }
 
-    floatingSpring->unk3C
-        = TO_WORLD_POS(floatingSpring->base.spriteX, floatingSpring->base.regionX)
-        + I(floatingSpring->unk44);
-    floatingSpring->unk40
-        = TO_WORLD_POS(me->y, floatingSpring->base.regionY) + I(floatingSpring->unk48);
+    floatingSpring->unk3C = TO_WORLD_POS(floatingSpring->base.spriteX, floatingSpring->base.regionX) + I(floatingSpring->unk44);
+    floatingSpring->unk40 = TO_WORLD_POS(me->y, floatingSpring->base.regionY) + I(floatingSpring->unk48);
 }
 
 static u32 sub_8074EF4(Sprite_FloatingSpring *floatingSpring)
 {
     if (PLAYER_IS_ALIVE) {
-        u32 temp = sub_800CDBC(&floatingSpring->s, floatingSpring->unk3C,
-                               floatingSpring->unk40, &gPlayer);
+        u32 temp = sub_800CDBC(&floatingSpring->s, floatingSpring->unk3C, floatingSpring->unk40, &gPlayer);
         if (temp != 0) {
             if (I(gPlayer.y) < floatingSpring->unk40) {
                 gPlayer.y += Q(floatingSpring->s.hitboxes[0].top);
