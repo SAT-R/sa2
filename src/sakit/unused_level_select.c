@@ -14,8 +14,6 @@
 
 #include "constants/songs.h"
 
-const char ALIGNED(4) gUnknown_080D5128[8] = "STAGE";
-
 typedef struct {
     void *vram;
     u16 unk4;
@@ -95,8 +93,8 @@ static void Task_Poll(void)
             levelSelect->levelId++;
         }
 
-        numToTileIndices(digits, levelSelect->levelId);
-        sub_8004274(levelSelect->vram, Tileset_Language, 0xC, 0xE, 0, digits, 0);
+        numToASCII(digits, levelSelect->levelId);
+        RenderText(levelSelect->vram, Tileset_Language, 0xC, 0xE, 0, digits, 0);
     }
 }
 
@@ -106,8 +104,8 @@ static void Task_8009854(void)
     gBgPalette[1] = RGB_WHITE;
     gFlags |= 0x1;
 
-    levelSelect->vram += sub_8004274(levelSelect->vram, Tileset_Language, 0x6, 0xE, 0,
-                                     (const u8 *)gUnknown_080D5128, 0);
+    levelSelect->vram
+        += RenderText(levelSelect->vram, Tileset_Language, 0x6, 0xE, 0, "STAGE", 0);
 
     gCurTask->main = Task_Poll;
     gCurTask->main();

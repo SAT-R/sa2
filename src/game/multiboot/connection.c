@@ -521,7 +521,7 @@ void sub_8081AD4(struct SinglePakConnectScreen *connectScreen)
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 }
 
-void sub_8081C0C(void)
+void ShowSinglePakResults(void)
 {
     u32 i;
     for (i = 0; i < MULTI_SIO_PLAYERS_MAX; i++) {

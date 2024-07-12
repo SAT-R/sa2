@@ -1219,44 +1219,32 @@ u32 sub_8004010(void)
 }
 #endif
 
-// Copies the given tileOffsets of the given tilesSrc into the
-// given dest.
-// Also sets some stuff in the vram blend regs
-// My guess is that this was designed for rendering text based tiles to the screen
-s32 sub_8004274(void *dest, const void *tilesSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
-                const u8 *tileOffsets, u8 param6)
+// Copies the font to VRAM and displays the input text by using it as tileset.
+s32 RenderText(void *dest, const void *font, u16 x, u16 y, u8 bg, const char *text,
+               u8 palette)
 {
     u8 i = 0;
 
-    u16 tileBase = gBgCntRegs[bgCtrlIndex] & BGCNT_CHARBASE(0x3);
-    void *vramTiles = (void *)(VRAM + (tileBase * 4096));
+    u16 *vramTiles = (void *)BG_CHAR_ADDR_FROM_BGCNT(bg);
 
-    u16 blendTarget = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG3 | BLDCNT_TGT2_BG2
-                       | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG0)
-        & gBgCntRegs[bgCtrlIndex];
-    u16 *vramBlend
-        = ({ (u16 *)(VRAM + (blendTarget * 8)); }) + param3 * TILE_SIZE_4BPP + param2;
+    u16 layoutBase = (gBgCntRegs[bg] & BGCNT_SCREENBASE_MASK) << 3;
+    u16 *vramLayout = ({ (u16 *)(VRAM + (layoutBase)); }) + y * 32 + x;
 
-    for (; tileOffsets[i] != 0; i++) {
-        void *copyDest = dest + (i * TILE_SIZE_4BPP);
-        u16 offset;
+    for (; text[i] != 0; i++) {
+        u16 *copyDest = dest + (i * TILE_SIZE_4BPP);
+        u16 tile;
         u16 *addr;
-        CpuFastCopy(tilesSrc + (tileOffsets[i] * TILE_SIZE_4BPP), copyDest,
-                    TILE_SIZE_4BPP);
+        CpuFastCopy(font + (text[i] * TILE_SIZE_4BPP), copyDest, TILE_SIZE_4BPP);
 
+        tile = (copyDest - vramTiles) / 16u;
 #ifndef NON_MATCHING
-        offset = (u16)((((u16 *)copyDest - (u16 *)vramTiles) << 12) >> 16);
-        vramBlend++;
-        vramBlend--;
-#else
-        // divide by tilesize 4bpp
-        offset = (u16)(copyDest - vramTiles) >> 5;
+        vramLayout++;
+        vramLayout--;
 #endif
 
-        addr = vramBlend;
-        addr += i;
+        addr = &vramLayout[i];
 
-        *addr = (param6 * 4096) | offset;
+        *addr = (palette << 12) | tile;
     }
 
     return i * TILE_SIZE_4BPP;
