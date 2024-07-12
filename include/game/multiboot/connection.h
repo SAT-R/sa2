@@ -5,6 +5,6 @@
 
 void sub_8081200(void);
 void StartSinglePakConnect(void);
-void sub_8081C0C(void);
+void ShowSinglePakResults(void);
 
 #endif // GUARD_MULTIPLAYER_SINGLEPAK_CONNECTION_H

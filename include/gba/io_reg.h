@@ -550,8 +550,11 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define DISPSTAT_VCOUNT_INTR 0x0020 // V-Count interrupt enabled
 
 // BGCNT
-#define BGCNT_PRIORITY(n)          (n) // Values 0 - 3. Lower priority BGs will be drawn on top of higher priority BGs.
-#define BGCNT_CHARBASE(n)   ((n) << 2) // Values 0 - 3. Base block for tile pixel data.
+// Values 0 - 3. Lower priority BGs will be drawn on top of higher priority BGs.
+#define BGCNT_PRIORITY(n)          (n)
+// Values 0 - 3. Base block for tile pixel data.
+// Target pointer: BG_CHAR_ADDR(n)
+#define BGCNT_CHARBASE(n)   ((n) << 2)
 #define BGCNT_MOSAIC            0x0040
 #define BGCNT_16COLOR           0x0000 // 4 bits per pixel
 #define BGCNT_256COLOR          0x0080 // 8 bits per pixel

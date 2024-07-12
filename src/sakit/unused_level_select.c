@@ -93,8 +93,8 @@ static void Task_Poll(void)
             levelSelect->levelId++;
         }
 
-        numToTileIndices(digits, levelSelect->levelId);
-        sub_8004274(levelSelect->vram, Tileset_Language, 0xC, 0xE, 0, digits, 0);
+        numToASCII(digits, levelSelect->levelId);
+        RenderText(levelSelect->vram, Tileset_Language, 0xC, 0xE, 0, digits, 0);
     }
 }
 
@@ -105,7 +105,7 @@ static void Task_8009854(void)
     gFlags |= 0x1;
 
     levelSelect->vram
-        += sub_8004274(levelSelect->vram, Tileset_Language, 0x6, 0xE, 0, "STAGE", 0);
+        += RenderText(levelSelect->vram, Tileset_Language, 0x6, 0xE, 0, "STAGE", 0);
 
     gCurTask->main = Task_Poll;
     gCurTask->main();

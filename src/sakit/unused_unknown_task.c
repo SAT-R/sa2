@@ -35,7 +35,7 @@ void sub_800A43C(void)
 
 void Task_800A4CC(void)
 {
-    sub_8004274((void *)(VRAM + 1 * TILE_SIZE_4BPP), &Tileset_Language, 1, 10, 2,
+    RenderText((void *)(VRAM + 1 * TILE_SIZE_4BPP), &Tileset_Language, 1, 10, 2,
                 gUnknown_080D5130, 0);
 
     if (gPressedKeys & A_BUTTON) {

@@ -75,8 +75,7 @@ void GameStart(void)
 
     // This flag is only set in GameInit
     if (gFlags & FLAGS_200) {
-        // Show singlepak results
-        sub_8081C0C();
+        ShowSinglePakResults();
         return;
     }
 

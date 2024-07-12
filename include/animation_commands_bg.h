@@ -6,9 +6,9 @@
 
 void UpdateBgAnimationTiles(Background *);
 
-s32 sub_8004274(void *dest, const void *tilesSrc, u16 param2, u16 param3, u8 bgCtrlIndex,
-                const u8 *tileOffsets, u8 param6);
+s32 RenderText(void *dest, const void *font, u16 x, u16 y, u8 bg, const char *text,
+               u8 palette);
 
-void numToTileIndices(u8 *digits, u16 number);
+void numToASCII(u8 digits[5], u16 number);
 
 #endif // GUARD_ANIMATION_COMMANDS_EXTRA_H
