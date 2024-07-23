@@ -512,9 +512,11 @@ void sub_802E1EC(s32 p0, u16 p1)
 
 // (99.77%) https://decomp.me/scratch/BhinB
 // (addendum by Ollie https://decomp.me/scratch/qyFAO )
-NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(Vec2_16 *p0, u8 pairCount))
+// (99.92% https://decomp.me/scratch/m5XSc )
+NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(s16 p0[2][2], u8 pairCount))
 {
     s16 i;
+    s16 j;
     s16 sp[STGINTRO_SP_SIZE][2];
 
 #ifdef NON_MATCHING
@@ -523,33 +525,32 @@ NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(Vec2_16
         pairCount = STGINTRO_SP_SIZE;
 #endif
 
-    for (i = 0; i < pairCount; i++) {
-        sp[i][0] = p0[i].x;
-        sp[i][1] = p0[i].y;
+    for (j = 0; j < pairCount; j++) {
+#ifndef NON_MATCHING
+        asm("" ::: "r0", "r2");
+#endif
+        sp[j][0] = p0[j][0];
+        sp[j][1] = p0[j][1];
     }
 
     for (i = 0; i < pairCount - 1; i++) {
         u8 *bgOffsets = gBgOffsetsHBlank;
-#ifndef NON_MATCHING
-        register s32 yVal asm("r3") = sp[i][1];
-#else
-        s32 yVal = sp[i][1];
-#endif
+        // s16 yVal = sp[i][1];
         s16 xVal;
         s32 xVal2;
         s32 r4;
-        s16 l;
+        s16 l, r;
+        s32 v;
 
-        bgOffsets = (u8 *)&((s16 *)bgOffsets)[yVal];
+        bgOffsets = (u8 *)&((s16 *)bgOffsets)[sp[i][1]];
         xVal = sp[i][0];
-        xVal2 = Q(xVal);
+        xVal2 = Q_24_8(xVal);
 
-        yVal -= sp[i + 1][1];
-
-        if (yVal != 0) {
-            r4 = Div(Q(xVal - sp[i + 1][0]), yVal);
+        v = sp[i][1] - sp[i + 1][1];
+        if (v != 0) {
+            r4 = Div(Q_24_8(xVal - sp[i + 1][0]), sp[i][1] - sp[i + 1][1]);
         } else {
-            r4 = Q(xVal - sp[i + 1][0]);
+            r4 = Q_24_8(xVal - sp[i + 1][0]);
         }
 
         l = sp[i][1];
@@ -560,7 +561,7 @@ NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(Vec2_16
                 r0 = DISPLAY_WIDTH;
 
             *bgOffsets++ = r0;
-            bgOffsets++;
+            *bgOffsets++;
 
             xVal2 += r4;
             l++;
