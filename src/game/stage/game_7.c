@@ -256,32 +256,29 @@ void sub_802DDC4(u8 p0, u16 p1)
 }
 
 // (98.53%) https://decomp.me/scratch/khvum
+// (98.53%) https://decomp.me/scratch/aNJxr
 NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, u16 p1))
 {
     u8 *bgOffsets = gBgOffsetsHBlank;
+    s32 r2;
     s32 r7 = 0;
     u16 r6 = ((unsigned)p1 << 22) >> 22;
+    s16 i, j;
+    s32 r3;
+    s32 r1;
 
-    if ((unsigned)(r6 - (Q(1.0) + 1)) << 16 > 510 << 16)
+    if ((unsigned)(r6 - (Q_24_8(1.0) + 1)) << 16 > 510 << 16)
         return;
 
-    if ((r6 - Q(2.0)) == 0 || (r6 - Q(2.0)) == 1) {
-        s16 i;
-
-        // bgOffsets = &bgOffsets[p0 * sizeof(u16)];
-
-#ifndef NON_MATCHING
-        asm("" : "=r"(r7));
-#endif
+    if ((r6 - Q_24_8(2.0)) == 0 || (r6 - Q_24_8(2.0)) == 1) {
         for (i = 0; i < p0; i++) {
             bgOffsets++;
             *bgOffsets = DISPLAY_WIDTH;
             bgOffsets++;
         }
     } else {
-        s32 r3 = (COS(r6) * 15) >> 2;
-        s32 r1 = SIN_24_8(r6);
-        s16 i;
+        r3 = (COS(r6) * 15) >> 2;
+        r1 = SIN_24_8(r6);
 
         r3 = ABS(r3);
         r1 = ABS(r1);
@@ -289,26 +286,20 @@ NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, 
         if (r3 != 0) {
             r3 = Div(r3, r1);
         } else {
-            r3 = Q(1.0);
+            r3 = Q_24_8(1.0);
         }
 
-        if (r6 < Q(2.0)) {
-            // bgOffsets = &bgOffsets[p0 * sizeof(u16)];
-            s16 k;
-
-            for (k = 0; k < p0; k++) {
+        if (r6 < Q_24_8(2.0)) {
+            for (i = 0; i < p0; i++) {
 
                 // TODO: Macro?
-                bgOffsets++;
+                *bgOffsets++;
                 *bgOffsets = DISPLAY_WIDTH;
-                bgOffsets++;
+                *bgOffsets++;
             }
 
-            for (k = p0; k < DISPLAY_HEIGHT; k++) {
+            for (j = p0; j < DISPLAY_HEIGHT; j++) {
                 u32 val;
-                s32 dw;
-
-                dw = DISPLAY_WIDTH;
 
                 r7 += r3;
                 val = r7;
@@ -318,9 +309,9 @@ NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, 
                 if (val > DISPLAY_WIDTH)
                     return;
 
-                bgOffsets++;
-                *bgOffsets = dw - val;
-                bgOffsets++;
+                *bgOffsets++;
+                *bgOffsets = DISPLAY_WIDTH - val;
+                *bgOffsets++;
             }
         } else {
             bgOffsets += p0 * sizeof(u16);
@@ -328,10 +319,10 @@ NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, 
             for (i = p0; i >= 0; i--) {
                 u32 xVal;
                 r7 = r7 + r3;
-                xVal = (u32)Q(r7) >> 16;
+                xVal = (u32)Q_24_8(r7) >> 16;
                 if (xVal > DISPLAY_WIDTH) {
                     r3 = 0;
-                    r7 = Q(DISPLAY_WIDTH);
+                    r7 = Q_24_8(DISPLAY_WIDTH);
                     xVal = DISPLAY_WIDTH;
                 }
                 *bgOffsets = DISPLAY_WIDTH - xVal;
