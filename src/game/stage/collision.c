@@ -1,4 +1,3 @@
-#define NON_MATCHING 1
 #include "global.h"
 #include "tilemap.h"
 
