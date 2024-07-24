@@ -1,3 +1,4 @@
+#define NON_MATCHING 1
 #include "global.h"
 #include "tilemap.h"
 
@@ -615,7 +616,7 @@ s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
 }
 
 // TODO: Fix this register mess!
-// (100.00%) https://decomp.me/scratch/xGy3C
+// (100.00%) https://decomp.me/scratch/sJY4g
 s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
 {
 #ifndef NON_MATCHING
@@ -673,16 +674,16 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
 
     sb = 1;
 
-    res = sub_801EF94(p1, p0, p2 & sb);
+    p0 = sub_801EF94(p1, p0, p2 & sb);
     r7 = 0x3FF;
-    r7 &= res;
+    r7 &= p0;
 
     r6 = 0x7;
     r3 = r6;
     r3 &= p1;
 
     r0 = 0x400;
-    r0 &= res;
+    r0 &= p0;
     if (r0) {
         r3 = r6 - r3;
     }
@@ -708,7 +709,7 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
     }
     // _0801EF1E
 
-    if (res & 0x800) {
+    if (p0 & 0x800) {
         if ((r3 != 8) && (r3 != 0)) {
             r0 = r3 + 8;
             r0 = (r3 > 0) ? r3 - 8 : r0;
@@ -743,7 +744,7 @@ s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
         register u8 *r1p asm("r1") = p3;
         *r1p = rotation;
 #else
-        *p3in = rotation;
+        *p3 = rotation;
 #endif
     }
 
