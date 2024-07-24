@@ -75,7 +75,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc", void Task_Gr
                         if (player->moveState & MOVESTATE_FACING_LEFT) {
                             s32 newPlayerX = I(player->x);
                             s32 left = me->d.sData[0] * TILE_WIDTH;
-                            s32 middle = left + me->d.uData[2] * 4;
+                            s32 middle = left + me->d.uData[2] * (TILE_WIDTH / 2);
                             if (newPlayerX >= middle) {
                                 if ((!(player->unk5C & gPlayerControls.jump) || !(railKind & RAIL_KIND_2)) && !(railKind & RAIL_KIND_1))
                                     goto _080100B0;
