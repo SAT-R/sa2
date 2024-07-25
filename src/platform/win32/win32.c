@@ -49,5 +49,7 @@ DWORD WINAPI GameThread(void *pThreadParam)
 
 void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
 {
-    printf("DMA(TODO): S0x%p  0x%p -> 0x%p\n", src, dest, dest + (control & 0x1FFFFF));
+    printf("DMA(TODO): S0x%p => 0x%p - 0x%p\n", src, dest, dest + (control & 0x1FFFFF));
 }
+
+void DmaStop(int dmaNum) { printf("DmaStop: %d\n", dmaNum); }

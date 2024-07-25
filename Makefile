@@ -31,6 +31,9 @@ else ifeq ($(CPU_ARCH),i386)
   ifeq ($(PLATFORM),sdl_win32)
     TOOLCHAIN := /usr/i686-w64-mingw32/
     PREFIX := i686-w64-mingw32-
+  else ifeq ($(PLATFORM),win32)
+    TOOLCHAIN := /usr/i686-w64-mingw32/
+    PREFIX := i686-w64-mingw32-
   endif
 else
   ifneq ($(PLATFORM),sdl)
@@ -105,7 +108,7 @@ else
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell sdl2-config --cflags)
 	else ifeq ($(PLATFORM),sdl_win32)
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(SDL_MINGW_FLAGS)
-	else
+	else ifeq ($(PLATFORM),win32)
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=1
 	endif
 
@@ -496,12 +499,14 @@ japan: ; @$(MAKE) GAME_REGION=JAPAN
 
 europe: ; @$(MAKE) GAME_REGION=EUROPE
 
-x86: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 sdl: ; @$(MAKE) PLATFORM=sdl
 
 sdl_win32: SDL2.dll $(SDL_MINGW_LIB)
 	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
+
+# WIP
+win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 chao_garden/mb_chao_garden.gba: 
 	@$(MAKE) -C chao_garden DEBUG=0
