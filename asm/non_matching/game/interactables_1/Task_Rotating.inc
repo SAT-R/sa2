@@ -61,7 +61,7 @@
 	ands r0, r1
 	cmp r0, #0
 	beq _0805ED3C
-	ldr r0, _0805ED38 @ =sub_805EF90
+	ldr r0, _0805ED38 @ =Task_AfterJump
 	str r0, [r2, #8]
 	mov r0, sb
 	bl DisplaySprite
@@ -73,7 +73,7 @@ _0805ED28: .4byte 0x00003FF0
 _0805ED2C: .4byte 0x000003FF
 _0805ED30: .4byte gCamera
 _0805ED34: .4byte gPlayer
-_0805ED38: .4byte sub_805EF90
+_0805ED38: .4byte Task_AfterJump
 _0805ED3C:
 	adds r1, r5, #0
 	adds r1, #0x5e
@@ -108,7 +108,7 @@ _0805ED4E:
 	str r0, [r5, #0x20]
 	ldr r0, _0805EDA0 @ =gCurTask
 	ldr r1, [r0]
-	ldr r0, _0805EDA4 @ =sub_805EF90
+	ldr r0, _0805EDA4 @ =Task_AfterJump
 	str r0, [r1, #8]
 	ldr r1, _0805EDA8 @ =IWRAM_START + 0x40
 	adds r0, r7, r1
@@ -124,7 +124,7 @@ _0805ED4E:
 _0805ED98: .4byte gPlayerControls
 _0805ED9C: .4byte 0xFFBFFFFF
 _0805EDA0: .4byte gCurTask
-_0805EDA4: .4byte sub_805EF90
+_0805EDA4: .4byte Task_AfterJump
 _0805EDA8: .4byte IWRAM_START + 0x40
 _0805EDAC:
 	cmp r0, #2

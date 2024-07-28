@@ -140,3 +140,8 @@ jobs:
         run: |
           make clean
           make -j${nproc} sdl_win32
+  
+      - name: win32
+        run: |
+          make clean
+          make -j${nproc} win32

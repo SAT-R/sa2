@@ -279,7 +279,6 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
     }
 }
 
-void Task_80188FC(void);
 struct Task *sub_8019120(void)
 {
     struct Task *t = TaskCreate(Task_80188FC, 0, -2, 0, NULL);
@@ -290,7 +289,6 @@ struct Task *sub_8019120(void)
     return t;
 }
 
-void Task_8018A28(void);
 struct Task *sub_80191A4(void)
 {
     struct Task *t = TaskCreate(Task_8018A28, 0, 1, 0, NULL);

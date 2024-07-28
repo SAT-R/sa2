@@ -23,8 +23,8 @@ typedef struct {
     /* 0x40 */ s16 unk40;
 } BouncyBar;
 
-void sub_806160C(void);
-void sub_80617A4(void);
+void Task_BouncyBarIdle(void);
+void Task_BouncyBarLaunch(void);
 
 const u16 gUnknown_080D94E8[] = { 9, 9, 9 };
 
@@ -35,7 +35,7 @@ const s16 gUnknown_080D94F2[] = { -384, -384, -384 };
 void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     Sprite *s;
-    struct Task *t = TaskCreate(sub_806160C, sizeof(BouncyBar), 0x2010, 0, TaskDestructor_80095E8);
+    struct Task *t = TaskCreate(Task_BouncyBarIdle, sizeof(BouncyBar), 0x2010, 0, TaskDestructor_80095E8);
     BouncyBar *bar = TASK_DATA(t);
 
     s = &bar->s;
@@ -74,7 +74,7 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     }
 }
 
-void sub_806160C(void)
+void Task_BouncyBarIdle(void)
 {
     BouncyBar *bar = TASK_DATA(gCurTask);
     Sprite *s = &bar->s;
@@ -102,7 +102,7 @@ void sub_806160C(void)
 
         bar->unk40 = screenX - I(gPlayer.x) >= 0 ? screenX - I(gPlayer.x) : I(gPlayer.x) - screenX;
 
-        gCurTask->main = sub_80617A4;
+        gCurTask->main = Task_BouncyBarLaunch;
         gPlayer.moveState |= MOVESTATE_400000;
 
         bar->unk3C = 2 - bar->unk3C;
@@ -121,7 +121,7 @@ void sub_806160C(void)
     DisplaySprite(s);
 }
 
-void sub_80617A4(void)
+void Task_BouncyBarLaunch(void)
 {
     BouncyBar *bar = TASK_DATA(gCurTask);
     Sprite *s = &bar->s;
@@ -161,10 +161,10 @@ void sub_80617A4(void)
     }
 
     if (UpdateSpriteAnimation(s) == 0) {
-        s->graphics.anim = 538;
+        s->graphics.anim = SA2_ANIM_BOUNCY_BAR;
         s->variant = 0;
         s->prevVariant = -1;
-        gCurTask->main = sub_806160C;
+        gCurTask->main = Task_BouncyBarIdle;
     }
     DisplaySprite(s);
 }

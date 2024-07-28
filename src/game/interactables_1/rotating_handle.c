@@ -17,6 +17,7 @@
 #include "task.h"
 #include "trig.h"
 
+#include "constants/animations.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -28,14 +29,14 @@ typedef struct {
     u8 unk40;
 } Sprite_RotatingHandle;
 
-static void sub_805EF90(void);
-static void sub_805EA94(void);
-static void sub_805ECA0(void);
+static void Task_AfterJump(void);
+static void Task_Idle(void);
+static void Task_Rotating(void);
 
 void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY)
 {
     if (me->d.sData[0] >= 0) {
-        struct Task *t = TaskCreate(sub_805EA94, sizeof(Sprite_RotatingHandle), 0x2010, 0, TaskDestructor_80095E8);
+        struct Task *t = TaskCreate(Task_Idle, sizeof(Sprite_RotatingHandle), 0x2010, 0, TaskDestructor_80095E8);
         Sprite_RotatingHandle *rotatingHandle = TASK_DATA(t);
         Sprite *s = &rotatingHandle->s;
         rotatingHandle->base.regionX = spriteRegionX;
@@ -52,7 +53,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         SET_MAP_ENTITY_INITIALIZED(me);
 
         s->graphics.dest = VramMalloc(9);
-        s->graphics.anim = 546;
+        s->graphics.anim = SA2_ANIM_ROTATING_HANDLE;
         s->variant = 0;
 
         s->oamFlags = SPRITE_OAM_ORDER(18);
@@ -67,7 +68,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     }
 }
 
-static void sub_805EA94(void)
+static void Task_Idle(void)
 {
     Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
     Sprite *s = &rotatingHandle->s;
@@ -129,7 +130,7 @@ static void sub_805EA94(void)
         m4aSongNumStart(SE_SPEED_BOOSTER);
         gPlayer.unk62 = 0;
         gPlayer.moveState |= MOVESTATE_400000;
-        gCurTask->main = sub_805ECA0;
+        gCurTask->main = Task_Rotating;
     } else {
         if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
             me->x = rotatingHandle->base.spriteX;
@@ -143,7 +144,7 @@ static void sub_805EA94(void)
 }
 
 // (95.57%) https://decomp.me/scratch/RaPDV
-NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc", static void sub_805ECA0())
+NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", static void Task_Rotating())
 {
     Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
     Sprite *s = &rotatingHandle->s;
@@ -166,7 +167,7 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc", static void su
     s->y = y - gCamera.y;
 
     if (!PLAYER_IS_ALIVE) {
-        gCurTask->main = sub_805EF90;
+        gCurTask->main = Task_AfterJump;
         DisplaySprite(s);
         return;
     }
@@ -184,7 +185,7 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc", static void su
         gPlayer.unk16 = 6;
         gPlayer.unk17 = 9;
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gCurTask->main = sub_805EF90;
+        gCurTask->main = Task_AfterJump;
 
         switch (rotatingHandle->unk40) {
             case 0:
@@ -246,7 +247,7 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc", static void su
             }
         }
 
-        s->graphics.anim = 0x222;
+        s->graphics.anim = SA2_ANIM_ROTATING_HANDLE;
         s->variant = r2;
         s->prevVariant = -1;
         gPlayer.variant = r2;
@@ -268,7 +269,7 @@ NONMATCH("asm/non_matching/game/interactables_1/sub_805ECA0.inc", static void su
 }
 END_NONMATCH
 
-static void sub_805EF90(void)
+static void Task_AfterJump(void)
 {
     Sprite_RotatingHandle *rotatingHandle = TASK_DATA(gCurTask);
     Sprite *s = &rotatingHandle->s;
@@ -290,7 +291,7 @@ static void sub_805EF90(void)
         temp3 = 0xB;
     }
 
-    s->graphics.anim = 0x222;
+    s->graphics.anim = SA2_ANIM_ROTATING_HANDLE;
     s->variant = temp3;
     s->prevVariant = -1;
 
@@ -306,7 +307,7 @@ static void sub_805EF90(void)
     if (temp3 == 0) {
         rotatingHandle->unk3C = 0;
         rotatingHandle->unk3E = 0;
-        gCurTask->main = sub_805EA94;
+        gCurTask->main = Task_Idle;
     }
     UpdateSpriteAnimation(s);
     DisplaySprite(s);

@@ -634,7 +634,7 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
 {
     vs32 x, y;
     s32 sprWidth, sprHeight;
-    u8 sp18, i;
+    u8 subframe, i;
     u32 x1, y1, sp24, sp28;
 
     if (sprite->dimensions != (void *)-1) {
@@ -675,7 +675,7 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
         sp24 = x - sprite->x;
         sp28 = y - sprite->y;
         if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && y + sprHeight >= 0 && y <= DISPLAY_HEIGHT) {
-            for (sp18 = 0; sp18 < sprDims->numSubframes; ++sp18) {
+            for (subframe = 0; subframe < sprDims->numSubframes; ++subframe) {
                 const u16 *oamData = gRefSpriteTables->oamData[sprite->graphics.anim];
                 OamData *oam = OamMalloc(GET_SPRITE_OAM_ORDER(sprite));
 
@@ -683,8 +683,9 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
                     return;
                 }
 
-                DmaCopy16(3, &oamData[3 * ((sprDims->oamIndex & 0x3FFF) + sp18)], oam,
-                          6); // excluding affine params
+                // copy excluding affine params
+                DmaCopy16(3, &oamData[3 * ((sprDims->oamIndex & 0x3FFF) + subframe)], oam, 6);
+
                 x1 = oam->all.attr1 & 0x1FF;
                 y1 = oam->all.attr0 & 0xFF;
                 oam->all.attr1 &= 0xFE00;

@@ -4,7 +4,7 @@
 	.include "asm/macros/c_decl.inc"
 
 SECTION_RODATA
-    .include "sound/voice_groups.inc"
+	.include "sound/voice_groups.inc"
 	.include "sound/keysplit_tables.inc"
 	.include "sound/programmable_wave_data.inc"
 	.include "sound/music_player_table.inc"

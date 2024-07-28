@@ -1685,13 +1685,13 @@ void sub_80228C0(Player *p)
     register u32 r1 asm("r1");
     register u32 r0 asm("r0");
     register s32 playerX asm("r4") = p->x;
-    register s32 playerY asm("sl") = (p->y);
+    register s32 playerY asm("sl") = p->y;
 #else
     s32 resultA;
     u32 r1;
     u32 r0;
     s32 playerX = p->x;
-    s32 playerY = (p->y);
+    s32 playerY = p->y;
 #endif
     u32 mask = p->unk38;
     s32 py = I(playerY);
@@ -3532,10 +3532,10 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
         } break;
 
         case 16 - 9: {
-#ifndef NON_MATCHING
             if (p->character != CHARACTER_CREAM) {
                 break;
             }
+#ifndef NON_MATCHING
             speed = p->speedGroundX;
             speed = (speed >> 5) + (speed >> 6);
 
@@ -3574,7 +3574,6 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
             s->animSpeed = speed;
 #else
             s->animSpeed = I(ABS(p->speedGroundX)) * 3 + 8;
-            ;
 #endif
         } break;
     }

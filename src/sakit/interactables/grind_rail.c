@@ -75,7 +75,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc", void Task_Gr
                         if (player->moveState & MOVESTATE_FACING_LEFT) {
                             s32 newPlayerX = I(player->x);
                             s32 left = me->d.sData[0] * TILE_WIDTH;
-                            s32 middle = left + me->d.uData[2] * 4;
+                            s32 middle = left + me->d.uData[2] * (TILE_WIDTH / 2);
                             if (newPlayerX >= middle) {
                                 if ((!(player->unk5C & gPlayerControls.jump) || !(railKind & RAIL_KIND_2)) && !(railKind & RAIL_KIND_1))
                                     goto _080100B0;
@@ -181,10 +181,11 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc", void Tas
     Player *player = &gPlayer;
     Sprite_GrindRail *rail = TASK_DATA(gCurTask);
     MapEntity *me = rail->me;
+    s16 left;
     s16 right;
     s16 bottom;
-    s16 left;
-    s16 top;
+    s16 worldX;
+    s16 worldY;
 
     // This pointer madness seems to be necessary for matching
     u8 *pSpriteX = &rail->spriteX;
@@ -196,33 +197,27 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc", void Tas
     u8 *pRailKind = &rail->kind;
     u8 kind = *pRailKind;
 
-    left = TO_WORLD_POS(stackSpriteX, regionX);
-    top = TO_WORLD_POS(me->y, regionY);
+    worldX = TO_WORLD_POS(stackSpriteX, regionX);
+    worldY = TO_WORLD_POS(me->y, regionY);
 
     if (!(player->moveState & MOVESTATE_DEAD)) {
         // _080101AA
         s32 someX;
         s32 someWidth;
-        s32 someY;
+        s32 top;
         s32 otherY;
-#if 0
-        // This path somehow gets a higher percentage, while less instructions match
-        // Also right_ being s8 is WRONG, it's 16bits!!!
-        s8 right_ = left;
-        right = right_ + (me->d.uData[0] * TILE_WIDTH);
-#else
-        right = left + (me->d.uData[0] * TILE_WIDTH);
-#endif
 
-        if (right <= I(player->x)) {
+        left = worldX + (me->d.sData[0] * TILE_WIDTH);
+
+        if (left <= I(player->x)) {
             someWidth = me->d.uData[2] * TILE_WIDTH;
-            if ((right + someWidth) >= I(player->x)) {
+            if ((left + someWidth) >= I(player->x)) {
 
-                someY = top + me->d.sData[1] * TILE_WIDTH;
+                top = worldY + me->d.sData[1] * TILE_WIDTH;
 
-                if (someY <= I(player->y)) {
+                if (top <= I(player->y)) {
 
-                    otherY = someY + me->d.uData[3] * TILE_WIDTH;
+                    otherY = top + me->d.uData[3] * TILE_WIDTH;
                     if (otherY >= I(player->y)) {
 
                         // __080101FC
@@ -230,7 +225,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc", void Tas
 
                             if (kind & RAIL_KIND_1) {
                                 if ((gPlayer.moveState & 1)) {
-                                    if (left < ((someWidth >> 1) + right)
+                                    if (worldX < (left + (someWidth >> 1))
                                         || ((player->unk5C & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
                                         if ((kind & RAIL_KIND_2)) {
                                             player->transition = 13;
@@ -244,11 +239,11 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc", void Tas
                             if (!(kind & 1)) {
                                 if (!(player->moveState & MOVESTATE_FACING_LEFT)) {
                                     s32 playerX = I(player->x);
-                                    s32 newLeft = left;
-                                    newLeft += me->d.uData[0] * 8;
-                                    newLeft += me->d.uData[2] * 4;
+                                    s32 middle = worldX;
+                                    middle += me->d.sData[0] * TILE_WIDTH;
+                                    middle += me->d.uData[2] * (TILE_WIDTH / 2);
 
-                                    if (playerX > newLeft || ((player->unk5C & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
+                                    if (playerX > middle || ((player->unk5C & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
                                         if ((kind & RAIL_KIND_2)) {
                                             player->transition = 13;
                                         set13:;
@@ -265,10 +260,10 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc", void Tas
         }
     }
 
-    left -= gCamera.x;
-    top -= gCamera.y;
+    worldX -= gCamera.x;
+    worldY -= gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(left, top)) {
+    if (IS_OUT_OF_CAM_RANGE(worldX, worldY)) {
         me->x = stackSpriteX;
         TaskDestroy(gCurTask);
     }

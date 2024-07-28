@@ -256,32 +256,29 @@ void sub_802DDC4(u8 p0, u16 p1)
 }
 
 // (98.53%) https://decomp.me/scratch/khvum
+// (98.53%) https://decomp.me/scratch/aNJxr
 NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, u16 p1))
 {
     u8 *bgOffsets = gBgOffsetsHBlank;
+    s32 r2;
     s32 r7 = 0;
     u16 r6 = ((unsigned)p1 << 22) >> 22;
+    s16 i, j;
+    s32 r3;
+    s32 r1;
 
     if ((unsigned)(r6 - (Q(1.0) + 1)) << 16 > 510 << 16)
         return;
 
     if ((r6 - Q(2.0)) == 0 || (r6 - Q(2.0)) == 1) {
-        s16 i;
-
-        // bgOffsets = &bgOffsets[p0 * sizeof(u16)];
-
-#ifndef NON_MATCHING
-        asm("" : "=r"(r7));
-#endif
         for (i = 0; i < p0; i++) {
             bgOffsets++;
             *bgOffsets = DISPLAY_WIDTH;
             bgOffsets++;
         }
     } else {
-        s32 r3 = (COS(r6) * 15) >> 2;
-        s32 r1 = SIN_24_8(r6);
-        s16 i;
+        r3 = (COS(r6) * 15) >> 2;
+        r1 = SIN_24_8(r6);
 
         r3 = ABS(r3);
         r1 = ABS(r1);
@@ -293,22 +290,16 @@ NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, 
         }
 
         if (r6 < Q(2.0)) {
-            // bgOffsets = &bgOffsets[p0 * sizeof(u16)];
-            s16 k;
-
-            for (k = 0; k < p0; k++) {
+            for (i = 0; i < p0; i++) {
 
                 // TODO: Macro?
-                bgOffsets++;
+                *bgOffsets++;
                 *bgOffsets = DISPLAY_WIDTH;
-                bgOffsets++;
+                *bgOffsets++;
             }
 
-            for (k = p0; k < DISPLAY_HEIGHT; k++) {
+            for (j = p0; j < DISPLAY_HEIGHT; j++) {
                 u32 val;
-                s32 dw;
-
-                dw = DISPLAY_WIDTH;
 
                 r7 += r3;
                 val = r7;
@@ -318,9 +309,9 @@ NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, 
                 if (val > DISPLAY_WIDTH)
                     return;
 
-                bgOffsets++;
-                *bgOffsets = dw - val;
-                bgOffsets++;
+                *bgOffsets++;
+                *bgOffsets = DISPLAY_WIDTH - val;
+                *bgOffsets++;
             }
         } else {
             bgOffsets += p0 * sizeof(u16);
@@ -521,9 +512,11 @@ void sub_802E1EC(s32 p0, u16 p1)
 
 // (99.77%) https://decomp.me/scratch/BhinB
 // (addendum by Ollie https://decomp.me/scratch/qyFAO )
-NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(Vec2_16 *p0, u8 pairCount))
+// (99.92% https://decomp.me/scratch/m5XSc )
+NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(s16 p0[2][2], u8 pairCount))
 {
     s16 i;
+    s16 j;
     s16 sp[STGINTRO_SP_SIZE][2];
 
 #ifdef NON_MATCHING
@@ -532,31 +525,30 @@ NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(Vec2_16
         pairCount = STGINTRO_SP_SIZE;
 #endif
 
-    for (i = 0; i < pairCount; i++) {
-        sp[i][0] = p0[i].x;
-        sp[i][1] = p0[i].y;
+    for (j = 0; j < pairCount; j++) {
+#ifndef NON_MATCHING
+        asm("" ::: "r0", "r2");
+#endif
+        sp[j][0] = p0[j][0];
+        sp[j][1] = p0[j][1];
     }
 
     for (i = 0; i < pairCount - 1; i++) {
         u8 *bgOffsets = gBgOffsetsHBlank;
-#ifndef NON_MATCHING
-        register s32 yVal asm("r3") = sp[i][1];
-#else
-        s32 yVal = sp[i][1];
-#endif
+        // s16 yVal = sp[i][1];
         s16 xVal;
         s32 xVal2;
         s32 r4;
-        s16 l;
+        s16 l, r;
+        s32 v;
 
-        bgOffsets = (u8 *)&((s16 *)bgOffsets)[yVal];
+        bgOffsets = (u8 *)&((s16 *)bgOffsets)[sp[i][1]];
         xVal = sp[i][0];
         xVal2 = Q(xVal);
 
-        yVal -= sp[i + 1][1];
-
-        if (yVal != 0) {
-            r4 = Div(Q(xVal - sp[i + 1][0]), yVal);
+        v = sp[i][1] - sp[i + 1][1];
+        if (v != 0) {
+            r4 = Div(Q(xVal - sp[i + 1][0]), sp[i][1] - sp[i + 1][1]);
         } else {
             r4 = Q(xVal - sp[i + 1][0]);
         }
@@ -569,7 +561,7 @@ NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(Vec2_16
                 r0 = DISPLAY_WIDTH;
 
             *bgOffsets++ = r0;
-            bgOffsets++;
+            *bgOffsets++;
 
             xVal2 += r4;
             l++;
