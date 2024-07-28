@@ -233,6 +233,8 @@ int main(int argc, char **argv)
 
                     REG_DISPSTAT |= INTR_FLAG_VBLANK;
 
+                    // TODO: Shouldn't this run DMA_VBLANK?
+                    //       If not, add a note here, why it is HBLANK!
                     RunDMAs(DMA_HBLANK);
 
                     if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
@@ -565,7 +567,11 @@ static void RunDMAs(u32 type)
             }
 
             if (dma->control & DMA_REPEAT) {
+#if PLATFORM_GBA
                 dma->size = ((&REG_DMA0CNT)[dmaNum * 3] & 0x1FFFF);
+#else
+                dma->size = ((&REG_DMA0CNT)[dmaNum] & 0x1FFFF);
+#endif
                 if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_RELOAD) {
 #if PLATFORM_GBA
                     dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 3];
