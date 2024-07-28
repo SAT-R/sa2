@@ -252,6 +252,7 @@ void TaskDestructor_DecompCredits(struct Task *t)
     gIntrTable[INTR_INDEX_HBLANK] = cred->prevHBlank;
 
     /* Initialize Titlescreen */
+    PAUSE_GRAPHICS_QUEUE();
 
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
         CreateTitleScreen();
