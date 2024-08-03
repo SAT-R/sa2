@@ -2,6 +2,7 @@
 // TEMP
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h> // memset
 #endif
 #include "global.h"
 #include "core.h"
@@ -117,6 +118,9 @@ struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
     task->unk16 = 0;
     task->unk18 = 0;
     task->data = (IwramData)(uintptr_t)IwramMalloc(structSize);
+#if CLEAR_TASK_MEMORY_ON_DESTROY
+    task->dataSize = (task->data != NULL) ? structSize : 0;
+#endif
     task->parent = (TaskPtr32)gCurTask;
 #if ENABLE_TASK_LOGGING
     task->name = name;
@@ -165,6 +169,10 @@ void TaskDestroy(struct Task *task)
                 ((struct Task *)next)->prev = prev;
 
                 if (task->data != (IwramData)NULL) {
+#if CLEAR_TASK_MEMORY_ON_DESTROY
+                    // Clear previous task data, to circumvent use-after-free bugs
+                    memset(TASK_DATA(task), 0, task->dataSize);
+#endif
                     IwramFree(TASK_DATA(task));
                 }
 
