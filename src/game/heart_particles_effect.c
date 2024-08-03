@@ -24,7 +24,11 @@ typedef struct {
 static void sub_8086CBC(struct Task *);
 static void sub_8086A88(void);
 static void sub_8086A0C(HeartParticles *);
+#ifdef BUG_FIX
+static bool8 sub_8086B38(HeartParticles *unk998);
+#else
 static void sub_8086B38(HeartParticles *unk998);
+#endif
 static void sub_8086BE8(u8);
 
 void CreateHeartParticles(void)
@@ -79,20 +83,29 @@ static void sub_8086A88(void)
         s->y = gPlayer.unk90->s.y;
     }
 
-    sub_8086B38(unk998);
+    {
+#ifdef BUG_FIX
+        bool8 wasDestroyed = sub_8086B38(unk998);
+        if(wasDestroyed) {
+            return;
+        }
+#else
+        sub_8086B38(unk998);
+#endif
 
-    if (unk998->unkE4 == 0) {
-        if (unk998->unkC2 == 0) {
-            sub_8086BE8(0);
-        }
-        if (unk998->unkC2 == 3) {
-            sub_8086BE8(1);
-        }
-        if (unk998->unkC2 == 7) {
-            sub_8086BE8(2);
-        }
-        if (unk998->unkC2 == 11) {
-            sub_8086BE8(3);
+        if (unk998->unkE4 == 0) {
+            if (unk998->unkC2 == 0) {
+                sub_8086BE8(0);
+            }
+            if (unk998->unkC2 == 3) {
+                sub_8086BE8(1);
+            }
+            if (unk998->unkC2 == 7) {
+                sub_8086BE8(2);
+            }
+            if (unk998->unkC2 == 11) {
+                sub_8086BE8(3);
+            }
         }
     }
 
@@ -107,7 +120,11 @@ static void sub_8086A88(void)
     }
 }
 
+#ifdef BUG_FIX
+static bool8 sub_8086B38(HeartParticles *unk998)
+#else
 static void sub_8086B38(HeartParticles *unk998)
+#endif
 {
     u8 i;
     u8 j = 1;
@@ -115,7 +132,11 @@ static void sub_8086B38(HeartParticles *unk998)
 
     if (unk998->unkE4 != 0 && unk998->unkC0 == 0) {
         TaskDestroy(gCurTask);
+#ifdef BUG_FIX
+        return TRUE;
+#else
         return;
+#endif
     }
 
     for (i = 0; i < NUM_HEARTS; i++) {
@@ -132,6 +153,12 @@ static void sub_8086B38(HeartParticles *unk998)
         }
         j <<= 1;
     }
+    
+#ifdef BUG_FIX
+    return FALSE;
+#else
+    return;
+#endif
 }
 
 static void sub_8086BE8(u8 i)
