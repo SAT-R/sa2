@@ -658,7 +658,7 @@ static bool8 RenderCannon(EggBomberTank *boss)
             explosion.spawnY = (I(boss->unk58) - gCamera.y) + sExplositionPositions[i][1];
             CreateBossParticleWithExplosionUpdate(&explosion, &boss->unk76);
         }
-        wasRendered = 1;
+        wasRendered = TRUE;
     } else if ((gStageTime & 3) == 0) {
         explosion.spawnX = (I(boss->unk54) - gCamera.x);
         explosion.spawnY = (I(boss->unk58) - gCamera.y);
