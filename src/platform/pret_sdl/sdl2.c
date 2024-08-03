@@ -9,7 +9,8 @@
 #include <xinput.h>
 #endif
 
-#define ENABLE_AUDIO 0
+#define ENABLE_AUDIO     0
+#define ENABLE_VRAM_VIEW 01
 
 #include <SDL.h>
 
@@ -26,8 +27,11 @@
 #include "cgb_audio.h"
 #endif
 
+#ifndef TILE_WIDTH
+#define TILE_WIDTH 8
+#endif
+
 extern IntrFunc gIntrTable[16];
-;
 
 #if 0
 extern u16 INTR_CHECK;
@@ -47,6 +51,9 @@ extern uint8_t VRAM[VRAM_SIZE];
 extern uint8_t OAM[OAM_SIZE];
 extern uint8_t FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK];
 ALIGNED(256) uint16_t gameImage[DISPLAY_WIDTH * DISPLAY_HEIGHT];
+#define VRAM_VIEW_WIDTH  (32 * TILE_WIDTH)
+#define VRAM_VIEW_HEIGHT (96 * TILE_WIDTH)
+uint16_t vramBuffer[VRAM_VIEW_WIDTH * VRAM_VIEW_HEIGHT];
 
 #define DMA_COUNT 4
 
@@ -87,6 +94,11 @@ SDL_Thread *mainLoopThread;
 SDL_Window *sdlWindow;
 SDL_Renderer *sdlRenderer;
 SDL_Texture *sdlTexture;
+#if ENABLE_VRAM_VIEW
+SDL_Window *vramWindow;
+SDL_Renderer *vramRenderer;
+SDL_Texture *vramTexture;
+#endif
 SDL_sem *vBlankSemaphore;
 SDL_atomic_t isFrameAvailable;
 bool speedUp = false;
@@ -109,8 +121,9 @@ extern void AgbMain(void);
 void DoSoftReset(void) {};
 
 int DoMain(void *param);
-void ProcessEvents(void);
+void ProcessSDLEvents(void);
 void VDraw(SDL_Texture *texture);
+void VramDraw(SDL_Texture *texture);
 
 static void ReadSaveFile(char *path);
 static void StoreSaveFile(void);
@@ -120,6 +133,10 @@ static void UpdateInternalClock(void);
 static void RunDMAs(u32 type);
 
 u16 Platform_GetKeyInput(void);
+
+void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS | HEAP_ZERO_MEMORY, numBytes); }
+
+void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 
 int main(int argc, char **argv)
 {
@@ -150,22 +167,59 @@ int main(int argc, char **argv)
         return 1;
     }
 
+#if ENABLE_VRAM_VIEW
+    int mainWindowX;
+    int mainWindowWidth;
+    SDL_GetWindowPosition(sdlWindow, &mainWindowX, NULL);
+    SDL_GetWindowSize(sdlWindow, &mainWindowWidth, NULL);
+    int vramWindowX = mainWindowX + mainWindowWidth;
+    u16 vramWindowWidth = VRAM_VIEW_WIDTH;
+    u16 vramWindowHeight = VRAM_VIEW_HEIGHT;
+    vramWindow = SDL_CreateWindow("VRAM View", vramWindowX, SDL_WINDOWPOS_CENTERED, vramWindowWidth, vramWindowHeight,
+                                  SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    if (vramWindow == NULL) {
+        fprintf(stderr, "VRAM Window could not be created! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
+#endif
+
     sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_PRESENTVSYNC);
     if (sdlRenderer == NULL) {
         fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
 
+#if ENABLE_VRAM_VIEW
+    vramRenderer = SDL_CreateRenderer(vramWindow, -1, SDL_RENDERER_PRESENTVSYNC);
+    if (vramRenderer == NULL) {
+        fprintf(stderr, "VRAM Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
+#endif
+
     SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
     SDL_RenderClear(sdlRenderer);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
     SDL_RenderSetLogicalSize(sdlRenderer, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+#if ENABLE_VRAM_VIEW
+    SDL_SetRenderDrawColor(vramRenderer, 0, 0, 0, 255);
+    SDL_RenderClear(vramRenderer);
+    SDL_RenderSetLogicalSize(vramRenderer, vramWindowWidth, vramWindowHeight);
+#endif
 
     sdlTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ABGR1555, SDL_TEXTUREACCESS_STREAMING, DISPLAY_WIDTH, DISPLAY_HEIGHT);
     if (sdlTexture == NULL) {
         fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
+
+#if ENABLE_VRAM_VIEW
+    vramTexture = SDL_CreateTexture(vramRenderer, SDL_PIXELFORMAT_ABGR1555, SDL_TEXTUREACCESS_STREAMING, vramWindowWidth, vramWindowHeight);
+    if (vramTexture == NULL) {
+        fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
+#endif
 
     simTime = curGameTime = lastGameTime = SDL_GetPerformanceCounter();
 
@@ -195,6 +249,9 @@ int main(int argc, char **argv)
 #endif
 
     VDraw(sdlTexture);
+#if ENABLE_VRAM_VIEW
+    VramDraw(vramTexture);
+#endif
     mainLoopThread = SDL_CreateThread(DoMain, "AgbMain", NULL);
 
     double accumulator = 0.0;
@@ -210,7 +267,7 @@ int main(int argc, char **argv)
     REG_KEYINPUT = 0x3FF;
 
     while (isRunning) {
-        ProcessEvents();
+        ProcessSDLEvents();
 
         if (!paused) {
             double dt = fixedTimestep / timeScale; // TODO: Fix speedup
@@ -218,7 +275,7 @@ int main(int argc, char **argv)
             curGameTime = SDL_GetPerformanceCounter();
             double deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
             if (deltaTime > (dt * 5))
-                deltaTime = dt;
+                deltaTime = dt * 5;
             lastGameTime = curGameTime;
 
             accumulator += deltaTime;
@@ -246,6 +303,12 @@ int main(int argc, char **argv)
                     accumulator -= dt;
                 }
             }
+
+#if ENABLE_VRAM_VIEW
+            VramDraw(vramTexture);
+            SDL_RenderClear(vramRenderer);
+            SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
+#endif
         }
 
         if (videoScaleChanged) {
@@ -254,6 +317,9 @@ int main(int argc, char **argv)
         }
 
         SDL_RenderPresent(sdlRenderer);
+#if ENABLE_VRAM_VIEW
+        SDL_RenderPresent(vramRenderer);
+#endif
     }
 
     // StoreSaveFile();
@@ -332,7 +398,7 @@ static u16 keys;
 u32 fullScreenFlags = 0;
 static SDL_DisplayMode sdlDispMode = { 0 };
 
-void ProcessEvents(void)
+void ProcessSDLEvents(void)
 {
     SDL_Event event;
 
@@ -527,7 +593,7 @@ static void RunDMAs(u32 type)
         if ((dma->control & DMA_ENABLE) && (((dma->control & DMA_START_MASK) >> 12) == type)) {
             // printf("DMA%d src=%p, dest=%p, control=%d\n", dmaNum, dma->src, dma->dest,
             // dma->control);
-            for (int i = 0; i < (dma->size); i++) {
+            for (int i = 0; i < dma->size; i++) {
                 if ((dma->control) & DMA_32BIT)
                     *dma->dst32 = *dma->src32;
                 else
@@ -567,11 +633,8 @@ static void RunDMAs(u32 type)
             }
 
             if (dma->control & DMA_REPEAT) {
-#if PLATFORM_GBA
-                dma->size = ((&REG_DMA0CNT)[dmaNum * 3] & 0x1FFFF);
-#else
-                dma->size = ((&REG_DMA0CNT)[dmaNum] & 0x1FFFF);
-#endif
+                // NOTE: If we change dma->size anywhere above, we need to reset its value here.
+
                 if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_RELOAD) {
 #if PLATFORM_GBA
                     dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 3];
@@ -647,6 +710,13 @@ void DmaStop(int dmaNum)
 
     struct DMATransfer *dma = &DMAList[dmaNum];
     dma->control &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
+}
+
+void DmaWait(int dmaNum)
+{
+    vu32 *ctrlRegs = &REG_DMA0CNT;
+    while (ctrlRegs[dmaNum] & (DMA_ENABLE << 16))
+        ;
 }
 
 void CpuSet(const void *src, void *dst, u32 cnt)
@@ -1881,6 +1951,42 @@ static void DrawFrame(uint16_t *pixels)
         }
     }
 }
+
+void DrawVramView(Uint16 *buffer)
+{
+    for (int y = 0; y < VRAM_VIEW_HEIGHT / TILE_WIDTH; y++) {
+        for (int x = 0; x < VRAM_VIEW_WIDTH / TILE_WIDTH; x++) {
+            u16 tileId = y * (VRAM_VIEW_WIDTH / TILE_WIDTH) + x;
+            u16 *tileBase = &buffer[(y * VRAM_VIEW_WIDTH + x) * 8];
+
+            for (int ty = 0; ty < TILE_WIDTH; ty++) {
+                for (int tx = 0; tx < TILE_WIDTH; tx += 2) {
+                    u16 *dest = &tileBase[ty * VRAM_VIEW_WIDTH + tx];
+
+#if 01
+                    int i = (ty * TILE_WIDTH + tx) / 2;
+                    u8 *colorPtr = &((u8 *)VRAM)[tileId * 0x20 + i];
+                    u8 colorId = colorPtr[0];
+                    u8 colA = (colorId & 0xF0) >> 4;
+                    u8 colB = (colorId & 0x0F) >> 0;
+
+                    dest[0] = PLTT[colB];
+                    dest[1] = PLTT[colA];
+#endif
+                }
+            }
+        }
+    }
+}
+
+#if ENABLE_VRAM_VIEW
+void VramDraw(SDL_Texture *texture)
+{
+    memset(vramBuffer, 0, sizeof(vramBuffer));
+    DrawVramView(vramBuffer);
+    SDL_UpdateTexture(texture, NULL, vramBuffer, VRAM_VIEW_WIDTH * sizeof(Uint16));
+}
+#endif
 
 void VDraw(SDL_Texture *texture)
 {
