@@ -86,7 +86,7 @@ static void sub_8086A88(void)
     {
 #ifdef BUG_FIX
         bool8 wasDestroyed = sub_8086B38(unk998);
-        if(wasDestroyed) {
+        if (wasDestroyed) {
             return;
         }
 #else
@@ -153,7 +153,7 @@ static void sub_8086B38(HeartParticles *unk998)
         }
         j <<= 1;
     }
-    
+
 #ifdef BUG_FIX
     return FALSE;
 #else
