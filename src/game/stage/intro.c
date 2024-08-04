@@ -304,15 +304,12 @@ struct Task *SetupStageIntro(void)
             + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0]
             + ({ zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24; }) + (sZoneUnlockedIcons[0][0] * NUM_ZONE_UNLOCKED_ICONS));
     } else {
-        // _0802F260
-
         tilesCursor = VramMalloc(
             zoneLoadingCharacterLogos[gSelectedCharacter][0] + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 0][0]
             + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 1][0] + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 2][0]
             + zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + 3][0]
             + ({ zoneLoadingIcons[LEVEL_TO_ZONE(gCurrentLevel)][0] + 0x24; }));
     }
-    // __0802F2C4
 
     /*     Init Character Logo     */
     s = &sit_d->sprCharacterLogo;
@@ -336,7 +333,7 @@ struct Task *SetupStageIntro(void)
     if (IS_MULTI_PLAYER) {
         s->palId = SIO_MULTI_CNT->id;
     }
-    // _0802F34C
+
     s->hitboxes[0].index = -1;
     s->frameFlags = 0;
     UpdateSpriteAnimation(s);
@@ -344,7 +341,6 @@ struct Task *SetupStageIntro(void)
     for (i = 0; i < NUM_ZONE_NAME_PARTS; i++) {
         u32 nameIndex;
 
-        // _0802F39C
         s = &sit_d->sprZoneName[i];
         s->x = 0;
         s->y = 0;
@@ -357,7 +353,6 @@ struct Task *SetupStageIntro(void)
             s->graphics.anim = zoneLoadingZoneNames[nameIndex][1];
             s->variant = zoneLoadingZoneNames[nameIndex][2];
         } else if ((gCurrentLevel & 0x3) == ACT_BOSS) {
-            // _0802F41C
             s->graphics.dest = tilesCursor;
 
             nameIndex = (ZONE_NAME_INDEX_BOSS_ATK + i);
@@ -365,14 +360,12 @@ struct Task *SetupStageIntro(void)
             s->graphics.anim = zoneLoadingZoneNames[nameIndex][1];
             s->variant = zoneLoadingZoneNames[nameIndex][2];
         } else {
-            // _0802F446
             s->graphics.dest = tilesCursor;
 
             tilesCursor += zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + i][0] * TILE_SIZE_4BPP;
             s->graphics.anim = zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + i][1];
             s->variant = zoneLoadingZoneNames[LEVEL_TO_ZONE(gCurrentLevel) * 4 + i][2];
         }
-        // _0802F47E
         s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
@@ -432,7 +425,6 @@ struct Task *SetupStageIntro(void)
 
     /*    The icons of all unlocked zones in the upper-right    */
     if (IS_SINGLE_PLAYER) {
-        // _0802F5A8
         for (i = 0; i < NUM_INTRO_STAGE_ICONS; i++) {
             s = &sit_d->sprUnlockedIcons[i];
             s->x = 0;
@@ -447,16 +439,13 @@ struct Task *SetupStageIntro(void)
                     s->graphics.anim = sZoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][1];
                     s->variant = sZoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][2];
                 } else {
-                    // _0802F5FE
                     s->graphics.anim = sZoneUnlockedIcons[i][1];
                     s->variant = sZoneUnlockedIcons[i][2];
                 }
             } else if (i == LEVEL_TO_ZONE(gCurrentLevel)) {
-                // _0802F5F0
                 s->graphics.anim = sZoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][1];
                 s->variant = sZoneUnlockedIcons[INTRO_ICON_BOSS_ATTACK][2];
             } else {
-                // _0802F5FE
                 s->graphics.anim = sZoneUnlockedIcons[i][1];
                 s->variant = sZoneUnlockedIcons[i][2];
             }
@@ -473,7 +462,6 @@ struct Task *SetupStageIntro(void)
             UpdateSpriteAnimation(s);
         }
     }
-    // _0802F652
 
     /*    Act Names    */
     t2 = TaskCreate(Task_IntroActLettersAnimations, sizeof(SITaskE), 0x2240, 0, TaskDestructor_8030474);
@@ -726,6 +714,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
         }
 
         TaskDestroy(gCurTask);
+        return;
     }
 }
 END_NONMATCH
@@ -803,7 +792,6 @@ static void Task_IntroColorAnimation(void)
         sub_802DDC4(p0->x, p0->y);
         sub_802DF18(p1->x, p1->y);
     } else {
-        // _0802FE60
         sub_802DBC0(p0->x, p0->y);
         sub_802DF18(p1->x, p1->y);
     }
@@ -1066,7 +1054,6 @@ void Task_IntroActLettersAnimations(void)
         counter -= 150;
 
         if (counter < 14) {
-            // _080302D8+6
             for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
                 s = &sit_e->sprZoneNames[i];
 
@@ -1082,7 +1069,6 @@ void Task_IntroActLettersAnimations(void)
                 s->y = y + sScreenPositions_ZoneLoadingActLetters[i][1];
             }
         } else if (counter < 18) {
-            // _0803031C+4
             counter -= 13;
 
             y = gUnknown_080D7130[counter];
@@ -1093,14 +1079,13 @@ void Task_IntroActLettersAnimations(void)
                 s->y = sScreenPositions_ZoneLoadingActLetters[i][1] + y;
             }
         } else {
-            // _0803035C
             for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
                 s = &sit_e->sprZoneNames[i];
                 s->x = sScreenPositions_ZoneLoadingActLetters[i][0];
                 s->y = sScreenPositions_ZoneLoadingActLetters[i][1];
             }
         }
-        // _08030378
+
         sub_8030488_inline();
     }
 }
