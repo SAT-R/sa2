@@ -690,7 +690,7 @@ static void SoundTestScreenRenderUI(void)
     SPRITE_FLAG_SET(scrollArrows, X_FLIP);
     DisplaySprite(scrollArrows);
     SPRITE_FLAG_CLEAR(scrollArrows, X_FLIP);
-    
+
     soundTestScreen->scrollArrowAnimFrame++;
 }
 
