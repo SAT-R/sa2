@@ -200,7 +200,14 @@ void TasksExec(void)
             gNextTask = (struct Task *)TASK_PTR(gCurTask->next);
 
             if (!(gCurTask->flags & 1)) {
-                gCurTask->main();
+#ifdef BUG_FIX
+                if (gCurTask->main == NULL)
+#if ENABLE_TASK_LOGGING
+                    printf("WARNING: Pointer of Task '%s' is NULL.\n", gCurTask->name);
+#endif
+                else
+#endif
+                    gCurTask->main();
             }
 
             gCurTask = gNextTask;
