@@ -68,6 +68,10 @@ struct SoundTestScreen {
     u32 freqChanges[8];
     u32 channelFreqs[8];
     u8 language;
+
+#ifdef BUG_FIX
+    u8 hblankIrqIndex;
+#endif
 }; /* size 0x75C */
 
 static void SoundTestScreenCreateUI(struct Task *t);
@@ -551,6 +555,9 @@ static void SoundTestScreenRenderUI(void)
     gBgScrollRegs[0][0] += 2;
     gBgScrollRegs[0][1] += 1;
 
+#ifdef BUG_FIX
+    soundTestScreen->hblankIrqIndex = gNumHBlankCallbacks;
+#endif
     gHBlankCallbacks[gNumHBlankCallbacks++] = sub_808DB2C;
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
 
@@ -832,6 +839,19 @@ static void SoundTestScreenOnDestroy(struct Task *t)
 static void Task_SoundTestScreenCleanup(void)
 {
     ResetProfileScreensVram();
+
+#ifdef BUG_FIX
+    // Prevent a crash related to task data being cleared on-destroy
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
+    s32 i = soundTestScreen->hblankIrqIndex;
+
+    for (; i + 1 < gNumHBlankIntrs; i++) {
+        gHBlankCallbacks[i] = gHBlankCallbacks[i + 1];
+    }
+
+    gHBlankCallbacks[--gNumHBlankIntrs] = NULL;
+#endif
+
     TaskDestroy(gCurTask);
 }
 
