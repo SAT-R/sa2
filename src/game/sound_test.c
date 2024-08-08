@@ -535,7 +535,7 @@ static void Task_SoundTestScreenMain(void)
 static void SoundTestScreenRenderUI(void)
 {
     struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
-    Sprite *unkC8 = &soundTestScreen->title;
+    Sprite *title = &soundTestScreen->title;
     Sprite *titleTrimAndControls = soundTestScreen->titleTrimAndControls;
     Sprite *backCountrolName = &soundTestScreen->backControlName;
     Sprite *numberDisplayDigit = soundTestScreen->numberDisplay;
@@ -584,11 +584,11 @@ static void SoundTestScreenRenderUI(void)
     }
 
     DisplaySprite(backCountrolName);
-    DisplaySprite(unkC8);
+    DisplaySprite(title);
     DisplaySprite(sprStage);
-    sprStage->frameFlags |= 0x400;
+    SPRITE_FLAG_SET(sprStage, X_FLIP);
     DisplaySprite(sprStage);
-    sprStage->frameFlags &= ~0x400;
+    SPRITE_FLAG_CLEAR(sprStage, X_FLIP);
 
     if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING) {
         u8 numChangeElements = 0;
@@ -687,10 +687,10 @@ static void SoundTestScreenRenderUI(void)
     scrollArrows->x = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7) + 94;
     DisplaySprite(scrollArrows);
     scrollArrows->x = 58 - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
-    scrollArrows->frameFlags |= 0x400;
+    SPRITE_FLAG_SET(scrollArrows, X_FLIP);
     DisplaySprite(scrollArrows);
-    scrollArrows->frameFlags &= ~0x400;
-
+    SPRITE_FLAG_CLEAR(scrollArrows, X_FLIP);
+    
     soundTestScreen->scrollArrowAnimFrame++;
 }
 
