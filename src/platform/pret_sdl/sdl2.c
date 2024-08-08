@@ -579,7 +579,7 @@ static void RunDMAs(u32 type)
 {
     for (int dmaNum = 0; dmaNum < DMA_COUNT; dmaNum++) {
         struct DMATransfer *dma = &DMAList[dmaNum];
-#if PLATFORM_GBA
+#if !USE_NEW_DMA
         // Regular GBA order
         u32 dmaCntReg = (&REG_DMA0CNT)[dmaNum * 3];
 #else
@@ -636,7 +636,7 @@ static void RunDMAs(u32 type)
                 // NOTE: If we change dma->size anywhere above, we need to reset its value here.
 
                 if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_RELOAD) {
-#if PLATFORM_GBA
+#if !USE_NEW_DMA
                     dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 3];
 #else
                     dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 2];
@@ -649,7 +649,7 @@ static void RunDMAs(u32 type)
     }
 }
 
-#if PLATFORM_GBA
+#if 0
 s32 Div(s32 num, s32 denom)
 {
     if (denom != 0) {
@@ -681,7 +681,7 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
         return;
     }
 
-#if PLATFORM_GBA
+#if !USE_NEW_DMA
     // Regular GBA order
     (&REG_DMA0SAD)[dmaNum * 3] = (uintptr_t)src;
     (&REG_DMA0DAD)[dmaNum * 3] = (uintptr_t)dest;
@@ -706,7 +706,11 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
 
 void DmaStop(int dmaNum)
 {
+#if !USE_NEW_DMA
+    (&REG_DMA0CNT)[dmaNum * 3] &= ~((DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT) << 16);
+#else
     (&REG_DMA0CNT)[dmaNum] &= ~((DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT) << 16);
+#endif
 
     struct DMATransfer *dma = &DMAList[dmaNum];
     dma->control &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
@@ -715,8 +719,13 @@ void DmaStop(int dmaNum)
 void DmaWait(int dmaNum)
 {
     vu32 *ctrlRegs = &REG_DMA0CNT;
+#if !USE_NEW_DMA
+    while (ctrlRegs[dmaNum * 3] & (DMA_ENABLE << 16))
+        ;
+#else
     while (ctrlRegs[dmaNum] & (DMA_ENABLE << 16))
         ;
+#endif
 }
 
 void CpuSet(const void *src, void *dst, u32 cnt)

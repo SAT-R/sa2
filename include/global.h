@@ -1,6 +1,7 @@
 #ifndef GUARD_GLOBAL_H
 #define GUARD_GLOBAL_H
 
+#include "config.h"
 #include "gba/gba.h"
 
 #define CONST_DATA __attribute__((section(".data")))
