@@ -68,6 +68,10 @@ struct SoundTestScreen {
     u32 freqChanges[8];
     u32 channelFreqs[8];
     u8 language;
+
+#ifdef BUG_FIX
+    u8 hblankIrqIndex;
+#endif
 }; /* size 0x75C */
 
 static void SoundTestScreenCreateUI(struct Task *t);
@@ -531,7 +535,7 @@ static void Task_SoundTestScreenMain(void)
 static void SoundTestScreenRenderUI(void)
 {
     struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
-    Sprite *unkC8 = &soundTestScreen->title;
+    Sprite *title = &soundTestScreen->title;
     Sprite *titleTrimAndControls = soundTestScreen->titleTrimAndControls;
     Sprite *backCountrolName = &soundTestScreen->backControlName;
     Sprite *numberDisplayDigit = soundTestScreen->numberDisplay;
@@ -551,6 +555,9 @@ static void SoundTestScreenRenderUI(void)
     gBgScrollRegs[0][0] += 2;
     gBgScrollRegs[0][1] += 1;
 
+#ifdef BUG_FIX
+    soundTestScreen->hblankIrqIndex = gNumHBlankCallbacks;
+#endif
     gHBlankCallbacks[gNumHBlankCallbacks++] = sub_808DB2C;
     gFlags |= FLAGS_EXECUTE_HBLANK_CALLBACKS;
 
@@ -577,11 +584,11 @@ static void SoundTestScreenRenderUI(void)
     }
 
     DisplaySprite(backCountrolName);
-    DisplaySprite(unkC8);
+    DisplaySprite(title);
     DisplaySprite(sprStage);
-    sprStage->frameFlags |= 0x400;
+    SPRITE_FLAG_SET(sprStage, X_FLIP);
     DisplaySprite(sprStage);
-    sprStage->frameFlags &= ~0x400;
+    SPRITE_FLAG_CLEAR(sprStage, X_FLIP);
 
     if (soundTestScreen->state == SOUND_TEST_SCREEN_PLAYING) {
         u8 numChangeElements = 0;
@@ -680,9 +687,9 @@ static void SoundTestScreenRenderUI(void)
     scrollArrows->x = ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7) + 94;
     DisplaySprite(scrollArrows);
     scrollArrows->x = 58 - ((COS((soundTestScreen->scrollArrowAnimFrame & 15) * 0x10) >> 6) * 5 >> 7);
-    scrollArrows->frameFlags |= 0x400;
+    SPRITE_FLAG_SET(scrollArrows, X_FLIP);
     DisplaySprite(scrollArrows);
-    scrollArrows->frameFlags &= ~0x400;
+    SPRITE_FLAG_CLEAR(scrollArrows, X_FLIP);
 
     soundTestScreen->scrollArrowAnimFrame++;
 }
@@ -832,6 +839,19 @@ static void SoundTestScreenOnDestroy(struct Task *t)
 static void Task_SoundTestScreenCleanup(void)
 {
     ResetProfileScreensVram();
+
+#ifdef BUG_FIX
+    // Prevent a crash related to task data being cleared on-destroy
+    struct SoundTestScreen *soundTestScreen = TASK_DATA(gCurTask);
+    s32 i = soundTestScreen->hblankIrqIndex;
+
+    for (; i + 1 < gNumHBlankIntrs; i++) {
+        gHBlankCallbacks[i] = gHBlankCallbacks[i + 1];
+    }
+
+    gHBlankCallbacks[--gNumHBlankIntrs] = NULL;
+#endif
+
     TaskDestroy(gCurTask);
 }
 

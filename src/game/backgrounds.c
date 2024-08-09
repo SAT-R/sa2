@@ -190,7 +190,7 @@ void sub_808DB2C(int_vcount vcount)
 {
     struct UNK_3005B80_UNK4 *unk0 = gUnknown_03005B80.unk0;
 
-    if (vcount >= 159) {
+    if (vcount >= (DISPLAY_HEIGHT - 1)) {
         unk0->unk2 = 0;
         return;
     }

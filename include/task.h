@@ -20,6 +20,7 @@ typedef u32 TaskPtr32;
 #define TASK_IS_NULL(taskp) ((taskp) == (void *)IWRAM_START)
 
 typedef u16 IwramData;
+#define CLEAR_TASK_MEMORY_ON_DESTROY FALSE
 #else
 typedef struct Task *TaskPtr;
 typedef TaskPtr TaskPtr32;
@@ -29,7 +30,8 @@ typedef TaskPtr TaskPtr32;
 
 typedef void *IwramData;
 
-#define ENABLE_TASK_LOGGING TRUE
+#define ENABLE_TASK_LOGGING          TRUE
+#define CLEAR_TASK_MEMORY_ON_DESTROY TRUE
 #endif
 
 #define TASK_IS_NOT_NULL(taskp) !TASK_IS_NULL(taskp)
@@ -46,6 +48,9 @@ struct Task {
     /* 0x02 */ TaskPtr prev;
     /* 0x04 */ TaskPtr next;
     /* 0x06 */ IwramData data;
+#if PORTABLE
+    u32 dataSize;
+#endif
     /* 0x08 */ TaskMain main;
     /* 0x0C */ TaskDestructor dtor;
     /* 0x10 */ u16 priority; // priority?

@@ -1,6 +1,8 @@
 #ifndef GUARD_GBA_IO_REG_H
 #define GUARD_GBA_IO_REG_H
 
+#include "config.h"
+
 #include <stdint.h>
 
 #define IO_SIZE 0x400
@@ -104,7 +106,7 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_OFFSET_FIFO_B      0xa4
 
 #define REG_OFFSET_DMA         0xb0
-#if PLATFORM_GBA
+#if !USE_NEW_DMA
 #define REG_OFFSET_DMA0        REG_OFFSET_DMA
 #define REG_OFFSET_DMA0SAD     0xb0
 #define REG_OFFSET_DMA0DAD     0xb4

@@ -278,6 +278,7 @@ void Clear64byte(void *x)
 void SoundInit(struct SoundInfo *soundInfo)
 {
     soundInfo->ident = 0;
+#if !USE_NEW_DMA
     if (REG_DMA1CNT & (DMA_REPEAT << 16))
         REG_DMA1CNT = ((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4;
     if (REG_DMA2CNT & (DMA_REPEAT << 16))
@@ -292,6 +293,7 @@ void SoundInit(struct SoundInfo *soundInfo)
     REG_DMA1DAD = (intptr_t)&REG_FIFO_A;
     REG_DMA2SAD = (intptr_t)soundInfo->pcmBuffer + PCM_DMA_BUF_SIZE;
     REG_DMA2DAD = (intptr_t)&REG_FIFO_B;
+#endif
     SOUND_INFO_PTR = soundInfo;
     CpuFill32(0, soundInfo, sizeof(struct SoundInfo));
     soundInfo->maxChans = 8;
@@ -410,12 +412,14 @@ void m4aSoundVSyncOff(void)
 
     if (soundInfo->ident >= ID_NUMBER && soundInfo->ident <= ID_NUMBER + 1) {
         soundInfo->ident += 10;
+#if !USE_NEW_DMA
         if (REG_DMA1CNT & (DMA_REPEAT << 16))
             REG_DMA1CNT = ((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4;
         if (REG_DMA2CNT & (DMA_REPEAT << 16))
             REG_DMA2CNT = ((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4;
         REG_DMA1CNT_H = DMA_32BIT;
         REG_DMA2CNT_H = DMA_32BIT;
+#endif // !USE_NEW_DMA
         CpuFill32(0, soundInfo->pcmBuffer, sizeof(soundInfo->pcmBuffer));
     }
 }
@@ -427,8 +431,10 @@ void m4aSoundVSyncOn(void)
 
     if (ident == ID_NUMBER)
         return;
+#if !USE_NEW_DMA
     REG_DMA1CNT_H = DMA_ENABLE | DMA_START_SPECIAL | DMA_32BIT | DMA_REPEAT;
     REG_DMA2CNT_H = DMA_ENABLE | DMA_START_SPECIAL | DMA_32BIT | DMA_REPEAT;
+#endif
     soundInfo->pcmDmaCounter = 0;
     soundInfo->ident = ident - 10;
 }

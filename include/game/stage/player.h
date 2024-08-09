@@ -65,6 +65,8 @@ bool32 sub_8029E6C(Player *);
         PLAYERFN_SET_SHIFT_OFFSETS(player, x, y)                                                                                           \
     }
 
+// TODO: This is unaligned in-ROM.
+//       Can we somehow change this to be using a struct instead?
 extern const u16 gUnknown_080D6736[][2];
 extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
 

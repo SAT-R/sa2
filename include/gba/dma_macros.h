@@ -1,6 +1,8 @@
 #ifndef GUARD_GBA_DMA_MACROS_H
 #define GUARD_GBA_DMA_MACROS_H
 
+#include "config.h"
+
 #if PLATFORM_GBA
 #define DmaSet(dmaNum, src, dest, control)        \
 {                                                 \
@@ -159,12 +161,16 @@ extern void DmaStop(int dmaNum);
 #define DmaFill16Defvars(dmaNum, fillval, dest, size) DmaFillDefvars(dmaNum, fillval, dest, size, 16)
 #define DmaFill32Defvars(dmaNum, fillval, dest, size) DmaFillDefvars(dmaNum, fillval, dest, size, 32)
 
+#if PLATFORM_GBA
 #define DmaWait(dmaNum)                           \
 {                                                 \
     vu32 *dmaRegs = (vu32 *)REG_ADDR_DMA##dmaNum; \
     while (dmaRegs[2] & (DMA_ENABLE << 16))       \
         ;                                         \
 }
+#else
+extern void DmaWait(int dmaNum);
+#endif
 
 // from pokeemerald
 // Maximum amount of data we will transfer in one operation

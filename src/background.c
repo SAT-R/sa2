@@ -356,6 +356,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
             gBgScrollRegs[bgId][0] = bg->scrollX & 0x7;
             gBgScrollRegs[bgId][1] = bg->scrollY & 0x7;
 
+            // If a new line of tiles has to be loaded on either axis...
             if ((bg->prevScrollX >> 3 != bg->scrollX >> 3) || (bg->prevScrollY >> 3 != bg->scrollY >> 3)) {
                 if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
                     // _08003072
@@ -537,6 +538,8 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         }
                     }
                 } else {
+                    // Tilemap is Level Map
+
                     // _080034DC
                     s32 i;
                     s32 j;

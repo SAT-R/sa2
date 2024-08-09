@@ -77,6 +77,10 @@ void Task_CollectRingEffect(void)
         gActiveCollectRingEffectCount--;
 
         TaskDestroy(gCurTask);
+#ifdef BUG_FIX
+        // Prevent use-after-free
+        return;
+#endif
     }
 
     DisplaySprite(s);
