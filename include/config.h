@@ -11,6 +11,6 @@
 #define GAME GAME_SA2
 
 // TODO: Put somewhere else?
-#define USE_NEW_DMA 0
+#define USE_NEW_DMA 1
 
 #endif // GUARD_SA1_CONFIG_H
