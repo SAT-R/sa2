@@ -1,6 +1,7 @@
 #ifndef GUARD_GLOBAL_H
 #define GUARD_GLOBAL_H
 
+#include "config.h"
 #include "gba/gba.h"
 
 #define CONST_DATA __attribute__((section(".data")))
@@ -8,6 +9,14 @@
 // #include "types.h"
 // #include "variables.h"
 #include "functions.h"
+
+#if !PLATFORM_GBA
+void *Platform_malloc(int numBytes);
+void Platform_free(void *ptr);
+#define malloc(numBytes)    Platform_malloc(numBytes)
+#define calloc(count, size) Platform_malloc(count *size)
+#define free(numBytes)      Platform_free(numBytes)
+#endif
 
 #define SIO_MULTI_CNT ((volatile struct SioMultiCnt *)REG_ADDR_SIOCNT)
 

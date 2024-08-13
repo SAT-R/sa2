@@ -131,7 +131,9 @@ NONMATCH("asm/non_matching/sakit/input_buf__sub_800DF8C.inc", void sub_800DF8C(P
             lbl:
 
                 if (r6 == 0) {
-                    *sp00.unk8 = r8;
+                    // NOTE: As long as this function is non-matching,
+                    //       this line leads to Sonic not being able to jump in non-vanilla builds
+                    //*sp00.unk8 = r8;
                     break;
                 }
 

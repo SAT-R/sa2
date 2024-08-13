@@ -17,17 +17,17 @@ typedef struct {
     /* 0x04 */ s8 unused4;
     /* 0x05 */ u8 width;
     /* 0x06 */ u8 height;
-} Interactable_Toggle_PlayerLayer;
+} MapEntity_Toggle_PlayerLayer;
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
-} Sprite_ChangePlayerLayer;
+} TogglePlayerLayer;
 
-static void Task_Interactable_Toggle_PlayerLayer(void)
+static void Task_MapEntity_Toggle_PlayerLayer(void)
 {
-    Sprite_ChangePlayerLayer *layerChanger = TASK_DATA(gCurTask);
-    SpriteBase *base = &layerChanger->base;
-    Interactable_Toggle_PlayerLayer *me = (Interactable_Toggle_PlayerLayer *)base->me;
+    TogglePlayerLayer *toggle = TASK_DATA(gCurTask);
+    SpriteBase *base = &toggle->base;
+    MapEntity_Toggle_PlayerLayer *me = (MapEntity_Toggle_PlayerLayer *)base->me;
     u8 spriteX = base->spriteX;
     u32 regionX = base->regionX;
     u32 regionY = base->regionY;
@@ -61,9 +61,9 @@ static void Task_Interactable_Toggle_PlayerLayer(void)
 
 void CreateEntity_Toggle_PlayerLayer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, UNUSED u8 spriteY)
 {
-    struct Task *t = TaskCreate(Task_Interactable_Toggle_PlayerLayer, sizeof(Sprite_ChangePlayerLayer), 0x2000, 0, NULL);
-    Sprite_ChangePlayerLayer *layerChanger = TASK_DATA(t);
-    SpriteBase *base = &layerChanger->base;
+    struct Task *t = TaskCreate(Task_MapEntity_Toggle_PlayerLayer, sizeof(TogglePlayerLayer), 0x2000, 0, NULL);
+    TogglePlayerLayer *toggle = TASK_DATA(t);
+    SpriteBase *base = &toggle->base;
 
     base->regionX = spriteRegionX;
     base->regionY = spriteRegionY;

@@ -21,12 +21,15 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
+// NOTE: It seems like this was supposed to store 5 positions for displaying/storing bound motion frames
+//       but actually none of the positions are used.
+#define NUM_BOUND_MOTION_FRAMES 5
 typedef struct {
-    /* 0x00 */ s32 px[5];
-    /* 0x14 */ s32 py[5];
-    /* 0x28 */ u16 unk28;
+    /* 0x00 */ s32 px[NUM_BOUND_MOTION_FRAMES];
+    /* 0x14 */ s32 py[NUM_BOUND_MOTION_FRAMES];
+    /* 0x28 */ u16 prevFrameNum;
     /* 0x2C */ Sprite s;
-} TaskStrc_8011C98; /* size: 0x5C */
+} TrickBound; /* size: 0x5C */
 
 /* NOTE: We consider Player Callbacks to be all procedures
  *       that are passed to the first member of the Player struct.
@@ -36,13 +39,13 @@ typedef struct {
 
 void PlayerCB_8011DCC(Player *);
 void PlayerCB_8011E88(Player *);
-void Task_8012034(void);
+void Task_SonicBoundMotionFrames(void);
 void PlayerCB_80123D0(Player *);
 void PlayerCB_8012DA4(Player *p);
 void PlayerCB_80123FC(Player *);
 void PlayerCB_8012460(Player *);
 void PlayerCB_8012498(Player *p);
-void TaskDestructor_80124B8(struct Task *);
+void TaskDestructor_SonicBoundMotionFrames(struct Task *);
 void PlayerCB_80124D0(Player *p);
 void PlayerCB_80126B0(Player *p);
 void PlayerCB_80127F0(Player *p);
@@ -131,23 +134,23 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
 }
 
 // For Sonic's Down-Trick "Bound"
-struct Task *sub_8011C98(s32 x, s32 y)
+struct Task *Player_Sonic_Bound(s32 x, s32 y)
 {
     if (IS_MULTI_PLAYER) {
         return NULL;
     } else {
-        struct Task *t = TaskCreate(Task_8012034, sizeof(TaskStrc_8011C98), 0x4001, 0, TaskDestructor_80124B8);
+        struct Task *t = TaskCreate(Task_SonicBoundMotionFrames, sizeof(TrickBound), 0x4001, 0, TaskDestructor_SonicBoundMotionFrames);
 
-        TaskStrc_8011C98 *strc = TASK_DATA(t);
-        Sprite *s = &strc->s;
+        TrickBound *bound = TASK_DATA(t);
+        Sprite *s = &bound->s;
 
         s16 i;
-        for (i = 0; i < 5; i++) {
-            strc->px[i] = x;
-            strc->py[i] = y;
+        for (i = 0; i < NUM_BOUND_MOTION_FRAMES; i++) {
+            bound->px[i] = x;
+            bound->py[i] = y;
         }
 
-        strc->unk28 = 0;
+        bound->prevFrameNum = 0;
         s->graphics.dest = VramMalloc(16);
         s->graphics.size = 0;
         s->graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_SONIC);
@@ -301,10 +304,11 @@ void PlayerCB_8011F94(Player *p)
         s32 sinValue;
         s32 bounceImpactAccel = -Q(6.0);
 
-        // Matching
+#ifndef NON_MATCHING
         u8 *rotPtr = &p->rotation;
         rotPtr++;
         rotPtr--;
+#endif
 
         // Bounce up after hitting the ground
         sinValue = SIN_24_8(rot = p->rotation * 4);
@@ -326,10 +330,10 @@ void PlayerCB_8011F94(Player *p)
     }
 }
 
-void Task_8012034(void)
+void Task_SonicBoundMotionFrames(void)
 {
-    TaskStrc_8011C98 *strc = TASK_DATA(gCurTask);
-    Sprite *s = &strc->s;
+    TrickBound *bound = TASK_DATA(gCurTask);
+    Sprite *s = &bound->s;
     Vec2_32 pos;
 
     if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.speedAirY < Q(2.0)) || (gPlayer.unk64 != 36)) {
@@ -337,11 +341,11 @@ void Task_8012034(void)
     } else {
         UpdateSpriteAnimation(s);
 
-        strc->unk28 = ((strc->unk28 - 1) & 0x6);
+        bound->prevFrameNum = ((bound->prevFrameNum - 1) & 0x6);
 
         // Get player's previous position 'unk28' frames ago
         // and display it
-        GetPreviousPlayerPos(&pos, strc->unk28);
+        GetPreviousPlayerPos(&pos, bound->prevFrameNum);
         s->x = I(pos.x) - gCamera.x;
         s->y = I(pos.y) - gCamera.y;
 
@@ -349,7 +353,7 @@ void Task_8012034(void)
     }
 }
 
-void sub_80120C0(Player *p)
+void Player_SonicForwardDash(Player *p)
 {
     if (p->moveState & MOVESTATE_10) {
         if (p->unk5C & DPAD_LEFT)
@@ -508,7 +512,7 @@ void PlayerCB_80123FC(Player *p)
         PLAYERFN_SET(PlayerCB_8011F94);
 
         if (p->character == CHARACTER_SONIC) {
-            sub_8011C98(I(p->x), I(p->y));
+            Player_Sonic_Bound(I(p->x), I(p->y));
         } else if (p->character == CHARACTER_AMY) {
             CreateAmyAttackHeartEffect(3);
         }
@@ -537,9 +541,9 @@ void PlayerCB_8012498(Player *p)
     }
 }
 
-void TaskDestructor_80124B8(struct Task *t)
+void TaskDestructor_SonicBoundMotionFrames(struct Task *t)
 {
-    TaskStrc_8011C98 *strc = TASK_DATA(t);
+    TrickBound *strc = TASK_DATA(t);
     Sprite *s = &strc->s;
     VramFree(s->graphics.dest);
 }
@@ -560,11 +564,12 @@ void PlayerCB_80124D0(Player *p)
 
 /* Maybe new module here? */
 
+// Forward Dash ?
 bool32 sub_801251C(Player *p)
 {
     if (p->character == CHARACTER_SONIC) {
         if (p->unk71 == 1) {
-            sub_80120C0(p);
+            Player_SonicForwardDash(p);
             return TRUE;
         }
     }

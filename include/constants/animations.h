@@ -21,16 +21,20 @@
 #define SA2_CHAR_ANIM_CROUCH             2
 #define SA2_CHAR_ANIM_SPIN_DASH          3
 #define SA2_CHAR_ANIM_SPIN_ATTACK        4
+#define SA2_CHAR_ANIM_5                  5
+#define SA2_CHAR_ANIM_6                  6
+#define SA2_CHAR_ANIM_7                  7
 #define SA2_CHAR_ANIM_BRAKE              8
 #define SA2_CHAR_ANIM_WALK               9
 #define SA2_CHAR_ANIM_JUMP_1             10
 #define SA2_CHAR_ANIM_JUMP_2             11
+#define SA2_CHAR_ANIM_12                 12
 #define SA2_CHAR_ANIM_FALLING_VULNERABLE 13
 #define SA2_CHAR_ANIM_14                 14
 #define SA2_CHAR_ANIM_15                 15
 #define SA2_CHAR_ANIM_16                 16
 
-// TODO: Rename. "These "Insta Shield" is true for Sonic, but not the other characters.
+// TODO: Rename. Thee "Insta Shield" is true for Sonic, but not the other characters.
 #define SA2_CHAR_ANIM_INSTA_SHIELD_1 17
 #define SA2_CHAR_ANIM_INSTA_SHIELD_2 18
 #define SA2_CHAR_ANIM_19             19
@@ -76,15 +80,24 @@
 #define SA2_CHAR_ANIM_55                                     55
 #define SA2_CHAR_ANIM_56                                     56
 #define SA2_CHAR_ANIM_57                                     57
+#define SA2_CHAR_ANIM_58                                     58
+#define SA2_CHAR_ANIM_59                                     59
+#define SA2_CHAR_ANIM_60                                     60
+#define SA2_CHAR_ANIM_61                                     61
 #define SA2_CHAR_ANIM_62                                     62
 #define SA2_CHAR_ANIM_63                                     63
+#define SA2_CHAR_ANIM_64                                     64
 #define SA2_CHAR_ANIM_65                                     65
 #define SA2_CHAR_ANIM_66                                     66
 #define SA2_CHAR_ANIM_67                                     67
 #define SA2_CHAR_ANIM_68                                     68
 #define SA2_CHAR_ANIM_69                                     69
 #define SA2_CHAR_ANIM_70                                     70
+#define SA2_CHAR_ANIM_71                                     71
+#define SA2_CHAR_ANIM_72                                     72
+#define SA2_CHAR_ANIM_73                                     73
 #define SA2_CHAR_ANIM_BOOST_PALETTE                          74
+#define SA2_CHAR_ANIM_75                                     75
 #define SA2_CHAR_ANIM_80                                     80
 #define SA2_CHAR_ANIM_87                                     87
 

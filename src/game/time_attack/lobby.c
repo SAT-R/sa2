@@ -24,7 +24,7 @@ struct TimeAttackLobbyScreen {
     Sprite unkB0[5];
     ScreenFade unk1A0;
     u8 unk1AC;
-    u8 unk1AD;
+    u8 cursor;
     u8 unk1AE;
     u8 unk1AF;
 };
@@ -237,7 +237,7 @@ void sub_8088CC4(void)
 
     for (i = 0; i < 4; i++) {
         s = &lobbyScreen->unkB0[i + 1];
-        if (i == lobbyScreen->unk1AD) {
+        if (i == lobbyScreen->cursor) {
             s->palId = 0;
         } else {
             s->palId = 1;
@@ -265,8 +265,17 @@ void sub_8088D60(void)
     Sprite *s;
     u32 i;
     if (UpdateScreenFade(&lobbyScreen->unk1A0) == SCREEN_FADE_COMPLETE) {
+#ifdef BUG_FIX
+        u8 selection = lobbyScreen->cursor;
         TaskDestroy(gCurTask);
-        switch (lobbyScreen->unk1AD) {
+        switch (selection)
+#else
+        // This is a use-after-free bug.
+        // It usually works out because per default Task data is not cleared on destruction.
+        TaskDestroy(gCurTask);
+        switch (lobbyScreen->cursor)
+#endif
+        {
             case 0:
                 GameStageStart();
                 break;
@@ -290,7 +299,7 @@ void sub_8088D60(void)
     }
 
     s = &lobbyScreen->unk80;
-    switch (lobbyScreen->unk1AD) {
+    switch (lobbyScreen->cursor) {
         case 1:
             s->x -= 4;
             break;
@@ -307,7 +316,7 @@ void sub_8088D60(void)
     }
 
     s = &lobbyScreen->unkB0[0];
-    switch (lobbyScreen->unk1AD) {
+    switch (lobbyScreen->cursor) {
         case 1:
             s->x -= 2;
             break;
@@ -328,17 +337,17 @@ void sub_8088EB4(void)
     ScreenFade *fade;
     u32 i;
 
-    if (gRepeatedKeys & (DPAD_UP) && lobbyScreen->unk1AD != 0) {
-        lobbyScreen->unk1AD--;
+    if (gRepeatedKeys & (DPAD_UP) && lobbyScreen->cursor != 0) {
+        lobbyScreen->cursor--;
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
-    } else if (gRepeatedKeys & DPAD_DOWN && lobbyScreen->unk1AD != 3) {
-        lobbyScreen->unk1AD++;
+    } else if (gRepeatedKeys & DPAD_DOWN && lobbyScreen->cursor != 3) {
+        lobbyScreen->cursor++;
         m4aSongNumStart(SE_MENU_CURSOR_MOVE);
     }
 
     for (i = 0; i < 4; i++) {
         s = &lobbyScreen->unkB0[i + 1];
-        if (i == lobbyScreen->unk1AD) {
+        if (i == lobbyScreen->cursor) {
             s->palId = 0;
         } else {
             s->palId = 1;
@@ -356,7 +365,7 @@ void sub_8088EB4(void)
     }
 
     if (gRepeatedKeys & A_BUTTON) {
-        if (lobbyScreen->unk1AD != 3) {
+        if (lobbyScreen->cursor != 3) {
             s = &lobbyScreen->unk80;
             VramFree(s->graphics.dest);
             s->graphics.dest = VramMalloc(gUnknown_080E0474[gSelectedCharacter + 5].numTiles);
@@ -364,7 +373,7 @@ void sub_8088EB4(void)
             s->variant = gUnknown_080E0474[gSelectedCharacter + 5].variant;
             s->prevVariant = -1;
             s->animSpeed = 0x40;
-            if (lobbyScreen->unk1AD == 1) {
+            if (lobbyScreen->cursor == 1) {
                 s->frameFlags &= ~0x400;
             }
             UpdateSpriteAnimation(s);
@@ -378,7 +387,7 @@ void sub_8088EB4(void)
                 s->variant = gUnknown_080E04C4[1].variant;
                 s->prevVariant = -1;
                 s->animSpeed = 0x40;
-                if (lobbyScreen->unk1AD == 1) {
+                if (lobbyScreen->cursor == 1) {
                     s->frameFlags &= ~0x400;
                 }
                 UpdateSpriteAnimation(s);
@@ -401,7 +410,7 @@ void CreateTimeAttackLobbyScreen()
     struct Task *t = TaskCreate(sub_8088CC4, sizeof(struct TimeAttackLobbyScreen), 0x1000, 0, sub_8089104);
     struct TimeAttackLobbyScreen *lobbyScreen = TASK_DATA(t);
 
-    lobbyScreen->unk1AD = 0;
+    lobbyScreen->cursor = 0;
     lobbyScreen->unk1AC = 0;
     sub_8088944(lobbyScreen);
 }

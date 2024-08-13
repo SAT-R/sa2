@@ -84,3 +84,9 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
 }
 
 void DmaStop(int dmaNum) { printf("DmaStop: %d\n", dmaNum); }
+
+void DmaWait(int dmaNum) { printf("DmaWait: %d\n", dmaNum); }
+
+void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS | HEAP_ZERO_MEMORY, numBytes); }
+
+void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }

@@ -41,7 +41,7 @@ static Vec2_32 sPlayerPosBuffer[BE_BUFFER_SIZE] = { 0 };
 static u8 ALIGNED(4) sPlayerStateBufferIndex = 0;
 static u8 ALIGNED(4) sPlayerPosBufferIndex = 0;
 
-const u8 gUnknown_080D5674[4] = { 2, 4, 6, 0 };
+const u8 gUnknown_080D5674[3] = { 2, 4, 6 };
 
 const AnimId sCharacterPalettesBoostEffect[NUM_CHARACTERS] = {
     SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_SONIC), SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_PALETTE, CHARACTER_CREAM),
@@ -183,7 +183,7 @@ void sub_801583C(void)
     if (IS_SINGLE_PLAYER && !gUnknown_030055BC && !IS_BOSS_STAGE(gCurrentLevel)) {
         gUnknown_030055BC = TRUE;
 
-        for (i = 0; i < 3; i++) {
+        for (i = 0; i < ARRAY_COUNT(gUnknown_080D5674); i++) {
             struct Task *t = TaskCreate(Task_80159C8, sizeof(PlayerActions), 0x4000, 0, TaskDestructor_8015B50);
             PlayerActions *actions = TASK_DATA(t);
 

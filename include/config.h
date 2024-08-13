@@ -10,4 +10,11 @@
 // TODO: Define this in Makefile through a compiler macro!
 #define GAME GAME_SA2
 
+// TODO: Put somewhere else?
+#if PLATFORM_GBA
+#define USE_NEW_DMA 0
+#else
+#define USE_NEW_DMA 1
+#endif
+
 #endif // GUARD_SA1_CONFIG_H
