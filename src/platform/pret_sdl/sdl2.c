@@ -99,15 +99,16 @@ SDL_Window *vramWindow;
 SDL_Renderer *vramRenderer;
 SDL_Texture *vramTexture;
 #endif
-SDL_sem *vBlankSemaphore;
-SDL_atomic_t isFrameAvailable;
-bool speedUp = false;
 #define INITIAL_VIDEO_SCALE 1
 unsigned int videoScale = INITIAL_VIDEO_SCALE;
 unsigned int preFullscreenVideoScale = INITIAL_VIDEO_SCALE;
+SDL_sem *vBlankSemaphore;
+SDL_atomic_t isFrameAvailable;
+bool speedUp = false;
 bool videoScaleChanged = false;
 bool isRunning = true;
 bool paused = false;
+bool stepOneFrame = false;
 double simTime = 0;
 double lastGameTime = 0;
 double curGameTime = 0;
@@ -269,13 +270,18 @@ int main(int argc, char **argv)
     while (isRunning) {
         ProcessSDLEvents();
 
-        if (!paused) {
+        if (!paused || stepOneFrame) {
             double dt = fixedTimestep / timeScale; // TODO: Fix speedup
+            double deltaTime = 0;
 
             curGameTime = SDL_GetPerformanceCounter();
-            double deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
-            if (deltaTime > (dt * 5))
-                deltaTime = dt * 5;
+            if (stepOneFrame) {
+                deltaTime = dt;
+            } else {
+                deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
+                if (deltaTime > (dt * 5))
+                    deltaTime = dt * 5;
+            }
             lastGameTime = curGameTime;
 
             accumulator += deltaTime;
@@ -309,6 +315,9 @@ int main(int argc, char **argv)
             SDL_RenderClear(vramRenderer);
             SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
 #endif
+            if (paused && stepOneFrame) {
+                stepOneFrame = false;
+            }
         }
 
         if (videoScaleChanged) {
@@ -430,6 +439,9 @@ void ProcessSDLEvents(void)
                             SDL_PauseAudio(0);
                         }
                         break;
+                    case SDLK_SLASH:
+                        stepOneFrame = FALSE;
+                        break;
                 }
                 break;
             case SDL_KEYDOWN:
@@ -474,6 +486,10 @@ void ProcessSDLEvents(void)
                                 timeScale = 5.0;
                                 SDL_PauseAudio(1);
                             }
+                            break;
+                        case SDLK_F10:
+                            paused = true;
+                            stepOneFrame = true;
                             break;
                     }
                 break;
