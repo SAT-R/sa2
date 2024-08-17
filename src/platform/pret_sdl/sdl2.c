@@ -148,7 +148,7 @@ int main(int argc, char **argv)
     freopen("CON", "w", stdout);
 #endif
 
-    ReadSaveFile("pokeemerald.sav");
+    ReadSaveFile("sa2.sav");
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -381,12 +381,12 @@ static void CloseSaveFile()
 }
 
 // Key mappings
-#define KEY_A_BUTTON      SDLK_z
+#define KEY_A_BUTTON      SDLK_c
 #define KEY_B_BUTTON      SDLK_x
 #define KEY_START_BUTTON  SDLK_RETURN
 #define KEY_SELECT_BUTTON SDLK_BACKSLASH
-#define KEY_L_BUTTON      SDLK_a
-#define KEY_R_BUTTON      SDLK_s
+#define KEY_L_BUTTON      SDLK_d
+#define KEY_R_BUTTON      SDLK_f
 #define KEY_DPAD_UP       SDLK_UP
 #define KEY_DPAD_DOWN     SDLK_DOWN
 #define KEY_DPAD_LEFT     SDLK_LEFT
