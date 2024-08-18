@@ -130,25 +130,23 @@
 #define SA2_ANIM_CHEESE_BACKFLIP                       457
 #define SA2_ANIM_CHEESE_NERVOUS                        458
 #define SA2_ANIM_CHEESE_PIROUETTE                      459
-#define SA2_ANIM_CHEESE_SHOCKED                                                                                                            \
-    460 // Not sure about this one. They put their hand to their mouth, but it doesn't
-        // have an eating animation
-#define SA2_ANIM_CHEESE_LIFTING              461
-#define SA2_ANIM_CHEESE_CELEBRATING          462
-#define SA2_ANIM_CHEESE_STOMPING             463 // alternatively: SA2_ANIM_CHEESE_CANNON_BALL ?
-#define SA2_ANIM_CHEESE_SKY_UPPERCUT         464
-#define SA2_ANIM_CHEESE_DYING                465
-#define SA2_ANIM_CHEESE_STRUGGLING           466
-#define SA2_ANIM_CHEESE_SIDEWAYS_2           467
-#define SA2_ANIM_CHEESE_DOWNWARDS            468
-#define SA2_ANIM_CHEESE_469                  469
-#define SA2_ANIM_CHEESE_WAVING_PLAYER        470
-#define SA2_ANIM_SONIC_GOING_SUPER_0         471
-#define SA2_ANIM_SONIC_GOING_SUPER_1         472
-#define SA2_ANIM_SUPER_SONIC_SIDEWAYS        473
-#define SA2_ANIM_SUPER_SONIC_ATTACK_CLOUD    474
-#define SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET 475
-#define SA2_ANIM_SUPER_SONIC_FROZEN          476
+#define SA2_ANIM_CHEESE_SHOCKED                        460
+#define SA2_ANIM_CHEESE_LIFTING                        461
+#define SA2_ANIM_CHEESE_CELEBRATING                    462
+#define SA2_ANIM_CHEESE_STOMPING                       463 // alternatively: SA2_ANIM_CHEESE_CANNON_BALL ?
+#define SA2_ANIM_CHEESE_SKY_UPPERCUT                   464
+#define SA2_ANIM_CHEESE_DYING                          465
+#define SA2_ANIM_CHEESE_STRUGGLING                     466
+#define SA2_ANIM_CHEESE_SIDEWAYS_2                     467
+#define SA2_ANIM_CHEESE_DOWNWARDS                      468
+#define SA2_ANIM_CHEESE_469                            469
+#define SA2_ANIM_CHEESE_WAVING_PLAYER                  470
+#define SA2_ANIM_SONIC_GOING_SUPER_0                   471
+#define SA2_ANIM_SONIC_GOING_SUPER_1                   472
+#define SA2_ANIM_SUPER_SONIC_SIDEWAYS                  473
+#define SA2_ANIM_SUPER_SONIC_ATTACK_CLOUD              474
+#define SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET           475
+#define SA2_ANIM_SUPER_SONIC_FROZEN                    476
 // Defeating enemies / opening item boxes
 #define SA2_ANIM_DUST_CLOUD 477
 

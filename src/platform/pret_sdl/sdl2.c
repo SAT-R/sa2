@@ -296,9 +296,9 @@ int main(int argc, char **argv)
 
                     REG_DISPSTAT |= INTR_FLAG_VBLANK;
 
-                    // TODO: Shouldn't this run DMA_VBLANK?
-                    //       If not, add a note here, why it is HBLANK!
-                    RunDMAs(DMA_HBLANK);
+                    // TODO(Jace): I think this should be DMA_VBLANK.
+                    //             If not, and it is HBLANK instead, add a note here, why it is!
+                    RunDMAs(DMA_VBLANK);
 
                     if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
                         gIntrTable[INTR_INDEX_VBLANK]();
@@ -324,7 +324,6 @@ int main(int argc, char **argv)
             SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
             videoScaleChanged = false;
         }
-
         SDL_RenderPresent(sdlRenderer);
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);
