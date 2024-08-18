@@ -99,13 +99,6 @@ SECTIONS
         src/task.o(.text);
         src/background.o(.text);
         src/sprite.o(.text);
-#if (CPU_ARCH_ARM == 1)
-        asm/bg_triangles_unused_0.o(.text);
-#endif
-        src/bg_triangles_0.o(.text);
-#if (CPU_ARCH_ARM == 1)
-        asm/bg_triangles_unused_1.o(.text);
-#endif
         src/bg_triangles.o(.text);
         src/malloc_ewram.o(.text);
         src/malloc_vram.o(.text);
