@@ -10,7 +10,7 @@
 #endif
 
 #define ENABLE_AUDIO     0
-#define ENABLE_VRAM_VIEW 01
+#define ENABLE_VRAM_VIEW 0
 
 #include <SDL.h>
 
@@ -437,9 +437,6 @@ void ProcessSDLEvents(void)
                             SDL_ClearQueuedAudio(1);
                             SDL_PauseAudio(0);
                         }
-                        break;
-                    case SDLK_SLASH:
-                        stepOneFrame = FALSE;
                         break;
                 }
                 break;
