@@ -66,7 +66,7 @@ SECTIONS
         src/game/special_stage/utils.o(.data);
         src/game/save.o(.data);
         src/game/multiboot/collect_rings/time_display.o(.data);
-        src/game/math_0.o(.data);
+        src/game/math.o(.data);
         src/game/unknown_effect.o(.data);
         src/game/backgrounds.o(.data);
 
@@ -99,13 +99,6 @@ SECTIONS
         src/task.o(.text);
         src/background.o(.text);
         src/sprite.o(.text);
-#if (CPU_ARCH_ARM == 1)
-        asm/bg_triangles_unused_0.o(.text);
-#endif
-        src/bg_triangles_0.o(.text);
-#if (CPU_ARCH_ARM == 1)
-        asm/bg_triangles_unused_1.o(.text);
-#endif
         src/bg_triangles.o(.text);
         src/malloc_ewram.o(.text);
         src/malloc_vram.o(.text);
@@ -332,15 +325,8 @@ SECTIONS
         src/game/multiboot/connection.o(.text);
         src/game/multiboot/collect_rings/results.o(.text);
         src/game/multiboot/collect_rings/time_display.o(.text);
-        
-#if (CPU_ARCH_ARM == 1)
-        asm/math_0_0.o(.text);
-        asm/math_0_1.o(.text);
-        asm/math_0_2.o(.text);
-        asm/math_0_3.o(.text);
-#endif
-        src/game/math_0.o(.text);
-        src/game/math_1.o(.text);
+
+        src/game/math.o(.text);
 
         src/game/mystery_item_box.o(.text);
         src/game/heart_particles_effect.o(.text);
@@ -533,7 +519,7 @@ SECTIONS
         src/game/interactables_2/note_particle.o(.rodata);
         src/game/multiboot/connection.o(.rodata);
         src/game/multiboot/collect_rings/time_display.o(.rodata);
-        src/game/math_1.o(.rodata);
+        src/game/math.o(.rodata);
         src/game/mystery_item_box.o(.rodata);
         src/game/race_progress.o(.rodata);
         src/game/unknown_effect.o(.rodata);
