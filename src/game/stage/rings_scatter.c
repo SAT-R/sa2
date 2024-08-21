@@ -138,7 +138,7 @@ void InitScatteringRings(s32 x, s32 y, s32 numRings)
 
         if (ring->unkC == 0) {
             ring->unkC = 180;
-            ring->unkE = p->unk38;
+            ring->unkE = p->layer;
             ring->x = Q(x);
             ring->y = Q(y);
 

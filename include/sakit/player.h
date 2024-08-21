@@ -67,10 +67,10 @@ typedef void (*PlayerCallback)(struct Player_ *);
 
 #define HAS_SHIELD(p) ((p)->itemEffect & (PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC | PLAYER_ITEM_EFFECT__SHIELD_NORMAL))
 
-#define FLAG_PLAYER_x38__LAYER_FRONT 0x00
-#define FLAG_PLAYER_x38__LAYER_BACK  0x01
-#define FLAG_PLAYER_x38__LAYER_MASK  0x01
-#define FLAG_PLAYER_x38__80          0x80
+#define PLAYER_LAYER__FRONT 0x00
+#define PLAYER_LAYER__BACK  0x01
+#define PLAYER_LAYER__MASK  0x01
+#define PLAYER_LAYER__80    0x80
 
 // Not sure what these are yet
 typedef struct Player_ {
@@ -106,7 +106,7 @@ typedef struct Player_ {
     /* 0x34 */ u16 unk34;
     /* 0x36 */ s8 unk36;
     /* 0x37 */ u8 itemEffect; // bitfield
-    /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
+    /* 0x38 */ u8 layer; // bitfield(?), 0x1 determines layer
     /* 0x39 */ u8 unk39;
     /* 0x3A */ u16 unk3A;
     /* 0x3C */ void *unk3C; // the object player collides with this frame?

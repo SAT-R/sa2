@@ -42,9 +42,9 @@ static void Task_MapEntity_Toggle_PlayerLayer(void)
         // The interactable-index determines, whether the layer we switch to
         // should be the foreground- or the background layer.
         if (me->index == IA__TOGGLE_PLAYER_LAYER__FOREGROUND) {
-            gPlayer.unk38 &= ~1;
+            gPlayer.layer &= ~1;
         } else {
-            gPlayer.unk38 |= 1;
+            gPlayer.layer |= 1;
         }
 
         gPlayer.moveState &= ~MOVESTATE_1000000;

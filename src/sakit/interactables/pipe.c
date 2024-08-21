@@ -100,9 +100,9 @@ static void Task_Pipe_End(void)
         gPlayer.unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY; // priority bits
         gPlayer.unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
 
-        gPlayer.unk38 = FLAG_PLAYER_x38__LAYER_FRONT;
+        gPlayer.layer = PLAYER_LAYER__FRONT;
         if (me->exitOnBackLayer) {
-            gPlayer.unk38 = FLAG_PLAYER_x38__LAYER_BACK;
+            gPlayer.layer = PLAYER_LAYER__BACK;
         }
 
         gPlayer.transition = PLTRANS_PT28;

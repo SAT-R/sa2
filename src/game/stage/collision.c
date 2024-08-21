@@ -432,7 +432,7 @@ s32 sub_801EB44(s32 p0, s32 p1, s32 layer)
     p0 = CLAMP_32(p0, 0, gRefCollision->pxWidth - 1);
     p1 = CLAMP_32(p1, 0, gRefCollision->pxHeight - 1);
 
-    tile = sub_801EF94(p0, p1, layer & FLAG_PLAYER_x38__LAYER_MASK);
+    tile = sub_801EF94(p0, p1, layer & PLAYER_LAYER__MASK);
     mtTileIndex = tile & TILE_MASK_INDEX;
 
     yPixel = p1 % (unsigned)TILE_WIDTH;
@@ -492,7 +492,7 @@ s32 sub_801EC3C(s32 p0, s32 p1, s32 layer)
     p1 = CLAMP_32(p1, 0, gRefCollision->pxWidth - 1);
     p0 = CLAMP_32(p0, 0, gRefCollision->pxHeight - 1);
 
-    tile = sub_801EF94(p1, p0, layer & FLAG_PLAYER_x38__LAYER_MASK);
+    tile = sub_801EF94(p1, p0, layer & PLAYER_LAYER__MASK);
     mtTileIndex = tile & TILE_MASK_INDEX;
 
     xPixel = p1 % (unsigned)TILE_WIDTH;
@@ -510,7 +510,7 @@ s32 sub_801EC3C(s32 p0, s32 p1, s32 layer)
         hv = TILE_WIDTH;
     }
 
-    if (layer & FLAG_PLAYER_x38__80) {
+    if (layer & PLAYER_LAYER__80) {
         s32 flags = gRefCollision->flags[mtTileIndex / (unsigned)TILE_WIDTH];
 
         // 2: one tile's flags' bit-width

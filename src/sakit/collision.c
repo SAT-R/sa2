@@ -350,7 +350,7 @@ bool32 sub_800CBA4(Player *p)
     if (p->moveState & MOVESTATE_1000000) {
         PlayerSpriteInfo *psi;
 
-        p->unk38 = FLAG_PLAYER_x38__LAYER_BACK;
+        p->layer = PLAYER_LAYER__BACK;
 
         p->moveState &= ~MOVESTATE_1000000;
         p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;

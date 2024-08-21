@@ -82,7 +82,7 @@ static void SuperSonicInitPlayer(void)
     p->unk34 = 0;
     p->unk36 = 0;
     p->itemEffect = 0;
-    p->unk38 = 0;
+    p->layer = 0;
     p->unk3C = NULL;
     p->unk40 = 0;
     p->unk44 = 0;

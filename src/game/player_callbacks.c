@@ -1255,7 +1255,7 @@ void sub_80131B4(Player *p)
                             playerBottomX -= 1;
                             playerBottomX -= p->spriteOffsetX;
 
-                            if (sub_801E4E4(playerBottomY, playerBottomX, p->unk38, -8, NULL, sub_801EE64) < 0) {
+                            if (sub_801E4E4(playerBottomY, playerBottomX, p->layer, -8, NULL, sub_801EE64) < 0) {
                                 PLAYERFN_SET(PlayerCB_8013BD4);
                                 p->unk64 = 93;
                                 p->spriteOffsetX = 6;
@@ -1273,7 +1273,7 @@ void sub_80131B4(Player *p)
                             playerBottomX -= 1;
                             playerBottomX -= p->spriteOffsetX;
 
-                            if (sub_801E4E4(playerBottomY, playerBottomX, p->unk38, +8, NULL, sub_801EE64) < 0) {
+                            if (sub_801E4E4(playerBottomY, playerBottomX, p->layer, +8, NULL, sub_801EE64) < 0) {
 
                                 PLAYERFN_SET(PlayerCB_8013BD4);
                                 p->unk64 = 93;
@@ -1309,7 +1309,7 @@ void sub_80131B4(Player *p)
                             playerBottomX += p->spriteOffsetX;
 
                             if (sub_801E4E4(playerBottomY, // fmt
-                                            playerBottomX, p->unk38, +8, NULL, sub_801EE64)
+                                            playerBottomX, p->layer, +8, NULL, sub_801EE64)
                                 < 0) {
                                 PLAYERFN_SET(PlayerCB_8013BD4);
                                 p->unk64 = 93;
@@ -1484,7 +1484,7 @@ s32 sub_8013644(Player *p)
 
         pY = I(p->y);
 
-        result = sub_801E4E4(pX, pY, p->unk38, -8, &rot, sub_801ED24);
+        result = sub_801E4E4(pX, pY, p->layer, -8, &rot, sub_801ED24);
 
         if (rot & 0x1) {
             p->rotation = Q(0.25);
@@ -1500,7 +1500,7 @@ s32 sub_8013644(Player *p)
 
         pY = I(p->y);
 
-        result = sub_801E4E4(pX, pY, p->unk38, +8, &rot, sub_801ED24);
+        result = sub_801E4E4(pX, pY, p->layer, +8, &rot, sub_801ED24);
 
         if (!(rot & 0x1)) {
             p->rotation = rot;

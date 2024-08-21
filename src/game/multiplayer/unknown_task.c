@@ -117,7 +117,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                         gPlayer.unk94->s.frameFlags |= 0x2000;
 
                         gCamera.unk50 &= ~3;
-                        gPlayer.unk38 = (mpp->unk54 >> 7) & 1;
+                        gPlayer.layer = (mpp->unk54 >> 7) & 1;
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk60 = 30;
                         gPlayer.timerInvulnerability = 120;

@@ -127,10 +127,10 @@ static void Task_LightBridgeActive(void)
     }
 
     if (lightBridge->active) {
-        gPlayer.unk38 &= ~1;
+        gPlayer.layer &= ~1;
     } else {
         // Fall through bridge
-        gPlayer.unk38 |= 1;
+        gPlayer.layer |= 1;
     }
 
     if (!IsPlayerWithinRange(lightBridge)) {
@@ -284,14 +284,14 @@ static void TaskDestructor_InteractableTecBaseLightBridge(struct Task *t)
 
 static void ActivateBridge(Sprite_LightBridge *lightBridge)
 {
-    lightBridge->layer = gPlayer.unk38;
+    lightBridge->layer = gPlayer.layer;
 
     gCurTask->main = Task_LightBridgeActive;
 }
 
 static void DeactivateBridge(Sprite_LightBridge *lightBridge)
 {
-    gPlayer.unk38 |= 1;
+    gPlayer.layer |= 1;
     gCurTask->main = Task_LightBridgeInactive;
 }
 

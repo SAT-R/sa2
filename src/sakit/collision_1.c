@@ -37,7 +37,7 @@ u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3, UNUSED 
     mpp = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
     mpPlayerSprite = &mpp->s;
 
-    if (layer != p->unk38) {
+    if (layer != p->layer) {
         return COLL_NONE;
     }
     // _0800DABC

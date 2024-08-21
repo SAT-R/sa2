@@ -721,7 +721,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->spindashAccel = 0;
     p->unk29 = 0;
     p->unk28 = 0;
-    p->unk38 = FLAG_PLAYER_x38__LAYER_BACK;
+    p->layer = PLAYER_LAYER__BACK;
     p->unk40 = 0x900;
     p->unk44 = 0x600;
     p->unk48 = 8;
@@ -752,7 +752,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->transition = 0;
     p->unk6E = 0;
     p->prevTransition = 0;
-    p->isBoosting = 0;
+    p->isBoosting = FALSE;
     p->unk58 = 0;
     p->unk6C = 0;
     p->unk71 = 0;
@@ -874,7 +874,7 @@ s32 sub_802195C(Player *p, u8 *p1, s32 *out)
     playerX2 = I(p->x) - (2 + p->spriteOffsetX);
     playerY2 = I(p->y) - (p->spriteOffsetY);
 
-    mask = p->unk38;
+    mask = p->layer;
     if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
@@ -884,7 +884,7 @@ s32 sub_802195C(Player *p, u8 *p1, s32 *out)
     playerX = I(p->x) - (2 + p->spriteOffsetX);
     playerY = I(p->y) + (p->spriteOffsetY);
 
-    mask = p->unk38;
+    mask = p->layer;
     if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
@@ -924,7 +924,7 @@ s32 sub_8021A34(Player *p, u8 *p1, s32 *out)
     playerX2 = I(p->x) + (2 + p->spriteOffsetX);
     playerY2 = I(p->y) - (p->spriteOffsetY);
 
-    mask = p->unk38;
+    mask = p->layer;
     if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
@@ -934,7 +934,7 @@ s32 sub_8021A34(Player *p, u8 *p1, s32 *out)
     playerX = I(p->x) + (2 + p->spriteOffsetX);
     playerY = I(p->y) + (p->spriteOffsetY);
 
-    mask = p->unk38;
+    mask = p->layer;
     if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
@@ -974,7 +974,7 @@ s32 sub_8021B08(Player *p, u8 *p1, s32 *out)
     playerY2 = I(p->y) - (p->spriteOffsetY);
     playerX2 = I(p->x) - (2 + p->spriteOffsetX);
 
-    mask = p->unk38;
+    mask = p->layer;
     if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
@@ -984,7 +984,7 @@ s32 sub_8021B08(Player *p, u8 *p1, s32 *out)
     playerY = I(p->y) - (p->spriteOffsetY);
     playerX = I(p->x) + (2 + p->spriteOffsetX);
 
-    mask = p->unk38;
+    mask = p->layer;
     if (p->speedAirY < Q(3.0)) {
         mask |= 0x80;
     }
@@ -1034,7 +1034,7 @@ void sub_8021C4C(Player *p)
     s32 *ptr;
 
     u32 mask;
-    u32 mask2 = p->unk38;
+    u32 mask2 = p->layer;
 
     playerX = I(p->x) - (3 + p->spriteOffsetX);
     playerY = I(p->y);
@@ -1130,7 +1130,7 @@ void sub_8021DB8(Player *p)
     s32 *ptr;
 
     u32 mask;
-    u32 mask2 = p->unk38;
+    u32 mask2 = p->layer;
 
     playerX = I(p->x) - (3 + p->spriteOffsetX);
     playerY = I(p->y);
@@ -1208,7 +1208,7 @@ void sub_8021EE4(Player *p)
     u16 gravity;
 
     u32 mask;
-    u32 mask2 = p->unk38;
+    u32 mask2 = p->layer;
 
     gravity = GRAVITY_IS_INVERTED;
     if (gravity) {
@@ -1283,7 +1283,7 @@ void sub_802203C(Player *p)
     u16 gravity;
 
     u32 mask;
-    u32 mask2 = p->unk38;
+    u32 mask2 = p->layer;
 
     gravity = GRAVITY_IS_INVERTED;
     if (gravity) {
@@ -1499,7 +1499,7 @@ void sub_80223BC(Player *p)
     s32 *ptr;
 
     u32 mask;
-    u32 mask2 = p->unk38;
+    u32 mask2 = p->layer;
 
     playerX = I(p->x) - (3 + p->spriteOffsetX);
     playerY = I(p->y);
@@ -1564,7 +1564,7 @@ void sub_80224DC(Player *p)
     s32 *ptr;
 
     u32 mask;
-    u32 mask2 = p->unk38;
+    u32 mask2 = p->layer;
 
     playerX = I(p->x) - (3 + p->spriteOffsetX);
     playerY = I(p->y);
@@ -1626,7 +1626,7 @@ void sub_80225E8(Player *p)
     u16 gravity;
 
     u32 mask;
-    u8 *mask2 = &p->unk38;
+    u8 *mask2 = &p->layer;
 
     playerX = I(p->x) - (2 + p->spriteOffsetX);
     playerY = I(p->y);
@@ -1694,7 +1694,7 @@ void sub_8022710(Player *p)
     u16 gravity;
 
     u32 mask;
-    u8 *mask2 = &p->unk38;
+    u8 *mask2 = &p->layer;
 
     playerX = I(p->x) + (2 + p->spriteOffsetX);
     playerY = I(p->y);
@@ -1804,7 +1804,7 @@ void sub_80228C0(Player *p)
     s32 playerX = p->x;
     s32 playerY = p->y;
 #endif
-    u32 mask = p->unk38;
+    u32 mask = p->layer;
     s32 py = I(playerY);
 
     resultA = sub_801E4E4(py + p->spriteOffsetY, (playerX = I(playerX)) - (2 + p->spriteOffsetX), mask, 8, &p->unk28, sub_801EE64);
@@ -1916,7 +1916,7 @@ void sub_80229EC(Player *p)
 #endif
     playerX = p->x;
     playerY = (p->y);
-    mask = p->unk38;
+    mask = p->layer;
     py = I(playerY);
 
     resultA = sub_801E4E4(py - p->spriteOffsetY, (playerX = I(playerX)) + (2 + p->spriteOffsetX), mask, -8, &p->unk28, sub_801EE64);
@@ -2028,7 +2028,7 @@ void sub_8022B18(Player *p)
 #endif
     playerX = p->x;
     playerY = (p->y);
-    mask = p->unk38;
+    mask = p->layer;
     py = I(playerX);
 
     resultA = sub_801E4E4(py - p->spriteOffsetY, (playerY = I(playerY)) - (2 + p->spriteOffsetX), mask, -8, &p->unk28, sub_801ED24);
@@ -2139,7 +2139,7 @@ void sub_8022C44(Player *p)
 #endif
     playerX = p->x;
     playerY = (p->y);
-    mask = p->unk38;
+    mask = p->layer;
     py = I(playerX);
 
     resultA = sub_801E4E4(py + p->spriteOffsetY, (playerY = I(playerY)) + (2 + p->spriteOffsetX), mask, +8, &p->unk28, sub_801ED24);
@@ -2479,22 +2479,22 @@ NONMATCH("asm/non_matching/game/player__sub_802302C.inc", s32 sub_802302C(u8 par
     switch (param0 >> 6) {
         case 0: {
             s32 y = py + 2;
-            result = sub_801E4E4(y + p->spriteOffsetX, px, p->unk38, +8, NULL, sub_801EE64);
+            result = sub_801E4E4(y + p->spriteOffsetX, px, p->layer, +8, NULL, sub_801EE64);
         } break;
 
         case 2: {
             s32 y = py - 2;
-            result = sub_801E4E4(y - p->spriteOffsetX, px, p->unk38, -8, NULL, sub_801EE64);
+            result = sub_801E4E4(y - p->spriteOffsetX, px, p->layer, -8, NULL, sub_801EE64);
         } break;
 
         case 1: {
             s32 x = (px - 2);
-            result = sub_801E4E4(x - p->spriteOffsetX, py, p->unk38, -8, NULL, sub_801ED24);
+            result = sub_801E4E4(x - p->spriteOffsetX, py, p->layer, -8, NULL, sub_801ED24);
         } break;
 
         case 3: {
             s32 x = (px + 2);
-            result = sub_801E4E4(x + p->spriteOffsetX, py, p->unk38, +8, NULL, sub_801ED24);
+            result = sub_801E4E4(x + p->spriteOffsetX, py, p->layer, +8, NULL, sub_801ED24);
         } break;
 
         default: {
@@ -3552,7 +3552,7 @@ void sub_80246DC(Player *p)
             PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
         } else {
             if ((p->speedAirY > 0) && (p->variant == 1) && ((((u16)r3 - 10) == 0) || (((u16)r3 - 10) == 1))) {
-                s32 newY = sub_801E6D4(I(p->y) + p->spriteOffsetY, I(p->x), p->unk38, 8, NULL, sub_801EE64);
+                s32 newY = sub_801E6D4(I(p->y) + p->spriteOffsetY, I(p->x), p->layer, 8, NULL, sub_801EE64);
 
                 if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                     if (newY <= 32) {
@@ -3859,7 +3859,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
 
     send->unk8 &= ~0x30;
     send->unk8 |= ((gPlayer.unk90->s.frameFlags & 0x3000) >> 8);
-    if (p->unk38 != 0) {
+    if (p->layer != 0) {
         send->unk8 |= 0x80;
     } else {
         send->unk8 &= ~0x80;
@@ -4639,7 +4639,7 @@ void PlayerCB_Spindash(Player *p)
 void sub_802669C(Player *p)
 {
     s32 newY;
-    p->unk38 = 0;
+    p->layer = 0;
     p->rotation = 0;
 
     p->unk90->s.frameFlags &= ~(MOVESTATE_2000 | MOVESTATE_1000);
@@ -4648,11 +4648,11 @@ void sub_802669C(Player *p)
     p->itemEffect |= PLAYER_ITEM_EFFECT__TELEPORT;
 
     if (GRAVITY_IS_INVERTED) {
-        newY = sub_801E6D4(I(p->y) - p->spriteOffsetY, I(p->x), p->unk38, -8, NULL, sub_801EE64);
+        newY = sub_801E6D4(I(p->y) - p->spriteOffsetY, I(p->x), p->layer, -8, NULL, sub_801EE64);
 
         newY = p->y - Q(newY);
     } else {
-        newY = sub_801E6D4(I(p->y) + p->spriteOffsetY, I(p->x), p->unk38, 8, NULL, sub_801EE64);
+        newY = sub_801E6D4(I(p->y) + p->spriteOffsetY, I(p->x), p->layer, 8, NULL, sub_801EE64);
 
         newY = p->y + Q(newY);
     }
@@ -4697,7 +4697,7 @@ void PlayerCB_8026810(Player *p)
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
         p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
         p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
-        p->unk38 = 1;
+        p->layer = 1;
 
         gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
         m4aSongNumStop(SE_GRINDING);
@@ -4730,7 +4730,7 @@ void PlayerCB_8026810(Player *p)
             p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
             p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
             p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
-            p->unk38 = 1;
+            p->layer = 1;
 
             gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
             m4aSongNumStop(SE_GRINDING);
@@ -4757,7 +4757,7 @@ void PlayerCB_80269C0(Player *p)
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
-    p->unk38 = 1;
+    p->layer = 1;
 
     gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
 
@@ -4789,7 +4789,7 @@ void PlayerCB_8026A4C(Player *p)
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
-    p->unk38 = 1;
+    p->layer = 1;
 
     gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
 
@@ -4923,7 +4923,7 @@ void PlayerCB_8026E24(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 1);
-    p->unk38 = 0;
+    p->layer = 0;
 
     m4aSongNumStart(SE_SPIN);
 
@@ -6480,7 +6480,7 @@ s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
     playerY2 = I(p->y) + p->spriteOffsetY;
     playerX2 = I(p->x) - (2 + p->spriteOffsetX);
 
-    mask = p->unk38;
+    mask = p->layer;
     if (p->speedAirY < 0) {
         mask |= 0x80;
     }
@@ -6490,7 +6490,7 @@ s32 sub_8029BB8(Player *p, u8 *p1, s32 *out)
     playerY = I(p->y) + p->spriteOffsetY;
     playerX = I(p->x) + (2 + p->spriteOffsetX);
 
-    mask = p->unk38;
+    mask = p->layer;
     if (p->speedAirY < 0) {
         mask |= 0x80;
     }
@@ -6948,7 +6948,7 @@ void sub_802A6C0(Player *p)
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
     p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
-    p->unk38 = 0x1;
+    p->layer = 0x1;
 
     gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
     m4aSongNumStop(SE_GRINDING);
