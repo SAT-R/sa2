@@ -182,8 +182,8 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", static void 
         me->x = rotatingHandle->base.spriteX;
         Player_TransitionCancelFlyingAndBoost(&gPlayer);
         sub_8023B5C(&gPlayer, 9);
-        gPlayer.unk16 = 6;
-        gPlayer.unk17 = 9;
+        gPlayer.spriteOffsetX = 6;
+        gPlayer.spriteOffsetY = 9;
         gPlayer.moveState &= ~MOVESTATE_400000;
         gCurTask->main = Task_AfterJump;
 

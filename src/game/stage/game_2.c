@@ -181,7 +181,7 @@ void sub_801F488(void)
         s32 x, y;
         s32 x2, y2;
 
-        s32 yInverted = p->unk17;
+        s32 yInverted = p->spriteOffsetY;
 
         if (GRAVITY_IS_INVERTED) {
             yInverted = -yInverted;

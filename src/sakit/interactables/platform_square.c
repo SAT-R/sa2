@@ -173,7 +173,7 @@ static void Task_Platform_Square(void)
             p->y += deltaY - Q(2.0);
         }
 
-        res = sub_801F100(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x) + gPlayer.unk16, gPlayer.unk38, +8, sub_801EC3C);
+        res = sub_801F100(I(gPlayer.y) + gPlayer.spriteOffsetY, I(gPlayer.x) + gPlayer.spriteOffsetX, gPlayer.unk38, +8, sub_801EC3C);
         if (res < 0) {
             gPlayer.y += Q(res);
 
@@ -183,20 +183,20 @@ static void Task_Platform_Square(void)
         }
 
         temp = I(p->x) + 2;
-        res = sub_801F100(temp + p->unk16, I(p->y), p->unk38, +8, sub_801EB44);
+        res = sub_801F100(temp + p->spriteOffsetX, I(p->y), p->unk38, +8, sub_801EB44);
 
         if (res < 0) {
             p->x += Q(res);
         }
 
         temp2 = I(p->x) - 2;
-        res = sub_801F100(temp2 - p->unk16, I(p->y), p->unk38, -8, sub_801EB44);
+        res = sub_801F100(temp2 - p->spriteOffsetX, I(p->y), p->unk38, -8, sub_801EB44);
 
         if (res < 0) {
             p->x -= Q(res);
         }
 
-        res = sub_801F100(I(p->y) + p->unk17, I(p->x) - p->unk16, p->unk38, +8, sub_801EC3C);
+        res = sub_801F100(I(p->y) + p->spriteOffsetY, I(p->x) - p->spriteOffsetX, p->unk38, +8, sub_801EC3C);
 
         if (res < 0) {
             p->y += Q(res);
@@ -236,7 +236,7 @@ static void Task_Platform_Square(void)
                     p->speedAirY = 0;
                 }
 
-                res = sub_801F100(I(p->y) + p->unk17, I(p->x), p->unk38, 8, sub_801EC3C);
+                res = sub_801F100(I(p->y) + p->spriteOffsetY, I(p->x), p->unk38, 8, sub_801EC3C);
 
                 if ((res < 0) && (deltaY > 0)) {
                     Platform_Square_KillPlayer();
@@ -273,7 +273,7 @@ static void Task_Platform_Square(void)
                     }
 
                     if (otherRes & 0x10000) {
-                        s32 newRes = sub_801F100(I(p->y) - p->unk17, I(p->x), p->unk38, -8, sub_801EC3C);
+                        s32 newRes = sub_801F100(I(p->y) - p->spriteOffsetY, I(p->x), p->unk38, -8, sub_801EC3C);
 
                         if (newRes < 0) {
                             if (deltaY < 0) {
@@ -294,7 +294,7 @@ static void Task_Platform_Square(void)
                 } else {
                     s32 newRes;
                     p->speedAirY = 0;
-                    newRes = sub_801F100(I(p->y) - p->unk17, I(p->x), p->unk38, -8, sub_801EC3C);
+                    newRes = sub_801F100(I(p->y) - p->spriteOffsetY, I(p->x), p->unk38, -8, sub_801EC3C);
 
                     if ((newRes < 0) && (deltaY < 0)) {
                         Platform_Square_KillPlayer();
@@ -312,14 +312,14 @@ static void Task_Platform_Square(void)
 
             if (result & 0x40000) {
                 s32 tempXVal = I(p->x) + 2;
-                if (sub_801F100(tempXVal + p->unk16, I(p->y), p->unk38, -8, sub_801EB44) < 0) {
+                if (sub_801F100(tempXVal + p->spriteOffsetX, I(p->y), p->unk38, -8, sub_801EB44) < 0) {
                     Platform_Square_KillPlayer();
                 }
             }
 
             if (result & 0x80000) {
                 s32 tempXVal = I(p->x) - 2;
-                if (sub_801F100(tempXVal - p->unk16, I(p->y), p->unk38, +8, sub_801EB44) < 0) {
+                if (sub_801F100(tempXVal - p->spriteOffsetX, I(p->y), p->unk38, +8, sub_801EB44) < 0) {
                     Platform_Square_KillPlayer();
                 }
             }

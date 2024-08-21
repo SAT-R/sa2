@@ -47,7 +47,7 @@ void Task_SparkEffect(void)
         Sprite *s = &spark->s;
         struct Camera *cam = &gCamera;
         s->x = I(p->x) - cam->x;
-        s->y = (I(p->y) + p->unk17) - cam->y;
+        s->y = (I(p->y) + p->spriteOffsetY) - cam->y;
 
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {
             s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;

@@ -37,7 +37,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc", void Task_Gr
 {
     Player *player = &gPlayer;
 
-    s32 r7 = GRAVITY_IS_INVERTED ? I(player->y) - player->unk17 : I(player->y) + player->unk17;
+    s32 r7 = GRAVITY_IS_INVERTED ? I(player->y) - player->spriteOffsetY : I(player->y) + player->spriteOffsetY;
 
     // _0800FE78
     Sprite_GrindRail *rail = TASK_DATA(gCurTask);

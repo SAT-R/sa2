@@ -188,8 +188,8 @@ static void sub_8072DCC(Sprite_HookRail *hookRail)
     gPlayer.unk64 = 55;
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
-    gPlayer.unk16 = 6;
-    gPlayer.unk17 = 14;
+    gPlayer.spriteOffsetX = 6;
+    gPlayer.spriteOffsetY = 14;
     gPlayer.moveState &= ~MOVESTATE_4;
     gPlayer.y = Q(hookRail->y + HOOK_HEIGHT);
     hookRail->grindDistance = 0;

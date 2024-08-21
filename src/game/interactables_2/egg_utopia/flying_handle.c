@@ -163,8 +163,8 @@ static void sub_807F484(Sprite_FlyingHandle *flyingHandle)
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
 
-    gPlayer.unk16 = 6;
-    gPlayer.unk17 = 14;
+    gPlayer.spriteOffsetX = 6;
+    gPlayer.spriteOffsetY = 14;
     gPlayer.moveState &= ~MOVESTATE_4;
     gPlayer.transition = PLTRANS_PT3;
     gPlayer.speedGroundX = 0;

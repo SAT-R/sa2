@@ -56,8 +56,8 @@ bool32 sub_8029E6C(Player *);
 
 #define PLAYERFN_SET_SHIFT_OFFSETS(player, x, y)                                                                                           \
     {                                                                                                                                      \
-        player->unk16 = x;                                                                                                                 \
-        player->unk17 = y;                                                                                                                 \
+        player->spriteOffsetX = x;                                                                                                         \
+        player->spriteOffsetY = y;                                                                                                         \
     }
 #define PLAYERFN_CHANGE_SHIFT_OFFSETS(player, x, y)                                                                                        \
     {                                                                                                                                      \

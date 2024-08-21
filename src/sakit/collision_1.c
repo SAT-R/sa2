@@ -203,7 +203,7 @@ bool32 sub_800DE44(Player *p)
 u32 sub_800DF38(Sprite *s, s32 x, s32 y, Player *p)
 {
     // TODO: Could this match with a 'struct Rect8' instead of s8[4]?
-    s8 rectPlayer[4] = { -p->unk16, -p->unk17, +p->unk16, +p->unk17 };
+    s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
     return CheckRectCollision_SpritePlayer(s, x, y, p, (struct Rect8 *)&rectPlayer);
 }

@@ -65,8 +65,8 @@ static void SuperSonicInitPlayer(void)
     p->speedAirX = 0;
     p->speedAirY = 0;
     p->speedGroundX = 0;
-    p->unk16 = 0;
-    p->unk17 = 0;
+    p->spriteOffsetX = 0;
+    p->spriteOffsetY = 0;
     // /* 0x18 */ u8 filler18[8]; // no idea what this data is and why it's not set
     p->moveState = 0;
     p->rotation = 0;

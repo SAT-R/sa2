@@ -493,8 +493,8 @@ static void sub_8074088(Sprite_HCCrane *crane)
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 9);
 
-    gPlayer.unk16 = 6;
-    gPlayer.unk17 = 9;
+    gPlayer.spriteOffsetX = 6;
+    gPlayer.spriteOffsetY = 9;
     gPlayer.moveState |= MOVESTATE_400000;
     gPlayer.unk64 = 0x37;
 

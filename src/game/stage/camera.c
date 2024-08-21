@@ -392,7 +392,7 @@ void InitCamera(u32 level)
             camera->unk10 = I(player->x) - (2 * DISPLAY_WIDTH);
             camera->y = I(player->y) - 0x54;
             camera->unk14 = camera->y;
-            camera->unk64 = player->unk17 - 4;
+            camera->unk64 = player->spriteOffsetY - 4;
         }
     } else {
         camera->x = I(player->x) - (DISPLAY_WIDTH / 2);
@@ -408,7 +408,7 @@ void InitCamera(u32 level)
 
         camera->unk10 = camera->x;
         camera->unk14 = camera->y;
-        camera->unk64 = player->unk17 - 4;
+        camera->unk64 = player->spriteOffsetY - 4;
     }
 
     camera->unk8 = 0x1000;
@@ -526,7 +526,7 @@ void UpdateCamera(void)
             }
             if (!(camera->unk50 & 2)) {
                 s32 unk64 = camera->unk64;
-                s32 temp8 = player->unk17 - 4;
+                s32 temp8 = player->spriteOffsetY - 4;
                 if (GRAVITY_IS_INVERTED) {
                     temp8 = -temp8;
                 }

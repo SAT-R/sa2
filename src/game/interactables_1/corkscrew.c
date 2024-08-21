@@ -121,8 +121,8 @@ void sub_8060ED0(void)
     } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
         player->unk64 = 4;
         sub_8023B5C(player, 9);
-        player->unk16 = 6;
-        player->unk17 = 9;
+        player->spriteOffsetX = 6;
+        player->spriteOffsetY = 9;
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
@@ -231,8 +231,8 @@ void sub_8061228(void)
     } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
         player->unk64 = 4;
         sub_8023B5C(player, 9);
-        player->unk16 = 6;
-        player->unk17 = 9;
+        player->spriteOffsetX = 6;
+        player->spriteOffsetY = 9;
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {

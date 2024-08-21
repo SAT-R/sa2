@@ -216,8 +216,8 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                         gPlayer.moveState &= ~MOVESTATE_400;
                         gPlayer.moveState &= ~MOVESTATE_100;
                         sub_8023B5C(&gPlayer, 14);
-                        gPlayer.unk16 = 6;
-                        gPlayer.unk17 = 14;
+                        gPlayer.spriteOffsetX = 6;
+                        gPlayer.spriteOffsetY = 14;
                         gPlayer.unk61 = 0;
                         gPlayer.unk62 = 0;
 
@@ -727,21 +727,21 @@ void sub_801707C(void)
 
                 s32 y;
                 if (!GRAVITY_IS_INVERTED) {
-                    result = sub_801E4E4(MAX(I(gPlayer.y), mpp->pos.y) + gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, 8, &unusedByte,
+                    result = sub_801E4E4(MAX(I(gPlayer.y), mpp->pos.y) + gPlayer.spriteOffsetY, I(gPlayer.x), gPlayer.unk38, 8, &unusedByte,
                                          sub_801EE64);
                 } else {
-                    result = sub_801E4E4(MIN(I(gPlayer.y), mpp->pos.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, -8, &unusedByte,
-                                         sub_801EE64);
+                    result = sub_801E4E4(MIN(I(gPlayer.y), mpp->pos.y) - gPlayer.spriteOffsetY, I(gPlayer.x), gPlayer.unk38, -8,
+                                         &unusedByte, sub_801EE64);
                 }
 
-                if (result - gPlayer.unk17 > 0) {
+                if (result - gPlayer.spriteOffsetY > 0) {
                     gPlayer.moveState |= MOVESTATE_400000;
                     gPlayer.moveState &= ~MOVESTATE_8;
 
                     mpp->unk5C |= 4;
                     sub_8023B5C(&gPlayer, 14);
-                    gPlayer.unk16 = 6;
-                    gPlayer.unk17 = 14;
+                    gPlayer.spriteOffsetX = 6;
+                    gPlayer.spriteOffsetY = 14;
 
                     {
                         struct UNK_3005510 *thing = sub_8019224();
@@ -799,7 +799,8 @@ void sub_801707C(void)
                     // TODO: potential macro
                     if (!invertedGravity) {
                         y = Q(mpp->pos.y + (s->hitboxes[0].bottom) + 17);
-                        result = sub_801E4E4(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, 8, &unusedByte, sub_801EE64);
+                        result
+                            = sub_801E4E4(I(gPlayer.y) + gPlayer.spriteOffsetY, I(gPlayer.x), gPlayer.unk38, 8, &unusedByte, sub_801EE64);
 
                         if (result < 0) {
                             y += Q(result);
@@ -810,7 +811,8 @@ void sub_801707C(void)
 
                     } else {
                         y = Q(mpp->pos.y + (s->hitboxes[0].top) - 17);
-                        result = sub_801E4E4(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, -8, &unusedByte, sub_801EE64);
+                        result
+                            = sub_801E4E4(I(gPlayer.y) - gPlayer.spriteOffsetY, I(gPlayer.x), gPlayer.unk38, -8, &unusedByte, sub_801EE64);
 
                         if (result < 0) {
                             y -= Q(result);
@@ -939,7 +941,7 @@ void sub_8017670(void)
         }
 
         {
-            s8 rect[4] = { -gPlayer.unk16, -gPlayer.unk17, gPlayer.unk16, gPlayer.unk17 };
+            s8 rect[4] = { -gPlayer.spriteOffsetX, -gPlayer.spriteOffsetY, gPlayer.spriteOffsetX, gPlayer.spriteOffsetY };
             val = sub_800D0A0(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, mpp->unk54 >> 7 & 1, 1);
 
             if (mpp->unk4C & 0x20 && !(val & 0x20)) {
@@ -962,8 +964,8 @@ void sub_8017670(void)
                     if ((!GRAVITY_IS_INVERTED && I(gPlayer.y) > mpp->pos.y) || (GRAVITY_IS_INVERTED && I(gPlayer.y) < mpp->pos.y)) {
                         gPlayer.moveState |= MOVESTATE_400000;
                         sub_8023B5C(&gPlayer, 14);
-                        gPlayer.unk16 = 6;
-                        gPlayer.unk17 = 14;
+                        gPlayer.spriteOffsetX = 6;
+                        gPlayer.spriteOffsetY = 14;
                         gPlayer.speedGroundX = 0;
                         gPlayer.speedAirX = 0;
                         gPlayer.unk64 = SA2_CHAR_ANIM_IDLE;
@@ -1018,7 +1020,7 @@ void sub_8017670(void)
             }
             {
                 s32 x, y;
-                s32 playerUnk17 = gPlayer.unk17;
+                s32 playerUnk17 = gPlayer.spriteOffsetY;
                 bool32 gravityInverted = GRAVITY_IS_INVERTED;
                 // mpp->unk5C |= 4;
                 x = QS(mpp->pos.x);
@@ -1247,7 +1249,7 @@ void sub_8017F34(void)
     }
 
     if (mpp->unk48 < 0) {
-        result = sub_801F100(I(gPlayer.y) - gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, -8, sub_801EC3C);
+        result = sub_801F100(I(gPlayer.y) - gPlayer.spriteOffsetY, I(gPlayer.x), gPlayer.unk38, -8, sub_801EC3C);
         if (result < 0) {
             gPlayer.y -= Q(result);
             gPlayer.moveState &= ~MOVESTATE_8;
@@ -1255,7 +1257,7 @@ void sub_8017F34(void)
             mpp->unk60 = 30;
         }
     } else if (mpp->unk48 > 0) {
-        result = sub_801F100(I(gPlayer.y) + gPlayer.unk17, I(gPlayer.x), gPlayer.unk38, 8, sub_801EC3C);
+        result = sub_801F100(I(gPlayer.y) + gPlayer.spriteOffsetY, I(gPlayer.x), gPlayer.unk38, 8, sub_801EC3C);
         if (result < 0) {
             gPlayer.y += Q(result);
             gPlayer.moveState &= ~MOVESTATE_8;
@@ -1265,13 +1267,13 @@ void sub_8017F34(void)
     }
 
     if (mpp->unk44 < 0) {
-        result = sub_801F100(I(gPlayer.x) - gPlayer.unk16, I(gPlayer.y), gPlayer.unk38, -8, sub_801EB44);
+        result = sub_801F100(I(gPlayer.x) - gPlayer.spriteOffsetX, I(gPlayer.y), gPlayer.unk38, -8, sub_801EB44);
         if (result < 0) {
             gPlayer.x -= Q(result);
         }
         return;
     } else if (mpp->unk44 > 0) {
-        result = sub_801F100(I(gPlayer.x) + gPlayer.unk16, I(gPlayer.y), gPlayer.unk38, 8, sub_801EB44);
+        result = sub_801F100(I(gPlayer.x) + gPlayer.spriteOffsetX, I(gPlayer.y), gPlayer.unk38, 8, sub_801EB44);
         if (result < 0) {
             gPlayer.x += Q(result);
         }
@@ -1489,8 +1491,8 @@ void Task_HandleLaunchPlayer(void)
         gPlayer.unk64 = SA2_CHAR_ANIM_38;
         sprPlayer->prevVariant = -1;
         sub_8023B5C(&gPlayer, 14);
-        gPlayer.unk16 = 6;
-        gPlayer.unk17 = 14;
+        gPlayer.spriteOffsetX = 6;
+        gPlayer.spriteOffsetY = 14;
         m4aSongNumStart(SE_SPRING);
         gPlayer.speedAirY = *airSpeed;
         TaskDestroy(gCurTask);

@@ -36,7 +36,7 @@ u32 CheckRectCollision_SpritePlayer(Sprite *s, s32 sx, s32 sy, Player *p, struct
 // (100.00%) https://decomp.me/scratch/0Ro0I
 u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
 {
-    s8 rectPlayer[4] = { -p->unk16, -p->unk17, +p->unk16, +p->unk17 };
+    s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
     u32 result = COLL_NONE;
     bool32 ip = FALSE;
@@ -58,8 +58,8 @@ u32 sub_800C060(Sprite *s, s32 sx, s32 sy, Player *p)
         s32 y;
 #endif
 
-        rectPlayer[1] = -p->unk17;
-        rectPlayer[3] = +p->unk17;
+        rectPlayer[1] = -p->spriteOffsetY;
+        rectPlayer[3] = +p->spriteOffsetY;
         p->moveState |= MOVESTATE_8;
         result |= COLL_FLAG_8;
 
@@ -406,7 +406,7 @@ bool32 sub_800CBA4(Player *p)
 //            arrow platform, spike platform
 u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
 {
-    s8 rectPlayer[4] = { -p->unk16, -p->unk17, +p->unk16, +p->unk17 };
+    s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
     bool32 r4 = COLL_NONE;
 
@@ -456,7 +456,7 @@ u32 sub_800CCB8(Sprite *s, s32 sx, s32 sy, Player *p)
 // Called by IAs ramp, spring, floating spring, bounce block, spike platform
 u32 sub_800CDBC(Sprite *s, s32 sx, s32 sy, Player *p)
 {
-    s8 rectPlayer[4] = { -p->unk16, -p->unk17, +p->unk16, +p->unk17 };
+    s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
     bool32 r4 = COLL_NONE;
 

@@ -1237,8 +1237,8 @@ void sub_80131B4(Player *p)
                     if (result != sp08) {
                         PLAYERFN_SET(PlayerCB_8013BD4);
                         p->unk64 = 93;
-                        p->unk16 = 6;
-                        p->unk17 = 14;
+                        p->spriteOffsetX = 6;
+                        p->spriteOffsetY = 14;
                         p->w.tf.flags |= MOVESTATE_IN_AIR;
                         return;
                     }
@@ -1249,17 +1249,17 @@ void sub_80131B4(Player *p)
                             s32 playerBottomX;
                             s32 playerBottomY = I(p->y);
                             playerBottomY -= 1;
-                            playerBottomY -= p->unk17;
+                            playerBottomY -= p->spriteOffsetY;
 
                             playerBottomX = I(p->x);
                             playerBottomX -= 1;
-                            playerBottomX -= p->unk16;
+                            playerBottomX -= p->spriteOffsetX;
 
                             if (sub_801E4E4(playerBottomY, playerBottomX, p->unk38, -8, NULL, sub_801EE64) < 0) {
                                 PLAYERFN_SET(PlayerCB_8013BD4);
                                 p->unk64 = 93;
-                                p->unk16 = 6;
-                                p->unk17 = 14;
+                                p->spriteOffsetX = 6;
+                                p->spriteOffsetY = 14;
                                 p->w.tf.flags |= MOVESTATE_IN_AIR;
                                 return;
                             }
@@ -1267,18 +1267,18 @@ void sub_80131B4(Player *p)
                             s32 playerBottomX;
                             s32 playerBottomY = I(p->y);
                             playerBottomY += 1;
-                            playerBottomY += p->unk17;
+                            playerBottomY += p->spriteOffsetY;
 
                             playerBottomX = I(p->x);
                             playerBottomX -= 1;
-                            playerBottomX -= p->unk16;
+                            playerBottomX -= p->spriteOffsetX;
 
                             if (sub_801E4E4(playerBottomY, playerBottomX, p->unk38, +8, NULL, sub_801EE64) < 0) {
 
                                 PLAYERFN_SET(PlayerCB_8013BD4);
                                 p->unk64 = 93;
-                                p->unk16 = 6;
-                                p->unk17 = 14;
+                                p->spriteOffsetX = 6;
+                                p->spriteOffsetY = 14;
                                 p->w.tf.flags |= MOVESTATE_IN_AIR;
                                 return;
                             }
@@ -1293,8 +1293,8 @@ void sub_80131B4(Player *p)
                     if (result != sp08) {
                         PLAYERFN_SET(PlayerCB_8013BD4);
                         p->unk64 = 93;
-                        p->unk16 = 6;
-                        p->unk17 = 14;
+                        p->spriteOffsetX = 6;
+                        p->spriteOffsetY = 14;
                         p->w.tf.flags |= MOVESTATE_IN_AIR;
                         return;
                     } else if (result != 0) {
@@ -1302,19 +1302,19 @@ void sub_80131B4(Player *p)
                             s32 playerBottomX;
                             s32 playerBottomY = I(p->y);
                             playerBottomY += 1;
-                            playerBottomY += p->unk17;
+                            playerBottomY += p->spriteOffsetY;
 
                             playerBottomX = I(p->x);
                             playerBottomX += 1;
-                            playerBottomX += p->unk16;
+                            playerBottomX += p->spriteOffsetX;
 
                             if (sub_801E4E4(playerBottomY, // fmt
                                             playerBottomX, p->unk38, +8, NULL, sub_801EE64)
                                 < 0) {
                                 PLAYERFN_SET(PlayerCB_8013BD4);
                                 p->unk64 = 93;
-                                p->unk16 = 6;
-                                p->unk17 = 14;
+                                p->spriteOffsetX = 6;
+                                p->spriteOffsetY = 14;
                                 p->w.tf.flags |= MOVESTATE_IN_AIR;
                                 return;
                             }
@@ -1341,8 +1341,8 @@ void sub_80131B4(Player *p)
 
             PLAYERFN_SET(PlayerCB_8013BD4);
             p->unk64 = 93;
-            p->unk16 = 6;
-            p->unk17 = 14;
+            p->spriteOffsetX = 6;
+            p->spriteOffsetY = 14;
             p->w.tf.flags |= MOVESTATE_IN_AIR;
         } else {
 
@@ -1357,8 +1357,8 @@ void sub_80131B4(Player *p)
                 }
 
                 p->speedAirX >>= 2;
-                p->unk16 = 6;
-                p->unk17 = 14;
+                p->spriteOffsetX = 6;
+                p->spriteOffsetY = 14;
             } else {
                 sub_8013150(p);
             }
@@ -1379,8 +1379,8 @@ void sub_8013498(Player *p)
         p->speedAirX = 0;
         p->speedAirY = 0;
 
-        p->unk16 = 6;
-        p->unk17 = 14;
+        p->spriteOffsetX = 6;
+        p->spriteOffsetY = 14;
 
         sub_8022318(p);
 
@@ -1401,7 +1401,7 @@ void sub_801350C(Player *p)
     s32 res;
 
     if ((gStageTime & 0x3) == 0) {
-        s32 offsetY = p->unk17;
+        s32 offsetY = p->spriteOffsetY;
 
         if (GRAVITY_IS_INVERTED)
             offsetY = -offsetY;
@@ -1455,7 +1455,7 @@ void sub_80135BC(Player *p)
 
     {
         s32 offsetY;
-        offsetY = p->unk17 - 14;
+        offsetY = p->spriteOffsetY - 14;
 
         if (GRAVITY_IS_INVERTED)
             offsetY = -offsetY;
@@ -1480,7 +1480,7 @@ s32 sub_8013644(Player *p)
 
         pX = I(p->x);
         pX -= 2;
-        pX -= p->unk16;
+        pX -= p->spriteOffsetX;
 
         pY = I(p->y);
 
@@ -1496,7 +1496,7 @@ s32 sub_8013644(Player *p)
         s32 pY;
         pX = I(p->x);
         pX += 2;
-        pX += p->unk16;
+        pX += p->spriteOffsetX;
 
         pY = I(p->y);
 
@@ -1532,7 +1532,7 @@ void sub_80136E8(Player *p)
         }
 
         if (p->unk5C & DPAD_UP) {
-            s32 offsetY = Q(p->unk17);
+            s32 offsetY = Q(p->spriteOffsetY);
 
             if (GRAVITY_IS_INVERTED) {
                 offsetY = -offsetY;
@@ -1589,7 +1589,7 @@ void sub_80136E8(Player *p)
             }
         } else if (p->unk5C & DPAD_DOWN) {
             s32 speed;
-            s32 offsetY = Q(p->unk17);
+            s32 offsetY = Q(p->spriteOffsetY);
             if (GRAVITY_IS_INVERTED) {
                 offsetY = -offsetY;
             }
@@ -1684,8 +1684,8 @@ void sub_801394C(Player *p)
         p->moveState |= MOVESTATE_IN_AIR;
         p->moveState |= MOVESTATE_100;
 
-        p->unk16 = 6;
-        p->unk17 = 9;
+        p->spriteOffsetX = 6;
+        p->spriteOffsetY = 9;
         p->unk64 = 50;
         p->transition = PLTRANS_PT4;
     }
@@ -1759,8 +1759,8 @@ END_NONMATCH
 void sub_8013AD8(Player *p)
 {
     p->moveState &= ~MOVESTATE_4;
-    p->unk16 = 6;
-    p->unk17 = 6;
+    p->spriteOffsetX = 6;
+    p->spriteOffsetY = 6;
 
     p->speedAirY += Q(1.5);
 
@@ -1854,9 +1854,9 @@ void sub_8013C50(Player *p)
     p->unk64 = 104;
 
     if (GRAVITY_IS_INVERTED) {
-        p->y += Q(p->unk17);
+        p->y += Q(p->spriteOffsetY);
     } else {
-        p->y -= Q(p->unk17);
+        p->y -= Q(p->spriteOffsetY);
     }
 
     PLAYERFN_SET(PlayerCB_8013E64);
@@ -1868,8 +1868,8 @@ void sub_8013CA0(Player *p)
 {
     PLAYERFN_SET(PlayerCB_8013BD4);
 
-    p->unk16 = 6;
-    p->unk17 = 14;
+    p->spriteOffsetX = 6;
+    p->spriteOffsetY = 14;
 
     p->unk64 = 93;
 }
@@ -1938,8 +1938,8 @@ void sub_8013D7C(Player *p)
 {
     PLAYERFN_SET(PlayerCB_8013BD4);
     p->unk64 = 93;
-    p->unk16 = 6;
-    p->unk17 = 14;
+    p->spriteOffsetX = 6;
+    p->spriteOffsetY = 14;
     p->w.tf.flags |= 0x2;
 }
 
@@ -1995,9 +1995,9 @@ void PlayerCB_8013E64(Player *p)
         p->rotation = 0;
 
         if (GRAVITY_IS_INVERTED) {
-            p->y += Q(p->unk17);
+            p->y += Q(p->spriteOffsetY);
         } else {
-            p->y -= Q(p->unk17);
+            p->y -= Q(p->spriteOffsetY);
         }
 
         if (p->moveState & MOVESTATE_FACING_LEFT) {

@@ -91,10 +91,8 @@ typedef struct Player_ {
 
     // The player sprite's position is actually at the middle of its graphics,
     // this offset denotes the difference to the ground.
-    // spriteOffsetX
-    /* 0x16 */ s8 unk16;
-    // spriteOffsetY
-    /* 0x17 */ s8 unk17;
+    /* 0x16 */ s8 spriteOffsetX;
+    /* 0x17 */ s8 spriteOffsetY;
     /* 0x18 */ u8 filler18[8];
 
     // set/compare to values in "include/constants/move_states.h"

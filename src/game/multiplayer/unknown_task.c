@@ -221,8 +221,8 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     gPlayer.moveState &= ~MOVESTATE_100;
                     gPlayer.unk64 = 0x14;
                     sub_8023B5C(&gPlayer, 0xe);
-                    gPlayer.unk16 = 6;
-                    gPlayer.unk17 = 0xE;
+                    gPlayer.spriteOffsetX = 6;
+                    gPlayer.spriteOffsetY = 0xE;
                     gPlayer.unk61 = 0;
                     gPlayer.unk62 = 0;
                     gPlayer.speedGroundX = 0;
