@@ -176,7 +176,7 @@ void sub_8011D48(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    if (!p->unk5A) {
+    if (!p->isBoosting) {
         if (p->moveState & MOVESTATE_FACING_LEFT) {
             p->speedGroundX = -Q(3.0);
         } else {
@@ -217,7 +217,7 @@ void PlayerCB_8011DCC(Player *p)
 
             PLAYERFN_SET(PlayerCB_8011E88);
 
-            if (!p->unk5A) {
+            if (!p->isBoosting) {
                 if (p->moveState & MOVESTATE_FACING_LEFT) {
                     p->speedGroundX = -Q(4.0);
                 } else {
@@ -279,7 +279,7 @@ void PlayerCB_8011F1C(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
-    p->unk5A = FALSE;
+    p->isBoosting = FALSE;
     p->unk64 = 36;
 
     if (p->character == CHARACTER_AMY) {
@@ -632,7 +632,7 @@ void sub_8012644(Player *p)
 
     p->w.cf.flyingDuration = CREAM_FLYING_DURATION;
     p->unk61 = 1;
-    p->unk5A = 0;
+    p->isBoosting = 0;
     p->unk58 = 0;
     gPlayer.moveState |= MOVESTATE_10000000;
     PLAYERFN_SET_AND_CALL(PlayerCB_80126B0, p);
@@ -816,7 +816,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
 
         s = &ts->s;
 
-        if (!gPlayer.unk5A) {
+        if (!gPlayer.isBoosting) {
             s->graphics.dest = VramMalloc(15);
             s->graphics.anim = SA2_ANIM_TAILS_TAIL_SWIPE;
             s->variant = 0;
@@ -890,7 +890,7 @@ void sub_8012BC0(Player *p)
 
     p->w.tf.flyingDuration = TAILS_FLYING_DURATION;
     p->unk61 = 1;
-    p->unk5A = 0;
+    p->isBoosting = 0;
     p->unk58 = 0;
 
     gPlayer.moveState |= MOVESTATE_10000000;
@@ -1786,7 +1786,7 @@ void sub_8013AD8(Player *p)
     {
         u8 *tFlags = &p->w.tf.flags;
         *tFlags = 0;
-        p->unk5A = FALSE;
+        p->isBoosting = FALSE;
         *tFlags |= 0x2;
     }
 

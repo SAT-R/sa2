@@ -302,7 +302,7 @@ static void SetTaskMain_807D978(Sprite_Fan *unused) { gCurTask->main = Task_IA_S
 
 static s16 ClampPlayerSpeed(s16 speed)
 {
-    if (gPlayer.unk5A) {
+    if (gPlayer.isBoosting) {
         CLAMP_INLINE2(speed, -PROP_PLAYER_CLAMP_SPEED_BOOST, PROP_PLAYER_CLAMP_SPEED_BOOST);
     } else {
         // @BUG: Seems like a copy-paste error?

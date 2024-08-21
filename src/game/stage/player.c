@@ -752,7 +752,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->transition = 0;
     p->unk6E = 0;
     p->prevTransition = 0;
-    p->unk5A = 0;
+    p->isBoosting = 0;
     p->unk58 = 0;
     p->unk6C = 0;
     p->unk71 = 0;
@@ -5048,7 +5048,7 @@ void PlayerCB_8027190(Player *p)
 void PlayerCB_8027250(Player *p)
 {
     p->timerInvulnerability = 0x78;
-    p->unk5A = 0;
+    p->isBoosting = 0;
 
     if (ABS(p->speedAirX) <= Q(2.5)) {
         if (p->speedAirX <= Q(0.625)) {
@@ -5321,7 +5321,7 @@ void PlayerCB_80279F8(Player *p)
     PlayerCB_CameraShift_inline(p);
 
     if (p->moveState & MOVESTATE_4000000) {
-        p->unk5A = 1;
+        p->isBoosting = 1;
         p->unk5C = 0x10;
         p->speedGroundX = Q(10.0);
         p->unk64 = 9;
@@ -5411,7 +5411,7 @@ void PlayerCB_8027D3C(Player *p)
     if (((p->x > cmpX) && (p->unk5C == DPAD_RIGHT)) // fmt
         || ((p->x < cmpX) && (p->unk5C == DPAD_LEFT)) //
         || (p->x == cmpX)) {
-        p->unk5A = 0;
+        p->isBoosting = 0;
         p->speedAirX = 0;
         p->speedAirY = 0;
         p->speedGroundX = 0;
@@ -5798,7 +5798,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
             p->speedAirX = -sSpringAccelX[r6];
 
             if (!(p->moveState & MOVESTATE_IN_AIR) && p->speedAirX < -Q(9.0)) {
-                p->unk5A = 1;
+                p->isBoosting = 1;
             }
         } break;
 
@@ -5806,7 +5806,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
             p->speedAirX = +sSpringAccelX[r6];
 
             if (!(p->moveState & MOVESTATE_IN_AIR) && p->speedAirX > +Q(9.0)) {
-                p->unk5A = 1;
+                p->isBoosting = 1;
             }
         } break;
 
@@ -6249,20 +6249,20 @@ void sub_802989C(Player *p)
 void sub_80298DC(Player *p)
 {
     // TODO: unk5A Might be isBoostActive ?
-    bool32 isBoostActive = p->unk5A;
+    bool32 isBoostActive = p->isBoosting;
     if (isBoostActive) {
         if (!(p->moveState & MOVESTATE_IN_AIR)) {
             p->unk58 = gUnknown_080D6916[p->unk52];
 
             if (ABS(p->speedGroundX) < Q(4.5)) {
-                p->unk5A = FALSE;
+                p->isBoosting = FALSE;
                 p->unk58 = 0;
             }
         }
     } else {
         if ((!(p->moveState & MOVESTATE_IN_AIR)) && ((ABS(p->speedGroundX) >= p->unk44))) {
             if (p->unk58 >= gUnknown_080D6916[p->unk52]) {
-                p->unk5A = TRUE;
+                p->isBoosting = TRUE;
                 gCamera.unk8 = 0x400;
 
                 CreateBoostModeParticles();
@@ -6737,7 +6737,7 @@ bool32 sub_802A184(Player *p)
 void sub_802A1C8(Player *p)
 {
     u32 unk52 = p->unk52;
-    if (p->unk5A) {
+    if (p->isBoosting) {
         p->unk44 = Q(12.0);
         p->unk40 = Q(15.0);
     } else if (p->moveState & MOVESTATE_4) {
@@ -6828,7 +6828,7 @@ void sub_802A40C(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->unk5A = 0;
+    p->isBoosting = 0;
     p->unk64 = 9;
     p->moveState &= ~(MOVESTATE_FACING_LEFT);
     p->unk72 = 0;
@@ -6962,7 +6962,7 @@ void PlayerCB_802A714(Player *p)
         } break;
 
         case CHARACTER_CREAM: {
-            if (p->unk5A == 0) {
+            if (p->isBoosting == 0) {
                 sub_8012548(p);
             } else {
                 sub_8012830(p);
@@ -6974,7 +6974,7 @@ void PlayerCB_802A714(Player *p)
         } break;
 
         case CHARACTER_KNUCKLES: {
-            if (p->unk5A == 0) {
+            if (p->isBoosting == 0) {
                 sub_8012EEC(p);
             } else {
                 sub_8013070(p);
@@ -6982,7 +6982,7 @@ void PlayerCB_802A714(Player *p)
         } break;
 
         case CHARACTER_AMY: {
-            if (p->unk5A == 0) {
+            if (p->isBoosting == 0) {
                 sub_8013F04(p);
             } else {
                 sub_8011D48(p);

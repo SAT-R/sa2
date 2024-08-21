@@ -360,7 +360,7 @@ static s16 ClampRailSpeed(s16 groundSpeedX)
 {
     s16 speed;
 
-    if (gPlayer.unk5A) {
+    if (gPlayer.isBoosting) {
         speed = groundSpeedX;
         if (speed > Q_8_8(BOOSTED_MAX_RAIL_SPEED)) {
             speed = Q_8_8(BOOSTED_MAX_RAIL_SPEED);

@@ -233,7 +233,7 @@ static bool32 sub_8073784(Sprite_TurnAroundBar *turnAroundBar)
 
 static s16 ClampSpeed(s16 speed)
 {
-    if (gPlayer.unk5A != 0) {
+    if (gPlayer.isBoosting != 0) {
         if (speed > Q_8_8(15)) {
             speed = Q_8_8(15);
         } else if (speed < -Q_8_8(15)) {

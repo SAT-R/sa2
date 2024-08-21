@@ -124,7 +124,7 @@ typedef struct Player_ {
     /* 0x54 */ u16 unk54; // some other anim-variant?
     /* 0x56 */ u16 unk56;
     /* 0x58 */ s16 unk58;
-    /* 0x5A */ bool8 unk5A; // boost?
+    /* 0x5A */ bool8 isBoosting;
     /* 0x5B */ u8 unk5B;
     /* 0x5C */ u16 unk5C; // input
     /* 0x5E */ u16 unk5E; // new input on this frame?

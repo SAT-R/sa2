@@ -129,7 +129,7 @@ void Task_Interactable_Booster(void)
         m4aSongNumStart(SE_SPEED_BOOSTER);
 
         gPlayer.unk62 = 0;
-        gPlayer.unk5A = 1;
+        gPlayer.isBoosting = 1;
 
         if (GRAVITY_IS_INVERTED) {
             if ((s->frameFlags & 0x800) == 0) {

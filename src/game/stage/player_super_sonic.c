@@ -93,7 +93,7 @@ static void SuperSonicInitPlayer(void)
     p->unk54 = 0;
     p->unk56 = 0;
     p->unk58 = 0;
-    p->unk5A = 0;
+    p->isBoosting = 0;
     p->unk5B = 0;
     p->unk5C = 0;
     p->unk5E = 0;
