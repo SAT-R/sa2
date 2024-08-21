@@ -406,11 +406,11 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
     if (mpp->unk54 & 1) {
         s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
-        s->frameFlags = gUnknown_030054B8++ | 0x20;
+        s->frameFlags = gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE;
         if (mpp->unk54 & 2) {
             transform->width = -256;
         } else {
-            transform->width = 256;
+            transform->width = +256;
         }
 
         if (mpp->unk54 & 8) {
@@ -442,19 +442,20 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             s->oamFlags |= 0x40;
         }
 
-        s->frameFlags &= ~(0x100 | 0x80);
+        s->frameFlags &= ~SPRITE_FLAG_MASK_OBJ_MODE;
         if (mpp->unk57 & 0x20
             && (gGameMode != GAME_MODE_TEAM_PLAY
                 || ((gMultiplayerConnections & (0x10 << (mpp->unk56))) >> ((mpp->unk56 + 4))
                     != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))
             && mpp->unk60 == 0 && mpp->unk56 != SIO_MULTI_CNT->id) {
-            s->frameFlags |= 0x100;
-            gDispCnt |= 0x8000;
-            gWinRegs[5] = 0x83F;
+            s->frameFlags |= SPRITE_FLAG(OBJ_MODE, 2);
+            gDispCnt |= DISPCNT_OBJWIN_ON;
+            gWinRegs[WINREG_WINOUT] = (WINOUT_WINOBJ_BG3 | WINOUT_WIN01_ALL);
         }
-        if ((u16)(s->x + 0x3F) < 0x16F && (s->y > -0x40 && s->y < 0xE0)) {
+
+        if ((u16)(s->x + 63) < (DISPLAY_WIDTH + 127) && (s->y > -64 && s->y < DISPLAY_HEIGHT + 64)) {
             DisplaySprite(s);
-        } else if (gGameMode == 5) {
+        } else if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
             if ((gCamera.x + s->x) < 0x3C1) {
                 s->x += 0x5A0;
                 transform->x += 0x5A0;
@@ -467,7 +468,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                 transform->y -= 0x360;
             }
 
-            if ((u16)(s->x + 0x3F) < 0x16F && (s->y > -0x40 && s->y < 0xE0)) {
+            if ((u16)(s->x + 63) < (DISPLAY_WIDTH + 127) && (s->y > -64 && s->y < DISPLAY_HEIGHT + 64)) {
                 if (mpp->unk54 & 1) {
                     TransformSprite(s, transform);
                 }
