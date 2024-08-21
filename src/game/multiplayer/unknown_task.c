@@ -121,8 +121,8 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk60 = 30;
                         gPlayer.timerInvulnerability = 120;
-                        gCamera.x = (I(gPlayer.x) + gCamera.shiftX) - 0x78;
-                        gCamera.y = (I(gPlayer.y) + gCamera.shiftY) - 0x50;
+                        gCamera.x = (I(gPlayer.x) + gCamera.shiftX) - (DISPLAY_WIDTH / 2);
+                        gCamera.y = (I(gPlayer.y) + gCamera.shiftY) - (DISPLAY_HEIGHT / 2);
                         m4aSongNumStart(SE_218);
                     }
                 }
@@ -133,10 +133,10 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                     && (gGameMode != GAME_MODE_TEAM_PLAY
                         || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))) {
-                    gPlayer.itemEffect |= 0x10;
+                    gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__10;
 
                     gPlayer.timerSpeedup = 600;
-                    gPlayer.itemEffect &= ~0x4;
+                    gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__SPEED_UP;
                     CreateItemTask_Confusion(gPlayer.character);
                     m4aSongNumStart(SE_ITEM_CONFUSION);
                     m4aMPlayTempoControl(&gMPlayInfo_BGM, 128);

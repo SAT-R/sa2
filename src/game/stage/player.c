@@ -3177,8 +3177,8 @@ void Task_8023D08(void)
 
         gSpecialRingCount = 0;
         InitializePlayer(&gPlayer);
-        gCamera.x = I(gPlayer.x) + gCamera.shiftX - 0x78;
-        gCamera.y = I(gPlayer.y) + gCamera.shiftY - 0x50;
+        gCamera.x = I(gPlayer.x) + gCamera.shiftX - (DISPLAY_WIDTH / 2);
+        gCamera.y = I(gPlayer.y) + gCamera.shiftY - (DISPLAY_HEIGHT / 2);
         m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
         gPlayer.moveState = 0;
         gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
@@ -5353,9 +5353,9 @@ void PlayerCB_8027C5C(Player *p)
     //       x-position relative to a sprite region?
     s32 playerX = I(p->x) - gCamera.x;
 
-    if (playerX > 0x78) {
+    if (playerX > (DISPLAY_WIDTH / 2)) {
         p->speedGroundX = Q(4.5);
-    } else if (playerX < 0x78) {
+    } else if (playerX < (DISPLAY_WIDTH / 2)) {
         p->speedGroundX = Q(5.5);
     } else {
         p->speedGroundX = Q(5.0);
