@@ -94,7 +94,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                 if (gGameMode != GAME_MODE_TEAM_PLAY
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                         != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
-                    gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__40;
+                    gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__CONFUSION;
                     gPlayer.unk32 = 600;
                     CreateItemTask_Confusion(gPlayer.character);
                     m4aSongNumStart(217);
@@ -102,7 +102,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                 break;
             }
             case 1: {
-                if ((u8)recv->pat0.unk10 == SIO_MULTI_CNT->id && !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__80)) {
+                if ((u8)recv->pat0.unk10 == SIO_MULTI_CNT->id && !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT)) {
                     u32 prevMoveState = gPlayer.moveState & (MOVESTATE_IN_SCRIPTED | MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
                     if (!(prevMoveState)) {
                         InitializePlayer(&gPlayer);

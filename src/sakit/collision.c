@@ -353,7 +353,7 @@ bool32 sub_800CBA4(Player *p)
         p->unk38 = FLAG_PLAYER_x38__LAYER_BACK;
 
         p->moveState &= ~MOVESTATE_1000000;
-        p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
+        p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
 
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
         p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
@@ -363,7 +363,7 @@ bool32 sub_800CBA4(Player *p)
         p->transition = PLTRANS_PT9;
     }
 
-    p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
+    p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
 
     if (!HAS_SHIELD(p)) {
         if (gRingCount != 0) {

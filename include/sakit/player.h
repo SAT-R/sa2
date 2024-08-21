@@ -62,15 +62,10 @@ typedef void (*PlayerCallback)(struct Player_ *);
 #define PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC 0x08
 #define PLAYER_ITEM_EFFECT__10              0x10
 #define PLAYER_ITEM_EFFECT__20              0x20
-#define PLAYER_ITEM_EFFECT__80              0x80
+#define PLAYER_ITEM_EFFECT__CONFUSION       0x40
+#define PLAYER_ITEM_EFFECT__TELEPORT        0x80
 
 #define HAS_SHIELD(p) ((p)->itemEffect & (PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC | PLAYER_ITEM_EFFECT__SHIELD_NORMAL))
-
-// Confusion
-#define PLAYER_ITEM_EFFECT__40 0x40
-
-// Teleport
-#define PLAYER_ITEM_EFFECT__80 0x80
 
 #define FLAG_PLAYER_x38__LAYER_FRONT 0x00
 #define FLAG_PLAYER_x38__LAYER_BACK  0x01

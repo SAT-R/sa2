@@ -3501,7 +3501,7 @@ void sub_802460C(Player *p)
         if (!(p->moveState & MOVESTATE_IGNORE_INPUT)) {
             p->unk5C = gInput;
 
-            if (IS_MULTI_PLAYER && (p->itemEffect & PLAYER_ITEM_EFFECT__40)) {
+            if (IS_MULTI_PLAYER && (p->itemEffect & PLAYER_ITEM_EFFECT__CONFUSION)) {
                 u8 dpad = (p->unk5C & DPAD_ANY) >> 4;
                 u32 r1 = gStageTime;
 
@@ -3517,7 +3517,7 @@ void sub_802460C(Player *p)
                 p->unk5C = (p->unk5C & ~DPAD_ANY) | dpad;
 
                 if (--p->unk32 == 0) {
-                    p->itemEffect &= 0xBF;
+                    p->itemEffect &= ~PLAYER_ITEM_EFFECT__CONFUSION;
                 }
             }
         }
@@ -4645,7 +4645,7 @@ void sub_802669C(Player *p)
     p->unk90->s.frameFlags &= ~(MOVESTATE_2000 | MOVESTATE_1000);
     p->unk90->s.frameFlags |= MOVESTATE_1000;
 
-    p->itemEffect |= PLAYER_ITEM_EFFECT__80;
+    p->itemEffect |= PLAYER_ITEM_EFFECT__TELEPORT;
 
     if (GRAVITY_IS_INVERTED) {
         newY = sub_801E6D4(I(p->y) - p->spriteOffsetY, I(p->x), p->unk38, -8, NULL, sub_801EE64);
@@ -4696,7 +4696,7 @@ void PlayerCB_8026810(Player *p)
     if (sub_8029E6C(p)) {
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
         p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
-        p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
+        p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
         p->unk38 = 1;
 
         gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
@@ -4729,7 +4729,7 @@ void PlayerCB_8026810(Player *p)
 
             p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
             p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
-            p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
+            p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
             p->unk38 = 1;
 
             gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
@@ -4756,7 +4756,7 @@ void PlayerCB_80269C0(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
-    p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
+    p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
     p->unk38 = 1;
 
     gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
@@ -4788,7 +4788,7 @@ void PlayerCB_8026A4C(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
-    p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
+    p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
     p->unk38 = 1;
 
     gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
@@ -6947,7 +6947,7 @@ void sub_802A6C0(Player *p)
 {
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
-    p->itemEffect &= ~PLAYER_ITEM_EFFECT__80;
+    p->itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
     p->unk38 = 0x1;
 
     gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;

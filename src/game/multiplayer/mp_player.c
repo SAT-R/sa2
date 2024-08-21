@@ -373,13 +373,13 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             }
         }
     } else {
-        if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__80) || (mpp->unk57 & 0x80) || gPlayer.timerInvincibility == 0 || !PLAYER_IS_ALIVE
-            || gUnknown_030054B4[mpp->unk56] != -1) {
+        if ((gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT) || (mpp->unk57 & 0x80) || gPlayer.timerInvincibility == 0
+            || !PLAYER_IS_ALIVE || gUnknown_030054B4[mpp->unk56] != -1) {
             if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
                 if (mpp->unk56 == SIO_MULTI_CNT->id && gMultiplayerCharacters[mpp->unk56] == CHARACTER_TAILS
                     && gMultiplayerCharacters[mpp->unk56] == CHARACTER_KNUCKLES && mpp->unk5C & 4) {
                     mpp->unk5C &= ~0x6;
-                    if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__80)) {
+                    if (!(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT)) {
                         gPlayer.moveState &= ~MOVESTATE_400000;
                     }
                     {
@@ -1520,7 +1520,7 @@ void sub_8018818(void)
         }
 
         gPlayer.timerInvulnerability = 120;
-        gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__80;
+        gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__TELEPORT;
     }
 }
 

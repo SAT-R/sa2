@@ -281,7 +281,7 @@ void CreateGameStage(void)
         }
 
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-            gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__80;
+            gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__TELEPORT;
         }
     } else {
         for (i = 0; i < 4; i++) {
