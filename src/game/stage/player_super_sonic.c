@@ -109,7 +109,7 @@ static void SuperSonicInitPlayer(void)
     p->transition = 0;
     p->unk6E = 0;
     p->prevTransition = 0;
-    p->unk70 = 0;
+    p->unk70 = FALSE;
     p->unk71 = 0;
     p->unk72 = 0;
     p->checkPointX = 0;

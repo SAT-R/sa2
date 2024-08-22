@@ -756,7 +756,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->unk58 = 0;
     p->unk6C = FALSE;
     p->unk71 = 0;
-    p->unk70 = 0;
+    p->unk70 = FALSE;
     p->unk36 = 0;
 
     sub_8015750();
@@ -839,7 +839,7 @@ void Player_TransitionCancelFlyingAndBoost(Player *p)
     p->unk62 = 0;
     p->unk63 = 0;
     p->unk71 = 0;
-    p->unk70 = 0;
+    p->unk70 = FALSE;
 
     if (p->character == CHARACTER_TAILS) {
         m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
@@ -3715,7 +3715,7 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
         if (!(p->moveState & MOVESTATE_FACING_LEFT)) {                                                                                     \
             psi->transform.width = -Q(1.0);                                                                                                \
         } else {                                                                                                                           \
-            psi->transform.width = Q(1.0);                                                                                                 \
+            psi->transform.width = +Q(1.0);                                                                                                \
         }                                                                                                                                  \
         if (GRAVITY_IS_INVERTED) {                                                                                                         \
             psi->transform.width = -psi->transform.width;                                                                                  \
@@ -4303,7 +4303,7 @@ void PlayerCB_Jump(Player *p)
         p->charState = 11;
     }
 
-    p->unk70 = 1;
+    p->unk70 = TRUE;
 
     jumpHeight = (p->moveState & MOVESTATE_40) ? Q(PLAYER_JUMP_HEIGHT_UNDER_WATER) : Q(PLAYER_JUMP_HEIGHT);
 
@@ -4386,7 +4386,7 @@ void PlayerCB_8025F84(Player *p)
         p->charState = 11;
     }
 
-    p->unk70 = 1;
+    p->unk70 = TRUE;
 
     p->unk90->s.frameFlags &= ~MOVESTATE_4000;
     m4aSongNumStart(SE_JUMP);
@@ -4412,7 +4412,7 @@ void PlayerCB_8026060(Player *p)
         }
     }
 
-    p->unk70 = 1;
+    p->unk70 = TRUE;
     p->unk6E = 1;
 
     p->unk90->s.frameFlags &= ~MOVESTATE_4000;
@@ -4440,7 +4440,7 @@ void PlayerCB_802611C(Player *p)
         }
     }
 
-    p->unk70 = 1;
+    p->unk70 = TRUE;
     p->unk6E = 0;
 
     p->unk90->s.frameFlags &= ~MOVESTATE_4000;

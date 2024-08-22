@@ -142,7 +142,7 @@ typedef struct Player_ {
     /* 0x6D */ u8 transition;
     /* 0x6E */ u8 unk6E; // Parameter for transition(?)
     /* 0x6F */ u8 prevTransition;
-    /* 0x70 */ u8 unk70;
+    /* 0x70 */ bool8 unk70;
     /* 0x71 */ u8 unk71;
     // unk72 appears to be a duration timer for side-forward trick animations (in
     // frames?)

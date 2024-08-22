@@ -378,7 +378,7 @@ void Player_SonicForwardDash(Player *p)
 
     p->speedAirY = 0;
     p->rotation = 0;
-    p->unk70 = 0;
+    p->unk70 = FALSE;
     p->unk71 = 0;
 
     m4aSongNumStart(SE_SONIC_MIDAIR_SOMERSAULT);
@@ -410,7 +410,7 @@ void sub_8012194(Player *p)
     p->speedAirY = I(sinVal * six) - Q(0.5);
 
     p->rotation = 0;
-    p->unk70 = 0;
+    p->unk70 = FALSE;
     p->unk71 = 0;
     p->unk6E = 0;
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
@@ -436,7 +436,7 @@ void PlayerCB_801225C(Player *p)
     p->speedAirY = -Q(4.0);
     p->rotation = 0;
 
-    p->unk70 = 1;
+    p->unk70 = TRUE;
     p->unk71 = 0;
     p->unk6E = 0;
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
