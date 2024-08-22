@@ -51,10 +51,6 @@ typedef struct {
     /* 0xAC */ u8 unkAC;
 } AmyFlags;
 
-// Declared beforehand because it's used inside Player struct
-struct Player_;
-typedef void (*PlayerCallback)(struct Player_ *);
-
 #define PLAYER_ITEM_EFFECT__NONE            0x00
 #define PLAYER_ITEM_EFFECT__SHIELD_NORMAL   0x01
 #define PLAYER_ITEM_EFFECT__INVINCIBILITY   0x02
@@ -72,7 +68,10 @@ typedef void (*PlayerCallback)(struct Player_ *);
 #define PLAYER_LAYER__MASK  0x01
 #define PLAYER_LAYER__80    0x80
 
-// Not sure what these are yet
+// Declared beforehand because it's used inside Player struct
+struct Player_;
+typedef void (*PlayerCallback)(struct Player_ *);
+
 typedef struct Player_ {
     /* 0x00 */ PlayerCallback callback;
     /* 0x04 */ u16 unk4;
