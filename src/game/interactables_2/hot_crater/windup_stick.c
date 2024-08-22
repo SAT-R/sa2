@@ -62,13 +62,13 @@ static void sub_8072650(void)
     }
 
     if ((u8)(windUpStick->unk10 - 1) < 2) {
-        if (gPlayer.unk5C & 0x10) {
+        if (gPlayer.heldInput & 0x10) {
             if (sub_8072A28(windUpStick)) {
                 gPlayer.x += 0x80;
             }
         }
 
-        if (gPlayer.unk5C & 0x20) {
+        if (gPlayer.heldInput & 0x20) {
             if (sub_80729F4(windUpStick)) {
                 gPlayer.x -= 0x80;
             }

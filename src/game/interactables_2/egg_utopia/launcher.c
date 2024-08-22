@@ -195,7 +195,7 @@ static void Task_807DBF0(void)
         launcher->unk48 = FALSE;
     } else {
         if (gPlayer.timerInvulnerability != 120) {
-            if (gPlayer.unk5E & gPlayerControls.jump) {
+            if (gPlayer.frameInput & gPlayerControls.jump) {
                 gPlayer.transition = PLTRANS_PT3;
 
                 gPlayer.moveState &= ~MOVESTATE_400000;

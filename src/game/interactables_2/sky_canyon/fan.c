@@ -153,7 +153,7 @@ static void sub_807D468(Sprite_Fan *prop)
                 gPlayer.x = r3;
             }
 
-            if (gPlayer.unk5E & 0x20) {
+            if (gPlayer.frameInput & 0x20) {
                 gPlayer.moveState |= MOVESTATE_FACING_LEFT;
                 gPlayer.speedGroundX = -gPlayer.speedGroundX;
             }
@@ -172,7 +172,7 @@ static void sub_807D468(Sprite_Fan *prop)
                 gPlayer.x = r3;
             }
 
-            if (gPlayer.unk5E & 0x10) {
+            if (gPlayer.frameInput & 0x10) {
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                 gPlayer.speedGroundX = -gPlayer.speedGroundX;
             }

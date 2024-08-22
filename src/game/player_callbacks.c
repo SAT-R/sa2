@@ -356,10 +356,10 @@ void Task_SonicBoundMotionFrames(void)
 void Player_SonicForwardDash(Player *p)
 {
     if (p->moveState & MOVESTATE_10) {
-        if (p->unk5C & DPAD_LEFT)
+        if (p->heldInput & DPAD_LEFT)
             p->moveState |= MOVESTATE_FACING_LEFT;
 
-        if (p->unk5C & DPAD_RIGHT)
+        if (p->heldInput & DPAD_RIGHT)
             p->moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
@@ -605,8 +605,8 @@ void sub_80125BC(Player *p)
 
         p->unk64 = 85;
     } else {
-        if (((p->unk5C & DPAD_LEFT) && !(p->moveState & MOVESTATE_FACING_LEFT))
-            || ((p->unk5C & DPAD_RIGHT) && (p->moveState & MOVESTATE_FACING_LEFT))) {
+        if (((p->heldInput & DPAD_LEFT) && !(p->moveState & MOVESTATE_FACING_LEFT))
+            || ((p->heldInput & DPAD_RIGHT) && (p->moveState & MOVESTATE_FACING_LEFT))) {
             p->unk64 = 84;
         } else if (p->unk64 == 84) {
             if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
@@ -643,7 +643,7 @@ void PlayerCB_80126B0(Player *p)
     if (p->w.cf.flyingDuration != 0) {
         p->w.cf.flyingDuration--;
 
-        if (p->unk5C & gPlayerControls.attack) {
+        if (p->heldInput & gPlayerControls.attack) {
             p->unk64 = 86;
             p->transition = PLTRANS_PT5;
 
@@ -663,7 +663,7 @@ void PlayerCB_80126B0(Player *p)
             p->unk61 = 1;
         }
     } else {
-        if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75)) && (p->w.cf.flyingDuration != 0)) {
+        if ((p->frameInput & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75)) && (p->w.cf.flyingDuration != 0)) {
             p->unk61 = 2;
         }
 
@@ -864,8 +864,8 @@ void sub_8012B44(Player *p)
         p->unk64 = 90;
         m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
     } else {
-        if (((p->unk5C & DPAD_LEFT) && !(p->moveState & MOVESTATE_FACING_LEFT))
-            || ((p->unk5C & DPAD_RIGHT) && (p->moveState & MOVESTATE_FACING_LEFT))) {
+        if (((p->heldInput & DPAD_LEFT) && !(p->moveState & MOVESTATE_FACING_LEFT))
+            || ((p->heldInput & DPAD_RIGHT) && (p->moveState & MOVESTATE_FACING_LEFT))) {
             p->unk64 = 89;
         } else if ((p->unk64 == 89)) {
             if ((p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER))
@@ -916,7 +916,7 @@ void PlayerCB_8012C2C(Player *p)
             p->unk61 = 1;
         }
     } else {
-        if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75)) && (p->w.tf.flyingDuration != 0)) {
+        if ((p->frameInput & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75)) && (p->w.tf.flyingDuration != 0)) {
             p->unk61 = 2;
         }
 
@@ -1346,7 +1346,7 @@ void sub_80131B4(Player *p)
             p->w.tf.flags |= MOVESTATE_IN_AIR;
         } else {
 
-            if (!(p->unk5C & gPlayerControls.jump) || (p->moveState & MOVESTATE_40)) {
+            if (!(p->heldInput & gPlayerControls.jump) || (p->moveState & MOVESTATE_40)) {
                 PLAYERFN_SET(PlayerCB_8013BD4);
                 p->unk64 = 93;
 
@@ -1431,7 +1431,7 @@ void sub_801350C(Player *p)
 
 void sub_80135BC(Player *p)
 {
-    if (p->unk5C & gPlayerControls.jump) {
+    if (p->heldInput & gPlayerControls.jump) {
         if (p->speedAirX <= 0) {
             p->speedAirX += Q(0.09375);
 
@@ -1531,7 +1531,7 @@ void sub_80136E8(Player *p)
             p->unk64 = 101;
         }
 
-        if (p->unk5C & DPAD_UP) {
+        if (p->heldInput & DPAD_UP) {
             s32 offsetY = Q(p->spriteOffsetY);
 
             if (GRAVITY_IS_INVERTED) {
@@ -1587,7 +1587,7 @@ void sub_80136E8(Player *p)
                     p->speedAirY = -speed;
                 }
             }
-        } else if (p->unk5C & DPAD_DOWN) {
+        } else if (p->heldInput & DPAD_DOWN) {
             s32 speed;
             s32 offsetY = Q(p->spriteOffsetY);
             if (GRAVITY_IS_INVERTED) {
@@ -1643,7 +1643,7 @@ void sub_80136E8(Player *p)
         }
 
         r2 = 1;
-        if (!(p->unk5C & (DPAD_DOWN | DPAD_UP))) {
+        if (!(p->heldInput & (DPAD_DOWN | DPAD_UP))) {
             r2 = sub_8029B0C(p, &rot, NULL);
             if (r2 < 0) {
                 p->y += Q(r2);
@@ -1672,7 +1672,7 @@ void sub_80136E8(Player *p)
 
 void sub_801394C(Player *p)
 {
-    if (p->unk5E & gPlayerControls.jump) {
+    if (p->frameInput & gPlayerControls.jump) {
         p->speedAirY = -Q(2.625);
         p->speedAirX = +Q(3.0);
         p->moveState ^= MOVESTATE_FACING_LEFT;
@@ -1717,11 +1717,11 @@ NONMATCH("asm/non_matching/game/playercb__sub_80139B0.inc", void sub_80139B0(Pla
         p->speedGroundX = +speedGrnd;
     }
 
-    if (p->unk5C & DPAD_LEFT) {
+    if (p->heldInput & DPAD_LEFT) {
         if (((u8)r2 != 0x80)) {
             shift = ABS(r2) + Q_8_8(2.0);
         }
-    } else if (p->unk5C & DPAD_RIGHT) {
+    } else if (p->heldInput & DPAD_RIGHT) {
         if ((r2 != 0)) {
             shift = ABS(r2) + Q_8_8(2.0);
         }

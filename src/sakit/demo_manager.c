@@ -102,7 +102,7 @@ void Task_DemoManagerMain(void)
 
     if (gPhysicalInput & START_BUTTON) {
         gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-        gPlayer.unk5C = 0;
+        gPlayer.heldInput = 0;
 
         gUnknown_030054E4 = 1;
 

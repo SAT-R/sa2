@@ -1538,7 +1538,7 @@ void LaunchPlayer(s16 airSpeedY)
     s16 *airSpeed = TASK_DATA(t);
     *airSpeed = airSpeedY;
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-    gPlayer.unk5C = 0;
+    gPlayer.heldInput = 0;
     gPlayer.unk64 = 109; // TODO: wtf this is being set to larger than 91
     gPlayer.moveState |= MOVESTATE_800000;
 }

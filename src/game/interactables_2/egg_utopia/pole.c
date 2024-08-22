@@ -82,8 +82,8 @@ static void Task_807EA8C(void)
         gPlayer.y += Q(1);
     }
 
-    if (gPlayer.unk5E & gPlayerControls.jump) {
-        u16 leftPressed = gPlayer.unk5C & DPAD_LEFT;
+    if (gPlayer.frameInput & gPlayerControls.jump) {
+        u16 leftPressed = gPlayer.heldInput & DPAD_LEFT;
         if (leftPressed != 0) {
             leftPressed = TRUE;
         }

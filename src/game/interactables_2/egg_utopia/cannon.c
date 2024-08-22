@@ -87,7 +87,7 @@ void CreateEntity_Cannon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
 static void sub_807E314(void)
 {
     Sprite_Cannon *cannon = TASK_DATA(gCurTask);
-    if (!PLAYER_IS_ALIVE || --cannon->unk6C == 0xFFFF || gPlayer.unk5E & (gPlayerControls.jump | gPlayerControls.attack)) {
+    if (!PLAYER_IS_ALIVE || --cannon->unk6C == 0xFFFF || gPlayer.frameInput & (gPlayerControls.jump | gPlayerControls.attack)) {
         sub_807E408(cannon);
     } else {
         sub_807E56C(cannon);

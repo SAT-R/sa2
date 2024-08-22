@@ -252,8 +252,8 @@ static void Task_BossRunManagerMain(void)
             if (gPlayer.x < Q(42960) && gPlayer.x > Q(gUnknown_080D8808[6][0] + 30)) {
                 gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
                 gPlayer.speedGroundX = Q(5);
-                gPlayer.unk5E = 0;
-                gPlayer.unk5C = 0;
+                gPlayer.frameInput = 0;
+                gPlayer.heldInput = 0;
                 gPlayer.rotation = 0;
                 if (I(gPlayer.x) - 120 != gCamera.x) {
                     if (I(gPlayer.x) - 120 > gCamera.x) {
@@ -950,8 +950,8 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", static void Ta
         Player_DisableInputAndBossTimer_FinalBoss();
 
         gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-        gPlayer.unk5C = 0;
-        gPlayer.unk5E = 0;
+        gPlayer.heldInput = 0;
+        gPlayer.frameInput = 0;
 
         if (gPlayer.moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) {
             gPlayer.unk64 = 50;

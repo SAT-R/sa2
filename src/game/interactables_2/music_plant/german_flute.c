@@ -168,12 +168,12 @@ static void Task_8076A6C(void)
 
     flute->timer++;
 
-    if (gPlayer.unk5C & 0x10) {
+    if (gPlayer.heldInput & 0x10) {
         gPlayer.x += Q(0.5);
         gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
-    if (gPlayer.unk5C & 0x20) {
+    if (gPlayer.heldInput & 0x20) {
         gPlayer.x -= Q(0.5);
         gPlayer.moveState |= MOVESTATE_FACING_LEFT;
     }

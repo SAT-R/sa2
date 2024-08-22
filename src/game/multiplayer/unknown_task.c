@@ -228,7 +228,7 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     gPlayer.speedGroundX = 0;
                     gPlayer.speedAirX = 0;
                     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-                    gPlayer.unk5C = 0;
+                    gPlayer.heldInput = 0;
                     gPlayer.moveState |= MOVESTATE_FACING_LEFT;
                     gPlayer.unk64 = 0x1C;
                     gPlayer.moveState |= MOVESTATE_800000;
@@ -262,7 +262,7 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     sub_8019CCC(j, count - 1);
                     mpp2->unk5C |= 1;
                     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-                    gPlayer.unk5C = 0;
+                    gPlayer.heldInput = 0;
                     temp = gUnknown_03005438;
                     unk10 = &gUnknown_03005510[temp];
                     gUnknown_03005438++;

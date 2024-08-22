@@ -118,8 +118,8 @@ static void Task_ActiveMain(void)
     } else if (gPlayer.timerInvulnerability == 120) {
         sub_807F798(flyingHandle);
     } else if (flyingHandle->unk69 == 0) {
-        if (gPlayer.unk5E & gPlayerControls.jump) {
-            if (gPlayer.unk5C & 0x20) {
+        if (gPlayer.frameInput & gPlayerControls.jump) {
+            if (gPlayer.heldInput & 0x20) {
                 flyingHandle->unk64 = 1;
             } else {
                 flyingHandle->unk64 = 0;

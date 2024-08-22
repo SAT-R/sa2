@@ -174,7 +174,7 @@ static void EndHalfPipeSequence(Sprite_IceParadiseHalfPipe *halfPipe) { gCurTask
 static bool32 sub_80789AC(Sprite_IceParadiseHalfPipe *halfPipe)
 {
     if (gPlayer.speedAirX <= -Q(2) || gPlayer.speedAirX >= Q(2.25)) {
-        if (gPlayer.unk5E & gPlayerControls.jump) {
+        if (gPlayer.frameInput & gPlayerControls.jump) {
             gPlayer.transition = PLTRANS_PT3;
         } else {
             return PlayerWithinHalfPipe(halfPipe);

@@ -260,7 +260,7 @@ const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS] = {
 // TODO: This is unaligned in-ROM.
 //       Can we somehow change this to be using a struct instead?
 //
-// TODO: Tiny up the macros, not just here, but everywhere!
+// TODO: Tidy up the macros, not just here, but everywhere!
 //       This isn't intuitive to read.
 //
 // The index is the same as Player.unk64
@@ -708,8 +708,8 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
 
     p->callback = PlayerCB_8025318;
 
-    p->unk5C = gPlayerControls.jump | gPlayerControls.attack | gPlayerControls.trick;
-    p->unk5E = gPlayerControls.jump | gPlayerControls.attack | gPlayerControls.trick;
+    p->heldInput = gPlayerControls.jump | gPlayerControls.attack | gPlayerControls.trick;
+    p->frameInput = gPlayerControls.jump | gPlayerControls.attack | gPlayerControls.trick;
 
     p->speedAirX = 0;
     p->speedAirY = 0;
@@ -2823,7 +2823,7 @@ void sub_8023610(Player *p)
         s16 r0;
         u16 r2 = p->speedAirX;
 
-        if (p->unk5C & DPAD_LEFT) {
+        if (p->heldInput & DPAD_LEFT) {
             if ((p->unk64 != SA2_CHAR_ANIM_63) && !(p->moveState & MOVESTATE_2000)) {
                 p->moveState |= MOVESTATE_FACING_LEFT;
             }
@@ -2846,7 +2846,7 @@ void sub_8023610(Player *p)
             r2 = -r6;
             goto set;
 
-        } else if (p->unk5C & DPAD_RIGHT) {
+        } else if (p->heldInput & DPAD_RIGHT) {
             if ((p->unk64 != SA2_CHAR_ANIM_63) && !(p->moveState & MOVESTATE_2000)) {
                 p->moveState &= ~MOVESTATE_FACING_LEFT;
             }
@@ -3390,8 +3390,8 @@ void CallPlayerTransition(Player *p)
 
                 if (p->moveState & (MOVESTATE_20000000 | MOVESTATE_10000000 | MOVESTATE_2000 | MOVESTATE_8 | MOVESTATE_IN_AIR)) {
                     p->moveState |= (MOVESTATE_8000000 | MOVESTATE_IGNORE_INPUT);
-                    p->unk5C = 0;
-                    p->unk5E = 0;
+                    p->heldInput = 0;
+                    p->frameInput = 0;
                 } else {
                     p->moveState |= MOVESTATE_8000000;
                     PLAYERFN_SET(PlayerCB_80273D0);
@@ -3493,16 +3493,16 @@ void sub_802460C(Player *p)
     u16 input2;
 
     if (IS_MULTI_PLAYER && (SIO_MULTI_CNT->id != gCamera.spectatorTarget)) {
-        p->unk5C = 0;
+        p->heldInput = 0;
         input = 0;
     } else {
-        input = p->unk5C;
+        input = p->heldInput;
 
         if (!(p->moveState & MOVESTATE_IGNORE_INPUT)) {
-            p->unk5C = gInput;
+            p->heldInput = gInput;
 
             if (IS_MULTI_PLAYER && (p->itemEffect & PLAYER_ITEM_EFFECT__CONFUSION)) {
-                u8 dpad = (p->unk5C & DPAD_ANY) >> 4;
+                u8 dpad = (p->heldInput & DPAD_ANY) >> 4;
                 u32 r1 = gStageTime;
 
                 r1 = ((p->unk32 + r1) & 0x3);
@@ -3514,7 +3514,7 @@ void sub_802460C(Player *p)
                 dpad = (dpad >> 4) | dpad;
                 dpad = (u8)(dpad << 4);
 
-                p->unk5C = (p->unk5C & ~DPAD_ANY) | dpad;
+                p->heldInput = (p->heldInput & ~DPAD_ANY) | dpad;
 
                 if (--p->unk32 == 0) {
                     p->itemEffect &= ~PLAYER_ITEM_EFFECT__CONFUSION;
@@ -3523,14 +3523,14 @@ void sub_802460C(Player *p)
         }
     }
 
-    input2 = p->unk5C;
+    input2 = p->heldInput;
     input ^= input2;
 #ifdef NON_MATCHING
     input &= input2;
 #else
     asm("and %0, %2" : "=r"(input) : "r"(input), "r"(input2));
 #endif
-    p->unk5E = input;
+    p->frameInput = input;
 }
 
 void sub_80246DC(Player *p)
@@ -4084,7 +4084,7 @@ void PlayerCB_802569C(Player *p)
     u16 characterAnim = GET_CHARACTER_ANIM(p);
 
     if (!sub_802A0FC(p) && !sub_8029E6C(p) && !sub_802A2A8(p)) {
-        u16 dpad = (p->unk5C & DPAD_ANY);
+        u16 dpad = (p->heldInput & DPAD_ANY);
         if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 0)) {
                 p->variant = 1;
@@ -4126,7 +4126,7 @@ void PlayerCB_8025854(Player *p)
     u16 characterAnim = GET_CHARACTER_ANIM(p);
 
     if (!sub_802A184(p) && !sub_8029E6C(p) && !sub_802A2A8(p)) {
-        u16 dpad = (p->unk5C & DPAD_ANY);
+        u16 dpad = (p->heldInput & DPAD_ANY);
         if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->variant == 0)) {
                 p->variant = 1;
@@ -4196,7 +4196,7 @@ void PlayerCB_8025AB8(Player *p)
             p->unk99[0]--;
         } else if (!sub_8029E6C(p)) {
             if (p->unk2A == 0) {
-                u16 dpadSideways = (p->unk5C & (DPAD_LEFT | DPAD_RIGHT));
+                u16 dpadSideways = (p->heldInput & (DPAD_LEFT | DPAD_RIGHT));
                 if (dpadSideways != DPAD_RIGHT) {
                     if (dpadSideways == DPAD_LEFT) {
                         s32 val = p->speedGroundX;
@@ -4342,7 +4342,7 @@ void PlayerCB_Jumping(Player *p)
                 return;
 
         // Caps the jump force if the player lets go of the jump button
-        if (p->speedAirY < maxJumpSpeed && !(p->unk5C & gPlayerControls.jump)) {
+        if (p->speedAirY < maxJumpSpeed && !(p->heldInput & gPlayerControls.jump)) {
             p->speedAirY = maxJumpSpeed;
         }
     }
@@ -4500,7 +4500,7 @@ void PlayerCB_Spindash(Player *p)
     Sprite *s = &p->unk90->s;
     u16 cAnim = GET_CHARACTER_ANIM(p);
 
-    if (!(p->unk5C & DPAD_DOWN)) {
+    if (!(p->heldInput & DPAD_DOWN)) {
         s16 index;
         s32 speed;
         p->moveState &= ~MOVESTATE_400;
@@ -4528,7 +4528,7 @@ void PlayerCB_Spindash(Player *p)
                 pitch = 0;
         }
 
-        if (p->unk5E & gPlayerControls.jump) {
+        if (p->frameInput & gPlayerControls.jump) {
             struct MusicPlayerInfo *mPlayerInfo;
             m4aSongNumStart(SE_SPIN_ATTACK);
 
@@ -4774,7 +4774,7 @@ void PlayerCB_8026A4C(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->unk5C & gPlayerControls.jump)
+    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->heldInput & gPlayerControls.jump)
         && (p->character == CHARACTER_SONIC || p->character == CHARACTER_AMY)) {
         p->unk64 = 42;
         p->speedAirY = -Q(7.5);
@@ -4811,10 +4811,10 @@ void sub_8026B64(Player *p)
 {
     s16 groundSpeed = p->speedGroundX;
 
-    if ((p->unk2A == 0) && (p->unk5C & (DPAD_LEFT | DPAD_RIGHT))) {
-        if ((p->unk5C & DPAD_RIGHT) && (groundSpeed < p->unk44)) {
+    if ((p->unk2A == 0) && (p->heldInput & (DPAD_LEFT | DPAD_RIGHT))) {
+        if ((p->heldInput & DPAD_RIGHT) && (groundSpeed < p->unk44)) {
             groundSpeed += Q(1.0 / 32.0);
-        } else if ((p->unk5C & DPAD_LEFT) && (groundSpeed > Q(1.0))) {
+        } else if ((p->heldInput & DPAD_LEFT) && (groundSpeed > Q(1.0))) {
             groundSpeed -= Q(1.0 / 32.0);
         }
     }
@@ -4957,10 +4957,10 @@ void PlayerCB_8026FC8(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    if (p->unk5C & DPAD_LEFT) {
+    if (p->heldInput & DPAD_LEFT) {
         p->moveState |= MOVESTATE_FACING_LEFT;
     }
-    if (p->unk5C & DPAD_RIGHT) {
+    if (p->heldInput & DPAD_RIGHT) {
         p->moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
@@ -5015,7 +5015,7 @@ void PlayerCB_8027190(Player *p)
     s32 u40 = p->unk40;
     s16 speed = p->speedGroundX;
 
-    if (p->unk5C & DPAD_LEFT) {
+    if (p->heldInput & DPAD_LEFT) {
         speed -= u48;
 
         if (speed < -u40) {
@@ -5024,7 +5024,7 @@ void PlayerCB_8027190(Player *p)
             if (speed > -u40)
                 speed = -u40;
         }
-    } else if (p->unk5C & DPAD_RIGHT) {
+    } else if (p->heldInput & DPAD_RIGHT) {
         speed += u48;
 
         if (speed > +u40) {
@@ -5141,7 +5141,7 @@ void PlayerCB_GoalSlowdown(Player *p)
 
     playerX2 = playerX - gStageGoalX;
 
-    if (((p->speedGroundX >= Q(2.0)) && (p->unk5E & DPAD_LEFT)) || (playerX2 > 0x579)) {
+    if (((p->speedGroundX >= Q(2.0)) && (p->frameInput & DPAD_LEFT)) || (playerX2 > 0x579)) {
         p->unk64 = 25;
 
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
@@ -5322,7 +5322,7 @@ void PlayerCB_80279F8(Player *p)
 
     if (p->moveState & MOVESTATE_4000000) {
         p->isBoosting = 1;
-        p->unk5C = 0x10;
+        p->heldInput = 0x10;
         p->speedGroundX = Q(10.0);
         p->unk64 = 9;
         sub_801583C();
@@ -5383,11 +5383,11 @@ void PlayerCB_8027D3C(Player *p)
 
     cmpX = Q(*pCmpX + index);
     if (p->x < cmpX) {
-        p->unk5C = DPAD_RIGHT;
+        p->heldInput = DPAD_RIGHT;
     } else if (p->x > cmpX) {
-        p->unk5C = DPAD_LEFT;
+        p->heldInput = DPAD_LEFT;
     } else {
-        p->unk5C = 0;
+        p->heldInput = 0;
     }
 
     sub_802966C(p);
@@ -5408,8 +5408,8 @@ void PlayerCB_8027D3C(Player *p)
 
     PLAYERFN_UPDATE_UNK2A(p);
 
-    if (((p->x > cmpX) && (p->unk5C == DPAD_RIGHT)) // fmt
-        || ((p->x < cmpX) && (p->unk5C == DPAD_LEFT)) //
+    if (((p->x > cmpX) && (p->heldInput == DPAD_RIGHT)) // fmt
+        || ((p->x < cmpX) && (p->heldInput == DPAD_LEFT)) //
         || (p->x == cmpX)) {
         p->isBoosting = 0;
         p->speedAirX = 0;
@@ -5426,7 +5426,7 @@ void PlayerCB_8027D3C(Player *p)
 
         p->moveState &= ~MOVESTATE_FACING_LEFT;
         p->unk72 = 0;
-        p->unk5C = 0;
+        p->heldInput = 0;
 
         PLAYERFN_SET(PlayerCB_Nop);
     }
@@ -5689,13 +5689,13 @@ void PlayerCB_802890C(Player *p)
 
 void DoTrickIfButtonPressed(Player *p)
 {
-    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->unk36 == 0) && (p->unk5E & gPlayerControls.trick)) {
+    if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->unk36 == 0) && (p->frameInput & gPlayerControls.trick)) {
 
-        if (p->unk5C & DPAD_UP) {
+        if (p->heldInput & DPAD_UP) {
             INCREMENT_SCORE(sTrickPoints[0]);
             p->unk5B = TRICK_DIR_UP;
             PLAYERFN_SET(PlayerCB_80286F0);
-        } else if (p->unk5C & DPAD_DOWN) {
+        } else if (p->heldInput & DPAD_DOWN) {
             INCREMENT_SCORE(sTrickPoints[3]);
 
             switch (p->character) {
@@ -5719,8 +5719,8 @@ void DoTrickIfButtonPressed(Player *p)
                     PLAYERFN_SET(PlayerCB_80286F0);
                 } break;
             }
-        } else if ((!(p->moveState & MOVESTATE_FACING_LEFT) && (p->unk5C & DPAD_RIGHT))
-                   || ((p->moveState & MOVESTATE_FACING_LEFT) && (p->unk5C & DPAD_LEFT))) {
+        } else if ((!(p->moveState & MOVESTATE_FACING_LEFT) && (p->heldInput & DPAD_RIGHT))
+                   || ((p->moveState & MOVESTATE_FACING_LEFT) && (p->heldInput & DPAD_LEFT))) {
             INCREMENT_SCORE(sTrickPoints[2]);
             p->unk5B = TRICK_DIR_FORWARD;
 
@@ -6012,7 +6012,7 @@ bool32 sub_80294F4(Player *p)
 {
     u16 song;
     if (!(p->moveState & MOVESTATE_20000000)) {
-        if (p->unk5E & gPlayerControls.attack) {
+        if (p->frameInput & gPlayerControls.attack) {
             switch (p->character) {
                 case CHARACTER_SONIC: {
                     PlayerCB_8011F1C(p);
@@ -6020,7 +6020,7 @@ bool32 sub_80294F4(Player *p)
                 } break;
 
                 case CHARACTER_CREAM: {
-                    if ((p->unk5C & DPAD_ANY) == DPAD_DOWN) {
+                    if ((p->heldInput & DPAD_ANY) == DPAD_DOWN) {
                         sub_8012888(p);
                     } else {
                         sub_80128E0(p);
@@ -6039,7 +6039,7 @@ bool32 sub_80294F4(Player *p)
                 } break;
             }
         }
-        if (p->unk5E & gPlayerControls.jump) {
+        if (p->frameInput & gPlayerControls.jump) {
             switch (p->character) {
                 case CHARACTER_SONIC: {
                     if (!IS_BOSS_STAGE(gCurrentLevel) && gHomingTarget.squarePlayerDistance < 0x4000) {
@@ -6099,9 +6099,9 @@ void sub_802966C(Player *p)
     s32 u48 = p->unk48;
     s32 u4C = p->unk4C;
 
-    if ((p->unk2A == 0) && p->unk5C & (DPAD_LEFT | DPAD_RIGHT)) {
+    if ((p->unk2A == 0) && p->heldInput & (DPAD_LEFT | DPAD_RIGHT)) {
         if (p->speedGroundX > 0) {
-            if (p->unk5C & DPAD_RIGHT) {
+            if (p->heldInput & DPAD_RIGHT) {
                 if (p->speedGroundX < p->unk44) {
                     p->speedGroundX += u48;
 
@@ -6136,7 +6136,7 @@ void sub_802966C(Player *p)
                 }
             }
         } else if (p->speedGroundX < 0) {
-            if (p->unk5C & DPAD_LEFT) {
+            if (p->heldInput & DPAD_LEFT) {
                 if (p->speedGroundX > -p->unk44) {
                     p->speedGroundX -= u48;
 
@@ -6175,7 +6175,7 @@ void sub_802966C(Player *p)
                 }
             }
         } else {
-            if ((p->moveState & MOVESTATE_FACING_LEFT) != ((p->unk5C & DPAD_RIGHT) >> 4)) {
+            if ((p->moveState & MOVESTATE_FACING_LEFT) != ((p->heldInput & DPAD_RIGHT) >> 4)) {
                 if (p->moveState & MOVESTATE_FACING_LEFT) {
                     p->speedGroundX -= u48;
                 } else {
@@ -6609,7 +6609,7 @@ bool32 sub_8029E6C(Player *p)
 {
     u8 rot = p->rotation;
 
-    if (p->unk5E & gPlayerControls.jump) {
+    if (p->frameInput & gPlayerControls.jump) {
         if (GRAVITY_IS_INVERTED) {
             rot += Q(0.25);
             rot = -rot;
@@ -6696,7 +6696,7 @@ void TaskDestructor_802A07C(struct Task *t)
 
 bool32 sub_802A0C8(Player *p)
 {
-    if (((p->unk5C & DPAD_ANY) == DPAD_UP) && p->speedGroundX == 0) {
+    if (((p->heldInput & DPAD_ANY) == DPAD_UP) && p->speedGroundX == 0) {
         PLAYERFN_SET(PlayerCB_802A620);
         return TRUE;
     }
@@ -6706,7 +6706,7 @@ bool32 sub_802A0C8(Player *p)
 
 bool32 sub_802A0FC(Player *p)
 {
-    if ((p->unk5C & DPAD_ANY) == DPAD_DOWN) {
+    if ((p->heldInput & DPAD_ANY) == DPAD_DOWN) {
         if ((p->speedGroundX == 0) && (((p->rotation + Q(0.125)) & 0xC0) == 0)
             && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
             PLAYERFN_SET(PlayerCB_802A228);
@@ -6725,7 +6725,7 @@ bool32 sub_802A0FC(Player *p)
 bool32 sub_802A184(Player *p)
 {
     if (p->unk64 == 2) {
-        if (p->unk5E & gPlayerControls.jump) {
+        if (p->frameInput & gPlayerControls.jump) {
             PLAYERFN_SET_AND_CALL(PlayerCB_802631C, p);
             return TRUE;
         }
@@ -6782,7 +6782,7 @@ bool32 sub_802A2A8(Player *p)
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || (p->moveState & (MOVESTATE_8000 | MOVESTATE_400))
         || ((p->rotation + Q(0.25)) << 24 <= 0)) {
         return FALSE;
-    } else if (p->unk5E & gPlayerControls.attack) {
+    } else if (p->frameInput & gPlayerControls.attack) {
         PLAYERFN_SET(PlayerCB_802A714);
         return TRUE;
     } else {
@@ -6918,8 +6918,8 @@ void PlayerCB_802A620(Player *p)
 void sub_802A660(Player *p)
 {
     if (p->unk2A == 0) {
-        if ((p->unk5C & DPAD_SIDEWAYS) != DPAD_RIGHT) {
-            if ((p->unk5C & DPAD_SIDEWAYS) == DPAD_LEFT) {
+        if ((p->heldInput & DPAD_SIDEWAYS) != DPAD_RIGHT) {
+            if ((p->heldInput & DPAD_SIDEWAYS) == DPAD_LEFT) {
                 s32 grnd = p->speedGroundX;
                 if (grnd <= 0) {
                     p->moveState |= MOVESTATE_FACING_LEFT;

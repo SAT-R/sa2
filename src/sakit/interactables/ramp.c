@@ -129,7 +129,7 @@ static void Task_Ramp(void)
 
                         if (playerMiddleY >= temp6) {
                             if (!(player->moveState & MOVESTATE_IN_AIR) && (player->speedGroundX > Q(4))
-                                && (player->unk5E & gPlayerControls.jump)) {
+                                && (player->frameInput & gPlayerControls.jump)) {
                                 if (halfWidth < (hbWidth / 2)) {
                                     player->transition = PLTRANS_PT22;
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 1;

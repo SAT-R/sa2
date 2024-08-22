@@ -271,7 +271,7 @@ static void sub_8062D44(void)
                     if (!(otherPlayer->unk5C & 1) && gGameMode != GAME_MODE_TEAM_PLAY) {
                         otherPlayer->unk5C |= 1;
                         gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-                        gPlayer.unk5C = 0;
+                        gPlayer.heldInput = 0;
                     }
                 }
             }

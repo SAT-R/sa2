@@ -61,11 +61,11 @@ static void Task_PlayerFloating(void)
             sub_807B74C(propeller);
         }
 
-        if (gPlayer.unk5C & DPAD_RIGHT) {
+        if (gPlayer.heldInput & DPAD_RIGHT) {
             gPlayer.x += Q(0.5);
         }
 
-        if (gPlayer.unk5C & DPAD_LEFT) {
+        if (gPlayer.heldInput & DPAD_LEFT) {
             gPlayer.x -= Q(0.5);
         }
 
@@ -104,7 +104,7 @@ static void sub_807B530(void)
     } else {
         s32 temp;
         sub_807B8FC(propeller);
-        if (gPlayer.unk5C & 0x10) {
+        if (gPlayer.heldInput & 0x10) {
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
             propeller->unk44 += 16;
 
@@ -115,7 +115,7 @@ static void sub_807B530(void)
             }
         }
 
-        if (gPlayer.unk5C & 0x20) {
+        if (gPlayer.heldInput & 0x20) {
             gPlayer.moveState |= MOVESTATE_FACING_LEFT;
             propeller->unk44 -= 16;
             if (propeller->unk44 < -512) {

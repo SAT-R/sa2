@@ -107,7 +107,7 @@ static void sub_8072BB8(void)
 
     if (gPlayer.timerInvulnerability == 120) {
         sub_8073088(hookRail);
-    } else if (gPlayer.unk5E & gPlayerControls.jump) {
+    } else if (gPlayer.frameInput & gPlayerControls.jump) {
         sub_807321C();
         sub_8073048(hookRail);
     } else {
@@ -141,7 +141,7 @@ static void sub_8072C90(void)
 
     if (gPlayer.timerInvulnerability == 120) {
         sub_8073088(hookRail);
-    } else if (gPlayer.unk5E & gPlayerControls.jump) {
+    } else if (gPlayer.frameInput & gPlayerControls.jump) {
         sub_807321C();
         sub_8073048(hookRail);
     } else if (gPlayer.rotation != 109 && gPlayer.rotation != 19) {
@@ -167,7 +167,7 @@ static void sub_8072D40(void)
 
     if (gPlayer.timerInvulnerability == 120) {
         sub_8073168(hookRail);
-    } else if (gPlayer.unk5E & gPlayerControls.jump) {
+    } else if (gPlayer.frameInput & gPlayerControls.jump) {
         sub_807321C();
         sub_8073148(hookRail);
     } else {

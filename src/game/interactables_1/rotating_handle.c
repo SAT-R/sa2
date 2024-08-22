@@ -172,7 +172,7 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", static void 
         return;
     }
 
-    if (gPlayer.unk5E & gPlayerControls.jump) {
+    if (gPlayer.frameInput & gPlayerControls.jump) {
 #ifndef NON_MATCHING
         register u32 temp2 asm("r4");
 #else
