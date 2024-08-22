@@ -155,7 +155,7 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 void sub_807C9C0(Sprite_IA86 *ia086)
 {
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.unk64 = 44;
+    gPlayer.charState = 44;
 
     ia086->unk182 = 64;
     ia086->unk184 = Q(0.5);
@@ -179,7 +179,7 @@ void sub_807C9C0(Sprite_IA86 *ia086)
     s16 *p184;
 
     p1->moveState |= MOVESTATE_400000;
-    p1->unk64 = 44;
+    p1->charState = 44;
 
     // Must be some debug stuff happening here
     r0 = 0x23C;

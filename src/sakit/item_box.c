@@ -132,8 +132,8 @@ void sub_800B1AC(Entity_ItemBox *itembox)
 {
     if (itembox->unk78 != TRUE || gPlayer.moveState & MOVESTATE_IN_AIR) {
         gPlayer.speedAirY = -Q(3.0);
-        gPlayer.unk64 = 38;
-        gPlayer.unk66 = -1;
+        gPlayer.charState = 38;
+        gPlayer.prevCharState = -1;
         gPlayer.transition = PLTRANS_PT5;
     }
 

@@ -67,8 +67,8 @@ static void Task_HalfPipeSequenceMain(void)
 
     if (!sub_80789AC(halfPipe)) {
         gPlayer.moveState &= ~MOVESTATE_8000;
-        if (gPlayer.unk64 >= 59 && gPlayer.unk64 < 62) {
-            gPlayer.unk64 = 9;
+        if (gPlayer.charState >= 59 && gPlayer.charState < 62) {
+            gPlayer.charState = 9;
         }
         EndHalfPipeSequence(halfPipe);
     } else {
@@ -118,13 +118,13 @@ static void UpdatePlayerPosOnHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe, u16 
         r3 = sin / (halfPipe->height - halfPipe->offsetY);
 
         if (r3 < 32) {
-            gPlayer.unk64 = 9;
+            gPlayer.charState = 9;
         } else if (r3 < 96) {
-            gPlayer.unk64 = 59;
+            gPlayer.charState = 59;
         } else if (r3 < 160) {
-            gPlayer.unk64 = 60;
+            gPlayer.charState = 60;
         } else {
-            gPlayer.unk64 = 61;
+            gPlayer.charState = 61;
         }
     }
 }
@@ -204,7 +204,7 @@ static bool32 ShouldTriggerHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
         return FALSE;
     }
 
-    if (gPlayer.unk64 != 4 && gPlayer.unk64 != 9) {
+    if (gPlayer.charState != 4 && gPlayer.charState != 9) {
         return FALSE;
     }
 

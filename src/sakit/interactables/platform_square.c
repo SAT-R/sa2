@@ -219,7 +219,7 @@ static void Task_Platform_Square(void)
         result = sub_800CCB8(s, x, y, p);
 
         if (result & 0x30000) {
-            if (gPlayer.character == CHARACTER_KNUCKLES && gPlayer.unk64 > 99 && gPlayer.unk64 <= 105) {
+            if (gPlayer.character == CHARACTER_KNUCKLES && gPlayer.charState > 99 && gPlayer.charState <= 105) {
                 p->transition = PLTRANS_PT4;
             }
 

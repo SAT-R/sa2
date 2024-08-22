@@ -219,7 +219,7 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     gPlayer.moveState |= MOVESTATE_IN_AIR;
                     gPlayer.moveState &= ~MOVESTATE_400;
                     gPlayer.moveState &= ~MOVESTATE_100;
-                    gPlayer.unk64 = 0x14;
+                    gPlayer.charState = 0x14;
                     sub_8023B5C(&gPlayer, 0xe);
                     gPlayer.spriteOffsetX = 6;
                     gPlayer.spriteOffsetY = 0xE;
@@ -230,7 +230,7 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
                     gPlayer.heldInput = 0;
                     gPlayer.moveState |= MOVESTATE_FACING_LEFT;
-                    gPlayer.unk64 = 0x1C;
+                    gPlayer.charState = 0x1C;
                     gPlayer.moveState |= MOVESTATE_800000;
                 }
             }

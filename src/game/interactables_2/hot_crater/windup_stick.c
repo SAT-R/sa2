@@ -95,23 +95,23 @@ static void sub_80726E8(Sprite_WindUpStick *windUpStick)
 
     switch (windUpStick->unk10) {
         case 1:
-            gPlayer.unk64 = 0x33;
+            gPlayer.charState = 0x33;
             gPlayer.speedAirX = 0;
             gPlayer.speedAirY -= Q(6.5);
             break;
         case 2:
 #ifndef NON_MATCHING
         {
-            register s16 *unk64 asm("r0") = &gPlayer.unk64;
+            register s16 *unk64 asm("r0") = &gPlayer.charState;
             *unk64 = 0x34;
         }
 #else
-            gPlayer.unk64 = 0x34;
+            gPlayer.charState = 0x34;
 #endif
             gPlayer.speedAirX = 0;
             break;
         case 3:
-            gPlayer.unk64 = 0x35;
+            gPlayer.charState = 0x35;
             if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
                 gPlayer.speedGroundX -= Q(2.5);
             } else {
@@ -119,7 +119,7 @@ static void sub_80726E8(Sprite_WindUpStick *windUpStick)
             }
             break;
         case 4:
-            gPlayer.unk64 = 0x36;
+            gPlayer.charState = 0x36;
             if (gPlayer.moveState & MOVESTATE_FACING_LEFT) {
                 gPlayer.speedGroundX -= Q(1.25);
             } else {
@@ -152,11 +152,11 @@ static void sub_80727F4(Sprite_WindUpStick *windUpStick)
 
     switch (windUpStick->unk10) {
         case 1:
-            gPlayer.unk64 = 0xE;
+            gPlayer.charState = 0xE;
             gPlayer.transition = PLTRANS_PT7;
             break;
         case 2:
-            gPlayer.unk64 = 0xE;
+            gPlayer.charState = 0xE;
             gPlayer.transition = PLTRANS_PT7;
             break;
         case 3:

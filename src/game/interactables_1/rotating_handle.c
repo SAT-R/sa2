@@ -103,22 +103,22 @@ static void Task_Idle(void)
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
             if (I(gPlayer.y) > y) {
                 s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
-                gPlayer.unk64 = 0x2D;
+                gPlayer.charState = 0x2D;
                 rotatingHandle->unk40 = 0;
             } else {
                 s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
-                gPlayer.unk64 = 0x2E;
+                gPlayer.charState = 0x2E;
                 rotatingHandle->unk40 = 1;
             }
         } else {
             gPlayer.moveState |= 1;
             if (I(gPlayer.y) > y) {
                 s->frameFlags &= ~SPRITE_FLAG_MASK_X_FLIP;
-                gPlayer.unk64 = 0x2D;
+                gPlayer.charState = 0x2D;
                 rotatingHandle->unk40 = 2;
             } else {
                 s->frameFlags |= SPRITE_FLAG_MASK_X_FLIP;
-                gPlayer.unk64 = 0x2E;
+                gPlayer.charState = 0x2E;
                 rotatingHandle->unk40 = 3;
             }
         }
@@ -229,11 +229,11 @@ NONMATCH("asm/non_matching/game/interactables_1/Task_Rotating.inc", static void 
         }
         gPlayer.speedAirX = Div(COS(temp2) << 1, 0x11);
         gPlayer.speedAirY = Div(SIN(temp2) << 1, 0x11);
-        gPlayer.unk64 = 0x32;
+        gPlayer.charState = 0x32;
         gPlayer.unk6C = 1;
     } else {
         u8 r2;
-        if (gPlayer.unk64 == 0x2D) {
+        if (gPlayer.charState == 0x2D) {
             s32 new_var;
             r2 = Div(temp, 0x56);
             new_var = 0xB;

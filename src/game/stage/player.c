@@ -512,7 +512,7 @@ static inline void Player_InitIceSlide_inline(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->unk64 = 62;
+    p->charState = 62;
     p->moveState &= ~(MOVESTATE_FACING_LEFT);
 
     m4aSongNumStart(SE_ICE_PARADISE_SLIDE);
@@ -726,8 +726,8 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->unk44 = 0x600;
     p->unk48 = 8;
     p->unk4C = 64;
-    p->unk64 = 0;
-    p->unk66 = -1;
+    p->charState = 0;
+    p->prevCharState = -1;
     p->anim = -1;
     p->variant = -1;
     p->timerInvulnerability = 0;
@@ -1457,7 +1457,7 @@ void sub_8022318(Player *p)
         p->spriteOffsetY = 14;
     } else {
         p->moveState &= ~MOVESTATE_4;
-        p->unk64 = 0;
+        p->charState = 0;
 
         offsetY = p->spriteOffsetY - 14;
 
@@ -1484,8 +1484,8 @@ void sub_8022318(Player *p)
     p->unk25 = 120;
     p->unk61 = 0;
 
-    if (p->unk64 > SA2_NUM_PLAYER_CHAR_ANIMATIONS) {
-        p->unk64 = SA2_CHAR_ANIM_IDLE;
+    if (p->charState > SA2_NUM_PLAYER_CHAR_ANIMATIONS) {
+        p->charState = SA2_CHAR_ANIM_IDLE;
     }
 }
 
@@ -2819,12 +2819,12 @@ void sub_8023610(Player *p)
     s32 r5 = p->unk48 * 2;
     s32 r6 = p->unk44;
 
-    if ((p->unk64 != SA2_CHAR_ANIM_20) && !(p->moveState & MOVESTATE_10)) {
+    if ((p->charState != SA2_CHAR_ANIM_20) && !(p->moveState & MOVESTATE_10)) {
         s16 r0;
         u16 r2 = p->speedAirX;
 
         if (p->heldInput & DPAD_LEFT) {
-            if ((p->unk64 != SA2_CHAR_ANIM_63) && !(p->moveState & MOVESTATE_2000)) {
+            if ((p->charState != SA2_CHAR_ANIM_63) && !(p->moveState & MOVESTATE_2000)) {
                 p->moveState |= MOVESTATE_FACING_LEFT;
             }
 
@@ -2847,7 +2847,7 @@ void sub_8023610(Player *p)
             goto set;
 
         } else if (p->heldInput & DPAD_RIGHT) {
-            if ((p->unk64 != SA2_CHAR_ANIM_63) && !(p->moveState & MOVESTATE_2000)) {
+            if ((p->charState != SA2_CHAR_ANIM_63) && !(p->moveState & MOVESTATE_2000)) {
                 p->moveState &= ~MOVESTATE_FACING_LEFT;
             }
 
@@ -3276,7 +3276,7 @@ void Task_8023FC0(void)
     sub_8024B10(p, p->unk90);
     sub_8024F74(p, p->unk94);
 
-    if (p->unk64 != 0x14 && p->timerInvulnerability > 0) {
+    if (p->charState != 0x14 && p->timerInvulnerability > 0) {
         p->timerInvulnerability--;
     }
 
@@ -3297,7 +3297,7 @@ void Task_8023FC0(void)
     if (p->moveState & MOVESTATE_DEAD) {
         struct Camera *cam = &gCamera;
         gCurTask->main = Task_8023E90;
-        p->unk64 = 0x16;
+        p->charState = 0x16;
         p->speedAirX = 0;
 
         if (p->speedAirY < -0x400) {
@@ -3536,7 +3536,7 @@ void sub_802460C(Player *p)
 void sub_80246DC(Player *p)
 {
     Sprite *s = &p->unk90->s;
-    u16 charAnim = p->unk64;
+    u16 charAnim = p->charState;
     u32 r3 = p->anim;
     u32 variant = p->variant;
     u32 sl = variant;
@@ -3619,18 +3619,18 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
 #endif
     Sprite *s = &p2->s;
 
-    if ((p->unk64 != -1) && (p->unk64 != p->unk66)) {
-        p->anim = gUnknown_080D6736[p->unk64][0];
+    if ((p->charState != -1) && (p->charState != p->prevCharState)) {
+        p->anim = gUnknown_080D6736[p->charState][0];
 
         // NOTE: Could it be that anims 80-91 are character-specific?
-        if (p->unk64 < SA2_CHAR_ANIM_80) {
+        if (p->charState < SA2_CHAR_ANIM_80) {
             p->anim += gPlayerCharacterIdleAnims[p->character];
         }
-        p->variant = gUnknown_080D6736[p->unk64][1];
+        p->variant = gUnknown_080D6736[p->charState][1];
         p2->s.animSpeed = SPRITE_ANIM_SPEED(1.0);
     }
 
-    switch (((u16)(p->unk64 - 9) << 16) >> 16) {
+    switch (((u16)(p->charState - 9) << 16) >> 16) {
         case SA2_CHAR_ANIM_WALK - 9: {
             p->anim = gPlayerCharacterIdleAnims[p->character] + SA2_CHAR_ANIM_WALK;
             p->variant = p->unk54;
@@ -3706,7 +3706,7 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
         }
     }
 
-    p->unk66 = p->unk64;
+    p->prevCharState = p->charState;
 }
 
 #define MACRO_8024B10_PSI_UPDATE(p, psi)                                                                                                   \
@@ -3764,8 +3764,8 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     psi->transform.x = I(p->x) - camX;
     psi->transform.y = I(p->y) - camY;
 
-    if (p->unk64 == SA2_CHAR_ANIM_WALK || p->unk64 == SA2_CHAR_ANIM_41 || p->unk64 == SA2_CHAR_ANIM_62 || p->unk64 == 63
-        || (p->unk64 == SA2_CHAR_ANIM_87 && p->character == CHARACTER_CREAM)) {
+    if (p->charState == SA2_CHAR_ANIM_WALK || p->charState == SA2_CHAR_ANIM_41 || p->charState == SA2_CHAR_ANIM_62 || p->charState == 63
+        || (p->charState == SA2_CHAR_ANIM_87 && p->character == CHARACTER_CREAM)) {
         psi->transform.rotation = p->rotation << 2;
         s->frameFlags &= ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP);
         s->frameFlags &= ~SPRITE_FLAG_MASK_ROT_SCALE;
@@ -4005,9 +4005,9 @@ void PlayerCB_8025318(Player *p)
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
         if (p->speedGroundX != 0) {
-            p->unk64 = 9;
+            p->charState = 9;
         } else {
-            p->unk64 = 0;
+            p->charState = 0;
         }
 
         PLAYERFN_SET_AND_CALL(PlayerCB_Idle, p);
@@ -4175,7 +4175,7 @@ void PlayerCB_8025A0C(Player *p)
         Player_InitIceSlide(p);
     } else {
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
-        p->unk64 = 4;
+        p->charState = 4;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
@@ -4298,9 +4298,9 @@ void PlayerCB_Jump(Player *p)
     }
 
     if (ABS(p->speedAirX) < Q(1.25)) {
-        p->unk64 = 10;
+        p->charState = 10;
     } else {
-        p->unk64 = 11;
+        p->charState = 11;
     }
 
     p->unk70 = 1;
@@ -4381,9 +4381,9 @@ void PlayerCB_8025F84(Player *p)
     }
 
     if (ABS(p->speedAirX) < Q(1.25)) {
-        p->unk64 = 10;
+        p->charState = 10;
     } else {
-        p->unk64 = 11;
+        p->charState = 11;
     }
 
     p->unk70 = 1;
@@ -4477,7 +4477,7 @@ void PlayerCB_80261D8(Player *p)
 
 void PlayerCB_802631C(Player *p)
 {
-    p->unk64 = 3;
+    p->charState = 3;
 
     p->moveState |= (MOVESTATE_400 | MOVESTATE_4);
     p->moveState &= ~(MOVESTATE_20 | MOVESTATE_IN_AIR);
@@ -4671,7 +4671,7 @@ void PlayerCB_8026764(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->unk64 = 41;
+    p->charState = 41;
 
     if (p->unk6E != 0) {
         p->moveState |= MOVESTATE_FACING_LEFT;
@@ -4725,7 +4725,7 @@ void PlayerCB_8026810(Player *p)
         m4aSongNumStartOrContinue(SE_GRINDING);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->unk64 = 14;
+            p->charState = 14;
 
             p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
             p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
@@ -4752,7 +4752,7 @@ void PlayerCB_80269C0(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->unk64 = 9;
+    p->charState = 9;
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
     p->unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
@@ -4776,10 +4776,10 @@ void PlayerCB_8026A4C(Player *p)
 
     if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->heldInput & gPlayerControls.jump)
         && (p->character == CHARACTER_SONIC || p->character == CHARACTER_AMY)) {
-        p->unk64 = 42;
+        p->charState = 42;
         p->speedAirY = -Q(7.5);
     } else {
-        p->unk64 = 39;
+        p->charState = 39;
         p->speedAirY = -Q(4.875);
     }
 
@@ -4852,7 +4852,7 @@ void PlayerCB_8026BCC(Player *p)
         PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->unk64 = 14;
+            p->charState = 14;
 
             PLAYERFN_SET(PlayerCB_Jumping);
         } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8)) != MOVESTATE_800) {
@@ -4886,7 +4886,7 @@ void PlayerCB_8026E24(Player *p)
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
     p->rotation = 0;
-    p->unk64 = 4;
+    p->charState = 4;
 
     p->moveState &= ~MOVESTATE_FACING_LEFT;
 
@@ -4937,7 +4937,7 @@ void PlayerCB_8026F10(Player *p)
     } else {
         //_08026F74
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
-        p->unk64 = 4;
+        p->charState = 4;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
@@ -4964,7 +4964,7 @@ void PlayerCB_8026FC8(Player *p)
         p->moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
-    p->unk64 = 63;
+    p->charState = 63;
     p->rotation = 0;
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8027040, p);
@@ -4991,8 +4991,8 @@ void PlayerCB_8027114(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
-    if ((!(p->moveState & MOVESTATE_4) || (p->unk64 != 4))) {
-        p->unk64 = 47;
+    if ((!(p->moveState & MOVESTATE_4) || (p->charState != 4))) {
+        p->charState = 47;
         p->moveState &= ~MOVESTATE_4;
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
@@ -5064,14 +5064,14 @@ void PlayerCB_8027250(Player *p)
         } else {
             p->speedAirX = -Q(1.5);
         }
-        p->unk64 = 0x14;
+        p->charState = 0x14;
     } else {
         if (p->speedAirX >= 0) {
             p->speedAirX = +Q(1.5);
         } else {
             p->speedAirX = -Q(1.5);
         }
-        p->unk64 = 0x15;
+        p->charState = 0x15;
     }
 
     p->speedAirY = -Q(3.0);
@@ -5122,7 +5122,7 @@ void PlayerCB_80273D0(Player *p)
             if (p->speedGroundX <= 0) {
                 sub_802785C(p);
             } else {
-                p->unk64 = 9;
+                p->charState = 9;
 
                 p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -5142,7 +5142,7 @@ void PlayerCB_GoalSlowdown(Player *p)
     playerX2 = playerX - gStageGoalX;
 
     if (((p->speedGroundX >= Q(2.0)) && (p->frameInput & DPAD_LEFT)) || (playerX2 > 0x579)) {
-        p->unk64 = 25;
+        p->charState = 25;
 
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
@@ -5186,11 +5186,11 @@ void PlayerCB_GoalBrake(Player *p)
 
     if (cAnim == SA2_CHAR_ANIM_31) {
         if ((p->variant == 0) && (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
-            p->unk64 = 26;
+            p->charState = 26;
         }
 
         if ((p->variant == 1) && (p->speedGroundX <= 0)) {
-            p->unk64 = 27;
+            p->charState = 27;
             p->speedGroundX = 0;
             m4aSongNumStop(SE_LONG_BRAKE);
 
@@ -5243,21 +5243,21 @@ void sub_802785C(Player *p)
     if (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
         switch (gCurrentLevel & 0x3) {
             case ACT_1: {
-                p->unk64 = 28;
+                p->charState = 28;
                 PLAYERFN_SET(PlayerCB_80278D4);
             } break;
 
             case ACT_2: {
-                p->unk64 = 29;
+                p->charState = 29;
                 PLAYERFN_SET(PlayerCB_80278D4);
             } break;
 
             case ACT_BOSS: {
-                p->unk64 = 32;
+                p->charState = 32;
             } break;
         }
     } else {
-        p->unk64 = 28;
+        p->charState = 28;
     }
 }
 
@@ -5298,7 +5298,7 @@ void PlayerCB_80279F8(Player *p)
         p->unk72++;
 
     if (p->unk72 == 120) {
-        p->unk64 = 32;
+        p->charState = 32;
     }
 
     if (p->unk72 == 180) {
@@ -5324,7 +5324,7 @@ void PlayerCB_80279F8(Player *p)
         p->isBoosting = 1;
         p->heldInput = 0x10;
         p->speedGroundX = Q(10.0);
-        p->unk64 = 9;
+        p->charState = 9;
         sub_801583C();
 
         PLAYERFN_SET(PlayerCB_8027B98);
@@ -5419,9 +5419,9 @@ void PlayerCB_8027D3C(Player *p)
 
         // TODO: Check correctness of MULTI_SIO_PLAYERS_MAX being here!
         if (r8 < MULTI_SIO_PLAYERS_MAX) {
-            p->unk64 = 28;
+            p->charState = 28;
         } else {
-            p->unk64 = 0;
+            p->charState = 0;
         }
 
         p->moveState &= ~MOVESTATE_FACING_LEFT;
@@ -5596,7 +5596,7 @@ void PlayerCB_80286F0(Player *p)
     p->speedAirX = 0;
     p->speedAirY = 0;
 
-    p->unk64 = gUnknown_080D698A[dir];
+    p->charState = gUnknown_080D698A[dir];
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     m4aSongNumStart(SE_JUMP);
@@ -5655,8 +5655,8 @@ void PlayerCB_802890C(Player *p)
         if (mask & MASK_80D6992_4)
             mask &= ~MASK_80D6992_4;
 
-        if ((mask & MASK_80D6992_8) && (p->unk64 != 14))
-            p->unk64 = 14;
+        if ((mask & MASK_80D6992_8) && (p->charState != 14))
+            p->charState = 14;
     }
 
     if (!(mask & MASK_80D6992_2) || (p->speedAirY > 0)) {
@@ -5776,14 +5776,14 @@ void PlayerCB_TouchNormalSpring(Player *p)
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
     if ((gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1)) || (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_2))) {
-        p->unk64 = 37;
+        p->charState = 37;
     } else if (ABS(p->speedAirX) < Q(2.5)) {
-        p->unk64 = 38;
+        p->charState = 38;
     } else {
-        p->unk64 = 39;
+        p->charState = 39;
     }
 
-    p->unk66 = -1;
+    p->prevCharState = -1;
 
     switch (r5) {
         case 0: {
@@ -5886,8 +5886,8 @@ void PlayerCB_8029158(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->unk64 = 40;
-    p->unk66 = -1;
+    p->charState = 40;
+    p->prevCharState = -1;
 
     if (p->speedAirX > Q(1.25)) {
         p->moveState &= ~MOVESTATE_FACING_LEFT;
@@ -5979,7 +5979,7 @@ void PlayerCB_8029158(Player *p)
 
 void PlayerCB_8029314(Player *p)
 {
-    if ((p->unk64 == 40) && (p->variant == 0) && (p->speedAirY > 0))
+    if ((p->charState == 40) && (p->variant == 0) && (p->speedAirY > 0))
         p->variant = 1;
 
     DoTrickIfButtonPressed(p);
@@ -6047,7 +6047,7 @@ bool32 sub_80294F4(Player *p)
                         return TRUE;
                     } else {
                         p->moveState |= MOVESTATE_20000000;
-                        p->unk64 = 18;
+                        p->charState = 18;
                         sub_8011B88(I(p->x), I(p->y), 1);
                         song = SE_SONIC_INSTA_SHIELD;
                         goto sub_80294F4_PlaySfx;
@@ -6076,7 +6076,7 @@ bool32 sub_80294F4(Player *p)
 
                 case CHARACTER_AMY: {
                     p->moveState |= MOVESTATE_20000000;
-                    p->unk64 = 18;
+                    p->charState = 18;
                     CreateAmyAttackHeartEffect(2);
 
                     song = SE_AMY_SUPER_HAMMER_ATTACK;
@@ -6113,8 +6113,8 @@ void sub_802966C(Player *p)
                 }
                 p->moveState &= ~MOVESTATE_FACING_LEFT;
             } else if (p->speedGroundX >= Q_24_8(2.0)) {
-                if ((p->unk64 == 7) || (p->unk64 == 8)) {
-                    r6 = p->unk64;
+                if ((p->charState == 7) || (p->charState == 8)) {
+                    r6 = p->charState;
                 } else {
                     u16 u54 = p->unk54;
                     r6 = 7;
@@ -6129,7 +6129,7 @@ void sub_802966C(Player *p)
                 p->speedGroundX -= u4C;
 
                 if ((p->speedGroundX > 0) && !(p->moveState & MOVESTATE_FACING_LEFT)) {
-                    if ((p->unk64 == 7) || (p->unk64 == 8)) {
+                    if ((p->charState == 7) || (p->charState == 8)) {
                         r6 = 7;
                     }
                     gPlayer.callback = PlayerCB_802A5C4;
@@ -6149,8 +6149,8 @@ void sub_802966C(Player *p)
                 p->moveState |= MOVESTATE_FACING_LEFT;
             } else {
                 if (p->speedGroundX <= -Q_24_8(2.0)) {
-                    if ((p->unk64 == 7) || (p->unk64 == 8)) {
-                        r6 = p->unk64;
+                    if ((p->charState == 7) || (p->charState == 8)) {
+                        r6 = p->charState;
                     } else {
                         u16 u54 = p->unk54;
                         r6 = 7;
@@ -6167,7 +6167,7 @@ void sub_802966C(Player *p)
                     p->speedGroundX += u4C;
 
                     if ((p->speedGroundX < 0) && (p->moveState & MOVESTATE_FACING_LEFT)) {
-                        if ((p->unk64 == 7) || (p->unk64 == 8)) {
+                        if ((p->charState == 7) || (p->charState == 8)) {
                             r6 = 7;
                         }
                         gPlayer.callback = PlayerCB_802A5C4;
@@ -6219,13 +6219,13 @@ void sub_802966C(Player *p)
 
     if (p->moveState & MOVESTATE_8000) {
         if ((r6 == 7) || (r6 == 8)) {
-            p->unk64 = r6;
+            p->charState = r6;
         }
     } else if (r6 != -1) {
-        if (p->unk64 != r6)
-            p->unk64 = r6;
-    } else if ((p->unk64 == 7) || (p->unk64 == 8)) {
-        p->unk64 = 9;
+        if (p->charState != r6)
+            p->charState = r6;
+    } else if ((p->charState == 7) || (p->charState == 8)) {
+        p->charState = 9;
     }
 
     sub_8023128(p);
@@ -6724,7 +6724,7 @@ bool32 sub_802A0FC(Player *p)
 
 bool32 sub_802A184(Player *p)
 {
-    if (p->unk64 == 2) {
+    if (p->charState == 2) {
         if (p->frameInput & gPlayerControls.jump) {
             PLAYERFN_SET_AND_CALL(PlayerCB_802631C, p);
             return TRUE;
@@ -6756,7 +6756,7 @@ void PlayerCB_802A228(Player *p)
 {
     p->moveState &= ~MOVESTATE_20;
 
-    p->unk64 = 2;
+    p->charState = 2;
     p->speedGroundX = 0;
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8025854, p);
@@ -6798,7 +6798,7 @@ void PlayerCB_802A300(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->unk66 = -1;
+    p->prevCharState = -1;
 
     p->rotation = 0;
 
@@ -6829,7 +6829,7 @@ void sub_802A40C(Player *p)
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
     p->isBoosting = 0;
-    p->unk64 = 9;
+    p->charState = 9;
     p->moveState &= ~(MOVESTATE_FACING_LEFT);
     p->unk72 = 0;
 
@@ -6844,7 +6844,7 @@ void sub_802A468(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->unk64 = 9;
+    p->charState = 9;
     p->moveState &= ~(MOVESTATE_FACING_LEFT);
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8027C5C, p);
@@ -6872,7 +6872,7 @@ void sub_802A558(Player *p) { PLAYERFN_UPDATE_AIR_FALL_SPEED_B(p); }
 
 void sub_802A58C(Player *p)
 {
-    if (p->unk64 != 20) {
+    if (p->charState != 20) {
         if (p->timerInvulnerability > 0)
             p->timerInvulnerability--;
     }
@@ -6888,10 +6888,10 @@ void PlayerCB_802A5C4(Player *p)
 {
     p->moveState &= ~MOVESTATE_20;
 
-    if (p->unk64 == 7 || p->unk64 == 8) {
-        p->unk64 = 6;
+    if (p->charState == 7 || p->charState == 8) {
+        p->charState = 6;
     } else {
-        p->unk64 = 5;
+        p->charState = 5;
     }
 
     p->unk90->s.frameFlags &= ~(MOVESTATE_4000);
@@ -6908,7 +6908,7 @@ void PlayerCB_802A620(Player *p)
 
     p->unk90->s.frameFlags &= ~(MOVESTATE_4000);
 
-    p->unk64 = 1;
+    p->charState = 1;
 
     p->speedGroundX = 0;
 

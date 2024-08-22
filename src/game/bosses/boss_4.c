@@ -355,7 +355,7 @@ static void sub_8041A08(AeroEgg *boss)
                 p->speedAirY = v;
                 p->moveState &= ~(MOVESTATE_100 | MOVESTATE_8);
                 p->unk3C = NULL;
-                p->unk64 = SA2_CHAR_ANIM_JUMP_2;
+                p->charState = SA2_CHAR_ANIM_JUMP_2;
                 p->transition = 5;
                 r7 = TRUE;
             }

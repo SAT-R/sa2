@@ -90,14 +90,15 @@ void CreateAmyAttackHeartEffect(u16 kind)
         return;
     }
 
-    if ((gPlayer.unk64 == SA2_CHAR_ANIM_15) || (gPlayer.unk64 == SA2_CHAR_ANIM_INSTA_SHIELD_2) || (gPlayer.unk64 == SA2_CHAR_ANIM_36)) {
+    if ((gPlayer.charState == SA2_CHAR_ANIM_15) || (gPlayer.charState == SA2_CHAR_ANIM_INSTA_SHIELD_2)
+        || (gPlayer.charState == SA2_CHAR_ANIM_36)) {
         struct Task *t = TaskCreate(Task_8015CE4, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_8015FF0);
         AmyAtkHearts *hearts = TASK_DATA(t);
 
-        hearts->unk100 = gUnknown_080D6736[gPlayer.unk64][0];
-        hearts->unk102 = gUnknown_080D6736[gPlayer.unk64][1];
+        hearts->unk100 = gUnknown_080D6736[gPlayer.charState][0];
+        hearts->unk102 = gUnknown_080D6736[gPlayer.charState][1];
 
-        if (gPlayer.unk64 < 80) {
+        if (gPlayer.charState < 80) {
             hearts->unk100 += gPlayerCharacterIdleAnims[gPlayer.character];
         }
 

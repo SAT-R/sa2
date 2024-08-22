@@ -492,7 +492,7 @@ void sub_80797AC(Sprite_IA69 *ia69)
 {
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.unk64 = 0x14;
+    gPlayer.charState = 0x14;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
     gPlayer.speedGroundX = 0;

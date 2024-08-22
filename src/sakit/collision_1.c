@@ -103,7 +103,7 @@ bool32 sub_800DD54(Player *p)
     p->moveState &= ~MOVESTATE_400;
     p->moveState &= ~MOVESTATE_100;
 
-    p->unk64 = SA2_CHAR_ANIM_20;
+    p->charState = SA2_CHAR_ANIM_20;
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
     p->unk61 = 0;
@@ -165,7 +165,7 @@ bool32 sub_800DE44(Player *p)
     p->moveState &= ~MOVESTATE_400;
     p->moveState &= ~MOVESTATE_100;
 
-    p->unk64 = SA2_CHAR_ANIM_20;
+    p->charState = SA2_CHAR_ANIM_20;
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
     p->unk61 = 0;

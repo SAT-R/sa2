@@ -100,7 +100,7 @@ static void sub_807E384(Sprite_Cannon *cannon)
 {
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.unk64 = 4;
+    gPlayer.charState = 4;
     m4aSongNumStart(SE_SPIN_ATTACK);
 
     if (cannon->unk68 == 0) {

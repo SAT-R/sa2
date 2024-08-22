@@ -101,8 +101,8 @@ static void SuperSonicInitPlayer(void)
     p->unk61 = 0;
     p->unk62 = 0;
     p->unk63 = 0;
-    p->unk64 = 0;
-    p->unk66 = 0;
+    p->charState = 0;
+    p->prevCharState = 0;
     p->anim = 0;
     p->variant = 0;
     p->unk6C = FALSE;

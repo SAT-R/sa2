@@ -248,7 +248,7 @@ static void sub_807B8FC(Sprite_Propeller *propeller)
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.unk64 = 44;
+    gPlayer.charState = 44;
 }
 
 static void Render(Sprite_Propeller *propeller)

@@ -140,7 +140,7 @@ static void Task_ActiveMain(void)
 static void ActivatePlayerGrab(Sprite_FlyingHandle *flyingHandle)
 {
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.unk64 = 55;
+    gPlayer.charState = 55;
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;

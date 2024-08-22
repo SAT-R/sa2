@@ -113,7 +113,7 @@ void sub_8036168(void)
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         gStageFlags &= ~STAGE_FLAG__ACT_START;
         gStageFlags &= ~STAGE_FLAG__100;
-        gPlayer.unk64 = 9;
+        gPlayer.charState = 9;
         if (countdown->unk6A != 0) {
             gPlayer.speedGroundX = Q_8_8(9);
         } else {

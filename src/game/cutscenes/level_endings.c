@@ -259,7 +259,7 @@ static void sub_808DD9C(void)
         scene->unk70 = player->x - Q(gCamera.x) - Q(20.0);
 
         if (scene->unk7A == 0) {
-            player->unk64 = 0x52;
+            player->charState = 82;
 
             VramFree(scene->unk4.graphics.dest);
 
@@ -397,7 +397,7 @@ static void sub_808E114(void)
     DisplaySprite(s);
 
     if (scene->unk78 == 0x28) {
-        player->unk64 = 0x52;
+        player->charState = 82;
     }
 
     if (scene->unk78 == 200) {

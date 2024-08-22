@@ -115,7 +115,7 @@ static void sub_8086A88(void)
         unk998->unkC2 = 0;
     }
 
-    if (gPlayer.unk64 != 0x22) {
+    if (gPlayer.charState != 0x22) {
         unk998->unkE4 = 1;
     }
 }

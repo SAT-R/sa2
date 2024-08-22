@@ -134,25 +134,25 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
             if (temp & 0x10000) {
                 gPlayer.y += Q_8_8(temp);
                 gPlayer.speedAirY = gUnknown_080E001A[noteBlock->unk4C][1];
-                gPlayer.unk64 = 4;
+                gPlayer.charState = 4;
                 gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0xC0;
             } else if (temp & 0x40000) {
                 gPlayer.x += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = gUnknown_080E001A[noteBlock->unk4C][0];
-                gPlayer.unk64 = 4;
+                gPlayer.charState = 4;
                 gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0x80;
             } else if (temp & 0x80000) {
                 gPlayer.x += (s16)(temp & 0xFF00);
                 gPlayer.speedAirX = gUnknown_080E001A[noteBlock->unk4C][2];
-                gPlayer.unk64 = 4;
+                gPlayer.charState = 4;
                 gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0;
             } else {
                 gPlayer.y += Q_8_8(temp);
                 gPlayer.speedAirY = gUnknown_080E001A[noteBlock->unk4C][3];
-                gPlayer.unk64 = 4;
+                gPlayer.charState = 4;
                 gPlayer.transition = PLTRANS_PT5;
                 noteBlock->unk4D = 0x40;
             }
@@ -161,7 +161,7 @@ static bool32 sub_8079AC4(Sprite_TecBaseNoteBlock *noteBlock)
                 gPlayer.moveState &= ~MOVESTATE_100;
             } else {
                 gPlayer.speedGroundX = speedGround;
-                gPlayer.unk64 = 4;
+                gPlayer.charState = 4;
                 gPlayer.transition = PLTRANS_PT5;
             }
 

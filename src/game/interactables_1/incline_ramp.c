@@ -52,7 +52,7 @@ static void Task_InclineRamp(void)
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
 
-                gPlayer.unk64 = 39;
+                gPlayer.charState = 39;
                 gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }
@@ -78,7 +78,7 @@ static void Task_InclineRamp(void)
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
 
-                gPlayer.unk64 = 11;
+                gPlayer.charState = 11;
                 gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }

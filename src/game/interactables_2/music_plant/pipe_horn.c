@@ -968,7 +968,7 @@ void sub_80778E4(Sprite_Pipe_Horn *pipe)
     Player_SetMovestate_IsInScriptedSequence();
 
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.unk64 = 4;
+    gPlayer.charState = 4;
 
     m4aSongNumStart(SE_SPIN_ATTACK);
 
@@ -1137,7 +1137,7 @@ void sub_8077C3C(Sprite_Pipe_Horn *horn)
     Player_SetMovestate_IsInScriptedSequence();
 
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.unk64 = 4;
+    gPlayer.charState = 4;
 
     m4aSongNumStart(SE_SPIN_ATTACK);
 

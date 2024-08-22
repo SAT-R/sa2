@@ -128,7 +128,7 @@ static void sub_807A560(void)
     u8 someBool = FALSE;
     Sprite_IA75 *ia75 = TASK_DATA(gCurTask);
     gPlayer.transition = PLTRANS_PT1;
-    gPlayer.unk64 = 0;
+    gPlayer.charState = 0;
 
     if (IS_MULTI_PLAYER) {
         sub_807AB6C(ia75);
@@ -183,7 +183,7 @@ static void sub_807A688(Sprite_IA75 *ia75)
     ia75->unk80 = gPlayer.y - (Q(ia75->y) + ia75->unk78);
 
     gPlayer.transition = PLTRANS_PT1;
-    gPlayer.unk64 = 0;
+    gPlayer.charState = 0;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
     gPlayer.speedGroundX = 0;

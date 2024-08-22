@@ -140,9 +140,9 @@ static void Task_Interactable_BouncySpring()
                 spring->s.prevVariant = -1;
             }
 
-            gPlayer.unk64 = 38;
+            gPlayer.charState = 38;
             gPlayer.transition = PLTRANS_PT7;
-            gPlayer.unk66 = -1;
+            gPlayer.prevCharState = -1;
 
             m4aSongNumStart(SE_SPRINGY_SPRING);
 

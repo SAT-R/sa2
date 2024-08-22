@@ -127,9 +127,8 @@ typedef struct Player_ {
     /* 0x61 */ s8 unk61;
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
-    /* 0x64 */ s16 unk64; // Character State? (TODO: shouldn't this be unsigned?)
-    /* 0x66 */ s16 unk66; // Character State, too? But if these were cAnims, why do some
-                          // procs recalculate them?
+    /* 0x64 */ s16 charState; // charState values appear to be a default behavior to transition into another animation
+    /* 0x66 */ s16 prevCharState;
     /* 0x68 */ AnimId anim;
     /* 0x6A */ u16 variant;
     /* 0x6C */ bool8 unk6C;

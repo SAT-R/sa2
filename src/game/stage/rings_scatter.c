@@ -257,7 +257,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Fli
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
+        if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
                 || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
@@ -390,7 +390,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Nor
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
+        if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
                 || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
@@ -519,7 +519,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_Flipped
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
+        if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
                 || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
@@ -645,7 +645,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_NormalG
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
+        if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
                 || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
@@ -774,7 +774,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.in
 #else
         hb = &p->unk90->s.hitboxes[0];
 #endif
-        if ((ring->unkC <= sp0C) && ((p->unk64 != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
+        if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
             && ((((ringIntX - TILE_WIDTH) > HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
                 || ((ringIntX + TILE_WIDTH) >= HB_LEFT(p, hb))
                 || (((ringIntX - TILE_WIDTH) >= HB_LEFT(p, hb)) && (HB_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
