@@ -155,14 +155,14 @@ static void Task_PlatformThinMain(void)
         }
 
         if (temp2 & 0x30000) {
-            s16 unk64 = player->unk64;
+            s16 charState = player->charState;
             s16 anim = player->anim;
             s16 variant = player->variant;
             switch (player->character) {
                 case CHARACTER_KNUCKLES:
-                    if (unk64 == 0x6B) {
-                        player->moveState &= ~0x8;
-                        player->moveState |= 2;
+                    if (charState == 107) {
+                        player->moveState &= ~MOVESTATE_8;
+                        player->moveState |= MOVESTATE_IN_AIR;
                         player->speedAirY = player->speedAirY >> 1;
                         CreatePlatformBreakParticles(x, y);
                         something = TRUE;
@@ -174,7 +174,7 @@ static void Task_PlatformThinMain(void)
                 case CHARACTER_SONIC:
                 case CHARACTER_AMY: {
                     anim -= gPlayerCharacterIdleAnims[player->character];
-                    if (unk64 == 0x24 && anim == 0x33 && variant == 1 && player->speedAirY > 0) {
+                    if (charState == 36 && anim == SA2_CHAR_ANIM_51 && variant == 1 && player->speedAirY > 0) {
                         player->moveState &= ~MOVESTATE_8;
                         CreatePlatformBreakParticles(x, y);
                         something = TRUE;

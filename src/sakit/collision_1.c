@@ -37,7 +37,7 @@ u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3, UNUSED 
     mpp = TASK_DATA(gMultiplayerPlayerTasks[SIO_MULTI_CNT->id]);
     mpPlayerSprite = &mpp->s;
 
-    if (layer != p->unk38) {
+    if (layer != p->layer) {
         return COLL_NONE;
     }
     // _0800DABC
@@ -103,7 +103,7 @@ bool32 sub_800DD54(Player *p)
     p->moveState &= ~MOVESTATE_400;
     p->moveState &= ~MOVESTATE_100;
 
-    p->unk64 = SA2_CHAR_ANIM_20;
+    p->charState = SA2_CHAR_ANIM_20;
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
     p->unk61 = 0;
@@ -165,7 +165,7 @@ bool32 sub_800DE44(Player *p)
     p->moveState &= ~MOVESTATE_400;
     p->moveState &= ~MOVESTATE_100;
 
-    p->unk64 = SA2_CHAR_ANIM_20;
+    p->charState = SA2_CHAR_ANIM_20;
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
     p->unk61 = 0;
@@ -203,7 +203,7 @@ bool32 sub_800DE44(Player *p)
 u32 sub_800DF38(Sprite *s, s32 x, s32 y, Player *p)
 {
     // TODO: Could this match with a 'struct Rect8' instead of s8[4]?
-    s8 rectPlayer[4] = { -p->unk16, -p->unk17, +p->unk16, +p->unk17 };
+    s8 rectPlayer[4] = { -p->spriteOffsetX, -p->spriteOffsetY, +p->spriteOffsetX, +p->spriteOffsetY };
 
     return CheckRectCollision_SpritePlayer(s, x, y, p, (struct Rect8 *)&rectPlayer);
 }

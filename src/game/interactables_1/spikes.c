@@ -525,8 +525,8 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
 
         if (flags) {
-            u32 v = ((u8)player->unk16 + 5);
-            s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
+            u32 v = ((u8)player->spriteOffsetX + 5);
+            s8 sp00[4] = { -v, 1 - player->spriteOffsetY, v, player->spriteOffsetY - 1 };
 
             if (flags & 0xC0000) {
                 player->moveState |= MOVESTATE_20;
@@ -572,7 +572,7 @@ bool32 sub_80601F8(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Player *play
                 if (gravityInverted) {
                     if (flags & 0x20000) {
                         player->speedAirY = 0;
-                        player->y = Q(screenY + s->hitboxes[0].bottom + player->unk17);
+                        player->y = Q(screenY + s->hitboxes[0].bottom + player->spriteOffsetY);
                         player->moveState |= MOVESTATE_8;
                         player->moveState &= ~MOVESTATE_IN_AIR;
                         player->unk3C = s;
@@ -643,7 +643,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
         u32 flags = sub_800CCB8(s, screenX, screenY, player);
         if (flags) {
             if ((flags & 0x20000) && !GRAVITY_IS_INVERTED) {
-                player->y = Q((screenY + s->hitboxes[0].bottom) + player->unk17 + 1);
+                player->y = Q((screenY + s->hitboxes[0].bottom) + player->spriteOffsetY + 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
 
@@ -653,7 +653,7 @@ static bool32 sub_8060440(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
                 }
             } else if ((flags & 0x10000) && GRAVITY_IS_INVERTED) {
                 // _080604D0
-                player->y = Q((screenY + s->hitboxes[0].top) - player->unk17 - 1);
+                player->y = Q((screenY + s->hitboxes[0].top) - player->spriteOffsetY - 1);
                 player->speedAirY = 0;
                 player->speedGroundX = 0;
 
@@ -741,8 +741,8 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
 
             if (sub_800DF38(s, screenX, screenY, player) == 0x80000) {
                 if ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0) {
-                    u32 v = ((u8)player->unk16 + 5);
-                    s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
+                    u32 v = ((u8)player->spriteOffsetX + 5);
+                    s8 sp00[4] = { -v, 1 - player->spriteOffsetY, v, player->spriteOffsetY - 1 };
 
                     if (!GRAVITY_IS_INVERTED) {
                         player->y = Q((screenY + s->hitboxes[0].top) - sp00[3]);
@@ -785,7 +785,7 @@ static bool32 sub_8060554(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
                         return TRUE;
                     }
                 } else if ((flags & 0x20000) && GRAVITY_IS_INVERTED) {
-                    player->y = Q(screenY + s->hitboxes[0].bottom + player->unk17);
+                    player->y = Q(screenY + s->hitboxes[0].bottom + player->spriteOffsetY);
                     player->moveState |= MOVESTATE_8;
                     player->moveState &= ~MOVESTATE_IN_AIR;
                     player->unk3C = s;
@@ -908,8 +908,8 @@ static bool32 sub_80609B4(Sprite *s, MapEntity *me, Sprite_Spikes *spikes, Playe
 
             if ((sub_800DF38(s, screenX, screenY, player) == 0x80000) && ((sub_8060D08(s, screenX, screenY, player) & 0xD0000) != 0)) {
 
-                u32 v = ((u8)player->unk16 + 5);
-                s8 sp00[4] = { -v, 1 - player->unk17, v, player->unk17 - 1 };
+                u32 v = ((u8)player->spriteOffsetX + 5);
+                s8 sp00[4] = { -v, 1 - player->spriteOffsetY, v, player->spriteOffsetY - 1 };
 
                 if (!GRAVITY_IS_INVERTED) {
                     player->y = Q(s->hitboxes[0].bottom + screenY - sp00[1]);

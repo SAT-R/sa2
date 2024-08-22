@@ -252,8 +252,8 @@ static void Task_BossRunManagerMain(void)
             if (gPlayer.x < Q(42960) && gPlayer.x > Q(gUnknown_080D8808[6][0] + 30)) {
                 gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
                 gPlayer.speedGroundX = Q(5);
-                gPlayer.unk5E = 0;
-                gPlayer.unk5C = 0;
+                gPlayer.frameInput = 0;
+                gPlayer.heldInput = 0;
                 gPlayer.rotation = 0;
                 if (I(gPlayer.x) - 120 != gCamera.x) {
                     if (I(gPlayer.x) - 120 > gCamera.x) {
@@ -498,7 +498,7 @@ static void sub_804A070(SuperEggRoboZTowers *towers, u8 towerIndex)
         if (result != 0) {
             gPlayer.y -= Q(8);
             gPlayer.speedAirY = -Q(3.5);
-            gPlayer.unk64 = 20;
+            gPlayer.charState = 20;
             gPlayer.transition = PLTRANS_PT6;
         }
     }
@@ -860,8 +860,8 @@ static void Task_804A9D8(void)
             }
 
             if (v >= 0 && v <= 3) {
-                gPlayer.unk64 = 70 - v;
-                gPlayer.unk66 = -1;
+                gPlayer.charState = 70 - v;
+                gPlayer.prevCharState = -1;
             }
         }
     }
@@ -950,11 +950,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", static void Ta
         Player_DisableInputAndBossTimer_FinalBoss();
 
         gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-        gPlayer.unk5C = 0;
-        gPlayer.unk5E = 0;
+        gPlayer.heldInput = 0;
+        gPlayer.frameInput = 0;
 
         if (gPlayer.moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) {
-            gPlayer.unk64 = 50;
+            gPlayer.charState = 50;
             gPlayer.speedAirX = -Q(2);
             gPlayer.speedAirY = -Q(0);
             gPlayer.transition = PLTRANS_PT5;
@@ -2032,7 +2032,7 @@ static void Task_SuperEggRoboZMain(void)
         boss->unk14 = 300;
         gCurTask->main = Task_804A9D8;
         m4aSongNumStart(SE_260);
-        gPlayer.unk64 = 0;
+        gPlayer.charState = 0;
         gPlayer.transition = PLTRANS_PT1;
     }
 }

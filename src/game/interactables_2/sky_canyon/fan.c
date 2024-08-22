@@ -153,7 +153,7 @@ static void sub_807D468(Sprite_Fan *prop)
                 gPlayer.x = r3;
             }
 
-            if (gPlayer.unk5E & 0x20) {
+            if (gPlayer.frameInput & 0x20) {
                 gPlayer.moveState |= MOVESTATE_FACING_LEFT;
                 gPlayer.speedGroundX = -gPlayer.speedGroundX;
             }
@@ -172,7 +172,7 @@ static void sub_807D468(Sprite_Fan *prop)
                 gPlayer.x = r3;
             }
 
-            if (gPlayer.unk5E & 0x10) {
+            if (gPlayer.frameInput & 0x10) {
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
                 gPlayer.speedGroundX = -gPlayer.speedGroundX;
             }
@@ -302,7 +302,7 @@ static void SetTaskMain_807D978(Sprite_Fan *unused) { gCurTask->main = Task_IA_S
 
 static s16 ClampPlayerSpeed(s16 speed)
 {
-    if (gPlayer.unk5A) {
+    if (gPlayer.isBoosting) {
         CLAMP_INLINE2(speed, -PROP_PLAYER_CLAMP_SPEED_BOOST, PROP_PLAYER_CLAMP_SPEED_BOOST);
     } else {
         // @BUG: Seems like a copy-paste error?

@@ -195,7 +195,7 @@ static void Task_807DBF0(void)
         launcher->unk48 = FALSE;
     } else {
         if (gPlayer.timerInvulnerability != 120) {
-            if (gPlayer.unk5E & gPlayerControls.jump) {
+            if (gPlayer.frameInput & gPlayerControls.jump) {
                 gPlayer.transition = PLTRANS_PT3;
 
                 gPlayer.moveState &= ~MOVESTATE_400000;
@@ -215,7 +215,7 @@ static void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
     m4aSongNumStart(SE_286);
 
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.unk64 = 64;
+    gPlayer.charState = 64;
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
@@ -223,8 +223,8 @@ static void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
 
-    gPlayer.unk16 = 6;
-    gPlayer.unk17 = 14;
+    gPlayer.spriteOffsetX = 6;
+    gPlayer.spriteOffsetY = 14;
     gPlayer.moveState &= ~MOVESTATE_4;
 
     if (IS_LAUNCHER_DIR_LEFT(launcher->kind)) {
@@ -242,7 +242,7 @@ static void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
 {
     if (PLAYER_IS_ALIVE && launcher->unk48) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.unk64 = 65;
+        gPlayer.charState = 65;
         gPlayer.transition = PLTRANS_PT7;
 
         switch (launcher->kind) {

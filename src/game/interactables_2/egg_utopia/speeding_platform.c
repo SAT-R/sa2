@@ -152,7 +152,7 @@ static void sub_807FB1C(Sprite_SpeedingPlatform *platform)
 
     if (PLAYER_IS_ALIVE && platform->unk4C) {
         gPlayer.x = platform->unk50 + (Q(platform->x) + platform->unk44);
-        gPlayer.y = platform->unk52 + (Q(platform->y) + platform->unk48) - Q(gPlayer.unk17);
+        gPlayer.y = platform->unk52 + (Q(platform->y) + platform->unk48) - Q(gPlayer.spriteOffsetY);
         platform->unk50 += gPlayer.speedAirX;
         platform->unk52 += gPlayer.speedAirY;
     }
@@ -269,7 +269,7 @@ static void TaskDestructor_Interactable097(struct Task *t)
 static void sub_807FE34(Sprite_SpeedingPlatform *platform)
 {
     platform->unk50 = gPlayer.x - (Q(platform->x) + platform->unk44);
-    platform->unk52 = gPlayer.y - (Q(platform->y) + platform->unk48) + Q(gPlayer.unk17);
+    platform->unk52 = gPlayer.y - (Q(platform->y) + platform->unk48) + Q(gPlayer.spriteOffsetY);
     platform->unk4C = TRUE;
     m4aSongNumStart(SE_288);
     gCurTask->main = sub_807FF20;

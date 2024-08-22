@@ -121,8 +121,8 @@ static void Task_Interactable_BouncySpring()
             Player_TransitionCancelFlyingAndBoost(&gPlayer);
             sub_8023B5C(&gPlayer, 14);
 
-            gPlayer.unk16 = 6;
-            gPlayer.unk17 = 14;
+            gPlayer.spriteOffsetX = 6;
+            gPlayer.spriteOffsetY = 14;
 
             gPlayer.moveState = (gPlayer.moveState | MOVESTATE_IN_AIR) & ~MOVESTATE_100;
 
@@ -140,9 +140,9 @@ static void Task_Interactable_BouncySpring()
                 spring->s.prevVariant = -1;
             }
 
-            gPlayer.unk64 = 38;
+            gPlayer.charState = 38;
             gPlayer.transition = PLTRANS_PT7;
-            gPlayer.unk66 = -1;
+            gPlayer.prevCharState = -1;
 
             m4aSongNumStart(SE_SPRINGY_SPRING);
 

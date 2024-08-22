@@ -145,9 +145,9 @@ void sub_8075B50(Sprite_NoteBlock *block)
     s32 ah;
     block->unk49 = 192;
     gPlayer.speedAirY = -(gUnknown_080DFC6A[block->unk48]);
-    gPlayer.unk64 = 0x39;
+    gPlayer.charState = 0x39;
     gPlayer.transition = PLTRANS_PT5;
-    gPlayer.unk66 = -1;
+    gPlayer.prevCharState = -1;
 
     block->unk4A = 0;
     sub_8080C78(block->posX, block->posY, 5, 30, (gUnknown_080DFC6A[block->unk48]) >> 3,

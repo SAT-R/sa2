@@ -1,13 +1,15 @@
 #include <string.h> // memcpy
 
 #include "core.h"
+#include "lib/m4a.h"
+#include "game/save.h"
 #include "game/special_stage/main.h"
 #include "game/special_stage/player.h"
 #include "game/special_stage/ui.h"
 #include "game/special_stage/utils.h"
 #include "game/special_stage/data.h"
-#include "lib/m4a.h"
-#include "game/save.h"
+
+#include "constants/animations.h"
 #include "constants/songs.h"
 #include "constants/text.h"
 
@@ -23,39 +25,52 @@ static void HandleUnpaused(struct SpecialStageUI *);
 static void RenderPauseMenu(struct SpecialStageUI *);
 
 static const struct UNK_80DF670 sDigitSprites[] = {
-    { 1119, 16, 2, 0, 0 }, { 1119, 17, 2, 0, 0 }, { 1119, 18, 2, 0, 0 }, { 1119, 19, 2, 0, 0 }, { 1119, 20, 2, 0, 0 },
-    { 1119, 21, 2, 0, 0 }, { 1119, 22, 2, 0, 0 }, { 1119, 23, 2, 0, 0 }, { 1119, 24, 2, 0, 0 },
+    { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR('1'), 2, 0, 0 }, { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR('2'), 2, 0, 0 },
+    { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR('3'), 2, 0, 0 }, { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR('4'), 2, 0, 0 },
+    { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR('5'), 2, 0, 0 }, { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR('6'), 2, 0, 0 },
+    { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR('7'), 2, 0, 0 }, { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR('8'), 2, 0, 0 },
+    { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR('9'), 2, 0, 0 },
 };
 
 static const struct UNK_80DF670 gUnknown_080DF830[] = {
-    { 1119, 25, 2, 0, 0 },
-    { 1119, 26, 2, 0, 0 },
+    { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR(':'), 2, 0, 0 },
+    { SA2_ANIM_ASCII, SA2_ANIM_ASCII_CHAR(';'), 2, 0, 0 },
 };
 
 static const struct UNK_80DF670 gUnknown_080DF840[] = {
-    { 885, 0, 2, 0, 0 }, { 885, 1, 2, 0, 0 }, { 885, 2, 2, 0, 0 }, { 885, 3, 2, 0, 0 },
-    { 885, 4, 2, 0, 0 }, { 885, 5, 2, 0, 0 }, { 885, 6, 2, 0, 0 }, { 885, 7, 2, 0, 0 },
+    { SA2_ANIM_SP_STAGE_MULTIPLIER, SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x2, 2, 0, 0 },
+    { SA2_ANIM_SP_STAGE_MULTIPLIER, SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x3, 2, 0, 0 },
+    { SA2_ANIM_SP_STAGE_MULTIPLIER, SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x4, 2, 0, 0 },
+    { SA2_ANIM_SP_STAGE_MULTIPLIER, SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x5, 2, 0, 0 },
+    { SA2_ANIM_SP_STAGE_MULTIPLIER, SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x6, 2, 0, 0 },
+    { SA2_ANIM_SP_STAGE_MULTIPLIER, SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x7, 2, 0, 0 },
+    { SA2_ANIM_SP_STAGE_MULTIPLIER, SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x8, 2, 0, 0 },
+    { SA2_ANIM_SP_STAGE_MULTIPLIER, SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x9, 2, 0, 0 },
 };
 
 static const struct UNK_80DF670 gUnknown_080DF880[] = {
-    { 1121, 0, 24, 0, 0 }, { 1121, 4, 27, 0, 0 }, { 1121, 1, 24, 0, 0 }, { 1121, 2, 27, 0, 0 }, { 1121, 3, 18, 0, 0 },
+    { SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_SONIC, 24, 0, 0 },
+    { SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_CREAM, 27, 0, 0 },
+    { SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_TAILS, 24, 0, 0 },
+    { SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_KNUCKLES, 27, 0, 0 },
+    { SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_AMY, 18, 0, 0 },
 };
 
 static const struct UNK_80DF670 sChaosEmeraldUnlockedSprites[] = {
-    { 895, 0, 9, 0, 0 },
-    { 895, 1, 9, 0, 0 },
-    { 895, 2, 9, 0, 0 },
-    { 895, 3, 9, 0, 0 },
-    { 895, 4, 9, 0, 0 },
-    { 895, 5, 9, 0, 0 },
-    { 895, 6, 9, 0, 0 },
-    // missing
-    { 895, 7, 9, 0, 0 },
-    { 895, 8, 9, 0, 0 },
+    { SA2_ANIM_CHAOS_EMERALDS_UNLOCKED, SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_RED, 9, 0, 0 },
+    { SA2_ANIM_CHAOS_EMERALDS_UNLOCKED, SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_BLUE, 9, 0, 0 },
+    { SA2_ANIM_CHAOS_EMERALDS_UNLOCKED, SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_YELLOW, 9, 0, 0 },
+    { SA2_ANIM_CHAOS_EMERALDS_UNLOCKED, SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_GREEN, 9, 0, 0 },
+    { SA2_ANIM_CHAOS_EMERALDS_UNLOCKED, SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_WHITE, 9, 0, 0 },
+    { SA2_ANIM_CHAOS_EMERALDS_UNLOCKED, SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_CYAN, 9, 0, 0 },
+    { SA2_ANIM_CHAOS_EMERALDS_UNLOCKED, SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_PURPLE, 9, 0, 0 },
+    { SA2_ANIM_CHAOS_EMERALDS_UNLOCKED, SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_EMPTY, 9, 0, 0 },
+    { SA2_ANIM_CHAOS_EMERALDS_UNLOCKED, SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_SHINE, 9, 0, 0 },
 };
 
 static const u16 sPauseMenuVariants[][3] = {
-    { 40, 1066, 0 }, { 40, 1067, 0 }, { 40, 1068, 0 }, { 40, 1069, 0 }, { 40, 1070, 0 }, { 40, 1071, 0 },
+    { 40, SA2_ANIM_PAUSE_MENU_JP, 0 }, { 40, SA2_ANIM_PAUSE_MENU_EN, 0 }, { 40, SA2_ANIM_PAUSE_MENU_DE, 0 },
+    { 40, SA2_ANIM_PAUSE_MENU_FR, 0 }, { 40, SA2_ANIM_PAUSE_MENU_ES, 0 }, { 40, SA2_ANIM_PAUSE_MENU_IT, 0 },
 };
 
 void sub_806FB04(void)
@@ -305,7 +320,8 @@ static void HandlePaused(struct SpecialStageUI *ui)
     const u16 pauseMenuSprites[6][3];
     memcpy((void *)&pauseMenuSprites, sPauseMenuVariants, 0x24);
 
-    sub_806CA88(s, 1, pauseMenuSprites[lang][0], pauseMenuSprites[lang][1], 0x1000, 0x78, 0x50, 0, pauseMenuSprites[lang][2], 0);
+    sub_806CA88(s, 1, pauseMenuSprites[lang][0], pauseMenuSprites[lang][1], 0x1000, (DISPLAY_WIDTH / 2), (DISPLAY_HEIGHT / 2), 0,
+                pauseMenuSprites[lang][2], 0);
 
     DmaCopy16(3, &gObjPalette[249], ui->pauseMenuPalette1, 6);
     DmaCopy16(3, &gObjPalette[252], ui->pauseMenuPalette2, 6);
@@ -331,16 +347,16 @@ static void SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *
     gUnknown_03005B58 = NULL;
 
     if (stage->targetReached) {
-        sub_806CA88(&resultsScreen->unk4, 1, 0x28, 0x37d, 0, 0x100 + a, 0x20, 0, 1, 0);
-        sub_806CA88(&resultsScreen->unk34, 1, gUnknown_080DF880[character].unk4, gUnknown_080DF880[character].anim, 0, 0x100 + a, 0x18, 0,
-                    gUnknown_080DF880[character].variant, 0);
+        sub_806CA88(&resultsScreen->unk4, 1, 0x28, SA2_ANIM_SP_STAGE_NOTIFS, 0, DISPLAY_WIDTH + 16 + a, 32, 0, 1, 0);
+        sub_806CA88(&resultsScreen->unk34, 1, gUnknown_080DF880[character].unk4, gUnknown_080DF880[character].anim, 0,
+                    DISPLAY_WIDTH + 16 + a, 24, 0, gUnknown_080DF880[character].variant, 0);
     } else {
-        sub_806CA88(&resultsScreen->unk4, 1, 0x20, 0x37d, 0, 0x100 + a, 0x20, 0, 0, 0);
+        sub_806CA88(&resultsScreen->unk4, 1, 0x20, SA2_ANIM_SP_STAGE_NOTIFS, 0, DISPLAY_WIDTH + 16 + a, 32, 0, 0, 0);
     }
 
-    sub_806CA88(&resultsScreen->unk1B4, 1, 0x16, 0x37E, 0, 0x100 + a, 0x48, 0, 0, 0);
-    sub_806CA88(&resultsScreen->unk1E4, 1, 0x16, 0x37E, 0, 0x100 + b, 0x5C, 0, 1, 0);
-    sub_806CA88(&resultsScreen->unk214, 1, 0x16, 0x37E, 0, 0x100 + c, 0x70, 0, 2, 0);
+    sub_806CA88(&resultsScreen->unk1B4, 1, 0x16, SA2_ANIM_SP_STAGE_SCORE_BONUSES, 0, DISPLAY_WIDTH + 16 + a, 72, 0, 0, 0);
+    sub_806CA88(&resultsScreen->unk1E4, 1, 0x16, SA2_ANIM_SP_STAGE_SCORE_BONUSES, 0, DISPLAY_WIDTH + 16 + b, 92, 0, 1, 0);
+    sub_806CA88(&resultsScreen->unk214, 1, 0x16, SA2_ANIM_SP_STAGE_SCORE_BONUSES, 0, DISPLAY_WIDTH + 16 + c, 112, 0, 2, 0);
 
     for (i = 0; i < 5; i++) {
         sub_806CA88(&resultsScreen->unk244[i], 1, sDigitSprites[0].unk4, sDigitSprites[0].anim, 0, d + SomeMacro807028C(i), 0x58, 0,
@@ -364,7 +380,7 @@ static void SpecialStageResultsScreenCreateUI(struct SpecialStageResultsScreen *
             sprite = &sChaosEmeraldUnlockedSprites[7];
         }
 
-        sub_806CA88(&resultsScreen->chaosEmerald[i], 1, 9, sprite->anim, 0, i * 24 + 292, 0x34, 0, sprite->variant, 0);
+        sub_806CA88(&resultsScreen->chaosEmerald[i], 1, 9, sprite->anim, 0, i * 24 + DISPLAY_WIDTH + 52, 52, 0, sprite->variant, 0);
     }
 
     resultsScreen->animFrame = 0;

@@ -112,10 +112,10 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
 
         case 1:
         case 2: {
-            ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
-            ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
+            ts->playerAnim = gUnknown_080D6736[gPlayer.charState][0];
+            ts->playerVariant = gUnknown_080D6736[gPlayer.charState][1];
 
-            if (gPlayer.unk64 < 80) {
+            if (gPlayer.charState < 80) {
                 AnimId idle = gPlayerCharacterIdleAnims[gPlayer.character];
                 ts->playerAnim += idle;
             }
@@ -176,16 +176,16 @@ void sub_8011D48(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    if (!p->unk5A) {
+    if (!p->isBoosting) {
         if (p->moveState & MOVESTATE_FACING_LEFT) {
             p->speedGroundX = -Q(3.0);
         } else {
             p->speedGroundX = +Q(3.0);
         }
 
-        p->unk64 = 15;
+        p->charState = 15;
     } else {
-        p->unk64 = 17;
+        p->charState = 17;
     }
 
     m4aSongNumStart(SE_TAILS_TAIL_SWIPE);
@@ -209,15 +209,15 @@ void PlayerCB_8011DCC(Player *p)
 
     if (p->unk90->s.frameFlags & MOVESTATE_4000) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->unk64 = 50;
+            p->charState = 50;
             p->transition = PLTRANS_PT5;
         } else {
             p->variant = 1;
-            p->unk6C = 1;
+            p->unk6C = TRUE;
 
             PLAYERFN_SET(PlayerCB_8011E88);
 
-            if (!p->unk5A) {
+            if (!p->isBoosting) {
                 if (p->moveState & MOVESTATE_FACING_LEFT) {
                     p->speedGroundX = -Q(4.0);
                 } else {
@@ -251,11 +251,11 @@ void PlayerCB_8011E88(Player *p)
 
     if (--p->unk72 == -1) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->unk64 = 50;
+            p->charState = 50;
             p->transition = PLTRANS_PT5;
         } else {
             p->variant = 2;
-            p->unk6C = 1;
+            p->unk6C = TRUE;
 
             PLAYERFN_SET(PlayerCB_80123D0);
         }
@@ -279,8 +279,8 @@ void PlayerCB_8011F1C(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
-    p->unk5A = FALSE;
-    p->unk64 = 36;
+    p->isBoosting = FALSE;
+    p->charState = 36;
 
     if (p->character == CHARACTER_AMY) {
         m4aSongNumStart(SE_AMY_HAMMER_SWIRL);
@@ -326,7 +326,7 @@ void PlayerCB_8011F94(Player *p)
             m4aSongNumStart(SE_SONIC_BOUND_IMPACT);
         }
 
-        p->unk64 = -1;
+        p->charState = -1;
     }
 }
 
@@ -336,7 +336,7 @@ void Task_SonicBoundMotionFrames(void)
     Sprite *s = &bound->s;
     Vec2_32 pos;
 
-    if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.speedAirY < Q(2.0)) || (gPlayer.unk64 != 36)) {
+    if ((gPlayer.moveState & MOVESTATE_DEAD) || (gPlayer.speedAirY < Q(2.0)) || (gPlayer.charState != 36)) {
         TaskDestroy(gCurTask);
     } else {
         UpdateSpriteAnimation(s);
@@ -356,10 +356,10 @@ void Task_SonicBoundMotionFrames(void)
 void Player_SonicForwardDash(Player *p)
 {
     if (p->moveState & MOVESTATE_10) {
-        if (p->unk5C & DPAD_LEFT)
+        if (p->heldInput & DPAD_LEFT)
             p->moveState |= MOVESTATE_FACING_LEFT;
 
-        if (p->unk5C & DPAD_RIGHT)
+        if (p->heldInput & DPAD_RIGHT)
             p->moveState &= ~MOVESTATE_FACING_LEFT;
     }
 
@@ -369,7 +369,7 @@ void Player_SonicForwardDash(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->unk64 = 80;
+    p->charState = 80;
 
     if (p->moveState & MOVESTATE_FACING_LEFT)
         p->speedAirX -= Q(2.25);
@@ -378,7 +378,7 @@ void Player_SonicForwardDash(Player *p)
 
     p->speedAirY = 0;
     p->rotation = 0;
-    p->unk70 = 0;
+    p->unk70 = FALSE;
     p->unk71 = 0;
 
     m4aSongNumStart(SE_SONIC_MIDAIR_SOMERSAULT);
@@ -402,7 +402,7 @@ void sub_8012194(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
-    p->unk64 = 19;
+    p->charState = 19;
 
     cosVal = COS_24_8(unk30054C0);
     sinVal = SIN_24_8(unk30054C0);
@@ -410,7 +410,7 @@ void sub_8012194(Player *p)
     p->speedAirY = I(sinVal * six) - Q(0.5);
 
     p->rotation = 0;
-    p->unk70 = 0;
+    p->unk70 = FALSE;
     p->unk71 = 0;
     p->unk6E = 0;
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
@@ -430,13 +430,13 @@ void PlayerCB_801225C(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->unk64 = 14;
+    p->charState = 14;
 
     p->speedAirX = 0;
     p->speedAirY = -Q(4.0);
     p->rotation = 0;
 
-    p->unk70 = 1;
+    p->unk70 = TRUE;
     p->unk71 = 0;
     p->unk6E = 0;
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
@@ -525,7 +525,7 @@ void PlayerCB_8012460(Player *p)
 
     if (p->speedAirY >= 0) {
         p->variant++;
-        p->unk6C = 1;
+        p->unk6C = TRUE;
         PLAYERFN_SET(PlayerCB_8012498);
     }
 
@@ -551,7 +551,7 @@ void TaskDestructor_SonicBoundMotionFrames(struct Task *t)
 void PlayerCB_80124D0(Player *p)
 {
     if (--p->unk72 == -1) {
-        p->unk64 = 14;
+        p->charState = 14;
         p->moveState &= ~MOVESTATE_BOOST_EFFECT_ON;
     }
 
@@ -589,9 +589,9 @@ void sub_8012548(Player *p)
 
     if (ABS(p->speedGroundX) < Q(0.25)) {
         p->speedGroundX = 0;
-        p->unk64 = 15;
+        p->charState = 15;
     } else {
-        p->unk64 = 87;
+        p->charState = 87;
     }
 
     PLAYERFN_SET_AND_CALL(PlayerCB_80127F0, p);
@@ -600,20 +600,20 @@ void sub_8012548(Player *p)
 void sub_80125BC(Player *p)
 {
     if (p->w.cf.flyingDuration == 0) {
-        if (p->unk64 == 85)
+        if (p->charState == 85)
             m4aSongNumStop(SE_CREAM_FLYING);
 
-        p->unk64 = 85;
+        p->charState = 85;
     } else {
-        if (((p->unk5C & DPAD_LEFT) && !(p->moveState & MOVESTATE_FACING_LEFT))
-            || ((p->unk5C & DPAD_RIGHT) && (p->moveState & MOVESTATE_FACING_LEFT))) {
-            p->unk64 = 84;
-        } else if (p->unk64 == 84) {
+        if (((p->heldInput & DPAD_LEFT) && !(p->moveState & MOVESTATE_FACING_LEFT))
+            || ((p->heldInput & DPAD_RIGHT) && (p->moveState & MOVESTATE_FACING_LEFT))) {
+            p->charState = 84;
+        } else if (p->charState == 84) {
             if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
-                p->unk64 = 83;
+                p->charState = 83;
             }
         } else {
-            p->unk64 = 83;
+            p->charState = 83;
         }
 
         m4aSongNumStartOrChange(SE_CREAM_FLYING);
@@ -632,7 +632,7 @@ void sub_8012644(Player *p)
 
     p->w.cf.flyingDuration = CREAM_FLYING_DURATION;
     p->unk61 = 1;
-    p->unk5A = 0;
+    p->isBoosting = 0;
     p->unk58 = 0;
     gPlayer.moveState |= MOVESTATE_10000000;
     PLAYERFN_SET_AND_CALL(PlayerCB_80126B0, p);
@@ -643,8 +643,8 @@ void PlayerCB_80126B0(Player *p)
     if (p->w.cf.flyingDuration != 0) {
         p->w.cf.flyingDuration--;
 
-        if (p->unk5C & gPlayerControls.attack) {
-            p->unk64 = 86;
+        if (p->heldInput & gPlayerControls.attack) {
+            p->charState = 86;
             p->transition = PLTRANS_PT5;
 
             m4aSongNumStop(SE_CREAM_FLYING);
@@ -663,7 +663,7 @@ void PlayerCB_80126B0(Player *p)
             p->unk61 = 1;
         }
     } else {
-        if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75)) && (p->w.cf.flyingDuration != 0)) {
+        if ((p->frameInput & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75)) && (p->w.cf.flyingDuration != 0)) {
             p->unk61 = 2;
         }
 
@@ -694,7 +694,7 @@ void PlayerCB_80126B0(Player *p)
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
         p->transition = PLTRANS_PT1;
     } else if (p->moveState & MOVESTATE_40) {
-        p->unk64 = 14;
+        p->charState = 14;
         p->transition = PLTRANS_PT5;
     }
 }
@@ -703,7 +703,7 @@ void PlayerCB_80127F0(Player *p)
 {
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->unk64 = 9;
+            p->charState = 9;
             p->transition = PLTRANS_PT5;
         } else {
             p->transition = PLTRANS_PT1;
@@ -723,7 +723,7 @@ void sub_8012830(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    p->unk64 = 17;
+    p->charState = 17;
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8012938, p);
 }
@@ -738,7 +738,7 @@ void sub_8012888(Player *p)
 
     p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
 
-    p->unk64 = 18;
+    p->charState = 18;
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8012978, p);
 }
@@ -753,7 +753,7 @@ void sub_80128E0(Player *p)
 
     p->moveState |= (MOVESTATE_20000000 | MOVESTATE_100 | MOVESTATE_IN_AIR);
 
-    p->unk64 = 19;
+    p->charState = 19;
 
     PLAYERFN_SET_AND_CALL(PlayerCB_80129BC, p);
 }
@@ -762,7 +762,7 @@ void PlayerCB_8012938(Player *p)
 {
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->unk64 = 50;
+            p->charState = 50;
             p->transition = PLTRANS_PT5;
         } else {
             p->transition = PLTRANS_PT1;
@@ -811,12 +811,12 @@ struct Task *sub_80129DC(s32 x, s32 y)
         ts->playerAnim = gPlayerCharacterIdleAnims[gPlayer.character];
 
         // This is += because it's adding to the base Idle character animation
-        ts->playerAnim += gUnknown_080D6736[gPlayer.unk64][0];
-        ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
+        ts->playerAnim += gUnknown_080D6736[gPlayer.charState][0];
+        ts->playerVariant = gUnknown_080D6736[gPlayer.charState][1];
 
         s = &ts->s;
 
-        if (!gPlayer.unk5A) {
+        if (!gPlayer.isBoosting) {
             s->graphics.dest = VramMalloc(15);
             s->graphics.anim = SA2_ANIM_TAILS_TAIL_SWIPE;
             s->variant = 0;
@@ -841,7 +841,7 @@ void sub_8012AD0(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
-    p->unk64 = 91;
+    p->charState = 91;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -861,17 +861,17 @@ void sub_8012AD0(Player *p)
 void sub_8012B44(Player *p)
 {
     if (p->w.tf.flyingDuration == 0) {
-        p->unk64 = 90;
+        p->charState = 90;
         m4aSongNumStop(SE_TAILS_PROPELLER_FLYING);
     } else {
-        if (((p->unk5C & DPAD_LEFT) && !(p->moveState & MOVESTATE_FACING_LEFT))
-            || ((p->unk5C & DPAD_RIGHT) && (p->moveState & MOVESTATE_FACING_LEFT))) {
-            p->unk64 = 89;
-        } else if ((p->unk64 == 89)) {
+        if (((p->heldInput & DPAD_LEFT) && !(p->moveState & MOVESTATE_FACING_LEFT))
+            || ((p->heldInput & DPAD_RIGHT) && (p->moveState & MOVESTATE_FACING_LEFT))) {
+            p->charState = 89;
+        } else if ((p->charState == 89)) {
             if ((p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER))
-                p->unk64 = 88;
+                p->charState = 88;
         } else {
-            p->unk64 = 88;
+            p->charState = 88;
         }
 
         m4aSongNumStartOrChange(SE_TAILS_PROPELLER_FLYING);
@@ -890,7 +890,7 @@ void sub_8012BC0(Player *p)
 
     p->w.tf.flyingDuration = TAILS_FLYING_DURATION;
     p->unk61 = 1;
-    p->unk5A = 0;
+    p->isBoosting = 0;
     p->unk58 = 0;
 
     gPlayer.moveState |= MOVESTATE_10000000;
@@ -916,7 +916,7 @@ void PlayerCB_8012C2C(Player *p)
             p->unk61 = 1;
         }
     } else {
-        if ((p->unk5E & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75)) && (p->w.tf.flyingDuration != 0)) {
+        if ((p->frameInput & gPlayerControls.jump) && (p->speedAirY >= -Q(0.75)) && (p->w.tf.flyingDuration != 0)) {
             p->unk61 = 2;
         }
 
@@ -940,7 +940,7 @@ void PlayerCB_8012C2C(Player *p)
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
         p->transition = PLTRANS_PT1;
     } else if (p->moveState & MOVESTATE_40) {
-        p->unk64 = 14;
+        p->charState = 14;
         p->transition = PLTRANS_PT5;
     }
 }
@@ -960,7 +960,7 @@ void sub_8012D3C(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
-    p->unk64 = 15;
+    p->charState = 15;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -1009,10 +1009,10 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
         t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
         ts = TASK_DATA(t);
 
-        ts->playerAnim = gUnknown_080D6736[gPlayer.unk64][0];
-        ts->playerVariant = gUnknown_080D6736[gPlayer.unk64][1];
+        ts->playerAnim = gUnknown_080D6736[gPlayer.charState][0];
+        ts->playerVariant = gUnknown_080D6736[gPlayer.charState][1];
 
-        if (gPlayer.unk64 < 80) {
+        if (gPlayer.charState < 80) {
             ts->playerAnim += gPlayerCharacterIdleAnims[gPlayer.character];
         }
 
@@ -1037,7 +1037,7 @@ void sub_8012EEC(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
-    p->unk64 = 15;
+    p->charState = 15;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -1071,11 +1071,11 @@ void PlayerCB_8012F6C(Player *p)
 
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->unk64 = 50;
+            p->charState = 50;
             p->transition = PLTRANS_PT5;
         } else {
             p->variant++;
-            p->unk6C = 1;
+            p->unk6C = TRUE;
 
             if (ABS(p->speedGroundX) < Q(3.0)) {
                 if (p->moveState & MOVESTATE_FACING_LEFT) {
@@ -1109,7 +1109,7 @@ void PlayerCB_8013010(Player *p)
 
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->unk64 = 50;
+            p->charState = 50;
             p->transition = PLTRANS_PT5;
         } else {
             p->transition = PLTRANS_PT1;
@@ -1125,7 +1125,7 @@ void sub_8013070(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
-    p->unk64 = 17;
+    p->charState = 17;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 9);
 
@@ -1160,7 +1160,7 @@ void PlayerCB_80130E4(Player *p)
 
     if (--p->unk72 == -1) {
         p->variant++;
-        p->unk6C = 1;
+        p->unk6C = TRUE;
         PLAYERFN_SET(PlayerCB_8013B6C);
     }
 
@@ -1174,7 +1174,7 @@ void sub_8013150(Player *p)
     p->moveState &= ~MOVESTATE_FACING_LEFT;
 
     if (!(xOffset & 0x7F)) {
-        p->unk64 = 0x5C;
+        p->charState = 0x5C;
 
         if ((u8)xOffset == 0x80) {
             p->moveState |= MOVESTATE_FACING_LEFT;
@@ -1183,7 +1183,7 @@ void sub_8013150(Player *p)
         if (xOffset < 0) {
             xOffset = -xOffset;
         }
-        p->unk64 = gUnknown_080D5538[(xOffset & 0x7F) >> 5];
+        p->charState = gUnknown_080D5538[(xOffset & 0x7F) >> 5];
     }
 }
 
@@ -1219,7 +1219,7 @@ void sub_80131B4(Player *p)
             p->transition = PLTRANS_PT1;
         } else {
             PLAYERFN_SET(PlayerCB_8013C18);
-            p->unk64 = 95;
+            p->charState = 95;
             m4aSongNumStart(SE_SONIC_SKID_ATTACK);
         }
     } else {
@@ -1236,9 +1236,9 @@ void sub_80131B4(Player *p)
 
                     if (result != sp08) {
                         PLAYERFN_SET(PlayerCB_8013BD4);
-                        p->unk64 = 93;
-                        p->unk16 = 6;
-                        p->unk17 = 14;
+                        p->charState = 93;
+                        p->spriteOffsetX = 6;
+                        p->spriteOffsetY = 14;
                         p->w.tf.flags |= MOVESTATE_IN_AIR;
                         return;
                     }
@@ -1249,17 +1249,17 @@ void sub_80131B4(Player *p)
                             s32 playerBottomX;
                             s32 playerBottomY = I(p->y);
                             playerBottomY -= 1;
-                            playerBottomY -= p->unk17;
+                            playerBottomY -= p->spriteOffsetY;
 
                             playerBottomX = I(p->x);
                             playerBottomX -= 1;
-                            playerBottomX -= p->unk16;
+                            playerBottomX -= p->spriteOffsetX;
 
-                            if (sub_801E4E4(playerBottomY, playerBottomX, p->unk38, -8, NULL, sub_801EE64) < 0) {
+                            if (sub_801E4E4(playerBottomY, playerBottomX, p->layer, -8, NULL, sub_801EE64) < 0) {
                                 PLAYERFN_SET(PlayerCB_8013BD4);
-                                p->unk64 = 93;
-                                p->unk16 = 6;
-                                p->unk17 = 14;
+                                p->charState = 93;
+                                p->spriteOffsetX = 6;
+                                p->spriteOffsetY = 14;
                                 p->w.tf.flags |= MOVESTATE_IN_AIR;
                                 return;
                             }
@@ -1267,18 +1267,18 @@ void sub_80131B4(Player *p)
                             s32 playerBottomX;
                             s32 playerBottomY = I(p->y);
                             playerBottomY += 1;
-                            playerBottomY += p->unk17;
+                            playerBottomY += p->spriteOffsetY;
 
                             playerBottomX = I(p->x);
                             playerBottomX -= 1;
-                            playerBottomX -= p->unk16;
+                            playerBottomX -= p->spriteOffsetX;
 
-                            if (sub_801E4E4(playerBottomY, playerBottomX, p->unk38, +8, NULL, sub_801EE64) < 0) {
+                            if (sub_801E4E4(playerBottomY, playerBottomX, p->layer, +8, NULL, sub_801EE64) < 0) {
 
                                 PLAYERFN_SET(PlayerCB_8013BD4);
-                                p->unk64 = 93;
-                                p->unk16 = 6;
-                                p->unk17 = 14;
+                                p->charState = 93;
+                                p->spriteOffsetX = 6;
+                                p->spriteOffsetY = 14;
                                 p->w.tf.flags |= MOVESTATE_IN_AIR;
                                 return;
                             }
@@ -1292,9 +1292,9 @@ void sub_80131B4(Player *p)
                     result = sub_8029A74(p, 0, &sp08);
                     if (result != sp08) {
                         PLAYERFN_SET(PlayerCB_8013BD4);
-                        p->unk64 = 93;
-                        p->unk16 = 6;
-                        p->unk17 = 14;
+                        p->charState = 93;
+                        p->spriteOffsetX = 6;
+                        p->spriteOffsetY = 14;
                         p->w.tf.flags |= MOVESTATE_IN_AIR;
                         return;
                     } else if (result != 0) {
@@ -1302,19 +1302,19 @@ void sub_80131B4(Player *p)
                             s32 playerBottomX;
                             s32 playerBottomY = I(p->y);
                             playerBottomY += 1;
-                            playerBottomY += p->unk17;
+                            playerBottomY += p->spriteOffsetY;
 
                             playerBottomX = I(p->x);
                             playerBottomX += 1;
-                            playerBottomX += p->unk16;
+                            playerBottomX += p->spriteOffsetX;
 
                             if (sub_801E4E4(playerBottomY, // fmt
-                                            playerBottomX, p->unk38, +8, NULL, sub_801EE64)
+                                            playerBottomX, p->layer, +8, NULL, sub_801EE64)
                                 < 0) {
                                 PLAYERFN_SET(PlayerCB_8013BD4);
-                                p->unk64 = 93;
-                                p->unk16 = 6;
-                                p->unk17 = 14;
+                                p->charState = 93;
+                                p->spriteOffsetX = 6;
+                                p->spriteOffsetY = 14;
                                 p->w.tf.flags |= MOVESTATE_IN_AIR;
                                 return;
                             }
@@ -1331,7 +1331,7 @@ void sub_80131B4(Player *p)
 
                 p->w.tf.shift = 3;
 
-                p->unk64 = 100;
+                p->charState = 100;
                 p->moveState |= MOVESTATE_10000000;
 
                 PLAYERFN_SET_SHIFT_OFFSETS(p, 6, 10);
@@ -1340,15 +1340,15 @@ void sub_80131B4(Player *p)
             }
 
             PLAYERFN_SET(PlayerCB_8013BD4);
-            p->unk64 = 93;
-            p->unk16 = 6;
-            p->unk17 = 14;
+            p->charState = 93;
+            p->spriteOffsetX = 6;
+            p->spriteOffsetY = 14;
             p->w.tf.flags |= MOVESTATE_IN_AIR;
         } else {
 
-            if (!(p->unk5C & gPlayerControls.jump) || (p->moveState & MOVESTATE_40)) {
+            if (!(p->heldInput & gPlayerControls.jump) || (p->moveState & MOVESTATE_40)) {
                 PLAYERFN_SET(PlayerCB_8013BD4);
-                p->unk64 = 93;
+                p->charState = 93;
 
                 if (p->speedAirX <= 0) {
                     p->moveState |= MOVESTATE_FACING_LEFT;
@@ -1357,8 +1357,8 @@ void sub_80131B4(Player *p)
                 }
 
                 p->speedAirX >>= 2;
-                p->unk16 = 6;
-                p->unk17 = 14;
+                p->spriteOffsetX = 6;
+                p->spriteOffsetY = 14;
             } else {
                 sub_8013150(p);
             }
@@ -1379,8 +1379,8 @@ void sub_8013498(Player *p)
         p->speedAirX = 0;
         p->speedAirY = 0;
 
-        p->unk16 = 6;
-        p->unk17 = 14;
+        p->spriteOffsetX = 6;
+        p->spriteOffsetY = 14;
 
         sub_8022318(p);
 
@@ -1388,7 +1388,7 @@ void sub_8013498(Player *p)
             p->transition = PLTRANS_PT1;
         } else {
             p->unk2A = 15;
-            p->unk64 = 94;
+            p->charState = 94;
             PLAYERFN_SET(PlayerCB_8013BF0);
         }
     }
@@ -1401,7 +1401,7 @@ void sub_801350C(Player *p)
     s32 res;
 
     if ((gStageTime & 0x3) == 0) {
-        s32 offsetY = p->unk17;
+        s32 offsetY = p->spriteOffsetY;
 
         if (GRAVITY_IS_INVERTED)
             offsetY = -offsetY;
@@ -1431,7 +1431,7 @@ void sub_801350C(Player *p)
 
 void sub_80135BC(Player *p)
 {
-    if (p->unk5C & gPlayerControls.jump) {
+    if (p->heldInput & gPlayerControls.jump) {
         if (p->speedAirX <= 0) {
             p->speedAirX += Q(0.09375);
 
@@ -1455,7 +1455,7 @@ void sub_80135BC(Player *p)
 
     {
         s32 offsetY;
-        offsetY = p->unk17 - 14;
+        offsetY = p->spriteOffsetY - 14;
 
         if (GRAVITY_IS_INVERTED)
             offsetY = -offsetY;
@@ -1480,11 +1480,11 @@ s32 sub_8013644(Player *p)
 
         pX = I(p->x);
         pX -= 2;
-        pX -= p->unk16;
+        pX -= p->spriteOffsetX;
 
         pY = I(p->y);
 
-        result = sub_801E4E4(pX, pY, p->unk38, -8, &rot, sub_801ED24);
+        result = sub_801E4E4(pX, pY, p->layer, -8, &rot, sub_801ED24);
 
         if (rot & 0x1) {
             p->rotation = Q(0.25);
@@ -1496,11 +1496,11 @@ s32 sub_8013644(Player *p)
         s32 pY;
         pX = I(p->x);
         pX += 2;
-        pX += p->unk16;
+        pX += p->spriteOffsetX;
 
         pY = I(p->y);
 
-        result = sub_801E4E4(pX, pY, p->unk38, +8, &rot, sub_801ED24);
+        result = sub_801E4E4(pX, pY, p->layer, +8, &rot, sub_801ED24);
 
         if (!(rot & 0x1)) {
             p->rotation = rot;
@@ -1527,12 +1527,12 @@ void sub_80136E8(Player *p)
         p->speedAirX = 0;
         p->speedAirY = 0;
 
-        if (p->unk64 != 100) {
-            p->unk64 = 101;
+        if (p->charState != 100) {
+            p->charState = 101;
         }
 
-        if (p->unk5C & DPAD_UP) {
-            s32 offsetY = Q(p->unk17);
+        if (p->heldInput & DPAD_UP) {
+            s32 offsetY = Q(p->spriteOffsetY);
 
             if (GRAVITY_IS_INVERTED) {
                 offsetY = -offsetY;
@@ -1559,7 +1559,7 @@ void sub_80136E8(Player *p)
                 sub_8022318(p);
                 PLAYERFN_SET(PlayerCB_8013BD4);
 
-                p->unk64 = 93;
+                p->charState = 93;
                 return;
             } else if (r2 < 0) {
                 sub_801394C(p);
@@ -1575,11 +1575,11 @@ void sub_80136E8(Player *p)
                 p->y += offsetY;
 
                 if (r2 < 0) {
-                    p->unk64 = 0x66;
+                    p->charState = 0x66;
                     p->y -= Q(r2);
                 } else {
                     s32 speed;
-                    p->unk64 = 0x66;
+                    p->charState = 0x66;
                     speed = Q(0.75);
                     if (p->moveState & 0x40) {
                         speed = Q(0.5);
@@ -1587,9 +1587,9 @@ void sub_80136E8(Player *p)
                     p->speedAirY = -speed;
                 }
             }
-        } else if (p->unk5C & DPAD_DOWN) {
+        } else if (p->heldInput & DPAD_DOWN) {
             s32 speed;
-            s32 offsetY = Q(p->unk17);
+            s32 offsetY = Q(p->spriteOffsetY);
             if (GRAVITY_IS_INVERTED) {
                 offsetY = -offsetY;
             }
@@ -1624,10 +1624,10 @@ void sub_80136E8(Player *p)
 
                 sub_8022318(p);
                 PLAYERFN_SET(PlayerCB_8013BD4);
-                p->unk64 = 93;
+                p->charState = 93;
                 return;
             } else {
-                p->unk64 = 103;
+                p->charState = 103;
                 speed = Q(0.75);
                 if (p->moveState & MOVESTATE_40) {
                     speed = Q(0.5);
@@ -1643,7 +1643,7 @@ void sub_80136E8(Player *p)
         }
 
         r2 = 1;
-        if (!(p->unk5C & (DPAD_DOWN | DPAD_UP))) {
+        if (!(p->heldInput & (DPAD_DOWN | DPAD_UP))) {
             r2 = sub_8029B0C(p, &rot, NULL);
             if (r2 < 0) {
                 p->y += Q(r2);
@@ -1655,7 +1655,7 @@ void sub_80136E8(Player *p)
 
                 sub_8022318(p);
 
-                p->unk64 = 93;
+                p->charState = 93;
                 return;
             }
         }
@@ -1672,7 +1672,7 @@ void sub_80136E8(Player *p)
 
 void sub_801394C(Player *p)
 {
-    if (p->unk5E & gPlayerControls.jump) {
+    if (p->frameInput & gPlayerControls.jump) {
         p->speedAirY = -Q(2.625);
         p->speedAirX = +Q(3.0);
         p->moveState ^= MOVESTATE_FACING_LEFT;
@@ -1684,9 +1684,9 @@ void sub_801394C(Player *p)
         p->moveState |= MOVESTATE_IN_AIR;
         p->moveState |= MOVESTATE_100;
 
-        p->unk16 = 6;
-        p->unk17 = 9;
-        p->unk64 = 50;
+        p->spriteOffsetX = 6;
+        p->spriteOffsetY = 9;
+        p->charState = 50;
         p->transition = PLTRANS_PT4;
     }
 }
@@ -1717,11 +1717,11 @@ NONMATCH("asm/non_matching/game/playercb__sub_80139B0.inc", void sub_80139B0(Pla
         p->speedGroundX = +speedGrnd;
     }
 
-    if (p->unk5C & DPAD_LEFT) {
+    if (p->heldInput & DPAD_LEFT) {
         if (((u8)r2 != 0x80)) {
             shift = ABS(r2) + Q_8_8(2.0);
         }
-    } else if (p->unk5C & DPAD_RIGHT) {
+    } else if (p->heldInput & DPAD_RIGHT) {
         if ((r2 != 0)) {
             shift = ABS(r2) + Q_8_8(2.0);
         }
@@ -1759,8 +1759,8 @@ END_NONMATCH
 void sub_8013AD8(Player *p)
 {
     p->moveState &= ~MOVESTATE_4;
-    p->unk16 = 6;
-    p->unk17 = 6;
+    p->spriteOffsetX = 6;
+    p->spriteOffsetY = 6;
 
     p->speedAirY += Q(1.5);
 
@@ -1786,7 +1786,7 @@ void sub_8013AD8(Player *p)
     {
         u8 *tFlags = &p->w.tf.flags;
         *tFlags = 0;
-        p->unk5A = FALSE;
+        p->isBoosting = FALSE;
         *tFlags |= 0x2;
     }
 
@@ -1799,7 +1799,7 @@ void PlayerCB_8013B6C(Player *p)
 
     if ((p->unk90->s.frameFlags) & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->unk64 = 50;
+            p->charState = 50;
             p->transition = PLTRANS_PT5;
         } else {
             p->transition = PLTRANS_PT1;
@@ -1851,12 +1851,12 @@ void PlayerCB_8013E64(Player *p);
 
 void sub_8013C50(Player *p)
 {
-    p->unk64 = 104;
+    p->charState = 104;
 
     if (GRAVITY_IS_INVERTED) {
-        p->y += Q(p->unk17);
+        p->y += Q(p->spriteOffsetY);
     } else {
-        p->y -= Q(p->unk17);
+        p->y -= Q(p->spriteOffsetY);
     }
 
     PLAYERFN_SET(PlayerCB_8013E64);
@@ -1868,10 +1868,10 @@ void sub_8013CA0(Player *p)
 {
     PLAYERFN_SET(PlayerCB_8013BD4);
 
-    p->unk16 = 6;
-    p->unk17 = 14;
+    p->spriteOffsetX = 6;
+    p->spriteOffsetY = 14;
 
-    p->unk64 = 93;
+    p->charState = 93;
 }
 
 // PlayerSomething_CeilGroundSpeed
@@ -1924,7 +1924,7 @@ void PlayerCB_8013D18(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
-    p->unk64 = 106;
+    p->charState = 106;
 
     p->speedAirX = 0;
     p->speedAirY = 0;
@@ -1937,9 +1937,9 @@ void PlayerCB_8013D18(Player *p)
 void sub_8013D7C(Player *p)
 {
     PLAYERFN_SET(PlayerCB_8013BD4);
-    p->unk64 = 93;
-    p->unk16 = 6;
-    p->unk17 = 14;
+    p->charState = 93;
+    p->spriteOffsetX = 6;
+    p->spriteOffsetY = 14;
     p->w.tf.flags |= 0x2;
 }
 
@@ -1950,7 +1950,7 @@ void PlayerCB_8013DA8(Player *p)
     sub_80283C4(p);
 
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
-        p->unk64 = 107;
+        p->charState = 107;
         p->speedAirX = Q(0.0);
         p->speedAirY = Q(1.0);
 
@@ -1971,7 +1971,7 @@ void PlayerCB_8013DFC(Player *p)
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
         PLAYERFN_SET(PlayerCB_8013E34);
 
-        p->unk64 = 108;
+        p->charState = 108;
         p->speedAirY = 0;
     }
 }
@@ -1995,9 +1995,9 @@ void PlayerCB_8013E64(Player *p)
         p->rotation = 0;
 
         if (GRAVITY_IS_INVERTED) {
-            p->y += Q(p->unk17);
+            p->y += Q(p->spriteOffsetY);
         } else {
-            p->y -= Q(p->unk17);
+            p->y -= Q(p->spriteOffsetY);
         }
 
         if (p->moveState & MOVESTATE_FACING_LEFT) {
@@ -2045,7 +2045,7 @@ void sub_8013F04(Player *p)
 
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
-    p->unk64 = 15;
+    p->charState = 15;
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 

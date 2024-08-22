@@ -40,8 +40,8 @@ static void Task_InclineRamp(void)
                 gPlayer.moveState = moveState;
 
                 sub_8023B5C(&gPlayer, 14);
-                gPlayer.unk16 = 6;
-                gPlayer.unk17 = 14;
+                gPlayer.spriteOffsetX = 6;
+                gPlayer.spriteOffsetY = 14;
                 gPlayer.speedAirY = Q_8_8(-3);
                 gPlayer.speedGroundX = Q_8_8(17);
                 gPlayer.speedAirX += Q_8_8(17);
@@ -49,10 +49,10 @@ static void Task_InclineRamp(void)
                 sub_8023260(&gPlayer);
                 Player_TransitionCancelFlyingAndBoost(&gPlayer);
                 sub_8023B5C(&gPlayer, 14);
-                gPlayer.unk16 = 6;
-                gPlayer.unk17 = 14;
+                gPlayer.spriteOffsetX = 6;
+                gPlayer.spriteOffsetY = 14;
 
-                gPlayer.unk64 = 39;
+                gPlayer.charState = 39;
                 gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }
@@ -66,8 +66,8 @@ static void Task_InclineRamp(void)
                 gPlayer.moveState = moveState;
 
                 sub_8023B5C(&gPlayer, 14);
-                gPlayer.unk16 = 6;
-                gPlayer.unk17 = 14;
+                gPlayer.spriteOffsetX = 6;
+                gPlayer.spriteOffsetY = 14;
                 gPlayer.speedAirY = Q_8_8(-3);
                 gPlayer.speedGroundX = Q_8_8(-17);
                 gPlayer.speedAirX += Q_8_8(-17);
@@ -75,10 +75,10 @@ static void Task_InclineRamp(void)
                 sub_8023260(&gPlayer);
                 Player_TransitionCancelFlyingAndBoost(&gPlayer);
                 sub_8023B5C(&gPlayer, 14);
-                gPlayer.unk16 = 6;
-                gPlayer.unk17 = 14;
+                gPlayer.spriteOffsetX = 6;
+                gPlayer.spriteOffsetY = 14;
 
-                gPlayer.unk64 = 11;
+                gPlayer.charState = 11;
                 gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }

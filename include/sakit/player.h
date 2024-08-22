@@ -51,10 +51,6 @@ typedef struct {
     /* 0xAC */ u8 unkAC;
 } AmyFlags;
 
-// Declared beforehand because it's used inside Player struct
-struct Player_;
-typedef void (*PlayerCallback)(struct Player_ *);
-
 #define PLAYER_ITEM_EFFECT__NONE            0x00
 #define PLAYER_ITEM_EFFECT__SHIELD_NORMAL   0x01
 #define PLAYER_ITEM_EFFECT__INVINCIBILITY   0x02
@@ -62,22 +58,20 @@ typedef void (*PlayerCallback)(struct Player_ *);
 #define PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC 0x08
 #define PLAYER_ITEM_EFFECT__10              0x10
 #define PLAYER_ITEM_EFFECT__20              0x20
-#define PLAYER_ITEM_EFFECT__80              0x80
+#define PLAYER_ITEM_EFFECT__CONFUSION       0x40
+#define PLAYER_ITEM_EFFECT__TELEPORT        0x80
 
 #define HAS_SHIELD(p) ((p)->itemEffect & (PLAYER_ITEM_EFFECT__SHIELD_MAGNETIC | PLAYER_ITEM_EFFECT__SHIELD_NORMAL))
 
-// Confusion
-#define PLAYER_ITEM_EFFECT__40 0x40
+#define PLAYER_LAYER__FRONT 0x00
+#define PLAYER_LAYER__BACK  0x01
+#define PLAYER_LAYER__MASK  0x01
+#define PLAYER_LAYER__80    0x80
 
-// Teleport
-#define PLAYER_ITEM_EFFECT__80 0x80
+// Declared beforehand because it's used inside Player struct
+struct Player_;
+typedef void (*PlayerCallback)(struct Player_ *);
 
-#define FLAG_PLAYER_x38__LAYER_FRONT 0x00
-#define FLAG_PLAYER_x38__LAYER_BACK  0x01
-#define FLAG_PLAYER_x38__LAYER_MASK  0x01
-#define FLAG_PLAYER_x38__80          0x80
-
-// Not sure what these are yet
 typedef struct Player_ {
     /* 0x00 */ PlayerCallback callback;
     /* 0x04 */ u16 unk4;
@@ -91,10 +85,8 @@ typedef struct Player_ {
 
     // The player sprite's position is actually at the middle of its graphics,
     // this offset denotes the difference to the ground.
-    // spriteOffsetX
-    /* 0x16 */ s8 unk16;
-    // spriteOffsetY
-    /* 0x17 */ s8 unk17;
+    /* 0x16 */ s8 spriteOffsetX;
+    /* 0x17 */ s8 spriteOffsetY;
     /* 0x18 */ u8 filler18[8];
 
     // set/compare to values in "include/constants/move_states.h"
@@ -113,7 +105,7 @@ typedef struct Player_ {
     /* 0x34 */ u16 unk34;
     /* 0x36 */ s8 unk36;
     /* 0x37 */ u8 itemEffect; // bitfield
-    /* 0x38 */ u8 unk38; // bitfield(?), 0x1 determines layer
+    /* 0x38 */ u8 layer; // bitfield(?), 0x1 determines layer
     /* 0x39 */ u8 unk39;
     /* 0x3A */ u16 unk3A;
     /* 0x3C */ void *unk3C; // the object player collides with this frame?
@@ -126,30 +118,30 @@ typedef struct Player_ {
     /* 0x54 */ u16 unk54; // some other anim-variant?
     /* 0x56 */ u16 unk56;
     /* 0x58 */ s16 unk58;
-    /* 0x5A */ bool8 unk5A; // boost?
+    /* 0x5A */ bool8 isBoosting;
     /* 0x5B */ u8 unk5B;
-    /* 0x5C */ u16 unk5C; // input
-    /* 0x5E */ u16 unk5E; // new input on this frame?
+    /* 0x5C */ u16 heldInput;
+    /* 0x5E */ u16 frameInput;
     /* 0x60 */ s8 unk60;
     /* 0x61 */ s8 unk61;
     /* 0x62 */ u8 unk62;
     /* 0x63 */ u8 unk63;
-    /* 0x64 */ s16 unk64; // Character State? (TODO: shouldn't this be unsigned?)
-    /* 0x66 */ s16 unk66; // Character State, too? But if these were cAnims, why do some
-                          // procs recalculate them?
+    /* 0x64 */ s16 charState; // charState values appear to be a default behavior to transition into another animation
+    /* 0x66 */ s16 prevCharState;
     /* 0x68 */ AnimId anim;
     /* 0x6A */ u16 variant;
-    /* 0x6C */ u8 unk6C;
+    /* 0x6C */ bool8 unk6C;
+
     // 0x6D Some player state, cleared after usage
     //  0x01 = PlayerCB_80124D0
     //  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA), by
     //  PlayerCB_80126B0
-
+    //
     // use constants/player_transitions.h
     /* 0x6D */ u8 transition;
     /* 0x6E */ u8 unk6E; // Parameter for transition(?)
     /* 0x6F */ u8 prevTransition;
-    /* 0x70 */ u8 unk70;
+    /* 0x70 */ bool8 unk70;
     /* 0x71 */ u8 unk71;
     // unk72 appears to be a duration timer for side-forward trick animations (in
     // frames?)

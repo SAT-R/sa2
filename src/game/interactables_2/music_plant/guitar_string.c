@@ -194,7 +194,7 @@ void sub_807608C(Sprite_GuitarString *gs)
         Player_SetMovestate_IsInScriptedSequence();
         gPlayer.moveState |= MOVESTATE_400000;
 
-        gPlayer.unk64 = 4;
+        gPlayer.charState = 4;
         gPlayer.speedAirX = 0;
         gPlayer.speedAirY = (s32)(gPlayer.speedAirY * 3) >> 1;
 

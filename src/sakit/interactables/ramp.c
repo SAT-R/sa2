@@ -64,10 +64,10 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s->animSpeed = 0x10;
     s->palId = 0;
     s->hitboxes[0].index = -1;
-    s->frameFlags = 0x2200;
+    s->frameFlags = (SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(MOSAIC, 1));
 
-    if (temp & 2) {
-        s->frameFlags |= 0x400;
+    if (temp & 0x2) {
+        SPRITE_FLAG_SET(s, X_FLIP);
     }
     UpdateSpriteAnimation(s);
 }
@@ -111,11 +111,11 @@ static void Task_Ramp(void)
                 player->speedAirX = 0;
                 player->speedGroundX = 0;
             } else if (!(ramp->unk3C & 2)) {
-                s32 temp8 = screenX + s->hitboxes[0].left;
-                s32 temp2 = s->hitboxes[0].right - s->hitboxes[0].left;
-                s32 temp9 = I(player->x) - temp8;
-                if (temp9 > 0) {
-                    if (temp9 > temp2) {
+                s32 hbLeft = screenX + s->hitboxes[0].left;
+                s32 hbWidth = s->hitboxes[0].right - s->hitboxes[0].left;
+                s32 halfWidth = I(player->x) - hbLeft;
+                if (halfWidth > 0) {
+                    if (halfWidth > hbWidth) {
                         if (!(player->moveState & MOVESTATE_IN_AIR) && (player->speedGroundX > Q(4))) {
                             player->transition = PLTRANS_PT22;
                             player->unk6E = (ramp->unk3C & 1) * 3;
@@ -124,13 +124,13 @@ static void Task_Ramp(void)
                         player->moveState &= ~MOVESTATE_8;
                         player->moveState |= MOVESTATE_IN_AIR;
                     } else {
-                        s32 temp4 = I(player->y) + player->unk17 - screenY;
-                        s32 temp6 = I(s->hitboxes[0].top * (Q(temp9) / temp2));
+                        s32 playerMiddleY = I(player->y) + player->spriteOffsetY - screenY;
+                        s32 temp6 = I(s->hitboxes[0].top * (Q(halfWidth) / hbWidth));
 
-                        if (temp4 >= temp6) {
+                        if (playerMiddleY >= temp6) {
                             if (!(player->moveState & MOVESTATE_IN_AIR) && (player->speedGroundX > Q(4))
-                                && (player->unk5E & gPlayerControls.jump)) {
-                                if (temp9 < (temp2 / 2)) {
+                                && (player->frameInput & gPlayerControls.jump)) {
+                                if (halfWidth < (hbWidth / 2)) {
                                     player->transition = PLTRANS_PT22;
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 1;
                                 } else {
@@ -138,7 +138,7 @@ static void Task_Ramp(void)
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 2;
                                 }
                             } else {
-                                player->y += Q(temp6 - temp4);
+                                player->y += Q(temp6 - playerMiddleY);
                                 player->rotation = 0;
 
                                 player->moveState |= MOVESTATE_8;

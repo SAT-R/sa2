@@ -104,7 +104,7 @@ static void sub_807C360(void)
 
 static void sub_807C3DC(Sprite_IA85 *ia85)
 {
-    if (gPlayer.unk5E & gPlayerControls.jump) {
+    if (gPlayer.frameInput & gPlayerControls.jump) {
         if (!(ia85->unk48 & 2)) {
             if (!(ia85->unk48 & 1)) {
                 ia85->unk48 |= 1;
@@ -167,7 +167,7 @@ static void sub_807C504(Sprite_IA85 *ia85)
 
 static void sub_807C52C(Sprite_IA85 *ia85)
 {
-    if (gPlayer.unk5E & gPlayerControls.jump) {
+    if (gPlayer.frameInput & gPlayerControls.jump) {
         ia85->unk48 |= 2;
     }
 }

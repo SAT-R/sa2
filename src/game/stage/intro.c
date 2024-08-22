@@ -539,7 +539,7 @@ static void Task_802F75C(void)
         Player *p = &gPlayer;
         p->anim = characterAnimsGettingReady[gSelectedCharacter].anim;
         p->variant = characterAnimsGettingReady[gSelectedCharacter].variant;
-        p->unk6C = 1;
+        p->unk6C = TRUE;
         p->unk90->s.frameFlags |= MOVESTATE_40000;
         p->unk94->s.frameFlags |= MOVESTATE_40000;
 

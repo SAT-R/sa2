@@ -37,7 +37,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc", void Task_Gr
 {
     Player *player = &gPlayer;
 
-    s32 r7 = GRAVITY_IS_INVERTED ? I(player->y) - player->unk17 : I(player->y) + player->unk17;
+    s32 r7 = GRAVITY_IS_INVERTED ? I(player->y) - player->spriteOffsetY : I(player->y) + player->spriteOffsetY;
 
     // _0800FE78
     Sprite_GrindRail *rail = TASK_DATA(gCurTask);
@@ -77,7 +77,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc", void Task_Gr
                             s32 left = me->d.sData[0] * TILE_WIDTH;
                             s32 middle = left + me->d.uData[2] * (TILE_WIDTH / 2);
                             if (newPlayerX >= middle) {
-                                if ((!(player->unk5C & gPlayerControls.jump) || !(railKind & RAIL_KIND_2)) && !(railKind & RAIL_KIND_1))
+                                if ((!(player->heldInput & gPlayerControls.jump) || !(railKind & RAIL_KIND_2)) && !(railKind & RAIL_KIND_1))
                                     goto _080100B0;
                             }
                             // _0800FFB8
@@ -104,7 +104,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc", void Task_Gr
                         s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
                         middle += me->d.uData[2] * 4;
                         if (playerX <= middle) {
-                            if ((!(player->unk5C & gPlayerControls.jump)) || !(railKind & RAIL_KIND_2))
+                            if ((!(player->heldInput & gPlayerControls.jump)) || !(railKind & RAIL_KIND_2))
                                 goto _080100B0;
                         }
                         // _08010028
@@ -226,7 +226,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc", void Tas
                             if (kind & RAIL_KIND_1) {
                                 if ((gPlayer.moveState & 1)) {
                                     if (worldX < (left + (someWidth >> 1))
-                                        || ((player->unk5C & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
+                                        || ((player->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
                                         if ((kind & RAIL_KIND_2)) {
                                             player->transition = 13;
                                             goto set13;
@@ -243,7 +243,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc", void Tas
                                     middle += me->d.sData[0] * TILE_WIDTH;
                                     middle += me->d.uData[2] * (TILE_WIDTH / 2);
 
-                                    if (playerX > middle || ((player->unk5C & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
+                                    if (playerX > middle || ((player->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
                                         if ((kind & RAIL_KIND_2)) {
                                             player->transition = 13;
                                         set13:;

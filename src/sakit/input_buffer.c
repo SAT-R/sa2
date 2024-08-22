@@ -67,9 +67,9 @@ NONMATCH("asm/non_matching/sakit/input_buf__sub_800DF8C.inc", void sub_800DF8C(P
     }
     // _0800DFB4
 
-    sub_800E0C0(p->unk5E, p->unk5E);
+    sub_800E0C0(p->frameInput, p->frameInput);
 
-    if (p->unk70 != 0) {
+    if (p->unk70) {
         sp00.unk4 = 0;
         sp00.unk0 = gUnknown_08C871D4[p->character];
 

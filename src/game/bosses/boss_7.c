@@ -380,9 +380,9 @@ static void sub_8047E28(void)
         return;
     }
 
-    if ((gPlayer.unk5C & 0x40)) {
+    if ((gPlayer.heldInput & 0x40)) {
         gStageFlags |= STAGE_FLAG__GRAVITY_INVERTED;
-    } else if (gPlayer.unk5C & 0x80) {
+    } else if (gPlayer.heldInput & 0x80) {
         gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
     }
 }

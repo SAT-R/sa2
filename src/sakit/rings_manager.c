@@ -131,10 +131,10 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
     u16 regions_y; // sp10;
 
     s8 *pSp04 = &sp04[0];
-    *pSp04++ = -gPlayer.unk16;
-    *pSp04++ = -gPlayer.unk17;
-    *pSp04++ = +gPlayer.unk16;
-    *pSp04 = +gPlayer.unk17;
+    *pSp04++ = -gPlayer.spriteOffsetX;
+    *pSp04++ = -gPlayer.spriteOffsetY;
+    *pSp04++ = +gPlayer.spriteOffsetX;
+    *pSp04 = +gPlayer.spriteOffsetY;
     memcpy(sp00, sp04, sizeof(sp00));
 
     if (!(gStageFlags & STAGE_FLAG__2)) {

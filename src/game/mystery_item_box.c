@@ -260,8 +260,8 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     MapEntity *me;
     if (itemBox->unk84 != 1 || gPlayer.moveState & 2) {
         gPlayer.speedAirY = -0x300;
-        gPlayer.unk64 = 0x26;
-        gPlayer.unk66 = -1;
+        gPlayer.charState = 0x26;
+        gPlayer.prevCharState = -1;
         gPlayer.transition = PLTRANS_PT5;
     }
 

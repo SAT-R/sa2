@@ -60,7 +60,7 @@ void Task_SpindashDustEffect(void)
         }
 
         cam = &gCamera;
-        offY = p->unk17;
+        offY = p->spriteOffsetY;
 
         if (GRAVITY_IS_INVERTED) {
             offY = -offY;
@@ -114,7 +114,7 @@ void Task_SpindashDustEffectBig(void)
         }
 
         cam = &gCamera;
-        offY = p->unk17;
+        offY = p->spriteOffsetY;
 
         if (GRAVITY_IS_INVERTED) {
             offY = -offY;

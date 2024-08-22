@@ -170,7 +170,7 @@ static void sub_8073670(Sprite_TurnAroundBar *turnAroundBar)
     turnAroundBar->unk44 = Q(turnAroundBar->y) - gPlayer.y;
     gPlayer.x = Q(turnAroundBar->x);
     gPlayer.y = Q(turnAroundBar->y);
-    gPlayer.unk64 = 0x38;
+    gPlayer.charState = 0x38;
 
     s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     s->variant = 1;
@@ -233,7 +233,7 @@ static bool32 sub_8073784(Sprite_TurnAroundBar *turnAroundBar)
 
 static s16 ClampSpeed(s16 speed)
 {
-    if (gPlayer.unk5A != 0) {
+    if (gPlayer.isBoosting != 0) {
         if (speed > Q_8_8(15)) {
             speed = Q_8_8(15);
         } else if (speed < -Q_8_8(15)) {

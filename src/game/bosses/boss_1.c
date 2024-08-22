@@ -427,7 +427,7 @@ static void sub_803AA40(void)
 
         if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC
             && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
-            gPlayer.unk64 = 81;
+            gPlayer.charState = 81;
         }
 
         if (!IS_FINAL_STAGE(gCurrentLevel)) {

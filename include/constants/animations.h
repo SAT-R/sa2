@@ -130,25 +130,23 @@
 #define SA2_ANIM_CHEESE_BACKFLIP                       457
 #define SA2_ANIM_CHEESE_NERVOUS                        458
 #define SA2_ANIM_CHEESE_PIROUETTE                      459
-#define SA2_ANIM_CHEESE_SHOCKED                                                                                                            \
-    460 // Not sure about this one. They put their hand to their mouth, but it doesn't
-        // have an eating animation
-#define SA2_ANIM_CHEESE_LIFTING              461
-#define SA2_ANIM_CHEESE_CELEBRATING          462
-#define SA2_ANIM_CHEESE_STOMPING             463 // alternatively: SA2_ANIM_CHEESE_CANNON_BALL ?
-#define SA2_ANIM_CHEESE_SKY_UPPERCUT         464
-#define SA2_ANIM_CHEESE_DYING                465
-#define SA2_ANIM_CHEESE_STRUGGLING           466
-#define SA2_ANIM_CHEESE_SIDEWAYS_2           467
-#define SA2_ANIM_CHEESE_DOWNWARDS            468
-#define SA2_ANIM_CHEESE_469                  469
-#define SA2_ANIM_CHEESE_WAVING_PLAYER        470
-#define SA2_ANIM_SONIC_GOING_SUPER_0         471
-#define SA2_ANIM_SONIC_GOING_SUPER_1         472
-#define SA2_ANIM_SUPER_SONIC_SIDEWAYS        473
-#define SA2_ANIM_SUPER_SONIC_ATTACK_CLOUD    474
-#define SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET 475
-#define SA2_ANIM_SUPER_SONIC_FROZEN          476
+#define SA2_ANIM_CHEESE_SHOCKED                        460
+#define SA2_ANIM_CHEESE_LIFTING                        461
+#define SA2_ANIM_CHEESE_CELEBRATING                    462
+#define SA2_ANIM_CHEESE_STOMPING                       463 // alternatively: SA2_ANIM_CHEESE_CANNON_BALL ?
+#define SA2_ANIM_CHEESE_SKY_UPPERCUT                   464
+#define SA2_ANIM_CHEESE_DYING                          465
+#define SA2_ANIM_CHEESE_STRUGGLING                     466
+#define SA2_ANIM_CHEESE_SIDEWAYS_2                     467
+#define SA2_ANIM_CHEESE_DOWNWARDS                      468
+#define SA2_ANIM_CHEESE_469                            469
+#define SA2_ANIM_CHEESE_WAVING_PLAYER                  470
+#define SA2_ANIM_SONIC_GOING_SUPER_0                   471
+#define SA2_ANIM_SONIC_GOING_SUPER_1                   472
+#define SA2_ANIM_SUPER_SONIC_SIDEWAYS                  473
+#define SA2_ANIM_SUPER_SONIC_ATTACK_CLOUD              474
+#define SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET           475
+#define SA2_ANIM_SUPER_SONIC_FROZEN                    476
 // Defeating enemies / opening item boxes
 #define SA2_ANIM_DUST_CLOUD 477
 
@@ -545,10 +543,39 @@
 #define SA2_ANIM_VARIANT_SP_STAGE_HOLE_2 2
 #define SA2_ANIM_VARIANT_SP_STAGE_HOLE_3 3
 
+#define SA2_ANIM_SP_STAGE_MULTIPLIER            885
+#define SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x2 0
+#define SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x3 1
+#define SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x4 2
+#define SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x5 3
+#define SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x6 4
+#define SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x7 5
+#define SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x8 6
+#define SA2_ANIM_VARIANT_SP_STAGE_MULTIPLIER_x9 7
+
 #define SA2_ANIM_SP_STAGE_ARROW                890
 #define SA2_ANIM_VARIANT_SP_STAGE_ARROW_GREEN  0
 #define SA2_ANIM_VARIANT_SP_STAGE_ARROW_YELLOW 1
 #define SA2_ANIM_VARIANT_SP_STAGE_ARROW_RED    2
+
+#define SA2_ANIM_SP_STAGE_NOTIFS                             893
+#define SA2_ANIM_VARIANT_SP_STAGE_NOTIFS_SPECIAL_STAGE       0
+#define SA2_ANIM_VARIANT_SP_STAGE_NOTIFS_GOT_A_CHAOS_EMERALD 1
+#define SA2_ANIM_SP_STAGE_SCORE_BONUSES                      894
+#define SA2_ANIM_VARIANT_SP_STAGE_SCORE_BONUSES_RING         0
+#define SA2_ANIM_VARIANT_SP_STAGE_SCORE_BONUSES_CLEAR        1
+#define SA2_ANIM_VARIANT_SP_STAGE_SCORE_BONUSES_TOTAL        2
+
+#define SA2_ANIM_CHAOS_EMERALDS_UNLOCKED                895
+#define SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_RED    0
+#define SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_BLUE   1
+#define SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_YELLOW 2
+#define SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_GREEN  3
+#define SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_WHITE  4
+#define SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_CYAN   5
+#define SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_PURPLE 6
+#define SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_EMPTY  7
+#define SA2_ANIM_VARIANT_CHAOS_EMERALDS_UNLOCKED_SHINE  8
 
 #define SA2_ANIM_898 898
 #define SA2_ANIM_899 899
@@ -731,8 +758,7 @@
 #define SA2_ANIM_ASCII            1119
 #define SA2_ANIM_ASCII_FIRST_CHAR '!'
 #define SA2_ANIM_ASCII_YEN        '\\'
-#define SA2_ANIM_ASCII_0          15
-#define SA2_ANIM_ASCII_1          16
+#define SA2_ANIM_ASCII_CHAR(c)    ((c)-SA2_ANIM_ASCII_FIRST_CHAR)
 #define SA2_ANIM_NUM_ASCII_CHARS  94
 
 // Used in Time Attack and stage results screen (/ stage outro)

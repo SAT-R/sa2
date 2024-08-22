@@ -10,7 +10,7 @@
 #endif
 
 #define ENABLE_AUDIO     0
-#define ENABLE_VRAM_VIEW 01
+#define ENABLE_VRAM_VIEW 0
 
 #include <SDL.h>
 
@@ -99,15 +99,16 @@ SDL_Window *vramWindow;
 SDL_Renderer *vramRenderer;
 SDL_Texture *vramTexture;
 #endif
-SDL_sem *vBlankSemaphore;
-SDL_atomic_t isFrameAvailable;
-bool speedUp = false;
 #define INITIAL_VIDEO_SCALE 1
 unsigned int videoScale = INITIAL_VIDEO_SCALE;
 unsigned int preFullscreenVideoScale = INITIAL_VIDEO_SCALE;
+SDL_sem *vBlankSemaphore;
+SDL_atomic_t isFrameAvailable;
+bool speedUp = false;
 bool videoScaleChanged = false;
 bool isRunning = true;
 bool paused = false;
+bool stepOneFrame = false;
 double simTime = 0;
 double lastGameTime = 0;
 double curGameTime = 0;
@@ -147,7 +148,7 @@ int main(int argc, char **argv)
     freopen("CON", "w", stdout);
 #endif
 
-    ReadSaveFile("pokeemerald.sav");
+    ReadSaveFile("sa2.sav");
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -269,13 +270,18 @@ int main(int argc, char **argv)
     while (isRunning) {
         ProcessSDLEvents();
 
-        if (!paused) {
+        if (!paused || stepOneFrame) {
             double dt = fixedTimestep / timeScale; // TODO: Fix speedup
+            double deltaTime = 0;
 
             curGameTime = SDL_GetPerformanceCounter();
-            double deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
-            if (deltaTime > (dt * 5))
-                deltaTime = dt * 5;
+            if (stepOneFrame) {
+                deltaTime = dt;
+            } else {
+                deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
+                if (deltaTime > (dt * 5))
+                    deltaTime = dt * 5;
+            }
             lastGameTime = curGameTime;
 
             accumulator += deltaTime;
@@ -290,9 +296,9 @@ int main(int argc, char **argv)
 
                     REG_DISPSTAT |= INTR_FLAG_VBLANK;
 
-                    // TODO: Shouldn't this run DMA_VBLANK?
-                    //       If not, add a note here, why it is HBLANK!
-                    RunDMAs(DMA_HBLANK);
+                    // TODO(Jace): I think this should be DMA_VBLANK.
+                    //             If not, and it is HBLANK instead, add a note here, why it is!
+                    RunDMAs(DMA_VBLANK);
 
                     if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
                         gIntrTable[INTR_INDEX_VBLANK]();
@@ -309,13 +315,15 @@ int main(int argc, char **argv)
             SDL_RenderClear(vramRenderer);
             SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
 #endif
+            if (paused && stepOneFrame) {
+                stepOneFrame = false;
+            }
         }
 
         if (videoScaleChanged) {
             SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
             videoScaleChanged = false;
         }
-
         SDL_RenderPresent(sdlRenderer);
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);
@@ -372,12 +380,12 @@ static void CloseSaveFile()
 }
 
 // Key mappings
-#define KEY_A_BUTTON      SDLK_z
+#define KEY_A_BUTTON      SDLK_c
 #define KEY_B_BUTTON      SDLK_x
 #define KEY_START_BUTTON  SDLK_RETURN
 #define KEY_SELECT_BUTTON SDLK_BACKSLASH
-#define KEY_L_BUTTON      SDLK_a
-#define KEY_R_BUTTON      SDLK_s
+#define KEY_L_BUTTON      SDLK_d
+#define KEY_R_BUTTON      SDLK_f
 #define KEY_DPAD_UP       SDLK_UP
 #define KEY_DPAD_DOWN     SDLK_DOWN
 #define KEY_DPAD_LEFT     SDLK_LEFT
@@ -474,6 +482,10 @@ void ProcessSDLEvents(void)
                                 timeScale = 5.0;
                                 SDL_PauseAudio(1);
                             }
+                            break;
+                        case SDLK_F10:
+                            paused = true;
+                            stepOneFrame = true;
                             break;
                     }
                 break;

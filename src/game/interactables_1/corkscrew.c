@@ -51,7 +51,7 @@ void Task_8060D34(void)
                 gPlayer.speedAirY = 0;
                 gCurTask->main = sub_8060ED0;
             } else if ((x >= I(gPlayer.x)) && gPlayer.speedGroundX > Q_8_8(4) && !(gPlayer.moveState & MOVESTATE_IN_AIR)
-                       && !(gPlayer.unk5E & gPlayerControls.jump)) {
+                       && !(gPlayer.frameInput & gPlayerControls.jump)) {
                 corkscrew->base.spriteY |= 1;
             } else {
                 corkscrew->base.spriteY &= ~1;
@@ -108,21 +108,21 @@ void sub_8060ED0(void)
     player->speedAirY = 0;
 
     if (player->speedGroundX < corkscrew->unk10) {
-        player->unk64 = 50;
+        player->charState = 50;
         player->speedAirX = player->speedGroundX;
         player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8060D34;
-    } else if (player->unk5E & gPlayerControls.jump) {
-        player->unk64 = 50;
+    } else if (player->frameInput & gPlayerControls.jump) {
+        player->charState = 50;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q(4.875);
         player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8060D34;
-    } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
-        player->unk64 = 4;
+    } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
+        player->charState = 4;
         sub_8023B5C(player, 9);
-        player->unk16 = 6;
-        player->unk17 = 9;
+        player->spriteOffsetX = 6;
+        player->spriteOffsetY = 9;
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {
@@ -161,7 +161,7 @@ void sub_8061088(void)
                 gPlayer.speedAirY = 0;
                 gCurTask->main = sub_8061228;
             } else if ((x <= I(gPlayer.x)) && gPlayer.speedGroundX < -Q_8_8(4) && !(gPlayer.moveState & MOVESTATE_IN_AIR)
-                       && !(gPlayer.unk5E & gPlayerControls.jump)) {
+                       && !(gPlayer.frameInput & gPlayerControls.jump)) {
                 corkscrew->base.spriteY |= 1;
             } else {
                 corkscrew->base.spriteY &= ~1;
@@ -218,21 +218,21 @@ void sub_8061228(void)
     player->speedAirY = 0;
 
     if (player->speedGroundX > corkscrew->unk10) {
-        player->unk64 = 50;
+        player->charState = 50;
         player->speedAirX = player->speedGroundX;
         player->transition = PLTRANS_PT5;
         gCurTask->main = sub_8061088;
-    } else if (player->unk5E & gPlayerControls.jump) {
-        player->unk64 = 50;
+    } else if (player->frameInput & gPlayerControls.jump) {
+        player->charState = 50;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q(4.875);
         player->transition = PLTRANS_PT5;
         gCurTask->main = sub_8061088;
-    } else if (!(player->moveState & MOVESTATE_4) && player->unk5E & DPAD_DOWN) {
-        player->unk64 = 4;
+    } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
+        player->charState = 4;
         sub_8023B5C(player, 9);
-        player->unk16 = 6;
-        player->unk17 = 9;
+        player->spriteOffsetX = 6;
+        player->spriteOffsetY = 9;
         player->moveState |= MOVESTATE_4;
         m4aSongNumStart(SE_SPIN_ATTACK);
     } else if (!(player->moveState & MOVESTATE_4)) {

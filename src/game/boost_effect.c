@@ -236,7 +236,7 @@ void Task_80159C8(void)
     }
 
     if (PLAYER_IS_ALIVE) {
-        if (gPlayer.unk5A || (gPlayer.moveState & MOVESTATE_BOOST_EFFECT_ON)) {
+        if (gPlayer.isBoosting || (gPlayer.moveState & MOVESTATE_BOOST_EFFECT_ON)) {
 #ifndef NON_MATCHING
             register PlayerState *pls asm("r0") = &actions->plState;
 #else

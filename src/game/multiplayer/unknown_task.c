@@ -94,7 +94,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                 if (gGameMode != GAME_MODE_TEAM_PLAY
                     || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                         != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4))) {
-                    gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__40;
+                    gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__CONFUSION;
                     gPlayer.unk32 = 600;
                     CreateItemTask_Confusion(gPlayer.character);
                     m4aSongNumStart(217);
@@ -102,7 +102,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                 break;
             }
             case 1: {
-                if ((u8)recv->pat0.unk10 == SIO_MULTI_CNT->id && !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__80)) {
+                if ((u8)recv->pat0.unk10 == SIO_MULTI_CNT->id && !(gPlayer.itemEffect & PLAYER_ITEM_EFFECT__TELEPORT)) {
                     u32 prevMoveState = gPlayer.moveState & (MOVESTATE_IN_SCRIPTED | MOVESTATE_IGNORE_INPUT | MOVESTATE_400000);
                     if (!(prevMoveState)) {
                         InitializePlayer(&gPlayer);
@@ -117,12 +117,12 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                         gPlayer.unk94->s.frameFlags |= 0x2000;
 
                         gCamera.unk50 &= ~3;
-                        gPlayer.unk38 = (mpp->unk54 >> 7) & 1;
+                        gPlayer.layer = (mpp->unk54 >> 7) & 1;
                         gPlayer.moveState |= MOVESTATE_IN_AIR;
                         mpp->unk60 = 30;
                         gPlayer.timerInvulnerability = 120;
-                        gCamera.x = (I(gPlayer.x) + gCamera.shiftX) - 0x78;
-                        gCamera.y = (I(gPlayer.y) + gCamera.shiftY) - 0x50;
+                        gCamera.x = (I(gPlayer.x) + gCamera.shiftX) - (DISPLAY_WIDTH / 2);
+                        gCamera.y = (I(gPlayer.y) + gCamera.shiftY) - (DISPLAY_HEIGHT / 2);
                         m4aSongNumStart(SE_218);
                     }
                 }
@@ -133,10 +133,10 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                     && (gGameMode != GAME_MODE_TEAM_PLAY
                         || ((gMultiplayerConnections & (0x10 << (i))) >> ((i + 4))
                             != (gMultiplayerConnections & (0x10 << (SIO_MULTI_CNT->id))) >> (SIO_MULTI_CNT->id + 4)))) {
-                    gPlayer.itemEffect |= 0x10;
+                    gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__10;
 
                     gPlayer.timerSpeedup = 600;
-                    gPlayer.itemEffect &= ~0x4;
+                    gPlayer.itemEffect &= ~PLAYER_ITEM_EFFECT__SPEED_UP;
                     CreateItemTask_Confusion(gPlayer.character);
                     m4aSongNumStart(SE_ITEM_CONFUSION);
                     m4aMPlayTempoControl(&gMPlayInfo_BGM, 128);
@@ -219,18 +219,18 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     gPlayer.moveState |= MOVESTATE_IN_AIR;
                     gPlayer.moveState &= ~MOVESTATE_400;
                     gPlayer.moveState &= ~MOVESTATE_100;
-                    gPlayer.unk64 = 0x14;
+                    gPlayer.charState = 0x14;
                     sub_8023B5C(&gPlayer, 0xe);
-                    gPlayer.unk16 = 6;
-                    gPlayer.unk17 = 0xE;
+                    gPlayer.spriteOffsetX = 6;
+                    gPlayer.spriteOffsetY = 0xE;
                     gPlayer.unk61 = 0;
                     gPlayer.unk62 = 0;
                     gPlayer.speedGroundX = 0;
                     gPlayer.speedAirX = 0;
                     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-                    gPlayer.unk5C = 0;
+                    gPlayer.heldInput = 0;
                     gPlayer.moveState |= MOVESTATE_FACING_LEFT;
-                    gPlayer.unk64 = 0x1C;
+                    gPlayer.charState = 0x1C;
                     gPlayer.moveState |= MOVESTATE_800000;
                 }
             }
@@ -262,7 +262,7 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     sub_8019CCC(j, count - 1);
                     mpp2->unk5C |= 1;
                     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
-                    gPlayer.unk5C = 0;
+                    gPlayer.heldInput = 0;
                     temp = gUnknown_03005438;
                     unk10 = &gUnknown_03005510[temp];
                     gUnknown_03005438++;

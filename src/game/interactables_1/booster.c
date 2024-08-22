@@ -118,18 +118,18 @@ void Task_Interactable_Booster(void)
 
         if (gPlayer.moveState & MOVESTATE_4) {
             sub_8023B5C(&gPlayer, 9);
-            gPlayer.unk16 = 6;
-            gPlayer.unk17 = 9;
+            gPlayer.spriteOffsetX = 6;
+            gPlayer.spriteOffsetY = 9;
         } else {
             sub_8023B5C(&gPlayer, 14);
-            gPlayer.unk16 = 6;
-            gPlayer.unk17 = 14;
+            gPlayer.spriteOffsetX = 6;
+            gPlayer.spriteOffsetY = 14;
         }
 
         m4aSongNumStart(SE_SPEED_BOOSTER);
 
         gPlayer.unk62 = 0;
-        gPlayer.unk5A = 1;
+        gPlayer.isBoosting = 1;
 
         if (GRAVITY_IS_INVERTED) {
             if ((s->frameFlags & 0x800) == 0) {

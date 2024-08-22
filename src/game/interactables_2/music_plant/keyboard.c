@@ -88,7 +88,7 @@ static void sub_8076448(Sprite_Keyboard *kb)
     s16 r5, r6, r7, r8;
 
     kb->unk1 = 8;
-    gPlayer.unk64 = 4;
+    gPlayer.charState = 4;
     gPlayer.transition = PLTRANS_PT5;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
