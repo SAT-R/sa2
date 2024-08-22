@@ -132,12 +132,13 @@ typedef struct Player_ {
                           // procs recalculate them?
     /* 0x68 */ AnimId anim;
     /* 0x6A */ u16 variant;
-    /* 0x6C */ u8 unk6C;
+    /* 0x6C */ bool8 unk6C;
+
     // 0x6D Some player state, cleared after usage
     //  0x01 = PlayerCB_80124D0
     //  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA), by
     //  PlayerCB_80126B0
-
+    //
     // use constants/player_transitions.h
     /* 0x6D */ u8 transition;
     /* 0x6E */ u8 unk6E; // Parameter for transition(?)

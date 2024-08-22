@@ -737,7 +737,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->unk3C = NULL;
     p->itemEffect = 0;
     p->unk2A = 0;
-    p->unk72 = 0x168;
+    p->unk72 = ZONE_TIME_TO_INT(0, 6);
     p->unk7E = 0;
     p->unk7C = 0;
     p->unk82 = 0x100;
@@ -754,7 +754,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->prevTransition = 0;
     p->isBoosting = FALSE;
     p->unk58 = 0;
-    p->unk6C = 0;
+    p->unk6C = FALSE;
     p->unk71 = 0;
     p->unk70 = 0;
     p->unk36 = 0;
@@ -3108,8 +3108,8 @@ void sub_8023C10(Player *p)
     if (p->moveState & MOVESTATE_80000000) {
         s32 speedGroundX = p->speedGroundX;
         if (gInput & DPAD_ANY) {
-            speedGroundX += 0x20;
-            speedGroundX = speedGroundX >= 0 ? CLAMP(speedGroundX, 0, 0x1000) : 0;
+            speedGroundX += Q(0.125);
+            speedGroundX = speedGroundX >= Q(0) ? CLAMP(speedGroundX, Q(0), Q(16)) : Q(0);
         } else {
             speedGroundX = 0;
         }
@@ -3693,8 +3693,8 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
         p->unk98 = 0;
     }
 
-    if ((p->unk6C != 0) || (s->graphics.anim != p->anim) || (s->variant != p->variant)) {
-        p->unk6C = 0;
+    if (p->unk6C || (s->graphics.anim != p->anim) || (s->variant != p->variant)) {
+        p->unk6C = FALSE;
         s->graphics.anim = p->anim;
         s->variant = p->variant;
         s->prevVariant = -1;
@@ -4540,7 +4540,7 @@ void PlayerCB_Spindash(Player *p)
             pitch = MAX(pitch, Q(8.0));
 
             p->variant = 1;
-            p->unk6C = 1;
+            p->unk6C = TRUE;
         }
         p->spindashAccel = pitch;
 

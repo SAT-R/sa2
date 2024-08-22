@@ -213,7 +213,7 @@ void PlayerCB_8011DCC(Player *p)
             p->transition = PLTRANS_PT5;
         } else {
             p->variant = 1;
-            p->unk6C = 1;
+            p->unk6C = TRUE;
 
             PLAYERFN_SET(PlayerCB_8011E88);
 
@@ -255,7 +255,7 @@ void PlayerCB_8011E88(Player *p)
             p->transition = PLTRANS_PT5;
         } else {
             p->variant = 2;
-            p->unk6C = 1;
+            p->unk6C = TRUE;
 
             PLAYERFN_SET(PlayerCB_80123D0);
         }
@@ -525,7 +525,7 @@ void PlayerCB_8012460(Player *p)
 
     if (p->speedAirY >= 0) {
         p->variant++;
-        p->unk6C = 1;
+        p->unk6C = TRUE;
         PLAYERFN_SET(PlayerCB_8012498);
     }
 
@@ -1075,7 +1075,7 @@ void PlayerCB_8012F6C(Player *p)
             p->transition = PLTRANS_PT5;
         } else {
             p->variant++;
-            p->unk6C = 1;
+            p->unk6C = TRUE;
 
             if (ABS(p->speedGroundX) < Q(3.0)) {
                 if (p->moveState & MOVESTATE_FACING_LEFT) {
@@ -1160,7 +1160,7 @@ void PlayerCB_80130E4(Player *p)
 
     if (--p->unk72 == -1) {
         p->variant++;
-        p->unk6C = 1;
+        p->unk6C = TRUE;
         PLAYERFN_SET(PlayerCB_8013B6C);
     }
 
