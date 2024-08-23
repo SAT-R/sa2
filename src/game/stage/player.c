@@ -2970,7 +2970,7 @@ void sub_8023748(Player *p)
 void sub_8023878(Player *p)
 {
     p->moveState &= ~MOVESTATE_1000;
-    if (gWater.isActive == 1 && gWater.currentWaterLevel > -1 && (I(p->y) - 4) >= gWater.currentWaterLevel) {
+    if (gWater.isActive == TRUE && gWater.currentWaterLevel >= 0 && (I(p->y) - 4) >= gWater.currentWaterLevel) {
         if (!(p->moveState & MOVESTATE_40)) {
             p->moveState |= MOVESTATE_40;
             p->moveState |= MOVESTATE_1000;
@@ -2980,7 +2980,7 @@ void sub_8023878(Player *p)
             if ((p->character != 3 || p->unk61 != 9) && (s8)p->unk88 < 1) {
                 p->unk88 = 10;
                 CreateWaterfallSurfaceHitEffect(I(p->x), gWater.currentWaterLevel);
-                m4aSongNumStart(SE_156);
+                m4aSongNumStart(SE_WATERFALL_SURFACE_HIT);
             }
         }
 
@@ -3018,19 +3018,20 @@ void sub_8023878(Player *p)
             }
             p->unk87 = 60;
         }
-        if (!(gStageTime & 0xF) && !(PseudoRandom32() & 0x300)) {
-            s32 dX = ((p->moveState & MOVESTATE_FACING_LEFT) ? -0x400 : 0x400);
-            SpawnAirBubbles(p->x + dX, p->y - Q(4), 0, 0);
+        if (!(gStageTime % 16u) && !(PseudoRandom32() & 0x300)) {
+            s32 qDX = ((p->moveState & MOVESTATE_FACING_LEFT) ? -Q(4) : +Q(4));
+            SpawnAirBubbles(p->x + qDX, p->y - Q(4), 0, 0);
         }
     } else {
         if (p->moveState & MOVESTATE_40) {
             p->moveState &= ~MOVESTATE_40;
             p->moveState |= MOVESTATE_1000;
             p->speedAirY = p->speedAirY << 1;
+
             if ((p->character != 3 || p->unk61 != 9) && p->unk88 < 1) {
                 p->unk88 = 10;
                 CreateWaterfallSurfaceHitEffect(I(p->x), gWater.currentWaterLevel);
-                m4aSongNumStart(SE_156);
+                m4aSongNumStart(SE_WATERFALL_SURFACE_HIT);
             }
         }
         p->unk87 = 60;
@@ -3042,8 +3043,8 @@ void sub_8023878(Player *p)
     }
 
     if (p->itemEffect & PLAYER_ITEM_EFFECT__SPEED_UP) {
-        p->unk48 = p->unk48 << 1;
-        p->unk4C = p->unk4C << 1;
+        p->unk48 = p->unk48 * 2;
+        p->unk4C = p->unk4C * 2;
     } else if (p->itemEffect & PLAYER_ITEM_EFFECT__10) {
         p->unk40 = p->unk40 >> 2;
         p->unk48 = p->unk48 >> 2;
@@ -5048,7 +5049,7 @@ void PlayerCB_8027190(Player *p)
 void PlayerCB_8027250(Player *p)
 {
     p->timerInvulnerability = 0x78;
-    p->isBoosting = 0;
+    p->isBoosting = FALSE;
 
     if (ABS(p->speedAirX) <= Q(2.5)) {
         if (p->speedAirX <= Q(0.625)) {
@@ -5321,7 +5322,7 @@ void PlayerCB_80279F8(Player *p)
     PlayerCB_CameraShift_inline(p);
 
     if (p->moveState & MOVESTATE_4000000) {
-        p->isBoosting = 1;
+        p->isBoosting = TRUE;
         p->heldInput = 0x10;
         p->speedGroundX = Q(10.0);
         p->charState = 9;
@@ -5411,7 +5412,7 @@ void PlayerCB_8027D3C(Player *p)
     if (((p->x > cmpX) && (p->heldInput == DPAD_RIGHT)) // fmt
         || ((p->x < cmpX) && (p->heldInput == DPAD_LEFT)) //
         || (p->x == cmpX)) {
-        p->isBoosting = 0;
+        p->isBoosting = FALSE;
         p->speedAirX = 0;
         p->speedAirY = 0;
         p->speedGroundX = 0;
@@ -5798,7 +5799,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
             p->speedAirX = -sSpringAccelX[r6];
 
             if (!(p->moveState & MOVESTATE_IN_AIR) && p->speedAirX < -Q(9.0)) {
-                p->isBoosting = 1;
+                p->isBoosting = TRUE;
             }
         } break;
 
@@ -5806,7 +5807,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
             p->speedAirX = +sSpringAccelX[r6];
 
             if (!(p->moveState & MOVESTATE_IN_AIR) && p->speedAirX > +Q(9.0)) {
-                p->isBoosting = 1;
+                p->isBoosting = TRUE;
             }
         } break;
 
@@ -6828,7 +6829,7 @@ void sub_802A40C(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->isBoosting = 0;
+    p->isBoosting = FALSE;
     p->charState = 9;
     p->moveState &= ~(MOVESTATE_FACING_LEFT);
     p->unk72 = 0;

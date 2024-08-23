@@ -125,7 +125,7 @@
 #define SE_SPRING                    153
 #define SE_SPIKES                    154
 #define SE_SPEED_BOOSTER             155
-#define SE_156                       156
+#define SE_WATERFALL_SURFACE_HIT     156
 #define SE_157                       157
 #define SE_AIR_BUBBLE                158
 #define SE_ALARM_1                   159

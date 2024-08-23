@@ -632,7 +632,7 @@ void sub_8012644(Player *p)
 
     p->w.cf.flyingDuration = CREAM_FLYING_DURATION;
     p->unk61 = 1;
-    p->isBoosting = 0;
+    p->isBoosting = FALSE;
     p->unk58 = 0;
     gPlayer.moveState |= MOVESTATE_10000000;
     PLAYERFN_SET_AND_CALL(PlayerCB_80126B0, p);
@@ -890,7 +890,7 @@ void sub_8012BC0(Player *p)
 
     p->w.tf.flyingDuration = TAILS_FLYING_DURATION;
     p->unk61 = 1;
-    p->isBoosting = 0;
+    p->isBoosting = FALSE;
     p->unk58 = 0;
 
     gPlayer.moveState |= MOVESTATE_10000000;
