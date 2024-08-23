@@ -12,6 +12,7 @@
 #include "task.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
@@ -140,7 +141,7 @@ static void Task_Interactable_BouncySpring()
                 spring->s.prevVariant = -1;
             }
 
-            gPlayer.charState = 38;
+            gPlayer.charState = CHARSTATE_38;
             gPlayer.transition = PLTRANS_PT7;
             gPlayer.prevCharState = -1;
 

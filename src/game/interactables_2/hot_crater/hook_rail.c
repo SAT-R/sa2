@@ -12,6 +12,7 @@
 #include "game/interactables_2/hot_crater/hook_rail.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
@@ -185,7 +186,7 @@ static void sub_8072D40(void)
 static void sub_8072DCC(Sprite_HookRail *hookRail)
 {
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 55;
+    gPlayer.charState = CHARSTATE_55;
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
     gPlayer.spriteOffsetX = 6;
@@ -264,7 +265,7 @@ static void sub_8072F8C(void)
 {
     Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
-    if (IsPlayerTouching(hookRail) != PLAYER_TOUCH_DIRECTION_NONE && gPlayer.charState == 55) {
+    if (IsPlayerTouching(hookRail) != PLAYER_TOUCH_DIRECTION_NONE && gPlayer.charState == CHARSTATE_55) {
         sub_80730BC(hookRail);
     }
 
@@ -330,7 +331,7 @@ static void sub_80730BC(Sprite_HookRail *hookRail)
 static void sub_80730F0(UNUSED Sprite_HookRail *hookRail)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.charState = 14;
+    gPlayer.charState = CHARSTATE_FALLING_VULNERABLE_B;
     gPlayer.transition = PLTRANS_PT5;
     if (gPlayer.rotation == 128) {
         gPlayer.rotation = 109;

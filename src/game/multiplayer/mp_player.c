@@ -22,6 +22,7 @@
 #include "game/multiplayer/multipak_connection.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/game_modes.h"
 #include "constants/songs.h"
 
@@ -221,7 +222,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                         gPlayer.unk61 = 0;
                         gPlayer.unk62 = 0;
 
-                        gPlayer.charState = SA2_CHAR_ANIM_WALK;
+                        gPlayer.charState = CHARSTATE_WALK_A;
                         gPlayer.moveState |= MOVESTATE_800000;
                         gPlayer.callback = PlayerCB_8025318;
                         gPlayer.moveState &= ~MOVESTATE_400000;
@@ -528,7 +529,7 @@ void sub_8016D20(void)
                 return;
             }
 
-            gPlayer.charState = SA2_CHAR_ANIM_WALK;
+            gPlayer.charState = CHARSTATE_WALK_A;
             gPlayer.callback = PlayerCB_8025318;
             gPlayer.unk61 = 0;
             gPlayer.unk62 = 0;
@@ -584,7 +585,7 @@ void sub_8016D20(void)
             if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SONIC)) {
                 return;
             }
-            gPlayer.charState = SA2_CHAR_ANIM_WALK;
+            gPlayer.charState = CHARSTATE_WALK_A;
             gPlayer.callback = PlayerCB_8025318;
             gPlayer.unk61 = 0;
             gPlayer.unk62 = 0;
@@ -764,7 +765,7 @@ void sub_801707C(void)
             }
         }
 
-        gPlayer.charState = SA2_CHAR_ANIM_IDLE;
+        gPlayer.charState = CHARSTATE_IDLE;
         gPlayer.callback = PlayerCB_8025318;
         gPlayer.moveState |= MOVESTATE_IN_AIR;
         gPlayer.unk61 = 0;
@@ -782,7 +783,7 @@ void sub_801707C(void)
                 || I(gPlayer.x) <= gCamera.minX || I(gPlayer.x) >= gCamera.maxX || SOME_INVERTED_GRAVITY_MACRO || moveStateVal != 0) {
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 mpp->unk5C &= ~4;
-                gPlayer.charState = SA2_CHAR_ANIM_IDLE;
+                gPlayer.charState = CHARSTATE_IDLE;
                 gPlayer.callback = PlayerCB_8025318;
                 if (SOME_INVERTED_GRAVITY_MACRO) {
                     gPlayer.timerInvulnerability = 60;
@@ -969,7 +970,7 @@ void sub_8017670(void)
                         gPlayer.spriteOffsetY = 14;
                         gPlayer.speedGroundX = 0;
                         gPlayer.speedAirX = 0;
-                        gPlayer.charState = SA2_CHAR_ANIM_IDLE;
+                        gPlayer.charState = CHARSTATE_IDLE;
                         gPlayer.unk61 = 0;
                         gPlayer.unk62 = 0;
                         if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
@@ -1012,11 +1013,11 @@ void sub_8017670(void)
                 || I(gPlayer.x) <= gCamera.minX || I(gPlayer.x) >= gCamera.maxX || SOME_INVERTED_GRAVITY_MACRO || moveStateVal != 0) {
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 mpp->unk5C &= ~4;
-                gPlayer.charState = SA2_CHAR_ANIM_IDLE;
+                gPlayer.charState = CHARSTATE_IDLE;
                 if (SOME_INVERTED_GRAVITY_MACRO) {
                     mpp->unk60 = 30;
                 }
-                // gPlayer.charState = 0;
+
                 return;
             }
             {
@@ -1489,7 +1490,7 @@ void Task_HandleLaunchPlayer(void)
         gPlayer.moveState &= ~MOVESTATE_8;
         gPlayer.moveState |= MOVESTATE_IN_AIR;
         gPlayer.moveState &= ~MOVESTATE_100;
-        gPlayer.charState = SA2_CHAR_ANIM_38;
+        gPlayer.charState = CHARSTATE_38;
         sprPlayer->prevVariant = -1;
         sub_8023B5C(&gPlayer, 14);
         gPlayer.spriteOffsetX = 6;
@@ -1500,7 +1501,7 @@ void Task_HandleLaunchPlayer(void)
         return;
     }
 
-    if (gPlayer.charState != 109) {
+    if (gPlayer.charState != CHAR_STATE_AMY_SA1_JUMP) {
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         gPlayer.moveState &= ~MOVESTATE_800000;
         TaskDestroy(gCurTask);
@@ -1539,6 +1540,6 @@ void LaunchPlayer(s16 airSpeedY)
     *airSpeed = airSpeedY;
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     gPlayer.heldInput = 0;
-    gPlayer.charState = 109; // TODO: wtf this is being set to larger than 91
+    gPlayer.charState = CHAR_STATE_AMY_SA1_JUMP;
     gPlayer.moveState |= MOVESTATE_800000;
 }

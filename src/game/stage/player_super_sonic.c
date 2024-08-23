@@ -16,6 +16,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/characters.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
@@ -101,7 +102,7 @@ static void SuperSonicInitPlayer(void)
     p->unk61 = 0;
     p->unk62 = 0;
     p->unk63 = 0;
-    p->charState = 0;
+    p->charState = CHARSTATE_IDLE;
     p->prevCharState = 0;
     p->anim = 0;
     p->variant = 0;

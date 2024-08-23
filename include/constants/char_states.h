@@ -2,7 +2,7 @@
 #define GUARD_SA2_CHAR_STATES_H
 
 /* The values in here are used for Player.charState!
-   They are used to determine the next Player animation/variant in some instances.
+   They are used to determine the next behavior (and Player.anim/Player.variant in most instances).
    Some are shared between characters (CHARSTATE_xyz)
 */
 
@@ -65,13 +65,13 @@
 #define CHARSTATE_56                           56
 #define CHARSTATE_57                           57
 #define CHARSTATE_58                           58
-#define CHARSTATE_59                           59
-#define CHARSTATE_60                           60
-#define CHARSTATE_61                           61
-#define CHARSTATE_62                           62
+#define CHARSTATE_WALLRUN_INIT                 59
+#define CHARSTATE_WALLRUN_TO_WALL              60
+#define CHARSTATE_WALLRUN_ON_WALL              61
+#define CHARSTATE_ICE_SLIDE                    62
 #define CHARSTATE_WALK_B                       63
-#define CHARSTATE_64                           64
-#define CHARSTATE_65                           65
+#define CHARSTATE_LAUNCHER_IN_CART             64
+#define CHARSTATE_LAUNCHER_IN_AIR              65
 #define CHARSTATE_66                           66
 #define CHARSTATE_67                           67
 #define CHARSTATE_68                           68

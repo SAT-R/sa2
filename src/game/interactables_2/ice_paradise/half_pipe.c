@@ -10,6 +10,7 @@
 #include "game/stage/camera.h"
 #include "game/interactables_2/ice_paradise/half_pipe.h"
 
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 
 typedef struct {
@@ -67,8 +68,9 @@ static void Task_HalfPipeSequenceMain(void)
 
     if (!sub_80789AC(halfPipe)) {
         gPlayer.moveState &= ~MOVESTATE_8000;
-        if (gPlayer.charState >= 59 && gPlayer.charState < 62) {
-            gPlayer.charState = 9;
+        if (gPlayer.charState == CHARSTATE_WALLRUN_INIT || gPlayer.charState == CHARSTATE_WALLRUN_TO_WALL
+            || gPlayer.charState == CHARSTATE_WALLRUN_ON_WALL) {
+            gPlayer.charState = CHARSTATE_WALK_A;
         }
         EndHalfPipeSequence(halfPipe);
     } else {
@@ -118,13 +120,13 @@ static void UpdatePlayerPosOnHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe, u16 
         r3 = sin / (halfPipe->height - halfPipe->offsetY);
 
         if (r3 < 32) {
-            gPlayer.charState = 9;
+            gPlayer.charState = CHARSTATE_WALK_A;
         } else if (r3 < 96) {
-            gPlayer.charState = 59;
+            gPlayer.charState = CHARSTATE_WALLRUN_INIT;
         } else if (r3 < 160) {
-            gPlayer.charState = 60;
+            gPlayer.charState = CHARSTATE_WALLRUN_TO_WALL;
         } else {
-            gPlayer.charState = 61;
+            gPlayer.charState = CHARSTATE_WALLRUN_ON_WALL;
         }
     }
 }
@@ -204,7 +206,7 @@ static bool32 ShouldTriggerHalfPipe(Sprite_IceParadiseHalfPipe *halfPipe)
         return FALSE;
     }
 
-    if (gPlayer.charState != 4 && gPlayer.charState != 9) {
+    if (gPlayer.charState != CHARSTATE_SPIN_ATTACK && gPlayer.charState != CHARSTATE_WALK_A) {
         return FALSE;
     }
 

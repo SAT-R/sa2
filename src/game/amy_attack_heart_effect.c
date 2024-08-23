@@ -10,6 +10,7 @@
 #include "game/amy_attack_heart_effect.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 
 typedef struct {
     /* 0x00 */ s32 x;
@@ -90,8 +91,7 @@ void CreateAmyAttackHeartEffect(u16 kind)
         return;
     }
 
-    if ((gPlayer.charState == SA2_CHAR_ANIM_15) || (gPlayer.charState == SA2_CHAR_ANIM_INSTA_SHIELD_2)
-        || (gPlayer.charState == SA2_CHAR_ANIM_36)) {
+    if ((gPlayer.charState == CHARSTATE_15) || (gPlayer.charState == CHARSTATE_INSTA_SHIELD_1) || (gPlayer.charState == CHARSTATE_36)) {
         struct Task *t = TaskCreate(Task_8015CE4, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_8015FF0);
         AmyAtkHearts *hearts = TASK_DATA(t);
 

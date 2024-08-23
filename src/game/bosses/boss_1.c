@@ -26,9 +26,10 @@
 #include "game/stage/screen_shake.h"
 
 #include "lib/m4a.h"
+#include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
-#include "constants/animations.h"
 #include "flags.h"
 
 typedef struct {
@@ -427,7 +428,7 @@ static void sub_803AA40(void)
 
         if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC
             && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
-            gPlayer.charState = 81;
+            gPlayer.charState = CHARSTATE_SONIC_CATCHING_CREAM;
         }
 
         if (!IS_FINAL_STAGE(gCurrentLevel)) {

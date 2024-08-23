@@ -18,6 +18,7 @@
 #include "game/stage/results.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/songs.h"
 #include "constants/text.h"
 #include "constants/tilemaps.h"
@@ -259,7 +260,7 @@ static void sub_808DD9C(void)
         scene->unk70 = player->x - Q(gCamera.x) - Q(20.0);
 
         if (scene->unk7A == 0) {
-            player->charState = 82;
+            player->charState = CHARSTATE_SONIC_CAUGHT_CREAM;
 
             VramFree(scene->unk4.graphics.dest);
 
@@ -397,7 +398,7 @@ static void sub_808E114(void)
     DisplaySprite(s);
 
     if (scene->unk78 == 0x28) {
-        player->charState = 82;
+        player->charState = CHARSTATE_SONIC_CAUGHT_CREAM;
     }
 
     if (scene->unk78 == 200) {

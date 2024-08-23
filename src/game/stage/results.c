@@ -16,6 +16,7 @@
 #include "game/stage/ui.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -281,8 +282,8 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     } else if (ACT_INDEX(gCurrentLevel) == ACT_BOSS) {
         m4aSongNumStart(MUS_BOSS_CLEAR);
 
-        if (gPlayer.charState == SA2_CHAR_ANIM_WALK) {
-            gPlayer.charState = SA2_CHAR_ANIM_ACT_CLEAR;
+        if (gPlayer.charState == CHARSTATE_WALK_A) {
+            gPlayer.charState = CHARSTATE_ACT_CLEAR_TIME_ATTACK;
         }
 
     } else {

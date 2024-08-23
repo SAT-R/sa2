@@ -13,6 +13,7 @@
 #include "trig.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -215,7 +216,7 @@ static void sub_807DC80(Sprite_EggUtopia_Launcher *launcher)
     m4aSongNumStart(SE_286);
 
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 64;
+    gPlayer.charState = CHARSTATE_LAUNCHER_IN_CART;
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
@@ -242,7 +243,7 @@ static void sub_807DD04(Sprite_EggUtopia_Launcher *launcher)
 {
     if (PLAYER_IS_ALIVE && launcher->unk48) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.charState = 65;
+        gPlayer.charState = CHARSTATE_LAUNCHER_IN_AIR;
         gPlayer.transition = PLTRANS_PT7;
 
         switch (launcher->kind) {

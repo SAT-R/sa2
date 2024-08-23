@@ -12,6 +12,7 @@
 #include "game/entity.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -108,18 +109,18 @@ void sub_8060ED0(void)
     player->speedAirY = 0;
 
     if (player->speedGroundX < corkscrew->unk10) {
-        player->charState = 50;
+        player->charState = CHARSTATE_50;
         player->speedAirX = player->speedGroundX;
         player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8060D34;
     } else if (player->frameInput & gPlayerControls.jump) {
-        player->charState = 50;
+        player->charState = CHARSTATE_50;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q(4.875);
         player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8060D34;
     } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
-        player->charState = 4;
+        player->charState = CHARSTATE_SPIN_ATTACK;
         sub_8023B5C(player, 9);
         player->spriteOffsetX = 6;
         player->spriteOffsetY = 9;
@@ -218,18 +219,18 @@ void sub_8061228(void)
     player->speedAirY = 0;
 
     if (player->speedGroundX > corkscrew->unk10) {
-        player->charState = 50;
+        player->charState = CHARSTATE_50;
         player->speedAirX = player->speedGroundX;
         player->transition = PLTRANS_PT5;
         gCurTask->main = sub_8061088;
     } else if (player->frameInput & gPlayerControls.jump) {
-        player->charState = 50;
+        player->charState = CHARSTATE_50;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q(4.875);
         player->transition = PLTRANS_PT5;
         gCurTask->main = sub_8061088;
     } else if (!(player->moveState & MOVESTATE_4) && player->frameInput & DPAD_DOWN) {
-        player->charState = 4;
+        player->charState = CHARSTATE_SPIN_ATTACK;
         sub_8023B5C(player, 9);
         player->spriteOffsetX = 6;
         player->spriteOffsetY = 9;

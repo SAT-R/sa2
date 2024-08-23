@@ -9,6 +9,7 @@
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/music_plant/keyboard.h"
 
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
@@ -88,7 +89,7 @@ static void sub_8076448(Sprite_Keyboard *kb)
     s16 r5, r6, r7, r8;
 
     kb->unk1 = 8;
-    gPlayer.charState = 4;
+    gPlayer.charState = CHARSTATE_SPIN_ATTACK;
     gPlayer.transition = PLTRANS_PT5;
 
     if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {

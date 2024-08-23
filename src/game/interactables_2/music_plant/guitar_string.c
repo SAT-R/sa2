@@ -11,6 +11,7 @@
 #include "game/interactables_2/music_plant/guitar_string.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -194,7 +195,7 @@ void sub_807608C(Sprite_GuitarString *gs)
         Player_SetMovestate_IsInScriptedSequence();
         gPlayer.moveState |= MOVESTATE_400000;
 
-        gPlayer.charState = 4;
+        gPlayer.charState = CHARSTATE_SPIN_ATTACK;
         gPlayer.speedAirX = 0;
         gPlayer.speedAirY = (s32)(gPlayer.speedAirY * 3) >> 1;
 

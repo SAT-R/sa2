@@ -11,6 +11,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -78,7 +79,7 @@ void Task_YadoMain(void)
     if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == TRUE) {
         m4aSongNumStart(SE_SPRING);
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
-        gPlayer.charState = SA2_CHAR_ANIM_50;
+        gPlayer.charState = CHARSTATE_50;
         gPlayer.unk6C = 1;
         gPlayer.transition = PLTRANS_PT5;
 
@@ -123,7 +124,7 @@ void Task_8055084(void)
             if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
                 // _08055134
                 gPlayer.speedAirY = YADO_PLAYER_ACCEL;
-                gPlayer.charState = SA2_CHAR_ANIM_50;
+                gPlayer.charState = CHARSTATE_50;
                 gPlayer.unk6C = 1;
                 gPlayer.transition = 5;
 
@@ -134,7 +135,7 @@ void Task_8055084(void)
     } else if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
         // _08055134
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
-        gPlayer.charState = SA2_CHAR_ANIM_50;
+        gPlayer.charState = CHARSTATE_50;
         gPlayer.unk6C = 1;
         gPlayer.transition = 5;
 
@@ -235,7 +236,7 @@ void Task_8055378(void)
 
     if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == TRUE) {
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
-        gPlayer.charState = SA2_CHAR_ANIM_50;
+        gPlayer.charState = CHARSTATE_50;
         gPlayer.unk6C = 1;
         gPlayer.transition = PLTRANS_PT5;
 

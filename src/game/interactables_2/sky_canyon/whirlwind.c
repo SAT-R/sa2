@@ -11,6 +11,7 @@
 #include "trig.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -155,7 +156,7 @@ void CreateEntity_Whirlwind(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 void sub_807C9C0(Sprite_IA86 *ia086)
 {
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 44;
+    gPlayer.charState = CHARSTATE_44;
 
     ia086->unk182 = 64;
     ia086->unk184 = Q(0.5);
@@ -179,7 +180,7 @@ void sub_807C9C0(Sprite_IA86 *ia086)
     s16 *p184;
 
     p1->moveState |= MOVESTATE_400000;
-    p1->charState = 44;
+    p1->charState = CHARSTATE_44;
 
     // Must be some debug stuff happening here
     r0 = 0x23C;

@@ -13,6 +13,7 @@
 #include "game/interactables_2/hot_crater/crane.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 
 typedef struct {
@@ -496,7 +497,7 @@ static void sub_8074088(Sprite_HCCrane *crane)
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 9;
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 0x37;
+    gPlayer.charState = CHARSTATE_55;
 
     sub_8074550(crane);
     crane->unk1B8.unk0 = 1;
@@ -519,7 +520,7 @@ static void sub_8074138(Sprite_HCCrane *crane)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && crane->unk1B8.unk0 != 0) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.charState = 0x26;
+        gPlayer.charState = CHARSTATE_38;
         gPlayer.transition = PLTRANS_PT7;
         gPlayer.speedAirX = 0;
         gPlayer.speedAirY = -crane->unk1B8.accelY;

@@ -10,6 +10,7 @@
 #include "malloc_vram.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 
 typedef struct {
@@ -170,7 +171,7 @@ static void sub_8073670(Sprite_TurnAroundBar *turnAroundBar)
     turnAroundBar->unk44 = Q(turnAroundBar->y) - gPlayer.y;
     gPlayer.x = Q(turnAroundBar->x);
     gPlayer.y = Q(turnAroundBar->y);
-    gPlayer.charState = 0x38;
+    gPlayer.charState = CHARSTATE_56;
 
     s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     s->variant = 1;

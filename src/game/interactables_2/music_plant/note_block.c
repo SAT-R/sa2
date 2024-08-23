@@ -10,6 +10,7 @@
 #include "game/interactables_2/music_plant/note_block.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -145,7 +146,7 @@ void sub_8075B50(Sprite_NoteBlock *block)
     s32 ah;
     block->unk49 = 192;
     gPlayer.speedAirY = -(gUnknown_080DFC6A[block->unk48]);
-    gPlayer.charState = 0x39;
+    gPlayer.charState = CHARSTATE_57;
     gPlayer.transition = PLTRANS_PT5;
     gPlayer.prevCharState = -1;
 

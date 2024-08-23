@@ -10,6 +10,7 @@
 
 #include "data/handlers_ia_pipe_horn_sequences.h"
 
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -968,7 +969,7 @@ void sub_80778E4(Sprite_Pipe_Horn *pipe)
     Player_SetMovestate_IsInScriptedSequence();
 
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 4;
+    gPlayer.charState = CHARSTATE_SPIN_ATTACK;
 
     m4aSongNumStart(SE_SPIN_ATTACK);
 
@@ -1137,7 +1138,7 @@ void sub_8077C3C(Sprite_Pipe_Horn *horn)
     Player_SetMovestate_IsInScriptedSequence();
 
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 4;
+    gPlayer.charState = CHARSTATE_SPIN_ATTACK;
 
     m4aSongNumStart(SE_SPIN_ATTACK);
 
