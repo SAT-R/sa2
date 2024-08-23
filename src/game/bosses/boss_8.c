@@ -860,7 +860,7 @@ static void Task_804A9D8(void)
 
             if (v >= 0 && v <= 3) {
                 gPlayer.charState = CHARSTATE_70 - v;
-                gPlayer.prevCharState = -1;
+                gPlayer.prevCharState = CHARSTATE_INVALID;
             }
         }
     }

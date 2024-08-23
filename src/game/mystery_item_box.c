@@ -262,7 +262,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     if (itemBox->unk84 != 1 || gPlayer.moveState & 2) {
         gPlayer.speedAirY = -Q(3); // default itembox-hit y-accel
         gPlayer.charState = CHARSTATE_SPRING_B;
-        gPlayer.prevCharState = -1;
+        gPlayer.prevCharState = CHARSTATE_INVALID;
         gPlayer.transition = PLTRANS_PT5;
     }
 
@@ -290,8 +290,8 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
             u16 prevRingCount = gRingCount;
             gRingCount = prevRingCount + boxVal;
 
-            if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-                if (Div(gRingCount, 100) != Div(prevRingCount, 100) && gGameMode == 0) {
+            if (!IS_EXTRA_STAGE(gCurrentLevel)) {
+                if (Div(gRingCount, 100) != Div(prevRingCount, 100) && gGameMode == GAME_MODE_SINGLE_PLAYER) {
                     gNumLives = MIN(gNumLives + 1, 255u);
                     gUnknown_030054A8.unk3 = 0x10;
                 }

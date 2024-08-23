@@ -143,7 +143,7 @@ static void Task_Interactable_BouncySpring()
 
             gPlayer.charState = CHARSTATE_SPRING_B;
             gPlayer.transition = PLTRANS_PT7;
-            gPlayer.prevCharState = -1;
+            gPlayer.prevCharState = CHARSTATE_INVALID;
 
             m4aSongNumStart(SE_SPRINGY_SPRING);
 

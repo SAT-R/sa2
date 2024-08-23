@@ -6799,7 +6799,7 @@ void PlayerCB_802A300(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->prevCharState = -1;
+    p->prevCharState = CHARSTATE_INVALID;
 
     p->rotation = 0;
 
