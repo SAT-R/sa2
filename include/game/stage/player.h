@@ -67,7 +67,7 @@ bool32 sub_8029E6C(Player *);
 
 // TODO: This is unaligned in-ROM.
 //       Can we somehow change this to be using a struct instead?
-extern const u16 gUnknown_080D6736[][2];
+extern const u16 sCharStateAnimInfo[][2];
 extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
 
 #endif // GUARD_STAGE_PLAYER_H

@@ -95,8 +95,8 @@ void CreateAmyAttackHeartEffect(u16 kind)
         struct Task *t = TaskCreate(Task_8015CE4, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_8015FF0);
         AmyAtkHearts *hearts = TASK_DATA(t);
 
-        hearts->unk100 = gUnknown_080D6736[gPlayer.charState][0];
-        hearts->unk102 = gUnknown_080D6736[gPlayer.charState][1];
+        hearts->unk100 = sCharStateAnimInfo[gPlayer.charState][0];
+        hearts->unk102 = sCharStateAnimInfo[gPlayer.charState][1];
 
         if (gPlayer.charState < 80) {
             hearts->unk100 += gPlayerCharacterIdleAnims[gPlayer.character];

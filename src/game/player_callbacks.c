@@ -112,8 +112,8 @@ struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
 
         case 1:
         case 2: {
-            ts->playerAnim = gUnknown_080D6736[gPlayer.charState][0];
-            ts->playerVariant = gUnknown_080D6736[gPlayer.charState][1];
+            ts->playerAnim = sCharStateAnimInfo[gPlayer.charState][0];
+            ts->playerVariant = sCharStateAnimInfo[gPlayer.charState][1];
 
             if (gPlayer.charState < 80) {
                 AnimId idle = gPlayerCharacterIdleAnims[gPlayer.character];
@@ -811,8 +811,8 @@ struct Task *sub_80129DC(s32 x, s32 y)
         ts->playerAnim = gPlayerCharacterIdleAnims[gPlayer.character];
 
         // This is += because it's adding to the base Idle character animation
-        ts->playerAnim += gUnknown_080D6736[gPlayer.charState][0];
-        ts->playerVariant = gUnknown_080D6736[gPlayer.charState][1];
+        ts->playerAnim += sCharStateAnimInfo[gPlayer.charState][0];
+        ts->playerVariant = sCharStateAnimInfo[gPlayer.charState][1];
 
         s = &ts->s;
 
@@ -1011,8 +1011,8 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
         t = sub_801F15C(x, y, 232, gPlayer.unk60, Task_801F214, TaskDestructor_801F550);
         ts = TASK_DATA(t);
 
-        ts->playerAnim = gUnknown_080D6736[gPlayer.charState][0];
-        ts->playerVariant = gUnknown_080D6736[gPlayer.charState][1];
+        ts->playerAnim = sCharStateAnimInfo[gPlayer.charState][0];
+        ts->playerVariant = sCharStateAnimInfo[gPlayer.charState][1];
 
         if (gPlayer.charState < 80) {
             ts->playerAnim += gPlayerCharacterIdleAnims[gPlayer.character];

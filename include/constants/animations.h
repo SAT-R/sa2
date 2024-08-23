@@ -49,7 +49,7 @@
 #define SA2_CHAR_ANIM_BEFORE_COUNTDOWN                       30
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1
-#define SA2_CHAR_ANIM_31                                     31
+#define SA2_CHAR_ANIM_GOAL_BRAKE                             31
 #define SA2_CHAR_ANIM_ACT_CLEAR                              32
 #define SA2_CHAR_ANIM_33                                     33
 #define SA2_CHAR_ANIM_34                                     34
