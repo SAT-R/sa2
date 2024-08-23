@@ -72,7 +72,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     }
 
     itemBox = TASK_DATA(t);
-    itemBox->unk82 = gUnknown_080E029A[gMultiplayerPseudoRandom & 7];
+    itemBox->unk82 = gUnknown_080E029A[gMultiplayerPseudoRandom % ARRAY_COUNT(gUnknown_080E029A)];
     itemBox->iconOffsetY = Q(0.0);
     itemBox->x = TO_WORLD_POS(me->x, spriteRegionX);
     itemBox->y = TO_WORLD_POS(me->y, spriteRegionY);

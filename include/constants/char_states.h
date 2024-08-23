@@ -22,11 +22,11 @@
 #define CHARSTATE_12                            12
 #define CHARSTATE_FALLING_VULNERABLE_A          13
 #define CHARSTATE_FALLING_VULNERABLE_B          14
-#define CHARSTATE_15                            15
+#define CHARSTATE_BOOSTLESS_ATTACK              15
 #define CHARSTATE_16                            16
-#define CHARSTATE_17                            17
-#define CHARSTATE_INSTA_SHIELD_1                18
-#define CHARSTATE_INSTA_SHIELD_2                19
+#define CHARSTATE_BOOST_ATTACK                  17
+#define CHARSTATE_INSTA_SHIELD_1                18 // TODO: Name (charState 18 is not only used by Sonic)
+#define CHARSTATE_INSTA_SHIELD_2                19 //
 #define CHARSTATE_20                            20
 #define CHARSTATE_21                            21
 #define CHARSTATE_22                            22
@@ -89,7 +89,7 @@
 #define CHARSTATE_TAUNT_L                       79
 #define CHARSTATE_SHARED_COUNT                  80
 
-#define CHARSTATE_SONIC_AIR_DASH              CHARSTATE_SHARED_COUNT
+#define CHARSTATE_SONIC_FORWARD_THRUST        CHARSTATE_SHARED_COUNT
 #define CHARSTATE_SONIC_CATCHING_CREAM        81
 #define CHARSTATE_SONIC_CAUGHT_CREAM          82
 #define CHARSTATE_CREAM_FLYING                83
@@ -104,7 +104,7 @@
 #define CHARSTATE_KNUCKLES_GLIDE              92
 #define CHARSTATE_KNUCKLES_GLIDE_FALL         93
 #define CHARSTATE_KNUCKLES_GLIDE_FALL_HIT     94
-#define CHARSTATE_KNUCKLES_GLIDE_ON_GROUND    95
+#define CHARSTATE_KNUCKLES_GLIDE_IMPACT       95
 #define CHARSTATE_KNUCKLES_GLIDE_TURN_FRAME_A 96
 #define CHARSTATE_KNUCKLES_GLIDE_TURN_FRAME_B 97
 #define CHARSTATE_KNUCKLES_GLIDE_TURN_FRAME_C 98
