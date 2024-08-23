@@ -6095,7 +6095,7 @@ bool32 sub_80294F4(Player *p)
 // (100.00%) https://decomp.me/scratch/ZcC17
 void sub_802966C(Player *p)
 {
-    s8 r6 = -1;
+    s8 charState = -1;
     s32 u48 = p->unk48;
     s32 u4C = p->unk4C;
 
@@ -6114,12 +6114,12 @@ void sub_802966C(Player *p)
                 p->moveState &= ~MOVESTATE_FACING_LEFT;
             } else if (p->speedGroundX >= Q_24_8(2.0)) {
                 if ((p->charState == 7) || (p->charState == 8)) {
-                    r6 = p->charState;
+                    charState = p->charState;
                 } else {
                     u16 u54 = p->unk54;
-                    r6 = 7;
+                    charState = 7;
                     if (u54 > 3) {
-                        r6 = 8;
+                        charState = 8;
                     }
                 }
                 p->speedGroundX -= u4C;
@@ -6130,7 +6130,7 @@ void sub_802966C(Player *p)
 
                 if ((p->speedGroundX > 0) && !(p->moveState & MOVESTATE_FACING_LEFT)) {
                     if ((p->charState == 7) || (p->charState == 8)) {
-                        r6 = 7;
+                        charState = 7;
                     }
                     gPlayer.callback = PlayerCB_802A5C4;
                 }
@@ -6150,12 +6150,12 @@ void sub_802966C(Player *p)
             } else {
                 if (p->speedGroundX <= -Q_24_8(2.0)) {
                     if ((p->charState == 7) || (p->charState == 8)) {
-                        r6 = p->charState;
+                        charState = p->charState;
                     } else {
                         u16 u54 = p->unk54;
-                        r6 = 7;
+                        charState = 7;
                         if (u54 > 3) {
-                            r6 = 8;
+                            charState = 8;
                         }
                     }
 
@@ -6168,7 +6168,7 @@ void sub_802966C(Player *p)
 
                     if ((p->speedGroundX < 0) && (p->moveState & MOVESTATE_FACING_LEFT)) {
                         if ((p->charState == 7) || (p->charState == 8)) {
-                            r6 = 7;
+                            charState = 7;
                         }
                         gPlayer.callback = PlayerCB_802A5C4;
                     }
@@ -6182,7 +6182,7 @@ void sub_802966C(Player *p)
                     p->speedGroundX += u48;
                 }
 
-                r6 = 9;
+                charState = 9;
                 sub_8023B5C(p, 14);
                 p->spriteOffsetX = 6;
                 p->spriteOffsetY = 14;
@@ -6196,9 +6196,9 @@ void sub_802966C(Player *p)
             s16 val = grndSpeed - Q_24_8(8.0 / 256.0);
             if (val <= 0) {
                 val = 0;
-                r6 = 0;
+                charState = 0;
             } else {
-                r6 = 9;
+                charState = 9;
             }
 
             p->speedGroundX = val;
@@ -6206,24 +6206,24 @@ void sub_802966C(Player *p)
             s16 val = grndSpeed + Q_24_8(8.0 / 256.0);
             if (val >= 0) {
                 val = 0;
-                r6 = 0;
+                charState = 0;
             } else {
-                r6 = 9;
+                charState = 9;
             }
 
             p->speedGroundX = val;
         } else {
-            r6 = 0;
+            charState = 0;
         }
     }
 
     if (p->moveState & MOVESTATE_8000) {
-        if ((r6 == 7) || (r6 == 8)) {
-            p->charState = r6;
+        if ((charState == 7) || (charState == 8)) {
+            p->charState = charState;
         }
-    } else if (r6 != -1) {
-        if (p->charState != r6)
-            p->charState = r6;
+    } else if (charState != -1) {
+        if (p->charState != charState)
+            p->charState = charState;
     } else if ((p->charState == 7) || (p->charState == 8)) {
         p->charState = 9;
     }
