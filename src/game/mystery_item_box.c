@@ -11,6 +11,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
@@ -259,8 +260,8 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     struct UNK_3005510 *unk5510;
     MapEntity *me;
     if (itemBox->unk84 != 1 || gPlayer.moveState & 2) {
-        gPlayer.speedAirY = -0x300;
-        gPlayer.charState = 0x26;
+        gPlayer.speedAirY = -Q(3); // default itembox-hit y-accel
+        gPlayer.charState = CHARSTATE_SPRING_B;
         gPlayer.prevCharState = -1;
         gPlayer.transition = PLTRANS_PT5;
     }

@@ -520,7 +520,7 @@ static void sub_8074138(Sprite_HCCrane *crane)
 {
     if (!(gPlayer.moveState & MOVESTATE_DEAD) && crane->unk1B8.unk0 != 0) {
         gPlayer.moveState &= ~MOVESTATE_400000;
-        gPlayer.charState = CHARSTATE_38;
+        gPlayer.charState = CHARSTATE_SPRING_B;
         gPlayer.transition = PLTRANS_PT7;
         gPlayer.speedAirX = 0;
         gPlayer.speedAirY = -crane->unk1B8.accelY;

@@ -160,7 +160,7 @@ static void Task_PlatformThinMain(void)
             s16 variant = player->variant;
             switch (player->character) {
                 case CHARACTER_KNUCKLES:
-                    if (charState == CHAR_STATE_KNUCKLES_DRILL_CLAW_MAIN) {
+                    if (charState == CHARSTATE_KNUCKLES_DRILL_CLAW_MAIN) {
                         player->moveState &= ~MOVESTATE_8;
                         player->moveState |= MOVESTATE_IN_AIR;
                         player->speedAirY = player->speedAirY >> 1;
@@ -174,7 +174,7 @@ static void Task_PlatformThinMain(void)
                 case CHARACTER_SONIC:
                 case CHARACTER_AMY: {
                     anim -= gPlayerCharacterIdleAnims[player->character];
-                    if (charState == CHARSTATE_36 && anim == SA2_CHAR_ANIM_51 && variant == 1 && player->speedAirY > 0) {
+                    if (charState == CHARSTATE_TRICK_DOWN && anim == SA2_CHAR_ANIM_51 && variant == 1 && player->speedAirY > 0) {
                         player->moveState &= ~MOVESTATE_8;
                         CreatePlatformBreakParticles(x, y);
                         something = TRUE;

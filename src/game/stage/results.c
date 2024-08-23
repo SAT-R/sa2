@@ -283,7 +283,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         m4aSongNumStart(MUS_BOSS_CLEAR);
 
         if (gPlayer.charState == CHARSTATE_WALK_A) {
-            gPlayer.charState = CHARSTATE_ACT_CLEAR_TIME_ATTACK;
+            gPlayer.charState = CHARSTATE_ACT_CLEAR_TIME_ATTACK_OR_BOSS;
         }
 
     } else {

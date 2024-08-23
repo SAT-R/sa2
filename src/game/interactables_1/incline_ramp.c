@@ -53,7 +53,7 @@ static void Task_InclineRamp(void)
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
 
-                gPlayer.charState = CHARSTATE_39;
+                gPlayer.charState = CHARSTATE_SPRING_C;
                 gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }

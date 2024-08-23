@@ -91,7 +91,8 @@ void CreateAmyAttackHeartEffect(u16 kind)
         return;
     }
 
-    if ((gPlayer.charState == CHARSTATE_15) || (gPlayer.charState == CHARSTATE_INSTA_SHIELD_1) || (gPlayer.charState == CHARSTATE_36)) {
+    if ((gPlayer.charState == CHARSTATE_15) || (gPlayer.charState == CHARSTATE_INSTA_SHIELD_1)
+        || (gPlayer.charState == CHARSTATE_TRICK_DOWN)) {
         struct Task *t = TaskCreate(Task_8015CE4, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_8015FF0);
         AmyAtkHearts *hearts = TASK_DATA(t);
 

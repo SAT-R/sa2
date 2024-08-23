@@ -264,7 +264,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     gUnknown_030054A8.unk0 = 0xFF;
 
     if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
-        gPlayer.charState = CHARSTATE_ACT_CLEAR_TIME_ATTACK;
+        gPlayer.charState = CHARSTATE_ACT_CLEAR_TIME_ATTACK_OR_BOSS;
     }
 
     if (resultsCutScene->unk2D8 == 1) {

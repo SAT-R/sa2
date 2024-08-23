@@ -141,7 +141,7 @@ static void Task_Interactable_BouncySpring()
                 spring->s.prevVariant = -1;
             }
 
-            gPlayer.charState = CHARSTATE_38;
+            gPlayer.charState = CHARSTATE_SPRING_B;
             gPlayer.transition = PLTRANS_PT7;
             gPlayer.prevCharState = -1;
 

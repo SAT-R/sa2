@@ -181,14 +181,14 @@ static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
 
     switch (ring->orientation) {
         case DASH_RING_DIR__UP: {
-            gPlayer.charState = CHARSTATE_38;
+            gPlayer.charState = CHARSTATE_SPRING_B;
             gPlayer.speedAirX = COS_DEG(270) * IA_DASH_RING_ACCELERATION;
             gPlayer.speedAirY = SIN_DEG(270) * IA_DASH_RING_ACCELERATION;
         } break;
 
         case DASH_RING_DIR__UP_RIGHT: {
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
-            gPlayer.charState = CHARSTATE_38;
+            gPlayer.charState = CHARSTATE_SPRING_B;
             gPlayer.speedAirX = COS_DEG(315) * IA_DASH_RING_ACCELERATION;
             gPlayer.speedAirY = SIN_DEG(315) * IA_DASH_RING_ACCELERATION;
         } break;
@@ -229,7 +229,7 @@ static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
 
         case DASH_RING_DIR__UP_LEFT: {
             gPlayer.moveState |= MOVESTATE_FACING_LEFT;
-            gPlayer.charState = CHARSTATE_38;
+            gPlayer.charState = CHARSTATE_SPRING_B;
             gPlayer.speedAirX = COS_DEG(225) * IA_DASH_RING_ACCELERATION;
             gPlayer.speedAirY = SIN_DEG(225) * IA_DASH_RING_ACCELERATION;
         } break;

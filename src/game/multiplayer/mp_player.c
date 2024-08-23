@@ -1490,7 +1490,7 @@ void Task_HandleLaunchPlayer(void)
         gPlayer.moveState &= ~MOVESTATE_8;
         gPlayer.moveState |= MOVESTATE_IN_AIR;
         gPlayer.moveState &= ~MOVESTATE_100;
-        gPlayer.charState = CHARSTATE_38;
+        gPlayer.charState = CHARSTATE_SPRING_B;
         sprPlayer->prevVariant = -1;
         sub_8023B5C(&gPlayer, 14);
         gPlayer.spriteOffsetX = 6;
@@ -1501,7 +1501,7 @@ void Task_HandleLaunchPlayer(void)
         return;
     }
 
-    if (gPlayer.charState != CHAR_STATE_AMY_SA1_JUMP) {
+    if (gPlayer.charState != CHARSTATE_AMY_SA1_JUMP) {
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         gPlayer.moveState &= ~MOVESTATE_800000;
         TaskDestroy(gCurTask);
@@ -1540,6 +1540,6 @@ void LaunchPlayer(s16 airSpeedY)
     *airSpeed = airSpeedY;
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     gPlayer.heldInput = 0;
-    gPlayer.charState = CHAR_STATE_AMY_SA1_JUMP;
+    gPlayer.charState = CHARSTATE_AMY_SA1_JUMP;
     gPlayer.moveState |= MOVESTATE_800000;
 }
