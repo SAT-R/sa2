@@ -41,7 +41,7 @@ void PlayerCB_8011DCC(Player *);
 void PlayerCB_8011E88(Player *);
 void Task_SonicBoundMotionFrames(void);
 void PlayerCB_80123D0(Player *);
-void PlayerCB_8012DA4(Player *p);
+void Player_Attack_Tails_TailSwipe(Player *p);
 void PlayerCB_80123FC(Player *);
 void PlayerCB_8012460(Player *);
 void PlayerCB_8012498(Player *p);
@@ -166,7 +166,7 @@ struct Task *Player_Sonic_Bound(s32 x, s32 y)
     }
 }
 
-void sub_8011D48(Player *p)
+void Player_InitAttack_Sonic(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -577,7 +577,7 @@ bool32 sub_801251C(Player *p)
     return FALSE;
 }
 
-void sub_8012548(Player *p)
+void Player_InitAttack_Cream_ChaoAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -713,7 +713,7 @@ void PlayerCB_80127F0(Player *p)
     sub_8027EF0(p);
 }
 
-void sub_8012830(Player *p)
+void Player_InitAttack_Cream_StepAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -954,7 +954,7 @@ void PlayerCB_8012D1C(Player *p)
     sub_8028204(p);
 }
 
-void sub_8012D3C(Player *p)
+void Player_InitAttack_Tails(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -970,10 +970,12 @@ void sub_8012D3C(Player *p)
 
     m4aSongNumStart(SE_TAILS_TAIL_SWIPE);
 
-    PLAYERFN_SET_AND_CALL(PlayerCB_8012DA4, p);
+    PLAYERFN_SET_AND_CALL(Player_Attack_Tails_TailSwipe, p);
 }
 
-void PlayerCB_8012DA4(Player *p)
+// Tails' "Tail Swipe" can be used both while stationary as well as moving/boosting.
+// While boosting, it is commonly referred to as "Super Tail Swipe".
+void Player_Attack_Tails_TailSwipe(Player *p)
 {
     s32 halfUnk4C = p->unk4C >> 1;
 
@@ -1031,7 +1033,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
     return result;
 }
 
-void sub_8012EEC(Player *p)
+void Player_InitAttack_Knuckles_Punch(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -1119,7 +1121,7 @@ void PlayerCB_8013010(Player *p)
     sub_8027EF0(p);
 }
 
-void sub_8013070(Player *p)
+void Player_InitAttack_Knuckles_SpiralAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -1135,7 +1137,7 @@ void sub_8013070(Player *p)
 
     p->unk72 = 32;
 
-    m4aSongNumStart(SE_225);
+    m4aSongNumStart(SE_SPIRAL_ATTACK);
 
     PLAYERFN_SET_AND_CALL(PlayerCB_80130E4, p);
 }
@@ -2039,7 +2041,7 @@ void sub_8013EE0(Player *p)
 
 void PlayerCB_8013F60(Player *p);
 
-void sub_8013F04(Player *p)
+void Player_InitAttack_Amy_HammerAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 

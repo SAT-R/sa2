@@ -133,7 +133,7 @@ void sub_802A4B8(Player *);
 void PlayerCB_Nop(Player *);
 void PlayerCB_802A5C4(Player *);
 void PlayerCB_802A620(Player *);
-void PlayerCB_802A714(Player *);
+void Player_InitAttack(Player *);
 
 // >> acceleration = (sin(angle) * 3) / 32
 #define GET_ROTATED_ACCEL(angle)   ((SIN_24_8((angle)*4) * 3) >> 5)
@@ -3988,7 +3988,7 @@ void PlayerCB_8025318(Player *p)
 {
     u32 mask;
     if (IS_BOSS_STAGE(gCurrentLevel)) {
-        if ((p->moveState & MOVESTATE_IN_AIR)) {
+        if (p->moveState & MOVESTATE_IN_AIR) {
             PlayerCB_8025F84(p);
             return;
         }
@@ -6783,7 +6783,7 @@ bool32 sub_802A2A8(Player *p)
         || ((p->rotation + Q(0.25)) << 24 <= 0)) {
         return FALSE;
     } else if (p->frameInput & gPlayerControls.attack) {
-        PLAYERFN_SET(PlayerCB_802A714);
+        PLAYERFN_SET(Player_InitAttack);
         return TRUE;
     } else {
         return FALSE;
@@ -6954,38 +6954,39 @@ void sub_802A6C0(Player *p)
     m4aSongNumStop(SE_GRINDING);
 }
 
-void PlayerCB_802A714(Player *p)
+void Player_InitAttack(Player *p)
 {
     switch (p->character) {
         case CHARACTER_SONIC: {
-            sub_8011D48(p);
+            Player_InitAttack_Sonic(p);
         } break;
 
         case CHARACTER_CREAM: {
-            if (p->isBoosting == 0) {
-                sub_8012548(p);
+            if (!p->isBoosting) {
+                Player_InitAttack_Cream_ChaoAttack(p);
             } else {
-                sub_8012830(p);
+                Player_InitAttack_Cream_StepAttack(p);
             }
         } break;
 
         case CHARACTER_TAILS: {
-            sub_8012D3C(p);
+            Player_InitAttack_Tails(p);
         } break;
 
         case CHARACTER_KNUCKLES: {
-            if (p->isBoosting == 0) {
-                sub_8012EEC(p);
+            if (!p->isBoosting) {
+                Player_InitAttack_Knuckles_Punch(p);
             } else {
-                sub_8013070(p);
+                Player_InitAttack_Knuckles_SpiralAttack(p);
             }
         } break;
 
         case CHARACTER_AMY: {
-            if (p->isBoosting == 0) {
-                sub_8013F04(p);
+            if (!p->isBoosting) {
+                Player_InitAttack_Amy_HammerAttack(p);
             } else {
-                sub_8011D48(p);
+                // Same effect as Sonic's "Super Skid" (Boost + B_BUTTON)
+                Player_InitAttack_Sonic(p);
             }
         } break;
     }

@@ -17,4 +17,4 @@
 #define USE_NEW_DMA 1
 #endif
 
-#endif // GUARD_SA1_CONFIG_H
+#endif // GUARD_SA2_CONFIG_H

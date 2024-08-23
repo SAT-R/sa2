@@ -3,9 +3,6 @@
 
 #include "global.h"
 #include "core.h"
-//#include "platform.h"
-#include "gba/defines.h"
-#include "gba/io_reg.h"
 
 extern void GameInit(void);
 extern void GameStart(void);

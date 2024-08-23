@@ -5,8 +5,6 @@
 #include "trig.h"
 #include "bg_triangles.h"
 #include "malloc_vram.h"
-#include "gba/defines.h"
-#include "gba/io_reg.h"
 #include "lib/m4a.h"
 #include "sakit/globals.h"
 #include "sakit/camera.h"

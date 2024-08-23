@@ -168,7 +168,7 @@
 // Plays when Sonic does his "Bound" trick and collides with the ground
 #define SE_SONIC_BOUND_IMPACT  223
 #define SE_224                 224
-#define SE_225                 225
+#define SE_SPIRAL_ATTACK       225
 #define SE_226                 226
 #define SE_CREAM_FLYING        227
 #define SE_228                 228

@@ -1,8 +1,6 @@
 #ifndef GUARD_GBA_IO_REG_H
 #define GUARD_GBA_IO_REG_H
 
-#include "config.h"
-
 #include <stdint.h>
 
 #define IO_SIZE 0x400
