@@ -68,7 +68,7 @@ void sub_8022284(Player *);
 void Task_PlayerMain(void);
 void AllocateCharacterStageGfx(Player *, PlayerSpriteInfo *);
 void AllocateCharacterMidAirGfx(Player *, PlayerSpriteInfo *);
-void TaskDestructor_802A07C(struct Task *);
+void TaskDestructor_Player(struct Task *);
 void sub_802486C(Player *p, PlayerSpriteInfo *p2);
 void sub_8024B10(Player *p, PlayerSpriteInfo *s);
 void sub_8024F74(Player *p, PlayerSpriteInfo *s);
@@ -131,7 +131,7 @@ void Player_InitKilledBoss(Player *);
 void Player_InitReachedGoalMultiplayer(Player *);
 void Player_Nop(Player *);
 void Player_802A5C4(Player *);
-void Player_802A620(Player *);
+void Player_InitTaunt(Player *);
 void Player_InitAttack(Player *);
 
 // >> acceleration = (sin(angle) * 3) / 32
@@ -549,7 +549,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     struct Task *t;
     player_0_Task *gt;
 
-    t = TaskCreate(Task_PlayerMain, sizeof(player_0_Task), 0x3000, 0, TaskDestructor_802A07C);
+    t = TaskCreate(Task_PlayerMain, sizeof(player_0_Task), 0x3000, 0, TaskDestructor_Player);
     p->spriteTask = t;
     gt = TASK_DATA(t);
     gt->unk0 = unk60;
@@ -4078,7 +4078,7 @@ void Player_8025548(Player *p)
     }
 }
 
-void Player_802569C(Player *p)
+void Player_Taunt(Player *p)
 {
     Sprite *s = &p->unk90->s;
     u16 characterAnim = GET_CHARACTER_ANIM(p);
@@ -4094,7 +4094,7 @@ void Player_802569C(Player *p)
             PLAYERFN_SET(Player_TouchGround);
         }
 
-        if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 1) && (s->frameFlags & 0x4000)) {
+        if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 1) && (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)) {
             PLAYERFN_SET(Player_TouchGround);
         }
 
@@ -6683,7 +6683,7 @@ void Player_DisableInputAndBossTimer_FinalBoss(void)
     }
 }
 
-void TaskDestructor_802A07C(struct Task *t)
+void TaskDestructor_Player(struct Task *t)
 {
     gPlayer.spriteTask = NULL;
 
@@ -6700,7 +6700,7 @@ void TaskDestructor_802A07C(struct Task *t)
 bool32 Player_TryTaunt(Player *p)
 {
     if (((p->heldInput & DPAD_ANY) == DPAD_UP) && p->speedGroundX == 0) {
-        PLAYERFN_SET(Player_802A620);
+        PLAYERFN_SET(Player_InitTaunt);
         return TRUE;
     }
 
@@ -6904,7 +6904,7 @@ void Player_802A5C4(Player *p)
     PLAYERFN_SET_AND_CALL(Player_8025548, p);
 }
 
-void Player_802A620(Player *p)
+void Player_InitTaunt(Player *p)
 {
     p->moveState &= ~MOVESTATE_20;
 
@@ -6914,7 +6914,7 @@ void Player_802A620(Player *p)
 
     p->speedGroundX = 0;
 
-    PLAYERFN_SET_AND_CALL(Player_802569C, p);
+    PLAYERFN_SET_AND_CALL(Player_Taunt, p);
 }
 
 void sub_802A660(Player *p)
