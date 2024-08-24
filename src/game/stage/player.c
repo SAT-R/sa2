@@ -2727,7 +2727,7 @@ void sub_80232D0(Player *p)
         }
     }
 
-    if ((p->moveState & (MOVESTATE_GOAL_REACHED0 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
+    if ((p->moveState & (MOVESTATE_GOAL_80000000 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
         s32 r2, r3;
         struct Camera *cam2 = &gCamera;
         r3 = p->y;
@@ -3106,7 +3106,7 @@ void sub_8023B5C(Player *p, s32 spriteOffsetY)
 
 void sub_8023C10(Player *p)
 {
-    if (p->moveState & MOVESTATE_GOAL_REACHED0) {
+    if (p->moveState & MOVESTATE_GOAL_80000000) {
         s32 speedGroundX = p->speedGroundX;
         if (gInput & DPAD_ANY) {
             speedGroundX += Q(0.125);
@@ -3205,7 +3205,7 @@ void Task_PlayerHandleDeath(void)
 
 static inline bool32 SomePlayerYComparison(Player *p, struct Camera *cam, s32 playerY)
 {
-    if (p->moveState & MOVESTATE_GOAL_REACHED0) {
+    if (p->moveState & MOVESTATE_GOAL_80000000) {
         return FALSE;
     }
 
@@ -6576,7 +6576,7 @@ bool32 sub_8029DE8(Player *p)
     struct Camera *cam = &gCamera;
     s32 playerY = p->y;
 
-    if (!(p->moveState & MOVESTATE_GOAL_REACHED0)) {
+    if (!(p->moveState & MOVESTATE_GOAL_80000000)) {
         if (GRAVITY_IS_INVERTED) {
             if (playerY <= Q(cam->minY))
                 return TRUE;
@@ -6594,7 +6594,7 @@ bool32 sub_8029E24(Player *p)
     struct Camera *cam = &gCamera;
     s32 playerY = p->y;
 
-    if (!(p->moveState & MOVESTATE_GOAL_REACHED0)) {
+    if (!(p->moveState & MOVESTATE_GOAL_80000000)) {
         if (GRAVITY_IS_INVERTED) {
             if (playerY <= Q(cam->y - (DISPLAY_HEIGHT / 2)))
                 return TRUE;

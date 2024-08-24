@@ -60,10 +60,10 @@ void sub_801561C(void)
     u32 oldPlayerUnk10 = unk5A70->s.frameFlags;
     u16 r6 = unk5A70->transform.rotation;
 
-    oldPlayerMovestate &= ~MOVESTATE_GOAL_REACHED0;
+    oldPlayerMovestate &= ~MOVESTATE_GOAL_80000000;
 
     if (GRAVITY_IS_INVERTED) {
-        oldPlayerMovestate |= MOVESTATE_GOAL_REACHED0;
+        oldPlayerMovestate |= MOVESTATE_GOAL_80000000;
     }
 
     for (i = 0; i < (s32)ARRAY_COUNT(sPlayerStateBuffer); i++) {
@@ -87,10 +87,10 @@ void sub_80156D0(void)
     INC_BE_INDEX(sPlayerStateBuffer);
     i = sPlayerStateBufferIndex;
 
-    oldMovestate &= ~MOVESTATE_GOAL_REACHED0;
+    oldMovestate &= ~MOVESTATE_GOAL_80000000;
 
     if (GRAVITY_IS_INVERTED) {
-        oldMovestate |= MOVESTATE_GOAL_REACHED0;
+        oldMovestate |= MOVESTATE_GOAL_80000000;
     }
 
     sPlayerStateBuffer[i].anim = p->anim;
@@ -272,7 +272,7 @@ void Task_80159C8(void)
                     transform->width = 0xFF00;
                 }
 
-                moveState = actions->plState.moveState & MOVESTATE_GOAL_REACHED0;
+                moveState = actions->plState.moveState & MOVESTATE_GOAL_80000000;
                 actions->plState.moveState = moveState;
 
                 if (moveState) {
