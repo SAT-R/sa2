@@ -140,7 +140,7 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail.inc", void Task_Gr
                             goto _080100B0;
                     }
                 _08010096:
-                    player->transition = 11;
+                    player->transition = PLTRANS_PT11;
                     player->unk6E = 0;
 
                     if (railKind & RAIL_KIND_1)
@@ -228,11 +228,11 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc", void Tas
                                     if (worldX < (left + (someWidth >> 1))
                                         || ((player->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
                                         if ((kind & RAIL_KIND_2)) {
-                                            player->transition = 13;
+                                            player->transition = PLTRANS_PT13;
                                             goto set13;
                                         } else
                                             goto set12;
-                                        // player->transition = 12;
+                                        // player->transition = PLTRANS_PT12;
                                     }
                                 }
                             }
@@ -245,11 +245,11 @@ NONMATCH("asm/non_matching/sakit/interactables/Task_GrindRail_Air.inc", void Tas
 
                                     if (playerX > middle || ((player->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
                                         if ((kind & RAIL_KIND_2)) {
-                                            player->transition = 13;
+                                            player->transition = PLTRANS_PT13;
                                         set13:;
                                         } else
                                         set12:
-                                            player->transition = 12;
+                                            player->transition = PLTRANS_PT12;
                                     }
                                 }
                             }
