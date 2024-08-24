@@ -120,7 +120,7 @@ bool32 sub_80294F4(Player *);
 void sub_802966C(Player *);
 bool32 Player_TryTaunt(Player *);
 bool32 Player_TryCrouchOrSpinAttack(Player *);
-bool32 sub_802A184(Player *);
+bool32 Player_TryInitSpindash(Player *);
 void Player_802A228(Player *);
 void Player_InitIceSlide(Player *);
 void Player_802A3B8(Player *);
@@ -4125,7 +4125,7 @@ void Player_8025854(Player *p)
     Sprite *s = &p->unk90->s;
     u16 characterAnim = GET_CHARACTER_ANIM(p);
 
-    if (!sub_802A184(p) && !Player_TryJump(p) && !Player_TryAttack(p)) {
+    if (!Player_TryInitSpindash(p) && !Player_TryJump(p) && !Player_TryAttack(p)) {
         u16 dpad = (p->heldInput & DPAD_ANY);
         if (dpad == 0) {
             if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->variant == 0)) {
@@ -4475,7 +4475,7 @@ void Player_80261D8(Player *p)
     PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
-void Player_802631C(Player *p)
+void Player_InitSpindash(Player *p)
 {
     p->charState = CHARSTATE_SPIN_DASH;
 
@@ -6725,11 +6725,11 @@ bool32 Player_TryCrouchOrSpinAttack(Player *p)
     return FALSE;
 }
 
-bool32 sub_802A184(Player *p)
+bool32 Player_TryInitSpindash(Player *p)
 {
     if (p->charState == CHARSTATE_CROUCH) {
         if (p->frameInput & gPlayerControls.jump) {
-            PLAYERFN_SET_AND_CALL(Player_802631C, p);
+            PLAYERFN_SET_AND_CALL(Player_InitSpindash, p);
             return TRUE;
         }
     }
