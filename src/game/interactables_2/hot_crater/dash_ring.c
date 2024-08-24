@@ -195,7 +195,7 @@ static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
 
         case DASH_RING_DIR__RIGHT: {
             gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
-            gPlayer.charState = CHARSTATE_40;
+            gPlayer.charState = CHARSTATE_RAMP_AND_DASHRING;
             gPlayer.speedAirX = COS_DEG(0) * IA_DASH_RING_ACCELERATION;
             gPlayer.speedAirY = SIN_DEG(0) * IA_DASH_RING_ACCELERATION;
         } break;
@@ -222,7 +222,7 @@ static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
 
         case DASH_RING_DIR__LEFT: {
             gPlayer.moveState |= MOVESTATE_FACING_LEFT;
-            gPlayer.charState = CHARSTATE_40;
+            gPlayer.charState = CHARSTATE_RAMP_AND_DASHRING;
             gPlayer.speedAirX = COS_DEG(180) * IA_DASH_RING_ACCELERATION;
             gPlayer.speedAirY = SIN_DEG(180) * IA_DASH_RING_ACCELERATION;
         } break;

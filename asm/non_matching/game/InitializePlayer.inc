@@ -32,7 +32,7 @@ _080216C2:
 	ldrsh r0, [r0, r1]
 	lsls r0, r0, #8
 	str r0, [r5, #0xc]
-	ldr r0, _0802181C @ =PlayerCB_8025318
+	ldr r0, _0802181C @ =Player_TouchGround
 	str r0, [r5]
 	ldr r0, _08021820 @ =gPlayerControls
 	ldrh r2, [r0]
@@ -197,7 +197,7 @@ _080217EA:
 	str r2, [r5, #0x78]
 	b _08021840
 	.align 2, 0
-_0802181C: .4byte PlayerCB_8025318
+_0802181C: .4byte Player_TouchGround
 _08021820: .4byte gPlayerControls
 _08021824: .4byte 0x0000FFFF
 _08021828: .4byte gGameMode

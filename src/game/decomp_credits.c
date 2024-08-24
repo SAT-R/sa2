@@ -172,7 +172,7 @@ void Task_DecompCreditsFirst()
             cred->logoFrameT0 = cred->frames;
             SPRITE_FLAG_CLEAR(&cred->sprLogoOllie, X_FLIP);
             m4aSongNumStart(SE_LONG_BRAKE);
-            cred->sprSonic.graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_BRAKE, CHARACTER_SONIC);
+            cred->sprSonic.graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_BRAKE_GOAL, CHARACTER_SONIC);
             cred->sprSonic.variant = 0;
         }
 

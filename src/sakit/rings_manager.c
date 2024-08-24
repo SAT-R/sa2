@@ -311,7 +311,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
                                             && (((ry - 8) >= (mpp->pos.y + mpp->s.hitboxes[0].top))
                                                 && ((rx + 8) <= mpp->s.hitboxes[0].bottom))) {
                                             u8 anim = rm->s.graphics.anim - gPlayerCharacterIdleAnims[gMultiplayerCharacters[mpp->unk56]];
-                                            if ((anim != SA2_CHAR_ANIM_28 && anim != SA2_CHAR_ANIM_29) || !(mpp->unk54 & 0x4)) {
+                                            if ((anim != SA2_CHAR_ANIM_HIT && anim != SA2_CHAR_ANIM_DEAD) || !(mpp->unk54 & 0x4)) {
                                                 CreateCollectRingEffect(rx, ry);
                                                 meRing->x = (u8)MAP_ENTITY_STATE_INITIALIZED;
                                             }

@@ -84,7 +84,7 @@ void PlayerCB_Jump(Player *p);
 void PlayerCB_Jumping(Player *);
 void PlayerCB_8025F84(Player *);
 void PlayerCB_Spindash(Player *);
-void PlayerCB_8026810(Player *);
+void Player_DoGrinding(Player *);
 void PlayerCB_8027040(Player *);
 void PlayerCB_8027190(Player *);
 void PlayerCB_8027324(Player *);
@@ -100,9 +100,9 @@ void PlayerCB_8029074(Player *);
 void PlayerCB_8029314(Player *);
 void PlayerCB_8026060(Player *p);
 void PlayerCB_802611C(Player *p);
-void PlayerCB_8026764(Player *p);
+void Player_InitGrinding(Player *p);
 void PlayerCB_80269C0(Player *p);
-void PlayerCB_8026A4C(Player *p);
+void Player_GrindRailEndAir(Player *p);
 void PlayerCB_8026E24(Player *p);
 void PlayerCB_8026F10(Player *p);
 void PlayerCB_8026FC8(Player *p);
@@ -214,7 +214,7 @@ void Player_InitAttack(Player *);
 // TODO(Jace): This name is speculative right now, check for accuracy!
 #define PLAYERFN_MAYBE_TRANSITION_TO_GROUND_BASE(player)                                                                                   \
     if ((player->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {                                                           \
-        gPlayer.callback = PlayerCB_8025318;                                                                                               \
+        gPlayer.callback = Player_TouchGround;                                                                                             \
                                                                                                                                            \
         player->speedGroundX = player->speedAirX;                                                                                          \
         player->rotation = 0;                                                                                                              \
@@ -271,24 +271,24 @@ const u16 sCharStateAnimInfo[][2] = {
     [CHARSTATE_CROUCH] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_CROUCH, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_SPIN_DASH] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_SPIN_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_ATTACK, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_5] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_5, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_6] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_6, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_7] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_7, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_TURN_SLOW] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_5, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_TURN_AFTER_BRAKE] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_6, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_BRAKE] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_BRAKE, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_BRAKE_GOAL] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_BRAKE_GOAL, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_WALK_A] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_JUMP_1] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_JUMP_1, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_JUMP_2] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_JUMP_2, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_12] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_12, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_HIT_GROUND] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_HIT_GROUND, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_FALLING_VULNERABLE_A] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_FALLING_VULNERABLE, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_FALLING_VULNERABLE_B] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_FALLING_VULNERABLE, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_BOOSTLESS_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_14, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_16] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_15, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_BOOST_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_16, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_INSTA_SHIELD_1] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_INSTA_SHIELD_2] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_2, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_20] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_28, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_21] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_28, CHARACTER_SHARED_ANIM), 1 },
-    [CHARSTATE_22] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_29, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_BOOSTLESS_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOSTLESS_ATTACK, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_AIR_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_AIR_ATTACK, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_BOOST_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOST_ATTACK, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_SOME_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_SOME_OTHER_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_2, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_HIT_AIR] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_HIT, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_HIT_STUNNED] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_HIT, CHARACTER_SHARED_ANIM), 1 },
+    [CHARSTATE_DEAD] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_DEAD, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_TAUNT_A] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_TAUNT_B] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_GOAL_BRAKE_A] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_GOAL_BRAKE, CHARACTER_SHARED_ANIM), 0 },
@@ -306,9 +306,9 @@ const u16 sCharStateAnimInfo[][2] = {
     [CHARSTATE_SPRING_A] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_65, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_SPRING_B] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_52, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_SPRING_C] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_53, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_40] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_54, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_41] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_55, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_42] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_56, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_RAMP_AND_DASHRING] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_54, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_GRINDING] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_55, CHARACTER_SHARED_ANIM), 0 },
+    [CHARSTATE_GRINDING_SONIC_AMY_JUMP_OFF] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_56, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_43] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_57, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_44] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_58, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_45] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_59, CHARACTER_SHARED_ANIM), 0 },
@@ -377,7 +377,7 @@ const u16 sCharStateAnimInfo[][2] = {
     [CHARSTATE_KNUCKLES_DRILL_CLAW_GROUND] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_KNUCKLES), 2 },
     [CHARSTATE_AMY_SA1_JUMP] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_52, CHARACTER_AMY), 0 },
     [CHARSTATE_TAUNT_M] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SHARED_ANIM), 0 },
-    [CHARSTATE_AMY_HAMMER_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_14, CHARACTER_AMY), 0 },
+    [CHARSTATE_AMY_HAMMER_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOSTLESS_ATTACK, CHARACTER_AMY), 0 },
     [CHARSTATE_AMY_SA1_HAMMER_ATTACK] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_19, CHARACTER_AMY), 0 },
     [CHARSTATE_TAUNT_N] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SHARED_ANIM), 0 },
     [CHARSTATE_AMY_MID_AIR_HAMMER_SWIRL] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_2, CHARACTER_AMY), 0 },
@@ -387,7 +387,7 @@ static const s16 gUnknown_080D6902[5][2] = {
     { 8, 64 }, { 12, 64 }, { 14, 64 }, { 16, 64 }, { 18, 64 },
 };
 
-static const s16 gUnknown_080D6916[5] = { 0x800, 0x7F8, 0x690, 0x5A0, 0x438 };
+static const s16 gUnknown_080D6916[5] = { Q(8), Q(7.96875), Q(6.5625), Q(5.625), Q(4.21875) };
 
 static const s16 sSpinDashSpeeds[9] = {
     Q_8_8(6.000 + 0 * (3. / 8.)), //
@@ -567,7 +567,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 
     InitializePlayer(p);
 
-    PLAYERFN_SET(PlayerCB_8025318);
+    PLAYERFN_SET(Player_TouchGround);
 
     sub_801F754();
     InitPlayerHitRingsScatter();
@@ -708,7 +708,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     }
     p->y = Q(p->checkPointY);
 
-    p->callback = PlayerCB_8025318;
+    p->callback = Player_TouchGround;
 
     p->heldInput = gPlayerControls.jump | gPlayerControls.attack | gPlayerControls.trick;
     p->frameInput = gPlayerControls.jump | gPlayerControls.attack | gPlayerControls.trick;
@@ -1010,7 +1010,7 @@ void sub_8021BE0(Player *p)
 {
     if (!(p->moveState & MOVESTATE_200)) {
         if (!(p->moveState & MOVESTATE_800000)) {
-            PLAYERFN_SET(PlayerCB_8025318);
+            PLAYERFN_SET(Player_TouchGround);
             p->moveState &= ~(MOVESTATE_10 | MOVESTATE_IN_AIR);
         }
 
@@ -2821,7 +2821,7 @@ void sub_8023610(Player *p)
     s32 r5 = p->unk48 * 2;
     s32 r6 = p->unk44;
 
-    if ((p->charState != CHARSTATE_20) && !(p->moveState & MOVESTATE_10)) {
+    if ((p->charState != CHARSTATE_HIT_AIR) && !(p->moveState & MOVESTATE_10)) {
         s16 r0;
         u16 r2 = p->speedAirX;
 
@@ -3198,7 +3198,7 @@ void Task_8023D08(void)
         }
 
         gCurTask->main = Task_8023FC0;
-        gPlayer.callback = PlayerCB_8025318;
+        gPlayer.callback = Player_TouchGround;
     } else {
         val--;
         gt->unk4 = val;
@@ -3279,7 +3279,7 @@ void Task_8023FC0(void)
     sub_8024B10(p, p->unk90);
     sub_8024F74(p, p->unk94);
 
-    if (p->charState != CHARSTATE_20 && p->timerInvulnerability > 0) {
+    if (p->charState != CHARSTATE_HIT_AIR && p->timerInvulnerability > 0) {
         p->timerInvulnerability--;
     }
 
@@ -3291,7 +3291,7 @@ void Task_8023FC0(void)
     sub_8015790();
     sub_80156D0();
 
-    p->moveState &= ~MOVESTATE_800;
+    p->moveState &= ~MOVESTATE_ICE_SLIDE;
     gHomingTarget.squarePlayerDistance = 0x4000;
     gHomingTarget.angle = 0;
     gCheeseTarget.squarePlayerDistance = CHEESE_DISTANCE_MAX;
@@ -3300,7 +3300,7 @@ void Task_8023FC0(void)
     if (p->moveState & MOVESTATE_DEAD) {
         struct Camera *cam = &gCamera;
         gCurTask->main = Task_8023E90;
-        p->charState = CHARSTATE_22;
+        p->charState = CHARSTATE_DEAD;
         p->speedAirX = 0;
 
         if (p->speedAirY < -0x400) {
@@ -3356,7 +3356,7 @@ void CallPlayerTransition(Player *p)
     if (p->transition) {
         switch (p->transition - 1) {
             case PLTRANS_PT1 - 1: {
-                PLAYERFN_SET(PlayerCB_8025318);
+                PLAYERFN_SET(Player_TouchGround);
             } break;
             case PLTRANS_PT2 - 1: {
                 PLAYERFN_SET(PlayerCB_8025A0C);
@@ -3453,20 +3453,20 @@ void CallPlayerTransition(Player *p)
                 }
                 PLAYERFN_SET(PlayerCB_TouchNormalSpring);
             } break;
-            case PLTRANS_PT22 - 1: {
+            case PLTRANS_RAMP_AND_DASHRING - 1: {
                 PLAYERFN_SET(PlayerCB_8029158);
             } break;
             case PLTRANS_PT24 - 1: {
                 PLAYERFN_SET(PlayerCB_802A300);
             } break;
-            case PLTRANS_PT11 - 1: {
-                PLAYERFN_SET(PlayerCB_8026764);
+            case PLTRANS_GRINDING - 1: {
+                PLAYERFN_SET(Player_InitGrinding);
             } break;
-            case PLTRANS_PT12 - 1: {
+            case PLTRANS_GRIND_RAIL_END_GROUND - 1: {
                 PLAYERFN_SET(PlayerCB_80269C0);
             } break;
-            case PLTRANS_PT13 - 1: {
-                PLAYERFN_SET(PlayerCB_8026A4C);
+            case PLTRANS_GRIND_RAIL_END_AIR - 1: {
+                PLAYERFN_SET(Player_GrindRailEndAir);
             } break;
             case PLTRANS_PT23 - 1: {
                 PLAYERFN_SET(PlayerCB_802A258);
@@ -3644,7 +3644,7 @@ void sub_802486C(Player *p, PlayerSpriteInfo *p2)
             PLAYERFN_SET_ANIM_SPEED(p, s);
         } break;
 
-        case CHARSTATE_16 - 9: {
+        case CHARSTATE_AIR_ATTACK - 9: {
             if (p->character != CHARACTER_CREAM) {
                 break;
             }
@@ -3765,7 +3765,7 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
     psi->transform.x = I(p->x) - camX;
     psi->transform.y = I(p->y) - camY;
 
-    if (p->charState == CHARSTATE_WALK_A || p->charState == CHARSTATE_41 || p->charState == CHARSTATE_ICE_SLIDE
+    if (p->charState == CHARSTATE_WALK_A || p->charState == CHARSTATE_GRINDING || p->charState == CHARSTATE_ICE_SLIDE
         || p->charState == CHARSTATE_WALK_B || (p->charState == CHARSTATE_CREAM_CHAO_ATTACK && p->character == CHARACTER_CREAM)) {
         psi->transform.rotation = p->rotation << 2;
         s->frameFlags &= ~(SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP);
@@ -3985,7 +3985,7 @@ void sub_8024F74(Player *p, PlayerSpriteInfo *inPsi)
     }
 }
 
-void PlayerCB_8025318(Player *p)
+void Player_TouchGround(Player *p)
 {
     u32 mask;
     if (IS_BOSS_STAGE(gCurrentLevel)) {
@@ -3995,8 +3995,8 @@ void PlayerCB_8025318(Player *p)
         }
     }
 
-    mask = (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR);
-    if ((p->moveState & mask) == MOVESTATE_800) {
+    mask = (MOVESTATE_ICE_SLIDE | MOVESTATE_8 | MOVESTATE_IN_AIR);
+    if ((p->moveState & mask) == MOVESTATE_ICE_SLIDE) {
         Player_InitIceSlide(p);
     } else {
         Player_TransitionCancelFlyingAndBoost(p);
@@ -4020,7 +4020,7 @@ void PlayerCB_Idle(Player *p)
 {
     if ((p->moveState & (MOVESTATE_8000000 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8000000) {
         PlayerCB_80273D0(p);
-    } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_800) {
+    } else if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_ICE_SLIDE) {
         Player_InitIceSlide(p);
     } else if (!sub_802A0C8(p) && !sub_802A0FC(p) && !sub_8029E6C(p) && !sub_802A2A8(p)) {
         sub_802966C(p);
@@ -4054,7 +4054,7 @@ void PlayerCB_8025548(Player *p)
 {
     if (!sub_802A0FC(p) && !sub_8029E6C(p) && ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) || !sub_802A2A8(p))) {
         if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
-            PLAYERFN_SET(PlayerCB_8025318);
+            PLAYERFN_SET(Player_TouchGround);
         }
 
         if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
@@ -4092,11 +4092,11 @@ void PlayerCB_802569C(Player *p)
                 p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             }
         } else if (dpad != DPAD_UP) {
-            PLAYERFN_SET(PlayerCB_8025318);
+            PLAYERFN_SET(Player_TouchGround);
         }
 
         if ((characterAnim == SA2_CHAR_ANIM_TAUNT) && (p->variant == 1) && (s->frameFlags & 0x4000)) {
-            PLAYERFN_SET(PlayerCB_8025318);
+            PLAYERFN_SET(Player_TouchGround);
         }
 
         if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
@@ -4134,11 +4134,11 @@ void PlayerCB_8025854(Player *p)
                 p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
             }
         } else if (dpad != DPAD_DOWN) {
-            PLAYERFN_SET(PlayerCB_8025318);
+            PLAYERFN_SET(Player_TouchGround);
         }
 
         if ((characterAnim == SA2_CHAR_ANIM_CROUCH) && (p->variant == 1) && (s->frameFlags & 0x4000)) {
-            PLAYERFN_SET(PlayerCB_8025318);
+            PLAYERFN_SET(Player_TouchGround);
         }
 
         if (((p->rotation + Q(0.375)) & 0xFF) < 0xC0) {
@@ -4172,7 +4172,7 @@ void PlayerCB_8025A0C(Player *p)
         }
     }
 
-    if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_800) {
+    if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_ICE_SLIDE) {
         Player_InitIceSlide(p);
     } else {
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
@@ -4190,7 +4190,7 @@ void PlayerCB_8025AB8(Player *p)
 {
     if ((p->moveState & (MOVESTATE_8000000 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8000000) {
         PlayerCB_80273D0(p);
-    } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_800) {
+    } else if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_ICE_SLIDE) {
         Player_InitIceSlide(p);
     } else {
         if (p->unk99[0] != 0) {
@@ -4241,7 +4241,7 @@ void PlayerCB_8025AB8(Player *p)
         }
 
         if (p->speedGroundX == 0) {
-            PLAYERFN_SET_AND_CALL(PlayerCB_8025318, p);
+            PLAYERFN_SET_AND_CALL(Player_TouchGround, p);
         } else {
             s32 speedX = p->speedGroundX;
 
@@ -4583,7 +4583,7 @@ void PlayerCB_Spindash(Player *p)
         sub_8022190(p);
 
         if ((p->moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8) {
-            gPlayer.callback = PlayerCB_8025318;
+            gPlayer.callback = Player_TouchGround;
             p->speedGroundX = p->speedAirX;
             p->rotation = 0;
         }
@@ -4663,7 +4663,7 @@ void sub_802669C(Player *p)
     gPlayer.moveState |= MOVESTATE_IN_SCRIPTED;
 }
 
-void PlayerCB_8026764(Player *p)
+void Player_InitGrinding(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -4672,7 +4672,7 @@ void PlayerCB_8026764(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->charState = CHARSTATE_41;
+    p->charState = CHARSTATE_GRINDING;
 
     if (p->unk6E != 0) {
         p->moveState |= MOVESTATE_FACING_LEFT;
@@ -4689,10 +4689,10 @@ void PlayerCB_8026764(Player *p)
     sub_802669C(p);
     m4aSongNumStart(SE_GRINDING);
 
-    PLAYERFN_SET_AND_CALL(PlayerCB_8026810, p);
+    PLAYERFN_SET_AND_CALL(Player_DoGrinding, p);
 }
 
-void PlayerCB_8026810(Player *p)
+void Player_DoGrinding(Player *p)
 {
     if (sub_8029E6C(p)) {
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
@@ -4766,7 +4766,7 @@ void PlayerCB_80269C0(Player *p)
     PLAYERFN_SET_AND_CALL(PlayerCB_Idle, p);
 }
 
-void PlayerCB_8026A4C(Player *p)
+void Player_GrindRailEndAir(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -4777,7 +4777,7 @@ void PlayerCB_8026A4C(Player *p)
 
     if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->heldInput & gPlayerControls.jump)
         && (p->character == CHARACTER_SONIC || p->character == CHARACTER_AMY)) {
-        p->charState = CHARSTATE_42;
+        p->charState = CHARSTATE_GRINDING_SONIC_AMY_JUMP_OFF;
         p->speedAirY = -Q(7.5);
     } else {
         p->charState = CHARSTATE_SPRING_C;
@@ -4856,8 +4856,8 @@ void PlayerCB_8026BCC(Player *p)
             p->charState = CHARSTATE_FALLING_VULNERABLE_B;
 
             PLAYERFN_SET(PlayerCB_Jumping);
-        } else if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8)) != MOVESTATE_800) {
-            PLAYERFN_SET(PlayerCB_8025318);
+        } else if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_8)) != MOVESTATE_ICE_SLIDE) {
+            PLAYERFN_SET(Player_TouchGround);
         }
     }
 }
@@ -4933,7 +4933,7 @@ void PlayerCB_8026E24(Player *p)
 
 void PlayerCB_8026F10(Player *p)
 {
-    if ((p->moveState & (MOVESTATE_800 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_800) {
+    if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_ICE_SLIDE) {
         Player_InitIceSlide_inline(p);
     } else {
         p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
@@ -5064,14 +5064,14 @@ void PlayerCB_8027250(Player *p)
         } else {
             p->speedAirX = -Q(1.5);
         }
-        p->charState = CHARSTATE_20;
+        p->charState = CHARSTATE_HIT_AIR;
     } else {
         if (p->speedAirX >= 0) {
             p->speedAirX = +Q(1.5);
         } else {
             p->speedAirX = -Q(1.5);
         }
-        p->charState = CHARSTATE_21;
+        p->charState = CHARSTATE_HIT_STUNNED;
     }
 
     p->speedAirY = -Q(3.0);
@@ -5575,7 +5575,7 @@ struct Task *sub_8028640(s32 x, s32 y, s32 p2)
 }
 
 // Set when doing tricks
-void PlayerCB_80286F0(Player *p)
+void Player_TailsCream_InitStopNSlam(Player *p)
 {
     u32 dir = p->unk5B;
     u16 character = p->character;
@@ -5600,7 +5600,7 @@ void PlayerCB_80286F0(Player *p)
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
 
     m4aSongNumStart(SE_JUMP);
-    m4aSongNumStart(SE_230);
+    m4aSongNumStart(SE_TAILS_CREAM_STOP_N_SLAM);
 
     PLAYERFN_SET_AND_CALL(PlayerCB_80287AC, p);
 }
@@ -5694,29 +5694,29 @@ void DoTrickIfButtonPressed(Player *p)
         if (p->heldInput & DPAD_UP) {
             INCREMENT_SCORE(sTrickPoints[0]);
             p->unk5B = TRICK_DIR_UP;
-            PLAYERFN_SET(PlayerCB_80286F0);
+            PLAYERFN_SET(Player_TailsCream_InitStopNSlam);
         } else if (p->heldInput & DPAD_DOWN) {
             INCREMENT_SCORE(sTrickPoints[3]);
 
             switch (p->character) {
                 case CHARACTER_SONIC: {
                     p->moveState |= MOVESTATE_20000000;
-                    PLAYERFN_SET(PlayerCB_8011F1C);
+                    PLAYERFN_SET(Player_SonicAmy_InitStopNSlam);
                 } break;
 
                 case CHARACTER_KNUCKLES: {
                     p->moveState |= MOVESTATE_20000000;
-                    PLAYERFN_SET(PlayerCB_8013D18);
+                    PLAYERFN_SET(Player_Knuckles_InitDrillClaw);
                 } break;
 
                 case CHARACTER_AMY: {
                     p->moveState |= MOVESTATE_20000000;
-                    PLAYERFN_SET(PlayerCB_8011F1C);
+                    PLAYERFN_SET(Player_SonicAmy_InitStopNSlam);
                 } break;
 
                 default: {
                     p->unk5B = TRICK_DIR_DOWN;
-                    PLAYERFN_SET(PlayerCB_80286F0);
+                    PLAYERFN_SET(Player_TailsCream_InitStopNSlam);
                 } break;
             }
         } else if ((!(p->moveState & MOVESTATE_FACING_LEFT) && (p->heldInput & DPAD_RIGHT))
@@ -5724,12 +5724,12 @@ void DoTrickIfButtonPressed(Player *p)
             INCREMENT_SCORE(sTrickPoints[2]);
             p->unk5B = TRICK_DIR_FORWARD;
 
-            PLAYERFN_SET(PlayerCB_80286F0);
+            PLAYERFN_SET(Player_TailsCream_InitStopNSlam);
         } else {
             INCREMENT_SCORE(sTrickPoints[1]);
             p->unk5B = TRICK_DIR_BACKWARD;
 
-            PLAYERFN_SET(PlayerCB_80286F0);
+            PLAYERFN_SET(Player_TailsCream_InitStopNSlam);
         }
     }
 }
@@ -5762,7 +5762,7 @@ void PlayerCB_TouchNormalSpring(Player *p)
 {
     u8 u6E = p->unk6E;
     u8 r5 = (u6E >> 4);
-    u8 r6 = u6E % 4;
+    u8 r6 = u6E % ARRAY_COUNT(gUnknown_080D69C2);
 
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -5886,7 +5886,7 @@ void PlayerCB_8029158(Player *p)
 
     PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
-    p->charState = CHARSTATE_40;
+    p->charState = CHARSTATE_RAMP_AND_DASHRING;
     p->prevCharState = CHARSTATE_INVALID;
 
     if (p->speedAirX > Q(1.25)) {
@@ -5938,7 +5938,7 @@ void PlayerCB_8029158(Player *p)
             if (speed < 0) {
                 speed += 7;
             }
-            r5 = (((u32)speed << 13) >> 16);
+            r5 = (speed / 8u);
 
             res = -ABS(groundSpeed) / 6;
 
@@ -5979,7 +5979,7 @@ void PlayerCB_8029158(Player *p)
 
 void PlayerCB_8029314(Player *p)
 {
-    if ((p->charState == CHARSTATE_40) && (p->variant == 0) && (p->speedAirY > 0))
+    if ((p->charState == CHARSTATE_RAMP_AND_DASHRING) && (p->variant == 0) && (p->speedAirY > 0))
         p->variant = 1;
 
     DoTrickIfButtonPressed(p);
@@ -6015,26 +6015,26 @@ bool32 sub_80294F4(Player *p)
         if (p->frameInput & gPlayerControls.attack) {
             switch (p->character) {
                 case CHARACTER_SONIC: {
-                    PlayerCB_8011F1C(p);
+                    Player_SonicAmy_InitStopNSlam(p);
                     return TRUE;
                 } break;
 
                 case CHARACTER_CREAM: {
                     if ((p->heldInput & DPAD_ANY) == DPAD_DOWN) {
-                        sub_8012888(p);
+                        Player_Cream_InitChaoRollingAttack(p);
                     } else {
-                        sub_80128E0(p);
+                        Player_Cream_InitChaoAttack(p);
                     }
                     return TRUE;
                 } break;
 
                 case CHARACTER_KNUCKLES: {
-                    PlayerCB_8013D18(p);
+                    Player_Knuckles_InitDrillClaw(p);
                     return TRUE;
                 } break;
 
                 case CHARACTER_AMY: {
-                    PlayerCB_8011F1C(p);
+                    Player_SonicAmy_InitStopNSlam(p);
                     return TRUE;
                 } break;
             }
@@ -6047,7 +6047,7 @@ bool32 sub_80294F4(Player *p)
                         return TRUE;
                     } else {
                         p->moveState |= MOVESTATE_20000000;
-                        p->charState = CHARSTATE_INSTA_SHIELD_1;
+                        p->charState = CHARSTATE_SOME_ATTACK;
                         sub_8011B88(I(p->x), I(p->y), 1);
                         song = SE_SONIC_INSTA_SHIELD;
                         goto sub_80294F4_PlaySfx;
@@ -6076,8 +6076,8 @@ bool32 sub_80294F4(Player *p)
 
                 case CHARACTER_AMY: {
                     p->moveState |= MOVESTATE_20000000;
-                    p->charState = CHARSTATE_INSTA_SHIELD_1;
-                    CreateAmyAttackHeartEffect(2);
+                    p->charState = CHARSTATE_SOME_ATTACK;
+                    CreateAmyAttackHeartEffect(AMY_ATTACK_EFFECT_KIND_C);
 
                     song = SE_AMY_SUPER_HAMMER_ATTACK;
                 sub_80294F4_PlaySfx:
@@ -6113,13 +6113,13 @@ void sub_802966C(Player *p)
                 }
                 p->moveState &= ~MOVESTATE_FACING_LEFT;
             } else if (p->speedGroundX >= Q_24_8(2.0)) {
-                if ((p->charState == CHARSTATE_7) || (p->charState == CHARSTATE_BRAKE)) {
+                if ((p->charState == CHARSTATE_BRAKE) || (p->charState == CHARSTATE_BRAKE_GOAL)) {
                     charState = p->charState;
                 } else {
                     u16 u54 = p->unk54;
-                    charState = CHARSTATE_7;
+                    charState = CHARSTATE_BRAKE;
                     if (u54 > 3) {
-                        charState = CHARSTATE_BRAKE;
+                        charState = CHARSTATE_BRAKE_GOAL;
                     }
                 }
                 p->speedGroundX -= u4C;
@@ -6129,8 +6129,8 @@ void sub_802966C(Player *p)
                 p->speedGroundX -= u4C;
 
                 if ((p->speedGroundX > 0) && !(p->moveState & MOVESTATE_FACING_LEFT)) {
-                    if ((p->charState == CHARSTATE_7) || (p->charState == CHARSTATE_BRAKE)) {
-                        charState = CHARSTATE_7;
+                    if ((p->charState == CHARSTATE_BRAKE) || (p->charState == CHARSTATE_BRAKE_GOAL)) {
+                        charState = CHARSTATE_BRAKE;
                     }
                     gPlayer.callback = PlayerCB_802A5C4;
                 }
@@ -6149,13 +6149,13 @@ void sub_802966C(Player *p)
                 p->moveState |= MOVESTATE_FACING_LEFT;
             } else {
                 if (p->speedGroundX <= -Q_24_8(2.0)) {
-                    if ((p->charState == CHARSTATE_7) || (p->charState == CHARSTATE_BRAKE)) {
+                    if ((p->charState == CHARSTATE_BRAKE) || (p->charState == CHARSTATE_BRAKE_GOAL)) {
                         charState = p->charState;
                     } else {
                         u16 u54 = p->unk54;
-                        charState = CHARSTATE_7;
+                        charState = CHARSTATE_BRAKE;
                         if (u54 > 3) {
-                            charState = CHARSTATE_BRAKE;
+                            charState = CHARSTATE_BRAKE_GOAL;
                         }
                     }
 
@@ -6167,8 +6167,8 @@ void sub_802966C(Player *p)
                     p->speedGroundX += u4C;
 
                     if ((p->speedGroundX < 0) && (p->moveState & MOVESTATE_FACING_LEFT)) {
-                        if ((p->charState == CHARSTATE_7) || (p->charState == CHARSTATE_BRAKE)) {
-                            charState = CHARSTATE_7;
+                        if ((p->charState == CHARSTATE_BRAKE) || (p->charState == CHARSTATE_BRAKE_GOAL)) {
+                            charState = CHARSTATE_BRAKE;
                         }
                         gPlayer.callback = PlayerCB_802A5C4;
                     }
@@ -6218,13 +6218,13 @@ void sub_802966C(Player *p)
     }
 
     if (p->moveState & MOVESTATE_8000) {
-        if ((charState == CHARSTATE_7) || (charState == CHARSTATE_BRAKE)) {
+        if ((charState == CHARSTATE_BRAKE) || (charState == CHARSTATE_BRAKE_GOAL)) {
             p->charState = charState;
         }
     } else if (charState != CHARSTATE_INVALID) {
         if (p->charState != charState)
             p->charState = charState;
-    } else if ((p->charState == CHARSTATE_7) || (p->charState == CHARSTATE_BRAKE)) {
+    } else if ((p->charState == CHARSTATE_BRAKE) || (p->charState == CHARSTATE_BRAKE_GOAL)) {
         p->charState = CHARSTATE_WALK_A;
     }
 
@@ -6768,7 +6768,7 @@ void PlayerCB_802A258(Player *p)
         if (p->moveState & MOVESTATE_4)
             PlayerCB_8025A0C(p);
         else
-            PlayerCB_8025318(p);
+            Player_TouchGround(p);
     } else {
         p->moveState |= MOVESTATE_40000;
         p->moveState &= ~(MOVESTATE_1000000 | MOVESTATE_20);
@@ -6872,7 +6872,7 @@ void sub_802A558(Player *p) { PLAYERFN_UPDATE_AIR_FALL_SPEED_B(p); }
 
 void sub_802A58C(Player *p)
 {
-    if (p->charState != CHARSTATE_20) {
+    if (p->charState != CHARSTATE_HIT_AIR) {
         if (p->timerInvulnerability > 0)
             p->timerInvulnerability--;
     }
@@ -6888,10 +6888,10 @@ void PlayerCB_802A5C4(Player *p)
 {
     p->moveState &= ~MOVESTATE_20;
 
-    if (p->charState == CHARSTATE_7 || p->charState == CHARSTATE_BRAKE) {
-        p->charState = CHARSTATE_6;
+    if (p->charState == CHARSTATE_BRAKE || p->charState == CHARSTATE_BRAKE_GOAL) {
+        p->charState = CHARSTATE_TURN_AFTER_BRAKE;
     } else {
-        p->charState = CHARSTATE_5;
+        p->charState = CHARSTATE_TURN_SLOW;
     }
 
     p->unk90->s.frameFlags &= ~(MOVESTATE_4000);

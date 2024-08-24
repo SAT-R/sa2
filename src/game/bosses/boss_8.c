@@ -497,7 +497,7 @@ static void sub_804A070(SuperEggRoboZTowers *towers, u8 towerIndex)
         if (result != 0) {
             gPlayer.y -= Q(8);
             gPlayer.speedAirY = -Q(3.5);
-            gPlayer.charState = CHARSTATE_20;
+            gPlayer.charState = CHARSTATE_HIT_AIR;
             gPlayer.transition = PLTRANS_PT6;
         }
     }

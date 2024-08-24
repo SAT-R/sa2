@@ -41,7 +41,7 @@ void Task_SlidyIce(void)
             s32 posY = screenY + me->offsetY * TILE_WIDTH;
 
             if ((posY <= I(gPlayer.y)) && ((posY + me->height * TILE_WIDTH) >= I(gPlayer.y))) {
-                gPlayer.moveState |= MOVESTATE_800;
+                gPlayer.moveState |= MOVESTATE_ICE_SLIDE;
             }
         }
     }

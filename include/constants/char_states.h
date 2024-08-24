@@ -12,24 +12,24 @@
 #define CHARSTATE_CROUCH                        2
 #define CHARSTATE_SPIN_DASH                     3
 #define CHARSTATE_SPIN_ATTACK                   4
-#define CHARSTATE_5                             5
-#define CHARSTATE_6                             6
-#define CHARSTATE_7                             7
-#define CHARSTATE_BRAKE                         8
+#define CHARSTATE_TURN_SLOW                     5
+#define CHARSTATE_TURN_AFTER_BRAKE              6
+#define CHARSTATE_BRAKE                         7
+#define CHARSTATE_BRAKE_GOAL                    8
 #define CHARSTATE_WALK_A                        9
 #define CHARSTATE_JUMP_1                        10
 #define CHARSTATE_JUMP_2                        11
-#define CHARSTATE_12                            12
+#define CHARSTATE_HIT_GROUND                    12
 #define CHARSTATE_FALLING_VULNERABLE_A          13
 #define CHARSTATE_FALLING_VULNERABLE_B          14
 #define CHARSTATE_BOOSTLESS_ATTACK              15
-#define CHARSTATE_16                            16
+#define CHARSTATE_AIR_ATTACK                    16
 #define CHARSTATE_BOOST_ATTACK                  17
-#define CHARSTATE_INSTA_SHIELD_1                18 // TODO: Name (charState 18 is not only used by Sonic)
-#define CHARSTATE_INSTA_SHIELD_2                19 //
-#define CHARSTATE_20                            20
-#define CHARSTATE_21                            21
-#define CHARSTATE_22                            22
+#define CHARSTATE_SOME_ATTACK                   18 // TODO: Name (charState 18 is not only used by Sonic)
+#define CHARSTATE_SOME_OTHER_ATTACK             19 //
+#define CHARSTATE_HIT_AIR                       20
+#define CHARSTATE_HIT_STUNNED                   21
+#define CHARSTATE_DEAD                          22
 #define CHARSTATE_TAUNT_A                       23
 #define CHARSTATE_TAUNT_B                       24
 #define CHARSTATE_GOAL_BRAKE_A                  25
@@ -47,9 +47,9 @@
 #define CHARSTATE_SPRING_A                      37
 #define CHARSTATE_SPRING_B                      38
 #define CHARSTATE_SPRING_C                      39
-#define CHARSTATE_40                            40
-#define CHARSTATE_41                            41
-#define CHARSTATE_42                            42
+#define CHARSTATE_RAMP_AND_DASHRING             40
+#define CHARSTATE_GRINDING                      41
+#define CHARSTATE_GRINDING_SONIC_AMY_JUMP_OFF   42
 #define CHARSTATE_43                            43
 #define CHARSTATE_44                            44
 #define CHARSTATE_45                            45

@@ -336,9 +336,9 @@ void Task_Item_Confusion(void)
         s->frameFlags |= mpp->s.frameFlags & SPRITE_FLAG_MASK_PRIORITY;
 
         if (GRAVITY_IS_INVERTED) {
-            s->frameFlags |= MOVESTATE_800;
+            s->frameFlags |= MOVESTATE_ICE_SLIDE;
         } else {
-            s->frameFlags &= ~MOVESTATE_800;
+            s->frameFlags &= ~MOVESTATE_ICE_SLIDE;
         }
 
         UpdateSpriteAnimation(s);

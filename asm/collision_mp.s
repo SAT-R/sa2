@@ -802,12 +802,12 @@ _0800D66A:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800D6B4 @ =PlayerCB_8025318
+	ldr r0, _0800D6B4 @ =Player_TouchGround
 	str r0, [r6]
 	adds r0, r6, #0
 	b _0800DA00
 	.align 2, 0
-_0800D6B4: .4byte PlayerCB_8025318
+_0800D6B4: .4byte Player_TouchGround
 _0800D6B8:
 	mov r4, sl
 	strh r4, [r6, #0x14]
@@ -900,7 +900,7 @@ _0800D738:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800D790 @ =PlayerCB_8025318
+	ldr r0, _0800D790 @ =Player_TouchGround
 	str r0, [r6]
 _0800D770:
 	ldr r0, [r6, #0x20]
@@ -919,7 +919,7 @@ _0800D770:
 	str r2, [r6, #0xc]
 	b _0800DA18
 	.align 2, 0
-_0800D790: .4byte PlayerCB_8025318
+_0800D790: .4byte Player_TouchGround
 _0800D794:
 	movs r0, #0x80
 	lsls r0, r0, #0xb
@@ -977,7 +977,7 @@ _0800D7D8:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800D80C @ =PlayerCB_8025318
+	ldr r0, _0800D80C @ =Player_TouchGround
 	str r0, [r6]
 	adds r0, r6, #0
 	adds r0, #0x61
@@ -985,7 +985,7 @@ _0800D7D8:
 	strb r4, [r5]
 	b _0800DA18
 	.align 2, 0
-_0800D80C: .4byte PlayerCB_8025318
+_0800D80C: .4byte Player_TouchGround
 _0800D810:
 	adds r0, r6, #0
 	bl sub_800DE44
@@ -1064,7 +1064,7 @@ _0800D868:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800D8B8 @ =PlayerCB_8025318
+	ldr r0, _0800D8B8 @ =Player_TouchGround
 	str r0, [r5]
 	adds r0, r5, #0
 	adds r0, #0x61
@@ -1073,7 +1073,7 @@ _0800D868:
 	strb r4, [r1]
 	b _0800DA18
 	.align 2, 0
-_0800D8B8: .4byte PlayerCB_8025318
+_0800D8B8: .4byte Player_TouchGround
 _0800D8BC: .4byte gPlayer + 0x62
 _0800D8C0:
 	mov r2, sl
@@ -1158,7 +1158,7 @@ _0800D93C:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800D994 @ =PlayerCB_8025318
+	ldr r0, _0800D994 @ =Player_TouchGround
 	str r0, [r5]
 	adds r0, r5, #0
 	movs r1, #0xe
@@ -1184,7 +1184,7 @@ _0800D974:
 	str r4, [r5, #0xc]
 	b _0800DA18
 	.align 2, 0
-_0800D994: .4byte PlayerCB_8025318
+_0800D994: .4byte Player_TouchGround
 _0800D998:
 	movs r0, #0x80
 	lsls r0, r0, #0xa
@@ -1236,7 +1236,7 @@ _0800D9BE:
 	adds r1, #0x64
 	movs r0, #9
 	strh r0, [r1]
-	ldr r0, _0800DA08 @ =PlayerCB_8025318
+	ldr r0, _0800DA08 @ =Player_TouchGround
 	str r0, [r5]
 	adds r0, r5, #0
 _0800DA00:
@@ -1245,7 +1245,7 @@ _0800DA00:
 	strb r4, [r7]
 	b _0800DA18
 	.align 2, 0
-_0800DA08: .4byte PlayerCB_8025318
+_0800DA08: .4byte Player_TouchGround
 _0800DA0C:
 	adds r0, r5, #0
 	bl sub_800DE44

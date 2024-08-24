@@ -98,7 +98,7 @@ void sub_8018AD8(union MultiSioData *recv, u8 i)
                     gPlayer.itemEffect |= PLAYER_ITEM_EFFECT__CONFUSION;
                     gPlayer.unk32 = 600;
                     CreateItemTask_Confusion(gPlayer.character);
-                    m4aSongNumStart(217);
+                    m4aSongNumStart(SE_ITEM_CONFUSION);
                 }
                 break;
             }
@@ -220,7 +220,7 @@ void sub_8018E00(union MultiSioData *recv, u8 i)
                     gPlayer.moveState |= MOVESTATE_IN_AIR;
                     gPlayer.moveState &= ~MOVESTATE_400;
                     gPlayer.moveState &= ~MOVESTATE_100;
-                    gPlayer.charState = CHARSTATE_20;
+                    gPlayer.charState = CHARSTATE_HIT_AIR;
                     sub_8023B5C(&gPlayer, 0xe);
                     gPlayer.spriteOffsetX = 6;
                     gPlayer.spriteOffsetY = 0xE;

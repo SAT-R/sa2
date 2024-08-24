@@ -16,36 +16,33 @@
 #define SA2_ANIM_CHAR(anim, character) ((anim) + character * SA2_NUM_PLAYER_CHAR_ANIMATIONS)
 
 // TODO: If possible, make player animations macros, so there's no redundancy
-#define SA2_CHAR_ANIM_IDLE               0
-#define SA2_CHAR_ANIM_TAUNT              1
-#define SA2_CHAR_ANIM_CROUCH             2
-#define SA2_CHAR_ANIM_SPIN_DASH          3
-#define SA2_CHAR_ANIM_SPIN_ATTACK        4
-#define SA2_CHAR_ANIM_5                  5
-#define SA2_CHAR_ANIM_6                  6
-#define SA2_CHAR_ANIM_7                  7
-#define SA2_CHAR_ANIM_BRAKE              8
-#define SA2_CHAR_ANIM_WALK               9
-#define SA2_CHAR_ANIM_JUMP_1             10
-#define SA2_CHAR_ANIM_JUMP_2             11
-#define SA2_CHAR_ANIM_12                 12
-#define SA2_CHAR_ANIM_FALLING_VULNERABLE 13
-#define SA2_CHAR_ANIM_14                 14
-#define SA2_CHAR_ANIM_15                 15
-#define SA2_CHAR_ANIM_16                 16
-
-// TODO: Rename. Thee "Insta Shield" is true for Sonic, but not the other characters.
-#define SA2_CHAR_ANIM_INSTA_SHIELD_1 17
-#define SA2_CHAR_ANIM_INSTA_SHIELD_2 18
-#define SA2_CHAR_ANIM_19             19
-
+#define SA2_CHAR_ANIM_IDLE                                   0
+#define SA2_CHAR_ANIM_TAUNT                                  1
+#define SA2_CHAR_ANIM_CROUCH                                 2
+#define SA2_CHAR_ANIM_SPIN_DASH                              3
+#define SA2_CHAR_ANIM_SPIN_ATTACK                            4
+#define SA2_CHAR_ANIM_5                                      5
+#define SA2_CHAR_ANIM_6                                      6
+#define SA2_CHAR_ANIM_BRAKE                                  7
+#define SA2_CHAR_ANIM_BRAKE_GOAL                             8
+#define SA2_CHAR_ANIM_WALK                                   9
+#define SA2_CHAR_ANIM_JUMP_1                                 10
+#define SA2_CHAR_ANIM_JUMP_2                                 11
+#define SA2_CHAR_ANIM_HIT_GROUND                             12
+#define SA2_CHAR_ANIM_FALLING_VULNERABLE                     13
+#define SA2_CHAR_ANIM_BOOSTLESS_ATTACK                       14
+#define SA2_CHAR_ANIM_AIR_ATTACK                             15
+#define SA2_CHAR_ANIM_BOOST_ATTACK                           16
+#define SA2_CHAR_ANIM_INSTA_SHIELD_1                         17
+#define SA2_CHAR_ANIM_INSTA_SHIELD_2                         18
+#define SA2_CHAR_ANIM_19                                     19
 #define SA2_CHAR_ANIM_20                                     20
 #define SA2_CHAR_ANIM_21                                     21
 #define SA2_CHAR_ANIM_22                                     22
 #define SA2_CHAR_ANIM_23                                     23
 #define SA2_CHAR_ANIM_24                                     24
-#define SA2_CHAR_ANIM_28                                     28
-#define SA2_CHAR_ANIM_29                                     29
+#define SA2_CHAR_ANIM_HIT                                    28
+#define SA2_CHAR_ANIM_DEAD                                   29
 #define SA2_CHAR_ANIM_BEFORE_COUNTDOWN                       30
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_GETTING_READY 0
 #define SA2_CHAR_ANIM_VARIANT_BEFORE_COUNTDOWN_LIFTOFF       1

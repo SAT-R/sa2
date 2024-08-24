@@ -224,7 +224,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
 
                         gPlayer.charState = CHARSTATE_WALK_A;
                         gPlayer.moveState |= MOVESTATE_800000;
-                        gPlayer.callback = PlayerCB_8025318;
+                        gPlayer.callback = Player_TouchGround;
                         gPlayer.moveState &= ~MOVESTATE_400000;
                         mpp->unk5C &= ~4;
                         if (mpp2->unk5C & 4) {
@@ -530,7 +530,7 @@ void sub_8016D20(void)
             }
 
             gPlayer.charState = CHARSTATE_WALK_A;
-            gPlayer.callback = PlayerCB_8025318;
+            gPlayer.callback = Player_TouchGround;
             gPlayer.unk61 = 0;
             gPlayer.unk62 = 0;
 
@@ -586,7 +586,7 @@ void sub_8016D20(void)
                 return;
             }
             gPlayer.charState = CHARSTATE_WALK_A;
-            gPlayer.callback = PlayerCB_8025318;
+            gPlayer.callback = Player_TouchGround;
             gPlayer.unk61 = 0;
             gPlayer.unk62 = 0;
 
@@ -766,7 +766,7 @@ void sub_801707C(void)
         }
 
         gPlayer.charState = CHARSTATE_IDLE;
-        gPlayer.callback = PlayerCB_8025318;
+        gPlayer.callback = Player_TouchGround;
         gPlayer.moveState |= MOVESTATE_IN_AIR;
         gPlayer.unk61 = 0;
         gPlayer.unk62 = 0;
@@ -784,7 +784,7 @@ void sub_801707C(void)
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 mpp->unk5C &= ~4;
                 gPlayer.charState = CHARSTATE_IDLE;
-                gPlayer.callback = PlayerCB_8025318;
+                gPlayer.callback = Player_TouchGround;
                 if (SOME_INVERTED_GRAVITY_MACRO) {
                     gPlayer.timerInvulnerability = 60;
                 }
@@ -1148,7 +1148,7 @@ void sub_8017C28(void)
             }
             val = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
             if ((val & 2) && !(gPlayer.moveState & MOVESTATE_IN_AIR) && gPlayer.rotation == 0) {
-                if (s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_14, CHARACTER_AMY)) {
+                if (s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOSTLESS_ATTACK, CHARACTER_AMY)) {
                     LaunchPlayer(-Q_8_8(7.5));
 #ifndef NON_MATCHING
                     goto lab;

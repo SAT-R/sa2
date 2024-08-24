@@ -67,7 +67,7 @@ const s16 sHeartOffsets[4][8][3] = {
         { -1, 0, 0 },
         { 0, 0, 0 },
     },
-    [AMY_ATTACK_EFFECT_KIND_D] = {
+    [AMY_ATTACK_EFFECT_KIND_STOP_N_SLAM] = {
         { 2, 0, 4 },
         { 6, 19, 6 },
         { 10, 28, 2 },
@@ -91,7 +91,7 @@ void CreateAmyAttackHeartEffect(u16 kind)
         return;
     }
 
-    if ((gPlayer.charState == CHARSTATE_BOOSTLESS_ATTACK) || (gPlayer.charState == CHARSTATE_INSTA_SHIELD_1)
+    if ((gPlayer.charState == CHARSTATE_BOOSTLESS_ATTACK) || (gPlayer.charState == CHARSTATE_SOME_ATTACK)
         || (gPlayer.charState == CHARSTATE_TRICK_DOWN)) {
         struct Task *t = TaskCreate(Task_8015CE4, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_8015FF0);
         AmyAtkHearts *hearts = TASK_DATA(t);
