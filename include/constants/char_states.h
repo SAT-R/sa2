@@ -30,15 +30,15 @@
 #define CHARSTATE_HIT_AIR                       20
 #define CHARSTATE_HIT_STUNNED                   21
 #define CHARSTATE_DEAD                          22
-#define CHARSTATE_TAUNT_A                       23
-#define CHARSTATE_TAUNT_B                       24
+#define CHARSTATE_UNUSED_A                      23
+#define CHARSTATE_UNUSED_B                      24
 #define CHARSTATE_GOAL_BRAKE_A                  25
 #define CHARSTATE_GOAL_BRAKE_B                  26
 #define CHARSTATE_GOAL_BRAKE_C                  27
 #define CHARSTATE_ACT_CLEAR_A                   28
 #define CHARSTATE_ACT_CLEAR_B                   29
 #define CHARSTATE_ACT_CLEAR_C                   30
-#define CHARSTATE_TAUNT_C                       31
+#define CHARSTATE_UNUSED_C                      31
 #define CHARSTATE_ACT_CLEAR_TIME_ATTACK_OR_BOSS 32
 #define CHARSTATE_TRICK_UP                      33
 #define CHARSTATE_TRICK_FORWARD                 34
@@ -78,15 +78,15 @@
 #define CHARSTATE_CUTSCENE_LOOK_UP_FRAME_1      68
 #define CHARSTATE_CUTSCENE_LOOK_UP_FRAME_2      69
 #define CHARSTATE_CUTSCENE_LOOK_UP_FRAME_3      70
-#define CHARSTATE_TAUNT_D                       71
-#define CHARSTATE_TAUNT_E                       72
-#define CHARSTATE_TAUNT_F                       73
-#define CHARSTATE_TAUNT_G                       74
-#define CHARSTATE_TAUNT_H                       75
-#define CHARSTATE_TAUNT_I                       76
-#define CHARSTATE_TAUNT_J                       77
-#define CHARSTATE_TAUNT_K                       78
-#define CHARSTATE_TAUNT_L                       79
+#define CHARSTATE_UNUSED_D                      71
+#define CHARSTATE_UNUSED_E                      72
+#define CHARSTATE_UNUSED_F                      73
+#define CHARSTATE_UNUSED_G                      74
+#define CHARSTATE_UNUSED_H                      75
+#define CHARSTATE_UNUSED_I                      76
+#define CHARSTATE_UNUSED_J                      77
+#define CHARSTATE_UNUSED_K                      78
+#define CHARSTATE_UNUSED_L                      79
 #define CHARSTATE_SHARED_COUNT                  80
 
 #define CHARSTATE_SONIC_FORWARD_THRUST        CHARSTATE_SHARED_COUNT
@@ -119,10 +119,10 @@
 #define CHARSTATE_KNUCKLES_DRILL_CLAW_MAIN    107
 #define CHARSTATE_KNUCKLES_DRILL_CLAW_GROUND  108
 #define CHARSTATE_AMY_SA1_JUMP                109
-#define CHARSTATE_TAUNT_M                     110
+#define CHARSTATE_UNUSED_M                    110
 #define CHARSTATE_AMY_HAMMER_ATTACK           111
 #define CHARSTATE_AMY_SA1_HAMMER_ATTACK       112
-#define CHARSTATE_TAUNT_N                     113
+#define CHARSTATE_UNUSED_N                    113
 #define CHARSTATE_AMY_MID_AIR_HAMMER_SWIRL    114 // might be SA1 version?
 #define CHARSTATE_COUNT                       115
 

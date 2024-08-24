@@ -752,6 +752,7 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define KEY_AND_INTR    0x8000
 #define DPAD_ANY        0x00F0
 #define DPAD_SIDEWAYS   (DPAD_LEFT | DPAD_RIGHT)
+#define DPAD_VERTICAL   (DPAD_DOWN | DPAD_UP)
 #define JOY_EXCL_DPAD   0x030F
 
 // interrupt flags

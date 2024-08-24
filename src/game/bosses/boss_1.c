@@ -692,7 +692,7 @@ static void sub_803B264(EggHammerTankII *boss)
 {
     u8 i, j;
     s16 acc, val;
-    for (i = 0, val = 1; i < 5; i++) {
+    for (i = 0, val = 1; i < ARRAY_COUNT(gUnknown_080D7A98); i++) {
         if ((boss->unkA4 & val)) {
             val = gUnknown_080D7A98[i];
             break;
@@ -718,7 +718,7 @@ static void sub_803B2F8(EggHammerTankII *boss)
     u8 i, val;
     s32 result;
 
-    for (i = 0, val = 1; i < 5; i++) {
+    for (i = 0, val = 1; i < ARRAY_COUNT(gUnknown_080D7AA2); i++) {
         if (boss->unkA4 & val) {
             val = gUnknown_080D7AA2[i];
             break;
@@ -773,7 +773,7 @@ static void sub_803B4A0(EggHammerTankII *boss)
         boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i + 8]);
     }
 
-    for (i = 0, val = 1; i < 5; i++) {
+    for (i = 0, val = 1; i < ARRAY_COUNT(gUnknown_080D7A98); i++) {
         if (boss->unkA4 & val) {
             val = gUnknown_080D7A98[i] * 2;
             break;
@@ -782,7 +782,7 @@ static void sub_803B4A0(EggHammerTankII *boss)
     }
 
     if (boss->timer < 58) {
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < ARRAY_COUNT(gUnknown_080D7A58); i++) {
             boss->unk54[0][i] -= val;
             if (boss->unk54[0][i] < gUnknown_080D7A58[i]) {
                 boss->unk54[0][i] = gUnknown_080D7A58[i];

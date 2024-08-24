@@ -20,7 +20,7 @@ void sub_8023260(Player *);
 void sub_80232D0(Player *);
 void sub_8023610(Player *);
 void Player_TouchGround(Player *p);
-void PlayerCB_80261D8(Player *p);
+void Player_80261D8(Player *p);
 void sub_8027EF0(Player *p);
 void sub_8028204(Player *p);
 void sub_80282EC(Player *p);
@@ -42,7 +42,8 @@ s32 sub_8029B0C(Player *player, u8 *p1, s32 *out);
 type8029A28 sub_8029A28(Player *player, u8 *p1, type8029A28 *out);
 type8029A28 sub_8029A74(Player *player, u8 *p1, type8029A28 *out);
 
-bool32 sub_8029E6C(Player *);
+bool32 Player_TryJump(Player *);
+bool32 Player_TryAttack(Player *);
 
 #define GET_CHARACTER_ANIM(player) (player->anim - gPlayerCharacterIdleAnims[player->character])
 

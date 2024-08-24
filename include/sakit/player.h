@@ -133,9 +133,9 @@ typedef struct Player_ {
     /* 0x6C */ bool8 unk6C;
 
     // 0x6D Some player state, cleared after usage
-    //  0x01 = PlayerCB_80124D0
+    //  0x01 = Player_80124D0
     //  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA), by
-    //  PlayerCB_80126B0
+    //  Player_80126B0
     //
     // use constants/player_transitions.h
     /* 0x6D */ u8 transition;

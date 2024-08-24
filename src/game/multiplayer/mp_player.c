@@ -771,7 +771,7 @@ void sub_801707C(void)
         gPlayer.unk61 = 0;
         gPlayer.unk62 = 0;
 
-        if (sub_8029E6C(&gPlayer)) {
+        if (Player_TryJump(&gPlayer)) {
             mpp->unk60 = 30;
             gPlayer.moveState &= ~MOVESTATE_400000;
             mpp->unk5C &= ~4;
@@ -1000,7 +1000,7 @@ void sub_8017670(void)
                 return;
             }
 
-            if (sub_8029E6C(&gPlayer) != 0) {
+            if (Player_TryJump(&gPlayer) != 0) {
                 mpp->unk60 = 30;
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 mpp->unk5C &= ~0x4;
