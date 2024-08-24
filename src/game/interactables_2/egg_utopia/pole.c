@@ -185,7 +185,7 @@ static void TaskDestructor_Interactable094(struct Task *t)
 static void Pole_TransitionPlayerSliding(Sprite_Pole *pole)
 {
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = CHARSTATE_66;
+    gPlayer.charState = CHARSTATE_POLE;
     gPlayer.x = Q(pole->middleX);
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;

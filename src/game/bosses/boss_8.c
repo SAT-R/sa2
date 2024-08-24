@@ -859,7 +859,7 @@ static void Task_804A9D8(void)
             }
 
             if (v >= 0 && v <= 3) {
-                gPlayer.charState = CHARSTATE_70 - v;
+                gPlayer.charState = CHARSTATE_CUTSCENE_LOOK_UP_FRAME_3 - v;
                 gPlayer.prevCharState = CHARSTATE_INVALID;
             }
         }
@@ -953,7 +953,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_8__Task_804AB24.inc", static void Ta
         gPlayer.frameInput = 0;
 
         if (gPlayer.moveState & (MOVESTATE_8 | MOVESTATE_IN_AIR)) {
-            gPlayer.charState = CHARSTATE_50;
+            gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
             gPlayer.speedAirX = -Q(2);
             gPlayer.speedAirY = -Q(0);
             gPlayer.transition = PLTRANS_PT5;

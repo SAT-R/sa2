@@ -109,12 +109,12 @@ void sub_8060ED0(void)
     player->speedAirY = 0;
 
     if (player->speedGroundX < corkscrew->unk10) {
-        player->charState = CHARSTATE_50;
+        player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
         player->transition = PLTRANS_PT5;
         gCurTask->main = Task_8060D34;
     } else if (player->frameInput & gPlayerControls.jump) {
-        player->charState = CHARSTATE_50;
+        player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q(4.875);
         player->transition = PLTRANS_PT5;
@@ -219,12 +219,12 @@ void sub_8061228(void)
     player->speedAirY = 0;
 
     if (player->speedGroundX > corkscrew->unk10) {
-        player->charState = CHARSTATE_50;
+        player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
         player->transition = PLTRANS_PT5;
         gCurTask->main = sub_8061088;
     } else if (player->frameInput & gPlayerControls.jump) {
-        player->charState = CHARSTATE_50;
+        player->charState = CHARSTATE_CURLED_IN_AIR;
         player->speedAirX = player->speedGroundX;
         player->speedAirY = -Q(4.875);
         player->transition = PLTRANS_PT5;

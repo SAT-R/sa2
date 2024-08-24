@@ -21,8 +21,8 @@ typedef struct {
 } AmyHeartParams; /* size: 0x10 */
 
 typedef struct {
-    /* 0x000 */ Sprite sprHearts[AMY_ATTACK_HEART_COUNT];
-    /* 0x0C0 */ AmyHeartParams params[AMY_ATTACK_HEART_COUNT];
+    /* 0x000 */ Sprite sprHearts[AMY_ATTACK_HEART_SPRITE_COUNT];
+    /* 0x0C0 */ AmyHeartParams params[AMY_ATTACK_HEART_SPRITE_COUNT];
     /* 0x100 */ u16 unk100;
     /* 0x102 */ u16 unk102;
     /* 0x104 */ u16 kind;
@@ -36,8 +36,8 @@ void sub_8015E28(u16);
 void TaskDestructor_8015FF0(struct Task *);
 
 ALIGNED(4)
-const s16 sHeartOffsets[4][8][3] = {
-    [AMY_ATTACK_EFFECT_KIND_A] = {
+const s16 sHeartOffsets[AMY_HEART_PATTERN_COUNT][8][3] = {
+    [AMY_HEART_PATTERN_HAMMER_ATTACK] = {
         { 10, 0, -27 },
         { 12, 13, -22 },
         { 14, 23, -13 },
@@ -47,7 +47,7 @@ const s16 sHeartOffsets[4][8][3] = {
         { 0, 0, 0 },
         { 0, 0, 0 },
     },
-    [AMY_ATTACK_EFFECT_KIND_B] = {
+    [AMY_HEART_PATTERN_B] = {
         { 10, 7, -27 },
         { 12, 20, -22 },
         { 14, 30, -13 },
@@ -57,7 +57,7 @@ const s16 sHeartOffsets[4][8][3] = {
         { 0, 0, 0 },
         { 0, 0, 0 },
     },
-    [AMY_ATTACK_EFFECT_KIND_C] = {
+    [AMY_HEART_PATTERN_C] = {
         { 0, -10, -26 },
         { 4, 8, -27 },
         { 8, 22, -17 },
@@ -67,7 +67,7 @@ const s16 sHeartOffsets[4][8][3] = {
         { -1, 0, 0 },
         { 0, 0, 0 },
     },
-    [AMY_ATTACK_EFFECT_KIND_STOP_N_SLAM] = {
+    [AMY_HEART_PATTERN_STOP_N_SLAM] = {
         { 2, 0, 4 },
         { 6, 19, 6 },
         { 10, 28, 2 },

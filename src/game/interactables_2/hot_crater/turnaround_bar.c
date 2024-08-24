@@ -171,7 +171,7 @@ static void sub_8073670(Sprite_TurnAroundBar *turnAroundBar)
     turnAroundBar->unk44 = Q(turnAroundBar->y) - gPlayer.y;
     gPlayer.x = Q(turnAroundBar->x);
     gPlayer.y = Q(turnAroundBar->y);
-    gPlayer.charState = CHARSTATE_56;
+    gPlayer.charState = CHARSTATE_TURNAROUND_BAR;
 
     s->graphics.anim = SA2_ANIM_TURNAROUND_BAR;
     s->variant = 1;

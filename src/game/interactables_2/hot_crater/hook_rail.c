@@ -186,7 +186,7 @@ static void sub_8072D40(void)
 static void sub_8072DCC(Sprite_HookRail *hookRail)
 {
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = CHARSTATE_55;
+    gPlayer.charState = CHARSTATE_HANGING;
     Player_TransitionCancelFlyingAndBoost(&gPlayer);
     sub_8023B5C(&gPlayer, 14);
     gPlayer.spriteOffsetX = 6;
@@ -265,7 +265,7 @@ static void sub_8072F8C(void)
 {
     Sprite_HookRail *hookRail = TASK_DATA(gCurTask);
 
-    if (IsPlayerTouching(hookRail) != PLAYER_TOUCH_DIRECTION_NONE && gPlayer.charState == CHARSTATE_55) {
+    if (IsPlayerTouching(hookRail) != PLAYER_TOUCH_DIRECTION_NONE && gPlayer.charState == CHARSTATE_HANGING) {
         sub_80730BC(hookRail);
     }
 

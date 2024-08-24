@@ -249,7 +249,7 @@ static void sub_807B8FC(Sprite_Propeller *propeller)
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = CHARSTATE_44;
+    gPlayer.charState = CHARSTATE_IN_WHIRLWIND;
 }
 
 static void Render(Sprite_Propeller *propeller)

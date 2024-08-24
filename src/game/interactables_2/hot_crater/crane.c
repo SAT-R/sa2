@@ -497,7 +497,7 @@ static void sub_8074088(Sprite_HCCrane *crane)
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 9;
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = CHARSTATE_55;
+    gPlayer.charState = CHARSTATE_HANGING;
 
     sub_8074550(crane);
     crane->unk1B8.unk0 = 1;

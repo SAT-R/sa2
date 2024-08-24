@@ -211,7 +211,7 @@ void PlayerCB_8011DCC(Player *p)
 
     if (p->unk90->s.frameFlags & MOVESTATE_4000) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->charState = CHARSTATE_50;
+            p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
         } else {
             p->variant = 1;
@@ -253,7 +253,7 @@ void PlayerCB_8011E88(Player *p)
 
     if (--p->unk72 == -1) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->charState = CHARSTATE_50;
+            p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
         } else {
             p->variant = 2;
@@ -516,7 +516,7 @@ void Player_SonicAmy_WindupStopNSlam(Player *p)
         if (p->character == CHARACTER_SONIC) {
             Player_Sonic_Bound(I(p->x), I(p->y));
         } else if (p->character == CHARACTER_AMY) {
-            CreateAmyAttackHeartEffect(AMY_ATTACK_EFFECT_KIND_STOP_N_SLAM);
+            CreateAmyAttackHeartEffect(AMY_HEART_PATTERN_STOP_N_SLAM);
         }
     }
 }
@@ -764,7 +764,7 @@ void PlayerCB_8012938(Player *p)
 {
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->charState = CHARSTATE_50;
+            p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
         } else {
             p->transition = PLTRANS_PT1;
@@ -1075,7 +1075,7 @@ void PlayerCB_8012F6C(Player *p)
 
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->charState = CHARSTATE_50;
+            p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
         } else {
             p->variant++;
@@ -1113,7 +1113,7 @@ void PlayerCB_8013010(Player *p)
 
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->charState = CHARSTATE_50;
+            p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
         } else {
             p->transition = PLTRANS_PT1;
@@ -1691,7 +1691,7 @@ void sub_801394C(Player *p)
 
         p->spriteOffsetX = 6;
         p->spriteOffsetY = 9;
-        p->charState = CHARSTATE_50;
+        p->charState = CHARSTATE_CURLED_IN_AIR;
         p->transition = PLTRANS_PT4;
     }
 }
@@ -1804,7 +1804,7 @@ void PlayerCB_8013B6C(Player *p)
 
     if ((p->unk90->s.frameFlags) & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
-            p->charState = CHARSTATE_50;
+            p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
         } else {
             p->transition = PLTRANS_PT1;
@@ -2056,7 +2056,7 @@ void Player_InitAttack_Amy_HammerAttack(Player *p)
 
     p->moveState |= MOVESTATE_20000000;
 
-    CreateAmyAttackHeartEffect(AMY_ATTACK_EFFECT_KIND_A);
+    CreateAmyAttackHeartEffect(AMY_HEART_PATTERN_HAMMER_ATTACK);
 
     PLAYERFN_SET_AND_CALL(PlayerCB_8013F60, p);
 }

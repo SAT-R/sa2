@@ -333,7 +333,7 @@ static void TaskDestructor_GermanFlute(struct Task *t) {};
 
 static void sub_8076E3C(Sprite_GermanFlute *flute)
 {
-    gPlayer.charState = CHARSTATE_58;
+    gPlayer.charState = CHARSTATE_FLUTE_EXHAUST;
     gPlayer.speedAirX = 0;
 
     gPlayer.speedAirY = -sFluteUpdraft[flute->kind];
