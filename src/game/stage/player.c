@@ -2691,7 +2691,7 @@ void sub_80232D0(Player *p)
                     cam->unk14 += iy;
                 }
             }
-        } else if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+        } else if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             ox = gUnknown_080D650C[gCurrentLevel].x;
             if ((ox >= 0) && (qPX >= Q(ox)) && (cam->unk8 != 0)) {
                 if (!(cam->unk50 & 0x1)) {
@@ -2727,7 +2727,7 @@ void sub_80232D0(Player *p)
         }
     }
 
-    if ((p->moveState & (MOVESTATE_80000000 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
+    if ((p->moveState & (MOVESTATE_GOAL_REACHED0 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
         s32 r2, r3;
         struct Camera *cam2 = &gCamera;
         r3 = p->y;
@@ -3106,7 +3106,7 @@ void sub_8023B5C(Player *p, s32 spriteOffsetY)
 
 void sub_8023C10(Player *p)
 {
-    if (p->moveState & MOVESTATE_80000000) {
+    if (p->moveState & MOVESTATE_GOAL_REACHED0) {
         s32 speedGroundX = p->speedGroundX;
         if (gInput & DPAD_ANY) {
             speedGroundX += Q(0.125);
@@ -3205,7 +3205,7 @@ void Task_PlayerHandleDeath(void)
 
 static inline bool32 SomePlayerYComparison(Player *p, struct Camera *cam, s32 playerY)
 {
-    if (p->moveState & MOVESTATE_80000000) {
+    if (p->moveState & MOVESTATE_GOAL_REACHED0) {
         return FALSE;
     }
 
@@ -3390,11 +3390,11 @@ void CallPlayerTransition(Player *p)
                 }
 
                 if (p->moveState & (MOVESTATE_20000000 | MOVESTATE_10000000 | MOVESTATE_2000 | MOVESTATE_8 | MOVESTATE_IN_AIR)) {
-                    p->moveState |= (MOVESTATE_8000000 | MOVESTATE_IGNORE_INPUT);
+                    p->moveState |= (MOVESTATE_GOAL_REACHED | MOVESTATE_IGNORE_INPUT);
                     p->heldInput = 0;
                     p->frameInput = 0;
                 } else {
-                    p->moveState |= MOVESTATE_8000000;
+                    p->moveState |= MOVESTATE_GOAL_REACHED;
                     PLAYERFN_SET(Player_InitReachedGoal);
                 }
             } break;
@@ -4016,7 +4016,7 @@ void Player_TouchGround(Player *p)
 // TODO/NAME: Not only used for idling...
 void Player_Idle(Player *p)
 {
-    if ((p->moveState & (MOVESTATE_8000000 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8000000) {
+    if ((p->moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_GOAL_REACHED) {
         Player_InitReachedGoal(p);
     } else if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_ICE_SLIDE) {
         Player_InitIceSlide(p);
@@ -4187,7 +4187,7 @@ void Player_8025A0C(Player *p)
 
 void Player_8025AB8(Player *p)
 {
-    if ((p->moveState & (MOVESTATE_8000000 | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_8000000) {
+    if ((p->moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_GOAL_REACHED) {
         Player_InitReachedGoal(p);
     } else if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_8 | MOVESTATE_IN_AIR)) == MOVESTATE_ICE_SLIDE) {
         Player_InitIceSlide(p);
@@ -5109,7 +5109,7 @@ void Player_InitReachedGoal(Player *p)
         if (gGameMode == GAME_MODE_TIME_ATTACK)
             gSpecialRingCount = SPECIAL_STAGE_REQUIRED_SP_RING_COUNT;
 
-        if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+        if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
             Player_InitSpecialStageTransition(p);
         } else {
             Player_TransitionCancelFlyingAndBoost(p);
@@ -6576,7 +6576,7 @@ bool32 sub_8029DE8(Player *p)
     struct Camera *cam = &gCamera;
     s32 playerY = p->y;
 
-    if (!(p->moveState & MOVESTATE_80000000)) {
+    if (!(p->moveState & MOVESTATE_GOAL_REACHED0)) {
         if (GRAVITY_IS_INVERTED) {
             if (playerY <= Q(cam->minY))
                 return TRUE;
@@ -6594,7 +6594,7 @@ bool32 sub_8029E24(Player *p)
     struct Camera *cam = &gCamera;
     s32 playerY = p->y;
 
-    if (!(p->moveState & MOVESTATE_80000000)) {
+    if (!(p->moveState & MOVESTATE_GOAL_REACHED0)) {
         if (GRAVITY_IS_INVERTED) {
             if (playerY <= Q(cam->y - (DISPLAY_HEIGHT / 2)))
                 return TRUE;
@@ -6647,7 +6647,7 @@ void ContinueLevelSongAfterDrowning(Player *p)
 
 void sub_8029FA4(Player *p)
 {
-    u8 mask = (p->moveState & MOVESTATE_8000000) ? 0x7 : 0x3;
+    u8 mask = (p->moveState & MOVESTATE_GOAL_REACHED) ? 0x7 : 0x3;
 
     if ((gStageTime & mask) == 0) {
         s32 u17 = p->spriteOffsetY;
@@ -6987,7 +6987,7 @@ void Player_InitAttack(Player *p)
             if (!p->isBoosting) {
                 Player_InitAttack_Amy_HammerAttack(p);
             } else {
-                // Same effect as Sonic's "Super Skid" (Boost + B_BUTTON)
+                // Same code as Sonic's "Super Skid" (Boost + B_BUTTON)
                 Player_InitAttack_Sonic(p);
             }
         } break;

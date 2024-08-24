@@ -17,7 +17,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
 
     u16 *cursor;
     s32 x0 = 0;
-    if ((gPlayer.moveState & MOVESTATE_8000000) && gSpecialRingCount >= 7) {
+    if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && gSpecialRingCount >= 7) {
         if (gBgScrollRegs[3][0] == 0) {
             gBgScrollRegs[3][0] = cameraX;
         }

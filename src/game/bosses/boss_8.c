@@ -274,7 +274,7 @@ static void Task_BossRunManagerMain(void)
             } else {
                 r5 = gPlayer.x;
                 if (r5 > Q(42960)) {
-                    gPlayer.moveState &= ~MOVESTATE_8000000;
+                    gPlayer.moveState &= ~MOVESTATE_GOAL_REACHED;
                     gPlayer.speedGroundX = 0;
                     gPlayer.transition = 1;
                     manager->bossIndex++;

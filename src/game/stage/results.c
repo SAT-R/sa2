@@ -104,7 +104,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     outro->fade.bldCnt = 0x3FFF;
     outro->fade.bldAlpha = zero;
 
-    if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+    if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
         outro->fade.speed = Q(0.25);
         outro->fade.bldCnt = 0x3FBF;
     } else if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
@@ -441,7 +441,7 @@ void Task_UpdateStageResults(void)
                         gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
                     }
 
-                    if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+                    if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
                         TasksDestroyAll();
 
                         { // TODO: This is a macro!
@@ -481,7 +481,7 @@ void Task_UpdateStageResults(void)
             }
         }
 
-        if ((gPlayer.moveState & MOVESTATE_8000000) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
+        if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
             DestroyStageResultsGfx();
             gPlayer.moveState |= MOVESTATE_4000000;
             return;

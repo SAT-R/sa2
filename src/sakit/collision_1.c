@@ -30,7 +30,7 @@ u32 sub_800DA4C(Sprite *opponent, s16 oppX, s16 oppY, UNUSED s32 param3, UNUSED 
         return COLL_NONE;
     }
 
-    if (p->moveState & MOVESTATE_8000000) {
+    if (p->moveState & MOVESTATE_GOAL_REACHED) {
         return COLL_NONE;
     }
 
