@@ -121,7 +121,7 @@ void sub_802966C(Player *);
 bool32 Player_TryTaunt(Player *);
 bool32 Player_TryCrouchOrSpinAttack(Player *);
 bool32 Player_TryInitSpindash(Player *);
-void Player_802A228(Player *);
+void Player_InitCrouch(Player *);
 void Player_InitIceSlide(Player *);
 void Player_802A3B8(Player *);
 void Player_802A3C4(Player *);
@@ -4120,7 +4120,7 @@ void Player_Taunt(Player *p)
     }
 }
 
-void Player_8025854(Player *p)
+void Player_Crouch(Player *p)
 {
     Sprite *s = &p->unk90->s;
     u16 characterAnim = GET_CHARACTER_ANIM(p);
@@ -6712,7 +6712,7 @@ bool32 Player_TryCrouchOrSpinAttack(Player *p)
     if ((p->heldInput & DPAD_ANY) == DPAD_DOWN) {
         if ((p->speedGroundX == 0) && (((p->rotation + Q(0.125)) & 0xC0) == 0)
             && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
-            PLAYERFN_SET(Player_802A228);
+            PLAYERFN_SET(Player_InitCrouch);
             return TRUE;
         } else if (((u16)(p->speedGroundX + (Q(0.5) - 1)) > Q(1.0) - 2)
                    && !(p->moveState & (MOVESTATE_1000000 | MOVESTATE_4 | MOVESTATE_IN_AIR))) {
@@ -6755,14 +6755,14 @@ void sub_802A1C8(Player *p)
     p->unk4C = gUnknown_080D6902[unk52][1];
 }
 
-void Player_802A228(Player *p)
+void Player_InitCrouch(Player *p)
 {
     p->moveState &= ~MOVESTATE_20;
 
     p->charState = CHARSTATE_CROUCH;
     p->speedGroundX = 0;
 
-    PLAYERFN_SET_AND_CALL(Player_8025854, p);
+    PLAYERFN_SET_AND_CALL(Player_Crouch, p);
 }
 
 void Player_802A258(Player *p)

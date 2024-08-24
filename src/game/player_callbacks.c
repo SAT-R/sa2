@@ -840,7 +840,7 @@ struct Task *sub_80129DC(s32 x, s32 y)
     return result;
 }
 
-void Player_TailsUnused_Jump(Player *p)
+void Player_Tails_InitUnusedJump(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
