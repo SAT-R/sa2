@@ -49,11 +49,11 @@ void Player_8012498(Player *p);
 void TaskDestructor_SonicBoundMotionFrames(struct Task *);
 void Player_80124D0(Player *p);
 void Player_80126B0(Player *p);
-void Player_80127F0(Player *p);
+void Player_Cream_80127F0(Player *p);
 void Player_8012938(Player *p);
 void Player_8012978(Player *p);
 void Player_80129BC(Player *p);
-void Player_8012C2C(Player *p);
+void Player_Tails_8012C2C(Player *p);
 void Player_8012D1C(Player *p);
 void Player_8012F6C(Player *p);
 void Player_8013010(Player *p);
@@ -569,8 +569,7 @@ void Player_80124D0(Player *p)
 
 /* Maybe new module here? */
 
-// Forward Dash ?
-bool32 Player_TrySwitchingToForwardThrust(Player *p)
+bool32 Player_Sonic_TryForwardThrust(Player *p)
 {
     if (p->character == CHARACTER_SONIC) {
         if (p->unk71 == 1) {
@@ -599,7 +598,7 @@ void Player_InitAttack_Cream_ChaoAttack(Player *p)
         p->charState = CHARSTATE_CREAM_CHAO_ATTACK;
     }
 
-    PLAYERFN_SET_AND_CALL(Player_80127F0, p);
+    PLAYERFN_SET_AND_CALL(Player_Cream_80127F0, p);
 }
 
 void UpdateCreamFlying(Player *p)
@@ -704,7 +703,7 @@ void Player_80126B0(Player *p)
     }
 }
 
-void Player_80127F0(Player *p)
+void Player_Cream_80127F0(Player *p)
 {
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
@@ -883,7 +882,7 @@ void sub_8012B44(Player *p)
     }
 }
 
-void sub_8012BC0(Player *p)
+void sub_Tails_8012BC0(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -899,10 +898,10 @@ void sub_8012BC0(Player *p)
     p->unk58 = 0;
 
     gPlayer.moveState |= MOVESTATE_10000000;
-    PLAYERFN_SET_AND_CALL(Player_8012C2C, p);
+    PLAYERFN_SET_AND_CALL(Player_Tails_8012C2C, p);
 }
 
-void Player_8012C2C(Player *p)
+void Player_Tails_8012C2C(Player *p)
 {
     // Only decrease Tails' counter every 2nd frame, giving him 8 seconds of flight.
     // ...why didn't they just set his timer to a bigger value?

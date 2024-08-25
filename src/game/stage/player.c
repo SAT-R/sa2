@@ -81,7 +81,7 @@ void Player_8025A0C(Player *p);
 void Player_Idle(Player *);
 void Player_8025AB8(Player *);
 void Player_InitJump(Player *p);
-void Player_InitJumping(Player *);
+void Player_Jumping(Player *);
 void Player_8025F84(Player *);
 void Player_Spindash(Player *);
 void Player_DoGrinding(Player *);
@@ -116,7 +116,7 @@ void sub_802989C(Player *p);
 void Player_802A258(Player *p);
 void Player_802A300(Player *p);
 
-bool32 sub_80294F4(Player *);
+bool32 Player_TryMidAirAction(Player *);
 void sub_802966C(Player *);
 bool32 Player_TryTaunt(Player *);
 bool32 Player_TryCrouchOrSpinAttack(Player *);
@@ -746,8 +746,8 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->unk61 = 0;
     p->unk62 = 0;
     p->unk63 = 0;
-    p->unk86 = 30;
-    p->unk87 = 60;
+    p->secondsUntilDrown = 30;
+    p->framesUntilDrownCountDecrement = 60;
     p->unk88 = 10;
     p->transition = 0;
     p->unk6E = 0;
@@ -2984,8 +2984,8 @@ void sub_8023878(Player *p)
             }
         }
 
-        if (--p->unk87 < 1) {
-            switch (p->unk86--) {
+        if (--p->framesUntilDrownCountDecrement < 1) {
+            switch (p->secondsUntilDrown--) {
                 case 11:
                     if (p->unk60 == 0) {
                         gUnknown_030054A8.unk4 = 16;
@@ -3010,13 +3010,13 @@ void sub_8023878(Player *p)
                     SpawnDrowningCountdownNum(p, 0);
                     break;
             }
-            if (p->unk86 < 0) {
+            if (p->secondsUntilDrown < 0) {
                 p->moveState |= MOVESTATE_DEAD;
                 p->speedAirY = 0;
                 SpawnAirBubbles(p->x, p->y - Q(12), 0, 1);
                 SpawnBubblesAfterDrowning(p);
             }
-            p->unk87 = 60;
+            p->framesUntilDrownCountDecrement = 60;
         }
         if (!(gStageTime % 16u) && !(PseudoRandom32() & 0x300)) {
             s32 qDX = ((p->moveState & MOVESTATE_FACING_LEFT) ? -Q(4) : +Q(4));
@@ -3034,8 +3034,8 @@ void sub_8023878(Player *p)
                 m4aSongNumStart(SE_WATERFALL_SURFACE_HIT);
             }
         }
-        p->unk87 = 60;
-        p->unk86 = 30;
+        p->framesUntilDrownCountDecrement = 60;
+        p->secondsUntilDrown = 30;
 
         if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header && p->unk60 == 0) {
             m4aSongNumStartOrContinue(gLevelSongs[gCurrentLevel]);
@@ -3341,7 +3341,7 @@ void Task_PlayerMain(void)
             m4aSongNumStop(SE_CREAM_FLYING);
         }
 
-        if (p->unk86 < 0) {
+        if (p->secondsUntilDrown < 0) {
             m4aSongNumStart(SE_157);
         } else {
             m4aSongNumStart(SE_LIFE_LOST);
@@ -4043,7 +4043,7 @@ void Player_Idle(Player *p)
         if (p->moveState & MOVESTATE_8000) {
             p->moveState &= ~MOVESTATE_IN_AIR;
         } else if (p->moveState & MOVESTATE_IN_AIR) {
-            PLAYERFN_SET(Player_InitJumping);
+            PLAYERFN_SET(Player_Jumping);
         }
     }
 }
@@ -4073,7 +4073,7 @@ void Player_8025548(Player *p)
         PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
-            PLAYERFN_SET(Player_InitJumping);
+            PLAYERFN_SET(Player_Jumping);
         }
     }
 }
@@ -4115,7 +4115,7 @@ void Player_Taunt(Player *p)
         PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
-            PLAYERFN_SET(Player_InitJumping);
+            PLAYERFN_SET(Player_Jumping);
         }
     }
 }
@@ -4157,7 +4157,7 @@ void Player_Crouch(Player *p)
         PLAYERFN_UPDATE_UNK2A(p);
 
         if (p->moveState & MOVESTATE_IN_AIR) {
-            PLAYERFN_SET(Player_InitJumping);
+            PLAYERFN_SET(Player_Jumping);
         }
     }
 }
@@ -4276,7 +4276,7 @@ void Player_8025AB8(Player *p)
             PLAYERFN_UPDATE_UNK2A(p);
 
             if (p->moveState & MOVESTATE_IN_AIR) {
-                PLAYERFN_SET(Player_InitJumping);
+                PLAYERFN_SET(Player_Jumping);
             }
         }
     }
@@ -4325,10 +4325,10 @@ void Player_InitJump(Player *p)
 
     m4aSongNumStart(SE_JUMP);
 
-    PLAYERFN_SET_AND_CALL(Player_InitJumping, p);
+    PLAYERFN_SET_AND_CALL(Player_Jumping, p);
 }
 
-void Player_InitJumping(Player *p)
+void Player_Jumping(Player *p)
 {
     s16 maxJumpSpeed = -Q(PLAYER_MAX_NOT_HELD_JUMP_FORCE);
 
@@ -4338,7 +4338,7 @@ void Player_InitJumping(Player *p)
 
     if (p->moveState & MOVESTATE_100) {
         if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS)
-            if (Player_TrySwitchingToForwardThrust(p) || sub_80294F4(p))
+            if (Player_Sonic_TryForwardThrust(p) || Player_TryMidAirAction(p))
                 return;
 
         // Caps the jump force if the player lets go of the jump button
@@ -4391,7 +4391,7 @@ void Player_8025F84(Player *p)
     p->unk90->s.frameFlags &= ~MOVESTATE_4000;
     m4aSongNumStart(SE_JUMP);
 
-    PLAYERFN_SET_AND_CALL(Player_InitJumping, p);
+    PLAYERFN_SET_AND_CALL(Player_Jumping, p);
 }
 
 void Player_8026060(Player *p)
@@ -4458,7 +4458,7 @@ void Player_80261D8(Player *p)
         sub_8023610(p);
 
         if ((gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (p->moveState & MOVESTATE_100)) {
-            if (Player_TrySwitchingToForwardThrust(p) || sub_80294F4(p))
+            if (Player_Sonic_TryForwardThrust(p) || Player_TryMidAirAction(p))
                 return;
         }
     }
@@ -4734,7 +4734,7 @@ void Player_DoGrinding(Player *p)
 
             gPlayer.moveState &= ~MOVESTATE_IN_SCRIPTED;
             m4aSongNumStop(SE_GRINDING);
-            PLAYERFN_SET(Player_InitJumping);
+            PLAYERFN_SET(Player_Jumping);
         } else {
             if (IS_SINGLE_PLAYER) {
                 sub_801F488();
@@ -4854,7 +4854,7 @@ void Player_8026BCC(Player *p)
         if (p->moveState & MOVESTATE_IN_AIR) {
             p->charState = CHARSTATE_FALLING_VULNERABLE_B;
 
-            PLAYERFN_SET(Player_InitJumping);
+            PLAYERFN_SET(Player_Jumping);
         } else if ((p->moveState & (MOVESTATE_ICE_SLIDE | MOVESTATE_8)) != MOVESTATE_ICE_SLIDE) {
             PLAYERFN_SET(Player_TouchGround);
         }
@@ -6007,7 +6007,8 @@ void Player_802940C(Player *p)
 }
 
 // TODO: Fix the goto-match
-bool32 sub_80294F4(Player *p)
+// Only checks for A-/B-Button actions, not tricks!
+bool32 Player_TryMidAirAction(Player *p)
 {
     u16 song;
     if (!(p->moveState & MOVESTATE_20000000)) {
@@ -6038,6 +6039,7 @@ bool32 sub_80294F4(Player *p)
                 } break;
             }
         }
+
         if (p->frameInput & gPlayerControls.jump) {
             switch (p->character) {
                 case CHARACTER_SONIC: {
@@ -6049,7 +6051,7 @@ bool32 sub_80294F4(Player *p)
                         p->charState = CHARSTATE_SOME_ATTACK;
                         sub_8011B88(I(p->x), I(p->y), 1);
                         song = SE_SONIC_INSTA_SHIELD;
-                        goto sub_80294F4_PlaySfx;
+                        goto Player_TryMidAirAction_PlaySfx;
                     }
                 } break;
 
@@ -6060,7 +6062,7 @@ bool32 sub_80294F4(Player *p)
 
                 case CHARACTER_TAILS: {
                     if (!(p->moveState & MOVESTATE_40)) {
-                        sub_8012BC0(p);
+                        sub_Tails_8012BC0(p);
                         p->moveState |= MOVESTATE_20000000;
                         return TRUE;
                     }
@@ -6079,7 +6081,7 @@ bool32 sub_80294F4(Player *p)
                     CreateAmyAttackHeartEffect(AMY_HEART_PATTERN_C);
 
                     song = SE_AMY_SUPER_HAMMER_ATTACK;
-                sub_80294F4_PlaySfx:
+                Player_TryMidAirAction_PlaySfx:
                     m4aSongNumStart(song);
                     // TODO / BUG?
                     // there's no return TRUE; for Amy
@@ -6635,8 +6637,8 @@ void sub_8029F20(Player *p) { PLAYERFN_UPDATE_ROTATION(p); }
 
 void ContinueLevelSongAfterDrowning(Player *p)
 {
-    p->unk87 = 60;
-    p->unk86 = 30;
+    p->framesUntilDrownCountDecrement = 60;
+    p->secondsUntilDrown = 30;
 
     if (gMPlayTable[0].info->songHeader == gSongTable[MUS_DROWNING].header) {
         if (p->unk60 == 0) {

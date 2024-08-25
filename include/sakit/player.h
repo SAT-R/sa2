@@ -159,8 +159,8 @@ typedef struct Player_ {
     /* 0x84 */ s8 defeatScoreIndex;
 
     /* 0x85 */ s8 character;
-    /* 0x86 */ s8 unk86;
-    /* 0x87 */ s8 unk87;
+    /* 0x86 */ s8 secondsUntilDrown;
+    /* 0x87 */ s8 framesUntilDrownCountDecrement;
     /* 0x88 */ s8 unk88;
     /* 0x88 */ u8 filler88[3];
     /* 0x8C */ struct Task *spriteTask;
