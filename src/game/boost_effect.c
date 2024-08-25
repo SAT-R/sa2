@@ -60,10 +60,10 @@ void sub_801561C(void)
     u32 oldPlayerUnk10 = unk5A70->s.frameFlags;
     u16 r6 = unk5A70->transform.rotation;
 
-    oldPlayerMovestate &= ~MOVESTATE_GOAL_80000000;
+    oldPlayerMovestate &= ~MOVESTATE_80000000;
 
     if (GRAVITY_IS_INVERTED) {
-        oldPlayerMovestate |= MOVESTATE_GOAL_80000000;
+        oldPlayerMovestate |= MOVESTATE_80000000;
     }
 
     for (i = 0; i < (s32)ARRAY_COUNT(sPlayerStateBuffer); i++) {
@@ -87,10 +87,10 @@ void sub_80156D0(void)
     INC_BE_INDEX(sPlayerStateBuffer);
     i = sPlayerStateBufferIndex;
 
-    oldMovestate &= ~MOVESTATE_GOAL_80000000;
+    oldMovestate &= ~MOVESTATE_80000000;
 
     if (GRAVITY_IS_INVERTED) {
-        oldMovestate |= MOVESTATE_GOAL_80000000;
+        oldMovestate |= MOVESTATE_80000000;
     }
 
     sPlayerStateBuffer[i].anim = p->anim;
@@ -206,7 +206,7 @@ void sub_801583C(void)
             s->x = 0;
             s->y = 0;
 
-            actions->transform.height = 0x100;
+            actions->transform.height = +Q(1);
         }
 
         if (s->palId != 0) {
@@ -261,21 +261,18 @@ void Task_80159C8(void)
             UpdateSpriteAnimation(s);
 
             if (SPRITE_FLAG_GET(s, ROT_SCALE_ENABLE)) {
-                u32 moveState;
-
                 SPRITE_FLAG_CLEAR(s, ROT_SCALE);
                 s->frameFlags |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 if (actions->plState.moveState & MOVESTATE_FACING_LEFT) {
-                    transform->width = 0x100;
+                    transform->width = +Q(1);
                 } else {
-                    transform->width = 0xFF00;
+                    transform->width = -Q(1);
                 }
 
-                moveState = actions->plState.moveState & MOVESTATE_GOAL_80000000;
-                actions->plState.moveState = moveState;
+                actions->plState.moveState &= MOVESTATE_80000000;
 
-                if (moveState) {
+                if (actions->plState.moveState) {
                     transform->width = -transform->width;
                 }
 

@@ -114,7 +114,7 @@ void Player_TouchNormalSpring(Player *p);
 void Player_8029158(Player *p);
 void sub_802989C(Player *p);
 void Player_802A258(Player *p);
-void Player_802A300(Player *p);
+void Player_InitDashRing(Player *p);
 
 bool32 Player_TryMidAirAction(Player *);
 void sub_802966C(Player *);
@@ -172,11 +172,10 @@ void Player_InitAttack(Player *);
 
 #define PLAYERFN_UPDATE_UNK2A(player)                                                                                                      \
     {                                                                                                                                      \
-        if (player->unk2A) {                                                                                                               \
+        if (player->unk2A != 0) {                                                                                                          \
             player->unk2A -= 1;                                                                                                            \
-        } else if ((player->rotation + 32) & 0xC0) {                                                                                       \
-            s32 absGroundSpeed = ABS(player->speedGroundX);                                                                                \
-            if (absGroundSpeed < Q(1.875)) {                                                                                               \
+        } else if ((player->rotation + Q(0.125)) & 0xC0) {                                                                                 \
+            if (ABS(player->speedGroundX) < Q(1.875)) {                                                                                    \
                 player->speedGroundX = 0;                                                                                                  \
                                                                                                                                            \
                 player->moveState |= MOVESTATE_IN_AIR;                                                                                     \
@@ -365,11 +364,11 @@ const u16 sCharStateAnimInfo[][2] = {
     [CHARSTATE_KNUCKLES_GLIDE_TURN_FRAME_C] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_KNUCKLES), 2 },
     [CHARSTATE_KNUCKLES_GLIDE_TURN_FRAME_D] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_20, CHARACTER_KNUCKLES), 3 },
     [CHARSTATE_KNUCKLES_GLIDE_GRAB_WALL] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_23, CHARACTER_KNUCKLES), 0 },
-    [CHARSTATE_KNUCKLES_WALL_CLIMB_A] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_24, CHARACTER_KNUCKLES), 2 },
-    [CHARSTATE_KNUCKLES_WALL_CLIMB_B] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_24, CHARACTER_KNUCKLES), 0 },
-    [CHARSTATE_KNUCKLES_WALL_CLIMB_C] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_24, CHARACTER_KNUCKLES), 1 },
-    [CHARSTATE_KNUCKLES_WALL_CLIMB_D] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_24, CHARACTER_KNUCKLES), 3 },
-    [CHARSTATE_KNUCKLES_WALL_CLIMB_E] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_24, CHARACTER_KNUCKLES), 4 },
+    [CHARSTATE_KNUCKLES_CLIMB_A] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_24, CHARACTER_KNUCKLES), 2 },
+    [CHARSTATE_KNUCKLES_CLIMB_B] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_24, CHARACTER_KNUCKLES), 0 },
+    [CHARSTATE_KNUCKLES_CLIMB_C] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_24, CHARACTER_KNUCKLES), 1 },
+    [CHARSTATE_KNUCKLES_CLIMB_D] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_24, CHARACTER_KNUCKLES), 3 },
+    [CHARSTATE_KNUCKLES_CLIMB_E] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_24, CHARACTER_KNUCKLES), 4 },
     [CHARSTATE_KNUCKLES_DRILL_CLAW_INIT] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_KNUCKLES), 0 },
     [CHARSTATE_KNUCKLES_DRILL_CLAW_MAIN] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_KNUCKLES), 1 },
     [CHARSTATE_KNUCKLES_DRILL_CLAW_GROUND] = { SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_KNUCKLES), 2 },
@@ -626,8 +625,8 @@ void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
     s->hitboxes[1].index = -1;
 
     param2->transform.rotation = 0;
-    param2->transform.width = 0x100;
-    param2->transform.height = 0x100;
+    param2->transform.width = +Q(1);
+    param2->transform.height = +Q(1);
     param2->transform.x = 0;
     param2->transform.y = 0;
 }
@@ -668,8 +667,8 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
     s->frameFlags = (SPRITE_FLAG_MASK_18 | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE | SPRITE_FLAG(ROT_SCALE, 4));
 
     extraSprite->transform.rotation = 0;
-    extraSprite->transform.width = 0x100;
-    extraSprite->transform.height = 0x100;
+    extraSprite->transform.width = +Q(1);
+    extraSprite->transform.height = +Q(1);
     extraSprite->transform.x = 0;
     extraSprite->transform.y = 0;
 }
@@ -806,8 +805,8 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
         } break;
 
         case CHARACTER_KNUCKLES: {
-            p->w.kf.unkAC = 0;
-            p->w.kf.unkAD = 0;
+            p->w.kf.flags = 0;
+            p->w.kf.shift = 0;
             p->w.kf.unkAE = 0;
         } break;
 
@@ -2727,7 +2726,7 @@ void sub_80232D0(Player *p)
         }
     }
 
-    if ((p->moveState & (MOVESTATE_GOAL_80000000 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
+    if ((p->moveState & (MOVESTATE_80000000 | MOVESTATE_DEAD)) != MOVESTATE_DEAD) {
         s32 r2, r3;
         struct Camera *cam2 = &gCamera;
         r3 = p->y;
@@ -3093,7 +3092,7 @@ void sub_8023B5C(Player *p, s32 spriteOffsetY)
 
 void sub_8023C10(Player *p)
 {
-    if (p->moveState & MOVESTATE_GOAL_80000000) {
+    if (p->moveState & MOVESTATE_80000000) {
         s32 speedGroundX = p->speedGroundX;
         if (gInput & DPAD_ANY) {
             speedGroundX += Q(0.125);
@@ -3109,7 +3108,7 @@ void sub_8023C10(Player *p)
                 break;
 
             case DPAD_RIGHT:
-                p->speedAirX = speedGroundX;
+                p->speedAirX = +speedGroundX;
                 break;
 
             default:
@@ -3122,7 +3121,7 @@ void sub_8023C10(Player *p)
                 break;
 
             case DPAD_DOWN:
-                p->speedAirY = speedGroundX;
+                p->speedAirY = +speedGroundX;
                 break;
 
             default:
@@ -3145,6 +3144,7 @@ void Task_PlayerHandleDeath(void)
     if (val == 0) {
         if (IS_SINGLE_PLAYER) {
             TaskDestroy(gCurTask);
+
             if ((!gLoadedSaveGame->timeLimitDisabled
                  && (gCourseTime > MAX_COURSE_TIME || (gStageFlags & STAGE_FLAG__4 && gCourseTime == 0)))
                 || ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) && gCourseTime > MAX_COURSE_TIME)) {
@@ -3154,45 +3154,44 @@ void Task_PlayerHandleDeath(void)
                 gSpecialRingCount = 0;
                 HandleLifeLost();
             }
-            return;
+        } else {
+            gRingCount = 0;
+
+            if (gGameMode == GAME_MODE_MULTI_PLAYER) {
+                gRingCount = 1;
+            }
+
+            gSpecialRingCount = 0;
+            InitializePlayer(&gPlayer);
+            gCamera.x = I(gPlayer.x) + gCamera.shiftX - (DISPLAY_WIDTH / 2);
+            gCamera.y = I(gPlayer.y) + gCamera.shiftY - (DISPLAY_HEIGHT / 2);
+            m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
+            gPlayer.moveState = 0;
+            gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
+
+            gPlayer.unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            gPlayer.unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+            gPlayer.unk94->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
+            gPlayer.unk94->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
+
+            gCamera.unk50 &= ~0x3;
+            if (gPlayer.character == CHARACTER_CREAM && gCheese != NULL) {
+                gCheese->posX = gPlayer.x;
+                gCheese->posY = gPlayer.y;
+            }
+
+            gCurTask->main = Task_PlayerMain;
+            gPlayer.callback = Player_TouchGround;
         }
-
-        gRingCount = 0;
-
-        if (gGameMode == GAME_MODE_MULTI_PLAYER) {
-            gRingCount = 1;
-        }
-
-        gSpecialRingCount = 0;
-        InitializePlayer(&gPlayer);
-        gCamera.x = I(gPlayer.x) + gCamera.shiftX - (DISPLAY_WIDTH / 2);
-        gCamera.y = I(gPlayer.y) + gCamera.shiftY - (DISPLAY_HEIGHT / 2);
-        m4aMPlayTempoControl(&gMPlayInfo_BGM, 256);
-        gPlayer.moveState = 0;
-        gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
-
-        gPlayer.unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-        gPlayer.unk90->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
-        gPlayer.unk94->s.frameFlags &= ~SPRITE_FLAG_MASK_PRIORITY;
-        gPlayer.unk94->s.frameFlags |= SPRITE_FLAG(PRIORITY, 2);
-
-        gCamera.unk50 &= ~0x3;
-        if (gPlayer.character == CHARACTER_CREAM && gCheese != NULL) {
-            gCheese->posX = gPlayer.x;
-            gCheese->posY = gPlayer.y;
-        }
-
-        gCurTask->main = Task_PlayerMain;
-        gPlayer.callback = Player_TouchGround;
     } else {
         val--;
         gt->unk4 = val;
     }
 }
 
-static inline bool32 SomePlayerYComparison(Player *p, struct Camera *cam, s32 playerY)
+static inline bool32 DeadPlayerLeftScreen(Player *p, struct Camera *cam, s32 playerY)
 {
-    if (p->moveState & MOVESTATE_GOAL_80000000) {
+    if (p->moveState & MOVESTATE_80000000) {
         return FALSE;
     }
 
@@ -3201,7 +3200,7 @@ static inline bool32 SomePlayerYComparison(Player *p, struct Camera *cam, s32 pl
             return TRUE;
         }
     } else {
-        if (playerY >= Q(cam->y) + Q(240) - 1) {
+        if (playerY >= Q(cam->y) + Q(DISPLAY_HEIGHT + 80) - 1) {
             return TRUE;
         }
     }
@@ -3215,9 +3214,9 @@ void Task_PlayerDied(void)
     PlayerSpriteInfo *psi1 = gPlayer.unk90;
     PlayerSpriteInfo *psi2 = gPlayer.unk94;
 
-    if (SomePlayerYComparison(&gPlayer, &gCamera, gPlayer.y)) {
+    if (DeadPlayerLeftScreen(&gPlayer, &gCamera, gPlayer.y)) {
         player_0_Task *gt = TASK_DATA(gCurTask);
-        gt->unk4 = 0x3C;
+        gt->unk4 = ZONE_TIME_TO_INT(0, 1);
         gPlayer.moveState |= MOVESTATE_100000;
         if (IS_MULTI_PLAYER) {
             sub_8024B10(p, psi1);
@@ -3277,9 +3276,9 @@ void Task_PlayerMain(void)
     sub_80156D0();
 
     p->moveState &= ~MOVESTATE_ICE_SLIDE;
-    gHomingTarget.squarePlayerDistance = 0x4000;
+    gHomingTarget.squarePlayerDistance = SQUARE(128);
     gHomingTarget.angle = 0;
-    gCheeseTarget.squarePlayerDistance = CHEESE_DISTANCE_MAX;
+    gCheeseTarget.squarePlayerDistance = SQUARE(CHEESE_DISTANCE_MAX);
     gCheeseTarget.task = NULL;
 
     if (p->moveState & MOVESTATE_DEAD) {
@@ -3442,7 +3441,7 @@ void CallPlayerTransition(Player *p)
                 PLAYERFN_SET(Player_8029158);
             } break;
             case PLTRANS_PT24 - 1: {
-                PLAYERFN_SET(Player_802A300);
+                PLAYERFN_SET(Player_InitDashRing);
             } break;
             case PLTRANS_GRINDING - 1: {
                 PLAYERFN_SET(Player_InitGrinding);
@@ -5748,7 +5747,7 @@ void Player_TouchNormalSpring(Player *p)
 {
     u8 u6E = p->unk6E;
     u8 r5 = (u6E >> 4);
-    u8 r6 = u6E % ARRAY_COUNT(gUnknown_080D69C2);
+    u8 r6 = u6E % ARRAY_COUNT(sSpringAccelY);
 
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -5978,7 +5977,7 @@ void Player_8029314(Player *p)
     PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
-void Player_802940C(Player *p)
+void Player_DashRing(Player *p)
 {
     if (--p->unk72 == -1) {
         PLAYERFN_SET(Player_8029074);
@@ -6010,7 +6009,7 @@ bool32 Player_TryMidAirAction(Player *p)
                     if ((p->heldInput & DPAD_ANY) == DPAD_DOWN) {
                         Player_Cream_InitChaoRollingAttack(p);
                     } else {
-                        Player_Cream_InitChaoAttack(p);
+                        Player_Cream_InitMidAirChaoAttack(p);
                     }
                     return TRUE;
                 } break;
@@ -6030,13 +6029,13 @@ bool32 Player_TryMidAirAction(Player *p)
         if (p->frameInput & gPlayerControls.jump) {
             switch (p->character) {
                 case CHARACTER_SONIC: {
-                    if (!IS_BOSS_STAGE(gCurrentLevel) && gHomingTarget.squarePlayerDistance < Q_SQUARE(Q(8))) {
-                        sub_8012194(p);
+                    if (!IS_BOSS_STAGE(gCurrentLevel) && gHomingTarget.squarePlayerDistance < SQUARE(128)) {
+                        Player_Sonic_InitHomingAttack(p);
                         return TRUE;
                     } else {
                         p->moveState |= MOVESTATE_20000000;
                         p->charState = CHARSTATE_SOME_ATTACK;
-                        sub_8011B88(I(p->x), I(p->y), 1);
+                        Player_Sonic_InitAttackGfxTask(I(p->x), I(p->y), 1);
                         song = SE_SONIC_INSTA_SHIELD;
                         goto Player_TryMidAirAction_PlaySfx;
                     }
@@ -6057,7 +6056,7 @@ bool32 Player_TryMidAirAction(Player *p)
 
                 case CHARACTER_KNUCKLES: {
                     if (!(p->moveState & MOVESTATE_40)) {
-                        sub_8013AD8(p);
+                        Player_Knuckles_InitGlide(p);
                         return TRUE;
                     }
                 } break;
@@ -6556,7 +6555,7 @@ void sub_8029D14(Player *p)
     }
 }
 
-void PlayerFn_Cmd_UpdatePosition(Player *p) { PLAYERFN_UPDATE_POSITION(p); }
+void Player_UpdatePosition(Player *p) { PLAYERFN_UPDATE_POSITION(p); }
 
 void PlayerFn_Cmd_UpdateAirFallSpeed(Player *p) { PLAYERFN_UPDATE_AIR_FALL_SPEED(p); }
 
@@ -6565,7 +6564,7 @@ bool32 sub_8029DE8(Player *p)
     struct Camera *cam = &gCamera;
     s32 playerY = p->y;
 
-    if (!(p->moveState & MOVESTATE_GOAL_80000000)) {
+    if (!(p->moveState & MOVESTATE_80000000)) {
         if (GRAVITY_IS_INVERTED) {
             if (playerY <= Q(cam->minY))
                 return TRUE;
@@ -6578,14 +6577,15 @@ bool32 sub_8029DE8(Player *p)
     return FALSE;
 }
 
-bool32 sub_8029E24(Player *p)
+// Might've been an inline func, but doesn't match with it.
+bool32 DeadPlayerLeftScreen_UnusedCopy(Player *p)
 {
     struct Camera *cam = &gCamera;
     s32 playerY = p->y;
 
-    if (!(p->moveState & MOVESTATE_GOAL_80000000)) {
+    if (!(p->moveState & MOVESTATE_80000000)) {
         if (GRAVITY_IS_INVERTED) {
-            if (playerY <= Q(cam->y - (DISPLAY_HEIGHT / 2)))
+            if (playerY <= Q(cam->y - 80))
                 return TRUE;
         } else {
             if (playerY >= Q(cam->y) + Q(DISPLAY_HEIGHT + 80) - 1)
@@ -6782,7 +6782,7 @@ bool32 Player_TryAttack(Player *p)
     }
 }
 
-void Player_802A300(Player *p)
+void Player_InitDashRing(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
     p->moveState |= MOVESTATE_IN_AIR;
@@ -6796,7 +6796,7 @@ void Player_802A300(Player *p)
 
     m4aSongNumStart(SE_DASH_RING);
 
-    PLAYERFN_SET_AND_CALL(Player_802940C, p);
+    PLAYERFN_SET_AND_CALL(Player_DashRing, p);
 }
 
 void Player_InitIceSlide(Player *p) { Player_InitIceSlide_inline(p); }
@@ -6949,14 +6949,14 @@ void Player_InitAttack(Player *p)
 {
     switch (p->character) {
         case CHARACTER_SONIC: {
-            Player_InitAttack_Sonic(p);
+            Player_Sonic_InitAttack(p);
         } break;
 
         case CHARACTER_CREAM: {
             if (!p->isBoosting) {
-                Player_InitAttack_Cream_ChaoAttack(p);
+                Player_Cream_InitChaoAttack(p);
             } else {
-                Player_InitAttack_Cream_StepAttack(p);
+                Player_Cream_InitStepAttack(p);
             }
         } break;
 
@@ -6966,9 +6966,9 @@ void Player_InitAttack(Player *p)
 
         case CHARACTER_KNUCKLES: {
             if (!p->isBoosting) {
-                Player_InitAttack_Knuckles_Punch(p);
+                Player_Knuckles_InitPunch(p);
             } else {
-                Player_InitAttack_Knuckles_SpiralAttack(p);
+                Player_Knuckles_InitSpiralAttack(p);
             }
         } break;
 
@@ -6977,7 +6977,7 @@ void Player_InitAttack(Player *p)
                 Player_InitAttack_Amy_HammerAttack(p);
             } else {
                 // Same code as Sonic's "Super Skid" (Boost + B_BUTTON)
-                Player_InitAttack_Sonic(p);
+                Player_Sonic_InitAttack(p);
             }
         } break;
     }

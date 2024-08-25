@@ -239,7 +239,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     UpdateSpriteAnimation(s);
 
     resultsCutScene->transform.width = 0;
-    resultsCutScene->transform.height = 0x100;
+    resultsCutScene->transform.height = +Q(1);
     resultsCutScene->transform.x = 120;
     resultsCutScene->transform.y = 120;
     resultsCutScene->transform.rotation = 0;

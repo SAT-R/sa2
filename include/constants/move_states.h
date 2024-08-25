@@ -36,6 +36,6 @@
 #define MOVESTATE_10000000        0x10000000
 #define MOVESTATE_20000000        0x20000000
 #define MOVESTATE_IN_SCRIPTED     0x40000000 // Player speed/pos are currently handled by an Interactable
-#define MOVESTATE_GOAL_80000000   0x80000000
+#define MOVESTATE_80000000        0x80000000
 
 #endif // GUARD_MOVESTATES_H

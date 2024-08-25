@@ -42,9 +42,9 @@ typedef struct {
 } TailsFlags;
 
 typedef struct {
-    /* 0xAC */ u8 unkAC;
-    /* 0xAD */ u8 unkAD;
-    /* 0xAE */ u8 unkAE;
+    /* 0xAC */ u8 flags;
+    /* 0xAD */ s8 shift; // TODO: Name
+    /* 0xAE */ s8 unkAE;
 } KnucklesFlags;
 
 typedef struct {
@@ -133,7 +133,7 @@ typedef struct Player_ {
     /* 0x6C */ bool8 unk6C;
 
     // 0x6D Some player state, cleared after usage
-    //  0x01 = Player_80124D0
+    //  0x01 = Player_Sonic_HomingAttack
     //  0x05 = Set by IA ClearPipe_End if data[1] is set (also in GermanFlute IA), by
     //  Player_80126B0
     //
@@ -143,8 +143,7 @@ typedef struct Player_ {
     /* 0x6F */ u8 prevTransition;
     /* 0x70 */ bool8 unk70;
     /* 0x71 */ u8 unk71;
-    // unk72 appears to be a duration timer for side-forward trick animations (in
-    // frames?)
+    // unk72 appears to be a duration timer for side-forward trick animations + Homing Attack
     /* 0x72 */ s16 unk72;
     /* 0x74 */ s16 checkPointX;
     /* 0x76 */ s16 checkPointY;

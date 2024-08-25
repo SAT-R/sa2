@@ -38,35 +38,35 @@ typedef struct {
  *       if they are only called directly in the code, those are NOT callbacks.
  */
 
-void Player_8011DCC(Player *);
-void Player_8011E88(Player *);
+void Player_Sonic_WindupAttack(Player *);
+void Player_Sonic_Attack(Player *);
 void Task_SonicBoundMotionFrames(void);
 void Player_80123D0(Player *);
 void Player_Attack_Tails_TailSwipe(Player *p);
 void Player_SonicAmy_WindupStopNSlam(Player *);
-void Player_8012460(Player *);
-void Player_8012498(Player *p);
+void Player_SonicAmy_StopNSlam_AfterGroundCollision(Player *);
+void Player_SonicAmy_StopNSlam_FallAfterCollision(Player *p);
 void TaskDestructor_SonicBoundMotionFrames(struct Task *);
-void Player_80124D0(Player *p);
+void Player_Sonic_HomingAttack(Player *p);
 void Player_80126B0(Player *p);
-void Player_Cream_80127F0(Player *p);
-void Player_8012938(Player *p);
-void Player_8012978(Player *p);
-void Player_80129BC(Player *p);
+void Player_Cream_ChaoAttack(Player *p);
+void Player_Cream_StepAttack(Player *p);
+void Player_Cream_ChaoRollingAttack(Player *p);
+void Player_Cream_WindupMidAirChaoAttack(Player *p);
 void Player_Tails_8012C2C(Player *p);
 void Player_8012D1C(Player *p);
-void Player_8012F6C(Player *p);
-void Player_8013010(Player *p);
-void Player_80130E4(Player *p);
+void Player_Knuckles_PunchLeft(Player *p);
+void Player_Knuckles_PunchRight(Player *p);
+void Player_Knuckles_SpiralAttack(Player *p);
 s32 sub_8013644(Player *p);
 void sub_801394C(Player *p);
 void Player_8013B6C(Player *p);
-void Player_8013BB4(Player *p);
-void Player_8013BD4(Player *p);
-void Player_8013BF0(Player *p);
-void Player_8013C18(Player *p);
-void Player_8013C34(Player *p);
-void sub_8013C50(Player *p);
+void Player_Knuckles_Glide(Player *p);
+void Player_Knuckles_FallAfterGlide(Player *p);
+void Player_Knuckles_Glide_TouchGroundAfterBreakup(Player *p);
+void Player_Knuckles_Glide_GroundImpact(Player *p);
+void Player_Knuckles_Climb(Player *p);
+void Player_Knuckles_InitClimbPullUpEdge(Player *p);
 void sub_8013CA0(Player *p);
 
 void sub_8022318(Player *p);
@@ -74,7 +74,7 @@ void sub_8022838(Player *p);
 void sub_80232D0(Player *p);
 
 void sub_8023610(Player *p);
-void PlayerFn_Cmd_UpdatePosition(Player *p);
+void Player_UpdatePosition(Player *p);
 void PlayerFn_Cmd_UpdateAirFallSpeed(Player *p);
 
 const ALIGNED(4) u16 gUnknown_080D5518[3][3] = {
@@ -93,7 +93,7 @@ static const u16 sKnucklesAnimData_FX[2][3] = {
     { 25, SA2_ANIM_CHAR(SA2_CHAR_ANIM_51, CHARACTER_KNUCKLES), 3 },
 };
 
-struct Task *sub_8011B88(s32 x, s32 y, u16 p2)
+struct Task *Player_Sonic_InitAttackGfxTask(s32 x, s32 y, u16 p2)
 {
     TaskStrc_801F15C *ts;
     struct Task *t;
@@ -168,7 +168,7 @@ struct Task *Player_Sonic_Bound(s32 x, s32 y)
     }
 }
 
-void Player_InitAttack_Sonic(Player *p)
+void Player_Sonic_InitAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -192,10 +192,10 @@ void Player_InitAttack_Sonic(Player *p)
 
     m4aSongNumStart(SE_TAILS_TAIL_SWIPE);
 
-    PLAYERFN_SET_AND_CALL(Player_8011DCC, p);
+    PLAYERFN_SET_AND_CALL(Player_Sonic_WindupAttack, p);
 }
 
-void Player_8011DCC(Player *p)
+void Player_Sonic_WindupAttack(Player *p)
 {
     s32 grndSpeed = p->speedGroundX;
     if (grndSpeed > 0) {
@@ -217,7 +217,7 @@ void Player_8011DCC(Player *p)
             p->variant = 1;
             p->unk6C = TRUE;
 
-            PLAYERFN_SET(Player_8011E88);
+            PLAYERFN_SET(Player_Sonic_Attack);
 
             if (!p->isBoosting) {
                 if (p->moveState & MOVESTATE_FACING_LEFT) {
@@ -226,7 +226,7 @@ void Player_8011DCC(Player *p)
                     p->speedGroundX = +Q(4.0);
                 }
             } else {
-                sub_8011B88(I(p->x), I(p->y), 0);
+                Player_Sonic_InitAttackGfxTask(I(p->x), I(p->y), 0);
             }
 
             p->unk72 = 32;
@@ -237,7 +237,7 @@ void Player_8011DCC(Player *p)
     sub_8027EF0(p);
 }
 
-void Player_8011E88(Player *p)
+void Player_Sonic_Attack(Player *p)
 {
     s32 grndSpeed = p->speedGroundX;
     if (grndSpeed > 0) {
@@ -323,7 +323,7 @@ void Player_SonicAmy_StopNSlam(Player *p)
 
         p->speedAirX = HALVE(p->speedAirX);
 
-        PLAYERFN_SET(Player_8012460);
+        PLAYERFN_SET(Player_SonicAmy_StopNSlam_AfterGroundCollision);
 
         p->moveState |= MOVESTATE_IN_AIR;
 
@@ -395,7 +395,7 @@ void Player_SonicForwardThrust(Player *p)
     PLAYERFN_SET_AND_CALL(Player_80261D8, p);
 }
 
-void sub_8012194(Player *p)
+void Player_Sonic_InitHomingAttack(Player *p)
 {
     s16 angle = gHomingTarget.angle;
     s32 six = Q(6.0);
@@ -424,7 +424,7 @@ void sub_8012194(Player *p)
 
     m4aSongNumStart(SE_SONIC_MIDAIR_SOMERSAULT);
 
-    PLAYERFN_SET_AND_CALL(Player_80124D0, p);
+    PLAYERFN_SET_AND_CALL(Player_Sonic_HomingAttack, p);
 }
 
 void Player_801225C(Player *p)
@@ -524,20 +524,20 @@ void Player_SonicAmy_WindupStopNSlam(Player *p)
     }
 }
 
-void Player_8012460(Player *p)
+void Player_SonicAmy_StopNSlam_AfterGroundCollision(Player *p)
 {
     p->speedAirY += Q(56.0 / 256.0);
 
     if (p->speedAirY >= 0) {
         p->variant++;
         p->unk6C = TRUE;
-        PLAYERFN_SET(Player_8012498);
+        PLAYERFN_SET(Player_SonicAmy_StopNSlam_FallAfterCollision);
     }
 
     sub_80283C4(p);
 }
 
-void Player_8012498(Player *p)
+void Player_SonicAmy_StopNSlam_FallAfterCollision(Player *p)
 {
     sub_8027EF0(p);
 
@@ -553,7 +553,7 @@ void TaskDestructor_SonicBoundMotionFrames(struct Task *t)
     VramFree(s->graphics.dest);
 }
 
-void Player_80124D0(Player *p)
+void Player_Sonic_HomingAttack(Player *p)
 {
     if (--p->unk72 == -1) {
         p->charState = CHARSTATE_FALLING_VULNERABLE_B;
@@ -563,6 +563,7 @@ void Player_80124D0(Player *p)
     sub_8027EF0(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
+        // Hit ground instead of targeted enemy
         p->transition = PLTRANS_PT1;
     }
 }
@@ -581,7 +582,7 @@ bool32 Player_Sonic_TryForwardThrust(Player *p)
     return FALSE;
 }
 
-void Player_InitAttack_Cream_ChaoAttack(Player *p)
+void Player_Cream_InitChaoAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -598,7 +599,7 @@ void Player_InitAttack_Cream_ChaoAttack(Player *p)
         p->charState = CHARSTATE_CREAM_CHAO_ATTACK;
     }
 
-    PLAYERFN_SET_AND_CALL(Player_Cream_80127F0, p);
+    PLAYERFN_SET_AND_CALL(Player_Cream_ChaoAttack, p);
 }
 
 void UpdateCreamFlying(Player *p)
@@ -703,7 +704,7 @@ void Player_80126B0(Player *p)
     }
 }
 
-void Player_Cream_80127F0(Player *p)
+void Player_Cream_ChaoAttack(Player *p)
 {
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
@@ -717,7 +718,7 @@ void Player_Cream_80127F0(Player *p)
     sub_8027EF0(p);
 }
 
-void Player_InitAttack_Cream_StepAttack(Player *p)
+void Player_Cream_InitStepAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -729,7 +730,7 @@ void Player_InitAttack_Cream_StepAttack(Player *p)
 
     p->charState = CHARSTATE_BOOST_ATTACK;
 
-    PLAYERFN_SET_AND_CALL(Player_8012938, p);
+    PLAYERFN_SET_AND_CALL(Player_Cream_StepAttack, p);
 }
 
 void Player_Cream_InitChaoRollingAttack(Player *p)
@@ -744,10 +745,10 @@ void Player_Cream_InitChaoRollingAttack(Player *p)
 
     p->charState = CHARSTATE_SOME_ATTACK;
 
-    PLAYERFN_SET_AND_CALL(Player_8012978, p);
+    PLAYERFN_SET_AND_CALL(Player_Cream_ChaoRollingAttack, p);
 }
 
-void Player_Cream_InitChaoAttack(Player *p)
+void Player_Cream_InitMidAirChaoAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -759,10 +760,10 @@ void Player_Cream_InitChaoAttack(Player *p)
 
     p->charState = CHARSTATE_SOME_OTHER_ATTACK;
 
-    PLAYERFN_SET_AND_CALL(Player_80129BC, p);
+    PLAYERFN_SET_AND_CALL(Player_Cream_WindupMidAirChaoAttack, p);
 }
 
-void Player_8012938(Player *p)
+void Player_Cream_StepAttack(Player *p)
 {
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if (p->moveState & MOVESTATE_IN_AIR) {
@@ -776,7 +777,8 @@ void Player_8012938(Player *p)
     sub_8027EF0(p);
 }
 
-void Player_8012978(Player *p)
+// Mid-Air: Down-B
+void Player_Cream_ChaoRollingAttack(Player *p)
 {
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         if ((p->anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_INSTA_SHIELD_1, CHARACTER_CREAM)) && p->variant == 0) {
@@ -791,7 +793,7 @@ void Player_8012978(Player *p)
     }
 }
 
-void Player_80129BC(Player *p)
+void Player_Cream_WindupMidAirChaoAttack(Player *p)
 {
     sub_8027EF0(p);
 
@@ -1037,7 +1039,7 @@ struct Task *sub_8012DF8(s32 x, s32 y, u16 p2)
     return result;
 }
 
-void Player_InitAttack_Knuckles_Punch(Player *p)
+void Player_Knuckles_InitPunch(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -1057,10 +1059,10 @@ void Player_InitAttack_Knuckles_Punch(Player *p)
         }
     }
 
-    PLAYERFN_SET_AND_CALL(Player_8012F6C, p);
+    PLAYERFN_SET_AND_CALL(Player_Knuckles_PunchLeft, p);
 }
 
-void Player_8012F6C(Player *p)
+void Player_Knuckles_PunchLeft(Player *p)
 {
     s32 speed = p->speedGroundX;
     if (speed > 0) {
@@ -1091,14 +1093,14 @@ void Player_8012F6C(Player *p)
                 }
             }
 
-            PLAYERFN_SET(Player_8013010);
+            PLAYERFN_SET(Player_Knuckles_PunchRight);
         }
     }
 
     sub_8027EF0(p);
 }
 
-void Player_8013010(Player *p)
+void Player_Knuckles_PunchRight(Player *p)
 {
     s32 speed = p->speedGroundX;
     if (speed > 0) {
@@ -1125,7 +1127,7 @@ void Player_8013010(Player *p)
     sub_8027EF0(p);
 }
 
-void Player_InitAttack_Knuckles_SpiralAttack(Player *p)
+void Player_Knuckles_InitSpiralAttack(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
 
@@ -1143,10 +1145,10 @@ void Player_InitAttack_Knuckles_SpiralAttack(Player *p)
 
     m4aSongNumStart(SE_SPIRAL_ATTACK);
 
-    PLAYERFN_SET_AND_CALL(Player_80130E4, p);
+    PLAYERFN_SET_AND_CALL(Player_Knuckles_SpiralAttack, p);
 }
 
-void Player_80130E4(Player *p)
+void Player_Knuckles_SpiralAttack(Player *p)
 {
     s32 speed = p->speedGroundX;
     s32 addend = p->unk4C >> 1;
@@ -1173,9 +1175,9 @@ void Player_80130E4(Player *p)
     sub_8027EF0(p);
 }
 
-void Knuckles_UpdateGlide(Player *p)
+void Player_Knuckles_Glide_UpdateFrames(Player *p)
 {
-    s8 xOffset = p->w.tf.shift;
+    s8 xOffset = p->w.kf.shift;
     p->moveState &= ~MOVESTATE_20;
     p->moveState &= ~MOVESTATE_FACING_LEFT;
 
@@ -1193,13 +1195,13 @@ void Knuckles_UpdateGlide(Player *p)
     }
 }
 
-void sub_80131B4(Player *p)
+void Player_Knuckles_Glide_MainUpdate(Player *p)
 {
     type8029A28 result;
     u8 someFlags;
     sub_8022838(p);
 
-    someFlags = p->w.tf.flags;
+    someFlags = p->w.kf.flags;
 
     if (!(someFlags & MOVESTATE_IN_AIR)) {
         u8 temp;
@@ -1211,7 +1213,7 @@ void sub_80131B4(Player *p)
 
         temp = -((p->rotation + Q(0.125)) & -Q(0.25));
         if (temp != 0) {
-            s8 shift = p->w.tf.shift + Q(0.25);
+            s8 shift = p->w.kf.shift + Q(0.25);
             if (shift <= 0) {
                 p->moveState |= MOVESTATE_FACING_LEFT;
             } else {
@@ -1224,8 +1226,7 @@ void sub_80131B4(Player *p)
 
             p->transition = PLTRANS_PT1;
         } else {
-            // Knuckles impacts on the ground after gliding
-            PLAYERFN_SET(Player_8013C18);
+            PLAYERFN_SET(Player_Knuckles_Glide_GroundImpact);
             p->charState = CHARSTATE_KNUCKLES_GLIDE_IMPACT;
             m4aSongNumStart(SE_SONIC_SKID_ATTACK);
         }
@@ -1235,18 +1236,18 @@ void sub_80131B4(Player *p)
         if (temp) {
             type8029A28 sp08;
 
-            if (p->w.tf.unkAE >= 0) {
-                s8 temp = p->w.tf.shift + Q(0.25);
+            if (p->w.kf.unkAE >= 0) {
+                s8 temp = p->w.kf.shift + Q(0.25);
                 if (temp <= 0) {
                     p->moveState |= MOVESTATE_FACING_LEFT;
                     result = sub_8029A28(p, NULL, &sp08);
 
                     if (result != sp08) {
-                        PLAYERFN_SET(Player_8013BD4);
+                        PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
                         p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
                         p->spriteOffsetX = 6;
                         p->spriteOffsetY = 14;
-                        p->w.tf.flags |= MOVESTATE_IN_AIR;
+                        p->w.kf.flags |= MOVESTATE_IN_AIR;
                         return;
                     }
 
@@ -1263,11 +1264,11 @@ void sub_80131B4(Player *p)
                             playerBottomX -= p->spriteOffsetX;
 
                             if (sub_801E4E4(playerBottomY, playerBottomX, p->layer, -8, NULL, sub_801EE64) < 0) {
-                                PLAYERFN_SET(Player_8013BD4);
+                                PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
                                 p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
                                 p->spriteOffsetX = 6;
                                 p->spriteOffsetY = 14;
-                                p->w.tf.flags |= MOVESTATE_IN_AIR;
+                                p->w.kf.flags |= MOVESTATE_IN_AIR;
                                 return;
                             }
                         } else {
@@ -1282,11 +1283,11 @@ void sub_80131B4(Player *p)
 
                             if (sub_801E4E4(playerBottomY, playerBottomX, p->layer, +8, NULL, sub_801EE64) < 0) {
 
-                                PLAYERFN_SET(Player_8013BD4);
+                                PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
                                 p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
                                 p->spriteOffsetX = 6;
                                 p->spriteOffsetY = 14;
-                                p->w.tf.flags |= MOVESTATE_IN_AIR;
+                                p->w.kf.flags |= MOVESTATE_IN_AIR;
                                 return;
                             }
                         }
@@ -1298,11 +1299,11 @@ void sub_80131B4(Player *p)
 
                     result = sub_8029A74(p, 0, &sp08);
                     if (result != sp08) {
-                        PLAYERFN_SET(Player_8013BD4);
+                        PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
                         p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
                         p->spriteOffsetX = 6;
                         p->spriteOffsetY = 14;
-                        p->w.tf.flags |= MOVESTATE_IN_AIR;
+                        p->w.kf.flags |= MOVESTATE_IN_AIR;
                         return;
                     } else if (result != 0) {
                         if (!GRAVITY_IS_INVERTED) {
@@ -1315,14 +1316,12 @@ void sub_80131B4(Player *p)
                             playerBottomX += 1;
                             playerBottomX += p->spriteOffsetX;
 
-                            if (sub_801E4E4(playerBottomY, // fmt
-                                            playerBottomX, p->layer, +8, NULL, sub_801EE64)
-                                < 0) {
-                                PLAYERFN_SET(Player_8013BD4);
+                            if (sub_801E4E4(playerBottomY, playerBottomX, p->layer, +8, NULL, sub_801EE64) < 0) {
+                                PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
                                 p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
                                 p->spriteOffsetX = 6;
                                 p->spriteOffsetY = 14;
-                                p->w.tf.flags |= MOVESTATE_IN_AIR;
+                                p->w.kf.flags |= MOVESTATE_IN_AIR;
                                 return;
                             }
                         }
@@ -1334,9 +1333,9 @@ void sub_80131B4(Player *p)
                 p->speedAirX = 0;
                 p->speedAirY = 0;
 
-                PLAYERFN_SET(Player_8013C34);
+                PLAYERFN_SET(Player_Knuckles_Climb);
 
-                p->w.tf.shift = 3;
+                p->w.kf.shift = 3;
 
                 p->charState = CHARSTATE_KNUCKLES_GLIDE_GRAB_WALL;
                 p->moveState |= MOVESTATE_10000000;
@@ -1346,15 +1345,14 @@ void sub_80131B4(Player *p)
                 return;
             }
 
-            PLAYERFN_SET(Player_8013BD4);
+            PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
             p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
             p->spriteOffsetX = 6;
             p->spriteOffsetY = 14;
-            p->w.tf.flags |= MOVESTATE_IN_AIR;
+            p->w.kf.flags |= MOVESTATE_IN_AIR;
         } else {
-
             if (!(p->heldInput & gPlayerControls.jump) || (p->moveState & MOVESTATE_40)) {
-                PLAYERFN_SET(Player_8013BD4);
+                PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
                 p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
 
                 if (p->speedAirX <= 0) {
@@ -1367,7 +1365,7 @@ void sub_80131B4(Player *p)
                 p->spriteOffsetX = 6;
                 p->spriteOffsetY = 14;
             } else {
-                Knuckles_UpdateGlide(p);
+                Player_Knuckles_Glide_UpdateFrames(p);
             }
         }
     }
@@ -1396,7 +1394,7 @@ void sub_8013498(Player *p)
         } else {
             p->unk2A = 15;
             p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL_HIT;
-            PLAYERFN_SET(Player_8013BF0);
+            PLAYERFN_SET(Player_Knuckles_Glide_TouchGroundAfterBreakup);
         }
     }
 }
@@ -1428,7 +1426,7 @@ void sub_801350C(Player *p)
         p->y += Q(res);
         p->rotation = rot;
     } else if (!(p->moveState & MOVESTATE_8)) {
-        PLAYERFN_SET(Player_8013BD4);
+        PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
 
         PLAYERFN_CHANGE_SHIFT_OFFSETS(p, 6, 14);
 
@@ -1535,7 +1533,7 @@ void sub_80136E8(Player *p)
         p->speedAirY = 0;
 
         if (p->charState != CHARSTATE_KNUCKLES_GLIDE_GRAB_WALL) {
-            p->charState = CHARSTATE_KNUCKLES_WALL_CLIMB_A;
+            p->charState = CHARSTATE_KNUCKLES_CLIMB_A;
         }
 
         if (p->heldInput & DPAD_UP) {
@@ -1550,7 +1548,7 @@ void sub_80136E8(Player *p)
             p->y += offsetY;
 
             if (r2 > 2) {
-                sub_8013C50(p);
+                Player_Knuckles_InitClimbPullUpEdge(p);
                 return;
             } else if (r2 > 0) {
 #ifdef BUGFIX
@@ -1564,7 +1562,7 @@ void sub_80136E8(Player *p)
                 p->speedAirY = 0;
 
                 sub_8022318(p);
-                PLAYERFN_SET(Player_8013BD4);
+                PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
 
                 p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
                 return;
@@ -1582,11 +1580,11 @@ void sub_80136E8(Player *p)
                 p->y += offsetY;
 
                 if (r2 < 0) {
-                    p->charState = CHARSTATE_KNUCKLES_WALL_CLIMB_B;
+                    p->charState = CHARSTATE_KNUCKLES_CLIMB_B;
                     p->y -= Q(r2);
                 } else {
                     s32 speed;
-                    p->charState = CHARSTATE_KNUCKLES_WALL_CLIMB_B;
+                    p->charState = CHARSTATE_KNUCKLES_CLIMB_B;
                     speed = Q(0.75);
                     if (p->moveState & 0x40) {
                         speed = Q(0.5);
@@ -1630,11 +1628,11 @@ void sub_80136E8(Player *p)
                 p->speedAirY = 0;
 
                 sub_8022318(p);
-                PLAYERFN_SET(Player_8013BD4);
+                PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
                 p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
                 return;
             } else {
-                p->charState = CHARSTATE_KNUCKLES_WALL_CLIMB_C;
+                p->charState = CHARSTATE_KNUCKLES_CLIMB_C;
                 speed = Q(0.75);
                 if (p->moveState & MOVESTATE_40) {
                     speed = Q(0.5);
@@ -1699,7 +1697,7 @@ void sub_801394C(Player *p)
 }
 
 // (76.32%) https://decomp.me/scratch/8fUWD
-NONMATCH("asm/non_matching/game/player__sub_80139B0.inc", void sub_80139B0(Player *p))
+NONMATCH("asm/non_matching/game/player__sub_80139B0.inc", void Knuckles_Glide_UpdateSpeed(Player *p))
 {
     s32 speedGrnd = ABS(p->speedGroundX);
     s8 r2 = p->w.tf.shift;
@@ -1763,7 +1761,7 @@ NONMATCH("asm/non_matching/game/player__sub_80139B0.inc", void sub_80139B0(Playe
 }
 END_NONMATCH
 
-void sub_8013AD8(Player *p)
+void Player_Knuckles_InitGlide(Player *p)
 {
     p->moveState &= ~MOVESTATE_4;
     p->spriteOffsetX = 6;
@@ -1782,22 +1780,22 @@ void sub_8013AD8(Player *p)
     if (p->moveState & MOVESTATE_FACING_LEFT) {
         p->speedGroundX = -p->speedGroundX;
         p->speedAirX = p->speedGroundX;
-        p->w.tf.shift = 0x80;
+        p->w.kf.shift = 0x80;
     } else {
         p->speedAirX = p->speedGroundX;
-        p->w.tf.shift = 0;
+        p->w.kf.shift = 0;
     }
 
     p->rotation = 0;
 
     {
-        u8 *tFlags = &p->w.tf.flags;
+        u8 *tFlags = &p->w.kf.flags;
         *tFlags = 0;
         p->isBoosting = FALSE;
         *tFlags |= 0x2;
     }
 
-    PLAYERFN_SET_AND_CALL(Player_8013BB4, p);
+    PLAYERFN_SET_AND_CALL(Player_Knuckles_Glide, p);
 }
 
 void Player_8013B6C(Player *p)
@@ -1816,22 +1814,22 @@ void Player_8013B6C(Player *p)
     sub_8027EF0(p);
 }
 
-void Player_8013BB4(Player *p)
+void Player_Knuckles_Glide(Player *p)
 {
-    sub_80139B0(p);
+    Knuckles_Glide_UpdateSpeed(p);
     sub_80232D0(p);
-    PlayerFn_Cmd_UpdatePosition(p);
-    sub_80131B4(p);
+    Player_UpdatePosition(p);
+    Player_Knuckles_Glide_MainUpdate(p);
 }
 
-void Player_8013BD4(Player *p)
+void Player_Knuckles_FallAfterGlide(Player *p)
 {
     sub_80232D0(p);
-    PlayerFn_Cmd_UpdatePosition(p);
+    Player_UpdatePosition(p);
     sub_8013498(p);
 }
 
-void Player_8013BF0(Player *p)
+void Player_Knuckles_Glide_TouchGroundAfterBreakup(Player *p)
 {
     if ((p->unk90->s.frameFlags) & SPRITE_FLAG_MASK_ANIM_OVER) {
         p->transition = PLTRANS_PT1;
@@ -1840,25 +1838,25 @@ void Player_8013BF0(Player *p)
     sub_8027EF0(p);
 }
 
-void Player_8013C18(Player *p)
+void Player_Knuckles_Glide_GroundImpact(Player *p)
 {
     sub_80135BC(p);
     sub_80232D0(p);
-    PlayerFn_Cmd_UpdatePosition(p);
+    Player_UpdatePosition(p);
 }
 
-void Player_8013C34(Player *p)
+void Player_Knuckles_Climb(Player *p)
 {
     sub_80136E8(p);
     sub_80232D0(p);
-    PlayerFn_Cmd_UpdatePosition(p);
+    Player_UpdatePosition(p);
 }
 
-void Player_8013E64(Player *p);
+void Player_Knuckles_ClimbPullUpEdge(Player *p);
 
-void sub_8013C50(Player *p)
+void Player_Knuckles_InitClimbPullUpEdge(Player *p)
 {
-    p->charState = CHARSTATE_KNUCKLES_WALL_CLIMB_D;
+    p->charState = CHARSTATE_KNUCKLES_CLIMB_D;
 
     if (GRAVITY_IS_INVERTED) {
         p->y += Q(p->spriteOffsetY);
@@ -1866,14 +1864,14 @@ void sub_8013C50(Player *p)
         p->y -= Q(p->spriteOffsetY);
     }
 
-    PLAYERFN_SET(Player_8013E64);
+    PLAYERFN_SET(Player_Knuckles_ClimbPullUpEdge);
 
     p->w.tf.shift = 0;
 }
 
 void sub_8013CA0(Player *p)
 {
-    PLAYERFN_SET(Player_8013BD4);
+    PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
 
     p->spriteOffsetX = 6;
     p->spriteOffsetY = 14;
@@ -1943,11 +1941,11 @@ void Player_Knuckles_InitDrillClaw(Player *p)
 
 void sub_8013D7C(Player *p)
 {
-    PLAYERFN_SET(Player_8013BD4);
+    PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
     p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
     p->spriteOffsetX = 6;
     p->spriteOffsetY = 14;
-    p->w.tf.flags |= 0x2;
+    p->w.kf.flags |= 0x2;
 }
 
 void Player_Knuckles_DrillClaw(Player *p);
@@ -1996,7 +1994,7 @@ void Player_8013E34(Player *p)
     }
 }
 
-void Player_8013E64(Player *p)
+void Player_Knuckles_ClimbPullUpEdge(Player *p)
 {
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         p->rotation = 0;
@@ -2016,7 +2014,7 @@ void Player_8013E64(Player *p)
         PLAYERFN_CALL(Player_TouchGround, p);
     } else {
         sub_80232D0(p);
-        PlayerFn_Cmd_UpdatePosition(p);
+        Player_UpdatePosition(p);
     }
 }
 
