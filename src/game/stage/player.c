@@ -2812,65 +2812,52 @@ void sub_80232D0(Player *p)
     }
 }
 
-// TODO: Remvoe gotos
-// https://decomp.me/scratch/TeU3L
 void sub_8023610(Player *p)
 {
     s32 r5 = p->unk48 * 2;
     s32 r6 = p->unk44;
 
     if ((p->charState != CHARSTATE_HIT_AIR) && !(p->moveState & MOVESTATE_10)) {
-        s16 r0;
-        u16 r2 = p->speedAirX;
+        s16 qAirSpeedS;
+        u16 qAirSpeedU = p->speedAirX;
 
         if (p->heldInput & DPAD_LEFT) {
             if ((p->charState != CHARSTATE_WALK_B) && !(p->moveState & MOVESTATE_2000)) {
                 p->moveState |= MOVESTATE_FACING_LEFT;
             }
 
-            r0 = r2;
-            r2 = r0 - r5;
-            r0 = r2;
+            qAirSpeedS = qAirSpeedU;
+            qAirSpeedU = qAirSpeedS - r5;
+            qAirSpeedS = qAirSpeedU;
 
-            if (r0 >= -r6) {
-                goto set;
+            if (qAirSpeedS < -r6) {
+                qAirSpeedU = qAirSpeedS + r5;
+                qAirSpeedS = qAirSpeedU;
+
+                if (qAirSpeedS > -r6) {
+                    qAirSpeedU = -r6;
+                }
             }
-
-            r2 = r0 + r5;
-            r0 = r2;
-
-            if (r0 <= -r6) {
-                goto set;
-            }
-
-            r2 = -r6;
-            goto set;
-
         } else if (p->heldInput & DPAD_RIGHT) {
             if ((p->charState != CHARSTATE_WALK_B) && !(p->moveState & MOVESTATE_2000)) {
                 p->moveState &= ~MOVESTATE_FACING_LEFT;
             }
 
-            r0 = r2;
-            r2 = r0 + r5;
-            r0 = r2;
+            qAirSpeedS = qAirSpeedU;
+            qAirSpeedU = qAirSpeedS + r5;
+            qAirSpeedS = qAirSpeedU;
 
-            if (r0 <= r6) {
-                goto set;
+            if (qAirSpeedS > r6) {
+                qAirSpeedU = qAirSpeedS - r5;
+                qAirSpeedS = qAirSpeedU;
+
+                if (qAirSpeedS < r6) {
+                    qAirSpeedU = r6;
+                }
             }
-
-            r2 = r0 - r5;
-            r0 = r2;
-
-            if (r0 >= r6) {
-                goto set;
-            }
-
-            r2 = r6;
         }
 
-    set:
-        p->speedAirX = r2;
+        p->speedAirX = qAirSpeedU;
     }
 }
 
