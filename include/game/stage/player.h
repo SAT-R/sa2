@@ -7,6 +7,10 @@
 #include "constants/characters.h"
 #include "game/parameters/characters.h"
 
+// In SA2 tricks stop all characters when the buttons are pressed.
+// Set this to TRUE to behave more like SA3.
+#define DISABLE_TRICK_AIR_WAIT !TRUE
+
 // Actual type of 'type8029A28' currently unknown, rename once it is
 typedef s32 type8029A28;
 
@@ -19,8 +23,8 @@ void sub_8023B5C(Player *, s32);
 void sub_8023260(Player *);
 void sub_80232D0(Player *);
 void sub_8023610(Player *);
-void PlayerCB_8025318(Player *p);
-void PlayerCB_80261D8(Player *p);
+void Player_TouchGround(Player *p);
+void Player_80261D8(Player *p);
 void sub_8027EF0(Player *p);
 void sub_8028204(Player *p);
 void sub_80282EC(Player *p);
@@ -42,7 +46,8 @@ s32 sub_8029B0C(Player *player, u8 *p1, s32 *out);
 type8029A28 sub_8029A28(Player *player, u8 *p1, type8029A28 *out);
 type8029A28 sub_8029A74(Player *player, u8 *p1, type8029A28 *out);
 
-bool32 sub_8029E6C(Player *);
+bool32 Player_TryJump(Player *);
+bool32 Player_TryAttack(Player *);
 
 #define GET_CHARACTER_ANIM(player) (player->anim - gPlayerCharacterIdleAnims[player->character])
 
@@ -67,7 +72,7 @@ bool32 sub_8029E6C(Player *);
 
 // TODO: This is unaligned in-ROM.
 //       Can we somehow change this to be using a struct instead?
-extern const u16 gUnknown_080D6736[][2];
+extern const u16 sCharStateAnimInfo[][2];
 extern const AnimId gPlayerCharacterIdleAnims[NUM_CHARACTERS];
 
 #endif // GUARD_STAGE_PLAYER_H

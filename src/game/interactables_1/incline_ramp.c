@@ -8,6 +8,7 @@
 #include "sprite.h"
 #include "task.h"
 
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -52,7 +53,7 @@ static void Task_InclineRamp(void)
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
 
-                gPlayer.charState = 39;
+                gPlayer.charState = CHARSTATE_SPRING_C;
                 gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }
@@ -78,7 +79,7 @@ static void Task_InclineRamp(void)
                 gPlayer.spriteOffsetX = 6;
                 gPlayer.spriteOffsetY = 14;
 
-                gPlayer.charState = 11;
+                gPlayer.charState = CHARSTATE_JUMP_2;
                 gPlayer.transition = PLTRANS_PT7;
                 m4aSongNumStart(SE_SPRING);
             }

@@ -18,6 +18,7 @@
 #include "game/multiplayer/mp_player.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/items.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
@@ -132,8 +133,8 @@ void sub_800B1AC(Entity_ItemBox *itembox)
 {
     if (itembox->unk78 != TRUE || gPlayer.moveState & MOVESTATE_IN_AIR) {
         gPlayer.speedAirY = -Q(3.0);
-        gPlayer.charState = 38;
-        gPlayer.prevCharState = -1;
+        gPlayer.charState = CHARSTATE_SPRING_B;
+        gPlayer.prevCharState = CHARSTATE_INVALID;
         gPlayer.transition = PLTRANS_PT5;
     }
 

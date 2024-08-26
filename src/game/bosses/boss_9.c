@@ -4,7 +4,6 @@
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
-#include "gba/io_reg.h"
 #include "lib/m4a.h"
 #include "game/math.h"
 #include "game/bosses/common.h"

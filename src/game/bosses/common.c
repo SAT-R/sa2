@@ -50,9 +50,9 @@ void CreateZoneBoss(u8 boss)
 void sub_8039ED4(void)
 {
     if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
-        gPlayer.moveState &= ~MOVESTATE_8000000;
+        gPlayer.moveState &= ~MOVESTATE_GOAL_REACHED;
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
-        PLAYERFN_SET(PlayerCB_8025318);
+        PLAYERFN_SET(Player_TouchGround);
         gPlayer.transition = PLTRANS_NONE;
     }
 }

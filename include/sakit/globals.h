@@ -63,7 +63,7 @@ struct UNK_3005510 {
     u8 unk7;
 }; /* 0x8 */
 
-#define CHEESE_DISTANCE_MAX (200 * 200)
+#define CHEESE_DISTANCE_MAX 200
 typedef struct {
     /* 0x00 */ s32 squarePlayerDistance;
     /* 0x04 */ struct Task *task;

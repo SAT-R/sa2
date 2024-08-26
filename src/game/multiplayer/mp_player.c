@@ -22,6 +22,7 @@
 #include "game/multiplayer/multipak_connection.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/game_modes.h"
 #include "constants/songs.h"
 
@@ -221,9 +222,9 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
                         gPlayer.unk61 = 0;
                         gPlayer.unk62 = 0;
 
-                        gPlayer.charState = SA2_CHAR_ANIM_WALK;
+                        gPlayer.charState = CHARSTATE_WALK_A;
                         gPlayer.moveState |= MOVESTATE_800000;
-                        gPlayer.callback = PlayerCB_8025318;
+                        gPlayer.callback = Player_TouchGround;
                         gPlayer.moveState &= ~MOVESTATE_400000;
                         mpp->unk5C &= ~4;
                         if (mpp2->unk5C & 4) {
@@ -528,8 +529,8 @@ void sub_8016D20(void)
                 return;
             }
 
-            gPlayer.charState = SA2_CHAR_ANIM_WALK;
-            gPlayer.callback = PlayerCB_8025318;
+            gPlayer.charState = CHARSTATE_WALK_A;
+            gPlayer.callback = Player_TouchGround;
             gPlayer.unk61 = 0;
             gPlayer.unk62 = 0;
 
@@ -584,8 +585,8 @@ void sub_8016D20(void)
             if (s->graphics.anim != SA2_ANIM_CHAR(SA2_CHAR_ANIM_SPIN_DASH, CHARACTER_SONIC)) {
                 return;
             }
-            gPlayer.charState = SA2_CHAR_ANIM_WALK;
-            gPlayer.callback = PlayerCB_8025318;
+            gPlayer.charState = CHARSTATE_WALK_A;
+            gPlayer.callback = Player_TouchGround;
             gPlayer.unk61 = 0;
             gPlayer.unk62 = 0;
 
@@ -764,13 +765,13 @@ void sub_801707C(void)
             }
         }
 
-        gPlayer.charState = SA2_CHAR_ANIM_IDLE;
-        gPlayer.callback = PlayerCB_8025318;
+        gPlayer.charState = CHARSTATE_IDLE;
+        gPlayer.callback = Player_TouchGround;
         gPlayer.moveState |= MOVESTATE_IN_AIR;
         gPlayer.unk61 = 0;
         gPlayer.unk62 = 0;
 
-        if (sub_8029E6C(&gPlayer)) {
+        if (Player_TryJump(&gPlayer)) {
             mpp->unk60 = 30;
             gPlayer.moveState &= ~MOVESTATE_400000;
             mpp->unk5C &= ~4;
@@ -782,8 +783,8 @@ void sub_801707C(void)
                 || I(gPlayer.x) <= gCamera.minX || I(gPlayer.x) >= gCamera.maxX || SOME_INVERTED_GRAVITY_MACRO || moveStateVal != 0) {
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 mpp->unk5C &= ~4;
-                gPlayer.charState = SA2_CHAR_ANIM_IDLE;
-                gPlayer.callback = PlayerCB_8025318;
+                gPlayer.charState = CHARSTATE_IDLE;
+                gPlayer.callback = Player_TouchGround;
                 if (SOME_INVERTED_GRAVITY_MACRO) {
                     gPlayer.timerInvulnerability = 60;
                 }
@@ -969,7 +970,7 @@ void sub_8017670(void)
                         gPlayer.spriteOffsetY = 14;
                         gPlayer.speedGroundX = 0;
                         gPlayer.speedAirX = 0;
-                        gPlayer.charState = SA2_CHAR_ANIM_IDLE;
+                        gPlayer.charState = CHARSTATE_IDLE;
                         gPlayer.unk61 = 0;
                         gPlayer.unk62 = 0;
                         if (s->frameFlags & SPRITE_FLAG_MASK_X_FLIP) {
@@ -999,7 +1000,7 @@ void sub_8017670(void)
                 return;
             }
 
-            if (sub_8029E6C(&gPlayer) != 0) {
+            if (Player_TryJump(&gPlayer) != 0) {
                 mpp->unk60 = 30;
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 mpp->unk5C &= ~0x4;
@@ -1012,11 +1013,11 @@ void sub_8017670(void)
                 || I(gPlayer.x) <= gCamera.minX || I(gPlayer.x) >= gCamera.maxX || SOME_INVERTED_GRAVITY_MACRO || moveStateVal != 0) {
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 mpp->unk5C &= ~4;
-                gPlayer.charState = SA2_CHAR_ANIM_IDLE;
+                gPlayer.charState = CHARSTATE_IDLE;
                 if (SOME_INVERTED_GRAVITY_MACRO) {
                     mpp->unk60 = 30;
                 }
-                // gPlayer.charState = 0;
+
                 return;
             }
             {
@@ -1147,7 +1148,7 @@ void sub_8017C28(void)
             }
             val = sub_800DA4C(s, mpp->pos.x, mpp->pos.y, mpp->unk66, mpp->unk68, (mpp->unk54 >> 7) & 1);
             if ((val & 2) && !(gPlayer.moveState & MOVESTATE_IN_AIR) && gPlayer.rotation == 0) {
-                if (s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_14, CHARACTER_AMY)) {
+                if (s->graphics.anim == SA2_ANIM_CHAR(SA2_CHAR_ANIM_BOOSTLESS_ATTACK, CHARACTER_AMY)) {
                     LaunchPlayer(-Q_8_8(7.5));
 #ifndef NON_MATCHING
                     goto lab;
@@ -1489,7 +1490,7 @@ void Task_HandleLaunchPlayer(void)
         gPlayer.moveState &= ~MOVESTATE_8;
         gPlayer.moveState |= MOVESTATE_IN_AIR;
         gPlayer.moveState &= ~MOVESTATE_100;
-        gPlayer.charState = SA2_CHAR_ANIM_38;
+        gPlayer.charState = CHARSTATE_SPRING_B;
         sprPlayer->prevVariant = -1;
         sub_8023B5C(&gPlayer, 14);
         gPlayer.spriteOffsetX = 6;
@@ -1500,7 +1501,7 @@ void Task_HandleLaunchPlayer(void)
         return;
     }
 
-    if (gPlayer.charState != 109) {
+    if (gPlayer.charState != CHARSTATE_AMY_SA1_JUMP) {
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
         gPlayer.moveState &= ~MOVESTATE_800000;
         TaskDestroy(gCurTask);
@@ -1539,6 +1540,6 @@ void LaunchPlayer(s16 airSpeedY)
     *airSpeed = airSpeedY;
     gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
     gPlayer.heldInput = 0;
-    gPlayer.charState = 109; // TODO: wtf this is being set to larger than 91
+    gPlayer.charState = CHARSTATE_AMY_SA1_JUMP;
     gPlayer.moveState |= MOVESTATE_800000;
 }

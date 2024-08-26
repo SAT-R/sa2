@@ -10,6 +10,7 @@
 #include "game/amy_attack_heart_effect.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 
 typedef struct {
     /* 0x00 */ s32 x;
@@ -20,8 +21,8 @@ typedef struct {
 } AmyHeartParams; /* size: 0x10 */
 
 typedef struct {
-    /* 0x000 */ Sprite sprHearts[AMY_ATTACK_HEART_COUNT];
-    /* 0x0C0 */ AmyHeartParams params[AMY_ATTACK_HEART_COUNT];
+    /* 0x000 */ Sprite sprHearts[AMY_ATTACK_HEART_SPRITE_COUNT];
+    /* 0x0C0 */ AmyHeartParams params[AMY_ATTACK_HEART_SPRITE_COUNT];
     /* 0x100 */ u16 unk100;
     /* 0x102 */ u16 unk102;
     /* 0x104 */ u16 kind;
@@ -35,8 +36,8 @@ void sub_8015E28(u16);
 void TaskDestructor_8015FF0(struct Task *);
 
 ALIGNED(4)
-const s16 sHeartOffsets[4][8][3] = {
-    [AMY_ATTACK_EFFECT_KIND_A] = {
+const s16 sHeartOffsets[AMY_HEART_PATTERN_COUNT][8][3] = {
+    [AMY_HEART_PATTERN_HAMMER_ATTACK] = {
         { 10, 0, -27 },
         { 12, 13, -22 },
         { 14, 23, -13 },
@@ -46,7 +47,7 @@ const s16 sHeartOffsets[4][8][3] = {
         { 0, 0, 0 },
         { 0, 0, 0 },
     },
-    [AMY_ATTACK_EFFECT_KIND_B] = {
+    [AMY_HEART_PATTERN_B] = {
         { 10, 7, -27 },
         { 12, 20, -22 },
         { 14, 30, -13 },
@@ -56,7 +57,7 @@ const s16 sHeartOffsets[4][8][3] = {
         { 0, 0, 0 },
         { 0, 0, 0 },
     },
-    [AMY_ATTACK_EFFECT_KIND_C] = {
+    [AMY_HEART_PATTERN_C] = {
         { 0, -10, -26 },
         { 4, 8, -27 },
         { 8, 22, -17 },
@@ -66,7 +67,7 @@ const s16 sHeartOffsets[4][8][3] = {
         { -1, 0, 0 },
         { 0, 0, 0 },
     },
-    [AMY_ATTACK_EFFECT_KIND_D] = {
+    [AMY_HEART_PATTERN_STOP_N_SLAM] = {
         { 2, 0, 4 },
         { 6, 19, 6 },
         { 10, 28, 2 },
@@ -90,13 +91,13 @@ void CreateAmyAttackHeartEffect(u16 kind)
         return;
     }
 
-    if ((gPlayer.charState == SA2_CHAR_ANIM_15) || (gPlayer.charState == SA2_CHAR_ANIM_INSTA_SHIELD_2)
-        || (gPlayer.charState == SA2_CHAR_ANIM_36)) {
+    if ((gPlayer.charState == CHARSTATE_BOOSTLESS_ATTACK) || (gPlayer.charState == CHARSTATE_SOME_ATTACK)
+        || (gPlayer.charState == CHARSTATE_TRICK_DOWN)) {
         struct Task *t = TaskCreate(Task_8015CE4, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_8015FF0);
         AmyAtkHearts *hearts = TASK_DATA(t);
 
-        hearts->unk100 = gUnknown_080D6736[gPlayer.charState][0];
-        hearts->unk102 = gUnknown_080D6736[gPlayer.charState][1];
+        hearts->unk100 = sCharStateAnimInfo[gPlayer.charState][0];
+        hearts->unk102 = sCharStateAnimInfo[gPlayer.charState][1];
 
         if (gPlayer.charState < 80) {
             hearts->unk100 += gPlayerCharacterIdleAnims[gPlayer.character];

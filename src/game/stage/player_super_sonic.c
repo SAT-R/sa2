@@ -16,6 +16,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/characters.h"
 #include "constants/move_states.h"
 #include "constants/songs.h"
@@ -52,7 +53,7 @@ const TileInfo gAnims_SuperSonic_080D69C8[23] = {
     { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 6 },  { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 7 },
     { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 14 }, { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 15 },
     { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 18 }, { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 19 },
-    { 0, SA2_ANIM_SUPER_SONIC_FROZEN, 0 },           { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_29, CHARACTER_SONIC), 0 },
+    { 0, SA2_ANIM_SUPER_SONIC_FROZEN, 0 },           { 0, SA2_ANIM_CHAR(SA2_CHAR_ANIM_DEAD, CHARACTER_SONIC), 0 },
     { 0, SA2_ANIM_SUPER_SONIC_STOPPING_ROCKET, 2 },
 };
 
@@ -93,7 +94,7 @@ static void SuperSonicInitPlayer(void)
     p->unk54 = 0;
     p->unk56 = 0;
     p->unk58 = 0;
-    p->isBoosting = 0;
+    p->isBoosting = FALSE;
     p->unk5B = 0;
     p->heldInput = 0;
     p->frameInput = 0;
@@ -101,8 +102,8 @@ static void SuperSonicInitPlayer(void)
     p->unk61 = 0;
     p->unk62 = 0;
     p->unk63 = 0;
-    p->charState = 0;
-    p->prevCharState = 0;
+    p->charState = CHARSTATE_IDLE;
+    p->prevCharState = CHARSTATE_IDLE;
     p->anim = 0;
     p->variant = 0;
     p->unk6C = FALSE;
@@ -121,8 +122,8 @@ static void SuperSonicInitPlayer(void)
     p->unk82 = 0;
     p->defeatScoreIndex = 0;
     p->character = CHARACTER_SONIC;
-    p->unk86 = 0;
-    p->unk87 = 0;
+    p->secondsUntilDrown = 0;
+    p->framesUntilDrownCountDecrement = 0;
     p->unk88 = 0;
 }
 

@@ -133,12 +133,12 @@ static void Task_StageGoalToggleMain(void)
     s32 y = TO_WORLD_POS(me->y, regionY);
 
     if (IS_MULTI_PLAYER) {
-        if (x <= I(gPlayer.x) && !(gPlayer.moveState & (MOVESTATE_8000000 | MOVESTATE_8))) {
+        if (x <= I(gPlayer.x) && !(gPlayer.moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_8))) {
             gPlayer.transition = PLTRANS_PT10;
             gStageGoalX = x;
             StageGoalToggle_HandleMultiplayerFinish();
         }
-    } else if (x <= I(gPlayer.x) && !(gPlayer.moveState & MOVESTATE_8000000)) {
+    } else if (x <= I(gPlayer.x) && !(gPlayer.moveState & MOVESTATE_GOAL_REACHED)) {
         gPlayer.transition = PLTRANS_PT10;
         gStageFlags |= 0x21;
         gStageGoalX = x;

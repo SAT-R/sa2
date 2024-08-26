@@ -218,7 +218,7 @@ void Task_801A04C(void)
     Finish2 *f2 = TASK_DATA(gCurTask);
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        x = 240;
+        x = DISPLAY_WIDTH;
     }
 
     if (gUnknown_03005438 == gUnknown_03005420) {

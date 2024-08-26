@@ -362,7 +362,7 @@ void sub_80145D8(void)
     sub_8015118(cheese);
     cheese->unk10 = 0;
 
-    if (gCheeseTarget.squarePlayerDistance < CHEESE_DISTANCE_MAX) {
+    if (gCheeseTarget.squarePlayerDistance < SQUARE(CHEESE_DISTANCE_MAX)) {
         cheese->unk18 = gCheeseTarget.task;
 
         gCheeseTarget.task->unk15 = 1;

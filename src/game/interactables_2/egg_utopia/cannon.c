@@ -12,6 +12,7 @@
 #include "game/math.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -100,15 +101,15 @@ static void sub_807E384(Sprite_Cannon *cannon)
 {
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 4;
+    gPlayer.charState = CHARSTATE_SPIN_ATTACK;
     m4aSongNumStart(SE_SPIN_ATTACK);
 
     if (cannon->unk68 == 0) {
-        gPlayer.x = Q(cannon->x + 0x28);
+        gPlayer.x = Q(cannon->x + 40);
         gPlayer.y = Q(cannon->y);
         gPlayer.moveState |= MOVESTATE_FACING_LEFT;
     } else {
-        gPlayer.x = Q(cannon->x - 0x28);
+        gPlayer.x = Q(cannon->x - 40);
         gPlayer.y = Q(cannon->y);
         gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
     }
@@ -237,8 +238,8 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
     s->y = cannon->y - gCamera.y;
 
     transform.rotation = cannon->unk6A;
-    transform.width = 0x100;
-    transform.height = 0x100;
+    transform.width = +Q(1);
+    transform.height = +Q(1);
     transform.x = s->x;
     transform.y = s->y;
 

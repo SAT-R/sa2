@@ -1,8 +1,6 @@
 #ifndef GUARD_GBA_IO_REG_H
 #define GUARD_GBA_IO_REG_H
 
-#include "config.h"
-
 #include <stdint.h>
 
 #define IO_SIZE 0x400
@@ -754,6 +752,7 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define KEY_AND_INTR    0x8000
 #define DPAD_ANY        0x00F0
 #define DPAD_SIDEWAYS   (DPAD_LEFT | DPAD_RIGHT)
+#define DPAD_VERTICAL   (DPAD_DOWN | DPAD_UP)
 #define JOY_EXCL_DPAD   0x030F
 
 // interrupt flags

@@ -397,7 +397,7 @@ _080164C4:
 	strh r0, [r1]
 	movs r0, #0x3c
 	strh r0, [r4, #0x2c]
-	ldr r0, _080165BC @ =PlayerCB_8025318
+	ldr r0, _080165BC @ =Player_TouchGround
 	str r0, [r4]
 	ldr r0, [r4, #0x20]
 	ldr r2, _080165C0 @ =0xFFBFFFFF
@@ -450,7 +450,7 @@ _080165AC: .4byte IWRAM_START + 0x64
 _080165B0: .4byte gPlayer
 _080165B4: .4byte 0xFFFFFBFF
 _080165B8: .4byte 0xFFFFFEFF
-_080165BC: .4byte PlayerCB_8025318
+_080165BC: .4byte Player_TouchGround
 _080165C0: .4byte 0xFFBFFFFF
 _080165C4: .4byte gGameMode
 _080165C8: .4byte gMultiplayerCharRings

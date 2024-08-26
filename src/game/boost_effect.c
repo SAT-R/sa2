@@ -206,7 +206,7 @@ void sub_801583C(void)
             s->x = 0;
             s->y = 0;
 
-            actions->transform.height = 0x100;
+            actions->transform.height = +Q(1);
         }
 
         if (s->palId != 0) {
@@ -228,7 +228,7 @@ void Task_80159C8(void)
 #endif
 
     if (!(gPlayer.moveState & MOVESTATE_4000000)) {
-        if (gPlayer.moveState & MOVESTATE_8000000) {
+        if (gPlayer.moveState & MOVESTATE_GOAL_REACHED) {
             TaskDestroy(gCurTask);
             gUnknown_030055BC = FALSE;
             return;
@@ -261,21 +261,18 @@ void Task_80159C8(void)
             UpdateSpriteAnimation(s);
 
             if (SPRITE_FLAG_GET(s, ROT_SCALE_ENABLE)) {
-                u32 moveState;
-
                 SPRITE_FLAG_CLEAR(s, ROT_SCALE);
                 s->frameFlags |= (gUnknown_030054B8++) | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE;
 
                 if (actions->plState.moveState & MOVESTATE_FACING_LEFT) {
-                    transform->width = 0x100;
+                    transform->width = +Q(1);
                 } else {
-                    transform->width = 0xFF00;
+                    transform->width = -Q(1);
                 }
 
-                moveState = actions->plState.moveState & MOVESTATE_80000000;
-                actions->plState.moveState = moveState;
+                actions->plState.moveState &= MOVESTATE_80000000;
 
-                if (moveState) {
+                if (actions->plState.moveState) {
                     transform->width = -transform->width;
                 }
 

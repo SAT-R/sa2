@@ -11,6 +11,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -140,7 +141,7 @@ static void Task_ActiveMain(void)
 static void ActivatePlayerGrab(Sprite_FlyingHandle *flyingHandle)
 {
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 55;
+    gPlayer.charState = CHARSTATE_HANGING;
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;

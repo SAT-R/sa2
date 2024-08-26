@@ -11,6 +11,7 @@
 #include "lib/m4a.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
@@ -71,7 +72,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     }
 
     itemBox = TASK_DATA(t);
-    itemBox->unk82 = gUnknown_080E029A[gMultiplayerPseudoRandom & 7];
+    itemBox->unk82 = gUnknown_080E029A[gMultiplayerPseudoRandom % ARRAY_COUNT(gUnknown_080E029A)];
     itemBox->iconOffsetY = Q(0.0);
     itemBox->x = TO_WORLD_POS(me->x, spriteRegionX);
     itemBox->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -259,9 +260,9 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     struct UNK_3005510 *unk5510;
     MapEntity *me;
     if (itemBox->unk84 != 1 || gPlayer.moveState & 2) {
-        gPlayer.speedAirY = -0x300;
-        gPlayer.charState = 0x26;
-        gPlayer.prevCharState = -1;
+        gPlayer.speedAirY = -Q(3); // default itembox-hit y-accel
+        gPlayer.charState = CHARSTATE_SPRING_B;
+        gPlayer.prevCharState = CHARSTATE_INVALID;
         gPlayer.transition = PLTRANS_PT5;
     }
 
@@ -289,8 +290,8 @@ static void sub_8086504(Sprite_MysteryItemBox *itemBox)
             u16 prevRingCount = gRingCount;
             gRingCount = prevRingCount + boxVal;
 
-            if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-                if (Div(gRingCount, 100) != Div(prevRingCount, 100) && gGameMode == 0) {
+            if (!IS_EXTRA_STAGE(gCurrentLevel)) {
+                if (Div(gRingCount, 100) != Div(prevRingCount, 100) && gGameMode == GAME_MODE_SINGLE_PLAYER) {
                     gNumLives = MIN(gNumLives + 1, 255u);
                     gUnknown_030054A8.unk3 = 0x10;
                 }

@@ -13,10 +13,10 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
-#include "constants/zones.h"
-
-#include "constants/songs.h"
 #include "constants/animations.h"
+#include "constants/char_states.h"
+#include "constants/songs.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ SpriteBase base;
@@ -160,7 +160,7 @@ static void Task_PlatformThinMain(void)
             s16 variant = player->variant;
             switch (player->character) {
                 case CHARACTER_KNUCKLES:
-                    if (charState == 107) {
+                    if (charState == CHARSTATE_KNUCKLES_DRILL_CLAW_MAIN) {
                         player->moveState &= ~MOVESTATE_8;
                         player->moveState |= MOVESTATE_IN_AIR;
                         player->speedAirY = player->speedAirY >> 1;
@@ -174,7 +174,7 @@ static void Task_PlatformThinMain(void)
                 case CHARACTER_SONIC:
                 case CHARACTER_AMY: {
                     anim -= gPlayerCharacterIdleAnims[player->character];
-                    if (charState == 36 && anim == SA2_CHAR_ANIM_51 && variant == 1 && player->speedAirY > 0) {
+                    if (charState == CHARSTATE_TRICK_DOWN && anim == SA2_CHAR_ANIM_51 && variant == 1 && player->speedAirY > 0) {
                         player->moveState &= ~MOVESTATE_8;
                         CreatePlatformBreakParticles(x, y);
                         something = TRUE;

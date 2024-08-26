@@ -48,7 +48,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
         s = &bde->s;
         p = &gPlayer;
 
-        if (p->moveState & MOVESTATE_8000000) {
+        if (p->moveState & MOVESTATE_GOAL_REACHED) {
             s->graphics.dest = VramMalloc(15);
             s->graphics.anim = SA2_ANIM_BRAKING_DUST_EFFECT;
             s->variant = 0;

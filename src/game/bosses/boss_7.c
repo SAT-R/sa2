@@ -326,7 +326,7 @@ void CreateEggFrog(void)
     s->graphics.dest = (void *)VRAM + 0xC000;
     SPRITE_INIT_WITHOUT_VRAM(s, SA2_ANIM_EGG_FROG_CABIN, 0, 31, 3, SPRITE_FLAG(18, 1));
 
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < ARRAY_COUNT(boss->unk98); i++) {
         u32 a;
         s = &boss->unk98[i];
         s->x = 0;

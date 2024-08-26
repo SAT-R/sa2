@@ -117,7 +117,7 @@ static void Task_Ramp(void)
                 if (halfWidth > 0) {
                     if (halfWidth > hbWidth) {
                         if (!(player->moveState & MOVESTATE_IN_AIR) && (player->speedGroundX > Q(4))) {
-                            player->transition = PLTRANS_PT22;
+                            player->transition = PLTRANS_RAMP_AND_DASHRING;
                             player->unk6E = (ramp->unk3C & 1) * 3;
                         }
 
@@ -131,10 +131,10 @@ static void Task_Ramp(void)
                             if (!(player->moveState & MOVESTATE_IN_AIR) && (player->speedGroundX > Q(4))
                                 && (player->frameInput & gPlayerControls.jump)) {
                                 if (halfWidth < (hbWidth / 2)) {
-                                    player->transition = PLTRANS_PT22;
+                                    player->transition = PLTRANS_RAMP_AND_DASHRING;
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 1;
                                 } else {
-                                    player->transition = PLTRANS_PT22;
+                                    player->transition = PLTRANS_RAMP_AND_DASHRING;
                                     player->unk6E = ((ramp->unk3C & 1) * 3) + 2;
                                 }
                             } else {
@@ -158,7 +158,7 @@ static void Task_Ramp(void)
             if (var) {
                 if (((ramp->unk3C & 2) != 0 && I(player->x) < s->x) || ((ramp->unk3C & 2) == 0 && I(player->x) > s->x)) {
                     if (!(player->moveState & MOVESTATE_IN_AIR) && player->speedGroundX > Q(4)) {
-                        player->transition = PLTRANS_PT22;
+                        player->transition = PLTRANS_RAMP_AND_DASHRING;
                         player->unk6E = (ramp->unk3C & 1) * 3;
                     }
                 } else if (((ramp->unk3C & 2) != 0 && I(player->x) > s->x) || ((ramp->unk3C & 2) == 0 && I(player->x) < s->x)) {

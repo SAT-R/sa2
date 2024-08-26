@@ -19,12 +19,20 @@
 typedef struct {
     /* 0x00 */ SpriteBase base;
     /* 0x0C */ Sprite s;
-    /* 0x3D */ u8 unk3D;
-    /* 0x3E */ u8 unk3E;
+    /* 0x3D */ u8 dir;
+    /* 0x3E */ u8 speedId;
 } Sprite_Spring;
 
-#define SPRINGTYPE_NORMAL_UP   0
-#define SPRINGTYPE_NORMAL_DOWN 1
+#define SPRINGTYPE_NORMAL_UP     0
+#define SPRINGTYPE_NORMAL_DOWN   1
+#define SPRINGTYPE_NORMAL_LEFT   2
+#define SPRINGTYPE_NORMAL_RIGHT  3
+#define SPRINGTYPE_BIG_UPLEFT    4
+#define SPRINGTYPE_BIG_UPRIGHT   5
+#define SPRINGTYPE_BIG_DOWNLEFT  6
+#define SPRINGTYPE_BIG_DOWNRIGHT 7
+#define SPRINGTYPE_SMALL_UPLEFT  8
+#define SPRINGTYPE_SMALL_UPRIGHT 9
 // TODO: Check remaining springtype values (-> correct names!)
 #define SPRINGTYPE_COUNT 10
 
@@ -44,46 +52,46 @@ static void TaskDestructor_Spring(struct Task *t);
 
 static const u16 sSpringAnimationData[NUM_SPRING_KINDS][SPRINGTYPE_COUNT][4] = {
     {
-        { SA2_ANIM_SPRING, 0, 20, 0x0000 },
-        { SA2_ANIM_SPRING, 0, 20, 0x0800 },
-        { SA2_ANIM_SPRING, 2, 20, 0x0400 },
-        { SA2_ANIM_SPRING, 2, 20, 0x0000 },
-        { SA2_ANIM_SPRING, 4, 20, 0x0400 },
-        { SA2_ANIM_SPRING, 4, 20, 0x0000 },
-        { SA2_ANIM_SPRING, 4, 20, 0x0C00 },
-        { SA2_ANIM_SPRING, 4, 20, 0x0800 },
-        { SA2_ANIM_SPRING, 6, 15, 0x0400 },
-        { SA2_ANIM_SPRING, 6, 15, 0x0000 },
+        [SPRINGTYPE_NORMAL_UP] = { SA2_ANIM_SPRING, 0, 20, 0x0000 },
+        [SPRINGTYPE_NORMAL_DOWN] = { SA2_ANIM_SPRING, 0, 20, SPRITE_FLAG_MASK_Y_FLIP },
+        [SPRINGTYPE_NORMAL_LEFT] = { SA2_ANIM_SPRING, 2, 20, SPRITE_FLAG_MASK_X_FLIP },
+        [SPRINGTYPE_NORMAL_RIGHT] = { SA2_ANIM_SPRING, 2, 20, 0x0000 },
+        [SPRINGTYPE_BIG_UPLEFT] = { SA2_ANIM_SPRING, 4, 20, SPRITE_FLAG_MASK_X_FLIP },
+        [SPRINGTYPE_BIG_UPRIGHT] = { SA2_ANIM_SPRING, 4, 20, 0x0000 },
+        [SPRINGTYPE_BIG_DOWNLEFT] = { SA2_ANIM_SPRING, 4, 20, SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP },
+        [SPRINGTYPE_BIG_DOWNRIGHT] = { SA2_ANIM_SPRING, 4, 20, SPRITE_FLAG_MASK_Y_FLIP },
+        [SPRINGTYPE_SMALL_UPLEFT] = { SA2_ANIM_SPRING, 6, 15, SPRITE_FLAG_MASK_X_FLIP },
+        [SPRINGTYPE_SMALL_UPRIGHT] = { SA2_ANIM_SPRING, 6, 15, 0x0000 },
     },
     {
-        { SA2_ANIM_SPRING_MUS_PLA, 0, 20, 0x0000 },
-        { SA2_ANIM_SPRING_MUS_PLA, 0, 20, 0x0800 },
-        { SA2_ANIM_SPRING_MUS_PLA_2, 0, 20, 0x0400 },
-        { SA2_ANIM_SPRING_MUS_PLA_2, 0, 20, 0x0000 },
-        { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, 0x0400 },
-        { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, 0x0000 },
-        { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, 0x0C00 },
-        { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, 0x0800 },
-        { SA2_ANIM_SPRING_MUS_PLA_2, 4, 20, 0x0400 },
-        { SA2_ANIM_SPRING_MUS_PLA_2, 4, 20, 0x0000 },
+        [SPRINGTYPE_NORMAL_UP] = { SA2_ANIM_SPRING_MUS_PLA, 0, 20, 0x0000 },
+        [SPRINGTYPE_NORMAL_DOWN] = { SA2_ANIM_SPRING_MUS_PLA, 0, 20, SPRITE_FLAG_MASK_Y_FLIP },
+        [SPRINGTYPE_NORMAL_LEFT] = { SA2_ANIM_SPRING_MUS_PLA_2, 0, 20, SPRITE_FLAG_MASK_X_FLIP },
+        [SPRINGTYPE_NORMAL_RIGHT] = { SA2_ANIM_SPRING_MUS_PLA_2, 0, 20, 0x0000 },
+        [SPRINGTYPE_BIG_UPLEFT] = { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, SPRITE_FLAG_MASK_X_FLIP },
+        [SPRINGTYPE_BIG_UPRIGHT] = { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, 0x0000 },
+        [SPRINGTYPE_BIG_DOWNLEFT] = { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP },
+        [SPRINGTYPE_BIG_DOWNRIGHT] = { SA2_ANIM_SPRING_MUS_PLA_2, 2, 25, SPRITE_FLAG_MASK_Y_FLIP },
+        [SPRINGTYPE_SMALL_UPLEFT] = { SA2_ANIM_SPRING_MUS_PLA_2, 4, 20, SPRITE_FLAG_MASK_X_FLIP },
+        [SPRINGTYPE_SMALL_UPRIGHT] = { SA2_ANIM_SPRING_MUS_PLA_2, 4, 20, 0x0000 },
     },
     {
-        { SA2_ANIM_SPRING_TEC_BAS, 0, 20, 0x0000 },
-        { SA2_ANIM_SPRING_TEC_BAS, 0, 20, 0x0800 },
-        { SA2_ANIM_SPRING_TEC_BAS, 2, 20, 0x0400 },
-        { SA2_ANIM_SPRING_TEC_BAS, 2, 20, 0x0000 },
-        { SA2_ANIM_SPRING_TEC_BAS, 4, 16, 0x0400 },
-        { SA2_ANIM_SPRING_TEC_BAS, 4, 16, 0x0000 },
-        { SA2_ANIM_SPRING_TEC_BAS, 4, 16, 0x0C00 },
-        { SA2_ANIM_SPRING_TEC_BAS, 4, 16, 0x0800 },
-        { SA2_ANIM_SPRING_TEC_BAS, 6, 12, 0x0400 },
-        { SA2_ANIM_SPRING_TEC_BAS, 6, 12, 0x0000 },
+        [SPRINGTYPE_NORMAL_UP] = { SA2_ANIM_SPRING_TEC_BAS, 0, 20, 0x0000 },
+        [SPRINGTYPE_NORMAL_DOWN] = { SA2_ANIM_SPRING_TEC_BAS, 0, 20, SPRITE_FLAG_MASK_Y_FLIP },
+        [SPRINGTYPE_NORMAL_LEFT] = { SA2_ANIM_SPRING_TEC_BAS, 2, 20, SPRITE_FLAG_MASK_X_FLIP },
+        [SPRINGTYPE_NORMAL_RIGHT] = { SA2_ANIM_SPRING_TEC_BAS, 2, 20, 0x0000 },
+        [SPRINGTYPE_BIG_UPLEFT] = { SA2_ANIM_SPRING_TEC_BAS, 4, 16, SPRITE_FLAG_MASK_X_FLIP },
+        [SPRINGTYPE_BIG_UPRIGHT] = { SA2_ANIM_SPRING_TEC_BAS, 4, 16, 0x0000 },
+        [SPRINGTYPE_BIG_DOWNLEFT] = { SA2_ANIM_SPRING_TEC_BAS, 4, 16, SPRITE_FLAG_MASK_X_FLIP | SPRITE_FLAG_MASK_Y_FLIP },
+        [SPRINGTYPE_BIG_DOWNRIGHT] = { SA2_ANIM_SPRING_TEC_BAS, 4, 16, SPRITE_FLAG_MASK_Y_FLIP },
+        [SPRINGTYPE_SMALL_UPLEFT] = { SA2_ANIM_SPRING_TEC_BAS, 6, 12, SPRITE_FLAG_MASK_X_FLIP },
+        [SPRINGTYPE_SMALL_UPRIGHT] = { SA2_ANIM_SPRING_TEC_BAS, 6, 12, 0x0000 },
     },
 };
 
 // Effects applied onto the player-state.
 // These trigger the player acceleration when touching each of the spring directions
-static const u8 gUnknown_080D53D0[SPRINGTYPE_COUNT]
+static const u8 sSpringDirToPlayerTransition[SPRINGTYPE_COUNT]
     = { PLTRANS_SPRING_UP,       PLTRANS_SPRING_DOWN,      PLTRANS_SPRING_LEFT,       PLTRANS_SPRING_RIGHT,   PLTRANS_SPRING_UP_LEFT,
         PLTRANS_SPRING_UP_RIGHT, PLTRANS_SPRING_DOWN_LEFT, PLTRANS_SPRING_DOWN_RIGHT, PLTRANS_SPRING_UP_LEFT, PLTRANS_SPRING_UP_RIGHT };
 
@@ -135,8 +143,8 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     s->variant = sSpringAnimationData[springKind][springType][1];
 
     s->frameFlags |= sSpringAnimationData[springKind][springType][3];
-    spring->unk3D = springType;
-    spring->unk3E = me->d.sData[0] & 0x3;
+    spring->dir = springType;
+    spring->speedId = me->d.sData[0] & 0x3;
     UpdateSpriteAnimation(s);
 }
 
@@ -150,7 +158,7 @@ static void Task_Spring(void)
         gCurTask->main = sub_800E3D0;
         s->variant++;
 
-        if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3 && (spring->unk3D / 2) == 0))
+        if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3 && (spring->dir / 2) == 0))
             s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2B00);
     }
 
@@ -177,7 +185,7 @@ static void sub_800E3D0(void)
         if (UpdateSpriteAnimation(s) == 0) {
             s->variant--;
 
-            if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) && (spring->unk3D / 2) == 0) {
+            if ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) && (spring->dir / 2) == 0) {
                 s->graphics.dest = (void *)(OBJ_VRAM0 + 0x2980);
             }
 
@@ -198,12 +206,12 @@ static bool32 sub_800E490(Sprite *s, MapEntity *me, Sprite_Spring *spring, Playe
 
     if (((player->moveState & MOVESTATE_400000) == 0) && sub_800CDBC(s, xPos, yPos, player) != 0) {
 
-        player->transition = gUnknown_080D53D0[spring->unk3D];
-        player->unk6E = spring->unk3E;
-        player->unk6C = 1;
+        player->transition = sSpringDirToPlayerTransition[spring->dir];
+        player->unk6E = spring->speedId;
+        player->unk6C = TRUE;
 
         if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-            m4aSongNumStart(sSpring_MusicPlant_Soundeffects[spring->unk3E]);
+            m4aSongNumStart(sSpring_MusicPlant_Soundeffects[spring->speedId]);
         } else {
             m4aSongNumStart(SE_SPRING);
         }
@@ -217,33 +225,57 @@ static bool32 sub_800E490(Sprite *s, MapEntity *me, Sprite_Spring *spring, Playe
 static void TaskDestructor_Spring(struct Task *t)
 {
     Sprite_Spring *spring = TASK_DATA(t);
-    if ((LEVEL_TO_ZONE(gCurrentLevel) != ZONE_3) || (spring->unk3D / 2 != 0)) {
+    if ((LEVEL_TO_ZONE(gCurrentLevel) != ZONE_3) || (spring->dir / 2 != 0)) {
         VramFree(spring->s.graphics.dest);
     }
 }
 
-void CreateEntity_Spring_Big_DownLeft(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3) { INITIALIZE_SPRING(6); }
+void CreateEntity_Spring_Big_DownLeft(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
+{
+    INITIALIZE_SPRING(SPRINGTYPE_BIG_DOWNLEFT);
+}
 
 void CreateEntity_Spring_Normal_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(SPRINGTYPE_NORMAL_DOWN);
 }
 
-void CreateEntity_Spring_Big_DownRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3) { INITIALIZE_SPRING(7); }
+void CreateEntity_Spring_Big_DownRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
+{
+    INITIALIZE_SPRING(SPRINGTYPE_BIG_DOWNRIGHT);
+}
 
-void CreateEntity_Spring_Normal_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3) { INITIALIZE_SPRING(2); }
+void CreateEntity_Spring_Normal_Left(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
+{
+    INITIALIZE_SPRING(SPRINGTYPE_NORMAL_LEFT);
+}
 
-void CreateEntity_Spring_Normal_Right(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3) { INITIALIZE_SPRING(3); }
+void CreateEntity_Spring_Normal_Right(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
+{
+    INITIALIZE_SPRING(SPRINGTYPE_NORMAL_RIGHT);
+}
 
-void CreateEntity_Spring_Big_UpLeft(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3) { INITIALIZE_SPRING(4); }
+void CreateEntity_Spring_Big_UpLeft(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
+{
+    INITIALIZE_SPRING(SPRINGTYPE_BIG_UPLEFT);
+}
 
 void CreateEntity_Spring_Normal_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
 {
     INITIALIZE_SPRING(SPRINGTYPE_NORMAL_UP);
 }
 
-void CreateEntity_Spring_Big_UpRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3) { INITIALIZE_SPRING(5); }
+void CreateEntity_Spring_Big_UpRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
+{
+    INITIALIZE_SPRING(SPRINGTYPE_BIG_UPRIGHT);
+}
 
-void CreateEntity_Spring_Small_UpLeft(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3) { INITIALIZE_SPRING(8); }
+void CreateEntity_Spring_Small_UpLeft(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
+{
+    INITIALIZE_SPRING(SPRINGTYPE_SMALL_UPLEFT);
+}
 
-void CreateEntity_Spring_Small_UpRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3) { INITIALIZE_SPRING(9); }
+void CreateEntity_Spring_Small_UpRight(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 param3)
+{
+    INITIALIZE_SPRING(SPRINGTYPE_SMALL_UPRIGHT);
+}

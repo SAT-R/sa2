@@ -13,6 +13,7 @@
 #include "game/time_attack/lobby.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/songs.h"
 
 struct TimeAttackResultsCutScene {
@@ -238,7 +239,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     UpdateSpriteAnimation(s);
 
     resultsCutScene->transform.width = 0;
-    resultsCutScene->transform.height = 0x100;
+    resultsCutScene->transform.height = +Q(1);
     resultsCutScene->transform.x = 120;
     resultsCutScene->transform.y = 120;
     resultsCutScene->transform.rotation = 0;
@@ -263,7 +264,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     gUnknown_030054A8.unk0 = 0xFF;
 
     if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
-        gPlayer.charState = 0x20;
+        gPlayer.charState = CHARSTATE_ACT_CLEAR_TIME_ATTACK_OR_BOSS;
     }
 
     if (resultsCutScene->unk2D8 == 1) {

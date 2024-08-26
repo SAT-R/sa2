@@ -12,6 +12,7 @@
 #include "game/interactables_2/ice_paradise/funnel_sphere.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -143,7 +144,7 @@ static void sub_8078170(Sprite_FunnelSphere *funnelSphere)
     s32 character;
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 4;
+    gPlayer.charState = CHARSTATE_SPIN_ATTACK;
 
     m4aSongNumStart(SE_SPIN_ATTACK);
     gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;

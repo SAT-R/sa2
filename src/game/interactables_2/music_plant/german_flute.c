@@ -11,6 +11,7 @@
 #include "game/interactables_2/note_particle.h"
 #include "game/interactables_2/music_plant/german_flute.h"
 
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -195,7 +196,7 @@ static void sub_8076B84(Sprite_GermanFlute *flute)
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 4;
+    gPlayer.charState = CHARSTATE_SPIN_ATTACK;
     m4aSongNumStart(SE_SPIN_ATTACK);
 
     gPlayer.speedGroundX = 0;
@@ -253,7 +254,7 @@ static void sub_8076C70(Sprite_GermanFlute *flute)
 static void sub_8076C88(Sprite_GermanFlute UNUSED *flute)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.charState = 14;
+    gPlayer.charState = CHARSTATE_FALLING_VULNERABLE_B;
     gPlayer.transition = PLTRANS_PT5;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
@@ -332,7 +333,7 @@ static void TaskDestructor_GermanFlute(struct Task *t) {};
 
 static void sub_8076E3C(Sprite_GermanFlute *flute)
 {
-    gPlayer.charState = 0x3A;
+    gPlayer.charState = CHARSTATE_FLUTE_EXHAUST;
     gPlayer.speedAirX = 0;
 
     gPlayer.speedAirY = -sFluteUpdraft[flute->kind];

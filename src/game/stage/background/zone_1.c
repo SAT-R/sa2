@@ -59,7 +59,7 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
     u16 *cursor;
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        if ((gPlayer.moveState & MOVESTATE_8000000) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
+        if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
             s32 temp, val;
             temp = (gPlayer.moveState & MOVESTATE_4000000) ? 7 : 0xF;
 
@@ -81,7 +81,7 @@ void StageBgUpdate_Zone1Acts12(s32 UNUSED a, s32 UNUSED b)
         cursor = gBgOffsetsHBlank;
         initial1 = 0;
 
-        if ((gPlayer.moveState & MOVESTATE_8000000) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
+        if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
             s32 temp, val;
             temp = (gPlayer.moveState & MOVESTATE_4000000) ? 0xF : 0x1F;
 

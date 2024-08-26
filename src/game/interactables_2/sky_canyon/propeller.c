@@ -16,6 +16,7 @@
 #include "game/interactables_2/sky_canyon_init.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -248,7 +249,7 @@ static void sub_807B8FC(Sprite_Propeller *propeller)
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 44;
+    gPlayer.charState = CHARSTATE_IN_WHIRLWIND;
 }
 
 static void Render(Sprite_Propeller *propeller)

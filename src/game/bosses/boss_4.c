@@ -22,6 +22,7 @@
 #include "game/stage/boss_results_transition.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -355,7 +356,7 @@ static void sub_8041A08(AeroEgg *boss)
                 p->speedAirY = v;
                 p->moveState &= ~(MOVESTATE_100 | MOVESTATE_8);
                 p->unk3C = NULL;
-                p->charState = SA2_CHAR_ANIM_JUMP_2;
+                p->charState = CHARSTATE_JUMP_2;
                 p->transition = 5;
                 r7 = TRUE;
             }

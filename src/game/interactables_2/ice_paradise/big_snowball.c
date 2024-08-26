@@ -8,7 +8,9 @@
 #include "game/stage/camera.h"
 #include "game/entity.h"
 #include "game/interactables_2/ice_paradise/big_snowball.h"
+
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
@@ -492,7 +494,7 @@ void sub_80797AC(Sprite_IA69 *ia69)
 {
     Player_SetMovestate_IsInScriptedSequence();
     gPlayer.moveState |= MOVESTATE_400000;
-    gPlayer.charState = 0x14;
+    gPlayer.charState = CHARSTATE_HIT_AIR;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
     gPlayer.speedGroundX = 0;

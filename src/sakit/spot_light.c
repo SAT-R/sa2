@@ -106,7 +106,7 @@ void Task_SpotLightMain(void)
         gBldRegs.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG0);
         gBldRegs.bldY = spotLight->unk8 >> 8;
 
-        if (gPlayer.moveState & (MOVESTATE_DEAD | MOVESTATE_8000000)) {
+        if (gPlayer.moveState & (MOVESTATE_DEAD | MOVESTATE_GOAL_REACHED)) {
             gCurTask->main = Task_800A8E0;
         } else if (gUnknown_030054E4 != 0) {
             TaskDestroy(spotLight->t0);

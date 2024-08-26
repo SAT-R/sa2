@@ -4,24 +4,24 @@
 #include "core.h"
 #include "sakit/player.h"
 
-struct Task *sub_8011B88(s32 x, s32 y, u16 p2);
-void sub_8011D48(Player *);
-void PlayerCB_8011F1C(Player *);
-void sub_8012194(Player *);
-bool32 sub_801251C(Player *);
-void sub_8012644(Player *);
-void sub_8012888(Player *);
-void sub_80128E0(Player *);
-void sub_8012548(Player *);
-void sub_8012830(Player *);
-void sub_8012BC0(Player *);
-void sub_8012D3C(Player *);
-void sub_8012EEC(Player *);
-void sub_8013070(Player *);
-void sub_8013AD8(Player *);
-void PlayerCB_8013D18(Player *);
-void sub_8013F04(Player *);
-void PlayerCB_801225C(Player *p);
+struct Task *Player_SonicAmy_InitSkidAttackGfxTask(s32 x, s32 y, u16 p2);
+void Player_SonicAmy_InitSkidAttack(Player *);
+void Player_SonicAmy_InitStopNSlam(Player *);
+void Player_Sonic_InitHomingAttack(Player *);
+bool32 Player_Sonic_TryForwardThrust(Player *);
+void Player_Cream_InitFlying(Player *);
+void Player_Cream_InitChaoRollingAttack(Player *);
+void Player_Cream_InitMidAirChaoAttack(Player *);
+void Player_Cream_InitChaoAttack(Player *);
+void Player_Cream_InitStepAttack(Player *);
+void Player_Tails_InitFlying(Player *);
+void Player_Tails_InitTailSwipe(Player *);
+void Player_Knuckles_InitPunch(Player *);
+void Player_Knuckles_InitSpiralAttack(Player *);
+void Player_Knuckles_InitGlide(Player *);
+void Player_Knuckles_InitDrillClaw(Player *);
+void Player_Amy_InitHammerAttack(Player *);
+void Player_801225C(Player *p);
 void Player_UpdateHomingPosition(s32, s32);
 
 #endif // GUARD_player_callbacks_H

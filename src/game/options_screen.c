@@ -4307,11 +4307,11 @@ static void Task_TimeRecordsScreenCharacterChangeAnimIn(void)
     struct TimeRecordsScreen *timeRecordsScreen = TASK_DATA(gCurTask);
 
     if (++timeRecordsScreen->animFrame < 5) {
-        gBgScrollRegs[1][0] = timeRecordsScreen->animFrame * 18 - 240;
+        gBgScrollRegs[1][0] = timeRecordsScreen->animFrame * 18 - DISPLAY_WIDTH;
     }
 
     if (timeRecordsScreen->animFrame > 6) {
-        gBgScrollRegs[2][0] = (timeRecordsScreen->animFrame - 6) * 18 - 240;
+        gBgScrollRegs[2][0] = (timeRecordsScreen->animFrame - 6) * 18 - DISPLAY_WIDTH;
     }
 
     TimeRecordsScreenRenderCoursesViewUI(1);
@@ -4545,8 +4545,8 @@ static void Task_TimeRecordsScreenCharacterChangeAnimOut(void)
 
     timeRecordsScreen->animFrame--;
 
-    gBgScrollRegs[1][0] = timeRecordsScreen->animFrame * 18 - 240;
-    gBgScrollRegs[2][0] = timeRecordsScreen->animFrame * 18 - 240;
+    gBgScrollRegs[1][0] = timeRecordsScreen->animFrame * 18 - DISPLAY_WIDTH;
+    gBgScrollRegs[2][0] = timeRecordsScreen->animFrame * 18 - DISPLAY_WIDTH;
 
     TimeRecordsScreenRefreshTimesUI(timeRecordsScreen);
     TimeRecordsScreenRenderCoursesViewUI(1);

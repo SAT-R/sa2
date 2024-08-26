@@ -16,6 +16,7 @@
 #include "game/stage/ui.h"
 
 #include "constants/animations.h"
+#include "constants/char_states.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 
@@ -103,7 +104,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     outro->fade.bldCnt = 0x3FFF;
     outro->fade.bldAlpha = zero;
 
-    if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+    if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
         outro->fade.speed = Q(0.25);
         outro->fade.bldCnt = 0x3FBF;
     } else if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
@@ -281,8 +282,8 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     } else if (ACT_INDEX(gCurrentLevel) == ACT_BOSS) {
         m4aSongNumStart(MUS_BOSS_CLEAR);
 
-        if (gPlayer.charState == SA2_CHAR_ANIM_WALK) {
-            gPlayer.charState = SA2_CHAR_ANIM_ACT_CLEAR;
+        if (gPlayer.charState == CHARSTATE_WALK_A) {
+            gPlayer.charState = CHARSTATE_ACT_CLEAR_TIME_ATTACK_OR_BOSS;
         }
 
     } else {
@@ -440,7 +441,7 @@ void Task_UpdateStageResults(void)
                         gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = gCurrentLevel;
                     }
 
-                    if ((gPlayer.moveState & MOVESTATE_8000000) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
+                    if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
                         TasksDestroyAll();
 
                         { // TODO: This is a macro!
@@ -480,7 +481,7 @@ void Task_UpdateStageResults(void)
             }
         }
 
-        if ((gPlayer.moveState & MOVESTATE_8000000) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
+        if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
             DestroyStageResultsGfx();
             gPlayer.moveState |= MOVESTATE_4000000;
             return;
