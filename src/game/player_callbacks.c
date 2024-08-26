@@ -291,8 +291,10 @@ void Player_SonicAmy_InitStopNSlam(Player *p)
         m4aSongNumStart(SE_AMY_HAMMER_SWIRL);
     }
 
+#if !DISABLE_TRICK_AIR_WAIT
     p->speedAirX = 0;
     p->speedAirY = 0;
+#endif
 
     PLAYERFN_SET_AND_CALL(Player_SonicAmy_WindupStopNSlam, p);
 }
@@ -1524,7 +1526,7 @@ s32 sub_8013644(Player *p)
     return result;
 }
 
-void sub_80136E8(Player *p)
+void Player_Knuckles_Climb_80136E8(Player *p)
 {
     u8 rot;
     s32 r2;
@@ -1854,7 +1856,7 @@ void Player_Knuckles_GlideHardLanding(Player *p)
 
 void Player_Knuckles_Climb(Player *p)
 {
-    sub_80136E8(p);
+    Player_Knuckles_Climb_80136E8(p);
     sub_80232D0(p);
     Player_UpdatePosition(p);
 }
@@ -1938,8 +1940,10 @@ void Player_Knuckles_InitDrillClaw(Player *p)
 
     p->charState = CHARSTATE_KNUCKLES_DRILL_CLAW_INIT;
 
+#if !DISABLE_TRICK_AIR_WAIT
     p->speedAirX = 0;
     p->speedAirY = 0;
+#endif
 
     m4aSongNumStart(SE_226);
 

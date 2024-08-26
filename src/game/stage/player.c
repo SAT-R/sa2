@@ -49,6 +49,10 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
+// In SA2 tricks stop all characters when the buttons are pressed.
+// Set this to TRUE to behave more like SA3.
+#define DISABLE_TRICK_AIR_WAIT !TRUE
+
 typedef struct {
     /* 0x00 */ u8 unk0;
     /* 0x04 */ u32 unk4; // TODO: Check the type!
@@ -94,7 +98,7 @@ void Player_GoalBrake(Player *);
 void Player_InitVictoryPoseTransition(Player *);
 void Player_VictoryPose(Player *);
 void Player_8027B98(Player *);
-void Player_80287AC(Player *);
+void Player_WindupDefaultTrick(Player *);
 void Player_802890C(Player *);
 void Player_8029074(Player *);
 void Player_8029314(Player *);
@@ -5559,8 +5563,7 @@ struct Task *sub_8028640(s32 x, s32 y, s32 p2)
     return t;
 }
 
-// Set when doing tricks
-void Player_TailsCream_InitStopNSlam(Player *p)
+void Player_InitDefaultTrick(Player *p)
 {
     u32 dir = p->unk5B;
     u16 character = p->character;
@@ -5578,8 +5581,10 @@ void Player_TailsCream_InitStopNSlam(Player *p)
     else if (mask & MASK_80D6992_8)
         p->unk72 = 45;
 
+#if !DISABLE_TRICK_AIR_WAIT
     p->speedAirX = 0;
     p->speedAirY = 0;
+#endif
 
     p->charState = sTrickDirToCharstate[dir];
     p->unk90->s.frameFlags &= ~SPRITE_FLAG_MASK_ANIM_OVER;
@@ -5587,10 +5592,10 @@ void Player_TailsCream_InitStopNSlam(Player *p)
     m4aSongNumStart(SE_JUMP);
     m4aSongNumStart(SE_TAILS_CREAM_STOP_N_SLAM);
 
-    PLAYERFN_SET_AND_CALL(Player_80287AC, p);
+    PLAYERFN_SET_AND_CALL(Player_WindupDefaultTrick, p);
 }
 
-void Player_80287AC(Player *p)
+void Player_WindupDefaultTrick(Player *p)
 {
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
         u32 dir = p->unk5B;
@@ -5679,7 +5684,7 @@ void DoTrickIfButtonPressed(Player *p)
         if (p->heldInput & DPAD_UP) {
             INCREMENT_SCORE(sTrickPoints[0]);
             p->unk5B = TRICK_DIR_UP;
-            PLAYERFN_SET(Player_TailsCream_InitStopNSlam);
+            PLAYERFN_SET(Player_InitDefaultTrick);
         } else if (p->heldInput & DPAD_DOWN) {
             INCREMENT_SCORE(sTrickPoints[3]);
 
@@ -5701,7 +5706,7 @@ void DoTrickIfButtonPressed(Player *p)
 
                 default: {
                     p->unk5B = TRICK_DIR_DOWN;
-                    PLAYERFN_SET(Player_TailsCream_InitStopNSlam);
+                    PLAYERFN_SET(Player_InitDefaultTrick);
                 } break;
             }
         } else if ((!(p->moveState & MOVESTATE_FACING_LEFT) && (p->heldInput & DPAD_RIGHT))
@@ -5709,12 +5714,12 @@ void DoTrickIfButtonPressed(Player *p)
             INCREMENT_SCORE(sTrickPoints[2]);
             p->unk5B = TRICK_DIR_FORWARD;
 
-            PLAYERFN_SET(Player_TailsCream_InitStopNSlam);
+            PLAYERFN_SET(Player_InitDefaultTrick);
         } else {
             INCREMENT_SCORE(sTrickPoints[1]);
             p->unk5B = TRICK_DIR_BACKWARD;
 
-            PLAYERFN_SET(Player_TailsCream_InitStopNSlam);
+            PLAYERFN_SET(Player_InitDefaultTrick);
         }
     }
 }
