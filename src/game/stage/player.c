@@ -49,10 +49,6 @@
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
 
-// In SA2 tricks stop all characters when the buttons are pressed.
-// Set this to TRUE to behave more like SA3.
-#define DISABLE_TRICK_AIR_WAIT !TRUE
-
 typedef struct {
     /* 0x00 */ u8 unk0;
     /* 0x04 */ u32 unk4; // TODO: Check the type!
