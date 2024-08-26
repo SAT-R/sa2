@@ -6035,20 +6035,20 @@ bool32 Player_TryMidAirAction(Player *p)
                     } else {
                         p->moveState |= MOVESTATE_20000000;
                         p->charState = CHARSTATE_SOME_ATTACK;
-                        Player_Sonic_InitAttackGfxTask(I(p->x), I(p->y), 1);
+                        Player_SonicAmy_InitSkidAttackGfxTask(I(p->x), I(p->y), 1);
                         song = SE_SONIC_INSTA_SHIELD;
                         goto Player_TryMidAirAction_PlaySfx;
                     }
                 } break;
 
                 case CHARACTER_CREAM: {
-                    sub_8012644(p);
+                    Player_Cream_InitFlying(p);
                     return TRUE;
                 } break;
 
                 case CHARACTER_TAILS: {
                     if (!(p->moveState & MOVESTATE_40)) {
-                        sub_Tails_8012BC0(p);
+                        Player_Tails_InitFlying(p);
                         p->moveState |= MOVESTATE_20000000;
                         return TRUE;
                     }
@@ -6949,7 +6949,7 @@ void Player_InitAttack(Player *p)
 {
     switch (p->character) {
         case CHARACTER_SONIC: {
-            Player_Sonic_InitAttack(p);
+            Player_SonicAmy_InitSkidAttack(p);
         } break;
 
         case CHARACTER_CREAM: {
@@ -6961,7 +6961,7 @@ void Player_InitAttack(Player *p)
         } break;
 
         case CHARACTER_TAILS: {
-            Player_InitAttack_Tails(p);
+            Player_Tails_InitTailSwipe(p);
         } break;
 
         case CHARACTER_KNUCKLES: {
@@ -6974,10 +6974,10 @@ void Player_InitAttack(Player *p)
 
         case CHARACTER_AMY: {
             if (!p->isBoosting) {
-                Player_InitAttack_Amy_HammerAttack(p);
+                Player_Amy_InitHammerAttack(p);
             } else {
                 // Same code as Sonic's "Super Skid" (Boost + B_BUTTON)
-                Player_Sonic_InitAttack(p);
+                Player_SonicAmy_InitSkidAttack(p);
             }
         } break;
     }
