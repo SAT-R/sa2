@@ -7,6 +7,10 @@
 #include "constants/characters.h"
 #include "game/parameters/characters.h"
 
+// In SA2 tricks stop all characters when the buttons are pressed.
+// Set this to TRUE to behave more like SA3.
+#define DISABLE_TRICK_AIR_WAIT !TRUE
+
 // Actual type of 'type8029A28' currently unknown, rename once it is
 typedef s32 type8029A28;
 
