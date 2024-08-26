@@ -111,7 +111,7 @@ void Player_8027250(Player *p);
 void Player_InitReachedGoal(Player *p);
 void Player_8028D74(Player *p);
 void Player_TouchNormalSpring(Player *p);
-void Player_8029158(Player *p);
+void Player_InitRampOrDashRing(Player *p);
 void sub_802989C(Player *p);
 void Player_802A258(Player *p);
 void Player_InitDashRing(Player *p);
@@ -3438,7 +3438,7 @@ void CallPlayerTransition(Player *p)
                 PLAYERFN_SET(Player_TouchNormalSpring);
             } break;
             case PLTRANS_RAMP_AND_DASHRING - 1: {
-                PLAYERFN_SET(Player_8029158);
+                PLAYERFN_SET(Player_InitRampOrDashRing);
             } break;
             case PLTRANS_PT24 - 1: {
                 PLAYERFN_SET(Player_InitDashRing);
@@ -5864,7 +5864,7 @@ void Player_8029074(Player *p)
     PLAYERFN_MAYBE_TRANSITION_TO_GROUND(p);
 }
 
-void Player_8029158(Player *p)
+void Player_InitRampOrDashRing(Player *p)
 {
     Player_TransitionCancelFlyingAndBoost(p);
     p->moveState |= MOVESTATE_IN_AIR;
@@ -5875,7 +5875,7 @@ void Player_8029158(Player *p)
     p->charState = CHARSTATE_RAMP_AND_DASHRING;
     p->prevCharState = CHARSTATE_INVALID;
 
-    if (p->speedAirX > Q(1.25)) {
+    if (p->speedAirX > +Q(1.25)) {
         p->moveState &= ~MOVESTATE_FACING_LEFT;
     }
     if (p->speedAirX < -Q(1.25)) {
@@ -5908,7 +5908,7 @@ void Player_8029158(Player *p)
             if (speed < 0) {
                 speed += 7;
             }
-            r5 = (((u32)speed << 13) >> 16);
+            r5 = ((u32)speed / 8);
 
             res = -ABS(groundSpeed) / 6;
 
