@@ -1,6 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "trig.h"
+#include "flags.h"
 
 void sub_802DBC0(u8 p0, u16 p1)
 {
@@ -632,3 +633,43 @@ NONMATCH("asm/non_matching/game/stage/sub_802E384.inc", void sub_802E384(Vec2_16
     }
 }
 END_NONMATCH
+
+void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, s16 d)
+{
+    gUnknown_03002A80 = 2;
+    gUnknown_03002878 = REG_ADDR_WIN0H;
+    gFlags |= FLAGS_4;
+
+    if (0xEE > (u16)(x - 1) || 0x9F < y || x < 1) {
+        if ((b >> 1) == 0) {
+            if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+                gUnknown_03002878 = REG_ADDR_WIN0H;
+                gUnknown_03002A80 = 2;
+                DmaClear32(3, &gBgOffsetsBuffer[0], 160 * 4);
+                return;
+            } else {
+                gUnknown_03002878 = REG_ADDR_WIN0H;
+                gUnknown_03002A80 = 2;
+                DmaClear32(3, &gBgOffsetsBuffer[1], 160 * 4);
+                return;
+            }
+        }
+
+        if ((a - 0x101) <= 8160 && 239 < x) {
+            s32 sin = (SIN(a) * (x - 240)) >> 0xE + y;
+
+            if ((u32)(sin - 1) < 0x9F) {
+                if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+                    DmaClear32(3, &gBgOffsetsBuffer[0], 160 * 4);
+                } else {
+                    DmaClear32(3, &gBgOffsetsBuffer[1], 160 * 4);
+                }
+
+                sub_802DDC4(CLAMP_16(sin - (b >> 1), 0, 0xA0), a);
+                return;
+            }
+        }
+        //     if (0x200 < a_input) {
+        // }
+    }
+}
