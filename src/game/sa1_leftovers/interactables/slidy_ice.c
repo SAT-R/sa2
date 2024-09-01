@@ -4,7 +4,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
-#include "sakit/interactables/slidy_ice.h"
+#include "game/sa1_leftovers/interactables/slidy_ice.h"
 
 typedef struct {
     /* 0x00 */ u8 x;

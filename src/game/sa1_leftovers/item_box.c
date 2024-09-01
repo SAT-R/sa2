@@ -6,8 +6,8 @@
 #include "trig.h"
 #include "lib/m4a.h"
 
-#include "sakit/collision.h"
-#include "sakit/dust_cloud.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/dust_cloud.h"
 
 #include "game/entity.h"
 #include "game/stage/item_tasks.h"

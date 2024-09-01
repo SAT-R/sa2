@@ -3,7 +3,7 @@
 #include "trig.h"
 #include "lib/m4a.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/interactables_2/sky_canyon/propeller_spring.h"
 #include "game/interactables_2/sky_canyon_init.h"

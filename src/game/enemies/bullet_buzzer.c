@@ -1,7 +1,7 @@
 #include "global.h"
 #include "malloc_vram.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/entity.h"
 

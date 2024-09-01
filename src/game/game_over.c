@@ -6,7 +6,7 @@
 #include "task.h"
 #include "lib/m4a.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 
 #include "game/game_over.h"
 #include "game/time_attack/lobby.h"

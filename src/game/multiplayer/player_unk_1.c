@@ -3,7 +3,7 @@
 #include "game/entity.h"
 #include "game/multiplayer/player_unk_1.h"
 #include "game/stage/rings_scatter.h"
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 struct UNK_3005510 *sub_8019224(void)
 {

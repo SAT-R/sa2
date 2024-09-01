@@ -7,8 +7,8 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "lib/m4a.h"
-#include "sakit/collision.h"
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"

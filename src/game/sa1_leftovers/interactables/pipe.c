@@ -5,7 +5,7 @@
 #include "lib/m4a.h"
 
 #include "game/entity.h"
-#include "sakit/interactables/pipe.h"
+#include "game/sa1_leftovers/interactables/pipe.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

@@ -3,7 +3,7 @@
 #include "flags.h"
 #include "malloc_vram.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 
 #include "data/sprite_data.h"
 

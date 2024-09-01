@@ -5,8 +5,8 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 
-#include "sakit/collision.h"
-#include "sakit/interactables/platform_thin.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/interactables/platform_thin.h"
 #include "game/entity.h"
 
 #include "game/multiplayer/player_unk_1.h"
@@ -210,7 +210,8 @@ static void Task_PlatformThinMain(void)
     return;
 }
 // (95.35%) https://decomp.me/scratch/8xD3v
-NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc", static void CreatePlatformBreakParticles(s16 x, s16 y))
+NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/CreatePlatformBreakParticles.inc",
+         static void CreatePlatformBreakParticles(s16 x, s16 y))
 {
     struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(Platform_D1C), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
     Platform_D1C *platform = TASK_DATA(t);

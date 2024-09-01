@@ -4,7 +4,7 @@
 #include "task.h"
 #include "malloc_vram.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

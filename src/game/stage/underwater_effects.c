@@ -4,7 +4,7 @@
 #include "sprite.h"
 #include "trig.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 
 #include "game/stage/game_2.h"
 #include "game/stage/player.h"

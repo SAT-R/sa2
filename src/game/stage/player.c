@@ -4,8 +4,8 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 
-#include "sakit/music_manager.h"
-#include "sakit/input_buffer.h"
+#include "game/sa1_leftovers/music_manager.h"
+#include "game/sa1_leftovers/input_buffer.h"
 
 #include "game/save.h"
 

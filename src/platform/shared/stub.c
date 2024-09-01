@@ -3,7 +3,7 @@
 #include "global.h"
 #include "sprite.h"
 #include "task.h"
-#include "sakit/collision.h" // sub_800D0A0
+#include "game/sa1_leftovers/collision.h" // sub_800D0A0
 #include "game/bosses/boss_5.h" // sub_802E784
 #include "game/math.h" // sub_8084B54
 #include "game/stage/game_7.h"

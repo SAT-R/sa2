@@ -3,15 +3,15 @@
 #include "trig.h"
 #include "lib/m4a.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 
 #include "game/stage/collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
 #include "game/stage/rings_scatter.h"
-#include "sakit/collect_ring_effect.h"
-#include "sakit/rings_manager.h" // for RESERVED_RING_TILES_VRAM
+#include "game/sa1_leftovers/collect_ring_effect.h"
+#include "game/sa1_leftovers/rings_manager.h" // for RESERVED_RING_TILES_VRAM
 
 #include "constants/animations.h"
 #include "constants/songs.h"

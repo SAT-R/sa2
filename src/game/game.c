@@ -10,7 +10,7 @@
 #include "game/options_screen.h"
 #include "game/multiboot/connection.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/decomp_credits.h"
 #include "game/stage/tilemap_table.h"

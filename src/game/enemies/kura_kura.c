@@ -4,7 +4,7 @@
 #include "malloc_vram.h"
 #include "trig.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/entity.h"
 #include "game/enemies/kura_kura.h"

@@ -1,7 +1,7 @@
 #ifndef GUARD_STAGE_PLAYER_H
 #define GUARD_STAGE_PLAYER_H
 
-#include "sakit/player.h"
+#include "game/sa1_leftovers/player.h"
 
 // TODO: merge these
 #include "constants/characters.h"

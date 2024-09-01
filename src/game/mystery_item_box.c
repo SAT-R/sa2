@@ -1,11 +1,11 @@
 #include "core.h"
 #include "malloc_vram.h"
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/collision.h"
 
 #include "game/entity.h"
 #include "game/mystery_item_box.h"
 #include "game/multiplayer/player_unk_1.h"
-#include "sakit/dust_cloud.h"
+#include "game/sa1_leftovers/dust_cloud.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "lib/m4a.h"

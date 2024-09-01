@@ -7,7 +7,7 @@
 #include "game/entity.h"
 #include "game/enemies/bell.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "constants/animations.h"
 

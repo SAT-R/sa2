@@ -5,7 +5,7 @@
 
 #include "lib/m4a.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 
 #include "game/bosses/final_intro.h"
 

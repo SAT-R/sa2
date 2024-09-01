@@ -5,8 +5,8 @@
 #include "gba/types.h"
 #include "sprite.h"
 
-#include "sakit/globals.h"
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_leftovers/collision.h"
 
 #include "game/stage/collision.h"
 #include "game/player_callbacks.h"

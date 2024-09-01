@@ -5,8 +5,8 @@
 #include "trig.h"
 #include "malloc_vram.h"
 
-#include "sakit/collision.h"
-#include "sakit/interactables/platform.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/interactables/platform.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"

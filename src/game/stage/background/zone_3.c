@@ -2,7 +2,7 @@
 #include "core.h"
 #include "flags.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 
 #include "game/stage/camera.h"
 #include "game/stage/background/callbacks.h"
