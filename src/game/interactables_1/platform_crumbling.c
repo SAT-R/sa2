@@ -52,7 +52,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
     base->regionY = spriteRegionY;
     base->me = me;
     base->spriteX = me->x;
-    base->spriteY = spriteY;
+    base->id = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 
     platform->unk3C = 0;

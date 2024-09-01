@@ -67,7 +67,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     ia75->base.regionX = spriteRegionX;
     ia75->base.regionY = spriteRegionY;
     ia75->base.spriteX = me->x;
-    ia75->base.spriteY = spriteY;
+    ia75->base.id = spriteY;
 
     switch (ia75->unk94) {
         case 0:

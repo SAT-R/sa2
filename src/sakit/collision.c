@@ -197,7 +197,7 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Spri
                         v->unk0 = 3;
                         v->unk1 = eb->base.regionX;
                         v->unk2 = eb->base.regionY;
-                        v->unk3 = eb->base.spriteY;
+                        v->unk3 = eb->base.id;
                     }
 
                     Collision_AdjustPlayerSpeed(&gPlayer);
@@ -221,7 +221,7 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Spri
                         v->unk0 = 3;
                         v->unk1 = eb->base.regionX;
                         v->unk2 = eb->base.regionY;
-                        v->unk3 = eb->base.spriteY;
+                        v->unk3 = eb->base.id;
                     }
 
                     CreateDustCloud(sx, sy);
@@ -242,7 +242,7 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Spri
                     v->unk0 = 3;
                     v->unk1 = eb->base.regionX;
                     v->unk2 = eb->base.regionY;
-                    v->unk3 = eb->base.spriteY;
+                    v->unk3 = eb->base.id;
                 }
 
                 CreateDustCloud(sx, sy);

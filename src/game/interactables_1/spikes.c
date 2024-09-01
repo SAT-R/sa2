@@ -53,7 +53,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     spikes->base.regionY = spriteRegionY;
     spikes->base.me = me;
     spikes->base.spriteX = me->x;
-    spikes->base.spriteY = spriteY;
+    spikes->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -93,7 +93,7 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     spikes->base.regionY = spriteRegionY;
     spikes->base.me = me;
     spikes->base.spriteX = me->x;
-    spikes->base.spriteY = spriteY;
+    spikes->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -210,7 +210,7 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
     spikes->base.regionY = spriteRegionY;
     spikes->base.me = me;
     spikes->base.spriteX = me->x;
-    spikes->base.spriteY = spriteY;
+    spikes->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -386,7 +386,7 @@ void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     spikes->base.regionY = spriteRegionY;
     spikes->base.me = me;
     spikes->base.spriteX = me->x;
-    spikes->base.spriteY = spriteY;
+    spikes->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -452,7 +452,7 @@ void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 sprite
     spikes->base.regionY = spriteRegionY;
     spikes->base.me = me;
     spikes->base.spriteX = me->x;
-    spikes->base.spriteY = spriteY;
+    spikes->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);

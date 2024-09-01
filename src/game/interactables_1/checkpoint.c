@@ -74,7 +74,7 @@ void CreateEntity_Checkpoint(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     chkPt->base.regionY = spriteRegionY;
     chkPt->base.me = me;
     chkPt->base.spriteX = me->x;
-    chkPt->base.spriteY = spriteY;
+    chkPt->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -254,7 +254,7 @@ void CreateEntity_Toggle_Checkpoint(MapEntity *in_ia, u16 spriteRegionX, u16 spr
         toggle->base.regionY = spriteRegionY;
         toggle->base.me = in_ia;
         toggle->base.spriteX = in_ia->x;
-        toggle->base.spriteY = spriteY;
+        toggle->base.id = spriteY;
     }
 
     SET_MAP_ENTITY_INITIALIZED(in_ia);

@@ -35,7 +35,7 @@ void CreateEntity_Circus(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
     circus->base.regionY = spriteRegionY;
     circus->base.me = me;
     circus->base.spriteX = me->x;
-    circus->base.spriteY = spriteY;
+    circus->base.id = spriteY;
 
     if (me->d.sData[1] != 0) {
         circus->clampParam = TRUE;

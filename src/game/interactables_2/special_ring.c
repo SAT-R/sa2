@@ -46,7 +46,7 @@ void CreateEntity_SpecialRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
         ring->base.regionY = spriteRegionY;
         ring->base.me = me;
         ring->base.spriteX = me->x;
-        ring->base.spriteY = spriteY;
+        ring->base.id = spriteY;
 
         s = &ring->displayed;
         s->oamFlags = SPRITE_OAM_ORDER(18);

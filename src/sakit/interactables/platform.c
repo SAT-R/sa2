@@ -96,7 +96,7 @@ void CreateEntity_Platform_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
     platform->base.spriteX = me->x;
-    platform->base.spriteY = spriteY;
+    platform->base.id = spriteY;
     platform->unk40 = 0;
     platform->unk44 = 0;
     platform->unk4C = 0;
@@ -254,7 +254,7 @@ void CreateEntity_Platform_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
     platform->base.spriteX = me->x;
-    platform->base.spriteY = spriteY;
+    platform->base.id = spriteY;
     platform->unk40 = 0;
     platform->unk44 = 0;
     platform->unk4C = 0;
@@ -395,7 +395,7 @@ void Task_800EDF8(void)
                 uStrc->unk0 = 1;
                 uStrc->unk1 = platform->base.regionX;
                 uStrc->unk2 = platform->base.regionY;
-                uStrc->unk3 = platform->base.spriteY;
+                uStrc->unk3 = platform->base.id;
                 uStrc->unk4 = 1;
             }
         }

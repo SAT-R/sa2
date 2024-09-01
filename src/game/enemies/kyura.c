@@ -41,7 +41,7 @@ void CreateEntity_Kyura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     kyura->base.regionY = spriteRegionY;
     kyura->base.me = me;
     kyura->base.spriteX = me->x;
-    kyura->base.spriteY = spriteY;
+    kyura->base.id = spriteY;
 
     kyura->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
     kyura->spawnY = Q(TO_WORLD_POS(me->y, spriteRegionY));

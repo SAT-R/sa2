@@ -333,7 +333,7 @@ void CreateEntity_Propeller(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     propeller->base.regionY = spriteRegionY;
     propeller->base.me = me;
     propeller->base.spriteX = me->x;
-    propeller->base.spriteY = spriteY;
+    propeller->base.id = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 

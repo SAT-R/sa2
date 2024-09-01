@@ -34,7 +34,7 @@ void CreateEntity_Hammerhead(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     hammerhead->base.regionY = spriteRegionY;
     hammerhead->base.me = me;
     hammerhead->base.spriteX = me->x;
-    hammerhead->base.spriteY = spriteY;
+    hammerhead->base.id = spriteY;
 
     hammerhead->unk48 = 0;
     sub_8056EDC(hammerhead);

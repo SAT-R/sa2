@@ -66,7 +66,7 @@ void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     booster->base.regionY = spriteRegionY;
     booster->base.me = me;
     booster->base.spriteX = me->x;
-    booster->base.spriteY = spriteY;
+    booster->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);

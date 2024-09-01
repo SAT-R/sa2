@@ -50,7 +50,7 @@ void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     kiki->base.regionY = spriteRegionY;
     kiki->base.me = me;
     kiki->base.spriteX = me->x;
-    kiki->base.spriteY = spriteY;
+    kiki->base.id = spriteY;
 
     kiki->unk3C = 1;
     kiki->unk3D = 0;

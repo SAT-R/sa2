@@ -5884,69 +5884,65 @@ void Player_InitRampOrDashRing(Player *p)
 
     switch (p->unk6E) {
         case 0: {
-            s32 groundSpeed = p->speedGroundX;
-            s32 speed = (groundSpeed * 3);
-            s16 r5;
-            s16 res;
+            s32 qGroundSpeed = p->speedGroundX;
+            s32 speed = (qGroundSpeed * 3);
+            s16 qSpeedX, qSpeedY;
+
             if (speed < 0) {
                 speed += 7;
             }
-            r5 = (((u32)speed << 13) >> 16);
+            qSpeedX = ((u32)speed / 8);
+            qSpeedY = -ABS(qGroundSpeed) / 6;
 
-            res = -ABS(groundSpeed) / 6;
-
-            p->speedAirX = r5 + Q(3.75);
-            p->speedAirY = res + -Q(3.75);
+            p->speedAirX = qSpeedX + +Q(3.75);
+            p->speedAirY = qSpeedY + -Q(3.75);
         } break;
 
         case 1:
         case 2: {
             s32 groundSpeed = p->speedGroundX;
             s32 speed = (groundSpeed * 3);
-            s16 r5;
-            s16 res;
+            s16 qSpeedX, qSpeedY;
+
             if (speed < 0) {
                 speed += 7;
             }
-            r5 = ((u32)speed / 8);
+            qSpeedX = ((u32)speed / 8);
+            qSpeedY = -ABS(groundSpeed) / 6;
 
-            res = -ABS(groundSpeed) / 6;
-
-            p->speedAirX = r5 + Q(3.75);
-            p->speedAirY = res + -Q(7.50);
+            p->speedAirX = qSpeedX + +Q(3.75);
+            p->speedAirY = qSpeedY + -Q(7.50);
         } break;
 
         case 3: {
             s32 groundSpeed = p->speedGroundX;
             s32 speed = (groundSpeed * 3);
-            s16 r5;
-            s16 res;
+            s16 qSpeedX, qSpeedY;
+
             if (speed < 0) {
                 speed += 7;
             }
-            r5 = (speed / 8u);
+            qSpeedX = (speed / 8u);
+            qSpeedY = -ABS(groundSpeed) / 6;
 
-            res = -ABS(groundSpeed) / 6;
-
-            p->speedAirX = r5 + Q(5.625);
-            p->speedAirY = res + -Q(2.50);
+            p->speedAirX = qSpeedX + +Q(5.625);
+            p->speedAirY = qSpeedY + -Q(2.50);
         } break;
 
         case 4:
         case 5: {
             s32 groundSpeed = p->speedGroundX;
             s32 speed = (groundSpeed * 3);
-            s16 r5;
-            s16 res;
+            s16 qSpeedX, qSpeedY;
+
             if (speed < 0) {
                 speed += 7;
             }
-            r5 = (((u32)speed << 13) >> 16);
+            qSpeedX = (((u32)speed << 13) >> 16);
+            qSpeedY = -ABS(groundSpeed) / 6;
 
-            res = -ABS(groundSpeed) / 6;
-
-            p->speedAirX = r5 + Q(11.25);
-            p->speedAirY = res + -Q(2.50);
+            p->speedAirX = qSpeedX + +Q(11.25);
+            p->speedAirY = qSpeedY + -Q(2.50);
         } break;
     }
 

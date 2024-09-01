@@ -46,7 +46,7 @@ void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     globe->base.regionY = spriteRegionY;
     globe->base.me = me;
     globe->base.spriteX = me->x;
-    globe->base.spriteY = spriteY;
+    globe->base.id = spriteY;
 
     s = &globe->s;
     s->oamFlags = SPRITE_OAM_ORDER(18);

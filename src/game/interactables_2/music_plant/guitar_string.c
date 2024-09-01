@@ -50,7 +50,7 @@ void CreateEntity_GuitarString(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     gs->base.regionY = spriteRegionY;
     gs->base.me = me;
     gs->base.spriteX = me->x;
-    gs->base.spriteY = spriteY;
+    gs->base.id = spriteY;
 
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;

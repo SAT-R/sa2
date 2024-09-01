@@ -87,7 +87,7 @@ void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
     platform->base.spriteX = me->x;
-    platform->base.spriteY = spriteY;
+    platform->base.id = spriteY;
 
     platform->unk40 = 0;
     platform->unk44 = 0;
@@ -193,7 +193,7 @@ static void Task_PlatformThinMain(void)
             unk5510->unk0 = 1;
             unk5510->unk1 = platform->base.regionX;
             unk5510->unk2 = platform->base.regionY;
-            unk5510->unk3 = platform->base.spriteY;
+            unk5510->unk3 = platform->base.id;
             unk5510->unk4 = 0;
         }
         TaskDestroy(gCurTask);

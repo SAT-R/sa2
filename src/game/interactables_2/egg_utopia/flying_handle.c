@@ -81,7 +81,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     flyingHandle->base.regionY = spriteRegionY;
     flyingHandle->base.me = me;
     flyingHandle->base.spriteX = me->x;
-    flyingHandle->base.spriteY = spriteY;
+    flyingHandle->base.id = spriteY;
 
     for (i = 0; i < 3; i++) {
         flyingHandle->unk6C[i][0] = flyingHandle->unk44;

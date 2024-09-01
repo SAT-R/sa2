@@ -49,7 +49,7 @@ typedef struct {
     /* 0x04 */ u16 regionX;
     /* 0x06 */ u16 regionY;
     /* 0x08 */ u8 spriteX;
-    /* 0x09 */ u8 spriteY;
+    /* 0x09 */ u8 id;
 } SpriteBase;
 
 // TODO maybe(?): Integrate this with every enemy

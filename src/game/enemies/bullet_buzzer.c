@@ -39,7 +39,7 @@ void CreateEntity_BulletBuzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     bbuzzer->base.regionY = spriteRegionY;
     bbuzzer->base.me = me;
     bbuzzer->base.spriteX = me->x;
-    bbuzzer->base.spriteY = spriteY;
+    bbuzzer->base.id = spriteY;
 
     ENEMY_SET_SPAWN_POS_FLYING(bbuzzer, me);
 

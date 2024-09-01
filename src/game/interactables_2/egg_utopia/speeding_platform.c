@@ -73,7 +73,7 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
     platform->base.spriteX = me->x;
-    platform->base.spriteY = spriteY;
+    platform->base.id = spriteY;
 
     for (i = 0; i < 3; i++) {
         platform->unk60[i][0] = platform->unk44;

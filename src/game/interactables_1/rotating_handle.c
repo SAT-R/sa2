@@ -44,7 +44,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         rotatingHandle->base.regionY = spriteRegionY;
         rotatingHandle->base.me = me;
         rotatingHandle->base.spriteX = me->x;
-        rotatingHandle->base.spriteY = spriteY;
+        rotatingHandle->base.id = spriteY;
         rotatingHandle->unk3C = 0;
         rotatingHandle->unk3E = 0;
         rotatingHandle->unk40 = 0;

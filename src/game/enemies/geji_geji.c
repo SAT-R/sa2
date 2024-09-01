@@ -47,7 +47,7 @@ void CreateEntity_GejiGeji(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     gg->base.regionY = spriteRegionY;
     gg->base.me = me;
     gg->base.spriteX = me->x;
-    gg->base.spriteY = spriteY;
+    gg->base.id = spriteY;
 
     gg->spawnX = Q(TO_WORLD_POS(me->x, spriteRegionX));
     gg->spawnY = Q(TO_WORLD_POS(me->y, spriteRegionY));

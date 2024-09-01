@@ -237,7 +237,7 @@ void CreateEntity_PropellerSpring(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     ia85->base.regionY = spriteRegionY;
     ia85->base.me = me;
     ia85->base.spriteX = me->x;
-    ia85->base.spriteY = spriteY;
+    ia85->base.id = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 

@@ -46,7 +46,7 @@ void CreateEntity_Gohla(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         gohla->base.regionY = spriteRegionY;
         gohla->base.me = me;
         gohla->base.spriteX = me->x;
-        gohla->base.spriteY = spriteY;
+        gohla->base.id = spriteY;
 
         if (me->d.sData[1]) {
             gohla->unk8C = TRUE;

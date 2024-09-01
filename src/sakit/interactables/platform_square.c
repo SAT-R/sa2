@@ -50,7 +50,7 @@ void CreateEntity_Platform_Square(MapEntity *me, u16 spriteRegionX, u16 spriteRe
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
     platform->base.spriteX = me->x;
-    platform->base.spriteY = spriteY;
+    platform->base.id = spriteY;
     platform->unk40 = 0;
     platform->unk44 = 0;
     platform->unk4C = 0;

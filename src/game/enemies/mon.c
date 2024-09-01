@@ -38,7 +38,7 @@ void CreateEntity_Mon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     mon->base.regionY = spriteRegionY;
     mon->base.me = me;
     mon->base.spriteX = me->x;
-    mon->base.spriteY = spriteY;
+    mon->base.id = spriteY;
 
     // TODO: Isn't this always -1?
     r2 = (-me->d.sData[0] | me->d.sData[0]);

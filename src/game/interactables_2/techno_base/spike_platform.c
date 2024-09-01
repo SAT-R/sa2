@@ -52,7 +52,7 @@ void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     ia78->base.regionX = spriteRegionX;
     ia78->base.regionY = spriteRegionY;
     ia78->base.spriteX = me->x;
-    ia78->base.spriteY = spriteY;
+    ia78->base.id = spriteY;
 
     ia78->unk3C = TO_WORLD_POS(me->x, spriteRegionX);
     ia78->unk40 = TO_WORLD_POS(me->y, spriteRegionY);

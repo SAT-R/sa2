@@ -46,7 +46,7 @@ void CreateEntity_IronBall(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     ia95->base.regionX = spriteRegionX;
     ia95->base.regionY = spriteRegionY;
     ia95->base.spriteX = me->x;
-    ia95->base.spriteY = spriteY;
+    ia95->base.id = spriteY;
 
     s = &ia95->s;
     s->oamFlags = SPRITE_OAM_ORDER(18);

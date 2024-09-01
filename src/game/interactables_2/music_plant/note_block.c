@@ -76,7 +76,7 @@ void CreateEntity_Note_Block(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     block->base.me = me;
 
     block->base.spriteX = me->x;
-    block->base.spriteY = spriteY;
+    block->base.id = spriteY;
 
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
