@@ -3,7 +3,16 @@
 
 #define BOSS_VELOCITY_X           Q(5.00)
 #define BOSS_VELOCITY_Y           Q(0.00)
+#define BOSS_RUSH_VELOCITY_X      Q(5.00)
+#define BOSS_RUSH_VELOCITY_Y      Q(0.00)
 #define BOSS_EXPLOSION_VELOCITY_X Q(5.50)
+
+/*
+ * Boss 1 - Egg Hammer Tank II
+ */
+
+#define BOSS1_VELOCITY_X BOSS_VELOCITY_X
+#define BOSS1_VELOCITY_Y BOSS_VELOCITY_Y
 
 /*
  * Boss 3 - Egg Totem

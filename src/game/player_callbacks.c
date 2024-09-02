@@ -994,11 +994,9 @@ void Player_Tails_TailSwipe(Player *p)
 
     s32 speed = p->speedGroundX;
     if (speed > 0) {
-        if ((speed -= halfUnk4C) < 0)
-            speed = 0;
+        speed = MAX(0, speed - halfUnk4C);
     } else {
-        if ((speed += halfUnk4C) > 0)
-            speed = 0;
+        speed = MIN(0, speed + halfUnk4C);
     }
     p->speedGroundX = speed;
 
@@ -1291,7 +1289,6 @@ void Player_Knuckles_Glide_MainUpdate(Player *p)
                             playerBottomX -= p->spriteOffsetX;
 
                             if (sub_801E4E4(playerBottomY, playerBottomX, p->layer, +8, NULL, sub_801EE64) < 0) {
-
                                 PLAYERFN_SET(Player_Knuckles_FallAfterGlide);
                                 p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL;
                                 p->spriteOffsetX = 6;

@@ -6,24 +6,22 @@
 
 #include "game/sa1_leftovers/collision.h"
 
+#include "game/player_callbacks.h"
 #include "game/save.h"
 #include "game/cheese.h"
 #include "game/bosses/boss_1.h"
 #include "game/bosses/common.h"
 #include "game/bosses/eggmobile_escape_sequence.h"
-#include "game/time_attack/results.h"
 #include "game/cutscenes/level_endings.h"
+#include "game/parameters/bosses.h"
 #include "game/stage/boss_results_transition.h"
-
 #include "game/stage/collision.h"
-#include "game/player_callbacks.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-
 #include "game/stage/results.h"
-
 #include "game/stage/screen_fade.h"
 #include "game/stage/screen_shake.h"
+#include "game/time_attack/results.h"
 
 #include "lib/m4a.h"
 #include "constants/animations.h"
@@ -209,11 +207,11 @@ void CreateEggHammerTankII(void)
     boss->y = Q(155);
 
     if (IS_FINAL_STAGE(gCurrentLevel)) {
-        boss->speedX = Q_8_8(5);
-        boss->speedY = 0;
+        boss->speedX = BOSS_RUSH_VELOCITY_X;
+        boss->speedY = BOSS_RUSH_VELOCITY_Y;
     } else {
-        boss->speedX = Q_8_8(5);
-        boss->speedY = 0;
+        boss->speedX = BOSS1_VELOCITY_X;
+        boss->speedY = BOSS1_VELOCITY_Y;
     }
 
     for (i = 0; i < 8; i++) {
@@ -333,7 +331,7 @@ static void Task_EggHammerTankIIMain(void)
 
     if (unkA8 > 126) {
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
-        boss->speedX = Q_8_8(5);
+        boss->speedX = BOSS1_VELOCITY_X;
         gCurTask->main = Task_803C980;
     }
 
@@ -414,16 +412,16 @@ static void sub_803AA40(void)
 
     if (boss->unkA8 < 33) {
         if (boss->unkA8 == 1) {
-            ts->flags = 1;
-            ts->brightness = 2048;
-            ts->speed = 192;
+            ts->flags = SCREEN_FADE_FLAG_LIGHTEN;
+            ts->brightness = Q(8);
+            ts->speed = Q(0.75);
         }
         UpdateScreenFade(ts);
     } else if (boss->unkA8 < 121) {
         Cheese *thing;
-        ts->flags = 2;
-        ts->brightness = 0;
-        ts->speed = 0;
+        ts->flags = SCREEN_FADE_FLAG_2;
+        ts->brightness = Q(0);
+        ts->speed = Q(0);
         UpdateScreenFade(ts);
 
         if (!IS_FINAL_STAGE(gCurrentLevel) && gSelectedCharacter == CHARACTER_SONIC
@@ -431,13 +429,7 @@ static void sub_803AA40(void)
             gPlayer.charState = CHARSTATE_SONIC_CATCHING_CREAM;
         }
 
-        if (!IS_FINAL_STAGE(gCurrentLevel)) {
-            gWinRegs[WINREG_WININ] = WININ_WIN0_ALL;
-            gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ);
-            return;
-        }
-
-        if (boss->unkA8 == 0x22) {
+        if (IS_FINAL_STAGE(gCurrentLevel) && (boss->unkA8 == 0x22)) {
             s32 x, y;
 
             x = gUnknown_080D6DE4[0][0] - I(gPlayer.x);
@@ -464,7 +456,7 @@ static void sub_803AA40(void)
             gBossIndex++;
         }
     } else {
-        ts->speed = 0x28;
+        ts->speed = Q(40. / 256.);
 
         if (UpdateScreenFade(ts) == SCREEN_FADE_COMPLETE) {
             if (!IS_FINAL_STAGE(gCurrentLevel)) {
@@ -476,6 +468,7 @@ static void sub_803AA40(void)
                     CreateStageResults(gCourseTime, gRingCount, gSpecialRingCount);
                 }
             }
+
             TaskDestroy(gCurTask);
             return;
         }
@@ -730,7 +723,7 @@ static void sub_803B2F8(EggHammerTankII *boss)
     boss->unk94 &= (SIN_PERIOD - 1);
     boss->unk54[1][0] = boss->unk94;
 
-    for (i = 1; i < 8; i++) {
+    for (i = 1; i < ARRAY_COUNT(boss->unk54[0]); i++) {
         boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i]);
     }
 
@@ -747,17 +740,14 @@ static void sub_803B2F8(EggHammerTankII *boss)
         result = sub_8004418(SIN((boss->unk54[1][7] + val) & (SIN_PERIOD - 1)) >> 6,
                              (COS((boss->unk54[1][7] + val) & (SIN_PERIOD - 1)) >> 6) + result);
 
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < ARRAY_COUNT(boss->unk54[0]); i++) {
             boss->unk54[1][i] = result;
         }
         boss->unk94 = result;
         CreateScreenShake(0x800, 0x10, 0x80, 0x14, 0x83);
-    } else {
-        boss->timer--;
-        if (boss->timer == 0) {
-            boss->timer = 30;
-            boss->unkA0 = 4;
-        }
+    } else if (--boss->timer == 0) {
+        boss->timer = 30;
+        boss->unkA0 = 4;
     }
 }
 
@@ -769,7 +759,7 @@ static void sub_803B4A0(EggHammerTankII *boss)
     boss->unk94 += 8;
     boss->unk54[1][0] = boss->unk94;
 
-    for (i = 1; i < 8; i++) {
+    for (i = 1; i < ARRAY_COUNT(boss->unk54[0]); i++) {
         boss->unk54[1][i] += I((boss->unk54[1][i - 1] - boss->unk54[1][i]) * gUnknown_080D7A78[i + 8]);
     }
 

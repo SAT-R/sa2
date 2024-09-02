@@ -262,6 +262,7 @@ struct BlendRegs {
 
 // TODO: Should this be in a GBA-specific header file?
 #define NUM_AFFINE_BACKGROUNDS 2
+#define NUM_BACKGROUNDS        4
 
 // Values to be passed top the affine registers
 // (used by BG2/BG3 in affine screen modes)

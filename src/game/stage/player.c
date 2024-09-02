@@ -734,7 +734,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->timerSpeedup = 0;
     p->unk32 = 0;
     p->unk3C = NULL;
-    p->itemEffect = 0;
+    p->itemEffect = PLAYER_ITEM_EFFECT__NONE;
     p->unk2A = 0;
     p->unk72 = ZONE_TIME_TO_INT(0, 6);
     p->unk7E = 0;

@@ -22,7 +22,7 @@ void TaskDestructor_801E040(struct Task *unused)
     s32 i;
     gCamera.movementTask = NULL;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < NUM_BACKGROUNDS; i++) {
         gBgScrollRegs[i][0] = 0;
         gBgScrollRegs[i][1] = 0;
     }
