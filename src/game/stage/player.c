@@ -3091,7 +3091,8 @@ void sub_8023B5C(Player *p, s32 spriteOffsetY)
     }
 }
 
-void sub_8023C10(Player *p)
+// 0x08023C10
+void Player_Debug_TestRingScatter(Player *p)
 {
     if (p->moveState & MOVESTATE_80000000) {
         s32 speedGroundX = p->speedGroundX;
