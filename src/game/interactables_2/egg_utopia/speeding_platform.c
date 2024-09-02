@@ -109,7 +109,7 @@ static void sub_807F9F0(void)
         s32 res = sub_801F100(platform->y + I(platform->unk48), platform->x + I(platform->unk44), 1, 8, sub_801EC3C);
         if (res < 0) {
             platform->unk4C = FALSE;
-            gPlayer.transition = PLTRANS_PT3;
+            gPlayer.transition = PLTRANS_INIT_JUMP;
             gPlayer.moveState &= ~8;
             gPlayer.unk3C = 0;
         }

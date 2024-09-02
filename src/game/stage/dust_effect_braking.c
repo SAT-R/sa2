@@ -95,7 +95,7 @@ void Task_801F6E0(void)
     }
 }
 
-void sub_801F754(void)
+void CreateBrakingDustEffectRelatedTask(void)
 {
     if (gUnknown_030059D0.t == NULL) {
         struct Task *t = TaskCreate(Task_801F7B4, 0, 0x4000, 0, TaskDestructor_801F7A8);
@@ -104,7 +104,7 @@ void sub_801F754(void)
     }
 }
 
-void sub_801F78C(void)
+void DestroyBrakingDustEffectRelatedTask(void)
 {
     if (gUnknown_030059D0.t != NULL) {
         TaskDestroy(gUnknown_030059D0.t);

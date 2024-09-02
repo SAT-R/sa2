@@ -2032,7 +2032,7 @@ static void Task_SuperEggRoboZMain(void)
         gCurTask->main = Task_804A9D8;
         m4aSongNumStart(SE_260);
         gPlayer.charState = CHARSTATE_IDLE;
-        gPlayer.transition = PLTRANS_PT1;
+        gPlayer.transition = PLTRANS_TOUCH_GROUND;
     }
 }
 

@@ -53,7 +53,7 @@ static void Task_Pipe_Start(void)
         && ((screenY + 24) >= I(gPlayer.y)) && (!(gPlayer.moveState & MOVESTATE_80000))) {
         u8 flag;
 
-        gPlayer.transition = PLTRANS_PT25;
+        gPlayer.transition = PLTRANS_PIPE_A;
 
         flag = (me->unk3 & 0x03) << 4;
         flag |= me->unk4 & 0x0F;
@@ -105,7 +105,7 @@ static void Task_Pipe_End(void)
             gPlayer.layer = PLAYER_LAYER__BACK;
         }
 
-        gPlayer.transition = PLTRANS_PT28;
+        gPlayer.transition = PLTRANS_PIPE_B;
         if (me->unk4 != 0) {
             gPlayer.transition = PLTRANS_PT5;
         }

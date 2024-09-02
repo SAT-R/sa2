@@ -13,16 +13,16 @@
 //  0x1C = Set by IA ClearPipe_End if data[1] is 0
 
 #define PLTRANS_NONE                  0
-#define PLTRANS_PT1                   1
+#define PLTRANS_TOUCH_GROUND          1
 #define PLTRANS_PT2                   2
-#define PLTRANS_PT3                   3
+#define PLTRANS_INIT_JUMP             3
 #define PLTRANS_PT4                   4
 #define PLTRANS_PT5                   5
 #define PLTRANS_PT6                   6
 #define PLTRANS_PT7                   7
 #define PLTRANS_PT8                   8
 #define PLTRANS_PT9                   9
-#define PLTRANS_PT10                  10
+#define PLTRANS_REACHED_GOAL          10
 #define PLTRANS_GRINDING              11
 #define PLTRANS_GRIND_RAIL_END_GROUND 12
 #define PLTRANS_GRIND_RAIL_END_AIR    13
@@ -36,10 +36,10 @@
 #define PLTRANS_SPRING_DOWN_RIGHT     21
 #define PLTRANS_RAMP_AND_DASHRING     22
 #define PLTRANS_PT23                  23
-#define PLTRANS_PT24                  24
-#define PLTRANS_PT25                  25
-#define PLTRANS_PT26                  26
-#define PLTRANS_PT27                  27
-#define PLTRANS_PT28                  28
+#define PLTRANS_DASHRING              24
+#define PLTRANS_PIPE_A                25
+#define PLTRANS_PROPELLER_SPRING      26
+#define PLTRANS_CORKSCREW             27
+#define PLTRANS_PIPE_B                28
 
 #endif // GUARD_PLAYER_TRANSITIONS_H

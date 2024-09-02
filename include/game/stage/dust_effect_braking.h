@@ -4,8 +4,8 @@
 #include "core.h"
 
 struct Task *CreateBrakingDustEffect(s32, s32);
-void sub_801F754(void);
-void sub_801F78C(void);
+void CreateBrakingDustEffectRelatedTask(void);
+void DestroyBrakingDustEffectRelatedTask(void);
 
 typedef struct {
     s8 unk0;

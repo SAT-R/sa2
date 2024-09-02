@@ -83,7 +83,7 @@ static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
     gPlayer.rotation = 0;
     gPlayer.speedAirY = 0;
     gPlayer.moveState = gPlayer.moveState ^ 1;
-    gPlayer.transition = PLTRANS_PT1;
+    gPlayer.transition = PLTRANS_TOUCH_GROUND;
 
     s->graphics.anim = 567;
     s->variant = 2;

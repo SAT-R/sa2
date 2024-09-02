@@ -134,12 +134,12 @@ static void Task_StageGoalToggleMain(void)
 
     if (IS_MULTI_PLAYER) {
         if (x <= I(gPlayer.x) && !(gPlayer.moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_8))) {
-            gPlayer.transition = PLTRANS_PT10;
+            gPlayer.transition = PLTRANS_REACHED_GOAL;
             gStageGoalX = x;
             StageGoalToggle_HandleMultiplayerFinish();
         }
     } else if (x <= I(gPlayer.x) && !(gPlayer.moveState & MOVESTATE_GOAL_REACHED)) {
-        gPlayer.transition = PLTRANS_PT10;
+        gPlayer.transition = PLTRANS_REACHED_GOAL;
         gStageFlags |= 0x21;
         gStageGoalX = x;
 

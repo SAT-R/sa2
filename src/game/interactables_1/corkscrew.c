@@ -42,7 +42,7 @@ void Task_8060D34(void)
             if (x < I(gPlayer.x) && (corkscrew->base.id & 1)) {
                 s32 idx;
                 s32 y24_8;
-                gPlayer.transition = PLTRANS_PT27;
+                gPlayer.transition = PLTRANS_CORKSCREW;
 
                 idx = ((((I(gPlayer.x) - x) * 930) >> 8) + 256) & ONE_CYCLE;
                 gPlayer.x += gPlayer.speedGroundX;
@@ -94,7 +94,7 @@ void sub_8060ED0(void)
         if (player->moveState & MOVESTATE_4) {
             player->transition = PLTRANS_PT2;
         } else {
-            player->transition = PLTRANS_PT1;
+            player->transition = PLTRANS_TOUCH_GROUND;
         }
         gCurTask->main = Task_8060D34;
         return;
@@ -152,7 +152,7 @@ void sub_8061088(void)
             if (x > I(gPlayer.x) && (corkscrew->base.id & 1)) {
                 s32 idx;
                 s32 y24_8;
-                gPlayer.transition = PLTRANS_PT27;
+                gPlayer.transition = PLTRANS_CORKSCREW;
 
                 idx = ((((I(gPlayer.x) - x) * 930) >> 8) + 256) & ONE_CYCLE;
                 gPlayer.x += gPlayer.speedGroundX;
@@ -204,7 +204,7 @@ void sub_8061228(void)
         if (player->moveState & MOVESTATE_4) {
             player->transition = PLTRANS_PT2;
         } else {
-            player->transition = PLTRANS_PT1;
+            player->transition = PLTRANS_TOUCH_GROUND;
         }
         gCurTask->main = sub_8061088;
         return;

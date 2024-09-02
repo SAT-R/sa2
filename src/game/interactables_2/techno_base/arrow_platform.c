@@ -129,7 +129,7 @@ static void sub_807A560(void)
 {
     u8 someBool = FALSE;
     Sprite_IA75 *ia75 = TASK_DATA(gCurTask);
-    gPlayer.transition = PLTRANS_PT1;
+    gPlayer.transition = PLTRANS_TOUCH_GROUND;
     gPlayer.charState = CHARSTATE_IDLE;
 
     if (IS_MULTI_PLAYER) {
@@ -184,7 +184,7 @@ static void sub_807A688(Sprite_IA75 *ia75)
     ia75->unk7C = gPlayer.x - (Q(ia75->x) + ia75->unk74);
     ia75->unk80 = gPlayer.y - (Q(ia75->y) + ia75->unk78);
 
-    gPlayer.transition = PLTRANS_PT1;
+    gPlayer.transition = PLTRANS_TOUCH_GROUND;
     gPlayer.charState = CHARSTATE_IDLE;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;
@@ -227,12 +227,12 @@ static void sub_807A73C(Sprite_IA75 *ia75)
             case 0:
                 gPlayer.speedGroundX = -Q_8_8(7.5);
                 gPlayer.moveState |= 1;
-                gPlayer.transition = PLTRANS_PT1;
+                gPlayer.transition = PLTRANS_TOUCH_GROUND;
                 break;
             case 1:
                 gPlayer.speedGroundX = Q_8_8(7.5);
                 gPlayer.moveState &= ~MOVESTATE_FACING_LEFT;
-                gPlayer.transition = PLTRANS_PT1;
+                gPlayer.transition = PLTRANS_TOUCH_GROUND;
                 break;
             case 2:
                 gPlayer.transition = PLTRANS_SPRING_UP;

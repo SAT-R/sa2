@@ -138,7 +138,7 @@ static bool32 sub_807C424(Sprite_IA85 *ia85)
 
 static void sub_807C4A0(Sprite_IA85 *ia85)
 {
-    gPlayer.transition = PLTRANS_PT26;
+    gPlayer.transition = PLTRANS_PROPELLER_SPRING;
     if (ia85->unk48 & 1)
         gPlayer.speedAirY = -Q(5.5);
     else

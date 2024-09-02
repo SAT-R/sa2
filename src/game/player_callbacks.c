@@ -547,7 +547,7 @@ void Player_SonicAmy_StopNSlam_FallAfterCollision(Player *p)
     sub_8027EF0(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->transition = PLTRANS_PT1;
+        p->transition = PLTRANS_TOUCH_GROUND;
     }
 }
 
@@ -569,7 +569,7 @@ void Player_Sonic_HomingAttack(Player *p)
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
         // Hit ground instead of targeted enemy
-        p->transition = PLTRANS_PT1;
+        p->transition = PLTRANS_TOUCH_GROUND;
     }
 }
 
@@ -702,7 +702,7 @@ void Player_Cream_Flying(Player *p)
     sub_80282EC(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->transition = PLTRANS_PT1;
+        p->transition = PLTRANS_TOUCH_GROUND;
     } else if (p->moveState & MOVESTATE_40) {
         p->charState = CHARSTATE_FALLING_VULNERABLE_B;
         p->transition = PLTRANS_PT5;
@@ -716,7 +716,7 @@ void Player_Cream_ChaoAttack(Player *p)
             p->charState = CHARSTATE_WALK_A;
             p->transition = PLTRANS_PT5;
         } else {
-            p->transition = PLTRANS_PT1;
+            p->transition = PLTRANS_TOUCH_GROUND;
         }
     }
 
@@ -775,7 +775,7 @@ void Player_Cream_StepAttack(Player *p)
             p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
         } else {
-            p->transition = PLTRANS_PT1;
+            p->transition = PLTRANS_TOUCH_GROUND;
         }
     }
 
@@ -794,7 +794,7 @@ void Player_Cream_ChaoRollingAttack(Player *p)
     sub_8027EF0(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->transition = PLTRANS_PT1;
+        p->transition = PLTRANS_TOUCH_GROUND;
     }
 }
 
@@ -803,7 +803,7 @@ void Player_Cream_WindupMidAirChaoAttack(Player *p)
     sub_8027EF0(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->transition = PLTRANS_PT1;
+        p->transition = PLTRANS_TOUCH_GROUND;
     }
 }
 
@@ -951,7 +951,7 @@ void Player_Tails_8012C2C(Player *p)
     sub_80282EC(p);
 
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->transition = PLTRANS_PT1;
+        p->transition = PLTRANS_TOUCH_GROUND;
     } else if (p->moveState & MOVESTATE_40) {
         p->charState = CHARSTATE_FALLING_VULNERABLE_B;
         p->transition = PLTRANS_PT5;
@@ -961,7 +961,7 @@ void Player_Tails_8012C2C(Player *p)
 void Player_8012D1C(Player *p)
 {
     if (!(p->moveState & MOVESTATE_IN_AIR)) {
-        p->transition = PLTRANS_PT1;
+        p->transition = PLTRANS_TOUCH_GROUND;
     }
 
     sub_8028204(p);
@@ -1127,7 +1127,7 @@ void Player_Knuckles_PunchRight(Player *p)
             p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
         } else {
-            p->transition = PLTRANS_PT1;
+            p->transition = PLTRANS_TOUCH_GROUND;
         }
     }
 
@@ -1231,7 +1231,7 @@ void Player_Knuckles_Glide_MainUpdate(Player *p)
 
             sub_8022318(p);
 
-            p->transition = PLTRANS_PT1;
+            p->transition = PLTRANS_TOUCH_GROUND;
         } else {
             PLAYERFN_SET(Player_Knuckles_GlideHardLanding);
             p->charState = CHARSTATE_KNUCKLES_GLIDE_IMPACT;
@@ -1396,7 +1396,7 @@ void Player_Knuckles_GlideSoftFall(Player *p)
         sub_8022318(p);
 
         if ((p->rotation + Q(0.125)) & Q(0.75)) {
-            p->transition = PLTRANS_PT1;
+            p->transition = PLTRANS_TOUCH_GROUND;
         } else {
             p->unk2A = 15;
             p->charState = CHARSTATE_KNUCKLES_GLIDE_FALL_HIT;
@@ -1477,7 +1477,7 @@ void sub_80135BC(Player *p)
     sub_8022318(p);
 
     p->unk2A = 15;
-    p->transition = PLTRANS_PT1;
+    p->transition = PLTRANS_TOUCH_GROUND;
 }
 
 s32 sub_8013644(Player *p)
@@ -1813,7 +1813,7 @@ void Player_8013B6C(Player *p)
             p->charState = CHARSTATE_CURLED_IN_AIR;
             p->transition = PLTRANS_PT5;
         } else {
-            p->transition = PLTRANS_PT1;
+            p->transition = PLTRANS_TOUCH_GROUND;
         }
     }
 
@@ -1838,7 +1838,7 @@ void Player_Knuckles_FallAfterGlide(Player *p)
 void Player_Knuckles_GlideSoftLanding(Player *p)
 {
     if ((p->unk90->s.frameFlags) & SPRITE_FLAG_MASK_ANIM_OVER) {
-        p->transition = PLTRANS_PT1;
+        p->transition = PLTRANS_TOUCH_GROUND;
     }
 
     sub_8027EF0(p);
@@ -1998,7 +1998,7 @@ void Player_8013E34(Player *p)
     p->speedAirY = 0;
 
     if (p->unk90->s.frameFlags & SPRITE_FLAG_MASK_ANIM_OVER) {
-        p->transition = PLTRANS_PT1;
+        p->transition = PLTRANS_TOUCH_GROUND;
     }
 }
 
