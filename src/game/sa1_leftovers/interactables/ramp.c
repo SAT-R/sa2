@@ -9,7 +9,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
-#include "sakit/interactables/ramp.h"
+#include "game/sa1_leftovers/interactables/ramp.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -36,7 +36,7 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     ramp->base.regionY = spriteRegionY;
     ramp->base.me = me;
     ramp->base.spriteX = me->x;
-    ramp->base.spriteY = spriteY;
+    ramp->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);

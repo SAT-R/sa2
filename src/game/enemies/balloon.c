@@ -2,7 +2,7 @@
 #include "malloc_vram.h"
 #include "game/enemies/balloon.h"
 #include "game/entity.h"
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 #include "game/enemies/projectiles.h"
 #include "task.h"
 #include "trig.h"
@@ -36,7 +36,7 @@ void CreateEntity_Balloon(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
         balloon->base.regionY = spriteRegionY;
         balloon->base.me = me;
         balloon->base.spriteX = me->x;
-        balloon->base.spriteY = spriteY;
+        balloon->base.id = spriteY;
 
         ENEMY_SET_SPAWN_POS_FLYING(balloon, me);
 

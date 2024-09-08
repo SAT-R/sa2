@@ -12,9 +12,9 @@
 #include "game/stage/results.h"
 #include "game/stage/ui.h"
 #include "game/stage/game_7.h"
-#include "sakit/globals.h"
-#include "sakit/camera.h"
-#include "sakit/player.h"
+#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_leftovers/camera.h"
+#include "game/sa1_leftovers/player.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

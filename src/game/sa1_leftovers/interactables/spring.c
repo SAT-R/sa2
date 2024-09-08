@@ -9,7 +9,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
-#include "sakit/interactables/spring.h"
+#include "game/sa1_leftovers/interactables/spring.h"
 
 #include "constants/animations.h"
 #include "constants/player_transitions.h"
@@ -109,7 +109,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     spring->base.regionY = spriteRegionY;
     spring->base.me = me;
     spring->base.spriteX = me->x;
-    spring->base.spriteY = spriteY;
+    spring->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);

@@ -4,7 +4,7 @@
 #include "trig.h"
 #include "lib/m4a.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/entity.h"
 #include "game/enemies/kubinaga.h"
@@ -62,7 +62,7 @@ void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     k->base.regionY = spriteRegionY;
     k->base.me = me;
     k->base.spriteX = me->x;
-    k->base.spriteY = spriteY;
+    k->base.id = spriteY;
 
     ENEMY_SET_SPAWN_POS_STATIC(k, me);
     s->x = TO_WORLD_POS(me->x, spriteRegionX);

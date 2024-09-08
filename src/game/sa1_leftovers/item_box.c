@@ -6,8 +6,8 @@
 #include "trig.h"
 #include "lib/m4a.h"
 
-#include "sakit/collision.h"
-#include "sakit/dust_cloud.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/dust_cloud.h"
 
 #include "game/entity.h"
 #include "game/stage/item_tasks.h"
@@ -96,7 +96,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     itembox->base.regionY = spriteRegionY;
     itembox->base.me = me;
     itembox->base.spriteX = me->x;
-    itembox->base.spriteY = spriteY;
+    itembox->base.id = spriteY;
 
     s = &itembox->s;
     s->oamFlags = SPRITE_OAM_ORDER(19);
@@ -149,7 +149,7 @@ void sub_800B1AC(Entity_ItemBox *itembox)
         unk->unk0 = 2;
         unk->unk1 = itembox->base.regionX;
         unk->unk2 = itembox->base.regionY;
-        unk->unk3 = itembox->base.spriteY;
+        unk->unk3 = itembox->base.id;
     }
 
     gCurTask->main = Task_800B780;

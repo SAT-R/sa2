@@ -94,7 +94,7 @@ void CreateEntity_Launcher(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     launcher->base.regionY = spriteRegionY;
     launcher->base.me = me;
     launcher->base.spriteX = me->x;
-    launcher->base.spriteY = spriteY;
+    launcher->base.id = spriteY;
 
     switch (launcher->kind) {
         case LAUNCHER_KIND(LAUN_DIR_LEFT, LAUN_GRAVITY_DOWN): {
@@ -197,7 +197,7 @@ static void Task_807DBF0(void)
     } else {
         if (gPlayer.timerInvulnerability != 120) {
             if (gPlayer.frameInput & gPlayerControls.jump) {
-                gPlayer.transition = PLTRANS_PT3;
+                gPlayer.transition = PLTRANS_INIT_JUMP;
 
                 gPlayer.moveState &= ~MOVESTATE_400000;
                 launcher->unk48 = FALSE;

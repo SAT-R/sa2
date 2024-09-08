@@ -6,10 +6,10 @@
 #include "bg_triangles.h"
 #include "malloc_vram.h"
 #include "lib/m4a.h"
-#include "sakit/globals.h"
-#include "sakit/camera.h"
-#include "sakit/collision.h"
-#include "sakit/player.h"
+#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_leftovers/camera.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/player.h"
 #include "game/bosses/common.h"
 #include "game/player_callbacks.h" // UpdateHomingPosition
 #include "game/cheese.h"
@@ -2032,7 +2032,7 @@ static void Task_SuperEggRoboZMain(void)
         gCurTask->main = Task_804A9D8;
         m4aSongNumStart(SE_260);
         gPlayer.charState = CHARSTATE_IDLE;
-        gPlayer.transition = PLTRANS_PT1;
+        gPlayer.transition = PLTRANS_TOUCH_GROUND;
     }
 }
 

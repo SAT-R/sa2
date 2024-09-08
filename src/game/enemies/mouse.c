@@ -1,6 +1,6 @@
 #include "global.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/entity.h"
 #include "game/enemies/mouse.h"
@@ -38,7 +38,7 @@ void CreateEntity_Mouse(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         mouse->base.regionY = spriteRegionY;
         mouse->base.me = me;
         mouse->base.spriteX = me->x;
-        mouse->base.spriteY = spriteY;
+        mouse->base.id = spriteY;
 
         if (me->d.sData[1] != 0) {
             mouse->unk50 = 1;

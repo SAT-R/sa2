@@ -32,7 +32,7 @@ static void Task_InclineRamp(void)
     if (!(moveState & MOVESTATE_DEAD) && (screenX <= I(gPlayer.x)) && ((screenX + me->d.uData[2] * TILE_WIDTH) >= I(gPlayer.x))
         && (screenY <= I(gPlayer.y)) && ((screenY + me->d.uData[3] * TILE_WIDTH) >= I(gPlayer.y)) && (!(moveState & MOVESTATE_IN_AIR))) {
         //  spriteY == me->d.uData[0]; (set in initSprite, below)
-        if (((s8)ramp->base.spriteY) == 0) {
+        if (((s8)ramp->base.id) == 0) {
             if (gPlayer.speedAirX > Q(4)) {
                 moveState &= ~MOVESTATE_8;
                 moveState |= MOVESTATE_IN_AIR;
@@ -106,7 +106,7 @@ void CreateEntity_InclineRamp(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     ramp->base.regionX = spriteRegionY;
     ramp->base.me = me;
 
-    ramp->base.spriteY = me->d.uData[0];
+    ramp->base.id = me->d.uData[0];
     ramp->base.spriteX = me->x;
     SET_MAP_ENTITY_INITIALIZED(me);
 }

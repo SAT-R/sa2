@@ -3,10 +3,10 @@
 #include "core.h"
 #include "malloc_ewram.h"
 
-#include "sakit/camera.h"
-#include "sakit/collect_ring_effect.h"
-#include "sakit/ring.h"
-#include "sakit/rings_manager.h"
+#include "game/sa1_leftovers/camera.h"
+#include "game/sa1_leftovers/collect_ring_effect.h"
+#include "game/sa1_leftovers/ring.h"
+#include "game/sa1_leftovers/rings_manager.h"
 
 #include "game/entity.h"
 #include "game/stage/player_super_sonic.h"

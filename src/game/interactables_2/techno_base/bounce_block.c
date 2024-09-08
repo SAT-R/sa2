@@ -60,7 +60,7 @@ void CreateEntity_NoteBlock(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     noteBlock->base.regionY = spriteRegionY;
     noteBlock->base.me = me;
     noteBlock->base.spriteX = me->x;
-    noteBlock->base.spriteY = spriteY;
+    noteBlock->base.id = spriteY;
 
     s = &noteBlock->s;
     s->oamFlags = SPRITE_OAM_ORDER(18);

@@ -119,7 +119,7 @@ struct Task *TaskCreate(TaskMain taskMain, u16 structSize, u16 priority, u16 fla
     task->unk18 = 0;
     task->data = (IwramData)(uintptr_t)IwramMalloc(structSize);
 #if CLEAR_TASK_MEMORY_ON_DESTROY
-    task->dataSize = (task->data != NULL) ? structSize : 0;
+    task->dataSize = (task->data != (TaskPtr32)NULL) ? structSize : 0;
 #endif
     task->parent = (TaskPtr32)gCurTask;
 #if ENABLE_TASK_LOGGING

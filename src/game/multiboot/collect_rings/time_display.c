@@ -2,7 +2,7 @@
 #include "malloc_vram.h"
 #include "flags.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 #include "game/multiboot/collect_rings/time_display.h"
 
 #include "constants/animations.h"

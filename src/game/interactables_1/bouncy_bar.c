@@ -7,8 +7,8 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "lib/m4a.h"
-#include "sakit/collision.h"
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"
@@ -45,7 +45,7 @@ void CreateEntity_BouncyBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     bar->base.regionY = spriteRegionY;
     bar->base.me = me;
     bar->base.spriteX = me->x;
-    bar->base.spriteY = spriteY;
+    bar->base.id = spriteY;
 
     bar->unk3C = 0;
     bar->unk3D = 0;

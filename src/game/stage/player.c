@@ -4,8 +4,8 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 
-#include "sakit/music_manager.h"
-#include "sakit/input_buffer.h"
+#include "game/sa1_leftovers/music_manager.h"
+#include "game/sa1_leftovers/input_buffer.h"
 
 #include "game/save.h"
 
@@ -48,6 +48,7 @@
 #include "constants/char_states.h"
 #include "constants/player_transitions.h"
 #include "constants/songs.h"
+#include "constants/zones.h"
 
 typedef struct {
     /* 0x00 */ u8 unk0;
@@ -566,7 +567,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
 
     PLAYERFN_SET(Player_TouchGround);
 
-    sub_801F754();
+    CreateBrakingDustEffectRelatedTask();
     InitPlayerHitRingsScatter();
 
     if ((gInputRecorder.mode == RECORDER_RECORD)) {
@@ -734,7 +735,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     p->timerSpeedup = 0;
     p->unk32 = 0;
     p->unk3C = NULL;
-    p->itemEffect = 0;
+    p->itemEffect = PLAYER_ITEM_EFFECT__NONE;
     p->unk2A = 0;
     p->unk72 = ZONE_TIME_TO_INT(0, 6);
     p->unk7E = 0;
@@ -3090,7 +3091,8 @@ void sub_8023B5C(Player *p, s32 spriteOffsetY)
     }
 }
 
-void sub_8023C10(Player *p)
+// 0x08023C10
+void Player_Debug_TestRingScatter(Player *p)
 {
     if (p->moveState & MOVESTATE_80000000) {
         s32 speedGroundX = p->speedGroundX;
@@ -3339,13 +3341,13 @@ void CallPlayerTransition(Player *p)
 {
     if (p->transition) {
         switch (p->transition - 1) {
-            case PLTRANS_PT1 - 1: {
+            case PLTRANS_TOUCH_GROUND - 1: {
                 PLAYERFN_SET(Player_TouchGround);
             } break;
             case PLTRANS_PT2 - 1: {
                 PLAYERFN_SET(Player_8025A0C);
             } break;
-            case PLTRANS_PT3 - 1: {
+            case PLTRANS_INIT_JUMP - 1: {
                 p->moveState &= ~(MOVESTATE_400000 | MOVESTATE_IGNORE_INPUT);
                 PLAYERFN_SET(Player_InitJump);
             } break;
@@ -3370,7 +3372,7 @@ void CallPlayerTransition(Player *p)
             case PLTRANS_PT9 - 1: {
                 PLAYERFN_SET(Player_8027250);
             } break;
-            case PLTRANS_PT10 - 1: {
+            case PLTRANS_REACHED_GOAL - 1: {
                 if (gGameMode == GAME_MODE_TIME_ATTACK) {
                     gStageFlags |= STAGE_FLAG__TURN_OFF_TIMER;
                 }
@@ -3440,7 +3442,7 @@ void CallPlayerTransition(Player *p)
             case PLTRANS_RAMP_AND_DASHRING - 1: {
                 PLAYERFN_SET(Player_InitRampOrDashRing);
             } break;
-            case PLTRANS_PT24 - 1: {
+            case PLTRANS_DASHRING - 1: {
                 PLAYERFN_SET(Player_InitDashRing);
             } break;
             case PLTRANS_GRINDING - 1: {
@@ -3455,16 +3457,16 @@ void CallPlayerTransition(Player *p)
             case PLTRANS_PT23 - 1: {
                 PLAYERFN_SET(Player_802A258);
             } break;
-            case PLTRANS_PT25 - 1: {
+            case PLTRANS_PIPE_A - 1: {
                 PLAYERFN_SET(Player_8026E24);
             } break;
-            case PLTRANS_PT28 - 1: {
+            case PLTRANS_PIPE_B - 1: {
                 PLAYERFN_SET(Player_8026F10);
             } break;
-            case PLTRANS_PT26 - 1: {
+            case PLTRANS_PROPELLER_SPRING - 1: {
                 PLAYERFN_SET(Player_8026FC8);
             } break;
-            case PLTRANS_PT27 - 1: {
+            case PLTRANS_CORKSCREW - 1: {
                 PLAYERFN_SET(Player_8027114);
             } break;
         }
@@ -5223,7 +5225,7 @@ void Player_InitVictoryPoseTransition(Player *p)
 {
     Player_CameraShift_inline(p);
 
-    p->unk72 = 90;
+    p->unk72 = ZONE_TIME_TO_INT(0, 1.5);
 
     if (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
         switch (gCurrentLevel & 0x3) {
@@ -5884,69 +5886,65 @@ void Player_InitRampOrDashRing(Player *p)
 
     switch (p->unk6E) {
         case 0: {
-            s32 groundSpeed = p->speedGroundX;
-            s32 speed = (groundSpeed * 3);
-            s16 r5;
-            s16 res;
+            s32 qGroundSpeed = p->speedGroundX;
+            s32 speed = (qGroundSpeed * 3);
+            s16 qSpeedX, qSpeedY;
+
             if (speed < 0) {
                 speed += 7;
             }
-            r5 = (((u32)speed << 13) >> 16);
+            qSpeedX = ((u32)speed / 8);
+            qSpeedY = -ABS(qGroundSpeed) / 6;
 
-            res = -ABS(groundSpeed) / 6;
-
-            p->speedAirX = r5 + Q(3.75);
-            p->speedAirY = res + -Q(3.75);
+            p->speedAirX = qSpeedX + +Q(3.75);
+            p->speedAirY = qSpeedY + -Q(3.75);
         } break;
 
         case 1:
         case 2: {
             s32 groundSpeed = p->speedGroundX;
             s32 speed = (groundSpeed * 3);
-            s16 r5;
-            s16 res;
+            s16 qSpeedX, qSpeedY;
+
             if (speed < 0) {
                 speed += 7;
             }
-            r5 = ((u32)speed / 8);
+            qSpeedX = ((u32)speed / 8);
+            qSpeedY = -ABS(groundSpeed) / 6;
 
-            res = -ABS(groundSpeed) / 6;
-
-            p->speedAirX = r5 + Q(3.75);
-            p->speedAirY = res + -Q(7.50);
+            p->speedAirX = qSpeedX + +Q(3.75);
+            p->speedAirY = qSpeedY + -Q(7.50);
         } break;
 
         case 3: {
             s32 groundSpeed = p->speedGroundX;
             s32 speed = (groundSpeed * 3);
-            s16 r5;
-            s16 res;
+            s16 qSpeedX, qSpeedY;
+
             if (speed < 0) {
                 speed += 7;
             }
-            r5 = (speed / 8u);
+            qSpeedX = (speed / 8u);
+            qSpeedY = -ABS(groundSpeed) / 6;
 
-            res = -ABS(groundSpeed) / 6;
-
-            p->speedAirX = r5 + Q(5.625);
-            p->speedAirY = res + -Q(2.50);
+            p->speedAirX = qSpeedX + +Q(5.625);
+            p->speedAirY = qSpeedY + -Q(2.50);
         } break;
 
         case 4:
         case 5: {
             s32 groundSpeed = p->speedGroundX;
             s32 speed = (groundSpeed * 3);
-            s16 r5;
-            s16 res;
+            s16 qSpeedX, qSpeedY;
+
             if (speed < 0) {
                 speed += 7;
             }
-            r5 = (((u32)speed << 13) >> 16);
+            qSpeedX = (((u32)speed << 13) >> 16);
+            qSpeedY = -ABS(groundSpeed) / 6;
 
-            res = -ABS(groundSpeed) / 6;
-
-            p->speedAirX = r5 + Q(11.25);
-            p->speedAirY = res + -Q(2.50);
+            p->speedAirX = qSpeedX + +Q(11.25);
+            p->speedAirY = qSpeedY + -Q(2.50);
         } break;
     }
 
@@ -6293,7 +6291,7 @@ void sub_80299FC(Player *p)
     p->spriteTask = NULL;
 
     if (p->unk60 == 0) {
-        sub_801F78C();
+        DestroyBrakingDustEffectRelatedTask();
         DestroyRingsScatterTask();
     }
 }
@@ -6656,7 +6654,7 @@ void Player_ClearMovestate_IsInScriptedSequence(void) { gPlayer.moveState &= ~MO
 
 void Player_DisableInputAndBossTimer(void)
 {
-    gPlayer.transition = PLTRANS_PT10;
+    gPlayer.transition = PLTRANS_REACHED_GOAL;
     gStageFlags |= (STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__2 | STAGE_FLAG__ACT_START);
 
     if (gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {

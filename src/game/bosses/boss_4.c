@@ -4,8 +4,8 @@
 #include "task.h"
 #include "trig.h"
 #include "lib/m4a.h"
-#include "sakit/camera.h"
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/camera.h"
+#include "game/sa1_leftovers/collision.h"
 
 #include "game/game.h" // sub_801E4E4
 

@@ -1,5 +1,5 @@
 #include "core.h"
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/collision.h"
 #include "game/unknown_effect.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

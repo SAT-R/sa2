@@ -5,8 +5,8 @@
 #include "malloc_vram.h"
 #include "lib/m4a.h"
 
-#include "sakit/collision.h"
-#include "sakit/interactables/platform_thin.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/interactables/platform_thin.h"
 #include "game/entity.h"
 
 #include "game/multiplayer/player_unk_1.h"
@@ -87,7 +87,7 @@ void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
     platform->base.spriteX = me->x;
-    platform->base.spriteY = spriteY;
+    platform->base.id = spriteY;
 
     platform->unk40 = 0;
     platform->unk44 = 0;
@@ -193,7 +193,7 @@ static void Task_PlatformThinMain(void)
             unk5510->unk0 = 1;
             unk5510->unk1 = platform->base.regionX;
             unk5510->unk2 = platform->base.regionY;
-            unk5510->unk3 = platform->base.spriteY;
+            unk5510->unk3 = platform->base.id;
             unk5510->unk4 = 0;
         }
         TaskDestroy(gCurTask);
@@ -210,7 +210,8 @@ static void Task_PlatformThinMain(void)
     return;
 }
 // (95.35%) https://decomp.me/scratch/8xD3v
-NONMATCH("asm/non_matching/sakit/interactables/CreatePlatformBreakParticles.inc", static void CreatePlatformBreakParticles(s16 x, s16 y))
+NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/CreatePlatformBreakParticles.inc",
+         static void CreatePlatformBreakParticles(s16 x, s16 y))
 {
     struct Task *t = TaskCreate(Task_PlatformBreakParticlesMain, sizeof(Platform_D1C), 0x2011, 0, TaskDestructor_PlatformBreakParticles);
     Platform_D1C *platform = TASK_DATA(t);

@@ -81,7 +81,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     flyingHandle->base.regionY = spriteRegionY;
     flyingHandle->base.me = me;
     flyingHandle->base.spriteX = me->x;
-    flyingHandle->base.spriteY = spriteY;
+    flyingHandle->base.id = spriteY;
 
     for (i = 0; i < 3; i++) {
         flyingHandle->unk6C[i][0] = flyingHandle->unk44;
@@ -167,7 +167,7 @@ static void sub_807F484(Sprite_FlyingHandle *flyingHandle)
     gPlayer.spriteOffsetX = 6;
     gPlayer.spriteOffsetY = 14;
     gPlayer.moveState &= ~MOVESTATE_4;
-    gPlayer.transition = PLTRANS_PT3;
+    gPlayer.transition = PLTRANS_INIT_JUMP;
     gPlayer.speedGroundX = 0;
     gPlayer.speedAirX = 0;
     gPlayer.speedAirY = 0;

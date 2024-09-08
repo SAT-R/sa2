@@ -2,11 +2,11 @@
 #include "rect.h"
 #include "sprite.h"
 #include "lib/m4a.h"
-#include "sakit/globals.h"
-#include "sakit/collision.h"
-#include "sakit/dust_cloud.h"
-#include "sakit/entities_manager.h"
-#include "sakit/player.h"
+#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/dust_cloud.h"
+#include "game/sa1_leftovers/entities_manager.h"
+#include "game/sa1_leftovers/player.h"
 
 #include "game/cheese.h"
 #include "game/entity.h"
@@ -164,7 +164,7 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
 }
 
 // (92.68%) https://decomp.me/scratch/CcZm5
-NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
+NONMATCH("asm/non_matching/game/sa1_leftovers/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
 {
     PlayerSpriteInfo *psi = gPlayer.unk90;
     Sprite *sprPlayer = &psi->s;
@@ -197,7 +197,7 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Spri
                         v->unk0 = 3;
                         v->unk1 = eb->base.regionX;
                         v->unk2 = eb->base.regionY;
-                        v->unk3 = eb->base.spriteY;
+                        v->unk3 = eb->base.id;
                     }
 
                     Collision_AdjustPlayerSpeed(&gPlayer);
@@ -221,7 +221,7 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Spri
                         v->unk0 = 3;
                         v->unk1 = eb->base.regionX;
                         v->unk2 = eb->base.regionY;
-                        v->unk3 = eb->base.spriteY;
+                        v->unk3 = eb->base.id;
                     }
 
                     CreateDustCloud(sx, sy);
@@ -242,7 +242,7 @@ NONMATCH("asm/non_matching/sakit/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Spri
                     v->unk0 = 3;
                     v->unk1 = eb->base.regionX;
                     v->unk2 = eb->base.regionY;
-                    v->unk3 = eb->base.spriteY;
+                    v->unk3 = eb->base.id;
                 }
 
                 CreateDustCloud(sx, sy);

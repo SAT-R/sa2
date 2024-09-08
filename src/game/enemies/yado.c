@@ -1,8 +1,8 @@
 #include "global.h"
 #include "malloc_vram.h"
-#include "sakit/collision.h"
-#include "sakit/dust_cloud.h"
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/dust_cloud.h"
+#include "game/sa1_leftovers/entities_manager.h"
 #include "game/entity.h"
 #include "game/cheese.h"
 #include "game/enemies/projectiles.h"
@@ -47,7 +47,7 @@ void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     yado->base.regionY = spriteRegionY;
     yado->base.me = me;
     yado->base.spriteX = me->x;
-    yado->base.spriteY = spriteY;
+    yado->base.id = spriteY;
 
     if (me->d.sData[1] != 0) {
         yado->clampParam = TRUE;
@@ -166,7 +166,7 @@ void Task_8055084(void)
                             unk->unk0 = 3;
                             unk->unk1 = yado2->base.regionX;
                             unk->unk2 = yado2->base.regionY;
-                            unk->unk3 = yado2->base.spriteY;
+                            unk->unk3 = yado2->base.id;
                         }
                         x3 = x;
                         y3 = y;

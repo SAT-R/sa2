@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 
 #include "game/stage/player_controls.h"
 #include "constants/zones.h"

@@ -3,7 +3,7 @@
 #include "sprite.h"
 #include "task.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -52,7 +52,7 @@ void CreateEntity_PlatformCrumbling(MapEntity *me, u16 spriteRegionX, u16 sprite
     base->regionY = spriteRegionY;
     base->me = me;
     base->spriteX = me->x;
-    base->spriteY = spriteY;
+    base->id = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 
     platform->unk3C = 0;

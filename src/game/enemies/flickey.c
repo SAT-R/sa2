@@ -1,8 +1,8 @@
 #include "global.h"
 #include "malloc_vram.h"
 #include "game/entity.h"
-#include "sakit/collision.h"
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/entities_manager.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "task.h"
@@ -53,7 +53,7 @@ void CreateEntity_Flickey(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
         flickey->base.regionY = spriteRegionY;
         flickey->base.me = me;
         flickey->base.spriteX = me->x;
-        flickey->base.spriteY = spriteY;
+        flickey->base.id = spriteY;
 
         ENEMY_SET_SPAWN_POS_FLYING(flickey, me);
 

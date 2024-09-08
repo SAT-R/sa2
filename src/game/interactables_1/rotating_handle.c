@@ -9,8 +9,8 @@
 #include "game/stage/camera.h"
 #include "game/stage/player_controls.h"
 #include "game/interactables_1/rotating_handle.h"
-#include "sakit/collision.h"
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "malloc_vram.h"
 #include "sprite.h"
@@ -44,7 +44,7 @@ void CreateEntity_RotatingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteReg
         rotatingHandle->base.regionY = spriteRegionY;
         rotatingHandle->base.me = me;
         rotatingHandle->base.spriteX = me->x;
-        rotatingHandle->base.spriteY = spriteY;
+        rotatingHandle->base.id = spriteY;
         rotatingHandle->unk3C = 0;
         rotatingHandle->unk3E = 0;
         rotatingHandle->unk40 = 0;

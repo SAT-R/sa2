@@ -41,7 +41,7 @@ void CreateEntity_TurnAroundBar(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     turnAroundBar->base.regionY = spriteRegionY;
     turnAroundBar->base.me = me;
     turnAroundBar->base.spriteX = me->x;
-    turnAroundBar->base.spriteY = spriteY;
+    turnAroundBar->base.id = spriteY;
 
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
@@ -83,7 +83,7 @@ static void sub_8073474(Sprite_TurnAroundBar *turnAroundBar)
     gPlayer.rotation = 0;
     gPlayer.speedAirY = 0;
     gPlayer.moveState = gPlayer.moveState ^ 1;
-    gPlayer.transition = PLTRANS_PT1;
+    gPlayer.transition = PLTRANS_TOUCH_GROUND;
 
     s->graphics.anim = 567;
     s->variant = 2;

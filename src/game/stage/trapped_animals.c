@@ -1,7 +1,7 @@
 #include "global.h"
 #include "trig.h"
 
-#include "sakit/globals.h"
+#include "game/sa1_leftovers/globals.h"
 
 #include "game/stage/ui.h"
 #include "game/stage/collision.h"

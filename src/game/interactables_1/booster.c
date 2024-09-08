@@ -4,8 +4,8 @@
 #include "task.h"
 #include "lib/m4a.h"
 
-#include "sakit/collision.h"
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/entity.h"
 #include "game/stage/player.h"
@@ -66,7 +66,7 @@ void CreateEntity_Booster(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     booster->base.regionY = spriteRegionY;
     booster->base.me = me;
     booster->base.spriteX = me->x;
-    booster->base.spriteY = spriteY;
+    booster->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);

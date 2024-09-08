@@ -45,7 +45,7 @@ void CreateEntity_Decoration(MapEntity *me, u16 regionX, u16 regionY, u8 spriteY
 
         base->base.me = me;
         base->base.spriteX = me->x;
-        base->base.spriteY = spriteY;
+        base->base.id = spriteY;
 
         s->x = TO_WORLD_POS(me->x, regionX);
         s->y = TO_WORLD_POS(me->y, regionY);

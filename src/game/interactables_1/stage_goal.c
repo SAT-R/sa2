@@ -4,7 +4,7 @@
 
 #include "malloc_vram.h"
 
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/collision.h"
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -49,7 +49,7 @@ void CreateEntity_StageGoal(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     stageGoal->base.regionY = spriteRegionY;
     stageGoal->base.me = me;
     stageGoal->base.spriteX = me->x;
-    stageGoal->base.spriteY = spriteY;
+    stageGoal->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);
@@ -134,12 +134,12 @@ static void Task_StageGoalToggleMain(void)
 
     if (IS_MULTI_PLAYER) {
         if (x <= I(gPlayer.x) && !(gPlayer.moveState & (MOVESTATE_GOAL_REACHED | MOVESTATE_8))) {
-            gPlayer.transition = PLTRANS_PT10;
+            gPlayer.transition = PLTRANS_REACHED_GOAL;
             gStageGoalX = x;
             StageGoalToggle_HandleMultiplayerFinish();
         }
     } else if (x <= I(gPlayer.x) && !(gPlayer.moveState & MOVESTATE_GOAL_REACHED)) {
-        gPlayer.transition = PLTRANS_PT10;
+        gPlayer.transition = PLTRANS_REACHED_GOAL;
         gStageFlags |= 0x21;
         gStageGoalX = x;
 

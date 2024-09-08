@@ -161,10 +161,10 @@ static void sub_80727F4(Sprite_WindUpStick *windUpStick)
             gPlayer.transition = PLTRANS_PT7;
             break;
         case 3:
-            gPlayer.transition = PLTRANS_PT1;
+            gPlayer.transition = PLTRANS_TOUCH_GROUND;
             break;
         case 4:
-            gPlayer.transition = PLTRANS_PT1;
+            gPlayer.transition = PLTRANS_TOUCH_GROUND;
             gPlayer.moveState ^= 1;
             break;
     }

@@ -2,7 +2,7 @@
 #define GUARD_player_callbacks_H
 
 #include "core.h"
-#include "sakit/player.h"
+#include "game/sa1_leftovers/player.h"
 
 struct Task *Player_SonicAmy_InitSkidAttackGfxTask(s32 x, s32 y, u16 p2);
 void Player_SonicAmy_InitSkidAttack(Player *);
@@ -22,6 +22,6 @@ void Player_Knuckles_InitGlide(Player *);
 void Player_Knuckles_InitDrillClaw(Player *);
 void Player_Amy_InitHammerAttack(Player *);
 void Player_801225C(Player *p);
-void Player_UpdateHomingPosition(s32, s32);
+void Player_UpdateHomingPosition(s32 qX, s32 qY);
 
 #endif // GUARD_player_callbacks_H

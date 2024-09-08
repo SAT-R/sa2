@@ -385,7 +385,7 @@ static void sub_80731D4(void)
 static void sub_807321C(void)
 {
     gPlayer.moveState &= ~MOVESTATE_400000;
-    gPlayer.transition = PLTRANS_PT3;
+    gPlayer.transition = PLTRANS_INIT_JUMP;
 }
 
 static bool32 sub_8073238(Sprite_HookRail *hookRail)

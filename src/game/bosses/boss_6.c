@@ -5,8 +5,8 @@
 
 #include "lib/m4a.h"
 
-#include "sakit/globals.h"
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_leftovers/collision.h"
 
 #include "game/bosses/boss_6.h"
 #include "game/bosses/common.h"

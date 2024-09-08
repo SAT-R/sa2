@@ -4,7 +4,7 @@
 #include "task.h"
 
 #include "game/entity.h"
-#include "sakit/interactables/044.h"
+#include "game/sa1_leftovers/interactables/044.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
@@ -22,17 +22,17 @@ typedef struct {
 void Task_Interactable_044(void)
 {
     Sprite_IA044 *ia044 = TASK_DATA(gCurTask);
-    SpriteBase *object = &ia044->base;
-    MapEntity *me = object->me;
+    SpriteBase *base = &ia044->base;
+    MapEntity *me = base->me;
     s32 screenX, screenY;
     u32 regionY, regionX;
     s32 left, top;
     s32 playerX, playerY;
     s32 spriteX;
 
-    spriteX = object->spriteX;
-    regionX = object->regionX;
-    regionY = object->regionY;
+    spriteX = base->spriteX;
+    regionX = base->regionX;
+    regionY = base->regionY;
     screenX = TO_WORLD_POS(spriteX, regionX);
     screenY = TO_WORLD_POS(me->y, regionY);
 
@@ -47,10 +47,10 @@ void Task_Interactable_044(void)
             u32 moveState = gPlayer.moveState;
             if (((moveState & (MOVESTATE_40000 | MOVESTATE_IN_AIR)) == MOVESTATE_IN_AIR) && (gPlayer.speedAirY < 0)) {
                 if (moveState & MOVESTATE_10000000) {
-                    object->spriteY = 1;
+                    base->id = 1;
                 }
 
-                if ((!(moveState & MOVESTATE_10000000) || !(gPlayer.moveState & MOVESTATE_10000000)) && object->spriteY == 0) {
+                if ((!(moveState & MOVESTATE_10000000) || !(gPlayer.moveState & MOVESTATE_10000000)) && base->id == 0) {
                     gPlayer.transition = PLTRANS_PT23;
                     gPlayer.unk6E = 0;
 
@@ -61,10 +61,10 @@ void Task_Interactable_044(void)
                 }
             }
         } else {
-            object->spriteY = 0;
+            base->id = 0;
         }
     } else {
-        object->spriteY = 0;
+        base->id = 0;
     }
 
     screenX -= gCamera.x;
@@ -73,6 +73,7 @@ void Task_Interactable_044(void)
     if (IS_OUT_OF_CAM_RANGE_TYPED(u32, screenX, screenY)) {
         me->x = spriteX;
         TaskDestroy(gCurTask);
+        return;
     }
 }
 #undef sBottom
@@ -89,6 +90,6 @@ void CreateEntity_044(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 sp
     ia044->base.regionY = spriteRegionY;
     ia044->base.me = me;
     ia044->base.spriteX = me->x;
-    ia044->base.spriteY = 0;
+    ia044->base.id = 0;
     SET_MAP_ENTITY_INITIALIZED(me);
 }

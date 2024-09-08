@@ -1,11 +1,11 @@
 #include "core.h"
 #include "malloc_vram.h"
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/collision.h"
 
 #include "game/entity.h"
 #include "game/mystery_item_box.h"
 #include "game/multiplayer/player_unk_1.h"
-#include "sakit/dust_cloud.h"
+#include "game/sa1_leftovers/dust_cloud.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "lib/m4a.h"
@@ -80,7 +80,7 @@ void CreateEntity_MysteryItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteReg
     itemBox->base.regionY = spriteRegionY;
     itemBox->base.me = me;
     itemBox->base.spriteX = me->x;
-    itemBox->base.spriteY = spriteY;
+    itemBox->base.id = spriteY;
     SET_MAP_ENTITY_INITIALIZED(me);
 
     s = &itemBox->box;
@@ -276,7 +276,7 @@ static void sub_8086474(Sprite_MysteryItemBox *itemBox)
     unk5510->unk0 = 5;
     unk5510->unk1 = itemBox->base.regionX;
     unk5510->unk2 = itemBox->base.regionY;
-    unk5510->unk3 = itemBox->base.spriteY;
+    unk5510->unk3 = itemBox->base.id;
     unk5510->unk4 = itemBox->base.me->d.sData[1];
 
     gCurTask->main = sub_808665C;

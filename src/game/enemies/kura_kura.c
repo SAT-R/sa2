@@ -4,7 +4,7 @@
 #include "malloc_vram.h"
 #include "trig.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/entity.h"
 #include "game/enemies/kura_kura.h"
@@ -40,7 +40,7 @@ void CreateEntity_KuraKura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     kk->base.regionY = spriteRegionY;
     kk->base.me = me;
     kk->base.spriteX = me->x;
-    kk->base.spriteY = spriteY;
+    kk->base.id = spriteY;
 
     ENEMY_SET_SPAWN_POS_STATIC(kk, me);
 

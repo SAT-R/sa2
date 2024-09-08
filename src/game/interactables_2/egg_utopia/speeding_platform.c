@@ -5,7 +5,7 @@
 #include "trig.h"
 #include "lib/m4a.h"
 
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/collision.h"
 #include "game/entity.h"
 
 #include "game/stage/player.h"
@@ -73,7 +73,7 @@ void CreateEntity_SpeedingPlatform(MapEntity *me, u16 spriteRegionX, u16 spriteR
     platform->base.regionY = spriteRegionY;
     platform->base.me = me;
     platform->base.spriteX = me->x;
-    platform->base.spriteY = spriteY;
+    platform->base.id = spriteY;
 
     for (i = 0; i < 3; i++) {
         platform->unk60[i][0] = platform->unk44;
@@ -109,7 +109,7 @@ static void sub_807F9F0(void)
         s32 res = sub_801F100(platform->y + I(platform->unk48), platform->x + I(platform->unk44), 1, 8, sub_801EC3C);
         if (res < 0) {
             platform->unk4C = FALSE;
-            gPlayer.transition = PLTRANS_PT3;
+            gPlayer.transition = PLTRANS_INIT_JUMP;
             gPlayer.moveState &= ~8;
             gPlayer.unk3C = 0;
         }

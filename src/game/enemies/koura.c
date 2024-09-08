@@ -5,7 +5,7 @@
 #include "game/entity.h"
 #include "game/enemies/koura.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 #include "trig.h"
 
 #include "constants/animations.h"
@@ -46,7 +46,7 @@ void CreateEntity_Koura(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     koura->base.regionY = spriteRegionY;
     koura->base.me = me;
     koura->base.spriteX = me->x;
-    koura->base.spriteY = spriteY;
+    koura->base.id = spriteY;
 
     if (me->d.uData[2] > me->d.uData[3]) {
         if (me->d.sData[1] == 1) {

@@ -172,7 +172,7 @@ void CreateEntity_DashRing(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
 
 static void DashRing_SetPlayerSpeedAndDir(Sprite_DashRing *ring)
 {
-    gPlayer.transition = PLTRANS_PT24;
+    gPlayer.transition = PLTRANS_DASHRING;
 
     // NOTE: This doesn't take the sprite offset, is it a bug?
     gPlayer.x = Q(ring->posX);

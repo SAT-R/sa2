@@ -7,7 +7,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/collision.h"
 #include "sprite.h"
 #include "task.h"
 
@@ -56,7 +56,7 @@ void CreateEntity_BouncySpring(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     spring->base.regionY = spriteRegionY;
     spring->base.me = me;
     spring->base.spriteX = me->x;
-    spring->base.spriteY = spriteY;
+    spring->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);

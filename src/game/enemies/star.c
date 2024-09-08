@@ -3,7 +3,7 @@
 #include "task.h"
 #include "malloc_vram.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/entity.h"
 #include "game/enemies/star.h"
@@ -45,7 +45,7 @@ void CreateEntity_Star(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     star->base.regionY = spriteRegionY;
     star->base.me = me;
     star->base.spriteX = me->x;
-    star->base.spriteY = spriteY;
+    star->base.id = spriteY;
 
     ENEMY_SET_SPAWN_POS_STATIC(star, me);
 

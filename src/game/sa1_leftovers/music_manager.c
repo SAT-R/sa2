@@ -1,9 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-#include "sakit/globals.h"
-#include "sakit/player.h"
-#include "sakit/music_manager.h"
+#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_leftovers/player.h"
+#include "game/sa1_leftovers/music_manager.h"
 
 #include "lib/m4a.h"
 

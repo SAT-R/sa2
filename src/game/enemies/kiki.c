@@ -1,8 +1,8 @@
 #include "global.h"
 #include "game/entity.h"
 #include "game/enemies/kiki.h"
-#include "sakit/entities_manager.h"
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/entities_manager.h"
+#include "game/sa1_leftovers/collision.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "malloc_vram.h"
@@ -50,7 +50,7 @@ void CreateEntity_Kiki(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     kiki->base.regionY = spriteRegionY;
     kiki->base.me = me;
     kiki->base.spriteX = me->x;
-    kiki->base.spriteY = spriteY;
+    kiki->base.id = spriteY;
 
     kiki->unk3C = 1;
     kiki->unk3D = 0;

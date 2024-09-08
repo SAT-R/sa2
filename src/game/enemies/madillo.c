@@ -2,7 +2,7 @@
 #include "malloc_vram.h"
 #include "game/entity.h"
 #include "game/enemies/madillo.h"
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
@@ -34,7 +34,7 @@ void CreateEntity_Madillo(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     madillo->base.regionY = spriteRegionY;
     madillo->base.me = me;
     madillo->base.spriteX = me->x;
-    madillo->base.spriteY = spriteY;
+    madillo->base.id = spriteY;
 
     if (me->d.sData[1] != 0) {
         madillo->clampParam = TRUE;

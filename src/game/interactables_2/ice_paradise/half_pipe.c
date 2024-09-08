@@ -177,7 +177,7 @@ static bool32 sub_80789AC(Sprite_IceParadiseHalfPipe *halfPipe)
 {
     if (gPlayer.speedAirX <= -Q(2) || gPlayer.speedAirX >= Q(2.25)) {
         if (gPlayer.frameInput & gPlayerControls.jump) {
-            gPlayer.transition = PLTRANS_PT3;
+            gPlayer.transition = PLTRANS_INIT_JUMP;
         } else {
             return PlayerWithinHalfPipe(halfPipe);
         }

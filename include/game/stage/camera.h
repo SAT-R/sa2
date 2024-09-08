@@ -4,7 +4,7 @@
 #include "global.h"
 #include "core.h"
 
-#include "sakit/camera.h"
+#include "game/sa1_leftovers/camera.h"
 
 struct Backgrounds {
     Background unk0;

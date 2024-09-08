@@ -1,7 +1,7 @@
 #include "global.h"
-#include "sakit/globals.h"
-#include "sakit/input_buffer.h"
-#include "sakit/player.h"
+#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_leftovers/input_buffer.h"
+#include "game/sa1_leftovers/player.h"
 
 #include "constants/characters.h"
 
@@ -48,7 +48,7 @@ typedef struct {
 // (This might be used for timing in multiplayer?)
 //
 // (91%) https://decomp.me/scratch/zFRhq
-NONMATCH("asm/non_matching/sakit/input_buf__sub_800DF8C.inc", void sub_800DF8C(Player *p))
+NONMATCH("asm/non_matching/game/sa1_leftovers/input_buf__sub_800DF8C.inc", void sub_800DF8C(Player *p))
 {
     struct struc_800DF8C sp00;
 #ifndef NON_MATCHING

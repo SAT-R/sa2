@@ -69,7 +69,7 @@ void CreateEntity_Note_Sphere(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     note->base.regionY = spriteRegionY;
     note->base.me = me;
     note->base.spriteX = me->x;
-    note->base.spriteY = spriteY;
+    note->base.id = spriteY;
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;

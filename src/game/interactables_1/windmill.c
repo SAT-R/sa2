@@ -40,7 +40,7 @@ void CreateEntity_Windmill(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     windmill->base.regionY = spriteRegionY;
     windmill->base.me = me;
     windmill->base.spriteX = me->x;
-    windmill->base.spriteY = spriteY;
+    windmill->base.id = spriteY;
 
     s->x = TO_WORLD_POS(me->x, spriteRegionX);
     s->y = TO_WORLD_POS(me->y, spriteRegionY);

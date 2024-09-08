@@ -2,12 +2,12 @@
 #include "task.h"
 #include "lib/m4a.h"
 
-#include "sakit/globals.h"
-#include "sakit/collect_ring_effect.h"
-#include "sakit/rings_manager.h"
+#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_leftovers/collect_ring_effect.h"
+#include "game/sa1_leftovers/rings_manager.h"
 
-#include "sakit/player.h"
-#include "sakit/camera.h"
+#include "game/sa1_leftovers/player.h"
+#include "game/sa1_leftovers/camera.h"
 
 #include "constants/animations.h"
 

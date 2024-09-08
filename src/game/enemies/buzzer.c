@@ -1,7 +1,7 @@
 #include "global.h"
 #include "malloc_vram.h"
 
-#include "sakit/entities_manager.h"
+#include "game/sa1_leftovers/entities_manager.h"
 
 #include "game/entity.h"
 
@@ -42,7 +42,7 @@ void CreateEntity_Buzzer(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8
         buzzer->base.regionY = spriteRegionY;
         buzzer->base.me = me;
         buzzer->base.spriteX = me->x;
-        buzzer->base.spriteY = spriteY;
+        buzzer->base.id = spriteY;
 
         ENEMY_SET_SPAWN_POS_FLYING(buzzer, me);
 

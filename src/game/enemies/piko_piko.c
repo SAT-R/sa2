@@ -1,7 +1,7 @@
 #include "global.h"
 #include "malloc_vram.h"
 
-#include "sakit/collision.h"
+#include "game/sa1_leftovers/collision.h"
 
 #include "game/stage/collision.h"
 #include "game/stage/player.h"
@@ -37,7 +37,7 @@ void CreateEntity_PikoPiko(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
         piko->base.regionY = spriteRegionY;
         piko->base.me = me;
         piko->base.spriteX = me->x;
-        piko->base.spriteY = spriteY;
+        piko->base.id = spriteY;
 
         if (me->d.sData[1] != 0) {
             piko->clampParam = TRUE;
