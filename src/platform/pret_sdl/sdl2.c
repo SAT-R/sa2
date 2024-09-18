@@ -9,8 +9,8 @@
 #include <xinput.h>
 #endif
 
-#define ENABLE_AUDIO     0
-#define ENABLE_VRAM_VIEW 0
+#define ENABLE_AUDIO     !TRUE
+#define ENABLE_VRAM_VIEW !TRUE
 
 #include <SDL.h>
 
@@ -51,9 +51,12 @@ extern uint8_t VRAM[VRAM_SIZE];
 extern uint8_t OAM[OAM_SIZE];
 extern uint8_t FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK];
 ALIGNED(256) uint16_t gameImage[DISPLAY_WIDTH * DISPLAY_HEIGHT];
+#if ENABLE_VRAM_VIEW
 #define VRAM_VIEW_WIDTH  (32 * TILE_WIDTH)
 #define VRAM_VIEW_HEIGHT (96 * TILE_WIDTH)
 uint16_t vramBuffer[VRAM_VIEW_WIDTH * VRAM_VIEW_HEIGHT];
+uint8_t vramPalIdBuffer[(VRAM_VIEW_WIDTH / TILE_WIDTH) * (VRAM_VIEW_HEIGHT / TILE_WIDTH)];
+#endif
 
 #define DMA_COUNT 4
 
@@ -537,11 +540,11 @@ u16 GetXInputKeys()
 
         if (xAxis < -STICK_THRESHOLD)
             xinputKeys |= DPAD_LEFT;
-        if (xAxis > STICK_THRESHOLD)
+        else if (xAxis > STICK_THRESHOLD)
             xinputKeys |= DPAD_RIGHT;
         if (yAxis < -STICK_THRESHOLD)
             xinputKeys |= DPAD_DOWN;
-        if (yAxis > STICK_THRESHOLD)
+        else if (yAxis > STICK_THRESHOLD)
             xinputKeys |= DPAD_UP;
 
         /* Speedup */
@@ -1187,6 +1190,9 @@ static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16
 
         unsigned int tileNum = entry & 0x3FF;
         unsigned int paletteNum = (entry >> 12) & 0xF;
+#if ENABLE_VRAM_VIEW
+        vramPalIdBuffer[tileNum] = paletteNum;
+#endif
 
         unsigned int tileX = xx % 8;
         unsigned int tileY = yy % 8;
@@ -1667,12 +1673,16 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount, bool win
                 uint16_t pixel = 0;
 
                 if (!is8BPP) {
-                    pixel = tiledata[(block_offset + oam->split.tileNum) * 32 + (tile_y * 4) + (tile_x / 2)];
+                    int tileDataIndex = (block_offset + oam->split.tileNum) * 32 + (tile_y * 4) + (tile_x / 2);
+                    pixel = tiledata[tileDataIndex];
                     if (tile_x & 1)
                         pixel >>= 4;
                     else
                         pixel &= 0xF;
                     palette += oam->split.paletteNum * 16;
+#if ENABLE_VRAM_VIEW
+                    vramPalIdBuffer[0x800 + (tileDataIndex / 32)] = 16 + oam->split.paletteNum;
+#endif
                 } else {
                     pixel = tiledata[(block_offset * 2 + oam->split.tileNum) * 32 + (tile_y * 8) + tile_x];
                 }
@@ -1923,7 +1933,7 @@ static void DrawFrame(uint16_t *pixels)
     int j;
     static uint16_t scanlines[DISPLAY_HEIGHT][DISPLAY_WIDTH];
     unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
-    uint16_t backdropColor = *(uint16_t *)PLTT;
+    uint16_t backdropColor = ((uint16_t *)PLTT)[0];
 
     // backdrop color brightness effects
     if (REG_BLDCNT & BLDCNT_TGT1_BD) {
@@ -1973,6 +1983,7 @@ static void DrawFrame(uint16_t *pixels)
     }
 }
 
+#if ENABLE_VRAM_VIEW
 void DrawVramView(Uint16 *buffer)
 {
     for (int y = 0; y < VRAM_VIEW_HEIGHT / TILE_WIDTH; y++) {
@@ -1982,25 +1993,24 @@ void DrawVramView(Uint16 *buffer)
 
             for (int ty = 0; ty < TILE_WIDTH; ty++) {
                 for (int tx = 0; tx < TILE_WIDTH; tx += 2) {
-                    u16 *dest = &tileBase[ty * VRAM_VIEW_WIDTH + tx];
+                    s32 tileIndex = ty * VRAM_VIEW_WIDTH + tx;
+                    u16 *dest = &tileBase[tileIndex];
 
-#if 01
                     int i = (ty * TILE_WIDTH + tx) / 2;
                     u8 *colorPtr = &((u8 *)VRAM)[tileId * 0x20 + i];
                     u8 colorId = colorPtr[0];
                     u8 colA = (colorId & 0xF0) >> 4;
                     u8 colB = (colorId & 0x0F) >> 0;
-
-                    dest[0] = PLTT[colB];
-                    dest[1] = PLTT[colA];
-#endif
+                    
+                    u8 paletteId = vramPalIdBuffer[tileId];
+                    dest[0] = PLTT[paletteId*16 + colB];
+                    dest[1] = PLTT[paletteId*16 + colA];
                 }
             }
         }
     }
 }
 
-#if ENABLE_VRAM_VIEW
 void VramDraw(SDL_Texture *texture)
 {
     memset(vramBuffer, 0, sizeof(vramBuffer));
