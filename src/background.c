@@ -404,7 +404,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                             u16 *r1Ptr;
                             u32 index2;
                             u16 *r4Ptr;
-                            index = bg->unk20 ;
+                            index = bg->unk20;
                             index *= sp08;
                             r1Ptr = (u16 *)&((u8 *)bg->layout)[index];
                             index2 = bg->unk1E + bg->targetTilesX - 1;
@@ -468,7 +468,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         if (bg->flags & BACKGROUND_FLAG_100) {
                             if (bg->flags & BACKGROUND_FLAG_80) {
                                 // _08003306
-                                u32 index = ((sp14 + r5) - 1) * bg->xTiles ;
+                                u32 index = ((sp14 + r5) - 1) * bg->xTiles;
                                 u16 *r1Ptr = CastPointer(bg->layout, index * sp08);
                                 u16 *r4Ptr = CastPointer(r1Ptr, (r2 - 1) * sp08);
 
@@ -484,7 +484,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                                 u32 index;
                                 u16 *r4Ptr;
                                 index = sp14 * bg->xTiles;
-                                index *= sp08 ;
+                                index *= sp08;
                                 r1 = &((u8 *)bg->layout)[index];
                                 r4Ptr = (u16 *)&r1[(r2 - 1) * sp08];
 
@@ -518,7 +518,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                                 u16 *r4Ptr = CastPointer(bg->layout, index * sp08);
 
                                 while (r5-- != 0) {
-                                    dmaSize = sp08 * r2 ;
+                                    dmaSize = sp08 * r2;
                                     // _08003492
                                     DmaCopy16(3, r4Ptr, r7Ptr, (s32)dmaSize);
 
