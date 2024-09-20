@@ -71,7 +71,7 @@ void DrawBackground(Background *background)
 }
 
 // (85.37%) https://decomp.me/scratch/617Jb
-// (87.13%) https://decomp.me/scratch/1CFim
+// (87.46%) https://decomp.me/scratch/1CFim
 NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 {
     u16 sp00;
@@ -252,7 +252,6 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                 s32 sp18;
                 s32 sp1C;
                 u32 sp20;
-                u32 dmaFlags; // <- sp3C
                 s32 r1;
                 sp10 = bg->unk1E;
                 sp14 = bg->unk20;
@@ -328,8 +327,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         r8 -= r5;
 
                         while (r5-- != 0) {
-                            dmaFlags = sp20;
-                            DmaCopy16(3, dmaSrc, dmaDest, (s32)dmaFlags);
+                            DmaCopy16(3, dmaSrc, dmaDest, (s32)sp20);
                             dmaDest += sp0C;
                             dmaSrc += sp00 * sp08;
                         }
@@ -447,10 +445,11 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                             // _08003298
                             while (--r5 != 0) {
-                                dmaSize = bg->targetTilesX - (r2 - 1);
-                                dmaSize *= sp08;
-                                dmaSize += (dmaSize >> 31);
-                                DmaCopy16(3, r4Ptr, r7Ptr, dmaSize);
+                                DmaCopy16(3, r4Ptr, r7Ptr, (s32)({
+                                              dmaSize = bg->targetTilesX - (r2 - 1);
+                                              dmaSize *= sp08;
+                                              dmaSize;
+                                          }));
 
                                 r7Ptr = CastPointer(r7Ptr, sp0C);
                                 r4Ptr = CastPointer(r4Ptr, sp00 * sp08);
@@ -607,7 +606,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
         REG_VCOUNT;
         bg->prevScrollX = bg->scrollX;
         bg->prevScrollY = bg->scrollY;
-    };
+    }
 
     return 1;
 }
