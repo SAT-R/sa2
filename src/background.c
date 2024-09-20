@@ -71,6 +71,7 @@ void DrawBackground(Background *background)
 }
 
 // (85.37%) https://decomp.me/scratch/617Jb
+// (87.13%) https://decomp.me/scratch/1CFim
 NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 {
     u16 sp00;
@@ -83,11 +84,14 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
     u32 bgId; // -> r5 = (bg->flags & BACKGROUND_FLAGS_MASK_BG_ID)
     s32 sb;
     u32 dmaSize;
+    s32 i;
+    s32 j;
+    u16 k;
 
-    while (gUnknown_0300287C != gUnknown_03002AE4) {
+    while (gUnknown_03002AE4 != gUnknown_0300287C) {
         Background *bg;
 
-#if 1 && !PORTABLE
+#if !PORTABLE
         // TODO: This #if should not be required.
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK))
             return FALSE;
@@ -132,6 +136,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                 u8 *r1 = CastPointer(bg->layoutVram, bg->unk24 * sp0C);
                 u16 *r7 = CastPointer(r1, bg->unk22 * sp08);
                 u16 r5 = bg->targetTilesY;
+                u16 k;
 
                 // r2 <- bg->flags
                 // r3 <- affine
@@ -147,11 +152,10 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                         // _08002C7C
                         while (r5-- != 0) {
-                            u16 i;
 
                             // _08002C9A
-                            for (i = 0; i < bg->targetTilesX; i++) {
-                                r7[i] = (*(r4Ptr - i) ^ TileMask_FlipXY);
+                            for (k = 0; k < bg->targetTilesX; k++) {
+                                r7[k] = (*(r4Ptr - k) ^ TileMask_FlipXY);
                             }
 
                             r7 = CastPointer(r7, sp0C);
@@ -166,10 +170,8 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                         // _08002D08
                         while (r5-- != 0) {
-                            u16 i;
-
-                            for (i = 0; i < bg->targetTilesX; i++) {
-                                r7[i] = (*(r4Ptr - i) ^ TileMask_FlipX);
+                            for (k = 0; k < bg->targetTilesX; k++) {
+                                r7[k] = (*(r4Ptr - k) ^ TileMask_FlipX);
                             }
 
                             r7 = CastPointer(r7, sp0C);
@@ -223,7 +225,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         } else {
                             // __08002E74
                             u32 r0Index = bg->unk20 * sp00 * sp08;
-                            void *r1Ptr = CastPointer(bg->layout, bg->unk20 * sp00 * sp08);
+                            void *r1Ptr = CastPointer(bg->layout, r0Index);
                             void *r4Ptr = CastPointer(r1Ptr, bg->unk1E * sp08);
 
                             // r0 = r0Index
@@ -242,21 +244,21 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     }
                 }
             } else {
+                // ( (bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) != 0)
+
                 // r3 = affine
                 // r6 = bg
                 // _08002ED4
                 s32 sp18;
                 s32 sp1C;
                 u32 sp20;
-                s32 sp38;
                 u32 dmaFlags; // <- sp3C
-                s32 i, j;
+                s32 r1;
                 sp10 = bg->unk1E;
                 sp14 = bg->unk20;
 
                 // _08002EE8
-                for (i = 0; i < bg->targetTilesX;) {
-                    s32 r1;
+                for (i = 0; i < bg->targetTilesX; i += r1) {
                     s32 r5Res;
                     s32 r8;
                     s32 sp10_i = sp10 + i;
@@ -300,7 +302,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         result *= bg->mapWidth;
                         r2Ptr = (void *)bg->metatileMap;
                         temp2 = sp18 << 1;
-                        r0Ptr = CastPointer(r2Ptr, result << 1);
+                        r0Ptr = CastPointer(r2Ptr, result * 2);
                         r1Ptr = CastPointer(r0Ptr, temp2);
 
                         // r1 = v
@@ -332,8 +334,6 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                             dmaSrc += sp00 * sp08;
                         }
                     }
-
-                    i += r1;
                 }
                 // _08002FD6
             }
@@ -344,7 +344,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
             // r5 <- bgId
             // _08002FE8
             if (!(bg->flags & BACKGROUND_FLAG_IS_LEVEL_MAP)) {
-                u32 vR2 = bg->xTiles;
+                // u32 vR2 = bg->xTiles;
                 while (bg->scrollX >= sp00 * 8)
                     bg->scrollX -= sp00 * 8;
 
@@ -363,7 +363,6 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     // TODO: Something'S wrong with the types here (r2 should be s16?)
                     u16 *r7Ptr;
                     s16 r2;
-                    s32 r4;
                     u16 r5;
                     u16 *sp3C;
                     u32 notherIndex;
@@ -375,7 +374,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     r7Ptr = CastPointer(r7Ptr, bg->unk22 * sp08);
 
                     if (((bg->targetTilesX + sp10) + 1) > bg->xTiles) {
-                        r2 -= (bg->xTiles - 1);
+                        r2 = (bg->xTiles - 1);
                     } else {
                         r2 = 0;
                     }
@@ -385,19 +384,18 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         // _080030D4
                         if (bg->flags & BACKGROUND_FLAG_80) {
                             // _080030DC
-                            u32 index = ((bg->unk20 + r5) - 1);
-                            u16 *r1Ptr = (u16 *)&((u8 *)bg->layout)[r4 * index * sp08];
+                            u32 index = ((bg->unk20 + r5) - 1) * bg->xTiles;
+                            u16 *r1Ptr = CastPointer(bg->layout, index * sp08);
                             u32 index2 = ((bg->unk1E + bg->targetTilesX) - 1);
-                            u16 *r4Ptr = &r1Ptr[index2 * sp08];
+                            u16 *r4Ptr = CastPointer(r1Ptr, index2 * sp08);
 
                             while (r5-- != 0) {
                                 // _08003108
-                                u16 i; // <- r3
-                                for (i = 0; i < bg->targetTilesX; i++) {
+                                for (k = 0; k < bg->targetTilesX; k++) {
                                     u32 mask = TileMask_FlipXY;
                                     // _08003126
-                                    sp3C = &r7Ptr[i];
-                                    *sp3C = (r4Ptr[0 - i] ^ mask);
+                                    sp3C = &r7Ptr[k];
+                                    *sp3C = (r4Ptr[0 - k] ^ mask);
                                 }
                             }
                         } else {
@@ -406,8 +404,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                             u16 *r1Ptr;
                             u32 index2;
                             u16 *r4Ptr;
-                            index = bg->unk20;
-                            index *= r4;
+                            index = bg->unk20 ;
                             index *= sp08;
                             r1Ptr = (u16 *)&((u8 *)bg->layout)[index];
                             index2 = bg->unk1E + bg->targetTilesX - 1;
@@ -415,11 +412,10 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
 
                             while (r5-- != 0) {
                                 // _08003180
-                                u16 i;
-                                for (i = 0; i < bg->targetTilesX; i++) {
+                                for (k = 0; k < bg->targetTilesX; k++) {
                                     // _0800319E
-                                    sp3C = &r7Ptr[i];
-                                    *sp3C = (r4Ptr[0 - i] ^ TileMask_FlipX);
+                                    sp3C = &r7Ptr[k];
+                                    *sp3C = (r4Ptr[0 - k] ^ TileMask_FlipX);
                                 }
                             }
                         }
@@ -428,29 +424,29 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         if (bg->flags & BACKGROUND_FLAG_80) {
                             // _080031D8
                             u32 index = ((sp14 + r5) - 1);
-                            u16 *r0Ptr = (u16 *)&((u8 *)bg->layout)[r4 * index * sp08];
+                            u16 *r0Ptr = (u16 *)&((u8 *)bg->layout)[index * sp08];
                             u32 index2 = sp10;
                             u16 *r4Ptr = &r0Ptr[index2 * sp08];
 
                             while (r5-- != 0) {
-                                u16 i = 0;
+                                u16 k;
 
-                                for (; i < bg->targetTilesX; i++) {
-                                    sp3C = &r7Ptr[i];
-                                    *sp3C = r4Ptr[i] ^ TileMask_FlipY;
+                                for (k = 0; k < bg->targetTilesX; k++) {
+                                    sp3C = &r7Ptr[k];
+                                    *sp3C = r4Ptr[k] ^ TileMask_FlipY;
                                 }
                                 r7Ptr = CastPointer(r7Ptr, sp0C);
                                 r4Ptr = (void *)(((u8 *)r4Ptr) - sp00 * sp08);
                             }
                         } else {
                             // _08003254
-                            u32 index = sp14;
-                            u16 *r0Ptr = (u16 *)&((u8 *)bg->layout)[r4 * index * sp08];
+                            u32 index = (sp14 * bg->xTiles);
+                            u16 *r0Ptr = CastPointer(bg->layout, index * sp08);
                             u32 index2 = sp10;
-                            u16 *r4Ptr = &r0Ptr[index2 * sp08];
+                            u16 *r4Ptr = CastPointer(r0Ptr, index2 * bg->xTiles);
 
                             // _08003298
-                            while (r5-- != 0) {
+                            while (--r5 != 0) {
                                 dmaSize = bg->targetTilesX - (r2 - 1);
                                 dmaSize *= sp08;
                                 dmaSize += (dmaSize >> 31);
@@ -472,14 +468,13 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         if (bg->flags & BACKGROUND_FLAG_100) {
                             if (bg->flags & BACKGROUND_FLAG_80) {
                                 // _08003306
-                                u32 index = ((sp14 + r5) - 1) * r4;
-                                u16 *r1Ptr = (u16 *)&(((u8 *)bg->layout)[index * sp08]);
-                                u16 *r4Ptr = (u16 *)((u8 *)&r1Ptr[(r2 - 1) * sp08]);
+                                u32 index = ((sp14 + r5) - 1) * bg->xTiles ;
+                                u16 *r1Ptr = CastPointer(bg->layout, index * sp08);
+                                u16 *r4Ptr = CastPointer(r1Ptr, (r2 - 1) * sp08);
 
                                 while (--r5 != (u16)-1) {
-                                    u16 i;
-                                    for (i = 0; i < bg->targetTilesX; i++) {
-                                        r7Ptr[i] = *(r4Ptr - i) ^ TileMask_FlipXY;
+                                    for (k = 0; k < bg->targetTilesX; k++) {
+                                        r7Ptr[k] = *(r4Ptr - k) ^ TileMask_FlipXY;
                                     }
                                     r7Ptr = CastPointer(r7Ptr, sp0C);
                                     r4Ptr = (u16 *)(((u8 *)r4Ptr) - sp00 * sp08);
@@ -487,18 +482,15 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                             } else {
                                 // _08003380
                                 u32 index;
-                                u8 *r1Ptr;
                                 u16 *r4Ptr;
-                                index = sp14;
-                                index *= r4;
-                                index *= sp08;
-                                r1Ptr = &((u8 *)bg->layout)[index];
-                                r4Ptr = (u16 *)&r1Ptr[(r2 - 1) * sp08];
+                                index = sp14 * bg->xTiles;
+                                index *= sp08 ;
+                                r1 = &((u8 *)bg->layout)[index];
+                                r4Ptr = (u16 *)&r1[(r2 - 1) * sp08];
 
                                 while (--r5 != (u16)-1) {
-                                    u16 i;
-                                    for (i = 0; i < bg->targetTilesX; i++) {
-                                        r7Ptr[i] = *(r4Ptr - i) ^ TileMask_FlipX;
+                                    for (k = 0; k < bg->targetTilesX; k++) {
+                                        r7Ptr[k] = *(r4Ptr - k) ^ TileMask_FlipX;
                                     }
                                     r7Ptr = CastPointer(r7Ptr, sp0C);
                                     r4Ptr = CastPointer(r4Ptr, sp00 * sp08);
@@ -508,26 +500,25 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                             // _080033F4
                             if (bg->flags & BACKGROUND_FLAG_80) {
                                 // _080033FC
-                                u32 index = ((sp14 + r5) - 1) * r4;
+                                u32 index = ((sp14 + r5) - 1) * bg->xTiles;
                                 u16 *r4Ptr = (u16 *)&((u8 *)bg->layout)[index * sp08];
 
-                                u32 sp30 = r2;
+                                // u32 sp30 = r2;
                                 while (--r5 != (u16)-1) {
-                                    u16 i;
-                                    for (i = 0; i < r2; i++) {
-                                        u16 *sp3C = &r7Ptr[i];
-                                        *sp3C = r4Ptr[i] ^ TileMask_FlipY;
+                                    for (k = 0; k < r2; k++) {
+                                        u16 *sp3C = &r7Ptr[k];
+                                        *sp3C = r4Ptr[k] ^ TileMask_FlipY;
                                     }
                                     r7Ptr = CastPointer(r7Ptr, sp0C);
                                     r4Ptr = (u16 *)(((u8 *)r4Ptr) - sp00 * sp08);
                                 }
                             } else {
                                 // _08003474
-                                u32 index = (sp14 * r4);
-                                u16 *r4Ptr = (u16 *)&((u8 *)bg->layout)[index * sp08];
+                                u32 index = (sp14 * bg->xTiles);
+                                u16 *r4Ptr = CastPointer(bg->layout, index * sp08);
 
                                 while (r5-- != 0) {
-                                    dmaSize = sp08 * r2;
+                                    dmaSize = sp08 * r2 ;
                                     // _08003492
                                     DmaCopy16(3, r4Ptr, r7Ptr, (s32)dmaSize);
 
@@ -541,10 +532,8 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                     // Tilemap is Level Map
 
                     // _080034DC
-                    s32 i;
-                    s32 j;
-                    sp10 = (bg->scrollX >> 3) + bg->unk1E;
-                    sp14 = (bg->scrollY >> 3) + bg->unk20;
+                    sp10 = (bg->scrollX / 8) + bg->unk1E;
+                    sp14 = (bg->scrollY / 8) + bg->unk20;
 
                     for (i = 0; i < bg->targetTilesX;) {
                         // _08003500
@@ -553,7 +542,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                         s32 r1 = bg->xTiles;
                         s32 sp28 = r4 - (sp24 * r1);
                         s32 sp2C;
-                        s32 sp34;
+                        // s32 sp34;
                         s32 r8 = bg->targetTilesY;
                         s32 r0 = bg->targetTilesX - i;
                         r1 = r1 - sp28;
@@ -573,10 +562,8 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                             yPos *= bg->mapWidth;
 
                             { // _0800355C
-                                s32 metatileIndex = *(&bg->metatileMap[yPos] + sp24);
+                                s32 metatileIndex = *(&bg->metatileMap[yPos] + sp24) * bg->xTiles * bg->yTiles;
                                 s32 otherVal;
-                                metatileIndex *= bg->xTiles;
-                                metatileIndex *= bg->yTiles;
 
                                 otherVal = new_r4 * bg->xTiles;
                                 otherVal += sp28;
@@ -587,7 +574,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
                                     u8 *dmaSrc;
                                     u8 *dmaDest;
                                     u8 *destPtr;
-                                    u32 destIndex;
+                                    // u32 destIndex;
                                     dmaSrc = CastPointer(bg->layout, otherVal * sp08);
                                     destPtr = CastPointer(bg->layoutVram, bg->unk24);
                                     destPtr += sp0C * j;
