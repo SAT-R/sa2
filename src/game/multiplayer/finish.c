@@ -168,7 +168,7 @@ void sub_8019F08(void)
     gLoadedSaveGame->score += (s16)gRingCount;
 
     if (gCourseTime <= MAX_COURSE_TIME) {
-        if (!(gStageFlags & STAGE_FLAG__4) || (gCourseTime != 0)) {
+        if (!(gStageFlags & STAGE_FLAG__TIMER_REVERSED) || (gCourseTime != 0)) {
             return;
         }
     }

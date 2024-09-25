@@ -236,10 +236,10 @@ void CreateGameStage(void)
     }
 
     gStageFlags &= ~STAGE_FLAG__2;
-    gStageFlags &= ~STAGE_FLAG__4;
+    gStageFlags &= ~STAGE_FLAG__TIMER_REVERSED;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gStageFlags |= STAGE_FLAG__4;
+        gStageFlags |= STAGE_FLAG__TIMER_REVERSED;
     }
 
     CreateStageRingsManager();
@@ -376,7 +376,7 @@ void Task_GameStage(void)
 
     gCheckpointTime += timeStep;
 
-    if (gStageFlags & STAGE_FLAG__4) {
+    if (gStageFlags & STAGE_FLAG__TIMER_REVERSED) {
         gCourseTime -= timeStep;
         if ((s32)gCourseTime > 0) {
             return;

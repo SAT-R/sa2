@@ -20,7 +20,7 @@
 #define STAGE_FLAG__CLEAR              0x0000
 #define STAGE_FLAG__ACT_START          0x0001 // Turns timer off, likely other effects?
 #define STAGE_FLAG__2                  0x0002
-#define STAGE_FLAG__4                  0x0004
+#define STAGE_FLAG__TIMER_REVERSED     0x0004 // Timer gets lower on every tick, and player loses life on 0:00:00.
 #define STAGE_FLAG__10                 0x0010
 #define STAGE_FLAG__DISABLE_PAUSE_MENU 0x0020
 #define STAGE_FLAG__DEMO_RUNNING       0x0040 // TODO: Check accuracy of name
