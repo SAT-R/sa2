@@ -504,11 +504,11 @@ NONMATCH("asm/non_matching/game/stage/SpawnMapEntities.inc", void SpawnMapEntiti
         h_regionCount = (u16)*interactables++;
         v_regionCount = (u16)*interactables++;
 
-        range.xLow = gCamera.x - Q(0.5);
-        range.xHigh = gCamera.x + Q(1.4375);
+        range.xLow = gCamera.x - 128;
+        range.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
 
-        range.yLow = gCamera.y - Q(0.5);
-        range.yHigh = gCamera.y + Q(1.125);
+        range.yLow = gCamera.y - 128;
+        range.yHigh = gCamera.y + (DISPLAY_HEIGHT + 128);
 
         if (range.xLow < 0) {
             range.xLow = 0;
@@ -689,11 +689,11 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
             v_regionCount = (u16)*interactables++;
 
             if (gCamera.x > em->prevCamX) {
-                range1.xLow = em->prevCamX + 0x170;
-                range1.xHigh = gCamera.x + 0x170;
+                range1.xLow = em->prevCamX + (DISPLAY_WIDTH + 128);
+                range1.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
             } else {
-                range1.xLow = gCamera.x - 0x80;
-                range1.xHigh = em->prevCamX - 0x80;
+                range1.xLow = gCamera.x - 128;
+                range1.xHigh = em->prevCamX - 128;
             }
 
             if (em->unk14 != 0) {
@@ -701,19 +701,19 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                 return;
             }
 
-            range1.yLow = gCamera.y - 0x80;
-            range1.yHigh = gCamera.y + 0x120;
+            range1.yLow = gCamera.y - 128;
+            range1.yHigh = gCamera.y + (DISPLAY_HEIGHT + 128);
 
             if (gCamera.y > em->prevCamY) {
-                range2.yLow = em->prevCamY + 0x120;
-                range2.yHigh = gCamera.y + 0x120;
+                range2.yLow = em->prevCamY + (DISPLAY_HEIGHT + 128);
+                range2.yHigh = gCamera.y + (DISPLAY_HEIGHT + 128);
             } else {
-                range2.yLow = gCamera.y - 0x80;
-                range2.yHigh = em->prevCamY - 0x80;
+                range2.yLow = gCamera.y - 128;
+                range2.yHigh = em->prevCamY - 128;
             }
 
-            range2.xLow = gCamera.x - 0x80;
-            range2.xHigh = gCamera.x + 0x170;
+            range2.xLow = gCamera.x - 128;
+            range2.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
 
             if ((s32)range1.xLow < 0) {
                 range1.xLow = 0;

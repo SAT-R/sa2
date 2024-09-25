@@ -62,7 +62,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc", void Tas
         if (someCos != 0) {
             // _080099D6
             s16 divRes;
-            u8 sp08[8];
+            int_vcount sp08[8];
             Struct_SP10 sp10;
             s16 sp14[2];
             s32 sb;

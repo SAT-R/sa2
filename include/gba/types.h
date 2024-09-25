@@ -1,6 +1,7 @@
 #ifndef GUARD_GBA_TYPES_H
 #define GUARD_GBA_TYPES_H
 
+#include "gba/defines.h"
 #include <stdint.h>
 
 #if defined(_MSC_VER)
@@ -29,7 +30,12 @@ typedef int64_t  s64;
 // If the DISPLAY_HEIGHT was >255, scanline effects would break,
 // so we have to make this variable bigger.
 // (u16 should be plenty for screen coordinates, right?)
-#if (DISPLAY_HEIGHT > 255)
+#if !defined(DISPLAY_HEIGHT)
+#error DISPLAY_HEIGHT not defined.
+#endif
+/// TODO: Technically this should only be #if (DISPLAY_HEIGHT > 255),
+//        we should probably replace uses of int_vcount with a different type where a high DISPLAY_WIDTH necessitates u16.
+#if ((DISPLAY_WIDTH > 255) || (DISPLAY_HEIGHT > 255))
 typedef u16 int_vcount;
 #else
 typedef u8 int_vcount;

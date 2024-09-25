@@ -238,7 +238,12 @@ extern u16 gDispCnt;
 #define WINREG_WIN1V  3
 #define WINREG_WININ  4
 #define WINREG_WINOUT 5
-extern u16 gWinRegs[6];
+#if (WIN_RANGE(0xFF, 0) == 0xFF00)
+typedef u16 winreg_t;
+#else
+typedef u32 winreg_t;
+#endif
+extern winreg_t gWinRegs[6];
 extern struct BlendRegs gBldRegs;
 extern BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS];
 extern u16 gObjPalette[OBJ_PLTT_SIZE / sizeof(u16)];
@@ -276,10 +281,11 @@ extern struct MapHeader **gTilemapsRef; // TODO: make this an array and add size
 extern u8 gUnknown_03002280[4][4];
 extern u8 gUnknown_03004D80[16]; // TODO: Is this 4 (# backgrounds), instead of 16?
 
-#define LOG_GRAPHICS_QUEUE TRUE
+#define LOG_GRAPHICS_QUEUE !TRUE
 #if (!PLATFORM_GBA && LOG_GRAPHICS_QUEUE)
 #define GFX_QUEUE_LOG_ADD(gfx)                                                                                                             \
-    printf("GFX %d: src 0x%p, dst 0x%p, size 0x%04X\n", gVramGraphicsCopyQueueIndex, (gfx)->src, (gfx)->dest, (gfx)->size);
+    printf("GFX %d: src 0x%p, dst 0x%p, size 0x%04X\n", gVramGraphicsCopyQueueIndex, (gfx)->src,                                           \
+           (void *)((intptr_t)(gfx)->dest - (intptr_t)VRAM), (gfx)->size);
 #else
 #define GFX_QUEUE_LOG_ADD(gfx)
 #endif
@@ -292,7 +298,19 @@ extern u8 gVramGraphicsCopyQueueIndex;
 
 #define INC_GRAPHICS_QUEUE_CURSOR(cursor) cursor = (cursor + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
 
+/* Make sure that both pointers are valid */
+#ifndef DEBUG
+#define TEST_GFX_POINTERS(gfx)
+#else
+#define TEST_GFX_POINTERS(gfx)                                                                                                             \
+    {                                                                                                                                      \
+        volatile u8 testVarDst = *(u8 *)((gfx)->dest);                                                                                     \
+        volatile u8 testVarSrc = *(u8 *)((gfx)->src);                                                                                      \
+    }
+#endif
+
 #define ADD_TO_GRAPHICS_QUEUE(gfx)                                                                                                         \
+    TEST_GFX_POINTERS(gfx);                                                                                                                \
     gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = gfx;                                                                             \
     /* Log has to happen before gVramGraphicsCopyQueueIndex increment */                                                                   \
     GFX_QUEUE_LOG_ADD(gfx)                                                                                                                 \

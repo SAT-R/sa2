@@ -1534,7 +1534,7 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount, bool win
     int i;
     unsigned int x;
     unsigned int y;
-    void *objtiles = VRAM + 0x10000;
+    void *objtiles = OBJ_VRAM0;
     unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
     bool winShouldBlendPixel = true;
 
@@ -1791,8 +1791,8 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     }
 
     bool windowsEnabled = false;
-    uint16_t WIN0bottom, WIN0top, WIN0right, WIN0left;
-    uint16_t WIN1bottom, WIN1top, WIN1right, WIN1left;
+    u16 WIN0bottom, WIN0top, WIN0right, WIN0left;
+    u16 WIN1bottom, WIN1top, WIN1right, WIN1left;
     bool WIN0enable, WIN1enable;
     WIN0enable = false;
     WIN1enable = false;
@@ -1800,10 +1800,11 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     // figure out if WIN0 masks on this scanline
     if (REG_DISPCNT & DISPCNT_WIN0_ON) {
         // acquire the window coordinates
-        WIN0bottom = (REG_WIN0V & 0xFF); // y2;
-        WIN0top = (REG_WIN0V & 0xFF00) >> 8; // y1;
-        WIN0right = (REG_WIN0H & 0xFF); // x2
-        WIN0left = (REG_WIN0H & 0xFF00) >> 8; // x1
+
+        WIN0bottom = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0V]); // y2;
+        WIN0top = WIN_GET_LOWER(gWinRegs[WINREG_WIN0V]); // y1;
+        WIN0right = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0H]); // x2
+        WIN0left = WIN_GET_LOWER(gWinRegs[WINREG_WIN0H]); // x1
 
         // figure out WIN Y wraparound and check bounds accordingly
         if (WIN0top > WIN0bottom) {
@@ -1818,10 +1819,10 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     }
     // figure out if WIN1 masks on this scanline
     if (REG_DISPCNT & DISPCNT_WIN1_ON) {
-        WIN1bottom = (REG_WIN0V & 0xFF); // y2;
-        WIN1top = (REG_WIN0V & 0xFF00) >> 8; // y1;
-        WIN1right = (REG_WIN0H & 0xFF); // x2
-        WIN1left = (REG_WIN0H & 0xFF00) >> 8; // x1
+        WIN1bottom = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0V]); // y2;
+        WIN1top = WIN_GET_LOWER(gWinRegs[WINREG_WIN0V]); // y1;
+        WIN1right = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0H]); // x2
+        WIN1left = WIN_GET_LOWER(gWinRegs[WINREG_WIN0H]); // x1
 
         if (WIN1top > WIN1bottom) {
             if (vcount >= WIN1top || vcount < WIN1bottom)
@@ -2001,10 +2002,10 @@ void DrawVramView(Uint16 *buffer)
                     u8 colorId = colorPtr[0];
                     u8 colA = (colorId & 0xF0) >> 4;
                     u8 colB = (colorId & 0x0F) >> 0;
-                    
+
                     u8 paletteId = vramPalIdBuffer[tileId];
-                    dest[0] = PLTT[paletteId*16 + colB];
-                    dest[1] = PLTT[paletteId*16 + colA];
+                    dest[0] = PLTT[paletteId * 16 + colB];
+                    dest[1] = PLTT[paletteId * 16 + colA];
                 }
             }
         }

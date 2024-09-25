@@ -4,7 +4,7 @@
 
 void sub_802DBC0(u8 p0, u16 p1)
 {
-    u8 *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlank;
 #ifdef BUG_FIX
     if (bgOffsets == NULL) {
         return;
@@ -90,12 +90,12 @@ NONMATCH("asm/non_matching/game/stage/sub_802DCC8.inc", void sub_802DCC8(u8 p0, 
 {
 #ifndef NON_MATCHING
     register u32 r7 asm("r7") = p0;
-    u8 *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlank;
     register s32 r5 asm("r5") = 0;
     register u16 r6 asm("r6") = ((unsigned)p1 << 22) >> 22;
 #else
     u32 r7 = p0;
-    u8 *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlank;
     s32 r5 = 0;
     u16 r6 = ((unsigned)p1 << 22) >> 22;
 #endif
@@ -170,7 +170,7 @@ END_NONMATCH
 
 void sub_802DDC4(u8 p0, u16 p1)
 {
-    u8 *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlank;
     s32 r5 = 0;
     u16 r6 = ((unsigned)p1 << 22) >> 22;
 
@@ -259,7 +259,7 @@ void sub_802DDC4(u8 p0, u16 p1)
 // (98.53%) https://decomp.me/scratch/aNJxr
 NONMATCH("asm/non_matching/game/stage/sub_802DF18.inc", void sub_802DF18(u8 p0, u16 p1))
 {
-    u8 *bgOffsets = gBgOffsetsHBlank;
+    int_vcount *bgOffsets = gBgOffsetsHBlank;
     s32 r2;
     s32 r7 = 0;
     u16 r6 = ((unsigned)p1 << 22) >> 22;
