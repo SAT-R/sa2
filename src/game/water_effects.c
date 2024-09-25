@@ -464,34 +464,44 @@ void TaskDestructor_WaterSurface(struct Task *t)
 void sub_8011A4C(void)
 {
     Water *water = &gWater;
-    WaterData *wd = TASK_DATA(water->t);
-    u32 unk2;
-    unk2 = water->unk2;
-    water->unk1 = unk2;
-    water->unk8 &= ~0x1;
+#ifdef BUG_FIX
+    if (water && water->t)
+#endif
+    {
+        WaterData *wd = TASK_DATA(water->t);
+        u32 unk2;
+        unk2 = water->unk2;
+        water->unk1 = unk2;
+        water->unk8 &= ~0x1;
 
-    // TODO: This surely can be matched differently!
-    unk2 <<= 24;
+        // TODO: This surely can be matched differently!
+        unk2 <<= 24;
 
-    if (!unk2) {
-        DmaCopy32(3, &wd->pal[0x100], PLTT, 0x1D0);
-        DmaCopy32(3, &wd->pal[0x0], OBJ_PLTT, OBJ_PLTT_SIZE);
-        REG_DISPCNT &= ~DISPCNT_BG0_ON;
-        gFlags |= (FLAGS_UPDATE_SPRITE_PALETTES | FLAGS_UPDATE_BACKGROUND_PALETTES);
+        if (!unk2) {
+            DmaCopy32(3, &wd->pal[0x100], PLTT, 0x1D0);
+            DmaCopy32(3, &wd->pal[0x0], OBJ_PLTT, OBJ_PLTT_SIZE);
+            REG_DISPCNT &= ~DISPCNT_BG0_ON;
+            gFlags |= (FLAGS_UPDATE_SPRITE_PALETTES | FLAGS_UPDATE_BACKGROUND_PALETTES);
+        }
     }
 }
 
 void VCountIntr_8011ACC(void)
 {
     Water *water = &gWater;
-    WaterData *wd = TASK_DATA(water->t);
+#ifdef BUG_FIX
+    if (water && water->t)
+#endif
+    {
+        WaterData *wd = TASK_DATA(water->t);
 
-    DmaCopy32(3, &wd->pal[0x100], PLTT, 0x1D0);
-    DmaCopy32(3, &wd->pal[0x0], OBJ_PLTT, OBJ_PLTT_SIZE);
+        DmaCopy32(3, &wd->pal[0x100], PLTT, 0x1D0);
+        DmaCopy32(3, &wd->pal[0x0], OBJ_PLTT, OBJ_PLTT_SIZE);
 
-    REG_DISPCNT &= ~DISPCNT_BG0_ON;
-    gFlags |= (FLAGS_UPDATE_SPRITE_PALETTES | FLAGS_UPDATE_BACKGROUND_PALETTES);
-    REG_IF = INTR_FLAG_VCOUNT;
+        REG_DISPCNT &= ~DISPCNT_BG0_ON;
+        gFlags |= (FLAGS_UPDATE_SPRITE_PALETTES | FLAGS_UPDATE_BACKGROUND_PALETTES);
+        REG_IF = INTR_FLAG_VCOUNT;
+    }
 }
 
 void TaskDestructor_8011B3C(struct Task *t)
