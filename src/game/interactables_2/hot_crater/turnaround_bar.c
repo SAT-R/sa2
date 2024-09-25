@@ -225,7 +225,7 @@ static bool32 sub_8073784(Sprite_TurnAroundBar *turnAroundBar)
     temp3 = temp;
     temp4 = temp2;
 
-    if (temp4 < -128 || temp4 > 368 || temp3 < -128 || temp3 > 288) {
+    if (temp4 < -128 || temp4 > (DISPLAY_WIDTH + 128) || temp3 < -128 || temp3 > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 

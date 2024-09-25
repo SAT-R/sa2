@@ -435,7 +435,8 @@ bool32 sub_8079624(Sprite_IA69 *ia69)
 
     temp2 = temp1;
     temp3 = temp;
-    if ((temp2 + ia69->unk1B0) < -128 || (temp2 + ia69->unk1AC) > 368 || (temp3 + ia69->unk1B2) < -128 || (temp3 + ia69->unk1AE) >= 289) {
+    if ((temp2 + ia69->unk1B0) < -128 || (temp2 + ia69->unk1AC) > (DISPLAY_WIDTH + 128) || (temp3 + ia69->unk1B2) < -128
+        || (temp3 + ia69->unk1AE) > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 

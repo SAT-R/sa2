@@ -750,7 +750,8 @@ static bool32 sub_80745B4(Sprite_HCCrane *crane)
     screenY = crane->posY - gCamera.y;
 
     // TODO: Replace constants!
-    if (((u16)(screenX + 192) > 624) || ((screenY + 64) < -128) || ((screenY - 64) > 288)) {
+    if (((screenX + 64) < -128) || ((screenX - 64) > (DISPLAY_WIDTH + 128)) || ((screenY + 64) < -128)
+        || ((screenY - 64) > (DISPLAY_HEIGHT + 128))) {
         return TRUE;
     }
 

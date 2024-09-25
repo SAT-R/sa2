@@ -267,7 +267,7 @@ static bool32 sub_807B028(Sprite_IA78 *ia78)
 
     temp2 = temp1;
     temp3 = temp;
-    if (temp2 < -128 || temp2 > 368 || temp3 < -128 || temp3 >= 289) {
+    if (temp2 < -128 || temp2 > (DISPLAY_WIDTH + 128) || temp3 < -128 || temp3 > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 

@@ -262,7 +262,8 @@ bool32 sub_8072A5C(Sprite_WindUpStick *windUpStick)
     s16 x = windUpStick->unk0 - gCamera.x;
     s16 y = windUpStick->unk4 - gCamera.y;
 
-    if (x + windUpStick->unkC < -128 || x + windUpStick->unk8 > 368 || y + windUpStick->unkE < -128 || y + windUpStick->unkA > 288) {
+    if (x + windUpStick->unkC < -128 || x + windUpStick->unk8 > (DISPLAY_WIDTH + 128) || y + windUpStick->unkE < -128
+        || y + windUpStick->unkA > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
     return FALSE;

@@ -296,8 +296,8 @@ static bool32 sub_807A920(Sprite_IA75 *ia75)
     s16 x = ia75->x - gCamera.x;
     s16 y = ia75->y - gCamera.y;
 
-    if ((x + ia75->offsetX + 24) < -128 || (x + ia75->width - 24) > 368 || (y + ia75->offsetY + 24) < -128
-        || (y + ia75->height - 24) > 288) {
+    if ((x + ia75->offsetX + 24) < -128 || (x + ia75->width - 24) > (DISPLAY_WIDTH + 128) || (y + ia75->offsetY + 24) < -128
+        || (y + ia75->height - 24) > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
     return FALSE;

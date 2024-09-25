@@ -316,8 +316,8 @@ static bool32 ShouldDespawn(Sprite_FlyingHandle *flyingHandle)
     s16 x = flyingHandle->x - gCamera.x;
     s16 y = flyingHandle->y - gCamera.y;
 
-    if (x + flyingHandle->width < -128 || x + flyingHandle->offsetX > 368 || y + flyingHandle->height < -128
-        || y + flyingHandle->offsetY > 288) {
+    if (x + flyingHandle->width < -128 || x + flyingHandle->offsetX > (DISPLAY_WIDTH + 128) || y + flyingHandle->height < -128
+        || y + flyingHandle->offsetY > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 

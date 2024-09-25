@@ -478,8 +478,8 @@ bool32 sub_807CF2C(Sprite_IA86 *ia086)
     s16 screenX = ia086->unk228.posX - gCamera.x;
     s16 screenY = ia086->unk228.posY - gCamera.y;
 
-    if (((screenX + ia086->unk228.right) < -128) || ((screenX + ia086->unk228.left) > 368) || ((screenY + ia086->unk228.bottom) < -128)
-        || ((screenY + ia086->unk228.top) > 288)) {
+    if (((screenX + ia086->unk228.right) < -128) || ((screenX + ia086->unk228.left) > (DISPLAY_WIDTH + 128))
+        || ((screenY + ia086->unk228.bottom) < -128) || ((screenY + ia086->unk228.top) > (DISPLAY_HEIGHT + 128))) {
 
         return TRUE;
     }

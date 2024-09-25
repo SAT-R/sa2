@@ -224,6 +224,7 @@ static void sub_8079D30(Sprite_TecBaseNoteBlock *noteBlock)
     DisplaySprite(s);
 }
 
+// TODO: Weird comparison nonmatch
 static bool32 sub_8079D60(Sprite_TecBaseNoteBlock *noteBlock)
 {
     s32 temp, temp2;
@@ -240,7 +241,7 @@ static bool32 sub_8079D60(Sprite_TecBaseNoteBlock *noteBlock)
     temp4 = temp2;
     temp3 = temp;
 
-    if (temp3 > 496 || temp4 > 416) {
+    if (temp3 > (128 + (DISPLAY_WIDTH + 128)) || temp4 > (128 + (DISPLAY_HEIGHT + 128))) {
         return TRUE;
     }
     return FALSE;
