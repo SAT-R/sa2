@@ -1580,6 +1580,9 @@ static void Task_BirdAnim(void)
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
+    // NOTE: In theory 368 should be (DISPLAY_WIDTH + 128)
+    //       and 308 should be some according value,
+    //       but then timing would be completely off.
     if ((u16)(s->x + 64) > 368) {
         BirdAnimEnd();
     }

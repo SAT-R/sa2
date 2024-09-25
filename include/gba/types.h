@@ -121,10 +121,6 @@ PACKED(OamDataShort, {
     /* 0x08 */ u16 tileNum:10;    // 0x3FF
              u16 priority:2;    // 0x400, 0x800 -> 0xC00
              u16 paletteNum:4;
-
-    /* 0x0A */ u16 fractional:8;
-             u16 integer:7;
-             u16 sign:1;
 }); /* size: 0x6 (important to not be 0x8, see comment above struct!) */
 #endif
 

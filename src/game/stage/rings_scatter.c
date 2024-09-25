@@ -211,10 +211,8 @@ typedef struct {
 
 // (90.40%) https://decomp.me/scratch/jdAe4
 // (92.98%) https://decomp.me/scratch/TxbaC
-
-// clang-format off
-NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_FlippedGravity.inc", void RingsScatterSingleplayer_FlippedGravity(void))
-// clang-format on
+NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_FlippedGravity.inc",
+         void RingsScatterSingleplayer_FlippedGravity(void))
 {
 
     RingsScatter *rs = TASK_DATA(gCurTask);
@@ -319,7 +317,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Fli
                         if (iwram_end != oamAlloced) {
                             // NOTE: This will not work out for widescreen resolutions
                             u32 dimOffX, dimOffY;
-                            DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
+                            DmaCopy16(3, oam, oamAlloced, sizeof(OamDataShort));
                             oamAlloced->all.attr0 &= 0xFF00;
 
                             dimOffY = screenY - (u16)s->dimensions->offsetY;
@@ -446,7 +444,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Nor
                         if (iwram_end != oamAlloced) {
                             // NOTE: This will not work out for widescreen resolutions
                             u32 dimOffX, dimOffY;
-                            DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
+                            DmaCopy16(3, oam, oamAlloced, sizeof(OamDataShort));
                             oamAlloced->all.attr0 &= 0xFF00;
 
                             dimOffY = screenY - (u16)s->dimensions->offsetY;
@@ -574,7 +572,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_Flipped
                         if (iwram_end != oamAlloced) {
                             // NOTE: This will not work out for widescreen resolutions
                             u32 dimOffX, dimOffY;
-                            DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
+                            DmaCopy16(3, oam, oamAlloced, sizeof(OamDataShort));
                             oamAlloced->all.attr0 &= 0xFF00;
 
                             dimOffY = screenY - (u16)s->dimensions->offsetY;
@@ -701,7 +699,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterMultipak_NormalG
                         if (iwram_end != oamAlloced) {
                             // NOTE: This will not work out for widescreen resolutions
                             u32 dimOffX, dimOffY;
-                            DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
+                            DmaCopy16(3, oam, oamAlloced, sizeof(OamDataShort));
                             oamAlloced->all.attr0 &= 0xFF00;
 
                             dimOffY = screenY - (u16)s->dimensions->offsetY;
@@ -830,7 +828,7 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSinglepakMain.in
                         if (iwram_end != oamAlloced) {
                             // NOTE: This will not work out for widescreen resolutions
                             u32 dimOffX, dimOffY;
-                            DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
+                            DmaCopy16(3, oam, oamAlloced, sizeof(OamDataShort));
                             oamAlloced->all.attr0 &= 0xFF00;
 
                             dimOffY = screenY - (u16)s->dimensions->offsetY;

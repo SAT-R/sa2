@@ -390,7 +390,7 @@ void InitCamera(u32 level)
         } else {
             camera->x = I(player->x);
             camera->unk10 = I(player->x) - (2 * DISPLAY_WIDTH);
-            camera->y = I(player->y) - 0x54;
+            camera->y = I(player->y) - ((DISPLAY_HEIGHT / 2) + 4);
             camera->unk14 = camera->y;
             camera->unk64 = player->spriteOffsetY - 4;
         }

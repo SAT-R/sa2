@@ -82,8 +82,6 @@ void StageInit_32(void);
 void StageInit_33(void);
 void StageInit_Dummy(void);
 
-void TaskDestructor_801E040(struct Task *);
-
 // NOTE(Jace): Many of these call copies of the exact same procedure,
 //             so for non-matching builds we could just exclude
 //             codegen for those copies and have pointers to a single one?
@@ -166,7 +164,7 @@ void GameStageStart(void)
     }
 
     gStageTime = 0;
-    gStageFlags &= ~0x80;
+    gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
 
     if (IS_MULTI_PLAYER) {
         sMPStageStartFrameCount = gFrameCount;

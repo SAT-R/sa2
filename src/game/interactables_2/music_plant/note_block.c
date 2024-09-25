@@ -215,6 +215,7 @@ void sub_8075D28(Sprite_NoteBlock *block)
     DisplaySprite(s);
 }
 
+// TODO/BUG: Even with the non-matching fixes, these blocks despawn immediately after creation.
 bool32 sub_8075D58(Sprite_NoteBlock *block)
 {
     s32 screenX, screenY;
@@ -233,9 +234,9 @@ bool32 sub_8075D58(Sprite_NoteBlock *block)
     screenY = block->posY + r4;
     screenY -= gCamera.y;
 #else
-    screenX = block->posX + 256;
+    screenX = block->posX;
     screenX -= gCamera.x;
-    screenX = block->posY + 256;
+    screenX = block->posY;
     screenY -= gCamera.y;
 #endif
 
@@ -244,7 +245,7 @@ bool32 sub_8075D58(Sprite_NoteBlock *block)
     otherX = screenX;
     if ((otherX) > 752 || (otherY) > 672) {
 #else
-    if ((screenX < -256 || screenX > (256 + DISPLAY_WIDTH)) || (screenY < -256 || screenY > (256 + DISPLAY_HEIGHT))) {
+    if ((screenX < -128 || screenX > (128 + DISPLAY_WIDTH)) || (screenY < -128 || screenY > (DISPLAY_HEIGHT + 128))) {
 #endif
         return TRUE;
     }
