@@ -26,7 +26,7 @@ void CreateStageBg_Zone4(void)
     background->layoutVram = (void *)BG_SCREEN_ADDR(27);
     background->targetTilesX = 32;
     background->targetTilesY = 32;
-    background->flags = BACKGROUND_DONT_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3);
+    background->flags = BACKGROUND_DISABLE_PALETTE_UPDATE | BACKGROUND_FLAGS_BG_ID(3);
     DrawBackground(background);
 
     gBgScrollRegs[0][0] = 0;

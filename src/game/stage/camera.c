@@ -67,7 +67,7 @@ const Background gStageCameraBgTemplates[4] = {
         .paletteOffset = 0,
         .animFrameCounter = 0,
         .animDelayCounter = 0,
-        .flags = BACKGROUND_FLAG_IS_LEVEL_MAP | BACKGROUND_FLAG_20 | BACKGROUND_DONT_UPDATE_PALETTE | BACKGROUND_DONT_UPDATE_TILESET | BACKGROUND_FLAGS_BG_ID(1),
+        .flags = BACKGROUND_FLAG_IS_LEVEL_MAP | BACKGROUND_FLAG_20 | BACKGROUND_DISABLE_PALETTE_UPDATE | BACKGROUND_DISABLE_TILESET_UPDATE | BACKGROUND_FLAGS_BG_ID(1),
         .scrollX = 0,
         .scrollY = 0,
         .prevScrollX = 32767,
@@ -131,7 +131,7 @@ const Background gStageCameraBgTemplates[4] = {
         .paletteOffset = 0,
         .animFrameCounter = 0,
         .animDelayCounter = 0,
-        .flags = BACKGROUND_DONT_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3),
+        .flags = BACKGROUND_DISABLE_PALETTE_UPDATE | BACKGROUND_FLAGS_BG_ID(3),
         .scrollX = 0,
         .scrollY = 0,
         .prevScrollX = 32767,
@@ -163,7 +163,7 @@ const Background gStageCameraBgTemplates[4] = {
         .paletteOffset = 0,
         .animFrameCounter = 0,
         .animDelayCounter = 0,
-        .flags = BACKGROUND_DONT_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(0),
+        .flags = BACKGROUND_DISABLE_PALETTE_UPDATE | BACKGROUND_FLAGS_BG_ID(0),
         .scrollX = 0,
         .scrollY = 0,
         .prevScrollX = 32767,
@@ -356,8 +356,8 @@ void InitCamera(u32 level)
     gUnknown_03002280[2][3] = 0x20;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        bgs->unk40.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_DONT_UPDATE_TILESET;
-        bgs->unk80.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_DONT_UPDATE_TILESET;
+        bgs->unk40.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_DISABLE_TILESET_UPDATE;
+        bgs->unk80.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_DISABLE_TILESET_UPDATE;
     }
 
     if (level != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {

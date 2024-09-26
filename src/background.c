@@ -37,25 +37,26 @@ void DrawBackground(Background *background)
     u32 palSize;
     u16 gfxSize;
 
+    // Set tilemap (or tileset, for map chunks) dimensions and graphics
     background->xTiles = mapHeader->tileset.xTiles;
     background->yTiles = mapHeader->tileset.yTiles;
     background->graphics.src = mapHeader->tileset.tiles;
     gfxSize = mapHeader->tileset.tilesSize;
     background->graphics.size = gfxSize;
 
-    if (!(background->flags & BACKGROUND_DONT_UPDATE_TILESET)) {
+    if (!(background->flags & BACKGROUND_DISABLE_TILESET_UPDATE)) {
         ADD_TO_GRAPHICS_QUEUE(&background->graphics);
-        background->flags ^= BACKGROUND_DONT_UPDATE_TILESET;
+        background->flags ^= BACKGROUND_DISABLE_TILESET_UPDATE;
     }
 
     pal = mapHeader->tileset.palette;
     palSize = mapHeader->tileset.palLength;
     background->paletteOffset = mapHeader->tileset.palOffset;
 
-    if (!(background->flags & BACKGROUND_DONT_UPDATE_PALETTE)) {
+    if (!(background->flags & BACKGROUND_DISABLE_PALETTE_UPDATE)) {
         DmaCopy16(3, pal, gBgPalette + background->paletteOffset, palSize * sizeof(*pal));
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
-        background->flags ^= BACKGROUND_DONT_UPDATE_PALETTE;
+        background->flags ^= BACKGROUND_DISABLE_PALETTE_UPDATE;
     }
 
     background->layout = mapHeader->tileset.map;
