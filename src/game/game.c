@@ -32,7 +32,7 @@ void GameStart(void)
     bool32 hasProfile = FALSE;
 
     // NOTE: cast because of const
-    gTilemapsRef = (Tilemap**)gTilemaps;
+    gTilemapsRef = (Tilemap **)gTilemaps;
     gRefSpriteTables = &gSpriteTables;
     gUnknown_03004D54 = gBgOffsetsBuffer[0];
     gUnknown_030022C0 = gBgOffsetsBuffer[1];
