@@ -81,7 +81,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     CpuFastCopy(bgStageTileset, (void *)BG_VRAM, SIO32ML_BLOCK_SIZE);
     CpuFastCopy(tilemaps, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 
-    gTilemapsRef = *((struct MapHeader ***)(EWRAM_START + 0x33000));
+    gTilemapsRef = *((Tilemap ***)(EWRAM_START + 0x33000));
     gMultiplayerLanguage = gLoadedSaveGame->language;
 
     sub_8081FB0();

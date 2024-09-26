@@ -208,7 +208,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
 
         // Display the image 'index' for 'delay' frames
         s->timeUntilNextFrame += Q_8_8(((ACmd_ShowFrame *)cmd)->delay);
-        s->timeUntilNextFrame -= s->animSpeed * 16;
+        s->timeUntilNextFrame -= s->animSpeed * 0x10;
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {

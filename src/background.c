@@ -32,15 +32,15 @@ const AnimationCommandFunc animCmdTable_BG[12] = {
 
 void DrawBackground(Background *background)
 {
-    struct MapHeader *mapHeader = gTilemapsRef[background->tilemapId];
+    struct MapHeader *mapHeader = (struct MapHeader *)gTilemapsRef[background->tilemapId];
     const u16 *pal;
     u32 palSize;
     u16 gfxSize;
 
-    background->xTiles = mapHeader->h.xTiles;
-    background->yTiles = mapHeader->h.yTiles;
-    background->graphics.src = mapHeader->h.tiles;
-    gfxSize = mapHeader->h.tilesSize;
+    background->xTiles = mapHeader->tileset.xTiles;
+    background->yTiles = mapHeader->tileset.yTiles;
+    background->graphics.src = mapHeader->tileset.tiles;
+    gfxSize = mapHeader->tileset.tilesSize;
     background->graphics.size = gfxSize;
 
     if (!(background->flags & BACKGROUND_UPDATE_GRAPHICS)) {
@@ -48,9 +48,9 @@ void DrawBackground(Background *background)
         background->flags ^= BACKGROUND_UPDATE_GRAPHICS;
     }
 
-    pal = mapHeader->h.palette;
-    palSize = mapHeader->h.palLength;
-    background->paletteOffset = mapHeader->h.palOffset;
+    pal = mapHeader->tileset.palette;
+    palSize = mapHeader->tileset.palLength;
+    background->paletteOffset = mapHeader->tileset.palOffset;
 
     if (!(background->flags & BACKGROUND_UPDATE_PALETTE)) {
         DmaCopy16(3, pal, gBgPalette + background->paletteOffset, palSize * sizeof(*pal));
@@ -58,7 +58,7 @@ void DrawBackground(Background *background)
         background->flags ^= BACKGROUND_UPDATE_PALETTE;
     }
 
-    background->layout = mapHeader->h.map;
+    background->layout = mapHeader->tileset.map;
 
     if (background->flags & BACKGROUND_FLAG_IS_LEVEL_MAP) {
         background->metatileMap = mapHeader->metatileMap;
@@ -103,8 +103,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
             Background **backgrounds = &gUnknown_03001800[0];
             s32 index = gUnknown_03002AE4;
             bg = backgrounds[index];
-            index = (index + 1) % ARRAY_COUNT(gUnknown_03001800);
-            gUnknown_03002AE4 = index;
+            gUnknown_03002AE4 = (gUnknown_03002AE4 + 1) % ARRAY_COUNT(gUnknown_03001800);
 
             if ((bg->flags & BACKGROUND_FLAG_20) && (bg->scrollX == bg->prevScrollX) && bg->scrollY == bg->prevScrollY)
                 continue;
@@ -614,31 +613,31 @@ END_NONMATCH
 
 void UpdateBgAnimationTiles(Background *bg)
 {
-    struct MapHeader *header = gTilemapsRef[bg->tilemapId];
-    if (header->h.animFrameCount > 0) {
-        if (header->h.animDelay <= ++bg->animDelayCounter) {
+    Tilemap *tilemap = gTilemapsRef[bg->tilemapId];
+    if (tilemap->animFrameCount > 0) {
+        if (tilemap->animDelay <= ++bg->animDelayCounter) {
             u32 animTileSize;
 
             bg->animDelayCounter = 0;
 
-            if (header->h.animFrameCount <= ++bg->animFrameCounter)
+            if (tilemap->animFrameCount <= ++bg->animFrameCounter)
                 bg->animFrameCounter = 0;
 
-            animTileSize = header->h.animTileSize;
+            animTileSize = tilemap->animTileSize;
 
             if (!(bg->flags & BACKGROUND_UPDATE_ANIMATIONS)) {
                 if (bg->animFrameCounter == 0) {
-                    bg->graphics.src = header->h.tiles;
+                    bg->graphics.src = tilemap->tiles;
                 } else {
-                    const u8 *tiles = header->h.tiles;
-                    u32 size = header->h.tilesSize;
+                    const u8 *tiles = tilemap->tiles;
+                    u32 size = tilemap->tilesSize;
                     tiles += size;
                     tiles += (bg->animFrameCounter - 1) * animTileSize;
                     bg->graphics.src = tiles;
                 }
             } else {
                 u8 *ts = bg->graphics.dest;
-                ts += header->h.tilesSize;
+                ts += tilemap->tilesSize;
                 ts += (bg->animFrameCounter * animTileSize);
                 bg->graphics.src = ts;
             }

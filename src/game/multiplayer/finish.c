@@ -144,7 +144,6 @@ void TaskDestructor_8019EF4(struct Task *t)
 
 typedef struct {
     u16 unk0;
-    u8 filler2[2];
 } Finish2; /* size: 4 */
 
 void Task_801A04C(void);
@@ -152,7 +151,7 @@ void Task_TransitionToResultsScreen(void);
 
 void sub_8019F08(void)
 {
-    u32 i; // r4
+    u32 i;
     u32 r2;
     u8 r6;
     struct Task *mpt;

@@ -662,8 +662,7 @@ void MultiPakCommunicationError(void)
     MultiSioStop();
     MultiSioInit(0);
 
-    // TODO: Fix cast!
-    gTilemapsRef = (struct MapHeader **)gTilemaps;
+    gTilemapsRef = (Tilemap **)gTilemaps;
     gRefSpriteTables = &gSpriteTables;
     gMultiplayerMissingHeartbeats[0] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
