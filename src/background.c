@@ -43,19 +43,19 @@ void DrawBackground(Background *background)
     gfxSize = mapHeader->tileset.tilesSize;
     background->graphics.size = gfxSize;
 
-    if (!(background->flags & BACKGROUND_UPDATE_GRAPHICS)) {
+    if (!(background->flags & BACKGROUND_DONT_UPDATE_TILESET)) {
         ADD_TO_GRAPHICS_QUEUE(&background->graphics);
-        background->flags ^= BACKGROUND_UPDATE_GRAPHICS;
+        background->flags ^= BACKGROUND_DONT_UPDATE_TILESET;
     }
 
     pal = mapHeader->tileset.palette;
     palSize = mapHeader->tileset.palLength;
     background->paletteOffset = mapHeader->tileset.palOffset;
 
-    if (!(background->flags & BACKGROUND_UPDATE_PALETTE)) {
+    if (!(background->flags & BACKGROUND_DONT_UPDATE_PALETTE)) {
         DmaCopy16(3, pal, gBgPalette + background->paletteOffset, palSize * sizeof(*pal));
         gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
-        background->flags ^= BACKGROUND_UPDATE_PALETTE;
+        background->flags ^= BACKGROUND_DONT_UPDATE_PALETTE;
     }
 
     background->layout = mapHeader->tileset.map;

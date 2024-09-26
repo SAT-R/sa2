@@ -6,6 +6,11 @@
 
 #include "game/sa1_leftovers/camera.h"
 
+#define CAMBG_MAP_FRONT_LAYER 0
+#define CAMBG_MAP_BACK_LAYER  1
+#define CAMBG_BACK_A_LAYER    2
+#define CAMBG_BACK_B_LAYER    3
+
 struct Backgrounds {
     Background unk0;
     Background unk40;

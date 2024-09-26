@@ -9,8 +9,8 @@
 
 #include "game/stage/player_super_sonic.h"
 
-#include "game/stage/stage.h"
 #include "game/stage/camera.h"
+#include "game/stage/stage.h"
 #include "game/stage/player.h"
 #include "game/stage/collision.h"
 #include "game/stage/background/dummy.h"
@@ -44,7 +44,7 @@ void TaskDestructor_801E040(struct Task *);
 #define BOSS_CAM_FRAME_DELTA_PIXELS 5
 
 const Background gStageCameraBgTemplates[4] = {
-    {
+    [CAMBG_MAP_FRONT_LAYER] = {
         .graphics = {  
             .src = NULL,  
             .dest = (void*)BG_VRAM,  
@@ -67,7 +67,7 @@ const Background gStageCameraBgTemplates[4] = {
         .paletteOffset = 0,
         .animFrameCounter = 0,
         .animDelayCounter = 0,
-        .flags = BACKGROUND_FLAG_IS_LEVEL_MAP | BACKGROUND_FLAG_20 | BACKGROUND_UPDATE_PALETTE | BACKGROUND_UPDATE_GRAPHICS | BACKGROUND_FLAGS_BG_ID(1),
+        .flags = BACKGROUND_FLAG_IS_LEVEL_MAP | BACKGROUND_FLAG_20 | BACKGROUND_DONT_UPDATE_PALETTE | BACKGROUND_DONT_UPDATE_TILESET | BACKGROUND_FLAGS_BG_ID(1),
         .scrollX = 0,
         .scrollY = 0,
         .prevScrollX = 32767,
@@ -76,7 +76,7 @@ const Background gStageCameraBgTemplates[4] = {
         .mapWidth = 0,
         .mapHeight = 0,
     },
-    {
+    [CAMBG_MAP_BACK_LAYER] = {
         .graphics = {  
             .src = NULL,  
             .dest = (void*)BG_VRAM,  
@@ -108,7 +108,7 @@ const Background gStageCameraBgTemplates[4] = {
         .mapWidth = 0,
         .mapHeight = 0,
     },
-    {
+    [CAMBG_BACK_A_LAYER] = {
         .graphics = {  
             .src = NULL,  
             .dest = (void*)BG_SCREEN_ADDR(16),  
@@ -131,7 +131,7 @@ const Background gStageCameraBgTemplates[4] = {
         .paletteOffset = 0,
         .animFrameCounter = 0,
         .animDelayCounter = 0,
-        .flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3),
+        .flags = BACKGROUND_DONT_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3),
         .scrollX = 0,
         .scrollY = 0,
         .prevScrollX = 32767,
@@ -140,7 +140,7 @@ const Background gStageCameraBgTemplates[4] = {
         .mapWidth = 0,
         .mapHeight = 0,
     },
-    {
+    [CAMBG_BACK_B_LAYER] = {
         .graphics = {  
             .src = NULL,  
             .dest = (void*)BG_CHAR_ADDR(3),  
@@ -163,7 +163,7 @@ const Background gStageCameraBgTemplates[4] = {
         .paletteOffset = 0,
         .animFrameCounter = 0,
         .animDelayCounter = 0,
-        .flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(0),
+        .flags = BACKGROUND_DONT_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(0),
         .scrollX = 0,
         .scrollY = 0,
         .prevScrollX = 32767,
@@ -356,8 +356,8 @@ void InitCamera(u32 level)
     gUnknown_03002280[2][3] = 0x20;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        bgs->unk40.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_UPDATE_GRAPHICS;
-        bgs->unk80.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_UPDATE_GRAPHICS;
+        bgs->unk40.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_DONT_UPDATE_TILESET;
+        bgs->unk80.flags |= BACKGROUND_UPDATE_ANIMATIONS | BACKGROUND_DONT_UPDATE_TILESET;
     }
 
     if (level != LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {

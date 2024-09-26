@@ -11,8 +11,6 @@
 
 #include "constants/tilemaps.h"
 
-extern const Background gStageCameraBgTemplates[4];
-
 static s16 sCameraShiftX = 0;
 
 void CreateStageBg_Zone4(void)
@@ -21,14 +19,14 @@ void CreateStageBg_Zone4(void)
     const Background *templates;
     gBgCntRegs[0] = 0x1B0F;
 
-    *background = gStageCameraBgTemplates[3];
+    *background = gStageCameraBgTemplates[CAMBG_BACK_B_LAYER];
 
     background->tilemapId = TM_SPOTLIGHT_SNOW;
     background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
     background->layoutVram = (void *)BG_SCREEN_ADDR(27);
     background->targetTilesX = 32;
     background->targetTilesY = 32;
-    background->flags = BACKGROUND_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3);
+    background->flags = BACKGROUND_DONT_UPDATE_PALETTE | BACKGROUND_FLAGS_BG_ID(3);
     DrawBackground(background);
 
     gBgScrollRegs[0][0] = 0;
