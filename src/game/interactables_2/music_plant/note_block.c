@@ -236,7 +236,7 @@ bool32 sub_8075D58(Sprite_NoteBlock *block)
 #else
     screenX = block->posX;
     screenX -= gCamera.x;
-    screenX = block->posY;
+    screenY = block->posY;
     screenY -= gCamera.y;
 #endif
 
