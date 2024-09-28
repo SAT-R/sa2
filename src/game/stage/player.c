@@ -696,7 +696,6 @@ void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
 }
 
 // NOTE: Only reg-alloc mismatch in loop (see comment below)
-// (99.91%) https://decomp.me/scratch/UT9dt
 NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Player *p))
 {
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (((p->x & p->y) + 1) != 0)) {
