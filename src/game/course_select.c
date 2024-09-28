@@ -289,8 +289,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
 
     gDispCnt = 0x1340;
 
-    gBgCntRegs[1] = 0x1C0E;
-    gBgCntRegs[0] = 0x5003;
+    gBgCntRegs[1] = BGCNT_TXT256x256 | (BGCNT_PRIORITY(2) | BGCNT_SCREENBASE(28) | BGCNT_16COLOR | BGCNT_CHARBASE(3));
+    gBgCntRegs[0] = BGCNT_TXT512x256 | (BGCNT_PRIORITY(3) | BGCNT_SCREENBASE(16) | BGCNT_16COLOR | BGCNT_CHARBASE(0));
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;

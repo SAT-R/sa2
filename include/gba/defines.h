@@ -52,6 +52,16 @@ extern uint16_t PLTT[PLTT_SIZE/sizeof(uint16_t)];
 #define BG_PLTT (u8*)&PLTT[0]
 #define OBJ_PLTT (u8*)&PLTT[BG_PLTT_SIZE/sizeof(uint16_t)]
 extern uint8_t OAM[OAM_SIZE];
+
+// NOTE: We shouldn't consider WIDESCREEN_HACK a permanent thing.
+//       This hack should best be removed once there's a "native" platform layer.
+#if ((DISPLAY_WIDTH >= 256) || (DISPLAY_HEIGHT >= 256))
+#undef VRAM_SIZE
+#define VRAM_SIZE (0x18000 + (0x800 * (12)))
+#define WIDESCREEN_HACK TRUE
+#else
+#define WIDESCREEN_HACK FALSE
+#endif
 extern uint8_t VRAM[VRAM_SIZE];
 
 #define BG_VRAM           &VRAM[0]
@@ -101,7 +111,7 @@ extern uint8_t VRAM[VRAM_SIZE];
 
 #endif
 
-#if ((DISPLAY_WIDTH > 255) || (DISPLAY_HEIGHT > 255))
+#if WIDESCREEN_HACK
 #define WIN_RANGE(a, b) (((a) << 16) | (b))
 #define WIN_GET_LOWER(win_reg)  (((win_reg) & 0xFFFF0000) >> 16)
 #define WIN_GET_HIGHER(win_reg) (((win_reg) & 0x0000FFFF) >> 0)

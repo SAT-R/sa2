@@ -559,7 +559,12 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define BGCNT_16COLOR           0x0000 // 4 bits per pixel
 #define BGCNT_256COLOR          0x0080 // 8 bits per pixel
 #define BGCNT_SCREENBASE(n) ((n) << 8) // Values 0 - 31. Base block for tile map.
+#if !WIDESCREEN_HACK
 #define BGCNT_SCREENBASE_MASK   0x1F00
+#else
+// Luckily BGCNT_WRAP is not used with text-mode backgrounds, which stage maps are.
+#define BGCNT_SCREENBASE_MASK   0x3F00
+#endif
 #define BGCNT_WRAP              0x2000 // Only affects affine BGs. Text BGs wrap by default.
 #define BGCNT_TXT256x256        0x0000 // Internal screen size size of text mode BG in pixels.
 #define BGCNT_TXT512x256        0x4000

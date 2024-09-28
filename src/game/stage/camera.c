@@ -51,7 +51,7 @@ const Background gStageCameraBgTemplates[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .layoutVram = (void*)BG_SCREEN_ADDR(30),
+        .layoutVram = (void*)BG_SCREEN_ADDR(CAM_SCREENBASE_MAP_FRONT),
         .layout = NULL,
         .xTiles = 0,
         .yTiles = 0,
@@ -83,7 +83,7 @@ const Background gStageCameraBgTemplates[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .layoutVram = (void*)BG_SCREEN_ADDR(31),
+        .layoutVram = (void*)BG_SCREEN_ADDR(CAM_SCREENBASE_MAP_BACK),
         .layout = NULL,
         .xTiles = 0,
         .yTiles = 0,
@@ -115,7 +115,7 @@ const Background gStageCameraBgTemplates[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .layoutVram = (void*)BG_SCREEN_ADDR(29),
+        .layoutVram = (void*)BG_SCREEN_ADDR(CAM_SCREENBASE_BACK_B),
         .layout = NULL,
         .xTiles = 0,
         .yTiles = 0,
@@ -147,7 +147,7 @@ const Background gStageCameraBgTemplates[4] = {
             .size = 0,  
             .anim = 0,
         },
-        .layoutVram = (void*)BG_SCREEN_ADDR(28),
+        .layoutVram = (void*)BG_SCREEN_ADDR(CAM_SCREENBASE_BACK_A),
         .layout = NULL,
         .xTiles = 0,
         .yTiles = 0,
@@ -268,51 +268,59 @@ static const BgUpdate sStageBgUpdateFuncs[NUM_LEVEL_IDS] = {
     [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = StageBgUpdate_Zone6Acts12,
 };
 
-static const s8 gUnknown_080D5A98[NUM_LEVEL_IDS][4] = {
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 64, 2, 28 }, //
-    { 32, 64, 2, 28 }, //
-    { 32, 64, 2, 28 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 64, 2, 28 }, //
-    { 32, 64, 2, 28 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 64, 2, 28 }, //
-    { 64, 32, 2, 28 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 28 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 28 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 32, 2, 29 }, //
-    { 32, 64, 2, 28 }, //
-    { 32, 32, 2, 29 }, //
-    { 64, 32, 2, 28 }, //
+#define STGBG_SCRN_DIM(w, h, charBase, screenBase)                                                                                         \
+    {                                                                                                                                      \
+        ((w) / TILE_WIDTH), ((h) / TILE_WIDTH), charBase, screenBase                                                                       \
+    }
+#define STGBG_WIDTH(arr)      ((arr)[0])
+#define STGBG_HEIGHT(arr)     ((arr)[1])
+#define STGBG_CHARBASE(arr)   ((arr)[2])
+#define STGBG_SCREENBASE(arr) ((arr)[3])
+static const s8 sStageBgDimensions[NUM_LEVEL_IDS][4] = {
+    [LEVEL_INDEX(ZONE_1, ACT_1)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_1, ACT_2)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_1, ACT_BOSS)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_1, ACT_UNUSED)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_2, ACT_1)] = STGBG_SCRN_DIM(256, 512, 2, CAM_SCREENBASE_BACK_A),
+    [LEVEL_INDEX(ZONE_2, ACT_2)] = STGBG_SCRN_DIM(256, 512, 2, CAM_SCREENBASE_BACK_A),
+    [LEVEL_INDEX(ZONE_2, ACT_BOSS)] = STGBG_SCRN_DIM(256, 512, 2, CAM_SCREENBASE_BACK_A),
+    [LEVEL_INDEX(ZONE_2, ACT_UNUSED)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_3, ACT_1)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_3, ACT_2)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_3, ACT_BOSS)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_3, ACT_UNUSED)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_4, ACT_1)] = STGBG_SCRN_DIM(256, 512, 2, CAM_SCREENBASE_BACK_A),
+    [LEVEL_INDEX(ZONE_4, ACT_2)] = STGBG_SCRN_DIM(256, 512, 2, CAM_SCREENBASE_BACK_A),
+    [LEVEL_INDEX(ZONE_4, ACT_BOSS)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_4, ACT_UNUSED)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_5, ACT_1)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_5, ACT_2)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_5, ACT_BOSS)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_5, ACT_UNUSED)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_6, ACT_1)] = STGBG_SCRN_DIM(256, 512, 2, CAM_SCREENBASE_BACK_A),
+    [LEVEL_INDEX(ZONE_6, ACT_2)] = STGBG_SCRN_DIM(512, 256, 2, CAM_SCREENBASE_BACK_A),
+    [LEVEL_INDEX(ZONE_6, ACT_BOSS)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_6, ACT_UNUSED)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_7, ACT_1)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_7, ACT_2)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_A),
+    [LEVEL_INDEX(ZONE_7, ACT_BOSS)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_7, ACT_UNUSED)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_A),
+    [LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_FINAL, ACT_BOSS)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_FINAL, ACT_UNUSED)] = STGBG_SCRN_DIM(256, 512, 2, CAM_SCREENBASE_BACK_A),
+    [LEVEL_INDEX(ZONE_UNUSED, ACT_1)] = STGBG_SCRN_DIM(256, 256, 2, CAM_SCREENBASE_BACK_B),
+    [LEVEL_INDEX(ZONE_UNUSED, ACT_2)] = STGBG_SCRN_DIM(512, 256, 2, CAM_SCREENBASE_BACK_A),
 };
 
 void InitCamera(u32 level)
 {
-    u32 temp;
+    u32 txtSize;
 
     struct Backgrounds *bgs;
     Player *player = &gPlayer;
     struct Camera *camera = &gCamera;
-    const s8 *unkA98 = gUnknown_080D5A98[level];
+    const s8 *bgDim = sStageBgDimensions[level];
 
     gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_BG3_ON | DISPCNT_OBJ_1D_MAP);
     if (level == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
@@ -320,10 +328,15 @@ void InitCamera(u32 level)
             = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
     }
 
-    gBgCntRegs[1] = (BGCNT_SCREENBASE(30) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(1));
-    gBgCntRegs[2] = (BGCNT_SCREENBASE(31) | BGCNT_16COLOR | BGCNT_CHARBASE(0) | BGCNT_PRIORITY(2));
-    temp = ((unkA98[0] + 0x1F) >> 6 | ((unkA98[1] + 0x1F) >> 6) << 1) << 0xE;
-    gBgCntRegs[3] = temp | 3 | (unkA98[3] << 8) | (unkA98[2] << 2);
+#if !WIDESCREEN_HACK
+    gBgCntRegs[1] = BGCNT_TXT256x256 | (BGCNT_PRIORITY(1) | BGCNT_SCREENBASE(CAM_SCREENBASE_MAP_FRONT) | BGCNT_16COLOR | BGCNT_CHARBASE(0));
+    gBgCntRegs[2] = BGCNT_TXT256x256 | (BGCNT_PRIORITY(2) | BGCNT_SCREENBASE(CAM_SCREENBASE_MAP_BACK) | BGCNT_16COLOR | BGCNT_CHARBASE(0));
+#else
+    gBgCntRegs[1] = BGCNT_TXT512x512 | (BGCNT_PRIORITY(1) | BGCNT_SCREENBASE(CAM_SCREENBASE_MAP_FRONT) | BGCNT_16COLOR | BGCNT_CHARBASE(0));
+    gBgCntRegs[2] = BGCNT_TXT512x512 | (BGCNT_PRIORITY(2) | BGCNT_SCREENBASE(CAM_SCREENBASE_MAP_BACK) | BGCNT_16COLOR | BGCNT_CHARBASE(0));
+#endif
+    txtSize = ((STGBG_WIDTH(bgDim) + 0x1F) >> 6 | ((STGBG_HEIGHT(bgDim) + 0x1F) >> 6) << 1) << 0xE;
+    gBgCntRegs[3] = txtSize | BGCNT_PRIORITY(3) | BGCNT_SCREENBASE(STGBG_SCREENBASE(bgDim)) | BGCNT_CHARBASE(STGBG_CHARBASE(bgDim));
 
     if (level == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
         gDispCnt = (DISPCNT_OBJ_ON | DISPCNT_WIN0_ON | DISPCNT_BG1_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_MODE_1);
@@ -339,10 +352,10 @@ void InitCamera(u32 level)
     memcpy(&gStageBackgroundsRam.unkC0, &gStageCameraBgTemplates[2], sizeof(Background));
     bgs->unkC0.tilemapId = TM_LEVEL_BG(level);
 
-    bgs->unkC0.graphics.dest = (void *)BG_CHAR_ADDR(unkA98[2]);
-    bgs->unkC0.layoutVram = (void *)BG_SCREEN_ADDR(unkA98[3]);
-    bgs->unkC0.targetTilesX = unkA98[0];
-    bgs->unkC0.targetTilesY = unkA98[1];
+    bgs->unkC0.graphics.dest = (void *)BG_CHAR_ADDR(STGBG_CHARBASE(bgDim));
+    bgs->unkC0.layoutVram = (void *)BG_SCREEN_ADDR(STGBG_SCREENBASE(bgDim));
+    bgs->unkC0.targetTilesX = STGBG_WIDTH(bgDim);
+    bgs->unkC0.targetTilesY = STGBG_HEIGHT(bgDim);
 
     gUnknown_03004D80[1] = 0;
     gUnknown_03002280[1][0] = 0;

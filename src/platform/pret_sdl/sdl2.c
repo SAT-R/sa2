@@ -53,7 +53,7 @@ extern uint8_t FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK];
 ALIGNED(256) uint16_t gameImage[DISPLAY_WIDTH * DISPLAY_HEIGHT];
 #if ENABLE_VRAM_VIEW
 #define VRAM_VIEW_WIDTH  (32 * TILE_WIDTH)
-#define VRAM_VIEW_HEIGHT (96 * TILE_WIDTH)
+#define VRAM_VIEW_HEIGHT (((VRAM_SIZE / TILE_SIZE_4BPP) / 32) * TILE_WIDTH)
 uint16_t vramBuffer[VRAM_VIEW_WIDTH * VRAM_VIEW_HEIGHT];
 uint8_t vramPalIdBuffer[(VRAM_VIEW_WIDTH / TILE_WIDTH) * (VRAM_VIEW_HEIGHT / TILE_WIDTH)];
 #endif
@@ -1141,7 +1141,8 @@ static const uint16_t bgMapSizes[][2] = {
 static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16_t voffs, int lineNum, uint16_t *line)
 {
     unsigned int charBaseBlock = (control >> 2) & 3;
-    unsigned int screenBaseBlock = (control >> 8) & 0x1F;
+    unsigned int screenBaseBlock = (control & BGCNT_SCREENBASE_MASK) >> 8;
+
     unsigned int bitsPerPixel = ((control >> 7) & 1) ? 8 : 4;
     unsigned int mapWidth = bgMapSizes[control >> 14][0];
     unsigned int mapHeight = bgMapSizes[control >> 14][1];
@@ -1163,30 +1164,32 @@ static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16
         unsigned int xx;
         if (control & BGCNT_MOSAIC)
             xx = (applyBGHorizontalMosaicEffect(x) + hoffs) & 0x1FF;
-        else
-            xx = (x + hoffs) & 0x1FF;
-
-        unsigned int yy = (lineNum + voffs) & 0x1FF;
-
-        // if x or y go above 255 pixels it goes to the next screen base which are 0x400
-        // WORDs long
-        if (xx > 255 && mapWidthInPixels > 256) {
-            bgmap += 0x400;
+        else {
+            if (!(control & BGCNT_TXT512x256)) {
+                xx = (x + hoffs) & 0xFF;
+            } else {
+                xx = (x + hoffs) & 0x1FF;
+            }
         }
 
-        if (yy > 255 && mapHeightInPixels > 256) {
-            // the width check is for 512x512 mode support, it jumps by two screen bases
-            // instead
-            bgmap += (mapWidthInPixels > 256) ? 0x800 : 0x400;
-        }
+        unsigned int yy = (lineNum + voffs);
 
-        // maximum width for bgtile block is 256
-        xx &= 0xFF;
-        yy &= 0xFF;
+        if (!(control & BGCNT_TXT256x512)) {
+            yy &= 0xFF;
+        } else {
+            yy &= 0x1FF;
+        }
 
         unsigned int mapX = xx / 8;
         unsigned int mapY = yy / 8;
-        uint16_t entry = bgmap[mapY * 32 + mapX];
+
+        // TODO: The mult. with 64 doesn't break stage maps, but most regular tilemaps are broken.
+#if !WIDESCREEN_HACK
+        unsigned int mapIndex = mapY * 32 + mapX;
+#else
+        unsigned int mapIndex = mapY * ((control & BGCNT_TXT512x256) ? 64 : 32) + mapX;
+#endif
+        uint16_t entry = bgmap[mapIndex];
 
         unsigned int tileNum = entry & 0x3FF;
         unsigned int paletteNum = (entry >> 12) & 0xF;
