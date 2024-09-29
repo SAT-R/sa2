@@ -350,7 +350,7 @@ void CreateEggTotem(void)
         s->oamFlags = SPRITE_OAM_ORDER(21);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
@@ -373,7 +373,7 @@ void CreateEggTotem(void)
     s->oamFlags = SPRITE_OAM_ORDER(22);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = temp;
     s->palId = 0;
@@ -398,7 +398,7 @@ void CreateEggTotem(void)
         s->oamFlags = SPRITE_OAM_ORDER(20);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = temp;
         s->palId = 0;
@@ -419,7 +419,7 @@ void CreateEggTotem(void)
         s->oamFlags = SPRITE_OAM_ORDER(21);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = temp;
         s->palId = 0;
@@ -1721,7 +1721,7 @@ void CreateEggTotemBullet(EggTotem *totem, s32 qX, s32 qY, u16 qSpeed)
     s->oamFlags = SPRITE_OAM_ORDER(16);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;

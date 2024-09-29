@@ -555,7 +555,7 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->y = DISPLAY_HEIGHT - 30; // set to the screen's bottom
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(4);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->frameFlags = 0;
@@ -574,7 +574,7 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->y = (DISPLAY_HEIGHT / 2) + 30;
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(3);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->frameFlags = 0;
@@ -606,7 +606,7 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
 
         s->graphics.size = 0;
         s->oamFlags = SPRITE_OAM_ORDER(3);
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -622,7 +622,7 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->y = (DISPLAY_HEIGHT / 2);
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(30);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->frameFlags = 0x3000;
@@ -1528,7 +1528,7 @@ static void CreateBirdAnimation(u16 x, s16 y, u16 startStep, u16 p4, u16 p5)
     s->y = y;
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(3);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->frameFlags = 0;
@@ -1665,7 +1665,7 @@ static void CreateLensFlareAnimation(void)
 
         s->graphics.size = 0;
         s->oamFlags = SPRITE_OAM_ORDER(8 - i);
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = i | (SPRITE_FLAG_MASK_ROT_SCALE_DOUBLE_SIZE | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);

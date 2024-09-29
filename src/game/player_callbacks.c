@@ -161,7 +161,7 @@ struct Task *Player_Sonic_Bound(s32 x, s32 y)
         s->variant = 3;
         s->prevVariant = -1;
         s->oamFlags = SPRITE_OAM_ORDER(17);
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = SPRITE_FLAG(PRIORITY, 2);

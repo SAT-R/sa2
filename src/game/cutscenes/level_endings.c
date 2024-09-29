@@ -189,7 +189,7 @@ void CreateStageResultsCutscene(u8 mode)
     s->y = 0;
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(10);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
 
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = unk122C[mode];
@@ -215,7 +215,7 @@ void CreateStageResultsCutscene(u8 mode)
         s->y = 0;
         s->graphics.size = 0;
         s->oamFlags = SPRITE_OAM_ORDER(9);
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
 
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;

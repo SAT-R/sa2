@@ -40,7 +40,7 @@ void CreateBoostModeParticles(void)
     s->prevVariant = -1;
     s->oamFlags = SPRITE_OAM_ORDER(8);
     s->frameFlags = 0x2000;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     UpdateSpriteAnimation(s);
@@ -53,7 +53,7 @@ void CreateBoostModeParticles(void)
     s->prevVariant = -1;
     s->oamFlags = SPRITE_OAM_ORDER(8);
     s->frameFlags = 0x2000;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
 

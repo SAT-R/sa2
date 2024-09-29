@@ -101,7 +101,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
     cs->s->graphics.size = 0;
     cs->s->animCursor = 0;
-    cs->s->timeUntilNextFrame = 0;
+    cs->s->qAnimDelay = 0;
     cs->s->prevVariant = -1;
     cs->s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     cs->s->palId = 0;
@@ -134,7 +134,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
 
                 cs->s->graphics.size = 0;
                 cs->s->animCursor = 0;
-                cs->s->timeUntilNextFrame = 0;
+                cs->s->qAnimDelay = 0;
                 cs->s->prevVariant = -1;
                 cs->s->animSpeed = SPRITE_ANIM_SPEED(1.0);
                 cs->s->palId = 0;
@@ -160,7 +160,7 @@ void CreateEntity_Crane(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
         cs->s->oamFlags = SPRITE_OAM_ORDER(18);
         cs->s->graphics.size = 0;
         cs->s->animCursor = 0;
-        cs->s->timeUntilNextFrame = 0;
+        cs->s->qAnimDelay = 0;
         cs->s->prevVariant = -1;
         cs->s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         cs->s->palId = 0;

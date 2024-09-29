@@ -673,8 +673,8 @@ s32 sub_80036E0(Sprite *s)
 
     SPRITE_INIT_ANIM_IF_CHANGED(s);
 
-    if (s->timeUntilNextFrame > 0)
-        s->timeUntilNextFrame -= s->animSpeed * 16;
+    if (s->qAnimDelay > 0)
+        s->qAnimDelay -= s->animSpeed * 16;
     else {
         s32 ret;
         const ACmd *cmd;
@@ -710,8 +710,8 @@ s32 sub_80036E0(Sprite *s)
         }
 
         // Display the image 'index' for 'delay' frames
-        s->timeUntilNextFrame += (((ACmd_ShowFrame *)cmd)->delay << 8);
-        s->timeUntilNextFrame -= s->animSpeed * 16;
+        s->qAnimDelay += (((ACmd_ShowFrame *)cmd)->delay << 8);
+        s->qAnimDelay -= s->animSpeed * 16;
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {

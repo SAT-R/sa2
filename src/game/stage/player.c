@@ -605,7 +605,7 @@ void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
     s->x = I(p->x);
     s->y = I(p->y);
     s->oamFlags = SPRITE_OAM_ORDER(16 + unk60);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
 
     if (IS_MULTI_PLAYER) {
@@ -656,7 +656,7 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
     s->x = I(p->x);
     s->y = I(p->y);
     s->oamFlags = SPRITE_OAM_ORDER(17);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
 
     if (IS_MULTI_PLAYER) {

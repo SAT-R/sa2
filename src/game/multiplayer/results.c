@@ -221,7 +221,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
                 s->variant = gUnknown_080D9100[lang][3].variant + temp;
             }
             s->animCursor = 0;
-            s->timeUntilNextFrame = 0;
+            s->qAnimDelay = 0;
             s->prevVariant = -1;
             s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
@@ -237,7 +237,7 @@ void CreateMultiplayerResultsScreen(u8 mode)
             s->graphics.anim = sResultsScreenPlayerCursor[i].anim;
             s->variant = sResultsScreenPlayerCursor[i].variant;
             s->animCursor = 0;
-            s->timeUntilNextFrame = 0;
+            s->qAnimDelay = 0;
             s->prevVariant = -1;
             s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;

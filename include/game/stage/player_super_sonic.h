@@ -54,7 +54,7 @@ struct SuperSonic {
         _sonic->spr.prevVariant = -1;                                                                                                      \
         _sonic->spr.graphics.size = 0;                                                                                                     \
         _sonic->spr.animCursor = 0;                                                                                                        \
-        _sonic->spr.timeUntilNextFrame = 0;                                                                                                \
+        _sonic->spr.qAnimDelay = 0;                                                                                                        \
         _sonic->unk10 = 0;                                                                                                                 \
         _sonic->unk14 = 0;                                                                                                                 \
         _sonic->unk22 = 0;                                                                                                                 \

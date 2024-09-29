@@ -103,7 +103,7 @@ void CreateEntity_PlatformThin(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -239,7 +239,7 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/CreatePlatformBreakP
         s->oamFlags = SPRITE_OAM_ORDER(8);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = 0x10;
         s->palId = 0;
@@ -283,7 +283,7 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/CreatePlatformBreakP
         s->oamFlags = SPRITE_OAM_ORDER(8);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = 0x10;
         s->palId = 0;

@@ -62,7 +62,7 @@ void CreateDemoManager(void)
 
     s->animCursor = 0;
     s->prevVariant = -1;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
     s->oamFlags = SPRITE_OAM_ORDER(1);
@@ -84,7 +84,7 @@ void CreateDemoManager(void)
 
     s->animCursor = 0;
     s->prevVariant = -1;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = 0x10;
     s->palId = 0;
     s->oamFlags = SPRITE_OAM_ORDER(1);

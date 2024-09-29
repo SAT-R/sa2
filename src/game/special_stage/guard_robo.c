@@ -243,7 +243,7 @@ void sub_8071380(Sprite *s, void *vram, s16 x, s16 y, u8 b, const struct UNK_80D
     s->x = x;
     s->y = y;
     s->oamFlags = SPRITE_OAM_ORDER(b);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevAnim = 0xffff;
     s->variant = c4->variant;
     s->prevVariant = 0xff;

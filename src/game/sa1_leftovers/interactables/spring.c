@@ -118,7 +118,7 @@ static void CreateEntity_Spring(u8 springType, MapEntity *me, u16 spriteRegionX,
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = springKind;
     s->animCursor = springKind;
-    s->timeUntilNextFrame = springKind;
+    s->qAnimDelay = springKind;
 
     s->prevVariant = -1;
     s->animSpeed = 0x10;
