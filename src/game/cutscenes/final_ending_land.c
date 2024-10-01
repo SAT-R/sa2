@@ -222,7 +222,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->oamFlags = SPRITE_OAM_ORDER(2);
             s->graphics.size = 0;
             s->animCursor = 0;
-            s->timeUntilNextFrame = 0;
+            s->qAnimDelay = 0;
             s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 1;
             s->frameFlags = 0;
@@ -241,7 +241,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->oamFlags = SPRITE_OAM_ORDER(1);
             s->graphics.size = 0;
             s->animCursor = 0;
-            s->timeUntilNextFrame = 0;
+            s->qAnimDelay = 0;
             s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
             s->frameFlags = 0;
@@ -261,7 +261,7 @@ void CreateFinalEndingLandingCutScene(void)
             s->oamFlags = SPRITE_OAM_ORDER(1);
             s->graphics.size = 0;
             s->animCursor = 0;
-            s->timeUntilNextFrame = 0;
+            s->qAnimDelay = 0;
             s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 2;
             s->frameFlags = 0;
@@ -283,7 +283,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -306,7 +306,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0x60;
@@ -334,7 +334,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(3);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -355,7 +355,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(3);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -376,7 +376,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -397,7 +397,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -418,7 +418,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -439,7 +439,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -460,7 +460,7 @@ void CreateFinalEndingLandingCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 1;
         s->frameFlags = 0;

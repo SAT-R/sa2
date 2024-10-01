@@ -52,7 +52,7 @@ void CreateEntity_LightGlobe(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -81,7 +81,7 @@ static bool32 sub_807B190(Sprite_LightGlobe *globe)
     temp5 = temp3;
     temp6 = temp4;
 
-    if (temp5 < -128 || temp5 > 368 || temp6 < -128 || temp6 > 416) {
+    if (temp5 < -128 || temp5 > (DISPLAY_WIDTH + 128) || temp6 < -128 || (temp6 > (DISPLAY_HEIGHT + 128) + 128)) {
         return TRUE;
     }
     return FALSE;

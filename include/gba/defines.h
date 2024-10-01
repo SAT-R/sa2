@@ -36,6 +36,10 @@
 #define OBJ_VRAM1_SIZE  0x4000
 #define OAM_ENTRY_COUNT 128
 #if PORTABLE
+// NOTE: Used in gba/types.h, so they have to be defined before the #include
+#define DISPLAY_WIDTH  240
+#define DISPLAY_HEIGHT 160
+
 #include "gba/types.h"
 #define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
 extern struct SoundInfo *SOUND_INFO_PTR;
@@ -48,6 +52,16 @@ extern uint16_t PLTT[PLTT_SIZE/sizeof(uint16_t)];
 #define BG_PLTT (u8*)&PLTT[0]
 #define OBJ_PLTT (u8*)&PLTT[BG_PLTT_SIZE/sizeof(uint16_t)]
 extern uint8_t OAM[OAM_SIZE];
+
+// NOTE: We shouldn't consider WIDESCREEN_HACK a permanent thing.
+//       This hack should best be removed once there's a "native" platform layer.
+#if ((DISPLAY_WIDTH >= 256) || (DISPLAY_HEIGHT >= 256))
+#undef VRAM_SIZE
+#define VRAM_SIZE (0x18000 + (0x800 * (12)))
+#define WIDESCREEN_HACK TRUE
+#else
+#define WIDESCREEN_HACK FALSE
+#endif
 extern uint8_t VRAM[VRAM_SIZE];
 
 #define BG_VRAM           &VRAM[0]
@@ -59,9 +73,10 @@ extern uint8_t VRAM[VRAM_SIZE];
 #define OBJ_VRAM0         &VRAM[0x10000]
 #define OBJ_VRAM1         &VRAM[0x14000]
 
+#else
 #define DISPLAY_WIDTH  240
 #define DISPLAY_HEIGHT 160
-#else
+
 // NOTE(Jace): I tried replacing these altogether,
 //             but that resulted in a nonmatching ROM
 //             (see notes above)
@@ -94,8 +109,16 @@ extern uint8_t VRAM[VRAM_SIZE];
 #define OAM      0x7000000
 #define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
 
-#define DISPLAY_WIDTH  240
-#define DISPLAY_HEIGHT 160
+#endif
+
+#if WIDESCREEN_HACK
+#define WIN_RANGE(a, b) (((a) << 16) | (b))
+#define WIN_GET_LOWER(win_reg)  (((win_reg) & 0xFFFF0000) >> 16)
+#define WIN_GET_HIGHER(win_reg) (((win_reg) & 0x0000FFFF) >> 0)
+#else
+#define WIN_RANGE(a, b) (((a) << 8) | (b))
+#define WIN_GET_LOWER(win_reg)  (((win_reg) & 0xFF00) >> 8)
+#define WIN_GET_HIGHER(win_reg) (((win_reg) & 0x00FF) >> 0)
 #endif
 
 #define TILE_SIZE_4BPP 32
@@ -121,8 +144,6 @@ extern uint8_t VRAM[VRAM_SIZE];
 #define RGB_MAGENTA RGB16(31, 0, 31)
 #define RGB_CYAN RGB16(0, 31, 31)
 #define RGB_WHITEALPHA (RGB_WHITE | 0x8000)
-
-#define WIN_RANGE(a, b) (((a) << 8) | (b))
 
 #define SYSTEM_CLOCK           (16 * 1024 * 1024)   // System Clock
 

@@ -45,7 +45,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
             camFracX = 0x100;
         }
 
-        gFlags |= 4;
+        gFlags |= FLAGS_4;
         gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 4;
 
@@ -53,7 +53,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
         unk5590_1 = gStageTime * 0x18;
 
         // Sky and Clouds
-        for (i = 0; i < 159; i++) {
+        for (i = 0; i < DISPLAY_HEIGHT - 1; i++) {
             if ((u32)((camFracY + i) - 111) < 10) {
                 camFracX = ((((camFracY + i) - 110) * cameraX) >> 5) & 0xFF;
             } else {
@@ -68,7 +68,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone2Acts12.inc",
 
         // Red Bottom
         something = (cameraX >> 3);
-        for (j = 0; i < 159; i++, j++) {
+        for (j = 0; i < DISPLAY_HEIGHT - 1; i++, j++) {
             x0 = CLAMP_SIN_PERIOD(x0 + 8);
             *cursor++ = something + (SIN(x0) >> 13) + (COS(CLAMP_SIN_PERIOD((gStageTime * 2) + x0)) >> 11)
                 + (SIN(CLAMP_SIN_PERIOD(unk5590_1 + (i * 0x40))) >> 13);

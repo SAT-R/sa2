@@ -289,8 +289,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
 
     gDispCnt = 0x1340;
 
-    gBgCntRegs[1] = 0x1C0E;
-    gBgCntRegs[0] = 0x5003;
+    gBgCntRegs[1] = BGCNT_TXT256x256 | (BGCNT_PRIORITY(2) | BGCNT_SCREENBASE(28) | BGCNT_16COLOR | BGCNT_CHARBASE(3));
+    gBgCntRegs[0] = BGCNT_TXT512x256 | (BGCNT_PRIORITY(3) | BGCNT_SCREENBASE(16) | BGCNT_16COLOR | BGCNT_CHARBASE(0));
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
@@ -390,7 +390,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->oamFlags = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -413,7 +413,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
@@ -431,7 +431,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
@@ -449,7 +449,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -466,7 +466,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -505,7 +505,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -523,7 +523,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
         s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
@@ -883,7 +883,7 @@ static void Task_UnlockCutSceneNextCoursePause(void)
         fade->window = SCREEN_FADE_USE_WINDOW_0;
         fade->brightness = 0;
         fade->flags = SCREEN_FADE_FLAG_LIGHTEN;
-        fade->speed = 0x180;
+        fade->speed = Q(1.5);
         fade->bldCnt = (BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_ALL);
         fade->bldAlpha = 0;
         gCurTask->main = Task_FadeOutAndExitToSelectedLevel;

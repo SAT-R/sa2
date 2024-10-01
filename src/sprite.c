@@ -167,8 +167,8 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
     if (s->frameFlags & SPRITE_FLAG_MASK_ANIM_OVER)
         return 0;
 
-    if (s->timeUntilNextFrame > 0)
-        s->timeUntilNextFrame -= s->animSpeed * 16;
+    if (s->qAnimDelay > 0)
+        s->qAnimDelay -= s->animSpeed * 16;
     else {
         /* Call all commands for the new frame */
         s32 ret;
@@ -207,8 +207,8 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
         }
 
         // Display the image 'index' for 'delay' frames
-        s->timeUntilNextFrame += Q_8_8(((ACmd_ShowFrame *)cmd)->delay);
-        s->timeUntilNextFrame -= s->animSpeed * 16;
+        s->qAnimDelay += Q_8_8(((ACmd_ShowFrame *)cmd)->delay);
+        s->qAnimDelay -= s->animSpeed * 0x10;
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
             if (frame != -1) {
@@ -561,7 +561,7 @@ void DisplaySprite(Sprite *sprite)
 
         if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && // fmt
             y + sprHeight >= 0 && y <= DISPLAY_HEIGHT) {
-            u8 unk6D0 = gMosaicReg >> 8;
+            u8 mosaicHVSizes = gMosaicReg >> 8;
 
             for (i = 0; i < sprDims->numSubframes; i++) {
                 oamData = gRefSpriteTables->oamData[sprite->graphics.anim];
@@ -612,7 +612,8 @@ void DisplaySprite(Sprite *sprite)
                     }
                 }
 
-                if (unk6D0 != 0 && (sprite->frameFlags & SPRITE_FLAG_MASK_MOSAIC) != 0) {
+                if (mosaicHVSizes != 0 && (sprite->frameFlags & SPRITE_FLAG_MASK_MOSAIC) != 0) {
+                    // Enable mosaic bit
                     oam->all.attr0 |= 0x1000;
                 }
 

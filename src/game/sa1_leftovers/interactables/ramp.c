@@ -59,7 +59,7 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;

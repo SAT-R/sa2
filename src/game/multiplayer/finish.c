@@ -106,7 +106,7 @@ void sub_8019CCC(u8 sioId, u8 count)
 
         s->prevVariant = -1;
         s->oamFlags = SPRITE_OAM_ORDER(0);
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
@@ -144,7 +144,6 @@ void TaskDestructor_8019EF4(struct Task *t)
 
 typedef struct {
     u16 unk0;
-    u8 filler2[2];
 } Finish2; /* size: 4 */
 
 void Task_801A04C(void);
@@ -152,7 +151,7 @@ void Task_TransitionToResultsScreen(void);
 
 void sub_8019F08(void)
 {
-    u32 i; // r4
+    u32 i;
     u32 r2;
     u8 r6;
     struct Task *mpt;
@@ -168,7 +167,7 @@ void sub_8019F08(void)
     gLoadedSaveGame->score += (s16)gRingCount;
 
     if (gCourseTime <= MAX_COURSE_TIME) {
-        if (!(gStageFlags & STAGE_FLAG__4) || (gCourseTime != 0)) {
+        if (!(gStageFlags & STAGE_FLAG__TIMER_REVERSED) || (gCourseTime != 0)) {
             return;
         }
     }

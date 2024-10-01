@@ -14,7 +14,7 @@ const u16 Map_zone_1_act_dummy_fg1[] = INCBIN_U16("data/maps/zone_1/act_dummy/ti
 
 ALIGNED(4) const struct MapHeader MapHeader_zone_1_act_dummy_fg0 = 
 {
-    .h = {
+    .tileset = {
         .xTiles = 12,
         .yTiles = 12,
         .animTileSize = 0,
@@ -34,7 +34,7 @@ ALIGNED(4) const struct MapHeader MapHeader_zone_1_act_dummy_fg0 =
 
 ALIGNED(4) const struct MapHeader MapHeader_zone_1_act_dummy_fg1 = 
 {
-    .h = {
+    .tileset = {
         .xTiles = 12,
         .yTiles = 12,
         .animTileSize = 0,

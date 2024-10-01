@@ -172,7 +172,7 @@ void SuperSonicInit()
     spr->x = 0;
     spr->y = 0;
     spr->animCursor = 0;
-    spr->timeUntilNextFrame = 0;
+    spr->qAnimDelay = 0;
     spr->prevVariant = -1;
     spr->animSpeed = SPRITE_ANIM_SPEED(1.0);
     spr->palId = 0;

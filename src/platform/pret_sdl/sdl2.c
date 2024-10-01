@@ -9,8 +9,8 @@
 #include <xinput.h>
 #endif
 
-#define ENABLE_AUDIO     0
-#define ENABLE_VRAM_VIEW 0
+#define ENABLE_AUDIO     !TRUE
+#define ENABLE_VRAM_VIEW !TRUE
 
 #include <SDL.h>
 
@@ -51,9 +51,12 @@ extern uint8_t VRAM[VRAM_SIZE];
 extern uint8_t OAM[OAM_SIZE];
 extern uint8_t FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK];
 ALIGNED(256) uint16_t gameImage[DISPLAY_WIDTH * DISPLAY_HEIGHT];
+#if ENABLE_VRAM_VIEW
 #define VRAM_VIEW_WIDTH  (32 * TILE_WIDTH)
-#define VRAM_VIEW_HEIGHT (96 * TILE_WIDTH)
+#define VRAM_VIEW_HEIGHT (((VRAM_SIZE / TILE_SIZE_4BPP) / 32) * TILE_WIDTH)
 uint16_t vramBuffer[VRAM_VIEW_WIDTH * VRAM_VIEW_HEIGHT];
+uint8_t vramPalIdBuffer[(VRAM_VIEW_WIDTH / TILE_WIDTH) * (VRAM_VIEW_HEIGHT / TILE_WIDTH)];
+#endif
 
 #define DMA_COUNT 4
 
@@ -537,11 +540,11 @@ u16 GetXInputKeys()
 
         if (xAxis < -STICK_THRESHOLD)
             xinputKeys |= DPAD_LEFT;
-        if (xAxis > STICK_THRESHOLD)
+        else if (xAxis > STICK_THRESHOLD)
             xinputKeys |= DPAD_RIGHT;
         if (yAxis < -STICK_THRESHOLD)
             xinputKeys |= DPAD_DOWN;
-        if (yAxis > STICK_THRESHOLD)
+        else if (yAxis > STICK_THRESHOLD)
             xinputKeys |= DPAD_UP;
 
         /* Speedup */
@@ -1138,7 +1141,8 @@ static const uint16_t bgMapSizes[][2] = {
 static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16_t voffs, int lineNum, uint16_t *line)
 {
     unsigned int charBaseBlock = (control >> 2) & 3;
-    unsigned int screenBaseBlock = (control >> 8) & 0x1F;
+    unsigned int screenBaseBlock = (control & BGCNT_SCREENBASE_MASK) >> 8;
+
     unsigned int bitsPerPixel = ((control >> 7) & 1) ? 8 : 4;
     unsigned int mapWidth = bgMapSizes[control >> 14][0];
     unsigned int mapHeight = bgMapSizes[control >> 14][1];
@@ -1160,33 +1164,38 @@ static void RenderBGScanline(int bgNum, uint16_t control, uint16_t hoffs, uint16
         unsigned int xx;
         if (control & BGCNT_MOSAIC)
             xx = (applyBGHorizontalMosaicEffect(x) + hoffs) & 0x1FF;
-        else
-            xx = (x + hoffs) & 0x1FF;
-
-        unsigned int yy = (lineNum + voffs) & 0x1FF;
-
-        // if x or y go above 255 pixels it goes to the next screen base which are 0x400
-        // WORDs long
-        if (xx > 255 && mapWidthInPixels > 256) {
-            bgmap += 0x400;
+        else {
+            if (!(control & BGCNT_TXT512x256)) {
+                xx = (x + hoffs) & 0xFF;
+            } else {
+                xx = (x + hoffs) & 0x1FF;
+            }
         }
 
-        if (yy > 255 && mapHeightInPixels > 256) {
-            // the width check is for 512x512 mode support, it jumps by two screen bases
-            // instead
-            bgmap += (mapWidthInPixels > 256) ? 0x800 : 0x400;
-        }
+        unsigned int yy = (lineNum + voffs);
 
-        // maximum width for bgtile block is 256
-        xx &= 0xFF;
-        yy &= 0xFF;
+        if (!(control & BGCNT_TXT256x512)) {
+            yy &= 0xFF;
+        } else {
+            yy &= 0x1FF;
+        }
 
         unsigned int mapX = xx / 8;
         unsigned int mapY = yy / 8;
-        uint16_t entry = bgmap[mapY * 32 + mapX];
+
+        // TODO: The mult. with 64 doesn't break stage maps, but most regular tilemaps are broken.
+#if !WIDESCREEN_HACK
+        unsigned int mapIndex = mapY * 32 + mapX;
+#else
+        unsigned int mapIndex = mapY * ((control & BGCNT_TXT512x256) ? 64 : 32) + mapX;
+#endif
+        uint16_t entry = bgmap[mapIndex];
 
         unsigned int tileNum = entry & 0x3FF;
         unsigned int paletteNum = (entry >> 12) & 0xF;
+#if ENABLE_VRAM_VIEW
+        vramPalIdBuffer[tileNum] = paletteNum;
+#endif
 
         unsigned int tileX = xx % 8;
         unsigned int tileY = yy % 8;
@@ -1528,7 +1537,7 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount, bool win
     int i;
     unsigned int x;
     unsigned int y;
-    void *objtiles = VRAM + 0x10000;
+    void *objtiles = OBJ_VRAM0;
     unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
     bool winShouldBlendPixel = true;
 
@@ -1667,12 +1676,16 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount, bool win
                 uint16_t pixel = 0;
 
                 if (!is8BPP) {
-                    pixel = tiledata[(block_offset + oam->split.tileNum) * 32 + (tile_y * 4) + (tile_x / 2)];
+                    int tileDataIndex = (block_offset + oam->split.tileNum) * 32 + (tile_y * 4) + (tile_x / 2);
+                    pixel = tiledata[tileDataIndex];
                     if (tile_x & 1)
                         pixel >>= 4;
                     else
                         pixel &= 0xF;
                     palette += oam->split.paletteNum * 16;
+#if ENABLE_VRAM_VIEW
+                    vramPalIdBuffer[0x800 + (tileDataIndex / 32)] = 16 + oam->split.paletteNum;
+#endif
                 } else {
                     pixel = tiledata[(block_offset * 2 + oam->split.tileNum) * 32 + (tile_y * 8) + tile_x];
                 }
@@ -1781,8 +1794,8 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     }
 
     bool windowsEnabled = false;
-    uint16_t WIN0bottom, WIN0top, WIN0right, WIN0left;
-    uint16_t WIN1bottom, WIN1top, WIN1right, WIN1left;
+    u16 WIN0bottom, WIN0top, WIN0right, WIN0left;
+    u16 WIN1bottom, WIN1top, WIN1right, WIN1left;
     bool WIN0enable, WIN1enable;
     WIN0enable = false;
     WIN1enable = false;
@@ -1790,10 +1803,11 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     // figure out if WIN0 masks on this scanline
     if (REG_DISPCNT & DISPCNT_WIN0_ON) {
         // acquire the window coordinates
-        WIN0bottom = (REG_WIN0V & 0xFF); // y2;
-        WIN0top = (REG_WIN0V & 0xFF00) >> 8; // y1;
-        WIN0right = (REG_WIN0H & 0xFF); // x2
-        WIN0left = (REG_WIN0H & 0xFF00) >> 8; // x1
+
+        WIN0bottom = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0V]); // y2;
+        WIN0top = WIN_GET_LOWER(gWinRegs[WINREG_WIN0V]); // y1;
+        WIN0right = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0H]); // x2
+        WIN0left = WIN_GET_LOWER(gWinRegs[WINREG_WIN0H]); // x1
 
         // figure out WIN Y wraparound and check bounds accordingly
         if (WIN0top > WIN0bottom) {
@@ -1808,10 +1822,10 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     }
     // figure out if WIN1 masks on this scanline
     if (REG_DISPCNT & DISPCNT_WIN1_ON) {
-        WIN1bottom = (REG_WIN0V & 0xFF); // y2;
-        WIN1top = (REG_WIN0V & 0xFF00) >> 8; // y1;
-        WIN1right = (REG_WIN0H & 0xFF); // x2
-        WIN1left = (REG_WIN0H & 0xFF00) >> 8; // x1
+        WIN1bottom = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0V]); // y2;
+        WIN1top = WIN_GET_LOWER(gWinRegs[WINREG_WIN0V]); // y1;
+        WIN1right = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0H]); // x2
+        WIN1left = WIN_GET_LOWER(gWinRegs[WINREG_WIN0H]); // x1
 
         if (WIN1top > WIN1bottom) {
             if (vcount >= WIN1top || vcount < WIN1bottom)
@@ -1923,7 +1937,7 @@ static void DrawFrame(uint16_t *pixels)
     int j;
     static uint16_t scanlines[DISPLAY_HEIGHT][DISPLAY_WIDTH];
     unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
-    uint16_t backdropColor = *(uint16_t *)PLTT;
+    uint16_t backdropColor = ((uint16_t *)PLTT)[0];
 
     // backdrop color brightness effects
     if (REG_BLDCNT & BLDCNT_TGT1_BD) {
@@ -1973,6 +1987,7 @@ static void DrawFrame(uint16_t *pixels)
     }
 }
 
+#if ENABLE_VRAM_VIEW
 void DrawVramView(Uint16 *buffer)
 {
     for (int y = 0; y < VRAM_VIEW_HEIGHT / TILE_WIDTH; y++) {
@@ -1982,25 +1997,24 @@ void DrawVramView(Uint16 *buffer)
 
             for (int ty = 0; ty < TILE_WIDTH; ty++) {
                 for (int tx = 0; tx < TILE_WIDTH; tx += 2) {
-                    u16 *dest = &tileBase[ty * VRAM_VIEW_WIDTH + tx];
+                    s32 tileIndex = ty * VRAM_VIEW_WIDTH + tx;
+                    u16 *dest = &tileBase[tileIndex];
 
-#if 01
                     int i = (ty * TILE_WIDTH + tx) / 2;
                     u8 *colorPtr = &((u8 *)VRAM)[tileId * 0x20 + i];
                     u8 colorId = colorPtr[0];
                     u8 colA = (colorId & 0xF0) >> 4;
                     u8 colB = (colorId & 0x0F) >> 0;
 
-                    dest[0] = PLTT[colB];
-                    dest[1] = PLTT[colA];
-#endif
+                    u8 paletteId = vramPalIdBuffer[tileId];
+                    dest[0] = PLTT[paletteId * 16 + colB];
+                    dest[1] = PLTT[paletteId * 16 + colA];
                 }
             }
         }
     }
 }
 
-#if ENABLE_VRAM_VIEW
 void VramDraw(SDL_Texture *texture)
 {
     memset(vramBuffer, 0, sizeof(vramBuffer));

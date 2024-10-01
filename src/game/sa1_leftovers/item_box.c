@@ -102,7 +102,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     s->oamFlags = SPRITE_OAM_ORDER(19);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -117,7 +117,7 @@ void CreateEntity_ItemBox(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u
     s->oamFlags = SPRITE_OAM_ORDER(20);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;

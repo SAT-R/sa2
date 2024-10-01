@@ -31,8 +31,8 @@ void GameStart(void)
     u32 i;
     bool32 hasProfile = FALSE;
 
-    // TODO: Fix cast
-    gTilemapsRef = (struct MapHeader **)gTilemaps;
+    // NOTE: cast because of const
+    gTilemapsRef = (Tilemap **)gTilemaps;
     gRefSpriteTables = &gSpriteTables;
     gUnknown_03004D54 = gBgOffsetsBuffer[0];
     gUnknown_030022C0 = gBgOffsetsBuffer[1];

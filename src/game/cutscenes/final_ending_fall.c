@@ -211,7 +211,7 @@ void CreateFinalEndingFallCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -230,7 +230,7 @@ void CreateFinalEndingFallCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -249,7 +249,7 @@ void CreateFinalEndingFallCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -269,7 +269,7 @@ void CreateFinalEndingFallCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(2);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 2;
         s->frameFlags = 0x2000;
@@ -288,7 +288,7 @@ void CreateFinalEndingFallCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(1);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 2;
         s->frameFlags = 0x2000;
@@ -307,7 +307,7 @@ void CreateFinalEndingFallCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 2;
         s->frameFlags = 0x2000;
@@ -327,7 +327,7 @@ void CreateFinalEndingFallCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 2;
         s->frameFlags = 0;
@@ -348,7 +348,7 @@ void CreateFinalEndingFallCutScene(void)
         s->oamFlags = SPRITE_OAM_ORDER(0);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0;
@@ -703,7 +703,7 @@ void sub_80923AC(struct FinalEndingFallCutScene *scene)
 
                 if (UpdateSpriteAnimation(s) != 1) {
                     s->animCursor = 0;
-                    s->timeUntilNextFrame = 0;
+                    s->qAnimDelay = 0;
                     s->frameFlags &= ~0x4000;
                 }
                 DisplaySprite(s);

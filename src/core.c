@@ -47,9 +47,9 @@ bool8 gMultiSioEnabled = FALSE;
 struct Task *gTaskPtrs[] ALIGNED(16) = {};
 u32 gBgOffsetsBuffer[2][DISPLAY_HEIGHT] = {}; /* TODO: Find out how this is different from gBgOffsetsHBlank */
 u16 gObjPalette[] = {};
-struct MapHeader **gTilemapsRef = NULL;
+Tilemap **gTilemapsRef = NULL;
 u32 gFrameCount = 0;
-u16 gWinRegs[6] ALIGNED(16) = {};
+winreg_t gWinRegs[6] ALIGNED(16) = {};
 s32 gNumTasks = 0;
 u8 gUnknown_03002280[4][4] = {};
 u16 gInput = 0;
@@ -560,7 +560,8 @@ static void UpdateScreenCpuSet(void)
         gNumHBlankIntrs = 0;
     }
 
-#if 01
+#if !PORTABLE
+    // TEMP: remove #if when all sVblankFuncs match
     if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE)
 #endif
     {
@@ -657,7 +658,7 @@ static void VBlankIntr(void)
 struct GraphicsData_Hack {
     uintptr_t src;
     uintptr_t dest;
-    u16 remainingBytes;
+    u16 size;
 };
 
 #define COPY_CHUNK_SIZE 1024
@@ -665,38 +666,57 @@ struct GraphicsData_Hack {
 static bool32 ProcessVramGraphicsCopyQueue(void)
 {
     u32 offset;
+#ifndef NON_MATCHING
     struct GraphicsData_Hack *graphics;
+#else
+    struct GraphicsData *graphics;
+#endif
 
     while (gVramGraphicsCopyCursor != gVramGraphicsCopyQueueIndex) {
-        graphics = (struct GraphicsData_Hack *)gVramGraphicsCopyQueue[gVramGraphicsCopyCursor];
+        graphics = (void *)gVramGraphicsCopyQueue[gVramGraphicsCopyCursor];
 
-        if (graphics->remainingBytes != 0) {
-            for (offset = 0; graphics->remainingBytes > 0; offset += COPY_CHUNK_SIZE) {
-                if (graphics->remainingBytes > COPY_CHUNK_SIZE) {
+        if (graphics->size != 0) {
+            for (offset = 0; graphics->size > 0; offset += COPY_CHUNK_SIZE) {
+                if (graphics->size > COPY_CHUNK_SIZE) {
 #ifdef BUG_FIX
                     if ((graphics->src != 0) && (graphics->dest != 0))
 #endif
                     {
                         DmaCopy16(3, (void *)(graphics->src + offset), (void *)(graphics->dest + offset), COPY_CHUNK_SIZE);
+                        graphics->size -= COPY_CHUNK_SIZE;
                     }
-                    graphics->remainingBytes -= COPY_CHUNK_SIZE;
+#ifdef BUG_FIX
+                    else {
+                        graphics->size = 0;
+                    }
+#endif
                 } else {
 #ifdef BUG_FIX
                     if ((graphics->src != 0) && (graphics->dest != 0))
 #endif
                     {
-                        DmaCopy16(3, (void *)(graphics->src + offset), (void *)(graphics->dest + offset), graphics->remainingBytes);
+                        DmaCopy16(3, (void *)(graphics->src + offset), (void *)(graphics->dest + offset), graphics->size);
                     }
-                    graphics->remainingBytes = 0;
+                    graphics->size = 0;
                 }
             }
         }
+#ifdef BUG_FIX
+        // NOTE: Technically not necessary, but it's a bit cleaner this way.
+        if (graphics->size == 0) {
+            gVramGraphicsCopyQueue[gVramGraphicsCopyCursor] = NULL;
+        }
+#endif
 
         INC_GRAPHICS_QUEUE_CURSOR(gVramGraphicsCopyCursor);
 
+        // TODO: Once REG_DISPSTAT gets set correctly, and all graphics functions match, remove this #if.
+        //       Otherwise graphics will not get copied properly.
+#if !PORTABLE
         if (!(REG_DISPSTAT & DISPSTAT_VBLANK)) {
             return FALSE;
         }
+#endif
     }
 
     return TRUE;

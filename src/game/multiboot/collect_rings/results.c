@@ -81,7 +81,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     CpuFastCopy(bgStageTileset, (void *)BG_VRAM, SIO32ML_BLOCK_SIZE);
     CpuFastCopy(tilemaps, (void *)EWRAM_START + 0x33000, EWRAM_SIZE - 0x33000);
 
-    gTilemapsRef = *((struct MapHeader ***)(EWRAM_START + 0x33000));
+    gTilemapsRef = *((Tilemap ***)(EWRAM_START + 0x33000));
     gMultiplayerLanguage = gLoadedSaveGame->language;
 
     sub_8081FB0();
@@ -207,7 +207,7 @@ void sub_808207C(void)
 
                 s->variant = i;
                 s->animCursor = 0;
-                s->timeUntilNextFrame = 0;
+                s->qAnimDelay = 0;
                 s->prevVariant = -1;
                 s->animSpeed = SPRITE_ANIM_SPEED(1.0);
                 s->palId = 0;
@@ -249,7 +249,7 @@ void sub_808207C(void)
             }
             s->variant = 0;
             s->animCursor = 0;
-            s->timeUntilNextFrame = 0;
+            s->qAnimDelay = 0;
             s->prevVariant = -1;
             s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
@@ -609,7 +609,7 @@ void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y
     s->graphics.anim = animId;
     s->variant = variant;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = unk25;

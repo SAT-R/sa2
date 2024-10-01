@@ -72,7 +72,7 @@ void CreateEntity_Spikes_Up(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
 
     s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -107,7 +107,7 @@ void CreateEntity_Spikes_Down(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
 
     s->variant = SA2_ANIM_VARIANT_SPIKES_UP;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -225,7 +225,7 @@ void CreateEntity_Spikes_LeftRight(MapEntity *me, u16 spriteRegionX, u16 spriteR
 
     s->variant = SA2_ANIM_VARIANT_SPIKES_SIDEWAYS;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -401,7 +401,7 @@ void CreateEntity_Spikes_HidingUp(MapEntity *me, u16 spriteRegionX, u16 spriteRe
 
     s->variant = 0xFF;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -467,7 +467,7 @@ void CreateEntity_Spikes_HidingDown(MapEntity *me, u16 spriteRegionX, u16 sprite
 
     s->variant = 0xFF;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;

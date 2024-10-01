@@ -96,7 +96,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     s->oamFlags = SPRITE_OAM_ORDER(19);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -111,7 +111,7 @@ static void sub_807A33C(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -296,8 +296,8 @@ static bool32 sub_807A920(Sprite_IA75 *ia75)
     s16 x = ia75->x - gCamera.x;
     s16 y = ia75->y - gCamera.y;
 
-    if ((x + ia75->offsetX + 24) < -128 || (x + ia75->width - 24) > 368 || (y + ia75->offsetY + 24) < -128
-        || (y + ia75->height - 24) > 288) {
+    if ((x + ia75->offsetX + 24) < -128 || (x + ia75->width - 24) > (DISPLAY_WIDTH + 128) || (y + ia75->offsetY + 24) < -128
+        || (y + ia75->height - 24) > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
     return FALSE;

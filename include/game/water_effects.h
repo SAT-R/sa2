@@ -11,8 +11,8 @@ typedef struct {
 typedef struct {
     /* 0x00 */ bool8 isActive;
     /* 0x01 */ u8 unk1;
-    /* 0x01 */ u8 unk2;
-    /* 0x01 */ u8 unk3;
+    /* 0x02 */ u8 unk2;
+    /* 0x03 */ u8 unk3;
     /* 0x04 */ s16 currentWaterLevel;
     /* 0x06 */ s16 targetWaterLevel;
     /* 0x08 */ u32 unk8;

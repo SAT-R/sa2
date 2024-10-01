@@ -82,8 +82,6 @@ void StageInit_32(void);
 void StageInit_33(void);
 void StageInit_Dummy(void);
 
-void TaskDestructor_801E040(struct Task *);
-
 // NOTE(Jace): Many of these call copies of the exact same procedure,
 //             so for non-matching builds we could just exclude
 //             codegen for those copies and have pointers to a single one?
@@ -166,7 +164,7 @@ void GameStageStart(void)
     }
 
     gStageTime = 0;
-    gStageFlags &= ~0x80;
+    gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
 
     if (IS_MULTI_PLAYER) {
         sMPStageStartFrameCount = gFrameCount;
@@ -238,10 +236,10 @@ void CreateGameStage(void)
     }
 
     gStageFlags &= ~STAGE_FLAG__2;
-    gStageFlags &= ~STAGE_FLAG__4;
+    gStageFlags &= ~STAGE_FLAG__TIMER_REVERSED;
 
     if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-        gStageFlags |= STAGE_FLAG__4;
+        gStageFlags |= STAGE_FLAG__TIMER_REVERSED;
     }
 
     CreateStageRingsManager();
@@ -378,7 +376,7 @@ void Task_GameStage(void)
 
     gCheckpointTime += timeStep;
 
-    if (gStageFlags & STAGE_FLAG__4) {
+    if (gStageFlags & STAGE_FLAG__TIMER_REVERSED) {
         gCourseTime -= timeStep;
         if ((s32)gCourseTime > 0) {
             return;

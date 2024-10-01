@@ -325,7 +325,7 @@ struct Task *SetupStageIntro(void)
     s->graphics.anim = zoneLoadingCharacterLogos[gSelectedCharacter][1];
     s->variant = zoneLoadingCharacterLogos[gSelectedCharacter][2];
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -369,7 +369,7 @@ struct Task *SetupStageIntro(void)
         s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
@@ -389,7 +389,7 @@ struct Task *SetupStageIntro(void)
     s->graphics.anim = SA2_ANIM_STAGE_INTRO_LOADING_WHEEL;
     s->variant = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(2.0);
     s->palId = 0;
@@ -415,7 +415,7 @@ struct Task *SetupStageIntro(void)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant |= -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -453,7 +453,7 @@ struct Task *SetupStageIntro(void)
             s->oamFlags = SPRITE_OAM_ORDER(4);
             s->graphics.size = 0;
             s->animCursor = 0;
-            s->timeUntilNextFrame = 0;
+            s->qAnimDelay = 0;
             s->prevVariant = -1;
             s->animSpeed = SPRITE_ANIM_SPEED(1.0);
             s->palId = 0;
@@ -489,7 +489,7 @@ struct Task *SetupStageIntro(void)
         s->oamFlags = SPRITE_OAM_ORDER(2);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;

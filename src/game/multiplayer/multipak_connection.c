@@ -115,7 +115,7 @@ void StartMultiPakConnect(void)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
@@ -133,7 +133,7 @@ void StartMultiPakConnect(void)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
@@ -149,7 +149,7 @@ void StartMultiPakConnect(void)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
@@ -662,8 +662,7 @@ void MultiPakCommunicationError(void)
     MultiSioStop();
     MultiSioInit(0);
 
-    // TODO: Fix cast!
-    gTilemapsRef = (struct MapHeader **)gTilemaps;
+    gTilemapsRef = (Tilemap **)gTilemaps;
     gRefSpriteTables = &gSpriteTables;
     gMultiplayerMissingHeartbeats[0] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;

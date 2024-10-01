@@ -605,7 +605,7 @@ void AllocateCharacterStageGfx(Player *p, PlayerSpriteInfo *param2)
     s->x = I(p->x);
     s->y = I(p->y);
     s->oamFlags = SPRITE_OAM_ORDER(16 + unk60);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
 
     if (IS_MULTI_PLAYER) {
@@ -656,7 +656,7 @@ void AllocateCharacterMidAirGfx(Player *p, PlayerSpriteInfo *param2)
     s->x = I(p->x);
     s->y = I(p->y);
     s->oamFlags = SPRITE_OAM_ORDER(17);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
 
     if (IS_MULTI_PLAYER) {
@@ -696,7 +696,6 @@ void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
 }
 
 // NOTE: Only reg-alloc mismatch in loop (see comment below)
-// (99.91%) https://decomp.me/scratch/UT9dt
 NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Player *p))
 {
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (((p->x & p->y) + 1) != 0)) {
@@ -3148,7 +3147,7 @@ void Task_PlayerHandleDeath(void)
             TaskDestroy(gCurTask);
 
             if ((!gLoadedSaveGame->timeLimitDisabled
-                 && (gCourseTime > MAX_COURSE_TIME || (gStageFlags & STAGE_FLAG__4 && gCourseTime == 0)))
+                 && (gCourseTime > MAX_COURSE_TIME || (gStageFlags & STAGE_FLAG__TIMER_REVERSED && gCourseTime == 0)))
                 || ((gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) && gCourseTime > MAX_COURSE_TIME)) {
                 HandleDeath();
             } else {

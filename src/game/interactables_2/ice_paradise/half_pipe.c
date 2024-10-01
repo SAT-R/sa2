@@ -190,7 +190,8 @@ static bool32 ShouldDespawn(Sprite_IceParadiseHalfPipe *halfPipe)
     s16 x = halfPipe->x - gCamera.x;
     s16 y = halfPipe->y - gCamera.y;
 
-    if (x + halfPipe->width < -128 || x + halfPipe->offsetX > 368 || y + halfPipe->height < -128 || y + halfPipe->offsetY > 288) {
+    if (x + halfPipe->width < -128 || x + halfPipe->offsetX > (DISPLAY_WIDTH + 128) || y + halfPipe->height < -128
+        || y + halfPipe->offsetY > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
     return FALSE;

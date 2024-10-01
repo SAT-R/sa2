@@ -292,7 +292,7 @@ static bool32 sub_807854C(Sprite_FunnelSphere *funnelSphere)
     s16 x = funnelSphere->x - gCamera.x;
     s16 y = funnelSphere->y - gCamera.y;
 
-    if (x < -128 || x > 368 || y < -0x80 || y > 288) {
+    if (x < -128 || x > (DISPLAY_WIDTH + 128) || y < -128 || y > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 

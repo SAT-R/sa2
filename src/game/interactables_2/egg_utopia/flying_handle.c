@@ -92,7 +92,7 @@ void CreateEntity_FlyingHandle(MapEntity *me, u16 spriteRegionX, u16 spriteRegio
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -316,8 +316,8 @@ static bool32 ShouldDespawn(Sprite_FlyingHandle *flyingHandle)
     s16 x = flyingHandle->x - gCamera.x;
     s16 y = flyingHandle->y - gCamera.y;
 
-    if (x + flyingHandle->width < -128 || x + flyingHandle->offsetX > 368 || y + flyingHandle->height < -128
-        || y + flyingHandle->offsetY > 288) {
+    if (x + flyingHandle->width < -128 || x + flyingHandle->offsetX > (DISPLAY_WIDTH + 128) || y + flyingHandle->height < -128
+        || y + flyingHandle->offsetY > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 

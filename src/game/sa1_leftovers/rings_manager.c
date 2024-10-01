@@ -110,7 +110,7 @@ void CreateStageRingsManager(void)
     s->graphics.anim = SA2_ANIM_RING;
     s->variant = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -396,6 +396,12 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
                                         sp1C++;
                                     }
                                 }
+#ifdef BUG_FIX
+                                // NOTE: This is likely not 100% correct, but it not being here led to a softlock.
+                                else {
+                                    meRing = (MapEntity_Ring *)(((u8 *)meRing) + 2);
+                                }
+#endif
                             }
                         }
 

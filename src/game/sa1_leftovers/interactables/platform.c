@@ -136,7 +136,7 @@ void CreateEntity_Platform_A(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
         s->oamFlags = SPRITE_OAM_ORDER(18);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = 0x10;
         s->palId = 0;
@@ -283,7 +283,7 @@ void CreateEntity_Platform_B(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;

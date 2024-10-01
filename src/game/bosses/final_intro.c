@@ -324,7 +324,7 @@ void CreateTrueArea53Intro(void)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 5;
@@ -340,7 +340,7 @@ void CreateTrueArea53Intro(void)
         s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = i + 1;
@@ -392,7 +392,7 @@ void CreateOrbitingEmeraldsSequence(void)
         emerald->oamFlags = SPRITE_OAM_ORDER(20);
         emerald->graphics.size = 0;
         emerald->animCursor = 0;
-        emerald->timeUntilNextFrame = 0;
+        emerald->qAnimDelay = 0;
         emerald->animSpeed = SPRITE_ANIM_SPEED(1.0);
         emerald->palId = 0;
         emerald->frameFlags = 0;
@@ -576,7 +576,7 @@ void CreateSuperSonicSpark(s32 x, s32 y)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = 0x20;
     s->palId = 0;
     s->frameFlags = 0x1000;
@@ -628,7 +628,7 @@ void CreateActor(u8 character)
     s->oamFlags = SPRITE_OAM_ORDER(16 - gUnknown_080D7984[character]);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = 0x20;
     if (character < ACTOR_CHEESE) {
         s->palId = character;
@@ -650,7 +650,7 @@ void CreateActor(u8 character)
         s->oamFlags = SPRITE_OAM_ORDER(16);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
         s->frameFlags = 0x1000;

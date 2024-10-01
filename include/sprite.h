@@ -20,18 +20,18 @@ struct GraphicsData {
 #define TileMask_FlipXY  (TileMask_FlipX | TileMask_FlipY)
 #define TileMask_Palette (TileMask_FlipX | TileMask_FlipY)
 
-#define BACKGROUND_FLAGS_BG_ID(id)   (id)
-#define BACKGROUND_FLAGS_MASK_BG_ID  0x3
-#define BACKGROUND_FLAG_4            0x4
-#define BACKGROUND_UPDATE_GRAPHICS   0x8
-#define BACKGROUND_UPDATE_PALETTE    0x10
-#define BACKGROUND_FLAG_20           0x20
-#define BACKGROUND_FLAG_IS_LEVEL_MAP 0x40
-#define BACKGROUND_FLAG_80           0x80
-#define BACKGROUND_FLAG_100          0x100
-#define BACKGROUND_UPDATE_ANIMATIONS 0x200
-#define BACKGROUND_FLAG_400          0x400
-#define BACKGROUND_FLAG_800          0x800
+#define BACKGROUND_FLAGS_BG_ID(id)        (id)
+#define BACKGROUND_FLAGS_MASK_BG_ID       0x3
+#define BACKGROUND_FLAG_4                 0x4
+#define BACKGROUND_DISABLE_TILESET_UPDATE 0x8
+#define BACKGROUND_DISABLE_PALETTE_UPDATE 0x10
+#define BACKGROUND_FLAG_20                0x20
+#define BACKGROUND_FLAG_IS_LEVEL_MAP      0x40
+#define BACKGROUND_FLAG_80                0x80
+#define BACKGROUND_FLAG_100               0x100
+#define BACKGROUND_UPDATE_ANIMATIONS      0x200
+#define BACKGROUND_FLAG_400               0x400
+#define BACKGROUND_FLAG_800               0x800
 typedef struct {
     /* 0x00 */ struct GraphicsData graphics;
 
@@ -159,7 +159,7 @@ typedef struct {
 
     /* 0x1A */ u16 oamFlags; // bit 6-10: OAM order index
 
-    /* 0x1C */ s16 timeUntilNextFrame; // Q_8_8, in frames
+    /* 0x1C */ s16 qAnimDelay; // Q_8_8, in frames
     /* 0x1E */ u16 prevAnim;
     /* 0x20 */ u8 variant;
     /* 0x21 */ u8 prevVariant;
@@ -272,7 +272,7 @@ s16 sub_8004418(s16 x, s16 y);
         (_sprite)->prevVariant = (_sprite)->variant;                                                                                       \
         (_sprite)->prevAnim = (_sprite)->graphics.anim;                                                                                    \
         (_sprite)->animCursor = 0;                                                                                                         \
-        (_sprite)->timeUntilNextFrame = 0;                                                                                                 \
+        (_sprite)->qAnimDelay = 0;                                                                                                         \
         SPRITE_FLAG_CLEAR(_sprite, ANIM_OVER);                                                                                             \
     }
 
@@ -284,7 +284,7 @@ s16 sub_8004418(s16 x, s16 y);
 
 #define SPRITE_INIT_SCRIPT(_sprite, _speed)                                                                                                \
     _sprite->animCursor = 0;                                                                                                               \
-    _sprite->timeUntilNextFrame = 0;                                                                                                       \
+    _sprite->qAnimDelay = 0;                                                                                                               \
     _sprite->prevVariant = -1;                                                                                                             \
     _sprite->animSpeed = SPRITE_ANIM_SPEED(_speed);                                                                                        \
     _sprite->palId = 0;                                                                                                                    \

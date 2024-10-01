@@ -87,15 +87,15 @@ NONMATCH("asm/non_matching/engine/sub_8006228.inc", void sub_8006228(u8 bg, u8 p
         gUnknown_03002A80 = 4;
 
         if (bg & 1) {
-            cursor = &((u8 *)gBgOffsetsHBlank)[2];
+            cursor = &((int_vcount *)gBgOffsetsHBlank)[2];
             gUnknown_03002878 = (void *)&REG_WIN0H;
         } else {
-            cursor = &((u8 *)gBgOffsetsHBlank)[0];
+            cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
             gUnknown_03002878 = (void *)&REG_WIN0H;
         }
     } else {
         gUnknown_03002A80 = 2;
-        cursor = &((u8 *)gBgOffsetsHBlank)[0];
+        cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
 
         if (bg & 1) {
             gUnknown_03002878 = (void *)&REG_WIN1H;
@@ -211,15 +211,15 @@ NONMATCH("asm/non_matching/engine/sub_80064A8.inc", void sub_80064A8(u8 bg, u8 p
         gUnknown_03002A80 = 4;
 
         if (bg & 1) {
-            cursor = &((u8 *)gBgOffsetsHBlank)[2];
+            cursor = &((int_vcount *)gBgOffsetsHBlank)[2];
             gUnknown_03002878 = (void *)&REG_WIN0H;
         } else {
-            cursor = &((u8 *)gBgOffsetsHBlank)[0];
+            cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
             gUnknown_03002878 = (void *)&REG_WIN0H;
         }
     } else {
         gUnknown_03002A80 = 2;
-        cursor = &((u8 *)gBgOffsetsHBlank)[0];
+        cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
 
         if (bg & 1) {
             gUnknown_03002878 = (void *)&REG_WIN1H;
@@ -331,7 +331,7 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriP
     Unknown *u;
     Unknown sp00[5];
     Unknown *pSp0;
-    u8 *cursor, *cursor2;
+    int_vcount *cursor, *cursor2;
 #ifndef NON_MATCHING
     register u32 r0 asm("r0");
     register u32 r1 asm("r1");
@@ -362,9 +362,9 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriP
 
     pSp0 = &sp00[1];
     memcpy(pSp0, &gUnknown_080984F4, sizeof(sp00[1]));
-    cursor = (u8 *)&sp00[3];
+    cursor = (int_vcount *)&sp00[3];
     memset(cursor, 0, sizeof(sp00[3]));
-    cursor2 = (u8 *)&sp00[4];
+    cursor2 = (int_vcount *)&sp00[4];
     memset(cursor2, 0, sizeof(sp00[4]));
 
     gFlags |= FLAGS_4;
@@ -373,15 +373,15 @@ NONMATCH("asm/non_matching/engine/sub_800724C.inc", void sub_800724C(u8 bg, TriP
         gUnknown_03002A80 = 4;
 
         if (bg & 1) {
-            cursor = &((u8 *)gBgOffsetsHBlank)[2];
+            cursor = &((int_vcount *)gBgOffsetsHBlank)[2];
             gUnknown_03002878 = (void *)&REG_WIN0H;
         } else {
-            cursor = &((u8 *)gBgOffsetsHBlank)[0];
+            cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
             gUnknown_03002878 = (void *)&REG_WIN0H;
         }
     } else {
         gUnknown_03002A80 = 2;
-        cursor = &((u8 *)gBgOffsetsHBlank)[0];
+        cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
 
         if (bg & 1) {
             gUnknown_03002878 = (void *)&REG_WIN1H;
@@ -584,15 +584,15 @@ void sub_80075D0(u8 bg, u8 param1, u8 param2, s16 param3, u16 param4, u16 param5
         gUnknown_03002A80 = 4;
 
         if (bg & 1) {
-            cursor = &((u8 *)gBgOffsetsHBlank)[2];
+            cursor = &((int_vcount *)gBgOffsetsHBlank)[2];
             gUnknown_03002878 = (void *)&REG_WIN0H;
         } else {
-            cursor = &((u8 *)gBgOffsetsHBlank)[0];
+            cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
             gUnknown_03002878 = (void *)&REG_WIN0H;
         }
     } else {
         gUnknown_03002A80 = 2;
-        cursor = &((u8 *)gBgOffsetsHBlank)[0];
+        cursor = &((int_vcount *)gBgOffsetsHBlank)[0];
 
         if (bg & 1) {
             gUnknown_03002878 = (void *)&REG_WIN1H;

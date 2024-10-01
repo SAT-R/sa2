@@ -88,7 +88,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -104,7 +104,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -120,7 +120,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -136,7 +136,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -152,7 +152,7 @@ void CreateEntity_BigSnowball(MapEntity *me, u16 spriteRegionX, u16 spriteRegion
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -435,7 +435,8 @@ bool32 sub_8079624(Sprite_IA69 *ia69)
 
     temp2 = temp1;
     temp3 = temp;
-    if ((temp2 + ia69->unk1B0) < -128 || (temp2 + ia69->unk1AC) > 368 || (temp3 + ia69->unk1B2) < -128 || (temp3 + ia69->unk1AE) >= 289) {
+    if ((temp2 + ia69->unk1B0) < -128 || (temp2 + ia69->unk1AC) > (DISPLAY_WIDTH + 128) || (temp3 + ia69->unk1B2) < -128
+        || (temp3 + ia69->unk1AE) > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 

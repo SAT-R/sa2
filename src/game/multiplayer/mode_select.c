@@ -114,7 +114,7 @@ void CreateMultiplayerModeSelectScreen(void)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
@@ -132,7 +132,7 @@ void CreateMultiplayerModeSelectScreen(void)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
@@ -150,7 +150,7 @@ void CreateMultiplayerModeSelectScreen(void)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;
@@ -168,7 +168,7 @@ void CreateMultiplayerModeSelectScreen(void)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
     s->hitboxes[0].index = -1;

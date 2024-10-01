@@ -61,7 +61,7 @@ void CreateEntity_SpikePlatform(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
     s->oamFlags = SPRITE_OAM_ORDER(18);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -267,7 +267,7 @@ static bool32 sub_807B028(Sprite_IA78 *ia78)
 
     temp2 = temp1;
     temp3 = temp;
-    if (temp2 < -128 || temp2 > 368 || temp3 < -128 || temp3 >= 289) {
+    if (temp2 < -128 || temp2 > (DISPLAY_WIDTH + 128) || temp3 < -128 || temp3 > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 

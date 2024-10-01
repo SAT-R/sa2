@@ -49,7 +49,7 @@ void CreateOpponentPositionIndicator(u8 sid)
     spr->oamFlags = SPRITE_OAM_ORDER(1);
     spr->graphics.size = 0;
     spr->animCursor = 0;
-    spr->timeUntilNextFrame = 0;
+    spr->qAnimDelay = 0;
     spr->prevVariant = -1;
     spr->animSpeed = SPRITE_ANIM_SPEED(1.0);
     spr->palId = sid;
@@ -78,7 +78,7 @@ void CreateSelfPositionIndicator(void)
     spr->oamFlags = SPRITE_OAM_ORDER(1);
     spr->graphics.size = 0;
     spr->animCursor = 0;
-    spr->timeUntilNextFrame = 0;
+    spr->qAnimDelay = 0;
     spr->prevVariant = -1;
     spr->animSpeed = SPRITE_ANIM_SPEED(1.0);
     spr->palId = 0;

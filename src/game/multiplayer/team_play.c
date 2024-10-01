@@ -133,7 +133,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         s->graphics.anim = gUnknown_080D92BC[i].anim;
         s->variant = gUnknown_080D92BC[i].variant;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
@@ -153,7 +153,7 @@ void CreateMultiplayerTeamPlayScreen(void)
         s->graphics.anim = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].anim;
         s->variant = gUnknown_080D92DC[TextElementOffset(lang, 5, i)].variant;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = SPRITE_ANIM_SPEED(1.0);
         s->palId = 0;
@@ -170,7 +170,7 @@ void CreateMultiplayerTeamPlayScreen(void)
     s->graphics.anim = SA2_ANIM_MULTIPLAYER_UNKNOWN;
     s->variant = SA2_ANIM_VARIANT_MULTIPLAYER_UNKNOWN_ARROWS;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;

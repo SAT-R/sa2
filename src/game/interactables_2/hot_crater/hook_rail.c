@@ -393,7 +393,7 @@ static bool32 sub_8073238(Sprite_HookRail *hookRail)
     s16 x = hookRail->x - gCamera.x;
     s16 y = hookRail->y - gCamera.y;
 
-    if (x < -128 || x > 368 || y < -128 || y > 288) {
+    if (x < -128 || x > (DISPLAY_WIDTH + 128) || y < -128 || y > (DISPLAY_HEIGHT + 128)) {
         return TRUE;
     }
 

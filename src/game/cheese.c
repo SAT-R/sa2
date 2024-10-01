@@ -142,7 +142,7 @@ void CreateCheese(Player *player)
     s->prevVariant = -1;
     s->oamFlags = SPRITE_OAM_ORDER(17);
     s->frameFlags = SPRITE_FLAG(PRIORITY, 2);
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
 
     s->animSpeed = SPRITE_ANIM_SPEED(1.0);
     s->palId = 0;
@@ -700,7 +700,7 @@ void sub_8014BB0(Cheese *cheese)
     unk4BB0->s.y = I(unk4BB0->unk38) - gCamera.y;
     unk4BB0->s.oamFlags = SPRITE_OAM_ORDER(8);
     unk4BB0->s.frameFlags = SPRITE_FLAG(PRIORITY, 2);
-    unk4BB0->s.timeUntilNextFrame = 0;
+    unk4BB0->s.qAnimDelay = 0;
 
     unk4BB0->s.animSpeed = SPRITE_ANIM_SPEED(1.0);
     unk4BB0->s.palId = 0;

@@ -32,7 +32,7 @@ typedef struct {
 } Tilemap; /* size = 0x1C */
 
 struct MapHeader {
-    /* 0x00 */ Tilemap h;
+    /* 0x00 */ Tilemap tileset;
     /* 0x1C */ const u16 *metatileMap;
     /* 0x20 */ u16 mapWidth; // in Metatiles
     /* 0x22 */ u16 mapHeight; // in Metatiles

@@ -329,7 +329,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
         s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
         s->animCursor = 0;
-        s->timeUntilNextFrame = 0;
+        s->qAnimDelay = 0;
         s->prevVariant = -1;
         s->animSpeed = 0x10;
         s->palId = 0;
@@ -347,7 +347,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->oamFlags = SPRITE_OAM_ORDER(3);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -364,7 +364,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -381,7 +381,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -398,7 +398,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -415,7 +415,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -432,7 +432,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -449,7 +449,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -466,7 +466,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
     s->palId = 0;
@@ -483,7 +483,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->oamFlags = SPRITE_OAM_ORDER(1);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
     s->prevVariant = -1;
     s->animSpeed = 0x10;
 #ifndef NON_MATCHING
@@ -503,7 +503,7 @@ void CreateCharacterSelectionScreen(u8 initialSelection, bool8 allUnlocked)
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
-    s->timeUntilNextFrame = 0;
+    s->qAnimDelay = 0;
 #ifndef NON_MATCHING
     (&characterScreen->characterSprite)->prevVariant = -1;
 #else
