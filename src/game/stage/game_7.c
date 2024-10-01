@@ -634,8 +634,13 @@ NONMATCH("asm/non_matching/game/stage/sub_802E384.inc", void sub_802E384(Vec2_16
 }
 END_NONMATCH
 
+void sub_802E49C(s32 *tmp9, s32);
+
 void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, s16 d)
 {
+    s32 sin;
+    s32 idx;
+    s16 temp2;
     gUnknown_03002A80 = 2;
     gUnknown_03002878 = REG_ADDR_WIN0H;
     gFlags |= FLAGS_4;
@@ -656,7 +661,7 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, s16 d)
         }
 
         if ((a - 0x101) <= 8160 && 239 < x) {
-            s32 sin = (SIN(a) * (x - 240)) >> 0xE + y;
+            sin = (SIN(a) * (x - 240)) >> 0xE + y;
 
             if ((u32)(sin - 1) < 0x9F) {
                 if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
@@ -669,7 +674,176 @@ void sub_802E784(u16 a, u16 b, u16 c, s16 x, s16 y, s16 d)
                 return;
             }
         }
-        //     if (0x200 < a_input) {
-        // }
+        if (a > 0x200) {
+            if (y > 0x9F) {
+                sin = (COS(a) * (y - 0xA0)) >> 0xE + x;
+
+                if ((u32)(sin - 1) < 0xEF) {
+                    if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+                        DmaClear32(3, &gBgOffsetsBuffer[0], 160 * 4);
+                    } else {
+                        DmaClear32(3, &gBgOffsetsBuffer[1], 160 * 4);
+                    }
+
+                    sub_802DDC4(CLAMP_16(sin - b, 0, 0xF0) << 8, a);
+                    sub_802DDC4(CLAMP_16(sin + b, 0, 0xF0) << 8, a);
+                    return;
+                }
+
+                if (a > 0x200) {
+                    gUnknown_03002878 = REG_ADDR_WIN0H;
+                    gUnknown_03002A80 = 2;
+                    return;
+                }
+            }
+
+            if (a > 0x200) {
+                gUnknown_03002878 = REG_ADDR_WIN0H;
+                gUnknown_03002A80 = 2;
+                return;
+            }
+        }
+        if (y > -1) {
+            gUnknown_03002878 = REG_ADDR_WIN0H;
+            gUnknown_03002A80 = 2;
+            return;
+        }
+
+        y = ((COS(a) * (y - 160)) >> 0xE) + x;
+
+        if ((u16)(y - 1) > 0xEE) {
+            gUnknown_03002878 = REG_ADDR_WIN0H;
+            gUnknown_03002A80 = 2;
+            return;
+        }
+        if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+            DmaClear32(3, &gBgOffsetsBuffer[0], 160 * 4);
+        } else {
+            DmaClear32(3, &gBgOffsetsBuffer[1], 160 * 4);
+        }
+
+        sub_802DDC4(CLAMP_16(sin - b, 0, 0xF0) << 8, a);
+        sub_802DDC4(CLAMP_16(sin + b, 0, 0xF0) << 8, a);
+        return;
+    }
+
+    if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+        DmaClear32(3, &gBgOffsetsBuffer[0], 160 * 4);
+    } else {
+        DmaClear32(3, &gBgOffsetsBuffer[1], 160 * 4);
+    }
+
+    idx = (a - 0x100) & (SIN_PERIOD - 1);
+    {
+        s32 tmp2 = (b * COS(idx)) >> 0xF;
+        s32 tmp4 = (b * SIN(a)) >> 0xF;
+        s32 tmp5 = (d * COS(a)) >> 0xE;
+        s32 tmp6 = x + tmp2 + tmp5;
+        s32 tmp7 = (d * SIN(a)) >> 0xE;
+        s16 tmp8[7][2];
+
+        s32 tmp11, tmp12;
+        s32 tmp12, tmp13;
+        s32 cos2, sin2;
+        s32 tmp14;
+        s32 tmp15;
+
+        tmp8[0] = y + tmp4 + tmp7;
+        tmp8[1] = (x - tmp2) + tmp5;
+        tmp8[2] = (y - tmp4) + tmp7;
+        tmp8[3] = tmp6;
+        tmp8[4] = tmp8[0];
+        tmp8[5] = tmp8[1];
+        tmp11 = (x + ((c * COS(idx)) >> 0xF));
+        tmp12 = (y + ((c * SIN(idx)) >> 0xF));
+
+        x -= tmp2;
+        y -= tmp4;
+
+        cos2 = (COS(a) * 0xF) >> 2;
+        sin2 = (SIN(a) >> 6);
+
+        if (cos2 != 0) {
+            if (sin2 == 0) {
+                cos2 = -4096;
+            } else {
+                cos2 = Div(cos2, sin2);
+            }
+        }
+
+        sin2 = tmp6 << 8;
+        idx = tmp8;
+        if (a < 0x200) {
+            tmp13 = temp2;
+            for (; idx < 0x9F; idx++) {
+                sin2 += cos2;
+                temp2 = sin2 >> 8;
+                sin = sin2 >> 8;
+                if (sin > 0xEF) {
+                    tmp13 = 0xF0;
+                }
+
+                if (sin < 0) {
+                    tmp13 = 0;
+                }
+            }
+        } else {
+            tmp13 = temp2;
+            for (; idx != 0; idx--) {
+                sin2 -= cos2;
+                temp2 = sin2 >> 8;
+                sin = sin2 >> 8;
+                if (sin > 0xEF) {
+                    tmp13 = 0xF0;
+                    break;
+                }
+
+                if (sin < 0) {
+                    tmp13 = 0;
+                    break;
+                }
+            }
+        }
+
+        tmp15 = idx;
+
+        sin2 = tmp8[1] << 8;
+
+        if (a < 0x200) {
+            for (; tmp8[2] < 0x9E; tmp8[2]++) {
+                sin2 += cos2;
+                sin = sin2 >> 8;
+                if (sin > 0xEF) {
+                    tmp14 = 0xF0;
+                    break;
+                }
+
+                if (sin < 0) {
+                    tmp14 = 0;
+                    break;
+                }
+            }
+        } else {
+            for (; tmp8[2] != 0; tmp8[2]--) {
+                sin2 -= cos2;
+                temp2 = sin2 >> 8;
+                sin = sin2 >> 8;
+                if (sin > 0xEF) {
+                    tmp14 = 0xF0;
+                    break;
+                }
+
+                if (sin < 0) {
+                    tmp14 = 0;
+                    break;
+                }
+            }
+        }
+
+        if (tmp14 == tmp13 || tmp8[2] == tmp15) {
+            sub_802E49C(&tmp8[1], 6);
+        } else {
+            sub_802E49C(&tmp8[1], 7);
+        }
     }
 }
