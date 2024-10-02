@@ -147,6 +147,4 @@
 	pop {r1}
 	bx r1
 
-    @ Unused
-	
 .syntax divided

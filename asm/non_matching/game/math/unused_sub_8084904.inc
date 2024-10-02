@@ -50,7 +50,5 @@ _08084914:
 	bx r0
 	.align 2, 0
 _08084960: .4byte gSineTable
-
-    @ Unused
 	
 .syntax divided

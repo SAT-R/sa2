@@ -291,7 +291,5 @@ _08084EA6:
 	pop {r4, r5, r6, r7}
 	pop {r0}
 	bx r0
-    
-    @ Called in math_0.s (unused sub_80851E0)
 	
 .syntax divided

@@ -1,5 +1,6 @@
 .syntax unified
 .text
+    @ code similar to sub_80835E0
 	push {r4, r5, r6, r7, lr}
 	mov r7, r8
 	push {r7}
@@ -116,6 +117,4 @@ _0808377A:
 	.align 2, 0
 _08083794: .4byte 0x000003FF
 
-    @ Unused
-	
 .syntax divided

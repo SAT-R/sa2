@@ -1,6 +1,7 @@
 
 .syntax unified
 .text
+@ Called in math_0.s (unused sub_80851E0)
 	ldrh r2, [r0, #4]
 	ldrh r3, [r0, #8]
 	eors r2, r3
@@ -28,6 +29,4 @@
 	bx lr
 	.align 2, 0
 
-    @ Unused
-	
 .syntax divided

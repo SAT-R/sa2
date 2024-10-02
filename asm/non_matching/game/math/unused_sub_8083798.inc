@@ -98,7 +98,5 @@ _08083850:
 	pop {r0}
 	bx r0
 	.align 2, 0
-    
-    @ Unused
 	
 .syntax divided
