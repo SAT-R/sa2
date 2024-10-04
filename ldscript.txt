@@ -541,7 +541,8 @@ SECTIONS
         src/data/tilemap_data_old_logos.o(.rodata);
 
         src/data/sprite_tables.o(.rodata);
-        data/sprite_animation_scripts.o(.rodata);
+        src/data/animations/animations.o(.rodata);
+        src/data/animations/animation_table.o(.data);
         src/data/sprite_dimensions.o(.rodata);
         src/data/sprite_oam_data.o(.rodata);
         data/sprite_animation_data.o(.rodata);

@@ -160,7 +160,7 @@ static inline void sub_8015B64_inline(AnimId anim, u16 palId)
 {
     const s32 *pAnim = (const s32 *)*gAnimations[anim];
 
-    if (*pAnim++ == ANIM_CMD__GET_PALETTE) {
+    if (*pAnim++ == ANIM_CMD__PALETTE) {
         u32 animPalId;
         u16 numColors, insertOffset;
 
