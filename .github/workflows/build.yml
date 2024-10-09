@@ -145,3 +145,8 @@ jobs:
         run: |
           make clean
           make -j${nproc} win32
+
+      - name: sdl
+        run: |
+          make clean
+          make -j${nproc} sdl_objs

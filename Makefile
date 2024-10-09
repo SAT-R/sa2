@@ -105,6 +105,7 @@ ifeq ($(PLATFORM),gba)
 	CC1FLAGS += -fhex-asm
 else 
 	ifeq ($(PLATFORM),sdl)
+		CC1FLAGS += -Wno-parentheses-equality -Wno-unused-value
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell sdl2-config --cflags)
 	else ifeq ($(PLATFORM),sdl_win32)
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(SDL_MINGW_FLAGS)
@@ -181,7 +182,7 @@ infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst 
 
 # Build tools when building the rom
 # Disable dependency scanning for clean/tidy/tools
-ifeq (,$(filter-out all rom compare libagbsyscall,$(MAKECMDGOALS)))
+ifeq (,$(filter-out all objs rom compare libagbsyscall,$(MAKECMDGOALS)))
 # if we are doing any of these things, build tools first
 $(call infoshell, $(MAKE) tools -j$(nproc))
 else
@@ -418,6 +419,9 @@ PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
 $(PROCESSED_LDSCRIPT): $(LDSCRIPT)
 	$(CPP) -P $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
 
+objs: $(OBJS)
+	@echo "Done"
+
 $(ELF): $(OBJS) $(PROCESSED_LDSCRIPT) libagbsyscall
 ifeq ($(PLATFORM),gba)
 	@echo "$(LD) -T $(LDSCRIPT) -Map $(MAP) <objects> <lib>"
@@ -501,6 +505,7 @@ europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 
 sdl: ; @$(MAKE) PLATFORM=sdl
+sdl_objs: ; @$(MAKE) objs PLATFORM=sdl
 
 sdl_win32: SDL2.dll $(SDL_MINGW_LIB)
 	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386

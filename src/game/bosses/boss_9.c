@@ -2413,7 +2413,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_8050104.inc", bool8 sub_80501
     u32 r2;
     s16 **ip = unk1C->unk1C;
     s16 *r4 = (s16 *)&unk1C->unk4;
-    u16 *unk3A = &unk1C->unk20;
+    u16 *unk3A = (void *)&unk1C->unk20;
     u16 sb = unk1C->unk16;
     bool8 result = FALSE;
     u16 r7;
