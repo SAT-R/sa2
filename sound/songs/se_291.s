@@ -2,10 +2,9 @@
 	.include "asm/macros/portable.inc"
 	.include "sound/MPlayDef.s"
 
-	SECTION_RODATA
+	mSectionRodata
 
-	.align 2
-	.global song0291_1
+	mAlignWord
 song0291_1:
 	.byte	KEYSH	, 0
 	.byte	TEMPO	, 48
@@ -81,7 +80,7 @@ song0291_1:
 	.byte	W05
 	.byte	FINE
 
-	.align 2
+	mAlignWord
 	.global C_DECL(se_291)
 C_DECL(se_291):
 	.byte	1
@@ -89,6 +88,6 @@ C_DECL(se_291):
 	.byte	20
 	.byte	128
 
-	.4byte	voicegroup005
+	mPtr	voicegroup005
 
-	.4byte  song0291_1
+	mPtr  song0291_1

@@ -1,4 +1,4 @@
-	.align 2
+	mAlignWord
 	.global C_DECL(gSongTable)
 C_DECL(gSongTable):	@ 0x08AD4F4C
 	song C_DECL(dummy_song_header), 0, 0
@@ -509,6 +509,6 @@ C_DECL(gSongTable):	@ 0x08AD4F4C
 	song C_DECL(mus_505), 0, 0
 	song C_DECL(mus_506), 0, 0
 
-	.align 2
+	mAlignWord
 C_DECL(dummy_song_header):
 	.byte 0, 0, 0, 0

@@ -182,7 +182,7 @@ infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst 
 
 # Build tools when building the rom
 # Disable dependency scanning for clean/tidy/tools
-ifeq (,$(filter-out all objs rom compare libagbsyscall,$(MAKECMDGOALS)))
+ifeq (,$(filter-out all rom compare libagbsyscall,$(MAKECMDGOALS)))
 # if we are doing any of these things, build tools first
 $(call infoshell, $(MAKE) tools -j$(nproc))
 else
@@ -195,32 +195,14 @@ ifeq ($(PLATFORM),gba)
 ROM      := $(BUILD_NAME).gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
+else ifeq ($(PLATFORM),sdl)
+ROM      := $(BUILD_NAME).sdl
+ELF      := $(ROM).elf
+MAP      := $(ROM).map
 else
 ROM      := $(BUILD_NAME).$(PLATFORM).exe
 ELF      := $(ROM:.exe=.elf)
 MAP      := $(ROM:.exe=.map)
-endif
-
-ifeq ($(CPU_ARCH),arm)
-# no-op
-  ASM_PSEUDO_OP_CONV := sed -n 'p'
-else
-
-  # MacOS sed command is different to Linux
-  SEDFLAGS :=
-  UNAME := $(shell uname)
-  ifeq ($(UNAME),Darwin)
-  	SEDFLAGS += -i ''
-  endif
-
-  # Convert .2byte -> .short and .4byte -> .int
-  #  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
-  #  but on 64bit targets it would be .8byte / .quad
-  #
-  # sed expression script by Kurausukun
-  # only apply the SEDFLAGS (for MacOS) to the commands where we read the file
-  ASM_PSEUDO_OP_CONV := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
-  # TODO: switch to quad for 64bit
 endif
 
 ASM_SUBDIR = asm
@@ -419,9 +401,6 @@ PROCESSED_LDSCRIPT := $(OBJ_DIR)/$(LDSCRIPT)
 $(PROCESSED_LDSCRIPT): $(LDSCRIPT)
 	$(CPP) -P $(CPPFLAGS) $(LDSCRIPT) > $(PROCESSED_LDSCRIPT)
 
-objs: $(OBJS)
-	@echo "Done"
-
 $(ELF): $(OBJS) $(PROCESSED_LDSCRIPT) libagbsyscall
 ifeq ($(PLATFORM),gba)
 	@echo "$(LD) -T $(LDSCRIPT) -Map $(MAP) <objects> <lib>"
@@ -430,7 +409,7 @@ else
 	@echo Outputting $(ROOT_DIR)/$@
 	@touch $(ROOT_DIR)/$(MAP)
 ifeq ($(PLATFORM),sdl)
-	@cd $(OBJ_DIR) && $(CC1) -no-pie $(OBJS_REL) $(shell sdl2-config --cflags --libs) -o $(ROOT_DIR)/$@
+	@cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) $(shell sdl2-config --cflags --libs) -o $(ROOT_DIR)/$@
 else ifeq ($(PLATFORM),sdl_win32)
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(ROOT_DIR)/$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 else
@@ -442,6 +421,8 @@ $(ROM): $(ELF)
 ifeq ($(PLATFORM),gba)
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
+else ifeq ($(PLATFORM),sdl)
+	cp $< $@
 else
 	$(OBJCOPY) -O pei-i386 $< $@
 ifeq ($(CREATE_PDB),1)
@@ -462,8 +443,10 @@ $(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
 	@$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
 	@$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
+ifeq ($(PLATFORM), gba)
 	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
-	@$(ASM_PSEUDO_OP_CONV) $(OBJ_DIR)/$*.s | $(AS) $(ASFLAGS) -o $@ -
+endif
+	@$(AS) $(ASFLAGS) $(OBJ_DIR)/$*.s -o $@
 
 # Build arm asm sources
 ifeq ($(CPU_ARCH),arm)
@@ -476,12 +459,12 @@ endif
 # rule for sources from the src dir (parts of libraries)
 $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
+	@$(AS) $(ASFLAGS) -o $@ $<
 
 # rule for rest of asm directory
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
+	@$(AS) $(ASFLAGS) -o $@ $<
 endif
 
 ifeq ($(NODEP),1)
@@ -492,11 +475,11 @@ endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
+	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
+	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 
 japan: ; @$(MAKE) GAME_REGION=JAPAN
@@ -505,7 +488,6 @@ europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 
 sdl: ; @$(MAKE) PLATFORM=sdl
-sdl_objs: ; @$(MAKE) objs PLATFORM=sdl
 
 sdl_win32: SDL2.dll $(SDL_MINGW_LIB)
 	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386

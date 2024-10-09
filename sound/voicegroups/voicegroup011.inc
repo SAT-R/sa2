@@ -1,4 +1,4 @@
-	.align 2
+	mAlignWord
 	.global voicegroup011
 voicegroup011:	@ 0x08AD0D10
 	voice_square_2_alt 1, 0, 0, 15, 0	@08AD0D10

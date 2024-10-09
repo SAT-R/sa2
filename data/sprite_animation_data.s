@@ -1,7 +1,7 @@
 .include "asm/macros/c_decl.inc"
 .include "asm/macros/portable.inc"
 
-SECTION_RODATA
+mSectionRodata
 
 @ TODO: move these into C files in src/data?
     .global C_DECL(gSpritePalettes) @ 0x0816ADC8

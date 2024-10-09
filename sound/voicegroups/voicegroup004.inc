@@ -1,4 +1,4 @@
-	.align 2
+	mAlignWord
 	.global voicegroup004
 voicegroup004:	@ 0x08ACEBD4
 	voice_directsound 60, 0, DirectSoundWaveData_21, 255, 0, 255, 0	@08ACEBD4

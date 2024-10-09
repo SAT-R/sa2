@@ -17,10 +17,10 @@ RomHeaderGameTitle:
 	.space 12
 
 RomHeaderGameCode:
-	.4byte 0
+	.int 0
 
 RomHeaderMakerCode:
-	.2byte 0
+	.short 0
 
 RomHeaderMagic:
 	.byte 0x96

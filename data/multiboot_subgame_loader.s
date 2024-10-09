@@ -1,7 +1,7 @@
 .include "asm/macros/c_decl.inc"
 .include "asm/macros/portable.inc"
 
-SECTION_RODATA
+mSectionRodata
 
 @; Not really sure why this is here
     .global C_DECL(gUnknown_08CD0728)

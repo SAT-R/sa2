@@ -1,4 +1,4 @@
-	.align 2
+	mAlignWord
 	.global voicegroup019
 voicegroup019:	@ 0x08AD2ABC
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_266, 255, 0, 255, 0	@08AD2ABC
