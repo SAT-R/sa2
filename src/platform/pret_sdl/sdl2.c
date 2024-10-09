@@ -9,9 +9,6 @@
 #include <xinput.h>
 #endif
 
-#define ENABLE_AUDIO     !TRUE
-#define ENABLE_VRAM_VIEW !TRUE
-
 #include <SDL.h>
 
 #include "global.h"
@@ -141,9 +138,6 @@ u16 Platform_GetKeyInput(void);
 #ifdef _WIN32
 void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS | HEAP_ZERO_MEMORY, numBytes); }
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
-#else
-void *Platform_malloc(int numBytes) { return malloc(numBytes); }
-void Platform_free(void *ptr) { free(ptr); }
 #endif
 
 int main(int argc, char **argv)
@@ -2037,7 +2031,7 @@ void VDraw(SDL_Texture *texture)
 
 int DoMain(void *data)
 {
-    AgbMain();
+    // AgbMain();
     return 0;
 }
 
