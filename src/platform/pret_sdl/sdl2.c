@@ -604,8 +604,7 @@ static void RunDMAs(u32 type)
         }
 
         if ((dma->control & DMA_ENABLE) && (((dma->control & DMA_START_MASK) >> 12) == type)) {
-            // printf("DMA%d src=%p, dest=%p, control=%d\n", dmaNum, dma->src, dma->dest,
-            // dma->control);
+            // printf("DMA%d src=%p, dest=%p, control=%d\n", dmaNum, dma->src, dma->dst, dma->control);
             for (int i = 0; i < dma->size; i++) {
                 if ((dma->control) & DMA_32BIT)
                     *dma->dst32 = *dma->src32;
@@ -2031,7 +2030,7 @@ void VDraw(SDL_Texture *texture)
 
 int DoMain(void *data)
 {
-    // AgbMain();
+    AgbMain();
     return 0;
 }
 
