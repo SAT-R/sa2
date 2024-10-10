@@ -37,8 +37,8 @@
 #define OAM_ENTRY_COUNT 128
 #if PORTABLE
 // NOTE: Used in gba/types.h, so they have to be defined before the #include
-#define DISPLAY_WIDTH  240
-#define DISPLAY_HEIGHT 160
+#define DISPLAY_WIDTH  426
+#define DISPLAY_HEIGHT 240
 
 #include "gba/types.h"
 #define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
