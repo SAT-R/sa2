@@ -1,4 +1,4 @@
-	SECTION_RODATA
+	mSectionRodata
 
 .incbin "graphics/obj_palettes/pal_000.gbapal"
 .incbin "graphics/obj_palettes/pal_001.gbapal"

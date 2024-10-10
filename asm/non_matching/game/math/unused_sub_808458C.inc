@@ -232,7 +232,5 @@
 	.align 2, 0
 _08084774: .4byte 0x00100000
 _08084778: .4byte 0x00000000
-
-    @ Unused
 	
 .syntax divided

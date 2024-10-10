@@ -1,4 +1,4 @@
-	.align 2
+	mAlignWord
 KeySplitTable1:	@ 0x08AD4E20
 	.byte	1
 	.byte	60

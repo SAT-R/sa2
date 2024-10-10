@@ -156,7 +156,5 @@
 	pop {r0}
 	bx r0
 	.align 2, 0
-
-    @ Unused
 	
 .syntax divided

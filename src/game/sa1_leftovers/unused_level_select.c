@@ -93,7 +93,7 @@ static void Task_Poll(void)
         }
 
         numToASCII(digits, levelSelect->levelId);
-        RenderText(levelSelect->vram, Tileset_Language, 0xC, 0xE, 0, digits, 0);
+        RenderText(levelSelect->vram, Tileset_Language, 0xC, 0xE, 0, (char *)digits, 0);
     }
 }
 

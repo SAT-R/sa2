@@ -106,9 +106,13 @@ jobs:
           add: "reports maps"
           message: ${{ env.REPORTS_COMMIT_MSG }}
 
-  platforms:
+  platforms_linux:
+    strategy:
+      matrix: 
+        platform: ["sdl", "sdl_win32", "win32"]
     if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork || github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork}} 
     runs-on: ubuntu-22.04
+    name: Linux build ${{ matrix.platform }}
     steps:
       - name: Checkout PR
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target'}} 
@@ -136,12 +140,7 @@ jobs:
           ./install.sh ../
         working-directory: agbcc
   
-      - name: sdl_win32
+      - name: ${{ matrix.platform }}
         run: |
           make clean
-          make -j${nproc} sdl_win32
-  
-      - name: win32
-        run: |
-          make clean
-          make -j${nproc} win32
+          make -j${nproc} ${{ matrix.platform }}

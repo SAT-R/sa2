@@ -1,4 +1,4 @@
-	.align 2
+	mAlignWord
 	.global voicegroup022
 voicegroup022:	@ 0x08AD3CBC
 	voice_square_1_alt 0, 0, 0, 0, 15, 0	@08AD3CBC

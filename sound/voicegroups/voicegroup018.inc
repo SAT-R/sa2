@@ -1,4 +1,4 @@
-	.align 2
+	mAlignWord
 	.global voicegroup018
 voicegroup018:	@ 0x08AD2948
 	voice_directsound_no_resample 60, 0, DirectSoundWaveData_235, 255, 0, 255, 0	@08AD2948

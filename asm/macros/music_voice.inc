@@ -21,7 +21,7 @@
 	.else
 	.byte 0
 	.endif
-	.4byte \sample_data_pointer
+	mPtr \sample_data_pointer
 	.byte \attack
 	.byte \decay
 	.byte \sustain
@@ -75,7 +75,7 @@
 
 	.macro _voice_programmable_wave type, wave_samples_pointer, attack, decay, sustain, release
 	.byte \type, 60, 0, 0
-	.4byte \wave_samples_pointer
+	mPtr \wave_samples_pointer
 	.byte (\attack  & 0x7)
 	.byte (\decay   & 0x7)
 	.byte (\sustain & 0xF)
@@ -102,24 +102,24 @@
 
 	.macro voice_keysplit voice_group_pointer, keysplit_table_pointer
 	.byte 0x40, 0, 0, 0
-	.4byte \voice_group_pointer
-	.4byte \keysplit_table_pointer
+	mPtr \voice_group_pointer
+	mPtr \keysplit_table_pointer
 	.endm
 
 	.macro voice_keysplit_all voice_group_pointer
 	.byte 0x80, 0, 0, 0
-	.4byte \voice_group_pointer
-	.4byte 0
+	mPtr \voice_group_pointer
+	.int 0
 	.endm
 
 	.macro cry sample
 	.byte 0x20, 60, 0, 0
-	.4byte \sample
+	.int \sample
 	.byte 0xff, 0, 0xff, 0
 	.endm
 
 	.macro cry2 sample
 	.byte 0x30, 60, 0, 0
-	.4byte \sample
+	.int \sample
 	.byte 0xff, 0, 0xff, 0
 	.endm

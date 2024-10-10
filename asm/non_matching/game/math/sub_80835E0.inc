@@ -115,7 +115,5 @@ _0808369E:
 	bx r0
 	.align 2, 0
 _080836B8: .4byte 0x000003FF
-
-    @ Unused (code similar to sub_80835E0)
 	
 .syntax divided

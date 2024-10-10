@@ -105,6 +105,7 @@ ifeq ($(PLATFORM),gba)
 	CC1FLAGS += -fhex-asm
 else 
 	ifeq ($(PLATFORM),sdl)
+		CC1FLAGS += -Wno-parentheses-equality -Wno-unused-value
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell sdl2-config --cflags)
 	else ifeq ($(PLATFORM),sdl_win32)
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(SDL_MINGW_FLAGS)
@@ -194,32 +195,14 @@ ifeq ($(PLATFORM),gba)
 ROM      := $(BUILD_NAME).gba
 ELF      := $(ROM:.gba=.elf)
 MAP      := $(ROM:.gba=.map)
+else ifeq ($(PLATFORM),sdl)
+ROM      := $(BUILD_NAME).sdl
+ELF      := $(ROM).elf
+MAP      := $(ROM).map
 else
 ROM      := $(BUILD_NAME).$(PLATFORM).exe
 ELF      := $(ROM:.exe=.elf)
 MAP      := $(ROM:.exe=.map)
-endif
-
-ifeq ($(CPU_ARCH),arm)
-# no-op
-  ASM_PSEUDO_OP_CONV := sed -n 'p'
-else
-
-  # MacOS sed command is different to Linux
-  SEDFLAGS :=
-  UNAME := $(shell uname)
-  ifeq ($(UNAME),Darwin)
-  	SEDFLAGS += -i ''
-  endif
-
-  # Convert .2byte -> .short and .4byte -> .int
-  #  Note that on 32bit architectures .4byte / .int is enough for storing pointers,
-  #  but on 64bit targets it would be .8byte / .quad
-  #
-  # sed expression script by Kurausukun
-  # only apply the SEDFLAGS (for MacOS) to the commands where we read the file
-  ASM_PSEUDO_OP_CONV := sed -e 's/\.4byte/\.int/g;s/\.2byte/\.short/g'
-  # TODO: switch to quad for 64bit
 endif
 
 ASM_SUBDIR = asm
@@ -438,6 +421,8 @@ $(ROM): $(ELF)
 ifeq ($(PLATFORM),gba)
 	$(OBJCOPY) -O binary --pad-to 0x8400000 $< $@
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
+else ifeq ($(PLATFORM),sdl)
+	cp $< $@
 else
 	$(OBJCOPY) -O pei-i386 $< $@
 ifeq ($(CREATE_PDB),1)
@@ -458,8 +443,10 @@ $(C_OBJS): $(OBJ_DIR)/%.o: %.c $$(c_dep)
 	@$(shell mkdir -p $(shell dirname '$(OBJ_DIR)/$*.i'))
 	@$(CPP) $(CPPFLAGS) $< -o $(OBJ_DIR)/$*.i
 	@$(PREPROC) $(OBJ_DIR)/$*.i | $(CC1) $(CC1FLAGS) -o $(OBJ_DIR)/$*.s -
+ifeq ($(PLATFORM), gba)
 	@printf ".text\n\t.align\t2, 0\n" >> $(OBJ_DIR)/$*.s
-	@$(ASM_PSEUDO_OP_CONV) $(OBJ_DIR)/$*.s | $(AS) $(ASFLAGS) -o $@ -
+endif
+	@$(AS) $(ASFLAGS) $(OBJ_DIR)/$*.s -o $@
 
 # Build arm asm sources
 ifeq ($(CPU_ARCH),arm)
@@ -472,12 +459,12 @@ endif
 # rule for sources from the src dir (parts of libraries)
 $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
+	@$(AS) $(ASFLAGS) -o $@ $<
 
 # rule for rest of asm directory
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s $$(asm_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(ASM_PSEUDO_OP_CONV) $< | $(AS) $(ASFLAGS) -o $@ -
+	@$(AS) $(ASFLAGS) -o $@ $<
 endif
 
 ifeq ($(NODEP),1)
@@ -488,11 +475,11 @@ endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $$(data_dep)
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
+	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 	@echo "$(AS) <flags> -o $@ $<"
-	@$(PREPROC) $< "" | $(ASM_PSEUDO_OP_CONV) | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
+	@$(PREPROC) $< "" | $(CPP) $(CPPFLAGS) - | $(AS) $(ASFLAGS) -o $@ -
 
 
 japan: ; @$(MAKE) GAME_REGION=JAPAN

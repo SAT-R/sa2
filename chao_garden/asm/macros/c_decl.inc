@@ -4,7 +4,7 @@
 
 // 32bit Windows and MacOS versions prefix labels using an underscore.
 // For interoperability we need to replicate that behavior here.
-#if ( CPU_ARCH_X86 && (defined(__WIN32) || defined(__APPLE__)) )
+#if ( (CPU_ARCH_X86 && defined(__WIN32)) || defined(__APPLE__) )
     #define C_DECL(label) _##label
 #else
     #define C_DECL(label) label

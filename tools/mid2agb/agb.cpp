@@ -62,10 +62,10 @@ void PrintAgbHeader()
     std::fprintf(g_outputFile, "\t.equ\t%s_exg, %u\n", g_asmLabel.c_str(), g_exactGateTime);
     std::fprintf(g_outputFile, "\t.equ\t%s_cmp, %u\n", g_asmLabel.c_str(), g_compressionEnabled);
 
-    std::fprintf(g_outputFile, "\n\tSECTION_RODATA\n");
+    std::fprintf(g_outputFile, "\n\tmSectionRodata\n");
     std::fprintf(g_outputFile, "\t.global\tC_DECL(%s)\n", g_asmLabel.c_str());
 
-    std::fprintf(g_outputFile, "\t.align\t2\n");
+    std::fprintf(g_outputFile, "\tmAlignWord\n");
 }
 
 std::string Comment(std::string str)
@@ -151,7 +151,7 @@ void PrintWord(const char *format, ...)
 {
     std::va_list args;
     va_start(args, format);
-    std::fprintf(g_outputFile, "\t .4byte\t");
+    std::fprintf(g_outputFile, "\t mPtr\t");
     std::vfprintf(g_outputFile, format, args);
     std::fprintf(g_outputFile, "\n");
     va_end(args);
@@ -549,19 +549,19 @@ void PrintAgbFooter()
     int trackCount = g_agbTrack - 1;
 
     std::fprintf(g_outputFile, "\n%s\n", Comment("******************************************************").c_str());
-    std::fprintf(g_outputFile, "\t.align\t2\n");
+    std::fprintf(g_outputFile, "\tmAlignWord\n");
     std::fprintf(g_outputFile, "\nC_DECL(%s):\n", g_asmLabel.c_str());
     std::fprintf(g_outputFile, "\t.byte\t%u\t%s\n", trackCount, Comment("NumTrks").c_str());
     std::fprintf(g_outputFile, "\t.byte\t%u\t%s\n", 0, Comment("NumBlks").c_str());
     std::fprintf(g_outputFile, "\t.byte\t%s_pri\t%s\n", g_asmLabel.c_str(), Comment("Priority").c_str());
     std::fprintf(g_outputFile, "\t.byte\t%s_rev\t%s\n", g_asmLabel.c_str(), Comment("Reverb").c_str());
     std::fprintf(g_outputFile, "\n");
-    std::fprintf(g_outputFile, "\t.4byte\t%s_grp\n", g_asmLabel.c_str());
+    std::fprintf(g_outputFile, "\tmPtr\t%s_grp\n", g_asmLabel.c_str());
     std::fprintf(g_outputFile, "\n");
 
     // track pointers
     for (int i = 1; i <= trackCount; i++)
-        std::fprintf(g_outputFile, "\t.4byte\t%s_%u\n", g_asmLabel.c_str(), i);
+        std::fprintf(g_outputFile, "\tmPtr\t%s_%u\n", g_asmLabel.c_str(), i);
 
     std::fprintf(g_outputFile, "\n\t.end\n");
 }

@@ -9,9 +9,6 @@
 #include <xinput.h>
 #endif
 
-#define ENABLE_AUDIO     !TRUE
-#define ENABLE_VRAM_VIEW !TRUE
-
 #include <SDL.h>
 
 #include "global.h"
@@ -138,9 +135,10 @@ static void RunDMAs(u32 type);
 
 u16 Platform_GetKeyInput(void);
 
+#ifdef _WIN32
 void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS | HEAP_ZERO_MEMORY, numBytes); }
-
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
+#endif
 
 int main(int argc, char **argv)
 {
@@ -606,8 +604,7 @@ static void RunDMAs(u32 type)
         }
 
         if ((dma->control & DMA_ENABLE) && (((dma->control & DMA_START_MASK) >> 12) == type)) {
-            // printf("DMA%d src=%p, dest=%p, control=%d\n", dmaNum, dma->src, dma->dest,
-            // dma->control);
+            // printf("DMA%d src=%p, dest=%p, control=%d\n", dmaNum, dma->src, dma->dst, dma->control);
             for (int i = 0; i < dma->size; i++) {
                 if ((dma->control) & DMA_32BIT)
                     *dma->dst32 = *dma->src32;

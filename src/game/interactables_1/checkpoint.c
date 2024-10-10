@@ -201,7 +201,7 @@ void Task_8063228(struct Task *unused)
     u32 numColors;
     u32 offset;
 
-    if (*cmd++ == ANIM_CMD__GET_PALETTE) {
+    if (*cmd++ == ANIM_CMD__PALETTE) {
         palId = *cmd++;
         numColors = *cmd;
         offset = numColors >> 16;

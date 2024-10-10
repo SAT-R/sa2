@@ -309,7 +309,7 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
         s16 x16, y16;
         s16 *affine;
         big.affineIndex = s->frameFlags & SPRITE_FLAG_MASK_ROT_SCALE;
-        affine = &gOamBuffer[big.affineIndex * 4].all.affineParam;
+        affine = (void *)&gOamBuffer[big.affineIndex * 4].all.affineParam;
 
 #if 0
         sub_80047A0(transform->rotation & ONE_CYCLE, transform->width, transform->height,

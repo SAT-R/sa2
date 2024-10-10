@@ -1,4 +1,4 @@
-	.align 2
+	mAlignWord
 	.global voicegroup007
 voicegroup007:	@ 0x08ACF510
 	voice_square_1_alt 0, 0, 0, 0, 15, 0	@08ACF510
