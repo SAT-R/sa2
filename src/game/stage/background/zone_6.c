@@ -416,7 +416,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
         case 7: {
             s8 i;
             for (i = 0; i < 16; i++) {
-                gBgPalette[DISPLAY_WIDTH + i] = RGB_BLACK;
+                gBgPalette[(15 * 16) + i] = RGB_BLACK;
             }
             gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
             gDispCnt &= ~(DISPCNT_BG0_ON);
