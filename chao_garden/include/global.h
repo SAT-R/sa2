@@ -33,7 +33,7 @@
 #endif
 
 /// IDE support
-#if defined(__APPLE__) || defined(__CYGWIN__) || defined(__INTELLISENSE__)
+#if defined(__CYGWIN__) || defined(__INTELLISENSE__)
 // We define these when using certain IDEs to fool preproc
 #define _(x)  (x)
 #define __(x) (x)
