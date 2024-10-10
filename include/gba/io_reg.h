@@ -129,15 +129,15 @@ extern unsigned char REG_BASE[IO_SIZE];
 // To fit this into the same memory footprint on 64bit,
 // We need to put the control registers behind the pointers to avoid padding.
 #define REG_OFFSET_DMA0SAD     REG_OFFSET_DMA
-#define REG_OFFSET_DMA1SAD     REG_OFFSET_DMA0SAD
-#define REG_OFFSET_DMA2SAD     REG_OFFSET_DMA1SAD
-#define REG_OFFSET_DMA3SAD     REG_OFFSET_DMA2SAD
-#define REG_OFFSET_DMA0DAD     (REG_OFFSET_DMA3SAD + sizeof(void*))
-#define REG_OFFSET_DMA1DAD     (REG_OFFSET_DMA0DAD + sizeof(void*))
-#define REG_OFFSET_DMA2DAD     (REG_OFFSET_DMA1DAD + sizeof(void*))
-#define REG_OFFSET_DMA3DAD     (REG_OFFSET_DMA2DAD + sizeof(void*))
+#define REG_OFFSET_DMA1SAD     (REG_OFFSET_DMA0SAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA2SAD     (REG_OFFSET_DMA1SAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA3SAD     (REG_OFFSET_DMA2SAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA0DAD     (REG_OFFSET_DMA3SAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA1DAD     (REG_OFFSET_DMA0DAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA2DAD     (REG_OFFSET_DMA1DAD + sizeof(uintptr_t))
+#define REG_OFFSET_DMA3DAD     (REG_OFFSET_DMA2DAD + sizeof(uintptr_t))
 
-#define REG_OFFSET_DMA0CNT     (REG_OFFSET_DMA3DAD + sizeof(void*))
+#define REG_OFFSET_DMA0CNT     (REG_OFFSET_DMA3DAD + sizeof(uintptr_t))
 #define REG_OFFSET_DMA0CNT_L   (REG_OFFSET_DMA0CNT + 0)
 #define REG_OFFSET_DMA0CNT_H   (REG_OFFSET_DMA0CNT_L + sizeof(uint16_t))
 #define REG_OFFSET_DMA1CNT     (REG_OFFSET_DMA0CNT_H + sizeof(uint16_t))
@@ -448,26 +448,26 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_FIFO_A      (*(vu32 *)REG_ADDR_FIFO_A)
 #define REG_FIFO_B      (*(vu32 *)REG_ADDR_FIFO_B)
 
-#define REG_DMA0SAD     (*(vu32 *)REG_ADDR_DMA0SAD)
-#define REG_DMA0DAD     (*(vu32 *)REG_ADDR_DMA0DAD)
+#define REG_DMA0SAD     (*(volatile uintptr_t *)REG_ADDR_DMA0SAD)
+#define REG_DMA0DAD     (*(volatile uintptr_t *)REG_ADDR_DMA0DAD)
 #define REG_DMA0CNT     (*(vu32 *)REG_ADDR_DMA0CNT)
 #define REG_DMA0CNT_L   (*(vu16 *)REG_ADDR_DMA0CNT_L)
 #define REG_DMA0CNT_H   (*(vu16 *)REG_ADDR_DMA0CNT_H)
 
-#define REG_DMA1SAD     (*(vu32 *)REG_ADDR_DMA1SAD)
-#define REG_DMA1DAD     (*(vu32 *)REG_ADDR_DMA1DAD)
+#define REG_DMA1SAD     (*(volatile uintptr_t *)REG_ADDR_DMA1SAD)
+#define REG_DMA1DAD     (*(volatile uintptr_t *)REG_ADDR_DMA1DAD)
 #define REG_DMA1CNT     (*(vu32 *)REG_ADDR_DMA1CNT)
 #define REG_DMA1CNT_L   (*(vu16 *)REG_ADDR_DMA1CNT_L)
 #define REG_DMA1CNT_H   (*(vu16 *)REG_ADDR_DMA1CNT_H)
 
-#define REG_DMA2SAD     (*(vu32 *)REG_ADDR_DMA2SAD)
-#define REG_DMA2DAD     (*(vu32 *)REG_ADDR_DMA2DAD)
+#define REG_DMA2SAD     (*(volatile uintptr_t *)REG_ADDR_DMA2SAD)
+#define REG_DMA2DAD     (*(volatile uintptr_t *)REG_ADDR_DMA2DAD)
 #define REG_DMA2CNT     (*(vu32 *)REG_ADDR_DMA2CNT)
 #define REG_DMA2CNT_L   (*(vu16 *)REG_ADDR_DMA2CNT_L)
 #define REG_DMA2CNT_H   (*(vu16 *)REG_ADDR_DMA2CNT_H)
 
-#define REG_DMA3SAD     (*(vu32 *)REG_ADDR_DMA3SAD)
-#define REG_DMA3DAD     (*(vu32 *)REG_ADDR_DMA3DAD)
+#define REG_DMA3SAD     (*(volatile uintptr_t *)REG_ADDR_DMA3SAD)
+#define REG_DMA3DAD     (*(volatile uintptr_t *)REG_ADDR_DMA3DAD)
 #define REG_DMA3CNT     (*(vu32 *)REG_ADDR_DMA3CNT)
 #define REG_DMA3CNT_L   (*(vu16 *)REG_ADDR_DMA3CNT_L)
 #define REG_DMA3CNT_H   (*(vu16 *)REG_ADDR_DMA3CNT_H)
