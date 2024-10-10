@@ -230,7 +230,7 @@ NONMATCH("asm/non_matching/game/stage/background/sub_801D24C.inc", void sub_801D
         b = (p0 * gUnknown_080D5C02[1][i][2]) >> 4;
         b &= 0x1F;
 
-        gBgPalette[15 * 16 + i] = ((b << 10) + (g << 5) + (r << 0));
+        gBgPalette[(15 * 16) + i] = ((b << 10) + (g << 5) + (r << 0));
     }
 
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
@@ -330,7 +330,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
             gBgCntRegs[3] |= BGCNT_PRIORITY(2);
 
             for (i = 0; i < 16; i++) {
-                gBgPalette[DISPLAY_WIDTH + i] = RGB_BLACK;
+                gBgPalette[(15 * 16) + i] = RGB_BLACK;
             }
 
             // jumps to _0801D8EE for this
@@ -363,7 +363,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 u32 green = ((gUnknown_080D5C02[0][i][1] * r6) >> 5) & 0x1F;
                 u32 blue = ((gUnknown_080D5C02[0][i][2] * r6) >> 5) & 0x1F;
 
-                gBgPalette[DISPLAY_WIDTH + i] = ((blue << 10) | (green << 5) | red);
+                gBgPalette[(15 * 16) + i] = ((blue << 10) | (green << 5) | red);
             }
 
             // jumps to _0801D83C for this
@@ -381,7 +381,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 u32 green = gUnknown_080D5C02[0][i][1];
                 u32 blue = gUnknown_080D5C02[0][i][2];
 
-                gBgPalette[DISPLAY_WIDTH + i] = ((blue << 10) | (green << 5) | red);
+                gBgPalette[(15 * 16) + i] = ((blue << 10) | (green << 5) | red);
             }
 
             // _0801D83C
@@ -407,7 +407,7 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone6Acts12.inc",
                 u32 green = ((gUnknown_080D5C02[0][i][1] * r6) >> 4) & 0x1F;
                 u32 blue = ((gUnknown_080D5C02[0][i][2] * r6) >> 4) & 0x1F;
 
-                gBgPalette[DISPLAY_WIDTH + i] = ((blue << 10) | (green << 5) | red);
+                gBgPalette[(15 * 16) + i] = ((blue << 10) | (green << 5) | red);
             }
 
             gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
