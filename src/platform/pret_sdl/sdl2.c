@@ -651,7 +651,7 @@ static void RunDMAs(u32 type)
 #if !USE_NEW_DMA
                     dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 3];
 #else
-                    dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 2];
+                    dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum];
 #endif
                 }
             } else {
@@ -700,8 +700,8 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
     (&REG_DMA0CNT)[dmaNum * 3] = (size_t)control;
 #else
     // "64 bit" order
-    (&REG_DMA0SAD)[dmaNum * 2] = (uintptr_t)src;
-    (&REG_DMA0DAD)[dmaNum * 2] = (uintptr_t)dest;
+    (&REG_DMA0SAD)[dmaNum] = (uintptr_t)src;
+    (&REG_DMA0DAD)[dmaNum] = (uintptr_t)dest;
     (&REG_DMA0CNT)[dmaNum] = (size_t)control;
 #endif
 

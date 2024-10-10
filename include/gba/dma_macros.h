@@ -6,7 +6,7 @@
 #if PLATFORM_GBA
 #define DmaSet(dmaNum, src, dest, control)        \
 {                                                 \
-    vu32 *dmaRegs = (vu32 *)REG_ADDR_DMA##dmaNum; \
+    vu32 *dmaRegs = (vu32 *)REG_ADDR_DMA##dmaNum##SAD; \
     dmaRegs[0] = (vu32)(src);                     \
     dmaRegs[1] = (vu32)(dest);                    \
     dmaRegs[2] = (vu32)(control);                 \
@@ -69,7 +69,7 @@ extern void DmaSet(int dmaNum, const void *src, void *dest, u32 control);
 #if PLATFORM_GBA
 #define DmaStop(dmaNum)                                         \
 {                                                               \
-    vu16 *dmaRegs = (vu16 *)REG_ADDR_DMA##dmaNum;               \
+    vu16 *dmaRegs = (vu16 *)REG_ADDR_DMA##dmaNum##SAD;          \
     dmaRegs[5] &= ~(DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT); \
     dmaRegs[5] &= ~DMA_ENABLE;                                  \
     dmaRegs[5];                                                 \
@@ -164,7 +164,7 @@ extern void DmaStop(int dmaNum);
 #if PLATFORM_GBA
 #define DmaWait(dmaNum)                           \
 {                                                 \
-    vu32 *dmaRegs = (vu32 *)REG_ADDR_DMA##dmaNum; \
+    vu32 *dmaRegs = (vu32 *)REG_ADDR_DMA##dmaNum##SAD; \
     while (dmaRegs[2] & (DMA_ENABLE << 16))       \
         ;                                         \
 }
