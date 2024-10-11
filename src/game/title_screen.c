@@ -240,7 +240,9 @@ static const u8 sUnknown_080E0EF4[] = INCBIN_U8("graphics/80E0EF4.gbapal");
 // Each value is scan line which the brightness should be increased
 // 0 being top 160 being bottom
 static const u8 sWavesVerticalBrightnessGradiant[] = {
-    0, 3, 8, 14, 21, 32, 46, 66, 96, 160,
+    (u8)(0.00000 * DISPLAY_HEIGHT), (u8)(0.01875 * DISPLAY_HEIGHT), (u8)(0.05000 * DISPLAY_HEIGHT), (u8)(0.08750 * DISPLAY_HEIGHT),
+    (u8)(0.13125 * DISPLAY_HEIGHT), (u8)(0.20000 * DISPLAY_HEIGHT), (u8)(0.28750 * DISPLAY_HEIGHT), (u8)(0.41250 * DISPLAY_HEIGHT),
+    (u8)(0.60000 * DISPLAY_HEIGHT), (u8)(1.00000 * DISPLAY_HEIGHT),
 };
 
 static const u8 sPanUpNextVelocityChangeFrame[] = { 60, 19, 10, 10, 255 };
