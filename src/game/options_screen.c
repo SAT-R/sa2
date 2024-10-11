@@ -3033,7 +3033,7 @@ static void DeleteScreenInitRegisters(struct DeleteScreen *deleteScreen)
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
     gBgScrollRegs[2][0] = 0;
-    gBgScrollRegs[2][1] = 0xFFFD;
+    gBgScrollRegs[2][1] = -3;
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
 
@@ -3257,12 +3257,12 @@ static void ProfileNameScreenInitRegisters(s16 language)
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
-    gBgScrollRegs[1][0] = 0xFFE8;
+    gBgScrollRegs[1][0] = -24;
 
     if (language == LanguageIndex(LANG_JAPANESE)) {
-        gBgScrollRegs[1][1] = 0xFFD9;
+        gBgScrollRegs[1][1] = -39;
     } else {
-        gBgScrollRegs[1][1] = 0x69;
+        gBgScrollRegs[1][1] = 105;
     }
 
     gBgScrollRegs[2][0] = 0;
@@ -3998,10 +3998,10 @@ static void TimeRecordsScreenInitRegisters(void)
 
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
-    gBgScrollRegs[1][0] = 0xff58;
+    gBgScrollRegs[1][0] = -168;
     gBgScrollRegs[1][1] = 0;
-    gBgScrollRegs[2][0] = 0xff58;
-    gBgScrollRegs[2][1] = 0x10;
+    gBgScrollRegs[2][0] = -168;
+    gBgScrollRegs[2][1] = 16;
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
 
@@ -4289,10 +4289,10 @@ static void Task_TimeRecordsScreenHandleCharacterChange(void)
     }
 
     TimeRecordsScreenRenderCoursesViewUI(1);
-    gBgScrollRegs[1][0] = 0xFF10;
+    gBgScrollRegs[1][0] = -240;
     gBgScrollRegs[1][1] = 0;
-    gBgScrollRegs[2][0] = 0xFF10;
-    gBgScrollRegs[2][1] = 0x10;
+    gBgScrollRegs[2][0] = -240;
+    gBgScrollRegs[2][1] = 16;
 
     OptionsInitBackground(&timeRecordsScreen->coursesViewCharacterBackground, 1, 0x16, sTimeRecordsCharacterAssets[character][0], 9, 0x14,
                           0, 1, 0, 0);

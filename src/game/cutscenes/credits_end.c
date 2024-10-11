@@ -339,7 +339,7 @@ static void Task_CreateCopyrightScreen(void)
         Background *background = &scene->unk80;
         gDispCnt |= 0x400;
         gBgScrollRegs[2][0] = 0;
-        gBgScrollRegs[2][1] = 0xD190;
+        gBgScrollRegs[2][1] = -11888;
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(8);
         background->graphics.anim = 0;

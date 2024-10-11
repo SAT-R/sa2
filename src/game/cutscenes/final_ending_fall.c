@@ -533,7 +533,7 @@ void sub_8091F68(struct FinalEndingFallCutScene *scene)
 
     if (scene->unk35C >= 10) {
         gBgScrollRegs[0][1] = gBgScrollRegs[1][1];
-        sub_808E8F8(gBgScrollRegs[0], 0, 2);
+        sub_808E8F8((s16 *)gBgScrollRegs[0], 0, 2);
 
     } else {
         gBgScrollRegs[0][1] = scene->unk470 >> 8;

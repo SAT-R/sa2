@@ -1761,8 +1761,8 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
             // All backgrounds are text mode
             for (bgnum = 3; bgnum >= 0; bgnum--) {
                 if (isbgEnabled(bgnum)) {
-                    uint16_t bghoffs = *(uint16_t *)(REG_ADDR_BG0HOFS + bgnum * 4);
-                    uint16_t bgvoffs = *(uint16_t *)(REG_ADDR_BG0VOFS + bgnum * 4);
+                    uint16_t bghoffs = *(uint32_t *)(REG_ADDR_BG0HOFS + bgnum * 8);
+                    uint16_t bgvoffs = *(uint32_t *)(REG_ADDR_BG0VOFS + bgnum * 8);
 
                     RenderBGScanline(bgnum, scanline.bgcnts[bgnum], bghoffs, bgvoffs, vcount, scanline.layers[bgnum]);
                 }
@@ -1778,8 +1778,8 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
             // BG0 and BG1 are text mode
             for (bgnum = 1; bgnum >= 0; bgnum--) {
                 if (isbgEnabled(bgnum)) {
-                    uint16_t bghoffs = *(uint16_t *)(REG_ADDR_BG0HOFS + bgnum * 4);
-                    uint16_t bgvoffs = *(uint16_t *)(REG_ADDR_BG0VOFS + bgnum * 4);
+                    uint16_t bghoffs = *(uint32_t *)(REG_ADDR_BG0HOFS + bgnum * 8);
+                    uint16_t bgvoffs = *(uint32_t *)(REG_ADDR_BG0VOFS + bgnum * 8);
 
                     RenderBGScanline(bgnum, scanline.bgcnts[bgnum], bghoffs, bgvoffs, vcount, scanline.layers[bgnum]);
                 }

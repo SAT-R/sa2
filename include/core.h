@@ -254,7 +254,11 @@ extern u16 gBgCntRegs[4];
 //       [4]{s16 x, s16 y}
 //       Should we introduce a
 //       "#define NUM_BACKGROUNDS 4" in gba/defines.h?
+#if PLATFORM_GBA
 extern s16 gBgScrollRegs[NUM_BACKGROUNDS][2];
+#else
+extern s32 gBgScrollRegs[NUM_BACKGROUNDS][2];
+#endif
 
 extern OamData gUnknown_030022C8;
 extern OamData gOamBuffer2[OAM_ENTRY_COUNT];

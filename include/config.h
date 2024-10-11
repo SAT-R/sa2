@@ -12,9 +12,12 @@
 
 // TODO: Put somewhere else?
 #if PLATFORM_GBA
-#define USE_NEW_DMA 0
+#define USE_NEW_DMA  0
+#define ENABLE_AUDIO 1
 #else
-#define USE_NEW_DMA 1
+#define USE_NEW_DMA      1
+#define ENABLE_AUDIO     0
+#define ENABLE_VRAM_VIEW 0
 #endif
 
 #endif // GUARD_SA2_CONFIG_H

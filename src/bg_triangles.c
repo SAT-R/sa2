@@ -655,7 +655,12 @@ void sub_8007738(u8 bg, int_vcount minY, int_vcount maxY, u16 param3, u8 param4,
 
     gFlags |= FLAGS_4;
 
+#if PLATFORM_GBA
     gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[bg * 4];
+#else
+    gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[bg * 8];
+#endif
+
     gUnknown_03002A80 = 4;
 
     cursor = &((u16 *)gBgOffsetsHBlank)[minY * 2];
@@ -679,7 +684,11 @@ void sub_8007858(u8 param0, int_vcount minY, int_vcount maxY, u16 param3, u16 pa
 
     gFlags |= FLAGS_4;
 
+#if PLATFORM_GBA
     gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[param0 * 4];
+#else
+    gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[param0 * 8];
+#endif
     gUnknown_03002A80 = 4;
 
     cursor = &((u16 *)gBgOffsetsHBlank)[minY * 2];
@@ -703,7 +712,11 @@ void sub_80078D4(u8 bg, int_vcount minY, int_vcount maxY, u16 offsetEven, u16 of
 
     gFlags |= FLAGS_4;
 
+#if PLATFORM_GBA
     gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[bg * 4];
+#else
+    gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[bg * 8];
+#endif
     gUnknown_03002A80 = 4;
 
     if (minY < maxY) {
@@ -719,7 +732,11 @@ void sub_8007958(u8 bg, int_vcount minY, int_vcount maxY, s16 param3, s8 param4,
 
     gFlags |= FLAGS_4;
 
+#if PLATFORM_GBA
     gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[bg * 4];
+#else
+    gUnknown_03002878 = (void *)&((u8 *)&REG_BG0HOFS)[bg * 8];
+#endif
     gUnknown_03002A80 = 4;
 
     cursor = &((u16 *)gBgOffsetsHBlank)[minY * 2];

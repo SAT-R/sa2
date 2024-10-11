@@ -20,6 +20,8 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_OFFSET_BG1CNT      0xa
 #define REG_OFFSET_BG2CNT      0xc
 #define REG_OFFSET_BG3CNT      0xe
+
+#if PLATFORM_GBA
 #define REG_OFFSET_BG0HOFS     0x10
 #define REG_OFFSET_BG0VOFS     0x12
 #define REG_OFFSET_BG1HOFS     0x14
@@ -28,37 +30,61 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_OFFSET_BG2VOFS     0x1a
 #define REG_OFFSET_BG3HOFS     0x1c
 #define REG_OFFSET_BG3VOFS     0x1e
-#define REG_OFFSET_BG2PA       0x20
-#define REG_OFFSET_BG2PB       0x22
-#define REG_OFFSET_BG2PC       0x24
-#define REG_OFFSET_BG2PD       0x26
-#define REG_OFFSET_BG2X        0x28
-#define REG_OFFSET_BG2X_L      0x28
-#define REG_OFFSET_BG2X_H      0x2a
-#define REG_OFFSET_BG2Y        0x2c
-#define REG_OFFSET_BG2Y_L      0x2c
-#define REG_OFFSET_BG2Y_H      0x2e
-#define REG_OFFSET_BG3PA       0x30
-#define REG_OFFSET_BG3PB       0x32
-#define REG_OFFSET_BG3PC       0x34
-#define REG_OFFSET_BG3PD       0x36
-#define REG_OFFSET_BG3X        0x38
-#define REG_OFFSET_BG3X_L      0x38
-#define REG_OFFSET_BG3X_H      0x3a
-#define REG_OFFSET_BG3Y        0x3c
-#define REG_OFFSET_BG3Y_L      0x3c
-#define REG_OFFSET_BG3Y_H      0x3e
-#define REG_OFFSET_WIN0H       0x40
-#define REG_OFFSET_WIN1H       0x42
-#define REG_OFFSET_WIN0V       0x44
-#define REG_OFFSET_WIN1V       0x46
-#define REG_OFFSET_WININ       0x48
-#define REG_OFFSET_WINOUT      0x4a
-#define REG_OFFSET_MOSAIC      0x4c
-#define REG_OFFSET_BLDCNT      0x50
-#define REG_OFFSET_BLDALPHA    0x52
-#define REG_OFFSET_BLDY        0x54
 
+#define REG_OFFSET_BG2PA       REG_OFFSET_BG3VOFS + sizeof(u16)
+#else
+#define REG_OFFSET_BG0HOFS     REG_OFFSET_BG3CNT + sizeof(u32)
+#define REG_OFFSET_BG0VOFS     REG_OFFSET_BG0HOFS + sizeof(u32)
+#define REG_OFFSET_BG1HOFS     REG_OFFSET_BG0VOFS + sizeof(u32)
+#define REG_OFFSET_BG1VOFS     REG_OFFSET_BG1HOFS + sizeof(u32)
+#define REG_OFFSET_BG2HOFS     REG_OFFSET_BG1VOFS + sizeof(u32)
+#define REG_OFFSET_BG2VOFS     REG_OFFSET_BG2HOFS + sizeof(u32)
+#define REG_OFFSET_BG3HOFS     REG_OFFSET_BG2VOFS + sizeof(u32)
+#define REG_OFFSET_BG3VOFS     REG_OFFSET_BG3HOFS + sizeof(u32)
+
+#define REG_OFFSET_BG2PA       REG_OFFSET_BG3VOFS + sizeof(u32)
+#endif
+
+
+#define REG_OFFSET_BG2PB       REG_OFFSET_BG2PA + sizeof(u16)
+#define REG_OFFSET_BG2PC       REG_OFFSET_BG2PB + sizeof(u16)
+#define REG_OFFSET_BG2PD       REG_OFFSET_BG2PC + sizeof(u16)
+
+#define REG_OFFSET_BG2X        REG_OFFSET_BG2PD + sizeof(u16)
+#define REG_OFFSET_BG2X_L      REG_OFFSET_BG2X
+#define REG_OFFSET_BG2X_H      REG_OFFSET_BG2X + sizeof(u16)
+
+#define REG_OFFSET_BG2Y        REG_OFFSET_BG2X_H + sizeof(u16)
+#define REG_OFFSET_BG2Y_L      REG_OFFSET_BG2Y
+#define REG_OFFSET_BG2Y_H      REG_OFFSET_BG2Y + sizeof(u16)
+
+#define REG_OFFSET_BG3PA       REG_OFFSET_BG2Y_H + sizeof(u16)
+#define REG_OFFSET_BG3PB       REG_OFFSET_BG3PA + sizeof(u16)
+#define REG_OFFSET_BG3PC       REG_OFFSET_BG3PB + sizeof(u16)
+#define REG_OFFSET_BG3PD       REG_OFFSET_BG3PC + sizeof(u16)
+
+#define REG_OFFSET_BG3X        REG_OFFSET_BG3PD + sizeof(u16)
+#define REG_OFFSET_BG3X_L      REG_OFFSET_BG3X
+#define REG_OFFSET_BG3X_H      REG_OFFSET_BG3X + sizeof(u16)
+
+#define REG_OFFSET_BG3Y        REG_OFFSET_BG3X_H + sizeof(u16)
+#define REG_OFFSET_BG3Y_L      REG_OFFSET_BG3Y
+#define REG_OFFSET_BG3Y_H      REG_OFFSET_BG3Y + sizeof(u16)
+
+#define REG_OFFSET_WIN0H       REG_OFFSET_BG3Y_H + sizeof(u16)
+#define REG_OFFSET_WIN1H       REG_OFFSET_WIN0H + sizeof(u16)
+#define REG_OFFSET_WIN0V       REG_OFFSET_WIN1H + sizeof(u16)
+#define REG_OFFSET_WIN1V       REG_OFFSET_WIN0V + sizeof(u16)
+#define REG_OFFSET_WININ       REG_OFFSET_WIN1V + sizeof(u16)
+#define REG_OFFSET_WINOUT      REG_OFFSET_WININ + sizeof(u16)
+#define REG_OFFSET_MOSAIC      REG_OFFSET_WINOUT + sizeof(u16)
+#define REG_OFFSET_BLDCNT      REG_OFFSET_MOSAIC + sizeof(u32)
+#define REG_OFFSET_BLDALPHA    REG_OFFSET_BLDCNT + sizeof(u16)
+#define REG_OFFSET_BLDY        REG_OFFSET_BLDALPHA + sizeof(u16)
+
+
+// TODO: reindex these
+#define REG_OFFSET_SOUND REG_OFFSET_BLDY + sizeof(u16) + 10
 #define REG_OFFSET_SOUND1CNT_L 0x60
 #define REG_OFFSET_NR10        0x60
 #define REG_OFFSET_SOUND1CNT_H 0x62
@@ -103,7 +129,7 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_OFFSET_FIFO_A      0xa0
 #define REG_OFFSET_FIFO_B      0xa4
 
-#define REG_OFFSET_DMA         0xb0
+#define REG_OFFSET_DMA REG_OFFSET_SOUND + 80
 #if !USE_NEW_DMA
 #define REG_OFFSET_DMA0SAD     REG_OFFSET_DMA
 #define REG_OFFSET_DMA0DAD     0xb4
@@ -365,6 +391,8 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_BG1CNT      (*(vu16 *)REG_ADDR_BG1CNT)
 #define REG_BG2CNT      (*(vu16 *)REG_ADDR_BG2CNT)
 #define REG_BG3CNT      (*(vu16 *)REG_ADDR_BG3CNT)
+
+#if PLATFORM_GBA
 #define REG_BG0HOFS     (*(vu16 *)REG_ADDR_BG0HOFS)
 #define REG_BG0VOFS     (*(vu16 *)REG_ADDR_BG0VOFS)
 #define REG_BG1HOFS     (*(vu16 *)REG_ADDR_BG1HOFS)
@@ -373,6 +401,17 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_BG2VOFS     (*(vu16 *)REG_ADDR_BG2VOFS)
 #define REG_BG3HOFS     (*(vu16 *)REG_ADDR_BG3HOFS)
 #define REG_BG3VOFS     (*(vu16 *)REG_ADDR_BG3VOFS)
+#else
+#define REG_BG0HOFS     (*(vu32 *)REG_ADDR_BG0HOFS)
+#define REG_BG0VOFS     (*(vu32 *)REG_ADDR_BG0VOFS)
+#define REG_BG1HOFS     (*(vu32 *)REG_ADDR_BG1HOFS)
+#define REG_BG1VOFS     (*(vu32 *)REG_ADDR_BG1VOFS)
+#define REG_BG2HOFS     (*(vu32 *)REG_ADDR_BG2HOFS)
+#define REG_BG2VOFS     (*(vu32 *)REG_ADDR_BG2VOFS)
+#define REG_BG3HOFS     (*(vu32 *)REG_ADDR_BG3HOFS)
+#define REG_BG3VOFS     (*(vu32 *)REG_ADDR_BG3VOFS)
+#endif
+
 #define REG_BG2PA       (*(vu16 *)REG_ADDR_BG2PA)
 #define REG_BG2PB       (*(vu16 *)REG_ADDR_BG2PB)
 #define REG_BG2PC       (*(vu16 *)REG_ADDR_BG2PC)

@@ -74,7 +74,13 @@ u32 gFlagsPreVBlank = 0;
 /* 0x03002794 */ const struct SpriteTables *gRefSpriteTables = NULL;
 struct GraphicsData *gVramGraphicsCopyQueue[] ALIGNED(16) = {};
 u16 gUnknown_03002820 = 0;
+
+#if PLATFORM_GBA
 s16 gBgScrollRegs[][2] ALIGNED(16) = {};
+#else
+s32 gBgScrollRegs[][2] = {};
+#endif
+
 u16 gDispCnt = 0;
 u8 gKeysContinuedRepeatIntervals[10] ALIGNED(16) = {};
 union MultiSioData gMultiSioSend ALIGNED(8) = {};
