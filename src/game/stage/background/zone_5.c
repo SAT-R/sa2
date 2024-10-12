@@ -3,29 +3,31 @@
 #include "flags.h"
 
 #include "game/sa1_leftovers/globals.h"
-
 #include "game/stage/camera.h"
 
 #include "constants/tilemaps.h"
+#include "constants/zones.h"
 
 extern const Background gStageCameraBgTemplates[4];
+
+#define SCREENBASE_SKY_CANYON_CLOUDS 27
 
 void CreateStageBg_Zone5(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
     if (IS_SINGLE_PLAYER) {
-        gDispCnt |= 0x100;
-        gBgCntRegs[0] = 0x1b0c;
+        gDispCnt |= DISPCNT_BG0_ON;
+        gBgCntRegs[0] = (BGCNT_TXT256x256 | BGCNT_SCREENBASE(SCREENBASE_SKY_CANYON_CLOUDS) | BGCNT_CHARBASE(3));
         *background = gStageCameraBgTemplates[3];
         background->tilemapId = TM_SKY_CANYON_CLOUDS_FOREGROUND;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
-        background->layoutVram = (void *)BG_SCREEN_ADDR(27);
-        background->targetTilesX = 0x20;
-        background->targetTilesY = 0x20;
+        background->layoutVram = (void *)BG_SCREEN_ADDR(SCREENBASE_SKY_CANYON_CLOUDS);
+        background->targetTilesX = (256 / TILE_WIDTH);
+        background->targetTilesY = (256 / TILE_WIDTH);
         DrawBackground(background);
     }
     gBgScrollRegs[0][0] = 0;
-    gBgScrollRegs[0][1] = 0;
+    gBgScrollRegs[0][1] = 160 - DISPLAY_HEIGHT;
     gBgScrollRegs[3][0] = 0;
     gBgScrollRegs[3][1] = 0;
 }
@@ -40,22 +42,22 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
     gBgScrollRegs[3][0] = 0;
     num = gStageTime * 2;
     if (IS_SINGLE_PLAYER) {
-        gFlags = gFlags | 4;
+        gFlags = gFlags | FLAGS_4;
         gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 2;
         cursor = gBgOffsetsHBlank;
-        if (gCurrentLevel != 18) {
-            gDispCnt |= 0x100;
-            gDispCnt |= 0x2000;
-            gWinRegs[5] = 0x3f;
-            gWinRegs[4] = 0x3f3f;
-            gWinRegs[0] = 0xf0;
-            gWinRegs[2] = 0xa0;
-            gWinRegs[1] = 0xf0;
-            gWinRegs[3] = 0xa0;
+        if (gCurrentLevel != LEVEL_INDEX(ZONE_5, ACT_BOSS)) {
+            gDispCnt |= DISPCNT_BG0_ON;
+            gDispCnt |= DISPCNT_WIN0_ON;
+            gWinRegs[WINREG_WINOUT] = WINOUT_WIN01_ALL;
+            gWinRegs[WINREG_WININ] = (WININ_WIN0_ALL | WININ_WIN1_ALL);
+            gWinRegs[WINREG_WIN0H] = WIN_RANGE(0, DISPLAY_WIDTH);
+            gWinRegs[WINREG_WIN0V] = WIN_RANGE(0, DISPLAY_HEIGHT);
+            gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
+            gWinRegs[WINREG_WIN1V] = WIN_RANGE(0, DISPLAY_HEIGHT);
             gBldRegs.bldY = 7;
-            gBldRegs.bldCnt = 0x3f41;
-            gBldRegs.bldAlpha = 0x1010;
+            gBldRegs.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG0);
+            gBldRegs.bldAlpha = BLDALPHA_BLEND(16, 16);
         }
 
         // Move the parallax clouds
