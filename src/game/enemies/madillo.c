@@ -93,16 +93,13 @@ static void Task_MadilloMain(void)
                     s->prevVariant = -1;
                     SPRITE_FLAG_CLEAR(s, X_FLIP);
                 }
-            } else {
-                // _080561BC
-                if (Q(pos.x + 120) > gPlayer.x) {
-                    if (I(madillo->offsetX) < (me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH) {
-                        gCurTask->main = Task_8056230;
-                        s->graphics.anim = SA2_ANIM_MADILLO;
-                        s->variant = 1;
-                        s->prevVariant = -1;
-                        SPRITE_FLAG_SET(s, X_FLIP);
-                    }
+            } else if (Q(pos.x + 120) > gPlayer.x) {
+                if (I(madillo->offsetX) < (me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH) {
+                    gCurTask->main = Task_8056230;
+                    s->graphics.anim = SA2_ANIM_MADILLO;
+                    s->variant = 1;
+                    s->prevVariant = -1;
+                    SPRITE_FLAG_SET(s, X_FLIP);
                 }
             }
         }
@@ -113,7 +110,7 @@ static void Task_MadilloMain(void)
 static void Task_8056230(void)
 {
     Sprite_Madillo *madillo = TASK_DATA(gCurTask);
-    Sprite *s = &madillo->s; // r5
+    Sprite *s = &madillo->s;
     Sprite *s2;
 
     MapEntity *me = madillo->base.me;
@@ -134,27 +131,17 @@ static void Task_8056230(void)
     s2 = &p->unk90->s;
 
     if ((s2->hitboxes[0].index != -1)) {
-        s32 x1, x2;
-        x1 = pos.x + s->hitboxes[0].left;
-        x2 = I(p->x) + s2->hitboxes[0].left;
-        if ((x1 <= x2 && x1 + (s->hitboxes[0].right - s->hitboxes[0].left) >= x2)
-            || (x1 >= x2 && x2 + (s2->hitboxes[0].right - s2->hitboxes[0].left) >= x1)) {
-            s32 y1, y2;
-            y1 = pos.y + s->hitboxes[0].top;
-            y2 = I(p->y) + s2->hitboxes[0].top;
-            if ((y1 <= y2 && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
-                || (y1 >= y2 && y2 + (s2->hitboxes[0].bottom - s2->hitboxes[0].top) >= y1)) {
-                if ((p->itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE) {
-                    sub_800CBA4(p);
-                }
+        if (HB_COLLISION(pos.x, pos.y, s->hitboxes[0], I(p->x), I(p->y), s2->hitboxes[0])) {
+            if ((p->itemEffect & 0x2) == PLAYER_ITEM_EFFECT__NONE) {
+                sub_800CBA4(p);
             }
         }
     }
 
     ENEMY_DESTROY_IF_OFFSCREEN(madillo, me, s);
 
-    if ((s->frameFlags & 0x400 && I(madillo->offsetX) > (me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)
-        || (!(s->frameFlags & 0x400) && I(madillo->offsetX) < me->d.sData[0] * TILE_WIDTH)) {
+    if ((s->frameFlags & SPRITE_FLAG(X_FLIP, 1) && I(madillo->offsetX) > (me->d.sData[0] + me->d.uData[2]) * TILE_WIDTH)
+        || (!(s->frameFlags & SPRITE_FLAG(X_FLIP, 1)) && I(madillo->offsetX) < me->d.sData[0] * TILE_WIDTH)) {
         gCurTask->main = Task_80564BC;
         s->graphics.anim = SA2_ANIM_MADILLO;
         s->variant = 0;
@@ -168,7 +155,7 @@ static void Task_8056230(void)
 static void Task_80564BC(void)
 {
     Sprite_Madillo *madillo = TASK_DATA(gCurTask);
-    Sprite *s = &madillo->s; // r5
+    Sprite *s = &madillo->s;
 
     MapEntity *me = madillo->base.me;
     Vec2_32 pos;
