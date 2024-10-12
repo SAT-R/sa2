@@ -5,6 +5,7 @@
 #include "malloc_vram.h"
 #include "trig.h"
 #include "game/entity.h"
+#include "game/sa1_leftovers/camera.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/interactables_2/sky_canyon/small_windmill.h"
@@ -323,9 +324,9 @@ static void RenderWindmill(Sprite_SmallWindmill *windmill)
     UpdateSpriteAnimation(s);
     s->x = windmill->x - gCamera.x;
     s->y = windmill->y - gCamera.y;
-    s->frameFlags &= ~0xC00;
+    s->frameFlags &= ~(SPRITE_FLAG(X_FLIP, 1) | SPRITE_FLAG(Y_FLIP, 1));
     DisplaySprite(s);
-    s->frameFlags |= 0xC00;
+    s->frameFlags |= (SPRITE_FLAG(X_FLIP, 1) | SPRITE_FLAG(Y_FLIP, 1));
     DisplaySprite(s);
 }
 
@@ -333,7 +334,8 @@ static bool32 ShouldDespawn(Sprite_SmallWindmill *windmill)
 {
     s16 x = windmill->x - gCamera.x;
     s16 y = windmill->y - gCamera.y;
-    if (x < -160 || x > 400 || (y + 0x20) < -128 || (y - 0x20) > 288) {
+
+    if (((x + 32) < -128) || ((x - 32) > (DISPLAY_WIDTH + 128)) || ((y + 32) < -128) || ((y - 32) > (DISPLAY_HEIGHT + 128))) {
         return TRUE;
     }
 
