@@ -171,7 +171,7 @@ void Task_8055084(void)
         yado->unk4C = YADO_PROJ_COOLDOWN;
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 0;
-        s->prevVariant = 0xFF;
+        s->prevVariant = -1;
         gCurTask->main = Task_YadoMain;
     } else if (yado->unk4C == 60) {
         ProjInit pinit;
@@ -193,7 +193,7 @@ void Task_8055084(void)
     } else if (yado->unk4C == 6) {
         s->graphics.anim = SA2_ANIM_YADO;
         s->variant = 2;
-        s->prevVariant = 0xFF;
+        s->prevVariant = -1;
     }
 
     UpdateSpriteAnimation(s);
