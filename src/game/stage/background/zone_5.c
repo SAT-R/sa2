@@ -15,6 +15,7 @@ extern const Background gStageCameraBgTemplates[4];
 void CreateStageBg_Zone5(void)
 {
     Background *background = &gStageBackgroundsRam.unk0;
+
     if (IS_SINGLE_PLAYER) {
         gDispCnt |= DISPCNT_BG0_ON;
         gBgCntRegs[0] = (BGCNT_TXT256x256 | BGCNT_SCREENBASE(SCREENBASE_SKY_CANYON_CLOUDS) | BGCNT_CHARBASE(3));
@@ -26,6 +27,7 @@ void CreateStageBg_Zone5(void)
         background->targetTilesY = (256 / TILE_WIDTH);
         DrawBackground(background);
     }
+
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 160 - DISPLAY_HEIGHT;
     gBgScrollRegs[3][0] = 0;
@@ -41,11 +43,13 @@ void StageBgUpdate_Zone5Acts12(s32 UNUSED a, s32 UNUSED b)
     gBgScrollRegs[0][0]++;
     gBgScrollRegs[3][0] = 0;
     num = gStageTime * 2;
+
     if (IS_SINGLE_PLAYER) {
         gFlags = gFlags | FLAGS_4;
         gUnknown_03002878 = (void *)REG_ADDR_BG3HOFS;
         gUnknown_03002A80 = 2;
         cursor = gBgOffsetsHBlank;
+
         if (gCurrentLevel != LEVEL_INDEX(ZONE_5, ACT_BOSS)) {
             gDispCnt |= DISPCNT_BG0_ON;
             gDispCnt |= DISPCNT_WIN0_ON;
