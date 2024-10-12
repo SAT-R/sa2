@@ -35,7 +35,10 @@ void CreateStageBg_Zone4(void)
     gBgScrollRegs[3][1] = 0;
 
     if (IS_SINGLE_PLAYER) {
+#if !TEMP_FIX
+        // Calling this will lead to crashes
         CreateSpotLightBeams();
+#endif
     }
 }
 

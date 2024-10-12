@@ -1882,16 +1882,15 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
                     if (blendMode != 0 && REG_BLDCNT & (1 << bgnum) && winEffectEnable) {
                         uint16_t targetA = color;
                         uint16_t targetB = 0;
-                        char isSpriteBlendingEnabled;
 
                         switch (blendMode) {
-                            case 1:
-                                isSpriteBlendingEnabled = REG_BLDCNT & BLDCNT_TGT2_OBJ ? 1 : 0;
+                            case 1: {
+                                char isSpriteBlendingEnabled = REG_BLDCNT & BLDCNT_TGT2_OBJ ? 1 : 0;
                                 // find targetB and blend it
                                 if (alphaBlendSelectTargetB(&scanline, &targetB, prnum, prsub + 1, xpos, isSpriteBlendingEnabled)) {
                                     color = alphaBlendColor(targetA, targetB);
                                 }
-                                break;
+                            } break;
                             case 2:
                                 color = alphaBrightnessIncrease(targetA);
                                 break;
