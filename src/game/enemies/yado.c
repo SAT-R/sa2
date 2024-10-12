@@ -119,75 +119,51 @@ void Task_8055084(void)
         if (sub_800C4FC(s, pos.x, pos.y, 1) == TRUE) {
             TaskDestroy(gCurTask);
             return;
-        } else {
-            // _08055100
-            if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
-                // _08055134
-                gPlayer.speedAirY = YADO_PLAYER_ACCEL;
-                gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
-                gPlayer.unk6C = 1;
-                gPlayer.transition = 5;
+        } else if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
+            gPlayer.speedAirY = YADO_PLAYER_ACCEL;
+            gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
+            gPlayer.unk6C = 1;
+            gPlayer.transition = 5;
 
-                // TODO: Why is this called twice?
-                m4aSongNumStart(SE_SPRING);
-            }
+            m4aSongNumStart(SE_SPRING);
         }
     } else if (sub_800C204(s, pos.x, pos.y, 0, &gPlayer, 0) == 1) {
-        // _08055134
         gPlayer.speedAirY = YADO_PLAYER_ACCEL;
         gPlayer.charState = CHARSTATE_CURLED_IN_AIR;
         gPlayer.unk6C = 1;
         gPlayer.transition = 5;
 
-        // TODO: Why is this called twice?
         m4aSongNumStart(SE_SPRING);
     } else {
         s32 x = pos.x;
         s32 y = pos.y;
 
         if (gCheese != NULL) {
-            Cheese *a4 = gCheese;
+            Cheese *cheese = gCheese;
             Sprite_Yado *yado2 = TASK_DATA(gCurTask);
 
-            if ((a4->s.hitboxes[1].index != -1)) {
-                s32 x1, x2;
-                x1 = x + s->hitboxes[0].left;
-                x2 = I(a4->posX) + a4->s.hitboxes[1].left;
-                if ((x1 <= x2 && x1 + (s->hitboxes[0].right - s->hitboxes[0].left) >= x2)
-                    || (x1 >= x2 && x2 + (a4->s.hitboxes[1].right - a4->s.hitboxes[1].left) >= x1)) {
-                    s32 y1, y2;
-                    y1 = y + s->hitboxes[0].top;
-                    y2 = I(a4->posY) + a4->s.hitboxes[1].top;
-                    if ((y1 <= y2 && y1 + (s->hitboxes[0].bottom - s->hitboxes[0].top) >= y2)
-                        || (y1 >= y2 && y2 + (a4->s.hitboxes[1].bottom - a4->s.hitboxes[1].top) >= y1)) {
-                        s16 x3, y3;
-                        if (IS_MULTI_PLAYER) {
-                            struct UNK_3005510 *unk = sub_8019224();
-                            unk->unk0 = 3;
-                            unk->unk1 = yado2->base.regionX;
-                            unk->unk2 = yado2->base.regionY;
-                            unk->unk3 = yado2->base.id;
-                        }
-                        x3 = x;
-                        y3 = y;
-
-                        CreateDustCloud(x3, y3);
-                        CreateTrappedAnimal(x3, y3);
-                        CreateEnemyDefeatScoreAndManageLives(x3, y3);
-
-                        TaskDestroy(gCurTask);
-                        return;
+            if (cheese->s.hitboxes[1].index != HITBOX_STATE_INACTIVE) {
+                if (HB_COLLISION(x, y, s->hitboxes[0], I(cheese->posX), I(cheese->posY), cheese->s.hitboxes[1])) {
+                    if (IS_MULTI_PLAYER) {
+                        struct UNK_3005510 *unk = sub_8019224();
+                        unk->unk0 = 3;
+                        unk->unk1 = yado2->base.regionX;
+                        unk->unk2 = yado2->base.regionY;
+                        unk->unk3 = yado2->base.id;
                     }
+
+                    CreateDustCloud(x, y);
+                    CreateTrappedAnimal(x, y);
+                    CreateEnemyDefeatScoreAndManageLives(x, y);
+
+                    TaskDestroy(gCurTask);
+                    return;
                 }
             }
         }
     }
 
-    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-        SET_MAP_ENTITY_NOT_INITIALIZED(me, yado->base.spriteX);
-        TaskDestroy(gCurTask);
-        return;
-    }
+    ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(yado, me, s);
 
     Player_UpdateHomingPosition(yado->spawnX, yado->spawnY);
 
@@ -198,7 +174,6 @@ void Task_8055084(void)
         s->prevVariant = 0xFF;
         gCurTask->main = Task_YadoMain;
     } else if (yado->unk4C == 60) {
-        // _080552E4
         ProjInit pinit;
         pinit.numTiles = 4;
         pinit.anim = SA2_ANIM_YADO_PROJ;
