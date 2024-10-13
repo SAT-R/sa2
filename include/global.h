@@ -45,9 +45,11 @@ typedef void (*VoidFn)(void);
 
 #ifdef NON_MATCHING
 #define ASM_FUNC(path, decl)
+#define TEMP_FIX 1
 #else
 #define ASM_FUNC(path, decl)                                                                                                               \
     NAKED decl { asm(".include " #path); }
+#define TEMP_FIX 0
 #endif
 
 #ifdef NON_MATCHING

@@ -166,7 +166,11 @@ static inline void sub_8015B64_inline(AnimId anim, u16 palId)
 
         animPalId = *pAnim++;
         insertOffset = (*pAnim >> 16);
+#ifndef BUG_FIX
+        // This only works on GBA because it's specifically using a 32bit DMA below and for that, addresses are aligned to the last word.
+        // We can assume that this was supposed to be 'insertOffset += (palId * 16)', but that is taken care of by the animation data.
         insertOffset += palId;
+#endif
         numColors = *pAnim % 256u;
 
         DmaCopy32(3, &gRefSpriteTables->palettes[animPalId * 16], &gObjPalette[insertOffset], numColors * sizeof(u16));

@@ -1819,10 +1819,10 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     }
     // figure out if WIN1 masks on this scanline
     if (REG_DISPCNT & DISPCNT_WIN1_ON) {
-        WIN1bottom = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0V]); // y2;
-        WIN1top = WIN_GET_LOWER(gWinRegs[WINREG_WIN0V]); // y1;
-        WIN1right = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0H]); // x2
-        WIN1left = WIN_GET_LOWER(gWinRegs[WINREG_WIN0H]); // x1
+        WIN1bottom = WIN_GET_HIGHER(gWinRegs[WINREG_WIN1V]); // y2;
+        WIN1top = WIN_GET_LOWER(gWinRegs[WINREG_WIN1V]); // y1;
+        WIN1right = WIN_GET_HIGHER(gWinRegs[WINREG_WIN1H]); // x2
+        WIN1left = WIN_GET_LOWER(gWinRegs[WINREG_WIN1H]); // x1
 
         if (WIN1top > WIN1bottom) {
             if (vcount >= WIN1top || vcount < WIN1bottom)
@@ -1882,16 +1882,15 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
                     if (blendMode != 0 && REG_BLDCNT & (1 << bgnum) && winEffectEnable) {
                         uint16_t targetA = color;
                         uint16_t targetB = 0;
-                        char isSpriteBlendingEnabled;
 
                         switch (blendMode) {
-                            case 1:
-                                isSpriteBlendingEnabled = REG_BLDCNT & BLDCNT_TGT2_OBJ ? 1 : 0;
+                            case 1: {
+                                char isSpriteBlendingEnabled = REG_BLDCNT & BLDCNT_TGT2_OBJ ? 1 : 0;
                                 // find targetB and blend it
                                 if (alphaBlendSelectTargetB(&scanline, &targetB, prnum, prsub + 1, xpos, isSpriteBlendingEnabled)) {
                                     color = alphaBlendColor(targetA, targetB);
                                 }
-                                break;
+                            } break;
                             case 2:
                                 color = alphaBrightnessIncrease(targetA);
                                 break;

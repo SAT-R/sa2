@@ -3782,12 +3782,16 @@ void sub_8024B10(Player *p, PlayerSpriteInfo *inPsi)
         UpdateSpriteAnimation(s);
     }
     if (IS_SINGLE_PLAYER) {
+        // Draw Player sprite in SP modes
         if (p->moveState & MOVESTATE_DEAD
             || (!(p->moveState & MOVESTATE_100000) && (p->timerInvulnerability == 0 || (gStageTime & 2) == 0))) {
             DisplaySprite(s);
         }
 
-        if (IS_SINGLE_PLAYER) {
+#ifndef NON_MATCHING
+        if (IS_SINGLE_PLAYER)
+#endif
+        {
             return;
         }
     }

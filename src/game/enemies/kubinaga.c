@@ -92,7 +92,8 @@ void CreateEntity_Kubinaga(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, 
     s->graphics.dest = VramMalloc(0x10);
     SPRITE_INIT_ANIM(s, SA2_ANIM_KUBINAGA, 1, 19);
     SPRITE_INIT_SCRIPT(s, 1.0)
-    s->frameFlags = gUnknown_030054B8++ | 0x2060;
+    s->frameFlags
+        = gUnknown_030054B8++ | SPRITE_FLAG(PRIORITY, 2) | SPRITE_FLAG(ROT_SCALE_DOUBLE_SIZE, 1) | SPRITE_FLAG(ROT_SCALE_ENABLE, 1);
     UpdateSpriteAnimation(s);
     SET_MAP_ENTITY_INITIALIZED(me);
 }
@@ -205,8 +206,12 @@ static void sub_80528AC(void)
     sBase->y = pos.y - gCamera.y;
 
     sHead->x = pos2.x - gCamera.x;
+#ifndef BUG_FIX
     // BUG: this doesn't make sense to be pos.x but it doesn't appear to have any effect
     sHead->y = pos2.x - gCamera.y;
+#else
+    sHead->y = pos2.y - gCamera.y;
+#endif
 
     ENEMY_DESTROY_IF_PLAYER_HIT_2(sBase, pos);
     ENEMY_DESTROY_IF_PLAYER_HIT_2(sHead, pos2);
@@ -272,8 +277,12 @@ static void sub_8052AEC(void)
     sBase->y = pos.y - gCamera.y;
 
     sHead->x = pos2.x - gCamera.x;
+#ifndef BUG_FIX
     // BUG: this doesn't make sense to be pos.x but it doesn't appear to have any effect
     sHead->y = pos2.x - gCamera.y;
+#else
+    sHead->y = pos2.y - gCamera.y;
+#endif
 
     k->unkBE -= 0x200;
     ENEMY_DESTROY_IF_PLAYER_HIT_2(sBase, pos);
