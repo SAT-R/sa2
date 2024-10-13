@@ -291,8 +291,6 @@ int main(int argc, char **argv)
                 REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
                 if (SDL_AtomicGet(&isFrameAvailable)) {
                     VDraw(sdlTexture);
-                    SDL_RenderClear(sdlRenderer);
-                    SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
                     SDL_AtomicSet(&isFrameAvailable, 0);
 
                     REG_DISPSTAT |= INTR_FLAG_VBLANK;
@@ -310,6 +308,8 @@ int main(int argc, char **argv)
                     accumulator -= dt;
                 }
             }
+            SDL_RenderClear(sdlRenderer);
+            SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
 
 #if ENABLE_VRAM_VIEW
             VramDraw(vramTexture);
