@@ -5,7 +5,6 @@
 #include "malloc_vram.h"
 #include "trig.h"
 #include "game/entity.h"
-#include "game/sa1_leftovers/camera.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/interactables_2/sky_canyon/small_windmill.h"
