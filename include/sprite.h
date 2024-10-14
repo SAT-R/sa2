@@ -200,7 +200,7 @@ typedef struct {
 } SpriteTransform; /* size 0xA */
 
 typedef struct {
-    /* 0x00 */ u16 unk0[4];
+    /* 0x00 */ s16 unk0[4];
     /* 0x08 */ s16 qDirX;
     /* 0x0A */ s16 qDirY;
 

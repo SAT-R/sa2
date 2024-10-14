@@ -372,8 +372,8 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
             s32 r0;
             s32 r1;
             s32 r2;
-            u32 r3;
-            u32 r4;
+            s32 r3;
+            s32 r4;
 
             // __08004A04
             if (transform->width > 0) {
