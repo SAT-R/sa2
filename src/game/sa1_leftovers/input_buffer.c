@@ -47,7 +47,7 @@ typedef struct {
 // Letting go of a button does not trigger the index increase.
 // (This might be used for timing in multiplayer?)
 //
-// (91%) https://decomp.me/scratch/zFRhq
+// (97%) https://decomp.me/scratch/VpRkC
 NONMATCH("asm/non_matching/game/sa1_leftovers/input_buf__sub_800DF8C.inc", void sub_800DF8C(Player *p))
 {
     const u8 **unk0;
