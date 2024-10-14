@@ -50,7 +50,9 @@ typedef struct {
 // (91%) https://decomp.me/scratch/zFRhq
 NONMATCH("asm/non_matching/game/sa1_leftovers/input_buf__sub_800DF8C.inc", void sub_800DF8C(Player *p))
 {
-    struct struc_800DF8C sp00;
+    const u8 **unk0;
+    u32 unk4;
+    u8 *unk8;
 #ifndef NON_MATCHING
     register u32 r6 asm("r6");
     register u32 r8 asm("r8");
@@ -69,11 +71,11 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/input_buf__sub_800DF8C.inc", void 
 
     sub_800E0C0(p->frameInput, p->frameInput);
 
-    if (p->unk70) {
-        sp00.unk4 = 0;
-        sp00.unk0 = gUnknown_08C871D4[p->character];
+    if (p->unk70 != 0) {
+        unk4 = 0;
+        unk0 = gUnknown_08C871D4[p->character];
 
-        data = *sp00.unk0;
+        data = *unk0;
         if (data != INPUTBUF_NULL_PTR) {
             // __0800DFEC
             r6 = *data++;
@@ -82,7 +84,6 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/input_buf__sub_800DF8C.inc", void 
             // _0800E002
             while (p->unk71 != r8) {
                 u8 cid;
-                sp00.unk8 = &p->unk71;
                 cid = gNewInputCountersIndex;
 
                 // _0800E012
@@ -94,12 +95,15 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/input_buf__sub_800DF8C.inc", void 
                     register u32 maskFF asm("sl") = 0xFF;
                     register u32 mask1F asm("r9") = 0x1F;
                     register u32 r0_2 asm("r0") = r6 - 1;
+                    register s32 r2 asm("r2");
                     asm("" ::"r"(mask1F));
                     asm("" ::"r"(maskFF));
+
 #else
                     u32 maskFF = 0xFF;
                     u32 mask1F = 0x1F;
                     u32 r0_2 = r6 - 1;
+                    s32 r2;
 #endif
                     r6 = (u16)r0_2;
 
@@ -111,36 +115,38 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/input_buf__sub_800DF8C.inc", void 
                     // _0800E02A
                     while (1) {
                         u32 r3 = gNewInputCounters[cid].unk0 & r7;
-                        s32 r2 = gNewInputCounters[cid].unk1;
+                        r2 = gNewInputCounters[cid].unk1;
 
                         if ((s16)r1 >= (signed)(r2 & maskFF)) {
                             if (ip == r3) {
-                                cid = (cid - 1) & mask1F;
+                                cid = (cid - 1);
+                                r2 = mask1F;
+                                cid &= r2;
                                 break;
                             } else {
                                 cid = (cid - 1) & mask1F;
-                                r1 = (r1 - 1) - r6;
+                                r1 = ((s16)(r1 - 1)) - r2;
                             }
                         } else {
                             // r2 should be set to 0 here, actually
-                            r6 = 0;
+                            r2 = 0;
                             break;
                         }
                     }
+                    if (r2 == 0) {
+                        break;
+                    }
                 }
-            lbl:
 
                 if (r6 == 0) {
-                    // NOTE: As long as this function is non-matching,
-                    //       this line leads to Sonic not being able to jump in non-vanilla builds
-                    //*sp00.unk8 = r8;
+                    p->unk71 = r8;
                     break;
                 }
 
                 // _0800E082
-                sp00.unk4 = (u16)(sp00.unk4 + 1);
+                unk4 = (u16)(unk4 + 1);
 
-                if (sp00.unk0[sp00.unk4] == INPUTBUF_NULL_PTR) {
+                if (unk0[unk4] == INPUTBUF_NULL_PTR) {
                     break;
                 }
 
