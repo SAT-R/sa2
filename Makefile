@@ -184,7 +184,7 @@ infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst 
 # Disable dependency scanning for clean/tidy/tools
 ifeq (,$(filter-out all rom compare libagbsyscall,$(MAKECMDGOALS)))
 # if we are doing any of these things, build tools first
-$(call infoshell, $(MAKE) tools -j$(nproc))
+$(call infoshell, $(MAKE) tools)
 else
 NODEP ?= 1
 endif

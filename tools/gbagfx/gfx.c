@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <assert.h>
 #include <string.h> // memcpy
 #include "global.h"
 #include "gfx.h"
@@ -444,6 +445,7 @@ void WriteImage(char *path, int numTiles, int bitDepth, int metatileWidth, int m
 
                 curr = curr->next;
             }
+            assert(scratchBuffer != NULL);
             /* Copy the scratch buffer back into the original buffer */
             memcpy(buffer, scratchBuffer, bufferSize);
             

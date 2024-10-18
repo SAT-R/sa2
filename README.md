@@ -45,7 +45,7 @@ If you use `vscode` then consider using the provided [Dev Container](https://cod
  
 On Linux systems
 ```
-sudo apt install build-essentials binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
+sudo apt install build-essential binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
 ```
 
 On MacOS and Windows install [**devkitARM**](http://devkitpro.org/wiki/Getting_Started/devkitARM)
