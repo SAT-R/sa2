@@ -509,17 +509,14 @@ void sub_802E1EC(s32 p0, u16 p1)
 }
 
 #define STGINTRO_SP_SIZE 8
-
-// (99.77%) https://decomp.me/scratch/BhinB
-// (addendum by Ollie https://decomp.me/scratch/qyFAO )
-// (99.92% https://decomp.me/scratch/m5XSc )
-NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(s16 p0[2][2], u8 pairCount))
+void sub_802E278(s16 *p0, u8 pairCount)
 {
     s16 i;
     s16 j;
+
     s16 sp[STGINTRO_SP_SIZE][2];
 
-#ifdef NON_MATCHING
+#ifdef BUGFIX
     // Make sure pairCount isn't bigger than the # of elements in sp
     if (pairCount > STGINTRO_SP_SIZE)
         pairCount = STGINTRO_SP_SIZE;
@@ -527,10 +524,13 @@ NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(s16 p0[
 
     for (j = 0; j < pairCount; j++) {
 #ifndef NON_MATCHING
+        s16 *r3;
         asm("" ::: "r0", "r2");
+        sp[j][0] = *(r3 = &p0[j * 2 + 0]);
+#else
+        sp[j][0] = p0[j * 2 + 0];
 #endif
-        sp[j][0] = p0[j][0];
-        sp[j][1] = p0[j][1];
+        sp[j][1] = p0[j * 2 + 1];
     }
 
     for (i = 0; i < pairCount - 1; i++) {
@@ -544,13 +544,13 @@ NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(s16 p0[
 
         bgOffsets = (u8 *)&((s16 *)bgOffsets)[sp[i][1]];
         xVal = sp[i][0];
-        xVal2 = Q(xVal);
+        xVal2 = Q_24_8(xVal);
 
         v = sp[i][1] - sp[i + 1][1];
         if (v != 0) {
-            r4 = Div(Q(xVal - sp[i + 1][0]), sp[i][1] - sp[i + 1][1]);
+            r4 = Div(Q_24_8(xVal - sp[i + 1][0]), sp[i][1] - sp[i + 1][1]);
         } else {
-            r4 = Q(xVal - sp[i + 1][0]);
+            r4 = Q_24_8(xVal - sp[i + 1][0]);
         }
 
         l = sp[i][1];
@@ -568,13 +568,10 @@ NONMATCH("asm/non_matching/game/stage/sub_802E278.inc", void sub_802E278(s16 p0[
         }
     }
 }
-END_NONMATCH
 
-// like sub_802E278
-// (99.78%) https://decomp.me/scratch/soFiq
-NONMATCH("asm/non_matching/game/stage/sub_802E384.inc", void sub_802E384(Vec2_16 *p0, u16 pairCount))
+void sub_802E384(s16 *p0, u16 pairCount)
 {
-    s16 i;
+    s16 i, j;
     s16 sp[STGINTRO_SP_SIZE][2];
 
 #ifdef NON_MATCHING
@@ -584,36 +581,39 @@ NONMATCH("asm/non_matching/game/stage/sub_802E384.inc", void sub_802E384(Vec2_16
 #endif
 
     for (i = 0; i < pairCount; i++) {
-        sp[i][0] = p0[i].x;
-        sp[i][1] = p0[i].y;
+#ifndef NON_MATCHING
+        s16 *r3;
+        asm("" ::: "r0", "r2");
+        sp[i][0] = *(r3 = &p0[i * 2 + 0]);
+#else
+        sp[i][0] = p0[i * 2 + 0];
+#endif
+        sp[i][1] = p0[i * 2 + 1];
     }
 
-    for (i = 0; i < pairCount - 1; i++) {
+    for (j = 0; j < pairCount - 1; j++) {
+
         u8 *bgOffsets = gBgOffsetsHBlank;
-#ifndef NON_MATCHING
-        register s32 yVal asm("r3") = sp[i][1];
-#else
-        s32 yVal = sp[i][1];
-#endif
+        register s32 yVal asm("r3") = sp[j][1];
         s16 xVal;
         s32 xVal2;
         s32 r4;
-        s16 l;
+        s16 l, r;
 
         bgOffsets = (u8 *)&((s16 *)bgOffsets)[yVal];
-        xVal = sp[i][0];
-        xVal2 = Q(xVal);
+        xVal = sp[j][0];
+        xVal2 = Q_24_8(xVal);
 
-        yVal -= sp[i + 1][1];
+        yVal -= sp[j + 1][1];
 
         if (yVal != 0) {
-            r4 = Div(Q(xVal - sp[i + 1][0]), yVal);
+            r4 = Div(Q_24_8(xVal - sp[j + 1][0]), yVal);
         } else {
-            r4 = Q(xVal - sp[i + 1][0]);
+            r4 = Q_24_8(xVal - sp[j + 1][0]);
         }
 
-        l = sp[i][1];
-        while (l <= sp[i + 1][1]) {
+        l = sp[j][1];
+        while (l <= sp[j + 1][1]) {
             s16 r1 = (xVal2 >> 8);
 
             if (r1 > DISPLAY_WIDTH)
@@ -622,13 +622,12 @@ NONMATCH("asm/non_matching/game/stage/sub_802E384.inc", void sub_802E384(Vec2_16
             if (r1 < 0)
                 r1 = 0;
 
-            bgOffsets++;
+            *bgOffsets++;
             *bgOffsets = r1;
-            bgOffsets++;
+            *bgOffsets++;
 
             xVal2 += r4;
             l++;
         }
     }
 }
-END_NONMATCH
