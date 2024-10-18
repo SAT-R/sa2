@@ -537,14 +537,22 @@ void sub_8031138(u16 p0)
             x = (16 - counter) * 24;
         }
 
+#if !PLATFORM_GBA
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
+#else
+        for (i = 0; i < 8; i++) {
+#endif
             s->x = (x - p0) + i * 32;
             DisplaySprite(s);
         }
     } else {
         s = &outro->s7;
 
+#if !PLATFORM_GBA
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
+#else
+        for (i = 0; i < 8; i++) {
+#endif
             s->x = -p0 + i * 32;
             DisplaySprite(s);
         }

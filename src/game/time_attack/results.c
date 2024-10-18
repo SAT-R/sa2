@@ -295,13 +295,21 @@ void sub_80897E8(void)
             temp = ((16 - unk168) * 24);
         }
 
+#if !PLATFORM_GBA
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
+#else
+        for (i = 0; i < 8; i++) {
+#endif
             s->x = temp + (i * 32);
             DisplaySprite(s);
         }
     } else {
         s = &resultsCutScene->unk12C;
+#if !PLATFORM_GBA
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
+#else
+        for (i = 0; i < 8; i++) {
+#endif
             s->x = (i * 32); // TODO: Does (i * 32) match?
             DisplaySprite(s);
         }
