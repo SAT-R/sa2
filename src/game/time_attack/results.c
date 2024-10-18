@@ -291,29 +291,24 @@ void sub_80897E8(void)
         s32 temp;
         s = &resultsCutScene->unk12C;
         temp = 0;
-        if (unk168 < 17) {
-            temp = ((16 - unk168) * 24);
+        if (unk168 <= 16) {
+            temp = (16 - unk168) * 24;
         }
 
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 16) / 32); i++) {
             s->x = temp + (i * 32);
             DisplaySprite(s);
         }
     } else {
         s = &resultsCutScene->unk12C;
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 16) / 32); i++) {
             s->x = (i * 32); // TODO: Does (i * 32) match?
             DisplaySprite(s);
         }
     }
 
     if (unk168 > 28) {
-        s32 temp;
-        if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
-            temp = 2;
-        } else {
-            temp = 3;
-        }
+        s32 temp = ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) ? 2 : 3;
 
         for (i = 0; i < temp; i++) {
             s = &resultsCutScene->unkC[i];
