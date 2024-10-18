@@ -143,7 +143,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     s = &resultsCutScene->unkC[0];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = 41;
+    s->y = DISPLAY_HEIGHT - 39;
     s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
@@ -162,7 +162,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     s = &resultsCutScene->unkC[1];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = 49;
+    s->y = DISPLAY_HEIGHT - 31;
     s->graphics.dest = VramMalloc(sStageResultsHeadlineTexts[isBossLevel][0]);
     s->graphics.anim = sStageResultsHeadlineTexts[isBossLevel][1];
     s->variant = sStageResultsHeadlineTexts[isBossLevel][2];
@@ -185,7 +185,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     }
     s = &resultsCutScene->unkC[2];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = 49;
+    s->y = DISPLAY_HEIGHT - 31;
     s->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
     s->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
     s->variant = sAnimsGotThroughZoneAndActNames[level][2];
@@ -201,8 +201,8 @@ u32 CreateTimeAttackResults(u32 finishTime)
     UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unk9C[0];
-    s->x = 40;
-    s->y = 90;
+    s->x = (DISPLAY_WIDTH / 2) - 80;
+    s->y = (DISPLAY_HEIGHT / 2) + 10;
     s->graphics.dest = VramMalloc(8);
     s->graphics.anim = SA2_ANIM_TA_RECORD;
     s->variant = SA2_ANIM_VARIANT_TA_TIME;
