@@ -594,7 +594,11 @@ void sub_802E384(s16 *p0, u16 pairCount)
     for (j = 0; j < pairCount - 1; j++) {
 
         u8 *bgOffsets = gBgOffsetsHBlank;
+#ifdef NON_MATCHING
         register s32 yVal asm("r3") = sp[j][1];
+#else
+        s32 yVal = sp[j][1];
+#endif
         s16 xVal;
         s32 xVal2;
         s32 r4;
