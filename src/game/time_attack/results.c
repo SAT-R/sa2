@@ -143,7 +143,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     s = &resultsCutScene->unkC[0];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = DISPLAY_HEIGHT - 39;
+    s->y = (DISPLAY_HEIGHT / 2) - 39;
     s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
@@ -162,7 +162,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     s = &resultsCutScene->unkC[1];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = DISPLAY_HEIGHT - 31;
+    s->y = (DISPLAY_HEIGHT / 2) - 31;
     s->graphics.dest = VramMalloc(sStageResultsHeadlineTexts[isBossLevel][0]);
     s->graphics.anim = sStageResultsHeadlineTexts[isBossLevel][1];
     s->variant = sStageResultsHeadlineTexts[isBossLevel][2];
@@ -185,7 +185,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     }
     s = &resultsCutScene->unkC[2];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = DISPLAY_HEIGHT - 31;
+    s->y = (DISPLAY_HEIGHT / 2) - 31;
     s->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
     s->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
     s->variant = sAnimsGotThroughZoneAndActNames[level][2];
@@ -295,21 +295,14 @@ void sub_80897E8(void)
             temp = ((16 - unk168) * 24);
         }
 
-#if !PLATFORM_GBA
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
-#else
-        for (i = 0; i < 8; i++) {
-#endif
             s->x = temp + (i * 32);
             DisplaySprite(s);
         }
     } else {
         s = &resultsCutScene->unk12C;
-#if !PLATFORM_GBA
+
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
-#else
-        for (i = 0; i < 8; i++) {
-#endif
             s->x = (i * 32); // TODO: Does (i * 32) match?
             DisplaySprite(s);
         }

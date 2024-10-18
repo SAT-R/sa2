@@ -176,7 +176,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     s = &outro->s1[0];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = DISPLAY_HEIGHT - 39;
+    s->y = (DISPLAY_HEIGHT / 2) - 39;
     s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
@@ -198,7 +198,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
         s = &outro->s1[1];
         s->x = DISPLAY_WIDTH + 16;
-        s->y = DISPLAY_HEIGHT - 31;
+        s->y = (DISPLAY_HEIGHT / 2) - 31;
         s->graphics.dest = VramMalloc(sStageResultsHeadlineTexts[isBossAct][0]);
         s->graphics.anim = sStageResultsHeadlineTexts[isBossAct][1];
         s->variant = sStageResultsHeadlineTexts[isBossAct][2];
@@ -229,7 +229,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
         s = &outro->s1[2];
         s->x = DISPLAY_WIDTH + 16;
-        s->y = DISPLAY_HEIGHT - 31;
+        s->y = (DISPLAY_HEIGHT / 2) - 31;
         s->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
         s->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
         s->variant = sAnimsGotThroughZoneAndActNames[level][2];
@@ -537,22 +537,14 @@ void sub_8031138(u16 p0)
             x = (16 - counter) * 24;
         }
 
-#if !PLATFORM_GBA
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
-#else
-        for (i = 0; i < 8; i++) {
-#endif
             s->x = (x - p0) + i * 32;
             DisplaySprite(s);
         }
     } else {
         s = &outro->s7;
 
-#if !PLATFORM_GBA
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
-#else
-        for (i = 0; i < 8; i++) {
-#endif
             s->x = -p0 + i * 32;
             DisplaySprite(s);
         }
