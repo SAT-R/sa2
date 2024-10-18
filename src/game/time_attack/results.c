@@ -310,12 +310,7 @@ void sub_80897E8(void)
     }
 
     if (unk168 > 28) {
-        s32 temp;
-        if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
-            temp = 2;
-        } else {
-            temp = 3;
-        }
+        s32 temp = ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) ? 2 : 3;
 
         for (i = 0; i < temp; i++) {
             s = &resultsCutScene->unkC[i];
