@@ -301,7 +301,10 @@ static s16 TryWriteSaveGame(void)
             return TRUE;
         }
     }
-
+    // #if TAS_TESTING
+    //     // Takes about 12 frames to write in the real gba
+    //     gInputRecorder.playbackHead += 12;
+    // #endif
     return FALSE;
 }
 
