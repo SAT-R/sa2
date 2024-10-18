@@ -1557,7 +1557,7 @@ void Player_Knuckles_Climb_80136E8(Player *p)
                 Player_Knuckles_InitClimbPullUpEdge(p);
                 return;
             } else if (r2 > 0) {
-#ifdef BUGFIX
+#ifdef BUG_FIX
                 rot = 0;
 #endif
                 // BUG: rot is not initialised

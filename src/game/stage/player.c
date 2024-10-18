@@ -6107,7 +6107,7 @@ void sub_802966C(Player *p)
                     p->unk58 += u48;
                 }
                 p->moveState &= ~MOVESTATE_FACING_LEFT;
-            } else if (p->speedGroundX >= Q_24_8(2.0)) {
+            } else if (p->speedGroundX >= Q(2.0)) {
                 if ((p->charState == CHARSTATE_BRAKE) || (p->charState == CHARSTATE_BRAKE_GOAL)) {
                     charState = p->charState;
                 } else {
@@ -6143,7 +6143,7 @@ void sub_802966C(Player *p)
                 }
                 p->moveState |= MOVESTATE_FACING_LEFT;
             } else {
-                if (p->speedGroundX <= -Q_24_8(2.0)) {
+                if (p->speedGroundX <= -Q(2.0)) {
                     if ((p->charState == CHARSTATE_BRAKE) || (p->charState == CHARSTATE_BRAKE_GOAL)) {
                         charState = p->charState;
                     } else {
@@ -6188,7 +6188,7 @@ void sub_802966C(Player *p)
     } else {
         s32 grndSpeed = p->speedGroundX;
         if (grndSpeed > 0) {
-            s16 val = grndSpeed - Q_24_8(8.0 / 256.0);
+            s16 val = grndSpeed - Q(8.0 / 256.0);
             if (val <= 0) {
                 val = 0;
                 charState = CHARSTATE_IDLE;
@@ -6198,7 +6198,7 @@ void sub_802966C(Player *p)
 
             p->speedGroundX = val;
         } else if (grndSpeed < 0) {
-            s16 val = grndSpeed + Q_24_8(8.0 / 256.0);
+            s16 val = grndSpeed + Q(8.0 / 256.0);
             if (val >= 0) {
                 val = 0;
                 charState = CHARSTATE_IDLE;

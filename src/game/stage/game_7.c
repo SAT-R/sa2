@@ -516,7 +516,7 @@ void sub_802E278(s16 *p0, u8 pairCount)
 
     s16 sp[STGINTRO_SP_SIZE][2];
 
-#ifdef BUGFIX
+#ifdef BUG_FIX
     // Make sure pairCount isn't bigger than the # of elements in sp
     if (pairCount > STGINTRO_SP_SIZE)
         pairCount = STGINTRO_SP_SIZE;
@@ -544,13 +544,13 @@ void sub_802E278(s16 *p0, u8 pairCount)
 
         bgOffsets = (u8 *)&((s16 *)bgOffsets)[sp[i][1]];
         xVal = sp[i][0];
-        xVal2 = Q_24_8(xVal);
+        xVal2 = Q(xVal);
 
         v = sp[i][1] - sp[i + 1][1];
         if (v != 0) {
-            r4 = Div(Q_24_8(xVal - sp[i + 1][0]), sp[i][1] - sp[i + 1][1]);
+            r4 = Div(Q(xVal - sp[i + 1][0]), sp[i][1] - sp[i + 1][1]);
         } else {
-            r4 = Q_24_8(xVal - sp[i + 1][0]);
+            r4 = Q(xVal - sp[i + 1][0]);
         }
 
         l = sp[i][1];
@@ -602,14 +602,14 @@ void sub_802E384(s16 *p0, u16 pairCount)
 
         bgOffsets = (u8 *)&((s16 *)bgOffsets)[yVal];
         xVal = sp[j][0];
-        xVal2 = Q_24_8(xVal);
+        xVal2 = Q(xVal);
 
         yVal -= sp[j + 1][1];
 
         if (yVal != 0) {
-            r4 = Div(Q_24_8(xVal - sp[j + 1][0]), yVal);
+            r4 = Div(Q(xVal - sp[j + 1][0]), yVal);
         } else {
-            r4 = Q_24_8(xVal - sp[j + 1][0]);
+            r4 = Q(xVal - sp[j + 1][0]);
         }
 
         l = sp[j][1];

@@ -306,7 +306,7 @@ static s16 ClampPlayerSpeed(s16 speed)
         CLAMP_INLINE2(speed, -PROP_PLAYER_CLAMP_SPEED_BOOST, PROP_PLAYER_CLAMP_SPEED_BOOST);
     } else {
         // @BUG: Seems like a copy-paste error?
-#ifdef BUGFIX
+#ifdef BUG_FIX
         CLAMP_INLINE2(speed, -PROP_PLAYER_CLAMP_SPEED, +PROP_PLAYER_CLAMP_SPEED);
 #else
         CLAMP_INLINE2(speed, -PROP_PLAYER_CLAMP_SPEED_BOOST, +PROP_PLAYER_CLAMP_SPEED);

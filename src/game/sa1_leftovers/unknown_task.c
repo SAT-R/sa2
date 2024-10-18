@@ -48,7 +48,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc", void Tas
     if (ut->unkB != 0) {
         // _08009984
 
-        if (ut->unk0 < Q_24_8(2.0)) {
+        if (ut->unk0 < Q(2.0)) {
             ut->unk4 -= ut->unk2;
         } else {
             ut->unk4 += ut->unk2;
@@ -69,32 +69,32 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc", void Tas
             s32 r5;
             s32 temp;
 
-            divRes = Div(Q_24_8(sinIndex) << 8, someCos);
-            sp10.unk0 = ut->unk6 - Q_24_8_TO_INT(ut->unk8 * divRes);
+            divRes = Div(Q(sinIndex) << 8, someCos);
+            sp10.unk0 = ut->unk6 - I(ut->unk8 * divRes);
 
             if (sp10.unk0 <= 0) {
                 sp10.unk0 = 0;
 
                 if (sinIndex >= 256) {
                     s32 newSinIndex = ((sinIndex - 256 - 512) & ONE_CYCLE);
-                    s32 newSinValue = Q_24_8(SIN_24_8(newSinIndex));
+                    s32 newSinValue = Q(SIN_24_8(newSinIndex));
 
                     divRes = Div(newSinValue, COS_24_8(newSinIndex));
-                    sp10.unk2 = Q_24_8_TO_INT(ut->unk6 * divRes);
+                    sp10.unk2 = I(ut->unk6 * divRes);
                 } else {
                     // _08009A50
                     s32 newSinIndex = ((sinIndex - 256) & ONE_CYCLE);
                     s32 newSinValue = SIN_24_8(newSinIndex);
 
                     divRes = Div(newSinValue, COS_24_8(newSinIndex));
-                    sp10.unk2 = Q_24_8_TO_INT(ut->unk6 * divRes);
+                    sp10.unk2 = I(ut->unk6 * divRes);
                 }
             } else if (sp10.unk0 >= DISPLAY_WIDTH) {
                 // _08009A86
                 s32 r1;
                 sp10.unk0 = DISPLAY_WIDTH; // might be DISPLAY_WIDTH?
                 if (sinIndex >= 256) {
-                    r1 = sinIndex - Q_24_8(3.0);
+                    r1 = sinIndex - Q(3.0);
                 } else {
                     r1 = sinIndex + sp10.unk0;
                 }
@@ -112,7 +112,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc", void Tas
             // __08009AF4
 
             divRes = Div((SIN_24_8(sinIndex & ONE_CYCLE) << 8), COS_24_8(sinIndex & ONE_CYCLE));
-            sp08[2] = Q_24_8((ut->unk8 * divRes) - DISPLAY_HEIGHT);
+            sp08[2] = Q((ut->unk8 * divRes) - DISPLAY_HEIGHT);
             sp08[3] = DISPLAY_HEIGHT;
 
             r5 = (ut->unk0 - ut->unkB);
@@ -125,7 +125,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc", void Tas
                 sp14[0] = sb;
 
                 if (r5 >= 256) {
-                    sinIndex = r5 - Q_24_8(3.0);
+                    sinIndex = r5 - Q(3.0);
                 } else {
                     sinIndex = 256 - r5;
                 }
@@ -138,7 +138,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc", void Tas
                 sp14[0] = DISPLAY_WIDTH;
 
                 if (r5 >= 256) {
-                    sinIndex = r5 - Q_24_8(3.0);
+                    sinIndex = r5 - Q(3.0);
                 } else {
                     sinIndex = 256 - r5;
                 }
@@ -160,7 +160,7 @@ NONMATCH("asm/non_matching/game/stage/Task_CreateStageUnknownTask.inc", void Tas
             sp08[6] = (((ut->unk8 - DISPLAY_HEIGHT) * divRes) >> 8) + ut->unk6;
             sp08[7] = DISPLAY_HEIGHT;
 
-            if (ut->unk0 < Q_24_8(2.0)) {
+            if (ut->unk0 < Q(2.0)) {
                 if (sp14[1] < DISPLAY_HEIGHT) {
                     // _08009C98
                     if ((u16)sp10.unk2 >= DISPLAY_HEIGHT) {
