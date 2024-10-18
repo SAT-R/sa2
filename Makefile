@@ -495,7 +495,7 @@ sdl_win32: SDL2.dll $(SDL_MINGW_LIB)
 win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 chao_garden/mb_chao_garden.gba: 
-ifeq ($(PLATFORM), GBA)
+ifeq ($(PLATFORM), gba)
 	@$(MAKE) -C chao_garden DEBUG=0
 else
 	@echo "Not building on the chao garden rom, as platform is $(PLATFORM)"
@@ -508,7 +508,7 @@ chao_garden: tools
 # Dependency here is already explicit, but we sometimes get a race condition if this
 # is not specified
 multi_boot/subgame_bootstrap/subgame_bootstrap.gba: multi_boot/programs/subgame_loader/subgame_loader.bin
-ifeq ($(PLATFORM), GBA)
+ifeq ($(PLATFORM), gba)
 	@$(MAKE) -C multi_boot/subgame_bootstrap DEBUG=0
 else
 	@echo "Not building on the subgame bootstrap rom, as platform is $(PLATFORM)" 
@@ -516,7 +516,7 @@ else
 endif
 
 multi_boot/programs/subgame_loader/subgame_loader.bin:
-ifeq ($(PLATFORM), GBA)
+ifeq ($(PLATFORM), gba)
 	@$(MAKE) -C multi_boot/programs/subgame_loader DEBUG=0
 else
 	@echo "Not building on the subgame loader rom, as platform is $(PLATFORM)" 
@@ -524,7 +524,7 @@ else
 endif
 
 multi_boot/collect_rings/mb_signed_collect_rings.gba:
-ifeq ($(PLATFORM), GBA)
+ifeq ($(PLATFORM), gba)
 	@$(MAKE) -C multi_boot/collect_rings DEBUG=0
 else
 	@echo "Not building on the collect the rings rom, as platform is $(PLATFORM)" 
