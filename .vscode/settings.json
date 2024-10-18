@@ -339,7 +339,8 @@
     "endings.h": "c",
     "team_play.h": "c",
     "stdlib.h": "c",
-    "boss_8.h": "c"
+    "boss_8.h": "c",
+    "config.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

@@ -367,7 +367,7 @@ include graphics.mk
 %.gbapal: %.pal ; $(GFX) $< $@
 %.gbapal: %.png ; $(GFX) $< $@
 
-chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba 
+chao_garden/mb_chao_garden.gba.lz: chao_garden/mb_chao_garden.gba
 	$(GFX) $< $@ -search 1
 
 data/mb_chao_garden_japan.gba.lz: data/mb_chao_garden_japan.gba
@@ -492,11 +492,15 @@ sdl: ; @$(MAKE) PLATFORM=sdl
 sdl_win32: SDL2.dll $(SDL_MINGW_LIB)
 	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386
 
-# WIP
 win32: ; @$(MAKE) PLATFORM=win32 CPU_ARCH=i386
 
 chao_garden/mb_chao_garden.gba: 
+ifeq ($(PLATFORM), gba)
 	@$(MAKE) -C chao_garden DEBUG=0
+else
+	@echo "Not building on the chao garden rom, as platform is $(PLATFORM)"
+	@printf "1" > chao_garden/mb_chao_garden.gba
+endif
 
 chao_garden: tools
 	@$(MAKE) -C chao_garden DEBUG=0
@@ -504,13 +508,28 @@ chao_garden: tools
 # Dependency here is already explicit, but we sometimes get a race condition if this
 # is not specified
 multi_boot/subgame_bootstrap/subgame_bootstrap.gba: multi_boot/programs/subgame_loader/subgame_loader.bin
+ifeq ($(PLATFORM), gba)
 	@$(MAKE) -C multi_boot/subgame_bootstrap DEBUG=0
+else
+	@echo "Not building on the subgame bootstrap rom, as platform is $(PLATFORM)" 
+	@printf "1" > multi_boot/subgame_bootstrap/subgame_bootstrap.gba
+endif
 
 multi_boot/programs/subgame_loader/subgame_loader.bin:
+ifeq ($(PLATFORM), gba)
 	@$(MAKE) -C multi_boot/programs/subgame_loader DEBUG=0
+else
+	@echo "Not building on the subgame loader rom, as platform is $(PLATFORM)" 
+	@printf "1" > multi_boot/programs/subgame_loader/subgame_loader.bin
+endif
 
 multi_boot/collect_rings/mb_signed_collect_rings.gba:
+ifeq ($(PLATFORM), gba)
 	@$(MAKE) -C multi_boot/collect_rings DEBUG=0
+else
+	@echo "Not building on the collect the rings rom, as platform is $(PLATFORM)" 
+	@printf "1" > multi_boot/collect_rings/mb_signed_collect_rings.gba
+endif
 
 subgame_bootstrap: tools
 	@$(MAKE) -C multi_boot/subgame_bootstrap DEBUG=0

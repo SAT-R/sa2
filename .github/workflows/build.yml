@@ -126,19 +126,7 @@ jobs:
 
       - name: Install tools
         run: |
-          sudo apt update && sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
-      
-      - name: Checkout agbcc
-        uses: actions/checkout@master
-        with:
-          path: agbcc
-          repository: SAT-R/agbcc
-      
-      - name: Install agbcc
-        run: |
-          ./build.sh
-          ./install.sh ../
-        working-directory: agbcc
+          sudo apt update && sudo apt install xorg-dev libsdl2-dev gcc-mingw-w64 libarchive-tools
   
       - name: ${{ matrix.platform }}
         run: |
