@@ -2447,22 +2447,29 @@ s32 sub_8022F58(u8 param0, Player *p)
     return result;
 }
 
-// (98.07%) https://decomp.me/scratch/xgjsf
-NONMATCH("asm/non_matching/game/player__sub_802302C.inc", s32 sub_802302C(u8 param0, Player *p))
+s32 sub_802302C(u8 param0, Player *p)
 {
     s32 r3;
+    u32 r0;
     s32 result;
+    u32 temp;
 
     s32 px = I(p->x);
     s32 py = I(p->y);
 
     p->unk29 = param0;
     r3 = (s8)param0;
+#ifndef NON_MATCHING
+    p->unk28 = ((u32)param0 << 0x18) >> 0x18;
+#else
     p->unk28 = param0;
+#endif
 
     if (((param0 + Q(0.125)) << 24) > 0) {
         if (r3 <= 0) {
+#ifndef NON_MATCHING
             asm("");
+#endif
             param0 += Q(0.125);
         } else {
             param0 += Q(0.125) - 1;
@@ -2503,7 +2510,6 @@ NONMATCH("asm/non_matching/game/player__sub_802302C.inc", s32 sub_802302C(u8 par
 
     return result;
 }
-END_NONMATCH
 
 void sub_8023128(Player *p)
 {
