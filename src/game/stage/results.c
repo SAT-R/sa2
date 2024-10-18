@@ -512,9 +512,9 @@ void sub_80310F0(void)
 
     if (counter <= 15) {
         s->x = (16 - counter) * 15;
-        s->y = (DISPLAY_HEIGHT / 2) + 20
+        s->y = (DISPLAY_HEIGHT / 2) + 20;
     } else if (counter <= 23) {
-        s->y = (DISPLAY_HEIGHT / 2) + 20
+        s->y = (DISPLAY_HEIGHT / 2) + 20;
     } else if (counter <= 28) {
         s->y -= 7;
     }
