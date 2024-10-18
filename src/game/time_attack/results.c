@@ -291,7 +291,6 @@ void sub_80897E8(void)
         s32 temp;
         s = &resultsCutScene->unk12C;
         temp = 0;
-		
         if (unk168 <= 16) {
             temp = ((16 - unk168) * 24);
         }
@@ -302,7 +301,6 @@ void sub_80897E8(void)
         }
     } else {
         s = &resultsCutScene->unk12C;
-		
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
             s->x = (i * 32); // TODO: Does (i * 32) match?
             DisplaySprite(s);
