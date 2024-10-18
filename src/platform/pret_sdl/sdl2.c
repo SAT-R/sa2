@@ -308,23 +308,25 @@ int main(int argc, char **argv)
                     accumulator -= dt;
                 }
             }
-            SDL_RenderClear(sdlRenderer);
-            SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
 
-#if ENABLE_VRAM_VIEW
-            VramDraw(vramTexture);
-            SDL_RenderClear(vramRenderer);
-            SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
-#endif
             if (paused && stepOneFrame) {
                 stepOneFrame = false;
             }
         }
 
+        SDL_RenderClear(sdlRenderer);
+        SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+
+#if ENABLE_VRAM_VIEW
+        VramDraw(vramTexture);
+        SDL_RenderClear(vramRenderer);
+        SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
+
         if (videoScaleChanged) {
             SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
             videoScaleChanged = false;
         }
+#endif
         SDL_RenderPresent(sdlRenderer);
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);

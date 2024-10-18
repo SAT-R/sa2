@@ -24,6 +24,10 @@
 #include "game/water_effects.h"
 #include "game/dummy_task.h"
 
+// #if TAS_TESTING
+// #include "data/recordings.h"
+// #endif
+
 #include "data/sprite_tables.h"
 
 void GameStart(void)
@@ -79,9 +83,14 @@ void GameStart(void)
         return;
     }
 
-#if ENABLE_DECOMP_CREDITS
-    CreateDecompCreditsScreen(hasProfile);
-#else
+    // #if TAS_TESTING
+    //     gInputPlaybackData = gDemoRecordings[4];
+    //     InputRecorderLoadTape();
+    //     gInputRecorder.mode = RECORDER_PLAYBACK;
+    //     CreateNewProfileScreen();
+    // #elif ENABLE_DECOMP_CREDITS
+    //     CreateDecompCreditsScreen(hasProfile);
+    // #else
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
         CreateTitleScreen();
         LoadCompletedSaveGame();
@@ -103,5 +112,5 @@ void GameStart(void)
     }
 
     CreateTitleScreen();
-#endif
+    // #endif
 }
