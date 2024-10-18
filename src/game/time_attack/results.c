@@ -286,7 +286,6 @@ void sub_80897E8(void)
     Sprite *s;
     u32 unk168 = resultsCutScene->unk168;
     u32 i;
-	s32 white_bar_width = ((DISPLAY_WIDTH + 16) / 32);
 
     if (unk168 < 24) {
         s32 temp;
@@ -294,17 +293,17 @@ void sub_80897E8(void)
         temp = 0;
 		
         if (unk168 <= 16) {
-            temp = (16 - unk168) * 24;
+            temp = ((16 - unk168) * 24);
         }
 
-        for (i = 0; i < white_bar_width; i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 16) / 32); i++) {
             s->x = temp + (i * 32);
             DisplaySprite(s);
         }
     } else {
         s = &resultsCutScene->unk12C;
 		
-        for (i = 0; i < white_bar_width; i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 16) / 32); i++) {
             s->x = (i * 32); // TODO: Does (i * 32) match?
             DisplaySprite(s);
         }

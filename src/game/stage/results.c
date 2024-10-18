@@ -527,7 +527,6 @@ void sub_8031138(u16 p0)
     u32 i;
     Sprite *s;
     s32 r4;
-    s32 white_bar_width = ((DISPLAY_WIDTH + 16) / 32);
 
     if (counter < 24) {
         s32 x;
@@ -538,14 +537,14 @@ void sub_8031138(u16 p0)
             x = (16 - counter) * 24;
         }
 
-        for (i = 0; i < white_bar_width; i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 16) / 32); i++) {
             s->x = (x - p0) + i * 32;
             DisplaySprite(s);
         }
     } else {
         s = &outro->s7;
 
-        for (i = 0; i < white_bar_width; i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 16) / 32); i++) {
             s->x = -p0 + i * 32;
             DisplaySprite(s);
         }
