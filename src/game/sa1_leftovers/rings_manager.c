@@ -25,10 +25,10 @@ typedef struct {
 void Task_RingsMgrMain(void);
 void TaskDestructor_8007F1C(struct Task *);
 
-#define RM_PLAYER_LEFT   (I(gPlayer.x) + sp00[0])
-#define RM_PLAYER_RIGHT  (RM_PLAYER_LEFT + (sp00[2] - sp00[0]))
-#define RM_PLAYER_TOP    (I(gPlayer.y) + sp00[1])
-#define RM_PLAYER_BOTTOM (RM_PLAYER_TOP + (sp00[3] - sp00[1]))
+#define RM_PLAYER_LEFT   (I(gPlayer.x) + rect[0])
+#define RM_PLAYER_RIGHT  (RM_PLAYER_LEFT + (rect[2] - rect[0]))
+#define RM_PLAYER_TOP    (I(gPlayer.y) + rect[1])
+#define RM_PLAYER_BOTTOM (RM_PLAYER_TOP + (rect[3] - rect[1]))
 
 const u8 *const gSpritePosData_rings[NUM_LEVEL_IDS] = {
     zone1_act1_rings,
@@ -119,28 +119,21 @@ void CreateStageRingsManager(void)
 
 // TODO: Create GET_OFFSET macro!
 //
-// (76.80%) https://decomp.me/scratch/pbchb
+// (82.33%) https://decomp.me/scratch/4gmfT
 NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgrMain(void))
 {
     // oam sub-frame ID?
     u8 sp1C = 0;
-    s8 sp00[4];
-    s8 sp04[4];
     s32 sp08;
-    u16 regions_x; // sp0C;
-    u16 regions_y; // sp10;
-
-    s8 *pSp04 = &sp04[0];
-    *pSp04++ = -gPlayer.spriteOffsetX;
-    *pSp04++ = -gPlayer.spriteOffsetY;
-    *pSp04++ = +gPlayer.spriteOffsetX;
-    *pSp04 = +gPlayer.spriteOffsetY;
-    memcpy(sp00, sp04, sizeof(sp00));
+    u32 regions_x; // sp0C;
+    u32 regions_y; // sp10;
+    s8 rect[4] = { -gPlayer.spriteOffsetX, -gPlayer.spriteOffsetY, gPlayer.spriteOffsetX, gPlayer.spriteOffsetY };
 
     if (!(gStageFlags & STAGE_FLAG__2)) {
+
         // _08007F60
-        RingsManager *rm = TASK_DATA(gCurTask);
-        void *rings = rm->rings; // sp14
+        RingsManager *rm;
+        u32 *rings = *(u32 **)((uintptr_t)TASK_PTR(gCurTask->data) + offsetof(RingsManager, rings)); // sp14
         s32 *rings_header;
         Sprite *s; // sp18
         const SpriteOffset *dimensions; // sp20
@@ -166,38 +159,32 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
 
             // _08007FE4
             SuperSonicGetPos(&gPlayer.x, &gPlayer.y);
-            sp00[0] = -10;
-            sp00[1] = -10;
-            sp00[2] = +10;
-            sp00[3] = +10;
+            rect[0] = -10;
+            rect[1] = -10;
+            rect[2] = +10;
+            rect[3] = +10;
         }
         // _08007FFA
 
+        rings = *(void **)((uintptr_t)TASK_PTR(gCurTask->data) + offsetof(RingsManager, rings));
         rm = TASK_DATA(gCurTask);
-        rings = rm->rings;
         s = &rm->s;
         UpdateSpriteAnimation(s);
 
         dimensions = s->dimensions;
+        rings++;
+        regions_x = (u16)*rings++;
+        regions_y = (u16)*rings++;
 
-        rings_header = rings + 4;
-        regions_x = *rings_header++;
-        regions_y = *rings_header++;
-        rings = rings_header;
-
-        sl = (I(gPlayer.y) + sp00[1]) >> 8;
-        while (((sl <= (((sp00[3] + I(gPlayer.y)) + 8)) >> 8)) && (sl < regions_y)) {
+        sl = (I(gPlayer.y) + rect[1]) >> 8;
+        while (((sl <= (((rect[3] + I(gPlayer.y)) + 8)) >> 8)) && (sl < regions_y)) {
             // _08008064
             s32 r0x;
-            sb = ((I(gPlayer.x) + sp00[0] - 8) >> 8);
+            sb = ((I(gPlayer.x) + rect[0] - 8) >> 8);
 
-            while ((sb <= ((I(gPlayer.x) + sp00[2] + 16) >> 8)) && sb < regions_x) {
+            while ((sb <= ((I(gPlayer.x) + rect[2] + 16) >> 8)) && sb < regions_x) {
                 // _080080A0
-                s32 yPos = sl * regions_x;
-                s32 xPos = sb * 4;
-                s32 offset;
-                yPos *= 4;
-                offset = *(u32 *)(rings + (yPos + xPos));
+                u32 offset = *(u32 *)((u8 *)rings + ((regions_x * sl) * sizeof(u32)) + (sb * sizeof(u32)));
 
                 if (offset) {
                     MapEntity_Ring *meRing;
@@ -216,12 +203,13 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
                                 s32 ringLeft = rx - 8;
 
                                 // Player touches ring(?)
-                                if (((ringLeft <= RM_PLAYER_LEFT) && ((rx + 8) >= RM_PLAYER_LEFT)) || ((RM_PLAYER_RIGHT >= ringLeft))) {
+                                if (((ringLeft <= RM_PLAYER_LEFT) && ((rx + 8) >= RM_PLAYER_LEFT))
+                                    || (ringLeft >= RM_PLAYER_LEFT && (RM_PLAYER_RIGHT >= ringLeft))) {
                                     // _0800813A
                                     s32 ringTop = ry - 16;
 
-                                    if (((ringTop <= RM_PLAYER_TOP) && (RM_PLAYER_TOP >= ringTop)) || (ry >= RM_PLAYER_TOP)
-                                        || (((ringTop >= RM_PLAYER_TOP) && (((ry + 16) <= RM_PLAYER_BOTTOM))))) {
+                                    if (((ringTop <= RM_PLAYER_TOP) && ((ry) >= RM_PLAYER_TOP))
+                                        || ((ringTop >= RM_PLAYER_TOP && RM_PLAYER_BOTTOM >= ringTop))) {
                                         // _08008166
                                         u16 prevRingCount = gRingCount;
                                         gRingCount++;
@@ -291,17 +279,13 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
 
                         while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
                             // _080086E8
-                            s32 yPos = sl * regions_x;
-                            s32 xPos = sb * 4;
-                            s32 offset;
-                            yPos *= 4;
-                            offset = *(u32 *)(rings + (yPos + xPos));
+                            u32 offset = *(u32 *)((u8 *)rings + ((regions_x * sl) * sizeof(u32)) + (sb * sizeof(u32)));
 
                             if (offset != 0) {
                                 MapEntity_Ring *meRing;
                                 offset -= 8;
 
-                                meRing = (rings + (offset));
+                                meRing = (void *)((u8 *)rings + (offset));
                                 while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
                                     if (meRing->x != (u8)MAP_ENTITY_STATE_INITIALIZED) {
                                         s32 rx = TO_WORLD_POS(meRing->x, sb);
@@ -341,17 +325,13 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
 
                     while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
                         // _080086E8
-                        s32 yPos = sl * regions_x;
-                        s32 xPos = sb * 4;
-                        s32 offset;
-                        yPos *= 4;
-                        offset = *(u32 *)(rings + (yPos + xPos));
+                        u32 offset = *(u32 *)((u8 *)rings + ((regions_x * sl) * sizeof(u32)) + (sb * sizeof(u32)));
 
                         if (offset != 0) {
                             MapEntity_Ring *meRing;
                             offset -= 8;
 
-                            meRing = (rings + (offset));
+                            meRing = (void *)((u8 *)rings + (offset));
                             while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
                                 // _0800870C
                                 if (meRing->x != (u8)MAP_ENTITY_STATE_INITIALIZED) {
@@ -399,7 +379,7 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
 #ifdef BUG_FIX
                                 // NOTE: This is likely not 100% correct, but it not being here led to a softlock.
                                 else {
-                                    meRing = (MapEntity_Ring *)(((u8 *)meRing) + 2);
+                                    // meRing = (MapEntity_Ring *)(((u8 *)meRing) + 2);
                                 }
 #endif
                             }
@@ -420,17 +400,13 @@ NONMATCH("asm/non_matching/game/stage/Task_RingsMgrMain.inc", void Task_RingsMgr
 
                     while (((sb << 8) < (gCamera.x + DISPLAY_WIDTH)) && (sb < regions_x)) {
                         // _080086E8
-                        s32 yPos = sl * regions_x;
-                        s32 xPos = sb * 4;
-                        s32 offset;
-                        yPos *= 4;
-                        offset = *(u32 *)(rings + (yPos + xPos));
+                        u32 offset = *(u32 *)((u8 *)rings + ((regions_x * sl) * sizeof(u32)) + (sb * sizeof(u32)));
 
                         if (offset != 0) {
                             MapEntity_Ring *meRing;
                             offset -= 8;
 
-                            meRing = (rings + (offset));
+                            meRing = (void *)((u8 *)rings + (offset));
                             while (meRing->x != (u8)MAP_ENTITY_STATE_ARRAY_END) {
                                 // _0800870C
                                 if (meRing->x == (u8)MAP_ENTITY_STATE_INITIALIZED) {
