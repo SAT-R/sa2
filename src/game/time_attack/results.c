@@ -296,14 +296,14 @@ void sub_80897E8(void)
             temp = ((16 - unk168) * 24);
         }
 
-        for (i = 0; i < ((DISPLAY_WIDTH + 16) / 32); i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
             s->x = temp + (i * 32);
             DisplaySprite(s);
         }
     } else {
         s = &resultsCutScene->unk12C;
 		
-        for (i = 0; i < ((DISPLAY_WIDTH + 16) / 32); i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
             s->x = (i * 32); // TODO: Does (i * 32) match?
             DisplaySprite(s);
         }
