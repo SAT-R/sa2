@@ -68,7 +68,7 @@ static const u16 sStageScoreBonusesTexts[3][3] = {
     { 26, SA2_ANIM_SCORE_BONUSES, SA2_ANIM_VARIANT_SCORE_BONUSES_SP_RING },
 };
 
-const u16 gUnknown_080D71CC[3] = { (DISPLAY_WIDTH / 2) - 120, (DISPLAY_WIDTH / 2) - 51, (DISPLAY_WIDTH / 2) + 53 };
+const u16 sStageResultsTextOffset[3] = { 0, 69, 173 };
 
 void Task_UpdateStageResults(void);
 void TaskDestructor_StageResults(struct Task *);
@@ -637,10 +637,10 @@ void sub_8031314(void)
         {
             s32 i = 0;
             s32 x2 = (s16)x;
-            for (; i < ARRAY_COUNT(gUnknown_080D71CC); i++) {
+            for (; i < ARRAY_COUNT(sStageResultsTextOffset); i++) {
                 Sprite *s = &outro->s1[i];
-                s32 match = gUnknown_080D71CC[i];
-                s->x = x2 + match;
+                s32 offset = sStageResultsTextOffset[i];
+                s->x = x2 + offset;
             }
         }
     }

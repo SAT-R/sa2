@@ -94,7 +94,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     for (i = 0; i < 7; i++) {
         s = &resultsCutScene->unk178[i];
-        s->x = i * 14 + 72;
+        s->x = i * 14 + ((DISPLAY_WIDTH / 2) - 46);
         s->y = (DISPLAY_HEIGHT / 2) + 8;
         s->graphics.dest = VramMalloc(4);
         s->graphics.anim = SA2_ANIM_TIME_ATTACK_DIGITS;
@@ -240,8 +240,8 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     resultsCutScene->transform.width = 0;
     resultsCutScene->transform.height = +Q(1);
-    resultsCutScene->transform.x = 120;
-    resultsCutScene->transform.y = 120;
+    resultsCutScene->transform.x = (DISPLAY_WIDTH / 2);
+    resultsCutScene->transform.y = (DISPLAY_HEIGHT - 40);
     resultsCutScene->transform.rotation = 0;
 
     s = &resultsCutScene->unk9C[2];
