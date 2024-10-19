@@ -322,8 +322,11 @@ check_format:
 
 tools: $(TOOLDIRS)
 
-$(TOOLDIRS):
+$(TOOLDIRS): tool_libs
 	@$(MAKE) -C $@
+
+tool_libs:
+	@$(MAKE) -C tools/_shared
 
 compare: rom
 ifeq ($(PLATFORM),gba)
