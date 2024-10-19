@@ -68,7 +68,7 @@ static const u16 sStageScoreBonusesTexts[3][3] = {
     { 26, SA2_ANIM_SCORE_BONUSES, SA2_ANIM_VARIANT_SCORE_BONUSES_SP_RING },
 };
 
-const u16 sStageResultsTextOffset[3] = { 0, 69, 173 };
+static const u16 sStageResultsTextOffset[3] = { 0, 69, 173 };
 
 void Task_UpdateStageResults(void);
 void TaskDestructor_StageResults(struct Task *);
