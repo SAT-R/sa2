@@ -3704,7 +3704,11 @@ static void ProfileNameScreenFadeOutAndExit(void)
     if (onCompleteAction == NAME_SCREEN_COMPLETE_ACTION_MULTIPLAYER) {
         CreateMultiplayerModeSelectScreen();
     } else {
+#if TAS_TESTING
+        CreateTitleScreenAndSkipIntro();
+#else
         CreateTitleScreen();
+#endif
     }
 }
 

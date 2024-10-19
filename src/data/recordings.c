@@ -4,6 +4,10 @@ static const u8 demo1[];
 static const u8 demo2[];
 static const u8 demo3[];
 static const u8 demo4[];
+#if TAS_TESTING
+static const u8 speedrun[];
+#endif
+
 
 // TODO: move to data and include as asm
 const u8 *const gDemoRecordings[] = {
@@ -11,6 +15,9 @@ const u8 *const gDemoRecordings[] = {
     demo2,
     demo4,
     demo3,
+#if TAS_TESTING
+    speedrun
+#endif
 };
 
 static const u8 demo1[] = INCBIN_U8("data/recordings/demo_1.bin.lz");
@@ -18,6 +25,9 @@ static const u8 demo2[] = INCBIN_U8("data/recordings/demo_2.bin.lz");
 static const u8 demo3[] = INCBIN_U8("data/recordings/demo_3.bin.lz");
 static const u8 demo4[] = INCBIN_U8("data/recordings/demo_4.bin.lz");
 
+#if TAS_TESTING
+static const u8 speedrun[] = INCBIN_U8("data/recordings/dashjump_any_percent.bin.lz");
+#endif
 
 // Unused - not sure what this data represent
 static const u8 gUnknown_08C882C8[][32] = {

@@ -49,6 +49,17 @@ void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     yado->base.spriteX = me->x;
     yado->base.id = spriteY;
 
+    // This value was left uninitialised on the real game,
+    // so the value is essentially random
+#ifdef BUG_FIX
+#if TAS_TESTING
+    // For this tas, it's likely that the value randomly started as 2
+    yado->unk4C = 2;
+#else
+    yado->unk4C = YADO_PROJ_COOLDOWN;
+#endif
+#endif
+
     if (me->d.sData[1] != 0) {
         yado->clampParam = TRUE;
     } else {
@@ -89,7 +100,6 @@ void Task_YadoMain(void)
 
     ENEMY_DESTROY_IF_OUT_OF_CAM_RANGE(yado, me, s);
 
-    // BUG(?): yado->unk4C wasn't set in CreateEntity_Yado
     if (--yado->unk4C == 0) {
         yado->unk4C = YADO_PROJ_COOLDOWN;
         gCurTask->main = Task_8055084;

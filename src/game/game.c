@@ -24,6 +24,10 @@
 #include "game/water_effects.h"
 #include "game/dummy_task.h"
 
+#if TAS_TESTING
+#include "data/recordings.h"
+#endif
+
 #include "data/sprite_tables.h"
 
 void GameStart(void)
@@ -79,7 +83,20 @@ void GameStart(void)
         return;
     }
 
-#if ENABLE_DECOMP_CREDITS
+#if TAS_TESTING
+    gInputPlaybackData = gDemoRecordings[4];
+    InputRecorderLoadTape();
+    gInputRecorder.mode = RECORDER_PLAYBACK;
+    CreateNewProfileScreen();
+
+    // Use this snippet to skipt to a specific level
+    // music plant act 2 starts at frame 16454
+    // gInputRecorder.playbackHead = 16454;
+    // gCurrentLevel = LEVEL_INDEX(ZONE_3, ACT_2);
+    // ApplyGameStageSettings();
+    // GameStageStart();
+
+#elif ENABLE_DECOMP_CREDITS
     CreateDecompCreditsScreen(hasProfile);
 #else
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
