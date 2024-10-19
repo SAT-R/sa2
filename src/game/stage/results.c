@@ -68,7 +68,7 @@ static const u16 sStageScoreBonusesTexts[3][3] = {
     { 26, SA2_ANIM_SCORE_BONUSES, SA2_ANIM_VARIANT_SCORE_BONUSES_SP_RING },
 };
 
-const u16 gUnknown_080D71CC[3] = { 0, 69, 173 };
+const u16 gUnknown_080D71CC[3] = { (DISPLAY_WIDTH / 2) - 120, (DISPLAY_WIDTH / 2) - 51, (DISPLAY_WIDTH / 2) + 53 };
 
 void Task_UpdateStageResults(void);
 void TaskDestructor_StageResults(struct Task *);
@@ -568,7 +568,7 @@ void sub_8031138(u16 p0)
             u16 innerX = DISPLAY_WIDTH - ((counter - 39) * 12);
             r4 = innerX;
         } else {
-            r4 = 48;
+            r4 = (DISPLAY_WIDTH / 2) - 72;
         }
         s->x = r4 - p0;
         DisplaySprite(s);
@@ -587,7 +587,7 @@ void sub_8031138(u16 p0)
             u16 innerX = DISPLAY_WIDTH - ((counter - 49) * 12);
             r4 = innerX;
         } else {
-            r4 = 48;
+            r4 = (DISPLAY_WIDTH / 2) - 72;
         }
         s->x = r4 - p0;
         DisplaySprite(s);
@@ -606,7 +606,7 @@ void sub_8031138(u16 p0)
             u16 innerX = DISPLAY_WIDTH - ((counter - 59) * 12);
             r4 = innerX;
         } else {
-            r4 = 48;
+            r4 = (DISPLAY_WIDTH / 2) - 72;
         }
 
         s->x = r4 - p0;
@@ -631,7 +631,7 @@ void sub_8031314(void)
         if (counter < 45) {
             x = (u16)(DISPLAY_WIDTH - ((counter - 29) * 15));
         } else {
-            x = 3;
+            x = (DISPLAY_WIDTH / 2) - 117;
         }
 
         {
