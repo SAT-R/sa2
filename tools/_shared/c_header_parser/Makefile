@@ -10,6 +10,9 @@ CFLAGS = -I $(ARENA_ALLOC_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2
 
 .PHONY: all clean
 
+# HACK: we have no idea why some environments attempt to build the makefile for these libs
+# Makefile.o: ;
+
 all: libc_header_parser.a
 	@:
 

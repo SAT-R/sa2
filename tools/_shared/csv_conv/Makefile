@@ -11,6 +11,9 @@ LDFLAGS =
 
 .PHONY: all clean
 
+# HACK: we have no idea why some environments attempt to build the makefile for these libs
+# Makefile.o: ;
+
 all: libcsv_conv.a
 	@:
 
