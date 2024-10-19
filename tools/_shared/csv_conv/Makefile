@@ -9,6 +9,9 @@ SRCS = csv_conv.c
 CFLAGS = -I $(CSV_CONV_DIR) -Wall -Wextra -Werror $(NO_ERROR) -std=gnu11 -O2
 LDFLAGS = 
 
+# Clear the default suffixes
+.SUFFIXES:
+
 .PHONY: all clean
 
 all: libcsv_conv.a

@@ -3,6 +3,9 @@ CC = gcc
 
 SOURCE = ArenaAlloc.c
 
+# Clear the default suffixes
+.SUFFIXES:
+
 .PHONY: all clean
 
 all: libarena_alloc.a
