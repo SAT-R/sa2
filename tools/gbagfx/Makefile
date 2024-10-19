@@ -1,6 +1,7 @@
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -Wno-sign-compare -std=c11 -O2 -DPNG_SKIP_SETJMP_CHECK
+# TODO: why does error-maybe-uninitialized appear on some peoples systems
+CFLAGS = -Wall -Wextra -Werror -Wno-sign-compare -Wno-maybe-uninitialized -Wno-unknown-warning-option -std=c11 -O2 -DPNG_SKIP_SETJMP_CHECK
 CFLAGS += $(shell pkg-config --cflags libpng)
 
 LIBS = -lpng -lz
