@@ -123,6 +123,8 @@ jobs:
       - name: Checkout
         if: ${{ github.event_name == 'push' }}
         uses: actions/checkout@master
+      
+      - run: find tools/_shared
 
       - name: Install tools
         run: |
@@ -130,5 +132,4 @@ jobs:
   
       - name: ${{ matrix.platform }}
         run: |
-          make clean
           make -j${nproc} ${{ matrix.platform }}

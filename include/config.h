@@ -17,4 +17,6 @@
 #define USE_NEW_DMA 1
 #endif
 
+#define TAS_TESTING 0
+
 #endif // GUARD_SA2_CONFIG_H

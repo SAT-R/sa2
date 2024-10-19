@@ -178,6 +178,8 @@ endif
 # these commands will run regardless of deps being completed
 .PHONY: clean tools clean-tools $(TOOLDIRS) libagbsyscall
 
+# a special command which ensures that stdout and stderr
+# get printed instead of output into the makefile
 infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
 
 # Build tools when building the rom
@@ -185,6 +187,11 @@ infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst 
 ifeq (,$(filter-out all rom compare libagbsyscall,$(MAKECMDGOALS)))
 # if we are doing any of these things, build tools first
 $(call infoshell, $(MAKE) tools)
+# ensure that tools did build
+MAKE_TOOLS_OUTCOME=$(shell $(MAKE) tools > /dev/null 2>&1 && echo 0 || echo 1)
+ifneq ($(MAKE_TOOLS_OUTCOME),0)
+  $(error Make tools command failed!)
+endif
 else
 NODEP ?= 1
 endif
@@ -315,11 +322,8 @@ check_format:
 
 tools: $(TOOLDIRS)
 
-$(TOOLDIRS): tool_libs
+$(TOOLDIRS):
 	@$(MAKE) -C $@
-
-tool_libs:
-	@$(MAKE) -C tools/_shared
 
 compare: rom
 ifeq ($(PLATFORM),gba)
