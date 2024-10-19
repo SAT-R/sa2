@@ -174,8 +174,11 @@ const Background gStageCameraBgTemplates[4] = {
     },
 };
 
-const u16 gUnknown_080D5964[][2]
-    = { { 32, 216 }, { 32, 204 }, { 32, 216 }, { 32, 208 }, { 32, 208 }, { 32, 232 }, { 32, 264 }, { 32, 264 }, { 32, 264 } };
+const u16 gBossCameraClamps[][2] = {
+    [ZONE_1] = { 32, DISPLAY_HEIGHT + 56 },  [ZONE_2] = { 32, DISPLAY_HEIGHT + 44 },      [ZONE_3] = { 32, DISPLAY_HEIGHT + 56 },
+    [ZONE_4] = { 32, DISPLAY_HEIGHT + 48 },  [ZONE_5] = { 32, DISPLAY_HEIGHT + 48 },      [ZONE_6] = { 32, DISPLAY_HEIGHT + 72 },
+    [ZONE_7] = { 32, DISPLAY_HEIGHT + 104 }, [ZONE_FINAL] = { 32, DISPLAY_HEIGHT + 104 }, [ZONE_FINAL + 1] = { 32, DISPLAY_HEIGHT + 104 },
+};
 
 static const VoidFn sStageBgInitProcedures[] = {
     [LEVEL_INDEX(ZONE_1, ACT_1)] = CreateStageBg_Zone1,
@@ -393,8 +396,8 @@ void InitCamera(u32 level)
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             SuperSonicGetPos(&player->x, &player->y);
-            gUnknown_03005440 = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][0];
-            gUnknown_030054BC = gUnknown_080D5964[LEVEL_TO_ZONE(0x20)][1];
+            gBossCameraClampX = gBossCameraClamps[ZONE_FINAL + 1][0];
+            gBossCameraClampY = gBossCameraClamps[ZONE_FINAL + 1][1];
             camera->x = 600;
             camera->unk10 = (DISPLAY_WIDTH / 2);
             camera->unk14 = 0;
@@ -402,7 +405,10 @@ void InitCamera(u32 level)
             camera->unk64 = -4;
         } else {
             camera->x = I(player->x);
-            camera->unk10 = I(player->x) - (2 * DISPLAY_WIDTH);
+            // TODO: Handle boss camera restrictions for large screen sizes
+            // for now we use the original GBA values as otherwise the boss
+            // goes off the screen (not sure why yet)
+            camera->unk10 = I(player->x) - (2 * 240);
             camera->y = I(player->y) - ((DISPLAY_HEIGHT / 2) + 4);
             camera->unk14 = camera->y;
             camera->unk64 = player->spriteOffsetY - 4;
@@ -502,17 +508,17 @@ void UpdateCamera(void)
         playerY = I(player->y);
         delta = playerY - newY;
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
-            if (delta < 49) {
+            if (delta <= 48) {
                 s32 temp = newY - 48;
                 newY = delta + temp;
                 camera->shiftY = 0;
-            } else if (delta >= (gUnknown_030054BC - 208)) {
+            } else if (delta >= (gBossCameraClampY - 208)) {
                 s32 temp = newY - 112;
                 newY = delta + temp;
                 camera->shiftY = 0;
             }
         } else {
-            if (delta < 49) {
+            if (delta <= 48) {
                 s32 temp = newY - 48;
                 newY = delta + temp;
                 camera->shiftY = 0;
@@ -520,7 +526,7 @@ void UpdateCamera(void)
                 newY += 2;
             }
         }
-        newY = CLAMP(newY, gUnknown_03005440, gUnknown_030054BC - DISPLAY_HEIGHT);
+        newY = CLAMP(newY, gBossCameraClampX, gBossCameraClampY - DISPLAY_HEIGHT);
 
         newX = newX + camera->shiftX;
         newY = newY + camera->shiftY;

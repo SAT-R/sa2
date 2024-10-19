@@ -204,8 +204,8 @@ void CreateGameStage(void)
     }
 
     if (IS_BOSS_STAGE(gCurrentLevel)) {
-        gUnknown_03005440 = gUnknown_080D5964[LEVEL_TO_ZONE(gCurrentLevel)][0];
-        gUnknown_030054BC = gUnknown_080D5964[LEVEL_TO_ZONE(gCurrentLevel)][1];
+        gBossCameraClampX = gBossCameraClamps[LEVEL_TO_ZONE(gCurrentLevel)][0];
+        gBossCameraClampY = gBossCameraClamps[LEVEL_TO_ZONE(gCurrentLevel)][1];
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
             CreateBossRunManager(gBossIndex);
@@ -213,8 +213,8 @@ void CreateGameStage(void)
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             SuperSonicInit();
-            gUnknown_03005440 = gUnknown_080D5964[ZONE_FINAL + 1][0];
-            gUnknown_030054BC = gUnknown_080D5964[ZONE_FINAL + 1][1];
+            gBossCameraClampX = gBossCameraClamps[ZONE_FINAL + 1][0];
+            gBossCameraClampY = gBossCameraClamps[ZONE_FINAL + 1][1];
         }
     }
 

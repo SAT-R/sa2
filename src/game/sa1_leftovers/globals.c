@@ -26,7 +26,7 @@ bool8 ALIGNED(4) gBossRingsShallRespawn = FALSE;
 u32 gMultiplayerPseudoRandom = 0;
 u8 gUnknown_03005438 = 0;
 u8 ALIGNED(4) gUnknown_0300543C = 0;
-u16 ALIGNED(4) gUnknown_03005440 = 0;
+u16 ALIGNED(4) gBossCameraClampX = 0;
 s8 ALIGNED(4) gTrappedAnimalVariant = 0;
 
 u8 ALIGNED(4) gNumLives = 0;
@@ -42,7 +42,7 @@ UNK_30054A8 ALIGNED(8) gUnknown_030054A8 = {};
 u8 gUnknown_030054B0 = 0;
 s8 ALIGNED(4) gUnknown_030054B4[MULTI_SIO_PLAYERS_MAX] = {};
 u8 gUnknown_030054B8 = 0;
-u16 ALIGNED(4) gUnknown_030054BC = 0;
+u16 ALIGNED(4) gBossCameraClampY = 0;
 HomingTarget gHomingTarget = {};
 
 u8 gDemoPlayCounter = 0;

@@ -94,8 +94,8 @@ extern u8 gSpecialRingCount;
 extern s32 gUnknown_030054E0;
 extern s32 gUnknown_030054FC;
 
-extern u16 gUnknown_03005440;
-extern u16 gUnknown_030054BC;
+extern u16 gBossCameraClampX;
+extern u16 gBossCameraClampY;
 extern u8 gRandomItemBox;
 extern u8 gUnknown_030053E0;
 

@@ -321,12 +321,11 @@ int main(int argc, char **argv)
         VramDraw(vramTexture);
         SDL_RenderClear(vramRenderer);
         SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
-
+#endif
         if (videoScaleChanged) {
             SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
             videoScaleChanged = false;
         }
-#endif
         SDL_RenderPresent(sdlRenderer);
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);

@@ -36,7 +36,7 @@ void UpdateCamera(void);
 
 extern const Collision *gRefCollision;
 
-extern const u16 gUnknown_080D5964[][2];
+extern const u16 gBossCameraClamps[][2];
 
 extern struct Backgrounds gStageBackgroundsRam;
 
