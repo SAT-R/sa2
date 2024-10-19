@@ -17,6 +17,10 @@
 #include "game/stage/camera.h"
 #include "game/stage/results.h"
 
+#if TAS_TESTING
+#include "game/title_screen.h"
+#endif
+
 #include "constants/animations.h"
 #include "constants/char_states.h"
 #include "constants/songs.h"
@@ -616,6 +620,11 @@ void sub_808E6B0(void)
 
 void CreateCharacterUnlockCutScene(u8 zone)
 {
+#if TAS_TESTING
+    // Most TAS tooling resets to the title screen
+    // as soon as any cutscene starts
+    CreateTitleScreenAndSkipIntro();
+#else
     struct Task *t = TaskCreate(sub_808E424, sizeof(struct CharacterUnlockCutScene), 0x1000, 0, NULL);
     struct CharacterUnlockCutScene *scene = TASK_DATA(t);
     scene->unk10C = zone * 4;
@@ -623,6 +632,7 @@ void CreateCharacterUnlockCutScene(u8 zone)
     scene->unk110 = 0;
     scene->unk112 = zone;
     sub_808E274(scene);
+#endif
 }
 
 void CreateCreamUnlockCutScene(void)

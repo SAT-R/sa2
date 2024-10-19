@@ -570,6 +570,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
     CreateBrakingDustEffectRelatedTask();
     InitPlayerHitRingsScatter();
 
+#if !TAS_TESTING
     if ((gInputRecorder.mode == RECORDER_RECORD)) {
         InputRecorderLoadTape();
         gInputRecorder.mode = RECORDER_RECORD;
@@ -577,6 +578,7 @@ void sub_80213C0(u32 UNUSED characterId, u32 UNUSED levelId, Player *player)
         InputRecorderLoadTape();
         gInputRecorder.mode = RECORDER_PLAYBACK;
     }
+#endif
 
     gStageGoalX = 0;
     gUnknown_030054FC = 0;

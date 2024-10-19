@@ -929,7 +929,7 @@ NONMATCH("asm/non_matching/game/bosses/boss_3__sub_803FF44.inc", void sub_803FF4
         totem->qUnk9C += totem->qUnkA4;
         totem->qUnkA0 += totem->qUnkA6;
 
-        y = I(totem->qUnkA0) + gUnknown_080D7F10[i] - 1;
+        y = I(totem->qUnkA0) - 8;
         x = I(totem->qUnk9C);
         res = sub_801F100(y, x, 1, +8, sub_801EC3C);
 
