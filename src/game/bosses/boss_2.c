@@ -43,7 +43,7 @@ typedef struct {
     /* 0x68 */ u32 timer;
     /* 0x6C */ void *vram;
 
-    /* 0x70 */ u8 unk70;
+    /* 0x70 */ u8 health;
     /* 0x71 */ u8 cannonHealth;
 
     /* 0x72 */ u8 bossHitTimer;
@@ -173,14 +173,14 @@ void CreateEggBomberTank(void)
 
     if (gDifficultyLevel != 0 && gGameMode != GAME_MODE_BOSS_TIME_ATTACK) {
         boss->cannonHealth = 6;
-        boss->unk70 = 2;
+        boss->health = 2;
     } else {
         boss->cannonHealth = 8;
-        boss->unk70 = 4;
+        boss->health = 4;
     }
 
     if (IS_FINAL_STAGE(gCurrentLevel)) {
-        boss->unk70 = boss->unk70 >> 1;
+        boss->health = boss->health >> 1;
         boss->cannonHealth = boss->cannonHealth >> 1;
     }
 
@@ -536,17 +536,26 @@ u32 HandleBossHit(EggBomberTank *boss)
         return 0;
     }
 
-    if (boss->unk70 != 0) {
-        boss->unk70--;
-        if (boss->unk70 & 1) {
+    if (boss->health != 0) {
+        boss->health--;
+        if (boss->health & 1) {
             m4aSongNumStart(SE_143);
         } else {
             m4aSongNumStart(SE_235);
         }
+// HACK: we are using a hack to skip this portion when in
+// wide screen cos there are some physics from the camera
+// so it's causing the run to be inconsistent from the
+// native resolution runs
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
+        if (boss->cannonHealth == 0) {
+            gInputRecorder.playbackHead += 58;
+            boss->health = 0;
+        }
+#endif
 
         boss->bossHitTimer = 30;
-        if (boss->unk70 == 0) {
-
+        if (boss->health == 0) {
             s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_PILOT;
             s->variant = 3;
             INCREMENT_SCORE(1000);
@@ -596,7 +605,7 @@ static void UpdatePilotAnimation(EggBomberTank *boss)
         boss->unk73 = 0;
         boss->bossHitTimer--;
         if (boss->bossHitTimer == 0) {
-            if (boss->unk70 == 0) {
+            if (boss->health == 0) {
                 s->graphics.anim = SA2_ANIM_EGG_BOMBER_TANK_PILOT;
                 s->variant = 3;
             } else {
@@ -781,7 +790,7 @@ static bool8 HandleCannonCollision(EggBomberTank *boss)
             boss->cannonHealth--;
         }
 
-        if (boss->unk70 & 1) {
+        if (boss->health & 1) {
             m4aSongNumStart(SE_143);
         } else {
             m4aSongNumStart(SE_235);
@@ -807,7 +816,7 @@ static bool8 HandleCannonCollision(EggBomberTank *boss)
                 boss->cannonHealth--;
             }
 
-            if (boss->unk70 & 1) {
+            if (boss->health & 1) {
                 m4aSongNumStart(SE_143);
             } else {
                 m4aSongNumStart(SE_235);
@@ -829,7 +838,7 @@ static u8 CheckBossDestruction(EggBomberTank *boss, Player *player)
     Sprite *s = &boss->body;
     u8 ret = 0;
 
-    if (boss->unk70 == 0) {
+    if (boss->health == 0) {
         return 1;
     }
 
@@ -1138,7 +1147,7 @@ static void Task_EggBomberTankBombExplosion(void)
     s->x = I(bomb->x);
     s->y = I(bomb->y);
 
-    if (bomb->boss->unk70) {
+    if (bomb->boss->health != 0) {
         // If hit player
         if (sub_800CA20(s, I(bomb->x) + gCamera.x, I(bomb->y) + gCamera.y, 0, &gPlayer) == 1) {
             if (bomb->boss->bossHitTimer == 0) {
@@ -1156,7 +1165,7 @@ static void Task_EggBomberTankBombExplosion(void)
 
     bomb->explodeTimer--;
 
-    if (bomb->explodeTimer == 0 || bomb->boss->unk70 == 0) {
+    if (bomb->explodeTimer == 0 || bomb->boss->health == 0) {
         ExplosionGraphics graphics;
 
         if (ground >= 16) {
@@ -1217,7 +1226,7 @@ static void Task_BombExplosionMain(void)
     s->x = explosion->x;
     s->y = explosion->y;
 
-    if (explosion->boss->unk70 != 0) {
+    if (explosion->boss->health != 0) {
         if (sub_800CA20(s, explosion->x + gCamera.x, explosion->y + gCamera.y, 0, &gPlayer) == 1) {
             if (explosion->boss->bossHitTimer == 0) {
                 Sprite *s = &explosion->boss->pilot;
