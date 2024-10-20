@@ -140,7 +140,7 @@ static void Task_StageGoalToggleMain(void)
         }
     } else if (x <= I(gPlayer.x) && !(gPlayer.moveState & MOVESTATE_GOAL_REACHED)) {
         gPlayer.transition = PLTRANS_REACHED_GOAL;
-        gStageFlags |= 0x21;
+        gStageFlags |= STAGE_FLAG__DISABLE_PAUSE_MENU | STAGE_FLAG__ACT_START;
         gStageGoalX = x;
 
         if (gGameMode == GAME_MODE_SINGLE_PLAYER && !(gPlayer.moveState & MOVESTATE_IN_AIR) && gPlayer.speedGroundX > Q(2.5)) {
@@ -161,6 +161,13 @@ static void Task_StageGoalToggleMain(void)
                 CreateStageGoalBonusPointsAnim(I(gPlayer.x), I(gPlayer.y), extraScore);
             }
         }
+
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
+        if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1)) {
+            gPlayer.speedGroundX = 0;
+            gInputRecorder.playbackHead += 1;
+        }
+#endif
     }
 
     x -= gCamera.x;
