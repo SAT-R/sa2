@@ -691,6 +691,15 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
             if (gCamera.x > em->prevCamX) {
                 range1.xLow = em->prevCamX + (DISPLAY_WIDTH + 128);
                 range1.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
+                // HACK: in zone 3 the TAS we are using depends on going so far off the screen
+                // that some IAs do not spawn and so it gets to skip them. We have to emulate
+                // that behaviour so that we can test the TAS in widescreen
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
+                if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
+                    range1.xLow = em->prevCamX + (DISPLAY_WIDTH + 70);
+                    range1.xHigh = gCamera.x + (DISPLAY_WIDTH + 70);
+                }
+#endif
             } else {
                 range1.xLow = gCamera.x - 128;
                 range1.xHigh = em->prevCamX - 128;
@@ -714,6 +723,11 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
 
             range2.xLow = gCamera.x - 128;
             range2.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
+            if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
+                range2.xHigh = gCamera.x + (DISPLAY_WIDTH + 70);
+            }
+#endif
 
             if ((s32)range1.xLow < 0) {
                 range1.xLow = 0;

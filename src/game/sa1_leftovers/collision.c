@@ -328,6 +328,11 @@ void Collision_AdjustPlayerSpeed(Player *p)
     } else if (IS_BOSS_STAGE(gCurrentLevel)) {
         s32 speedX = -(p->speedAirX >> 1);
         p->speedAirY = -p->speedAirY;
+        // BUG: using the camera DX here is not really fair, since
+        // this will throw the player forwards if the camera is moving
+        // towards the boss.
+        // In reality this should use a fixed value of +Q(5) since that's
+        // the boss moving speed
         p->speedAirX = speedX - Q(gCamera.dx);
     } else if (p->speedAirY > 0) {
         // Bounce off of enemies

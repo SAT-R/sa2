@@ -485,10 +485,23 @@ void UpdateCamera(void)
         camera->unk10 += BOSS_CAM_FRAME_DELTA_PIXELS;
         newX += BOSS_CAM_FRAME_DELTA_PIXELS;
 
+// Most TASes were written with the expection that
+// the player gets pushed forwards when touching the boss
+// and the camera is moving. So we need to emulate that behaviour
+// even though the camera moves differently in widescreen
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK
+        if (newX + ((240 / 2) + 1) < I(player->x)) {
+
+#else
         if (newX + ((DISPLAY_WIDTH / 2) + 1) < I(player->x)) {
+#endif
             if ((camera->unk10 + (DISPLAY_HEIGHT / 2)) > newX) {
                 s32 playerScreenX = I(player->x);
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK
+                playerScreenX -= 240 / 2;
+#else
                 playerScreenX -= DISPLAY_WIDTH / 2;
+#endif
                 camera->shiftX = playerScreenX - newX;
             } else {
                 newX = (camera->unk10 + (DISPLAY_HEIGHT / 2));
