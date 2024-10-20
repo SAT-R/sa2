@@ -170,7 +170,7 @@ static void sub_8074FD8(Sprite_FloatingSpring *floatingSpring)
     if (floatingSpring->unk50) {
         u8 level = gCurrentLevel;
         if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->s.graphics.anim = SA2_ANIM_FLOATING_SPRING_3;
             floatingSpring->s.variant = 0;
         } else {
             floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
@@ -178,7 +178,7 @@ static void sub_8074FD8(Sprite_FloatingSpring *floatingSpring)
         }
     } else {
         if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->s.graphics.anim = SA2_ANIM_FLOATING_SPRING_3;
             floatingSpring->s.variant = ZONE_3;
         } else {
             floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
@@ -191,7 +191,7 @@ static void sub_8075048(Sprite_FloatingSpring *floatingSpring)
 {
     if (floatingSpring->unk50) {
         if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->s.graphics.anim = SA2_ANIM_FLOATING_SPRING_3;
             floatingSpring->s.variant = 1;
         } else {
             floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
@@ -199,7 +199,7 @@ static void sub_8075048(Sprite_FloatingSpring *floatingSpring)
         }
     } else {
         if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-            floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_UNKNOWN;
+            floatingSpring->s.graphics.anim = SA2_ANIM_FLOATING_SPRING_3;
             floatingSpring->s.variant = 3;
         } else {
             floatingSpring->s.graphics.anim = SA2_ANIM_SPRING_PLATFORM;
@@ -281,11 +281,11 @@ bool32 sub_80751CC(Sprite_FloatingSpring *floatingSpring)
     s16 x = floatingSpring->unk3C - gCamera.x;
     s16 y = floatingSpring->unk40 - gCamera.y;
 
-    if (x < -((me->d.uData[2] * 8) + 0x80) || x > (me->d.uData[2] * 8) + 0x170) {
-        return TRUE;
-    }
-
-    if (y < -((me->d.uData[3] * 8) + 0x80) || y > (me->d.uData[3] * 8) + 0x220) {
+    // Should be IS_OUT_OF_RANGE_2(x, y, (me->d.uData[2] * TILE_WIDTH) + (CAM_REGION_WIDTH / 2), (me->d.uData[3] * TILE_WIDTH) +
+    // (CAM_REGION_WIDTH / 2)) But DISPLAY_HEIGHT + 384 does not match
+    if (x < -((me->d.uData[2] * TILE_WIDTH) + (CAM_REGION_WIDTH / 2))
+        || x > (me->d.uData[2] * TILE_WIDTH) + (DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)) || y < -((me->d.uData[3] * TILE_WIDTH) + 128)
+        || y > (me->d.uData[3] * TILE_WIDTH) + (DISPLAY_HEIGHT + 384)) {
         return TRUE;
     }
 
@@ -298,11 +298,8 @@ bool32 sub_8075228(Sprite_FloatingSpring *floatingSpring)
     s16 x = floatingSpring->unk3C - gCamera.x;
     s16 y = floatingSpring->unk40 - gCamera.y;
 
-    if (x < -((me->d.uData[2] * 8) + 0x80) || x > (me->d.uData[2] * 8) + 0x170) {
-        return TRUE;
-    }
-
-    if (y < -((me->d.uData[3] * 8) + 0x80) || y > (me->d.uData[3] * 8) + 0x120) {
+    if (IS_OUT_OF_RANGE_2(x, y, (me->d.uData[2] * TILE_WIDTH) + (CAM_REGION_WIDTH / 2),
+                          (me->d.uData[3] * TILE_WIDTH) + (CAM_REGION_WIDTH / 2))) {
         return TRUE;
     }
 

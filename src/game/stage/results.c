@@ -21,15 +21,7 @@
 #include "constants/zones.h"
 
 typedef struct {
-    /*  0x00 */ ScreenFade fade;
-    /*  0x0C */ Sprite s1[3];
-    /*  0x9C */ Sprite sprScores[3];
-    /* 0x12C */ Sprite s7;
-    /* 0x15C */ u32 timeBonusScore;
-    /* 0x160 */ u32 ringBonusScore;
-    /* 0x164 */ u32 spRingBonusScore;
-    /* 0x168 */ s32 counter; // frames since task started
-    /* 0x16C */ s32 unk16C;
+    StageResultsBase base;
     /* 0x170 */ bool8 isCountingDone;
 } StageResults; /* size: 0x174 */
 
@@ -37,7 +29,12 @@ typedef struct {
 #define OUTRO_RING_BONUS_Y_POS    (DISPLAY_HEIGHT / 2) + 30
 #define OUTRO_SP_RING_BONUS_Y_POS (DISPLAY_HEIGHT / 2) + 50
 
-const u16 sAnimsGotThroughCharacterNames[5][3] = {
+static void Task_UpdateStageResults(void);
+static void TaskDestructor_StageResults(struct Task *);
+static void AnimateResults(u16 frame);
+static void DestroyStageResultsGfx(void);
+
+const u16 gAnimsGotThroughCharacterNames[][3] = {
     { 24, SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_SONIC },
     { 27, SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_CREAM },
     { 24, SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_TAILS },
@@ -45,7 +42,7 @@ const u16 sAnimsGotThroughCharacterNames[5][3] = {
     { 18, SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_AMY },
 };
 
-const u16 sStageResultsHeadlineTexts[5][3] = {
+const u16 gStageResultsHeadlineTexts[][3] = {
     { 28, SA2_ANIM_RESULTS_HEADLINE, SA2_ANIM_VARIANT_RESULTS_HEADLINE_GOT_THROUGH },
     { 36, SA2_ANIM_RESULTS_HEADLINE, SA2_ANIM_VARIANT_RESULTS_HEADLINE_BOSS_DESTROYED },
     { 0, 0, 0 },
@@ -53,7 +50,7 @@ const u16 sStageResultsHeadlineTexts[5][3] = {
     { 0, 0, 0 },
 };
 
-const u16 sAnimsGotThroughZoneAndActNames[11][3] = {
+const u16 gAnimsGotThroughZoneAndActNames[][3] = {
     { 14, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ACT_1 },        { 14, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ACT_2 },
     { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_1) }, { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_2) },
     { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_3) }, { 18, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_ZONE(ZONE_4) },
@@ -62,20 +59,13 @@ const u16 sAnimsGotThroughZoneAndActNames[11][3] = {
     { 16, SA2_ANIM_STAGE, SA2_ANIM_VARIANT_STAGE_EXTRA },
 };
 
-static const u16 sStageScoreBonusesTexts[3][3] = {
+static const u16 sStageScoreBonusesTexts[][3] = {
     { 26, SA2_ANIM_SCORE_BONUSES, SA2_ANIM_VARIANT_SCORE_BONUSES_TIME },
     { 26, SA2_ANIM_SCORE_BONUSES, SA2_ANIM_VARIANT_SCORE_BONUSES_RING },
     { 26, SA2_ANIM_SCORE_BONUSES, SA2_ANIM_VARIANT_SCORE_BONUSES_SP_RING },
 };
 
-static const u16 sStageResultsTextOffset[3] = { 0, 69, 173 };
-
-void Task_UpdateStageResults(void);
-void TaskDestructor_StageResults(struct Task *);
-void sub_80310F0(void);
-static void sub_8031138(u16 p0);
-void sub_8031314(void);
-static void DestroyStageResultsGfx(void);
+static const u16 sStageResultsTextOffset[] = { 0, 69, 173 };
 
 u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 {
@@ -94,70 +84,70 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     t = TaskCreate(Task_UpdateStageResults, sizeof(StageResults), 0xC100, 0, TaskDestructor_StageResults);
     outro = TASK_DATA(t);
-    outro->counter = zero;
+    outro->base.counter = zero;
     outro->isCountingDone = zero;
 
-    outro->fade.window = zero;
-    outro->fade.flags = 1;
-    outro->fade.speed = Q(1.0);
-    outro->fade.brightness = zero;
-    outro->fade.bldCnt = 0x3FFF;
-    outro->fade.bldAlpha = zero;
+    outro->base.fade.window = zero;
+    outro->base.fade.flags = 1;
+    outro->base.fade.speed = Q(1.0);
+    outro->base.fade.brightness = zero;
+    outro->base.fade.bldCnt = 0x3FFF;
+    outro->base.fade.bldAlpha = zero;
 
     if ((gPlayer.moveState & MOVESTATE_GOAL_REACHED) && (gSpecialRingCount >= SPECIAL_STAGE_REQUIRED_SP_RING_COUNT)) {
-        outro->fade.speed = Q(0.25);
-        outro->fade.bldCnt = 0x3FBF;
+        outro->base.fade.speed = Q(0.25);
+        outro->base.fade.bldCnt = 0x3FBF;
     } else if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
-        outro->fade.bldCnt = 0x3FAF;
-        outro->fade.brightness = 0x2000;
-        UpdateScreenFade(&outro->fade);
+        outro->base.fade.bldCnt = 0x3FAF;
+        outro->base.fade.brightness = 0x2000;
+        UpdateScreenFade(&outro->base.fade);
     }
 
     if (courseTime < ZONE_TIME_TO_INT(0, 30)) {
-        outro->timeBonusScore = 80000;
+        outro->base.timeBonusScore = 80000;
     } else if (courseTime < ZONE_TIME_TO_INT(0, 50)) {
-        outro->timeBonusScore = 50000;
+        outro->base.timeBonusScore = 50000;
     } else if (courseTime < ZONE_TIME_TO_INT(1, 0)) {
-        outro->timeBonusScore = 10000;
+        outro->base.timeBonusScore = 10000;
     } else if (courseTime < ZONE_TIME_TO_INT(1, 30)) {
-        outro->timeBonusScore = 5000;
+        outro->base.timeBonusScore = 5000;
     } else if (courseTime < ZONE_TIME_TO_INT(2, 0)) {
-        outro->timeBonusScore = 4000;
+        outro->base.timeBonusScore = 4000;
     } else if (courseTime < ZONE_TIME_TO_INT(3, 0)) {
-        outro->timeBonusScore = 3000;
+        outro->base.timeBonusScore = 3000;
     } else if (courseTime < ZONE_TIME_TO_INT(4, 0)) {
-        outro->timeBonusScore = 2000;
+        outro->base.timeBonusScore = 2000;
     } else if (courseTime < ZONE_TIME_TO_INT(5, 0)) {
-        outro->timeBonusScore = 1000;
+        outro->base.timeBonusScore = 1000;
     } else if (courseTime < ZONE_TIME_TO_INT(6, 0)) {
-        outro->timeBonusScore = 500;
+        outro->base.timeBonusScore = 500;
     } else {
-        outro->timeBonusScore = 0;
+        outro->base.timeBonusScore = 0;
     }
 
-    outro->ringBonusScore = ringCount * 100;
+    outro->base.ringBonusScore = ringCount * 100;
 
     if (spRingCount == SPECIAL_STAGE_REQUIRED_SP_RING_COUNT) {
-        outro->spRingBonusScore = 10000;
+        outro->base.spRingBonusScore = 10000;
     } else {
-        outro->spRingBonusScore = spRingCount * 1000;
+        outro->base.spRingBonusScore = spRingCount * 1000;
     }
 
-    if (outro->spRingBonusScore > outro->ringBonusScore) {
-        if (outro->spRingBonusScore > outro->timeBonusScore) {
-            outro->unk16C = Div(outro->spRingBonusScore, 100);
+    if (outro->base.spRingBonusScore > outro->base.ringBonusScore) {
+        if (outro->base.spRingBonusScore > outro->base.timeBonusScore) {
+            outro->base.unk16C = Div(outro->base.spRingBonusScore, 100);
         } else {
-            outro->unk16C = Div(outro->timeBonusScore, 100);
+            outro->base.unk16C = Div(outro->base.timeBonusScore, 100);
         }
     } else {
-        if (outro->ringBonusScore > outro->timeBonusScore) {
-            outro->unk16C = Div(outro->ringBonusScore, 100);
+        if (outro->base.ringBonusScore > outro->base.timeBonusScore) {
+            outro->base.unk16C = Div(outro->base.ringBonusScore, 100);
         } else {
-            outro->unk16C = Div(outro->timeBonusScore, 100);
+            outro->base.unk16C = Div(outro->base.timeBonusScore, 100);
         }
     }
 
-    s = &outro->s7;
+    s = &outro->base.separator;
     s->x = DISPLAY_WIDTH + 16;
     s->y = (DISPLAY_HEIGHT / 2);
     s->graphics.dest = VramMalloc(4);
@@ -174,12 +164,12 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
     UpdateSpriteAnimation(s);
 
-    s = &outro->s1[0];
+    s = &outro->base.title[0];
     s->x = DISPLAY_WIDTH + 16;
     s->y = (DISPLAY_HEIGHT / 2) - 39;
-    s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
-    s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
-    s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
+    s->graphics.dest = VramMalloc(gAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
+    s->graphics.anim = gAnimsGotThroughCharacterNames[gSelectedCharacter][1];
+    s->variant = gAnimsGotThroughCharacterNames[gSelectedCharacter][2];
     s->oamFlags = SPRITE_OAM_ORDER(4);
     s->graphics.size = 0;
     s->animCursor = 0;
@@ -196,17 +186,17 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         u8 level;
         bool32 isBossAct = ACT_INDEX(gCurrentLevel) >> 1;
 
-        s = &outro->s1[1];
+        s = &outro->base.title[1];
         s->x = DISPLAY_WIDTH + 16;
         s->y = (DISPLAY_HEIGHT / 2) - 31;
-        s->graphics.dest = VramMalloc(sStageResultsHeadlineTexts[isBossAct][0]);
-        s->graphics.anim = sStageResultsHeadlineTexts[isBossAct][1];
-        s->variant = sStageResultsHeadlineTexts[isBossAct][2];
+        s->graphics.dest = VramMalloc(gStageResultsHeadlineTexts[isBossAct][0]);
+        s->graphics.anim = gStageResultsHeadlineTexts[isBossAct][1];
+        s->variant = gStageResultsHeadlineTexts[isBossAct][2];
 
         extraLevel = gCurrentLevel; // needed for matching
         if (IS_FINAL_STAGE(extraLevel) || IS_EXTRA_STAGE(gCurrentLevel)) {
-            s->graphics.anim = sStageResultsHeadlineTexts[0][1];
-            s->variant = sStageResultsHeadlineTexts[0][2];
+            s->graphics.anim = gStageResultsHeadlineTexts[0][1];
+            s->variant = gStageResultsHeadlineTexts[0][2];
         }
 
         s->oamFlags = SPRITE_OAM_ORDER(4);
@@ -227,19 +217,19 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
             level = gCurrentLevel & 1;
         }
 
-        s = &outro->s1[2];
+        s = &outro->base.title[2];
         s->x = DISPLAY_WIDTH + 16;
         s->y = (DISPLAY_HEIGHT / 2) - 31;
-        s->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
-        s->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
-        s->variant = sAnimsGotThroughZoneAndActNames[level][2];
+        s->graphics.dest = VramMalloc(gAnimsGotThroughZoneAndActNames[level][0]);
+        s->graphics.anim = gAnimsGotThroughZoneAndActNames[level][1];
+        s->variant = gAnimsGotThroughZoneAndActNames[level][2];
 
         if (IS_FINAL_STAGE(gCurrentLevel)) {
-            s->graphics.anim = sAnimsGotThroughZoneAndActNames[9][1];
-            s->variant = sAnimsGotThroughZoneAndActNames[9][2];
+            s->graphics.anim = gAnimsGotThroughZoneAndActNames[9][1];
+            s->variant = gAnimsGotThroughZoneAndActNames[9][2];
         } else if (IS_EXTRA_STAGE(gCurrentLevel)) {
-            s->graphics.anim = sAnimsGotThroughZoneAndActNames[10][1];
-            s->variant = sAnimsGotThroughZoneAndActNames[10][2];
+            s->graphics.anim = gAnimsGotThroughZoneAndActNames[10][1];
+            s->variant = gAnimsGotThroughZoneAndActNames[10][2];
         }
 
         s->oamFlags = SPRITE_OAM_ORDER(4);
@@ -254,8 +244,8 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         UpdateSpriteAnimation(s);
     }
 
-    for (i = 0; i < ARRAY_COUNT(outro->sprScores); i++) {
-        s = &outro->sprScores[i];
+    for (i = 0; i < ARRAY_COUNT(outro->base.sprScores); i++) {
+        s = &outro->base.sprScores[i];
         s->x = DISPLAY_WIDTH + 16;
         s->y = ((DISPLAY_HEIGHT / 2) - 6) + i * 20;
         s->graphics.dest = VramMalloc(sStageScoreBonusesTexts[i][0]);
@@ -290,18 +280,18 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
         m4aSongNumStart(MUS_ACT_CLEAR);
     }
 
-    return (u16)outro->unk16C;
+    return (u16)outro->base.unk16C;
 }
 
-void Task_UpdateStageResults(void)
+static void Task_UpdateStageResults(void)
 {
     StageResults *outro = TASK_DATA(gCurTask);
-    u32 counter = outro->counter;
+    u32 counter = outro->base.counter;
 
-    if (++counter > outro->unk16C + 309) {
-        counter = outro->unk16C + 310;
+    if (++counter > outro->base.unk16C + 309) {
+        counter = outro->base.unk16C + 310;
     }
-    outro->counter = counter;
+    outro->base.counter = counter;
 
     if (IS_EXTRA_STAGE(gCurrentLevel)) {
         gBldRegs.bldCnt = (BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_BD | BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2
@@ -309,41 +299,41 @@ void Task_UpdateStageResults(void)
     }
 
     if (counter >= 150) {
-        if (outro->ringBonusScore != 0) {
-            outro->ringBonusScore -= 100;
+        if (outro->base.ringBonusScore != 0) {
+            outro->base.ringBonusScore -= 100;
             INCREMENT_SCORE_A(100);
         }
 
-        if (outro->spRingBonusScore != 0) {
-            outro->spRingBonusScore -= 100;
+        if (outro->base.spRingBonusScore != 0) {
+            outro->base.spRingBonusScore -= 100;
             INCREMENT_SCORE_A(100);
         }
 
-        if (outro->timeBonusScore != 0) {
-            outro->timeBonusScore -= 100;
+        if (outro->base.timeBonusScore != 0) {
+            outro->base.timeBonusScore -= 100;
             INCREMENT_SCORE_A(100);
         }
 
         // If user pressed A, quickly finish score counting
         if (!IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
             if (gPressedKeys & A_BUTTON) {
-                INCREMENT_SCORE_A(outro->ringBonusScore);
-                INCREMENT_SCORE_A(outro->spRingBonusScore);
-                INCREMENT_SCORE_A(outro->timeBonusScore);
+                INCREMENT_SCORE_A(outro->base.ringBonusScore);
+                INCREMENT_SCORE_A(outro->base.spRingBonusScore);
+                INCREMENT_SCORE_A(outro->base.timeBonusScore);
 
-                outro->ringBonusScore = 0;
-                outro->spRingBonusScore = 0;
-                outro->timeBonusScore = 0;
+                outro->base.ringBonusScore = 0;
+                outro->base.spRingBonusScore = 0;
+                outro->base.timeBonusScore = 0;
 
-                if (counter < outro->unk16C + 149) {
-                    counter = outro->unk16C + 149;
-                    outro->counter = counter;
+                if (counter < outro->base.unk16C + 149) {
+                    counter = outro->base.unk16C + 149;
+                    outro->base.counter = counter;
                 }
             }
         }
 
         if ((gStageTime % 4u) == 0) {
-            if ((outro->ringBonusScore != 0) || (outro->spRingBonusScore != 0) || (outro->timeBonusScore != 0)) {
+            if ((outro->base.ringBonusScore != 0) || (outro->base.spRingBonusScore != 0) || (outro->base.timeBonusScore != 0)) {
                 m4aSongNumStart(SE_STAGE_RESULT_COUNTER);
             } else if (!outro->isCountingDone) {
                 outro->isCountingDone = TRUE;
@@ -352,7 +342,7 @@ void Task_UpdateStageResults(void)
         }
     }
 
-    if (counter > outro->unk16C + 309) {
+    if (counter > outro->base.unk16C + 309) {
         if (IS_FINAL_STAGE(gCurrentLevel)) {
             if ((gMPlayInfo_BGM.status & 0xFFFF) == 0) {
                 gLoadedSaveGame->unlockedLevels[gSelectedCharacter] = LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53);
@@ -388,7 +378,7 @@ void Task_UpdateStageResults(void)
                 return;
             }
         } else {
-            if (UpdateScreenFade(&outro->fade) == 1) {
+            if (UpdateScreenFade(&outro->base.fade) == 1) {
                 gBldRegs.bldY = 0x10;
                 gPlayer.moveState |= MOVESTATE_100000;
 
@@ -488,27 +478,27 @@ void Task_UpdateStageResults(void)
         }
     }
 
-    sub_80310F0();
-    sub_8031314();
+    StageResults_AnimateSeparator();
+    StageResults_AnimateTitle();
 
     if (IS_FINAL_OR_EXTRA_STAGE(gCurrentLevel)) {
-        if (counter > outro->unk16C + 245) {
+        if (counter > outro->base.unk16C + 245) {
             u32 innerCount = counter;
             innerCount -= 245;
-            sub_8031138((innerCount - outro->unk16C) * 16);
+            AnimateResults((innerCount - outro->base.unk16C) * 16);
         } else {
-            sub_8031138(0);
+            AnimateResults(0);
         }
     } else {
-        sub_8031138(0);
+        AnimateResults(0);
     }
 }
 
-void sub_80310F0(void)
+void StageResults_AnimateSeparator(void)
 {
     StageResults *outro = TASK_DATA(gCurTask);
-    u32 counter = outro->counter;
-    Sprite *s = &outro->s7;
+    u32 counter = outro->base.counter;
+    Sprite *s = &outro->base.separator;
 
     if (counter <= 15) {
         s->x = (16 - counter) * 15;
@@ -520,17 +510,17 @@ void sub_80310F0(void)
     }
 }
 
-void sub_8031138(u16 p0)
+static void AnimateResults(u16 frame)
 {
     StageResults *outro = TASK_DATA(gCurTask);
-    u32 counter = outro->counter;
+    u32 counter = outro->base.counter;
     u32 i;
     Sprite *s;
     s32 r4;
 
     if (counter < 24) {
         s32 x;
-        s = &outro->s7;
+        s = &outro->base.separator;
         x = 0;
 
         if (counter <= 16) {
@@ -538,14 +528,14 @@ void sub_8031138(u16 p0)
         }
 
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
-            s->x = (x - p0) + i * 32;
+            s->x = (x - frame) + i * 32;
             DisplaySprite(s);
         }
     } else {
-        s = &outro->s7;
+        s = &outro->base.separator;
 
         for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
-            s->x = -p0 + i * 32;
+            s->x = -frame + i * 32;
             DisplaySprite(s);
         }
     }
@@ -554,15 +544,15 @@ void sub_8031138(u16 p0)
         u32 numDisplayedBonuses = (ACT_INDEX(gCurrentLevel) == ACT_BOSS) ? 2 : 3;
 
         for (i = 0; i < numDisplayedBonuses; i++) {
-            s = &outro->s1[i];
-            s->x -= p0;
+            s = &outro->base.title[i];
+            s->x -= frame;
             DisplaySprite(s);
         }
     }
 
     if (counter >= 39) {
 
-        s = &outro->sprScores[0];
+        s = &outro->base.sprScores[0];
 
         if (counter < 56) {
             u16 innerX = DISPLAY_WIDTH - ((counter - 39) * 12);
@@ -570,18 +560,18 @@ void sub_8031138(u16 p0)
         } else {
             r4 = (DISPLAY_WIDTH / 2) - 72;
         }
-        s->x = r4 - p0;
+        s->x = r4 - frame;
         DisplaySprite(s);
 
         {
             s16 r4_2 = r4;
-            s16 pp = p0;
-            StageUI_PrintIntegerAt(outro->timeBonusScore, r4_2 + 144 - pp, OUTRO_TIME_BONUS_Y_POS, 0);
+            s16 pp = frame;
+            StageUI_PrintIntegerAt(outro->base.timeBonusScore, r4_2 + 144 - pp, OUTRO_TIME_BONUS_Y_POS, 0);
         }
     }
 
     if (counter >= 49) {
-        s = &outro->sprScores[1];
+        s = &outro->base.sprScores[1];
 
         if (counter <= 65) {
             u16 innerX = DISPLAY_WIDTH - ((counter - 49) * 12);
@@ -589,18 +579,18 @@ void sub_8031138(u16 p0)
         } else {
             r4 = (DISPLAY_WIDTH / 2) - 72;
         }
-        s->x = r4 - p0;
+        s->x = r4 - frame;
         DisplaySprite(s);
 
         {
             s16 r4_2 = r4;
-            s16 pp = p0;
-            StageUI_PrintIntegerAt(outro->ringBonusScore, r4_2 + 144 - pp, OUTRO_RING_BONUS_Y_POS, 0);
+            s16 pp = frame;
+            StageUI_PrintIntegerAt(outro->base.ringBonusScore, r4_2 + 144 - pp, OUTRO_RING_BONUS_Y_POS, 0);
         }
     }
 
     if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS) && (gCurrentLevel < LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) && (counter >= 59)) {
-        s = &outro->sprScores[2];
+        s = &outro->base.sprScores[2];
 
         if (counter <= 75) {
             u16 innerX = DISPLAY_WIDTH - ((counter - 59) * 12);
@@ -609,21 +599,21 @@ void sub_8031138(u16 p0)
             r4 = (DISPLAY_WIDTH / 2) - 72;
         }
 
-        s->x = r4 - p0;
+        s->x = r4 - frame;
         DisplaySprite(s);
 
         {
             s16 r4_2 = r4;
-            s16 pp = p0;
-            StageUI_PrintIntegerAt(outro->spRingBonusScore, r4_2 + 144 - pp, OUTRO_SP_RING_BONUS_Y_POS, 0);
+            s16 pp = frame;
+            StageUI_PrintIntegerAt(outro->base.spRingBonusScore, r4_2 + 144 - pp, OUTRO_SP_RING_BONUS_Y_POS, 0);
         }
     }
 }
 
-void sub_8031314(void)
+void StageResults_AnimateTitle(void)
 {
     StageResults *outro = TASK_DATA(gCurTask);
-    u32 counter = outro->counter;
+    u32 counter = outro->base.counter;
 
     if (counter > 28) {
         u32 x;
@@ -638,7 +628,7 @@ void sub_8031314(void)
             s32 i = 0;
             s32 x2 = (s16)x;
             for (; i < ARRAY_COUNT(sStageResultsTextOffset); i++) {
-                Sprite *s = &outro->s1[i];
+                Sprite *s = &outro->base.title[i];
                 s32 offset = sStageResultsTextOffset[i];
                 s->x = x2 + offset;
             }
@@ -646,32 +636,32 @@ void sub_8031314(void)
     }
 }
 
-void TaskDestructor_StageResults(struct Task *t)
+static void TaskDestructor_StageResults(struct Task *t)
 {
     StageResults *outro = TASK_DATA(t);
-    if (outro->s7.graphics.dest != NULL) {
-        VramFree(outro->s7.graphics.dest);
-        VramFree(outro->s1[0].graphics.dest);
-        VramFree(outro->s1[1].graphics.dest);
-        VramFree(outro->s1[2].graphics.dest);
-        VramFree(outro->sprScores[0].graphics.dest);
-        VramFree(outro->sprScores[1].graphics.dest);
-        VramFree(outro->sprScores[2].graphics.dest);
+    if (outro->base.separator.graphics.dest != NULL) {
+        VramFree(outro->base.separator.graphics.dest);
+        VramFree(outro->base.title[0].graphics.dest);
+        VramFree(outro->base.title[1].graphics.dest);
+        VramFree(outro->base.title[2].graphics.dest);
+        VramFree(outro->base.sprScores[0].graphics.dest);
+        VramFree(outro->base.sprScores[1].graphics.dest);
+        VramFree(outro->base.sprScores[2].graphics.dest);
     }
 }
 
-void DestroyStageResultsGfx(void)
+static void DestroyStageResultsGfx(void)
 {
     StageResults *outro = TASK_DATA(gCurTask);
-    if (outro->s7.graphics.dest != NULL) {
-        VramFree(outro->s7.graphics.dest);
-        VramFree(outro->s1[0].graphics.dest);
-        VramFree(outro->s1[1].graphics.dest);
-        VramFree(outro->s1[2].graphics.dest);
-        VramFree(outro->sprScores[0].graphics.dest);
-        VramFree(outro->sprScores[1].graphics.dest);
-        VramFree(outro->sprScores[2].graphics.dest);
+    if (outro->base.separator.graphics.dest != NULL) {
+        VramFree(outro->base.separator.graphics.dest);
+        VramFree(outro->base.title[0].graphics.dest);
+        VramFree(outro->base.title[1].graphics.dest);
+        VramFree(outro->base.title[2].graphics.dest);
+        VramFree(outro->base.sprScores[0].graphics.dest);
+        VramFree(outro->base.sprScores[1].graphics.dest);
+        VramFree(outro->base.sprScores[2].graphics.dest);
 
-        outro->s7.graphics.dest = NULL;
+        outro->base.separator.graphics.dest = NULL;
     }
 }

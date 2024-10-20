@@ -315,7 +315,7 @@ void CreateTitleScreen(void)
         // Goes from 16384 -> 102 in an log curve \_
         titleScreen->wavesTranslationX[i] = val;
         // Goes from 4 -> 642 in steps of 4 but becomes
-        // a slightly more jagged line as i in creases
+        // a slightly more jagged line as i increases
         titleScreen->wavesTranslationY[i] = Div(65536, val);
     };
 

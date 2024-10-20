@@ -261,7 +261,7 @@
 #define SA2_ANIM_SPRING_PLATFORM                 568
 #define SA2_ANIM_569                             569
 #define SA2_ANIM_DRUM                            570
-#define SA2_ANIM_SPRING_UNKNOWN                  571
+#define SA2_ANIM_FLOATING_SPRING_3               571
 #define SA2_ANIM_SPRING_MUS_PLA                  572
 #define SA2_ANIM_SPRING_MUS_PLA_2                573
 #define SA2_ANIM_PLATFORM_SQUARE_MUS_PLA         574

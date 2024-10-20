@@ -112,6 +112,8 @@ void sub_8036168(void)
 
     if (--countdown->unk68 == 0) {
         gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
+        // Uncomment to skip straight to level ending
+        // gPlayer.moveState |= MOVESTATE_GOAL_REACHED;
         gStageFlags &= ~STAGE_FLAG__ACT_START;
         gStageFlags &= ~STAGE_FLAG__100;
         gPlayer.charState = CHARSTATE_WALK_A;
@@ -149,8 +151,8 @@ void sub_8036168(void)
         s = &countdown->sprCountdownDigits;
         s->variant = SA2_ANIM_VARIANT_COUNTDOWN_1 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         s->prevVariant = -1;
-        s->x = (I(gPlayer.x) - gCamera.x) + 0x18;
-        s->y = (I(gPlayer.y) - gCamera.y) - 0x18;
+        s->x = (I(gPlayer.x) - gCamera.x) + 24;
+        s->y = (I(gPlayer.y) - gCamera.y) - 24;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
@@ -175,11 +177,9 @@ void sub_8036398(void)
 
     s->x = countdown->unk60 - gCamera.x;
     s->y = countdown->unk64 - gCamera.y;
-    {
-        if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
-            TaskDestroy(gCurTask);
-            return;
-        }
+    if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
+        TaskDestroy(gCurTask);
+        return;
     }
 
     UpdateSpriteAnimation(s);
