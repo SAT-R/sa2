@@ -421,6 +421,15 @@ u16 sub_80859F4(s16 *unk28, u16 unk5C)
     return r0 / 4096;
 }
 
+#if 0
+// Found here in SA3
+// Almost identical to sub_80859F4, maybe just signed equivalent?
+s16 sub_80B1560(s16 *param0, u16 param1)
+{
+
+}
+#endif
+
 void sub_8085A88(UNK_8085D14 *p1)
 {
     p1->unk0 = 0;
