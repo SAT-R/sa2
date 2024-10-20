@@ -94,7 +94,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     for (i = 0; i < 7; i++) {
         s = &resultsCutScene->unk178[i];
-        s->x = i * 14 + 72;
+        s->x = i * 14 + ((DISPLAY_WIDTH / 2) - 48);
         s->y = (DISPLAY_HEIGHT / 2) + 8;
         s->graphics.dest = VramMalloc(4);
         s->graphics.anim = SA2_ANIM_TIME_ATTACK_DIGITS;
@@ -143,7 +143,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     s = &resultsCutScene->unkC[0];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = 41;
+    s->y = (DISPLAY_HEIGHT / 2) - 39;
     s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
@@ -162,7 +162,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     s = &resultsCutScene->unkC[1];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = 49;
+    s->y = (DISPLAY_HEIGHT / 2) - 31;
     s->graphics.dest = VramMalloc(sStageResultsHeadlineTexts[isBossLevel][0]);
     s->graphics.anim = sStageResultsHeadlineTexts[isBossLevel][1];
     s->variant = sStageResultsHeadlineTexts[isBossLevel][2];
@@ -185,7 +185,7 @@ u32 CreateTimeAttackResults(u32 finishTime)
     }
     s = &resultsCutScene->unkC[2];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = 49;
+    s->y = (DISPLAY_HEIGHT / 2) - 31;
     s->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
     s->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
     s->variant = sAnimsGotThroughZoneAndActNames[level][2];
@@ -201,8 +201,8 @@ u32 CreateTimeAttackResults(u32 finishTime)
     UpdateSpriteAnimation(s);
 
     s = &resultsCutScene->unk9C[0];
-    s->x = 40;
-    s->y = 90;
+    s->x = (DISPLAY_WIDTH / 2) - 80;
+    s->y = (DISPLAY_HEIGHT / 2) + 10;
     s->graphics.dest = VramMalloc(8);
     s->graphics.anim = SA2_ANIM_TA_RECORD;
     s->variant = SA2_ANIM_VARIANT_TA_TIME;
@@ -240,13 +240,13 @@ u32 CreateTimeAttackResults(u32 finishTime)
 
     resultsCutScene->transform.width = 0;
     resultsCutScene->transform.height = +Q(1);
-    resultsCutScene->transform.x = 120;
-    resultsCutScene->transform.y = 120;
+    resultsCutScene->transform.x = (DISPLAY_WIDTH / 2);
+    resultsCutScene->transform.y = (DISPLAY_HEIGHT / 2) + 40;
     resultsCutScene->transform.rotation = 0;
 
     s = &resultsCutScene->unk9C[2];
     s->x = (DISPLAY_WIDTH / 2);
-    s->y = (DISPLAY_HEIGHT - 12);
+    s->y = (DISPLAY_HEIGHT / 2) + 68;
     s->graphics.dest = VramMalloc(0x16);
     s->graphics.anim = SA2_ANIM_TA_RECORD;
     s->variant = 0;
@@ -291,29 +291,25 @@ void sub_80897E8(void)
         s32 temp;
         s = &resultsCutScene->unk12C;
         temp = 0;
-        if (unk168 < 17) {
+        if (unk168 <= 16) {
             temp = ((16 - unk168) * 24);
         }
 
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
             s->x = temp + (i * 32);
             DisplaySprite(s);
         }
     } else {
         s = &resultsCutScene->unk12C;
-        for (i = 0; i < 8; i++) {
+
+        for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
             s->x = (i * 32); // TODO: Does (i * 32) match?
             DisplaySprite(s);
         }
     }
 
     if (unk168 > 28) {
-        s32 temp;
-        if ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) {
-            temp = 2;
-        } else {
-            temp = 3;
-        }
+        s32 temp = ((gCurrentLevel & ACT_BOSS) && !(gCurrentLevel & ACT_2)) ? 2 : 3;
 
         for (i = 0; i < temp; i++) {
             s = &resultsCutScene->unkC[i];

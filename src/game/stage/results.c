@@ -33,9 +33,9 @@ typedef struct {
     /* 0x170 */ bool8 isCountingDone;
 } StageResults; /* size: 0x174 */
 
-#define OUTRO_TIME_BONUS_Y_POS    90
-#define OUTRO_RING_BONUS_Y_POS    110
-#define OUTRO_SP_RING_BONUS_Y_POS 130
+#define OUTRO_TIME_BONUS_Y_POS    (DISPLAY_HEIGHT / 2) + 10
+#define OUTRO_RING_BONUS_Y_POS    (DISPLAY_HEIGHT / 2) + 30
+#define OUTRO_SP_RING_BONUS_Y_POS (DISPLAY_HEIGHT / 2) + 50
 
 const u16 sAnimsGotThroughCharacterNames[5][3] = {
     { 24, SA2_ANIM_CHAR_GOT_THROUGH, SA2_ANIM_VARIANT_CHAR_GOT_THROUGH_SONIC },
@@ -68,7 +68,7 @@ static const u16 sStageScoreBonusesTexts[3][3] = {
     { 26, SA2_ANIM_SCORE_BONUSES, SA2_ANIM_VARIANT_SCORE_BONUSES_SP_RING },
 };
 
-const u16 gUnknown_080D71CC[3] = { 0, 69, 173 };
+static const u16 sStageResultsTextOffset[3] = { 0, 69, 173 };
 
 void Task_UpdateStageResults(void);
 void TaskDestructor_StageResults(struct Task *);
@@ -176,7 +176,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
     s = &outro->s1[0];
     s->x = DISPLAY_WIDTH + 16;
-    s->y = 41;
+    s->y = (DISPLAY_HEIGHT / 2) - 39;
     s->graphics.dest = VramMalloc(sAnimsGotThroughCharacterNames[gSelectedCharacter][0]);
     s->graphics.anim = sAnimsGotThroughCharacterNames[gSelectedCharacter][1];
     s->variant = sAnimsGotThroughCharacterNames[gSelectedCharacter][2];
@@ -198,7 +198,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
         s = &outro->s1[1];
         s->x = DISPLAY_WIDTH + 16;
-        s->y = 49;
+        s->y = (DISPLAY_HEIGHT / 2) - 31;
         s->graphics.dest = VramMalloc(sStageResultsHeadlineTexts[isBossAct][0]);
         s->graphics.anim = sStageResultsHeadlineTexts[isBossAct][1];
         s->variant = sStageResultsHeadlineTexts[isBossAct][2];
@@ -229,7 +229,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
 
         s = &outro->s1[2];
         s->x = DISPLAY_WIDTH + 16;
-        s->y = 49;
+        s->y = (DISPLAY_HEIGHT / 2) - 31;
         s->graphics.dest = VramMalloc(sAnimsGotThroughZoneAndActNames[level][0]);
         s->graphics.anim = sAnimsGotThroughZoneAndActNames[level][1];
         s->variant = sAnimsGotThroughZoneAndActNames[level][2];
@@ -257,7 +257,7 @@ u16 CreateStageResults(u32 courseTime, u16 ringCount, u8 spRingCount)
     for (i = 0; i < ARRAY_COUNT(outro->sprScores); i++) {
         s = &outro->sprScores[i];
         s->x = DISPLAY_WIDTH + 16;
-        s->y = 74 + i * 20;
+        s->y = ((DISPLAY_HEIGHT / 2) - 6) + i * 20;
         s->graphics.dest = VramMalloc(sStageScoreBonusesTexts[i][0]);
         s->graphics.anim = sStageScoreBonusesTexts[i][1];
         s->variant = sStageScoreBonusesTexts[i][2];
@@ -512,9 +512,9 @@ void sub_80310F0(void)
 
     if (counter <= 15) {
         s->x = (16 - counter) * 15;
-        s->y = 100;
+        s->y = (DISPLAY_HEIGHT / 2) + 20;
     } else if (counter <= 23) {
-        s->y = 100;
+        s->y = (DISPLAY_HEIGHT / 2) + 20;
     } else if (counter <= 28) {
         s->y -= 7;
     }
@@ -537,14 +537,14 @@ void sub_8031138(u16 p0)
             x = (16 - counter) * 24;
         }
 
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
             s->x = (x - p0) + i * 32;
             DisplaySprite(s);
         }
     } else {
         s = &outro->s7;
 
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < ((DISPLAY_WIDTH + 32) / 32); i++) {
             s->x = -p0 + i * 32;
             DisplaySprite(s);
         }
@@ -568,7 +568,7 @@ void sub_8031138(u16 p0)
             u16 innerX = DISPLAY_WIDTH - ((counter - 39) * 12);
             r4 = innerX;
         } else {
-            r4 = 48;
+            r4 = (DISPLAY_WIDTH / 2) - 72;
         }
         s->x = r4 - p0;
         DisplaySprite(s);
@@ -587,7 +587,7 @@ void sub_8031138(u16 p0)
             u16 innerX = DISPLAY_WIDTH - ((counter - 49) * 12);
             r4 = innerX;
         } else {
-            r4 = 48;
+            r4 = (DISPLAY_WIDTH / 2) - 72;
         }
         s->x = r4 - p0;
         DisplaySprite(s);
@@ -606,7 +606,7 @@ void sub_8031138(u16 p0)
             u16 innerX = DISPLAY_WIDTH - ((counter - 59) * 12);
             r4 = innerX;
         } else {
-            r4 = 48;
+            r4 = (DISPLAY_WIDTH / 2) - 72;
         }
 
         s->x = r4 - p0;
@@ -631,16 +631,16 @@ void sub_8031314(void)
         if (counter < 45) {
             x = (u16)(DISPLAY_WIDTH - ((counter - 29) * 15));
         } else {
-            x = 3;
+            x = (DISPLAY_WIDTH / 2) - 117;
         }
 
         {
             s32 i = 0;
             s32 x2 = (s16)x;
-            for (; i < ARRAY_COUNT(gUnknown_080D71CC); i++) {
+            for (; i < ARRAY_COUNT(sStageResultsTextOffset); i++) {
                 Sprite *s = &outro->s1[i];
-                s32 match = gUnknown_080D71CC[i];
-                s->x = x2 + match;
+                s32 offset = sStageResultsTextOffset[i];
+                s->x = x2 + offset;
             }
         }
     }
