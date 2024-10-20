@@ -1,5 +1,3 @@
-#include <string.h> // memcpy
-
 #include "core.h"
 #include "task.h"
 #include "sprite.h"

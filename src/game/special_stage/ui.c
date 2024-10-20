@@ -1,5 +1,3 @@
-#include <string.h> // memcpy
-
 #include "core.h"
 #include "lib/m4a.h"
 #include "game/save.h"

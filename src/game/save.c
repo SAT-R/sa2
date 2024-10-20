@@ -1,5 +1,3 @@
-#include <string.h> // memcpy
-
 #include "global.h"
 #include "lib/agb_flash.h"
 #include "malloc_ewram.h"

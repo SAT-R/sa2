@@ -1,5 +1,3 @@
-#include <string.h> // memcpy
-
 #include "global.h"
 #include "game/cutscenes/level_endings.h"
 #include "core.h"

@@ -1,5 +1,7 @@
 #ifndef GUARD_MAIN_H
 #define GUARD_MAIN_H
+// for memcpy
+#include <string.h>
 
 #include "global.h"
 #include "task.h"
@@ -307,12 +309,30 @@ extern u8 gVramGraphicsCopyQueueIndex;
     }
 #endif
 
+#if PORTABLE
+// On the GBA we use a fixed heap to allocate memory
+// but on other OS's we malloc and free memory which
+// the graphics queue may be referring to. Instead we
+// make a separate copy of the graphics queue with the
+// pointers we need to copy so that a race condition
+// happens where sprite has been freed but the copy
+// has not happened we don't get invalid memory access
+extern struct GraphicsData gVramGraphicsCopyQueueBuffer[32];
+#define ADD_TO_GRAPHICS_QUEUE(gfx)                                                                                                         \
+    TEST_GFX_POINTERS(gfx);                                                                                                                \
+    memcpy(&gVramGraphicsCopyQueueBuffer[gVramGraphicsCopyQueueIndex], gfx, sizeof(struct GraphicsData));                                  \
+    gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &gVramGraphicsCopyQueueBuffer[gVramGraphicsCopyQueueIndex];                      \
+    /* Log has to happen before gVramGraphicsCopyQueueIndex increment */                                                                   \
+    GFX_QUEUE_LOG_ADD(gfx)                                                                                                                 \
+    INC_GRAPHICS_QUEUE_CURSOR(gVramGraphicsCopyQueueIndex);
+#else
 #define ADD_TO_GRAPHICS_QUEUE(gfx)                                                                                                         \
     TEST_GFX_POINTERS(gfx);                                                                                                                \
     gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = gfx;                                                                             \
     /* Log has to happen before gVramGraphicsCopyQueueIndex increment */                                                                   \
     GFX_QUEUE_LOG_ADD(gfx)                                                                                                                 \
     INC_GRAPHICS_QUEUE_CURSOR(gVramGraphicsCopyQueueIndex);
+#endif
 
 extern u16 *gUnknown_030022AC;
 extern void *gUnknown_030022C0;

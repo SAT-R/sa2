@@ -72,7 +72,12 @@ u16 gReleasedKeys ALIGNED(4) = 0;
 u8 gUnknown_03002710[] ALIGNED(16) = {};
 u32 gFlagsPreVBlank = 0;
 /* 0x03002794 */ const struct SpriteTables *gRefSpriteTables = NULL;
+
+#if PORTABLE
+struct GraphicsData gVramGraphicsCopyQueueBuffer[32] = {};
+#endif
 struct GraphicsData *gVramGraphicsCopyQueue[] ALIGNED(16) = {};
+
 u16 gUnknown_03002820 = 0;
 s16 gBgScrollRegs[][2] ALIGNED(16) = {};
 u16 gDispCnt = 0;
@@ -421,7 +426,13 @@ static void UpdateScreenDma(void)
 
     DmaCopy32(3, gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
     DmaCopy16(3, &gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
+#if PORTABLE
+    DmaCopy16(3, &gMosaicReg, (void *)REG_ADDR_MOSAIC, sizeof(gMosaicReg));
+#else
+    // BUG: For some reason, even though the var
+    // is only 2 they chose to copy 4 bytes, oops
     DmaCopy16(3, &gMosaicReg, (void *)REG_ADDR_MOSAIC, 4);
+#endif
     DmaCopy16(3, gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
     DmaCopy32(3, &gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 

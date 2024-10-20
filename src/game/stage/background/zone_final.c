@@ -1,4 +1,3 @@
-#include <string.h>
 #include "global.h"
 #include "core.h"
 #include "flags.h"

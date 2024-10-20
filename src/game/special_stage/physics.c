@@ -1,5 +1,3 @@
-#include <string.h> // memcpy
-
 #include "core.h"
 #include "game/stage/player_controls.h"
 #include "game/special_stage/main.h"
