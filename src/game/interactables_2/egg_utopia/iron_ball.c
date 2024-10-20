@@ -146,11 +146,8 @@ static bool32 sub_807F120(Sprite_IA95 *ia95)
     s16 x = ia95->unk3C - gCamera.x;
     s16 y = ia95->unk40 - gCamera.y;
 
-    if (x < -((me->d.uData[2] * 8) + 0x80) || x > (me->d.uData[2] * 8) + 0x170) {
-        return TRUE;
-    }
-
-    if (y < -((me->d.uData[3] * 8) + 0x80) || y > (me->d.uData[3] * 8) + 0x120) {
+    if (IS_OUT_OF_RANGE_2(x, y, (me->d.uData[2] * TILE_WIDTH) + (CAM_REGION_WIDTH / 2),
+                          (me->d.uData[3] * TILE_WIDTH) + (CAM_REGION_WIDTH / 2))) {
         return TRUE;
     }
 
