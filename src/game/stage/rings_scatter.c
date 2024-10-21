@@ -20,6 +20,12 @@
 #define MAX_SCATTERING_RINGS_COUNT_SP 32
 #define MAX_SCATTERING_RINGS_COUNT_MP 16
 
+#define PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)                                                                                  \
+    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I(p->x), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I(p->x), rect))                         \
+      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I(p->x), rect) && RECT_RIGHT(I(p->x), rect) >= (ringIntX - TILE_WIDTH)))                    \
+     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I(p->y), rect) && ringIntY >= RECT_TOP(I(p->y), rect))                                \
+          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I(p->y), rect) && RECT_BOTTOM(I(p->y), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
+
 typedef struct {
     /* 0x00 */ s32 x;
     /* 0x04 */ s32 y;
@@ -210,35 +216,19 @@ typedef struct {
 #define HB_ALT_HEIGHT(hb)    ((hb)->bottom - (hb)->top)
 #define HB_ALT_BOTTOM(p, hb) (I((p)->y) + HB_ALT_HEIGHT(hb))
 
-#define PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)                                                                                  \
-    ((((ringIntX - TILE_WIDTH) <= RECT_LEFT(I(p->x), rect) && (ringIntX + TILE_WIDTH) >= RECT_LEFT(I(p->x), rect))                         \
-      || ((ringIntX - TILE_WIDTH) >= RECT_LEFT(I(p->x), rect) && RECT_RIGHT(I(p->x), rect) >= (ringIntX - TILE_WIDTH)))                    \
-     && ((((ringIntY - (TILE_WIDTH * 2)) <= RECT_TOP(I(p->y), rect) && ringIntY >= RECT_TOP(I(p->y), rect))                                \
-          || ((ringIntY - (TILE_WIDTH * 2)) >= RECT_TOP(I(p->y), rect) && RECT_BOTTOM(I(p->y), rect) >= (ringIntY - (TILE_WIDTH * 2))))))
-
-// (90.40%) https://decomp.me/scratch/jdAe4
-// (92.98%) https://decomp.me/scratch/TxbaC
-NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_FlippedGravity.inc",
-         void RingsScatterSingleplayer_FlippedGravity(void))
+void RingsScatterSingleplayer_FlippedGravity(void)
 {
-
     RingsScatter *rs = TASK_DATA(gCurTask);
     ScatterRing *ring = &rs->rings[0];
     Sprite *s = &rs->sprRing;
     s32 sp08 = rs->unk2B0;
     s32 sp0C = rs->unk2B4;
     bool32 sp10 = FALSE;
-    s32 i = 0; // sp14
-    s32 ringIntX;
-    s32 ringIntY;
-    s32 screenX; // sp18;
-    s32 screenY; // sl
+    s32 i;
+    s32 ringIntX, ringIntY;
+    s32 screenX, screenY;
     Player *p;
-#if USE_HITBOX_RECT
-    HitboxRect *hb;
-#else
     Hitbox *hb;
-#endif
 
     UpdateSpriteAnimation(s);
 
@@ -253,102 +243,102 @@ NONMATCH("asm/non_matching/game/stage/rings_scatter/RingsScatterSingleplayer_Fli
         ringIntX = I(ring->x);
         ringIntY = I(ring->y);
         screenX = ringIntX - gCamera.x;
+#ifndef NON_MATCHING
+        screenY = ({
+            s32 r0 = gCamera.y;
+            register s32 r2 asm("r2") = ringIntY;
+            asm("" ::"r"(r2));
+            r2 -= r0;
+            asm("" ::"r"(r2));
+            r2;
+        });
+#else
         screenY = ringIntY - gCamera.y;
+#endif
 
         p = &gPlayer;
 
-#if USE_HITBOX_RECT
-        hb = (HitboxRect *)&p->unk90->s.hitboxes[0].left;
-#else
         hb = &p->unk90->s.hitboxes[0];
-#endif
-        if ((ring->unkC <= sp0C) && ((p->charState != SA2_CHAR_ANIM_20) || (p->timerInvulnerability == 0)) && (IS_ALIVE(p))
-            && ((((ringIntX - TILE_WIDTH) > HB_ALT_LEFT(p, hb)) && (HB_ALT_RIGHT(p, hb) > (ringIntX - TILE_WIDTH)))
-                || ((ringIntX + TILE_WIDTH) >= HB_ALT_LEFT(p, hb))
-                || (((ringIntX - TILE_WIDTH) >= HB_ALT_LEFT(p, hb)) && (HB_ALT_RIGHT(p, hb) >= (ringIntX - TILE_WIDTH))))
-            && ((((ringIntY - 16) > HB_ALT_TOP(p, hb)) || (ringIntY < HB_ALT_TOP(p, hb))) && ((ringIntY - 16) >= HB_ALT_TOP(p, hb)))
-            && (HB_ALT_BOTTOM(p, hb) >= (ringIntY - 16))) {
-            s32 oldRingCount;
-            // _0801FF70
+        if (ring->unkC <= sp0C && (p->charState != SA2_CHAR_ANIM_20 || p->timerInvulnerability == 0) && IS_ALIVE(p)) {
+            struct Rect8 *rect = (struct Rect8 *)&hb->left;
+            if (PLAYER_TOUCHING_RING(p, rect, ringIntX, ringIntY)) {
+                s32 oldRingCount;
+                // _0801FF70
 
-            CreateCollectRingEffect(ringIntX, ringIntY);
+                CreateCollectRingEffect(ringIntX, ringIntY);
 
-            INCREMENT_RINGS(1);
-            // _0801FFC4
+                INCREMENT_RINGS(1);
+                // _0801FFC4
 
-            if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
-                if (gRingCount > 255) {
-                    gRingCount = 255;
+                if (gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
+                    if (gRingCount > 255) {
+                        gRingCount = 255;
+                    }
                 }
+
+                ring->unkC = 0;
+                continue;
             }
+        }
 
-            ring->unkC = 0;
-        } else {
-            // _08020008
-
-            if ((ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
-                s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8, sub_801EC3C);
-                if (res <= 0) {
-                    ring->y -= Q(res);
-                    ring->velY = (ring->velY >> 2) - ring->velY;
-                }
+        if (ring->velY < 0 && !(ring->unk10 & 0x7)) {
+            s32 res = sub_801F100(ringIntY - (TILE_WIDTH * 2), ringIntX, ring->unkE, -8, sub_801EC3C);
+            if (res <= 0) {
+                ring->y -= Q_24_8(res);
+                ring->velY = (ring->velY >> 2) - ring->velY;
             }
+        }
 
-            if ((rs->unk2B6 & 0x1) && (ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
-                s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, 8, sub_801EC3C);
-                if (res <= 0) {
-                    ring->y += Q(res);
-                    ring->velY = (ring->velY >> 2) - ring->velY;
-                }
+        if (rs->unk2B6 & 0x1 && ring->velY > 0 && !(ring->unk10 & 0x7)) {
+            s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, 8, sub_801EC3C);
+            if (res <= 0) {
+                ring->y += Q_24_8(res);
+                ring->velY = (ring->velY >> 2) - ring->velY;
             }
+        }
 
-            ring->velY -= sp08;
+        ring->velY -= sp08;
 
-            if ((((unsigned)screenX + TILE_WIDTH - 1) < 255) && (screenY > -8) && (screenY < (DISPLAY_HEIGHT + 8))) {
-                if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
-                    // _080200C0
-                    if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
-                        // _080200D2
-                        s->oamBaseIndex = 0xFF;
-                        s->x = screenX;
-                        s->y = screenY;
-                        DisplaySprite(s);
+        if ((screenX + TILE_WIDTH) > 0 && screenX + TILE_WIDTH < 256 && screenY > -8 && screenY < (DISPLAY_HEIGHT + TILE_WIDTH)) {
+            if (ring->unkC >= 32 || (gStageTime & 0x2) == 0) {
+                if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
+                    s->oamBaseIndex = 0xFF;
+                    s->x = screenX;
+                    s->y = screenY;
+                    DisplaySprite(s);
 
-                        sp10 = TRUE;
-                    } else {
-                        // _080200F8
-                        OamData *oam = &gOamBuffer2[s->oamBaseIndex];
+                    sp10 = TRUE;
+                } else {
+                    OamData *oam = &gOamBuffer2[s->oamBaseIndex];
 
-                        OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
+                    OamData *oamAlloced = OamMalloc(GET_SPRITE_OAM_ORDER(s));
 
-                        if (iwram_end != oamAlloced) {
-                            // NOTE: This will not work out for widescreen resolutions
-                            u32 dimOffX, dimOffY;
-                            DmaCopy16(3, oam, oamAlloced, sizeof(OamDataShort));
-                            oamAlloced->all.attr0 &= 0xFF00;
+                    if (iwram_end != oamAlloced) {
+                        // NOTE: This will not work out for widescreen resolutions
+                        u32 dimOffX, dimOffY;
+                        DmaCopy16(3, oam, oamAlloced, sizeof(OamDataShort));
+                        oamAlloced->all.attr0 &= 0xFF00;
 
-                            dimOffY = screenY - (u16)s->dimensions->offsetY;
-                            oamAlloced->all.attr0 += dimOffY & 0xFF;
+                        dimOffY = screenY - (u16)s->dimensions->offsetY;
+                        oamAlloced->all.attr0 += dimOffY & 0xFF;
 
-                            oamAlloced->all.attr1 &= 0xFE00;
+                        oamAlloced->all.attr1 &= 0xFE00;
 
-                            dimOffX = screenX - (u16)s->dimensions->offsetX;
-                            oamAlloced->all.attr1 += dimOffX & 0x1FF;
-                        }
+                        dimOffX = screenX - (u16)s->dimensions->offsetX;
+                        oamAlloced->all.attr1 += dimOffX & 0x1FF;
                     }
                 }
             }
-            // _08020166
-            {
-                u16 sprFlags = ring->unk10;
-                ring->unk10 &= ~0x3;
-                ring->unk10 |= (sprFlags + 1) & 0x3;
-                ring->unkC--;
-            }
+        }
+
+        {
+            u16 sprFlags = ring->unk10;
+            ring->unk10 &= ~0x3;
+            ring->unk10 |= (sprFlags + 1) & 0x3;
+            ring->unkC--;
         }
     }
 }
-END_NONMATCH
 
 void RingsScatterSingleplayer_NormalGravity(void)
 {
@@ -404,7 +394,7 @@ void RingsScatterSingleplayer_NormalGravity(void)
             }
         }
 
-        if ((ring->velY > 0) && ((ring->unk10 & 0x7) == 0)) {
+        if (ring->velY > 0 && ((ring->unk10 & 0x7) == 0)) {
             s32 res = sub_801F100(ringIntY, ringIntX, ring->unkE, +8, sub_801EC3C);
             if (res <= 0) {
                 ring->y += Q_24_8(res);
@@ -412,7 +402,7 @@ void RingsScatterSingleplayer_NormalGravity(void)
             }
         }
 
-        if ((rs->unk2B6 & 0x1) && (ring->velY < 0) && ((ring->unk10 & 0x7) == 0)) {
+        if (rs->unk2B6 & 0x1 && ring->velY < 0 && ((ring->unk10 & 0x7) == 0)) {
             s32 res = sub_801F100((ringIntY - 16), ringIntX, ring->unkE, -8, sub_801EC3C);
             if (res <= 0) {
                 ring->y -= Q_24_8(res);
@@ -423,7 +413,7 @@ void RingsScatterSingleplayer_NormalGravity(void)
         ring->velY += sp08;
 
         if ((screenX + TILE_WIDTH) > 0 && screenX + TILE_WIDTH < 256 && (screenY > -8) && (screenY < (DISPLAY_HEIGHT + 8))) {
-            if ((ring->unkC >= 32) || ((gStageTime & 0x2) == 0)) {
+            if (ring->unkC >= 32 || ((gStageTime & 0x2) == 0)) {
                 if ((!sp10) || (s->oamBaseIndex == 0xFF)) {
                     s->oamBaseIndex = 0xFF;
                     s->x = screenX;
@@ -439,7 +429,7 @@ void RingsScatterSingleplayer_NormalGravity(void)
                     if (iwram_end != oamAlloced) {
                         // NOTE: This will not work out for widescreen resolutions
                         u32 dimOffX, dimOffY;
-                        DmaCopy16(3, oam, oamAlloced, 6 /*sizeof(OamDataShort)*/);
+                        DmaCopy16(3, oam, oamAlloced, sizeof(OamDataShort));
                         oamAlloced->all.attr0 &= 0xFF00;
 
                         dimOffY = screenY - (u16)s->dimensions->offsetY;
