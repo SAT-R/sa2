@@ -691,13 +691,23 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
             if (gCamera.x > em->prevCamX) {
                 range1.xLow = em->prevCamX + (DISPLAY_WIDTH + 128);
                 range1.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
-                // HACK: in zone 3 the TAS we are using depends on going so far off the screen
-                // that some IAs do not spawn and so it gets to skip them. We have to emulate
-                // that behaviour so that we can test the TAS in widescreen
+
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-                    range1.xLow = em->prevCamX + (DISPLAY_WIDTH + 45);
-                    range1.xHigh = gCamera.x + (DISPLAY_WIDTH + 45);
+                    // HACK: in zone 3 the TAS we are using depends on going so far off the screen
+                    // that some IAs do not spawn and so it gets to skip them. We have to emulate
+                    // that behaviour so that we can test the TAS in widescreen
+                    range1.xLow = em->prevCamX + (426 + 45);
+                    range1.xHigh = gCamera.x + (426 + 45);
+                } else if (gCurrentLevel == LEVEL_INDEX(ZONE_4, ACT_2)) {
+                    // In this stage there is a pen which initialises earlier
+                    // than the TAS expects, so this limits that
+                    range1.xLow = em->prevCamX + (426 + 80);
+                    range1.xHigh = gCamera.x + (426 + 80);
+                } else if (gCurrentLevel == LEVEL_INDEX(ZONE_5, ACT_1)) {
+                    // In this stage there are some birds which initialise early
+                    range1.xLow = em->prevCamX + (240 + 128);
+                    range1.xHigh = gCamera.x + (240 + 128);
                 }
 #endif
             } else {
@@ -725,7 +735,11 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
             range2.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
             if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-                range2.xHigh = gCamera.x + (DISPLAY_WIDTH + 45);
+                range2.xHigh = gCamera.x + (426 + 45);
+            } else if (gCurrentLevel == LEVEL_INDEX(ZONE_4, ACT_2)) {
+                range2.xHigh = gCamera.x + (426 + 80);
+            } else if (gCurrentLevel == LEVEL_INDEX(ZONE_5, ACT_1)) {
+                range2.xHigh = gCamera.x + (240 + 128);
             }
 #endif
 
