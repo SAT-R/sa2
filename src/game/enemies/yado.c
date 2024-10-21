@@ -53,8 +53,12 @@ void CreateEntity_Yado(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     // so the value is essentially random
 #ifdef BUG_FIX
 #if TAS_TESTING
-    // For this tas, it's likely that the value randomly started as 2
-    yado->unk4C = 2;
+    if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1)) {
+        // For this tas, it's likely that the value randomly started as 2
+        yado->unk4C = 2;
+    } else {
+        yado->unk4C = 13;
+    }
 #else
     yado->unk4C = YADO_PROJ_COOLDOWN;
 #endif

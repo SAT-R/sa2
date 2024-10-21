@@ -454,6 +454,9 @@ void InitCamera(u32 level)
     }
 }
 
+// Only need to use this hacked value for these zones
+#define DISPLAY_WIDTH_FOR_BOSS_TAS (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_2 ? (240 / 2) : (DISPLAY_WIDTH / 2))
+
 void UpdateCamera(void)
 {
     Player *player = &gPlayer;
@@ -485,10 +488,11 @@ void UpdateCamera(void)
 
 // Most TASes were written with the expection that
 // the player gets pushed forwards when touching the boss
-// and the camera is moving. So we need to emulate that behaviour
-// even though the camera moves differently in widescreen
+// and the camera is moving (due to a physics bug).
+// So we need to emulate that behaviour on some specific
+// levels
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK
-        if (newX + ((240 / 2) + 1) < I(player->x)) {
+        if (newX + (DISPLAY_WIDTH_FOR_BOSS_TAS + 1) < I(player->x)) {
 
 #else
         if (newX + ((DISPLAY_WIDTH / 2) + 1) < I(player->x)) {
@@ -496,7 +500,7 @@ void UpdateCamera(void)
             if ((camera->unk10 + (DISPLAY_HEIGHT / 2)) > newX) {
                 s32 playerScreenX = I(player->x);
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK
-                playerScreenX -= 240 / 2;
+                playerScreenX -= DISPLAY_WIDTH_FOR_BOSS_TAS;
 #else
                 playerScreenX -= DISPLAY_WIDTH / 2;
 #endif

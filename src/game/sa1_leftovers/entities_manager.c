@@ -696,8 +696,8 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                 // that behaviour so that we can test the TAS in widescreen
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
                 if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-                    range1.xLow = em->prevCamX + (DISPLAY_WIDTH + 70);
-                    range1.xHigh = gCamera.x + (DISPLAY_WIDTH + 70);
+                    range1.xLow = em->prevCamX + (DISPLAY_WIDTH + 45);
+                    range1.xHigh = gCamera.x + (DISPLAY_WIDTH + 45);
                 }
 #endif
             } else {
@@ -725,7 +725,7 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
             range2.xHigh = gCamera.x + (DISPLAY_WIDTH + 128);
 #if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
             if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_3) {
-                range2.xHigh = gCamera.x + (DISPLAY_WIDTH + 70);
+                range2.xHigh = gCamera.x + (DISPLAY_WIDTH + 45);
             }
 #endif
 

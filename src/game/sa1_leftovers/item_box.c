@@ -245,6 +245,18 @@ void ApplyItemboxEffect(Entity_ItemBox *itembox)
 
         case ITEM__RINGS_RANDOM: {
             s32 rnd = gUnknown_080D51FC[(u32)PseudoRandom32() % 5];
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
+            // There is a point in the level where the TAS depends on the RNG
+            // giving 50. Because widescreen runs different code to the native
+            // resolution the RNG end up being different here
+            if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_2)) {
+                if (itembox->base.regionX == 65) {
+                    rnd = 50;
+                } else {
+                    rnd = 1;
+                }
+            }
+#endif
             rings = &gRingCount;
             oldRingCount = *rings;
             newRingCount = *rings + rnd;

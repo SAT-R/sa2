@@ -48,7 +48,7 @@ void CreateEntity_Ramp(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 s
     s->graphics.dest = VramMalloc(20);
     s->graphics.anim = SA2_ANIM_RAMP;
 
-    if (LEVEL_TO_ZONE(gCurrentLevel) == 5) {
+    if (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) {
         s->graphics.anim = SA2_ANIM_RAMP_TECHNO_BASE;
     }
 
