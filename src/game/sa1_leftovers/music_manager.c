@@ -62,7 +62,7 @@ const u16 gUnknown_080D5254[7] = {
 
 void Task_StageMusicManager(void)
 {
-    struct SongHeader *songHeader = gMPlayTable[0].info->songHeader;
+    struct MP2KSongHeader *songHeader = gMPlayTable[0].info->songHeader;
 
     if ((gUnknown_030054A8.unk0 == 0) && PLAYER_IS_ALIVE) {
         if ((gUnknown_030054A8.unk1 & 0xF0) == 0x30) {

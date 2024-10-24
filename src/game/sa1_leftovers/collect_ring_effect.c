@@ -19,7 +19,7 @@ typedef struct {
 
 void Task_CollectRingEffect(void);
 
-extern struct SongHeader se_ring_copy;
+extern struct MP2KSongHeader se_ring_copy;
 
 void CreateCollectRingEffect(s16 x, s16 y)
 {
