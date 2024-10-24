@@ -140,7 +140,7 @@ void CreateStageMusicManager(void)
 
 static void MusManager_UpdateBgmParams(void)
 {
-    struct MusicPlayerInfo *bgmInfo = &gMPlayInfo_BGM;
+    struct MP2KPlayerState *bgmInfo = &gMPlayInfo_BGM;
 
     m4aMPlayImmInit(bgmInfo);
     m4aMPlayVolumeControl(bgmInfo, 0xFF, 4);
@@ -153,7 +153,7 @@ static void MusManager_UpdateBgmParams(void)
 
 void sub_800BF74(u16 fadeoutSpeed)
 {
-    struct MusicPlayerInfo *bgmInfo = &gMPlayInfo_BGM;
+    struct MP2KPlayerState *bgmInfo = &gMPlayInfo_BGM;
 
     m4aMPlayFadeOutTemporarily(bgmInfo, fadeoutSpeed / 16);
 

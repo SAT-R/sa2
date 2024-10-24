@@ -4528,7 +4528,7 @@ void Player_Spindash(Player *p)
         }
 
         if (p->frameInput & gPlayerControls.jump) {
-            struct MusicPlayerInfo *mPlayerInfo;
+            struct MP2KPlayerState *mPlayerInfo;
             m4aSongNumStart(SE_SPIN_ATTACK);
 
             mPlayerInfo = gMPlayTable[gSongTable[SE_SPIN_ATTACK].ms].info;
