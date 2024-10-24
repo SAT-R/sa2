@@ -360,8 +360,8 @@ struct MP2KPlayerState {
     // TODO: volatile necessary?
     volatile u32 lockStatus;
 #endif
-    void (*nextPlayerFunc)(void *);
-    void *nextPlayer;
+    MPlayMainFunc nextPlayerFunc;
+    struct MP2KPlayerState *nextPlayer;
 };
 #endif
 
