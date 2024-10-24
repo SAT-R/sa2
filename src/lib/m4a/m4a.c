@@ -59,21 +59,21 @@ static void UnusedDummyCallback(void) { }
 
 void MPlayContinue(struct MP2KPlayerState *mplayInfo)
 {
-    if (mplayInfo->ident == ID_NUMBER) {
-        mplayInfo->ident++;
+    if (mplayInfo->lockStatus == ID_NUMBER) {
+        mplayInfo->lockStatus++;
         mplayInfo->status &= ~MUSICPLAYER_STATUS_PAUSE;
-        mplayInfo->ident = ID_NUMBER;
+        mplayInfo->lockStatus = ID_NUMBER;
     }
 }
 
 void MPlayFadeOut(struct MP2KPlayerState *mplayInfo, u16 speed)
 {
-    if (mplayInfo->ident == ID_NUMBER) {
-        mplayInfo->ident++;
-        mplayInfo->fadeOC = speed;
-        mplayInfo->fadeOI = speed;
+    if (mplayInfo->lockStatus == ID_NUMBER) {
+        mplayInfo->lockStatus++;
+        mplayInfo->fadeCounter = speed;
+        mplayInfo->fadeInterval = speed;
         mplayInfo->fadeOV = (64 << FADE_VOL_SHIFT);
-        mplayInfo->ident = ID_NUMBER;
+        mplayInfo->lockStatus = ID_NUMBER;
     }
 }
 
@@ -91,7 +91,7 @@ void m4aSoundInit(void)
     for (i = 0; i < NUM_MUSIC_PLAYERS; i++) {
         struct MP2KPlayerState *mplayInfo = gMPlayTable[i].info;
         MPlayOpen(mplayInfo, gMPlayTable[i].track, gMPlayTable[i].numTracks);
-        mplayInfo->unk_B = gMPlayTable[i].unk_A;
+        mplayInfo->checkSongPriority = gMPlayTable[i].unk_A;
         mplayInfo->memAccArea = gMPlayMemAccArea;
     }
 }
@@ -190,24 +190,24 @@ void m4aMPlayFadeOut(struct MP2KPlayerState *mplayInfo, u16 speed) { MPlayFadeOu
 
 void m4aMPlayFadeOutTemporarily(struct MP2KPlayerState *mplayInfo, u16 speed)
 {
-    if (mplayInfo->ident == ID_NUMBER) {
-        mplayInfo->ident++;
-        mplayInfo->fadeOC = speed;
-        mplayInfo->fadeOI = speed;
+    if (mplayInfo->lockStatus == ID_NUMBER) {
+        mplayInfo->lockStatus++;
+        mplayInfo->fadeCounter = speed;
+        mplayInfo->fadeInterval = speed;
         mplayInfo->fadeOV = (64 << FADE_VOL_SHIFT) | TEMPORARY_FADE;
-        mplayInfo->ident = ID_NUMBER;
+        mplayInfo->lockStatus = ID_NUMBER;
     }
 }
 
 void m4aMPlayFadeIn(struct MP2KPlayerState *mplayInfo, u16 speed)
 {
-    if (mplayInfo->ident == ID_NUMBER) {
-        mplayInfo->ident++;
-        mplayInfo->fadeOC = speed;
-        mplayInfo->fadeOI = speed;
+    if (mplayInfo->lockStatus == ID_NUMBER) {
+        mplayInfo->lockStatus++;
+        mplayInfo->fadeCounter = speed;
+        mplayInfo->fadeInterval = speed;
         mplayInfo->fadeOV = (0 << FADE_VOL_SHIFT) | FADE_IN;
         mplayInfo->status &= ~MUSICPLAYER_STATUS_PAUSE;
-        mplayInfo->ident = ID_NUMBER;
+        mplayInfo->lockStatus = ID_NUMBER;
     }
 }
 
@@ -567,8 +567,8 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
     // append music player and MPlayMain to linked list
 
     if (soundInfo->MPlayMainHead != NULL) {
-        mplayInfo->MPlayMainNext = soundInfo->MPlayMainHead;
-        mplayInfo->musicPlayerNext = soundInfo->musicPlayerHead;
+        mplayInfo->nextPlayerFunc = (void*)soundInfo->MPlayMainHead; // TODO: cast
+        mplayInfo->nextPlayer = soundInfo->musicPlayerHead;
         // NULL assignment semantically useless, but required for match
         soundInfo->MPlayMainHead = NULL;
     }
@@ -582,35 +582,35 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
     soundInfo->MPlayMainHead = MP2KPlayerMain;
 #endif
     soundInfo->ident = ID_NUMBER;
-    mplayInfo->ident = ID_NUMBER;
+    mplayInfo->lockStatus = ID_NUMBER;
 }
 
-void MPlayStart(struct MP2KPlayerState *mplayInfo, struct SongHeader *songHeader)
+void MPlayStart(struct MP2KPlayerState *mplayInfo, struct MP2KSongHeader *songHeader)
 {
     s32 i;
-    u8 unk_B;
+    u8 checkSongPriority;
     struct MP2KTrack *track;
 
-    if (mplayInfo->ident != ID_NUMBER)
+    if (mplayInfo->lockStatus != ID_NUMBER)
         return;
 
-    unk_B = mplayInfo->unk_B;
+    checkSongPriority = mplayInfo->checkSongPriority;
 
-    if (!unk_B
+    if (!checkSongPriority
         || ((!mplayInfo->songHeader || !(mplayInfo->tracks[0].flags & MPT_FLG_START))
             && ((mplayInfo->status & MUSICPLAYER_STATUS_TRACK) == 0 || (mplayInfo->status & MUSICPLAYER_STATUS_PAUSE)))
         || (mplayInfo->priority <= songHeader->priority)) {
-        mplayInfo->ident++;
+        mplayInfo->lockStatus++;
         mplayInfo->status = 0;
         mplayInfo->songHeader = songHeader;
-        mplayInfo->tone = songHeader->tone;
+        mplayInfo->voicegroup = (void*)songHeader->tone; // TODO: cast
         mplayInfo->priority = songHeader->priority;
         mplayInfo->clock = 0;
-        mplayInfo->tempoD = 150;
-        mplayInfo->tempoI = 150;
-        mplayInfo->tempoU = 0x100;
-        mplayInfo->tempoC = 0;
-        mplayInfo->fadeOI = 0;
+        mplayInfo->tempoRawBPM = 150;
+        mplayInfo->tempoInterval = 150;
+        mplayInfo->tempoScale = 0x100;
+        mplayInfo->tempoCounter = 0;
+        mplayInfo->fadeInterval = 0;
 
         i = 0;
         track = mplayInfo->tracks;
@@ -634,7 +634,7 @@ void MPlayStart(struct MP2KPlayerState *mplayInfo, struct SongHeader *songHeader
         if (songHeader->reverb & SOUND_MODE_REVERB_SET)
             m4aSoundMode(songHeader->reverb);
 
-        mplayInfo->ident = ID_NUMBER;
+        mplayInfo->lockStatus = ID_NUMBER;
     }
 }
 
@@ -644,10 +644,10 @@ void MPlayStop(struct MP2KPlayerState *mplayInfo)
     s32 i;
     struct MP2KTrack *track;
 
-    if (mplayInfo->ident != ID_NUMBER)
+    if (mplayInfo->lockStatus != ID_NUMBER)
         return;
 
-    mplayInfo->ident++;
+    mplayInfo->lockStatus++;
     mplayInfo->status |= MUSICPLAYER_STATUS_PAUSE;
 
     i = mplayInfo->trackCount;
@@ -659,7 +659,7 @@ void MPlayStop(struct MP2KPlayerState *mplayInfo)
         track++;
     }
 
-    mplayInfo->ident = ID_NUMBER;
+    mplayInfo->lockStatus = ID_NUMBER;
 }
 
 void FadeOutBody(struct MP2KPlayerState *mplayInfo)
@@ -668,17 +668,17 @@ void FadeOutBody(struct MP2KPlayerState *mplayInfo)
     struct MP2KTrack *track;
     u16 fadeOV;
 
-    if (mplayInfo->fadeOI == 0)
+    if (mplayInfo->fadeInterval == 0)
         return;
-    if (--mplayInfo->fadeOC != 0)
+    if (--mplayInfo->fadeCounter != 0)
         return;
 
-    mplayInfo->fadeOC = mplayInfo->fadeOI;
+    mplayInfo->fadeCounter = mplayInfo->fadeInterval;
 
     if (mplayInfo->fadeOV & FADE_IN) {
         if ((u16)(mplayInfo->fadeOV += (4 << FADE_VOL_SHIFT)) >= (64 << FADE_VOL_SHIFT)) {
             mplayInfo->fadeOV = (64 << FADE_VOL_SHIFT);
-            mplayInfo->fadeOI = 0;
+            mplayInfo->fadeInterval = 0;
         }
     } else {
         if ((s16)(mplayInfo->fadeOV -= (4 << FADE_VOL_SHIFT)) <= 0) {
@@ -706,7 +706,7 @@ void FadeOutBody(struct MP2KPlayerState *mplayInfo)
             else
                 mplayInfo->status = MUSICPLAYER_STATUS_PAUSE;
 
-            mplayInfo->fadeOI = 0;
+            mplayInfo->fadeInterval = 0;
             return;
         }
     }
@@ -1142,11 +1142,11 @@ void CgbSound(void)
 
 void m4aMPlayTempoControl(struct MP2KPlayerState *mplayInfo, u16 tempo)
 {
-    if (mplayInfo->ident == ID_NUMBER) {
-        mplayInfo->ident++;
-        mplayInfo->tempoU = tempo;
-        mplayInfo->tempoI = (mplayInfo->tempoD * mplayInfo->tempoU) >> 8;
-        mplayInfo->ident = ID_NUMBER;
+    if (mplayInfo->lockStatus == ID_NUMBER) {
+        mplayInfo->lockStatus++;
+        mplayInfo->tempoScale = tempo;
+        mplayInfo->tempoInterval = (mplayInfo->tempoRawBPM * mplayInfo->tempoScale) >> 8;
+        mplayInfo->lockStatus = ID_NUMBER;
     }
 }
 
@@ -1156,10 +1156,10 @@ void m4aMPlayVolumeControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, u16
     u32 bit;
     struct MP2KTrack *track;
 
-    if (mplayInfo->ident != ID_NUMBER)
+    if (mplayInfo->lockStatus != ID_NUMBER)
         return;
 
-    mplayInfo->ident++;
+    mplayInfo->lockStatus++;
 
     i = mplayInfo->trackCount;
     track = mplayInfo->tracks;
@@ -1178,7 +1178,7 @@ void m4aMPlayVolumeControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, u16
         bit <<= 1;
     }
 
-    mplayInfo->ident = ID_NUMBER;
+    mplayInfo->lockStatus = ID_NUMBER;
 }
 
 void m4aMPlayPitchControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s16 pitch)
@@ -1187,10 +1187,10 @@ void m4aMPlayPitchControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s16 
     u32 bit;
     struct MP2KTrack *track;
 
-    if (mplayInfo->ident != ID_NUMBER)
+    if (mplayInfo->lockStatus != ID_NUMBER)
         return;
 
-    mplayInfo->ident++;
+    mplayInfo->lockStatus++;
 
     i = mplayInfo->trackCount;
     track = mplayInfo->tracks;
@@ -1210,7 +1210,7 @@ void m4aMPlayPitchControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s16 
         bit <<= 1;
     }
 
-    mplayInfo->ident = ID_NUMBER;
+    mplayInfo->lockStatus = ID_NUMBER;
 }
 
 void m4aMPlayPanpotControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s8 pan)
@@ -1219,10 +1219,10 @@ void m4aMPlayPanpotControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s8 
     u32 bit;
     struct MP2KTrack *track;
 
-    if (mplayInfo->ident != ID_NUMBER)
+    if (mplayInfo->lockStatus != ID_NUMBER)
         return;
 
-    mplayInfo->ident++;
+    mplayInfo->lockStatus++;
 
     i = mplayInfo->trackCount;
     track = mplayInfo->tracks;
@@ -1241,7 +1241,7 @@ void m4aMPlayPanpotControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s8 
         bit <<= 1;
     }
 
-    mplayInfo->ident = ID_NUMBER;
+    mplayInfo->lockStatus = ID_NUMBER;
 }
 
 void ClearModM(struct MP2KTrack *track)
@@ -1261,10 +1261,10 @@ void m4aMPlayModDepthSet(struct MP2KPlayerState *mplayInfo, u16 trackBits, u8 mo
     u32 bit;
     struct MP2KTrack *track;
 
-    if (mplayInfo->ident != ID_NUMBER)
+    if (mplayInfo->lockStatus != ID_NUMBER)
         return;
 
-    mplayInfo->ident++;
+    mplayInfo->lockStatus++;
 
     i = mplayInfo->trackCount;
     track = mplayInfo->tracks;
@@ -1285,7 +1285,7 @@ void m4aMPlayModDepthSet(struct MP2KPlayerState *mplayInfo, u16 trackBits, u8 mo
         bit <<= 1;
     }
 
-    mplayInfo->ident = ID_NUMBER;
+    mplayInfo->lockStatus = ID_NUMBER;
 }
 
 void m4aMPlayLFOSpeedSet(struct MP2KPlayerState *mplayInfo, u16 trackBits, u8 lfoSpeed)
@@ -1294,10 +1294,10 @@ void m4aMPlayLFOSpeedSet(struct MP2KPlayerState *mplayInfo, u16 trackBits, u8 lf
     u32 bit;
     struct MP2KTrack *track;
 
-    if (mplayInfo->ident != ID_NUMBER)
+    if (mplayInfo->lockStatus != ID_NUMBER)
         return;
 
-    mplayInfo->ident++;
+    mplayInfo->lockStatus++;
 
     i = mplayInfo->trackCount;
     track = mplayInfo->tracks;
@@ -1318,7 +1318,7 @@ void m4aMPlayLFOSpeedSet(struct MP2KPlayerState *mplayInfo, u16 trackBits, u8 lf
         bit <<= 1;
     }
 
-    mplayInfo->ident = ID_NUMBER;
+    mplayInfo->lockStatus = ID_NUMBER;
 }
 
 #define MEMACC_COND_JUMP(cond)                                                                                                             \

@@ -226,44 +226,13 @@ struct SoundInfo {
 #endif
 };
 
-struct SongHeader {
+struct MP2KSongHeader {
     u8 trackCount;
     u8 blockCount;
     u8 priority;
     u8 reverb;
     struct ToneData *tone;
     u8 *part[1];
-};
-
-struct PokemonCrySong {
-    u8 trackCount;
-    u8 blockCount;
-    u8 priority;
-    u8 reverb;
-    struct ToneData *tone;
-    u8 *part[2];
-    u8 gap;
-    u8 part0; // 0x11
-    u8 tuneValue; // 0x12
-    u8 gotoCmd; // 0x13
-    u32 gotoTarget; // 0x14
-    u8 part1; // 0x18
-    u8 tuneValue2; // 0x19
-    u8 cont[2]; // 0x1A
-    u8 volCmd; // 0x1C
-    u8 volumeValue; // 0x1D
-    u8 unkCmd0D[2]; // 0x1E
-    u32 unkCmd0DParam; // 0x20
-    u8 xreleCmd[2]; // 0x24
-    u8 releaseValue; // 0x26
-    u8 panCmd;
-    u8 panValue; // 0x28
-    u8 tieCmd; // 0x29
-    u8 tieKeyValue; // 0x2A
-    u8 tieVelocityValue; // 0x2B
-    u8 unkCmd0C[2]; // 0x2C
-    u16 unkCmd0CParam; // 0x2E
-    u8 end[2]; // 0x30
 };
 
 #define MPT_FLG_VOLSET 0x01
@@ -273,6 +242,7 @@ struct PokemonCrySong {
 #define MPT_FLG_START  0x40
 #define MPT_FLG_EXIST  0x80
 
+#if 01
 struct MP2KTrack {
     u8 flags;
     u8 wait;
@@ -314,6 +284,7 @@ struct MP2KTrack {
     u8 *cmdPtr;
     u8 *patternStack[3];
 };
+#endif
 
 #define MUSICPLAYER_STATUS_TRACK 0x0000ffff
 #define MUSICPLAYER_STATUS_PAUSE 0x80000000
@@ -327,6 +298,7 @@ struct MP2KTrack {
 #define FADE_VOL_MAX   64
 #define FADE_VOL_SHIFT 2
 
+#if 0
 struct MP2KPlayerState {
     struct SongHeader *songHeader;
     u32 status;
@@ -350,6 +322,38 @@ struct MP2KPlayerState {
     MPlayMainFunc MPlayMainNext;
     struct MP2KPlayerState *musicPlayerNext;
 };
+#else
+struct MP2KPlayerState {
+    struct MP2KSongHeader *songHeader;
+    vu32 status;
+    u8 trackCount;
+    u8 priority;
+    u8 cmd;
+    bool8 checkSongPriority;
+    u32 clock;
+    u8 padding[8];
+    u8 *memAccArea;
+    u16 tempoRawBPM; // 150 initially... this doesn't seem right but whatever
+    u16 tempoScale; // 0x100 initially
+    u16 tempoInterval; // 150 initially
+    u16 tempoCounter;
+    u16 fadeInterval;
+    u16 fadeCounter;
+#if 1
+    u16 fadeOV;
+#else
+    u16 isFadeTemporary : 1;
+    u16 isFadeIn : 1;
+    u16 fadeVolume : 7;
+    u16 : 7; // padding
+#endif
+    struct MP2KTrack *tracks;
+    struct MP2KInstrument *voicegroup;
+    vu32 lockStatus;
+    void (*nextPlayerFunc)(void *);
+    void *nextPlayer;
+};
+#endif
 
 struct MusicPlayer {
     struct MP2KPlayerState *info;
@@ -359,7 +363,7 @@ struct MusicPlayer {
 };
 
 struct Song {
-    struct SongHeader *header;
+    struct MP2KSongHeader *header;
     u16 ms;
     u16 me;
 };
@@ -406,7 +410,7 @@ void MPlayMain(struct MP2KPlayerState *);
 void RealClearChain(void *x);
 
 void MPlayContinue(struct MP2KPlayerState *mplayInfo);
-void MPlayStart(struct MP2KPlayerState *mplayInfo, struct SongHeader *songHeader);
+void MPlayStart(struct MP2KPlayerState *mplayInfo, struct MP2KSongHeader *songHeader);
 void MPlayStop(struct MP2KPlayerState *mplayInfo);
 void FadeOutBody(struct MP2KPlayerState *mplayInfo);
 void TrkVolPitSet(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track);
@@ -473,8 +477,6 @@ void ply_xiecv(struct MP2KPlayerState *, struct MP2KTrack *);
 void ply_xiecl(struct MP2KPlayerState *, struct MP2KTrack *);
 void ply_xleng(struct MP2KPlayerState *, struct MP2KTrack *);
 void ply_xswee(struct MP2KPlayerState *, struct MP2KTrack *);
-void ply_xcmd_0C(struct MP2KPlayerState *, struct MP2KTrack *);
-void ply_xcmd_0D(struct MP2KPlayerState *, struct MP2KTrack *);
 #else
 void MP2KClearChain(struct MixerSource *chan);
 
