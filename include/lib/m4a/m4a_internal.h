@@ -325,7 +325,12 @@ struct MP2KPlayerState {
 #else
 struct MP2KPlayerState {
     struct MP2KSongHeader *songHeader;
-    vu32 status;
+#if !PORTABLE
+    u32 status;
+#else
+    // TODO: volatile necessary?
+    volatile u32 status;
+#endif
     u8 trackCount;
     u8 priority;
     u8 cmd;
@@ -349,7 +354,12 @@ struct MP2KPlayerState {
 #endif
     struct MP2KTrack *tracks;
     struct MP2KInstrument *voicegroup;
-    vu32 lockStatus;
+#if !PORTABLE
+    u32 lockStatus;
+#else
+    // TODO: volatile necessary?
+    volatile u32 lockStatus;
+#endif
     void (*nextPlayerFunc)(void *);
     void *nextPlayer;
 };
