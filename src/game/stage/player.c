@@ -2773,8 +2773,8 @@ void sub_80232D0(Player *p)
         }
 
         if (IS_BOSS_STAGE(gCurrentLevel)) {
-            r2 = gBossCameraClampX;
-            r3 = gBossCameraClampY;
+            r2 = gBossCameraClampYLower;
+            r3 = gBossCameraClampYUpper;
         } else {
             r2 = cam->minY;
             r3 = cam->maxY;

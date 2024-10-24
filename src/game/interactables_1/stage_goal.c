@@ -166,6 +166,9 @@ static void Task_StageGoalToggleMain(void)
         if (gCurrentLevel == LEVEL_INDEX(ZONE_3, ACT_1)) {
             gPlayer.speedGroundX = 0;
             gInputRecorder.playbackHead += 1;
+        } else if (gCurrentLevel == LEVEL_INDEX(ZONE_6, ACT_2)) {
+            gPlayer.speedAirX = 0;
+            gInputRecorder.playbackHead += 1;
         }
 #endif
     }

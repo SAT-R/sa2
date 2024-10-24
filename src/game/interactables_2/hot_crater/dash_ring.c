@@ -25,7 +25,7 @@ static void Task_Interactable_DashRing(void);
 static void Task_Interactable_DashRing_AfterAcceleration(void);
 static void TaskDestructor_Interactable_DashRing(struct Task *);
 static void DashRing_UpdateScreenPos(Sprite_DashRing *);
-static bool32 DashRing_ShouldDespawn(Sprite_DashRing *);
+bool32 DashRing_ShouldDespawn(Sprite_DashRing *);
 static void DashRing_Despawn(Sprite_DashRing *);
 
 // type: UnkDashRingStruct
@@ -318,14 +318,15 @@ static void DashRing_UpdateScreenPos(Sprite_DashRing *ring)
     ring->s2.y = ring->posY - gCamera.y;
 }
 
-static bool32 DashRing_ShouldDespawn(Sprite_DashRing *ring)
+bool32 DashRing_ShouldDespawn(Sprite_DashRing *ring)
 {
     s16 screenX, screenY;
 
     screenX = ring->posX - gCamera.x;
     screenY = ring->posY - gCamera.y;
 
-    if (((u16)(screenX + 140) > 520) || ((screenY + 12) < -128) || ((screenY - 12) > 288)) {
+    if ((screenX + 12) < -(CAM_REGION_WIDTH / 2) || (screenX - 12) > DISPLAY_WIDTH + (CAM_REGION_WIDTH / 2)
+        || (screenY + 12) < -(CAM_REGION_WIDTH / 2) || ((screenY - 12) > DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))) {
         return TRUE;
     }
 

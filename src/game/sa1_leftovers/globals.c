@@ -26,7 +26,7 @@ bool8 ALIGNED(4) gBossRingsShallRespawn = FALSE;
 u32 gMultiplayerPseudoRandom = 0;
 u8 gUnknown_03005438 = 0;
 u8 ALIGNED(4) gUnknown_0300543C = 0;
-u16 ALIGNED(4) gBossCameraClampX = 0;
+u16 ALIGNED(4) gBossCameraClampYLower = 0;
 s8 ALIGNED(4) gTrappedAnimalVariant = 0;
 
 u8 ALIGNED(4) gNumLives = 0;
@@ -37,12 +37,12 @@ u16 ALIGNED(16) gMultiplayerNames[MULTI_SIO_PLAYERS_MAX][MAX_PLAYER_NAME_LENGTH]
 u32 gCourseTime = 0;
 
 CheeseTarget ALIGNED(8) gCheeseTarget = {};
-u32 sMPStageStartFrameCount = 0;
+u32 gMPStageStartFrameCount = 0;
 UNK_30054A8 ALIGNED(8) gUnknown_030054A8 = {};
 u8 gUnknown_030054B0 = 0;
 s8 ALIGNED(4) gUnknown_030054B4[MULTI_SIO_PLAYERS_MAX] = {};
 u8 gUnknown_030054B8 = 0;
-u16 ALIGNED(4) gBossCameraClampY = 0;
+u16 ALIGNED(4) gBossCameraClampYUpper = 0;
 HomingTarget gHomingTarget = {};
 
 u8 gDemoPlayCounter = 0;

@@ -90,9 +90,9 @@ void GameStart(void)
     CreateNewProfileScreen();
 
     // Use this snippet to skip to a specific level
-    // music plant act 2 starts at frame 16454
-    // gInputRecorder.playbackHead = 13942;
-    // gCurrentLevel = LEVEL_INDEX(ZONE_3, ACT_1);
+    // zone 7 act 1 starts at frame 44928
+    // gInputRecorder.playbackHead = 44928;
+    // gCurrentLevel = LEVEL_INDEX(ZONE_7, ACT_1);
     // ApplyGameStageSettings();
     // GameStageStart();
 

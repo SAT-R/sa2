@@ -33,8 +33,6 @@
 
 struct Task *gGameStageTask = NULL;
 
-extern u32 sMPStageStartFrameCount;
-
 void Task_GameStage(void);
 
 void TaskDestructor_GameStage(struct Task *);
@@ -167,7 +165,7 @@ void GameStageStart(void)
     gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
 
     if (IS_MULTI_PLAYER) {
-        sMPStageStartFrameCount = gFrameCount;
+        gMPStageStartFrameCount = gFrameCount;
     }
 
     gCheckpointTime = ZONE_TIME_TO_INT(0, 0);
@@ -204,8 +202,8 @@ void CreateGameStage(void)
     }
 
     if (IS_BOSS_STAGE(gCurrentLevel)) {
-        gBossCameraClampX = gBossCameraClamps[LEVEL_TO_ZONE(gCurrentLevel)][0];
-        gBossCameraClampY = gBossCameraClamps[LEVEL_TO_ZONE(gCurrentLevel)][1];
+        gBossCameraClampYLower = gBossCameraYClamps[LEVEL_TO_ZONE(gCurrentLevel)][0];
+        gBossCameraClampYUpper = gBossCameraYClamps[LEVEL_TO_ZONE(gCurrentLevel)][1];
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
             CreateBossRunManager(gBossIndex);
@@ -213,8 +211,8 @@ void CreateGameStage(void)
 
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             SuperSonicInit();
-            gBossCameraClampX = gBossCameraClamps[ZONE_FINAL + 1][0];
-            gBossCameraClampY = gBossCameraClamps[ZONE_FINAL + 1][1];
+            gBossCameraClampYLower = gBossCameraYClamps[ZONE_FINAL + 1][0];
+            gBossCameraClampYUpper = gBossCameraYClamps[ZONE_FINAL + 1][1];
         }
     }
 
@@ -310,7 +308,7 @@ void Task_GameStage(void)
         gStageTime++;
         timeStep = 1;
     } else {
-        u32 framesSinceStageStart = (gFrameCount - sMPStageStartFrameCount);
+        u32 framesSinceStageStart = (gFrameCount - gMPStageStartFrameCount);
         timeStep = framesSinceStageStart - gStageTime;
         gStageTime = framesSinceStageStart;
 

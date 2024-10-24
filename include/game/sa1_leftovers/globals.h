@@ -94,8 +94,8 @@ extern u8 gSpecialRingCount;
 extern s32 gUnknown_030054E0;
 extern s32 gUnknown_030054FC;
 
-extern u16 gBossCameraClampX;
-extern u16 gBossCameraClampY;
+extern u16 gBossCameraClampYLower;
+extern u16 gBossCameraClampYUpper;
 extern u8 gRandomItemBox;
 extern u8 gUnknown_030053E0;
 
@@ -121,6 +121,7 @@ extern u8 gUnknown_030054F8;
 // Incremented by 1 every frame if the game is not paused.
 // Starts before the stage-timer that is used for scores does.
 extern u32 gStageTime;
+extern u32 gMPStageStartFrameCount;
 
 extern u32 gCheckpointTime; // Checkpoint timer?
 

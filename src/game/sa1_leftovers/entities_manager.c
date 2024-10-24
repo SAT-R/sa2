@@ -708,6 +708,14 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                     // In this stage there are some birds which initialise early
                     range1.xLow = em->prevCamX + (240 + 128);
                     range1.xHigh = gCamera.x + (240 + 128);
+                } else if (gCurrentLevel == LEVEL_INDEX(ZONE_6, ACT_1)) {
+                    // In this stage some robot bird thing jumps too early
+                    range1.xLow = em->prevCamX + (426 + 35);
+                    range1.xHigh = gCamera.x + (426 + 35);
+                } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_1)) {
+                    // Some spike thing generates too early
+                    range1.xLow = em->prevCamX + (426 + 35);
+                    range1.xHigh = gCamera.x + (426 + 35);
                 }
 #endif
             } else {
@@ -740,6 +748,10 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                 range2.xHigh = gCamera.x + (426 + 80);
             } else if (gCurrentLevel == LEVEL_INDEX(ZONE_5, ACT_1)) {
                 range2.xHigh = gCamera.x + (240 + 128);
+            } else if (gCurrentLevel == LEVEL_INDEX(ZONE_6, ACT_1)) {
+                range2.xHigh = gCamera.x + (426 + 35);
+            } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_1)) {
+                range2.xHigh = gCamera.x + (426 + 35);
             }
 #endif
 

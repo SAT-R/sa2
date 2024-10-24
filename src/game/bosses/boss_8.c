@@ -195,11 +195,11 @@ void CreateBossRunManager(u8 bossIndex)
     manager->bossIndex = bossIndex;
     manager->unk5 = 0;
     manager->unk6 = 0;
-    manager->unk0 = gBossCameraClamps[manager->bossIndex][0];
-    manager->unk2 = gBossCameraClamps[manager->bossIndex][1];
+    manager->unk0 = gBossCameraYClamps[manager->bossIndex][0];
+    manager->unk2 = gBossCameraYClamps[manager->bossIndex][1];
 
-    gBossCameraClampX = gBossCameraClamps[manager->bossIndex][0];
-    gBossCameraClampY = gBossCameraClamps[manager->bossIndex][1];
+    gBossCameraClampYLower = gBossCameraYClamps[manager->bossIndex][0];
+    gBossCameraClampYUpper = gBossCameraYClamps[manager->bossIndex][1];
 
     if (bossIndex != 0) {
         s32 x, y;
@@ -246,8 +246,8 @@ static void Task_BossRunManagerMain(void)
 
     if (manager->bossIndex <= 6) {
         if (manager->bossIndex == 6) {
-            gBossCameraClampX = gBossCameraClamps[7][0];
-            gBossCameraClampY = gBossCameraClamps[7][1];
+            gBossCameraClampYLower = gBossCameraYClamps[7][0];
+            gBossCameraClampYUpper = gBossCameraYClamps[7][1];
             if (gPlayer.x < Q(42960) && gPlayer.x > Q(gUnknown_080D8808[6][0] + 30)) {
                 gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
                 gPlayer.speedGroundX = Q(5);
@@ -340,24 +340,24 @@ static void Task_BossRunManagerMain(void)
         }
     }
 
-    if (manager->unk0 != gBossCameraClamps[manager->unk5][0]) {
-        if (manager->unk0 < gBossCameraClamps[manager->unk5][0]) {
+    if (manager->unk0 != gBossCameraYClamps[manager->unk5][0]) {
+        if (manager->unk0 < gBossCameraYClamps[manager->unk5][0]) {
             manager->unk0++;
         } else {
             manager->unk0--;
         }
     }
 
-    if (manager->unk2 != gBossCameraClamps[manager->unk5][1]) {
-        if (manager->unk2 < gBossCameraClamps[manager->unk5][1]) {
+    if (manager->unk2 != gBossCameraYClamps[manager->unk5][1]) {
+        if (manager->unk2 < gBossCameraYClamps[manager->unk5][1]) {
             manager->unk2++;
         } else {
             manager->unk2--;
         }
     }
 
-    gBossCameraClampX = manager->unk0;
-    gBossCameraClampY = manager->unk2;
+    gBossCameraClampYLower = manager->unk0;
+    gBossCameraClampYUpper = manager->unk2;
 }
 
 static void TaskDestructor_BossRunManager(struct Task *t) { }

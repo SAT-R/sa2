@@ -172,7 +172,7 @@ const Background gStageCameraBgTemplates[4] = {
     },
 };
 
-const u16 gBossCameraClamps[][2] = {
+const u16 gBossCameraYClamps[][2] = {
     [ZONE_1] = { 32, DISPLAY_HEIGHT + 56 },  [ZONE_2] = { 32, DISPLAY_HEIGHT + 44 },      [ZONE_3] = { 32, DISPLAY_HEIGHT + 56 },
     [ZONE_4] = { 32, DISPLAY_HEIGHT + 48 },  [ZONE_5] = { 32, DISPLAY_HEIGHT + 48 },      [ZONE_6] = { 32, DISPLAY_HEIGHT + 72 },
     [ZONE_7] = { 32, DISPLAY_HEIGHT + 104 }, [ZONE_FINAL] = { 32, DISPLAY_HEIGHT + 104 }, [ZONE_FINAL + 1] = { 32, DISPLAY_HEIGHT + 104 },
@@ -394,8 +394,8 @@ void InitCamera(u32 level)
     if (IS_BOSS_STAGE(gCurrentLevel)) {
         if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
             SuperSonicGetPos(&player->x, &player->y);
-            gBossCameraClampX = gBossCameraClamps[ZONE_FINAL + 1][0];
-            gBossCameraClampY = gBossCameraClamps[ZONE_FINAL + 1][1];
+            gBossCameraClampYLower = gBossCameraYClamps[ZONE_FINAL + 1][0];
+            gBossCameraClampYUpper = gBossCameraYClamps[ZONE_FINAL + 1][1];
             camera->x = 600;
             camera->unk10 = (DISPLAY_WIDTH / 2);
             camera->unk14 = 0;
@@ -454,8 +454,9 @@ void InitCamera(u32 level)
     }
 }
 
-// Only need to use this hacked value for these zones
-#define DISPLAY_WIDTH_FOR_BOSS_TAS (LEVEL_TO_ZONE(gCurrentLevel) == ZONE_2 ? (240 / 2) : (DISPLAY_WIDTH / 2))
+// Only need to use the original value for these zones
+#define DISPLAY_WIDTH_FOR_BOSS_TAS                                                                                                         \
+    ((LEVEL_TO_ZONE(gCurrentLevel) == ZONE_2 || LEVEL_TO_ZONE(gCurrentLevel) == ZONE_6) ? (240 / 2) : (DISPLAY_WIDTH / 2))
 
 void UpdateCamera(void)
 {
@@ -491,15 +492,14 @@ void UpdateCamera(void)
 // and the camera is moving (due to a physics bug).
 // So we need to emulate that behaviour on some specific
 // levels
-#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
         if (newX + (DISPLAY_WIDTH_FOR_BOSS_TAS + 1) < I(player->x)) {
-
 #else
         if (newX + ((DISPLAY_WIDTH / 2) + 1) < I(player->x)) {
 #endif
             if ((camera->unk10 + (DISPLAY_HEIGHT / 2)) > newX) {
                 s32 playerScreenX = I(player->x);
-#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
                 playerScreenX -= DISPLAY_WIDTH_FOR_BOSS_TAS;
 #else
                 playerScreenX -= DISPLAY_WIDTH / 2;
@@ -527,7 +527,7 @@ void UpdateCamera(void)
                 s32 temp = newY - 48;
                 newY = delta + temp;
                 camera->shiftY = 0;
-            } else if (delta >= (gBossCameraClampY - 208)) {
+            } else if (delta >= (gBossCameraClampYUpper - 208)) {
                 s32 temp = newY - 112;
                 newY = delta + temp;
                 camera->shiftY = 0;
@@ -541,7 +541,7 @@ void UpdateCamera(void)
                 newY += 2;
             }
         }
-        newY = CLAMP(newY, gBossCameraClampX, gBossCameraClampY - DISPLAY_HEIGHT);
+        newY = CLAMP(newY, gBossCameraClampYLower, gBossCameraClampYUpper - DISPLAY_HEIGHT);
 
         newX = newX + camera->shiftX;
         newY = newY + camera->shiftY;

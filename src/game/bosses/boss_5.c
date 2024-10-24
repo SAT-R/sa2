@@ -34,8 +34,8 @@ typedef struct {
     /* 0x0C */ s16 unkC; // speedX
     /* 0x0E */ s16 unkE; // speedY
 
-    /* 0x10 */ u8 unk10;
-    /* 0x11 */ u8 unk11;
+    /* 0x10 */ u8 health;
+    /* 0x11 */ u8 gunHealth;
     /* 0x12 */ u8 unk12;
     /* 0x13 */ u8 unk13;
     /* 0x14 */ u8 unk14;
@@ -196,6 +196,12 @@ void CreateEggSaucer(void)
     void *vram;
     void *vramBase;
 
+    // The TAS is off by 1 frame here, probably
+    // becaues of our constant +12 assumed save time
+#if TAS_TESTING
+    gInputRecorder.playbackHead++;
+#endif
+
     gDispCnt |= 0x100;
     gBgCntRegs[0] = 0x560D;
     gBgScrollRegs[0][0] = 0;
@@ -234,16 +240,23 @@ void CreateEggSaucer(void)
     fade->bldAlpha = 0;
 
     if (gDifficultyLevel != 0 && gGameMode != GAME_MODE_BOSS_TIME_ATTACK) {
-        boss->unk10 = 6;
-        boss->unk11 = 2;
+        boss->health = 6;
+        boss->gunHealth = 2;
     } else {
-        boss->unk10 = 8;
-        boss->unk11 = 4;
+        boss->health = 8;
+        boss->gunHealth = 4;
     }
 
+    // Due to camera->dx issues in collision the widescreen physics
+    // behave differently to non widescreen so set the health to 2
+    // so that the TAS has to at least hit the cabin to move on
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
+    boss->health = 2;
+#endif
+
     if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
-        boss->unk10 = boss->unk10 >> 1;
-        boss->unk11 = boss->unk11 >> 1;
+        boss->health = boss->health >> 1;
+        boss->gunHealth = boss->gunHealth >> 1;
     }
 
     if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE)) {
@@ -429,12 +442,12 @@ void sub_804352C(void)
     sub_8043E2C(boss);
     sub_8045898(boss);
 
-    if (boss->unk10 == 0) {
+    if (boss->health == 0) {
         gBldRegs.bldCnt = 0;
         Player_DisableInputAndBossTimer();
         sub_80436E4(boss);
         boss->unkC = Q(BOSS_SPEED);
-        boss->unk11 = 0;
+        boss->gunHealth = 0;
         gCurTask->main = sub_80435BC;
     }
 }
@@ -567,7 +580,7 @@ void sub_80438C4(EggSaucer *boss)
     UpdateSpriteAnimation(s);
     DisplaySprite(s);
 
-    if (boss->unk11) {
+    if (boss->gunHealth > 0) {
         s = &boss->gunBase;
         s->x = x + ((COS(boss->gunDiskAngle) * 5) >> 11);
         s->y = y + ((SIN(boss->gunDiskAngle) * 5) >> 11);
@@ -726,7 +739,7 @@ void sub_8043E2C(EggSaucer *boss)
     Sprite *s;
     SpriteTransform *transform;
     ExplosionPartsInfo explosion;
-    if (boss->unk11 == 0 && boss->unk20 == 0) {
+    if (boss->gunHealth == 0 && boss->unk20 == 0) {
         boss->unk24 += 16;
         x = boss->unk28 + boss->unk22;
         boss->unk28 = x;
@@ -844,7 +857,7 @@ void HandleCollision(EggSaucer *boss)
         gCheeseTarget.task->unk15 = 0;
     }
 
-    if (boss->unk11 != 0 && boss->unk1F == 0) {
+    if (boss->gunHealth != 0 && boss->unk1F == 0) {
         s = &boss->gunBase;
         x = I(boss->x) + ((COS(boss->gunDiskAngle) * 5) >> 11);
         y = I(boss->y) + ((SIN(boss->gunDiskAngle) * 5) >> 11);
@@ -858,15 +871,15 @@ void HandleCollision(EggSaucer *boss)
 
         if (sub_800C320(s, x, y, 0, &gPlayer) == 1) {
             boss->unk1F = 0x1E;
-            boss->unk11--;
+            boss->gunHealth--;
 
-            if (boss->unk11 & 1) {
+            if (boss->gunHealth & 1) {
                 m4aSongNumStart(SE_143);
             } else {
                 m4aSongNumStart(SE_235);
             }
 
-            if (boss->unk11 == 0) {
+            if (boss->gunHealth == 0) {
                 INCREMENT_SCORE(500);
             }
         } else {
@@ -880,16 +893,16 @@ void HandleCollision(EggSaucer *boss)
         if (boss->unk1F == 0) {
             if (IsColliding_Cheese(s, x, y, 0, &gPlayer) == 1) {
                 boss->unk1F = 0x1E;
-                boss->unk11--;
+                boss->gunHealth--;
 
-                if (boss->unk11 & 1) {
+                if (boss->gunHealth & 1) {
                     m4aSongNumStart(SE_143);
                 } else {
                     m4aSongNumStart(SE_235);
                 }
 
                 gCheeseTarget.task->unk15 = 0;
-                if (boss->unk11 == 0) {
+                if (boss->gunHealth == 0) {
                     INCREMENT_SCORE(500);
                 }
             }
@@ -1051,7 +1064,7 @@ void sub_8044784(EggSaucer *boss)
         return;
     }
 
-    if (boss->unk11 == 0) {
+    if (boss->gunHealth == 0) {
         fade->brightness = Q(SCREEN_FADE_BLEND_MAX);
         UpdateScreenFade(fade);
         gFlags &= ~FLAGS_4;
@@ -1074,7 +1087,7 @@ void sub_8044784(EggSaucer *boss)
 
         someBool = TRUE;
         if (boss->unk1E == 0) {
-            boss->unk1C = gUnknown_080D7F94[boss->unk10 > 4 ? 1 : 0];
+            boss->unk1C = gUnknown_080D7F94[boss->health > 4 ? 1 : 0];
         }
     } else {
         s32 tmp;
@@ -1222,7 +1235,7 @@ static void sub_8044B28(EggSaucer *boss)
     }
 
     if (++boss->unkBC >= 0x50) {
-        if (boss->unk11 != 0 || (PseudoRandom32() & 1)) {
+        if (boss->gunHealth != 0 || (PseudoRandom32() & 1)) {
             boss->unkBC = 0;
             boss->armStateTimer = 64;
             boss->armState = 2;
@@ -1322,7 +1335,7 @@ static void sub_8044CBC(EggSaucer *boss)
 #endif
 
     if (boss->armStateTimer == 0) {
-        if (boss->unk11 != 0) {
+        if (boss->gunHealth != 0) {
             boss->armState = 0;
             s = &boss->hand;
             s->hitboxes[0].index = -1;
@@ -1571,9 +1584,9 @@ void sub_80452F8(EggSaucer *boss)
 void sub_8045368(EggSaucer *boss)
 {
     Sprite *s = &boss->pilot;
-    boss->unk10--;
+    boss->health--;
 
-    if ((boss->unk10 & 1)) {
+    if ((boss->health & 1)) {
         m4aSongNumStart(SE_143);
     } else {
         m4aSongNumStart(SE_235);
@@ -1583,7 +1596,7 @@ void sub_8045368(EggSaucer *boss)
     boss->unk12 = 0;
     if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && gSelectedCharacter == CHARACTER_SONIC)
         && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
-        if (!boss->unk10) {
+        if (!boss->health) {
             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES;
             s->variant = 3;
             INCREMENT_SCORE(1000);
@@ -1592,7 +1605,7 @@ void sub_8045368(EggSaucer *boss)
             s->variant = 2;
         }
     } else {
-        if (!boss->unk10) {
+        if (!boss->health) {
             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_EGGMAN;
             s->variant = 3;
             INCREMENT_SCORE(1000);
@@ -1603,7 +1616,7 @@ void sub_8045368(EggSaucer *boss)
     }
     s->prevVariant = -1;
 
-    if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && boss->unk10 == 4) {
+    if (gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && boss->health == 4) {
         gUnknown_030054A8.unk1 = 0x11;
     }
 }
@@ -1626,7 +1639,7 @@ void sub_80454A4(EggSaucer *boss)
 
     if ((gCurrentLevel != LEVEL_INDEX(ZONE_FINAL, ACT_XX_FINAL_ZONE) && gSelectedCharacter == CHARACTER_SONIC)
         && gLoadedSaveGame->unlockedLevels[CHARACTER_SONIC] <= gCurrentLevel) {
-        if (!boss->unk10) {
+        if (!boss->health) {
             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_KNUCKLES;
             s->variant = 3;
         } else {
@@ -1634,7 +1647,7 @@ void sub_80454A4(EggSaucer *boss)
             s->variant = 0;
         }
     } else {
-        if (!boss->unk10) {
+        if (!boss->health) {
             s->graphics.anim = SA2_ANIM_EGG_SAUCER_PILOT_EGGMAN;
             s->variant = 3;
         } else {
@@ -1759,7 +1772,7 @@ void sub_804598C(void) { TaskDestroy(gCurTask); }
 
 void sub_80459A0(EggSaucer *boss)
 {
-    if (boss->unk11 == 0 && boss->armDiskAngle != ((boss->cabinDiskAngle + 0x200) & (SIN_PERIOD - 1))) {
+    if (boss->gunHealth == 0 && boss->armDiskAngle != ((boss->cabinDiskAngle + 0x200) & (SIN_PERIOD - 1))) {
         boss->armDiskAngle = CLAMP_SIN_PERIOD(boss->armDiskAngle + 1);
     }
 }
