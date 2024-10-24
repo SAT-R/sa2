@@ -567,7 +567,7 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
     // append music player and MPlayMain to linked list
 
     if (soundInfo->MPlayMainHead != NULL) {
-        mplayInfo->nextPlayerFunc = (void*)soundInfo->MPlayMainHead; // TODO: cast
+        mplayInfo->nextPlayerFunc = (void *)soundInfo->MPlayMainHead; // TODO: cast
         mplayInfo->nextPlayer = soundInfo->musicPlayerHead;
         // NULL assignment semantically useless, but required for match
         soundInfo->MPlayMainHead = NULL;
@@ -603,7 +603,7 @@ void MPlayStart(struct MP2KPlayerState *mplayInfo, struct MP2KSongHeader *songHe
         mplayInfo->lockStatus++;
         mplayInfo->status = 0;
         mplayInfo->songHeader = songHeader;
-        mplayInfo->voicegroup = (void*)songHeader->tone; // TODO: cast
+        mplayInfo->voicegroup = (void *)songHeader->tone; // TODO: cast
         mplayInfo->priority = songHeader->priority;
         mplayInfo->clock = 0;
         mplayInfo->tempoRawBPM = 150;
