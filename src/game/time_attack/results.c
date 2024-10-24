@@ -6,7 +6,7 @@
 #include "game/stage/player.h"
 #include "game/stage/ui.h"
 #include "malloc_vram.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "trig.h"
 #include "task.h"
 #include "game/stage/results.h"

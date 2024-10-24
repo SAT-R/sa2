@@ -3,7 +3,7 @@
 #include "flags.h"
 #include "sprite.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "mb_programs.h"
 #include "multi_boot.h"
 #include "sio32_multi_load.h"

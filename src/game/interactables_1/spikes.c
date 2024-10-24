@@ -2,7 +2,7 @@
 
 #include "global.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "malloc_vram.h"
 
 #include "game/sa1_leftovers/collision.h"

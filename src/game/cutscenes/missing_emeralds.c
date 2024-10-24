@@ -4,7 +4,7 @@
 #include "game/stage/screen_fade.h"
 #include "sprite.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/save.h"
 #include "game/title_screen.h"
 

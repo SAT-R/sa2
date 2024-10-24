@@ -7,7 +7,7 @@
 #include "game/special_stage/data.h"
 #include "task.h"
 #include "trig.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

@@ -4,7 +4,7 @@
 #include "malloc_vram.h"
 #include "flags.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "game/sa1_leftovers/globals.h"
 

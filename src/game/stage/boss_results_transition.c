@@ -2,7 +2,7 @@
 #include "core.h"
 #include "flags.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/cheese.h"
 #include "game/save.h"
 #include "game/stage/player.h"

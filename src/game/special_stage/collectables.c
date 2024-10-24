@@ -5,7 +5,7 @@
 #include "game/special_stage/collectables.h"
 #include "game/special_stage/data.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "trig.h"
 #include "game/math.h"
 #include "constants/songs.h"

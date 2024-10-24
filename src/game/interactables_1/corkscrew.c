@@ -1,6 +1,6 @@
 #include "global.h"
 #include "malloc_vram.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "task.h"
 #include "core.h"

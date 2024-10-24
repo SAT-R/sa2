@@ -5,7 +5,7 @@
 #include "sprite.h"
 #include "game/stage/screen_fade.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "trig.h"
 #include "game/save.h"
 #include "game/math.h"

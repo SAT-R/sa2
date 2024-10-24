@@ -6,7 +6,7 @@
 #include "game/save.h"
 #include "game/stage/stage.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/character_select.h"
 #include "constants/songs.h"
 #include "constants/text.h"

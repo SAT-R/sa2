@@ -10,7 +10,7 @@
 #include "game/multiplayer/finish.h"
 #include "game/multiplayer/mp_player.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/char_states.h"
 #include "constants/songs.h"

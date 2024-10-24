@@ -14,7 +14,7 @@
 #ifdef TEAMPLAY_AVAILABLE
 #include "game/multiplayer/team_play.h"
 #endif
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
 #include "constants/songs.h"

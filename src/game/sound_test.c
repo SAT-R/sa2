@@ -3,7 +3,7 @@
 #include "core.h"
 #include "game/options_screen.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "flags.h"
 #include "trig.h"
 #include "game/backgrounds.h"

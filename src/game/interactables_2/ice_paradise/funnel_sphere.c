@@ -5,7 +5,7 @@
 #include "malloc_vram.h"
 #include "task.h"
 #include "trig.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/entity.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

@@ -8,7 +8,7 @@ SECTIONS
     ALIGN(4)
     {
         data/sound_data.o(ewram_data); 
-        src/lib/m4a.o(ewram_data);
+        src/lib/m4a/m4a.o(ewram_data);
         src/core.o(ewram_data);
         ewram_end = .;
     }
@@ -18,7 +18,7 @@ SECTIONS
     ALIGN(4)
     {
         /**** bss ****/
-        src/lib/m4a.o(.bss.code);
+        src/lib/m4a/m4a.o(.bss.code);
         src/multi_boot.o(.bss);
         
         . = 0x00000408;
@@ -30,7 +30,7 @@ SECTIONS
         . = 0x00000410;
         src/game/stage/collision.o(.bss);
 
-        src/lib/agb_flash.o(.bss);
+        src/lib/agb_flash/agb_flash.o(.bss);
 
         /**** common ****/
         . = ALIGN(16); 
@@ -72,7 +72,7 @@ SECTIONS
 
         /* libs */
         . = ALIGN(16);
-        src/lib/agb_flash.o(.data);
+        src/lib/agb_flash/agb_flash.o(.data);
 
         iwram_end = .;
     }
@@ -363,13 +363,13 @@ SECTIONS
 
         /* libs */
 #if (CPU_ARCH_ARM == 1)
-        src/lib/m4a0.o(.text);
+        src/lib/m4a/m4a0.o(.text);
 #endif
-        src/lib/m4a.o(.text);
-        src/lib/agb_flash.o(.text);
-        src/lib/agb_flash_512k.o(.text);
-        src/lib/agb_flash_le_512k.o(.text);
-        src/lib/agb_flash_mx_512k.o(.text);
+        src/lib/m4a/m4a.o(.text);
+        src/lib/agb_flash/agb_flash.o(.text);
+        src/lib/agb_flash/agb_flash_512k.o(.text);
+        src/lib/agb_flash/agb_flash_le_512k.o(.text);
+        src/lib/agb_flash/agb_flash_mx_512k.o(.text);
 #if (PLATFORM_GBA == 1)
         *libagbsyscall.a:ArcTan2.o(.text);
         *libagbsyscall.a:CpuFastSet.o(.text);
@@ -550,7 +550,7 @@ SECTIONS
         src/data/tileset_debug_text.o(.rodata);
         src/data/tilemap_data.o(.rodata);
 
-        src/lib/m4a_tables.o(.rodata);
+        src/lib/m4a/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);
 
         /* Songs */
@@ -814,10 +814,10 @@ SECTIONS
         sound/songs/midi/mus_506.o(.rodata);
 
         /* Lib data */
-        src/lib/agb_flash.o(.rodata);
-        src/lib/agb_flash_512k.o(.rodata);
-        src/lib/agb_flash_le_512k.o(.rodata);
-        src/lib/agb_flash_mx_512k.o(.rodata);
+        src/lib/agb_flash/agb_flash.o(.rodata);
+        src/lib/agb_flash/agb_flash_512k.o(.rodata);
+        src/lib/agb_flash/agb_flash_le_512k.o(.rodata);
+        src/lib/agb_flash/agb_flash_mx_512k.o(.rodata);
         *libgcc.a:_divdi3.o(.rodata);
 
         /* Asset data */

@@ -4,7 +4,7 @@
 #include "task.h"
 #include "sprite.h"
 #include "game/stage/screen_fade.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "constants/songs.h"
 #include "game/save.h"
 #include "malloc_vram.h"

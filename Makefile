@@ -284,12 +284,12 @@ OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 # Use the old compiler for m4a, as it was prebuilt and statically linked
 # to the original codebase
-$(C_BUILDDIR)/lib/m4a.o: CC1 := $(CC1_OLD)
+$(C_BUILDDIR)/lib/m4a/m4a.o: CC1 := $(CC1_OLD)
 
 # Use `-O1` for agb_flash libs, as these were also prebuilt
 ifeq ($(PLATFORM),gba)
-$(C_BUILDDIR)/lib/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
-$(C_BUILDDIR)/lib/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+$(C_BUILDDIR)/lib/agb_flash/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+$(C_BUILDDIR)/lib/agb_flash/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 endif
 
 MAKEFLAGS += --no-print-directory

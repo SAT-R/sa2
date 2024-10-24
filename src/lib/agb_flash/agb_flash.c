@@ -1,6 +1,6 @@
 #include "global.h"
-#include "gba/flash_internal.h"
-#include "lib/agb_flash.h"
+#include "lib/agb_flash/flash_internal.h"
+#include "lib/agb_flash/agb_flash.h"
 
 static u8 sTimerNum;
 static u16 sTimerCount;

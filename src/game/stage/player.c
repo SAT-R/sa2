@@ -2,7 +2,7 @@
 #include "core.h"
 #include "trig.h"
 #include "malloc_vram.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "game/sa1_leftovers/music_manager.h"
 #include "game/sa1_leftovers/input_buffer.h"

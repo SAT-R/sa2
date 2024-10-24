@@ -5,7 +5,7 @@
 #include "trig.h"
 #include "bg_triangles.h"
 #include "malloc_vram.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/sa1_leftovers/globals.h"
 #include "game/sa1_leftovers/camera.h"
 #include "game/sa1_leftovers/collision.h"

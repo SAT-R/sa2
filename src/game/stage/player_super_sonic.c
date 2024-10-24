@@ -13,7 +13,7 @@
 #include "game/save.h"
 #include "game/stage/stage.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"

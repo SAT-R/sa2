@@ -1,14 +1,14 @@
 #include "core.h"
 #include "global.h"
-#include "lib/m4a.h"
 #include "malloc_ewram.h"
+#include "malloc_vram.h"
 #include "multi_sio.h"
 #include "sprite.h"
 #include "task.h"
-#include "lib/agb_flash.h"
 #include "flags.h"
 #include "input_recorder.h"
-#include "malloc_vram.h"
+#include "lib/m4a/m4a.h"
+#include "lib/agb_flash/agb_flash.h"
 
 // TODO: the order of these vars has
 // been shuffled due to compilation losses.

@@ -1,5 +1,5 @@
 #include "global.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "gba/syscall.h"
 
 #include "malloc_vram.h"

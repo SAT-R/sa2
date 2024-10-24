@@ -4,7 +4,7 @@
 #include "sprite.h"
 #include "task.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

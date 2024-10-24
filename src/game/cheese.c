@@ -7,7 +7,7 @@
 #include "game/stage/camera.h"
 #include "game/multiplayer/mp_player.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/zones.h"
 #include "constants/characters.h"

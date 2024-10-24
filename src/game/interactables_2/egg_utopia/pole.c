@@ -1,6 +1,6 @@
 #include "global.h"
 #include "core.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "game/stage/player_controls.h"
 #include "game/entity.h"
