@@ -14,7 +14,7 @@
 #include "global.h"
 #include "core.h"
 #include "gba/defines.h"
-#include "gba/flash_internal.h"
+#include "lib/agb_flash/flash_internal.h"
 #include "gba/io_reg.h"
 #include "gba/types.h"
 #include "gba/m4a_internal.h"

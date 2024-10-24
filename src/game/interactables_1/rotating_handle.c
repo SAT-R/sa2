@@ -2,7 +2,7 @@
 
 #include "global.h"
 #include "gba/types.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "game/entity.h"
 #include "game/stage/player.h"

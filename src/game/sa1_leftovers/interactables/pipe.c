@@ -2,7 +2,7 @@
 #include "gba/types.h"
 #include "sprite.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "game/entity.h"
 #include "game/sa1_leftovers/interactables/pipe.h"

@@ -5,7 +5,7 @@
 #include "game/sa1_leftovers/player.h"
 #include "game/sa1_leftovers/music_manager.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/songs.h"
 

@@ -1,5 +1,5 @@
 #include "global.h"
-#include "gba/flash_internal.h"
+#include "lib/agb_flash/flash_internal.h"
 
 const u16 mx512kMaxTime[] = {
     10,   65469, TIMER_ENABLE | TIMER_INTR_ENABLE | TIMER_256CLK, //

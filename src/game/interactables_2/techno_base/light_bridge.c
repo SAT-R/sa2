@@ -6,7 +6,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "malloc_vram.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/interactables.h"
 #include "constants/animations.h"

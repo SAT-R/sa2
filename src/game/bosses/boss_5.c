@@ -20,7 +20,7 @@
 
 #include "game/stage/screen_fade.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
 #include "constants/animations.h"

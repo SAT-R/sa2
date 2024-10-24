@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "malloc_vram.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "flags.h"
 #include "sprite.h"

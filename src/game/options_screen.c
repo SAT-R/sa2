@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "game/options_screen.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "task.h"
 #include "game/save.h"
 #include "malloc_ewram.h"

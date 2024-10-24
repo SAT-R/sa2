@@ -4,7 +4,7 @@
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/entity.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/songs.h"
 

@@ -3,7 +3,7 @@
 #include "malloc_vram.h"
 #include "task.h"
 #include "trig.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/sa1_leftovers/camera.h"
 #include "game/sa1_leftovers/collision.h"
 

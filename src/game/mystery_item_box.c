@@ -8,7 +8,7 @@
 #include "game/sa1_leftovers/dust_cloud.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"

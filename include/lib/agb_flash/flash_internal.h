@@ -2,7 +2,7 @@
 #define GUARD_GBA_FLASH_INTERNAL_H
 
 #define FLASH_ROM_SIZE_1M 131072 // 1 megabit ROM
-#define SECTORS_PER_BANK 16
+#define SECTORS_PER_BANK  16
 
 #if !PORTABLE
 #define FLASH_BASE ((u8 *)0xE000000)
@@ -12,9 +12,7 @@ extern u8 FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK];
 
 #define FLASH_WRITE(addr, data) ((*(vu8 *)(FLASH_BASE + (addr))) = (data))
 
-
-struct FlashSector
-{
+struct FlashSector {
     u32 size;
     u8 shift;
     u16 count;
@@ -29,15 +27,14 @@ struct FlashType {
     // TODO: add support for anonymous unions/structs if possible
     union {
         struct {
-        u8 makerId;
-        u8 deviceId;
+            u8 makerId;
+            u8 deviceId;
         } separate;
         u16 joined;
     } ids;
 };
 
-struct FlashSetupInfo
-{
+struct FlashSetupInfo {
     u16 (*programFlashSector)(u16, void *);
     u16 (*eraseFlashChip)(void);
     u16 (*eraseFlashSector)(u16);
@@ -54,14 +51,13 @@ extern u16 (*EraseFlashSector)(u16);
 extern const u16 *gFlashMaxTime;
 extern const struct FlashType *gFlash;
 
-
 extern u8 gFlashTimeoutFlag;
 extern u8 (*PollFlashStatus)(u8 *);
 
 extern u16 (*WaitForFlashWrite)(u8, u8 *, u8);
 
 extern const struct FlashSetupInfo LE39FW512;
-//extern const struct FlashSetupInfo AT29LV512;
+// extern const struct FlashSetupInfo AT29LV512;
 extern const struct FlashSetupInfo MN63F805MNP;
 extern const struct FlashSetupInfo MX29L512;
 extern const struct FlashSetupInfo DefaultFlash512K;

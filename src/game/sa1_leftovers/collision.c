@@ -1,7 +1,7 @@
 #include "global.h"
 #include "rect.h"
 #include "sprite.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/sa1_leftovers/globals.h"
 #include "game/sa1_leftovers/collision.h"
 #include "game/sa1_leftovers/dust_cloud.h"

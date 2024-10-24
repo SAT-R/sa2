@@ -8,7 +8,7 @@
 #include "game/interactables_2/egg_utopia/flying_handle.h"
 #include "malloc_vram.h"
 #include "trig.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"
