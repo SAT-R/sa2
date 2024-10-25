@@ -102,9 +102,7 @@ void cgb_trigger_note(u8 channel)
     }
 }
 
-// TODO: Re-enable stubbed_cgb_audio_generate
-void cgb_audio_generate(u16 samplesPerFrame) { }
-void stubbed_cgb_audio_generate(u16 samplesPerFrame)
+void cgb_audio_generate(u16 samplesPerFrame)
 {
     float *outBuffer = gb.outBuffer;
     switch (REG_NR11 & 0xC0) {
@@ -262,8 +260,8 @@ void stubbed_cgb_audio_generate(u16 samplesPerFrame)
                     outputR += gb.Vol[3] * sample / 15.0f;
             }
         }
-        outBuffer[0] = outputL / 4.0f;
-        outBuffer[1] = outputR / 4.0f;
+        outBuffer[0] = outputL * 0.25f;
+        outBuffer[1] = outputR * 0.25f;
     }
 }
 
