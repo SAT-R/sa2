@@ -25,7 +25,7 @@ struct MP2KInstrument {
     u8 type;
     u8 drumKey;
     u8 cgbLength;
-    u8 panSweep;
+    u8 pan_sweep; // pan or sweep (compatible sound ch. 1)
     union {
         struct WaveData *wav;
         struct MP2KInstrument *group;
@@ -55,4 +55,5 @@ void clear_modM(struct MP2KPlayerState *unused, struct MP2KTrack *track);
 void MP2K_event_endtie(struct MP2KPlayerState *unused, struct MP2KTrack *track);
 void MP2K_event_lfos(struct MP2KPlayerState *unused, struct MP2KTrack *track);
 void MP2K_event_mod(struct MP2KPlayerState *unused, struct MP2KTrack *track);
+
 #endif

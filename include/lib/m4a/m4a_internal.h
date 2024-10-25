@@ -164,6 +164,73 @@ struct SoundChannel {
     u32 blockCount;
 };
 
+#if 0
+struct MixerSource {
+    u8 status;
+    u8 type;
+    u8 rightVol;
+    u8 leftVol;
+    u8 attack;
+    u8 decay;
+    u8 sustain;
+    u8 release;
+    u8 key;
+    u8 envelopeVol;
+    union {
+        u8 envelopeVolR;
+        u8 envelopeGoal;
+    } __attribute__((packed));
+    union {
+        u8 envelopeVolL;
+        u8 envelopeCtr;
+    } __attribute__((packed));
+    u8 echoVol;
+    u8 echoLen;
+    u8 padding1;
+    u8 padding2;
+    u8 gateTime;
+    u8 untransposedKey;
+    u8 velocity;
+    u8 priority;
+    u8 rhythmPan;
+    u8 padding3;
+    u8 padding4;
+    u8 padding5;
+    union {
+        u32 ct;
+        struct {
+            u8 padding6;
+            u8 sustainGoal;
+            u8 nrx4;
+            u8 pan;
+        };
+    };
+    union {
+        float fw;
+        struct {
+            u8 panMask;
+            u8 cgbStatus;
+            u8 length;
+            u8 sweep;
+        };
+    };
+    u32 freq;
+    union {
+        u32 *newCgb3Sample;
+        struct WaveData *wav;
+    };
+    union {
+        u32 *oldCgb3Sample;
+        s8 *current;
+    };
+    struct MP2KTrack *track;
+    struct MixerSource *prev;
+    struct MixerSource *next;
+    u32 padding7; // d4
+    u32 blockCount; // bdpcm block count
+};
+#endif
+
 #define MAX_DIRECTSOUND_CHANNELS 12
 #if !PORTABLE
 #define PCM_DMA_BUF_SIZE 1584 // size of Direct Sound buffer
@@ -276,8 +343,13 @@ struct MP2KTrack {
     u8 priority;
     u8 echoVolume;
     u8 echoLength;
+#if 0
     struct SoundChannel *chan;
-    struct ToneData tone;
+    struct ToneData instrument;
+#else
+    struct MixerSource *chan;
+    struct MP2KInstrument instrument;
+#endif
     u8 gap[10];
     u16 unk_3A;
     u32 unk_3C;

@@ -1,5 +1,5 @@
 #include "core.h"
-#include "gba/flash_internal.h"
+#include "lib/agb_flash/flash_internal.h"
 
 ALIGNED(256) uint8_t EWRAM_START[EWRAM_SIZE] = { 0 };
 ALIGNED(256) uint8_t IWRAM_START[IWRAM_SIZE] = { 0 };

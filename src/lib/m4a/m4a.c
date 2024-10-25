@@ -7,6 +7,9 @@
 #include "lib/m4a/sound_mixer.h"
 #endif
 
+// TODO: Remove
+#define VOID_CAST (void *)
+
 extern const u8 gCgb3Vol[];
 
 #if !PORTABLE
@@ -225,7 +228,7 @@ void m4aMPlayImmInit(struct MP2KPlayerState *mplayInfo)
                 track->bendRange = 2;
                 track->volPublic = 64;
                 track->lfoSpeed = 22;
-                track->tone.type = 1;
+                track->instrument.type = 1;
             }
         }
 
@@ -256,7 +259,7 @@ void MPlayExtender(struct CgbChannel *cgbChans)
         cgb_trigger_note(i);
     }
 #endif
-    soundInfo = SOUND_INFO_PTR;
+    soundInfo = VOID_CAST SOUND_INFO_PTR;
 
     ident = soundInfo->ident;
 
@@ -343,7 +346,7 @@ void SoundInit(struct SoundInfo *soundInfo)
     REG_DMA2DAD = (intptr_t)&REG_FIFO_B;
 #endif
 
-    SOUND_INFO_PTR = soundInfo;
+    SOUND_INFO_PTR = VOID_CAST soundInfo;
     CpuFill32(0, soundInfo, sizeof(struct SoundInfo));
 
     soundInfo->maxChans = 8;
@@ -373,7 +376,7 @@ void SoundInit(struct SoundInfo *soundInfo)
 
 void SampleFreqSet(u32 freq)
 {
-    struct SoundInfo *soundInfo = SOUND_INFO_PTR;
+    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
 
     freq = (freq & 0xF0000) >> 16;
     soundInfo->freq = freq;
@@ -413,7 +416,7 @@ void SampleFreqSet(u32 freq)
 
 void m4aSoundMode(u32 mode)
 {
-    struct SoundInfo *soundInfo = SOUND_INFO_PTR;
+    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
     u32 temp;
 
     if (soundInfo->ident != ID_NUMBER)
@@ -467,7 +470,7 @@ void m4aSoundMode(u32 mode)
 
 void SoundClear(void)
 {
-    struct SoundInfo *soundInfo = SOUND_INFO_PTR;
+    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
     s32 i;
     void *chan;
 
@@ -503,7 +506,7 @@ void SoundClear(void)
 
 void m4aSoundVSyncOff(void)
 {
-    struct SoundInfo *soundInfo = SOUND_INFO_PTR;
+    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
 
     if (soundInfo->ident >= ID_NUMBER && soundInfo->ident <= ID_NUMBER + 1) {
         soundInfo->ident += 10;
@@ -523,7 +526,7 @@ void m4aSoundVSyncOff(void)
 
 void m4aSoundVSyncOn(void)
 {
-    struct SoundInfo *soundInfo = SOUND_INFO_PTR;
+    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
     u32 ident = soundInfo->ident;
 
     if (ident == ID_NUMBER)
@@ -546,7 +549,7 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
     if (trackCount > MAX_MUSICPLAYER_TRACKS)
         trackCount = MAX_MUSICPLAYER_TRACKS;
 
-    soundInfo = SOUND_INFO_PTR;
+    soundInfo = VOID_CAST SOUND_INFO_PTR;
 
     if (soundInfo->ident != ID_NUMBER)
         return;
@@ -852,7 +855,7 @@ void CgbModVol(struct CgbChannel *chan)
 {
 #if 0
     // PRET
-    struct SoundInfo *soundInfo = SOUND_INFO_PTR;
+    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
 
     if ((soundInfo->mode & 1) || !CgbPan(chan)) {
 #else
@@ -878,7 +881,7 @@ void CgbSound(void)
     s32 ch;
     struct CgbChannel *channels;
     s32 prevC15;
-    struct SoundInfo *soundInfo = SOUND_INFO_PTR;
+    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
     vu8 *nrx0ptr;
     vu8 *nrx1ptr;
     vu8 *nrx2ptr;
@@ -1443,37 +1446,37 @@ void ply_xwave(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
     READ_XCMD_BYTE(wav, 2)
     READ_XCMD_BYTE(wav, 3)
 
-    track->tone.wav = (struct WaveData *)wav;
+    track->instrument.wav = (struct WaveData *)wav;
     track->cmdPtr += 4;
 }
 
 void ply_xtype(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->tone.type = *track->cmdPtr;
+    track->instrument.type = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void ply_xatta(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->tone.attack = *track->cmdPtr;
+    track->instrument.attack = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void ply_xdeca(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->tone.decay = *track->cmdPtr;
+    track->instrument.decay = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void ply_xsust(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->tone.sustain = *track->cmdPtr;
+    track->instrument.sustain = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void ply_xrele(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->tone.release = *track->cmdPtr;
+    track->instrument.release = *track->cmdPtr;
     track->cmdPtr++;
 }
 
@@ -1491,13 +1494,13 @@ void ply_xiecl(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 
 void ply_xleng(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->tone.length = *track->cmdPtr;
+    track->instrument.cgbLength = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void ply_xswee(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->tone.pan_sweep = *track->cmdPtr;
+    track->instrument.pan_sweep = *track->cmdPtr;
     track->cmdPtr++;
 }
 

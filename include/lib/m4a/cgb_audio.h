@@ -1,7 +1,8 @@
 #ifndef CGB_AUDIO_H
 #define CGB_AUDIO_H
 
-#define MIXED_AUDIO_BUFFER_SIZE 4907
+#include "lib/m4a/m4a_internal.h"
+#define MIXED_AUDIO_BUFFER_SIZE PCM_DMA_BUF_SIZE
 
 struct AudioCGB {
     u16 ch1Freq;

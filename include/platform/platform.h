@@ -1,6 +1,8 @@
 #ifndef GUARD_SA2_PLATFORM_H
 #define GUARD_SA2_PLATFORM_H
 
+#include "gba/types.h"
+
 /* NOTE:
  * "Unsafe" versions included for compatibility.
  * This is just here so if someone accidentally calls
@@ -12,11 +14,13 @@
  * anymore.
  */
 #define ENABLE_RL_LZ_LOGGING 1
-unsigned char *Platform_LZDecompress(unsigned char *src, int srcSize);
-unsigned char *Platform_RLDecompress(unsigned char *src, int srcSize);
-void Platform_LZFree(unsigned char *dest);
-void Platform_RLFree(unsigned char *dest);
-void Platform_LZDecompressUnsafe(unsigned char *src, unsigned char *dest);
-void Platform_RLDecompressUnsafe(unsigned char *src, unsigned char *dest);
+extern unsigned char *Platform_LZDecompress(unsigned char *src, int srcSize);
+extern unsigned char *Platform_RLDecompress(unsigned char *src, int srcSize);
+extern void Platform_LZFree(unsigned char *dest);
+extern void Platform_RLFree(unsigned char *dest);
+extern void Platform_LZDecompressUnsafe(unsigned char *src, unsigned char *dest);
+extern void Platform_RLDecompressUnsafe(unsigned char *src, unsigned char *dest);
+
+extern void Platform_QueueAudio(const void *data, u32 numBytes);
 
 #endif // GUARD_SA2_PLATFORM_H

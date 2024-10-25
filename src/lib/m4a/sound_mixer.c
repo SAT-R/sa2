@@ -8,6 +8,8 @@
 #define VCOUNT_VBLANK   160
 #define TOTAL_SCANLINES 228
 
+#define VOID_CAST (void *)
+
 static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData2 *wav, float *outBuffer,
                                  u16 samplesPerFrame, float sampleRateReciprocal);
 void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, float *outBuffer, u8 dmaCounter, u16 maxBufSize);
@@ -67,7 +69,7 @@ void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPe
         } else {
             tmp2 = outBuffer + samplesPerFrame * 2;
         }
-        uf16 i = 0;
+        u16 i = 0;
         do {
             float s = tmp1[0] + tmp1[1] + tmp2[0] + tmp2[1];
             s *= ((float)reverb / 512.0f);
@@ -85,14 +87,14 @@ void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPe
     }
 
     float sampleRateReciprocal = mixer->sampleRateReciprocal;
-    sf8 numChans = mixer->numChans;
+    s8 numChans = mixer->numChans;
     struct MixerSource *chan = mixer->chans;
 
     for (int i = 0; i < numChans; i++, chan++) {
-        struct WaveData2 *wav = chan->wav;
+        struct WaveData2 *wav = VOID_CAST chan->wav;
 
         if (scanlineLimit != 0) {
-            uf16 vcount = REG_VCOUNT;
+            u16 vcount = REG_VCOUNT;
             if (vcount < VCOUNT_VBLANK) {
                 vcount += TOTAL_SCANLINES;
             }
@@ -158,7 +160,7 @@ static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData2 *wa
         }
 
         switch (status & 3) {
-            uf16 newEnv;
+            u16 newEnv;
             case 2:
                 // Decay
                 chan->envelopeVol = env * chan->decay / 256U;
@@ -215,7 +217,7 @@ static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData2 *wa
 static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData2 *wav, float *outBuffer,
                                  u16 samplesPerFrame, float sampleRateReciprocal)
 { /*, [[[]]]) {*/
-    uf8 v = chan->envelopeVol * (mixer->masterVol + 1) / 16U;
+    u8 v = chan->envelopeVol * (mixer->masterVol + 1) / 16U;
     chan->envelopeVolR = chan->rightVol * v / 256U;
     chan->envelopeVolL = chan->leftVol * v / 256U;
 
@@ -232,7 +234,7 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
 
     if (chan->type & 8) {
         for (u16 i = 0; i < samplesPerFrame; i++, outBuffer += 2) {
-            sf8 c = *(current++);
+            s8 c = *(current++);
 
             outBuffer[1] += (c * envR) / 32768.0f;
             outBuffer[0] += (c * envL) / 32768.0f;
@@ -253,8 +255,8 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
         float finePos = chan->fw;
         float romSamplesPerOutputSample = chan->freq * sampleRateReciprocal;
 
-        sf16 b = current[0];
-        sf16 m = current[1] - b;
+        s16 b = current[0];
+        s16 m = current[1] - b;
         current += 1;
 
         for (u16 i = 0; i < samplesPerFrame; i++, outBuffer += 2) {

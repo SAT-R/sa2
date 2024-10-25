@@ -1,10 +1,11 @@
 /* Function stubs for M4A functions */
 
 #include "global.h"
-#include "gba/m4a_internal.h"
+#include "lib/m4a/m4a_internal.h"
 
-struct SoundInfo sSoundInfo = { 0 };
-struct SoundInfo *SOUND_INFO_PTR = &sSoundInfo;
+struct SoundMixerState sSoundInfo = { 0 };
+struct SoundMixerState *SOUND_INFO_PTR = &sSoundInfo;
+#if 0
 
 u32 umul3232H32(u32 multiplier, u32 multiplicand) { return ((u64)multiplier * (u64)multiplicand) >> 32; }
 
@@ -43,3 +44,4 @@ void ply_note(struct MusicPlayerInfo *info, struct MusicPlayerTrack *track) { }
 // extended sound command handler functions
 void ply_xcmd_0C(struct MusicPlayerInfo *info, struct MusicPlayerTrack *track) { }
 void ply_xcmd_0D(struct MusicPlayerInfo *info, struct MusicPlayerTrack *track) { }
+#endif
