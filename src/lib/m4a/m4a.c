@@ -1435,7 +1435,7 @@ void ply_xxx(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track) { gMPla
 
 void ply_xwave(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    u32 wav;
+    uintptr_t wav;
 
 #ifdef BUG_FIX
     wav = 0;
