@@ -112,7 +112,7 @@ void CreateDecompCreditsScreen(bool32 hasProfile)
     gIntrTable[INTR_INDEX_HBLANK] = customHBlank;
 
     // Other
-    // m4aSongNumStart(MUS_STAFF_CREDITS);
+    m4aSongNumStart(MUS_STAFF_CREDITS);
 }
 
 void UpdateSprites(DCCredits *cred)
@@ -171,7 +171,7 @@ void Task_DecompCreditsFirst()
         if (cred->logoFrameT0 == 0) {
             cred->logoFrameT0 = cred->frames;
             SPRITE_FLAG_CLEAR(&cred->sprLogoOllie, X_FLIP);
-            // m4aSongNumStart(SE_LONG_BRAKE);
+            m4aSongNumStart(SE_LONG_BRAKE);
             cred->sprSonic.graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_BRAKE_GOAL, CHARACTER_SONIC);
             cred->sprSonic.variant = 0;
         }
@@ -180,7 +180,7 @@ void Task_DecompCreditsFirst()
             cred->qSpeedSonic -= Q(20.0 / 256.0);
 
         } else {
-            // m4aSongNumStop(SE_LONG_BRAKE);
+            m4aSongNumStop(SE_LONG_BRAKE);
 
             cred->sprSonic.graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_WALK, CHARACTER_SONIC);
             cred->sprSonic.variant = 2;
@@ -239,7 +239,7 @@ void TaskDestructor_DecompCredits(struct Task *t)
 
     /* If players skip the credits while the soundeffect plays,
        it continues if it isn't manually stopped. */
-    // m4aSongNumStop(SE_LONG_BRAKE);
+    m4aSongNumStop(SE_LONG_BRAKE);
 
     /* Deallocate all graphics from VRAM */
     Debug_TextPrinterDestroy();

@@ -39,13 +39,13 @@ void MP2KClearChain(struct MixerSource *chan)
     struct MixerSource *prev = chan->prev;
 
     if (prev != NULL) {
-        prev->next = VOID_CAST next;
+        prev->next = next;
     } else {
-        track->chan = VOID_CAST next;
+        track->chan = next;
     }
 
     if (next != NULL) {
-        next->prev = VOID_CAST prev;
+        next->prev = prev;
     }
 
     chan->track = NULL;
@@ -155,7 +155,7 @@ struct MP2KInstrument SafeDereferenceMP2KInstrument(struct MP2KInstrument *addr)
             }
         }
     } else {
-        instrument.wav = VOID_CAST addr->wav;
+        instrument.wav = addr->wav;
     }
 
     if (addr->attack == SafeDereferenceU8(&addr->attack) && addr->decay == SafeDereferenceU8(&addr->decay)
@@ -193,7 +193,7 @@ void MPlayJumpTableCopy(void **mplayJumpTable)
 void MP2K_event_fine(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 {
     struct MP2KTrack *r5 = track;
-    for (struct MixerSource *chan = VOID_CAST track->chan; chan != NULL; chan = chan->next) {
+    for (struct MixerSource *chan = track->chan; chan != NULL; chan = chan->next) {
         if (chan->status & 0xC7) {
             chan->status |= 0x40;
         }
@@ -377,7 +377,7 @@ void MP2KPlayerMain(void *voidPtrPlayer)
             }
             trackBits |= (1 << i);
 
-            chan = VOID_CAST currentTrack->chan;
+            chan = currentTrack->chan;
             while (chan != NULL) {
                 if ((chan->status & SOUND_CHANNEL_SF_ON) == 0) {
 #if 0

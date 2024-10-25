@@ -102,7 +102,9 @@ void cgb_trigger_note(u8 channel)
     }
 }
 
-void cgb_audio_generate(u16 samplesPerFrame)
+// TODO: Re-enable stubbed_cgb_audio_generate
+void cgb_audio_generate(u16 samplesPerFrame) { }
+void stubbed_cgb_audio_generate(u16 samplesPerFrame)
 {
     float *outBuffer = gb.outBuffer;
     switch (REG_NR11 & 0xC0) {
