@@ -61,7 +61,7 @@ struct WaveData {
 struct ToneData {
     u8 type;
     u8 key;
-    u8 length; // sound length (compatible sound)
+    u8 cgbLength; // sound length (compatible sound)
     u8 pan_sweep; // pan or sweep (compatible sound ch. 1)
     struct WaveData *wav;
     u8 attack;
@@ -343,7 +343,7 @@ struct MP2KTrack {
     u8 priority;
     u8 echoVolume;
     u8 echoLength;
-#if 0
+#if !PORTABLE
     struct SoundChannel *chan;
     struct ToneData instrument;
 #else
