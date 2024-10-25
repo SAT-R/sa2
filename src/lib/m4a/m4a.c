@@ -4,6 +4,7 @@
 
 #if PORTABLE
 #include "lib/m4a/cgb_audio.h"
+#include "lib/m4a/sound_mixer.h"
 #endif
 
 extern const u8 gCgb3Vol[];
@@ -217,12 +218,12 @@ void m4aMPlayImmInit(struct MP2KPlayerState *mplayInfo)
     struct MP2KTrack *track = mplayInfo->tracks;
 
     while (trackCount > 0) {
-        if (track->flags & MPT_FLG_EXIST) {
-            if (track->flags & MPT_FLG_START) {
+        if (track->status & MPT_FLG_EXIST) {
+            if (track->status & MPT_FLG_START) {
                 Clear64byte(track);
-                track->flags = MPT_FLG_EXIST;
+                track->status = MPT_FLG_EXIST;
                 track->bendRange = 2;
-                track->volX = 64;
+                track->volPublic = 64;
                 track->lfoSpeed = 22;
                 track->tone.type = 1;
             }
@@ -559,7 +560,7 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
     mplayInfo->status = MUSICPLAYER_STATUS_PAUSE;
 
     while (trackCount != 0) {
-        tracks->flags = 0;
+        tracks->status = 0;
         trackCount--;
         tracks++;
     }
@@ -597,7 +598,7 @@ void MPlayStart(struct MP2KPlayerState *mplayInfo, struct MP2KSongHeader *songHe
     checkSongPriority = mplayInfo->checkSongPriority;
 
     if (!checkSongPriority
-        || ((!mplayInfo->songHeader || !(mplayInfo->tracks[0].flags & MPT_FLG_START))
+        || ((!mplayInfo->songHeader || !(mplayInfo->tracks[0].status & MPT_FLG_START))
             && ((mplayInfo->status & MUSICPLAYER_STATUS_TRACK) == 0 || (mplayInfo->status & MUSICPLAYER_STATUS_PAUSE)))
         || (mplayInfo->priority <= songHeader->priority)) {
         mplayInfo->lockStatus++;
@@ -617,7 +618,7 @@ void MPlayStart(struct MP2KPlayerState *mplayInfo, struct MP2KSongHeader *songHe
 
         while (i < songHeader->trackCount && i < mplayInfo->trackCount) {
             TrackStop(mplayInfo, track);
-            track->flags = MPT_FLG_EXIST | MPT_FLG_START;
+            track->status = MPT_FLG_EXIST | MPT_FLG_START;
             track->chan = 0;
             track->cmdPtr = songHeader->part[i];
             i++;
@@ -626,7 +627,7 @@ void MPlayStart(struct MP2KPlayerState *mplayInfo, struct MP2KSongHeader *songHe
 
         while (i < mplayInfo->trackCount) {
             TrackStop(mplayInfo, track);
-            track->flags = 0;
+            track->status = 0;
             i++;
             track++;
         }
@@ -695,7 +696,7 @@ void FadeOutBody(struct MP2KPlayerState *mplayInfo)
                 val &= fadeOV;
 
                 if (!val)
-                    track->flags = 0;
+                    track->status = 0;
 
                 i--;
                 track++;
@@ -715,11 +716,11 @@ void FadeOutBody(struct MP2KPlayerState *mplayInfo)
     track = mplayInfo->tracks;
 
     while (i > 0) {
-        if (track->flags & MPT_FLG_EXIST) {
+        if (track->status & MPT_FLG_EXIST) {
             fadeOV = mplayInfo->fadeOV;
 
-            track->volX = (fadeOV >> FADE_VOL_SHIFT);
-            track->flags |= MPT_FLG_VOLCHG;
+            track->volPublic = (fadeOV >> FADE_VOL_SHIFT);
+            track->status |= MPT_FLG_VOLCHG;
         }
 
         i--;
@@ -729,41 +730,41 @@ void FadeOutBody(struct MP2KPlayerState *mplayInfo)
 
 void TrkVolPitSet(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    if (track->flags & MPT_FLG_VOLSET) {
+    if (track->status & MPT_FLG_VOLSET) {
         s32 x;
         s32 y;
 
-        x = (u32)(track->vol * track->volX) >> 5;
+        x = (u32)(track->vol * track->volPublic) >> 5;
 
-        if (track->modT == 1)
-            x = (u32)(x * (track->modM + 128)) >> 7;
+        if (track->modType == 1)
+            x = (u32)(x * (track->modCalculated + 128)) >> 7;
 
-        y = 2 * track->pan + track->panX;
+        y = 2 * track->pan + track->panPublic;
 
-        if (track->modT == 2)
-            y += track->modM;
+        if (track->modType == 2)
+            y += track->modCalculated;
 
         if (y < -128)
             y = -128;
         else if (y > 127)
             y = 127;
 
-        track->volMR = (u32)((y + 128) * x) >> 8;
-        track->volML = (u32)((127 - y) * x) >> 8;
+        track->volRightCalculated = (u32)((y + 128) * x) >> 8;
+        track->volLeftCalculated = (u32)((127 - y) * x) >> 8;
     }
 
-    if (track->flags & MPT_FLG_PITSET) {
+    if (track->status & MPT_FLG_PITSET) {
         s32 bend = track->bend * track->bendRange;
-        s32 x = (track->tune + bend) * 4 + (track->keyShift << 8) + (track->keyShiftX << 8) + track->pitX;
+        s32 x = (track->tune + bend) * 4 + (track->keyShift << 8) + (track->keyShiftPublic << 8) + track->pitchPublic;
 
-        if (track->modT == 0)
-            x += 16 * track->modM;
+        if (track->modType == 0)
+            x += 16 * track->modCalculated;
 
-        track->keyM = x >> 8;
-        track->pitM = x;
+        track->keyShiftCalculated = x >> 8;
+        track->pitchCalculated = x;
     }
 
-    track->flags &= ~(MPT_FLG_PITSET | MPT_FLG_VOLSET);
+    track->status &= ~(MPT_FLG_PITSET | MPT_FLG_VOLSET);
 }
 
 u32 MidiKeyToCgbFreq(u8 chanNum, u8 key, u8 fineAdjust)
@@ -993,8 +994,8 @@ void CgbSound(void)
                 goto oscillator_off;
             }
         } else if (channels->statusFlags & SOUND_CHANNEL_SF_IEC) {
-            channels->pseudoEchoLength--;
-            if ((s8)(channels->pseudoEchoLength & mask) <= 0) {
+            channels->echoLength--;
+            if ((s8)(channels->echoLength & mask) <= 0) {
             oscillator_off:
                 CgbOscOff(ch);
                 channels->statusFlags = 0;
@@ -1023,7 +1024,7 @@ void CgbSound(void)
                     channels->envelopeVolume--;
                     if ((s8)(channels->envelopeVolume & mask) <= 0) {
                     envelope_pseudoecho_start:
-                        channels->envelopeVolume = ((channels->envelopeGoal * channels->pseudoEchoVolume) + 0xFF) >> 8;
+                        channels->envelopeVolume = ((channels->envelopeGoal * channels->echoVolume) + 0xFF) >> 8;
                         if (channels->envelopeVolume) {
                             channels->statusFlags |= SOUND_CHANNEL_SF_IEC;
                             channels->modify |= CGB_CHANNEL_MO_VOL;
@@ -1167,9 +1168,9 @@ void m4aMPlayVolumeControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, u16
 
     while (i > 0) {
         if (trackBits & bit) {
-            if (track->flags & MPT_FLG_EXIST) {
-                track->volX = volume / 4;
-                track->flags |= MPT_FLG_VOLCHG;
+            if (track->status & MPT_FLG_EXIST) {
+                track->volPublic = volume / 4;
+                track->status |= MPT_FLG_VOLCHG;
             }
         }
 
@@ -1198,10 +1199,10 @@ void m4aMPlayPitchControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s16 
 
     while (i > 0) {
         if (trackBits & bit) {
-            if (track->flags & MPT_FLG_EXIST) {
-                track->keyShiftX = pitch >> 8;
-                track->pitX = pitch;
-                track->flags |= MPT_FLG_PITCHG;
+            if (track->status & MPT_FLG_EXIST) {
+                track->keyShiftPublic = pitch >> 8;
+                track->pitchPublic = pitch;
+                track->status |= MPT_FLG_PITCHG;
             }
         }
 
@@ -1230,9 +1231,9 @@ void m4aMPlayPanpotControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s8 
 
     while (i > 0) {
         if (trackBits & bit) {
-            if (track->flags & MPT_FLG_EXIST) {
-                track->panX = pan;
-                track->flags |= MPT_FLG_VOLCHG;
+            if (track->status & MPT_FLG_EXIST) {
+                track->panPublic = pan;
+                track->status |= MPT_FLG_VOLCHG;
             }
         }
 
@@ -1246,13 +1247,13 @@ void m4aMPlayPanpotControl(struct MP2KPlayerState *mplayInfo, u16 trackBits, s8 
 
 void ClearModM(struct MP2KTrack *track)
 {
-    track->lfoSpeedC = 0;
-    track->modM = 0;
+    track->lfoSpeedCounter = 0;
+    track->modCalculated = 0;
 
-    if (track->modT == 0)
-        track->flags |= MPT_FLG_PITCHG;
+    if (track->modType == 0)
+        track->status |= MPT_FLG_PITCHG;
     else
-        track->flags |= MPT_FLG_VOLCHG;
+        track->status |= MPT_FLG_VOLCHG;
 }
 
 void m4aMPlayModDepthSet(struct MP2KPlayerState *mplayInfo, u16 trackBits, u8 modDepth)
@@ -1272,10 +1273,10 @@ void m4aMPlayModDepthSet(struct MP2KPlayerState *mplayInfo, u16 trackBits, u8 mo
 
     while (i > 0) {
         if (trackBits & bit) {
-            if (track->flags & MPT_FLG_EXIST) {
-                track->mod = modDepth;
+            if (track->status & MPT_FLG_EXIST) {
+                track->modDepth = modDepth;
 
-                if (!track->mod)
+                if (!track->modDepth)
                     ClearModM(track);
             }
         }
@@ -1305,7 +1306,7 @@ void m4aMPlayLFOSpeedSet(struct MP2KPlayerState *mplayInfo, u16 trackBits, u8 lf
 
     while (i > 0) {
         if (trackBits & bit) {
-            if (track->flags & MPT_FLG_EXIST) {
+            if (track->status & MPT_FLG_EXIST) {
                 track->lfoSpeed = lfoSpeed;
 
                 if (!track->lfoSpeed)
@@ -1433,7 +1434,7 @@ void ply_xwave(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     u32 wav;
 
-#ifdef UBFIX
+#ifdef BUG_FIX
     wav = 0;
 #endif
 
@@ -1478,13 +1479,13 @@ void ply_xrele(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 
 void ply_xiecv(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->pseudoEchoVolume = *track->cmdPtr;
+    track->echoVolume = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void ply_xiecl(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->pseudoEchoLength = *track->cmdPtr;
+    track->echoLength = *track->cmdPtr;
     track->cmdPtr++;
 }
 
@@ -1505,7 +1506,7 @@ void ply_xcmd_0C(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     u32 unk;
 
-#ifdef UBFIX
+#ifdef BUG_FIX
     unk = 0;
 #endif
 
@@ -1529,7 +1530,7 @@ void ply_xcmd_0D(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     u32 unk;
 
-#ifdef UBFIX
+#ifdef BUG_FIX
     unk = 0;
 #endif
 

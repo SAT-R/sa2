@@ -408,6 +408,8 @@ static u16 keys;
 u32 fullScreenFlags = 0;
 static SDL_DisplayMode sdlDispMode = { 0 };
 
+void Platform_QueueAudio(const void *data, uint32_t bytesCount) { SDL_QueueAudio(1, data, bytesCount); }
+
 void ProcessSDLEvents(void)
 {
     SDL_Event event;

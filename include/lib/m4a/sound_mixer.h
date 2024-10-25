@@ -114,8 +114,6 @@ struct SoundMixerState {
 
 typedef void (*MixerRamFunc)(struct SoundMixerState *, u32, u16, s8 *, u16);
 
-#ifndef NOT_GBA
-#undef REG_VCOUNT
-#define REG_VCOUNT (*(vu8 *)REG_ADDR_VCOUNT)
-#endif
+extern void RunMixerFrame(void);
+
 #endif // SOUND_MIXER_H

@@ -87,6 +87,8 @@ struct ToneData {
 #define CGB_NRx2_ENV_DIR_DEC 0x00
 #define CGB_NRx2_ENV_DIR_INC 0x08
 
+struct MP2KTrack;
+
 struct CgbChannel {
     u8 statusFlags;
     u8 type;
@@ -100,8 +102,8 @@ struct CgbChannel {
     u8 envelopeVolume;
     u8 envelopeGoal;
     u8 envelopeCounter;
-    u8 pseudoEchoVolume;
-    u8 pseudoEchoLength;
+    u8 echoVolume;
+    u8 echoLength;
     u8 dummy1;
     u8 dummy2;
     u8 gateTime;
@@ -127,8 +129,6 @@ struct CgbChannel {
     u8 dummy4[8];
 };
 
-struct MP2KTrack;
-
 struct SoundChannel {
     u8 statusFlags;
     u8 type;
@@ -142,8 +142,8 @@ struct SoundChannel {
     u8 envelopeVolume;
     u8 envelopeVolumeRight;
     u8 envelopeVolumeLeft;
-    u8 pseudoEchoVolume;
-    u8 pseudoEchoLength;
+    u8 echoVolume;
+    u8 echoLength;
     u8 dummy1;
     u8 dummy2;
     u8 gateTime;
@@ -244,38 +244,38 @@ struct MP2KSongHeader {
 
 #if 01
 struct MP2KTrack {
-    u8 flags;
+    u8 status;
     u8 wait;
     u8 patternLevel;
-    u8 repN;
-    u8 gateTime;
+    u8 repeatCount;
+    u8 gateTime; // 0 if TIE
     u8 key;
     u8 velocity;
     u8 runningStatus;
-    u8 keyM;
-    u8 pitM;
-    s8 keyShift;
-    s8 keyShiftX;
-    s8 tune;
-    u8 pitX;
-    s8 bend;
+    s8 keyShiftCalculated; // Calculated by TrkVolPitSet using fields below. Units: semitones
+    u8 pitchCalculated; // Calculated by TrkVolPitSet using fields below. Units: 256ths of a semitone
+    s8 keyShift; // Units: semitones
+    s8 keyShiftPublic; // Units: semitones
+    s8 tune; // Units: 64ths of a semitone
+    u8 pitchPublic; // Units: 256ths of a semitone
+    s8 bend; // Units: (bendRange / 64)ths of a semitone
     u8 bendRange;
-    u8 volMR;
-    u8 volML;
+    u8 volRightCalculated;
+    u8 volLeftCalculated;
     u8 vol;
-    u8 volX;
+    u8 volPublic; // Used both for fades and MPlayVolumeControl
     s8 pan;
-    s8 panX;
-    s8 modM;
-    u8 mod;
-    u8 modT;
+    s8 panPublic;
+    s8 modCalculated; // Pitch units: 16ths of a semitone
+    u8 modDepth;
+    u8 modType;
     u8 lfoSpeed;
-    u8 lfoSpeedC;
+    u8 lfoSpeedCounter;
     u8 lfoDelay;
-    u8 lfoDelayC;
+    u8 lfoDelayCounter;
     u8 priority;
-    u8 pseudoEchoVolume;
-    u8 pseudoEchoLength;
+    u8 echoVolume;
+    u8 echoLength;
     struct SoundChannel *chan;
     struct ToneData tone;
     u8 gap[10];
