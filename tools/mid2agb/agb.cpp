@@ -556,6 +556,7 @@ void PrintAgbFooter()
     std::fprintf(g_outputFile, "\t.byte\t%s_pri\t%s\n", g_asmLabel.c_str(), Comment("Priority").c_str());
     std::fprintf(g_outputFile, "\t.byte\t%s_rev\t%s\n", g_asmLabel.c_str(), Comment("Reverb").c_str());
     std::fprintf(g_outputFile, "\n");
+    std::fprintf(g_outputFile, "mAlignWord\n");
     std::fprintf(g_outputFile, "\tmPtr\t%s_grp\n", g_asmLabel.c_str());
     std::fprintf(g_outputFile, "\n");
 

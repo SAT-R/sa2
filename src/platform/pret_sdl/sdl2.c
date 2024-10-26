@@ -254,6 +254,9 @@ int main(int argc, char **argv)
 #if ENABLE_VRAM_VIEW
     VramDraw(vramTexture);
 #endif
+    // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
+    REG_RCNT = 0x8000;
+
     mainLoopThread = SDL_CreateThread(DoMain, "AgbMain", NULL);
 
     double accumulator = 0.0;
@@ -264,8 +267,6 @@ int main(int argc, char **argv)
     UpdateInternalClock();
 #endif
 
-    // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
-    REG_RCNT = 0x8000;
     REG_KEYINPUT = 0x3FF;
 
     while (isRunning) {

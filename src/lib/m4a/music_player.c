@@ -23,7 +23,7 @@ u32 umul3232H32(u32 a, u32 b)
     return result >> 32;
 }
 
-void SoundMainBTM(void *ptr) { CpuFill32(0, ptr, 0x40); }
+void SoundMainBTM(void *ptr) { CpuFill32(0, ptr, offsetof(struct MP2KTrack, cmdPtr)); }
 
 void ChnVolSetAsm(struct MixerSource *chan, struct MP2KTrack *track);
 
@@ -392,7 +392,7 @@ void MP2KPlayerMain(void *voidPtrPlayer)
             }
 
             if (currentTrack->status & MPT_FLG_START) {
-                CpuFill32(0, currentTrack, 0x40);
+                CpuFill32(0, currentTrack, offsetof(struct MP2KTrack, cmdPtr));
                 currentTrack->status = MPT_FLG_EXIST;
                 currentTrack->bendRange = 2;
                 currentTrack->volPublic = 64;

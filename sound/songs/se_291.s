@@ -88,6 +88,7 @@ C_DECL(se_291):
 	.byte	20
 	.byte	128
 
+mAlignWord
 	mPtr	voicegroup005
 
 	mPtr  song0291_1

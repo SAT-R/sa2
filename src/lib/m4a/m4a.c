@@ -2,6 +2,8 @@
 #include "gba/types.h"
 #include "lib/m4a/m4a_internal.h"
 
+#include <stdio.h>
+
 #if PORTABLE
 #include "lib/m4a/cgb_audio.h"
 #include "lib/m4a/sound_mixer.h"
@@ -18,6 +20,11 @@ extern const u8 gCgb3Vol[];
 BSS_CODE ALIGNED(4) char SoundMainRAM_Buffer[0x400] = { 0 };
 #endif
 
+EWRAM_DATA struct MP2KTrack gMPlayTrack_BGM[16] = {};
+EWRAM_DATA struct MP2KTrack gMPlayTrack_SE1[16] = {};
+EWRAM_DATA struct MP2KTrack gMPlayTrack_SE2[16] = {};
+EWRAM_DATA struct MP2KTrack gMPlayTrack_SE3[16] = {};
+
 EWRAM_DATA struct SoundInfo gSoundInfo = {};
 EWRAM_DATA MPlayFunc gMPlayJumpTable[36] = {};
 EWRAM_DATA struct CgbChannel gCgbChans[4] = {};
@@ -26,13 +33,8 @@ EWRAM_DATA struct CgbChannel gCgbChans[4] = {};
 EWRAM_DATA struct MP2KPlayerState gMPlayInfo_BGM = {};
 EWRAM_DATA struct MP2KPlayerState gMPlayInfo_SE1 = {};
 EWRAM_DATA struct MP2KPlayerState gMPlayInfo_SE2 = {};
-EWRAM_DATA u8 gMPlayMemAccArea[0x10] = {};
+EWRAM_DATA u8 gMPlayMemAccArea[4 * sizeof(uintptr_t)] = {};
 EWRAM_DATA struct MP2KPlayerState gMPlayInfo_SE3 = {};
-
-struct MP2KTrack gMPlayTrack_BGM[10];
-struct MP2KTrack gMPlayTrack_SE1[3];
-struct MP2KTrack gMPlayTrack_SE2[9];
-struct MP2KTrack gMPlayTrack_SE3[1];
 
 void MP2K_event_nxx();
 void MP2KPlayerMain();
@@ -485,7 +487,7 @@ void SoundClear(void)
     while (i > 0) {
         ((struct SoundChannel *)chan)->statusFlags = 0;
         i--;
-        chan = (void *)((s32)chan + sizeof(struct SoundChannel));
+        chan = (void *)((intptr_t)chan + sizeof(struct SoundChannel));
     }
 
     chan = soundInfo->cgbChans;
@@ -497,7 +499,7 @@ void SoundClear(void)
             soundInfo->CgbOscOff(i);
             ((struct CgbChannel *)chan)->statusFlags = 0;
             i++;
-            chan = (void *)((s32)chan + sizeof(struct CgbChannel));
+            chan = (void *)((intptr_t)chan + sizeof(struct CgbChannel));
         }
     }
 
@@ -950,7 +952,7 @@ void CgbSound(void)
 #endif
                         // fallthrough
                     case 2:
-                        *nrx1ptr = ((u32)channels->wavePointer << 6) + channels->length;
+                        *nrx1ptr = ((intptr_t)channels->wavePointer << 6) + channels->length;
                         goto init_env_step_time_dir;
                     case 3:
                         if (channels->wavePointer != channels->currentPointer) {
@@ -973,7 +975,7 @@ void CgbSound(void)
                         break;
                     default:
                         *nrx1ptr = channels->length;
-                        *nrx3ptr = (u32)channels->wavePointer << 3;
+                        *nrx3ptr = (intptr_t)channels->wavePointer << 3;
                     init_env_step_time_dir:
                         envelopeStepTimeAndDir = channels->attack + CGB_NRx2_ENV_DIR_INC;
                         if (channels->length)

@@ -9,7 +9,6 @@
 // Used so that we can have cross platform (32bit or 64bit) pointers
 .macro mPtr value
 #if defined(__aarch64__) || defined(__x86_64__)
-    .align 4
     .quad \value
 #else
     .int \value
@@ -19,8 +18,10 @@
 // Used for cross platform aligning of labels
 .macro mAlignWord
 #if defined(__aarch64__) || defined(__x86_64__)
-    .align 4
-#else
+    .align 8
+#elif defined(PLATFORM_GBA)
     .align 2
+#else
+    .align 4
 #endif
 .endm
