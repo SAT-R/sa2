@@ -9,12 +9,9 @@
 #include "lib/m4a/sound_mixer.h"
 #endif
 
-// TODO: Remove
-#define VOID_CAST (void *)
-
 extern const u8 gCgb3Vol[];
 
-#if !PORTABLE
+#if PLATFORM_GBA
 #define BSS_CODE __attribute__((section(".bss.code")))
 
 BSS_CODE ALIGNED(4) char SoundMainRAM_Buffer[0x400] = { 0 };
@@ -25,7 +22,7 @@ EWRAM_DATA struct MP2KTrack gMPlayTrack_SE1[16] = {};
 EWRAM_DATA struct MP2KTrack gMPlayTrack_SE2[16] = {};
 EWRAM_DATA struct MP2KTrack gMPlayTrack_SE3[16] = {};
 
-EWRAM_DATA struct SoundInfo gSoundInfo = {};
+EWRAM_DATA struct SoundMixerState gSoundInfo = {};
 EWRAM_DATA MPlayFunc gMPlayJumpTable[36] = {};
 EWRAM_DATA struct MixerSource gCgbChans[4] = {};
 
@@ -35,9 +32,6 @@ EWRAM_DATA struct MP2KPlayerState gMPlayInfo_SE1 = {};
 EWRAM_DATA struct MP2KPlayerState gMPlayInfo_SE2 = {};
 EWRAM_DATA u8 gMPlayMemAccArea[4 * sizeof(uintptr_t)] = {};
 EWRAM_DATA struct MP2KPlayerState gMPlayInfo_SE3 = {};
-
-void MP2K_event_nxx();
-void MP2KPlayerMain();
 
 static void DummyCallback(void);
 
@@ -86,7 +80,7 @@ void MPlayFadeOut(struct MP2KPlayerState *mplayInfo, u16 speed)
 void m4aSoundInit(void)
 {
     s32 i;
-#if !PORTABLE
+#if PLATFORM_GBA
     CpuCopy32((void *)((s32)SoundMainRAM & ~1), SoundMainRAM_Buffer, sizeof(SoundMainRAM_Buffer));
 #endif
 
@@ -104,7 +98,7 @@ void m4aSoundInit(void)
 
 void m4aSoundMain(void)
 {
-#if !PORTABLE
+#if PLATFORM_GBA
     SoundMain();
 #else
     RunMixerFrame();
@@ -241,7 +235,7 @@ void m4aMPlayImmInit(struct MP2KPlayerState *mplayInfo)
 
 void MPlayExtender(struct MixerSource *cgbChans)
 {
-    struct SoundInfo *soundInfo;
+    struct SoundMixerState *soundInfo;
     u32 lockStatus;
 
     REG_SOUNDCNT_X = SOUND_MASTER_ENABLE | SOUND_4_ON | SOUND_3_ON | SOUND_2_ON | SOUND_1_ON;
@@ -261,7 +255,8 @@ void MPlayExtender(struct MixerSource *cgbChans)
         cgb_trigger_note(i);
     }
 #endif
-    soundInfo = VOID_CAST SOUND_INFO_PTR;
+
+    soundInfo = SOUND_INFO_PTR;
 
     lockStatus = soundInfo->lockStatus;
 
@@ -270,27 +265,15 @@ void MPlayExtender(struct MixerSource *cgbChans)
 
     soundInfo->lockStatus++;
 
-#if !PORTABLE
-    gMPlayJumpTable[8] = ply_memacc;
-    gMPlayJumpTable[17] = ply_lfos;
-    gMPlayJumpTable[19] = ply_mod;
-    gMPlayJumpTable[28] = ply_xcmd;
-    gMPlayJumpTable[29] = ply_endtie;
-    gMPlayJumpTable[30] = SampleFreqSet;
-    gMPlayJumpTable[31] = TrackStop;
-    gMPlayJumpTable[32] = FadeOutBody;
-    gMPlayJumpTable[33] = TrkVolPitSet;
-#else
-    gMPlayJumpTable[8] = ply_memacc;
+    gMPlayJumpTable[8] = MP2K_event_memacc;
     gMPlayJumpTable[17] = MP2K_event_lfos;
     gMPlayJumpTable[19] = MP2K_event_mod;
-    gMPlayJumpTable[28] = ply_xcmd;
+    gMPlayJumpTable[28] = MP2K_event_xcmd;
     gMPlayJumpTable[29] = MP2K_event_endtie;
     gMPlayJumpTable[30] = SampleFreqSet;
     gMPlayJumpTable[31] = TrackStop;
     gMPlayJumpTable[32] = FadeOutBody;
     gMPlayJumpTable[33] = TrkVolPitSet;
-#endif
 
     soundInfo->cgbChans = cgbChans;
     soundInfo->CgbSound = CgbSound;
@@ -312,14 +295,14 @@ void MPlayExtender(struct MixerSource *cgbChans)
     soundInfo->lockStatus = lockStatus;
 }
 
-#if !PORTABLE
+#if PLATFORM_GBA
 void MusicPlayerJumpTableCopy(void) { asm("swi 0x2A"); }
 #endif
 
-void ClearChain(void *x)
+void ClearChain(struct MixerSource *chan)
 {
     void (*func)(void *) = *(&gMPlayJumpTable[34]);
-    func(x);
+    func(chan);
 }
 
 void Clear64byte(void *x)
@@ -328,7 +311,7 @@ void Clear64byte(void *x)
     func(x);
 }
 
-void SoundInit(struct SoundInfo *soundInfo)
+void SoundInit(struct SoundMixerState *soundInfo)
 {
     soundInfo->lockStatus = 0;
 #if !USE_NEW_DMA
@@ -348,16 +331,12 @@ void SoundInit(struct SoundInfo *soundInfo)
     REG_DMA2DAD = (intptr_t)&REG_FIFO_B;
 #endif
 
-    SOUND_INFO_PTR = VOID_CAST soundInfo;
-    CpuFill32(0, soundInfo, sizeof(struct SoundInfo));
+    SOUND_INFO_PTR = soundInfo;
+    CpuFill32(0, soundInfo, sizeof(struct SoundMixerState));
 
     soundInfo->numChans = 8;
     soundInfo->masterVol = 15;
-#if !PORTABLE
-    soundInfo->plynote = (PlyNoteFunc)ply_note;
-#else
     soundInfo->plynote = MP2K_event_nxx;
-#endif
     soundInfo->CgbSound = DummyCallback;
     soundInfo->CgbOscOff = (CgbOscOffFunc)DummyCallback;
     soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)DummyCallback;
@@ -367,7 +346,8 @@ void SoundInit(struct SoundInfo *soundInfo)
 
     soundInfo->MPlayJumpTable = gMPlayJumpTable;
 
-#if !PORTABLE
+    // Interesting
+#if PLATFORM_GBA
     SampleFreqSet(SOUND_MODE_FREQ_13379);
 #else
     SampleFreqSet(SOUND_MODE_FREQ_42048);
@@ -378,12 +358,12 @@ void SoundInit(struct SoundInfo *soundInfo)
 
 void SampleFreqSet(u32 freq)
 {
-    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
+    struct SoundMixerState *soundInfo = SOUND_INFO_PTR;
 
     freq = (freq & 0xF0000) >> 16;
     soundInfo->freqOption = freq;
 
-#if !PORTABLE
+#if PLATFORM_GBA
     soundInfo->samplesPerFrame = gPcmSamplesPerVBlankTable[freq - 1];
     soundInfo->framesPerDmaCycle = PCM_DMA_BUF_SIZE / soundInfo->samplesPerFrame;
 
@@ -406,7 +386,7 @@ void SampleFreqSet(u32 freq)
     REG_TM0CNT_L = -(280896 / soundInfo->samplesPerFrame);
 
     m4aSoundVSyncOn();
-#if !PORTABLE
+#if PLATFORM_GBA
     while (*(vu8 *)REG_ADDR_VCOUNT == 159)
         ;
 
@@ -418,7 +398,7 @@ void SampleFreqSet(u32 freq)
 
 void m4aSoundMode(u32 mode)
 {
-    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
+    struct SoundMixerState *soundInfo = SOUND_INFO_PTR;
     u32 temp;
 
     if (soundInfo->lockStatus != ID_NUMBER)
@@ -472,7 +452,7 @@ void m4aSoundMode(u32 mode)
 
 void SoundClear(void)
 {
-    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
+    struct SoundMixerState *soundInfo = SOUND_INFO_PTR;
     s32 i;
     struct MixerSource *chan;
 
@@ -508,7 +488,7 @@ void SoundClear(void)
 
 void m4aSoundVSyncOff(void)
 {
-    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
+    struct SoundMixerState *soundInfo = SOUND_INFO_PTR;
 
     if (soundInfo->lockStatus >= ID_NUMBER && soundInfo->lockStatus <= ID_NUMBER + 1) {
         soundInfo->lockStatus += 10;
@@ -528,7 +508,7 @@ void m4aSoundVSyncOff(void)
 
 void m4aSoundVSyncOn(void)
 {
-    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
+    struct SoundMixerState *soundInfo = SOUND_INFO_PTR;
     u32 lockStatus = soundInfo->lockStatus;
 
     if (lockStatus == ID_NUMBER)
@@ -543,7 +523,7 @@ void m4aSoundVSyncOn(void)
 
 void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 trackCount)
 {
-    struct SoundInfo *soundInfo;
+    struct SoundMixerState *soundInfo;
 
     if (trackCount == 0)
         return;
@@ -551,7 +531,7 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
     if (trackCount > MAX_MUSICPLAYER_TRACKS)
         trackCount = MAX_MUSICPLAYER_TRACKS;
 
-    soundInfo = VOID_CAST SOUND_INFO_PTR;
+    soundInfo = SOUND_INFO_PTR;
 
     if (soundInfo->lockStatus != ID_NUMBER)
         return;
@@ -570,7 +550,7 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
         tracks++;
     }
 
-    // append music player and MPlayMain to linked list
+    // append music player and MP2KPlayerMain to linked list
 
     if (soundInfo->MPlayMainHead != NULL) {
         mplayInfo->nextPlayerFunc = soundInfo->MPlayMainHead;
@@ -579,10 +559,10 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
         soundInfo->MPlayMainHead = NULL;
     }
 
-#if !PORTABLE
+#if PLATFORM_GBA
     // TODO: Are casts needed here?
     soundInfo->musicPlayerHead = mplayInfo;
-    soundInfo->MPlayMainHead = MPlayMain;
+    soundInfo->MPlayMainHead = MP2KPlayerMain;
 #else
     soundInfo->musicPlayerHead = mplayInfo;
     soundInfo->MPlayMainHead = MP2KPlayerMain;
@@ -609,7 +589,7 @@ void MPlayStart(struct MP2KPlayerState *mplayInfo, struct MP2KSongHeader *songHe
         mplayInfo->lockStatus++;
         mplayInfo->status = 0;
         mplayInfo->songHeader = songHeader;
-        mplayInfo->voicegroup = (void *)songHeader->tone; // TODO: cast
+        mplayInfo->voicegroup = songHeader->voicegroup;
         mplayInfo->priority = songHeader->priority;
         mplayInfo->clock = 0;
         mplayInfo->tempoRawBPM = 150;
@@ -855,27 +835,18 @@ static inline int CgbPan(struct MixerSource *chan)
 
 void CgbModVol(struct MixerSource *chan)
 {
-#if 0
-    // PRET
-    struct SoundInfo  *soundInfo = VOID_CAST SOUND_INFO_PTR;
-
-    if ((soundInfo->mode & 1) || !CgbPan(chan)) {
-#else
     if (!CgbPan(chan)) {
-#endif
-    chan->data.cgb.pan = 0xFF;
-    chan->data.cgb.envelopeGoal = (u32)(chan->rightVol + chan->leftVol) / 16;
-}
-else
-{
-    chan->data.cgb.envelopeGoal = (u32)(chan->rightVol + chan->leftVol) / 16;
+        chan->data.cgb.pan = 0xFF;
+        chan->data.cgb.envelopeGoal = (u32)(chan->rightVol + chan->leftVol) / 16;
+    } else {
+        chan->data.cgb.envelopeGoal = (u32)(chan->rightVol + chan->leftVol) / 16;
 
-    if (chan->data.cgb.envelopeGoal > 15)
-        chan->data.cgb.envelopeGoal = 15;
-}
+        if (chan->data.cgb.envelopeGoal > 15)
+            chan->data.cgb.envelopeGoal = 15;
+    }
 
-chan->data.cgb.sustainGoal = (chan->data.cgb.envelopeGoal * chan->data.cgb.sustain + 15) >> 4;
-chan->data.cgb.pan &= chan->data.cgb.panMask;
+    chan->data.cgb.sustainGoal = (chan->data.cgb.envelopeGoal * chan->data.cgb.sustain + 15) >> 4;
+    chan->data.cgb.pan &= chan->data.cgb.panMask;
 }
 
 void CgbSound(void)
@@ -883,7 +854,7 @@ void CgbSound(void)
     s32 ch;
     struct MixerSource *channels;
     s32 prevC15;
-    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
+    struct SoundMixerState *soundInfo = SOUND_INFO_PTR;
     vu8 *nrx0ptr;
     vu8 *nrx1ptr;
     vu8 *nrx2ptr;
@@ -1333,7 +1304,7 @@ void m4aMPlayLFOSpeedSet(struct MP2KPlayerState *mplayInfo, u16 trackBits, u8 lf
     else                                                                                                                                   \
         goto cond_false;
 
-void ply_memacc(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_memacc(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     u32 op;
     u8 *addr;
@@ -1419,7 +1390,7 @@ cond_false:
     track->cmdPtr += 4;
 }
 
-void ply_xcmd(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xcmd(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     u32 n = *track->cmdPtr;
     track->cmdPtr++;
@@ -1427,7 +1398,7 @@ void ply_xcmd(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
     gXcmdTable[n](mplayInfo, track);
 }
 
-void ply_xxx(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xxx(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     void (*func)(struct MP2KPlayerState *, struct MP2KTrack *) = *(&gMPlayJumpTable[0]);
     func(mplayInfo, track);
@@ -1441,7 +1412,7 @@ void ply_xxx(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
         (var) |= byte;                                                                                                                     \
     }
 
-void ply_xwave(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xwave(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     uintptr_t wav;
 
@@ -1454,105 +1425,62 @@ void ply_xwave(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
     READ_XCMD_BYTE(wav, 2)
     READ_XCMD_BYTE(wav, 3)
 
-    track->instrument.wav = (struct WaveData *)wav;
+    track->instrument.data.sound.wav = (struct WaveData *)wav;
     track->cmdPtr += 4;
 }
 
-void ply_xtype(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xtype(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     track->instrument.type = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xatta(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xatta(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.attack = *track->cmdPtr;
+    track->instrument.data.sound.attack = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xdeca(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xdeca(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.decay = *track->cmdPtr;
+    track->instrument.data.sound.decay = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xsust(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xsust(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.sustain = *track->cmdPtr;
+    track->instrument.data.sound.sustain = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xrele(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xrele(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.release = *track->cmdPtr;
+    track->instrument.data.sound.release = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xiecv(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xiecv(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     track->echoVolume = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xiecl(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xiecl(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     track->echoLength = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xleng(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xleng(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     track->instrument.cgbLength = *track->cmdPtr;
     track->cmdPtr++;
 }
 
-void ply_xswee(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
+void MP2K_event_xswee(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
     track->instrument.pan_sweep = *track->cmdPtr;
     track->cmdPtr++;
 }
-
-#if 0
-void ply_xcmd_0C(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
-{
-    u32 unk;
-
-#ifdef BUG_FIX
-    unk = 0;
-#endif
-
-    READ_XCMD_BYTE(unk, 0) // UB: uninitialized variable
-    READ_XCMD_BYTE(unk, 1)
-
-    if (track->unk_3A < (u16)unk)
-    {
-        track->unk_3A++;
-        track->cmdPtr -= 2;
-        track->wait = 1;
-    }
-    else
-    {
-        track->unk_3A = 0;
-        track->cmdPtr += 2;
-    }
-}
-
-void ply_xcmd_0D(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
-{
-    u32 unk;
-
-#ifdef BUG_FIX
-    unk = 0;
-#endif
-
-    READ_XCMD_BYTE(unk, 0) // UB: uninitialized variable
-    READ_XCMD_BYTE(unk, 1)
-    READ_XCMD_BYTE(unk, 2)
-    READ_XCMD_BYTE(unk, 3)
-
-    track->unk_3C = unk;
-    track->cmdPtr += 4;
-}
-#endif
 
 static void DummyCallback(void) { }

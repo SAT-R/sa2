@@ -3,7 +3,7 @@
 
 #include "lib/m4a/m4a_internal.h"
 
-extern struct SoundInfo gSoundInfo;
+extern struct SoundMixerState gSoundInfo;
 
 extern struct MP2KPlayerState gMPlayInfo_BGM;
 extern struct MP2KPlayerState gMPlayInfo_SE1;

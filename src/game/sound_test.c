@@ -547,7 +547,7 @@ static void SoundTestScreenRenderUI(void)
     Sprite *speakerConeElement = soundTestScreen->speakerCone;
     SpriteTransform *speakerConeEffects = soundTestScreen->speakerConeEffects;
 
-    struct SoundInfo *soundInfo;
+    struct SoundMixerState *soundInfo;
 
     s16 i;
     const u8 *E0C30;

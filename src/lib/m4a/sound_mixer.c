@@ -2,18 +2,15 @@
 #include "global.h"
 #include "lib/m4a/music_player.h"
 #include "lib/m4a/sound_mixer.h"
-#include "lib/m4a/mp2k_common.h"
 #include "lib/m4a/cgb_audio.h"
 
 #define VCOUNT_VBLANK   160
 #define TOTAL_SCANLINES 228
 
-#define VOID_CAST (void *)
-
-static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData2 *wav, float *pcmBuffer,
+static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData *wav, float *pcmBuffer,
                                  u16 samplesPerFrame, float sampleRateReciprocal);
 void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, float *pcmBuffer, u8 dmaCounter, u16 maxBufSize);
-static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData2 *wav);
+static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData *wav);
 static s8 sub_82DF758(struct MixerSource *chan, u32 current);
 
 void RunMixerFrame(void)
@@ -50,9 +47,7 @@ void RunMixerFrame(void)
 
     // MixerRamFunc mixerRamFunc = ((MixerRamFunc)MixerCodeBuffer);
     SampleMixer(mixer, maxScanlines, samplesPerFrame, pcmBuffer, dmaCounter, MIXED_AUDIO_BUFFER_SIZE);
-#if PORTABLE
     cgb_audio_generate(samplesPerFrame);
-#endif
 }
 
 void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPerFrame, float *pcmBuffer, u8 dmaCounter, u16 maxBufSize)
@@ -91,7 +86,7 @@ void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPe
     struct MixerSource *chan = mixer->chans;
 
     for (int i = 0; i < numChans; i++, chan++) {
-        struct WaveData2 *wav = VOID_CAST chan->wav;
+        struct WaveData *wav = chan->wav;
 
         if (scanlineLimit != 0) {
             u16 vcount = REG_VCOUNT;
@@ -113,7 +108,7 @@ returnEarly:
 
 // Returns TRUE if channel is still active after moving envelope forward a frame
 //__attribute__((target("thumb")))
-static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData2 *wav)
+static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData *wav)
 {
     // MP2K envelope shape
     //                                                                 |
@@ -207,14 +202,14 @@ static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData2 *wa
         chan->data.sound.ct = wav->size;
         chan->data.sound.fw = 0;
         chan->data.sound.envelopeVol = 0;
-        if (wav->loopFlags & 0xC0) {
+        if ((wav->status >> 8) & 0xC0) {
             chan->status |= 0x10;
         }
         goto attack;
     }
 }
 
-static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData2 *wav, float *pcmBuffer,
+static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSource *chan, struct WaveData *wav, float *pcmBuffer,
                                  u16 samplesPerFrame, float sampleRateReciprocal)
 { /*, [[[]]]) {*/
     u8 v = chan->data.sound.envelopeVol * (mixer->masterVol + 1) / 16U;

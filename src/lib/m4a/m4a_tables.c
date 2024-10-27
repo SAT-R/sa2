@@ -3,14 +3,6 @@
 // Some of these functions have different signatures, so we need to make this
 // an array of void pointers or a struct. It's simpler to just make it an array
 // for now.
-#if PLATFORM_GBA
-void *const gMPlayJumpTableTemplate[] = {
-    ply_fine,  ply_goto,  ply_patt,   ply_pend,      ply_rept,  ply_fine,    ply_fine,     ply_fine,       ply_fine,
-    ply_prio,  ply_tempo, ply_keysh,  ply_voice,     ply_vol,   ply_pan,     ply_bend,     ply_bendr,      ply_lfos,
-    ply_lfodl, ply_mod,   ply_modt,   ply_fine,      ply_fine,  ply_tune,    ply_fine,     ply_fine,       ply_fine,
-    ply_port,  ply_fine,  ply_endtie, SampleFreqSet, TrackStop, FadeOutBody, TrkVolPitSet, RealClearChain, SoundMainBTM,
-};
-#else
 void *const gMPlayJumpTableTemplate[] = {
     MP2K_event_fine,  MP2K_event_goto, MP2K_event_patt, MP2K_event_pend, MP2K_event_rept,  MP2K_event_fine,
     MP2K_event_fine,  MP2K_event_fine, MP2K_event_fine, MP2K_event_prio, MP2K_event_tempo, MP2K_event_keysh,
@@ -19,7 +11,6 @@ void *const gMPlayJumpTableTemplate[] = {
     MP2K_event_fine,  MP2K_event_fine, MP2K_event_fine, MP2K_event_port, MP2K_event_fine,  MP2K_event_endtie,
     SampleFreqSet,    TrackStop,       FadeOutBody,     TrkVolPitSet,    MP2KClearChain,   SoundMainBTM,
 };
-#endif
 
 const u8 gScaleTable[] = {
     0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7, 0xE8, 0xE9, 0xEA, 0xEB, 0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7,
@@ -72,5 +63,6 @@ const u8 gClockTable[] = {
 };
 
 const XcmdFunc gXcmdTable[] = {
-    ply_xxx, ply_xwave, ply_xtype, ply_xxx, ply_xatta, ply_xdeca, ply_xsust, ply_xrele, ply_xiecv, ply_xiecl, ply_xleng, ply_xswee,
+    MP2K_event_xxx,   MP2K_event_xwave, MP2K_event_xtype, MP2K_event_xxx,   MP2K_event_xatta, MP2K_event_xdeca,
+    MP2K_event_xsust, MP2K_event_xrele, MP2K_event_xiecv, MP2K_event_xiecl, MP2K_event_xleng, MP2K_event_xswee,
 };

@@ -714,8 +714,8 @@ SoundMainBTM:
 	bx lr
 	thumb_func_end SoundMainBTM
 
-	thumb_func_start RealClearChain
-RealClearChain:
+	thumb_func_start MP2KClearChain
+MP2KClearChain:
 	ldr r3, [r0, o_SoundChannel_track]
 	cmp r3, 0
 	beq _081DD5E2
@@ -736,36 +736,36 @@ _081DD5DE:
 	str r1, [r0, o_SoundChannel_track]
 _081DD5E2:
 	bx lr
-	thumb_func_end RealClearChain
+	thumb_func_end MP2KClearChain
 
-	thumb_func_start ply_fine
-ply_fine:
+	thumb_func_start MP2K_event_fine
+MP2K_event_fine:
 	push {r4,r5,lr}
 	adds r5, r1, 0
 	ldr r4, [r5, o_MusicPlayerTrack_chan]
 	cmp r4, 0
-	beq ply_fine_done
-ply_fine_loop:
+	beq MP2K_event_fine_done
+MP2K_event_fine_loop:
 	ldrb r1, [r4, o_SoundChannel_statusFlags]
 	movs r0, SOUND_CHANNEL_SF_ON
 	tst r0, r1
-	beq ply_fine_ok
+	beq MP2K_event_fine_ok
 	movs r0, SOUND_CHANNEL_SF_STOP
 	orrs r1, r0
 	strb r1, [r4, o_SoundChannel_statusFlags]
-ply_fine_ok:
+MP2K_event_fine_ok:
 	adds r0, r4, 0
-	bl RealClearChain
+	bl MP2KClearChain
 	ldr r4, [r4, o_SoundChannel_nextChannelPointer]
 	cmp r4, 0
-	bne ply_fine_loop
-ply_fine_done:
+	bne MP2K_event_fine_loop
+MP2K_event_fine_done:
 	movs r0, 0
 	strb r0, [r5, o_MusicPlayerTrack_flags]
 	pop {r4,r5}
 	pop {r0}
 	bx r0
-	thumb_func_end ply_fine
+	thumb_func_end MP2K_event_fine
 
 	thumb_func_start MPlayJumpTableCopy
 MPlayJumpTableCopy:
@@ -819,10 +819,10 @@ _081DD64A:
 	b chk_adr_r2
 	thumb_func_end ld_r3_tp_adr_i
 
-	thumb_func_start ply_goto
-ply_goto:
+	thumb_func_start MP2K_event_goto
+MP2K_event_goto:
 	push {lr}
-ply_goto_1:
+MP2K_event_goto_1:
 	ldr r2, [r1, o_MusicPlayerTrack_cmdPtr]
 	ldrb r0, [r2, 0x3]
 	lsls r0, 8
@@ -837,13 +837,13 @@ ply_goto_1:
 	str r0, [r1, o_MusicPlayerTrack_cmdPtr]
 	pop {r0}
 	bx r0
-	thumb_func_end ply_goto
+	thumb_func_end MP2K_event_goto
 
-	thumb_func_start ply_patt
-ply_patt:
+	thumb_func_start MP2K_event_patt
+MP2K_event_patt:
 	ldrb r2, [r1, o_MusicPlayerTrack_patternLevel]
 	cmp r2, 3
-	bhs ply_patt_done
+	bhs MP2K_event_patt_done
 	lsls r2, 2
 	adds r3, r1, r2
 	ldr r2, [r1, o_MusicPlayerTrack_cmdPtr]
@@ -852,64 +852,64 @@ ply_patt:
 	ldrb r2, [r1, o_MusicPlayerTrack_patternLevel]
 	adds r2, 1
 	strb r2, [r1, o_MusicPlayerTrack_patternLevel]
-	b ply_goto
-ply_patt_done:
-	b ply_fine
-	thumb_func_end ply_patt
+	b MP2K_event_goto
+MP2K_event_patt_done:
+	b MP2K_event_fine
+	thumb_func_end MP2K_event_patt
 
-	thumb_func_start ply_pend
-ply_pend:
+	thumb_func_start MP2K_event_pend
+MP2K_event_pend:
 	ldrb r2, [r1, o_MusicPlayerTrack_patternLevel]
 	cmp r2, 0
-	beq ply_pend_done
+	beq MP2K_event_pend_done
 	subs r2, 1
 	strb r2, [r1, o_MusicPlayerTrack_patternLevel]
 	lsls r2, 2
 	adds r3, r1, r2
 	ldr r2, [r3, o_MusicPlayerTrack_patternStack]
 	str r2, [r1, o_MusicPlayerTrack_cmdPtr]
-ply_pend_done:
+MP2K_event_pend_done:
 	bx lr
-	thumb_func_end ply_pend
+	thumb_func_end MP2K_event_pend
 
-	thumb_func_start ply_rept
-ply_rept:
+	thumb_func_start MP2K_event_rept
+MP2K_event_rept:
 	push {lr}
 	ldr r2, [r1, o_MusicPlayerTrack_cmdPtr]
 	ldrb r3, [r2]
 	cmp r3, 0
-	bne ply_rept_1
+	bne MP2K_event_rept_1
 	adds r2, 1
 	str r2, [r1, o_MusicPlayerTrack_cmdPtr]
-	b ply_goto_1
-ply_rept_1:
+	b MP2K_event_goto_1
+MP2K_event_rept_1:
 	ldrb r3, [r1, o_MusicPlayerTrack_repN]
 	adds r3, 1
 	strb r3, [r1, o_MusicPlayerTrack_repN]
 	mov r12, r3
 	bl ld_r3_tp_adr_i
 	cmp r12, r3
-	bhs ply_rept_2
-	b ply_goto_1
-ply_rept_2:
+	bhs MP2K_event_rept_2
+	b MP2K_event_goto_1
+MP2K_event_rept_2:
 	movs r3, 0
 	strb r3, [r1, o_MusicPlayerTrack_repN]
 	adds r2, 5
 	str r2, [r1, o_MusicPlayerTrack_cmdPtr]
 	pop {r0}
 	bx r0
-	thumb_func_end ply_rept
+	thumb_func_end MP2K_event_rept
 
-	thumb_func_start ply_prio
-ply_prio:
+	thumb_func_start MP2K_event_prio
+MP2K_event_prio:
 	mov r12, lr
 	bl ld_r3_tp_adr_i
 	strb r3, [r1, o_MusicPlayerTrack_priority]
 	bx r12
-	thumb_func_end ply_prio
+	thumb_func_end MP2K_event_prio
 
-	thumb_func_start ply_tempo
-ply_tempo:
+	thumb_func_start MP2K_event_tempo
+MP2K_event_tempo:
 	mov r12, lr
 	bl ld_r3_tp_adr_i
 	lsls r3, 1
@@ -919,10 +919,10 @@ ply_tempo:
 	lsrs r3, 8
 	strh r3, [r0, o_MusicPlayerInfo_tempoI]
 	bx r12
-	thumb_func_end ply_tempo
+	thumb_func_end MP2K_event_tempo
 
-	thumb_func_start ply_keysh
-ply_keysh:
+	thumb_func_start MP2K_event_keysh
+MP2K_event_keysh:
 	mov r12, lr
 	bl ld_r3_tp_adr_i
 	strb r3, [r1, o_MusicPlayerTrack_keyShift]
@@ -931,10 +931,10 @@ ply_keysh:
 	orrs r3, r2
 	strb r3, [r1, o_MusicPlayerTrack_flags]
 	bx r12
-	thumb_func_end ply_keysh
+	thumb_func_end MP2K_event_keysh
 
-	thumb_func_start ply_voice
-ply_voice:
+	thumb_func_start MP2K_event_voice
+MP2K_event_voice:
 	mov r12, lr
 	ldr r2, [r1, o_MusicPlayerTrack_cmdPtr]
 	ldrb r3, [r2]
@@ -955,10 +955,10 @@ ply_voice:
 	bl chk_adr_r2
 	str r3, [r1, o_MusicPlayerTrack_ToneData_attack]
 	bx r12
-	thumb_func_end ply_voice
+	thumb_func_end MP2K_event_voice
 
-	thumb_func_start ply_vol
-ply_vol:
+	thumb_func_start MP2K_event_vol
+MP2K_event_vol:
 	mov r12, lr
 	bl ld_r3_tp_adr_i
 	strb r3, [r1, o_MusicPlayerTrack_vol]
@@ -967,10 +967,10 @@ ply_vol:
 	orrs r3, r2
 	strb r3, [r1, o_MusicPlayerTrack_flags]
 	bx r12
-	thumb_func_end ply_vol
+	thumb_func_end MP2K_event_vol
 
-	thumb_func_start ply_pan
-ply_pan:
+	thumb_func_start MP2K_event_pan
+MP2K_event_pan:
 	mov r12, lr
 	bl ld_r3_tp_adr_i
 	subs r3, C_V
@@ -980,10 +980,10 @@ ply_pan:
 	orrs r3, r2
 	strb r3, [r1, o_MusicPlayerTrack_flags]
 	bx r12
-	thumb_func_end ply_pan
+	thumb_func_end MP2K_event_pan
 
-	thumb_func_start ply_bend
-ply_bend:
+	thumb_func_start MP2K_event_bend
+MP2K_event_bend:
 	mov r12, lr
 	bl ld_r3_tp_adr_i
 	subs r3, C_V
@@ -993,10 +993,10 @@ ply_bend:
 	orrs r3, r2
 	strb r3, [r1, o_MusicPlayerTrack_flags]
 	bx r12
-	thumb_func_end ply_bend
+	thumb_func_end MP2K_event_bend
 
-	thumb_func_start ply_bendr
-ply_bendr:
+	thumb_func_start MP2K_event_bendr
+MP2K_event_bendr:
 	mov r12, lr
 	bl ld_r3_tp_adr_i
 	strb r3, [r1, o_MusicPlayerTrack_bendRange]
@@ -1005,18 +1005,18 @@ ply_bendr:
 	orrs r3, r2
 	strb r3, [r1, o_MusicPlayerTrack_flags]
 	bx r12
-	thumb_func_end ply_bendr
+	thumb_func_end MP2K_event_bendr
 
-	thumb_func_start ply_lfodl
-ply_lfodl:
+	thumb_func_start MP2K_event_lfodl
+MP2K_event_lfodl:
 	mov r12, lr
 	bl ld_r3_tp_adr_i
 	strb r3, [r1, o_MusicPlayerTrack_lfoDelay]
 	bx r12
-	thumb_func_end ply_lfodl
+	thumb_func_end MP2K_event_lfodl
 
-	thumb_func_start ply_modt
-ply_modt:
+	thumb_func_start MP2K_event_modt
+MP2K_event_modt:
 	mov r12, lr
 	bl ld_r3_tp_adr_i
 	ldrb r0, [r1, o_MusicPlayerTrack_modT]
@@ -1029,10 +1029,10 @@ ply_modt:
 	strb r3, [r1, o_MusicPlayerTrack_flags]
 _081DD7AA:
 	bx r12
-	thumb_func_end ply_modt
+	thumb_func_end MP2K_event_modt
 
-	thumb_func_start ply_tune
-ply_tune:
+	thumb_func_start MP2K_event_tune
+MP2K_event_tune:
 	mov r12, lr
 	bl ld_r3_tp_adr_i
 	subs r3, C_V
@@ -1042,10 +1042,10 @@ ply_tune:
 	orrs r3, r2
 	strb r3, [r1, o_MusicPlayerTrack_flags]
 	bx r12
-	thumb_func_end ply_tune
+	thumb_func_end MP2K_event_tune
 
-	thumb_func_start ply_port
-ply_port:
+	thumb_func_start MP2K_event_port
+MP2K_event_port:
 	mov r12, lr
 	ldr r2, [r1, o_MusicPlayerTrack_cmdPtr]
 	ldrb r3, [r2]
@@ -1056,7 +1056,7 @@ ply_port:
 	strb r3, [r0]
 	bx r12
 	.pool
-	thumb_func_end ply_port
+	thumb_func_end MP2K_event_port
 
 	thumb_func_start m4aSoundVSync
 m4aSoundVSync:
@@ -1117,8 +1117,8 @@ m4aSoundVSync_Done:
 	.pool
 	thumb_func_end m4aSoundVSync
 
-	thumb_func_start MPlayMain
-MPlayMain:
+	thumb_func_start MP2KPlayerMain
+MP2KPlayerMain:
 	ldr r2, lt2_ID_NUMBER
 	ldr r3, [r0, o_MusicPlayerInfo_ident]
 	cmp r2, r3
@@ -1454,7 +1454,7 @@ call_r3:
 lt_gClockTable:     .word gClockTable
 lt2_SOUND_INFO_PTR: .word SOUND_INFO_PTR
 lt2_ID_NUMBER:      .word ID_NUMBER
-	thumb_func_end MPlayMain
+	thumb_func_end MP2KPlayerMain
 
 	thumb_func_start TrackStop
 TrackStop:
@@ -1526,8 +1526,8 @@ _081DDAFC:
 	bx lr
 	thumb_func_end ChnVolSetAsm
 
-	thumb_func_start ply_note
-ply_note:
+	thumb_func_start MP2K_event_nxx
+MP2K_event_nxx:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -1802,10 +1802,10 @@ _081DDCEA:
 	pop {r0}
 	bx r0
 	.pool
-	thumb_func_end ply_note
+	thumb_func_end MP2K_event_nxx
 
-	thumb_func_start ply_endtie
-ply_endtie:
+	thumb_func_start MP2K_event_endtie
+MP2K_event_endtie:
 	push {r4,r5}
 	ldr r2, [r1, o_MusicPlayerTrack_cmdPtr]
 	ldrb r3, [r2]
@@ -1843,7 +1843,7 @@ _081DDD3A:
 _081DDD40:
 	pop {r4,r5}
 	bx lr
-	thumb_func_end ply_endtie
+	thumb_func_end MP2K_event_endtie
 
 	thumb_func_start clear_modM
 clear_modM:
@@ -1873,8 +1873,8 @@ ld_r3_tp_adr_i_unchecked:
 	bx lr
 	thumb_func_end ld_r3_tp_adr_i
 
-	thumb_func_start ply_lfos
-ply_lfos:
+	thumb_func_start MP2K_event_lfos
+MP2K_event_lfos:
 	mov r12, lr
 	bl ld_r3_tp_adr_i_unchecked
 	strb r3, [r1, o_MusicPlayerTrack_lfoSpeed]
@@ -1883,10 +1883,10 @@ ply_lfos:
 	bl clear_modM
 _081DDD7C:
 	bx r12
-	thumb_func_end ply_lfos
+	thumb_func_end MP2K_event_lfos
 
-	thumb_func_start ply_mod
-ply_mod:
+	thumb_func_start MP2K_event_mod
+MP2K_event_mod:
 	mov r12, lr
 	bl ld_r3_tp_adr_i_unchecked
 	strb r3, [r1, o_MusicPlayerTrack_mod]
@@ -1895,7 +1895,7 @@ ply_mod:
 	bl clear_modM
 _081DDD90:
 	bx r12
-	thumb_func_end ply_mod
+	thumb_func_end MP2K_event_mod
 
 	.align 2, 0 @ Don't pad with nop.
 

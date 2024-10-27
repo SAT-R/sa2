@@ -3,18 +3,21 @@
 #include "platform/platform.h" // Platform_QueueAudio
 #include "lib/m4a/m4a_internal.h"
 #include "lib/m4a/cgb_audio.h"
-#include "lib/m4a/mp2k_common.h"
 #include "lib/m4a/music_player.h"
 
-// TODO: Remove!
-#define VOID_CAST (void *)
+#ifndef __has_builtin
+#define __has_builtin(x) defined(__GNUC__)
+#endif
 
-static u32 MidiKeyToFreq(struct WaveData2 *wav, u8 key, u8 pitch);
-extern void *const gMPlayJumpTableTemplate[];
-extern const u8 gScaleTable[];
-extern const u32 gFreqTable[];
-extern const u8 gClockTable[];
-float audioBuffer[MIXED_AUDIO_BUFFER_SIZE];
+#if ((-1 >> 1) == -1) && __has_builtin(__builtin_ctz)
+#define FLOOR_DIV_POW2(a, b) ((a) >> __builtin_ctz(b))
+#else
+#define FLOOR_DIV_POW2(a, b) ((a) > 0 ? (a) / (b) : (((a) + 1 - (b)) / (b)))
+#endif
+
+static float audioBuffer[MIXED_AUDIO_BUFFER_SIZE];
+
+static void ChnVolSetAsm(struct MixerSource *chan, struct MP2KTrack *track);
 
 u32 umul3232H32(u32 a, u32 b)
 {
@@ -24,8 +27,6 @@ u32 umul3232H32(u32 a, u32 b)
 }
 
 void SoundMainBTM(void *ptr) { CpuFill32(0, ptr, offsetof(struct MP2KTrack, cmdPtr)); }
-
-void ChnVolSetAsm(struct MixerSource *chan, struct MP2KTrack *track);
 
 // Removes chan from the doubly-linked list of channels associated with chan->track.
 // Gonna rename this to like "FreeChannel" or something, similar to VGMS
@@ -51,136 +52,7 @@ void MP2KClearChain(struct MixerSource *chan)
     chan->track = NULL;
 }
 
-// TODO: Remove all the SafeDereference* functions.
-//         They don't do anything in PORTABLE (except introduce extra branches),
-//         were meant as EWRAM bounds check for OG hardware...
-#define VERIFY_PTR(x)
-
-static u8 SafeDereferenceU8(u8 *addr)
-{
-    u8 ret = *addr;
-    VERIFY_PTR(addr);
-    return ret;
-}
-
-static u32 SafeDereferenceU32(u32 *addr)
-{
-    u32 ret = *addr;
-    VERIFY_PTR(addr);
-    return ret;
-}
-
-static u8 *SafeDereferenceU8Ptr(u8 **addr)
-{
-    u8 *ret = *addr;
-    VERIFY_PTR(addr);
-    return ret;
-}
-
-static u32 *SafeDereferenceU32Ptr(u32 **addr)
-{
-    u32 *ret = *addr;
-    VERIFY_PTR(addr);
-    return ret;
-}
-
-static struct WaveData2 *SafeDereferenceWavDataPtr(struct WaveData2 **addr)
-{
-    struct WaveData2 *ret = *addr;
-    VERIFY_PTR(addr);
-    return ret;
-}
-
-static struct MP2KInstrument *SafeDereferenceMP2KInstrumentPtr(struct MP2KInstrument **addr)
-{
-    struct MP2KInstrument *ret = *addr;
-    VERIFY_PTR(addr);
-    return ret;
-}
-
-static void *SafeDereferenceVoidPtr(void **addr)
-{
-    void *ret = *addr;
-    VERIFY_PTR(addr);
-    return ret;
-}
-
-#ifndef NOT_GBA
-// I read an article about undefined behavior today so I'm feeling especially cautious
-// I'm definitely bringing this onto compiler explorer for some laughs... heh...
-// ...Sorry
-struct MP2KInstrument SafeDereferenceMP2KInstrument(struct MP2KInstrument *addr)
-{
-    struct MP2KInstrument instrument;
-    if (addr->type == SafeDereferenceU8(&addr->type) && addr->drumKey == SafeDereferenceU8(&addr->drumKey)
-        && addr->cgbLength == SafeDereferenceU8(&addr->cgbLength) && addr->pan_sweep == SafeDereferenceU8(&addr->pan_sweep)) {
-        instrument.type = addr->type;
-        instrument.drumKey = addr->drumKey;
-        instrument.cgbLength = addr->cgbLength;
-        instrument.pan_sweep = addr->pan_sweep;
-    } else {
-        instrument.type = 0;
-        instrument.drumKey = 0;
-        instrument.cgbLength = 0;
-        instrument.pan_sweep = 0;
-    }
-
-    // I don't know how much the optimizer can eff with weird union stuff so I might as well go through
-    // all the steps to check which union member to access...?
-    if (instrument.type & 0xC0) {
-        if (addr->group == SafeDereferenceMP2KInstrumentPtr(&addr->group)) {
-            instrument.group = addr->group;
-        } else {
-            instrument.group = NULL;
-        }
-
-        if (addr->keySplitTable == SafeDereferenceU8Ptr(&addr->keySplitTable)) {
-            instrument.keySplitTable = addr->keySplitTable;
-        } else {
-            instrument.keySplitTable = NULL;
-        }
-        return instrument;
-    } else if (instrument.type & 0x7) {
-        if ((instrument.type & 0x7) == 3) {
-            if (addr->cgb3Sample == SafeDereferenceU32Ptr(&addr->cgb3Sample)) {
-                instrument.cgb3Sample = addr->cgb3Sample;
-            } else {
-                instrument.cgb3Sample = NULL;
-            }
-        } else {
-            if (addr->squareNoiseConfig == SafeDereferenceU32(&addr->squareNoiseConfig)) {
-                instrument.squareNoiseConfig = addr->squareNoiseConfig;
-            } else {
-                instrument.squareNoiseConfig = 0;
-            }
-        }
-    } else {
-        instrument.wav = addr->wav;
-    }
-
-    if (addr->attack == SafeDereferenceU8(&addr->attack) && addr->decay == SafeDereferenceU8(&addr->decay)
-        && addr->sustain == SafeDereferenceU8(&addr->sustain) && addr->release == SafeDereferenceU8(&addr->release)) {
-        instrument.attack = addr->attack;
-        instrument.decay = addr->decay;
-        instrument.sustain = addr->sustain;
-        instrument.release = addr->release;
-    } else {
-        instrument.attack = 0;
-        instrument.decay = 0;
-        instrument.sustain = 0;
-        instrument.release = 0;
-    }
-    return instrument;
-}
-#endif
-
-#undef VERIFY_PTR
-
-u8 ConsumeTrackByte(struct MP2KTrack *track)
-{
-    u8 *ptr = track->cmdPtr++;
-    return SafeDereferenceU8(ptr);
-}
+static u8 ConsumeTrackByte(struct MP2KTrack *track) { return *track->cmdPtr++; }
 
 void MPlayJumpTableCopy(void **mplayJumpTable)
 {
@@ -197,7 +69,7 @@ void MP2K_event_fine(struct MP2KPlayerState *unused, struct MP2KTrack *track)
         if (chan->status & 0xC7) {
             chan->status |= 0x40;
         }
-        MP2KClearChain(chan);
+        ClearChain(chan);
     }
     track->status = 0;
 }
@@ -205,20 +77,14 @@ void MP2K_event_fine(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 // Sets the track's cmdPtr to the specified address.
 void MP2K_event_goto(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 {
-#ifdef NOT_GBA
-    u8 *addr;
-    memcpy(&addr, track->cmdPtr, sizeof(u8 *));
-    track->cmdPtr = addr;
-#else
     u8 *cmdPtr = track->cmdPtr;
     uintptr_t addr = 0;
     for (size_t i = sizeof(uintptr_t) - 1; i > 0; i--) {
         addr |= cmdPtr[i];
         addr <<= 8;
     }
-    addr |= SafeDereferenceU8(cmdPtr);
+    addr |= *cmdPtr;
     track->cmdPtr = (u8 *)addr;
-#endif
 }
 
 // Sets the track's cmdPtr to the specified address after backing up its current position.
@@ -286,7 +152,7 @@ void MP2K_event_keysh(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 void MP2K_event_voice(struct MP2KPlayerState *player, struct MP2KTrack *track)
 {
     u8 voice = *(track->cmdPtr++);
-    struct MP2KInstrument *instrument = &player->voicegroup[voice];
+    struct MP2KVoiceGroup *instrument = &player->voicegroup[voice];
     track->instrument = *instrument;
 }
 
@@ -333,19 +199,13 @@ void MP2K_event_tune(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 
 void MP2K_event_port(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 {
-    // I'm really curious whether any games actually use this event...
-#ifdef NOT_GBA
-    // I assume anything done by this command will get immediately overwritten by CgbSound?
-    track->cmdPtr += 2;
-#else
+
     vu8 *offset = (vu8 *)(REG_ADDR_NR10 + *(track->cmdPtr++));
     *offset = ConsumeTrackByte(track);
-#endif
 }
 
-void MP2KPlayerMain(void *voidPtrPlayer)
+void MP2KPlayerMain(struct MP2KPlayerState *player)
 {
-    struct MP2KPlayerState *player = (struct MP2KPlayerState *)voidPtrPlayer;
     struct SoundMixerState *mixer = SOUND_INFO_PTR;
 
     if (player->lockStatus != PLAYER_UNLOCKED) {
@@ -360,7 +220,7 @@ void MP2KPlayerMain(void *voidPtrPlayer)
     if (player->status & MUSICPLAYER_STATUS_PAUSE) {
         goto returnEarly;
     }
-    FadeOutBody(voidPtrPlayer);
+    FadeOutBody(player);
     if (player->status & MUSICPLAYER_STATUS_PAUSE) {
         goto returnEarly;
     }
@@ -380,11 +240,7 @@ void MP2KPlayerMain(void *voidPtrPlayer)
             chan = currentTrack->chan;
             while (chan != NULL) {
                 if ((chan->status & SOUND_CHANNEL_SF_ON) == 0) {
-#if 0
                     ClearChain(chan);
-#else
-                    MP2KClearChain(chan);
-#endif
                 } else if (chan->data.sound.gateTime != 0 && --chan->data.sound.gateTime == 0) {
                     chan->status |= SOUND_CHANNEL_SF_STOP;
                 }
@@ -414,9 +270,8 @@ void MP2KPlayerMain(void *voidPtrPlayer)
                 if (event >= 0xCF) {
                     mixer->plynote(event - 0xCF, player, currentTrack);
                 } else if (event >= 0xB1) {
-                    void (*eventFunc)(struct MP2KPlayerState *, struct MP2KTrack *);
                     player->cmd = event - 0xB1;
-                    eventFunc = mixer->MPlayJumpTable[player->cmd];
+                    MP2KEventFunc eventFunc = mixer->MPlayJumpTable[player->cmd];
                     eventFunc(player, currentTrack);
 
                     if (currentTrack->status == 0) {
@@ -482,11 +337,7 @@ void MP2KPlayerMain(void *voidPtrPlayer)
         TrkVolPitSet(player, track);
         for (struct MixerSource *chan = track->chan; chan != NULL; chan = chan->next) {
             if ((chan->status & 0xC7) == 0) {
-#if 0
-                    ClearChain(chan);
-#else
-                MP2KClearChain(chan);
-#endif
+                ClearChain(chan);
                 continue;
             }
             u8 cgbType = chan->type & 0x7;
@@ -505,7 +356,7 @@ void MP2KPlayerMain(void *voidPtrPlayer)
                     chan->data.cgb.freq = mixer->MidiKeyToCgbFreq(cgbType, key, track->pitchCalculated);
                     chan->data.cgb.cgbStatus |= 0x2;
                 } else {
-                    chan->data.sound.freq = MidiKeyToFreq(VOID_CAST chan->wav, key, track->pitchCalculated);
+                    chan->data.sound.freq = MidiKeyToFreq(chan->wav, key, track->pitchCalculated);
                 }
             }
         }
@@ -533,7 +384,7 @@ void TrackStop(struct MP2KPlayerState *player, struct MP2KTrack *track)
     }
 }
 
-void ChnVolSetAsm(struct MixerSource *chan, struct MP2KTrack *track)
+static void ChnVolSetAsm(struct MixerSource *chan, struct MP2KTrack *track)
 {
     s8 forcedPan = chan->data.sound.rhythmPan;
     u32 rightVolume = (u8)(forcedPan + 128) * chan->data.sound.velocity * track->volRightCalculated / 128 / 128;
@@ -550,7 +401,7 @@ void ChnVolSetAsm(struct MixerSource *chan, struct MP2KTrack *track)
 }
 
 void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *track)
-{ // ply_note
+{ // MP2K_event_nxx
     struct SoundMixerState *mixer = SOUND_INFO_PTR;
 
     // A note can be anywhere from 1 to 4 bytes long. First is always the note length...
@@ -571,7 +422,7 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
     // sp14
     s8 forcedPan = 0;
     // First r4, then r9
-    struct MP2KInstrument *instrument = VOID_CAST & track->instrument;
+    struct MP2KVoiceGroup *instrument = &track->instrument;
     // sp8
     u8 key = track->key;
     u8 type = instrument->type;
@@ -579,12 +430,12 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
     if (type & (TONEDATA_TYPE_RHY | TONEDATA_TYPE_SPL)) {
         u8 instrumentIndex;
         if (instrument->type & TONEDATA_TYPE_SPL) {
-            instrumentIndex = instrument->keySplitTable[track->key];
+            instrumentIndex = instrument->data.keySplit.keySplitTable[track->key];
         } else {
             instrumentIndex = track->key;
         }
 
-        instrument = instrument->group + instrumentIndex;
+        instrument = instrument->data.keySplit.group + instrumentIndex;
         if (instrument->type & (TONEDATA_TYPE_RHY | TONEDATA_TYPE_SPL)) {
             return;
         }
@@ -661,18 +512,15 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
     if (chan == NULL) {
         return;
     }
-#if 0
+
     ClearChain(chan);
-#else
-    MP2KClearChain(chan);
-#endif
 
     chan->prev = NULL;
     chan->next = track->chan;
     if (track->chan != NULL) {
         track->chan->prev = chan;
     }
-    track->chan = VOID_CAST chan;
+    track->chan = chan;
     chan->track = track;
 
     track->lfoDelayCounter = track->lfoDelay;
@@ -688,11 +536,11 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
     chan->data.sound.key = key;
     chan->data.sound.rhythmPan = forcedPan;
     chan->type = instrument->type;
-    chan->wav = instrument->wav;
-    chan->data.sound.attack = instrument->attack;
-    chan->data.sound.decay = instrument->decay;
-    chan->data.sound.sustain = instrument->sustain;
-    chan->data.sound.release = instrument->release;
+    chan->wav = instrument->data.sound.wav;
+    chan->data.sound.attack = instrument->data.sound.attack;
+    chan->data.sound.decay = instrument->data.sound.decay;
+    chan->data.sound.sustain = instrument->data.sound.sustain;
+    chan->data.sound.release = instrument->data.sound.release;
     chan->data.sound.echoVol = track->echoVolume;
     chan->data.sound.echoLen = track->echoLength;
     ChnVolSetAsm(chan, track);
@@ -715,7 +563,7 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
 
         chan->data.cgb.freq = mixer->MidiKeyToCgbFreq(cgbType, transposedKey, track->pitchCalculated);
     } else {
-        chan->data.sound.freq = MidiKeyToFreq(VOID_CAST chan->wav, transposedKey, track->pitchCalculated);
+        chan->data.sound.freq = MidiKeyToFreq(chan->wav, transposedKey, track->pitchCalculated);
     }
 
     chan->status = SOUND_CHANNEL_SF_START;
@@ -761,7 +609,6 @@ void MP2K_event_mod(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 void m4aSoundVSync(void)
 {
     struct SoundMixerState *mixer = SOUND_INFO_PTR;
-#if PORTABLE
     if (mixer->lockStatus - PLAYER_UNLOCKED <= 1) {
         s32 samplesPerFrame = mixer->samplesPerFrame * 2;
         float *m4aBuffer = mixer->pcmBuffer;
@@ -779,50 +626,6 @@ void m4aSoundVSync(void)
         if ((s8)(--mixer->dmaCounter) <= 0)
             mixer->dmaCounter = mixer->framesPerDmaCycle;
     }
-#else
-    if (mixer->lockStatus - PLAYER_UNLOCKED <= 1 && (s8)(--mixer->dmaCounter) <= 0) {
-        mixer->dmaCounter = mixer->framesPerDmaCycle;
-        if (REG_DMA1CNT & (DMA_REPEAT << 16))
-            REG_DMA1CNT = (DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16 | 4;
-        if (REG_DMA2CNT & (DMA_REPEAT << 16))
-            REG_DMA2CNT = (DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16 | 4;
-        REG_DMA1CNT_H = DMA_32BIT;
-        REG_DMA2CNT_H = DMA_32BIT;
-        REG_DMA1CNT_H = DMA_ENABLE | DMA_START_SPECIAL | DMA_32BIT | DMA_REPEAT;
-        REG_DMA2CNT_H = DMA_ENABLE | DMA_START_SPECIAL | DMA_32BIT | DMA_REPEAT;
-    }
-#endif
 }
 
-#if 01
-// In:
-// - wav: pointer to sample
-// - key: the note after being transposed. If pitch bend puts it between notes, then the note below.
-// - pitch: how many 256ths of a semitone above `key` the current note is.
-// Out:
-// - The frequency in Hz at which the sample should be played back.
-
-u32 MidiKeyToFreq(struct WaveData2 *wav, u8 key, u8 pitch)
-{
-    if (key > 178) {
-        key = 178;
-        pitch = 255;
-    }
-
-    // Alternatively, note = key % 12 and octave = 14 - (key / 12)
-    u8 note = gScaleTable[key] & 0xF;
-    u8 octave = gScaleTable[key] >> 4;
-    u8 nextNote = gScaleTable[key + 1] & 0xF;
-    u8 nextOctave = gScaleTable[key + 1] >> 4;
-
-    u32 baseFreq1 = gFreqTable[note] >> octave;
-    u32 baseFreq2 = gFreqTable[nextNote] >> nextOctave;
-
-    u32 freqDifference = umul3232H32(baseFreq2 - baseFreq1, pitch << 24);
-    // This is added by me. The real GBA and GBA BIOS don't verify this address, and as a result the
-    // BIOS's memory can be dumped.
-    u32 freq = SafeDereferenceU32(&wav->freq);
-    return umul3232H32(freq, baseFreq1 + freqDifference);
-}
-#endif
 #endif // PORTABLE
