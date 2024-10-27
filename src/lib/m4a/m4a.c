@@ -298,7 +298,7 @@ void MPlayExtender(struct MixerSource *cgbChans)
     soundInfo->MidiKeyToCgbFreq = MidiKeyToCgbFreq;
     soundInfo->maxScanlines = MAX_LINES;
 
-    CpuFill32(0, cgbChans, sizeof(struct CgbChannel) * 4);
+    CpuFill32(0, cgbChans, sizeof(struct MixerSource) * 4);
 
     cgbChans[0].type = 1;
     cgbChans[0].data.cgb.panMask = 0x11;
@@ -474,7 +474,7 @@ void SoundClear(void)
 {
     struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
     s32 i;
-    void *chan;
+    struct MixerSource *chan;
 
     if (soundInfo->lockStatus != ID_NUMBER)
         return;
@@ -485,9 +485,9 @@ void SoundClear(void)
     chan = &soundInfo->chans[0];
 
     while (i > 0) {
-        ((struct SoundChannel *)chan)->status = 0;
+        chan->status = 0;
         i--;
-        chan = (void *)((intptr_t)chan + sizeof(struct SoundChannel));
+        chan = (void *)((intptr_t)chan + sizeof(struct MixerSource));
     }
 
     chan = soundInfo->cgbChans;
@@ -497,9 +497,9 @@ void SoundClear(void)
 
         while (i <= 4) {
             soundInfo->CgbOscOff(i);
-            ((struct CgbChannel *)chan)->status = 0;
+            chan->status = 0;
             i++;
-            chan = (void *)((intptr_t)chan + sizeof(struct CgbChannel));
+            chan = (void *)((intptr_t)chan + sizeof(struct MixerSource));
         }
     }
 
@@ -857,7 +857,7 @@ void CgbModVol(struct MixerSource *chan)
 {
 #if 0
     // PRET
-    struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
+    struct SoundInfo  *soundInfo = VOID_CAST SOUND_INFO_PTR;
 
     if ((soundInfo->mode & 1) || !CgbPan(chan)) {
 #else

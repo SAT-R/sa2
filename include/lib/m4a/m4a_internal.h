@@ -90,148 +90,6 @@ struct ToneData {
 
 struct MP2KTrack;
 
-struct CgbChannel {
-    u8 status;
-    u8 type;
-    u8 rightVol;
-    u8 leftVol;
-    u8 attack;
-    u8 decay;
-    u8 sustain;
-    u8 release;
-    u8 key;
-    u8 envelopeVol;
-    u8 envelopeGoal;
-    u8 envelopeCtr;
-    u8 echoVol;
-    u8 echoLen;
-    u8 dummy1;
-    u8 dummy2;
-    u8 gateTime;
-    u8 untransposedKey;
-    u8 velocity;
-    u8 priority;
-    u8 rhythmPan;
-    u8 dummy3[3];
-    u8 dummy5; // padding6
-    u8 sustainGoal;
-    u8 nrx4; // NR[1-4]4 register (initial, length bit)
-    u8 pan;
-    u8 panMask;
-    u8 cgbStatus;
-    u8 length;
-    u8 sweep;
-    u32 freq;
-    u32 *wav; // instructs CgbMain to load targeted wave
-    u32 *current; // stores the currently loaded wave
-    struct MP2KTrack *track;
-    void *prev;
-    void *next;
-    u8 dummy4[8];
-};
-
-struct SoundChannel {
-    u8 status;
-    u8 type;
-    u8 rightVol;
-    u8 leftVol;
-    u8 attack;
-    u8 decay;
-    u8 sustain;
-    u8 release;
-    u8 key; // midi key as it was translated into final pitch
-    u8 envelopeVol;
-    u8 envelopeVolR;
-    u8 envelopeVolL;
-    u8 echoVol;
-    u8 echoLen;
-    u8 dummy1;
-    u8 dummy2;
-    u8 gateTime;
-    u8 untransposedKey; // midi key as it was used in the track data
-    u8 velocity;
-    u8 priority;
-    u8 rhythmPan;
-    u8 dummy3[3];
-    u32 count;
-    float fw;
-    u32 freq;
-    struct WaveData *wav;
-    s8 *current;
-    struct MP2KTrack *track;
-    void *prev;
-    void *next;
-    u32 dummy4;
-    u32 blockCount;
-};
-
-#if 0
-struct MixerSource {
-    u8 status;
-    u8 type;
-    u8 rightVol;
-    u8 leftVol;
-    u8 attack;
-    u8 decay;
-    u8 sustain;
-    u8 release;
-    u8 key;
-    u8 envelopeVol;
-    union {
-        u8 envelopeVolR;
-        u8 envelopeGoal;
-    } __attribute__((packed));
-    union {
-        u8 envelopeVolL;
-        u8 envelopeCtr;
-    } __attribute__((packed));
-    u8 echoVol;
-    u8 echoLen;
-    u8 padding1;
-    u8 padding2;
-    u8 gateTime;
-    u8 untransposedKey;
-    u8 velocity;
-    u8 priority;
-    u8 rhythmPan;
-    u8 padding3;
-    u8 padding4;
-    u8 padding5;
-    union {
-        u32 ct;
-        struct {
-            u8 padding6;
-            u8 sustainGoal;
-            u8 nrx4;
-            u8 pan;
-        };
-    };
-    union {
-        float fw;
-        struct {
-            u8 panMask;
-            u8 cgbStatus;
-            u8 length;
-            u8 sweep;
-        };
-    };
-    u32 freq;
-    union {
-        u32 *newCgb3Sample;
-        struct WaveData *wav;
-    };
-    union {
-        u32 *oldCgb3Sample;
-        s8 *current;
-    };
-    struct MP2KTrack *track;
-    struct MixerSource *prev;
-    struct MixerSource *next;
-    u32 padding7; // d4
-    u32 blockCount; // bdpcm block count
-};
-#endif
-
 #define MAX_DIRECTSOUND_CHANNELS 12
 #if !PORTABLE
 #define PCM_DMA_BUF_SIZE 1584 // size of Direct Sound buffer
@@ -252,8 +110,6 @@ typedef void (*MPlayMainFunc)(struct MP2KPlayerState *);
 struct SoundInfo {
     // This field is normally equal to ID_NUMBER but it is set to other
     // values during sensitive operations for locking purposes.
-    // This field should be volatile but isn't. This could potentially cause
-    // race conditions.
     u32 lockStatus;
 
     vu8 dmaCounter;
@@ -351,7 +207,7 @@ struct MP2KTrack {
     u8 echoVolume;
     u8 echoLength;
 #if !PORTABLE
-    struct SoundChannel *chan;
+    struct MixerSource *chan;
     struct ToneData instrument;
 #else
     struct MixerSource *chan;

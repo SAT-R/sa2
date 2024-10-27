@@ -348,7 +348,8 @@
     "level_endings.h": "c",
     "music_player.h": "c",
     "sound_mixer.h": "c",
-    "cgb_audio.h": "c"
+    "cgb_audio.h": "c",
+    "shared.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,
