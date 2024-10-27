@@ -178,8 +178,8 @@ struct MixerSource {
         struct {
             u8 key;
             u8 envelopeVol;
-            u8 envelopeCtr;
             u8 envelopeGoal;
+            u8 envelopeCtr;
 
             u8 echoVol;
             u8 echoLen;
