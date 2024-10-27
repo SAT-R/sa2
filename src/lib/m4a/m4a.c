@@ -874,7 +874,7 @@ else
         chan->data.cgb.envelopeGoal = 15;
 }
 
-chan->data.cgb.sustainGoal = (chan->data.cgb.envelopeGoal * chan->sustain + 15) >> 4;
+chan->data.cgb.sustainGoal = (chan->data.cgb.envelopeGoal * chan->data.cgb.sustain + 15) >> 4;
 chan->data.cgb.pan &= chan->data.cgb.panMask;
 }
 
@@ -977,7 +977,7 @@ void CgbSound(void)
                         *nrx1ptr = channels->data.cgb.length;
                         *nrx3ptr = (intptr_t)channels->wav << 3;
                     init_env_step_time_dir:
-                        envelopeStepTimeAndDir = channels->attack + CGB_NRx2_ENV_DIR_INC;
+                        envelopeStepTimeAndDir = channels->data.cgb.attack + CGB_NRx2_ENV_DIR_INC;
                         if (channels->data.cgb.length)
                             channels->data.cgb.nrx4 = 0x40;
                         else
@@ -987,8 +987,8 @@ void CgbSound(void)
 #if PORTABLE
                 cgb_set_length(ch - 1, channels->data.cgb.length);
 #endif
-                channels->data.cgb.envelopeCtr = channels->attack;
-                if ((s8)(channels->attack & mask)) {
+                channels->data.cgb.envelopeCtr = channels->data.cgb.attack;
+                if ((s8)(channels->data.cgb.attack & mask)) {
                     channels->data.cgb.envelopeVol = 0;
                     goto envelope_step_complete;
                 } else {
@@ -1009,11 +1009,11 @@ void CgbSound(void)
             goto envelope_complete;
         } else if ((channels->status & SOUND_CHANNEL_SF_STOP) && (channels->status & SOUND_CHANNEL_SF_ENV)) {
             channels->status &= ~SOUND_CHANNEL_SF_ENV;
-            channels->data.cgb.envelopeCtr = channels->release;
-            if ((s8)(channels->release & mask)) {
+            channels->data.cgb.envelopeCtr = channels->data.cgb.release;
+            if ((s8)(channels->data.cgb.release & mask)) {
                 channels->data.cgb.cgbStatus |= CGB_CHANNEL_MO_VOL;
                 if (ch != 3)
-                    envelopeStepTimeAndDir = channels->release | CGB_NRx2_ENV_DIR_DEC;
+                    envelopeStepTimeAndDir = channels->data.cgb.release | CGB_NRx2_ENV_DIR_DEC;
                 goto envelope_step_complete;
             } else {
                 goto envelope_pseudoecho_start;
@@ -1040,7 +1040,7 @@ void CgbSound(void)
                             goto oscillator_off;
                         }
                     } else {
-                        channels->data.cgb.envelopeCtr = channels->release;
+                        channels->data.cgb.envelopeCtr = channels->data.cgb.release;
                     }
                 } else if ((channels->status & SOUND_CHANNEL_SF_ENV) == SOUND_CHANNEL_SF_ENV_SUSTAIN) {
                 envelope_sustain:
@@ -1054,7 +1054,7 @@ void CgbSound(void)
                     sustainGoal = (s8)(channels->data.cgb.sustainGoal);
                     if (envelopeVol <= sustainGoal) {
                     envelope_sustain_start:
-                        if (channels->sustain == 0) {
+                        if (channels->data.cgb.sustain == 0) {
                             channels->status &= ~SOUND_CHANNEL_SF_ENV;
                             goto envelope_pseudoecho_start;
                         } else {
@@ -1065,24 +1065,24 @@ void CgbSound(void)
                             goto envelope_sustain;
                         }
                     } else {
-                        channels->data.cgb.envelopeCtr = channels->decay;
+                        channels->data.cgb.envelopeCtr = channels->data.cgb.decay;
                     }
                 } else {
                     channels->data.cgb.envelopeVol++;
                     if ((u8)(channels->data.cgb.envelopeVol & mask) >= channels->data.cgb.envelopeGoal) {
                     envelope_decay_start:
                         channels->status--;
-                        channels->data.cgb.envelopeCtr = channels->decay;
+                        channels->data.cgb.envelopeCtr = channels->data.cgb.decay;
                         if ((u8)(channels->data.cgb.envelopeCtr & mask)) {
                             channels->data.cgb.cgbStatus |= CGB_CHANNEL_MO_VOL;
                             channels->data.cgb.envelopeVol = channels->data.cgb.envelopeGoal;
                             if (ch != 3)
-                                envelopeStepTimeAndDir = channels->decay | CGB_NRx2_ENV_DIR_DEC;
+                                envelopeStepTimeAndDir = channels->data.cgb.decay | CGB_NRx2_ENV_DIR_DEC;
                         } else {
                             goto envelope_sustain_start;
                         }
                     } else {
-                        channels->data.cgb.envelopeCtr = channels->attack;
+                        channels->data.cgb.envelopeCtr = channels->data.cgb.attack;
                     }
                 }
             }

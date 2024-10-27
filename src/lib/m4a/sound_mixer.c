@@ -91,7 +91,7 @@ void SampleMixer(struct SoundMixerState *mixer, u32 scanlineLimit, u16 samplesPe
     struct MixerSource *chan = mixer->chans;
 
     for (int i = 0; i < numChans; i++, chan++) {
-        struct WaveData2 *wav = VOID_CAST chan->data.sound.wav;
+        struct WaveData2 *wav = VOID_CAST chan->wav;
 
         if (scanlineLimit != 0) {
             u16 vcount = REG_VCOUNT;
@@ -146,7 +146,7 @@ static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData2 *wa
             }
         } else if (status & 0x40) {
             // Release
-            chan->data.sound.envelopeVol = env * chan->release / 256U;
+            chan->data.sound.envelopeVol = env * chan->data.sound.release / 256U;
             u8 echoVol = chan->data.sound.echoVol;
             if (chan->data.sound.envelopeVol > echoVol) {
                 return TRUE;
@@ -163,9 +163,9 @@ static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData2 *wa
             u16 newEnv;
             case 2:
                 // Decay
-                chan->data.sound.envelopeVol = env * chan->decay / 256U;
+                chan->data.sound.envelopeVol = env * chan->data.sound.decay / 256U;
 
-                u8 sustain = chan->sustain;
+                u8 sustain = chan->data.sound.sustain;
                 if (chan->data.sound.envelopeVol <= sustain && sustain == 0) {
                     // Duplicated echo check from Release section above
                     if (chan->data.sound.echoVol == 0) {
@@ -182,7 +182,7 @@ static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData2 *wa
                 break;
             case 3:
             attack:
-                newEnv = env + chan->attack;
+                newEnv = env + chan->data.sound.attack;
                 if (newEnv > 0xFF) {
                     chan->data.sound.envelopeVol = 0xFF;
                     --chan->status;
@@ -203,7 +203,7 @@ static inline bool32 TickEnvelope(struct MixerSource *chan, struct WaveData2 *wa
     } else {
         // Init channel
         chan->status = 3;
-        chan->data.sound.current = wav->data;
+        chan->current = wav->data;
         chan->data.sound.ct = wav->size;
         chan->data.sound.fw = 0;
         chan->data.sound.envelopeVol = 0;
@@ -228,7 +228,7 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
         loopLen = wav->size - wav->loopStart;
     }
     s32 samplesLeftInWav = chan->data.sound.ct;
-    s8 *current = chan->data.sound.current;
+    s8 *current = chan->current;
     signed envR = chan->data.sound.envelopeVolR;
     signed envL = chan->data.sound.envelopeVolL;
 
@@ -250,7 +250,7 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
         }
 
         chan->data.sound.ct = samplesLeftInWav;
-        chan->data.sound.current = current;
+        chan->current = current;
     } else {
         float finePos = chan->data.sound.fw;
         float romSamplesPerOutputSample = chan->data.sound.freq * sampleRateReciprocal;
@@ -298,7 +298,7 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
 
         chan->data.sound.fw = finePos;
         chan->data.sound.ct = samplesLeftInWav;
-        chan->data.sound.current = current - 1;
+        chan->current = current - 1;
     }
 }
 #endif // PORTABLE

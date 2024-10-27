@@ -505,7 +505,7 @@ void MP2KPlayerMain(void *voidPtrPlayer)
                     chan->data.cgb.freq = mixer->MidiKeyToCgbFreq(cgbType, key, track->pitchCalculated);
                     chan->data.cgb.cgbStatus |= 0x2;
                 } else {
-                    chan->data.sound.freq = MidiKeyToFreq(VOID_CAST chan->data.sound.wav, key, track->pitchCalculated);
+                    chan->data.sound.freq = MidiKeyToFreq(VOID_CAST chan->wav, key, track->pitchCalculated);
                 }
             }
         }
@@ -688,11 +688,11 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
     chan->data.sound.key = key;
     chan->data.sound.rhythmPan = forcedPan;
     chan->type = instrument->type;
-    chan->data.sound.wav = instrument->wav;
-    chan->attack = instrument->attack;
-    chan->decay = instrument->decay;
-    chan->sustain = instrument->sustain;
-    chan->release = instrument->release;
+    chan->wav = instrument->wav;
+    chan->data.sound.attack = instrument->attack;
+    chan->data.sound.decay = instrument->decay;
+    chan->data.sound.sustain = instrument->sustain;
+    chan->data.sound.release = instrument->release;
     chan->data.sound.echoVol = track->echoVolume;
     chan->data.sound.echoLen = track->echoLength;
     ChnVolSetAsm(chan, track);
@@ -715,7 +715,7 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
 
         chan->data.cgb.freq = mixer->MidiKeyToCgbFreq(cgbType, transposedKey, track->pitchCalculated);
     } else {
-        chan->data.sound.freq = MidiKeyToFreq(VOID_CAST chan->data.sound.wav, transposedKey, track->pitchCalculated);
+        chan->data.sound.freq = MidiKeyToFreq(VOID_CAST chan->wav, transposedKey, track->pitchCalculated);
     }
 
     chan->status = SOUND_CHANNEL_SF_START;

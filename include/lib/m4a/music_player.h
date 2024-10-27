@@ -2,7 +2,7 @@
 #define MUSIC_PLAYER_H
 
 #include "gba/types.h"
-//#include "m4a.h"
+#include "lib/m4a/shared.h"
 #if PORTABLE
 #include "lib/m4a/sound_mixer.h"
 #endif
