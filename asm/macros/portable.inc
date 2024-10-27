@@ -17,11 +17,13 @@
 
 // Used for cross platform aligning of labels
 .macro mAlignWord
-#if defined(__aarch64__) || defined(__x86_64__)
-    .align 8
+#if defined(__APPLE__) && (defined(__aarch64__) || defined(__x86_64__))
+    .align 3       // Align to 8 bytes on macOS (2^3 = 8)
+#elif defined(__aarch64__) || defined(__x86_64__)
+    .align 8       // Align to 8 bytes on other platforms
 #elif defined(PLATFORM_GBA)
-    .align 2
+    .align 2       // Align to 4 bytes on GBA
 #else
-    .align 4
+    .align 4       // Default alignment to 4 bytes
 #endif
 .endm
