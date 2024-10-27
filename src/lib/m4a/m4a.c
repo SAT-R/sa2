@@ -1408,8 +1408,10 @@ void ply_memacc(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
     }
 
 cond_true : {
-    // *& is required for matching
-    (*(void (*)(void *, void *)) & gMPlayJumpTable[1])(mplayInfo, track);
+    {
+        void (*func)(struct MP2KPlayerState *, struct MP2KTrack *) = *(&gMPlayJumpTable[1]);
+        func(mplayInfo, track);
+    }
     return;
 }
 
@@ -1427,7 +1429,8 @@ void ply_xcmd(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 
 void ply_xxx(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    (*(void (*)(void *, void *)) & gMPlayJumpTable[0])(mplayInfo, track);
+    void (*func)(struct MP2KPlayerState *, struct MP2KTrack *) = *(&gMPlayJumpTable[0]);
+    func(mplayInfo, track);
 }
 
 #define READ_XCMD_BYTE(var, n)                                                                                                             \
