@@ -634,15 +634,15 @@ static void SoundTestScreenRenderUI(void)
         soundInfo = &gSoundInfo;
 
         for (i = 0; i < 8; i++) {
-            if (soundTestScreen->channelFreqs[i] != soundInfo->chans[i].freq) {
-                s32 change = soundTestScreen->channelFreqs[i] - soundInfo->chans[i].freq;
+            if (soundTestScreen->channelFreqs[i] != soundInfo->chans[i].data.sound.freq) {
+                s32 change = soundTestScreen->channelFreqs[i] - soundInfo->chans[i].data.sound.freq;
                 if (change - soundTestScreen->freqChanges[i] > 256) {
                     soundTestScreen->speakerSize += 32;
                     soundTestScreen->speakerAnimFrame = 32;
                     numChangeElements++;
                 }
                 soundTestScreen->freqChanges[i] = change;
-                soundTestScreen->channelFreqs[i] = soundInfo->chans[i].freq;
+                soundTestScreen->channelFreqs[i] = soundInfo->chans[i].data.sound.freq;
             }
         }
 

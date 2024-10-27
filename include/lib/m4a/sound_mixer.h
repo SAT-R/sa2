@@ -2,104 +2,12 @@
 #define SOUND_MIXER_H
 
 #include "gba/types.h"
-#include "music_player.h"
+#include "lib/m4a/music_player.h"
 
 #define MIXER_UNLOCKED 0x68736D53
 #define MIXER_LOCKED   PLAYER_UNLOCKED + 1
 
 struct MP2KPlayerState;
-
-// struct SharedMixerSourceData {
-//     u8 echoVol;
-//     u8 echoLen;
-//     u8 padding1;
-//     u8 padding2;
-//     u8 gateTime;
-//     u8 untransposedKey;
-//     u8 velocity;
-//     u8 priority;
-//     u8 rhythmPan;
-// } __attribute__((packed));
-
-// struct MixerSource {
-//     u8 status;
-//     u8 type;
-//     u8 rightVol;
-//     u8 leftVol;
-//     u8 attack;
-//     u8 decay;
-//     u8 sustain;
-//     u8 release;
-//     u8 key;
-//     union {
-//         struct {
-//             u8 envelopeVol;
-//             u8 envelopeGoal;
-//             u8 envelopeCtr;
-//             u8 echoVol;
-//             u8 echoLen;
-//             u8 padding1;
-//             u8 padding2;
-//             u8 gateTime;
-//             u8 untransposedKey;
-//             u8 velocity;
-//             u8 priority;
-//             u8 rhythmPan;
-
-//             u8 padding3;
-//             u8 padding4;
-//             u8 padding5;
-
-//             u8 padding6;
-//             u8 sustainGoal;
-//             u8 nrx4;
-//             u8 pan;
-
-//             u8 panMask;
-//             u8 cgbStatus;
-//             u8 length;
-//             u8 sweep;
-
-//             u32 freq;
-//             // TODO: move out and call dataNext and dataPrev
-//             u32 *newCgb3Sample;
-//             u32 *oldCgb3Sample;
-//         } __attribute__((packed)) cgb;
-//         struct {
-//             u8 envelopeVol;
-//             u8 envelopeVolR;
-//             u8 envelopeVolL;
-//
-//             u8 padding1;
-//             u8 padding2;
-//
-//             u8 echoVol;
-//             u8 echoLen;
-//             u8 padding1;
-//             u8 padding2;
-//             u8 gateTime;
-//             u8 untransposedKey;
-//             u8 velocity;
-//             u8 priority;
-//             u8 rhythmPan;
-
-//             u8 padding3;
-//             u8 padding4;
-//             u8 padding5;
-
-//             u32 ct;
-//             float fw;
-//             u32 freq;
-//             struct WaveData *wav;
-//             s8 *current;
-//         } __attribute__((packed)) sound;
-//     } __attribute__((packed)) data;
-//     struct MP2KTrack *track;
-//     struct MixerSource *prev;
-//     struct MixerSource *next;
-//     u32 padding7; // d4
-//     u32 blockCount; // bdpcm block count
-// };
 
 struct MixerSource {
     u8 status;
