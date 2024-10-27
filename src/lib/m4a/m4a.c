@@ -956,12 +956,15 @@ void CgbSound(void)
                         goto init_env_step_time_dir;
                     case 3:
                         if (channels->data.cgb.newCgb3Sample != channels->data.cgb.oldCgb3Sample) {
+                            u32 *sample;
                             *nrx0ptr = 0x40;
-                            REG_WAVE_RAM0 = channels->data.cgb.newCgb3Sample[0];
-                            REG_WAVE_RAM1 = channels->data.cgb.newCgb3Sample[1];
-                            REG_WAVE_RAM2 = channels->data.cgb.newCgb3Sample[2];
-                            REG_WAVE_RAM3 = channels->data.cgb.newCgb3Sample[3];
-                            channels->data.cgb.oldCgb3Sample = channels->data.cgb.newCgb3Sample;
+                            sample = channels->data.cgb.newCgb3Sample;
+
+                            REG_WAVE_RAM0 = sample[0];
+                            REG_WAVE_RAM1 = sample[1];
+                            REG_WAVE_RAM2 = sample[2];
+                            REG_WAVE_RAM3 = sample[3];
+                            channels->data.cgb.oldCgb3Sample = sample;
 #if PORTABLE
                             cgb_set_wavram();
 #endif
