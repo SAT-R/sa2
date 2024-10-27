@@ -2,7 +2,6 @@
 #define CGB_AUDIO_H
 
 #include "lib/m4a/m4a_internal.h"
-#define MIXED_AUDIO_BUFFER_SIZE PCM_DMA_BUF_SIZE
 
 struct AudioCGB {
     u16 ch1Freq;
@@ -21,7 +20,7 @@ struct AudioCGB {
     bool8 DAC[4];
     float WAVRAM[32];
     u16 ch4LFSR[2];
-    float outBuffer[MIXED_AUDIO_BUFFER_SIZE * 2];
+    float outBuffer[PCM_DMA_BUF_SIZE * 2];
 };
 
 void cgb_audio_init(u32 rate);

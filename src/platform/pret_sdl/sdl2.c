@@ -19,9 +19,9 @@
 #include "lib/agb_flash/flash_internal.h"
 #define DMA_DEST_MASK 0x0060
 #define DMA_SRC_MASK  0x0180
+
 #if ENABLE_AUDIO
-#include "lib/m4a/m4a_internal.h"
-#include "lib/m4a/cgb_audio.h"
+#include "platform/shared/audio/cgb_audio.h"
 #endif
 
 #ifndef TILE_WIDTH

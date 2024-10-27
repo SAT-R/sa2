@@ -4,12 +4,9 @@
 
 #include <stdio.h>
 
-#if PORTABLE
-#include "lib/m4a/cgb_audio.h"
-#include "lib/m4a/sound_mixer.h"
+#if !PLATFORM_GBA
+#include "platform/shared/audio/cgb_audio.h"
 #endif
-
-extern const u8 gCgb3Vol[];
 
 #if PLATFORM_GBA
 #define BSS_CODE __attribute__((section(".bss.code")))
@@ -33,7 +30,7 @@ EWRAM_DATA struct MP2KPlayerState gMPlayInfo_SE2 = {};
 EWRAM_DATA u8 gMPlayMemAccArea[4 * sizeof(uintptr_t)] = {};
 EWRAM_DATA struct MP2KPlayerState gMPlayInfo_SE3 = {};
 
-static void DummyCallback(void);
+static void MP2K_event_null(void);
 
 u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust)
 {
@@ -55,7 +52,7 @@ u32 MidiKeyToFreq(struct WaveData *wav, u8 key, u8 fineAdjust)
     return umul3232H32(wav->freq, val1 + umul3232H32(val2 - val1, fineAdjustShifted));
 }
 
-static void UnusedDummyCallback(void) { }
+UNUSED static void UnusedFunc(void) { }
 
 void MPlayContinue(struct MP2KPlayerState *mplayInfo)
 {
@@ -96,14 +93,7 @@ void m4aSoundInit(void)
     }
 }
 
-void m4aSoundMain(void)
-{
-#if PLATFORM_GBA
-    SoundMain();
-#else
-    RunMixerFrame();
-#endif
-}
+void m4aSoundMain(void) { SoundMain(); }
 
 void m4aSongNumStart(u16 n)
 {
@@ -249,7 +239,7 @@ void MPlayExtender(struct MixerSource *cgbChans)
     REG_NR30 = 0;
     REG_NR50 = 0x77;
 
-#if PORTABLE
+#if !PLATFORM_GBA
     for (u8 i = 0; i < 4; i++) {
         cgb_set_envelope(i, 8);
         cgb_trigger_note(i);
@@ -337,16 +327,15 @@ void SoundInit(struct SoundMixerState *soundInfo)
     soundInfo->numChans = 8;
     soundInfo->masterVol = 15;
     soundInfo->plynote = MP2K_event_nxx;
-    soundInfo->CgbSound = DummyCallback;
-    soundInfo->CgbOscOff = (CgbOscOffFunc)DummyCallback;
-    soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)DummyCallback;
-    soundInfo->ExtVolPit = (ExtVolPitFunc)DummyCallback;
+    soundInfo->CgbSound = MP2K_event_null;
+    soundInfo->CgbOscOff = (CgbOscOffFunc)MP2K_event_null;
+    soundInfo->MidiKeyToCgbFreq = (MidiKeyToCgbFreqFunc)MP2K_event_null;
+    soundInfo->ExtVolPit = (ExtVolPitFunc)MP2K_event_null;
 
     MPlayJumpTableCopy((void **)gMPlayJumpTable);
 
     soundInfo->MPlayJumpTable = gMPlayJumpTable;
 
-    // Interesting
 #if PLATFORM_GBA
     SampleFreqSet(SOUND_MODE_FREQ_13379);
 #else
@@ -559,14 +548,9 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
         soundInfo->MPlayMainHead = NULL;
     }
 
-#if PLATFORM_GBA
-    // TODO: Are casts needed here?
     soundInfo->musicPlayerHead = mplayInfo;
     soundInfo->MPlayMainHead = MP2KPlayerMain;
-#else
-    soundInfo->musicPlayerHead = mplayInfo;
-    soundInfo->MPlayMainHead = MP2KPlayerMain;
-#endif
+
     soundInfo->lockStatus = ID_NUMBER;
     mplayInfo->lockStatus = ID_NUMBER;
 }
@@ -624,7 +608,6 @@ void MPlayStart(struct MP2KPlayerState *mplayInfo, struct MP2KSongHeader *songHe
     }
 }
 
-// TODO: Rename to m4aMPlayStop
 void MPlayStop(struct MP2KPlayerState *mplayInfo)
 {
     s32 i;
@@ -807,7 +790,7 @@ void CgbOscOff(u8 chanNum)
             REG_NR42 = 8;
             REG_NR44 = 0x80;
     }
-#if PORTABLE
+#if !PLATFORM_GBA
     cgb_set_envelope(chanNum - 1, 8);
     cgb_trigger_note(chanNum - 1);
 #endif
@@ -918,7 +901,7 @@ void CgbSound(void)
                 switch (ch) {
                     case 1:
                         *nrx0ptr = channels->data.cgb.sweep;
-#if PORTABLE
+#if !PLATFORM_GBA
                         cgb_set_sweep(channels->data.cgb.sweep);
 #endif
                         // fallthrough
@@ -933,7 +916,7 @@ void CgbSound(void)
                             REG_WAVE_RAM2 = ((u32 *)channels->wav)[2];
                             REG_WAVE_RAM3 = ((u32 *)channels->wav)[3];
                             channels->current = channels->wav;
-#if PORTABLE
+#if !PLATFORM_GBA
                             cgb_set_wavram();
 #endif
                         }
@@ -955,7 +938,7 @@ void CgbSound(void)
                             channels->data.cgb.nrx4 = 0x00;
                         break;
                 }
-#if PORTABLE
+#if !PLATFORM_GBA
                 cgb_set_length(ch - 1, channels->data.cgb.length);
 #endif
                 channels->data.cgb.envelopeCtr = channels->data.cgb.attack;
@@ -1105,7 +1088,7 @@ void CgbSound(void)
                 if (ch == 1 && !(*nrx0ptr & 0x08))
                     *nrx4ptr = channels->data.cgb.nrx4 | 0x80;
             }
-#if PORTABLE
+#if !PLATFORM_GBA
             cgb_set_envelope(ch - 1, *nrx2ptr);
             cgb_toggle_length(ch - 1, (*nrx4ptr & 0x40));
             cgb_trigger_note(ch - 1);
@@ -1483,4 +1466,4 @@ void MP2K_event_xswee(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track
     track->cmdPtr++;
 }
 
-static void DummyCallback(void) { }
+void MP2K_event_null(void) { }

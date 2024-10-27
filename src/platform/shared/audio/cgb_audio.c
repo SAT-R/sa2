@@ -1,16 +1,15 @@
-#if PORTABLE
 #include "global.h"
-#include "lib/m4a/cgb_audio.h"
-#include "lib/m4a/cgb_tables.h"
+#include "platform/shared/audio/cgb_audio.h"
+#include "platform/shared/audio/cgb_tables.h"
 
-struct AudioCGB gb;
-float soundChannelPos[4];
-const s16 *PU1Table;
-const s16 *PU2Table;
-u32 apuFrame;
-u8 apuCycle;
-u32 sampleRate;
-u16 lfsrMax[2];
+static struct AudioCGB gb;
+static float soundChannelPos[4];
+static const s16 *PU1Table;
+static const s16 *PU2Table;
+static u32 apuFrame;
+static u8 apuCycle;
+static u32 sampleRate;
+static u16 lfsrMax[2];
 float ch4Samples;
 
 void cgb_audio_init(u32 rate)
@@ -266,4 +265,3 @@ void cgb_audio_generate(u16 samplesPerFrame)
 }
 
 float *cgb_get_buffer() { return gb.outBuffer; }
-#endif
