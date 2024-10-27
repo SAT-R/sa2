@@ -242,7 +242,7 @@ void m4aMPlayImmInit(struct MP2KPlayerState *mplayInfo)
 void MPlayExtender(struct CgbChannel *cgbChans)
 {
     struct SoundInfo *soundInfo;
-    u32 ident;
+    u32 lockStatus;
 
     REG_SOUNDCNT_X = SOUND_MASTER_ENABLE | SOUND_4_ON | SOUND_3_ON | SOUND_2_ON | SOUND_1_ON;
     REG_SOUNDCNT_L = 0; // set master volume to zero
@@ -263,12 +263,12 @@ void MPlayExtender(struct CgbChannel *cgbChans)
 #endif
     soundInfo = VOID_CAST SOUND_INFO_PTR;
 
-    ident = soundInfo->ident;
+    lockStatus = soundInfo->lockStatus;
 
-    if (ident != ID_NUMBER)
+    if (lockStatus != ID_NUMBER)
         return;
 
-    soundInfo->ident++;
+    soundInfo->lockStatus++;
 
 #if !PORTABLE
     gMPlayJumpTable[8] = ply_memacc;
@@ -309,7 +309,7 @@ void MPlayExtender(struct CgbChannel *cgbChans)
     cgbChans[3].type = 4;
     cgbChans[3].panMask = 0x88;
 
-    soundInfo->ident = ident;
+    soundInfo->lockStatus = lockStatus;
 }
 
 #if !PORTABLE
@@ -330,7 +330,7 @@ void Clear64byte(void *x)
 
 void SoundInit(struct SoundInfo *soundInfo)
 {
-    soundInfo->ident = 0;
+    soundInfo->lockStatus = 0;
 #if !USE_NEW_DMA
     if (REG_DMA1CNT & (DMA_REPEAT << 16))
         REG_DMA1CNT = ((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4;
@@ -373,7 +373,7 @@ void SoundInit(struct SoundInfo *soundInfo)
     SampleFreqSet(SOUND_MODE_FREQ_42048);
 #endif
 
-    soundInfo->ident = ID_NUMBER;
+    soundInfo->lockStatus = ID_NUMBER;
 }
 
 void SampleFreqSet(u32 freq)
@@ -390,7 +390,7 @@ void SampleFreqSet(u32 freq)
     // LCD refresh rate 59.7275Hz
     soundInfo->pcmFreq = (597275 * soundInfo->pcmSamplesPerVBlank + 5000) / 10000;
 
-    // CPU frequency 16.78Mhz
+    // CPU freq 16.78Mhz
     soundInfo->divFreq = (0x1000000 / soundInfo->pcmFreq + 1) >> 1;
 #else
     soundInfo->pcmSamplesPerVBlank = 701;
@@ -421,10 +421,10 @@ void m4aSoundMode(u32 mode)
     struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
     u32 temp;
 
-    if (soundInfo->ident != ID_NUMBER)
+    if (soundInfo->lockStatus != ID_NUMBER)
         return;
 
-    soundInfo->ident++;
+    soundInfo->lockStatus++;
 
     temp = mode & (SOUND_MODE_REVERB_SET | SOUND_MODE_REVERB_VAL);
 
@@ -442,7 +442,7 @@ void m4aSoundMode(u32 mode)
         chan = &soundInfo->chans[0];
 
         while (temp != 0) {
-            chan->statusFlags = 0;
+            chan->status = 0;
             temp--;
             chan++;
         }
@@ -467,7 +467,7 @@ void m4aSoundMode(u32 mode)
         SampleFreqSet(temp);
     }
 
-    soundInfo->ident = ID_NUMBER;
+    soundInfo->lockStatus = ID_NUMBER;
 }
 
 void SoundClear(void)
@@ -476,16 +476,16 @@ void SoundClear(void)
     s32 i;
     void *chan;
 
-    if (soundInfo->ident != ID_NUMBER)
+    if (soundInfo->lockStatus != ID_NUMBER)
         return;
 
-    soundInfo->ident++;
+    soundInfo->lockStatus++;
 
     i = MAX_DIRECTSOUND_CHANNELS;
     chan = &soundInfo->chans[0];
 
     while (i > 0) {
-        ((struct SoundChannel *)chan)->statusFlags = 0;
+        ((struct SoundChannel *)chan)->status = 0;
         i--;
         chan = (void *)((intptr_t)chan + sizeof(struct SoundChannel));
     }
@@ -497,21 +497,21 @@ void SoundClear(void)
 
         while (i <= 4) {
             soundInfo->CgbOscOff(i);
-            ((struct CgbChannel *)chan)->statusFlags = 0;
+            ((struct CgbChannel *)chan)->status = 0;
             i++;
             chan = (void *)((intptr_t)chan + sizeof(struct CgbChannel));
         }
     }
 
-    soundInfo->ident = ID_NUMBER;
+    soundInfo->lockStatus = ID_NUMBER;
 }
 
 void m4aSoundVSyncOff(void)
 {
     struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
 
-    if (soundInfo->ident >= ID_NUMBER && soundInfo->ident <= ID_NUMBER + 1) {
-        soundInfo->ident += 10;
+    if (soundInfo->lockStatus >= ID_NUMBER && soundInfo->lockStatus <= ID_NUMBER + 1) {
+        soundInfo->lockStatus += 10;
 
         if (REG_DMA1CNT & (DMA_REPEAT << 16))
             REG_DMA1CNT = ((DMA_ENABLE | DMA_START_NOW | DMA_32BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16) | 4;
@@ -529,16 +529,16 @@ void m4aSoundVSyncOff(void)
 void m4aSoundVSyncOn(void)
 {
     struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
-    u32 ident = soundInfo->ident;
+    u32 lockStatus = soundInfo->lockStatus;
 
-    if (ident == ID_NUMBER)
+    if (lockStatus == ID_NUMBER)
         return;
 
     REG_DMA1CNT_H = DMA_ENABLE | DMA_START_SPECIAL | DMA_32BIT | DMA_REPEAT;
     REG_DMA2CNT_H = DMA_ENABLE | DMA_START_SPECIAL | DMA_32BIT | DMA_REPEAT;
 
-    soundInfo->pcmDmaCounter = 0;
-    soundInfo->ident = ident - 10;
+    soundInfo->dmaCounter = 0;
+    soundInfo->lockStatus = lockStatus - 10;
 }
 
 void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 trackCount)
@@ -553,10 +553,10 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
 
     soundInfo = VOID_CAST SOUND_INFO_PTR;
 
-    if (soundInfo->ident != ID_NUMBER)
+    if (soundInfo->lockStatus != ID_NUMBER)
         return;
 
-    soundInfo->ident++;
+    soundInfo->lockStatus++;
 
     Clear64byte(mplayInfo);
 
@@ -587,7 +587,7 @@ void MPlayOpen(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *tracks, u8 t
     soundInfo->musicPlayerHead = mplayInfo;
     soundInfo->MPlayMainHead = MP2KPlayerMain;
 #endif
-    soundInfo->ident = ID_NUMBER;
+    soundInfo->lockStatus = ID_NUMBER;
     mplayInfo->lockStatus = ID_NUMBER;
 }
 
@@ -835,16 +835,16 @@ void CgbOscOff(u8 chanNum)
 
 static inline int CgbPan(struct CgbChannel *chan)
 {
-    u32 rightVolume = chan->rightVolume;
-    u32 leftVolume = chan->leftVolume;
+    u32 rightVol = chan->rightVol;
+    u32 leftVol = chan->leftVol;
 
-    if ((rightVolume = (u8)rightVolume) >= (leftVolume = (u8)leftVolume)) {
-        if (rightVolume / 2 >= leftVolume) {
+    if ((rightVol = (u8)rightVol) >= (leftVol = (u8)leftVol)) {
+        if (rightVol / 2 >= leftVol) {
             chan->pan = 0x0F;
             return 1;
         }
     } else {
-        if (leftVolume / 2 >= rightVolume) {
+        if (leftVol / 2 >= rightVol) {
             chan->pan = 0xF0;
             return 1;
         }
@@ -864,11 +864,11 @@ void CgbModVol(struct CgbChannel *chan)
     if (!CgbPan(chan)) {
 #endif
     chan->pan = 0xFF;
-    chan->envelopeGoal = (u32)(chan->rightVolume + chan->leftVolume) / 16;
+    chan->envelopeGoal = (u32)(chan->rightVol + chan->leftVol) / 16;
 }
 else
 {
-    chan->envelopeGoal = (u32)(chan->rightVolume + chan->leftVolume) / 16;
+    chan->envelopeGoal = (u32)(chan->rightVol + chan->leftVol) / 16;
 
     if (chan->envelopeGoal > 15)
         chan->envelopeGoal = 15;
@@ -900,7 +900,7 @@ void CgbSound(void)
         soundInfo->c15 = 14;
 
     for (ch = 1, channels = soundInfo->cgbChans; ch <= 4; ch++, channels++) {
-        if (!(channels->statusFlags & SOUND_CHANNEL_SF_ON))
+        if (!(channels->status & SOUND_CHANNEL_SF_ON))
             continue;
 
         /* 1. determine hardware channel registers */
@@ -939,10 +939,10 @@ void CgbSound(void)
         envelopeStepTimeAndDir = *nrx2ptr;
 
         /* 2. calculate envelope volume */
-        if (channels->statusFlags & SOUND_CHANNEL_SF_START) {
-            if (!(channels->statusFlags & SOUND_CHANNEL_SF_STOP)) {
-                channels->statusFlags = SOUND_CHANNEL_SF_ENV_ATTACK;
-                channels->modify = CGB_CHANNEL_MO_PIT | CGB_CHANNEL_MO_VOL;
+        if (channels->status & SOUND_CHANNEL_SF_START) {
+            if (!(channels->status & SOUND_CHANNEL_SF_STOP)) {
+                channels->status = SOUND_CHANNEL_SF_ENV_ATTACK;
+                channels->cgbStatus = CGB_CHANNEL_MO_PIT | CGB_CHANNEL_MO_VOL;
                 CgbModVol(channels);
                 switch (ch) {
                     case 1:
@@ -952,16 +952,16 @@ void CgbSound(void)
 #endif
                         // fallthrough
                     case 2:
-                        *nrx1ptr = ((intptr_t)channels->wavePointer << 6) + channels->length;
+                        *nrx1ptr = ((intptr_t)channels->wav << 6) + channels->length;
                         goto init_env_step_time_dir;
                     case 3:
-                        if (channels->wavePointer != channels->currentPointer) {
+                        if (channels->wav != channels->current) {
                             *nrx0ptr = 0x40;
-                            REG_WAVE_RAM0 = channels->wavePointer[0];
-                            REG_WAVE_RAM1 = channels->wavePointer[1];
-                            REG_WAVE_RAM2 = channels->wavePointer[2];
-                            REG_WAVE_RAM3 = channels->wavePointer[3];
-                            channels->currentPointer = channels->wavePointer;
+                            REG_WAVE_RAM0 = channels->wav[0];
+                            REG_WAVE_RAM1 = channels->wav[1];
+                            REG_WAVE_RAM2 = channels->wav[2];
+                            REG_WAVE_RAM3 = channels->wav[3];
+                            channels->current = channels->wav;
 #if PORTABLE
                             cgb_set_wavram();
 #endif
@@ -969,27 +969,27 @@ void CgbSound(void)
                         *nrx0ptr = 0;
                         *nrx1ptr = channels->length;
                         if (channels->length)
-                            channels->n4 = 0xC0;
+                            channels->nrx4 = 0xC0;
                         else
-                            channels->n4 = 0x80;
+                            channels->nrx4 = 0x80;
                         break;
                     default:
                         *nrx1ptr = channels->length;
-                        *nrx3ptr = (intptr_t)channels->wavePointer << 3;
+                        *nrx3ptr = (intptr_t)channels->wav << 3;
                     init_env_step_time_dir:
                         envelopeStepTimeAndDir = channels->attack + CGB_NRx2_ENV_DIR_INC;
                         if (channels->length)
-                            channels->n4 = 0x40;
+                            channels->nrx4 = 0x40;
                         else
-                            channels->n4 = 0x00;
+                            channels->nrx4 = 0x00;
                         break;
                 }
 #if PORTABLE
                 cgb_set_length(ch - 1, channels->length);
 #endif
-                channels->envelopeCounter = channels->attack;
+                channels->envelopeCtr = channels->attack;
                 if ((s8)(channels->attack & mask)) {
-                    channels->envelopeVolume = 0;
+                    channels->envelopeVol = 0;
                     goto envelope_step_complete;
                 } else {
                     // skip attack phase if attack is instantaneous (=0)
@@ -998,20 +998,20 @@ void CgbSound(void)
             } else {
                 goto oscillator_off;
             }
-        } else if (channels->statusFlags & SOUND_CHANNEL_SF_IEC) {
-            channels->echoLength--;
-            if ((s8)(channels->echoLength & mask) <= 0) {
+        } else if (channels->status & SOUND_CHANNEL_SF_IEC) {
+            channels->echoLen--;
+            if ((s8)(channels->echoLen & mask) <= 0) {
             oscillator_off:
                 CgbOscOff(ch);
-                channels->statusFlags = 0;
+                channels->status = 0;
                 goto channel_complete;
             }
             goto envelope_complete;
-        } else if ((channels->statusFlags & SOUND_CHANNEL_SF_STOP) && (channels->statusFlags & SOUND_CHANNEL_SF_ENV)) {
-            channels->statusFlags &= ~SOUND_CHANNEL_SF_ENV;
-            channels->envelopeCounter = channels->release;
+        } else if ((channels->status & SOUND_CHANNEL_SF_STOP) && (channels->status & SOUND_CHANNEL_SF_ENV)) {
+            channels->status &= ~SOUND_CHANNEL_SF_ENV;
+            channels->envelopeCtr = channels->release;
             if ((s8)(channels->release & mask)) {
-                channels->modify |= CGB_CHANNEL_MO_VOL;
+                channels->cgbStatus |= CGB_CHANNEL_MO_VOL;
                 if (ch != 3)
                     envelopeStepTimeAndDir = channels->release | CGB_NRx2_ENV_DIR_DEC;
                 goto envelope_step_complete;
@@ -1020,19 +1020,19 @@ void CgbSound(void)
             }
         } else {
         envelope_step_repeat:
-            if (channels->envelopeCounter == 0) {
+            if (channels->envelopeCtr == 0) {
                 if (ch == 3)
-                    channels->modify |= CGB_CHANNEL_MO_VOL;
+                    channels->cgbStatus |= CGB_CHANNEL_MO_VOL;
 
                 CgbModVol(channels);
-                if ((channels->statusFlags & SOUND_CHANNEL_SF_ENV) == SOUND_CHANNEL_SF_ENV_RELEASE) {
-                    channels->envelopeVolume--;
-                    if ((s8)(channels->envelopeVolume & mask) <= 0) {
+                if ((channels->status & SOUND_CHANNEL_SF_ENV) == SOUND_CHANNEL_SF_ENV_RELEASE) {
+                    channels->envelopeVol--;
+                    if ((s8)(channels->envelopeVol & mask) <= 0) {
                     envelope_pseudoecho_start:
-                        channels->envelopeVolume = ((channels->envelopeGoal * channels->echoVolume) + 0xFF) >> 8;
-                        if (channels->envelopeVolume) {
-                            channels->statusFlags |= SOUND_CHANNEL_SF_IEC;
-                            channels->modify |= CGB_CHANNEL_MO_VOL;
+                        channels->envelopeVol = ((channels->envelopeGoal * channels->echoVol) + 0xFF) >> 8;
+                        if (channels->envelopeVol) {
+                            channels->status |= SOUND_CHANNEL_SF_IEC;
+                            channels->cgbStatus |= CGB_CHANNEL_MO_VOL;
                             if (ch != 3)
                                 envelopeStepTimeAndDir = 0 | CGB_NRx2_ENV_DIR_INC;
                             goto envelope_complete;
@@ -1040,49 +1040,49 @@ void CgbSound(void)
                             goto oscillator_off;
                         }
                     } else {
-                        channels->envelopeCounter = channels->release;
+                        channels->envelopeCtr = channels->release;
                     }
-                } else if ((channels->statusFlags & SOUND_CHANNEL_SF_ENV) == SOUND_CHANNEL_SF_ENV_SUSTAIN) {
+                } else if ((channels->status & SOUND_CHANNEL_SF_ENV) == SOUND_CHANNEL_SF_ENV_SUSTAIN) {
                 envelope_sustain:
-                    channels->envelopeVolume = channels->sustainGoal;
-                    channels->envelopeCounter = 7;
-                } else if ((channels->statusFlags & SOUND_CHANNEL_SF_ENV) == SOUND_CHANNEL_SF_ENV_DECAY) {
-                    int envelopeVolume, sustainGoal;
+                    channels->envelopeVol = channels->sustainGoal;
+                    channels->envelopeCtr = 7;
+                } else if ((channels->status & SOUND_CHANNEL_SF_ENV) == SOUND_CHANNEL_SF_ENV_DECAY) {
+                    int envelopeVol, sustainGoal;
 
-                    channels->envelopeVolume--;
-                    envelopeVolume = (s8)(channels->envelopeVolume & mask);
+                    channels->envelopeVol--;
+                    envelopeVol = (s8)(channels->envelopeVol & mask);
                     sustainGoal = (s8)(channels->sustainGoal);
-                    if (envelopeVolume <= sustainGoal) {
+                    if (envelopeVol <= sustainGoal) {
                     envelope_sustain_start:
                         if (channels->sustain == 0) {
-                            channels->statusFlags &= ~SOUND_CHANNEL_SF_ENV;
+                            channels->status &= ~SOUND_CHANNEL_SF_ENV;
                             goto envelope_pseudoecho_start;
                         } else {
-                            channels->statusFlags--;
-                            channels->modify |= CGB_CHANNEL_MO_VOL;
+                            channels->status--;
+                            channels->cgbStatus |= CGB_CHANNEL_MO_VOL;
                             if (ch != 3)
                                 envelopeStepTimeAndDir = 0 | CGB_NRx2_ENV_DIR_INC;
                             goto envelope_sustain;
                         }
                     } else {
-                        channels->envelopeCounter = channels->decay;
+                        channels->envelopeCtr = channels->decay;
                     }
                 } else {
-                    channels->envelopeVolume++;
-                    if ((u8)(channels->envelopeVolume & mask) >= channels->envelopeGoal) {
+                    channels->envelopeVol++;
+                    if ((u8)(channels->envelopeVol & mask) >= channels->envelopeGoal) {
                     envelope_decay_start:
-                        channels->statusFlags--;
-                        channels->envelopeCounter = channels->decay;
-                        if ((u8)(channels->envelopeCounter & mask)) {
-                            channels->modify |= CGB_CHANNEL_MO_VOL;
-                            channels->envelopeVolume = channels->envelopeGoal;
+                        channels->status--;
+                        channels->envelopeCtr = channels->decay;
+                        if ((u8)(channels->envelopeCtr & mask)) {
+                            channels->cgbStatus |= CGB_CHANNEL_MO_VOL;
+                            channels->envelopeVol = channels->envelopeGoal;
                             if (ch != 3)
                                 envelopeStepTimeAndDir = channels->decay | CGB_NRx2_ENV_DIR_DEC;
                         } else {
                             goto envelope_sustain_start;
                         }
                     } else {
-                        channels->envelopeCounter = channels->attack;
+                        channels->envelopeCtr = channels->attack;
                     }
                 }
             }
@@ -1091,7 +1091,7 @@ void CgbSound(void)
     envelope_step_complete:
         // every 15 frames, envelope calculation has to be done twice
         // to keep up with the hardware envelope rate (1/64 s)
-        channels->envelopeCounter--;
+        channels->envelopeCtr--;
         if (prevC15 == 0) {
             prevC15--;
             goto envelope_step_repeat;
@@ -1099,40 +1099,40 @@ void CgbSound(void)
 
     envelope_complete:
         /* 3. apply pitch to HW registers */
-        if (channels->modify & CGB_CHANNEL_MO_PIT) {
+        if (channels->cgbStatus & CGB_CHANNEL_MO_PIT) {
             if (ch < 4 && (channels->type & TONEDATA_TYPE_FIX)) {
                 int dac_pwm_rate = REG_SOUNDBIAS_H;
 
                 if (dac_pwm_rate < 0x40) // if PWM rate = 32768 Hz
-                    channels->frequency = (channels->frequency + 2) & 0x7fc;
+                    channels->freq = (channels->freq + 2) & 0x7fc;
                 else if (dac_pwm_rate < 0x80) // if PWM rate = 65536 Hz
-                    channels->frequency = (channels->frequency + 1) & 0x7fe;
+                    channels->freq = (channels->freq + 1) & 0x7fe;
             }
 
             if (ch != 4)
-                *nrx3ptr = channels->frequency;
+                *nrx3ptr = channels->freq;
             else
-                *nrx3ptr = (*nrx3ptr & 0x08) | channels->frequency;
-            channels->n4 = (channels->n4 & 0xC0) + (*((u8 *)(&channels->frequency) + 1));
-            *nrx4ptr = (s8)(channels->n4 & mask);
+                *nrx3ptr = (*nrx3ptr & 0x08) | channels->freq;
+            channels->nrx4 = (channels->nrx4 & 0xC0) + (*((u8 *)(&channels->freq) + 1));
+            *nrx4ptr = (s8)(channels->nrx4 & mask);
         }
 
         /* 4. apply envelope & volume to HW registers */
-        if (channels->modify & CGB_CHANNEL_MO_VOL) {
+        if (channels->cgbStatus & CGB_CHANNEL_MO_VOL) {
             REG_NR51 = (REG_NR51 & ~channels->panMask) | channels->pan;
             if (ch == 3) {
-                *nrx2ptr = gCgb3Vol[channels->envelopeVolume];
-                if (channels->n4 & 0x80) {
+                *nrx2ptr = gCgb3Vol[channels->envelopeVol];
+                if (channels->nrx4 & 0x80) {
                     *nrx0ptr = 0x80;
-                    *nrx4ptr = channels->n4;
-                    channels->n4 &= 0x7f;
+                    *nrx4ptr = channels->nrx4;
+                    channels->nrx4 &= 0x7f;
                 }
             } else {
                 u32 envMask = 0xF;
-                *nrx2ptr = (envelopeStepTimeAndDir & envMask) + (channels->envelopeVolume << 4);
-                *nrx4ptr = channels->n4 | 0x80;
+                *nrx2ptr = (envelopeStepTimeAndDir & envMask) + (channels->envelopeVol << 4);
+                *nrx4ptr = channels->nrx4 | 0x80;
                 if (ch == 1 && !(*nrx0ptr & 0x08))
-                    *nrx4ptr = channels->n4 | 0x80;
+                    *nrx4ptr = channels->nrx4 | 0x80;
             }
 #if PORTABLE
             cgb_set_envelope(ch - 1, *nrx2ptr);
@@ -1142,7 +1142,7 @@ void CgbSound(void)
         }
 
     channel_complete:
-        channels->modify = 0;
+        channels->cgbStatus = 0;
     }
 }
 
