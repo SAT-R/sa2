@@ -385,7 +385,7 @@ void MP2KPlayerMain(void *voidPtrPlayer)
 #else
                     MP2KClearChain(chan);
 #endif
-                } else if (chan->gateTime != 0 && --chan->gateTime == 0) {
+                } else if (chan->data.sound.gateTime != 0 && --chan->data.sound.gateTime == 0) {
                     chan->status |= SOUND_CHANNEL_SF_STOP;
                 }
                 chan = chan->next;
@@ -412,11 +412,11 @@ void MP2KPlayerMain(void *voidPtrPlayer)
                 }
 
                 if (event >= 0xCF) {
-                    mixer->mp2kEventNxxFunc(event - 0xCF, player, currentTrack);
+                    mixer->plynote(event - 0xCF, player, currentTrack);
                 } else if (event >= 0xB1) {
                     void (*eventFunc)(struct MP2KPlayerState *, struct MP2KTrack *);
                     player->cmd = event - 0xB1;
-                    eventFunc = mixer->mp2kEventFuncTable[player->cmd];
+                    eventFunc = mixer->MPlayJumpTable[player->cmd];
                     eventFunc(player, currentTrack);
 
                     if (currentTrack->status == 0) {
@@ -493,19 +493,19 @@ void MP2KPlayerMain(void *voidPtrPlayer)
             if (track->status & MPT_FLG_VOLCHG) {
                 ChnVolSetAsm(chan, track);
                 if (cgbType != 0) {
-                    chan->cgbStatus |= 1;
+                    chan->data.cgb.cgbStatus |= 1;
                 }
             }
             if (track->status & MPT_FLG_PITCHG) {
-                s32 key = chan->key + track->keyShiftCalculated;
+                s32 key = chan->data.sound.key + track->keyShiftCalculated;
                 if (key < 0) {
                     key = 0;
                 }
                 if (cgbType != 0) {
-                    chan->freq = mixer->cgbCalcFreqFunc(cgbType, key, track->pitchCalculated);
-                    chan->cgbStatus |= 0x2;
+                    chan->data.cgb.freq = mixer->MidiKeyToCgbFreq(cgbType, key, track->pitchCalculated);
+                    chan->data.cgb.cgbStatus |= 0x2;
                 } else {
-                    chan->freq = MidiKeyToFreq(VOID_CAST chan->wav, key, track->pitchCalculated);
+                    chan->data.sound.freq = MidiKeyToFreq(VOID_CAST chan->data.sound.wav, key, track->pitchCalculated);
                 }
             }
         }
@@ -523,7 +523,7 @@ void TrackStop(struct MP2KPlayerState *player, struct MP2KTrack *track)
                 u8 cgbType = chan->type & 0x7;
                 if (cgbType != 0) {
                     struct SoundMixerState *mixer = SOUND_INFO_PTR;
-                    mixer->cgbNoteOffFunc(cgbType);
+                    mixer->CgbOscOff(cgbType);
                 }
                 chan->status = 0;
             }
@@ -535,14 +535,14 @@ void TrackStop(struct MP2KPlayerState *player, struct MP2KTrack *track)
 
 void ChnVolSetAsm(struct MixerSource *chan, struct MP2KTrack *track)
 {
-    s8 forcedPan = chan->rhythmPan;
-    u32 rightVolume = (u8)(forcedPan + 128) * chan->velocity * track->volRightCalculated / 128 / 128;
+    s8 forcedPan = chan->data.sound.rhythmPan;
+    u32 rightVolume = (u8)(forcedPan + 128) * chan->data.sound.velocity * track->volRightCalculated / 128 / 128;
     if (rightVolume > 0xFF) {
         rightVolume = 0xFF;
     }
     chan->rightVol = rightVolume;
 
-    u32 leftVolume = (u8)(127 - forcedPan) * chan->velocity * track->volLeftCalculated / 128 / 128;
+    u32 leftVolume = (u8)(127 - forcedPan) * chan->data.sound.velocity * track->volLeftCalculated / 128 / 128;
     if (leftVolume > 0xFF) {
         leftVolume = 0xFF;
     }
@@ -615,7 +615,7 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
         // If this channel is running and not stopped,
         if ((chan->status & SOUND_CHANNEL_SF_ON) && (chan->status & SOUND_CHANNEL_SF_STOP) == 0) {
             // then make sure this note is higher priority (or same priority but from a later track).
-            if (chan->priority > priority || (chan->priority == priority && chan->track < track)) {
+            if (chan->data.sound.priority > priority || (chan->data.sound.priority == priority && chan->track < track)) {
                 return;
             }
         }
@@ -624,10 +624,10 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
         struct MP2KTrack *t = track;
         bool32 foundStoppingChannel = FALSE;
         chan = NULL;
-        u8 maxChans = mixer->numChans;
+        u8 numChans = mixer->numChans;
         struct MixerSource *currChan = mixer->chans;
 
-        for (u8 i = 0; i < maxChans; i++, currChan++) {
+        for (u8 i = 0; i < numChans; i++, currChan++) {
             if ((currChan->status & SOUND_CHANNEL_SF_ON) == 0) {
                 // Hey, we found a completely inactive channel! Let's use that.
                 chan = currChan;
@@ -638,20 +638,20 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
                 // In the absence of a completely finalized channel, we can take over one that's about to
                 // finalize. That's a tier above any channel that's currently playing a note.
                 foundStoppingChannel = TRUE;
-                p = currChan->priority;
+                p = currChan->data.sound.priority;
                 t = currChan->track;
                 chan = currChan;
             } else if ((currChan->status & SOUND_CHANNEL_SF_STOP && foundStoppingChannel)
                        || ((currChan->status & SOUND_CHANNEL_SF_STOP) == 0 && !foundStoppingChannel)) {
                 // The channel we're checking is on the same tier, so check the priority and track order
-                if (currChan->priority < p) {
-                    p = currChan->priority;
+                if (currChan->data.sound.priority < p) {
+                    p = currChan->data.sound.priority;
                     t = currChan->track;
                     chan = currChan;
-                } else if (currChan->priority == p && currChan->track > t) {
+                } else if (currChan->data.sound.priority == p && currChan->track > t) {
                     t = currChan->track;
                     chan = currChan;
-                } else if (currChan->priority == p && currChan->track == t) {
+                } else if (currChan->data.sound.priority == p && currChan->track == t) {
                     chan = currChan;
                 }
             }
@@ -681,24 +681,24 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
     }
     TrkVolPitSet(player, track);
 
-    chan->gateTime = track->gateTime;
-    chan->untransposedKey = track->key;
-    chan->velocity = track->velocity;
-    chan->priority = priority;
-    chan->key = key;
-    chan->rhythmPan = forcedPan;
+    chan->data.sound.gateTime = track->gateTime;
+    chan->data.sound.untransposedKey = track->key;
+    chan->data.sound.velocity = track->velocity;
+    chan->data.sound.priority = priority;
+    chan->data.sound.key = key;
+    chan->data.sound.rhythmPan = forcedPan;
     chan->type = instrument->type;
-    chan->wav = instrument->wav;
+    chan->data.sound.wav = instrument->wav;
     chan->attack = instrument->attack;
     chan->decay = instrument->decay;
     chan->sustain = instrument->sustain;
     chan->release = instrument->release;
-    chan->echoVol = track->echoVolume;
-    chan->echoLen = track->echoLength;
+    chan->data.sound.echoVol = track->echoVolume;
+    chan->data.sound.echoLen = track->echoLength;
     ChnVolSetAsm(chan, track);
 
     // Avoid promoting keyShiftCalculated to u8 by splitting the addition into a separate statement
-    s16 transposedKey = chan->key;
+    s16 transposedKey = chan->data.sound.key;
     transposedKey += track->keyShiftCalculated;
     if (transposedKey < 0) {
         transposedKey = 0;
@@ -706,16 +706,16 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
 
     if (cgbType != 0) {
         // struct CgbChannel *cgbChan = (struct CgbChannel *)chan;
-        chan->length = instrument->cgbLength;
+        chan->data.cgb.length = instrument->cgbLength;
         if (instrument->pan_sweep & 0x80 || (instrument->pan_sweep & 0x70) == 0) {
-            chan->sweep = 8;
+            chan->data.cgb.sweep = 8;
         } else {
-            chan->sweep = instrument->pan_sweep;
+            chan->data.cgb.sweep = instrument->pan_sweep;
         }
 
-        chan->freq = mixer->cgbCalcFreqFunc(cgbType, transposedKey, track->pitchCalculated);
+        chan->data.cgb.freq = mixer->MidiKeyToCgbFreq(cgbType, transposedKey, track->pitchCalculated);
     } else {
-        chan->freq = MidiKeyToFreq(VOID_CAST chan->wav, transposedKey, track->pitchCalculated);
+        chan->data.sound.freq = MidiKeyToFreq(VOID_CAST chan->data.sound.wav, transposedKey, track->pitchCalculated);
     }
 
     chan->status = SOUND_CHANNEL_SF_START;
@@ -734,7 +734,7 @@ void MP2K_event_endtie(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 
     struct MixerSource *chan = track->chan;
     while (chan != NULL) {
-        if (chan->status & 0x83 && (chan->status & 0x40) == 0 && chan->untransposedKey == key) {
+        if (chan->status & 0x83 && (chan->status & 0x40) == 0 && chan->data.sound.untransposedKey == key) {
             chan->status |= 0x40;
             return;
         }
@@ -764,7 +764,7 @@ void m4aSoundVSync(void)
 #if PORTABLE
     if (mixer->lockStatus - PLAYER_UNLOCKED <= 1) {
         s32 samplesPerFrame = mixer->samplesPerFrame * 2;
-        float *m4aBuffer = mixer->outBuffer;
+        float *m4aBuffer = mixer->pcmBuffer;
         float *cgbBuffer = cgb_get_buffer();
         s32 dmaCounter = mixer->dmaCounter;
 

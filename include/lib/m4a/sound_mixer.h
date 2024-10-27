@@ -36,7 +36,6 @@ struct MP2KPlayerState;
 //             u8 envelopeVol;
 //             u8 envelopeGoal;
 //             u8 envelopeCtr;
-
 //             u8 echoVol;
 //             u8 echoLen;
 //             u8 padding1;
@@ -70,7 +69,10 @@ struct MP2KPlayerState;
 //             u8 envelopeVol;
 //             u8 envelopeVolR;
 //             u8 envelopeVolL;
-
+//
+//             u8 padding1;
+//             u8 padding2;
+//
 //             u8 echoVol;
 //             u8 echoLen;
 //             u8 padding1;
@@ -108,55 +110,71 @@ struct MixerSource {
     u8 decay;
     u8 sustain;
     u8 release;
-    u8 key;
-    u8 envelopeVol;
+
     union {
-        u8 envelopeVolR;
-        u8 envelopeGoal;
-    } __attribute__((packed));
-    union {
-        u8 envelopeVolL;
-        u8 envelopeCtr;
-    } __attribute__((packed));
-    u8 echoVol;
-    u8 echoLen;
-    u8 padding1;
-    u8 padding2;
-    u8 gateTime;
-    u8 untransposedKey;
-    u8 velocity;
-    u8 priority;
-    u8 rhythmPan;
-    u8 padding3;
-    u8 padding4;
-    u8 padding5;
-    union {
-        u32 ct;
         struct {
+            u8 key;
+            u8 envelopeVol;
+            u8 envelopeCtr;
+            u8 envelopeGoal;
+
+            u8 echoVol;
+            u8 echoLen;
+            u8 padding1;
+            u8 padding2;
+            u8 gateTime;
+            u8 untransposedKey;
+            u8 velocity;
+            u8 priority;
+            u8 rhythmPan;
+            u8 padding3;
+            u8 padding4;
+            u8 padding5;
+
             u8 padding6;
             u8 sustainGoal;
             u8 nrx4;
             u8 pan;
-        };
-    };
-    union {
-        float fw;
-        struct {
+
             u8 panMask;
             u8 cgbStatus;
             u8 length;
             u8 sweep;
-        };
-    };
-    u32 freq;
-    union {
-        u32 *newCgb3Sample;
-        struct WaveData *wav;
-    };
-    union {
-        u32 *oldCgb3Sample;
-        s8 *current;
-    };
+
+            u32 freq;
+
+            u32 *newCgb3Sample; // nextSample
+            u32 *oldCgb3Sample; // currentSample
+        } cgb;
+        struct {
+            u8 key;
+            u8 envelopeVol;
+            u8 envelopeVolR;
+            u8 envelopeVolL;
+
+            u8 echoVol;
+            u8 echoLen;
+            u8 padding1;
+            u8 padding2;
+            u8 gateTime;
+            u8 untransposedKey;
+            u8 velocity;
+            u8 priority;
+            u8 rhythmPan;
+            u8 padding3;
+            u8 padding4;
+            u8 padding5;
+
+            u32 ct;
+            float fw;
+
+            u32 freq;
+
+            struct WaveData *wav;
+            s8 *current; // todo: sample
+        } sound;
+    } data;
+
     struct MP2KTrack *track;
     struct MixerSource *prev;
     struct MixerSource *next;
@@ -166,6 +184,8 @@ struct MixerSource {
 
 enum { MAX_SAMPLE_CHANNELS = 12 };
 enum { MIXED_AUDIO_BUFFER_SIZE = 4907 };
+
+typedef void (*ExtVolPitFunc)(void);
 
 struct SoundMixerState {
     vu32 lockStatus;
@@ -187,21 +207,21 @@ struct SoundMixerState {
     s32 sampleRate;
     float sampleRateReciprocal;
     struct MixerSource *cgbChans;
-    void (*firstPlayerFunc)(void *player);
-    void *firstPlayer;
-    void (*cgbMixerFunc)(void);
-    void (*cgbNoteOffFunc)(u8 chan);
-    u32 (*cgbCalcFreqFunc)(u8 chan, u8 key, u8 pitch);
-    void (**mp2kEventFuncTable)();
-    void (*mp2kEventNxxFunc)(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *track);
-    void *reserved1; // In poke* this is called "ExtVolPit"
+    void (*MPlayMainHead)(void *player);
+    void *musicPlayerHead;
+    void (*CgbSound)(void);
+    void (*CgbOscOff)(u8 chan);
+    u32 (*MidiKeyToCgbFreq)(u8 chan, u8 key, u8 pitch);
+    void (**MPlayJumpTable)();
+    void (*plynote)(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *track);
+    ExtVolPitFunc ExtVolPit;
     void *reserved2;
     void *reserved3;
     void *reversed4;
     void *reserved5;
     struct MixerSource chans[MAX_SAMPLE_CHANNELS];
-    float outBuffer[MIXED_AUDIO_BUFFER_SIZE * 2];
-    // s8 outBuffer[MIXED_AUDIO_BUFFER_SIZE * 2];
+    float pcmBuffer[MIXED_AUDIO_BUFFER_SIZE * 2];
+    // s8 pcmBuffer[MIXED_AUDIO_BUFFER_SIZE * 2];
 };
 
 typedef void (*MixerRamFunc)(struct SoundMixerState *, u32, u16, s8 *, u16);

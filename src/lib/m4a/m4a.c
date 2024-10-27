@@ -296,7 +296,7 @@ void MPlayExtender(struct CgbChannel *cgbChans)
     soundInfo->CgbSound = CgbSound;
     soundInfo->CgbOscOff = CgbOscOff;
     soundInfo->MidiKeyToCgbFreq = MidiKeyToCgbFreq;
-    soundInfo->maxLines = MAX_LINES;
+    soundInfo->maxScanlines = MAX_LINES;
 
     CpuFill32(0, cgbChans, sizeof(struct CgbChannel) * 4);
 
@@ -351,8 +351,8 @@ void SoundInit(struct SoundInfo *soundInfo)
     SOUND_INFO_PTR = VOID_CAST soundInfo;
     CpuFill32(0, soundInfo, sizeof(struct SoundInfo));
 
-    soundInfo->maxChans = 8;
-    soundInfo->masterVolume = 15;
+    soundInfo->numChans = 8;
+    soundInfo->masterVol = 15;
 #if !PORTABLE
     soundInfo->plynote = (PlyNoteFunc)ply_note;
 #else
@@ -381,29 +381,29 @@ void SampleFreqSet(u32 freq)
     struct SoundInfo *soundInfo = VOID_CAST SOUND_INFO_PTR;
 
     freq = (freq & 0xF0000) >> 16;
-    soundInfo->freq = freq;
+    soundInfo->freqOption = freq;
 
 #if !PORTABLE
-    soundInfo->pcmSamplesPerVBlank = gPcmSamplesPerVBlankTable[freq - 1];
-    soundInfo->pcmDmaPeriod = PCM_DMA_BUF_SIZE / soundInfo->pcmSamplesPerVBlank;
+    soundInfo->samplesPerFrame = gPcmSamplesPerVBlankTable[freq - 1];
+    soundInfo->framesPerDmaCycle = PCM_DMA_BUF_SIZE / soundInfo->samplesPerFrame;
 
     // LCD refresh rate 59.7275Hz
-    soundInfo->pcmFreq = (597275 * soundInfo->pcmSamplesPerVBlank + 5000) / 10000;
+    soundInfo->sampleRate = (597275 * soundInfo->samplesPerFrame + 5000) / 10000;
 
     // CPU freq 16.78Mhz
-    soundInfo->divFreq = (0x1000000 / soundInfo->pcmFreq + 1) >> 1;
+    soundInfo->sampleRateReciprocal = (0x1000000 / soundInfo->sampleRate + 1) >> 1;
 #else
-    soundInfo->pcmSamplesPerVBlank = 701;
-    soundInfo->pcmDmaPeriod = PCM_DMA_BUF_SIZE / soundInfo->pcmSamplesPerVBlank;
-    soundInfo->pcmFreq = 60.0f * soundInfo->pcmSamplesPerVBlank;
-    soundInfo->divFreq = 1.0f / soundInfo->pcmFreq;
+    soundInfo->samplesPerFrame = 701;
+    soundInfo->framesPerDmaCycle = PCM_DMA_BUF_SIZE / soundInfo->samplesPerFrame;
+    soundInfo->sampleRate = 60.0f * soundInfo->samplesPerFrame;
+    soundInfo->sampleRateReciprocal = 1.0f / soundInfo->sampleRate;
 #endif
 
     // Turn off timer 0.
     REG_TM0CNT_H = 0;
 
     // cycles per LCD fresh 280896
-    REG_TM0CNT_L = -(280896 / soundInfo->pcmSamplesPerVBlank);
+    REG_TM0CNT_L = -(280896 / soundInfo->samplesPerFrame);
 
     m4aSoundVSyncOn();
 #if !PORTABLE
@@ -436,7 +436,7 @@ void m4aSoundMode(u32 mode)
     if (temp) {
         struct SoundChannel *chan;
 
-        soundInfo->maxChans = temp >> SOUND_MODE_MAXCHN_SHIFT;
+        soundInfo->numChans = temp >> SOUND_MODE_MAXCHN_SHIFT;
 
         temp = MAX_DIRECTSOUND_CHANNELS;
         chan = &soundInfo->chans[0];
@@ -451,7 +451,7 @@ void m4aSoundMode(u32 mode)
     temp = mode & SOUND_MODE_MASVOL;
 
     if (temp)
-        soundInfo->masterVolume = temp >> SOUND_MODE_MASVOL_SHIFT;
+        soundInfo->masterVol = temp >> SOUND_MODE_MASVOL_SHIFT;
 
     temp = mode & SOUND_MODE_DA_BIT;
 
@@ -894,10 +894,10 @@ void CgbSound(void)
     // Most comparision operations that cast to s8 perform 'and' by 0xFF.
     int mask = 0xff;
 
-    if (soundInfo->c15)
-        soundInfo->c15--;
+    if (soundInfo->cgbCounter15)
+        soundInfo->cgbCounter15--;
     else
-        soundInfo->c15 = 14;
+        soundInfo->cgbCounter15 = 14;
 
     for (ch = 1, channels = soundInfo->cgbChans; ch <= 4; ch++, channels++) {
         if (!(channels->status & SOUND_CHANNEL_SF_ON))
@@ -935,7 +935,7 @@ void CgbSound(void)
                 break;
         }
 
-        prevC15 = soundInfo->c15;
+        prevC15 = soundInfo->cgbCounter15;
         envelopeStepTimeAndDir = *nrx2ptr;
 
         /* 2. calculate envelope volume */

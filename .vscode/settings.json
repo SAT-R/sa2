@@ -345,7 +345,10 @@
     "iron_ball.h": "c",
     "char_states.h": "c",
     "course_select.h": "c",
-    "level_endings.h": "c"
+    "level_endings.h": "c",
+    "music_player.h": "c",
+    "sound_mixer.h": "c",
+    "cgb_audio.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

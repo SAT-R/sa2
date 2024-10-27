@@ -259,21 +259,21 @@ struct SoundInfo {
 
     // Direct Sound
     u8 reverb;
-    u8 maxChans;
-    u8 masterVolume;
-    u8 freq;
+    u8 numChans;
+    u8 masterVol;
+    u8 freqOption;
 
-    u8 mode;
-    u8 c15; // periodically counts from 14 down to 0 (15 states)
-    u8 pcmDmaPeriod; // number of V-blanks per PCM DMA
-    u8 maxLines;
+    u8 extensionFlags;
+    u8 cgbCounter15; // periodically counts from 14 down to 0 (15 states)
+    u8 framesPerDmaCycle; // number of V-blanks per PCM DMA
+    u8 maxScanlines;
     u8 gap[3];
-    s32 pcmSamplesPerVBlank;
-    s32 pcmFreq;
+    s32 samplesPerFrame;
+    s32 sampleRate;
 #if !PORTABLE
-    s32 divFreq;
+    s32 sampleRateReciprocal;
 #else
-    float divFreq;
+    float sampleRateReciprocal;
 #endif
     struct CgbChannel *cgbChans;
     MPlayMainFunc MPlayMainHead;
@@ -284,7 +284,10 @@ struct SoundInfo {
     MPlayFunc *MPlayJumpTable;
     PlyNoteFunc plynote;
     ExtVolPitFunc ExtVolPit;
-    u8 gap2[16];
+    void *reserved2;
+    void *reserved3;
+    void *reversed4;
+    void *reserved5;
     struct SoundChannel chans[MAX_DIRECTSOUND_CHANNELS];
 #if !PORTABLE
     s8 pcmBuffer[PCM_DMA_BUF_SIZE * 2];
