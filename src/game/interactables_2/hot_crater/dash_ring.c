@@ -1,6 +1,6 @@
 #include "global.h"
 #include "malloc_vram.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "trig.h"
 
 #include "game/stage/player.h"
@@ -265,6 +265,13 @@ static bool32 DashRing_PlayerIsColliding(Sprite_DashRing *ring)
 
         if ((ringScreenX2 <= playerScreenX) && ((ringScreenX2 + 24) >= playerScreenX) && (ringScreenY2 <= playerScreenY)
             && (ringScreenY2 + 24) >= playerScreenY) {
+#if TAS_TESTING && TAS_TESTING_WIDESCREEN_HACK && DISPLAY_WIDTH > 240
+            // The TAS is designed to "skip" the dashring by being so far off screen
+            // that the play does no trigger it
+            if (gCurrentLevel == LEVEL_INDEX(ZONE_2, ACT_1)) {
+                return FALSE;
+            }
+#endif
             return TRUE;
         }
     }
