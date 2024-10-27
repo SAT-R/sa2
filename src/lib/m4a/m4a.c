@@ -952,19 +952,16 @@ void CgbSound(void)
 #endif
                         // fallthrough
                     case 2:
-                        *nrx1ptr = ((intptr_t)channels->data.cgb.newCgb3Sample << 6) + channels->data.cgb.length;
+                        *nrx1ptr = ((intptr_t)channels->wav << 6) + channels->data.cgb.length;
                         goto init_env_step_time_dir;
                     case 3:
-                        if (channels->data.cgb.newCgb3Sample != channels->data.cgb.oldCgb3Sample) {
-                            u32 *sample;
+                        if (channels->wav != channels->current) {
                             *nrx0ptr = 0x40;
-                            sample = channels->data.cgb.newCgb3Sample;
-
-                            REG_WAVE_RAM0 = sample[0];
-                            REG_WAVE_RAM1 = sample[1];
-                            REG_WAVE_RAM2 = sample[2];
-                            REG_WAVE_RAM3 = sample[3];
-                            channels->data.cgb.oldCgb3Sample = sample;
+                            REG_WAVE_RAM0 = ((u32 *)channels->wav)[0];
+                            REG_WAVE_RAM1 = ((u32 *)channels->wav)[1];
+                            REG_WAVE_RAM2 = ((u32 *)channels->wav)[2];
+                            REG_WAVE_RAM3 = ((u32 *)channels->wav)[3];
+                            channels->current = channels->wav;
 #if PORTABLE
                             cgb_set_wavram();
 #endif
@@ -978,7 +975,7 @@ void CgbSound(void)
                         break;
                     default:
                         *nrx1ptr = channels->data.cgb.length;
-                        *nrx3ptr = (intptr_t)channels->data.cgb.newCgb3Sample << 3;
+                        *nrx3ptr = (intptr_t)channels->wav << 3;
                     init_env_step_time_dir:
                         envelopeStepTimeAndDir = channels->attack + CGB_NRx2_ENV_DIR_INC;
                         if (channels->data.cgb.length)

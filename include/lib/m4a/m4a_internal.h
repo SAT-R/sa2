@@ -205,9 +205,6 @@ struct MixerSource {
             u8 sweep;
 
             u32 freq;
-
-            u32 *newCgb3Sample; // nextSample
-            u32 *oldCgb3Sample; // currentSample
         } cgb;
         struct {
             u8 key;
@@ -232,11 +229,11 @@ struct MixerSource {
             float fw;
 
             u32 freq;
-
-            struct WaveData *wav;
-            s8 *current; // todo: sample
         } sound;
     } data;
+
+    void *wav; // The next peice of data to be loading
+    void *current; // The working pointer from wav
 
     struct MP2KTrack *track;
     struct MixerSource *prev;
