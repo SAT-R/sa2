@@ -1,6 +1,6 @@
 #include "global.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "game/sa1_leftovers/globals.h"
 #include "game/sa1_leftovers/collect_ring_effect.h"
@@ -19,7 +19,7 @@ typedef struct {
 
 void Task_CollectRingEffect(void);
 
-extern struct SongHeader se_ring_copy;
+extern struct MP2KSongHeader se_ring_copy;
 
 void CreateCollectRingEffect(s16 x, s16 y)
 {

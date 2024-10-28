@@ -14,7 +14,7 @@
 
 #include "game/stage/screen_fade.h"
 #include "game/stage/tilemap_table.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "constants/text.h"
 #include "flags.h"
 

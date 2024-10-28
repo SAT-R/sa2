@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 #include "trig.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "rect.h"
 
 #include "game/sa1_leftovers/globals.h"

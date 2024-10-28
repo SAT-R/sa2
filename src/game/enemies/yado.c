@@ -8,7 +8,7 @@
 #include "game/enemies/projectiles.h"
 #include "game/stage/trapped_animals.h"
 #include "game/multiplayer/player_unk_1.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"

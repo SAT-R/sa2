@@ -12,5 +12,13 @@
       "cwd": "${workspaceFolder}",
       "MIMode": "lldb",
     },
+    {
+      "name": "SDL Debug Linux",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/sa2_debug.sdl",
+      "cwd": "${workspaceFolder}",
+      "MIMode": "gdb",
+    },
   ]
 }

@@ -87,3 +87,5 @@ void DmaWait(int dmaNum) { printf("DmaWait: %d\n", dmaNum); }
 void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GENERATE_EXCEPTIONS | HEAP_ZERO_MEMORY, numBytes); }
 
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
+
+void Platform_QueueAudio(const u8 *data, u32 numBytes) { }

@@ -7,7 +7,7 @@
 #include "game/cutscenes/extra_ending_fall.h"
 #include "game/cutscenes/final_ending_fall.h"
 #include "malloc_vram.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "trig.h"
 #include "game/save.h"
 

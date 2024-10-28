@@ -3,7 +3,7 @@
 #include "game/math.h"
 #include "core.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "game/interactables_2/techno_base/light_globe.h"

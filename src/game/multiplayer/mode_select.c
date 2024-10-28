@@ -5,7 +5,7 @@
 #include "multi_sio.h"
 #include "sprite.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/multiplayer/mode_select.h"
 #include "game/multiplayer/multipak_connection.h"
 #include "game/multiboot/connection.h"

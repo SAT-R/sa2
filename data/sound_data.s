@@ -3,6 +3,7 @@
 	.include "asm/macros/music_voice.inc"
 	.include "asm/macros/c_decl.inc"
 
+@; TODO: Convert this all to C
 mSectionRodata
 	.include "sound/voice_groups.inc"
 	.include "sound/keysplit_tables.inc"

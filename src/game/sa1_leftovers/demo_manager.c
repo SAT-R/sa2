@@ -4,7 +4,7 @@
 #include "sprite.h"
 #include "task.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "game/sa1_leftovers/demo_manager.h"
 #include "game/sa1_leftovers/player.h"

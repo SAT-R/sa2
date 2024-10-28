@@ -4,6 +4,7 @@
 include config.mk
 
 ROOT_DIR := $(realpath $(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
+OS       := $(shell uname)
 
 ifeq ($(PLATFORM),gba)
   TOOLCHAIN := $(DEVKITARM)
@@ -164,6 +165,20 @@ else
   CPPFLAGS += -D ENABLE_DECOMP_CREDITS=1
 endif
 
+# TODO: compile songs to C so that we can work around this
+# MacOS refuses to link the songs data because some pointers
+# are not aligned. This is a simple work around which tells
+# the compiler not to care. Once we are compiling the songs
+# to C, we can cast the pointers to integers to make the linker
+# care less
+ifeq ($(OS), Darwin)
+  LINKER_MAP_FLAGS = -Wl,-map, "$(ROOT_DIR)/$(MAP)"
+  ifneq ($(PLATFORM), gba)
+   export MACOSX_DEPLOYMENT_TARGET := 11
+  endif
+else
+  LINKER_MAP_FLAGS = -Xlinker -Map="$(ROOT_DIR)/$(MAP)"
+endif
 
 # Clear the default suffixes
 .SUFFIXES:
@@ -284,12 +299,12 @@ OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 # Use the old compiler for m4a, as it was prebuilt and statically linked
 # to the original codebase
-$(C_BUILDDIR)/lib/m4a.o: CC1 := $(CC1_OLD)
+$(C_BUILDDIR)/lib/m4a/m4a.o: CC1 := $(CC1_OLD)
 
 # Use `-O1` for agb_flash libs, as these were also prebuilt
 ifeq ($(PLATFORM),gba)
-$(C_BUILDDIR)/lib/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
-$(C_BUILDDIR)/lib/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+$(C_BUILDDIR)/lib/agb_flash/agb_flash.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
+$(C_BUILDDIR)/lib/agb_flash/agb_flash%.o: CC1FLAGS := -O1 -mthumb-interwork -Werror
 endif
 
 MAKEFLAGS += --no-print-directory
@@ -416,7 +431,7 @@ else
 	@echo Outputting $(ROOT_DIR)/$@
 	@touch $(ROOT_DIR)/$(MAP)
 ifeq ($(PLATFORM),sdl)
-	@cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) $(shell sdl2-config --cflags --libs) -o $(ROOT_DIR)/$@
+	@cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) $(shell sdl2-config --cflags --libs) $(LINKER_MAP_FLAGS) -o $(ROOT_DIR)/$@
 else ifeq ($(PLATFORM),sdl_win32)
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(ROOT_DIR)/$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 else

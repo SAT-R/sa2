@@ -20,7 +20,5 @@ u32 sub_800D0A0(Sprite *s, s16 x, s16 y, s16 param3, s16 param4, u8 param5, u32 
 void sub_802E784(u16 p0, u16 p1, u16 p2, s16 x, s16 y, s16 p5) { }
 
 // TEMP
-void RealClearChain(void) { }
-void SoundMainBTM(void) { }
 double sqrt(double v) { return 0; }
 float atan2f(float a, float b) { return 0; }

@@ -6,7 +6,7 @@
 #include "game/special_stage/guard_robo.h"
 #include "game/special_stage/data.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/save.h"
 #include "trig.h"
 #include "malloc_ewram.h"

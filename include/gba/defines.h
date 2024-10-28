@@ -40,9 +40,10 @@
 #define DISPLAY_WIDTH  240
 #define DISPLAY_HEIGHT 160
 
-#include "gba/types.h"
-#define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
-extern struct SoundInfo *SOUND_INFO_PTR;
+//#include "gba/types.h"
+// TODO: Fix #define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
+#define OAM_SIZE (OAM_ENTRY_COUNT*8)
+extern struct SoundMixerState *SOUND_INFO_PTR;
 extern uint16_t INTR_CHECK;
 extern void (*INTR_VECTOR)(void);
 
@@ -80,7 +81,7 @@ extern uint8_t VRAM[VRAM_SIZE];
 // NOTE(Jace): I tried replacing these altogether,
 //             but that resulted in a nonmatching ROM
 //             (see notes above)
-#define SOUND_INFO_PTR (*(struct SoundInfo **)0x3007FF0)
+#define SOUND_INFO_PTR (*(struct SoundMixerState **)0x3007FF0)
 #define INTR_CHECK     (*(u16 *)0x3007FF8)
 #define INTR_VECTOR    (*(void **)0x3007FFC)
 

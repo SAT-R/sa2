@@ -24,7 +24,7 @@
 #include "game/multiboot/collect_rings/time_display.h"
 #include "game/multiplayer/mp_player.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/animations.h"
 #include "constants/characters.h"

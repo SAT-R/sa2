@@ -5,7 +5,7 @@
 #include "game/sa1_leftovers/player.h"
 #include "game/sa1_leftovers/music_manager.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/songs.h"
 
@@ -62,7 +62,7 @@ const u16 gUnknown_080D5254[7] = {
 
 void Task_StageMusicManager(void)
 {
-    struct SongHeader *songHeader = gMPlayTable[0].info->songHeader;
+    struct MP2KSongHeader *songHeader = gMPlayTable[0].info->songHeader;
 
     if ((gUnknown_030054A8.unk0 == 0) && PLAYER_IS_ALIVE) {
         if ((gUnknown_030054A8.unk1 & 0xF0) == 0x30) {
@@ -140,7 +140,7 @@ void CreateStageMusicManager(void)
 
 static void MusManager_UpdateBgmParams(void)
 {
-    struct MusicPlayerInfo *bgmInfo = &gMPlayInfo_BGM;
+    struct MP2KPlayerState *bgmInfo = &gMPlayInfo_BGM;
 
     m4aMPlayImmInit(bgmInfo);
     m4aMPlayVolumeControl(bgmInfo, 0xFF, 4);
@@ -153,7 +153,7 @@ static void MusManager_UpdateBgmParams(void)
 
 void sub_800BF74(u16 fadeoutSpeed)
 {
-    struct MusicPlayerInfo *bgmInfo = &gMPlayInfo_BGM;
+    struct MP2KPlayerState *bgmInfo = &gMPlayInfo_BGM;
 
     m4aMPlayFadeOutTemporarily(bgmInfo, fadeoutSpeed / 16);
 

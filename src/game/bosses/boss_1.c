@@ -1,8 +1,10 @@
 #include "core.h"
+#include "flags.h"
 #include "sprite.h"
 #include "task.h"
 #include "malloc_vram.h"
 #include "trig.h"
+#include "lib/m4a/m4a.h"
 
 #include "game/sa1_leftovers/collision.h"
 
@@ -23,12 +25,10 @@
 #include "game/stage/screen_shake.h"
 #include "game/time_attack/results.h"
 
-#include "lib/m4a.h"
 #include "constants/animations.h"
 #include "constants/char_states.h"
 #include "constants/songs.h"
 #include "constants/zones.h"
-#include "flags.h"
 
 typedef struct {
     ScreenFade fade; /* 0xB4 */

@@ -5,7 +5,7 @@
 #include "game/stage/screen_fade.h"
 #include "game/stage/stage.h"
 #include "malloc_vram.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "game/character_select.h"
 #include "game/course_select.h"
 #include "game/options_screen.h"

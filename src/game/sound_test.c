@@ -3,7 +3,7 @@
 #include "core.h"
 #include "game/options_screen.h"
 #include "task.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "flags.h"
 #include "trig.h"
 #include "game/backgrounds.h"
@@ -547,7 +547,7 @@ static void SoundTestScreenRenderUI(void)
     Sprite *speakerConeElement = soundTestScreen->speakerCone;
     SpriteTransform *speakerConeEffects = soundTestScreen->speakerConeEffects;
 
-    struct SoundInfo *soundInfo;
+    struct SoundMixerState *soundInfo;
 
     s16 i;
     const u8 *E0C30;
@@ -634,15 +634,15 @@ static void SoundTestScreenRenderUI(void)
         soundInfo = &gSoundInfo;
 
         for (i = 0; i < 8; i++) {
-            if (soundTestScreen->channelFreqs[i] != soundInfo->chans[i].freq) {
-                s32 change = soundTestScreen->channelFreqs[i] - soundInfo->chans[i].freq;
+            if (soundTestScreen->channelFreqs[i] != soundInfo->chans[i].data.sound.freq) {
+                s32 change = soundTestScreen->channelFreqs[i] - soundInfo->chans[i].data.sound.freq;
                 if (change - soundTestScreen->freqChanges[i] > 256) {
                     soundTestScreen->speakerSize += 32;
                     soundTestScreen->speakerAnimFrame = 32;
                     numChangeElements++;
                 }
                 soundTestScreen->freqChanges[i] = change;
-                soundTestScreen->channelFreqs[i] = soundInfo->chans[i].freq;
+                soundTestScreen->channelFreqs[i] = soundInfo->chans[i].data.sound.freq;
             }
         }
 

@@ -9,7 +9,7 @@
 #include "game/special_stage/tables.h"
 #include "game/special_stage/data.h"
 #include "trig.h"
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 #include "constants/songs.h"
 
 void sub_80714C4(void);

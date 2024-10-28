@@ -15,7 +15,7 @@
 #include "game/stage/boss_results_transition.h"
 #include "game/cheese.h"
 
-#include "lib/m4a.h"
+#include "lib/m4a/m4a.h"
 
 #include "constants/zones.h"
 #include "constants/animations.h"
