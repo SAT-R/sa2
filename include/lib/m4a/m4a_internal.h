@@ -236,10 +236,7 @@ struct SoundMixerState {
 #if PLATFORM_GBA
     s8 pcmBuffer[PCM_DMA_BUF_SIZE * 2];
 #else
-    // This is larger than needed for now to prevent
-    // some memory overflow which is occuring and messing
-    // with the globals after the sound info struct
-    float pcmBuffer[PCM_DMA_BUF_SIZE * 3];
+    float pcmBuffer[PCM_DMA_BUF_SIZE * 2];
 #endif
 };
 
