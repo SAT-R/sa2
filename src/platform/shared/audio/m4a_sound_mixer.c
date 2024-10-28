@@ -446,8 +446,8 @@ void MP2K_event_keysh(struct MP2KPlayerState *unused, struct MP2KTrack *track)
 void MP2K_event_voice(struct MP2KPlayerState *player, struct MP2KTrack *track)
 {
     u8 voice = *(track->cmdPtr++);
-    struct MP2KVoiceGroup *instrument = &player->voicegroup[voice];
-    track->instrument = *instrument;
+    struct MP2KVoiceGroup *voicegroup = &player->voicegroup[voice];
+    track->voicegroup = *voicegroup;
 }
 
 void MP2K_event_vol(struct MP2KPlayerState *unused, struct MP2KTrack *track)
@@ -547,7 +547,7 @@ void MP2KPlayerMain(struct MP2KPlayerState *player)
                 currentTrack->bendRange = 2;
                 currentTrack->volPublic = 64;
                 currentTrack->lfoSpeed = 22;
-                currentTrack->instrument.type = 1;
+                currentTrack->voicegroup.type = 1;
             }
 
             while (currentTrack->wait == 0) {
@@ -695,7 +695,7 @@ static void ChnVolSetAsm(struct MixerSource *chan, struct MP2KTrack *track)
 }
 
 void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *track)
-{ // MP2K_event_nxx
+{
     struct SoundMixerState *mixer = SOUND_INFO_PTR;
 
     // A note can be anywhere from 1 to 4 bytes long. First is always the note length...
@@ -716,28 +716,28 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
     // sp14
     s8 forcedPan = 0;
     // First r4, then r9
-    struct MP2KVoiceGroup *instrument = &track->instrument;
+    struct MP2KVoiceGroup *voicegroup = &track->voicegroup;
     // sp8
     u8 key = track->key;
-    u8 type = instrument->type;
+    u8 type = voicegroup->type;
 
     if (type & (TONEDATA_TYPE_RHY | TONEDATA_TYPE_SPL)) {
-        u8 instrumentIndex;
-        if (instrument->type & TONEDATA_TYPE_SPL) {
-            instrumentIndex = instrument->data.keySplit.keySplitTable[track->key];
+        u8 voicegroupIndex;
+        if (voicegroup->type & TONEDATA_TYPE_SPL) {
+            voicegroupIndex = voicegroup->data.keySplit.keySplitTable[track->key];
         } else {
-            instrumentIndex = track->key;
+            voicegroupIndex = track->key;
         }
 
-        instrument = instrument->data.keySplit.group + instrumentIndex;
-        if (instrument->type & (TONEDATA_TYPE_RHY | TONEDATA_TYPE_SPL)) {
+        voicegroup = voicegroup->data.keySplit.group + voicegroupIndex;
+        if (voicegroup->type & (TONEDATA_TYPE_RHY | TONEDATA_TYPE_SPL)) {
             return;
         }
         if (type & TONEDATA_TYPE_RHY) {
-            if (instrument->pan_sweep & 0x80) {
-                forcedPan = ((s8)(instrument->pan_sweep & 0x7F) - 0x40) * 2;
+            if (voicegroup->pan_sweep & 0x80) {
+                forcedPan = ((s8)(voicegroup->pan_sweep & 0x7F) - 0x40) * 2;
             }
-            key = instrument->drumKey;
+            key = voicegroup->drumKey;
         }
     }
 
@@ -747,7 +747,7 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
         priority = 0xFF;
     }
 
-    u8 cgbType = instrument->type & TONEDATA_TYPE_CGB;
+    u8 cgbType = voicegroup->type & TONEDATA_TYPE_CGB;
     struct MixerSource *chan;
 
     if (cgbType != 0) {
@@ -829,12 +829,12 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
     chan->data.sound.priority = priority;
     chan->data.sound.key = key;
     chan->data.sound.rhythmPan = forcedPan;
-    chan->type = instrument->type;
-    chan->wav = instrument->data.sound.wav;
-    chan->data.sound.attack = instrument->data.sound.attack;
-    chan->data.sound.decay = instrument->data.sound.decay;
-    chan->data.sound.sustain = instrument->data.sound.sustain;
-    chan->data.sound.release = instrument->data.sound.release;
+    chan->type = voicegroup->type;
+    chan->wav = voicegroup->data.sound.wav;
+    chan->data.sound.attack = voicegroup->data.sound.attack;
+    chan->data.sound.decay = voicegroup->data.sound.decay;
+    chan->data.sound.sustain = voicegroup->data.sound.sustain;
+    chan->data.sound.release = voicegroup->data.sound.release;
     chan->data.sound.echoVol = track->echoVolume;
     chan->data.sound.echoLen = track->echoLength;
     ChnVolSetAsm(chan, track);
@@ -848,11 +848,11 @@ void MP2K_event_nxx(u8 clock, struct MP2KPlayerState *player, struct MP2KTrack *
 
     if (cgbType != 0) {
         // struct CgbChannel *cgbChan = (struct CgbChannel *)chan;
-        chan->data.cgb.length = instrument->cgbLength;
-        if (instrument->pan_sweep & 0x80 || (instrument->pan_sweep & 0x70) == 0) {
+        chan->data.cgb.length = voicegroup->cgbLength;
+        if (voicegroup->pan_sweep & 0x80 || (voicegroup->pan_sweep & 0x70) == 0) {
             chan->data.cgb.sweep = 8;
         } else {
-            chan->data.cgb.sweep = instrument->pan_sweep;
+            chan->data.cgb.sweep = voicegroup->pan_sweep;
         }
 
         chan->data.cgb.freq = mixer->MidiKeyToCgbFreq(cgbType, transposedKey, track->pitchCalculated);

@@ -317,7 +317,7 @@ struct MP2KTrack {
     u8 echoLength;
 
     struct MixerSource *chan;
-    struct MP2KVoiceGroup instrument;
+    struct MP2KVoiceGroup voicegroup;
 
     u8 gap[10];
     u16 unk_3A;

@@ -214,7 +214,7 @@ void m4aMPlayImmInit(struct MP2KPlayerState *mplayInfo)
                 track->bendRange = 2;
                 track->volPublic = 64;
                 track->lfoSpeed = 22;
-                track->instrument.type = 1;
+                track->voicegroup.type = 1;
             }
         }
 
@@ -1408,37 +1408,37 @@ void MP2K_event_xwave(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track
     READ_XCMD_BYTE(wav, 2)
     READ_XCMD_BYTE(wav, 3)
 
-    track->instrument.data.sound.wav = (struct WaveData *)wav;
+    track->voicegroup.data.sound.wav = (struct WaveData *)wav;
     track->cmdPtr += 4;
 }
 
 void MP2K_event_xtype(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.type = *track->cmdPtr;
+    track->voicegroup.type = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void MP2K_event_xatta(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.data.sound.attack = *track->cmdPtr;
+    track->voicegroup.data.sound.attack = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void MP2K_event_xdeca(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.data.sound.decay = *track->cmdPtr;
+    track->voicegroup.data.sound.decay = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void MP2K_event_xsust(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.data.sound.sustain = *track->cmdPtr;
+    track->voicegroup.data.sound.sustain = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void MP2K_event_xrele(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.data.sound.release = *track->cmdPtr;
+    track->voicegroup.data.sound.release = *track->cmdPtr;
     track->cmdPtr++;
 }
 
@@ -1456,13 +1456,13 @@ void MP2K_event_xiecl(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track
 
 void MP2K_event_xleng(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.cgbLength = *track->cmdPtr;
+    track->voicegroup.cgbLength = *track->cmdPtr;
     track->cmdPtr++;
 }
 
 void MP2K_event_xswee(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    track->instrument.pan_sweep = *track->cmdPtr;
+    track->voicegroup.pan_sweep = *track->cmdPtr;
     track->cmdPtr++;
 }
 
