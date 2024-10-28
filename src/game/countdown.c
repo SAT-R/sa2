@@ -16,11 +16,26 @@
 #include "constants/songs.h"
 #include "constants/text.h"
 
+#define ALIGN_DIGITS_HORIZONTALLY TRUE
+#define ALIGN_DIGITS_VERTICALLY   !TRUE
+
+#if defined(NON_MATCHING) && ALIGN_DIGITS_HORIZONTALLY
+#define DIGITS_X (DISPLAY_WIDTH / 2)
+#else
+#define DIGITS_X ((I(gPlayer.x) - gCamera.x) + 24)
+#endif
+
+#if defined(NON_MATCHING) && ALIGN_DIGITS_VERTICALLY
+#define DIGITS_Y (DISPLAY_HEIGHT / 2)
+#else
+#define DIGITS_Y ((I(gPlayer.y) - gCamera.y) - 24)
+#endif
+
 struct CourseStartCountdown {
     Sprite sprMachine;
     Sprite sprCountdownDigits;
-    u32 unk60; // x ?
-    u32 unk64; // y ?
+    u32 machineScreenX; // x ?
+    u32 machineScreenY; // y ?
     s16 unk68;
     u8 unk6A;
     u8 unk6B;
@@ -125,8 +140,8 @@ void sub_8036168(void)
 
         sub_8018818();
         CreateRaceStartMessage();
-        countdown->unk60 = I(gPlayer.x);
-        countdown->unk64 = I(gPlayer.y);
+        countdown->machineScreenX = I(gPlayer.x);
+        countdown->machineScreenY = I(gPlayer.y);
         m4aSongNumStart(VOICE__ANNOUNCER__GO);
         gCurTask->main = sub_8036398;
     } else {
@@ -151,8 +166,8 @@ void sub_8036168(void)
         s = &countdown->sprCountdownDigits;
         s->variant = SA2_ANIM_VARIANT_COUNTDOWN_1 - Div(countdown->unk68, GBA_FRAMES_PER_SECOND);
         s->prevVariant = -1;
-        s->x = (I(gPlayer.x) - gCamera.x) + 24;
-        s->y = (I(gPlayer.y) - gCamera.y) - 24;
+        s->x = DIGITS_X;
+        s->y = DIGITS_Y;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
     }
@@ -175,8 +190,8 @@ void sub_8036398(void)
     struct CourseStartCountdown *countdown = TASK_DATA(gCurTask);
     Sprite *s = &countdown->sprMachine;
 
-    s->x = countdown->unk60 - gCamera.x;
-    s->y = countdown->unk64 - gCamera.y;
+    s->x = countdown->machineScreenX - gCamera.x;
+    s->y = countdown->machineScreenY - gCamera.y;
     if (IS_OUT_OF_CAM_RANGE(s->x, s->y)) {
         TaskDestroy(gCurTask);
         return;
