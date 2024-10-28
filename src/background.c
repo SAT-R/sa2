@@ -767,7 +767,7 @@ static AnimCmdResult animCmd_AddHitbox_BG(void *cursor, Sprite *s)
     s32 index = cmd->hitbox.index & 0xF;
     s->animCursor += AnimCommandSizeInWords(*cmd);
 
-    DmaCopy32(3, &cmd->hitbox, &s->hitboxes[index].index, 8);
+    DmaCopy32(3, &cmd->hitbox, &s->hitboxes[index].index, sizeof(Hitbox));
 
     if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0) && (cmd->hitbox.bottom == 0)) {
         s->hitboxes[index].index = -1;

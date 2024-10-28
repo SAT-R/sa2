@@ -56,7 +56,7 @@ static PlayerStateHandler const sPlayerStateHandlers[] = {
 
 struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
 {
-    const struct UNK_80DF670 *characterSprites[5];
+    const struct UNK_80DF670 *characterSprites[NUM_CHARACTERS];
     u8 lang;
     s16 result;
     u32 unk5B5C;
@@ -66,7 +66,7 @@ struct Task *CreateSpecialStagePlayer(struct SpecialStage *stage)
     struct Task *t;
     struct SpecialStagePlayer *player;
 
-    memcpy(&characterSprites, &gUnknown_080DF670, 0x14);
+    memcpy(&characterSprites, &gUnknown_080DF670, sizeof(characterSprites));
     lang = stage->zone;
 
     t = TaskCreate(sub_806D2C8, sizeof(struct SpecialStagePlayer), 0x9000, 0, NULL);

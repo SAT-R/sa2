@@ -560,7 +560,7 @@ struct Task *CreateSpecialStageCollectables(struct SpecialStage *stage)
     s16 unkF6CC[7];
     struct Task *t;
     struct SpecialStageCollectables *collectables;
-    memcpy(unkF6CC, gUnknown_080DF6CC, 0xE);
+    memcpy(unkF6CC, gUnknown_080DF6CC, sizeof(unkF6CC));
 
     t = TaskCreate(Task_InitObjects, sizeof(struct SpecialStageCollectables), 0xB000, 0, NULL);
     collectables = TASK_DATA(t);

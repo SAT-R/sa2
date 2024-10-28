@@ -105,7 +105,7 @@ static void InitOverScreen(LostLifeCause lostLifeCause)
     gBldRegs.bldAlpha = 0;
     gFlags &= ~FLAGS_4;
 
-    memset(gBgPalette, 0, 0x200);
+    memset(gBgPalette, 0, sizeof(gBgPalette));
     gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
     if (lostLifeCause & OVER_CAUSE_ZERO_LIVES) {

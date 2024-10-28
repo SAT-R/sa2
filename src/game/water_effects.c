@@ -235,7 +235,7 @@ void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)
         s->frameFlags = SPRITE_FLAG(PRIORITY, 0);
         UpdateSpriteAnimation(s);
 
-        gWater.t = TaskCreate(Task_StageWaterTask, PLTT_SIZE, 0xFFFE, 0, TaskDestructor_WaterSurface);
+        gWater.t = TaskCreate(Task_StageWaterTask, sizeof(WaterData), 0xFFFE, 0, TaskDestructor_WaterSurface);
     }
 }
 
@@ -478,8 +478,8 @@ void sub_8011A4C(void)
         unk2 <<= 24;
 
         if (!unk2) {
-            DmaCopy32(3, &wd->pal[0x100], PLTT, 0x1D0);
-            DmaCopy32(3, &wd->pal[0x0], OBJ_PLTT, OBJ_PLTT_SIZE);
+            DmaCopy32(3, &wd->pal[16 * 16], PLTT, 29 * 16);
+            DmaCopy32(3, &wd->pal[0], OBJ_PLTT, OBJ_PLTT_SIZE);
             REG_DISPCNT &= ~DISPCNT_BG0_ON;
             gFlags |= (FLAGS_UPDATE_SPRITE_PALETTES | FLAGS_UPDATE_BACKGROUND_PALETTES);
         }
@@ -495,8 +495,8 @@ void VCountIntr_8011ACC(void)
     {
         WaterData *wd = TASK_DATA(water->t);
 
-        DmaCopy32(3, &wd->pal[0x100], PLTT, 0x1D0);
-        DmaCopy32(3, &wd->pal[0x0], OBJ_PLTT, OBJ_PLTT_SIZE);
+        DmaCopy32(3, &wd->pal[16 * 16], PLTT, 29 * 16);
+        DmaCopy32(3, &wd->pal[0], OBJ_PLTT, OBJ_PLTT_SIZE);
 
         REG_DISPCNT &= ~DISPCNT_BG0_ON;
         gFlags |= (FLAGS_UPDATE_SPRITE_PALETTES | FLAGS_UPDATE_BACKGROUND_PALETTES);

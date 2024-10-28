@@ -4,7 +4,8 @@
 #include "core.h"
 
 typedef struct {
-    u16 pal[16 * 16];
+    // TODO: this is a 2D array
+    u16 pal[16 * 32];
 } WaterData;
 
 // Seems to be belonging to water effect

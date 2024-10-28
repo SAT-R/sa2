@@ -22,7 +22,7 @@ void CreateStageBg_Zone1(void)
 
     if (gGameMode != GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) {
         const Background *templates = gStageCameraBgTemplates;
-        memcpy(background, &templates[3], 0x40);
+        memcpy(background, &templates[3], sizeof(Background));
 
         background->tilemapId = TM_STAGE_1_BG_0_COPY;
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);
@@ -32,7 +32,7 @@ void CreateStageBg_Zone1(void)
         background->targetTilesY = 0x20;
     } else {
         const Background *templates = gStageCameraBgTemplates;
-        memcpy(background, &templates[3], 0x40);
+        memcpy(background, &templates[3], sizeof(Background));
         background->tilemapId = TM_LEVEL_BG(LEVEL_INDEX(ZONE_1, ACT_1));
 
         background->graphics.dest = (void *)BG_SCREEN_ADDR(24);

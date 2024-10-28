@@ -699,11 +699,11 @@ UNK_8085DEC *sub_8085DEC(UNK_8085DEC *thing, u16 num)
     return thing;
 }
 
-void sub_8085E10(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2) { memcpy(p2, &p1->unk10, 0x10); }
+UNUSED void sub_8085E10(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2) { memcpy(p2, &p1->unk10, 0x10); }
 
-void sub_8085E24(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2) { memcpy(&p1->unk10, p2, 0x10); }
+UNUSED void sub_8085E24(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2) { memcpy(&p1->unk10, p2, 0x10); }
 
-void sub_8085E38(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2)
+UNUSED void sub_8085E38(struct UNK_8085F1C *p1, struct UNK_8085F1C *p2)
 {
 
     memcpy(p2, &p1->unk10, 0x10);

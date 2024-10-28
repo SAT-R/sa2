@@ -412,7 +412,7 @@ static void UpdateScreenDma(void)
 {
     u8 i, j = 0;
     REG_DISPCNT = gDispCnt;
-    DmaCopy32(3, gBgCntRegs, (void *)REG_ADDR_BG0CNT, 8);
+    DmaCopy32(3, gBgCntRegs, (void *)REG_ADDR_BG0CNT, sizeof(gBgCntRegs));
 
     if (gFlags & FLAGS_UPDATE_BACKGROUND_PALETTES) {
         DmaCopy32(3, gBgPalette, (void *)BG_PLTT, BG_PLTT_SIZE);
