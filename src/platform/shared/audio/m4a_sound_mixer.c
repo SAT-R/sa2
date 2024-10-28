@@ -243,7 +243,7 @@ static inline void GenerateAudio(struct SoundMixerState *mixer, struct MixerSour
     signed envR = chan->data.sound.envelopeVolR;
     signed envL = chan->data.sound.envelopeVolL;
 
-    if (chan->type & 8) {
+    if (chan->type & TONEDATA_TYPE_CGB) {
         for (u16 i = 0; i < samplesPerFrame; i++, pcmBuffer += 2) {
             s8 c = *(current++);
 
@@ -634,7 +634,7 @@ void MP2KPlayerMain(struct MP2KPlayerState *player)
                 ClearChain(chan);
                 continue;
             }
-            u8 cgbType = chan->type & 0x7;
+            u8 cgbType = chan->type & TONEDATA_TYPE_CGB;
             if (track->status & MPT_FLG_VOLCHG) {
                 ChnVolSetAsm(chan, track);
                 if (cgbType != 0) {
@@ -665,7 +665,7 @@ void TrackStop(struct MP2KPlayerState *player, struct MP2KTrack *track)
     if (track->status & 0x80) {
         for (struct MixerSource *chan = track->chan; chan != NULL; chan = chan->next) {
             if (chan->status != 0) {
-                u8 cgbType = chan->type & 0x7;
+                u8 cgbType = chan->type & TONEDATA_TYPE_CGB;
                 if (cgbType != 0) {
                     struct SoundMixerState *mixer = SOUND_INFO_PTR;
                     mixer->CgbOscOff(cgbType);
