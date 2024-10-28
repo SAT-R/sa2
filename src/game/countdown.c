@@ -34,8 +34,8 @@
 struct CourseStartCountdown {
     Sprite sprMachine;
     Sprite sprCountdownDigits;
-    u32 machineScreenX; // x ?
-    u32 machineScreenY; // y ?
+    u32 machineScreenX;
+    u32 machineScreenY;
     s16 unk68;
     u8 unk6A;
     u8 unk6B;
