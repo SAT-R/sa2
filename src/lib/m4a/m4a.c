@@ -1395,29 +1395,25 @@ void MP2K_event_xxx(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
     func(mplayInfo, track);
 }
 
-#define READ_XCMD_BYTE(var, n)                                                                                                             \
-    {                                                                                                                                      \
-        u32 byte = track->cmdPtr[(n)];                                                                                                     \
-        byte <<= n * 8;                                                                                                                    \
-        (var) &= ~(0xFF << (n * 8));                                                                                                       \
-        (var) |= byte;                                                                                                                     \
-    }
-
 void MP2K_event_xwave(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
 {
-    uintptr_t wav;
+    union {
+        u8 *a;
+        u8 d[sizeof(uintptr_t)];
+    } u;
 
-#ifdef BUG_FIX
-    wav = 0;
+    u.d[0] = *(track->cmdPtr + 0);
+    u.d[1] = *(track->cmdPtr + 1);
+    u.d[2] = *(track->cmdPtr + 2);
+    u.d[3] = *(track->cmdPtr + 3);
+#if !PLATFORM_GBA && _LP64
+    u.d[4] = *(track->cmdPtr + 4);
+    u.d[5] = *(track->cmdPtr + 5);
+    u.d[6] = *(track->cmdPtr + 6);
+    u.d[7] = *(track->cmdPtr + 7);
 #endif
-
-    READ_XCMD_BYTE(wav, 0) // UB: uninitialized variable
-    READ_XCMD_BYTE(wav, 1)
-    READ_XCMD_BYTE(wav, 2)
-    READ_XCMD_BYTE(wav, 3)
-
-    track->voicegroup.data.sound.wav = (struct WaveData *)wav;
-    track->cmdPtr += 4;
+    track->voicegroup.data.sound.wav = (struct WaveData *)u.a;
+    track->cmdPtr += sizeof(uintptr_t);
 }
 
 void MP2K_event_xtype(struct MP2KPlayerState *mplayInfo, struct MP2KTrack *track)
