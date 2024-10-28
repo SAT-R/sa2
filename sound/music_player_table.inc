@@ -3,10 +3,6 @@
 .equiv NUM_TRACKS_SE2, 16
 .equiv NUM_TRACKS_SE3, 16
 
-#if !PORTABLE
-.section ewram_data
-#endif
-
 	mSectionRodata
 
 	mAlignWord

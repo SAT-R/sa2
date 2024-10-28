@@ -19,6 +19,14 @@ EWRAM_DATA struct MP2KTrack gMPlayTrack_SE1[16] = {};
 EWRAM_DATA struct MP2KTrack gMPlayTrack_SE2[16] = {};
 EWRAM_DATA struct MP2KTrack gMPlayTrack_SE3[16] = {};
 
+// TODO: convert sound_data to C
+// const struct MusicPlayer gMPlayTable[] = {
+//     { &gMPlayInfo_BGM, gMPlayTrack_BGM, 16 },
+//     { &gMPlayInfo_SE1, gMPlayTrack_SE1, 16 },
+//     { &gMPlayInfo_SE2, gMPlayTrack_SE2, 16 },
+//     { &gMPlayInfo_SE3, gMPlayTrack_SE3, 16 },
+// };
+
 EWRAM_DATA struct SoundMixerState gSoundInfo = {};
 EWRAM_DATA MPlayFunc gMPlayJumpTable[36] = {};
 EWRAM_DATA struct MixerSource gCgbChans[4] = {};
