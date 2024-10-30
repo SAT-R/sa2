@@ -90,9 +90,9 @@ void CreateCreditsEndCutScene(u8 creditsVariant)
     gBgCntRegs[2] = 0x1504;
 
 #ifndef NON_MATCHING
-    DmaFill32(3, 0, BG_CHAR_ADDR((++r6, --r6)), 0x4000);
+    DmaFill32(3, 0, BG_CHAR_ADDR((++r6, --r6)), sizeof(Background) * 256);
 #else
-    DmaFill32(3, 0, BG_CHAR_ADDR(r6), 0x4000);
+    DmaFill32(3, 0, BG_CHAR_ADDR(r6), sizeof(Background) * 256);
 #endif
 
     gUnknown_03004D80[2] = 0x5a;

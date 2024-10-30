@@ -4013,7 +4013,7 @@ static void TimeRecordsScreenInitRegisters(void)
     gUnknown_03002280[1][2] = 0xFF;
     gUnknown_03002280[1][3] = 64;
 
-    DmaFill32(3, 0, (void *)BG_CHAR_ADDR(1), 0x40);
+    DmaFill32(3, 0, (void *)BG_CHAR_ADDR(1), sizeof(Background));
 
     gUnknown_03004D80[2] = 0;
     gUnknown_03002280[2][0] = 0;
@@ -4021,7 +4021,7 @@ static void TimeRecordsScreenInitRegisters(void)
     gUnknown_03002280[2][2] = 0xFF;
     gUnknown_03002280[2][3] = 64;
 
-    DmaFill32(3, 0, (void *)BG_CHAR_ADDR(2), 0x40);
+    DmaFill32(3, 0, (void *)BG_CHAR_ADDR(2), sizeof(Background));
 }
 
 static void TimeRecordsScreenCreateCoursesViewBackgroundsUI(struct TimeRecordsScreen *timeRecordsScreen)

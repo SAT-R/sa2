@@ -68,7 +68,7 @@ void CreateStageBg_Zone6_Acts(void)
     gUnknown_03002280[0][1] = 0;
     gUnknown_03002280[0][2] = 0xff;
     gUnknown_03002280[0][3] = 32;
-    DmaFill32(3, 0, BG_SCREEN_ADDR(24), 64);
+    DmaFill32(3, 0, BG_SCREEN_ADDR(24), sizeof(Background));
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
     gBgScrollRegs[3][0] = 0;
@@ -92,7 +92,7 @@ void CreateStageBg_Zone6_Boss(void)
     gUnknown_03002280[0][1] = 0;
     gUnknown_03002280[0][2] = 0xff;
     gUnknown_03002280[0][3] = 32;
-    DmaFill32(3, 0, BG_SCREEN_ADDR(24), 64);
+    DmaFill32(3, 0, BG_SCREEN_ADDR(24), sizeof(Background));
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
     gBgScrollRegs[3][0] = 0;

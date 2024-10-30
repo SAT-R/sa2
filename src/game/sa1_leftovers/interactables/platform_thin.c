@@ -255,11 +255,11 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/CreatePlatformBreakP
         UpdateSpriteAnimation(s);
 
         // copy base 1
-        DmaCopy16(3, &platform->unk0, &platform->unk30, 0x30);
+        DmaCopy16(3, &platform->unk0, &platform->unk30, sizeof(Sprite));
         s = &platform->unk30;
 
         // copy transform
-        DmaCopy16(3, &platform->unkC0, &platform->unkCC, 0xC);
+        DmaCopy16(3, &platform->unkC0, &platform->unkCC, sizeof(SpriteTransform));
 
         // Set the new params
         s->frameFlags = 0x71;
@@ -275,7 +275,7 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/CreatePlatformBreakP
         s = &platform->unk60;
 
         // Copy the transform
-        DmaCopy16(3, &platform->unkC0, &platform->unkD8, 0xC);
+        DmaCopy16(3, &platform->unkC0, &platform->unkD8, sizeof(SpriteTransform));
 
         s->graphics.dest = VramMalloc(sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][3]);
         s->graphics.anim = sPlatformBreakAnimations[LEVEL_TO_ZONE(gCurrentLevel)][4];
@@ -296,11 +296,11 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/CreatePlatformBreakP
         UpdateSpriteAnimation(s);
 
         // Copy base 2
-        DmaCopy16(3, &platform->unk60, &platform->unk90, 0x30);
+        DmaCopy16(3, &platform->unk60, &platform->unk90, sizeof(Sprite));
         s = &platform->unk90;
 
         // Copy the transform
-        DmaCopy16(3, &platform->unkD8, &platform->unkE4, 0xC);
+        DmaCopy16(3, &platform->unkD8, &platform->unkE4, sizeof(SpriteTransform));
         transform = &platform->unkE4;
 
         // Update props

@@ -318,8 +318,8 @@ static void HandlePaused(struct SpecialStageUI *ui)
     sub_806CA88(s, 1, pauseMenuVariants[lang][0], pauseMenuVariants[lang][1], 0x1000, (DISPLAY_WIDTH / 2), (DISPLAY_HEIGHT / 2), 0,
                 pauseMenuVariants[lang][2], 0);
 
-    DmaCopy16(3, &gObjPalette[249], ui->pauseMenuPalette1, 6);
-    DmaCopy16(3, &gObjPalette[252], ui->pauseMenuPalette2, 6);
+    DmaCopy16(3, &gObjPalette[249], ui->pauseMenuPalette1, sizeof(ui->pauseMenuPalette1));
+    DmaCopy16(3, &gObjPalette[252], ui->pauseMenuPalette2, sizeof(ui->pauseMenuPalette2));
     ui->wasPaused = TRUE;
     m4aMPlayAllStop();
     m4aSongNumStart(SE_PAUSE_SCREEN);
@@ -774,8 +774,8 @@ static void RenderPauseMenu(struct SpecialStageUI *ui)
         a = (void *)OBJ_PLTT + 0x1F8;
     }
 
-    DmaCopy16(3, ui->pauseMenuPalette2, b, 6);
-    DmaCopy16(3, ui->pauseMenuPalette1, a, 6);
+    DmaCopy16(3, ui->pauseMenuPalette2, b, sizeof(ui->pauseMenuPalette2));
+    DmaCopy16(3, ui->pauseMenuPalette1, a, sizeof(ui->pauseMenuPalette1));
     DisplaySprite(s);
 }
 
