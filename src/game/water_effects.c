@@ -17,6 +17,23 @@
 #include "constants/animations.h"
 #include "constants/zones.h"
 
+typedef struct {
+    /* 0x00 */ s32 x;
+    /* 0x04 */ s32 y;
+    /* 0x08 */ u8 filler0[0x14];
+    /* 0x1C */ Sprite s;
+    /* 0x4C */ u8 filler4C[0xC];
+} RunOnWaterEffect; /* size: 0x58 */
+
+static void Task_StageWaterTask(void);
+static void Task_RunOnWaterEffect(void);
+static void TaskDestructor_WaterSurface(struct Task *);
+static void sub_8011A4C(void);
+static void VCountIntr_8011ACC(void);
+static void TaskDestructor_8011B3C(struct Task *);
+
+Water gWater = {};
+
 #define WATER_MASK_COLOR_A 0x7BDE
 #define WATER_MASK_COLOR_B 0x739C
 #define WATER_MASK_A       ((WATER_MASK_COLOR_A << 16) | WATER_MASK_COLOR_A)
@@ -24,23 +41,23 @@
 
 #define WATER_SURFACE_SPRITE_COUNT ((DISPLAY_WIDTH + 16) / 16)
 
-Water gWater = {};
+#define WATER_MASK_PALETTE_CHUNK(in, waterMask)                                                                                            \
+    ({                                                                                                                                     \
+        u32 temp1, temp2;                                                                                                                  \
+        temp1 = (in);                                                                                                                      \
+        temp2 = temp1;                                                                                                                     \
+        temp2 = ((temp2 & WATER_MASK_A) + (((temp1 & WATER_MASK_B) + (WATER_MASK_B & (waterMask))) >> 1));                                 \
+        temp2 >>= 1;                                                                                                                       \
+    })
 
 static const u16 gUnknown_080D550C[NUM_CHARACTERS] = {
     SA2_ANIM_UNDERWATER_1UP_SONIC,    SA2_ANIM_UNDERWATER_1UP_CREAM, SA2_ANIM_UNDERWATER_1UP_TAILS,
     SA2_ANIM_UNDERWATER_1UP_KNUCKLES, SA2_ANIM_UNDERWATER_1UP_AMY,
 };
 
-static void Task_StageWaterTask(void);
-static void Task_RunOnWaterEffect(void);
-static void TaskDestructor_WaterSurface(struct Task *);
-void sub_8011A4C(void);
-void VCountIntr_8011ACC(void);
-void TaskDestructor_8011B3C(struct Task *);
-
-static void inline sub_8011B54_inline(u32 *dst, u32 *src, s32 size, s32 shift)
+static void inline CopyPalette(u32 *dst, u32 *src, s32 length)
 {
-    u32 r2 = size >> shift;
+    u32 r2 = length >> 4;
 
     while (r2-- > 0) {
         *dst++ = *src++;
@@ -54,38 +71,32 @@ static void inline sub_8011B54_inline(u32 *dst, u32 *src, s32 size, s32 shift)
     }
 }
 
-static void inline copyMask(u32 *dst, u32 *src, u32 waterMask)
+static inline void MaskPaletteWithUnderwaterColor_inline(u32 *dst, u32 *src, u32 mask, s32 size)
 {
-    u32 maskColors0, maskColors1;
-
-    maskColors0 = *src;
-    maskColors1 = maskColors0;
-    maskColors1 &= WATER_MASK_A;
-    maskColors0 &= WATER_MASK_B;
-    maskColors0 = (maskColors0 + waterMask) >> 1;
-    maskColors1 = (maskColors1 + maskColors0) >> 1;
-    *dst = maskColors1;
+    u32 k = (size >> 4);
+    while (k-- > 0) {
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+    }
 }
 
-// (98.73%) https://decomp.me/scratch/M6i4c
-NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
+void InitWaterPalettes(void)
 {
-    u32 k;
-    u16 animId;
+    u16 animId, character;
     const ACmd **animation;
-    s32 pal;
-    u32 *dst, *src;
-    u32 waterMask;
-    u32 maskColors0, maskColors1;
-    u32 maskA, maskB;
+    u32 pal;
 
     Water *water = &gWater;
     WaterData *wd = TASK_DATA(water->t);
 
     if (IS_MULTI_PLAYER) {
         u8 i = 0, j = 0;
-        // const u16 *palettes = gSpritePalettes;
-
         for (; j < 4; j++) {
             if ((gMultiplayerConnections >> j) & 0x1) {
                 i++;
@@ -93,124 +104,41 @@ NONMATCH("asm/non_matching/game/sub_8011328.inc", void sub_8011328(void))
         }
 
         for (j = 0; j < i; j++) {
-            u16 mpChar = gMultiplayerCharacters[j];
-            animId = gUnknown_080D550C[mpChar];
+            character = gMultiplayerCharacters[j];
+            animId = gUnknown_080D550C[character];
             animation = gAnimations[animId];
             pal = animation[0]->pal.palId;
-            src = (u32 *)&gSpritePalettes[pal * 16];
-            dst = (u32 *)&wd->pal[j * 16];
-            sub_8011B54_inline(dst, src, 1, 0);
+#ifndef NON_MATCHING
+            {
+                const u16 *src = gSpritePalettes[pal];
+                CopyPalette((u32 *)wd->pal[j], (u32 *)src, 16);
+            };
+#else
+            CopyPalette((u32 *)wd->pal[j], (u32 *)gSpritePalettes[pal], 16);
+#endif
         }
     } else {
-        u16 playerChar = gPlayer.character;
+        character = gPlayer.character;
 
-        animId = gUnknown_080D550C[playerChar];
+        animId = gUnknown_080D550C[character];
         animation = gAnimations[animId];
         pal = animation[0]->pal.palId;
-        sub_8011B54_inline((u32 *)&wd->pal[0 * 16], (u32 *)&gSpritePalettes[pal * 16], 1, 0);
+        CopyPalette((u32 *)wd->pal[0], (u32 *)gSpritePalettes[pal], 16);
 
-        playerChar = gPlayer.character;
-        animId = sCharacterPalettesBoostEffect[playerChar];
+        character = gPlayer.character;
+        animId = sCharacterPalettesBoostEffect[character];
         animation = gAnimations[animId];
-        pal = (animation[0]->pal.palId + 0) * 16;
-        dst = (u32 *)&wd->pal[1 * 16];
-        src = (u32 *)&gSpritePalettes[pal];
-        sub_8011B54_inline(dst, src, 1, 0);
+        pal = animation[0]->pal.palId;
+        CopyPalette((u32 *)wd->pal[1], (u32 *)gSpritePalettes[pal], 16);
     }
 
     animId = SA2_ANIM_PALETTE_554;
     animation = gAnimations[animId];
-    pal = (animation[0]->pal.palId + 4) * 16;
-    dst = (u32 *)&wd->pal[4 * 16];
-    src = (u32 *)&gSpritePalettes[(pal)];
-    sub_8011B54_inline(dst, src, 12, 0);
+    pal = (animation[0]->pal.palId + 4);
+    CopyPalette((u32 *)wd->pal[4], (u32 *)gSpritePalettes[pal], 12 * 16);
 
-    dst = (u32 *)&wd->pal[256];
-    src = (u32 *)gBgPalette;
-    waterMask = water->mask;
-    k = 16;
-    maskA = WATER_MASK_A;
-    maskB = WATER_MASK_B;
-    waterMask &= maskB;
-
-    /* Mask sixteen 16-color palettes - Start */
-    while (k-- > 0) {
-        // TODO: Find a way to inline these!
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 &= maskA;
-        maskColors0 &= maskB;
-        maskColors0 = (maskColors0 + waterMask) >> 1;
-        maskColors1 = (maskColors1 + maskColors0);
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 &= maskA;
-        maskColors0 &= maskB;
-        maskColors0 = (maskColors0 + waterMask) >> 1;
-        maskColors1 = (maskColors1 + maskColors0);
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 &= maskA;
-        maskColors0 &= maskB;
-        maskColors0 = (maskColors0 + waterMask) >> 1;
-        maskColors1 = (maskColors1 + maskColors0);
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 &= maskA;
-        maskColors0 &= maskB;
-        maskColors0 = (maskColors0 + waterMask) >> 1;
-        maskColors1 = (maskColors1 + maskColors0);
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 &= maskA;
-        maskColors0 &= maskB;
-        maskColors0 = (maskColors0 + waterMask) >> 1;
-        maskColors1 = (maskColors1 + maskColors0);
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 &= maskA;
-        maskColors0 &= maskB;
-        maskColors0 = (maskColors0 + waterMask) >> 1;
-        maskColors1 = (maskColors1 + maskColors0);
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 &= maskA;
-        maskColors0 &= maskB;
-        maskColors0 = (maskColors0 + waterMask) >> 1;
-        maskColors1 = (maskColors1 + maskColors0);
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 &= maskA;
-        maskColors0 &= maskB;
-        maskColors0 = (maskColors0 + waterMask) >> 1;
-        maskColors1 = (maskColors1 + maskColors0);
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-    }
-    /* Mask sixteen 16-color palettes - End */
+    MaskPaletteWithUnderwaterColor_inline((u32 *)wd->pal[16], (u32 *)gBgPalette, water->mask, 16 * 16);
 }
-END_NONMATCH
 
 void CreateStageWaterTask(s32 waterLevel, u32 p1, u32 mask)
 {
@@ -265,7 +193,7 @@ static void Task_StageWaterTask(void)
         return;
     }
 
-    if (gStageTime & 0x1) {
+    if (gStageTime & 1) {
         if (water->currentWaterLevel != water->targetWaterLevel) {
             if (water->currentWaterLevel < water->targetWaterLevel)
                 water->currentWaterLevel++;
@@ -288,7 +216,7 @@ static void Task_StageWaterTask(void)
     unk1 = water->unk1 - 1;
     if (unk1 < DISPLAY_HEIGHT - 1) {
         s = &water->s;
-        s->x = -((cam->x + ((gStageTime + 1) >> 2)) & 0xF);
+        s->x = -((cam->x + ((gStageTime + 1) >> 2)) & 15);
         s->y = water->unk2 + 1;
         s->frameFlags |= (SPRITE_FLAG_MASK_19 | SPRITE_FLAG_MASK_18);
         UpdateSpriteAnimation(s);
@@ -315,14 +243,6 @@ static void Task_StageWaterTask(void)
         gFlags &= ~FLAGS_40;
     }
 }
-
-typedef struct {
-    /* 0x00 */ s32 x;
-    /* 0x04 */ s32 y;
-    /* 0x08 */ u8 filler0[0x14];
-    /* 0x1C */ Sprite s;
-    /* 0x4C */ u8 filler4C[0xC];
-} RunOnWaterEffect; /* size: 0x58 */
 
 void CreateRunOnWaterEffect(void)
 {
@@ -384,75 +304,26 @@ struct Task *CreateWaterfallSurfaceHitEffect(s32 x, s32 y)
     return t;
 }
 
-// TODO: Inlining this might match sub_8011328?
-void MaskPaletteWithUnderwaterColor(u32 *dst, u32 *src, u32 mask, s32 size)
+UNUSED void MaskPaletteWithUnderwaterColor(u32 *dst, u32 *src, u32 mask, s32 size)
 {
-    u32 maskColors0, maskColors1;
-    u32 maskA, maskB;
-    u32 k;
-
-    k = (size >> 4);
-
-    /* Mask sixteen 16-color palettes - Start */
+#ifndef NON_MATCHING
+    u32 k = (size >> 4);
     while (k-- > 0) {
-        maskA = WATER_MASK_A;
-        maskB = WATER_MASK_B;
-
-        // TODO: Find a way to inline these!
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 = ((maskColors1 & maskA) + (((maskColors0 & maskB) + (maskB & mask)) >> 1));
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
-
-        maskColors0 = *src++;
-        maskColors1 = maskColors0;
-        maskColors1 &= maskA;
-        maskColors0 &= maskB;
-        maskColors0 = (maskColors0 + (maskB & mask)) >> 1;
-        maskColors1 = (maskColors1 + maskColors0);
-        maskColors1 >>= 1;
-        *dst++ = maskColors1;
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
+        *dst++ = WATER_MASK_PALETTE_CHUNK(*src++, mask);
     }
+#else
+    MaskPaletteWithUnderwaterColor_inline(dst, src, mask, size);
+#endif
 }
 
-void TaskDestructor_WaterSurface(struct Task *t)
+static void TaskDestructor_WaterSurface(struct Task *t)
 {
     Water *water = &gWater;
 
@@ -461,7 +332,7 @@ void TaskDestructor_WaterSurface(struct Task *t)
     water->t = NULL;
 }
 
-void sub_8011A4C(void)
+static void sub_8011A4C(void)
 {
     Water *water = &gWater;
 #ifdef BUG_FIX
@@ -478,7 +349,7 @@ void sub_8011A4C(void)
         unk2 <<= 24;
 
         if (!unk2) {
-            DmaCopy32(3, &wd->pal[16 * 16], PLTT, 29 * 16);
+            DmaCopy32(3, &wd->pal[16], PLTT, 29 * 16);
             DmaCopy32(3, &wd->pal[0], OBJ_PLTT, OBJ_PLTT_SIZE);
             REG_DISPCNT &= ~DISPCNT_BG0_ON;
             gFlags |= (FLAGS_UPDATE_SPRITE_PALETTES | FLAGS_UPDATE_BACKGROUND_PALETTES);
@@ -486,16 +357,16 @@ void sub_8011A4C(void)
     }
 }
 
-void VCountIntr_8011ACC(void)
+static void VCountIntr_8011ACC(void)
 {
     Water *water = &gWater;
 #ifdef BUG_FIX
-    if (water && water->t)
+    if (!water || !water->t)
 #endif
     {
         WaterData *wd = TASK_DATA(water->t);
 
-        DmaCopy32(3, &wd->pal[16 * 16], PLTT, 29 * 16);
+        DmaCopy32(3, &wd->pal[16], PLTT, 29 * 16);
         DmaCopy32(3, &wd->pal[0], OBJ_PLTT, OBJ_PLTT_SIZE);
 
         REG_DISPCNT &= ~DISPCNT_BG0_ON;
@@ -504,11 +375,11 @@ void VCountIntr_8011ACC(void)
     }
 }
 
-void TaskDestructor_8011B3C(struct Task *t)
+static void TaskDestructor_8011B3C(struct Task *t)
 {
     RunOnWaterEffect *effect = TASK_DATA(t);
     Sprite *s = &effect->s;
     VramFree(s->graphics.dest);
 }
 
-static void sub_8011B54(u32 *dst, u32 *src, s32 size) { sub_8011B54_inline(dst, src, size, 4); }
+static void sub_8011B54(u32 *dst, u32 *src, s32 size) { CopyPalette(dst, src, size); }

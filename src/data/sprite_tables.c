@@ -7,7 +7,7 @@ const struct SpriteTables gSpriteTables = {
      gAnimations,
      gSpriteDimensions,
      (const u16**const)gSpriteOamData,
-     gSpritePalettes,
+     (const u16*)gSpritePalettes,
      gObjTiles_4bpp,
      gObjTiles_8bpp
 };

@@ -1093,7 +1093,7 @@ void Task_IntroActLettersAnimations(void)
 static void TaskDestructor_StageIntroParent(struct Task *t)
 {
     if (gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1)) {
-        sub_8011328();
+        InitWaterPalettes();
     }
 
     if (IS_SINGLE_PLAYER) {
