@@ -41,7 +41,7 @@ static void Task_Interactable097(void);
 static void TaskDestructor_Interactable097(struct Task *);
 static void sub_807FF04(Sprite_SpeedingPlatform *);
 static void sub_807FB1C(Sprite_SpeedingPlatform *);
-static bool32 sub_807FE90(Sprite_SpeedingPlatform *);
+static bool32 ShouldDespawn(Sprite_SpeedingPlatform *);
 static void sub_807FEEC(Sprite_SpeedingPlatform *);
 static void RenderPlatform(Sprite_SpeedingPlatform *);
 static bool32 sub_807FC9C(Sprite_SpeedingPlatform *);
@@ -115,7 +115,7 @@ static void sub_807F9F0(void)
         }
     }
 
-    if (sub_807FE90(platform)) {
+    if (ShouldDespawn(platform)) {
         sub_807FEEC(platform);
     } else {
         RenderPlatform(platform);
@@ -253,7 +253,7 @@ static void Task_Interactable097(void)
         sub_807FE34(platform);
     }
 
-    if (sub_807FE90(platform)) {
+    if (ShouldDespawn(platform)) {
         sub_807FEEC(platform);
     } else {
         RenderPlatform(platform);
@@ -275,12 +275,13 @@ static void sub_807FE34(Sprite_SpeedingPlatform *platform)
     gCurTask->main = sub_807FF20;
 }
 
-static bool32 sub_807FE90(Sprite_SpeedingPlatform *platform)
+static bool32 ShouldDespawn(Sprite_SpeedingPlatform *platform)
 {
     s16 x = platform->x + I(platform->unk44) - gCamera.x;
     s16 y = platform->y + I(platform->unk48) - gCamera.y;
 
-    if ((u16)(x + 192) > 624 || y + 32 < -128 || y - 32 >= 289) {
+    if (x < -((CAM_REGION_WIDTH / 2) + 64) || x > (DISPLAY_WIDTH + ((CAM_REGION_WIDTH / 2) + 64)) || y + 32 < -(CAM_REGION_WIDTH / 2)
+        || y - 32 > (DISPLAY_HEIGHT + (CAM_REGION_WIDTH / 2))) {
         return TRUE;
     }
 
@@ -320,7 +321,7 @@ static void sub_807FF20(void)
         sub_807FF88(platform);
     }
 
-    if (sub_807FE90(platform)) {
+    if (ShouldDespawn(platform)) {
         sub_807FEEC(platform);
     } else {
         RenderPlatform(platform);
@@ -349,7 +350,7 @@ static void sub_807FFB0(void)
         sub_807FA98(platform);
     }
 
-    if (sub_807FE90(platform)) {
+    if (ShouldDespawn(platform)) {
         sub_807FEEC(platform);
     } else {
         RenderPlatform(platform);

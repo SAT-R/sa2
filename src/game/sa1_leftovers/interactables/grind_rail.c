@@ -175,17 +175,11 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/Task_GrindRail.inc",
 }
 END_NONMATCH
 
-// (94.19%) https://decomp.me/scratch/mrRim
-NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/Task_GrindRail_Air.inc", void Task_GrindRail_Air(void))
+void Task_GrindRail_Air(void)
 {
-    Player *player = &gPlayer;
+    Player *p = &gPlayer;
     Sprite_GrindRail *rail = TASK_DATA(gCurTask);
     MapEntity *me = rail->me;
-    s16 left;
-    s16 right;
-    s16 bottom;
-    s16 worldX;
-    s16 worldY;
 
     // This pointer madness seems to be necessary for matching
     u8 *pSpriteX = &rail->spriteX;
@@ -196,79 +190,46 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/Task_GrindRail_Air.i
     u16 regionY = *pRegY;
     u8 *pRailKind = &rail->kind;
     u8 kind = *pRailKind;
+    s16 x;
+    s16 y;
 
-    worldX = TO_WORLD_POS(stackSpriteX, regionX);
-    worldY = TO_WORLD_POS(me->y, regionY);
+    x = TO_WORLD_POS(stackSpriteX, regionX);
+    y = TO_WORLD_POS(me->y, regionY);
 
-    if (!(player->moveState & MOVESTATE_DEAD)) {
-        // _080101AA
-        s32 someX;
-        s32 someWidth;
-        s32 top;
-        s32 otherY;
+    if (!(p->moveState & MOVESTATE_DEAD)) {
+        if ((x + (me->d.sData[0] * TILE_WIDTH) <= I(p->x) && (x + (me->d.sData[0] * TILE_WIDTH) + (me->d.uData[2] * TILE_WIDTH) >= I(p->x)))
+            && (y + (me->d.sData[1] * TILE_WIDTH) <= I(p->y)
+                && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH) >= I(p->y))) {
 
-        left = worldX + (me->d.sData[0] * TILE_WIDTH);
+            if ((p->moveState & MOVESTATE_1000000)) {
+                if (((kind & RAIL_KIND_1) && (p->moveState & MOVESTATE_FACING_LEFT)
+                     && (I(p->x) < x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * TILE_WIDTH) >> 1)
+                         || ((p->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2))))) {
+                    if ((kind & RAIL_KIND_2)) {
+                        p->transition = PLTRANS_GRIND_RAIL_END_AIR;
 
-        if (left <= I(player->x)) {
-            someWidth = me->d.uData[2] * TILE_WIDTH;
-            if ((left + someWidth) >= I(player->x)) {
-
-                top = worldY + me->d.sData[1] * TILE_WIDTH;
-
-                if (top <= I(player->y)) {
-
-                    otherY = top + me->d.uData[3] * TILE_WIDTH;
-                    if (otherY >= I(player->y)) {
-
-                        // __080101FC
-                        if ((player->moveState & MOVESTATE_1000000)) {
-
-                            if (kind & RAIL_KIND_1) {
-                                if ((gPlayer.moveState & 1)) {
-                                    if (worldX < (left + (someWidth >> 1))
-                                        || ((player->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
-                                        if ((kind & RAIL_KIND_2)) {
-                                            player->transition = PLTRANS_GRIND_RAIL_END_AIR;
-                                            goto set13;
-                                        } else
-                                            goto set12;
-                                        // player->transition = PLTRANS_GRIND_RAIL_END_GROUND;
-                                    }
-                                }
-                            }
-                            if (!(kind & 1)) {
-                                if (!(player->moveState & MOVESTATE_FACING_LEFT)) {
-                                    s32 playerX = I(player->x);
-                                    s32 middle = worldX;
-                                    middle += me->d.sData[0] * TILE_WIDTH;
-                                    middle += me->d.uData[2] * (TILE_WIDTH / 2);
-
-                                    if (playerX > middle || ((player->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2))) {
-                                        if ((kind & RAIL_KIND_2)) {
-                                            player->transition = PLTRANS_GRIND_RAIL_END_AIR;
-                                        set13:;
-                                        } else
-                                        set12:
-                                            player->transition = PLTRANS_GRIND_RAIL_END_GROUND;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    } else
+                        p->transition = PLTRANS_GRIND_RAIL_END_GROUND;
+                } else if (!(kind & RAIL_KIND_1) && !(p->moveState & MOVESTATE_FACING_LEFT)
+                           && (I(p->x) > x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * TILE_WIDTH) >> 1)
+                               || ((p->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2)))) {
+                    if ((kind & RAIL_KIND_2)) {
+                        p->transition = PLTRANS_GRIND_RAIL_END_AIR;
+                    } else
+                        p->transition = PLTRANS_GRIND_RAIL_END_GROUND;
                 }
             }
         }
     }
 
-    worldX -= gCamera.x;
-    worldY -= gCamera.y;
+    x -= gCamera.x;
+    y -= gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(worldX, worldY)) {
+    if (IS_OUT_OF_CAM_RANGE(x, y)) {
         me->x = stackSpriteX;
         TaskDestroy(gCurTask);
     }
 }
-END_NONMATCH
 
 void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType)
 {
