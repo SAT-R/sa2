@@ -378,32 +378,30 @@ NONMATCH("asm/non_matching/engine/TransformSprite.inc", void TransformSprite(Spr
             // __08004A04
             if (transform->width > 0) {
                 // __08004A08
-                r4 = (u16)dimensions->offsetX;
+                r4 = dimensions->offsetX;
             } else {
                 // _08004A20
-                r4 = dimensions->width - (u16)dimensions->offsetX;
+                r4 = dimensions->width - dimensions->offsetX;
             }
 
             // _08004A2E
             if (transform->height > 0) {
-                r3 = (u16)dimensions->offsetY;
+                r3 = dimensions->offsetY;
             } else {
                 // _08004A3E
-                r3 = dimensions->height - (u16)dimensions->offsetY;
+                r3 = dimensions->height - dimensions->offsetY;
             }
 
             // _08004A4C
-            r4 = (r4 - (dimensions->width / 2));
-            r1 = big.unk0[0] * r4;
-            r3 = (r3 - (dimensions->height / 2));
-            r0 = big.unk0[1] * r3;
+            r1 = big.unk0[0] * (r4 - (dimensions->width / 2));
+            r0 = big.unk0[1] * (r3 - (dimensions->height / 2));
             r1 += r0;
             r1 = r1 + ((dimensions->width / 2) << 8);
             big.posX -= (r1 >> 8);
 
             // __080004A7E
-            r1 = big.unk0[2] * r4;
-            r0 = big.unk0[3] * r3;
+            r1 = big.unk0[2] * (r4 - (dimensions->width / 2));
+            r0 = big.unk0[3] * (r3 - (dimensions->height / 2));
             r1 += r0;
             r1 += ((dimensions->height / 2) << 8);
             big.posY -= r1 >> 8;
