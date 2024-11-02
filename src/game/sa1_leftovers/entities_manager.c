@@ -716,6 +716,10 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                     // Some spike thing generates too early
                     range1.xLow = em->prevCamX + (426 + 35);
                     range1.xHigh = gCamera.x + (426 + 35);
+                } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_2)) {
+                    // A grind rail generates too early
+                    range1.xLow = em->prevCamX + (426 + 40);
+                    range1.xHigh = gCamera.x + (426 + 40);
                 }
 #endif
             } else {
@@ -752,6 +756,8 @@ NONMATCH("asm/non_matching/game/stage/Task_8008DCC.inc", void Task_8008DCC(void)
                 range2.xHigh = gCamera.x + (426 + 35);
             } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_1)) {
                 range2.xHigh = gCamera.x + (426 + 35);
+            } else if (gCurrentLevel == LEVEL_INDEX(ZONE_7, ACT_2)) {
+                range2.xHigh = gCamera.x + (426 + 40);
             }
 #endif
 
