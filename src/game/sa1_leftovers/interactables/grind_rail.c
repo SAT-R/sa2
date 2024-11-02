@@ -29,17 +29,17 @@ typedef struct {
 
 static void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType);
 
-void Task_GrindRail(void);
-void sub_8010464(void);
+static void Task_GrindRail(void);
+static void GrindRailAudioDelay(void);
 
-// (79.90%) https://decomp.me/scratch/ncgh4
-NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/Task_GrindRail.inc", void Task_GrindRail(void))
+static void Task_GrindRail(void)
 {
-    Player *player = &gPlayer;
+    Player *p = &gPlayer;
 
-    s32 r7 = GRAVITY_IS_INVERTED ? I(player->y) - player->spriteOffsetY : I(player->y) + player->spriteOffsetY;
+    s32 r7 = GRAVITY_IS_INVERTED ? I(p->y) - p->spriteOffsetY : I(p->y) + p->spriteOffsetY;
 
-    // _0800FE78
+    s16 x, y;
+
     Sprite_GrindRail *rail = TASK_DATA(gCurTask);
     MapEntity *me = rail->me;
     u8 *pSpriteX = &rail->spriteX;
@@ -49,133 +49,76 @@ NONMATCH("asm/non_matching/game/sa1_leftovers/interactables/Task_GrindRail.inc",
     u16 *pRegY = &rail->regionY;
     u16 regionY = *pRegY;
     u8 *pRailKind = &rail->kind;
-    u8 railKind = *pRailKind;
-    s16 posX = TO_WORLD_POS(stackSpriteX, regionX);
-    s16 posY = TO_WORLD_POS(me->y, regionY);
+    u8 kind = *pRailKind;
 
-    if (!(player->moveState & MOVESTATE_DEAD)) {
-        void *newRail; // for matching
-        s32 left = posX + me->d.sData[0] * TILE_WIDTH;
-        if ((left <= I(player->x)) && (left + me->d.uData[2] * TILE_WIDTH >= I(player->x)) && ((posY + me->d.sData[1] * TILE_WIDTH) <= r7)
-            && (((posY + me->d.sData[1] * TILE_WIDTH) + me->d.uData[3] * TILE_WIDTH) >= r7)) {
+    x = TO_WORLD_POS(stackSpriteX, regionX);
+    y = TO_WORLD_POS(me->y, regionY);
+
+    if (!(p->moveState & MOVESTATE_DEAD)) {
+        // TODO: create a collision macro for entity data
+        if (((x + (me->d.sData[0] * TILE_WIDTH)) <= I(p->x)
+             && ((x + (me->d.sData[0] * TILE_WIDTH)) + (me->d.uData[2] * TILE_WIDTH) >= I(p->x)))
+            && (y + (me->d.sData[1] * TILE_WIDTH) <= r7 && y + (me->d.sData[1] * TILE_WIDTH) + (me->d.uData[3] * TILE_WIDTH) >= r7)) {
             bool32 r6 = FALSE;
 
             if (GRAVITY_IS_INVERTED) {
-                if (r7 >= posX)
+                if (r7 >= y)
                     r6 = TRUE;
             } else {
-                if (r7 <= posX)
+                if (r7 <= y)
                     r6 = TRUE;
             }
-            //_0800FF52
-            if ((player->speedAirY >= 0) && (r6) && !(railKind & RAIL_KIND_80)) {
-                // _0800FF6E
-                if (player->moveState & MOVESTATE_1000000) {
-                    if (!(railKind & RAIL_KIND_1)) {
-                        if (player->moveState & MOVESTATE_FACING_LEFT) {
-                            s32 newPlayerX = I(player->x);
-                            s32 left = me->d.sData[0] * TILE_WIDTH;
-                            s32 middle = left + me->d.uData[2] * (TILE_WIDTH / 2);
-                            if (newPlayerX >= middle) {
-                                if ((!(player->heldInput & gPlayerControls.jump) || !(railKind & RAIL_KIND_2)) && !(railKind & RAIL_KIND_1))
-                                    goto _080100B0;
-                            }
-                            // _0800FFB8
-                            if ((railKind & RAIL_KIND_2))
-                                player->transition = PLTRANS_GRIND_RAIL_END_AIR;
-                            else
-                                player->transition = PLTRANS_GRIND_RAIL_END_GROUND;
 
-                            {
-                                newRail = TASK_DATA(gCurTask);
-                                newRail += 9;
-                                *(u8 *)newRail |= RAIL_KIND_80;
-                                // goto _080100B0; // This is supposed to go here, but
-                                // the optimizer kicks in
-                            }
+            if ((p->speedAirY >= 0) && r6 && !(kind & RAIL_KIND_80)) {
+                if ((p->moveState & MOVESTATE_1000000)) {
+                    if ((!(kind & RAIL_KIND_1) && (p->moveState & MOVESTATE_FACING_LEFT)
+                         && (I(p->x) < x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * (TILE_WIDTH / 2)))
+                             || ((p->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2))))) {
+                        if ((kind & RAIL_KIND_2)) {
+                            p->transition = PLTRANS_GRIND_RAIL_END_AIR;
+
+                        } else {
+                            p->transition = PLTRANS_GRIND_RAIL_END_GROUND;
                         }
-                        if (!(railKind & RAIL_KIND_1)) {
-                            goto _080100B0;
+                        *(u8 *)(TASK_DATA(gCurTask) + offsetof(Sprite_GrindRail, kind)) |= RAIL_KIND_80;
+                    } else if ((kind & RAIL_KIND_1) && !(p->moveState & MOVESTATE_FACING_LEFT)
+                               && (I(p->x) > x + (me->d.sData[0] * TILE_WIDTH) + ((me->d.uData[2] * (TILE_WIDTH / 2)))
+                                   || ((p->heldInput & gPlayerControls.jump) && (kind & RAIL_KIND_2)))) {
+                        if ((kind & RAIL_KIND_2)) {
+                            p->transition = PLTRANS_GRIND_RAIL_END_AIR;
+                        } else {
+                            p->transition = PLTRANS_GRIND_RAIL_END_GROUND;
                         }
+                        *(u8 *)(TASK_DATA(gCurTask) + offsetof(Sprite_GrindRail, kind)) |= RAIL_KIND_80;
                     }
-                    // _0800FFF0
-                    if (!(player->moveState & MOVESTATE_FACING_LEFT)) {
-                        s32 playerX = I(player->x);
-                        s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
-                        middle += me->d.uData[2] * 4;
-                        if (playerX <= middle) {
-                            if ((!(player->heldInput & gPlayerControls.jump)) || !(railKind & RAIL_KIND_2))
-                                goto _080100B0;
-                        }
-                        // _08010028
+                } else if (((kind & RAIL_KIND_1)
+                            && Q_24_8_TO_INT(p->x) < (x + (me->d.sData[0] * TILE_WIDTH)) + ((me->d.uData[2] * (TILE_WIDTH / 2))))
+                           || (!(kind & RAIL_KIND_1)
+                               && Q_24_8_TO_INT(p->x) > (x + (me->d.sData[0] * TILE_WIDTH)) + ((me->d.uData[2] * (TILE_WIDTH / 2))))) {
+                    p->transition = PLTRANS_GRINDING;
+                    p->unk6E = 0;
 
-                        if ((railKind & RAIL_KIND_2))
-                            player->transition = PLTRANS_GRIND_RAIL_END_AIR;
-                        else
-                            player->transition = PLTRANS_GRIND_RAIL_END_GROUND;
-
-                        // _0801004E
-                        {
-                            void *newRail = TASK_DATA(gCurTask);
-                            newRail += 9;
-                            *(u8 *)newRail |= RAIL_KIND_80;
-                        }
-                    }
-                } else {
-                    // _08010060
-                    if (railKind & RAIL_KIND_1) {
-                        s32 playerX = I(player->x);
-                        s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
-                        middle += me->d.uData[2] * 4;
-                        if (playerX < middle)
-                            goto _08010096;
-                        else
-                            goto _080100B0;
-                    } else {
-                        // _08010080
-                        s32 playerX = I(player->x);
-                        s32 middle = posX + me->d.sData[0] * TILE_WIDTH;
-                        middle += me->d.uData[2] * 4;
-                        if (playerX <= middle)
-                            goto _080100B0;
-                    }
-                _08010096:
-                    player->transition = PLTRANS_GRINDING;
-                    player->unk6E = 0;
-
-                    if (railKind & RAIL_KIND_1)
-                        player->unk6E = 1;
+                    if (kind & RAIL_KIND_1)
+                        p->unk6E = 1;
                 }
             }
-
-        _080100B0 : {
-            void *newRail;
-            {
-                newRail = TASK_DATA(gCurTask);
-                newRail += 9;
-                *(u8 *)newRail &= 0x7F;
-            }
-        }
+            // BUG: this should not be set if it was set to RAIL_KIND_80 above
+            *(u8 *)(TASK_DATA(gCurTask) + offsetof(Sprite_GrindRail, kind)) &= ~RAIL_KIND_80;
         } else {
-            // _080100C4
-            void *newRail;
-            newRail = TASK_DATA(gCurTask);
-            newRail += 9;
-            *(u8 *)newRail &= 0x7F;
+            *(u8 *)(TASK_DATA(gCurTask) + offsetof(Sprite_GrindRail, kind)) &= ~RAIL_KIND_80;
         }
     }
-    // _080100D6
-    posX -= gCamera.x;
-    posY -= gCamera.y;
 
-    if (IS_OUT_OF_CAM_RANGE(posX, posY)) {
-        me->x = rail->spriteX;
+    x -= gCamera.x;
+    y -= gCamera.y;
+
+    if (IS_OUT_OF_CAM_RANGE(x, y)) {
+        me->x = stackSpriteX;
         TaskDestroy(gCurTask);
     }
 }
-END_NONMATCH
 
-void Task_GrindRail_Air(void)
+static void Task_GrindRail_Air(void)
 {
     Player *p = &gPlayer;
     Sprite_GrindRail *rail = TASK_DATA(gCurTask);
@@ -231,7 +174,7 @@ void Task_GrindRail_Air(void)
     }
 }
 
-void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType)
+static void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
     struct Task *t = TaskCreate(Task_GrindRail, sizeof(Sprite_GrindRail), 0x2010, 0, NULL);
@@ -274,7 +217,7 @@ void CreateEntity_GrindRail(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY,
     SET_MAP_ENTITY_INITIALIZED(me);
 }
 
-void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType)
+static void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegionY, u8 spriteY, u8 railType)
 {
 #ifdef NON_MATCHING
     struct Task *t = TaskCreate(Task_GrindRail_Air, 10, 0x2010, 0, NULL);
@@ -318,14 +261,14 @@ void CreateEntity_GrindRail_Air(MapEntity *me, u16 spriteRegionX, u16 spriteRegi
 }
 
 // Delays the playback of the grinding sound by 60 frames
-void CreateGrindrailAudioTask(void)
+UNUSED static void CreateGrindrailAudioTask(void)
 {
-    struct Task *t = TaskCreate(sub_8010464, sizeof(u16), 0x2010, 0, NULL);
+    struct Task *t = TaskCreate(GrindRailAudioDelay, sizeof(u16), 0x2010, 0, NULL);
     u16 *audioTimer = TASK_DATA(t);
     *audioTimer = 0;
 }
 
-void sub_8010464(void)
+static void GrindRailAudioDelay(void)
 {
     u16 *audioTimer = TASK_DATA(gCurTask);
     if (++(*audioTimer) > GBA_FRAMES_PER_SECOND) {
