@@ -370,8 +370,8 @@ void SampleFreqSet(u32 freq)
     // CPU freq 16.78Mhz
     soundInfo->sampleRateReciprocal = (0x1000000 / soundInfo->sampleRate + 1) >> 1;
 #else
-    soundInfo->samplesPerFrame = 701;
-    soundInfo->framesPerDmaCycle = PCM_DMA_BUF_SIZE / soundInfo->samplesPerFrame;
+    soundInfo->samplesPerFrame = 800;
+    soundInfo->framesPerDmaCycle = PCM_DMA_BUF_SIZE / (soundInfo->samplesPerFrame);
     soundInfo->sampleRate = 60.0f * soundInfo->samplesPerFrame;
     soundInfo->sampleRateReciprocal = 1.0f / soundInfo->sampleRate;
 #endif

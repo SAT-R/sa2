@@ -235,10 +235,10 @@ int main(int argc, char **argv)
     SDL_AudioSpec want;
 
     SDL_memset(&want, 0, sizeof(want)); /* or SDL_zero(want) */
-    want.freq = 42060;
+    want.freq = 48000;
     want.format = AUDIO_F32;
     want.channels = 2;
-    want.samples = 701;
+    want.samples = (want.freq / 60);
     cgb_audio_init(want.freq);
 
     if (SDL_OpenAudio(&want, 0) < 0)
@@ -411,8 +411,15 @@ static SDL_DisplayMode sdlDispMode = { 0 };
 
 void Platform_QueueAudio(const void *data, uint32_t bytesCount)
 {
+    // Reset the audio buffer if we are 3 frames out of sync
+    // If this happens it suggests there was some OS level lag
+    // in playing audio. The queue length should remain stable at < 3 otherwise
+    if (SDL_GetQueuedAudioSize(1) > (bytesCount * 3)) {
+        SDL_ClearQueuedAudio(1);
+    }
+
     SDL_QueueAudio(1, data, bytesCount);
-    // printf("Queueing %d\n, QueueSize %d\n", bytesCount, SDL_GetQueuedAudioSize(1));
+    printf("Queueing %d\n, QueueSize %d\n", bytesCount, SDL_GetQueuedAudioSize(1));
 }
 
 void ProcessSDLEvents(void)

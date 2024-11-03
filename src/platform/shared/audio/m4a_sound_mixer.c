@@ -908,15 +908,22 @@ void m4aSoundVSync(void)
         float *m4aBuffer = mixer->pcmBuffer;
         float *cgbBuffer = cgb_get_buffer();
         s32 dmaCounter = mixer->dmaCounter;
+        bool8 shouldQueue = FALSE;
 
         if (dmaCounter > 1) {
             m4aBuffer += samplesPerFrame * (mixer->framesPerDmaCycle - (dmaCounter - 1));
         }
 
-        for (u32 i = 0; i < samplesPerFrame; i++)
+        for (u32 i = 0; i < samplesPerFrame; i++) {
             audioBuffer[i] = m4aBuffer[i] + cgbBuffer[i];
+            if (audioBuffer[i] != 0) {
+                shouldQueue = TRUE;
+            }
+        }
 
-        Platform_QueueAudio(audioBuffer, samplesPerFrame * 4);
+        if (shouldQueue) {
+            Platform_QueueAudio(audioBuffer, samplesPerFrame * 4);
+        }
         if ((s8)(--mixer->dmaCounter) <= 0)
             mixer->dmaCounter = mixer->framesPerDmaCycle;
     }
