@@ -235,10 +235,10 @@ int main(int argc, char **argv)
     SDL_AudioSpec want;
 
     SDL_memset(&want, 0, sizeof(want)); /* or SDL_zero(want) */
-    want.freq = 42048;
+    want.freq = 42060;
     want.format = AUDIO_F32;
     want.channels = 2;
-    want.samples = 1024;
+    want.samples = 701;
     cgb_audio_init(want.freq);
 
     if (SDL_OpenAudio(&want, 0) < 0)
@@ -409,7 +409,11 @@ static u16 keys;
 u32 fullScreenFlags = 0;
 static SDL_DisplayMode sdlDispMode = { 0 };
 
-void Platform_QueueAudio(const void *data, uint32_t bytesCount) { SDL_QueueAudio(1, data, bytesCount); }
+void Platform_QueueAudio(const void *data, uint32_t bytesCount)
+{
+    SDL_QueueAudio(1, data, bytesCount);
+    // printf("Queueing %d\n, QueueSize %d\n", bytesCount, SDL_GetQueuedAudioSize(1));
+}
 
 void ProcessSDLEvents(void)
 {

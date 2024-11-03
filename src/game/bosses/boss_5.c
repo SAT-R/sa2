@@ -562,10 +562,10 @@ void sub_80438C4(EggSaucer *boss)
     gBgScrollRegs[0][0] = 60 - x;
     gBgScrollRegs[0][1] = 54 - y;
 
-    if (x < -50 || x > 300) {
-        gDispCnt &= ~0x100;
+    if (x < -50 || x > (DISPLAY_WIDTH + 60)) {
+        gDispCnt &= ~DISPCNT_BG0_ON;
     } else {
-        gDispCnt |= 0x100;
+        gDispCnt |= DISPCNT_BG0_ON;
     }
 
     s = &boss->cabin;

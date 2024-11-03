@@ -444,18 +444,18 @@ static void Render(EggFrog *boss)
     u8 i, j;
     u8 temp;
 
-    s->x = 0x20;
-    s->y = 0x28;
+    s->x = 32;
+    s->y = 40;
     UpdateSpriteAnimation(s);
     sub_8003914(s);
     gBgScrollRegs[0][0] = 32 - (I(boss->x) - gCamera.x);
     gBgScrollRegs[0][1] = 40 - (I(boss->y) - gCamera.y);
 
     pos.x = I(boss->x) - gCamera.x;
-    if ((u32)(pos.x + 0x32) >= 351) {
-        gDispCnt &= ~0x100;
+    if (pos.x < -50 || pos.x > (DISPLAY_WIDTH + 60)) {
+        gDispCnt &= ~DISPCNT_BG0_ON;
     } else {
-        gDispCnt |= 0x100;
+        gDispCnt |= DISPCNT_BG0_ON;
     }
 
     for (i = 0; i < 2; i++) {
