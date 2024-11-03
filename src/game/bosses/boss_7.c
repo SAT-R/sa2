@@ -78,7 +78,7 @@ static void sub_8048408(EggFrog *);
 static void sub_80492B8(EggFrog *);
 static void sub_8048858(EggFrog *);
 static void sub_8048E64(EggFrog *);
-static void sub_80480E8(EggFrog *);
+static void Render(EggFrog *);
 static void sub_804931C(EggFrog *);
 
 static void sub_8047F0C(void);
@@ -363,7 +363,7 @@ static void sub_8047E28(void)
     sub_80492B8(boss);
     sub_8048858(boss);
     sub_8048E64(boss);
-    sub_80480E8(boss);
+    Render(boss);
     sub_804931C(boss);
 
     if (boss->unk14 == 0) {
@@ -393,7 +393,7 @@ static void sub_8047F0C(void)
     gStageFlags &= ~STAGE_FLAG__GRAVITY_INVERTED;
     sub_8048654(boss);
     sub_8048E64(boss);
-    sub_80480E8(boss);
+    Render(boss);
     sub_804931C(boss);
 
     if (Mod(gStageTime, 13) == 0) {
@@ -434,7 +434,7 @@ static void sub_8047F0C(void)
     }
 }
 
-static void sub_80480E8(EggFrog *boss)
+static void Render(EggFrog *boss)
 {
 
     s32 sin, cos;
@@ -976,7 +976,7 @@ static void Task_EggFrogMain(void)
     sub_80492B8(boss);
     sub_804920C(boss);
     sub_8048E64(boss);
-    sub_80480E8(boss);
+    Render(boss);
     boss->unk16 = 1;
     sub_804931C(boss);
 

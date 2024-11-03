@@ -787,6 +787,7 @@ static AnimCmdResult animCmd_AddHitbox_BG(void *cursor, Sprite *s)
 void sub_8003914(Sprite *s)
 {
     const SpriteOffset *dims;
+
     gUnknown_03004D10[gUnknown_03005390] = s;
     gUnknown_03005390++;
 
@@ -832,11 +833,18 @@ NONMATCH("asm/non_matching/engine/sub_80039E4.inc", bool32 sub_80039E4(void))
     // tilesize (could be 32 and get optimized out?)
     s32 sp28 = 5;
 
+#if !PORTABLE
+    // TODO: this might not be needed
     if (!(REG_DISPSTAT & DISPSTAT_VBLANK)) {
         return FALSE;
     }
+#endif
 
+// TODO: once function matches this can be removed
+#if PORTABLE
+    gUnknown_03005390 = 0;
     return TRUE;
+#endif
 
     if (gUnknown_03005390 != 0) {
         OamDataShort oam;

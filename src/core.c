@@ -335,7 +335,7 @@ void GameInit(void)
     }
 
     // Setup interrupt vector
-#if !PORTABLE
+#if PLATFORM_GBA
     // On GBA the function gets pushed into IWRAM because executing it there is very,
     // very fast
     DmaCopy32(3, IntrMain, gIntrMainBuf, sizeof(gIntrMainBuf));
@@ -366,11 +366,7 @@ void GameLoop(void)
             m4aSoundMain();
         }
 
-#if !PORTABLE
-        // TEMP: remove #if when all sVblankFuncs match
-        if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE)
-#endif
-        {
+        if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
             GetInput();
 
             if (gMultiSioEnabled) {
@@ -453,11 +449,7 @@ static void UpdateScreenDma(void)
         DmaCopy16(3, gBgOffsetsHBlank, gUnknown_03002878, gUnknown_03002A80);
     }
 
-#if !PORTABLE
-    // TEMP: remove #if when all sVblankFuncs match
-    if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE)
-#endif
-    {
+    if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
         CopyOamBufferToOam();
         DmaCopy16(3, gOamBuffer + 0x00, (void *)OAM + 0x000, 0x100);
         DmaCopy16(3, gOamBuffer + 0x20, (void *)OAM + 0x100, 0x100);
@@ -571,11 +563,7 @@ static void UpdateScreenCpuSet(void)
         gNumHBlankIntrs = 0;
     }
 
-#if !PORTABLE
-    // TEMP: remove #if when all sVblankFuncs match
-    if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE)
-#endif
-    {
+    if (sLastCalledVblankFuncId == VBLANK_FUNC_ID_NONE) {
         CopyOamBufferToOam();
         CpuFastCopy(gOamBuffer, (void *)OAM, OAM_SIZE);
     }
