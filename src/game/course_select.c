@@ -16,6 +16,7 @@
 #include "game/bosses/final_intro.h"
 #include "trig.h"
 
+#include "constants/animations.h"
 #include "constants/tilemaps.h"
 
 struct CourseSelectionScreen {
@@ -423,10 +424,10 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
 
     for (i = 0; i < ARRAY_COUNT(coursesScreen->zoneActUnits); i++) {
         s = &coursesScreen->zoneActUnits[i];
-        s->x = i * 0x20 + 0xB8;
+        s->x = i * 32 + (DISPLAY_WIDTH - 56);
         s->y = 0;
         s->graphics.dest = VramMalloc(4);
-        s->graphics.anim = 0x2F6;
+        s->graphics.anim = SA2_ANIM_758;
         s->variant = 0;
         s->oamFlags = SPRITE_OAM_ORDER(4);
         s->graphics.size = 0;
@@ -441,7 +442,7 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     }
 
     s = &coursesScreen->zoneType;
-    s->x = 0x80;
+    s->x = DISPLAY_WIDTH - 112;
     s->y = 0;
     s->graphics.dest = VramMalloc(0x1A);
     s->graphics.anim = 0x2F5;
@@ -458,8 +459,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     UpdateSpriteAnimation(s);
 
     s = &coursesScreen->zoneName;
-    s->x = 0xF0;
-    s->y = 0x18;
+    s->x = DISPLAY_WIDTH;
+    s->y = 24;
     s->graphics.dest = VramMalloc(0x26);
     s->graphics.anim = 0x2F9;
     s->variant = 0;
@@ -478,8 +479,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     s->x = 0;
     s->y = 0;
     if (gLoadedSaveGame->language == LANG_JAPANESE) {
-        s->graphics.dest = VramMalloc(0x18);
-        s->graphics.anim = 0x2FB;
+        s->graphics.dest = VramMalloc(24);
+        s->graphics.anim = 763;
         // Set the background color based on the
         // character
         if (IS_SINGLE_PLAYER) {
@@ -494,8 +495,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
             s->variant = gMultiplayerCharacters[0];
         }
     } else {
-        s->graphics.dest = VramMalloc(0x1C);
-        s->graphics.anim = 0x2FC;
+        s->graphics.dest = VramMalloc(28);
+        s->graphics.anim = 764;
         if (IS_SINGLE_PLAYER) {
             s->variant = gSelectedCharacter;
         } else {
@@ -516,8 +517,8 @@ void CreateCourseSelectionScreen(u8 currentLevel, u8 maxLevel, u8 cutScenes)
     for (i = 0; i < ARRAY_COUNT(coursesScreen->chaosEmeralds); i++) {
         s = &coursesScreen->chaosEmeralds[i];
         s->x = 0;
-        s->y = 0x88;
-        s->graphics.dest = (void *)OBJ_VRAM0 + (i * 0x120);
+        s->y = DISPLAY_HEIGHT - 24;
+        s->graphics.dest = (void *)OBJ_VRAM0 + (i * (9 * TILE_SIZE_4BPP));
         s->graphics.anim = sChaoEmeraldAssets[i][0];
         s->variant = sChaoEmeraldAssets[i][1];
         s->oamFlags = SPRITE_OAM_ORDER(4);
@@ -977,7 +978,7 @@ static void RenderUI(struct CourseSelectionScreen *coursesScreen)
             } else {
                 s = &coursesScreen->chaosEmeralds[0];
             }
-            s->x = (((i * 3)) * 8) + 0x24;
+            s->x = (((i * 3)) * 8) + ((DISPLAY_WIDTH / 2) - 84);
             UpdateSpriteAnimation(s);
             DisplaySprite(s);
         }

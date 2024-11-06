@@ -240,11 +240,7 @@ extern u16 gDispCnt;
 #define WINREG_WIN1V  3
 #define WINREG_WININ  4
 #define WINREG_WINOUT 5
-#if (WIN_RANGE(0xFF, 0) == 0xFF00)
-typedef u16 winreg_t;
-#else
-typedef u32 winreg_t;
-#endif
+
 extern winreg_t gWinRegs[6];
 extern struct BlendRegs gBldRegs;
 extern BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS];

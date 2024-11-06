@@ -351,7 +351,8 @@
     "cgb_audio.h": "c",
     "shared.h": "c",
     "mp2k_common.h": "c",
-    "cgb_tables.h": "c"
+    "cgb_tables.h": "c",
+    "stdint.h": "c"
   },
   "asm-code-lens.donated": true,
   "editor.formatOnSave": true,

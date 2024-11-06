@@ -323,7 +323,7 @@ void CreateTitleScreen(void)
     fade->window = SCREEN_FADE_USE_WINDOW_1;
     fade->brightness = 0;
     fade->flags = (SCREEN_FADE_FLAG_DARKEN | SCREEN_FADE_FLAG_2);
-    fade->speed = 0x100;
+    fade->speed = 256;
     fade->bldCnt = (BLDCNT_EFFECT_LIGHTEN | BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL);
     fade->bldAlpha = 0;
 
@@ -488,7 +488,7 @@ static void InitTitleScreenBackgrounds(TitleScreen *titleScreen)
     gBgScrollRegs[2][0] = 0;
     gBgScrollRegs[2][1] = 0;
     gBgScrollRegs[1][0] = 8;
-    gBgScrollRegs[1][1] = 0x200;
+    gBgScrollRegs[1][1] = 512;
     gBgScrollRegs[0][0] = 0;
     gBgScrollRegs[0][1] = 0;
 
@@ -597,13 +597,13 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
         // position * lineHeight + topPadding
         if (menuItemId < SinglePlayerMenuItem(0)) {
             // PlayModeMenu positions
-            s->y = (PlayModeMenuIndex(menuItemId) * 0x12) + 96;
+            s->y = (PlayModeMenuIndex(menuItemId) * 18) + (DISPLAY_HEIGHT / 2) + 16;
         } else if (gLoadedSaveGame->chaoGardenUnlocked) {
             // SinglePlayerMenu positions if we have the chao garden available
-            s->y = (SinglePlayerMenuIndex(menuItemId) * 0x10) + 96;
+            s->y = (SinglePlayerMenuIndex(menuItemId) * 16) + (DISPLAY_HEIGHT / 2) + 16;
         } else {
             // SinglePlayerMenu positions if we don't have the chao garden
-            s->y = (SinglePlayerMenuIndex(menuItemId) * 0x12) + 100;
+            s->y = (SinglePlayerMenuIndex(menuItemId) * 18) + (DISPLAY_HEIGHT / 2) + 20;
         }
 
         s->graphics.size = 0;
@@ -641,6 +641,7 @@ static void Task_IntroFadeInSegaLogoAnim(void)
     if (titleScreen->animFrame >= 16) {
         titleScreen->animFrame = 0;
         gBldRegs.bldAlpha = FadeInBlend(16);
+        // position the logo
         gBgScrollRegs[0][0] = 0;
         gBgScrollRegs[0][1] = 0;
         gCurTask->main = Task_IntroShowSegaLogo;
@@ -906,7 +907,7 @@ static void Task_IntroSkyAnim(void)
             gBldRegs.bldY = 16;
         }
 
-        if (titleScreen->animFrame == 0x15) {
+        if (titleScreen->animFrame == 21) {
             gBgScrollRegs[1][1] = 0;
         }
     }
@@ -1343,7 +1344,7 @@ static void Task_ShowTitleScreenIntroSkipped(void)
     bg0->unk20 = 0;
     bg0->unk22 = 0;
     bg0->unk24 = 0;
-    bg0->targetTilesX = 0x1A;
+    bg0->targetTilesX = 26;
     bg0->targetTilesY = 10;
     bg0->paletteOffset = 0;
     bg0->flags = BACKGROUND_FLAG_4 | BACKGROUND_FLAGS_BG_ID(2);
@@ -1427,7 +1428,7 @@ static void WavesBackgroundAnim(TitleScreen *titleScreen)
     s32 j;
 
     REG_SIOCNT &= ~SIO_INTR_ENABLE;
-    gDispCnt |= 0x4000;
+    gDispCnt |= DISPCNT_WIN1_ON;
     gWinRegs[WINREG_WIN1H] = WIN_RANGE(0, DISPLAY_WIDTH);
     gWinRegs[WINREG_WIN1V] = WIN_RANGE((titleScreen->wavesTopOffset - 2), DISPLAY_HEIGHT);
     gWinRegs[WINREG_WININ] |= 0x3F00;
@@ -1907,7 +1908,7 @@ static void Task_StartTitleScreenDemo(void)
 static void ShowGameLogo(TitleScreen *_)
 {
     // angle, width, height, right, bottom, left, top
-    sub_8003EE4(0, 0x100, 0x100, 0, 0, 20, 8, gBgAffineRegs);
+    sub_8003EE4(0, 0x100, 0x100, 0, 0, (DISPLAY_WIDTH / 2) - 100, 8, gBgAffineRegs);
 }
 
 static void BirdAnimEnd(void)
