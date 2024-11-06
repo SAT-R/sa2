@@ -387,8 +387,8 @@ static void CloseSaveFile()
 #define KEY_B_BUTTON      SDLK_x
 #define KEY_START_BUTTON  SDLK_RETURN
 #define KEY_SELECT_BUTTON SDLK_BACKSLASH
-#define KEY_L_BUTTON      SDLK_d
-#define KEY_R_BUTTON      SDLK_f
+#define KEY_L_BUTTON      SDLK_s
+#define KEY_R_BUTTON      SDLK_d
 #define KEY_DPAD_UP       SDLK_UP
 #define KEY_DPAD_DOWN     SDLK_DOWN
 #define KEY_DPAD_LEFT     SDLK_LEFT
