@@ -276,7 +276,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
             // if (mpp->unk61++ > 30) {
             //     // TODO: macro this
             //     TasksDestroyAll();
-            //     gUnknown_03002AE4 = gUnknown_0300287C;
+            //     PAUSE_BACKGROUNDS_QUEUE();
             //     gUnknown_03005390 = 0;
             //     PAUSE_GRAPHICS_QUEUE();
             //     MultiPakCommunicationError();
@@ -291,7 +291,7 @@ NONMATCH("asm/non_matching/game/multiplayer/mp_player__Task_CreateMultiplayerPla
         if (mpp->unk61++ > 30) {
             // TODO: macro this
             TasksDestroyAll();
-            gUnknown_03002AE4 = gUnknown_0300287C;
+            PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();

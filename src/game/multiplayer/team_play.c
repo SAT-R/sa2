@@ -592,7 +592,7 @@ static void sub_805D1F8(void)
             packet = &gMultiSioRecv[i];
             if (packet->pat0.unk0 > 0x4041) {
                 TasksDestroyAll();
-                gUnknown_03002AE4 = gUnknown_0300287C;
+                PAUSE_BACKGROUNDS_QUEUE();
                 gUnknown_03005390 = 0;
                 PAUSE_GRAPHICS_QUEUE();
                 MultiPakCommunicationError();

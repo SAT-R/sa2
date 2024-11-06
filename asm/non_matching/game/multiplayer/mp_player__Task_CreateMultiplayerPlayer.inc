@@ -573,8 +573,8 @@ _0801666C:
 	ldr r1, _080166D4 @ =0x0000FFFF
 	movs r0, #0
 	bl TasksDestroyInPriorityRange
-	ldr r1, _080166D8 @ =gUnknown_03002AE4
-	ldr r0, _080166DC @ =gUnknown_0300287C
+	ldr r1, _080166D8 @ =gBackgroundsCopyQueueCursor
+	ldr r0, _080166DC @ =gBackgroundsCopyQueueIndex
 	ldrb r0, [r0]
 	strb r0, [r1]
 	ldr r1, _080166E0 @ =gUnknown_03005390
@@ -590,8 +590,8 @@ _0801666C:
 	b _08016D08
 	.align 2, 0
 _080166D4: .4byte 0x0000FFFF
-_080166D8: .4byte gUnknown_03002AE4
-_080166DC: .4byte gUnknown_0300287C
+_080166D8: .4byte gBackgroundsCopyQueueCursor
+_080166DC: .4byte gBackgroundsCopyQueueIndex
 _080166E0: .4byte gUnknown_03005390
 _080166E4: .4byte gVramGraphicsCopyCursor
 _080166E8: .4byte gVramGraphicsCopyQueueIndex

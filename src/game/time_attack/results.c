@@ -417,7 +417,7 @@ static void Task_HandleExit(void)
     if (UpdateScreenFade(&resultsCutScene->base.fade) == SCREEN_FADE_COMPLETE) {
         WriteSaveGame();
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();

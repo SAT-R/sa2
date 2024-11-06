@@ -621,7 +621,7 @@ void sub_806C6A4(void)
         gLoadedSaveGame->score += stage->rings;
 
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         WriteSaveGame();
@@ -692,7 +692,7 @@ void SpecialStagePauseMenuMain(void)
                 return;
             }
             TasksDestroyAll();
-            gUnknown_03002AE4 = gUnknown_0300287C;
+            PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
             CreateTitleScreenAndSkipIntro();

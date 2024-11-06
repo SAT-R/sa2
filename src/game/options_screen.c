@@ -3695,7 +3695,7 @@ static void ProfileNameScreenFadeOutAndExit(void)
     }
     WriteSaveGame();
     TasksDestroyAll();
-    gUnknown_03002AE4 = gUnknown_0300287C;
+    PAUSE_BACKGROUNDS_QUEUE();
     gUnknown_03005390 = 0;
     PAUSE_GRAPHICS_QUEUE();
 
@@ -4637,7 +4637,7 @@ static void Task_TimeRecordsScreenFadeToPrevious(void)
             }
             EwramFree(timeRecordsScreen->timeRecords);
             TasksDestroyAll();
-            gUnknown_03002AE4 = gUnknown_0300287C;
+            PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
             CreateCharacterSelectionScreen(timeRecordsScreen->character, allCharactersUnlocked);
@@ -5560,7 +5560,7 @@ static void Task_OptionsScreenFadeOutAndExit(void)
     StoreProfileData(optionsScreen);
     WriteSaveGame();
     TasksDestroyAll();
-    gUnknown_03002AE4 = gUnknown_0300287C;
+    PAUSE_BACKGROUNDS_QUEUE();
     gUnknown_03005390 = 0;
     PAUSE_GRAPHICS_QUEUE();
     CreateTitleScreenAtSinglePlayerMenu();

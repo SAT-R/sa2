@@ -164,7 +164,7 @@ void Task_DemoManagerEndFadeout(void)
     if (dm->tFadeout >= 48) {
         gLoadedSaveGame->timeLimitDisabled = dm->timeLimitDisabled;
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
 

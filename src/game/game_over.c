@@ -63,7 +63,7 @@ void Task_FadeoutToOverScreen(void)
     if (UpdateScreenFade(&gameover_fade->unk0) != SCREEN_FADE_RUNNING) {
         gBldRegs.bldY = 16;
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         InitOverScreen(lostLifeCause);
@@ -285,7 +285,7 @@ void Task_TimeOverScreenMain(void)
 
     if (--screen->framesUntilDone == 0) {
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         gRingCount = 0;
@@ -322,7 +322,7 @@ void sub_8036B70(void)
 
     if (--screen->framesUntilDone == 0) {
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateTitleScreen();

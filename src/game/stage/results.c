@@ -351,7 +351,7 @@ static void Task_UpdateStageResults(void)
                 TasksDestroyAll();
 
                 { // TODO: This is a macro!
-                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    PAUSE_BACKGROUNDS_QUEUE();
                     gUnknown_03005390 = 0;
                     PAUSE_GRAPHICS_QUEUE();
                 }
@@ -367,7 +367,7 @@ static void Task_UpdateStageResults(void)
                 TasksDestroyAll();
 
                 { // TODO: This is a macro!
-                    gUnknown_03002AE4 = gUnknown_0300287C;
+                    PAUSE_BACKGROUNDS_QUEUE();
                     gUnknown_03005390 = 0;
                     PAUSE_GRAPHICS_QUEUE();
                 }
@@ -386,7 +386,7 @@ static void Task_UpdateStageResults(void)
                     TasksDestroyAll();
 
                     { // TODO: This is a macro!
-                        gUnknown_03002AE4 = gUnknown_0300287C;
+                        PAUSE_BACKGROUNDS_QUEUE();
                         gUnknown_03005390 = 0;
                         PAUSE_GRAPHICS_QUEUE();
                     }
@@ -435,7 +435,7 @@ static void Task_UpdateStageResults(void)
                         TasksDestroyAll();
 
                         { // TODO: This is a macro!
-                            gUnknown_03002AE4 = gUnknown_0300287C;
+                            PAUSE_BACKGROUNDS_QUEUE();
                             gUnknown_03005390 = 0;
                             PAUSE_GRAPHICS_QUEUE();
                         }
@@ -458,7 +458,7 @@ static void Task_UpdateStageResults(void)
                     TasksDestroyAll();
 
                     { // TODO: This is a macro!
-                        gUnknown_03002AE4 = gUnknown_0300287C;
+                        PAUSE_BACKGROUNDS_QUEUE();
                         gUnknown_03005390 = 0;
                         PAUSE_GRAPHICS_QUEUE();
                     }

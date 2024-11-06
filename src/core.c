@@ -20,7 +20,7 @@ u32 gIntrMainBuf[] = {};
 struct Task gTasks[] = {};
 u16 gUnknown_030017F0 ALIGNED(4) = 0;
 s16 gUnknown_030017F4[2] ALIGNED(4) = {};
-Background *gUnknown_03001800[] ALIGNED(16) = {};
+Background *gBackgroundsCopyQueue[] ALIGNED(16) = {};
 u32 gFlags = 0;
 u8 gUnknown_03001850[] ALIGNED(16) = {};
 FuncType_030053A0 gUnknown_03001870[] = {};
@@ -88,7 +88,7 @@ u8 gUnknown_03002874 = 0;
 // gComputedBgTarget
 void *gUnknown_03002878 ALIGNED(4) = NULL;
 
-u8 gUnknown_0300287C = 0;
+u8 gBackgroundsCopyQueueIndex = 0;
 u16 gBgPalette[] ALIGNED(16) = {};
 
 // gComputedBgSectorSize
@@ -102,7 +102,7 @@ struct MultiBootParam gMultiBootParam ALIGNED(8) = {};
 
 u16 gPressedKeys ALIGNED(4) = 0;
 u8 gOamFirstPausedIndex ALIGNED(4) = 0;
-u8 gUnknown_03002AE4 ALIGNED(4) = 0;
+u8 gBackgroundsCopyQueueCursor ALIGNED(4) = 0;
 HBlankFunc gHBlankIntrs[4] ALIGNED(16) = {};
 
 u8 gIwramHeap[0x2204] = {};
@@ -206,8 +206,8 @@ void GameInit(void)
     DmaFill32(3, 0, (void *)PLTT, PLTT_SIZE);
 
     sLastCalledVblankFuncId = VBLANK_FUNC_ID_NONE;
-    gUnknown_03002AE4 = 0;
-    gUnknown_0300287C = 0;
+    gBackgroundsCopyQueueCursor = 0;
+    gBackgroundsCopyQueueIndex = 0;
     gUnknown_03005390 = 0;
     gVramGraphicsCopyCursor = 0;
     gVramGraphicsCopyQueueIndex = 0;

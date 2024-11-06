@@ -258,7 +258,7 @@ extern OamData gOamBuffer[OAM_ENTRY_COUNT];
 
 // NOTE(Jace): This could be u16[2][DISPLAY_HEIGHT][2] (or unsigned Vec2_16?)
 extern u32 gBgOffsetsBuffer[2][DISPLAY_HEIGHT];
-extern Background *gUnknown_03001800[16];
+extern Background *gBackgroundsCopyQueue[16];
 
 // This is used to buffer the xy-shift for each background scanline
 extern void *gBgOffsetsHBlank;
@@ -330,6 +330,14 @@ extern struct GraphicsData gVramGraphicsCopyQueueBuffer[32];
     INC_GRAPHICS_QUEUE_CURSOR(gVramGraphicsCopyQueueIndex);
 #endif
 
+#define PAUSE_BACKGROUNDS_QUEUE() gBackgroundsCopyQueueCursor = gBackgroundsCopyQueueIndex;
+
+#define INC_BACKGROUNDS_QUEUE_CURSOR(cursor) cursor = (cursor + 1) % ARRAY_COUNT(gBackgroundsCopyQueue);
+
+#define ADD_TO_BACKGROUNDS_QUEUE(_bg)                                                                                                      \
+    gBackgroundsCopyQueue[gBackgroundsCopyQueueIndex] = _bg;                                                                               \
+    INC_BACKGROUNDS_QUEUE_CURSOR(gBackgroundsCopyQueueIndex);
+
 extern u16 *gUnknown_030022AC;
 extern void *gUnknown_030022C0;
 extern s16 gMosaicReg;
@@ -337,13 +345,13 @@ extern u8 gUnknown_030026F4;
 extern u16 gUnknown_03002820;
 extern u8 gUnknown_03002874;
 extern void *gUnknown_03002878;
-extern u8 gUnknown_0300287C;
+extern u8 gBackgroundsCopyQueueIndex;
 extern u8 gUnknown_03002A80;
 extern u16 gUnknown_03002A8C;
 // When paused, the previously-active OAM elements get moved to the end
 // of the OAM. This is the index of the first currently-inactive element
 extern u8 gOamFirstPausedIndex;
-extern u8 gUnknown_03002AE4;
+extern u8 gBackgroundsCopyQueueCursor;
 extern Sprite *gUnknown_03004D10[16];
 extern u8 gUnknown_03004D50;
 extern void *gUnknown_03004D54;
