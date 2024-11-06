@@ -119,6 +119,8 @@ void UpdateSprites(DCCredits *cred)
 {
     Sprite *s;
 
+    bool32 tailsIsCheering = FALSE;
+
     REG_IE |= INTR_FLAG_HBLANK;
 
     Debug_PrintTextAt("Game decompiled by:", 8, 16);
@@ -134,6 +136,7 @@ void UpdateSprites(DCCredits *cred)
     DisplaySprite(s);
     cred->qTailsScreenX += cred->qSpeedTails;
     s->x = I(cred->qTailsScreenX);
+    tailsIsCheering = (s->graphics.anim == SA2_ANIM_CHAR(33, CHARACTER_TAILS)) ? 1 : 0;
 
     s = &cred->sprLogoOllie;
     UpdateSpriteAnimation(s);
@@ -148,7 +151,7 @@ void UpdateSprites(DCCredits *cred)
     s->x = I(cred->qLogoJaceScreenX);
     Debug_PrintTextAt("@JaceCear", 16, cred->sprLogoJace.y + 8);
 
-    if ((cred->frames >= 5 * GBA_FRAMES_PER_SECOND) && ((cred->frames % 64u) < 32)) {
+    if (tailsIsCheering && ((cred->frames % 64u) < 32)) {
         Debug_PrintTextAt("Press START to continue", 8, DISPLAY_HEIGHT);
     }
 }
@@ -160,6 +163,7 @@ void Task_DecompCreditsFirst()
 
     UpdateSprites(cred);
 
+    // Check Tails' position
     if (cred->sprLogoJace.x <= ((DISPLAY_WIDTH / 2) + 24)) {
         cred->sprTails.graphics.anim = SA2_ANIM_CHAR(33, CHARACTER_TAILS);
         cred->sprTails.variant = 0;
@@ -219,7 +223,15 @@ void Task_SonicArrived(void)
 
     UpdateSprites(cred);
 
-    if (cred->sonicArrivedT0 > 10 * GBA_FRAMES_PER_SECOND) {
+    // Check Tails' position
+    if (cred->sprLogoJace.x <= ((DISPLAY_WIDTH / 2) + 24)) {
+        cred->sprTails.graphics.anim = SA2_ANIM_CHAR(33, CHARACTER_TAILS);
+        cred->sprTails.variant = 0;
+        cred->qSpeedTails = 0;
+        cred->sprTails.animSpeed = SPRITE_ANIM_SPEED(1.0);
+    }
+
+    if (cred->sonicArrivedT0 > 7 * GBA_FRAMES_PER_SECOND) {
         cred->sprSonic.graphics.anim = SA2_ANIM_CHAR(SA2_CHAR_ANIM_TAUNT, CHARACTER_SONIC);
         cred->sprSonic.variant = 0;
     }
@@ -283,7 +295,7 @@ void customHBlank(void)
     u16 vcount = REG_VCOUNT;
     if ((vcount >= DISPLAY_HEIGHT - 16 - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
         ((u16 *)BG_PLTT)[0] = RGB_WHITE;
-    } else if ((vcount >= DISPLAY_HEIGHT - 64 - 16 - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
+    } else if ((vcount >= (DISPLAY_HEIGHT / 2) - 1) && (vcount < DISPLAY_HEIGHT - 1)) {
         ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[3 * 16];
     } else {
         ((u16 *)BG_PLTT)[0] = ((u16 *)OBJ_PLTT)[2 * 16];
