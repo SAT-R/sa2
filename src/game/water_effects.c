@@ -361,7 +361,7 @@ static void VCountIntr_8011ACC(void)
 {
     Water *water = &gWater;
 #ifdef BUG_FIX
-    if (!water || !water->t)
+    if (water && water->t)
 #endif
     {
         WaterData *wd = TASK_DATA(water->t);
