@@ -67,8 +67,7 @@ void DrawBackground(Background *background)
         background->mapHeight = mapHeader->mapHeight;
     }
 
-    gUnknown_03001800[gUnknown_0300287C] = background;
-    gUnknown_0300287C = (gUnknown_0300287C + 1) % ARRAY_COUNT(gUnknown_03001800);
+    ADD_TO_BACKGROUNDS_QUEUE(background);
 }
 
 // (85.37%) https://decomp.me/scratch/617Jb
@@ -89,7 +88,7 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
     s32 j;
     u16 k;
 
-    while (gUnknown_03002AE4 != gUnknown_0300287C) {
+    while (gBackgroundsCopyQueueCursor != gBackgroundsCopyQueueIndex) {
         Background *bg;
 
 #if !PORTABLE
@@ -101,10 +100,10 @@ NONMATCH("asm/non_matching/engine/sub_8002B20.inc", bool32 sub_8002B20(void))
         // _08002B64
         REG_VCOUNT;
         {
-            Background **backgrounds = &gUnknown_03001800[0];
-            s32 index = gUnknown_03002AE4;
+            Background **backgrounds = &gBackgroundsCopyQueue[0];
+            s32 index = gBackgroundsCopyQueueCursor;
             bg = backgrounds[index];
-            gUnknown_03002AE4 = (gUnknown_03002AE4 + 1) % ARRAY_COUNT(gUnknown_03001800);
+            gBackgroundsCopyQueueCursor = (gBackgroundsCopyQueueCursor + 1) % ARRAY_COUNT(gBackgroundsCopyQueue);
 
             if ((bg->flags & BACKGROUND_FLAG_20) && (bg->scrollX == bg->prevScrollX) && bg->scrollY == bg->prevScrollY)
                 continue;

@@ -2,6 +2,7 @@
 #define GUARD_MULTIPLAYER_MULTIPAK_CONNECTION_H
 
 #include "global.h"
+#include "core.h"
 #include "multi_sio.h"
 
 extern u8 gMultiplayerUnlockedCharacters;
@@ -20,7 +21,7 @@ void MultiPakCommunicationError(void);
                 if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(i))) {                                                                      \
                     if (gMultiplayerMissingHeartbeats[i]++ > 0xB4) {                                                                       \
                         TasksDestroyAll();                                                                                                 \
-                        gUnknown_03002AE4 = gUnknown_0300287C;                                                                             \
+                        PAUSE_BACKGROUNDS_QUEUE();                                                                                         \
                         gUnknown_03005390 = 0;                                                                                             \
                         gVramGraphicsCopyCursor = gVramGraphicsCopyQueueIndex;                                                             \
                         MultiPakCommunicationError();                                                                                      \

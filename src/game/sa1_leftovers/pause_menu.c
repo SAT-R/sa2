@@ -110,7 +110,7 @@ void Task_PauseMenuUpdate(void)
         m4aSongNumStart(SE_SELECT);
 
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
@@ -120,7 +120,7 @@ void Task_PauseMenuUpdate(void)
         m4aSongNumStart(SE_SELECT);
 
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateTitleScreenAndSkipIntro();

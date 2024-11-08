@@ -216,7 +216,7 @@ static void sub_805ADAC(void)
         if (!(gMultiSioStatusFlags & MULTI_SIO_RECV_ID(SIO_MULTI_CNT->id))) {
             if (gMultiplayerMissingHeartbeats[SIO_MULTI_CNT->id]++ > 180) {
                 TasksDestroyAll();
-                gUnknown_03002AE4 = gUnknown_0300287C;
+                PAUSE_BACKGROUNDS_QUEUE();
                 gUnknown_03005390 = 0;
                 PAUSE_GRAPHICS_QUEUE();
                 MultiPakCommunicationError();
@@ -235,7 +235,7 @@ static void sub_805ADAC(void)
     if (gMultiSioStatusFlags & MULTI_SIO_HARD_ERROR || (r4 && !(gMultiSioStatusFlags & MULTI_SIO_RECV_ID0) && recv->unk0 != 0)) {
         if (++connectScreen->unkFD >= 9) {
             TasksDestroyAll();
-            gUnknown_03002AE4 = gUnknown_0300287C;
+            PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
@@ -296,7 +296,7 @@ static void sub_805ADAC(void)
     if (connectScreen->unkFA == 0) {
         if (!(gMultiSioStatusFlags & MULTI_SIO_PARENT) && gMultiSioStatusFlags & MULTI_SIO_RECV_ID0 && recv->unk0 > 0x4010) {
             TasksDestroyAll();
-            gUnknown_03002AE4 = gUnknown_0300287C;
+            PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
@@ -356,7 +356,7 @@ static void sub_805ADAC(void)
 
     if (recv->unk0 >= 0x4013) {
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         MultiPakCommunicationError();
@@ -490,7 +490,7 @@ static void sub_805B4C0(void)
             gUnknown_03002280[0][2] = 0xFF;
             gUnknown_03002280[0][3] = 32;
             TasksDestroyAll();
-            gUnknown_03002AE4 = gUnknown_0300287C;
+            PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();
@@ -551,7 +551,7 @@ static void sub_805B4C0(void)
         gUnknown_03002280[0][2] = 0xFF;
         gUnknown_03002280[0][3] = 32;
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         MultiPakCommunicationError();
@@ -559,7 +559,7 @@ static void sub_805B4C0(void)
     } else {
         if (gMultiSioStatusFlags & MULTI_SIO_PARENT && connectScreen->unkFB++ >= 0x3D) {
             TasksDestroyAll();
-            gUnknown_03002AE4 = gUnknown_0300287C;
+            PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
             MultiPakCommunicationError();

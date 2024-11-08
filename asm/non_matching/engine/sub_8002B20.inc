@@ -10,8 +10,8 @@
 	sub sp, #0x40
 	movs r0, #0
 	str r0, [sp, #4]
-	ldr r0, _08002B58 @ =gUnknown_03002AE4
-	ldr r1, _08002B5C @ =gUnknown_0300287C
+	ldr r0, _08002B58 @ =gBackgroundsCopyQueueCursor
+	ldr r1, _08002B5C @ =gBackgroundsCopyQueueIndex
 	ldrb r2, [r0]
 	adds r3, r0, #0
 	adds r4, r1, #0
@@ -29,13 +29,13 @@ _08002B44:
 	movs r0, #0
 	bl sub_8002B20_return
 	.align 2, 0
-_08002B58: .4byte gUnknown_03002AE4
-_08002B5C: .4byte gUnknown_0300287C
+_08002B58: .4byte gBackgroundsCopyQueueCursor
+_08002B5C: .4byte gBackgroundsCopyQueueIndex
 _08002B60: .4byte REG_DISPSTAT
 _08002B64:
 	ldr r0, _08002BC8 @ =REG_VCOUNT
 	ldrh r0, [r0]
-	ldr r2, _08002BCC @ =gUnknown_03001800
+	ldr r2, _08002BCC @ =gBackgroundsCopyQueue
 	ldrb r1, [r3]
 	lsls r0, r1, #2
 	adds r0, r0, r2
@@ -84,7 +84,7 @@ _08002B90:
 	b _08002BF8
 	.align 2, 0
 _08002BC8: .4byte REG_VCOUNT
-_08002BCC: .4byte gUnknown_03001800
+_08002BCC: .4byte gBackgroundsCopyQueue
 _08002BD0: .4byte gDispCnt
 _08002BD4: .4byte gBgCntRegs
 _08002BD8:
@@ -1476,8 +1476,8 @@ _080035FA:
 	strh r0, [r6, #0x34]
 	ldrh r0, [r6, #0x32]
 	strh r0, [r6, #0x36]
-	ldr r3, _08003630 @ =gUnknown_03002AE4
-	ldr r4, _08003634 @ =gUnknown_0300287C
+	ldr r3, _08003630 @ =gBackgroundsCopyQueueCursor
+	ldr r4, _08003634 @ =gBackgroundsCopyQueueIndex
 sub_8002B20_continue: @ 0x0800360A
 	ldrb r0, [r3]
 	ldrb r5, [r4]
@@ -1498,7 +1498,7 @@ sub_8002B20_return:
 	.align 2, 0
 _08003628: .4byte 0x040000D4
 _0800362C: .4byte REG_VCOUNT
-_08003630: .4byte gUnknown_03002AE4
-_08003634: .4byte gUnknown_0300287C
+_08003630: .4byte gBackgroundsCopyQueueCursor
+_08003634: .4byte gBackgroundsCopyQueueIndex
 
 .syntax divided

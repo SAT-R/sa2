@@ -273,7 +273,7 @@ void StartSinglePakConnect(void)
         gCurTask->main = sub_8081604;
     } else {
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         MultiPakCommunicationError();
@@ -298,7 +298,7 @@ void sub_8081604(void)
 
     if (SomeSioCheck()) {
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         MultiPakCommunicationError();
@@ -340,7 +340,7 @@ void sub_8081604(void)
     if (multiBootFlags == MULTIBOOT_ERROR_NO_PROBE_TARGET || multiBootFlags == MULTIBOOT_ERROR_NO_DLREADY
         || multiBootFlags == MULTIBOOT_ERROR_BOOT_FAILURE || multiBootFlags == MULTIBOOT_ERROR_HANDSHAKE_FAILURE) {
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         gFlags &= ~FLAGS_4000;
@@ -412,7 +412,7 @@ void sub_80818B8(void)
     for (i = 1; i < 4; i++) {
         if (!sub_8081E38(connectScreen, i)) {
             TasksDestroyAll();
-            gUnknown_03002AE4 = gUnknown_0300287C;
+            PAUSE_BACKGROUNDS_QUEUE();
             gUnknown_03005390 = 0;
             PAUSE_GRAPHICS_QUEUE();
             gFlags &= ~FLAGS_4000;

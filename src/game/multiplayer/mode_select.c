@@ -409,7 +409,7 @@ static void Task_ExitAndInitSelectedPakMode(void)
     u8 pakMode = modeScreen->pakMode;
     TasksDestroyAll();
 
-    gUnknown_03002AE4 = gUnknown_0300287C;
+    PAUSE_BACKGROUNDS_QUEUE();
     gUnknown_03005390 = 0;
     PAUSE_GRAPHICS_QUEUE();
 

@@ -1029,7 +1029,7 @@ static void Task_FadeOutAndExitToPrevious(void)
 
     if (UpdateScreenFade(unk0) == SCREEN_FADE_COMPLETE) {
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         if (gGameMode != GAME_MODE_SINGLE_PLAYER) {

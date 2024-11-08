@@ -1021,7 +1021,7 @@ void Task_804DC60(void)
     if (--boss->unk12 == 0) {
         TasksDestroyAll();
 
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
 
         PAUSE_GRAPHICS_QUEUE();

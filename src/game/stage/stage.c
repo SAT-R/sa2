@@ -439,7 +439,7 @@ void HandleLifeLost(void)
 
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
@@ -452,7 +452,7 @@ void HandleLifeLost(void)
         CreateGameOverScreen(OVER_CAUSE_ZERO_LIVES);
     } else {
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateGameStage();
@@ -610,7 +610,7 @@ void HandleDeath(void)
 
     if (gGameMode == GAME_MODE_TIME_ATTACK || gGameMode == GAME_MODE_BOSS_TIME_ATTACK) {
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         CreateTimeAttackLobbyScreen();
@@ -631,7 +631,7 @@ void HandleDeath(void)
 void GoToNextLevel(void)
 {
     TasksDestroyAll();
-    gUnknown_03002AE4 = gUnknown_0300287C;
+    PAUSE_BACKGROUNDS_QUEUE();
     gUnknown_03005390 = 0;
     PAUSE_GRAPHICS_QUEUE();
     WriteSaveGame();

@@ -217,7 +217,7 @@ static void sub_805BC40(void)
     } else {
         u8 outcome = outcomeScreen->unk203;
         TasksDestroyAll();
-        gUnknown_03002AE4 = gUnknown_0300287C;
+        PAUSE_BACKGROUNDS_QUEUE();
         gUnknown_03005390 = 0;
         PAUSE_GRAPHICS_QUEUE();
         if (outcome == OUTCOME_CONNECTION_SUCCESS) {
