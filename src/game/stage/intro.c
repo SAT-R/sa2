@@ -201,52 +201,52 @@ const s16 gUnknown_080D7130[6] = { 10, -8, 6, -4, 2, 0 };
 typedef struct {
     /* 0x00 */ u32 counter;
     /* 0x04 */ bool8 skippedIntro;
-} SITaskA; /* size: 0x8 */
+} IntroController; /* size: 0x8 */
 
-// TODO: Are SITaskB/C/F the same struct?
+// TODO: Are IntroBackgrounds/C/F the same struct?
 typedef struct {
-    /* 0x00 */ SITaskA *parent;
+    /* 0x00 */ IntroController *controller;
     /* 0x04 */ ScreenFade fade;
-    /* 0x10 */ Vec2_16 unk10;
-    /* 0x14 */ Vec2_16 unk14;
-} SITaskB; /* size: 0x18 */
+    /* 0x10 */ Vec2_16 colorsPos1;
+    /* 0x14 */ Vec2_16 colorsPos2;
+} IntroBackgrounds; /* size: 0x18 */
 
 typedef struct {
-    /* 0x00 */ SITaskA *parent;
+    /* 0x00 */ IntroController *controller;
     /* 0x04 */ Sprite sprUnlockedIcons[9];
     /* 0x1B4 */ Sprite sprCharacterLogo;
     /* 0x1E4 */ Sprite sprZoneName[4];
     /* 0x2A4 */ Sprite sprLoadingWheel;
     /* 0x2D4 */ Sprite sprLoadingWheelIcon;
     /* 0x304 */ SpriteTransform transform;
-} SITaskD; /* size: 0x310 */
+} IntroUI; /* size: 0x310 */
 
 typedef struct {
-    /* 0x00 */ SITaskA *parent;
+    /* 0x00 */ IntroController *controller;
     /* 0x04 */ Sprite sprZoneNames[4];
-} SITaskE; /* size: 0xC4 */
+} IntroActLetters; /* size: 0xC4 */
 
-static void Task_802F75C(void);
+static void Task_IntroControllerMain(void);
 static void Task_802F9F8(void);
 static void Task_IntroColorAnimation(void);
 static void Task_IntroZoneNameAndIconAnimations(void);
 static void Task_IntroActLettersAnimations(void);
 static void Task_UpdateStageLoadingScreen(void);
-static void TaskDestructor_StageIntroParent(struct Task *);
-static void TaskDestructor_nop_8030458(struct Task *);
+static void TaskDestructor_IntroController(struct Task *);
+static void TaskDestructor_Dummy(struct Task *);
 static void TaskDestructor_803045C(struct Task *);
 static void TaskDestructor_8030474(struct Task *);
 
 struct Task *SetupStageIntro(void)
 {
     struct Task *t; // sp04
-    SITaskA *sit_a; // sp08
+    IntroController *introController; // sp08
     struct Task *t2;
     ScreenFade *fade;
-    SITaskB *sit_b;
+    IntroBackgrounds *introBackgrounds;
     // SITaskC *sit_c;
-    SITaskD *sit_d; // r8
-    SITaskE *sit_e;
+    IntroUI *introUI; // r8
+    IntroActLetters *introActLetters;
     // SITaskF *sit_f;
     Vec2_16 *vec;
     void *tilesCursor;
@@ -261,41 +261,41 @@ struct Task *SetupStageIntro(void)
 
     gActiveBossTask = NULL;
 
-    t = TaskCreate(Task_802F75C, sizeof(SITaskA), 0x2200, 0, TaskDestructor_StageIntroParent);
-    sit_a = TASK_DATA(t);
-    sit_a->counter = 2;
-    sit_a->skippedIntro = FALSE;
+    t = TaskCreate(Task_IntroControllerMain, sizeof(IntroController), 0x2200, 0, TaskDestructor_IntroController);
+    introController = TASK_DATA(t);
+    introController->counter = 2;
+    introController->skippedIntro = FALSE;
 
     gPlayer.moveState |= MOVESTATE_100000;
 
-    t2 = TaskCreate(Task_802F9F8, sizeof(SITaskB), 0x2210, 0, TaskDestructor_nop_8030458);
-    sit_b = TASK_DATA(t2);
-    sit_b->parent = sit_a;
+    t2 = TaskCreate(Task_802F9F8, sizeof(IntroBackgrounds), 0x2210, 0, TaskDestructor_Dummy);
+    introBackgrounds = TASK_DATA(t2);
+    introBackgrounds->controller = introController;
 
-    fade = &sit_b->fade;
+    fade = &introBackgrounds->fade;
     fade->window = 0;
     fade->brightness = 0;
-    fade->flags = 2;
+    fade->flags = SCREEN_FADE_FLAG_2;
     fade->speed = 0;
-    fade->bldCnt = 0x3FFF;
+    fade->bldCnt = BLDCNT_TGT1_ALL | BLDCNT_TGT2_ALL | BLDCNT_EFFECT_LIGHTEN | BLDCNT_EFFECT_BLEND;
     fade->bldAlpha = 0;
     UpdateScreenFade(fade);
 
-    t2 = TaskCreate(Task_IntroColorAnimation, sizeof(SITaskB), 0x2220, 0, TaskDestructor_nop_8030458);
-    sit_b = TASK_DATA(t2);
-    sit_b->parent = sit_a;
+    t2 = TaskCreate(Task_IntroColorAnimation, sizeof(IntroBackgrounds), 0x2220, 0, TaskDestructor_Dummy);
+    introBackgrounds = TASK_DATA(t2);
+    introBackgrounds->controller = introController;
 
-    vec = &sit_b->unk10;
+    vec = &introBackgrounds->colorsPos1;
     vec->x = 0;
     vec->y = 0;
 
-    vec = &sit_b->unk14;
+    vec = &introBackgrounds->colorsPos2;
     vec->x = 0;
     vec->y = 0;
 
-    t2 = TaskCreate(Task_IntroZoneNameAndIconAnimations, sizeof(SITaskD), 0x2230, 0, TaskDestructor_803045C);
-    sit_d = TASK_DATA(t2);
-    sit_d->parent = sit_a;
+    t2 = TaskCreate(Task_IntroZoneNameAndIconAnimations, sizeof(IntroUI), 0x2230, 0, TaskDestructor_803045C);
+    introUI = TASK_DATA(t2);
+    introUI->controller = introController;
 
     if (IS_SINGLE_PLAYER) {
         tilesCursor = VramMalloc(
@@ -312,7 +312,7 @@ struct Task *SetupStageIntro(void)
     }
 
     /*     Init Character Logo     */
-    s = &sit_d->sprCharacterLogo;
+    s = &introUI->sprCharacterLogo;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = tilesCursor;
@@ -341,7 +341,7 @@ struct Task *SetupStageIntro(void)
     for (i = 0; i < NUM_ZONE_NAME_PARTS; i++) {
         u32 nameIndex;
 
-        s = &sit_d->sprZoneName[i];
+        s = &introUI->sprZoneName[i];
         s->x = 0;
         s->y = 0;
 
@@ -378,7 +378,7 @@ struct Task *SetupStageIntro(void)
     }
 
     /*    Loading Wheel in upper-left corner    */
-    s = &sit_d->sprLoadingWheel;
+    s = &introUI->sprLoadingWheel;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = tilesCursor;
@@ -398,7 +398,7 @@ struct Task *SetupStageIntro(void)
     UpdateSpriteAnimation(s);
 
     /*    Icon inside the loading wheel    */
-    s = &sit_d->sprLoadingWheelIcon;
+    s = &introUI->sprLoadingWheelIcon;
     s->x = 0;
     s->y = 0;
     s->graphics.dest = tilesCursor;
@@ -426,7 +426,7 @@ struct Task *SetupStageIntro(void)
     /*    The icons of all unlocked zones in the upper-right    */
     if (IS_SINGLE_PLAYER) {
         for (i = 0; i < NUM_INTRO_STAGE_ICONS; i++) {
-            s = &sit_d->sprUnlockedIcons[i];
+            s = &introUI->sprUnlockedIcons[i];
             s->x = 0;
             s->y = -32;
             s->graphics.dest = tilesCursor;
@@ -464,13 +464,13 @@ struct Task *SetupStageIntro(void)
     }
 
     /*    Act Names    */
-    t2 = TaskCreate(Task_IntroActLettersAnimations, sizeof(SITaskE), 0x2240, 0, TaskDestructor_8030474);
-    sit_e = TASK_DATA(t2);
-    sit_e->parent = sit_a;
+    t2 = TaskCreate(Task_IntroActLettersAnimations, sizeof(IntroActLetters), 0x2240, 0, TaskDestructor_8030474);
+    introActLetters = TASK_DATA(t2);
+    introActLetters->controller = introController;
     tilesCursor = VramMalloc(sZoneLoadingActLetters[0][0] * 4);
 
     for (i = 0; i < 4; i++) {
-        s = &sit_e->sprZoneNames[i];
+        s = &introActLetters->sprZoneNames[i];
         s->x = 0;
         s->y = -32;
 
@@ -478,7 +478,7 @@ struct Task *SetupStageIntro(void)
         s->variant = sZoneLoadingActLetters[i][2];
 
         // Set Act number anim (1 or 2)
-        if ((i == 3) && ((ACT_INDEX(gCurrentLevel) & 0x1) != ACT_1)) {
+        if ((i == 3) && ((ACT_INDEX(gCurrentLevel) & 1) != ACT_1)) {
             s->graphics.anim = sZoneLoadingActLetters[4][1];
             s->variant = sZoneLoadingActLetters[4][2];
         }
@@ -498,17 +498,17 @@ struct Task *SetupStageIntro(void)
         UpdateSpriteAnimation(s);
     }
 
-    t2 = TaskCreate(Task_UpdateStageLoadingScreen, sizeof(SITaskB), 0x22F0, 0, TaskDestructor_nop_8030458);
-    sit_b = TASK_DATA(t2);
-    sit_b->parent = sit_a;
+    t2 = TaskCreate(Task_UpdateStageLoadingScreen, sizeof(IntroBackgrounds), 0x22F0, 0, TaskDestructor_Dummy);
+    introBackgrounds = TASK_DATA(t2);
+    introBackgrounds->controller = introController;
 
     return t;
 }
 
-static void Task_802F75C(void)
+static void Task_IntroControllerMain(void)
 {
-    SITaskA *sit_a = TASK_DATA(gCurTask);
-    u32 frameCounter = sit_a->counter;
+    IntroController *introController = TASK_DATA(gCurTask);
+    u32 frameCounter = introController->counter;
     frameCounter++;
 
     /*    Allow player to skip the intro animation    */
@@ -517,10 +517,10 @@ static void Task_802F75C(void)
             gPlayer.moveState &= ~MOVESTATE_100000;
             gPlayer.moveState &= ~MOVESTATE_400000;
             frameCounter = 200;
-            sit_a->skippedIntro = TRUE;
+            introController->skippedIntro = TRUE;
         }
     }
-    sit_a->counter = frameCounter;
+    introController->counter = frameCounter;
 
     gUnknown_03005AF0.s.frameFlags &= ~(SPRITE_FLAG_MASK_OBJ_MODE);
 
@@ -571,7 +571,7 @@ static void Task_802F75C(void)
             gStageFlags &= ~STAGE_FLAG__ACT_START;
         } else {
             if (gBossIndex == 0) {
-                CreateCourseStartCountdown(sit_a->skippedIntro);
+                CreateCourseStartCountdown(introController->skippedIntro);
             } else {
                 gPlayer.moveState &= ~MOVESTATE_IGNORE_INPUT;
                 gStageFlags &= ~STAGE_FLAG__ACT_START;
@@ -591,13 +591,13 @@ static void Task_802F75C(void)
 // (85.25%) https://decomp.me/scratch/zMdSN
 NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8(void))
 {
-    SITaskB *sit_b = TASK_DATA(gCurTask);
-    SITaskA *parent = sit_b->parent; // sp00
-    ScreenFade *fade = &sit_b->fade;
-    s32 frameCounter = parent->counter;
+    IntroBackgrounds *introBackgrounds = TASK_DATA(gCurTask);
+    IntroController *controller = introBackgrounds->controller; // sp00
+    ScreenFade *fade = &introBackgrounds->fade;
+    s32 frameCounter = controller->counter;
     u8 i;
 
-    gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_OBJWIN_ON);
+    // gDispCnt &= ~(DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_OBJWIN_ON);
 
     if ((unsigned)frameCounter >= 150) {
         frameCounter -= 150;
@@ -687,7 +687,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
     // _0802FC86
 
     /* Setup window registers and destroy this Task */
-    if (parent->counter >= 200) {
+    if (controller->counter >= 200) {
         gBldRegs.bldY = 0;
         gBldRegs.bldCnt = 0;
         gBldRegs.bldAlpha = 0;
@@ -709,8 +709,13 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
 
             gBldRegs.bldCnt
                 = (BLDCNT_TGT2_OBJ | BLDCNT_TGT2_BG0 | BLDCNT_TGT2_BG1 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1 | BLDCNT_TGT1_BG2);
-            gBldRegs.bldAlpha = 0x404;
-            gBldRegs.bldY = 0x404;
+            gBldRegs.bldAlpha = BLDALPHA_BLEND(4, 4);
+            // Bug: this shouldn't be set any large than 31, possibly copy and paste from the above line?
+#ifdef BUG_FIX
+            gBldRegs.bldY = SCREEN_FADE_BLEND_MAX;
+#else
+            gBldRegs.bldY = 1028;
+#endif
         }
 
         TaskDestroy(gCurTask);
@@ -721,12 +726,12 @@ END_NONMATCH
 
 static void Task_IntroColorAnimation(void)
 {
-    SITaskB *sit_b = TASK_DATA(gCurTask);
+    IntroBackgrounds *introBackgrounds = TASK_DATA(gCurTask);
 
-    SITaskA *parent = sit_b->parent;
-    Vec2_16 *p0 = &sit_b->unk10;
-    Vec2_16 *p1 = &sit_b->unk14;
-    u32 counter = parent->counter;
+    IntroController *controller = introBackgrounds->controller;
+    Vec2_16 *p0 = &introBackgrounds->colorsPos1;
+    Vec2_16 *p1 = &introBackgrounds->colorsPos2;
+    u32 counter = controller->counter;
 
     if (counter > INTROFRAME_VISIBLE) {
         u32 innerCount = counter - INTROFRAME_VISIBLE;
@@ -799,20 +804,20 @@ static void Task_IntroColorAnimation(void)
 
 static void StageIntroUpdateIcons(void)
 {
-    SITaskD *sit_d = TASK_DATA(gCurTask);
-    u32 counter = sit_d->parent->counter;
+    IntroUI *introUI = TASK_DATA(gCurTask);
+    u32 counter = introUI->controller->counter;
     Sprite *s;
     SpriteTransform *transform;
     s32 i;
     s32 sineVal;
 
     /* Colored Character Logo */
-    s = &sit_d->sprCharacterLogo;
+    s = &introUI->sprCharacterLogo;
     DisplaySprite(s);
 
     /* Zone Name */
-    for (i = 0; i < ARRAY_COUNT(sit_d->sprZoneName); i++) {
-        s = &sit_d->sprZoneName[i];
+    for (i = 0; i < ARRAY_COUNT(introUI->sprZoneName); i++) {
+        s = &introUI->sprZoneName[i];
         s->prevVariant = -1;
         UpdateSpriteAnimation(s);
         DisplaySprite(s);
@@ -820,14 +825,14 @@ static void StageIntroUpdateIcons(void)
 
     /* Icons of unlocked Zones */
     if (IS_SINGLE_PLAYER) {
-        for (i = 0; i < ARRAY_COUNT(sit_d->sprUnlockedIcons); i++) {
-            s = &sit_d->sprUnlockedIcons[i];
+        for (i = 0; i < ARRAY_COUNT(introUI->sprUnlockedIcons); i++) {
+            s = &introUI->sprUnlockedIcons[i];
             DisplaySprite(s);
         }
     }
 
     /* The top-left Loading Wheel */
-    s = &sit_d->sprLoadingWheel;
+    s = &introUI->sprLoadingWheel;
     if (counter >= 30) {
         if (counter == 30) {
             s->graphics.anim = SA2_ANIM_STAGE_INTRO_LOADING_WHEEL;
@@ -839,8 +844,8 @@ static void StageIntroUpdateIcons(void)
     DisplaySprite(s);
 
     /* The Zone's icon inside the Loading Wheel */
-    s = &sit_d->sprLoadingWheelIcon;
-    transform = &sit_d->transform;
+    s = &introUI->sprLoadingWheelIcon;
+    transform = &introUI->transform;
     sineVal = SIN_24_8((counter * 24) & ONE_CYCLE);
 
     if (sineVal == Q(1.0)) {
@@ -863,8 +868,8 @@ static void StageIntroUpdateIcons(void)
 // (88.38%) https://decomp.me/scratch/la7O4
 NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.inc", void Task_IntroZoneNameAndIconAnimations(void))
 {
-    SITaskD *sit_d = TASK_DATA(gCurTask);
-    u32 counter = sit_d->parent->counter;
+    IntroUI *introUI = TASK_DATA(gCurTask);
+    u32 counter = introUI->controller->counter;
     Sprite *s;
     u8 sp08;
     s32 sl;
@@ -876,7 +881,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
             return;
         } else if (counter >= 150) {
             // _0802FFD2
-            s = &sit_d->sprCharacterLogo;
+            s = &introUI->sprCharacterLogo;
 
             if (counter == 150) {
                 s->graphics.anim = sColoredTriangle[gSelectedCharacter].anim;
@@ -898,7 +903,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
         // _0803004E
         counter -= 9;
 
-        s = &sit_d->sprCharacterLogo;
+        s = &introUI->sprCharacterLogo;
 
         if (counter <= 12) {
             s->x = 254 - (((counter * 75) << 6) >> 8);
@@ -917,8 +922,8 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
         i = 0;
         sp08 = counter;
 
-        for (i = 0; i < ARRAY_COUNT(sit_d->sprZoneName); i++) {
-            s = &sit_d->sprZoneName[i];
+        for (i = 0; i < ARRAY_COUNT(introUI->sprZoneName); i++) {
+            s = &introUI->sprZoneName[i];
 
             if (counter <= 12) {
                 s->x = 284 - (((counter * 75) << 6) >> 8);
@@ -939,10 +944,10 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
         }
         // _08030134+8
 
-        for (i = 0; i < ARRAY_COUNT(sit_d->sprUnlockedIcons); i++) {
+        for (i = 0; i < ARRAY_COUNT(introUI->sprUnlockedIcons); i++) {
             // _08030170
-            u32 lastIconIndex = ((ARRAY_COUNT(sit_d->sprUnlockedIcons) - 1) - i);
-            s = &sit_d->sprUnlockedIcons[lastIconIndex];
+            u32 lastIconIndex = ((ARRAY_COUNT(introUI->sprUnlockedIcons) - 1) - i);
+            s = &introUI->sprUnlockedIcons[lastIconIndex];
             s->x = 67 + lastIconIndex * 17;
             s->y = -22;
 
@@ -985,7 +990,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
         }
 
         /* Loading Wheel */
-        s = &sit_d->sprLoadingWheel;
+        s = &introUI->sprLoadingWheel;
         s->x = 36;
 
         if (counter <= 16) {
@@ -1001,7 +1006,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
 
         // _08030240
         /* Loading Wheel Icon */
-        s = &sit_d->sprLoadingWheelIcon;
+        s = &introUI->sprLoadingWheelIcon;
 
         s->frameFlags = (gUnknown_030054B8++ | SPRITE_FLAG_MASK_ROT_SCALE_ENABLE);
         s->x = 35;
@@ -1025,12 +1030,12 @@ END_NONMATCH
 static inline void sub_8030488_inline()
 {
     if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS) && (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_FINAL)) {
-        SITaskE *sit_e = TASK_DATA(gCurTask);
+        IntroActLetters *introActLetters = TASK_DATA(gCurTask);
         u8 i;
 
-        for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
-            if ((i * 3) < (sit_e->parent->counter - 150)) {
-                Sprite *s = &sit_e->sprZoneNames[i];
+        for (i = 0; i < ARRAY_COUNT(introActLetters->sprZoneNames); i++) {
+            if ((i * 3) < (introActLetters->controller->counter - 150)) {
+                Sprite *s = &introActLetters->sprZoneNames[i];
                 DisplaySprite(s);
             }
         }
@@ -1039,8 +1044,8 @@ static inline void sub_8030488_inline()
 
 void Task_IntroActLettersAnimations(void)
 {
-    SITaskE *sit_e = TASK_DATA(gCurTask);
-    u32 counter = sit_e->parent->counter;
+    IntroActLetters *introActLetters = TASK_DATA(gCurTask);
+    u32 counter = introActLetters->controller->counter;
     Sprite *s;
     u32 i;
     s32 y;
@@ -1054,8 +1059,8 @@ void Task_IntroActLettersAnimations(void)
         counter -= 150;
 
         if (counter < 14) {
-            for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
-                s = &sit_e->sprZoneNames[i];
+            for (i = 0; i < ARRAY_COUNT(introActLetters->sprZoneNames); i++) {
+                s = &introActLetters->sprZoneNames[i];
 
                 y = counter - i * 3;
                 if (y >= 4)
@@ -1073,14 +1078,14 @@ void Task_IntroActLettersAnimations(void)
 
             y = gUnknown_080D7130[counter];
 
-            for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
-                s = &sit_e->sprZoneNames[i];
+            for (i = 0; i < ARRAY_COUNT(introActLetters->sprZoneNames); i++) {
+                s = &introActLetters->sprZoneNames[i];
                 s->x = sScreenPositions_ZoneLoadingActLetters[i][0];
                 s->y = sScreenPositions_ZoneLoadingActLetters[i][1] + y;
             }
         } else {
-            for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
-                s = &sit_e->sprZoneNames[i];
+            for (i = 0; i < ARRAY_COUNT(introActLetters->sprZoneNames); i++) {
+                s = &introActLetters->sprZoneNames[i];
                 s->x = sScreenPositions_ZoneLoadingActLetters[i][0];
                 s->y = sScreenPositions_ZoneLoadingActLetters[i][1];
             }
@@ -1090,7 +1095,7 @@ void Task_IntroActLettersAnimations(void)
     }
 }
 
-static void TaskDestructor_StageIntroParent(struct Task *t)
+static void TaskDestructor_IntroController(struct Task *t)
 {
     if (gCurrentLevel == LEVEL_INDEX(ZONE_1, ACT_1)) {
         InitWaterPalettes();
@@ -1103,8 +1108,8 @@ static void TaskDestructor_StageIntroParent(struct Task *t)
 
 static void Task_UpdateStageLoadingScreen(void)
 {
-    SITaskB *sit_b = TASK_DATA(gCurTask);
-    u32 counter = sit_b->parent->counter;
+    IntroBackgrounds *introBackgrounds = TASK_DATA(gCurTask);
+    u32 counter = introBackgrounds->controller->counter;
 
     gBgPalette[0] = sZoneLoadingCharacterColors[gSelectedCharacter];
 
@@ -1116,18 +1121,18 @@ static void Task_UpdateStageLoadingScreen(void)
     }
 }
 
-static void TaskDestructor_nop_8030458(struct Task *t) { }
+static void TaskDestructor_Dummy(struct Task *t) { }
 
 static void TaskDestructor_803045C(struct Task *t)
 {
-    SITaskD *sit_d = TASK_DATA(t);
-    VramFree(sit_d->sprCharacterLogo.graphics.dest);
+    IntroUI *introUI = TASK_DATA(t);
+    VramFree(introUI->sprCharacterLogo.graphics.dest);
 }
 
 static void TaskDestructor_8030474(struct Task *t)
 {
-    SITaskE *sit_e = TASK_DATA(t);
-    VramFree(sit_e->sprZoneNames[0].graphics.dest);
+    IntroActLetters *introActLetters = TASK_DATA(t);
+    VramFree(introActLetters->sprZoneNames[0].graphics.dest);
 }
 
 // NOTE: This only matches with the code being copy-pasted,
@@ -1135,15 +1140,19 @@ static void TaskDestructor_8030474(struct Task *t)
 //       defined above for some reason...
 static void sub_8030488(void)
 {
+#ifndef NON_MATCHING
     if ((ACT_INDEX(gCurrentLevel) != ACT_BOSS) && (LEVEL_TO_ZONE(gCurrentLevel) != ZONE_FINAL)) {
-        SITaskE *sit_e = TASK_DATA(gCurTask);
+        IntroActLetters *introActLetters = TASK_DATA(gCurTask);
         u8 i;
 
-        for (i = 0; i < ARRAY_COUNT(sit_e->sprZoneNames); i++) {
-            if ((i * 3) < (sit_e->parent->counter - 150)) {
-                Sprite *s = &sit_e->sprZoneNames[i];
+        for (i = 0; i < ARRAY_COUNT(introActLetters->sprZoneNames); i++) {
+            if ((i * 3) < (introActLetters->controller->counter - 150)) {
+                Sprite *s = &introActLetters->sprZoneNames[i];
                 DisplaySprite(s);
             }
         }
     }
+#else
+    sub_8030488_inline();
+#endif
 }

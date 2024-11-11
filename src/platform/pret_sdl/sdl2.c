@@ -411,10 +411,10 @@ static SDL_DisplayMode sdlDispMode = { 0 };
 
 void Platform_QueueAudio(const void *data, uint32_t bytesCount)
 {
-    // Reset the audio buffer if we are 3 frames out of sync
+    // Reset the audio buffer if we are 10 frames out of sync
     // If this happens it suggests there was some OS level lag
-    // in playing audio. The queue length should remain stable at < 3 otherwise
-    if (SDL_GetQueuedAudioSize(1) > (bytesCount * 3)) {
+    // in playing audio. The queue length should remain stable at < 10 otherwise
+    if (SDL_GetQueuedAudioSize(1) > (bytesCount * 10)) {
         SDL_ClearQueuedAudio(1);
     }
 
@@ -1811,11 +1811,12 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     if (REG_DISPCNT & DISPCNT_WIN0_ON) {
         // acquire the window coordinates
 
-        WIN0bottom = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0V]); // y2;
-        WIN0top = WIN_GET_LOWER(gWinRegs[WINREG_WIN0V]); // y1;
-        WIN0right = WIN_GET_HIGHER(gWinRegs[WINREG_WIN0H]); // x2
-        WIN0left = WIN_GET_LOWER(gWinRegs[WINREG_WIN0H]); // x1
+        WIN0bottom = WIN_GET_HIGHER(REG_WIN0V); // y2;
+        WIN0top = WIN_GET_LOWER(REG_WIN0V); // y1;
+        WIN0right = WIN_GET_HIGHER(REG_WIN0H); // x2
+        WIN0left = WIN_GET_LOWER(REG_WIN0H); // x1
 
+        // printf("%d, %d, %d, %d\n", WIN0bottom, WIN0top, WIN0right, WIN0left);
         // figure out WIN Y wraparound and check bounds accordingly
         if (WIN0top > WIN0bottom) {
             if (vcount >= WIN0top || vcount < WIN0bottom)
@@ -1829,10 +1830,10 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     }
     // figure out if WIN1 masks on this scanline
     if (REG_DISPCNT & DISPCNT_WIN1_ON) {
-        WIN1bottom = WIN_GET_HIGHER(gWinRegs[WINREG_WIN1V]); // y2;
-        WIN1top = WIN_GET_LOWER(gWinRegs[WINREG_WIN1V]); // y1;
-        WIN1right = WIN_GET_HIGHER(gWinRegs[WINREG_WIN1H]); // x2
-        WIN1left = WIN_GET_LOWER(gWinRegs[WINREG_WIN1H]); // x1
+        WIN1bottom = WIN_GET_HIGHER(REG_WIN1V); // y2;
+        WIN1top = WIN_GET_LOWER(REG_WIN1V); // y1;
+        WIN1right = WIN_GET_HIGHER(REG_WIN1H); // x2
+        WIN1left = WIN_GET_LOWER(REG_WIN1H); // x1
 
         if (WIN1top > WIN1bottom) {
             if (vcount >= WIN1top || vcount < WIN1bottom)
