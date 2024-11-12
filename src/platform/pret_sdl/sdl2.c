@@ -1699,7 +1699,6 @@ static void DrawSprites(struct scanlineData *scanline, uint16_t vcount, bool win
 
                 if (pixel != 0) {
                     uint16_t color = palette[pixel];
-                    ;
 
                     // if sprite mode is 2 then write to the window mask instead
                     if (isObjWin) {
@@ -1944,22 +1943,6 @@ static void DrawFrame(uint16_t *pixels)
     int j;
     static uint16_t scanlines[DISPLAY_HEIGHT][DISPLAY_WIDTH];
     unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
-    uint16_t backdropColor = ((uint16_t *)PLTT)[0];
-
-    // backdrop color brightness effects
-    if (REG_BLDCNT & BLDCNT_TGT1_BD) {
-        switch (blendMode) {
-            case 2:
-                backdropColor = alphaBrightnessIncrease(backdropColor);
-                break;
-            case 3:
-                backdropColor = alphaBrightnessDecrease(backdropColor);
-                break;
-        }
-
-        // Make sure to push the backdrop color back to PLTT mem.
-        *(uint16_t *)PLTT = backdropColor;
-    }
 
     for (i = 0; i < DISPLAY_HEIGHT; i++) {
         REG_VCOUNT = i;
