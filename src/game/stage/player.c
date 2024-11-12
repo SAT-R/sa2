@@ -5323,7 +5323,7 @@ void Player_80279F8(Player *p)
         p->heldInput = DPAD_RIGHT;
         p->speedGroundX = Q(10.0);
         p->charState = CHARSTATE_WALK_A;
-        sub_801583C();
+        CreateBoostEffectTasks();
 
         PLAYERFN_SET(Player_8027B98);
 

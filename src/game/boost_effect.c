@@ -179,7 +179,7 @@ static inline void sub_8015B64_inline(AnimId anim, u16 palId)
     }
 }
 
-void sub_801583C(void)
+void CreateBoostEffectTasks(void)
 {
     Sprite *s;
     u8 i;
