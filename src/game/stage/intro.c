@@ -678,11 +678,7 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_802F9F8.inc", void Task_802F9F8
         UpdateScreenFade(fade);
 
         gWinRegs[WINREG_WININ] = (WININ_WIN0_ALL | WININ_WIN1_ALL);
-        // This line is needed on all platforms but ATM it just makes the background black on
-        // SDL so we can't see the intro triangles. We need to figure that out and re-enable
-#if PLATFORM_GBA
         gWinRegs[WINREG_WINOUT] = (WINOUT_WIN01_OBJ | WINOUT_WINOBJ_OBJ);
-#endif
     }
 
     if (gCurrentLevel == LEVEL_INDEX(ZONE_FINAL, ACT_TRUE_AREA_53)) {
