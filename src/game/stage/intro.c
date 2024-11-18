@@ -786,7 +786,7 @@ static void Task_IntroColorAnimation(void)
         }
     }
 
-    gUnknown_03002A80 = 2;
+    gUnknown_03002A80 = 2 * sizeof(int_vcount);
     gUnknown_03002878 = (void *)&REG_WIN0H;
 
     gFlags |= FLAGS_4;
