@@ -45,7 +45,7 @@ u32 gMultiSioStatusFlags = 0;
 bool8 gMultiSioEnabled = FALSE;
 
 struct Task *gTaskPtrs[] ALIGNED(16) = {};
-u32 gBgOffsetsBuffer[2][DISPLAY_HEIGHT] = {}; /* TODO: Find out how this is different from gBgOffsetsHBlank */
+int_vcount gBgOffsetsBuffer[2][DISPLAY_HEIGHT][4] = {}; /* TODO: Find out how this is different from gBgOffsetsHBlank */
 u16 gObjPalette[] = {};
 Tilemap **gTilemapsRef = NULL;
 u32 gFrameCount = 0;
@@ -54,7 +54,7 @@ s32 gNumTasks = 0;
 u8 gUnknown_03002280[4][4] = {};
 u16 gInput = 0;
 u8 gRepeatedKeysTestCounter[] ALIGNED(16) = {};
-u16 *gUnknown_030022AC = NULL;
+void *gUnknown_030022AC = NULL;
 u16 gBgCntRegs[] = {};
 u16 gRepeatedKeys ALIGNED(4) = 0;
 struct Task *gNextTask = NULL;
@@ -297,7 +297,7 @@ void GameInit(void)
     DmaFill32(3, 0, &gBgOffsetsBuffer, sizeof(gBgOffsetsBuffer));
 
     gBgOffsetsHBlank = gBgOffsetsBuffer[0];
-    gUnknown_030022AC = (void *)gBgOffsetsBuffer[1];
+    gUnknown_030022AC = gBgOffsetsBuffer[1];
     gUnknown_03002878 = NULL;
     gUnknown_03002A80 = 0;
     gNumHBlankCallbacks = 0;

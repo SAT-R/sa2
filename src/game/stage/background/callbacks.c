@@ -27,7 +27,7 @@ void HBlankCB_801E434(int_vcount vcount)
 void HBlankCB_801E454(int_vcount vcount)
 {
     if (vcount != 0) {
-        u16 *p = &gUnknown_030022AC[vcount * 2], *q;
+        u16 *p = &((u16 *)gUnknown_030022AC)[vcount * 2], *q;
         q = p - 1;
 
         if (p[1] != *q) {

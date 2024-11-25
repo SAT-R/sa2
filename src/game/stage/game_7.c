@@ -19,7 +19,7 @@ void sub_802DBC0(u8 p0, u16 p1)
     if (r6 == 0 || r6 == 1) {
         s16 i;
 
-        bgOffsets = &bgOffsets[p0 * sizeof(u16)];
+        bgOffsets = &bgOffsets[p0 * 2];
 
 #ifndef NON_MATCHING
         asm("" : "=r"(r5));
@@ -46,7 +46,7 @@ void sub_802DBC0(u8 p0, u16 p1)
         r3 = ABS(r3);
 
         if (r6 < Q(2.0)) {
-            bgOffsets = &bgOffsets[p0 * sizeof(u16)];
+            bgOffsets = &bgOffsets[p0 * 2];
 
             // __0802DC56
             for (i = p0; i < DISPLAY_HEIGHT; i++) {
@@ -66,7 +66,7 @@ void sub_802DBC0(u8 p0, u16 p1)
             }
         } else {
             // _0802DC90
-            bgOffsets = &bgOffsets[p0 * sizeof(u16)];
+            bgOffsets = &bgOffsets[p0 * 2];
 
             for (i = p0; i >= 0; i--) {
                 // _0802DC9C
@@ -180,7 +180,7 @@ void sub_802DDC4(u8 p0, u16 p1)
     if ((r6 - Q(2.0)) == 0 || (r6 - Q(2.0)) == 1) {
         s16 i;
 
-        bgOffsets = &bgOffsets[p0 * sizeof(u16)];
+        bgOffsets = &bgOffsets[p0 * 2];
 
 #ifndef NON_MATCHING
         asm("" : "=r"(r5));
@@ -207,7 +207,7 @@ void sub_802DDC4(u8 p0, u16 p1)
         }
 
         if (r6 < Q(2.0)) {
-            bgOffsets = &bgOffsets[p0 * sizeof(u16)];
+            bgOffsets = &bgOffsets[p0 * 2];
 
             // __0802DC56
             for (i = p0; i < DISPLAY_HEIGHT; i++) {
@@ -226,7 +226,7 @@ void sub_802DDC4(u8 p0, u16 p1)
             }
         } else {
             // _0802DC90
-            bgOffsets = &bgOffsets[DISPLAY_HEIGHT * sizeof(u16)];
+            bgOffsets = &bgOffsets[DISPLAY_HEIGHT * 2];
 
             for (i = DISPLAY_HEIGHT; i > p0; i--) {
                 bgOffsets--;
@@ -235,7 +235,7 @@ void sub_802DDC4(u8 p0, u16 p1)
             }
 
             bgOffsets = gBgOffsetsHBlank;
-            bgOffsets += p0 * sizeof(u16);
+            bgOffsets += p0 * 2;
 
             for (i = p0; i >= 0; i--) {
                 // _0802DC9C
