@@ -780,7 +780,7 @@ static void Task_IntroColorAnimation(void)
              * highlights the Act's name */
             innerCount = counter - INTROFRAME_CLEAR_BANNER;
             p0->y = 544 - (innerCount * 6);
-            p0->x = (innerCount * 7);
+            p0->x = innerCount * ((DISPLAY_HEIGHT - 62) / 14);
             p1->y = 0;
             // p1->x = 0;
         }
