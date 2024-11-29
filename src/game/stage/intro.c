@@ -743,8 +743,8 @@ static void Task_IntroColorAnimation(void)
 
         if (innerCount < INTROFRAME_NAME_AND_BANNER) {
             /* Bottom left */
-            p0->y = -(innerCount * 24) + 256;
-            p0->x = 88;
+            p0->y = -(innerCount * (DISPLAY_WIDTH / INTROFRAME_NAME_AND_BANNER)) + (DISPLAY_WIDTH + 16);
+            p0->x = (DISPLAY_HEIGHT / 2) + 8;
 
             if (innerCount >= INTROFRAME_BANNER_APPEARS) {
                 /* Top Banner */
@@ -757,7 +757,7 @@ static void Task_IntroColorAnimation(void)
             /* Keep the Bottom-Left Triangle and Banner on-screen until 2 seconds have
              * passed (and stage name + all icons left the screen) */
             p0->y = 542;
-            p0->x = 137;
+            p0->x = DISPLAY_HEIGHT - 23;
             p1->y = 512;
             p1->x = 16;
         } else if (counter < INTROFRAME_CLEAR_BANNER) {
@@ -765,7 +765,7 @@ static void Task_IntroColorAnimation(void)
             innerCount = counter - INTROFRAME_PAUSE_ON_BANNER;
 
             p0->y = 542 - (innerCount * 18);
-            p0->x = -(innerCount * 2) + 137;
+            p0->x = -(innerCount * 2) + (DISPLAY_HEIGHT - 23);
             p1->y = 512 - (innerCount * 16);
             p1->x = counter - 104;
         } else if (counter >= INTROFRAME_FADE_GAMEPLAY) {
@@ -793,7 +793,7 @@ static void Task_IntroColorAnimation(void)
 
     InitHBlankBgOffsets(DISPLAY_WIDTH);
 
-    if (counter > 10) {
+    if (counter > INTROFRAME_NAME_AND_BANNER) {
         sub_802DDC4(p0->x, p0->y);
         sub_802DF18(p1->x, p1->y);
     } else {
@@ -865,7 +865,7 @@ static void StageIntroUpdateIcons(void)
     DisplaySprite(s);
 }
 
-// (88.38%) https://decomp.me/scratch/la7O4
+// (88.38%) https://decomp.me/scratch/HozxE
 NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.inc", void Task_IntroZoneNameAndIconAnimations(void))
 {
     IntroUI *introUI = TASK_DATA(gCurTask);
@@ -907,16 +907,16 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
 
         if (counter <= 12) {
             s->x = 254 - (((counter * 75) << 6) >> 8);
-            s->y = 121 - (((counter * 123) << 3) >> 8);
+            s->y = ((DISPLAY_HEIGHT / 2) + 41) - (((counter * 123) << 3) >> 8);
         } else if (counter <= 100) {
             // _08030078
-            s->x = 24;
-            s->y = 74;
+            s->x = 254 - (((13 * 75) << 6) >> 8) + 13;
+            s->y = ((DISPLAY_HEIGHT / 2) + 41) - (((13 * 123) << 3) >> 8) + 2;
         } else {
             // _08030086
             u32 innerCount = counter - (100 - 12);
             s->x = 254 - (((innerCount * 75) << 6) >> 8);
-            s->y = 121 - (((innerCount * 123) << 3) >> 8);
+            s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((innerCount * 123) << 3) >> 8);
         }
         // _080300AE
         i = 0;
@@ -927,13 +927,13 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
 
             if (counter <= 12) {
                 s->x = 284 - (((counter * 75) << 6) >> 8);
-                s->y = 127 - (((counter * 123) << 3) >> 8);
+                s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((counter * 123) << 3) >> 8);
             } else if (counter <= 100) {
-                s->x = 54;
-                s->y = DISPLAY_HEIGHT / 2;
+                s->x = 284 - (((13 * 75) << 6) >> 8) + 13;
+                s->y = ((DISPLAY_HEIGHT / 2) + 47) - (((13 * 123) << 3) >> 8) + 2;
             } else {
                 s->x = 284 - ((((counter - (100 - 12)) * 75) << 6) >> 8);
-                s->y = 127 - ((((counter - (100 - 12)) * 123) << 3) >> 8);
+                s->y = ((DISPLAY_HEIGHT / 2) + 47) - ((((counter - (100 - 12)) * 123) << 3) >> 8);
             }
             // _0803012A
 
@@ -948,7 +948,8 @@ NONMATCH("asm/non_matching/game/stage/intro/Task_IntroZoneNameAndIconAnimations.
             // _08030170
             u32 lastIconIndex = ((ARRAY_COUNT(introUI->sprUnlockedIcons) - 1) - i);
             s = &introUI->sprUnlockedIcons[lastIconIndex];
-            s->x = 67 + lastIconIndex * 17;
+            s->x = (DISPLAY_WIDTH - (ARRAY_COUNT(introUI->sprUnlockedIcons) * 17) - ((ARRAY_COUNT(introUI->sprUnlockedIcons) + 1) * 2))
+                + lastIconIndex * 17;
             s->y = -22;
 
             if (sp08 < 50) {

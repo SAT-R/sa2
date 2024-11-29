@@ -149,9 +149,17 @@ void sub_802EF68(s16 p0, s16 p1, u8 p2)
 void InitHBlankBgOffsets(u16 xOffset)
 {
     if (gBgOffsetsHBlank == &gBgOffsetsBuffer) {
+#if DISPLAY_WIDTH > 255
+        DmaFill32(3, xOffset, &gBgOffsetsBuffer[0][0], sizeof(gBgOffsetsBuffer[0]));
+#else
         DmaFill16(3, xOffset, &gBgOffsetsBuffer[0][0], sizeof(gBgOffsetsBuffer[0]));
+#endif
     } else {
+#if DISPLAY_WIDTH > 255
+        DmaFill32(3, xOffset, &gBgOffsetsBuffer[1][0], sizeof(gBgOffsetsBuffer[1]));
+#else
         DmaFill16(3, xOffset, &gBgOffsetsBuffer[1][0], sizeof(gBgOffsetsBuffer[1]));
+#endif
     }
 }
 
