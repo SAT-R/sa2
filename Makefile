@@ -30,11 +30,15 @@ ifeq ($(PLATFORM),gba)
   PREFIX := arm-none-eabi-
 else ifeq ($(CPU_ARCH),i386)
   ifeq ($(PLATFORM),sdl_win32)
-    TOOLCHAIN := /usr/i686-w64-mingw32/
     PREFIX := i686-w64-mingw32-
   else ifeq ($(PLATFORM),win32)
-    TOOLCHAIN := /usr/i686-w64-mingw32/
     PREFIX := i686-w64-mingw32-
+  endif
+else ifeq ($(CPU_ARCH),EE)
+  ifeq ($(PLATFORM),sdl_ps2)
+    PREFIX := mips64r5900el-ps2-elf-
+  else
+    $(error Unsupported CPU arch for platform '$(CPU_ARCH)', '$(PLATFORM)')
   endif
 else
   ifneq ($(PLATFORM),sdl)
