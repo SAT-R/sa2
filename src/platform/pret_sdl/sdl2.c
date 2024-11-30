@@ -2011,6 +2011,21 @@ void VDraw(SDL_Texture *texture)
     REG_VCOUNT = 161; // prep for being in VBlank period
 }
 
+<<<<<<< HEAD
+=======
+int DoMain(void *data)
+{
+    AgbMain();
+    return 0;
+}
+
+void VBlankIntrWait(void)
+{
+    SDL_AtomicSet(&isFrameAvailable, 1);
+    SDL_SemWait(vBlankSemaphore);
+}
+
+>>>>>>> b1b34f15 (more progress)
 u8 BinToBcd(u8 bin)
 {
     int placeCounter = 1;

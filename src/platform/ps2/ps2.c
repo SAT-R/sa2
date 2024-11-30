@@ -9,7 +9,9 @@
 #include <xinput.h>
 #endif
 
-// #include <SDL.h>
+#define SDL_MAIN_HANDLED
+
+#include <SDL.h>
 
 #include "global.h"
 #include "core.h"
@@ -90,10 +92,11 @@ struct bgPriority {
     char subPriority;
 };
 
-// SDL_Thread *mainLoopThread;
-// SDL_Window *sdlWindow;
-// SDL_Renderer *sdlRenderer;
-// SDL_Texture *sdlTexture;
+SDL_Thread *mainLoopThread;
+SDL_Thread *controlThread;
+SDL_Window *sdlWindow;
+SDL_Renderer *sdlRenderer;
+SDL_Texture *sdlTexture;
 #if ENABLE_VRAM_VIEW
 SDL_Window *vramWindow;
 SDL_Renderer *vramRenderer;
@@ -102,8 +105,8 @@ SDL_Texture *vramTexture;
 #define INITIAL_VIDEO_SCALE 1
 unsigned int videoScale = INITIAL_VIDEO_SCALE;
 unsigned int preFullscreenVideoScale = INITIAL_VIDEO_SCALE;
-// SDL_sem *vBlankSemaphore;
-// SDL_atomic_t isFrameAvailable;
+SDL_sem *vBlankSemaphore;
+SDL_atomic_t isFrameAvailable;
 bool speedUp = false;
 bool videoScaleChanged = false;
 bool isRunning = true;
@@ -122,9 +125,10 @@ extern void AgbMain(void);
 void DoSoftReset(void) {};
 
 int DoMain(void *param);
+int DoControl(void *data);
 void ProcessSDLEvents(void);
-// void VDraw(SDL_Texture *texture);
-// void VramDraw(SDL_Texture *texture);
+void VDraw(SDL_Texture *texture);
+void VramDraw(SDL_Texture *texture);
 
 static void ReadSaveFile(char *path);
 static void StoreSaveFile(void);
@@ -140,209 +144,275 @@ void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GE
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 #endif
 
+#include <kernel.h>
+
+void RotateThreads(s32 id, u16 time, void *arg)
+{
+    printf("rorate\n");
+    iRotateThreadReadyQueue(0x1e);
+}
+
 int main(int argc, char **argv)
 {
-    //     // Open an output console on Windows
-    // #ifdef _WIN32
-    //     AllocConsole();
-    //     AttachConsole(GetCurrentProcessId());
-    //     freopen("CON", "w", stdout);
-    // #endif
+    // REG_RCNT = 0x8000;
+    // cgb_audio_init(48000);
+    // AgbMain();
+    // return 0;
+    // Open an output console on Windows
+#ifdef _WIN32
+    AllocConsole();
+    AttachConsole(GetCurrentProcessId());
+    freopen("CON", "w", stdout);
+#endif
 
-    //     ReadSaveFile("sa2.sav");
+    // ReadSaveFile("sa2.sav");
 
-    //     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-    //         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-    //         return 1;
-    //     }
+    printf("Starting\n");
+    SDL_SetMainReady();
+    printf("Ready \n");
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
+    printf("INITIALISED\n");
 
-    // #ifdef TITLE_BAR
-    //     const char *title = STR(TITLE_BAR);
-    // #else
-    //     const char *title = "SAT-R sa2";
-    // #endif
+#ifdef TITLE_BAR
+    const char *title = STR(TITLE_BAR);
+#else
+    const char *title = "SAT-R sa2";
+#endif
 
-    //     sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * videoScale,
-    //                                  DISPLAY_HEIGHT * videoScale, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-    //     if (sdlWindow == NULL) {
-    //         fprintf(stderr, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
-    //         return 1;
-    //     }
+    sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, DISPLAY_WIDTH * videoScale,
+                                 DISPLAY_HEIGHT * videoScale, SDL_WINDOW_SHOWN);
+    if (sdlWindow == NULL) {
+        fprintf(stderr, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
 
-    // #if ENABLE_VRAM_VIEW
-    //     int mainWindowX;
-    //     int mainWindowWidth;
-    //     SDL_GetWindowPosition(sdlWindow, &mainWindowX, NULL);
-    //     SDL_GetWindowSize(sdlWindow, &mainWindowWidth, NULL);
-    //     int vramWindowX = mainWindowX + mainWindowWidth;
-    //     u16 vramWindowWidth = VRAM_VIEW_WIDTH;
-    //     u16 vramWindowHeight = VRAM_VIEW_HEIGHT;
-    //     vramWindow = SDL_CreateWindow("VRAM View", vramWindowX, SDL_WINDOWPOS_CENTERED, vramWindowWidth, vramWindowHeight,
-    //                                   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-    //     if (vramWindow == NULL) {
-    //         fprintf(stderr, "VRAM Window could not be created! SDL_Error: %s\n", SDL_GetError());
-    //         return 1;
-    //     }
-    // #endif
+    printf("WINDOW CREATED\n");
 
-    //     sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_PRESENTVSYNC);
-    //     if (sdlRenderer == NULL) {
-    //         fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
-    //         return 1;
-    //     }
+#if ENABLE_VRAM_VIEW
+    int mainWindowX;
+    int mainWindowWidth;
+    SDL_GetWindowPosition(sdlWindow, &mainWindowX, NULL);
+    SDL_GetWindowSize(sdlWindow, &mainWindowWidth, NULL);
+    int vramWindowX = mainWindowX + mainWindowWidth;
+    u16 vramWindowWidth = VRAM_VIEW_WIDTH;
+    u16 vramWindowHeight = VRAM_VIEW_HEIGHT;
+    vramWindow = SDL_CreateWindow("VRAM View", vramWindowX, SDL_WINDOWPOS_CENTERED, vramWindowWidth, vramWindowHeight,
+                                  SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+    if (vramWindow == NULL) {
+        fprintf(stderr, "VRAM Window could not be created! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
+#endif
 
-    // #if ENABLE_VRAM_VIEW
-    //     vramRenderer = SDL_CreateRenderer(vramWindow, -1, SDL_RENDERER_PRESENTVSYNC);
-    //     if (vramRenderer == NULL) {
-    //         fprintf(stderr, "VRAM Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
-    //         return 1;
-    //     }
-    // #endif
+    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_PRESENTVSYNC);
+    if (sdlRenderer == NULL) {
+        fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
+    printf("RENDERER CREATED\n");
 
-    //     SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
-    //     SDL_RenderClear(sdlRenderer);
-    //     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-    //     SDL_RenderSetLogicalSize(sdlRenderer, DISPLAY_WIDTH, DISPLAY_HEIGHT);
-    // #if ENABLE_VRAM_VIEW
-    //     SDL_SetRenderDrawColor(vramRenderer, 0, 0, 0, 255);
-    //     SDL_RenderClear(vramRenderer);
-    //     SDL_RenderSetLogicalSize(vramRenderer, vramWindowWidth, vramWindowHeight);
-    // #endif
+#if ENABLE_VRAM_VIEW
+    vramRenderer = SDL_CreateRenderer(vramWindow, -1, SDL_RENDERER_PRESENTVSYNC);
+    if (vramRenderer == NULL) {
+        fprintf(stderr, "VRAM Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
+#endif
 
-    //     sdlTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ABGR1555, SDL_TEXTUREACCESS_STREAMING, DISPLAY_WIDTH,
-    //     DISPLAY_HEIGHT); if (sdlTexture == NULL) {
-    //         fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
-    //         return 1;
-    //     }
+    SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
+    SDL_RenderClear(sdlRenderer);
+    // SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+    SDL_RenderSetLogicalSize(sdlRenderer, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
-    // #if ENABLE_VRAM_VIEW
-    //     vramTexture = SDL_CreateTexture(vramRenderer, SDL_PIXELFORMAT_ABGR1555, SDL_TEXTUREACCESS_STREAMING, vramWindowWidth,
-    //     vramWindowHeight); if (vramTexture == NULL) {
-    //         fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
-    //         return 1;
-    //     }
-    // #endif
+#if ENABLE_VRAM_VIEW
+    SDL_SetRenderDrawColor(vramRenderer, 0, 0, 0, 255);
+    SDL_RenderClear(vramRenderer);
+    SDL_RenderSetLogicalSize(vramRenderer, vramWindowWidth, vramWindowHeight);
+#endif
 
-    //     simTime = curGameTime = lastGameTime = SDL_GetPerformanceCounter();
+    sdlTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ABGR1555, SDL_TEXTUREACCESS_STREAMING, DISPLAY_WIDTH, DISPLAY_HEIGHT);
+    if (sdlTexture == NULL) {
+        fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
 
-    //     isFrameAvailable.value = 0;
-    //     vBlankSemaphore = SDL_CreateSemaphore(0);
-    //     if (vBlankSemaphore == NULL) {
-    //         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to create Semaphore:\n  %s", SDL_GetError());
-    //     }
+#if ENABLE_VRAM_VIEW
+    vramTexture = SDL_CreateTexture(vramRenderer, SDL_PIXELFORMAT_ABGR1555, SDL_TEXTUREACCESS_STREAMING, vramWindowWidth, vramWindowHeight);
+    if (vramTexture == NULL) {
+        fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
+#endif
 
-    // #if ENABLE_AUDIO
-    // SDL_AudioSpec want;
+    simTime = curGameTime = lastGameTime = SDL_GetPerformanceCounter();
 
-    // SDL_memset(&want, 0, sizeof(want)); /* or SDL_zero(want) */
-    // want.freq = 48000;
-    // want.format = AUDIO_F32;
-    // want.channels = 2;
-    // want.samples = (want.freq / 60);
+    isFrameAvailable.value = 0;
+    vBlankSemaphore = SDL_CreateSemaphore(0);
+    if (vBlankSemaphore == NULL) {
+        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to create Semaphore:\n  %s", SDL_GetError());
+    }
+
+#if ENABLE_AUDIO
+    SDL_AudioSpec want;
+
+    SDL_memset(&want, 0, sizeof(want)); /* or SDL_zero(want) */
+    want.freq = 48000;
+    want.format = AUDIO_F32;
+    want.channels = 2;
+    want.samples = (want.freq / 60);
     cgb_audio_init(48000);
 
-    //     if (SDL_OpenAudio(&want, 0) < 0)
-    //         SDL_Log("Failed to open audio: %s", SDL_GetError());
-    //     else {
-    //         if (want.format != AUDIO_F32) /* we let this one thing change. */
-    //             SDL_Log("We didn't get Float32 audio format.");
-    //         SDL_PauseAudio(0);
-    //     }
-    // #endif
+    // if (SDL_OpenAudio(&want, 0) < 0)
+    //     SDL_Log("Failed to open audio: %s", SDL_GetError());
+    // else {
+    //     if (want.format != AUDIO_F32) /* we let this one thing change. */
+    //         SDL_Log("We didn't get Float32 audio format.");
+    //     SDL_PauseAudio(0);
+    // }
+#endif
 
-    //     VDraw(sdlTexture);
-    // #if ENABLE_VRAM_VIEW
-    //     VramDraw(vramTexture);
-    // #endif
-    //     // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
-    //     REG_RCNT = 0x8000;
-
-    //     mainLoopThread = SDL_CreateThread(DoMain, "AgbMain", NULL);
-
-    //     double accumulator = 0.0;
-
-    // #if 0
-    //     memset(&internalClock, 0, sizeof(internalClock));
-    //     internalClock.status = SIIRTCINFO_24HOUR;
-    //     UpdateInternalClock();
-    // #endif
-
-    //     REG_KEYINPUT = 0x3FF;
-
-    //     while (isRunning) {
-    //         ProcessSDLEvents();
-
-    //         if (!paused || stepOneFrame) {
-    //             double dt = fixedTimestep / timeScale; // TODO: Fix speedup
-    //             double deltaTime = 0;
-
-    //             curGameTime = SDL_GetPerformanceCounter();
-    //             if (stepOneFrame) {
-    //                 deltaTime = dt;
-    //             } else {
-    //                 deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
-    //                 if (deltaTime > (dt * 5))
-    //                     deltaTime = dt * 5;
-    //             }
-    //             lastGameTime = curGameTime;
-
-    //             accumulator += deltaTime;
-
-    //             while (accumulator >= dt) {
-    //                 REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
-    //                 if (SDL_AtomicGet(&isFrameAvailable)) {
-    //                     VDraw(sdlTexture);
-    //                     SDL_AtomicSet(&isFrameAvailable, 0);
-
-    //                     REG_DISPSTAT |= INTR_FLAG_VBLANK;
-
-    //                     // TODO(Jace): I think this should be DMA_VBLANK.
-    //                     //             If not, and it is HBLANK instead, add a note here, why it is!
-    //                     RunDMAs(DMA_VBLANK);
-
-    //                     if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
-    //                         gIntrTable[INTR_INDEX_VBLANK]();
-    //                     REG_DISPSTAT &= ~INTR_FLAG_VBLANK;
-
-    //                     SDL_SemPost(vBlankSemaphore);
-
-    //                     accumulator -= dt;
-    //                 }
-    //             }
-
-    //             if (paused && stepOneFrame) {
-    //                 stepOneFrame = false;
-    //             }
-    //         }
-
-    //         SDL_RenderClear(sdlRenderer);
-    //         SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
-
-    // #if ENABLE_VRAM_VIEW
-    //         VramDraw(vramTexture);
-    //         SDL_RenderClear(vramRenderer);
-    //         SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
-    // #endif
-    //         if (videoScaleChanged) {
-    //             SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
-    //             videoScaleChanged = false;
-    //         }
-    //         SDL_RenderPresent(sdlRenderer);
-    // #if ENABLE_VRAM_VIEW
-    //         SDL_RenderPresent(vramRenderer);
-    // #endif
-    //     }
-
-    //     // StoreSaveFile();
-    //     CloseSaveFile();
-
-    //     SDL_DestroyWindow(sdlWindow);
-    //     SDL_Quit();
-    //     return 0;
-
+    VDraw(sdlTexture);
+#if ENABLE_VRAM_VIEW
+    VramDraw(vramTexture);
+#endif
+    // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
     REG_RCNT = 0x8000;
-    AgbMain();
 
+    mainLoopThread = SDL_CreateThread(DoMain, "AgbMain", NULL);
+    controlThread = SDL_CreateThread(DoControl, "DoControl", NULL);
+    // struct t_ee_thread agbThread, controlThread;
+    // int agbThreadId, controlThreadId;
+
+    // printf("\nBeginning thread demo:\n");
+
+    // agbThread.status = 0;
+    // agbThread.func = (void *)DoMain;
+    // agbThread.stack = (void *)((int *)malloc(0x800) + 0x800 - 4);
+    // agbThread.initial_priority = 0x1e;
+
+    // controlThread.status = 0;
+    // controlThread.func = (void *)DoControl;
+    // controlThread.stack = (void *)((int *)malloc(0x800) + 0x800 - 4);
+    // controlThread.initial_priority = 0x1e;
+
+    // agbThreadId = CreateThread(&agbThread);
+    // controlThreadId = CreateThread(&controlThread);
+
+    // if (agbThreadId <= 0) {
+    //     printf("Server thread failed to start. %i\n", agbThreadId);
+    //     return -1;
+    // }
+
+    // if (controlThreadId <= 0) {
+    //     printf("Server thread failed to start. %i\n", controlThreadId);
+    //     return -1;
+    // }
+    // printf("Starting threads\n");
+
+    // StartThread(agbThreadId, NULL);
+    // StartThread(controlThreadId, NULL);
+
+    // // Set the time in miliseconds to call the function RotateThreads
+    // SetAlarm(16, RotateThreads, 0);
+
+    while (isRunning) {
+        SleepThread();
+    }
+
+    // TerminateThread(agbThreadId);
+    // printf("Terminated agb thread.\n");
+    // TerminateThread(controlThreadId);
+    // printf("Terminated control thread.\n");
+
+    // StoreSaveFile();
+    // CloseSaveFile();
+
+    SDL_DestroyWindow(sdlWindow);
+    SDL_Quit();
+    return 0;
+}
+
+int DoControl(void *d)
+{
+    printf("CONTROL??");
+    double accumulator = 0.0;
+
+#if 0
+        memset(&internalClock, 0, sizeof(internalClock));
+        internalClock.status = SIIRTCINFO_24HOUR;
+        UpdateInternalClock();
+#endif
+
+    REG_KEYINPUT = 0x3FF;
+
+    while (TRUE) {
+        printf("PROCESS EVENT\n");
+        ProcessSDLEvents();
+
+        if (!paused || stepOneFrame) {
+            double dt = fixedTimestep / timeScale; // TODO: Fix speedup
+            double deltaTime = 0;
+
+            curGameTime = SDL_GetPerformanceCounter();
+            if (stepOneFrame) {
+                deltaTime = dt;
+            } else {
+                deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
+                if (deltaTime > (dt * 5))
+                    deltaTime = dt * 5;
+            }
+            lastGameTime = curGameTime;
+
+            accumulator += deltaTime;
+
+            while (accumulator >= dt) {
+                printf("WAITING %d %d\n", accumulator, dt);
+                REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
+                if (SDL_AtomicGet(&isFrameAvailable)) {
+                    VDraw(sdlTexture);
+                    SDL_AtomicSet(&isFrameAvailable, 0);
+
+                    REG_DISPSTAT |= INTR_FLAG_VBLANK;
+
+                    // TODO(Jace): I think this should be DMA_VBLANK.
+                    //             If not, and it is HBLANK instead, add a note here, why it is!
+                    RunDMAs(DMA_VBLANK);
+
+                    if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
+                        gIntrTable[INTR_INDEX_VBLANK]();
+                    REG_DISPSTAT &= ~INTR_FLAG_VBLANK;
+
+                    SDL_SemPost(vBlankSemaphore);
+
+                    accumulator -= dt;
+                }
+            }
+
+            if (paused && stepOneFrame) {
+                stepOneFrame = false;
+            }
+        }
+
+        SDL_RenderClear(sdlRenderer);
+        SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+
+#if ENABLE_VRAM_VIEW
+        VramDraw(vramTexture);
+        SDL_RenderClear(vramRenderer);
+        SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
+#endif
+        if (videoScaleChanged) {
+            SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
+            videoScaleChanged = false;
+        }
+        SDL_RenderPresent(sdlRenderer);
+#if ENABLE_VRAM_VIEW
+        SDL_RenderPresent(vramRenderer);
+#endif
+    }
     return 0;
 }
 
@@ -412,7 +482,7 @@ static void CloseSaveFile()
 static u16 keys;
 
 u32 fullScreenFlags = 0;
-// static SDL_DisplayMode sdlDispMode = { 0 };
+static SDL_DisplayMode sdlDispMode = { 0 };
 
 void Platform_QueueAudio(const void *data, uint32_t bytesCount)
 {
@@ -429,105 +499,105 @@ void Platform_QueueAudio(const void *data, uint32_t bytesCount)
 
 void ProcessSDLEvents(void)
 {
-    // SDL_Event event;
+    SDL_Event event;
 
-    // while (SDL_PollEvent(&event)) {
-    //     SDL_Keycode keyCode = event.key.keysym.sym;
-    //     Uint16 keyMod = event.key.keysym.mod;
+    while (SDL_PollEvent(&event)) {
+        SDL_Keycode keyCode = event.key.keysym.sym;
+        Uint16 keyMod = event.key.keysym.mod;
 
-    //     switch (event.type) {
-    //         case SDL_QUIT:
-    //             isRunning = false;
-    //             break;
-    //         case SDL_KEYUP:
-    //             switch (event.key.keysym.sym) {
-    //                 HANDLE_KEYUP(A_BUTTON)
-    //                 HANDLE_KEYUP(B_BUTTON)
-    //                 HANDLE_KEYUP(START_BUTTON)
-    //                 HANDLE_KEYUP(SELECT_BUTTON)
-    //                 HANDLE_KEYUP(L_BUTTON)
-    //                 HANDLE_KEYUP(R_BUTTON)
-    //                 HANDLE_KEYUP(DPAD_UP)
-    //                 HANDLE_KEYUP(DPAD_DOWN)
-    //                 HANDLE_KEYUP(DPAD_LEFT)
-    //                 HANDLE_KEYUP(DPAD_RIGHT)
-    //                 case SDLK_SPACE:
-    //                     if (speedUp) {
-    //                         speedUp = false;
-    //                         timeScale = 1.0;
-    //                         SDL_ClearQueuedAudio(1);
-    //                         SDL_PauseAudio(0);
-    //                     }
-    //                     break;
-    //             }
-    //             break;
-    //         case SDL_KEYDOWN:
-    //             if (keyCode == SDLK_RETURN && (keyMod & KMOD_ALT)) {
-    //                 fullScreenFlags ^= SDL_WINDOW_FULLSCREEN_DESKTOP;
-    //                 if (fullScreenFlags & SDL_WINDOW_FULLSCREEN_DESKTOP) {
-    //                     SDL_GetWindowDisplayMode(sdlWindow, &sdlDispMode);
-    //                     preFullscreenVideoScale = videoScale;
-    //                 } else {
-    //                     SDL_SetWindowDisplayMode(sdlWindow, &sdlDispMode);
-    //                     videoScale = preFullscreenVideoScale;
-    //                 }
-    //                 SDL_SetWindowFullscreen(sdlWindow, fullScreenFlags);
+        switch (event.type) {
+            case SDL_QUIT:
+                isRunning = false;
+                break;
+            case SDL_KEYUP:
+                switch (event.key.keysym.sym) {
+                    HANDLE_KEYUP(A_BUTTON)
+                    HANDLE_KEYUP(B_BUTTON)
+                    HANDLE_KEYUP(START_BUTTON)
+                    HANDLE_KEYUP(SELECT_BUTTON)
+                    HANDLE_KEYUP(L_BUTTON)
+                    HANDLE_KEYUP(R_BUTTON)
+                    HANDLE_KEYUP(DPAD_UP)
+                    HANDLE_KEYUP(DPAD_DOWN)
+                    HANDLE_KEYUP(DPAD_LEFT)
+                    HANDLE_KEYUP(DPAD_RIGHT)
+                    case SDLK_SPACE:
+                        if (speedUp) {
+                            speedUp = false;
+                            timeScale = 1.0;
+                            SDL_ClearQueuedAudio(1);
+                            SDL_PauseAudio(0);
+                        }
+                        break;
+                }
+                break;
+            case SDL_KEYDOWN:
+                if (keyCode == SDLK_RETURN && (keyMod & KMOD_ALT)) {
+                    fullScreenFlags ^= SDL_WINDOW_FULLSCREEN_DESKTOP;
+                    if (fullScreenFlags & SDL_WINDOW_FULLSCREEN_DESKTOP) {
+                        SDL_GetWindowDisplayMode(sdlWindow, &sdlDispMode);
+                        preFullscreenVideoScale = videoScale;
+                    } else {
+                        SDL_SetWindowDisplayMode(sdlWindow, &sdlDispMode);
+                        videoScale = preFullscreenVideoScale;
+                    }
+                    SDL_SetWindowFullscreen(sdlWindow, fullScreenFlags);
 
-    //                 SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
-    //                 videoScaleChanged = FALSE;
-    //             } else
-    //                 switch (event.key.keysym.sym) {
-    //                     HANDLE_KEYDOWN(A_BUTTON)
-    //                     HANDLE_KEYDOWN(B_BUTTON)
-    //                     HANDLE_KEYDOWN(START_BUTTON)
-    //                     HANDLE_KEYDOWN(SELECT_BUTTON)
-    //                     HANDLE_KEYDOWN(L_BUTTON)
-    //                     HANDLE_KEYDOWN(R_BUTTON)
-    //                     HANDLE_KEYDOWN(DPAD_UP)
-    //                     HANDLE_KEYDOWN(DPAD_DOWN)
-    //                     HANDLE_KEYDOWN(DPAD_LEFT)
-    //                     HANDLE_KEYDOWN(DPAD_RIGHT)
-    //                     case SDLK_r:
-    //                         if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
-    //                             DoSoftReset();
-    //                         }
-    //                         break;
-    //                     case SDLK_p:
-    //                         if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
-    //                             paused = !paused;
-    //                         }
-    //                         break;
-    //                     case SDLK_SPACE:
-    //                         if (!speedUp) {
-    //                             speedUp = true;
-    //                             timeScale = 5.0;
-    //                             SDL_PauseAudio(1);
-    //                         }
-    //                         break;
-    //                     case SDLK_F10:
-    //                         paused = true;
-    //                         stepOneFrame = true;
-    //                         break;
-    //                 }
-    //             break;
-    //         case SDL_WINDOWEVENT:
-    //             if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-    //                 unsigned int w = event.window.data1;
-    //                 unsigned int h = event.window.data2;
+                    SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
+                    videoScaleChanged = FALSE;
+                } else
+                    switch (event.key.keysym.sym) {
+                        HANDLE_KEYDOWN(A_BUTTON)
+                        HANDLE_KEYDOWN(B_BUTTON)
+                        HANDLE_KEYDOWN(START_BUTTON)
+                        HANDLE_KEYDOWN(SELECT_BUTTON)
+                        HANDLE_KEYDOWN(L_BUTTON)
+                        HANDLE_KEYDOWN(R_BUTTON)
+                        HANDLE_KEYDOWN(DPAD_UP)
+                        HANDLE_KEYDOWN(DPAD_DOWN)
+                        HANDLE_KEYDOWN(DPAD_LEFT)
+                        HANDLE_KEYDOWN(DPAD_RIGHT)
+                        case SDLK_r:
+                            if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
+                                DoSoftReset();
+                            }
+                            break;
+                        case SDLK_p:
+                            if (event.key.keysym.mod & (KMOD_LCTRL | KMOD_RCTRL)) {
+                                paused = !paused;
+                            }
+                            break;
+                        case SDLK_SPACE:
+                            if (!speedUp) {
+                                speedUp = true;
+                                timeScale = 5.0;
+                                SDL_PauseAudio(1);
+                            }
+                            break;
+                        case SDLK_F10:
+                            paused = true;
+                            stepOneFrame = true;
+                            break;
+                    }
+                break;
+            case SDL_WINDOWEVENT:
+                if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    unsigned int w = event.window.data1;
+                    unsigned int h = event.window.data2;
 
-    //                 videoScale = 0;
-    //                 if (w / DISPLAY_WIDTH > videoScale)
-    //                     videoScale = w / DISPLAY_WIDTH;
-    //                 if (h / DISPLAY_HEIGHT > videoScale)
-    //                     videoScale = h / DISPLAY_HEIGHT;
-    //                 if (videoScale < 1)
-    //                     videoScale = 1;
+                    videoScale = 0;
+                    if (w / DISPLAY_WIDTH > videoScale)
+                        videoScale = w / DISPLAY_WIDTH;
+                    if (h / DISPLAY_HEIGHT > videoScale)
+                        videoScale = h / DISPLAY_HEIGHT;
+                    if (videoScale < 1)
+                        videoScale = 1;
 
-    //                 videoScaleChanged = true;
-    //             }
-    //             break;
-    //     }
-    // }
+                    videoScaleChanged = true;
+                }
+                break;
+        }
+    }
 }
 
 #ifdef _WIN32
@@ -748,19 +818,17 @@ void DmaStop(int dmaNum)
     dma->control &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
 }
 
-void DmaWait(int dmaNum) { printf("DmaWait: %d\n", dmaNum); }
-
-// void DmaWait(int dmaNum)
-// {
-//     vu32 *ctrlRegs = &REG_DMA0CNT;
-// #if !USE_NEW_DMA
-//     while (ctrlRegs[dmaNum * 3] & (DMA_ENABLE << 16))
-//         ;
-// #else
-//     while (ctrlRegs[dmaNum] & (DMA_ENABLE << 16))
-//         ;
-// #endif
-// }
+void DmaWait(int dmaNum)
+{
+    vu32 *ctrlRegs = &REG_DMA0CNT;
+#if !USE_NEW_DMA
+    while (ctrlRegs[dmaNum * 3] & (DMA_ENABLE << 16))
+        ;
+#else
+    while (ctrlRegs[dmaNum] & (DMA_ENABLE << 16))
+        ;
+#endif
+}
 
 void TestFunc(void) { }
 
@@ -2023,24 +2091,28 @@ void VramDraw(SDL_Texture *texture)
 }
 #endif
 
-// void VDraw(SDL_Texture *texture)
-// {
-//     memset(gameImage, 0, sizeof(gameImage));
-//     DrawFrame(gameImage);
-//     SDL_UpdateTexture(texture, NULL, gameImage, DISPLAY_WIDTH * sizeof(Uint16));
-//     REG_VCOUNT = 161; // prep for being in VBlank period
-// }
+void VDraw(SDL_Texture *texture)
+{
+    memset(gameImage, 0, sizeof(gameImage));
+    DrawFrame(gameImage);
+    SDL_UpdateTexture(texture, NULL, gameImage, DISPLAY_WIDTH * sizeof(Uint16));
+    REG_VCOUNT = 161; // prep for being in VBlank period
+}
 
 int DoMain(void *data)
 {
+    printf("THREAD!\n");
     AgbMain();
     return 0;
 }
 
 void VBlankIntrWait(void)
 {
-    // SDL_AtomicSet(&isFrameAvailable, 1);
-    // SDL_SemWait(vBlankSemaphore);
+    printf("INTRWAIT\n");
+    SDL_AtomicSet(&isFrameAvailable, 1);
+    printf("WAITING FOR SEM\n");
+    while (vBlankSemaphore)
+        SDL_SemWait(vBlankSemaphore);
 }
 
 u8 BinToBcd(u8 bin)
