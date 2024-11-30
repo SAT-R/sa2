@@ -106,6 +106,7 @@ SDL_Texture *vramTexture;
 unsigned int videoScale = INITIAL_VIDEO_SCALE;
 unsigned int preFullscreenVideoScale = INITIAL_VIDEO_SCALE;
 SDL_sem *vBlankSemaphore;
+SDL_atomic_t isVblankReady;
 SDL_atomic_t isFrameAvailable;
 bool speedUp = false;
 bool videoScaleChanged = false;
@@ -146,10 +147,141 @@ void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 
 #include <kernel.h>
 
+static volatile int counter = 0;
+static volatile int continueloop;
+
+#define THREAD_STACK_SIZE (128 * 1024)
+
+static u8 thread_stack[THREAD_STACK_SIZE] ALIGNED(16);
+static ee_thread_t thread_thread;
+static int thread_threadid;
+
+static u8 thread_stack2[THREAD_STACK_SIZE] ALIGNED(16);
+static ee_thread_t thread_thread2;
+static int thread_threadid2;
+
+static u8 disp_stack[THREAD_STACK_SIZE] ALIGNED(16);
+static int disp_threadid;
+
+void TheThread(void *arg);
+void TheThread2(void *arg);
+
+// void dispatcher(void *apParam)
+// {
+
+//     while (1) {
+//         printf("Dispatch\n");
+
+//         SleepThread();
+
+//     } /* end while */
+
+// } /* end dispatcher */
+
+// void alarmfunction(s32 id, u16 time, void *arg)
+// {
+//     counter++;
+//     iWakeupThread(disp_threadid);
+//     iRotateThreadReadyQueue(30);
+//     iSetAlarm(625, alarmfunction, NULL);
+// }
+
+// int main(int argc, char **argv)
+// {
+//     extern void *_gp;
+
+//     // EEUG : pay attention at the priority of your 'main' thread.
+//     // Make sure that it is higher than threads you create
+//     //(i.e. priority value is lower than 0x1E). I think ps2link sets it to 64
+//     // - set the priority of your main thread to '0x1D':
+//     // - create/start your "vegetables counters", set alarm handlers etc.;
+//     // - lower priority of your 'main' thread
+//     ChangeThreadPriority(GetThreadId(), 29); // 29 is lower than 30 ;)
+
+//     continueloop = 1;
+
+//     SetAlarm(625, alarmfunction, NULL);
+
+//     printf("\ncreating thread\n");
+
+//     thread_thread.func = dispatcher;
+//     thread_thread.stack = disp_stack;
+//     thread_thread.stack_size = THREAD_STACK_SIZE;
+//     thread_thread.gp_reg = &_gp;
+//     thread_thread.initial_priority = 0;
+//     StartThread(disp_threadid = CreateThread(&thread_thread), NULL);
+
+//     thread_thread.func = TheThread;
+//     thread_thread.stack = thread_stack;
+//     thread_thread.stack_size = THREAD_STACK_SIZE;
+//     thread_thread.gp_reg = &_gp;
+//     thread_thread.initial_priority = 30;
+//     if ((thread_threadid = CreateThread(&thread_thread)) < 0) {
+//         printf("CREATE THREAD ERROR!!!\n");
+//         return -1;
+//     }
+//     StartThread(thread_threadid, NULL);
+//     printf("thread started\n");
+
+//     thread_thread2.func = TheThread2;
+//     thread_thread2.stack = thread_stack2;
+//     thread_thread2.stack_size = THREAD_STACK_SIZE;
+//     thread_thread2.gp_reg = &_gp;
+//     thread_thread2.initial_priority = 31;
+//     if ((thread_threadid2 = CreateThread(&thread_thread2)) < 0) {
+//         printf("CREATE THREAD ERROR!!!\n");
+//         return -1;
+//     }
+//     StartThread(thread_threadid2, NULL);
+//     printf("thread 2 started\n");
+
+//     ChangeThreadPriority(GetThreadId(), 30);
+
+//     while (continueloop == 1) { }
+
+//     printf("terminating\n");
+//     TerminateThread(thread_threadid);
+//     DeleteThread(thread_threadid);
+
+//     printf("\ndone\n");
+//     return 0;
+// }
+
+// void TheThread(void *arg)
+// {
+//     while (1) {
+//         printf("Thread loop iter\n");
+//         if (counter > 50)
+//             continueloop = 0;
+//         SleepThread();
+//     }
+// }
+// void TheThread2(void *arg)
+// {
+//     while (1) {
+//         printf("Thread 2 loop iter\n");
+//         if (counter > 50)
+//             continueloop = 0;
+//         SleepThread();
+//     }
+// }
+
+void dispatcher(void *apParam)
+{
+
+    while (1) {
+
+        SleepThread();
+
+    } /* end while */
+
+} /* end dispatcher */
+
 void RotateThreads(s32 id, u16 time, void *arg)
 {
-    printf("rorate\n");
-    iRotateThreadReadyQueue(0x1e);
+    iWakeupThread(disp_threadid);
+    iRotateThreadReadyQueue(30);
+    iSetAlarm(1, RotateThreads, NULL);
 }
 
 int main(int argc, char **argv)
@@ -250,6 +382,7 @@ int main(int argc, char **argv)
     simTime = curGameTime = lastGameTime = SDL_GetPerformanceCounter();
 
     isFrameAvailable.value = 0;
+    isVblankReady.value = 0;
     vBlankSemaphore = SDL_CreateSemaphore(0);
     if (vBlankSemaphore == NULL) {
         SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to create Semaphore:\n  %s", SDL_GetError());
@@ -281,63 +414,69 @@ int main(int argc, char **argv)
     // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
     REG_RCNT = 0x8000;
 
-    mainLoopThread = SDL_CreateThread(DoMain, "AgbMain", NULL);
-    controlThread = SDL_CreateThread(DoControl, "DoControl", NULL);
-    // struct t_ee_thread agbThread, controlThread;
-    // int agbThreadId, controlThreadId;
+    ChangeThreadPriority(GetThreadId(), 29); // 29 is lower than 30 ;)
 
-    // printf("\nBeginning thread demo:\n");
+    // Set the time in miliseconds to call the function RotateThreads
+    SetAlarm(1, RotateThreads, 0);
 
-    // agbThread.status = 0;
-    // agbThread.func = (void *)DoMain;
-    // agbThread.stack = (void *)((int *)malloc(0x800) + 0x800 - 4);
-    // agbThread.initial_priority = 0x1e;
+    // mainLoopThread = SDL_CreateThread(DoMain, "AgbMain", NULL);
+    // controlThread = SDL_CreateThread(DoControl, "DoControl", NULL);
+    struct t_ee_thread agbThread, controlThread, thread_thread;
+    int agbThreadId, controlThreadId;
 
-    // controlThread.status = 0;
-    // controlThread.func = (void *)DoControl;
-    // controlThread.stack = (void *)((int *)malloc(0x800) + 0x800 - 4);
-    // controlThread.initial_priority = 0x1e;
+    printf("\nBeginning thread demo:\n");
 
-    // agbThreadId = CreateThread(&agbThread);
-    // controlThreadId = CreateThread(&controlThread);
+    thread_thread.func = dispatcher;
+    thread_thread.stack = disp_stack;
+    thread_thread.stack_size = THREAD_STACK_SIZE;
+    thread_thread.gp_reg = &_gp;
+    thread_thread.initial_priority = 0;
+    StartThread(disp_threadid = CreateThread(&thread_thread), NULL);
 
-    // if (agbThreadId <= 0) {
-    //     printf("Server thread failed to start. %i\n", agbThreadId);
-    //     return -1;
-    // }
-
-    // if (controlThreadId <= 0) {
-    //     printf("Server thread failed to start. %i\n", controlThreadId);
-    //     return -1;
-    // }
-    // printf("Starting threads\n");
-
-    // StartThread(agbThreadId, NULL);
-    // StartThread(controlThreadId, NULL);
-
-    // // Set the time in miliseconds to call the function RotateThreads
-    // SetAlarm(16, RotateThreads, 0);
-
-    while (isRunning) {
-        SleepThread();
+    thread_thread.func = DoMain;
+    thread_thread.stack = thread_stack;
+    thread_thread.stack_size = THREAD_STACK_SIZE;
+    thread_thread.gp_reg = &_gp;
+    thread_thread.initial_priority = 30;
+    if ((agbThreadId = CreateThread(&thread_thread)) < 0) {
+        printf("CREATE THREAD ERROR!!!\n");
+        return -1;
     }
 
+    printf("Starting threads\n");
+    StartThread(agbThreadId, NULL);
+
+    ChangeThreadPriority(GetThreadId(), 30);
+
+    DoControl(NULL);
+
+    // printf("terminating\n");
     // TerminateThread(agbThreadId);
-    // printf("Terminated agb thread.\n");
-    // TerminateThread(controlThreadId);
-    // printf("Terminated control thread.\n");
+    // DeleteThread(agbThreadId);
 
     // StoreSaveFile();
     // CloseSaveFile();
+    // while (1) {
+    //     if (SDL_AtomicGet(&isFrameAvailable)) {
+    //         SDL_AtomicSet(&isFrameAvailable, 0);
+    //         REG_DISPSTAT |= INTR_FLAG_VBLANK;
+    //         RunDMAs(DMA_VBLANK);
+    //         if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
+    //             gIntrTable[INTR_INDEX_VBLANK]();
+    //         REG_DISPSTAT &= ~INTR_FLAG_VBLANK;
+
+    //         SDL_SemPost(vBlankSemaphore);
+    //     }
+    // }
 
     SDL_DestroyWindow(sdlWindow);
     SDL_Quit();
     return 0;
 }
 
-int DoControl(void *d)
+int DoControl(void *data)
 {
-    printf("CONTROL??");
+    printf("CONTROL??\n");
     double accumulator = 0.0;
 
 #if 0
@@ -348,8 +487,8 @@ int DoControl(void *d)
 
     REG_KEYINPUT = 0x3FF;
 
-    while (TRUE) {
-        printf("PROCESS EVENT\n");
+    while (isRunning) {
+        // printf("PROCESS EVENT\n");
         ProcessSDLEvents();
 
         if (!paused || stepOneFrame) {
@@ -369,9 +508,10 @@ int DoControl(void *d)
             accumulator += deltaTime;
 
             while (accumulator >= dt) {
-                printf("WAITING %d %d\n", accumulator, dt);
+                // printf("WAITING %d %d\n", accumulator, dt);
                 REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
                 if (SDL_AtomicGet(&isFrameAvailable)) {
+                    // printf("Frame is ready\n");
                     VDraw(sdlTexture);
                     SDL_AtomicSet(&isFrameAvailable, 0);
 
@@ -386,8 +526,11 @@ int DoControl(void *d)
                     REG_DISPSTAT &= ~INTR_FLAG_VBLANK;
 
                     SDL_SemPost(vBlankSemaphore);
+                    // SDL_AtomicSet(&isVblankReady, 1);
 
                     accumulator -= dt;
+                } else {
+                    // SleepThread();
                 }
             }
 
@@ -412,6 +555,7 @@ int DoControl(void *d)
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);
 #endif
+        // SleepThread();
     }
     return 0;
 }
@@ -680,6 +824,7 @@ static void CPUWriteByte(void *dest, uint8_t val) { *(uint8_t *)dest = val; }
 
 static void RunDMAs(u32 type)
 {
+    // printf("Runing DMAs\n");
     for (int dmaNum = 0; dmaNum < DMA_COUNT; dmaNum++) {
         struct DMATransfer *dma = &DMAList[dmaNum];
 #if !USE_NEW_DMA
@@ -823,11 +968,11 @@ void DmaWait(int dmaNum)
     vu32 *ctrlRegs = &REG_DMA0CNT;
 #if !USE_NEW_DMA
     while (ctrlRegs[dmaNum * 3] & (DMA_ENABLE << 16))
-        ;
 #else
     while (ctrlRegs[dmaNum] & (DMA_ENABLE << 16))
-        ;
 #endif
+        // SleepThread();
+        ;
 }
 
 void TestFunc(void) { }
@@ -2101,18 +2246,23 @@ void VDraw(SDL_Texture *texture)
 
 int DoMain(void *data)
 {
-    printf("THREAD!\n");
+    printf("DO MAIN THREAD!\n");
     AgbMain();
     return 0;
 }
 
 void VBlankIntrWait(void)
 {
-    printf("INTRWAIT\n");
+    // printf("INTRWAIT\n");
     SDL_AtomicSet(&isFrameAvailable, 1);
-    printf("WAITING FOR SEM\n");
-    while (vBlankSemaphore)
-        SDL_SemWait(vBlankSemaphore);
+    // printf("WAITING FOR SEM\n");
+    // while (!SDL_AtomicGet(&isVblankReady)) {
+    //     printf("WAITING FOR SEM\n");
+    //     // SleepThread();
+    // }
+    // printf("SEM DONE\n");
+    // SDL_AtomicSet(&isVblankReady, 0);
+    SDL_SemWait(vBlankSemaphore);
 }
 
 u8 BinToBcd(u8 bin)

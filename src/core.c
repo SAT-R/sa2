@@ -402,7 +402,7 @@ void GameLoop(void)
 
         // Wait for vblank to finish
         while (REG_DISPSTAT & DISPSTAT_VBLANK) {
-            SleepThread();
+            // SleepThread();
         }
     };
 }
