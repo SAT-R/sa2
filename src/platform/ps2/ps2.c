@@ -150,7 +150,7 @@ void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 static volatile int counter = 0;
 static volatile int continueloop;
 
-#define THREAD_STACK_SIZE (128 * 1024)
+#define THREAD_STACK_SIZE (512 * 1024)
 
 static u8 thread_stack[THREAD_STACK_SIZE] ALIGNED(16);
 static ee_thread_t thread_thread;
@@ -339,7 +339,7 @@ int main(int argc, char **argv)
     }
 #endif
 
-    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_PRESENTVSYNC);
+    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
     if (sdlRenderer == NULL) {
         fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -414,41 +414,44 @@ int main(int argc, char **argv)
     // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
     REG_RCNT = 0x8000;
 
-    ChangeThreadPriority(GetThreadId(), 29); // 29 is lower than 30 ;)
+    // ChangeThreadPriority(GetThreadId(), 29); // 29 is lower than 30 ;)
 
-    // Set the time in miliseconds to call the function RotateThreads
-    SetAlarm(1, RotateThreads, 0);
+    // // Set the time in miliseconds to call the function RotateThreads
+    // SetAlarm(1, RotateThreads, 0);
 
-    // mainLoopThread = SDL_CreateThread(DoMain, "AgbMain", NULL);
-    // controlThread = SDL_CreateThread(DoControl, "DoControl", NULL);
-    struct t_ee_thread agbThread, controlThread, thread_thread;
-    int agbThreadId, controlThreadId;
+    // // mainLoopThread = SDL_CreateThread(DoMain, "AgbMain", NULL);
+    // // controlThread = SDL_CreateThread(DoControl, "DoControl", NULL);
+    // struct t_ee_thread agbThread, controlThread, thread_thread;
+    // int agbThreadId, controlThreadId;
 
-    printf("\nBeginning thread demo:\n");
+    // printf("\nBeginning thread demo:\n");
 
-    thread_thread.func = dispatcher;
-    thread_thread.stack = disp_stack;
-    thread_thread.stack_size = THREAD_STACK_SIZE;
-    thread_thread.gp_reg = &_gp;
-    thread_thread.initial_priority = 0;
-    StartThread(disp_threadid = CreateThread(&thread_thread), NULL);
+    // thread_thread.func = dispatcher;
+    // thread_thread.stack = disp_stack;
+    // thread_thread.stack_size = THREAD_STACK_SIZE;
+    // thread_thread.gp_reg = &_gp;
+    // thread_thread.initial_priority = 0;
+    // StartThread(disp_threadid = CreateThread(&thread_thread), NULL);
 
-    thread_thread.func = DoMain;
-    thread_thread.stack = thread_stack;
-    thread_thread.stack_size = THREAD_STACK_SIZE;
-    thread_thread.gp_reg = &_gp;
-    thread_thread.initial_priority = 30;
-    if ((agbThreadId = CreateThread(&thread_thread)) < 0) {
-        printf("CREATE THREAD ERROR!!!\n");
-        return -1;
-    }
+    // thread_thread.func = DoMain;
+    // thread_thread.stack = thread_stack;
+    // thread_thread.stack_size = THREAD_STACK_SIZE;
+    // thread_thread.gp_reg = &_gp;
+    // thread_thread.initial_priority = 30;
+    // if ((agbThreadId = CreateThread(&thread_thread)) < 0) {
+    //     printf("CREATE THREAD ERROR!!!\n");
+    //     return -1;
+    // }
 
-    printf("Starting threads\n");
-    StartThread(agbThreadId, NULL);
+    // printf("Starting threads\n");
+    // StartThread(agbThreadId, NULL);
 
-    ChangeThreadPriority(GetThreadId(), 30);
+    // ChangeThreadPriority(GetThreadId(), 30);
+    // REG_KEYINPUT = 0x3FF;
 
-    DoControl(NULL);
+    DoMain(NULL);
+
+    // DoControl(NULL);
 
     // printf("terminating\n");
     // TerminateThread(agbThreadId);
@@ -547,10 +550,10 @@ int DoControl(void *data)
         SDL_RenderClear(vramRenderer);
         SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
 #endif
-        if (videoScaleChanged) {
-            SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
-            videoScaleChanged = false;
-        }
+        // if (videoScaleChanged) {
+        //     SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
+        //     videoScaleChanged = false;
+        // }
         SDL_RenderPresent(sdlRenderer);
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);
@@ -2164,8 +2167,8 @@ static void DrawFrame(uint16_t *pixels)
 {
     int i;
     int j;
-    static uint16_t scanlines[DISPLAY_HEIGHT][DISPLAY_WIDTH];
-    unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
+    // static uint16_t scanlines[DISPLAY_HEIGHT][DISPLAY_WIDTH];
+    // unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
 
     for (i = 0; i < DISPLAY_HEIGHT; i++) {
         REG_VCOUNT = i;
@@ -2175,10 +2178,23 @@ static void DrawFrame(uint16_t *pixels)
                 gIntrTable[INTR_INDEX_VCOUNT]();
         }
 
+        unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
+        uint16_t backdropColor = *(uint16_t *)PLTT;
+        if (REG_BLDCNT & BLDCNT_TGT1_BD) {
+            switch (blendMode) {
+                case 2:
+                    backdropColor = alphaBrightnessIncrease(backdropColor);
+                    break;
+                case 3:
+                    backdropColor = alphaBrightnessDecrease(backdropColor);
+                    break;
+            }
+        }
+
         // Render the backdrop color before the each individual scanline.
         // HBlank interrupt code could have changed it inbetween lines.
-        memsetu16(scanlines[i], *(uint16_t *)PLTT, DISPLAY_WIDTH);
-        DrawScanline(scanlines[i], i);
+        memsetu16(&pixels[i * DISPLAY_WIDTH], backdropColor, DISPLAY_WIDTH);
+        DrawScanline(&pixels[i * DISPLAY_WIDTH], i);
 
         REG_DISPSTAT |= INTR_FLAG_HBLANK;
 
@@ -2192,12 +2208,12 @@ static void DrawFrame(uint16_t *pixels)
     }
 
     // Copy to screen
-    for (i = 0; i < DISPLAY_HEIGHT; i++) {
-        uint16_t *src = scanlines[i];
-        for (j = 0; j < DISPLAY_WIDTH; j++) {
-            pixels[i * DISPLAY_WIDTH + j] = src[j];
-        }
-    }
+    // for (i = 0; i < DISPLAY_HEIGHT; i++) {
+    //     uint16_t *src = scanlines[i];
+    //     for (j = 0; j < DISPLAY_WIDTH; j++) {
+    //         pixels[i * DISPLAY_WIDTH + j] = src[j];
+    //     }
+    // }
 }
 
 #if ENABLE_VRAM_VIEW
@@ -2251,18 +2267,37 @@ int DoMain(void *data)
     return 0;
 }
 
+#include <time.h>
 void VBlankIntrWait(void)
 {
-    // printf("INTRWAIT\n");
-    SDL_AtomicSet(&isFrameAvailable, 1);
-    // printf("WAITING FOR SEM\n");
-    // while (!SDL_AtomicGet(&isVblankReady)) {
-    //     printf("WAITING FOR SEM\n");
-    //     // SleepThread();
-    // }
-    // printf("SEM DONE\n");
-    // SDL_AtomicSet(&isVblankReady, 0);
-    SDL_SemWait(vBlankSemaphore);
+    // // printf("INTRWAIT\n");
+    // SDL_AtomicSet(&isFrameAvailable, 1);
+    // // printf("WAITING FOR SEM\n");
+    // // while (!SDL_AtomicGet(&isVblankReady)) {
+    // //     printf("WAITING FOR SEM\n");
+    // //     // SleepThread();
+    // // }
+    // // printf("SEM DONE\n");
+    // // SDL_AtomicSet(&isVblankReady, 0);
+    // SDL_SemWait(vBlankSemaphore);
+
+    VDraw(sdlTexture);
+
+    // SDL_AtomicSet(&isFrameAvailable, 0);
+
+    REG_DISPSTAT |= INTR_FLAG_VBLANK;
+
+    // TODO(Jace): I think this should be DMA_VBLANK.
+    //             If not, and it is HBLANK instead, add a note here, why it is!
+    RunDMAs(DMA_VBLANK);
+
+    if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
+        gIntrTable[INTR_INDEX_VBLANK]();
+    REG_DISPSTAT &= ~INTR_FLAG_VBLANK;
+
+    SDL_RenderClear(sdlRenderer);
+    SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+    SDL_RenderPresent(sdlRenderer);
 }
 
 u8 BinToBcd(u8 bin)
