@@ -314,8 +314,9 @@ int main(int argc, char **argv)
     const char *title = "SAT-R sa2";
 #endif
 
-    sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, DISPLAY_WIDTH * videoScale,
-                                 DISPLAY_HEIGHT * videoScale, SDL_WINDOW_SHOWN);
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+
+    sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
     if (sdlWindow == NULL) {
         fprintf(stderr, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -370,6 +371,8 @@ int main(int argc, char **argv)
         fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
+
+    SDL_SetTextureColorMod(sdlTexture, 140, 140, 140);
 
 #if ENABLE_VRAM_VIEW
     vramTexture = SDL_CreateTexture(vramRenderer, SDL_PIXELFORMAT_ABGR1555, SDL_TEXTUREACCESS_STREAMING, vramWindowWidth, vramWindowHeight);
@@ -2167,8 +2170,6 @@ static void DrawFrame(uint16_t *pixels)
 {
     int i;
     int j;
-    // static uint16_t scanlines[DISPLAY_HEIGHT][DISPLAY_WIDTH];
-    // unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
 
     for (i = 0; i < DISPLAY_HEIGHT; i++) {
         REG_VCOUNT = i;
@@ -2206,14 +2207,6 @@ static void DrawFrame(uint16_t *pixels)
         REG_DISPSTAT &= ~INTR_FLAG_HBLANK;
         REG_DISPSTAT &= ~INTR_FLAG_VCOUNT;
     }
-
-    // Copy to screen
-    // for (i = 0; i < DISPLAY_HEIGHT; i++) {
-    //     uint16_t *src = scanlines[i];
-    //     for (j = 0; j < DISPLAY_WIDTH; j++) {
-    //         pixels[i * DISPLAY_WIDTH + j] = src[j];
-    //     }
-    // }
 }
 
 #if ENABLE_VRAM_VIEW
