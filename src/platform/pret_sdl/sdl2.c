@@ -90,7 +90,6 @@ struct bgPriority {
     char subPriority;
 };
 
-SDL_Thread *mainLoopThread;
 SDL_Window *sdlWindow;
 SDL_Renderer *sdlRenderer;
 SDL_Texture *sdlTexture;
