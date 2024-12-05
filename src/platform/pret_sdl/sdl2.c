@@ -9,6 +9,8 @@
 #include <xinput.h>
 #endif
 
+#define SDL_MAIN_HANDLED
+
 #include <SDL.h>
 
 #include "global.h"
@@ -139,6 +141,10 @@ void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 
 int main(int argc, char **argv)
 {
+#ifdef PS2
+    SDL_SetMainReady();
+#endif
+
     // Open an output console on Windows
 #ifdef _WIN32
     AllocConsole();
@@ -146,9 +152,15 @@ int main(int argc, char **argv)
     freopen("CON", "w", stdout);
 #endif
 
+#ifndef PS2
     ReadSaveFile("sa2.sav");
+#endif
 
+#if !ENABLE_AUDIO
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+#else
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+#endif
         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
@@ -159,8 +171,12 @@ int main(int argc, char **argv)
     const char *title = "SAT-R sa2";
 #endif
 
+#ifdef PS2
+    sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
+#else
     sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * videoScale,
                                  DISPLAY_HEIGHT * videoScale, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+#endif
     if (sdlWindow == NULL) {
         fprintf(stderr, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -182,7 +198,7 @@ int main(int argc, char **argv)
     }
 #endif
 
-    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_PRESENTVSYNC);
+    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
     if (sdlRenderer == NULL) {
         fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -218,6 +234,10 @@ int main(int argc, char **argv)
         fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
+#endif
+
+#ifdef PS2
+    SDL_SetTextureColorMod(sdlTexture, 140, 140, 140);
 #endif
 
 #if ENABLE_AUDIO
@@ -314,10 +334,13 @@ void VBlankIntrWait(void)
         SDL_RenderClear(vramRenderer);
         SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
 #endif
+
+#ifndef PS2
         if (videoScaleChanged) {
             SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
             videoScaleChanged = false;
         }
+#endif
         SDL_RenderPresent(sdlRenderer);
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);
@@ -401,6 +424,7 @@ static SDL_DisplayMode sdlDispMode = { 0 };
 
 void Platform_QueueAudio(const void *data, uint32_t bytesCount)
 {
+#if ENABLE_AUDIO
     // Reset the audio buffer if we are 10 frames out of sync
     // If this happens it suggests there was some OS level lag
     // in playing audio. The queue length should remain stable at < 10 otherwise
@@ -410,6 +434,7 @@ void Platform_QueueAudio(const void *data, uint32_t bytesCount)
 
     SDL_QueueAudio(1, data, bytesCount);
     // printf("Queueing %d\n, QueueSize %d\n", bytesCount, SDL_GetQueuedAudioSize(1));
+#endif
 }
 
 void ProcessSDLEvents(void)
@@ -2011,21 +2036,6 @@ void VDraw(SDL_Texture *texture)
     REG_VCOUNT = 161; // prep for being in VBlank period
 }
 
-<<<<<<< HEAD
-=======
-int DoMain(void *data)
-{
-    AgbMain();
-    return 0;
-}
-
-void VBlankIntrWait(void)
-{
-    SDL_AtomicSet(&isFrameAvailable, 1);
-    SDL_SemWait(vBlankSemaphore);
-}
-
->>>>>>> b1b34f15 (more progress)
 u8 BinToBcd(u8 bin)
 {
     int placeCounter = 1;

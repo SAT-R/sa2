@@ -371,6 +371,7 @@ int main(int argc, char **argv)
         fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
+    SDL_SetTextureScaleMode(sdlTexture, SDL_ScaleModeLinear);
 
     SDL_SetTextureColorMod(sdlTexture, 140, 140, 140);
 
@@ -557,7 +558,7 @@ int DoControl(void *data)
         //     SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
         //     videoScaleChanged = false;
         // }
-        SDL_RenderPresent(sdlRenderer);
+        // SDL_RenderPresent(sdlRenderer);
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);
 #endif
@@ -2290,7 +2291,7 @@ void VBlankIntrWait(void)
 
     SDL_RenderClear(sdlRenderer);
     SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
-    SDL_RenderPresent(sdlRenderer);
+    // SDL_RenderPresent(sdlRenderer);
 }
 
 u8 BinToBcd(u8 bin)

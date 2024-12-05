@@ -358,8 +358,6 @@ void GameInit(void)
     MultiSioInit(0);
 }
 
-#include <kernel.h>
-
 void GameLoop(void)
 {
     while (TRUE) {
@@ -401,9 +399,8 @@ void GameLoop(void)
         }
 
         // Wait for vblank to finish
-        while (REG_DISPSTAT & DISPSTAT_VBLANK) {
-            // SleepThread();
-        }
+        while (REG_DISPSTAT & DISPSTAT_VBLANK)
+            ;
     };
 }
 

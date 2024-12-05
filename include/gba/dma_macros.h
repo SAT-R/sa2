@@ -1,8 +1,6 @@
 #ifndef GUARD_GBA_DMA_MACROS_H
 #define GUARD_GBA_DMA_MACROS_H
 
-#include "config.h"
-
 #if PLATFORM_GBA
 #define DmaSet(dmaNum, src, dest, control)        \
 {                                                 \

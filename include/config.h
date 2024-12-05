@@ -20,4 +20,17 @@
 #define TAS_TESTING                 1
 #define TAS_TESTING_WIDESCREEN_HACK 1
 
+#if PLATFORM_GBA
+#define ENABLE_AUDIO TRUE
+#else
+#ifdef PS2
+#define ENABLE_AUDIO     FALSE
+#define ENABLE_VRAM_VIEW FALSE
+#else
+#define ENABLE_AUDIO     TRUE
+#define ENABLE_VRAM_VIEW FALSE
+#endif
+
+#endif
+
 #endif // GUARD_SA2_CONFIG_H

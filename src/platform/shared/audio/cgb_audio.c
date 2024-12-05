@@ -103,7 +103,9 @@ void cgb_trigger_note(u8 channel)
 
 void cgb_audio_generate(u16 samplesPerFrame)
 {
+#if !ENABLE_AUDIO
     return;
+#endif
     float *outBuffer = gb.outBuffer;
     switch (REG_NR11 & 0xC0) {
         case 0x00:
