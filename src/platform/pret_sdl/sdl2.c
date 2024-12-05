@@ -90,7 +90,6 @@ struct bgPriority {
     char subPriority;
 };
 
-SDL_Thread *mainLoopThread;
 SDL_Window *sdlWindow;
 SDL_Renderer *sdlRenderer;
 SDL_Texture *sdlTexture;
@@ -102,26 +101,24 @@ SDL_Texture *vramTexture;
 #define INITIAL_VIDEO_SCALE 1
 unsigned int videoScale = INITIAL_VIDEO_SCALE;
 unsigned int preFullscreenVideoScale = INITIAL_VIDEO_SCALE;
-SDL_sem *vBlankSemaphore;
-SDL_atomic_t isFrameAvailable;
+
 bool speedUp = false;
 bool videoScaleChanged = false;
 bool isRunning = true;
 bool paused = false;
 bool stepOneFrame = false;
-double simTime = 0;
+
 double lastGameTime = 0;
 double curGameTime = 0;
 double fixedTimestep = 1.0 / 60.0; // 16.666667ms
 double timeScale = 1.0;
-// struct SiiRtcInfo internalClock;
+double accumulator = 0.0;
 
 static FILE *sSaveFile = NULL;
 
 extern void AgbMain(void);
 void DoSoftReset(void) {};
 
-int DoMain(void *param);
 void ProcessSDLEvents(void);
 void VDraw(SDL_Texture *texture);
 void VramDraw(SDL_Texture *texture);
@@ -223,14 +220,6 @@ int main(int argc, char **argv)
     }
 #endif
 
-    simTime = curGameTime = lastGameTime = SDL_GetPerformanceCounter();
-
-    isFrameAvailable.value = 0;
-    vBlankSemaphore = SDL_CreateSemaphore(0);
-    if (vBlankSemaphore == NULL) {
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to create Semaphore:\n  %s", SDL_GetError());
-    }
-
 #if ENABLE_AUDIO
     SDL_AudioSpec want;
 
@@ -256,18 +245,19 @@ int main(int argc, char **argv)
 #endif
     // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
     REG_RCNT = 0x8000;
-
-    mainLoopThread = SDL_CreateThread(DoMain, "AgbMain", NULL);
-
-    double accumulator = 0.0;
-
-#if 0
-    memset(&internalClock, 0, sizeof(internalClock));
-    internalClock.status = SIIRTCINFO_24HOUR;
-    UpdateInternalClock();
-#endif
-
     REG_KEYINPUT = 0x3FF;
+
+    AgbMain();
+
+    return 0;
+}
+
+// Every GBA frame we process the SDL events and render the number of times
+// SDL requires us to for vsync. When we need another frame we break out of
+// the loop via a return
+void VBlankIntrWait(void)
+{
+    bool frameAvailable = TRUE;
 
     while (isRunning) {
         ProcessSDLEvents();
@@ -290,9 +280,9 @@ int main(int argc, char **argv)
 
             while (accumulator >= dt) {
                 REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
-                if (SDL_AtomicGet(&isFrameAvailable)) {
+                if (frameAvailable) {
                     VDraw(sdlTexture);
-                    SDL_AtomicSet(&isFrameAvailable, 0);
+                    frameAvailable = FALSE;
 
                     REG_DISPSTAT |= INTR_FLAG_VBLANK;
 
@@ -304,9 +294,10 @@ int main(int argc, char **argv)
                         gIntrTable[INTR_INDEX_VBLANK]();
                     REG_DISPSTAT &= ~INTR_FLAG_VBLANK;
 
-                    SDL_SemPost(vBlankSemaphore);
-
                     accumulator -= dt;
+                } else {
+                    // Get another frame
+                    return;
                 }
             }
 
@@ -333,12 +324,11 @@ int main(int argc, char **argv)
 #endif
     }
 
-    // StoreSaveFile();
     CloseSaveFile();
 
     SDL_DestroyWindow(sdlWindow);
     SDL_Quit();
-    return 0;
+    exit(0);
 }
 
 static void ReadSaveFile(char *path)
@@ -2019,18 +2009,6 @@ void VDraw(SDL_Texture *texture)
     DrawFrame(gameImage);
     SDL_UpdateTexture(texture, NULL, gameImage, DISPLAY_WIDTH * sizeof(Uint16));
     REG_VCOUNT = 161; // prep for being in VBlank period
-}
-
-int DoMain(void *data)
-{
-    AgbMain();
-    return 0;
-}
-
-void VBlankIntrWait(void)
-{
-    SDL_AtomicSet(&isFrameAvailable, 1);
-    SDL_SemWait(vBlankSemaphore);
 }
 
 u8 BinToBcd(u8 bin)
