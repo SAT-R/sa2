@@ -118,6 +118,7 @@ double lastGameTime = 0;
 double curGameTime = 0;
 double fixedTimestep = 1.0 / 60.0; // 16.666667ms
 double timeScale = 1.0;
+double accumulator = 0.0;
 // struct SiiRtcInfo internalClock;
 
 static FILE *sSaveFile = NULL;
@@ -145,26 +146,8 @@ void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GE
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 #endif
 
-#include <kernel.h>
-
 static volatile int counter = 0;
 static volatile int continueloop;
-
-#define THREAD_STACK_SIZE (512 * 1024)
-
-static u8 thread_stack[THREAD_STACK_SIZE] ALIGNED(16);
-static ee_thread_t thread_thread;
-static int thread_threadid;
-
-static u8 thread_stack2[THREAD_STACK_SIZE] ALIGNED(16);
-static ee_thread_t thread_thread2;
-static int thread_threadid2;
-
-static u8 disp_stack[THREAD_STACK_SIZE] ALIGNED(16);
-static int disp_threadid;
-
-void TheThread(void *arg);
-void TheThread2(void *arg);
 
 // void dispatcher(void *apParam)
 // {
@@ -266,30 +249,12 @@ void TheThread2(void *arg);
 //     }
 // }
 
-void dispatcher(void *apParam)
-{
-
-    while (1) {
-
-        SleepThread();
-
-    } /* end while */
-
-} /* end dispatcher */
-
-void RotateThreads(s32 id, u16 time, void *arg)
-{
-    iWakeupThread(disp_threadid);
-    iRotateThreadReadyQueue(30);
-    iSetAlarm(1, RotateThreads, NULL);
-}
-
 int main(int argc, char **argv)
 {
-    // REG_RCNT = 0x8000;
-    // cgb_audio_init(48000);
-    // AgbMain();
-    // return 0;
+#ifdef PS2
+    SDL_SetMainReady();
+#endif
+
     // Open an output console on Windows
 #ifdef _WIN32
     AllocConsole();
@@ -297,16 +262,18 @@ int main(int argc, char **argv)
     freopen("CON", "w", stdout);
 #endif
 
-    // ReadSaveFile("sa2.sav");
+#ifndef PS2
+    ReadSaveFile("sa2.sav");
+#endif
 
-    printf("Starting\n");
-    SDL_SetMainReady();
-    printf("Ready \n");
+#if !ENABLE_AUDIO
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+#else
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+#endif
         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
-    printf("INITIALISED\n");
 
 #ifdef TITLE_BAR
     const char *title = STR(TITLE_BAR);
@@ -314,15 +281,16 @@ int main(int argc, char **argv)
     const char *title = "SAT-R sa2";
 #endif
 
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
-
+#ifdef PS2
     sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
+#else
+    sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * videoScale,
+                                 DISPLAY_HEIGHT * videoScale, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+#endif
     if (sdlWindow == NULL) {
         fprintf(stderr, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
-
-    printf("WINDOW CREATED\n");
 
 #if ENABLE_VRAM_VIEW
     int mainWindowX;
@@ -345,7 +313,6 @@ int main(int argc, char **argv)
         fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
-    printf("RENDERER CREATED\n");
 
 #if ENABLE_VRAM_VIEW
     vramRenderer = SDL_CreateRenderer(vramWindow, -1, SDL_RENDERER_PRESENTVSYNC);
@@ -357,9 +324,8 @@ int main(int argc, char **argv)
 
     SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
     SDL_RenderClear(sdlRenderer);
-    // SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
     SDL_RenderSetLogicalSize(sdlRenderer, DISPLAY_WIDTH, DISPLAY_HEIGHT);
-
 #if ENABLE_VRAM_VIEW
     SDL_SetRenderDrawColor(vramRenderer, 0, 0, 0, 255);
     SDL_RenderClear(vramRenderer);
@@ -371,9 +337,6 @@ int main(int argc, char **argv)
         fprintf(stderr, "Texture could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
-    SDL_SetTextureScaleMode(sdlTexture, SDL_ScaleModeLinear);
-
-    SDL_SetTextureColorMod(sdlTexture, 140, 140, 140);
 
 #if ENABLE_VRAM_VIEW
     vramTexture = SDL_CreateTexture(vramRenderer, SDL_PIXELFORMAT_ABGR1555, SDL_TEXTUREACCESS_STREAMING, vramWindowWidth, vramWindowHeight);
@@ -383,14 +346,10 @@ int main(int argc, char **argv)
     }
 #endif
 
-    simTime = curGameTime = lastGameTime = SDL_GetPerformanceCounter();
-
-    isFrameAvailable.value = 0;
-    isVblankReady.value = 0;
-    vBlankSemaphore = SDL_CreateSemaphore(0);
-    if (vBlankSemaphore == NULL) {
-        SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Failed to create Semaphore:\n  %s", SDL_GetError());
-    }
+#ifdef PS2
+    SDL_SetTextureScaleMode(sdlTexture, SDL_ScaleModeLinear);
+    SDL_SetTextureColorMod(sdlTexture, 140, 140, 140);
+#endif
 
 #if ENABLE_AUDIO
     SDL_AudioSpec want;
@@ -400,15 +359,15 @@ int main(int argc, char **argv)
     want.format = AUDIO_F32;
     want.channels = 2;
     want.samples = (want.freq / 60);
-    cgb_audio_init(48000);
+    cgb_audio_init(want.freq);
 
-    // if (SDL_OpenAudio(&want, 0) < 0)
-    //     SDL_Log("Failed to open audio: %s", SDL_GetError());
-    // else {
-    //     if (want.format != AUDIO_F32) /* we let this one thing change. */
-    //         SDL_Log("We didn't get Float32 audio format.");
-    //     SDL_PauseAudio(0);
-    // }
+    if (SDL_OpenAudio(&want, 0) < 0)
+        SDL_Log("Failed to open audio: %s", SDL_GetError());
+    else {
+        if (want.format != AUDIO_F32) /* we let this one thing change. */
+            SDL_Log("We didn't get Float32 audio format.");
+        SDL_PauseAudio(0);
+    }
 #endif
 
     VDraw(sdlTexture);
@@ -451,7 +410,11 @@ int main(int argc, char **argv)
     // StartThread(agbThreadId, NULL);
 
     // ChangeThreadPriority(GetThreadId(), 30);
-    // REG_KEYINPUT = 0x3FF;
+    // Who knows why, but something to do with the way we set
+    // REG_KEYINPUT whilst in tas testing mode causes a soft lock
+    // if we don't set this when not doing tas testing then the game
+    // softlocks on the intro
+    REG_KEYINPUT = KEYS_MASK;
 
     DoMain(NULL);
 
@@ -495,8 +458,8 @@ int DoControl(void *data)
     REG_KEYINPUT = 0x3FF;
 
     while (isRunning) {
-        // printf("PROCESS EVENT\n");
         ProcessSDLEvents();
+        REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
 
         if (!paused || stepOneFrame) {
             double dt = fixedTimestep / timeScale; // TODO: Fix speedup
@@ -516,7 +479,7 @@ int DoControl(void *data)
 
             while (accumulator >= dt) {
                 // printf("WAITING %d %d\n", accumulator, dt);
-                REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
+
                 if (SDL_AtomicGet(&isFrameAvailable)) {
                     // printf("Frame is ready\n");
                     VDraw(sdlTexture);
@@ -2261,38 +2224,168 @@ int DoMain(void *data)
     return 0;
 }
 
-#include <time.h>
 void VBlankIntrWait(void)
 {
-    // // printf("INTRWAIT\n");
-    // SDL_AtomicSet(&isFrameAvailable, 1);
-    // // printf("WAITING FOR SEM\n");
-    // // while (!SDL_AtomicGet(&isVblankReady)) {
-    // //     printf("WAITING FOR SEM\n");
-    // //     // SleepThread();
-    // // }
-    // // printf("SEM DONE\n");
-    // // SDL_AtomicSet(&isVblankReady, 0);
-    // SDL_SemWait(vBlankSemaphore);
+    bool frameAvailable = TRUE;
 
-    VDraw(sdlTexture);
+    while (isRunning) {
+        ProcessSDLEvents();
 
-    // SDL_AtomicSet(&isFrameAvailable, 0);
+        if (!paused || stepOneFrame) {
+            double dt = fixedTimestep / timeScale; // TODO: Fix speedup
+            double deltaTime = 0;
 
-    REG_DISPSTAT |= INTR_FLAG_VBLANK;
+            curGameTime = SDL_GetPerformanceCounter();
 
-    // TODO(Jace): I think this should be DMA_VBLANK.
-    //             If not, and it is HBLANK instead, add a note here, why it is!
-    RunDMAs(DMA_VBLANK);
+#ifdef PS2
+            deltaTime = dt;
+#else
+            if (stepOneFrame) {
+                deltaTime = dt;
+            } else {
+                deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
+                if (deltaTime > (dt * 5))
+                    deltaTime = dt * 5;
+            }
+#endif
 
-    if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
-        gIntrTable[INTR_INDEX_VBLANK]();
-    REG_DISPSTAT &= ~INTR_FLAG_VBLANK;
+            lastGameTime = curGameTime;
 
-    SDL_RenderClear(sdlRenderer);
-    SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
-    // SDL_RenderPresent(sdlRenderer);
+            accumulator += deltaTime;
+
+            while (accumulator >= dt) {
+                if (frameAvailable) {
+                    VDraw(sdlTexture);
+                    frameAvailable = FALSE;
+
+                    REG_DISPSTAT |= INTR_FLAG_VBLANK;
+
+                    // TODO(Jace): I think this should be DMA_VBLANK.
+                    //             If not, and it is HBLANK instead, add a note here, why it is!
+                    RunDMAs(DMA_VBLANK);
+
+                    if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
+                        gIntrTable[INTR_INDEX_VBLANK]();
+                    REG_DISPSTAT &= ~INTR_FLAG_VBLANK;
+                    accumulator -= dt;
+                } else {
+                    REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
+                    accumulator -= dt;
+                    // Get another frame;
+                    return;
+                }
+            }
+
+            if (paused && stepOneFrame) {
+                stepOneFrame = false;
+            }
+        }
+
+        SDL_RenderClear(sdlRenderer);
+        SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+
+#if ENABLE_VRAM_VIEW
+        VramDraw(vramTexture);
+        SDL_RenderClear(vramRenderer);
+        SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
+#endif
+
+#ifndef PS2
+        if (videoScaleChanged) {
+            SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
+            videoScaleChanged = false;
+        }
+#endif
+        SDL_RenderPresent(sdlRenderer);
+#if ENABLE_VRAM_VIEW
+        SDL_RenderPresent(vramRenderer);
+#endif
+    }
+
+    CloseSaveFile();
+
+    SDL_DestroyWindow(sdlWindow);
+    SDL_Quit();
+    exit(0);
 }
+
+// while (isRunning) {
+//         ProcessSDLEvents();
+//         REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
+
+//         if (!paused || stepOneFrame) {
+//             double dt = fixedTimestep / timeScale; // TODO: Fix speedup
+//             double deltaTime = 0;
+
+//             curGameTime = SDL_GetPerformanceCounter();
+// #ifdef PS2
+//             deltaTime = dt;
+// #else
+//             if (stepOneFrame) {
+//                 deltaTime = dt;
+//             } else {
+//                 deltaTime = (double)((curGameTime - lastGameTime) / (double)SDL_GetPerformanceFrequency());
+//                 if (deltaTime > (dt * 5))
+//                     deltaTime = dt * 5;
+//             }
+// #endif
+//             lastGameTime = curGameTime;
+//             accumulator += deltaTime;
+
+//             while (accumulator >= dt) {
+//                 if (frameAvailable) {
+//                     VDraw(sdlTexture);
+//                     frameAvailable = FALSE;
+
+//                     REG_DISPSTAT |= INTR_FLAG_VBLANK;
+
+//                     // TODO(Jace): I think this should be DMA_VBLANK.
+//                     //             If not, and it is HBLANK instead, add a note here, why it is!
+//                     RunDMAs(DMA_VBLANK);
+
+//                     if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
+//                         gIntrTable[INTR_INDEX_VBLANK]();
+//                     REG_DISPSTAT &= ~INTR_FLAG_VBLANK;
+
+//                     accumulator -= dt;
+//                 } else {
+//                     accumulator -= dt;
+//                     // Get another frame
+//                     return;
+//                 }
+//             }
+
+//             if (paused && stepOneFrame) {
+//                 stepOneFrame = false;
+//             }
+//         }
+
+//         SDL_RenderClear(sdlRenderer);
+//         SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+
+// #if ENABLE_VRAM_VIEW
+//         VramDraw(vramTexture);
+//         SDL_RenderClear(vramRenderer);
+//         SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
+// #endif
+
+// #ifndef PS2
+//         if (videoScaleChanged) {
+//             SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
+//             videoScaleChanged = false;
+//         }
+// #endif
+//         SDL_RenderPresent(sdlRenderer);
+// #if ENABLE_VRAM_VIEW
+//         SDL_RenderPresent(vramRenderer);
+// #endif
+//     }
+
+//     CloseSaveFile();
+
+//     SDL_DestroyWindow(sdlWindow);
+//     SDL_Quit();
+//     exit(0);
 
 u8 BinToBcd(u8 bin)
 {

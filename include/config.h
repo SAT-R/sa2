@@ -17,7 +17,7 @@
 #define USE_NEW_DMA 1
 #endif
 
-#define TAS_TESTING                 1
+#define TAS_TESTING                 0
 #define TAS_TESTING_WIDESCREEN_HACK 1
 
 #if PLATFORM_GBA

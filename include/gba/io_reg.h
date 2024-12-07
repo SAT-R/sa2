@@ -3,9 +3,10 @@
 
 #include <stdint.h>
 
-#define IO_SIZE 0x400
-#if !PORTABLE
-#define REG_BASE 0x4000000 // I/O register base address
+#define IO_SIZE 0x800
+#if PLATFORM_GBA
+// I/O register base address
+#define REG_BASE 0x4000000 
 #else
 // TODO: Needs to be u8 because of the address macros
 extern unsigned char REG_BASE[IO_SIZE];
@@ -160,7 +161,9 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_OFFSET_DMA3CNT_H   (REG_OFFSET_DMA3CNT_L + sizeof(uint16_t))
 #endif
 
-#define REG_OFFSET_TMCNT       0x100
+#define REG_OFFSET_DMA_END REG_OFFSET_DMA3CNT_H + sizeof(uint16_t) 
+
+#define REG_OFFSET_TMCNT       REG_OFFSET_DMA_END + 0x10
 #define REG_OFFSET_TMCNT_L     0x100
 #define REG_OFFSET_TMCNT_H     0x102
 #define REG_OFFSET_TM0CNT      0x100
@@ -186,8 +189,8 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_OFFSET_SIOMULTI2   0x124
 #define REG_OFFSET_SIOMULTI3   0x126
 
-#define REG_OFFSET_KEYINPUT    0x130
-#define REG_OFFSET_KEYCNT      0x132
+#define REG_OFFSET_KEYINPUT    REG_OFFSET_TMCNT + 0x30
+#define REG_OFFSET_KEYCNT      REG_OFFSET_TMCNT + 0x32
 
 #define REG_OFFSET_RCNT        0x134
 
@@ -200,11 +203,11 @@ extern unsigned char REG_BASE[IO_SIZE];
 #define REG_OFFSET_JOY_TRANS_L 0x154
 #define REG_OFFSET_JOY_TRANS_H 0x156
 
-#define REG_OFFSET_IME         0x208
-#define REG_OFFSET_IE          0x200
-#define REG_OFFSET_IF          0x202
+#define REG_OFFSET_IME         REG_OFFSET_TMCNT + 0x108
+#define REG_OFFSET_IE          REG_OFFSET_TMCNT + 0x100
+#define REG_OFFSET_IF          REG_OFFSET_TMCNT + 0x102
 
-#define REG_OFFSET_WAITCNT     0x204
+#define REG_OFFSET_WAITCNT     REG_OFFSET_TMCNT + 0x104
 
 // I/O register addresses
 
