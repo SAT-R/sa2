@@ -116,8 +116,9 @@ else
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell sdl2-config --cflags)
 	else ifeq ($(PLATFORM),sdl_ps2)
 		CC1FLAGS += -Wno-parentheses-equality -Wno-unused-value
-		CPPFLAGS += -I$(PS2SDK)/common/include -I$(PS2SDK)/ee/include -I$(PS2SDK)/ports/include $(shell $(SDL2_PS2_PKG)/bin/sdl2-config --cflags)
-		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -D_EE -DPS2 -D__PS2__
+		CC1FLAGS += -ffast-math
+		CPPFLAGS += -I$(PS2SDK)/common/include -I$(PS2SDK)/ee/include -I$(PS2SDK)/ports/include $(shell $(PS2SDK)/ports/bin/sdl2-config --cflags)
+		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -D_EE -DPS2 -D__PS2__ -Dmain=SDL_main
 	else ifeq ($(PLATFORM),sdl_win32)
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(SDL_MINGW_FLAGS)
 	else ifeq ($(PLATFORM),win32)
@@ -155,7 +156,11 @@ ifeq ($(DEBUG),1)
   CC1FLAGS += -g3 -O0
   CPPFLAGS += -D DEBUG=1
 else
+ifeq ($(PLATFORM), gba)
   CC1FLAGS += -O2
+else
+  CC1FLAGS += -O3
+endif
 endif
 
 ifeq ($(PORTABLE),1)
@@ -273,7 +278,7 @@ C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/*")
 else ifeq ($(PLATFORM),sdl)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
 else ifeq ($(PLATFORM),sdl_ps2)
-C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/pret_sdl/*")
+C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
 else ifeq ($(PLATFORM),sdl_win32)
 C_SRCS := $(shell find $(C_SUBDIR) -name "*.c" -not -path "*/platform/win32/*" -not -path "*/platform/ps2/*")
 else ifeq ($(PLATFORM),win32)
@@ -447,7 +452,7 @@ ifeq ($(PLATFORM),sdl)
 else ifeq ($(PLATFORM),sdl_win32)
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(ROOT_DIR)/$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 else ifeq ($(PLATFORM),sdl_ps2)
-	@cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) $(shell $(SDL2_PS2_PKG)/bin/sdl2-config --cflags --libs) $(LINKER_MAP_FLAGS) -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/common/lib -L$(PS2SDK)/ee/lib -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -Wl,-zmax-page-size=128 -o $(ROOT_DIR)/$@
+	@cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) -lSDL2main -lSDL2 $(shell $(PS2SDK)/ports/bin/sdl2-config --libs) $(LINKER_MAP_FLAGS) -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/common/lib -L$(PS2SDK)/ee/lib -L$(PS2DEV)/gsKit/lib -Wl,-zmax-page-size=128 -o $(ROOT_DIR)/$@
 else
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 endif

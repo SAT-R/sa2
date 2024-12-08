@@ -103,7 +103,6 @@ void cgb_trigger_note(u8 channel)
 
 void cgb_audio_generate(u16 samplesPerFrame)
 {
-    return;
 #if !ENABLE_AUDIO
     return;
 #endif
