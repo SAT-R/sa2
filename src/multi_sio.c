@@ -1,4 +1,5 @@
 #include "global.h"
+#include "game/game.h"
 #include "multi_sio.h"
 #include "sio32_multi_load.h"
 
@@ -10,7 +11,9 @@ u32 gMultiSioIntrFuncBuf[0x120 / 4] = {}; // Interrupt Routine RAM Execution Buf
 
 struct MultiSioArea gMultiSioArea = {};
 
+#if (CURRENT_GAME <= GAME_SA2)
 UNUSED u32 gUnusedMultiSioSpace[2] = {};
+#endif
 
 #ifdef MULTI_SIO_DI_FUNC_FAST
 u32 gMultiSioRecvFuncBuf[0x40 / 4] = {}; // Receive Data/Check Buffer Change Routine RAM Execution Buffer
