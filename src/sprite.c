@@ -629,7 +629,7 @@ void DisplaySprite(Sprite *sprite)
     }
 }
 
-void DisplaySprites(Sprite *sprite, u16 *sp08, u8 sp0C)
+void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
 {
     vs32 x, y;
     s32 sprWidth, sprHeight;
@@ -728,7 +728,7 @@ void DisplaySprites(Sprite *sprite, u16 *sp08, u8 sp0C)
                 }
                 oam->all.attr2 += GET_TILE_NUM(sprite->graphics.dest);
 
-                for (i = 0; i < sp0C; ++i) {
+                for (i = 0; i < numPositions; ++i) {
                     OamData *r5 = OamMalloc(GET_SPRITE_OAM_ORDER(sprite));
 
                     if (iwram_end == oam)
@@ -736,8 +736,8 @@ void DisplaySprites(Sprite *sprite, u16 *sp08, u8 sp0C)
                     DmaCopy16(3, oam, r5, sizeof(OamDataShort));
                     r5->all.attr1 &= 0xFE00;
                     r5->all.attr0 &= 0xFF00;
-                    r5->all.attr0 += (sp08[2 * i + 1] + sp28 + y1) & 0xFF;
-                    r5->all.attr1 += (sp08[2 * i + 0] + sp24 + x1) & 0x1FF;
+                    r5->all.attr0 += (positions[i].y + sp28 + y1) & 0xFF;
+                    r5->all.attr1 += (positions[i].x + sp24 + x1) & 0x1FF;
                 }
             }
         }
