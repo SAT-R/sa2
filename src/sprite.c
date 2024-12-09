@@ -634,7 +634,7 @@ void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
     vs32 x, y;
     s32 sprWidth, sprHeight;
     u8 subframe, i;
-    u32 x1, y1, sp24, sp28;
+    s32 x1, y1, centerOffsetX, centerOffsetY;
 
     if (sprite->dimensions != (void *)-1) {
         const SpriteOffset *sprDims = sprite->dimensions;
@@ -671,8 +671,8 @@ void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
             }
         }
 
-        sp24 = x - sprite->x;
-        sp28 = y - sprite->y;
+        centerOffsetX = x - sprite->x;
+        centerOffsetY = y - sprite->y;
         if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && y + sprHeight >= 0 && y <= DISPLAY_HEIGHT) {
             for (subframe = 0; subframe < sprDims->numSubframes; ++subframe) {
                 const u16 *oamData = gRefSpriteTables->oamData[sprite->graphics.anim];
@@ -736,8 +736,8 @@ void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
                     DmaCopy16(3, oam, r5, sizeof(OamDataShort));
                     r5->all.attr1 &= 0xFE00;
                     r5->all.attr0 &= 0xFF00;
-                    r5->all.attr0 += (positions[i].y + sp28 + y1) & 0xFF;
-                    r5->all.attr1 += (positions[i].x + sp24 + x1) & 0x1FF;
+                    r5->all.attr0 += (positions[i].y + centerOffsetY + y1) & 0xFF;
+                    r5->all.attr1 += (positions[i].x + centerOffsetX + x1) & 0x1FF;
                 }
             }
         }
