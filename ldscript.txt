@@ -39,6 +39,7 @@ SECTIONS
 
         /* engine */
         src/core.o(.data);
+        src/input_recorder.o(.data);
 
         /* "SA1 Leftovers" */
         . = ALIGN(32); 
