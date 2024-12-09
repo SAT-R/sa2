@@ -100,7 +100,7 @@ typedef struct {
     /* 0x00 */ u16 oamIndex;
 #else
     /* 0x00 */ u8 flip;
-    
+
     // every animation has an associated oamData pointer, oamIndex starts at
     // 0 for every new animation and ends at variantCount-1
     /* 0x01 */ u8 oamIndex;

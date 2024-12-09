@@ -125,8 +125,6 @@ FuncType_030053A0 gUnknown_030053A0[] ALIGNED(16) = {};
 const u8 *gInputPlaybackData = NULL;
 bool8 gExecSoundMain ALIGNED(4) = FALSE;
 s32 gPseudoRandom = 0;
-struct InputRecorder gInputRecorder ALIGNED(8) = {};
-u16 *gInputRecorderTapeBuffer = NULL;
 
 static void UpdateScreenDma(void);
 static void UpdateScreenCpuSet(void);
