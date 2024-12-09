@@ -553,7 +553,13 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->graphics.anim = SA2_ANIM_TITLE_COPYRIGHT;
     s->variant = SA2_ANIM_VARIANT_COPYRIGHT_2003;
     s->prevVariant = -1;
+#if PLATFORM_GBA
     s->x = 0;
+#else
+    // Only display the COPYRIGHT message, not the "Licensed by ***" msg
+    // TODO: Split the graphics properly.
+    s->x = DISPLAY_WIDTH - 136;
+#endif
     s->y = DISPLAY_HEIGHT - 30; // set to the screen's bottom
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(4);
