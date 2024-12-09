@@ -35,7 +35,8 @@ u8 gNumHBlankIntrs = 0;
 struct BlendRegs gBldRegs ALIGNED(8) = {};
 u8 gOamFreeIndex = 0;
 struct Task gEmptyTask ALIGNED(16) = {};
-BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(8) = {};
+u8 gNextFreeAffineIndex = 0;
+BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] = {};
 void *gVramHeapStartAddr = NULL;
 u16 gUnknown_03001944 ALIGNED(4) = 0;
 u8 gUnknown_03001948 ALIGNED(4) = 0;
@@ -252,6 +253,9 @@ void GameInit(void)
     gBgAffineRegs[1].x = 0;
     gBgAffineRegs[1].y = 0;
 
+#if (CURRENT_GAME >= GAME_SA3)
+    gNextFreeAffineIndex = 0;
+#endif
     gUnknown_03001944 = 0;
     gUnknown_030017F0 = 0x100;
     gUnknown_03005394 = 0x100;
@@ -378,6 +382,10 @@ void GameLoop(void)
 
         gFlagsPreVBlank = gFlags;
         VBlankIntrWait();
+
+#if (CURRENT_GAME >= GAME_SA3)
+        gNextFreeAffineIndex = 0;
+#endif
 
         if (gFlags & FLAGS_4000) {
             UpdateScreenCpuSet();

@@ -629,7 +629,7 @@ void DisplaySprite(Sprite *sprite)
     }
 }
 
-void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
+void DisplaySprites(Sprite *sprite, u16 *sp08, u8 sp0C)
 {
     vs32 x, y;
     s32 sprWidth, sprHeight;

@@ -1892,9 +1892,7 @@ static void Task_StartTitleScreenDemo(void)
     gSelectedCharacter = CHARACTER_SONIC;
     gCurrentLevel = sDemoLevels[0];
 
-    gDemoPlayCounter++;
-    // Don't count higher than 3
-    gDemoPlayCounter &= 3;
+    gDemoPlayCounter = (gDemoPlayCounter + 1) % 4u;
 
     gGameMode = GAME_MODE_SINGLE_PLAYER;
 
