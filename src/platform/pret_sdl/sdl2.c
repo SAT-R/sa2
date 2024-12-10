@@ -243,7 +243,7 @@ int main(int argc, char **argv)
 #if ENABLE_VRAM_VIEW
     VramDraw(vramTexture);
 #endif
-    // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
+    // Prevent the multiplayer screen from being drawn ( see core.c:EngineInit() )
     REG_RCNT = 0x8000;
     REG_KEYINPUT = 0x3FF;
 

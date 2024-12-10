@@ -180,7 +180,7 @@ static VBlankFunc const sVblankFuncs[] = {
     sub_8002B20,
 };
 
-void GameInit(void)
+void EngineInit(void)
 {
     s16 i;
     u16 errorIdentifying;
@@ -362,7 +362,7 @@ void GameInit(void)
     MultiSioInit(0);
 }
 
-void GameLoop(void)
+void EngineMainLoop(void)
 {
     while (TRUE) {
         gExecSoundMain = FALSE;

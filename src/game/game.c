@@ -30,7 +30,7 @@
 
 #include "data/sprite_tables.h"
 
-void GameStart(void)
+void GameInit(void)
 {
     u32 i;
     bool32 hasProfile = FALSE;
@@ -77,7 +77,7 @@ void GameStart(void)
         hasProfile = TRUE;
     }
 
-    // This flag is only set in GameInit
+    // This flag is only set in EngineInit
     if (gFlags & FLAGS_200) {
         ShowSinglePakResults();
         return;

@@ -368,7 +368,7 @@ extern struct MultiBootParam gMultiBootParam;
 
 extern const struct SpriteTables *gRefSpriteTables;
 
-void GameInit(void);
-void GameLoop(void);
+void EngineInit(void);
+void EngineMainLoop(void);
 
 #endif

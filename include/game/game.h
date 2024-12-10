@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void GameStart(void);
+void GameInit(void);
 
 #endif // GUARD_GAME_H

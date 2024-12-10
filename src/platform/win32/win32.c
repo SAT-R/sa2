@@ -4,9 +4,7 @@
 #include "global.h"
 #include "core.h"
 
-extern void GameInit(void);
-extern void GameStart(void);
-extern void GameLoop(void);
+void GameInit(void);
 
 DWORD WINAPI GameThread(void *pThreadParam);
 
@@ -25,8 +23,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR lpCmdLine, 
     REG_RCNT = 0x8000;
     REG_KEYINPUT = 0x3FF;
 
+    EngineInit();
     GameInit();
-    GameStart();
 
     DWORD threadId;
     HANDLE GameThreadHandle = CreateThread(NULL, 0, GameThread, NULL, 0, &threadId);
@@ -39,7 +37,7 @@ DWORD WINAPI GameThread(void *pThreadParam)
     REG_KEYINPUT &= ~START_BUTTON;
     while (1) {
         gFlags |= 0x4000;
-        GameLoop();
+        EngineMainLoop();
         REG_KEYINPUT ^= (A_BUTTON | START_BUTTON);
         REG_KEYINPUT |= (DPAD_RIGHT);
     }
