@@ -11,7 +11,7 @@
 #if defined(__aarch64__) || defined(__x86_64__)
     .quad \value
 #else
-    .int \value
+    .4byte \value
 #endif
 .endm
 

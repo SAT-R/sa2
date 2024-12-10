@@ -564,5 +564,6 @@ void PrintAgbFooter()
     for (int i = 1; i <= trackCount; i++)
         std::fprintf(g_outputFile, "\tmPtr\t%s_%u\n", g_asmLabel.c_str(), i);
 
+    // TODO: is this needed?
     std::fprintf(g_outputFile, "\n\t.end\n");
 }

@@ -618,6 +618,11 @@ s32 sub_801ED24(s32 p0, s32 p1, s32 p2, u8 *p3)
 // (100.00%) https://decomp.me/scratch/sJY4g
 s32 sub_801EE64(s32 p0in, s32 p1in, s32 p2in, u8 *p3in)
 {
+#ifdef BUG_FIX
+    if (!gRefCollision) {
+        return 0;
+    }
+#endif
 #ifndef NON_MATCHING
     register u32 r0 asm("r0");
     register u32 r1 asm("r1");

@@ -9,6 +9,10 @@
 #include <xinput.h>
 #endif
 
+#ifdef PS2
+#define SDL_MAIN_HANDLED
+#endif
+
 #include <SDL.h>
 
 #include "global.h"
@@ -137,8 +141,39 @@ void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GE
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 #endif
 
+#ifdef PS2
+// TODO: clean these for what is needed
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+#include <kernel.h>
+#include <sifrpc.h>
+#include <iopcontrol.h>
+#include <sbv_patches.h>
+#include <ps2_filesystem_driver.h>
+
+__attribute__((weak)) void reset_IOP(void)
+{
+    SifInitRpc(0);
+    while (!SifIopReset(NULL, 0)) { }
+    while (!SifIopSync()) { }
+}
+
+static void prepare_IOP(void)
+{
+    reset_IOP();
+    SifInitRpc(0);
+    sbv_patch_enable_lmb();
+}
+#endif
+
 int main(int argc, char **argv)
 {
+#if PS2
+    prepare_IOP();
+#endif
+
     // Open an output console on Windows
 #ifdef _WIN32
     AllocConsole();
@@ -146,9 +181,11 @@ int main(int argc, char **argv)
     freopen("CON", "w", stdout);
 #endif
 
+#ifndef PS2
     ReadSaveFile("sa2.sav");
+#endif
 
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0) {
         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
@@ -159,12 +196,17 @@ int main(int argc, char **argv)
     const char *title = "SAT-R sa2";
 #endif
 
+#ifdef PS2
+    sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
+#else
     sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, DISPLAY_WIDTH * videoScale,
                                  DISPLAY_HEIGHT * videoScale, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+#endif
     if (sdlWindow == NULL) {
         fprintf(stderr, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
+    printf("CREATED!\n");
 
 #if ENABLE_VRAM_VIEW
     int mainWindowX;
@@ -182,7 +224,7 @@ int main(int argc, char **argv)
     }
 #endif
 
-    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_PRESENTVSYNC);
+    sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (sdlRenderer == NULL) {
         fprintf(stderr, "Renderer could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
@@ -220,6 +262,11 @@ int main(int argc, char **argv)
     }
 #endif
 
+#ifdef PS2
+    SDL_SetTextureScaleMode(sdlTexture, SDL_ScaleModeLinear);
+    SDL_SetTextureColorMod(sdlTexture, 140, 140, 140);
+#endif
+
 #if ENABLE_AUDIO
     SDL_AudioSpec want;
 
@@ -230,6 +277,7 @@ int main(int argc, char **argv)
     want.samples = (want.freq / 60);
     cgb_audio_init(want.freq);
 
+    SDL_InitSubSystem(SDL_INIT_AUDIO);
     if (SDL_OpenAudio(&want, 0) < 0)
         SDL_Log("Failed to open audio: %s", SDL_GetError());
     else {
@@ -245,7 +293,7 @@ int main(int argc, char **argv)
 #endif
     // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
     REG_RCNT = 0x8000;
-    REG_KEYINPUT = 0x3FF;
+    REG_KEYINPUT = KEYS_MASK;
 
     AgbMain();
 
@@ -267,6 +315,12 @@ void VBlankIntrWait(void)
             double deltaTime = 0;
 
             curGameTime = SDL_GetPerformanceCounter();
+
+// For now the PS2 renders too slowly so we just
+// have to render as far as we can
+#ifdef PS2
+            deltaTime = dt;
+#else
             if (stepOneFrame) {
                 deltaTime = dt;
             } else {
@@ -274,6 +328,8 @@ void VBlankIntrWait(void)
                 if (deltaTime > (dt * 5))
                     deltaTime = dt * 5;
             }
+#endif
+
             lastGameTime = curGameTime;
 
             accumulator += deltaTime;
@@ -281,6 +337,7 @@ void VBlankIntrWait(void)
             while (accumulator >= dt) {
                 REG_KEYINPUT = KEYS_MASK ^ Platform_GetKeyInput();
                 if (frameAvailable) {
+                    // The draw function is super slow on constrained hardware
                     VDraw(sdlTexture);
                     frameAvailable = FALSE;
 
@@ -293,10 +350,13 @@ void VBlankIntrWait(void)
                     if (REG_DISPSTAT & DISPSTAT_VBLANK_INTR)
                         gIntrTable[INTR_INDEX_VBLANK]();
                     REG_DISPSTAT &= ~INTR_FLAG_VBLANK;
-
                     accumulator -= dt;
                 } else {
-                    // Get another frame
+                    // remove this once the PS2 renders fast enough
+#ifdef PS2
+                    accumulator -= dt;
+#endif
+                    // Get another frame;
                     return;
                 }
             }
@@ -314,10 +374,12 @@ void VBlankIntrWait(void)
         SDL_RenderClear(vramRenderer);
         SDL_RenderCopy(vramRenderer, vramTexture, NULL, NULL);
 #endif
+
         if (videoScaleChanged) {
             SDL_SetWindowSize(sdlWindow, DISPLAY_WIDTH * videoScale, DISPLAY_HEIGHT * videoScale);
             videoScaleChanged = false;
         }
+
         SDL_RenderPresent(sdlRenderer);
 #if ENABLE_VRAM_VIEW
         SDL_RenderPresent(vramRenderer);
@@ -330,7 +392,6 @@ void VBlankIntrWait(void)
     SDL_Quit();
     exit(0);
 }
-
 static void ReadSaveFile(char *path)
 {
     // Check whether the saveFile exists, and create it if not
@@ -401,6 +462,7 @@ static SDL_DisplayMode sdlDispMode = { 0 };
 
 void Platform_QueueAudio(const void *data, uint32_t bytesCount)
 {
+#if ENABLE_AUDIO
     // Reset the audio buffer if we are 10 frames out of sync
     // If this happens it suggests there was some OS level lag
     // in playing audio. The queue length should remain stable at < 10 otherwise
@@ -410,6 +472,7 @@ void Platform_QueueAudio(const void *data, uint32_t bytesCount)
 
     SDL_QueueAudio(1, data, bytesCount);
     // printf("Queueing %d\n, QueueSize %d\n", bytesCount, SDL_GetQueuedAudioSize(1));
+#endif
 }
 
 void ProcessSDLEvents(void)

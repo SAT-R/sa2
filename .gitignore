@@ -81,6 +81,7 @@ libagbsyscall/*.s
 *.exe
 *.dll
 *.sdl
+*.iso
 
 # third party deps
 /ext

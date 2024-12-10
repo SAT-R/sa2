@@ -4,13 +4,6 @@
 #include "config.h"
 #include "gba/gba.h"
 
-#if PLATFORM_GBA
-#define ENABLE_AUDIO TRUE
-#else
-#define ENABLE_AUDIO     TRUE
-#define ENABLE_VRAM_VIEW !TRUE
-#endif
-
 #define CONST_DATA __attribute__((section(".data")))
 
 // #include "types.h"

@@ -596,6 +596,8 @@ static void UpdateScreenCpuSet(void)
     }
 }
 
+void somefunc(void) { }
+
 static void VBlankIntr(void)
 {
     u16 keys;
@@ -633,6 +635,7 @@ static void VBlankIntr(void)
     if (!(gFlagsPreVBlank & FLAGS_8000)) {
         keys = ~REG_KEYINPUT & (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON);
         if (keys == (START_BUTTON | SELECT_BUTTON | B_BUTTON | A_BUTTON)) {
+            somefunc();
             gFlags |= FLAGS_8000;
             REG_IE = 0;
             REG_IME = 0;

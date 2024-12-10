@@ -18,6 +18,9 @@ ifeq ($(CPU_ARCH),arm)
 else ifeq ($(CPU_ARCH),i386)
     THUMB_SUPPORT ?= 0
     MIDI_COMMENTS := "x86"
+else ifeq ($(CPU_ARCH),MIPS)
+    THUMB_SUPPORT ?= 0
+    MIDI_COMMENTS := "x86"
 else
     $(error unknown arch: $(CPU_ARCH))
 endif
@@ -59,9 +62,10 @@ DEBUG         ?= 0
 MAKER_CODE := 78
 
 # Version
-BUILD_NAME := sa2
-TITLE      := SONICADVANC2
-GAME_CODE  := A2N
+BUILD_NAME    := sa2
+TITLE         := SONICADVANC2
+GAME_CODE     := A2N
+PS2_GAME_CODE := SLUS_054.02
 
 
 # Revision

@@ -169,8 +169,7 @@ typedef struct Player_ {
     //       Alternatively, some of the following data might be a union
     /* 0x94 */ PlayerSpriteInfo *unk94;
     /* 0x98 */ u8 unk98; // Multiplayer var. TODO: check sign!
-    /* 0x99 */ s8 unk99[15];
-    /* 0xA8 */ u8 unkA8;
+    /* 0x99 */ s8 unk99[16];
     /* 0x9A */ u8 fillerA9[0x3];
 
     // Cream's framecounter for flying
