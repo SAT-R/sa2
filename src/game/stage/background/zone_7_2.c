@@ -37,6 +37,6 @@ NONMATCH("asm/non_matching/game/stage/background/StageBgUpdate_Zone7Acts12.inc",
         Zone7BgUpdate_Outside(x, y);
     }
 
-    gPlayer.unkA8 = bgId;
+    gPlayer.unk99[15] = bgId;
 }
 END_NONMATCH

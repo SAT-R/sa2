@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define IO_SIZE 0x800
+#define IO_SIZE 0x400
 #if PLATFORM_GBA
 // I/O register base address
 #define REG_BASE 0x4000000 

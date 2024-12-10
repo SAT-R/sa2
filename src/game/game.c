@@ -97,7 +97,9 @@ void GameStart(void)
     // GameStageStart();
 
 #elif ENABLE_DECOMP_CREDITS
-    CreateDecompCreditsScreen(hasProfile);
+    gCurrentLevel = LEVEL_INDEX(ZONE_2, ACT_1);
+    ApplyGameStageSettings();
+    GameStageStart();
 #else
     if (gFlags & FLAGS_NO_FLASH_MEMORY) {
         CreateTitleScreen();

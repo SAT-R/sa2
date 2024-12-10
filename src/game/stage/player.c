@@ -763,7 +763,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     sub_8015750();
     sub_801561C();
     sub_802989C(p);
-
+#ifndef NON_MATCHING
     { // This smells like a memset macro.
         // Nonmatching reg-alloc between r4 & r6 here
         u32 *u99 = (void *)p->unk99;
@@ -773,6 +773,9 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
             *u99++ = 0;
         }
     }
+#else
+    memset(p->unk99, 0, sizeof(p->unk99));
+#endif
 
     p->unk99[0] = 0x7F;
 

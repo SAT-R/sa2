@@ -34,7 +34,7 @@ else ifeq ($(CPU_ARCH),i386)
   else ifeq ($(PLATFORM),win32)
     PREFIX := i686-w64-mingw32-
   endif
-else ifeq ($(CPU_ARCH),EE)
+else ifeq ($(CPU_ARCH),MIPS)
   ifeq ($(PLATFORM),sdl_ps2)
     PREFIX := mips64r5900el-ps2-elf-
   else
@@ -115,24 +115,24 @@ else
 		CC1FLAGS += -Wno-parentheses-equality -Wno-unused-value
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(shell sdl2-config --cflags)
 	else ifeq ($(PLATFORM),sdl_ps2)
-		CC1FLAGS += -Wno-parentheses-equality -Wno-unused-value
-		CC1FLAGS += -ffast-math
+		CC1FLAGS += -Wno-parentheses-equality -Wno-unused-value -ffast-math
 		CPPFLAGS += -I$(PS2SDK)/common/include -I$(PS2SDK)/ee/include -I$(PS2SDK)/ports/include $(shell $(PS2SDK)/ports/bin/sdl2-config --cflags)
-		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -D_EE -DPS2 -D__PS2__ -Dmain=SDL_main
+		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 -D_EE -DPS2 -D__PS2__
 	else ifeq ($(PLATFORM),sdl_win32)
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=1 -D PLATFORM_WIN32=0 $(SDL_MINGW_FLAGS)
 	else ifeq ($(PLATFORM),win32)
 		CPPFLAGS += -D TITLE_BAR=$(BUILD_NAME).$(PLATFORM) -D PLATFORM_GBA=0 -D PLATFORM_SDL=0 -D PLATFORM_WIN32=1
 	endif
 
-	ifeq ($(CPU_ARCH),i386)
-        CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0
-
+    ifeq ($(CPU_ARCH),i386)
+        CPPFLAGS += -D CPU_ARCH_X86=1 -D CPU_ARCH_ARM=0 -D CPU_ARCH_MIPS=0
         # Use the more legible Intel dialect for x86, without underscores
         CC1FLAGS += -masm=intel
-	else 
-        CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0
-	endif
+	else ifeq ($(CPU_ARCH),MIPS)
+        CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0 -D CPU_ARCH_MIPS=1
+    else 
+        CPPFLAGS += -D CPU_ARCH_X86=0 -D CPU_ARCH_ARM=0 -D CPU_ARCH_MIPS=0
+    endif
 endif
 
 ifeq ($(PLATFORM),gba)
@@ -147,6 +147,9 @@ else
     # for modern we are using a modern compiler
     # so instead of CPP we can use gcc -E to "preprocess only"
     CPP := $(CC1) -E
+  else ifeq ($(PLATFORM), sdl_ps2)
+    # the linker complains if we don't set this
+    ASFLAGS  += -msingle-float
   endif
   # Allow file input through stdin on modern GCC and set it to "compile only"
   CC1FLAGS += -x c -S
@@ -236,6 +239,10 @@ else ifeq ($(PLATFORM),sdl)
 ROM      := $(BUILD_NAME).sdl
 ELF      := $(ROM).elf
 MAP      := $(ROM).map
+else ifeq ($(PLATFORM),sdl_ps2)
+ROM      := $(BUILD_NAME).$(PLATFORM).iso
+ELF      := $(ROM:.iso=.elf)
+MAP      := $(ROM:.iso=.map)
 else
 ROM      := $(BUILD_NAME).$(PLATFORM).exe
 ELF      := $(ROM:.exe=.elf)
@@ -380,13 +387,17 @@ clean-tools:
 
 tidy:
 	$(RM) $(ROM) $(ELF) $(MAP)
-	$(RM) $(BUILD_NAME)_europe.gba $(BUILD_NAME)_europe.elf $(BUILD_NAME)_europe.map
-	$(RM) $(BUILD_NAME)_japan.gba $(BUILD_NAME)_japan.elf $(BUILD_NAME)_japan.map
-	$(RM) -r build/*
+	$(RM) -r $(OBJ_DIR)
+ifeq ($(PLATFORM), sdl_win32)
 	$(RM) SDL2.dll
-ifeq ($(PLATFORM), GBA)
+else ifeq ($(PLATFORM), gba)
+ifeq ($(GAME_REGION), USA)
+	$(MAKE) tidy GAME_REGION=JAPAN
+	$(MAKE) tidy GAME_REGION=EUROPE
+endif
 	$(MAKE) tidy PLATFORM=win32 CPU_ARCH=i386
 	$(MAKE) tidy PLATFORM=sdl_win32 CPU_ARCH=i386
+	$(MAKE) tidy PLATFORM=sdl_ps2 CPU_ARCH=MIPS
 	$(MAKE) tidy PLATFORM=sdl
 endif
 
@@ -452,7 +463,7 @@ ifeq ($(PLATFORM),sdl)
 else ifeq ($(PLATFORM),sdl_win32)
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(ROOT_DIR)/$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 else ifeq ($(PLATFORM),sdl_ps2)
-	@cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) -lSDL2main -lSDL2 $(shell $(PS2SDK)/ports/bin/sdl2-config --libs) $(LINKER_MAP_FLAGS) -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/common/lib -L$(PS2SDK)/ee/lib -L$(PS2DEV)/gsKit/lib -Wl,-zmax-page-size=128 -o $(ROOT_DIR)/$@
+	@cd $(OBJ_DIR) && $(CC1) $(OBJS_REL) -lSDL2 $(shell $(PS2SDK)/ports/bin/sdl2-config --libs) $(LINKER_MAP_FLAGS) -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/common/lib -L$(PS2SDK)/ee/lib -L$(PS2DEV)/gsKit/lib -Wl,-zmax-page-size=128 -o $(ROOT_DIR)/$@
 else
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 endif
@@ -464,6 +475,11 @@ ifeq ($(PLATFORM),gba)
 	$(FIX) $@ -p -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(GAME_REVISION) --silent
 else ifeq ($(PLATFORM),sdl)
 	cp $< $@
+else ifeq ($(PLATFORM),sdl_ps2)
+	@echo Creating $(ROM) from $(ELF)
+	@cp -r ps2/ntsc $(OBJ_DIR)/iso
+	@cp $< $(OBJ_DIR)/iso/$(PS2_GAME_CODE)
+	@mkisofs -o $(ROM) $(OBJ_DIR)/iso/
 else
 	$(OBJCOPY) -O pei-i386 $< $@
 ifeq ($(CREATE_PDB),1)
@@ -530,7 +546,7 @@ europe: ; @$(MAKE) GAME_REGION=EUROPE
 
 sdl: ; @$(MAKE) PLATFORM=sdl
 
-sdl_ps2: ; @$(MAKE) CPU_ARCH=EE PLATFORM=sdl_ps2
+sdl_ps2: ; @$(MAKE) CPU_ARCH=MIPS PLATFORM=sdl_ps2
 
 sdl_win32: SDL2.dll $(SDL_MINGW_LIB)
 	@$(MAKE) PLATFORM=sdl_win32 CPU_ARCH=i386

@@ -8,7 +8,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends binutils-arm-none-eabi \
      gcc-arm-none-eabi libpng-dev build-essential clang-format-13 xorg-dev \
      libsdl2-dev gcc-mingw-w64 texinfo flex bison gettext libgsl-dev libgmp3-dev \
-     libmpfr-dev libmpc-dev zlib1g-dev autopoint cmake automake patch
+     libmpfr-dev libmpc-dev zlib1g-dev autopoint cmake automake patch mkisofs
 
 WORKDIR /deps
 RUN git clone https://github.com/SAT-R/agbcc.git && cd agbcc && ./build.sh

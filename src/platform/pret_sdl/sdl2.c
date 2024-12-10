@@ -9,8 +9,11 @@
 #include <xinput.h>
 #endif
 
+#ifdef PS2
+#define SDL_MAIN_HANDLED
+#endif
+
 #include <SDL.h>
-#include <SDL_audio.h>
 
 #include "global.h"
 #include "core.h"
@@ -138,8 +141,39 @@ void *Platform_malloc(int numBytes) { return HeapAlloc(GetProcessHeap(), HEAP_GE
 void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 #endif
 
+#ifdef PS2
+// TODO: clean these for what is needed
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+#include <kernel.h>
+#include <sifrpc.h>
+#include <iopcontrol.h>
+#include <sbv_patches.h>
+#include <ps2_filesystem_driver.h>
+
+__attribute__((weak)) void reset_IOP(void)
+{
+    SifInitRpc(0);
+    while (!SifIopReset(NULL, 0)) { }
+    while (!SifIopSync()) { }
+}
+
+static void prepare_IOP(void)
+{
+    reset_IOP();
+    SifInitRpc(0);
+    sbv_patch_enable_lmb();
+}
+#endif
+
 int main(int argc, char **argv)
 {
+#if PS2
+    prepare_IOP();
+#endif
+
     // Open an output console on Windows
 #ifdef _WIN32
     AllocConsole();
@@ -259,7 +293,7 @@ int main(int argc, char **argv)
 #endif
     // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
     REG_RCNT = 0x8000;
-    REG_KEYINPUT = 0x3FF;
+    REG_KEYINPUT = KEYS_MASK;
 
     AgbMain();
 
