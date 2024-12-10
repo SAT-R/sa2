@@ -93,7 +93,7 @@ typedef struct {
 } Background; /* size = 0x40 */
 
 typedef struct {
-#if (CURRENT_GAME >= GAME_SA3)
+#if (ENGINE >= ENGINE_3)
     // In SA3 flip-bits are integrated into the oamIndex.
     // X-Flip: Bit 14
     // Y-Flip: Bit 15

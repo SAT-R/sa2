@@ -11,7 +11,7 @@ u32 gMultiSioIntrFuncBuf[0x120 / 4] = {}; // Interrupt Routine RAM Execution Buf
 
 struct MultiSioArea gMultiSioArea = {};
 
-#if (CURRENT_GAME <= GAME_SA2)
+#if (GAME <= GAME_SA2)
 UNUSED u32 gUnusedMultiSioSpace[2] = {};
 #endif
 

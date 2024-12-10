@@ -35,6 +35,8 @@ u8 gNumHBlankIntrs = 0;
 struct BlendRegs gBldRegs ALIGNED(8) = {};
 u8 gOamFreeIndex = 0;
 struct Task gEmptyTask ALIGNED(16) = {};
+
+// NOTE: gNextFreeAffineIndex introduced in SA3, unused before.
 u8 gNextFreeAffineIndex = 0;
 BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] = {};
 void *gVramHeapStartAddr = NULL;
@@ -251,7 +253,7 @@ void GameInit(void)
     gBgAffineRegs[1].x = 0;
     gBgAffineRegs[1].y = 0;
 
-#if (CURRENT_GAME >= GAME_SA3)
+#if (GAME >= GAME_SA3)
     gNextFreeAffineIndex = 0;
 #endif
     gUnknown_03001944 = 0;
@@ -381,7 +383,7 @@ void GameLoop(void)
         gFlagsPreVBlank = gFlags;
         VBlankIntrWait();
 
-#if (CURRENT_GAME >= GAME_SA3)
+#if (GAME >= GAME_SA3)
         gNextFreeAffineIndex = 0;
 #endif
 
