@@ -253,7 +253,7 @@ void GameInit(void)
     gBgAffineRegs[1].x = 0;
     gBgAffineRegs[1].y = 0;
 
-#if (GAME >= GAME_SA3)
+#if (ENGINE >= ENGINE_3)
     gNextFreeAffineIndex = 0;
 #endif
     gUnknown_03001944 = 0;
@@ -383,7 +383,7 @@ void GameLoop(void)
         gFlagsPreVBlank = gFlags;
         VBlankIntrWait();
 
-#if (GAME >= GAME_SA3)
+#if (ENGINE >= ENGINE_3)
         gNextFreeAffineIndex = 0;
 #endif
 
