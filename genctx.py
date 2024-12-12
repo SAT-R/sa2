@@ -31,20 +31,20 @@ for filename in search_directories('./include/**/*.h'):
 
         if not header_name in depends_on:            
             depends_on[header_name] = set()
-            if not header_name.startswith("gba/") \
-               and header_name != "global.h"      \
-               and header_name != "functions.h":
-                depends_on[header_name].add("global.h")
+
+            if not header_name.startswith("gba/"):
+                if header_name != "global.h"      \
+                and header_name != "config.h"     \
+                and header_name != "functions.h":
+                    depends_on[header_name].add("global.h")
             
-            if header_name.startswith("gba/")       \
-            and not header_name.endswith("types.h") \
-            and not header_name.endswith("defines.h"):
-                depends_on[header_name].add("gba/types.h")
-            
-            if header_name.startswith("gba/")           \
-            and not header_name.endswith("multiboot.h") \
-            and not header_name.endswith("types.h"):
-                depends_on[header_name].add("gba/multiboot.h")
+            else: # header_name.startswith("gba/")
+                if  not header_name.endswith("types.h") \
+                and not header_name.endswith("defines.h"):
+                    depends_on[header_name].add("gba/types.h")
+                elif not header_name.endswith("multiboot.h") \
+                and not header_name.endswith("types.h"):
+                    depends_on[header_name].add("gba/multiboot.h")
                 
         data[header_name] = ""
         for line in header.readlines():
