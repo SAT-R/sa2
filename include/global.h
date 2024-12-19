@@ -39,7 +39,7 @@ typedef void (*VoidFn)(void);
 #if !(defined NON_MATCHING)
 #define NON_MATCHING 1
 #endif
-#elif defined(DEBUG)
+#elif (DEBUG)
 #define NON_MATCHING 1
 #endif
 

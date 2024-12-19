@@ -75,8 +75,10 @@ void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
         dataSize = dataSize * sizeof(u16);
     }
 
-    printf("DMA(TODO): S0x%p => 0x%p - 0x%p\n", src, dest, dest + dataSize);
+    // printf("DMA(TODO): S0x%p => 0x%p - 0x%p\n", src, dest, dest + dataSize);
 }
+
+void VBlankIntrWait() { }
 
 void DmaStop(int dmaNum) { printf("DmaStop: %d\n", dmaNum); }
 

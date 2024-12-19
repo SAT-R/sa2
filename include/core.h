@@ -294,17 +294,6 @@ extern u8 gVramGraphicsCopyQueueIndex;
 
 #define INC_GRAPHICS_QUEUE_CURSOR(cursor) cursor = (cursor + 1) % ARRAY_COUNT(gVramGraphicsCopyQueue);
 
-/* Make sure that both pointers are valid */
-#ifndef DEBUG
-#define TEST_GFX_POINTERS(gfx)
-#else
-#define TEST_GFX_POINTERS(gfx)                                                                                                             \
-    {                                                                                                                                      \
-        volatile u8 testVarDst = *(u8 *)((gfx)->dest);                                                                                     \
-        volatile u8 testVarSrc = *(u8 *)((gfx)->src);                                                                                      \
-    }
-#endif
-
 #if PORTABLE
 // On the GBA we use a fixed heap to allocate memory
 // but on other OS's we malloc and free memory which
@@ -315,7 +304,6 @@ extern u8 gVramGraphicsCopyQueueIndex;
 // has not happened we don't get invalid memory access
 extern struct GraphicsData gVramGraphicsCopyQueueBuffer[32];
 #define ADD_TO_GRAPHICS_QUEUE(gfx)                                                                                                         \
-    TEST_GFX_POINTERS(gfx);                                                                                                                \
     memcpy(&gVramGraphicsCopyQueueBuffer[gVramGraphicsCopyQueueIndex], gfx, sizeof(struct GraphicsData));                                  \
     gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = &gVramGraphicsCopyQueueBuffer[gVramGraphicsCopyQueueIndex];                      \
     /* Log has to happen before gVramGraphicsCopyQueueIndex increment */                                                                   \
@@ -323,7 +311,6 @@ extern struct GraphicsData gVramGraphicsCopyQueueBuffer[32];
     INC_GRAPHICS_QUEUE_CURSOR(gVramGraphicsCopyQueueIndex);
 #else
 #define ADD_TO_GRAPHICS_QUEUE(gfx)                                                                                                         \
-    TEST_GFX_POINTERS(gfx);                                                                                                                \
     gVramGraphicsCopyQueue[gVramGraphicsCopyQueueIndex] = gfx;                                                                             \
     /* Log has to happen before gVramGraphicsCopyQueueIndex increment */                                                                   \
     GFX_QUEUE_LOG_ADD(gfx)                                                                                                                 \
