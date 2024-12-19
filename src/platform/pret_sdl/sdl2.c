@@ -15,7 +15,7 @@
 
 #ifdef PORTABLE
 // gcc doesn't optimally inline some functions which causes a significant framerate drop in frame rate
-#define inline_hack __attribute__((always_inline))
+#define inline_hack
 #else
 #define inline_hack
 #endif
@@ -56,7 +56,7 @@ extern uint8_t IWRAM_START[IWRAM_SIZE];
 extern uint8_t REG_BASE[IO_SIZE];
 extern uint16_t PLTT[PLTT_SIZE / sizeof(uint16_t)];
 extern uint8_t VRAM[VRAM_SIZE];
-extern uint8_t OAM[OAM_SIZE];
+extern uint16_t OAM[OAM_SIZE / 2];
 extern uint8_t FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK];
 ALIGNED(256) uint16_t gameImage[DISPLAY_WIDTH * DISPLAY_HEIGHT];
 #if ENABLE_VRAM_VIEW
@@ -3419,6 +3419,8 @@ uint16_t *memsetu16(uint16_t *dst, uint16_t fill, size_t count)
     return 0;
 }
 
+void update_scanline(void);
+
 void DrawFrame(uint16_t *pixels)
 {
     int i;
@@ -3432,21 +3434,21 @@ void DrawFrame(uint16_t *pixels)
         }
 
         // backdrop color brightness effects
-        unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
-        uint16_t backdropColor = *(uint16_t *)PLTT;
-        if (REG_BLDCNT & BLDCNT_TGT1_BD) {
-            switch (blendMode) {
-                case 2:
-                    backdropColor = alphaBrightnessIncrease(backdropColor);
-                    break;
-                case 3:
-                    backdropColor = alphaBrightnessDecrease(backdropColor);
-                    break;
-            }
-        }
+        // unsigned int blendMode = (REG_BLDCNT >> 6) & 3;
+        // uint16_t backdropColor = *(uint16_t *)PLTT;
+        // if (REG_BLDCNT & BLDCNT_TGT1_BD) {
+        //     switch (blendMode) {
+        //         case 2:
+        //             backdropColor = alphaBrightnessIncrease(backdropColor);
+        //             break;
+        //         case 3:
+        //             backdropColor = alphaBrightnessDecrease(backdropColor);
+        //             break;
+        //     }
+        // }
 
-        memsetu16(&pixels[i * DISPLAY_WIDTH], backdropColor, DISPLAY_WIDTH);
-        DrawScanline(&pixels[i * DISPLAY_WIDTH], i);
+        // memsetu16(&pixels[i * DISPLAY_WIDTH], backdropColor, DISPLAY_WIDTH);
+        update_scanline();
 
         REG_DISPSTAT |= INTR_FLAG_HBLANK;
 
@@ -3496,9 +3498,11 @@ void VramDraw(SDL_Texture *texture)
 }
 #endif
 
+void clear_texture(void);
+
 void VDraw(SDL_Texture *texture)
 {
-    memset(gameImage, 0, sizeof(gameImage));
+    clear_texture();
     DrawFrame(gameImage);
     SDL_UpdateTexture(texture, NULL, gameImage, DISPLAY_WIDTH * sizeof(Uint16));
     REG_VCOUNT = 161; // prep for being in VBlank period

@@ -41,8 +41,8 @@
 
 #if PORTABLE
 // NOTE: Used in gba/types.h, so they have to be defined before the #include
-#define DISPLAY_WIDTH  426
-#define DISPLAY_HEIGHT 240
+#define DISPLAY_WIDTH  240
+#define DISPLAY_HEIGHT 160
 
 //#include "gba/types.h"
 // TODO: Fix #define OAM_SIZE (OAM_ENTRY_COUNT*sizeof(OamData))
@@ -56,7 +56,7 @@ extern uint8_t IWRAM_START[IWRAM_SIZE];
 extern uint16_t PLTT[PLTT_SIZE/sizeof(uint16_t)];
 #define BG_PLTT (u8*)&PLTT[0]
 #define OBJ_PLTT (u8*)&PLTT[BG_PLTT_SIZE/sizeof(uint16_t)]
-extern uint8_t OAM[OAM_SIZE];
+extern uint16_t OAM[OAM_SIZE / 2];
 
 // NOTE: We shouldn't consider WIDESCREEN_HACK a permanent thing.
 //       This hack should best be removed once there's a "native" platform layer.
