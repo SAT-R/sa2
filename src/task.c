@@ -204,6 +204,8 @@ void TasksExec(void)
                 if (gCurTask->main == NULL)
 #if ENABLE_TASK_LOGGING
                     printf("WARNING: Pointer of Task '%s' is NULL.\n", gCurTask->name);
+#else
+                    ;
 #endif
                 else
 #endif

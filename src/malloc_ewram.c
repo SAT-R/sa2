@@ -75,7 +75,6 @@ void *EwramMalloc(u32 req)
 void EwramFree(void *p)
 {
 #if PORTABLE
-    printf("EwramFree: %p\n", p);
     if (p != NULL) {
         free(p);
     }

@@ -146,6 +146,7 @@ ifeq ($(DEBUG),1)
   CPPFLAGS += -D DEBUG=1
 else
   CC1FLAGS += -O2
+  CPPFLAGS += -D DEBUG=0
 endif
 
 ifeq ($(PORTABLE),1)
