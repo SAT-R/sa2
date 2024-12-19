@@ -36,9 +36,11 @@ struct BlendRegs gBldRegs ALIGNED(8) = {};
 u8 gOamFreeIndex = 0;
 struct Task gEmptyTask ALIGNED(16) = {};
 
+#if (ENGINE >= ENGINE_3)
 // NOTE: gNextFreeAffineIndex introduced in SA3, unused before.
 u8 gNextFreeAffineIndex = 0;
-BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] = {};
+#endif
+BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(8) = {};
 void *gVramHeapStartAddr = NULL;
 u16 gUnknown_03001944 ALIGNED(4) = 0;
 u8 gUnknown_03001948 ALIGNED(4) = 0;

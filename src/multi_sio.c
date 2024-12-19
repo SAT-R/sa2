@@ -1,5 +1,4 @@
 #include "global.h"
-#include "game/game.h"
 #include "multi_sio.h"
 #include "sio32_multi_load.h"
 
