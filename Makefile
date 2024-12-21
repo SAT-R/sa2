@@ -30,11 +30,11 @@ ifeq ($(PLATFORM),gba)
   PREFIX := arm-none-eabi-
 else ifeq ($(CPU_ARCH),i386)
   ifeq ($(PLATFORM),sdl_win32)
-    TOOLCHAIN := /usr/i686-w64-mingw32/
-    PREFIX := i686-w64-mingw32-
+    TOOLCHAIN := /usr/x86_64-w64-mingw32/
+    PREFIX := x86_64-w64-mingw32-
   else ifeq ($(PLATFORM),win32)
-    TOOLCHAIN := /usr/i686-w64-mingw32/
-    PREFIX := i686-w64-mingw32-
+    TOOLCHAIN := /usr/x86_64-w64-mingw32/
+    PREFIX := x86_64-w64-mingw32-
   endif
 else
   ifneq ($(PLATFORM),sdl)
@@ -90,7 +90,7 @@ TOOLS = $(foreach tool,$(TOOLBASE),tools/$(tool)/$(tool)$(EXE))
 CPPFLAGS ?= -iquote include -D $(GAME_REGION)
 CC1FLAGS ?= -Wimplicit -Wparentheses -Werror
 
-SDL_MINGW_PKG          :=  ext/SDL2-2.30.3/i686-w64-mingw32
+SDL_MINGW_PKG          :=  ext/SDL2-2.30.3/x86_64-w64-mingw32
 SDL_MINGW_INCLUDE      := $(SDL_MINGW_PKG)/include/SDL2
 SDL_MINGW_BIN          := $(SDL_MINGW_PKG)/bin
 SDL_MINGW_SDL_DLL      := $(SDL_MINGW_PKG)/bin/SDL2.dll
@@ -436,7 +436,7 @@ ifeq ($(PLATFORM),sdl)
 else ifeq ($(PLATFORM),sdl_win32)
 	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -lmingw32 -L$(ROOT_DIR)/$(SDL_MINGW_LIB) -lSDL2main -lSDL2.dll -lwinmm -lkernel32 -lxinput -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 else
-	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
+	@cd $(OBJ_DIR) && $(CC1) -mwin32 $(OBJS_REL) -L$(ROOT_DIR)/libagbsyscall -lagbsyscall -lkernel32 -lgdi32 -o $(ROOT_DIR)/$@ -Xlinker -Map "$(ROOT_DIR)/$(MAP)"
 endif
 endif
 
@@ -447,7 +447,7 @@ ifeq ($(PLATFORM),gba)
 else ifeq ($(PLATFORM),sdl)
 	cp $< $@
 else
-	$(OBJCOPY) -O pei-i386 $< $@
+	$(OBJCOPY) -O pei-x86-64 $< $@
 ifeq ($(CREATE_PDB),1)
 	$(CV2PDB) $@
 endif
