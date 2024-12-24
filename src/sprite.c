@@ -177,14 +177,14 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
         const ACmd **variants;
 
         // Handle all the "regular" Animation commands with an ID < 0
-        variants = gRefSpriteTables->animations[s->graphics.anim];
+        variants = gRefSpriteTables->animations[GET_SPRITE_ANIM(s)];
         script = variants[s->variant];
         cmd = ReadInstruction(script, s->animCursor);
         while (cmd->id < 0) {
             // TODO: make this const void*
             ret = animCmdTable[~cmd->id]((void *)cmd, s);
             if (ret != ACMD_RESULT__RUNNING) {
-#ifndef NON_MATCHING
+#if (!defined(NON_MATCHING) && ((GAME == GAME_SA1) || (GAME == GAME_SA2)))
                 register const ACmd *newScript asm("r2");
 #else
                 const ACmd *newScript;
@@ -194,7 +194,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
                 }
 
                 // animation has changed
-                variants = gRefSpriteTables->animations[s->graphics.anim];
+                variants = gRefSpriteTables->animations[GET_SPRITE_ANIM(s)];
                 newScript = variants[s->variant];
 
                 // reset cursor
@@ -211,13 +211,19 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
         s->qAnimDelay -= s->animSpeed * 0x10;
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
+
+#if ((GAME == GAME_SA1) || (GAME == GAME_SA2))
             if (frame != -1) {
                 const struct SpriteTables *sprTables = gRefSpriteTables;
 
-                s->dimensions = &sprTables->dimensions[s->graphics.anim][frame];
+                s->dimensions = &sprTables->dimensions[GET_SPRITE_ANIM(s)][frame];
             } else {
                 s->dimensions = (void *)-1;
             }
+#else
+            s->frameNum = cmd->show.index;
+            s->frameFlags |= SPRITE_FLAG_MASK_26;
+#endif
         }
 
         s->animCursor += 2;
