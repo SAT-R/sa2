@@ -261,8 +261,12 @@ static AnimCmdResult animCmd_AddHitbox(void *cursor, Sprite *s)
     s->animCursor += AnimCommandSizeInWords(ACmd_Hitbox);
 
     DmaCopy32(3, &cmd->hitbox, &s->hitboxes[hitboxId].index, sizeof(Hitbox));
-
-    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0) && (cmd->hitbox.bottom == 0)) {
+#if (GAME == GAME_SA3)
+    if (((u8)cmd->hitbox.left == (u8)cmd->hitbox.right) && (*(volatile u8 *)&cmd->hitbox.top == (u8)cmd->hitbox.bottom))
+#else
+    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0) && (cmd->hitbox.bottom == 0))
+#endif
+    {
         s->hitboxes[hitboxId].index = -1;
     } else {
         if (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {

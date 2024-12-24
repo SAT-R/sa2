@@ -433,6 +433,26 @@ void TasksDestroyInPriorityRange(u16 lbound, u16 rbound)
     }
 }
 
+#if (GAME == GAME_SA3)
+static s32 IwramActiveNodeTotalSize(void)
+{
+    s32 activeSize = 0;
+    struct IwramNode *cur = (void *)gIwramHeap;
+    struct IwramNode *next;
+    while (1) {
+        if (cur->state < 0) {
+            activeSize -= cur->state;
+        }
+        next = (void *)(cur->next + IWRAM_START);
+        if (next == (void *)IWRAM_START) {
+            break;
+        }
+        cur = next;
+    }
+    return activeSize;
+}
+#endif
+
 static void TaskMainDummy1(void) { }
 
 static void TaskMainDummy2(void) { }

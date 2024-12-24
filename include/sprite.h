@@ -126,6 +126,8 @@ typedef struct {
 typedef struct {
     // index: -1 on init; lower 4 bits = index (in anim-cmds)
     /* 0x00 */ s32 index;
+
+    // TODO: Make this a Rect8, like in SA1 and SA3!
     /* 0x04 */ s8 left;
     /* 0x05 */ s8 top;
     /* 0x06 */ s8 right;

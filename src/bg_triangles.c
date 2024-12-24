@@ -789,7 +789,7 @@ void sub_8007A08(u8 bg, u8 param1, u8 param2, u8 param3, u8 param4)
     }
 }
 
-// TODO: Not in SA3 ?
+#if ((GAME == GAME_SA1) || (GAME == GAME_SA2))
 void sub_8007AC0(u8 affineBg, int_vcount minY, int_vcount maxY)
 {
     u16 *cursor;
@@ -826,3 +826,4 @@ void sub_8007AC0(u8 affineBg, int_vcount minY, int_vcount maxY)
         minY++;
     }
 }
+#endif
