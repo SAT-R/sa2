@@ -554,7 +554,8 @@ void sub_8082AA8(void)
 
 struct MultiplayerSinglePakResultsScreen *InitAndGetResultsScreenObject(s16 mode)
 {
-    struct Task *t = TaskCreate(Task_MultiplayerSinglePakResultsScreenInit, sizeof(struct MultiplayerSinglePakResultsScreen), 0x2000, 0, NULL);
+    struct Task *t
+        = TaskCreate(Task_MultiplayerSinglePakResultsScreenInit, sizeof(struct MultiplayerSinglePakResultsScreen), 0x2000, 0, NULL);
     struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(t);
 
     resultsScreen->unk434 = mode;

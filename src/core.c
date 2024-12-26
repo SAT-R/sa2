@@ -843,10 +843,10 @@ static void ClearOamBufferCpuSet(void)
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
     if (!(gFlags & FLAGS_20)) {
         if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
-            gBgOffsetsHBlank  = &gBgOffsetsBuffer[1];
+            gBgOffsetsHBlank = &gBgOffsetsBuffer[1];
             sa2__gUnknown_030022AC = &gBgOffsetsBuffer[0];
         } else {
-            gBgOffsetsHBlank  = &gBgOffsetsBuffer[0];
+            gBgOffsetsHBlank = &gBgOffsetsBuffer[0];
             sa2__gUnknown_030022AC = &gBgOffsetsBuffer[1];
         }
     }
