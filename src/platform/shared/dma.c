@@ -2,7 +2,7 @@
 #include "global.h"
 #include "platform/shared/dma.h"
 
-struct DMATransfer DMAList[DMA_COUNT] = {0};
+struct DMATransfer DMAList[DMA_COUNT] = { 0 };
 
 void RunDMAs(u32 type)
 {
