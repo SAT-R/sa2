@@ -15,7 +15,6 @@
 
 // #include "types.h"
 // #include "variables.h"
-#include "functions.h"
 
 #if !PLATFORM_GBA
 #ifdef _WIN32

@@ -9,7 +9,7 @@ SECTIONS
     {
         data/sound_data.o(ewram_data); 
         src/lib/m4a/m4a.o(ewram_data);
-        src/core.o(ewram_data);
+        src/malloc_ewram.o(.bss);
         ewram_end = .;
     }
 

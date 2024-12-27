@@ -114,7 +114,6 @@ u8 gBackgroundsCopyQueueCursor ALIGNED(4) = 0;
 HBlankFunc gHBlankIntrs[4] ALIGNED(16) = {};
 
 u8 gIwramHeap[0x2204] = {};
-EWRAM_DATA u8 gEwramHeap[] = {};
 
 Sprite *gUnknown_03004D10[] ALIGNED(16) = {};
 u8 gUnknown_03004D50 ALIGNED(4) = 0;
@@ -152,6 +151,8 @@ static void Dma2Intr(void);
 static void Dma3Intr(void);
 static void KeypadIntr(void);
 static void GamepakIntr(void);
+
+extern void IntrMain(void);
 
 // Warning: array contains an empty slot which would have
 // been used for a Timer3Intr function
@@ -332,10 +333,9 @@ void EngineInit(void)
     TasksInit();
     EwramInitHeap();
 
-    // 140 / 256 max useable segments
-    gVramHeapMaxTileSlots = 140 * VRAM_TILE_SLOTS_PER_SEGMENT;
-    // Would be good to know where this number comes from
-    gVramHeapStartAddr = OBJ_VRAM1 - (TILE_SIZE_4BPP * 48);
+    // VRAM_TILE_SEGMENTS / 256 max useable segments
+    gVramHeapMaxTileSlots = VRAM_TILE_SEGMENTS * VRAM_TILE_SLOTS_PER_SEGMENT;
+    gVramHeapStartAddr = OBJ_VRAM1 - (VRAM_HEAP_TILE_COUNT * TILE_SIZE_4BPP);
 
     VramResetHeapState();
 
@@ -529,6 +529,15 @@ static void ClearOamBufferDma(void)
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
     if (!(gFlags & FLAGS_20)) {
+#if (GAME == GAME_SA1)
+        if (gBgOffsetsHBlank == gBgOffsetsBuffer[0]) {
+            gBgOffsetsHBlank = gBgOffsetsBuffer[1];
+            gUnknown_030022AC = gBgOffsetsBuffer[0];
+        } else {
+            gBgOffsetsHBlank = gBgOffsetsBuffer[0];
+            gUnknown_030022AC = gBgOffsetsBuffer[1];
+        }
+#else
         if (gBgOffsetsHBlank == gUnknown_03004D54) {
             gBgOffsetsHBlank = gUnknown_030022C0;
 
@@ -539,6 +548,7 @@ static void ClearOamBufferDma(void)
 
             gUnknown_030022AC = gUnknown_030022C0;
         }
+#endif
     }
     gFlags &= ~FLAGS_4;
     DmaFill16(3, 0x200, gOamBuffer + 0x00, 0x100);
