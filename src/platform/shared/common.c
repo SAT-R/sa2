@@ -11,6 +11,9 @@ ALIGNED(256) uint8_t OAM[OAM_SIZE] = { 0 };
 ALIGNED(256) uint8_t FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK] = { 0 };
 
 u16 INTR_CHECK = 0;
+
+void IntrMain(void);
+
 IntrFunc INTR_VECTOR = IntrMain;
 
 void IntrMain(void)
