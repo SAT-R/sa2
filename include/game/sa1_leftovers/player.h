@@ -10,7 +10,7 @@
 typedef struct {
     /*0x00 */ SpriteTransform transform;
     /*0x0C */ Sprite s;
-    /*0x3C */ Hitbox reserved;
+    /*0x3C */ Hitbox reserved; // TODO: Maybe 3 hitboxes (Player, Action, Shield)?
 } PlayerSpriteInfo; /* size: 0x44 */
 
 extern PlayerSpriteInfo gUnknown_03005AA0;
