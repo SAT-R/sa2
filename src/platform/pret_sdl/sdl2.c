@@ -119,7 +119,7 @@ void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 int main(int argc, char **argv)
 {
     // Open an output console on Windows
-#ifdef _WIN32 && (DEBUG != 0)
+#if (defined _WIN32) && (DEBUG != 0)
     AllocConsole();
     AttachConsole(GetCurrentProcessId());
     freopen("CON", "w", stdout);

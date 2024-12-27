@@ -2,6 +2,8 @@
 #include "global.h"
 #include "platform/shared/dma.h"
 
+struct DMATransfer DMAList[DMA_COUNT] = {0};
+
 void RunDMAs(u32 type)
 {
     for (int dmaNum = 0; dmaNum < DMA_COUNT; dmaNum++) {

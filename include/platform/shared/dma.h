@@ -19,7 +19,9 @@ struct DMATransfer {
     };
     u32 size;
     u16 control;
-} DMAList[DMA_COUNT];
+} DMATransfer;
+
+extern struct DMATransfer DMAList[DMA_COUNT];
 
 typedef enum { DMA_NOW, DMA_VBLANK, DMA_HBLANK, DMA_SPECIAL } DmaStartTypes;
 
