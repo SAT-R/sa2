@@ -1,7 +1,7 @@
 #include "global.h"
-#include "game/sa1_leftovers/globals.h"
-#include "game/sa1_leftovers/input_buffer.h"
-#include "game/sa1_leftovers/player.h"
+#include "game/sa1_sa2_shared/globals.h"
+#include "game/sa1_sa2_shared/input_buffer.h"
+#include "game/sa1_sa2_shared/player.h"
 
 #include "constants/characters.h"
 
@@ -57,7 +57,7 @@ typedef struct {
 // (This might be used for timing in multiplayer?)
 //
 // (97%) https://decomp.me/scratch/VpRkC
-NONMATCH("asm/non_matching/game/sa1_leftovers/input_buf__sub_800DF8C.inc", void sub_800DF8C(Player *p))
+NONMATCH("asm/non_matching/game/sa1_sa2_shared/input_buf__sub_800DF8C.inc", void sub_800DF8C(Player *p))
 {
     const u8 **unk0;
     u32 unk4;

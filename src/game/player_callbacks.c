@@ -3,8 +3,8 @@
 #include "lib/m4a/m4a.h"
 #include "malloc_vram.h"
 
-#include "game/sa1_leftovers/globals.h"
-#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_sa2_shared/globals.h"
+#include "game/sa1_sa2_shared/collision.h"
 
 #include "game/stage/game_2.h"
 #include "game/stage/player_controls.h"

@@ -4,10 +4,10 @@
 #include "malloc_ewram.h"
 #include "rect.h"
 
-#include "game/sa1_leftovers/camera.h"
-#include "game/sa1_leftovers/collect_ring_effect.h"
-#include "game/sa1_leftovers/ring.h"
-#include "game/sa1_leftovers/rings_manager.h"
+#include "game/sa1_sa2_shared/camera.h"
+#include "game/sa1_sa2_shared/collect_ring_effect.h"
+#include "game/sa1_sa2_shared/ring.h"
+#include "game/sa1_sa2_shared/rings_manager.h"
 
 #include "game/entity.h"
 #include "game/stage/player_super_sonic.h"

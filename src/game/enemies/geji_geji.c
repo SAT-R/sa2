@@ -1,6 +1,6 @@
 #include "global.h"
 
-#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_sa2_shared/collision.h"
 
 #include "game/entity.h"
 #include "game/enemies/geji_geji.h"

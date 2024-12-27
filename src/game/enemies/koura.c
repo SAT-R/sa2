@@ -5,7 +5,7 @@
 #include "game/entity.h"
 #include "game/enemies/koura.h"
 
-#include "game/sa1_leftovers/entities_manager.h"
+#include "game/sa1_sa2_shared/entities_manager.h"
 #include "trig.h"
 
 #include "constants/animations.h"

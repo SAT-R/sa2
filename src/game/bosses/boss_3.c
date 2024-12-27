@@ -3,7 +3,7 @@
 #include "trig.h"
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
-#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_sa2_shared/collision.h"
 #include "game/entity.h"
 #include "game/bosses/common.h"
 #include "game/bosses/boss_3.h"

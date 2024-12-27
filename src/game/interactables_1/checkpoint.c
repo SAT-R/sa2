@@ -7,8 +7,8 @@
 #include "sprite.h"
 #include "task.h"
 
-#include "game/sa1_leftovers/globals.h"
-#include "game/sa1_leftovers/palette_loader.h"
+#include "game/sa1_sa2_shared/globals.h"
+#include "game/sa1_sa2_shared/palette_loader.h"
 
 #include "game/entity.h"
 #include "game/stage/spawn_positions.h"

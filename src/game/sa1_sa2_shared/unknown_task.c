@@ -6,7 +6,7 @@
 #include "task.h"
 #include "trig.h"
 #include "gba/syscall.h"
-#include "game/sa1_leftovers/unknown_task.h"
+#include "game/sa1_sa2_shared/unknown_task.h"
 
 void Task_CreateStageUnknownTask(void);
 void TaskDestructor_CreateStageUnknownTask(struct Task *);

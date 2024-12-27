@@ -3,7 +3,7 @@
 
 #include "core.h"
 #include "rect.h"
-#include "game/sa1_leftovers/player.h"
+#include "game/sa1_sa2_shared/player.h"
 
 #define COLL_NONE        0
 #define COLL_FLAG_1      0x00000001

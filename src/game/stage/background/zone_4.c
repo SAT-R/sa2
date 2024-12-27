@@ -3,8 +3,8 @@
 #include "flags.h"
 #include "animation_commands_bg.h"
 
-#include "game/sa1_leftovers/globals.h"
-#include "game/sa1_leftovers/spot_light.h"
+#include "game/sa1_sa2_shared/globals.h"
+#include "game/sa1_sa2_shared/spot_light.h"
 
 #include "game/stage/camera.h"
 #include "game/stage/player.h"

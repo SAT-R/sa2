@@ -3,7 +3,7 @@
 
 #include "game/stage/player_controls.h"
 #include "game/entity.h"
-#include "game/sa1_leftovers/interactables/grind_rail.h"
+#include "game/sa1_sa2_shared/interactables/grind_rail.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 

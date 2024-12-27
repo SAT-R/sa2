@@ -1,11 +1,11 @@
 #include "core.h"
 #include "malloc_vram.h"
-#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_sa2_shared/collision.h"
 
 #include "game/entity.h"
 #include "game/mystery_item_box.h"
 #include "game/multiplayer/player_unk_1.h"
-#include "game/sa1_leftovers/dust_cloud.h"
+#include "game/sa1_sa2_shared/dust_cloud.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 #include "lib/m4a/m4a.h"

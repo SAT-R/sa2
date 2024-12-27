@@ -4,7 +4,7 @@
 #include "task.h"
 #include "trig.h"
 
-#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_sa2_shared/collision.h"
 
 #include "game/stage/player.h"
 #include "game/stage/camera.h"

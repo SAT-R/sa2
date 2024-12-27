@@ -2,11 +2,11 @@
 #include "rect.h"
 #include "sprite.h"
 #include "lib/m4a/m4a.h"
-#include "game/sa1_leftovers/globals.h"
-#include "game/sa1_leftovers/collision.h"
-#include "game/sa1_leftovers/dust_cloud.h"
-#include "game/sa1_leftovers/entities_manager.h"
-#include "game/sa1_leftovers/player.h"
+#include "game/sa1_sa2_shared/globals.h"
+#include "game/sa1_sa2_shared/collision.h"
+#include "game/sa1_sa2_shared/dust_cloud.h"
+#include "game/sa1_sa2_shared/entities_manager.h"
+#include "game/sa1_sa2_shared/player.h"
 
 #include "game/cheese.h"
 #include "game/entity.h"
@@ -164,7 +164,7 @@ bool32 IsColliding_Cheese(Sprite *sprTarget, s32 sx, s32 sy, s16 hbIndex, Player
 }
 
 // (92.68%) https://decomp.me/scratch/CcZm5
-NONMATCH("asm/non_matching/game/sa1_leftovers/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
+NONMATCH("asm/non_matching/game/sa1_sa2_shared/coll__sub_800C4FC.inc", bool32 sub_800C4FC(Sprite *s, s32 sx, s32 sy, u8 hbIndex))
 {
     PlayerSpriteInfo *psi = gPlayer.unk90;
     Sprite *sprPlayer = &psi->s;

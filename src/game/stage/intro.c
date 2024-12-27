@@ -2,7 +2,7 @@
 #include "flags.h"
 #include "malloc_vram.h"
 #include "trig.h"
-#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_sa2_shared/globals.h"
 #include "game/stage/player.h"
 #include "game/cheese.h"
 #include "game/stage/game_7.h"

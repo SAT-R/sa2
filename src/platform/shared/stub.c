@@ -2,7 +2,7 @@
 
 #include "global.h"
 #include "sprite.h"
-#include "game/sa1_leftovers/collision.h" // sub_800D0A0
+#include "game/sa1_sa2_shared/collision.h" // sub_800D0A0
 #include "game/bosses/boss_5.h" // sub_802E784
 
 void *ewram_end = 0;

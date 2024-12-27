@@ -1,7 +1,7 @@
 #ifndef GUARD_SA2_INPUT_BUFFER
 #define GUARD_SA2_INPUT_BUFFER
 
-#include "game/sa1_leftovers/player.h"
+#include "game/sa1_sa2_shared/player.h"
 
 void sub_800E0C0(u16 param0, u16 param1);
 void sub_800DF8C(Player *p);

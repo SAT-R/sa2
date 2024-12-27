@@ -1,7 +1,7 @@
 #include "global.h"
 #include "core.h"
 
-#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_sa2_shared/globals.h"
 
 #include "game/multiplayer/player_unk_2.h"
 

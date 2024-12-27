@@ -4,7 +4,7 @@
 #include "core.h"
 #include "malloc_vram.h"
 
-#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_sa2_shared/globals.h"
 
 #include "game/save.h"
 #include "game/time_attack/lobby.h"

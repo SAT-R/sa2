@@ -1,6 +1,6 @@
 #include "global.h"
 #include "core.h"
-#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_sa2_shared/globals.h"
 
 u8 gUnknown_030053E0 = 0;
 u32 gCheckpointTime = 0;

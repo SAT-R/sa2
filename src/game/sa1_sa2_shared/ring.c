@@ -4,11 +4,11 @@
 #include "trig.h"
 #include "rect.h"
 
-#include "game/sa1_leftovers/globals.h"
-#include "game/sa1_leftovers/collect_ring_effect.h"
-#include "game/sa1_leftovers/rings_manager.h"
-#include "game/sa1_leftovers/camera.h"
-#include "game/sa1_leftovers/player.h"
+#include "game/sa1_sa2_shared/globals.h"
+#include "game/sa1_sa2_shared/collect_ring_effect.h"
+#include "game/sa1_sa2_shared/rings_manager.h"
+#include "game/sa1_sa2_shared/camera.h"
+#include "game/sa1_sa2_shared/player.h"
 
 #include "constants/animations.h"
 #include "constants/zones.h"

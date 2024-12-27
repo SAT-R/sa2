@@ -6,8 +6,8 @@
 
 #include "lib/m4a/m4a.h"
 
-#include "game/sa1_leftovers/demo_manager.h"
-#include "game/sa1_leftovers/player.h"
+#include "game/sa1_sa2_shared/demo_manager.h"
+#include "game/sa1_sa2_shared/player.h"
 
 // TODO: add headers for these into sakit
 // instead of including from the main game

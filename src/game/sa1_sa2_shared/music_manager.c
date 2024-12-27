@@ -1,9 +1,9 @@
 #include "global.h"
 #include "core.h"
 
-#include "game/sa1_leftovers/globals.h"
-#include "game/sa1_leftovers/player.h"
-#include "game/sa1_leftovers/music_manager.h"
+#include "game/sa1_sa2_shared/globals.h"
+#include "game/sa1_sa2_shared/player.h"
+#include "game/sa1_sa2_shared/music_manager.h"
 
 #include "lib/m4a/m4a.h"
 

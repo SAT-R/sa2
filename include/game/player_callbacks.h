@@ -2,7 +2,7 @@
 #define GUARD_player_callbacks_H
 
 #include "core.h"
-#include "game/sa1_leftovers/player.h"
+#include "game/sa1_sa2_shared/player.h"
 
 struct Task *Player_SonicAmy_InitSkidAttackGfxTask(s32 x, s32 y, u16 p2);
 void Player_SonicAmy_InitSkidAttack(Player *);

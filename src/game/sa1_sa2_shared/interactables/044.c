@@ -4,7 +4,7 @@
 #include "task.h"
 
 #include "game/entity.h"
-#include "game/sa1_leftovers/interactables/044.h"
+#include "game/sa1_sa2_shared/interactables/044.h"
 #include "game/stage/player.h"
 #include "game/stage/camera.h"
 
