@@ -6,7 +6,7 @@
 
 #define DMA_COUNT 4
 
-struct DMATransfer {
+typedef struct DMATransfer {
     union {
         const void *src;
         const u16 *src16;
