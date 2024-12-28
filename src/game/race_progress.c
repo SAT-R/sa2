@@ -3,7 +3,7 @@
 #include "sprite.h"
 #include "malloc_vram.h"
 
-#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_sa2_shared/globals.h"
 #include "game/race_progress.h"
 #include "game/stage/player.h"
 #include "game/multiplayer/mp_player.h"

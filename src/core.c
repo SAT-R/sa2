@@ -35,6 +35,11 @@ u8 gNumHBlankIntrs = 0;
 struct BlendRegs gBldRegs ALIGNED(8) = {};
 u8 gOamFreeIndex = 0;
 struct Task gEmptyTask ALIGNED(16) = {};
+
+#if (ENGINE >= ENGINE_3)
+// NOTE: gNextFreeAffineIndex introduced in SA3, unused before.
+u8 gNextFreeAffineIndex = 0;
+#endif
 BgAffineReg gBgAffineRegs[NUM_AFFINE_BACKGROUNDS] ALIGNED(8) = {};
 void *gVramHeapStartAddr = NULL;
 u16 gUnknown_03001944 ALIGNED(4) = 0;
@@ -61,7 +66,10 @@ struct Task *gNextTask = NULL;
 void *gUnknown_030022C0 = NULL;
 
 OamData gOamBuffer2[OAM_ENTRY_COUNT] ALIGNED(16) = {};
+
+#if (GAME == GAME_SA2)
 s16 gMosaicReg = 0;
+#endif
 
 HBlankFunc gHBlankCallbacks[4] ALIGNED(16) = {};
 struct Task *gCurTask = NULL;
@@ -106,7 +114,6 @@ u8 gBackgroundsCopyQueueCursor ALIGNED(4) = 0;
 HBlankFunc gHBlankIntrs[4] ALIGNED(16) = {};
 
 u8 gIwramHeap[0x2204] = {};
-EWRAM_DATA u8 gEwramHeap[] = {};
 
 Sprite *gUnknown_03004D10[] ALIGNED(16) = {};
 u8 gUnknown_03004D50 ALIGNED(4) = 0;
@@ -124,8 +131,6 @@ FuncType_030053A0 gUnknown_030053A0[] ALIGNED(16) = {};
 const u8 *gInputPlaybackData = NULL;
 bool8 gExecSoundMain ALIGNED(4) = FALSE;
 s32 gPseudoRandom = 0;
-struct InputRecorder gInputRecorder ALIGNED(8) = {};
-u16 *gInputRecorderTapeBuffer = NULL;
 
 static void UpdateScreenDma(void);
 static void UpdateScreenCpuSet(void);
@@ -146,6 +151,8 @@ static void Dma2Intr(void);
 static void Dma3Intr(void);
 static void KeypadIntr(void);
 static void GamepakIntr(void);
+
+extern void IntrMain(void);
 
 // Warning: array contains an empty slot which would have
 // been used for a Timer3Intr function
@@ -179,7 +186,7 @@ static VBlankFunc const sVblankFuncs[] = {
     sub_8002B20,
 };
 
-void GameInit(void)
+void EngineInit(void)
 {
     s16 i;
     u16 errorIdentifying;
@@ -252,6 +259,9 @@ void GameInit(void)
     gBgAffineRegs[1].x = 0;
     gBgAffineRegs[1].y = 0;
 
+#if (ENGINE >= ENGINE_3)
+    gNextFreeAffineIndex = 0;
+#endif
     gUnknown_03001944 = 0;
     gUnknown_030017F0 = 0x100;
     gUnknown_03005394 = 0x100;
@@ -271,7 +281,10 @@ void GameInit(void)
     gBldRegs.bldCnt = 0;
     gBldRegs.bldAlpha = 0;
     gBldRegs.bldY = 0;
+
+#if (GAME == GAME_SA2)
     gMosaicReg = 0;
+#endif
 
     gPseudoRandom = 0;
 
@@ -320,10 +333,9 @@ void GameInit(void)
     TasksInit();
     EwramInitHeap();
 
-    // 140 / 256 max useable segments
-    gVramHeapMaxTileSlots = 140 * VRAM_TILE_SLOTS_PER_SEGMENT;
-    // Would be good to know where this number comes from
-    gVramHeapStartAddr = OBJ_VRAM1 - (TILE_SIZE_4BPP * 48);
+    // VRAM_TILE_SEGMENTS / 256 max useable segments
+    gVramHeapMaxTileSlots = VRAM_TILE_SEGMENTS * VRAM_TILE_SLOTS_PER_SEGMENT;
+    gVramHeapStartAddr = OBJ_VRAM1 - (VRAM_HEAP_TILE_COUNT * TILE_SIZE_4BPP);
 
     VramResetHeapState();
 
@@ -358,9 +370,12 @@ void GameInit(void)
     MultiSioInit(0);
 }
 
-void GameLoop(void)
+void EngineMainLoop(void)
 {
-    while (TRUE) {
+#if !PLATFORM_WIN32
+    while (TRUE)
+#endif
+    {
         gExecSoundMain = FALSE;
         if (!(gFlags & FLAGS_4000)) {
             m4aSoundMain();
@@ -378,6 +393,10 @@ void GameLoop(void)
 
         gFlagsPreVBlank = gFlags;
         VBlankIntrWait();
+
+#if (ENGINE >= ENGINE_3)
+        gNextFreeAffineIndex = 0;
+#endif
 
         if (gFlags & FLAGS_4000) {
             UpdateScreenCpuSet();
@@ -422,12 +441,14 @@ static void UpdateScreenDma(void)
 
     DmaCopy32(3, gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
     DmaCopy16(3, &gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
+#if (GAME == GAME_SA2)
 #ifdef BUG_FIX
     DmaCopy16(3, &gMosaicReg, (void *)REG_ADDR_MOSAIC, sizeof(gMosaicReg));
 #else
     // BUG: For some reason, even though the var
     // is only 2 they chose to copy 4 bytes, oops
     DmaCopy16(3, &gMosaicReg, (void *)REG_ADDR_MOSAIC, 4);
+#endif
 #endif
     DmaCopy16(3, gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
     DmaCopy32(3, &gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
@@ -508,6 +529,15 @@ static void ClearOamBufferDma(void)
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
     if (!(gFlags & FLAGS_20)) {
+#if (GAME == GAME_SA1)
+        if (gBgOffsetsHBlank == gBgOffsetsBuffer[0]) {
+            gBgOffsetsHBlank = gBgOffsetsBuffer[1];
+            gUnknown_030022AC = gBgOffsetsBuffer[0];
+        } else {
+            gBgOffsetsHBlank = gBgOffsetsBuffer[0];
+            gUnknown_030022AC = gBgOffsetsBuffer[1];
+        }
+#else
         if (gBgOffsetsHBlank == gUnknown_03004D54) {
             gBgOffsetsHBlank = gUnknown_030022C0;
 
@@ -518,6 +548,7 @@ static void ClearOamBufferDma(void)
 
             gUnknown_030022AC = gUnknown_030022C0;
         }
+#endif
     }
     gFlags &= ~FLAGS_4;
     DmaFill16(3, 0x200, gOamBuffer + 0x00, 0x100);
@@ -547,7 +578,15 @@ static void UpdateScreenCpuSet(void)
 
     CpuCopy32(gWinRegs, (void *)REG_ADDR_WIN0H, sizeof(gWinRegs));
     CpuCopy16(&gBldRegs, (void *)REG_ADDR_BLDCNT, 6);
+#if (GAME == GAME_SA2)
+#ifdef BUG_FIX
+    CpuCopy16(&gMosaicReg, (void *)REG_ADDR_MOSAIC, sizeof(gMosaicReg));
+#else
+    // BUG: For some reason, even though the var
+    // is only 2 they chose to copy 4 bytes, oops
     CpuCopy16(&gMosaicReg, (void *)REG_ADDR_MOSAIC, 4);
+#endif
+#endif
     CpuCopy16(gBgScrollRegs, (void *)REG_ADDR_BG0HOFS, sizeof(gBgScrollRegs));
     CpuCopy32(&gBgAffineRegs, (void *)REG_ADDR_BG2PA, sizeof(gBgAffineRegs));
 
@@ -806,13 +845,33 @@ static void GamepakIntr(void) { REG_IF = INTR_FLAG_GAMEPAK; }
 
 void DummyFunc(void) { }
 
+#if (GAME == GAME_SA1)
 static void ClearOamBufferCpuSet(void)
 {
     gNumHBlankCallbacks = 0;
 
     gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
-    if (!(gFlags & 0x20)) {
+    if (!(gFlags & FLAGS_20)) {
+        if (gBgOffsetsHBlank == gBgOffsetsBuffer) {
+            gBgOffsetsHBlank = &gBgOffsetsBuffer[1];
+            sa2__gUnknown_030022AC = &gBgOffsetsBuffer[0];
+        } else {
+            gBgOffsetsHBlank = &gBgOffsetsBuffer[0];
+            sa2__gUnknown_030022AC = &gBgOffsetsBuffer[1];
+        }
+    }
+    gFlags &= ~4;
+    CpuFastFill(0x200, gOamBuffer, sizeof(gOamBuffer));
+    gUnknown_03004D50 = 0;
+    gFlags &= ~FLAGS_10;
+}
+#else
+static void ClearOamBufferCpuSet(void)
+{
+    gNumHBlankCallbacks = 0;
 
+    gFlags &= ~FLAGS_EXECUTE_HBLANK_CALLBACKS;
+    if (!(gFlags & FLAGS_20)) {
         if (gBgOffsetsHBlank == gUnknown_03004D54) {
             gBgOffsetsHBlank = gUnknown_030022C0;
             gUnknown_030022AC = gUnknown_03004D54;
@@ -824,5 +883,6 @@ static void ClearOamBufferCpuSet(void)
     gFlags &= ~4;
     CpuFastFill(0x200, gOamBuffer, sizeof(gOamBuffer));
     gUnknown_03004D50 = 0;
-    gFlags &= ~16;
+    gFlags &= ~FLAGS_10;
 }
+#endif

@@ -3,7 +3,7 @@
 
 void AgbMain(void)
 {
+    EngineInit();
     GameInit();
-    GameStart();
-    GameLoop();
+    EngineMainLoop();
 }

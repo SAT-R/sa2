@@ -2,7 +2,7 @@
 #include "core.h"
 #include "flags.h"
 
-#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_sa2_shared/globals.h"
 #include "game/stage/camera.h"
 
 #include "constants/tilemaps.h"

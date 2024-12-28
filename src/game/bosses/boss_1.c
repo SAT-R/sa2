@@ -6,7 +6,7 @@
 #include "trig.h"
 #include "lib/m4a/m4a.h"
 
-#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_sa2_shared/collision.h"
 
 #include "game/player_callbacks.h"
 #include "game/save.h"

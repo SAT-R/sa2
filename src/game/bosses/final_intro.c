@@ -5,7 +5,7 @@
 
 #include "lib/m4a/m4a.h"
 
-#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_sa2_shared/globals.h"
 
 #include "game/bosses/final_intro.h"
 

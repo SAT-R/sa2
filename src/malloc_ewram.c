@@ -5,6 +5,9 @@
 #include "core.h"
 #include "malloc_ewram.h"
 
+#define EWRAM_HEAP_SIZE 0x20080
+EWRAM_DATA u8 gEwramHeap[EWRAM_HEAP_SIZE] = { 0 };
+
 /* At the very beginning, there's only one node. */
 void EwramInitHeap(void)
 {
@@ -75,7 +78,6 @@ void *EwramMalloc(u32 req)
 void EwramFree(void *p)
 {
 #if PORTABLE
-    printf("EwramFree: %p\n", p);
     if (p != NULL) {
         free(p);
     }

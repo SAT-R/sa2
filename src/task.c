@@ -204,6 +204,8 @@ void TasksExec(void)
                 if (gCurTask->main == NULL)
 #if ENABLE_TASK_LOGGING
                     printf("WARNING: Pointer of Task '%s' is NULL.\n", gCurTask->name);
+#else
+                    ;
 #endif
                 else
 #endif
@@ -430,6 +432,26 @@ void TasksDestroyInPriorityRange(u16 lbound, u16 rbound)
         cur = (struct Task *)TASK_PTR(curOffset);
     }
 }
+
+#if (GAME == GAME_SA3)
+static s32 IwramActiveNodeTotalSize(void)
+{
+    s32 activeSize = 0;
+    struct IwramNode *cur = (void *)gIwramHeap;
+    struct IwramNode *next;
+    while (1) {
+        if (cur->state < 0) {
+            activeSize -= cur->state;
+        }
+        next = (void *)(cur->next + IWRAM_START);
+        if (next == (void *)IWRAM_START) {
+            break;
+        }
+        cur = next;
+    }
+    return activeSize;
+}
+#endif
 
 static void TaskMainDummy1(void) { }
 

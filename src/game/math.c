@@ -27,6 +27,15 @@ u32 gRngValue = 0;
 
 const u16 gUnknown_080E0290[] = { 0x0AAA, 0x02AA };
 
+typedef struct {
+    void *unk0;
+    void *start;
+    void *next;
+    void *unkC;
+} UNK_8085DEC;
+
+bool8 sub_8085D98(UNK_8085DEC *thing, UNK_8085DEC *target);
+
 #define RAND_CONST 0x37119371;
 
 NONMATCH("asm/non_matching/game/math/unused_sub_80832FC.inc", void sub_80832FC()) { }
@@ -608,15 +617,6 @@ void sub_8085D14(UNK_8085D14 *p1, u32 p2, u32 p3, u32 p4)
     p1->unkA = p3;
     p1->unk12 = p4;
 }
-
-typedef struct {
-    void *unk0;
-    void *start;
-    void *next;
-    void *unkC;
-} UNK_8085DEC;
-
-bool8 sub_8085D98(UNK_8085DEC *thing, UNK_8085DEC *target);
 
 void sub_8085D44(UNK_8085DEC *thing)
 {

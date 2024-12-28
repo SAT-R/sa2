@@ -30,9 +30,14 @@ typedef TaskPtr TaskPtr32;
 
 typedef void *IwramData;
 
-#define ENABLE_TASK_LOGGING          TRUE
+#if !DEBUG
+#define ENABLE_TASK_LOGGING !TRUE
+#else
+#define ENABLE_TASK_LOGGING TRUE
+#endif // !DEBUG
+
 #define CLEAR_TASK_MEMORY_ON_DESTROY TRUE
-#endif
+#endif // PLATFORM_GBA
 
 #define TASK_IS_NOT_NULL(taskp) !TASK_IS_NULL(taskp)
 

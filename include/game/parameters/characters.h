@@ -3,6 +3,8 @@
 
 #include "constants/zones.h"
 
+// TODO: Be consistent about whether these are Q() or I() values!
+
 /*** Common ***/
 #define PLAYER_FLYING_END_GRAVITY  (0.033) // = (8. / 256.)
 #define PLAYER_GRAVITY             42.0 / 256.0

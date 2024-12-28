@@ -4,8 +4,8 @@
 
 #include "lib/m4a/m4a.h"
 
-#include "game/sa1_leftovers/globals.h"
-#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_sa2_shared/globals.h"
+#include "game/sa1_sa2_shared/collision.h"
 
 #include "game/stage/spawn_positions.h"
 #include "game/stage/collision.h"

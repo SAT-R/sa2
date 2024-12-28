@@ -2,7 +2,7 @@
 #include "game/entity.h"
 #include "game/enemies/gohla.h"
 
-#include "game/sa1_leftovers/collision.h"
+#include "game/sa1_sa2_shared/collision.h"
 
 #include "malloc_vram.h"
 #include "sprite.h"

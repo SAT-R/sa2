@@ -3,7 +3,7 @@
 #include "task.h"
 #include "trig.h"
 
-#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_sa2_shared/globals.h"
 
 #include "game/stage/player.h"
 #include "game/bosses/common.h"

@@ -4,7 +4,7 @@
 #include "global.h"
 #include "core.h"
 
-#include "game/sa1_leftovers/camera.h"
+#include "game/sa1_sa2_shared/camera.h"
 
 #define CAMBG_MAP_FRONT_LAYER 0
 #define CAMBG_MAP_BACK_LAYER  1

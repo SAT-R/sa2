@@ -6,7 +6,7 @@
 #include "global.h"
 #include "core.h" // for MultiSioData
 
-#include "game/sa1_leftovers/globals.h"
+#include "game/sa1_sa2_shared/globals.h"
 
 void sub_8019240(union MultiSioData *, u8);
 void sub_80192A8(union MultiSioData *, u8);

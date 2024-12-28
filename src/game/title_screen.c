@@ -22,7 +22,7 @@
 #include "game/character_select.h"
 #include "malloc_vram.h"
 #include "game/time_attack/mode_select.h"
-#include "game/sa1_leftovers/demo_manager.h"
+#include "game/sa1_sa2_shared/demo_manager.h"
 
 #include "game/assets/compressed/roms.h"
 
@@ -553,7 +553,13 @@ static void InitTitleScreenUI(TitleScreen *titleScreen)
     s->graphics.anim = SA2_ANIM_TITLE_COPYRIGHT;
     s->variant = SA2_ANIM_VARIANT_COPYRIGHT_2003;
     s->prevVariant = -1;
+#if PLATFORM_GBA
     s->x = 0;
+#else
+    // Only display the COPYRIGHT message, not the "Licensed by ***" msg
+    // TODO: Split the graphics properly.
+    s->x = DISPLAY_WIDTH - 136;
+#endif
     s->y = DISPLAY_HEIGHT - 30; // set to the screen's bottom
     s->graphics.size = 0;
     s->oamFlags = SPRITE_OAM_ORDER(4);
@@ -1892,9 +1898,7 @@ static void Task_StartTitleScreenDemo(void)
     gSelectedCharacter = CHARACTER_SONIC;
     gCurrentLevel = sDemoLevels[0];
 
-    gDemoPlayCounter++;
-    // Don't count higher than 3
-    gDemoPlayCounter &= 3;
+    gDemoPlayCounter = (gDemoPlayCounter + 1) % 4u;
 
     gGameMode = GAME_MODE_SINGLE_PLAYER;
 

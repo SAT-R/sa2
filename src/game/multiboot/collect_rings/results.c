@@ -47,7 +47,7 @@ struct MultiplayerSinglePakResultsScreen {
     u32 unk43C;
 }; /* size 0x440 */
 
-struct MultiplayerSinglePakResultsScreen *sub_8082B1C(s16);
+struct MultiplayerSinglePakResultsScreen *InitAndGetResultsScreenObject(s16);
 
 void sub_8081FB0(void);
 void sub_8082038(struct MultiplayerSinglePakResultsScreen *);
@@ -56,6 +56,7 @@ void sub_8082C58(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082CB4(struct MultiplayerSinglePakResultsScreen *);
 void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *);
 
+// TODO: Maybe rename because this is also called before the 1st round?
 void CreateMultiplayerSinglePakResultsScreen(u32 a)
 {
     struct MultiplayerSinglePakResultsScreen *resultsScreen;
@@ -85,7 +86,7 @@ void CreateMultiplayerSinglePakResultsScreen(u32 a)
     gMultiplayerLanguage = gLoadedSaveGame->language;
 
     sub_8081FB0();
-    resultsScreen = sub_8082B1C(a);
+    resultsScreen = InitAndGetResultsScreenObject(a);
     sub_8082038(resultsScreen);
     sub_8082B80(resultsScreen);
     sub_8082BF8(resultsScreen);
@@ -145,7 +146,7 @@ void sub_8082038(struct MultiplayerSinglePakResultsScreen *screen)
 
 void sub_80823FC(void);
 
-void sub_808207C(void)
+void Task_MultiplayerSinglePakResultsScreenInit(void)
 {
     u32 i;
     Sprite *s;
@@ -289,7 +290,7 @@ void sub_808207C(void)
 }
 
 void sub_8082AA8(void);
-void sub_8082630(void);
+void Task_8082630(void);
 void sub_8082788(void);
 
 void sub_80823FC(void)
@@ -343,8 +344,8 @@ void sub_80823FC(void)
         resultsScreen->unk430 = 0;
         if (resultsScreen->unk434) {
             gBldRegs.bldCnt = 0xFF;
-            gCurTask->main = sub_8082630;
-            sub_8082630();
+            gCurTask->main = Task_8082630;
+            Task_8082630();
         } else {
             gCurTask->main = sub_8082AA8;
             sub_8082AA8();
@@ -382,7 +383,7 @@ void sub_80823FC(void)
 void sub_808267C(void);
 void sub_8082788(void);
 
-void sub_8082630(void)
+void Task_8082630(void)
 {
     struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(gCurTask);
     resultsScreen->unk430 += 0x20;
@@ -547,13 +548,14 @@ void sub_8082AA8(void)
         m4aMPlayFadeOut(&gMPlayInfo_SE2, 8);
         m4aMPlayFadeOut(&gMPlayInfo_SE3, 8);
         gBldRegs.bldCnt = 0xFF;
-        gCurTask->main = sub_8082630;
+        gCurTask->main = Task_8082630;
     }
 }
 
-struct MultiplayerSinglePakResultsScreen *sub_8082B1C(s16 mode)
+struct MultiplayerSinglePakResultsScreen *InitAndGetResultsScreenObject(s16 mode)
 {
-    struct Task *t = TaskCreate(sub_808207C, sizeof(struct MultiplayerSinglePakResultsScreen), 0x2000, 0, NULL);
+    struct Task *t
+        = TaskCreate(Task_MultiplayerSinglePakResultsScreenInit, sizeof(struct MultiplayerSinglePakResultsScreen), 0x2000, 0, NULL);
     struct MultiplayerSinglePakResultsScreen *resultsScreen = TASK_DATA(t);
 
     resultsScreen->unk434 = mode;
@@ -564,13 +566,13 @@ struct MultiplayerSinglePakResultsScreen *sub_8082B1C(s16 mode)
     return resultsScreen;
 }
 
-void sub_8082CEC(Sprite *, void *, u16, u8, s16, s16, u16, u8, u32);
+void sub_8082CEC(Sprite *s, void *vramAddr, u16 animId, u8 variant, s16 x, s16 y, u16 oamFlags, u8 unk25, u32 unk10);
 
 void sub_8082B80(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {
     s16 i;
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < (s32)ARRAY_COUNT(resultsScreen->unk80); i++) {
         u16 anim = gPlayerCharacterIdleAnims[i];
         sub_8082CEC(&resultsScreen->unk80[i].unk0, OBJ_VRAM0 + (i * 0x800), anim, 0, 0x78, (i * 40) + 20, SPRITE_OAM_ORDER(16), i, 0x1000);
     }
@@ -580,7 +582,7 @@ void sub_8082BF8(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {
     s16 i;
 
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < (s32)ARRAY_COUNT(resultsScreen->unk160); i++) {
         sub_8082CEC(&resultsScreen->unk160[i], OBJ_VRAM0 + (i * 4 + 0x100) * 0x20, 0x451, i, 0, 0, SPRITE_OAM_ORDER(4), 0, 0x1000);
     }
 }
@@ -589,7 +591,7 @@ void sub_8082C58(struct MultiplayerSinglePakResultsScreen *resultsScreen)
 {
     s16 i;
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < (s32)ARRAY_COUNT(resultsScreen->unk370); i++) {
         sub_8082CEC(&resultsScreen->unk370[i], OBJ_VRAM0 + 0x2500 + i * 0xC0, 1099, i, 0, 0, SPRITE_OAM_ORDER(4), 0, 0x1000);
     }
 }

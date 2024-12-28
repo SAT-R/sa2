@@ -17,8 +17,7 @@
 #include "gba/io_reg.h"
 #include "gba/types.h"
 #include "lib/agb_flash/flash_internal.h"
-#define DMA_DEST_MASK 0x0060
-#define DMA_SRC_MASK  0x0180
+#include "platform/shared/dma.h"
 
 #if ENABLE_AUDIO
 #include "platform/shared/audio/cgb_audio.h"
@@ -54,25 +53,6 @@ ALIGNED(256) uint16_t gameImage[DISPLAY_WIDTH * DISPLAY_HEIGHT];
 uint16_t vramBuffer[VRAM_VIEW_WIDTH * VRAM_VIEW_HEIGHT];
 uint8_t vramPalIdBuffer[(VRAM_VIEW_WIDTH / TILE_WIDTH) * (VRAM_VIEW_HEIGHT / TILE_WIDTH)];
 #endif
-
-#define DMA_COUNT 4
-
-struct DMATransfer {
-    union {
-        const void *src;
-        const u16 *src16;
-        const u32 *src32;
-    };
-    union {
-        void *dst;
-        vu16 *dst16;
-        vu32 *dst32;
-    };
-    u32 size;
-    u16 control;
-} DMAList[DMA_COUNT];
-
-enum { DMA_NOW, DMA_VBLANK, DMA_HBLANK, DMA_SPECIAL };
 
 struct scanlineData {
     uint16_t layers[4][DISPLAY_WIDTH];
@@ -128,7 +108,6 @@ static void StoreSaveFile(void);
 static void CloseSaveFile(void);
 
 static void UpdateInternalClock(void);
-static void RunDMAs(u32 type);
 
 u16 Platform_GetKeyInput(void);
 
@@ -140,7 +119,7 @@ void Platform_free(void *ptr) { HeapFree(GetProcessHeap(), 0, ptr); }
 int main(int argc, char **argv)
 {
     // Open an output console on Windows
-#ifdef _WIN32
+#if (defined _WIN32) && (DEBUG != 0)
     AllocConsole();
     AttachConsole(GetCurrentProcessId());
     freopen("CON", "w", stdout);
@@ -243,7 +222,7 @@ int main(int argc, char **argv)
 #if ENABLE_VRAM_VIEW
     VramDraw(vramTexture);
 #endif
-    // Prevent the multiplayer screen from being drawn ( see core.c:GameInit() )
+    // Prevent the multiplayer screen from being drawn ( see core.c:EngineInit() )
     REG_RCNT = 0x8000;
     REG_KEYINPUT = 0x3FF;
 
@@ -592,158 +571,6 @@ static void CPUWriteHalfWord(void *dest, uint16_t val) { *(uint16_t *)dest = val
 static uint8_t CPUReadByte(const void *src) { return *(uint8_t *)src; }
 
 static void CPUWriteByte(void *dest, uint8_t val) { *(uint8_t *)dest = val; }
-
-static void RunDMAs(u32 type)
-{
-    for (int dmaNum = 0; dmaNum < DMA_COUNT; dmaNum++) {
-        struct DMATransfer *dma = &DMAList[dmaNum];
-#if !USE_NEW_DMA
-        // Regular GBA order
-        u32 dmaCntReg = (&REG_DMA0CNT)[dmaNum * 3];
-#else
-        // "64 bit" order
-        u32 dmaCntReg = (&REG_DMA0CNT)[dmaNum];
-#endif
-        if (!((dmaCntReg >> 16) & DMA_ENABLE)) {
-            dma->control &= ~DMA_ENABLE;
-        }
-
-        if ((dma->control & DMA_ENABLE) && (((dma->control & DMA_START_MASK) >> 12) == type)) {
-            // printf("DMA%d src=%p, dest=%p, control=%d\n", dmaNum, dma->src, dma->dst, dma->control);
-            for (int i = 0; i < dma->size; i++) {
-                if ((dma->control) & DMA_32BIT)
-                    *dma->dst32 = *dma->src32;
-                else
-                    *dma->dst16 = *dma->src16;
-
-                // process destination pointer changes
-                if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_INC) {
-                    if ((dma->control) & DMA_32BIT)
-                        dma->dst32++;
-                    else
-                        dma->dst16++;
-                } else if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_DEC) {
-                    if ((dma->control) & DMA_32BIT)
-                        dma->dst32--;
-                    else
-                        dma->dst16--;
-                } else if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_RELOAD) // TODO
-                {
-                    if ((dma->control) & DMA_32BIT)
-                        dma->dst32++;
-                    else
-                        dma->dst16++;
-                }
-
-                // process source pointer changes
-                if (((dma->control) & DMA_SRC_MASK) == DMA_SRC_INC) {
-                    if ((dma->control) & DMA_32BIT)
-                        dma->src32++;
-                    else
-                        dma->src16++;
-                } else if (((dma->control) & DMA_SRC_MASK) == DMA_SRC_DEC) {
-                    if ((dma->control) & DMA_32BIT)
-                        dma->src32--;
-                    else
-                        dma->src16--;
-                }
-            }
-
-            if (dma->control & DMA_REPEAT) {
-                // NOTE: If we change dma->size anywhere above, we need to reset its value here.
-
-                if (((dma->control) & DMA_DEST_MASK) == DMA_DEST_RELOAD) {
-#if !USE_NEW_DMA
-                    dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum * 3];
-#else
-                    dma->dst = (void *)(uintptr_t)(&REG_DMA0DAD)[dmaNum];
-#endif
-                }
-            } else {
-                dma->control &= ~DMA_ENABLE;
-            }
-        }
-    }
-}
-
-#if 0
-s32 Div(s32 num, s32 denom)
-{
-    if (denom != 0) {
-        return num / denom;
-    } else {
-        return 0;
-    }
-}
-
-s32 Mod(s32 num, s32 denom)
-{
-    if (denom != 0) {
-        return num % denom;
-    } else {
-        return 0;
-    }
-}
-#endif
-
-int MultiBoot(struct MultiBootParam *mp) { return 0; }
-
-#ifdef DmaSet
-#undef DmaSet
-#endif
-void DmaSet(int dmaNum, const void *src, void *dest, u32 control)
-{
-    if (dmaNum >= DMA_COUNT) {
-        fprintf(stderr, "DmaSet with invalid DMA number: dmaNum=%d, src=%p, dest=%p, control=%d\n", dmaNum, src, dest, control);
-        return;
-    }
-
-#if !USE_NEW_DMA
-    // Regular GBA order
-    (&REG_DMA0SAD)[dmaNum * 3] = (uintptr_t)src;
-    (&REG_DMA0DAD)[dmaNum * 3] = (uintptr_t)dest;
-    (&REG_DMA0CNT)[dmaNum * 3] = (size_t)control;
-#else
-    // "64 bit" order
-    (&REG_DMA0SAD)[dmaNum] = (uintptr_t)src;
-    (&REG_DMA0DAD)[dmaNum] = (uintptr_t)dest;
-    (&REG_DMA0CNT)[dmaNum] = (size_t)control;
-#endif
-
-    struct DMATransfer *dma = &DMAList[dmaNum];
-    dma->src = src;
-    dma->dst = dest;
-    dma->size = control & 0x1ffff;
-    dma->control = control >> 16;
-
-    // printf("\nDMA%d: S:%p %p -> %p\n", dmaNum, src, dest, dest + dma->size);
-
-    RunDMAs(DMA_NOW);
-}
-
-void DmaStop(int dmaNum)
-{
-#if !USE_NEW_DMA
-    (&REG_DMA0CNT)[dmaNum * 3] &= ~((DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT) << 16);
-#else
-    (&REG_DMA0CNT)[dmaNum] &= ~((DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT) << 16);
-#endif
-
-    struct DMATransfer *dma = &DMAList[dmaNum];
-    dma->control &= ~(DMA_ENABLE | DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT);
-}
-
-void DmaWait(int dmaNum)
-{
-    vu32 *ctrlRegs = &REG_DMA0CNT;
-#if !USE_NEW_DMA
-    while (ctrlRegs[dmaNum * 3] & (DMA_ENABLE << 16))
-        ;
-#else
-    while (ctrlRegs[dmaNum] & (DMA_ENABLE << 16))
-        ;
-#endif
-}
 
 void CpuSet(const void *src, void *dst, u32 cnt)
 {
@@ -1529,7 +1356,7 @@ static bool winCheckHorizontalBounds(u16 left, u16 right, u16 xpos)
 }
 
 // Parts of this code heavily borrowed from NanoboyAdvance.
-static void DrawSprites(struct scanlineData *scanline, uint16_t vcount, bool windowsEnabled)
+static void DrawOamSprites(struct scanlineData *scanline, uint16_t vcount, bool windowsEnabled)
 {
     int i;
     unsigned int x;
@@ -1854,7 +1681,7 @@ static void DrawScanline(uint16_t *pixels, uint16_t vcount)
     }
 
     if (REG_DISPCNT & DISPCNT_OBJ_ON)
-        DrawSprites(&scanline, vcount, windowsEnabled);
+        DrawOamSprites(&scanline, vcount, windowsEnabled);
 
     // iterate trough every priority in order
     for (prnum = 3; prnum >= 0; prnum--) {
@@ -2109,3 +1936,5 @@ u16 Sqrt(u32 num)
     }
     return bound;
 }
+
+int MultiBoot(struct MultiBootParam *mp) { return 0; }

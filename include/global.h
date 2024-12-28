@@ -15,7 +15,6 @@
 
 // #include "types.h"
 // #include "variables.h"
-#include "functions.h"
 
 #if !PLATFORM_GBA
 #ifdef _WIN32
@@ -39,7 +38,7 @@ typedef void (*VoidFn)(void);
 #if !(defined NON_MATCHING)
 #define NON_MATCHING 1
 #endif
-#elif defined(DEBUG)
+#elif (DEBUG)
 #define NON_MATCHING 1
 #endif
 

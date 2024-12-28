@@ -1,12 +1,12 @@
 #ifndef GUARD_RECT_H
 #define GUARD_RECT_H
 
-struct Rect8 {
+typedef struct Rect8 {
     /* 0x00 */ s8 left;
     /* 0x01 */ s8 top;
     /* 0x02 */ s8 right;
     /* 0x03 */ s8 bottom;
-};
+} Rect8;
 
 // TODO: Maybe the integer- and FP-macros can be merged somehow?
 

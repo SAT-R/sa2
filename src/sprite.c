@@ -177,14 +177,14 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
         const ACmd **variants;
 
         // Handle all the "regular" Animation commands with an ID < 0
-        variants = gRefSpriteTables->animations[s->graphics.anim];
+        variants = gRefSpriteTables->animations[GET_SPRITE_ANIM(s)];
         script = variants[s->variant];
         cmd = ReadInstruction(script, s->animCursor);
         while (cmd->id < 0) {
             // TODO: make this const void*
             ret = animCmdTable[~cmd->id]((void *)cmd, s);
             if (ret != ACMD_RESULT__RUNNING) {
-#ifndef NON_MATCHING
+#if (!defined(NON_MATCHING) && ((GAME == GAME_SA1) || (GAME == GAME_SA2)))
                 register const ACmd *newScript asm("r2");
 #else
                 const ACmd *newScript;
@@ -194,7 +194,7 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
                 }
 
                 // animation has changed
-                variants = gRefSpriteTables->animations[s->graphics.anim];
+                variants = gRefSpriteTables->animations[GET_SPRITE_ANIM(s)];
                 newScript = variants[s->variant];
 
                 // reset cursor
@@ -211,13 +211,19 @@ AnimCmdResult UpdateSpriteAnimation(Sprite *s)
         s->qAnimDelay -= s->animSpeed * 0x10;
         {
             s32 frame = ((ACmd_ShowFrame *)cmd)->index;
+
+#if ((GAME == GAME_SA1) || (GAME == GAME_SA2))
             if (frame != -1) {
                 const struct SpriteTables *sprTables = gRefSpriteTables;
 
-                s->dimensions = &sprTables->dimensions[s->graphics.anim][frame];
+                s->dimensions = &sprTables->dimensions[GET_SPRITE_ANIM(s)][frame];
             } else {
                 s->dimensions = (void *)-1;
             }
+#else
+            s->frameNum = cmd->show.index;
+            s->frameFlags |= SPRITE_FLAG_MASK_26;
+#endif
         }
 
         s->animCursor += 2;
@@ -261,8 +267,12 @@ static AnimCmdResult animCmd_AddHitbox(void *cursor, Sprite *s)
     s->animCursor += AnimCommandSizeInWords(ACmd_Hitbox);
 
     DmaCopy32(3, &cmd->hitbox, &s->hitboxes[hitboxId].index, sizeof(Hitbox));
-
-    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0) && (cmd->hitbox.bottom == 0)) {
+#if (GAME == GAME_SA3)
+    if (((u8)cmd->hitbox.left == (u8)cmd->hitbox.right) && (*(volatile u8 *)&cmd->hitbox.top == (u8)cmd->hitbox.bottom))
+#else
+    if ((cmd->hitbox.left == 0) && (cmd->hitbox.top == 0) && (cmd->hitbox.right == 0) && (cmd->hitbox.bottom == 0))
+#endif
+    {
         s->hitboxes[hitboxId].index = -1;
     } else {
         if (s->frameFlags & SPRITE_FLAG_MASK_Y_FLIP) {
@@ -629,12 +639,12 @@ void DisplaySprite(Sprite *sprite)
     }
 }
 
-void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
+void DisplaySprites(Sprite *sprite, Vec2_16 *positions, u8 numPositions)
 {
     vs32 x, y;
     s32 sprWidth, sprHeight;
     u8 subframe, i;
-    u32 x1, y1, sp24, sp28;
+    s32 x1, y1, centerOffsetX, centerOffsetY;
 
     if (sprite->dimensions != (void *)-1) {
         const SpriteOffset *sprDims = sprite->dimensions;
@@ -671,8 +681,8 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
             }
         }
 
-        sp24 = x - sprite->x;
-        sp28 = y - sprite->y;
+        centerOffsetX = x - sprite->x;
+        centerOffsetY = y - sprite->y;
         if (x + sprWidth >= 0 && x <= DISPLAY_WIDTH && y + sprHeight >= 0 && y <= DISPLAY_HEIGHT) {
             for (subframe = 0; subframe < sprDims->numSubframes; ++subframe) {
                 const u16 *oamData = gRefSpriteTables->oamData[sprite->graphics.anim];
@@ -728,7 +738,7 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
                 }
                 oam->all.attr2 += GET_TILE_NUM(sprite->graphics.dest);
 
-                for (i = 0; i < sp0C; ++i) {
+                for (i = 0; i < numPositions; ++i) {
                     OamData *r5 = OamMalloc(GET_SPRITE_OAM_ORDER(sprite));
 
                     if (iwram_end == oam)
@@ -736,8 +746,8 @@ void sub_081569A0(Sprite *sprite, u16 *sp08, u8 sp0C)
                     DmaCopy16(3, oam, r5, sizeof(OamDataShort));
                     r5->all.attr1 &= 0xFE00;
                     r5->all.attr0 &= 0xFF00;
-                    r5->all.attr0 += (sp08[2 * i + 1] + sp28 + y1) & 0xFF;
-                    r5->all.attr1 += (sp08[2 * i + 0] + sp24 + x1) & 0x1FF;
+                    r5->all.attr0 += (positions[i].y + centerOffsetY + y1) & 0xFF;
+                    r5->all.attr1 += (positions[i].x + centerOffsetX + x1) & 0x1FF;
                 }
             }
         }
