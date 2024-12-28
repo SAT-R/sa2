@@ -49,7 +49,7 @@ extern uint8_t IWRAM_START[IWRAM_SIZE];
 extern uint8_t REG_BASE[IO_SIZE];
 extern uint16_t PLTT[PLTT_SIZE / sizeof(uint16_t)];
 extern uint8_t VRAM[VRAM_SIZE];
-extern uint8_t OAM[OAM_SIZE];
+extern uint16_t OAM[OAM_SIZE / 2];
 extern uint8_t FLASH_BASE[FLASH_ROM_SIZE_1M * SECTORS_PER_BANK];
 ALIGNED(256) uint16_t gameImage[DISPLAY_WIDTH * DISPLAY_HEIGHT];
 #if ENABLE_VRAM_VIEW
@@ -1990,6 +1990,8 @@ uint16_t *memsetu16(uint16_t *dst, uint16_t fill, size_t count)
     return 0;
 }
 
+void update_scanline(void);
+
 static void DrawFrame(uint16_t *pixels)
 {
     int i;
@@ -2007,8 +2009,10 @@ static void DrawFrame(uint16_t *pixels)
 
         // Render the backdrop color before the each individual scanline.
         // HBlank interrupt code could have changed it inbetween lines.
-        memsetu16(scanlines[i], *(uint16_t *)PLTT, DISPLAY_WIDTH);
-        DrawScanline(scanlines[i], i);
+        // memsetu16(scanlines[i], *(uint16_t *)PLTT, DISPLAY_WIDTH);
+        // DrawScanline(scanlines[i], i);
+
+        update_scanline();
 
         REG_DISPSTAT |= INTR_FLAG_HBLANK;
 
@@ -2066,9 +2070,18 @@ void VramDraw(SDL_Texture *texture)
 }
 #endif
 
+void clear_texture(void);
+
+int frameNum = 0;
 void VDraw(SDL_Texture *texture)
 {
+    frameNum++;
+    printf("Draw frame %d\n", frameNum);
+    // clear_texture();
     memset(gameImage, 0, sizeof(gameImage));
+
+    // DrawFrame(gameImage);
+
     DrawFrame(gameImage);
     SDL_UpdateTexture(texture, NULL, gameImage, DISPLAY_WIDTH * sizeof(Uint16));
     REG_VCOUNT = 161; // prep for being in VBlank period
