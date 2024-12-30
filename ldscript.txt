@@ -123,10 +123,6 @@ SECTIONS
         src/game/sa1_sa2_shared/ring.o(.text);
         src/game/sa1_sa2_shared/music_manager.o(.text);
         src/game/sa1_sa2_shared/collision.o(.text);
-#if (CPU_ARCH_ARM == 1)
-        asm/collision_mp.o(.text);
-#endif
-        src/game/sa1_sa2_shared/collision_1.o(.text);
         src/game/sa1_sa2_shared/input_buffer.o(.text);
         src/game/sa1_sa2_shared/interactables/spring.o(.text);
         src/game/sa1_sa2_shared/interactables/platform.o(.text);

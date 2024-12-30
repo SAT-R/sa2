@@ -34,6 +34,17 @@ struct TimeRecords {
 
 #define NUM_TIME_RECORD_ROWS (NUM_COURSE_ZONES * ACTS_PER_ZONE * NUM_CHARACTERS * TIME_RECORDS_PER_COURSE)
 
+#if (GAME == GAME_SA1)
+struct SaveGame {
+    /* 0x10 */ u16 playerName[MAX_PLAYER_NAME_LENGTH];
+    /* 0x1A */ u8 language;
+
+    /* 0x428 */ u32 score;
+}
+
+// NOTE: Not a pointer in SA1!
+extern struct SaveGame gLoadedSaveGame;
+#elif (GAME == GAME_SA2)
 struct SaveGame {
     /* 0x000 */ u32 id;
 
@@ -67,11 +78,12 @@ struct SaveGame {
     /* 0x374 */ u32 score;
 };
 
+extern struct SaveGame *gLoadedSaveGame;
+#endif
+
 #define MULTIPLAYER_RESULT_WIN  0
 #define MULTIPLAYER_RESULT_LOSS 1
 #define MULTIPLAYER_RESULT_DRAW 2
-
-extern struct SaveGame *gLoadedSaveGame;
 
 void InsertMultiplayerProfile(u32 playerId, u16 *name);
 void RecordOwnMultiplayerResult(s16 result);
