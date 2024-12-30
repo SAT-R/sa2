@@ -1,5 +1,6 @@
 #include "global.h"
 #include "core.h"
+#include "flags.h"
 #include "lib/m4a/m4a.h"
 #include "task.h"
 
@@ -20,13 +21,13 @@ typedef struct {
     u8 levelId;
 } LevelSelect;
 
-static void Task_8009854(void);
+static void Task_UnusedLevelSelectInit(void);
 static void Task_Poll(void);
 static void Task_LoadStage(void);
 
 void CreateUnusedLevelSelect(void)
 {
-    struct Task *t = TaskCreate(Task_8009854, sizeof(LevelSelect), 0x2000, 0, NULL);
+    struct Task *t = TaskCreate(Task_UnusedLevelSelectInit, sizeof(LevelSelect), 0x2000, 0, NULL);
     gMultiplayerMissingHeartbeats[3] = 0;
     gMultiplayerMissingHeartbeats[2] = 0;
     gMultiplayerMissingHeartbeats[1] = 0;
@@ -97,11 +98,11 @@ static void Task_Poll(void)
     }
 }
 
-static void Task_8009854(void)
+static void Task_UnusedLevelSelectInit(void)
 {
     LevelSelect *levelSelect = TASK_DATA(gCurTask);
     gBgPalette[1] = RGB_WHITE;
-    gFlags |= 0x1;
+    gFlags |= FLAGS_UPDATE_BACKGROUND_PALETTES;
 
     levelSelect->vram += RenderText(levelSelect->vram, Tileset_Language, 0x6, 0xE, 0, "STAGE", 0);
 
@@ -128,5 +129,7 @@ static void Task_LoadStage(void)
     }
 }
 
+#if (GAME == GAME_SA2)
 static void nullsub_8009910(void) { }
 static void nullsub_8009914(void) { }
+#endif
