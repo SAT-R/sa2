@@ -97,7 +97,7 @@ typedef struct {
     /* 0x2D8 */ u16 unk2D8[12];
 } StageUI; /* size: 0x2F0 */
 
-void Task_CreateStageUIMain(void);
+void Task_StageUIMain(void);
 void TaskDestructor_CreateStageUI(struct Task *t);
 
 struct Task *CreateStageUI(void)
@@ -108,7 +108,7 @@ struct Task *CreateStageUI(void)
     StageUI *ui;
     Sprite *s;
 
-    struct Task *t = TaskCreate(Task_CreateStageUIMain, sizeof(StageUI), 0x2102, 0, TaskDestructor_CreateStageUI);
+    struct Task *t = TaskCreate(Task_StageUIMain, sizeof(StageUI), 0x2102, 0, TaskDestructor_CreateStageUI);
     gStageUITask = t;
     ui = TASK_DATA(t);
 
@@ -218,7 +218,7 @@ struct Task *CreateStageUI(void)
     return gStageUITask;
 }
 
-void Task_CreateStageUIMain(void)
+void Task_StageUIMain(void)
 {
     if (!(gStageFlags & STAGE_FLAG__TURN_OFF_HUD)) {
         u32 time;

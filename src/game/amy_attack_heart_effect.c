@@ -31,9 +31,9 @@ typedef struct {
     /* 0x10A */ u16 unk10A;
 } AmyAtkHearts; /* size: 0x10C */
 
-void Task_8015CE4(void);
+void Task_AmyAttackHeartEffect(void);
 void sub_8015E28(u16);
-void TaskDestructor_8015FF0(struct Task *);
+void TaskDestructor_AmyAttackHeartEffect(struct Task *);
 
 ALIGNED(4)
 const s16 sHeartOffsets[AMY_HEART_PATTERN_COUNT][8][3] = {
@@ -93,7 +93,7 @@ void CreateAmyAttackHeartEffect(u16 kind)
 
     if ((gPlayer.charState == CHARSTATE_BOOSTLESS_ATTACK) || (gPlayer.charState == CHARSTATE_SOME_ATTACK)
         || (gPlayer.charState == CHARSTATE_TRICK_DOWN)) {
-        struct Task *t = TaskCreate(Task_8015CE4, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_8015FF0);
+        struct Task *t = TaskCreate(Task_AmyAttackHeartEffect, sizeof(AmyAtkHearts), 0x3001, 0, TaskDestructor_AmyAttackHeartEffect);
         AmyAtkHearts *hearts = TASK_DATA(t);
 
         hearts->unk100 = sCharStateAnimInfo[gPlayer.charState][0];
@@ -116,7 +116,7 @@ void CreateAmyAttackHeartEffect(u16 kind)
 
 // NOTE: Fakematch
 // (99.97%) https://decomp.me/scratch/Z3oDP
-void Task_8015CE4(void)
+void Task_AmyAttackHeartEffect(void)
 {
 #ifndef NON_MATCHING
     register struct Task *t asm("r2") = gCurTask;
@@ -249,7 +249,7 @@ void sub_8015E28(u16 p0)
     }
 }
 
-void TaskDestructor_8015FF0(struct Task *t)
+void TaskDestructor_AmyAttackHeartEffect(struct Task *t)
 {
     AmyAtkHearts *hearts = TASK_DATA(t);
 

@@ -183,6 +183,8 @@ s32 sub_801E4E4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
     }
 }
 
+// TODO: Check whether this is in SA3! It's not in SA1!
+#if (GAME >= GAME_SA2)
 // TODO:
 // - Wrap this in macros where possible
 // - Remove gotos
@@ -418,6 +420,7 @@ s32 sub_801E6D4(s32 p0, s32 p1, s32 p2, s32 p3, u8 *data, Func801F07C func)
         }
     }
 }
+#endif
 
 s32 sub_801EB44(s32 p0, s32 p1, s32 layer)
 {
