@@ -254,29 +254,35 @@ static void sub_807E5F0(Sprite_Cannon *cannon)
 
 // (68.07%) https://decomp.me/scratch/TDVLh
 // (72.09%) https://decomp.me/scratch/sgt5z
+// (87.28%) https://decomp.me/scratch/pAFRx
 NONMATCH("asm/non_matching/game/interactables_2/egg_utopia/sub_807E66C.inc", static bool32 sub_807E66C(Sprite_Cannon *cannon))
 {
-    s16 x, y;
+    s16 x;
+    s16 y;
     s32 biggerX, biggerY, temp2, temp3;
     s32 r4;
     s16 playerX, playerY;
-    if (PLAYER_IS_ALIVE) {
-        // Maybe log
-        {
+    register Sprite_Cannon *r3 asm("r3") = cannon;
+    Sprite *s2 = &r3->sprite2;
+    if (!PLAYER_IS_ALIVE) {
+        return 0;
+    }
+    // Maybe log
+    {
 #ifndef NON_MATCHING
-            register u16 r0 asm("r0") = cannon->unk68;
-            asm("" ::"r"(r0));
+        register u16 r0 asm("r0") = cannon->unk68;
+        asm("" ::"r"(r0));
 #endif
-        }
+    }
 
-        x = cannon->x - gCamera.x;
-        y = cannon->y - gCamera.y;
-        playerX = I(gPlayer.x) - gCamera.x;
-        playerY = I(gPlayer.y) - gCamera.y;
+    x = r3->x - gCamera.x;
+    y = r3->y - gCamera.y;
+    playerX = I(gPlayer.x) - gCamera.x;
+    playerY = I(gPlayer.y) - gCamera.y;
 
-        if (HB_COLLISION(playerX, playerY, cannon->sprite2.hitboxes[0], x, y, gUnknown_03005AF0.s.hitboxes[0])) {
-            return 1;
-        }
+    // gUnknown_03005AF0.s.hitboxes[0] s-<hitboxes[0]
+    if (HB_COLLISION(playerX, playerY, s2->hitboxes[0], x, y, gUnknown_03005AF0.s.hitboxes[0])) {
+        return 1;
     }
 
     return 0;
