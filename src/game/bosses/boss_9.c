@@ -738,15 +738,17 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__CreateTrueArea53Boss.inc", void C
 }
 END_NONMATCH
 
-// (95.99%) https://decomp.me/scratch/05cvE
-NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc", void TrueArea53BossMove(s32 dX, s32 dY))
+void TrueArea53BossMove(s32 dX, s32 dY)
 {
     u8 i, j;
     TA53Boss *boss;
+#ifndef NON_MATCHING
+    TA53_unk594 *hack;
+#endif
+    TA53_unk594 *unk594;
     TA53_unk1C *unk1C;
     TA53_unk98 *unk98;
     TA53_unkA8 *unkA8;
-    TA53_unk594 *unk594;
     TA53_unk654 *unk654;
 
     if (gActiveBossTask == NULL)
@@ -754,6 +756,11 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc", void Tru
 
     boss = TASK_DATA(gActiveBossTask);
     unk1C = &boss->unk1C;
+
+#ifndef NON_MATCHING
+    hack = &boss->unk594;
+#endif
+
     unk98 = &boss->unk98;
 
     unk1C->qPos.x += dX;
@@ -777,6 +784,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc", void Tru
 
     for (i = 0; i < 10; i++) {
         unk594 = &boss->unk594;
+#ifndef NON_MATCHING
+        unk594 = hack;
+#endif
         unk594->unk40[i].x += dX;
         unk594->unk40[i].y += dY;
     }
@@ -789,7 +799,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__TrueArea53BossMove.inc", void Tru
     }
     // _0804D684
 }
-END_NONMATCH
 
 void Task_EggmanKidnapsVanilla(void)
 {
@@ -2067,8 +2076,7 @@ void sub_804F768(u32 qX, u32 qY, s16 param2, u32 sinIndex_)
     }
 }
 
-// (98.75%) https://decomp.me/scratch/h8qQS
-NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F850.inc", void sub_804F850(u32 qX, u32 qY, s16 param2, u32 sinIndex_))
+void sub_804F850(u32 qX, u32 qY, s16 param2, u32 sinIndex_)
 {
     u8 array[0x8];
     u8 i;
@@ -2080,6 +2088,12 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F850.inc", void sub_804F85
     bool32 r5 = FALSE;
     u8 r3 = 0;
     u8 r2;
+
+#ifndef NON_MATCHING
+    register u32 r0 asm("r0");
+#else
+    u32 r0;
+#endif
 
     for (r2 = 0; r2 < 16; r2++) {
         if (unk654->unkE[r2] == 0) {
@@ -2117,7 +2131,9 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F850.inc", void sub_804F85
         unk654->unkE[arrIndex] = 1;
         unk654->unk1E[arrIndex] = 255;
         unk654->unk2E[arrIndex][0] = (COS(sinIndex) * 3) >> 6;
-        unk654->unk2E[arrIndex][1] = (SIN(sinIndex) * 3) >> 6;
+
+        r0 = sinIndex;
+        unk654->unk2E[arrIndex][1] = (SIN(r0) * 3) >> 6;
 
         unk654->unk2E[arrIndex][0] += (COS(i * 128) * 3) >> 8;
         unk654->unk2E[arrIndex][1] += (SIN(i * 128) * 3) >> 8;
@@ -2128,7 +2144,6 @@ NONMATCH("asm/non_matching/game/bosses/boss_9__sub_804F850.inc", void sub_804F85
 
     m4aSongNumStart(SE_258);
 }
-END_NONMATCH
 
 void sub_804F9BC(u32 qX, u32 qY, UNUSED s16 param2, UNUSED u32 sinIndex_)
 {
