@@ -697,9 +697,17 @@ void SetStageSpawnPos(u32 character, u32 level, u32 p2, Player *p)
     p->unk94 = &gUnknown_03005AA0;
 }
 
-// NOTE: Only reg-alloc mismatch in loop (see comment below)
-NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Player *p))
+void InitializePlayer(Player *p)
 {
+#ifndef NON_MATCHING
+    register u8 *u99_r6 asm("r6");
+    register s8 *unk60 asm("r4");
+#else
+    u8 *u99_r6;
+    s8 *unk60;
+#endif
+    s8 *character;
+
     if ((gGameMode == GAME_MODE_MULTI_PLAYER_COLLECT_RINGS) && (((p->x & p->y) + 1) != 0)) {
         p->x = Q(460);
     } else {
@@ -764,19 +772,47 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     sub_801561C();
     sub_802989C(p);
 
-    { // This smells like a memset macro.
-        // Nonmatching reg-alloc between r4 & r6 here
-        u32 *u99 = (void *)p->unk99;
-        s32 i = 4;
+#ifndef NON_MATCHING
+    {
+        // Should be this but can't get it to match (even though it's functionally correct)
+        // so we resort back to asm
+        //
+        // u32 *u99 = (void *)p->unk99;
+        // s32 i = 4;
+        // u99_r6 = (void *)u99;
+        // unk60 = &p->unk60;
+        // character = &p->character;
 
-        while (i-- != 0) {
-            *u99++ = 0;
-        }
+        // while (i-- != 0) {
+        //     *u99++ = 0;
+        // }
+
+        register u32 *u99 asm("r1") = (void *)p->unk99;
+        register s32 i asm("r2") = 3;
+        u99_r6 = (void *)u99;
+        unk60 = &p->unk60;
+        character = &p->character;
+        asm("movs r3, #0\n"
+            "loop:\n"
+            "stm r1!, {r3}\n"
+            "add r0, r2, #0\n"
+            "sub r2, #1\n"
+            "cmp r0, #0\n"
+            "bne loop\n"
+            :
+            : "r"(u99), "r"(i));
     }
 
-    p->unk99[0] = 0x7F;
+#else
+    u99_r6 = p->unk99;
+    unk60 = &p->unk60;
+    character = &p->character;
+    memset(p->unk99, 0, 16);
+#endif
 
-    if ((p->unk60 == 0) && IS_SINGLE_PLAYER) {
+    *u99_r6 = 0x7F;
+
+    if ((*unk60 == 0) && IS_SINGLE_PLAYER) {
         if (gCourseTime >= MAX_COURSE_TIME) {
             gCheckpointTime = 0;
             gCourseTime = 0;
@@ -787,7 +823,7 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
         }
     }
 
-    switch (p->character) {
+    switch (*character) {
         case CHARACTER_SONIC: {
             p->w.sf.flags = 0;
             p->w.sf.unkAE = 0;
@@ -821,7 +857,6 @@ NONMATCH("asm/non_matching/game/InitializePlayer.inc", void InitializePlayer(Pla
     gUnknown_03005840 = NULL;
     gUnknown_0300583C = 0;
 }
-END_NONMATCH
 
 // Called anytime the player actively jumps, "autojumps" through touching an IA,
 // touches a Boost Pad or a Rotating Handle, touches the ground, etc.
