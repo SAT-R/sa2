@@ -104,7 +104,7 @@ void Task_DemoManagerMain(void)
         gPlayer.moveState |= MOVESTATE_IGNORE_INPUT;
         gPlayer.heldInput = 0;
 
-        gUnknown_030054E4 = 1;
+        gDestroySpotlights = 1;
 
         dm->playerPressedStart = TRUE;
 
@@ -194,7 +194,7 @@ void TaskDestructor_DemoManagerMain(struct Task *t)
     VramFree(dm->textPressStart.graphics.dest);
     VramFree(dm->textDemoPlay.graphics.dest);
 
-    gUnknown_030054E4 = 0;
+    gDestroySpotlights = 0;
     gStageFlags &= ~STAGE_FLAG__DEMO_RUNNING;
 }
 

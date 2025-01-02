@@ -102,7 +102,7 @@ extern u8 gUnknown_030053E0;
 extern u8 gUnknown_0300543C;
 extern struct Task *gEntitiesManagerTask;
 
-extern u8 gUnknown_030054E4;
+extern u8 gDestroySpotlights;
 
 extern u8 gUnknown_03005420;
 

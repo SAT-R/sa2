@@ -8,11 +8,19 @@ void CreateBrakingDustEffectRelatedTask(void);
 void DestroyBrakingDustEffectRelatedTask(void);
 
 typedef struct {
+    /* 0x00 */ u16 x;
+    /* 0x02 */ u16 y;
+    /* 0x04 */ u16 unk4;
+    /* 0x06 */ u16 unk6;
+    /* 0x08 */ Sprite s;
+} BrakeDustEffect;
+
+typedef struct {
     s8 unk0;
     u8 filler1[3];
-    struct Task *t;
-} UNK_30059D0;
+    struct Task *t; // -> BrakeDustEffect
+} DustEffectBraking;
 
-extern UNK_30059D0 gUnknown_030059D0;
+extern DustEffectBraking gDustEffectBrakingTask;
 
 #endif // GUARD_BRAKE_DUST_CLOUD_H

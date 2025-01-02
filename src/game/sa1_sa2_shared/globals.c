@@ -54,7 +54,7 @@ u8 gMultiplayerUnlockedLevels = 0;
 struct Task *gEntitiesManagerTask = NULL;
 
 s32 gUnknown_030054E0 = 0;
-u8 gUnknown_030054E4 = 0;
+u8 gDestroySpotlights = 0;
 
 u8 ALIGNED(4) gRandomItemBox = 0;
 u8 ALIGNED(4) gDifficultyLevel = 0;

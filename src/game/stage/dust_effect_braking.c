@@ -7,15 +7,7 @@
 
 #include "constants/animations.h"
 
-typedef struct {
-    /* 0x00 */ u16 x;
-    /* 0x02 */ u16 y;
-    /* 0x04 */ u16 unk4;
-    /* 0x06 */ u16 unk6;
-    /* 0x08 */ Sprite s;
-} BrakeDustEffect;
-
-UNK_30059D0 ALIGNED(8) gUnknown_030059D0 = {};
+DustEffectBraking ALIGNED(8) gDustEffectBrakingTask = {};
 
 void Task_801F6E0(void);
 void TaskDestructor_801F7A8(struct Task *);
@@ -27,7 +19,7 @@ void TaskDestructor_801F7B8(struct Task *);
 
 struct Task *CreateBrakingDustEffect(s32 x, s32 y)
 {
-    if (gUnknown_030059D0.t == NULL || gUnknown_030059D0.unk0 == 0) {
+    if (gDustEffectBrakingTask.t == NULL || gDustEffectBrakingTask.unk0 == 0) {
         return NULL;
     } else {
         struct Task *t;
@@ -35,7 +27,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
         Player *p;
         Sprite *s;
 
-        gUnknown_030059D0.unk0--;
+        gDustEffectBrakingTask.unk0--;
 
         t = TaskCreate(Task_801F6E0, sizeof(BrakeDustEffect), 0x4001, 0, TaskDestructor_801F7B8);
 
@@ -76,7 +68,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
 
 void Task_801F6E0(void)
 {
-    UNK_30059D0 *unk = &gUnknown_030059D0;
+    DustEffectBraking *unk = &gDustEffectBrakingTask;
     BrakeDustEffect *bde = TASK_DATA(gCurTask);
     Sprite *s = &bde->s;
 
@@ -97,22 +89,22 @@ void Task_801F6E0(void)
 
 void CreateBrakingDustEffectRelatedTask(void)
 {
-    if (gUnknown_030059D0.t == NULL) {
+    if (gDustEffectBrakingTask.t == NULL) {
         struct Task *t = TaskCreate(Task_801F7B4, 0, 0x4000, 0, TaskDestructor_801F7A8);
-        gUnknown_030059D0.t = t;
-        gUnknown_030059D0.unk0 = 20;
+        gDustEffectBrakingTask.t = t;
+        gDustEffectBrakingTask.unk0 = 20;
     }
 }
 
 void DestroyBrakingDustEffectRelatedTask(void)
 {
-    if (gUnknown_030059D0.t != NULL) {
-        TaskDestroy(gUnknown_030059D0.t);
-        gUnknown_030059D0.t = NULL;
+    if (gDustEffectBrakingTask.t != NULL) {
+        TaskDestroy(gDustEffectBrakingTask.t);
+        gDustEffectBrakingTask.t = NULL;
     }
 }
 
-void TaskDestructor_801F7A8(struct Task *t) { gUnknown_030059D0.t = NULL; }
+void TaskDestructor_801F7A8(struct Task *t) { gDustEffectBrakingTask.t = NULL; }
 
 void Task_801F7B4(void) { }
 
