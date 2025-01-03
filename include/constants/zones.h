@@ -1,32 +1,58 @@
 #ifndef GUARD_ZONES_H
 #define GUARD_ZONES_H
 
-#define ZONE_1      0
-#define ZONE_2      1
-#define ZONE_3      2
-#define ZONE_4      3
-#define ZONE_5      4
-#define ZONE_6      5
-#define ZONE_7      6
-#define ZONE_FINAL  7
+#define ZONE_1     0
+#define ZONE_2     1
+#define ZONE_3     2
+#define ZONE_4     3
+#define ZONE_5     4
+#define ZONE_6     5
+#define ZONE_7     6
+#define ZONE_FINAL 7
+#if (GAME >= GAME_SA2)
 #define ZONE_UNUSED 8
+#endif
 
-#define ACT_1      0
-#define ACT_2      1
+#define ACT_1 0
+#define ACT_2 1
+#if (GAME == GAME_SA1)
+#define ACT_BOSS ACT_2
+#elif (GAME == GAME_SA2)
 #define ACT_BOSS   2
 #define ACT_UNUSED 3
+#elif (GAME == GAME_SA3)
+#define ACT_BOSS 7
+#endif
 
+#if (GAME == GAME_SA1)
+#define ACT_X_ZONE   ACT_1
+#define ACT_THE_MOON ACT_2
+#elif (GAME == GAME_SA2)
 #define ACT_XX_FINAL_ZONE ACT_1
 #define ACT_TRUE_AREA_53  ACT_2
+#endif
 
-#define NUM_COURSE_ZONES   7
-#define ACTS_PER_ZONE      3
+#if (GAME == GAME_SA1)
+#define NUM_COURSE_ZONES      7
+#define NUM_TIME_ATTACK_ZONES 6
+#define ACTS_PER_ZONE         2
+#elif (GAME == GAME_SA2)
+#define NUM_COURSE_ZONES      7
+#define NUM_TIME_ATTACK_ZONES NUM_COURSE_ZONES
+#define ACTS_PER_ZONE         3
+#endif
 #define ACT_SLOTS_PER_ZONE (ACTS_PER_ZONE + 1)
 
 #define LEVEL_INDEX(zone, act) ((zone)*ACT_SLOTS_PER_ZONE) + (act)
 #define ACT_INDEX(lvl)         ((lvl) & (ACT_SLOTS_PER_ZONE - 1))
 
+#if (GAME == GAME_SA1)
+#define NUM_LEVEL_IDS_SP 14
+#define NUM_LEVEL_IDS_MP 4
+#define NUM_LEVEL_IDS    18
+#elif (GAME == GAME_SA2)
 #define NUM_LEVEL_IDS 34
+#endif
 
 #define LEVEL_TO_ZONE(level) ((level) >> 2)
 // ((((level) / (ACTS_PER_ZONE + 1)) * 2) | ((level) & 1))
