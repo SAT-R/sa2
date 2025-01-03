@@ -15,6 +15,8 @@
 
 #include "constants/animations.h"
 
+#define MAX_SMALL_BUBBLE_COUNT 11
+
 typedef struct {
     Player *p;
 } DrownBubbles;
@@ -104,7 +106,7 @@ struct Task *SpawnDrowningCountdownNum(Player *p, s32 countdown)
 // Called when air bubbles spawn underwater
 struct Task *SpawnAirBubbles(s32 p0, s32 p1, s32 p2, s32 p3)
 {
-    if ((s8)gSmallAirBubbleCount > 11) {
+    if ((s8)gSmallAirBubbleCount > MAX_SMALL_BUBBLE_COUNT) {
         return NULL;
     } else {
         struct Task *t;
@@ -158,8 +160,7 @@ bool32 RandomlySpawnAirBubbles(Player *p)
 
     u32 result = FALSE;
 
-    u32 flags = gStageTime & 0x7;
-    if (!flags) {
+    if ((gStageTime % 8u) == 0) {
         rand = ((u32)PseudoRandom32() & 0x300);
         if (!rand) {
             randX = (((u32)PseudoRandom32() & 0xF00) >> 8);

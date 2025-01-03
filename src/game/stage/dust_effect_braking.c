@@ -9,13 +9,19 @@
 
 DustEffectBraking ALIGNED(8) gDustEffectBrakingTask = {};
 
-void Task_801F6E0(void);
-void TaskDestructor_801F7A8(struct Task *);
-void Task_801F7B4(void);
-void TaskDestructor_801F7B8(struct Task *);
+void Task_BrakingDustEffect(void);
+void TaskDestructor_BrakingDustEffectRelated(struct Task *);
+void Task_BrakingDustEffectRelated(void);
+void TaskDestructor_BrakingDustEffect(struct Task *);
 
 /* This generates the Dust Clouds that appear while running and then braking by
  * holding the DPAD in the other direction. */
+
+#if (GAME == GAME_SA2)
+#define BRAKING_DUST_EFFECT_DTOR TaskDestructor_BrakingDustEffect
+#else
+#define BRAKING_DUST_EFFECT_DTOR NULL
+#endif
 
 struct Task *CreateBrakingDustEffect(s32 x, s32 y)
 {
@@ -29,7 +35,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
 
         gDustEffectBrakingTask.unk0--;
 
-        t = TaskCreate(Task_801F6E0, sizeof(BrakeDustEffect), 0x4001, 0, TaskDestructor_801F7B8);
+        t = TaskCreate(Task_BrakingDustEffect, sizeof(BrakeDustEffect), 0x4001, 0, BRAKING_DUST_EFFECT_DTOR);
 
         bde = TASK_DATA(t);
         bde->x = x;
@@ -66,7 +72,7 @@ struct Task *CreateBrakingDustEffect(s32 x, s32 y)
     }
 }
 
-void Task_801F6E0(void)
+void Task_BrakingDustEffect(void)
 {
     DustEffectBraking *unk = &gDustEffectBrakingTask;
     BrakeDustEffect *bde = TASK_DATA(gCurTask);
@@ -90,7 +96,7 @@ void Task_801F6E0(void)
 void CreateBrakingDustEffectRelatedTask(void)
 {
     if (gDustEffectBrakingTask.t == NULL) {
-        struct Task *t = TaskCreate(Task_801F7B4, 0, 0x4000, 0, TaskDestructor_801F7A8);
+        struct Task *t = TaskCreate(Task_BrakingDustEffectRelated, 0, 0x4000, 0, TaskDestructor_BrakingDustEffectRelated);
         gDustEffectBrakingTask.t = t;
         gDustEffectBrakingTask.unk0 = 20;
     }
@@ -104,11 +110,13 @@ void DestroyBrakingDustEffectRelatedTask(void)
     }
 }
 
-void TaskDestructor_801F7A8(struct Task *t) { gDustEffectBrakingTask.t = NULL; }
+void TaskDestructor_BrakingDustEffectRelated(struct Task *t) { gDustEffectBrakingTask.t = NULL; }
 
-void Task_801F7B4(void) { }
+void Task_BrakingDustEffectRelated(void) { }
 
-void TaskDestructor_801F7B8(struct Task *t)
+#if (GAME == GAME_SA2)
+// This destructor only gets used in SA2 for the after-goal braking effect.
+void TaskDestructor_BrakingDustEffect(struct Task *t)
 {
     BrakeDustEffect *bde = TASK_DATA(t);
     Sprite *s = &bde->s;
@@ -117,3 +125,4 @@ void TaskDestructor_801F7B8(struct Task *t)
         VramFree(bde->s.graphics.dest);
     }
 }
+#endif
