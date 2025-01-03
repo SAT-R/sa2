@@ -4,45 +4,36 @@
 #include "malloc_vram.h"
 #include "lib/m4a/m4a.h"
 
-#include "game/sa1_sa2_shared/music_manager.h"
-#include "game/sa1_sa2_shared/input_buffer.h"
-
-#include "game/save.h"
-
+#include "game/amy_attack_heart_effect.h"
 #include "game/boost_effect.h"
+#include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
 #include "game/bosses/common.h"
 #include "game/cheese.h"
-#include "game/stage/dust_effect_braking.h"
-
-#include "game/stage/spawn_positions.h"
-#include "game/stage/collision.h"
-#include "game/stage/camera.h"
-#include "game/stage/player.h"
-#include "game/player_callbacks.h"
-#include "game/stage/game_2.h"
-
+#include "game/heart_particles_effect.h"
 #include "game/multiplayer/player_unk_2.h"
-#include "game/parameters/bosses.h"
-#include "game/stage/player_controls.h"
-#include "game/stage/dust_effect_braking.h"
 #include "game/multiplayer/mp_player.h"
-#include "game/boost_effect.h"
-#include "game/stage/player_super_sonic.h"
-#include "game/stage/rings_scatter.h"
-#include "game/stage/stage.h"
-#include "game/unknown_effect.h"
-#include "game/water_effects.h"
-#include "game/stage/underwater_effects.h"
-#include "game/stage/item_tasks.h"
-#include "game/boost_effect.h"
-#include "game/amy_attack_heart_effect.h"
-
-#include "game/boost_mode_particles.h" // incl. CreateBoostModeParticles
+#include "game/parameters/bosses.h"
+#include "game/player_callbacks.h"
+#include "game/sa1_sa2_shared/input_buffer.h"
+#include "game/sa1_sa2_shared/music_manager.h"
+#include "game/save.h"
+#include "game/stage/camera.h"
+#include "game/stage/collision.h"
 #include "game/stage/dust_effect_braking.h" // CreateSpindashDustEffect
 #include "game/stage/dust_effect_spindash.h" // CreateSpindashDustEffect
-#include "game/time_attack/results.h" // for Player_VictoryPose
+#include "game/stage/game_2.h"
+#include "game/stage/item_tasks.h"
+#include "game/stage/player.h"
+#include "game/stage/player_controls.h"
+#include "game/stage/player_super_sonic.h"
 #include "game/stage/results.h"
-#include "game/heart_particles_effect.h"
+#include "game/stage/rings_scatter.h"
+#include "game/stage/spawn_positions.h"
+#include "game/stage/stage.h"
+#include "game/stage/underwater_effects.h"
+#include "game/time_attack/results.h" // for Player_VictoryPose
+#include "game/unknown_effect.h"
+#include "game/water_effects.h"
 
 #include "constants/animations.h"
 #include "constants/char_states.h"

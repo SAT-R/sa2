@@ -17,7 +17,6 @@ typedef struct {
 
 typedef struct {
     s8 unk0;
-    u8 filler1[3];
     struct Task *t; // -> BrakeDustEffect
 } DustEffectBraking;
 

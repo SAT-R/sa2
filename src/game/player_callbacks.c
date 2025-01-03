@@ -3,13 +3,13 @@
 #include "lib/m4a/m4a.h"
 #include "malloc_vram.h"
 
+
+#include "game/amy_attack_heart_effect.h"
 #include "game/sa1_sa2_shared/globals.h"
 #include "game/sa1_sa2_shared/collision.h"
-
 #include "game/stage/game_2.h"
-#include "game/stage/player_controls.h"
-#include "game/amy_attack_heart_effect.h"
 #include "game/stage/dust_effect_braking.h"
+#include "game/stage/player_controls.h"
 #include "game/boost_effect.h"
 #include "game/player_callbacks.h"
 

@@ -1,6 +1,7 @@
 #ifndef GUARD_STAGE_PLAYER_H
 #define GUARD_STAGE_PLAYER_H
 
+// TODO: Merge this file with this one!!!
 #include "game/sa1_sa2_shared/player.h"
 
 // TODO: merge these

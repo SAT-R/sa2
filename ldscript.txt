@@ -120,7 +120,7 @@ SECTIONS
         src/game/sa1_sa2_shared/collect_ring_effect.o(.text);
         src/game/sa1_sa2_shared/item_box.o(.text);
         src/game/sa1_sa2_shared/dust_cloud.o(.text);
-        src/game/sa1_sa2_shared/ring.o(.text);
+        src/game/sa1_sa2_shared/magnetic_ring.o(.text);
         src/game/sa1_sa2_shared/music_manager.o(.text);
         src/game/sa1_sa2_shared/collision.o(.text);
         src/game/sa1_sa2_shared/input_buffer.o(.text);
