@@ -2262,6 +2262,9 @@ void sub_8022D6C(Player *p)
         p->unk28 = 0;
         return;
     }
+
+    // NOTE/TODO: Not in SA1, but likely in SA3, so assuming >= GAME_SA2!
+#if (GAME >= GAME_SA2)
     if ((gCurrentLevel == 0) && (gWater.isActive == TRUE)) {
         s32 r5 = Q(p->y) >> 16;
         u32 mask = ~0x3;
@@ -2299,6 +2302,8 @@ void sub_8022D6C(Player *p)
             m4aSongNumStop(SE_281);
         }
     }
+#endif
+
     if (GRAVITY_IS_INVERTED) {
         s8 rot = p->rotation;
         rot += 0x40;
@@ -3307,6 +3312,8 @@ void Task_PlayerMain(void)
     }
 
     sub_8023748(p);
+
+    // from boost_effect.c
     sub_8015790();
     sub_80156D0();
 
